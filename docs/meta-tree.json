@@ -447,6 +447,12 @@
           "rel": "langsmith/agent-environments.md"
         }
       ],
+      "agent-registry": [
+        {
+          "title": "Agent Registry",
+          "rel": "langsmith/agent-registry.md"
+        }
+      ],
       "agent-server": [
         {
           "title": "Agent Server",
@@ -481,12 +487,6 @@
         {
           "title": "Configure Agent Server for scale",
           "rel": "langsmith/agent-server-scale.md"
-        }
-      ],
-      "agents": [
-        {
-          "title": "Agents",
-          "rel": "langsmith/agents.md"
         }
       ],
       "alerts": [

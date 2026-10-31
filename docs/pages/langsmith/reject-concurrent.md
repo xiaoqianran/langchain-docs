@@ -10,144 +10,144 @@ The guide covers the `reject` option for double texting, which rejects the new r
 
 First, we will define a quick helper function for printing out JS and cURL model outputs (you can skip this if using Python):
 
-**Javascript**
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> function prettyPrint(m) {
+>   const padded = " " + m['type'] + " ";
+>   const sepLen = Math.floor((80 - padded.length) / 2);
+>   const sep = "=".repeat(sepLen);
+>   const secondSep = sep + (padded.length % 2 ? "=" : "");
+>
+>   console.log(`${sep}${padded}${secondSep}`);
+>   console.log("\n\n");
+>   console.log(m.content);
+> }
+> ```
 
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-function prettyPrint(m) {
-  const padded = " " + m['type'] + " ";
-  const sepLen = Math.floor((80 - padded.length) / 2);
-  const sep = "=".repeat(sepLen);
-  const secondSep = sep + (padded.length % 2 ? "=" : "");
-
-  console.log(`${sep}${padded}${secondSep}`);
-  console.log("\n\n");
-  console.log(m.content);
-}
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# PLACE THIS IN A FILE CALLED pretty_print.sh
-pretty_print() {
-  local type="$1"
-  local content="$2"
-  local padded=" $type "
-  local total_width=80
-  local sep_len=$(( (total_width - ${#padded}) / 2 ))
-  local sep=$(printf '=%.0s' $(eval "echo {1.."${sep_len}"}"))
-  local second_sep=$sep
-  if (( (total_width - ${#padded}) % 2 )); then
-    second_sep="${second_sep}="
-  fi
-
-  echo "${sep}${padded}${second_sep}"
-  echo
-  echo "$content"
-}
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # PLACE THIS IN A FILE CALLED pretty_print.sh
+> pretty_print() {
+>   local type="$1"
+>   local content="$2"
+>   local padded=" $type "
+>   local total_width=80
+>   local sep_len=$(( (total_width - ${#padded}) / 2 ))
+>   local sep=$(printf '=%.0s' $(eval "echo {1.."${sep_len}"}"))
+>   local second_sep=$sep
+>   if (( (total_width - ${#padded}) % 2 )); then
+>     second_sep="${second_sep}="
+>   fi
+>
+>   echo "${sep}${padded}${second_sep}"
+>   echo
+>   echo "$content"
+> }
+> ```
 
 Now, let's import our required packages and instantiate our client, assistant, and thread.
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import httpx
+> from langchain_core.messages import convert_to_messages
+> from langgraph_sdk import get_client
+>
+> client = get_client(url=<DEPLOYMENT_URL>)
+> # Using the graph deployed with the name "agent"
+> assistant_id = "agent"
+> thread = await client.threads.create()
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import httpx
-from langchain_core.messages import convert_to_messages
-from langgraph_sdk import get_client
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client } from "@langchain/langgraph-sdk";
+>
+> const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+> // Using the graph deployed with the name "agent"
+> const assistantId = "agent";
+> const thread = await client.threads.create();
+> ```
 
-client = get_client(url=<DEPLOYMENT_URL>)
-# Using the graph deployed with the name "agent"
-assistant_id = "agent"
-thread = await client.threads.create()
-```
-
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "@langchain/langgraph-sdk";
-
-const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-// Using the graph deployed with the name "agent"
-const assistantId = "agent";
-const thread = await client.threads.create();
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-  --url <DEPLOYMENT_URL>/threads \
-  --header 'Content-Type: application/json' \
-  --data '{}'
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>   --url <DEPLOYMENT_URL>/threads \
+>   --header 'Content-Type: application/json' \
+>   --data '{}'
+> ```
 
 ## Create runs
 
 Now we can run a thread and try to run a second one with the "reject" option, which should fail since we have already started a run:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> run = await client.runs.create(
+>     thread["thread_id"],
+>     assistant_id,
+>     input={"messages": [{"role": "user", "content": "what's the weather in sf?"}]},
+> )
+> try:
+>     await client.runs.create(
+>         thread["thread_id"],
+>         assistant_id,
+>         input={
+>             "messages": [{"role": "user", "content": "what's the weather in nyc?"}]
+>         },
+>         multitask_strategy="reject",
+>     )
+> except httpx.HTTPStatusError as e:
+>     print("Failed to start concurrent run", e)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-run = await client.runs.create(
-    thread["thread_id"],
-    assistant_id,
-    input={"messages": [{"role": "user", "content": "what's the weather in sf?"}]},
-)
-try:
-    await client.runs.create(
-        thread["thread_id"],
-        assistant_id,
-        input={
-            "messages": [{"role": "user", "content": "what's the weather in nyc?"}]
-        },
-        multitask_strategy="reject",
-    )
-except httpx.HTTPStatusError as e:
-    print("Failed to start concurrent run", e)
-```
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const run = await client.runs.create(
+>   thread["thread_id"],
+>   assistantId,
+>   input={"messages": [{"role": "user", "content": "what's the weather in sf?"}]},
+> );
+>
+> try {
+>   await client.runs.create(
+>     thread["thread_id"],
+>     assistantId,
+>     {
+>       input: {"messages": [{"role": "user", "content": "what's the weather in nyc?"}]},
+>       multitask_strategy:"reject"
+>     },
+>   );
+> } catch (e) {
+>   console.error("Failed to start concurrent run", e);
+> }
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const run = await client.runs.create(
-  thread["thread_id"],
-  assistantId,
-  input={"messages": [{"role": "user", "content": "what's the weather in sf?"}]},
-);
-
-try {
-  await client.runs.create(
-    thread["thread_id"],
-    assistantId,
-    {
-      input: {"messages": [{"role": "user", "content": "what's the weather in nyc?"}]},
-      multitask_strategy:"reject"
-    },
-  );
-} catch (e) {
-  console.error("Failed to start concurrent run", e);
-}
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
---url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
---header 'Content-Type: application/json' \
---data "{
-  \"assistant_id\": \"agent\",
-  \"input\": {\"messages\": [{\"role\": \"human\", \"content\": \"what\'s the weather in sf?\"}]},
-}" && curl --request POST \
---url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
---header 'Content-Type: application/json' \
---data "{
-  \"assistant_id\": \"agent\",
-  \"input\": {\"messages\": [{\"role\": \"human\", \"content\": \"what\'s the weather in nyc?\"}]},
-  \"multitask_strategy\": \"reject\"
-}" || { echo "Failed to start concurrent run"; echo "Error: $?" >&2; }
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+> --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
+> --header 'Content-Type: application/json' \
+> --data "{
+>   \"assistant_id\": \"agent\",
+>   \"input\": {\"messages\": [{\"role\": \"human\", \"content\": \"what\'s the weather in sf?\"}]},
+> }" && curl --request POST \
+> --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
+> --header 'Content-Type: application/json' \
+> --data "{
+>   \"assistant_id\": \"agent\",
+>   \"input\": {\"messages\": [{\"role\": \"human\", \"content\": \"what\'s the weather in nyc?\"}]},
+>   \"multitask_strategy\": \"reject\"
+> }" || { echo "Failed to start concurrent run"; echo "Error: $?" >&2; }
+> ```
 
 Output:
 
@@ -160,42 +160,42 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 
 We can verify that the original thread finished executing:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # wait until the original run completes
+> await client.runs.join(thread["thread_id"], run["run_id"])
+>
+> state = await client.threads.get_state(thread["thread_id"])
+>
+> for m in convert_to_messages(state["values"]["messages"]):
+>     m.pretty_print()
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# wait until the original run completes
-await client.runs.join(thread["thread_id"], run["run_id"])
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.runs.join(thread["thread_id"], run["run_id"]);
+>
+> const state = await client.threads.getState(thread["thread_id"]);
+>
+> for (const m of state["values"]["messages"]) {
+>   prettyPrint(m);
+> }
+> ```
 
-state = await client.threads.get_state(thread["thread_id"])
-
-for m in convert_to_messages(state["values"]["messages"]):
-    m.pretty_print()
-```
-
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.runs.join(thread["thread_id"], run["run_id"]);
-
-const state = await client.threads.getState(thread["thread_id"]);
-
-for (const m of state["values"]["messages"]) {
-  prettyPrint(m);
-}
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-source pretty_print.sh && curl --request GET \
---url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join && \
-curl --request GET --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | \
-jq -c '.values.messages[]' | while read -r element; do
-    type=$(echo "$element" | jq -r '.type')
-    content=$(echo "$element" | jq -r '.content | if type == "array" then tostring else . end')
-    pretty_print "$type" "$content"
-done
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> source pretty_print.sh && curl --request GET \
+> --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join && \
+> curl --request GET --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | \
+> jq -c '.values.messages[]' | while read -r element; do
+>     type=$(echo "$element" | jq -r '.type')
+>     content=$(echo "$element" | jq -r '.content | if type == "array" then tostring else . end')
+>     pretty_print "$type" "$content"
+> done
+> ```
 
 Output:
 

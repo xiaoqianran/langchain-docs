@@ -10,11 +10,11 @@ Start with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overv
 
 ## Choose how to run Deep Agents
 
-> **[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)**
+> [card] [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)
 >
 > Build deep agents with managed deployment infrastructure for complex, long-running tasks. LangSmith runs the harness, Agent Server, sandboxes, and schedules.
 
-> **[Deep Agents SDK](#self-host-with-the-sdk)**
+> [card] [Deep Agents SDK](#self-host-with-the-sdk)
 >
 > The same deep agents harness with maximum flexibility. Host agents yourself, or run a custom LangSmith Deployment when you need more control over the runtime.
 
@@ -63,7 +63,7 @@ console.log(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/863e743e-5e51-4c04-9165-a6884536c09c/r)**
+> [card] [View example trace](https://smith.langchain.com/public/863e743e-5e51-4c04-9165-a6884536c09c/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -79,19 +79,19 @@ See the [Quickstart](/oss/javascript/deepagents/quickstart/) and [Customization 
 
 Deep Agents is an ["agent harness"](/oss/javascript/concepts/products#agent-harnesses-like-the-deep-agents-sdk). It is the same core tool calling loop as other agent frameworks, but with built-in capabilities that make agents reliable for real tasks:
 
-> **[Execution environment](#execution-environment)**
+> [card] [Execution environment](#execution-environment)
 >
 > Tools, virtual filesystem, optional sandbox, and REPL (interpreter)
 
-> **[Context management](#context-management)**
+> [card] [Context management](#context-management)
 >
 > Skills, memory, summarization, context offloading, and prompt caching
 
-> **[Delegation](#delegation)**
+> [card] [Delegation](#delegation)
 >
 > Subagent spawning and optional task planning
 
-> **[Steering](#steering)**
+> [card] [Steering](#steering)
 >
 > Human-in-the-loop approval and interrupts
 
@@ -135,7 +135,7 @@ The backends support the following file system operations:
 | `grep` | Search file contents with multiple output modes (files only, content with context, or counts) |
 | `execute` | Run shell commands in the environment (available with [sandbox backends](/oss/javascript/deepagents/sandboxes) only) |
 
-> **Supported multimodal file extensions**
+> [accordion] Supported multimodal file extensions
 >
 > | Type | Extensions |
 > | - | - |
@@ -144,7 +144,7 @@ The backends support the following file system operations:
 > | [Audio](/oss/javascript/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac` |
 > | [File](/oss/javascript/langchain/messages#multimodal) | `.pdf`, `.ppt`, `.pptx` |
 
-> **Running without the default filesystem tools**
+> [accordion] Running without the default filesystem tools
 >
 > To hide the filesystem tools listed above from the model, register a [harness profile](/oss/javascript/deepagents/profiles#harness-profiles) with `excluded_tools`:
 >
@@ -382,27 +382,27 @@ For more information, see [Human-in-the-loop](/oss/javascript/deepagents/human-i
 
 ## Get started
 
-> **[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)**
+> [card] [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)
 >
 > Build deep agents with managed deployment infrastructure
 
-> **[SDK quickstart](/oss/javascript/deepagents/quickstart)**
+> [card] [SDK quickstart](/oss/javascript/deepagents/quickstart)
 >
 > The same deep agents harness, self-hosted
 
-> **[Customization](/oss/javascript/deepagents/customization)**
+> [card] [Customization](/oss/javascript/deepagents/customization)
 >
 > Learn about SDK customization options
 
-> **[Code](/oss/deepagents/code/overview)**
+> [card] [Code](/oss/deepagents/code/overview)
 >
 > Use Deep Agents Code
 
-> **[ACP](/oss/javascript/deepagents/acp)**
+> [card] [ACP](/oss/javascript/deepagents/acp)
 >
 > Use deep agents in code editors with ACP
 
-> **[Reference](https://reference.langchain.com/javascript/modules/deepagents.html)**
+> [card] [Reference](https://reference.langchain.com/javascript/modules/deepagents.html)
 >
 > See the `deepagents` API reference
 

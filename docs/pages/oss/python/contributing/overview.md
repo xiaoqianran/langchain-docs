@@ -8,7 +8,7 @@ LangChain has helped form the largest developer community in generative AI, and 
 
 ## Ways to contribute
 
-> **Report bugs**
+> [accordion] Report bugs
 >
 > Found a bug? Please help us fix it by following these steps:
 >
@@ -16,15 +16,15 @@ LangChain has helped form the largest developer community in generative AI, and 
 >
 > Check if the issue already exists in our GitHub Issues for the respective repo:
 >
-> > **[LangChain](https://github.com/langchain-ai/langchain/issues)**
+> > [card] [LangChain](https://github.com/langchain-ai/langchain/issues)
 > >
 > > Issues
 >
-> > **[LangGraph](https://github.com/langchain-ai/langgraph/issues)**
+> > [card] [LangGraph](https://github.com/langchain-ai/langgraph/issues)
 > >
 > > Issues
 >
-> > **[Deep Agents](https://github.com/langchain-ai/deepagents/issues)**
+> > [card] [Deep Agents](https://github.com/langchain-ai/deepagents/issues)
 > >
 > > Issues
 >
@@ -42,7 +42,7 @@ LangChain has helped form the largest developer community in generative AI, and 
 > This issue is blocked by #123 and related to #456.
 > ```
 
-> **Suggest features**
+> [accordion] Suggest features
 >
 > Have an idea for a new feature or enhancement?
 >
@@ -50,15 +50,15 @@ LangChain has helped form the largest developer community in generative AI, and 
 >
 > Search the issues for the respective repository for existing feature requests:
 >
-> > **[LangChain](https://github.com/langchain-ai/langchain/issues?q=state%3Aopen%20label%3A%22feature%20request%22)**
+> > [card] [LangChain](https://github.com/langchain-ai/langchain/issues?q=state%3Aopen%20label%3A%22feature%20request%22)
 > >
 > > Issues
 >
-> > **[LangGraph](https://github.com/langchain-ai/langgraph/issues?q=state%3Aopen%20label%3Aenhancement)**
+> > [card] [LangGraph](https://github.com/langchain-ai/langgraph/issues?q=state%3Aopen%20label%3Aenhancement)
 > >
 > > Issues
 >
-> > **[Deep Agents](https://github.com/langchain-ai/deepagents/issues?q=is%3Aissue%20state%3Aopen%20label%3Afeature)**
+> > [card] [Deep Agents](https://github.com/langchain-ai/deepagents/issues?q=is%3Aissue%20state%3Aopen%20label%3Afeature)
 > >
 > > Issues
 >
@@ -70,19 +70,19 @@ LangChain has helped form the largest developer community in generative AI, and 
 >
 > Be sure to describe the use case and why it would be valuable to others. If possible, provide examples or mockups where applicable. Outline test cases that should pass.
 
-> **Improve documentation**
+> [accordion] Improve documentation
 >
 > Documentation improvements are welcome! We strive to keep our docs clear and comprehensive, and your perspective can make a big difference.
 >
-> > **[How to propose changes to the documentation](/oss/python/contributing/documentation)**
+> > [card] [How to propose changes to the documentation](/oss/python/contributing/documentation)
 > >
 > > Guide
 
-> **Contribute code**
+> [accordion] Contribute code
 >
 > With a large userbase, it can be hard for our small team to keep up with all the feature requests and bug fixes. If you have the skills and time, we would love your help!
 >
-> > **[How to make your first Pull Request](/oss/python/contributing/code)**
+> > [card] [How to make your first Pull Request](/oss/python/contributing/code)
 > >
 > > Guide
 >
@@ -90,27 +90,27 @@ LangChain has helped form the largest developer community in generative AI, and 
 >
 > If you are looking for something to work on, check out the issue labeled "help wanted" in our repos:
 >
-> > **[LangChain](https://github.com/langchain-ai/langchain/labels?q=help+wanted)**
+> > [card] [LangChain](https://github.com/langchain-ai/langchain/labels?q=help+wanted)
 > >
 > > Labels
 >
-> > **[LangGraph](https://github.com/langchain-ai/langgraph/labels?q=help+wanted)**
+> > [card] [LangGraph](https://github.com/langchain-ai/langgraph/labels?q=help+wanted)
 > >
 > > Labels
 >
-> > **[Deep Agents](https://github.com/langchain-ai/deepagents/labels?q=help+wanted)**
+> > [card] [Deep Agents](https://github.com/langchain-ai/deepagents/labels?q=help+wanted)
 > >
 > > Labels
 
-> **Build a new integration**
+> [accordion] Build a new integration
 >
 > Anyone can build and publish their own LangChain integration package. New integrations are not accepted as PRs to `langchain-ai` repos — they must be published independently to PyPI or npm.
 >
-> > **[LangChain](/oss/python/contributing/integrations-langchain)**
+> > [card] [LangChain](/oss/python/contributing/integrations-langchain)
 > >
 > > Guide to building a LangChain integration
 >
-> > **[Deep Agents sandboxes](/oss/python/contributing/integrations-langchain)**
+> > [card] [Deep Agents sandboxes](/oss/python/contributing/integrations-langchain)
 > >
 > > Guide to building a sandbox integration
 

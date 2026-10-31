@@ -8,7 +8,7 @@
 
 * 您可能已经部署了LangSmith，但没有设置 SSO。 LangSmith 需要 SSO 来管理用户和 API 密钥。您可以在 [configuration section.](/langsmith/self-host-sso) 中找到有关设置 SSO 的更多信息
 
-### *How does load balancing/ingress work*?
+### *负载平衡/入口如何工作*？
 
 * 您将需要向您的应用程序/用户公开前端容器/服务。这将处理到所有下游服务的路由。
 * 您需要在入口级别终止 SSL。我们建议使用 AWS ALB、GCP 负载均衡器或 Nginx 等托管服务。
@@ -19,9 +19,9 @@
 
 您可以在 [configuration section.](/langsmith/self-host-sso) 中找到有关设置 SSO 的更多信息
 
-### *Can I use external storage services?*
+### *我可以使用外部存储服务吗？*
 
-* 您可以配置LangSmith使用所有存储服务的外部版本。在生产环境中，我们强烈建议使用外部存储服务。 Check out the [configuration section](/langsmith/self-hosted) for more information.### *我的应用程序需要出口才能正常运行吗？*
+* 您可以配置LangSmith使用所有存储服务的外部版本。在生产环境中，我们强烈建议使用外部存储服务。查看[configuration section](/langsmith/self-hosted)了解更多信息。### *我的应用程序需要出口才能正常运行吗？*
 
 我们的部署仅需要出口来处理一些事情（其中大部分可以驻留在您的 VPC 内）：
 
@@ -43,7 +43,7 @@
 ### *应用程序的资源要求？*
 
 * 在 kubernetes 中，我们推荐最低 Helm 配置，您可以在 [medium size example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/medium_size.yaml) 中看到。对于 docker，我们建议至少 16GB RAM 和 4 个 CPU。
-* 对于 Postgres，我们建议至少使用 8GB RAM 和 2 个 CPU。
+* 对于 Postgres，我们建议至少 8GB RAM 和 2 个 CPU。
 * 对于 Redis，我们建议 4GB RAM 和 2 个 CPU。
 * 对于 Clickhouse，我们建议 32GB RAM 和 8 个 CPU。
 
@@ -84,7 +84,9 @@ JIT 配置和 SCIM 可能会相互冲突。我们建议在启用 SCIM 之前禁�
 
 #### *我可以使用自定义组名称吗？*
 
-是的。如果您的身份提供商支持将备用字段同步到 `displayName` 组属性，您可以使用备用属性（如 `description`）作为 LangSmith 中的 `displayName`，并保留身份提供商组名称的完全可自定义性。否则，组必须遵循 [Group Naming Convention](/langsmith/user-management#group-naming-convention) 部分中描述的特定命名约定，才能正确映射到 LangSmith 角色和工作区。您还可以使用 [configure a custom separator](/langsmith/user-management#configure-custom-separator)（例如，`-`、`_`、`&`）代替默认冒号 (`:`)，以适应对组名称字符有限制的身份提供者。
+是的。如果您的身份提供商支持将备用字段同步到 `displayName` 组属性，您可以使用备用属性（如 `description`）作为 LangSmith 中的 `displayName`，并保留身份提供商组名称的完全可自定义性。否则，组必须遵循 [Group Naming Convention](/langsmith/user-management#group-naming-convention) 部分中描述的特定命名约定，才能正确映射到 LangSmith 角色和工作区。组还可以使用任何名称并映射到[team](/langsmith/teams#sync-team-members-from-your-identity-provider)。输入组名称作为团队的 IdP 组，团队的工作区访问权限将应用于该组的成员。
+
+您还可以使用 [configure a custom separator](/langsmith/user-management#configure-custom-separator)（例如，`-`、`_`、`&`）代替默认冒号 (`:`)，以适应对组名称字符有限制的身份提供者。
 
 #### *为什么我的 Okta 集成不起作用？*
 
@@ -106,7 +108,7 @@ JIT 配置和 SCIM 可能会相互冲突。我们建议在启用 SCIM 之前禁�
 
 LangGraph 不会给您的代码增加任何开销，并且是专为流式工作流程而设计的。
 
-### LangGraph 开源吗？免费吗？
+### LangGraph开源吗？免费吗？
 
 是的。 LangGraph 是 MIT 许可的开源库，可以免费使用。
 
@@ -118,19 +120,19 @@ LangGraph 是一个有状态的编排框架，可为代理工作流程带来更�
 | SDK | Python 和 JavaScript | Python 和 JavaScript |
 | HTTP API |无 |是 - 对于检索和更新状态或长期记忆，或创建可配置的助手很有用 |
 |流媒体 |基本 |逐个令牌消息的专用模式 |
-|检查点|社区贡献 |开箱即用的支持 |
+|检查点 |社区贡献 |开箱即用的支持 |
 |持久层|自我管理|具有高效存储的托管 Postgres |
 |部署|自我管理| • 云 • 免费自托管 • 企业（付费自托管） |
 |可扩展性|自我管理|任务队列和服务器的自动扩展|
-|容错|自我管理|自动重试 |
+|容错 |自我管理|自动重试 |
 |并发控制|简单的线程 |支持双短信 |
-|日程安排 |无 | Cron 调度 |
+|日程安排|无 | Cron 调度 |
 |监控|无 |与 LangSmith 集成以实现可观察性 |
 | IDE集成|工作室 |工作室 |
 
 ### LangSmith 开源吗？
 
-不。LangSmith 是专有软件。
+不，LangSmith 是专有软件。
 
 欲了解更多信息，请参阅我们的[LangSmith pricing page](https://www.langchain.com/pricing)。
 
@@ -146,7 +148,7 @@ LangGraph 是一个有状态的编排框架，可为代理工作流程带来更�
 这将连接到作为 LangSmith 一部分托管的 Studio 前端。
 如果您设置环境变量`LANGSMITH_TRACING=false`，则不会将任何跟踪发送到LangSmith。
 
-### 什么是部署运行？部署运行是对通过 LangSmith 部署部署的 LangGraph 代理的一次端到端调用。节点和子图不单独计费。对其他 LangGraph 代理的调用（通过 RemoteGraph 或 LangGraph SDK 或直接 API）将根据托管被调用代理的部署单独收费。人机交互中断在恢复时会创建单独的部署运行。
+### 什么是部署运行？部署运行是对通过 LangSmith 部署部署的 LangGraph 代理的一次端到端调用。节点和子图不单独计费。对其他 LangGraph 代理的调用（通过 RemoteGraph 或 LangGraph SDK 或直接 API）将单独向托管被调用代理的部署收费。人机交互中断在恢复时会创建单独的部署运行。
 
 ***
 

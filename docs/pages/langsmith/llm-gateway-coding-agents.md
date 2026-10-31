@@ -45,54 +45,54 @@ If your LangSmith deployment is on a regional instance, replace the gateway host
 
 Set `ANTHROPIC_BASE_URL` to the Anthropic-format gateway endpoint. The gateway infers the `anthropic/` provider prefix from the endpoint.
 
-**Settings file (recommended)**
+> [tab] Settings file (recommended)
+>
+> Variables declared in a `--settings` file take precedence over anything already exported in your shell, so the gateway URL and API key are guaranteed to override any ambient `ANTHROPIC_*` values that may already be set in your environment (for example, from a global shell profile or another tool).
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> touch ~/.claude/langsmith_gateway.settings.json
+> echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com/anthropic/","ANTHROPIC_API_KEY": "YOUR_LANGSMITH_KEY_HERE"}}' > ~/.claude/langsmith_gateway.settings.json
+> claude --settings ~/.claude/langsmith_gateway.settings.json
+> ```
+>
+> Replace `YOUR_LANGSMITH_KEY_HERE` with your LangSmith API key.
 
-Variables declared in a `--settings` file take precedence over anything already exported in your shell, so the gateway URL and API key are guaranteed to override any ambient `ANTHROPIC_*` values that may already be set in your environment (for example, from a global shell profile or another tool).
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-touch ~/.claude/langsmith_gateway.settings.json
-echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com/anthropic/","ANTHROPIC_API_KEY": "YOUR_LANGSMITH_KEY_HERE"}}' > ~/.claude/langsmith_gateway.settings.json
-claude --settings ~/.claude/langsmith_gateway.settings.json
-```
-
-Replace `YOUR_LANGSMITH_KEY_HERE` with your LangSmith API key.
-
-**Environment variables**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com/anthropic/"
-export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
-
-claude
-```
+> [tab] Environment variables
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com/anthropic/"
+> export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
+>
+> claude
+> ```
 
 #### Route model tiers across providers
 
 Set `ANTHROPIC_BASE_URL` to the gateway root, then map each Claude model tier to a provider-prefixed gateway model ID.
 
-**Settings file (recommended)**
+> [tab] Settings file (recommended)
+>
+> Variables declared in a `--settings` file take precedence over anything already exported in your shell, so gateway URLs, the API key, and model mappings are guaranteed to override any ambient `ANTHROPIC_*` values.
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> touch ~/.claude/langsmith_gateway.settings.json
+> echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com","ANTHROPIC_API_KEY": "YOUR_LANGSMITH_KEY_HERE","ANTHROPIC_DEFAULT_OPUS_MODEL": "anthropic/claude-opus-5","ANTHROPIC_DEFAULT_SONNET_MODEL": "openai/gpt-5.6-terra","ANTHROPIC_DEFAULT_HAIKU_MODEL": "fireworks/accounts/fireworks/models/glm-5p2"}}' > ~/.claude/langsmith_gateway.settings.json
+> claude --settings ~/.claude/langsmith_gateway.settings.json
+> ```
+>
+> Replace `YOUR_LANGSMITH_KEY_HERE` with your LangSmith API key.
 
-Variables declared in a `--settings` file take precedence over anything already exported in your shell, so gateway URLs, the API key, and model mappings are guaranteed to override any ambient `ANTHROPIC_*` values.
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-touch ~/.claude/langsmith_gateway.settings.json
-echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com","ANTHROPIC_API_KEY": "YOUR_LANGSMITH_KEY_HERE","ANTHROPIC_DEFAULT_OPUS_MODEL": "anthropic/claude-opus-5","ANTHROPIC_DEFAULT_SONNET_MODEL": "openai/gpt-5.6-terra","ANTHROPIC_DEFAULT_HAIKU_MODEL": "fireworks/accounts/fireworks/models/glm-5p2"}}' > ~/.claude/langsmith_gateway.settings.json
-claude --settings ~/.claude/langsmith_gateway.settings.json
-```
-
-Replace `YOUR_LANGSMITH_KEY_HERE` with your LangSmith API key.
-
-**Environment variables**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com"
-export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
-export ANTHROPIC_DEFAULT_OPUS_MODEL="anthropic/claude-opus-5"
-export ANTHROPIC_DEFAULT_SONNET_MODEL="openai/gpt-5.6-terra"
-export ANTHROPIC_DEFAULT_HAIKU_MODEL="fireworks/accounts/fireworks/models/glm-5p2"
-
-claude
-```
+> [tab] Environment variables
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com"
+> export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
+> export ANTHROPIC_DEFAULT_OPUS_MODEL="anthropic/claude-opus-5"
+> export ANTHROPIC_DEFAULT_SONNET_MODEL="openai/gpt-5.6-terra"
+> export ANTHROPIC_DEFAULT_HAIKU_MODEL="fireworks/accounts/fireworks/models/glm-5p2"
+>
+> claude
+> ```
 
 The model IDs are examples. Map each tier to any model configured in your workspace secrets or available through [Gateway Credits](/langsmith/llm-gateway-credits); the gateway handles request translation across providers. For details, see [API formats](/langsmith/llm-gateway-api-formats#understand-translation-behavior).
 
@@ -106,28 +106,28 @@ Claude Code Plus and Max users can send their saved Anthropic OAuth credential t
 
 Log in to Claude Code with your subscription, then configure the gateway.
 
-**Settings file (recommended)**
+> [tab] Settings file (recommended)
+>
+> Variables declared in a `--settings` file take precedence over anything already exported in your shell, so the gateway URL and custom headers are guaranteed to override any ambient `ANTHROPIC_*` values. The settings file also keeps your LangSmith API key out of your shell history and dotfiles.
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> touch ~/.claude/langsmith_gateway.settings.json
+> echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com/anthropic","ANTHROPIC_CUSTOM_HEADERS": "X-Api-Key: YOUR_LANGSMITH_KEY_HERE"}}' > ~/.claude/langsmith_gateway.settings.json
+> claude --settings ~/.claude/langsmith_gateway.settings.json
+> ```
+>
+> Replace `YOUR_LANGSMITH_KEY_HERE` with your LangSmith API key.
 
-Variables declared in a `--settings` file take precedence over anything already exported in your shell, so the gateway URL and custom headers are guaranteed to override any ambient `ANTHROPIC_*` values. The settings file also keeps your LangSmith API key out of your shell history and dotfiles.
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-touch ~/.claude/langsmith_gateway.settings.json
-echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com/anthropic","ANTHROPIC_CUSTOM_HEADERS": "X-Api-Key: YOUR_LANGSMITH_KEY_HERE"}}' > ~/.claude/langsmith_gateway.settings.json
-claude --settings ~/.claude/langsmith_gateway.settings.json
-```
-
-Replace `YOUR_LANGSMITH_KEY_HERE` with your LangSmith API key.
-
-**Environment variables**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com/anthropic"
-export ANTHROPIC_CUSTOM_HEADERS="X-Api-Key: $LANGSMITH_API_KEY"
-
-claude
-```
-
-Treat the `ANTHROPIC_CUSTOM_HEADERS` value as a secret: it embeds your LangSmith API key, so keep it out of shell history, dotfiles, and shared configuration.
+> [tab] Environment variables
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com/anthropic"
+> export ANTHROPIC_CUSTOM_HEADERS="X-Api-Key: $LANGSMITH_API_KEY"
+>
+> claude
+> ```
+>
+> Treat the `ANTHROPIC_CUSTOM_HEADERS` value as a secret: it embeds your LangSmith API key, so keep it out of shell history, dotfiles, and shared configuration.
 
 Claude Code uses and refreshes the OAuth credential from its saved login, including the required OAuth capability in the `anthropic-beta` header.
 

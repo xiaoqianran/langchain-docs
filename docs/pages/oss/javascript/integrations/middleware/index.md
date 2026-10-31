@@ -10,11 +10,11 @@ Browse available middleware for different providers or contribute your own to th
 
 Middleware enables context engineering, harness customization, and runtime safety controls. It is a useful extension point in LangChain and we love highlighting what the community builds with it:
 
-> **[Add an official integration](/oss/javascript/contributing/implement-langchain#middleware)**
+> [card] [Add an official integration](/oss/javascript/contributing/implement-langchain#middleware)
 >
 > Follow the contributing guide to build and publish a middleware package.
 
-> **[Share a community middleware](https://github.com/langchain-ai/docs)**
+> [card] [Share a community middleware](https://github.com/langchain-ai/docs)
 >
 > Open a PR to the docs repo to add your middleware to the table below.
 

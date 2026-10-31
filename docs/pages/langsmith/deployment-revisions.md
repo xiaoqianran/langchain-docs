@@ -10,39 +10,39 @@ A revision deploys a version of your application to an existing Cloud deployment
 
 When you [create a deployment](/langsmith/deploy-to-cloud), LangSmith creates its first revision. Use the LangSmith UI or LangGraph CLI to create subsequent revisions.
 
-**LangSmith UI**
-
-From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-revisions), select **Deployments**, then select a deployment.
-
-1. In the top-right corner of the **Deployment** view, select **+ New Revision**.
-2. In the **New Revision** modal, specify the full path to the [API configuration file](/langsmith/cli#configuration-file), including the file name. For example, enter `langgraph.json` if the file is in the repository root.
-3. Choose whether to make the deployment shareable through [Studio](/langsmith/studio).
-4. Add, remove, or update environment variables and secrets. Existing values are prepopulated. For more information, see [Environment variables](/langsmith/env-var-cloud).
-5. Select **Submit**. LangSmith queues the revision for deployment.
-
-**LangGraph CLI**
-
-Run `langgraph deploy` again from your project directory. The command finds the existing deployment by name and creates a revision with your latest code changes:
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langgraph deploy
-```
-
-To target a deployment by ID, run:
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langgraph deploy --deployment-id <DEPLOYMENT_ID>
-```
-
-To view deployment IDs, run:
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langgraph deploy list
-```
-
-> [!NOTE]
+> [tab] LangSmith UI
 >
-> `langgraph deploy` can update only deployments originally created with `langgraph deploy`. Use the LangSmith UI to update deployments created through the UI or GitHub integration.
+> From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-revisions), select **Deployments**, then select a deployment.
+>
+> 1. In the top-right corner of the **Deployment** view, select **+ New Revision**.
+> 2. In the **New Revision** modal, specify the full path to the [API configuration file](/langsmith/cli#configuration-file), including the file name. For example, enter `langgraph.json` if the file is in the repository root.
+> 3. Choose whether to make the deployment shareable through [Studio](/langsmith/studio).
+> 4. Add, remove, or update environment variables and secrets. Existing values are prepopulated. For more information, see [Environment variables](/langsmith/env-var-cloud).
+> 5. Select **Submit**. LangSmith queues the revision for deployment.
+
+> [tab] LangGraph CLI
+>
+> Run `langgraph deploy` again from your project directory. The command finds the existing deployment by name and creates a revision with your latest code changes:
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langgraph deploy
+> ```
+>
+> To target a deployment by ID, run:
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langgraph deploy --deployment-id <DEPLOYMENT_ID>
+> ```
+>
+> To view deployment IDs, run:
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langgraph deploy list
+> ```
+>
+> > [!NOTE]
+> >
+> > `langgraph deploy` can update only deployments originally created with `langgraph deploy`. Use the LangSmith UI to update deployments created through the UI or GitHub integration.
 
 ## Interrupt a revision
 

@@ -32,11 +32,11 @@ Templates serve as starting points that you clone to create your own agent. When
 
 ## Available templates
 
-> **Executive Assistant**
+> [card] Executive Assistant
 >
 > Manages your inbox, calendar, and daily brief.
 
-> **Software Engineer**
+> [card] Software Engineer
 >
 > Ships code from Slack, Linear, and GitHub in a sandbox.
 

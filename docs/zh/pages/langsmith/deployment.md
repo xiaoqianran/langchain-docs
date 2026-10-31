@@ -18,37 +18,37 @@
 
 LangSmith 部署与框架无关，这意味着您可以部署使用以下方式构建的代理：
 
-> **[LangGraph (and LangChain)](/langsmith/deployment-quickstart)**
+> [卡][LangGraph (and LangChain)](/langsmith/deployment-quickstart)
 >
 > 使用 LangGraph CLI 和应用程序模板将应用程序部署到 LangSmith。
 
-> **[Google ADK](/langsmith/deploy-google-adk)**
+> [卡片] [Google ADK](/langsmith/deploy-google-adk)
 >
 > 使用 `deployments-wrap-sdk` 包将 Google 代理开发工具包 (ADK) 代理部署为 LangGraph。
 
-> **[Other frameworks](/langsmith/deploy-other-frameworks)**
+> [卡][Other frameworks](/langsmith/deploy-other-frameworks)
 >
 > 使用功能 API 或 `deployments-wrap-sdk` 部署 Claude Agent SDK、Strands、CrewAI、AutoGen 和其他代理框架。
 
-> **[Looking to deploy Deep Agents?](/langsmith/python/managed-deep-agents-overview)**
+> [卡片][Looking to deploy Deep Agents?](/langsmith/python/managed-deep-agents-overview)
 >
 > 使用托管Deep Agents：用于部署代码优先Deep Agents的托管运行时。
 
 ## LangSmith 部署环境根据您希望运行 [control plane](/langsmith/control-plane) 和 [data plane](/langsmith/data-plane)（代理服务器及其数据库）的位置选择环境。所有基础设施类型都使用相同的[Agent Server](/langsmith/agent-server)运行时。
 
-> **[Cloud](/langsmith/deploy-to-cloud-overview)**
+> [卡][Cloud](/langsmith/deploy-to-cloud-overview)
 >
 > 由 AWS 和 GCP 上的 LangChain 完全管理。在 LangSmith UI 中或使用 [⟦T2⟧](/langsmith/cli#deploy) 从 GitHub 创建部署。需要[Plus plan or above](https://www.langchain.com/pricing)。
 
-> **[Self-hosted with control plane](/langsmith/deploy-with-control-plane)**
+> [卡][Self-hosted with control plane](/langsmith/deploy-with-control-plane)
 >
 > 在您自己的 Kubernetes 集群中运行 LangSmith 部署控制平面和代理服务器，以及自托管 LangSmith。需要启用 LangSmith 部署的 [Enterprise plan](https://www.langchain.com/pricing)。
 
-> **[Hybrid](/langsmith/hybrid)**
+> [卡][Hybrid](/langsmith/hybrid)
 >
 > LangChain-托管控制平面，具有代理服务器及其基础设施中的数据平面。跟踪流向LangSmith云或自托管LangSmith。
 
-> **[Standalone server](/langsmith/deploy-standalone-server)**
+> [卡][Standalone server](/langsmith/deploy-standalone-server)
 >
 > 使用 Docker、Compose 或 Kubernetes 部署代理服务器。带上您自己的 PostgreSQL、Redis 和 LangSmith 许可证；没有控制平面。可选 [LangSmith tracing](/langsmith/observability) 到云或自托管实例。
 
@@ -63,13 +63,13 @@ LangSmith平台运行位置请参见[Platform setup](/langsmith/platform-setup)�
 
 部署后，代理将使用[Agent Server](/langsmith/assistants)的执行模型：**助手**用于配置，**线程**用于状态，**运行**用于工作负载。能力、教程、服务器定制和操作请参见[Agent Server](/langsmith/develop-agents-overview)。
 
-> **[Update prompts and contexts without redeploying](/langsmith/prompt-context-hub)**
+> [卡][Update prompts and contexts without redeploying](/langsmith/prompt-context-hub)
 >
-> 管理您部署的代理在运行时提取的提示和版本化上下文，以便您无需完全部署即可更改行为。> **[Interact with your deployment using RemoteGraph](/langsmith/use-remote-graph)**
+> 管理您部署的代理在运行时提取的提示和版本化上下文，以便您无需完全部署即可更改行为。> [卡][Interact with your deployment using RemoteGraph](/langsmith/use-remote-graph)
 >
 > 从客户端代码调用已部署的图，就好像它是本地编译的图一样。
 
-> **[Find and fix failures with Engine](/langsmith/engine)**
+> [卡][Find and fix failures with Engine](/langsmith/engine)
 >
 > 一旦代理投入生产，使用 LangSmith 引擎来检测其跟踪中重复出现的故障，诊断根本原因并解决它们。
 
@@ -77,7 +77,7 @@ LangSmith平台运行位置请参见[Platform setup](/langsmith/platform-setup)�
 
 将 LangChain.js 代理和聊天 UI 作为单个 Web 应用程序一起发布。 Vite 示例使用 LangSmith Deployment 作为单独 UI 背后的代理后端。其他示例将代理嵌入到 Web 框架的路由处理程序中并发送到主机平台。
 
-> **[Full-stack web apps](/langsmith/deploy-frameworks-and-platforms)**
+> [卡][Full-stack web apps](/langsmith/deploy-frameworks-and-platforms)
 >
 > 发布 LangChain.js 聊天应用程序：将代理嵌入 Next.js、SvelteKit、Nuxt、Cloudflare Workers 或 Deno Deploy（无需代理服务器），或将 LangSmith 部署与 Vite + React UI 配对。
 >

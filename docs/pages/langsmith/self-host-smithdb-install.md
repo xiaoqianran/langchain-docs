@@ -37,7 +37,7 @@ At the end of this step, the shared infrastructure portion of your SmithDB Helm 
 
 Add the cache values for your version from [Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage). On LangSmith 0.17 that is usually one line, `smithdb.cache.storageClassName`. Local SSD on either version also needs the node selectors and tolerations shown there.
 
-> **SmithDB infrastructure Helm values**
+> [accordion] SmithDB infrastructure Helm values
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > smithdb:

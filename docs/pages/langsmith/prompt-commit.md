@@ -38,7 +38,7 @@ In LangSmith, when you save changes to a prompt, you're essentially creating a n
 
 The webhook will send a JSON payload containing the new **prompt manifest**.
 
-> **Sample Webhook Payload**
+> [accordion] Sample Webhook Payload
 >
 > ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > {
@@ -165,7 +165,7 @@ For deployment, platforms like [Render.com](https://render.com/) (offering a sui
 
 The server's core functionality will include an endpoint for webhook reception, logic for parsing the manifest, and integration with the GitHub API (using a Personal Access Token for authentication) to manage commits.
 
-> **Minimal FastAPI Server Code ()**
+> [accordion] Minimal FastAPI Server Code ()
 >
 > `main.py`
 >

@@ -74,7 +74,7 @@ Using a provider not listed here? See [Arbitrary providers](/oss/deepagents/code
 | OpenRouter | [`langchain-openrouter`](/oss/python/integrations/chat/openrouter) | `OPENROUTER_API_KEY` | ✅ |
 | LiteLLM | [`langchain-litellm`](/oss/python/integrations/chat/litellm) | Per-provider (see [docs](https://docs.litellm.ai/)) | ❌ |
 
-> **Use Nemotron 3.5 Super VL on NVIDIA Build**
+> [accordion] Use Nemotron 3.5 Super VL on NVIDIA Build
 >
 > Install the NVIDIA provider package, then save your [NVIDIA Build API key](/oss/python/integrations/chat/nvidia_ai_endpoints#access-the-nvidia-api-catalog) with `/auth`:
 >
@@ -91,7 +91,7 @@ Using a provider not listed here? See [Arbitrary providers](/oss/deepagents/code
 >
 > The NVIDIA provider uses the public Build endpoint by default. Check [NVIDIA Build](https://build.nvidia.com/) for model availability. For a configured private endpoint, set `NVIDIA_BASE_URL` or pair its URL with the credential through `dcode auth set nvidia --base-url URL`.
 
-> **Configure Anthropic models on Gemini Enterprise Agent Platform**
+> [accordion] Configure Anthropic models on Gemini Enterprise Agent Platform
 >
 > The `google_anthropic_vertex` provider runs Claude through Anthropic's Messages API on Gemini Enterprise Agent Platform. It uses Google Cloud Application Default Credentials (ADC) instead of an Anthropic API key.
 >
@@ -219,7 +219,7 @@ To switch models in Deep Agents Code, either:
    dcode --model openai:gpt-5.5
    ```
 
-> **Model resolution order**
+> [accordion] Model resolution order
 >
 > When Deep Agents Code launches, it resolves which model to use in the following order:
 >
@@ -234,7 +234,7 @@ To switch models in Deep Agents Code, either:
 
 The `/model` selector dynamically builds its list from installed provider packages. Expand below for the full criteria and troubleshooting.
 
-> **How the switcher builds its model list**
+> [accordion] How the switcher builds its model list
 >
 > The interactive `/model` selector builds its list from installed provider packages and models configured in `config.toml`.
 >

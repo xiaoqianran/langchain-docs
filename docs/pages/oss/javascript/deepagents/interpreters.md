@@ -22,19 +22,19 @@ Most agent work alternates between model reasoning and tool calls. A model can f
 
 Interpreters move that orchestration into code so the model reasons about *what* to do, not every intermediate step.
 
-> **[Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)**
+> [card] [Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)
 >
 > Call selected tools from interpreter code, including loops, retries, branching, and parallel batches.
 
-> **[Dynamic subagents](#dynamic-subagents)**
+> [card] [Dynamic subagents](#dynamic-subagents)
 >
 > Dispatch subagents from code for fan-out, verification, and recursive workflows over large inputs.
 
-> **[Stateful work](#how-interpreters-work)**
+> [card] [Stateful work](#how-interpreters-work)
 >
 > Keep intermediate values in runtime state without overloading the model context.
 
-> **[Deterministic transforms](#how-interpreters-work)**
+> [card] [Deterministic transforms](#how-interpreters-work)
 >
 > Sort, group, parse, validate, score, and aggregate structured data without another model turn.
 

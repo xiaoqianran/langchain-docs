@@ -155,19 +155,19 @@ const model = new ChatOpenAI({
 
 ## Next steps
 
-> **[Models guide](/oss/javascript/langchain/models)**
+> [card] [Models guide](/oss/javascript/langchain/models)
 >
 > Learn how to use models: invoke, stream, batch, tool calling, and more.
 
-> **[Chat model integrations](/oss/javascript/integrations/chat)**
+> [card] [Chat model integrations](/oss/javascript/integrations/chat)
 >
 > Browse all chat model integrations and their capabilities.
 
-> **[All providers](/oss/javascript/integrations/providers/overview)**
+> [card] [All providers](/oss/javascript/integrations/providers/overview)
 >
 > See the full list of provider packages and integrations.
 
-> **[Agents](/oss/javascript/langchain/agents)**
+> [card] [Agents](/oss/javascript/langchain/agents)
 >
 > Build agents that use models as their reasoning engine.
 

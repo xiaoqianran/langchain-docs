@@ -33,7 +33,7 @@ If you do not meet either criterion, the automation adds an **external listing**
 
 ### List in the download table (default)
 
-> **[File an Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)**
+> [card] [File an Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)
 >
 > Use the fixed form fields for display name, language, component, package name, docs URL, and a short provider description (max 160 characters).
 
@@ -59,7 +59,7 @@ If your package meets the [eligibility criteria](#eligibility-for-hosted-guides)
 
 Depending on the type of integration you have built, you will need to create different types of documentation pages. LangChain provides templates for different types of integrations to help you get started.
 
-> **[Chat models](https://github.com/langchain-ai/docs/blob/main/src/oss/javascript/integrations/chat/TEMPLATE.mdx)**
+> [card] [Chat models](https://github.com/langchain-ai/docs/blob/main/src/oss/javascript/integrations/chat/TEMPLATE.mdx)
 
 > [!TIP]
 >
@@ -100,7 +100,7 @@ Please be patient as we handle a large volume of submissions. Review the automat
 
 **Congratulations!** Your integration is published and listed for the LangChain community.
 
-> **[Co-marketing](/oss/javascript/contributing/comarketing)**
+> [card] [Co-marketing](/oss/javascript/contributing/comarketing)
 >
 > Get in touch with the LangChain marketing team to explore co-marketing opportunities.
 

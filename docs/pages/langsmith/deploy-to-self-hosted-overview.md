@@ -14,27 +14,27 @@ Self-hosted deployments require an [Enterprise plan](https://www.langchain.com/p
 
 LangSmith supports three self-hosted topologies that trade off setup complexity against control-plane features. Reference pages for [platform features](/langsmith/self-hosted-platform-features), [Agent Server metrics](/langsmith/self-hosted-agent-server-metrics), and [diagnostics](/langsmith/diagnostics-self-hosted) apply to all three.
 
-> **[Full self-hosted platform](/langsmith/deploy-with-control-plane)**
+> [card] [Full self-hosted platform](/langsmith/deploy-with-control-plane)
 >
 > The complete LangSmith platform—[control plane](/langsmith/control-plane) UI and APIs, [data plane](/langsmith/data-plane) listener, observability, evaluation, and agent deployment management. Best for teams that want the LangSmith product experience inside their own network.
 
-> **[Hybrid](/langsmith/hybrid)**
+> [card] [Hybrid](/langsmith/hybrid)
 >
 > LangChain-hosted control plane with the data plane (Agent Servers and databases) in your infrastructure. Best when you want managed deployment workflows but need agent workloads and customer data to stay inside your VPC.
 
-> **[Standalone server](/langsmith/deploy-standalone-server)**
+> [card] [Standalone server](/langsmith/deploy-standalone-server)
 >
 > The lightest option—Agent Server containers (API + queue workers) with your own PostgreSQL and Redis. No control plane, no managed UI. Best for embedding the runtime into existing infrastructure or running air-gapped.
 
-> **[Platform features](/langsmith/self-hosted-platform-features)**
+> [card] [Platform features](/langsmith/self-hosted-platform-features)
 >
 > Reference for self-hosted-only platform behavior: custom Postgres and Redis, listeners, and resource customization.
 
-> **[Agent Server metrics](/langsmith/self-hosted-agent-server-metrics)**
+> [card] [Agent Server metrics](/langsmith/self-hosted-agent-server-metrics)
 >
 > Prometheus and Datadog export for Agent Server, including Deployment UI metrics and internal metrics.
 
-> **[Diagnostics](/langsmith/diagnostics-self-hosted)**
+> [card] [Diagnostics](/langsmith/diagnostics-self-hosted)
 >
 > Collect logs, inspect state, and troubleshoot a self-hosted installation.
 
@@ -54,11 +54,11 @@ In return, you can integrate with your own [Postgres](/langsmith/self-hosted-pla
 
 ## Next steps
 
-> **[Pick a topology](/langsmith/deploy-standalone-server)**
+> [card] [Pick a topology](/langsmith/deploy-standalone-server)
 >
 > Compare standalone server, full platform, and hybrid to find the right fit.
 
-> **[Enable LangSmith Deployment](/langsmith/enable-self-hosted-deployment)**
+> [card] [Enable LangSmith Deployment](/langsmith/enable-self-hosted-deployment)
 >
 > Add a control plane and data plane to deploy and manage agents on self-hosted LangSmith.
 

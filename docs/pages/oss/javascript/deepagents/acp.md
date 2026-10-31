@@ -49,7 +49,7 @@ You can also use the CLI without writing any code:
 npx deepagents-acp
 ```
 
-> **[Deep Agents ACP on npm](https://www.npmjs.com/package/deepagents-acp)**
+> [card] [Deep Agents ACP on npm](https://www.npmjs.com/package/deepagents-acp)
 >
 > The `deepagents-acp` package provides both a CLI and a programmatic API for exposing deep agents over ACP.
 

@@ -72,7 +72,7 @@ agent = create_agent(
 )
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **on\_error** `Callable[[Exception, ToolCallRequest], str | list[ContentBlock] | None]`
 >
@@ -86,7 +86,7 @@ agent = create_agent(
 >
 > Optional list of tools or tool names to apply error handling to. If `None`, applies to all tools.
 
-> **Tool error full example**
+> [accordion] Tool error full example
 >
 > The `on_error` handler receives the exception and the `ToolCallRequest` (which includes the tool call dict with name, args, and call ID). Return `None` for exceptions you do not want to handle, and they will propagate normally.
 >
@@ -159,7 +159,7 @@ agent = create_agent(
 )
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **max\_retries** `number` (default: 2)
 >
@@ -199,7 +199,7 @@ agent = create_agent(
 >
 > Whether to add random jitter (`±25%`) to delay to avoid thundering herd
 
-> **Full example**
+> [accordion] Full example
 >
 > The middleware automatically retries failed tool calls with exponential backoff.
 >
@@ -267,7 +267,7 @@ agent = create_agent(
 )
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **max\_retries** `number` (default: 2)
 >
@@ -301,7 +301,7 @@ agent = create_agent(
 >
 > Whether to add random jitter (`±25%`) to delay to avoid thundering herd
 
-> **Full example**
+> [accordion] Full example
 >
 > The middleware automatically retries failed model calls with exponential backoff.
 >
@@ -405,7 +405,7 @@ agent = create_agent(
 
 Watch this [video guide](https://www.youtube.com/watch?v=8rCRO0DUeIM) demonstrating Model Fallback middleware behavior.
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **first\_model** `string | BaseChatModel` *required*
 >
@@ -446,7 +446,7 @@ agent = create_agent(
 )
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > > [!TIP]
 > >
@@ -520,7 +520,7 @@ agent = create_agent(
 >
 > **Deprecated:** Use `keep: ("messages", value)` instead. Recent messages to preserve.
 
-> **Full example**
+> [accordion] Full example
 >
 > The summarization middleware monitors message token counts and automatically summarizes older messages when thresholds are reached.
 >
@@ -699,7 +699,7 @@ agent = create_agent(
 
 Watch this [video guide](https://www.youtube.com/watch?v=nJEER0uaNkE) demonstrating Model Call Limit middleware behavior.
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **thread\_limit** `number`
 >
@@ -746,7 +746,7 @@ agent = create_agent(
 
 Watch this [video guide](https://www.youtube.com/watch?v=6gYlaJJ8t0w) demonstrating Tool Call Limit middleware behavior.
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **tool\_name** `string`
 >
@@ -770,7 +770,7 @@ Watch this [video guide](https://www.youtube.com/watch?v=6gYlaJJ8t0w) demonstrat
 > * `'error'` - Raise a `ToolCallLimitExceededError` exception, stopping execution immediately
 > * `'end'` - Stop execution immediately with a `ToolMessage` and AI message for the exceeded tool call. Only works when limiting a single tool; raises `NotImplementedError` if other tools have pending calls.
 
-> **Full example**
+> [accordion] Full example
 >
 > Specify limits with:
 >
@@ -933,7 +933,7 @@ def detector(content: str) -> list[PIIMatch]:
 > * Use custom functions when you need validation logic beyond pattern matching
 > * Custom functions give you full control over detection logic and can implement complex validation rules
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **pii\_type** `string` *required*
 >
@@ -990,7 +990,7 @@ agent = create_agent(
 
 Watch this [video guide](https://www.youtube.com/watch?v=yTWocbVKQxw) demonstrating To-do List middleware behavior.
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **system\_prompt** `string`
 >
@@ -1029,7 +1029,7 @@ agent = create_agent(
 )
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **model** `string | BaseChatModel`
 >
@@ -1075,13 +1075,13 @@ agent = create_agent(
 )
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **searchable\_tools** `list[str | BaseTool]`
 >
 > Tools to defer behind the provider's tool search, given by name or instance. Deferred tools are withheld from the model until its search surfaces them. Tools constructed with `extras={"defer_loading": True}` are deferred regardless of this option; if `searchable_tools` is omitted, only those pre-marked tools are deferred.
 
-> **Full example**
+> [accordion] Full example
 >
 > The middleware opts-in all tools included in `searchable_tools` for deferral and search. A tool can also opt into deferral at construction time by setting `extras={"defer_loading": True}`.
 >
@@ -1144,7 +1144,7 @@ agent = create_agent(
 )
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **workspace\_root** `str | Path | None`
 >
@@ -1186,7 +1186,7 @@ agent = create_agent(
 >
 > Optional environment variables to supply to the shell session. Values are coerced to strings before command execution.
 
-> **Full example**
+> [accordion] Full example
 >
 > The middleware provides a single persistent shell session that agents can use to execute commands sequentially.
 >
@@ -1542,7 +1542,7 @@ agent = create_agent(
 )
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **root\_path** `str` *required*
 >
@@ -1556,7 +1556,7 @@ agent = create_agent(
 >
 > Maximum file size to search in MB. Files larger than this are skipped.
 
-> **Full example**
+> [accordion] Full example
 >
 > The middleware adds two search tools to agents:
 >
@@ -1629,7 +1629,7 @@ agent = create_agent(
 )
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **edits** `list[ContextEdit]` (default: \[ClearToolUsesEdit()])
 >
@@ -1665,7 +1665,7 @@ agent = create_agent(
 >
 > Placeholder text inserted for cleared tool outputs. This replaces the original tool message content.
 
-> **Full example**
+> [accordion] Full example
 >
 > The middleware applies context editing strategies when token limits are reached. The most common strategy is `ClearToolUsesEdit`, which clears older tool results while preserving recent ones.
 >
@@ -1723,7 +1723,7 @@ agent = create_agent(
 )
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **tools** `list[str | BaseTool]`
 >
@@ -1733,7 +1733,7 @@ agent = create_agent(
 >
 > Model to use for generating emulated tool responses. Can be a model identifier string (e.g., `'google_genai:gemini-3.6-flash'`) or a `BaseChatModel` instance. Defaults to the agent's model if not specified. See [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) for more information.
 
-> **Full example**
+> [accordion] Full example
 >
 > The middleware uses an LLM to generate plausible responses for tool calls instead of executing the actual tools.
 >
@@ -1780,15 +1780,15 @@ agent = create_agent(
 
 These middleware are optimized for specific LLM providers. See each provider's documentation for full details and examples.
 
-> **[Anthropic](/oss/python/integrations/middleware/anthropic)**
+> [card] [Anthropic](/oss/python/integrations/middleware/anthropic)
 >
 > Prompt caching, bash tool, text editor, memory, and file search middleware for Claude models.
 
-> **[AWS](/oss/python/integrations/middleware/aws)**
+> [card] [AWS](/oss/python/integrations/middleware/aws)
 >
 > Prompt caching middleware for Amazon Bedrock models.
 
-> **[OpenAI](/oss/python/integrations/middleware/openai)**
+> [card] [OpenAI](/oss/python/integrations/middleware/openai)
 >
 > Content moderation middleware for OpenAI models.
 

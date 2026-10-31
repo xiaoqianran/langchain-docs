@@ -65,7 +65,7 @@ gcloud storage buckets add-iam-policy-binding gs://YOUR_BUCKET_NAME \
 
 ## 3. 生成 HMAC 密钥
 
-LangSmith 使用 S3 兼容的 XML API 连接到 GCS，这需要 HMAC 密钥而不是服务帐户 JSON 密钥。
+LangSmith 使用与 S3 兼容的 XML API 连接到 GCS，这需要 HMAC 密钥而不是服务帐户 JSON 密钥。
 
 为您的服务帐户生成 HMAC 密钥：
 
@@ -153,7 +153,7 @@ curl --request POST \
   }'
 ```
 
-批量导出默认为`zstandard`压缩。此示例设置 `snappy`，因为 Snappy 速度很快且受到 BigQuery 的广泛支持。所有可用选项请参考[Bulk export trace data](/langsmith/data-export#2-create-an-export-job)，包括字段过滤和过滤表达式。
+批量导出默认为`zstandard`压缩。此示例设置 `snappy`，因为 Snappy 速度快且受到 BigQuery 的广泛支持。所有可用选项，请参阅[Bulk export trace data](/langsmith/data-export#2-create-an-export-job)，包括字段过滤和过滤表达式。
 
 > [!注意]
 >
@@ -176,60 +176,61 @@ BigQuery 提供两种访问导出数据的方法。两者都需要首先授予 B
 
 ### 创建表
 
-**外部表**
+> [选项卡] 外部表
+>
+> 外部表直接从 GCS 查询数据，无需将其复制到 BigQuery 中。
+>
+> 1. 在 BigQuery 控制台中，在 **Explorer** 窗格中展开您的项目和数据集。
+> 2. 单击数据集的 **操作** 菜单（三个点）并选择 **创建表**。
+> 3. 在**来源**下：
+> * 将 **创建表自** 设置为 **Google Cloud Storage**。
+> * 将文件路径设置为`gs://YOUR_BUCKET_NAME/YOUR_PREFIX/export_id=*`。使用 `export_id=*` 将 BigQuery 范围限定为 Hive 分区的导出目录，并排除 LangSmith 在目标验证期间写入的 `tmp/` 文件夹（请参阅 [Temporary validation file](#temporary-validation-file)）。
+> * 将 **文件格式** 设置为 **Parquet**。
+> 4.勾选**源数据分区**，然后：
+> * 将 **源 URI 前缀** 设置为 `gs://YOUR_BUCKET_NAME/YOUR_PREFIX`。
+> * 将**分区推断模式**设置为**自动推断类型**。
+> 5. 在**目的地**下：
+> * 选择您的项目和数据集。> * 输入表名，例如`langsmith_runs`。
+> * 将**表类型**设置为**外部表**。
+> 6. 在**架构**下，启用**自动检测**。
+> 7. 单击**创建表**。
+>
+> 分区路径列（`export_id`、`tenant_id`、`session_id`、`resource`、`year`、`month`、`day`）可用作可查询列。在查询中过滤 `year`、`month` 或 `day` 以启用分区修剪。
 
-外部表直接从 GCS 查询数据，无需将其复制到 BigQuery 中。
-
-1. 在 BigQuery 控制台的 **Explorer** 窗格中展开您的项目和数据集。
-2. 单击数据集的 **操作** 菜单（三个点）并选择 **创建表**。
-3. 在**来源**下：
-   * 将**创建表自**设置为**Google Cloud Storage**。
-   * 将文件路径设置为`gs://YOUR_BUCKET_NAME/YOUR_PREFIX/export_id=*`。使用 `export_id=*` 将 BigQuery 范围限定为 Hive 分区的导出目录，并排除 LangSmith 在目标验证期间写入的 `tmp/` 文件夹（请参阅 [Temporary validation file](#temporary-validation-file)）。
-   * 将**文件格式**设置为**Parquet**。
-4. 勾选**源数据分区**，然后：
-   * 将 **源 URI 前缀** 设置为 `gs://YOUR_BUCKET_NAME/YOUR_PREFIX`。
-   * 将**分区推断模式**设置为**自动推断类型**。
-5. 在**目的地**下：
-   * 选择您的项目和数据集。* 输入表名，例如`langsmith_runs`。
-   * 将**表类型**设置为**外部表**。
-6. 在**架构**下，启用**自动检测**。
-7. 单击**创建表**。
-
-分区路径列（`export_id`、`tenant_id`、`session_id`、`resource`、`year`、`month`、`day`）可用作可查询列。在查询中过滤 `year`、`month` 或 `day` 以启用分区修剪。
-
-**本机表**
-
-本机表将 Parquet 数据传输到 BigQuery 存储中，以获得完整的查询性能。
-
-1. 转到 Google Cloud 控制台中的[Data Transfer page](https://console.cloud.google.com/bigquery/transfers)，然后选择 **+ 创建传输**。
-
-2. 对于 **源类型**，选择 **Google 云存储**。
-
-3. 输入**传输名称**。如有必要，您可以随时编辑传输。
-
-4. 选择**计划选项**。如果您不想重复导出，可以选择**按需**并手动触发导出。
-
-5. 在 BigQuery 控制台中，在 **Explorer** 窗格中展开您的项目和数据集。
-
-6. 单击数据集的 **操作** 菜单（三个点）并选择 **创建表**。7. 在**来源**下：
-   * 将**创建表自**设置为**Google Cloud Storage**。
-   * 将文件路径设置为`gs://YOUR_BUCKET_NAME/YOUR_PREFIX/export_id=*`。使用 `export_id=*` 会排除 LangSmith 在目标验证期间写入的 `tmp/` 文件夹（请参阅 [Temporary validation file](#temporary-validation-file)）。
-   * 将**文件格式**设置为**Parquet**。
-
-8. 勾选**源数据分区**，然后：
-   * 将 **源 URI 前缀** 设置为 `gs://YOUR_BUCKET_NAME/YOUR_PREFIX`。
-   * 将**分区推断模式**设置为**自动推断类型**。
-
-9. 在**目的地**下：
-   * 选择您的项目和数据集。
-   * 输入表名，例如`langsmith_runs`。
-   * 将**表类型**设置为**本机表**。
-
-10. 在**高级选项**下，将新表的**写入首选项**设置为**如果为空则写入**。
-
-11. 单击**创建表**。
-
-BigQuery 运行加载作业来复制数据。 Hive 分区列在表中显示为常规列。有关可用数据列的完整列表，请参阅[Exportable fields](/langsmith/data-export#exportable-fields)。
+> [选项卡] 本机表
+>
+> 本机表将 Parquet 数据传输到 BigQuery 存储中，以实现完整的查询性能。
+>
+> 1. 转到 Google Cloud 控制台中的[Data Transfer page](https://console.cloud.google.com/bigquery/transfers)，然后选择 **+ 创建传输**。
+>
+> 2. 对于 **来源类型**，选择 **Google 云存储**。
+>
+> 3. 输入**传输名称**。如有必要，您可以随时编辑传输。
+>
+> 4. 选择**计划选项**。如果您不想重复导出，可以选择**按需**并手动触发导出。
+>
+> 5. 在 BigQuery 控制台的 **Explorer** 窗格中展开您的项目和数据集。
+>
+> 6. 单击数据集的 **操作** 菜单（三个点）并选择 **创建表**。
+>
+> 7. 在**来源**下：
+> * 将 **创建表自** 设置为 **Google Cloud Storage**。> * 将文件路径设置为`gs://YOUR_BUCKET_NAME/YOUR_PREFIX/export_id=*`。使用 `export_id=*` 会排除 LangSmith 在目标验证期间写入的 `tmp/` 文件夹（请参阅 [Temporary validation file](#temporary-validation-file)）。
+> * 将 **文件格式** 设置为 **Parquet**。
+>
+> 8. 勾选**源数据分区**，然后：
+> * 将 **源 URI 前缀** 设置为 `gs://YOUR_BUCKET_NAME/YOUR_PREFIX`。
+> * 将**分区推断模式**设置为**自动推断类型**。
+>
+> 9. 在**目的地**下：
+> * 选择您的项目和数据集。
+> * 输入表名，例如`langsmith_runs`。
+> * 将 **表类型** 设置为 **本机表**。
+>
+> 10. 在**高级选项**下，将新表的**写入首选项**设置为**如果为空则写入**。
+>
+> 11. 单击**创建表**。
+>
+> BigQuery 运行加载作业来复制数据。 Hive 分区列在表中显示为常规列。有关可用数据列的完整列表，请参阅[Exportable fields](/langsmith/data-export#exportable-fields)。
 
 ## 凭证轮换
 
@@ -251,9 +252,9 @@ BigQuery 运行加载作业来复制数据。 Hive 分区列在表中显示为�
          "secret_access_key": "NEW_HMAC_SECRET"
        }
      }'
-   ```LangSmith 在保存之前通过测试写入来验证新凭据。在此验证期间，新的 `tmp/` 文件可能会出现在您的存储桶中（请参阅[Temporary validation file](#temporary-validation-file)）。
+   ```
 
-3. **保持旧的 HMAC 密钥处于活动状态**，直到所有正在进行的导出运行完成。两个凭证集在过渡窗口期间同时有效。
+   LangSmith 在保存之前通过测试写入来验证新凭据。在此验证期间，新的 `tmp/` 文件可能会出现在您的存储桶中（请参阅[Temporary validation file](#temporary-validation-file)）。3. **保持旧的 HMAC 密钥处于活动状态**，直到所有正在进行的导出运行完成。两个凭证集在过渡窗口期间同时有效。
 
 4. 一旦您确认没有正在进行的运行正在使用旧的 HMAC 密钥，请在 GCP 中删除它们。
 
@@ -265,13 +266,15 @@ BigQuery 运行加载作业来复制数据。 Hive 分区列在表中显示为�
 | - | - | - |
 | `400 Access denied` 关于目的地创建 | HMAC 凭证缺乏写入权限 |验证服务帐户在存储桶上有`storage.objects.create` |
 | `400 Key ID you provided does not exist` | HMAC 访问 ID 无效 |在 GCP 中重新生成 HMAC 密钥 |
-| `400 Invalid endpoint` |端点 URL 格式错误 |准确使用`https://storage.googleapis.com` |
-| BigQuery 表不显示任何行 |出口尚未完成 |使用`GET /api/v1/bulk-exports/{export_id}`检查导出状态 |
+| `400 Invalid endpoint` |端点 URL 格式错误 |准确使用`https://storage.googleapis.com`|
+| BigQuery 表不显示任何行 |出口尚未完成|使用`GET /api/v1/bulk-exports/{export_id}`检查导出状态 |
 | BigQuery 分区修剪不起作用 |源 URI 前缀不正确 |确保源 URI 前缀在第一个分区键之前结束，例如`gs://BUCKET/PREFIX` |
 | BigQuery 拾取 `tmp/` 文件 |广泛的文件路径 glob |在文件路径中使用 `export_id=*` 而不是 `*` |
 
 有关其他错误代码和导出状态详细信息，请参阅[Monitor and troubleshoot bulk exports](/langsmith/data-export-monitor)。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/big-query-bulk-export.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

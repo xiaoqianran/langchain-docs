@@ -30,7 +30,7 @@ LangSmith与Harbor在三个点上集成：
 pip install "harbor[langsmith]"
 ```
 
-### 验证Harbor 使用您的 LangSmith 凭据进行身份验证。设置API密钥和该密钥所属的端点：
+### 验证Harbor 使用您的 LangSmith 凭据进行身份验证。设置 API 密钥以及该密钥所属的端点：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="<LANGSMITH_API_KEY>"
@@ -183,7 +183,7 @@ terminal-bench/
 该项目公开了两个图表，使用 `--ak graph` 选择。两者都使用 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 构建深度代理，仅输入不同：
 
 * **`deep_agent`** 解析为 `make_graph`，一个仅使用模型创建的深度代理。
-* **`research_agent`** 解析为 `make_research_graph`，具有研究系统提示的同一个深度代理。
+* **`research_agent`** 解析为 `make_research_graph`，具有研究系统提示的相同深度代理。
 
 每个图将模型从`--model`（从`configurable.model`读取）传递到`create_deep_agent`，从而用`init_chat_model()`进行解析：
 
@@ -212,7 +212,7 @@ graph = create_deep_agent(model="fireworks:accounts/fireworks/models/glm-5p2")
 
 ### 在沙箱内运行代理
 
-Harbor 在试用容器内运行整个代理。> **单次试验生命周期**
+Harbor 在试用容器内运行整个代理。> [手风琴] 单次试验生命周期
 >
 > 1. **解析和准备**：`harbor run`将标志解析为作业配置。作业工厂解析并缓存任务，验证环境资源限制，并在任何试运行之前解析指标。缓存仅适用于远程任务，因此`-p`本地任务被就地读取。
 > 2. **扇出**：Harbor 从`n_attempts × tasks × agents` 开始构建试验列表，然后同时运行试验直至`-n` 限制，并重试`-r`。并行性是每次试验的结果，因此不同的任务、代理和尝试一起运行，每个任务、代理和尝试都在自己的沙箱中运行。

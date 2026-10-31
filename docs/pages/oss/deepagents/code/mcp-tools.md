@@ -41,31 +41,31 @@ This quickstart adds the LangChain MCP servers to every Deep Agents Code session
 
 If it is not already present, create the `.mcp.json` file at the user level to make the server available to every project on the machine, or at the project level.
 
-**User**
+> [tab] User
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> mkdir -p ~/.deepagents
+> touch ~/.deepagents/.mcp.json
+> ```
+>
+> Servers in this file (`~/.deepagents/.mcp.json`) are available in every project on this machine.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-mkdir -p ~/.deepagents
-touch ~/.deepagents/.mcp.json
-```
+> [tab] Project
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> touch .mcp.json
+> ```
+>
+> Servers in this file (`<project>/.mcp.json`) are available to this project.
 
-Servers in this file (`~/.deepagents/.mcp.json`) are available in every project on this machine.
-
-**Project**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-touch .mcp.json
-```
-
-Servers in this file (`<project>/.mcp.json`) are available to this project.
-
-**Project (hidden)**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-mkdir -p .deepagents
-touch .deepagents/.mcp.json
-```
-
-Servers in this file (`<project>/.deepagents/.mcp.json`) are available to this project but kept out of the repo root.
+> [tab] Project (hidden)
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> mkdir -p .deepagents
+> touch .deepagents/.mcp.json
+> ```
+>
+> Servers in this file (`<project>/.deepagents/.mcp.json`) are available to this project but kept out of the repo root.
 
 See [Discovery locations](#discovery-locations) for full precedence rules.
 
@@ -180,7 +180,7 @@ For remote MCP servers, set `type` to `"sse"` or `"http"` and provide a `url`:
 
 ### Field reference
 
-> **stdio (default)**
+> [accordion] stdio (default)
 >
 > **Required:** `command`. **Optional:** `args`, `env`, `cwd`, plus the shared [tool-filter fields](#tool-filtering).
 >
@@ -200,7 +200,7 @@ For remote MCP servers, set `type` to `"sse"` or `"http"` and provide a `url`:
 >
 > Working directory for the subprocess. Overrides the default directory for this server's configuration source.
 
-> **sse**
+> [accordion] sse
 >
 > **Required:** `type: "sse"`, `url`. **Optional:** `headers`, `auth`, plus the shared [tool-filter fields](#tool-filtering).
 >
@@ -220,7 +220,7 @@ For remote MCP servers, set `type` to `"sse"` or `"http"` and provide a `url`:
 >
 > Set to `"oauth"` to drive an OAuth login flow with `dcode mcp login` instead of supplying an `Authorization` header. Cannot be combined with an `Authorization` header. See [OAuth login](#oauth-login).
 
-> **http**
+> [accordion] http
 >
 > **Required:** `type: "http"`, `url`. **Optional:** `headers`, `auth`, plus the shared [tool-filter fields](#tool-filtering).
 >
@@ -522,7 +522,7 @@ Connected MCP servers and their tools are automatically listed in the agent's sy
 
 ## Troubleshooting
 
-> **Server fails to start (stdio)**
+> [accordion] Server fails to start (stdio)
 >
 > Verify the command works outside Deep Agents Code:
 >
@@ -532,23 +532,23 @@ Connected MCP servers and their tools are automatically listed in the agent's sy
 >
 > Common causes: the package is not installed, `npx` is not on `PATH`, or required environment variables are missing.
 
-> **Connection refused (SSE/HTTP)**
+> [accordion] Connection refused (SSE/HTTP)
 >
 > Check that the remote server is running and the URL is correct. If the server requires authentication, make sure `headers` includes the correct credentials.
 
-> **Tools not appearing**
+> [accordion] Tools not appearing
 >
 > Deep Agents Code prints the number of tools loaded at startup (e.g., `✓ Loaded 3 MCP tools`). If you see `0`, the server started successfully but did not advertise any tools—check the server's own logs or documentation.
 
-> **Server shows `unauthenticated` in /mcp**
+> [accordion] Server shows `unauthenticated` in /mcp
 >
 > Either you have not run `dcode mcp login <server>` yet, or the persisted refresh token expired or was revoked server-side. Run the login command again — your session keeps running and the server will re-attach once tokens are refreshed.
 
-> **`Invalid MCP config at ...`**
+> [accordion] `Invalid MCP config at ...`
 >
 > A pre-flight validation rejected `--mcp-config` (or an auto-discovered `.mcp.json`). Common causes: an unsupported server name (must match `[A-Za-z0-9_-]+`), `auth: oauth` on a stdio server, both `command` and `url` set on the same entry, or a header value that is not a string. Fix the highlighted reason and relaunch — Deep Agents Code no longer dumps a multi-page subprocess trace for config errors.
 
-> **`$\{VAR\}` references fail**
+> [accordion] `$\{VAR\}` references fail
 >
 > Export the variable in the parent shell, add it to `~/.deepagents/.env`, or give the reference a `${VAR:-default}` fallback. To debug, set `DEEPAGENTS_CODE_DEBUG=1` and inspect the per-session log path printed to stderr on shutdown.
 

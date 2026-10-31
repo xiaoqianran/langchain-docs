@@ -640,7 +640,7 @@ ls.test(
 
 Once you have setup your config files (if you are using Vitest or Jest), you can run your tests using the following commands:
 
-> **Config files for Vitest/Jest**
+> [accordion] Config files for Vitest/Jest
 >
 > ```typescript Vitest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > Create a `ls.vitest.config.ts` file:
@@ -694,7 +694,7 @@ Remember to also add the config files for Vitest and Jest to your project.
 
 ### Agent
 
-> **Agent code**
+> [accordion] Agent code
 >
 > > [!WARNING]
 > >
@@ -823,7 +823,7 @@ Remember to also add the config files for Vitest and Jest to your project.
 
 ### Tests
 
-> **Test code**
+> [accordion] Test code
 >
 > ```python Pytest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > # from app import agent, polygon_aggregates, search_tool # import from wherever your agent is defined

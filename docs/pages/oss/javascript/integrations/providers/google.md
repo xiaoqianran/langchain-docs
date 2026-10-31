@@ -48,11 +48,11 @@ const res = await model.invoke([
 
 `ChatGoogle` supports tool calling, structured output, multimodal inputs (images, audio, video), reasoning/thinking, image generation, text-to-speech, and Gemini-specific native tools like Google Search grounding and code execution.
 
-> **[ChatGoogle](/oss/javascript/integrations/chat/google)**
+> [card] [ChatGoogle](/oss/javascript/integrations/chat/google)
 >
 > Full chat model documentation, including setup, invocation, streaming, structured output, and more.
 
-> **[Gemini native tools](/oss/javascript/integrations/tools/google)**
+> [card] [Gemini native tools](/oss/javascript/integrations/tools/google)
 >
 > Google Search, Code Execution, URL Context, Google Maps, File Search, Computer Use, and MCP servers.
 

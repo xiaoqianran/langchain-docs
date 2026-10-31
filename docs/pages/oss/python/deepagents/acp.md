@@ -209,7 +209,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-> **[Example coding agent](https://github.com/langchain-ai/deepagents/blob/main/libs/acp/examples/demo_agent.py)**
+> [card] [Example coding agent](https://github.com/langchain-ai/deepagents/blob/main/libs/acp/examples/demo_agent.py)
 >
 > The `deepagents-acp` package includes an example coding agent with filesystem and shell that you can run out of the box.
 

@@ -60,65 +60,65 @@ To leverage custom authentication and access user-level metadata in your deploym
    ```
 3. Once you've set up authentication in your server, requests must include the required authorization information based on your chosen scheme. Assuming you are using JWT token authentication, you could access your deployments using any of the following methods:
 
-   **Python Client**
+   > [tab] Python Client
+   >
+   > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > from langgraph_sdk import get_client
+   >
+   > my_token = "your-token" # In practice, you would generate a signed token with your auth provider
+   > client = get_client(
+   >     url="http://localhost:2024",
+   >     headers={"Authorization": f"Bearer {my_token}"}
+   > )
+   > threads = await client.threads.search()
+   > ```
 
-   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   from langgraph_sdk import get_client
+   > [tab] Python RemoteGraph
+   >
+   > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > from langgraph.pregel.remote import RemoteGraph
+   >
+   > my_token = "your-token" # In practice, you would generate a signed token with your auth provider
+   > remote-graph = RemoteGraph(
+   >     "agent",
+   >     url="http://localhost:2024",
+   >     headers={"Authorization": f"Bearer {my_token}"}
+   > )
+   > threads = await remote-graph.ainvoke(...)
+   > ```
 
-   my_token = "your-token" # In practice, you would generate a signed token with your auth provider
-   client = get_client(
-       url="http://localhost:2024",
-       headers={"Authorization": f"Bearer {my_token}"}
-   )
-   threads = await client.threads.search()
-   ```
+   > [tab] JavaScript Client
+   >
+   > ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > import { Client } from "@langchain/langgraph-sdk";
+   >
+   > const my_token = "your-token"; // In practice, you would generate a signed token with your auth provider
+   > const client = new Client({
+   > apiUrl: "http://localhost:2024",
+   > defaultHeaders: { Authorization: `Bearer ${my_token}` },
+   > });
+   > const threads = await client.threads.search();
+   > ```
 
-   **Python RemoteGraph**
+   > [tab] JavaScript RemoteGraph
+   >
+   > ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > import { RemoteGraph } from "@langchain/langgraph/remote";
+   >
+   > const my_token = "your-token"; // In practice, you would generate a signed token with your auth provider
+   > const remoteGraph = new RemoteGraph({
+   > graphId: "agent",
+   > url: "http://localhost:2024",
+   > headers: { Authorization: `Bearer ${my_token}` },
+   > });
+   > const threads = await remoteGraph.invoke(...);
+   > ```
 
-   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   from langgraph.pregel.remote import RemoteGraph
-
-   my_token = "your-token" # In practice, you would generate a signed token with your auth provider
-   remote-graph = RemoteGraph(
-       "agent",
-       url="http://localhost:2024",
-       headers={"Authorization": f"Bearer {my_token}"}
-   )
-   threads = await remote-graph.ainvoke(...)
-   ```
-
-   **JavaScript Client**
-
-   ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   import { Client } from "@langchain/langgraph-sdk";
-
-   const my_token = "your-token"; // In practice, you would generate a signed token with your auth provider
-   const client = new Client({
-   apiUrl: "http://localhost:2024",
-   defaultHeaders: { Authorization: `Bearer ${my_token}` },
-   });
-   const threads = await client.threads.search();
-   ```
-
-   **JavaScript RemoteGraph**
-
-   ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   import { RemoteGraph } from "@langchain/langgraph/remote";
-
-   const my_token = "your-token"; // In practice, you would generate a signed token with your auth provider
-   const remoteGraph = new RemoteGraph({
-   graphId: "agent",
-   url: "http://localhost:2024",
-   headers: { Authorization: `Bearer ${my_token}` },
-   });
-   const threads = await remoteGraph.invoke(...);
-   ```
-
-   **cURL**
-
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   curl -H "Authorization: Bearer ${your-token}" http://localhost:2024/threads
-   ```
+   > [tab] cURL
+   >
+   > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > curl -H "Authorization: Bearer ${your-token}" http://localhost:2024/threads
+   > ```
 
    For more details on RemoteGraph, refer to the [Use RemoteGraph](/langsmith/use-remote-graph) guide.
 

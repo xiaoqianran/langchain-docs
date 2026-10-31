@@ -10,29 +10,32 @@ This guide shows you how to trace [Google Agent Development Kit (ADK)](https://g
 
 > [!NOTE]
 >
-> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
+> In an [agent-based workspace](/langsmith/agent-registry), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Installation
 
 Install the required packages using your preferred package manager:
 
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv add "langsmith[google-adk]"
 ```
 
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install langsmith[google-adk]
 ```
 
 ## Setup
 
-Set your [API keys](/langsmith/create-account-api-key):
+Sending traces to an agent requires `langsmith>=0.14.9`.
+
+Set your [API keys](/langsmith/create-account-api-key), agent identifier, and environment:
 
 ```bash shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING=true
 export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
-export LANGSMITH_PROJECT=<your_langsmith_project>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="production"
 
 export GOOGLE_API_KEY=<your_google_api_key>
 ```
@@ -41,7 +44,8 @@ export GOOGLE_API_KEY=<your_google_api_key>
 LANGSMITH_TRACING=true
 LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 LANGSMITH_API_KEY=<your_langsmith_api_key>
-LANGSMITH_PROJECT=<your_langsmith_project>
+LANGSMITH_AGENT_ID="<your-agent-id>"
+LANGSMITH_AGENT_ENVIRONMENT="production"
 
 GOOGLE_API_KEY=<your_google_api_key>
 ```
@@ -49,8 +53,6 @@ GOOGLE_API_KEY=<your_google_api_key>
 To create a Google API key, refer to [Google AI Studio](https://aistudio.google.com/api-keys).
 
 ## Configure tracing
-
-Set `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT` to the agent registered during setup. Leave `project_name` unset to use this destination.
 
 To trace ADK agents, use `configure_google_adk()` from the LangSmith SDK. Call this function once before creating any ADK agents:
 
@@ -62,6 +64,7 @@ configure_google_adk()
 
 The function accepts the following optional parameters:
 
+* `address`: An agent address to send traces to instead of the one `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT` name, for example `ls.agent_address("my-agent", "production")`. Cannot be combined with `project_name`. Requires `langsmith>=0.14.14`.
 * `project_name`: Compatibility override for project-based tracing. Leave it unset to use the configured agent and environment.
 * `name`: Name for the root trace. Defaults to `"google_adk.session"`.
 * `metadata`: Dictionary of key-value pairs for additional context.
@@ -71,7 +74,7 @@ The function accepts the following optional parameters:
 
 This example creates a weather agent with a tool, then runs it with tracing enabled:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from dotenv import load_dotenv  # Optional
@@ -162,7 +165,7 @@ configure_google_adk(
 
 The integration automatically traces multi-agent workflows including sequential and parallel agent compositions:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from dotenv import load_dotenv  # Optional

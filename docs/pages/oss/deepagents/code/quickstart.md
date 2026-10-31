@@ -47,7 +47,7 @@ For choosing an agent environment, advanced options, and CI or headless setup, s
 Type naturally as you would in a chat interface.
 The agent uses its built-in tools, skills, and memory to help you with tasks.
 
-> **Slash commands**
+> [accordion] Slash commands
 >
 > Use these commands within a Deep Agents Code session:
 >
@@ -95,7 +95,7 @@ The agent uses its built-in tools, skills, and memory to help you with tasks.
 > * `/help`: Show help and available commands.
 > * `/quit`: Exit Deep Agents Code.
 
-> **Shell commands**
+> [accordion] Shell commands
 >
 > Type `!` to enter shell mode, then type your command.
 >
@@ -105,7 +105,7 @@ The agent uses its built-in tools, skills, and memory to help you with tasks.
 > ls -la
 > ```
 
-> **Keyboard shortcuts**
+> [accordion] Keyboard shortcuts
 >
 > **General**
 >
@@ -207,7 +207,7 @@ When you combine piped input with `-n` or `-m`, the piped content appears first,
 
 Shell execution is disabled by default in non-interactive mode. Use `-S`/`--shell-allow-list` to enable specific commands (e.g., `-S "pytest,git,make"`), `recommended` for safe defaults, or `all` to permit any command.
 
-> **Cap turn count**
+> [accordion] Cap turn count
 >
 > Long-running or misbehaving agents in CI/CD pipelines can loop indefinitely. `--max-turns N` gives operators a hard upper bound without having to touch SDK internals:
 >
@@ -219,7 +219,7 @@ Shell execution is disabled by default in non-interactive mode. Use `-S`/`--shel
 >
 > For a time-based limit instead of (or in addition to) a turn-count limit, see [Cap wall-clock time with `--timeout`](#non-interactive-mode-and-piping).
 
-> **Cap wall-clock time**
+> [accordion] Cap wall-clock time
 >
 > `--timeout SECONDS` enforces a hard wall-clock limit on a non-interactive run. It complements `--max-turns` (turn count) with a time-based budget—whichever limit is hit first cancels the agent.
 >
@@ -233,7 +233,7 @@ Shell execution is disabled by default in non-interactive mode. Use `-S`/`--shel
 >
 > On expiry the agent is cancelled and the process exits with code 124, the same code used by `--max-turns`, so CI can treat both budget hits uniformly. Requires `-n` or piped stdin; otherwise exits with code 2.
 
-> **Clean output and buffering**
+> [accordion] Clean output and buffering
 >
 > Use `-q` for clean output suitable for piping into other commands, and `--no-stream` to buffer the full response (instead of streaming) before writing to stdout:
 >
@@ -244,7 +244,7 @@ Shell execution is disabled by default in non-interactive mode. Use `-S`/`--shel
 >
 > In non-interactive mode, the agent is instructed to make reasonable assumptions and proceed autonomously rather than ask clarifying questions. It also favors non-interactive command variants (e.g., `npm init -y`, `apt-get install -y`).
 
-> **Shell execution examples**
+> [accordion] Shell execution examples
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > # Allow specific commands (validated against the list)
@@ -285,7 +285,7 @@ Set `DEEPAGENTS_CODE_LANGSMITH_PROJECT` to the coding agent environment's `trace
 
 To override the destination for a specific working directory, add `DEEPAGENTS_CODE_LANGSMITH_PROJECT` to a `.env` in that directory. See [environment variables](/oss/deepagents/code/configuration#environment-variables) for the full loading order.
 
-> **Disable agent tracing**
+> [accordion] Disable agent tracing
 >
 > Launch `dcode --no-tracing` to disable LangSmith agent tracing for one session. For future launches, set `DEEPAGENTS_CODE_LANGSMITH_TRACING=false` in your shell or `~/.deepagents/.env`.
 >
@@ -293,7 +293,7 @@ To override the destination for a specific working directory, add `DEEPAGENTS_CO
 >
 > Disabling agent tracing does not disable local conversation history or model-provider requests. It is separate from trace redaction and tracing emitted by agents run in shell commands.
 
-> **Separate coding-agent traces from shell-command traces**
+> [accordion] Separate coding-agent traces from shell-command traces
 >
 > Deep Agents Code can produce two kinds of LangSmith traces:
 >
@@ -323,7 +323,7 @@ To override the destination for a specific working directory, add `DEEPAGENTS_CO
 >
 > You can also scope LangSmith credentials to Deep Agents Code using the [`DEEPAGENTS_CODE_` prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix) (e.g., `DEEPAGENTS_CODE_LANGSMITH_API_KEY`).
 
-> **Copy traces to a second agent environment**
+> [accordion] Copy traces to a second agent environment
 >
 > To mirror traces to a second agent environment, set `DEEPAGENTS_CODE_LANGSMITH_REPLICA_PROJECTS`. This is useful for sending the same traces to agent environments in both a personal workspace and a shared team workspace.
 >

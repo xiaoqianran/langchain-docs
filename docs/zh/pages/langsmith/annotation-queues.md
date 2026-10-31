@@ -10,25 +10,23 @@
 >
 > 您还可以使用 SDK 以编程方式管理注释队列和反馈配置。参见[Manage feedback & annotation queues programmatically](/langsmith/annotation-queues-sdk)。
 
-要自定义运行输出在审核期间的显示方式，[configure custom output rendering for annotation queues](/langsmith/custom-output-rendering#for-annotation-queues)。
-
 LangSmith支持两种队列样式：
 
-* [**Single-run annotation queues**](#single-run-annotation-queues) 一次呈现一个队列项目，可以是一次运行，也可以是一个线程，并让审阅者提交您配置的任何标题反馈。对于**运行**项目，单运行队列还支持[assertions](/langsmith/assertions)来捕获离线评估的接受标准。
-* [**Pairwise annotation queues (PAQs)**](#pairwise-annotation-queues) 并排呈现两次运行，以便审阅者可以根据您定义的标题项目快速决定哪个输出更好（或者它们是否等效）。
+* [**Single-run annotation queues**](#single-run-annotation-queues) 一次呈现一个队列项目，可以是一次运行，也可以是一个线程，并让审阅者提交您配置的任何标题反馈。对于**运行**项目，单运行队列还支持[assertions](/langsmith/assertions)来捕获离线评估的验收标准。
+* [**Pairwise annotation queues (PAQs)**](#pairwise-annotation-queues) 并排呈现两次运行，以便审阅者可以根据您定义的标题项目快速确定哪个输出更好（或者它们是否等效）。
 
 > [!提示]
 >
 > 有关使用注释队列的演示，请观看 [Getting started with annotation queues](#video-guide) 视频指南。
 
-## 单次运行注释队列单次运行队列一次显示一项，并让审阅者提交您配置的任何标题反馈。它们可以直接从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotation-queues) 中的 **注释队列** 部分创建。队列可以包含运行项和线程项的混合。 *线程项目*代表整个对话，并根据与运行项目相同的标准进行审核。
+## 单次运行注释队列单次运行队列一次显示一项，并让审阅者提交您配置的任何标题反馈。它们可以直接从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotation-queues) 中的 **注释队列** 部分创建。队列可以包含运行项和线程项的混合。 *线程项*代表整个对话，并根据与运行项相同的标准进行审核。
 
 运行项和线程项支持不同的功能：
 
 |能力|运行项目 |主题项目 |
 | - | - | - |
 |评分标准反馈 |是的 |是的 |
-|审稿人笔记|是的 |没有 |
+|审稿人笔记 |是的 |没有 |
 |断言|是的 |没有 |
 |添加到数据集 |是的 |是的 |
 |默认数据集 |是的 |没有 |
@@ -72,7 +70,7 @@ LangSmith支持两种队列样式：
 
 * **启用运行预订**：预订项目会将其锁定一段时间内供您审阅。当项目被保留时，其他审阅者可以查看它，但无法添加反馈或注释。如果所有工作区成员都查看每次运行，则预约将被禁用。
 
-  如果审阅者查看了某个项目，然后在没有将其标记为“完成”的情况下离开，则预订将在指定的“预订长度”后过期。然后，该项目将被释放回队列中，并可由另一位审阅者保留。
+  如果审阅者查看了某个项目，然后在没有将其标记为“完成”的情况下离开，则预订将在指定的“预订长度”后过期。然后，该项目被释放回队列中，并可以由另一位审阅者保留。
 
   > [!注意]
   >
@@ -118,7 +116,7 @@ LangSmith支持两种队列样式：
 
   ![Details view side panel showing the Add to icon in the run header with its menu open, and the Add thread to annotation queue icon next to the view tabs.](https://mintcdn.com/langchain-5e9cc07a/2JD80Bfuvagi9E_N/langsmith/images/details-view-add-to-annotation-queue-light.png?fit=max\&auto=format\&n=2JD80Bfuvagi9E_N\&q=85\&s=bf8ef7a2a75b2dfc0f6b8c236f00f1da)> [!注意]
   >
-  > 线程操作仅在使用 `thread_id` / `session_id` 元数据检测的运行中出现。如果没有该元数据，面板将自行打开运行，并且只有运行操作可用。
+  > 线程操作仅在使用 `thread_id` / `session_id` 元数据检测的运行中显示。如果没有该元数据，面板将自行打开运行，并且只有运行操作可用。
 
 * **从跟踪或运行选项卡**：在跟踪项目或代理环境中，选择 **跟踪** 或 **运行** 选项卡。使用行复选框选择一项或多项。单击页面底部的 **添加到注释队列**。使用 **添加内容** 将每个选择作为 **选定的运行** 或作为其 **整个线程** 排队。
 
@@ -128,7 +126,7 @@ LangSmith支持两种队列样式：
 
   ![Threads tab with selected threads and the Add to Annotation Queue bulk action.](https://mintcdn.com/langchain-5e9cc07a/XAjVplP-0MXBU4mY/langsmith/images/threads-tab-add-to-annotation-queue-light.png?fit=max\&auto=format\&n=XAjVplP-0MXBU4mY\&q=85\&s=afc074fae70055e8c5d6c86380fec8e0)
 
-* **Automation rules**: [Set up a rule](/langsmith/rules) to automatically assign **runs** or **threads** that match a filter (for example, errors or low user scores) into a queue.
+* **自动化规则**：[Set up a rule](/langsmith/rules)自动将与过滤器（例如错误或低用户分数）匹配的**运行**或**线程**分配到队列中。
 
   > [!注意]
   >
@@ -138,7 +136,7 @@ LangSmith支持两种队列样式：
 
 > [!注意]
 >
-> 您可以在单个操作中最多将 **100** 个运行或线程添加到注释队列。要排队更多，请以 100 或更少的批次重复添加流程。
+> 您可以在单个操作中最多将 **100** 运行或线程添加到注释队列。要排队更多，请以 100 或更少的批次重复添加流程。
 >
 > 默认情况下，手动将运行或线程添加到注释队列不会更改跟踪保留。跟踪会保留为其项目配置的保留，除非另一个操作显式延长保留。由 [automation rule](/langsmith/rules) 执行的添加有所不同：默认情况下，为注释队列操作启用规则的 **扩展数据保留** 切换。运行规则升级包含每个匹配运行的整个跟踪，线程规则升级匹配线程中的每个跟踪。对于完全保留模型，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
@@ -152,10 +150,10 @@ LangSmith支持两种队列样式：
 
    * **运行项目**：中心窗格在轨迹视图中显示运行。线程中的运行在分级转弯上打开，并加载较早和较晚的转弯。线程外的运行会显示其跟踪中的每条消息，并标记代理的轮次。单击 **查看项目** 打开运行的 **详细信息** 面板，其中包含运行详细信息、参考输出和附件。子运行显示输入和输出而不是轨迹。轨迹不可用的运行会执行相同的操作，例如在没有 [query SmithDB](/langsmith/self-host-smithdb-features) 的自托管安装上。此视图将每个中间工具调用折叠成一行，并在输出下方列出参考输出和附件。
 
-     添加 **审阅者备注**，对 [**Feedback**](/langsmith/observability-concepts#feedback) 标准进行评分，或将项目标记为已审阅。要构建数据集，请单击 **添加到数据集** 将运行保存为示例。您可以直接在审阅侧面板中 [write **Assertions**](/langsmith/assertions) 并将它们保存为示例的预期输出，而不是手动制作校正后的参考输出。添加断言后，中心窗格将显示运行的输入，并将断言作为其参考输出。两种视图都是只读的。要在将运行添加到数据集之前编辑运行的输入和输出，请为队列启用 [**Classic Trace View**](#data-formatting)。
+     添加 **审阅者注释**，对 [**Feedback**](/langsmith/observability-concepts#feedback) 标准进行评分，或将项目标记为已审阅。要构建数据集，请单击 **添加到数据集** 将运行保存为示例。您可以直接在审阅侧面板中 [write **Assertions**](/langsmith/assertions) 并将它们保存为示例的预期输出，而不是手动制作校正后的参考输出。添加断言后，中心窗格将显示运行的输入，并将断言作为其参考输出。两种视图都是只读的。要在将运行添加到数据集之前编辑运行的输入和输出，请为队列启用 [**Classic Trace View**](#data-formatting)。
    * **话题项**：中心窗格显示话题的对话记录。阅读文字记录并对其标题 **反馈** 标准进行评分。单击“**查看项目**”以打开对话预览中的线程。作为示例，要将完整对话添加到数据集，请单击“**添加到数据集**”，然后选择一个数据集。要从选取器创建数据集，请单击“**新建数据集**”。要了解线程示例包含哪些内容，请参阅[Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)。
 
-   单击“**删除**”可从所有用户的队列中删除该项目，无论当前的预留或队列设置如何。
+   单击“**删除**”可从所有用户的队列中删除该项目，无论当前的预订或队列设置如何。
 
    > [!注意]
    >
@@ -169,7 +167,11 @@ LangSmith支持两种队列样式：
    >
    > 使用每个选项旁边的键盘快捷键可以更快地查看项目。
 
-## 成对注释队列成对注释队列 (PAQ) 并排显示两个运行，以便审阅者可以根据您定义的标题项目快速确定哪个输出更好（或者它们是否等效）。它们专为两个实验（通常是基线与候选模型）之间的快速 A/B 比较而设计，并且必须从**数据集和实验**页面创建。成对队列仅使用运行比较；它们不会将线程项排入队列。
+### 自定义审阅窗格自定义视图将中间窗格中的默认跟踪视图替换为您向 LangSmith 聊天描述的显示，例如没有工具调用的聊天记录。一个视图可以服务多个队列。欲了解更多信息，请参阅[Build custom views for annotation queues](/langsmith/annotation-queue-custom-views)。
+
+## 成对注释队列
+
+成对注释队列 (PAQ) 并排显示两个运行，以便审阅者可以根据您定义的标题项目快速确定哪个输出更好（或者它们是否等效）。它们专为两个实验（通常是基线与候选模型）之间的快速 A/B 比较而设计，并且必须从**数据集和实验**页面创建。成对队列仅使用运行比较；它们不会将线程项排入队列。
 
 ### 创建一个成对队列
 
@@ -179,14 +181,14 @@ LangSmith支持两种队列样式：
 
    ![Popover showing the "Add to Pairwise Annotation Queue" card highlighted after two experiments are selected.](https://mintcdn.com/langchain-5e9cc07a/jimZt8pd1vc7LfPM/langsmith/images/pairwise-annotation-queue-popup.png?fit=max\&auto=format\&n=jimZt8pd1vc7LfPM\&q=85\&s=ef08b7166abce2d890ba4b9be8cae927)
 
-3. 决定是将实验发送到现有的成对队列还是创建一个新队列。
-
-4. 提供队列详细信息：
+3. 决定是将实验发送到现有的成对队列还是创建一个新队列。4. 提供队列详细信息：
    * **基本详细信息**（名称和描述）
    * **针对成对评分量身定制的说明和评分标准**
    * **协作者设置**（审阅者数量、预订、预订时长）
 
-5. 提交表单以创建队列。 LangSmith 立即将两个实验的运行配对并填充队列。默认情况下，创建或填充成对注释队列不会更改跟踪保留。运行会保留添加到队列之前的 [retention tier](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
+5. 提交表单以创建队列。 LangSmith 立即将两个实验的运行配对并填充队列。
+
+默认情况下，创建或填充成对注释队列不会更改跟踪保留。运行会保留添加到队列之前的 [retention tier](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
 PAQ 的主要区别：
 
@@ -195,9 +197,9 @@ PAQ 的主要区别：
 * **数据集**：成对队列不使用默认数据集，因为比较跨越两个实验。
 * **预订和审阅者**：适用相同的协作者控制。保留有助于防止两个人同时判断相同的比较。
 
-### 向成对队列添加更多比较
+### 向成对队列添加更多比较如果稍后需要添加更多比较，请返回**数据集和实验**，再次选择两个实验，然后选择**添加到成对注释队列**以附加新对。
 
-如果稍后需要添加更多比较，请返回**数据集和实验**，再次选择两个实验，然后选择**添加到成对注释队列**以附加新对。选择两个实验并创建 PAQ 会自动配对运行。扩充现有 PAQ 时，LangSmith 保留历史比较并将新对添加到队列中。
+选择两个实验并创建 PAQ 会自动配对运行。扩充现有 PAQ 时，LangSmith 保留历史比较并将新对添加到队列中。
 
 ### 查看成对队列
 
@@ -210,11 +212,11 @@ PAQ 的主要区别：
 5. 可选操作：
    * 留下与任一运行相关的评论。
    * 如果您需要稍后重新访问，请重新排队比较。
-   * 打开详细信息视图进行更深入的调试。
+   * 打开详细信息视图进行更深入的调试。预订、审阅者阈值和评论的行为与单次运行队列中的行为相同，使团队能够使用不同的队列类型，而无需修改现有工作流程。
 
-预订、审阅者阈值和评论的行为与单次运行队列中的行为相同，使团队能够使用不同的队列类型，而无需修改现有工作流程。
+![Pairwise review screen showing runs side-by-side with the feedback pane containing A/B/Equal buttons and keyboard shortcuts.](https://mintcdn.com/langchain-5e9cc07a/jimZt8pd1vc7LfPM/langsmith/images/pairwise-annotation-queue-review-feedback-pane.png?fit=max\&auto=format\&n=jimZt8pd1vc7LfPM\&q=85\&s=b144d168c4f4fd1f624c1d0fd5ce7e3e)
 
-![Pairwise review screen showing runs side-by-side with the feedback pane containing A/B/Equal buttons and keyboard shortcuts.](https://mintcdn.com/langchain-5e9cc07a/jimZt8pd1vc7LfPM/langsmith/images/pairwise-annotation-queue-review-feedback-pane.png?fit=max\&auto=format\&n=jimZt8pd1vc7LfPM\&q=85\&s=b144d168c4f4fd1f624c1d0fd5ce7e3e)> [!提示]
+> [!提示]
 >
 > 考虑将已经有用户反馈（例如，反对）的运行路由到单运行队列中进行分类，并路由到成对队列中，以便与更强的基线进行头对头比较。这可以帮助您快速识别回归。要了解有关如何从 LLM 申请中获取用户反馈的更多信息，请按照 [attaching user feedback](/langsmith/attach-user-feedback) 上的指南进行操作。
 

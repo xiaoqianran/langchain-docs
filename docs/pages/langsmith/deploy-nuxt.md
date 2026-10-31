@@ -10,62 +10,62 @@ Source: [`js-nuxt`](https://github.com/langchain-ai/deployment-cookbook/tree/mai
 
 ## Deploy
 
-**Vercel**
+> [tab] Vercel
+>
+> **1. Import the repository**
+>
+> Click **Deploy with Vercel** below, or import [`langchain-ai/deployment-cookbook`](https://github.com/langchain-ai/deployment-cookbook) manually.
+>
+> [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook\&root-directory=js-nuxt\&env=OPENAI_API_KEY\&envDescription=OpenAI%20API%20key%20for%20the%20agent%20and%20its%20subagents)
+>
+> **2. Configure the project**
+>
+> Set **Root Directory** to `js-nuxt` and add `OPENAI_API_KEY` in project settings.
+>
+> **3. Deploy**
+>
+> Deploy the project. Nuxt detects Vercel automatically and builds Nitro server routes for the Agent Streaming Protocol API.
 
-**1. Import the repository**
+> [tab] Netlify
+>
+> **1. Import the repository**
+>
+> Click **Deploy to Netlify** below, or import [`langchain-ai/deployment-cookbook`](https://github.com/langchain-ai/deployment-cookbook) manually.
+>
+> [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/langchain-ai/deployment-cookbook\&base=js-nuxt)
+>
+> **2. Configure the project**
+>
+> Set **Base directory** to `js-nuxt`. Netlify runs the Nuxt build from that subdirectory.
+>
+> **3. Set environment variables**
+>
+> Add `OPENAI_API_KEY` in the Netlify deploy settings before the first build completes.
 
-Click **Deploy with Vercel** below, or import [`langchain-ai/deployment-cookbook`](https://github.com/langchain-ai/deployment-cookbook) manually.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook\&root-directory=js-nuxt\&env=OPENAI_API_KEY\&envDescription=OpenAI%20API%20key%20for%20the%20agent%20and%20its%20subagents)
-
-**2. Configure the project**
-
-Set **Root Directory** to `js-nuxt` and add `OPENAI_API_KEY` in project settings.
-
-**3. Deploy**
-
-Deploy the project. Nuxt detects Vercel automatically and builds Nitro server routes for the Agent Streaming Protocol API.
-
-**Netlify**
-
-**1. Import the repository**
-
-Click **Deploy to Netlify** below, or import [`langchain-ai/deployment-cookbook`](https://github.com/langchain-ai/deployment-cookbook) manually.
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/langchain-ai/deployment-cookbook\&base=js-nuxt)
-
-**2. Configure the project**
-
-Set **Base directory** to `js-nuxt`. Netlify runs the Nuxt build from that subdirectory.
-
-**3. Set environment variables**
-
-Add `OPENAI_API_KEY` in the Netlify deploy settings before the first build completes.
-
-**Node**
-
-**1. Build for production**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-cd js-nuxt
-cp .env.example .env   # set OPENAI_API_KEY for local dev
-pnpm install
-pnpm build
-```
-
-**2. Set environment variables**
-
-Export `OPENAI_API_KEY` on the host. Nitro reads it at runtime from the environment.
-
-Optionally enable LangSmith tracing by adding the variables from [`.env.example`](https://github.com/langchain-ai/deployment-cookbook/blob/main/js-nuxt/.env.example).
-
-**3. Start the Nitro server**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-node .output/server/index.mjs
-```
-
-Run behind any process manager or container orchestrator that keeps a Node.js process alive.
+> [tab] Node
+>
+> **1. Build for production**
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> cd js-nuxt
+> cp .env.example .env   # set OPENAI_API_KEY for local dev
+> pnpm install
+> pnpm build
+> ```
+>
+> **2. Set environment variables**
+>
+> Export `OPENAI_API_KEY` on the host. Nitro reads it at runtime from the environment.
+>
+> Optionally enable LangSmith tracing by adding the variables from [`.env.example`](https://github.com/langchain-ai/deployment-cookbook/blob/main/js-nuxt/.env.example).
+>
+> **3. Start the Nitro server**
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> node .output/server/index.mjs
+> ```
+>
+> Run behind any process manager or container orchestrator that keeps a Node.js process alive.
 
 > [!TIP]
 >
@@ -193,7 +193,7 @@ pnpm typecheck  # vue-tsc over the project
 
 ## Project layout
 
-> **Project structure**
+> [accordion] Project structure
 >
 > * `server/agent/` — deep agent (`createDeepAgent`) with `researcher` and `math-whiz` subagents, mock tools, and `stripReasoningReplay` middleware.
 > * `server/utils/` — protocol server logic: `session.ts` (SSE runs), `threads.ts` (checkpointer-backed state), `serialize.ts`, `runtime.ts`.
@@ -201,7 +201,7 @@ pnpm typecheck  # vue-tsc over the project
 > * `app/components/` — Vue chat UI (`ChatApp`, `Chat`, `ThreadHistory`, `SubagentList`, `MessageReasoning`, …) using `@langchain/vue`.
 > * `app/utils/threads.ts` — server-driven thread helpers and LangGraph SDK bootstrap.
 
-> **Backend details**
+> [accordion] Backend details
 >
 > * `server/agent/index.ts` — coordinator uses a reasoning model over the Responses API; tool-using subagents use chat-completions (to avoid reasoning item replay through the checkpointer).
 > * `server/agent/middleware.ts` — rebuilds prior assistant messages from `content` + `tool_calls` so stale reasoning ids are never replayed to the Responses API.
@@ -209,7 +209,7 @@ pnpm typecheck  # vue-tsc over the project
 > * `server/api/threads/index.get.ts` — `GET /api/threads`, the checkpointer-backed thread list.
 > * `server/api/threads/[threadId]/…` — handlers for `commands`, `stream`, `state` (GET/POST), `history`, and `DELETE`.
 
-> **Frontend details**
+> [accordion] Frontend details
 >
 > * `app/components/ChatThread.vue` — builds the `HttpAgentServerAdapter` and calls `provideStream({ transport, threadId })`.
 > * `app/components/Chat.vue` — message view with composer and per-subagent detail view (with breadcrumb).

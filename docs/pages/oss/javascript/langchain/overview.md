@@ -282,19 +282,19 @@ See the [Installation instructions](/oss/javascript/langchain/install) and [Quic
 
 ## &#x20;Core benefits
 
-> **[Standard model interface](/oss/javascript/langchain/models)**
+> [card] [Standard model interface](/oss/javascript/langchain/models)
 >
 > Use one interface for chat models, embeddings, and more across providers. Switch models with minimal code changes and keep your application portable as requirements evolve.
 
-> **[Highly configurable harness](/oss/javascript/langchain/agents)**
+> [card] [Highly configurable harness](/oss/javascript/langchain/agents)
 >
 > Start with `create_agent` as a minimal harness and add capabilities incrementally through middleware. Compose only what your use case needs, from guardrails and retries to routing and custom tool policies.
 
-> **[Built on top of LangGraph](/oss/javascript/langgraph/overview)**
+> [card] [Built on top of LangGraph](/oss/javascript/langgraph/overview)
 >
 > LangChain's agents are built on top of LangGraph. This allows us to take advantage of LangGraph's durable execution, human-in-the-loop support, persistence, and more.
 
-> **[Debug with LangSmith](/langsmith/observability)**
+> [card] [Debug with LangSmith](/langsmith/observability)
 >
 > Inspect traces, tool calls, state transitions, and latency in one place. Find failure modes, evaluate quality, and improve agent behavior with execution data.
 

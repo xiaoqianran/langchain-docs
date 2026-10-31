@@ -698,7 +698,7 @@ result = agent.invoke(
 )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/1cc763be-d53d-43ac-aed7-d09fae1f5f2a/r)**
+> [card] [View example trace](https://smith.langchain.com/public/1cc763be-d53d-43ac-aed7-d09fae1f5f2a/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -897,7 +897,7 @@ result = agent.invoke(
 )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/2b85db18-2005-4b2b-a25f-ed93b88212fb/r)**
+> [card] [View example trace](https://smith.langchain.com/public/2b85db18-2005-4b2b-a25f-ed93b88212fb/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -927,7 +927,7 @@ for snapshot in stream.values:
         print(f"Calling tools: {[tc['name'] for tc in latest_message.tool_calls]}")
 ```
 
-> **[View example trace](https://smith.langchain.com/public/392c54aa-0ced-42a5-9837-1e0f8a3d4062/r)**
+> [card] [View example trace](https://smith.langchain.com/public/392c54aa-0ced-42a5-9837-1e0f8a3d4062/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -945,27 +945,27 @@ Common patterns are prebuilt as first-class middleware. You can build anything e
 
 As agents take on complex work, they need support across a few key areas. The middleware ecosystem provides:
 
-> **[Execution environment](#execution-environment)**
+> [card] [Execution environment](#execution-environment)
 >
 > Tools, filesystem, sandboxes, and code execution
 
-> **[Context management](#context-management)**
+> [card] [Context management](#context-management)
 >
 > Summarization, memory, skills, and prompt caching
 
-> **[Planning and delegation](#planning-and-delegation)**
+> [card] [Planning and delegation](#planning-and-delegation)
 >
 > Todo lists and subagents for parallel, isolated work
 
-> **[Fault tolerance](#fault-tolerance)**
+> [card] [Fault tolerance](#fault-tolerance)
 >
 > Retries, fallbacks, and call limits
 
-> **[Guardrails](#guardrails)**
+> [card] [Guardrails](#guardrails)
 >
 > PII detection and content controls
 
-> **[Steering](#steering)**
+> [card] [Steering](#steering)
 >
 > Human-in-the-loop approval before high-impact actions
 
@@ -1996,15 +1996,15 @@ See [`HumanInTheLoopMiddleware`](https://reference.langchain.com/python/langchai
 
 ### Middleware resources
 
-> **[Middleware overview](/oss/python/langchain/middleware/overview)**
+> [card] [Middleware overview](/oss/python/langchain/middleware/overview)
 >
 > How the middleware stack works and when hooks fire
 
-> **[Prebuilt middleware](/oss/python/langchain/middleware/built-in)**
+> [card] [Prebuilt middleware](/oss/python/langchain/middleware/built-in)
 >
 > Full reference with configuration examples
 
-> **[Custom middleware](/oss/python/langchain/middleware/custom)**
+> [card] [Custom middleware](/oss/python/langchain/middleware/custom)
 >
 > Write your own hooks for business logic, PII scrubbing, and more
 

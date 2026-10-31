@@ -761,7 +761,7 @@ result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/6fa3df5b-9637-4afc-8c5d-90eaddc9ef87/r)**
+> [card] [View example trace](https://smith.langchain.com/public/6fa3df5b-9637-4afc-8c5d-90eaddc9ef87/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -988,7 +988,7 @@ const result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/9a9908d5-1083-4419-a89f-8b580668a54a/r)**
+> [card] [View example trace](https://smith.langchain.com/public/9a9908d5-1083-4419-a89f-8b580668a54a/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -1027,7 +1027,7 @@ for await (const snapshot of stream.values) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/26cab1f9-7af5-40b4-8e4d-156564142bd8/r)**
+> [card] [View example trace](https://smith.langchain.com/public/26cab1f9-7af5-40b4-8e4d-156564142bd8/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -1045,27 +1045,27 @@ Common patterns are prebuilt as first-class middleware. You can build anything e
 
 As agents take on complex work, they need support across a few key areas. The middleware ecosystem provides:
 
-> **[Execution environment](#execution-environment)**
+> [card] [Execution environment](#execution-environment)
 >
 > Tools, filesystem, sandboxes, and code execution
 
-> **[Context management](#context-management)**
+> [card] [Context management](#context-management)
 >
 > Summarization, memory, skills, and prompt caching
 
-> **[Planning and delegation](#planning-and-delegation)**
+> [card] [Planning and delegation](#planning-and-delegation)
 >
 > Todo lists and subagents for parallel, isolated work
 
-> **[Fault tolerance](#fault-tolerance)**
+> [card] [Fault tolerance](#fault-tolerance)
 >
 > Retries, fallbacks, and call limits
 
-> **[Guardrails](#guardrails)**
+> [card] [Guardrails](#guardrails)
 >
 > PII detection and content controls
 
-> **[Steering](#steering)**
+> [card] [Steering](#steering)
 >
 > Human-in-the-loop approval before high-impact actions
 
@@ -2164,15 +2164,15 @@ See [`humanInTheLoopMiddleware`](https://reference.langchain.com/javascript/lang
 
 ### Middleware resources
 
-> **[Middleware overview](/oss/javascript/langchain/middleware/overview)**
+> [card] [Middleware overview](/oss/javascript/langchain/middleware/overview)
 >
 > How the middleware stack works and when hooks fire
 
-> **[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)**
+> [card] [Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)
 >
 > Full reference with configuration examples
 
-> **[Custom middleware](/oss/javascript/langchain/middleware/custom)**
+> [card] [Custom middleware](/oss/javascript/langchain/middleware/custom)
 >
 > Write your own hooks for business logic, PII scrubbing, and more
 

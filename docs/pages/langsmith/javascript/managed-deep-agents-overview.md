@@ -81,19 +81,19 @@ Start with Managed Deep Agents to run production agents without having to manage
 
 ## Next steps
 
-> **[Quickstart](/langsmith/javascript/managed-deep-agents-quickstart)**
+> [card] [Quickstart](/langsmith/javascript/managed-deep-agents-quickstart)
 >
 > Create and deploy your first Managed Deep Agent with the `mda` CLI.
 
-> **[Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)**
+> [card] [Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)
 >
 > Add a custom search tool, durable memory, and a daily schedule.
 
-> **[Agent Server](/langsmith/agent-server-overview)**
+> [card] [Agent Server](/langsmith/agent-server-overview)
 >
 > Explore the runtime that hosts Managed Deep Agents deployments.
 
-> **[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)**
+> [card] [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)
 >
 > Call a deployed agent as a tool from Claude Code or another MCP client.
 

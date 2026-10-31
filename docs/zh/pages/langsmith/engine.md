@@ -12,13 +12,13 @@ LangSmith引擎是代理工程的LangSmith代理。根据您的生产跟踪，�
 
 对于每个问题，引擎都会显示贡献的跟踪，提出修复方案，通过附加与相同故障模式匹配的新跟踪来保持问题最新，并根据生产跟踪输入创建地面实况数据集示例。
 
-> **[Build: Open a pull request](/langsmith/engine-issues#open-a-pull-request)**
+> [卡][Build: Open a pull request](/langsmith/engine-issues#open-a-pull-request)
 >
 > 通过在连接的存储库中打开拉取请求来应用建议的修复。引擎可以对使用Deep Agents、LangChain和LangGraph构建的代理提出代码更改建议。
 
-> **[Test: Generate datasets](/langsmith/engine-issues#add-offline-examples)**
+> [卡][Test: Generate datasets](/langsmith/engine-issues#add-offline-examples)
 >
-> 从生产跟踪中创建地面实况数据集示例以进行离线评估，以便您可以在修复发布之前对其进行验证。> **[Monitor: Track recurring issues](/langsmith/engine-issues#filter-and-sort-issues)**
+> 从生产跟踪中创建地面实况数据集示例以进行离线评估，以便您可以在修复发布之前对其进行验证。> [卡][Monitor: Track recurring issues](/langsmith/engine-issues#filter-and-sort-issues)
 >
 > 按计划扫描您的跟踪项目，以显示、确定优先顺序并诊断重复出现的问题，并在每个问题出现时向其添加新的匹配跟踪。
 
@@ -126,19 +126,19 @@ flowchart LR
 
 ## 开始吧
 
-> **[Set up Engine](/langsmith/engine-setup)**
+> [卡][Set up Engine](/langsmith/engine-setup)
 >
 > 为您的组织启用引擎并为跟踪项目或代理环境打开它。
 
-> **[Find and fix issues](/langsmith/engine-issues)**
+> [卡][Find and fix issues](/langsmith/engine-issues)
 >
 > 查看引擎检测到的问题、打开拉取请求并创建数据集示例。
 
-> **[Connect Engine to your repository](/langsmith/engine-repositories)**
+> [卡][Connect Engine to your repository](/langsmith/engine-repositories)
 >
 > 让引擎读取您的源代码并打开带有建议修复的拉取请求。
 
-> **[Engine notifications](/langsmith/engine-notifications)**
+> [卡][Engine notifications](/langsmith/engine-notifications)
 >
 > 将检测到的问题发送到 Slack、Jira 或您的事件管理和分页工具。
 
@@ -149,6 +149,6 @@ flowchart LR
 * [Engine security](/langsmith/engine-security)：引擎如何处理您的数据，及其 GitHub 和模型子处理器控件。
 * [Engine on self-hosted and BYOC](/langsmith/engine-self-hosted)：在自托管 LangSmith 实例或 BYOC 数据平面上安装并运行 Engine。
 
-***
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -206,7 +206,7 @@ graph LR
 
 **Use cases:** Triaging support tickets, error logs, user feedback, or any batch of items that need different handling depending on their type.
 
-> **Example: classify and act**
+> [accordion] Example: classify and act
 >
 > **What you configure**
 >
@@ -437,7 +437,7 @@ graph LR
 
 Discovering files from interpreter code requires [programmatic tool calling (PTC)](/oss/python/deepagents/interpreters#programmatic-tool-calling-ptc). Enable `glob` in the PTC allowlist on interpreter middleware.
 
-> **Example: fan-out and synthesize**
+> [accordion] Example: fan-out and synthesize
 >
 > **What you configure**
 >
@@ -588,7 +588,7 @@ graph LR
 
 **Use cases:** Security audits where false positives are costly, compliance checks, any review where you need high confidence in findings.
 
-> **Example: adversarial verification**
+> [accordion] Example: adversarial verification
 >
 > **What you configure**
 >
@@ -788,7 +788,7 @@ graph LR
 
 **Use cases:** Architecture proposals, refactoring strategies, content variations, any task where exploring multiple options before committing produces a better outcome.
 
-> **Example: generate and filter**
+> [accordion] Example: generate and filter
 >
 > **What you configure**
 >
@@ -933,7 +933,7 @@ graph LR
 
 **Use cases:** Optimization under subjective criteria, style selection, choosing between competing implementations.
 
-> **Example: tournament**
+> [accordion] Example: tournament
 >
 > **What you configure**
 >
@@ -1130,7 +1130,7 @@ graph LR
 
 **Use cases:** Exhaustive search, dead code detection, dependency audits, any sweep where you want completeness rather than a fixed number of results.
 
-> **Example: loop until done**
+> [accordion] Example: loop until done
 >
 > **What you configure**
 >

@@ -36,65 +36,65 @@ Use the router pattern when you have distinct verticals (separate knowledge doma
 
 The router classifies the query and directs it to the appropriate agent(s). Use [`Command`](/oss/javascript/langgraph/graph-api#command) for single-agent routing or [`Send`](/oss/javascript/langgraph/graph-api#send) for parallel fan-out to multiple agents.
 
-**Single agent**
+> [tab] Single agent
+>
+> Use `Command` to route to a single specialized agent:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { z } from "zod";
+> import { Command } from "@langchain/langgraph";
+>
+> const ClassificationResult = z.object({
+>   query: z.string(),
+>   agent: z.string(),
+> });
+>
+> function classifyQuery(query: string): z.infer<typeof ClassificationResult> {
+>   // Use LLM to classify query and determine the appropriate agent
+>   // Classification logic here
+>   ...
+> }
+>
+> function routeQuery(state: z.infer<typeof ClassificationResult>) {
+>   const classification = classifyQuery(state.query);
+>
+>   // Route to the selected agent
+>   return new Command({ goto: classification.agent });
+> }
+> ```
 
-Use `Command` to route to a single specialized agent:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { z } from "zod";
-import { Command } from "@langchain/langgraph";
-
-const ClassificationResult = z.object({
-  query: z.string(),
-  agent: z.string(),
-});
-
-function classifyQuery(query: string): z.infer<typeof ClassificationResult> {
-  // Use LLM to classify query and determine the appropriate agent
-  // Classification logic here
-  ...
-}
-
-function routeQuery(state: z.infer<typeof ClassificationResult>) {
-  const classification = classifyQuery(state.query);
-
-  // Route to the selected agent
-  return new Command({ goto: classification.agent });
-}
-```
-
-**Multiple agents (parallel)**
-
-Use `Send` to fan out to multiple specialized agents in parallel:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { z } from "zod";
-import { Command } from "@langchain/langgraph";
-
-const ClassificationResult = z.object({
-  query: z.string(),
-  agent: z.string(),
-});
-
-function classifyQuery(query: string): z.infer<typeof ClassificationResult>[] {
-  // Use LLM to classify query and determine the appropriate agent
-  // Classification logic here
-  ...
-}
-
-function routeQuery(state: typeof State.State) {
-  const classifications = classifyQuery(state.query);
-
-  // Fan out to selected agents in parallel
-  return classifications.map(
-    (c) => new Send(c.agent, { query: c.query })
-  );
-}
-```
+> [tab] Multiple agents (parallel)
+>
+> Use `Send` to fan out to multiple specialized agents in parallel:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { z } from "zod";
+> import { Command } from "@langchain/langgraph";
+>
+> const ClassificationResult = z.object({
+>   query: z.string(),
+>   agent: z.string(),
+> });
+>
+> function classifyQuery(query: string): z.infer<typeof ClassificationResult>[] {
+>   // Use LLM to classify query and determine the appropriate agent
+>   // Classification logic here
+>   ...
+> }
+>
+> function routeQuery(state: typeof State.State) {
+>   const classifications = classifyQuery(state.query);
+>
+>   // Fan out to selected agents in parallel
+>   return classifications.map(
+>     (c) => new Send(c.agent, { query: c.query })
+>   );
+> }
+> ```
 
 For a complete implementation, see the tutorial below.
 
-> **[Tutorial: Build a multi-source knowledge base with routing](/oss/javascript/langchain/multi-agent/router-knowledge-base)**
+> [card] [Tutorial: Build a multi-source knowledge base with routing](/oss/javascript/langchain/multi-agent/router-knowledge-base)
 >
 > Build a router that queries GitHub, Notion, and Slack in parallel, then synthesizes results into a coherent answer. Covers state definition, specialized agents, parallel execution with `Send`, and result synthesis.
 

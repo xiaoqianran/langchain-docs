@@ -36,57 +36,57 @@ Use the router pattern when you have distinct verticals (separate knowledge doma
 
 The router classifies the query and directs it to the appropriate agent(s). Use [`Command`](/oss/python/langgraph/graph-api#command) for single-agent routing or [`Send`](/oss/python/langgraph/graph-api#send) for parallel fan-out to multiple agents.
 
-**Single agent**
+> [tab] Single agent
+>
+> Use `Command` to route to a single specialized agent:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph.types import Command
+>
+> def classify_query(query: str) -> str:
+>     """Use LLM to classify query and determine the appropriate agent."""
+>     # Classification logic here
+>     ...
+>
+> def route_query(state: State) -> Command:
+>     """Route to the appropriate agent based on query classification."""
+>     active_agent = classify_query(state["query"])
+>
+>     # Route to the selected agent
+>     return Command(goto=active_agent)
+> ```
 
-Use `Command` to route to a single specialized agent:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph.types import Command
-
-def classify_query(query: str) -> str:
-    """Use LLM to classify query and determine the appropriate agent."""
-    # Classification logic here
-    ...
-
-def route_query(state: State) -> Command:
-    """Route to the appropriate agent based on query classification."""
-    active_agent = classify_query(state["query"])
-
-    # Route to the selected agent
-    return Command(goto=active_agent)
-```
-
-**Multiple agents (parallel)**
-
-Use `Send` to fan out to multiple specialized agents in parallel:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from typing import TypedDict
-from langgraph.types import Send
-
-class ClassificationResult(TypedDict):
-    query: str
-    agent: str
-
-def classify_query(query: str) -> list[ClassificationResult]:
-    """Use LLM to classify query and determine which agents to invoke."""
-    # Classification logic here
-    ...
-
-def route_query(state: State):
-    """Route to relevant agents based on query classification."""
-    classifications = classify_query(state["query"])
-
-    # Fan out to selected agents in parallel
-    return [
-        Send(c["agent"], {"query": c["query"]})
-        for c in classifications
-    ]
-```
+> [tab] Multiple agents (parallel)
+>
+> Use `Send` to fan out to multiple specialized agents in parallel:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from typing import TypedDict
+> from langgraph.types import Send
+>
+> class ClassificationResult(TypedDict):
+>     query: str
+>     agent: str
+>
+> def classify_query(query: str) -> list[ClassificationResult]:
+>     """Use LLM to classify query and determine which agents to invoke."""
+>     # Classification logic here
+>     ...
+>
+> def route_query(state: State):
+>     """Route to relevant agents based on query classification."""
+>     classifications = classify_query(state["query"])
+>
+>     # Fan out to selected agents in parallel
+>     return [
+>         Send(c["agent"], {"query": c["query"]})
+>         for c in classifications
+>     ]
+> ```
 
 For a complete implementation, see the tutorial below.
 
-> **[Tutorial: Build a multi-source knowledge base with routing](/oss/python/langchain/multi-agent/router-knowledge-base)**
+> [card] [Tutorial: Build a multi-source knowledge base with routing](/oss/python/langchain/multi-agent/router-knowledge-base)
 >
 > Build a router that queries GitHub, Notion, and Slack in parallel, then synthesizes results into a coherent answer. Covers state definition, specialized agents, parallel execution with `Send`, and result synthesis.
 

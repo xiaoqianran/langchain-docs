@@ -14,11 +14,11 @@ Below are tutorials for common use cases, organized by framework.
 
 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) is the recommended way to build and deploy deep agents. You write the agent; LangSmith runs the harness and runtime.
 
-> **[Deep research](/oss/python/deepagents/deep-research)**
+> [card] [Deep research](/oss/python/deepagents/deep-research)
 >
 > Build a multi-step web research agent with Managed Deep Agents or the Deep Agents SDK.
 
-> **[Content builder](/oss/python/deepagents/content-builder)**
+> [card] [Content builder](/oss/python/deepagents/content-builder)
 >
 > Build a content writing agent with brand voice, skills, and image tools using Managed Deep Agents or the Deep Agents SDK.
 
@@ -26,15 +26,15 @@ Below are tutorials for common use cases, organized by framework.
 
 For maximum flexibility while using the same Deep Agents harness as [Managed Deep Agents](#managed-deep-agents), use the Deep Agents SDK and host agents yourself, or run a custom [LangSmith Deployment](/langsmith/deployment).
 
-> **[Deep research](/oss/python/deepagents/deep-research)**
+> [card] [Deep research](/oss/python/deepagents/deep-research)
 >
 > Build a multi-step web research agent with Managed Deep Agents or the Deep Agents SDK.
 
-> **[Content builder](/oss/python/deepagents/content-builder)**
+> [card] [Content builder](/oss/python/deepagents/content-builder)
 >
 > Build a content writing agent with brand voice, skills, and image tools using Managed Deep Agents or the Deep Agents SDK.
 
-> **[Data analysis](/oss/python/deepagents/data-analysis)**
+> [card] [Data analysis](/oss/python/deepagents/data-analysis)
 >
 > Build a data analysis agent that sends reports to Slack with the Deep Agents SDK.
 
@@ -42,19 +42,19 @@ For maximum flexibility while using the same Deep Agents harness as [Managed Dee
 
 [LangChain](/oss/python/langchain/overview) [agent](/oss/python/langchain/agents) implementations make it easy to get started for simple use cases.
 
-> **[Semantic Search](/oss/python/langchain/knowledge-base)**
+> [card] [Semantic Search](/oss/python/langchain/knowledge-base)
 >
 > Build a semantic search engine over a PDF with LangChain components.
 
-> **[RAG Agent](/oss/python/deepagents/rag)**
+> [card] [RAG Agent](/oss/python/deepagents/rag)
 >
 > Create a Retrieval Augmented Generation (RAG) agent.
 
-> **[SQL Agent](/oss/python/langchain/sql-agent)**
+> [card] [SQL Agent](/oss/python/langchain/sql-agent)
 >
 > Build a SQL agent to interact with databases with human-in-the-loop review.
 
-> **[Voice Agent](/oss/python/langchain/voice-agent)**
+> [card] [Voice Agent](/oss/python/langchain/voice-agent)
 >
 > Build an agent you can speak and listen to.
 
@@ -63,11 +63,11 @@ For maximum flexibility while using the same Deep Agents harness as [Managed Dee
 LangChain's [agent](/oss/python/langchain/agents) implementations use [LangGraph](/oss/python/langgraph/overview) primitives.
 If deeper customization is required, agents can be implemented directly in LangGraph.
 
-> **[Custom RAG Agent](/oss/python/langgraph/agentic-rag)**
+> [card] [Custom RAG Agent](/oss/python/langgraph/agentic-rag)
 >
 > Build a RAG agent using LangGraph primitives for fine-grained control.
 
-> **[Custom SQL Agent](/oss/python/langgraph/sql-agent)**
+> [card] [Custom SQL Agent](/oss/python/langgraph/sql-agent)
 >
 > Implement a SQL agent directly in LangGraph for maximum flexibility.
 
@@ -75,19 +75,19 @@ If deeper customization is required, agents can be implemented directly in LangG
 
 These tutorials demonstrate [multi-agent patterns](/oss/python/langchain/multi-agent), blending LangChain agents with LangGraph workflows.
 
-> **[Subagents: Personal assistant](/oss/python/langchain/multi-agent/subagents-personal-assistant)**
+> [card] [Subagents: Personal assistant](/oss/python/langchain/multi-agent/subagents-personal-assistant)
 >
 > Build a personal assistant that delegates to sub-agents.
 
-> **[Handoffs: Customer support](/oss/python/langchain/multi-agent/handoffs-customer-support)**
+> [card] [Handoffs: Customer support](/oss/python/langchain/multi-agent/handoffs-customer-support)
 >
 > Build a customer support workflow where a single agent transitions between different states.
 
-> **[Router: Knowledge base](/oss/python/langchain/multi-agent/router-knowledge-base)**
+> [card] [Router: Knowledge base](/oss/python/langchain/multi-agent/router-knowledge-base)
 >
 > Build a multi-source knowledge base that routes queries to specialized agents.
 
-> **[Skills: SQL assistant](/oss/python/langchain/multi-agent/skills-sql-assistant)**
+> [card] [Skills: SQL assistant](/oss/python/langchain/multi-agent/skills-sql-assistant)
 >
 > Build an agent that loads specialized skills progressively using on-demand context loading.
 
@@ -95,29 +95,29 @@ These tutorials demonstrate [multi-agent patterns](/oss/python/langchain/multi-a
 
 These guides explain the core concepts and APIs underlying LangChain and LangGraph.
 
-> **[Memory](/oss/python/concepts/memory)**
+> [card] [Memory](/oss/python/concepts/memory)
 >
 > Understand persistence of interactions within and across threads.
 
-> **[Context engineering](/oss/python/concepts/context)**
+> [card] [Context engineering](/oss/python/concepts/context)
 >
 > Learn methods for providing AI applications the right information and tools to accomplish a task.
 
-> **[Graph API](/oss/python/langgraph/graph-api)**
+> [card] [Graph API](/oss/python/langgraph/graph-api)
 >
 > Explore LangGraph’s declarative graph-building API.
 
-> **[Functional API](/oss/python/langgraph/functional-api)**
+> [card] [Functional API](/oss/python/langgraph/functional-api)
 >
 > Build agents as a single function.
 
 ## Additional resources
 
-> **[LangChain Academy](https://academy.langchain.com/)**
+> [card] [LangChain Academy](https://academy.langchain.com/)
 >
 > Courses and exercises to level up your LangChain skills.
 
-> **[Case Studies](/oss/python/langgraph/case-studies)**
+> [card] [Case Studies](/oss/python/langgraph/case-studies)
 >
 > See how teams are using LangChain and LangGraph in production.
 

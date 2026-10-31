@@ -31,77 +31,77 @@ The response contains `answers` keyed by question name rather than a chat messag
 
 The `typesafe/` prefix routes the request through your workspace's TypeSafe provider secret. Pass your LangSmith API key, not your TypeSafe API key, as the SDK's `api_key` or `apiKey`. Use the gateway base URL without `/v1` for the SDKs:
 
-**Python**
+> [tab] Python
+>
+> Install the TypeSafe SDK:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install typesafe-sdk
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+>
+> from typesafe_sdk import Noul, TypeSafeClient
+>
+> client = TypeSafeClient(
+>     api_key=os.environ["LANGSMITH_API_KEY"],
+>     base_url="https://gateway.smith.langchain.com",
+> )
+>
+> response = client.system_one(
+>     state="Hello!",
+>     model="typesafe/jev-1.13.0",
+>     questions={
+>         "is_helpful": Noul(
+>             instructions="Does this explain what an LLM gateway does?"
+>         ),
+>     },
+> )
+> ```
 
-Install the TypeSafe SDK:
+> [tab] JavaScript
+>
+> Install the TypeSafe SDK:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @typesafe-ai/sdk
+> ```
+>
+> ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { noul, TypeSafeClient } from "@typesafe-ai/sdk";
+>
+> const client = new TypeSafeClient({
+>   apiKey: process.env.LANGSMITH_API_KEY,
+>   baseURL: "https://gateway.smith.langchain.com",
+> });
+>
+> const response = await client.systemOne({
+>   state: "Hello!",
+>   model: "typesafe/jev-1.13.0",
+>   questions: {
+>     is_helpful: noul("Does this explain what an LLM gateway does?"),
+>   },
+> });
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install typesafe-sdk
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-
-from typesafe_sdk import Noul, TypeSafeClient
-
-client = TypeSafeClient(
-    api_key=os.environ["LANGSMITH_API_KEY"],
-    base_url="https://gateway.smith.langchain.com",
-)
-
-response = client.system_one(
-    state="Hello!",
-    model="typesafe/jev-1.13.0",
-    questions={
-        "is_helpful": Noul(
-            instructions="Does this explain what an LLM gateway does?"
-        ),
-    },
-)
-```
-
-**JavaScript**
-
-Install the TypeSafe SDK:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @typesafe-ai/sdk
-```
-
-```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { noul, TypeSafeClient } from "@typesafe-ai/sdk";
-
-const client = new TypeSafeClient({
-  apiKey: process.env.LANGSMITH_API_KEY,
-  baseURL: "https://gateway.smith.langchain.com",
-});
-
-const response = await client.systemOne({
-  state: "Hello!",
-  model: "typesafe/jev-1.13.0",
-  questions: {
-    is_helpful: noul("Does this explain what an LLM gateway does?"),
-  },
-});
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl https://gateway.smith.langchain.com/v1/systemone \
-    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-      "state": "Hello!",
-      "model": "typesafe/jev-1.13.0",
-      "questions": {
-        "is_helpful": {
-          "type": "noul",
-          "instructions": "Does this explain what an LLM gateway does?"
-        }
-      }
-    }'
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl https://gateway.smith.langchain.com/v1/systemone \
+>     -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+>     -H "Content-Type: application/json" \
+>     -d '{
+>       "state": "Hello!",
+>       "model": "typesafe/jev-1.13.0",
+>       "questions": {
+>         "is_helpful": {
+>           "type": "noul",
+>           "instructions": "Does this explain what an LLM gateway does?"
+>         }
+>       }
+>     }'
+> ```
 
 ## Use OpenAI decision models
 

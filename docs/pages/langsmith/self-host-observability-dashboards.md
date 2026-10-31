@@ -130,11 +130,11 @@ The Datadog preview shows shared filters, component tabs, and colored Sandbox se
 
 ![Datadog dashboard with shared deployment filters, SmithDB and Sandboxes tabs, colored sections, and boot-path charts](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-datadog-overview.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=fd4fc7074e51092bde0dae9bf59af38e)
 
-> **Public API traffic and latency**
+> [accordion] Public API traffic and latency
 >
 > ![Sandbox API requests by status, latency percentiles, and endpoint rankings](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-api.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=8a4c4f3d9438babf0126163434c7fa9e)
 
-> **Lifecycle operations and failures**
+> [accordion] Lifecycle operations and failures
 >
 > ![Sandbox operation errors, operation rates, and creation duration by outcome and stage](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-lifecycle.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=d6b1e082b6bfd9afa22e0f11e6da240b)
 

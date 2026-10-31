@@ -10,21 +10,21 @@ You can access a variety of tools in LangSmith Fleet. Use tool integrations and 
 
 You can add a tool from the [Fleet > Integrations tab](https://smith.langchain.com/agents/tools) to make it available to all agents in the workspace or from the agent sidebar to add it to a specific agent.
 
-**From Fleet > Integrations**
+> [tab] From Fleet > Integrations
+>
+> To add a tool to all agents in the workspace:
+>
+> 1. On the [Fleet > Integrations tab](https://smith.langchain.com/agents/tools), find the tool you want to add.
+> 2. Click the **Connect**.
+> 3. Follow the prompts to connect the tool to your agent.
 
-To add a tool to all agents in the workspace:
-
-1. On the [Fleet > Integrations tab](https://smith.langchain.com/agents/tools), find the tool you want to add.
-2. Click the **Connect**.
-3. Follow the prompts to connect the tool to your agent.
-
-**From the agent sidebar**
-
-To add a tool to a specific agent:
-
-1. In [Fleet](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-tools), select the agent to which you want to add the tool.
-2. In the sidebar, expand the **Connections** drawer and click **Add connection**.
-3. Select the tool you want to add.
+> [tab] From the agent sidebar
+>
+> To add a tool to a specific agent:
+>
+> 1. In [Fleet](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-tools), select the agent to which you want to add the tool.
+> 2. In the sidebar, expand the **Connections** drawer and click **Add connection**.
+> 3. Select the tool you want to add.
 
 ## Disconnect a tool
 
@@ -43,79 +43,79 @@ In [Fleet](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_camp
 
 The following tools are a subset of the tools available in LangSmith Fleet. For the full up-to-date list, visit the [Fleet > Integrations tab](https://smith.langchain.com/agents/tools).
 
-> **Gmail**
+> [card] Gmail
 >
 > Read, compose, and organize emails in your Gmail inbox.
 
-> **Google BigQuery**
+> [card] Google BigQuery
 >
 > Run queries and analyze large datasets stored in Google BigQuery.
 
-> **Google Calendar**
+> [card] Google Calendar
 >
 > View, create, and manage calendar events and meeting schedules.
 
-> **Google Docs**
+> [card] Google Docs
 >
 > Create, read, and edit documents in Google Docs.
 
-> **Google Sheets**
+> [card] Google Sheets
 >
 > Read, update, and analyze data in Google Sheets spreadsheets.
 
-> **Excel**
+> [card] Excel
 >
 > Read, write, and analyze data in Microsoft Excel workbooks.
 
-> **Outlook**
+> [card] Outlook
 >
 > Read, draft, and organize Outlook emails, meetings, and calendar events.
 
-> **PowerPoint**
+> [card] PowerPoint
 >
 > Search, read, and create Microsoft PowerPoint presentations.
 
-> **SharePoint**
+> [card] SharePoint
 >
 > Browse, read, and manage documents and sites in Microsoft SharePoint.
 
-> **Teams**
+> [card] Teams
 >
 > Send and read messages, channels, and collaboration updates in Microsoft Teams.
 
-> **Word**
+> [card] Word
 >
 > Search, read, and manage Microsoft Word documents.
 
-> **Exa**
+> [card] Exa
 >
 > Search the web using AI-powered semantic search for highly relevant results.
 
-> **GitHub**
+> [card] GitHub
 >
 > Browse repositories, manage issues and pull requests, and review code on GitHub.
 
-> **Linear**
+> [card] Linear
 >
 > Track issues, plan sprints, and coordinate team projects in Linear.
 
-> **LinkedIn**
+> [card] LinkedIn
 >
 > Create posts, manage your company page, and engage with your professional network.
 
-> **Pylon**
+> [card] Pylon
 >
 > View and respond to customer support conversations across channels.
 
-> **Slack**
+> [card] Slack
 >
 > Send messages, manage channels, and automate notifications in Slack.
 
-> **Tavily**
+> [card] Tavily
 >
 > Search the web and extract structured content from web pages.
 
-> **X**
+> [card] X
 >
 > Publish posts, monitor mentions, and engage with your audience on X.
 

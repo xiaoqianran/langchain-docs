@@ -45,66 +45,66 @@ await graph.invoke(
 
 **Dynamic runtime context** represents mutable data that can evolve during a single run and is managed through the LangGraph state object. This includes conversation history, intermediate results, and values derived from tools or LLM outputs. In LangGraph, the state object acts as [short-term memory](/oss/javascript/concepts/memory) during a run.
 
-**In an agent**
+> [tab] In an agent
+>
+> Example shows how to incorporate state into an agent **prompt**.
+>
+> State can also be accessed by the agent's **tools**, which can read or update the state as needed. See [tool calling guide](/oss/javascript/langchain/tools#access-context) for details.
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createAgent, createMiddleware } from "langchain";
+> import type { AgentState } from "langchain";
+> import * as z from "zod";
+>
+> const CustomState = z.object({ // [!code highlight]
+>   userName: z.string(),
+> });
+>
+> const personalizedPrompt = createMiddleware({ // [!code highlight]
+>   name: "PersonalizedPrompt",
+>   stateSchema: CustomState,
+>   wrapModelCall: (request, handler) => {
+>     const userName = request.state.userName || "User";
+>     const systemPrompt = `You are a helpful assistant. User's name is ${userName}`;
+>     return handler({ ...request, systemPrompt });
+>   },
+> });
+>
+> const agent = createAgent({  // [!code highlight]
+>   model: "claude-sonnet-4-6",
+>   tools: [/* your tools here */],
+>   middleware: [personalizedPrompt] as const, // [!code highlight]
+> });
+>
+> await agent.invoke({
+>   messages: [{ role: "user", content: "hi!" }],
+>   userName: "John Smith",
+> });
+> ```
 
-Example shows how to incorporate state into an agent **prompt**.
-
-State can also be accessed by the agent's **tools**, which can read or update the state as needed. See [tool calling guide](/oss/javascript/langchain/tools#access-context) for details.
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent, createMiddleware } from "langchain";
-import type { AgentState } from "langchain";
-import * as z from "zod";
-
-const CustomState = z.object({ // [!code highlight]
-  userName: z.string(),
-});
-
-const personalizedPrompt = createMiddleware({ // [!code highlight]
-  name: "PersonalizedPrompt",
-  stateSchema: CustomState,
-  wrapModelCall: (request, handler) => {
-    const userName = request.state.userName || "User";
-    const systemPrompt = `You are a helpful assistant. User's name is ${userName}`;
-    return handler({ ...request, systemPrompt });
-  },
-});
-
-const agent = createAgent({  // [!code highlight]
-  model: "claude-sonnet-4-6",
-  tools: [/* your tools here */],
-  middleware: [personalizedPrompt] as const, // [!code highlight]
-});
-
-await agent.invoke({
-  messages: [{ role: "user", content: "hi!" }],
-  userName: "John Smith",
-});
-```
-
-**In a workflow**
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { z } from "zod/v4";
-import { StateGraph, StateSchema, MessagesValue, START } from "@langchain/langgraph";
-
-const CustomState = new StateSchema({  // [!code highlight]
-  messages: MessagesValue,
-  extraField: z.number(),
-});
-
-const builder = new StateGraph(CustomState)
-  .addNode("node", async (state) => {  // [!code highlight]
-    const messages = state.messages;
-    // ...
-    return {  // [!code highlight]
-      extraField: state.extraField + 1,
-    };
-  })
-  .addEdge(START, "node");
-
-const graph = builder.compile();
-```
+> [tab] In a workflow
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { z } from "zod/v4";
+> import { StateGraph, StateSchema, MessagesValue, START } from "@langchain/langgraph";
+>
+> const CustomState = new StateSchema({  // [!code highlight]
+>   messages: MessagesValue,
+>   extraField: z.number(),
+> });
+>
+> const builder = new StateGraph(CustomState)
+>   .addNode("node", async (state) => {  // [!code highlight]
+>     const messages = state.messages;
+>     // ...
+>     return {  // [!code highlight]
+>       extraField: state.extraField + 1,
+>     };
+>   })
+>   .addEdge(START, "node");
+>
+> const graph = builder.compile();
+> ```
 
 > [!TIP]
 >

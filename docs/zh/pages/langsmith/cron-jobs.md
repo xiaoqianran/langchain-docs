@@ -26,47 +26,47 @@ LangSmith 部署 API 提供了多个用于创建和管理 cron 作业的端点�
 
 首先，我们来设置 SDK 客户端、助手和线程：
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_client
+>
+> client = get_client(url=<DEPLOYMENT_URL>)
+> # Using the graph deployed with the name "agent"
+> assistant_id = "agent"
+> # create thread
+> thread = await client.threads.create()
+> print(thread)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client } from "@langchain/langgraph-sdk";
+>
+> const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+> // Using the graph deployed with the name "agent"
+> const assistantId = "agent";
+> // create thread
+> const thread = await client.threads.create();
+> console.log(thread);
+> ```
 
-client = get_client(url=<DEPLOYMENT_URL>)
-# Using the graph deployed with the name "agent"
-assistant_id = "agent"
-# create thread
-thread = await client.threads.create()
-print(thread)
-```
-
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "@langchain/langgraph-sdk";
-
-const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-// Using the graph deployed with the name "agent"
-const assistantId = "agent";
-// create thread
-const thread = await client.threads.create();
-console.log(thread);
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/assistants/search \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "limit": 10,
-        "offset": 0
-    }' | jq -c 'map(select(.config == null or .config == {})) | .[0].graph_id' && \
-curl --request POST \
-    --url <DEPLOYMENT_URL>/threads \
-    --header 'Content-Type: application/json' \
-    --data '{}'
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/assistants/search \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "limit": 10,
+>         "offset": 0
+>     }' | jq -c 'map(select(.config == null or .config == {})) | .[0].graph_id' && \
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/threads \
+>     --header 'Content-Type: application/json' \
+>     --data '{}'
+> ```
 
 输出：
 
@@ -86,121 +86,121 @@ curl --request POST \
 
 要创建与特定线程关联的 cron 作业，您可以编写：
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # This schedules a job to run at 15:27 (3:27PM) UTC every day
+> cron_job = await client.crons.create_for_thread(
+>     thread["thread_id"],
+>     assistant_id,
+>     schedule="27 15 * * *",
+>     input={"messages": [{"role": "user", "content": "What time is it?"}]},
+> )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# This schedules a job to run at 15:27 (3:27PM) UTC every day
-cron_job = await client.crons.create_for_thread(
-    thread["thread_id"],
-    assistant_id,
-    schedule="27 15 * * *",
-    input={"messages": [{"role": "user", "content": "What time is it?"}]},
-)
-```
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> // This schedules a job to run at 15:27 (3:27PM) UTC every day
+> const cronJob = await client.crons.create_for_thread(
+>   thread["thread_id"],
+>   assistantId,
+>   {
+>     schedule: "27 15 * * *",
+>     input: { messages: [{ role: "user", content: "What time is it?" }] }
+>   }
+> );
+> ```
 
-**Javascript**
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/crons \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "assistant_id": <ASSISTANT_ID>,
+>     }'
+> ```请注意，删除不再有用的`Cron`作业**非常**重要。否则，您可能会向 LLM 收取不必要的 API 费用！您可以使用以下代码删除`Cron`作业：
 
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// This schedules a job to run at 15:27 (3:27PM) UTC every day
-const cronJob = await client.crons.create_for_thread(
-  thread["thread_id"],
-  assistantId,
-  {
-    schedule: "27 15 * * *",
-    input: { messages: [{ role: "user", content: "What time is it?" }] }
-  }
-);
-```
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.crons.delete(cron_job["cron_id"])
+> ```
 
-**卷曲**
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.crons.delete(cronJob["cron_id"]);
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/crons \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "assistant_id": <ASSISTANT_ID>,
-    }'
-```
-
-请注意，删除不再有用的`Cron`作业**非常**重要。否则，您可能会向 LLM 收取不必要的 API 费用！您可以使用以下代码删除`Cron`作业：**Python**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.crons.delete(cron_job["cron_id"])
-```
-
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.crons.delete(cronJob["cron_id"]);
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request DELETE \
-    --url <DEPLOYMENT_URL>/runs/crons/<CRON_ID>
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request DELETE \
+>     --url <DEPLOYMENT_URL>/runs/crons/<CRON_ID>
+> ```
 
 ## Cron 作业无状态
 
 您还可以使用以下代码创建无状态 cron 作业。无状态 cron 作业为每次执行创建一个新线程：
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # This schedules a job to run at 15:27 (3:27PM) UTC every day
+> cron_job_stateless = await client.crons.create(
+>     assistant_id,
+>     schedule="27 15 * * *",
+>     input={"messages": [{"role": "user", "content": "What time is it?"}]},
+> )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# This schedules a job to run at 15:27 (3:27PM) UTC every day
-cron_job_stateless = await client.crons.create(
-    assistant_id,
-    schedule="27 15 * * *",
-    input={"messages": [{"role": "user", "content": "What time is it?"}]},
-)
-```
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> // This schedules a job to run at 15:27 (3:27PM) UTC every day
+> const cronJobStateless = await client.crons.create(
+>   assistantId,
+>   {
+>     schedule: "27 15 * * *",
+>     input: { messages: [{ role: "user", content: "What time is it?" }] }
+>   }
+> );
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// This schedules a job to run at 15:27 (3:27PM) UTC every day
-const cronJobStateless = await client.crons.create(
-  assistantId,
-  {
-    schedule: "27 15 * * *",
-    input: { messages: [{ role: "user", content: "What time is it?" }] }
-  }
-);
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/runs/crons \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "assistant_id": <ASSISTANT_ID>,
-    }'
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/runs/crons \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "assistant_id": <ASSISTANT_ID>,
+>     }'
+> ```
 
 再次强调，完成工作后请记得将其删除！
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.crons.delete(cron_job_stateless["cron_id"])
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.crons.delete(cron_job_stateless["cron_id"])
-```
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.crons.delete(cronJobStateless["cron_id"]);
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.crons.delete(cronJobStateless["cron_id"]);
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request DELETE \
-    --url <DEPLOYMENT_URL>/runs/crons/<CRON_ID>
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request DELETE \
+>     --url <DEPLOYMENT_URL>/runs/crons/<CRON_ID>
+> ```
 
 ## 无状态 cron 的线程清理
 
@@ -208,69 +208,67 @@ curl --request DELETE \
 >
 > 此功能需要 LangGraph API 版本 **0.5.18** 或更高版本以及 Python SDK **0.3.2** 或更高版本，或者 JavaScript SDK **1.4.0** 或更高版本。
 
-每次触发无状态 cron 时，都会创建一个新线程。使用 `on_run_completed` 参数控制运行完成后该线程发生的情况：
-
-* **`"delete"`**（默认）：运行完成后自动删除线程。
+每次触发无状态 cron 时，都会创建一个新线程。使用 `on_run_completed` 参数控制运行完成后该线程发生的情况：* **`"delete"`**（默认）：运行完成后自动删除线程。
 * **`"keep"`**：保留线程以供以后检索。您负责清理这些线程。推荐方法请参见[how to add TTLs to your application](/langsmith/configure-ttl)。
 
 ### 示例：保留线程以供以后检索
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Create a stateless cron that keeps threads after execution.
+> # Configure checkpointer.ttl in langgraph.json to auto-delete old threads.
+> # See: https://docs.langchain.com/langsmith/configure-ttl
+> cron_job = await client.crons.create(
+>     assistant_id,
+>     schedule="27 15 * * *",
+>     input={"messages": [{"role": "user", "content": "Daily report"}]},
+>     on_run_completed="keep"
+> )
+>
+> # You can later retrieve the runs and their results
+> runs = await client.runs.search(
+>     metadata={"cron_id": cron_job["cron_id"]}
+> )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Create a stateless cron that keeps threads after execution.
-# Configure checkpointer.ttl in langgraph.json to auto-delete old threads.
-# See: https://docs.langchain.com/langsmith/configure-ttl
-cron_job = await client.crons.create(
-    assistant_id,
-    schedule="27 15 * * *",
-    input={"messages": [{"role": "user", "content": "Daily report"}]},
-    on_run_completed="keep"
-)
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> // Create a stateless cron that keeps threads after execution.
+> // Configure checkpointer.ttl in langgraph.json to auto-delete old threads.
+> // See: https://docs.langchain.com/langsmith/configure-ttl
+> const cronJob = await client.crons.create(
+>   assistantId,
+>   {
+>     schedule: "27 15 * * *",
+>     input: { messages: [{ role: "user", content: "Daily report" }] },
+>     onRunCompleted: "keep"
+>   }
+> );
+>
+> // You can later retrieve the runs and their results
+> const runs = await client.runs.search({
+>   metadata: { cron_id: cronJob["cron_id"] }
+> });
+> ```
 
-# You can later retrieve the runs and their results
-runs = await client.runs.search(
-    metadata={"cron_id": cron_job["cron_id"]}
-)
-```
-
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// Create a stateless cron that keeps threads after execution.
-// Configure checkpointer.ttl in langgraph.json to auto-delete old threads.
-// See: https://docs.langchain.com/langsmith/configure-ttl
-const cronJob = await client.crons.create(
-  assistantId,
-  {
-    schedule: "27 15 * * *",
-    input: { messages: [{ role: "user", content: "Daily report" }] },
-    onRunCompleted: "keep"
-  }
-);
-
-// You can later retrieve the runs and their results
-const runs = await client.runs.search({
-  metadata: { cron_id: cronJob["cron_id"] }
-});
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Create a stateless cron that keeps threads after execution.
-# Configure checkpointer.ttl in langgraph.json to auto-delete old threads.
-# See: https://docs.langchain.com/langsmith/configure-ttl
-curl --request POST \
-    --url <DEPLOYMENT_URL>/runs/crons \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "assistant_id": "<ASSISTANT_ID>",
-        "schedule": "27 15 * * *",
-        "input": {"messages": [{"role": "user", "content": "Daily report"}]},
-        "on_run_completed": "keep"
-    }'
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Create a stateless cron that keeps threads after execution.
+> # Configure checkpointer.ttl in langgraph.json to auto-delete old threads.
+> # See: https://docs.langchain.com/langsmith/configure-ttl
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/runs/crons \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "assistant_id": "<ASSISTANT_ID>",
+>         "schedule": "27 15 * * *",
+>         "input": {"messages": [{"role": "user", "content": "Daily report"}]},
+>         "on_run_completed": "keep"
+>     }'
+> ```
 
 ***
 

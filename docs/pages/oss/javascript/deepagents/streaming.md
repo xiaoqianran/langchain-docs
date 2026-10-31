@@ -280,7 +280,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/8649d5c5-8c04-430b-91e3-9eb58a808a3d/r)**
+> [card] [View example trace](https://smith.langchain.com/public/8649d5c5-8c04-430b-91e3-9eb58a808a3d/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -318,7 +318,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/e33b8f79-2f0f-4429-b11f-a6ec81d9caee/r)**
+> [card] [View example trace](https://smith.langchain.com/public/e33b8f79-2f0f-4429-b11f-a6ec81d9caee/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -704,7 +704,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/3237961a-c421-4619-bfaa-564704733a5e/r)**
+> [card] [View example trace](https://smith.langchain.com/public/3237961a-c421-4619-bfaa-564704733a5e/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -771,7 +771,7 @@ for await (const [namespace, chunk] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-> **[View example trace](https://smith.langchain.com/public/8fee752f-0dfd-4e71-ba6d-a1c762904117/r)**
+> [card] [View example trace](https://smith.langchain.com/public/8fee752f-0dfd-4e71-ba6d-a1c762904117/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -834,7 +834,7 @@ for await (const [namespace, chunk] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-> **[View example trace](https://smith.langchain.com/public/a8b202ab-abc8-421a-ab52-bf199e166662/r)**
+> [card] [View example trace](https://smith.langchain.com/public/a8b202ab-abc8-421a-ab52-bf199e166662/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -1360,7 +1360,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/e84b0c65-bdba-4d5d-8e50-bedc43c3e2a5/r)**
+> [card] [View example trace](https://smith.langchain.com/public/e84b0c65-bdba-4d5d-8e50-bedc43c3e2a5/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -1431,7 +1431,7 @@ for await (const [namespace, mode, data] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-> **[View example trace](https://smith.langchain.com/public/a29ab85c-0b19-4804-a528-ee7ad8e481c1/r)**
+> [card] [View example trace](https://smith.langchain.com/public/a29ab85c-0b19-4804-a528-ee7ad8e481c1/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -1555,7 +1555,7 @@ for (const [id, sub] of activeSubagents) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/f5bf2cac-26e5-4df3-bd67-9190e96684f8/r)**
+> [card] [View example trace](https://smith.langchain.com/public/f5bf2cac-26e5-4df3-bd67-9190e96684f8/r)
 >
 > Open a public LangSmith run for this example.
 

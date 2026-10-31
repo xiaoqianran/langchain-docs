@@ -10,29 +10,29 @@ Governance also extends to what agents do at runtime: [spend and data protection
 
 ## Explore
 
-> **[Organization administration](/langsmith/administration-overview)**
+> [card] [Organization administration](/langsmith/administration-overview)
 >
 > Organizations, workspaces, applications, billing, and usage.
 
-> **[Users & access control](/langsmith/user-management)**
+> [card] [Users & access control](/langsmith/user-management)
 >
 > Manage users, roles (RBAC), attribute-based access (ABAC), and authentication.
 
-> **[Tools](/langsmith/chat)**
+> [card] [Tools](/langsmith/chat)
 >
 > Administrative tools and the LangSmith CLI.
 
-> **[Auditing & compliance](/langsmith/audit-logs)**
+> [card] [Auditing & compliance](/langsmith/audit-logs)
 >
 > Audit logs, data storage and privacy, and compliance controls.
 
 ## Related
 
-> **[Account setup](/langsmith/admin)**
+> [card] [Account setup](/langsmith/admin)
 >
 > Create an account, manage API keys, configure profiles, and review pricing tiers.
 
-> **[LLM Gateway](/langsmith/llm-gateway)**
+> [card] [LLM Gateway](/langsmith/llm-gateway)
 >
 > Proxy LLM calls to enforce spend limits, redact sensitive data, and centrally manage provider credentials.
 

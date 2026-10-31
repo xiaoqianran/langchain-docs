@@ -9,40 +9,40 @@ This can be useful for long running jobs.
 
 First let's set up our client and thread:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_client
+>
+> client = get_client(url=<DEPLOYMENT_URL>)
+> # Using the graph deployed with the name "agent"
+> assistant_id = "agent"
+> # create thread
+> thread = await client.threads.create()
+> print(thread)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client } from "@langchain/langgraph-sdk";
+>
+> const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+> // Using the graph deployed with the name "agent"
+> const assistantID = "agent";
+> // create thread
+> const thread = await client.threads.create();
+> console.log(thread);
+> ```
 
-client = get_client(url=<DEPLOYMENT_URL>)
-# Using the graph deployed with the name "agent"
-assistant_id = "agent"
-# create thread
-thread = await client.threads.create()
-print(thread)
-```
-
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "@langchain/langgraph-sdk";
-
-const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-// Using the graph deployed with the name "agent"
-const assistantID = "agent";
-// create thread
-const thread = await client.threads.create();
-console.log(thread);
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-  --url <DEPLOYMENT_URL>/threads \
-  --header 'Content-Type: application/json' \
-  --data '{}'
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>   --url <DEPLOYMENT_URL>/threads \
+>   --header 'Content-Type: application/json' \
+>   --data '{}'
+> ```
 
 Output:
 
@@ -62,26 +62,26 @@ Output:
 
 If we list the current runs on this thread, we will see that it's empty:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> runs = await client.runs.list(thread["thread_id"])
+> print(runs)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-runs = await client.runs.list(thread["thread_id"])
-print(runs)
-```
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> let runs = await client.runs.list(thread['thread_id']);
+> console.log(runs);
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-let runs = await client.runs.list(thread['thread_id']);
-console.log(runs);
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request GET \
-    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request GET \
+>     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs
+> ```
 
 Output:
 
@@ -93,51 +93,51 @@ Output:
 
 Now let's kick off a run:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> input = {"messages": [{"role": "user", "content": "what's the weather in sf"}]}
+> run = await client.runs.create(thread["thread_id"], assistant_id, input=input)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-input = {"messages": [{"role": "user", "content": "what's the weather in sf"}]}
-run = await client.runs.create(thread["thread_id"], assistant_id, input=input)
-```
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> let input = {"messages": [{"role": "user", "content": "what's the weather in sf"}]};
+> let run = await client.runs.create(thread["thread_id"], assistantID, { input });
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-let input = {"messages": [{"role": "user", "content": "what's the weather in sf"}]};
-let run = await client.runs.create(thread["thread_id"], assistantID, { input });
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "assistant_id": <ASSISTANT_ID>
-    }'
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "assistant_id": <ASSISTANT_ID>
+>     }'
+> ```
 
 The first time we poll it, we can see `status=pending`:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> print(await client.runs.get(thread["thread_id"], run["run_id"]))
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-print(await client.runs.get(thread["thread_id"], run["run_id"]))
-```
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> console.log(await client.runs.get(thread["thread_id"], run["run_id"]));
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-console.log(await client.runs.get(thread["thread_id"], run["run_id"]));
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request GET \
-    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request GET \
+>     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
+> ```
 
 Output:
 
@@ -187,28 +187,28 @@ Output:
 
 Now we can join the run, wait for it to finish and check that status again:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.runs.join(thread["thread_id"], run["run_id"])
+> print(await client.runs.get(thread["thread_id"], run["run_id"]))
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.runs.join(thread["thread_id"], run["run_id"])
-print(await client.runs.get(thread["thread_id"], run["run_id"]))
-```
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.runs.join(thread["thread_id"], run["run_id"]);
+> console.log(await client.runs.get(thread["thread_id"], run["run_id"]));
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.runs.join(thread["thread_id"], run["run_id"]);
-console.log(await client.runs.get(thread["thread_id"], run["run_id"]));
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request GET \
-    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join &&
-curl --request GET \
-    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request GET \
+>     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join &&
+> curl --request GET \
+>     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
+> ```
 
 Output:
 
@@ -258,26 +258,26 @@ Output:
 
 Perfect! The run succeeded as we would expect. We can double check that the run worked as expected by printing out the final state:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> final_result = await client.threads.get_state(thread["thread_id"])
+> print(final_result)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-final_result = await client.threads.get_state(thread["thread_id"])
-print(final_result)
-```
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> let finalResult = await client.threads.getState(thread["thread_id"]);
+> console.log(finalResult);
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-let finalResult = await client.threads.getState(thread["thread_id"]);
-console.log(finalResult);
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request GET \
-    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request GET \
+>     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state
+> ```
 
 Output:
 
@@ -435,24 +435,24 @@ Output:
 
 We can also just print the content of the last AIMessage:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> print(final_result['values']['messages'][-1]['content'][0]['text'])
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-print(final_result['values']['messages'][-1]['content'][0]['text'])
-```
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> console.log(finalResult['values']['messages'][finalResult['values']['messages'].length-1]['content'][0]['text']);
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-console.log(finalResult['values']['messages'][finalResult['values']['messages'].length-1]['content'][0]['text']);
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request GET \
-    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | jq -r '.values.messages[-1].content.[0].text'
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request GET \
+>     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | jq -r '.values.messages[-1].content.[0].text'
+> ```
 
 Output:
 

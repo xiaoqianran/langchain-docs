@@ -8,7 +8,7 @@ LangSmith gives you end-to-end visibility into your agent by capturing [*traces*
 
 In this quickstart, you will add tracing to an AI assistant and view the results in LangSmith.
 
-Traces belong to an [agent and one of its environments](/langsmith/agents) within a workspace. This quickstart creates the agent in LangSmith, then configures your code to send traces to its identifier and environment. Compatibility instructions cover older workspaces and self-hosted LangSmith.
+Traces belong to an [agent and one of its environments](/langsmith/agent-registry) within a workspace. This quickstart creates the agent in LangSmith, then configures your code to send traces to its identifier and environment. Compatibility instructions cover older workspaces and self-hosted LangSmith.
 
 > [!TIP]
 >
@@ -28,84 +28,84 @@ Select your provider in the tabs on each step. The Anthropic and Gemini examples
 
 1. Create a directory for your agent code, install the dependencies, and configure the required environment variables:
 
-   **OpenAI**
+   > [tab] OpenAI
+   >
+   > ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > mkdir ls-quickstart && cd ls-quickstart
+   > python -m venv .venv && source .venv/bin/activate
+   > pip install -U langsmith openai
+   > ```
+   >
+   > ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > mkdir ls-quickstart-ts && cd ls-quickstart-ts
+   > npm init -y
+   > npm install langsmith openai
+   > npm install -D typescript tsx
+   > ```
+   >
+   > ```kotlin Java/Kotlin (Gradle) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > implementation("com.langchain.smith:langsmith-java:0.1.0-beta.27")
+   > ```
 
-   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   mkdir ls-quickstart && cd ls-quickstart
-   python -m venv .venv && source .venv/bin/activate
-   pip install -U langsmith openai
-   ```
+   > [tab] Anthropic
+   >
+   > ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > mkdir ls-quickstart && cd ls-quickstart
+   > python -m venv .venv && source .venv/bin/activate
+   > pip install -U langsmith anthropic
+   > ```
+   >
+   > ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > mkdir ls-quickstart-ts && cd ls-quickstart-ts
+   > npm init -y
+   > npm install langsmith @anthropic-ai/sdk
+   > npm install -D typescript tsx
+   > ```
 
-   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   mkdir ls-quickstart-ts && cd ls-quickstart-ts
-   npm init -y
-   npm install langsmith openai
-   npm install -D typescript tsx
-   ```
-
-   ```kotlin Java/Kotlin (Gradle) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   implementation("com.langchain.smith:langsmith-java:0.1.0-beta.27")
-   ```
-
-   **Anthropic**
-
-   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   mkdir ls-quickstart && cd ls-quickstart
-   python -m venv .venv && source .venv/bin/activate
-   pip install -U langsmith anthropic
-   ```
-
-   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   mkdir ls-quickstart-ts && cd ls-quickstart-ts
-   npm init -y
-   npm install langsmith @anthropic-ai/sdk
-   npm install -D typescript tsx
-   ```
-
-   **Gemini**
-
-   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   mkdir ls-quickstart && cd ls-quickstart
-   python -m venv .venv && source .venv/bin/activate
-   pip install -U langsmith google-genai
-   ```
-
-   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   mkdir ls-quickstart-ts && cd ls-quickstart-ts
-   npm init -y
-   npm install langsmith @google/genai
-   npm install -D typescript tsx
-   ```
+   > [tab] Gemini
+   >
+   > ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > mkdir ls-quickstart && cd ls-quickstart
+   > python -m venv .venv && source .venv/bin/activate
+   > pip install -U langsmith google-genai
+   > ```
+   >
+   > ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > mkdir ls-quickstart-ts && cd ls-quickstart-ts
+   > npm init -y
+   > npm install langsmith @google/genai
+   > npm install -D typescript tsx
+   > ```
 
 2. Export your environment variables in your shell:
 
-   **OpenAI**
+   > [tab] OpenAI
+   >
+   > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > export LANGSMITH_TRACING=true
+   > export LANGSMITH_API_KEY="<your-langsmith-api-key>"
+   > export OPENAI_API_KEY="<your-openai-api-key>"
+   > ```
 
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   export LANGSMITH_TRACING=true
-   export LANGSMITH_API_KEY="<your-langsmith-api-key>"
-   export OPENAI_API_KEY="<your-openai-api-key>"
-   ```
+   > [tab] Anthropic
+   >
+   > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > export LANGSMITH_TRACING=true
+   > export LANGSMITH_API_KEY="<your-langsmith-api-key>"
+   > export ANTHROPIC_API_KEY="<your-anthropic-api-key>"
+   > ```
 
-   **Anthropic**
-
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   export LANGSMITH_TRACING=true
-   export LANGSMITH_API_KEY="<your-langsmith-api-key>"
-   export ANTHROPIC_API_KEY="<your-anthropic-api-key>"
-   ```
-
-   **Gemini**
-
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   export LANGSMITH_TRACING=true
-   export LANGSMITH_API_KEY="<your-langsmith-api-key>"
-   export GEMINI_API_KEY="<your-gemini-api-key>"
-   ```
+   > [tab] Gemini
+   >
+   > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > export LANGSMITH_TRACING=true
+   > export LANGSMITH_API_KEY="<your-langsmith-api-key>"
+   > export GEMINI_API_KEY="<your-gemini-api-key>"
+   > ```
 
    Before sending traces, create the agent in LangSmith:
 
-   1. In an [agent-based workspace](/langsmith/agents), open **+ Agent**, choose **Observability**, and create an agent with an **Agent name** and **Agent ID**. This requires the `projects:create` permission. If the agent already exists, reuse it.
+   1. In an [agent-based workspace](/langsmith/agent-registry), open **+ Agent**, choose **Observability**, and create an agent with an **Agent name** and **Agent ID**. This requires the `projects:create` permission. If the agent already exists, reuse it.
    2. Copy the **Agent ID** and choose an environment: `local`, `development`, `staging`, or `production`.
    3. Configure [agent addressing](/langsmith/log-traces-to-agent) before running the agent:
 
@@ -116,7 +116,7 @@ Select your provider in the tabs on each step. The Anthropic and Gemini examples
 
    Register the agent once, not for every trace. Remove `LANGSMITH_PROJECT`, `LANGCHAIN_PROJECT`, and `LANGCHAIN_SESSION` from the environment where your code runs. Do not combine legacy destination settings with agent addressing. To create the agent with an SDK call or API request, see [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically).
 
-   > **Project-based workspaces and self-hosted LangSmith**
+   > [accordion] Project-based workspaces and self-hosted LangSmith
    >
    > Agent addressing is available in agent-based workspaces on LangSmith Cloud. In a project-based workspace, including self-hosted LangSmith, set `LANGSMITH_PROJECT` to your tracing project name instead of setting the two agent variables.
 
@@ -185,307 +185,307 @@ The `assistant` function calls a tool (`get_context`) to retrieve relevant conte
 
 Create a file called `app.py`, `index.ts`, `App.java`, or `App.kt` with the following code:
 
-**OpenAI**
+> [tab] OpenAI
+>
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from openai import OpenAI
+> from langsmith.wrappers import wrap_openai
+> from langsmith import traceable
+>
+> client = wrap_openai(OpenAI())  # log every OpenAI call automatically
+>
+> @traceable(run_type="tool")  # trace this as a tool span
+> def get_context(question: str) -> str:
+>     # In a real app, this would query a knowledge base or vector store
+>     return "LangSmith traces are stored for 14 days on the Developer plan."
+>
+> @traceable  # capture the full pipeline as a single trace
+> def assistant(question: str) -> str:
+>     context = get_context(question)
+>     response = client.chat.completions.create(
+>         model="gpt-6-luna",
+>         messages=[
+>             {
+>                 "role": "system",
+>                 "content": f"Answer using the context below.\n\nContext: {context}",
+>             },
+>             {"role": "user", "content": question},
+>         ],
+>     )
+>     return response.choices[0].message.content
+>
+> if __name__ == "__main__":
+>     print(assistant("How long are LangSmith traces stored?"))
+> ```
+>
+> ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import OpenAI from "openai";
+> import { wrapOpenAI } from "langsmith/wrappers";
+> import { traceable } from "langsmith/traceable";
+>
+> const client = wrapOpenAI(new OpenAI()); // log every OpenAI call automatically
+>
+> const getContext = traceable(
+>     async function getContext(question: string): Promise<string> { // trace this as a tool span
+>         // In a real app, this would query a knowledge base or vector store
+>         return "LangSmith traces are stored for 14 days on the Developer plan.";
+>     },
+>     { run_type: "tool" }
+> );
+>
+> const assistant = traceable(async function assistant(question: string) { // capture the full pipeline as a single trace
+>     const context = await getContext(question);
+>     const response = await client.chat.completions.create({
+>         model: "gpt-6-luna",
+>         messages: [
+>             {
+>                 role: "system",
+>                 content: `Answer using the context below.\n\nContext: ${context}`,
+>             },
+>             { role: "user", content: question },
+>         ],
+>     });
+>     return response.choices[0]?.message?.content ?? null;
+> });
+>
+> (async () => {
+>     console.log(await assistant("How long are LangSmith traces stored?"));
+> })();
+> ```
+>
+> ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import com.langchain.smith.tracing.RunType;
+> import com.langchain.smith.tracing.TraceConfig;
+> import com.langchain.smith.tracing.Tracing;
+> import com.langchain.smith.wrappers.openai.OpenAITracing;
+> import com.openai.client.OpenAIClient;
+> import com.openai.client.okhttp.OpenAIOkHttpClient;
+> import com.openai.models.ChatModel;
+> import com.openai.models.chat.completions.ChatCompletion;
+> import com.openai.models.chat.completions.ChatCompletionCreateParams;
+> import com.openai.models.chat.completions.ChatCompletionMessageParam;
+> import com.openai.models.chat.completions.ChatCompletionSystemMessageParam;
+> import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
+> import java.util.function.Function;
+>
+> class ObservabilityQuickstartApp {
+>   public static void main(String[] args) {
+>     new ObservabilityQuickstartRunner().run();
+>   }
+>
+>   private static final class ObservabilityQuickstartRunner {
+>     private final OpenAIClient client =
+>         OpenAITracing.wrapOpenAI(OpenAIOkHttpClient.fromEnv());
+>
+>     private final Function<String, String> getContext =
+>         Tracing.traceFunction(
+>             question -> "LangSmith traces are stored for 14 days on the Developer plan.",
+>             TraceConfig.builder().name("get_context").runType(RunType.TOOL).build());
+>
+>     private final Function<String, String> assistant =
+>         Tracing.traceFunction(
+>             question -> {
+>               String context = getContext.apply(question);
+>               ChatCompletion response =
+>                   client.chat()
+>                       .completions()
+>                       .create(
+>                           ChatCompletionCreateParams.builder()
+>                               .model(ChatModel.GPT_5_5)
+>                               .addMessage(
+>                                   ChatCompletionMessageParam.ofSystem(
+>                                       ChatCompletionSystemMessageParam.builder()
+>                                           .content(
+>                                               "Answer using the context below.\n\nContext: " + context)
+>                                           .build()))
+>                               .addMessage(
+>                                   ChatCompletionMessageParam.ofUser(
+>                                       ChatCompletionUserMessageParam.builder()
+>                                           .content(question)
+>                                           .build()))
+>                               .build());
+>               return response.choices().get(0).message().content().orElse("");
+>             },
+>             TraceConfig.builder().name("assistant").build());
+>
+>     void run() {
+>       System.out.println(assistant.apply("How long are LangSmith traces stored?"));
+>     }
+>   }
+> }
+> ```
+>
+> ```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import com.langchain.smith.tracing.RunType
+> import com.langchain.smith.tracing.TraceConfig
+> import com.langchain.smith.tracing.traceable
+> import com.langchain.smith.wrappers.openai.wrapOpenAI
+> import com.openai.client.okhttp.OpenAIOkHttpClient
+> import com.openai.models.ChatModel
+> import com.openai.models.chat.completions.ChatCompletionCreateParams
+> import com.openai.models.chat.completions.ChatCompletionMessageParam
+> import com.openai.models.chat.completions.ChatCompletionSystemMessageParam
+> import com.openai.models.chat.completions.ChatCompletionUserMessageParam
+> import kotlin.jvm.optionals.getOrNull
+>
+> val client = wrapOpenAI(OpenAIOkHttpClient.fromEnv())
+>
+> val getContext =
+>     traceable(
+>         { _: String -> "LangSmith traces are stored for 14 days on the Developer plan." },
+>         TraceConfig.builder().name("get_context").runType(RunType.TOOL).build(),
+>     )
+>
+> val assistant =
+>     traceable(
+>         { question: String ->
+>             val context = getContext(question)
+>             val response =
+>                 client.chat().completions().create(
+>                     ChatCompletionCreateParams.builder()
+>                         .model(ChatModel.GPT_5_5)
+>                         .addMessage(
+>                             ChatCompletionMessageParam.ofSystem(
+>                                 ChatCompletionSystemMessageParam.builder()
+>                                     .content("Answer using the context below.\n\nContext: $context")
+>                                     .build(),
+>                             ),
+>                         )
+>                         .addMessage(
+>                             ChatCompletionMessageParam.ofUser(
+>                                 ChatCompletionUserMessageParam.builder()
+>                                     .content(question)
+>                                     .build(),
+>                             ),
+>                         )
+>                         .build(),
+>                 )
+>             response.choices()[0].message().content().getOrNull().orEmpty()
+>         },
+>         TraceConfig.builder().name("assistant").build(),
+>     )
+>
+> println(assistant("How long are LangSmith traces stored?"))
+> ```
 
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from openai import OpenAI
-from langsmith.wrappers import wrap_openai
-from langsmith import traceable
+> [tab] Anthropic
+>
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from anthropic import Anthropic
+> from langsmith.wrappers import wrap_anthropic
+> from langsmith import traceable
+>
+> client = wrap_anthropic(Anthropic())  # log every Anthropic call automatically
+>
+> @traceable(run_type="tool")  # trace this as a tool span
+> def get_context(question: str) -> str:
+>     # In a real app, this would query a knowledge base or vector store
+>     return "LangSmith traces are stored for 14 days on the Developer plan."
+>
+> @traceable  # capture the full pipeline as a single trace
+> def assistant(question: str) -> str:
+>     context = get_context(question)
+>     response = client.messages.create(
+>         model="claude-sonnet-5-5",
+>         max_tokens=1024,
+>         system=f"Answer using the context below.\n\nContext: {context}",
+>         messages=[{"role": "user", "content": question}],
+>     )
+>     return "".join(block.text for block in response.content if block.type == "text")
+>
+> if __name__ == "__main__":
+>     print(assistant("How long are LangSmith traces stored?"))
+> ```
+>
+> ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import Anthropic from "@anthropic-ai/sdk";
+> import { wrapAnthropic } from "langsmith/wrappers/anthropic";
+> import { traceable } from "langsmith/traceable";
+>
+> const client = wrapAnthropic(new Anthropic()); // log every Anthropic call automatically
+>
+> const getContext = traceable(
+>     async function getContext(question: string): Promise<string> { // trace this as a tool span
+>         // In a real app, this would query a knowledge base or vector store
+>         return "LangSmith traces are stored for 14 days on the Developer plan.";
+>     },
+>     { run_type: "tool" }
+> );
+>
+> const assistant = traceable(async function assistant(question: string) { // capture the full pipeline as a single trace
+>     const context = await getContext(question);
+>     const response = await client.messages.create({
+>         model: "claude-sonnet-5-5",
+>         max_tokens: 1024,
+>         system: `Answer using the context below.\n\nContext: ${context}`,
+>         messages: [{ role: "user", content: question }],
+>     });
+>     const block = response.content[0];
+>     return block?.type === "text" ? block.text : null;
+> });
+>
+> (async () => {
+>     console.log(await assistant("How long are LangSmith traces stored?"));
+> })();
+> ```
 
-client = wrap_openai(OpenAI())  # log every OpenAI call automatically
-
-@traceable(run_type="tool")  # trace this as a tool span
-def get_context(question: str) -> str:
-    # In a real app, this would query a knowledge base or vector store
-    return "LangSmith traces are stored for 14 days on the Developer plan."
-
-@traceable  # capture the full pipeline as a single trace
-def assistant(question: str) -> str:
-    context = get_context(question)
-    response = client.chat.completions.create(
-        model="gpt-6-luna",
-        messages=[
-            {
-                "role": "system",
-                "content": f"Answer using the context below.\n\nContext: {context}",
-            },
-            {"role": "user", "content": question},
-        ],
-    )
-    return response.choices[0].message.content
-
-if __name__ == "__main__":
-    print(assistant("How long are LangSmith traces stored?"))
-```
-
-```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import OpenAI from "openai";
-import { wrapOpenAI } from "langsmith/wrappers";
-import { traceable } from "langsmith/traceable";
-
-const client = wrapOpenAI(new OpenAI()); // log every OpenAI call automatically
-
-const getContext = traceable(
-    async function getContext(question: string): Promise<string> { // trace this as a tool span
-        // In a real app, this would query a knowledge base or vector store
-        return "LangSmith traces are stored for 14 days on the Developer plan.";
-    },
-    { run_type: "tool" }
-);
-
-const assistant = traceable(async function assistant(question: string) { // capture the full pipeline as a single trace
-    const context = await getContext(question);
-    const response = await client.chat.completions.create({
-        model: "gpt-6-luna",
-        messages: [
-            {
-                role: "system",
-                content: `Answer using the context below.\n\nContext: ${context}`,
-            },
-            { role: "user", content: question },
-        ],
-    });
-    return response.choices[0]?.message?.content ?? null;
-});
-
-(async () => {
-    console.log(await assistant("How long are LangSmith traces stored?"));
-})();
-```
-
-```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import com.langchain.smith.tracing.RunType;
-import com.langchain.smith.tracing.TraceConfig;
-import com.langchain.smith.tracing.Tracing;
-import com.langchain.smith.wrappers.openai.OpenAITracing;
-import com.openai.client.OpenAIClient;
-import com.openai.client.okhttp.OpenAIOkHttpClient;
-import com.openai.models.ChatModel;
-import com.openai.models.chat.completions.ChatCompletion;
-import com.openai.models.chat.completions.ChatCompletionCreateParams;
-import com.openai.models.chat.completions.ChatCompletionMessageParam;
-import com.openai.models.chat.completions.ChatCompletionSystemMessageParam;
-import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
-import java.util.function.Function;
-
-class ObservabilityQuickstartApp {
-  public static void main(String[] args) {
-    new ObservabilityQuickstartRunner().run();
-  }
-
-  private static final class ObservabilityQuickstartRunner {
-    private final OpenAIClient client =
-        OpenAITracing.wrapOpenAI(OpenAIOkHttpClient.fromEnv());
-
-    private final Function<String, String> getContext =
-        Tracing.traceFunction(
-            question -> "LangSmith traces are stored for 14 days on the Developer plan.",
-            TraceConfig.builder().name("get_context").runType(RunType.TOOL).build());
-
-    private final Function<String, String> assistant =
-        Tracing.traceFunction(
-            question -> {
-              String context = getContext.apply(question);
-              ChatCompletion response =
-                  client.chat()
-                      .completions()
-                      .create(
-                          ChatCompletionCreateParams.builder()
-                              .model(ChatModel.GPT_5_5)
-                              .addMessage(
-                                  ChatCompletionMessageParam.ofSystem(
-                                      ChatCompletionSystemMessageParam.builder()
-                                          .content(
-                                              "Answer using the context below.\n\nContext: " + context)
-                                          .build()))
-                              .addMessage(
-                                  ChatCompletionMessageParam.ofUser(
-                                      ChatCompletionUserMessageParam.builder()
-                                          .content(question)
-                                          .build()))
-                              .build());
-              return response.choices().get(0).message().content().orElse("");
-            },
-            TraceConfig.builder().name("assistant").build());
-
-    void run() {
-      System.out.println(assistant.apply("How long are LangSmith traces stored?"));
-    }
-  }
-}
-```
-
-```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import com.langchain.smith.tracing.RunType
-import com.langchain.smith.tracing.TraceConfig
-import com.langchain.smith.tracing.traceable
-import com.langchain.smith.wrappers.openai.wrapOpenAI
-import com.openai.client.okhttp.OpenAIOkHttpClient
-import com.openai.models.ChatModel
-import com.openai.models.chat.completions.ChatCompletionCreateParams
-import com.openai.models.chat.completions.ChatCompletionMessageParam
-import com.openai.models.chat.completions.ChatCompletionSystemMessageParam
-import com.openai.models.chat.completions.ChatCompletionUserMessageParam
-import kotlin.jvm.optionals.getOrNull
-
-val client = wrapOpenAI(OpenAIOkHttpClient.fromEnv())
-
-val getContext =
-    traceable(
-        { _: String -> "LangSmith traces are stored for 14 days on the Developer plan." },
-        TraceConfig.builder().name("get_context").runType(RunType.TOOL).build(),
-    )
-
-val assistant =
-    traceable(
-        { question: String ->
-            val context = getContext(question)
-            val response =
-                client.chat().completions().create(
-                    ChatCompletionCreateParams.builder()
-                        .model(ChatModel.GPT_5_5)
-                        .addMessage(
-                            ChatCompletionMessageParam.ofSystem(
-                                ChatCompletionSystemMessageParam.builder()
-                                    .content("Answer using the context below.\n\nContext: $context")
-                                    .build(),
-                            ),
-                        )
-                        .addMessage(
-                            ChatCompletionMessageParam.ofUser(
-                                ChatCompletionUserMessageParam.builder()
-                                    .content(question)
-                                    .build(),
-                            ),
-                        )
-                        .build(),
-                )
-            response.choices()[0].message().content().getOrNull().orEmpty()
-        },
-        TraceConfig.builder().name("assistant").build(),
-    )
-
-println(assistant("How long are LangSmith traces stored?"))
-```
-
-**Anthropic**
-
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from anthropic import Anthropic
-from langsmith.wrappers import wrap_anthropic
-from langsmith import traceable
-
-client = wrap_anthropic(Anthropic())  # log every Anthropic call automatically
-
-@traceable(run_type="tool")  # trace this as a tool span
-def get_context(question: str) -> str:
-    # In a real app, this would query a knowledge base or vector store
-    return "LangSmith traces are stored for 14 days on the Developer plan."
-
-@traceable  # capture the full pipeline as a single trace
-def assistant(question: str) -> str:
-    context = get_context(question)
-    response = client.messages.create(
-        model="claude-sonnet-5-5",
-        max_tokens=1024,
-        system=f"Answer using the context below.\n\nContext: {context}",
-        messages=[{"role": "user", "content": question}],
-    )
-    return "".join(block.text for block in response.content if block.type == "text")
-
-if __name__ == "__main__":
-    print(assistant("How long are LangSmith traces stored?"))
-```
-
-```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import Anthropic from "@anthropic-ai/sdk";
-import { wrapAnthropic } from "langsmith/wrappers/anthropic";
-import { traceable } from "langsmith/traceable";
-
-const client = wrapAnthropic(new Anthropic()); // log every Anthropic call automatically
-
-const getContext = traceable(
-    async function getContext(question: string): Promise<string> { // trace this as a tool span
-        // In a real app, this would query a knowledge base or vector store
-        return "LangSmith traces are stored for 14 days on the Developer plan.";
-    },
-    { run_type: "tool" }
-);
-
-const assistant = traceable(async function assistant(question: string) { // capture the full pipeline as a single trace
-    const context = await getContext(question);
-    const response = await client.messages.create({
-        model: "claude-sonnet-5-5",
-        max_tokens: 1024,
-        system: `Answer using the context below.\n\nContext: ${context}`,
-        messages: [{ role: "user", content: question }],
-    });
-    const block = response.content[0];
-    return block?.type === "text" ? block.text : null;
-});
-
-(async () => {
-    console.log(await assistant("How long are LangSmith traces stored?"));
-})();
-```
-
-**Gemini**
-
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from google import genai
-from langsmith.wrappers import wrap_gemini
-from langsmith import traceable
-
-client = wrap_gemini(genai.Client())  # log every Gemini call automatically
-
-@traceable(run_type="tool")  # trace this as a tool span
-def get_context(question: str) -> str:
-    # In a real app, this would query a knowledge base or vector store
-    return "LangSmith traces are stored for 14 days on the Developer plan."
-
-@traceable  # capture the full pipeline as a single trace
-def assistant(question: str) -> str:
-    context = get_context(question)
-    response = client.models.generate_content(
-        model="gemini-3.8-flash",
-        contents=question,
-        config={"system_instruction": f"Answer using the context below.\n\nContext: {context}"},
-    )
-    return response.text
-
-if __name__ == "__main__":
-    print(assistant("How long are LangSmith traces stored?"))
-```
-
-```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { GoogleGenAI } from "@google/genai";
-import { wrapGemini } from "langsmith/wrappers/gemini";
-import { traceable } from "langsmith/traceable";
-
-const client = wrapGemini(new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })); // log every Gemini call automatically
-
-const getContext = traceable(
-    async function getContext(question: string): Promise<string> { // trace this as a tool span
-        // In a real app, this would query a knowledge base or vector store
-        return "LangSmith traces are stored for 14 days on the Developer plan.";
-    },
-    { run_type: "tool" }
-);
-
-const assistant = traceable(async function assistant(question: string) { // capture the full pipeline as a single trace
-    const context = await getContext(question);
-    const response = await client.models.generateContent({
-        model: "gemini-3.8-flash",
-        contents: question,
-        config: { systemInstruction: `Answer using the context below.\n\nContext: ${context}` },
-    });
-    return response.text ?? null;
-});
-
-(async () => {
-    console.log(await assistant("How long are LangSmith traces stored?"));
-})();
-```
+> [tab] Gemini
+>
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from google import genai
+> from langsmith.wrappers import wrap_gemini
+> from langsmith import traceable
+>
+> client = wrap_gemini(genai.Client())  # log every Gemini call automatically
+>
+> @traceable(run_type="tool")  # trace this as a tool span
+> def get_context(question: str) -> str:
+>     # In a real app, this would query a knowledge base or vector store
+>     return "LangSmith traces are stored for 14 days on the Developer plan."
+>
+> @traceable  # capture the full pipeline as a single trace
+> def assistant(question: str) -> str:
+>     context = get_context(question)
+>     response = client.models.generate_content(
+>         model="gemini-3.8-flash",
+>         contents=question,
+>         config={"system_instruction": f"Answer using the context below.\n\nContext: {context}"},
+>     )
+>     return response.text
+>
+> if __name__ == "__main__":
+>     print(assistant("How long are LangSmith traces stored?"))
+> ```
+>
+> ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { GoogleGenAI } from "@google/genai";
+> import { wrapGemini } from "langsmith/wrappers/gemini";
+> import { traceable } from "langsmith/traceable";
+>
+> const client = wrapGemini(new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })); // log every Gemini call automatically
+>
+> const getContext = traceable(
+>     async function getContext(question: string): Promise<string> { // trace this as a tool span
+>         // In a real app, this would query a knowledge base or vector store
+>         return "LangSmith traces are stored for 14 days on the Developer plan.";
+>     },
+>     { run_type: "tool" }
+> );
+>
+> const assistant = traceable(async function assistant(question: string) { // capture the full pipeline as a single trace
+>     const context = await getContext(question);
+>     const response = await client.models.generateContent({
+>         model: "gemini-3.8-flash",
+>         contents: question,
+>         config: { systemInstruction: `Answer using the context below.\n\nContext: ${context}` },
+>     });
+>     return response.text ?? null;
+> });
+>
+> (async () => {
+>     console.log(await assistant("How long are LangSmith traces stored?"));
+> })();
+> ```
 
 ## 3. Run the app
 
@@ -521,7 +521,7 @@ The outer span captures your `assistant` function's inputs and outputs. The nest
 * [Trace an agent](/langsmith/observability-llm-tutorial): a full lifecycle tutorial, from prototyping through production.
 * [Filter traces](/langsmith/filter-traces): search the traces in an agent environment.
 * [Log traces to an agent](/langsmith/log-traces-to-agent): configure the agent and environment in code or with environment variables.
-* [Agents](/langsmith/agents): how workspaces organize agents and their environments.
+* [Agent Registry](/langsmith/agent-registry): how workspaces organize agents and their environments.
 
 After logging traces, use **[Chat](/langsmith/chat)** to analyze them and get AI-powered insights into your agent's performance.
 

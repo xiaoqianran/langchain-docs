@@ -110,19 +110,19 @@ The workflow includes:
 
   ![Test with Results Workflow](https://mintcdn.com/langchain-5e9cc07a/MrTet_AXQVddxOlO/langsmith/images/cicd-test-with-results.png?fit=max\&auto=format\&n=MrTet_AXQVddxOlO\&q=85\&s=477c3f5ec3d9bb9dfc354b9a57860636)
 
-  > **Final Response Evaluation**
+  > [accordion] Final Response Evaluation
   >
   > Evaluates the final output of your agent against expected results. This is the most common type of evaluation that checks if the agent's final response meets quality standards and answers the user's question correctly.
 
-  > **Single Step Evaluation**
+  > [accordion] Single Step Evaluation
   >
   > Tests individual steps or nodes within your LangGraph workflow. This allows you to validate specific components of your agent's logic in isolation, ensuring each step functions correctly before testing the full pipeline.
 
-  > **Agent Trajectory Evaluation**
+  > [accordion] Agent Trajectory Evaluation
   >
   > Analyzes the complete path your agent takes through the graph, including all intermediate steps and decision points. This helps identify bottlenecks, unnecessary steps, or suboptimal routing in your agent's workflow. It also evaluates whether your agent invoked the right tools in the right order or at the right time.
 
-  > **Multi-Turn Evaluation**
+  > [accordion] Multi-Turn Evaluation
   >
   > Tests conversational flows where the agent maintains context across multiple interactions. This is crucial for agents that handle follow-up questions, clarifications, or extended dialogues with users.
 

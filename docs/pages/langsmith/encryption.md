@@ -8,11 +8,11 @@ Agent Server supports two approaches to application-level encryption at rest. Us
 
 ## Choose an encryption approach
 
-> **[Built-in AES encryption](/langsmith/aes-encryption)**
+> [card] [Built-in AES encryption](/langsmith/aes-encryption)
 >
 > Recommended for most deployments. Configure an AES key to encrypt checkpoint data and selected JSON fields. Supports lazy key rotation.
 
-> **[Custom encryption](/langsmith/custom-encryption)**
+> [card] [Custom encryption](/langsmith/custom-encryption)
 >
 > Use only when built-in AES does not meet your requirements. Supports per-tenant keys and external key management systems through custom handlers.
 

@@ -4,7 +4,7 @@
 
 # 基于属性的访问控制
 
-本参考文献介绍了LangSmith的基于属性的访问控制（ABAC）系统，该系统能够基于资源属性进行细粒度的访问控制，是对[RBAC](/langsmith/rbac)的补充。有关自动将用户配置为角色的信息，请参阅[SCIM](/langsmith/user-management#set-up-scim-for-your-organization)。
+本参考资料介绍了LangSmith基于属性的访问控制（ABAC）系统，该系统能够基于资源属性进行细粒度的访问控制，是对[RBAC](/langsmith/rbac)的补充。有关自动将用户配置为角色的信息，请参阅[SCIM](/langsmith/user-management#set-up-scim-for-your-organization)。
 
 > [!注意]
 >
@@ -14,7 +14,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 > [!注意]
 >
-> 角色和资源标签可以通过 UI 或 API 进行管理。 ABAC 策略可通过 [API](https://api.smith.langchain.com/docs#/access_policies) 配置。配置完成后，策略将在 API 和 UI 中自动实施。
+> 角色、资源标签和ABAC策略可以通过UI或[API](https://api.smith.langchain.com/docs#/access_policies)进行管理。配置完成后，策略将在 API 和 UI 中自动实施。
 
 ## 开始之前
 
@@ -39,7 +39,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
      >
      > 该环境变量对个人组织没有影响，因为个人组织未启用[RBAC](/langsmith/rbac)。
 
-2. 设置身份验证。要通过 API 管理访问策略，您需要来自 [Organization Admin](/langsmith/rbac#organization-admin) 用户的个人访问令牌 (PAT)，或具有组织管理员权限的组织范围的服务密钥。在运行任何脚本之前设置以下环境变量：
+2. 设置身份验证。要通过 API 管理访问策略，您需要具有 `organization:access-control:manage` 的用户的个人访问令牌 (PAT)，例如 [Organization Admin](/langsmith/rbac#organization-admin) 或 [Organization Operator](/langsmith/rbac#organization-operator)，或具有组织管理员权限的组织范围服务密钥。在运行任何脚本之前设置以下环境变量：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_API_KEY="your_admin_api_key"
@@ -77,9 +77,9 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 }
 ```
 
-###效果
+###效果`effect` 确定条件匹配时会发生什么：
 
-`effect` 确定条件匹配时会发生什么：* **`allow`** - 条件匹配时授予访问权限
+* **`allow`** - 条件匹配时授予访问权限
 * **`deny`** - 条件匹配时阻止访问
 
 > [!注意]
@@ -88,7 +88,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 ### 条件组
 
-`condition_groups`数组包含一个或多个条件组。使用 **OR 逻辑** 评估多个条件组 - 如果任何组匹配，则应用策略。
+`condition_groups` 数组包含一个或多个条件组。使用 **OR 逻辑** 评估多个条件组 - 如果任何组匹配，则应用策略。
 
 每个条件组指定：
 
@@ -119,7 +119,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 `conditions` 数组中的每个条件指定：
 
 * **`attribute_name`** - 目前仅支持`resource_tag_key`
-* **`attribute_key`** - 要匹配的标签键（例如，`Environment`、`Team`）
+* **`attribute_key`** - 要匹配的标签键（例如，`Environment`、`Application`）
 * **`operator`** - 比较运算符
 * **`attribute_value`** - 要比较的值
 
@@ -153,9 +153,16 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 `role_ids` 数组指定策略适用于哪些工作区角色。当具有该角色的用户访问资源时，将评估策略条件。
 
-创建策略时可以将策略附加到 [workspace roles](/langsmith/rbac#workspace-roles)（内置或 [custom](/langsmith/rbac#custom-roles)），或者稍后通过 API 附加。
+创建策略时，可以将策略附加到 [workspace roles](/langsmith/rbac#workspace-roles)（内置或 [custom](/langsmith/rbac#custom-roles)），或者稍后在 UI 中或使用 API 附加。保单也可以附加到[teams](/langsmith/teams#access-policies)。团队的策略适用于团队可以访问的工作区中的成员。
 
-## 管理访问策略访问策略由 [Organization Admins](/langsmith/rbac#organization-admin) 通过 LangSmith API 进行管理。在创建策略之前，请在工作区中[set up resource tags](/langsmith/set-up-resource-tags)。
+## 管理访问策略
+
+在组织设置中或使用 LangSmith API 管理访问策略。创建、编辑或删除策略需要 `organization:access-control:manage`，[Organization Admins](/langsmith/rbac#organization-admin) 和 [Organization Operators](/langsmith/rbac#organization-operator) 持有。在创建策略之前，请在工作区中[set up resource tags](/langsmith/set-up-resource-tags)。
+
+团队不制定政策。他们附加现有的：
+
+* 将策略附加到团队需要`organization:teams:manage-policies`。
+* 工作区管理员可以将现有策略作为工作区中的 [workspace-only policy](/langsmith/teams#add-workspace-only-members-and-policies) 附加到团队，并使用 `workspaces:teams:manage-policies`。
 
 ## ABAC 如何与 RBAC 配合使用
 
@@ -165,15 +172,15 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 * ABAC **允许** 策略即使没有 RBAC 权限也可以授予访问权限
 * 如果没有ABAC策略匹配，系统回退到RBAC
 
+当用户属于[teams](/langsmith/teams)时，LangSmith会从用户的角色和每个团队一起评估权限和策略。来自任何来源的匹配拒绝策略仍会阻止访问。
+
 ### 政策评估结果
 
-**功能组合：**
-
-|启用 RBAC | ABAC 已启用 |行为 |
+**功能组合：**|启用 RBAC | ABAC 已启用 |行为 |
 | - | - | - |
 | ✗ | ✗ |所有工作区成员都具有管理员级别访问权限 |
 | ✓ | ✗ |标准RBAC——基于角色权限的访问|
-| ✓ | ✓ | RBAC + ABAC - 基于标签的细粒度访问控制|
+| ✓ | ✓ | RBAC + ABAC - 基于标签的细粒度访问控制 |
 
 **同时启用 RBAC 和 ABAC 时：**
 
@@ -187,26 +194,26 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 | ✗ | ✗ | ✗ | **被拒绝** |
 | ✗ | ✓ | ✓ | **被拒绝**（否认获胜）|
 
-## 控制对运行输入和输出的访问`runs:read` 控制用户是否可以看到跑步。 `runs:read-inputs`和`runs:read-outputs`控制是否可以看到其输入和输出。这些权限的访问策略使用 `resource_type: "project"` 并根据每个运行的父项目进行评估，因此您可以隐藏某些项目中的输入、输出或两者，同时保持工作区中的其他项目不变。 RBAC 和 ABAC 组合这些权限的方式与组合任何其他权限的方式相同。详情请参阅[How ABAC works with RBAC](#how-abac-works-with-rbac)。
+## 控制对运行输入和输出的访问
 
-## 示例场景
+`runs:read` 控制用户是否可以看到跑步。 `runs:read-inputs`和`runs:read-outputs`控制是否可以看到其输入和输出。这些权限的访问策略使用 `resource_type: "project"` 并针对每个运行的父项目进行评估，因此您可以隐藏某些项目中的输入、输出或两者，同时保持工作区中的其他项目不变。 RBAC 和 ABAC 组合这些权限的方式与组合任何其他权限的方式相同。详情请参阅[How ABAC works with RBAC](#how-abac-works-with-rbac)。
 
-### 1. 注释者团队分配
+## 示例场景### 1. 将注释者限制在其数据集上
 
-允许注释者仅访问为其团队标记的数据集：
+允许注释者仅访问为其注释组标记的数据集：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
-  "name": "Annotator Team A Access",
+  "name": "Annotator Group A Access",
   "effect": "allow",
   "condition_groups": [{
     "permission": "datasets:read",
     "resource_type": "dataset",
     "conditions": [{
       "attribute_name": "resource_tag_key",
-      "attribute_key": "Annotation-Team",
+      "attribute_key": "Annotation-Group",
       "operator": "equals",
-      "attribute_value": "Team-A"
+      "attribute_value": "Group-A"
     }]
   }]
 }
@@ -256,7 +263,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 ### 4. 客户端和目的隔离（AND 逻辑）
 
-仅当满足两个条件时才授予访问权限 - 数据集用于训练并且属于特定客户端：
+仅当满足两个条件时才授予访问权限 - 数据集用于训练且属于特定客户端：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -283,7 +290,9 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 }
 ```
 
-### 5. 使用 `_if_exists` 的客户端数据加上没有 `Client` 标签的资源顾问没有 RBAC `datasets:read` 权限，但此策略允许他们访问标记为 `Client=Acme-Corp` 的数据集，以及根本没有 `Client` 标签的数据集。用不同客户端标记的数据集（例如，`Client=Other-Corp`）仍然被阻止：
+### 5. 客户端数据加上没有使用 `_if_exists` `Client` 标签的资源
+
+顾问没有 RBAC `datasets:read` 权限，但此策略允许他们访问标记为 `Client=Acme-Corp` 的数据集，以及根本没有 `Client` 标签的数据集。用不同客户端标记的数据集（例如，`Client=Other-Corp`）仍然被阻止：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -302,9 +311,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 }
 ```
 
-### 6.隐藏敏感项目中的运行输入和输出
-
-让用户继续浏览包含 PII 的项目中的运行，但隐藏运行的输入和输出。每个权限都有自己的条件组，并且使用 OR 逻辑对这些组进行评估。用户仍然需要 `runs:read` 才能查看运行情况：
+### 6.隐藏敏感项目中的运行输入和输出让用户继续浏览包含 PII 的项目中的运行，但隐藏运行的输入和输出。每个权限都有自己的条件组，并且使用 OR 逻辑对这些组进行评估。用户仍然需要 `runs:read` 才能查看运行情况：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -341,15 +348,15 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 项目、数据集和提示创建端点（包括分叉和克隆操作）支持此功能。标签在与资源创建相同的数据库事务中以原子方式应用。
 
-有关完整的详细信息和示例，请参阅资源标签指南中的[Tag a resource at creation time](/langsmith/set-up-resource-tags#tag-a-resource-at-creation-time)。> [!注意]
+有关完整的详细信息和示例，请参阅资源标签指南中的[Tag a resource at creation time](/langsmith/set-up-resource-tags#tag-a-resource-at-creation-time)。
+
+> [!注意]
 >
 > 如果您依赖 LangSmith SDK 在跟踪提取期间自动创建跟踪项目，则 `tag_value_ids` 参数在该自动创建路径上不可用。为了确保 ABAC 策略从一开始就适用，请在开始跟踪会话之前通过 `POST /api/v1/sessions` 使用所需的 `tag_value_ids` 预先创建项目。
 
 ## 故障排除
 
-**访问意外被拒绝？**
-
-* 检查拒绝策略是否匹配（拒绝始终优先）
+**访问意外被拒绝？*** 检查拒绝策略是否匹配（拒绝始终优先）
 * 检查用户是否具有RBAC权限或匹配的允许策略
 * 验证资源是否具有预期的标签和值
 * 使用 `_if_exists` 运算符的拒绝策略会阻止缺少该标签键的资源
@@ -362,7 +369,9 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 * 检查允许策略是否太宽泛（例如，使用通配符）
 * `_if_exists` 运算符匹配缺少该标签键的资源
 
-**运行输入或输出丢失？*** 检查用户的角色是否授予 `runs:read-inputs` 和 `runs:read-outputs`，或者允许策略是否为运行的项目授予它们
+**运行输入或输出丢失？**
+
+* 检查用户的角色是否授予 `runs:read-inputs` 和 `runs:read-outputs`，或者允许策略是否为运行的项目授予它们
 * 检查 `runs:read-inputs` 或 `runs:read-outputs` 上是否有与项目标签匹配的拒绝策略
 * 消息和轨迹视图返回`403 Forbidden`，除非这两个权限都被授予
 
@@ -372,8 +381,6 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 * 验证用户在工作区中具有该角色
 * 检查`resource_type`和`permission`是否与正在访问的资源匹配
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/abac.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

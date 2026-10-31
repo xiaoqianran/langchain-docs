@@ -10,75 +10,75 @@ Enable secure access from agents to any system using OAuth 2.0 credentials with 
 
 ## Installation
 
-**Python**
+> [tab] Python
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-auth
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-auth
+> ```
 
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-auth
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-auth
-```
-
-**JavaScript**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/auth
-```
+> [tab] JavaScript
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/auth
+> ```
 
 ## Quickstart
 
 ### 1. Initialize the client
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain_auth import Client
+>
+> client = Client(api_key="your-langsmith-api-key")
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_auth import Client
-
-client = Client(api_key="your-langsmith-api-key")
-```
-
-**JavaScript**
-
-```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from '@langchain/auth';
-
-const client = new Client({ apiKey: 'your-langsmith-api-key' });
-```
+> [tab] JavaScript
+>
+> ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client } from '@langchain/auth';
+>
+> const client = new Client({ apiKey: 'your-langsmith-api-key' });
+> ```
 
 #### Self-hosted configuration
 
 For self-hosted LangSmith instances, specify the API URL using the `/api-host` path on your instance.
 
-**Environment Variable**
+> [tab] Environment Variable
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export LANGSMITH_API_URL="https://your-langsmith-instance.com/api-host"
+> ```
+>
+> Then initialize the client normally:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> client = Client(api_key="your-langsmith-api-key")
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_API_URL="https://your-langsmith-instance.com/api-host"
-```
+> [tab] Explicit Configuration (Python)
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> client = Client(
+>     api_key="your-langsmith-api-key",
+>     api_url="https://your-langsmith-instance.com/api-host"
+> )
+> ```
 
-Then initialize the client normally:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-client = Client(api_key="your-langsmith-api-key")
-```
-
-**Explicit Configuration (Python)**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-client = Client(
-    api_key="your-langsmith-api-key",
-    api_url="https://your-langsmith-instance.com/api-host"
-)
-```
-
-**Explicit Configuration (JavaScript)**
-
-```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const client = new Client({
-    apiKey: 'your-langsmith-api-key',
-    apiUrl: 'https://your-langsmith-instance.com/api-host'
-});
-```
+> [tab] Explicit Configuration (JavaScript)
+>
+> ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const client = new Client({
+>     apiKey: 'your-langsmith-api-key',
+>     apiUrl: 'https://your-langsmith-instance.com/api-host'
+> });
+> ```
 
 ### 2. Set up OAuth providers
 
@@ -90,57 +90,57 @@ Before agents can authenticate, you need to configure an OAuth provider using th
 
 3. Set the callback URL in your OAuth provider:
 
-**LangSmith Cloud**
+> [tab] LangSmith Cloud
+>
+> ```
+> https://smith.langchain.com/host-oauth-callback/{provider_id}
+> ```
+>
+> For example, if your provider\_id is "github-local-dev", use:
+>
+> ```
+> https://smith.langchain.com/host-oauth-callback/github-local-dev
+> ```
 
-```
-https://smith.langchain.com/host-oauth-callback/{provider_id}
-```
-
-For example, if your provider\_id is "github-local-dev", use:
-
-```
-https://smith.langchain.com/host-oauth-callback/github-local-dev
-```
-
-**Self-hosted**
-
-```
-https://{your-langsmith-instance}/host-oauth-callback/{provider_id}
-```
-
-For example, if your instance is `langsmith.example.com` and provider\_id is "github", use:
-
-```
-https://langsmith.example.com/host-oauth-callback/github
-```
+> [tab] Self-hosted
+>
+> ```
+> https://{your-langsmith-instance}/host-oauth-callback/{provider_id}
+> ```
+>
+> For example, if your instance is `langsmith.example.com` and provider\_id is "github", use:
+>
+> ```
+> https://langsmith.example.com/host-oauth-callback/github
+> ```
 
 4. Use `client.create_oauth_provider()` with the credentials from your OAuth app:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> new_provider = await client.create_oauth_provider(
+>     provider_id="{provider_id}",  # Provide any unique ID
+>     name="{provider_display_name}",  # Provide any display name
+>     client_id="{your_client_id}",
+>     client_secret="{your_client_secret}",
+>     auth_url="{auth_url_of_your_provider}",
+>     token_url="{token_url_of_your_provider}",
+> )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-new_provider = await client.create_oauth_provider(
-    provider_id="{provider_id}",  # Provide any unique ID
-    name="{provider_display_name}",  # Provide any display name
-    client_id="{your_client_id}",
-    client_secret="{your_client_secret}",
-    auth_url="{auth_url_of_your_provider}",
-    token_url="{token_url_of_your_provider}",
-)
-```
-
-**JavaScript**
-
-```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const newProvider = await client.createOAuthProvider({
-    providerId: '{provider_id}',  // Provide any unique ID
-    name: '{provider_display_name}',  // Provide any display name
-    clientId: '{your_client_id}',
-    clientSecret: '{your_client_secret}',
-    authUrl: '{auth_url_of_your_provider}',
-    tokenUrl: '{token_url_of_your_provider}',
-});
-```
+> [tab] JavaScript
+>
+> ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const newProvider = await client.createOAuthProvider({
+>     providerId: '{provider_id}',  // Provide any unique ID
+>     name: '{provider_display_name}',  // Provide any display name
+>     clientId: '{your_client_id}',
+>     clientSecret: '{your_client_secret}',
+>     authUrl: '{auth_url_of_your_provider}',
+>     tokenUrl: '{token_url_of_your_provider}',
+> });
+> ```
 
 ### 3. Authenticate from an agent
 
@@ -188,44 +188,44 @@ token = auth_result.token
 
 Provide the `auth_url` to the user for out-of-band OAuth flows.
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> auth_result = await client.authenticate(
+>     provider="{provider_id}",
+>     scopes=["scopeA"],
+>     user_id="your_user_id"
+> )
+>
+> if auth_result.status == "pending":
+>     print(f"Complete OAuth at: {auth_result.url}")
+>     # Wait for user to complete OAuth
+>     completed_auth = await client.wait_for_completion(auth_result.auth_id)
+>     print("Authentication completed!")
+> else:
+>     token = auth_result.token
+>     print(f"Already authenticated, token: {token}")
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-auth_result = await client.authenticate(
-    provider="{provider_id}",
-    scopes=["scopeA"],
-    user_id="your_user_id"
-)
-
-if auth_result.status == "pending":
-    print(f"Complete OAuth at: {auth_result.url}")
-    # Wait for user to complete OAuth
-    completed_auth = await client.wait_for_completion(auth_result.auth_id)
-    print("Authentication completed!")
-else:
-    token = auth_result.token
-    print(f"Already authenticated, token: {token}")
-```
-
-**JavaScript**
-
-```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const authResult = await client.authenticate({
-    provider: '{provider_id}',
-    scopes: ['scopeA'],
-    userId: 'your_user_id'
-});
-
-if (authResult.status === 'pending') {
-    console.log(`Complete OAuth at: ${authResult.authUrl}`);
-    // Wait for user to complete OAuth
-    const completedAuth = await client.waitForCompletion(authResult.authId);
-    console.log('Authentication completed!');
-} else {
-    const token = authResult.token;
-    console.log(`Already authenticated, token: ${token}`);
-}
-```
+> [tab] JavaScript
+>
+> ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const authResult = await client.authenticate({
+>     provider: '{provider_id}',
+>     scopes: ['scopeA'],
+>     userId: 'your_user_id'
+> });
+>
+> if (authResult.status === 'pending') {
+>     console.log(`Complete OAuth at: ${authResult.authUrl}`);
+>     // Wait for user to complete OAuth
+>     const completedAuth = await client.waitForCompletion(authResult.authId);
+>     console.log('Authentication completed!');
+> } else {
+>     const token = authResult.token;
+>     console.log(`Already authenticated, token: ${token}`);
+> }
+> ```
 
 ## Troubleshooting
 

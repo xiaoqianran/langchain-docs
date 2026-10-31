@@ -117,7 +117,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 
 **Select embedding model:**
 
-> **OpenAI**
+> [accordion] OpenAI
 >
 > Install dependencies:
 >
@@ -149,7 +149,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **Azure**
+> [accordion] Azure
 >
 > Install dependencies
 >
@@ -183,7 +183,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **AWS**
+> [accordion] AWS
 >
 > Install dependencies:
 >
@@ -215,7 +215,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **Google Gemini**
+> [accordion] Google Gemini
 >
 > Install dependencies:
 >
@@ -247,7 +247,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **Gemini Enterprise Agent Platform**
+> [accordion] Gemini Enterprise Agent Platform
 >
 > Install dependencies:
 >
@@ -279,7 +279,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **MistralAI**
+> [accordion] MistralAI
 >
 > Install dependencies:
 >
@@ -311,7 +311,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **Cohere**
+> [accordion] Cohere
 >
 > Install dependencies:
 >
@@ -343,7 +343,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **Ollama**
+> [accordion] Ollama
 >
 > Install dependencies:
 >
@@ -370,7 +370,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **Voyage AI**
+> [accordion] Voyage AI
 >
 > Install dependencies:
 >
@@ -404,7 +404,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 
 **Select vector store:**
 
-> **Memory**
+> [accordion] Memory
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i langchain
@@ -424,66 +424,66 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > const vectorStore = new MemoryVectorStore(embeddings);
 > ```
 
-> **MongoDB**
+> [accordion] MongoDB
 >
-> **Manual embedding**
+> > [tab] Manual embedding
+> >
+> > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > npm install @langchain/mongodb mongodb @langchain/core
+> > ```
+> >
+> > ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > yarn add @langchain/mongodb mongodb @langchain/core
+> > ```
+> >
+> > ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > pnpm add @langchain/mongodb mongodb @langchain/core
+> > ```
+> >
+> > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import { MongoDBAtlasVectorSearch } from "@langchain/mongodb"
+> > import { MongoClient } from "mongodb";
+> >
+> > const client = new MongoClient(process.env.MONGODB_ATLAS_URI!);
+> > const collection = client
+> >   .db(process.env.MONGODB_ATLAS_DB_NAME)
+> >   .collection(process.env.MONGODB_ATLAS_COLLECTION_NAME);
+> >
+> > const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
+> >   collection,
+> >   indexName: "vector_index",
+> >   textKey: "text",
+> >   embeddingKey: "embedding",
+> > });
+> > ```
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> npm install @langchain/mongodb mongodb @langchain/core
-> ```
->
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> yarn add @langchain/mongodb mongodb @langchain/core
-> ```
->
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> pnpm add @langchain/mongodb mongodb @langchain/core
-> ```
->
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> import { MongoDBAtlasVectorSearch } from "@langchain/mongodb"
-> import { MongoClient } from "mongodb";
->
-> const client = new MongoClient(process.env.MONGODB_ATLAS_URI!);
-> const collection = client
->   .db(process.env.MONGODB_ATLAS_DB_NAME)
->   .collection(process.env.MONGODB_ATLAS_COLLECTION_NAME);
->
-> const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
->   collection,
->   indexName: "vector_index",
->   textKey: "text",
->   embeddingKey: "embedding",
-> });
-> ```
->
-> **Automated embedding**
->
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> npm install @langchain/mongodb mongodb @langchain/core
-> ```
->
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> yarn add @langchain/mongodb mongodb @langchain/core
-> ```
->
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> pnpm add @langchain/mongodb mongodb @langchain/core
-> ```
->
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> import { MongoDBAtlasVectorSearch } from "@langchain/mongodb"
-> import { MongoClient } from "mongodb";
->
-> const client = new MongoClient(process.env.MONGODB_ATLAS_URI!);
-> const collection = client
->   .db(process.env.MONGODB_ATLAS_DB_NAME)
->   .collection(process.env.MONGODB_ATLAS_COLLECTION_NAME);
->
-> const vectorStore = new MongoDBAtlasVectorSearch({ collection });
-> ```
+> > [tab] Automated embedding
+> >
+> > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > npm install @langchain/mongodb mongodb @langchain/core
+> > ```
+> >
+> > ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > yarn add @langchain/mongodb mongodb @langchain/core
+> > ```
+> >
+> > ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > pnpm add @langchain/mongodb mongodb @langchain/core
+> > ```
+> >
+> > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import { MongoDBAtlasVectorSearch } from "@langchain/mongodb"
+> > import { MongoClient } from "mongodb";
+> >
+> > const client = new MongoClient(process.env.MONGODB_ATLAS_URI!);
+> > const collection = client
+> >   .db(process.env.MONGODB_ATLAS_DB_NAME)
+> >   .collection(process.env.MONGODB_ATLAS_COLLECTION_NAME);
+> >
+> > const vectorStore = new MongoDBAtlasVectorSearch({ collection });
+> > ```
 
-> **Pinecone**
+> [accordion] Pinecone
 >
 > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install @langchain/pinecone @langchain/core @pinecone-database/pinecone
@@ -508,7 +508,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **Redis**
+> [accordion] Redis
 >
 > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install @langchain/redis @langchain/core redis
@@ -531,7 +531,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **Qdrant**
+> [accordion] Qdrant
 >
 > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install @langchain/qdrant @langchain/core
@@ -554,7 +554,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **Oracle AI Database**
+> [accordion] Oracle AI Database
 >
 > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i @oracle/langchain-oracledb @langchain/core
@@ -592,7 +592,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > await vectorStore.initialize();
 > ```
 
-> **Weaviate**
+> [accordion] Weaviate
 >
 > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install @langchain/weaviate @langchain/core weaviate-client

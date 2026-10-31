@@ -12,35 +12,35 @@ SmithDB is a columnar datastore built for agent trace data: deeply nested spans,
 
 Some LangSmith features, such as the Trajectory view, trajectory evaluators, and the filter query syntax, require SmithDB. See [SmithDB feature availability](/langsmith/self-host-smithdb-features).
 
-> **[Feature availability](/langsmith/self-host-smithdb-features)**
+> [card] [Feature availability](/langsmith/self-host-smithdb-features)
 >
 > See which features need SmithDB and what keeps working on ClickHouse.
 
-> **[Install SmithDB](/langsmith/self-host-smithdb-install)**
+> [card] [Install SmithDB](/langsmith/self-host-smithdb-install)
 >
 > Stage infrastructure, deploy SmithDB services, enable dual ingestion, and switch queries after validation.
 
-> **[Prepare supporting infrastructure](/langsmith/self-host-smithdb-infrastructure)**
+> [card] [Prepare supporting infrastructure](/langsmith/self-host-smithdb-infrastructure)
 >
 > Provide a dedicated PostgreSQL metastore, object storage, and cache storage.
 
-> **[Configure for scale](/langsmith/self-host-smithdb-scale)**
+> [card] [Configure for scale](/langsmith/self-host-smithdb-scale)
 >
 > Choose a tested resource tier and size SmithDB workloads.
 
-> **[Configure observability](/langsmith/self-host-smithdb-observability)**
+> [card] [Configure observability](/langsmith/self-host-smithdb-observability)
 >
 > Scrape SmithDB metrics and export logs and traces to your stack.
 
-> **[Migrate historical data](/langsmith/self-host-smithdb-migrate)**
+> [card] [Migrate historical data](/langsmith/self-host-smithdb-migrate)
 >
 > Backfill ClickHouse history into SmithDB before query cutover.
 
-> **[Metrics reference](/langsmith/self-host-smithdb-metrics)**
+> [card] [Metrics reference](/langsmith/self-host-smithdb-metrics)
 >
 > Metrics to watch on each SmithDB component and how to read them.
 
-> **[Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting)**
+> [card] [Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting)
 >
 > Gather context, disable SmithDB, or reset a deployment safely.
 

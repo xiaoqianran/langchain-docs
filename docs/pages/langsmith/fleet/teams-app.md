@@ -172,15 +172,15 @@ Adjust the instructions based on your use case—for example, you might want the
 
 ## Next steps
 
-> **[Add more tools](/langsmith/fleet/tools)**
+> [card] [Add more tools](/langsmith/fleet/tools)
 >
 > Connect additional services to your agent
 
-> **[Add more channels](/langsmith/fleet/channels)**
+> [card] [Add more channels](/langsmith/fleet/channels)
 >
 > Set up email, schedule, or webhook channels
 
-> **[Use templates](/langsmith/fleet/templates)**
+> [card] [Use templates](/langsmith/fleet/templates)
 >
 > Start from a prebuilt agent template
 

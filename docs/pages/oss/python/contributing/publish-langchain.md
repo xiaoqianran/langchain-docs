@@ -26,7 +26,7 @@ For the purposes of this guide, we'll be using PyPI as the package registry. You
 
 First, make sure you have a PyPI account:
 
-> **How to create a PyPI Token**
+> [accordion] How to create a PyPI Token
 >
 > **1. Create account**
 >
@@ -46,7 +46,7 @@ First, make sure you have a PyPI account:
 
 ### Build and publish
 
-> **[How to publish a package](https://docs.astral.sh/uv/guides/package/)**
+> [card] [How to publish a package](https://docs.astral.sh/uv/guides/package/)
 >
 > Helpful guide from `uv` on how to build and publish a package to PyPI.
 
@@ -69,7 +69,7 @@ If you do not meet either criterion, the automation adds an **external listing**
 
 ### List in the download table (default)
 
-> **[File an Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)**
+> [card] [File an Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)
 >
 > Use the fixed form fields for display name, language, component, package name, docs URL, and a short provider description (max 160 characters).
 
@@ -95,13 +95,13 @@ If your package meets the [eligibility criteria](#eligibility-for-hosted-guides)
 
 Depending on the type of integration you have built, you will need to create different types of documentation pages. LangChain provides templates for different types of integrations to help you get started.
 
-> **[Chat models](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/chat/TEMPLATE.mdx)**
+> [card] [Chat models](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/chat/TEMPLATE.mdx)
 
-> **[Tools/toolkits](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/tools/TEMPLATE.mdx)**
+> [card] [Tools/toolkits](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/tools/TEMPLATE.mdx)
 
-> **[Middleware](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/middleware/TEMPLATE.mdx)**
+> [card] [Middleware](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/middleware/TEMPLATE.mdx)
 
-> **[Vector stores](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/vectorstores/TEMPLATE.mdx)**
+> [card] [Vector stores](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/vectorstores/TEMPLATE.mdx)
 
 > [!TIP]
 >
@@ -142,7 +142,7 @@ Please be patient as we handle a large volume of submissions. Review the automat
 
 **Congratulations!** Your integration is published and listed for the LangChain community.
 
-> **[Co-marketing](/oss/python/contributing/comarketing)**
+> [card] [Co-marketing](/oss/python/contributing/comarketing)
 >
 > Get in touch with the LangChain marketing team to explore co-marketing opportunities.
 

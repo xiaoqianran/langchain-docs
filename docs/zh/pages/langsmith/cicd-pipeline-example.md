@@ -106,17 +106,17 @@ CI/CD 管道使用 GitHub Actions 以及 [Control Plane API](/langsmith/api-ref-
 
   ![Test with Results Workflow](https://mintcdn.com/langchain-5e9cc07a/MrTet_AXQVddxOlO/langsmith/images/cicd-test-with-results.png?fit=max\&auto=format\&n=MrTet_AXQVddxOlO\&q=85\&s=477c3f5ec3d9bb9dfc354b9a57860636)
 
-  > **最终响应评估**
+  > [手风琴] 最终反应评估
   >
-  > 根据预期结果评估代理的最终输出。这是最常见的评估类型，用于检查代理的最终响应是否符合质量标准并正确回答用户的问题。> **单步评估**
+  > 根据预期结果评估代理的最终输出。这是最常见的评估类型，用于检查代理的最终响应是否符合质量标准并正确回答用户的问题。> [手风琴] 单步评估
   >
   > 测试 LangGraph 工作流程中的各个步骤或节点。这使您可以单独验证代理逻辑的特定组件，确保每个步骤在测试整个管道之前正确运行。
 
-  > **智能体轨迹评估**
+  > [手风琴] 智能体轨迹评估
   >
   > 分析代理在图表中所采取的完整路径，包括所有中间步骤和决策点。这有助于识别代理工作流程中的瓶颈、不必要的步骤或次优路由。它还评估您的代理是否以正确的顺序或在正确的时间调用了正确的工具。
 
-  > **多轮评估**
+  > [手风琴] 多轮评估
   >
   > 测试代理在多个交互中维护上下文的对话流。这对于处理后续问题、澄清或与用户进行扩展对话的代理至关重要。
 
@@ -140,7 +140,7 @@ LangSmith支持多种部署方式，具体取决于您的[LangSmith instance is 
 * **云LangSmith**：直接 GitHub 集成。
 * **自托管/混合**：基于容器注册表的部署。
 
-部署流程从修改代理实现开始。您的项目中至少必须有一个 [⟦T7⟧](/langsmith/application-structure) 和依赖文件（`requirements.txt` 或 `pyproject.toml`）。使用 `langgraph dev` CLI 工具检查错误 - 修复任何错误；否则，部署到LangSmith部署时就会部署成功。
+部署流程从修改代理实现开始。您的项目中至少必须有一个 [⟦T7⟧](/langsmith/application-structure) 和依赖文件（`requirements.txt` 或 `pyproject.toml`）。使用 `langgraph dev` CLI 工具检查错误 - 修复任何错误；否则部署到LangSmith部署时部署成功。
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TD
@@ -248,7 +248,7 @@ langgraph dev
 
 ### 方法1：LangSmith部署UI
 
-使用 LangSmith 部署界面部署代理：
+使用 LangSmith 部署接口部署代理：
 
 1. 前往您的[LangSmith dashboard](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cicd-pipeline-example)。
 2. 导航到 **部署** 部分。

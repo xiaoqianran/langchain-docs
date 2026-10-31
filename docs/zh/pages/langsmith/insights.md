@@ -22,64 +22,68 @@ Insights 使用分层分类来理解您的数据并突出显示可操作的趋�
 * [Permissions](/langsmith/organization-workspace-operations#projects) 在 LangSmith 中创建规则（生成新的见解报告所需）。
 * [Permissions](/langsmith/organization-workspace-operations#projects) 查看 LangSmith 中的跟踪项目（需要查看现有的见解报告）。
 
-## 生成您的第一份见解报告
-
-**用户界面**1. 导航到左侧菜单中的**跟踪**，然后选择跟踪项目或代理和环境。在基于代理的工作区中，报表针对一个环境而不是整个代理运行。
-2. 单击右上角的 **+New**，然后单击 **New Insights Report** 以生成新的见解。
-3. 输入您的作业名称。
-4. 如果您还没有，请在工作区设置中为 Insights [configure a model](/langsmith/model-configurations) 进行操作。
-5. 回答引导性问题，将见解报告重点关注您想要了解的有关代理的信息，然后单击 **运行作业**。
-
-> [!提示]
+## 生成您的第一份见解报告> [选项卡] 用户界面
 >
-> 切换至手动模式[configure the job manually](#configure-a-job)。
+> 1. 导航到左侧菜单中的**跟踪**，然后选择跟踪项目或代理和环境。在基于代理的工作区中，报表针对一个环境而不是整个代理运行。
+>
+> 2. 单击右上角的 **+New**，然后单击 **New Insights Report** 以生成新的见解。
+>
+> 3. 输入您的作业名称。
+>
+> 4. 如果您还没有，请在工作区设置中为 Insights [configure a model](/langsmith/model-configurations) 进行操作。
+>
+> 5. 回答引导性问题，将见解报告重点关注您想要了解的有关代理的信息，然后单击 **运行作业**。
+>
+>> [!提示]
+>>
+> > 切换至手动模式[configure the job manually](#configure-a-job)。
+>
+> 这将启动后台洞察报告。报告最多可能需要 30 分钟才能完成。
 
-这将启动后台洞察报告。报告最多可能需要 30 分钟才能完成。
-
-**软件开发工具包**
-
-您可以使用 [Python SDK](/langsmith/smith-python-sdk) 对存储在 LangSmith 外部的数据生成见解报告。这使您可以分析来自生产系统、日志或其他来源的聊天历史记录。
-
-当您调用`generate_insights()`时，SDK将：
-
-1. 将您的聊天记录作为痕迹上传到新的LangSmith项目。
-2. 针对这些上传的跟踪生成洞察报告。
-3. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights) 中返回结果的链接。
-
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langsmith import Client
-
-client = Client()
-
-chat_histories = [
-    [
-        {"role": "user", "content": "how are you"},
-        {"role": "assistant", "content": "good!"},
-    ],
-    [
-        {"role": "user", "content": "do you like art"},
-        {"role": "assistant", "content": "only Tarkovsky"},
-    ],
-]
-
-report = client.generate_insights(
-    chat_histories=chat_histories,
-    name="Customer Support Topics - March 2024",
-    instructions="What are the main topics and questions users are asking about?",
-    openai_api_key=os.environ["OPENAI_API_KEY"],  # optional if already set as workspace secret
-)
-
-# client.poll_insights(report=report)
-```
-
-**命令行界面**
-
-[LangSmith CLI](/langsmith/langsmith-cli) 使用 [manual configuration](#manual-configuration) 的字段从 JSON 文件创建报告：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith insights create --project my-app --config insights.json --wait
-```有关文件格式以及运行、列出和更新已保存配置的命令，请参阅[Manage insights](/langsmith/langsmith-cli#manage-insights)。
+> [标签] SDK
+>
+> 您可以使用 [Python SDK](/langsmith/smith-python-sdk) 对存储在 LangSmith 外部的数据生成见解报告。这使您可以分析来自生产系统、日志或其他来源的聊天历史记录。
+>
+> 当您调用`generate_insights()`时，SDK将：
+>
+> 1. 将您的聊天记录作为痕迹上传到新的LangSmith项目。
+> 2. 针对这些上传的跟踪生成洞察报告。
+> 3. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights) 中返回结果的链接。
+>
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langsmith import Client
+>
+> client = Client()
+>
+> chat_histories = [
+>     [
+>         {"role": "user", "content": "how are you"},
+>         {"role": "assistant", "content": "good!"},
+>     ],
+>     [
+>         {"role": "user", "content": "do you like art"},
+>         {"role": "assistant", "content": "only Tarkovsky"},
+>     ],
+> ]
+>
+> report = client.generate_insights(
+>     chat_histories=chat_histories,
+>     name="Customer Support Topics - March 2024",
+>     instructions="What are the main topics and questions users are asking about?",
+>     openai_api_key=os.environ["OPENAI_API_KEY"],  # optional if already set as workspace secret
+> )
+>
+> # client.poll_insights(report=report)
+> ```> [选项卡] CLI
+>
+> [LangSmith CLI](/langsmith/langsmith-cli) 使用 [manual configuration](#manual-configuration) 的字段从 JSON 文件创建报告：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langsmith insights create --project my-app --config insights.json --wait
+> ```
+>
+> 有关文件格式以及运行、列出和更新已保存配置的命令，请参阅[Manage insights](/langsmith/langsmith-cli#manage-insights)。
 
 > [!注意]
 >
@@ -188,7 +192,7 @@ Insights 使用两种模型：
 | `run.outputs` |最近一次 root 运行的输出 | `{{run.outputs}}` |
 | `run.error` |错误字符串，如果运行失败 | `{{run.error}}` |
 | `run.feedback` |所有反馈分数均以 JSON blob 形式 | `{{run.feedback}}` |
-| `run.feedback.<key>` |按按键具体反馈得分 | `{{run.feedback.correctness}}` |
+| `run.feedback.<key>` |按键的具体反馈分数 | `{{run.feedback.correctness}}` |
 | `all_thread_messages` |线程的完整消息历史记录（仅适用于具有 [threads](/langsmith/threads) 的项目）| `{{all_thread_messages}}` |
 
 您可以使用点表示法访问嵌套字段。例如，`{{run.inputs.foo.bar}}` 仅包含上次运行输入中 `foo` 内的 `bar` 字段。
@@ -221,7 +225,7 @@ Insights 使用两种模型：
 * **每周一**：每周一 8:00 UTC 运行。
 * **自定义**：输入您自己的 cron 表达式（采用 UTC）。
 
-每次计划运行都会使用您保存的配置生成一份新报告。时间范围是动态计算的。例如，“最近 24 小时”始终分析执行时的最近 24 小时窗口。
+每次计划的运行都会使用您保存的配置生成一份新报告。时间范围是动态计算的。例如，“最近 24 小时”始终分析执行时的最近 24 小时窗口。
 
 ## 保存你的配置
 

@@ -59,7 +59,7 @@ Fleet 为您管理 AI 模型，因此您不需要自己的模型提供商 API �
 5. LangSmith 将您重定向回舰队。选择 **Gmail** 以展开该行。
 6. 单击 **选择帐户** 并选择您在步骤 3 中选择的帐户。
 
-**2.连接 Google 日历**1. 连接 Gmail 仅授权您的 Google 帐户使用 Gmail，而非 Google 日历。要授予日历访问权限，请点击 **Google 日历** 行右侧的 **更新权限**。
+**2.连接 Google 日历**1. 连接 Gmail 仅授权您的 Google 帐户使用 Gmail，而不授权使用 Google 日历。要授予日历访问权限，请点击 **Google 日历** 行右侧的 **更新权限**。
 2. 在对话框中，单击“**重新授权**”。
 3. 选择您的帐户并单击**继续**。
 4. 检查权限并单击“**允许**”。
@@ -68,7 +68,7 @@ Fleet 为您管理 AI 模型，因此您不需要自己的模型提供商 API �
 
 > [!注意]
 >
-> 您的代理仅在执行您指定的任务时访问您的帐户。您可以随时在 [agent sidebar](/langsmith/fleet/essentials#agent-sidebar) 或您的 Google 帐户设置中撤销访问权限。
+> 您的代理仅在执行您指定的任务时访问您的帐户。您可以随时在 [agent sidebar](/langsmith/fleet/essentials#agent-sidebar) 或 Google 帐户设置中撤销访问权限。
 
 ## 3. 配置您的代理
 
@@ -127,19 +127,19 @@ Fleet 为您管理 AI 模型，因此您不需要自己的模型提供商 API �
 
 现在您已经创建了第一个代理，下面是要探索的内容：
 
-> **[Try more templates](/langsmith/fleet/templates)**
+> [卡][Try more templates](/langsmith/fleet/templates)
 >
 > 探索常见任务的预构建代理
 
-> **[Add automation](/langsmith/fleet/essentials#channels)**
+> [卡][Add automation](/langsmith/fleet/essentials#channels)
 >
 > 通过渠道（Slack、电子邮件、时间表）自动运行您的代理
 
-> **[Connect more tools](/langsmith/fleet/tools)**
+> [卡][Connect more tools](/langsmith/fleet/tools)
 >
 > 添加 Slack、GitHub、Linear 等
 
-> **[Build complex agents](/langsmith/fleet/essentials#sub-agents)**
+> [卡][Build complex agents](/langsmith/fleet/essentials#sub-agents)
 >
 > 使用子代理来分解大任务
 

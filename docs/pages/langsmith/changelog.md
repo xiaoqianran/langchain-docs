@@ -134,7 +134,7 @@ Weekly updates to [LangSmith Cloud](/langsmith/observability). For LangSmith Fle
 
 ## Fixes and improvements
 
-> **Show all fixes**
+> [accordion] Show all fixes
 >
 > * Percentage error alerts that filter on an error message now report the correct error rate instead of 100%, and the alert preview divides matching errors by all runs in the same population.
 > * Experiment comparison computed columns that show a single output field, such as `outputs.response`, now display a preview with an **Expand** button instead of the "too large to render" error when full outputs are not yet loaded.
@@ -266,7 +266,7 @@ Weekly updates to [LangSmith Cloud](/langsmith/observability). For LangSmith Fle
 
 ## Fixes and improvements
 
-> **Show all fixes**
+> [accordion] Show all fixes
 >
 > * Tool results from Anthropic models now appear under their matching tool calls in traces instead of as User messages, so each result shows beside the call that produced it.
 > * Runs started or resumed through HTTP event-streaming commands are no longer blocked from being created by a malformed `langsmith-metadata` baggage value.
@@ -398,7 +398,7 @@ Weekly updates to [LangSmith Cloud](/langsmith/observability). For LangSmith Fle
 
 ## Fixes and improvements
 
-> **Show all fixes**
+> [accordion] Show all fixes
 >
 > * Fixed an issue where runs could be missing from SmithDB when a trace was upgraded (for example, after feedback was added) before the run's initial data finished writing. Runs now appear in SmithDB, and pending run updates are no longer left with an empty end time.
 > * Fixed a crash in the run detail view and peek pane when a run's message list became shorter while the page was open; the view now renders the remaining messages instead of failing.

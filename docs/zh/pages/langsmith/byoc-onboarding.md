@@ -6,11 +6,11 @@
 
 设置 LangSmith BYOC 数据平面，从在组织上启用 BYOC 到创建工作区和私密连接。
 
-Before you start, review the [prerequisites](/langsmith/byoc#prerequisites).
+在开始之前，请先查看[prerequisites](/langsmith/byoc#prerequisites)。
 
 默认情况下，LangChain 为您的数据平面创建 VPC。要自行创建和管理网络，请在创建下面的 IAM 角色和数据平面之前遵循[Bring your own VPC on AWS](/langsmith/byoc-byovpc)。
 
-**1. Enable BYOC on your organization**
+**1.在您的组织上启用 BYOC**
 
 在 AWS 上的 [aws.smith.langchain.com](https://aws.smith.langchain.com) 的 LangSmith 中创建一个组织，或重复使用现有组织。
 
@@ -62,9 +62,9 @@ LangChain 代表您配置基础设施。数据平面从`Requested`移动到`Prov
 >
 > 创建工作区时请仔细选择正确的数据平面。工作空间创建后无法移动到另一个数据平面。
 
-**7. （可选）迁移现有数据**
+**7. （可选）迁移现有数据**如果您从现有的LangSmith云或[self-hosted](/langsmith/self-hosted)实例迁移，则可以复制用户、角色、数据集、提示、实验、注释队列配置、自动化规则、仪表板和队列资源。 AWS 支持跟踪迁移。联系LangChain团队安排。
 
-如果您从现有的LangSmith云或[self-hosted](/langsmith/self-hosted)实例迁移，则可以复制用户、角色、数据集、提示、实验、注释队列配置、自动化规则、仪表板和队列资源。今天无法迁移痕迹。For more information, see [Migrate to BYOC](/langsmith/byoc-migration).
+欲了解更多信息，请参阅[Migrate to BYOC](/langsmith/byoc-migration)。
 
 ## 后续步骤
 
@@ -75,4 +75,4 @@ LangChain 代表您配置基础设施。数据平面从`Requested`移动到`Prov
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-onboarding.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-onboarding.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

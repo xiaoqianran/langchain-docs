@@ -6,33 +6,33 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 
 ## Setup
 
-> **Which clouds and regions can I deploy to?**
+> [accordion] Which clouds and regions can I deploy to?
 >
 > BYOC is generally available (GA) on AWS with a US control plane. Support for additional cloud providers is planned for the second half of 2026. See [Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers) for the supported AWS regions.
 
-> **Do I need a dedicated AWS account?**
+> [accordion] Do I need a dedicated AWS account?
 >
 > No. LangChain recommends a fresh account for clearer billing, and because some permissions cannot be scoped to specific resources, but it is not required.
 
-> **Can I install BYOC into an existing VPC?**
+> [accordion] Can I install BYOC into an existing VPC?
 >
 > Yes. With [Bring your own VPC (BYOVPC)](/langsmith/byoc-byovpc), you supply a VPC and subnets. You can create the VPC with the [reference Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byovpc) or use an existing VPC that meets the network requirements.
 >
 > To remove VPC creation permissions from the customer role, set `allow_vpc_creation_permissions = false` in the [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) and include your VPC ID in `vpc_ids`.
 
-> **Can I deploy multiple data planes in the same VPC?**
+> [accordion] Can I deploy multiple data planes in the same VPC?
 >
 > Yes. Deploying multiple data planes in the same VPC requires [Bring your own VPC (BYOVPC)](/langsmith/byoc-byovpc). Each data plane must use different subnets. Do not share subnets between data planes.
 
-> **Can I move an existing data plane into my own VPC?**
+> [accordion] Can I move an existing data plane into my own VPC?
 >
 > No. Moving an existing data plane to a different VPC is not supported, nor is changing its VPC and subnet configuration after creation.
 
-> **Can I install BYOC into an existing EKS cluster?**
+> [accordion] Can I install BYOC into an existing EKS cluster?
 >
 > No, and there are no plans to support it. LangChain operates the cluster on your behalf, including upgrades and patching, and a dedicated cluster is what makes managing it reliably possible.
 
-> **Can I run my own workloads in the LangSmith VPC or cluster?**
+> [accordion] Can I run my own workloads in the LangSmith VPC or cluster?
 >
 > Yes, as long as they do not interfere with the functioning of LangSmith.
 >
@@ -46,15 +46,15 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 >
 > LangChain is not responsible for downtime or issues caused by interfering workloads.
 
-> **What value do I set to the external ID for my role?**
+> [accordion] What value do I set to the external ID for my role?
 >
 > LangChain provides the external ID. Navigate to **Settings > Data Planes** and use the copy button next to the **Data Planes** header to copy it. Use this value when applying the `langsmith-byoc-role` Terraform module. The role's trust policy must use this value in its `ExternalId` condition.
 
-> **How long does provisioning take?**
+> [accordion] How long does provisioning take?
 >
 > End-to-end provisioning of a data plane takes around 60 to 90 minutes. Provisioning time can vary, because AWS resource provisioning is inconsistent.
 
-> **What happens if provisioning fails?**
+> [accordion] What happens if provisioning fails?
 >
 > The data plane transitions to `Provisioning Failed`. Failures are usually caused by missing permissions on the cross-account role, or by a service control policy (SCP) that blocks an action LangChain needs to take.
 >
@@ -62,25 +62,25 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 >
 > Contact the LangChain team. Once the permissions are corrected, provisioning reconciles automatically.
 
-> **What VPC CIDR range should I use?**
+> [accordion] What VPC CIDR range should I use?
 >
 > A private RFC 1918 range between `/18` and `/16`. If you plan to use VPC peering, select a range that does not overlap with the VPC you intend to peer with. The CIDR range cannot be changed after provisioning.
 
-> **How do I reach a data plane with a private endpoint?**
+> [accordion] How do I reach a data plane with a private endpoint?
 >
 > Data planes are provisioned with a private endpoint by default, so you need private connectivity such as Tailscale, AWS PrivateLink, or VPC peering.
 
-> **Are my service endpoints exposed to the internet?**
+> [accordion] Are my service endpoints exposed to the internet?
 >
 > No. Services sit behind a private load balancer by default, reachable only from inside your VPC or through the private connectivity you configure.
 >
 > Data plane endpoints can be made public at provisioning time. See [Onboarding](/langsmith/byoc-onboarding).
 
-> **Can I use my own DNS domain?**
+> [accordion] Can I use my own DNS domain?
 >
 > No. Data planes are provisioned under the standard LangChain BYOC domain. Find your data plane API URL under **Settings > Data Planes**.
 
-> **How do I decommission a data plane?**
+> [accordion] How do I decommission a data plane?
 >
 > Re-apply the [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) with `allow_delete_permissions = true`, which grants the permissions needed to delete LangSmith-managed resources.
 >
@@ -88,49 +88,49 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 
 ## Data and security
 
-> **Does sensitive data ever leave my VPC?**
+> [accordion] Does sensitive data ever leave my VPC?
 >
 > No. When a user opens `aws.smith.langchain.com`, the browser fetches the LangSmith UI bundle from LangChain's cloud. Once loaded, the application routes every request for sensitive data to your VPC.
 >
 > See [Data traffic](/langsmith/byoc-architecture#data-traffic).
 
-> **What can the LangChain team do in my account?**
+> [accordion] What can the LangChain team do in my account?
 >
 > LangChain can manage the infrastructure of the resources LangSmith created, and nothing else. Permissions are scoped by the `managed_by=langsmith` tag, so the role cannot act on unrelated resources in your account.
 >
 > The role holds no permissions that grant data access. See [How least privilege is enforced](/langsmith/byoc-architecture#how-least-privilege-is-enforced).
 
-> **Can LangChain read my traces or database contents?**
+> [accordion] Can LangChain read my traces or database contents?
 >
 > No. The cross-account role is infrastructure-scoped rather than data-scoped. It can manage the resources that hold your data, but holds no `s3:GetObject` on the trace bucket, no `rds-db:connect` to PostgreSQL, and no `elasticache:Connect` to Redis.
 >
 > Access to the data itself requires you to explicitly grant it, such as during an incident. See [How least privilege is enforced](/langsmith/byoc-architecture#how-least-privilege-is-enforced).
 
-> **What access do LangChain employees have to my environment and data?**
+> [accordion] What access do LangChain employees have to my environment and data?
 >
 > There is no standing data access. If an incident requires access to your data, LangChain either asks you to run the queries yourself, or requests break-glass access.
 
-> **Does LangSmith support customer-managed encryption keys?**
+> [accordion] Does LangSmith support customer-managed encryption keys?
 >
 > Yes. Customer-managed encryption keys (CMK) are supported for AWS BYOC deployments on request. Contact the LangChain team to coordinate setup. By default, data is encrypted at rest with cloud provider-managed keys.
 
-> **How do I revoke LangChain's access?**
+> [accordion] How do I revoke LangChain's access?
 >
 > You create and own the cross-account role in your own account, so you can revoke access without involving LangChain. Removing the role, or its trust relationship with the LangChain account, stops the control plane from assuming it, and stops reconciliation of data plane resources.
 
-> **Can I revoke individual permissions granted during provisioning?**
+> [accordion] Can I revoke individual permissions granted during provisioning?
 >
 > Yes, but the role needs its permissions for continuous reconciliation of the data plane, and to manage, upgrade, and scale it. Removing them can break those operations.
 >
 > If you need to remove specific permissions, contact the LangChain team first so the change can be reviewed. LangChain is not responsible for downtime or issues caused by permissions removed without that review.
 
-> **What does LangChain hold in the control plane?**
+> [accordion] What does LangChain hold in the control plane?
 >
 > Authentication, organization and workspace configuration, billing and usage metadata, hashed API keys, and the static frontend assets.
 >
 > Traces, prompts, datasets, evaluators, experiments, insights runs, annotation queues, agent deployments, and workspace secrets all live in your data plane.
 
-> **What data leaves my account?**
+> [accordion] What data leaves my account?
 >
 > Only operational data, and it travels over PrivateLink rather than the public internet:
 >
@@ -141,7 +141,7 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 >
 > Sensitive data such as traces does not leave your account. It goes only from the data plane to the end user requesting it. See [Data traffic](/langsmith/byoc-architecture#data-traffic).
 
-> **Does traffic go over the public internet?**
+> [accordion] Does traffic go over the public internet?
 >
 > No.
 >
@@ -151,7 +151,7 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 >
 > See [Connectivity](/langsmith/byoc-architecture#connectivity).
 
-> **Can I restrict outbound network traffic from the data plane?**
+> [accordion] Can I restrict outbound network traffic from the data plane?
 >
 > Yes.
 >
@@ -164,79 +164,79 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 >
 > With BYOVPC, you manage your own firewall and egress controls. Your network must continue to meet the [BYOVPC network requirements](/langsmith/byoc-byovpc#meet-the-network-requirements).
 
-> **Can I use my own private registry?**
+> [accordion] Can I use my own private registry?
 >
 > Not today. Container images are pulled from the LangChain AWS account over a VPC endpoint. Support for private registries is on the roadmap.
 
-> **How does the control plane reach my Kubernetes API server?**
+> [accordion] How does the control plane reach my Kubernetes API server?
 >
 > Over AWS PrivateLink. The management path exposes only your cluster's Kubernetes API server, which LangChain uses to install and reconcile the LangSmith components.
 >
 > The EKS cluster is private: the API server endpoint has no public access, and worker nodes have no public IP addresses. Your data is not reachable over that connection, and LangChain does not reach your environment over the public internet. See [Connectivity](/langsmith/byoc-architecture#connectivity).
 
-> **Where does the control plane run if my data plane is outside the US?**
+> [accordion] Where does the control plane run if my data plane is outside the US?
 >
 > The control plane runs in `us-east-2` regardless of where you place your data planes. If you provision a data plane outside the US, your sensitive application data stays in that region while control plane metadata remains in the US. See [Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers).
 
 ## Data planes and workspaces
 
-> **How do organizations, data planes, and workspaces relate?**
+> [accordion] How do organizations, data planes, and workspaces relate?
 >
 > Data planes belong to an organization, and workspaces belong to exactly one data plane. Use data planes for physical separation of data, and workspaces for logical separation within a data plane. See [Organizations, data planes, and workspaces](/langsmith/byoc-usage#organizations-data-planes-and-workspaces).
 
-> **Can I run more than one data plane?**
+> [accordion] Can I run more than one data plane?
 >
 > Yes. An organization can have several data planes, each in its own AWS account and region.
 >
 > The default limit is five data planes per organization. To deploy more than that, contact the LangChain team.
 
-> **Can one organization hold both Cloud and BYOC workspaces?**
+> [accordion] Can one organization hold both Cloud and BYOC workspaces?
 >
 > Yes. A workspace on LangSmith Cloud routes to the LangChain-managed backend rather than to a data plane, so both can coexist in the same organization. This also means you can move from an AWS Cloud trial to BYOC while reusing the same organization, users, roles, and SSO configuration.
 
 ## Operations
 
-> **Who is responsible for what in a BYOC deployment?**
+> [accordion] Who is responsible for what in a BYOC deployment?
 >
 > LangChain runs the control plane and manages the data plane infrastructure through delegated, least privilege access. You own the AWS account, network connectivity, the data in the data plane, and security monitoring inside your account.
 >
 > For the full division across platform and infrastructure, data and security, and operations and support, see the [BYOC shared responsibility model](/langsmith/byoc-shared-responsibility).
 
-> **Who upgrades LangSmith, and how often?**
+> [accordion] Who upgrades LangSmith, and how often?
 >
 > LangChain upgrades the LangSmith version in your data plane once a week. Upgrades are rolling, so there is no whole-service downtime. Supporting services such as Istio and KEDA are upgraded on a regular cadence, and LangChain manages all EKS cluster upgrades.
 >
 > Support for release channels is coming soon. See [Operations](/langsmith/byoc-operations).
 
-> **What about Kubernetes upgrades?**
+> [accordion] What about Kubernetes upgrades?
 >
 > LangChain owns and performs EKS upgrades proactively, ahead of AWS end-of-support dates, and coordinates the window with you.
 >
 > Control plane upgrades are transparent. Node group upgrades roll nodes one by one with make-before-break semantics, so you might see brief connection resets as pods restart, but no data loss. See [Kubernetes cluster upgrades](/langsmith/byoc-operations#kubernetes-cluster-upgrades).
 
-> **Do upgrades cause downtime?**
+> [accordion] Do upgrades cause downtime?
 >
 > No. Services run multiple replicas sized by a horizontal pod autoscaler, and pod disruption budgets cap how many replicas can be unavailable at once, so neither a rolling update nor a node drain takes a service below the capacity it needs.
 >
 > Maintenance that could cause downtime, such as a restart of RDS or ElastiCache, happens in a scheduled maintenance window that LangChain coordinates with you in advance.
 
-> **Who monitors the data plane?**
+> [accordion] Who monitors the data plane?
 >
 > LangChain operates the data plane after provisioning, including monitoring for uptime and error recovery, scaling, upgrades, and security patching. Because the deployment runs in your own account, the cloud controls you already operate apply to it as well.
 
-> **Can I set up my own observability for LangSmith BYOC?**
+> [accordion] Can I set up my own observability for LangSmith BYOC?
 >
 > Yes. You can install observability tooling such as collectors and agents into the EKS cluster, as long as it does not interfere with the operation of LangSmith.
 >
 > LangSmith services emit logs, metrics, and traces the same way they do on self-hosted, so the same configuration applies. See [Export LangSmith telemetry to your observability backend](/langsmith/export-backend).
 
-> **How are high availability and disaster recovery handled?**
+> [accordion] How are high availability and disaster recovery handled?
 >
 > Data planes are provisioned for high availability by default, running across multiple availability zones within a single region. All stateful components are backed up.
 >
 > A data plane does not span regions, so recovery from the loss of an entire region relies on those backups. See [High availability](/langsmith/byoc-operations#high-availability).
 
-> **How are backups handled?**
+> [accordion] How are backups handled?
 >
 > Backups run in your own account:
 >
@@ -245,7 +245,7 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 > * **ClickHouse**: On data planes that still run it, backups are taken daily and stored in an S3 bucket.
 > * **ElastiCache**: No backups are taken, because the data is ephemeral.
 
-> **Does LangChain offer an uptime SLA for BYOC data planes?**
+> [accordion] Does LangChain offer an uptime SLA for BYOC data planes?
 >
 > No. The data plane runs in your AWS account, so its availability depends on resources you control, including the account itself, the private connectivity you configure to reach the data plane, and the service quotas and policies that apply to the account. LangChain does not commit to an uptime target for infrastructure it does not solely control.
 >
@@ -253,7 +253,7 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 
 ## Cost
 
-> **What do I pay for with BYOC?**
+> [accordion] What do I pay for with BYOC?
 >
 > Two separate bills:
 >
@@ -264,11 +264,11 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 
 ## Features and migration
 
-> **Which LangSmith features work on BYOC?**
+> [accordion] Which LangSmith features work on BYOC?
 >
 > See [Available features](/langsmith/byoc#available-features) for the current list of supported features.
 
-> **Can I migrate an existing LangSmith instance to BYOC?**
+> [accordion] Can I migrate an existing LangSmith instance to BYOC?
 >
 > Yes. Users, roles, datasets, experiments, prompts, annotation queue configuration, automation rules, dashboards, and Fleet resources can be copied over. Trace migration is supported on AWS. Contact the LangChain team to arrange it. See [Migrate to BYOC](/langsmith/byoc-migration).
 

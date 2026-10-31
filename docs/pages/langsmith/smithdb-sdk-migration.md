@@ -45,27 +45,27 @@ The [LangSmith CLI](/langsmith/langsmith-cli) queries the same SmithDB-backed en
 
 The before and after change for each method is documented on the page for its area.
 
-> **[Query runs](/langsmith/smithdb-sdk-migration-query-runs)**
+> [card] [Query runs](/langsmith/smithdb-sdk-migration-query-runs)
 >
 > Search the runs in a project: filters, field projection, sorting, and pagination. The largest surface area in the migration.
 
-> **[Retrieve runs](/langsmith/smithdb-sdk-migration-runs)**
+> [card] [Retrieve runs](/langsmith/smithdb-sdk-migration-runs)
 >
 > Fetch one run by ID, load its child runs, and build the URL of a run in the LangSmith UI.
 
-> **[Traces](/langsmith/smithdb-sdk-migration-traces)**
+> [card] [Traces](/langsmith/smithdb-sdk-migration-traces)
 >
 > Query the traces in a project, read their token and cost aggregates, and list the runs that belong to one trace.
 
-> **[Threads](/langsmith/smithdb-sdk-migration-threads)**
+> [card] [Threads](/langsmith/smithdb-sdk-migration-threads)
 >
 > Query the threads in a project and list the traces (turns) that belong to one thread.
 
-> **[Dataset experiment runs](/langsmith/smithdb-sdk-migration-experiments)**
+> [card] [Dataset experiment runs](/langsmith/smithdb-sdk-migration-experiments)
 >
 > Query the runs recorded by an experiment on a dataset, including pagination and sorting by feedback score.
 
-> **[Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback)**
+> [card] [Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback)
 >
 > Create feedback on a run, add runs to an annotation queue, and share, unshare, or read publicly shared runs.
 
@@ -125,60 +125,60 @@ than guessing.
 
 ## Exceptions
 
-**Python**
+> [tab] Python
+>
+> The SmithDB-backed methods raise new exception classes instead of the legacy `langsmith.utils` exception classes.
+>
+> | Before (`langsmith.utils`) | After (`langsmith`) | Notes |
+> | - | - | - |
+> | `LangSmithError` | `LangsmithError` | Base exception class for the SDK; casing changed |
+> | `LangSmithAPIError` | `InternalServerError` | 5xx |
+> | `LangSmithRequestTimeout` | `APITimeoutError` | Raised when a request times out |
+> | `LangSmithUserError` | *(removed)* | No direct equivalent. The 403 org-scoped-key case now raises `PermissionDeniedError`; client-side argument validation now raises a standard `ValueError` or `TypeError` |
+> | `LangSmithRateLimitError` | `RateLimitError` | 429; unchanged name |
+> | `LangSmithAuthError` | `AuthenticationError` | 401 |
+> | `LangSmithNotFoundError` | `NotFoundError` | 404; unchanged name |
+> | `LangSmithConflictError` | `ConflictError` | 409; unchanged name |
+> | `LangSmithConnectionError` | `APIConnectionError` | Raised when the client cannot connect to the API |
+> | `LangSmithExceptionGroup` | *(removed)* | No equivalent |
+> | *(not available)* | `APIError` | New: base class for all API-related errors, with `message`, `request`, and `body` attributes |
+> | *(not available)* | `APIStatusError` | New: base class for all 4xx/5xx status errors |
+> | *(not available)* | `BadRequestError` | New: 400 |
+> | *(not available)* | `PermissionDeniedError` | New: 403 |
+> | *(not available)* | `UnprocessableEntityError` | New: 422 |
+> | *(not available)* | `APIResponseValidationError` | New: raised when a response does not match the expected schema |
 
-The SmithDB-backed methods raise new exception classes instead of the legacy `langsmith.utils` exception classes.
+> [tab] TypeScript
+>
+> The SmithDB-backed methods raise new exception classes instead of plain `Error`.
+>
+> | Before (plain `Error`) | After (`langsmith`) | Notes |
+> | - | - | - |
+> | *(not available)* | `LangsmithError` | base class for all SDK errors |
+> | *(not available)* | `InternalServerError` | 5xx |
+> | *(not available)* | `APIConnectionTimeoutError` | Raised when a request times out |
+> | *(not available)* | `RateLimitError` | 429 |
+> | *(not available)* | `AuthenticationError` | 401 |
+> | *(not available)* | `NotFoundError` | 404 |
+> | *(not available)* | `ConflictError` | 409 |
+> | *(not available)* | `APIConnectionError` | Raised when the client cannot connect to the API |
+> | *(not available)* | `APIError` | base class for all API-related errors, with `status`, `headers`, and `error` properties |
+> | *(not available)* | `BadRequestError` | 400 |
+> | *(not available)* | `PermissionDeniedError` | 403 |
+> | *(not available)* | `UnprocessableEntityError` | 422 |
+> | *(not available)* | `APIUserAbortError` | Raised when a request is aborted via an `AbortController` |
 
-| Before (`langsmith.utils`) | After (`langsmith`) | Notes |
-| - | - | - |
-| `LangSmithError` | `LangsmithError` | Base exception class for the SDK; casing changed |
-| `LangSmithAPIError` | `InternalServerError` | 5xx |
-| `LangSmithRequestTimeout` | `APITimeoutError` | Raised when a request times out |
-| `LangSmithUserError` | *(removed)* | No direct equivalent. The 403 org-scoped-key case now raises `PermissionDeniedError`; client-side argument validation now raises a standard `ValueError` or `TypeError` |
-| `LangSmithRateLimitError` | `RateLimitError` | 429; unchanged name |
-| `LangSmithAuthError` | `AuthenticationError` | 401 |
-| `LangSmithNotFoundError` | `NotFoundError` | 404; unchanged name |
-| `LangSmithConflictError` | `ConflictError` | 409; unchanged name |
-| `LangSmithConnectionError` | `APIConnectionError` | Raised when the client cannot connect to the API |
-| `LangSmithExceptionGroup` | *(removed)* | No equivalent |
-| *(not available)* | `APIError` | New: base class for all API-related errors, with `message`, `request`, and `body` attributes |
-| *(not available)* | `APIStatusError` | New: base class for all 4xx/5xx status errors |
-| *(not available)* | `BadRequestError` | New: 400 |
-| *(not available)* | `PermissionDeniedError` | New: 403 |
-| *(not available)* | `UnprocessableEntityError` | New: 422 |
-| *(not available)* | `APIResponseValidationError` | New: raised when a response does not match the expected schema |
+> [tab] Java
+>
+> No change. Error handling is unaffected by this migration.
 
-**TypeScript**
+> [tab] Go
+>
+> No change. Error handling is unaffected by this migration.
 
-The SmithDB-backed methods raise new exception classes instead of plain `Error`.
-
-| Before (plain `Error`) | After (`langsmith`) | Notes |
-| - | - | - |
-| *(not available)* | `LangsmithError` | base class for all SDK errors |
-| *(not available)* | `InternalServerError` | 5xx |
-| *(not available)* | `APIConnectionTimeoutError` | Raised when a request times out |
-| *(not available)* | `RateLimitError` | 429 |
-| *(not available)* | `AuthenticationError` | 401 |
-| *(not available)* | `NotFoundError` | 404 |
-| *(not available)* | `ConflictError` | 409 |
-| *(not available)* | `APIConnectionError` | Raised when the client cannot connect to the API |
-| *(not available)* | `APIError` | base class for all API-related errors, with `status`, `headers`, and `error` properties |
-| *(not available)* | `BadRequestError` | 400 |
-| *(not available)* | `PermissionDeniedError` | 403 |
-| *(not available)* | `UnprocessableEntityError` | 422 |
-| *(not available)* | `APIUserAbortError` | Raised when a request is aborted via an `AbortController` |
-
-**Java**
-
-No change. Error handling is unaffected by this migration.
-
-**Go**
-
-No change. Error handling is unaffected by this migration.
-
-**cURL**
-
-No change. Error handling is unaffected by this migration.
+> [tab] cURL
+>
+> No change. Error handling is unaffected by this migration.
 
 ## Discontinued
 

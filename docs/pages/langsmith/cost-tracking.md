@@ -543,7 +543,7 @@ To compute cost automatically from token usage, you need to provide **token coun
 
    In either case, the usage metadata should contain a subset of the following LangSmith-recognized fields:
 
-   > **Usage Metadata Schema and Cost Calculation**
+   > [accordion] Usage Metadata Schema and Cost Calculation
    >
    > The following fields in the `usage_metadata` dict are recognized by LangSmith. You can view the full [Python types](https://github.com/langchain-ai/langsmith-sdk/blob/e705fbd362be69dd70229f94bc09651ef8056a61/python/langsmith/schemas.py#L1196-L1227) or [TypeScript interfaces](https://github.com/langchain-ai/langsmith-sdk/blob/e705fbd362be69dd70229f94bc09651ef8056a61/js/src/schemas.ts#L637-L689) directly.
    >

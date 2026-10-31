@@ -279,7 +279,7 @@ for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlig
 final_state = stream.output  # [!code highlight]
 ```
 
-> **[View example trace](https://smith.langchain.com/public/5f413842-6959-4a62-9749-85feaf0a3ef2/r)**
+> [card] [View example trace](https://smith.langchain.com/public/5f413842-6959-4a62-9749-85feaf0a3ef2/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -571,7 +571,7 @@ for message in stream.messages:
         print(token, end="", flush=True)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/d4a81b30-29d3-41f5-9258-d82a76847e4b/r)**
+> [card] [View example trace](https://smith.langchain.com/public/d4a81b30-29d3-41f5-9258-d82a76847e4b/r)
 >
 > Open a public LangSmith run for this example.
 

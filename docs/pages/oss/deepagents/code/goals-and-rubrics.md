@@ -31,7 +31,7 @@ Deep Agents Code drafts acceptance criteria for review before starting the task.
 
 How draft criteria are handled depends on your [approval mode](/oss/deepagents/code/approval-modes):
 
-> **Review behavior by approval mode**
+> [accordion] Review behavior by approval mode
 >
 > * **Manual**: Always opens the inline review.
 > * **Auto**: Opens the review by default. Set `goals.auto_accept_criteria = true` in `~/.deepagents/config.toml` to apply generated criteria automatically.
@@ -69,7 +69,7 @@ Each follow-up turn is graded against the goal's acceptance criteria until the w
 
 * When a goal's completion is approved, Deep Agents Code clears the goal
 
-> **Goal command reference**
+> [accordion] Goal command reference
 >
 > * `/goal <objective>`: Draft acceptance criteria from a plain-language objective and review them before work begins.
 > * `/goal amend <feedback>`: Propose coordinated updates to the objective and criteria for review.
@@ -92,13 +92,13 @@ Use `/rubric` when you already know the acceptance criteria and want them to act
 
 A sticky rubric applies to future turns until cleared. A next-turn rubric applies only to the next submitted task.
 
-> **Rubric command reference**
+> [accordion] Rubric command reference
 >
 > * `/rubric show`: Inspect the active rubric.
 > * `/rubric clear`: Remove the active rubric.
 > * `/rubric model <provider:model>`: Set the model that grades rubric results.
 
-> **Use rubrics in non-interactive mode**
+> [accordion] Use rubrics in non-interactive mode
 >
 > Non-interactive runs cannot pause for goal review. Use `--rubric` for tasks where criteria are already known:
 >

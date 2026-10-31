@@ -133,19 +133,19 @@ You may want to update your agent's instructions or include more tools. You can 
 
 Now that you have created your first agent, here is what to explore:
 
-> **[Try more templates](/langsmith/fleet/templates)**
+> [card] [Try more templates](/langsmith/fleet/templates)
 >
 > Explore prebuilt agents for common tasks
 
-> **[Add automation](/langsmith/fleet/essentials#channels)**
+> [card] [Add automation](/langsmith/fleet/essentials#channels)
 >
 > Run your agent automatically with channels (Slack, email, schedules)
 
-> **[Connect more tools](/langsmith/fleet/tools)**
+> [card] [Connect more tools](/langsmith/fleet/tools)
 >
 > Add Slack, GitHub, Linear, and more
 
-> **[Build complex agents](/langsmith/fleet/essentials#sub-agents)**
+> [card] [Build complex agents](/langsmith/fleet/essentials#sub-agents)
 >
 > Use sub-agents to break down big tasks
 

@@ -115,63 +115,63 @@ uv sync
 
 ## Step 2: Set up your API keys
 
-**Google**
+> [tab] Google
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export GOOGLE_API_KEY="your-api-key"
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export GOOGLE_API_KEY="your-api-key"
-```
+> [tab] OpenAI
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export OPENAI_API_KEY="your-api-key"
+> ```
 
-**OpenAI**
+> [tab] Anthropic
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export ANTHROPIC_API_KEY="your-api-key"
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export OPENAI_API_KEY="your-api-key"
-```
+> [tab] OpenRouter
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export OPENROUTER_API_KEY="your-api-key"
+> export TAVILY_API_KEY="your-tavily-api-key"
+> ```
 
-**Anthropic**
+> [tab] Fireworks
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export FIREWORKS_API_KEY="your-api-key"
+> export TAVILY_API_KEY="your-tavily-api-key"
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export ANTHROPIC_API_KEY="your-api-key"
-```
+> [tab] Baseten
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export BASETEN_API_KEY="your-api-key"
+> export TAVILY_API_KEY="your-tavily-api-key"
+> ```
 
-**OpenRouter**
+> [tab] Ollama
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Local: Ollama must be running on your machine
+> # Cloud: Set your Ollama API key for hosted inference
+> export OLLAMA_API_KEY="your-api-key"
+> export TAVILY_API_KEY="your-tavily-api-key"
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export OPENROUTER_API_KEY="your-api-key"
-export TAVILY_API_KEY="your-tavily-api-key"
-```
-
-**Fireworks**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export FIREWORKS_API_KEY="your-api-key"
-export TAVILY_API_KEY="your-tavily-api-key"
-```
-
-**Baseten**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export BASETEN_API_KEY="your-api-key"
-export TAVILY_API_KEY="your-tavily-api-key"
-```
-
-**Ollama**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Local: Ollama must be running on your machine
-# Cloud: Set your Ollama API key for hosted inference
-export OLLAMA_API_KEY="your-api-key"
-export TAVILY_API_KEY="your-tavily-api-key"
-```
-
-**Other**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Set the API key for your provider
-export <PROVIDER>_API_KEY="your-api-key"
-export TAVILY_API_KEY="your-tavily-api-key"
-```
-
-Deep Agents work with any [LangChain chat model](/oss/python/deepagents/models#supported-models). Set the API key for your provider.
+> [tab] Other
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Set the API key for your provider
+> export <PROVIDER>_API_KEY="your-api-key"
+> export TAVILY_API_KEY="your-tavily-api-key"
+> ```
+>
+> Deep Agents work with any [LangChain chat model](/oss/python/deepagents/models#supported-models). Set the API key for your provider.
 
 > [!TIP]
 >
@@ -181,55 +181,55 @@ Deep Agents work with any [LangChain chat model](/oss/python/deepagents/models#s
 
 Google, OpenAI, and Anthropic offer built-in web search tools that run server-side: no extra package or API key needed. Pass a provider tool dict directly to `create_deep_agent`.
 
-**Provider search (recommended)**
+> [tab] Provider search (recommended)
+>
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+>
+> # Google's built-in search — no extra install or API key needed
+> internet_search = {"google_search": {}}
+> ```
+>
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+>
+> # OpenAI's built-in web search — no extra install or API key needed
+> internet_search = {"type": "web_search"}
+> ```
+>
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+>
+> # Anthropic's built-in web search — no extra install or API key needed
+> internet_search = {"type": "web_search_20260209", "name": "web_search"}
+> ```
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-
-# Google's built-in search — no extra install or API key needed
-internet_search = {"google_search": {}}
-```
-
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-
-# OpenAI's built-in web search — no extra install or API key needed
-internet_search = {"type": "web_search"}
-```
-
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-
-# Anthropic's built-in web search — no extra install or API key needed
-internet_search = {"type": "web_search_20260209", "name": "web_search"}
-```
-
-**Tavily (any provider)**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from typing import Literal
-
-from tavily import TavilyClient
-from deepagents import create_deep_agent
-
-tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-def internet_search(
-    query: str,
-    max_results: int = 5,
-    topic: Literal["general", "news", "finance"] = "general",
-    include_raw_content: bool = False,
-):
-    """Run a web search"""
-    return tavily_client.search(
-        query,
-        max_results=max_results,
-        include_raw_content=include_raw_content,
-        topic=topic,
-    )
-```
+> [tab] Tavily (any provider)
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from typing import Literal
+>
+> from tavily import TavilyClient
+> from deepagents import create_deep_agent
+>
+> tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+>
+>
+> def internet_search(
+>     query: str,
+>     max_results: int = 5,
+>     topic: Literal["general", "news", "finance"] = "general",
+>     include_raw_content: bool = False,
+> ):
+>     """Run a web search"""
+>     return tavily_client.search(
+>         query,
+>         max_results=max_results,
+>         include_raw_content=include_raw_content,
+>         topic=topic,
+>     )
+> ```
 
 ## Step 4: Create a deep agent
 
@@ -365,7 +365,7 @@ agent = create_deep_agent(
 
 > [!NOTE]
 >
-> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
+> In an [agent-based workspace](/langsmith/agent-registry), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-quickstart) provides you with visibility into your agent's execution, allowing you to view tool calls, subagent delegation, and LLM responses.
 

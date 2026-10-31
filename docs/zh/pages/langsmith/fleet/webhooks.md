@@ -134,34 +134,34 @@ Webhook 负载是一个包含以下字段的 JSON 对象：
 
 `config.json`文件和`tools.json`文件的结构如下：
 
-**`config.json`**
+> [标签] `config.json`
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "name": "My Agent",
+>   "description": "Agent description",
+>   "visibility_scope": "tenant",
+>   "triggers_paused": false
+> }
+> ```
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "name": "My Agent",
-  "description": "Agent description",
-  "visibility_scope": "tenant",
-  "triggers_paused": false
-}
-```
-
-**`tools.json`**
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "tools": [
-    {
-      "name": "tavily_web_search",
-      "mcp_server_url": "http://localhost:8084",
-      "mcp_server_name": "Fleet",
-      "display_name": "tavily_web_search"
-    }
-  ],
-  "interrupt_config": {
-    "http://localhost:8084::tavily_web_search::Fleet": false
-  }
-}
-```
+> [标签] `tools.json`
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "tools": [
+>     {
+>       "name": "tavily_web_search",
+>       "mcp_server_url": "http://localhost:8084",
+>       "mcp_server_name": "Fleet",
+>       "display_name": "tavily_web_search"
+>     }
+>   ],
+>   "interrupt_config": {
+>     "http://localhost:8084::tavily_web_search::Fleet": false
+>   }
+> }
+> ```
 
 ### 自定义输入字段
 

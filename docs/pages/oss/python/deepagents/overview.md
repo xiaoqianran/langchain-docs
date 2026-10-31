@@ -10,11 +10,11 @@ Start with [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)
 
 ## Choose how to run Deep Agents
 
-> **[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)**
+> [card] [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)
 >
 > Build deep agents with managed deployment infrastructure for complex, long-running tasks. LangSmith runs the harness, Agent Server, sandboxes, and schedules.
 
-> **[Deep Agents SDK](#self-host-with-the-sdk)**
+> [card] [Deep Agents SDK](#self-host-with-the-sdk)
 >
 > The same deep agents harness with maximum flexibility. Host agents yourself, or run a custom LangSmith Deployment when you need more control over the runtime.
 
@@ -184,7 +184,7 @@ agent.invoke(
 )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/a31c828a-b3cb-421a-9bc1-6f9e262294d1/r)**
+> [card] [View example trace](https://smith.langchain.com/public/a31c828a-b3cb-421a-9bc1-6f9e262294d1/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -200,19 +200,19 @@ See the [Quickstart](/oss/python/deepagents/quickstart/) and [Customization guid
 
 Deep Agents is an ["agent harness"](/oss/python/concepts/products#agent-harnesses-like-the-deep-agents-sdk). It is the same core tool calling loop as other agent frameworks, but with built-in capabilities that make agents reliable for real tasks:
 
-> **[Execution environment](#execution-environment)**
+> [card] [Execution environment](#execution-environment)
 >
 > Tools, virtual filesystem, optional sandbox, and REPL (interpreter)
 
-> **[Context management](#context-management)**
+> [card] [Context management](#context-management)
 >
 > Skills, memory, summarization, context offloading, and prompt caching
 
-> **[Delegation](#delegation)**
+> [card] [Delegation](#delegation)
 >
 > Subagent spawning and optional task planning
 
-> **[Steering](#steering)**
+> [card] [Steering](#steering)
 >
 > Human-in-the-loop approval and interrupts
 
@@ -270,7 +270,7 @@ The backends support the following file system operations:
 >
 > The `delete` tool requires `deepagents>=0.7`. Backends that do not support deletion have the tool automatically hidden from the model.
 
-> **Supported multimodal file extensions**
+> [accordion] Supported multimodal file extensions
 >
 > | Type | Extensions |
 > | - | - |
@@ -279,7 +279,7 @@ The backends support the following file system operations:
 > | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac` |
 > | [File](/oss/python/langchain/messages#multimodal) | `.pdf`, `.ppt`, `.pptx` |
 
-> **Running without the default filesystem tools**
+> [accordion] Running without the default filesystem tools
 >
 > To hide the filesystem tools listed above from the model, register a [harness profile](/oss/python/deepagents/profiles#harness-profiles) with `excluded_tools`:
 >
@@ -298,7 +298,7 @@ The backends support the following file system operations:
 >
 > Removing [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) itself via `excluded_middleware` is intentionally rejected—it is required scaffolding in the [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack). Use `excluded_tools` to hide only the model-visible tool surface and leave the middleware in place. To remove the `task` tool, see [Running without subagents](/oss/python/deepagents/subagents#running-without-subagents).
 
-> **Restricting filesystem tools**
+> [accordion] Restricting filesystem tools
 >
 > > [!NOTE]
 > >
@@ -542,27 +542,27 @@ For more information, see [Human-in-the-loop](/oss/python/deepagents/human-in-th
 
 ## Get started
 
-> **[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)**
+> [card] [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)
 >
 > Build deep agents with managed deployment infrastructure
 
-> **[SDK quickstart](/oss/python/deepagents/quickstart)**
+> [card] [SDK quickstart](/oss/python/deepagents/quickstart)
 >
 > The same deep agents harness, self-hosted
 
-> **[Customization](/oss/python/deepagents/customization)**
+> [card] [Customization](/oss/python/deepagents/customization)
 >
 > Learn about SDK customization options
 
-> **[Code](/oss/deepagents/code/overview)**
+> [card] [Code](/oss/deepagents/code/overview)
 >
 > Use Deep Agents Code
 
-> **[ACP](/oss/python/deepagents/acp)**
+> [card] [ACP](/oss/python/deepagents/acp)
 >
 > Use deep agents in code editors with ACP
 
-> **[Reference](https://reference.langchain.com/python/deepagents/)**
+> [card] [Reference](https://reference.langchain.com/python/deepagents/)
 >
 > See the `deepagents` API reference
 

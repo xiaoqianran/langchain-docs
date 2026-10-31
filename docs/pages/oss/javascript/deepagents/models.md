@@ -138,7 +138,7 @@ const result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/4440a203-58dc-4f45-8a81-4e1733e91016/r)**
+> [card] [View example trace](https://smith.langchain.com/public/4440a203-58dc-4f45-8a81-4e1733e91016/r)
 >
 > Open a public LangSmith run for this example.
 

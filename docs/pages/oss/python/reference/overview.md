@@ -6,23 +6,23 @@ Comprehensive API reference documentation for the LangChain and LangGraph Python
 
 ## Reference sites
 
-> **[Deep Agents](https://reference.langchain.com/python/deepagents)**
+> [card] [Deep Agents](https://reference.langchain.com/python/deepagents)
 >
 > Build agents that can plan, use subagents, and leverage file systems for complex tasks.
 
-> **[LangChain](https://reference.langchain.com/python/langchain)**
+> [card] [LangChain](https://reference.langchain.com/python/langchain)
 >
 > Complete API reference for LangChain Python, including chat models, tools, agents, and more.
 
-> **[LangGraph](https://reference.langchain.com/python/langgraph)**
+> [card] [LangGraph](https://reference.langchain.com/python/langgraph)
 >
 > Complete API reference for LangGraph Python, including graph APIs, state management, checkpointing, and more.
 
-> **[LangChain Integrations](https://reference.langchain.com/python/integrations/overview)**
+> [card] [LangChain Integrations](https://reference.langchain.com/python/integrations/overview)
 >
 > LangChain packages to connect with popular LLM providers, vector stores, tools, and other services.
 
-> **[MCP Adapter](https://reference.langchain.com/python/langchain_mcp_adapters/)**
+> [card] [MCP Adapter](https://reference.langchain.com/python/langchain_mcp_adapters/)
 >
 > Use Model Context Protocol (MCP) tools within LangChain and LangGraph applications.
 

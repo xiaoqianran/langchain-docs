@@ -42,27 +42,28 @@ BYOC 在 AWS 上全面可用 (GA)。计划于 2026 年下半年支持更多云�
 * **[Insights](/langsmith/insights)**：自动分析表面使用模式、常见代理行为和故障模式的痕迹。
 * **[LangSmith Chat](/langsmith/chat)**：从工作区内部分析跟踪、线程、提示和评估。
 * **[Prompt engineering](/langsmith/prompt-context-hub#prompts)**：提示并提示提交。
-* **[LangSmith Deployment](/langsmith/deployment)**：LangSmith 部署控制平面在数据平面的集群内部运行，因此代理管理层和代理都在 VPC 中运行。
+* **[LangSmith Deployment](/langsmith/deployment)**：LangSmith 部署控制平面在您的数据平面集群内运行，因此代理管理层和您的代理都在您的 VPC 中运行。
 * **[Sandboxes](/langsmith/sandboxes)**：通过 CLI 和 SDK 的使用与云相同，只是您指向数据平面的端点。
 * **[LLM Gateway](/langsmith/llm-gateway)**：使用一个 LangSmith API 密钥跨提供商调用模型，并集中实施支出、速率限制和数据保护策略。
-* **[LangSmith MCP](/langsmith/langsmith-remote-mcp)**：将MCP兼容的客户端连接到LangSmith查询数据。
-* **[Fleet](/langsmith/fleet/index)**：从模板、连接器和通道构建并运行无代码代理。
-* **[SmithDB](/langsmith/smithdb-sdk-migration)**：专门构建的跟踪数据可观察性后端，持久保存到您帐户中的 S3。 2026 年 10 月 21 日或之后创建的数据平面仅运行 SmithDB。 ClickHouse 已弃用，支持在 LangSmith v0.19 结束。* **[Engine](/langsmith/engine)**：自动检测、诊断和解决生产跟踪中发现的重复出现的问题。在 BYOC 上，Engine 在您自己的模型提供程序上运行其模型，并且您可以在 LangSmith UI 中配置 GitHub 应用程序和 Slack 应用程序。参见[Engine on BYOC](/langsmith/engine-self-hosted#engine-on-byoc)。
-
-以下功能已计划但尚未支持：
-
-* **[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)**：LangChain托管的深度代理，具有连接器、通道和时间表。
 * **[LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted)**：对模型调用强制执行您自己的身份验证流程，以便提供程序凭据永远不会暴露给最终用户。
+* **[LangSmith MCP](/langsmith/langsmith-remote-mcp)**：将MCP兼容的客户端连接到LangSmith查询数据。
+* **[Fleet](/langsmith/fleet/index)**：从模板、连接器和通道构建并运行无代码代理。* **[SmithDB](/langsmith/smithdb-sdk-migration)**：专门构建的跟踪数据可观察性后端，持久保存到您帐户中的 S3。 2026 年 10 月 21 日或之后创建的数据平面仅运行 SmithDB。 ClickHouse 已弃用，支持在 LangSmith v0.19 结束。
+* **[Engine](/langsmith/engine)**：自动检测、诊断和解决生产跟踪中发现的重复出现的问题。在 BYOC 上，Engine 在您自己的模型提供程序上运行其模型，并且您可以在 LangSmith UI 中配置 GitHub 应用程序和 Slack 应用程序。参见[Engine on BYOC](/langsmith/engine-self-hosted#engine-on-byoc)。
+* **[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)**：使用连接器、通道和时间表构建和运行深度代理。
+
+> [!注意]
+>
+> 使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。要开始，请按照 [Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart) 操作。
 
 ## 先决条件
 
-在LangChain配置数据平面之前，您需要满足以下条件：
-
-* **AWS 上的 LangSmith 组织**：在 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建一个组织，然后将您的组织 ID 发送到 LangChain 团队以启用 BYOC。
+在LangChain配置数据平面之前，您需要满足以下条件：* **AWS 上的 LangSmith 组织**：在 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建一个组织，然后将您的组织 ID 发送到 LangChain 团队以启用 BYOC。
 * **AWS 账户**：LangChain 建议使用专用于 LangSmith BYOC 的新账户，但这不是必需的。
 * **受支持的区域**：选择上面列出的 AWS 区域之一。
 * **IAM 角色和外部 ID**：LangChain 提供外部 ID。使用 **设置 > 数据平面** 中 **数据平面** 标题旁边的按钮复制它，然后将 [⟦T17⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 与此值一起应用以创建角色 LangChain 假定配置和管理您的数据平面。您必须使用此模块。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

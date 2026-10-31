@@ -105,23 +105,23 @@ Do not use object-store subpaths in `sandboxes.juicefs.name`. Use a flat name, s
 
 Sandboxes need additional secret material for service-to-service authentication and callback signing.
 
-**Using Kubernetes secrets (recommended)**
+> [tab] Using Kubernetes secrets (recommended)
+>
+> If you use `config.existingSecretName`, add the sandbox keys to the same LangSmith app Secret. Do not set the secret values directly in Helm.
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> stringData:
+>   sandbox_callback_signing_jwk: '<ed25519-private-jwk>'
+> ```
 
-If you use `config.existingSecretName`, add the sandbox keys to the same LangSmith app Secret. Do not set the secret values directly in Helm.
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-stringData:
-  sandbox_callback_signing_jwk: '<ed25519-private-jwk>'
-```
-
-**Using inline values**
-
-If the Helm chart manages your LangSmith app Secret, set the sandbox secret values directly in your config file. Avoid committing this file to version control.
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-sandboxes:
-  callbackSigningJwk: '<ed25519-private-jwk>'
-```
+> [tab] Using inline values
+>
+> If the Helm chart manages your LangSmith app Secret, set the sandbox secret values directly in your config file. Avoid committing this file to version control.
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> sandboxes:
+>   callbackSigningJwk: '<ed25519-private-jwk>'
+> ```
 
 The callback signing value must be an Ed25519 private JWK. Keep it stable across upgrades.
 
@@ -250,88 +250,88 @@ Add the following values to your `langsmith_config.yaml`, along with the sandbox
 >
 > When you upgrade from chart 0.16 to 0.17, drain the JuiceFS volumes first, then remove the `sandboxes.juicefs.csi` block from your values. For the steps, see [Upgrade an installation](/langsmith/self-host-upgrades).
 
-**AWS**
+> [tab] AWS
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> images:
+>   sandboxHostImage:
+>     tag: "<same-release-tag-as-your-langsmith-images>"
+>
+> sandboxes:
+>   enabled: true
+>   juicefs:
+>     name: "sandbox-juicefs"
+>     storage: "s3"
+>     bucket: "https://bucket-name.s3.us-west-2.amazonaws.com"
+>     redis:
+>       metaURL: "redis://redis-host:6379/1"
+>   sandboxHost:
+>     deployment:
+>       nodeSelector:
+>         kubernetes.io/arch: "amd64"
+>         sandbox.langsmith.com/host: "true"
+>     serviceAccount:
+>       annotations:
+>         eks.amazonaws.com/role-arn: "<role_arn>"
+> ```
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-images:
-  sandboxHostImage:
-    tag: "<same-release-tag-as-your-langsmith-images>"
+> [tab] GCP
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> images:
+>   sandboxHostImage:
+>     tag: "<same-release-tag-as-your-langsmith-images>"
+>
+> sandboxes:
+>   enabled: true
+>   juicefs:
+>     name: "sandbox-juicefs"
+>     storage: "gs"
+>     bucket: "gs://bucket-name"
+>     redis:
+>       metaURL: "redis://redis-host:6379/1"
+>   sandboxHost:
+>     deployment:
+>       nodeSelector:
+>         kubernetes.io/arch: "amd64"
+>         sandbox.langsmith.com/host: "true"
+>     serviceAccount:
+>       annotations:
+>         iam.gke.io/gcp-service-account: "<gsa_name>@<project_id>.iam.gserviceaccount.com"
+> ```
+>
+> On GKE, `sandbox-host` runs on the host network, and GKE does not give Workload Identity to host-network pods, so the annotation serves only the `juicefs-format` Job. Also grant the sandbox node pool's service account `roles/storage.objectAdmin` on the bucket, with an IAM condition limited to the JuiceFS prefix: objects under `sandbox-juicefs/` and list calls with that prefix. Without that grant, the JuiceFS mount gets 403 from Cloud Storage.
 
-sandboxes:
-  enabled: true
-  juicefs:
-    name: "sandbox-juicefs"
-    storage: "s3"
-    bucket: "https://bucket-name.s3.us-west-2.amazonaws.com"
-    redis:
-      metaURL: "redis://redis-host:6379/1"
-  sandboxHost:
-    deployment:
-      nodeSelector:
-        kubernetes.io/arch: "amd64"
-        sandbox.langsmith.com/host: "true"
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: "<role_arn>"
-```
-
-**GCP**
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-images:
-  sandboxHostImage:
-    tag: "<same-release-tag-as-your-langsmith-images>"
-
-sandboxes:
-  enabled: true
-  juicefs:
-    name: "sandbox-juicefs"
-    storage: "gs"
-    bucket: "gs://bucket-name"
-    redis:
-      metaURL: "redis://redis-host:6379/1"
-  sandboxHost:
-    deployment:
-      nodeSelector:
-        kubernetes.io/arch: "amd64"
-        sandbox.langsmith.com/host: "true"
-    serviceAccount:
-      annotations:
-        iam.gke.io/gcp-service-account: "<gsa_name>@<project_id>.iam.gserviceaccount.com"
-```
-
-On GKE, `sandbox-host` runs on the host network, and GKE does not give Workload Identity to host-network pods, so the annotation serves only the `juicefs-format` Job. Also grant the sandbox node pool's service account `roles/storage.objectAdmin` on the bucket, with an IAM condition limited to the JuiceFS prefix: objects under `sandbox-juicefs/` and list calls with that prefix. Without that grant, the JuiceFS mount gets 403 from Cloud Storage.
-
-**Azure**
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-images:
-  sandboxHostImage:
-    tag: "<same-release-tag-as-your-langsmith-images>"
-
-sandboxes:
-  enabled: true
-  juicefs:
-    name: "sandbox-juicefs"
-    storage: "wasb"
-    bucket: "https://container-name.core.windows.net"
-    storageAccountName: "<storage-account-name>"
-    redis:
-      metaURL: "redis://redis-host:6379/1"
-  juicefsFormatJob:
-    labels:
-      azure.workload.identity/use: "true"
-  sandboxHost:
-    deployment:
-      labels:
-        azure.workload.identity/use: "true"
-      nodeSelector:
-        kubernetes.io/arch: "amd64"
-        sandbox.langsmith.com/host: "true"
-    serviceAccount:
-      annotations:
-        azure.workload.identity/client-id: "<client_id>"
-```
+> [tab] Azure
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> images:
+>   sandboxHostImage:
+>     tag: "<same-release-tag-as-your-langsmith-images>"
+>
+> sandboxes:
+>   enabled: true
+>   juicefs:
+>     name: "sandbox-juicefs"
+>     storage: "wasb"
+>     bucket: "https://container-name.core.windows.net"
+>     storageAccountName: "<storage-account-name>"
+>     redis:
+>       metaURL: "redis://redis-host:6379/1"
+>   juicefsFormatJob:
+>     labels:
+>       azure.workload.identity/use: "true"
+>   sandboxHost:
+>     deployment:
+>       labels:
+>         azure.workload.identity/use: "true"
+>       nodeSelector:
+>         kubernetes.io/arch: "amd64"
+>         sandbox.langsmith.com/host: "true"
+>     serviceAccount:
+>       annotations:
+>         azure.workload.identity/client-id: "<client_id>"
+> ```
 
 Apply the updated chart:
 
@@ -347,101 +347,101 @@ helm upgrade -i langsmith langchain/langsmith \
 
 The LangSmith Terraform modules can provision the required AWS and GCP infrastructure and generate the corresponding Helm values.
 
-**AWS**
+> [tab] AWS
+>
+> In `modules/aws/infra/terraform.tfvars`, enable Sandboxes and configure the sandbox node capacity:
+>
+> ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> enable_sandboxes = true
+> redis_source     = "external"
+>
+> sandbox_juicefs_redis_instance_type             = "cache.m6g.large"
+> sandbox_juicefs_redis_snapshot_retention_limit  = 7
+>
+> sandbox_host_node_count               = 1
+> sandbox_host_instance_types           = ["m5d.metal"]
+> sandbox_host_configure_instance_store = true
+>
+> sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
+> ```
+>
+> AWS Sandboxes require `redis_source = "external"`. The Terraform module:
+>
+> * Creates a dedicated ElastiCache Redis instance for JuiceFS sandbox metadata.
+> * Configures that dedicated instance with the recommended `noeviction` policy.
+> * Reuses the LangSmith S3 bucket for sandbox object storage.
+> * Creates the JuiceFS configuration Secret.
+> * Adds the expected node label and taint.
+>
+> The AWS setup script generates the sandbox service-auth secret, callback signing JWK, and dedicated JuiceFS Redis auth token through the normal SSM-backed setup flow. Run the infra setup script before applying Terraform if those values do not exist yet.
+>
+> If you deploy the Helm release with the Terraform app module, set the sandbox app values in `modules/aws/app/terraform.tfvars` as well:
+>
+> ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> enable_sandboxes      = true
+> chart_version          = "~0.17.0"
+> sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
+> ```
+>
+> When `enable_sandboxes = true`, the Terraform app module requires an explicit LangSmith Helm chart v17 release and a sandbox runtime image tag.
+>
+> Run the normal AWS flow:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> make apply
+> make init-values
+> CHART_VERSION="~0.17.0" make deploy
+> ```
 
-In `modules/aws/infra/terraform.tfvars`, enable Sandboxes and configure the sandbox node capacity:
-
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-enable_sandboxes = true
-redis_source     = "external"
-
-sandbox_juicefs_redis_instance_type             = "cache.m6g.large"
-sandbox_juicefs_redis_snapshot_retention_limit  = 7
-
-sandbox_host_node_count               = 1
-sandbox_host_instance_types           = ["m5d.metal"]
-sandbox_host_configure_instance_store = true
-
-sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
-```
-
-AWS Sandboxes require `redis_source = "external"`. The Terraform module:
-
-* Creates a dedicated ElastiCache Redis instance for JuiceFS sandbox metadata.
-* Configures that dedicated instance with the recommended `noeviction` policy.
-* Reuses the LangSmith S3 bucket for sandbox object storage.
-* Creates the JuiceFS configuration Secret.
-* Adds the expected node label and taint.
-
-The AWS setup script generates the sandbox service-auth secret, callback signing JWK, and dedicated JuiceFS Redis auth token through the normal SSM-backed setup flow. Run the infra setup script before applying Terraform if those values do not exist yet.
-
-If you deploy the Helm release with the Terraform app module, set the sandbox app values in `modules/aws/app/terraform.tfvars` as well:
-
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-enable_sandboxes      = true
-chart_version          = "~0.17.0"
-sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
-```
-
-When `enable_sandboxes = true`, the Terraform app module requires an explicit LangSmith Helm chart v17 release and a sandbox runtime image tag.
-
-Run the normal AWS flow:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-make apply
-make init-values
-CHART_VERSION="~0.17.0" make deploy
-```
-
-**GCP**
-
-In `modules/gcp/infra/terraform.tfvars`, enable Sandboxes and configure a Standard GKE node pool:
-
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-enable_sandboxes = true
-redis_source     = "external"
-
-gke_use_autopilot     = false
-enable_gcp_iam_module = true
-
-sandbox_juicefs_redis_memory_size       = 5
-sandbox_juicefs_redis_high_availability = true
-
-sandbox_host_node_count     = 1
-sandbox_host_min_node_count = 1
-sandbox_host_max_node_count = 5
-sandbox_host_machine_type   = "n2-standard-8"
-
-sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
-```
-
-GCP Sandboxes require `redis_source = "external"`. The Terraform module:
-
-* Creates a dedicated Memorystore Redis instance for JuiceFS sandbox metadata.
-* Configures that dedicated instance with the recommended `noeviction` policy.
-* Reuses the LangSmith GCS bucket for sandbox object storage.
-* Creates the JuiceFS configuration Secret.
-* Adds the expected node label and taint.
-
-The GCP setup script generates the sandbox service-auth secret and callback signing JWK through the normal Secret Manager setup flow. Run the infra setup script before applying Terraform if those values do not exist yet.
-
-If you deploy the Helm release with the Terraform app module, set the sandbox app values in `modules/gcp/app/terraform.tfvars` as well:
-
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-enable_sandboxes      = true
-chart_version          = "~0.17.0"
-sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
-```
-
-When `enable_sandboxes = true`, the Terraform app module requires an explicit LangSmith Helm chart v17 release and a sandbox runtime image tag.
-
-Run the normal GCP flow:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-make apply
-make init-values
-CHART_VERSION="~0.17.0" make deploy
-```
+> [tab] GCP
+>
+> In `modules/gcp/infra/terraform.tfvars`, enable Sandboxes and configure a Standard GKE node pool:
+>
+> ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> enable_sandboxes = true
+> redis_source     = "external"
+>
+> gke_use_autopilot     = false
+> enable_gcp_iam_module = true
+>
+> sandbox_juicefs_redis_memory_size       = 5
+> sandbox_juicefs_redis_high_availability = true
+>
+> sandbox_host_node_count     = 1
+> sandbox_host_min_node_count = 1
+> sandbox_host_max_node_count = 5
+> sandbox_host_machine_type   = "n2-standard-8"
+>
+> sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
+> ```
+>
+> GCP Sandboxes require `redis_source = "external"`. The Terraform module:
+>
+> * Creates a dedicated Memorystore Redis instance for JuiceFS sandbox metadata.
+> * Configures that dedicated instance with the recommended `noeviction` policy.
+> * Reuses the LangSmith GCS bucket for sandbox object storage.
+> * Creates the JuiceFS configuration Secret.
+> * Adds the expected node label and taint.
+>
+> The GCP setup script generates the sandbox service-auth secret and callback signing JWK through the normal Secret Manager setup flow. Run the infra setup script before applying Terraform if those values do not exist yet.
+>
+> If you deploy the Helm release with the Terraform app module, set the sandbox app values in `modules/gcp/app/terraform.tfvars` as well:
+>
+> ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> enable_sandboxes      = true
+> chart_version          = "~0.17.0"
+> sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
+> ```
+>
+> When `enable_sandboxes = true`, the Terraform app module requires an explicit LangSmith Helm chart v17 release and a sandbox runtime image tag.
+>
+> Run the normal GCP flow:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> make apply
+> make init-values
+> CHART_VERSION="~0.17.0" make deploy
+> ```
 
 ## Optional: enable service URLs
 

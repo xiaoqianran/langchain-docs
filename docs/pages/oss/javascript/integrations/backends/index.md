@@ -10,11 +10,11 @@ Browse available filesystem backends for Deep Agents or contribute your own to t
 
 Custom backends connect Deep Agents to storage systems such as databases, object stores, and virtual filesystems. Share yours with the community:
 
-> **[Implement a custom backend](/oss/javascript/deepagents/backends#custom-backends)**
+> [card] [Implement a custom backend](/oss/javascript/deepagents/backends#custom-backends)
 >
 > Follow the custom backends guide to build your own backend.
 
-> **[Share a community backend](https://github.com/langchain-ai/docs)**
+> [card] [Share a community backend](https://github.com/langchain-ai/docs)
 >
 > Open a PR to the docs repo to add your backend to the table below.
 

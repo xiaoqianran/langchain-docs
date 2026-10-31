@@ -14,7 +14,7 @@ To time travel using the LangSmith Deployment API (via the LangGraph SDK):
 
 ## Use time travel in a workflow
 
-> **Example graph**
+> [accordion] Example graph
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from typing_extensions import TypedDict, NotRequired
@@ -58,177 +58,177 @@ To time travel using the LangSmith Deployment API (via the LangGraph SDK):
 
 ### 1. Run the graph
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_client
+> client = get_client(url=<DEPLOYMENT_URL>)
+>
+> # Using the graph deployed with the name "agent"
+> assistant_id = "agent"
+>
+> # create a thread
+> thread = await client.threads.create()
+> thread_id = thread["thread_id"]
+>
+> # Run the graph
+> result = await client.runs.wait(
+>     thread_id,
+>     assistant_id,
+>     input={}
+> )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
-client = get_client(url=<DEPLOYMENT_URL>)
+> [tab] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client } from "@langchain/langgraph-sdk";
+> const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+>
+> // Using the graph deployed with the name "agent"
+> const assistantID = "agent";
+>
+> // create a thread
+> const thread = await client.threads.create();
+> const threadID = thread["thread_id"];
+>
+> // Run the graph
+> const result = await client.runs.wait(
+>   threadID,
+>   assistantID,
+>   { input: {}}
+> );
+> ```
 
-# Using the graph deployed with the name "agent"
-assistant_id = "agent"
-
-# create a thread
-thread = await client.threads.create()
-thread_id = thread["thread_id"]
-
-# Run the graph
-result = await client.runs.wait(
-    thread_id,
-    assistant_id,
-    input={}
-)
-```
-
-**JavaScript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "@langchain/langgraph-sdk";
-const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-
-// Using the graph deployed with the name "agent"
-const assistantID = "agent";
-
-// create a thread
-const thread = await client.threads.create();
-const threadID = thread["thread_id"];
-
-// Run the graph
-const result = await client.runs.wait(
-  threadID,
-  assistantID,
-  { input: {}}
-);
-```
-
-**cURL**
-
-Create a thread:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
---url <DEPLOYMENT_URL>/threads \
---header 'Content-Type: application/json' \
---data '{}'
-```
-
-Run the graph:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
---url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
---header 'Content-Type: application/json' \
---data "{
-  \"assistant_id\": \"agent\",
-  \"input\": {}
-}"
-```
+> [tab] cURL
+>
+> Create a thread:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+> --url <DEPLOYMENT_URL>/threads \
+> --header 'Content-Type: application/json' \
+> --data '{}'
+> ```
+>
+> Run the graph:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+> --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
+> --header 'Content-Type: application/json' \
+> --data "{
+>   \"assistant_id\": \"agent\",
+>   \"input\": {}
+> }"
+> ```
 
 ### 2. Identify a checkpoint
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # The states are returned in reverse chronological order.
+> states = await client.threads.get_history(thread_id)
+> selected_state = states[1]
+> print(selected_state)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# The states are returned in reverse chronological order.
-states = await client.threads.get_history(thread_id)
-selected_state = states[1]
-print(selected_state)
-```
+> [tab] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> // The states are returned in reverse chronological order.
+> const states = await client.threads.getHistory(threadID);
+> const selectedState = states[1];
+> console.log(selectedState);
+> ```
 
-**JavaScript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// The states are returned in reverse chronological order.
-const states = await client.threads.getHistory(threadID);
-const selectedState = states[1];
-console.log(selectedState);
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request GET \
---url <DEPLOYMENT_URL>/threads/<THREAD_ID>/history \
---header 'Content-Type: application/json'
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request GET \
+> --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/history \
+> --header 'Content-Type: application/json'
+> ```
 
 ### 3. Update the state
 
 [`update_state`](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.update_state) will create a new checkpoint. The new checkpoint will be associated with the same thread, but a new checkpoint ID.
 
-**Python**
+> [tab] Python
+>
+> ```python {highlight={4}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> new_config = await client.threads.update_state(
+>     thread_id,
+>     {"topic": "chickens"},
+>     checkpoint_id=selected_state["checkpoint_id"]
+> )
+> print(new_config)
+> ```
 
-```python {highlight={4}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-new_config = await client.threads.update_state(
-    thread_id,
-    {"topic": "chickens"},
-    checkpoint_id=selected_state["checkpoint_id"]
-)
-print(new_config)
-```
+> [tab] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const newConfig = await client.threads.updateState(
+>   threadID,
+>   {
+>     values: { "topic": "chickens" },
+>     checkpointId: selectedState["checkpoint_id"]
+>   }
+> );
+> console.log(newConfig);
+> ```
 
-**JavaScript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const newConfig = await client.threads.updateState(
-  threadID,
-  {
-    values: { "topic": "chickens" },
-    checkpointId: selectedState["checkpoint_id"]
-  }
-);
-console.log(newConfig);
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
---url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state \
---header 'Content-Type: application/json' \
---data "{
-  \"assistant_id\": \"agent\",
-  \"checkpoint_id\": <CHECKPOINT_ID>,
-  \"values\": {\"topic\": \"chickens\"}
-}"
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+> --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state \
+> --header 'Content-Type: application/json' \
+> --data "{
+>   \"assistant_id\": \"agent\",
+>   \"checkpoint_id\": <CHECKPOINT_ID>,
+>   \"values\": {\"topic\": \"chickens\"}
+> }"
+> ```
 
 ### 4. Resume execution from the checkpoint
 
-**Python**
+> [tab] Python
+>
+> ```python {highlight={4,5}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.runs.wait(
+>     thread_id,
+>     assistant_id,
+>     input=None,
+>     checkpoint_id=new_config["checkpoint_id"]
+> )
+> ```
 
-```python {highlight={4,5}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.runs.wait(
-    thread_id,
-    assistant_id,
-    input=None,
-    checkpoint_id=new_config["checkpoint_id"]
-)
-```
+> [tab] JavaScript
+>
+> ```javascript {highlight={5,6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.runs.wait(
+>   threadID,
+>   assistantID,
+>   {
+>     input: null,
+>     checkpointId: newConfig["checkpoint_id"]
+>   }
+> );
+> ```
 
-**JavaScript**
-
-```javascript {highlight={5,6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.runs.wait(
-  threadID,
-  assistantID,
-  {
-    input: null,
-    checkpointId: newConfig["checkpoint_id"]
-  }
-);
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
---url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
---header 'Content-Type: application/json' \
---data "{
-  \"assistant_id\": \"agent\",
-  \"checkpoint_id\": <CHECKPOINT_ID>
-}"
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+> --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
+> --header 'Content-Type: application/json' \
+> --data "{
+>   \"assistant_id\": \"agent\",
+>   \"checkpoint_id\": <CHECKPOINT_ID>
+> }"
+> ```
 
 ## Learn more
 

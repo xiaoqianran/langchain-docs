@@ -118,7 +118,7 @@ The returned user information is available:
 * To your authorization handlers via [`ctx.user`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AuthContext)
 * In your application via `config["configuration"]["langgraph_auth_user"]`
 
-> **Supported Parameters**
+> [accordion] Supported Parameters
 >
 > The [`@auth.authenticate`](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/authenticate) handler can accept any of the following parameters by name:
 >

@@ -16,25 +16,25 @@ LangChain 运送容器镜像、Helm 图表和许可证；您提供 Kubernetes �
 
 LangSmith 支持三种自托管拓扑，可在设置复杂性与控制平面功能之间进行权衡。 [platform features](/langsmith/self-hosted-platform-features)、[Agent Server metrics](/langsmith/self-hosted-agent-server-metrics) 和 [diagnostics](/langsmith/diagnostics-self-hosted) 的参考页适用于所有三个。
 
-> **[Full self-hosted platform](/langsmith/deploy-with-control-plane)**
+> [卡][Full self-hosted platform](/langsmith/deploy-with-control-plane)
 >
-> 完整的 LangSmith 平台 — [control plane](/langsmith/control-plane) UI 和 API、[data plane](/langsmith/data-plane) 监听器、可观察性、评估和代理部署管理。最适合希望在自己的网络中获得 LangSmith 产品体验的团队。> **[Hybrid](/langsmith/hybrid)**
+> 完整的 LangSmith 平台 — [control plane](/langsmith/control-plane) UI 和 API、[data plane](/langsmith/data-plane) 监听器、可观察性、评估和代理部署管理。最适合希望在自己的网络中获得 LangSmith 产品体验的团队。> [卡][Hybrid](/langsmith/hybrid)
 >
 > LangChain 托管控制平面以及基础设施中的数据平面（代理服务器和数据库）。当您需要托管部署工作流程但需要代理工作负载和客户数据保留在 VPC 内时，这是最佳选择。
 
-> **[Standalone server](/langsmith/deploy-standalone-server)**
+> [卡][Standalone server](/langsmith/deploy-standalone-server)
 >
 > 最轻的选项 - 具有您自己的 PostgreSQL 和 Redis 的代理服务器容器（API + 队列工作人员）。没有控制平面，没有托管 UI。最适合将运行时嵌入现有基础设施或气隙运行。
 
-> **[Platform features](/langsmith/self-hosted-platform-features)**
+> [卡片] [Platform features](/langsmith/self-hosted-platform-features)
 >
 > 仅自托管平台行为的参考：自定义 Postgres 和 Redis、侦听器和资源自定义。
 
-> **[Agent Server metrics](/langsmith/self-hosted-agent-server-metrics)**
+> [卡][Agent Server metrics](/langsmith/self-hosted-agent-server-metrics)
 >
 > Agent Server 的 Prometheus 和 Datadog 导出，包括部署 UI 指标和内部指标。
 
-> **[Diagnostics](/langsmith/diagnostics-self-hosted)**
+> [卡片][Diagnostics](/langsmith/diagnostics-self-hosted)
 >
 > 收集日志、检查状态并对自承载安装进行故障排除。
 
@@ -52,11 +52,11 @@ LangSmith 支持三种自托管拓扑，可在设置复杂性与控制平面功�
 
 ## 后续步骤
 
-> **[Pick a topology](/langsmith/deploy-standalone-server)**
+> [卡][Pick a topology](/langsmith/deploy-standalone-server)
 >
 > 比较独立服务器、完整平台和混合服务器以找到合适的选择。
 
-> **[Enable LangSmith Deployment](/langsmith/enable-self-hosted-deployment)**
+> [卡][Enable LangSmith Deployment](/langsmith/enable-self-hosted-deployment)
 >
 > 添加控制平面和数据平面以在自托管LangSmith上部署和管理代理。
 

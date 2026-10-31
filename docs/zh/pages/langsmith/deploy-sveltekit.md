@@ -60,14 +60,14 @@ pnpm run deploy
 
 ## Cloudflare 后端设计
 
-|关注|实施|
+|关注|实施 |
 | - | - |
 |前端 | SvelteKit 客户端路由和组件 |
 | API层| `src/routes/api/threads/` 中的 SvelteKit 服务器端点 |
-|运行时|工人V8 + `nodejs_compat` |
+|运行时 |工人V8 + `nodejs_compat` |
 |上交所回放 |每线程持久对象 (`ThreadSession`) |
 |代理运行 |工人隔离；协议事件发布到 DO |
-|静态资产 | Workers 静态资产来自 `adapter-cloudflare` |
+|静态资产| Workers 静态资产来自 `adapter-cloudflare` |
 |秘密 | `wrangler secret` / 本地 `.env` |
 
 ## 生产坚持
@@ -101,7 +101,7 @@ pnpm typecheck  # svelte-check over the project
 npx wrangler dev .svelte-kit/cloudflare/_worker.js
 ```
 
-## 项目布局> **项目结构**
+## 项目布局> [手风琴] 项目结构
 >
 > * `src/lib/server/agent/` — 带有 `researcher` 和 `math-whiz` 子代理和模拟工具的深度代理 (`createDeepAgent`)。
 > * `src/lib/server/durable-objects/thread-session.ts` — 用于 SSE 重放的每线程持久对象事件日志。

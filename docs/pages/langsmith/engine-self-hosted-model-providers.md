@@ -40,43 +40,43 @@ To use your own providers:
 
 Click **Add credentials** next to the provider and enter:
 
-**Anthropic**
+> [tab] Anthropic
+>
+> An Anthropic API key.
 
-An Anthropic API key.
+> [tab] Amazon Bedrock
+>
+> An AWS access key ID and secret access key, with an optional session token, or a Bedrock API key (bearer token). Optionally, an AWS region.
+>
+> Engine uses the Bedrock Mantle API. To use Bedrock Runtime instead, see [Use Bedrock Runtime](#use-bedrock-runtime).
+>
+> Enable access to the required models in the selected AWS account and region. Grant the calling identity Mantle inference and model-subscription permissions. See [AmazonBedrockMantleInferenceAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonBedrockMantleInferenceAccess.html) for the required actions.
+>
+> If no region is saved, Engine uses `us-east-1`, including with workload identity. It does not inherit the EKS cluster's region.
+>
+> To use the cloud identity of Engine's pods instead, see [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers).
 
-**Amazon Bedrock**
+> [tab] Google Vertex AI
+>
+> A service account key in JSON format. Engine uses the JSON's `project_id` as the inference project and calls the `global` location.
+>
+> Enable the required models through [Model Garden](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/use-partner-models) in that project. Grant the service account `roles/aiplatform.user` in the same project.
+>
+> To use the cloud identity of Engine's pods instead, see [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers).
 
-An AWS access key ID and secret access key, with an optional session token, or a Bedrock API key (bearer token). Optionally, an AWS region.
+> [tab] Azure AI Foundry
+>
+> Confirm that your resource region has access and quota for the models required by your installed Engine image. To configure Azure:
+>
+> 1. Create the required model deployments in the same Azure AI Foundry resource. Deployment names must exactly match the model names (model IDs). Engine uses Claude as its primary model and GPT as its fallback. Custom deployment aliases are not supported for either model family.
+>
+>    Follow the [Claude deployment instructions](https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry) and check [Azure OpenAI model availability](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/responses). Accept the Azure Marketplace terms when creating your first Claude deployment.
+> 2. Enter an API key and the resource name, not its full URL. To use the cloud identity of Engine's pods instead of an API key, see [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers).
+> 3. Run [**Test connection**](#test-a-provider) and confirm that both Claude and GPT requests succeed, including when selecting additional providers. After saving, [start an Engine analysis](/langsmith/engine-self-hosted#verify-the-installation) to verify the complete setup.
 
-Engine uses the Bedrock Mantle API. To use Bedrock Runtime instead, see [Use Bedrock Runtime](#use-bedrock-runtime).
-
-Enable access to the required models in the selected AWS account and region. Grant the calling identity Mantle inference and model-subscription permissions. See [AmazonBedrockMantleInferenceAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonBedrockMantleInferenceAccess.html) for the required actions.
-
-If no region is saved, Engine uses `us-east-1`, including with workload identity. It does not inherit the EKS cluster's region.
-
-To use the cloud identity of Engine's pods instead, see [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers).
-
-**Google Vertex AI**
-
-A service account key in JSON format. Engine uses the JSON's `project_id` as the inference project and calls the `global` location.
-
-Enable the required models through [Model Garden](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/use-partner-models) in that project. Grant the service account `roles/aiplatform.user` in the same project.
-
-To use the cloud identity of Engine's pods instead, see [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers).
-
-**Azure AI Foundry**
-
-Confirm that your resource region has access and quota for the models required by your installed Engine image. To configure Azure:
-
-1. Create the required model deployments in the same Azure AI Foundry resource. Deployment names must exactly match the model names (model IDs). Engine uses Claude as its primary model and GPT as its fallback. Custom deployment aliases are not supported for either model family.
-
-   Follow the [Claude deployment instructions](https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry) and check [Azure OpenAI model availability](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/responses). Accept the Azure Marketplace terms when creating your first Claude deployment.
-2. Enter an API key and the resource name, not its full URL. To use the cloud identity of Engine's pods instead of an API key, see [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers).
-3. Run [**Test connection**](#test-a-provider) and confirm that both Claude and GPT requests succeed, including when selecting additional providers. After saving, [start an Engine analysis](/langsmith/engine-self-hosted#verify-the-installation) to verify the complete setup.
-
-**OpenAI**
-
-An OpenAI API key, and optionally your OpenAI organization ID.
+> [tab] OpenAI
+>
+> An OpenAI API key, and optionally your OpenAI organization ID.
 
 A provider with complete credentials shows as configured. To change them later, click the key icon next to the provider.
 
@@ -126,87 +126,87 @@ On BYOC, contact LangChain to make this change.
 
 Instead of saving credentials, Amazon Bedrock, Google Vertex AI, and Azure AI Foundry can authenticate with the cloud identity of Engine's pods instead of credentials saved in LangSmith. List those providers in `engine.workloadIdentityProviders`. Configure identity for both the API server and queue of the shared Engine and Insights deployment:
 
-**Amazon EKS**
+> [tab] Amazon EKS
+>
+> Configure IAM roles for service accounts (IRSA). Trust the namespace and service account of both Engine workloads, and grant the role access to the Bedrock models Engine uses.
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> engine:
+>   workloadIdentityProviders:
+>     - bedrock
+>
+> engineInsightsAgent:
+>   apiServer:
+>     serviceAccount:
+>       annotations:
+>         eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<engine-model-access-role>"
+>   queue:
+>     serviceAccount:
+>       annotations:
+>         eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<engine-model-access-role>"
+> ```
 
-Configure IAM roles for service accounts (IRSA). Trust the namespace and service account of both Engine workloads, and grant the role access to the Bedrock models Engine uses.
+> [tab] Google GKE
+>
+> Enable Workload Identity Federation for GKE on the cluster and the node pools that run Engine. Grant each Engine Kubernetes service account `roles/iam.workloadIdentityUser` on the Google service account. Bind each member as `serviceAccount:<cluster-project-id>.svc.id.goog[<namespace>/<kubernetes-service-account>]`.
+>
+> Grant the Google service account Vertex AI inference permissions, such as `roles/aiplatform.user`, in the project that hosts the models. Enable the required models in that project.
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> engine:
+>   workloadIdentityProviders:
+>     - vertex
+>
+> engineInsightsAgent:
+>   apiServer:
+>     serviceAccount:
+>       annotations:
+>         iam.gke.io/gcp-service-account: "<service-account>@<project-id>.iam.gserviceaccount.com"
+>     deployment:
+>       extraEnv:
+>         - name: GOOGLE_CLOUD_PROJECT
+>           value: "<vertex-project-id>"
+>   queue:
+>     serviceAccount:
+>       annotations:
+>         iam.gke.io/gcp-service-account: "<service-account>@<project-id>.iam.gserviceaccount.com"
+>     deployment:
+>       extraEnv:
+>         - name: GOOGLE_CLOUD_PROJECT
+>           value: "<vertex-project-id>"
+> ```
+>
+> Engine uses Application Default Credentials (ADC) to resolve the identity and project. Set `GOOGLE_CLOUD_PROJECT` on both workloads to the intended Vertex AI project. Engine currently uses the `global` Vertex AI location, so the required models must be available there.
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-engine:
-  workloadIdentityProviders:
-    - bedrock
-
-engineInsightsAgent:
-  apiServer:
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<engine-model-access-role>"
-  queue:
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<engine-model-access-role>"
-```
-
-**Google GKE**
-
-Enable Workload Identity Federation for GKE on the cluster and the node pools that run Engine. Grant each Engine Kubernetes service account `roles/iam.workloadIdentityUser` on the Google service account. Bind each member as `serviceAccount:<cluster-project-id>.svc.id.goog[<namespace>/<kubernetes-service-account>]`.
-
-Grant the Google service account Vertex AI inference permissions, such as `roles/aiplatform.user`, in the project that hosts the models. Enable the required models in that project.
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-engine:
-  workloadIdentityProviders:
-    - vertex
-
-engineInsightsAgent:
-  apiServer:
-    serviceAccount:
-      annotations:
-        iam.gke.io/gcp-service-account: "<service-account>@<project-id>.iam.gserviceaccount.com"
-    deployment:
-      extraEnv:
-        - name: GOOGLE_CLOUD_PROJECT
-          value: "<vertex-project-id>"
-  queue:
-    serviceAccount:
-      annotations:
-        iam.gke.io/gcp-service-account: "<service-account>@<project-id>.iam.gserviceaccount.com"
-    deployment:
-      extraEnv:
-        - name: GOOGLE_CLOUD_PROJECT
-          value: "<vertex-project-id>"
-```
-
-Engine uses Application Default Credentials (ADC) to resolve the identity and project. Set `GOOGLE_CLOUD_PROJECT` on both workloads to the intended Vertex AI project. Engine currently uses the `global` Vertex AI location, so the required models must be available there.
-
-**Azure AKS**
-
-Enable the AKS OIDC issuer and Microsoft Entra Workload ID. Create a federated identity credential for each Engine Kubernetes service account on your managed identity. Use the cluster's OIDC issuer, audience `api://AzureADTokenExchange`, and subject `system:serviceaccount:<namespace>:<kubernetes-service-account>` for each.
-
-Grant the identity the Cognitive Services User role, scoped to the Azure AI Foundry resource that hosts Engine's models. An Azure OpenAI role alone does not establish access to Claude models.
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-engine:
-  workloadIdentityProviders:
-    - azure
-
-engineInsightsAgent:
-  apiServer:
-    serviceAccount:
-      annotations:
-        azure.workload.identity/client-id: "<managed-identity-client-id>"
-    deployment:
-      labels:
-        azure.workload.identity/use: "true"
-  queue:
-    serviceAccount:
-      annotations:
-        azure.workload.identity/client-id: "<managed-identity-client-id>"
-    deployment:
-      labels:
-        azure.workload.identity/use: "true"
-```
-
-Both workloads need the service account annotation and pod label. Save the Foundry resource name under **Settings > Engine > Model providers**.
+> [tab] Azure AKS
+>
+> Enable the AKS OIDC issuer and Microsoft Entra Workload ID. Create a federated identity credential for each Engine Kubernetes service account on your managed identity. Use the cluster's OIDC issuer, audience `api://AzureADTokenExchange`, and subject `system:serviceaccount:<namespace>:<kubernetes-service-account>` for each.
+>
+> Grant the identity the Cognitive Services User role, scoped to the Azure AI Foundry resource that hosts Engine's models. An Azure OpenAI role alone does not establish access to Claude models.
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> engine:
+>   workloadIdentityProviders:
+>     - azure
+>
+> engineInsightsAgent:
+>   apiServer:
+>     serviceAccount:
+>       annotations:
+>         azure.workload.identity/client-id: "<managed-identity-client-id>"
+>     deployment:
+>       labels:
+>         azure.workload.identity/use: "true"
+>   queue:
+>     serviceAccount:
+>       annotations:
+>         azure.workload.identity/client-id: "<managed-identity-client-id>"
+>     deployment:
+>       labels:
+>         azure.workload.identity/use: "true"
+> ```
+>
+> Both workloads need the service account annotation and pod label. Save the Foundry resource name under **Settings > Engine > Model providers**.
 
 > [!WARNING]
 >
@@ -263,43 +263,43 @@ Set only the URLs for the APIs you listed in `ENGINE_GATEWAY_APIS`. The URLs mus
 
 Choose how Engine authenticates to the gateway:
 
-**API key**
+> [tab] API key
+>
+> Store the gateway key in a Kubernetes secret and mount it into both Engine workloads. Set `ENGINE_GATEWAY_API_KEY_FILE` to the mounted file's path.
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> engineInsightsAgent:
+>   apiServer:
+>     deployment:
+>       extraEnv:
+>         - name: ENGINE_GATEWAY_ANTHROPIC_BASE_URL
+>           value: "https://<gateway-host>/anthropic"
+>         - name: ENGINE_GATEWAY_OPENAI_BASE_URL
+>           value: "https://<gateway-host>/openai/v1"
+>         - name: ENGINE_GATEWAY_API_KEY_FILE
+>           value: "/etc/engine-gateway/api-key"
+>       volumes:
+>         - name: engine-gateway
+>           secret:
+>             secretName: engine-model-gateway
+>       volumeMounts:
+>         - name: engine-gateway
+>           mountPath: /etc/engine-gateway
+>           readOnly: true
+>   queue:
+>     deployment:
+>       # The same extraEnv, volumes, and volumeMounts as apiServer.
+> ```
+>
+> By default, Engine sends the key as `Authorization: Bearer <key>`. If your gateway expects the key in another header, set `ENGINE_GATEWAY_AUTH_HEADER` to that header's name, such as `x-api-key`. Engine then sends the key as the header's value.
+>
+> To send additional headers, mount a directory with one file per header and set `ENGINE_GATEWAY_HEADERS_DIR` to its path. Each file's name is the header name, and its contents are the value. Engine reserves `host`, `content-length`, `content-type`, `transfer-encoding`, `connection`, and headers that start with `x-langsmith-`.
+>
+> Engine reads the key and header files at the start of each run, so you can rotate them without restarting Engine.
 
-Store the gateway key in a Kubernetes secret and mount it into both Engine workloads. Set `ENGINE_GATEWAY_API_KEY_FILE` to the mounted file's path.
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-engineInsightsAgent:
-  apiServer:
-    deployment:
-      extraEnv:
-        - name: ENGINE_GATEWAY_ANTHROPIC_BASE_URL
-          value: "https://<gateway-host>/anthropic"
-        - name: ENGINE_GATEWAY_OPENAI_BASE_URL
-          value: "https://<gateway-host>/openai/v1"
-        - name: ENGINE_GATEWAY_API_KEY_FILE
-          value: "/etc/engine-gateway/api-key"
-      volumes:
-        - name: engine-gateway
-          secret:
-            secretName: engine-model-gateway
-      volumeMounts:
-        - name: engine-gateway
-          mountPath: /etc/engine-gateway
-          readOnly: true
-  queue:
-    deployment:
-      # The same extraEnv, volumes, and volumeMounts as apiServer.
-```
-
-By default, Engine sends the key as `Authorization: Bearer <key>`. If your gateway expects the key in another header, set `ENGINE_GATEWAY_AUTH_HEADER` to that header's name, such as `x-api-key`. Engine then sends the key as the header's value.
-
-To send additional headers, mount a directory with one file per header and set `ENGINE_GATEWAY_HEADERS_DIR` to its path. Each file's name is the header name, and its contents are the value. Engine reserves `host`, `content-length`, `content-type`, `transfer-encoding`, `connection`, and headers that start with `x-langsmith-`.
-
-Engine reads the key and header files at the start of each run, so you can rotate them without restarting Engine.
-
-**LLM auth proxy**
-
-If your gateway sits behind the [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted), Engine can authenticate with short-lived LangSmith tokens instead of a static key. See [Use the LLM auth proxy](#use-the-llm-auth-proxy).
+> [tab] LLM auth proxy
+>
+> If your gateway sits behind the [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted), Engine can authenticate with short-lived LangSmith tokens instead of a static key. See [Use the LLM auth proxy](#use-the-llm-auth-proxy).
 
 Apply the Helm values and restart both Engine workloads so they pick up the new environment variables.
 

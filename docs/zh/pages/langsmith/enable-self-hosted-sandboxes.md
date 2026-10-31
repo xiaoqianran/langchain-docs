@@ -4,17 +4,19 @@
 
 # 在自托管 LangSmith 上启用沙箱
 
-为自托管 LangSmith 沙箱配置 Kubernetes 节点、存储和 Helm 值。
+为自托管 LangSmith 沙盒配置 Kubernetes 节点、存储和 Helm 值。
 
 [Sandboxes](/langsmith/sandboxes) 为运行代码和公开服务提供隔离环境。当您需要沙箱工作负载或需要它们的功能时安装它们，例如[Engine](/langsmith/engine-self-hosted)。
 
 > [!注意]
 >
-> 沙盒需要 [Enterprise](https://langchain.com/pricing) 计划。
+> 沙箱需要 [Enterprise](https://langchain.com/pricing) 计划。
 
 默认情况下，沙箱处于禁用状态。安装后，请参阅 [LangSmith Sandboxes](/langsmith/sandboxes) 了解 LangSmith UI 和 API 中的用户工作流程。
 
 基础设施模型和生产规划参见[Sandbox architecture](/langsmith/self-host-sandbox-architecture)、[scaling and capacity](/langsmith/self-host-sandbox-scaling)、[upgrades and operations](/langsmith/self-host-sandbox-operations)。
+
+此页面将沙箱运行时安装在与 LangSmith 相同的集群中。要在专用 Kubernetes 集群中运行它，请参阅 [Run Sandboxes in a separate cluster](/langsmith/self-host-sandbox-separate-cluster)。
 
 ## 支持的平台
 
@@ -23,7 +25,7 @@
 * 亚马逊弹性 Kubernetes 服务 (EKS)
 * 谷歌 Kubernetes 引擎 (GKE)
 * Azure Kubernetes 服务 (AKS)
-* Red Hat OpenShift，附加步骤见[Configure OpenShift](#configure-openshift)
+* Red Hat OpenShift，以及 [Configure OpenShift](#configure-openshift) 中的附加步骤
 * 满足[node requirements for bare-metal and on-premises clusters](#node-requirements-for-bare-metal-and-on-premises-clusters)的裸机和本地 Kubernetes 集群
 
 > [!注意]
@@ -36,13 +38,15 @@
 * 由 Redis 支持的 JuiceFS 元数据存储以及由 S3、GCS 或 Azure Blob 存储支持的对象存储。
 * 可选通配符入口用于从沙箱内部公开的服务。
 
+默认情况下，`langsmith`版本与LangSmith一起部署沙箱运行时。对于 `sandboxes.external.enabled: true`，运行时是外部的：第二个 Helm 版本 `langsmith-sandbox` 将其部署，通常在专用集群中，通配符入口保留在 LangSmith 集群中。
+
 ## 先决条件
 
 **1.安装底座LangSmith平台**
 
 在启用沙箱之前，在 Kubernetes 上安装LangSmith。参见[Self-host LangSmith on Kubernetes](/langsmith/kubernetes)。
 
-沙箱在与 LangSmith 版本相同的 Kubernetes 集群和命名空间中运行。
+使用默认的嵌入式运行时，沙箱在与 LangSmith 版本相同的 Kubernetes 集群和命名空间中运行。
 
 如果您的集群无法从公共注册表中提取，还可以镜像沙箱运行时映像。参见[Additional images for Sandboxes](/langsmith/self-host-mirroring-images#additional-images-for-sandboxes)。
 
@@ -50,14 +54,14 @@
 
 您的集群必须包含专用节点，这些节点可以使用 `/dev/kvm` 上提供的 Linux KVM 运行嵌套工作负载。
 
-这些可以是裸机机器或启用了嵌套虚拟化的受支持的云实例。在 AWS 和 GCP 上，使用将 `/dev/kvm` 暴露给沙箱运行时的 x86\_64 Linux 实例。
-
-> [!警告]
+这些可以是裸机机器或启用了嵌套虚拟化的受支持的云实例。在 AWS 和 GCP 上，使用将 `/dev/kvm` 暴露给沙箱运行时的 x86\_64 Linux 实例。> [!警告]
 >
-> 在 EKS 上，VPC CNI 插件必须是 **v1.21 或更高版本**。 `v1.20.0` 第 8 代崩溃
+> 在 EKS 上，VPC CNI 插件必须是 **v1.21 或更高版本**。 `v1.20.0` 第八代崩溃
 > Intel实例（例如`m8i`）：`aws-node`进入`CrashLoopBackOff`，节点报告
 > `cni plugin not initialized`，受管节点组最终失败并显示
-> `NodeCreationFailure: Unhealthy nodes in the kubernetes cluster`。默认的 Helm 调度值期望这些节点具有以下标签和污点：
+> `NodeCreationFailure: Unhealthy nodes in the kubernetes cluster`。
+
+默认的 Helm 调度值期望这些节点具有以下标签和污点：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 label:
@@ -85,9 +89,9 @@ taint:
 |亚马逊AWS | `s3` |区域显式 HTTPS S3 端点，例如 `https://bucket-name.s3.us-west-2.amazonaws.com` |
 | GCP | `gs` | GCS URL，例如`gs://bucket-name` |
 |天蓝色| `wasb` | Azure Blob 存储 URL，例如 `https://container-name.core.windows.net` |
-| S3兼容，如MinIO | `s3` |以存储桶为路径的端点 URL，例如 `http://minio.example.com:9000/bucket-name`。需要静态密钥；参见[Use S3-compatible object storage](#use-s3-compatible-object-storage)。 |
+| S3兼容，如MinIO | `s3` |以存储桶为路径的端点 URL，例如 `http://minio.example.com:9000/bucket-name`。需要静态密钥；参见[Use S3-compatible object storage](#use-s3-compatible-object-storage)。 |不要在 `sandboxes.juicefs.name` 中使用对象存储子路径。使用简单的名称，例如 `sandbox-juicefs`。 JuiceFS 在配置的存储桶中以该名称存储对象。
 
-不要在 `sandboxes.juicefs.name` 中使用对象存储子路径。使用简单的名称，例如 `sandbox-juicefs`。 JuiceFS 在配置的存储桶中以该名称存储对象。> [!提示]
+> [!提示]
 >
 > 对于 Redis 元数据存储，我们建议将 `maxmemory-policy` 设置为 `noeviction`。这可以避免在内存压力下驱逐 JuiceFS 元数据。监控 Redis 容量并在达到内存限制之前对其进行扩展。
 >
@@ -97,41 +101,50 @@ taint:
 
 沙箱需要额外的秘密材料来进行服务间身份验证和回调签名。
 
-**使用 Kubernetes 机密（推荐）**
+> [tab] 使用 Kubernetes 机密（推荐）
+>
+> 如果您使用 `config.existingSecretName`，请将沙箱密钥添加到相同的 LangSmith 应用程序 Secret。不要直接在 Helm 中设置秘密值。
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> stringData:
+>   sandbox_callback_signing_jwk: '<ed25519-private-jwk>'
+> ```
 
-如果您使用 `config.existingSecretName`，请将沙箱密钥添加到相同的 LangSmith 应用程序 Secret。不要直接在 Helm 中设置秘密值。
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-stringData:
-  sandbox_callback_signing_jwk: '<ed25519-private-jwk>'
-  # Optional, only during service-auth secret rotation:
-```
-
-**使用内联值**
-
-如果 Helm 图表管理您的 LangSmith 应用程序 Secret，请直接在配置文件中设置沙箱机密值。避免将此文件提交给版本控制。
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-sandboxes:
-  callbackSigningJwk: '<ed25519-private-jwk>'
-```
+> [选项卡] 使用内联值
+>
+> 如果 Helm 图表管理您的 LangSmith 应用程序密钥，请直接在配置文件中设置沙箱密钥值。避免将此文件提交给版本控制。
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> sandboxes:
+>   callbackSigningJwk: '<ed25519-private-jwk>'
+> ```
 
 回调签名值必须是 Ed25519 私有 JWK。在升级过程中保持稳定。
+
+要使用 OpenSSL 1.1.1 或更高版本生成 Ed25519 私有 JWK，请运行：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+openssl genpkey -algorithm ED25519 -out callback-signing.pem
+d=$(openssl pkey -in callback-signing.pem -outform DER | tail -c 32 | base64 | tr '+/' '-_' | tr -d '=\n')
+x=$(openssl pkey -in callback-signing.pem -pubout -outform DER | tail -c 32 | base64 | tr '+/' '-_' | tr -d '=\n')
+printf '{"kty":"OKP","crv":"Ed25519","alg":"EdDSA","use":"sig","kid":"sandbox-callback-%s","x":"%s","d":"%s"}\n' "$(openssl rand -hex 8)" "$x" "$d"
+rm callback-signing.pem
+```该命令将 JWK 作为一行 JSON 打印。如果 `openssl genpkey` 报告 `Algorithm ED25519 not found`，则您的 `openssl` 是较旧的 LibreSSL 版本。安装 OpenSSL 并使用它运行命令。
 
 **5.选择代理CA模式**
 
 沙箱出口身份验证代理使用此 CA 进行 TLS 拦截和凭证注入。
 
-该图表支持两种代理 CA 模式：|模式|使用时 |
+该图表支持两种代理 CA 模式：
+
+|模式|使用时 |
 | - | - |
 | `generatedSecret` |您希望 Helm 创建一个自签名的 CA Secret。这是默认设置。 |
 | `existingSecret` |您可以在 LangSmith 图表之外管理 CA 秘密。秘密可以由证书管理器或其他外部进程手动创建。 |
 
 在无需实时集群访问即可渲染清单的 GitOps 工作流程中，首选 `existingSecret`。 `generatedSecret` 模式使用 Helm 的实时 `lookup` 行为在升级时重用生成的 Secret；纯渲染工作流程无法读取实时 Secret，并且可能会在每次渲染上生成新的证书材料。
 
-## 配置 OpenShift
-
-在 Red Hat OpenShift 上，沙箱运行时需要允许特权容器的安全上下文约束 (SCC)。沙箱运行时 Pod 具有主机网络的特权运行，因为它们管理微虚拟机、网络命名空间并在其节点上挂载。其他 LangSmith 组件，包括捆绑的 PostgreSQL、Redis 和 ClickHouse，在默认的 `restricted-v2` SCC 下运行。
+## 配置 OpenShift在 Red Hat OpenShift 上，沙箱运行时需要允许特权容器的安全上下文约束 (SCC)。沙盒运行时 Pod 具有主机网络的特权运行，因为它们管理微虚拟机、网络命名空间并在其节点上挂载。其他 LangSmith 组件，包括捆绑的 PostgreSQL、Redis 和 ClickHouse，在默认的 `restricted-v2` SCC 下运行。
 
 要准备 OpenShift 集群，请在 [enable Sandboxes with Helm](#enable-with-helm) 之前完成以下步骤：
 
@@ -141,7 +154,9 @@ sandboxes:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 oc debug node/<node-name> -- chroot /host ls -l /dev/kvm
-```应用图表期望的标签和污点：
+```
+
+应用图表期望的标签和污点：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 oc label node <node-name> sandbox.langsmith.com/host=true
@@ -152,27 +167,27 @@ oc adm taint node <node-name> sandbox.langsmith.com/host=true:NoSchedule
 
 **2.将特权 SCC 授予沙箱运行时**
 
-仅将内置 `privileged` SCC 授予沙盒运行时服务帐户。该图表将此服务帐户命名为 `<release-fullname>-sandbox-host`，对于名为 `langsmith` 的版本，它是 `langsmith-sandbox-host`：
+仅将内置 `privileged` SCC 授予沙箱运行时服务帐户。该图表将此服务帐户命名为 `<release-fullname>-sandbox-host`，对于名为 `langsmith` 的版本来说，它是 `langsmith-sandbox-host`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 oc adm policy add-scc-to-user privileged -z langsmith-sandbox-host -n <namespace>
-```
-
-JuiceFS 格式化程序作业作为相同的服务帐户运行，因此不需要单独的授权。如果您设置 `sandboxes.sandboxHost.serviceAccount.name`，请将 SCC 授予该名称。
+```JuiceFS 格式化程序作业作为相同的服务帐户运行，因此不需要单独的授权。如果您设置 `sandboxes.sandboxHost.serviceAccount.name`，请将 SCC 授予该名称。
 
 ## 裸机和本地集群的节点要求
 
-在托管云集群上，支持 KVM 的节点池满足了这些要求。在裸机和本地 Kubernetes 集群上，请在[enable Sandboxes with Helm](#enable-with-helm)之前确认每个沙箱节点和集群都满足它们。
+在托管云集群上，支持 KVM 的节点池满足了这些要求。在裸机和本地 Kubernetes 集群上，请在[enable Sandboxes with Helm](#enable-with-helm)之前确认每个沙盒节点和集群都满足它们。
 
-每个沙箱节点需要：* **CPU 架构**：x86-64 (`amd64`)。沙盒运行时不在 Arm 节点上运行。
+每个沙箱节点需要：
+
+* **CPU 架构**：x86-64 (`amd64`)。沙盒运行时不在 Arm 节点上运行。
 * **硬件虚拟化**：在固件中启用虚拟化扩展，加载 KVM 内核模块，并且存在`/dev/kvm`。
 * **cgroup v2**：统一的 cgroup 层次结构，具有可用的 `cpu` 控制器。沙箱运行时使用它来强制执行每个沙箱的 CPU 限制。
 * **TUN/TAP 和 FUSE**：`/dev/net/tun` 用于沙盒网络接口，`/dev/fuse` 用于 JuiceFS 安装。
-* **nftables**：nftables 后端对 `iptables` 的内核支持。沙箱运行时在每个沙箱的网络命名空间内应用其出口规则。
+* **nftables**：带有 nftables 后端的 `iptables` 内核支持。沙箱运行时在每个沙箱的网络命名空间内应用其出口规则。
 * **JuiceFS 缓存的本地磁盘**：`sandboxes.juicefs.hostMount.cacheDirs` 的节点本地路径，默认为 `/var/cache/juicefs`，缓存大小为 50 GiB。
 
 集群需要：* **特权 Pod**：沙盒运行时 Pod 以特权运行，具有主机网络和 `hostPath` 卷。如果您的集群强制执行 Pod 安全准入，请标记 LangSmith 命名空间以允许特权 Pod，例如 `pod-security.kubernetes.io/enforce=privileged`。
-* **节点端口可达性**：LangSmith平台后端通过TCP端口`19190`连接到每个沙箱节点。允许从 LangSmith Pod 到沙箱节点的流量，并将端口保留在专用网络上。
+* **节点端口可达性**：LangSmith 平台后端通过 TCP 端口 `19190` 连接到每个沙箱节点。允许从 LangSmith Pod 到沙箱节点的流量，并将端口保留在专用网络上。
 * **出站访问**：沙箱节点需要对 JuiceFS Redis 元数据存储、对象存储后端以及沙箱调用的目的地进行网络访问。要通过公司 HTTP 代理发送沙箱出口，请设置 `sandboxes.authProxy.httpProxy`。
 
 如果您的集群无法从公共注册表中提取，请镜像沙箱运行时映像。欲了解更多信息，请参阅[Additional images for Sandboxes](/langsmith/self-host-mirroring-images#additional-images-for-sandboxes)。
@@ -219,88 +234,88 @@ stringData:
 >
 > 当您从图表 0.16 升级到 0.17 时，首先耗尽 JuiceFS 卷，然后从您的值中删除 `sandboxes.juicefs.csi` 块。步骤请参见[Upgrade an installation](/langsmith/self-host-upgrades)。
 
-**AWS**
+> [选项卡] AWS
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> images:
+>   sandboxHostImage:
+>     tag: "<same-release-tag-as-your-langsmith-images>"
+>
+> sandboxes:
+>   enabled: true
+>   juicefs:
+>     name: "sandbox-juicefs"
+>     storage: "s3"
+>     bucket: "https://bucket-name.s3.us-west-2.amazonaws.com"
+>     redis:
+>       metaURL: "redis://redis-host:6379/1"
+>   sandboxHost:
+>     deployment:
+>       nodeSelector:
+>         kubernetes.io/arch: "amd64"
+>         sandbox.langsmith.com/host: "true"
+>     serviceAccount:
+>       annotations:
+>         eks.amazonaws.com/role-arn: "<role_arn>"
+> ```
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-images:
-  sandboxHostImage:
-    tag: "<same-release-tag-as-your-langsmith-images>"
+> [选项卡] GCP
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> images:
+>   sandboxHostImage:
+>     tag: "<same-release-tag-as-your-langsmith-images>"
+>
+> sandboxes:
+>   enabled: true
+>   juicefs:
+>     name: "sandbox-juicefs"
+>     storage: "gs"
+>     bucket: "gs://bucket-name"
+>     redis:
+>       metaURL: "redis://redis-host:6379/1"
+>   sandboxHost:
+>     deployment:
+>       nodeSelector:
+>         kubernetes.io/arch: "amd64"
+>         sandbox.langsmith.com/host: "true"
+>     serviceAccount:
+>       annotations:
+>         iam.gke.io/gcp-service-account: "<gsa_name>@<project_id>.iam.gserviceaccount.com"
+> ```
+>
+> 在 GKE 上，`sandbox-host` 在主机网络上运行，并且 GKE 不会向主机网络 Pod 提供工作负载身份，因此注释仅服务于 `juicefs-format` 作业。还要在存储桶上授予沙盒节点池的服务帐户`roles/storage.objectAdmin`，IAM 条件仅限于 JuiceFS 前缀：`sandbox-juicefs/` 下的对象并列出具有该前缀的调用。如果没有该授权，JuiceFS 装载会从 Cloud Storage 获取 403。
 
-sandboxes:
-  enabled: true
-  juicefs:
-    name: "sandbox-juicefs"
-    storage: "s3"
-    bucket: "https://bucket-name.s3.us-west-2.amazonaws.com"
-    redis:
-      metaURL: "redis://redis-host:6379/1"
-  sandboxHost:
-    deployment:
-      nodeSelector:
-        kubernetes.io/arch: "amd64"
-        sandbox.langsmith.com/host: "true"
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: "<role_arn>"
-```
-
-**GCP**
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-images:
-  sandboxHostImage:
-    tag: "<same-release-tag-as-your-langsmith-images>"
-
-sandboxes:
-  enabled: true
-  juicefs:
-    name: "sandbox-juicefs"
-    storage: "gs"
-    bucket: "gs://bucket-name"
-    redis:
-      metaURL: "redis://redis-host:6379/1"
-  sandboxHost:
-    deployment:
-      nodeSelector:
-        kubernetes.io/arch: "amd64"
-        sandbox.langsmith.com/host: "true"
-    serviceAccount:
-      annotations:
-        iam.gke.io/gcp-service-account: "<gsa_name>@<project_id>.iam.gserviceaccount.com"
-```
-
-在 GKE 上，`sandbox-host` 在主机网络上运行，并且 GKE 不会向主机网络 Pod 提供工作负载身份，因此注释仅服务于 `juicefs-format` 作业。同时在存储桶上授予沙箱节点池的服务账户`roles/storage.objectAdmin`，IAM 条件仅限于 JuiceFS 前缀：`sandbox-juicefs/` 下的对象并列出具有该前缀的调用。如果没有该授权，JuiceFS 装载会从 Cloud Storage 获取 403。
-
-**天蓝色**
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-images:
-  sandboxHostImage:
-    tag: "<same-release-tag-as-your-langsmith-images>"
-
-sandboxes:
-  enabled: true
-  juicefs:
-    name: "sandbox-juicefs"
-    storage: "wasb"
-    bucket: "https://container-name.core.windows.net"
-    storageAccountName: "<storage-account-name>"
-    redis:
-      metaURL: "redis://redis-host:6379/1"
-  juicefsFormatJob:
-    labels:
-      azure.workload.identity/use: "true"
-  sandboxHost:
-    deployment:
-      labels:
-        azure.workload.identity/use: "true"
-      nodeSelector:
-        kubernetes.io/arch: "amd64"
-        sandbox.langsmith.com/host: "true"
-    serviceAccount:
-      annotations:
-        azure.workload.identity/client-id: "<client_id>"
-```
+> [选项卡] 天蓝色
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> images:
+>   sandboxHostImage:
+>     tag: "<same-release-tag-as-your-langsmith-images>"
+>
+> sandboxes:
+>   enabled: true
+>   juicefs:
+>     name: "sandbox-juicefs"
+>     storage: "wasb"
+>     bucket: "https://container-name.core.windows.net"
+>     storageAccountName: "<storage-account-name>"
+>     redis:
+>       metaURL: "redis://redis-host:6379/1"
+>   juicefsFormatJob:
+>     labels:
+>       azure.workload.identity/use: "true"
+>   sandboxHost:
+>     deployment:
+>       labels:
+>         azure.workload.identity/use: "true"
+>       nodeSelector:
+>         kubernetes.io/arch: "amd64"
+>         sandbox.langsmith.com/host: "true"
+>     serviceAccount:
+>       annotations:
+>         azure.workload.identity/client-id: "<client_id>"
+> ```
 
 应用更新后的图表：
 
@@ -314,99 +329,99 @@ helm upgrade -i langsmith langchain/langsmith \
 
 ## 使用 Terraform 启用
 
-LangSmith Terraform 模块可以配置所需的 AWS 和 GCP 基础设施并生成相应的 Helm 值。
-
-**AWS**在`modules/aws/infra/terraform.tfvars`中，启用沙箱并配置沙箱节点容量：
-
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-enable_sandboxes = true
-redis_source     = "external"
-
-sandbox_juicefs_redis_instance_type             = "cache.m6g.large"
-sandbox_juicefs_redis_snapshot_retention_limit  = 7
-
-sandbox_host_node_count               = 1
-sandbox_host_instance_types           = ["m5d.metal"]
-sandbox_host_configure_instance_store = true
-
-sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
-```
-
-AWS 沙盒需要 `redis_source = "external"`。 Terraform 模块：
-
-* 为 JuiceFS 沙箱元数据创建专用的 ElastiCache Redis 实例。
-* 使用推荐的 `noeviction` 策略配置该专用实例。
-* 重用LangSmith S3 存储桶进行沙箱对象存储。
-* 创建 JuiceFS 配置 Secret。
-* 添加预期的节点标签和污点。
-
-AWS 设置脚本通过正常的 SSM 支持的设置流程生成沙箱服务身份验证密钥、回调签名 JWK 和专用 JuiceFS Redis 身份验证令牌。如果这些值尚不存在，请在应用 Terraform 之前运行基础设置脚本。
-
-如果您使用 Terraform 应用程序模块部署 Helm 版本，还要在 `modules/aws/app/terraform.tfvars` 中设置沙箱应用程序值：
-
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-enable_sandboxes      = true
-chart_version          = "~0.17.0"
-sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
-```
-
-当`enable_sandboxes = true`时，Terraform应用程序模块需要显式的LangSmithHelm图表v17版本和沙箱运行时图像标签。
-
-运行正常的 AWS 流程：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-make apply
-make init-values
-CHART_VERSION="~0.17.0" make deploy
-```
-
-**GCP**
-
-在 `modules/gcp/infra/terraform.tfvars` 中，启用沙盒并配置标准 GKE 节点池：
-
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-enable_sandboxes = true
-redis_source     = "external"
-
-gke_use_autopilot     = false
-enable_gcp_iam_module = true
-
-sandbox_juicefs_redis_memory_size       = 5
-sandbox_juicefs_redis_high_availability = true
-
-sandbox_host_node_count     = 1
-sandbox_host_min_node_count = 1
-sandbox_host_max_node_count = 5
-sandbox_host_machine_type   = "n2-standard-8"
-
-sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
-```
-
-GCP 沙盒需要 `redis_source = "external"`。 Terraform 模块：* 为 JuiceFS 沙箱元数据创建专用的 Memorystore Redis 实例。
-* 使用推荐的 `noeviction` 策略配置该专用实例。
-* 重用LangSmith GCS 存储桶进行沙箱对象存储。
-* 创建 JuiceFS 配置 Secret。
-* 添加预期的节点标签和污点。
-
-GCP 设置脚本通过正常的 Secret Manager 设置流程生成沙箱服务身份验证密钥和回调签名 JWK。如果这些值尚不存在，请在应用 Terraform 之前运行基础设置脚本。
-
-如果您使用 Terraform 应用程序模块部署 Helm 版本，还要在 `modules/gcp/app/terraform.tfvars` 中设置沙箱应用程序值：
-
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-enable_sandboxes      = true
-chart_version          = "~0.17.0"
-sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
-```
-
-当`enable_sandboxes = true`时，Terraform应用程序模块需要显式的LangSmithHelm图表v17版本和沙箱运行时图像标签。
-
-运行正常的 GCP 流程：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-make apply
-make init-values
-CHART_VERSION="~0.17.0" make deploy
-```
+LangSmith Terraform 模块可以配置所需的 AWS 和 GCP 基础设施并生成相应的 Helm 值。> [选项卡] AWS
+>
+> 在`modules/aws/infra/terraform.tfvars`中，启用沙箱并配置沙箱节点容量：
+>
+> ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> enable_sandboxes = true
+> redis_source     = "external"
+>
+> sandbox_juicefs_redis_instance_type             = "cache.m6g.large"
+> sandbox_juicefs_redis_snapshot_retention_limit  = 7
+>
+> sandbox_host_node_count               = 1
+> sandbox_host_instance_types           = ["m5d.metal"]
+> sandbox_host_configure_instance_store = true
+>
+> sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
+> ```
+>
+> AWS 沙盒需要 `redis_source = "external"`。 Terraform 模块：
+>
+> * 为 JuiceFS 沙箱元数据创建专用的 ElastiCache Redis 实例。
+> * 使用推荐的 `noeviction` 策略配置该专用实例。
+> * 重复使用 LangSmith S3 存储桶进行沙箱对象存储。
+> * 创建 JuiceFS 配置 Secret。
+> * 添加预期的节点标签和污点。
+>
+> AWS 设置脚本通过正常的 SSM 支持的设置流程生成沙盒服务身份验证密钥、回调签名 JWK 和专用 JuiceFS Redis 身份验证令牌。如果这些值尚不存在，请在应用 Terraform 之前运行基础设施设置脚本。
+>
+> 如果您使用 Terraform 应用程序模块部署 Helm 版本，还要在 `modules/aws/app/terraform.tfvars` 中设置沙箱应用程序值：
+>
+> ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> enable_sandboxes      = true
+> chart_version          = "~0.17.0"
+> sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
+> ```
+>
+> 当`enable_sandboxes = true`时，Terraform应用程序模块需要显式的LangSmithHelm图表v17版本和沙箱运行时图像标签。
+>
+> 运行正常的 AWS 流程：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> make apply
+> make init-values
+> CHART_VERSION="~0.17.0" make deploy
+> ```> [选项卡] GCP
+>
+> 在 `modules/gcp/infra/terraform.tfvars` 中，启用沙盒并配置标准 GKE 节点池：
+>
+> ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> enable_sandboxes = true
+> redis_source     = "external"
+>
+> gke_use_autopilot     = false
+> enable_gcp_iam_module = true
+>
+> sandbox_juicefs_redis_memory_size       = 5
+> sandbox_juicefs_redis_high_availability = true
+>
+> sandbox_host_node_count     = 1
+> sandbox_host_min_node_count = 1
+> sandbox_host_max_node_count = 5
+> sandbox_host_machine_type   = "n2-standard-8"
+>
+> sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
+> ```
+>
+> GCP 沙盒需要 `redis_source = "external"`。 Terraform 模块：
+>
+> * 为 JuiceFS 沙箱元数据创建专用的 Memorystore Redis 实例。
+> * 使用推荐的 `noeviction` 策略配置该专用实例。
+> * 重用LangSmith GCS 存储桶进行沙箱对象存储。
+> * 创建 JuiceFS 配置 Secret。
+> * 添加预期的节点标签和污点。
+>
+> GCP 设置脚本通过正常的 Secret Manager 设置流程生成沙盒服务身份验证密钥和回调签名 JWK。如果这些值尚不存在，请在应用 Terraform 之前运行基础设施设置脚本。
+>
+> 如果您使用 Terraform 应用程序模块部署 Helm 版本，还要在 `modules/gcp/app/terraform.tfvars` 中设置沙箱应用程序值：
+>
+> ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> enable_sandboxes      = true
+> chart_version          = "~0.17.0"
+> sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
+> ```
+>
+> 当`enable_sandboxes = true`时，Terraform应用程序模块需要显式的LangSmithHelm图表v17版本和沙箱运行时图像标签。
+>
+> 运行正常的 GCP 流程：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> make apply
+> make init-values
+> CHART_VERSION="~0.17.0" make deploy
+> ```
 
 ## 可选：启用服务 URL
 
@@ -415,9 +430,9 @@ CHART_VERSION="~0.17.0" make deploy
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sandboxes:
   serviceUrlBaseUrl: "https://sandbox-services.example.com"
-```
+```这需要 `*.sandbox-services.example.com` 的通配符 DNS 和 TLS。当 `ingress.enabled` 为 `true` 时，图表还添加通配符入口规则，将这些服务 URL 路由到 LangSmith 平台后端。
 
-这需要 `*.sandbox-services.example.com` 的通配符 DNS 和 TLS。当 `ingress.enabled` 为 `true` 时，图表还添加通配符入口规则，将这些服务 URL 路由到 LangSmith 平台后端。服务 URL 还需要 Ed25519 私有 JWKS，其第一个密钥上具有非空 `kid`。设置`config.signingJwks`，或将`langsmith_signing_jwks`添加到您的[existing LangSmith app Secret](/langsmith/self-host-using-an-existing-secret)。这与 `sandboxes.callbackSigningJwk` 是分开的。密钥生成说明请参见[Configure a signing JWKS](/langsmith/kubernetes#configure-a-signing-jwks)。
+服务 URL 还需要 Ed25519 私有 JWKS，其第一个键上具有非空 `kid`。设置`config.signingJwks`，或将`langsmith_signing_jwks`添加到您的[existing LangSmith app Secret](/langsmith/self-host-using-an-existing-secret)。这与 `sandboxes.callbackSigningJwk` 是分开的。密钥生成说明请参见[Configure a signing JWKS](/langsmith/kubernetes#configure-a-signing-jwks)。
 
 服务 URL 是 [build and edit custom apps with chat](/langsmith/custom-apps#configure-self-hosted-chat) 所必需的，尽管它们对于其他沙箱工作流程是可选的。
 
@@ -436,26 +451,24 @@ sandboxes:
 
 ## 验证安装
 
-升级完成后，验证沙盒运行时 Pod 和 JuiceFS 卷是否已准备就绪：
+升级完成后，验证沙箱运行时 Pod 和 JuiceFS 卷是否已准备就绪：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl rollout status deployment/sandbox-host -n <namespace>
 kubectl get pods,pvc -n <namespace>
 ```
 
-然后运行沙箱冒烟测试：
-
-1. 从公共镜像（例如 Python 镜像）创建沙箱。
+然后运行沙箱冒烟测试：1. 从公共镜像（例如 Python 镜像）创建沙箱。
 2. 在沙箱内启动Python HTTP 服务器。
 3. 在启用内存的情况下对沙箱进行快照。
 4. 从快照创建一个新的沙箱。
 5. 验证 HTTP 服务器是否仍在恢复的沙箱中运行。
 
-## 升级注意事项沙盒运行时映像更改通过 `sandbox-host` Kubernetes 部署推出。该图表默认使用无浪涌滚动更新策略，因此一次更换一台主机。
+## 升级注意事项
 
-在正常的 Helm 升级期间，终止主机停止接受新的 Sandbox，尝试将每个正在运行的 Sandbox 的 VM 内存保存到 JuiceFS，然后在 pod 退出之前停止这些 VM。此关闭受 `sandbox-host` Pod 终止宽限期限制，默认为 300 秒。这不是实时迁移：该主机上的沙箱在重新启动期间会中断。
+沙盒运行时映像更改通过 `sandbox-host` Kubernetes 部署推出。该图表默认使用无浪涌滚动更新策略，因此一次更换一台主机。
 
-沙箱不会主动重新启动。当用户或 API 操作启动沙箱或请求路径唤醒沙箱时，它们会再次启动。然后，LangSmith 将沙箱放置在可用主机上，并在关闭捕获完成时从保存的内存映像中恢复。如果内存映像不存在或不完整，沙盒将从保存的根文件系统启动。
+在正常的 Helm 升级期间，终止主机停止接受新的 Sandbox，尝试将每个正在运行的 Sandbox 的 VM 内存保存到 JuiceFS，然后在 pod 退出之前停止这些 VM。此关闭受 `sandbox-host` Pod 终止宽限期限制，默认为 300 秒。这不是实时迁移：该主机上的沙箱在重新启动期间会中断。沙箱不会主动重新启动。当用户或 API 操作启动沙箱或请求路径唤醒沙箱时，它们会再次启动。然后，LangSmith 将沙箱放置在可用主机上，并在关闭捕获完成时从保存的内存映像中恢复。如果内存映像不存在或不完整，沙盒将从保存的根文件系统启动。
 
 ***
 

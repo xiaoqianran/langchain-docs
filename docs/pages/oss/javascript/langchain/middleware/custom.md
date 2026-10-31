@@ -8,11 +8,11 @@ Build custom middleware by implementing hooks that run at specific points in the
 
 Middleware provides two styles of hooks to intercept agent execution:
 
-> **[Node-style hooks](#node-style-hooks)**
+> [card] [Node-style hooks](#node-style-hooks)
 >
 > Run sequentially at specific execution points.
 
-> **[Wrap-style hooks](#wrap-style-hooks)**
+> [card] [Wrap-style hooks](#wrap-style-hooks)
 >
 > Run around each model or tool call.
 
@@ -492,7 +492,7 @@ const agent = createAgent({
 });
 ```
 
-> **Execution flow**
+> [accordion] Execution flow
 >
 > **Before hooks run in order:**
 >
@@ -815,59 +815,59 @@ const toolMonitoringMiddleware = createMiddleware({
 
 When working with Anthropic models, use structured content blocks with cache control directives to cache large system prompts:
 
-**Decorator**
+> [tab] Decorator
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+> from langchain.messages import SystemMessage
+> from typing import Callable
+>
+>
+> @wrap_model_call
+> def add_cached_context(
+>     request: ModelRequest,
+>     handler: Callable[[ModelRequest], ModelResponse],
+> ) -> ModelResponse:
+>     # Always work with content blocks
+>     new_content = list(request.system_message.content_blocks) + [
+>         {
+>             "type": "text",
+>             "text": "Here is a large document to analyze:\n\n<document>...</document>",
+>             # content up until this point is cached
+>             "cache_control": {"type": "ephemeral"}
+>         }
+>     ]
+>
+>     new_system_message = SystemMessage(content=new_content)
+>     return handler(request.override(system_message=new_system_message))
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-from langchain.messages import SystemMessage
-from typing import Callable
-
-
-@wrap_model_call
-def add_cached_context(
-    request: ModelRequest,
-    handler: Callable[[ModelRequest], ModelResponse],
-) -> ModelResponse:
-    # Always work with content blocks
-    new_content = list(request.system_message.content_blocks) + [
-        {
-            "type": "text",
-            "text": "Here is a large document to analyze:\n\n<document>...</document>",
-            # content up until this point is cached
-            "cache_control": {"type": "ephemeral"}
-        }
-    ]
-
-    new_system_message = SystemMessage(content=new_content)
-    return handler(request.override(system_message=new_system_message))
-```
-
-**Class**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-from langchain.messages import SystemMessage
-from typing import Callable
-
-
-class CachedContextMiddleware(AgentMiddleware):
-    def wrap_model_call(
-        self,
-        request: ModelRequest,
-        handler: Callable[[ModelRequest], ModelResponse],
-    ) -> ModelResponse:
-        # Always work with content blocks
-        new_content = list(request.system_message.content_blocks) + [
-            {
-                "type": "text",
-                "text": "Here is a large document to analyze:\n\n<document>...</document>",
-                "cache_control": {"type": "ephemeral"}  # This content will be cached
-            }
-        ]
-
-        new_system_message = SystemMessage(content=new_content)
-        return handler(request.override(system_message=new_system_message))
-```
+> [tab] Class
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
+> from langchain.messages import SystemMessage
+> from typing import Callable
+>
+>
+> class CachedContextMiddleware(AgentMiddleware):
+>     def wrap_model_call(
+>         self,
+>         request: ModelRequest,
+>         handler: Callable[[ModelRequest], ModelResponse],
+>     ) -> ModelResponse:
+>         # Always work with content blocks
+>         new_content = list(request.system_message.content_blocks) + [
+>             {
+>                 "type": "text",
+>                 "text": "Here is a large document to analyze:\n\n<document>...</document>",
+>                 "cache_control": {"type": "ephemeral"}  # This content will be cached
+>             }
+>         ]
+>
+>         new_system_message = SystemMessage(content=new_content)
+>         return handler(request.override(system_message=new_system_message))
+> ```
 
 **Notes:**
 

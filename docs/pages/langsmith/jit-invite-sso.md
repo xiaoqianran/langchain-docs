@@ -24,40 +24,40 @@ The `invites_enabled` setting controls manual user invitations. When enabled, [o
 
 You can update these settings in the LangSmith UI or with the LangSmith API:
 
-**UI**
+> [tab] UI
+>
+> In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-jit-invite-sso):
+>
+> 1. Navigate to **Settings** > **Organization** > **Access and Security** > **General**.
+> 2. Toggle **Enable JIT provisioning** and **Allow invites** as needed.
+> 3. [Configure SSO default workspaces and roles](#configure-default-sso-settings) in **Settings** > **SSO configuration**.
 
-In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-jit-invite-sso):
-
-1. Navigate to **Settings** > **Organization** > **Access and Security** > **General**.
-2. Toggle **Enable JIT provisioning** and **Allow invites** as needed.
-3. [Configure SSO default workspaces and roles](#configure-default-sso-settings) in **Settings** > **SSO configuration**.
-
-**API**
-
-Update organization settings programmatically using the [Update organization info](/langsmith/smith-api/orgs/update-current-organization-info) endpoint:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl -X PATCH https://api.smith.langchain.com/api/v1/organizations/current/info \
-  -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jit_provisioning_enabled": true,
-    "invites_enabled": true
-  }'
-```
-
-Response includes updated current organization configuration:
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "id": "org-uuid",
-  "display_name": "My Organization",
-  "jit_provisioning_enabled": true,
-  "invites_enabled": true,
-  "sso_login_slug": "my-org",
-  ...
-}
-```
+> [tab] API
+>
+> Update organization settings programmatically using the [Update organization info](/langsmith/smith-api/orgs/update-current-organization-info) endpoint:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl -X PATCH https://api.smith.langchain.com/api/v1/organizations/current/info \
+>   -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "jit_provisioning_enabled": true,
+>     "invites_enabled": true
+>   }'
+> ```
+>
+> Response includes updated current organization configuration:
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "id": "org-uuid",
+>   "display_name": "My Organization",
+>   "jit_provisioning_enabled": true,
+>   "invites_enabled": true,
+>   "sso_login_slug": "my-org",
+>   ...
+> }
+> ```
 
 > [!NOTE]
 >

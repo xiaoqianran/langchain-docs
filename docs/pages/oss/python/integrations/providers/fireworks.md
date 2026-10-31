@@ -20,11 +20,11 @@ Get an API key from [fireworks.ai](https://app.fireworks.ai/login) and set the `
 
 ## Model interfaces
 
-> **[ChatFireworks](/oss/python/integrations/chat/fireworks)**
+> [card] [ChatFireworks](/oss/python/integrations/chat/fireworks)
 >
 > Interface to chat models hosted on Fireworks AI.
 
-> **[FireworksEmbeddings](/oss/python/integrations/embeddings/fireworks)**
+> [card] [FireworksEmbeddings](/oss/python/integrations/embeddings/fireworks)
 >
 > Embedding models served by Fireworks AI.
 

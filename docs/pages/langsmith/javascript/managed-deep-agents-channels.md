@@ -75,11 +75,11 @@ A channel receives messages that start agent runs and delivers responses. An [MC
 
 ## Supported channels
 
-> **[Slack](/langsmith/javascript/managed-deep-agents-channels-slack)**
+> [card] [Slack](/langsmith/javascript/managed-deep-agents-channels-slack)
 >
 > Start runs from Slack mentions, direct messages, and thread replies.
 
-> **[HTTP](/langsmith/javascript/managed-deep-agents-channels-http)**
+> [card] [HTTP](/langsmith/javascript/managed-deep-agents-channels-http)
 >
 > Start runs from any service that can send a JSON webhook.
 

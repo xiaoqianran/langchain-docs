@@ -10,7 +10,7 @@ LangSmith 可以轻松地将 [feedback](/langsmith/observability-concepts#feedba
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T3⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T3⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 使用 `create_feedback()` / `createFeedback`
 
@@ -104,7 +104,7 @@ await client.createFeedback({
 
 ## 从用户界面收集反馈
 
-如果您需要在不公开 API 密钥的情况下从浏览器或其他客户端环境收集反馈，请使用**预签名反馈令牌**。它们会生成一个范围为特定运行和反馈密钥的 URL，客户端可以直接调用该 URL。
+如果您需要在不公开 API 密钥的情况下从浏览器或其他客户端环境收集反馈，请使用**预签名反馈令牌**。它们生成一个范围为特定运行的 URL 和客户端可以直接调用的反馈密钥。
 
 完整指南请参见[Collect feedback with presigned URLs](/langsmith/presigned-feedback-tokens)。
 

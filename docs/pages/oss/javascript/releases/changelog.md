@@ -125,11 +125,11 @@ const processState = (state: typeof AgentState.State) => {
 
 The existing `Annotation` and zod-based API continues to work unchanged - `StateSchema` is an additional option for those who prefer schema-first definitions.
 
-> **[Learn more about StateSchema](/oss/javascript/langgraph/graph-api#schema)**
+> [card] [Learn more about StateSchema](/oss/javascript/langgraph/graph-api#schema)
 >
 > See the full documentation for defining graph state with StateSchema, ReducedValue, and UntrackedValue.
 
-> **[Learn about type utilities](/oss/javascript/langgraph/graph-api#type-utilities)**
+> [card] [Learn about type utilities](/oss/javascript/langgraph/graph-api#type-utilities)
 >
 > Use GraphNode and ConditionalEdgeRouter to type functions outside the graph builder.
 

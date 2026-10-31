@@ -148,53 +148,53 @@ interface AgentState {
 
 ### Render messages and output
 
-> **[Markdown messages](/oss/python/langchain/frontend/markdown-messages)**
+> [card] [Markdown messages](/oss/python/langchain/frontend/markdown-messages)
 >
 > Parse and render streamed markdown with proper formatting and code highlighting.
 
-> **[Structured output](/oss/python/langchain/frontend/structured-output)**
+> [card] [Structured output](/oss/python/langchain/frontend/structured-output)
 >
 > Render typed agent responses as custom UI components instead of plain text.
 
-> **[Reasoning tokens](/oss/python/langchain/frontend/reasoning-tokens)**
+> [card] [Reasoning tokens](/oss/python/langchain/frontend/reasoning-tokens)
 >
 > Display model thinking processes in collapsible blocks.
 
-> **[Generative UI](/oss/python/langchain/frontend/generative-ui-overview)**
+> [card] [Generative UI](/oss/python/langchain/frontend/generative-ui-overview)
 >
 > Render agent-generated interfaces across the spectrum from controlled to declarative to open-ended.
 
 ### Display agent actions
 
-> **[Tool calling](/oss/python/langchain/frontend/tool-calling)**
+> [card] [Tool calling](/oss/python/langchain/frontend/tool-calling)
 >
 > Show tool calls as rich, type-safe UI cards with loading and error states.
 
-> **[Headless tools](/oss/python/langchain/frontend/headless-tools)**
+> [card] [Headless tools](/oss/python/langchain/frontend/headless-tools)
 >
 > Run browser and device APIs on the client while keeping typed tool schemas on the agent.
 
-> **[Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop)**
+> [card] [Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop)
 >
 > Pause the agent for human review with approve, reject, and edit workflows.
 
 ### Manage conversations
 
-> **[Branching chat](/oss/python/langchain/frontend/branching-chat)**
+> [card] [Branching chat](/oss/python/langchain/frontend/branching-chat)
 >
 > Edit messages, regenerate responses, and navigate conversation branches.
 
-> **[Message queues](/oss/python/langchain/frontend/message-queues)**
+> [card] [Message queues](/oss/python/langchain/frontend/message-queues)
 >
 > Queue multiple messages while the agent processes them sequentially.
 
 ### Advanced streaming
 
-> **[Join & rejoin streams](/oss/python/langchain/frontend/join-rejoin)**
+> [card] [Join & rejoin streams](/oss/python/langchain/frontend/join-rejoin)
 >
 > Disconnect from and reconnect to running agent streams without losing progress.
 
-> **[Time travel](/oss/python/langchain/frontend/time-travel)**
+> [card] [Time travel](/oss/python/langchain/frontend/time-travel)
 >
 > Inspect, navigate, and resume from any checkpoint in the conversation history.
 
@@ -218,15 +218,15 @@ framework. Component libraries can own the presentation layer while LangChain's
 SDK owns the agent runtime state, resumability, interrupts, and checkpoint
 semantics underneath.
 
-> **[AI Elements](/oss/python/langchain/frontend/integrations/ai-elements)**
+> [card] [AI Elements](/oss/python/langchain/frontend/integrations/ai-elements)
 >
 > Composable shadcn/ui components for AI chat: `Conversation`, `Message`, `Tool`, `Reasoning`.
 
-> **[assistant-ui](/oss/python/langchain/frontend/integrations/assistant-ui)**
+> [card] [assistant-ui](/oss/python/langchain/frontend/integrations/assistant-ui)
 >
 > Headless React framework with built-in thread management, branching, and attachment support.
 
-> **[OpenUI](/oss/python/langchain/frontend/integrations/openui)**
+> [card] [OpenUI](/oss/python/langchain/frontend/integrations/openui)
 >
 > Generative UI library for data-rich reports and dashboards using the openui-lang component DSL.
 

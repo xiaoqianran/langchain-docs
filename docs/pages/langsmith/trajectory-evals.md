@@ -10,13 +10,13 @@ Many agent behaviors only emerge when using a real LLM, such as which tool the a
 
 AgentEvals allows you to evaluate the trajectory of your agent (the exact sequence of messages, including tool calls) by performing a *trajectory match* or by using an *LLM judge*:
 
-> **[Trajectory match](#trajectory-match-evaluator)**
+> [card] [Trajectory match](#trajectory-match-evaluator)
 >
 > Hard-code a reference trajectory for a given input and validate the run via a step-by-step comparison.
 >
 > Ideal for testing well-defined workflows where you know the expected behavior. Use when you have specific expectations about which tools should be called and in what order. This approach is deterministic, fast, and cost-effective since it doesn't require additional LLM calls.
 
-> **[LLM-as-judge](#llm-as-judge-evaluator)**
+> [card] [LLM-as-judge](#llm-as-judge-evaluator)
 >
 > Use an LLM to qualitatively validate your agent's execution trajectory. The "judge" LLM reviews the agent's decisions against a prompt rubric (which can include a reference trajectory).
 >

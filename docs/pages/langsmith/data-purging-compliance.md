@@ -29,54 +29,54 @@ For detailed information about data retention configuration and management, plea
 
 Organization Admins and Operators (`organization:manage`) can configure retention for any workspace. Workspace Admins can configure their own workspace (`workspaces:manage`). For a full permissions reference, see [Organization and workspace operations](/langsmith/organization-workspace-operations).
 
-**UI**
+> [tab] UI
+>
+> In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-purging-compliance):
+>
+> 1. Navigate to **Settings** at the bottom of the page.
+> 2. Select **Usage configuration** from the left-hand menu.
+> 3. Find the workspace in the list that you would like to configure.
+> 4. Click on the value under the **Data retention policy** column for that workspace.
+> 5. On the **workspace usage configurations** modal, customize the extended policy using the dropdown for **Extended - All traces are retained for** option. Available durations for SaaS customers are: 30d, 60d, 90d, 120d, 150d, and 180d (maximum as of September 14, 2026). Self-hosted deployments are not subject to this cap.
+> 6. Select **Save**.
 
-In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-purging-compliance):
-
-1. Navigate to **Settings** at the bottom of the page.
-2. Select **Usage configuration** from the left-hand menu.
-3. Find the workspace in the list that you would like to configure.
-4. Click on the value under the **Data retention policy** column for that workspace.
-5. On the **workspace usage configurations** modal, customize the extended policy using the dropdown for **Extended - All traces are retained for** option. Available durations for SaaS customers are: 30d, 60d, 90d, 120d, 150d, and 180d (maximum as of September 14, 2026). Self-hosted deployments are not subject to this cap.
-6. Select **Save**.
-
-**API**
-
-To read current settings:
-
-**Organization level** (`organization:manage`)
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl -X GET "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
-  -H "x-api-key: YOUR_API_KEY"
-```
-
-**Workspace level** (`workspaces:manage`)
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl -X GET "https://api.smith.langchain.com/api/v1/ttl-settings" \
-  -H "x-api-key: YOUR_API_KEY"
-```
-
-To update the retention period, set `resource_type` to `"run"` for traces and `ttl_days` to your desired duration. Available durations for SaaS customers are: 30, 60, 90, 120, 150, and 180 days (maximum as of September 14, 2026).
-
-**Organization level** (`organization:manage`)
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl -X PUT "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
-  -H "x-api-key: YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"resource_type": "run", "ttl_days": 90}'
-```
-
-**Workspace level** (`workspaces:manage`)
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl -X PUT "https://api.smith.langchain.com/api/v1/ttl-settings" \
-  -H "x-api-key: YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"resource_type": "run", "ttl_days": 90}'
-```
+> [tab] API
+>
+> To read current settings:
+>
+> **Organization level** (`organization:manage`)
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl -X GET "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
+>   -H "x-api-key: YOUR_API_KEY"
+> ```
+>
+> **Workspace level** (`workspaces:manage`)
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl -X GET "https://api.smith.langchain.com/api/v1/ttl-settings" \
+>   -H "x-api-key: YOUR_API_KEY"
+> ```
+>
+> To update the retention period, set `resource_type` to `"run"` for traces and `ttl_days` to your desired duration. Available durations for SaaS customers are: 30, 60, 90, 120, 150, and 180 days (maximum as of September 14, 2026).
+>
+> **Organization level** (`organization:manage`)
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl -X PUT "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
+>   -H "x-api-key: YOUR_API_KEY" \
+>   -H "Content-Type: application/json" \
+>   -d '{"resource_type": "run", "ttl_days": 90}'
+> ```
+>
+> **Workspace level** (`workspaces:manage`)
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl -X PUT "https://api.smith.langchain.com/api/v1/ttl-settings" \
+>   -H "x-api-key: YOUR_API_KEY" \
+>   -H "Content-Type: application/json" \
+>   -d '{"resource_type": "run", "ttl_days": 90}'
+> ```
 
 ### Workspace-level extended retention for self-hosted
 

@@ -109,7 +109,7 @@ const agent = createAgent({
 });
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **model** `string | BaseChatModel` *required*
 >
@@ -149,7 +149,7 @@ const agent = createAgent({
 >
 > Default: `"I'm sorry, but I can't comply with that request. It was flagged for {categories}."`
 
-> **Full example**
+> [accordion] Full example
 >
 > The middleware integrates OpenAI's moderation endpoint to check content at different stages:
 >

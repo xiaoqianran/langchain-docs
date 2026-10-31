@@ -278,7 +278,7 @@ Additionally, there are other ways to evaluate data besides in this "offline" ma
 
 ## Reference code
 
-> **Click to see a consolidated code snippet**
+> [accordion] Click to see a consolidated code snippet
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import openai

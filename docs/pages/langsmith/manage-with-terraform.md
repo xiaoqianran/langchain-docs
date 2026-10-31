@@ -205,7 +205,7 @@ resource "langsmith_alert_rule" "error_rate" {
 
 The full list of resources and data sources—with every argument and attribute—is published and kept in sync on the Terraform Registry:
 
-> **[LangSmith provider on the Terraform Registry](https://registry.terraform.io/providers/langchain-ai/langsmith/latest/docs)**
+> [card] [LangSmith provider on the Terraform Registry](https://registry.terraform.io/providers/langchain-ai/langsmith/latest/docs)
 >
 > Browse the complete reference for all resources and data sources.
 

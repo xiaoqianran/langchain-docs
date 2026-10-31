@@ -279,7 +279,7 @@ response = result.messages.at(-1)?.content;
 console.log(response); // "You are Bob!"
 ```
 
-> **[View example trace](https://smith.langchain.com/public/b512e509-c58f-4a96-8ee3-9fe060257d62/r)**
+> [card] [View example trace](https://smith.langchain.com/public/b512e509-c58f-4a96-8ee3-9fe060257d62/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -337,19 +337,19 @@ const result = await agent.invoke({
 
 With [short-term memory](#usage) enabled, long conversations can exceed the LLM's context window. Common solutions are:
 
-> **[Trim messages](#trim-messages)**
+> [card] [Trim messages](#trim-messages)
 >
 > Remove first or last N messages (before calling LLM)
 
-> **[Delete messages](#delete-messages)**
+> [card] [Delete messages](#delete-messages)
 >
 > Delete messages from LangGraph state permanently
 
-> **[Summarize messages](#summarize-messages)**
+> [card] [Summarize messages](#summarize-messages)
 >
 > Summarize earlier messages in the history and replace them with a summary
 
-> **Custom strategies**
+> [card] Custom strategies
 >
 > Custom strategies (e.g., message filtering, etc.)
 

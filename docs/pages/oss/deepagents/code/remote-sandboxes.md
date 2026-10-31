@@ -12,170 +12,170 @@ For a deeper look at sandbox architecture, integration patterns, and security be
 
 Each built-in provider ships as an optional extra. Install one from within a session with `/install`, or from the shell with `dcode --install`. Third-party providers such as E2B install as packages with the `--package` flag:
 
-**LangSmith**
+> [tab] LangSmith
+>
+> Included by default when installing `deepagents-code`. No extra installation needed.
 
-Included by default when installing `deepagents-code`. No extra installation needed.
+> [tab] AgentCore
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /install agentcore
+> ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --install agentcore
+> ```
 
-**AgentCore**
+> [tab] Daytona
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /install daytona
+> ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --install daytona
+> ```
 
-```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/install agentcore
-```
+> [tab] Modal
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /install modal
+> ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --install modal
+> ```
 
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --install agentcore
-```
+> [tab] Runloop
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /install runloop
+> ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --install runloop
+> ```
 
-**Daytona**
+> [tab] Vercel
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /install vercel
+> ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --install vercel
+> ```
 
-```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/install daytona
-```
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --install daytona
-```
-
-**Modal**
-
-```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/install modal
-```
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --install modal
-```
-
-**Runloop**
-
-```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/install runloop
-```
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --install runloop
-```
-
-**Vercel**
-
-```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/install vercel
-```
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --install vercel
-```
-
-**E2B**
-
-E2B is a [third-party provider](#third-party-providers) published by the `langchain-e2b` package. Install it as a package, not a `deepagents-code` extra:
-
-```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/install langchain-e2b --package
-```
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --install langchain-e2b --package
-```
+> [tab] E2B
+>
+> E2B is a [third-party provider](#third-party-providers) published by the `langchain-e2b` package. Install it as a package, not a `deepagents-code` extra:
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /install langchain-e2b --package
+> ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --install langchain-e2b --package
+> ```
 
 To install support for every built-in provider at once, use the `all-sandboxes` extra: `/install all-sandboxes` in a session, or `dcode --install all-sandboxes` from the shell. The `all-sandboxes` extra does not include third-party providers such as E2B.
 
 **2. Set provider credentials**
 
-**LangSmith**
+> [tab] LangSmith
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export LANGSMITH_API_KEY="your-key"
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_API_KEY="your-key"
-```
+> [tab] AgentCore
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export AWS_ACCESS_KEY_ID="your-key"
+> export AWS_SECRET_ACCESS_KEY="your-secret"
+> export AWS_REGION="us-west-2"
+>
+> # Only when using temporary/STS credentials:
+> export AWS_SESSION_TOKEN="session-token"
+> ```
 
-**AgentCore**
+> [tab] Daytona
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DAYTONA_API_KEY="your-key"
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export AWS_ACCESS_KEY_ID="your-key"
-export AWS_SECRET_ACCESS_KEY="your-secret"
-export AWS_REGION="us-west-2"
+> [tab] Modal
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> modal setup
+> ```
 
-# Only when using temporary/STS credentials:
-export AWS_SESSION_TOKEN="session-token"
-```
+> [tab] Runloop
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export RUNLOOP_API_KEY="your-key"
+> ```
 
-**Daytona**
+> [tab] Vercel
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export VERCEL_TOKEN="your-token"
+> export VERCEL_PROJECT_ID="your-project-id"
+> export VERCEL_TEAM_ID="your-team-id"
+> ```
+>
+> When running on Vercel, [OIDC](https://vercel.com/docs/oidc) credentials are used automatically instead.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DAYTONA_API_KEY="your-key"
-```
-
-**Modal**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-modal setup
-```
-
-**Runloop**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export RUNLOOP_API_KEY="your-key"
-```
-
-**Vercel**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export VERCEL_TOKEN="your-token"
-export VERCEL_PROJECT_ID="your-project-id"
-export VERCEL_TEAM_ID="your-team-id"
-```
-
-When running on Vercel, [OIDC](https://vercel.com/docs/oidc) credentials are used automatically instead.
-
-**E2B**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export E2B_API_KEY="your-key"
-```
+> [tab] E2B
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export E2B_API_KEY="your-key"
+> ```
 
 **3. Run Deep Agents Code with a sandbox**
 
-**LangSmith**
+> [tab] LangSmith
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox langsmith
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox langsmith
-```
+> [tab] AgentCore
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox agentcore
+> ```
 
-**AgentCore**
+> [tab] Daytona
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox daytona
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox agentcore
-```
+> [tab] Modal
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox modal
+> ```
 
-**Daytona**
+> [tab] Runloop
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox runloop
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox daytona
-```
+> [tab] Vercel
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox vercel
+> ```
 
-**Modal**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox modal
-```
-
-**Runloop**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox runloop
-```
-
-**Vercel**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox vercel
-```
-
-**E2B**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox e2b
-```
+> [tab] E2B
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox e2b
+> ```
 
 ## Sandbox flags and examples
 
@@ -250,7 +250,7 @@ dcode --sandbox e2b
 
 If you pass a `--sandbox` name that is not installed or declared, Deep Agents Code lists the available providers and explains how to install or configure the missing one.
 
-> **Publishing a sandbox provider**
+> [accordion] Publishing a sandbox provider
 >
 > To distribute a provider so users can run `dcode --sandbox <name>` after installing your package, implement a `SandboxProvider` subclass and register it under the `deepagents_code.sandbox_providers` entry-point group.
 >

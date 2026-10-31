@@ -56,32 +56,32 @@ LangSmith uses PostgreSQL as the primary store for operational and transactional
 
 We strongly recommend running Postgres on a managed service in production. Managed services provide built-in automated backups, PITR, and HA failover. For setup, refer to [Connect external Postgres](/langsmith/self-host-external-postgres).
 
-**AWS**
+> [tab] AWS
+>
+> Run [Amazon RDS for PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.CreatingConnecting.PostgreSQL.html) or [Aurora PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html) in Multi-AZ mode.
+>
+> * **Backups:** Enable [automated backups](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html) with a retention window that matches your compliance posture (7 to 35 days is typical).
+> * **PITR:** Automated backups include PITR within the retention window.
+> * **HA:** Multi-AZ deployments maintain a synchronous standby in a second availability zone with automatic failover.
+> * **Cross-region DR:** For Aurora, configure an [Aurora Global Database](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html). For RDS, use [cross-region read replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.XRgn.html) or copy automated snapshots to a secondary region.
+> * **Encryption:** Enable storage encryption with a customer-managed [KMS](https://aws.amazon.com/kms/) key.
 
-Run [Amazon RDS for PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.CreatingConnecting.PostgreSQL.html) or [Aurora PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html) in Multi-AZ mode.
+> [tab] GCP
+>
+> Run [Cloud SQL for PostgreSQL](https://cloud.google.com/sql/docs/postgres) with [high availability](https://cloud.google.com/sql/docs/postgres/high-availability) enabled.
+>
+> * **Backups:** Enable [automated backups](https://cloud.google.com/sql/docs/postgres/backup-recovery/backups) with PITR.
+> * **HA:** Regional instances replicate synchronously to a standby in a second zone.
+> * **Cross-region DR:** Configure [cross-region read replicas](https://cloud.google.com/sql/docs/postgres/replication/cross-region-replicas) and promote them on regional failure.
+> * **Encryption:** Use [Cloud KMS customer-managed encryption keys](https://docs.cloud.google.com/sql/docs/postgres/cmek).
 
-* **Backups:** Enable [automated backups](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html) with a retention window that matches your compliance posture (7 to 35 days is typical).
-* **PITR:** Automated backups include PITR within the retention window.
-* **HA:** Multi-AZ deployments maintain a synchronous standby in a second availability zone with automatic failover.
-* **Cross-region DR:** For Aurora, configure an [Aurora Global Database](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html). For RDS, use [cross-region read replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.XRgn.html) or copy automated snapshots to a secondary region.
-* **Encryption:** Enable storage encryption with a customer-managed [KMS](https://aws.amazon.com/kms/) key.
-
-**GCP**
-
-Run [Cloud SQL for PostgreSQL](https://cloud.google.com/sql/docs/postgres) with [high availability](https://cloud.google.com/sql/docs/postgres/high-availability) enabled.
-
-* **Backups:** Enable [automated backups](https://cloud.google.com/sql/docs/postgres/backup-recovery/backups) with PITR.
-* **HA:** Regional instances replicate synchronously to a standby in a second zone.
-* **Cross-region DR:** Configure [cross-region read replicas](https://cloud.google.com/sql/docs/postgres/replication/cross-region-replicas) and promote them on regional failure.
-* **Encryption:** Use [Cloud KMS customer-managed encryption keys](https://docs.cloud.google.com/sql/docs/postgres/cmek).
-
-**Azure**
-
-Run [Azure Database for PostgreSQL Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/overview) with zone-redundant HA.
-
-* **Backups:** Enable [automatic backups](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-backup-restore) with geo-redundant backup storage.
-* **HA:** Zone-redundant HA maintains a synchronous standby in a different availability zone.
-* **Cross-region DR:** Use [read replicas](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-read-replicas) in a secondary region for promotion on regional failure.
+> [tab] Azure
+>
+> Run [Azure Database for PostgreSQL Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/overview) with zone-redundant HA.
+>
+> * **Backups:** Enable [automatic backups](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-backup-restore) with geo-redundant backup storage.
+> * **HA:** Zone-redundant HA maintains a synchronous standby in a different availability zone.
+> * **Cross-region DR:** Use [read replicas](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-read-replicas) in a secondary region for promotion on regional failure.
 
 ### In-cluster Postgres
 
@@ -118,26 +118,26 @@ For an example replicated configuration, see the [replicated ClickHouse example]
 
 If you have enabled [blob storage](/langsmith/self-host-blob-storage) (recommended for production), your run inputs, outputs, errors, manifests, extras, events, and attachments live in S3, GCS, or Azure Blob Storage. Cloud blob services are durable by design, but you should still configure protection against accidental deletion and regional outages.
 
-**AWS**
+> [tab] AWS
+>
+> * Enable [S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html) to protect against accidental deletes and overwrites.
+> * Enable [MFA Delete](https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiFactorAuthenticationDelete.html) for high-security buckets.
+> * For cross-region DR, configure [Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html) to a bucket in your DR region.
+> * Use [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) for write-once-read-many (WORM) retention.
+> * Encrypt with [SSE-KMS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html). LangSmith supports passing a specific KMS key ARN, see [KMS encryption header support](/langsmith/self-host-blob-storage#kms-encryption-header-support).
 
-* Enable [S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html) to protect against accidental deletes and overwrites.
-* Enable [MFA Delete](https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiFactorAuthenticationDelete.html) for high-security buckets.
-* For cross-region DR, configure [Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html) to a bucket in your DR region.
-* Use [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) for write-once-read-many (WORM) retention.
-* Encrypt with [SSE-KMS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html). LangSmith supports passing a specific KMS key ARN, see [KMS encryption header support](/langsmith/self-host-blob-storage#kms-encryption-header-support).
+> [tab] GCP
+>
+> * Enable [Object Versioning](https://cloud.google.com/storage/docs/object-versioning) on the bucket.
+> * Use [dual-region or multi-region buckets](https://cloud.google.com/storage/docs/locations) for geo-redundancy.
+> * For cross-region DR, use [Storage Transfer Service](https://cloud.google.com/storage-transfer-service) or [Object Lifecycle Management](https://cloud.google.com/storage/docs/lifecycle) with replication policies.
+> * Encrypt with [Customer-Managed Encryption Keys (CMEK)](https://cloud.google.com/storage/docs/encryption/customer-managed-keys).
 
-**GCP**
-
-* Enable [Object Versioning](https://cloud.google.com/storage/docs/object-versioning) on the bucket.
-* Use [dual-region or multi-region buckets](https://cloud.google.com/storage/docs/locations) for geo-redundancy.
-* For cross-region DR, use [Storage Transfer Service](https://cloud.google.com/storage-transfer-service) or [Object Lifecycle Management](https://cloud.google.com/storage/docs/lifecycle) with replication policies.
-* Encrypt with [Customer-Managed Encryption Keys (CMEK)](https://cloud.google.com/storage/docs/encryption/customer-managed-keys).
-
-**Azure**
-
-* Choose a [redundancy tier](https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy) that matches your DR objectives. Use **RA-GRS** or **RA-GZRS** for cross-region read access during a primary region outage.
-* Enable [soft delete and blob versioning](https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-blob-overview).
-* Encrypt with a [customer-managed key in Key Vault](https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview).
+> [tab] Azure
+>
+> * Choose a [redundancy tier](https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy) that matches your DR objectives. Use **RA-GRS** or **RA-GZRS** for cross-region read access during a primary region outage.
+> * Enable [soft delete and blob versioning](https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-blob-overview).
+> * Encrypt with a [customer-managed key in Key Vault](https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview).
 
 > [!WARNING]
 >

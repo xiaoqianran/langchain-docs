@@ -45,31 +45,31 @@ You can create a skill two ways:
 >
 > By default, skills are **private** to the agent they belong to and are stored in the agent's long-term memory. You can [share a skill with the workspace](#share-a-skill).
 
-**With AI**
+> [tab] With AI
+>
+> In [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills), select an agent and prompt it to create a skill:
+>
+> Create a skill that helps the agent use the web to research a topic.
+>
+> Create a skill that helps the agent use the web to research a topic. Use when asked to research a topic, person, company, technology, event, or any question that requires gathering and synthesizing information from the web. Covers news lookups, competitive analysis, background research, and fact-finding tasks. Prefer `tavily_web_search` for most queries.
+>
+> You can also turn a previous conversation into a reusable skill at any time. After completing a task, ask the agent to capture the workflow:
+>
+> Turn this conversation into a reusable skill.
+>
+> Turn what we just did into a skill so you can repeat it in the future.
 
-In [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills), select an agent and prompt it to create a skill:
+> [tab] From a template
+>
+> 1. Navigate to [**Fleet > Skills**](https://smith.langchain.com/agents/skills).
+> 2. Browse available templates and select one to add to your agent.
 
-Create a skill that helps the agent use the web to research a topic.
-
-Create a skill that helps the agent use the web to research a topic. Use when asked to research a topic, person, company, technology, event, or any question that requires gathering and synthesizing information from the web. Covers news lookups, competitive analysis, background research, and fact-finding tasks. Prefer `tavily_web_search` for most queries.
-
-You can also turn a previous conversation into a reusable skill at any time. After completing a task, ask the agent to capture the workflow:
-
-Turn this conversation into a reusable skill.
-
-Turn what we just did into a skill so you can repeat it in the future.
-
-**From a template**
-
-1. Navigate to [**Fleet > Skills**](https://smith.langchain.com/agents/skills).
-2. Browse available templates and select one to add to your agent.
-
-**Manually**
-
-1. Select an agent in [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills).
-2. In the sidebar, expand the **Knowledge** drawer.
-3. In the **Skills** section, click **+ Add skill**.
-4. Enter the skill name, description, and instructions.
+> [tab] Manually
+>
+> 1. Select an agent in [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills).
+> 2. In the sidebar, expand the **Knowledge** drawer.
+> 3. In the **Skills** section, click **+ Add skill**.
+> 4. Enter the skill name, description, and instructions.
 
 > [!TIP]
 >

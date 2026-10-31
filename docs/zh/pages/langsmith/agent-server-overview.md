@@ -10,23 +10,23 @@
 
 ## 能力
 
-> **[Develop your application](/langsmith/application-structure)**
+> [卡][Develop your application](/langsmith/application-structure)
 >
 > 构建您的应用程序，配置 Python、JavaScript 和 monorepos 的依赖项，并使用 RemoteGraph、语义搜索、TTL 和 CI/CD 连接代理。
 
-> **[Agent Server runtime](/langsmith/agent-server)**
+> [卡][Agent Server runtime](/langsmith/agent-server)
 >
 > 使用助手、线程、运行和 cron 作业。流式传输给用户、暂停以供人工审核、处理并发输入并通过 MCP 和 A2A 连接。
 
-> **[Auth & access control](/langsmith/auth)**
+> [卡][Auth & access control](/langsmith/auth)
 >
 > 对用户进行身份验证、强制实施资源级访问并连接外部 OAuth2 身份提供商。
 
-> **[Server customization](/langsmith/caching)**
+> [卡][Server customization](/langsmith/caching)
 >
 > 添加缓存、自定义存储和检查点、生命周期挂钩、中间件、自定义路由、加密以及可配置标头和日志。
 
-> **[REST API](/langsmith/server-api-ref)**
+> [卡片] [REST API](/langsmith/server-api-ref)
 >
 > 针对助手、线程、运行、cron、存储、A2A、MCP 和系统端点的完整 REST API 参考。
 

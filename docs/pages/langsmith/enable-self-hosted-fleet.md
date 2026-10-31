@@ -136,7 +136,7 @@ fleet:
 
 #### Provider setup guides
 
-> **Google OAuth provider**
+> [accordion] Google OAuth provider
 >
 > To enable Google OAuth for Fleet, create an OAuth client in GCP and configure it with the required URLs and credentials.
 >
@@ -186,7 +186,7 @@ fleet:
 > helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
 > ```
 
-> **Microsoft OAuth provider**
+> [accordion] Microsoft OAuth provider
 >
 > To enable Microsoft OAuth for Fleet, create an Azure app registration, add the required Microsoft Graph delegated permissions, and configure a Microsoft OAuth provider in LangSmith.
 >
@@ -287,7 +287,7 @@ fleet:
 > helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
 > ```
 
-> **Linear OAuth provider**
+> [accordion] Linear OAuth provider
 >
 > To enable Linear OAuth for Fleet, create a Linear OAuth app and configure it with the required credentials.
 >
@@ -332,7 +332,7 @@ fleet:
 > helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
 > ```
 
-> **LinkedIn OAuth provider**
+> [accordion] LinkedIn OAuth provider
 >
 > To enable LinkedIn OAuth for Fleet, create a LinkedIn OAuth app and configure it with the required credentials.
 >
@@ -377,7 +377,7 @@ fleet:
 > helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
 > ```
 
-> **Salesforce OAuth provider**
+> [accordion] Salesforce OAuth provider
 >
 > To enable Salesforce OAuth for Fleet, create a Salesforce External Client App, configure its OAuth settings and policies, retrieve its credentials, then configure a Salesforce OAuth provider in LangSmith.
 >
@@ -470,7 +470,7 @@ fleet:
 > >
 > > If sign-in fails: confirm the **Callback URL** in Salesforce exactly matches `https://<hostname>/host-oauth-callback/<provider-id>` (HTTPS, no trailing slash); if you selected **Admin approved users are pre-authorized**, assign the app via a permission set; and if your org enforces login IP ranges, allowlist your Fleet server's egress IPs on the user's profile or set **IP Relaxation** to **Relax IP restrictions** in the app's policies.
 
-> **Slack OAuth provider**
+> [accordion] Slack OAuth provider
 >
 > One Slack OAuth provider powers both Slack tools and the Slack apps you add to individual agents, so Slack setup lives with the rest of the Slack integration.
 >

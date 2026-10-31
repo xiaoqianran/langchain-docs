@@ -118,15 +118,15 @@ Salesforce tools run with the permissions of the connected user. If an agent can
 
 ## Next steps
 
-> **[Add more tools](/langsmith/fleet/tools)**
+> [card] [Add more tools](/langsmith/fleet/tools)
 >
 > Connect additional services to your agent
 
-> **[Agent identity](/langsmith/fleet/agent-identity)**
+> [card] [Agent identity](/langsmith/fleet/agent-identity)
 >
 > Choose whether the agent uses shared or per-user credentials
 
-> **[Human-in-the-loop](/langsmith/fleet/essentials#human-in-the-loop)**
+> [card] [Human-in-the-loop](/langsmith/fleet/essentials#human-in-the-loop)
 >
 > Require approval before the agent takes sensitive actions
 

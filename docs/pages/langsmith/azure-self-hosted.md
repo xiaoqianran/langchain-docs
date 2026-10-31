@@ -30,19 +30,19 @@ Follow the [Kubernetes installation guide](/langsmith/kubernetes). LangSmith is 
 
 For production deployments, connect to Azure managed services:
 
-> **[Azure Blob Storage](/langsmith/self-host-blob-storage#azure-blob-storage)**
+> [card] [Azure Blob Storage](/langsmith/self-host-blob-storage#azure-blob-storage)
 >
 > Store trace data in Azure Blob
 
-> **[Azure Database](/langsmith/self-host-external-postgres#azure-database-for-postgresql)**
+> [card] [Azure Database](/langsmith/self-host-external-postgres#azure-database-for-postgresql)
 >
 > PostgreSQL database
 
-> **[Azure Cache](/langsmith/self-host-external-redis#azure-cache-for-redis)**
+> [card] [Azure Cache](/langsmith/self-host-external-redis#azure-cache-for-redis)
 >
 > Redis for caching
 
-> **[ClickHouse Cloud](/langsmith/self-host-external-clickhouse)**
+> [card] [ClickHouse Cloud](/langsmith/self-host-external-clickhouse)
 >
 > Analytics database
 

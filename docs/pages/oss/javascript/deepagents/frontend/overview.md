@@ -106,15 +106,15 @@ workflow monitor than a plain chat transcript.
 
 ## Patterns
 
-> **[Subagent streaming](/oss/javascript/deepagents/frontend/subagent-streaming)**
+> [card] [Subagent streaming](/oss/javascript/deepagents/frontend/subagent-streaming)
 >
 > Display specialist subagents with streaming content, progress tracking, and collapsible cards.
 
-> **[Todo list](/oss/javascript/deepagents/frontend/todo-list)**
+> [card] [Todo list](/oss/javascript/deepagents/frontend/todo-list)
 >
 > Track progress with a real-time todo list when the agent opts into task planning.
 
-> **[Sandbox](/oss/javascript/deepagents/frontend/sandbox)**
+> [card] [Sandbox](/oss/javascript/deepagents/frontend/sandbox)
 >
 > Build an IDE-like UI with a file browser, code viewer, and diff panel backed by a sandbox.
 

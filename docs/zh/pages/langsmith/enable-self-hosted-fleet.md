@@ -132,7 +132,7 @@ fleet:
 >
 > 提供商 ID 必须唯一，且不能以 `-agent-builder` 或 `-oauth-provider` 结尾。
 
-#### 提供商设置指南> **Google OAuth 提供商**
+#### 提供商设置指南> [手风琴] Google OAuth 提供商
 >
 > 要为 Fleet 启用 Google OAuth，请在 GCP 中创建 OAuth 客户端，并使用所需的 URL 和凭据对其进行配置。
 >
@@ -180,7 +180,7 @@ fleet:
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-> ```> **微软 OAuth 提供商**
+> ```> [手风琴] Microsoft OAuth 提供程序
 >
 > 要为 Fleet 启用 Microsoft OAuth，请创建 Azure 应用程序注册，添加所需的 Microsoft Graph 委派权限，并在 LangSmith 中配置 Microsoft OAuth 提供程序。
 >
@@ -219,9 +219,9 @@ fleet:
 > * `Channel.ReadBasic.All`
 >
 > * `Channel.Create`
+>> * `ChannelMessage.Send`
 >
-> * `ChannelMessage.Send`
->> * `ChannelMessage.Read.All`
+> * `ChannelMessage.Read.All`
 >
 > * `Chat.Create`
 >
@@ -278,7 +278,7 @@ fleet:
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-> ```> **线性 OAuth 提供商**
+> ```> [手风琴] 线性 OAuth 提供程序
 >
 > 要为 Fleet 启用 Linear OAuth，请创建 Linear OAuth 应用程序并使用所需的凭据对其进行配置。
 >
@@ -321,7 +321,7 @@ fleet:
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-> ```> **LinkedIn OAuth 提供商**
+> ```> [手风琴] LinkedIn OAuth 提供商
 >
 > 要为 Fleet 启用 LinkedIn OAuth，请创建 LinkedIn OAuth 应用程序并使用所需的凭据对其进行配置。
 >
@@ -364,7 +364,7 @@ fleet:
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-> ```> **Salesforce OAuth 提供商**
+> ```> [手风琴] Salesforce OAuth 提供商
 >
 > 要为 Fleet 启用 Salesforce OAuth，请创建 Salesforce 外部客户端应用程序，配置其 OAuth 设置和策略，检索其凭据，然后在 LangSmith 中配置 Salesforce OAuth 提供程序。
 >
@@ -434,7 +434,7 @@ fleet:
 >
 >> [!注意]
 >>
-> > 将 `<MyDomain>` 替换为您组织的 My Domain，可在 **设置 > My Domain** 下找到。对于沙箱，请使用 `https://<MyDomain>--<SandboxName>.sandbox.my.salesforce.com/services/oauth2/authorize` 和匹配的令牌 URL。
+> > 将 `<MyDomain>` 替换为您组织的 My Domain（位于 **设置 > My Domain** 下）。对于沙箱，请使用 `https://<MyDomain>--<SandboxName>.sandbox.my.salesforce.com/services/oauth2/authorize` 和匹配的令牌 URL。
 >
 > **6。应用更改**
 >
@@ -454,7 +454,7 @@ fleet:
 >>
 >> 如果登录失败：确认 Salesforce 中的 **回调 URL** 与 `https://<hostname>/host-oauth-callback/<provider-id>` 完全匹配（HTTPS，无尾部斜杠）；如果您选择**管理员批准的用户已预先授权**，请通过权限集分配应用程序；如果您的组织强制执行登录 IP 范围，请在用户的个人资料中将您的队列服务器的出口 IP 列入白名单，或在应用程序的策略中将 **IP 放宽** 设置为 **放宽 IP 限制**。
 
-> **Slack OAuth 提供商**
+> [手风琴] Slack OAuth 提供程序
 >
 > 一个 Slack OAuth 提供商为您添加到各个代理的 Slack 工具和 Slack 应用程序提供支持，因此 Slack 设置可以与 Slack 集成的其余部分一起使用。
 >
@@ -538,7 +538,7 @@ python3 -c "import secrets; print(secrets.token_urlsafe(48))"
 单击“**创建 GitHub 应用程序**”。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量 |
 | - | - | - |
 | **应用程序ID** |数字，位于页面顶部 | `FLEET_GITHUB_APP_ID` |
-| **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet`| `FLEET_GITHUB_APP_PUBLIC_LINK` |
+| **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet` | `FLEET_GITHUB_APP_PUBLIC_LINK` |
 |应用程序块 |公共链接的最后一个路径段 | `FLEET_GITHUB_APP_SLUG` |
 | **客户端ID** |在 **关于** |下`FLEET_GITHUB_APP_CLIENT_ID` |
 

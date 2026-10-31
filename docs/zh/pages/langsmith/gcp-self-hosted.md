@@ -32,19 +32,19 @@
 
 对于生产部署，请连接到 GCP 托管服务：
 
-> **[Google Cloud Storage](/langsmith/self-host-blob-storage#google-cloud-storage)**
+> [卡][Google Cloud Storage](/langsmith/self-host-blob-storage#google-cloud-storage)
 >
 > 将跟踪数据存储在 GCS 中
 
-> **[Cloud SQL](/langsmith/self-host-external-postgres#google-cloud-sql)**
+> [卡片] [Cloud SQL](/langsmith/self-host-external-postgres#google-cloud-sql)
 >
 > PostgreSQL 数据库
 
-> **[Memorystore](/langsmith/self-host-external-redis#google-cloud-memorystore)**
+> [卡][Memorystore](/langsmith/self-host-external-redis#google-cloud-memorystore)
 >
 > Redis 或 Valkey 用于缓存
 
-> **[ClickHouse Cloud](/langsmith/self-host-external-clickhouse)**
+> [卡片][ClickHouse Cloud](/langsmith/self-host-external-clickhouse)
 >
 > 分析数据库
 
@@ -52,11 +52,11 @@
 
 使用 [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) 对 GCP 服务验证 LangSmith Pod。
 
-**关键页面：**
-
-* [GCS HMAC key authentication](/langsmith/self-host-blob-storage#google-cloud-storage)
+**关键页面：*** [GCS HMAC key authentication](/langsmith/self-host-blob-storage#google-cloud-storage)
 * [Cloud SQL IAM authentication](/langsmith/self-host-external-postgres#iam-authentication)
-* [Memorystore IAM authentication](/langsmith/self-host-external-redis#iam-authentication)完成这些初始设置步骤后，您可以查看下面的完整 GCP 架构和最佳实践。
+* [Memorystore IAM authentication](/langsmith/self-host-external-redis#iam-authentication)
+
+完成这些初始设置步骤后，您可以查看下面的完整 GCP 架构和最佳实践。
 
 ## 参考架构
 
@@ -83,7 +83,7 @@
 
 LangSmith 根据您的要求支持多种计算选项：
 
-|计算选项 |描述 |适合 |
+|计算选项|描述 |适合 |
 | - | - | - |
 | **Google Kubernetes Engine（首选）** |高级扩展和多租户支持 |大型企业|
 | **基于计算引擎** |完全控制，BYO-infra |受监管或气隙环境 |
@@ -115,7 +115,7 @@ LangSmith 根据您的要求支持多种计算选项：
 
 ### 成本优化
 
-* 使用 [Committed Use Discounts](https://cloud.google.com/compute/docs/instances/signing-up-committed-use-discounts) 和 [Sustained Use Discounts](https://cloud.google.com/compute/docs/sustained-use-discounts) 调整[GKE](https://cloud.google.com/kubernetes-engine) 簇的大小。
+* 使用 [Committed Use Discounts](https://cloud.google.com/compute/docs/instances/signing-up-committed-use-discounts) 和 [Sustained Use Discounts](https://cloud.google.com/compute/docs/sustained-use-discounts) 调整[GKE](https://cloud.google.com/kubernetes-engine) 集群的大小。
 * 使用 [Cloud Billing](https://cloud.google.com/billing/docs) 仪表板和 [Cost Management](https://cloud.google.com/cost-management) 工具监控成本 KPI。
 
 ### 可持续性
@@ -128,9 +128,9 @@ LangSmith 根据您的要求支持多种计算选项：
 
 LangSmith 可配置为：
 
-* 仅[Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect) 访问（除了计费所需的出口之外，没有公共互联网暴露）。
+* 仅[Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect) 访问（除了计费所需的出口外，没有公共互联网暴露）。
 * 适用于 Cloud Storage、Cloud SQL 和持久磁盘的基于[Cloud KMS](https://cloud.google.com/kms) 的加密密钥。
-* 审计日志记录到 [Cloud Logging](https://cloud.google.com/logging) 和 [Cloud Audit Logs](https://cloud.google.com/logging/docs/audit)。客户可以根据需要在[Assured Workloads](https://cloud.google.com/assured-workloads)区域进行部署，以符合 ISO、HIPAA 或其他监管要求。
+* 审计日志记录到 [Cloud Logging](https://cloud.google.com/logging) 和 [Cloud Audit Logs](https://cloud.google.com/logging/docs/audit)。客户可以根据需要在[Assured Workloads](https://cloud.google.com/assured-workloads)区域进行部署，以符合 ISO、HIPAA 或其他法规要求。
 
 ## 监控和评估
 

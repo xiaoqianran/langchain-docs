@@ -60,65 +60,65 @@
    ```
 3. 在服务器中设置身份验证后，请求必须包含基于您选择的方案所需的授权信息。假设您使用 JWT 令牌身份验证，您可以使用以下任一方法访问您的部署：
 
-   **Python 客户端**
+   > [选项卡] Python 客户端
+   >
+   > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > from langgraph_sdk import get_client
+   >
+   > my_token = "your-token" # In practice, you would generate a signed token with your auth provider
+   > client = get_client(
+   >     url="http://localhost:2024",
+   >     headers={"Authorization": f"Bearer {my_token}"}
+   > )
+   > threads = await client.threads.search()
+   > ```
 
-   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   from langgraph_sdk import get_client
+   > [选项卡] Python RemoteGraph
+   >
+   > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > from langgraph.pregel.remote import RemoteGraph
+   >
+   > my_token = "your-token" # In practice, you would generate a signed token with your auth provider
+   > remote-graph = RemoteGraph(
+   >     "agent",
+   >     url="http://localhost:2024",
+   >     headers={"Authorization": f"Bearer {my_token}"}
+   > )
+   > threads = await remote-graph.ainvoke(...)
+   > ```
 
-   my_token = "your-token" # In practice, you would generate a signed token with your auth provider
-   client = get_client(
-       url="http://localhost:2024",
-       headers={"Authorization": f"Bearer {my_token}"}
-   )
-   threads = await client.threads.search()
-   ```
+   > [选项卡] JavaScript 客户端
+   >
+   > ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > import { Client } from "@langchain/langgraph-sdk";
+   >
+   > const my_token = "your-token"; // In practice, you would generate a signed token with your auth provider
+   > const client = new Client({
+   > apiUrl: "http://localhost:2024",
+   > defaultHeaders: { Authorization: `Bearer ${my_token}` },
+   > });
+   > const threads = await client.threads.search();
+   > ```
 
-   **Python 远程图**
+   > [选项卡] JavaScript RemoteGraph
+   >
+   > ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > import { RemoteGraph } from "@langchain/langgraph/remote";
+   >
+   > const my_token = "your-token"; // In practice, you would generate a signed token with your auth provider
+   > const remoteGraph = new RemoteGraph({
+   > graphId: "agent",
+   > url: "http://localhost:2024",
+   > headers: { Authorization: `Bearer ${my_token}` },
+   > });
+   > const threads = await remoteGraph.invoke(...);
+   > ```
 
-   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   from langgraph.pregel.remote import RemoteGraph
-
-   my_token = "your-token" # In practice, you would generate a signed token with your auth provider
-   remote-graph = RemoteGraph(
-       "agent",
-       url="http://localhost:2024",
-       headers={"Authorization": f"Bearer {my_token}"}
-   )
-   threads = await remote-graph.ainvoke(...)
-   ```
-
-   **JavaScript 客户端**
-
-   ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   import { Client } from "@langchain/langgraph-sdk";
-
-   const my_token = "your-token"; // In practice, you would generate a signed token with your auth provider
-   const client = new Client({
-   apiUrl: "http://localhost:2024",
-   defaultHeaders: { Authorization: `Bearer ${my_token}` },
-   });
-   const threads = await client.threads.search();
-   ```
-
-   **JavaScript RemoteGraph**
-
-   ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   import { RemoteGraph } from "@langchain/langgraph/remote";
-
-   const my_token = "your-token"; // In practice, you would generate a signed token with your auth provider
-   const remoteGraph = new RemoteGraph({
-   graphId: "agent",
-   url: "http://localhost:2024",
-   headers: { Authorization: `Bearer ${my_token}` },
-   });
-   const threads = await remoteGraph.invoke(...);
-   ```
-
-   **卷曲**
-
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   curl -H "Authorization: Bearer ${your-token}" http://localhost:2024/threads
-   ```
+   > [选项卡] 卷曲
+   >
+   > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   > curl -H "Authorization: Bearer ${your-token}" http://localhost:2024/threads
+   > ```
 
    有关 RemoteGraph 的更多详细信息，请参阅 [Use RemoteGraph](/langsmith/use-remote-graph) 指南。
 

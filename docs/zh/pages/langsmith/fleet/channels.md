@@ -45,7 +45,7 @@ Slack 频道可让您的团队直接在 Slack 中与代理聊天。使用 Slack 
 
 当在 Microsoft Teams 对话中发送消息时，Teams 通道会激活您的代理。
 
-有关完整的设置说明，包括 Azure Bot 创建、凭据注册和工具配置，请参阅 [Integrate Teams with an agent](/langsmith/fleet/teams-app)。
+有关完整的设置说明，包括 Azure Bot 创建、凭据注册和工具配置，请参阅 [Integrate Microsoft Teams with an agent](/langsmith/fleet/teams-app)。
 
 ## 暂停和恢复频道
 

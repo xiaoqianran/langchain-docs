@@ -31,7 +31,7 @@ Before tracing, set the following environment variables:
 
 * `LANGSMITH_API_KEY`: your [LangSmith API key](/langsmith/create-account-api-key).
 
-* Before tracing in an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent). Use [agent addressing](/langsmith/log-traces-to-agent): set `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT`. Remove legacy destination variables and overrides when using agent addressing.
+* Before tracing in an [agent-based workspace](/langsmith/agent-registry), [create an agent](/langsmith/create-an-agent). Use [agent addressing](/langsmith/log-traces-to-agent): set `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT`. Remove legacy destination variables and overrides when using agent addressing.
 
 ## Use `@traceable` / `traceable`
 

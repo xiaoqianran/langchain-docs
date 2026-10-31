@@ -8,13 +8,13 @@ LangSmith 部署的 **代理服务器** 提供用于创建和管理基于代理�
 
 使用代理服务器创建和管理：
 
-> **[Assistants](/langsmith/assistants)**
+> [卡片][Assistants](/langsmith/assistants)
 
-> **[Threads](/langsmith/use-threads)**
+> [卡][Threads](/langsmith/use-threads)
 
-> **[Runs](/langsmith/runs)**
+> [卡][Runs](/langsmith/runs)
 
-> **[Cron jobs](/langsmith/cron-jobs)**
+> [卡][Cron jobs](/langsmith/cron-jobs)
 
 > [!提示]
 >
@@ -44,7 +44,7 @@ LangSmith 部署的 **代理服务器** 提供用于创建和管理基于代理�
 
 #### 图形加载和编译
 
-图表的编译方式和时间取决于您在 [application structure](/langsmith/application-structure) 中的注册方式：1. **编译图**（推荐）：导出已编译的`CompiledGraph`实例。服务器在容器启动时加载一次，并在每次运行时重用它——每个请求没有编译开销。
+图表的编译方式和时间取决于您如何在 [application structure](/langsmith/application-structure) 中注册它：1. **编译图**（推荐）：导出已编译的`CompiledGraph`实例。服务器在容器启动时加载一次，并在每次运行时重用它——每个请求没有编译开销。
 2. **工厂函数**：导出服务器每次需要图时调用的代理工厂函数。仅当您需要每次运行图形自定义时才使用此选项（例如，根据助手配置选择不同的模型或工具）。保持工厂函数轻量级，因为它们在每次调用时运行。
 
 > [!提示]
@@ -61,7 +61,7 @@ Agent Server 持久保存三种类型的数据，默认情况下均由 [PostgreS
 
 ### 任务队列
 
-当客户端创建运行时，API 服务器将其放入队列，然后队列工作线程将其拾取以执行。还可以通知工作人员取消正在进行的运行，并发布打开 `/stream` 连接的输出事件，实时转发到客户端。[Redis](https://redis.io/) 处理 API 服务器和队列工作人员之间的信令、取消和流媒体发布/订阅。它仅存储临时数据——Redis 中不会保留任何用户或运行数据。运行数据本身总是从 PostgreSQL 读取和写入。
+当客户端创建运行时，API 服务器将其放入队列，然后队列工作线程将其拾取以执行。还可以通知工作人员取消正在进行的运行，并发布打开 `/stream` 连接的输出事件，实时转发到客户端。[Redis](https://redis.io/) 处理 API 服务器和队列工作人员之间的信令、取消和流媒体发布/订阅。它仅存储临时数据 - Redis 中不会保留任何用户或运行数据。运行数据本身总是从 PostgreSQL 读取和写入。
 
 有关如何设置和管理这些组件的更多信息，请查看 [hosting options](/langsmith/platform-setup) 指南。
 
@@ -144,6 +144,6 @@ flowchart TB
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-server.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

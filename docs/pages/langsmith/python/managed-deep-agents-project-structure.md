@@ -99,11 +99,11 @@ MDA copies the package into the build. `mda dev` reloads when you edit it, and `
 
 ## Next steps
 
-> **[Quickstart](/langsmith/python/managed-deep-agents-quickstart)**
+> [card] [Quickstart](/langsmith/python/managed-deep-agents-quickstart)
 >
 > Create and deploy your first Managed Deep Agent with the `mda` CLI.
 
-> **[Tutorial](/langsmith/python/managed-deep-agents-tutorial)**
+> [card] [Tutorial](/langsmith/python/managed-deep-agents-tutorial)
 >
 > Add durable memory and a daily schedule to the quickstart research assistant.
 

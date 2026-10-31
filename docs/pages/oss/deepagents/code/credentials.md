@@ -20,7 +20,7 @@ Open the credential manager from any session:
 
 The manager lists installed LLM provider and whether they have an environment key set, surfaces known providers that you can add from within the app, and includes non-model services such as Tavily web search. Select a provider to add or replace its key, install support for an uninstalled provider, or remove one you have already stored. Keys you add persist across sessions.
 
-> **Provider row labels**
+> [accordion] Provider row labels
 >
 > Each row shows the provider name followed by where its key comes from:
 >
@@ -125,35 +125,35 @@ Each provider's API key and its endpoint (`base_url`) resolve as a pair from the
 
 The built-in `web_search` tool uses [Tavily](https://tavily.com). Deep Agents Code shows a "Web search disabled" notification on startup until you provide a key. You can store the key in the [`/auth`](#use-%2Fauth-recommended) credential manager, where Tavily appears as a non-model service, or set the `TAVILY_API_KEY` environment variable.
 
-**Use /auth (recommended)**
+> [tab] Use /auth (recommended)
+>
+> Get a key from [tavily.com](https://tavily.com) (it starts with `tvly-`; the free tier is sufficient for most Deep Agents Code usage), then store it in the credential manager:
+>
+> ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /auth
+> ```
+>
+> Select **Tavily** from the list and paste the key. You can also reach this prompt directly from the "Web search disabled" notification by choosing **Enter API key**.
 
-Get a key from [tavily.com](https://tavily.com) (it starts with `tvly-`; the free tier is sufficient for most Deep Agents Code usage), then store it in the credential manager:
-
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/auth
-```
-
-Select **Tavily** from the list and paste the key. You can also reach this prompt directly from the "Web search disabled" notification by choosing **Enter API key**.
-
-**Set an environment variable**
-
-**1. Get a key**
-
-Sign up at [tavily.com](https://tavily.com) and copy the key (it starts with `tvly-`). The free tier is sufficient for most Deep Agents Code usage.
-
-**2. Add it to your environment**
-
-Add the key to `~/.deepagents/.env` so every session picks it up:
-
-```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-TAVILY_API_KEY=tvly-...
-```
-
-Shell exports take precedence over `.env` values (see [Loading order and precedence](/oss/deepagents/code/configuration#loading-order-and-precedence)). To scope a key to Deep Agents Code only without affecting other tools that read `TAVILY_API_KEY`, use the [`DEEPAGENTS_CODE_` prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix): `DEEPAGENTS_CODE_TAVILY_API_KEY=tvly-...`.
-
-**3. Reload or restart**
-
-In an existing session, run `/reload` to re-read `.env` files. On the next launch, the "Web search disabled" notification goes away and the agent can call `web_search`.
+> [tab] Set an environment variable
+>
+> **1. Get a key**
+>
+> Sign up at [tavily.com](https://tavily.com) and copy the key (it starts with `tvly-`). The free tier is sufficient for most Deep Agents Code usage.
+>
+> **2. Add it to your environment**
+>
+> Add the key to `~/.deepagents/.env` so every session picks it up:
+>
+> ```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> TAVILY_API_KEY=tvly-...
+> ```
+>
+> Shell exports take precedence over `.env` values (see [Loading order and precedence](/oss/deepagents/code/configuration#loading-order-and-precedence)). To scope a key to Deep Agents Code only without affecting other tools that read `TAVILY_API_KEY`, use the [`DEEPAGENTS_CODE_` prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix): `DEEPAGENTS_CODE_TAVILY_API_KEY=tvly-...`.
+>
+> **3. Reload or restart**
+>
+> In an existing session, run `/reload` to re-read `.env` files. On the next launch, the "Web search disabled" notification goes away and the agent can call `web_search`.
 
 ## See also
 

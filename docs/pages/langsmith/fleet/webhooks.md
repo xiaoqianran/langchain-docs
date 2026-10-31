@@ -136,34 +136,34 @@ The `files.content_base64` field contains a ZIP archive with the following struc
 
 The `config.json` file and `tools.json` files are structured as follows:
 
-**`config.json`**
+> [tab] `config.json`
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "name": "My Agent",
+>   "description": "Agent description",
+>   "visibility_scope": "tenant",
+>   "triggers_paused": false
+> }
+> ```
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "name": "My Agent",
-  "description": "Agent description",
-  "visibility_scope": "tenant",
-  "triggers_paused": false
-}
-```
-
-**`tools.json`**
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "tools": [
-    {
-      "name": "tavily_web_search",
-      "mcp_server_url": "http://localhost:8084",
-      "mcp_server_name": "Fleet",
-      "display_name": "tavily_web_search"
-    }
-  ],
-  "interrupt_config": {
-    "http://localhost:8084::tavily_web_search::Fleet": false
-  }
-}
-```
+> [tab] `tools.json`
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "tools": [
+>     {
+>       "name": "tavily_web_search",
+>       "mcp_server_url": "http://localhost:8084",
+>       "mcp_server_name": "Fleet",
+>       "display_name": "tavily_web_search"
+>     }
+>   ],
+>   "interrupt_config": {
+>     "http://localhost:8084::tavily_web_search::Fleet": false
+>   }
+> }
+> ```
 
 ### Custom input fields
 

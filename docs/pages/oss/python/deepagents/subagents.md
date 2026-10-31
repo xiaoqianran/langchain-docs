@@ -515,7 +515,7 @@ result = agent.invoke(
 )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/4162d0a6-05b4-46f7-a800-862403926aab/r)**
+> [card] [View example trace](https://smith.langchain.com/public/4162d0a6-05b4-46f7-a800-862403926aab/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -1130,7 +1130,7 @@ if __name__ == "__main__":
             print(f"[{item.name}] status: {item.status}")
 ```
 
-> **[View example trace](https://smith.langchain.com/public/e676ddb7-c0bc-4628-83a8-eb0a1f10ac10/r)**
+> [card] [View example trace](https://smith.langchain.com/public/e676ddb7-c0bc-4628-83a8-eb0a1f10ac10/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -1720,7 +1720,7 @@ To remove the built-in general-purpose subagent entirely instead of replacing it
 
 The general-purpose subagent is ideal for context isolation without specialized behavior. The main agent can delegate a complex multi-step task to this subagent and get a concise result back without bloat from intermediate tool calls.
 
-> **Example**
+> [card] Example
 >
 > Instead of the main agent making 10 web searches and filling its context with results, it delegates to the general-purpose subagent: `task(name="general-purpose", task="Research quantum computing trends")`. The subagent performs all the searches internally and returns only a summary.
 

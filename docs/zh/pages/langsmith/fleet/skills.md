@@ -11,7 +11,7 @@
 使用技能可以帮助：
 
 * 通过仅提供与当前任务相关的上下文来节省令牌的使用。
-* 防止座席在系统提示中出现过多上下文，这可能导致出现幻觉和错误响应。
+* 防止座席在系统提示中出现过多上下文，这可能会导致幻觉和错误响应。
 
 > [!注意]
 >
@@ -43,29 +43,30 @@
 >
 > 默认情况下，技能对其所属的代理来说是**私有的**，并存储在代理的长期记忆中。你可以[share a skill with the workspace](#share-a-skill)。
 
-**使用人工智能**
+> [选项卡] 与人工智能
+>
+> 在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中，选择一个代理并提示其创建技能：
+>
+> 创建一项技能，帮助客服人员使用网络研究某个主题。
+>
+> 创建一项技能，帮助客服人员使用网络研究某个主题。当被要求研究主题、人物、公司、技术、事件或任何需要从网络收集和综合信息的问题时使用。涵盖新闻查找、竞争分析、背景研究和事实调查任务。对于大多数查询，首选 `tavily_web_search`。
+>
+> 您还可以随时将之前的对话变成可重复使用的技能。完成任务后，要求代理捕获工作流程：
+>
+> 将这次对话变成可重复使用的技能。
+>> 将我们刚才所做的变成一项技能，以便您将来可以重复。
 
-在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中，选择一个代理并提示其创建技能：
+> [选项卡] 来自模板
+>
+> 1. 导航至[**Fleet > Skills**](https://smith.langchain.com/agents/skills)。
+> 2. 浏览可用模板并选择一个添加到您的代理中。
 
-创建一项技能来帮助代理使用网络来研究主题。
-
-创建一项技能来帮助代理使用网络来研究主题。当被要求研究主题、人物、公司、技术、事件或任何需要从网络收集和综合信息的问题时使用。涵盖新闻查找、竞争分析、背景研究和事实调查任务。对于大多数查询，首选 `tavily_web_search`。
-
-您还可以随时将之前的对话变成可重复使用的技能。完成任务后，要求代理捕获工作流程：
-
-将这种对话变成可重复使用的技能。
-
-将我们刚才所做的变成一项技能，以便您将来可以重复。**来自模板**
-
-1. 导航至[**Fleet > Skills**](https://smith.langchain.com/agents/skills)。
-2. 浏览可用模板并选择一个添加到您的代理中。
-
-**手动**
-
-1. 在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中选择代理。
-2. 在侧边栏中，展开**知识**抽屉。
-3. 在 **技能** 部分中，单击 **+ 添加技能**。
-4. 输入技能名称、描述和说明。
+> [选项卡] 手动
+>
+> 1. 在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中选择代理。
+> 2. 在侧边栏中，展开**知识**抽屉。
+> 3. 在 **技能** 部分中，单击 **+ 添加技能**。
+> 4. 输入技能名称、描述和说明。
 
 > [!提示]
 >
@@ -79,11 +80,11 @@
 
 将此修复视为一项技能。
 
-将这种修正变成一种技能，这样你就总是能以这种方式处理它。
+将这种修正变成一种技能，这样你就总是能以这种方式处理它。代理创建一个`SKILL.md`编码正确的行为。在未来的会话中，它会在处理该任务之前读取技能，而不是从头开始推理。
 
-代理创建一个`SKILL.md`编码正确的行为。在未来的会话中，它会在处理该任务之前读取技能，而不是从头开始推理。
+## 编辑私人技能
 
-## 编辑私人技能1. 在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中选择代理。
+1. 在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中选择代理。
 2. 在侧边栏中，展开**知识**抽屉。
 3. 在 **技能** 部分中，选择要编辑的技能。
 4. 更新技能名称、描述或说明。
@@ -114,13 +115,13 @@
 
 ## 删除私有技能
 
-删除私人技能会将其永久删除，因为它存储在该代理的内存中。
-
-1. 在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中选择代理。
+删除私人技能会将其永久删除，因为它存储在该代理的内存中。1. 在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中选择代理。
 2. 在侧边栏中，展开**知识**抽屉。
 3. 在 **技能** 部分中，单击要删除的技能的图标。
 
-## 删除共享技能只有创建共享技能的用户才能删除它。
+## 删除共享技能
+
+只有创建共享技能的用户才能删除它。
 
 > [!警告]
 >

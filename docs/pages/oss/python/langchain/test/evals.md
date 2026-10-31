@@ -63,7 +63,7 @@ def get_weather(city: str):
 agent = create_agent("claude-sonnet-4-6", tools=[get_weather])
 ```
 
-> **Strict match**
+> [accordion] Strict match
 >
 > The `strict` mode ensures trajectories contain identical messages in the same order with the same tool calls, though it allows for differences in message content. This is useful when you need to enforce a specific sequence of operations, such as requiring a policy lookup before authorizing an action.
 >
@@ -98,7 +98,7 @@ agent = create_agent("claude-sonnet-4-6", tools=[get_weather])
 >     assert evaluation["score"] is True
 > ```
 
-> **Unordered match**
+> [accordion] Unordered match
 >
 > The `unordered` mode allows the same tool calls in any order. This is helpful when you want to verify that specific information was retrieved but don't care about the sequence. For example, an agent that checks both weather and events for a city with different tool calls.
 >
@@ -137,7 +137,7 @@ agent = create_agent("claude-sonnet-4-6", tools=[get_weather])
 >     assert evaluation["score"] is True
 > ```
 
-> **Subset and superset match**
+> [accordion] Subset and superset match
 >
 > The `superset` and `subset` modes match partial trajectories. The `superset` mode verifies that the agent called at least the tools in the reference trajectory, allowing additional tool calls. The `subset` mode ensures the agent did not call any tools beyond those in the reference.
 >
@@ -183,7 +183,7 @@ agent = create_agent("claude-sonnet-4-6", tools=[get_weather])
 
 You can use an LLM to evaluate the agent's execution path with the `create_trajectory_llm_as_judge` function. Unlike trajectory match evaluators, it doesn't require a reference trajectory, but one can be provided if available.
 
-> **Without reference trajectory**
+> [accordion] Without reference trajectory
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from agentevals.trajectory.llm import create_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT
@@ -204,7 +204,7 @@ You can use an LLM to evaluate the agent's execution path with the `create_traje
 >     assert evaluation["score"] is True
 > ```
 
-> **With reference trajectory**
+> [accordion] With reference trajectory
 >
 > If you have a reference trajectory, use the prebuilt `TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE` prompt:
 >
@@ -229,7 +229,7 @@ You can use an LLM to evaluate the agent's execution path with the `create_traje
 
 All `agentevals` evaluators support Python asyncio. Async versions are available by adding `async` after `create_` in the function name.
 
-> **Async judge and evaluator example**
+> [accordion] Async judge and evaluator example
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from agentevals.trajectory.llm import create_async_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT
@@ -264,7 +264,7 @@ export LANGSMITH_TRACING="true"
 
 LangSmith offers two main approaches for running evaluations: [pytest](/langsmith/pytest) integration and the `evaluate` function.
 
-> **Use pytest integration**
+> [accordion] Use pytest integration
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import pytest
@@ -307,7 +307,7 @@ LangSmith offers two main approaches for running evaluations: [pytest](/langsmit
 > pytest test_trajectory.py --langsmith-output
 > ```
 
-> **Use the evaluate function**
+> [accordion] Use the evaluate function
 >
 > Create a [LangSmith dataset](/langsmith/manage-datasets) and use the `evaluate` function. The dataset must have the following schema:
 >

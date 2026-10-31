@@ -8,19 +8,19 @@ Connect useStream to any React UI component library or generative UI framework
 
 ## Integrations
 
-> **[CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit)**
+> [card] [CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit)
 >
 > Full AI chat runtime with structured generative UI support. Add a custom CopilotKit endpoint to your LangGraph deployment, then render dynamic component trees in React.
 
-> **[AI Elements](/oss/python/langchain/frontend/integrations/ai-elements)**
+> [card] [AI Elements](/oss/python/langchain/frontend/integrations/ai-elements)
 >
 > Composable shadcn/ui-based components for AI chat. Drop in `Conversation`, `Message`, `Tool`, and `Reasoning` and wire them directly to `stream.messages`.
 
-> **[assistant-ui](/oss/python/langchain/frontend/integrations/assistant-ui)**
+> [card] [assistant-ui](/oss/python/langchain/frontend/integrations/assistant-ui)
 >
 > Headless React framework with a full runtime layer. Bridge `useStream` to `AssistantRuntimeProvider` via the `useExternalStoreRuntime` adapter.
 
-> **[OpenUI](/oss/python/langchain/frontend/integrations/openui)**
+> [card] [OpenUI](/oss/python/langchain/frontend/integrations/openui)
 >
 > Generative UI library that lets the agent produce complete, interactive dashboards in a declarative component DSL. Purpose-built for data-rich, report-style UIs.
 

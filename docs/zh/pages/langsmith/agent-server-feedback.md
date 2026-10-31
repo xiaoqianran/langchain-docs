@@ -28,87 +28,87 @@ LangSmith 使用反馈来不断改进代理的实施。要了解有关LangSmith�
 
 创建一个运行并从响应中解析 `feedback` 对象。
 
-**Python SDK**
+> [选项卡] Python SDK
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_client
+>
+> client = get_client(url="<DEPLOYMENT_URL>", api_key="<API_KEY>")
+>
+> thread = await client.threads.create()
+> thread_id = thread["thread_id"]
+>
+> feedback_urls = {}
+>
+> async for event in client.runs.stream(
+>     thread_id,
+>     "agent",
+>     input={
+>         "messages": [
+>             {"role": "user", "content": "Tell me a joke about databases."}
+>         ]
+>     },
+>     stream_mode="updates",
+>     feedback_keys=["user_liked", "user_disliked"],
+> ):
+>     if event.event == "feedback":
+>         # Example: {"user_liked": ".../feedback/tokens/<id>", "user_disliked": "..."}
+>         feedback_urls = event.data
+>         print("Feedback URLs:", feedback_urls)
+>     elif event.event == "updates":
+>         print(event.data)
+> ```> [选项卡] JavaScript SDK
+>
+> ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client } from "@langchain/langgraph-sdk";
+>
+> const client = new Client({ apiUrl: "<DEPLOYMENT_URL>", apiKey: "<API_KEY>" });
+>
+> const thread = await client.threads.create();
+> const threadId = thread.thread_id;
+>
+> let feedbackUrls = {};
+>
+> const streamResponse = client.runs.stream(threadId, "agent", {
+>   input: {
+>     messages: [{ role: "user", content: "Tell me a joke about databases." }],
+>   },
+>   streamMode: "updates",
+>   feedbackKeys: ["user_liked", "user_disliked"],
+> });
+>
+> for await (const event of streamResponse) {
+>   if (event.event === "feedback") {
+>     // Example: { user_liked: ".../feedback/tokens/<id>", user_disliked: "..." }
+>     feedbackUrls = event.data;
+>     console.log("Feedback URLs:", feedbackUrls);
+>   } else if (event.event === "updates") {
+>     console.log(event.data);
+>   }
+> }
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
-
-client = get_client(url="<DEPLOYMENT_URL>", api_key="<API_KEY>")
-
-thread = await client.threads.create()
-thread_id = thread["thread_id"]
-
-feedback_urls = {}
-
-async for event in client.runs.stream(
-    thread_id,
-    "agent",
-    input={
-        "messages": [
-            {"role": "user", "content": "Tell me a joke about databases."}
-        ]
-    },
-    stream_mode="updates",
-    feedback_keys=["user_liked", "user_disliked"],
-):
-    if event.event == "feedback":
-        # Example: {"user_liked": ".../feedback/tokens/<id>", "user_disliked": "..."}
-        feedback_urls = event.data
-        print("Feedback URLs:", feedback_urls)
-    elif event.event == "updates":
-        print(event.data)
-```**JavaScript SDK**
-
-```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "@langchain/langgraph-sdk";
-
-const client = new Client({ apiUrl: "<DEPLOYMENT_URL>", apiKey: "<API_KEY>" });
-
-const thread = await client.threads.create();
-const threadId = thread.thread_id;
-
-let feedbackUrls = {};
-
-const streamResponse = client.runs.stream(threadId, "agent", {
-  input: {
-    messages: [{ role: "user", content: "Tell me a joke about databases." }],
-  },
-  streamMode: "updates",
-  feedbackKeys: ["user_liked", "user_disliked"],
-});
-
-for await (const event of streamResponse) {
-  if (event.event === "feedback") {
-    // Example: { user_liked: ".../feedback/tokens/<id>", user_disliked: "..." }
-    feedbackUrls = event.data;
-    console.log("Feedback URLs:", feedbackUrls);
-  } else if (event.event === "updates") {
-    console.log(event.data);
-  }
-}
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-  --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream" \
-  --header "Content-Type: application/json" \
-  --header "x-api-key: <API_KEY>" \
-  --data '{
-    "assistant_id": "agent",
-    "input": {
-      "messages": [
-        {
-          "role": "user",
-          "content": "Tell me a joke about databases."
-        }
-      ]
-    },
-    "stream_mode": "updates",
-    "feedback_keys": ["user_liked", "user_disliked"]
-  }'
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>   --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream" \
+>   --header "Content-Type: application/json" \
+>   --header "x-api-key: <API_KEY>" \
+>   --data '{
+>     "assistant_id": "agent",
+>     "input": {
+>       "messages": [
+>         {
+>           "role": "user",
+>           "content": "Tell me a joke about databases."
+>         }
+>       ]
+>     },
+>     "stream_mode": "updates",
+>     "feedback_keys": ["user_liked", "user_disliked"]
+>   }'
+> ```
 
 ## 处理流式传输的 `feedback` 事件
 
@@ -127,29 +127,29 @@ data: {"user_liked":"https://api.smith.langchain.com/api/v1/feedback/tokens/ef19
 
 例如，如果用户单击“拇指朝下”按钮，则调用 `user_disliked` URL：
 
-**发布**
+> [选项卡] 发布
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>   --url "https://api.smith.langchain.com/api/v1/feedback/tokens/e952734e-c0a0-417b-a04d-fc2209691ed5" \
+>   --header "Content-Type: application/json" \
+>   --data '{
+>     "score": 1,
+>     "value": 0,
+>     "comment": "I didn't like this joke because it didn't make me laugh.",
+>     "correction": {},
+>     "metadata": {}
+>   }'
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-  --url "https://api.smith.langchain.com/api/v1/feedback/tokens/e952734e-c0a0-417b-a04d-fc2209691ed5" \
-  --header "Content-Type: application/json" \
-  --data '{
-    "score": 1,
-    "value": 0,
-    "comment": "I didn't like this joke because it didn't make me laugh.",
-    "correction": {},
-    "metadata": {}
-  }'
-```
-
-**获取**
-
-`GET` 不支持`metadata`。
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request GET \
-  --url "https://api.smith.langchain.com/api/v1/feedback/tokens/e952734e-c0a0-417b-a04d-fc2209691ed5?score=1&value=0&comment=I%20didn%27t%20like%20this%20joke%20because%20it%20didn%27t%20make%20me%20laugh.&correction=%7B%7D"
-```
+> [选项卡] 获取
+>
+> `GET` 不支持`metadata`。
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request GET \
+>   --url "https://api.smith.langchain.com/api/v1/feedback/tokens/e952734e-c0a0-417b-a04d-fc2209691ed5?score=1&value=0&comment=I%20didn%27t%20like%20this%20joke%20because%20it%20didn%27t%20make%20me%20laugh.&correction=%7B%7D"
+> ```
 
 该请求成功后，LangSmith使用密钥`user_disliked`记录跟踪反馈。
 
@@ -162,7 +162,7 @@ curl --request GET \
 * 将 `key="user_score"` 与 `score=1` 一起使用来获得 `user_liked`
 * 将 `key="user_score"` 与 `score=-1` 一起使用来获得 `user_disliked`
 
-这可以简化分析，因为所有用户偏好信号都被分组在一个反馈键下。反馈数据模型很灵活，应该针对您的用例进行设计。例如，某些应用程序可能更喜欢单独的布尔样式键（`user_liked`、`user_disliked`），而其他应用程序可能更喜欢单个数字分数（`user_score`）或更丰富的带有多个反馈键的标题。
+这可以简化分析，因为所有用户偏好信号都被分组在一个反馈键下。反馈数据模型很灵活，应该根据您的用例进行设计。例如，某些应用程序可能更喜欢单独的布尔样式键（`user_liked`、`user_disliked`），而其他应用程序可能更喜欢单个数字分数（`user_score`）或更丰富的带有多个反馈键的标题。
 
 ## 在客户端 UI 中进行生产
 

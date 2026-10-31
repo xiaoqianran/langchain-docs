@@ -10,11 +10,11 @@ When creating either a custom class for yourself or to publish in a LangChain in
 
 First, install the required dependencies:
 
-> **[langchain-core](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-core#readme)**
+> [card] [langchain-core](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-core#readme)
 >
 > Defines the interfaces we want to import to define our custom components
 
-> **[langchain-tests](https://github.com/langchain-ai/langchainjs/tree/main/internal/standard-tests#readme)**
+> [card] [langchain-tests](https://github.com/langchain-ai/langchainjs/tree/main/internal/standard-tests#readme)
 >
 > Provides the standard tests and plugins necessary to run them
 
@@ -40,7 +40,7 @@ bun add @langchain/standard-tests
 
 There are 2 namespaces in the `langchain-tests` package:
 
-> **Unit tests**
+> [accordion] Unit tests
 >
 > **Location**: `src.unit_tests`
 >
@@ -48,7 +48,7 @@ There are 2 namespaces in the `langchain-tests` package:
 >
 > [View API reference](https://reference.langchain.com/python/langchain-tests/unit_tests)
 
-> **Integration tests**
+> [accordion] Integration tests
 >
 > **Location**: `src.integration_tests`
 >

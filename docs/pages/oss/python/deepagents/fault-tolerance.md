@@ -21,119 +21,119 @@ Different errors need different handling strategies:
 
 The sections below cover each strategy with code examples.
 
-**Transient errors**
-
-Add retry middleware to automatically retry network issues and rate limits. Model calls and tool calls each have their own retry middleware with exponential backoff:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents import create_agent
-from langchain.agents.middleware import ModelRetryMiddleware, ToolRetryMiddleware
-
-agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
-    tools=[search_tool, fetch_url_tool],
-    middleware=[
-        ModelRetryMiddleware(max_retries=3, backoff_factor=2.0, initial_delay=1.0),
-        ToolRetryMiddleware(
-            max_retries=2,
-            tools=["search", "fetch_url"],
-            retry_on=(TimeoutError, ConnectionError),
-        ),
-    ],
-)
-```
-
-**LLM-recoverable**
-
-Use [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) to catch tool exceptions and convert them into error `ToolMessage`s so the LLM can see what went wrong and try again:
-
-> [!NOTE]
+> [tab] Transient errors
 >
-> `ToolErrorMiddleware` requires `langchain>=1.3.14`.
+> Add retry middleware to automatically retry network issues and rate limits. Model calls and tool calls each have their own retry middleware with exponential backoff:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.agents import create_agent
+> from langchain.agents.middleware import ModelRetryMiddleware, ToolRetryMiddleware
+>
+> agent = create_agent(
+>     model="google_genai:gemini-3.6-flash",
+>     tools=[search_tool, fetch_url_tool],
+>     middleware=[
+>         ModelRetryMiddleware(max_retries=3, backoff_factor=2.0, initial_delay=1.0),
+>         ToolRetryMiddleware(
+>             max_retries=2,
+>             tools=["search", "fetch_url"],
+>             retry_on=(TimeoutError, ConnectionError),
+>         ),
+>     ],
+> )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents import create_agent
-from langchain.agents.middleware import ToolErrorMiddleware
+> [tab] LLM-recoverable
+>
+> Use [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) to catch tool exceptions and convert them into error `ToolMessage`s so the LLM can see what went wrong and try again:
+>
+> > [!NOTE]
+> >
+> > `ToolErrorMiddleware` requires `langchain>=1.3.14`.
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.agents import create_agent
+> from langchain.agents.middleware import ToolErrorMiddleware
+>
+>
+> def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
+>     if isinstance(exc, ValueError):
+>         return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}. Fix the input and retry."
+>     # propagate everything else
+>
+>
+> agent = create_agent(
+>     model="google_genai:gemini-3.6-flash",
+>     tools=[search_tool],
+>     middleware=[ToolErrorMiddleware(on_error)],
+> )
+> ```
 
+> [tab] User-fixable
+>
+> Pause and collect information from the user when needed (like account IDs, order numbers, or clarifications). Use `interrupt_on` to pause the agent before specific tool calls:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+>
+> agent = create_deep_agent(
+>     model="google_genai:gemini-3.6-flash",
+>     tools=[send_email_tool, delete_record_tool],
+>     interrupt_on={
+>         "send_email": True,
+>         "delete_record": True,
+>     },
+> )
+> ```
+>
+> For the full human-in-the-loop guide, see [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop).
 
-def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
-    if isinstance(exc, ValueError):
-        return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}. Fix the input and retry."
-    # propagate everything else
+> [tab] Provider outage
+>
+> If your primary model provider goes down entirely, use [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) to switch to an alternative model:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.agents import create_agent
+> from langchain.agents.middleware import ModelFallbackMiddleware
+>
+> agent = create_agent(
+>     model="google_genai:gemini-3.6-flash",
+>     tools=[search_tool],
+>     middleware=[
+>         ModelFallbackMiddleware("gpt-5.5"),
+>     ],
+> )
+> ```
 
+> [tab] Excessive calls
+>
+> Without limits, a confused agent can burn through your LLM API budget in minutes by looping on the same tool call or making hundreds of model calls. Set caps on both model calls and tool executions per run:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.agents import create_agent
+> from langchain.agents.middleware import ModelCallLimitMiddleware, ToolCallLimitMiddleware
+>
+> agent = create_agent(
+>     model="google_genai:gemini-3.6-flash",
+>     tools=[search_tool],
+>     middleware=[
+>         ModelCallLimitMiddleware(run_limit=50),
+>         ToolCallLimitMiddleware(run_limit=200),
+>     ],
+> )
+> ```
 
-agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
-    tools=[search_tool],
-    middleware=[ToolErrorMiddleware(on_error)],
-)
-```
-
-**User-fixable**
-
-Pause and collect information from the user when needed (like account IDs, order numbers, or clarifications). Use `interrupt_on` to pause the agent before specific tool calls:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-
-agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
-    tools=[send_email_tool, delete_record_tool],
-    interrupt_on={
-        "send_email": True,
-        "delete_record": True,
-    },
-)
-```
-
-For the full human-in-the-loop guide, see [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop).
-
-**Provider outage**
-
-If your primary model provider goes down entirely, use [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) to switch to an alternative model:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents import create_agent
-from langchain.agents.middleware import ModelFallbackMiddleware
-
-agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
-    tools=[search_tool],
-    middleware=[
-        ModelFallbackMiddleware("gpt-5.5"),
-    ],
-)
-```
-
-**Excessive calls**
-
-Without limits, a confused agent can burn through your LLM API budget in minutes by looping on the same tool call or making hundreds of model calls. Set caps on both model calls and tool executions per run:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents import create_agent
-from langchain.agents.middleware import ModelCallLimitMiddleware, ToolCallLimitMiddleware
-
-agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
-    tools=[search_tool],
-    middleware=[
-        ModelCallLimitMiddleware(run_limit=50),
-        ToolCallLimitMiddleware(run_limit=200),
-    ],
-)
-```
-
-**Unexpected**
-
-Let them bubble up for debugging. Do not catch what you cannot handle. [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) only surfaces exceptions you explicitly return content for; everything else propagates unchanged:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
-    if isinstance(exc, (ValueError, KeyError)):
-        # Surface known, recoverable errors to the model
-        return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}."
-    # Everything else (unexpected errors) propagates and halts the run
-```
+> [tab] Unexpected
+>
+> Let them bubble up for debugging. Do not catch what you cannot handle. [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) only surfaces exceptions you explicitly return content for; everything else propagates unchanged:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
+>     if isinstance(exc, (ValueError, KeyError)):
+>         # Surface known, recoverable errors to the model
+>         return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}."
+>     # Everything else (unexpected errors) propagates and halts the run
+> ```
 
 ## Rate limiting
 

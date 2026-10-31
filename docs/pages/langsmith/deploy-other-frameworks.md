@@ -70,412 +70,412 @@ Follow the same steps for each framework. Choose your stack in the tabs inside e
 
 Install Python packages for your framework plus LangGraph and LangSmith.
 
-**Claude Agent SDK**
+> [tab] Claude Agent SDK
+>
+> For [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview):
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install "langsmith[claude-agent-sdk]" langgraph "langgraph-cli[inmem]"
+> ```
+>
+> Set `ANTHROPIC_API_KEY` in your environment. For an Anthropic API key, refer to the [Claude console](https://claude.ai/login).
 
-For [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview):
+> [tab] Strands Agents
+>
+> For [Strands Agents](https://strandsagents.com/docs/):
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install strands-agents strands-agents-tools langgraph "langsmith[strands-agents]" "langgraph-cli[inmem]"
+> ```
+>
+> Configure AWS credentials if you use Amazon Bedrock as the model provider.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install "langsmith[claude-agent-sdk]" langgraph "langgraph-cli[inmem]"
-```
+> [tab] CrewAI
+>
+> For [CrewAI](https://docs.crewai.com/):
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install crewai langgraph langsmith opentelemetry-instrumentation-crewai opentelemetry-instrumentation-openai "langgraph-cli[inmem]"
+> ```
+>
+> Set LLM provider credentials in your environment (for example `OPENAI_API_KEY` if you use OpenAI-backed models).
 
-Set `ANTHROPIC_API_KEY` in your environment. For an Anthropic API key, refer to the [Claude console](https://claude.ai/login).
-
-**Strands Agents**
-
-For [Strands Agents](https://strandsagents.com/docs/):
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install strands-agents strands-agents-tools langgraph "langsmith[strands-agents]" "langgraph-cli[inmem]"
-```
-
-Configure AWS credentials if you use Amazon Bedrock as the model provider.
-
-**CrewAI**
-
-For [CrewAI](https://docs.crewai.com/):
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install crewai langgraph langsmith opentelemetry-instrumentation-crewai opentelemetry-instrumentation-openai "langgraph-cli[inmem]"
-```
-
-Set LLM provider credentials in your environment (for example `OPENAI_API_KEY` if you use OpenAI-backed models).
-
-**AutoGen**
-
-For [AutoGen](https://microsoft.github.io/autogen/):
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install autogen-agentchat autogen-ext langgraph langsmith opentelemetry-instrumentation-openai "langgraph-cli[inmem]"
-```
-
-Set `OPENAI_API_KEY` (or your model provider credentials) in your environment.
+> [tab] AutoGen
+>
+> For [AutoGen](https://microsoft.github.io/autogen/):
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install autogen-agentchat autogen-ext langgraph langsmith opentelemetry-instrumentation-openai "langgraph-cli[inmem]"
+> ```
+>
+> Set `OPENAI_API_KEY` (or your model provider credentials) in your environment.
 
 **2. Define your agent**
 
 Build your agent using the framework of your choice, exactly as you would outside of LangSmith.
 
-**Claude Agent SDK**
+> [tab] Claude Agent SDK
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from claude_agent_sdk import ClaudeAgentOptions
+>
+> options = ClaudeAgentOptions(
+>     model="claude-sonnet-5-5",
+>     system_prompt="You are a helpful assistant.",
+> )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from claude_agent_sdk import ClaudeAgentOptions
+> [tab] Strands Agents
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from strands import Agent
+>
+> strands_agent = Agent(
+>     system_prompt="You are a helpful assistant.",
+>     model="us.anthropic.claude-sonnet-4-20250514-v1:0",
+> )
+> ```
 
-options = ClaudeAgentOptions(
-    model="claude-sonnet-5-5",
-    system_prompt="You are a helpful assistant.",
-)
-```
+> [tab] CrewAI
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from crewai import Agent as CrewAgent, Crew, Task
+>
+> researcher = CrewAgent(role="Researcher", goal="Research a topic", backstory="Expert researcher.")
+> crew = Crew(
+>     agents=[researcher],
+>     tasks=[Task(description="{topic}", agent=researcher, expected_output="A short report.")],
+> )
+> ```
 
-**Strands Agents**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from strands import Agent
-
-strands_agent = Agent(
-    system_prompt="You are a helpful assistant.",
-    model="us.anthropic.claude-sonnet-4-20250514-v1:0",
-)
-```
-
-**CrewAI**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from crewai import Agent as CrewAgent, Crew, Task
-
-researcher = CrewAgent(role="Researcher", goal="Research a topic", backstory="Expert researcher.")
-crew = Crew(
-    agents=[researcher],
-    tasks=[Task(description="{topic}", agent=researcher, expected_output="A short report.")],
-)
-```
-
-**AutoGen**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from autogen_agentchat.agents import AssistantAgent
-from autogen_ext.models.openai import OpenAIChatCompletionClient
-
-assistant = AssistantAgent(
-    name="assistant",
-    model_client=OpenAIChatCompletionClient(model="gpt-5.5"),
-)
-```
+> [tab] AutoGen
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from autogen_agentchat.agents import AssistantAgent
+> from autogen_ext.models.openai import OpenAIChatCompletionClient
+>
+> assistant = AssistantAgent(
+>     name="assistant",
+>     model_client=OpenAIChatCompletionClient(model="gpt-5.5"),
+> )
+> ```
 
 **3. Wrap with the Functional API**
 
 Expose your agent through an `@entrypoint`-decorated function named `agent`. Inside, use `@task` for the unit of work that calls into the framework. Use `entrypoint.final()` to return the response and persist conversation history across turns on the same thread.
 
-**Claude Agent SDK**
+> [tab] Claude Agent SDK
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import operator
+>
+> from claude_agent_sdk import ClaudeSDKClient
+> from langgraph.func import entrypoint, task
+>
+> @task
+> async def invoke_claude(prompt: str) -> str:
+>     async with ClaudeSDKClient(options=options) as client:
+>         await client.query(prompt)
+>         chunks: list[str] = []
+>         async for message in client.receive_response():
+>             chunks.append(str(message))
+>         return "\n".join(chunks)
+>
+> @entrypoint()
+> async def agent(messages: list[dict], previous: list[dict] | None = None):
+>     history = operator.add(previous or [], messages)
+>     prompt = history[-1]["content"]
+>     response = await invoke_claude(prompt)
+>     new_message = {"role": "assistant", "content": response}
+>     return entrypoint.final(
+>         value=[new_message],
+>         save=operator.add(history, [new_message]),
+>     )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import operator
+> [tab] Strands Agents
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import operator
+>
+> from langgraph.func import entrypoint, task
+> from strands.types.content import Message
+>
+> @task
+> def invoke_strands(messages: list[Message]):
+>     result = strands_agent(messages)
+>     return [result.message]
+>
+> @entrypoint()
+> def agent(messages: list[Message], previous: list[Message] | None = None):
+>     messages = operator.add(previous or [], messages)
+>     response = invoke_strands(messages).result()
+>     return entrypoint.final(value=response, save=operator.add(messages, response))
+> ```
 
-from claude_agent_sdk import ClaudeSDKClient
-from langgraph.func import entrypoint, task
+> [tab] CrewAI
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import operator
+>
+> from langgraph.func import entrypoint, task
+>
+> @task
+> def run_crew(topic: str) -> str:
+>     return str(crew.kickoff(inputs={"topic": topic}))
+>
+> @entrypoint()
+> def agent(messages: list[dict], previous: list[dict] | None = None):
+>     history = operator.add(previous or [], messages)
+>     response = run_crew(history[-1]["content"]).result()
+>     new_message = {"role": "assistant", "content": response}
+>     return entrypoint.final(value=[new_message], save=operator.add(history, [new_message]))
+> ```
 
-@task
-async def invoke_claude(prompt: str) -> str:
-    async with ClaudeSDKClient(options=options) as client:
-        await client.query(prompt)
-        chunks: list[str] = []
-        async for message in client.receive_response():
-            chunks.append(str(message))
-        return "\n".join(chunks)
-
-@entrypoint()
-async def agent(messages: list[dict], previous: list[dict] | None = None):
-    history = operator.add(previous or [], messages)
-    prompt = history[-1]["content"]
-    response = await invoke_claude(prompt)
-    new_message = {"role": "assistant", "content": response}
-    return entrypoint.final(
-        value=[new_message],
-        save=operator.add(history, [new_message]),
-    )
-```
-
-**Strands Agents**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import operator
-
-from langgraph.func import entrypoint, task
-from strands.types.content import Message
-
-@task
-def invoke_strands(messages: list[Message]):
-    result = strands_agent(messages)
-    return [result.message]
-
-@entrypoint()
-def agent(messages: list[Message], previous: list[Message] | None = None):
-    messages = operator.add(previous or [], messages)
-    response = invoke_strands(messages).result()
-    return entrypoint.final(value=response, save=operator.add(messages, response))
-```
-
-**CrewAI**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import operator
-
-from langgraph.func import entrypoint, task
-
-@task
-def run_crew(topic: str) -> str:
-    return str(crew.kickoff(inputs={"topic": topic}))
-
-@entrypoint()
-def agent(messages: list[dict], previous: list[dict] | None = None):
-    history = operator.add(previous or [], messages)
-    response = run_crew(history[-1]["content"]).result()
-    new_message = {"role": "assistant", "content": response}
-    return entrypoint.final(value=[new_message], save=operator.add(history, [new_message]))
-```
-
-**AutoGen**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import operator
-
-from langgraph.func import entrypoint, task
-
-@task
-async def invoke_autogen(prompt: str) -> str:
-    result = await assistant.run(task=prompt)
-    return result.messages[-1].content
-
-@entrypoint()
-async def agent(messages: list[dict], previous: list[dict] | None = None):
-    history = operator.add(previous or [], messages)
-    response = await invoke_autogen(history[-1]["content"])
-    new_message = {"role": "assistant", "content": response}
-    return entrypoint.final(value=[new_message], save=operator.add(history, [new_message]))
-```
+> [tab] AutoGen
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import operator
+>
+> from langgraph.func import entrypoint, task
+>
+> @task
+> async def invoke_autogen(prompt: str) -> str:
+>     result = await assistant.run(task=prompt)
+>     return result.messages[-1].content
+>
+> @entrypoint()
+> async def agent(messages: list[dict], previous: list[dict] | None = None):
+>     history = operator.add(previous or [], messages)
+>     response = await invoke_autogen(history[-1]["content"])
+>     new_message = {"role": "assistant", "content": response}
+>     return entrypoint.final(value=[new_message], save=operator.add(history, [new_message]))
+> ```
 
 **4. Configure tracing**
 
 Forward the framework's native traces to LangSmith. Call tracing setup once at application startup, before creating or invoking agents.
 
-**Claude Agent SDK**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langsmith.integrations.claude_agent_sdk import configure_claude_agent_sdk
-
-configure_claude_agent_sdk()
-```
-
-For full setup details, see [Trace Claude Agent SDK applications](/langsmith/trace-claude-agent-sdk).
-
-**Strands Agents**
-
-Set your [LangSmith API key](/langsmith/create-account-api-key) and project name. If you use Amazon Bedrock, also configure AWS credentials.
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langsmith.integrations.strands_agents import setup_langsmith_telemetry
-
-setup_langsmith_telemetry()
-```
-
-> [!NOTE]
+> [tab] Claude Agent SDK
 >
-> If you're [self-hosting LangSmith](/langsmith/self-hosted), configure the OpenTelemetry OTLP endpoint and headers for your deployment. See [Trace Strands Agents applications](/langsmith/trace-with-strands-agents).
-
-> [!NOTE]
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langsmith.integrations.claude_agent_sdk import configure_claude_agent_sdk
 >
-> Strands' OTel tracing contains synchronous code. You may need to set `BG_JOB_ISOLATED_LOOPS=true` when deploying to Agent Server. See [`BG_JOB_ISOLATED_LOOPS`](/langsmith/env-var#bg_job_isolated_loops).
+> configure_claude_agent_sdk()
+> ```
+>
+> For full setup details, see [Trace Claude Agent SDK applications](/langsmith/trace-claude-agent-sdk).
 
-For full setup details, see [Trace Strands Agents applications](/langsmith/trace-with-strands-agents).
+> [tab] Strands Agents
+>
+> Set your [LangSmith API key](/langsmith/create-account-api-key) and project name. If you use Amazon Bedrock, also configure AWS credentials.
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langsmith.integrations.strands_agents import setup_langsmith_telemetry
+>
+> setup_langsmith_telemetry()
+> ```
+>
+> > [!NOTE]
+> >
+> > If you're [self-hosting LangSmith](/langsmith/self-hosted), configure the OpenTelemetry OTLP endpoint and headers for your deployment. See [Trace Strands Agents applications](/langsmith/trace-with-strands-agents).
+>
+> > [!NOTE]
+> >
+> > Strands' OTel tracing contains synchronous code. You may need to set `BG_JOB_ISOLATED_LOOPS=true` when deploying to Agent Server. See [`BG_JOB_ISOLATED_LOOPS`](/langsmith/env-var#bg_job_isolated_loops).
+>
+> For full setup details, see [Trace Strands Agents applications](/langsmith/trace-with-strands-agents).
 
-**CrewAI**
+> [tab] CrewAI
+>
+> Register the LangSmith span processor with the CrewAI and OpenAI instrumentors:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langsmith.integrations.otel import OtelSpanProcessor
+> from opentelemetry import trace
+> from opentelemetry.instrumentation.crewai import CrewAIInstrumentor
+> from opentelemetry.instrumentation.openai import OpenAIInstrumentor
+> from opentelemetry.sdk.trace import TracerProvider
+>
+> current_provider = trace.get_tracer_provider()
+> if isinstance(current_provider, TracerProvider):
+>     tracer_provider = current_provider
+> else:
+>     tracer_provider = TracerProvider()
+>     trace.set_tracer_provider(tracer_provider)
+>
+> tracer_provider.add_span_processor(OtelSpanProcessor())
+> CrewAIInstrumentor().instrument(tracer_provider=tracer_provider)
+> OpenAIInstrumentor().instrument(tracer_provider=tracer_provider)
+> ```
+>
+> For full setup details, see [Trace CrewAI applications](/langsmith/trace-with-crewai).
 
-Register the LangSmith span processor with the CrewAI and OpenAI instrumentors:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langsmith.integrations.otel import OtelSpanProcessor
-from opentelemetry import trace
-from opentelemetry.instrumentation.crewai import CrewAIInstrumentor
-from opentelemetry.instrumentation.openai import OpenAIInstrumentor
-from opentelemetry.sdk.trace import TracerProvider
-
-current_provider = trace.get_tracer_provider()
-if isinstance(current_provider, TracerProvider):
-    tracer_provider = current_provider
-else:
-    tracer_provider = TracerProvider()
-    trace.set_tracer_provider(tracer_provider)
-
-tracer_provider.add_span_processor(OtelSpanProcessor())
-CrewAIInstrumentor().instrument(tracer_provider=tracer_provider)
-OpenAIInstrumentor().instrument(tracer_provider=tracer_provider)
-```
-
-For full setup details, see [Trace CrewAI applications](/langsmith/trace-with-crewai).
-
-**AutoGen**
-
-Register the LangSmith span processor with the OpenAI instrumentor:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langsmith.integrations.otel import OtelSpanProcessor
-from opentelemetry import trace
-from opentelemetry.instrumentation.openai import OpenAIInstrumentor
-from opentelemetry.sdk.trace import TracerProvider
-
-tracer_provider = TracerProvider()
-tracer_provider.add_span_processor(OtelSpanProcessor())
-trace.set_tracer_provider(tracer_provider)
-OpenAIInstrumentor().instrument()
-```
-
-For full setup details, see [Trace AutoGen applications](/langsmith/trace-with-autogen).
+> [tab] AutoGen
+>
+> Register the LangSmith span processor with the OpenAI instrumentor:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langsmith.integrations.otel import OtelSpanProcessor
+> from opentelemetry import trace
+> from opentelemetry.instrumentation.openai import OpenAIInstrumentor
+> from opentelemetry.sdk.trace import TracerProvider
+>
+> tracer_provider = TracerProvider()
+> tracer_provider.add_span_processor(OtelSpanProcessor())
+> trace.set_tracer_provider(tracer_provider)
+> OpenAIInstrumentor().instrument()
+> ```
+>
+> For full setup details, see [Trace AutoGen applications](/langsmith/trace-with-autogen).
 
 ## End-to-end example
 
 The following examples combine agent definition, Functional API wrapping, tracing setup, and export of the `agent` symbol in a single `agent.py` file. Pick the tab for your framework.
 
-**Claude Agent SDK**
+> [tab] Claude Agent SDK
+>
+> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import operator
+>
+> from claude_agent_sdk import ClaudeAgentOptions, ClaudeSDKClient
+> from langgraph.func import entrypoint, task
+> from langsmith.integrations.claude_agent_sdk import configure_claude_agent_sdk
+>
+> configure_claude_agent_sdk()
+>
+> options = ClaudeAgentOptions(
+>     model="claude-sonnet-5-5",
+>     system_prompt="You are a helpful assistant.",
+> )
+>
+> @task
+> async def invoke_claude(prompt: str) -> str:
+>     async with ClaudeSDKClient(options=options) as client:
+>         await client.query(prompt)
+>         chunks: list[str] = []
+>         async for message in client.receive_response():
+>             chunks.append(str(message))
+>         return "\n".join(chunks)
+>
+> @entrypoint()
+> async def agent(messages: list[dict], previous: list[dict] | None = None):
+>     history = operator.add(previous or [], messages)
+>     prompt = history[-1]["content"]
+>     response = await invoke_claude(prompt)
+>     new_message = {"role": "assistant", "content": response}
+>     return entrypoint.final(
+>         value=[new_message],
+>         save=operator.add(history, [new_message]),
+>     )
+> ```
 
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import operator
+> [tab] Strands Agents
+>
+> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import operator
+>
+> from langgraph.func import entrypoint, task
+> from langsmith.integrations.strands_agents import setup_langsmith_telemetry
+> from strands import Agent
+> from strands.types.content import Message
+>
+> setup_langsmith_telemetry()
+>
+> strands_agent = Agent(
+>     system_prompt="You are a helpful assistant.",
+>     model="us.anthropic.claude-sonnet-4-20250514-v1:0",
+> )
+>
+> @task
+> def invoke_strands(messages: list[Message]):
+>     result = strands_agent(messages)
+>     return [result.message]
+>
+> @entrypoint()
+> def agent(messages: list[Message], previous: list[Message] | None = None):
+>     messages = operator.add(previous or [], messages)
+>     response = invoke_strands(messages).result()
+>     return entrypoint.final(value=response, save=operator.add(messages, response))
+> ```
 
-from claude_agent_sdk import ClaudeAgentOptions, ClaudeSDKClient
-from langgraph.func import entrypoint, task
-from langsmith.integrations.claude_agent_sdk import configure_claude_agent_sdk
+> [tab] CrewAI
+>
+> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import operator
+>
+> from crewai import Agent as CrewAgent, Crew, Task
+> from langgraph.func import entrypoint, task
+> from langsmith.integrations.otel import OtelSpanProcessor
+> from opentelemetry import trace
+> from opentelemetry.instrumentation.crewai import CrewAIInstrumentor
+> from opentelemetry.instrumentation.openai import OpenAIInstrumentor
+> from opentelemetry.sdk.trace import TracerProvider
+>
+> current_provider = trace.get_tracer_provider()
+> if isinstance(current_provider, TracerProvider):
+>     tracer_provider = current_provider
+> else:
+>     tracer_provider = TracerProvider()
+>     trace.set_tracer_provider(tracer_provider)
+>
+> tracer_provider.add_span_processor(OtelSpanProcessor())
+> CrewAIInstrumentor().instrument(tracer_provider=tracer_provider)
+> OpenAIInstrumentor().instrument(tracer_provider=tracer_provider)
+>
+> researcher = CrewAgent(role="Researcher", goal="Research a topic", backstory="Expert researcher.")
+> crew = Crew(
+>     agents=[researcher],
+>     tasks=[Task(description="{topic}", agent=researcher, expected_output="A short report.")],
+> )
+>
+> @task
+> def run_crew(topic: str) -> str:
+>     return str(crew.kickoff(inputs={"topic": topic}))
+>
+> @entrypoint()
+> def agent(messages: list[dict], previous: list[dict] | None = None):
+>     history = operator.add(previous or [], messages)
+>     response = run_crew(history[-1]["content"]).result()
+>     new_message = {"role": "assistant", "content": response}
+>     return entrypoint.final(value=[new_message], save=operator.add(history, [new_message]))
+> ```
 
-configure_claude_agent_sdk()
-
-options = ClaudeAgentOptions(
-    model="claude-sonnet-5-5",
-    system_prompt="You are a helpful assistant.",
-)
-
-@task
-async def invoke_claude(prompt: str) -> str:
-    async with ClaudeSDKClient(options=options) as client:
-        await client.query(prompt)
-        chunks: list[str] = []
-        async for message in client.receive_response():
-            chunks.append(str(message))
-        return "\n".join(chunks)
-
-@entrypoint()
-async def agent(messages: list[dict], previous: list[dict] | None = None):
-    history = operator.add(previous or [], messages)
-    prompt = history[-1]["content"]
-    response = await invoke_claude(prompt)
-    new_message = {"role": "assistant", "content": response}
-    return entrypoint.final(
-        value=[new_message],
-        save=operator.add(history, [new_message]),
-    )
-```
-
-**Strands Agents**
-
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import operator
-
-from langgraph.func import entrypoint, task
-from langsmith.integrations.strands_agents import setup_langsmith_telemetry
-from strands import Agent
-from strands.types.content import Message
-
-setup_langsmith_telemetry()
-
-strands_agent = Agent(
-    system_prompt="You are a helpful assistant.",
-    model="us.anthropic.claude-sonnet-4-20250514-v1:0",
-)
-
-@task
-def invoke_strands(messages: list[Message]):
-    result = strands_agent(messages)
-    return [result.message]
-
-@entrypoint()
-def agent(messages: list[Message], previous: list[Message] | None = None):
-    messages = operator.add(previous or [], messages)
-    response = invoke_strands(messages).result()
-    return entrypoint.final(value=response, save=operator.add(messages, response))
-```
-
-**CrewAI**
-
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import operator
-
-from crewai import Agent as CrewAgent, Crew, Task
-from langgraph.func import entrypoint, task
-from langsmith.integrations.otel import OtelSpanProcessor
-from opentelemetry import trace
-from opentelemetry.instrumentation.crewai import CrewAIInstrumentor
-from opentelemetry.instrumentation.openai import OpenAIInstrumentor
-from opentelemetry.sdk.trace import TracerProvider
-
-current_provider = trace.get_tracer_provider()
-if isinstance(current_provider, TracerProvider):
-    tracer_provider = current_provider
-else:
-    tracer_provider = TracerProvider()
-    trace.set_tracer_provider(tracer_provider)
-
-tracer_provider.add_span_processor(OtelSpanProcessor())
-CrewAIInstrumentor().instrument(tracer_provider=tracer_provider)
-OpenAIInstrumentor().instrument(tracer_provider=tracer_provider)
-
-researcher = CrewAgent(role="Researcher", goal="Research a topic", backstory="Expert researcher.")
-crew = Crew(
-    agents=[researcher],
-    tasks=[Task(description="{topic}", agent=researcher, expected_output="A short report.")],
-)
-
-@task
-def run_crew(topic: str) -> str:
-    return str(crew.kickoff(inputs={"topic": topic}))
-
-@entrypoint()
-def agent(messages: list[dict], previous: list[dict] | None = None):
-    history = operator.add(previous or [], messages)
-    response = run_crew(history[-1]["content"]).result()
-    new_message = {"role": "assistant", "content": response}
-    return entrypoint.final(value=[new_message], save=operator.add(history, [new_message]))
-```
-
-**AutoGen**
-
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import operator
-
-from autogen_agentchat.agents import AssistantAgent
-from autogen_ext.models.openai import OpenAIChatCompletionClient
-from langgraph.func import entrypoint, task
-from langsmith.integrations.otel import OtelSpanProcessor
-from opentelemetry import trace
-from opentelemetry.instrumentation.openai import OpenAIInstrumentor
-from opentelemetry.sdk.trace import TracerProvider
-
-tracer_provider = TracerProvider()
-tracer_provider.add_span_processor(OtelSpanProcessor())
-trace.set_tracer_provider(tracer_provider)
-OpenAIInstrumentor().instrument()
-
-assistant = AssistantAgent(
-    name="assistant",
-    model_client=OpenAIChatCompletionClient(model="gpt-5.5"),
-)
-
-@task
-async def invoke_autogen(prompt: str) -> str:
-    result = await assistant.run(task=prompt)
-    return result.messages[-1].content
-
-@entrypoint()
-async def agent(messages: list[dict], previous: list[dict] | None = None):
-    history = operator.add(previous or [], messages)
-    response = await invoke_autogen(history[-1]["content"])
-    new_message = {"role": "assistant", "content": response}
-    return entrypoint.final(value=[new_message], save=operator.add(history, [new_message]))
-```
+> [tab] AutoGen
+>
+> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import operator
+>
+> from autogen_agentchat.agents import AssistantAgent
+> from autogen_ext.models.openai import OpenAIChatCompletionClient
+> from langgraph.func import entrypoint, task
+> from langsmith.integrations.otel import OtelSpanProcessor
+> from opentelemetry import trace
+> from opentelemetry.instrumentation.openai import OpenAIInstrumentor
+> from opentelemetry.sdk.trace import TracerProvider
+>
+> tracer_provider = TracerProvider()
+> tracer_provider.add_span_processor(OtelSpanProcessor())
+> trace.set_tracer_provider(tracer_provider)
+> OpenAIInstrumentor().instrument()
+>
+> assistant = AssistantAgent(
+>     name="assistant",
+>     model_client=OpenAIChatCompletionClient(model="gpt-5.5"),
+> )
+>
+> @task
+> async def invoke_autogen(prompt: str) -> str:
+>     result = await assistant.run(task=prompt)
+>     return result.messages[-1].content
+>
+> @entrypoint()
+> async def agent(messages: list[dict], previous: list[dict] | None = None):
+>     history = operator.add(previous or [], messages)
+>     response = await invoke_autogen(history[-1]["content"])
+>     new_message = {"role": "assistant", "content": response}
+>     return entrypoint.final(value=[new_message], save=operator.add(history, [new_message]))
+> ```
 
 Two things are essential for every example:
 
@@ -496,138 +496,138 @@ my-agent/
 
 [`langgraph.json`](/langsmith/application-structure#configuration-file-concepts) points Agent Server at the exported symbol:
 
-**Claude Agent SDK**
+> [tab] Claude Agent SDK
+>
+> ```json langgraph.json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "$schema": "https://langgra.ph/schema.json",
+>   "dependencies": ["."],
+>   "graphs": {
+>     "claude_agent": "./agent.py:agent"
+>   },
+>   "env": ".env"
+> }
+> ```
+>
+> ```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [project]
+> name = "my-claude-agent"
+> version = "0.0.1"
+> requires-python = ">=3.10"
+> dependencies = [
+>     "langsmith[claude-agent-sdk]>=0.3.0",
+>     "langgraph>=0.4.0",
+> ]
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> LANGSMITH_API_KEY=your-langsmith-api-key
+> LANGSMITH_TRACING=true
+> LANGSMITH_PROJECT=my-claude-agent
+> ANTHROPIC_API_KEY=your-anthropic-api-key
+> ```
 
-```json langgraph.json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "$schema": "https://langgra.ph/schema.json",
-  "dependencies": ["."],
-  "graphs": {
-    "claude_agent": "./agent.py:agent"
-  },
-  "env": ".env"
-}
-```
+> [tab] Strands Agents
+>
+> ```json langgraph.json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "$schema": "https://langgra.ph/schema.json",
+>   "dependencies": ["."],
+>   "graphs": {
+>     "strands_agent": "./agent.py:agent"
+>   },
+>   "env": ".env"
+> }
+> ```
+>
+> ```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [project]
+> name = "my-strands-agent"
+> version = "0.0.1"
+> requires-python = ">=3.9"
+> dependencies = [
+>     "strands-agents>=0.1.0",
+>     "strands-agents-tools>=0.1.0",
+>     "langsmith[strands-agents]>=0.3.0",
+>     "langgraph>=0.4.0",
+> ]
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> LANGSMITH_API_KEY=your-langsmith-api-key
+> LANGSMITH_TRACING=true
+> LANGSMITH_PROJECT=my-strands-agent
+> OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=https://api.smith.langchain.com/otel/v1/traces
+> OTEL_EXPORTER_OTLP_HEADERS=x-api-key=your-langsmith-api-key,Langsmith-Project=my-strands-agent
+> AWS_REGION=your-aws-region
+> AWS_PROFILE=your-aws-profile
+> ```
 
-```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[project]
-name = "my-claude-agent"
-version = "0.0.1"
-requires-python = ">=3.10"
-dependencies = [
-    "langsmith[claude-agent-sdk]>=0.3.0",
-    "langgraph>=0.4.0",
-]
-```
+> [tab] CrewAI
+>
+> ```json langgraph.json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "$schema": "https://langgra.ph/schema.json",
+>   "dependencies": ["."],
+>   "graphs": {
+>     "crewai_agent": "./agent.py:agent"
+>   },
+>   "env": ".env"
+> }
+> ```
+>
+> ```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [project]
+> name = "my-crewai-agent"
+> version = "0.0.1"
+> requires-python = ">=3.10"
+> dependencies = [
+>     "crewai>=0.100.0",
+>     "langgraph>=0.4.0",
+>     "langsmith>=0.3.0",
+>     "opentelemetry-instrumentation-crewai>=0.1.0",
+>     "opentelemetry-instrumentation-openai>=0.1.0",
+> ]
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> LANGSMITH_API_KEY=your-langsmith-api-key
+> LANGSMITH_PROJECT=my-crewai-agent
+> OPENAI_API_KEY=your-openai-api-key
+> ```
 
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-LANGSMITH_API_KEY=your-langsmith-api-key
-LANGSMITH_TRACING=true
-LANGSMITH_PROJECT=my-claude-agent
-ANTHROPIC_API_KEY=your-anthropic-api-key
-```
-
-**Strands Agents**
-
-```json langgraph.json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "$schema": "https://langgra.ph/schema.json",
-  "dependencies": ["."],
-  "graphs": {
-    "strands_agent": "./agent.py:agent"
-  },
-  "env": ".env"
-}
-```
-
-```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[project]
-name = "my-strands-agent"
-version = "0.0.1"
-requires-python = ">=3.9"
-dependencies = [
-    "strands-agents>=0.1.0",
-    "strands-agents-tools>=0.1.0",
-    "langsmith[strands-agents]>=0.3.0",
-    "langgraph>=0.4.0",
-]
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-LANGSMITH_API_KEY=your-langsmith-api-key
-LANGSMITH_TRACING=true
-LANGSMITH_PROJECT=my-strands-agent
-OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=https://api.smith.langchain.com/otel/v1/traces
-OTEL_EXPORTER_OTLP_HEADERS=x-api-key=your-langsmith-api-key,Langsmith-Project=my-strands-agent
-AWS_REGION=your-aws-region
-AWS_PROFILE=your-aws-profile
-```
-
-**CrewAI**
-
-```json langgraph.json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "$schema": "https://langgra.ph/schema.json",
-  "dependencies": ["."],
-  "graphs": {
-    "crewai_agent": "./agent.py:agent"
-  },
-  "env": ".env"
-}
-```
-
-```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[project]
-name = "my-crewai-agent"
-version = "0.0.1"
-requires-python = ">=3.10"
-dependencies = [
-    "crewai>=0.100.0",
-    "langgraph>=0.4.0",
-    "langsmith>=0.3.0",
-    "opentelemetry-instrumentation-crewai>=0.1.0",
-    "opentelemetry-instrumentation-openai>=0.1.0",
-]
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-LANGSMITH_API_KEY=your-langsmith-api-key
-LANGSMITH_PROJECT=my-crewai-agent
-OPENAI_API_KEY=your-openai-api-key
-```
-
-**AutoGen**
-
-```json langgraph.json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "$schema": "https://langgra.ph/schema.json",
-  "dependencies": ["."],
-  "graphs": {
-    "autogen_agent": "./agent.py:agent"
-  },
-  "env": ".env"
-}
-```
-
-```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[project]
-name = "my-autogen-agent"
-version = "0.0.1"
-requires-python = ">=3.10"
-dependencies = [
-    "autogen-agentchat>=0.4.0",
-    "autogen-ext>=0.4.0",
-    "langgraph>=0.4.0",
-    "langsmith>=0.3.0",
-    "opentelemetry-instrumentation-openai>=0.1.0",
-]
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-LANGSMITH_API_KEY=your-langsmith-api-key
-LANGSMITH_PROJECT=my-autogen-agent
-OPENAI_API_KEY=your-openai-api-key
-```
+> [tab] AutoGen
+>
+> ```json langgraph.json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "$schema": "https://langgra.ph/schema.json",
+>   "dependencies": ["."],
+>   "graphs": {
+>     "autogen_agent": "./agent.py:agent"
+>   },
+>   "env": ".env"
+> }
+> ```
+>
+> ```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [project]
+> name = "my-autogen-agent"
+> version = "0.0.1"
+> requires-python = ">=3.10"
+> dependencies = [
+>     "autogen-agentchat>=0.4.0",
+>     "autogen-ext>=0.4.0",
+>     "langgraph>=0.4.0",
+>     "langsmith>=0.3.0",
+>     "opentelemetry-instrumentation-openai>=0.1.0",
+> ]
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> LANGSMITH_API_KEY=your-langsmith-api-key
+> LANGSMITH_PROJECT=my-autogen-agent
+> OPENAI_API_KEY=your-openai-api-key
+> ```
 
 ## Install dependencies
 
@@ -663,48 +663,48 @@ This serves the agent at `http://127.0.0.1:2024` and opens [LangSmith Studio](/l
 >
 > `langgraph dev` may serve on a different port. Check the URL in the terminal output and update the `curl` commands below if needed.
 
-**Claude Agent SDK, CrewAI, AutoGen**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Create a thread
-THREAD=$(curl -s -X POST http://127.0.0.1:2024/threads \
-  -H "Content-Type: application/json" -d '{}' | python -c "import sys, json; print(json.load(sys.stdin)['thread_id'])")
-
-# Run the agent and wait for the final response
-curl -s -X POST "http://127.0.0.1:2024/threads/$THREAD/runs/wait" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "assistant_id": "ASSISTANT_ID",
-    "input": [{"role": "user", "content": "Hello"}]
-  }'
-```
-
-**Strands Agents**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Create a thread
-THREAD=$(curl -s -X POST http://127.0.0.1:2024/threads \
-  -H "Content-Type: application/json" -d '{}' | python -c "import sys, json; print(json.load(sys.stdin)['thread_id'])")
-
-# Run the agent and wait for the final response
-curl -s -X POST "http://127.0.0.1:2024/threads/$THREAD/runs/wait" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "assistant_id": "ASSISTANT_ID",
-    "input": [
-      {
-        "role": "user",
-        "content": [
-          {"type": "text", "text": "Hello"}
-        ]
-      }
-    ]
-  }'
-```
-
-> [!NOTE]
+> [tab] Claude Agent SDK, CrewAI, AutoGen
 >
-> If this request fails with `NoCredentialsError`, configure AWS credentials for your model provider (for example `AWS_PROFILE` or `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`) and restart `langgraph dev`.
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Create a thread
+> THREAD=$(curl -s -X POST http://127.0.0.1:2024/threads \
+>   -H "Content-Type: application/json" -d '{}' | python -c "import sys, json; print(json.load(sys.stdin)['thread_id'])")
+>
+> # Run the agent and wait for the final response
+> curl -s -X POST "http://127.0.0.1:2024/threads/$THREAD/runs/wait" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "assistant_id": "ASSISTANT_ID",
+>     "input": [{"role": "user", "content": "Hello"}]
+>   }'
+> ```
+
+> [tab] Strands Agents
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Create a thread
+> THREAD=$(curl -s -X POST http://127.0.0.1:2024/threads \
+>   -H "Content-Type: application/json" -d '{}' | python -c "import sys, json; print(json.load(sys.stdin)['thread_id'])")
+>
+> # Run the agent and wait for the final response
+> curl -s -X POST "http://127.0.0.1:2024/threads/$THREAD/runs/wait" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "assistant_id": "ASSISTANT_ID",
+>     "input": [
+>       {
+>         "role": "user",
+>         "content": [
+>           {"type": "text", "text": "Hello"}
+>         ]
+>       }
+>     ]
+>   }'
+> ```
+>
+> > [!NOTE]
+> >
+> > If this request fails with `NoCredentialsError`, configure AWS credentials for your model provider (for example `AWS_PROFILE` or `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`) and restart `langgraph dev`.
 
 Replace `ASSISTANT_ID` with the graph key from your `langgraph.json` `graphs` object. For example, if your config is `"graphs": {"claude_agent": "./agent.py:agent"}`, use `claude_agent`; if your config is `"graphs": {"strands_agent": "./agent.py:agent"}`, use `strands_agent`.
 

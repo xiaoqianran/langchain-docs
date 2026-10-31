@@ -22,19 +22,19 @@
 
 ## 探索
 
-> **[Profile configuration](/langsmith/profile-configuration)**
+> [卡][Profile configuration](/langsmith/profile-configuration)
 >
 > 配置您的个人帐户设置和首选项。
 
-> **[Integrations](/langsmith/get-started-integrations)**
+> [卡][Integrations](/langsmith/get-started-integrations)
 >
 > 将 LangSmith 连接到您现有的工具和服务。
 
-> **[Pricing plans](/langsmith/pricing-plans)**
+> [卡][Pricing plans](/langsmith/pricing-plans)
 >
 > 比较计划并为您的团队选择合适的级别。
 
-> **[Enterprise](/langsmith/enterprise)**
+> [卡][Enterprise](/langsmith/enterprise)
 >
 > 企业能力、支持和入门。
 

@@ -12,15 +12,15 @@ For questions about Enterprise [pricing](/langsmith/pricing-plans) or to get sta
 
 Choose how to host LangSmith to match your infrastructure and data residency requirements.
 
-> **[Cloud](/langsmith/cloud)**
+> [card] [Cloud](/langsmith/cloud)
 >
 > Host LangSmith in LangSmith's managed cloud with US or EU data residency.
 
-> **[Hybrid](/langsmith/hybrid)**
+> [card] [Hybrid](/langsmith/hybrid)
 >
 > Run the control plane in LangSmith's cloud and your data plane in your own VPC for full data isolation.
 
-> **[Self-hosted](/langsmith/self-hosted)**
+> [card] [Self-hosted](/langsmith/self-hosted)
 >
 > Host LangSmith entirely within your own infrastructure using Kubernetes.
 
@@ -28,19 +28,19 @@ Choose how to host LangSmith to match your infrastructure and data residency req
 
 Manage users and automate provisioning across your organization.
 
-> **[User management](/langsmith/user-management)**
+> [card] [User management](/langsmith/user-management)
 >
 > Invite users, assign roles, and configure SCIM for automated provisioning and deprovisioning.
 
-> **[SSO & JIT provisioning](/langsmith/authentication-methods)**
+> [card] [SSO & JIT provisioning](/langsmith/authentication-methods)
 >
 > Configure SAML or OIDC single sign-on and just-in-time user provisioning for your identity provider.
 
-> **[Organization setup](/langsmith/set-up-hierarchy)**
+> [card] [Organization setup](/langsmith/set-up-hierarchy)
 >
 > Create and configure organizations, workspaces, and the user hierarchy within your enterprise.
 
-> **[Manage by API](/langsmith/manage-organization-by-api)**
+> [card] [Manage by API](/langsmith/manage-organization-by-api)
 >
 > Programmatically manage users, configure security settings, and administer your organization via API.
 
@@ -48,19 +48,19 @@ Manage users and automate provisioning across your organization.
 
 Control who can access what within your organization.
 
-> **[Role-based access control (RBAC)](/langsmith/rbac)**
+> [card] [Role-based access control (RBAC)](/langsmith/rbac)
 >
 > Define permissions per workspace using built-in or custom roles. Available exclusively on Enterprise plans.
 
-> **[Attribute-based access control (ABAC)](/langsmith/abac)**
+> [card] [Attribute-based access control (ABAC)](/langsmith/abac)
 >
 > Apply fine-grained, tag-based access policies to restrict resource access—including blocking PII data from specific users.
 
-> **[Workload isolation](/langsmith/workload-isolation)**
+> [card] [Workload isolation](/langsmith/workload-isolation)
 >
 > Use multi-workspace models to isolate teams, establish trust boundaries, and separate environments.
 
-> **[Resource tags](/langsmith/set-up-resource-tags)**
+> [card] [Resource tags](/langsmith/set-up-resource-tags)
 >
 > Tag resources for use with ABAC policies and to organize environments like dev, staging, and prod.
 
@@ -68,11 +68,11 @@ Control who can access what within your organization.
 
 Control how sensitive data is stored and accessed.
 
-> **[Data storage & privacy](/langsmith/data-storage-and-privacy)**
+> [card] [Data storage & privacy](/langsmith/data-storage-and-privacy)
 >
 > Understand what LangSmith stores, how encryption works, and how to opt out of telemetry and tracing.
 
-> **[PII controls with ABAC](/langsmith/abac)**
+> [card] [PII controls with ABAC](/langsmith/abac)
 >
 > Use ABAC deny policies to restrict access to traces and datasets that contain personally identifiable information.
 
@@ -80,11 +80,11 @@ Control how sensitive data is stored and accessed.
 
 Configure how long data is retained and how to delete it.
 
-> **[Data purging for compliance](/langsmith/data-purging-compliance)**
+> [card] [Data purging for compliance](/langsmith/data-purging-compliance)
 >
 > Set custom retention periods, delete traces by metadata, and meet deletion requirements.
 
-> **[Data retention settings](/langsmith/usage-and-billing#data-retention)**
+> [card] [Data retention settings](/langsmith/usage-and-billing#data-retention)
 >
 > Understand base vs. extended retention tiers, auto-upgrades, and how retention affects billing.
 
@@ -92,11 +92,11 @@ Configure how long data is retained and how to delete it.
 
 Track and limit spending across your organization.
 
-> **[Billing & spend limits](/langsmith/billing)**
+> [card] [Billing & spend limits](/langsmith/billing)
 >
 > Set monthly usage limits, track prepaid contract usage, and optimize tracing spend.
 
-> **[Granular usage reporting](/langsmith/granular-usage)**
+> [card] [Granular usage reporting](/langsmith/granular-usage)
 >
 > Break down trace usage by workspace, project, user, or API key to attribute costs across teams.
 
@@ -104,11 +104,11 @@ Track and limit spending across your organization.
 
 Review LangSmith's security posture and compliance certifications.
 
-> **[Shared responsibility model](/langsmith/shared-responsibility-model)**
+> [card] [Shared responsibility model](/langsmith/shared-responsibility-model)
 >
 > Review the security responsibilities shared between LangChain and your organization. LangSmith holds SOC 2 Type II, HIPAA, and GDPR certifications.
 
-> **[Scalability & resilience](/langsmith/scalability-and-resilience)**
+> [card] [Scalability & resilience](/langsmith/scalability-and-resilience)
 >
 > Review SLA guarantees, disaster recovery strategies, and high availability configurations.
 

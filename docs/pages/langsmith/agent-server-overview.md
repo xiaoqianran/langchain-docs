@@ -8,23 +8,23 @@ Configure and build applications on the [Agent Server](/langsmith/agent-server) 
 
 ## Capabilities
 
-> **[Develop your application](/langsmith/application-structure)**
+> [card] [Develop your application](/langsmith/application-structure)
 >
 > Structure your app, configure dependencies for Python, JavaScript, and monorepos, and connect agents with RemoteGraph, semantic search, TTLs, and CI/CD.
 
-> **[Agent Server runtime](/langsmith/agent-server)**
+> [card] [Agent Server runtime](/langsmith/agent-server)
 >
 > Work with assistants, threads, runs, and cron jobs. Stream to users, pause for human review, handle concurrent input, and connect via MCP and A2A.
 
-> **[Auth & access control](/langsmith/auth)**
+> [card] [Auth & access control](/langsmith/auth)
 >
 > Authenticate users, enforce resource-level access, and connect external OAuth2 identity providers.
 
-> **[Server customization](/langsmith/caching)**
+> [card] [Server customization](/langsmith/caching)
 >
 > Add caching, custom stores and checkpointers, lifespan hooks, middleware, custom routes, encryption, and configurable headers and logs.
 
-> **[REST API](/langsmith/server-api-ref)**
+> [card] [REST API](/langsmith/server-api-ref)
 >
 > Full REST API reference for assistants, threads, runs, crons, store, A2A, MCP, and system endpoints.
 

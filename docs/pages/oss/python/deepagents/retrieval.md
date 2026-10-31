@@ -24,7 +24,7 @@ If you need a custom knowledge base, you can use LangChain’s document loaders 
 
 For more information, see the following tutorial to build a searchable knowledge base and minimal RAG workflow:
 
-> **[Tutorial: Semantic search](/oss/python/langchain/knowledge-base)**
+> [card] [Tutorial: Semantic search](/oss/python/langchain/knowledge-base)
 >
 > Learn how to create a searchable knowledge base from your own data using LangChain’s document loaders, embeddings, and vector stores.
 > In this tutorial, you’ll build a search engine over a PDF, enabling retrieval of passages relevant to a query. You’ll also implement a minimal RAG workflow on top of this engine to see how external knowledge can be integrated into LLM reasoning.
@@ -71,23 +71,23 @@ Each component is modular: you can swap loaders, splitters, embeddings, or vecto
 
 ### Building blocks
 
-> **[Document loaders](/oss/python/integrations/document_loaders)**
+> [card] [Document loaders](/oss/python/integrations/document_loaders)
 >
 > Ingest data from external sources (Google Drive, Slack, Notion, etc.), returning standardized [`Document`](https://reference.langchain.com/python/langchain-core/documents/base/Document) objects.
 
-> **[Text splitters](/oss/python/integrations/splitters)**
+> [card] [Text splitters](/oss/python/integrations/splitters)
 >
 > Break large docs into smaller chunks that will be retrievable individually and fit within a model's context window.
 
-> **[Embedding models](/oss/python/integrations/embeddings)**
+> [card] [Embedding models](/oss/python/integrations/embeddings)
 >
 > An embedding model turns text into a vector of numbers so that texts with similar meaning land close together in that vector space.
 
-> **[Vector stores](/oss/python/integrations/vectorstores/)**
+> [card] [Vector stores](/oss/python/integrations/vectorstores/)
 >
 > Specialized databases for storing and searching embeddings.
 
-> **[Retrievers](/oss/python/integrations/retrievers/)**
+> [card] [Retrievers](/oss/python/integrations/retrievers/)
 >
 > A retriever is an interface that returns documents given an unstructured query.
 
@@ -124,11 +124,11 @@ graph TB
     class B,C process
 ```
 
-> **[Tutorial: Semantic search](/oss/python/langchain/knowledge-base)**
+> [card] [Tutorial: Semantic search](/oss/python/langchain/knowledge-base)
 >
 > Build a searchable knowledge base with document loaders, embeddings, and vector stores, then run a minimal retrieve-then-generate RAG workflow on top of it.
 
-> **[Tutorial: Evaluate a RAG application](/langsmith/evaluate-rag-tutorial)**
+> [card] [Tutorial: Evaluate a RAG application](/langsmith/evaluate-rag-tutorial)
 >
 > Build a simple retrieve-then-generate RAG app and measure answer correctness, relevance, groundedness, and retrieval quality with LangSmith.
 
@@ -267,7 +267,7 @@ response = agent.invoke({
 print(response['messages'][-1].content)
 ```
 
-> **[Tutorial: RAG with Deep Agents](/oss/python/deepagents/rag)**
+> [card] [Tutorial: RAG with Deep Agents](/oss/python/deepagents/rag)
 >
 > Build a documentation Q\&A agent that retrieves relevant chunks at query time, offloads them to the filesystem, and delegates analysis to subagents.
 
@@ -314,7 +314,7 @@ This architecture is suitable for:
 * Systems that require validation or quality control steps
 * Workflows involving multiple sources or iterative refinement
 
-> **[Tutorial: Agentic RAG with Self-Correction](/oss/python/langgraph/agentic-rag)**
+> [card] [Tutorial: Agentic RAG with Self-Correction](/oss/python/langgraph/agentic-rag)
 >
 > An example of **Hybrid RAG** that combines agentic reasoning with retrieval and self-correction.
 

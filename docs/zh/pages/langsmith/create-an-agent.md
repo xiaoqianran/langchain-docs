@@ -6,7 +6,7 @@
 
 在跟踪之前注册代理，选择其标识符，并使用 UI、Python SDK 或 REST API 配置环境。
 
-在 LangSmith 中创建 [agent](/langsmith/agents) 为其提供标识符和 [environments](/langsmith/agent-environments) 作为其跟踪。创建一次，然后使用其标识符和环境来发送代码中的跟踪。
+在 LangSmith 中创建 [agent](/langsmith/agent-registry#agent) 为其提供标识符和 [environments](/langsmith/agent-environments) 作为其跟踪。创建一次，然后使用其标识符和环境来发送代码中的跟踪。
 
 如果您的代理在 LangSmith 之外运行，请首先使用 UI、SDK 或 API 在 LangSmith 中创建其记录。这个记录组织了它的痕迹。您的代码仍然在您托管的地方运行。 LangChain `create_agent` 等框架函数构建在代码中运行的代理。他们不创建其 LangSmith 记录。
 
@@ -33,7 +33,7 @@
 
 这些规则适用于您提供值的任何位置：**代理 ID** 字段、SDK 和 API 创建请求以及您部署到的代理 ID。 “构建”选项卡会生成一个标识符。没有代理 ID 的部署会从部署名称中派生一个 ID，并在已采用该值时附加后缀，因此部署的代理最终会得到一个接近部署名称而不是等于部署名称的标识符。
 
-创建代理后，标识符无法更改。显示名称即可。对于哪个值是哪个，请参阅[Identifiers and display names](/langsmith/agents#identifiers-and-display-names)。
+创建代理后，标识符无法更改。显示名称即可。对于哪个值是哪个，请参阅[Identifiers and display names](/langsmith/agent-registry#identifiers-and-display-names)。
 
 ## 从“新建代理”面板开始四个控件可打开 **新代理** 面板：**+ 代理**位于代理列表上方，**+ 创建新代理** 和 **跟踪现有代理** 在列表末尾的创建卡上（也标题为 **新代理**），以及代理切换器中搜索框旁边的 **+** 按钮，该按钮会在悬停时显示 **新代理** 工具提示。 **跟踪现有代理** 打开“可观察性”选项上的面板，其他三个在其选项网格上打开它。 **所有选项**按钮返回到网格。
 
@@ -59,39 +59,39 @@
 
 将 [personal access token or service key](/langsmith/create-account-api-key) 与 [⟦T12⟧ permission](/langsmith/organization-workspace-operations#projects) 一起使用。跟踪密钥无法调用代理创建 API。创建代理后，您的代码可以使用跟踪密钥来提交跟踪。将 `LANGSMITH_API_KEY` 设置为设置凭据。将 `LANGSMITH_WORKSPACE_ID` 设置为目标工作区 ID，并将 `LANGSMITH_ENDPOINT` 设置为您的 [region's API URL](/langsmith/create-account-api-key#configure-the-sdk)。
 
-**Python**
+> [选项卡] Python
+>
+> 安装LangSmith v0.14.12 或更高版本：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langsmith>=0.14.12"
+> ```
+>
+> 创建代理并打印其标识符：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langsmith import Client
+>
+> client = Client()
+> agent = client.agents.create(
+>     id="support-agent",
+>     name="Support agent",
+>     source_type="EXTERNAL",
+> )
+> print(agent.id)  # Use as LANGSMITH_AGENT_ID
+> ```
 
-安装 LangSmith v0.14.12 或更高版本：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langsmith>=0.14.12"
-```
-
-创建代理并打印其标识符：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langsmith import Client
-
-client = Client()
-agent = client.agents.create(
-    id="support-agent",
-    name="Support agent",
-    source_type="EXTERNAL",
-)
-print(agent.id)  # Use as LANGSMITH_AGENT_ID
-```
-
-**休息**
-
-使用任何语言的 REST API 来注册代理。包括`source_type: "EXTERNAL"`：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --fail-with-body --request POST "$LANGSMITH_ENDPOINT/api/v1/agents" \
-  --header "x-api-key: $LANGSMITH_API_KEY" \
-  --header "x-tenant-id: $LANGSMITH_WORKSPACE_ID" \
-  --header "Content-Type: application/json" \
-  --data '{"id":"support-agent","name":"Support agent","source_type":"EXTERNAL"}'
-```
+> [选项卡] 休息
+>
+> 使用任何语言的 REST API 来注册代理。包括`source_type: "EXTERNAL"`：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --fail-with-body --request POST "$LANGSMITH_ENDPOINT/api/v1/agents" \
+>   --header "x-api-key: $LANGSMITH_API_KEY" \
+>   --header "x-tenant-id: $LANGSMITH_WORKSPACE_ID" \
+>   --header "Content-Type: application/json" \
+>   --data '{"id":"support-agent","name":"Support agent","source_type":"EXTERNAL"}'
+> ```
 
 `id` 是不可变的代理标识符。 `name` 是其可编辑的显示名称。创建响应包括 `environments`，以及每个环境的 `tracer_session_name` 和 `tracer_session_id`。
 
@@ -143,7 +143,7 @@ export LANGSMITH_PROJECT="<environment-tracer-session-name>"
 
 ## 另请参阅
 
-* [Agents](/langsmith/agents)
+* [Agent Registry](/langsmith/agent-registry)
 * [Agent environments](/langsmith/agent-environments)
 * [Build an agent in the UI](/langsmith/build-an-agent)
 * [Deploy to an agent environment](/langsmith/deploy-to-agent-environment)

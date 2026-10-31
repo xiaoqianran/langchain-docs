@@ -8,15 +8,15 @@ Code contributions are welcome! Whether you're fixing bugs, adding features, or 
 
 If you are looking for something to work on, check out the issue labeled "help wanted" in our repos:
 
-> **[LangChain](https://github.com/langchain-ai/deepagents/labels?q=help+wanted)**
+> [card] [LangChain](https://github.com/langchain-ai/deepagents/labels?q=help+wanted)
 >
 > Labels
 
-> **[LangGraph](https://github.com/langchain-ai/langgraphjs/labels?q=help+wanted)**
+> [card] [LangGraph](https://github.com/langchain-ai/langgraphjs/labels?q=help+wanted)
 >
 > Labels
 
-> **[Deep Agents](https://github.com/langchain-ai/deepagentsjs/labels?q=help+wanted)**
+> [card] [Deep Agents](https://github.com/langchain-ai/deepagentsjs/labels?q=help+wanted)
 >
 > Labels
 
@@ -141,7 +141,7 @@ Contributing to open source projects takes time and effort, but it can also help
 
 Maintain compatibility via:
 
-> **Stable interfaces**
+> [accordion] Stable interfaces
 >
 > **Always preserve**:
 >
@@ -150,7 +150,7 @@ Maintain compatibility via:
 > * Return value structure and types
 > * Import paths for public APIs
 
-> **Safe changes**
+> [accordion] Safe changes
 >
 > **Acceptable modifications**:
 >
@@ -162,7 +162,7 @@ Maintain compatibility via:
 >
 > * Adding new modules or functions
 
-> **Before making changes**
+> [accordion] Before making changes
 >
 > * **Would this break existing user code?**
 >
@@ -206,7 +206,7 @@ We will reject features that are likely to lead to security vulnerabilities or r
 
 Security checklist:
 
-> **Input validation**
+> [accordion] Input validation
 >
 > * Validate and sanitize all user inputs
 >
@@ -214,13 +214,13 @@ Security checklist:
 >
 > * Never use `eval()`, as this can lead to arbitrary code execution vulnerabilities
 
-> **Error handling**
+> [accordion] Error handling
 >
 > * Use specific exception types
 > * Don't expose sensitive information in error messages
 > * Implement proper resource cleanup
 
-> **Dependencies**
+> [accordion] Dependencies
 >
 > * Avoid adding hard dependencies
 > * Keep optional dependencies minimal
@@ -292,63 +292,63 @@ Once you've reviewed the [contribution guidelines](#contribution-guidelines), fi
 
 ## Repository structure
 
-**LangChain**
-
-LangChain is organized as a monorepo with multiple packages:
-
-> **Core packages**
+> [tab] LangChain
 >
-> * **[`langchain`](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain#readme)** (located in `libs/langchain/`): Main package with chains, agents, and retrieval logic
-> * **[`@langchain/core`](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-core#readme)** (located in `libs/langchain-core/`): Base interfaces and core abstractions
-
-> **Partner packages**
+> LangChain is organized as a monorepo with multiple packages:
 >
-> Located in `libs/providers/`, these are independently versioned packages for specific integrations. For example:
+> > [accordion] Core packages
+> >
+> > * **[`langchain`](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain#readme)** (located in `libs/langchain/`): Main package with chains, agents, and retrieval logic
+> > * **[`@langchain/core`](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-core#readme)** (located in `libs/langchain-core/`): Base interfaces and core abstractions
 >
-> * **[`@langchain/openai`](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-openai#readme)**: [OpenAI](/oss/javascript/integrations/providers/openai) integrations
-> * **[`@langchain/anthropic`](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-anthropic#readme)**: [Anthropic](/oss/javascript/integrations/providers/anthropic) integrations
-> * **[`@langchain/google`](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google#readme)**: [Google](/oss/javascript/integrations/providers/google) integrations
-
-> **Supporting packages**
+> > [accordion] Partner packages
+> >
+> > Located in `libs/providers/`, these are independently versioned packages for specific integrations. For example:
+> >
+> > * **[`@langchain/openai`](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-openai#readme)**: [OpenAI](/oss/javascript/integrations/providers/openai) integrations
+> > * **[`@langchain/anthropic`](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-anthropic#readme)**: [Anthropic](/oss/javascript/integrations/providers/anthropic) integrations
+> > * **[`@langchain/google`](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google#readme)**: [Google](/oss/javascript/integrations/providers/google) integrations
 >
-> * **[`@langchain/textsplitters`](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-textsplitters#readme)**: Text splitting utilities
-> * **[`@langchain/standard-tests`](https://github.com/langchain-ai/langchainjs/tree/main/internal/standard-tests#readme)**: Standard test suites for integrations
-> * **[`@langchain/community`](https://github.com/langchain-ai/langchainjs-community/tree/main/libs/community)**: Community maintained integrations (separate repo)
+> > [accordion] Supporting packages
+> >
+> > * **[`@langchain/textsplitters`](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-textsplitters#readme)**: Text splitting utilities
+> > * **[`@langchain/standard-tests`](https://github.com/langchain-ai/langchainjs/tree/main/internal/standard-tests#readme)**: Standard test suites for integrations
+> > * **[`@langchain/community`](https://github.com/langchain-ai/langchainjs-community/tree/main/libs/community)**: Community maintained integrations (separate repo)
 
-**LangGraph**
-
-LangGraph is organized as a monorepo with multiple Python packages:
-
-> **Core packages**
+> [tab] LangGraph
 >
-> * **[`langgraph`](https://github.com/langchain-ai/langgraph/tree/main/libs/langgraph#readme)** (located in `libs/langgraph/`): Core framework for building stateful, multi-actor agents
-> * **[`langgraph-prebuilt`](https://github.com/langchain-ai/langgraph/tree/main/libs/prebuilt#readme)** (located in `libs/prebuilt/`): High-level APIs for creating and running agents and tools
-
-> **Checkpoint packages**
+> LangGraph is organized as a monorepo with multiple Python packages:
 >
-> * **[`langgraph-checkpoint`](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint#readme)** (located in `libs/checkpoint/`): Base interfaces for checkpoint savers
-> * **[`langgraph-checkpoint-postgres`](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres#readme)** (located in `libs/checkpoint-postgres/`): Postgres implementation
-> * **[`langgraph-checkpoint-sqlite`](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite#readme)** (located in `libs/checkpoint-sqlite/`): SQLite implementation
-
-> **SDK and CLI**
+> > [accordion] Core packages
+> >
+> > * **[`langgraph`](https://github.com/langchain-ai/langgraph/tree/main/libs/langgraph#readme)** (located in `libs/langgraph/`): Core framework for building stateful, multi-actor agents
+> > * **[`langgraph-prebuilt`](https://github.com/langchain-ai/langgraph/tree/main/libs/prebuilt#readme)** (located in `libs/prebuilt/`): High-level APIs for creating and running agents and tools
 >
-> * **[`langgraph-sdk`](https://github.com/langchain-ai/langgraph/tree/main/libs/sdk-py#readme)** (located in `libs/sdk-py/`): Python SDK for the Agent Server API
-> * **[`langgraph-cli`](https://github.com/langchain-ai/langgraph/tree/main/libs/cli#readme)** (located in `libs/cli/`): Official command-line interface
-
-**Deep Agents**
-
-Deep Agents is organized as a monorepo with multiple Python packages:
-
-> **Core packages**
+> > [accordion] Checkpoint packages
+> >
+> > * **[`langgraph-checkpoint`](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint#readme)** (located in `libs/checkpoint/`): Base interfaces for checkpoint savers
+> > * **[`langgraph-checkpoint-postgres`](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres#readme)** (located in `libs/checkpoint-postgres/`): Postgres implementation
+> > * **[`langgraph-checkpoint-sqlite`](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite#readme)** (located in `libs/checkpoint-sqlite/`): SQLite implementation
 >
-> * **[`deepagents`](https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents#readme)** (located in `libs/deepagents/`): Core framework for building deep agents with planning, filesystem, and subagent capabilities
-> * **[`deepagents-code`](https://github.com/langchain-ai/deepagents/tree/main/libs/code#readme)** (located in `libs/code/`): Deep Agents Code — interactive terminal interface with conversation resume, web search, and sandboxes
-> * **[`deepagents-cli`](https://github.com/langchain-ai/deepagents/tree/main/libs/code)** (located in `libs/cli/`): Deploy tooling (`deepagents deploy`, `deepagents init`, `deepagents dev`) for shipping agents to LangSmith Deployments
+> > [accordion] SDK and CLI
+> >
+> > * **[`langgraph-sdk`](https://github.com/langchain-ai/langgraph/tree/main/libs/sdk-py#readme)** (located in `libs/sdk-py/`): Python SDK for the Agent Server API
+> > * **[`langgraph-cli`](https://github.com/langchain-ai/langgraph/tree/main/libs/cli#readme)** (located in `libs/cli/`): Official command-line interface
 
-> **Integration packages**
+> [tab] Deep Agents
 >
-> * **[`deepagents-evals`](https://github.com/langchain-ai/deepagents/tree/main/libs/evals#readme)** (located in `libs/evals/`): Evaluation suite and Harbor integration with LangSmith tracing
-> * **[`deepagents-acp`](https://github.com/langchain-ai/deepagents/tree/main/libs/acp#readme)** (located in `libs/acp/`): Agent Client Protocol integration
+> Deep Agents is organized as a monorepo with multiple Python packages:
+>
+> > [accordion] Core packages
+> >
+> > * **[`deepagents`](https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents#readme)** (located in `libs/deepagents/`): Core framework for building deep agents with planning, filesystem, and subagent capabilities
+> > * **[`deepagents-code`](https://github.com/langchain-ai/deepagents/tree/main/libs/code#readme)** (located in `libs/code/`): Deep Agents Code — interactive terminal interface with conversation resume, web search, and sandboxes
+> > * **[`deepagents-cli`](https://github.com/langchain-ai/deepagents/tree/main/libs/code)** (located in `libs/cli/`): Deploy tooling (`deepagents deploy`, `deepagents init`, `deepagents dev`) for shipping agents to LangSmith Deployments
+>
+> > [accordion] Integration packages
+> >
+> > * **[`deepagents-evals`](https://github.com/langchain-ai/deepagents/tree/main/libs/evals#readme)** (located in `libs/evals/`): Evaluation suite and Harbor integration with LangSmith tracing
+> > * **[`deepagents-acp`](https://github.com/langchain-ai/deepagents/tree/main/libs/acp#readme)** (located in `libs/acp/`): Agent Client Protocol integration
 
 ***
 
@@ -415,69 +415,69 @@ pnpm test:int
 
 Contributions must adhere to the following quality requirements:
 
-**Type hints**
+> [tab] Type hints
+>
+> **Required**: Complete types for all functions
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> function processDocuments(
+>     docs: Document[],
+>     processor: DocumentProcessor,
+>     batchSize: number = 100
+> ): ProcessingResult {
+>     // ...
+> }
+> ```
 
-**Required**: Complete types for all functions
+> [tab] Documentation
+>
+> **Required**: [JSDocs](https://jsdoc.app/about-getting-started) for all exported functions and interfaces
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /**
+>  * Document processing instance.
+>  */
+> interface FooDocumentProcessor {
+>     /**
+>      * Process documents in batches.
+>      *
+>      * @param docs - List of documents to process.
+>      * @returns Processing results with success/failure counts.
+>      */
+>     process(docs: Document[]): ProcessingResult;
+> }
+>
+> /**
+>  * Process documents in batches.
+>  *
+>  * @param docs - List of documents to process.
+>  * @param processor - Document processing instance.
+>  * @param batchSize - Number of documents per batch.
+>  * @returns Processing results with success/failure counts.
+>  */
+> export function processDocuments(
+>     docs: Document[],
+>     processor: DocumentProcessor,
+>     batchSize: number = 100
+> ): ProcessingResult {
+>     // ...
+> }
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-function processDocuments(
-    docs: Document[],
-    processor: DocumentProcessor,
-    batchSize: number = 100
-): ProcessingResult {
-    // ...
-}
-```
-
-**Documentation**
-
-**Required**: [JSDocs](https://jsdoc.app/about-getting-started) for all exported functions and interfaces
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/**
- * Document processing instance.
- */
-interface FooDocumentProcessor {
-    /**
-     * Process documents in batches.
-     *
-     * @param docs - List of documents to process.
-     * @returns Processing results with success/failure counts.
-     */
-    process(docs: Document[]): ProcessingResult;
-}
-
-/**
- * Process documents in batches.
- *
- * @param docs - List of documents to process.
- * @param processor - Document processing instance.
- * @param batchSize - Number of documents per batch.
- * @returns Processing results with success/failure counts.
- */
-export function processDocuments(
-    docs: Document[],
-    processor: DocumentProcessor,
-    batchSize: number = 100
-): ProcessingResult {
-    // ...
-}
-```
-
-**Code style**
-
-**Automated**: Formatting and linting:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm lint    # Check style and types
-pnpm format  # Apply formatting
-```
-
-**Standards**:
-
-* Descriptive variable names
-* Break up complex functions (aim for fewer than 20 lines)
-* Follow existing patterns in the codebase
+> [tab] Code style
+>
+> **Automated**: Formatting and linting:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm lint    # Check style and types
+> pnpm format  # Apply formatting
+> ```
+>
+> **Standards**:
+>
+> * Descriptive variable names
+> * Break up complex functions (aim for fewer than 20 lines)
+> * Follow existing patterns in the codebase
 
 ***
 
@@ -490,43 +490,43 @@ In order to write effective tests, there's a few good practices to follow:
 * Be exhaustive with assertions
 * Only use snapshots for reasonably sized data objects
 
-**Unit tests**
+> [tab] Unit tests
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> describe("DocumentProcessor", () => {
+>     it("Should handle empty document list", () => {
+>         const processor = new DocumentProcessor();
+>         const result = processor.process([]);
+>
+>         expect(result.success).toBe(true);
+>         expect(result.processedCount).toBe(0);
+>         expect(result.errors).toHaveLength(0);
+>     });
+> });
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-describe("DocumentProcessor", () => {
-    it("Should handle empty document list", () => {
-        const processor = new DocumentProcessor();
-        const result = processor.process([]);
+> [tab] Integration tests
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> describe("ChatOpenAI", () => {
+>     it("Should test with real API", () => {
+>         const chat = new ChatOpenAI();
+>         const response = chat.invoke("Hello");
+>     });
+> });
+> ```
 
-        expect(result.success).toBe(true);
-        expect(result.processedCount).toBe(0);
-        expect(result.errors).toHaveLength(0);
-    });
-});
-```
-
-**Integration tests**
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-describe("ChatOpenAI", () => {
-    it("Should test with real API", () => {
-        const chat = new ChatOpenAI();
-        const response = chat.invoke("Hello");
-    });
-});
-```
-
-**Mock usage**
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-describe("APIService", () => {
-    it("Should call with retry", () => {
-        const mockClient = new MockClient();
-        const service = new APIService(client: mockClient);
-        const result = service.callWithRetry();
-    });
-});
-```
+> [tab] Mock usage
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> describe("APIService", () => {
+>     it("Should call with retry", () => {
+>         const mockClient = new MockClient();
+>         const service = new APIService(client: mockClient);
+>         const result = service.callWithRetry();
+>     });
+> });
+> ```
 
 ### Submitting your PR
 

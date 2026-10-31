@@ -16,96 +16,96 @@
 
 从 **现有** LangSmith 应用程序开始，将以下自定义路由代码添加到您的应用程序文件中。如果您从头开始，则可以使用 CLI 从模板创建新应用程序。
 
-**Python**
+> [选项卡] Python
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langgraph new --template=new-langgraph-project-python my_new_project
+> ```
+>
+> 一旦您有了 LangGraph 项目，请添加以下应用程序代码：
+>
+> ```python {highlight={4}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # ./src/agent/webapp.py
+> from fastapi import FastAPI
+>
+> app = FastAPI()
+>
+>
+> @app.get("/hello")
+> def read_root():
+>     return {"Hello": "World"}
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langgraph new --template=new-langgraph-project-python my_new_project
-```
-
-一旦您有了 LangGraph 项目，请添加以下应用程序代码：
-
-```python {highlight={4}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# ./src/agent/webapp.py
-from fastapi import FastAPI
-
-app = FastAPI()
-
-
-@app.get("/hello")
-def read_root():
-    return {"Hello": "World"}
-```
-
-**打字稿**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn create langgraph
-npm install hono
-```
-
-一旦您有了 LangGraph 项目，请添加以下应用程序代码：
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// ./src/custom-routes.ts
-import { Hono } from "hono";
-
-export const app = new Hono()
-  .get("/custom/hello", (c) => {
-    return c.json({ hello: "world" });
-  })
-  .post("/custom/webhook", async (c) => {
-    const body = await c.req.json();
-    return c.json({ received: true, payload: body });
-  });
-```
-
-`hono` 包必须在您的项目依赖项中可用。
+> [选项卡] TypeScript
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn create langgraph
+> npm install hono
+> ```
+>
+> 一旦您有了 LangGraph 项目，请添加以下应用程序代码：
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> // ./src/custom-routes.ts
+> import { Hono } from "hono";
+>
+> export const app = new Hono()
+>   .get("/custom/hello", (c) => {
+>     return c.json({ hello: "world" });
+>   })
+>   .post("/custom/webhook", async (c) => {
+>     const body = await c.req.json();
+>     return c.json({ received: true, payload: body });
+>   });
+> ```
+>
+> `hono` 包必须在您的项目依赖项中可用。
 
 ## 配置`langgraph.json`将以下内容添加到您的 `langgraph.json` 配置文件中。确保路径指向您在 [previous section](#create-app) 中创建的应用程序实例。
 
-**Python**
+> [选项卡] Python
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "dependencies": ["."],
+>   "graphs": {
+>     "agent": "./src/agent/graph.py:graph"
+>   },
+>   "env": ".env",
+>   "http": {
+>     "app": "./src/agent/webapp.py:app"
+>   }
+>   // Other configuration options like auth, store, etc.
+> }
+> ```
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "dependencies": ["."],
-  "graphs": {
-    "agent": "./src/agent/graph.py:graph"
-  },
-  "env": ".env",
-  "http": {
-    "app": "./src/agent/webapp.py:app"
-  }
-  // Other configuration options like auth, store, etc.
-}
-```
-
-**打字稿**
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "node_version": "20",
-  "dependencies": ["."],
-  "graphs": { "agent": "./src/agent.ts:graph" },
-  "http": { "app": "./src/custom-routes.ts:app" },
-  "env": ".env"
-}
-```
+> [选项卡] TypeScript
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "node_version": "20",
+>   "dependencies": ["."],
+>   "graphs": { "agent": "./src/agent.ts:graph" },
+>   "http": { "app": "./src/custom-routes.ts:app" },
+>   "env": ".env"
+> }
+> ```
 
 ## 启动服务器
 
 在本地测试服务器：
 
-**Python**
+> [选项卡] Python
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langgraph dev --no-browser
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langgraph dev --no-browser
-```
-
-**打字稿**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npx @langchain/langgraph-cli@latest dev --no-browser
-```
+> [选项卡] TypeScript
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npx @langchain/langgraph-cli@latest dev --no-browser
+> ```
 
 如果您在浏览器中导航到 `localhost:2024/hello`（`2024` 是默认开发端口），您应该会看到 `/hello` 端点返回 JSON 响应。对于 TypeScript 示例，导航至 `localhost:2024/custom/hello`。
 

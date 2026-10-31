@@ -10,11 +10,11 @@ Fleet 将任何客服人员变成您的团队可以直接在频道或消息中�
 
 ## 选择安装路径
 
-> **[LangSmith Cloud](#set-up-slack-on-langsmith-cloud)**
+> [卡][LangSmith Cloud](#set-up-slack-on-langsmith-cloud)
 >
 > 连接 Slack 一次，然后一键将 Slack 应用程序添加到任何代理。
 
-> **[Self-hosted](#set-up-slack-on-self-hosted)**
+> [卡][Self-hosted](#set-up-slack-on-self-hosted)
 >
 > 配置 Slack OAuth 提供商，然后为每个代理创建自定义 Slack 应用程序。
 
@@ -55,7 +55,7 @@ Fleet 将任何客服人员变成您的团队可以直接在频道或消息中�
 
 ### 步骤 1. 连接 Fleet Slack 管理器
 
-Fleet Slack 应用程序充当您的工作空间的管理器。单个连接可以实现两件事：* **Slack 工具访问**：机器人确定代理需要发布消息、读取频道和线程历史记录以及发送直接消息的范围。
+Fleet Slack 应用程序充当您的工作空间的管理器。单个连接可以实现两件事：* **Slack 工具访问**：机器人范围为代理需要发布消息、读取频道和线程历史记录以及发送直接消息。
 * **应用程序管理**：允许 Fleet 为代理创建专用 Slack 应用程序并代表您将其安装在您的工作区中的范围，这使得一键部署成为可能。
 
 要连接，请打开[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-slack-app)中的**集成**页面，搜索**Slack**，然后单击Slack卡上的**连接**。当您第一次将 Slack 应用程序添加到代理时，Fleet 也会内联运行此连接，因此您可以跳至 [Step 2](#step-2-add-a-slack-app-to-an-agent) 并在出现提示时进行授权。
@@ -71,7 +71,7 @@ Fleet Slack 应用程序充当您的工作空间的管理器。单个连接可�
 
 ### 步骤 2. 将 Slack 应用程序添加到代理
 
-**1.将 Slack 添加到代理**在 [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-slack-app) 中，选择您的代理并打开其配置侧边栏。展开 **Channel** 抽屉并选择 **Slack**。单击“**添加到 Slack**”。如果您尚未连接 Slack，Fleet 首先运行 [manager authorization](#step-1-connect-the-fleet-slack-manager)。
+**1.将 Slack 添加到代理**在 [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-slack-app) 中，选择您的代理并打开其配置侧边栏。展开 **Channels** 抽屉并选择 **Slack**。单击“**添加到 Slack**”。如果您尚未连接 Slack，Fleet 首先运行 [manager authorization](#step-1-connect-the-fleet-slack-manager)。
 
 （可选）展开**高级**并启用**允许机器人触发器**以让来自其他 Slack 机器人的消息开始运行。
 
@@ -85,14 +85,14 @@ Fleet 使用其描述和图标创建一个以您的代理命名的 Slack 应用�
 
 如果您的 Slack 工作区需要管理员批准每个应用程序，Fleet 会将新应用程序保存为草稿，而不是安装它。完成设置需要两轮：
 
-1. 单击待处理 Slack 行上的 **完成设置**。 Slack 会打开一个窗口，您可以在其中单击“**请求**”将应用程序发送给您的工作区管理员。
+1. 单击待处理 Slack 行上的 **完成设置**。 Slack 将打开一个窗口，您可以在其中单击“**请求**”将应用程序发送给您的工作区管理员。
 2. 管理员批准后，返回舰队并再次单击“**完成设置**”。 Fleet 安装应用程序并激活频道。## 在自托管上设置 Slack
 
 自托管部署不使用 Fleet Slack 管理器。相反，为实例配置一次 Slack OAuth 提供程序，然后根据 Fleet 生成的清单为每个代理创建自定义 Slack 应用程序。
 
 ### 步骤 1. 设置 Slack OAuth 提供商
 
-每个自托管实例都需要进行此一次性设置，然后代理才能使用 Slack。它为您的代理启用 [Slack tools](#add-slack-tools) 并打开 Slack 通道，这使您可以在步骤 2 中添加自定义应用程序。
+每个自托管实例都需要进行此一次性设置，然后代理才能使用 Slack。它为您的代理启用 [Slack tools](#add-slack-tools) 并打开 Slack 通道，这使您可以在第 2 步中添加自定义应用程序。
 
 **1.配置头盔**
 
@@ -163,7 +163,7 @@ https://<hostname>/host-oauth-callback/<provider-id>
 
 **1.打开 Slack 设置对话框**
 
-选择您的代理并打开其配置侧边栏。展开 **Channel** 抽屉并选择 **Slack**。
+选择您的代理并打开其配置侧边栏。展开 **Channels** 抽屉并选择 **Slack**。
 
 您还可以从 **集成** 页面开始：在左侧导航中选择 **Slack 和 Teams**，然后在 **Slack 应用程序** 部分中单击 **添加 Slack 应用程序**。
 
@@ -180,7 +180,7 @@ https://<hostname>/host-oauth-callback/<provider-id>
 **3.输入您的应用程序凭据**
 
 返回 Fleet，单击 **Continue To Credentials** 并从新的 Slack 应用程序复制以下值：* **应用程序ID**：来自**基本信息**。
-* **客户端ID**：来自**基本信息>应用程序凭据**。
+* **客户端ID**：来自**基本信息>应用凭证**。
 * **客户端密钥**：来自**基本信息 > 应用程序凭证**。单击 Slack 中的 **显示** 并复制整个值。
 * **签名秘密**：来自**基本信息 > 应用凭证**。单击 Slack 中的 **显示** 并复制整个值。
 
@@ -196,20 +196,20 @@ https://<hostname>/host-oauth-callback/<provider-id>
 **需要管理员批准的 Slack 应用程序**：如果 Slack 显示 **请求** 而不是 **允许**，则您的工作区需要管理员批准：
 
 1. 在 Slack 窗口中，单击 **请求** 将安装请求发送给您的管理员。这实际上是通知管理员的。
-2. 返回舰队，单击“**保存并请求批准**”。尽管名称如此，此按钮仅将应用程序保存为草稿，以便您可以在管理员批准后恢复。
+2. 返回舰队，单击“**保存并请求批准**”。尽管其名称如此，此按钮仅将应用程序保存为草稿，以便您可以在管理员批准后恢复。
 
 参见[Finish a draft Slack app](#finish-a-draft-slack-app)。
 
 **5.完成设置**单击**完成**。如果您从代理开始，Fleet 会将应用程序链接到该代理。如果您从 **集成** 页面开始，请从下拉列表中选择一个代理，或单击 **不使用代理完成** 以稍后链接一个代理。
 
-### Finish a draft Slack app
+### 完成 Slack 应用草稿
 
 单击 **保存并请求批准** 会将应用程序保存为草稿，以便您在 Slack 管理员审核安装请求时保留进度。该草稿显示在 **Slack Apps** 部分的 **待 Slack 管理员批准**下。
 
-After your admin approves the app:
+在您的管理员批准该应用程序后：
 
 1. 在 **集成** 页面上，选择左侧导航栏中的 **Slack 和 Teams** 以打开 **Slack 应用程序** 部分。
-2. Click **Resume Setup** on the draft.
+2. 单击草稿上的“**恢复设置**”。
 3. 重新输入 **客户端密钥** 和 **签名密钥**。 Fleet 不会将机密存储在草稿中，因此请再次从 Slack 复制它们。
 4. 单击“**保存凭据**”，然后单击“**连接 OAuth**”，然后单击“Slack 中的**允许**”。
 5. 选择要将应用程序链接到的代理，然后单击 **完成**。
@@ -218,7 +218,7 @@ After your admin approves the app:
 >
 > 每个客服人员只能拥有一个 Slack 应用程序，并且每个 Slack 应用程序只能链接到一个客服人员。
 
-## Use your agent in Slack安装应用程序后，邀请代理加入频道，对其进行标记以开始运行，并在不离开 Slack 的情况下响应批准请求。
+## 在 Slack 中使用您的代理安装应用程序后，邀请代理加入频道，对其进行标记以开始运行，并在不离开 Slack 的情况下响应批准请求。
 
 ### 邀请代理加入频道
 
@@ -236,7 +236,7 @@ After your admin approves the app:
 
 ### Slack 中的错误消息
 
-如果代理在运行期间遇到错误，它会在 Slack 线程中进行回复，而不是保持沉默。对于某些错误类型（例如身份验证错误），回复会包含更多详细信息，以便您可以解决问题。
+如果代理在运行期间遇到错误，它会在 Slack 线程中进行回复，而不是保持沉默。对于某些错误类型（例如身份验证错误），回复会包含更多详细信息，以便您解决问题。
 
 ## 添加 Slack 工具Slack 工具可让您的代理发送消息、在线程中回复、读取历史记录以及发送直接消息。无论代理是如何触发的，无论是通过 Slack、Fleet UI、计划还是 Webhook，它们都会工作。
 
@@ -285,15 +285,15 @@ After your admin approves the app:
 
 ## 后续步骤
 
-> **[Add more tools](/langsmith/fleet/tools)**
+> [卡][Add more tools](/langsmith/fleet/tools)
 >
 > 将附加服务连接到您的代理
 
-> **[Add more channels](/langsmith/fleet/channels)**
+> [卡][Add more channels](/langsmith/fleet/channels)
 >
 > 设置电子邮件、时间表或 Webhook 渠道
 
-> **[Use templates](/langsmith/fleet/templates)**
+> [卡][Use templates](/langsmith/fleet/templates)
 >
 > 从预构建的代理模板开始
 

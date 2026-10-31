@@ -1420,32 +1420,32 @@ To make a user's group memberships visible to LangSmith at login, you need to do
 
 **Per-IdP setup:**
 
-**Okta**
+> [tab] Okta
+>
+> In the LangSmith SAML application:
+>
+> 1. Go to **Directory** > **Profile Editor**, then select the LangSmith application's user profile.
+> 2. Add a custom attribute named `groups` with **Type** `string array`.
+> 3. On **Sign On**, edit the SAML settings and add an attribute statement:
+>    * **Name**: `groups`
+>    * **Name format**: `Unspecified` (or `Basic`)
+>    * **Filter**: `Matches regex` with `.*` to send all groups, or use a more restrictive regex (e.g., `^LS:.*`) to limit to LangSmith-prefixed groups.
 
-In the LangSmith SAML application:
+> [tab] Entra ID (Azure)
+>
+> In the LangSmith Enterprise Application:
+>
+> 1. **Single sign-on** > **Attributes & Claims** > **Add a group claim**.
+> 2. Choose which groups to emit (typically **Groups assigned to the application**).
+> 3. Set **Source attribute** to `Cloud-only group display names` so the group name (which must match the [naming convention](#group-naming-convention)) is sent rather than the object ID.
+> 4. Set the claim **Name** to `groups` (or your configured **Groups claim field** value), with no namespace.
 
-1. Go to **Directory** > **Profile Editor**, then select the LangSmith application's user profile.
-2. Add a custom attribute named `groups` with **Type** `string array`.
-3. On **Sign On**, edit the SAML settings and add an attribute statement:
-   * **Name**: `groups`
-   * **Name format**: `Unspecified` (or `Basic`)
-   * **Filter**: `Matches regex` with `.*` to send all groups, or use a more restrictive regex (e.g., `^LS:.*`) to limit to LangSmith-prefixed groups.
-
-**Entra ID (Azure)**
-
-In the LangSmith Enterprise Application:
-
-1. **Single sign-on** > **Attributes & Claims** > **Add a group claim**.
-2. Choose which groups to emit (typically **Groups assigned to the application**).
-3. Set **Source attribute** to `Cloud-only group display names` so the group name (which must match the [naming convention](#group-naming-convention)) is sent rather than the object ID.
-4. Set the claim **Name** to `groups` (or your configured **Groups claim field** value), with no namespace.
-
-**Google Workspace**
-
-Google's SAML SSO does not natively emit Google Group memberships as a SAML attribute. To use SSO Groups Sync with Google Workspace, you must either:
-
-* Manage group membership through a directory sync tool that exposes groups as a SAML attribute, or
-* Use [SCIM](#set-up-scim-for-your-organization) instead, which supports group push from Google Workspace.
+> [tab] Google Workspace
+>
+> Google's SAML SSO does not natively emit Google Group memberships as a SAML attribute. To use SSO Groups Sync with Google Workspace, you must either:
+>
+> * Manage group membership through a directory sync tool that exposes groups as a SAML attribute, or
+> * Use [SCIM](#set-up-scim-for-your-organization) instead, which supports group push from Google Workspace.
 
 #### Group naming examples
 

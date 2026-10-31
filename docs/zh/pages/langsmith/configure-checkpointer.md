@@ -14,9 +14,9 @@
 
 ## 可用的后端
 
-|后端|存储|配置|使用案例 |
+|后端 |存储|配置|使用案例 |
 | - | - | - | - |
-| `default` | PostgreSQL |无（内置）|标准部署 |
+| `default` | PostgreSQL |无（内置）|标准部署|
 | `mongo` | MongoDB | `langgraph.json` 或 `LS_DEFAULT_CHECKPOINTER_BACKEND` 环境变量 |与现有 MongoDB 基础设施的团队 |
 | `custom` |用户提供| `langgraph.json` |自定义存储后端（请参阅[custom checkpointer](/langsmith/custom-checkpointer)）|
 
@@ -87,80 +87,78 @@ mongodb://host1:27017,host2:27017,host3:27017/mydb?replicaSet=prod-rs
 mongodb+srv://user:password@cluster.example.net/langgraph
 ```
 
-### 按环境部署
+### 按环境部署> [选项卡] 独立 (Kubernetes)
+>
+> [langgraph-cloud Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md) (v0.2.6+) 具有内置 MongoDB 支持。在您的值文件中启用它：
+>
+> **捆绑 MongoDB**（开发和测试）：
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> mongo:
+>   enabled: true
+>   resources:
+>     requests:
+>       cpu: 500m
+>       memory: 1Gi
+>   persistence:
+>     size: 8Gi
+> ```
+>
+> 该图表部署单节点 MongoDB 副本集并自动配置服务器以使用它。
+>
+> **外部 MongoDB**（生产）：
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> mongo:
+>   enabled: true
+>   external:
+>     enabled: true
+>     connectionUrl: "mongodb://user:password@mongo.example.net:27017/langgraph?replicaSet=rs0"
+> ```
+>
+> 或者引用现有的 Kubernetes 密钥：
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> mongo:
+>   enabled: true
+>   external:
+>     enabled: true
+>     existingSecretName: "my-mongo-secret"
+> ```
+>
+> 秘密必须包含 `mongodb_connection_url` 密钥。
 
-**独立（Kubernetes）**
+> [选项卡] 独立 (Docker)
+>
+> 如果您的 `langgraph.json` 已将 `backend` 设置为 `"mongo"`，则只需提供 URI。否则，设置两个环境变量：
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> docker run \
+>     --env-file .env \
+>     -p 8123:8000 \
+>     -e REDIS_URI="redis://redis:6379" \
+>     -e DATABASE_URI="postgres://postgres:postgres@postgres:5432/postgres" \
+>     -e LS_DEFAULT_CHECKPOINTER_BACKEND=mongo \
+>     -e LS_MONGODB_URI="mongodb://mongo:27017/langgraph?replicaSet=rs0" \
+>     -e LANGSMITH_API_KEY="..." \
+>     my-image
+> ```
+>
+> 有关 MongoDB 的完整 Docker Compose 示例，请参阅 [standalone server guide](/langsmith/deploy-standalone-server)。
 
-[langgraph-cloud Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md) (v0.2.6+) 具有内置的 MongoDB 支持。在您的值文件中启用它：
-
-**捆绑的 MongoDB**（开发和测试）：
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-mongo:
-  enabled: true
-  resources:
-    requests:
-      cpu: 500m
-      memory: 1Gi
-  persistence:
-    size: 8Gi
-```
-
-该图表部署单节点 MongoDB 副本集并自动配置服务器以使用它。**外部 MongoDB**（生产）：
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-mongo:
-  enabled: true
-  external:
-    enabled: true
-    connectionUrl: "mongodb://user:password@mongo.example.net:27017/langgraph?replicaSet=rs0"
-```
-
-或者引用现有的 Kubernetes 密钥：
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-mongo:
-  enabled: true
-  external:
-    enabled: true
-    existingSecretName: "my-mongo-secret"
-```
-
-该秘密必须包含 `mongodb_connection_url` 密钥。
-
-**独立（Docker）**
-
-如果您的 `langgraph.json` 已将 `backend` 设置为 `"mongo"`，则只需提供 URI。否则，设置两个环境变量：
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-docker run \
-    --env-file .env \
-    -p 8123:8000 \
-    -e REDIS_URI="redis://redis:6379" \
-    -e DATABASE_URI="postgres://postgres:postgres@postgres:5432/postgres" \
-    -e LS_DEFAULT_CHECKPOINTER_BACKEND=mongo \
-    -e LS_MONGODB_URI="mongodb://mongo:27017/langgraph?replicaSet=rs0" \
-    -e LANGSMITH_API_KEY="..." \
-    my-image
-```
-
-有关 MongoDB 的完整 Docker Compose 示例，请参阅 [standalone server guide](/langsmith/deploy-standalone-server)。
-
-**云**
-
-在 `langgraph.json` 中将 `backend` 设置为 `"mongo"`，然后将 `LS_MONGODB_URI` 添加为 LangSmith UI 的部署设置中的环境变量。
-
-您的 MongoDB 实例必须可从云数据平面访问。像 [MongoDB Atlas](https://www.mongodb.com/atlas) 这样的托管服务非常适合此目的。
-
-PostgreSQL 仍然自动配置非检查点数据。
+> [选项卡] 云
+>
+> 在 `langgraph.json` 中将 `backend` 设置为 `"mongo"`，然后将 `LS_MONGODB_URI` 添加为 LangSmith UI 的部署设置中的环境变量。
+>
+> 您的 MongoDB 实例必须可从云数据平面访问。像 [MongoDB Atlas](https://www.mongodb.com/atlas) 这样的托管服务非常适合此目的。
+>
+> PostgreSQL 仍然自动配置非检查点数据。
 
 ## 自定义检查点
 
 要使用 PostgreSQL 或 MongoDB 以外的存储后端，请实现自定义 [BaseCheckpointSaver](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.base.BaseCheckpointSaver)。详情请参阅[Add custom checkpointer](/langsmith/custom-checkpointer)。
 
-## 相关
-
-* [Configure TTLs](/langsmith/configure-ttl) 用于检查点和商店物品过期
+＃＃ 有关的* [Configure TTLs](/langsmith/configure-ttl) 用于检查点和商店物品过期
 * [Persistence concepts](/oss/python/langgraph/persistence) 位于 LangGraph
 * [Data plane](/langsmith/data-plane)架构
 * [Environment variables](/langsmith/env-var-cloud)参考

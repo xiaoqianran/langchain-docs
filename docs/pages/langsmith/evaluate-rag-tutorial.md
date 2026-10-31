@@ -737,7 +737,7 @@ View an example of the results in [this LangSmith experiment](https://smith.lang
 
 ## Reference code
 
-> **Here's a consolidated script with all the above code:**
+> [accordion] Here's a consolidated script with all the above code:
 >
 > ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import bs4

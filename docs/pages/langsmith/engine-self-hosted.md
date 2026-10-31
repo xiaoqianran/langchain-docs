@@ -195,45 +195,45 @@ When introducing or rotating the usage signing secret, pause new Engine work and
 
 Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts), alongside the complete Sandboxes values from [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes). These examples show only the Engine-specific values and the `sandboxes.enabled` flag.
 
-**Using Kubernetes secrets (recommended)**
-
-Reference your existing Secret by name. The chart reads `engine_encryption_key` and `engine_usage_signing_secret` from it.
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-config:
-  existingSecretName: "<your-secret-name>"
-  # Must be reachable from the sandbox network.
-  hostname: "https://langsmith.example.com"
-
-engine:
-  enabled: true
-  intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
-
-sandboxes:
-  enabled: true
-```
-
-**Using inline values**
-
-Set Engine's keys directly in your config file.
-
-> [!WARNING]
+> [tab] Using Kubernetes secrets (recommended)
 >
-> This puts live credentials in your config file. Do not commit it to version control. Prefer the Kubernetes Secret.
+> Reference your existing Secret by name. The chart reads `engine_encryption_key` and `engine_usage_signing_secret` from it.
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> config:
+>   existingSecretName: "<your-secret-name>"
+>   # Must be reachable from the sandbox network.
+>   hostname: "https://langsmith.example.com"
+>
+> engine:
+>   enabled: true
+>   intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
+>
+> sandboxes:
+>   enabled: true
+> ```
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-config:
-  hostname: "https://langsmith.example.com"
-
-engine:
-  enabled: true
-  intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
-  encryptionKey: "<engine-encryption-key>"
-  usageSigningSecret: "<engine-usage-signing-secret>"
-
-sandboxes:
-  enabled: true
-```
+> [tab] Using inline values
+>
+> Set Engine's keys directly in your config file.
+>
+> > [!WARNING]
+> >
+> > This puts live credentials in your config file. Do not commit it to version control. Prefer the Kubernetes Secret.
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> config:
+>   hostname: "https://langsmith.example.com"
+>
+> engine:
+>   enabled: true
+>   intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
+>   encryptionKey: "<engine-encryption-key>"
+>   usageSigningSecret: "<engine-usage-signing-secret>"
+>
+> sandboxes:
+>   enabled: true
+> ```
 
 > [!NOTE]
 >

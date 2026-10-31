@@ -325,7 +325,7 @@ Click an example to open its details panel, which includes inputs, outputs, refe
 
 ## Reference code
 
-> **Click to see a consolidated code snippet**
+> [accordion] Click to see a consolidated code snippet
 >
 > ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langsmith import Client, traceable, wrappers

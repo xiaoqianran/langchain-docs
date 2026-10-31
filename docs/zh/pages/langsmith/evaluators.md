@@ -4,7 +4,7 @@
 
 # 管理评估者
 
-在 LangSmith 的工作区级别查看和管理评估器。
+在 LangSmith 中查看和管理工作区级别的评估器。
 
 LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[workspace-level](/langsmith/administration-overview#workspaces)资源。您可以将单个评估器附加到多个[trace containers](/langsmith/observability-concepts#trace-containers)和[datasets](/langsmith/evaluation-concepts#datasets)，因此您可以在整个工作中应用一致的评估逻辑，而无需每次都重新创建它。
 
@@ -12,11 +12,11 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
 
 > [!注意]
 >
-> **基于代理的工作区。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，则您的工作区是基于项目的。跳过本节并阅读[Tracing projects](/langsmith/observability-concepts#tracing-projects)。
+> **基于代理的工作区。** 如果您的工作区按 [agent and environment](/langsmith/agent-registry) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，则您的工作区是基于项目的。跳过本节并阅读[Tracing projects](/langsmith/observability-concepts#tracing-projects)。
 
-评估器附加到 [agent](/langsmith/agents) 的 [environment](/langsmith/agent-environments#environment-names)。将其单独附加到 **生产** 以对生产流量进行评分，而无需对本地运行进行评分。> [!注意]
+评估器附加到 [agent](/langsmith/agent-registry#agent) 的 [environment](/langsmith/agent-environments#environment-names)。将其单独附加到 **生产** 以对生产流量进行评分，而无需对本地运行进行评分。> [!注意]
 >
-> **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，侧边栏有一个带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的。跳过本节并阅读[Agents](/langsmith/agents)。
+> **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，侧边栏有一个带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的。跳过本节并阅读[Agent Registry](/langsmith/agent-registry)。
 
 评估器附加到[tracing project](/langsmith/observability-concepts#tracing-projects)。
 
@@ -106,7 +106,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 ## 预构建的评估器模板
 
-预构建的评估器模板是用于常见检查的现成评估器，例如幻觉、提示注入和任务完成。每个模板都是一个起点。您可以在将其保存到工作区之前编辑其提示和评分架构。大多数模板是[LLM-as-a-judge](/langsmith/llm-as-judge)评估器，其提示来自开源[openevals](https://github.com/langchain-ai/openevals)包。有两个例外：断言使用LangSmith中定义的提示，而精确匹配是[code evaluator](/langsmith/online-evaluations-code)。
+预构建的评估器模板是现成的评估器，用于常见检查，例如幻觉、提示注入和任务完成。每个模板都是一个起点。您可以在将其保存到工作区之前编辑其提示和评分架构。大多数模板是[LLM-as-a-judge](/langsmith/llm-as-judge)评估器，其提示来自开源[openevals](https://github.com/langchain-ai/openevals)包。有两个例外：断言使用LangSmith中定义的提示，而精确匹配是[code evaluator](/langsmith/online-evaluations-code)。
 
 每个 LLM-as-a-judge 模板都会在其反馈键下写下一个分数，并在 `comment` 上写下法官的推理。语言和支持意图返回不带 `comment` 的标签。
 
@@ -152,7 +152,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 |模板|得分多少 |分数 |
 | - | - | - |
 |感知错误 |用户信号（例如沮丧或重复纠正）是否表明用户感知到代理犯了错误。 | `perceived_error`（布尔值）：`true` 当用户察觉到导致严重挫败的错误时。 |
-|语言 |对话的主要语言。 | `language`（字符串）：英文语言名称，如`Spanish`。 |
+|语言 |对话的主要语言。 | `language`（字符串）：英文语言名称，例如`Spanish`。 |
 |支持意向 |支持对话的主要目的。 | `intent`（类别）：`Account & Billing`、`Order Management`、`Technical Support`、`Product Inquiry`、`Policy Inquiry`、`Status Check`、`Complaint & Feedback`、`Escalation` 之一，或`Other`。 |
 |用户满意度|用户的语气和满意度指标是否表明用户感到满意。 | `user_satisfaction`（布尔值）：`true` 当用户表现满意时。 ||语气|座席的语气是否适合上下文并且一致。 | `agent_tone`（布尔值）：当语气合适时，`true`。 |
 |任务完成 |代理是否完全完成了对话中的每个用户请求。 | `task_completion`（布尔值）：`true` 当每个请求完成时。 |
@@ -164,16 +164,16 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 |模板|得分多少 |分数 |
 | - | - | - |
-|计划遵守|特工的行动是否遵循其宣布的计划。 | `plan_adherence`（布尔值）：`true` 当代理遵循计划时。 |
+|计划遵守 |特工的行动是否遵循其宣布的计划。 | `plan_adherence`（布尔值）：`true` 当代理遵循计划时。 |
 |工具选择|代理是否以合理的顺序选择了正确的工具，没有不必要的电话。 | `tool_selection`（布尔值）：`true` 当刀具选择准确且高效时。 |
-|轨迹精度|代理的路径是否合乎逻辑、显示出明显的进展并且相当有效。 | `trajectory_accuracy`（布尔值）：`true` 当轨迹准确且高效时。 |
+|轨迹精度 |代理的路径是否合乎逻辑、显示出明显的进展并且相当有效。 | `trajectory_accuracy`（布尔值）：`true` 当轨迹准确且高效时。 |
 
 ### 图像评估图像模板评估图像内容的质量和安全性。
 
 |模板|得分多少 |分数 |
 | - | - | - |
 |露骨内容 |图像是否包含裸露、性内容或暴力画面。 | `explicit_content`（布尔值）：当发现显式内容时，`true`。 |
-|敏感图像|图像是否包含有害、冒犯性或不适当的符号或描述。 | `sensitive_imagery`（布尔值）：当发现敏感图像时，`true`。 |
+|敏感图像|图像是否包含有害的、冒犯性的或不适当的符号或描述。 | `sensitive_imagery`（布尔值）：当发现敏感图像时，`true`。 |
 
 ### 语音评估
 
@@ -232,7 +232,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 1. 创建或打开第二个求值器并展开其过滤器。有关更多信息，请参阅 [Apply a filter to runs that trigger the evaluator](/langsmith/online-evaluations-llm-as-judge#apply-a-filter-to-runs-that-trigger-the-evaluator)（LLM 法官评估者）或 [Create a filter](/langsmith/online-evaluations-code#3-create-a-filter)（代码评估者）。
 
-2. 过滤第一个评估者的反馈键。过滤器匹配密钥而不是生成密钥的评估器，因此来自具有该密钥的任何源的反馈都会触发第二个评估器，包括[user feedback](/langsmith/attach-user-feedback)。使用只有第一个评估者生成的密钥。
+2. 过滤第一个评估者的反馈键。过滤器匹配键而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发第二个评估器，包括[user feedback](/langsmith/attach-user-feedback)。使用只有第一个评估者生成的密钥。
    * 要在每次运行时触发第一个评估者评分，请仅对键进行过滤：
 
      ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -258,7 +258,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 `avg` 字段对运行中具有该键的每个反馈记录进行平均，因此仅当运行有一个具有该键的记录时，它才等于第一个评估者的分数。具有相同键的另一记录（例如用户反馈）会改变平均值。
 
-## 删除评估者当评估器附加到跟踪容器或数据集时，您无法删除它。要删除评估器：
+## 删除评估器当评估器附加到跟踪容器或数据集时，您无法删除它。要删除评估器：
 
 1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluators)中，选择左侧边栏中的**评估器**。
 2. 选择您要删除的评估者。

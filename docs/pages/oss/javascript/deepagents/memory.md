@@ -60,7 +60,7 @@ const agent = createDeepAgent({
 });
 ```
 
-> **Full example: seed memory and invoke**
+> [accordion] Full example: seed memory and invoke
 >
 > Populate the store with initial memories, then invoke the agent across two threads to see it remember and update what it learns.
 >
@@ -152,7 +152,7 @@ const agent = createDeepAgent({
 });
 ```
 
-> **Full example: isolated memory across users**
+> [accordion] Full example: isolated memory across users
 >
 > Seed per-user memories and invoke the agent as two different users. Each user sees only their own preferences.
 >

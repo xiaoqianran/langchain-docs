@@ -24,436 +24,438 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T16⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T16⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
-在启用动态路由之前注册每个代理。副本配置需要每个目标环境的 `tracer_session_name`。在启用复制之前检索这些值。
-
-**Python**
-
-## 跟踪上下文如何工作
-
-当您使用 [⟦T18⟧](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) 上下文管理器时，它会覆盖在其范围内执行的代码的全局跟踪配置。这意味着您可以全局启用自动跟踪，同时有选择地控制特定函数调用的跟踪行为。
-
-控制优先级分为三个级别：
-
-1. **`tracing_context(enabled=...)`**：最高优先级（用于范围跟踪控制的上下文管理器）。
-2. **`ls.configure(enabled=...)`**：全局配置（设置全局跟踪行为）。
-3. **环境变量**：最低优先级（`LANGSMITH_TRACING`）。
-
-## 禁用特定调用的跟踪
-
-要禁用对特定操作的跟踪，请将其包装在带有 `enabled=False` 的 `tracing_context` 中：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import langsmith as ls
-from langsmith import traceable
-
-# LANGSMITH_TRACING=true is set globally
-
-@traceable
-def my_function(input_text: str):
-    return process(input_text)
-
-# Default invocation - is traced
-result = my_function("regular data")
-
-# Disable tracing for sensitive data
-with ls.tracing_context(enabled=False):
-    result = my_function("sensitive data")  # not traced
-```此模式对于您知道不应记录特定数据的一次性情况很有用。
-
-## 启用基于业务逻辑的条件跟踪
-
-您可以根据运行时条件（例如客户端设置或请求属性）动态启用或禁用跟踪。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import langsmith as ls
-from langsmith import traceable
-
-@traceable
-def my_function(input_text: str):
-    return process(input_text)
-
-def client_requires_zero_retention(client_id: str) -> bool:
-    """
-    Check if a client has a zero-retention policy.
-
-    In production, this would query a database, configuration service,
-    or feature flag system. Consider caching results for performance.
-    """
-    # Example: Query from database or config
-    zero_retention_clients = get_zero_retention_clients()  # Your implementation
-    return client_id in zero_retention_clients
-
-def handle_request(client_id: str, user_input: str):
-    """
-    Process a request with conditional tracing based on client requirements.
-    """
-    should_disable = client_requires_zero_retention(client_id)
-
-    with ls.tracing_context(enabled=not should_disable):
-        return my_function(user_input)
-
-# Example usage
-handle_request("client-a", "some input")  # Traced or not based on client settings
-```
-
-## 根据请求自定义跟踪配置
-
-您还可以动态自定义跟踪设置，例如将跟踪路由到不同的代理或添加特定于请求的元数据。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import langsmith as ls
-from langsmith import traceable
-
-@traceable
-def my_function(input_text: str):
-    return process(input_text)
-
-def handle_request(client_id: str, user_input: str, region: str):
-    """
-    Route traces to registered client-specific agents with custom metadata.
-    """
-    client_tier = get_client_tier(client_id)  # e.g., "enterprise", "standard"
-
-    with ls.tracing_context(
-        enabled=True,
-        address=ls.agent_address(f"client-{client_id}", "production"),
-        tags=["production", f"tier-{client_tier}", f"region-{region}"],
-        metadata={
-            "client_id": client_id,
-            "region": region,
-            "tier": client_tier
-        }
-    ):
-        return my_function(user_input)
-
-# Register client-abc first; traces go to its Production environment
-handle_request("abc", "some input", "us-west")
-```
-
-该模式适用于：
-
-* **多租户服务**：在单独的代理下隔离客户痕迹
-* **区域部署**：按地理区域跟踪性能和行为
-* **功能分支**：将实验功能跟踪路由到代理的开发环境
-* **用户细分**：按用户层、群组或 A/B 测试组分析行为
-
-## 使用自动跟踪
-
-[⟦T24⟧](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) 上下文管理器支持自动跟踪。您可以全局设置 `LANGSMITH_TRACING=true` 并使用 `tracing_context` 覆盖特定请求的设置：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-import langsmith as ls
-
-# Global environment variable set
-os.environ["LANGSMITH_TRACING"] = "true"
-
-@ls.traceable
-def process_data(data: str):
-    return data.upper()
-
-# Automatically traced (respects LANGSMITH_TRACING)
-process_data("hello")
-
-# Override global setting - disable for this call
-with ls.tracing_context(enabled=False):
-    process_data("sensitive")  # not traced
-
-# Override global setting - enable with custom config
-with ls.tracing_context(
-    enabled=True,
-    address=ls.agent_address("<your-agent-id>", "staging")
-):
-    process_data("important")  # Traced to the registered agent's Staging environment
-```
-
-## 嵌套跟踪上下文
-
-当您嵌套 `tracing_context` 块时，最里面的上下文优先。
-
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import langsmith as ls
-
-@ls.traceable
-def inner_function(data: str):
-    return data
-
-@ls.traceable
-def outer_function(data: str):
-    # This call respects the inner context
-    return inner_function(data)
-
-# Outer context disables tracing
-with ls.tracing_context(enabled=False):
-    # But inner context re-enables it
-    with ls.tracing_context(enabled=True):
-        outer_function("data")  # is traced
-```当您想要暂时启用跟踪以在通常非跟踪的部分中进行调试时，这会很有用。
-
-## 有条件地编辑输入和输出
-
-有时您希望记录跟踪，以便保留运行时间、结构、错误和元数据，但应针对特定请求隐藏输入和输出（例如，来自具有严格隐私要求的租户的跟踪）。这与 [disabling tracing](#disable-tracing-for-specific-invocations) 和 [⟦T28⟧](/langsmith/mask-inputs-outputs#hide-inputs-and-outputs) 完全不同，后者对客户端发送的每个跟踪应用相同的修订。
-
-要编辑每个请求，请将 [⟦T29⟧](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) 与 `replicas` 参数结合使用，并传递一个 `updates` 字典，该字典将覆盖记录运行中的 `inputs` 和 `outputs`。由于 `tracing_context` 的作用域为当前执行上下文，因此具有不同编辑策略的并发请求不会竞争。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import langsmith as ls
-from langsmith import traceable
-
-@traceable
-def my_agent(user_input: str) -> str:
-    return process(user_input)
-
-def should_redact(tenant_id: str) -> bool:
-    """Return True if traces for this tenant should have inputs/outputs masked."""
-    return tenant_id in get_redacted_tenants()
-
-def handle_request(tenant_id: str, user_input: str) -> str:
-    replica: dict = {"project_name": "my-project"}
-    if should_redact(tenant_id):
-        # Recorded run will have empty inputs/outputs but full structure,
-        # timing, metadata, and any errors.
-        replica["updates"] = {"inputs": {}, "outputs": {}}
-
-    with ls.tracing_context(replicas=[replica]):
-        return my_agent(user_input)
-```
-
-您可以使用 `updates` 中运行字段的任何子集（例如，`{"inputs": {"redacted": True}}` 保留标记，或 `{"outputs": {}}` 仅编辑输出）。相同的模式适用于将不同的编辑策略路由到不同的目的地：每个副本可以指定自己的`project_name`、`api_key`和`updates`。有关完整副本参考，请参阅[Write traces to multiple destinations with replicas](/langsmith/trace-replicas)。> [!注意]
+在启用动态路由之前注册每个代理。副本配置需要每个目标环境的 `tracer_session_name`。在启用复制之前检索这些值。> [选项卡] Python
 >
-> 使用 `updates` 编辑输入或输出时，始终在副本上设置 `project_name`。如果副本的 `project_name` 与活动跟踪的目标匹配，则可能会删除 `updates` 并发送未编辑的输入/输出。
-
-## 在已部署的代理中自定义跟踪
-
-默认情况下，在 LangSmith 部署的 [Agent Server](/langsmith/agent-server) 中启用跟踪。当使用[factory function](/langsmith/graph-rebuild)时，您可以用`tracing_context`包装生成的图来控制每次执行的跟踪。这对于添加自定义元数据、完全禁用跟踪或根据经过身份验证的用户自定义跟踪非常有用。
-
-### 禁用图表跟踪
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import contextlib
-import langsmith as ls
-from langgraph_sdk.runtime import ServerRuntime
-
-
-@contextlib.asynccontextmanager
-async def make_graph(runtime: ServerRuntime):
-    graph = build_my_graph()
-
-    # You can use tracing_context to dynamically enable/disable tracing,
-    # set metadata or tags, select an agent environment, etc.
-    with ls.tracing_context(enabled=False, metadata={"foo": "bar"}):
-        yield graph
-```
-
-### 每用户跟踪
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import contextlib
-import langsmith as ls
-from langgraph_sdk.runtime import ServerRuntime
-
-def get_agent_for_user(user_id: str) -> str | None:
-    ...
-    return "<your-agent-id>"
-
-graph = build_my_graph()
-
-@contextlib.asynccontextmanager
-async def make_graph(runtime: ServerRuntime):
-    user = runtime.user
-    # Select a registered agent for the user or disable tracing
-    agent_id = get_agent_for_user(user.identity)
-
-    if agent_id is None:
-        with ls.tracing_context(enabled=False):
-            yield graph
-    else:
-        with ls.tracing_context(
-            enabled=True,
-            address=ls.agent_address(agent_id, "production"),
-            metadata={"user_id": user.identity, "foo": "bar"},
-        ):
-            yield graph
-```
-
-## 可重复使用的跟踪包装器
-
-创建一个装饰器来自动应用条件跟踪逻辑。
-
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import functools
-import langsmith as ls
-from langsmith import traceable
-
-def conditional_trace(check_function):
-    """
-    Decorator that conditionally traces based on a check function.
-
-    Args:
-        check_function: Function that returns True if tracing should be enabled
-    """
-    def decorator(func):
-        traced_func = traceable(func)
-
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            should_trace = check_function(*args, **kwargs)
-            with ls.tracing_context(enabled=should_trace):
-                return traced_func(*args, **kwargs)
-        return wrapper
-    return decorator
-
-# Usage
-def should_trace_client(client_id: str, *args, **kwargs) -> bool:
-    return not client_requires_zero_retention(client_id)
-
-@conditional_trace(should_trace_client)
-def process_request(client_id: str, data: str):
-    return data.upper()
-
-# Automatically applies conditional tracing based on client_id
-process_request("client-a", "some data")
-```
-
-**打字稿**
-
-## 启用跟踪的工作原理
-
-在 TypeScript 中，您可以在调用 [⟦T47⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) 时使用 [⟦T46⟧](https://reference.langchain.com/javascript/langsmith/index/RunTree/tracingEnabled) 参数控制每个函数的跟踪。这允许您在功能级别有选择地启用或禁用跟踪。
-
-每个功能都控制跟踪的两级系统：
-
-1. **`tracingEnabled`参数**：最高优先级（传递给[⟦T49⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable)配置）。
-2. **环境变量**：最低优先级（`LANGSMITH_TRACING`）。
-
-## 禁用特定调用的跟踪要禁用特定操作的跟踪，请使用 `tracingEnabled: false` 创建可跟踪函数的版本：
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { traceable } from "langsmith/traceable";
-
-const myFunction = traceable(
-    (inputText: string) => {
-        return process(inputText);
-    },
-    { name: "my_function" }
-);
-
-// Default invocation - is traced
-await myFunction("regular data");
-
-// Disable tracing for sensitive data
-const myFunctionNoTrace = traceable(
-    (inputText: string) => {
-        return process(inputText);
-    },
-    { name: "my_function", tracingEnabled: false }
-);
-
-await myFunctionNoTrace("sensitive data");  // not traced
-```
-
-此模式对于您知道不应记录特定数据的一次性情况很有用。
-
-## 启用基于业务逻辑的条件跟踪
-
-您可能需要根据运行时条件（例如客户端隐私要求、法规遵从性或功能标志）动态控制跟踪。
-
-在 TypeScript 中，最有效的方法是预先创建函数的跟踪和非跟踪变体，然后在运行时根据您的业务逻辑在它们之间进行选择。这避免了在每个请求上创建新的跟踪包装器的性能开销，同时仍然提供对跟踪发生时间的细粒度控制。例如：
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { traceable } from "langsmith/traceable";
-
-// Define the core logic once
-function processText(inputText: string): string {
-    // Your actual processing logic
-    return inputText.toUpperCase();
-}
-
-// Create traced and non-traced variants upfront
-const myFunction = traceable(processText, { name: "my_function" });
-const myFunctionNoTrace = traceable(processText, {
-    name: "my_function",
-    tracingEnabled: false
-});
-
-function clientRequiresZeroRetention(clientId: string): boolean {
-    /**
-     * Check if a client has a zero-retention policy.
-     *
-     * In production, this would query a database, configuration service,
-     * or feature flag system. Consider caching results for performance.
-     */
-    const zeroRetentionClients = getZeroRetentionClients();  // Your implementation
-    return zeroRetentionClients.includes(clientId);
-}
-
-async function handleRequest(clientId: string, userInput: string) {
-    /**
-     * Process a request with conditional tracing based on client requirements.
-     * Efficiently selects pre-created traced or non-traced variant.
-     */
-    const shouldDisable = clientRequiresZeroRetention(clientId);
-
-    // Select the appropriate pre-created variant
-    const fn = shouldDisable ? myFunctionNoTrace : myFunction;
-    return await fn(userInput);
-}
-
-// Example usage
-await handleRequest("client-a", "some input");  // Traced or not based on client settings
-```
-
-## 使用自动跟踪
-
-[⟦T52⟧](https://reference.langchain.com/javascript/langsmith/index/RunTree/tracingEnabled) 选项可与自动跟踪无缝配合。您可以保持 `LANGSMITH_TRACING=true` 全局设置，并使用 `tracingEnabled` 覆盖特定功能的设置。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { AgentAddress } from "langsmith";
-import { traceable } from "langsmith/traceable";
-
-// Global tracing enabled via environment
-process.env.LANGSMITH_TRACING = "true";
-
-const processData = traceable(
-    (data: string) => {
-        return data.toUpperCase();
-    },
-    { name: "process_data" }
-);
-
-// Automatically traced (respects LANGSMITH_TRACING)
-await processData("hello");
-
-// Override global setting - disable for this call
-const processDataNoTrace = traceable(
-    (data: string) => {
-        return data.toUpperCase();
-    },
-    { name: "process_data", tracingEnabled: false }
-);
-
-await processDataNoTrace("sensitive");  // not traced
-
-// Override global setting - enable with custom config
-const processDataCustom = traceable(
-    (data: string) => {
-        return data.toUpperCase();
-    },
-    {
-        name: "process_data",
-        address: new AgentAddress("<your-agent-id>", "staging"),
-        tracingEnabled: true
-    }
-);
-
-await processDataCustom("important");  // Traced to the registered agent's Staging environment
-```
+> ## 跟踪上下文如何工作
+>
+> 当您使用 [⟦T18⟧](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) 上下文管理器时，它会覆盖在其范围内执行的代码的全局跟踪配置。这意味着您可以全局启用自动跟踪，同时有选择地控制特定函数调用的跟踪行为。
+>
+> 控制优先级分为三个级别：
+>
+> 1. **`tracing_context(enabled=...)`**：最高优先级（用于范围跟踪控制的上下文管理器）。
+> 2. **`ls.configure(enabled=...)`**：全局配置（设置全局跟踪行为）。
+> 3. **环境变量**：最低优先级（`LANGSMITH_TRACING`）。
+>
+> ## 禁用特定调用的跟踪
+>
+> 要禁用对特定操作的跟踪，请将其包装在带有 `enabled=False` 的 `tracing_context` 中：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import langsmith as ls
+> from langsmith import traceable
+>
+> # LANGSMITH_TRACING=true is set globally
+>
+> @traceable
+> def my_function(input_text: str):
+>     return process(input_text)
+>
+> # Default invocation - is traced
+> result = my_function("regular data")
+>
+> # Disable tracing for sensitive data
+> with ls.tracing_context(enabled=False):
+>     result = my_function("sensitive data")  # not traced
+> ```
+>
+> 此模式对于您知道不应记录特定数据的一次性情况非常有用。
+>
+> ## 启用基于业务逻辑的条件跟踪
+>
+> 您可以根据运行时条件（例如客户端设置或请求属性）动态启用或禁用跟踪。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import langsmith as ls
+> from langsmith import traceable
+>
+> @traceable
+> def my_function(input_text: str):
+>     return process(input_text)
+>
+> def client_requires_zero_retention(client_id: str) -> bool:
+>     """
+>     Check if a client has a zero-retention policy.
+>
+>     In production, this would query a database, configuration service,
+>     or feature flag system. Consider caching results for performance.
+>     """
+>     # Example: Query from database or config
+>     zero_retention_clients = get_zero_retention_clients()  # Your implementation
+>     return client_id in zero_retention_clients
+>
+> def handle_request(client_id: str, user_input: str):
+>     """
+>     Process a request with conditional tracing based on client requirements.
+>     """
+>     should_disable = client_requires_zero_retention(client_id)
+>
+>     with ls.tracing_context(enabled=not should_disable):
+>         return my_function(user_input)
+>
+> # Example usage
+> handle_request("client-a", "some input")  # Traced or not based on client settings
+> ```
+>
+> ## 自定义每个请求的跟踪配置
+>
+> 您还可以动态自定义跟踪设置，例如将跟踪路由到不同的代理或添加特定于请求的元数据。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import langsmith as ls
+> from langsmith import traceable
+>
+> @traceable
+> def my_function(input_text: str):
+>     return process(input_text)
+>
+> def handle_request(client_id: str, user_input: str, region: str):
+>     """
+>     Route traces to registered client-specific agents with custom metadata.
+>     """
+>     client_tier = get_client_tier(client_id)  # e.g., "enterprise", "standard"
+>
+>     with ls.tracing_context(
+>         enabled=True,
+>         address=ls.agent_address(f"client-{client_id}", "production"),
+>         tags=["production", f"tier-{client_tier}", f"region-{region}"],
+>         metadata={
+>             "client_id": client_id,
+>             "region": region,
+>             "tier": client_tier
+>         }
+>     ):
+>         return my_function(user_input)
+>
+> # Register client-abc first; traces go to its Production environment
+> handle_request("abc", "some input", "us-west")
+> ```
+>> 此模式适用于：
+>
+> * **多租户服务**：在单独的代理下隔离客户痕迹
+> * **区域部署**：按地理区域跟踪性能和行为
+> * **功能分支**：将实验功能跟踪路由到代理的开发环境
+> * **用户细分**：按用户层、群组或 A/B 测试组分析行为
+>
+> ## 使用自动跟踪
+>
+> [⟦T24⟧](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) 上下文管理器支持自动跟踪。您可以全局设置 `LANGSMITH_TRACING=true` 并使用 `tracing_context` 覆盖特定请求的设置：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> import langsmith as ls
+>
+> # Global environment variable set
+> os.environ["LANGSMITH_TRACING"] = "true"
+>
+> @ls.traceable
+> def process_data(data: str):
+>     return data.upper()
+>
+> # Automatically traced (respects LANGSMITH_TRACING)
+> process_data("hello")
+>
+> # Override global setting - disable for this call
+> with ls.tracing_context(enabled=False):
+>     process_data("sensitive")  # not traced
+>
+> # Override global setting - enable with custom config
+> with ls.tracing_context(
+>     enabled=True,
+>     address=ls.agent_address("<your-agent-id>", "staging")
+> ):
+>     process_data("important")  # Traced to the registered agent's Staging environment
+> ```
+>
+> ## 嵌套跟踪上下文
+>
+> 当您嵌套 `tracing_context` 块时，最里面的上下文优先。
+>
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import langsmith as ls
+>
+> @ls.traceable
+> def inner_function(data: str):
+>     return data
+>
+> @ls.traceable
+> def outer_function(data: str):
+>     # This call respects the inner context
+>     return inner_function(data)
+>
+> # Outer context disables tracing
+> with ls.tracing_context(enabled=False):
+>     # But inner context re-enables it
+>     with ls.tracing_context(enabled=True):
+>         outer_function("data")  # is traced
+> ```
+>
+> 当您想要临时启用跟踪以在通常非跟踪的部分中进行调试时，这会很有用。
+>
+> ## 有条件地编辑输入和输出
+>> 有时您希望记录跟踪，以便保留运行时间、结构、错误和元数据，但应针对特定请求隐藏输入和输出（例如，来自具有严格隐私要求的租户的跟踪）。这与 [disabling tracing](#disable-tracing-for-specific-invocations) 和 [⟦T28⟧](/langsmith/mask-inputs-outputs#hide-inputs-and-outputs) 完全不同，后者对客户端发送的每个跟踪应用相同的修订。
+>
+> 要编辑每个请求，请将 [⟦T29⟧](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) 与 `replicas` 参数结合使用，并传递一个 `updates` 字典，该字典将覆盖记录运行中的 `inputs` 和 `outputs`。由于 `tracing_context` 的作用域为当前执行上下文，因此具有不同编辑策略的并发请求不会竞争。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import langsmith as ls
+> from langsmith import traceable
+>
+> @traceable
+> def my_agent(user_input: str) -> str:
+>     return process(user_input)
+>
+> def should_redact(tenant_id: str) -> bool:
+>     """Return True if traces for this tenant should have inputs/outputs masked."""
+>     return tenant_id in get_redacted_tenants()
+>
+> def handle_request(tenant_id: str, user_input: str) -> str:
+>     replica: dict = {"project_name": "my-project"}
+>     if should_redact(tenant_id):
+>         # Recorded run will have empty inputs/outputs but full structure,
+>         # timing, metadata, and any errors.
+>         replica["updates"] = {"inputs": {}, "outputs": {}}
+>
+>     with ls.tracing_context(replicas=[replica]):
+>         return my_agent(user_input)
+> ```
+>
+> 您可以使用 `updates` 中运行字段的任何子集（例如，`{"inputs": {"redacted": True}}` 来保留标记，或 `{"outputs": {}}` 仅编辑输出）。相同的模式适用于将不同的编辑策略路由到不同的目的地：每个副本可以指定自己的`project_name`、`api_key`和`updates`。有关完整副本参考，请参阅[Write traces to multiple destinations with replicas](/langsmith/trace-replicas)。
+>
+>> [!注意]
+>>
+> > 使用 `updates` 编辑输入或输出时，始终在副本上设置 `project_name`。如果副本的 `project_name` 与活动跟踪的目标匹配，则可能会删除 `updates` 并发送未编辑的输入/输出。
+>> ## 在已部署的代理中自定义跟踪
+>
+> 默认情况下，在 LangSmith 部署的 [Agent Server](/langsmith/agent-server) 中启用跟踪。当使用[factory function](/langsmith/graph-rebuild)时，您可以用`tracing_context`包装生成的图来控制每次执行的跟踪。这对于添加自定义元数据、完全禁用跟踪或基于经过身份验证的用户自定义跟踪非常有用。
+>
+> ### 禁用图表跟踪
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import contextlib
+> import langsmith as ls
+> from langgraph_sdk.runtime import ServerRuntime
+>
+>
+> @contextlib.asynccontextmanager
+> async def make_graph(runtime: ServerRuntime):
+>     graph = build_my_graph()
+>
+>     # You can use tracing_context to dynamically enable/disable tracing,
+>     # set metadata or tags, select an agent environment, etc.
+>     with ls.tracing_context(enabled=False, metadata={"foo": "bar"}):
+>         yield graph
+> ```
+>
+> ### 每用户跟踪
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import contextlib
+> import langsmith as ls
+> from langgraph_sdk.runtime import ServerRuntime
+>
+> def get_agent_for_user(user_id: str) -> str | None:
+>     ...
+>     return "<your-agent-id>"
+>
+> graph = build_my_graph()
+>
+> @contextlib.asynccontextmanager
+> async def make_graph(runtime: ServerRuntime):
+>     user = runtime.user
+>     # Select a registered agent for the user or disable tracing
+>     agent_id = get_agent_for_user(user.identity)
+>
+>     if agent_id is None:
+>         with ls.tracing_context(enabled=False):
+>             yield graph
+>     else:
+>         with ls.tracing_context(
+>             enabled=True,
+>             address=ls.agent_address(agent_id, "production"),
+>             metadata={"user_id": user.identity, "foo": "bar"},
+>         ):
+>             yield graph
+> ```
+>
+> ## 可重复使用的跟踪包装器
+>
+> 创建一个装饰器来自动应用条件跟踪逻辑。
+>
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import functools
+> import langsmith as ls
+> from langsmith import traceable
+>
+> def conditional_trace(check_function):
+>     """
+>     Decorator that conditionally traces based on a check function.
+>
+>     Args:
+>         check_function: Function that returns True if tracing should be enabled
+>     """
+>     def decorator(func):
+>         traced_func = traceable(func)
+>
+>         @functools.wraps(func)
+>         def wrapper(*args, **kwargs):
+>             should_trace = check_function(*args, **kwargs)
+>             with ls.tracing_context(enabled=should_trace):
+>                 return traced_func(*args, **kwargs)
+>         return wrapper
+>     return decorator
+>
+> # Usage
+> def should_trace_client(client_id: str, *args, **kwargs) -> bool:
+>     return not client_requires_zero_retention(client_id)
+>
+> @conditional_trace(should_trace_client)
+> def process_request(client_id: str, data: str):
+>     return data.upper()
+>
+> # Automatically applies conditional tracing based on client_id
+> process_request("client-a", "some data")
+> ```> [选项卡] TypeScript
+>
+> ## 启用跟踪的工作原理
+>
+> 在 TypeScript 中，您可以在调用 [⟦T47⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) 时使用 [⟦T46⟧](https://reference.langchain.com/javascript/langsmith/index/RunTree/tracingEnabled) 参数控制每个函数的跟踪。这允许您在功能级别有选择地启用或禁用跟踪。
+>
+> 两级系统，其中每个功能都控制跟踪：
+>
+> 1. **`tracingEnabled`参数**：最高优先级（传递给[⟦T49⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable)配置）。
+> 2. **环境变量**：最低优先级（`LANGSMITH_TRACING`）。
+>
+> ## 禁用特定调用的跟踪
+>
+> 要禁用特定操作的跟踪，请使用 `tracingEnabled: false` 创建可跟踪函数的版本：
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { traceable } from "langsmith/traceable";
+>
+> const myFunction = traceable(
+>     (inputText: string) => {
+>         return process(inputText);
+>     },
+>     { name: "my_function" }
+> );
+>
+> // Default invocation - is traced
+> await myFunction("regular data");
+>
+> // Disable tracing for sensitive data
+> const myFunctionNoTrace = traceable(
+>     (inputText: string) => {
+>         return process(inputText);
+>     },
+>     { name: "my_function", tracingEnabled: false }
+> );
+>
+> await myFunctionNoTrace("sensitive data");  // not traced
+> ```
+>
+> 此模式对于您知道不应记录特定数据的一次性情况非常有用。
+>
+> ## 启用基于业务逻辑的条件跟踪
+>
+> 您可能需要根据运行时条件（例如客户端隐私要求、法规遵从性或功能标志）动态控制跟踪。
+>> 在 TypeScript 中，最有效的方法是预先创建函数的跟踪和非跟踪变体，然后在运行时根据您的业务逻辑在它们之间进行选择。这避免了在每个请求上创建新的跟踪包装器的性能开销，同时仍然提供对跟踪发生时间的细粒度控制。例如：
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { traceable } from "langsmith/traceable";
+>
+> // Define the core logic once
+> function processText(inputText: string): string {
+>     // Your actual processing logic
+>     return inputText.toUpperCase();
+> }
+>
+> // Create traced and non-traced variants upfront
+> const myFunction = traceable(processText, { name: "my_function" });
+> const myFunctionNoTrace = traceable(processText, {
+>     name: "my_function",
+>     tracingEnabled: false
+> });
+>
+> function clientRequiresZeroRetention(clientId: string): boolean {
+>     /**
+>      * Check if a client has a zero-retention policy.
+>      *
+>      * In production, this would query a database, configuration service,
+>      * or feature flag system. Consider caching results for performance.
+>      */
+>     const zeroRetentionClients = getZeroRetentionClients();  // Your implementation
+>     return zeroRetentionClients.includes(clientId);
+> }
+>
+> async function handleRequest(clientId: string, userInput: string) {
+>     /**
+>      * Process a request with conditional tracing based on client requirements.
+>      * Efficiently selects pre-created traced or non-traced variant.
+>      */
+>     const shouldDisable = clientRequiresZeroRetention(clientId);
+>
+>     // Select the appropriate pre-created variant
+>     const fn = shouldDisable ? myFunctionNoTrace : myFunction;
+>     return await fn(userInput);
+> }
+>
+> // Example usage
+> await handleRequest("client-a", "some input");  // Traced or not based on client settings
+> ```
+>
+> ## 使用自动跟踪
+>
+> [⟦T52⟧](https://reference.langchain.com/javascript/langsmith/index/RunTree/tracingEnabled) 选项与自动跟踪无缝配合。您可以保持 `LANGSMITH_TRACING=true` 全局设置，并使用 `tracingEnabled` 覆盖特定功能的设置。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { AgentAddress } from "langsmith";
+> import { traceable } from "langsmith/traceable";
+>
+> // Global tracing enabled via environment
+> process.env.LANGSMITH_TRACING = "true";
+>
+> const processData = traceable(
+>     (data: string) => {
+>         return data.toUpperCase();
+>     },
+>     { name: "process_data" }
+> );
+>
+> // Automatically traced (respects LANGSMITH_TRACING)
+> await processData("hello");
+>
+> // Override global setting - disable for this call
+> const processDataNoTrace = traceable(
+>     (data: string) => {
+>         return data.toUpperCase();
+>     },
+>     { name: "process_data", tracingEnabled: false }
+> );
+>
+> await processDataNoTrace("sensitive");  // not traced
+>
+> // Override global setting - enable with custom config
+> const processDataCustom = traceable(
+>     (data: string) => {
+>         return data.toUpperCase();
+>     },
+>     {
+>         name: "process_data",
+>         address: new AgentAddress("<your-agent-id>", "staging"),
+>         tracingEnabled: true
+>     }
+> );
+>
+> await processDataCustom("important");  // Traced to the registered agent's Staging environment
+> ```
 
 ## 与抽样比较
 
-条件跟踪和[sampling](/langsmith/sample-traces)有不同的用途：|特色 |条件追踪 |取样|
+条件跟踪和[sampling](/langsmith/sample-traces)有不同的用途：
+
+|特色|条件追踪 |取样|
 | - | - | - |
 | **控制** |确定性（显式启用/禁用）|概率（随机抽样）|
 | **用例** |业务逻辑、合规性、每个请求的决策 |成本优化、大批量可观测性 |
@@ -462,9 +464,7 @@ await processDataCustom("important");  // Traced to the registered agent's Stagi
 
 您可以结合使用这两种方法来进行细粒度控制。
 
-## 相关
-
-* [Trace without environment variables](/langsmith/trace-without-env-vars)：以编程方式配置跟踪，而不是使用环境变量。
+＃＃ 有关的* [Trace without environment variables](/langsmith/trace-without-env-vars)：以编程方式配置跟踪，而不是使用环境变量。
 * [Set a sampling rate for traces](/langsmith/sample-traces)：概率采样痕迹以减少体积
 * [Mask inputs and outputs](/langsmith/mask-inputs-outputs)：隐藏跟踪中的敏感数据，而不是完全禁用跟踪。
 * [Add metadata and tags to traces](/langsmith/add-metadata-tags)：使用自定义属性对跟踪进行分类和过滤。

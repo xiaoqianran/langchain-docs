@@ -137,7 +137,7 @@ Chat 支持以下开箱即用的模型提供程序：
 
 ### 提示中心页面
 
-在[LangSmith Hub](/langsmith/prompt-engineering-concepts#prompts-in-langsmith)中查看提示时，聊天可帮助您了解提示的结构、消息、工具和配置。这对于探索和学习共享提示非常有用。
+在 [LangSmith Hub](/langsmith/prompt-engineering-concepts#prompts-in-langsmith) 中查看提示时，聊天可帮助您了解提示的结构、消息、工具和配置。这对于探索和学习共享提示非常有用。
 
 **问题示例：**
 
@@ -159,7 +159,7 @@ Chat 支持以下开箱即用的模型提供程序：
 
 ### 数据集示例
 
-在**示例**选项卡下的**数据集**页面上，Chat 可帮助您了解数据集结构、浏览示例并识别数据模式。这对于了解您正在使用哪些数据以及准备实验数据集非常有用。
+在**示例**选项卡下的**数据集**页面上，Chat 可帮助您了解数据集结构、浏览示例并识别数据模式。这对于了解您正在使用的数据以及准备实验数据集非常有用。
 
 **问题示例：**
 
@@ -192,19 +192,19 @@ Chat 支持以下开箱即用的模型提供程序：
 
 详细了解 Chat 可帮助您探索的功能：
 
-> **[Observability](/langsmith/observability)**
+> [卡][Observability](/langsmith/observability)
 >
 > 了解有关跟踪和监控您的 LLM 申请的更多信息
 
-> **[Threads](/langsmith/threads)**
+> [卡][Threads](/langsmith/threads)
 >
 > 了解LangSmith中线程的工作原理
 
-> **[Prompt Engineering](/langsmith/prompt-context-hub#prompts)**
+> [卡][Prompt Engineering](/langsmith/prompt-context-hub#prompts)
 >
 > 在 Playground 中创建并迭代提示
 
-> **[Evaluation](/langsmith/evaluation)**
+> [卡][Evaluation](/langsmith/evaluation)
 >
 > 系统地评估和测试您的应用程序
 

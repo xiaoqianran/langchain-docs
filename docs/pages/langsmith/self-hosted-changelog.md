@@ -6,6 +6,28 @@
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want a license key to trial LangSmith in your environment.
 
+**2026-10-30**
+
+## langsmith-0.18.0-rc.52
+
+**LangSmith version:** `0.18.19rc1`
+
+* This release packages the same LangSmith application version as langsmith-0.18.0-rc.50. Refer to the [langsmith-0.18.0-rc.50](#langsmith-0-18-0-rc-50) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.18.0-rc.52.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.52/langsmith-0.18.0-rc.52.tgz)
+
+**Sandbox runtime chart, for Sandboxes in a separate cluster:** [`langsmith-sandbox-0.18.0-rc.3.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-sandbox-0.18.0-rc.3/langsmith-sandbox-0.18.0-rc.3.tgz)
+
+**2026-10-30**
+
+## langsmith-0.17.35
+
+**LangSmith version:** `0.17.62`
+
+* Workspace admins can create computer environments and access profiles through the Fleet API. Agents created on an environment run on its computers with those profiles applied.
+
+**Download the Helm chart:** [`langsmith-0.17.35.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.35/langsmith-0.17.35.tgz)
+
 **2026-10-29**
 
 ## langsmith-0.17.34

@@ -23,58 +23,58 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 
 > [!注意]
 >
-> 对保留期限的更改仅适用于新跟踪。现有痕迹不受影响。
+> 对保留期的更改仅适用于新跟踪。现有痕迹不受影响。
 
 ### 配置延长保留
 
-组织管理员和操作员 (`organization:manage`) 可以为任何工作区配置保留。工作区管理员可以配置自己的工作区 (`workspaces:manage`)。有关完整权限参考，请参阅[Organization and workspace operations](/langsmith/organization-workspace-operations)。
+组织管理员和操作员 (`organization:manage`) 可以为任何工作区配置保留。工作区管理员可以配置自己的工作区 (`workspaces:manage`)。有关完整权限参考，请参阅[Organization and workspace operations](/langsmith/organization-workspace-operations)。> [选项卡] 用户界面
+>
+> 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-purging-compliance) 中：
+>
+> 1. 导航至页面底部的**设置**。
+> 2. 从左侧菜单中选择**使用配置**。
+> 3. 在列表中找到您要配置的工作区。
+> 4. 单击该工作区的 **数据保留策略** 列下的值。
+> 5. 在 **工作空间使用配置** 模式中，使用 **扩展 - 保留所有跟踪** 选项的下拉菜单自定义扩展策略。 SaaS 客户的可用持续时间为：30 天、60 天、90 天、120 天、150 天和 180 天（截至 2026 年 9 月 14 日的最长期限）。自托管部署不受此上限限制。
+> 6. 选择**保存**。
 
-**用户界面**
-
-在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-purging-compliance)中：1. 导航至页面底部的**设置**。
-2. 从左侧菜单中选择**使用配置**。
-3. 在列表中找到您要配置的工作区。
-4. 单击该工作区的“**数据保留策略**”列下的值。
-5. 在 **工作空间使用配置** 模式中，使用 **扩展 - 保留所有跟踪** 选项的下拉菜单自定义扩展策略。 SaaS 客户的可用持续时间为：30 天、60 天、90 天、120 天、150 天和 180 天（截至 2026 年 9 月 14 日的最长期限）。自托管部署不受此上限限制。
-6. 选择**保存**。
-
-**API**
-
-要读取当前设置：
-
-**组织级别** (`organization:manage`)
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl -X GET "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
-  -H "x-api-key: YOUR_API_KEY"
-```
-
-**工作区级别** (`workspaces:manage`)
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl -X GET "https://api.smith.langchain.com/api/v1/ttl-settings" \
-  -H "x-api-key: YOUR_API_KEY"
-```
-
-要更新保留期，请将跟踪的 `resource_type` 设置为 `"run"`，并将 `ttl_days` 设置为所需的持续时间。 SaaS 客户的可用期限为：30、60、90、120、150 和 180 天（最长截至 2026 年 9 月 14 日）。
-
-**组织级别** (`organization:manage`)
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl -X PUT "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
-  -H "x-api-key: YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"resource_type": "run", "ttl_days": 90}'
-```
-
-**工作区级别** (`workspaces:manage`)
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl -X PUT "https://api.smith.langchain.com/api/v1/ttl-settings" \
-  -H "x-api-key: YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"resource_type": "run", "ttl_days": 90}'
-```
+> [选项卡] API
+>
+> 读取当前设置：
+>
+> **组织级别** (`organization:manage`)
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl -X GET "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
+>   -H "x-api-key: YOUR_API_KEY"
+> ```
+>
+> **工作区级别** (`workspaces:manage`)
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl -X GET "https://api.smith.langchain.com/api/v1/ttl-settings" \
+>   -H "x-api-key: YOUR_API_KEY"
+> ```
+>
+> 要更新保留期，请将跟踪的 `resource_type` 设置为 `"run"`，并将 `ttl_days` 设置为所需的持续时间。 SaaS 客户的可用期限为：30、60、90、120、150 和 180 天（最长截至 2026 年 9 月 14 日）。
+>
+> **组织级别** (`organization:manage`)
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl -X PUT "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
+>   -H "x-api-key: YOUR_API_KEY" \
+>   -H "Content-Type: application/json" \
+>   -d '{"resource_type": "run", "ttl_days": 90}'
+> ```
+>
+> **工作区级别** (`workspaces:manage`)
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl -X PUT "https://api.smith.langchain.com/api/v1/ttl-settings" \
+>   -H "x-api-key: YOUR_API_KEY" \
+>   -H "Content-Type: application/json" \
+>   -d '{"resource_type": "run", "ttl_days": 90}'
+> ```
 
 ### 自托管的工作区级别延长保留自托管 [Enterprise](/langsmith/pricing-plans) 客户还可以使用工作区级别的扩展保留配置，而不是系统范围的 TTL 设置。这可以对不同工作区的数据保留进行更精细的控制，而无需更改环境变量。
 

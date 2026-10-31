@@ -225,7 +225,7 @@ graph = create_deep_agent(model="fireworks:accounts/fireworks/models/glm-5p2")
 
 Harbor runs the entire agent inside the trial container.
 
-> **Single-trial lifecycle**
+> [accordion] Single-trial lifecycle
 >
 > 1. **Parse and prepare**: `harbor run` parses the flags into a job config. The job factory resolves and caches the tasks, validates the environment resource limits, and resolves the metrics before any trial runs. Caching applies to remote tasks only, so a `-p` local task is read in place.
 > 2. **Fan out**: Harbor builds the trial list from `n_attempts × tasks × agents`, then runs trials concurrently up to the `-n` limit, with `-r` retries. Parallelism is per trial, so different tasks, agents, and attempts run together, each in its own sandbox.

@@ -19,7 +19,7 @@
 
 对于LangChain（Python或JS/TS），请参阅[LangChain-specific instructions](/langsmith/trace-with-langchain)。
 
-如果您使用的是具有内置 LangSmith 集成的 LLM 提供者或代理框架，请参阅 [integrations overview](/langsmith/integrations)
+如果您使用的是具有内置 LangSmith 集成的 LLM 提供商或代理框架，请改为参阅 [integrations overview](/langsmith/integrations)
 
 ## 先决条件
 
@@ -27,11 +27,11 @@
 
 * `LANGSMITH_TRACING=true`：启用跟踪。设置此选项可在不更改代码的情况下打开和关闭跟踪。> [!注意]
   >
-  > `LANGSMITH_TRACING` controls the `@traceable` decorator and the `trace` context manager.要在运行时覆盖 `@traceable` 而不更改环境变量，请使用 [⟦T23⟧](#use-the-trace-context-manager-python-only) (Python) 或将 `tracingEnabled` 直接传递给 `traceable` (JS/TS)。 [⟦T26⟧ objects](#use-the-runtree-api) are not affected by any of these controls;他们总是在发布数据时将数据发送到LangSmith。
+  > `LANGSMITH_TRACING` 控制`@traceable` 装饰器和`trace` 上下文管理器。要在运行时覆盖 `@traceable` 而不更改环境变量，请使用 [⟦T23⟧](#use-the-trace-context-manager-python-only) (Python) 或将 `tracingEnabled` 直接传递给 `traceable` (JS/TS)。 [⟦T26⟧ objects](#use-the-runtree-api) 不受任何这些控制措施的影响；他们总是在发布数据时将数据发送到LangSmith。
 
 * `LANGSMITH_API_KEY`：您的[LangSmith API key](/langsmith/create-account-api-key)。
 
-* 在 [agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行追踪之前。使用[agent addressing](/langsmith/log-traces-to-agent)：设置`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`。 Remove legacy destination variables and overrides when using agent addressing.
+* 在 [agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行追踪之前。使用[agent addressing](/langsmith/log-traces-to-agent)：设置`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`。使用代理寻址时删除旧的目标变量和覆盖。
 
 ## 使用 `@traceable` / `traceable`
 
@@ -39,7 +39,7 @@
 
 以下示例跟踪一个简单的管道：`run_pipeline` 调用 `format_prompt` 构建消息，`invoke_llm` 调用模型，以及 `parse_output` 提取结果。
 
-每个函数都被单独跟踪，并且因为它们是从 `run_pipeline` 内部调用的（也被跟踪），所以 LangSmith 在子运行时自动嵌套它们。 `invoke_llm` uses `run_type="llm"` to mark it as an LLM call so LangSmith can render token counts and latency correctly:
+每个函数都被单独跟踪，并且因为它们是从 `run_pipeline` 内部调用的（也被跟踪），所以 LangSmith 在子运行时自动嵌套它们。 `invoke_llm`使用`run_type="llm"`将其标记为LLM调用，因此LangSmith可以正确呈现令牌计数和延迟：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import traceable
@@ -728,7 +728,7 @@ LangSmith 在后台线程中执行跟踪，以避免阻碍您的生产代理。�
   }
   ```
 
-## 相关* [Observability concepts](/langsmith/observability-concepts)：运行、跟踪和 LangSmith 数据模型的背景知识
+## 相关* [Observability concepts](/langsmith/observability-concepts)：运行、跟踪和LangSmith 数据模型的背景知识
 * [Run (span) data format](/langsmith/run-data-format)：运行字段的架构参考，包括`dotted_order`、`trace_id`和`parent_run_id`
 * [Log user feedback using the SDK](/langsmith/attach-user-feedback)：预先指定运行 ID 的常见用例
 * [Access the current run (span) within a traced function](/langsmith/access-current-span)：从跟踪内部读取或修改活动运行

@@ -352,7 +352,7 @@ The following compatibility fields are recognized but not applied. Deep Agents C
 
 ## Examples
 
-> **Block destructive Bash commands (PreToolUse)**
+> [accordion] Block destructive Bash commands (PreToolUse)
 >
 > ```bash title="~/.deepagents/hooks/block-rm.sh" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > #!/usr/bin/env bash
@@ -386,7 +386,7 @@ The following compatibility fields are recognized but not applied. Deep Agents C
 > }
 > ```
 
-> **Load project context on session start (SessionStart)**
+> [accordion] Load project context on session start (SessionStart)
 >
 > ```bash title="~/.deepagents/hooks/load-context.sh" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > #!/usr/bin/env bash
@@ -415,7 +415,7 @@ The following compatibility fields are recognized but not applied. Deep Agents C
 > }
 > ```
 
-> **Desktop notification when the turn ends on macOS (Stop)**
+> [accordion] Desktop notification when the turn ends on macOS (Stop)
 >
 > ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > {
@@ -434,7 +434,7 @@ The following compatibility fields are recognized but not applied. Deep Agents C
 > }
 > ```
 
-> **Python handler that reads the payload**
+> [accordion] Python handler that reads the payload
 >
 > ```python title="~/.deepagents/hooks/handler.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import json

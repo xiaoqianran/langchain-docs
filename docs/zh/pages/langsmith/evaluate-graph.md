@@ -278,7 +278,7 @@ async def main():
 
 ## 参考代码
 
-> **点击查看合并的代码片段**
+> [accordion] 点击查看合并的代码片段
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import asyncio

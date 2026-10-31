@@ -65,7 +65,7 @@ Disable, rename, or re-prompt the general-purpose subagent (`enabled`, `descript
 
 Register profiles before creating an agent. Pass a model string or a model object you construct yourself; see [Configure model parameters](/oss/javascript/deepagents/models#configure-model-parameters) for examples. Harness profiles apply in both cases.
 
-> **Lookup order for preconfigured model instances**
+> [accordion] Lookup order for preconfigured model instances
 >
 > When you pass a model object, the harness looks up its profile using the provider and identifier reported by that object.
 >

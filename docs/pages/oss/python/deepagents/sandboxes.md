@@ -59,257 +59,257 @@ Sandboxes are especially useful for:
 
 These examples assume you have already created a sandbox/devbox using the provider's SDK and have credentials set up. For signup, authentication, and provider-specific lifecycle details, see [Available providers](#available-providers).
 
-**LangSmith**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langsmith
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langsmith
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from deepagents.backends import LangSmithSandbox
-from langchain_anthropic import ChatAnthropic
-from langsmith.sandbox import SandboxClient
-
-client = SandboxClient()
-ls_sandbox = client.create_sandbox()
-backend = LangSmithSandbox(sandbox=ls_sandbox)
-
-agent = create_deep_agent(
-    model=ChatAnthropic(model="claude-sonnet-4-6"),
-    system_prompt="You are a Python coding assistant with sandbox access.",
-    backend=backend,
-)
-try:
-    result = agent.invoke(
-        {
-            "messages": [
-                {
-                    "role": "user",
-                    "content": "Create a small Python package and run pytest",
-                }
-            ]
-        }
-    )
-finally:
-    client.delete_sandbox(ls_sandbox.name)
-```
-
-> **[View example trace](https://smith.langchain.com/public/08974a6d-f496-46df-a0cc-29375c842988/r)**
+> [tab] LangSmith
 >
-> Open a public LangSmith run for this example.
-
-**Daytona**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-daytona
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-daytona
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from daytona import Daytona
-from deepagents import create_deep_agent
-from langchain_anthropic import ChatAnthropic
-from langchain_daytona import DaytonaSandbox
-
-sandbox = Daytona().create()
-backend = DaytonaSandbox(sandbox=sandbox)
-
-agent = create_deep_agent(
-    model=ChatAnthropic(model="claude-sonnet-4-6"),
-    system_prompt="You are a Python coding assistant with sandbox access.",
-    backend=backend,
-)
-
-try:
-    result = agent.invoke(
-        {
-            "messages": [
-                {
-                    "role": "user",
-                    "content": "Create a small Python package and run pytest",
-                }
-            ]
-        }
-    )
-finally:
-    sandbox.stop()
-```
-
-> **[View example trace](https://smith.langchain.com/public/2e58456c-3eac-424e-bffd-83d779f8e5d7/r)**
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langsmith
+> ```
 >
-> Open a public LangSmith run for this example.
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langsmith
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import LangSmithSandbox
+> from langchain_anthropic import ChatAnthropic
+> from langsmith.sandbox import SandboxClient
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> agent = create_deep_agent(
+>     model=ChatAnthropic(model="claude-sonnet-4-6"),
+>     system_prompt="You are a Python coding assistant with sandbox access.",
+>     backend=backend,
+> )
+> try:
+>     result = agent.invoke(
+>         {
+>             "messages": [
+>                 {
+>                     "role": "user",
+>                     "content": "Create a small Python package and run pytest",
+>                 }
+>             ]
+>         }
+>     )
+> finally:
+>     client.delete_sandbox(ls_sandbox.name)
+> ```
+>
+> > [card] [View example trace](https://smith.langchain.com/public/08974a6d-f496-46df-a0cc-29375c842988/r)
+> >
+> > Open a public LangSmith run for this example.
 
-**E2B**
+> [tab] Daytona
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-daytona
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-daytona
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from daytona import Daytona
+> from deepagents import create_deep_agent
+> from langchain_anthropic import ChatAnthropic
+> from langchain_daytona import DaytonaSandbox
+>
+> sandbox = Daytona().create()
+> backend = DaytonaSandbox(sandbox=sandbox)
+>
+> agent = create_deep_agent(
+>     model=ChatAnthropic(model="claude-sonnet-4-6"),
+>     system_prompt="You are a Python coding assistant with sandbox access.",
+>     backend=backend,
+> )
+>
+> try:
+>     result = agent.invoke(
+>         {
+>             "messages": [
+>                 {
+>                     "role": "user",
+>                     "content": "Create a small Python package and run pytest",
+>                 }
+>             ]
+>         }
+>     )
+> finally:
+>     sandbox.stop()
+> ```
+>
+> > [card] [View example trace](https://smith.langchain.com/public/2e58456c-3eac-424e-bffd-83d779f8e5d7/r)
+> >
+> > Open a public LangSmith run for this example.
 
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-e2b
-```
+> [tab] E2B
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-e2b
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-e2b
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from e2b import Sandbox
+> from deepagents import create_deep_agent
+> from langchain_anthropic import ChatAnthropic
+> from langchain_e2b import E2BSandbox
+>
+> e2b_sandbox = Sandbox.create()
+> backend = E2BSandbox(sandbox=e2b_sandbox)
+>
+> agent = create_deep_agent(
+>     model=ChatAnthropic(model="claude-sonnet-4-6"),
+>     system_prompt="You are a Python coding assistant with sandbox access.",
+>     backend=backend,
+> )
+>
+> try:
+>     result = agent.invoke(
+>         {
+>             "messages": [
+>                 {
+>                     "role": "user",
+>                     "content": "Create a small Python package and run pytest",
+>                 }
+>             ]
+>         }
+>     )
+> finally:
+>     e2b_sandbox.kill()
+> ```
 
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-e2b
-```
+> [tab] Modal
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-modal
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-modal
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import modal
+> from deepagents import create_deep_agent
+> from langchain_anthropic import ChatAnthropic
+> from langchain_modal import ModalSandbox
+>
+> app = modal.App.lookup("your-app")
+> modal_sandbox = modal.Sandbox.create(app=app)
+> backend = ModalSandbox(sandbox=modal_sandbox)
+>
+> agent = create_deep_agent(
+>     model=ChatAnthropic(model="claude-sonnet-4-6"),
+>     system_prompt="You are a Python coding assistant with sandbox access.",
+>     backend=backend,
+> )
+> try:
+>     result = agent.invoke(
+>         {
+>             "messages": [
+>                 {
+>                     "role": "user",
+>                     "content": "Create a small Python package and run pytest",
+>                 }
+>             ]
+>         }
+>     )
+> finally:
+>     modal_sandbox.terminate()
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from e2b import Sandbox
-from deepagents import create_deep_agent
-from langchain_anthropic import ChatAnthropic
-from langchain_e2b import E2BSandbox
+> [tab] Runloop
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-runloop
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-runloop
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+>
+> from deepagents import create_deep_agent
+> from langchain_anthropic import ChatAnthropic
+> from langchain_runloop import RunloopSandbox
+> from runloop_api_client import RunloopSDK
+>
+> client = RunloopSDK(bearer_token=os.environ["RUNLOOP_API_KEY"])
+>
+> devbox = client.devbox.create()
+> backend = RunloopSandbox(devbox=devbox)
+>
+> agent = create_deep_agent(
+>     model=ChatAnthropic(model="claude-sonnet-4-6"),
+>     system_prompt="You are a Python coding assistant with sandbox access.",
+>     backend=backend,
+> )
+>
+> try:
+>     result = agent.invoke(
+>         {
+>             "messages": [
+>                 {
+>                     "role": "user",
+>                     "content": "Create a small Python package and run pytest",
+>                 }
+>             ]
+>         }
+>     )
+> finally:
+>     devbox.shutdown()
+> ```
 
-e2b_sandbox = Sandbox.create()
-backend = E2BSandbox(sandbox=e2b_sandbox)
-
-agent = create_deep_agent(
-    model=ChatAnthropic(model="claude-sonnet-4-6"),
-    system_prompt="You are a Python coding assistant with sandbox access.",
-    backend=backend,
-)
-
-try:
-    result = agent.invoke(
-        {
-            "messages": [
-                {
-                    "role": "user",
-                    "content": "Create a small Python package and run pytest",
-                }
-            ]
-        }
-    )
-finally:
-    e2b_sandbox.kill()
-```
-
-**Modal**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-modal
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-modal
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import modal
-from deepagents import create_deep_agent
-from langchain_anthropic import ChatAnthropic
-from langchain_modal import ModalSandbox
-
-app = modal.App.lookup("your-app")
-modal_sandbox = modal.Sandbox.create(app=app)
-backend = ModalSandbox(sandbox=modal_sandbox)
-
-agent = create_deep_agent(
-    model=ChatAnthropic(model="claude-sonnet-4-6"),
-    system_prompt="You are a Python coding assistant with sandbox access.",
-    backend=backend,
-)
-try:
-    result = agent.invoke(
-        {
-            "messages": [
-                {
-                    "role": "user",
-                    "content": "Create a small Python package and run pytest",
-                }
-            ]
-        }
-    )
-finally:
-    modal_sandbox.terminate()
-```
-
-**Runloop**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-runloop
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-runloop
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-
-from deepagents import create_deep_agent
-from langchain_anthropic import ChatAnthropic
-from langchain_runloop import RunloopSandbox
-from runloop_api_client import RunloopSDK
-
-client = RunloopSDK(bearer_token=os.environ["RUNLOOP_API_KEY"])
-
-devbox = client.devbox.create()
-backend = RunloopSandbox(devbox=devbox)
-
-agent = create_deep_agent(
-    model=ChatAnthropic(model="claude-sonnet-4-6"),
-    system_prompt="You are a Python coding assistant with sandbox access.",
-    backend=backend,
-)
-
-try:
-    result = agent.invoke(
-        {
-            "messages": [
-                {
-                    "role": "user",
-                    "content": "Create a small Python package and run pytest",
-                }
-            ]
-        }
-    )
-finally:
-    devbox.shutdown()
-```
-
-**Vercel**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-vercel-sandbox
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-vercel-sandbox
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from langchain_anthropic import ChatAnthropic
-from langchain_vercel_sandbox import VercelSandbox
-from vercel.sandbox import Sandbox
-
-sandbox = Sandbox.create(runtime="python3.13")
-backend = VercelSandbox(sandbox=sandbox)
-
-agent = create_deep_agent(
-    model=ChatAnthropic(model="claude-sonnet-4-6"),
-    system_prompt="You are a Python coding assistant with sandbox access.",
-    backend=backend,
-)
-
-try:
-    result = agent.invoke(
-        {
-            "messages": [
-                {
-                    "role": "user",
-                    "content": "Create a small Python package and run pytest",
-                }
-            ]
-        }
-    )
-finally:
-    sandbox.stop()
-```
+> [tab] Vercel
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-vercel-sandbox
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-vercel-sandbox
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from langchain_anthropic import ChatAnthropic
+> from langchain_vercel_sandbox import VercelSandbox
+> from vercel.sandbox import Sandbox
+>
+> sandbox = Sandbox.create(runtime="python3.13")
+> backend = VercelSandbox(sandbox=sandbox)
+>
+> agent = create_deep_agent(
+>     model=ChatAnthropic(model="claude-sonnet-4-6"),
+>     system_prompt="You are a Python coding assistant with sandbox access.",
+>     backend=backend,
+> )
+>
+> try:
+>     result = agent.invoke(
+>         {
+>             "messages": [
+>                 {
+>                     "role": "user",
+>                     "content": "Create a small Python package and run pytest",
+>                 }
+>             ]
+>         }
+>     )
+> finally:
+>     sandbox.stop()
+> ```
 
 > [!TIP]
 >
@@ -1009,7 +1009,7 @@ finally:
     client.delete_sandbox(ls_sandbox.name)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/b2b4ae03-c454-44ae-920b-7f049763cb1c/r)**
+> [card] [View example trace](https://smith.langchain.com/public/b2b4ae03-c454-44ae-920b-7f049763cb1c/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -1063,204 +1063,204 @@ When the agent calls the `execute` tool, it provides a `command` string and gets
 
 You can also call the backend `execute()` method directly in your application code.
 
-**LangSmith**
+> [tab] LangSmith
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langsmith.sandbox import SandboxClient
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> result = backend.execute("python --version")
+> print(result.output)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents.backends.langsmith import LangSmithSandbox
-from langsmith.sandbox import SandboxClient
+> [tab] AgentCore
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-agentcore-codeinterpreter
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-agentcore-codeinterpreter
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from bedrock_agentcore.tools.code_interpreter_client import CodeInterpreter
+>
+> from langchain_agentcore_codeinterpreter import AgentCoreSandbox
+>
+> interpreter = CodeInterpreter(region="us-west-2")
+> interpreter.start()
+>
+> backend = AgentCoreSandbox(interpreter=interpreter)
+>
+> try:
+>     result = backend.execute("python3 --version")
+>     print(result.output)
+> finally:
+>     interpreter.stop()
+> ```
 
-client = SandboxClient()
-ls_sandbox = client.create_sandbox()
-backend = LangSmithSandbox(sandbox=ls_sandbox)
+> [tab] Databricks
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install 'databricks-langchain[deepagents]>=0.22.0'
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add 'databricks-langchain[deepagents]>=0.22.0'
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from databricks.sdk import WorkspaceClient
+>
+> from databricks_langchain import DatabricksSandbox
+>
+> client = WorkspaceClient()
+> backend = DatabricksSandbox(client, "sandboxes/my-sandbox")
+>
+> result = backend.execute("python --version")
+> print(result.output)
+> ```
 
-result = backend.execute("python --version")
-print(result.output)
-```
+> [tab] Daytona
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-daytona
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-daytona
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from daytona import Daytona
+>
+> from langchain_daytona import DaytonaSandbox
+>
+> sandbox = Daytona().create()
+> backend = DaytonaSandbox(sandbox=sandbox)
+>
+> result = backend.execute("python --version")
+> print(result.output)
+> ```
 
-**AgentCore**
+> [tab] E2B
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-e2b
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-e2b
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from e2b import Sandbox
+> from langchain_e2b import E2BSandbox
+>
+> e2b_sandbox = Sandbox.create()
+> sandbox = E2BSandbox(sandbox=e2b_sandbox)
+>
+> try:
+>     result = sandbox.execute("python --version")
+>     print(result.output)
+> finally:
+>     e2b_sandbox.kill()
+> ```
 
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-agentcore-codeinterpreter
-```
+> [tab] Modal
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import modal
+>
+> from langchain_modal import ModalSandbox
+>
+> app = modal.App.lookup("your-app")
+> modal_sandbox = modal.Sandbox.create(app=app)
+> backend = ModalSandbox(sandbox=modal_sandbox)
+>
+> result = backend.execute("python --version")
+> print(result.output)
+> ```
 
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-agentcore-codeinterpreter
-```
+> [tab] NVIDIA OpenShell
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-nvidia-openshell
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-nvidia-openshell
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import openshell
+>
+> from langchain_nvidia_openshell import OpenShellSandbox
+>
+> with openshell.Sandbox(delete_on_exit=True) as sandbox:
+>     backend = OpenShellSandbox(sandbox=sandbox)
+>
+>     result = backend.execute("python3 --version")
+>     print(result.output)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from bedrock_agentcore.tools.code_interpreter_client import CodeInterpreter
+> [tab] Runloop
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-runloop
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-runloop
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from runloop_api_client import RunloopSDK
+>
+> from langchain_runloop import RunloopSandbox
+>
+> api_key = "..."
+> client = RunloopSDK(bearer_token=api_key)
+>
+> devbox = client.devbox.create()
+> backend = RunloopSandbox(devbox=devbox)
+>
+> try:
+>     result = backend.execute("python --version")
+>     print(result.output)
+> finally:
+>     devbox.shutdown()
+> ```
 
-from langchain_agentcore_codeinterpreter import AgentCoreSandbox
-
-interpreter = CodeInterpreter(region="us-west-2")
-interpreter.start()
-
-backend = AgentCoreSandbox(interpreter=interpreter)
-
-try:
-    result = backend.execute("python3 --version")
-    print(result.output)
-finally:
-    interpreter.stop()
-```
-
-**Databricks**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install 'databricks-langchain[deepagents]>=0.22.0'
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add 'databricks-langchain[deepagents]>=0.22.0'
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from databricks.sdk import WorkspaceClient
-
-from databricks_langchain import DatabricksSandbox
-
-client = WorkspaceClient()
-backend = DatabricksSandbox(client, "sandboxes/my-sandbox")
-
-result = backend.execute("python --version")
-print(result.output)
-```
-
-**Daytona**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-daytona
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-daytona
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from daytona import Daytona
-
-from langchain_daytona import DaytonaSandbox
-
-sandbox = Daytona().create()
-backend = DaytonaSandbox(sandbox=sandbox)
-
-result = backend.execute("python --version")
-print(result.output)
-```
-
-**E2B**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-e2b
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-e2b
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from e2b import Sandbox
-from langchain_e2b import E2BSandbox
-
-e2b_sandbox = Sandbox.create()
-sandbox = E2BSandbox(sandbox=e2b_sandbox)
-
-try:
-    result = sandbox.execute("python --version")
-    print(result.output)
-finally:
-    e2b_sandbox.kill()
-```
-
-**Modal**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import modal
-
-from langchain_modal import ModalSandbox
-
-app = modal.App.lookup("your-app")
-modal_sandbox = modal.Sandbox.create(app=app)
-backend = ModalSandbox(sandbox=modal_sandbox)
-
-result = backend.execute("python --version")
-print(result.output)
-```
-
-**NVIDIA OpenShell**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-nvidia-openshell
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-nvidia-openshell
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import openshell
-
-from langchain_nvidia_openshell import OpenShellSandbox
-
-with openshell.Sandbox(delete_on_exit=True) as sandbox:
-    backend = OpenShellSandbox(sandbox=sandbox)
-
-    result = backend.execute("python3 --version")
-    print(result.output)
-```
-
-**Runloop**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-runloop
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-runloop
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from runloop_api_client import RunloopSDK
-
-from langchain_runloop import RunloopSandbox
-
-api_key = "..."
-client = RunloopSDK(bearer_token=api_key)
-
-devbox = client.devbox.create()
-backend = RunloopSandbox(devbox=devbox)
-
-try:
-    result = backend.execute("python --version")
-    print(result.output)
-finally:
-    devbox.shutdown()
-```
-
-**Vercel**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-vercel-sandbox
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-vercel-sandbox
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from vercel.sandbox import Sandbox
-
-from langchain_vercel_sandbox import VercelSandbox
-
-sandbox = Sandbox.create(runtime="python3.13")
-backend = VercelSandbox(sandbox=sandbox)
-
-try:
-    result = backend.execute("python --version")
-    print(result.output)
-finally:
-    sandbox.stop()
-```
+> [tab] Vercel
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-vercel-sandbox
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-vercel-sandbox
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from vercel.sandbox import Sandbox
+>
+> from langchain_vercel_sandbox import VercelSandbox
+>
+> sandbox = Sandbox.create(runtime="python3.13")
+> backend = VercelSandbox(sandbox=sandbox)
+>
+> try:
+>     result = backend.execute("python --version")
+>     print(result.output)
+> finally:
+>     sandbox.stop()
+> ```
 
 For example:
 
@@ -1323,412 +1323,412 @@ The deepagents sandbox backends support file transfer APIs for moving files betw
 
 Use `upload_files()` to populate the sandbox before the agent runs. Paths must be absolute and contents are `bytes`:
 
-**LangSmith**
+> [tab] LangSmith
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langsmith.sandbox import SandboxClient
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> backend.upload_files(
+>     [
+>         ("/src/index.py", b"print('Hello')\n"),
+>         ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
+>     ]
+> )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents.backends.langsmith import LangSmithSandbox
-from langsmith.sandbox import SandboxClient
+> [tab] AgentCore
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-agentcore-codeinterpreter
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-agentcore-codeinterpreter
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from bedrock_agentcore.tools.code_interpreter_client import CodeInterpreter
+>
+> from langchain_agentcore_codeinterpreter import AgentCoreSandbox
+>
+> interpreter = CodeInterpreter(region="us-west-2")
+> interpreter.start()
+>
+> backend = AgentCoreSandbox(interpreter=interpreter)
+>
+> backend.upload_files(
+>     [
+>         ("hello.py", b"print('Hello')\n"),
+>         ("data.csv", b"name,value\na,1\nb,2\n"),
+>     ]
+> )
+> ```
 
-client = SandboxClient()
-ls_sandbox = client.create_sandbox()
-backend = LangSmithSandbox(sandbox=ls_sandbox)
+> [tab] Databricks
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install 'databricks-langchain[deepagents]>=0.22.0'
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add 'databricks-langchain[deepagents]>=0.22.0'
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from databricks.sdk import WorkspaceClient
+>
+> from databricks_langchain import DatabricksSandbox
+>
+> client = WorkspaceClient()
+> backend = DatabricksSandbox(client, "sandboxes/my-sandbox")
+>
+> backend.upload_files(
+>     [
+>         ("/src/index.py", b"print('Hello')\n"),
+>         ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
+>     ]
+> )
+> ```
 
-backend.upload_files(
-    [
-        ("/src/index.py", b"print('Hello')\n"),
-        ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
-    ]
-)
-```
+> [tab] Daytona
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-daytona
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-daytona
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from daytona import Daytona
+>
+> from langchain_daytona import DaytonaSandbox
+>
+> sandbox = Daytona().create()
+> backend = DaytonaSandbox(sandbox=sandbox)
+>
+> backend.upload_files(
+>     [
+>         ("/src/index.py", b"print('Hello')\n"),
+>         ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
+>     ]
+> )
+> ```
 
-**AgentCore**
+> [tab] E2B
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-e2b
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-e2b
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from e2b import Sandbox
+> from langchain_e2b import E2BSandbox
+>
+> e2b_sandbox = Sandbox.create()
+> sandbox = E2BSandbox(sandbox=e2b_sandbox)
+>
+> try:
+>     sandbox.upload_files(
+>         [
+>             ("/src/index.py", b"print('Hello')\n"),
+>             ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
+>         ]
+>     )
+> finally:
+>     e2b_sandbox.kill()
+> ```
 
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-agentcore-codeinterpreter
-```
+> [tab] Modal
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import modal
+>
+> from langchain_modal import ModalSandbox
+>
+> app = modal.App.lookup("your-app")
+> modal_sandbox = modal.Sandbox.create(app=app)
+> backend = ModalSandbox(sandbox=modal_sandbox)
+>
+> backend.upload_files(
+>     [
+>         ("/src/index.py", b"print('Hello')\n"),
+>         ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
+>     ]
+> )
+> ```
 
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-agentcore-codeinterpreter
-```
+> [tab] Runloop
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-runloop
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-runloop
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from runloop_api_client import RunloopSDK
+>
+> from langchain_runloop import RunloopSandbox
+>
+> api_key = "..."
+> client = RunloopSDK(bearer_token=api_key)
+>
+> devbox = client.devbox.create()
+> backend = RunloopSandbox(devbox=devbox)
+>
+> backend.upload_files(
+>     [
+>         ("/src/index.py", b"print('Hello')\n"),
+>         ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
+>     ]
+> )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from bedrock_agentcore.tools.code_interpreter_client import CodeInterpreter
-
-from langchain_agentcore_codeinterpreter import AgentCoreSandbox
-
-interpreter = CodeInterpreter(region="us-west-2")
-interpreter.start()
-
-backend = AgentCoreSandbox(interpreter=interpreter)
-
-backend.upload_files(
-    [
-        ("hello.py", b"print('Hello')\n"),
-        ("data.csv", b"name,value\na,1\nb,2\n"),
-    ]
-)
-```
-
-**Databricks**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install 'databricks-langchain[deepagents]>=0.22.0'
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add 'databricks-langchain[deepagents]>=0.22.0'
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from databricks.sdk import WorkspaceClient
-
-from databricks_langchain import DatabricksSandbox
-
-client = WorkspaceClient()
-backend = DatabricksSandbox(client, "sandboxes/my-sandbox")
-
-backend.upload_files(
-    [
-        ("/src/index.py", b"print('Hello')\n"),
-        ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
-    ]
-)
-```
-
-**Daytona**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-daytona
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-daytona
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from daytona import Daytona
-
-from langchain_daytona import DaytonaSandbox
-
-sandbox = Daytona().create()
-backend = DaytonaSandbox(sandbox=sandbox)
-
-backend.upload_files(
-    [
-        ("/src/index.py", b"print('Hello')\n"),
-        ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
-    ]
-)
-```
-
-**E2B**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-e2b
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-e2b
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from e2b import Sandbox
-from langchain_e2b import E2BSandbox
-
-e2b_sandbox = Sandbox.create()
-sandbox = E2BSandbox(sandbox=e2b_sandbox)
-
-try:
-    sandbox.upload_files(
-        [
-            ("/src/index.py", b"print('Hello')\n"),
-            ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
-        ]
-    )
-finally:
-    e2b_sandbox.kill()
-```
-
-**Modal**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import modal
-
-from langchain_modal import ModalSandbox
-
-app = modal.App.lookup("your-app")
-modal_sandbox = modal.Sandbox.create(app=app)
-backend = ModalSandbox(sandbox=modal_sandbox)
-
-backend.upload_files(
-    [
-        ("/src/index.py", b"print('Hello')\n"),
-        ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
-    ]
-)
-```
-
-**Runloop**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-runloop
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-runloop
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from runloop_api_client import RunloopSDK
-
-from langchain_runloop import RunloopSandbox
-
-api_key = "..."
-client = RunloopSDK(bearer_token=api_key)
-
-devbox = client.devbox.create()
-backend = RunloopSandbox(devbox=devbox)
-
-backend.upload_files(
-    [
-        ("/src/index.py", b"print('Hello')\n"),
-        ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
-    ]
-)
-```
-
-**Vercel**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-vercel-sandbox
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-vercel-sandbox
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from vercel.sandbox import Sandbox
-
-from langchain_vercel_sandbox import VercelSandbox
-
-sandbox = Sandbox.create(runtime="python3.13")
-backend = VercelSandbox(sandbox=sandbox)
-
-backend.upload_files(
-    [
-        ("/src/index.py", b"print('Hello')\n"),
-        ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
-    ]
-)
-```
+> [tab] Vercel
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-vercel-sandbox
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-vercel-sandbox
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from vercel.sandbox import Sandbox
+>
+> from langchain_vercel_sandbox import VercelSandbox
+>
+> sandbox = Sandbox.create(runtime="python3.13")
+> backend = VercelSandbox(sandbox=sandbox)
+>
+> backend.upload_files(
+>     [
+>         ("/src/index.py", b"print('Hello')\n"),
+>         ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
+>     ]
+> )
+> ```
 
 ### Retrieving artifacts
 
 Use `download_files()` to retrieve files from the sandbox after the agent finishes:
 
-**LangSmith**
+> [tab] LangSmith
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langsmith.sandbox import SandboxClient
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+>
+> results = backend.download_files(["/src/index.py", "/output.txt"])
+> for result in results:
+>     if result.content is not None:
+>         print(f"{result.path}: {result.content.decode()}")
+>     else:
+>         print(f"Failed to download {result.path}: {result.error}")
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents.backends.langsmith import LangSmithSandbox
-from langsmith.sandbox import SandboxClient
+> [tab] AgentCore
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-agentcore-codeinterpreter
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-agentcore-codeinterpreter
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from bedrock_agentcore.tools.code_interpreter_client import CodeInterpreter
+>
+> from langchain_agentcore_codeinterpreter import AgentCoreSandbox
+>
+> interpreter = CodeInterpreter(region="us-west-2")
+> interpreter.start()
+>
+> backend = AgentCoreSandbox(interpreter=interpreter)
+>
+> results = backend.download_files(["hello.py"])
+> for result in results:
+>     if result.content is not None:
+>         print(f"{result.path}: {result.content.decode()}")
+>     else:
+>         print(f"Failed to download {result.path}: {result.error}")
+>
+> interpreter.stop()
+> ```
 
-client = SandboxClient()
-ls_sandbox = client.create_sandbox()
-backend = LangSmithSandbox(sandbox=ls_sandbox)
+> [tab] Databricks
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install 'databricks-langchain[deepagents]>=0.22.0'
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add 'databricks-langchain[deepagents]>=0.22.0'
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from databricks.sdk import WorkspaceClient
+>
+> from databricks_langchain import DatabricksSandbox
+>
+> client = WorkspaceClient()
+> backend = DatabricksSandbox(client, "sandboxes/my-sandbox")
+>
+> results = backend.download_files(["/src/index.py", "/output.txt"])
+> for result in results:
+>     if result.content is not None:
+>         print(f"{result.path}: {result.content.decode()}")
+>     else:
+>         print(f"Failed to download {result.path}: {result.error}")
+> ```
 
+> [tab] Daytona
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-daytona
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-daytona
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from daytona import Daytona
+>
+> from langchain_daytona import DaytonaSandbox
+>
+> sandbox = Daytona().create()
+> backend = DaytonaSandbox(sandbox=sandbox)
+>
+> results = backend.download_files(["/src/index.py", "/output.txt"])
+> for result in results:
+>     if result.content is not None:
+>         print(f"{result.path}: {result.content.decode()}")
+>     else:
+>         print(f"Failed to download {result.path}: {result.error}")
+> ```
 
-results = backend.download_files(["/src/index.py", "/output.txt"])
-for result in results:
-    if result.content is not None:
-        print(f"{result.path}: {result.content.decode()}")
-    else:
-        print(f"Failed to download {result.path}: {result.error}")
-```
+> [tab] E2B
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-e2b
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-e2b
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from e2b import Sandbox
+> from langchain_e2b import E2BSandbox
+>
+> e2b_sandbox = Sandbox.create()
+> sandbox = E2BSandbox(sandbox=e2b_sandbox)
+>
+> try:
+>     results = sandbox.download_files(["/src/index.py", "/output.txt"])
+>     for result in results:
+>         if result.content is not None:
+>             print(f"{result.path}: {result.content.decode()}")
+>         else:
+>             print(f"Failed to download {result.path}: {result.error}")
+> finally:
+>     e2b_sandbox.kill()
+> ```
 
-**AgentCore**
+> [tab] Modal
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import modal
+>
+> from langchain_modal import ModalSandbox
+>
+> app = modal.App.lookup("your-app")
+> modal_sandbox = modal.Sandbox.create(app=app)
+> backend = ModalSandbox(sandbox=modal_sandbox)
+>
+> results = backend.download_files(["/src/index.py", "/output.txt"])
+> for result in results:
+>     if result.content is not None:
+>         print(f"{result.path}: {result.content.decode()}")
+>     else:
+>         print(f"Failed to download {result.path}: {result.error}")
+> ```
 
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-agentcore-codeinterpreter
-```
+> [tab] Runloop
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-runloop
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-runloop
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from runloop_api_client import RunloopSDK
+>
+> from langchain_runloop import RunloopSandbox
+>
+> api_key = "..."
+> client = RunloopSDK(bearer_token=api_key)
+>
+> devbox = client.devbox.create()
+> backend = RunloopSandbox(devbox=devbox)
+>
+> results = backend.download_files(["/src/index.py", "/output.txt"])
+> for result in results:
+>     if result.content is not None:
+>         print(f"{result.path}: {result.content.decode()}")
+>     else:
+>         print(f"Failed to download {result.path}: {result.error}")
+> ```
 
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-agentcore-codeinterpreter
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from bedrock_agentcore.tools.code_interpreter_client import CodeInterpreter
-
-from langchain_agentcore_codeinterpreter import AgentCoreSandbox
-
-interpreter = CodeInterpreter(region="us-west-2")
-interpreter.start()
-
-backend = AgentCoreSandbox(interpreter=interpreter)
-
-results = backend.download_files(["hello.py"])
-for result in results:
-    if result.content is not None:
-        print(f"{result.path}: {result.content.decode()}")
-    else:
-        print(f"Failed to download {result.path}: {result.error}")
-
-interpreter.stop()
-```
-
-**Databricks**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install 'databricks-langchain[deepagents]>=0.22.0'
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add 'databricks-langchain[deepagents]>=0.22.0'
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from databricks.sdk import WorkspaceClient
-
-from databricks_langchain import DatabricksSandbox
-
-client = WorkspaceClient()
-backend = DatabricksSandbox(client, "sandboxes/my-sandbox")
-
-results = backend.download_files(["/src/index.py", "/output.txt"])
-for result in results:
-    if result.content is not None:
-        print(f"{result.path}: {result.content.decode()}")
-    else:
-        print(f"Failed to download {result.path}: {result.error}")
-```
-
-**Daytona**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-daytona
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-daytona
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from daytona import Daytona
-
-from langchain_daytona import DaytonaSandbox
-
-sandbox = Daytona().create()
-backend = DaytonaSandbox(sandbox=sandbox)
-
-results = backend.download_files(["/src/index.py", "/output.txt"])
-for result in results:
-    if result.content is not None:
-        print(f"{result.path}: {result.content.decode()}")
-    else:
-        print(f"Failed to download {result.path}: {result.error}")
-```
-
-**E2B**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-e2b
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-e2b
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from e2b import Sandbox
-from langchain_e2b import E2BSandbox
-
-e2b_sandbox = Sandbox.create()
-sandbox = E2BSandbox(sandbox=e2b_sandbox)
-
-try:
-    results = sandbox.download_files(["/src/index.py", "/output.txt"])
-    for result in results:
-        if result.content is not None:
-            print(f"{result.path}: {result.content.decode()}")
-        else:
-            print(f"Failed to download {result.path}: {result.error}")
-finally:
-    e2b_sandbox.kill()
-```
-
-**Modal**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import modal
-
-from langchain_modal import ModalSandbox
-
-app = modal.App.lookup("your-app")
-modal_sandbox = modal.Sandbox.create(app=app)
-backend = ModalSandbox(sandbox=modal_sandbox)
-
-results = backend.download_files(["/src/index.py", "/output.txt"])
-for result in results:
-    if result.content is not None:
-        print(f"{result.path}: {result.content.decode()}")
-    else:
-        print(f"Failed to download {result.path}: {result.error}")
-```
-
-**Runloop**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-runloop
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-runloop
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from runloop_api_client import RunloopSDK
-
-from langchain_runloop import RunloopSandbox
-
-api_key = "..."
-client = RunloopSDK(bearer_token=api_key)
-
-devbox = client.devbox.create()
-backend = RunloopSandbox(devbox=devbox)
-
-results = backend.download_files(["/src/index.py", "/output.txt"])
-for result in results:
-    if result.content is not None:
-        print(f"{result.path}: {result.content.decode()}")
-    else:
-        print(f"Failed to download {result.path}: {result.error}")
-```
-
-**Vercel**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-vercel-sandbox
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-vercel-sandbox
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from vercel.sandbox import Sandbox
-
-from langchain_vercel_sandbox import VercelSandbox
-
-sandbox = Sandbox.create(runtime="python3.13")
-backend = VercelSandbox(sandbox=sandbox)
-
-results = backend.download_files(["/src/index.py", "/output.txt"])
-for result in results:
-    if result.content is not None:
-        print(f"{result.path}: {result.content.decode()}")
-    else:
-        print(f"Failed to download {result.path}: {result.error}")
-```
+> [tab] Vercel
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-vercel-sandbox
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-vercel-sandbox
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from vercel.sandbox import Sandbox
+>
+> from langchain_vercel_sandbox import VercelSandbox
+>
+> sandbox = Sandbox.create(runtime="python3.13")
+> backend = VercelSandbox(sandbox=sandbox)
+>
+> results = backend.download_files(["/src/index.py", "/output.txt"])
+> for result in results:
+>     if result.content is not None:
+>         print(f"{result.path}: {result.content.decode()}")
+>     else:
+>         print(f"Failed to download {result.path}: {result.error}")
+> ```
 
 > [!NOTE]
 >

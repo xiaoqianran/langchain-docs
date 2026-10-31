@@ -192,7 +192,7 @@ export const agent = defineDeepAgent({
 
 The agent name is also the default deployment name. For model concepts and provider options, see [Models](/oss/javascript/langchain/models).
 
-> **Using another provider?**
+> [accordion] Using another provider?
 >
 > You can use a Tavily search tool instead.
 > Add a [Tavily API key](https://app.tavily.com) to `.env`:
@@ -288,7 +288,7 @@ What were the main announcements from the latest LangChain release?
 
 You should see the agent call the web search tool, then return a concise answer that cites sources. If search never appears in the trace, confirm the provider tool dict matches the model you set in `agent.py` or `agent.ts`.
 
-In an [agent-based workspace](/langsmith/agents), tracing will result in errors until you register the agent. For details, see [Trace local runs](/langsmith/javascript/managed-deep-agents-local-development#trace-local-runs).
+In an [agent-based workspace](/langsmith/agent-registry), tracing will result in errors until you register the agent. For details, see [Trace local runs](/langsmith/javascript/managed-deep-agents-local-development#trace-local-runs).
 
 **7. Deploy the agent**
 
@@ -312,15 +312,15 @@ Open that URL. You should see the deployment in a ready state. Send the same res
 
 ## Next steps
 
-> **[Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)**
+> [card] [Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)
 >
 > Add a custom Tavily search tool, durable memory, and a daily schedule.
 
-> **[Custom tools](/langsmith/javascript/managed-deep-agents-tools)**
+> [card] [Custom tools](/langsmith/javascript/managed-deep-agents-tools)
 >
 > Add authored LangChain tools from your project.
 
-> **[Connections](/langsmith/javascript/managed-deep-agents-connections)**
+> [card] [Connections](/langsmith/javascript/managed-deep-agents-connections)
 >
 > Authenticate with external services, as the agent or as the caller.
 

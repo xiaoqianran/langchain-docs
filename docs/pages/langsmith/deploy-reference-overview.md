@@ -8,31 +8,31 @@ This section is a reference for the SDKs, CLI, and APIs you use to deploy and in
 
 ## SDKs and CLI
 
-> **[LangSmith Deployments SDK](/langsmith/smith-deployments-sdk)**
+> [card] [LangSmith Deployments SDK](/langsmith/smith-deployments-sdk)
 >
 > Management of LangSmith deployments and revisions using the LangGraph SDK.
 
-> **[LangGraph CLI](/langsmith/cli)**
+> [card] [LangGraph CLI](/langsmith/cli)
 >
 > Build, deploy, and interact with agents from the command line.
 
-> **[RemoteGraph](/langsmith/remote-graph)**
+> [card] [RemoteGraph](/langsmith/remote-graph)
 >
 > Client-side interface for calling deployed graphs as if they were local.
 
 ## APIs
 
-> **[Agent Server API](/langsmith/server-api-ref)**
+> [card] [Agent Server API](/langsmith/server-api-ref)
 >
 > REST endpoints exposed by the Agent Server runtime: assistants, threads, runs, cron jobs, and the long-term memory store.
 
-> **[Control Plane API](/langsmith/api-ref-control-plane)**
+> [card] [Control Plane API](/langsmith/api-ref-control-plane)
 >
 > REST endpoints for managing deployments, revisions, and listeners.
 
 ## Releases
 
-> **[Agent Server changelog](/langsmith/agent-server-changelog)**
+> [card] [Agent Server changelog](/langsmith/agent-server-changelog)
 >
 > Version history and release notes for the Agent Server runtime.
 

@@ -61,50 +61,50 @@ To write the configuration yourself, use your region's API URL if your organizat
 
 The examples allow the relay to reach `10.0.0.0/8` and `db.corp.internal:5432` in addition to its default; see [Connector policy](#connector-policy).
 
-**Kubernetes (Helm)**
+> [tab] Kubernetes (Helm)
+>
+> Store the API key in a Secret, then install the [`langsmith-connector` chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-connector), version 0.3.0 or later:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> kubectl create namespace langsmith-connector
+> kubectl -n langsmith-connector create secret generic langsmith-connector-key \
+>   --from-literal=langsmith_api_key=<api key>
+>
+> helm repo add langchain https://langchain-ai.github.io/helm/
+> helm repo update
+> helm install langsmith-relay langchain/langsmith-connector \
+>   --namespace langsmith-connector \
+>   --set config.connectionId=<relay id> \
+>   --set config.existingSecretName=langsmith-connector-key \
+>   --set config.relay.enabled=true \
+>   --set 'config.relay.allow={10.0.0.0/8,db.corp.internal:5432}'
+> ```
+>
+> Add `--set config.endpoint=<endpoint>` for a region other than GCP US, and `config.relay.deny` for deny rules. Pass rules as a list, as in the example. A relay takes no `config.targets`.
+>
+> Run a single replica. One connector already keeps two redundant connections to LangSmith.
 
-Store the API key in a Secret, then install the [`langsmith-connector` chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-connector), version 0.3.0 or later:
+> [tab] Docker
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> docker run -d --name langsmith-relay --restart unless-stopped \
+>   -e LANGSMITH_CONNECTION_ID=<relay id> \
+>   -e LANGSMITH_API_KEY=<api key> \
+>   -e LANGSMITH_CONNECTOR_RELAY_MODE=true \
+>   -e LANGSMITH_CONNECTOR_RELAY_ALLOW="10.0.0.0/8,db.corp.internal:5432" \
+>   langchain/langsmith-connector:0.3.0
+> ```
+>
+> Add `-e LANGSMITH_ENDPOINT=<endpoint>` for a region other than GCP US, and `LANGSMITH_CONNECTOR_RELAY_DENY` for deny rules. Both rule variables take a comma-separated list. To read the key from a file instead, set `LANGSMITH_API_KEY_FILE` to its path.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-kubectl create namespace langsmith-connector
-kubectl -n langsmith-connector create secret generic langsmith-connector-key \
-  --from-literal=langsmith_api_key=<api key>
-
-helm repo add langchain https://langchain-ai.github.io/helm/
-helm repo update
-helm install langsmith-relay langchain/langsmith-connector \
-  --namespace langsmith-connector \
-  --set config.connectionId=<relay id> \
-  --set config.existingSecretName=langsmith-connector-key \
-  --set config.relay.enabled=true \
-  --set 'config.relay.allow={10.0.0.0/8,db.corp.internal:5432}'
-```
-
-Add `--set config.endpoint=<endpoint>` for a region other than GCP US, and `config.relay.deny` for deny rules. Pass rules as a list, as in the example. A relay takes no `config.targets`.
-
-Run a single replica. One connector already keeps two redundant connections to LangSmith.
-
-**Docker**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-docker run -d --name langsmith-relay --restart unless-stopped \
-  -e LANGSMITH_CONNECTION_ID=<relay id> \
-  -e LANGSMITH_API_KEY=<api key> \
-  -e LANGSMITH_CONNECTOR_RELAY_MODE=true \
-  -e LANGSMITH_CONNECTOR_RELAY_ALLOW="10.0.0.0/8,db.corp.internal:5432" \
-  langchain/langsmith-connector:0.3.0
-```
-
-Add `-e LANGSMITH_ENDPOINT=<endpoint>` for a region other than GCP US, and `LANGSMITH_CONNECTOR_RELAY_DENY` for deny rules. Both rule variables take a comma-separated list. To read the key from a file instead, set `LANGSMITH_API_KEY_FILE` to its path.
-
-**LangSmith CLI**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_API_KEY=<api key>
-langsmith relay connect <relay id> --allow 10.0.0.0/8 --allow db.corp.internal:5432
-```
-
-The `relay connect` command needs LangSmith CLI 0.3.5 or later. It runs until you stop it. Set `LANGSMITH_ENDPOINT` for a region other than GCP US, and pass `--deny` for deny rules. The connector authenticates with an API key, so a profile that signs in with OAuth does not work.
+> [tab] LangSmith CLI
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export LANGSMITH_API_KEY=<api key>
+> langsmith relay connect <relay id> --allow 10.0.0.0/8 --allow db.corp.internal:5432
+> ```
+>
+> The `relay connect` command needs LangSmith CLI 0.3.5 or later. It runs until you stop it. Set `LANGSMITH_ENDPOINT` for a region other than GCP US, and pass `--deny` for deny rules. The connector authenticates with an API key, so a profile that signs in with OAuth does not work.
 
 The connector honors `HTTPS_PROXY` if your network requires an outbound proxy. It logs `connector registered with LangSmith` when it connects. Set `LOG_LEVEL=debug` for more detail. With Helm, set it through `connector.deployment.extraEnv`.
 

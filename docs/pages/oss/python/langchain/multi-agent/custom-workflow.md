@@ -36,7 +36,7 @@ Each node in your workflow can be a simple function, an LLM call, or an entire [
 
 For a complete example of a custom workflow, see the tutorial below.
 
-> **[Tutorial: Build a multi-source knowledge base with routing](/oss/python/langchain/multi-agent/router-knowledge-base)**
+> [card] [Tutorial: Build a multi-source knowledge base with routing](/oss/python/langchain/multi-agent/router-knowledge-base)
 >
 > The [router pattern](/oss/python/langchain/multi-agent/router) is an example of a custom workflow. This tutorial walks through building a router that queries GitHub, Notion, and Slack in parallel, then synthesizes results.
 >
@@ -73,7 +73,7 @@ workflow = (
 
 A common use case is combining [retrieval](/oss/python/deepagents/retrieval) with an agent. This example builds a WNBA stats assistant that retrieves from a knowledge base and can fetch live news.
 
-> **Custom RAG workflow**
+> [accordion] Custom RAG workflow
 >
 > The workflow demonstrates three types of nodes:
 >

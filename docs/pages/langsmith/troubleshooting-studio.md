@@ -6,19 +6,19 @@ Safari blocks plain-HTTP traffic on localhost. When running Studio with `langgra
 
 ### Solution 1: Use Cloudflare Tunnel
 
-**Python**
+> [tab] Python
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U langgraph-cli>=0.2.6
+> langgraph dev --tunnel
+> ```
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U langgraph-cli>=0.2.6
-langgraph dev --tunnel
-```
-
-**JS**
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Requires @langchain/langgraph-cli>=0.0.26
-npx @langchain/langgraph-cli dev --tunnel
-```
+> [tab] JS
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Requires @langchain/langgraph-cli>=0.0.26
+> npx @langchain/langgraph-cli dev --tunnel
+> ```
 
 The command outputs a tunnel URL. To connect Studio:
 
@@ -95,19 +95,19 @@ Disable Brave Shields for LangSmith using the Brave icon in the URL bar.
 
 ### Solution 2: Use Cloudflare Tunnel
 
-**Python**
+> [tab] Python
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U langgraph-cli>=0.2.6
+> langgraph dev --tunnel
+> ```
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U langgraph-cli>=0.2.6
-langgraph dev --tunnel
-```
-
-**JS**
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Requires @langchain/langgraph-cli>=0.0.26
-npx @langchain/langgraph-cli dev --tunnel
-```
+> [tab] JS
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Requires @langchain/langgraph-cli>=0.0.26
+> npx @langchain/langgraph-cli dev --tunnel
+> ```
 
 The command outputs a tunnel URL. To connect Studio:
 
@@ -128,17 +128,17 @@ because without proper definition, Studio assumes the conditional edge could acc
 
 Define a mapping between router outputs and target nodes:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> graph.add_conditional_edges("node_a", routing_function, {True: "node_b", False: "node_c"})
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-graph.add_conditional_edges("node_a", routing_function, {True: "node_b", False: "node_c"})
-```
-
-**Javascript**
-
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-graph.addConditionalEdges("node_a", routingFunction, { true: "node_b", false: "node_c" });
-```
+> [tab] Javascript
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> graph.addConditionalEdges("node_a", routingFunction, { true: "node_b", false: "node_c" });
+> ```
 
 ### Solution 2: Router type definition
 

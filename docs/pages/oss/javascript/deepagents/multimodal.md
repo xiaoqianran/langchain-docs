@@ -32,7 +32,7 @@ For block types, provider-specific requirements, and additional examples (PDF, a
 
 The harness `read_file` tool returns [standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks) for supported multimodal files instead of plain text. The agent can inspect images, documents, and media stored in its [filesystem](/oss/javascript/deepagents/overview#virtual-filesystem-access) when the selected model supports the corresponding modality. Check the provider's documentation for your model's supported MIME types.
 
-> **Supported multimodal file extensions**
+> [accordion] Supported multimodal file extensions
 >
 > | Type | Extensions |
 > | - | - |

@@ -20,11 +20,11 @@ You can implement guardrails using [middleware](/oss/python/langchain/middleware
 
 Guardrails can be implemented using two complementary approaches:
 
-> **Deterministic guardrails**
+> [card] Deterministic guardrails
 >
 > Use rule-based logic like regex patterns, keyword matching, or explicit checks. Fast, predictable, and cost-effective, but may miss nuanced violations.
 
-> **Model-based guardrails**
+> [card] Model-based guardrails
 >
 > Use LLMs or classifiers to evaluate content with semantic understanding. Catch subtle issues that rules miss, but are slower and more expensive.
 
@@ -88,7 +88,7 @@ result = agent.invoke({
 })
 ```
 
-> **Built-in PII types and configuration**
+> [accordion] Built-in PII types and configuration
 >
 > **Built-in PII types:**
 >

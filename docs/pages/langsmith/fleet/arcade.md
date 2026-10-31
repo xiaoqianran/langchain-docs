@@ -91,15 +91,15 @@ Admins can remove the Arcade integration entirely by deleting the workspace conf
 
 ## Next steps
 
-> **[Add more tools](/langsmith/fleet/tools)**
+> [card] [Add more tools](/langsmith/fleet/tools)
 >
 > Connect additional services to your agent
 
-> **[Remote MCP servers](/langsmith/fleet/remote-mcp-servers)**
+> [card] [Remote MCP servers](/langsmith/fleet/remote-mcp-servers)
 >
 > Connect custom MCP servers to your workspace
 
-> **[Manage agent settings](/langsmith/fleet/manage-agent-settings)**
+> [card] [Manage agent settings](/langsmith/fleet/manage-agent-settings)
 >
 > Configure agent behavior and permissions
 

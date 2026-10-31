@@ -12,17 +12,17 @@ For a complete list of supported models and variants, see the [Ollama model libr
 
 ## Model interfaces
 
-> **[ChatOllama](/oss/python/integrations/chat/ollama)**
+> [card] [ChatOllama](/oss/python/integrations/chat/ollama)
 >
 > Ollama chat models.
 
-> **[OllamaEmbeddings](/oss/python/integrations/embeddings/ollama)**
+> [card] [OllamaEmbeddings](/oss/python/integrations/embeddings/ollama)
 >
 > Ollama embedding models.
 
 ## Other
 
-> **[OllamaLLM](/oss/python/integrations/llms/ollama)**
+> [card] [OllamaLLM](/oss/python/integrations/llms/ollama)
 >
 > (Legacy) Ollama text completion models.
 

@@ -74,7 +74,7 @@ Auto keeps the same gated-action rules as Manual but changes how those actions a
 
 After repeated denials or classifier failures, Auto stops and shows you the normal approval prompt for the next batch, then continues in Auto mode.
 
-> **Auto decision flow**
+> [accordion] Auto decision flow
 >
 > ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > flowchart TD
@@ -133,43 +133,43 @@ For other providers, the classifier uses the main agent model. You can select a 
 
 Set the classifier model through any of these sources:
 
-**TUI command**
-
-Run `/auto model` to open the interactive model picker and select a classifier model for the current session. To specify a model directly, pass it as an argument:
-
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/auto model openai:gpt-5.6-luna
-/auto model clear
-```
-
-Use `/auto model clear` to go back to inheriting the main model.
-
-**CLI flag**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode -y --auto-classifier-model openai:gpt-5.6-luna
-```
-
-`--auto-classifier-model` is only accepted in interactive TUI sessions.
-
-**Environment variable**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL="openai:gpt-5.6-luna"
-```
-
-> [!WARNING]
+> [tab] TUI command
 >
-> A **project `.env`** cannot set `DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`. Only shell exports, `~/.deepagents/.env`, the CLI flag, and `/auto model` work.
+> Run `/auto model` to open the interactive model picker and select a classifier model for the current session. To specify a model directly, pass it as an argument:
+>
+> ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /auto model openai:gpt-5.6-luna
+> /auto model clear
+> ```
+>
+> Use `/auto model clear` to go back to inheriting the main model.
 
-**config.toml**
+> [tab] CLI flag
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode -y --auto-classifier-model openai:gpt-5.6-luna
+> ```
+>
+> `--auto-classifier-model` is only accepted in interactive TUI sessions.
 
-```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[models]
-auto_classifier = "openai:gpt-5.6-luna"
-```
+> [tab] Environment variable
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL="openai:gpt-5.6-luna"
+> ```
+>
+> > [!WARNING]
+> >
+> > A **project `.env`** cannot set `DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`. Only shell exports, `~/.deepagents/.env`, the CLI flag, and `/auto model` work.
 
-> **Precedence order**
+> [tab] config.toml
+>
+> ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [models]
+> auto_classifier = "openai:gpt-5.6-luna"
+> ```
+
+> [accordion] Precedence order
 >
 > 1. **`/auto model` TUI command**: takes effect immediately for the current session.
 > 2. **`--auto-classifier-model` flag**: sets the classifier on launch (interactive TUI sessions only).

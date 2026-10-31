@@ -25,9 +25,9 @@ The generic nature of the interface allows you to use different types for keys a
 
 ## Built-in stores for local development
 
-> **[InMemoryStore](/oss/javascript/integrations/stores/in_memory)**
+> [card] [InMemoryStore](/oss/javascript/integrations/stores/in_memory)
 
-> **[LocalFileStore](/oss/javascript/integrations/stores/file_system)**
+> [card] [LocalFileStore](/oss/javascript/integrations/stores/file_system)
 
 ## Custom stores
 

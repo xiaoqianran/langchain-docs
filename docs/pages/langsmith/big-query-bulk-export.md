@@ -182,63 +182,63 @@ BigQuery offers two ways to access your exported data. Both require granting the
 
 ### Create the table
 
-**External table**
+> [tab] External table
+>
+> An external table queries data directly from GCS without copying it into BigQuery.
+>
+> 1. In the BigQuery console, expand your project and dataset in the **Explorer** pane.
+> 2. Click the dataset's **Actions** menu (three dots) and select **Create table**.
+> 3. Under **Source**:
+>    * Set **Create table from** to **Google Cloud Storage**.
+>    * Set the file path to `gs://YOUR_BUCKET_NAME/YOUR_PREFIX/export_id=*`. Using `export_id=*` scopes BigQuery to Hive-partitioned export directories and excludes the `tmp/` folder that LangSmith writes during destination validation (see [Temporary validation file](#temporary-validation-file)).
+>    * Set **File format** to **Parquet**.
+> 4. Check **Source data partitioning**, then:
+>    * Set **Source URI prefix** to `gs://YOUR_BUCKET_NAME/YOUR_PREFIX`.
+>    * Set **Partition inference mode** to **Automatically infer types**.
+> 5. Under **Destination**:
+>    * Select your project and dataset.
+>    * Enter a table name, for example `langsmith_runs`.
+>    * Set **Table type** to **External table**.
+> 6. Under **Schema**, enable **Auto-detect**.
+> 7. Click **Create table**.
+>
+> The partition path columns (`export_id`, `tenant_id`, `session_id`, `resource`, `year`, `month`, `day`) are available as queryable columns. Filter on `year`, `month`, or `day` in your queries to enable partition pruning.
 
-An external table queries data directly from GCS without copying it into BigQuery.
-
-1. In the BigQuery console, expand your project and dataset in the **Explorer** pane.
-2. Click the dataset's **Actions** menu (three dots) and select **Create table**.
-3. Under **Source**:
-   * Set **Create table from** to **Google Cloud Storage**.
-   * Set the file path to `gs://YOUR_BUCKET_NAME/YOUR_PREFIX/export_id=*`. Using `export_id=*` scopes BigQuery to Hive-partitioned export directories and excludes the `tmp/` folder that LangSmith writes during destination validation (see [Temporary validation file](#temporary-validation-file)).
-   * Set **File format** to **Parquet**.
-4. Check **Source data partitioning**, then:
-   * Set **Source URI prefix** to `gs://YOUR_BUCKET_NAME/YOUR_PREFIX`.
-   * Set **Partition inference mode** to **Automatically infer types**.
-5. Under **Destination**:
-   * Select your project and dataset.
-   * Enter a table name, for example `langsmith_runs`.
-   * Set **Table type** to **External table**.
-6. Under **Schema**, enable **Auto-detect**.
-7. Click **Create table**.
-
-The partition path columns (`export_id`, `tenant_id`, `session_id`, `resource`, `year`, `month`, `day`) are available as queryable columns. Filter on `year`, `month`, or `day` in your queries to enable partition pruning.
-
-**Native table**
-
-A native table transfers the Parquet data into BigQuery storage for full query performance.
-
-1. Go to the [Data Transfer page](https://console.cloud.google.com/bigquery/transfers) in the Google Cloud console and select **+ Create transfer**.
-
-2. For **Source type**, select **Google Cloud Storage**.
-
-3. Enter a **Transfer name**. You'll have access to edit the transfer at a point if necessary.
-
-4. Select a **Schedule option**. If you do not want to repeat the export, you can select **On demand** and trigger the export manually.
-
-5. In the BigQuery console, expand your project and dataset in the **Explorer** pane.
-
-6. Click the dataset's **Actions** menu (three dots) and select **Create table**.
-
-7. Under **Source**:
-   * Set **Create table from** to **Google Cloud Storage**.
-   * Set the file path to `gs://YOUR_BUCKET_NAME/YOUR_PREFIX/export_id=*`. Using `export_id=*` excludes the `tmp/` folder that LangSmith writes during destination validation (see [Temporary validation file](#temporary-validation-file)).
-   * Set **File format** to **Parquet**.
-
-8. Check **Source data partitioning**, then:
-   * Set **Source URI prefix** to `gs://YOUR_BUCKET_NAME/YOUR_PREFIX`.
-   * Set **Partition inference mode** to **Automatically infer types**.
-
-9. Under **Destination**:
-   * Select your project and dataset.
-   * Enter a table name, for example `langsmith_runs`.
-   * Set **Table type** to **Native table**.
-
-10. Under **Advanced options**, set **Write preference** to **Write if empty** for a new table.
-
-11. Click **Create table**.
-
-BigQuery runs a load job to copy the data. The Hive partition columns appear as regular columns in the table. For the full list of available data columns, see [Exportable fields](/langsmith/data-export#exportable-fields).
+> [tab] Native table
+>
+> A native table transfers the Parquet data into BigQuery storage for full query performance.
+>
+> 1. Go to the [Data Transfer page](https://console.cloud.google.com/bigquery/transfers) in the Google Cloud console and select **+ Create transfer**.
+>
+> 2. For **Source type**, select **Google Cloud Storage**.
+>
+> 3. Enter a **Transfer name**. You'll have access to edit the transfer at a point if necessary.
+>
+> 4. Select a **Schedule option**. If you do not want to repeat the export, you can select **On demand** and trigger the export manually.
+>
+> 5. In the BigQuery console, expand your project and dataset in the **Explorer** pane.
+>
+> 6. Click the dataset's **Actions** menu (three dots) and select **Create table**.
+>
+> 7. Under **Source**:
+>    * Set **Create table from** to **Google Cloud Storage**.
+>    * Set the file path to `gs://YOUR_BUCKET_NAME/YOUR_PREFIX/export_id=*`. Using `export_id=*` excludes the `tmp/` folder that LangSmith writes during destination validation (see [Temporary validation file](#temporary-validation-file)).
+>    * Set **File format** to **Parquet**.
+>
+> 8. Check **Source data partitioning**, then:
+>    * Set **Source URI prefix** to `gs://YOUR_BUCKET_NAME/YOUR_PREFIX`.
+>    * Set **Partition inference mode** to **Automatically infer types**.
+>
+> 9. Under **Destination**:
+>    * Select your project and dataset.
+>    * Enter a table name, for example `langsmith_runs`.
+>    * Set **Table type** to **Native table**.
+>
+> 10. Under **Advanced options**, set **Write preference** to **Write if empty** for a new table.
+>
+> 11. Click **Create table**.
+>
+> BigQuery runs a load job to copy the data. The Hive partition columns appear as regular columns in the table. For the full list of available data columns, see [Exportable fields](/langsmith/data-export#exportable-fields).
 
 ## Credential rotation
 

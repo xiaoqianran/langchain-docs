@@ -55,7 +55,7 @@ Define your [configuration](/oss/python/langgraph/use-graph-api#add-runtime-conf
   )
   ```
 
-> **Full example configuration**
+> [accordion] Full example configuration
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > ## Using Pydantic

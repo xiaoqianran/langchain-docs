@@ -1,8 +1,8 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Integrate Teams with an agent | https://docs.langchain.com/langsmith/fleet/teams-app -->
+<!-- langchain-docs: Integrate Microsoft Teams with an agent | https://docs.langchain.com/langsmith/fleet/teams-app -->
 
-# 将 Teams 与代理集成
+# 将 Microsoft Teams 与代理集成
 
 通过自带 Azure Bot 将 LangSmith Fleet 连接到 Microsoft Teams，让代理与 Teams 中的用户进行通信。
 
@@ -14,7 +14,7 @@
 
 > [!注意]
 >
-> 在频道对话中，机器人仅在明确提及时做出响应。在私信和群聊中，机器人会回复所有消息。
+> 在频道对话中，机器人仅在明确提及时做出响应。在私聊和群聊中，机器人会回复所有消息。
 
 ## 先决条件
 
@@ -119,18 +119,18 @@
 
 > [!提示]
 >
-> 您还可以要求您的代理自行添加这些工具。在代理聊天中，尝试：“添加 Teams 工具，以便可以回复消息。”1. 在边栏中，展开 **连接** 抽屉并单击 **添加连接**。
+> 您还可以要求您的代理自行添加这些工具。在代理聊天中，尝试：“添加 Teams 工具，以便可以回复消息。”1. 在侧栏中，展开 **连接** 抽屉并单击 **添加连接**。
 2.搜索“Teams”并添加您需要的工具：
    * **teams\_bot\_send\_proactive\_message**：将消息发送回 Teams 对话
    * **microsoft\_teams\_list\_my\_teams**：列出经过身份验证的用户所属的团队
    * **microsoft\_teams\_list\_channels**：列出团队中的频道
    * **microsoft\_teams\_post\_channel\_message**：将消息发布到频道
    * **microsoft\_teams\_read\_channel\_messages**：从频道读取最近的消息
-3. 如果出现提示，请单击“**连接**”以授权 Microsoft Graph 工具。
+3. 如果出现提示，请单击 **连接** 以授权 Microsoft Graph 工具。
 
 > [!注意]
 >
-> `teams_bot_send_proactive_message` 工具使用 Bot Framework 凭据，不需要单独的 OAuth 授权。其他 Teams 工具使用 Microsoft Graph API，可能需要 OAuth 同意。
+> `teams_bot_send_proactive_message` 工具使用 Bot Framework 凭据，不需要单独的 OAuth 授权。其他团队工具使用 Microsoft Graph API，可能需要 OAuth 同意。
 
 ## 配置代理行为（可选）
 
@@ -164,20 +164,18 @@ for bidirectional communication
 
 ## 后续步骤
 
-> **[Add more tools](/langsmith/fleet/tools)**
+> [卡][Add more tools](/langsmith/fleet/tools)
 >
 > 将附加服务连接到您的代理
 
-> **[Add more channels](/langsmith/fleet/channels)**
+> [卡][Add more channels](/langsmith/fleet/channels)
 >
 > 设置电子邮件、时间表或 Webhook 渠道
 
-> **[Use templates](/langsmith/fleet/templates)**
+> [卡][Use templates](/langsmith/fleet/templates)
 >
 > 从预构建的代理模板开始
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/teams-app.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/teams-app.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

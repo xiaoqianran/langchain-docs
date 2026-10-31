@@ -270,7 +270,7 @@ console.log(r2.content); // "The weather is sunny."
 console.log(model.callCount); // 2
 ```
 
-> **Full example: test a tool-calling agent with vitest**
+> [accordion] Full example: test a tool-calling agent with vitest
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { describe, test, expect } from "vitest";

@@ -30,19 +30,19 @@ This page provides an overview of the different kinds of context your deep agent
 
 Input context is information provided to your deep agent at startup that becomes part of its system prompt. The final prompt consists of several sources:
 
-> **[System prompt](#system-prompt)**
+> [card] [System prompt](#system-prompt)
 >
 > Custom instructions you provide plus built-in agent guidance.
 
-> **[Memory](#memory)**
+> [card] [Memory](#memory)
 >
 > Persistent `AGENTS.md` files always loaded when configured.
 
-> **[Skills](#skills)**
+> [card] [Skills](#skills)
 >
 > On-demand capabilities loaded when relevant (progressive disclosure).
 
-> **[Tool prompts](#tool-prompts)**
+> [card] [Tool prompts](#tool-prompts)
 >
 > Instructions for using built-in tools or custom tools.
 
@@ -317,7 +317,7 @@ order status. Always filter by the provided status.`,
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/ec891c50-2c13-449c-83e6-e6f3aa830999/r)**
+> [card] [View example trace](https://smith.langchain.com/public/ec891c50-2c13-449c-83e6-e6f3aa830999/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -609,11 +609,11 @@ Long-running tasks produce large tool outputs and long conversation history.
 Context compression reduces the size of information in an agent's working memory while preserving details relevant to the task.
 The following techniques are the built-in mechanisms to ensure the context passed to LLMs stays within its context window limit:
 
-> **[Offloading](#offloading)**
+> [card] [Offloading](#offloading)
 >
 > Large tool inputs and results are stored in the filesystem and replaced with references.
 
-> **[Summarization](#summarization)**
+> [card] [Summarization](#summarization)
 >
 > Old messages are compressed into an LLM-generated summary when limits are approached.
 
@@ -709,7 +709,7 @@ Subagents solve the **context bloat problem**. When the main agent uses tools wi
    };
    ```
 
-   > **[View example trace](https://smith.langchain.com/public/f6d140d5-7615-4414-b090-f35caeec28d1/r)**
+   > [card] [View example trace](https://smith.langchain.com/public/f6d140d5-7615-4414-b090-f35caeec28d1/r)
    >
    > Open a public LangSmith run for this example.
 
@@ -873,7 +873,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-> **[View example trace](https://smith.langchain.com/public/597e274c-3bd1-459f-bda3-02a1ff6dc6eb/r)**
+> [card] [View example trace](https://smith.langchain.com/public/597e274c-3bd1-459f-bda3-02a1ff6dc6eb/r)
 >
 > Open a public LangSmith run for this example.
 

@@ -168,63 +168,63 @@ agent = create_deep_agent(
 
 Pass a `rubric` string on invocation state to start the self-evaluation loop. Use `invoke()` for a single blocking call, or [`stream_events(..., version="v3")`](/oss/python/langchain/event-streaming) with [`CustomTransformer`](/oss/python/langchain/event-streaming#custom-updates) to receive grading events on `stream.custom` as they occur:
 
-**invoke()**
+> [tab] invoke()
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.messages import HumanMessage
+>
+> config = {"configurable": {"thread_id": "my-rubric-thread"}}
+> result = agent.invoke(
+>     {
+>         "messages": [HumanMessage("Write a haiku about spring.")],
+>         "rubric": (
+>             "- The poem has three lines\n"
+>             "- Lines follow a 5-7-5 syllable pattern\n"
+>             "- The theme is spring"
+>         ),
+>     },
+>     config=config,
+> )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.messages import HumanMessage
-
-config = {"configurable": {"thread_id": "my-rubric-thread"}}
-result = agent.invoke(
-    {
-        "messages": [HumanMessage("Write a haiku about spring.")],
-        "rubric": (
-            "- The poem has three lines\n"
-            "- Lines follow a 5-7-5 syllable pattern\n"
-            "- The theme is spring"
-        ),
-    },
-    config=config,
-)
-```
-
-**stream\_events()**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.messages import HumanMessage
-from langgraph.stream import CustomTransformer
-
-config = {"configurable": {"thread_id": "my-rubric-thread"}}
-stream = agent.stream_events(
-    {
-        "messages": [HumanMessage("Write a haiku about spring.")],
-        "rubric": (
-            "- The poem has three lines\n"
-            "- Lines follow a 5-7-5 syllable pattern\n"
-            "- The theme is spring"
-        ),
-    },
-    config=config,
-    version="v3",
-    transformers=[CustomTransformer],
-)
-
-for event in stream.custom:
-    event_type = event.get("type")
-    if event_type == "rubric_evaluation_start":
-        print(
-            f"Grading iteration {event['iteration']} "
-            f"(run {event['grading_run_id']})"
-        )
-    elif event_type == "rubric_evaluation_end":
-        print(f"Verdict: {event['result']} — {event.get('explanation', '')}")
-```
-
-Rubric grading emits the following custom events on `stream.custom`:
-
-| Event | When fired | Payload fields |
-| - | - | - |
-| `rubric_evaluation_start` | Before the grader runs. | <ul><li>`type`: event name</li><li>`grading_run_id`: shared across all events within one rubric attempt</li><li>`iteration`: zero-based index of the current grading run</li></ul> |
-| `rubric_evaluation_end` | After the grader returns or after a grader exception. | <ul><li>`type`: event name</li><li>`grading_run_id`: shared across all events within one rubric attempt</li><li>`iteration`: zero-based index of the current grader pass</li><li>`result`: terminal verdict for this pass</li><li>`explanation`: summary from the grader</li><li>`criteria`: per-criterion verdicts</li></ul> |
+> [tab] stream\_events()
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.messages import HumanMessage
+> from langgraph.stream import CustomTransformer
+>
+> config = {"configurable": {"thread_id": "my-rubric-thread"}}
+> stream = agent.stream_events(
+>     {
+>         "messages": [HumanMessage("Write a haiku about spring.")],
+>         "rubric": (
+>             "- The poem has three lines\n"
+>             "- Lines follow a 5-7-5 syllable pattern\n"
+>             "- The theme is spring"
+>         ),
+>     },
+>     config=config,
+>     version="v3",
+>     transformers=[CustomTransformer],
+> )
+>
+> for event in stream.custom:
+>     event_type = event.get("type")
+>     if event_type == "rubric_evaluation_start":
+>         print(
+>             f"Grading iteration {event['iteration']} "
+>             f"(run {event['grading_run_id']})"
+>         )
+>     elif event_type == "rubric_evaluation_end":
+>         print(f"Verdict: {event['result']} — {event.get('explanation', '')}")
+> ```
+>
+> Rubric grading emits the following custom events on `stream.custom`:
+>
+> | Event | When fired | Payload fields |
+> | - | - | - |
+> | `rubric_evaluation_start` | Before the grader runs. | <ul><li>`type`: event name</li><li>`grading_run_id`: shared across all events within one rubric attempt</li><li>`iteration`: zero-based index of the current grading run</li></ul> |
+> | `rubric_evaluation_end` | After the grader returns or after a grader exception. | <ul><li>`type`: event name</li><li>`grading_run_id`: shared across all events within one rubric attempt</li><li>`iteration`: zero-based index of the current grader pass</li><li>`result`: terminal verdict for this pass</li><li>`explanation`: summary from the grader</li><li>`criteria`: per-criterion verdicts</li></ul> |
 
 ### Rubric verdicts
 

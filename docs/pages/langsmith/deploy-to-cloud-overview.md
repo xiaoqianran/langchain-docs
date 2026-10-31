@@ -11,15 +11,15 @@ Deploy LangSmith agents to LangChain-managed Cloud infrastructure on AWS and GCP
 
 Agent deployments running on Cloud require a [Plus plan or above](https://www.langchain.com/pricing). Before creating your first agent deployment, verify that your application runs locally with `langgraph dev`. Refer to [Local development and testing](/langsmith/local-dev-testing).
 
-> **[Deploy on Cloud](/langsmith/deploy-to-cloud)**
+> [card] [Deploy on Cloud](/langsmith/deploy-to-cloud)
 >
 > Step-by-step setup guide for creating, configuring, and managing Cloud deployments from the LangSmith UI or the `langgraph deploy` CLI.
 
-> **[Cloud platform features](/langsmith/cloud-platform-features)**
+> [card] [Cloud platform features](/langsmith/cloud-platform-features)
 >
 > Reference for Cloud-only platform behavior: data regions, static IPs, payload limits, deployment types, and managed database provisioning.
 
-> **[Quickstart](/langsmith/deployment-quickstart)**
+> [card] [Quickstart](/langsmith/deployment-quickstart)
 >
 > Deploy your first LangGraph application to Cloud in a few minutes.
 
@@ -27,11 +27,11 @@ To deploy a code-first Deep Agent without standing up your own Agent Server, [Ma
 
 ## Next steps
 
-> **[Run the quickstart](/langsmith/deployment-quickstart)**
+> [card] [Run the quickstart](/langsmith/deployment-quickstart)
 >
 > Deploy a starter LangGraph application end-to-end.
 
-> **[Read the full deploy guide](/langsmith/deploy-to-cloud)**
+> [card] [Read the full deploy guide](/langsmith/deploy-to-cloud)
 >
 > Configure environment variables, secrets, revisions, and deployment settings.
 

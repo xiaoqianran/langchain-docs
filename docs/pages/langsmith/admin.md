@@ -20,19 +20,19 @@ Copy the key and save it securely.
 
 ## Explore
 
-> **[Profile configuration](/langsmith/profile-configuration)**
+> [card] [Profile configuration](/langsmith/profile-configuration)
 >
 > Configure your personal account settings and preferences.
 
-> **[Integrations](/langsmith/get-started-integrations)**
+> [card] [Integrations](/langsmith/get-started-integrations)
 >
 > Connect LangSmith to your existing tools and services.
 
-> **[Pricing plans](/langsmith/pricing-plans)**
+> [card] [Pricing plans](/langsmith/pricing-plans)
 >
 > Compare plans and choose the right tier for your team.
 
-> **[Enterprise](/langsmith/enterprise)**
+> [card] [Enterprise](/langsmith/enterprise)
 >
 > Enterprise capabilities, support, and onboarding.
 

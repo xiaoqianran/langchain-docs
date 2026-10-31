@@ -8,11 +8,11 @@ Understand how self-hosted LangSmith Sandboxes use microVMs, Kubernetes hosts, a
 
 For supported platforms, prerequisites, and installation instructions, see [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes). The architecture below describes the `sandbox-host` runtime. Storage mounting and configuration options can differ across Helm releases.
 
-> **[Scaling and capacity](/langsmith/self-host-sandbox-scaling)**
+> [card] [Scaling and capacity](/langsmith/self-host-sandbox-scaling)
 >
 > Size the host pool, configure autoscaling, and plan memory and cache capacity.
 
-> **[Upgrades and operations](/langsmith/self-host-sandbox-operations)**
+> [card] [Upgrades and operations](/langsmith/self-host-sandbox-operations)
 >
 > Understand host draining, failure recovery, and production monitoring.
 

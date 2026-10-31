@@ -157,19 +157,19 @@ model = ChatOpenAI(
 
 ## Next steps
 
-> **[Models guide](/oss/python/langchain/models)**
+> [card] [Models guide](/oss/python/langchain/models)
 >
 > Learn how to use models: invoke, stream, batch, tool calling, and more.
 
-> **[Chat model integrations](/oss/python/integrations/chat)**
+> [card] [Chat model integrations](/oss/python/integrations/chat)
 >
 > Browse all chat model integrations and their capabilities.
 
-> **[All providers](/oss/python/integrations/providers/overview)**
+> [card] [All providers](/oss/python/integrations/providers/overview)
 >
 > See the full list of provider packages and integrations.
 
-> **[Agents](/oss/python/langchain/agents)**
+> [card] [Agents](/oss/python/langchain/agents)
 >
 > Build agents that use models as their reasoning engine.
 

@@ -71,7 +71,7 @@ agent = create_agent(
 
 For a complete implementation, see the tutorial below.
 
-> **[Tutorial: Build a SQL assistant with on-demand skills](/oss/python/langchain/multi-agent/skills-sql-assistant)**
+> [card] [Tutorial: Build a SQL assistant with on-demand skills](/oss/python/langchain/multi-agent/skills-sql-assistant)
 >
 > Learn how to implement skills with progressive disclosure, where the agent loads specialized prompts and schemas on-demand rather than upfront.
 

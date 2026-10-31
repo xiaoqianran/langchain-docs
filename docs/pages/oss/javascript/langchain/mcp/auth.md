@@ -67,7 +67,7 @@ The `createMcpSession()` helper below connects these steps:
 2. In your callback route, call `completeLogin()` on the same session. It checks the caller and consumes the pending `state` before exchanging the code.
 3. Use the returned tools. After the exchange, the helper retries discovery with the saved tokens.
 
-> **Session helper**
+> [accordion] Session helper
 >
 > This example keeps pending login state in one Node.js process. For multiple processes or restarts, use shared storage with an expiry. Check the state, user, session, and server, and consume the record in one atomic operation. The SDK does not validate `state`.
 >

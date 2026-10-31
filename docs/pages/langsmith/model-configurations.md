@@ -227,19 +227,19 @@ The [LLM Gateway](/langsmith/llm-gateway-model-configurations) does not use OAut
 
 ### FAQ
 
-> **Can a single set of OAuth credentials be shared across workspaces?**
+> [accordion] Can a single set of OAuth credentials be shared across workspaces?
 >
 > No. OAuth credentials are stored on the model configuration, which is workspace-scoped. Each workspace enters its own credentials, even when the credentials point at the same IdP client.
 
-> **Why is my OAuth-enabled configuration suddenly using a static workspace key?**
+> [accordion] Why is my OAuth-enabled configuration suddenly using a static workspace key?
 >
 > If the broker cannot mint a bearer (IdP unreachable, credentials invalid, configuration deleted between request preparation and execution), the request falls back to the static workspace API key for the provider. Re-open the model configuration and verify the Token URL is reachable, the Client ID and secret are current, and the Token Endpoint Auth Method matches what your IdP expects.
 
-> **How do I rotate the client secret?**
+> [accordion] How do I rotate the client secret?
 >
 > Edit the model configuration and retype the secret in the **Client Secret** field. The previous secret is overwritten on save. The Redis-cached bearer continues to work until its TTL expires, after which the broker mints a new bearer using the rotated secret.
 
-> **Can OAuth and the LLM auth proxy be used together?**
+> [accordion] Can OAuth and the LLM auth proxy be used together?
 >
 > Yes. Routing is per-configuration. Configurations with OAuth enabled use OAuth; configurations without it fall through to the LLM auth proxy when the proxy is enabled at the organization level. A single multi-model job can mix the two flows.
 

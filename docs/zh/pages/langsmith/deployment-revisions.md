@@ -12,37 +12,37 @@
 
 当您 [create a deployment](/langsmith/deploy-to-cloud) 时，LangSmith 创建其第一个修订版。使用 LangSmith UI 或 LangGraph CLI 创建后续修订。
 
-**LangSmith用户界面**
-
-从[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-revisions)，选择“**部署**”，然后选择一个部署。
-
-1. 在 **部署** 视图的右上角，选择 **+ 新修订**。
-2. 在 **New Revision** 模式中，指定 [API configuration file](/langsmith/cli#configuration-file) 的完整路径，包括文件名。例如，如果文件位于存储库根目录中，请输入 `langgraph.json`。
-3. 选择是否通过[Studio](/langsmith/studio)使部署可共享。
-4. 添加、删除或更新环境变量和机密。现有值已预先填充。欲了解更多信息，请参阅[Environment variables](/langsmith/env-var-cloud)。
-5. 选择**提交**。 LangSmith 将修订排队以进行部署。
-
-**LangGraph CLI**
-
-从项目目录再次运行 `langgraph deploy`。该命令按名称查找现有部署，并使用最新的代码更改创建修订：
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langgraph deploy
-```
-
-要按 ID 定位部署，请运行：
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langgraph deploy --deployment-id <DEPLOYMENT_ID>
-```
-
-要查看部署 ID，请运行：
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langgraph deploy list
-```> [!注意]
+> [选项卡] LangSmith 用户界面
 >
-> `langgraph deploy` 只能更新最初使用 `langgraph deploy` 创建的部署。使用 LangSmith UI 更新通过 UI 或 GitHub 集成创建的部署。
+> 从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-revisions)，选择 **部署**，然后选择一个部署。
+>
+> 1. 在**部署**视图的右上角，选择**+ 新修订版**。
+> 2. 在 **New Revision** 模式中，指定 [API configuration file](/langsmith/cli#configuration-file) 的完整路径，包括文件名。例如，如果文件位于存储库根目录中，请输入 `langgraph.json`。
+> 3. 选择是否通过[Studio](/langsmith/studio)使部署可共享。
+> 4. 添加、删除或更新环境变量和机密。现有值已预先填充。欲了解更多信息，请参阅[Environment variables](/langsmith/env-var-cloud)。
+> 5. 选择**提交**。 LangSmith 将修订排队以进行部署。> [选项卡] LangGraph CLI
+>
+> 从项目目录再次运行 `langgraph deploy`。该命令按名称查找现有部署，并使用最新的代码更改创建修订：
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langgraph deploy
+> ```
+>
+> 要按 ID 定位部署，请运行：
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langgraph deploy --deployment-id <DEPLOYMENT_ID>
+> ```
+>
+> 要查看部署 ID，请运行：
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langgraph deploy list
+> ```
+>
+>> [!注意]
+>>
+>> `langgraph deploy` 只能更新最初使用 `langgraph deploy` 创建的部署。使用 LangSmith UI 更新通过 UI 或 GitHub 集成创建的部署。
 
 ## 中断修订
 

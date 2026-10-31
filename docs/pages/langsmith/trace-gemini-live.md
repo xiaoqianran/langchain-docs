@@ -16,7 +16,7 @@ To trace non-live text agents, tools, and multi-agent workflows built with ADK, 
 
 > [!NOTE]
 >
-> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
+> In an [agent-based workspace](/langsmith/agent-registry), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Choose an approach
 
@@ -56,6 +56,8 @@ uv add "langsmith[google-adk-live]"
 > The ADK Live integration requires `langsmith[google-adk-live]>=0.9.7`. This extra is separate from the `langsmith[google-adk]` batch integration.
 
 ## Set environment variables
+
+Sending traces to an agent requires `langsmith>=0.14.9`.
 
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<your-langsmith-api-key>
@@ -229,11 +231,11 @@ Record the user's microphone capture before resampling it for ADK, and record th
 
 ## Next steps
 
-> **[Voice fundamentals](/langsmith/trace-voice-fundamentals)**
+> [card] [Voice fundamentals](/langsmith/trace-voice-fundamentals)
 >
 > Core conventions for tracing voice agents.
 
-> **[Upload files with traces](/langsmith/upload-files-with-traces)**
+> [card] [Upload files with traces](/langsmith/upload-files-with-traces)
 >
 > Attach the conversation audio recording to your trace.
 

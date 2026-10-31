@@ -116,47 +116,47 @@ An explicit component `resources` block replaces the tier's CPU and memory. On 0
 
 See [SmithDB resource tiers](https://github.com/langchain-ai/helm/tree/main/charts/langsmith#smithdb-resource-tiers) for current values and chart details.
 
-> **Example explicit resource configuration**
+> [accordion] Example explicit resource configuration
 >
 > This example overrides the query component at medium-tier sizes.
 >
-> **LangSmith 0.17**
+> > [tab] LangSmith 0.17
+> >
+> > The cache claim stays at the tier size. These values request no node storage.
+> >
+> > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > smithdb:
+> >   resourceTier: medium
+> >   query:
+> >     deployment:
+> >       resources:
+> >         requests:
+> >           cpu: "28"
+> >           memory: "48Gi"
+> >         limits:
+> >           cpu: "28"
+> >           memory: "48Gi"
+> > ```
 >
-> The cache claim stays at the tier size. These values request no node storage.
->
-> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> smithdb:
->   resourceTier: medium
->   query:
->     deployment:
->       resources:
->         requests:
->           cpu: "28"
->           memory: "48Gi"
->         limits:
->           cpu: "28"
->           memory: "48Gi"
-> ```
->
-> **LangSmith 0.16**
->
-> The storage limit also sizes the default `emptyDir`.
->
-> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> smithdb:
->   resourceTier: medium
->   query:
->     deployment:
->       resources:
->         requests:
->           cpu: "28"
->           memory: "48Gi"
->           ephemeral-storage: "200Gi"
->         limits:
->           cpu: "28"
->           memory: "48Gi"
->           ephemeral-storage: "200Gi"
-> ```
+> > [tab] LangSmith 0.16
+> >
+> > The storage limit also sizes the default `emptyDir`.
+> >
+> > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > smithdb:
+> >   resourceTier: medium
+> >   query:
+> >     deployment:
+> >       resources:
+> >         requests:
+> >           cpu: "28"
+> >           memory: "48Gi"
+> >           ephemeral-storage: "200Gi"
+> >         limits:
+> >           cpu: "28"
+> >           memory: "48Gi"
+> >           ephemeral-storage: "200Gi"
+> > ```
 
 ## Metastore capacity
 

@@ -890,7 +890,7 @@ const result = await agent.invoke({
 });
 ```
 
-> **[View example trace](https://smith.langchain.com/public/063e51b3-a740-4e8f-8aea-719ece3eb063/r)**
+> [card] [View example trace](https://smith.langchain.com/public/063e51b3-a740-4e8f-8aea-719ece3eb063/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -1916,7 +1916,7 @@ const result = await agent.invoke({
 // '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
 ```
 
-> **[View example trace](https://smith.langchain.com/public/32f86449-60f9-4efc-ad23-ba394fff2f70/r)**
+> [card] [View example trace](https://smith.langchain.com/public/32f86449-60f9-4efc-ad23-ba394fff2f70/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -2155,7 +2155,7 @@ To remove the built-in general-purpose subagent entirely instead of replacing it
 
 The general-purpose subagent is ideal for context isolation without specialized behavior. The main agent can delegate a complex multi-step task to this subagent and get a concise result back without bloat from intermediate tool calls.
 
-> **Example**
+> [card] Example
 >
 > Instead of the main agent making 10 web searches and filling its context with results, it delegates to the general-purpose subagent: `task(name="general-purpose", task="Research quantum computing trends")`. The subagent performs all the searches internally and returns only a summary.
 
@@ -2979,7 +2979,7 @@ const verifyClaim = tool(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/5006241c-d76d-41b1-92f2-36aff3b8b7b6/r)**
+> [card] [View example trace](https://smith.langchain.com/public/5006241c-d76d-41b1-92f2-36aff3b8b7b6/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -3008,7 +3008,7 @@ const sharedLookup = tool(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/da0b5974-be3d-4ad7-97a7-15cf187d2d6c/r)**
+> [card] [View example trace](https://smith.langchain.com/public/da0b5974-be3d-4ad7-97a7-15cf187d2d6c/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -3043,7 +3043,7 @@ const flexibleSearch = tool(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/240b9930-e85a-4b28-9f5d-01ba1c52a650/r)**
+> [card] [View example trace](https://smith.langchain.com/public/240b9930-e85a-4b28-9f5d-01ba1c52a650/r)
 >
 > Open a public LangSmith run for this example.
 

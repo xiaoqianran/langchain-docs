@@ -29,7 +29,7 @@ Weekly updates to [LangSmith Fleet](/langsmith/fleet).
 
 ## Fixes and improvements
 
-> **Show all fixes**
+> [accordion] Show all fixes
 >
 > * Agent Builder now shows recovery actions such as Retry, setup navigation, and reconnect in Chat, connection rows, and the clone dialog when a provider connection check fails, instead of only a Connect button.
 > * Fixed an issue where stopping a Fleet run left tool calls shown as pending. Tool calls that did not finish now show as interrupted once streaming stops, and the canceled run notice appears after the run ends.
@@ -69,7 +69,7 @@ Weekly updates to [LangSmith Fleet](/langsmith/fleet).
 
 ## Fixes and improvements
 
-> **Show all fixes**
+> [accordion] Show all fixes
 >
 > * Shared agents now name the user who runs them instead of the agent's creator, so the model prompt and run metadata show the invoker's name and email, including for runs started through the SDK proxy.
 > * Scheduled Fleet runs no longer fail with expired credentials errors. Each cron run now gets fresh credentials when it starts, so runs created before this fix succeed without being recreated.
@@ -98,7 +98,7 @@ Weekly updates to [LangSmith Fleet](/langsmith/fleet).
 
 ## Fixes and improvements
 
-> **Show all fixes**
+> [accordion] Show all fixes
 >
 > * Fixed MCP OAuth setup failing with a 403 for users who have only MCP server permissions; you can now discover an MCP server's OAuth provider and bind it to a workspace without deployment permissions.
 > * Workspace admins who sign in with OIDC can now list, create, update, and delete workspace secrets, including the secrets used for MCP server headers, instead of getting a 401 error.

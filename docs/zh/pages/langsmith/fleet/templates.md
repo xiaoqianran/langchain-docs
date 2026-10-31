@@ -32,11 +32,11 @@ LangSmith Fleet 包含[starter templates](https://www.langchain.com/templates)�
 
 ## 可用模板
 
-> **行政助理**
+> 【名片】行政助理
 >
 > 管理您的收件箱、日历和每日简报。
 
-> **软件工程师**
+> 【名片】软件工程师
 >
 > 在沙箱中从 Slack、Linear 和 GitHub 发送代码。> [!注意]
 >

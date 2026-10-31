@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Arcade integration | https://docs.langchain.com/langsmith/fleet/arcade -->
 
-# 街机集成
+# 街机整合
 
 将您的工作区连接到 Arcade，让客服人员能够访问 GitHub、Gmail、Slack 等第三方工具。
 
@@ -45,7 +45,7 @@
 
 导航至[**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools)。在左侧菜单中的 **Apps** 下，单击 **Arcade**，然后单击 **Connect** 通过 OAuth 进行身份验证。**3.浏览可用工具**
 
-连接后，管理员安装的MCP服务器会自动出现。您可以从代理编辑器将这些工具添加到代理中。
+连接后，会自动出现管理员安装的MCP服务器。您可以从代理编辑器将这些工具添加到代理中。
 
 > [!注意]
 >
@@ -87,15 +87,15 @@
 
 ## 后续步骤
 
-> **[Add more tools](/langsmith/fleet/tools)**
+> [卡][Add more tools](/langsmith/fleet/tools)
 >
 > 将附加服务连接到您的代理
 
-> **[Remote MCP servers](/langsmith/fleet/remote-mcp-servers)**
+> [卡][Remote MCP servers](/langsmith/fleet/remote-mcp-servers)
 >
 > 将自定义 MCP 服务器连接到您的工作区
 
-> **[Manage agent settings](/langsmith/fleet/manage-agent-settings)**
+> [卡][Manage agent settings](/langsmith/fleet/manage-agent-settings)
 >
 > 配置代理行为和权限
 

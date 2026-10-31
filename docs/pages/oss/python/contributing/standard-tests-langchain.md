@@ -10,11 +10,11 @@ When creating either a custom class for yourself or to publish in a LangChain in
 
 First, install the required dependencies:
 
-> **[langchain-core](https://github.com/langchain-ai/langchain/tree/master/libs/core#readme)**
+> [card] [langchain-core](https://github.com/langchain-ai/langchain/tree/master/libs/core#readme)
 >
 > Defines the interfaces we want to import to define our custom components
 
-> **[langchain-tests](https://github.com/langchain-ai/langchain/tree/master/libs/standard-tests#readme)**
+> [card] [langchain-tests](https://github.com/langchain-ai/langchain/tree/master/libs/standard-tests#readme)
 >
 > Provides the standard tests and `pytest` plugins necessary to run them
 
@@ -34,7 +34,7 @@ uv add langchain-tests
 
 There are 2 namespaces in the `langchain-tests` package:
 
-> **Unit tests**
+> [accordion] Unit tests
 >
 > **Location**: `langchain_tests.unit_tests`
 >
@@ -42,7 +42,7 @@ There are 2 namespaces in the `langchain-tests` package:
 >
 > [View API reference](https://reference.langchain.com/python/langchain-tests/unit_tests)
 
-> **Integration tests**
+> [accordion] Integration tests
 >
 > **Location**: `langchain_tests.integration_tests`
 >
@@ -82,42 +82,42 @@ To see the complete list of configurable capabilities and their defaults, visit 
 
 Here are some example implementations of standard tests from popular integrations:
 
-**Unit tests**
-
-> **[ChatOpenAI](https://github.com/langchain-ai/langchain/blob/master/libs/partners/openai/tests/unit_tests/chat_models/test_base_standard.py)**
+> [tab] Unit tests
 >
-> Unit tests
-
-> **[ChatAnthropic](https://github.com/langchain-ai/langchain/blob/master/libs/partners/anthropic/tests/unit_tests/test_standard.py)**
+> > [card] [ChatOpenAI](https://github.com/langchain-ai/langchain/blob/master/libs/partners/openai/tests/unit_tests/chat_models/test_base_standard.py)
+> >
+> > Unit tests
 >
-> Unit tests
-
-> **[ChatGenAI](https://github.com/langchain-ai/langchain-google/blob/main/libs/genai/tests/unit_tests/test_standard.py)**
+> > [card] [ChatAnthropic](https://github.com/langchain-ai/langchain/blob/master/libs/partners/anthropic/tests/unit_tests/test_standard.py)
+> >
+> > Unit tests
 >
-> Unit tests
+> > [card] [ChatGenAI](https://github.com/langchain-ai/langchain-google/blob/main/libs/genai/tests/unit_tests/test_standard.py)
+> >
+> > Unit tests
 
-**Integration tests**
-
-> **[ChatOpenAI](https://github.com/langchain-ai/langchain/blob/master/libs/partners/openai/tests/integration_tests/chat_models/test_base_standard.py)**
+> [tab] Integration tests
 >
-> Integration tests
-
-> **[ChatAnthropic](https://github.com/langchain-ai/langchain/blob/master/libs/partners/anthropic/tests/integration_tests/test_standard.py)**
+> > [card] [ChatOpenAI](https://github.com/langchain-ai/langchain/blob/master/libs/partners/openai/tests/integration_tests/chat_models/test_base_standard.py)
+> >
+> > Integration tests
 >
-> Integration tests
-
-> **[ChatGenAI](https://github.com/langchain-ai/langchain-google/blob/main/libs/genai/tests/integration_tests/test_standard.py)**
+> > [card] [ChatAnthropic](https://github.com/langchain-ai/langchain/blob/master/libs/partners/anthropic/tests/integration_tests/test_standard.py)
+> >
+> > Integration tests
 >
-> Integration tests
+> > [card] [ChatGenAI](https://github.com/langchain-ai/langchain-google/blob/main/libs/genai/tests/integration_tests/test_standard.py)
+> >
+> > Integration tests
 
-**Sandbox integration tests**
-
-Ensure your integration passes the standard test suite.
-See the [Daytona integration](https://github.com/langchain-ai/deepagents/blob/main/libs/partners/daytona/tests/integration_tests/test_integration.py) as an example.
-
-> **[Daytona](https://github.com/langchain-ai/deepagents/blob/main/libs/partners/daytona/tests/integration_tests/test_integration.py)**
+> [tab] Sandbox integration tests
 >
-> Sandbox Integration tests
+> Ensure your integration passes the standard test suite.
+> See the [Daytona integration](https://github.com/langchain-ai/deepagents/blob/main/libs/partners/daytona/tests/integration_tests/test_integration.py) as an example.
+>
+> > [card] [Daytona](https://github.com/langchain-ai/deepagents/blob/main/libs/partners/daytona/tests/integration_tests/test_integration.py)
+> >
+> > Sandbox Integration tests
 
 ## Sandbox integrations
 

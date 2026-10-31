@@ -209,7 +209,7 @@ Timeouts and error handlers are Python-only; retry policies continue to work in 
   * More accurate token counting.
   * Summarization will now automatically trigger if a chat model raises a [`ContextOverflowError`](https://reference.langchain.com/python/langchain-core/exceptions/ContextOverflowError) (defined in `langchain-core`). Currently `langchain-anthropic` and `langchain-openai` support this.
 * We now default to the Responses API for model strings prefixed with `"openai:"`.
-  > **Disable data retention with the Responses API**
+  > [accordion] Disable data retention with the Responses API
   >
   > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   > from langchain.chat_models import init_chat_model

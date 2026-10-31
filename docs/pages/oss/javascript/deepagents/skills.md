@@ -142,7 +142,7 @@ const result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/3218e1ca-4a44-4b04-b386-924589552a79/r)**
+> [card] [View example trace](https://smith.langchain.com/public/3218e1ca-4a44-4b04-b386-924589552a79/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -475,7 +475,7 @@ const result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/e820ab54-7200-41fb-bf03-7639e7954b42/r)**
+> [card] [View example trace](https://smith.langchain.com/public/e820ab54-7200-41fb-bf03-7639e7954b42/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -532,144 +532,144 @@ Deep Agents supports different backends depending on how you want to store and m
 * `StoreBackend`: Stores files in a LangGraph store for durable, cross-thread storage.
 * `FilesystemBackend`: Reads and writes skill files from disk under a configurable `root_dir`.
 
-**StateBackend**
-
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent, StateBackend, type FileData } from "deepagents";
-import { MemorySaver } from "@langchain/langgraph";
-
-const checkpointer = new MemorySaver();
-const backend = new StateBackend();
-
-function createFileData(content: string): FileData {
-  const now = new Date().toISOString();
-  return {
-    content: content.split("\n"),
-    created_at: now,
-    modified_at: now,
-  };
-}
-
-const skillsFiles: Record<string, FileData> = {};
-const skillUrl =
-  "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
-const response = await fetch(skillUrl);
-const skillContent = await response.text();
-
-skillsFiles["/skills/langgraph-docs/SKILL.md"] = createFileData(skillContent);
-
-const agent = await createDeepAgent({
-  model: "anthropic:claude-sonnet-4-6",
-  backend,
-  checkpointer, // Required !
-  // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
-  skills: ["/skills/"],
-});
-
-const config = { configurable: { thread_id: `thread-${Date.now()}` } };
-const result = await agent.invoke(
-  {
-    messages: [{ role: "user", content: "what is langraph?" }],
-    files: skillsFiles,
-  },
-  config,
-);
-```
-
-> **[View example trace](https://smith.langchain.com/public/5c684c86-25c2-471e-a9f3-c43767036b26/r)**
+> [tab] StateBackend
 >
-> Open a public LangSmith run for this example.
-
-**StoreBackend**
-
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent, StoreBackend } from "deepagents";
-import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
-
-const checkpointer = new MemorySaver();
-const store = new InMemoryStore();
-const backend = new StoreBackend({
-  namespace: () => ["filesystem"],
-  store,
-});
-
-const skillUrl =
-  "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
-
-const response = await fetch(skillUrl);
-const skillContent = await response.text();
-
-await backend.uploadFiles([
-  ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
-]);
-
-const agent = await createDeepAgent({
-  model: "anthropic:claude-sonnet-4-6",
-  backend,
-  store,
-  checkpointer,
-  // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
-  skills: ["/skills/"],
-});
-
-const config = {
-  recursionLimit: 50,
-  configurable: { thread_id: `thread-${Date.now()}` },
-};
-const result = await agent.invoke(
-  { messages: [{ role: "user", content: "what is langraph?" }] },
-  config,
-);
-```
-
-> **[View example trace](https://smith.langchain.com/public/2b64039f-58ff-4bf9-930e-45e57f61c09b/r)**
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createDeepAgent, StateBackend, type FileData } from "deepagents";
+> import { MemorySaver } from "@langchain/langgraph";
 >
-> Open a public LangSmith run for this example.
-
-**FilesystemBackend**
-
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent, FilesystemBackend } from "deepagents";
-import { MemorySaver } from "@langchain/langgraph";
-
-const checkpointer = new MemorySaver();
-
-const skillUrl =
-  "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
-const response = await fetch(skillUrl);
-const skillContent = await response.text();
-
-let backend = new FilesystemBackend({
-  rootDir: process.cwd(),
-  virtualMode: true,
-});
-await backend.uploadFiles([
-  ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
-]);
-
-const agent = await createDeepAgent({
-  model: "anthropic:claude-sonnet-4-6",
-  backend,
-  // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
-  skills: ["/skills/"],
-  interruptOn: {
-    read_file: true,
-    write_file: true,
-    delete_file: true,
-  },
-  checkpointer, // Required for filesystem operations!
-});
-
-const config = { configurable: { thread_id: `thread-${Date.now()}` } };
-const result = await agent.invoke(
-  { messages: [{ role: "user", content: "what is langraph?" }] },
-  config,
-);
-```
-
-> **[View example trace](https://smith.langchain.com/public/f81b4363-f551-4eec-a7c2-16fa91834002/r)**
+> const checkpointer = new MemorySaver();
+> const backend = new StateBackend();
 >
-> Open a public LangSmith run for this example.
+> function createFileData(content: string): FileData {
+>   const now = new Date().toISOString();
+>   return {
+>     content: content.split("\n"),
+>     created_at: now,
+>     modified_at: now,
+>   };
+> }
+>
+> const skillsFiles: Record<string, FileData> = {};
+> const skillUrl =
+>   "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
+> const response = await fetch(skillUrl);
+> const skillContent = await response.text();
+>
+> skillsFiles["/skills/langgraph-docs/SKILL.md"] = createFileData(skillContent);
+>
+> const agent = await createDeepAgent({
+>   model: "anthropic:claude-sonnet-4-6",
+>   backend,
+>   checkpointer, // Required !
+>   // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
+>   skills: ["/skills/"],
+> });
+>
+> const config = { configurable: { thread_id: `thread-${Date.now()}` } };
+> const result = await agent.invoke(
+>   {
+>     messages: [{ role: "user", content: "what is langraph?" }],
+>     files: skillsFiles,
+>   },
+>   config,
+> );
+> ```
+>
+> > [card] [View example trace](https://smith.langchain.com/public/5c684c86-25c2-471e-a9f3-c43767036b26/r)
+> >
+> > Open a public LangSmith run for this example.
+
+> [tab] StoreBackend
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createDeepAgent, StoreBackend } from "deepagents";
+> import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
+>
+> const checkpointer = new MemorySaver();
+> const store = new InMemoryStore();
+> const backend = new StoreBackend({
+>   namespace: () => ["filesystem"],
+>   store,
+> });
+>
+> const skillUrl =
+>   "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
+>
+> const response = await fetch(skillUrl);
+> const skillContent = await response.text();
+>
+> await backend.uploadFiles([
+>   ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
+> ]);
+>
+> const agent = await createDeepAgent({
+>   model: "anthropic:claude-sonnet-4-6",
+>   backend,
+>   store,
+>   checkpointer,
+>   // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
+>   skills: ["/skills/"],
+> });
+>
+> const config = {
+>   recursionLimit: 50,
+>   configurable: { thread_id: `thread-${Date.now()}` },
+> };
+> const result = await agent.invoke(
+>   { messages: [{ role: "user", content: "what is langraph?" }] },
+>   config,
+> );
+> ```
+>
+> > [card] [View example trace](https://smith.langchain.com/public/2b64039f-58ff-4bf9-930e-45e57f61c09b/r)
+> >
+> > Open a public LangSmith run for this example.
+
+> [tab] FilesystemBackend
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createDeepAgent, FilesystemBackend } from "deepagents";
+> import { MemorySaver } from "@langchain/langgraph";
+>
+> const checkpointer = new MemorySaver();
+>
+> const skillUrl =
+>   "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
+> const response = await fetch(skillUrl);
+> const skillContent = await response.text();
+>
+> let backend = new FilesystemBackend({
+>   rootDir: process.cwd(),
+>   virtualMode: true,
+> });
+> await backend.uploadFiles([
+>   ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
+> ]);
+>
+> const agent = await createDeepAgent({
+>   model: "anthropic:claude-sonnet-4-6",
+>   backend,
+>   // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
+>   skills: ["/skills/"],
+>   interruptOn: {
+>     read_file: true,
+>     write_file: true,
+>     delete_file: true,
+>   },
+>   checkpointer, // Required for filesystem operations!
+> });
+>
+> const config = { configurable: { thread_id: `thread-${Date.now()}` } };
+> const result = await agent.invoke(
+>   { messages: [{ role: "user", content: "what is langraph?" }] },
+>   config,
+> );
+> ```
+>
+> > [card] [View example trace](https://smith.langchain.com/public/f81b4363-f551-4eec-a7c2-16fa91834002/r)
+> >
+> > Open a public LangSmith run for this example.
 
 ## Skill availability
 
@@ -712,7 +712,7 @@ This pattern keeps one maintained copy of each skill and varies only the paths p
 >
 > For Deep Agents Code storage conventions, see [App data](/oss/deepagents/code/configuration#data-locations).
 >
-> > **Emulate Deep Agents Code source order in the SDK**
+> > [accordion] Emulate Deep Agents Code source order in the SDK
 > >
 > > To match Deep Agents Code layering in SDK code, pass all desired sources explicitly in lowest-to-highest precedence order:
 > >
@@ -2227,7 +2227,7 @@ main().catch((err) => {
 });
 ```
 
-> **[View example trace](https://smith.langchain.com/public/1ea9b51a-1953-428d-ba40-f8d363139114/r)**
+> [card] [View example trace](https://smith.langchain.com/public/1ea9b51a-1953-428d-ba40-f8d363139114/r)
 >
 > Open a public LangSmith run for this example.
 

@@ -24,7 +24,9 @@
 
 > [!注意]
 >
-> 其他 LangSmith 服务从 [separate IP list](/langsmith/cloud#egress-from-langchain-saas) 出口。|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
+> 其他 LangSmith 服务从 [separate IP list](/langsmith/cloud#egress-from-langchain-saas) 出口。
+
+对于自动更新，请使用[egress IP inventory (JSON)](/langsmith/egress-ip-addresses.json)。按 `service: langsmith-deployment`、您的云和您的数据区域进行过滤。将每个匹配的 `cidr` 列入白名单。有关字段定义和更新指南，请参阅[Egress IP inventory](/langsmith/cloud#egress-ip-inventory)。|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
 | - | - | - | - |
 | 35.197.29.146 | 34.90.213.236 | 34.40.236.16 | 3.13.80.97 |
 | 34.145.102.123 | 34.145.102.123 34.13.244.114 | 34.13.244.114 34.40.140.88 | 3.146.216.198 |
@@ -59,7 +61,7 @@
 
 > [!注意]
 >
-> `langgraph deploy` 默认创建无服务器部署。较旧的 CLI 版本使用 `dev` 进行遗留开发部署，无需缩放至零，使用 `prod` 进行专用部署。遗留`dev`并不等同于Serverless；参见[⟦T5⟧](/langsmith/cli#deploy)。
+> `langgraph deploy` 默认创建无服务器部署。较旧的 CLI 版本使用 `dev` 进行遗留开发部署，无需缩放至零，使用 `prod` 进行专用部署。遗留`dev`并不等同于Serverless；参见[⟦T7⟧](/langsmith/cli#deploy)。
 
 | **部署类型** | **缩放** | **数据库** | **最适合** |
 | - | - | - | - |
@@ -69,7 +71,7 @@
 > [!警告]
 >
 > **不可变部署类型**
-> LangSmith 不支持创建部署后更改部署类型。要迁移到其他类型，请创建一个新部署并使用 [Agent Server API](/langsmith/server-api-ref) 从之前的部署复制数据，或者联系 [support](https://support.langchain.com) 获取迁移帮助。部署的 [size](#sizes) 仍然可以更改。代理服务器在两种部署类型上都是容错的；它会自动从短暂的 Redis 或 Postgres 中断中恢复，并重试失败的后台运行。
+> LangSmith 不支持创建部署后更改部署类型。要迁移到其他类型，请创建新的部署并使用 [Agent Server API](/langsmith/server-api-ref) 从之前的部署复制数据，或者联系 [support](https://support.langchain.com) 获取迁移帮助。部署的 [size](#sizes) 仍然可以更改。代理服务器在两种部署类型上都是容错的；它会自动从短暂的 Redis 或 Postgres 中断中恢复，并重试失败的后台运行。
 
 ### 无服务器
 
@@ -79,7 +81,7 @@
 
 该平台会检查计划运行并在 10 分钟内启用 [cron jobs](/langsmith/cron-jobs)，以提前开始缩减部署。这可以减少冷启动延迟，但不能保证准备就绪。默认情况下，启动期间的请求最多等待 60 秒，然后超时。
 
-副本不会横向扩展。默认情况下，其队列工作程序最多可处理 10 个并发运行，可通过 [⟦T9⟧](/langsmith/env-var-cloud#n_jobs_per_worker) 进行配置；额外的运行队列。
+副本不会横向扩展。它的队列工作程序默认处理最多 10 个并发运行，可通过 [⟦T11⟧](/langsmith/env-var-cloud#n_jobs_per_worker) 进行配置；额外的运行队列。
 
 > [!注意]
 >
@@ -111,8 +113,8 @@
 |每个副本的队列工作线程 | 1 个 vCPU / 2 GiB | 2 个 vCPU / 4 GiB | 4 个 vCPU / 8 GiB |
 |队列工作副本 | 1 到 10 | 1 至 20 | 1 至 40 |
 | **最低计费总运行时间** | **3 个 vCPU/6 GiB** | **6 个 vCPU/12 GiB** | **12 个 vCPU/24 GiB** |
-|数据库实例| 1 个 vCPU / 4 GiB | 2 个 vCPU / 8 GiB | 4 个 vCPU/16 GiB |
-|数据库存储|自动缩放磁盘|自动缩放磁盘|自动缩放磁盘 |最低计费运行时总数包括 2 个 API 服务器副本和 1 个队列工作线程。数据库容量单独计费，不包含在这些总计中。 [Autoscaling](#scaling) 按列出的每个副本大小添加运行时副本。
+|数据库实例 | 1 个 vCPU / 4 GiB | 2 个 vCPU / 8 GiB | 4 个 vCPU/16 GiB |
+|数据库存储 |自动缩放磁盘 |自动缩放磁盘|自动缩放磁盘|最低计费运行时总数包括 2 个 API 服务器副本和 1 个队列工作线程。数据库容量单独计费，不包含在这些总计中。 [Autoscaling](#scaling) 按列出的每个副本大小添加运行时副本。
 
 在专用部署中，计算大小和数据库大小可以独立于**缩放**对话框进行设置。大小更改将作为新修订版推出，并保留部署的线程、检查点和 API URL。
 
@@ -120,13 +122,13 @@
 
 ### 在一个部署上运行多个代理
 
-部署是[billed on the resources they consume](/langsmith/billing#langsmith-deployment-billing)，而不是他们服务的代理数量。要在一个部署的资源上运行多个代理，请在一个 `langgraph.json` 中运行[define multiple graphs](/langsmith/application-structure#define-multiple-graphs-in-one-deployment)。这对于专用来说效果很好：一个拥有自己数据库的始终在线实例可以托管多个生产代理。
+部署是[billed on the resources they consume](/langsmith/billing#langsmith-deployment-billing)，而不是他们所服务的代理数量。要在一个部署的资源上运行多个代理，请在一个 `langgraph.json` 中运行[define multiple graphs](/langsmith/application-structure#define-multiple-graphs-in-one-deployment)。这对于专用来说效果很好：一个拥有自己数据库的始终在线实例可以托管多个生产代理。
 
 部署中的所有图表共享其计算、数据库、自动缩放和部署类型。它们也作为一个修订版一起发布。当代理需要不同的大小、延迟配置文件或与其他代理隔离时，为代理提供自己的部署。
 
 ## 数据库配置控制平面和 [data plane](/langsmith/data-plane) 侦听器应用程序协调起来，为每个云部署自动创建一个 Postgres 数据库。该数据库充当部署的[persistence layer](/oss/python/langgraph/persistence#memory-store)。
 
-实现LangGraph应用时，无需配置[checkpointer](/oss/python/langgraph/persistence#checkpointer-libraries)。会自动为图表配置检查点。为图表配置的任何检查点都将替换为自动配置的检查点。
+实现LangGraph应用时，不需要配置[checkpointer](/oss/python/langgraph/persistence#checkpointer-libraries)。会自动为图表配置检查点。为图表配置的任何检查点都将替换为自动配置的检查点。
 
 无法直接访问数据库。对数据库的所有访问都通过[Agent Server](/langsmith/agent-server) 进行。
 
@@ -141,7 +143,7 @@
 [Serverless](#serverless) 在零到一个副本之间缩放。
 
 专用部署添加和删除最多[maximum for its size](#sizes)的副本。 [API servers](/langsmith/agent-server#runtime-architecture) 和 [queue workers](/langsmith/agent-server#runtime-architecture) 是独立扩展的独立池，因此读取流量不会减慢运行提交速度，反之亦然：* **API 服务器** 在 CPU 上扩展。目标是 CPU 限制的 50%，这是 [sizes table](#sizes) 中请求的 vCPU 的两倍。最少有 2 个副本。
-* **队列工作线程** 根据 CPU 或运行积压进行扩展，以需要更多副本的为准。 CPU 目标是相同的。待办事项目标按 [⟦T11⟧](/langsmith/env-var-cloud#n_jobs_per_worker) 的 75% 计算待处理和正在运行的运行（向下舍入）。默认值为 10，目标是每个副本 7 次运行； 30 次运行需要 5 名工人。最小值为 1 个副本。
+* **队列工作线程** 根据 CPU 或运行积压进行扩展，以需要更多副本的为准。 CPU 目标是相同的。待办事项目标按 [⟦T13⟧](/langsmith/env-var-cloud#n_jobs_per_worker) 的 75% 计算待处理和正在运行的运行（向下舍入）。默认值为 10，目标是每个副本 7 次运行； 30 次运行需要 5 名工人。最小值为 1 个副本。
 
 内存不会触发缩放。 Redis 和数据库计算不会自动缩放。为了避免快速的扩展变化，缩减会等待 15 分钟，然后每 2 分钟删除最多 10% 的副本（至少一个）。它在修订版推出期间暂停。副本保持[billable](/langsmith/billing#langsmith-deployment-billing)，直到缩小规模。
 

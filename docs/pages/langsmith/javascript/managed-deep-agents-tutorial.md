@@ -181,15 +181,15 @@ For deploy flags and troubleshooting, see [Deploy an agent](/langsmith/javascrip
 
 ## Next steps
 
-> **[Custom middleware](/langsmith/javascript/managed-deep-agents-middleware)**
+> [card] [Custom middleware](/langsmith/javascript/managed-deep-agents-middleware)
 >
 > Add logging, retries, limits, and guardrails around model and tool calls.
 
-> **[Identity](/langsmith/javascript/managed-deep-agents-identity)**
+> [card] [Identity](/langsmith/javascript/managed-deep-agents-identity)
 >
 > Authenticate callers and use verified identity in tools and middleware.
 
-> **[Evals](/langsmith/javascript/managed-deep-agents-evals)**
+> [card] [Evals](/langsmith/javascript/managed-deep-agents-evals)
 >
 > Develop Harbor evals with a coding agent and the eval-engineering skill.
 

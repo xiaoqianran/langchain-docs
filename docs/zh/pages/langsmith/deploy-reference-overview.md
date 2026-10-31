@@ -10,31 +10,31 @@
 
 ## SDK 和 CLI
 
-> **[LangSmith Deployments SDK](/langsmith/smith-deployments-sdk)**
+> [卡][LangSmith Deployments SDK](/langsmith/smith-deployments-sdk)
 >
 > 使用 LangGraph SDK 管理 LangSmith 部署和修订。
 
-> **[LangGraph CLI](/langsmith/cli)**
+> [卡][LangGraph CLI](/langsmith/cli)
 >
 > 从命令行构建、部署代理并与代理交互。
 
-> **[RemoteGraph](/langsmith/remote-graph)**
+> [卡][RemoteGraph](/langsmith/remote-graph)
 >
 > 用于调用部署的图形的客户端接口，就好像它们是本地的一样。
 
 ## API
 
-> **[Agent Server API](/langsmith/server-api-ref)**
+> [卡][Agent Server API](/langsmith/server-api-ref)
 >
 > Agent Server 运行时公开的 REST 端点：助手、线程、运行、cron 作业和长期内存存储。
 
-> **[Control Plane API](/langsmith/api-ref-control-plane)**
+> [卡][Control Plane API](/langsmith/api-ref-control-plane)
 >
 > 用于管理部署、修订和侦听器的 REST 端点。
 
 ## 发布
 
-> **[Agent Server changelog](/langsmith/agent-server-changelog)**
+> [卡][Agent Server changelog](/langsmith/agent-server-changelog)
 >
 > Agent Server 运行时的版本历史记录和发行说明。
 

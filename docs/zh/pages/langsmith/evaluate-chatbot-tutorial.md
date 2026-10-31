@@ -250,7 +250,7 @@ def test_length_score() -> None:
 
 ## 随着时间的推移跟踪结果
 
-现在我们已经以自动化方式运行这些实验，我们希望随着时间的推移跟踪这些结果。我们可以从数据集页面的整体`Experiments`选项卡中执行此操作。默认情况下，我们显示随时间变化的评估指标（以红色突出显示）。我们还自动跟踪 git 指标，以便轻松地将其与代码分支关联起来（以黄色突出显示）。
+现在我们已经以自动化方式运行这些实验，我们希望随着时间的推移跟踪这些结果。我们可以从数据集页面中的整体`Experiments`选项卡中执行此操作。默认情况下，我们显示随时间变化的评估指标（以红色突出显示）。我们还自动跟踪 git 指标，以便轻松地将其与代码分支关联起来（以黄色突出显示）。
 
 ![Testing tutorial over time](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/testing-tutorial-over-time.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=a5961747b6ea92bb2f838d025ca5e3d5)
 
@@ -264,7 +264,7 @@ def test_length_score() -> None:
 
 ## 参考代码
 
-> **点击查看合并的代码片段**
+> [accordion] 点击查看合并的代码片段
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import openai

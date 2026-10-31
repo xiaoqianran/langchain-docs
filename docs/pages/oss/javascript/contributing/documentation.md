@@ -80,7 +80,7 @@ This starts a development server with hot reload at `http://localhost:3000`. Edi
 >
 > If you are having issues with you local preview, try running `mint update` to ensure you're using the latest Mintlify version.
 
-> **Prerequisites**
+> [accordion] Prerequisites
 >
 > **Recommended:** run `mise trust && mise install` to get every pinned version at once. `.mise.toml` is the canonical pin for the toolchain, and its postinstall hook wires up the pre-commit and pre-push hooks.
 >
@@ -99,7 +99,7 @@ This starts a development server with hot reload at `http://localhost:3000`. Edi
 
 ## Edit documentation
 
-> **Quick edits on GitHub**
+> [accordion] Quick edits on GitHub
 >
 > For typos or small changes, edit directly on GitHub without local setup:
 >
@@ -120,7 +120,7 @@ This starts a development server with hot reload at `http://localhost:3000`. Edi
 >
 > All pull requests must link to an issue or discussion where a solution has been approved by a maintainer. See our [pull request requirements](/oss/javascript/contributing/overview#pull-request-requirements).
 
-> **Create a sharable preview build (LangChain team only)**
+> [accordion] Create a sharable preview build (LangChain team only)
 >
 > When you create or update a PR, a [preview branch/ID](https://github.com/langchain-ai/docs/actions/workflows/create-preview-branch.yml) is automatically generated. A comment will be left on the PR with the ID.
 >
@@ -160,19 +160,19 @@ All pull requests are automatically checked by CI/CD. The same linting and forma
 
 All documentation falls under one of four categories:
 
-> **[How-to guides](#how-to-guides)**
+> [card] [How-to guides](#how-to-guides)
 >
 > Task-oriented instructions for users who know what they want to accomplish.
 
-> **[Conceptual guides](#conceptual-guides)**
+> [card] [Conceptual guides](#conceptual-guides)
 >
 > Explanations that provide deeper understanding and insights.
 
-> **[Reference](#reference)**
+> [card] [Reference](#reference)
 >
 > Technical descriptions of APIs and implementation details.
 
-> **[Tutorials](#tutorials)**
+> [card] [Tutorials](#tutorials)
 >
 > Lessons that guide users through practical activities to build understanding.
 
@@ -184,20 +184,20 @@ All documentation falls under one of four categories:
 
 How-to guides are task-oriented instructions for users who know what they want to accomplish. Examples of how-to guides are on the [LangChain](/oss/javascript/langchain/overview) and [LangGraph](/oss/javascript/langgraph/overview) tabs.
 
-> **Characteristics**
+> [accordion] Characteristics
 >
 > * **Task-focused**: Focus on a specific task or problem
 > * **Step-by-step**: Break down the task into smaller steps
 > * **Hands-on**: Provide concrete examples and code snippets
 
-> **Tips**
+> [accordion] Tips
 >
 > * Focus on the **how** rather than the **why**
 > * Use concrete examples and code snippets
 > * Break down the task into smaller steps
 > * Link to related conceptual guides and references
 
-> **Examples**
+> [accordion] Examples
 >
 > * [Messages](/oss/javascript/langchain/messages)
 > * [Tools](/oss/javascript/langchain/tools)
@@ -207,14 +207,14 @@ How-to guides are task-oriented instructions for users who know what they want t
 
 Conceptual guide cover core concepts abstractly, providing deep understanding.
 
-> **Characteristics**
+> [accordion] Characteristics
 >
 > * **Understanding-focused**: Explain why things work as they do
 > * **Broad perspective**: Higher and wider view than other types
 > * **Design-oriented**: Explain decisions and trade-offs
 > * **Context-rich**: Use analogies and comparisons
 
-> **Tips**
+> [accordion] Tips
 >
 > * Focus on the **"why"** rather than the "how"
 > * Provides supplementary information not necessarily required for feature usage
@@ -222,7 +222,7 @@ Conceptual guide cover core concepts abstractly, providing deep understanding.
 > * Avoid blending in too much reference content
 > * Link to related tutorials and how-to guides
 
-> **Examples**
+> [accordion] Examples
 >
 > * [Memory](/oss/javascript/concepts/memory)
 > * [Context](/oss/javascript/concepts/context)
@@ -233,9 +233,9 @@ Conceptual guide cover core concepts abstractly, providing deep understanding.
 
 Reference documentation contains detailed, low-level information describing exactly what functionality exists and how to use it.
 
-> **[Python reference](https://reference.langchain.com/python/)**
+> [card] [Python reference](https://reference.langchain.com/python/)
 
-> **[JavaScript/TypeScript reference](https://reference.langchain.com/javascript/)**
+> [card] [JavaScript/TypeScript reference](https://reference.langchain.com/javascript/)
 
 A good reference should:
 
@@ -243,17 +243,17 @@ A good reference should:
 * Be comprehensive and structured for easy lookup
 * Serve as the authoritative source for technical details
 
-> **Contributing to references**
+> [accordion] Contributing to references
 >
 > The generated API reference at [reference.langchain.com](https://reference.langchain.com/python/) is built and deployed outside this repository. To report bugs, missing packages, or broken pages there, [open a reference documentation issue](https://github.com/langchain-ai/docs/issues/new?template=04-reference-docs.yml).
 
-> **LangChain reference best practices**
+> [accordion] LangChain reference best practices
 >
 > * **Be consistent**; follow existing patterns for provider-specific documentation
 > * Include both basic usage (code snippets) and common edge cases/failure modes
 > * Note when features require specific versions
 
-> **When to create new reference documentation**
+> [accordion] When to create new reference documentation
 >
 > * New integrations that meet the [hosted-guide eligibility criteria](/oss/javascript/contributing/publish-langchain#eligibility-for-hosted-guides) (50,000+ monthly downloads or featured)
 > * Complex configuration options require detailed explanation
@@ -268,19 +268,19 @@ Tutorials are longer form step-by-step guides that builds upon itself and takes 
 >
 > We generally do not merge new tutorials from outside contributors without an acute need. If you feel that a certain topic is missing from docs or is not sufficiently covered, please [open a new issue](https://github.com/langchain-ai/docs/issues).
 
-> **Characteristics**
+> [accordion] Characteristics
 >
 > * **Practical**: Focus on practical activities to build understanding.
 > * **Step-by-step**: Break down the activity into smaller steps.
 > * **Hands-on**: Provide sequential, working code snippets.
 > * **Supplementary**: Provide additional context and information not necessarily required for feature usage.
 
-> **Tips**
+> [accordion] Tips
 >
 > * Code snippets should be sequential and working if the user follows the steps in order.
 > * Provide some context for the activity, but link to related conceptual guides and references for more detailed information.
 
-> **Examples**
+> [accordion] Examples
 >
 > * [Semantic search](/oss/javascript/langchain/knowledge-base)
 > * [RAG agent](/oss/javascript/deepagents/rag)
@@ -295,26 +295,26 @@ Tutorials are longer form step-by-step guides that builds upon itself and takes 
 
 Use [Mintlify components](https://mintlify.com/docs/text) to enhance readability:
 
-**Callouts**
+> [tab] Callouts
+>
+> * `<Note>` for helpful supplementary information
+> * `<Warning>` for important cautions and breaking changes
+> * `<Tip>` for best practices and advice
+> * `<Info>` for neutral contextual information
+> * `<Check>` for success confirmations
 
-* `<Note>` for helpful supplementary information
-* `<Warning>` for important cautions and breaking changes
-* `<Tip>` for best practices and advice
-* `<Info>` for neutral contextual information
-* `<Check>` for success confirmations
+> [tab] Structure
+>
+> * `<Steps>` for an overview of sequential procedures. **Not** for long lists of steps or tutorials.
+> * `<Tabs>` for platform-specific content.
+> * `<AccordionGroup>` and `<Accordion>` for nice-to-have information that can be collapsed by default (e.g., full code examples).
+> * `<CardGroup>` and `<Card>` for highlighting content.
 
-**Structure**
-
-* `<Steps>` for an overview of sequential procedures. **Not** for long lists of steps or tutorials.
-* `<Tabs>` for platform-specific content.
-* `<AccordionGroup>` and `<Accordion>` for nice-to-have information that can be collapsed by default (e.g., full code examples).
-* `<CardGroup>` and `<Card>` for highlighting content.
-
-**Code**
-
-* `<CodeGroup>` for multiple language examples.
-* Always specify language tags on code blocks (e.g., ` ```python`, ` ```javascript`).
-* Titles for code blocks (e.g. `Success`, `Error Response`)
+> [tab] Code
+>
+> * `<CodeGroup>` for multiple language examples.
+> * Always specify language tags on code blocks (e.g., ` ```python`, ` ```javascript`).
+> * Titles for code blocks (e.g. `Success`, `Error Response`)
 
 ### Mermaid diagrams
 
@@ -370,15 +370,15 @@ This will generate two outputs (one for each language) at `/oss/python/concepts/
 
 ### General guidelines
 
-> **Avoid duplication**
+> [accordion] Avoid duplication
 >
 > Multiple pages covering the same material are difficult to maintain and cause confusion. There should be only one canonical page for each concept or feature. Link to other guides instead of re-explaining.
 
-> **Link frequently**
+> [accordion] Link frequently
 >
 > Documentation sections don't exist in a vacuum. Link to other sections frequently to allow users to learn about unfamiliar topics. This includes linking to API references and conceptual sections.
 
-> **Be concise**
+> [accordion] Be concise
 >
 > Take a less-is-more approach. If another section with a good explanation exists, link to it rather than re-explain, unless your content presents a new angle.
 
@@ -406,7 +406,7 @@ The @[`bind_tools`][ChatAnthropic.bind_tools] method accepts...
 
 The build pipeline transforms these into proper markdown links based on the current language scope (Python or JavaScript). For example, `@[ChatAnthropic]` becomes a link to the Python or JS API reference page depending on which version of the docs is being built, **but only if an entry exists in the `link_map.py` file!** See below for details.
 
-> **How autolinks work**
+> [accordion] How autolinks work
 >
 > The `@[]` syntax is processed by [`handle_auto_links.py`](https://github.com/langchain-ai/docs/blob/main/pipeline/preprocessors/handle_auto_links.py). It looks up link keys in [`link_map.py`](https://github.com/langchain-ai/docs/blob/main/pipeline/preprocessors/link_map.py), which contains dictionary mappings for both Python and JavaScript scopes.
 >

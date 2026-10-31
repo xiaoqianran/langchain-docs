@@ -730,7 +730,7 @@ Legacy functionality outside the focus of standard interfaces and agents has bee
 
 Methods, functions, and other objects that were already deprecated and slated for removal in 1.0 have been deleted.
 
-> **View removed deprecated APIs**
+> [accordion] View removed deprecated APIs
 >
 > The following deprecated APIs have been removed in v1:
 >

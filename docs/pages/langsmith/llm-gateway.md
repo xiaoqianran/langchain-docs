@@ -26,11 +26,11 @@ The gateway calls each provider with a credential that LangSmith holds: your own
 
 Start with the guide for your role:
 
-> **[Set up the gateway for your team](/langsmith/llm-gateway-admin-setup)**
+> [card] [Set up the gateway for your team](/langsmith/llm-gateway-admin-setup)
 >
 > Complete the initial setup to route requests through the gateway.
 
-> **[Send your first request](/langsmith/llm-gateway-first-request)**
+> [card] [Send your first request](/langsmith/llm-gateway-first-request)
 >
 > Send a request from the Simulator, call the gateway from your code, and view the trace.
 

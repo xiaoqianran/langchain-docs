@@ -16,7 +16,7 @@ The integration hooks into the spans Pipecat already emits and maps them onto La
 
 > [!NOTE]
 >
-> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
+> In an [agent-based workspace](/langsmith/agent-registry), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Install
 
@@ -31,6 +31,8 @@ uv add "langsmith[pipecat]" "pipecat-ai[openai,local,tracing]"
 ```
 
 ## Set environment variables
+
+Sending traces to an agent requires `langsmith>=0.14.9`.
 
 The integration reads your LangSmith credentials from the environment and exports to LangSmith for you via OpenTelemetry:
 
@@ -178,11 +180,11 @@ The integration attaches the recording to the conversation root when it ends. Fo
 
 ## Next steps
 
-> **[Voice fundamentals](/langsmith/trace-voice-fundamentals)**
+> [card] [Voice fundamentals](/langsmith/trace-voice-fundamentals)
 >
 > Core conventions for tracing voice agents.
 
-> **[Upload files with traces](/langsmith/upload-files-with-traces)**
+> [card] [Upload files with traces](/langsmith/upload-files-with-traces)
 >
 > Attach the conversation audio recording to your trace.
 

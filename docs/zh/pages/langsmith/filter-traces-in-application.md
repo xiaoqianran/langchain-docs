@@ -8,7 +8,7 @@
 
 跟踪项目可以跨[threads](/langsmith/observability-concepts#threads)、[traces](/langsmith/observability-concepts#traces)和[runs](/langsmith/observability-concepts#runs)积累大量数据。 LangSmith 的过滤工具可让您精确导航和分析数据。
 
-在 [agent-based workspace](/langsmith/agents) 中，跟踪项目是一个代理的 [environment](/langsmith/agent-environments) 之一，因此过滤器适用于您打开的环境，而不是整个代理。要过滤代理的环境，请依次过滤每个环境。
+在 [agent-based workspace](/langsmith/agent-registry) 中，跟踪项目是一个代理的 [environment](/langsmith/agent-environments) 之一，因此过滤器适用于您打开的环境，而不是整个代理。要过滤代理的环境，请依次过滤每个环境。
 
 > [!注意]
 >
@@ -33,7 +33,7 @@
 
 有两种方法可以过滤跟踪项目中的数据：1. **过滤器**：位于**追踪**项目页面的左上角。您可以在此处构建和管理过滤条件。
    * 第一个下拉菜单过滤默认值和[saved views](#save-a-filter)。
-   * 按 **线程**、**跟踪** 或 **运行** 快速过滤。
+   * 按**线程**、**跟踪**或**运行**进行快速过滤。
    * **在属性或全文搜索上向 [configure a filter based](#specific-filtering-techniques) 添加过滤器**。
 
 2. **过滤器快捷方式**：位于**跟踪**项目页面的右侧边栏。过滤器快捷方式栏提供对基于项目运行中最常出现的属性的过滤器的快速访问。
@@ -74,7 +74,7 @@ LangSmith 分割文本并以任意顺序匹配任何部分关键字匹配。 Lan
 
 > [!注意]
 >
-> 令牌必须至少有 2 个字符长才能被索引。单字符标记（例如，`a`、`x`）从搜索中排除。
+> 令牌的长度必须至少为 2 个字符才能编制索引。单字符标记（例如，`a`、`x`）从搜索中排除。
 
 ![LangSmith filter bar showing full-text search and input/output filters with example search terms for python, tensorflow, embedding, fine, and tune](https://mintcdn.com/langchain-5e9cc07a/PUuoao8vpJsRGlfG/langsmith/images/filter-bar-search-light.png?fit=max\&auto=format\&n=PUuoao8vpJsRGlfG\&q=85\&s=bbec4ff93f1bbf16577f7d9c4105f8e3)
 
@@ -228,7 +228,7 @@ LangSmith 会将其分解为以下一组可搜索的键值对：
 
 1. 在 UI 中创建它。
 2. 单击过滤栏中的图标。如果您构建了树或跟踪过滤器，您也可以复制它们。
-3. 这将为您提供一个以 LangSmith 查询语言表示过滤器的字符串。例如：`and(eq(is_root, true), and(eq(feedback_key, "user_score"), eq(feedback_score, 1)))`。
+3. 这将为您提供一个表示 LangSmith 查询语言中的过滤器的字符串。例如：`and(eq(is_root, true), and(eq(feedback_key, "user_score"), eq(feedback_score, 1)))`。
 
 有关查询语言语法的更多信息，请参阅[Trace query syntax](/langsmith/trace-query-syntax#filter-query-language)。
 
@@ -258,7 +258,7 @@ LangSmith 会将其分解为以下一组可搜索的键值对：
 2. 添加另一个过滤规则。然后，您可以单击过滤器下拉列表底部的**高级**过滤器链接。
 3. 将打开一个模式，您可以在其中添加 **Trace** 过滤器。这些过滤器将应用于您已过滤的各个运行的所有父运行的跟踪。
 
-### 过滤其子运行具有某些属性的运行（跨度）您可能想要搜索具有特定类型子运行的运行。例如，搜索具有名称为 `Foo` 的子运行的所有跟踪。当 `Foo` 并不总是被调用，但您想分析它被调用的情况时，这很有用。
+### 筛选其子运行具有某些属性的运行（跨度）您可能想要搜索具有特定类型子运行的运行。例如，搜索具有名称为 `Foo` 的子运行的所有跟踪。当 `Foo` 并不总是被调用，但您想要分析它被调用的情况时，这很有用。
 
 1. 单击线程/跟踪/运行切换中的 **运行**。
 2. 添加另一个过滤规则。然后，您可以单击过滤器下拉列表底部的**高级**过滤器链接。

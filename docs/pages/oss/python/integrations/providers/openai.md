@@ -8,37 +8,37 @@ This page covers all LangChain integrations with [OpenAI](https://en.wikipedia.o
 
 ## Model interfaces
 
-> **[ChatOpenAI](/oss/python/integrations/chat/openai)**
+> [card] [ChatOpenAI](/oss/python/integrations/chat/openai)
 >
 > OpenAI chat models.
 
-> **[Decisions API](/oss/python/integrations/decision_models/openai)**
+> [card] [Decisions API](/oss/python/integrations/decision_models/openai)
 >
 > Typed answers and calibrated probabilities for routing, classification, and agent middleware.
 
-> **[AzureChatOpenAI](/oss/python/integrations/chat/azure_chat_openai)**
+> [card] [AzureChatOpenAI](/oss/python/integrations/chat/azure_chat_openai)
 >
 > Azure OpenAI chat models with enterprise features.
 
-> **[OpenAIEmbeddings](/oss/python/integrations/embeddings/openai)**
+> [card] [OpenAIEmbeddings](/oss/python/integrations/embeddings/openai)
 >
 > OpenAI embedding models.
 
-> **[AzureOpenAIEmbeddings](/oss/python/integrations/embeddings/azure_openai)**
+> [card] [AzureOpenAIEmbeddings](/oss/python/integrations/embeddings/azure_openai)
 >
 > Azure OpenAI embedding models with enterprise features.
 
 ## Other
 
-> **[OpenAI](/oss/python/integrations/llms/openai)**
+> [card] [OpenAI](/oss/python/integrations/llms/openai)
 >
 > (Legacy) OpenAI text completion models.
 
-> **[AzureOpenAI](/oss/python/integrations/llms/azure_openai)**
+> [card] [AzureOpenAI](/oss/python/integrations/llms/azure_openai)
 >
 > Wrapper for (legacy) OpenAI text completion models hosted on Azure.
 
-> **[OpenAIModerationMiddleware](/oss/python/integrations/middleware/openai#content-moderation)**
+> [card] [OpenAIModerationMiddleware](/oss/python/integrations/middleware/openai#content-moderation)
 >
 > Detect text that could be hateful, violent, etc.
 

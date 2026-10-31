@@ -105,7 +105,7 @@ npx wrangler dev .svelte-kit/cloudflare/_worker.js
 
 ## Project layout
 
-> **Project structure**
+> [accordion] Project structure
 >
 > * `src/lib/server/agent/` — deep agent (`createDeepAgent`) with `researcher` and `math-whiz` subagents and mock tools.
 > * `src/lib/server/durable-objects/thread-session.ts` — per-thread Durable Object event log for SSE replay.

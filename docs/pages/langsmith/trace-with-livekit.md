@@ -16,7 +16,7 @@ Each conversation appears as one LangSmith trace with its pipeline events, laten
 
 > [!NOTE]
 >
-> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
+> In an [agent-based workspace](/langsmith/agent-registry), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Install
 
@@ -31,6 +31,8 @@ uv add "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
 ```
 
 ## Set environment variables
+
+Sending traces to an agent requires `langsmith>=0.14.9`.
 
 The integration reads your LangSmith credentials from the environment and exports to LangSmith for you via OpenTelemetry:
 
@@ -269,11 +271,11 @@ async def my_agent(ctx: agents.JobContext):
 
 ## Next steps
 
-> **[Voice fundamentals](/langsmith/trace-voice-fundamentals)**
+> [card] [Voice fundamentals](/langsmith/trace-voice-fundamentals)
 >
 > Core conventions for tracing voice agents.
 
-> **[Upload files with traces](/langsmith/upload-files-with-traces)**
+> [card] [Upload files with traces](/langsmith/upload-files-with-traces)
 >
 > Attach the conversation audio recording to your trace.
 

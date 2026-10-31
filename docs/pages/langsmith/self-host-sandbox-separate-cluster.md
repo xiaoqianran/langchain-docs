@@ -290,101 +290,101 @@ To keep the JuiceFS Redis URL and its password out of your values file, also cre
 
 Create `langsmith_sandbox_config.yaml`. Replace the placeholders with your values.
 
-**EKS**
+> [tab] EKS
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> config:
+>   endpoint: "https://langsmith.example.com/api"
+>   existingSecretName: "langsmith-sandbox-runtime"
+>
+> workloadIdentity:
+>   provider: aws
+>   aws:
+>     roleArn: "<role_arn>"
+>
+> juicefs:
+>   name: "sandbox-juicefs"
+>   storage: "s3"
+>   bucket: "https://bucket-name.s3.us-west-2.amazonaws.com"
+>   redis:
+>     metaURL: "rediss://<redis-host>:6379/0"
+>
+> sandboxHost:
+>   enabled: true
+>   serviceAccount:
+>     name: "langsmith-sandbox-host"
+>   deployment:
+>     nodeSelector:
+>       kubernetes.io/arch: "amd64"
+>       sandbox.langsmith.com/host: "true"
+> ```
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-config:
-  endpoint: "https://langsmith.example.com/api"
-  existingSecretName: "langsmith-sandbox-runtime"
+> [tab] GKE
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> config:
+>   endpoint: "https://langsmith.example.com/api"
+>   existingSecretName: "langsmith-sandbox-runtime"
+>
+> workloadIdentity:
+>   provider: gcp
+>
+> juicefs:
+>   name: "sandbox-juicefs"
+>   storage: "gs"
+>   bucket: "gs://bucket-name"
+>   redis:
+>     # Memorystore with AUTH. With in-transit encryption, use rediss:// on port 6378.
+>     metaURL: "redis://:<auth-string>@<redis-host>:6379/0"
+>   # Without local SSD on the node pool, omit hostMount to keep the cache on the
+>   # boot disk (/var/cache/juicefs).
+>   hostMount:
+>     cacheDirs:
+>       - "<node-local-ssd-path>/juicefs"
+>
+> sandboxHost:
+>   enabled: true
+>   deployment:
+>     nodeSelector:
+>       kubernetes.io/arch: "amd64"
+>       sandbox.langsmith.com/host: "true"
+> ```
 
-workloadIdentity:
-  provider: aws
-  aws:
-    roleArn: "<role_arn>"
-
-juicefs:
-  name: "sandbox-juicefs"
-  storage: "s3"
-  bucket: "https://bucket-name.s3.us-west-2.amazonaws.com"
-  redis:
-    metaURL: "rediss://<redis-host>:6379/0"
-
-sandboxHost:
-  enabled: true
-  serviceAccount:
-    name: "langsmith-sandbox-host"
-  deployment:
-    nodeSelector:
-      kubernetes.io/arch: "amd64"
-      sandbox.langsmith.com/host: "true"
-```
-
-**GKE**
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-config:
-  endpoint: "https://langsmith.example.com/api"
-  existingSecretName: "langsmith-sandbox-runtime"
-
-workloadIdentity:
-  provider: gcp
-
-juicefs:
-  name: "sandbox-juicefs"
-  storage: "gs"
-  bucket: "gs://bucket-name"
-  redis:
-    # Memorystore with AUTH. With in-transit encryption, use rediss:// on port 6378.
-    metaURL: "redis://:<auth-string>@<redis-host>:6379/0"
-  # Without local SSD on the node pool, omit hostMount to keep the cache on the
-  # boot disk (/var/cache/juicefs).
-  hostMount:
-    cacheDirs:
-      - "<node-local-ssd-path>/juicefs"
-
-sandboxHost:
-  enabled: true
-  deployment:
-    nodeSelector:
-      kubernetes.io/arch: "amd64"
-      sandbox.langsmith.com/host: "true"
-```
-
-**AKS**
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-config:
-  endpoint: "https://langsmith.example.com/api"
-  existingSecretName: "langsmith-sandbox-runtime"
-
-workloadIdentity:
-  provider: azure
-  azure:
-    clientId: "<client_id>"
-
-juicefs:
-  name: "sandbox-juicefs"
-  storage: "wasb"
-  bucket: "https://<container>.blob.core.windows.net"
-  storageAccountName: "<storage-account-name>"
-  redis:
-    # Azure Managed Redis with an access key. With Microsoft Entra authentication,
-    # drop the key and set iamAuthProvider: azure.
-    metaURL: "rediss://:<url-encoded-access-key>@<redis-host>:10000/0"
-  hostMount:
-    cacheDirs:
-      - "/mnt/juicefs-cache"
-
-sandboxHost:
-  enabled: true
-  serviceAccount:
-    # Must match the subject of the managed identity's federated credential.
-    name: "langsmith-sandbox-host"
-  deployment:
-    nodeSelector:
-      kubernetes.io/arch: "amd64"
-      sandbox.langsmith.com/host: "true"
-```
+> [tab] AKS
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> config:
+>   endpoint: "https://langsmith.example.com/api"
+>   existingSecretName: "langsmith-sandbox-runtime"
+>
+> workloadIdentity:
+>   provider: azure
+>   azure:
+>     clientId: "<client_id>"
+>
+> juicefs:
+>   name: "sandbox-juicefs"
+>   storage: "wasb"
+>   bucket: "https://<container>.blob.core.windows.net"
+>   storageAccountName: "<storage-account-name>"
+>   redis:
+>     # Azure Managed Redis with an access key. With Microsoft Entra authentication,
+>     # drop the key and set iamAuthProvider: azure.
+>     metaURL: "rediss://:<url-encoded-access-key>@<redis-host>:10000/0"
+>   hostMount:
+>     cacheDirs:
+>       - "/mnt/juicefs-cache"
+>
+> sandboxHost:
+>   enabled: true
+>   serviceAccount:
+>     # Must match the subject of the managed identity's federated credential.
+>     name: "langsmith-sandbox-host"
+>   deployment:
+>     nodeSelector:
+>       kubernetes.io/arch: "amd64"
+>       sandbox.langsmith.com/host: "true"
+> ```
 
 Leave `images.sandboxHostImage.tag` empty. The chart then runs the `sandbox-host` image for its appVersion, the LangSmith release it pairs with.
 

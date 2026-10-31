@@ -10,7 +10,7 @@ SmithDB components expose application metrics and can export logs and traces to 
 
 Each SmithDB component exposes application metrics at the fixed `/metrics` path on its HTTP port. Configure your monitoring stack to discover the pods by adding scrape annotations to each component:
 
-> **Sample Prometheus configuration**
+> [accordion] Sample Prometheus configuration
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > smithdb:

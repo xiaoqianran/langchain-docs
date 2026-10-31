@@ -34,40 +34,40 @@ In this guide, we’ll show how to trigger a webhook after streaming a run.
 
 Before making API calls, set up your assistant and thread.
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_client
+>
+> client = get_client(url=<DEPLOYMENT_URL>)
+> assistant_id = "agent"
+> thread = await client.threads.create()
+> print(thread)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
+> [tab] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client } from "@langchain/langgraph-sdk";
+>
+> const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+> const assistantID = "agent";
+> const thread = await client.threads.create();
+> console.log(thread);
+> ```
 
-client = get_client(url=<DEPLOYMENT_URL>)
-assistant_id = "agent"
-thread = await client.threads.create()
-print(thread)
-```
-
-**JavaScript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "@langchain/langgraph-sdk";
-
-const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-const assistantID = "agent";
-const thread = await client.threads.create();
-console.log(thread);
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/assistants/search \
-    --header 'Content-Type: application/json' \
-    --data '{ "limit": 10, "offset": 0 }' | jq -c 'map(select(.config == null or .config == {})) | .[0]' && \
-curl --request POST \
-    --url <DEPLOYMENT_URL>/threads \
-    --header 'Content-Type: application/json' \
-    --data '{}'
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/assistants/search \
+>     --header 'Content-Type: application/json' \
+>     --data '{ "limit": 10, "offset": 0 }' | jq -c 'map(select(.config == null or .config == {})) | .[0]' && \
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/threads \
+>     --header 'Content-Type: application/json' \
+>     --data '{}'
+> ```
 
 Example response:
 
@@ -89,52 +89,52 @@ To use a webhook, specify the `webhook` parameter in your API request. When the 
 
 For example, if your server listens for webhook events at `https://my-server.app/my-webhook-endpoint`, include this in your request:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> input = { "messages": [{ "role": "user", "content": "Hello!" }] }
+>
+> async for chunk in client.runs.stream(
+>     thread_id=thread["thread_id"],
+>     assistant_id=assistant_id,
+>     input=input,
+>     stream_mode="events",
+>     webhook="https://my-server.app/my-webhook-endpoint"
+> ):
+>     pass
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-input = { "messages": [{ "role": "user", "content": "Hello!" }] }
+> [tab] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const input = { messages: [{ role: "human", content: "Hello!" }] };
+>
+> const streamResponse = client.runs.stream(
+>   thread["thread_id"],
+>   assistantID,
+>   {
+>     input: input,
+>     webhook: "https://my-server.app/my-webhook-endpoint"
+>   }
+> );
+>
+> for await (const chunk of streamResponse) {
+>   // Handle stream output
+> }
+> ```
 
-async for chunk in client.runs.stream(
-    thread_id=thread["thread_id"],
-    assistant_id=assistant_id,
-    input=input,
-    stream_mode="events",
-    webhook="https://my-server.app/my-webhook-endpoint"
-):
-    pass
-```
-
-**JavaScript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const input = { messages: [{ role: "human", content: "Hello!" }] };
-
-const streamResponse = client.runs.stream(
-  thread["thread_id"],
-  assistantID,
-  {
-    input: input,
-    webhook: "https://my-server.app/my-webhook-endpoint"
-  }
-);
-
-for await (const chunk of streamResponse) {
-  // Handle stream output
-}
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "assistant_id": <ASSISTANT_ID>,
-        "input": {"messages": [{"role": "user", "content": "Hello!"}]},
-        "webhook": "https://my-server.app/my-webhook-endpoint"
-    }'
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "assistant_id": <ASSISTANT_ID>,
+>         "input": {"messages": [{"role": "user", "content": "Hello!"}]},
+>         "webhook": "https://my-server.app/my-webhook-endpoint"
+>     }'
+> ```
 
 ## Webhook payload
 

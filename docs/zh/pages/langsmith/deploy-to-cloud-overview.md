@@ -13,25 +13,25 @@
 
 在云上运行的代理部署需要[Plus plan or above](https://www.langchain.com/pricing)。在创建第一个代理部署之前，请验证您的应用程序是否使用 `langgraph dev` 在本地运行。参考[Local development and testing](/langsmith/local-dev-testing)。
 
-> **[Deploy on Cloud](/langsmith/deploy-to-cloud)**
+> [卡][Deploy on Cloud](/langsmith/deploy-to-cloud)
 >
 > 从 LangSmith UI 或 `langgraph deploy` CLI 创建、配置和管理云部署的分步设置指南。
 
-> **[Cloud platform features](/langsmith/cloud-platform-features)**
+> [卡片] [Cloud platform features](/langsmith/cloud-platform-features)
 >
 > 仅云平台行为的参考：数据区域、静态 IP、负载限制、部署类型和托管数据库配置。
 
-> **[Quickstart](/langsmith/deployment-quickstart)**
+> [卡][Quickstart](/langsmith/deployment-quickstart)
 >
 > 在几分钟内将您的第一个 LangGraph 应用程序部署到云。为了部署代码优先的深度代理而无需建立自己的代理服务器，[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)在公共测试版中提供了 CLI 优先的托管运行时。
 
 ## 后续步骤
 
-> **[Run the quickstart](/langsmith/deployment-quickstart)**
+> [卡][Run the quickstart](/langsmith/deployment-quickstart)
 >
 > 端到端部署入门 LangGraph 应用程序。
 
-> **[Read the full deploy guide](/langsmith/deploy-to-cloud)**
+> [卡][Read the full deploy guide](/langsmith/deploy-to-cloud)
 >
 > 配置环境变量、机密、修订和部署设置。
 

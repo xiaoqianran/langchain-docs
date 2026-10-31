@@ -80,7 +80,7 @@ const agent = createAgent({
 > When invoking the agent, pass a `config` that includes the **thread ID** to associate execution with a conversation thread.
 > See the [LangGraph interrupts documentation](/oss/javascript/langgraph/interrupts) for details.
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **interruptOn** `object` *required*
 >
@@ -525,101 +525,101 @@ Each interrupt also carries a `response_schema`: a JSON schema with one branch p
 
 Each tab shows one `write_file` branch, an answer that matches it, and the [ToolMessage](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) the model receives. For readability, the branches below omit the `additionalProperties` fields.
 
-**approve**
+> [tab] approve
+>
+> Run the call as proposed.
+>
+> ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {"type": "object", "properties": {"type": {"type": "string", "const": "approve"}}, "required": ["type"]}
+> ```
+>
+> ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> { type: "approve" }
+> ```
+>
+> ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> Wrote 14 characters to orders_archive.csv
+> ```
 
-Run the call as proposed.
+> [tab] edit
+>
+> Run the call with new arguments. `edited_action.name` must stay `write_file`, and `edited_action.args` must match `write_file`'s argument schema. Arguments the tool does not declare are handled the same way as when the model sends them: a `z.object` schema drops them, and a `z.looseObject` schema keeps them.
+>
+> ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "type": "object",
+>   "properties": {
+>     "type": {"type": "string", "const": "edit"},
+>     "edited_action": {
+>       "type": "object",
+>       "properties": {
+>         "name": {"type": "string", "const": "write_file"},
+>         "args": {
+>           "type": "object",
+>           "properties": {
+>             "path": {"type": "string"},
+>             "content": {"type": "string"}
+>           },
+>           "required": ["path", "content"]
+>         }
+>       },
+>       "required": ["name", "args"]
+>     }
+>   },
+>   "required": ["type", "edited_action"]
+> }
+> ```
+>
+> ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   type: "edit",
+>   edited_action: {
+>     name: "write_file",
+>     args: { path: "archive/orders_2024.csv", content: "id,total\n1,20\n" },
+>   },
+> }
+> ```
+>
+> The model receives the tool's result after a note that a reviewer replaced the call. Set `editNotice` on the middleware to change the note, or pass `null` to remove it.
+>
+> ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> Note: a human reviewer replaced this tool call before it ran. The call recorded in your message is the one you produced, not the one that executed. This was intentional and authorized. Do not re-issue your original call. Executed instead: write_file with arguments {"path":"archive/orders_2024.csv","content":"id,total\n1,20\n"}.
+>
+> Tool response:
+> Wrote 14 characters to archive/orders_2024.csv
+> ```
 
-```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{"type": "object", "properties": {"type": {"type": "string", "const": "approve"}}, "required": ["type"]}
-```
+> [tab] reject
+>
+> Skip the call. The `message` is optional and tells the model why.
+>
+> ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {"type": "object", "properties": {"type": {"type": "string", "const": "reject"}, "message": {"type": "string"}}, "required": ["type"]}
+> ```
+>
+> ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> { type: "reject", message: "Write to the archive/ folder instead." }
+> ```
+>
+> ```text Model receives (error status) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> Write to the archive/ folder instead.
+> ```
 
-```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{ type: "approve" }
-```
-
-```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Wrote 14 characters to orders_archive.csv
-```
-
-**edit**
-
-Run the call with new arguments. `edited_action.name` must stay `write_file`, and `edited_action.args` must match `write_file`'s argument schema. Arguments the tool does not declare are handled the same way as when the model sends them: a `z.object` schema drops them, and a `z.looseObject` schema keeps them.
-
-```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "type": "object",
-  "properties": {
-    "type": {"type": "string", "const": "edit"},
-    "edited_action": {
-      "type": "object",
-      "properties": {
-        "name": {"type": "string", "const": "write_file"},
-        "args": {
-          "type": "object",
-          "properties": {
-            "path": {"type": "string"},
-            "content": {"type": "string"}
-          },
-          "required": ["path", "content"]
-        }
-      },
-      "required": ["name", "args"]
-    }
-  },
-  "required": ["type", "edited_action"]
-}
-```
-
-```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  type: "edit",
-  edited_action: {
-    name: "write_file",
-    args: { path: "archive/orders_2024.csv", content: "id,total\n1,20\n" },
-  },
-}
-```
-
-The model receives the tool's result after a note that a reviewer replaced the call. Set `editNotice` on the middleware to change the note, or pass `null` to remove it.
-
-```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Note: a human reviewer replaced this tool call before it ran. The call recorded in your message is the one you produced, not the one that executed. This was intentional and authorized. Do not re-issue your original call. Executed instead: write_file with arguments {"path":"archive/orders_2024.csv","content":"id,total\n1,20\n"}.
-
-Tool response:
-Wrote 14 characters to archive/orders_2024.csv
-```
-
-**reject**
-
-Skip the call. The `message` is optional and tells the model why.
-
-```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{"type": "object", "properties": {"type": {"type": "string", "const": "reject"}, "message": {"type": "string"}}, "required": ["type"]}
-```
-
-```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{ type: "reject", message: "Write to the archive/ folder instead." }
-```
-
-```text Model receives (error status) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Write to the archive/ folder instead.
-```
-
-**respond**
-
-Skip the call and answer in place of the tool. The `message` is required. The model receives it as a successful tool result, so use `reject` to deny a call.
-
-```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{"type": "object", "properties": {"type": {"type": "string", "const": "respond"}, "message": {"type": "string"}}, "required": ["type", "message"]}
-```
-
-```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{ type: "respond", message: "Saved orders_archive.csv to the shared drive myself." }
-```
-
-```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Saved orders_archive.csv to the shared drive myself.
-```
+> [tab] respond
+>
+> Skip the call and answer in place of the tool. The `message` is required. The model receives it as a successful tool result, so use `reject` to deny a call.
+>
+> ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {"type": "object", "properties": {"type": {"type": "string", "const": "respond"}, "message": {"type": "string"}}, "required": ["type", "message"]}
+> ```
+>
+> ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> { type: "respond", message: "Saved orders_archive.csv to the shared drive myself." }
+> ```
+>
+> ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> Saved orders_archive.csv to the shared drive myself.
+> ```
 
 ### Resume each call by ID
 
@@ -747,115 +747,115 @@ await agent.invoke(
 
 ### Decision types
 
-**approve**
-
-Use `approve` to approve the tool call as-is and execute it without changes.
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await agent.invoke(
-    new Command({
-        // Decisions are provided as a list, one per action under review.
-        // The order of decisions must match the order of actions
-        // in the interrupt request.
-        resume: {
-            decisions: [
-                {
-                    type: "approve",
-                }
-            ]
-        }
-    }),
-    config  // Same thread ID to resume the paused conversation
-);
-```
-
-**edit**
-
-Use `edit` to modify the tool call before execution.
-Provide the edited action with the new tool name and arguments.
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await agent.invoke(
-    new Command({
-        // Decisions are provided as a list, one per action under review.
-        // The order of decisions must match the order of actions
-        // in the interrupt request.
-        resume: {
-            decisions: [
-                {
-                    type: "edit",
-                    // Edited action with tool name and args
-                    editedAction: {
-                        // Tool name to call.
-                        // Will usually be the same as the original action.
-                        name: "new_tool_name",
-                        // Arguments to pass to the tool.
-                        args: { key1: "new_value", key2: "original_value" },
-                    }
-                }
-            ]
-        }
-    }),
-    config  // Same thread ID to resume the paused conversation
-);
-```
-
-> [!TIP]
+> [tab] approve
 >
-> When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.
+> Use `approve` to approve the tool call as-is and execute it without changes.
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await agent.invoke(
+>     new Command({
+>         // Decisions are provided as a list, one per action under review.
+>         // The order of decisions must match the order of actions
+>         // in the interrupt request.
+>         resume: {
+>             decisions: [
+>                 {
+>                     type: "approve",
+>                 }
+>             ]
+>         }
+>     }),
+>     config  // Same thread ID to resume the paused conversation
+> );
+> ```
 
-**reject**
+> [tab] edit
+>
+> Use `edit` to modify the tool call before execution.
+> Provide the edited action with the new tool name and arguments.
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await agent.invoke(
+>     new Command({
+>         // Decisions are provided as a list, one per action under review.
+>         // The order of decisions must match the order of actions
+>         // in the interrupt request.
+>         resume: {
+>             decisions: [
+>                 {
+>                     type: "edit",
+>                     // Edited action with tool name and args
+>                     editedAction: {
+>                         // Tool name to call.
+>                         // Will usually be the same as the original action.
+>                         name: "new_tool_name",
+>                         // Arguments to pass to the tool.
+>                         args: { key1: "new_value", key2: "original_value" },
+>                     }
+>                 }
+>             ]
+>         }
+>     }),
+>     config  // Same thread ID to resume the paused conversation
+> );
+> ```
+>
+> > [!TIP]
+> >
+> > When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.
 
-Use `reject` to deny the tool call and provide feedback instead of execution. The tool is not executed.
+> [tab] reject
+>
+> Use `reject` to deny the tool call and provide feedback instead of execution. The tool is not executed.
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await agent.invoke(
+>     new Command({
+>         // Decisions are provided as a list, one per action under review.
+>         // The order of decisions must match the order of actions
+>         // in the interrupt request.
+>         resume: {
+>             decisions: [
+>                 {
+>                     type: "reject",
+>                     // Optional: explain why the action was rejected
+>                     // and whether the agent should retry a different approach.
+>                     message: "User rejected this action. Do not retry this tool call.",
+>                 }
+>             ]
+>         }
+>     }),
+>     config  // Same thread ID to resume the paused conversation
+> );
+> ```
+>
+> The `message` is added to the conversation as feedback to help the agent understand why the action was rejected and what it should do instead. When you omit `message`, the middleware uses a default rejection message that tells the model the tool was not executed and not to retry the same tool call unless the user asks. For side-effecting tools, provide a domain-specific message that is explicit about whether the agent should abandon the action, ask a follow-up question, or try a safer alternative.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await agent.invoke(
-    new Command({
-        // Decisions are provided as a list, one per action under review.
-        // The order of decisions must match the order of actions
-        // in the interrupt request.
-        resume: {
-            decisions: [
-                {
-                    type: "reject",
-                    // Optional: explain why the action was rejected
-                    // and whether the agent should retry a different approach.
-                    message: "User rejected this action. Do not retry this tool call.",
-                }
-            ]
-        }
-    }),
-    config  // Same thread ID to resume the paused conversation
-);
-```
-
-The `message` is added to the conversation as feedback to help the agent understand why the action was rejected and what it should do instead. When you omit `message`, the middleware uses a default rejection message that tells the model the tool was not executed and not to retry the same tool call unless the user asks. For side-effecting tools, provide a domain-specific message that is explicit about whether the agent should abandon the action, ask a follow-up question, or try a safer alternative.
-
-**respond**
-
-Use `respond` for "ask user" style tools where the tool's real implementation is the human's reply. The `message` content is returned directly as the tool result; the tool itself is not executed.
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await agent.invoke(
-    new Command({
-        // Decisions are provided as a list, one per action under review.
-        // The order of decisions must match the order of actions
-        // in the interrupt request.
-        resume: {
-            decisions: [
-                {
-                    type: "respond",
-                    // The human's reply, returned directly as the tool result
-                    message: "Blue.",
-                }
-            ]
-        }
-    }),
-    config  // Same thread ID to resume the paused conversation
-);
-```
-
-The `message` is returned to the agent as a successful `ToolMessage`. Use `respond` when the tool is intentionally a placeholder for human input, for example, an `ask_user` tool that prompts for clarification. Do not use `respond` to deny a proposed action, because it tells the model that the tool completed successfully.
+> [tab] respond
+>
+> Use `respond` for "ask user" style tools where the tool's real implementation is the human's reply. The `message` content is returned directly as the tool result; the tool itself is not executed.
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await agent.invoke(
+>     new Command({
+>         // Decisions are provided as a list, one per action under review.
+>         // The order of decisions must match the order of actions
+>         // in the interrupt request.
+>         resume: {
+>             decisions: [
+>                 {
+>                     type: "respond",
+>                     // The human's reply, returned directly as the tool result
+>                     message: "Blue.",
+>                 }
+>             ]
+>         }
+>     }),
+>     config  // Same thread ID to resume the paused conversation
+> );
+> ```
+>
+> The `message` is returned to the agent as a successful `ToolMessage`. Use `respond` when the tool is intentionally a placeholder for human input, for example, an `ask_user` tool that prompts for clarification. Do not use `respond` to deny a proposed action, because it tells the model that the tool completed successfully.
 
 ***
 

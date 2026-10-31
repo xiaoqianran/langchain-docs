@@ -10,23 +10,23 @@ Prompts, retrieval context, skills, and task instructions change more often than
 
 ## Prompts
 
-> **[Create and update prompts](/langsmith/create-a-prompt)**
+> [card] [Create and update prompts](/langsmith/create-a-prompt)
 >
 > Build prompts via the UI or SDK, configure settings, use tools, add multimodal inputs, and connect model providers.
 
-> **[Manage prompts](/langsmith/manage-prompts)**
+> [card] [Manage prompts](/langsmith/manage-prompts)
 >
 > Organize with tags, commit changes, trigger webhooks, and share through the public prompt hub.
 
-> **[Explore the prompt hub](/langsmith/manage-prompts#public-prompt-hub)**
+> [card] [Explore the prompt hub](/langsmith/manage-prompts#public-prompt-hub)
 >
 > Browse and manage prompt tags and discover community prompts from the LangChain Hub.
 
-> **[Open the Playground](/langsmith/prompt-engineering-concepts#playground)**
+> [card] [Open the Playground](/langsmith/prompt-engineering-concepts#playground)
 >
 > Test and experiment with prompts using custom endpoints and model configurations.
 
-> **[Follow tutorials](/langsmith/optimize-classifier)**
+> [card] [Follow tutorials](/langsmith/optimize-classifier)
 >
 > Learn step-by-step techniques, like optimizing classifiers and advanced prompt engineering.
 
@@ -34,19 +34,19 @@ Use the **[Chat](/langsmith/chat)** in the Playground to optimize prompts, gener
 
 ## Context Hub
 
-> **[Concepts](/langsmith/context-engineering-concepts)**
+> [card] [Concepts](/langsmith/context-engineering-concepts)
 >
 > Learn the core concepts of context engineering: skills, agents, versioning, and sharing.
 
-> **[Use the Context Hub](/langsmith/use-the-context-hub)**
+> [card] [Use the Context Hub](/langsmith/use-the-context-hub)
 >
 > Create a context, view its files and history, and promote it to an environment.
 
-> **[Manage contexts with the SDK](/langsmith/manage-contexts-sdk)**
+> [card] [Manage contexts with the SDK](/langsmith/manage-contexts-sdk)
 >
 > Push, pull, list, and delete agent and skill repos in the Context Hub programmatically.
 
-> **[Configure commit webhooks](/langsmith/context-hub-webhooks)**
+> [card] [Configure commit webhooks](/langsmith/context-hub-webhooks)
 >
 > Send every agent and skill commit in your workspace to an external HTTPS endpoint.
 

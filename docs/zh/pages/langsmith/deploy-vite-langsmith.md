@@ -147,70 +147,68 @@ pnpm run dev
 
 ## 部署前端
 
-代理和 UI 分开部署。 `pnpm run deploy`成功后，在任何静态平台上托管Vite构建（`dist/`）并将其指向您的LangSmith部署URL。
+代理和 UI 分开部署。 `pnpm run deploy`成功后，在任何静态平台上托管Vite构建（`dist/`）并将其指向您的LangSmith部署URL。> [标签] 维塞尔
+>
+> **1。导入存储库**
+>
+> 单击下面的 **使用 Vercel 部署**，或手动导入 [⟦T46⟧](https://github.com/langchain-ai/deployment-cookbook)。
+>
+> [⟦T93⟧](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook\&root-directory=js-langsmith\&env=VITE_AGENT_API_URL,LANGSMITH_API_KEY\&envDescription=LangSmith%20deployment%20URL%20and%20API%20key)
+>
+> **2。配置项目**
+>
+> 1. 将**根目录**设置为`js-langsmith`。
+> 2. 使用默认的Vite版本。构建输出是`dist/`。
+> 3. 设置这些环境变量：
+> * `VITE_AGENT_API_URL`：LangSmith 部署根 URL。
+> * `LANGSMITH_API_KEY`：演示客户端使用的LangSmith API 密钥。
 
-**韦尔塞尔**
+> [选项卡] Netlify
+>
+> **1。导入存储库**
+>
+> 单击下面的 **部署到 Netlify**，或手动导入 [⟦T51⟧](https://github.com/langchain-ai/deployment-cookbook)。
+>
+> [⟦T94⟧](https://app.netlify.com/start/deploy?repository=https://github.com/langchain-ai/deployment-cookbook\&base=js-langsmith)
+>
+> **2。配置项目**
+>
+> 将 **基目录** 设置为 `js-langsmith`。使用默认构建命令（`pnpm build`或`npm run build`）并发布目录`dist/`。
+>
+> **3。设置环境变量**
+>
+> 在部署之前在 Netlify 中添加这些变量：
+>
+> * `VITE_AGENT_API_URL`：LangSmith 部署根 URL。
+> * `LANGSMITH_API_KEY`：演示客户端使用的LangSmith API 密钥。> [选项卡] Cloudflare 页面
+>
+> **1。连接存储库**
+>
+> 在 [Cloudflare dashboard](https://dash.cloudflare.com/) 中，从 [⟦T58⟧](https://github.com/langchain-ai/deployment-cookbook) 创建 **Workers & Pages** 项目。
+>
+> **2。配置构建**
+>
+> * **根目录**：`js-langsmith`
+> * **构建命令**：`pnpm install && pnpm build`
+> * **构建输出目录**：`dist`
+>
+> **3。设置环境变量**
+>
+> 在 Pages 项目设置中添加以下变量：
+>
+> * `VITE_AGENT_API_URL`：LangSmith 部署根 URL。
+> * `LANGSMITH_API_KEY`：演示客户端使用的LangSmith API 密钥。
 
-**1.导入存储库**
+## 故障排除
 
-单击下面的 **使用 Vercel 部署**，或手动导入 [⟦T46⟧](https://github.com/langchain-ai/deployment-cookbook)。
-
-[⟦T93⟧](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook\&root-directory=js-langsmith\&env=VITE_AGENT_API_URL,LANGSMITH_API_KEY\&envDescription=LangSmith%20deployment%20URL%20and%20API%20key)
-
-**2.配置项目**1. 将**根目录**设置为`js-langsmith`。
-2. 使用默认的Vite版本。构建输出是`dist/`。
-3. 设置这些环境变量：
-   * `VITE_AGENT_API_URL`：LangSmith 部署根 URL。
-   * `LANGSMITH_API_KEY`：演示客户端使用的LangSmith API 密钥。
-
-**网络化**
-
-**1.导入存储库**
-
-单击下面的 **部署到 Netlify**，或手动导入 [⟦T51⟧](https://github.com/langchain-ai/deployment-cookbook)。
-
-[⟦T94⟧](https://app.netlify.com/start/deploy?repository=https://github.com/langchain-ai/deployment-cookbook\&base=js-langsmith)
-
-**2.配置项目**
-
-将**基目录**设置为`js-langsmith`。使用默认构建命令（`pnpm build`或`npm run build`）并发布目录`dist/`。
-
-**3.设置环境变量**
-
-部署之前在 Netlify 中添加这些变量：
-
-* `VITE_AGENT_API_URL`：LangSmith 部署根 URL。
-* `LANGSMITH_API_KEY`：演示客户端使用的LangSmith API 密钥。
-
-**Cloudflare 页面**
-
-**1.连接存储库**
-
-在 [Cloudflare dashboard](https://dash.cloudflare.com/) 中，从 [⟦T58⟧](https://github.com/langchain-ai/deployment-cookbook) 创建 **Workers & Pages** 项目。
-
-**2.配置构建**
-
-* **根目录**：`js-langsmith`
-* **构建命令**：`pnpm install && pnpm build`
-* **构建输出目录**：`dist`
-
-**3.设置环境变量**
-
-在 Pages 项目设置中添加以下变量：
-
-* `VITE_AGENT_API_URL`：LangSmith 部署根 URL。
-* `LANGSMITH_API_KEY`：演示客户端使用的LangSmith API 密钥。
-
-## 故障排除* `pnpm run dev`启动但无法连接UI：本地开发者将`VITE_AGENT_API_URL`留空，然后重新启动`pnpm run dev`。
-* 座席本地应答失败：确认`OPENAI_API_KEY`设置为`.env`。
+* `pnpm run dev`启动但无法连接UI：本地开发者将`VITE_AGENT_API_URL`留空，然后重新启动`pnpm run dev`。
+* 座席本地无法应答：确认`OPENAI_API_KEY`设置为`.env`。
 * `pnpm run deploy` 失败并出现身份验证错误：确认 `LANGSMITH_API_KEY` 具有部署访问权限。
 * 远程UI连接失败：确认`VITE_AGENT_API_URL`是部署根URL，不带路径后缀。
 * 重启本地开发后线程消失：本地`langgraph dev`使用内存中的`MemorySaver`； LangSmith 部署在生产中提供持久存储。
 * 您更改了`agent/`中的文件，但生产没有改变：再次运行`pnpm run deploy`。
 
-## 了解该项目
-
-> **代理文件**
+## 了解该项目> [手风琴] 代理文件
 >
 > LangSmith 后端位于 `agent/`：
 >
@@ -223,7 +221,7 @@ pnpm run dev
 >
 > `agent/index.ts` 导出LangGraph 本地服务和LangSmith 部署的图。本地`MemorySaver`检查指针仅由`langgraph dev`使用。 LangSmith 部署将其替换为生产中由 Postgres 支持的持久存储，无需更改代码。
 
-> **LangGraph配置**
+> [手风琴] LangGraph 配置
 >
 > `langgraph.json` 将 CLI 指向图表：
 >
@@ -236,7 +234,9 @@ pnpm run dev
 > }
 > ```
 >
-> 图ID是`agent`。前端在流式传输时使用该 id 作为助手 id。> **聊天界面**
+> 图ID是`agent`。前端在流式传输时使用该 id 作为助手 id。
+
+> [手风琴] 聊天 UI
 >
 > `src/` 中的 React 应用程序提供流式聊天、线程历史记录、子代理渲染和工具调用渲染。
 >
@@ -248,7 +248,7 @@ pnpm run dev
 >
 > 请参阅[Agent Server API reference](/langsmith/server-api-ref)了解底层线程和流API。
 
-> **本地命令**
+> [手风琴] 本地命令
 >
 > 运行两个本地进程：
 >
@@ -268,9 +268,7 @@ pnpm run dev
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm build
 > pnpm preview
-> ```
-
-> **CI/CD**
+> ```> [手风琴] CI/CD
 >
 > 当 `js-langsmith/agent/` 下的文件或共享配置文件发生更改时，代理会通过 GitHub Actions 进行部署：
 >

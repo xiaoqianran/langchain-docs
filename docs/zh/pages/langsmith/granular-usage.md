@@ -54,7 +54,7 @@ LangSmith 提供精细的计费使用 API，可让您检索按工作区、项目
 
 ## 查询参数
 
-粒度使用端点接受以下查询参数：|参数|类型 |必填 |描述 |
+粒度使用端点接受以下查询参数：|参数|类型 |必填|描述 |
 | - | - | - | - |
 | `start_time` |日期时间 |是的 |时间范围的开始（ISO 8601 格式）。 |
 | `end_time` |日期时间 |是的 |时间范围结束。必须在`start_time`之后。 |
@@ -311,7 +311,7 @@ GET /api/v1/orgs/current/billing/granular-usage/export
 对于`kind=traces`，值列是`Traces`。对于 `kind=langsmith_deployments`，值列为 `Nodes Executed`、`Agent Runs` 和 `Agent Uptime (seconds)`。|专栏 |出现时间 |
 | - | - |
 |时间桶开始|永远 |
-|时间桶结束 |永远 |
+|时间桶结束|永远 |
 |工作区 ID/名称 |始终（在 `group_by=workspace` 时填充）|
 |项目 ID / 名称 |始终（在 `group_by=project` 时填充）|
 |用户 ID / 电子邮件 |始终（在 `group_by=user` 时填充）|
@@ -319,7 +319,7 @@ GET /api/v1/orgs/current/billing/granular-usage/export
 |痕迹| `kind=traces` |
 |执行的节点/代理运行/代理正常运行时间（秒）| `kind=langsmith_deployments` |
 
-Cells whose value would start with `=`, `+`, `-`, `@`, tab, or carriage-return are tab-prefixed to neutralize spreadsheet formula evaluation in Excel / Google Sheets / LibreOffice.
+值以 `=`、`+`、`-`、`@`、制表符或回车符开头的单元格带有制表符前缀，以中和 Excel / Google Sheets / LibreOffice 中的电子表格公式计算。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 response = client.get(
@@ -352,14 +352,14 @@ group_by=workspace" \
 
 `group_by` 参数决定如何聚合使用数据：
 
-|价值|描述 |返回尺寸 |可用于 |
+|价值|描述 |返回尺寸 |适用于 |
 | - | - | - | - |
 | `workspace` |按工作区分组 | `workspace_id`、`workspace_name` |两种 |
-| `project` |按项目分组| `project_id`、`project_name` |两种 |
+| `project` |按项目分组 | `project_id`、`project_name` |两种 |
 | `user` |按用户分组 | `user_id`、`user_email` |两种 |
 | `api_key` |按 API 密钥分组 | `api_key_short_key` |两种 |
 
-对于跟踪使用，“项目”指的是[LangSmith tracer session](/langsmith/observability-concepts)。对于部署使用，“项目”指的是 LangSmith 部署项目（已部署的代理）。在 [agent-based workspace](/langsmith/agents) 中，按项目分组是导出最接近代理的方式，因为没有代理或环境维度。每个跟踪使用情况行覆盖一个代理的一个 [environment](/langsmith/agent-environments)，因此合计代理的使用情况意味着对其环境行进行求和。 LangSmith 将其为环境创建的跟踪项目命名为 `<agent>-<environment>`，例如 `support-triage-production`，而早于代理的项目则保留其已有的名称。
+对于跟踪使用，“项目”指的是[LangSmith tracer session](/langsmith/observability-concepts)。对于部署使用，“项目”指的是 LangSmith 部署项目（已部署的代理）。在 [agent-based workspace](/langsmith/agent-registry) 中，按项目分组是导出最接近代理的方式，因为没有代理或环境维度。每个跟踪使用情况行覆盖一个代理的一个 [environment](/langsmith/agent-environments)，因此合计代理的使用情况意味着对其环境行进行求和。 LangSmith 将其为环境创建的跟踪项目命名为 `<agent>-<environment>`，例如 `support-triage-production`，而早于代理的项目则保留其已有的名称。
 
 ## 相关资源
 

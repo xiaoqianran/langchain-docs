@@ -10,11 +10,11 @@
 >
 > 在您自己的模型提供程序上运行引擎需要 LangSmith Helm 图表 `0.17.0` 或更高版本。早期的图表版本仅在 [LangSmith Intelligence](/langsmith/engine-self-hosted#langsmith-intelligence) 上运行引擎。
 
-在自托管 LangSmith 上，组织管理员选择 [LangSmith Engine](/langsmith/engine) 运行其模型调用的位置：在 LangSmith Intelligence (LSI) 上、在您自己的模型提供商上或两者上。在您自己的提供商上运行引擎会根据您与这些提供商的协议保留提示和响应。本页介绍如何选择提供商、向他们进行身份验证以及通过专用网络连接到他们或 LSI。有关两个选项的比较，请参阅[Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models)。首先完成[Install Engine](/langsmith/engine-self-hosted#install-engine)。
+在自托管 LangSmith 上，组织管理员选择 [LangSmith Engine](/langsmith/engine) 运行其模型调用的位置：在 LangSmith Intelligence (LSI) 上、在您自己的模型提供程序上或两者上。在您自己的提供商上运行引擎会根据您与这些提供商的协议保留提示和响应。本页介绍如何选择提供商、向他们进行身份验证以及通过专用网络连接到他们或 LSI。有关两个选项的比较，请参阅[Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models)。首先完成[Install Engine](/langsmith/engine-self-hosted#install-engine)。
 
 > [!注意]
 >
-> 在[BYOC](/langsmith/engine-self-hosted#engine-on-byoc)、LangSmith 上，智能不可用，并且引擎仅在您自己的模型提供程序上运行。 Amazon Bedrock 可以使用 LangChain 配置的数据平面的云身份。 [cloud identity](#use-cloud-identity-for-your-model-providers) 和 [private connection](#connect-privately) 部分仅适用于自托管 LangSmith。
+> 在[BYOC](/langsmith/engine-self-hosted#engine-on-byoc)、LangSmith 上，智能不可用，引擎仅在您自己的模型提供程序上运行。 Amazon Bedrock 可以使用 LangChain 配置的数据平面的云身份。 [cloud identity](#use-cloud-identity-for-your-model-providers) 和 [private connection](#connect-privately) 部分仅适用于自托管 LangSmith。
 
 ## 使用您自己的模型提供者引擎直接从您的集群调用您的提供程序。根据您与提供商的协议，提示和响应仅发送给您的提供商。 LangChain 没有收到。
 
@@ -38,51 +38,51 @@ Engine 支持Anthropic、OpenAI、Amazon Bedrock、Google Vertex AI 和 Azure AI
 
 单击提供商旁边的 **添加凭据** 并输入：
 
-**Anthropic**
+> [标签] Anthropic
+>
+> Anthropic API 密钥。> [标签] 亚马逊基岩
+>
+> AWS 访问密钥 ID 和秘密访问密钥，以及可选的会话令牌或 Bedrock API 密钥（不记名令牌）。 （可选）AWS 区域。
+>
+> 引擎使用基岩地幔 API。要改用 Bedrock Runtime，请参阅 [Use Bedrock Runtime](#use-bedrock-runtime)。
+>
+> 允许访问所选 AWS 账户和区域中所需的模型。授予调用身份 Mantle 推理和模型订阅权限。请参阅[AmazonBedrockMantleInferenceAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonBedrockMantleInferenceAccess.html)了解所需的操作。
+>
+> 如果未保存任何区域，引擎将使用`us-east-1`，包括工作负载标识。它不继承 EKS 集群的区域。
+>
+> 要改用 Engine pod 的云身份，请参阅 [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers)。
 
-Anthropic API 密钥。
+> [选项卡] Google Vertex AI
+>
+> JSON 格式的服务帐户密钥。引擎使用JSON的`project_id`作为推理项目并调用`global`位置。
+>
+> 在该项目中通过[Model Garden](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/use-partner-models)启用所需的模型。在同一项目中授予服务帐户`roles/aiplatform.user`。
+>
+> 要改用 Engine pod 的云身份，请参阅 [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers)。> [选项卡] Azure AI Foundry
+>
+> 确认您的资源区域具有已安装的引擎映像所需模型的访问权限和配额。配置 Azure：
+>
+> 1. 在同一 Azure AI Foundry 资源中创建所需的模型部署。部署名称必须与模型名称（模型 ID）完全匹配。 Engine 使用 Claude 作为其主要模型，并使用 GPT 作为后备模型。这两个模型系列都不支持自定义部署别名。
+>
+> 按照[Claude deployment instructions](https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry) 并检查[Azure OpenAI model availability](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/responses)。创建第一个 Claude 部署时接受 Azure 市场条款。
+> 2. 输入 API 密钥和资源名称，而不是其完整 URL。要使用 Engine pod 的云身份而不是 API 密钥，请参阅[Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers)。
+> 3. 运行 [**Test connection**](#test-a-provider) 并确认 Claude 和 GPT 请求均成功，包括在选择其他提供商时。保存后，[start an Engine analysis](/langsmith/engine-self-hosted#verify-the-installation)验证完整设置。
 
-**亚马逊基岩**
-
-AWS 访问密钥 ID 和秘密访问密钥，以及可选的会话令牌或 Bedrock API 密钥（不记名令牌）。 （可选）AWS 区域。
-
-引擎使用基岩地幔 API。要改用 Bedrock Runtime，请参阅 [Use Bedrock Runtime](#use-bedrock-runtime)。允许访问所选 AWS 账户和区域中所需的模型。授予调用身份 Mantle 推理和模型订阅权限。请参阅[AmazonBedrockMantleInferenceAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonBedrockMantleInferenceAccess.html)了解所需的操作。
-
-如果没有保存区域，引擎将使用`us-east-1`，包括工作负载标识。它不继承 EKS 集群的区域。
-
-要改用 Engine pod 的云身份，请参阅 [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers)。
-
-**谷歌顶点人工智能**
-
-JSON 格式的服务帐户密钥。引擎使用JSON的`project_id`作为推理项目并调用`global`位置。
-
-通过该项目中的[Model Garden](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/use-partner-models)启用所需的模型。在同一项目中授予服务帐户`roles/aiplatform.user`。
-
-要改用 Engine pod 的云身份，请参阅 [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers)。
-
-**Azure AI 铸造厂**
-
-确认您的资源区域具有已安装的引擎映像所需模型的访问权限和配额。配置 Azure：
-
-1. 在同一 Azure AI Foundry 资源中创建所需的模型部署。部署名称必须与模型名称（模型 ID）完全匹配。 Engine 使用 Claude 作为其主要模型，并使用 GPT 作为后备模型。这两个模型系列都不支持自定义部署别名。遵循[Claude deployment instructions](https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry)并检查[Azure OpenAI model availability](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/responses)。创建第一个 Claude 部署时接受 Azure 市场条款。
-2. 输入 API 密钥和资源名称，而不是其完整 URL。要使用 Engine pod 的云身份而不是 API 密钥，请参阅[Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers)。
-3. 运行 [**Test connection**](#test-a-provider) 并确认 Claude 和 GPT 请求均成功，包括在选择其他提供商时。保存后，[start an Engine analysis](/langsmith/engine-self-hosted#verify-the-installation)验证完整设置。
-
-**OpenAI**
-
-OpenAI API 密钥，以及可选的 OpenAI 组织 ID。
+> [标签] OpenAI
+>
+> OpenAI API 密钥，以及可选的 OpenAI 组织 ID。
 
 具有完整凭据的提供程序显示为已配置。要稍后更改它们，请单击提供程序旁边的钥匙图标。
 
-**2.测试提供商**
-
-单击**测试连接**。引擎使用保存的凭据或配置的云身份向它在该提供商上使用的每个模型发送一个小请求。它显示每个请求是否成功，如果没有，则说明原因。
+**2.测试提供商**单击**测试连接**。引擎使用保存的凭据或配置的云身份向它在该提供商上使用的每个模型发送一个小请求。它显示每个请求是否成功，如果没有，则说明原因。
 
 **3.选择提供商并保存**
 
 选择引擎可能使用的提供商，然后保存。
 
-如果保存后引擎运行失败：* **未选择任何提供程序：** 在选择并保存至少一个提供程序之前，引擎不会开始运行。
+如果保存后引擎运行失败：
+
+* **未选择提供程序：** 在选择并保存至少一个提供程序之前，引擎不会开始运行。
 * **拒绝的凭据：** **测试连接** 报告哪个提供商拒绝了它们。更新凭据并再次测试。
 * **模型不可用：** 在您的提供商帐户中启用模型，然后再次测试。
 
@@ -108,97 +108,95 @@ engineInsightsAgent:
           value: "<system-inference-profile-id>"
 ```
 
-将`ENGINE_BEDROCK_INFERENCE_PROFILE`设置为Engine的Claude模型的系统推理配置文件ID，例如`us.anthropic.<model-id>`。支持的前缀为 `us.`、`eu.`、`apac.` 和 `global.`。不支持配置文件 ARN 和应用程序推理配置文件。
-
-授予呼叫身份 Bedrock Runtime 访问该配置文件的权限。然后应用 Helm 值，重新启动两个部署，并运行 [**Test connection**](#test-a-provider)。如果引擎升级更改了其 Claude 模型，请更新配置文件 ID。
+将`ENGINE_BEDROCK_INFERENCE_PROFILE`设置为Engine的Claude模型的系统推理配置文件ID，例如`us.anthropic.<model-id>`。支持的前缀为 `us.`、`eu.`、`apac.` 和 `global.`。不支持配置文件 ARN 和应用程序推理配置文件。授予呼叫身份 Bedrock Runtime 访问该配置文件的权限。然后应用 Helm 值，重新启动两个部署，并运行 [**Test connection**](#test-a-provider)。如果引擎升级更改了其 Claude 模型，请更新配置文件 ID。
 
 在 BYOC 上，请联系 LangChain 进行此更改。
 
-## 对您的模型提供商使用云身份Amazon Bedrock、Google Vertex AI 和 Azure AI Foundry 可以使用 Engine pod 的云身份（而不是保存在 LangSmith 中的凭证）进行身份验证，而不是保存凭证。在 `engine.workloadIdentityProviders` 中列出这些提供商。为共享引擎和 Insights 部署的 API 服务器和队列配置身份：
+## 对您的模型提供商使用云身份
 
-**亚马逊EKS**
+Amazon Bedrock、Google Vertex AI 和 Azure AI Foundry 可以使用 Engine pod 的云身份（而不是保存在 LangSmith 中的凭证）进行身份验证，而不是保存凭证。在 `engine.workloadIdentityProviders` 中列出这些提供商。为共享引擎和 Insights 部署的 API 服务器和队列配置身份：
 
-为服务账户 (IRSA) 配置 IAM 角色。信任两个引擎工作负载的命名空间和服务帐户，并授予角色对引擎使用的 Bedrock 模型的访问权限。
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-engine:
-  workloadIdentityProviders:
-    - bedrock
-
-engineInsightsAgent:
-  apiServer:
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<engine-model-access-role>"
-  queue:
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<engine-model-access-role>"
-```
-
-**谷歌GKE**
-
-在集群和运行引擎的节点池上为 GKE 启用工作负载联合身份验证。在 Google 服务帐户上授予每个 Engine Kubernetes 服务帐户 `roles/iam.workloadIdentityUser`。将每个成员绑定为`serviceAccount:<cluster-project-id>.svc.id.goog[<namespace>/<kubernetes-service-account>]`。
-
-在托管模型的项目中授予 Google 服务帐户 Vertex AI 推理权限，例如 `roles/aiplatform.user`。在该项目中启用所需的模型。
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-engine:
-  workloadIdentityProviders:
-    - vertex
-
-engineInsightsAgent:
-  apiServer:
-    serviceAccount:
-      annotations:
-        iam.gke.io/gcp-service-account: "<service-account>@<project-id>.iam.gserviceaccount.com"
-    deployment:
-      extraEnv:
-        - name: GOOGLE_CLOUD_PROJECT
-          value: "<vertex-project-id>"
-  queue:
-    serviceAccount:
-      annotations:
-        iam.gke.io/gcp-service-account: "<service-account>@<project-id>.iam.gserviceaccount.com"
-    deployment:
-      extraEnv:
-        - name: GOOGLE_CLOUD_PROJECT
-          value: "<vertex-project-id>"
-```
-
-引擎使用应用程序默认凭据 (ADC) 来解析身份和项目。将两个工作负载上的 `GOOGLE_CLOUD_PROJECT` 设置为预期的 Vertex AI 项目。引擎当前使用 `global` Vertex AI 位置，因此所需的模型必须在那里可用。
-
-**Azure AKS**启用 AKS OIDC 颁发者和 Microsoft Entra 工作负载 ID。为托管身份上的每个引擎 Kubernetes 服务帐户创建联合身份凭证。为每个集群使用集群的 OIDC 发行者、受众 `api://AzureADTokenExchange` 和主题 `system:serviceaccount:<namespace>:<kubernetes-service-account>`。
-
-向身份授予认知服务用户角色，范围仅限于托管引擎模型的 Azure AI Foundry 资源。仅 Azure OpenAI 角色无法建立对 Claude 模型的访问权限。
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-engine:
-  workloadIdentityProviders:
-    - azure
-
-engineInsightsAgent:
-  apiServer:
-    serviceAccount:
-      annotations:
-        azure.workload.identity/client-id: "<managed-identity-client-id>"
-    deployment:
-      labels:
-        azure.workload.identity/use: "true"
-  queue:
-    serviceAccount:
-      annotations:
-        azure.workload.identity/client-id: "<managed-identity-client-id>"
-    deployment:
-      labels:
-        azure.workload.identity/use: "true"
-```
-
-两个工作负载都需要服务帐户注释和 Pod 标签。将 Foundry 资源名称保存在**设置 > 引擎 > 模型提供程序**下。
+> [选项卡] Amazon EKS
+>
+> 为服务账户 (IRSA) 配置 IAM 角色。信任两个引擎工作负载的命名空间和服务帐户，并授予角色对引擎使用的 Bedrock 模型的访问权限。
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> engine:
+>   workloadIdentityProviders:
+>     - bedrock
+>
+> engineInsightsAgent:
+>   apiServer:
+>     serviceAccount:
+>       annotations:
+>         eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<engine-model-access-role>"
+>   queue:
+>     serviceAccount:
+>       annotations:
+>         eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<engine-model-access-role>"
+> ```> [标签] 谷歌 GKE
+>
+> 在集群和运行引擎的节点池上为 GKE 启用工作负载联合身份验证。在 Google 服务帐户上授予每个 Engine Kubernetes 服务帐户 `roles/iam.workloadIdentityUser`。将每个成员绑定为`serviceAccount:<cluster-project-id>.svc.id.goog[<namespace>/<kubernetes-service-account>]`。
+>
+> 在托管模型的项目中授予 Google 服务帐户 Vertex AI 推理权限，例如 `roles/aiplatform.user`。在该项目中启用所需的模型。
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> engine:
+>   workloadIdentityProviders:
+>     - vertex
+>
+> engineInsightsAgent:
+>   apiServer:
+>     serviceAccount:
+>       annotations:
+>         iam.gke.io/gcp-service-account: "<service-account>@<project-id>.iam.gserviceaccount.com"
+>     deployment:
+>       extraEnv:
+>         - name: GOOGLE_CLOUD_PROJECT
+>           value: "<vertex-project-id>"
+>   queue:
+>     serviceAccount:
+>       annotations:
+>         iam.gke.io/gcp-service-account: "<service-account>@<project-id>.iam.gserviceaccount.com"
+>     deployment:
+>       extraEnv:
+>         - name: GOOGLE_CLOUD_PROJECT
+>           value: "<vertex-project-id>"
+> ```
+>
+> 引擎使用应用程序默认凭据 (ADC) 来解析身份和项目。将两个工作负载上的 `GOOGLE_CLOUD_PROJECT` 设置为预期的 Vertex AI 项目。引擎当前使用 `global` Vertex AI 位置，因此所需的模型必须在那里可用。> [选项卡] Azure AKS
+>
+> 启用 AKS OIDC 颁发者和 Microsoft Entra 工作负载 ID。为托管身份上的每个引擎 Kubernetes 服务帐户创建联合身份凭证。为每个集群使用集群的 OIDC 发行者、受众 `api://AzureADTokenExchange` 和主题 `system:serviceaccount:<namespace>:<kubernetes-service-account>`。
+>
+> 向身份授予认知服务用户角色，范围仅限于托管引擎模型的 Azure AI Foundry 资源。仅 Azure OpenAI 角色无法建立对 Claude 模型的访问权限。
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> engine:
+>   workloadIdentityProviders:
+>     - azure
+>
+> engineInsightsAgent:
+>   apiServer:
+>     serviceAccount:
+>       annotations:
+>         azure.workload.identity/client-id: "<managed-identity-client-id>"
+>     deployment:
+>       labels:
+>         azure.workload.identity/use: "true"
+>   queue:
+>     serviceAccount:
+>       annotations:
+>         azure.workload.identity/client-id: "<managed-identity-client-id>"
+>     deployment:
+>       labels:
+>         azure.workload.identity/use: "true"
+> ```
+>
+> 两个工作负载都需要服务帐户注释和 Pod 标签。将 Foundry 资源名称保存在**设置 > 引擎 > 模型提供程序**下。
 
 > [!警告]
 >
-> `engine.workloadIdentityProviders` 中列出的提供程序视为在未保存凭据的情况下进行配置，因此任何组织管理员都可以选择它。将身份范围限定为引擎使用的模型。保存的凭据优先于云身份。切换提供商时，请在删除其保存的凭据之前应用云身份配置。然后，在 **设置 > 引擎 > 模型提供程序** 下仅删除该提供程序保存的 API 密钥或服务帐户 JSON。对于 Bedrock，还要删除任何已保存的访问密钥、秘密访问密钥和会话令牌。保留 Azure AI Foundry 资源名称和任何 Bedrock 区域设置，然后再次 [test the provider](#test-a-provider)。
+> `engine.workloadIdentityProviders` 中列出的提供程序视为在未保存凭据的情况下进行配置，因此任何组织管理员都可以选择它。将身份范围限定为引擎使用的模型。保存的凭据优先于云身份。切换提供商时，请在删除其保存的凭据之前应用云身份配置。然后，在 **设置 > 引擎 > 模型提供程序** 下仅删除该提供程序保存的 API 密钥或服务帐户 JSON。对于 Bedrock，还要删除所有已保存的访问密钥、秘密访问密钥和会话令牌。保留 Azure AI Foundry 资源名称和任何 Bedrock 区域设置，然后再次 [test the provider](#test-a-provider)。
 
 ## 使用模型网关
 
@@ -208,7 +206,7 @@ engineInsightsAgent:
 >
 > 模型网关支持需要 LangSmith Helm 图表 `0.17.31` 或更高版本。
 
-安装 LangSmith 的人都会在 Helm 值中配置网关，而不是在 UI 中。网关 URL 通常是私有地址，因此组织设置将允许任何组织管理员将引擎指向内部服务。在[BYOC](/langsmith/engine-self-hosted#engine-on-byoc)，联系LangChain配置网关。
+安装 LangSmith 的人都会在 Helm 值中配置网关，而不是在 UI 中。网关 URL 通常是私有地址，因此组织设置将允许任何组织管理员将引擎指向内部服务。 [BYOC](/langsmith/engine-self-hosted#engine-on-byoc) 尚不提供模型网关。
 
 ### 网关要求
 
@@ -243,58 +241,58 @@ commonEnv:
 
 **3.配置身份验证**
 
-选择引擎如何向网关进行身份验证：
+选择引擎如何向网关进行身份验证：> [选项卡] API 密钥
+>
+> 将网关密钥存储在 Kubernetes 密钥中并将其安装到两个引擎工作负载中。将 `ENGINE_GATEWAY_API_KEY_FILE` 设置为已安装文件的路径。
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> engineInsightsAgent:
+>   apiServer:
+>     deployment:
+>       extraEnv:
+>         - name: ENGINE_GATEWAY_ANTHROPIC_BASE_URL
+>           value: "https://<gateway-host>/anthropic"
+>         - name: ENGINE_GATEWAY_OPENAI_BASE_URL
+>           value: "https://<gateway-host>/openai/v1"
+>         - name: ENGINE_GATEWAY_API_KEY_FILE
+>           value: "/etc/engine-gateway/api-key"
+>       volumes:
+>         - name: engine-gateway
+>           secret:
+>             secretName: engine-model-gateway
+>       volumeMounts:
+>         - name: engine-gateway
+>           mountPath: /etc/engine-gateway
+>           readOnly: true
+>   queue:
+>     deployment:
+>       # The same extraEnv, volumes, and volumeMounts as apiServer.
+> ```
+>
+> 默认情况下，引擎发送密钥为`Authorization: Bearer <key>`。如果您的网关需要另一个标头中的密钥，请将 `ENGINE_GATEWAY_AUTH_HEADER` 设置为该标头的名称，例如 `x-api-key`。然后引擎将密钥作为标头的值发送。
+>
+> 要发送其他标头，请挂载每个标头一个文件的目录，并将 `ENGINE_GATEWAY_HEADERS_DIR` 设置为其路径。每个文件的名称是标头名称，其内容是值。引擎保留`host`、`content-length`、`content-type`、`transfer-encoding`、`connection`以及以`x-langsmith-`开头的标头。
+>
+> 引擎在每次运行开始时读取密钥和头文件，因此您可以轮换它们而无需重新启动引擎。
 
-**API 密钥**
-
-将网关密钥存储在 Kubernetes 密钥中并将其安装到两个引擎工作负载中。将 `ENGINE_GATEWAY_API_KEY_FILE` 设置为已安装文件的路径。
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-engineInsightsAgent:
-  apiServer:
-    deployment:
-      extraEnv:
-        - name: ENGINE_GATEWAY_ANTHROPIC_BASE_URL
-          value: "https://<gateway-host>/anthropic"
-        - name: ENGINE_GATEWAY_OPENAI_BASE_URL
-          value: "https://<gateway-host>/openai/v1"
-        - name: ENGINE_GATEWAY_API_KEY_FILE
-          value: "/etc/engine-gateway/api-key"
-      volumes:
-        - name: engine-gateway
-          secret:
-            secretName: engine-model-gateway
-      volumeMounts:
-        - name: engine-gateway
-          mountPath: /etc/engine-gateway
-          readOnly: true
-  queue:
-    deployment:
-      # The same extraEnv, volumes, and volumeMounts as apiServer.
-```
-
-默认情况下，引擎将密钥发送为`Authorization: Bearer <key>`。如果您的网关需要另一个标头中的密钥，请将 `ENGINE_GATEWAY_AUTH_HEADER` 设置为该标头的名称，例如 `x-api-key`。然后引擎将密钥作为标头的值发送。
-
-要发送其他标头，请安装一个目录，每个标头一个文件，并将 `ENGINE_GATEWAY_HEADERS_DIR` 设置为其路径。每个文件的名称是标头名称，其内容是值。引擎保留`host`、`content-length`、`content-type`、`transfer-encoding`、`connection`以及以`x-langsmith-`开头的标头。引擎在每次运行开始时读取密钥和头文件，因此您可以轮换它们而无需重新启动引擎。
-
-**LLM授权代理**
-
-如果您的网关位于 [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted) 后面，引擎可以使用短期 LangSmith 令牌而不是静态密钥进行身份验证。参见[Use the LLM auth proxy](#use-the-llm-auth-proxy)。
+> [选项卡] LLM 身份验证代理
+>
+> 如果您的网关位于 [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted) 后面，引擎可以使用短期 LangSmith 令牌而不是静态密钥进行身份验证。参见[Use the LLM auth proxy](#use-the-llm-auth-proxy)。
 
 应用 Helm 值并重新启动两个引擎工作负载，以便它们获取新的环境变量。
 
-**4.测试并选择网关**
-
-在“**设置 > 引擎 > 模型提供程序**”下，单击“**模型网关**”旁边的“测试连接**”。引擎通过网关为您配置的每个 API 发送一个小请求，并显示每个请求是否成功。如果网关拒绝请求，结果将包括网关的错误消息。然后选择**模型网关**并保存。
+**4.测试并选择网关**在“**设置 > 引擎 > 模型提供程序**”下，单击“**模型网关**”旁边的“测试连接**”。引擎通过网关为您配置的每个 API 发送一个小请求，并显示每个请求是否成功。如果网关拒绝请求，结果将包括网关的错误消息。然后选择**模型网关**并保存。
 
 ### 使用 LLM 身份验证代理
 
-使用 LLM 身份验证代理，引擎永远不会持有网关密钥。代理验证 LangSmith 签名的令牌，并且您的代理配置添加网关的凭据。对于每次运行，引擎都会从您的 LangSmith 安装请求一个令牌，并在每次模型调用时将其发送到 `X-LangSmith-LLM-Auth` 标头中。令牌的有效期为五分钟，引擎会在当前令牌过期之前请求新的令牌。 **测试连接**使用相同的流程。
+使用 LLM 身份验证代理，引擎永远不会持有网关密钥。代理验证 LangSmith 签名的令牌，并且您的代理配置添加网关的凭据。
 
-设置方法：
+对于每次运行，引擎都会从您的 LangSmith 安装请求一个令牌，并在每次模型调用时将其发送到 `X-LangSmith-LLM-Auth` 标头中。令牌的有效期为五分钟，引擎会在当前令牌过期之前请求新的令牌。 **测试连接**使用相同的流程。
 
-1. 完成[Set up the LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted)的步骤 1 到 4：配置 JWT 签名和颁发者，为您的组织启用代理，设置 JWT 受众，并安装身份验证代理图表，并将您的网关作为其上游。
+设置方法：1. 完成[Set up the LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted)的步骤 1 到 4：配置 JWT 签名和颁发者，为您的组织启用代理，设置 JWT 受众，并安装身份验证代理图表，并将您的网关作为其上游。
 2. 在两个引擎工作负载上，将 `ENGINE_GATEWAY_AUTH` 设置为 `llm_auth_proxy`，并将基本 URL 指向身份验证代理服务而不是网关。不要设置`ENGINE_GATEWAY_API_KEY_FILE`：当两者都设置时，引擎将无法运行。
+
+   代理将每个请求的路径附加到图表的 `authProxy.upstream` URL，因此请保留每个 API 在网关上的路径。例如，将 `authProxy.upstream` 设置为 `https://gateway.example.com` 并且网关在 `https://gateway.example.com/anthropic` 处为 Anthropic API 提供服务，请将 `ENGINE_GATEWAY_ANTHROPIC_BASE_URL` 设置为代理地址，后跟 `/anthropic`。该图表将服务命名为 `<release>-auth-proxy` 并默认侦听端口 `10000` (`authProxy.service.port`)。
 
    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    engineInsightsAgent:
@@ -315,7 +313,7 @@ engineInsightsAgent:
    ```
 
    仅当引擎通过集群内的纯 HTTP 到达身份验证代理时才需要 `ENGINE_GATEWAY_ALLOW_INSECURE_HTTP`。
-3. 如果您组织的 **允许的 URL** 设置为 **自定义**，请将身份验证代理的主机添加到列表中。引擎按计划运行，而不是以登录用户的身份运行。其令牌标识组织和工作区，`actor_type` 设置为 `api_key:service`，并且它们不包含 IdP 令牌。如果您的 `ext_authz` 或 `ext_proc` 服务将用户的 IdP 令牌交换为网关凭据，请单独处理引擎的请求，例如通过将工作区映射到网关凭据。
+3. 如果您组织的 **允许的 URL** 设置为 **自定义**，请将身份验证代理的主机名添加到列表中。引擎按计划运行，而不是以登录用户的身份运行。其令牌标识组织和工作区，`actor_type` 设置为 `api_key:service`，并且它们不包含 IdP 令牌。如果您的 `ext_authz` 或 `ext_proc` 服务将用户的 IdP 令牌交换为网关凭据，请单独处理引擎的请求，例如通过将工作区映射到网关凭据。
 
 如果引擎报告未为组织启用 LLM 身份验证代理，或者组织没有 JWT 受众，请填写 [Configure organization settings in LangSmith](/langsmith/llm-auth-proxy-self-hosted#3-configure-organization-settings-in-langsmith)。
 

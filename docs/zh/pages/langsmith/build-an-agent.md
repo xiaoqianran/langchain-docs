@@ -2,17 +2,17 @@
 
 <!-- langchain-docs: Build an agent in the UI | https://docs.langchain.com/langsmith/build-an-agent -->
 
-# Build an agent in the UI
+# 在UI中构建一个代理
 
-“构建”选项卡如何从表单配置代理、该表单的每个部分设置的内容以及新代理的跟踪记录的位置。
+“构建”选项卡如何从表单配置代理、该表单的每个部分设置什么以及新代理的跟踪落在何处。
 
-**构建**选项卡在LangSmith而不是代码中创建代理。您填写配置表单，提交时LangSmith会从中创建一个[no-code agent](/langsmith/fleet)。 Nothing is created until you do.
+**构建**选项卡在LangSmith而不是代码中创建代理。您填写配置表单，提交时LangSmith会从中创建一个[no-code agent](/langsmith/fleet)。在您创建之前，什么都不会被创建。
 
-当您需要一个没有本地项目或部署的工作代理时，请使用它。它生成的所有内容都是 [agent](/langsmith/agents) ，就像其他任何东西一样，因此它的跟踪、仪表板和评估器的行为与您自己检测的行为相同。
+当您需要一个没有本地项目或部署的工作代理时，请使用它。它生成的所有内容都是 [agent](/langsmith/agent-registry#agent) ，就像其他任何东西一样，因此它的跟踪、仪表板和评估器的行为与您自己检测的行为相同。
 
 > [!注意]
 >
-> [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。 They are not available on [self-hosted](/langsmith/self-hosted) LangSmith.要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
+> [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
 
 > [!注意]
 >
@@ -58,7 +58,7 @@ LangSmith 创建代理，然后完成其余的设置，例如连接帐户和注�
 
 ## 另请参阅
 
-* [Agents](/langsmith/agents)
+* [Agent Registry](/langsmith/agent-registry)
 * [Navigate agents](/langsmith/navigate-agents)
 * [No-code agents](/langsmith/fleet)
 * [Agent environments](/langsmith/agent-environments)

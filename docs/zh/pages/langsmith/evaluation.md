@@ -12,13 +12,13 @@ LangSmith 的测试工具可帮助您测量代理质量、迭代提示以及在�
 
 LangSmith 支持两种类型的基于运行时间和地点的评估：
 
-> **线下评估**
+> 【卡牌】线下评测
 >
 > **发货前测试**
 >
 > 在开发过程中对精选数据集进行评估，以比较版本、基准性能并捕获回归。
 
-> **在线评估**
+> 【卡牌】在线评测
 >
 > **生产中的监控**
 >
@@ -38,44 +38,44 @@ LangSmith 支持两种类型的基于运行时间和地点的评估：
 
 ## 评估工作流程
 
-**离线评估流程**
-
-**1.创建数据集**
-
-从手动策划的测试用例、历史生产跟踪或合成数据生成中创建带有 [examples](/langsmith/evaluation-concepts#examples)（具有输入和参考输出的单独测试用例）的 [dataset](/langsmith/manage-datasets)。
-
-**2.定义评估者**
-
-创建 [evaluators](/langsmith/evaluation-concepts#evaluators)（对应用程序性能进行评分的函数）来对性能进行评分：
-
-* [Human](/langsmith/evaluation-concepts#human)回顾
-* [Code](/langsmith/evaluation-concepts#code)规则
-* [LLM-as-judge](/langsmith/llm-as-judge)
-* [Pairwise](/langsmith/evaluate-pairwise)比较
-
-**3.进行实验**
-
-在数据集上执行您的应用程序以创建[experiment](/langsmith/evaluation-concepts#experiment)（在数据集上评估特定应用程序版本的结果）。配置[repetitions, concurrency, and caching](/langsmith/experiment-configuration)以优化运行。
-
-**4.分析结果**
-
-比较 [benchmarking](/langsmith/evaluation-types#benchmarking)、[unit tests](/langsmith/evaluation-types#unit-tests)、[regression tests](/langsmith/evaluation-types#regression-tests) 或 [backtesting](/langsmith/evaluation-types#backtesting) 的实验。
-
-**在线评估流程**
-
-**1.部署您的应用程序**
-
-每次交互都会创建一个没有参考输出的[run](/langsmith/evaluation-concepts#runs)（包括输入、输出和中间步骤的单个执行跟踪）。
-
-**2.配置在线评估器**
-
-设置 [evaluators](/langsmith/online-evaluations-llm-as-judge) 在生产跟踪上自动运行：安全检查、格式验证、质量启发法和无参考的法学硕士作为法官。应用[filters and sampling rates](/langsmith/online-evaluations-llm-as-judge#configure-a-sampling-rate)来控制成本。
-
-**3.实时监控**评估器在[runs](/langsmith/evaluation-concepts#runs)或[threads](/langsmith/online-evaluations-multi-turn)（形成多轮对话的相关运行的集合）上自动运行，提供实时监控、异常检测和警报。
-
-**4.建立反馈循环**
-
-将失败的生产跟踪添加到您的[dataset](/langsmith/manage-datasets)，创建有针对性的评估器，通过离线实验验证修复，然后重新部署。
+> [tab] 离线评估流程
+>
+> **1。创建数据集**
+>
+> 根据手动策划的测试用例、历史生产跟踪或合成数据生成，使用 [examples](/langsmith/evaluation-concepts#examples)（具有输入和参考输出的单独测试用例）创建 [dataset](/langsmith/manage-datasets)。
+>
+> **2。定义评估者**
+>
+> 创建 [evaluators](/langsmith/evaluation-concepts#evaluators)（对应用程序性能进行评分的函数）来对性能进行评分：
+>
+> * [Human](/langsmith/evaluation-concepts#human) 回顾
+> * [Code](/langsmith/evaluation-concepts#code) 规则
+> * [LLM-as-judge](/langsmith/llm-as-judge)
+> * [Pairwise](/langsmith/evaluate-pairwise)比较
+>
+> **3。进行实验**
+>
+> 在数据集上执行您的应用程序以创建 [experiment](/langsmith/evaluation-concepts#experiment)（在数据集上评估特定应用程序版本的结果）。配置[repetitions, concurrency, and caching](/langsmith/experiment-configuration)以优化运行。
+>
+> **4。分析结果**
+>
+> 比较 [benchmarking](/langsmith/evaluation-types#benchmarking)、[unit tests](/langsmith/evaluation-types#unit-tests)、[regression tests](/langsmith/evaluation-types#regression-tests) 或 [backtesting](/langsmith/evaluation-types#backtesting) 的实验。> [tab] 在线评测流程
+>
+> **1。部署您的应用程序**
+>
+> 每次交互都会创建一个没有参考输出的[run](/langsmith/evaluation-concepts#runs)（包括输入、输出和中间步骤的单个执行跟踪）。
+>
+> **2。配置在线评估器**
+>
+> 设置 [evaluators](/langsmith/online-evaluations-llm-as-judge) 在生产跟踪上自动运行：安全检查、格式验证、质量启发法和无参考的法学硕士作为法官。应用[filters and sampling rates](/langsmith/online-evaluations-llm-as-judge#configure-a-sampling-rate)来控制成本。
+>
+> **3。实时监控**
+>
+> 评估器在[runs](/langsmith/evaluation-concepts#runs)或[threads](/langsmith/online-evaluations-multi-turn)（形成多轮对话的相关运行的集合）上自动运行，提供实时监控、异常检测和警报。
+>
+> **4。建立反馈循环**
+>
+> 将失败的生产跟踪添加到您的[dataset](/langsmith/manage-datasets)，创建有针对性的评估器，通过离线实验验证修复，然后重新部署。
 
 > [!提示]
 >
@@ -83,33 +83,33 @@ LangSmith 支持两种类型的基于运行时间和地点的评估：
 
 ## 开始吧
 
-> **[Evaluation quickstart](/langsmith/evaluation-quickstart)**
+> [卡][Evaluation quickstart](/langsmith/evaluation-quickstart)
 >
 > 开始离线评估。
 
-> **[Manage datasets](/langsmith/manage-datasets)**
+> [卡][Manage datasets](/langsmith/manage-datasets)
 >
 > 通过 UI 或 SDK 创建和管理用于评估的数据集。
 
-> **[Run offline evaluations](/langsmith/evaluate-llm-application)**
+> [卡][Run offline evaluations](/langsmith/evaluate-llm-application)
 >
-> 探索综合测试的评估类型、技术和框架。
-
-> **[Analyze results](/langsmith/analyze-an-experiment)**
+> 探索综合测试的评估类型、技术和框架。> [卡][Analyze results](/langsmith/analyze-an-experiment)
 >
 > 查看和分析评估结果、比较实验、过滤数据并导出结果。
 
-> **[Run online evaluations](/langsmith/online-evaluations-llm-as-judge)**
+> [卡][Run online evaluations](/langsmith/online-evaluations-llm-as-judge)
 >
 > 从“可观察性”选项卡实时监控生产质量。
 
-> **[Follow tutorials](/langsmith/evaluate-chatbot-tutorial)**
+> [卡][Follow tutorials](/langsmith/evaluate-chatbot-tutorial)
 >
 > 按照分步教程进行学习，从简单的聊天机器人到复杂的代理评估。
 
-> **[Studio](/langsmith/studio)**
+> [卡][Studio](/langsmith/studio)
 >
-> 使用交互式环境来开发和调试代理。> [!注意]
+> 使用交互式环境来开发和调试代理。
+
+> [!注意]
 >
 > 要设置 LangSmith 实例，请访问 [Platform setup section](/langsmith/platform-setup) 在云、混合或自托管之间进行选择。所有选项都包括可观察性、评估、即时工程和部署。
 

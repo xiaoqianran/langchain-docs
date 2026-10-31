@@ -103,7 +103,7 @@ docker run \
 >
 > 并且您应该为 `REDIS_URI`、`DATABASE_URI` 和 `LANGSMITH_API_KEY` 提供适当的值。
 >
-> * 如果您的应用程序需要额外的环境变量，您可以以类似的方式传递它们。
+> * 如果您的应用程序需要额外的环境变量，您可以通过类似的方式传递它们。
 
 ## Docker 组合> [!警告]
 >
@@ -158,7 +158,7 @@ services:
 
 将此文件放在同一文件夹中运行 `docker compose up`。
 
-> **使用 MongoDB 检查点**
+> [手风琴] 使用 MongoDB 检查点
 >
 > 要在 MongoDB 而不是 PostgreSQL 中存储检查点，请添加 MongoDB 服务并配置检查点后端。将 `langgraph.json` 中的后端设置为 `"mongo"` 或使用 `LS_DEFAULT_CHECKPOINTER_BACKEND` 环境变量。所有其他服务器数据仍然需要 PostgreSQL。
 >

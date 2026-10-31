@@ -30,19 +30,19 @@ Follow the [Kubernetes installation guide](/langsmith/kubernetes). LangSmith is 
 
 For production deployments, connect to AWS managed services:
 
-> **[Amazon S3](/langsmith/self-host-blob-storage#amazon-s3)**
+> [card] [Amazon S3](/langsmith/self-host-blob-storage#amazon-s3)
 >
 > Store trace data in S3
 
-> **[Amazon RDS](/langsmith/self-host-external-postgres#amazon-rds)**
+> [card] [Amazon RDS](/langsmith/self-host-external-postgres#amazon-rds)
 >
 > PostgreSQL database
 
-> **[Amazon ElastiCache](/langsmith/self-host-external-redis#amazon-elasticache)**
+> [card] [Amazon ElastiCache](/langsmith/self-host-external-redis#amazon-elasticache)
 >
 > Redis or Valkey for caching
 
-> **[ClickHouse Cloud](/langsmith/self-host-external-clickhouse)**
+> [card] [ClickHouse Cloud](/langsmith/self-host-external-clickhouse)
 >
 > Analytics database
 

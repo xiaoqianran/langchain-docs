@@ -40,198 +40,198 @@ The same model interface works in both contexts, which gives you the flexibility
 
 The easiest way to get started with a standalone model in LangChain is to use `initChatModel` to initialize one from a [chat model provider](/oss/javascript/integrations/chat) of your choice (examples below):
 
-**OpenAI**
+> [tab] OpenAI
+>
+> 👉 Read the [OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/openai
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/openai
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/openai
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/openai
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.OPENAI_API_KEY = "your-api-key";
+>
+> const model = await initChatModel("gpt-5.5");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatOpenAI } from "@langchain/openai";
+>
+> const model = new ChatOpenAI({
+>   model: "gpt-5.5",
+>   apiKey: "your-api-key"
+> });
+> ```
 
-👉 Read the [OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+> [tab] Anthropic
+>
+> 👉 Read the [Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/anthropic
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/anthropic
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/anthropic
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm add @langchain/anthropic
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.ANTHROPIC_API_KEY = "your-api-key";
+>
+> const model = await initChatModel("claude-sonnet-4-6");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatAnthropic } from "@langchain/anthropic";
+>
+> const model = new ChatAnthropic({
+>   model: "claude-sonnet-4-6",
+>   apiKey: "your-api-key"
+> });
+> ```
 
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/openai
-```
+> [tab] Azure
+>
+> 👉 Read the [Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/azure
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/azure
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/azure
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/azure
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.AZURE_OPENAI_API_KEY = "your-api-key";
+> process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
+> process.env.OPENAI_API_VERSION = "your-api-version";
+>
+> const model = await initChatModel("azure_openai:gpt-5.5");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { AzureChatOpenAI } from "@langchain/openai";
+>
+> const model = new AzureChatOpenAI({
+>   model: "gpt-5.5",
+>   azureOpenAIApiKey: "your-api-key",
+>   azureOpenAIApiEndpoint: "your-endpoint",
+>   azureOpenAIApiVersion: "your-api-version"
+> });
+> ```
 
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/openai
-```
+> [tab] Google Gemini
+>
+> 👉 Read the [ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/google
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/google
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/google
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/google
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.GOOGLE_API_KEY = "your-api-key";
+>
+> const model = await initChatModel("google:gemini-3.7-flash");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatGoogle } from "@langchain/google/node";
+>
+> const model = new ChatGoogle({
+>   model: "gemini-3.7-flash",
+>   apiKey: "your-api-key"
+> });
+> ```
 
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/openai
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/openai
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.OPENAI_API_KEY = "your-api-key";
-
-const model = await initChatModel("gpt-5.5");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatOpenAI } from "@langchain/openai";
-
-const model = new ChatOpenAI({
-  model: "gpt-5.5",
-  apiKey: "your-api-key"
-});
-```
-
-**Anthropic**
-
-👉 Read the [Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/anthropic
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/anthropic
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/anthropic
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm add @langchain/anthropic
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.ANTHROPIC_API_KEY = "your-api-key";
-
-const model = await initChatModel("claude-sonnet-4-6");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatAnthropic } from "@langchain/anthropic";
-
-const model = new ChatAnthropic({
-  model: "claude-sonnet-4-6",
-  apiKey: "your-api-key"
-});
-```
-
-**Azure**
-
-👉 Read the [Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/azure
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/azure
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/azure
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/azure
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.AZURE_OPENAI_API_KEY = "your-api-key";
-process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
-process.env.OPENAI_API_VERSION = "your-api-version";
-
-const model = await initChatModel("azure_openai:gpt-5.5");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { AzureChatOpenAI } from "@langchain/openai";
-
-const model = new AzureChatOpenAI({
-  model: "gpt-5.5",
-  azureOpenAIApiKey: "your-api-key",
-  azureOpenAIApiEndpoint: "your-endpoint",
-  azureOpenAIApiVersion: "your-api-version"
-});
-```
-
-**Google Gemini**
-
-👉 Read the [ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/google
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/google
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/google
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/google
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.GOOGLE_API_KEY = "your-api-key";
-
-const model = await initChatModel("google:gemini-3.7-flash");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatGoogle } from "@langchain/google/node";
-
-const model = new ChatGoogle({
-  model: "gemini-3.7-flash",
-  apiKey: "your-api-key"
-});
-```
-
-**Bedrock Converse**
-
-👉 Read the [AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/aws
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/aws
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/aws
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/aws
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-// Follow the steps here to configure your credentials:
-// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-const model = await initChatModel("bedrock:gpt-5.5");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatBedrockConverse } from "@langchain/aws";
-
-// Follow the steps here to configure your credentials:
-// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-const model = new ChatBedrockConverse({
-  model: "gpt-5.5",
-  region: "us-east-2"
-});
-```
+> [tab] Bedrock Converse
+>
+> 👉 Read the [AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/aws
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/aws
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/aws
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/aws
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> // Follow the steps here to configure your credentials:
+> // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+>
+> const model = await initChatModel("bedrock:gpt-5.5");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatBedrockConverse } from "@langchain/aws";
+>
+> // Follow the steps here to configure your credentials:
+> // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+>
+> const model = new ChatBedrockConverse({
+>   model: "gpt-5.5",
+>   region: "us-east-2"
+> });
+> ```
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const response = await model.invoke("Why do parrots talk?");
@@ -247,15 +247,15 @@ Browse the [full list of supported providers](/oss/javascript/integrations/provi
 
 ### Key methods
 
-> **[Invoke](#invoke)**
+> [card] [Invoke](#invoke)
 >
 > The model takes messages as input and outputs messages after generating a complete response.
 
-> **[Stream](#stream)**
+> [card] [Stream](#stream)
 >
 > Invoke the model, but stream the output as it is generated in real-time.
 
-> **[Batch](#batch)**
+> [card] [Batch](#batch)
 >
 > Send multiple requests to a model in a batch for more efficient processing.
 
@@ -434,9 +434,9 @@ The resulting message can be treated the same as a message that was generated wi
 >
 > Streaming only works if all steps in the program know how to process a stream of chunks. For instance, an application that isn't streaming-capable would be one that needs to store the entire output in memory before it can be processed.
 
-> **Advanced streaming topics**
+> [accordion] Advanced streaming topics
 >
-> > **Streaming events**
+> > [accordion] Streaming events
 > >
 > > LangChain chat models can also stream semantic events using
 > > \[`streamEvents()`]\[BaseChatModel.streamEvents].
@@ -472,7 +472,7 @@ The resulting message can be treated the same as a message that was generated wi
 > >
 > > See the [`streamEvents()`](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/streamEvents) reference for event types and other details.
 >
-> > **"Auto-streaming" chat models**
+> > [accordion] "Auto-streaming" chat models
 > >
 > > LangChain simplifies streaming from chat models by automatically enabling streaming mode in certain cases, even when you're not explicitly calling the streaming methods. This is particularly useful when you use the non-streaming invoke method but still want to stream the entire application, including intermediate results from the chat model.
 > >
@@ -597,7 +597,7 @@ When binding user-defined tools, the model's response includes a **request** to 
 
 Below, we show some common ways you can use tool calling.
 
-> **Tool execution loop**
+> [accordion] Tool execution loop
 >
 > When a model returns tool calls, you need to execute the tools and pass the results back to the model. This creates a conversation loop where the model can use tool results to generate its final response. LangChain includes [agent](/oss/javascript/langchain/agents) abstractions that handle this orchestration for you.
 >
@@ -630,7 +630,7 @@ Below, we show some common ways you can use tool calling.
 >
 > Each [`ToolMessage`](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) returned by the tool includes a `tool_call_id` that matches the original tool call, helping the model correlate results with requests.
 
-> **Forcing tool calls**
+> [accordion] Forcing tool calls
 >
 > By default, the model has the freedom to choose which bound tool to use based on the user's input. However, you might want to force choosing a tool, ensuring the model uses either a particular tool or **any** tool from a given list:
 >
@@ -642,7 +642,7 @@ Below, we show some common ways you can use tool calling.
 > const modelWithTools = model.bindTools([tool_1], { toolChoice: "tool_1" })
 > ```
 
-> **Parallel tool calls**
+> [accordion] Parallel tool calls
 >
 > Many models support calling multiple tools in parallel when appropriate. This allows the model to gather information from different sources simultaneously.
 >
@@ -683,7 +683,7 @@ Below, we show some common ways you can use tool calling.
 > > model.bind_tools([get_weather], parallel_tool_calls=False)
 > > ```
 
-> **Streaming tool calls**
+> [accordion] Streaming tool calls
 >
 > When streaming responses, tool calls are progressively built through [`ToolCallChunk`](https://reference.langchain.com/javascript/langchain-core/messages/ContentBlock/Tools/ToolCallChunk). This allows you to see tool calls as they're being generated rather than waiting for the complete response.
 >
@@ -735,99 +735,99 @@ Models can be requested to provide their response in a format matching a given s
 >
 > To learn about structured output, see [Structured output](/oss/javascript/langchain/structured-output).
 
-**Zod**
+> [tab] Zod
+>
+> A [zod schema](https://zod.dev/) is the preferred method of defining an output schema. Note that when a zod schema is provided, the model output will also be validated against the schema using zod's parse methods.
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+>
+> const Movie = z.object({
+>   title: z.string().describe("The title of the movie"),
+>   year: z.number().describe("The year the movie was released"),
+>   director: z.string().describe("The director of the movie"),
+>   rating: z.number().describe("The movie's rating out of 10"),
+> });
+>
+> const modelWithStructure = model.withStructuredOutput(Movie);
+>
+> const response = await modelWithStructure.invoke("Provide details about the movie Inception");
+> console.log(response);
+> // {
+> //   title: "Inception",
+> //   year: 2010,
+> //   director: "Christopher Nolan",
+> //   rating: 8.8,
+> // }
+> ```
 
-A [zod schema](https://zod.dev/) is the preferred method of defining an output schema. Note that when a zod schema is provided, the model output will also be validated against the schema using zod's parse methods.
+> [tab] JSON Schema
+>
+> For maximum control or interoperability, you can provide a raw JSON Schema.
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const jsonSchema = {
+>   "title": "Movie",
+>   "description": "A movie with details",
+>   "type": "object",
+>   "properties": {
+>     "title": {
+>       "type": "string",
+>       "description": "The title of the movie",
+>     },
+>     "year": {
+>       "type": "integer",
+>       "description": "The year the movie was released",
+>     },
+>     "director": {
+>       "type": "string",
+>       "description": "The director of the movie",
+>     },
+>     "rating": {
+>       "type": "number",
+>       "description": "The movie's rating out of 10",
+>     },
+>   },
+>   "required": ["title", "year", "director", "rating"],
+> }
+>
+> const modelWithStructure = model.withStructuredOutput(
+>   jsonSchema,
+>   { method: "jsonSchema" },
+> )
+>
+> const response = await modelWithStructure.invoke("Provide details about the movie Inception")
+> console.log(response)  // {'title': 'Inception', 'year': 2010, ...}
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-
-const Movie = z.object({
-  title: z.string().describe("The title of the movie"),
-  year: z.number().describe("The year the movie was released"),
-  director: z.string().describe("The director of the movie"),
-  rating: z.number().describe("The movie's rating out of 10"),
-});
-
-const modelWithStructure = model.withStructuredOutput(Movie);
-
-const response = await modelWithStructure.invoke("Provide details about the movie Inception");
-console.log(response);
-// {
-//   title: "Inception",
-//   year: 2010,
-//   director: "Christopher Nolan",
-//   rating: 8.8,
-// }
-```
-
-**JSON Schema**
-
-For maximum control or interoperability, you can provide a raw JSON Schema.
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const jsonSchema = {
-  "title": "Movie",
-  "description": "A movie with details",
-  "type": "object",
-  "properties": {
-    "title": {
-      "type": "string",
-      "description": "The title of the movie",
-    },
-    "year": {
-      "type": "integer",
-      "description": "The year the movie was released",
-    },
-    "director": {
-      "type": "string",
-      "description": "The director of the movie",
-    },
-    "rating": {
-      "type": "number",
-      "description": "The movie's rating out of 10",
-    },
-  },
-  "required": ["title", "year", "director", "rating"],
-}
-
-const modelWithStructure = model.withStructuredOutput(
-  jsonSchema,
-  { method: "jsonSchema" },
-)
-
-const response = await modelWithStructure.invoke("Provide details about the movie Inception")
-console.log(response)  // {'title': 'Inception', 'year': 2010, ...}
-```
-
-**Standard Schema**
-
-Any schema from a library implementing the [Standard Schema](https://standardschema.dev/) specification is also supported. Standard Schema objects are validated at runtime via the schema's `~standard.validate()` method.
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as v from "valibot";
-import { toStandardJsonSchema } from "@valibot/to-json-schema";
-
-const Movie = toStandardJsonSchema(
-  v.object({
-    title: v.pipe(v.string(), v.description("The title of the movie")),
-    year: v.pipe(v.number(), v.description("The year the movie was released")),
-    director: v.pipe(v.string(), v.description("The director of the movie")),
-    rating: v.pipe(v.number(), v.description("The movie's rating out of 10")),
-  })
-);
-
-const modelWithStructure = model.withStructuredOutput(Movie);
-
-const response = await modelWithStructure.invoke("Provide details about the movie Inception");
-console.log(response);
-// {
-//   title: "Inception",
-//   year: 2010,
-//   director: "Christopher Nolan",
-//   rating: 8.8,
-// }
-```
+> [tab] Standard Schema
+>
+> Any schema from a library implementing the [Standard Schema](https://standardschema.dev/) specification is also supported. Standard Schema objects are validated at runtime via the schema's `~standard.validate()` method.
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as v from "valibot";
+> import { toStandardJsonSchema } from "@valibot/to-json-schema";
+>
+> const Movie = toStandardJsonSchema(
+>   v.object({
+>     title: v.pipe(v.string(), v.description("The title of the movie")),
+>     year: v.pipe(v.number(), v.description("The year the movie was released")),
+>     director: v.pipe(v.string(), v.description("The director of the movie")),
+>     rating: v.pipe(v.number(), v.description("The movie's rating out of 10")),
+>   })
+> );
+>
+> const modelWithStructure = model.withStructuredOutput(Movie);
+>
+> const response = await modelWithStructure.invoke("Provide details about the movie Inception");
+> console.log(response);
+> // {
+> //   title: "Inception",
+> //   year: 2010,
+> //   director: "Christopher Nolan",
+> //   rating: 8.8,
+> // }
+> ```
 
 > [!NOTE]
 >
@@ -840,7 +840,7 @@ console.log(response);
 >
 > See your [provider's integration page](/oss/javascript/integrations/providers/overview) for supported methods and configuration options.
 
-> **Example: Message output alongside parsed structure**
+> [accordion] Example: Message output alongside parsed structure
 >
 > It can be useful to return the raw [`AIMessage`](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) object alongside the parsed representation to access response metadata such as [token counts](#token-usage). To do this, set [`include_raw=True`](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withStructuredOutput) when calling [`with_structured_output`](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withStructuredOutput):
 >
@@ -868,7 +868,7 @@ console.log(response);
 > // }
 > ```
 
-> **Example: Nested structures**
+> [accordion] Example: Nested structures
 >
 > Schemas can be nested:
 >
@@ -925,7 +925,7 @@ Model profile data allow applications to work around model capabilities dynamica
 3. Model inputs can be gated based on supported [modalities](#multimodal) and maximum input tokens.
 4. [Deep Agents Code](/oss/deepagents/code) filters the [interactive model switcher](/oss/deepagents/code/providers#which-models-appear-in-the-switcher) to models whose profiles report `tool_calling` support and text I/O, and displays context window sizes and capability flags in the selector detail view.
 
-> **Modify profile data**
+> [accordion] Modify profile data
 >
 > Model profile data can be changed if it is missing, stale, or incorrect.
 >
@@ -1062,7 +1062,7 @@ You can configure a custom base URL for providers that implement the OpenAI Chat
 > * [OpenRouter via `ChatOpenRouter`](/oss/javascript/integrations/chat/openrouter) (`langchain-openrouter`)
 > * [LiteLLM via `ChatLiteLLM` / `ChatLiteLLMRouter`](/oss/javascript/integrations/chat) (`langchain-litellm`)
 
-> **Custom base URL**
+> [accordion] Custom base URL
 >
 > Many model providers offer OpenAI-compatible APIs (e.g., [Together AI](https://www.together.ai/), [vLLM](https://github.com/vllm-project/vllm)). You can use `initChatModel` with these providers by specifying the appropriate `base_url` parameter:
 >
@@ -1125,7 +1125,7 @@ These configuration values are particularly useful when:
 * Controlling resource usage in production
 * Tracking invocations across complex pipelines
 
-> **Key configuration attributes**
+> [accordion] Key configuration attributes
 >
 > **runName** `string`
 >

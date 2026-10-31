@@ -116,7 +116,7 @@ async def authenticate(headers: dict) -> Auth.types.MinimalUserDict:
 * 通过 [⟦T17⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AuthContext) 发送给您的授权处理人员
 * 通过 `config["configuration"]["langgraph_auth_user"]` 进行申请
 
-> **支持的参数**
+> [手风琴] 支持的参数
 >
 > [⟦T19⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/authenticate) 处理程序可以按名称接受以下任何参数：
 >
@@ -437,7 +437,7 @@ LangGraph 提供三个级别的授权处理程序，从最通用到最具体：
 
 #### 支持的操作和类型
 
-以下是所有支持的操作处理程序：|资源 |处理程序 |描述 |值类型|
+以下是所有支持的操作处理程序：|资源 |处理程序 |描述 |值类型 |
 | - | - | - | - |
 | **话题** | `@auth.on.threads.create` |线程创建 | [⟦T63⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsCreate) |
 | | `@auth.on.threads.read` |主题检索 | [⟦T65⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsRead) |
@@ -446,7 +446,7 @@ LangGraph 提供三个级别的授权处理程序，从最通用到最具体：
 | | `@auth.on.threads.search` |列出主题 | [⟦T71⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsSearch) |
 | | `@auth.on.threads.create_run` |创建或更新运行 | [⟦T73⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/RunsCreate) |
 | **助理** | `@auth.on.assistants.create` |助理创作 | [⟦T75⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsCreate) |
-| | `@auth.on.assistants.read` |助理检索| [⟦T77⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsRead) |
+| | `@auth.on.assistants.read` |助理检索 | [⟦T77⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsRead) |
 | | `@auth.on.assistants.update` |助理更新 | [⟦T79⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsUpdate) |
 | | `@auth.on.assistants.delete` |助理删除| [⟦T81⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsDelete) |
 | | `@auth.on.assistants.search` |上市助理| [⟦T83⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsSearch) |

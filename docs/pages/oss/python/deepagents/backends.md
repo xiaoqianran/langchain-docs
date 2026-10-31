@@ -941,7 +941,7 @@ To also support the `execute` tool (running shell commands), implement [`Sandbox
 
 Always return structured result types with an `error` field for failure cases. Do not raise exceptions.
 
-> **Example: S3-style backend skeleton**
+> [accordion] Example: S3-style backend skeleton
 >
 > This skeleton maps filesystem paths to object keys. Fill in each method with your storage client's list, read, search, upload, and read-modify-write operations.
 >

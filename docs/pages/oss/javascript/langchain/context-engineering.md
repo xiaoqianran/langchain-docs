@@ -40,11 +40,11 @@ To build reliable agents, you need to control what happens at each step of the a
 | **[Tool Context](#tool-context)** | What tools can access and produce (reads/writes to state, store, runtime context) | Persistent |
 | **[Life-cycle Context](#life-cycle-context)** | What happens between model and tool calls (summarization, guardrails, logging, etc.) | Persistent |
 
-> **Transient context**
+> [card] Transient context
 >
 > What the LLM sees for a single call. You can modify messages, tools, or prompts without changing what's saved in state.
 
-> **Persistent context**
+> [card] Persistent context
 >
 > What gets saved in state across turns. Life-cycle hooks and tool writes modify this permanently.
 
@@ -73,23 +73,23 @@ Throughout this guide, you'll see frequent use of the middleware API as a means 
 
 Control what goes into each model call - instructions, available tools, which model to use, and output format. These decisions directly impact reliability and cost.
 
-> **[System Prompt](#system-prompt)**
+> [card] [System Prompt](#system-prompt)
 >
 > Base instructions from the developer to the LLM.
 
-> **[Messages](#messages)**
+> [card] [Messages](#messages)
 >
 > The full list of messages (conversation history) sent to the LLM.
 
-> **[Tools](#tools)**
+> [card] [Tools](#tools)
 >
 > Utilities the agent has access to for taking actions.
 
-> **[Model](#model)**
+> [card] [Model](#model)
 >
 > The actual model (including configuration) to be called.
 
-> **[Response Format](#response-format)**
+> [card] [Response Format](#response-format)
 >
 > Schema specification for the model's final response.
 
@@ -99,261 +99,261 @@ All of these types of model context can draw from **state** (short-term memory),
 
 The system prompt sets the LLM's behavior and capabilities. Different users, contexts, or conversation stages need different instructions. Successful agents draw on memories, preferences, and configuration to provide the right instructions for the current state of the conversation.
 
-**State**
+> [tab] State
+>
+> Access message count or conversation context from state:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createAgent } from "langchain";
+>
+> const agent = createAgent({
+>   model: "gpt-5.5",
+>   tools: [...],
+>   middleware: [
+>     dynamicSystemPromptMiddleware((state) => {
+>       // Read from State: check conversation length
+>       const messageCount = state.messages.length;
+>
+>       let base = "You are a helpful assistant.";
+>
+>       if (messageCount > 10) {
+>         base += "\nThis is a long conversation - be extra concise.";
+>       }
+>
+>       return base;
+>     }),
+>   ],
+> });
+> ```
 
-Access message count or conversation context from state:
+> [tab] Store
+>
+> Access user preferences from long-term memory:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { createAgent, dynamicSystemPromptMiddleware } from "langchain";
+>
+> const contextSchema = z.object({
+>   userId: z.string(),
+> });
+>
+> type Context = z.infer<typeof contextSchema>;
+>
+> const agent = createAgent({
+>   model: "gpt-5.5",
+>   tools: [...],
+>   contextSchema,
+>   middleware: [
+>     dynamicSystemPromptMiddleware<Context>(async (state, runtime) => {
+>       const userId = runtime.context.userId;
+>
+>       // Read from Store: get user preferences
+>       const store = runtime.store;
+>       const userPrefs = await store.get(["preferences"], userId);
+>
+>       let base = "You are a helpful assistant.";
+>
+>       if (userPrefs) {
+>         const style = userPrefs.value?.communicationStyle || "balanced";
+>         base += `\nUser prefers ${style} responses.`;
+>       }
+>
+>       return base;
+>     }),
+>   ],
+> });
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent } from "langchain";
-
-const agent = createAgent({
-  model: "gpt-5.5",
-  tools: [...],
-  middleware: [
-    dynamicSystemPromptMiddleware((state) => {
-      // Read from State: check conversation length
-      const messageCount = state.messages.length;
-
-      let base = "You are a helpful assistant.";
-
-      if (messageCount > 10) {
-        base += "\nThis is a long conversation - be extra concise.";
-      }
-
-      return base;
-    }),
-  ],
-});
-```
-
-**Store**
-
-Access user preferences from long-term memory:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createAgent, dynamicSystemPromptMiddleware } from "langchain";
-
-const contextSchema = z.object({
-  userId: z.string(),
-});
-
-type Context = z.infer<typeof contextSchema>;
-
-const agent = createAgent({
-  model: "gpt-5.5",
-  tools: [...],
-  contextSchema,
-  middleware: [
-    dynamicSystemPromptMiddleware<Context>(async (state, runtime) => {
-      const userId = runtime.context.userId;
-
-      // Read from Store: get user preferences
-      const store = runtime.store;
-      const userPrefs = await store.get(["preferences"], userId);
-
-      let base = "You are a helpful assistant.";
-
-      if (userPrefs) {
-        const style = userPrefs.value?.communicationStyle || "balanced";
-        base += `\nUser prefers ${style} responses.`;
-      }
-
-      return base;
-    }),
-  ],
-});
-```
-
-**Runtime Context**
-
-Access user ID or configuration from Runtime Context:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createAgent, dynamicSystemPromptMiddleware } from "langchain";
-
-const contextSchema = z.object({
-  userRole: z.string(),
-  deploymentEnv: z.string(),
-});
-
-type Context = z.infer<typeof contextSchema>;
-
-const agent = createAgent({
-  model: "gpt-5.5",
-  tools: [...],
-  contextSchema,
-  middleware: [
-    dynamicSystemPromptMiddleware<Context>((state, runtime) => {
-      // Read from Runtime Context: user role and environment
-      const userRole = runtime.context.userRole;
-      const env = runtime.context.deploymentEnv;
-
-      let base = "You are a helpful assistant.";
-
-      if (userRole === "admin") {
-        base += "\nYou have admin access. You can perform all operations.";
-      } else if (userRole === "viewer") {
-        base += "\nYou have read-only access. Guide users to read operations only.";
-      }
-
-      if (env === "production") {
-        base += "\nBe extra careful with any data modifications.";
-      }
-
-      return base;
-    }),
-  ],
-});
-```
+> [tab] Runtime Context
+>
+> Access user ID or configuration from Runtime Context:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { createAgent, dynamicSystemPromptMiddleware } from "langchain";
+>
+> const contextSchema = z.object({
+>   userRole: z.string(),
+>   deploymentEnv: z.string(),
+> });
+>
+> type Context = z.infer<typeof contextSchema>;
+>
+> const agent = createAgent({
+>   model: "gpt-5.5",
+>   tools: [...],
+>   contextSchema,
+>   middleware: [
+>     dynamicSystemPromptMiddleware<Context>((state, runtime) => {
+>       // Read from Runtime Context: user role and environment
+>       const userRole = runtime.context.userRole;
+>       const env = runtime.context.deploymentEnv;
+>
+>       let base = "You are a helpful assistant.";
+>
+>       if (userRole === "admin") {
+>         base += "\nYou have admin access. You can perform all operations.";
+>       } else if (userRole === "viewer") {
+>         base += "\nYou have read-only access. Guide users to read operations only.";
+>       }
+>
+>       if (env === "production") {
+>         base += "\nBe extra careful with any data modifications.";
+>       }
+>
+>       return base;
+>     }),
+>   ],
+> });
+> ```
 
 ### Messages
 
 Messages make up the prompt that is sent to the LLM.
 It's critical to manage the content of messages to ensure that the LLM has the right information to respond well.
 
-**State**
+> [tab] State
+>
+> Inject uploaded file context from State when relevant to current query:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createMiddleware, HumanMessage } from "langchain";
+>
+> const injectFileContext = createMiddleware({
+>   name: "InjectFileContext",
+>   wrapModelCall: (request, handler) => {
+>     // request.state is a shortcut for request.state.messages
+>     const uploadedFiles = request.state.uploadedFiles || [];  // [!code highlight]
+>
+>     if (uploadedFiles.length > 0) {
+>       // Build context about available files
+>       const fileDescriptions = uploadedFiles.map(file =>
+>         `- ${file.name} (${file.type}): ${file.summary}`
+>       );
+>
+>       const fileContext = `Files you have access to in this conversation:
+> ${fileDescriptions.join("\n")}
+>
+> Reference these files when answering questions.`;
+>
+>       // Inject file context before recent messages
+>       const messages = [  // [!code highlight]
+>         ...request.messages,  // Rest of conversation
+>         new HumanMessage(fileContext)
+>       ];
+>       request = { ...request, messages };  // [!code highlight]
+>     }
+>
+>     return handler(request);
+>   },
+> });
+>
+> const agent = createAgent({
+>   model: "gpt-5.5",
+>   tools: [...],
+>   middleware: [injectFileContext],
+> });
+> ```
 
-Inject uploaded file context from State when relevant to current query:
+> [tab] Store
+>
+> Inject user's email writing style from Store to guide drafting:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { createMiddleware, HumanMessage } from "langchain";
+>
+> const contextSchema = z.object({
+>   userId: z.string(),
+> });
+>
+> const injectWritingStyle = createMiddleware({
+>   name: "InjectWritingStyle",
+>   contextSchema,
+>   wrapModelCall: async (request, handler) => {
+>     const userId = request.runtime.context.userId;  // [!code highlight]
+>
+>     // Read from Store: get user's writing style examples
+>     const store = request.runtime.store;  // [!code highlight]
+>     const writingStyle = await store.get(["writing_style"], userId);  // [!code highlight]
+>
+>     if (writingStyle) {
+>       const style = writingStyle.value;
+>       // Build style guide from stored examples
+>       const styleContext = `Your writing style:
+> - Tone: ${style.tone || 'professional'}
+> - Typical greeting: "${style.greeting || 'Hi'}"
+> - Typical sign-off: "${style.signOff || 'Best'}"
+> - Example email you've written:
+> ${style.exampleEmail || ''}`;
+>
+>       // Append at end - models pay more attention to final messages
+>       const messages = [
+>         ...request.messages,
+>         new HumanMessage(styleContext)
+>       ];
+>       request = { ...request, messages };  // [!code highlight]
+>     }
+>
+>     return handler(request);
+>   },
+> });
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createMiddleware, HumanMessage } from "langchain";
-
-const injectFileContext = createMiddleware({
-  name: "InjectFileContext",
-  wrapModelCall: (request, handler) => {
-    // request.state is a shortcut for request.state.messages
-    const uploadedFiles = request.state.uploadedFiles || [];  // [!code highlight]
-
-    if (uploadedFiles.length > 0) {
-      // Build context about available files
-      const fileDescriptions = uploadedFiles.map(file =>
-        `- ${file.name} (${file.type}): ${file.summary}`
-      );
-
-      const fileContext = `Files you have access to in this conversation:
-${fileDescriptions.join("\n")}
-
-Reference these files when answering questions.`;
-
-      // Inject file context before recent messages
-      const messages = [  // [!code highlight]
-        ...request.messages,  // Rest of conversation
-        new HumanMessage(fileContext)
-      ];
-      request = { ...request, messages };  // [!code highlight]
-    }
-
-    return handler(request);
-  },
-});
-
-const agent = createAgent({
-  model: "gpt-5.5",
-  tools: [...],
-  middleware: [injectFileContext],
-});
-```
-
-**Store**
-
-Inject user's email writing style from Store to guide drafting:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createMiddleware, HumanMessage } from "langchain";
-
-const contextSchema = z.object({
-  userId: z.string(),
-});
-
-const injectWritingStyle = createMiddleware({
-  name: "InjectWritingStyle",
-  contextSchema,
-  wrapModelCall: async (request, handler) => {
-    const userId = request.runtime.context.userId;  // [!code highlight]
-
-    // Read from Store: get user's writing style examples
-    const store = request.runtime.store;  // [!code highlight]
-    const writingStyle = await store.get(["writing_style"], userId);  // [!code highlight]
-
-    if (writingStyle) {
-      const style = writingStyle.value;
-      // Build style guide from stored examples
-      const styleContext = `Your writing style:
-- Tone: ${style.tone || 'professional'}
-- Typical greeting: "${style.greeting || 'Hi'}"
-- Typical sign-off: "${style.signOff || 'Best'}"
-- Example email you've written:
-${style.exampleEmail || ''}`;
-
-      // Append at end - models pay more attention to final messages
-      const messages = [
-        ...request.messages,
-        new HumanMessage(styleContext)
-      ];
-      request = { ...request, messages };  // [!code highlight]
-    }
-
-    return handler(request);
-  },
-});
-```
-
-**Runtime Context**
-
-Inject compliance rules from Runtime Context based on user's jurisdiction:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createMiddleware, HumanMessage } from "langchain";
-
-const contextSchema = z.object({
-  userJurisdiction: z.string(),
-  industry: z.string(),
-  complianceFrameworks: z.array(z.string()),
-});
-
-type Context = z.infer<typeof contextSchema>;
-
-const injectComplianceRules = createMiddleware<Context>({
-  name: "InjectComplianceRules",
-  contextSchema,
-  wrapModelCall: (request, handler) => {
-    // Read from Runtime Context: get compliance requirements
-    const { userJurisdiction, industry, complianceFrameworks } = request.runtime.context;  // [!code highlight]
-
-    // Build compliance constraints
-    const rules = [];
-    if (complianceFrameworks.includes("GDPR")) {
-      rules.push("- Must obtain explicit consent before processing personal data");
-      rules.push("- Users have right to data deletion");
-    }
-    if (complianceFrameworks.includes("HIPAA")) {
-      rules.push("- Cannot share patient health information without authorization");
-      rules.push("- Must use secure, encrypted communication");
-    }
-    if (industry === "finance") {
-      rules.push("- Cannot provide financial advice without proper disclaimers");
-    }
-
-    if (rules.length > 0) {
-      const complianceContext = `Compliance requirements for ${userJurisdiction}:
-${rules.join("\n")}`;
-
-      // Append at end - models pay more attention to final messages
-      const messages = [
-        ...request.messages,
-        new HumanMessage(complianceContext)
-      ];
-      request = { ...request, messages };  // [!code highlight]
-    }
-
-    return handler(request);
-  },
-});
-```
+> [tab] Runtime Context
+>
+> Inject compliance rules from Runtime Context based on user's jurisdiction:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { createMiddleware, HumanMessage } from "langchain";
+>
+> const contextSchema = z.object({
+>   userJurisdiction: z.string(),
+>   industry: z.string(),
+>   complianceFrameworks: z.array(z.string()),
+> });
+>
+> type Context = z.infer<typeof contextSchema>;
+>
+> const injectComplianceRules = createMiddleware<Context>({
+>   name: "InjectComplianceRules",
+>   contextSchema,
+>   wrapModelCall: (request, handler) => {
+>     // Read from Runtime Context: get compliance requirements
+>     const { userJurisdiction, industry, complianceFrameworks } = request.runtime.context;  // [!code highlight]
+>
+>     // Build compliance constraints
+>     const rules = [];
+>     if (complianceFrameworks.includes("GDPR")) {
+>       rules.push("- Must obtain explicit consent before processing personal data");
+>       rules.push("- Users have right to data deletion");
+>     }
+>     if (complianceFrameworks.includes("HIPAA")) {
+>       rules.push("- Cannot share patient health information without authorization");
+>       rules.push("- Must use secure, encrypted communication");
+>     }
+>     if (industry === "finance") {
+>       rules.push("- Cannot provide financial advice without proper disclaimers");
+>     }
+>
+>     if (rules.length > 0) {
+>       const complianceContext = `Compliance requirements for ${userJurisdiction}:
+> ${rules.join("\n")}`;
+>
+>       // Append at end - models pay more attention to final messages
+>       const messages = [
+>         ...request.messages,
+>         new HumanMessage(complianceContext)
+>       ];
+>       request = { ...request, messages };  // [!code highlight]
+>     }
+>
+>     return handler(request);
+>   },
+> });
+> ```
 
 > [!NOTE]
 >
@@ -403,102 +403,102 @@ const searchOrders = tool(
 
 Not every tool is appropriate for every situation. Too many tools may overwhelm the model (overload context) and increase errors; too few limit capabilities. Dynamic tool selection adapts the available toolset based on authentication state, user permissions, feature flags, or conversation stage.
 
-**State**
+> [tab] State
+>
+> Enable advanced tools only after certain conversation milestones:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createMiddleware } from "langchain";
+>
+> const stateBasedTools = createMiddleware({
+>   name: "StateBasedTools",
+>   wrapModelCall: (request, handler) => {
+>     // Read from State: check authentication and conversation length
+>     const state = request.state;  // [!code highlight]
+>     const isAuthenticated = state.authenticated || false;  // [!code highlight]
+>     const messageCount = state.messages.length;
+>
+>     let filteredTools = request.tools;
+>
+>     // Only enable sensitive tools after authentication
+>     if (!isAuthenticated) {
+>       filteredTools = request.tools.filter(t => t.name.startsWith("public_"));  // [!code highlight]
+>     } else if (messageCount < 5) {
+>       filteredTools = request.tools.filter(t => t.name !== "advanced_search");  // [!code highlight]
+>     }
+>
+>     return handler({ ...request, tools: filteredTools });  // [!code highlight]
+>   },
+> });
+> ```
 
-Enable advanced tools only after certain conversation milestones:
+> [tab] Store
+>
+> Filter tools based on user preferences or feature flags in Store:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { createMiddleware } from "langchain";
+>
+> const contextSchema = z.object({
+>   userId: z.string(),
+> });
+>
+> const storeBasedTools = createMiddleware({
+>   name: "StoreBasedTools",
+>   contextSchema,
+>   wrapModelCall: async (request, handler) => {
+>     const userId = request.runtime.context.userId;  // [!code highlight]
+>
+>     // Read from Store: get user's enabled features
+>     const store = request.runtime.store;  // [!code highlight]
+>     const featureFlags = await store.get(["features"], userId);  // [!code highlight]
+>
+>     let filteredTools = request.tools;
+>
+>     if (featureFlags) {
+>       const enabledFeatures = featureFlags.value?.enabledTools || [];
+>       filteredTools = request.tools.filter(t => enabledFeatures.includes(t.name));  // [!code highlight]
+>     }
+>
+>     return handler({ ...request, tools: filteredTools });  // [!code highlight]
+>   },
+> });
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createMiddleware } from "langchain";
-
-const stateBasedTools = createMiddleware({
-  name: "StateBasedTools",
-  wrapModelCall: (request, handler) => {
-    // Read from State: check authentication and conversation length
-    const state = request.state;  // [!code highlight]
-    const isAuthenticated = state.authenticated || false;  // [!code highlight]
-    const messageCount = state.messages.length;
-
-    let filteredTools = request.tools;
-
-    // Only enable sensitive tools after authentication
-    if (!isAuthenticated) {
-      filteredTools = request.tools.filter(t => t.name.startsWith("public_"));  // [!code highlight]
-    } else if (messageCount < 5) {
-      filteredTools = request.tools.filter(t => t.name !== "advanced_search");  // [!code highlight]
-    }
-
-    return handler({ ...request, tools: filteredTools });  // [!code highlight]
-  },
-});
-```
-
-**Store**
-
-Filter tools based on user preferences or feature flags in Store:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createMiddleware } from "langchain";
-
-const contextSchema = z.object({
-  userId: z.string(),
-});
-
-const storeBasedTools = createMiddleware({
-  name: "StoreBasedTools",
-  contextSchema,
-  wrapModelCall: async (request, handler) => {
-    const userId = request.runtime.context.userId;  // [!code highlight]
-
-    // Read from Store: get user's enabled features
-    const store = request.runtime.store;  // [!code highlight]
-    const featureFlags = await store.get(["features"], userId);  // [!code highlight]
-
-    let filteredTools = request.tools;
-
-    if (featureFlags) {
-      const enabledFeatures = featureFlags.value?.enabledTools || [];
-      filteredTools = request.tools.filter(t => enabledFeatures.includes(t.name));  // [!code highlight]
-    }
-
-    return handler({ ...request, tools: filteredTools });  // [!code highlight]
-  },
-});
-```
-
-**Runtime Context**
-
-Filter tools based on user permissions from Runtime Context:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createMiddleware } from "langchain";
-
-const contextSchema = z.object({
-  userRole: z.string(),
-});
-
-const contextBasedTools = createMiddleware({
-  name: "ContextBasedTools",
-  contextSchema,
-  wrapModelCall: (request, handler) => {
-    // Read from Runtime Context: get user role
-    const userRole = request.runtime.context.userRole;  // [!code highlight]
-
-    let filteredTools = request.tools;
-
-    if (userRole === "admin") {
-      // Admins get all tools
-    } else if (userRole === "editor") {
-      filteredTools = request.tools.filter(t => t.name !== "delete_data");  // [!code highlight]
-    } else {
-      filteredTools = request.tools.filter(t => t.name.startsWith("read_"));  // [!code highlight]
-    }
-
-    return handler({ ...request, tools: filteredTools });  // [!code highlight]
-  },
-});
-```
+> [tab] Runtime Context
+>
+> Filter tools based on user permissions from Runtime Context:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { createMiddleware } from "langchain";
+>
+> const contextSchema = z.object({
+>   userRole: z.string(),
+> });
+>
+> const contextBasedTools = createMiddleware({
+>   name: "ContextBasedTools",
+>   contextSchema,
+>   wrapModelCall: (request, handler) => {
+>     // Read from Runtime Context: get user role
+>     const userRole = request.runtime.context.userRole;  // [!code highlight]
+>
+>     let filteredTools = request.tools;
+>
+>     if (userRole === "admin") {
+>       // Admins get all tools
+>     } else if (userRole === "editor") {
+>       filteredTools = request.tools.filter(t => t.name !== "delete_data");  // [!code highlight]
+>     } else {
+>       filteredTools = request.tools.filter(t => t.name.startsWith("read_"));  // [!code highlight]
+>     }
+>
+>     return handler({ ...request, tools: filteredTools });  // [!code highlight]
+>   },
+> });
+> ```
 
 See [Dynamic tools](/oss/javascript/langchain/tools#dynamic-tool-selection) for both filtering pre-registered tools and registering tools at runtime (e.g., from MCP servers).
 
@@ -507,121 +507,121 @@ See [Dynamic tools](/oss/javascript/langchain/tools#dynamic-tool-selection) for 
 Different models have different strengths, costs, and context windows. Select the right model for the task at hand, which
 might change during an agent run.
 
-**State**
+> [tab] State
+>
+> Use different models based on conversation length from State:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createMiddleware, initChatModel } from "langchain";
+>
+> // Initialize models once outside the middleware
+> const largeModel = initChatModel("claude-sonnet-4-6");
+> const standardModel = initChatModel("gpt-5.5");
+> const efficientModel = initChatModel("gpt-5.4-mini");
+>
+> const stateBasedModel = createMiddleware({
+>   name: "StateBasedModel",
+>   wrapModelCall: (request, handler) => {
+>     // request.messages is a shortcut for request.state.messages
+>     const messageCount = request.messages.length;  // [!code highlight]
+>     let model;
+>
+>     if (messageCount > 20) {
+>       model = largeModel;
+>     } else if (messageCount > 10) {
+>       model = standardModel;
+>     } else {
+>       model = efficientModel;
+>     }
+>
+>     return handler({ ...request, model });  // [!code highlight]
+>   },
+> });
+> ```
 
-Use different models based on conversation length from State:
+> [tab] Store
+>
+> Use user's preferred model from Store:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { createMiddleware, initChatModel } from "langchain";
+>
+> const contextSchema = z.object({
+>   userId: z.string(),
+> });
+>
+> // Initialize available models once
+> const MODEL_MAP = {
+>   "gpt-5.5": initChatModel("gpt-5.5"),
+>   "gpt-5.4-mini": initChatModel("gpt-5.4-mini"),
+>   "claude-sonnet": initChatModel("claude-sonnet-4-6"),
+> };
+>
+> const storeBasedModel = createMiddleware({
+>   name: "StoreBasedModel",
+>   contextSchema,
+>   wrapModelCall: async (request, handler) => {
+>     const userId = request.runtime.context.userId;  // [!code highlight]
+>
+>     // Read from Store: get user's preferred model
+>     const store = request.runtime.store;  // [!code highlight]
+>     const userPrefs = await store.get(["preferences"], userId);  // [!code highlight]
+>
+>     let model = request.model;
+>
+>     if (userPrefs) {
+>       const preferredModel = userPrefs.value?.preferredModel;
+>       if (preferredModel && MODEL_MAP[preferredModel]) {
+>         model = MODEL_MAP[preferredModel];  // [!code highlight]
+>       }
+>     }
+>
+>     return handler({ ...request, model });  // [!code highlight]
+>   },
+> });
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createMiddleware, initChatModel } from "langchain";
-
-// Initialize models once outside the middleware
-const largeModel = initChatModel("claude-sonnet-4-6");
-const standardModel = initChatModel("gpt-5.5");
-const efficientModel = initChatModel("gpt-5.4-mini");
-
-const stateBasedModel = createMiddleware({
-  name: "StateBasedModel",
-  wrapModelCall: (request, handler) => {
-    // request.messages is a shortcut for request.state.messages
-    const messageCount = request.messages.length;  // [!code highlight]
-    let model;
-
-    if (messageCount > 20) {
-      model = largeModel;
-    } else if (messageCount > 10) {
-      model = standardModel;
-    } else {
-      model = efficientModel;
-    }
-
-    return handler({ ...request, model });  // [!code highlight]
-  },
-});
-```
-
-**Store**
-
-Use user's preferred model from Store:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createMiddleware, initChatModel } from "langchain";
-
-const contextSchema = z.object({
-  userId: z.string(),
-});
-
-// Initialize available models once
-const MODEL_MAP = {
-  "gpt-5.5": initChatModel("gpt-5.5"),
-  "gpt-5.4-mini": initChatModel("gpt-5.4-mini"),
-  "claude-sonnet": initChatModel("claude-sonnet-4-6"),
-};
-
-const storeBasedModel = createMiddleware({
-  name: "StoreBasedModel",
-  contextSchema,
-  wrapModelCall: async (request, handler) => {
-    const userId = request.runtime.context.userId;  // [!code highlight]
-
-    // Read from Store: get user's preferred model
-    const store = request.runtime.store;  // [!code highlight]
-    const userPrefs = await store.get(["preferences"], userId);  // [!code highlight]
-
-    let model = request.model;
-
-    if (userPrefs) {
-      const preferredModel = userPrefs.value?.preferredModel;
-      if (preferredModel && MODEL_MAP[preferredModel]) {
-        model = MODEL_MAP[preferredModel];  // [!code highlight]
-      }
-    }
-
-    return handler({ ...request, model });  // [!code highlight]
-  },
-});
-```
-
-**Runtime Context**
-
-Select model based on cost limits or environment from Runtime Context:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createMiddleware, initChatModel } from "langchain";
-
-const contextSchema = z.object({
-  costTier: z.string(),
-  environment: z.string(),
-});
-
-// Initialize models once outside the middleware
-const premiumModel = initChatModel("claude-sonnet-4-6");
-const standardModel = initChatModel("gpt-5.5");
-const budgetModel = initChatModel("gpt-5.4-mini");
-
-const contextBasedModel = createMiddleware({
-  name: "ContextBasedModel",
-  contextSchema,
-  wrapModelCall: (request, handler) => {
-    // Read from Runtime Context: cost tier and environment
-    const costTier = request.runtime.context.costTier;  // [!code highlight]
-    const environment = request.runtime.context.environment;  // [!code highlight]
-
-    let model;
-
-    if (environment === "production" && costTier === "premium") {
-      model = premiumModel;
-    } else if (costTier === "budget") {
-      model = budgetModel;
-    } else {
-      model = standardModel;
-    }
-
-    return handler({ ...request, model });  // [!code highlight]
-  },
-});
-```
+> [tab] Runtime Context
+>
+> Select model based on cost limits or environment from Runtime Context:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { createMiddleware, initChatModel } from "langchain";
+>
+> const contextSchema = z.object({
+>   costTier: z.string(),
+>   environment: z.string(),
+> });
+>
+> // Initialize models once outside the middleware
+> const premiumModel = initChatModel("claude-sonnet-4-6");
+> const standardModel = initChatModel("gpt-5.5");
+> const budgetModel = initChatModel("gpt-5.4-mini");
+>
+> const contextBasedModel = createMiddleware({
+>   name: "ContextBasedModel",
+>   contextSchema,
+>   wrapModelCall: (request, handler) => {
+>     // Read from Runtime Context: cost tier and environment
+>     const costTier = request.runtime.context.costTier;  // [!code highlight]
+>     const environment = request.runtime.context.environment;  // [!code highlight]
+>
+>     let model;
+>
+>     if (environment === "production" && costTier === "premium") {
+>       model = premiumModel;
+>     } else if (costTier === "budget") {
+>       model = budgetModel;
+>     } else {
+>       model = standardModel;
+>     }
+>
+>     return handler({ ...request, model });  // [!code highlight]
+>   },
+> });
+> ```
 
 See [Dynamic model](/oss/javascript/langchain/models#dynamic-model-selection) for more examples.
 
@@ -658,127 +658,127 @@ const customerSupportTicket = z.object({
 
 Dynamic response format selection adapts schemas based on user preferences, conversation stage, or role—returning simple formats early and detailed formats as complexity increases.
 
-**State**
+> [tab] State
+>
+> Configure structured output based on conversation state:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createMiddleware } from "langchain";
+> import { z } from "zod";
+>
+> const simpleResponse = z.object({
+>   answer: z.string().describe("A brief answer"),
+> });
+>
+> const detailedResponse = z.object({
+>   answer: z.string().describe("A detailed answer"),
+>   reasoning: z.string().describe("Explanation of reasoning"),
+>   confidence: z.number().describe("Confidence score 0-1"),
+> });
+>
+> const stateBasedOutput = createMiddleware({
+>   name: "StateBasedOutput",
+>   wrapModelCall: (request, handler) => {
+>     // request.state is a shortcut for request.state.messages
+>     const messageCount = request.messages.length;  // [!code highlight]
+>
+>     let responseFormat;
+>     if (messageCount < 3) {
+>       // Early conversation - use simple format
+>       responseFormat = simpleResponse; // [!code highlight]
+>     } else {
+>       // Established conversation - use detailed format
+>       responseFormat = detailedResponse; // [!code highlight]
+>     }
+>
+>     return handler({ ...request, responseFormat });
+>   },
+> });
+> ```
 
-Configure structured output based on conversation state:
+> [tab] Store
+>
+> Configure output format based on user preferences in Store:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { createMiddleware } from "langchain";
+>
+> const contextSchema = z.object({
+>   userId: z.string(),
+> });
+>
+> const verboseResponse = z.object({
+>   answer: z.string().describe("Detailed answer"),
+>   sources: z.array(z.string()).describe("Sources used"),
+> });
+>
+> const conciseResponse = z.object({
+>   answer: z.string().describe("Brief answer"),
+> });
+>
+> const storeBasedOutput = createMiddleware({
+>   name: "StoreBasedOutput",
+>   wrapModelCall: async (request, handler) => {
+>     const userId = request.runtime.context.userId;  // [!code highlight]
+>
+>     // Read from Store: get user's preferred response style
+>     const store = request.runtime.store;  // [!code highlight]
+>     const userPrefs = await store.get(["preferences"], userId);  // [!code highlight]
+>
+>     const style = userPrefs?.value?.responseStyle || "concise";
+>     const responseFormat =
+>       style === "verbose" ? verboseResponse : conciseResponse;  // [!code highlight]
+>
+>     return handler({
+>       ...request,
+>       responseFormat,
+>     });
+>   },
+> });
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createMiddleware } from "langchain";
-import { z } from "zod";
-
-const simpleResponse = z.object({
-  answer: z.string().describe("A brief answer"),
-});
-
-const detailedResponse = z.object({
-  answer: z.string().describe("A detailed answer"),
-  reasoning: z.string().describe("Explanation of reasoning"),
-  confidence: z.number().describe("Confidence score 0-1"),
-});
-
-const stateBasedOutput = createMiddleware({
-  name: "StateBasedOutput",
-  wrapModelCall: (request, handler) => {
-    // request.state is a shortcut for request.state.messages
-    const messageCount = request.messages.length;  // [!code highlight]
-
-    let responseFormat;
-    if (messageCount < 3) {
-      // Early conversation - use simple format
-      responseFormat = simpleResponse; // [!code highlight]
-    } else {
-      // Established conversation - use detailed format
-      responseFormat = detailedResponse; // [!code highlight]
-    }
-
-    return handler({ ...request, responseFormat });
-  },
-});
-```
-
-**Store**
-
-Configure output format based on user preferences in Store:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createMiddleware } from "langchain";
-
-const contextSchema = z.object({
-  userId: z.string(),
-});
-
-const verboseResponse = z.object({
-  answer: z.string().describe("Detailed answer"),
-  sources: z.array(z.string()).describe("Sources used"),
-});
-
-const conciseResponse = z.object({
-  answer: z.string().describe("Brief answer"),
-});
-
-const storeBasedOutput = createMiddleware({
-  name: "StoreBasedOutput",
-  wrapModelCall: async (request, handler) => {
-    const userId = request.runtime.context.userId;  // [!code highlight]
-
-    // Read from Store: get user's preferred response style
-    const store = request.runtime.store;  // [!code highlight]
-    const userPrefs = await store.get(["preferences"], userId);  // [!code highlight]
-
-    const style = userPrefs?.value?.responseStyle || "concise";
-    const responseFormat =
-      style === "verbose" ? verboseResponse : conciseResponse;  // [!code highlight]
-
-    return handler({
-      ...request,
-      responseFormat,
-    });
-  },
-});
-```
-
-**Runtime Context**
-
-Configure output format based on Runtime Context like user role or environment:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createMiddleware } from "langchain";
-
-const contextSchema = z.object({
-  userRole: z.string(),
-  environment: z.string(),
-});
-
-const adminResponse = z.object({
-  answer: z.string().describe("Answer"),
-  debugInfo: z.record(z.any()).describe("Debug information"),
-  systemStatus: z.string().describe("System status"),
-});
-
-const userResponse = z.object({
-  answer: z.string().describe("Answer"),
-});
-
-const contextBasedOutput = createMiddleware({
-  name: "ContextBasedOutput",
-  wrapModelCall: (request, handler) => {
-    // Read from Runtime Context: user role and environment
-    const userRole = request.runtime.context.userRole;  // [!code highlight]
-    const environment = request.runtime.context.environment;  // [!code highlight]
-
-    let responseFormat;
-    if (userRole === "admin" && environment === "production") {
-      responseFormat = adminResponse;  // [!code highlight]
-    } else {
-      responseFormat = userResponse;  // [!code highlight]
-    }
-
-    return handler({ ...request, responseFormat });
-  },
-});
-```
+> [tab] Runtime Context
+>
+> Configure output format based on Runtime Context like user role or environment:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { createMiddleware } from "langchain";
+>
+> const contextSchema = z.object({
+>   userRole: z.string(),
+>   environment: z.string(),
+> });
+>
+> const adminResponse = z.object({
+>   answer: z.string().describe("Answer"),
+>   debugInfo: z.record(z.any()).describe("Debug information"),
+>   systemStatus: z.string().describe("System status"),
+> });
+>
+> const userResponse = z.object({
+>   answer: z.string().describe("Answer"),
+> });
+>
+> const contextBasedOutput = createMiddleware({
+>   name: "ContextBasedOutput",
+>   wrapModelCall: (request, handler) => {
+>     // Read from Runtime Context: user role and environment
+>     const userRole = request.runtime.context.userRole;  // [!code highlight]
+>     const environment = request.runtime.context.environment;  // [!code highlight]
+>
+>     let responseFormat;
+>     if (userRole === "admin" && environment === "production") {
+>       responseFormat = adminResponse;  // [!code highlight]
+>     } else {
+>       responseFormat = userResponse;  // [!code highlight]
+>     }
+>
+>     return handler({ ...request, responseFormat });
+>   },
+> });
+> ```
 
 ## Tool context
 
@@ -792,184 +792,184 @@ Tools can also fetch important information for the model that allows it to perfo
 
 Most real-world tools need more than just the LLM's parameters. They need user IDs for database queries, API keys for external services, or current session state to make decisions. Tools read from state, store, and runtime context to access this information.
 
-**State**
+> [tab] State
+>
+> Read from State to check current session information:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { createAgent, tool, type ToolRuntime } from "langchain";
+>
+> const checkAuthentication = tool(
+>   async (_, runtime: ToolRuntime) => {
+>     // Read from State: check current auth status
+>     const currentState = runtime.state;
+>     const isAuthenticated = currentState.authenticated || false;
+>
+>     if (isAuthenticated) {
+>       return "User is authenticated";
+>     } else {
+>       return "User is not authenticated";
+>     }
+>   },
+>   {
+>     name: "check_authentication",
+>     description: "Check if user is authenticated",
+>     schema: z.object({}),
+>   }
+> );
+> ```
 
-Read from State to check current session information:
+> [tab] Store
+>
+> Read from Store to access persisted user preferences:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { createAgent, tool, type ToolRuntime } from "langchain";
+>
+> const contextSchema = z.object({
+>   userId: z.string(),
+> });
+>
+> const getPreference = tool(
+>   async ({ preferenceKey }, runtime: ToolRuntime) => {
+>     const userId = runtime.context.userId;
+>
+>     // Read from Store: get existing preferences
+>     const store = runtime.store;
+>     const existingPrefs = await store.get(["preferences"], userId);
+>
+>     if (existingPrefs) {
+>       const value = existingPrefs.value?.[preferenceKey];
+>       return value ? `${preferenceKey}: ${value}` : `No preference set for ${preferenceKey}`;
+>     } else {
+>       return "No preferences found";
+>     }
+>   },
+>   {
+>     name: "get_preference",
+>     description: "Get user preference from Store",
+>     schema: z.object({
+>       preferenceKey: z.string(),
+>     }),
+>   }
+> );
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createAgent, tool, type ToolRuntime } from "langchain";
-
-const checkAuthentication = tool(
-  async (_, runtime: ToolRuntime) => {
-    // Read from State: check current auth status
-    const currentState = runtime.state;
-    const isAuthenticated = currentState.authenticated || false;
-
-    if (isAuthenticated) {
-      return "User is authenticated";
-    } else {
-      return "User is not authenticated";
-    }
-  },
-  {
-    name: "check_authentication",
-    description: "Check if user is authenticated",
-    schema: z.object({}),
-  }
-);
-```
-
-**Store**
-
-Read from Store to access persisted user preferences:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createAgent, tool, type ToolRuntime } from "langchain";
-
-const contextSchema = z.object({
-  userId: z.string(),
-});
-
-const getPreference = tool(
-  async ({ preferenceKey }, runtime: ToolRuntime) => {
-    const userId = runtime.context.userId;
-
-    // Read from Store: get existing preferences
-    const store = runtime.store;
-    const existingPrefs = await store.get(["preferences"], userId);
-
-    if (existingPrefs) {
-      const value = existingPrefs.value?.[preferenceKey];
-      return value ? `${preferenceKey}: ${value}` : `No preference set for ${preferenceKey}`;
-    } else {
-      return "No preferences found";
-    }
-  },
-  {
-    name: "get_preference",
-    description: "Get user preference from Store",
-    schema: z.object({
-      preferenceKey: z.string(),
-    }),
-  }
-);
-```
-
-**Runtime Context**
-
-Read from Runtime Context for configuration like API keys and user IDs:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { tool } from "@langchain/core/tools";
-import { createAgent } from "langchain";
-
-const contextSchema = z.object({
-  userId: z.string(),
-  apiKey: z.string(),
-  dbConnection: z.string(),
-});
-
-const fetchUserData = tool(
-  async ({ query }, runtime: ToolRuntime<any, typeof contextSchema>) => {
-    // Read from Runtime Context: get API key and DB connection
-    const { userId, apiKey, dbConnection } = runtime.context;
-
-    // Use configuration to fetch data
-    const results = await performDatabaseQuery(dbConnection, query, apiKey);
-
-    return `Found ${results.length} results for user ${userId}`;
-  },
-  {
-    name: "fetch_user_data",
-    description: "Fetch data using Runtime Context configuration",
-    schema: z.object({
-      query: z.string(),
-    }),
-  }
-);
-
-const agent = createAgent({
-  model: "gpt-5.5",
-  tools: [fetchUserData],
-  contextSchema,
-});
-```
+> [tab] Runtime Context
+>
+> Read from Runtime Context for configuration like API keys and user IDs:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { tool } from "@langchain/core/tools";
+> import { createAgent } from "langchain";
+>
+> const contextSchema = z.object({
+>   userId: z.string(),
+>   apiKey: z.string(),
+>   dbConnection: z.string(),
+> });
+>
+> const fetchUserData = tool(
+>   async ({ query }, runtime: ToolRuntime<any, typeof contextSchema>) => {
+>     // Read from Runtime Context: get API key and DB connection
+>     const { userId, apiKey, dbConnection } = runtime.context;
+>
+>     // Use configuration to fetch data
+>     const results = await performDatabaseQuery(dbConnection, query, apiKey);
+>
+>     return `Found ${results.length} results for user ${userId}`;
+>   },
+>   {
+>     name: "fetch_user_data",
+>     description: "Fetch data using Runtime Context configuration",
+>     schema: z.object({
+>       query: z.string(),
+>     }),
+>   }
+> );
+>
+> const agent = createAgent({
+>   model: "gpt-5.5",
+>   tools: [fetchUserData],
+>   contextSchema,
+> });
+> ```
 
 ### Writes
 
 Tool results can be used to help an agent complete a given task. Tools can both return results directly to the model
 and update the memory of the agent to make important context available to future steps.
 
-**State**
+> [tab] State
+>
+> Write to State to track session-specific information using Command:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { tool } from "@langchain/core/tools";
+> import { createAgent } from "langchain";
+> import { Command } from "@langchain/langgraph";
+>
+> const authenticateUser = tool(
+>   async ({ password }) => {
+>     // Perform authentication
+>     if (password === "correct") {
+>       // Write to State: mark as authenticated using Command
+>       return new Command({
+>         update: { authenticated: true },
+>       });
+>     } else {
+>       return new Command({ update: { authenticated: false } });
+>     }
+>   },
+>   {
+>     name: "authenticate_user",
+>     description: "Authenticate user and update State",
+>     schema: z.object({
+>       password: z.string(),
+>     }),
+>   }
+> );
+> ```
 
-Write to State to track session-specific information using Command:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { tool } from "@langchain/core/tools";
-import { createAgent } from "langchain";
-import { Command } from "@langchain/langgraph";
-
-const authenticateUser = tool(
-  async ({ password }) => {
-    // Perform authentication
-    if (password === "correct") {
-      // Write to State: mark as authenticated using Command
-      return new Command({
-        update: { authenticated: true },
-      });
-    } else {
-      return new Command({ update: { authenticated: false } });
-    }
-  },
-  {
-    name: "authenticate_user",
-    description: "Authenticate user and update State",
-    schema: z.object({
-      password: z.string(),
-    }),
-  }
-);
-```
-
-**Store**
-
-Write to Store to persist data across sessions:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createAgent, tool, type ToolRuntime } from "langchain";
-
-const savePreference = tool(
-  async ({ preferenceKey, preferenceValue }, runtime: ToolRuntime<any, typeof contextSchema>) => {
-    const userId = runtime.context.userId;
-
-    // Read existing preferences
-    const store = runtime.store;
-    const existingPrefs = await store.get(["preferences"], userId);
-
-    // Merge with new preference
-    const prefs = existingPrefs?.value || {};
-    prefs[preferenceKey] = preferenceValue;
-
-    // Write to Store: save updated preferences
-    await store.put(["preferences"], userId, prefs);
-
-    return `Saved preference: ${preferenceKey} = ${preferenceValue}`;
-  },
-  {
-    name: "save_preference",
-    description: "Save user preference to Store",
-    schema: z.object({
-      preferenceKey: z.string(),
-      preferenceValue: z.string(),
-    }),
-  }
-);
-```
+> [tab] Store
+>
+> Write to Store to persist data across sessions:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+> import { createAgent, tool, type ToolRuntime } from "langchain";
+>
+> const savePreference = tool(
+>   async ({ preferenceKey, preferenceValue }, runtime: ToolRuntime<any, typeof contextSchema>) => {
+>     const userId = runtime.context.userId;
+>
+>     // Read existing preferences
+>     const store = runtime.store;
+>     const existingPrefs = await store.get(["preferences"], userId);
+>
+>     // Merge with new preference
+>     const prefs = existingPrefs?.value || {};
+>     prefs[preferenceKey] = preferenceValue;
+>
+>     // Write to Store: save updated preferences
+>     await store.put(["preferences"], userId, prefs);
+>
+>     return `Saved preference: ${preferenceKey} = ${preferenceValue}`;
+>   },
+>   {
+>     name: "save_preference",
+>     description: "Save user preference to Store",
+>     schema: z.object({
+>       preferenceKey: z.string(),
+>       preferenceValue: z.string(),
+>     }),
+>   }
+> );
+> ```
 
 See [Tools](/oss/javascript/langchain/tools) for comprehensive examples of accessing state, store, and runtime context in tools.
 

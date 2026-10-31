@@ -111,7 +111,7 @@ result = await agent.invoke(
 console.log(result.messages.at(-1)?.content);
 ```
 
-> **[View example trace](https://smith.langchain.com/public/e630ed7d-1c56-466e-ab84-ae06531f74a9/r)**
+> [card] [View example trace](https://smith.langchain.com/public/e630ed7d-1c56-466e-ab84-ae06531f74a9/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -319,7 +319,7 @@ const getWeather = tool(({ city }) => `It is currently sunny in ${city}.`, {
 });
 ```
 
-> **[View example trace](https://smith.langchain.com/public/989af542-1023-4731-8ce5-733c83d36064/r)**
+> [card] [View example trace](https://smith.langchain.com/public/989af542-1023-4731-8ce5-733c83d36064/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -353,7 +353,7 @@ const getWeatherData = tool(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/ce660b42-01d4-4b22-81eb-d140aaaf24e5/r)**
+> [card] [View example trace](https://smith.langchain.com/public/ce660b42-01d4-4b22-81eb-d140aaaf24e5/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -429,7 +429,7 @@ const setLanguage = tool(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/107f34b8-4f15-4419-b798-bb46eadbe850/r)**
+> [card] [View example trace](https://smith.langchain.com/public/107f34b8-4f15-4419-b798-bb46eadbe850/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -476,7 +476,7 @@ const result = await agent.invoke({
 // "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-> **[View example trace](https://smith.langchain.com/public/685c0211-e91c-45a2-8e9e-01be40cab4e9/r)**
+> [card] [View example trace](https://smith.langchain.com/public/685c0211-e91c-45a2-8e9e-01be40cab4e9/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -684,227 +684,229 @@ With dynamic tools, the set of tools available to the agent is modified at runti
 
 There are two approaches depending on whether tools are known ahead of time:
 
-**Filtering pre-registered tools**
-
-When all possible tools are known at agent creation time, you can pre-register them and dynamically filter which ones are exposed to the model based on state, permissions, or context.
-
-**State**
-
-Enable advanced tools only after certain conversation milestones:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createMiddleware, tool } from "langchain";
-import { createDeepAgent } from "deepagents";
-
-const stateBasedTools = createMiddleware({
-    name: "StateBasedTools",
-    wrapModelCall: (request, handler) => {
-        // Read from State: check authentication and conversation length
-        const state = request.state as typeof request.state & {
-            authenticated?: boolean;
-        };
-        const isAuthenticated = state.authenticated ?? false;
-        const messageCount = state.messages.length;
-
-        let filteredTools = request.tools;
-
-        // Only enable sensitive tools after authentication
-        if (!isAuthenticated) {
-            filteredTools = request.tools.filter(
-                (t: any) => typeof t.name === "string" && t.name.startsWith("public_"),
-            );
-        } else if (messageCount < 5) {
-            filteredTools = request.tools.filter(
-                (t: any) => typeof t.name === "string" && t.name !== "advanced_search",
-            );
-        }
-
-        return handler({ ...request, tools: filteredTools });
-    },
-});
-
-const agent = await createDeepAgent({
-    model: "claude-sonnet-4-6",
-    tools: tools,
-    middleware: [stateBasedTools] as any,
-});
-```
-
-**Store**
-
-Filter tools based on user preferences or feature flags in Store:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createMiddleware } from "langchain";
-import { createDeepAgent, StoreBackend } from "deepagents";
-import * as z from "zod";
-import { InMemoryStore } from "@langchain/langgraph";
-
-const contextSchema = z.object({
-  userId: z.string(),
-});
-
-const storeBasedTools = createMiddleware({
-  name: "StoreBasedTools",
-  contextSchema,
-  wrapModelCall: async (request, handler) => {
-    const userId =
-      (request.runtime?.context as { userId?: string } | undefined)?.userId ??
-        "user-123";
-
-    // Read from Store: get user's enabled features
-    const runtimeStore = request.runtime?.store as InMemoryStore | undefined;
-    const rawFlags = (await runtimeStore?.get(
-      ["features"],
-      userId as string,
-    )) as unknown;
-    const featureFlags = rawFlags as FeatureFlags | undefined;
-
-    let filteredTools = request.tools;
-
-    if (featureFlags) {
-      const enabledFeatures = featureFlags.enabledTools || [];
-      filteredTools = request.tools.filter((t) =>
-        enabledFeatures.includes(t.name as string)
-      );
-    }
-
-    return handler({ ...request, tools: filteredTools });
-  },
-});
-
-const agent = await createDeepAgent({
-  model: "claude-sonnet-4-6",
-  backend: new StoreBackend(),
-  store,
-  checkpointer,
-  tools,
-  middleware: [storeBasedTools] as any,
-});
-```
-
-**Runtime Context**
-
-Filter tools based on user permissions from Runtime Context:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createMiddleware } from "langchain";
-import { createDeepAgent } from "deepagents";
-
-const contextSchema = z.object({
-  userRole: z.string(),
-});
-
-const contextBasedTools = createMiddleware({
-  name: "ContextBasedTools",
-  contextSchema,
-  wrapModelCall: (request, handler) => {
-    // Read from Runtime Context: get user role
-    const userRole = request.runtime.context.userRole;
-
-    let filteredTools = request.tools;
-
-    if (userRole === "admin") {
-      // Admins get all tools
-    } else if (userRole === "editor") {
-      filteredTools = request.tools.filter((t) => t.name !== "delete_data");
-    } else {
-      filteredTools = request.tools.filter(
-        (t) => (t.name as string).startsWith("read_"),
-      );
-    }
-
-    return handler({ ...request, tools: filteredTools });
-  },
-});
-
-const agent = await createDeepAgent({
-  model: "claude-sonnet-4-6",
-  store,
-  checkpointer,
-  tools,
-  middleware: [contextBasedTools] as any,
-});
-```
-
-This approach is best when:
-
-* All possible tools are known at compile/startup time
-* You want to filter based on permissions, feature flags, or conversation state
-* Tools are static but their availability is dynamic
-
-See [Dynamically selecting tools](/oss/javascript/langchain/middleware/custom#dynamically-selecting-tools) for more examples.
-
-**Runtime tool registration**
-
-When tools are discovered or created at runtime (e.g., loaded from an MCP server, generated based on user data, or fetched from a remote registry), you need to both register the tools and handle their execution dynamically.
-
-This requires two middleware hooks:
-
-1. `wrap_model_call` - Add the dynamic tools to the request
-2. `wrap_tool_call` - Handle execution of the dynamically added tools
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent, createMiddleware, tool } from "langchain";
-import * as z from "zod";
-
-// A tool that will be added dynamically at runtime
-const calculateTip = tool(
-  ({ billAmount, tipPercentage = 20 }) => {
-    const tip = billAmount * (tipPercentage / 100);
-    return `Tip: $${tip.toFixed(2)}, Total: $${(billAmount + tip).toFixed(2)}`;
-  },
-  {
-    name: "calculate_tip",
-    description: "Calculate the tip amount for a bill",
-    schema: z.object({
-      billAmount: z.number().describe("The bill amount"),
-      tipPercentage: z.number().default(20).describe("Tip percentage"),
-    }),
-  }
-);
-
-const dynamicToolMiddleware = createMiddleware({
-  name: "DynamicToolMiddleware",
-  wrapModelCall: (request, handler) => {
-    // Add dynamic tool to the request
-    // This could be loaded from an MCP server, database, etc.
-    return handler({
-      ...request,
-      tools: [...request.tools, calculateTip],
-    });
-  },
-  wrapToolCall: (request, handler) => {
-    // Handle execution of the dynamic tool
-    if (request.toolCall.name === "calculate_tip") {
-      return handler({ ...request, tool: calculateTip });
-    }
-    return handler(request);
-  },
-});
-
-const agent = createAgent({
-  model: "gpt-5.5",
-  tools: [getWeather], // Only static tools registered here
-  middleware: [dynamicToolMiddleware],
-});
-
-// The agent can now use both getWeather AND calculateTip
-const result = await agent.invoke({
-  messages: [{ role: "user", content: "Calculate a 20% tip on $85" }],
-});
-```
-
-This approach is best when:
-
-* Tools are discovered at runtime (e.g., from an MCP server)
-* Tools are generated dynamically based on user data or configuration
-* You're integrating with external tool registries
-
-> [!NOTE]
+> [tab] Filtering pre-registered tools
 >
-> The `wrap_tool_call` hook is required for runtime-registered tools because the agent needs to know how to execute tools that weren't in the original tool list. Without it, the agent won't know how to invoke the dynamically added tool.
+> When all possible tools are known at agent creation time, you can pre-register them and dynamically filter which ones are exposed to the model based on state, permissions, or context.
+>
+> > [tab] State
+> >
+> > Enable advanced tools only after certain conversation milestones:
+> >
+> > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import { createMiddleware, tool } from "langchain";
+> > import { createDeepAgent } from "deepagents";
+> >
+> > const stateBasedTools = createMiddleware({
+> >     name: "StateBasedTools",
+> >     wrapModelCall: (request, handler) => {
+> >         // Read from State: check authentication and conversation length
+> >         const state = request.state as typeof request.state & {
+> >             authenticated?: boolean;
+> >         };
+> >         const isAuthenticated = state.authenticated ?? false;
+> >         const messageCount = state.messages.length;
+> >
+> >         let filteredTools = request.tools;
+> >
+> >         // Only enable sensitive tools after authentication
+> >         if (!isAuthenticated) {
+> >             filteredTools = request.tools.filter(
+> >                 (t: any) => typeof t.name === "string" && t.name.startsWith("public_"),
+> >             );
+> >         } else if (messageCount < 5) {
+> >             filteredTools = request.tools.filter(
+> >                 (t: any) => typeof t.name === "string" && t.name !== "advanced_search",
+> >             );
+> >         }
+> >
+> >         return handler({ ...request, tools: filteredTools });
+> >     },
+> > });
+> >
+> > const agent = await createDeepAgent({
+> >     model: "claude-sonnet-4-6",
+> >     tools: tools,
+> >     middleware: [stateBasedTools] as any,
+> > });
+> > ```
+>
+> > [tab] Store
+> >
+> > Filter tools based on user preferences or feature flags in Store:
+> >
+> > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import { createMiddleware } from "langchain";
+> > import { createDeepAgent, StoreBackend } from "deepagents";
+> > import * as z from "zod";
+> > import { InMemoryStore } from "@langchain/langgraph";
+> >
+> > const contextSchema = z.object({
+> >   userId: z.string(),
+> > });
+> >
+> > const storeBasedTools = createMiddleware({
+> >   name: "StoreBasedTools",
+> >   contextSchema,
+> >   wrapModelCall: async (request, handler) => {
+> >     const userId =
+> >       (request.runtime?.context as { userId?: string } | undefined)?.userId ??
+> >         "user-123";
+> >
+> >     // Read from Store: get user's enabled features
+> >     const runtimeStore = request.runtime?.store as InMemoryStore | undefined;
+> >     const rawFlags = (await runtimeStore?.get(
+> >       ["features"],
+> >       userId as string,
+> >     )) as unknown;
+> >     const featureFlags = rawFlags as FeatureFlags | undefined;
+> >
+> >     let filteredTools = request.tools;
+> >
+> >     if (featureFlags) {
+> >       const enabledFeatures = featureFlags.enabledTools || [];
+> >       filteredTools = request.tools.filter((t) =>
+> >         enabledFeatures.includes(t.name as string)
+> >       );
+> >     }
+> >
+> >     return handler({ ...request, tools: filteredTools });
+> >   },
+> > });
+> >
+> > const agent = await createDeepAgent({
+> >   model: "claude-sonnet-4-6",
+> >   backend: new StoreBackend(),
+> >   store,
+> >   checkpointer,
+> >   tools,
+> >   middleware: [storeBasedTools] as any,
+> > });
+> > ```
+>
+> > [tab] Runtime Context
+> >
+> > Filter tools based on user permissions from Runtime Context:
+> >
+> > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import * as z from "zod";
+> > import { createMiddleware } from "langchain";
+> > import { createDeepAgent } from "deepagents";
+> >
+> > const contextSchema = z.object({
+> >   userRole: z.string(),
+> > });
+> >
+> > const contextBasedTools = createMiddleware({
+> >   name: "ContextBasedTools",
+> >   contextSchema,
+> >   wrapModelCall: (request, handler) => {
+> >     // Read from Runtime Context: get user role
+> >     const userRole = request.runtime.context.userRole;
+> >
+> >     let filteredTools = request.tools;
+> >
+> >     if (userRole === "admin") {
+> >       // Admins get all tools
+> >     } else if (userRole === "editor") {
+> >       filteredTools = request.tools.filter((t) => t.name !== "delete_data");
+> >     } else {
+> >       filteredTools = request.tools.filter(
+> >         (t) => (t.name as string).startsWith("read_"),
+> >       );
+> >     }
+> >
+> >     return handler({ ...request, tools: filteredTools });
+> >   },
+> > });
+> >
+> > const agent = await createDeepAgent({
+> >   model: "claude-sonnet-4-6",
+> >   store,
+> >   checkpointer,
+> >   tools,
+> >   middleware: [contextBasedTools] as any,
+> > });
+> > ```
+>
+> This approach is best when:
+>
+> * All possible tools are known at compile/startup time
+> * You want to filter based on permissions, feature flags, or conversation state
+> * Tools are static but their availability is dynamic
+>
+> See [Dynamically selecting tools](/oss/javascript/langchain/middleware/custom#dynamically-selecting-tools) for more examples.
+
+> [tab] Runtime tool registration
+>
+> When tools are discovered or created at runtime (e.g., loaded from an MCP server, generated based on user data, or fetched from a remote registry), you need to both register the tools and handle their execution dynamically.
+>
+> This requires two middleware hooks:
+>
+> 1. `wrap_model_call` - Add the dynamic tools to the request
+> 2. `wrap_tool_call` - Handle execution of the dynamically added tools
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createAgent, createMiddleware, tool } from "langchain";
+> import * as z from "zod";
+>
+> // A tool that will be added dynamically at runtime
+> const calculateTip = tool(
+>   ({ billAmount, tipPercentage = 20 }) => {
+>     const tip = billAmount * (tipPercentage / 100);
+>     return `Tip: $${tip.toFixed(2)}, Total: $${(billAmount + tip).toFixed(2)}`;
+>   },
+>   {
+>     name: "calculate_tip",
+>     description: "Calculate the tip amount for a bill",
+>     schema: z.object({
+>       billAmount: z.number().describe("The bill amount"),
+>       tipPercentage: z.number().default(20).describe("Tip percentage"),
+>     }),
+>   }
+> );
+>
+> const dynamicToolMiddleware = createMiddleware({
+>   name: "DynamicToolMiddleware",
+>   wrapModelCall: (request, handler) => {
+>     // Add dynamic tool to the request
+>     // This could be loaded from an MCP server, database, etc.
+>     return handler({
+>       ...request,
+>       tools: [...request.tools, calculateTip],
+>     });
+>   },
+>   wrapToolCall: (request, handler) => {
+>     // Handle execution of the dynamic tool
+>     if (request.toolCall.name === "calculate_tip") {
+>       return handler({ ...request, tool: calculateTip });
+>     }
+>     return handler(request);
+>   },
+> });
+>
+> const agent = createAgent({
+>   model: "gpt-5.5",
+>   tools: [getWeather], // Only static tools registered here
+>   middleware: [dynamicToolMiddleware],
+> });
+>
+> // The agent can now use both getWeather AND calculateTip
+> const result = await agent.invoke({
+>   messages: [{ role: "user", content: "Calculate a 20% tip on $85" }],
+> });
+> ```
+>
+> This approach is best when:
+>
+> * Tools are discovered at runtime (e.g., from an MCP server)
+>
+> * Tools are generated dynamically based on user data or configuration
+>
+> * You're integrating with external tool registries
+>
+> > [!NOTE]
+> >
+> > The `wrap_tool_call` hook is required for runtime-registered tools because the agent needs to know how to execute tools that weren't in the original tool list. Without it, the agent won't know how to invoke the dynamically added tool.
 
 ## Headless tools
 
@@ -938,7 +940,7 @@ When the model issues a tool call for one of these tools, the run **interrupts**
 
 Use the optional **`onTool`** callback to observe lifecycle events (`start`, `success`, `error`) for UI feedback such as spinners or toasts.
 
-> **[Headless tools frontend pattern](/oss/javascript/langchain/frontend/headless-tools)**
+> [card] [Headless tools frontend pattern](/oss/javascript/langchain/frontend/headless-tools)
 >
 > See an end-to-end example of schema-only tools executed in the client with `useStream`.
 

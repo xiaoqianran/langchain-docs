@@ -60,7 +60,7 @@ const agent = createAgent({
 });
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **maxRetries** `number` (default: 2)
 >
@@ -100,7 +100,7 @@ const agent = createAgent({
 >
 > Whether to add random jitter (`±25%`) to delay to avoid thundering herd
 
-> **Full example**
+> [accordion] Full example
 >
 > The middleware automatically retries failed tool calls with exponential backoff.
 >
@@ -274,7 +274,7 @@ const agent = createAgent({
 });
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **maxRetries** `number` (default: 2)
 >
@@ -308,7 +308,7 @@ const agent = createAgent({
 >
 > Whether to add random jitter (`±25%`) to delay to avoid thundering herd
 
-> **Full example**
+> [accordion] Full example
 >
 > The middleware automatically retries failed model calls with exponential backoff.
 >
@@ -407,7 +407,7 @@ const agent = createAgent({
 });
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > The middleware accepts a variable number of string arguments representing fallback models in order:
 >
@@ -451,7 +451,7 @@ const agent = createAgent({
 });
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > > [!TIP]
 > >
@@ -529,7 +529,7 @@ const agent = createAgent({
 >
 > **Deprecated:** Use `keep: { messages: value }` instead. Recent messages to preserve.
 
-> **Full example**
+> [accordion] Full example
 >
 > The summarization middleware monitors message token counts and automatically summarizes older messages when thresholds are reached.
 >
@@ -669,7 +669,7 @@ const agent = createAgent({
 
 Watch this [video guide](https://www.youtube.com/watch?v=x5jLQTFXR0Y) demonstrating Model Call Limit middleware behavior.
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **threadLimit** `number`
 >
@@ -711,7 +711,7 @@ const agent = createAgent({
 
 Watch this [video guide](https://www.youtube.com/watch?v=oL6am5UqODY) demonstrating Tool Call Limit middleware behavior.
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **toolName** `string`
 >
@@ -735,7 +735,7 @@ Watch this [video guide](https://www.youtube.com/watch?v=oL6am5UqODY) demonstrat
 > * `'error'` - Throw a `ToolCallLimitExceededError` exception, stopping execution immediately
 > * `'end'` - Stop execution immediately with a ToolMessage and AI message for the exceeded tool call. Only works when limiting a single tool; throws error if other tools have pending calls.
 
-> **Full example**
+> [accordion] Full example
 >
 > Specify limits with:
 >
@@ -886,7 +886,7 @@ function detector(content: string): PIIMatch[] {
 > * Use custom functions when you need validation logic beyond pattern matching
 > * Custom functions give you full control over detection logic and can implement complex validation rules
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **piiType** `string` *required*
 >
@@ -946,7 +946,7 @@ const agent = createAgent({
 
 Watch this [video guide](https://www.youtube.com/watch?v=dwvhZ1z_Pas) demonstrating To-do List middleware behavior.
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > No configuration options available (uses defaults).
 
@@ -976,7 +976,7 @@ const agent = createAgent({
 });
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **model** `string | BaseChatModel`
 >
@@ -1035,13 +1035,13 @@ const agent = createAgent({
 });
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **searchableTools** `(string | StructuredToolInterface)[]`
 >
 > Tools to defer behind the provider's tool search, given by name or instance. Deferred tools are withheld from the model until its search surfaces them. Tools constructed with `extras.defer_loading: true` are deferred regardless of this option; if `searchableTools` is omitted, only those pre-marked tools are deferred.
 
-> **Full example**
+> [accordion] Full example
 >
 > The middleware opts-in all tools included in the `searchableTools` for deferral and search. A tool can also opt into deferral at construction time by setting `extras.defer_loading: true`
 >
@@ -1248,7 +1248,7 @@ const agent = createAgent({
 });
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **edits** `ContextEdit[]` (default: \[new ClearToolUsesEdit()])
 >
@@ -1280,7 +1280,7 @@ const agent = createAgent({
 >
 > Placeholder text inserted for cleared tool outputs. This replaces the original tool message content.
 
-> **Full example**
+> [accordion] Full example
 >
 > The middleware applies context editing strategies when token limits are reached. The most common strategy is `ClearToolUsesEdit`, which clears older tool results while preserving recent ones.
 >
@@ -1333,7 +1333,7 @@ const agent = createAgent({
 });
 ```
 
-> **Configuration options**
+> [accordion] Configuration options
 >
 > **tools** `(string | ClientTool | ServerTool)[]`
 >
@@ -1343,7 +1343,7 @@ const agent = createAgent({
 >
 > Model to use for generating emulated tool responses. Can be a model identifier string (e.g., `'google:gemini-3.6-flash'`) or a `BaseChatModel` instance. Defaults to the agent's model if not specified.
 
-> **Full example**
+> [accordion] Full example
 >
 > The middleware uses an LLM to generate plausible responses for tool calls instead of executing the actual tools.
 >
@@ -1418,11 +1418,11 @@ const agent = createAgent({
 
 These middleware are optimized for specific LLM providers. See each provider's documentation for full details and examples.
 
-> **[Anthropic](/oss/javascript/integrations/middleware/anthropic)**
+> [card] [Anthropic](/oss/javascript/integrations/middleware/anthropic)
 >
 > Prompt caching, bash tool, text editor, memory, and file search middleware for Claude models.
 
-> **[AWS](/oss/javascript/integrations/middleware/aws)**
+> [card] [AWS](/oss/javascript/integrations/middleware/aws)
 >
 > Prompt caching middleware for Amazon Bedrock models.
 

@@ -25,49 +25,49 @@ See the [Quickstart](/oss/deepagents/code/quickstart) to add provider credential
 
 ## Capabilities
 
-> **[Remote sandboxes](/oss/deepagents/code/remote-sandboxes)**
+> [card] [Remote sandboxes](/oss/deepagents/code/remote-sandboxes)
 >
 > Run agent tools remotely instead of on your local machine.
 
-> **[Goals and rubrics](/oss/deepagents/code/goals-and-rubrics)**
+> [card] [Goals and rubrics](/oss/deepagents/code/goals-and-rubrics)
 >
 > Define measurable objectives or grading criteria so the agent can check whether work is done.
 
-> **[Subagents](/oss/deepagents/code/subagents)**
+> [card] [Subagents](/oss/deepagents/code/subagents)
 >
 > Delegate work to task-specific subagents for parallel execution.
 
-> **[Memory](/oss/deepagents/code/memory-and-skills#memory)**
+> [card] [Memory](/oss/deepagents/code/memory-and-skills#memory)
 >
 > Store and retrieve information across sessions, including project conventions and learned patterns.
 
-> **[Context compaction](/oss/deepagents/code/quickstart#interactive-mode)**
+> [card] [Context compaction](/oss/deepagents/code/quickstart#interactive-mode)
 >
 > Summarize older messages and offload originals to storage.
 
-> **[Human-in-the-loop](/oss/deepagents/code/quickstart#interactive-mode)**
+> [card] [Human-in-the-loop](/oss/deepagents/code/quickstart#interactive-mode)
 >
 > Require human approval for sensitive tool operations.
 
-> **[Skills](/oss/deepagents/code/memory-and-skills#skills)**
+> [card] [Skills](/oss/deepagents/code/memory-and-skills#skills)
 >
 > Extend agent capabilities with custom expertise and instructions.
 
-> **[MCP tools](/oss/deepagents/code/mcp-tools)**
+> [card] [MCP tools](/oss/deepagents/code/mcp-tools)
 >
 > Load external tools from Model Context Protocol servers.
 
-> **[Tracing](/oss/deepagents/code/quickstart#trace-with-langsmith)**
+> [card] [Tracing](/oss/deepagents/code/quickstart#trace-with-langsmith)
 >
 > Trace agent operations in LangSmith for observability and debugging.
 
 ## Next steps
 
-> **[Quickstart](/oss/deepagents/code/quickstart)**
+> [card] [Quickstart](/oss/deepagents/code/quickstart)
 >
 > Install Deep Agents Code, run your first task, and use interactive or non-interactive modes.
 
-> **[Configuration](/oss/deepagents/code/configuration)**
+> [card] [Configuration](/oss/deepagents/code/configuration)
 >
 > Set up credentials, `config.toml`, environment variables, hooks, and CLI flags.
 

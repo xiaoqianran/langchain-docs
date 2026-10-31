@@ -117,7 +117,7 @@ vector_store.similarity_search(
 
 **Select embedding model:**
 
-> **OpenAI**
+> [accordion] OpenAI
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-openai
@@ -139,7 +139,7 @@ vector_store.similarity_search(
 > embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
 > ```
 
-> **Azure**
+> [accordion] Azure
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-azure-ai
@@ -161,7 +161,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **Google Gemini**
+> [accordion] Google Gemini
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-google-genai
@@ -179,7 +179,7 @@ vector_store.similarity_search(
 > embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
 > ```
 
-> **Gemini Enterprise Agent Platform**
+> [accordion] Gemini Enterprise Agent Platform
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-google-vertexai
@@ -191,7 +191,7 @@ vector_store.similarity_search(
 > embeddings = VertexAIEmbeddings(model="text-embedding-005")
 > ```
 
-> **AWS**
+> [accordion] AWS
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-aws
@@ -203,7 +203,7 @@ vector_store.similarity_search(
 > embeddings = BedrockEmbeddings(model_id="amazon.titan-embed-text-v2:0")
 > ```
 
-> **HuggingFace**
+> [accordion] HuggingFace
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-huggingface
@@ -215,7 +215,7 @@ vector_store.similarity_search(
 > embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
 > ```
 
-> **Ollama**
+> [accordion] Ollama
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-ollama
@@ -227,7 +227,7 @@ vector_store.similarity_search(
 > embeddings = OllamaEmbeddings(model="nomic-embed-text")
 > ```
 
-> **Cohere**
+> [accordion] Cohere
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-cohere
@@ -245,7 +245,7 @@ vector_store.similarity_search(
 > embeddings = CohereEmbeddings(model="embed-english-v3.0")
 > ```
 
-> **Mistral AI**
+> [accordion] Mistral AI
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-mistralai
@@ -263,7 +263,7 @@ vector_store.similarity_search(
 > embeddings = MistralAIEmbeddings(model="mistral-embed")
 > ```
 
-> **Nomic**
+> [accordion] Nomic
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-nomic
@@ -281,7 +281,7 @@ vector_store.similarity_search(
 > embeddings = NomicEmbeddings(model="nomic-embed-text-v1.5")
 > ```
 
-> **NVIDIA**
+> [accordion] NVIDIA
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-nvidia-ai-endpoints
@@ -299,7 +299,7 @@ vector_store.similarity_search(
 > embeddings = NVIDIAEmbeddings(model="NV-Embed-QA")
 > ```
 
-> **Voyage AI**
+> [accordion] Voyage AI
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-voyageai
@@ -319,7 +319,7 @@ vector_store.similarity_search(
 >
 > For more information, see the [Voyage AI documentation](https://www.mongodb.com/docs/voyageai/models/text-embeddings/).
 
-> **IBM watsonx**
+> [accordion] IBM watsonx
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-ibm
@@ -341,7 +341,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **Fake**
+> [accordion] Fake
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-core
@@ -353,7 +353,7 @@ vector_store.similarity_search(
 > embeddings = DeterministicFakeEmbedding(size=4096)
 > ```
 
-> **xAI**
+> [accordion] xAI
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-xai
@@ -371,7 +371,7 @@ vector_store.similarity_search(
 > model = init_chat_model("grok-2", model_provider="xai")
 > ```
 
-> **Perplexity**
+> [accordion] Perplexity
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-perplexity
@@ -389,7 +389,7 @@ vector_store.similarity_search(
 > model = init_chat_model("llama-3.1-sonar-small-128k-online", model_provider="perplexity")
 > ```
 
-> **DeepSeek**
+> [accordion] DeepSeek
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-deepseek
@@ -409,7 +409,7 @@ vector_store.similarity_search(
 
 **Select vector store:**
 
-> **In-memory**
+> [accordion] In-memory
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-core
@@ -425,7 +425,7 @@ vector_store.similarity_search(
 > vector_store = InMemoryVectorStore(embeddings)
 > ```
 
-> **Amazon OpenSearch**
+> [accordion] Amazon OpenSearch
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU boto3
@@ -454,7 +454,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **Astra DB**
+> [accordion] Astra DB
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-astradb
@@ -476,7 +476,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **Azure Cosmos DB NoSQL**
+> [accordion] Azure Cosmos DB NoSQL
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-azure-cosmosdb azure-cosmos
@@ -504,7 +504,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **Azure Cosmos DB Mongo vCore**
+> [accordion] Azure Cosmos DB Mongo vCore
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-azure-ai pymongo
@@ -527,7 +527,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **Chroma**
+> [accordion] Chroma
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-chroma
@@ -547,7 +547,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **CockroachDB**
+> [accordion] CockroachDB
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-cockroachdb
@@ -575,7 +575,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **Elasticsearch**
+> [accordion] Elasticsearch
 >
 > Install the package and start Elasticsearch locally using the [start-local](https://github.com/elastic/start-local) script:
 >
@@ -603,7 +603,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **Google AlloyDB**
+> [accordion] Google AlloyDB
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-google-alloydb-pg
@@ -631,7 +631,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **Milvus**
+> [accordion] Milvus
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-milvus
@@ -653,7 +653,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **MongoDB**
+> [accordion] MongoDB
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-mongodb
@@ -672,7 +672,7 @@ vector_store.similarity_search(
 >
 > For more information, see the [MongoDB LangChain integration docs](https://www.mongodb.com/docs/atlas/ai-integrations/langchain/#vector-store).
 
-> **PGVector**
+> [accordion] PGVector
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-postgres
@@ -692,7 +692,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **PGVectorStore**
+> [accordion] PGVectorStore
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-postgres
@@ -716,7 +716,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **Pinecone**
+> [accordion] Pinecone
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-pinecone
@@ -736,7 +736,7 @@ vector_store.similarity_search(
 > vector_store = PineconeVectorStore(embedding=embeddings, index=index)
 > ```
 
-> **Qdrant**
+> [accordion] Qdrant
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-qdrant
@@ -767,7 +767,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **Redis**
+> [accordion] Redis
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-redis
@@ -790,7 +790,7 @@ vector_store.similarity_search(
 > vector_store = RedisVectorStore(embeddings=embeddings, config=config)
 > ```
 
-> **Oracle AI Database**
+> [accordion] Oracle AI Database
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-oracledb
@@ -824,7 +824,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **turbopuffer**
+> [accordion] turbopuffer
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-turbopuffer
@@ -844,7 +844,7 @@ vector_store.similarity_search(
 > vector_store = TurbopufferVectorStore(embedding=embeddings, namespace=ns)
 > ```
 
-> **Valkey**
+> [accordion] Valkey
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU "langchain-aws[valkey]"
@@ -864,7 +864,7 @@ vector_store.similarity_search(
 > )
 > ```
 
-> **Weaviate**
+> [accordion] Weaviate
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-weaviate

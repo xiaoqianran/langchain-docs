@@ -112,15 +112,15 @@ transcript.
 
 ## Explore the spectrum
 
-> **[Controlled](/oss/javascript/langchain/frontend/controlled-generative-ui)**
+> [card] [Controlled](/oss/javascript/langchain/frontend/controlled-generative-ui)
 >
 > Author the components; the agent picks which to render and what data to pass.
 
-> **[Declarative](/oss/javascript/langchain/frontend/declarative-generative-ui)**
+> [card] [Declarative](/oss/javascript/langchain/frontend/declarative-generative-ui)
 >
 > The agent emits a spec; the frontend composes from a registered catalog.
 
-> **[Open-ended](/oss/javascript/langchain/frontend/open-ended-generative-ui)**
+> [card] [Open-ended](/oss/javascript/langchain/frontend/open-ended-generative-ui)
 >
 > Render UI created elsewhere, such as sandboxed MCP Apps.
 

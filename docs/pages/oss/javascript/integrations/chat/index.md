@@ -12,7 +12,7 @@ Integrate with chat models using LangChain JavaScript.
 >
 > See [this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install).
 
-> **OpenAI**
+> [accordion] OpenAI
 >
 > Install:
 >
@@ -46,7 +46,7 @@ Integrate with chat models using LangChain JavaScript.
 > await model.invoke("Hello, world!")
 > ```
 
-> **Anthropic**
+> [accordion] Anthropic
 >
 > Install:
 >
@@ -83,7 +83,7 @@ Integrate with chat models using LangChain JavaScript.
 > await model.invoke("Hello, world!")
 > ```
 
-> **Google Gemini**
+> [accordion] Google Gemini
 >
 > Install:
 >
@@ -117,7 +117,7 @@ Integrate with chat models using LangChain JavaScript.
 > await model.invoke("Hello, world!")
 > ```
 
-> **MistralAI**
+> [accordion] MistralAI
 >
 > Install:
 >
@@ -154,7 +154,7 @@ Integrate with chat models using LangChain JavaScript.
 > await model.invoke("Hello, world!")
 > ```
 
-> **Groq**
+> [accordion] Groq
 >
 > Install:
 >

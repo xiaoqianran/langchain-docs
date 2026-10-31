@@ -168,7 +168,7 @@ services:
 
 Run `docker compose up` with this file in the same folder.
 
-> **With MongoDB checkpointing**
+> [accordion] With MongoDB checkpointing
 >
 > To store checkpoints in MongoDB instead of PostgreSQL, add a MongoDB service and configure the checkpointer backend. Set the backend to `"mongo"` in your `langgraph.json` or use the `LS_DEFAULT_CHECKPOINTER_BACKEND` environment variable. PostgreSQL is still required for all other server data.
 >

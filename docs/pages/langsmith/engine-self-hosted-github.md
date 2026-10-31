@@ -138,7 +138,7 @@ Public visibility allows other accounts to install the App. It does not make rep
 
 Enterprise-owned Apps have internal visibility and cannot be installed on personal accounts. Install in each organization; an enterprise-account installation does not grant repository access.
 
-> **Enterprise visibility and managed users**
+> [accordion] Enterprise visibility and managed users
 >
 > Only enterprise members can authorize an enterprise-owned App. If outside collaborators need to connect repositories, review their enterprise access before choosing that ownership type. See GitHub's [App visibility rules](https://docs.github.com/en/enterprise-cloud@latest/apps/creating-github-apps/registering-a-github-app/making-a-github-app-public-or-private) or the [GHES equivalent](https://docs.github.com/en/enterprise-server@3.20/apps/creating-github-apps/registering-a-github-app/making-a-github-app-public-or-private), selecting your server's documentation version.
 >
@@ -154,33 +154,33 @@ Enterprise-owned Apps have internal visibility and cannot be installed on person
 
 Choose the tab for the account that owns the App. These paths apply on the GitHub instance selected above:
 
-**Organization**
+> [tab] Organization
+>
+> You must be an organization owner or have permission to manage its Apps.
+>
+> To open the registration form:
+>
+> 1. Open your profile menu and select **Your organizations**.
+> 2. Next to the organization that should own the App, select **Settings**.
+> 3. Open **Developer settings** > **GitHub Apps** > **New GitHub App**.
 
-You must be an organization owner or have permission to manage its Apps.
+> [tab] Enterprise
+>
+> An enterprise owner completes these steps. On GHES, enterprise-owned Apps require version 3.17 or later. On older versions, use an organization-owned App with the visibility needed for your repositories.
+>
+> To open the registration form:
+>
+> 1. Open your profile menu. With managed users, select **Your enterprise**. With personal accounts, select **Your enterprises**, then open the enterprise's **Settings**.
+> 2. In the enterprise sidebar, under **Settings**, select **GitHub Apps**.
+> 3. Select **New GitHub App**.
+>
+> For GitHub's instructions, see [Create an App for your enterprise](https://docs.github.com/en/enterprise-cloud@latest/admin/managing-github-apps-for-your-enterprise/creating-github-apps-for-your-enterprise).
 
-To open the registration form:
-
-1. Open your profile menu and select **Your organizations**.
-2. Next to the organization that should own the App, select **Settings**.
-3. Open **Developer settings** > **GitHub Apps** > **New GitHub App**.
-
-**Enterprise**
-
-An enterprise owner completes these steps. On GHES, enterprise-owned Apps require version 3.17 or later. On older versions, use an organization-owned App with the visibility needed for your repositories.
-
-To open the registration form:
-
-1. Open your profile menu. With managed users, select **Your enterprise**. With personal accounts, select **Your enterprises**, then open the enterprise's **Settings**.
-2. In the enterprise sidebar, under **Settings**, select **GitHub Apps**.
-3. Select **New GitHub App**.
-
-For GitHub's instructions, see [Create an App for your enterprise](https://docs.github.com/en/enterprise-cloud@latest/admin/managing-github-apps-for-your-enterprise/creating-github-apps-for-your-enterprise).
-
-**Personal account**
-
-Use this option for a personal account without managed users.
-
-Open your profile menu and select **Settings** > **Developer settings** > **GitHub Apps** > **New GitHub App**.
+> [tab] Personal account
+>
+> Use this option for a personal account without managed users.
+>
+> Open your profile menu and select **Settings** > **Developer settings** > **GitHub Apps** > **New GitHub App**.
 
 #### Complete the registration form
 

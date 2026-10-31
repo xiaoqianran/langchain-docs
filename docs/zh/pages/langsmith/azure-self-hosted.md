@@ -32,25 +32,25 @@
 
 对于生产部署，请连接到 Azure 托管服务：
 
-> **[Azure Blob Storage](/langsmith/self-host-blob-storage#azure-blob-storage)**
+> [卡片][Azure Blob Storage](/langsmith/self-host-blob-storage#azure-blob-storage)
 >
 > 将跟踪数据存储在 Azure Blob 中
 
-> **[Azure Database](/langsmith/self-host-external-postgres#azure-database-for-postgresql)**
+> [卡][Azure Database](/langsmith/self-host-external-postgres#azure-database-for-postgresql)
 >
 > PostgreSQL 数据库
 
-> **[Azure Cache](/langsmith/self-host-external-redis#azure-cache-for-redis)**
+> [卡][Azure Cache](/langsmith/self-host-external-redis#azure-cache-for-redis)
 >
 > Redis 用于缓存
 
-> **[ClickHouse Cloud](/langsmith/self-host-external-clickhouse)**
+> [卡][ClickHouse Cloud](/langsmith/self-host-external-clickhouse)
 >
 > 分析数据库
 
-**3.设置身份验证**
+**3.设置身份验证**使用 [Azure Workload Identity](https://azure.github.io/azure-workload-identity/docs/introduction.html) 对 Azure 服务的 LangSmith Pod 进行身份验证。
 
-使用 [Azure Workload Identity](https://azure.github.io/azure-workload-identity/docs/introduction.html) 对 Azure 服务的 LangSmith Pod 进行身份验证。**关键页面：**
+**关键页面：**
 
 * [Azure Blob managed identity](/langsmith/self-host-blob-storage#azure-blob-storage)
 * [Azure Database Entra authentication](/langsmith/self-host-external-postgres#iam-authentication)
@@ -117,7 +117,7 @@
 
 #### 备份和灾难恢复
 
-启用[automatic backups](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-backup-restore)并配置异地冗余备份存储以防止区域范围内的中断。对于关键应用程序，在次要区域中创建只读副本。
+启用 [automatic backups](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-backup-restore) 并配置异地冗余备份存储以防止区域范围内的中断。对于关键应用程序，在次要区域中创建只读副本。
 
 #### 缩放
 
@@ -155,9 +155,9 @@
 
 使用 [RBAC permission model](https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide) 在保管库范围内分配角色并限制对所需主体的访问。使用专用链接和防火墙限制网络访问。
 
-#### Data protection and logging
+#### 数据保护和日志记录
 
-Enable [soft delete and purge protection](https://learn.microsoft.com/en-us/azure/key-vault/general/soft-delete-overview) to prevent accidental deletion.打开日志记录并配置 Key Vault 访问事件的警报。
+启用[soft delete and purge protection](https://learn.microsoft.com/en-us/azure/key-vault/general/soft-delete-overview)以防止意外删除。打开日志记录并配置 Key Vault 访问事件的警报。
 
 ### 网络安全
 
@@ -165,7 +165,7 @@ Enable [soft delete and purge protection](https://learn.microsoft.com/en-us/azur
 
 通过入口控制器或WAF仅公开前端服务。其他服务应该是内部的，并通过集群网络进行通信。
 
-#### RBAC and pod security
+#### RBAC 和 Pod 安全
 
 使用 [Kubernetes RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) 控制谁可以部署、修改或读取资源。启用 [pod security admission](https://kubernetes.io/docs/concepts/security/pod-security-admission/) 强制执行基线、受限或特权配置文件。
 
@@ -173,7 +173,7 @@ Enable [soft delete and purge protection](https://learn.microsoft.com/en-us/azur
 
 使用 [CSI Secret Store](https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver) 将 Key Vault 中的机密装载到 pod 中。避免将机密存储在环境变量或配置文件中。
 
-## Observability and monitoring
+## 可观察性和监控
 
 将您的 LangSmith 实例配置为 [export telemetry data](/langsmith/export-backend)，以便您可以使用 Azure 的服务来监控它。
 

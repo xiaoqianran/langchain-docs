@@ -79,7 +79,7 @@ Register profiles before creating an agent. Pass a model string or a model objec
 
 Provider profiles supply construction settings only when you pass a string.
 
-> **Lookup order for preconfigured model instances**
+> [accordion] Lookup order for preconfigured model instances
 >
 > When you pass a model object, the harness looks up its profile using the provider and identifier reported by that object.
 >

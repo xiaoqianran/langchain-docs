@@ -10,13 +10,13 @@ Agent Server 支持两种静态应用程序级加密方法。使用内置 AES �
 
 ## 选择一种加密方法
 
-> **[Built-in AES encryption](/langsmith/aes-encryption)**
+> [卡][Built-in AES encryption](/langsmith/aes-encryption)
 >
 > 推荐用于大多数部署。配置 AES 密钥以加密检查点数据和选定的 JSON 字段。支持惰性密钥轮换。
 
-> **[Custom encryption](/langsmith/custom-encryption)**
+> [卡][Custom encryption](/langsmith/custom-encryption)
 >
-> 仅当内置 AES 不能满足您的要求时才使用。通过自定义处理程序支持每个租户密钥和外部密钥管理系统。
+> 仅当内置 AES 不能满足您的要求时使用。通过自定义处理程序支持每个租户密钥和外部密钥管理系统。
 
 如果您需要，请选择[built-in AES encryption](/langsmith/aes-encryption)：
 

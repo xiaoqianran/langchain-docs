@@ -733,7 +733,7 @@ const experimentResults = await evaluate(targetFunc, {
 
 ## 参考代码
 
-> **这是包含上述所有代码的综合脚本：**
+> [accordion] 这是包含上述所有代码的综合脚本：
 >
 > ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import bs4

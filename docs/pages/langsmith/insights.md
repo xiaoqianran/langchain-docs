@@ -22,66 +22,70 @@ Insights uses hierarchical categorization to make sense of your data and highlig
 
 ## Generate your first Insights report
 
-**UI**
-
-1. Navigate to **Tracing** in the left-hand menu and select a tracing project or an agent and environment. In an agent-based workspace, a report runs against one environment rather than the whole agent.
-2. Click **+New** in the top right corner then **New Insights Report** to generate new insights over it.
-3. Enter a name for your job.
-4. If you haven't already, [configure a model](/langsmith/model-configurations) for Insights in your workspace settings.
-5. Answer the guided questions to focus your Insights Report on what you want to learn about your agent, then click **Run job**.
-
-> [!TIP]
+> [tab] UI
 >
-> Toggle to Manual mode to [configure the job manually](#configure-a-job).
+> 1. Navigate to **Tracing** in the left-hand menu and select a tracing project or an agent and environment. In an agent-based workspace, a report runs against one environment rather than the whole agent.
+>
+> 2. Click **+New** in the top right corner then **New Insights Report** to generate new insights over it.
+>
+> 3. Enter a name for your job.
+>
+> 4. If you haven't already, [configure a model](/langsmith/model-configurations) for Insights in your workspace settings.
+>
+> 5. Answer the guided questions to focus your Insights Report on what you want to learn about your agent, then click **Run job**.
+>
+> > [!TIP]
+> >
+> > Toggle to Manual mode to [configure the job manually](#configure-a-job).
+>
+> This will kick off a background Insights Report. Reports can take up to 30 minutes to complete.
 
-This will kick off a background Insights Report. Reports can take up to 30 minutes to complete.
+> [tab] SDK
+>
+> You can generate Insights Reports over data stored outside LangSmith using the [Python SDK](/langsmith/smith-python-sdk). This allows you to analyze chat histories from your production systems, logs, or other sources.
+>
+> When you call `generate_insights()`, the SDK will:
+>
+> 1. Upload your chat histories as traces to a new LangSmith project.
+> 2. Generate an Insights Report over those uploaded traces.
+> 3. Return a link to your results in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights).
+>
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langsmith import Client
+>
+> client = Client()
+>
+> chat_histories = [
+>     [
+>         {"role": "user", "content": "how are you"},
+>         {"role": "assistant", "content": "good!"},
+>     ],
+>     [
+>         {"role": "user", "content": "do you like art"},
+>         {"role": "assistant", "content": "only Tarkovsky"},
+>     ],
+> ]
+>
+> report = client.generate_insights(
+>     chat_histories=chat_histories,
+>     name="Customer Support Topics - March 2024",
+>     instructions="What are the main topics and questions users are asking about?",
+>     openai_api_key=os.environ["OPENAI_API_KEY"],  # optional if already set as workspace secret
+> )
+>
+> # client.poll_insights(report=report)
+> ```
 
-**SDK**
-
-You can generate Insights Reports over data stored outside LangSmith using the [Python SDK](/langsmith/smith-python-sdk). This allows you to analyze chat histories from your production systems, logs, or other sources.
-
-When you call `generate_insights()`, the SDK will:
-
-1. Upload your chat histories as traces to a new LangSmith project.
-2. Generate an Insights Report over those uploaded traces.
-3. Return a link to your results in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights).
-
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langsmith import Client
-
-client = Client()
-
-chat_histories = [
-    [
-        {"role": "user", "content": "how are you"},
-        {"role": "assistant", "content": "good!"},
-    ],
-    [
-        {"role": "user", "content": "do you like art"},
-        {"role": "assistant", "content": "only Tarkovsky"},
-    ],
-]
-
-report = client.generate_insights(
-    chat_histories=chat_histories,
-    name="Customer Support Topics - March 2024",
-    instructions="What are the main topics and questions users are asking about?",
-    openai_api_key=os.environ["OPENAI_API_KEY"],  # optional if already set as workspace secret
-)
-
-# client.poll_insights(report=report)
-```
-
-**CLI**
-
-The [LangSmith CLI](/langsmith/langsmith-cli) creates a report from a JSON file that uses the fields of a [manual configuration](#manual-configuration):
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith insights create --project my-app --config insights.json --wait
-```
-
-For the file format and the commands that run, list, and update saved configurations, see [Manage insights](/langsmith/langsmith-cli#manage-insights).
+> [tab] CLI
+>
+> The [LangSmith CLI](/langsmith/langsmith-cli) creates a report from a JSON file that uses the fields of a [manual configuration](#manual-configuration):
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langsmith insights create --project my-app --config insights.json --wait
+> ```
+>
+> For the file format and the commands that run, list, and update saved configurations, see [Manage insights](/langsmith/langsmith-cli#manage-insights).
 
 > [!NOTE]
 >

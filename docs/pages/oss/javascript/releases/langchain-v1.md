@@ -4,15 +4,15 @@
 
 **LangChain v1 is a focused, production-ready foundation for building agents.** We've streamlined the framework around three core improvements:
 
-> **[createAgent](#createagent)**
+> [card] [createAgent](#createagent)
 >
 > A new standard way to build agents in LangChain, replacing `createReactAgent` from LangGraph with a cleaner, more powerful API.
 
-> **[Standard content blocks](#standard-content-blocks)**
+> [card] [Standard content blocks](#standard-content-blocks)
 >
 > A new `contentBlocks` property that provides unified access to modern LLM features across all providers.
 
-> **[Simplified package](#simplified-package)**
+> [card] [Simplified package](#simplified-package)
 >
 > The `langchain` package has been streamlined to focus on essential building blocks for agents, with legacy functionality moved to `@langchain/classic`.
 
@@ -162,19 +162,19 @@ For more information, see [the complete middleware guide](/oss/javascript/langch
 
 Because `createAgent` is built on LangGraph, you automatically get built in support for long running and reliable agents via:
 
-> **Persistence**
+> [card] Persistence
 >
 > Conversations automatically persist across sessions with built-in checkpointing
 
-> **Streaming**
+> [card] Streaming
 >
 > Stream tokens, tool calls, and reasoning traces in real-time
 
-> **Human-in-the-loop**
+> [card] Human-in-the-loop
 >
 > Pause agent execution for human approval before sensitive actions
 
-> **Time travel**
+> [card] Time travel
 >
 > Rewind conversations to any point and explore alternate paths and prompts
 
@@ -298,27 +298,27 @@ Please report any issues discovered with 1.0 on [GitHub](https://github.com/lang
 
 ## Additional resources
 
-> **[LangChain 1.0](https://blog.langchain.com/langchain-langchain-1-0-alpha-releases/)**
+> [card] [LangChain 1.0](https://blog.langchain.com/langchain-langchain-1-0-alpha-releases/)
 >
 > Read the announcement
 
-> **[Middleware guide](https://blog.langchain.com/agent-middleware/)**
+> [card] [Middleware guide](https://blog.langchain.com/agent-middleware/)
 >
 > Deep dive into middleware
 
-> **[Agents Documentation](/oss/javascript/langchain/agents)**
+> [card] [Agents Documentation](/oss/javascript/langchain/agents)
 >
 > Full agent documentation
 
-> **[Message Content](/oss/javascript/langchain/messages#message-content)**
+> [card] [Message Content](/oss/javascript/langchain/messages#message-content)
 >
 > New content blocks API
 
-> **[Migration guide](/oss/javascript/migrate/langchain-v1)**
+> [card] [Migration guide](/oss/javascript/migrate/langchain-v1)
 >
 > How to migrate to LangChain v1
 
-> **[GitHub](https://github.com/langchain-ai/langchainjs)**
+> [card] [GitHub](https://github.com/langchain-ai/langchainjs)
 >
 > Report issues or contribute
 

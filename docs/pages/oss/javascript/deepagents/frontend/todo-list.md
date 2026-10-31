@@ -450,19 +450,19 @@ The todo list pattern is a specialization of the broader LangChain approach to
 rendering structured agent state. These guides cover related techniques that
 pair well with plan-based agents:
 
-> **[Structured output](/oss/javascript/langchain/frontend/structured-output)**
+> [card] [Structured output](/oss/javascript/langchain/frontend/structured-output)
 >
 > Render any structured agent state—not just todos—with custom UI components instead of plain text.
 
-> **[Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)**
+> [card] [Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)
 >
 > Reconnect to a running plan after a page reload or tab switch without losing progress.
 
-> **[Message queues](/oss/javascript/langchain/frontend/message-queues)**
+> [card] [Message queues](/oss/javascript/langchain/frontend/message-queues)
 >
 > Queue follow-up tasks while the agent is still working through its current plan.
 
-> **[Human-in-the-Loop](/oss/javascript/langchain/frontend/human-in-the-loop)**
+> [card] [Human-in-the-Loop](/oss/javascript/langchain/frontend/human-in-the-loop)
 >
 > Pause and resume plan execution when the agent needs user approval or input.
 

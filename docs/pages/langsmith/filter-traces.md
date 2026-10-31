@@ -404,50 +404,50 @@ The SDK streaming APIs accept `ai_search` for runs, traces, and threads. Use the
 
 Pass a nonempty description of at most 2,000 UTF-8 bytes in `ai_search`, and add a filter to require structured conditions as well: `filter` for runs and threads, or `trace_filter` and `tree_filter` for traces. The description and filters combine the same way as in the UI. See [Combine AI search with filters](#combine-ai-search-with-filters).
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langsmith import Langsmith
+>
+> client = Langsmith()
+>
+> for run in client.runs.streaming.query_v2_items(
+>     project_ids=["<project-id>"],
+>     ai_search="tool call failed",
+>     filter='eq(run_type, "llm")',
+>     selects=["ID", "NAME"],
+> ):
+>     print(run.id, run.name)
+> ```
+>
+> To search traces or threads, call the matching method:
+>
+> * **Traces**: `client.traces.streaming.query_items(project_id="<project-id>", ai_search="tool call failed")`
+> * **Threads**: `client.threads.streaming.query_items(project_id="<project-id>", ai_search="user asks for a refund")`
+>
+> With `AsyncLangsmith`, use `async for` with the same methods.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langsmith import Langsmith
-
-client = Langsmith()
-
-for run in client.runs.streaming.query_v2_items(
-    project_ids=["<project-id>"],
-    ai_search="tool call failed",
-    filter='eq(run_type, "llm")',
-    selects=["ID", "NAME"],
-):
-    print(run.id, run.name)
-```
-
-To search traces or threads, call the matching method:
-
-* **Traces**: `client.traces.streaming.query_items(project_id="<project-id>", ai_search="tool call failed")`
-* **Threads**: `client.threads.streaming.query_items(project_id="<project-id>", ai_search="user asks for a refund")`
-
-With `AsyncLangsmith`, use `async for` with the same methods.
-
-**TypeScript**
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import Langsmith from "langsmith";
-
-const client = new Langsmith();
-
-for await (const run of client.runs.streaming.queryV2Items({
-  project_ids: ["<project-id>"],
-  ai_search: "tool call failed",
-  filter: 'eq(run_type, "llm")',
-  selects: ["ID", "NAME"],
-})) {
-  console.log(run.id, run.name);
-}
-```
-
-To search traces or threads, call the matching method:
-
-* **Traces**: `client.traces.streaming.queryItems({ project_id: "<project-id>", ai_search: "tool call failed" })`
-* **Threads**: `client.threads.streaming.queryItems({ project_id: "<project-id>", ai_search: "user asks for a refund" })`
+> [tab] TypeScript
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import Langsmith from "langsmith";
+>
+> const client = new Langsmith();
+>
+> for await (const run of client.runs.streaming.queryV2Items({
+>   project_ids: ["<project-id>"],
+>   ai_search: "tool call failed",
+>   filter: 'eq(run_type, "llm")',
+>   selects: ["ID", "NAME"],
+> })) {
+>   console.log(run.id, run.name);
+> }
+> ```
+>
+> To search traces or threads, call the matching method:
+>
+> * **Traces**: `client.traces.streaming.queryItems({ project_id: "<project-id>", ai_search: "tool call failed" })`
+> * **Threads**: `client.threads.streaming.queryItems({ project_id: "<project-id>", ai_search: "user asks for a refund" })`
 
 The `query_v2_items` / `queryV2Items` and `query_items` / `queryItems` methods follow pagination cursors and return assembled runs, traces, or threads. The lower-level `query_v2` / `queryV2` and `query` methods return server-sent events containing JSON patches instead.
 

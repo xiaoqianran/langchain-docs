@@ -80,7 +80,7 @@ const agent = new LangGraphAgent({
 });
 ```
 
-> **[AG-UI LangGraph adapter on npm](https://www.npmjs.com/package/@ag-ui/langgraph)**
+> [card] [AG-UI LangGraph adapter on npm](https://www.npmjs.com/package/@ag-ui/langgraph)
 >
 > The `@ag-ui/langgraph` package implements the AG-UI protocol for LangGraph graphs, including deep agents.
 
@@ -167,15 +167,15 @@ For the interrupt model itself, see [Human-in-the-loop](/oss/python/deepagents/h
 
 Any AG-UI client can drive a deep agent exposed over the protocol, so you do not have to build message rendering, streaming, or state sync yourself. Point the client at the adapter (or a runtime that wraps it) and select the agent by its `graphId`.
 
-> **[CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit)**
+> [card] [CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit)
 >
 > React chat runtime with AG-UI support for LangGraph and Deep Agents, including the Python FastAPI bridge.
 
-> **[AG-UI clients](https://docs.ag-ui.com/integrations)**
+> [card] [AG-UI clients](https://docs.ag-ui.com/integrations)
 >
 > The full list of AG-UI clients and SDKs, including terminal and mobile clients.
 
-> **[Build a custom client](https://docs.ag-ui.com/quickstart/clients)**
+> [card] [Build a custom client](https://docs.ag-ui.com/quickstart/clients)
 >
 > Consume the event stream directly with the AG-UI SDK to build your own interface.
 

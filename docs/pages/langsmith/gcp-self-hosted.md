@@ -30,19 +30,19 @@ Follow the [Kubernetes installation guide](/langsmith/kubernetes). LangSmith is 
 
 For production deployments, connect to GCP managed services:
 
-> **[Google Cloud Storage](/langsmith/self-host-blob-storage#google-cloud-storage)**
+> [card] [Google Cloud Storage](/langsmith/self-host-blob-storage#google-cloud-storage)
 >
 > Store trace data in GCS
 
-> **[Cloud SQL](/langsmith/self-host-external-postgres#google-cloud-sql)**
+> [card] [Cloud SQL](/langsmith/self-host-external-postgres#google-cloud-sql)
 >
 > PostgreSQL database
 
-> **[Memorystore](/langsmith/self-host-external-redis#google-cloud-memorystore)**
+> [card] [Memorystore](/langsmith/self-host-external-redis#google-cloud-memorystore)
 >
 > Redis or Valkey for caching
 
-> **[ClickHouse Cloud](/langsmith/self-host-external-clickhouse)**
+> [card] [ClickHouse Cloud](/langsmith/self-host-external-clickhouse)
 >
 > Analytics database
 

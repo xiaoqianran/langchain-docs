@@ -296,7 +296,7 @@ await evaluate((inputs) => toxicityClassifier(inputs["input"]), {
 
 ## 探索结果
 
-每次调用 `evaluate()` 都会创建一个 [experiment](/langsmith/evaluation-concepts#experiment)，您可以在 LangSmith UI 中查看或通过 SDK 查询。更多详情请参阅[Analyze an experiment](/langsmith/analyze-an-experiment)。
+每次调用 `evaluate()` 都会创建一个 [experiment](/langsmith/evaluation-concepts#experiment)，您可以在 LangSmith UI 中查看或通过 SDK 查询。更多详情请参见[Analyze an experiment](/langsmith/analyze-an-experiment)。
 
 针对数据集运行的实验列在实验表中。
 
@@ -319,7 +319,7 @@ await evaluate((inputs) => toxicityClassifier(inputs["input"]), {
 
 ## 参考代码
 
-> **点击查看合并的代码片段**
+> [accordion] 点击查看合并的代码片段
 >
 > ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langsmith import Client, traceable, wrappers

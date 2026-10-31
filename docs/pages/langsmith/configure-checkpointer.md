@@ -89,72 +89,72 @@ mongodb+srv://user:password@cluster.example.net/langgraph
 
 ### Deploy by environment
 
-**Standalone (Kubernetes)**
+> [tab] Standalone (Kubernetes)
+>
+> The [langgraph-cloud Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md) (v0.2.6+) has built-in MongoDB support. Enable it in your values file:
+>
+> **Bundled MongoDB** (development and testing):
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> mongo:
+>   enabled: true
+>   resources:
+>     requests:
+>       cpu: 500m
+>       memory: 1Gi
+>   persistence:
+>     size: 8Gi
+> ```
+>
+> The chart deploys a single-node MongoDB replica set and automatically configures the server to use it.
+>
+> **External MongoDB** (production):
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> mongo:
+>   enabled: true
+>   external:
+>     enabled: true
+>     connectionUrl: "mongodb://user:password@mongo.example.net:27017/langgraph?replicaSet=rs0"
+> ```
+>
+> Or reference an existing Kubernetes secret:
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> mongo:
+>   enabled: true
+>   external:
+>     enabled: true
+>     existingSecretName: "my-mongo-secret"
+> ```
+>
+> The secret must contain a `mongodb_connection_url` key.
 
-The [langgraph-cloud Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md) (v0.2.6+) has built-in MongoDB support. Enable it in your values file:
+> [tab] Standalone (Docker)
+>
+> If your `langgraph.json` already sets `backend` to `"mongo"`, you only need to provide the URI. Otherwise, set both environment variables:
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> docker run \
+>     --env-file .env \
+>     -p 8123:8000 \
+>     -e REDIS_URI="redis://redis:6379" \
+>     -e DATABASE_URI="postgres://postgres:postgres@postgres:5432/postgres" \
+>     -e LS_DEFAULT_CHECKPOINTER_BACKEND=mongo \
+>     -e LS_MONGODB_URI="mongodb://mongo:27017/langgraph?replicaSet=rs0" \
+>     -e LANGSMITH_API_KEY="..." \
+>     my-image
+> ```
+>
+> See the [standalone server guide](/langsmith/deploy-standalone-server) for a full Docker Compose example with MongoDB.
 
-**Bundled MongoDB** (development and testing):
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-mongo:
-  enabled: true
-  resources:
-    requests:
-      cpu: 500m
-      memory: 1Gi
-  persistence:
-    size: 8Gi
-```
-
-The chart deploys a single-node MongoDB replica set and automatically configures the server to use it.
-
-**External MongoDB** (production):
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-mongo:
-  enabled: true
-  external:
-    enabled: true
-    connectionUrl: "mongodb://user:password@mongo.example.net:27017/langgraph?replicaSet=rs0"
-```
-
-Or reference an existing Kubernetes secret:
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-mongo:
-  enabled: true
-  external:
-    enabled: true
-    existingSecretName: "my-mongo-secret"
-```
-
-The secret must contain a `mongodb_connection_url` key.
-
-**Standalone (Docker)**
-
-If your `langgraph.json` already sets `backend` to `"mongo"`, you only need to provide the URI. Otherwise, set both environment variables:
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-docker run \
-    --env-file .env \
-    -p 8123:8000 \
-    -e REDIS_URI="redis://redis:6379" \
-    -e DATABASE_URI="postgres://postgres:postgres@postgres:5432/postgres" \
-    -e LS_DEFAULT_CHECKPOINTER_BACKEND=mongo \
-    -e LS_MONGODB_URI="mongodb://mongo:27017/langgraph?replicaSet=rs0" \
-    -e LANGSMITH_API_KEY="..." \
-    my-image
-```
-
-See the [standalone server guide](/langsmith/deploy-standalone-server) for a full Docker Compose example with MongoDB.
-
-**Cloud**
-
-Set `backend` to `"mongo"` in your `langgraph.json`, then add `LS_MONGODB_URI` as an environment variable in your deployment settings in the LangSmith UI.
-
-Your MongoDB instance must be reachable from the Cloud data plane. A managed service like [MongoDB Atlas](https://www.mongodb.com/atlas) works well for this.
-
-PostgreSQL is still auto-provisioned for non-checkpoint data.
+> [tab] Cloud
+>
+> Set `backend` to `"mongo"` in your `langgraph.json`, then add `LS_MONGODB_URI` as an environment variable in your deployment settings in the LangSmith UI.
+>
+> Your MongoDB instance must be reachable from the Cloud data plane. A managed service like [MongoDB Atlas](https://www.mongodb.com/atlas) works well for this.
+>
+> PostgreSQL is still auto-provisioned for non-checkpoint data.
 
 ## Custom checkpointer
 

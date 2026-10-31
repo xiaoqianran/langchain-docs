@@ -12,15 +12,17 @@
 >
 > 对于2026年8月3日之后注册的客户，批量导出仅适用于[LangSmith Enterprise plan](https://www.langchain.com/pricing-langsmith)。在 2026 年 8 月 3 日或之前注册的客户可以在 2027 年 2 月 1 日之前使用 Plus 或 Enterprise 套餐的批量导出功能。
 
-LangSmith 的批量数据导出功能可让您将特定项目和日期范围内的跟踪数据以 [Parquet](https://parquet.apache.org/docs/overview/) 格式导出到 S3 兼容存储桶，与 [Run data format](/langsmith/run-data-format) 中的字段匹配。这对于 BigQuery、Snowflake、Redshift 或 Jupyter Notebooks 等工具中的离线分析非常有用。
+LangSmith 的批量数据导出功能可让您将特定项目和日期范围内的跟踪数据以 [Parquet](https://parquet.apache.org/docs/overview/) 格式导出到 S3 兼容存储桶，与 [Run data format](/langsmith/run-data-format) 中的字段匹配。这对于 BigQuery、Snowflake、Redshift 或 Jupyter Notebook 等工具中的离线分析非常有用。
 
 本页介绍如何：
 
-* 创建导出目的地
-* 创建和配置导出作业，包括计划导出和字段过滤
-* 监控导出进度
+* 创建导出目的地。
+* 创建和配置导出作业，包括计划导出和字段过滤。
+* 监控导出进度。
 
-**开始之前：** 导出可能需要一些时间，具体取决于数据量，并且 LangSmith 限制可以同时运行的导出数量。批量导出有 72 小时的运行时超时 - 有关详细信息，请参阅[Automatic retry behavior](/langsmith/data-export-monitor#automatic-retry-behavior)。启动后，LangSmith 会自动处理编排，[resilience of the export process](/langsmith/data-export-monitor#failure-modes-and-retry-policy) 会自动处理。
+## 开始之前
+
+导出可能需要一些时间，具体取决于数据量，并且LangSmith限制了可以同时运行的导出数量。批量导出有 72 小时的运行时超时。详情请参阅[Automatic retry behavior](/langsmith/data-export-monitor#automatic-retry-behavior)。启动后，LangSmith 会自动处理编排，[resilience of the export process](/langsmith/data-export-monitor#failure-modes-and-retry-policy) 会自动处理。
 
 ## 1. 创建目的地目的地告诉 LangSmith 将导出的数据写入何处。在提出此请求之前，您需要：
 
@@ -55,14 +57,14 @@ curl --request POST \
 
 保存响应中的`id`；创建导出作业时您将需要它。
 
-请参阅[Manage bulk export destinations](/langsmith/data-export-destinations)了解权限设置、特定于提供商的配置（AWS S3、GCS、MinIO）和凭证选项。
+请参阅 [Manage bulk export destinations](/langsmith/data-export-destinations) 了解权限设置、特定于提供商的配置（AWS S3、GCS、MinIO）和凭证选项。
 
 ## 2. 创建导出作业
 
 导出作业以项目（或工作区中的所有实验）和日期范围为目标。您将需要：
 
 * 从[previous step](#1-create-a-destination)前往目的地`id`。
-* 项目 ID (`session_id`) 或 `"all_experiments": true` — 从 [**Tracing Projects** list](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-export) 中的单个项目视图复制项目 ID。
+* 项目 ID (`session_id`) 或 `"all_experiments": true`。从 [**Tracing Projects** list](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-export) 中的单个项目视图复制项目 ID。
 * UTC ISO 8601 格式的 `start_time` 和 `end_time`。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -82,9 +84,15 @@ curl --request POST \
 
 保存响应中的`id`以监控导出进度。
 
-您可以选择添加 `filter` 表达式来缩小导出的运行集。请参阅我们的 [filter query language](/langsmith/trace-query-syntax#filter-query-language) 和 [examples](/langsmith/export-traces#use-filter-query-language) 了解语法。不设置 `filter` 字段将导出所有运行。
+您可以选择添加 `filter` 表达式来缩小导出的运行集。语法请参阅[filter query language](/langsmith/trace-query-syntax#filter-query-language)和[examples](/langsmith/export-traces#use-filter-query-language)。不设置 `filter` 字段将导出所有运行。
+
+在从 SmithDB 读取的导出中，`filter` 还接受 [search bar query syntax](/langsmith/filter-traces#query-syntax)，例如 `run_type:llm AND status:error`。该过滤器匹配各个运行，例如**单次运行**范围。
+
+LangSmith 在创建导出时检查过滤器，并拒绝无效的过滤器并显示 `400` 错误。过滤器的长度最多为 5,000 个字符。
 
 > [!注意]
+>
+> 批量导出过滤器中的搜索栏语法可在 LangSmith 云和自托管 LangSmith 以及 [SmithDB](/langsmith/self-host-smithdb-features)、Helm 版本 `0.18.0-rc.50` 或更高版本（应用程序版本 `0.18.19rc1` 或更高版本）上使用。其他安装仅接受[filter query language](/langsmith/trace-query-syntax#filter-query-language)。> [!注意]
 >
 > **LangSmith 云限制：每个工作区每小时 250 个批量导出创建**
 >
@@ -96,7 +104,9 @@ curl --request POST \
 
 ### 导出所有实验
 
-要导出工作区中的每个实验而不是使用 `session_id` 定位单个项目，请设置 `all_experiments: true`。每当您对数据集运行评估时，LangSmith都会创建一个实验，任何具有`reference_dataset_id`集的跟踪项目都符合条件。`all_experiments` 和 `session_id` 互斥 — 设置为 1。
+要导出工作区中的每个实验而不是使用 `session_id` 定位单个项目，请设置 `all_experiments: true`。每当您针对数据集运行评估时，LangSmith都会创建一个实验，任何具有`reference_dataset_id`集的跟踪项目都符合条件。
+
+`all_experiments` 和 `session_id` 互斥 — 设置为 1。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request POST \
@@ -115,9 +125,7 @@ curl --request POST \
 
 LangSmith 在运行时解析实验会话集，因此导出会拾取您在提交作业后但编排器开始处理之前创建的任何实验。
 
-相同的 `all_experiments` 标志适用于 [scheduled exports](#schedule-recurring-exports) — 包括 `interval_hours` 并省略 `end_time`，而不是提供 `end_time`。
-
-> [!注意]
+相同的 `all_experiments` 标志适用于 [scheduled exports](#schedule-recurring-exports) — 包括 `interval_hours` 并省略 `end_time`，而不是提供 `end_time`。> [!注意]
 >
 > **云限制：每次导出 250 个实验**
 >
@@ -162,7 +170,7 @@ curl --request POST \
 >
 > 一次性（非经常性）批量出口不受此限制。
 >
-> 如果您的工作区达到限制，新计划的导出请求将被拒绝，并显示 `429`，直到您 [cancel](/langsmith/data-export-monitor#stop-an-export) 现有计划。要提高限制，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
+> 如果您的工作空间达到限制，新计划的导出请求将被拒绝，并显示 `429`，直到您 [cancel](/langsmith/data-export-monitor#stop-an-export) 现有计划。要提高限制，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 >
 > [Self-hosted LangSmith](/langsmith/self-hosted) 默认情况下不强制执行此限制。
 
@@ -203,7 +211,7 @@ curl --request POST \
 
 > [!提示]
 >
-> 排除 `inputs` 和 `outputs` 可以显着提高导出性能并减小文件大小，特别是对于大型运行。仅当您需要进行分析时才包含这些字段。
+> 排除 `inputs` 和 `outputs` 可以显着提高导出性能并减小文件大小，尤其是对于大型运行。仅当您需要进行分析时才包含这些字段。
 >
 > 如果您的导出包含令牌或成本字段（默认情况下），将 `is_rollup_disabled` 设置为 `true` 也可以加快速度，因为 LangSmith 会跳过计算跟踪级别汇总。然后，根运行携带自己的令牌和成本值，而不是整个跟踪的总计。 `is_rollup_disabled` 默认为 `false` 并且仅适用于从 SmithDB 读取的导出。
 
@@ -235,7 +243,7 @@ curl --request POST \
 
 |领域|描述 |
 | - | - |
-| `name` |运行名称|
+| `name` |运行名称 |
 | `run_type` |运行类型（例如“链”、“llm”、“工具”）|
 | `start_time` |开始时间戳 (UTC) |
 | `end_time` |结束时间戳 (UTC) |
@@ -262,7 +270,7 @@ curl --request POST \
 
 > [!注意]
 >
-> **`feedback_stats`聚合限制**
+> **`feedback_stats` 聚合限制**
 >
 > `feedback_stats` 字段仅包含字符串类型反馈的值细分。非字符串值（数字、布尔值、复杂类型）的反馈不包括在这些细分中。要分析非字符串反馈值，请单独导出原始反馈数据。
 
@@ -296,7 +304,7 @@ curl --request GET \
   --header 'Content-Type: application/json' \
   --header 'X-API-Key: YOUR_API_KEY' \
   --header 'X-Tenant-Id: YOUR_WORKSPACE_ID'
-```响应中的 `status` 字段将为 `CREATED`、`RUNNING`、`COMPLETED`、`FAILED`、`CANCELLED` 或 `TIMEDOUT` 之一。导出可能需要一些时间，具体取决于数据量。一旦状态为`COMPLETED`，Parquet 文件就在您的存储桶中可用。
+```响应中的 `status` 字段将为 `CREATED`、`RUNNING`、`COMPLETED`、`FAILED`、`CANCELLED` 或 `TIMEDOUT` 之一。导出可能需要一些时间，具体取决于数据量。一旦状态为`COMPLETED`，Parquet 文件就可以在您的存储桶中使用。
 
 请参阅 [Monitor and troubleshoot bulk exports](/langsmith/data-export-monitor) 了解如何列出运行、停止导出和诊断故障。
 

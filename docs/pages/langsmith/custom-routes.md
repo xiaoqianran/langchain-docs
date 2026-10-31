@@ -14,98 +14,98 @@ Below are examples for Python and TypeScript.
 
 Starting from an **existing** LangSmith application, add the following custom route code to your app file. If you are starting from scratch, you can create a new app from a template using the CLI.
 
-**Python**
+> [tab] Python
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langgraph new --template=new-langgraph-project-python my_new_project
+> ```
+>
+> Once you have a LangGraph project, add the following app code:
+>
+> ```python {highlight={4}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # ./src/agent/webapp.py
+> from fastapi import FastAPI
+>
+> app = FastAPI()
+>
+>
+> @app.get("/hello")
+> def read_root():
+>     return {"Hello": "World"}
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langgraph new --template=new-langgraph-project-python my_new_project
-```
-
-Once you have a LangGraph project, add the following app code:
-
-```python {highlight={4}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# ./src/agent/webapp.py
-from fastapi import FastAPI
-
-app = FastAPI()
-
-
-@app.get("/hello")
-def read_root():
-    return {"Hello": "World"}
-```
-
-**TypeScript**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn create langgraph
-npm install hono
-```
-
-Once you have a LangGraph project, add the following app code:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// ./src/custom-routes.ts
-import { Hono } from "hono";
-
-export const app = new Hono()
-  .get("/custom/hello", (c) => {
-    return c.json({ hello: "world" });
-  })
-  .post("/custom/webhook", async (c) => {
-    const body = await c.req.json();
-    return c.json({ received: true, payload: body });
-  });
-```
-
-The `hono` package must be available in your project dependencies.
+> [tab] TypeScript
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn create langgraph
+> npm install hono
+> ```
+>
+> Once you have a LangGraph project, add the following app code:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> // ./src/custom-routes.ts
+> import { Hono } from "hono";
+>
+> export const app = new Hono()
+>   .get("/custom/hello", (c) => {
+>     return c.json({ hello: "world" });
+>   })
+>   .post("/custom/webhook", async (c) => {
+>     const body = await c.req.json();
+>     return c.json({ received: true, payload: body });
+>   });
+> ```
+>
+> The `hono` package must be available in your project dependencies.
 
 ## Configure `langgraph.json`
 
 Add the following to your `langgraph.json` configuration file. Make sure the path points to the app instance you created in the [previous section](#create-app).
 
-**Python**
+> [tab] Python
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "dependencies": ["."],
+>   "graphs": {
+>     "agent": "./src/agent/graph.py:graph"
+>   },
+>   "env": ".env",
+>   "http": {
+>     "app": "./src/agent/webapp.py:app"
+>   }
+>   // Other configuration options like auth, store, etc.
+> }
+> ```
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "dependencies": ["."],
-  "graphs": {
-    "agent": "./src/agent/graph.py:graph"
-  },
-  "env": ".env",
-  "http": {
-    "app": "./src/agent/webapp.py:app"
-  }
-  // Other configuration options like auth, store, etc.
-}
-```
-
-**TypeScript**
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "node_version": "20",
-  "dependencies": ["."],
-  "graphs": { "agent": "./src/agent.ts:graph" },
-  "http": { "app": "./src/custom-routes.ts:app" },
-  "env": ".env"
-}
-```
+> [tab] TypeScript
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "node_version": "20",
+>   "dependencies": ["."],
+>   "graphs": { "agent": "./src/agent.ts:graph" },
+>   "http": { "app": "./src/custom-routes.ts:app" },
+>   "env": ".env"
+> }
+> ```
 
 ## Start server
 
 Test the server out locally:
 
-**Python**
+> [tab] Python
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langgraph dev --no-browser
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langgraph dev --no-browser
-```
-
-**TypeScript**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npx @langchain/langgraph-cli@latest dev --no-browser
-```
+> [tab] TypeScript
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npx @langchain/langgraph-cli@latest dev --no-browser
+> ```
 
 If you navigate to `localhost:2024/hello` in your browser (`2024` is the default development port), you should see the `/hello` endpoint returning a JSON response. For the TypeScript example, navigate to `localhost:2024/custom/hello`.
 

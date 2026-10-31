@@ -32,19 +32,19 @@
 
 对于生产部署，请连接到 AWS 托管服务：
 
-> **[Amazon S3](/langsmith/self-host-blob-storage#amazon-s3)**
+> [卡片] [Amazon S3](/langsmith/self-host-blob-storage#amazon-s3)
 >
 > 将跟踪数据存储在S3中
 
-> **[Amazon RDS](/langsmith/self-host-external-postgres#amazon-rds)**
+> [卡][Amazon RDS](/langsmith/self-host-external-postgres#amazon-rds)
 >
 > PostgreSQL 数据库
 
-> **[Amazon ElastiCache](/langsmith/self-host-external-redis#amazon-elasticache)**
+> [卡片][Amazon ElastiCache](/langsmith/self-host-external-redis#amazon-elasticache)
 >
 > Redis 或 Valkey 用于缓存
 
-> **[ClickHouse Cloud](/langsmith/self-host-external-clickhouse)**
+> [卡][ClickHouse Cloud](/langsmith/self-host-external-clickhouse)
 >
 > 分析数据库
 
@@ -83,7 +83,7 @@
 
 LangSmith根据您的要求支持多种计算选项：
 
-|计算选项 |描述 |适合 |
+|计算选项|描述 |适合 |
 | - | - | - |
 | **弹性 Kubernetes 服务（首选）** |高级扩展和多租户支持 |大型企业|
 | **基于 EC2** |完全控制，BYO-infra |受监管或气隙环境 |

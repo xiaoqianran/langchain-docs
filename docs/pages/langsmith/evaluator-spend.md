@@ -36,11 +36,11 @@ The agent and the trace are unaffected. Only the evaluator stops producing score
 | [Organization default spend limit](#set-an-organization-default-spend-limit) | Organization **Settings** > **Usage Configuration** | `organization:manage` required to view and edit |
 | [Per-evaluator override](#override-the-default-for-an-attached-project-or-dataset) | Edit evaluator > **Advanced** > **Spend limit** | All members can view, `organization:manage` required to edit |
 
-> **[Set your first limit](#set-an-organization-default-spend-limit)**
+> [card] [Set your first limit](#set-an-organization-default-spend-limit)
 >
 > Open organization **Settings** and define a single weekly cap that applies to all evaluator attachments to every project and dataset across all workspaces in the organization.
 
-> **[Override for one project or dataset](#override-the-default-for-an-attached-project-or-dataset)**
+> [card] [Override for one project or dataset](#override-the-default-for-an-attached-project-or-dataset)
 >
 > Customize the limit for a specific project or dataset attached to an evaluator.
 

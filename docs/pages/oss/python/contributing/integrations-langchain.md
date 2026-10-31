@@ -12,15 +12,15 @@ LangChain provides standard interfaces for several different components (languag
 
 ## Why implement a LangChain integration?
 
-> **Discoverability**
+> [card] Discoverability
 >
 > LangChain is the most used framework for building LLM applications, with over 200 million monthly downloads.
 
-> **Interoperability**
+> [card] Interoperability
 >
 > LangChain components expose a standard interface, allowing developers to easily swap them for each other. If you implement a LangChain integration, any developer using a different component will easily be able to swap yours in.
 
-> **Best Practices**
+> [card] Best Practices
 >
 > Through their standard interface, LangChain components encourage and facilitate best practices (streaming, async, etc.) that improve developer experience and application performance.
 
@@ -55,7 +55,7 @@ While any component can be integrated into LangChain, there are specific types o
 
 **1. Implement your package**
 
-> **[How to implement a LangChain integration](/oss/python/contributing/implement-langchain)**
+> [card] [How to implement a LangChain integration](/oss/python/contributing/implement-langchain)
 
 **2. Pass standard tests**
 
@@ -63,13 +63,13 @@ If applicable, implement support for LangChain's [standard test](/oss/python/con
 
 **3. Publish integration**
 
-> **[How to publish an integration](/oss/python/contributing/publish-langchain)**
+> [card] [How to publish an integration](/oss/python/contributing/publish-langchain)
 
 **4. List your integration**
 
 Open a PR in the LangChain [docs repo](https://github.com/langchain-ai/docs) so users can find your package. Hosted guides are limited; most integrations are listed via YAML.
 
-> **How listing works**
+> [accordion] How listing works
 >
 > **Default (under 50,000 monthly downloads, not featured):** File an [Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml). After a maintainer applies `integration-run`, automation opens a PR that adds a row to [`scripts/data/integration_external_docs.yaml`](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml). The name column links to your `docs_url` (partner docs preferred, then GitHub, then PyPI or npm). Do not open a manual listing PR or add a new MDX page; automation closes those PRs and redirects to the issue form.
 >

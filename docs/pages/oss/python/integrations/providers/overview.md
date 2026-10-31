@@ -8,17 +8,17 @@ LangChain offers an extensive ecosystem with 1000+ integrations across chat & em
 
 A **provider** is a company or platform that hosts AI models and exposes them through an API (e.g., OpenAI, Anthropic, Google). Many providers have a dedicated `langchain-<provider>` package that implements one or more of LangChain's standard interfaces—chat models, embedding models, vector stores, and more—giving you a consistent API regardless of the underlying provider. Install the package, pick a model name, and swap providers without changing your code.
 
-> **[Chat models](/oss/python/integrations/chat)**
+> [card] [Chat models](/oss/python/integrations/chat)
 
-> **[Embedding models](/oss/python/integrations/embeddings)**
+> [card] [Embedding models](/oss/python/integrations/embeddings)
 
-> **[Tools and toolkits](/oss/python/integrations/tools)**
+> [card] [Tools and toolkits](/oss/python/integrations/tools)
 
-> **[Middleware](/oss/python/integrations/middleware)**
+> [card] [Middleware](/oss/python/integrations/middleware)
 
-> **[Checkpointers](/oss/python/integrations/checkpointers)**
+> [card] [Checkpointers](/oss/python/integrations/checkpointers)
 
-> **[Sandboxes](/oss/python/integrations/sandboxes)**
+> [card] [Sandboxes](/oss/python/integrations/sandboxes)
 
 To see a full list of integrations by component type, refer to the categories in the sidebar.
 

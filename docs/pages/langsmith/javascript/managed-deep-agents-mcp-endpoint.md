@@ -140,19 +140,19 @@ To retain knowledge across calls, [opt in to durable memory](/langsmith/javascri
 
 ## Next steps
 
-> **[Agent Server](/langsmith/agent-server-overview)**
+> [card] [Agent Server](/langsmith/agent-server-overview)
 >
 > Explore the runtime that hosts every Managed Deep Agents deployment.
 
-> **[Agent Server MCP](/langsmith/server-mcp)**
+> [card] [Agent Server MCP](/langsmith/server-mcp)
 >
 > Read the Agent Server MCP protocol reference.
 
-> **[MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)**
+> [card] [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)
 >
 > Add tools from remote MCP servers to the agent.
 
-> **[Identity](/langsmith/javascript/managed-deep-agents-identity)**
+> [card] [Identity](/langsmith/javascript/managed-deep-agents-identity)
 >
 > Authenticate callers to the deployment.
 

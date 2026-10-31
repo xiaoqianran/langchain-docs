@@ -26,47 +26,47 @@ Sometimes you don't want to run your graph based on user interaction, but rather
 
 First, let's set up our SDK client, assistant, and thread:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_client
+>
+> client = get_client(url=<DEPLOYMENT_URL>)
+> # Using the graph deployed with the name "agent"
+> assistant_id = "agent"
+> # create thread
+> thread = await client.threads.create()
+> print(thread)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client } from "@langchain/langgraph-sdk";
+>
+> const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+> // Using the graph deployed with the name "agent"
+> const assistantId = "agent";
+> // create thread
+> const thread = await client.threads.create();
+> console.log(thread);
+> ```
 
-client = get_client(url=<DEPLOYMENT_URL>)
-# Using the graph deployed with the name "agent"
-assistant_id = "agent"
-# create thread
-thread = await client.threads.create()
-print(thread)
-```
-
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "@langchain/langgraph-sdk";
-
-const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-// Using the graph deployed with the name "agent"
-const assistantId = "agent";
-// create thread
-const thread = await client.threads.create();
-console.log(thread);
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/assistants/search \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "limit": 10,
-        "offset": 0
-    }' | jq -c 'map(select(.config == null or .config == {})) | .[0].graph_id' && \
-curl --request POST \
-    --url <DEPLOYMENT_URL>/threads \
-    --header 'Content-Type: application/json' \
-    --data '{}'
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/assistants/search \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "limit": 10,
+>         "offset": 0
+>     }' | jq -c 'map(select(.config == null or .config == {})) | .[0].graph_id' && \
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/threads \
+>     --header 'Content-Type: application/json' \
+>     --data '{}'
+> ```
 
 Output:
 
@@ -86,123 +86,123 @@ Output:
 
 To create a cron job associated with a specific thread, you can write:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # This schedules a job to run at 15:27 (3:27PM) UTC every day
+> cron_job = await client.crons.create_for_thread(
+>     thread["thread_id"],
+>     assistant_id,
+>     schedule="27 15 * * *",
+>     input={"messages": [{"role": "user", "content": "What time is it?"}]},
+> )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# This schedules a job to run at 15:27 (3:27PM) UTC every day
-cron_job = await client.crons.create_for_thread(
-    thread["thread_id"],
-    assistant_id,
-    schedule="27 15 * * *",
-    input={"messages": [{"role": "user", "content": "What time is it?"}]},
-)
-```
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> // This schedules a job to run at 15:27 (3:27PM) UTC every day
+> const cronJob = await client.crons.create_for_thread(
+>   thread["thread_id"],
+>   assistantId,
+>   {
+>     schedule: "27 15 * * *",
+>     input: { messages: [{ role: "user", content: "What time is it?" }] }
+>   }
+> );
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// This schedules a job to run at 15:27 (3:27PM) UTC every day
-const cronJob = await client.crons.create_for_thread(
-  thread["thread_id"],
-  assistantId,
-  {
-    schedule: "27 15 * * *",
-    input: { messages: [{ role: "user", content: "What time is it?" }] }
-  }
-);
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/crons \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "assistant_id": <ASSISTANT_ID>,
-    }'
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/crons \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "assistant_id": <ASSISTANT_ID>,
+>     }'
+> ```
 
 Note that it is **very** important to delete `Cron` jobs that are no longer useful. Otherwise you could rack up unwanted API charges to the LLM! You can delete a `Cron` job using the following code:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.crons.delete(cron_job["cron_id"])
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.crons.delete(cron_job["cron_id"])
-```
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.crons.delete(cronJob["cron_id"]);
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.crons.delete(cronJob["cron_id"]);
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request DELETE \
-    --url <DEPLOYMENT_URL>/runs/crons/<CRON_ID>
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request DELETE \
+>     --url <DEPLOYMENT_URL>/runs/crons/<CRON_ID>
+> ```
 
 ## Cron job stateless
 
 You can also create stateless cron jobs by using the following code. Stateless cron jobs create a new thread for each execution:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # This schedules a job to run at 15:27 (3:27PM) UTC every day
+> cron_job_stateless = await client.crons.create(
+>     assistant_id,
+>     schedule="27 15 * * *",
+>     input={"messages": [{"role": "user", "content": "What time is it?"}]},
+> )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# This schedules a job to run at 15:27 (3:27PM) UTC every day
-cron_job_stateless = await client.crons.create(
-    assistant_id,
-    schedule="27 15 * * *",
-    input={"messages": [{"role": "user", "content": "What time is it?"}]},
-)
-```
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> // This schedules a job to run at 15:27 (3:27PM) UTC every day
+> const cronJobStateless = await client.crons.create(
+>   assistantId,
+>   {
+>     schedule: "27 15 * * *",
+>     input: { messages: [{ role: "user", content: "What time is it?" }] }
+>   }
+> );
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// This schedules a job to run at 15:27 (3:27PM) UTC every day
-const cronJobStateless = await client.crons.create(
-  assistantId,
-  {
-    schedule: "27 15 * * *",
-    input: { messages: [{ role: "user", content: "What time is it?" }] }
-  }
-);
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/runs/crons \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "assistant_id": <ASSISTANT_ID>,
-    }'
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/runs/crons \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "assistant_id": <ASSISTANT_ID>,
+>     }'
+> ```
 
 Again, remember to delete your job once you are done with it!
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.crons.delete(cron_job_stateless["cron_id"])
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.crons.delete(cron_job_stateless["cron_id"])
-```
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.crons.delete(cronJobStateless["cron_id"]);
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.crons.delete(cronJobStateless["cron_id"]);
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request DELETE \
-    --url <DEPLOYMENT_URL>/runs/crons/<CRON_ID>
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request DELETE \
+>     --url <DEPLOYMENT_URL>/runs/crons/<CRON_ID>
+> ```
 
 ## Thread cleanup for stateless crons
 
@@ -217,62 +217,62 @@ Every time a stateless cron is triggered, a new thread is created. Control what 
 
 ### Example: Keeping threads for later retrieval
 
-**Python**
+> [tab] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Create a stateless cron that keeps threads after execution.
+> # Configure checkpointer.ttl in langgraph.json to auto-delete old threads.
+> # See: https://docs.langchain.com/langsmith/configure-ttl
+> cron_job = await client.crons.create(
+>     assistant_id,
+>     schedule="27 15 * * *",
+>     input={"messages": [{"role": "user", "content": "Daily report"}]},
+>     on_run_completed="keep"
+> )
+>
+> # You can later retrieve the runs and their results
+> runs = await client.runs.search(
+>     metadata={"cron_id": cron_job["cron_id"]}
+> )
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Create a stateless cron that keeps threads after execution.
-# Configure checkpointer.ttl in langgraph.json to auto-delete old threads.
-# See: https://docs.langchain.com/langsmith/configure-ttl
-cron_job = await client.crons.create(
-    assistant_id,
-    schedule="27 15 * * *",
-    input={"messages": [{"role": "user", "content": "Daily report"}]},
-    on_run_completed="keep"
-)
+> [tab] Javascript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> // Create a stateless cron that keeps threads after execution.
+> // Configure checkpointer.ttl in langgraph.json to auto-delete old threads.
+> // See: https://docs.langchain.com/langsmith/configure-ttl
+> const cronJob = await client.crons.create(
+>   assistantId,
+>   {
+>     schedule: "27 15 * * *",
+>     input: { messages: [{ role: "user", content: "Daily report" }] },
+>     onRunCompleted: "keep"
+>   }
+> );
+>
+> // You can later retrieve the runs and their results
+> const runs = await client.runs.search({
+>   metadata: { cron_id: cronJob["cron_id"] }
+> });
+> ```
 
-# You can later retrieve the runs and their results
-runs = await client.runs.search(
-    metadata={"cron_id": cron_job["cron_id"]}
-)
-```
-
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// Create a stateless cron that keeps threads after execution.
-// Configure checkpointer.ttl in langgraph.json to auto-delete old threads.
-// See: https://docs.langchain.com/langsmith/configure-ttl
-const cronJob = await client.crons.create(
-  assistantId,
-  {
-    schedule: "27 15 * * *",
-    input: { messages: [{ role: "user", content: "Daily report" }] },
-    onRunCompleted: "keep"
-  }
-);
-
-// You can later retrieve the runs and their results
-const runs = await client.runs.search({
-  metadata: { cron_id: cronJob["cron_id"] }
-});
-```
-
-**cURL**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Create a stateless cron that keeps threads after execution.
-# Configure checkpointer.ttl in langgraph.json to auto-delete old threads.
-# See: https://docs.langchain.com/langsmith/configure-ttl
-curl --request POST \
-    --url <DEPLOYMENT_URL>/runs/crons \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "assistant_id": "<ASSISTANT_ID>",
-        "schedule": "27 15 * * *",
-        "input": {"messages": [{"role": "user", "content": "Daily report"}]},
-        "on_run_completed": "keep"
-    }'
-```
+> [tab] cURL
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Create a stateless cron that keeps threads after execution.
+> # Configure checkpointer.ttl in langgraph.json to auto-delete old threads.
+> # See: https://docs.langchain.com/langsmith/configure-ttl
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/runs/crons \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "assistant_id": "<ASSISTANT_ID>",
+>         "schedule": "27 15 * * *",
+>         "input": {"messages": [{"role": "user", "content": "Daily report"}]},
+>         "on_run_completed": "keep"
+>     }'
+> ```
 
 ***
 

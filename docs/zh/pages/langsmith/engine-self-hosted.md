@@ -45,7 +45,7 @@ BYOC 上的引擎与自托管 LangSmith 的不同之处如下：
 | **谁运行模型** | LangChain，及其选择的提供商 |您的提供商帐户 |
 | **凭证** |没有任何。引擎使用您的 LangSmith 许可证进行身份验证。 |您提供的 API 密钥或云身份，或者您自己的 [model gateway](/langsmith/engine-self-hosted-model-providers#use-a-model-gateway) |
 | **型号选择** |由LangChain管理和调整|由 LangChain 管理，在您的提供商提供的型号系列中 |
-| **数据处理协议** | LangChain，每个提供商都有 ZDR |您的，与您使用的每个提供商一起|
+| **数据处理协议** | LangChain，每个提供商都有 ZDR |您的，与您使用的每个提供商一起 |
 | **计费** | LangChain 对 LSU 中引擎的使用情况进行计费。 |您的提供商会向您收取模型调用费用。 LangChain 对 LSU 中的 Engine 使用情况进行计费，费率低于LangSmith Intelligence。 |
 | **可用性** | AWS 美国 |任何云，以及您的集群可以访问的受支持模型和端点 |
 
@@ -57,7 +57,7 @@ LangSmith 智能：引擎运行在您的VPC中； LSI 和 Bedrock 在 LangChain 
 
 ![Architecture diagram of self-hosted LangSmith in your VPC sending model inference to your model providers and usage metadata to LangChain's cloud.](https://mintcdn.com/langchain-5e9cc07a/YV2_h1H0dQOJtIWY/langsmith/images/engine-self-hosted-byok.png?fit=max\&auto=format\&n=YV2_h1H0dQOJtIWY\&q=85\&s=772a34376f553f8a07ce36f96a4b0f81)
 
-您自己的模型提供程序：引擎在您的 VPC 中运行并直接调用您的提供程序，并且只有使用元数据会发送到LangChain。
+您自己的模型提供者：引擎在您的 VPC 中运行并直接调用您的提供者，并且仅使用元数据发送到LangChain。
 
 ### LangSmith 情报LSI 是运行 Engine 模型的LangChain 托管服务。引擎将其模型请求发送到 `https://beacon.aws.langchain.com/intelligence`，并使用您的 LangSmith 许可证进行身份验证，因此您无需提供模型提供者凭据。每个请求都携带引擎完成其工作所需的跟踪内容、代码和中间输出。
 
@@ -67,19 +67,19 @@ LangSmith 智能：引擎运行在您的VPC中； LSI 和 Bedrock 在 LangChain 
 
 如果与 LSI 的连接不可用，引擎将停止并返回错误。 LangSmith 部署的其余部分不受影响，并且引擎会再次尝试进行下一次计划扫描。
 
-### 您自己的模型提供商引擎使用您控制的凭证或云身份直接从您的集群调用 Anthropic、OpenAI、Amazon Bedrock、Google Vertex AI 或 Azure AI Foundry。 Prompts and responses go only to your provider.要选择提供商并添加凭据，请参阅[Configure model providers for Engine on self-hosted](/langsmith/engine-self-hosted-model-providers)。
+### 您自己的模型提供商引擎使用您控制的凭证或云身份直接从您的集群调用 Anthropic、OpenAI、Amazon Bedrock、Google Vertex AI 或 Azure AI Foundry。提示和响应仅发送给您的提供商。要选择提供商并添加凭据，请参阅[Configure model providers for Engine on self-hosted](/langsmith/engine-self-hosted-model-providers)。
 
-## Where Engine processes and stores data
+## 引擎处理和存储数据的位置
 
 在自托管部署中，引擎将您的环境和 LangChain 之间的数据处理分开：
 
-* **您的环境：** 引擎编排和 LangSmith 存储的跟踪保留在您的自托管环境中。
-* **LangChain的环境，具有LangSmith智能：** LSI和模型提供程序处理Engine发送的内容。 LSI retains only [usage metadata](#what-langsmith-intelligence-retains).
-* **您的模型提供商以及您自己的提供商：** 您的提供商根据您与他们的协议处理引擎发送的内容。 LangChain receives only [usage metadata](#what-langsmith-intelligence-retains).
+* **您的环境：** 引擎编排和LangSmith存储的跟踪保留在您的自托管环境中。
+* **LangChain的环境，具有LangSmith智能：** LSI和模型提供程序处理Engine发送的内容。 LSI仅保留[usage metadata](#what-langsmith-intelligence-retains)。
+* **您的模型提供商以及您自己的提供商：** 您的提供商根据您与他们的协议处理引擎发送的内容。 LangChain 仅收到 [usage metadata](#what-langsmith-intelligence-retains)。
 
 如果您启用外部通知，引擎还会将通知内容发送到您配置的 Slack 通道或 Webhook 端点。有关 Slack 应用程序设置和发送到 Slack 的内容，请参阅 [Connect self-hosted LangSmith to Slack](/langsmith/self-host-slack)。
 
-### What LangSmith Intelligence retains
+### LangSmith 情报保留了什么
 
 LSI 不会保留提示或模型响应的内容。它保留以下元数据用于使用归因和计费：* 用于归因使用情况的帐户、工作区和项目标识符。
 * 用于计费的模型和令牌使用元数据。
@@ -94,7 +94,7 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
 
 默认情况下禁用引擎。它需要[Sandboxes](/langsmith/enable-self-hosted-sandboxes)、与[LangSmith Intelligence](#allow-egress-to-langsmith-intelligence)的连接，除非您的安装是[air-gapped](#air-gapped-installations)、外部可访问的[⟦T15⟧](#verify-your-hostname-is-externally-reachable)和[Engine's keys](#generate-engines-keys)。在启用引擎之前完成先决条件。
 
-引擎和 [Insights](/langsmith/self-host-insights-chat) 从同一映像运行并共享一个部署。 Engine 不需要 Insights。如果您的安装已运行 Insights，则启用 Engine 会添加配置而不是新 Pod。
+引擎和 [Insights](/langsmith/self-host-insights-chat) 从同一映像运行并共享一个部署。 Engine 不需要 Insights。如果您的安装已运行 Insights，则启用 Engine 会添加配置而不是添加新 Pod。
 
 ### 组件
 
@@ -143,7 +143,7 @@ AWS URL 还记录使用情况，因此它适用于采用任一选项的组织。
 
 **4.验证您的主机名可从外部访问**引擎的沙箱使用 `langsmith` CLI 调用您的 LangSmith 安装，因此 `config.hostname` 必须可从沙箱网络访问。 Helm 验证拒绝 `localhost` 和集群内 `*.svc` 地址。
 
-使用 TLS 通过入口提供该主机名，如 [Set up an ingress](/langsmith/self-host-ingress) 中所述。引擎的沙箱网络策略允许访问您的 LangSmith 主机名、配置的 GitHub 主机以及公共 PyPI 和 npm 注册表。沙箱外部的代理会注入每次运行的凭据，因此它们在沙箱内部不可读。
+使用 TLS 通过您的入口提供该主机名，如 [Set up an ingress](/langsmith/self-host-ingress) 中所述。引擎的沙箱网络策略允许访问您的 LangSmith 主机名、配置的 GitHub 主机以及公共 PyPI 和 npm 注册表。沙箱外部的代理会注入每次运行的凭据，因此它们在沙箱内部不可读。
 
 当引擎生成代码修复时，它会安装`pypi.org`、`files.pythonhosted.org`和`registry.npmjs.org`的依赖项。注册表主机不可配置，因此引擎无法使用内部 PyPI 或 npm 镜像，并且如果您的网络阻止公共注册表，依赖项安装将失败。沙箱无法到达 Go 模块代理，例如 `proxy.golang.org`，因此引擎使用连接的代码存储库的 `vendor/` 目录（当它存在时）。
 
@@ -173,45 +173,45 @@ AWS URL 还记录使用情况，因此它适用于采用任一选项的组织。
 
 将以下内容添加到您的 [⟦T49⟧](/langsmith/kubernetes#configure-your-helm-charts) 中，以及 [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes) 中的完整沙箱值。这些示例仅显示特定于引擎的值和 `sandboxes.enabled` 标志。
 
-**使用 Kubernetes 机密（推荐）**
-
-按名称引用您现有的 Secret。该图表从中读取 `engine_encryption_key` 和 `engine_usage_signing_secret`。
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-config:
-  existingSecretName: "<your-secret-name>"
-  # Must be reachable from the sandbox network.
-  hostname: "https://langsmith.example.com"
-
-engine:
-  enabled: true
-  intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
-
-sandboxes:
-  enabled: true
-```
-
-**使用内联值**
-
-直接在配置文件中设置引擎的密钥。
-
-> [!警告]
+> [tab] 使用 Kubernetes 机密（推荐）
 >
-> 这会将实时凭据放入您的配置文件中。不要将其提交给版本控制。更喜欢 Kubernetes Secret。
+> 按名称引用您现有的 Secret。该图表从中读取 `engine_encryption_key` 和 `engine_usage_signing_secret`。
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> config:
+>   existingSecretName: "<your-secret-name>"
+>   # Must be reachable from the sandbox network.
+>   hostname: "https://langsmith.example.com"
+>
+> engine:
+>   enabled: true
+>   intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
+>
+> sandboxes:
+>   enabled: true
+> ```
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-config:
-  hostname: "https://langsmith.example.com"
-
-engine:
-  enabled: true
-  intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
-  encryptionKey: "<engine-encryption-key>"
-  usageSigningSecret: "<engine-usage-signing-secret>"
-
-sandboxes:
-  enabled: true
-```
+> [选项卡] 使用内联值
+>
+> 直接在配置文件中设置引擎的密钥。
+>
+>> [!警告]
+>>
+>> 这会将实时凭据放入您的配置文件中。不要将其提交给版本控制。更喜欢 Kubernetes Secret。
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> config:
+>   hostname: "https://langsmith.example.com"
+>
+> engine:
+>   enabled: true
+>   intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
+>   encryptionKey: "<engine-encryption-key>"
+>   usageSigningSecret: "<engine-usage-signing-secret>"
+>
+> sandboxes:
+>   enabled: true
+> ```
 
 > [!注意]
 >
@@ -255,7 +255,7 @@ helm upgrade -i langsmith langchain/langsmith \
 kubectl get pods -n <namespace> | grep standalone-insights
 ```
 
-API 服务器和队列 Pod 都应该是`Running`。然后，确认`platform-backend`是健康的，因为它调度引擎运行：
+API 服务器和队列 Pod 都应该是`Running`。然后，确认 `platform-backend` 是健康的，因为它调度引擎运行：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl rollout status deployment/langsmith-platform-backend -n <namespace>

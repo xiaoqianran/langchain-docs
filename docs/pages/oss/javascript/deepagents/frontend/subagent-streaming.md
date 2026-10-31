@@ -379,19 +379,19 @@ These LangChain frontend patterns work with subagent cards the same way they
 work with single-agent streams. Deep Agents are built on the same `useStream`
 API, so these guides apply directly:
 
-> **[Tool calling](/oss/javascript/langchain/frontend/tool-calling)**
+> [card] [Tool calling](/oss/javascript/langchain/frontend/tool-calling)
 >
 > Render each subagent's tool calls as rich, type-safe UI cards with pending, completed, and failed states.
 
-> **[Markdown messages](/oss/javascript/langchain/frontend/markdown-messages)**
+> [card] [Markdown messages](/oss/javascript/langchain/frontend/markdown-messages)
 >
 > Display coordinator and subagent messages as formatted markdown with proper streaming support.
 
-> **[Human-in-the-Loop](/oss/javascript/langchain/frontend/human-in-the-loop)**
+> [card] [Human-in-the-Loop](/oss/javascript/langchain/frontend/human-in-the-loop)
 >
 > Pause a delegated subagent for user approval or input using the same interrupt API.
 
-> **[Reasoning tokens](/oss/javascript/langchain/frontend/reasoning-tokens)**
+> [card] [Reasoning tokens](/oss/javascript/langchain/frontend/reasoning-tokens)
 >
 > Surface model thinking inside subagent cards using collapsible reasoning blocks.
 

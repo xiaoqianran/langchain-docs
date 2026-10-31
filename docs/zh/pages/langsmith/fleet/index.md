@@ -13,17 +13,17 @@ LangSmith Fleet 是一个用于创建和管理 AI 代理的无代码平台。它
 使用舰队可以：
 
 * 自动执行日常任务，例如起草电子邮件、总结更新和组织信息。
-* 连接您最喜爱的应用程序，将上下文带入代理的工作中。
+* 连接您最喜欢的应用程序，将上下文带入代理的工作中。
 * 在聊天或工作场所（例如 Slack）中使用以获取流程帮助。
 * 通过对重要行动的简单批准来保持控制。
 
 ## 开始构建
 
-> **[Build with AI](https://smith.langchain.com/agents)**
+> [卡][Build with AI](https://smith.langchain.com/agents)
 >
 > 描述您想要创建的代理并让 Fleet 构建它，并在关键点暂停以等待您的输入。
 
-> **[Build from a template](/langsmith/fleet/quickstart)**
+> [卡][Build from a template](/langsmith/fleet/quickstart)
 >
 > 从预配置的代理开始并对其进行自定义。
 

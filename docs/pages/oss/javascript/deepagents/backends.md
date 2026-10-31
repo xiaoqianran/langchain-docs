@@ -828,7 +828,7 @@ To also support the `execute` tool (running shell commands), implement [`Sandbox
 
 All methods must return structured Result objects with an optional `error` field—do not throw on missing files or invalid patterns.
 
-> **Example: S3-style backend skeleton**
+> [accordion] Example: S3-style backend skeleton
 >
 > This skeleton maps filesystem paths to object keys. Fill in each method with your storage client's list, read, search, upload, and read-modify-write operations.
 >
@@ -1191,7 +1191,7 @@ Backends implement `BackendProtocolV2`. All query methods return structured Resu
 
 ## Update existing backends to V2
 
-> **Migration guide**
+> [accordion] Migration guide
 >
 > ### Method renames
 >

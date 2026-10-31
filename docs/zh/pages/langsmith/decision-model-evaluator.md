@@ -16,7 +16,7 @@
 
 > [!注意]
 >
-> 决策模型评估者需要 LangSmith Plus 或 Enterprise 计划。
+> 决策模型评估器需要 LangSmith Plus 或 Enterprise [plan](/langsmith/pricing-plans)。它们在 [BYOC](/langsmith/byoc) 部署中不可用。
 
 ## 步骤 1. 创建评估器
 
@@ -27,7 +27,7 @@
 1. 为您的决策模型提供程序添加 API 密钥。在 LangSmith 中，转到 **设置 > 集成 > 提供商机密** 并单击 **+ 机密**：* 对于 OpenAI，选择 **OpenAI** 并粘贴您的 OpenAI API 密钥。 LangSmith 将其存储为工作空间秘密`OPENAI_API_KEY`。
    * 对于 TypeSafe，选择 **TypeSafe** 并粘贴您的 TypeSafe 帐户中的密钥。 LangSmith 将其存储为工作空间秘密`TYPESAFE_API_KEY`。
 
-   要将密钥存储在不同的名称下，请选择 **自定义** 并输入您自己的秘密名称。欲了解更多信息，请参阅[Add provider secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)。
+   要将密钥存储在不同的名称下，请选择 **自定义** 并输入您自己的秘密名称。有关更多信息，请参阅[Add a provider key](/langsmith/llm-gateway-provider-authentication#add-a-provider-key)。
 2. 在 LangSmith UI 中，打开数据集或跟踪项目的 **Evaluators** 选项卡，然后单击 **+ Evaluator**。
 3. 在 **配置评估器** 面板中，选择 **从头开始创建** 下的 **决策模型评估器**。
 4. 指定您的评估员。

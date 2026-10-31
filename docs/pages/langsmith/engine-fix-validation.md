@@ -78,7 +78,7 @@ Engine sets `config.configurable.__engine_validation_replay__ = true` on every r
 
 Use the marker to skip or block tools whose effects leave your agent, such as sending email or messages, charging customers, filing tickets, writing to production data stores, scheduling work, and calling partner APIs.
 
-> **Copy-paste allowlist middleware**
+> [accordion] Copy-paste allowlist middleware
 >
 > Add the following middleware to your agent project:
 >

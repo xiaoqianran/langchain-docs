@@ -62,63 +62,63 @@ async def graph(config):
 
 ## 从客户端连接
 
-**远程图**
+> [选项卡] RemoteGraph
+>
+> 初始化[⟦T17⟧](https://reference.langchain.com/python/langgraph/pregel/remote/RemoteGraph)时设置`distributed_tracing=True`。这会自动在所有请求上传播跟踪标头。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph.graph import StateGraph
+> from langgraph.pregel.remote import RemoteGraph
+>
+> remote_graph = RemoteGraph(
+>     "agent",
+>     url="<DEPLOYMENT_URL>",
+>     distributed_tracing=True,  # Enable trace propagation
+> )
+>
+> def subgraph_node(query: str):
+>     # Trace context is automatically propagated
+>     return remote_graph.invoke({
+>         "messages": [{"role": "user", "content": query}]
+>     })['messages'][-1]['content']
+>
+> # The RemoteGraph is called in the context of some on going work.
+> # This could be a parent LangGraph agent, code traced with `@ls.traceable`,
+> # or any other instrumented code.
+> graph = (
+>         StateGraph(str)
+>             .add_node(subgraph_node)
+>             .add_edge("__start__", "subgraph_node")
+>             .compile()
+> )
+> # The remote graph's execution will appear as a child of this trace
+> result = graph.invoke("What's the weather in SF?")
+> ```
 
-初始化[⟦T17⟧](https://reference.langchain.com/python/langgraph/pregel/remote/RemoteGraph)时设置`distributed_tracing=True`。这会自动在所有请求上传播跟踪标头。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph.graph import StateGraph
-from langgraph.pregel.remote import RemoteGraph
-
-remote_graph = RemoteGraph(
-    "agent",
-    url="<DEPLOYMENT_URL>",
-    distributed_tracing=True,  # Enable trace propagation
-)
-
-def subgraph_node(query: str):
-    # Trace context is automatically propagated
-    return remote_graph.invoke({
-        "messages": [{"role": "user", "content": query}]
-    })['messages'][-1]['content']
-
-# The RemoteGraph is called in the context of some on going work.
-# This could be a parent LangGraph agent, code traced with `@ls.traceable`,
-# or any other instrumented code.
-graph = (
-        StateGraph(str)
-            .add_node(subgraph_node)
-            .add_edge("__start__", "subgraph_node")
-            .compile()
-)
-# The remote graph's execution will appear as a child of this trace
-result = graph.invoke("What's the weather in SF?")
-```
-
-**软件开发工具包**
-
-如果您直接使用 [LangGraph SDK](/langsmith/reference)，请使用 `run_tree.to_headers()` 手动传播跟踪标头：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
-import langsmith as ls
-
-client = get_client(url="<DEPLOYMENT_URL>")
-
-with ls.trace("call_remote_agent", inputs={"query": query}) as rt:
-    headers = rt.to_headers()
-    async for chunk in client.runs.stream(
-        thread_id=None,
-        assistant_id="agent",
-        input={"messages": [{"role": "user", "content": query}]},
-        stream_mode="values",
-        headers=headers,  # Pass trace headers
-    ):
-        pass
-    return chunk
-
-result = await call_remote_agent("What's the weather in SF?")
-```
+> [标签] SDK
+>
+> 如果您直接使用 [LangGraph SDK](/langsmith/reference)，请使用 `run_tree.to_headers()` 手动传播跟踪标头：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_client
+> import langsmith as ls
+>
+> client = get_client(url="<DEPLOYMENT_URL>")
+>
+> with ls.trace("call_remote_agent", inputs={"query": query}) as rt:
+>     headers = rt.to_headers()
+>     async for chunk in client.runs.stream(
+>         thread_id=None,
+>         assistant_id="agent",
+>         input={"messages": [{"role": "user", "content": query}]},
+>         stream_mode="values",
+>         headers=headers,  # Pass trace headers
+>     ):
+>         pass
+>     return chunk
+>
+> result = await call_remote_agent("What's the weather in SF?")
+> ```
 
 ## 相关
 

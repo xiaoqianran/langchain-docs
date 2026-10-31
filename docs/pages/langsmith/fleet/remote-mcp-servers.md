@@ -67,36 +67,36 @@ Fleet discovers available tools from your MCP server and makes them available in
 
 To add a remote MCP server to all agents in the workspace:
 
-**From Fleet > Integrations**
+> [tab] From Fleet > Integrations
+>
+> **1. Navigate to Fleet > Integrations**
+>
+> In the LangSmith UI, navigate to the [**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools) tab.
+>
+> **2. Add the server**
+>
+> 1. Click **+ Custom MCP** at the bottom of the left sidebar.
+> 2. Add a **Name** for the MCP server.
+> 3. Add the MCP **URL** (e.g., `https://api.example.com/mcp`)
+> 4. Select the **Authentication** type. See [Authentication types](#authentication-types) for more details.
+>
+> **3. Save the server**
+>
+> Click **Save server**. Fleet will automatically discover available tools from your MCP server and make them available in your agents. The configured headers are applied to both tool discovery requests and tool execution requests.
 
-**1. Navigate to Fleet > Integrations**
-
-In the LangSmith UI, navigate to the [**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools) tab.
-
-**2. Add the server**
-
-1. Click **+ Custom MCP** at the bottom of the left sidebar.
-2. Add a **Name** for the MCP server.
-3. Add the MCP **URL** (e.g., `https://api.example.com/mcp`)
-4. Select the **Authentication** type. See [Authentication types](#authentication-types) for more details.
-
-**3. Save the server**
-
-Click **Save server**. Fleet will automatically discover available tools from your MCP server and make them available in your agents. The configured headers are applied to both tool discovery requests and tool execution requests.
-
-**From workspace settings**
-
-**1. Navigate to MCP server settings**
-
-In the LangSmith UI, navigate to the [Settings > MCP servers](https://smith.langchain.com/settings/workspaces/mcp-servers) tab.
-
-**2. Add the server**
-
-Click **Add server** and enter the server name and URL, then configure authentication (see [authentication types](#authentication-types)).
-
-**3. Save the server**
-
-Click **Save server**. Fleet will automatically discover available tools from your MCP server and make them available in your agents. The configured headers are applied to both tool discovery requests and tool execution requests.
+> [tab] From workspace settings
+>
+> **1. Navigate to MCP server settings**
+>
+> In the LangSmith UI, navigate to the [Settings > MCP servers](https://smith.langchain.com/settings/workspaces/mcp-servers) tab.
+>
+> **2. Add the server**
+>
+> Click **Add server** and enter the server name and URL, then configure authentication (see [authentication types](#authentication-types)).
+>
+> **3. Save the server**
+>
+> Click **Save server**. Fleet will automatically discover available tools from your MCP server and make them available in your agents. The configured headers are applied to both tool discovery requests and tool execution requests.
 
 ### Authentication types
 

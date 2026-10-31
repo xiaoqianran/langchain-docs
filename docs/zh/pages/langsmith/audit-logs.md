@@ -8,14 +8,14 @@
 
 > [!注意]
 >
-> 审核日志可在 [**Enterprise** plans](/langsmith/pricing-plans) 上找到。如果您有兴趣升级到企业版，请[contact our sales team](https://www.langchain.com/contact-sales)。
+> 审核日志可在 [**Enterprise** plans](/langsmith/pricing-plans) 上找到。如果您有兴趣升级到企业版，[contact our sales team](https://www.langchain.com/contact-sales)。
 
 LangSmith 审核日志提供组织内所采取的管理和配置操作的防篡改记录。他们帮助您回答以下问题：
 
 * **谁**删除了 API 密钥、数据集或部署？
 * **什么时候**邀请新成员、修改角色或更新示例？
-* **什么**计费、SSO 或数据保留配置发生了更改？
-* **哪些**数据集、跟踪项目或提示 Webhooks 被修改？在 [agent-based workspace](/langsmith/agents) 中，代理也会接受审核。
+* **什么**计费、SSO 或数据保留配置发生了变化？
+* **哪些**数据集、跟踪项目或提示 Webhooks 被修改？在 [agent-based workspace](/langsmith/agent-registry) 中，代理也会接受审核。
 
 审核日志对于安全审查、合规性要求和一般操作可见性非常有用。
 
@@ -46,7 +46,7 @@ LangSmith 审核日志提供组织内所采取的管理和配置操作的防篡�
 
 审核日志最多保留 **400 天**。超过 400 天的事件可能会被自动删除。
 
-## 为自托管部署启用审核日志审核日志适用于运行 Helm Chart **0.12.33** 或更高版本的 [self-hosted](/langsmith/self-hosted) LangSmith 实例。随着时间的推移，个别业务的覆盖范围不断扩大。介绍各个操作的图表版本，请参见[Self-hosted version availability](#self-hosted-version-availability)。
+## 为自托管部署启用审核日志审核日志适用于运行 Helm Chart **0.12.33** 或更高版本的 [self-hosted](/langsmith/self-hosted) LangSmith 实例。随着时间的推移，个别业务的覆盖范围不断扩大。介绍各个操作的图表版本请参见[Self-hosted version availability](#self-hosted-version-availability)。
 
 升级后，请使用以下选项之一启用审核日志：
 
@@ -127,10 +127,11 @@ curl -G \
 | **过滤视图** | `create_filter_view`、`update_filter_view`、`delete_filter_view`、`rename_filter_view` |
 | **提示提交和中心** | `create_commit`、`create_directory_commit`、`delete_directory`、`create_hub_environment`、`update_hub_environment`、`delete_hub_environment` |
 | **提示画布快速操作** | `create_prompt_canvas_quick_action`、`update_prompt_canvas_quick_action`、`delete_prompt_canvas_quick_action` |
-| **提示 webhook** | `create_prompt_webhook`、`update_prompt_webhook`、`delete_prompt_webhook`、`test_prompt_webhook` |
+| **提示 webhooks** | `create_prompt_webhook`、`update_prompt_webhook`、`delete_prompt_webhook`、`test_prompt_webhook` |
 | **部署** | `create_deployment`、`update_deployment`、`delete_deployment` |
 | **批量出口** | `create_bulk_export`、`cancel_bulk_export`、`get_bulk_export`、`get_bulk_export_run`、`get_bulk_export_runs`、`get_bulk_export_runs_filtered`、`list_bulk_exports`、`create_bulk_export_destination`、`update_bulk_export_destination`、 `read_bulk_export_destination`、`list_bulk_export_destinations` || **资源标签** | `create_tag_key`、`update_tag_key`、`delete_tag_key`、`create_tag_value`、`update_tag_value`、`delete_tag_value`、`create_tagging`、`delete_tagging` |
-| **访问政策** | `create_access_policy`、`delete_access_policy`、`list_access_policies`、`read_access_policy`、`attach_access_policies`、`read_role_access_policies` |
+| **访问政策** | `create_access_policy`、`delete_access_policy`、`list_access_policies`、`read_access_policy`、`attach_access_policies`、`read_role_access_policies`、`read_team_access_policies` |
+| **团队** | `create_team`、`update_team`、`delete_team`、`add_team_members`、`remove_team_member`、`attach_team_access_policy`、`detach_team_access_policy`、`create_team_workspace_grant`、`update_team_workspace_grant`、 `delete_team_workspace_grant` |
 | **自定义图表** | `create_chart`、`update_chart`、`delete_chart`、`read_chart`、`read_charts`、`read_chart_preview`、`create_chart_section`、`update_chart_section`、`delete_chart_section`、 `clone_chart_section`、`read_chart_section`、`create_org_chart`、`update_org_chart`、`delete_org_chart`、`create_org_chart_section`、`update_org_chart_section`、`delete_org_chart_section`、`read_tracing_dashboard` |
 | **型号定价** | `create_model_price_map`、`update_model_price_map`、`delete_model_price_map` |
 | **MCP 服务器和工具** | `create_mcp_server`、`update_mcp_server`、`delete_mcp_server`、`register_mcp_server_oauth`、`mcp_proxy`、`create_mcp_vendor_settings`、`update_mcp_vendor_settings`、`delete_mcp_vendor_settings`、`invalidate_mcp_tools_cache`、 `create_tool`、`update_tool`、`delete_tool` |
@@ -138,50 +139,50 @@ curl -G \
 | **锻造配置** | `create_forge_configuration`、`update_forge_configuration`、`delete_forge_configuration`、`trigger_forge_configuration` |
 | **洞察工作** | `create_insights_job`、`update_insights_job`、`delete_insights_job`、`create_insights_job_config`、`update_insights_job_config`、`delete_insights_job_config`、`generate_insights_job_config`、`get_insights_job_runs` |
 | **队列使用限制和 webhook** | `create_fleet_usage_limit`、`update_fleet_usage_limit`、`delete_fleet_usage_limit`、`create_fleet_webhook`、`update_fleet_webhook`、`delete_fleet_webhook`、`test_fleet_webhook` |
-| **沙盒代理配置文件** | `create_sandbox_proxy_profile`、`update_sandbox_proxy_profile`、`delete_sandbox_proxy_profile` |
+| **沙箱代理配置文件** | `create_sandbox_proxy_profile`、`update_sandbox_proxy_profile`、`delete_sandbox_proxy_profile` |
 | **游乐场设置** | `create_playground_settings`、`update_playground_settings`、`delete_playground_settings` |
 | **自托管许可** | `create_self_hosted_customer`、`update_self_hosted_customer`、`mint_self_hosted_license`、`update_self_hosted_license` |
 | **功能模型默认值** | `upsert_feature_default_model`、`delete_feature_default_model`、`upsert_feature_disabled_model`、`delete_feature_disabled_model` |
 | **入职** | `create_onboarding_state`、`update_onboarding_state` |
-| **NPS** | `submit_nps_response` |
+| **NPS** | `submit_nps_response` |## 自托管版本可用性
 
-## 自托管版本可用性以下列表提供了介绍每个操作的 [self-hosted](/langsmith/self-hosted) Helm 图表版本。所有后续版本都可以进行操作。本节仅适用于[self-hosted](/langsmith/self-hosted)部署；在 LangSmith [cloud](/langsmith/cloud) 上，所有列出的操作都可用。
+以下列表提供了介绍每个操作的 [self-hosted](/langsmith/self-hosted) Helm 图表版本。所有后续版本都可以进行操作。本节仅适用于[self-hosted](/langsmith/self-hosted)部署；在 LangSmith [cloud](/langsmith/cloud) 上，所有列出的操作都可用。
 
 > [!注意]
 >
-> `0.15.0-rc.*` 候选版本中引入的操作可在 `0.15.0` 稳定版本及更高版本中使用。频道详情请参阅[Release policy](/langsmith/release-versions)。
+> `0.15.0-rc.*` 候选版本中引入的操作可在 `0.15.0` 稳定版本及更高版本中使用。频道详情请参考[Release policy](/langsmith/release-versions)。
 
-> **0.12.33**
+> [手风琴] 0.12.33
 >
 > `add_member_to_workspace`、`add_members_to_workspace_batch`、`cancel_bulk_export`、`create_api_key`、`create_bulk_export`、`create_bulk_export_destination`、`create_personal_access_token`、`create_service_key`、`create_tag_key`、 `create_tag_value`、`create_tagging`、`create_workspace`、`delete_api_key`、`delete_personal_access_token`、`delete_service_key`、`delete_tag_key`、`delete_tag_value`、`delete_tagging`、 `delete_usage_limit`、`delete_workspace`、`delete_workspace_member`、`delete_workspace_pending_member`、`set_tenant_handle`、`unshare_entities`、`update_organization_info`、`update_tag_key`、`update_tag_value`、 `update_ttl_settings`、`update_usage_limit`、`update_workspace`、`update_workspace_member`、`update_workspace_secrets`
 
-> **0.12.34**
+> [手风琴] 0.12.34
 >
 > `add_basic_auth_users_to_org`、`clone_chart_section`、`confirm_payment_checkout_session`、`create_chart`、`create_chart_section`、`create_deployment`、`create_model_price_map`、`create_org_chart`、`create_org_chart_section`、 `create_payment_account_link`、`create_payment_checkout_session`、`create_payment_setup_intent`、`create_role`、`create_sso_settings`、`delete_chart`、`delete_chart_section`、`delete_deployment`、`delete_model_price_map`、 `delete_org_chart`、`delete_org_chart_section`、`delete_org_member`、`delete_org_pending_member`、`delete_role`、`delete_sso_settings`、`invite_user_to_org`、`invite_users_to_org_batch`、`update_basic_auth_user`、 `update_business_info`、`update_chart`、`update_chart_section`、`update_default_sso_provision_organization`、`update_deployment`、`update_login_methods`、`update_model_price_map`、`update_org_chart`、`update_org_chart_section`、 `update_org_member`、`update_payment_method`、`update_payment_plan`、`update_role`、`update_sso_settings`
 
-> **0.13.3**
+> [手风琴] 0.13.3
 >
-> `update_bulk_export_destination`> **0.13.32**
+> `update_bulk_export_destination`> [手风琴] 0.13.32
 >
 > `clone_dataset`、`create_comparative_experiment`、`create_csv_dataset`、`create_dataset`、`create_example`、`create_examples`、`create_experiment_via_upload`、`create_playground_experiment`、`create_prompt_webhook`、 `delete_comparative_experiment`、`delete_dataset`、`delete_datasets`、`delete_example`、`delete_examples`、`delete_prompt_webhook`、`delete_tracer_session`、`delete_tracer_sessions`、`read_bulk_export_destination`、 `share_dataset`、`test_prompt_webhook`、`unshare_dataset`、`update_dataset`、`update_dataset_splits`、`update_dataset_version`、`update_example`、`update_examples`、`update_prompt_webhook`、 `update_tracer_session`
 
-> **0.13.37**
+> [手风琴] 0.13.37
 >
 > `attach_access_policies`、`create_access_policy`、`create_scim_group`、`create_scim_token`、`create_scim_user`、`delete_access_policy`、`delete_scim_group`、`delete_scim_token`、`delete_scim_user`、 `list_access_policies`、`read_access_policy`、`read_role_access_policies`、`update_scim_group`、`update_scim_token`、`update_scim_user`
 
-> **0.15.0-rc.1**
+> [手风琴] 0.15.0-rc.1
 >
-> `add_annotation_queue_reviewer`、`add_runs_to_annotation_queue`、`batch_query_trace_messages`、`bulk_delete_evaluators`、`claim_pending_organization_invite`、`claim_pending_workspace_invite`、`confirm_sso_user_email`、`count_examples`、`create_alert_rule`、 `create_annotation_queue`、`create_annotation_queue_run_status`、`create_commit`、`create_directory_commit`、`create_evaluator`、`create_experiment_view_override`、`create_feedback_config`、`create_feedback_formula`、`create_filter_view`、 `create_fleet_usage_limit`、`create_fleet_webhook`、`create_forge_configuration`、`create_gateway_policy`、`create_hub_environment`、`create_insights_job`、`create_insights_job_config`、`create_mcp_server`、`create_mcp_vendor_settings`、 `create_onboarding_state`、`create_organization`、`create_playground_settings`、`create_prompt_canvas_quick_action`、`create_sandbox_proxy_profile`、`create_service_account`、`create_tenant`、`create_tool`、`delete_alert_rule`、 `delete_annotation_queue`、`delete_annotation_queue_run`、`delete_annotation_queue_runs`、`delete_annotation_queues`、`delete_directory`、`delete_evaluator`、`delete_experiment_view_override`、`delete_feature_default_model`、`delete_feature_disabled_model`、 `delete_feedback_config`、`delete_feedback_formula`、`delete_filter_view`、`delete_fleet_usage_limit`、`delete_fleet_webhook`、`delete_forge_configuration`、`delete_gateway_policy`、`delete_hub_environment`、`delete_insights_job`、 `delete_insights_job_config`、`delete_mcp_server`、`delete_mcp_vendor_settings`、`delete_pending_organization_invite`、`delete_pending_workspace_invite`、`delete_playground_settings`、`delete_prompt_canvas_quick_action`、`delete_runs`、`delete_sandbox_proxy_profile`、 `delete_service_account`、`delete_tool`、`diff_dataset_versions`、`download_dataset`、`evaluate_experiment`、`execute_custom_code`、`export_annotation_queue`、`export_granular_usage_csv`、`export_usage_backfill_csv`、 `generate_dataset`、`generate_insights_job_config`、`generate_runs_query`、`generate_shared_dataset_query`、`get_annotation_queue`、`get_annotation_queue_archived_size`、`get_annotation_queue_run`、`get_annotation_queue_runs`、`get_annotation_queue_size`、 `get_annotation_queue_total_size`、`get_annotation_queues_for_run`、`get_audit_logs`、`get_bulk_export`、`get_bulk_export_run`、`get_bulk_export_runs`、`get_bulk_export_runs_filtered`、`get_company_info`、`get_dataset_comparison_view`、 `get_dataset_version`、`get_dataset_versions`、`get_example`、`get_experiment_view_override`、`get_experiment_view_overrides`、`get_feedback_formula`、`get_filter_view`、`get_granular_usage`、`get_insights_job`、`get_insights_job_runs`、`get_login_methods`、`get_mcp_tools`、`get_onboarding_state`、`get_org_dashboard`、`get_org_usage`、`get_org_usage_limits`、`get_organization_billing_info`、`get_organization_info`、`get_pairwise_queue`、 `get_run_cluster`、`get_shared_examples_count`、`get_shared_tokens`、`get_sso_settings`、`get_sso_settings_current`、`get_tag_key`、`get_tag_value`、`get_usage_limits`、`get_workspace_stats`、 `get_workspace_usage_limits_info`、`invalidate_mcp_tools_cache`、`list_annotation_queues`、`list_bulk_export_destinations`、`list_bulk_exports`、`list_chart_sections`、`list_examples`、`list_feedback_configs`、`list_feedback_formulas`、 `list_filter_views`、`list_insights_job_configs`、`list_insights_jobs`、`list_org_members`、`list_org_personal_access_tokens`、`list_org_service_keys`、`list_organization_roles`、`list_organizations`、`list_pairwise_entries`、 `list_pairwise_queues`、`list_pending_organization_invites`、`list_pending_workspace_invites`、`list_permissions`、`list_service_accounts`、`list_tag_keys`、`list_tag_values`、`list_taggings`、`list_tags`、 `list_tags_for_resource`、`list_workspace_members`、`list_workspaces`、`login`、`mcp_proxy`、`mcp_proxy_get`、`populate_annotation_queue`、`query_run`、`query_runs`、 `query_thread_traces`、`query_threads`、`query_trace`、`query_trace_messages`、`read_chart`、`read_chart_preview`、`read_chart_section`、`read_charts`、`read_dataset_delta`、 `read_dataset_share_state`、`read_example`、`read_examples`、`read_feedback`、`read_feedbacks`、`read_model_price_map`、`read_run`、`read_runs`、`read_shared_delta`、 `read_shared_delta_stream`、`read_tracing_dashboard`、`register_mcp_server_oauth`、`remove_annotation_queue_reviewer`、`rename_filter_view`、`resolve_annotation_queue_run`、`send_sso_email_confirmation`、`stream_dataset_comparison_view`、`stream_feedback_delta`、 `submit_nps_response`、`sync_examples`、`test_alert_rule`、`test_fleet_webhook`、`trigger_forge_configuration`、`update_alert_rule`、`update_annotation_queue`、`update_annotation_queue_run`、`update_evaluator`、 `update_experiment_view_override`、`update_feedback_config`、`update_feedback_formula`、`update_filter_view`、`update_fleet_usage_limit`、`update_fleet_webhook`、`update_forge_configuration`、`update_gateway_policy`、`update_hub_environment`、 `update_insights_job`、`update_insights_job_config`、`update_mcp_server`、`update_mcp_vendor_settings`、`update_onboarding_state`、`update_playground_settings`、`update_prompt_canvas_quick_action`、`update_sandbox_proxy_profile`、`update_self_hosted_customer`、 `update_self_hosted_license`、`update_tool`、`upsert_feature_default_model`、`upsert_feature_disabled_model`、`validate_example`、`validate_examples`
+> `add_annotation_queue_reviewer`、`add_runs_to_annotation_queue`、`batch_query_trace_messages`、`bulk_delete_evaluators`、`claim_pending_organization_invite`、`claim_pending_workspace_invite`、`confirm_sso_user_email`、`count_examples`、`create_alert_rule`、 `create_annotation_queue`、`create_annotation_queue_run_status`、`create_commit`、`create_directory_commit`、`create_evaluator`、`create_experiment_view_override`、`create_feedback_config`、`create_feedback_formula`、`create_filter_view`、 `create_fleet_usage_limit`、`create_fleet_webhook`、`create_forge_configuration`、`create_gateway_policy`、`create_hub_environment`、`create_insights_job`、`create_insights_job_config`、`create_mcp_server`、`create_mcp_vendor_settings`、 `create_onboarding_state`、`create_organization`、`create_playground_settings`、`create_prompt_canvas_quick_action`、`create_sandbox_proxy_profile`、`create_service_account`、`create_tenant`、`create_tool`、`delete_alert_rule`、 `delete_annotation_queue`、`delete_annotation_queue_run`、`delete_annotation_queue_runs`、`delete_annotation_queues`、`delete_directory`、`delete_evaluator`、`delete_experiment_view_override`、`delete_feature_default_model`、`delete_feature_disabled_model`、 `delete_feedback_config`、`delete_feedback_formula`、`delete_filter_view`、`delete_fleet_usage_limit`、`delete_fleet_webhook`、`delete_forge_configuration`、`delete_gateway_policy`、`delete_hub_environment`、`delete_insights_job`、 `delete_insights_job_config`、`delete_mcp_server`、`delete_mcp_vendor_settings`、`delete_pending_organization_invite`、`delete_pending_workspace_invite`、`delete_playground_settings`、`delete_prompt_canvas_quick_action`、`delete_runs`、`delete_sandbox_proxy_profile`、 `delete_service_account`、`delete_tool`、`diff_dataset_versions`、`download_dataset`、`evaluate_experiment`、`execute_custom_code`、`export_annotation_queue`、`export_granular_usage_csv`、`export_usage_backfill_csv`、 `generate_dataset`、`generate_insights_job_config`、`generate_runs_query`、`generate_shared_dataset_query`、`get_annotation_queue`、`get_annotation_queue_archived_size`、`get_annotation_queue_run`、`get_annotation_queue_runs`、`get_annotation_queue_size`、 `get_annotation_queue_total_size`、`get_annotation_queues_for_run`、`get_audit_logs`、`get_bulk_export`、`get_bulk_export_run`、`get_bulk_export_runs`、`get_bulk_export_runs_filtered`、`get_company_info`、`get_dataset_comparison_view`、 `get_dataset_version`、`get_dataset_versions`、`get_example`、`get_experiment_view_override`、`get_experiment_view_overrides`、`get_feedback_formula`、`get_filter_view`、`get_granular_usage`、`get_insights_job`、`get_insights_job_runs`、`get_login_methods`、`get_mcp_tools`、`get_onboarding_state`、`get_org_dashboard`、`get_org_usage`、`get_org_usage_limits`、 `get_organization_billing_info`、`get_organization_info`、`get_pairwise_queue`、`get_run_cluster`、`get_shared_examples_count`、`get_shared_tokens`、`get_sso_settings`、`get_sso_settings_current`、`get_tag_key`、 `get_tag_value`、`get_usage_limits`、`get_workspace_stats`、`get_workspace_usage_limits_info`、`invalidate_mcp_tools_cache`、`list_annotation_queues`、`list_bulk_export_destinations`、`list_bulk_exports`、`list_chart_sections`、 `list_examples`、`list_feedback_configs`、`list_feedback_formulas`、`list_filter_views`、`list_insights_job_configs`、`list_insights_jobs`、`list_org_members`、`list_org_personal_access_tokens`、`list_org_service_keys`、 `list_organization_roles`、`list_organizations`、`list_pairwise_entries`、`list_pairwise_queues`、`list_pending_organization_invites`、`list_pending_workspace_invites`、`list_permissions`、`list_service_accounts`、`list_tag_keys`、 `list_tag_values`、`list_taggings`、`list_tags`、`list_tags_for_resource`、`list_workspace_members`、`list_workspaces`、`login`、`mcp_proxy`、`mcp_proxy_get`、 `populate_annotation_queue`、`query_run`、`query_runs`、`query_thread_traces`、`query_threads`、`query_trace`、`query_trace_messages`、`read_chart`、`read_chart_preview`、 `read_chart_section`、`read_charts`、`read_dataset_delta`、`read_dataset_share_state`、`read_example`、`read_examples`、`read_feedback`、`read_feedbacks`、`read_model_price_map`、 `read_run`、`read_runs`、`read_shared_delta`、`read_shared_delta_stream`、`read_tracing_dashboard`、`register_mcp_server_oauth`、`remove_annotation_queue_reviewer`、`rename_filter_view`、`resolve_annotation_queue_run`、 `send_sso_email_confirmation`、`stream_dataset_comparison_view`、`stream_feedback_delta`、`submit_nps_response`、`sync_examples`、`test_alert_rule`、`test_fleet_webhook`、`trigger_forge_configuration`、`update_alert_rule`、 `update_annotation_queue`、`update_annotation_queue_run`、`update_evaluator`、`update_experiment_view_override`、`update_feedback_config`、`update_feedback_formula`、`update_filter_view`、`update_fleet_usage_limit`、`update_fleet_webhook`、 `update_forge_configuration`、`update_gateway_policy`、`update_hub_environment`、`update_insights_job`、`update_insights_job_config`、`update_mcp_server`、`update_mcp_vendor_settings`、`update_onboarding_state`、`update_playground_settings`、 `update_prompt_canvas_quick_action`、`update_sandbox_proxy_profile`、`update_self_hosted_customer`、`update_self_hosted_license`、`update_tool`、`upsert_feature_default_model`、`upsert_feature_disabled_model`、`validate_example`、`validate_examples`
 
-> **0.15.0**
+> [手风琴] 0.15.0
 >
 > `create_provisioned_saas_org`、`create_self_hosted_customer`、`invite_provisioned_org_member`、`mint_self_hosted_license`
 
-> **0.16.0**
+> [手风琴] 0.16.0
 >
 > `export_granular_usage_deployments_csv`、`export_granular_usage_traces_csv`、`get_granular_usage_deployments`、`get_granular_usage_traces`、`update_service_key`
 
-> **0.17.0**
+> [手风琴] 0.17.0
 >
 > `create_agent`、`create_agent_runtime_binding`、`delete_agent`、`list_all_org_personal_access_tokens`、`revoke_personal_access_token`、`update_agent`
 
@@ -189,29 +190,29 @@ curl -G \
 
 ## 常见问题解答
 
-> **谁可以查看审核日志？**
+> [手风琴] 谁可以查看审核日志？
 >
-> 具有 [**Organization Admin**](/langsmith/rbac#organization-admin) 或 [**Organization Operator**](/langsmith/rbac#organization-operator) 角色（授予 `organization:manage` 权限）的用户可以访问审核日志。工作区级别角色不提供审核日志访问权限。
+> 具有[**Organization Admin**](/langsmith/rbac#organization-admin) 或[**Organization Operator**](/langsmith/rbac#organization-operator) 角色（授予`organization:manage` 权限）的用户可以访问审核日志。工作区级别角色不提供审核日志访问权限。
 
-> **Plus 或 Developer 计划中是否提供审核日志？**
+> [accordion] Plus 或 Developer 计划中是否提供审核日志？
 >
 > 不需要。审核日志是一项企业功能。计划详情请参阅[pricing](https://www.langchain.com/pricing-langsmith)。
 
-> **是否有用于查看审核日志的 UI？**
+> [accordion] 是否有用于查看审核日志的 UI？
 >
 > 是的。参见[View audit logs in the UI](#view-audit-logs-in-the-ui)。还可以通过 [API](#query-audit-logs-via-api) 获取审核日志。
 
-> **读取操作是否被记录？**
+> [accordion] 读取操作是否被记录？
 >
 > 审核日志目前主要集中于写入操作。将来可能会添加对更多读取操作的支持。
 
-> **未来会跟踪更多操作吗？**
+> [手风琴] 未来会跟踪更多操作吗？
 >
 > 是的。跟踪的操作集随着时间的推移而扩展。 [tracked operations reference](#tracked-operations-reference) 始终反映当前支持的操作集。
 
-> **我可以获取 OCSF 以外格式的审核日志吗？**
+> [accordion] 我可以获取 OCSF 以外格式的审核日志吗？
 >
-> API 仅以 OCSF 格式返回事件。如果您需要不同形状的数据，每个事件中的 `unmapped.original_audit_log` 字段包含原始 LangSmith 审核日志记录。> **什么是 OCSF？**
+> API 仅以 OCSF 格式返回事件。如果您需要不同形状的数据，每个事件中的 `unmapped.original_audit_log` 字段包含原始 LangSmith 审核日志记录。> [手风琴] 什么是 OCSF？
 >
 > [Open Cybersecurity Schema Framework (OCSF)](https://schema.ocsf.io/) 是安全事件数据的开放标准。 LangSmith 将审核日志事件返回为 OCSF v1.7.0 API 活动（类 6003）对象。
 

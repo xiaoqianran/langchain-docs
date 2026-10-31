@@ -62,37 +62,37 @@ config:
 
 ## 2. Enable LLM Auth Proxy for your organization
 
-**Self-hosted**
-
-**Option A:** Enable for a specific organization:
-
-In the LangSmith UI, navigate to the **Settings** page, copy the organization ID at the top left next to **Organizations**.
-
-Run the following against your LangSmith PostgreSQL database:
-
-```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-UPDATE organizations
-SET config = config || '{"can_use_llm_auth_proxy": true}'
-WHERE id = '<organization_id>';
-```
-
-**Option B:** Enable for all organizations in an installation:
-
-Add the following to `commonEnv` in your [LangSmith `values.yaml`](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml):
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-commonEnv:
-  - name: DEFAULT_ORG_FEATURE_CAN_USE_LLM_AUTH_PROXY
-    value: "true"
-```
-
-> [!NOTE]
+> [tab] Self-hosted
 >
-> This setting has no effect on Personal organizations.
+> **Option A:** Enable for a specific organization:
+>
+> In the LangSmith UI, navigate to the **Settings** page, copy the organization ID at the top left next to **Organizations**.
+>
+> Run the following against your LangSmith PostgreSQL database:
+>
+> ```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> UPDATE organizations
+> SET config = config || '{"can_use_llm_auth_proxy": true}'
+> WHERE id = '<organization_id>';
+> ```
+>
+> **Option B:** Enable for all organizations in an installation:
+>
+> Add the following to `commonEnv` in your [LangSmith `values.yaml`](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml):
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> commonEnv:
+>   - name: DEFAULT_ORG_FEATURE_CAN_USE_LLM_AUTH_PROXY
+>     value: "true"
+> ```
+>
+> > [!NOTE]
+> >
+> > This setting has no effect on Personal organizations.
 
-**SaaS**
-
-Contact technical support via the [Support Portal](https://support.langchain.com) to enable LLM Auth Proxy for your organization.
+> [tab] SaaS
+>
+> Contact technical support via the [Support Portal](https://support.langchain.com) to enable LLM Auth Proxy for your organization.
 
 ## 3. Configure organization settings in LangSmith
 
@@ -184,7 +184,7 @@ Your `ext_authz` service can run in two ways:
 
 The example below is a minimal Python `ext_authz` service that performs an OAuth2 client credentials token exchange. On each request, it returns a cached `Authorization` header with a fresh access token, refreshing it from the configured token endpoint before it expires. See [e2e/oauth/](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-auth-proxy/e2e/oauth) in the chart repository for the full example.
 
-> **ext-authz-oauth.py**
+> [accordion] ext-authz-oauth.py
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > """ext_authz service that performs an OAuth2 client-credentials token exchange.
@@ -381,7 +381,7 @@ curl -H "X-LangSmith-LLM-Auth: <JWT>" -d '{"model":"gpt-5.5",...}'
 
 The example below deploys a minimal Go transformer as a Kubernetes Deployment. It reads the JWT from request headers, injects an `Authorization` header, and rewrites the request body from OpenAI format to a custom format.
 
-> **transformer-configmap.yaml**
+> [accordion] transformer-configmap.yaml
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > apiVersion: v1
@@ -549,7 +549,7 @@ The example below deploys a minimal Go transformer as a Kubernetes Deployment. I
 >     )
 > ```
 
-> **transformer-deployment.yaml**
+> [accordion] transformer-deployment.yaml
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > apiVersion: apps/v1
@@ -743,32 +743,32 @@ The JWT is passed to your `ext_authz` or transformer service in the `x-langsmith
 
 ## FAQ
 
-> **Does the auth proxy support corporate proxies?**
+> [accordion] Does the auth proxy support corporate proxies?
 >
 > Yes. Configure an HTTP proxy via the `httpProxy` section in `values.yaml`. See [HTTP proxy](#http-proxy) for details.
 
-> **Does the auth proxy support custom certificates?**
+> [accordion] Does the auth proxy support custom certificates?
 >
 > Yes, via `customCa` for custom CA certificates and `mtls` for mutual TLS.
 
-> **Can a single auth proxy route to multiple upstream LLM gateways?**
+> [accordion] Can a single auth proxy route to multiple upstream LLM gateways?
 >
 > No. The auth proxy has a single `upstream` field.
 
-> **Can the auth proxy serve multiple organizations?**
+> [accordion] Can the auth proxy serve multiple organizations?
 >
 > Yes. Multiple organizations can point to the same auth proxy instance via their model configuration in LangSmith.
 
-> **Can the LangSmith to auth proxy connection use HTTP instead of HTTPS?**
+> [accordion] Can the LangSmith to auth proxy connection use HTTP instead of HTTPS?
 >
 > Yes, but only in self-hosted, and we generally recommend placing the auth proxy behind a dedicated ingress so communication uses HTTPS. To allow HTTP, add `LLM_AUTH_PROXY_ACCEPT_HTTP` to `commonEnv` and `playground.deployment.extraEnv` in your [LangSmith `values.yaml`](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml).
 > To enable HTTP traffic to the auth proxy for [Chat and Insights](/langsmith/self-host-insights-chat), set this environment variable in the respective `extraEnv` sections: `config.polly.agent.extraEnv` (for Chat, which was formerly called Polly) and `config.insights.agent.extraEnv`.
 
-> **Does the auth proxy work without a public ingress?**
+> [accordion] Does the auth proxy work without a public ingress?
 >
 > Yes. When the auth proxy is only reachable through internal Kubernetes networking (no public ingress), add `SSRF_ALLOW_K8S_INTERNAL` to all services that make LLM calls and both `SSRF_ALLOW_K8S_INTERNAL` and `SSRF_ALLOW_PRIVATE_IPS_PLAYGROUND` to the `playground` service. See [Deploy without a public ingress](#deploy-without-a-public-ingress) for configuration details.
 
-> **When should I use the LLM auth proxy versus OAuth client credentials on a model configuration?**
+> [accordion] When should I use the LLM auth proxy versus OAuth client credentials on a model configuration?
 >
 > Use the LLM auth proxy when authentication needs custom logic beyond OAuth2 `client_credentials`. For example, exchanging the LangSmith JWT for a provider-specific token, injecting GCP or AWS identity, or rewriting request and response bodies. Use [OAuth client credentials on a model configuration](/langsmith/model-configurations#oauth-client-credentials) when each workspace or team needs self-service control over its own OAuth2 `client_credentials` against a custom gateway. Both can coexist within the same organization; routing is per-configuration.
 

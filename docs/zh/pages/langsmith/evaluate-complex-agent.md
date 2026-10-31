@@ -78,7 +78,7 @@ import sqlite3
 
 ### 定义客户支持代理
 
-我们将创建一个对数据库具有有限访问权限的 [LangGraph](/oss/python/langgraph/overview) 代理。出于演示目的，我们的代理将支持两种基本类型的请求：
+我们将创建一个 [LangGraph](/oss/python/langgraph/overview) 代理，对数据库的访问权限有限。出于演示目的，我们的代理将支持两种基本类型的请求：
 
 * 查找：客户可以根据其他识别信息查找歌曲名称、艺术家姓名和专辑。例如：“你有吉米·亨德里克斯的哪些歌曲？”
 * 退款：客户可以针对过去的购买申请退款。例如：“我的名字是克劳德·香农，我想对上周购买的商品进行退款，你能帮我吗？”
@@ -693,7 +693,7 @@ experiment_results = await client.aevaluate(
 
 ## 参考代码这是包含上述所有代码的综合脚本：
 
-> **参考代码**
+> [手风琴] 参考代码
 >
 > ````python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import json

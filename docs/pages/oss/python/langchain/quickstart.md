@@ -112,121 +112,121 @@ Get an API key from [any supported model provider](/oss/python/integrations/prov
 
 Set the API keys in your shell or in a `.env` file, for example:
 
-**OpenAI**
+> [tab] OpenAI
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export OPENAI_API_KEY="your-api-key"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> OPENAI_API_KEY=your-api-key
+> ```
 
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export OPENAI_API_KEY="your-api-key"
-```
+> [tab] Google Gemini
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export GOOGLE_API_KEY="your-api-key"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> GOOGLE_API_KEY=your-api-key
+> ```
 
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-OPENAI_API_KEY=your-api-key
-```
+> [tab] Claude (Anthropic)
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export ANTHROPIC_API_KEY="your-api-key"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ANTHROPIC_API_KEY=your-api-key
+> ```
 
-**Google Gemini**
+> [tab] OpenRouter
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export OPENROUTER_API_KEY="your-api-key"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> OPENROUTER_API_KEY=your-api-key
+> ```
 
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export GOOGLE_API_KEY="your-api-key"
-```
+> [tab] Fireworks
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export FIREWORKS_API_KEY="your-api-key"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> FIREWORKS_API_KEY=your-api-key
+> ```
 
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-GOOGLE_API_KEY=your-api-key
-```
+> [tab] Baseten
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export BASETEN_API_KEY="your-api-key"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> BASETEN_API_KEY=your-api-key
+> ```
 
-**Claude (Anthropic)**
+> [tab] Ollama
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Local: Ollama must be running (https://ollama.com)
+> # Cloud: Set your Ollama API key for hosted inference
+> export OLLAMA_API_KEY="your-api-key"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Local: Ollama must be running (https://ollama.com)
+> # Cloud: Set your Ollama API key for hosted inference
+> OLLAMA_API_KEY=your-api-key
+> ```
 
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export ANTHROPIC_API_KEY="your-api-key"
-```
+> [tab] Azure
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export AZURE_OPENAI_API_KEY="your-api-key"
+> export AZURE_OPENAI_ENDPOINT="https://your-resource.openai.azure.com"
+> export AZURE_OPENAI_DEPLOYMENT_NAME="your-deployment"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> AZURE_OPENAI_API_KEY=your-api-key
+> AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com
+> AZURE_OPENAI_DEPLOYMENT_NAME=your-deployment
+> ```
 
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-ANTHROPIC_API_KEY=your-api-key
-```
+> [tab] AWS Bedrock
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export AWS_ACCESS_KEY_ID="your-access-key"
+> export AWS_SECRET_ACCESS_KEY="your-secret-key"
+> export AWS_REGION="us-east-1"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> AWS_ACCESS_KEY_ID=your-access-key
+> AWS_SECRET_ACCESS_KEY=your-secret-key
+> AWS_REGION=us-east-1
+> ```
 
-**OpenRouter**
+> [tab] HuggingFace
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export HUGGINGFACEHUB_API_TOKEN="hf_..."
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> HUGGINGFACEHUB_API_TOKEN=hf_...
+> ```
 
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export OPENROUTER_API_KEY="your-api-key"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-OPENROUTER_API_KEY=your-api-key
-```
-
-**Fireworks**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export FIREWORKS_API_KEY="your-api-key"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-FIREWORKS_API_KEY=your-api-key
-```
-
-**Baseten**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export BASETEN_API_KEY="your-api-key"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-BASETEN_API_KEY=your-api-key
-```
-
-**Ollama**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Local: Ollama must be running (https://ollama.com)
-# Cloud: Set your Ollama API key for hosted inference
-export OLLAMA_API_KEY="your-api-key"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Local: Ollama must be running (https://ollama.com)
-# Cloud: Set your Ollama API key for hosted inference
-OLLAMA_API_KEY=your-api-key
-```
-
-**Azure**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export AZURE_OPENAI_API_KEY="your-api-key"
-export AZURE_OPENAI_ENDPOINT="https://your-resource.openai.azure.com"
-export AZURE_OPENAI_DEPLOYMENT_NAME="your-deployment"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-AZURE_OPENAI_API_KEY=your-api-key
-AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com
-AZURE_OPENAI_DEPLOYMENT_NAME=your-deployment
-```
-
-**AWS Bedrock**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export AWS_ACCESS_KEY_ID="your-access-key"
-export AWS_SECRET_ACCESS_KEY="your-secret-key"
-export AWS_REGION="us-east-1"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-AWS_ACCESS_KEY_ID=your-access-key
-AWS_SECRET_ACCESS_KEY=your-secret-key
-AWS_REGION=us-east-1
-```
-
-**HuggingFace**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export HUGGINGFACEHUB_API_TOKEN="hf_..."
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-HUGGINGFACEHUB_API_TOKEN=hf_...
-```
-
-**Other**
-
-See the full list of supported [chat model integrations](/oss/python/integrations/chat).
+> [tab] Other
+>
+> See the full list of supported [chat model integrations](/oss/python/integrations/chat).
 
 To load a `.env` file, use [`python-dotenv`](https://pypi.org/project/python-dotenv/) (`load_dotenv()`).
 
@@ -814,40 +814,40 @@ print(deep_agent_result["messages"][-1].content_blocks)
 
 The results will differ based on the model and the execution.
 
-**LangChain agents**
+> [tab] LangChain agents
+>
+> ```txt wrap expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> **1) Number of lines containing `Gatsby`:** `null`
+>
+> **2) First line containing `Daisy`:** `null`
+>
+> **3) Synopsis:**
+> The Great Gatsby follows the mysterious millionaire Jay Gatsby and his obsession with reuniting with his former lover, Daisy Buchanan, as narrated by his neighbor Nick Carraway. Set against the backdrop of the Roaring Twenties on Long Island, the novel explores themes of wealth, class, and the elusive nature of the American Dream.
+>
+> **how_you_computed_counts:**
+> I successfully fetched the full text of the eBook using the `fetch_text_from_url` tool. However, because I do not have access to a code execution environment (like Python) or text-processing tools (like `grep`), I cannot deterministically split the text by line breaks, iterate through the thousands of lines, and verify the exact line numbers or match counts. LLMs cannot reliably perform exact line-counting or indexing over massive texts within their context window without external computational tools. As instructed, rather than fabricating or guessing a number, I have output `null` for the exact counts and positions.
+> ```
 
-```txt wrap expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-**1) Number of lines containing `Gatsby`:** `null`
-
-**2) First line containing `Daisy`:** `null`
-
-**3) Synopsis:**
-The Great Gatsby follows the mysterious millionaire Jay Gatsby and his obsession with reuniting with his former lover, Daisy Buchanan, as narrated by his neighbor Nick Carraway. Set against the backdrop of the Roaring Twenties on Long Island, the novel explores themes of wealth, class, and the elusive nature of the American Dream.
-
-**how_you_computed_counts:**
-I successfully fetched the full text of the eBook using the `fetch_text_from_url` tool. However, because I do not have access to a code execution environment (like Python) or text-processing tools (like `grep`), I cannot deterministically split the text by line breaks, iterate through the thousands of lines, and verify the exact line numbers or match counts. LLMs cannot reliably perform exact line-counting or indexing over massive texts within their context window without external computational tools. As instructed, rather than fabricating or guessing a number, I have output `null` for the exact counts and positions.
-```
-
-**Deep agents**
-
-```txt wrap expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Based on the text fetched directly from the Gutenberg URL and analyzed using filesystem search tools, here are the answers to your questions:
-
-**1) Lines containing the substring `Gatsby`**
-**258** lines contain the exact substring `Gatsby`.
-
-**2) First line containing `Daisy`**
-Line **181** is the first line in the file that contains the exact substring `Daisy`.
-*(For context, the line reads: "Buchanans. Daisy was my second cousin once removed, and I’d known Tom")*
-
-**3) Two-sentence neutral synopsis**
-*The Great Gatsby* follows the mysterious millionaire Jay Gatsby and his obsessive pursuit to reunite with his former lover, Daisy Buchanan, in 1920s Long Island. The story is narrated by Nick Carraway, who observes the tragic consequences of Gatsby's relentless ambition and the shallow materialism of the era's wealthy elite.
-
-***
-
-**How counts were computed:**
-When fetching the document from the URL, the file was too large for the standard output and was automatically saved to the local filesystem by the system (`/large_tool_results/x246ax2x`). I then used the `grep` tool to search the saved file for the exact literal substrings `Gatsby` and `Daisy`. The `grep` tool returned every matching line along with its 1-based line number. I manually counted the exact number of lines returned for `Gatsby` (which totaled 258) and identified the first line number returned for `Daisy` (which was 181). I also verified there were no uppercase variations (`GATSBY` or `DAISY`) that would have been missed. No errors were encountered during this process.
-```
+> [tab] Deep agents
+>
+> ```txt wrap expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> Based on the text fetched directly from the Gutenberg URL and analyzed using filesystem search tools, here are the answers to your questions:
+>
+> **1) Lines containing the substring `Gatsby`**
+> **258** lines contain the exact substring `Gatsby`.
+>
+> **2) First line containing `Daisy`**
+> Line **181** is the first line in the file that contains the exact substring `Daisy`.
+> *(For context, the line reads: "Buchanans. Daisy was my second cousin once removed, and I’d known Tom")*
+>
+> **3) Two-sentence neutral synopsis**
+> *The Great Gatsby* follows the mysterious millionaire Jay Gatsby and his obsessive pursuit to reunite with his former lover, Daisy Buchanan, in 1920s Long Island. The story is narrated by Nick Carraway, who observes the tragic consequences of Gatsby's relentless ambition and the shallow materialism of the era's wealthy elite.
+>
+> ***
+>
+> **How counts were computed:**
+> When fetching the document from the URL, the file was too large for the standard output and was automatically saved to the local filesystem by the system (`/large_tool_results/x246ax2x`). I then used the `grep` tool to search the saved file for the exact literal substrings `Gatsby` and `Daisy`. The `grep` tool returned every matching line along with its 1-based line number. I manually counted the exact number of lines returned for `Gatsby` (which totaled 258) and identified the first line number returned for `Daisy` (which was 181). I also verified there were no uppercase variations (`GATSBY` or `DAISY`) that would have been missed. No errors were encountered during this process.
+> ```
 
 If you look at the output on both tabs, you notice that the LangChain agent provided answers but they are estimates. The agent lacks the tools to answer this question. You may also get errors that the prompt is too long.
 
@@ -864,7 +864,7 @@ For LangChain agents, you must implement more capabilities to get a similar leve
 
 > [!NOTE]
 >
-> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
+> In an [agent-based workspace](/langsmith/agent-registry), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 Most interesting agents you build with LangChain make many calls to LLMs. As these agents get more complex, it becomes important to be able to inspect what exactly is going on inside your agent. The best way to do this is with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart).
 

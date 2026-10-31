@@ -313,11 +313,11 @@ To change the limit, set these variables in the deployment environment:
 
 ## Next steps
 
-> **[Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)**
+> [card] [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)
 >
 > Deploy and reconcile schedule changes.
 
-> **[CLI reference](/langsmith/javascript/managed-deep-agents-cli)**
+> [card] [CLI reference](/langsmith/javascript/managed-deep-agents-cli)
 >
 > Look up `mda deploy` flags and troubleshooting.
 

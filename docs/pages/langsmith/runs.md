@@ -70,19 +70,19 @@ The Agent Server API provides several endpoints for creating and managing runs. 
 
 ## In this section
 
-> **[Kick off background runs](/langsmith/background-run)**
+> [card] [Kick off background runs](/langsmith/background-run)
 >
 > Run your agent asynchronously and poll for results.
 
-> **[Run multiple agents on the same thread](/langsmith/same-thread)**
+> [card] [Run multiple agents on the same thread](/langsmith/same-thread)
 >
 > Use multiple assistants on a shared thread to combine agent capabilities.
 
-> **[Stateless runs](/langsmith/stateless-runs)**
+> [card] [Stateless runs](/langsmith/stateless-runs)
 >
 > Execute runs without persisting state when conversation history isn't needed.
 
-> **[Cancel a run](/langsmith/cancel-run)**
+> [card] [Cancel a run](/langsmith/cancel-run)
 >
 > Cancel a single run or multiple runs via the API.
 

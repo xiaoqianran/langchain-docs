@@ -52,7 +52,7 @@ This minor line is still a release candidate. The last stable release is `0.16.7
 
 * Store operations from graphs now reject namespace labels that are empty or contain `.`, as the HTTP store API does, so such a label can no longer read or change another namespace's items.
 
-> **v0.17 releases**
+> [accordion] v0.17 releases
 >
 > **2026-10-26**
 >
@@ -197,7 +197,7 @@ Latest version: `0.16.7`
 * Updates Agent Server's Go toolchain to mitigate CVE-2026-111943 in certificate-chain verification.
 * Updates certifi, Hono and Vite to patched versions to address published security advisories.
 
-> **v0.16 releases**
+> [accordion] v0.16 releases
 >
 > **2026-10-26**
 >
@@ -403,7 +403,7 @@ Latest version: `0.15.9`
 * Updates Agent Server's Go toolchain to mitigate CVE-2026-111943 in certificate-chain verification.
 * Updates bundled certifi and Hono to clear known CVEs.
 
-> **v0.15 releases**
+> [accordion] v0.15 releases
 >
 > **2026-10-23**
 >
@@ -605,7 +605,7 @@ Latest version: `0.14.7`
 * Update bundled npm tooling to address dependency vulnerabilities in server images.
 * Updates Agent Server's Go toolchain and HTTP/2 dependencies with upstream security fixes.
 
-> **v0.14 releases**
+> [accordion] v0.14 releases
 >
 > **2026-10-23**
 >
@@ -823,7 +823,7 @@ Latest version: `0.13.8`
 * Update bundled npm tooling to address dependency vulnerabilities in server images.
 * Patch AnyIO vulnerabilities in server dependencies, preserve HTTPS webhook compatibility, and prevent obsolete Python package files from surviving image upgrades.
 
-> **v0.13 releases**
+> [accordion] v0.13 releases
 >
 > **2026-09-25**
 >
@@ -1035,7 +1035,7 @@ Latest version: `0.12.12`
 
 * Remove unused `bun` runtime from server images.
 
-> **v0.12 releases**
+> [accordion] v0.12 releases
 >
 > **2026-09-22**
 >
@@ -1314,7 +1314,7 @@ Latest version: `0.11.4`
 * Wolfi (`chainguard-base-fips`) server images now ship a FIPS-compliant Go core-server and FIPS-mode Node, and no longer include the unused bun runtime.
 * Applied stranded Postgres migration `061` for `thread_ls_user_id_idx` and `thread_assistant_id_idx` btree indexes.
 
-> **v0.11 releases**
+> [accordion] v0.11 releases
 >
 > **2026-08-20**
 >
@@ -1547,7 +1547,7 @@ Latest version: `0.10.3`
 * v0.10.0rc1 includes breaking changes for security and correctness. Refer to the [Security section](#security) for more details.
 * v0.10.0 is the stable promotion of the v0.10.0rc line. Note in particular the potentially breaking security changes in 0.10.0rc1.
 
-> **v0.10 releases**
+> [accordion] v0.10 releases
 >
 > **2026-07-09**
 >

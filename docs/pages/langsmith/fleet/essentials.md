@@ -50,11 +50,11 @@ To require approval for a tool, set it to **Ask**. When the agent reaches that t
 
 When your agent stops to ask for approval, you have two options:
 
-> **Accept**
+> [card] Accept
 >
 > Give the green light and let your agent proceed with its plan.
 
-> **Reject**
+> [card] Reject
 >
 > Decline the action and tell the agent what to change.
 

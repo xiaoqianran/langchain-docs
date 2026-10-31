@@ -114,13 +114,13 @@ Salesforce 工具以连接用户的权限运行。如果代理无法读取对象
 
 ## 后续步骤
 
-> **[Add more tools](/langsmith/fleet/tools)**
+> [卡][Add more tools](/langsmith/fleet/tools)
 >
-> 将附加服务连接到您的代理> **[Agent identity](/langsmith/fleet/agent-identity)**
+> 将附加服务连接到您的代理> [卡][Agent identity](/langsmith/fleet/agent-identity)
 >
 > 选择代理是使用共享凭据还是每用户凭据
 
-> **[Human-in-the-loop](/langsmith/fleet/essentials#human-in-the-loop)**
+> [卡][Human-in-the-loop](/langsmith/fleet/essentials#human-in-the-loop)
 >
 > 代理采取敏感行动之前需要获得批准
 

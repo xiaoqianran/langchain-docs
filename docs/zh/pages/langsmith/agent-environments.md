@@ -6,7 +6,7 @@
 
 代理的环境如何划分其踪迹、如何选择一个踪迹以及该组的哪些部分是固定的。
 
-*环境*记录代理在生成跟踪时运行的位置。 [agent](/langsmith/agents) 记录的每条踪迹都准确地落在其一个环境中，该环境是从固定的四个环境中提取的。
+*环境*记录代理在生成跟踪时运行的位置。 [agent](/langsmith/agent-registry#agent) 记录的每条踪迹都准确地落在其一个环境中，该环境是从固定的四个环境中提取的。
 
 由于环境随跟踪一起移动，因此代理运行的位置是跟踪本身的属性。
 
@@ -41,7 +41,7 @@
 
 ## 另请参阅
 
-* [Agents](/langsmith/agents)
+* [Agent Registry](/langsmith/agent-registry)
 * [Log traces to an agent](/langsmith/log-traces-to-agent)
 * [Configure legacy integrations](/langsmith/create-an-agent#use-an-environment-project)
 * [Observability concepts](/langsmith/observability-concepts)

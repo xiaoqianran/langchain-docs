@@ -11,7 +11,7 @@
 * **BYOC**：组织管理员将应用程序的凭据保存在 LangSmith UI 中。参见[Configure the App on BYOC](#configure-the-app-on-byoc)。
 * **自托管**：操作员在 Helm 值中配置应用程序的凭据。参见[Configure the App on self-hosted](#configure-the-app-on-self-hosted)。
 
-此配置独立于 LangSmith 部署构建和预览的 GitHub 设置。
+此配置与 LangSmith 部署构建和预览的 GitHub 设置是分开的。
 
 ## 在 BYOC 上配置应用程序
 
@@ -82,26 +82,26 @@ GitHub 将拉取请求 Webhook 发送到数据平面上的 **Webhook URL**。如
 
 将示例企业地址或 GHES 主机名占位符替换为您自己的。 GHES 在云基础设施和本地使用相同的配置。
 
-在端口 443 上使用 HTTPS 和完全限定的主机名，无需路径（例如 `/api/v3`）或组织名称。 LangSmith 自动确定 API 端点。不支持 SSH Git URL 和自定义 GitHub 端口。
+在端口 443 上使用 HTTPS 和完全限定的主机名，不带路径（例如 `/api/v3`）或组织名称。 LangSmith 自动确定 API 端点。不支持 SSH Git URL 和自定义 GitHub 端口。
 
 #### 允许网络访问
 
 所有连接均使用 HTTPS。为每个源配置 DNS、路由和证书信任：|来源 |目的地 |目的|
 | - | - | - |
-|用户的浏览器 | GitHub web host and LangSmith authorization callback URL |登录、App授权、安装。 |
-| LangSmith 服务和发动机工人 | GitHub Web 和 API 主机 | Authorization, repository information, branch and diff operations, PR creation/status, and App identity. |
+|用户的浏览器| GitHub Web 主机和LangSmith 授权回调 URL |登录、App授权、安装。 |
+| LangSmith 服务和发动机工人 | GitHub Web 和 API 主机 |授权、存储库信息、分支和差异操作、PR 创建/状态和应用程序身份。 |
 |沙盒主机 | GitHub 虚拟主机 |克隆存储库并推送修复分支。 |
-| GitHub | LangSmith webhook URL | Link PRs to issues and complete issues after a merge. |
+| GitHub | LangSmith webhook URL |将 PR 链接到问题并在合并后完成问题。 |
 
-For API access, allow the host for your GitHub environment:
+对于 API 访问，请允许您的 GitHub 环境的主机：
 
 * **GitHub.com**：`api.github.com`。
-* **Enterprise Cloud with data residency**: `api.example.ghe.com` for a web address of `https://example.ghe.com`.
-* **GHES**: The same host as the web address, `<ghes-hostname>`.
+* **具有数据驻留的企业云**：`api.example.ghe.com` 对应网址 `https://example.ghe.com`。
+* **GHES**：与网址相同的主机，`<ghes-hostname>`。
 
-GitHub.com and `ghe.com` send webhooks from outside your network; GHES 从您的 GHES 环境发送它们。 The webhook URL must be reachable from that source. Browser access through a VPN does not establish webhook access.
+GitHub.com 和 `ghe.com` 从您的网络外部发送 webhook； GHES 从您的 GHES 环境发送它们。 Webhook URL 必须可从该源访问。通过 VPN 的浏览器访问不会建立 Webhook 访问。
 
-For GitHub IP allow lists, include the outbound addresses of LangSmith services and sandbox hosts, including any NAT gateway addresses.沙箱 Git 流量需要直接路由到 GitHub。不支持强制上游 HTTP/HTTPS 转发代理； LangSmith API pod 上的`HTTPS_PROXY` 不配置沙箱 Git 访问。
+对于 GitHub IP 允许列表，包括 LangSmith 服务和沙箱主机的出站地址，包括任何 NAT 网关地址。沙箱 Git 流量需要直接路由到 GitHub。不支持强制上游 HTTP/HTTPS 转发代理； LangSmith API pod 上的`HTTPS_PROXY` 不配置沙箱 Git 访问。
 
 对于私有 IP 地址或私有 CA，请在配置下面的 LangSmith 时包含 [private-GHES settings](#private-ghes-deployments)。
 
@@ -119,12 +119,12 @@ For GitHub IP allow lists, include the outbound addresses of LangSmith services 
 | - | - |
 |一个组织中的存储库 |在该组织中创建应用程序。如果不需要在其他地方安装，请选择**仅在此帐户上**。 |
 |企业内多个组织的存储库 |创建企业拥有的应用程序并将其安装在每个组织中。这使得安装仅限于企业。 |
-|多个组织中的存储库，或组织和个人帐户的混合，没有托管用户 |使用**任何帐户**创建组织拥有的应用程序，然后将其安装在每个目标帐户中。在 GHES 上，**任何帐户**仅适用于该服务器内。 |
+|多个组织中的存储库，或组织和个人帐户混合的存储库，没有托管用户 |使用**任何帐户**创建组织拥有的应用程序，然后将其安装在每个目标帐户中。在 GHES 上，**任何帐户**仅适用于该服务器内。 |
 |由一个个人帐户拥有的存储库，没有托管用户 |在个人帐户中创建应用程序并选择**仅在此帐户上**。 |
 
 公开可见性允许其他帐户安装该应用程序。它不会公开存储库或在未安装的情况下授予访问权限。
 
-企业拥有的应用程序具有内部可见性，不能安装在个人帐户上。安装在每个组织中；企业帐户安装不授予存储库访问权限。> **企业可见性和托管用户**
+企业拥有的应用程序具有内部可见性，不能安装在个人帐户上。安装在每个组织中；企业帐户安装不授予存储库访问权限。> [手风琴] 企业可见性和托管用户
 >
 > 只有企业会员才能授权企业自有App。如果外部协作者需要连接存储库，请在选择所有权类型之前检查其企业访问权限。请参阅 GitHub 的 [App visibility rules](https://docs.github.com/en/enterprise-cloud@latest/apps/creating-github-apps/registering-a-github-app/making-a-github-app-public-or-private) 或 [GHES equivalent](https://docs.github.com/en/enterprise-server@3.20/apps/creating-github-apps/registering-a-github-app/making-a-github-app-public-or-private)，选择服务器的文档版本。
 >
@@ -138,39 +138,39 @@ For GitHub IP allow lists, include the outbound addresses of LangSmith services 
 
 #### 打开注册表选择拥有该应用程序的帐户的选项卡。这些路径适用于上面选择的 GitHub 实例：
 
-**组织**
+> [选项卡] 组织
+>
+> 您必须是组织所有者或有权管理其应用程序。
+>
+> 打开注册表：
+>
+> 1. 打开您的个人资料菜单并选择 **您的组织**。
+> 2. 在应拥有该应用程序的组织旁边，选择 **设置**。
+> 3. 打开 **开发者设置** > **GitHub 应用程序** > **新 GitHub 应用程序**。
 
-您必须是组织所有者或有权管理其应用程序。
-
-打开注册表：
-
-1. 打开您的个人资料菜单并选择 **您的组织**。
-2. 在应拥有该应用程序的组织旁边，选择“**设置**”。
-3. 打开 **开发者设置** > **GitHub 应用程序** > **新 GitHub 应用程序**。
-
-**企业**
-
-企业所有者完成这些步骤。在 GHES 上，企业拥有的应用程序需要版本 3.17 或更高版本。在旧版本上，使用具有存储库所需可见性的组织拥有的应用程序。
-
-打开注册表：
-
-1. 打开您的个人资料菜单。对于托管用户，选择**您的企业**。对于个人帐户，选择**您的企业**，然后打开企业的**设置**。
-2. 在企业侧边栏中的 **设置** 下，选择 **GitHub 应用程序**。
-3. 选择**新 GitHub 应用程序**。
-
-有关 GitHub 的说明，请参阅[Create an App for your enterprise](https://docs.github.com/en/enterprise-cloud@latest/admin/managing-github-apps-for-your-enterprise/creating-github-apps-for-your-enterprise)。
-
-**个人账户**
-
-对于没有托管用户的个人帐户，请使用此选项。打开您的个人资料菜单，然后选择 **设置** > **开发人员设置** > **GitHub 应用程序** > **新 GitHub 应用程序**。
+> [选项卡] 企业
+>
+> 企业所有者完成这些步骤。在 GHES 上，企业拥有的应用程序需要版本 3.17 或更高版本。在旧版本上，使用具有存储库所需可见性的组织拥有的应用程序。
+>
+> 打开注册表：
+>
+> 1. 打开您的个人资料菜单。对于托管用户，选择**您的企业**。对于个人帐户，选择**您的企业**，然后打开企业的**设置**。
+> 2. 在企业侧边栏中的 **设置** 下，选择 **GitHub 应用程序**。
+> 3. 选择 **新建 GitHub 应用程序**。
+>
+> 有关 GitHub 的说明，请参阅[Create an App for your enterprise](https://docs.github.com/en/enterprise-cloud@latest/admin/managing-github-apps-for-your-enterprise/creating-github-apps-for-your-enterprise)。> [选项卡] 个人帐户
+>
+> 将此选项用于没有受管理用户的个人帐户。
+>
+> 打开您的个人资料菜单并选择 **设置** > **开发人员设置** > **GitHub 应用程序** > **新 GitHub 应用程序**。
 
 #### 填写注册表
 
-将这些设置用于所有 GitHub 环境和应用程序所有者。有关字段定义，请参阅[Register a GitHub App](https://docs.github.com/en/enterprise-cloud@latest/apps/creating-github-apps/registering-a-github-app/registering-a-github-app)。将 `https://langsmith.example.com` 替换为 LangSmith 部署的面向浏览器的 URL。
+对所有 GitHub 环境和应用程序所有者使用这些设置。有关字段定义，请参阅[Register a GitHub App](https://docs.github.com/en/enterprise-cloud@latest/apps/creating-github-apps/registering-a-github-app/registering-a-github-app)。将 `https://langsmith.example.com` 替换为 LangSmith 部署的面向浏览器的 URL。
 
 GitHub 标记授权回调字段 **回调 URL** 或 **重定向 URI**。这两个名称均指 GitHub 在授权后返回用户的 URL。
 
-如果 LangSmith 使用基本路径，请包含它。例如，`https://langsmith.example.com/langsmith` 的部署使用 `https://langsmith.example.com/langsmith/api-host/v1/integrations/forge/github/callback` 作为其授权回调 URL。| GitHub 设置 |价值|
+如果 LangSmith 使用基本路径，请包含它。例如，位于 `https://langsmith.example.com/langsmith` 的部署使用 `https://langsmith.example.com/langsmith/api-host/v1/integrations/forge/github/callback` 作为其授权回调 URL。| GitHub 设置 |价值|
 | - | - |
 | **GitHub 应用程序名称** |您的部署的唯一名称，例如 `acme-langsmith-engine`。 |
 | **主页网址** |您的 LangSmith URL，例如 `https://langsmith.example.com`。 |
@@ -294,7 +294,7 @@ hostBackend:
 
 **拥有私人证书颁发机构的 GHES**
 
-LangSmith 服务和沙箱主机必须信任签署 GHES 证书的 CA。仅在浏览器中或沙箱内配置信任是不够的。
+LangSmith 服务和沙箱主机必须信任签署您的 GHES 证书的 CA。仅在浏览器中或沙箱内配置信任是不够的。
 
 按照[Mount internal CAs for TLS](/langsmith/self-host-custom-tls-certificates#mount-internal-cas-for-tls)配置`config.customCa.secretName`和`config.customCa.secretKey`。包括您的私有 CA 以及捆绑包中其他出站连接所需的任何公共根。还将 `hostBackend.deployment.extraEnv` 中的 `REQUESTS_CA_BUNDLE` 设置为 `/etc/ssl/certs/custom-ca-certificates.crt`，即图表安装该包的路径。除了图表的 TLS 配置之外，GitHub 集成还需要此设置。
 

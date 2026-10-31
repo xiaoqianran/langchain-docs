@@ -40,238 +40,238 @@ The same model interface works in both contexts, which gives you the flexibility
 
 The easiest way to get started with a standalone model in LangChain is to use [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) to initialize one from a chat model provider of your choice (examples below):
 
-**OpenAI**
-
-👉 Read the [OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain[openai]"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain[openai]"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain.chat_models import init_chat_model
-
-os.environ["OPENAI_API_KEY"] = "sk-..."
-
-model = init_chat_model("gpt-5.5")
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain_openai import ChatOpenAI
-
-os.environ["OPENAI_API_KEY"] = "sk-..."
-
-model = ChatOpenAI(model="gpt-5.5")
-```
-
-**Anthropic**
-
-👉 Read the [Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain[anthropic]"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain[anthropic]"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain.chat_models import init_chat_model
-
-os.environ["ANTHROPIC_API_KEY"] = "sk-..."
-
-model = init_chat_model("claude-sonnet-4-6")
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain_anthropic import ChatAnthropic
-
-os.environ["ANTHROPIC_API_KEY"] = "sk-..."
-
-model = ChatAnthropic(model="claude-sonnet-4-6")
-```
-
-**Azure**
-
-👉 Read the [Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain[openai]"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain[openai]"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain.chat_models import init_chat_model
-
-os.environ["AZURE_OPENAI_API_KEY"] = "..."
-os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
-os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
-
-model = init_chat_model(
-    "azure_openai:gpt-5.5",
-    azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
-)
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain_openai import AzureChatOpenAI
-
-os.environ["AZURE_OPENAI_API_KEY"] = "..."
-os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
-os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
-
-model = AzureChatOpenAI(
-    model="gpt-5.5",
-    azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
-)
-```
-
-**Google Gemini**
-
-👉 Read the [Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain[google-genai]"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain[google-genai]"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain.chat_models import init_chat_model
-
-os.environ["GOOGLE_API_KEY"] = "..."
-
-model = init_chat_model("google_genai:gemini-3.7-flash")
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain_google_genai import ChatGoogleGenerativeAI
-
-os.environ["GOOGLE_API_KEY"] = "..."
-
-model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
-```
-
-**AWS Bedrock**
-
-👉 Read the [AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain[aws]"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain[aws]"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.chat_models import init_chat_model
-
-# Follow the steps here to configure your credentials:
-# https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-model = init_chat_model(
-    "us.anthropic.claude-sonnet-4-6",
-    model_provider="bedrock_converse",
-)
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_aws import ChatBedrock
-
-model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
-```
-
-**HuggingFace**
-
-👉 Read the [HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain[huggingface]"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain[huggingface]"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain.chat_models import init_chat_model
-
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
-
-model = init_chat_model(
-    "microsoft/Phi-3-mini-4k-instruct",
-    model_provider="huggingface",
-    temperature=0.7,
-    max_tokens=1024,
-)
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
-
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
-
-llm = HuggingFaceEndpoint(
-    repo_id="microsoft/Phi-3-mini-4k-instruct",
-    temperature=0.7,
-    max_length=1024,
-)
-model = ChatHuggingFace(llm=llm)
-```
-
-**OpenRouter**
-
-👉 Read the [OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain-openrouter"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain-openrouter"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain.chat_models import init_chat_model
-
-os.environ["OPENROUTER_API_KEY"] = "sk-..."
-
-model = init_chat_model(
-    "auto",
-    model_provider="openrouter",
-)
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain_openrouter import ChatOpenRouter
-
-os.environ["OPENROUTER_API_KEY"] = "sk-..."
-
-model = ChatOpenRouter(model="auto")
-```
+> [tab] OpenAI
+>
+> 👉 Read the [OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain[openai]"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain[openai]"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain.chat_models import init_chat_model
+>
+> os.environ["OPENAI_API_KEY"] = "sk-..."
+>
+> model = init_chat_model("gpt-5.5")
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain_openai import ChatOpenAI
+>
+> os.environ["OPENAI_API_KEY"] = "sk-..."
+>
+> model = ChatOpenAI(model="gpt-5.5")
+> ```
+
+> [tab] Anthropic
+>
+> 👉 Read the [Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain[anthropic]"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain[anthropic]"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain.chat_models import init_chat_model
+>
+> os.environ["ANTHROPIC_API_KEY"] = "sk-..."
+>
+> model = init_chat_model("claude-sonnet-4-6")
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain_anthropic import ChatAnthropic
+>
+> os.environ["ANTHROPIC_API_KEY"] = "sk-..."
+>
+> model = ChatAnthropic(model="claude-sonnet-4-6")
+> ```
+
+> [tab] Azure
+>
+> 👉 Read the [Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain[openai]"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain[openai]"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain.chat_models import init_chat_model
+>
+> os.environ["AZURE_OPENAI_API_KEY"] = "..."
+> os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
+> os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
+>
+> model = init_chat_model(
+>     "azure_openai:gpt-5.5",
+>     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+> )
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain_openai import AzureChatOpenAI
+>
+> os.environ["AZURE_OPENAI_API_KEY"] = "..."
+> os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
+> os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
+>
+> model = AzureChatOpenAI(
+>     model="gpt-5.5",
+>     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
+> )
+> ```
+
+> [tab] Google Gemini
+>
+> 👉 Read the [Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain[google-genai]"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain[google-genai]"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain.chat_models import init_chat_model
+>
+> os.environ["GOOGLE_API_KEY"] = "..."
+>
+> model = init_chat_model("google_genai:gemini-3.7-flash")
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain_google_genai import ChatGoogleGenerativeAI
+>
+> os.environ["GOOGLE_API_KEY"] = "..."
+>
+> model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
+> ```
+
+> [tab] AWS Bedrock
+>
+> 👉 Read the [AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain[aws]"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain[aws]"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.chat_models import init_chat_model
+>
+> # Follow the steps here to configure your credentials:
+> # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+>
+> model = init_chat_model(
+>     "us.anthropic.claude-sonnet-4-6",
+>     model_provider="bedrock_converse",
+> )
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain_aws import ChatBedrock
+>
+> model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
+> ```
+
+> [tab] HuggingFace
+>
+> 👉 Read the [HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain[huggingface]"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain[huggingface]"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain.chat_models import init_chat_model
+>
+> os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
+>
+> model = init_chat_model(
+>     "microsoft/Phi-3-mini-4k-instruct",
+>     model_provider="huggingface",
+>     temperature=0.7,
+>     max_tokens=1024,
+> )
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
+>
+> os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
+>
+> llm = HuggingFaceEndpoint(
+>     repo_id="microsoft/Phi-3-mini-4k-instruct",
+>     temperature=0.7,
+>     max_length=1024,
+> )
+> model = ChatHuggingFace(llm=llm)
+> ```
+
+> [tab] OpenRouter
+>
+> 👉 Read the [OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain-openrouter"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain-openrouter"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain.chat_models import init_chat_model
+>
+> os.environ["OPENROUTER_API_KEY"] = "sk-..."
+>
+> model = init_chat_model(
+>     "auto",
+>     model_provider="openrouter",
+> )
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain_openrouter import ChatOpenRouter
+>
+> os.environ["OPENROUTER_API_KEY"] = "sk-..."
+>
+> model = ChatOpenRouter(model="auto")
+> ```
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 response = model.invoke("Why do parrots talk?")
@@ -287,15 +287,15 @@ Browse the [full list of supported providers](/oss/python/integrations/providers
 
 ### Key methods
 
-> **[Invoke](#invoke)**
+> [card] [Invoke](#invoke)
 >
 > The model takes messages as input and outputs messages after generating a complete response.
 
-> **[Stream](#stream)**
+> [card] [Stream](#stream)
 >
 > Invoke the model, but stream the output as it is generated in real-time.
 
-> **[Batch](#batch)**
+> [card] [Batch](#batch)
 >
 > Send multiple requests to a model in a batch for more efficient processing.
 
@@ -470,9 +470,9 @@ The resulting message can be treated the same as a message that was generated wi
 >
 > Streaming only works if all steps in the program know how to process a stream of chunks. For instance, an application that isn't streaming-capable would be one that needs to store the entire output in memory before it can be processed.
 
-> **Advanced streaming topics**
+> [accordion] Advanced streaming topics
 >
-> > **Streaming events**
+> > [accordion] Streaming events
 > >
 > > LangChain chat models can also stream semantic events using `astream_events()`.
 > >
@@ -510,7 +510,7 @@ The resulting message can be treated the same as a message that was generated wi
 > > >
 > > > See the [`astream_events()`](https://reference.langchain.com/python/langchain_core/language_models/#langchain_core.language_models.chat_models.BaseChatModel.astream_events) reference for event types and other details.
 >
-> > **"Auto-streaming" chat models**
+> > [accordion] "Auto-streaming" chat models
 > >
 > > LangChain simplifies streaming from chat models by automatically enabling streaming mode in certain cases, even when you're not explicitly calling the streaming methods. This is particularly useful when you use the non-streaming invoke method but still want to stream the entire application, including intermediate results from the chat model.
 > >
@@ -642,7 +642,7 @@ When binding user-defined tools, the model's response includes a **request** to 
 
 Below, we show some common ways you can use tool calling.
 
-> **Tool execution loop**
+> [accordion] Tool execution loop
 >
 > When a model returns tool calls, you need to execute the tools and pass the results back to the model. This creates a conversation loop where the model can use tool results to generate its final response. LangChain includes [agent](/oss/python/langchain/agents) abstractions that handle this orchestration for you.
 >
@@ -674,7 +674,7 @@ Below, we show some common ways you can use tool calling.
 >
 > Each [`ToolMessage`](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) returned by the tool includes a `tool_call_id` that matches the original tool call, helping the model correlate results with requests.
 
-> **Forcing tool calls**
+> [accordion] Forcing tool calls
 >
 > By default, the model has the freedom to choose which bound tool to use based on the user's input. However, you might want to force choosing a tool, ensuring the model uses either a particular tool or **any** tool from a given list:
 >
@@ -686,7 +686,7 @@ Below, we show some common ways you can use tool calling.
 > model_with_tools = model.bind_tools([tool_1], tool_choice="tool_1")
 > ```
 
-> **Parallel tool calls**
+> [accordion] Parallel tool calls
 >
 > Many models support calling multiple tools in parallel when appropriate. This allows the model to gather information from different sources simultaneously.
 >
@@ -726,7 +726,7 @@ Below, we show some common ways you can use tool calling.
 > > model.bind_tools([get_weather], parallel_tool_calls=False)
 > > ```
 
-> **Streaming tool calls**
+> [accordion] Streaming tool calls
 >
 > When streaming responses, tool calls are progressively built through [`ToolCallChunk`](https://reference.langchain.com/python/langchain-core/messages/tool/ToolCallChunk). This allows you to see tool calls as they're being generated rather than waiting for the complete response.
 >
@@ -779,83 +779,83 @@ Models can be requested to provide their response in a format matching a given s
 >
 > To learn about structured output, see [Structured output](/oss/python/langchain/structured-output).
 
-**Pydantic**
+> [tab] Pydantic
+>
+> [Pydantic models](https://docs.pydantic.dev/latest/concepts/models/#basic-model-usage) provide the richest feature set with field validation, descriptions, and nested structures.
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from pydantic import BaseModel, Field
+>
+> class Movie(BaseModel):
+>     """A movie with details."""
+>     title: str = Field(description="The title of the movie")
+>     year: int = Field(description="The year the movie was released")
+>     director: str = Field(description="The director of the movie")
+>     rating: float = Field(description="The movie's rating out of 10")
+>
+> model_with_structure = model.with_structured_output(Movie)
+> response = model_with_structure.invoke("Provide details about the movie Inception")
+> print(response)  # Movie(title="Inception", year=2010, director="Christopher Nolan", rating=8.8)
+> ```
 
-[Pydantic models](https://docs.pydantic.dev/latest/concepts/models/#basic-model-usage) provide the richest feature set with field validation, descriptions, and nested structures.
+> [tab] TypedDict
+>
+> Python's `TypedDict` provides a simpler alternative to Pydantic models, ideal when you don't need runtime validation.
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from typing_extensions import TypedDict, Annotated
+>
+> class MovieDict(TypedDict):
+>     """A movie with details."""
+>     title: Annotated[str, ..., "The title of the movie"]
+>     year: Annotated[int, ..., "The year the movie was released"]
+>     director: Annotated[str, ..., "The director of the movie"]
+>     rating: Annotated[float, ..., "The movie's rating out of 10"]
+>
+> model_with_structure = model.with_structured_output(MovieDict)
+> response = model_with_structure.invoke("Provide details about the movie Inception")
+> print(response)  # {'title': 'Inception', 'year': 2010, 'director': 'Christopher Nolan', 'rating': 8.8}
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from pydantic import BaseModel, Field
-
-class Movie(BaseModel):
-    """A movie with details."""
-    title: str = Field(description="The title of the movie")
-    year: int = Field(description="The year the movie was released")
-    director: str = Field(description="The director of the movie")
-    rating: float = Field(description="The movie's rating out of 10")
-
-model_with_structure = model.with_structured_output(Movie)
-response = model_with_structure.invoke("Provide details about the movie Inception")
-print(response)  # Movie(title="Inception", year=2010, director="Christopher Nolan", rating=8.8)
-```
-
-**TypedDict**
-
-Python's `TypedDict` provides a simpler alternative to Pydantic models, ideal when you don't need runtime validation.
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from typing_extensions import TypedDict, Annotated
-
-class MovieDict(TypedDict):
-    """A movie with details."""
-    title: Annotated[str, ..., "The title of the movie"]
-    year: Annotated[int, ..., "The year the movie was released"]
-    director: Annotated[str, ..., "The director of the movie"]
-    rating: Annotated[float, ..., "The movie's rating out of 10"]
-
-model_with_structure = model.with_structured_output(MovieDict)
-response = model_with_structure.invoke("Provide details about the movie Inception")
-print(response)  # {'title': 'Inception', 'year': 2010, 'director': 'Christopher Nolan', 'rating': 8.8}
-```
-
-**JSON Schema**
-
-Provide a [JSON Schema](https://json-schema.org/understanding-json-schema/about) for maximum control and interoperability.
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import json
-
-json_schema = {
-    "title": "Movie",
-    "description": "A movie with details",
-    "type": "object",
-    "properties": {
-        "title": {
-            "type": "string",
-            "description": "The title of the movie"
-        },
-        "year": {
-            "type": "integer",
-            "description": "The year the movie was released"
-        },
-        "director": {
-            "type": "string",
-            "description": "The director of the movie"
-        },
-        "rating": {
-            "type": "number",
-            "description": "The movie's rating out of 10"
-        }
-    },
-    "required": ["title", "year", "director", "rating"]
-}
-
-model_with_structure = model.with_structured_output(
-    json_schema,
-    method="json_schema",
-)
-response = model_with_structure.invoke("Provide details about the movie Inception")
-print(response)  # {'title': 'Inception', 'year': 2010, ...}
-```
+> [tab] JSON Schema
+>
+> Provide a [JSON Schema](https://json-schema.org/understanding-json-schema/about) for maximum control and interoperability.
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import json
+>
+> json_schema = {
+>     "title": "Movie",
+>     "description": "A movie with details",
+>     "type": "object",
+>     "properties": {
+>         "title": {
+>             "type": "string",
+>             "description": "The title of the movie"
+>         },
+>         "year": {
+>             "type": "integer",
+>             "description": "The year the movie was released"
+>         },
+>         "director": {
+>             "type": "string",
+>             "description": "The director of the movie"
+>         },
+>         "rating": {
+>             "type": "number",
+>             "description": "The movie's rating out of 10"
+>         }
+>     },
+>     "required": ["title", "year", "director", "rating"]
+> }
+>
+> model_with_structure = model.with_structured_output(
+>     json_schema,
+>     method="json_schema",
+> )
+> response = model_with_structure.invoke("Provide details about the movie Inception")
+> print(response)  # {'title': 'Inception', 'year': 2010, ...}
+> ```
 
 > [!NOTE]
 >
@@ -870,7 +870,7 @@ print(response)  # {'title': 'Inception', 'year': 2010, ...}
 >
 > See your [provider's integration page](/oss/python/integrations/providers/overview) for supported methods and configuration options.
 
-> **Example: Message output alongside parsed structure**
+> [accordion] Example: Message output alongside parsed structure
 >
 > It can be useful to return the raw [`AIMessage`](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) object alongside the parsed representation to access response metadata such as [token counts](#token-usage). To do this, set [`include_raw=True`](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel/with_structured_output) when calling [`with_structured_output`](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel/with_structured_output):
 >
@@ -894,7 +894,7 @@ print(response)  # {'title': 'Inception', 'year': 2010, ...}
 > # }
 > ```
 
-> **Example: Nested structures**
+> [accordion] Example: Nested structures
 >
 > Schemas can be nested:
 >
@@ -966,7 +966,7 @@ Model profile data allow applications to work around model capabilities dynamica
 3. Model inputs can be gated based on supported [modalities](#multimodal) and maximum input tokens.
 4. [Deep Agents Code](/oss/deepagents/code) filters the [interactive model switcher](/oss/deepagents/code/providers#which-models-appear-in-the-switcher) to models whose profiles report `tool_calling` support and text I/O, and displays context window sizes and capability flags in the selector detail view.
 
-> **Updating or overwriting profile data**
+> [accordion] Updating or overwriting profile data
 >
 > Model profile data can be changed if it is missing, stale, or incorrect.
 >
@@ -1201,7 +1201,7 @@ except ModelTimeoutError:
 
 Each type carries an `is_retryable` attribute that [retry middleware](/oss/python/langchain/middleware/built-in#model-retry) respects by default.
 
-> **Exception types**
+> [accordion] Exception types
 >
 > * [`ModelAuthenticationError`](https://reference.langchain.com/python/langchain-core/exceptions/ModelAuthenticationError) — missing, invalid, or expired API key (not retryable)
 > * [`ModelPermissionDeniedError`](https://reference.langchain.com/python/langchain-core/exceptions/ModelPermissionDeniedError) — credentials lack permission (not retryable)
@@ -1219,7 +1219,7 @@ Many chat model providers impose a limit on the number of invocations that can b
 
 To help manage rate limits, chat model integrations accept a `rate_limiter` parameter that can be provided during initialization to control the rate at which requests are made.
 
-> **Initialize and use a rate limiter**
+> [accordion] Initialize and use a rate limiter
 >
 > LangChain comes with (an optional) built-in [`InMemoryRateLimiter`](https://reference.langchain.com/python/langchain-core/rate_limiters/InMemoryRateLimiter). This limiter is thread safe and can be shared by multiple threads in the same process.
 >
@@ -1256,7 +1256,7 @@ You can configure a custom base URL for providers that implement the OpenAI Chat
 > * [OpenRouter via `ChatOpenRouter`](/oss/python/integrations/chat/openrouter) (`langchain-openrouter`)
 > * [LiteLLM via `ChatLiteLLM` / `ChatLiteLLMRouter`](/oss/python/integrations/chat) (`langchain-litellm`)
 
-> **Custom base URL**
+> [accordion] Custom base URL
 >
 > Many model providers offer OpenAI-compatible APIs (e.g., [Together AI](https://www.together.ai/), [vLLM](https://github.com/vllm-project/vllm)). You can use [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) with these providers by specifying the appropriate `base_url` parameter:
 >
@@ -1273,7 +1273,7 @@ You can configure a custom base URL for providers that implement the OpenAI Chat
 > >
 > > When using direct chat model class instantiation, the parameter name may vary by provider. Check the respective [reference](/oss/python/integrations/providers/overview) for details.
 
-> **HTTP proxy configuration**
+> [accordion] HTTP proxy configuration
 >
 > For deployments requiring HTTP proxies, some model integrations support proxy configuration:
 >
@@ -1314,71 +1314,71 @@ A number of model providers return token usage information as part of the invoca
 
 You can track aggregate token counts across models in an application using either a callback or context manager, as shown below:
 
-**Callback handler**
+> [tab] Callback handler
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.chat_models import init_chat_model
+> from langchain_core.callbacks import UsageMetadataCallbackHandler
+>
+> model_1 = init_chat_model(model="gpt-5.4-mini")
+> model_2 = init_chat_model(model="claude-haiku-4-5-20251001")
+>
+> callback = UsageMetadataCallbackHandler()
+> result_1 = model_1.invoke("Hello", config={"callbacks": [callback]})
+> result_2 = model_2.invoke("Hello", config={"callbacks": [callback]})
+> print(callback.usage_metadata)
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>     'gpt-5.4-mini': {
+>         'input_tokens': 8,
+>         'output_tokens': 10,
+>         'total_tokens': 18,
+>         'input_token_details': {'audio': 0, 'cache_read': 0},
+>         'output_token_details': {'audio': 0, 'reasoning': 0}
+>     },
+>     'claude-haiku-4-5-20251001': {
+>         'input_tokens': 8,
+>         'output_tokens': 21,
+>         'total_tokens': 29,
+>         'input_token_details': {'cache_read': 0, 'cache_creation': 0}
+>     }
+> }
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.chat_models import init_chat_model
-from langchain_core.callbacks import UsageMetadataCallbackHandler
-
-model_1 = init_chat_model(model="gpt-5.4-mini")
-model_2 = init_chat_model(model="claude-haiku-4-5-20251001")
-
-callback = UsageMetadataCallbackHandler()
-result_1 = model_1.invoke("Hello", config={"callbacks": [callback]})
-result_2 = model_2.invoke("Hello", config={"callbacks": [callback]})
-print(callback.usage_metadata)
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-    'gpt-5.4-mini': {
-        'input_tokens': 8,
-        'output_tokens': 10,
-        'total_tokens': 18,
-        'input_token_details': {'audio': 0, 'cache_read': 0},
-        'output_token_details': {'audio': 0, 'reasoning': 0}
-    },
-    'claude-haiku-4-5-20251001': {
-        'input_tokens': 8,
-        'output_tokens': 21,
-        'total_tokens': 29,
-        'input_token_details': {'cache_read': 0, 'cache_creation': 0}
-    }
-}
-```
-
-**Context manager**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.chat_models import init_chat_model
-from langchain_core.callbacks import get_usage_metadata_callback
-
-model_1 = init_chat_model(model="gpt-5.4-mini")
-model_2 = init_chat_model(model="claude-haiku-4-5-20251001")
-
-with get_usage_metadata_callback() as cb:
-    model_1.invoke("Hello")
-    model_2.invoke("Hello")
-    print(cb.usage_metadata)
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-    'gpt-5.4-mini': {
-        'input_tokens': 8,
-        'output_tokens': 10,
-        'total_tokens': 18,
-        'input_token_details': {'audio': 0, 'cache_read': 0},
-        'output_token_details': {'audio': 0, 'reasoning': 0}
-    },
-    'claude-haiku-4-5-20251001': {
-        'input_tokens': 8,
-        'output_tokens': 21,
-        'total_tokens': 29,
-        'input_token_details': {'cache_read': 0, 'cache_creation': 0}
-    }
-}
-```
+> [tab] Context manager
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.chat_models import init_chat_model
+> from langchain_core.callbacks import get_usage_metadata_callback
+>
+> model_1 = init_chat_model(model="gpt-5.4-mini")
+> model_2 = init_chat_model(model="claude-haiku-4-5-20251001")
+>
+> with get_usage_metadata_callback() as cb:
+>     model_1.invoke("Hello")
+>     model_2.invoke("Hello")
+>     print(cb.usage_metadata)
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>     'gpt-5.4-mini': {
+>         'input_tokens': 8,
+>         'output_tokens': 10,
+>         'total_tokens': 18,
+>         'input_token_details': {'audio': 0, 'cache_read': 0},
+>         'output_token_details': {'audio': 0, 'reasoning': 0}
+>     },
+>     'claude-haiku-4-5-20251001': {
+>         'input_tokens': 8,
+>         'output_tokens': 21,
+>         'total_tokens': 29,
+>         'input_token_details': {'cache_read': 0, 'cache_creation': 0}
+>     }
+> }
+> ```
 
 ### Invocation config
 
@@ -1405,7 +1405,7 @@ These configuration values are particularly useful when:
 * Controlling resource usage in production
 * Tracking invocations across complex pipelines
 
-> **Key configuration attributes**
+> [accordion] Key configuration attributes
 >
 > **run\_name** `string`
 >
@@ -1454,7 +1454,7 @@ configurable_model.invoke(
 )
 ```
 
-> **Configurable model with default values**
+> [accordion] Configurable model with default values
 >
 > We can create a configurable model with default model values, specify which parameters are configurable, and add prefixes to configurable params:
 >
@@ -1484,7 +1484,7 @@ configurable_model.invoke(
 >
 > See the [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) reference for more details on `configurable_fields` and `config_prefix`.
 
-> **Using a configurable model declaratively**
+> [accordion] Using a configurable model declaratively
 >
 > We can call declarative operations like `bind_tools`, `with_structured_output`, `with_configurable`, etc. on a configurable model and chain a configurable model in the same way that we would a regularly instantiated chat model object.
 >

@@ -839,19 +839,19 @@ For backends and sandboxes:
 
 ## Related
 
-> **[Going to production](/oss/javascript/deepagents/going-to-production)**
+> [card] [Going to production](/oss/javascript/deepagents/going-to-production)
 >
 > Deploy the agent with persistent sandboxes, auth, guardrails, and production `useStream` settings.
 
-> **[Sandboxes](/oss/javascript/deepagents/sandboxes)**
+> [card] [Sandboxes](/oss/javascript/deepagents/sandboxes)
 >
 > Sandbox providers, security model, and file transfer APIs.
 
-> **[Frontend overview](/oss/javascript/deepagents/frontend/overview)**
+> [card] [Frontend overview](/oss/javascript/deepagents/frontend/overview)
 >
 > Other deep agent UI patterns: subagent streaming, todo lists, and custom state.
 
-> **[Application structure](/oss/javascript/langgraph/application-structure)**
+> [card] [Application structure](/oss/javascript/langgraph/application-structure)
 >
 > Full `langgraph.json` reference, including custom `http.app` routes.
 
@@ -860,19 +860,19 @@ For backends and sandboxes:
 The sandbox IDE builds on core LangChain frontend patterns. These guides cover
 the same `useStream` primitives used in this page:
 
-> **[Tool calling](/oss/javascript/langchain/frontend/tool-calling)**
+> [card] [Tool calling](/oss/javascript/langchain/frontend/tool-calling)
 >
 > Render file and execution tool calls as purpose-built UI cards with type-safe results.
 
-> **[Headless tools](/oss/javascript/langchain/frontend/headless-tools)**
+> [card] [Headless tools](/oss/javascript/langchain/frontend/headless-tools)
 >
 > Run browser and device APIs on the client side—useful for embedding live preview or terminal output in the IDE panel.
 
-> **[Open-ended generative UI](/oss/javascript/langchain/frontend/open-ended-generative-ui)**
+> [card] [Open-ended generative UI](/oss/javascript/langchain/frontend/open-ended-generative-ui)
 >
 > Render sandboxed app previews and MCP-generated interfaces at the open end of the generative UI spectrum.
 
-> **[Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)**
+> [card] [Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)
 >
 > Reconnect to a running coding session after a page reload without losing the sandbox state.
 

@@ -8,15 +8,15 @@ Code contributions are welcome! Whether you're fixing bugs, adding features, or 
 
 If you are looking for something to work on, check out the issue labeled "help wanted" in our repos:
 
-> **[LangChain](https://github.com/langchain-ai/langchain/labels?q=help+wanted)**
+> [card] [LangChain](https://github.com/langchain-ai/langchain/labels?q=help+wanted)
 >
 > Labels
 
-> **[LangGraph](https://github.com/langchain-ai/langgraph/labels?q=help+wanted)**
+> [card] [LangGraph](https://github.com/langchain-ai/langgraph/labels?q=help+wanted)
 >
 > Labels
 
-> **[Deep Agents](https://github.com/langchain-ai/deepagents/labels?q=help+wanted)**
+> [card] [Deep Agents](https://github.com/langchain-ai/deepagents/labels?q=help+wanted)
 >
 > Labels
 
@@ -129,7 +129,7 @@ Contributing to open source projects takes time and effort, but it can also help
 
 Maintain compatibility via:
 
-> **Stable interfaces**
+> [accordion] Stable interfaces
 >
 > **Always preserve**:
 >
@@ -138,7 +138,7 @@ Maintain compatibility via:
 > * Return value structure and types
 > * Import paths for public APIs
 
-> **Safe changes**
+> [accordion] Safe changes
 >
 > **Acceptable modifications**:
 >
@@ -150,7 +150,7 @@ Maintain compatibility via:
 >
 > * Adding new modules or functions
 
-> **Before making changes**
+> [accordion] Before making changes
 >
 > * **Would this break existing user code?**
 >
@@ -196,19 +196,19 @@ We will reject features that are likely to lead to security vulnerabilities or r
 
 Security checklist:
 
-> **Input validation**
+> [accordion] Input validation
 >
 > * Validate and sanitize all user inputs
 > * Properly escape data in templates and queries
 > * Never use `eval()`, `exec()`, or `pickle` on user data, as this can lead to arbitrary code execution vulnerabilities
 
-> **Error handling**
+> [accordion] Error handling
 >
 > * Use specific exception types
 > * Don't expose sensitive information in error messages
 > * Implement proper resource cleanup
 
-> **Dependencies**
+> [accordion] Dependencies
 >
 > * Avoid adding hard dependencies
 > * Keep optional dependencies minimal
@@ -278,64 +278,64 @@ Once you've reviewed the [contribution guidelines](#contribution-guidelines), fi
 
 ## Repository structure
 
-**LangChain**
-
-LangChain is organized as a monorepo with multiple packages:
-
-> **Core packages**
+> [tab] LangChain
 >
-> * **[`langchain`](https://github.com/langchain-ai/langchain/tree/master/libs/langchain#readme)** (located in `libs/langchain/`): Main package with chains, agents, and retrieval logic
-> * **[`langchain-core`](https://github.com/langchain-ai/langchain/tree/master/libs/core#readme)** (located in `libs/core/`): Base interfaces and core abstractions
-
-> **Partner packages**
+> LangChain is organized as a monorepo with multiple packages:
 >
-> Located in `libs/partners/`, these are independently versioned packages for specific integrations. For example:
+> > [accordion] Core packages
+> >
+> > * **[`langchain`](https://github.com/langchain-ai/langchain/tree/master/libs/langchain#readme)** (located in `libs/langchain/`): Main package with chains, agents, and retrieval logic
+> > * **[`langchain-core`](https://github.com/langchain-ai/langchain/tree/master/libs/core#readme)** (located in `libs/core/`): Base interfaces and core abstractions
 >
-> * **[`langchain-openai`](https://github.com/langchain-ai/langchain/tree/master/libs/partners/openai#readme)**: [OpenAI](/oss/python/integrations/providers/openai) integrations
-> * **[`langchain-anthropic`](https://github.com/langchain-ai/langchain/tree/master/libs/partners/anthropic#readme)**: [Anthropic](/oss/python/integrations/providers/anthropic) integrations
-> * **[`langchain-google-genai`](https://github.com/langchain-ai/langchain-google/)**: [Google Generative AI](/oss/python/integrations/chat/google_generative_ai) integrations
+> > [accordion] Partner packages
+> >
+> > Located in `libs/partners/`, these are independently versioned packages for specific integrations. For example:
+> >
+> > * **[`langchain-openai`](https://github.com/langchain-ai/langchain/tree/master/libs/partners/openai#readme)**: [OpenAI](/oss/python/integrations/providers/openai) integrations
+> > * **[`langchain-anthropic`](https://github.com/langchain-ai/langchain/tree/master/libs/partners/anthropic#readme)**: [Anthropic](/oss/python/integrations/providers/anthropic) integrations
+> > * **[`langchain-google-genai`](https://github.com/langchain-ai/langchain-google/)**: [Google Generative AI](/oss/python/integrations/chat/google_generative_ai) integrations
+> >
+> > Many partner packages are in external repositories. Please check the [list of integrations](/oss/python/integrations/providers/overview) for details.
 >
-> Many partner packages are in external repositories. Please check the [list of integrations](/oss/python/integrations/providers/overview) for details.
+> > [accordion] Supporting packages
+> >
+> > * **[`langchain-text-splitters`](https://github.com/langchain-ai/langchain/tree/master/libs/text-splitters#readme)**: Text splitting utilities
+> > * **[`langchain-standard-tests`](https://github.com/langchain-ai/langchain/tree/master/libs/standard-tests#readme)**: Standard test suites for integrations
 
-> **Supporting packages**
+> [tab] LangGraph
 >
-> * **[`langchain-text-splitters`](https://github.com/langchain-ai/langchain/tree/master/libs/text-splitters#readme)**: Text splitting utilities
-> * **[`langchain-standard-tests`](https://github.com/langchain-ai/langchain/tree/master/libs/standard-tests#readme)**: Standard test suites for integrations
-
-**LangGraph**
-
-LangGraph is organized as a monorepo with multiple Python packages:
-
-> **Core packages**
+> LangGraph is organized as a monorepo with multiple Python packages:
 >
-> * **[`langgraph`](https://github.com/langchain-ai/langgraph/tree/main/libs/langgraph#readme)** (located in `libs/langgraph/`): Core framework for building stateful, multi-actor agents
-> * **[`langgraph-prebuilt`](https://github.com/langchain-ai/langgraph/tree/main/libs/prebuilt#readme)** (located in `libs/prebuilt/`): High-level APIs for creating and running agents and tools
-
-> **Checkpoint packages**
+> > [accordion] Core packages
+> >
+> > * **[`langgraph`](https://github.com/langchain-ai/langgraph/tree/main/libs/langgraph#readme)** (located in `libs/langgraph/`): Core framework for building stateful, multi-actor agents
+> > * **[`langgraph-prebuilt`](https://github.com/langchain-ai/langgraph/tree/main/libs/prebuilt#readme)** (located in `libs/prebuilt/`): High-level APIs for creating and running agents and tools
 >
-> * **[`langgraph-checkpoint`](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint#readme)** (located in `libs/checkpoint/`): Base interfaces for checkpoint savers
-> * **[`langgraph-checkpoint-postgres`](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres#readme)** (located in `libs/checkpoint-postgres/`): Postgres implementation
-> * **[`langgraph-checkpoint-sqlite`](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite#readme)** (located in `libs/checkpoint-sqlite/`): SQLite implementation
-
-> **SDK and CLI**
+> > [accordion] Checkpoint packages
+> >
+> > * **[`langgraph-checkpoint`](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint#readme)** (located in `libs/checkpoint/`): Base interfaces for checkpoint savers
+> > * **[`langgraph-checkpoint-postgres`](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres#readme)** (located in `libs/checkpoint-postgres/`): Postgres implementation
+> > * **[`langgraph-checkpoint-sqlite`](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite#readme)** (located in `libs/checkpoint-sqlite/`): SQLite implementation
 >
-> * **[`langgraph-sdk`](https://github.com/langchain-ai/langgraph/tree/main/libs/sdk-py#readme)** (located in `libs/sdk-py/`): Python SDK for the Agent Server API
-> * **[`langgraph-cli`](https://github.com/langchain-ai/langgraph/tree/main/libs/cli#readme)** (located in `libs/cli/`): Official command-line interface
+> > [accordion] SDK and CLI
+> >
+> > * **[`langgraph-sdk`](https://github.com/langchain-ai/langgraph/tree/main/libs/sdk-py#readme)** (located in `libs/sdk-py/`): Python SDK for the Agent Server API
+> > * **[`langgraph-cli`](https://github.com/langchain-ai/langgraph/tree/main/libs/cli#readme)** (located in `libs/cli/`): Official command-line interface
 
-**Deep Agents**
-
-Deep Agents is organized as a monorepo with multiple Python packages:
-
-> **Core packages**
+> [tab] Deep Agents
 >
-> * **[`deepagents`](https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents#readme)** (located in `libs/deepagents/`): Core framework for building deep agents with planning, filesystem, and subagent capabilities
-> * **[`deepagents-code`](https://github.com/langchain-ai/deepagents/tree/main/libs/code#readme)** (located in `libs/code/`): Deep Agents Code — interactive terminal interface with conversation resume, web search, and sandboxes
-> * **[`deepagents-cli`](https://github.com/langchain-ai/deepagents/tree/main/libs/code)** (located in `libs/cli/`): Deploy tooling (`deepagents deploy`, `deepagents init`, `deepagents dev`) for shipping agents to LangSmith Deployments
-
-> **Integration packages**
+> Deep Agents is organized as a monorepo with multiple Python packages:
 >
-> * **[`deepagents-evals`](https://github.com/langchain-ai/deepagents/tree/main/libs/evals#readme)** (located in `libs/evals/`): Evaluation suite and Harbor integration with LangSmith tracing
-> * **[`deepagents-acp`](https://github.com/langchain-ai/deepagents/tree/main/libs/acp#readme)** (located in `libs/acp/`): Agent Client Protocol integration
+> > [accordion] Core packages
+> >
+> > * **[`deepagents`](https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents#readme)** (located in `libs/deepagents/`): Core framework for building deep agents with planning, filesystem, and subagent capabilities
+> > * **[`deepagents-code`](https://github.com/langchain-ai/deepagents/tree/main/libs/code#readme)** (located in `libs/code/`): Deep Agents Code — interactive terminal interface with conversation resume, web search, and sandboxes
+> > * **[`deepagents-cli`](https://github.com/langchain-ai/deepagents/tree/main/libs/code)** (located in `libs/cli/`): Deploy tooling (`deepagents deploy`, `deepagents init`, `deepagents dev`) for shipping agents to LangSmith Deployments
+>
+> > [accordion] Integration packages
+> >
+> > * **[`deepagents-evals`](https://github.com/langchain-ai/deepagents/tree/main/libs/evals#readme)** (located in `libs/evals/`): Evaluation suite and Harbor integration with LangSmith tracing
+> > * **[`deepagents-acp`](https://github.com/langchain-ai/deepagents/tree/main/libs/acp#readme)** (located in `libs/acp/`): Agent Client Protocol integration
 
 ***
 
@@ -422,186 +422,193 @@ TEST_FILE=tests/integration_tests/test_openai.py make integration_tests
 
 Contributions must adhere to the following quality requirements:
 
-**Type hints**
-
-**Required**: Complete type annotations for all functions
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-def process_documents(
-    docs: list[Document],
-    processor: DocumentProcessor,
-    *,
-    batch_size: int = 100
-) -> ProcessingResult:
-    """Process documents in batches.
-
-    Args:
-        docs: List of documents to process.
-        processor: Document processing instance.
-        batch_size: Number of documents per batch.
-
-    Returns:
-        Processing results with success/failure counts.
-    """
-```
-
-**Documentation**
-
-**Required**: [Google-style docstrings](https://google.github.io/styleguide/pyguide.html) for all public functions.
-
-**Guiding principle**: Docstrings describe "what"; docs on this site explain the "how" and "why."
-
-| Content type | Location | Purpose |
-| - | - | - |
-| Parameter types | Signature | Auto-generates into API reference |
-| Parameter descriptions | Docstrings | Auto-generates into API reference |
-| Return types and exceptions | Docstrings | API reference |
-| Minimal usage example | Docstrings | Show basic instantiation pattern |
-| Feature tutorials | This site | In-depth walkthroughs |
-| End-to-end examples | This site | Real-world usage patterns |
-| Conceptual explanations | This site | Understanding and context |
-
-**Docstrings should contain:**
-
-1. One-line summary of what the class/function does
-2. Link to this site for tutorials, guides, and usage patterns
-3. Parameter documentation with types and descriptions
-4. Return value description
-5. Exceptions that may be raised
-6. Single minimal example showing basic instantiation/usage as necessary
-
-> **Good docstring example**
+> [tab] Type hints
 >
-> ````python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> class ChatAnthropic(BaseChatModel):
->     """Interface to Claude chat models.
+> **Required**: Complete type annotations for all functions
 >
->     See the [usage guide](https://docs.langchain.com/oss/python/integrations/chat/anthropic)
->     for tutorials, feature walkthroughs, and examples.
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> def process_documents(
+>     docs: list[Document],
+>     processor: DocumentProcessor,
+>     *,
+>     batch_size: int = 100
+> ) -> ProcessingResult:
+>     """Process documents in batches.
 >
 >     Args:
->         model: Model identifier (e.g., `'claude-sonnet-4-6'`).
->         temperature: Sampling temperature between `0` and `1`.
->         max_tokens: Maximum number of tokens to generate.
->         api_key: Anthropic API key.
->
->             If not provided, reads from the `ANTHROPIC_API_KEY`
->             environment variable.
->         timeout: Request timeout in seconds.
->         max_retries: Maximum number of retries for failed requests.
+>         docs: List of documents to process.
+>         processor: Document processing instance.
+>         batch_size: Number of documents per batch.
 >
 >     Returns:
->         A chat model instance that can be invoked with messages.
->
->     Raises:
->         ValueError: If the model identifier is not recognized.
->         AuthenticationError: If the API key is invalid.
->
->     Example:
->         ```python
->         from langchain_anthropic import ChatAnthropic
->
->         model = ChatAnthropic(model="claude-sonnet-4-6")
->         response = model.invoke("Hello!")
->         ```
+>         Processing results with success/failure counts.
 >     """
-> ````
+> ```
 
-> **What does NOT belong in docstrings**
+> [tab] Documentation
 >
-> Avoid duplicating content that belongs in docstrings:
+> **Required**: [Google-style docstrings](https://google.github.io/styleguide/pyguide.html) for all public functions.
 >
-> * **Parameter types**: These are in the function signature and auto-generated into the API reference.
+> **Guiding principle**: Docstrings describe "what"; docs on this site explain the "how" and "why."
 >
-> * **Feature tutorials**: Don't include extended walkthroughs. Instead, link to this site:
+> | Content type | Location | Purpose |
+> | - | - | - |
+> | Parameter types | Signature | Auto-generates into API reference |
+> | Parameter descriptions | Docstrings | Auto-generates into API reference |
+> | Return types and exceptions | Docstrings | API reference |
+> | Minimal usage example | Docstrings | Show basic instantiation pattern |
+> | Feature tutorials | This site | In-depth walkthroughs |
+> | End-to-end examples | This site | Real-world usage patterns |
+> | Conceptual explanations | This site | Understanding and context |
 >
->   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
->   """
->   ...
+> **Docstrings should contain:**
 >
->   See the [extended thinking guide](https://docs.langchain.com/oss/integrations/chat/anthropic#extended-thinking)
->   for configuration options.
->   """
->   ```
+> 1. One-line summary of what the class/function does
 >
-> * **Multiple example variations**: Include one minimal example, then link to comprehensive guides:
+> 2. Link to this site for tutorials, guides, and usage patterns
 >
->   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
->   """
->   Example:
->       \`\`\`python
->       message = HumanMessage(content=[
->           {"type": "image", "url": "https://example.com/image.jpg"}
->       ])
->       \`\`\`
+> 3. Parameter documentation with types and descriptions
 >
->   See the [multimodal guide](https://docs.langchain.com/oss/integrations/chat/anthropic#multimodal)
->   for all supported input formats.
->   """
->   ```
+> 4. Return value description
 >
-> * **Conceptual explanations**: Keep to factual parameter descriptions. Link to docs for deeper context.
+> 5. Exceptions that may be raised
 >
-> * **MkDocs-specific syntax**: Avoid `???+`, accordions, or tabs in docstrings. They don't render in IDEs.
+> 6. Single minimal example showing basic instantiation/usage as necessary
+>
+> > [accordion] Good docstring example
+> >
+> > ````python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > class ChatAnthropic(BaseChatModel):
+> >     """Interface to Claude chat models.
+> >
+> >     See the [usage guide](https://docs.langchain.com/oss/python/integrations/chat/anthropic)
+> >     for tutorials, feature walkthroughs, and examples.
+> >
+> >     Args:
+> >         model: Model identifier (e.g., `'claude-sonnet-4-6'`).
+> >         temperature: Sampling temperature between `0` and `1`.
+> >         max_tokens: Maximum number of tokens to generate.
+> >         api_key: Anthropic API key.
+> >
+> >             If not provided, reads from the `ANTHROPIC_API_KEY`
+> >             environment variable.
+> >         timeout: Request timeout in seconds.
+> >         max_retries: Maximum number of retries for failed requests.
+> >
+> >     Returns:
+> >         A chat model instance that can be invoked with messages.
+> >
+> >     Raises:
+> >         ValueError: If the model identifier is not recognized.
+> >         AuthenticationError: If the API key is invalid.
+> >
+> >     Example:
+> >         ```python
+> >         from langchain_anthropic import ChatAnthropic
+> >
+> >         model = ChatAnthropic(model="claude-sonnet-4-6")
+> >         response = model.invoke("Hello!")
+> >         ```
+> >     """
+> > ````
+>
+> > [accordion] What does NOT belong in docstrings
+> >
+> > Avoid duplicating content that belongs in docstrings:
+> >
+> > * **Parameter types**: These are in the function signature and auto-generated into the API reference.
+> >
+> > * **Feature tutorials**: Don't include extended walkthroughs. Instead, link to this site:
+> >
+> >   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> >   """
+> >   ...
+> >
+> >   See the [extended thinking guide](https://docs.langchain.com/oss/integrations/chat/anthropic#extended-thinking)
+> >   for configuration options.
+> >   """
+> >   ```
+> >
+> > * **Multiple example variations**: Include one minimal example, then link to comprehensive guides:
+> >
+> >   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> >   """
+> >   Example:
+> >       \`\`\`python
+> >       message = HumanMessage(content=[
+> >           {"type": "image", "url": "https://example.com/image.jpg"}
+> >       ])
+> >       \`\`\`
+> >
+> >   See the [multimodal guide](https://docs.langchain.com/oss/integrations/chat/anthropic#multimodal)
+> >   for all supported input formats.
+> >   """
+> >   ```
+> >
+> > * **Conceptual explanations**: Keep to factual parameter descriptions. Link to docs for deeper context.
+> >
+> > * **MkDocs-specific syntax**: Avoid `???+`, accordions, or tabs in docstrings. They don't render in IDEs.
 
-**Code style**
-
-**Automated**: Formatting and linting via [`ruff`](https://docs.astral.sh/ruff/)
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-make format  # Apply formatting
-make lint    # Check style and types
-```
-
-**Standards**:
-
-* Descriptive variable names
-* Break up complex functions (aim for fewer than 20 lines)
-* Follow existing patterns in the codebase
+> [tab] Code style
+>
+> **Automated**: Formatting and linting via [`ruff`](https://docs.astral.sh/ruff/)
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> make format  # Apply formatting
+> make lint    # Check style and types
+> ```
+>
+> **Standards**:
+>
+> * Descriptive variable names
+> * Break up complex functions (aim for fewer than 20 lines)
+> * Follow existing patterns in the codebase
 
 ### Dependencies
 
 LangChain packages distinguish between **hard dependencies** and **optional dependencies** to keep packages lightweight and minimize installation overhead for users.
 
-**Optional dependencies**
-
-Almost all new dependencies should be optional. Use optional dependencies when:
-
-* The dependency is only needed for specific integrations or features
-* Users can meaningfully use the package without this dependency
-* The dependency is large or has many transitive dependencies
-
-**Requirements:**
-
-* Users without the dependency installed must be able to **import** your code without any side effects (no warnings, no errors, no exceptions)
-* `pyproject.toml` and `uv.lock` are **not** modified
-
-**To add an optional dependency:**
-
-1. Add the dependency to the appropriate testing dependencies file (e.g., `extended_testing_deps.txt`)
-2. Add a unit test that at minimum attempts to import the new code. Ideally, the unit test uses lightweight fixtures to test the logic of the code.
-3. Use the `@pytest.mark.requires("package_name")` decorator for any unit tests that require the dependency.
-
-**Hard dependencies**
-
-Hard dependencies are installed automatically when users install the package. Use hard dependencies only when:
-
-* The package fundamentally cannot function without the dependency
-* The dependency is small and has minimal transitive dependencies
-* There is no reasonable way to make the functionality optional
-
-> [!WARNING]
+> [tab] Optional dependencies
 >
-> Adding hard dependencies increases install time and potential version conflicts for all users.
+> Almost all new dependencies should be optional. Use optional dependencies when:
 >
-> Maintainers will scrutinize hard dependency additions carefully!
+> * The dependency is only needed for specific integrations or features
+> * Users can meaningfully use the package without this dependency
+> * The dependency is large or has many transitive dependencies
+>
+> **Requirements:**
+>
+> * Users without the dependency installed must be able to **import** your code without any side effects (no warnings, no errors, no exceptions)
+> * `pyproject.toml` and `uv.lock` are **not** modified
+>
+> **To add an optional dependency:**
+>
+> 1. Add the dependency to the appropriate testing dependencies file (e.g., `extended_testing_deps.txt`)
+> 2. Add a unit test that at minimum attempts to import the new code. Ideally, the unit test uses lightweight fixtures to test the logic of the code.
+> 3. Use the `@pytest.mark.requires("package_name")` decorator for any unit tests that require the dependency.
 
-**To add a hard dependency:**
-
-1. Open an issue or discussion explaining why the dependency must be hard rather than optional
-2. Add the dependency to `pyproject.toml` under the appropriate section
-3. Run `uv lock` to update the lockfile
-4. Include comprehensive tests covering the new functionality
+> [tab] Hard dependencies
+>
+> Hard dependencies are installed automatically when users install the package. Use hard dependencies only when:
+>
+> * The package fundamentally cannot function without the dependency
+>
+> * The dependency is small and has minimal transitive dependencies
+>
+> * There is no reasonable way to make the functionality optional
+>
+> > [!WARNING]
+> >
+> > Adding hard dependencies increases install time and potential version conflicts for all users.
+> >
+> > Maintainers will scrutinize hard dependency additions carefully!
+>
+> **To add a hard dependency:**
+>
+> 1. Open an issue or discussion explaining why the dependency must be hard rather than optional
+> 2. Add the dependency to `pyproject.toml` under the appropriate section
+> 3. Run `uv lock` to update the lockfile
+> 4. Include comprehensive tests covering the new functionality
 
 ***
 
@@ -613,51 +620,51 @@ In order to write effective tests, there's a few good practices to follow:
 * Use descriptive variable names
 * Be exhaustive with assertions
 
-**Unit tests**
+> [tab] Unit tests
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> def test_document_processor_handles_empty_input():
+>     """Test processor gracefully handles empty document list."""
+>     processor = DocumentProcessor()
+>
+>     result = processor.process([])
+>
+>     assert result.success
+>     assert result.processed_count == 0
+>     assert len(result.errors) == 0
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-def test_document_processor_handles_empty_input():
-    """Test processor gracefully handles empty document list."""
-    processor = DocumentProcessor()
+> [tab] Integration tests
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> @pytest.mark.requires("openai")
+> def test_openai_chat_integration():
+>     """Test OpenAI chat integration with real API."""
+>
+>     chat = ChatOpenAI()
+>     response = chat.invoke("Hello")
+>
+>     assert isinstance(response.content, str)
+>     assert len(response.content) > 0
+> ```
 
-    result = processor.process([])
-
-    assert result.success
-    assert result.processed_count == 0
-    assert len(result.errors) == 0
-```
-
-**Integration tests**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-@pytest.mark.requires("openai")
-def test_openai_chat_integration():
-    """Test OpenAI chat integration with real API."""
-
-    chat = ChatOpenAI()
-    response = chat.invoke("Hello")
-
-    assert isinstance(response.content, str)
-    assert len(response.content) > 0
-```
-
-**Mock usage**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-def test_retry_mechanism(mocker):
-    """Test retry mechanism handles transient failures."""
-    mock_client = mocker.Mock()
-    mock_client.call.side_effect = [
-        ConnectionError("Temporary failure"),
-        {"result": "success"}
-    ]
-
-    service = APIService(client=mock_client)
-    result = service.call_with_retry()
-
-    assert result["result"] == "success"
-    assert mock_client.call.call_count == 2
-```
+> [tab] Mock usage
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> def test_retry_mechanism(mocker):
+>     """Test retry mechanism handles transient failures."""
+>     mock_client = mocker.Mock()
+>     mock_client.call.side_effect = [
+>         ConnectionError("Temporary failure"),
+>         {"result": "success"}
+>     ]
+>
+>     service = APIService(client=mock_client)
+>     result = service.call_with_retry()
+>
+>     assert result["result"] == "success"
+>     assert mock_client.call.call_count == 2
+> ```
 
 ### Submitting your PR
 

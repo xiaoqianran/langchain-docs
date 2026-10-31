@@ -247,7 +247,7 @@ The command prints each service's default scopes and the page where you register
 
 A service with no default scopes requires `--scope`.
 
-> **Some services run separate OAuth apps for their API and their MCP server**
+> [accordion] Some services run separate OAuth apps for their API and their MCP server
 >
 > Notion is one of them. `--oauth notion-api` registers an app against Notion's REST API, and that app does not authorize Notion's MCP server. To use the MCP server, create an [MCP OAuth connection](#create-an-mcp-oauth-connection) instead. Check the provider's documentation when a service offers both.
 
@@ -811,7 +811,7 @@ Connections are part of the Managed Deep Agents public beta. The following gaps 
 * **Workspace UI**: LangSmith does not list connections in the UI. Use `mda connections list` and `mda connections get` for connection metadata.
 * **Grant visibility**: `mda connections list` is workspace-scoped and does not report which deployments hold a credential under a slug. A run that fails with `no agent connection is set for slug '<slug>'` means this deployment owns no credential for it, even when `list` shows the slug. Run `mda connections create <slug>` from the project root to mint one.
 
-> **Store a user-owned API key through Agent Auth**
+> [accordion] Store a user-owned API key through Agent Auth
 >
 > An interrupt entry with `"kind": "secret"` has no `connect_url`. To collect one in a custom frontend, prompt for the value with a hidden input, then create the credential against the existing connection slug:
 >

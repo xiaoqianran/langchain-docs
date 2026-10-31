@@ -67,11 +67,11 @@ async function main() {
 await main();
 ```
 
-> **[View example trace](https://smith.langchain.com/public/6694c209-b195-4e4a-8fe4-225ea5ef3da2/r)**
+> [card] [View example trace](https://smith.langchain.com/public/6694c209-b195-4e4a-8fe4-225ea5ef3da2/r)
 >
 > Open a public LangSmith run for this example.
 
-> **LangChain docs MCP server**
+> [accordion] LangChain docs MCP server
 >
 > The [LangChain docs MCP server](/use-these-docs) is a public HTTP endpoint at `https://docs.langchain.com/mcp`.
 >
@@ -103,7 +103,7 @@ await main();
 > }
 > ```
 >
-> > **[View example trace](https://smith.langchain.com/public/c9906137-427e-434a-a441-1f55da3b9880/r)**
+> > [card] [View example trace](https://smith.langchain.com/public/c9906137-427e-434a-a441-1f55da3b9880/r)
 > >
 > > Open a public LangSmith run for this example.
 >
@@ -158,7 +158,7 @@ try {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/d15e224a-8053-467a-8a6d-90bffdb421d7/r)**
+> [card] [View example trace](https://smith.langchain.com/public/d15e224a-8053-467a-8a6d-90bffdb421d7/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -176,15 +176,15 @@ Transport selection and protocol negotiation are separate. The optional `mode` s
 
 ## Next steps
 
-> **[Tools](/oss/javascript/langchain/mcp/tools)**
+> [card] [Tools](/oss/javascript/langchain/mcp/tools)
 >
 > Load MCP tools into agents, control their execution, and handle their outputs.
 
-> **[Connections](/oss/javascript/langchain/mcp/connections)**
+> [card] [Connections](/oss/javascript/langchain/mcp/connections)
 >
 > Connection lifecycle, multiple servers, protocol eras, and caching.
 
-> **[Authentication](/oss/javascript/langchain/mcp/auth)**
+> [card] [Authentication](/oss/javascript/langchain/mcp/auth)
 >
 > Bearer tokens, OAuth 2.1, and per-user server auth.
 

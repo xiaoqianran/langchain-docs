@@ -300,7 +300,7 @@ agent.invoke(
 )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/6fd34d16-7eca-405e-be99-e4fc06ef96eb/r)**
+> [card] [View example trace](https://smith.langchain.com/public/6fd34d16-7eca-405e-be99-e4fc06ef96eb/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -443,99 +443,99 @@ Otherwise, to share memory across threads, route a path like `/memories/` to a [
 >
 > The `rt.server_info` and `rt.execution_info` namespace patterns shown below require `deepagents>=0.5.0`.
 
-**User (recommended)**
+> [tab] User (recommended)
+>
+> Namespace by `user_id`. Each user gets their own private memory. This is the recommended default since most applications deploy a single assistant.
+>
+> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+>
+> agent = create_deep_agent(
+>     model="google_genai:gemini-3.6-flash",
+>     backend=CompositeBackend(
+>         default=StateBackend(),
+>         routes={
+>             "/memories/": StoreBackend(
+>                 namespace=lambda rt: (
+>                     rt.server_info.assistant_id,  # [!code highlight]
+>                     rt.server_info.user.identity,  # [!code highlight]
+>                 ),
+>             ),
+>         },
+>     ),
+>     system_prompt="""You have persistent memory at /memories/.
+>
+>     Read /memories/instructions.txt at the start of each conversation for
+>     accumulated knowledge and preferences. When you learn something that
+>     should persist, update that file.""",
+> )
+> ```
 
-Namespace by `user_id`. Each user gets their own private memory. This is the recommended default since most applications deploy a single assistant.
+> [tab] Assistant
+>
+> Namespace by `assistant_id`. Memory is shared across all users of the same assistant, so any user can read or update it. Use this for shared instructions or knowledge that applies to everyone using a given assistant (e.g., "always reply in formal tone").
+>
+> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+>
+> agent = create_deep_agent(
+>     model="google_genai:gemini-3.6-flash",
+>     backend=CompositeBackend(
+>         default=StateBackend(),
+>         routes={
+>             "/memories/": StoreBackend(
+>                 namespace=lambda rt: (
+>                     rt.server_info.assistant_id,  # [!code highlight]
+>                 ),
+>             ),
+>         },
+>     ),
+> )
+> ```
 
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+> [tab] User
+>
+> Namespace by `user_id` alone. Memory follows the user across all assistants. Use this for a global user profile (name, timezone, communication preferences) that should apply regardless of which assistant the user is talking to.
+>
+> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+>
+> agent = create_deep_agent(
+>     model="google_genai:gemini-3.6-flash",
+>     backend=CompositeBackend(
+>         default=StateBackend(),
+>         routes={
+>             "/memories/": StoreBackend(
+>                 namespace=lambda rt: (rt.server_info.user.identity,),  # [!code highlight]
+>             ),
+>         },
+>     ),
+> )
+> ```
 
-agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
-    backend=CompositeBackend(
-        default=StateBackend(),
-        routes={
-            "/memories/": StoreBackend(
-                namespace=lambda rt: (
-                    rt.server_info.assistant_id,  # [!code highlight]
-                    rt.server_info.user.identity,  # [!code highlight]
-                ),
-            ),
-        },
-    ),
-    system_prompt="""You have persistent memory at /memories/.
-
-    Read /memories/instructions.txt at the start of each conversation for
-    accumulated knowledge and preferences. When you learn something that
-    should persist, update that file.""",
-)
-```
-
-**Assistant**
-
-Namespace by `assistant_id`. Memory is shared across all users of the same assistant, so any user can read or update it. Use this for shared instructions or knowledge that applies to everyone using a given assistant (e.g., "always reply in formal tone").
-
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-
-agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
-    backend=CompositeBackend(
-        default=StateBackend(),
-        routes={
-            "/memories/": StoreBackend(
-                namespace=lambda rt: (
-                    rt.server_info.assistant_id,  # [!code highlight]
-                ),
-            ),
-        },
-    ),
-)
-```
-
-**User**
-
-Namespace by `user_id` alone. Memory follows the user across all assistants. Use this for a global user profile (name, timezone, communication preferences) that should apply regardless of which assistant the user is talking to.
-
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-
-agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
-    backend=CompositeBackend(
-        default=StateBackend(),
-        routes={
-            "/memories/": StoreBackend(
-                namespace=lambda rt: (rt.server_info.user.identity,),  # [!code highlight]
-            ),
-        },
-    ),
-)
-```
-
-**Organization**
-
-Namespace by `org_id`. Memory is shared across all users and all assistants. Typically used for organization-wide policies (compliance rules, brand guidelines) that should be read-only for the agent. Write access should be restricted to application code to prevent prompt injection.
-
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-
-agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
-    backend=CompositeBackend(
-        default=StateBackend(),
-        routes={
-            "/memories/": StoreBackend(
-                namespace=lambda rt: (rt.context.org_id,),
-            ),
-        },
-    ),
-)
-```
+> [tab] Organization
+>
+> Namespace by `org_id`. Memory is shared across all users and all assistants. Typically used for organization-wide policies (compliance rules, brand guidelines) that should be read-only for the agent. Write access should be restricted to application code to prevent prompt injection.
+>
+> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+>
+> agent = create_deep_agent(
+>     model="google_genai:gemini-3.6-flash",
+>     backend=CompositeBackend(
+>         default=StateBackend(),
+>         routes={
+>             "/memories/": StoreBackend(
+>                 namespace=lambda rt: (rt.context.org_id,),
+>             ),
+>         },
+>     ),
+> )
+> ```
 
 You can also read and write to the store from your application code using the [Store API](/langsmith/custom-store). See [Advanced usage](/oss/python/deepagents/memory#advanced-usage) for examples.
 
@@ -583,147 +583,147 @@ The key decision is how long a sandbox lives. Does each conversation get a fresh
 >
 > The examples below use an async [graph factory](/langsmith/graph-rebuild) instead of a static graph because the sandbox needs the `thread_id` or `assistant_id` to look up or create the correct sandbox. Graph factories don't receive a full `Runtime` (no `server_info` or `execution_info`); instead, accept a `RunnableConfig` and read `thread_id` and `assistant_id` from `config["configurable"]`. The factory is async because sandbox creation is an I/O-bound operation that requires per-run information only available at invocation time.
 
-**Thread-scoped (most common)**
-
-Each conversation gets its own sandbox. The [graph factory](/langsmith/graph-rebuild) reads `thread_id` from the run config, so each [thread](/langsmith/use-threads) automatically gets its own isolated environment. Named sandbox lookup handles deduplication across runs. Cleaned up when the sandbox [TTL](/langsmith/configure-ttl) expires.
-
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from deepagents.backends.langsmith import LangSmithSandbox
-from langchain_core.runnables import RunnableConfig
-from langsmith.sandbox import SandboxClient
-
-client = SandboxClient()
-
-
-async def agent(config: RunnableConfig):
-    thread_id = config["configurable"]["thread_id"]  # [!code highlight]
-    sandbox_name = f"thread-{thread_id}"
-    existing = [
-        sb
-        for sb in client.list_sandboxes()
-        if getattr(sb, "name", None) == sandbox_name
-    ]
-    if existing:
-        ls_sandbox = existing[0]
-    else:
-        ls_sandbox = client.create_sandbox(
-            name=sandbox_name,
-            idle_ttl_seconds=3600,  # TTL: clean up when idle
-        )
-    return create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
-        backend=LangSmithSandbox(sandbox=ls_sandbox),
-    )
-```
-
-**Assistant-scoped**
-
-All conversations share one sandbox. The [graph factory](/langsmith/graph-rebuild) reads the [assistant](/langsmith/assistants) ID from `config["configurable"]`, so every thread on the same assistant returns to the same environment. Files, installed packages, and cloned repositories persist across conversations.
-
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from deepagents.backends.langsmith import LangSmithSandbox
-from langchain_core.runnables import RunnableConfig
-from langsmith.sandbox import SandboxClient
-
-client = SandboxClient()
-
-
-async def agent(config: RunnableConfig):
-    assistant_id = config["configurable"]["assistant_id"]  # [!code highlight]
-    sandbox_name = f"assistant-{assistant_id}"
-    existing = [
-        sb
-        for sb in client.list_sandboxes()
-        if getattr(sb, "name", None) == sandbox_name
-    ]
-    if existing:
-        ls_sandbox = existing[0]
-    else:
-        ls_sandbox = client.create_sandbox(name=sandbox_name)
-    return create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
-        backend=LangSmithSandbox(sandbox=ls_sandbox),
-    )
-```
-
-> [!WARNING]
+> [tab] Thread-scoped (most common)
 >
-> Assistant-scoped sandboxes accumulate files, installed packages, and other in-sandbox state over time. Configure a TTL with your sandbox provider, use snapshots to reset periodically, or implement cleanup logic to prevent the sandbox's disk and memory from growing unbounded.
+> Each conversation gets its own sandbox. The [graph factory](/langsmith/graph-rebuild) reads `thread_id` from the run config, so each [thread](/langsmith/use-threads) automatically gets its own isolated environment. Named sandbox lookup handles deduplication across runs. Cleaned up when the sandbox [TTL](/langsmith/configure-ttl) expires.
+>
+> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain_core.runnables import RunnableConfig
+> from langsmith.sandbox import SandboxClient
+>
+> client = SandboxClient()
+>
+>
+> async def agent(config: RunnableConfig):
+>     thread_id = config["configurable"]["thread_id"]  # [!code highlight]
+>     sandbox_name = f"thread-{thread_id}"
+>     existing = [
+>         sb
+>         for sb in client.list_sandboxes()
+>         if getattr(sb, "name", None) == sandbox_name
+>     ]
+>     if existing:
+>         ls_sandbox = existing[0]
+>     else:
+>         ls_sandbox = client.create_sandbox(
+>             name=sandbox_name,
+>             idle_ttl_seconds=3600,  # TTL: clean up when idle
+>         )
+>     return create_deep_agent(
+>         model="google_genai:gemini-3.6-flash",
+>         backend=LangSmithSandbox(sandbox=ls_sandbox),
+>     )
+> ```
+
+> [tab] Assistant-scoped
+>
+> All conversations share one sandbox. The [graph factory](/langsmith/graph-rebuild) reads the [assistant](/langsmith/assistants) ID from `config["configurable"]`, so every thread on the same assistant returns to the same environment. Files, installed packages, and cloned repositories persist across conversations.
+>
+> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain_core.runnables import RunnableConfig
+> from langsmith.sandbox import SandboxClient
+>
+> client = SandboxClient()
+>
+>
+> async def agent(config: RunnableConfig):
+>     assistant_id = config["configurable"]["assistant_id"]  # [!code highlight]
+>     sandbox_name = f"assistant-{assistant_id}"
+>     existing = [
+>         sb
+>         for sb in client.list_sandboxes()
+>         if getattr(sb, "name", None) == sandbox_name
+>     ]
+>     if existing:
+>         ls_sandbox = existing[0]
+>     else:
+>         ls_sandbox = client.create_sandbox(name=sandbox_name)
+>     return create_deep_agent(
+>         model="google_genai:gemini-3.6-flash",
+>         backend=LangSmithSandbox(sandbox=ls_sandbox),
+>     )
+> ```
+>
+> > [!WARNING]
+> >
+> > Assistant-scoped sandboxes accumulate files, installed packages, and other in-sandbox state over time. Configure a TTL with your sandbox provider, use snapshots to reset periodically, or implement cleanup logic to prevent the sandbox's disk and memory from growing unbounded.
 
 Because the `agent` variable is an async function (not a compiled graph), the server treats it as a [graph factory](/langsmith/graph-rebuild) and calls it on each run, injecting the config. The factory looks up or creates the sandbox by name and returns a fresh agent graph wired to that sandbox.
 
 Once deployed with `langgraph deploy`, invoke the agent from your application code using the SDK. The client-side code is the same regardless of scope. The scoping is handled entirely in the agent factory above, but the behavior differs:
 
-**Thread-scoped**
+> [tab] Thread-scoped
+>
+> Each thread gets its own sandbox. Follow-up messages within the same thread reuse the same sandbox, but a new thread always starts fresh with no leftover files or installed packages from previous conversations.
+>
+> ```python client.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_client
+>
+> client = get_client(url="<DEPLOYMENT_URL>", api_key="<LANGSMITH_API_KEY>")
+>
+> # Conversation 1: install pandas and analyze data
+> thread_1 = await client.threads.create()
+> async for chunk in client.runs.stream(
+>     thread_1["thread_id"],
+>     "agent",
+>     input={"messages": [{"role": "human", "content": "Install pandas and analyze sales_data.csv"}]},
+>     stream_mode="updates",
+> ):
+>     print(chunk.data)
+>
+> # Follow-up in the same conversation — pandas is still installed
+> async for chunk in client.runs.stream(
+>     thread_1["thread_id"],
+>     "agent",
+>     input={"messages": [{"role": "human", "content": "Now plot the results"}]},
+>     stream_mode="updates",
+> ):
+>     print(chunk.data)
+>
+> # Conversation 2: fresh sandbox — pandas is NOT installed, no files from conversation 1
+> thread_2 = await client.threads.create()
+> async for chunk in client.runs.stream(
+>     thread_2["thread_id"],
+>     "agent",
+>     input={"messages": [{"role": "human", "content": "What packages are installed?"}]},
+>     stream_mode="updates",
+> ):
+>     print(chunk.data)
+> ```
 
-Each thread gets its own sandbox. Follow-up messages within the same thread reuse the same sandbox, but a new thread always starts fresh with no leftover files or installed packages from previous conversations.
-
-```python client.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
-
-client = get_client(url="<DEPLOYMENT_URL>", api_key="<LANGSMITH_API_KEY>")
-
-# Conversation 1: install pandas and analyze data
-thread_1 = await client.threads.create()
-async for chunk in client.runs.stream(
-    thread_1["thread_id"],
-    "agent",
-    input={"messages": [{"role": "human", "content": "Install pandas and analyze sales_data.csv"}]},
-    stream_mode="updates",
-):
-    print(chunk.data)
-
-# Follow-up in the same conversation — pandas is still installed
-async for chunk in client.runs.stream(
-    thread_1["thread_id"],
-    "agent",
-    input={"messages": [{"role": "human", "content": "Now plot the results"}]},
-    stream_mode="updates",
-):
-    print(chunk.data)
-
-# Conversation 2: fresh sandbox — pandas is NOT installed, no files from conversation 1
-thread_2 = await client.threads.create()
-async for chunk in client.runs.stream(
-    thread_2["thread_id"],
-    "agent",
-    input={"messages": [{"role": "human", "content": "What packages are installed?"}]},
-    stream_mode="updates",
-):
-    print(chunk.data)
-```
-
-**Assistant-scoped**
-
-All threads share one sandbox. This is useful when the sandbox has state that's expensive to recreate, such as a cloned repo, installed dependencies, or build artifacts. Any conversation on the same assistant picks up where the last one left off without repeating setup.
-
-```python client.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
-
-client = get_client(url="<DEPLOYMENT_URL>", api_key="<LANGSMITH_API_KEY>")
-
-# Conversation 1: clone and set up the project
-thread_1 = await client.threads.create()
-async for chunk in client.runs.stream(
-    thread_1["thread_id"],
-    "agent",
-    input={"messages": [{"role": "human", "content": "Clone https://github.com/org/repo and install dependencies"}]},
-    stream_mode="updates",
-):
-    print(chunk.data)
-
-# Conversation 2: repo and dependencies are still there
-thread_2 = await client.threads.create()
-async for chunk in client.runs.stream(
-    thread_2["thread_id"],
-    "agent",
-    input={"messages": [{"role": "human", "content": "Run the test suite and fix any failures"}]},
-    stream_mode="updates",
-):
-    print(chunk.data)
-```
+> [tab] Assistant-scoped
+>
+> All threads share one sandbox. This is useful when the sandbox has state that's expensive to recreate, such as a cloned repo, installed dependencies, or build artifacts. Any conversation on the same assistant picks up where the last one left off without repeating setup.
+>
+> ```python client.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_client
+>
+> client = get_client(url="<DEPLOYMENT_URL>", api_key="<LANGSMITH_API_KEY>")
+>
+> # Conversation 1: clone and set up the project
+> thread_1 = await client.threads.create()
+> async for chunk in client.runs.stream(
+>     thread_1["thread_id"],
+>     "agent",
+>     input={"messages": [{"role": "human", "content": "Clone https://github.com/org/repo and install dependencies"}]},
+>     stream_mode="updates",
+> ):
+>     print(chunk.data)
+>
+> # Conversation 2: repo and dependencies are still there
+> thread_2 = await client.threads.create()
+> async for chunk in client.runs.stream(
+>     thread_2["thread_id"],
+>     "agent",
+>     input={"messages": [{"role": "human", "content": "Run the test suite and fix any failures"}]},
+>     stream_mode="updates",
+> ):
+>     print(chunk.data)
+> ```
 
 #### File transfers
 
@@ -734,7 +734,7 @@ Sandboxes are isolated containers, so your application code can't directly acces
 
 For provider-specific file transfer examples, see [working with files](/oss/python/deepagents/sandboxes#working-with-files). For provider setup, security, and lifecycle patterns, see the full [sandboxes guide](/oss/python/deepagents/sandboxes).
 
-> **Example: syncing skills and memories with custom middleware**
+> [accordion] Example: syncing skills and memories with custom middleware
 >
 > [Skill](/oss/python/deepagents/skills) scripts that the agent needs to execute must be uploaded into the sandbox before the agent runs. You may also want to sync [memories](/oss/python/deepagents/memory) so the agent can read and update them inside the container. Use [custom middleware](/oss/python/langchain/middleware/custom) with `before_agent` and `after_agent` hooks to move files across the sandbox boundary:
 >

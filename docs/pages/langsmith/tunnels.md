@@ -57,39 +57,39 @@ Run the connector inside your network. If your organization is not in the GCP US
 | GCP APAC | `https://apac.api.smith.langchain.com` |
 | AWS US | `https://aws.api.smith.langchain.com` |
 
-**Kubernetes (Helm)**
+> [tab] Kubernetes (Helm)
+>
+> Store the API key in a Secret, then install the [`langsmith-connector` chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-connector):
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> kubectl create namespace langsmith-connector
+> kubectl -n langsmith-connector create secret generic langsmith-connector-key \
+>   --from-literal=langsmith_api_key=<api key>
+>
+> helm repo add langchain https://langchain-ai.github.io/helm/
+> helm repo update
+> helm install langsmith-connector langchain/langsmith-connector \
+>   --namespace langsmith-connector \
+>   --set config.connectionId=<tunnel id> \
+>   --set config.existingSecretName=langsmith-connector-key \
+>   --set config.targets.litellm=http://litellm.internal:4000
+> ```
+>
+> Add `--set config.endpoint=<endpoint>` for a region other than GCP US. The chart mounts the key as a file and the connector reads it again on every reconnect, so you can rotate the key in the Secret without restarting the connector.
+>
+> Run a single replica. One connector already keeps two redundant connections to LangSmith.
 
-Store the API key in a Secret, then install the [`langsmith-connector` chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-connector):
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-kubectl create namespace langsmith-connector
-kubectl -n langsmith-connector create secret generic langsmith-connector-key \
-  --from-literal=langsmith_api_key=<api key>
-
-helm repo add langchain https://langchain-ai.github.io/helm/
-helm repo update
-helm install langsmith-connector langchain/langsmith-connector \
-  --namespace langsmith-connector \
-  --set config.connectionId=<tunnel id> \
-  --set config.existingSecretName=langsmith-connector-key \
-  --set config.targets.litellm=http://litellm.internal:4000
-```
-
-Add `--set config.endpoint=<endpoint>` for a region other than GCP US. The chart mounts the key as a file and the connector reads it again on every reconnect, so you can rotate the key in the Secret without restarting the connector.
-
-Run a single replica. One connector already keeps two redundant connections to LangSmith.
-
-**Docker**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-docker run -d --name langsmith-connector --restart unless-stopped \
-  -e LANGSMITH_CONNECTION_ID=<tunnel id> \
-  -e LANGSMITH_API_KEY=<api key> \
-  -e LANGSMITH_CONNECTOR_TARGETS="litellm=http://litellm.internal:4000" \
-  langchain/langsmith-connector:0.3.0
-```
-
-Add `-e LANGSMITH_ENDPOINT=<endpoint>` for a region other than GCP US. To read the key from a file instead, set `LANGSMITH_API_KEY_FILE` to its path.
+> [tab] Docker
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> docker run -d --name langsmith-connector --restart unless-stopped \
+>   -e LANGSMITH_CONNECTION_ID=<tunnel id> \
+>   -e LANGSMITH_API_KEY=<api key> \
+>   -e LANGSMITH_CONNECTOR_TARGETS="litellm=http://litellm.internal:4000" \
+>   langchain/langsmith-connector:0.3.0
+> ```
+>
+> Add `-e LANGSMITH_ENDPOINT=<endpoint>` for a region other than GCP US. To read the key from a file instead, set `LANGSMITH_API_KEY_FILE` to its path.
 
 The connector honors `HTTPS_PROXY` if your network requires an outbound proxy. Set `LOG_LEVEL=debug` to log every request it forwards. With Helm, set it through `connector.deployment.extraEnv`.
 

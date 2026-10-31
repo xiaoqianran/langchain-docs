@@ -99,7 +99,7 @@ If the file exists but fails these checks, tracing stops and the user sees a mes
 
 Admins usually install the file on each machine with a mobile device management (MDM) tool such as Jamf or Microsoft Intune. For every setting you can lock, see the [plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md).
 
-> **Example setup script**
+> [accordion] Example setup script
 >
 > Run this as root for each user, with `USER_HOME` set to that user's home folder:
 >

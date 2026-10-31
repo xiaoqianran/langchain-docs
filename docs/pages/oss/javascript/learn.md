@@ -14,11 +14,11 @@ Below are tutorials for common use cases, organized by framework.
 
 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) is the recommended way to build and deploy deep agents. You write the agent; LangSmith runs the harness and runtime.
 
-> **[Deep research](/oss/javascript/deepagents/deep-research)**
+> [card] [Deep research](/oss/javascript/deepagents/deep-research)
 >
 > Build a multi-step web research agent with Managed Deep Agents or the Deep Agents SDK.
 
-> **[Content builder](/oss/javascript/deepagents/content-builder)**
+> [card] [Content builder](/oss/javascript/deepagents/content-builder)
 >
 > Build a content writing agent with brand voice, skills, and image tools using Managed Deep Agents or the Deep Agents SDK.
 
@@ -26,11 +26,11 @@ Below are tutorials for common use cases, organized by framework.
 
 For maximum flexibility while using the same Deep Agents harness as [Managed Deep Agents](#managed-deep-agents), use the Deep Agents SDK and host agents yourself, or run a custom [LangSmith Deployment](/langsmith/deployment).
 
-> **[Deep research](/oss/javascript/deepagents/deep-research)**
+> [card] [Deep research](/oss/javascript/deepagents/deep-research)
 >
 > Build a multi-step web research agent with Managed Deep Agents or the Deep Agents SDK.
 
-> **[Content builder](/oss/javascript/deepagents/content-builder)**
+> [card] [Content builder](/oss/javascript/deepagents/content-builder)
 >
 > Build a content writing agent with brand voice, skills, and image tools using Managed Deep Agents or the Deep Agents SDK.
 
@@ -38,19 +38,19 @@ For maximum flexibility while using the same Deep Agents harness as [Managed Dee
 
 [LangChain](/oss/javascript/langchain/overview) [agent](/oss/javascript/langchain/agents) implementations make it easy to get started for simple use cases.
 
-> **[Semantic Search](/oss/javascript/langchain/knowledge-base)**
+> [card] [Semantic Search](/oss/javascript/langchain/knowledge-base)
 >
 > Build a semantic search engine over a PDF with LangChain components.
 
-> **[RAG Agent](/oss/javascript/deepagents/rag)**
+> [card] [RAG Agent](/oss/javascript/deepagents/rag)
 >
 > Create a Retrieval Augmented Generation (RAG) agent.
 
-> **[SQL Agent](/oss/javascript/langchain/sql-agent)**
+> [card] [SQL Agent](/oss/javascript/langchain/sql-agent)
 >
 > Build a SQL agent to interact with databases with human-in-the-loop review.
 
-> **[Voice Agent](/oss/javascript/langchain/voice-agent)**
+> [card] [Voice Agent](/oss/javascript/langchain/voice-agent)
 >
 > Build an agent you can speak and listen to.
 
@@ -59,11 +59,11 @@ For maximum flexibility while using the same Deep Agents harness as [Managed Dee
 LangChain's [agent](/oss/javascript/langchain/agents) implementations use [LangGraph](/oss/javascript/langgraph/overview) primitives.
 If deeper customization is required, agents can be implemented directly in LangGraph.
 
-> **[Custom RAG Agent](/oss/javascript/langgraph/agentic-rag)**
+> [card] [Custom RAG Agent](/oss/javascript/langgraph/agentic-rag)
 >
 > Build a RAG agent using LangGraph primitives for fine-grained control.
 
-> **[Custom SQL Agent](/oss/javascript/langgraph/sql-agent)**
+> [card] [Custom SQL Agent](/oss/javascript/langgraph/sql-agent)
 >
 > Implement a SQL agent directly in LangGraph for maximum flexibility.
 
@@ -75,29 +75,29 @@ These tutorials demonstrate [multi-agent patterns](/oss/javascript/langchain/mul
 
 These guides explain the core concepts and APIs underlying LangChain and LangGraph.
 
-> **[Memory](/oss/javascript/concepts/memory)**
+> [card] [Memory](/oss/javascript/concepts/memory)
 >
 > Understand persistence of interactions within and across threads.
 
-> **[Context engineering](/oss/javascript/concepts/context)**
+> [card] [Context engineering](/oss/javascript/concepts/context)
 >
 > Learn methods for providing AI applications the right information and tools to accomplish a task.
 
-> **[Graph API](/oss/javascript/langgraph/graph-api)**
+> [card] [Graph API](/oss/javascript/langgraph/graph-api)
 >
 > Explore LangGraph’s declarative graph-building API.
 
-> **[Functional API](/oss/javascript/langgraph/functional-api)**
+> [card] [Functional API](/oss/javascript/langgraph/functional-api)
 >
 > Build agents as a single function.
 
 ## Additional resources
 
-> **[LangChain Academy](https://academy.langchain.com/)**
+> [card] [LangChain Academy](https://academy.langchain.com/)
 >
 > Courses and exercises to level up your LangChain skills.
 
-> **[Case Studies](/oss/javascript/langgraph/case-studies)**
+> [card] [Case Studies](/oss/javascript/langgraph/case-studies)
 >
 > See how teams are using LangChain and LangGraph in production.
 

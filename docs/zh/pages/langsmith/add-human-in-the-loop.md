@@ -8,172 +8,7 @@
 
 ## 动态中断
 
-**Python**
-
-```python {highlight={2,34}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
-from langgraph_sdk.schema import Command
-client = get_client(url=<DEPLOYMENT_URL>)
-
-# Using the graph deployed with the name "agent"
-assistant_id = "agent"
-
-# create a thread
-thread = await client.threads.create()
-thread_id = thread["thread_id"]
-
-# Run the graph until the interrupt is hit.
-result = await client.runs.wait(
-    thread_id,
-    assistant_id,
-    input={"some_text": "original text"}   # (1)!
-)
-
-print(result['__interrupt__']) # (2)!
-# > [
-# >     {
-# >         'value': {'text_to_revise': 'original text'},
-# >         'resumable': True,
-# >         'ns': ['human_node:fc722478-2f21-0578-c572-d9fc4dd07c3b'],
-# >         'when': 'during'
-# >     }
-# > ]
-
-
-# Resume the graph
-print(await client.runs.wait(
-    thread_id,
-    assistant_id,
-    command=Command(resume="Edited text")   # (3)!
-))
-# > {'some_text': 'Edited text'}
-```
-
-1. 该图以某种初始状态被调用。
-2. 当图表命中中断时，它会返回一个带有有效负载和元数据的中断对象。
-   3\.该图通过 `Command(resume=...)` 恢复，注入人类输入并继续执行。
-
-**JavaScript**
-
-```javascript {highlight={32}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "@langchain/langgraph-sdk";
-const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-
-// Using the graph deployed with the name "agent"
-const assistantID = "agent";
-
-// create a thread
-const thread = await client.threads.create();
-const threadID = thread["thread_id"];
-
-// Run the graph until the interrupt is hit.
-const result = await client.runs.wait(
-  threadID,
-  assistantID,
-  { input: { "some_text": "original text" } }   # (1)!
-);
-
-console.log(result['__interrupt__']); # (2)!
-// > [
-# >     {
-# >         'value': {'text_to_revise': 'original text'},
-# >         'resumable': True,
-# >         'ns': ['human_node:fc722478-2f21-0578-c572-d9fc4dd07c3b'],
-# >         'when': 'during'
-# >     }
-# > ]
-
-// Resume the graph
-console.log(await client.runs.wait(
-    threadID,
-    assistantID,
-    { command: { resume: "Edited text" }}   # (3)!
-));
-# > {'some_text': 'Edited text'}
-```
-
-1. 该图以某种初始状态被调用。
-2. 当图表命中中断时，它会返回一个带有有效负载和元数据的中断对象。
-3. 该图通过`{ resume: ... }`命令对象恢复，注入人类输入并继续执行。
-
-**卷曲**
-
-创建一个线程：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
---url <DEPLOYMENT_URL>/threads \
---header 'Content-Type: application/json' \
---data '{}'
-```
-
-运行图表直到中断发生：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
---url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
---header 'Content-Type: application/json' \
---data "{
-  \"assistant_id\": \"agent\",
-  \"input\": {\"some_text\": \"original text\"}
-}"
-```
-
-恢复图表：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
- --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
- --header 'Content-Type: application/json' \
- --data "{
-   \"assistant_id\": \"agent\",
-   \"command\": {
-     \"resume\": \"Edited text\"
-   }
- }"
-```> **扩展示例：使用`interrupt`**
->
-> 这是您可以在代理服务器中运行的示例图。
-> 更多详情请参见[LangSmith quickstart](/langsmith/deployment-quickstart)。
->
-> ```python {highlight={7,13}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> from typing import TypedDict
->
-> from langgraph.checkpoint.memory import InMemorySaver
-> from langgraph.constants import START
-> from langgraph.graph import StateGraph
-> from langgraph.types import interrupt, Command
->
-> class State(TypedDict):
->     some_text: str
->
-> def human_node(state: State):
->     value = interrupt( # (1)!
->         {
->             "text_to_revise": state["some_text"] # (2)!
->         }
->     )
->     return {
->         "some_text": value # (3)!
->     }
->
->
-> # Build the graph
-> graph_builder = StateGraph(State)
-> graph_builder.add_node("human_node", human_node)
-> graph_builder.add_edge(START, "human_node")
->
-> graph = graph_builder.compile()
-> ```
->
-> 1. `interrupt(...)` 在 `human_node` 暂停执行，向人类展示给定的有效负载。
-> 2. 任何 JSON 可序列化值都可以传递给 [⟦T25⟧](https://reference.langchain.com/python/langgraph/types/interrupt) 函数。这里是一个包含要修改的文本的字典。
-> 3.恢复后，`interrupt(...)`的返回值是人类提供的输入，用于更新状态。
->
-> 一旦您有正在运行的代理服务器，您就可以使用它与其交互
-> [LangGraph SDK](/langsmith/langgraph-python-sdk)
->
-> **Python**
+> [选项卡] Python
 >
 > ```python {highlight={2,34}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langgraph_sdk import get_client
@@ -217,8 +52,8 @@ curl --request POST \
 > 1. 图形以某种初始状态调用。
 > 2. 当图表命中中断时，它返回一个带有有效负载和元数据的中断对象。
 > 3\.该图通过 `Command(resume=...)` 恢复，注入人类输入并继续执行。
->
-> **JavaScript**
+
+> [选项卡] JavaScript
 >
 > ```javascript {highlight={32}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { Client } from "@langchain/langgraph-sdk";
@@ -239,7 +74,7 @@ curl --request POST \
 > );
 >
 > console.log(result['__interrupt__']); # (2)!
-> # > [
+> // > [
 > # >     {
 > # >         'value': {'text_to_revise': 'original text'},
 > # >         'resumable': True,
@@ -260,8 +95,8 @@ curl --request POST \
 > 1. 图形以某种初始状态调用。
 > 2. 当图表命中中断时，它返回一个带有有效负载和元数据的中断对象。
 > 3. 使用 `{ resume: ... }` 命令对象恢复图表，注入人类输入并继续执行。
->
-> **卷曲**
+
+> [选项卡] 卷曲
 >
 > 创建一个线程：
 >
@@ -272,7 +107,7 @@ curl --request POST \
 > --data '{}'
 > ```
 >
-> 运行图表直到中断发生：
+> 运行图表直到中断发生。：
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > curl --request POST \
@@ -283,19 +118,184 @@ curl --request POST \
 >   \"input\": {\"some_text\": \"original text\"}
 > }"
 > ```
->> 恢复图表：
+>
+> 恢复图表：
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > curl --request POST \
-> --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
-> --header 'Content-Type: application/json' \
-> --data "{
->   \"assistant_id\": \"agent\",
->   \"command\": {
->     \"resume\": \"Edited text\"
->   }
-> }"
+>  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
+>  --header 'Content-Type: application/json' \
+>  --data "{
+>    \"assistant_id\": \"agent\",
+>    \"command\": {
+>      \"resume\": \"Edited text\"
+>    }
+>  }"
+> ```> [手风琴] 扩展示例：使用 `interrupt`
+>
+> 这是您可以在代理服务器中运行的示例图。
+> 更多详情请参见[LangSmith quickstart](/langsmith/deployment-quickstart)。
+>
+> ```python {highlight={7,13}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from typing import TypedDict
+>
+> from langgraph.checkpoint.memory import InMemorySaver
+> from langgraph.constants import START
+> from langgraph.graph import StateGraph
+> from langgraph.types import interrupt, Command
+>
+> class State(TypedDict):
+>     some_text: str
+>
+> def human_node(state: State):
+>     value = interrupt( # (1)!
+>         {
+>             "text_to_revise": state["some_text"] # (2)!
+>         }
+>     )
+>     return {
+>         "some_text": value # (3)!
+>     }
+>
+>
+> # Build the graph
+> graph_builder = StateGraph(State)
+> graph_builder.add_node("human_node", human_node)
+> graph_builder.add_edge(START, "human_node")
+>
+> graph = graph_builder.compile()
 > ```
+>
+> 1. `interrupt(...)` 在 `human_node` 暂停执行，向人类展示给定的有效负载。
+> 2. 任何 JSON 可序列化值都可以传递给 [⟦T25⟧](https://reference.langchain.com/python/langgraph/types/interrupt) 函数。这里是一个包含要修改的文本的字典。
+> 3.恢复后，`interrupt(...)`的返回值是人类提供的输入，用于更新状态。
+>
+> 一旦您有正在运行的代理服务器，您就可以使用它与其交互
+> [LangGraph SDK](/langsmith/langgraph-python-sdk)
+>
+>> [选项卡] Python
+>>
+>> ```python {highlight={2,34}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > from langgraph_sdk import get_client
+> > from langgraph_sdk.schema import Command
+> > client = get_client(url=<DEPLOYMENT_URL>)
+> >
+> > # Using the graph deployed with the name "agent"
+> > assistant_id = "agent"
+> >
+> > # create a thread
+> > thread = await client.threads.create()
+> > thread_id = thread["thread_id"]
+> >
+> > # Run the graph until the interrupt is hit.
+> > result = await client.runs.wait(
+> >     thread_id,
+> >     assistant_id,
+> >     input={"some_text": "original text"}   # (1)!
+> > )
+> >
+> > print(result['__interrupt__']) # (2)!
+> > # > [
+> > # >     {
+> > # >         'value': {'text_to_revise': 'original text'},
+> > # >         'resumable': True,
+> > # >         'ns': ['human_node:fc722478-2f21-0578-c572-d9fc4dd07c3b'],
+> > # >         'when': 'during'
+> > # >     }
+> > # > ]
+> >
+> >
+> > # Resume the graph
+> > print(await client.runs.wait(
+> >     thread_id,
+> >     assistant_id,
+> >     command=Command(resume="Edited text")   # (3)!
+> > ))
+> > # > {'some_text': 'Edited text'}
+> > ```
+>>
+>> 1. 该图以某种初始状态调用。
+>> 2. 当图命中中断时，它返回一个带有有效负载和元数据的中断对象。
+> > 3\.该图通过 `Command(resume=...)` 恢复，注入人类输入并继续执行。
+>
+>> [选项卡] JavaScript
+>>
+>> ```javascript {highlight={32}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import { Client } from "@langchain/langgraph-sdk";
+> > const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+> >
+> > // Using the graph deployed with the name "agent"
+> > const assistantID = "agent";
+> >
+> > // create a thread
+> > const thread = await client.threads.create();
+> > const threadID = thread["thread_id"];
+> >
+> > // Run the graph until the interrupt is hit.
+> > const result = await client.runs.wait(
+> >   threadID,
+> >   assistantID,
+> >   { input: { "some_text": "original text" } }   # (1)!
+> > );
+> >
+> > console.log(result['__interrupt__']); # (2)!
+> > # > [
+> > # >     {
+> > # >         'value': {'text_to_revise': 'original text'},
+> > # >         'resumable': True,
+> > # >         'ns': ['human_node:fc722478-2f21-0578-c572-d9fc4dd07c3b'],
+> > # >         'when': 'during'
+> > # >     }
+> > # > ]
+> >
+> > // Resume the graph
+> > console.log(await client.runs.wait(
+> >     threadID,
+> >     assistantID,
+> >     { command: { resume: "Edited text" }}   # (3)!
+> > ));
+> > # > {'some_text': 'Edited text'}
+> > ```
+>>
+>> 1. 该图以某种初始状态调用。
+>> 2. 当图命中中断时，它返回一个带有有效负载和元数据的中断对象。
+>> 3. 该图通过`{ resume: ... }`命令对象恢复，注入人类的输入并继续执行。
+>
+>> [选项卡] cURL
+>>
+>> 创建线程：
+>>
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > curl --request POST \
+> > --url <DEPLOYMENT_URL>/threads \
+> > --header 'Content-Type: application/json' \
+> > --data '{}'
+> > ```
+>>>> 运行图表直到中断发生：
+>>
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > curl --request POST \
+> > --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
+> > --header 'Content-Type: application/json' \
+> > --data "{
+> >   \"assistant_id\": \"agent\",
+> >   \"input\": {\"some_text\": \"original text\"}
+> > }"
+> > ```
+>>
+>> 恢复图：
+>>
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > curl --request POST \
+> > --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
+> > --header 'Content-Type: application/json' \
+> > --data "{
+> >   \"assistant_id\": \"agent\",
+> >   \"command\": {
+> >     \"resume\": \"Edited text\"
+> >   }
+> > }"
+> > ```
 
 ## 静态中断
 
@@ -320,156 +320,156 @@ graph = graph_builder.compile( # (1)!
 
 或者，您可以在运行时设置静态中断：
 
-**Python**
+> [选项卡] Python
+>
+> ```python {highlight={1,5,6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.runs.wait( # (1)!
+>     thread_id,
+>     assistant_id,
+>     inputs=inputs,
+>     interrupt_before=["node_a"], # (2)!
+>     interrupt_after=["node_b", "node_c"] # (3)!
+> )
+> ```
+>
+> 1. 使用`interrupt_before`和`interrupt_after`参数调用`client.runs.wait`。这是一个运行时配置，可以针对每次调用进行更改。
+> 2. `interrupt_before` 指定执行该节点之前应暂停执行的节点。
+> 3. `interrupt_after` 指定该节点执行完毕后应暂停执行的节点。> [选项卡] JavaScript
+>
+> ```javascript {highlight={1,6,7}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.runs.wait( // (1)!
+>     threadID,
+>     assistantID,
+>     {
+>     input: input,
+>     interruptBefore: ["node_a"], // (2)!
+>     interruptAfter: ["node_b", "node_c"] // (3)!
+>     }
+> )
+> ```
+>
+> 1. 使用`interruptBefore`和`interruptAfter`参数调用`client.runs.wait`。这是一个运行时配置，可以针对每次调用进行更改。
+> 2. `interruptBefore` 指定执行该节点之前应暂停执行的节点。
+> 3. `interruptAfter` 指定该节点执行完毕后应暂停执行的节点。
 
-```python {highlight={1,5,6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.runs.wait( # (1)!
-    thread_id,
-    assistant_id,
-    inputs=inputs,
-    interrupt_before=["node_a"], # (2)!
-    interrupt_after=["node_b", "node_c"] # (3)!
-)
-```
-
-1. 使用`interrupt_before`和`interrupt_after`参数调用`client.runs.wait`。这是一个运行时配置，可以针对每次调用进行更改。
-2. `interrupt_before` 指定执行该节点之前应暂停执行的节点。
-3. `interrupt_after` 指定该节点执行完毕后应暂停执行的节点。
-
-**JavaScript**
-
-```javascript {highlight={1,6,7}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await client.runs.wait( // (1)!
-    threadID,
-    assistantID,
-    {
-    input: input,
-    interruptBefore: ["node_a"], // (2)!
-    interruptAfter: ["node_b", "node_c"] // (3)!
-    }
-)
-```1. 使用`interruptBefore`和`interruptAfter`参数调用`client.runs.wait`。这是一个运行时配置，可以针对每次调用进行更改。
-2. `interruptBefore` 指定执行该节点之前应暂停执行的节点。
-3. `interruptAfter` 指定该节点执行完毕后应暂停执行的节点。
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
---url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
---header 'Content-Type: application/json' \
---data "{
-    \"assistant_id\": \"agent\",
-    \"interrupt_before\": [\"node_a\"],
-    \"interrupt_after\": [\"node_b\", \"node_c\"],
-    \"input\": <INPUT>
-}"
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+> --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
+> --header 'Content-Type: application/json' \
+> --data "{
+>     \"assistant_id\": \"agent\",
+>     \"interrupt_before\": [\"node_a\"],
+>     \"interrupt_after\": [\"node_b\", \"node_c\"],
+>     \"input\": <INPUT>
+> }"
+> ```
 
 以下示例显示如何添加静态中断：
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_client
+> client = get_client(url=<DEPLOYMENT_URL>)
+>
+> # Using the graph deployed with the name "agent"
+> assistant_id = "agent"
+>
+> # create a thread
+> thread = await client.threads.create()
+> thread_id = thread["thread_id"]
+>
+> # Run the graph until the breakpoint
+> result = await client.runs.wait(
+>     thread_id,
+>     assistant_id,
+>     input=inputs   # (1)!
+> )
+>
+> # Resume the graph
+> await client.runs.wait(
+>     thread_id,
+>     assistant_id,
+>     input=None   # (2)!
+> )
+> ```
+>
+> 1. 运行图表直至遇到第一个断点。
+> 2. 通过传入 `None` 作为输入来恢复图表。这将运行图表直到遇到下一个断点。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
-client = get_client(url=<DEPLOYMENT_URL>)
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client } from "@langchain/langgraph-sdk";
+> const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+>
+> // Using the graph deployed with the name "agent"
+> const assistantID = "agent";
+>
+> // create a thread
+> const thread = await client.threads.create();
+> const threadID = thread["thread_id"];
+>
+> // Run the graph until the breakpoint
+> const result = await client.runs.wait(
+>   threadID,
+>   assistantID,
+>   { input: input }   # (1)!
+> );
+>
+> // Resume the graph
+> await client.runs.wait(
+>   threadID,
+>   assistantID,
+>   { input: null }   # (2)!
+> );
+> ```
+>
+> 1. 运行图表直至遇到第一个断点。
+> 2. 通过传入 `null` 作为输入来恢复图表。这将运行图表直到遇到下一个断点。
 
-# Using the graph deployed with the name "agent"
-assistant_id = "agent"
+> [选项卡] 卷曲
+>
+> 创建一个线程：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+> --url <DEPLOYMENT_URL>/threads \
+> --header 'Content-Type: application/json' \
+> --data '{}'
+> ```
+>
+> 运行图形直到断点：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+> --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
+> --header 'Content-Type: application/json' \
+> --data "{
+>   \"assistant_id\": \"agent\",
+>   \"input\": <INPUT>
+> }"
+> ```
+>
+> 恢复图表：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+> --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
+> --header 'Content-Type: application/json' \
+> --data "{
+>   \"assistant_id\": \"agent\"
+> }"
+> ```
 
-# create a thread
-thread = await client.threads.create()
-thread_id = thread["thread_id"]
-
-# Run the graph until the breakpoint
-result = await client.runs.wait(
-    thread_id,
-    assistant_id,
-    input=inputs   # (1)!
-)
-
-# Resume the graph
-await client.runs.wait(
-    thread_id,
-    assistant_id,
-    input=None   # (2)!
-)
-```
-
-1. 运行图表直到遇到第一个断点。
-2. 通过传入 `None` 作为输入来恢复图表。这将运行图表直到遇到下一个断点。
-
-**JavaScript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "@langchain/langgraph-sdk";
-const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-
-// Using the graph deployed with the name "agent"
-const assistantID = "agent";
-
-// create a thread
-const thread = await client.threads.create();
-const threadID = thread["thread_id"];
-
-// Run the graph until the breakpoint
-const result = await client.runs.wait(
-  threadID,
-  assistantID,
-  { input: input }   # (1)!
-);
-
-// Resume the graph
-await client.runs.wait(
-  threadID,
-  assistantID,
-  { input: null }   # (2)!
-);
-```
-
-1. 运行图表直到遇到第一个断点。
-2. 通过传入 `null` 作为输入来恢复图表。这将运行图表直到遇到下一个断点。
-
-**卷曲**
-
-创建一个线程：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
---url <DEPLOYMENT_URL>/threads \
---header 'Content-Type: application/json' \
---data '{}'
-```
-
-运行图表直到断点：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
---url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
---header 'Content-Type: application/json' \
---data "{
-  \"assistant_id\": \"agent\",
-  \"input\": <INPUT>
-}"
-```
-
-恢复图表：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
---url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
---header 'Content-Type: application/json' \
---data "{
-  \"assistant_id\": \"agent\"
-}"
-```
-
-## 了解更多
-
-* [Human-in-the-loop conceptual guide](/oss/python/langgraph/interrupts)：了解有关 LangGraph 人机交互功能的更多信息。
+## 了解更多* [Human-in-the-loop conceptual guide](/oss/python/langgraph/interrupts)：了解有关 LangGraph 人机交互功能的更多信息。
 * [Common patterns](/oss/python/langgraph/interrupts#common-patterns)：学习如何实现批准/拒绝操作、请求用户输入、工具调用审查和验证人工输入等模式。
 * [Human-in-the-loop over MCP](/langsmith/server-mcp-elicitation)：应答来自MCP客户端的中断。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/add-human-in-the-loop.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
