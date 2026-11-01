@@ -48,7 +48,7 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 
 ## 跟踪本地运行`mda dev` 将跟踪发送到代理的**本地**环境。项目名称为`{name}-local`，取自您传递给`define_deep_agent`或`defineDeepAgent`的`name`。
 
-在 [agent-based workspace](/langsmith/agents) 中，LangSmith 拒绝这些跟踪，直到代理记录存在。 [⟦T15⟧](/langsmith/javascript/managed-deep-agents-deploy) 创建该记录。 `mda dev` 本身则不然。
+在 [agent-based workspace](/langsmith/agent-registry) 中，LangSmith 拒绝这些跟踪，直到代理记录存在。 [⟦T15⟧](/langsmith/javascript/managed-deep-agents-deploy) 创建该记录。 `mda dev` 本身则不然。
 
 在依赖本地跟踪之前，请在 UI 或 API 中使用相同的标识符运行 [create the agent](/langsmith/create-an-agent) 一次，或者运行 `mda deploy` 一次。当跟踪被拒绝时，工作室聊天仍然有效。
 

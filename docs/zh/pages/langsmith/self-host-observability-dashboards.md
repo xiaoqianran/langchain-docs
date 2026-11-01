@@ -15,7 +15,7 @@ LangSmith 自托管仪表板将运营指标分组到 SmithDB 和 Sandboxes 选�
 这两个仪表板共享组件组织，但它们的数据源和覆盖范围不同。|覆盖范围|数据狗 | Grafana 与 Prometheus |
 | - | - | - |
 | SmithDB 指标和 LangSmith 摄取路径 |包含 |包含 |
-|沙箱主机容量、生命周期、执行、资源、网络和运行状况 |包含 |包含 |
+|沙盒主机容量、生命周期、执行、资源、网络和运行状况 |包含 |包含 |
 | JuiceFS 挂载指标 |可选单独刮|可选单独刮|
 |沙箱 API/APM 视图 |可选的 Datadog APM |不包括在内|
 | AWS/GCP 存储桶指标 |可选的云集成 |不包括在内|
@@ -24,7 +24,7 @@ Grafana 的 Sandbox 选项卡不假设 Prometheus 中存在 Datadog 派生的指
 
 ## 检查先决条件
 
-使用现有的[self-hosted LangSmith deployment](/langsmith/self-hosted)和监控装置。仅对您操作的组件启用收集。这些示例不安装监控软件或启用 SmithDB 或沙箱。* **Datadog**：使用具有 Kubernetes 自动发现和 [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/) 的代理。沙箱注释需要 Agent 7.36 或更高版本。
+使用现有的[self-hosted LangSmith deployment](/langsmith/self-hosted)和监控装置。仅对您操作的组件启用收集。这些示例不安装监控软件或启用 SmithDB 或沙箱。* **Datadog**：使用具有 Kubernetes 自动发现和 [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/) 的代理。沙盒注释需要 Agent 7.36 或更高版本。
 * **Grafana**：将 Grafana 13 或更高版本用于本机选项卡和 V2 仪表板资源格式。配置现有的 Prometheus 数据源。
 * **专用连接**：收集器需要访问组件指标端点。不要通过公众进入暴露它们。沙箱主机使用节点网络，因此通过节点防火墙配置来限制访问。
 * **权限**：您需要导入仪表板和更新集合配置的权限。 Prometheus Pod 发现需要访问选定的 Kubernetes 命名空间。
@@ -102,7 +102,7 @@ Grafana `sandbox_job` 和 `juicefs_job` 变量默认为 All，并且在普通标
 
 JuiceFS 与主机分开导出`juicefs_*` 指标。对于 Datadog，`datadog-juicefs-values.yaml` 替换仅主机值文件并收集两个侦听器。对于 Prometheus，添加单独的 JuiceFS 作业。
 
-JuiceFS 默认为环回。这些示例不会更改其侦听器。如果更改绑定地址，请将其限制为预期的专用网络并保留现有的挂载选项。挂载配置更改还需要主机转出。单独配置外部管理的安装并避免重复抓取。由于稀疏图像和写时复制克隆，逻辑文件系统大小与物理存储桶使用情况不同。Datadog 的可选 API 小部件使用 `trace.http.request`、`trace.http.request.hits` 和 `trace.http.request.errors`。按照[Export LangSmith telemetry](/langsmith/export-backend#traces)并选择一个`api_service`以避免重复计算。验证您帐户中的名称，因为 OpenTelemetry 检测可能有所不同。公共 API 面板不包括内部报告，内部报告有自己的部分。 HTTP 延迟不包括流媒体和服务代理流量；单独的面板显示连接持续时间。 APM 错误标志和 HTTP 5xx 响应是单独的信号。
+JuiceFS 默认为环回。这些示例不会更改其侦听器。如果更改绑定地址，请将其限制到预期的专用网络并保留现有的挂载选项。挂载配置更改还需要主机转出。单独配置外部管理的安装并避免重复抓取。由于稀疏映像和写时复制克隆，逻辑文件系统大小与物理存储桶使用情况不同。Datadog 的可选 API 小部件使用 `trace.http.request`、`trace.http.request.hits` 和 `trace.http.request.errors`。按照[Export LangSmith telemetry](/langsmith/export-backend#traces)并选择一个`api_service`以避免重复计算。验证您帐户中的名称，因为 OpenTelemetry 检测可能有所不同。公共 API 面板不包括内部报告，内部报告有自己的部分。 HTTP 延迟不包括流媒体和服务代理流量；单独的面板显示连接持续时间。 APM 错误标志和 HTTP 5xx 响应是单独的信号。
 
 对于 Datadog 存储桶面板，启用适当的 AWS 或 GCP 集成并选择准确的 JuiceFS 存储桶。占位符默认选择不存储桶。 Grafana 提供的 Sandbox 选项卡不包括这些 API/APM 或提供程序存储集成。
 
@@ -112,19 +112,19 @@ Datadog 预览显示共享过滤器、组件选项卡和彩色沙盒部分。其
 
 ![Datadog dashboard with shared deployment filters, SmithDB and Sandboxes tabs, colored sections, and boot-path charts](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-datadog-overview.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=fd4fc7074e51092bde0dae9bf59af38e)
 
-> **公共 API 流量和延迟**
+> [手风琴] 公共 API 流量和延迟
 >
 > ![Sandbox API requests by status, latency percentiles, and endpoint rankings](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-api.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=8a4c4f3d9438babf0126163434c7fa9e)
 
-> **生命周期操作和故障**
+> [手风琴] 生命周期操作和故障
 >
 > ![Sandbox operation errors, operation rates, and creation duration by outcome and stage](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-lifecycle.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=d6b1e082b6bfd9afa22e0f11e6da240b)
 
-## 预览 Grafana Sandbox 选项卡
+## 预览 Grafana Sandbox 选项卡Grafana 预览显示共享过滤器和混合宽度沙箱面板。它的图表使用合成示例数据，而不是实时遥测或性能基准。
 
-Grafana 预览显示共享过滤器和混合宽度沙箱面板。它的图表使用合成示例数据，而不是实时遥测或性能基准。
+![Grafana dashboard with shared data source and namespace selectors, component tabs, and mixed-width Sandbox charts](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-grafana-overview.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=fff175f785cfe9ae664480a12dd770a9)
 
-![Grafana dashboard with shared data source and namespace selectors, component tabs, and mixed-width Sandbox charts](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-grafana-overview.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=fff175f785cfe9ae664480a12dd770a9)## 更新现有仪表板
+## 更新现有仪表板
 
 在导入替换仪表板之前备份自定义仪表板。 Datadog JSON 导入会覆盖现有的仪表板内容。统一的 Grafana 导出使用与旧版 SmithDB 仪表板不同的 UID；保存前检查导入目的地。
 
@@ -134,9 +134,7 @@ Grafana 预览显示共享过滤器和混合宽度沙箱面板。它的图表使
 
 ## 解决丢失数据的问题
 
-在解释空故障图之前检查收集器的运行状况和连续导出的仪表。在事件发生之前，计数器可能没有序列。在抓取之前退出的进程可能会丢失其最终的计数器增量；调查出口时检查日志。
-
-对于空的可选部分，请在更改运行时之前检查集成可用性、指标名称和选择器值。
+在解释空故障图之前检查收集器的运行状况和连续导出的仪表。在事件发生之前，计数器可能没有序列。在抓取之前退出的进程可能会丢失其最终的计数器增量；调查出口时检查日志。对于空的可选部分，请在更改运行时之前检查集成可用性、指标名称和选择器值。
 
 ## 另请参阅
 

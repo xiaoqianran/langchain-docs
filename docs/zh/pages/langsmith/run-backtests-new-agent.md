@@ -4,21 +4,21 @@
 
 # 在新版本的代理上运行回测
 
-Deploying your agent is just the beginning of a continuous improvement process. After you deploy to production, you'll want to refine your system by enhancing prompts, language models, tools, and architectures. Backtesting involves assessing new versions of your agent using historical data and comparing the new outputs to the original ones.与使用预生产数据集的评估相比，回溯测试可以更清楚地表明代理的新版本是否比当前部署有所改进。
+部署代理只是持续改进过程的开始。部署到生产环境后，您需要通过增强提示、语言模型、工具和体系结构来完善系统。回溯测试涉及使用历史数据评估代理的新版本，并将新输出与原始输出进行比较。与使用预生产数据集的评估相比，回溯测试可以更清楚地表明代理的新版本是否比当前部署有所改进。
 
 以下是回测的基本步骤：
 
-1. Select sample runs from your agent's Production environment to test against.
-2. Transform the run inputs into a dataset and record the run outputs as an initial experiment against that dataset.
-3. Execute your new system on the new dataset and compare the results of the experiments.
+1. 从代理的生产环境中选择示例运行进行测试。
+2. 将运行输入转换为数据集，并将运行输出记录为针对该数据集的初始实验。
+3. 在新数据集上执行新系统并比较实验结果。
 
-This process will provide you with a new dataset of representative inputs, which you can version and use for backtesting your models.> [!注意]
+此过程将为您提供一个新的代表性输入数据集，您可以对其进行版本控制并用于对模型进行回溯测试。> [!注意]
 >
 > 通常，您不会获得明确的“基本事实”答案。在这种情况下，您可以手动标记输出或使用不依赖参考数据的评估器。如果您的代理允许捕获真实标签，例如允许用户留下反馈，我们强烈建议您这样做。
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T11⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T11⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 设置
 
@@ -269,7 +269,7 @@ candidate_results = await client.aevaluate(
 
 结果揭示了两个模型之间有趣的权衡：
 
-1. GPT-4o 在遵循格式规则方面表现出改进的性能，始终包括所请求的表情符号数量
+1. GPT-4o 在遵循格式规则方面表现出改进的性能，始终包括所需数量的表情符号
 2. 然而，GPT-4o 在提供的搜索结果方面不太可靠
 
 为了说明接地问题：在 [this example run](https://smith.langchain.com/public/be060e19-0bc0-4798-94f5-c3d35719a5f6/r/07d43e7a-8632-479d-ae28-c7eac6e54da4) 中，GPT-4o 包含了有关 Abu Bakr Muhammad ibn Zakariyyā al-Rāzī 的医学贡献的事实，但这些事实未出现在搜索结果中。这展示了它如何从其内部知识中提取而不是严格使用所提供的信息。

@@ -5,4 +5,6 @@
 # 补丁工作区
 
 /langsmith/langsmith-platform-openapi.json 补丁 /api/v1/workspaces/{workspace_id}
-更新工作区。
+重命名当前组织中的工作区。
+
+需要工作区设置管理权限。已被使用的名称返回 409。

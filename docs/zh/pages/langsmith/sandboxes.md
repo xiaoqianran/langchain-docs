@@ -30,7 +30,7 @@
 
 ## 网络访问默认情况下，限制出站适用于非企业组织以及提出请求的组织。获得批准豁免的组织可以使用不受限制的出口。受限沙箱使用通用包注册表、源存储库和模型 API 的托管允许列表。 LangSmith 会阻止白名单之外的目的地，即使您将它们添加到沙箱的代理配置中也是如此。
 
-如果您需要不受限制的出口，请在 [file a support ticket](https://support.langchain.com) 中注明您的组织或工作区 ID、区域、所需的目的地和端口以及用例。欲了解更多信息，请参阅[restricted egress and access requests](/langsmith/sandbox-auth-proxy#organization-level-restricted-egress)。
+如果您需要不受限制的出口，请使用 [file a support ticket](https://support.langchain.com) 包含您的组织或工作区 ID、区域、所需的目的地和端口以及用例。欲了解更多信息，请参阅[restricted egress and access requests](/langsmith/sandbox-auth-proxy#organization-level-restricted-egress)。
 
 ## 开始吧
 
@@ -78,7 +78,7 @@ await sandbox.delete();
 
 > [!提示]
 >
-> 更喜欢命令行？ [Sandbox CLI](/langsmith/sandbox-cli) 允许您创建沙箱、运行命令和打开交互式 shell，而无需编写任何代码。
+> 更喜欢命令行？ [Sandbox CLI](/langsmith/sandbox-cli) 允许您创建沙箱、运行命令以及打开交互式 shell，而无需编写任何代码。
 
 ### 4. 与代理一起使用沙箱
 
@@ -88,37 +88,37 @@ await sandbox.delete();
 
 ## 资源
 
-> **[Snapshots](/langsmith/sandbox-snapshots)**
+> [卡][Snapshots](/langsmith/sandbox-snapshots)
 >
 > 从 Docker 映像构建文件系统映像或捕获正在运行的沙箱，然后从中启动沙箱。
 
-> **[Service URLs](/langsmith/sandbox-service-urls)**
+> [卡][Service URLs](/langsmith/sandbox-service-urls)
 >
 > 通过经过身份验证的 URL 访问在沙箱内运行的 HTTP 服务。
 
-> **[Auth proxy](/langsmith/sandbox-auth-proxy)**
+> [卡][Auth proxy](/langsmith/sandbox-auth-proxy)
 >
 > 将凭证注入出站 API 请求，无需硬编码机密。
 
-> **[Mounts](/langsmith/sandbox-mounts)**
+> [卡][Mounts](/langsmith/sandbox-mounts)
 >
 > 将 S3 存储桶、GCS 存储桶和公共 Git 存储库附加到沙箱文件系统。
 
-> **[Permissions](/langsmith/sandbox-permissions)**
+> [卡][Permissions](/langsmith/sandbox-permissions)
 >
 > 控制哪些工作区成员可以在创建沙箱后与其进行交互。
 
-> **[CLI](/langsmith/sandbox-cli)**
+> [卡][CLI](/langsmith/sandbox-cli)
 >
 > 从命令行构建快照、管理沙箱、打开控制台和隧道 TCP 端口。
 
-> **[SDK usage](/langsmith/sandbox-sdk)**
+> [卡][SDK usage](/langsmith/sandbox-sdk)
 >
 > 使用 Python 或 TypeScript SDK 以编程方式创建和管理沙箱。
 
-> **[Self-hosted setup](/langsmith/enable-self-hosted-sandboxes)**
+> [卡][Self-hosted setup](/langsmith/enable-self-hosted-sandboxes)
 >
-> 使用 Helm 或 Terraform 在自托管 LangSmith 部署上启用沙箱。> **[Harbor](/langsmith/harbor-integrations#sandboxes)**
+> 使用 Helm 或 Terraform 在自托管 LangSmith 部署上启用沙箱。> [卡][Harbor](/langsmith/harbor-integrations#sandboxes)
 >
 > 在 LangSmith 沙盒上运行 Harbor 评估和部署。
 

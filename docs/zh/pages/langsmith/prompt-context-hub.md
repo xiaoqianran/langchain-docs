@@ -12,21 +12,21 @@
 
 ## 提示
 
-> **[Create and update prompts](/langsmith/create-a-prompt)**
+> [卡][Create and update prompts](/langsmith/create-a-prompt)
 >
 > 通过 UI 或 SDK 构建提示、配置设置、使用工具、添加多模式输入并连接模型提供程序。
 
-> **[Manage prompts](/langsmith/manage-prompts)**
+> [卡][Manage prompts](/langsmith/manage-prompts)
 >
 > 使用标签进行组织、提交更改、触发 Webhook 并通过公共提示中心进行共享。
 
-> **[Explore the prompt hub](/langsmith/manage-prompts#public-prompt-hub)**
+> [卡][Explore the prompt hub](/langsmith/manage-prompts#public-prompt-hub)
 >
 > 浏览和管理提示标签并从LangChain Hub 发现社区提示。
 
-> **[Open the Playground](/langsmith/prompt-engineering-concepts#playground)**
+> [卡][Open the Playground](/langsmith/prompt-engineering-concepts#playground)
 >
-> 使用自定义端点和模型配置根据提示进行测试和实验。> **[Follow tutorials](/langsmith/optimize-classifier)**
+> 使用自定义端点和模型配置根据提示进行测试和实验。> [卡][Follow tutorials](/langsmith/optimize-classifier)
 >
 > 学习分步技术，例如优化分类器和高级提示工程。
 
@@ -34,19 +34,19 @@
 
 ## 上下文中心
 
-> **[Concepts](/langsmith/context-engineering-concepts)**
+> [卡][Concepts](/langsmith/context-engineering-concepts)
 >
 > 了解上下文工程的核心概念：技能、代理、版本控制和共享。
 
-> **[Use the Context Hub](/langsmith/use-the-context-hub)**
+> [卡][Use the Context Hub](/langsmith/use-the-context-hub)
 >
 > 创建上下文，查看其文件和历史记录，并将其提升为环境。
 
-> **[Manage contexts with the SDK](/langsmith/manage-contexts-sdk)**
+> [卡][Manage contexts with the SDK](/langsmith/manage-contexts-sdk)
 >
 > 以编程方式在 Context Hub 中推送、拉取、列出和删除代理和技能存储库。
 
-> **[Configure commit webhooks](/langsmith/context-hub-webhooks)**
+> [卡片] [Configure commit webhooks](/langsmith/context-hub-webhooks)
 >
 > 将工作区中的每个代理和技能提交发送到外部 HTTPS 端点。
 

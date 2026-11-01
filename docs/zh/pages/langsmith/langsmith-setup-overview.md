@@ -8,23 +8,23 @@ LangSmith 工作区的组织方式、LangSmith 的运行位置以及整个组织
 
 LangSmith是用于测试、部署、监控和改进代理的平台。此选项卡涵盖您在该工作之前和周围设置的内容：工作区如何组织您构建的内容、LangSmith 在哪里运行以及谁可以做什么。
 
-如果您正在决定 LangSmith 的运行位置，请从 [hosting options](/langsmith/platform-setup) 开始；如果您不熟悉 LangSmith 如何组织工作区，请从 [agents](/langsmith/agents) 开始。
+如果您正在决定 LangSmith 的运行位置，请从 [hosting options](/langsmith/platform-setup) 开始；如果您不熟悉 LangSmith 如何组织工作区，请从 [agents](/langsmith/agent-registry#agent) 开始。
 
 ## 探索
 
-> **[Hosting options](/langsmith/platform-setup)**
+> [卡][Hosting options](/langsmith/platform-setup)
 >
 > 云、自带云 (BYOC) 和自托管，以及如何选择与您的数据所在位置相匹配的云。
 
-> **[Agent-based workspaces](/langsmith/agents)**
+> [卡][Agent-based workspaces](/langsmith/agent-registry)
 >
 > 代理、保存每个代理痕迹的环境、如何在代理之间切换以及如何在 UI 中构建代理。
 
-> **[Account](/langsmith/admin)**
+> [卡][Account](/langsmith/admin)
 >
 > 创建帐户、管理 API 密钥、配置配置文件以及查看定价和使用情况。
 
-> **[Govern](/langsmith/govern-overview)**
+> [卡][Govern](/langsmith/govern-overview)
 >
 > 组织和工作空间、用户和访问控制、审核和合规性。
 

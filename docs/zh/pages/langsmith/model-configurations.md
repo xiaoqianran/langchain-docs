@@ -148,10 +148,10 @@
 
 ### 编辑语义
 
-OAuth 字段遵循保护存储秘密的编辑行为：* **秘密往返**：服务器返回秘密为`********`。输入呈现为空，并带有“已设置秘密。键入要替换的内容。”* 提示。提交而不重新输入会使存储的秘密保持不变。
-* **关闭保留凭据**：关闭**使用自定义 OAuth** 会停用 OAuth 流程，但保留存储的字段。使用相同的凭据切换回简历。
-* **清除字段**：编辑配置并将字段清空以明确清除它。
-* **通过另存为预设进行克隆**：当您将一次性配置另存为新预设时，非秘密 OAuth 字段会复制到新行中。该机密无法传输，因为它永远不会公开供读取，因此在克隆上强制禁用 OAuth，直到您重新输入该机密。
+OAuth 字段遵循保护存储秘密的编辑行为：* **Secret round-trip**: the server returns the secret as `********`. The input renders empty with a *"Secret is set. Type to replace."* hint. Submitting without retyping leaves the stored secret unchanged.
+* **Toggle off preserves credentials**: switching **Use Custom OAuth** off deactivates the OAuth flow but keeps the stored fields. Toggling back on resumes using the same credentials.
+* **Clear a field**: edit the configuration and blank the field to clear it explicitly.
+* **Clone via Save as preset**: when you save a one-off configuration as a new preset, non-secret OAuth fields copy into the new row. The secret cannot transfer because it is never exposed for read, so OAuth is force-disabled on the clone until you re-enter the secret.
 
 ### 请求如何流动
 
@@ -190,11 +190,13 @@ sequenceDiagram
 
 无论何时使用模型配置，都会遵循启用 OAuth 的配置：* [**Playground**](/langsmith/prompt-engineering-concepts)：聊天运行和实验运行。
 * [**Evaluators**](/langsmith/evaluation)：LLM-as-judge 配置、重用、预览测试和评估器详细信息 当每个提示解析为支持 OAuth 的配置时，测试全部跳过工作区秘密提示。
-* [**Insights**](/langsmith/insights)：思考和总结配置独立解决。
+* [**Insights**](/langsmith/insights)：思考和总结配置独立解析。
 * [**Chat**](/langsmith/chat)
 * [**Fleet**](/langsmith/fleet/index)
 
 在配置上启用 OAuth 时，LangSmith 不会提示输入该配置的工作区密钥，因为代理在请求时提供凭据。
+
+[LLM Gateway](/langsmith/llm-gateway-model-configurations) 不使用 OAuth 客户端凭据。 `custom/<name>` 网关请求使用配置的 API 密钥进行身份验证。
 
 ### 安全和审计
 
@@ -203,17 +205,17 @@ sequenceDiagram
 
 ### 常见问题解答
 
-> **可以跨工作区共享一组 OAuth 凭据吗？**
+> [accordion] 可以跨工作区共享一组 OAuth 凭据吗？
 >
-> 否。OAuth 凭据存储在模型配置中，该模型配置是工作区范围内的。每个工作区都会输入自己的凭据，即使这些凭据指向同一 IdP 客户端也是如此。> **为什么我的启用 OAuth 的配置突然使用静态工作区密钥？**
+> 否。OAuth 凭据存储在模型配置中，该模型配置是工作区范围内的。每个工作区都会输入自己的凭据，即使这些凭据指向同一 IdP 客户端也是如此。> [accordion] 为什么我的启用 OAuth 的配置突然使用静态工作区密钥？
 >
 > 如果代理无法创建承载（IdP 无法访问、凭据无效、在请求准备和执行之间删除配置），则请求将回退到提供程序的静态工作区 API 密钥。重新打开模型配置并验证令牌 URL 是否可访问、客户端 ID 和密钥是否最新以及令牌端点身份验证方法是否与您的 IdP 期望的相匹配。
 
-> **如何轮换客户端密钥？**
+> [手风琴] 如何轮换客户端密钥？
 >
 > 编辑模型配置并在 **客户端密钥** 字段中重新输入密钥。保存时会覆盖以前的秘密。 Redis 缓存的承载会继续工作，直到其 TTL 过期，之后代理会使用轮换的密钥创建一个新的承载。
 
-> **OAuth 和 LLM 身份验证代理可以一起使用吗？**
+> [accordion] OAuth 和 LLM auth 代理可以一起使用吗？
 >
 > 是的。路由是按配置进行的。启用 OAuth 的配置使用 OAuth；当在组织级别启用代理时，没有它的配置将落入 LLM 身份验证代理。单个多模型作业可以混合两个流程。
 

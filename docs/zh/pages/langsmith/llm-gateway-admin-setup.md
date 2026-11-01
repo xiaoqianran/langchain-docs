@@ -1,98 +1,63 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Admin setup | https://docs.langchain.com/langsmith/llm-gateway-admin-setup -->
+<!-- langchain-docs: Set up the LLM Gateway | https://docs.langchain.com/langsmith/llm-gateway-admin-setup -->
 
-# 管理员设置
+# 设置LLM网关
 
-一次性组织设置以启用 LLM 网关并授予用户访问权限。
+通过添加提供商密钥、授予调用网关的权限、颁发 API 密钥以及设置治理策略，为团队设置 LLM 网关。
 
 > [!注意]
 >
 > LLM 网关位于[beta](/langsmith/release-stages)。
 
-一次性设置为您的 LangSmith [organization](/langsmith/administration-overview#organizations) 启用 LLM 网关。 [Organization admins](/langsmith/rbac#organization-admin) 应在个人用户可以通过网关路由呼叫之前完成此操作。
-
-## 先决条件
-
-您需要 LangSmith 中的 [⟦T0⟧ permission](/langsmith/organization-workspace-operations)。 [Step 2 Option A](/langsmith/llm-gateway-admin-setup#option-a-create-a-custom-workspace-role-recommended) 还需要一个包含 [RBAC](/langsmith/rbac)（自定义角色）的计划。
-
-在完成这些步骤之前，请在自托管 LangSmith、[enable the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted) 上。
-
-## 1. 添加提供商机密
-
-对于 LangChain 托管模型，请跳过此步骤：它们使用您的 LangSmith API 密钥，而不是提供商机密。有关付费聊天模型，请参阅[Gateway Credits](/langsmith/llm-gateway-credits)。继续步骤 2 以授予网关访问权限。
-
-网关从您的工作区的提供商机密中解析提供商凭据。这使得它可以代理对上游提供商的调用，而无需个别用户需要提供商凭据的本地副本。
-
-转到 **设置 > 集成 > 提供商机密** 并添加要通过网关代理的提供商的密钥：|秘密名字|供应商|
-| - | - |
-| `ANTHROPIC_API_KEY` | Anthropic |
-| `AWS_BEARER_TOKEN_BEDROCK` | AWS 基岩 |
-| `AZURE_FOUNDRY_API_KEY` | Azure 铸造厂 |
-| `AZURE_FOUNDRY_RESOURCE_NAME` | Azure 铸造厂 |
-| `BASETEN_API_KEY` |巴斯坦|
-| `FIREWORKS_API_KEY` |烟花|
-| `GOOGLE_API_KEY` |谷歌双子座 |
-| `OPENAI_API_KEY` | OpenAI |
-| `SCALEDOWN_API_KEY` |缩小|
-| `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini企业代理平台|
-
-仅添加您的组织使用的提供商。如果用户调用尚未添加凭据的提供商，网关将返回错误。
+此页面引导管理员为团队准备[LLM Gateway](/langsmith/llm-gateway)：连接提供商、授予访问权限、颁发 API 密钥和设置策略。按顺序完成以下部分。每个链接都链接到完整涵盖其主题的页面。
 
 > [!提示]
 >
-> Azure Foundry 还支持 Microsoft Entra ID 服务主体身份验证，适用于禁用 API 密钥的资源。设置步骤请参见[Provider authentication](/langsmith/llm-gateway-provider-authentication#configure-azure-foundry)。
+> 某些用户无需此设置即可启动。 [Workspace Admin](/langsmith/rbac#workspace-admin) 已经可以调用网关，并且可以从模拟器的 **需要密钥** 提示中添加提供者密钥。如果您是组织中的唯一用户，请转至 [Send your first LLM Gateway request](/langsmith/llm-gateway-first-request)。
 
-## 2.配置用户的网关访问
+## 在自托管LangSmith上启用网关
 
-内置角色`WORKSPACE_USER`、`WORKSPACE_VIEWER`不包含`gateway:invoke`权限，无法编辑。您有两种授予网关访问权限的选项：
+在其他步骤之前，在自托管 LangSmith、[enable the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted) 上。对于其他部署，请跳过此部分。
 
-### 选项 A：创建自定义工作区角色（推荐）
+## 添加提供商密钥
 
-需要启用 RBAC 的计划。
+添加提供程序密钥需要该工作区中的 [permission to manage secrets](/langsmith/rbac#workspace-roles)。
 
-1. 转至 **设置 > 成员/角色**。
-2. 创建新的工作区角色。
-3. 至少授予`gateway:invoke`和`workspaces:read`。
-4. 将需要网关访问权限的用户分配给该角色。当您想要向特定用户授予网关访问权限而不授予他们完整的工作区管理员权限时，请使用此选项。这使您可以最大程度地控制谁可以使用网关。
+网关使用作为秘密存储在调用方 API 密钥所属工作区中的密钥来调用每个提供程序。在调用它的每个工作区中，为您的团队调用的每个提供商添加一个密钥。对于这些调用，网关不会回退到组织机密。如果您的团队仅调用 [Gateway Credits](/langsmith/llm-gateway-credits) 模型（不需要提供程序密钥），请跳过此部分。
 
-### 选项 B：使用工作区管理员角色
+有关每个提供者使用的步骤和秘密名称，请参阅[Add a provider key](/langsmith/llm-gateway-provider-authentication#add-a-provider-key)。
 
-无计划要求。
+## 授予调用网关的权限
 
-默认情况下，`WORKSPACE_ADMIN`角色已包含`gateway:invoke`和`workspaces:read`。将需要网关访问权限的用户分配给此角色。
+API密钥需要`gateway:invoke`和`workspaces:read`权限才能调用网关。在没有工作区角色的计划中，每个用户都具有工作区管理员角色，其中包括两者，因此无需执行任何操作。
 
-如果您不需要细粒度的访问控制，或者没有启用 RBAC，请使用此选项。
+在企业计划中，内置的工作区编辑者和工作区查看者角色不包含这两种权限。作为[Organization Admin](/langsmith/rbac#organization-admin)，创建具有这两种权限的[custom role](/langsmith/rbac#custom-roles)，并将其分配给调用网关的用户，或为其分配工作区管理员角色。
 
-## 3.配置策略（可选）
+有关更多信息，请参阅[Grant permission to call the gateway](/langsmith/llm-gateway-authentication#grant-permission-to-call-the-gateway)。
 
-网关策略管理需要`organization:manage`权限。
+## 决定开发人员如何获取 API 密钥
 
-转至 **LLM Gateway** 创建治理策略。您可以配置：
+每个请求都使用工作区范围的 LangSmith API 密钥进行身份验证。开发人员可以创建自己的个人访问令牌（PAT）来承载他们的角色，或者模拟器为他们创建一个。对于共享代理或通过移动设备管理 (MDM) 在公司范围内部署，您可以改为创建服务密钥。
 
-* **支出限制：** 组织、工作区、API 密钥或用户级别的硬上限。请参阅[Spend policies](/langsmith/llm-gateway-spend-policies)。
-* **数据策略：** 在 PII 和机密到达模型之前对其进行检测和编辑，并控制是否跟踪请求和响应正文。参见[Data policy](/langsmith/llm-gateway-data-policy)。
+有关键类型和范围，请参阅[Choose a key type](/langsmith/llm-gateway-authentication#choose-a-key-type)。有关编码代理的推出，请参阅[Set up coding agents](/langsmith/llm-gateway-coding-agents)。
 
-在初始设置期间，策略是可选的。在您配置策略之前，网关将自由允许调用。
+## 可选：设置策略创建策略需要 `organization:gateway:manage` 权限，组织管理员和组织操作员默认拥有该权限。在早于应用程序版本 0.18.9 的自托管 LangSmith（0.18.0-rc.22 之前的 Helm 图表版本）上，它需要 `organization:manage`。
 
-## 4. 向用户分发 API 密钥
+使用 **LLM Gateway** 页面上的选项卡创建以下任何策略类型：
 
-为需要网关访问的用户创建工作区范围的[Service Keys](/langsmith/administration-overview#service-keys)。每个密钥应附加到一个包含 `gateway:invoke` 和 `workspaces:read` 的角色。使用工作区范围的键，而不是组织范围的键。详情请参阅[API key scoping](/langsmith/llm-gateway-access#api-key-scoping)。
+* **[Spend limits](/langsmith/llm-gateway-spend-policies)**：组织、工作区、API 密钥或用户级别的硬上限。您的组织可能已在 **成本控制** 选项卡上设置了默认限制。
+* **[Rate limits](/langsmith/llm-gateway-rate-limit-policies)**：时间窗口内的请求或令牌限制。
+* **[Model access](/langsmith/llm-gateway-model-access-policies)**：用户可以调用哪些型号。
+* **[Header-based policies](/langsmith/llm-gateway-header-policies)**：由自定义请求标头（例如客户或团队标识符）限定的支出上限、速率限制和模型访问范围。
+* **[Data policies](/langsmith/llm-gateway-data-policy)**：在 PII 和机密到达模型之前检测并编辑它们，并控制是否跟踪请求和响应主体。
 
-与每个用户共享密钥和网关端点，或通过 MDM（移动设备管理）分发它们以在公司范围内部署编码代理。有关每个代理的配置说明，请参阅[Set up coding agents](/langsmith/llm-gateway-coding-agents)。
+在企业计划中，创建、更新和删除策略记录在[audit logs](/langsmith/audit-logs)中。
 
-## 验证
+## 发送测试请求
 
-对于自带密钥提供商，请要求用户运行 [verification cURL from the quickstart](/langsmith/llm-gateway-quickstart#send-a-request)。 `200` 响应确认网关、API 密钥、提供商机密和角色权限均已正确配置。该调用将在工作区的 **gateway** 跟踪项目中显示为跟踪。
+要确认设置，请按照[Send your first LLM Gateway request](/langsmith/llm-gateway-first-request)操作。它从模拟器和代码发送请求，并显示其跟踪。与开发人员共享同一页面作为他们的入门指南。
 
-## 后续步骤
-
-* [Quickstart](/langsmith/llm-gateway-quickstart)：与您的用户分享作为入门指南。
-* [Set up coding agents](/langsmith/llm-gateway-coding-agents)：在组织范围内配置 Claude Code、Codex 和其他代理。
-* [Traces, Engine, and access control](/langsmith/llm-gateway-access)：深入探讨角色、范围键、跟踪路由以及谁可以看到什么。
-
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-admin-setup.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

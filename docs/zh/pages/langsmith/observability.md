@@ -26,33 +26,35 @@ LangSmith 可与许多框架和提供商合作。浏览 [available integrations]
 
 一旦您的帐户和 API 密钥准备就绪，请设置跟踪：
 
-> **[Set up tracing](/langsmith/observability-quickstart)**
+> [卡][Set up tracing](/langsmith/observability-quickstart)
 >
 > 使用环境变量、框架集成或 SDK 在几分钟内将跟踪添加到您的应用程序。
 
-> **[Trace a RAG application](/langsmith/observability-llm-tutorial)**
+> [卡][Trace a RAG application](/langsmith/observability-llm-tutorial)
 >
 > 按照分步教程从头到尾安装检索增强生成应用程序。
 
-## 调查和监控> **[View traces](/langsmith/view-traces)**
+## 调查和监控> [卡][View traces](/langsmith/view-traces)
 >
-> 在“消息”、“轮数”和“详细信息”视图中检查线程和运行。
+> 在“消息”、“轮次”和“详细信息”视图中检查线程和运行。
 
-> **[Monitor performance](/langsmith/dashboards)**
+> [卡][Monitor performance](/langsmith/dashboards)
 >
-> 构建仪表板并设置警报以跟踪质量并尽早发现问题。
+> 构建仪表板并设置警报以跟踪质量并及早发现问题。
 
-> **[Configure automations](/langsmith/rules)**
+> [卡][Configure automations](/langsmith/rules)
 >
 > 通过规则、网络钩子和在线评估实现工作流程自动化。
 
-> **[Collect feedback](/langsmith/attach-user-feedback)**
+> [卡][Collect feedback](/langsmith/attach-user-feedback)
 >
 > 使用队列或内联注释对输出进行注释并收集用户反馈。
 
-> **[Find and fix failures with Engine](/langsmith/engine)**
+> [卡][Find and fix failures with Engine](/langsmith/engine)
 >
 > 自动检测跟踪中重复出现的问题，诊断其根本原因，并使用 LangSmith 引擎解决它们。
+
+如果您的应用程序通过 [LLM Gateway](/langsmith/llm-gateway) 调用模型，则网关会跟踪每个调用本身，而无需在代码中进行跟踪设置。有关这些痕迹出现的位置以及记录的内容，请参阅[View LLM Gateway traces](/langsmith/llm-gateway-traces)。
 
 术语和核心概念请参考[Observability concepts](/langsmith/observability-concepts)。有关跟踪定价、保留和限制，请参阅[Usage and billing](/langsmith/usage-and-billing)。
 

@@ -12,76 +12,76 @@
 
 ## 设置
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_client
+>
+> client = get_client(url=<DEPLOYMENT_URL>)
+>
+> openai_assistant = await client.assistants.create(
+>     graph_id="agent", config={"configurable": {"model_name": "openai"}}
+> )
+>
+> # There should always be a default assistant with no configuration
+> assistants = await client.assistants.search()
+> default_assistant = [a for a in assistants if not a["config"]][0]
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client } from "@langchain/langgraph-sdk";
+>
+> const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+>
+> const openAIAssistant = await client.assistants.create(
+>   { graphId: "agent", config: {"configurable": {"model_name": "openai"}}}
+> );
+>
+> const assistants = await client.assistants.search();
+> const defaultAssistant = assistants.find(a => !a.config);
+> ```
 
-client = get_client(url=<DEPLOYMENT_URL>)
-
-openai_assistant = await client.assistants.create(
-    graph_id="agent", config={"configurable": {"model_name": "openai"}}
-)
-
-# There should always be a default assistant with no configuration
-assistants = await client.assistants.search()
-default_assistant = [a for a in assistants if not a["config"]][0]
-```
-
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "@langchain/langgraph-sdk";
-
-const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-
-const openAIAssistant = await client.assistants.create(
-  { graphId: "agent", config: {"configurable": {"model_name": "openai"}}}
-);
-
-const assistants = await client.assistants.search();
-const defaultAssistant = assistants.find(a => !a.config);
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/assistants \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "graph_id": "agent",
-        "config": { "configurable": { "model_name": "openai" } }
-    }' && \
-curl --request POST \
-    --url <DEPLOYMENT_URL>/assistants/search \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "limit": 10,
-        "offset": 0
-    }' | jq -c 'map(select(.config == null or .config == {})) | .[0]'
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/assistants \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "graph_id": "agent",
+>         "config": { "configurable": { "model_name": "openai" } }
+>     }' && \
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/assistants/search \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "limit": 10,
+>         "offset": 0
+>     }' | jq -c 'map(select(.config == null or .config == {})) | .[0]'
+> ```
 
 我们可以看到这些助手的不同之处：
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> print(openai_assistant)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-print(openai_assistant)
-```
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> console.log(openAIAssistant);
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-console.log(openAIAssistant);
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request GET \
-    --url <DEPLOYMENT_URL>/assistants/<OPENAI_ASSISTANT_ID>
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request GET \
+>     --url <DEPLOYMENT_URL>/assistants/<OPENAI_ASSISTANT_ID>
+> ```
 
 输出：
 
@@ -100,24 +100,24 @@ curl --request GET \
 }
 ```
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> print(default_assistant)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-print(default_assistant)
-```
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> console.log(defaultAssistant);
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-console.log(defaultAssistant);
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request GET \
-    --url <DEPLOYMENT_URL>/assistants/<DEFAULT_ASSISTANT_ID>
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request GET \
+>     --url <DEPLOYMENT_URL>/assistants/<DEFAULT_ASSISTANT_ID>
+> ```
 
 输出：
 
@@ -140,88 +140,88 @@ curl --request GET \
 
 我们现在可以先在线程上运行OpenAI助手。
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> thread = await client.threads.create()
+> input = {"messages": [{"role": "user", "content": "who made you?"}]}
+> async for event in client.runs.stream(
+>     thread["thread_id"],
+>     openai_assistant["assistant_id"],
+>     input=input,
+>     stream_mode="updates",
+> ):
+>     print(f"Receiving event of type: {event.event}")
+>     print(event.data)
+>     print("\n\n")
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-thread = await client.threads.create()
-input = {"messages": [{"role": "user", "content": "who made you?"}]}
-async for event in client.runs.stream(
-    thread["thread_id"],
-    openai_assistant["assistant_id"],
-    input=input,
-    stream_mode="updates",
-):
-    print(f"Receiving event of type: {event.event}")
-    print(event.data)
-    print("\n\n")
-```
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const thread = await client.threads.create();
+> let input =  {"messages": [{"role": "user", "content": "who made you?"}]}
+>
+> const streamResponse = client.runs.stream(
+>   thread["thread_id"],
+>   openAIAssistant["assistant_id"],
+>   {
+>     input,
+>     streamMode: "updates"
+>   }
+> );
+> for await (const event of streamResponse) {
+>   console.log(`Receiving event of type: ${event.event}`);
+>   console.log(event.data);
+>   console.log("\n\n");
+> }
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const thread = await client.threads.create();
-let input =  {"messages": [{"role": "user", "content": "who made you?"}]}
-
-const streamResponse = client.runs.stream(
-  thread["thread_id"],
-  openAIAssistant["assistant_id"],
-  {
-    input,
-    streamMode: "updates"
-  }
-);
-for await (const event of streamResponse) {
-  console.log(`Receiving event of type: ${event.event}`);
-  console.log(event.data);
-  console.log("\n\n");
-}
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-thread_id=$(curl --request POST \
-    --url <DEPLOYMENT_URL>/threads \
-    --header 'Content-Type: application/json' \
-    --data '{}' | jq -r '.thread_id') && \
-curl --request POST \
-    --url "<DEPLOYMENT_URL>/threads/${thread_id}/runs/stream" \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "assistant_id": <OPENAI_ASSISTANT_ID>,
-        "input": {
-            "messages": [
-                {
-                    "role": "user",
-                    "content": "who made you?"
-                }
-            ]
-        },
-        "stream_mode": [
-            "updates"
-        ]
-    }' | \
-    sed 's/\r$//' | \
-    awk '
-    /^event:/ {
-        if (data_content != "") {
-            print data_content "\n"
-        }
-        sub(/^event: /, "Receiving event of type: ", $0)
-        printf "%s...\n", $0
-        data_content = ""
-    }
-    /^data:/ {
-        sub(/^data: /, "", $0)
-        data_content = $0
-    }
-    END {
-        if (data_content != "") {
-            print data_content "\n\n"
-        }
-    }
-'
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> thread_id=$(curl --request POST \
+>     --url <DEPLOYMENT_URL>/threads \
+>     --header 'Content-Type: application/json' \
+>     --data '{}' | jq -r '.thread_id') && \
+> curl --request POST \
+>     --url "<DEPLOYMENT_URL>/threads/${thread_id}/runs/stream" \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "assistant_id": <OPENAI_ASSISTANT_ID>,
+>         "input": {
+>             "messages": [
+>                 {
+>                     "role": "user",
+>                     "content": "who made you?"
+>                 }
+>             ]
+>         },
+>         "stream_mode": [
+>             "updates"
+>         ]
+>     }' | \
+>     sed 's/\r$//' | \
+>     awk '
+>     /^event:/ {
+>         if (data_content != "") {
+>             print data_content "\n"
+>         }
+>         sub(/^event: /, "Receiving event of type: ", $0)
+>         printf "%s...\n", $0
+>         data_content = ""
+>     }
+>     /^data:/ {
+>         sub(/^data: /, "", $0)
+>         data_content = $0
+>     }
+>     END {
+>         if (data_content != "") {
+>             print data_content "\n\n"
+>         }
+>     }
+> '
+> ```
 
 输出：
 
@@ -233,84 +233,84 @@ Receiving event of type: updates
 {'agent': {'messages': [{'content': 'I was created by OpenAI, a research organization focused on developing and advancing artificial intelligence technology.', 'additional_kwargs': {}, 'response_metadata': {'finish_reason': 'stop', 'model_name': 'gpt-4o-2024-05-13', 'system_fingerprint': 'fp_157b3831f5'}, 'type': 'ai', 'name': None, 'id': 'run-f5735b86-b80d-4c71-8dc3-4782b5a9c7c8', 'example': False, 'tool_calls': [], 'invalid_tool_calls': [], 'usage_metadata': None}]}}
 ```
 
-### 运行默认助手
+### 运行默认助手现在，我们可以在默认助手上运行它，并看到第二个助手知道最初的问题，并且可以回答问题“你呢？”：
 
-现在，我们可以在默认助手上运行它，并看到第二个助手知道最初的问题，并且可以回答问题“你呢？”：
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> input = {"messages": [{"role": "user", "content": "and you?"}]}
+> async for event in client.runs.stream(
+>     thread["thread_id"],
+>     default_assistant["assistant_id"],
+>     input=input,
+>     stream_mode="updates",
+> ):
+>     print(f"Receiving event of type: {event.event}")
+>     print(event.data)
+>     print("\n\n")
+> ```
 
-**Python**
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> let input =  {"messages": [{"role": "user", "content": "and you?"}]}
+>
+> const streamResponse = client.runs.stream(
+>   thread["thread_id"],
+>   defaultAssistant["assistant_id"],
+>   {
+>     input,
+>     streamMode: "updates"
+>   }
+> );
+> for await (const event of streamResponse) {
+>   console.log(`Receiving event of type: ${event.event}`);
+>   console.log(event.data);
+>   console.log("\n\n");
+> }
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-input = {"messages": [{"role": "user", "content": "and you?"}]}
-async for event in client.runs.stream(
-    thread["thread_id"],
-    default_assistant["assistant_id"],
-    input=input,
-    stream_mode="updates",
-):
-    print(f"Receiving event of type: {event.event}")
-    print(event.data)
-    print("\n\n")
-```
-
-**Javascript**```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-let input =  {"messages": [{"role": "user", "content": "and you?"}]}
-
-const streamResponse = client.runs.stream(
-  thread["thread_id"],
-  defaultAssistant["assistant_id"],
-  {
-    input,
-    streamMode: "updates"
-  }
-);
-for await (const event of streamResponse) {
-  console.log(`Receiving event of type: ${event.event}`);
-  console.log(event.data);
-  console.log("\n\n");
-}
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "assistant_id": <DEFAULT_ASSISTANT_ID>,
-        "input": {
-            "messages": [
-                {
-                    "role": "user",
-                    "content": "and you?"
-                }
-            ]
-        },
-        "stream_mode": [
-            "updates"
-        ]
-    }' | \
-    sed 's/\r$//' | \
-    awk '
-    /^event:/ {
-        if (data_content != "") {
-            print data_content "\n"
-        }
-        sub(/^event: /, "Receiving event of type: ", $0)
-        printf "%s...\n", $0
-        data_content = ""
-    }
-    /^data:/ {
-        sub(/^data: /, "", $0)
-        data_content = $0
-    }
-    END {
-        if (data_content != "") {
-            print data_content "\n\n"
-        }
-    }
-'
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "assistant_id": <DEFAULT_ASSISTANT_ID>,
+>         "input": {
+>             "messages": [
+>                 {
+>                     "role": "user",
+>                     "content": "and you?"
+>                 }
+>             ]
+>         },
+>         "stream_mode": [
+>             "updates"
+>         ]
+>     }' | \
+>     sed 's/\r$//' | \
+>     awk '
+>     /^event:/ {
+>         if (data_content != "") {
+>             print data_content "\n"
+>         }
+>         sub(/^event: /, "Receiving event of type: ", $0)
+>         printf "%s...\n", $0
+>         data_content = ""
+>     }
+>     /^data:/ {
+>         sub(/^data: /, "", $0)
+>         data_content = $0
+>     }
+>     END {
+>         if (data_content != "") {
+>             print data_content "\n\n"
+>         }
+>     }
+> '
+> ```
 
 输出：
 

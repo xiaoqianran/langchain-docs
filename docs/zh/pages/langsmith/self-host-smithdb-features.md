@@ -24,7 +24,7 @@ SmithDB 是必要的，但并不总是足够的。功能还可能取决于您的
 
 ## 需要 SmithDB 的功能
 
-几行涵盖了新版本的功能，该功能在没有 SmithDB 的情况下也可以使用。最后一列列出了在查询 ClickHouse 的安装中仍然可以使用的内容。|特色 |需要什么 SmithDB |没有SmithDB，什么可以工作？
+几行涵盖了新版本的功能，该功能在没有 SmithDB 的情况下也可以使用。最后一列列出了在查询 ClickHouse 的安装中仍然可以使用的内容。|特色|需要什么 SmithDB |没有SmithDB，什么可以工作？
 | - | - | - |
 | [Filter query syntax](/langsmith/filter-traces#query-syntax) |过滤器搜索栏和`field:value`查询语法，具有线程、根运行、单次运行和任何运行范围。 |使用旧函数式过滤器进行过滤。 |
 | [Custom dashboard chart editor](/langsmith/dashboards#custom-dashboards) |当前的图表编辑器，具有模板、比率、每系列过滤器、分组、细分和图表钻取。 |使用 [custom dashboards (legacy)](/langsmith/dashboards#custom-dashboards-legacy) 创建自定义仪表板和图表以及预构建的仪表板。 |
@@ -37,11 +37,13 @@ SmithDB 是必要的，但并不总是足够的。功能还可能取决于您的
 |大痕迹行动|用于大型跟踪的分页跟踪树，将整个跟踪下载为 JSON，并从跟踪详细信息页面删除整个跟踪。 |查看跟踪、下载各个运行以及现有的删除工作流程。 |
 | [LLM Gateway usage](/langsmith/llm-gateway-monitoring) | **使用情况**仪表板：支出摘要、图表、细分、过滤器和深入分析。 |网关路由和[policies](/langsmith/llm-gateway-spend-policies)。 |
 |代理微量 |业务代表概览卡上的跟踪计数迷你图和业务代表概览上的跟踪量图表。 |代理部署、管理和其他代理统计。 |
-| [Feedback in bulk exports](/langsmith/data-export#limit-exported-fields) |导出`feedbacks`字段，其中包含反馈键和注释。 |其他各个领域的批量出口。 |
+| [Bulk export filters](/langsmith/data-export#2-create-an-export-job) |使用 `field:value` 查询语法过滤导出的运行。 |使用函数式过滤器过滤导出的运行。 || [Feedback in bulk exports](/langsmith/data-export#limit-exported-fields) |导出`feedbacks`字段，其中包含反馈键和评论。 |其他各个领域的批量出口。 |
 
 跟踪、线程列表、数据集和实验可在任一数据存储上运行。
 
-## 另请参阅* [Enable SmithDB on self-hosted LangSmith](/langsmith/self-host-smithdb)
+## 另请参阅
+
+* [Enable SmithDB on self-hosted LangSmith](/langsmith/self-host-smithdb)
 * [Install SmithDB](/langsmith/self-host-smithdb-install)
 * [Migrate ClickHouse history to SmithDB](/langsmith/self-host-smithdb-migrate)
 * [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration)

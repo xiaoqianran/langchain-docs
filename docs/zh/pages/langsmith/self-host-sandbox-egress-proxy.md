@@ -2,23 +2,23 @@
 
 <!-- langchain-docs: Route self-hosted Sandbox egress through a forward proxy | https://docs.langchain.com/langsmith/self-host-sandbox-egress-proxy -->
 
-# 通过转发代理路由自托管沙箱出口
+# 通过转发代理路由自托管沙盒出口
 
 通过企业 HTTP 或 HTTPS 转发代理从自托管 LangSmith 沙箱发送出站连接，并具有绕过列表、基本代理身份验证和自定义 CA 信任。
 
 自托管 `sandbox-host` 可以通过您的公司转发代理从沙箱发送每个出站连接，而不是直接拨打目的地。当您的网络仅允许通过代理的出站流量，或者当您的安全团队需要所有沙盒流量来传递代理的访问策略和日志记录时，请使用此选项。
 
-有关沙箱流量如何离开 microVM，请参阅[Sandbox architecture](/langsmith/self-host-sandbox-architecture)。安装请参见[Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)。
+有关沙盒流量如何离开 microVM，请参阅[Sandbox architecture](/langsmith/self-host-sandbox-architecture)。安装请参见[Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)。
 
 ## 了解代理出口的工作原理
 
-来自沙箱的每个出站 TCP 连接首先到达其主机上的 [Sandbox auth proxy](/langsmith/sandbox-auth-proxy)。主机应用沙箱的允许和拒绝列表以及身份验证代理规则，然后将流量发送到转发代理，就像配置了 `HTTP_PROXY` 和 `HTTPS_PROXY` 的客户端所做的那样：* **普通 HTTP**：作为标准代理请求发送，例如 `GET http://example.com/path`。发送到允许列表中的 IP 地址的 HTTP 是例外：它通过 `CONNECT` 隧道到达端口 80，因此主机检查沙箱连接到的地址而不是其 `Host` 标头。
+来自沙盒的每个出站 TCP 连接首先到达其主机上的 [Sandbox auth proxy](/langsmith/sandbox-auth-proxy)。主机应用沙箱的允许和拒绝列表以及身份验证代理规则，然后将流量发送到转发代理，就像配置了 `HTTP_PROXY` 和 `HTTPS_PROXY` 的客户端所做的那样：* **普通 HTTP**：作为标准代理请求发送，例如 `GET http://example.com/path`。发送到允许列表中的 IP 地址的 HTTP 是例外：它通过 `CONNECT` 隧道到达端口 80，因此主机检查沙箱连接到的地址而不是其 `Host` 标头。
 * **HTTPS 和其他 TCP**：通过 `CONNECT` 隧道发送到目标主机和端口，例如 `CONNECT example.com:443` 或 `CONNECT github.com:22`。
 
 主办方也适用以下规则：
 
 * **无直接回退**：当转发代理拒绝请求或无法打开隧道时，请求或连接失败。主机从不直接重试。
-* **绕过列表**：主机直接拨打`noProxy`中的目的地，并进行相同的沙盒访问检查。
+* **绕过列表**：主机直接拨打`noProxy`中的目的地，并进行相同的沙箱访问检查。
 * **LangSmith API**：主机直接从沙盒向您的 LangSmith 安装的 API 拨打 HTTPS 请求，而不是通过转发代理。
 
 代理发生在沙箱外部的主机上。沙箱内的代码看不到转发代理地址，并且不需要设置`HTTP_PROXY`或`HTTPS_PROXY`。
@@ -32,9 +32,13 @@
 
 转发代理可能需要基本身份验证，在 0.17 版本上需要 LangSmith 0.17.37 或更高版本，或者在 0.18 版本上需要 0.18.11rc1 或更高版本。 `sandbox-host` 不支持 NTLM、协商 (Kerberos) 或摘要式代理身份验证或客户端证书 (mTLS)。当主机只需要信任其服务器证书时，HTTPS 代理即可工作。
 
-## 配置代理
+## 配置代理> [!注意]
+>
+> 当沙箱在[separate cluster](/langsmith/self-host-sandbox-separate-cluster)中运行时，请在`langsmith-sandbox`图表中配置代理：将URL添加到密钥`sandbox_egress_proxy_url`下的Secret，设置`authProxy.httpProxy.noProxy`，并将私有CA添加到`config.customCa`。使用外部运行时，`langsmith`图表无法渲染`sandboxes.authProxy.httpProxy`。
 
-要通过转发代理路由沙箱出口：**1.将代理设置添加到您的值**
+要通过转发代理路由沙箱出口：
+
+**1.将代理设置添加到您的值**
 
 在 LangSmith Helm 值中设置 `sandboxes.authProxy.httpProxy`：
 
@@ -48,7 +52,7 @@ sandboxes:
 ```
 
 * **`url`**：当与代理本身的连接使用 TLS 时，代理 URL、`http://host:port` 或 `https://host:port`。主机可以是主机名、IP 地址或集群内服务名称。留空即可直接发送出口。该图表将 URL 存储在 LangSmith 应用程序 Secret 中，因为它可以携带凭据（请参阅下一步）。当您设置 `config.existingSecretName` 时，将 `url` 留空，并将 URL 添加到密钥 `sandbox_egress_proxy_url` 下的该 Secret。
-* **`noProxy`**：主机直接拨号而不是通过代理拨打的目的地，与`NO_PROXY`环境变量匹配相同。诸如 `corp.internal` 之类的条目与该主机及其子域匹配，带有前导点（如 `.corp.internal` ）的条目仅匹配子域，而 `*` 则匹配每个主机。条目还可以是 IP 地址、CIDR 范围（例如 `10.0.0.0/8` 或 `host:port` 对）。当 `url` 不是没有路径的 `http://` 或 `https://` URL 时，或者当您将 `url` 与 `config.existingSecretName` 或 `config.disableSecretCreation` 一起设置时，图表将无法渲染。在 LangSmith 0.17.36 或更高版本上，`sandbox-host` 还会在启动时检查代理地址：环回或云元数据地址会使用 `sandbox host config invalid` 停止 pod，而不是使每个沙箱创建失败。
+* **`noProxy`**：主机直接拨号而不是通过代理拨打的目的地，与`NO_PROXY`环境变量匹配相同。诸如 `corp.internal` 之类的条目与该主机及其子域匹配，带有前导点（如 `.corp.internal` ）的条目仅匹配子域，而 `*` 则匹配每个主机。条目还可以是 IP 地址、CIDR 范围（例如 `10.0.0.0/8` 或 `host:port` 对）。当 `url` 不是没有路径的 `http://` 或 `https://` URL 时，或者当您将 `url` 与 `config.existingSecretName` 或 `config.disableSecretCreation` 一起设置时，图表将无法渲染。在 LangSmith 0.17.36 或更高版本上，`sandbox-host` 还会在启动时检查代理地址：环回或云元数据地址会使用 `sandbox host config invalid` 停止 pod，而不是使每个沙盒创建失败。
 
 **2. （可选）向代理进行身份验证**
 
@@ -78,7 +82,7 @@ http://svc-sandboxes:p%40ssw0rd@proxy.corp.internal:3128
 curl -sS -o /dev/null -w '%{http_code}\n' https://www.langchain.com/
 ```
 
-该命令打印 `200`，并且您的转发代理会记录来自沙盒节点的 `CONNECT www.langchain.com:443` 请求。对 `http://` URL 的请求将在代理日志中显示为 `GET http://...` 请求。
+该命令打印 `200`，并且您的转发代理会记录来自沙盒节点的 `CONNECT www.langchain.com:443` 请求。对 `http://` URL 的请求会在代理日志中显示为 `GET http://...` 请求。
 
 ## 直接到达私有服务默认情况下，`sandbox-host`拒绝连接到私有地址，因此即使`noProxy`直接发送连接，沙箱也无法到达内部服务。在自托管安装中，当沙箱的 `allow_list` 允许目标通过时，沙箱就会到达私有地址：主机名、glob（例如 `*.corp.internal`）或正则表达式。文字 IP 地址需要 IP 或 CIDR 条目。具有 `deny_list` 或没有 `access_control` 的沙箱永远不会到达私有地址。参见[Allow and deny lists](/langsmith/sandbox-auth-proxy#allow-and-deny-lists)。
 
@@ -118,4 +122,4 @@ curl -sS -o /dev/null -w '%{http_code}\n' https://www.langchain.com/
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-egress-proxy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-egress-proxy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

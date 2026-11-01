@@ -54,14 +54,14 @@ LangSmith 对决策模型问题强制执行以下限制：
 
 ## 添加决策模型在线评估器
 
-决策模型评估者需要 LangSmith Plus 或 Enterprise 计划。
+决策模型评估器需要 LangSmith Plus 或 Enterprise [plan](/langsmith/pricing-plans)。它们在 [BYOC](/langsmith/byoc) 部署中不可用。
 
 要添加决策模型在线评估器：1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-decision-models)中，导航至**追踪**页面，选择追踪项目。
 2. 单击**评估者**选项卡。
 3. 单击**+ 评估器** 打开**配置评估器** 面板。
 4. 在 **从头开始创建** 下，选择 **决策模型评估器**，然后命名您的评估器。
 5. 选择决策模型，将运行或线程变量映射到 **状态**，然后添加问题。对于每个设置，请参阅[How to define a decision model evaluator](/langsmith/decision-model-evaluator)。
-6. （可选）应用 [filter](/langsmith/online-evaluations-llm-as-judge#apply-a-filter-to-runs-that-trigger-the-evaluator)、设置 [sampling rate](/langsmith/online-evaluations-llm-as-judge#configure-a-sampling-rate) 或 [apply the rule to past runs or threads](/langsmith/online-evaluations-llm-as-judge#apply-a-rule-to-past-runs-or-threads)。这些设置的工作方式与 LLM-as-a-judge 在线评估器的工作方式相同。
+6. （可选）应用 [filter](/langsmith/online-evaluations-llm-as-judge#apply-a-filter-to-runs-that-trigger-the-evaluator)、设置 [sampling rate](/langsmith/online-evaluations-llm-as-judge#configure-a-sampling-rate) 或 [apply the rule to past runs or threads](/langsmith/online-evaluations-llm-as-judge#apply-a-rule-to-past-runs-or-threads)。这些设置的工作方式与 LLM 法官在线评估员的工作方式相同。
 7. 要保存评估器，请单击“**创建**”或“**保存**”。
 
 评估器检查与其过滤器匹配的每个新运行或线程。每个问题的答案都显示在其自己的反馈键下。
@@ -74,6 +74,6 @@ LangSmith 对决策模型问题强制执行以下限制：
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-decision-models.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

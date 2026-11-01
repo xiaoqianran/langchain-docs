@@ -15,7 +15,7 @@
 
 基本安装完成后，通过设置标志和重新部署来启用可选附加组件（LangSmith Deployment、Fleet、Insights、Polly、SmithDB 和 LLM Gateway）和 SSO。> [!注意]
 >
-> 这些页面遵循模块的 `v0.17.*` 发布标签，部署 LangSmith Helm 图表 0.17 行。 In a module tag, the first two numbers name the chart line and the last number is the module revision, so `v0.17.4` still deploys the newest 0.17 chart patch. The `v0.16.*` tags deploy chart 0.16. They have no LLM Gateway or SSO flags and federate 8 Workload Identity ServiceAccounts instead of 10. From v0.16.56, they deploy SmithDB only with `langsmith_helm_chart_version` set to `~0.17.0`.运行图表 0.17 的部署无法返回到 0.16。
+> 这些页面遵循模块的 `v0.17.*` 发布标签，部署 LangSmith Helm 图表 0.17 行。在模块标签中，前两个数字命名图表线，最后一个数字是模块修订版，因此`v0.17.4`仍然部署最新的0.17图表补丁。 `v0.16.*`标签部署图表0.16。他们没有 LLM 网关或 SSO 标志，并联合 8 个工作负载身份服务帐户而不是 10 个。从 v0.16.56 开始，他们仅部署 SmithDB，并将 `langsmith_helm_chart_version` 设置为 `~0.17.0`。运行图表 0.17 的部署无法返回到 0.16。
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init: {'flowchart': {'nodeSpacing': 25, 'rankSpacing': 30}}}%%
@@ -60,7 +60,7 @@ graph TB
 | - | - | - |
 | Azure CLI (`az`) | 2.50 或更高版本 |身份验证、查询 Azure 资源、管理 AKS 凭据 |
 |地形 | 1.11.0 或更高版本 |运行基础设施模块 |
-| `kubectl` | 1.34 或更高版本 | Inspect the AKS cluster |
+| `kubectl` | 1.34 或更高版本 |检查 AKS 集群 |
 |头盔| 3.12 或更高版本 |安装和管理LangSmith图表|
 | `kubelogin` |最新 |登录到具有 Entra ID 集成的集群（`aks_entra_only`，或具有 Entra ID 的附加集群）。否则不需要 |
 
@@ -138,7 +138,7 @@ make deploy
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make deploy-all   # apply → seed-secrets → kubeconfig → k8s-secrets → init-values → deploy
-````make deploy-all` stops at each `make apply` stage prompt. To skip the prompts, run `make deploy-all ARGS="-auto-approve"`. `make seed-secrets` 步骤还提示输入初始管理员密码，因此导出 `LANGSMITH_ADMIN_PASSWORD` 以进行无人值守运行。
+````make deploy-all` 在每个 `make apply` 阶段提示处停止。要跳过提示，请运行 `make deploy-all ARGS="-auto-approve"`。 `make seed-secrets` 步骤还提示输入初始管理员密码，因此导出 `LANGSMITH_ADMIN_PASSWORD` 以进行无人值守运行。
 
 ## 提供基础设施
 
@@ -146,17 +146,17 @@ Terraform 提供以下 Azure 资源：
 
 |资源 |类型 |目的|
 | - | - | - |
-| Resource Group | `azurerm_resource_group` | Container for all resources |
-| Virtual Network | `azurerm_virtual_network` |隔离网络（默认10.0.0.0/17） |
-| AKS Cluster | `azurerm_kubernetes_cluster` | Kubernetes, all workloads run here |
-| Ingress Controller |头盔|外部负载均衡器 + TLS 终止（默认为 Envoy Gateway）|
-| PostgreSQL Flexible Server | `azurerm_postgresql_flexible_server` |组织配置，运行元数据（外部层）|
-| Azure Managed Redis | `azapi_resource` (Microsoft.Cache/redisEnterprise) | Trace ingestion queue, pub/sub (external tier) |
-| Blob Storage | `azurerm_storage_account` |原始跟踪对象，始终需要 |
-| Managed Identity | `azurerm_user_assigned_identity` | Workload Identity for pod-to-Blob auth |
-| Azure Key Vault | `azurerm_key_vault` |存储所有LangSmith秘密 |
-|证书经理 |头盔| Automated TLS certificate management |
-|科达|头盔| Event-driven autoscaling for workers |
+|资源组| `azurerm_resource_group` |所有资源的容器 |
+|虚拟网络| `azurerm_virtual_network` |隔离网络（默认10.0.0.0/17） |
+| AKS 集群 | `azurerm_kubernetes_cluster` | Kubernetes，所有工作负载都在这里运行 |
+|入口控制器 |头盔|外部负载均衡器 + TLS 终止（默认为 Envoy Gateway）|
+| PostgreSQL 灵活服务器 | `azurerm_postgresql_flexible_server` |组织配置，运行元数据（外部层）|
+| Azure 托管 Redis | `azapi_resource` (Microsoft.Cache/redisEnterprise) |跟踪摄取队列，发布/订阅（外部层）|
+| Blob 存储 | `azurerm_storage_account` |原始跟踪对象，始终需要 |
+|托管身份| `azurerm_user_assigned_identity` |用于 Pod 到 Blob 身份验证的工作负载身份 |
+| Azure 密钥保管库 | `azurerm_key_vault` |存储所有LangSmith秘密 |
+|证书经理 |头盔|自动化 TLS 证书管理 |
+|科达|头盔|为工作人员提供事件驱动的自动缩放功能
 
 ### 克隆并配置
 
@@ -293,7 +293,7 @@ kubectl get sa langsmith-ksa -n langsmith \
 terraform -chdir=infra output
 ```
 
-## 部署LangSmith`make init-values` generates the Helm values, and `make deploy` installs the LangSmith Helm chart. Use the same two commands for first-time deploys and day-2 re-deploys.
+## 部署LangSmith`make init-values` 生成 Helm 值，`make deploy` 安装 LangSmith Helm 图表。对首次部署和第 2 天重新部署使用相同的两个命令。
 
 ### 使用 Helm 进行部署
 
@@ -303,18 +303,18 @@ terraform -chdir=infra output
 make init-values
 ```
 
-`make init-values` reads `terraform output` and `terraform.tfvars` and generates `helm/values/values-overrides.yaml` with all fields populated:
+`make init-values` 读取 `terraform output` 和 `terraform.tfvars` 并生成填充了所有字段的 `helm/values/values-overrides.yaml`：
 
-* `config.hostname`, your FQDN (from `dns_label` or `langsmith_domain`).
+* `config.hostname`，您的 FQDN（来自 `dns_label` 或 `langsmith_domain`）。
 * `config.initialOrgAdminEmail`，第一个组织管理员帐户。
 * `config.existingSecretName: langsmith-config-secret`，秘密参考。
-* `config.blobStorage`, storage account name + container + Workload Identity client ID.
-* Workload Identity annotations for 8 ServiceAccounts (backend, platform-backend, queue, ingest-queue, host-backend, listener, fleet-tool-server, fleet-trigger-server).
-* Ingress + TLS block: the `langsmith-tls` secret name for `letsencrypt`, `dns01`, and `existing`, plus the cert-manager annotation for `letsencrypt` and `dns01`. With `envoy-gateway`, the chart creates Gateway API routes instead of an Ingress.
-* Postgres and Redis external secret references (when `postgres_source = "external"` / `redis_source = "external"`).
-* `insights.enabled` and `polly.enabled`, set from `enable_insights` and `enable_polly`.
+* `config.blobStorage`，存储帐户名称 + 容器 + Workload Identity 客户端 ID。
+* 8 个 ServiceAccounts 的工作负载身份注释（后端、平台后端、队列、摄取队列、主机后端、侦听器、舰队工具服务器、舰队触发服务器）。
+* Ingress + TLS 块：`letsencrypt`、`dns01` 和 `existing` 的 `langsmith-tls` 秘密名称，以及 `letsencrypt` 和 `dns01` 的证书管理器注释。使用 `envoy-gateway`，图表创建网关 API 路由而不是入口。
+* Postgres 和 Redis 外部秘密引用（当`postgres_source = "external"` / `redis_source = "external"` 时）。
+* `insights.enabled`和`polly.enabled`，从`enable_insights`和`enable_polly`设置。
 
-With `clickhouse_source = "external"`, `make init-values` also prompts for the ClickHouse connection details and creates the `langsmith-clickhouse` secret.`make init-values` 还将尺寸覆盖和任何启用的附加覆盖写入`helm/values/`。它从 `helm/values/examples/` 复制其中的大部分内容并生成 Insights、LLM Gateway 和 PII 叠加层。
+对于 `clickhouse_source = "external"`，`make init-values` 还会提示输入 ClickHouse 连接详细信息并创建 `langsmith-clickhouse` 密钥。`make init-values` 还将尺寸覆盖和任何启用的附加覆盖写入`helm/values/`。它从 `helm/values/examples/` 复制其中的大部分内容并生成 Insights、LLM Gateway 和 PII 叠加层。
 
 #### 部署
 
@@ -564,7 +564,7 @@ make init-values    # appends insights + polly add-on overlays to the values cha
 make deploy         # rolling update, ~5 min
 ```
 
-Insights 叠加层仅打开该功能。 The ClickHouse connection lives in `values-overrides.yaml`, driven by `clickhouse_source` in `terraform.tfvars`.
+Insights 叠加层仅打开该功能。 ClickHouse 连接位于 `values-overrides.yaml` 中，由 `terraform.tfvars` 中的 `clickhouse_source` 驱动。
 
 验证：
 
@@ -579,7 +579,7 @@ helm get values langsmith -n langsmith | grep -A3 insights
 
 > [!警告]
 >
-> **Encryption keys must never change after first enable.** Changing `insights_encryption_key` or `polly_encryption_key` permanently corrupts all existing encrypted data.没有恢复路径。 These keys live in Key Vault and never rotate automatically.
+> **首次启用后加密密钥不得更改。** 更改 `insights_encryption_key` 或 `polly_encryption_key` 会永久损坏所有现有加密数据。没有恢复路径。这些密钥位于 Key Vault 中并且永远不会自动轮换。
 
 如果 Polly UI 在首次启用后显示“无法连接到 LangGraph 服务器”，则前端在 `langsmith-polly-config` ConfigMap 存在之前启动。运行`kubectl rollout restart deployment langsmith-frontend -n langsmith`。
 
@@ -587,7 +587,7 @@ helm get values langsmith -n langsmith | grep -A3 insights
 
 > [!警告]
 >
-> SmithDB on Azure requires a stable release on the LangSmith Helm chart 0.17 line, which the `v0.17.*` module tags deploy by default. A 0.17 release candidate is not a supported configuration. On a `v0.16.*` tag, SmithDB needs v0.16.56 or later and `langsmith_helm_chart_version = "~0.17.0"`.`enable_smithdb = true` 提供 SmithDB 所需的 Azure 基础设施：专用的 PostgreSQL 18 元存储、Blob 容器、工作负载身份和高级 SSD v2 缓存卷。它还需要一个非空的`availability_zones`，因为高级 SSD v2 仅附加到大多数区域中的区域虚拟机。 AKS 仅在创建集群时应用区域，因此如果您计划使用 SmithDB，请在第一个 `make apply` 中设置 `availability_zones`。在没有区域创建的集群上，稍后添加它们会通过计划，但模块会忽略现有节点池上的区域更改：节点保持非区域性，并且每个计划都会打印区域漂移警告。
+> Azure 上的 SmithDB 需要 LangSmith Helm 图表 0.17 系列上的稳定版本，`v0.17.*` 模块标签默认部署该版本。 0.17 候选版本不是受支持的配置。在 `v0.16.*` 标签上，SmithDB 需要 v0.16.56 或更高版本以及 `langsmith_helm_chart_version = "~0.17.0"`。`enable_smithdb = true` 提供 SmithDB 所需的 Azure 基础设施：专用的 PostgreSQL 18 元存储、Blob 容器、工作负载身份和高级 SSD v2 缓存卷。它还需要一个非空的`availability_zones`，因为高级 SSD v2 仅附加到大多数区域中的区域虚拟机。 AKS 仅在创建集群时应用区域，因此如果您计划使用 SmithDB，请在第一个 `make apply` 中设置 `availability_zones`。在没有区域创建的集群上，稍后添加它们会通过计划，但模块会忽略现有节点池上的区域更改：节点保持非区域性，并且每个计划都会打印区域漂移警告。
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # infra/terraform.tfvars
@@ -623,7 +623,7 @@ make deploy
 |客户端格式|基本网址 |
 | - | - |
 | OpenAI 聊天完成和回复 | `https://<hostname>/gateway/v1` |
-| Anthropic 留言 | `https://<hostname>/gateway` |部署后，组织管理员打开工作区的网关，添加提供程序机密并授予访问权限。欲了解更多信息，请参阅[LLM Gateway admin setup](/langsmith/llm-gateway-admin-setup)。
+| Anthropic 留言 | `https://<hostname>/gateway` |该标志为安装时的每个组织打开网关，因此没有单独的启用步骤。部署后，添加提供商密钥并授予访问权限。欲了解更多信息，请参阅[Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)。
 
 * **工作负载身份**：无论是否设置该标志，Terraform 都会联合 `<release>-agent-gateway` 和 `<release>-presidio-analyzer` ServiceAccounts，因此从 `v0.17.*` 标签应用的集群不需要 `make apply`。在最后从旧标签应用的集群上，首先运行 `make apply` 一次。
 * **超时**：模型调用最多可以运行 900 秒。将 `ingress_controller` 设置为 `nginx` 或 `agic` 时，`make deploy` 为 `/gateway/` 提供 900 秒超时的自己的 Ingress，而 `make uninstall` 将其删除。 Istio 默认不设置请求超时。使用 `envoy-gateway` 或 `none`，`make init-values` 会打印警告，并且您自己提高该控制器上的超时。
@@ -633,7 +633,7 @@ make deploy
 
 `enable_sso_oidc = true` 通过标准 OIDC 提供商（例如 Microsoft Entra ID、Okta、Auth0 或 Google Workspace）将 LangSmith 登录从基本身份验证切换到 [SSO](/langsmith/self-host-sso)。> [!警告]
 >
-> 仅在初始安装后，以组织管理员身份使用基本身份验证登录后，才启用 SSO。该标志会禁用基本身份验证，因此在管理员帐户存在之前启用它会将您锁定在用户界面之外。如果您使用 SCIM，请在 SSO 之后进行设置。
+> 仅在初始安装后、使用基本身份验证以组织管理员身份登录后才启用 SSO。该标志会禁用基本身份验证，因此在管理员帐户存在之前启用它会将您锁定在用户界面之外。如果您使用 SCIM，请在 SSO 之后进行设置。
 
 要启用单点登录：
 

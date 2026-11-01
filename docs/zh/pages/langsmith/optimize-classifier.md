@@ -8,11 +8,11 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 目标
 
-在此示例中，我们将构建一个机器人，根据标题对 GitHub 问题进行分类。它将接收一个标题并将其分类为许多不同的类别之一。然后，我们将开始收集用户反馈并使用它来塑造该分类器的执行方式。
+在此示例中，我们将构建一个机器人，根据标题对 GitHub 问题进行分类。它将接受一个标题并将其分类为许多不同的类别之一。然后，我们将开始收集用户反馈并使用它来塑造该分类器的执行方式。
 
 ## 开始使用
 

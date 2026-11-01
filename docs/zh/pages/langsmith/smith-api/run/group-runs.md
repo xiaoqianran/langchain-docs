@@ -5,4 +5,4 @@
 # 分组运行
 
 /langsmith/langsmith-platform-openapi.json 发布 /api/v1/runs/group
-获取按表达式分组的运行
+已弃用； 2027 年 1 月 31 日日落。使用 POST /api/v2/threads/query 来查询线程。

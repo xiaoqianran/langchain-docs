@@ -42,39 +42,39 @@ LANGSMITH_API_KEY=YOUR_LANGSMITH_API_KEY
 
 ### 步骤 3. 配置搜索服务器
 
-如果文件已经定义了`mcp`，请将`Parallel`添加到现有的`servers`映射中。仅定义一次`mcp`。
+如果文件已经定义了`mcp`，请将`Parallel`添加到现有的`servers`映射中。仅定义一次`mcp`。> [选项卡] Python
+>
+> 将`Parallel`添加到`tools/mcp.py`中的`servers`地图。
+>
+> ```python tools/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from managed_deepagents import define_mcp
+>
+> mcp = define_mcp(
+>     servers={
+>         "Parallel": {
+>             "transport": "http",
+>             "url": "https://api.smith.langchain.com/v1/managed-tools/servers/parallel/mcp",
+>         },
+>     },
+> )
+> ```
 
-**Python**
-
-将`Parallel`添加到`tools/mcp.py`中的`servers`地图。```python tools/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from managed_deepagents import define_mcp
-
-mcp = define_mcp(
-    servers={
-        "Parallel": {
-            "transport": "http",
-            "url": "https://api.smith.langchain.com/v1/managed-tools/servers/parallel/mcp",
-        },
-    },
-)
-```
-
-**打字稿**
-
-将`Parallel`添加到`tools/mcp.ts`中的`servers`地图。
-
-```typescript tools/mcp.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { defineMcp } from "managed-deepagents";
-
-export const mcp = defineMcp({
-  servers: {
-    "Parallel": {
-      transport: "http",
-      url: "https://api.smith.langchain.com/v1/managed-tools/servers/parallel/mcp",
-    },
-  },
-});
-```
+> [选项卡] TypeScript
+>
+> 将`Parallel`添加到`tools/mcp.ts`中的`servers`地图。
+>
+> ```typescript tools/mcp.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { defineMcp } from "managed-deepagents";
+>
+> export const mcp = defineMcp({
+>   servers: {
+>     "Parallel": {
+>       transport: "http",
+>       url: "https://api.smith.langchain.com/v1/managed-tools/servers/parallel/mcp",
+>     },
+>   },
+> });
+> ```
 
 您的代理现在可以将并行搜索与其其他工具一起使用。
 

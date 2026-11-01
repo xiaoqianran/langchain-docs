@@ -55,7 +55,7 @@ Studio 允许您直接从图形界面编辑各个节点内使用的提示。
   )
   ```
 
-> **完整示例配置**
+> [手风琴] 完整示例配置
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > ## Using Pydantic
@@ -126,7 +126,7 @@ Studio 允许您直接从图形界面编辑各个节点内使用的提示。
 
 ### 游乐场
 
-[Playground](/langsmith/create-a-prompt) 接口允许测试单独的 LLM 调用，而无需运行完整的图表：1. 选择一个线程。
+[Playground](/langsmith/create-a-prompt) 接口允许测试单个 LLM 调用，而无需运行完整图表：1. 选择一个线程。
 2. 单击节点上的“**查看 LLM 运行**”。这列出了节点内进行的所有 LLM 调用（如果有）。
 3. 选择要在 Playground 中打开的 LLM 运行。
 4. 修改提示并测试不同的模型和工具设置。

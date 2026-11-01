@@ -29,7 +29,7 @@
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:
   topology: unified
-```统一模式运行一个 `smithdb all` 副本，大小由 [unified tiers](#unified-tiers) 决定。当 Pod 重新启动或从节点故障中恢复时，查询会失败。 LangSmith 在 Redis 中对传入跟踪进行排队，并在 Pod 再次运行时写入它们，因此摄取会被延迟而不是被丢弃。 PodDisruptionBudget 可防止节点耗尽驱逐 pod。
+```统一模式运行一个 `smithdb all` 副本，其大小由 [unified tiers](#unified-tiers) 确定。当 Pod 重新启动或从节点故障中恢复时，查询会失败。 LangSmith 在 Redis 中对传入跟踪进行排队，并在 Pod 再次运行时写入它们，因此摄取会被延迟而不是被丢弃。 PodDisruptionBudget 可防止节点耗尽驱逐 pod。
 
 ### 专用查询服务
 
@@ -110,51 +110,51 @@ smithdb:
 
 有关当前值和图表详细信息，请参阅[SmithDB resource tiers](https://github.com/langchain-ai/helm/tree/main/charts/langsmith#smithdb-resource-tiers)。
 
-> **显式资源配置示例**
+> [accordion] 显式资源配置示例
 >
 > 此示例覆盖中等层大小的查询组件。
 >
-> **LangSmith 0.17**
+>> [标签] LangSmith 0.17
+>>
+>> 缓存声明保持在层大小。这些值不需要节点存储。
+>>
+>> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > smithdb:
+> >   resourceTier: medium
+> >   query:
+> >     deployment:
+> >       resources:
+> >         requests:
+> >           cpu: "28"
+> >           memory: "48Gi"
+> >         limits:
+> >           cpu: "28"
+> >           memory: "48Gi"
+> > ```
 >
-> 缓存声明保持在层大小。这些值不需要节点存储。
->
-> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> smithdb:
->   resourceTier: medium
->   query:
->     deployment:
->       resources:
->         requests:
->           cpu: "28"
->           memory: "48Gi"
->         limits:
->           cpu: "28"
->           memory: "48Gi"
-> ```
->
-> **LangSmith 0.16**
->
-> 存储限制还调整默认 `emptyDir` 的大小。
->
-> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> smithdb:
->   resourceTier: medium
->   query:
->     deployment:
->       resources:
->         requests:
->           cpu: "28"
->           memory: "48Gi"
->           ephemeral-storage: "200Gi"
->         limits:
->           cpu: "28"
->           memory: "48Gi"
->           ephemeral-storage: "200Gi"
-> ```
+>> [标签] LangSmith 0.16
+>>
+>> 存储限制也调整了默认的`emptyDir`。
+>>
+>> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > smithdb:
+> >   resourceTier: medium
+> >   query:
+> >     deployment:
+> >       resources:
+> >         requests:
+> >           cpu: "28"
+> >           memory: "48Gi"
+> >           ephemeral-storage: "200Gi"
+> >         limits:
+> >           cpu: "28"
+> >           memory: "48Gi"
+> >           ephemeral-storage: "200Gi"
+> > ```
 
-## 元存储容量
+## 元存储容量基准层仅涵盖 SmithDB Kubernetes 工作负载。它们不包括 PostgreSQL 元存储。使用专用元存储的以下起点：
 
-基准层仅涵盖 SmithDB Kubernetes 工作负载。它们不包括 PostgreSQL 元存储。使用专用元存储的以下起点：|等级 | vCPU |内存|
+|等级 | vCPU |内存|
 | - | - | - |
 |小| 2 | 16 GiB |
 |中等| 4 | 32 GiB |

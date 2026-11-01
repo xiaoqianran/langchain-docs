@@ -12,7 +12,7 @@ SmithDB 组件公开应用程序指标，并可以将日志和跟踪导出到现
 
 每个 SmithDB 组件都在其 HTTP 端口上的固定 `/metrics` 路径上公开应用程序指标。配置监控堆栈以通过向每个组件添加抓取注释来发现 Pod：
 
-> **普罗米修斯配置示例**
+> [手风琴] Prometheus 配置示例
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > smithdb:

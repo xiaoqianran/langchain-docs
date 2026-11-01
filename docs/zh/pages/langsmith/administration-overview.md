@@ -18,8 +18,8 @@ LangSmith 将访问和数据组织为四个级别。 [organization](#organizatio
 
 |特色|个人|共享|
 | - | - | - |
-|最大工作空间 | 1 |可变，取决于计划（参见[pricing page](https://www.langchain.com/pricing-langsmith)）|
-|合作|无法邀请用户 |可以邀请用户|
+|最大工作空间| 1 |可变，取决于计划（参见[pricing page](https://www.langchain.com/pricing-langsmith)）|
+|合作|无法邀请用户 |可以邀请用户 |
 |计费：付费计划|仅限开发者计划 |所有其他可用计划 |
 
 ### 工作区
@@ -145,7 +145,7 @@ PAT 前缀为 `lsv2_pt_`成员可以停用、重新激活或删除自己的 PAT�
 
 停用令牌会停止身份验证，但会通过 **停用** 徽章保持其记录、所有者和上次使用情况可见。停用是可逆的；删除会永久删除该记录。重新激活会保留原始到期日期，并且一旦过了该日期，将不可用。由于身份验证结果会被缓存，因此这些更改会在一分钟内生效，而不是立即生效。
 
-步骤和认证缓存时序请参考[Deactivate or delete a personal access token](/langsmith/create-account-api-key#deactivate-or-delete-a-personal-access-token)。
+步骤及认证缓存时序请参考[Deactivate or delete a personal access token](/langsmith/create-account-api-key#deactivate-or-delete-a-personal-access-token)。
 
 > [!提示]
 >
@@ -186,7 +186,7 @@ PAT 前缀为 `lsv2_pt_`成员可以停用、重新激活或删除自己的 PAT�
   * 组织管理员拥有对组织中所有工作区的`Admin` 访问权限。
 * [Organization Operator](/langsmith/rbac#organization-operator) 的角色授予用户对工作区和非管理员用户进行日常操作的管理访问权限，而无需管理员级别的权限，例如管理组织管理员。
   * 组织操作员仅添加到他们创建或受邀加入的工作区。
-* [Organization User](/langsmith/rbac#organization-user)角色授予用户读取组织信息的权限。但是，他们无法在组织级别执行任何写入操作。组织用户可以创建[Personal Access Tokens](#personal-access-tokens-pats)。
+* [Organization User](/langsmith/rbac#organization-user)的角色授予用户读取组织信息的权限。但是，他们无法在组织级别执行任何写入操作。组织用户可以创建[Personal Access Tokens](#personal-access-tokens-pats)。
   * 可以像往常一样将组织用户添加到工作区子集并分配工作区角色（如果启用 RBAC），这些角色指定工作区级别的权限。
 * [Organization Viewer](/langsmith/rbac#organization-viewer)的角色相当于组织用户，但具有此角色的用户**不能**创建个人访问令牌。自托管安装需要 Helm 图表版本 0.11.25 或更高版本才能发挥此作用。* [Organization Restricted](/langsmith/rbac#organization-restricted) 角色授予用户对其分配的工作区的访问权限，而无需组织范围的读取访问权限，因此用户无法列出组织成员。工作区范围的服务密钥也可以担任此角色。
 
@@ -248,7 +248,7 @@ PAT 前缀为 `lsv2_pt_`成员可以停用、重新激活或删除自己的 PAT�
 >
 > 虽然两种类型的标签都可以使用 `dev`、`staging` 和 `prod` 等环境术语，但它们有不同的用途：
 >
-> * **资源标签** (`Environment: prod`)：使用这些标签来*组织和过滤*工作区中的资源。将资源标签应用于跟踪项目、数据集和其他资源（包括提示），以按环境对它们进行分组，从而可以在 UI 中进行过滤。
+> * **资源标签** (`Environment: prod`)：使用这些标签来*组织*整个工作区的资源。将资源标签应用于跟踪项目、数据集和其他资源（包括提示），以按环境对它们进行分组。
 > * [Commit tags](/langsmith/manage-prompts#commit-tags)（`prod` 标签）：使用它们来管理代码引用的 [prompt version](/langsmith/prompt-context-hub#prompts)。提交标签是指向提示历史记录中特定提交的标签。当您的代码通过标签名称（例如，`client.pull_prompt("prompt-name:prod")`）提取提示时，它会检索该标签当前指向的任何提交。要将提示从 `staging` 升级到 `prod`，请将提交标记移动到所需的版本。
 >
 > 资源标签组织**哪些资源**属于某个环境。提交标签使您可以控制代码引用的提示的**哪个版本**，而无需更改代码本身。

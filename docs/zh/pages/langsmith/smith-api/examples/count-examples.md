@@ -5,4 +5,4 @@
 # 计算例子
 
 /langsmith/langsmith-platform-openapi.json 获取 /api/v1/examples/count
-通过查询参数计算所有示例
+计算与过滤器匹配的示例。

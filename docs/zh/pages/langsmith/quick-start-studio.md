@@ -88,29 +88,29 @@ uv add debugpy
 langgraph dev --debug-port 5678
 ```
 
-然后附加您首选的调试器：
+然后附加您首选的调试器：> [选项卡] VS 代码
+>
+> 将此配置添加到`launch.json`：
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>     "name": "Attach to LangGraph",
+>     "type": "debugpy",
+>     "request": "attach",
+>     "connect": {
+>       "host": "0.0.0.0",
+>       "port": 5678
+>     }
+> }
+> ```
 
-**VS 代码**将此配置添加到`launch.json`：
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-    "name": "Attach to LangGraph",
-    "type": "debugpy",
-    "request": "attach",
-    "connect": {
-      "host": "0.0.0.0",
-      "port": 5678
-    }
-}
-```
-
-**PyCharm**
-
-1. 转到“运行”>“编辑配置”
-2.点击+并选择“Python调试服务器”
-3.设置IDE主机名：`localhost`
-4. 设置端口：`5678`（或者您在上一步中选择的端口号）
-5.点击“确定”开始调试
+> [选项卡] PyCharm
+>
+> 1. 转到运行 > 编辑配置
+> 2.点击+并选择“Python调试服务器”
+> 3.设置IDE主机名：`localhost`
+> 4. 设置端口：`5678`（或者您在上一步中选择的端口号）
+> 5.点击“确定”开始调试
 
 > [!提示]
 >

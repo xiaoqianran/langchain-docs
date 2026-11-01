@@ -18,7 +18,7 @@
 
 在部署之前，请确保您拥有：
 
-* 具有托管 Deep Agents 公共测试版访问权限的工作区。
+* LangSmith 云工作空间。
 
 * `.env` 或您的 shell 环境中的该工作空间的 [LangSmith API key](/langsmith/create-account-api-key)。在交互式终端上，`mda deploy` 会提示您输入密钥或通过浏览器登录。
 
@@ -28,9 +28,9 @@
 
 * 模型提供者凭据，例如 `.env`、您的 shell 环境中的 `OPENAI_API_KEY` 或 LangSmith 工作区机密。
 
-## 选择 SaaS 区域`LANGSMITH_ENDPOINT` 选择 CLI 部署到的 LangSmith 区域。默认情况下，CLI 以 GCP US 为目标。
+## 选择 SaaS 区域
 
-在首次部署之前，在项目的 `.env` 或 shell 环境中设置 `LANGSMITH_ENDPOINT`：
+`LANGSMITH_ENDPOINT` 选择 CLI 部署到的 LangSmith 区域。默认情况下，CLI 以 GCP US 为目标。在首次部署之前，在项目的 `.env` 或 shell 环境中设置 `LANGSMITH_ENDPOINT`：
 
 |地区 |端点 |部署支持 |
 | - | - | - |
@@ -116,7 +116,7 @@ python-version = "3.14"
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 MDA_PYTHON_VERSION=3.12 uv run mda deploy
-````requires-python` 排除的目标构建失败。相反，依赖于图像的确切补丁版本的警告会发出警告，因为图像标签不会固定补丁版本。
+````requires-python` 排除的目标无法构建。相反，依赖于图像的确切补丁版本的警告会发出警告，因为图像标签不会固定补丁版本。
 
 `python-version` 仅控制部署映像。本地构建、`mda dev`、Harbor 任务镜像和[execution sandboxes](/langsmith/python/managed-deep-agents-sandboxes) 分别选择它们的解释器。
 
@@ -148,25 +148,25 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 ## 后续步骤
 
-> **[Agent Server](/langsmith/agent-server-overview)**
+> [卡][Agent Server](/langsmith/agent-server-overview)
 >
 > 探索托管部署的运行时。
 
-> **[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)**
+> [卡][MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)
 >
 > 将部署的代理作为工具公开给 MCP 客户端。
 
-> **[Identity](/langsmith/python/managed-deep-agents-identity)**
+> [卡][Identity](/langsmith/python/managed-deep-agents-identity)
 >
 > 对调用者进行身份验证并提供私有线程。
 
-> **[Schedules](/langsmith/python/managed-deep-agents-schedules)**
+> [卡][Schedules](/langsmith/python/managed-deep-agents-schedules)
 >
 > 根据托管 cron 计划运行代理。
 
-> **[Custom tools](/langsmith/python/managed-deep-agents-tools)**
+> [卡][Custom tools](/langsmith/python/managed-deep-agents-tools)
 >
-> 将创作的 LangChain 工具添加到代理定义中。> **[CLI reference](/langsmith/python/managed-deep-agents-cli)**
+> 将创作的 LangChain 工具添加到代理定义中。> [卡][CLI reference](/langsmith/python/managed-deep-agents-cli)
 >
 > 查找每个 `mda` 命令和标志。
 

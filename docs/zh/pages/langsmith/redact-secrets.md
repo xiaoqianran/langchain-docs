@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 本页面介绍通过 SDK 从跟踪数据中编辑机密（API 密钥、令牌、凭据）。要编辑电子邮件、姓名或 SSN 等个人身份信息 (PII)，请参阅 [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs)。要在 LLM 网关层编辑机密，请参阅[Data policy](/langsmith/llm-gateway-data-policy)。
+> 本页面介绍通过 SDK 从跟踪数据中编辑机密（API 密钥、令牌、凭据）。要编辑电子邮件、姓名或 SSN 等个人身份信息 (PII)，请参阅 [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs)。要在 LLM 网关层编辑机密，请参阅[Data policies](/langsmith/llm-gateway-data-policy)。
 >
 > [Claude Code](/langsmith/trace-claude-code#secret-redaction)、[OpenAI Codex](/langsmith/trace-with-codex#secret-redaction) 和 [Cursor](/langsmith/trace-with-cursor#secret-redaction) 的编码代理跟踪插件默认应用以下预设。这些不需要 SDK 代码。
 
@@ -65,7 +65,7 @@ Python 和 TypeScript 预设保留相同的规则，因此其中一个编辑的�
 
 名称规则需要组件边界，因此 `TOKEN` 匹配 `api_token` 和 `mytoken`，但不匹配 `tokenizer` 或 `tokens`。标头和 `Bearer` 规则保留标头名称和方案字，并仅编辑后面的凭证。
 
-### 将您自己的规则添加到预设中传递 `extra_rules` 来附加预设不知道的凭据模式，例如内部密钥格式。额外规则在内置规则之后运行。
+### 将您自己的规则添加到预设中传递 `extra_rules` 附加预设不知道的凭据模式，例如内部密钥格式。额外规则在内置规则之后运行。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import re

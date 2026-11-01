@@ -52,7 +52,7 @@ const notionToken = await connections.get("engineering-notion", { type: "user" }
 
 ### 识别来电者
 
-用户拥有的连接根据托管Deep Agents附加到运行的调用者身份进行解析。该身份的来源取决于代理的调用方式：|表面|来电者身份|
+用户拥有的连接根据托管Deep Agents附加到运行的调用者身份进行解析。该身份的来源取决于代理的调用方式：|表面|来电者身份 |
 | - | - |
 | [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack) |发送消息的 Slack 用户。 |
 | LangSmith 工作室 |已登录的 LangSmith 用户。 |
@@ -71,7 +71,7 @@ const notionToken = await connections.get("engineering-notion", { type: "user" }
 所有权决定代理使用凭证执行的操作。创建模式决定凭证如何到达工作区，并取决于外部服务如何进行身份验证：|模式|使用时 |使用 | 创建凭证所有者 |
 | - | - | - | - |
 | **不透明的秘密** |该服务使用固定的 API 密钥或其他静态秘密。 | `--secret-from-env`、`--secret-from-file`、stdin 或交互式提示 |代理|
-| **通用 OAuth** |您注册自己的 OAuth 应用程序 (BYOT)，例如使用 GitHub 或 Google。 |目录中的 `--oauth <service>`，或自定义提供商的 `--authorize-url` 和 `--token-url` |每个呼叫者或带有[⟦T69⟧](#authorize-an-agent-owned-oauth-account)或[client credentials](#create-a-client-credentials-connection)的座席|
+| **通用 OAuth** |您注册自己的 OAuth 应用程序 (BYOT)，例如使用 GitHub 或 Google。 |目录中的 `--oauth <service>`，或自定义提供商的 `--authorize-url` 和 `--token-url` |每个呼叫者或带有[⟦T69⟧](#authorize-an-agent-owned-oauth-account)或[client credentials](#create-a-client-credentials-connection)的座席 |
 | **MCP OAuth** | MCP 服务器通告 OAuth 并自动注册客户端。 | `--mcp <url>`，或者当项目已经声明用户拥有的 MCP 服务器时单独使用 slug |每个呼叫者或具有 [⟦T71⟧](#authorize-an-agent-owned-oauth-account) 的代理 |
 
 例如：
@@ -234,7 +234,7 @@ bunx mda connections catalog
 | `twitch` | [Twitch](https://dev.twitch.tv/console/apps) | `user:read:email` |
 | `x` | [X](https://developer.x.com/en/portal/dashboard) | `tweet.read` `users.read` `offline.access` |
 
-没有默认范围的服务需要`--scope`。> **某些服务为其 API 和 MCP 服务器运行单独的 OAuth 应用程序**
+没有默认范围的服务需要`--scope`。> [accordion] 某些服务为其 API 和 MCP 服务器运行单独的 OAuth 应用程序
 >
 > 观念就是其中之一。 `--oauth notion-api` 针对 Notion 的 REST API 注册应用程序，并且该应用程序未授权 Notion 的 MCP 服务器。要使用 MCP 服务器，请创建一个 [MCP OAuth connection](#create-an-mcp-oauth-connection)。当服务同时提供这两种服务时，请检查提供商的文档。
 
@@ -387,7 +387,7 @@ bunx mda connections create support-linear \
   --authorize
 ```
 
-CLI 为您登录的帐户启动授权流程，并存储部署的结果授权。运行时代码将其解析为代理拥有的凭证：
+CLI 为您登录的帐户启动授权流程，并存储部署的结果授权。运行时代码将其解析为代理拥有的凭据：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const accessToken = await connections.get("support-linear", { type: "agent" });
@@ -397,7 +397,7 @@ const accessToken = await connections.get("support-linear", { type: "agent" });
 
 > [!提示]
 >
-> 授权您的团队拥有的专用帐户，而不是您自己的帐户。您登录的帐户将成为客服人员对每个呼叫者采取的每项操作背后的身份。使用个人帐户会产生三项费用：
+> 授权您的团队拥有的专用帐户，而不是您自己的帐户。您登录的帐户将成为客服人员为每个呼叫者采取的每项操作背后的身份。使用个人帐户会产生三项费用：
 >
 > * 代理获得您对该提供商的完全访问权限。
 > * 提供商的审核日志显示您的姓名以及代理所做的事情。
@@ -774,9 +774,9 @@ bunx mda connections delete organization-tavily
 ## 查看当前限制
 
 连接是托管 Deep Agents 公共测试版的一部分。当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
-* **自定义通道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
+* **自定义渠道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
 * **工作区 UI**：LangSmith 不在 UI 中列出连接。使用 `mda connections list` 和 `mda connections get` 作为连接元数据。
-* **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示了 slug。从项目根目录运行`mda connections create <slug>`来创建一个。> **通过代理身份验证存储用户拥有的 API 密钥**
+* **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示了 slug。从项目根目录运行`mda connections create <slug>`来创建一个。> [accordion] 通过代理身份验证存储用户拥有的 API 密钥
 >
 > 具有`"kind": "secret"` 的中断入口没有`connect_url`。要在自定义前端中收集一个，请提示输入隐藏输入的值，然后根据现有连接 slug 创建凭据：
 >

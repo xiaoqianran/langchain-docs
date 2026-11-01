@@ -6,7 +6,7 @@
 
 当工作区从通过跟踪项目组织跟踪转变为通过代理和环境组织跟踪时，会发生什么变化。
 
-LangSmith 以两种方式之一组织工作空间。 *基于项目的工作区*按 [tracing project](/langsmith/observability-concepts#tracing-projects) 对跟踪进行分组。 “基于代理的工作空间”按 [agent](/langsmith/agents) 对它们进行分组，并将每个代理的轨迹划分为从固定的四个集合中绘制的 [environments](/langsmith/agent-environments)。
+LangSmith 以两种方式之一组织工作空间。 *基于项目的工作区*按 [tracing project](/langsmith/observability-concepts#tracing-projects) 对跟踪进行分组。 “基于代理的工作空间”按 [agent](/langsmith/agent-registry#agent) 对它们进行分组，并将每个代理的轨迹划分为从固定的四个集合中绘制的 [environments](/langsmith/agent-environments)。
 
 基于代理的组织可在 [LangSmith Cloud](/langsmith/cloud) 上使用。 [self-hosted](/langsmith/self-hosted) LangSmith 不可用。本页介绍了基于代理的工作区的不同之处，以及如果您的工作区成为基于代理的工作区，将会发生什么变化。
 
@@ -39,7 +39,7 @@ LangSmith 云上的新组织获得基于代理的工作区。在现有组织中�
 
 ## 另请参阅
 
-* [Agents](/langsmith/agents)
+* [Agent Registry](/langsmith/agent-registry)
 * [Agent environments](/langsmith/agent-environments)
 * [Workload isolation](/langsmith/workload-isolation)
 * [Administration overview](/langsmith/administration-overview#agents-and-applications)

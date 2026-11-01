@@ -10,105 +10,105 @@
 
 首先，让我们设置我们的客户端：
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_client
+>
+> client = get_client(url=<DEPLOYMENT_URL>)
+> # Using the graph deployed with the name "agent"
+> assistant_id = "agent"
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client } from "@langchain/langgraph-sdk";
+>
+> const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+> // Using the graph deployed with the name "agent"
+> const assistantId = "agent";
+> ```
 
-client = get_client(url=<DEPLOYMENT_URL>)
-# Using the graph deployed with the name "agent"
-assistant_id = "agent"
-```
-
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "@langchain/langgraph-sdk";
-
-const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-// Using the graph deployed with the name "agent"
-const assistantId = "agent";
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/assistants/search \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "limit": 10,
-        "offset": 0
-    }' | jq -c 'map(select(.config == null or .config == {})) | .[0].graph_id' && \
-curl --request POST \
-    --url <DEPLOYMENT_URL>/threads \
-    --header 'Content-Type: application/json' \
-    --data '{}'
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/assistants/search \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "limit": 10,
+>         "offset": 0
+>     }' | jq -c 'map(select(.config == null or .config == {})) | .[0].graph_id' && \
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/threads \
+>     --header 'Content-Type: application/json' \
+>     --data '{}'
+> ```
 
 ## 无状态流式传输
 
 我们可以以几乎与使用状态属性从运行流式传输的方式流式传输无状态运行的结果，但我们不是将值传递给`thread_id`参数，而是传递`None`：
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> input = {
+>     "messages": [
+>         {"role": "user", "content": "Hello! My name is Bagatur and I am 26 years old."}
+>     ]
+> }
+>
+> async for chunk in client.runs.stream(
+>     # Don't pass in a thread_id and the stream will be stateless
+>     None,
+>     assistant_id,
+>     input=input,
+>     stream_mode="updates",
+> ):
+>     if chunk.data and "run_id" not in chunk.data:
+>         print(chunk.data)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-input = {
-    "messages": [
-        {"role": "user", "content": "Hello! My name is Bagatur and I am 26 years old."}
-    ]
-}
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> let input = {
+>   messages: [
+>     { role: "user", content: "Hello! My name is Bagatur and I am 26 years old." }
+>   ]
+> };
+>
+> const streamResponse = client.runs.stream(
+>   // Don't pass in a thread_id and the stream will be stateless
+>   null,
+>   assistantId,
+>   {
+>     input,
+>     streamMode: "updates"
+>   }
+> );
+> for await (const chunk of streamResponse) {
+>   if (chunk.data && !("run_id" in chunk.data)) {
+>     console.log(chunk.data);
+>   }
+> }
+> ```
 
-async for chunk in client.runs.stream(
-    # Don't pass in a thread_id and the stream will be stateless
-    None,
-    assistant_id,
-    input=input,
-    stream_mode="updates",
-):
-    if chunk.data and "run_id" not in chunk.data:
-        print(chunk.data)
-```
-
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-let input = {
-  messages: [
-    { role: "user", content: "Hello! My name is Bagatur and I am 26 years old." }
-  ]
-};
-
-const streamResponse = client.runs.stream(
-  // Don't pass in a thread_id and the stream will be stateless
-  null,
-  assistantId,
-  {
-    input,
-    streamMode: "updates"
-  }
-);
-for await (const chunk of streamResponse) {
-  if (chunk.data && !("run_id" in chunk.data)) {
-    console.log(chunk.data);
-  }
-}
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/runs/stream \
-    --header 'Content-Type: application/json' \
-    --data "{
-        \"assistant_id\": \"agent\",
-        \"input\": {\"messages\": [{\"role\": \"human\", \"content\": \"Hello! My name is Bagatur and I am 26 years old.\"}]},
-        \"stream_mode\": [
-            \"updates\"
-        ]
-    }" | jq -c 'select(.data and (.data | has("run_id") | not)) | .data'
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/runs/stream \
+>     --header 'Content-Type: application/json' \
+>     --data "{
+>         \"assistant_id\": \"agent\",
+>         \"input\": {\"messages\": [{\"role\": \"human\", \"content\": \"Hello! My name is Bagatur and I am 26 years old.\"}]},
+>         \"stream_mode\": [
+>             \"updates\"
+>         ]
+>     }" | jq -c 'select(.data and (.data | has("run_id") | not)) | .data'
+> ```
 
 输出：
 
@@ -120,38 +120,38 @@ curl --request POST \
 
 除了流式传输之外，您还可以使用 `.wait` 函数等待无状态结果，如下所示：
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> stateless_run_result = await client.runs.wait(
+>     None,
+>     assistant_id,
+>     input=input,
+> )
+> print(stateless_run_result)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-stateless_run_result = await client.runs.wait(
-    None,
-    assistant_id,
-    input=input,
-)
-print(stateless_run_result)
-```
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> let statelessRunResult = await client.runs.wait(
+>   null,
+>   assistantId,
+>   { input: input }
+> );
+> console.log(statelessRunResult);
+> ```
 
-**Javascript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-let statelessRunResult = await client.runs.wait(
-  null,
-  assistantId,
-  { input: input }
-);
-console.log(statelessRunResult);
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/runs/wait \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "assistant_id": <ASSISTANT_IDD>,
-    }'
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/runs/wait \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "assistant_id": <ASSISTANT_IDD>,
+>     }'
+> ```
 
 输出：
 

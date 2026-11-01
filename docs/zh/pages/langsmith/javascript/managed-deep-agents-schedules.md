@@ -147,9 +147,9 @@ TypeScript 开发服务器不运行 cron 作业。 `mda dev` 在启动时列出�
 >
 > 运行时计划需要 `managed-deepagents` 0.9.0 或更高版本。
 
-`schedules/` 中的声明在部署时已修复。 `runtime.schedules` 在代理运行时创建计划，因此代理可以设置重复性或一次性工作来响应对话。它在工具和 [middleware](/langsmith/javascript/managed-deep-agents-middleware) 接收的运行时上可用，并且它充当当前运行的调用者。每个计划都属于当前用户或代理。
+`schedules/` 中的声明在部署时已修复。 `runtime.schedules` 在代理运行时创建计划，因此代理可以设置重复性或一次性工作来响应对话。它在工具和[middleware](/langsmith/javascript/managed-deep-agents-middleware)接收的运行时上可用，并且它充当当前运行的调用者。每个计划都属于当前用户或代理。
 
-代理只能通过您编写的工具来访问此 API。公开代理需要的呼叫，并忽略不应该接通的呼叫。当工具在 [channel](/langsmith/javascript/managed-deep-agents-channels) 运行期间创建计划（例如 Slack 对话）时，计划将继承该通道。每次运行都会将其最终答案发回给它。新线程发布新的 Slack 消息，当前线程在现有 Slack 线程中回复。
+代理只能通过您编写的工具来访问此 API。公开代理需要的呼叫，并忽略不应该接通的呼叫。当工具在 [channel](/langsmith/javascript/managed-deep-agents-channels) 运行期间创建计划（例如 Slack 对话）时，该计划将继承该通道。每次运行都会将其最终答案发回给它。新线程发布新的 Slack 消息，当前线程在现有 Slack 线程中回复。
 
 `newThread` 决定时间表使用两者中的哪一个。
 
@@ -301,14 +301,14 @@ await runtime.schedules!.delete(item.id, { owner });
 
 ## 后续步骤
 
-> **[Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)**
+> [卡][Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)
 >
 > 部署并协调日程变更。
 
-> **[CLI reference](/langsmith/javascript/managed-deep-agents-cli)**
+> [卡][CLI reference](/langsmith/javascript/managed-deep-agents-cli)
 >
 > 查找 `mda deploy` 标志和故障排除。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-schedules.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-schedules.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

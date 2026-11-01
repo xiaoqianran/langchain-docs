@@ -6,7 +6,7 @@
 
 座席切换器如何在座席列表和单个座席之间移动、哪些部分需要座席以及座席概览显示的内容。
 
-要在工作区中的 [agents](/langsmith/agents) 之间移动，请使用顶部栏中的代理切换器。选择一个代理以仅查看该代理的计数、图表和跟踪列表。
+要在工作区中的 [agents](/langsmith/agent-registry#agent) 之间移动，请使用顶部栏中的代理切换器。选择一个代理以仅查看该代理的计数、图表和跟踪列表。
 
 > [!注意]
 >
@@ -18,7 +18,7 @@
 
 代理切换器位于顶部栏的左侧，位于工作区切换器和面板折叠切换器之后。它显示**所有代理**或您所在代理的名称。在概述以外的部分中，面包屑会跟随在其后面并命名该部分。
 
-![The agent switcher open, with a search box above a list of agents and a check mark beside the selected one.](https://mintcdn.com/langchain-5e9cc07a/0GS5eCN4HA5fQwNT/langsmith/images/agent-switcher-open-light.png?fit=max\&auto=format\&n=0GS5eCN4HA5fQwNT\&q=85\&s=0b42353f60159bf455491f6d0a85845c)其背后的地址是`/o/<workspaceId>/a/<agentIdentifier>/...`。工作区槽采用 UUID，代理槽采用代理的 [identifier](/langsmith/agents#identifiers-and-display-names)。代理槽中的连字符表示所有代理，因此 `/a/-` 是 **所有代理** 视图，`/a/<agentIdentifier>` 是单个代理。可以从地址栏设置任一状态，这就是如何直接链接到两个视图之一。
+![The agent switcher open, with a search box above a list of agents and a check mark beside the selected one.](https://mintcdn.com/langchain-5e9cc07a/0GS5eCN4HA5fQwNT/langsmith/images/agent-switcher-open-light.png?fit=max\&auto=format\&n=0GS5eCN4HA5fQwNT\&q=85\&s=0b42353f60159bf455491f6d0a85845c)其背后的地址是`/o/<workspaceId>/a/<agentIdentifier>/...`。工作区槽采用 UUID，代理槽采用代理的 [identifier](/langsmith/agent-registry#identifiers-and-display-names)。代理槽中的连字符表示所有代理，因此 `/a/-` 是 **所有代理** 视图，`/a/<agentIdentifier>` 是单个代理。可以从地址栏设置任一状态，这就是如何直接链接到两个视图之一。
 
 ## 所有代理和单代理视图
 
@@ -44,9 +44,9 @@
 
 ## 阅读代理概述
 
-当您选择代理时，LangSmith 打开其概述。
+当您选择代理时，LangSmith 打开其概览。
 
-切换器显示客服人员的显示名称。标有 **ID** 的字段（旁边有一个复制按钮）保存标识符，这也是地址栏携带的值。 **ID**字段缩短了中间的一个长标识符。当您需要该值进行跟踪时，请使用 **ID** 旁边的复制按钮。 [Agent addressing](/langsmith/log-traces-to-agent) 采用标识符，而不是显示名称。对于哪个值是哪个，请参阅[Identifiers and display names](/langsmith/agents#identifiers-and-display-names)。
+切换器显示客服人员的显示名称。标有 **ID** 的字段（旁边有一个复制按钮）保存标识符，这也是地址栏携带的值。 **ID**字段缩短了中间的一个长标识符。当您需要该值进行跟踪时，请使用 **ID** 旁边的复制按钮。 [Agent addressing](/langsmith/log-traces-to-agent) 采用标识符，而不是显示名称。对于哪个值是哪个，请参阅[Identifiers and display names](/langsmith/agent-registry#identifiers-and-display-names)。
 
 在 **ID** 字段下方，概述按顺序显示以下内容：
 
@@ -58,7 +58,7 @@
 
 ## 另请参阅
 
-* [Agents](/langsmith/agents)
+* [Agent Registry](/langsmith/agent-registry)
 * [Create an agent](/langsmith/create-an-agent)
 * [Agent environments](/langsmith/agent-environments)
 * [Deploy to an agent environment](/langsmith/deploy-to-agent-environment)

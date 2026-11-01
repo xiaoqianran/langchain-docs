@@ -70,19 +70,19 @@ flowchart TB
 
 ## 在本节中
 
-> **[Kick off background runs](/langsmith/background-run)**
+> [卡][Kick off background runs](/langsmith/background-run)
 >
 > 异步运行代理并轮询结果。
 
-> **[Run multiple agents on the same thread](/langsmith/same-thread)**
+> [卡][Run multiple agents on the same thread](/langsmith/same-thread)
 >
 > 在共享线程上使用多个助手来组合代理功能。
 
-> **[Stateless runs](/langsmith/stateless-runs)**
+> [卡][Stateless runs](/langsmith/stateless-runs)
 >
 > 当不需要对话历史记录时，执行运行而不保留状态。
 
-> **[Cancel a run](/langsmith/cancel-run)**
+> [卡][Cancel a run](/langsmith/cancel-run)
 >
 > 通过 API 取消单次运行或多次运行。
 

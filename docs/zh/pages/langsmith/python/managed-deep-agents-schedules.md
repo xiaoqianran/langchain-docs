@@ -286,11 +286,11 @@ await runtime.schedules.delete(item["id"], owner=owner)
 
 ## 后续步骤
 
-> **[Deploy an agent](/langsmith/python/managed-deep-agents-deploy)**
+> [卡][Deploy an agent](/langsmith/python/managed-deep-agents-deploy)
 >
 > 部署并协调日程变更。
 
-> **[CLI reference](/langsmith/python/managed-deep-agents-cli)**
+> [卡][CLI reference](/langsmith/python/managed-deep-agents-cli)
 >
 > 查找 `mda deploy` 标志和故障排除。
 

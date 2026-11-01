@@ -33,7 +33,7 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 `mda dev`：
 
 1. 验证项目并将其编译为`.mda/build`。
-2. 将项目 `.env` 复制到本地构建中，并在需要时添加仅限本地的身份配置。
+2. 将项目`.env`复制到本地构建中，并在需要时添加仅限本地的身份配置。
 3. 创建本地 [Context Hub](/langsmith/python/managed-deep-agents-context-hub) 模拟以获取指令、技能和记忆。
 4. 启动特定语言的LangGraph开发服务器。
 5. 在 Studio 中打开代理。
@@ -42,7 +42,7 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 
 ## 跟踪本地运行`mda dev` 将跟踪发送到代理的**本地**环境。项目名称为`{name}-local`，取自您传递给`define_deep_agent`或`defineDeepAgent`的`name`。
 
-在 [agent-based workspace](/langsmith/agents) 中，LangSmith 拒绝这些跟踪，直到代理记录存在。 [⟦T14⟧](/langsmith/python/managed-deep-agents-deploy) 创建该记录。 `mda dev` 本身则不然。
+在 [agent-based workspace](/langsmith/agent-registry) 中，LangSmith 拒绝这些跟踪，直到代理记录存在。 [⟦T14⟧](/langsmith/python/managed-deep-agents-deploy) 创建该记录。 `mda dev` 本身则不然。
 
 在依赖本地跟踪之前，请在 UI 或 API 中使用相同的标识符运行 [create the agent](/langsmith/create-an-agent) 一次，或者运行 `mda deploy` 一次。当跟踪被拒绝时，工作室聊天仍然有效。
 

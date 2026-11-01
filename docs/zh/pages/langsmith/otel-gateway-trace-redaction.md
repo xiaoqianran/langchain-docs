@@ -31,7 +31,7 @@ flowchart TD
 
 > [!注意]
 >
-> 在发送跟踪之前，在 [agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 先决条件
 
@@ -96,7 +96,7 @@ service:
 
 标头适用于导出器发送的每个范围。要将跟踪发送到多个代理或环境，请为每个代理或环境定义一个导出器，并将每个代理的跨度路由到其导出器。 Span 属性（包括 `gen_ai.agent.name`）不会将跟踪发送到代理。要了解有关向代理发送跟踪的更多信息，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
 
-## 使用 LangChain、LangGraph 或 Deep Agents 进行跟踪
+## 使用 LangChain、LangGraph 或 Deep Agents 进行追踪
 
 如果您的代理已使用 [LangChain](/langsmith/trace-with-langchain)、[LangGraph](/langsmith/trace-with-langgraph) 或 [Deep Agents](/langsmith/trace-deep-agents)，请使用此方法。跟踪集成会根据您的环境变量自动处理跨度创建，因此不需要额外的检测代码：
 

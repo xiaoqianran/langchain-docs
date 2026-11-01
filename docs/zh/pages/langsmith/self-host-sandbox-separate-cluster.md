@@ -1,113 +1,101 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Run self-hosted Sandboxes in a separate cluster | https://docs.langchain.com/langsmith/self-host-sandbox-separate-cluster -->
 
-# Run self-hosted Sandboxes in a separate cluster
+# 在单独的集群中运行自托管沙箱
 
-Run the self-hosted LangSmith Sandbox runtime in a dedicated Kubernetes cluster with the langsmith-sandbox Helm chart, connected to the LangSmith control plane in another cluster.
+使用 langsmith-sandbox Helm 图表在专用 Kubernetes 集群中运行自托管 LangSmith Sandbox 运行时，连接到另一个集群中的 LangSmith 控制平面。
 
-By default, the `langsmith` Helm release runs the [Sandbox](/langsmith/sandboxes) runtime in the same Kubernetes cluster as LangSmith. With `sandboxes.external.enabled: true`, the runtime is external: a second chart, `langsmith-sandbox`, installs it, here in a dedicated cluster. This guide covers the requirements, network rules, secrets, and Helm steps for that topology.
+默认情况下，`langsmith` Helm 版本在与 LangSmith 相同的 Kubernetes 集群中运行 [Sandbox](/langsmith/sandboxes) 运行时。对于 `sandboxes.external.enabled: true`，运行时是外部的：第二个图表 `langsmith-sandbox` 将其安装在专用集群中。本指南涵盖了该拓扑的要求、网络规则、机密和 Helm 步骤。
 
-For the default topology and the settings both topologies share, see [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes). For upgrades, see [Upgrade separate sandbox clusters](/langsmith/self-host-upgrades#upgrade-separate-sandbox-clusters).
+有关默认拓扑和两个拓扑共享的设置，请参阅[Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)。如需升级，请参阅[Upgrade separate sandbox clusters](/langsmith/self-host-upgrades#upgrade-separate-sandbox-clusters)。
 
-> [!NOTE]
+> [!注意]
 >
-> Separate sandbox clusters require LangSmith Helm chart version 0.18.0-rc.51 or later, from the v0.18 preview, and a `langsmith-sandbox` chart whose appVersion matches your `langsmith` chart. Earlier charts ignore `sandboxes.external.enabled` and deploy the embedded runtime. To list the runtime chart versions and their appVersions, run `helm search repo langchain/langsmith-sandbox --versions --devel`.
+> 单独的沙盒集群需要 v0.18 预览版中的 LangSmith Helm 图表版本 0.18.0-rc.51 或更高版本，以及 appVersion 与您的 `langsmith` 图表匹配的 `langsmith-sandbox` 图表。早期的图表忽略`sandboxes.external.enabled`并部署嵌入式运行时。要列出运行时图表版本及其应用程序版本，请运行 `helm search repo langchain/langsmith-sandbox --versions --devel`。
 
-## Decide when to use a separate cluster
+## 决定何时使用单独的集群
 
-Use a separate cluster when:
+在以下情况下使用单独的集群：* **您的 LangSmith 集群无法托管沙箱节点**：沙箱运行时需要支持 KVM 的节点和特权 Pod。例如，GKE Autopilot 集群无法运行运行时，因此 Autopilot 上的 LangSmith 安装需要一个单独的 GKE Standard 集群用于沙箱。
+* **您想要隔离沙箱工作负载**：沙箱在特权主机上运行用户代码。单独的集群使这些节点远离运行LangSmith的集群并保存其应用程序机密。运行时仅接收它需要的两个秘密值。
 
-* **Your LangSmith cluster cannot host sandbox nodes**: The sandbox runtime needs KVM-capable nodes and privileged pods. For example, GKE Autopilot clusters cannot run the runtime, so a LangSmith installation on Autopilot needs a separate GKE Standard cluster for Sandboxes.
-* **You want to isolate sandbox workloads**: Sandboxes run user code on privileged hosts. A separate cluster keeps those nodes away from the cluster that runs LangSmith and holds its application secrets. The runtime receives only the two secret values it needs.
+否则，保留默认的嵌入式运行时。然后，Helm 版本会一起安装和升级控制平面和运行时，无需维护集群之间的网络路径。
 
-Otherwise, keep the default embedded runtime. One Helm release then installs and upgrades the control plane and the runtime together, with no network path between clusters to maintain.
+## 理解拓扑
 
-## Understand the topology
+LangSmith 集群保留沙箱 API 和控制平面：PostgreSQL 中的身份验证、放置、沙箱记录，以及 exec、文件和 [service URL](/langsmith/sandbox-service-urls) 流量的代理。沙箱集群运行主机及其 microVM。
 
-The LangSmith cluster keeps the Sandbox API and the control plane: authentication, placement, sandbox records in PostgreSQL, and the proxy for exec, file, and [service URL](/langsmith/sandbox-service-urls) traffic. The sandbox cluster runs the hosts and their microVMs.
+**独立集群**
 
-**separate-cluster**
+LangSmith集群保存API、放置和沙箱记录。沙箱集群运行主机，保存两个秘密的副本，并到达沙箱存储。将其与 [default architecture](/langsmith/self-host-sandbox-architecture#understand-the-deployment-model) 进行比较，其中 `sandbox-host` 在 LangSmith 集群中运行。
 
-The LangSmith cluster keeps the API, placement, and sandbox records. The sandbox cluster runs the hosts, holds copies of two secrets, and reaches sandbox storage.
-
-Compare it with the [default architecture](/langsmith/self-host-sandbox-architecture#understand-the-deployment-model), where `sandbox-host` runs in the LangSmith cluster.
-
-| | LangSmith cluster | Sandbox cluster |
+| | LangSmith集群|沙盒集群|
 | - | - | - |
-| Helm release | `langsmith`, with `sandboxes.external.enabled: true` | `langsmith-sandbox`, with `sandboxHost.enabled: true` |
-| Runs | `platform-backend`, `ingest-queue`, and the rest of LangSmith | `sandbox-host` on KVM-capable nodes, the JuiceFS formatter Job, and an optional host ingress |
-| Holds | Sandbox records, the callback signing JWK, and the sandbox service-auth secret | A minimal Secret with copies of those two values, and the egress proxy CA |
+|头盔释放 | `langsmith`，与 `sandboxes.external.enabled: true` | `langsmith-sandbox`，与 `sandboxHost.enabled: true` |
+|运行| `platform-backend`、`ingest-queue` 以及 LangSmith 的其余部分 | `sandbox-host` 在支持 KVM 的节点上、JuiceFS 格式化程序作业和可选的主机入口 |
+|持有|沙箱记录、回调签名 JWK 和沙箱服务身份验证密钥 |包含这两个值的副本的最小 Secret 以及出口代理 CA |
 
-With an external runtime, the `langsmith` release does not render `sandbox-host`, the JuiceFS formatter, the JuiceFS configuration Secret, or the proxy CA. The sandbox cluster reaches the JuiceFS Redis metadata store and the object storage; the LangSmith cluster does not need them.
+对于外部运行时，`langsmith` 版本不会渲染 `sandbox-host`、JuiceFS 格式化程序、JuiceFS 配置 Secret 或代理 CA。沙箱集群到达JuiceFS Redis元数据存储和对象存储； LangSmith集群不需要它们。
 
-The runtime chart uses the same settings as the embedded runtime, without the `sandboxes.` prefix:
+运行时图表使用与嵌入式运行时相同的设置，没有 `sandboxes.` 前缀：
 
-| `langsmith` chart, embedded runtime | `langsmith-sandbox` chart |
+| `langsmith` 图表，嵌入式运行时 | `langsmith-sandbox`图表|
 | - | - |
 | `sandboxes.sandboxHost.*` | `sandboxHost.*` |
 | `sandboxes.juicefs.*` | `juicefs.*` |
 | `sandboxes.juicefsFormatJob.*` | `juicefsFormatJob.*` |
 | `sandboxes.proxyCa.*` | `proxyCa.*` |
 | `sandboxes.authProxy.httpProxy.noProxy` | `authProxy.httpProxy.noProxy` |
-| `sandboxes.authProxy.httpProxy.url` | Key `sandbox_egress_proxy_url` in the runtime Secret |
+| `sandboxes.authProxy.httpProxy.url` |运行时 Secret 中的密钥 `sandbox_egress_proxy_url` |
 | `images.sandboxHostImage.*` | `images.sandboxHostImage.*` |
 | `config.customCa` | `config.customCa` |
-| Workload identity annotations on `sandboxes.sandboxHost.serviceAccount.annotations` | `workloadIdentity` |
+| `sandboxes.sandboxHost.serviceAccount.annotations` 上的工作负载身份注释 | `workloadIdentity` |[scaling](/langsmith/self-host-sandbox-scaling) 和 [operations](/langsmith/self-host-sandbox-operations) 指南使用嵌入式运行时的名称。在运行时间图表中应用相同的设置。
 
-The [scaling](/langsmith/self-host-sandbox-scaling) and [operations](/langsmith/self-host-sandbox-operations) guides use the embedded runtime's names. Apply the same settings in the runtime chart.
+## 检查要求
 
-## Check the requirements
+### 每朵云
 
-### Every cloud
+* **节点**：支持 KVM 的 `linux/amd64` 节点，受污染 `sandbox.langsmith.com/host=true:NoSchedule` 并标记为匹配 `sandboxHost.deployment.nodeSelector`。节点选择器没有默认值，如果没有它，图表将无法渲染。默认的容忍度与上面的污点相匹配；对于其他污点，覆盖`sandboxHost.deployment.tolerations`。节点级要求请参见[Enable Sandboxes prerequisites](/langsmith/enable-self-hosted-sandboxes#prerequisites)和[Node requirements for bare-metal and on-premises clusters](/langsmith/enable-self-hosted-sandboxes#node-requirements-for-bare-metal-and-on-premises-clusters)。
+* **JuiceFS 元数据 Redis**：使用 `maxmemory-policy noeviction`。只要其他集群可以访问它，就需要 AUTH、TLS 或 IAM 身份验证。启用沙箱先决条件中的存储后端和存储桶格式适用于 `juicefs.storage` 和 `juicefs.bucket`。
+* **LangSmith主机名**：将`langsmith`版本中的`config.hostname`设置为沙盒集群可以到达的地址。对于外部运行时，图表无法在没有外部运行时、环回或集群内服务地址的情况下呈现。
+* **`config.endpoint`**：将运行时图表的`config.endpoint`设置为`https://<LangSmith hostname>[/<base path>]/api`，外部可访问的LangSmith API，包括`/api`前缀。
+* **私有 CA**：如果私有 CA 签署了 LangSmith API 证书、主机入口证书或 HTTPS 出口代理证书，请将该 CA 添加到运行时图表的 `config.customCa`。* **网络**：打开[Configure the network](#configure-the-network)中的路径。
+* **Secrets**：在[Create the runtime Secret](#create-the-runtime-secret)中创建Secret。
 
-* **Nodes**: KVM-capable `linux/amd64` nodes, tainted `sandbox.langsmith.com/host=true:NoSchedule` and labeled to match `sandboxHost.deployment.nodeSelector`. The node selector has no default, and the chart fails to render without it. The default toleration matches the taint above; for other taints, override `sandboxHost.deployment.tolerations`. For node-level requirements, see the [Enable Sandboxes prerequisites](/langsmith/enable-self-hosted-sandboxes#prerequisites) and [Node requirements for bare-metal and on-premises clusters](/langsmith/enable-self-hosted-sandboxes#node-requirements-for-bare-metal-and-on-premises-clusters).
-* **JuiceFS metadata Redis**: Use `maxmemory-policy noeviction`. Require AUTH, TLS, or IAM authentication whenever another cluster can reach it. The storage backends and bucket formats in the Enable Sandboxes prerequisites apply to `juicefs.storage` and `juicefs.bucket`.
-* **LangSmith hostname**: Set `config.hostname` in the `langsmith` release to an address the sandbox cluster can reach. With an external runtime, the chart fails to render without it, or with a loopback or in-cluster Service address.
-* **`config.endpoint`**: Set the runtime chart's `config.endpoint` to `https://<LangSmith hostname>[/<base path>]/api`, the externally reachable LangSmith API including the `/api` prefix.
-* **Private CA**: If a private CA signs the LangSmith API certificate, the host ingress certificate, or an HTTPS egress proxy certificate, add that CA to the runtime chart's `config.customCa`.
-* **Network**: Open the paths in [Configure the network](#configure-the-network).
-* **Secrets**: Create the Secret in [Create the runtime Secret](#create-the-runtime-secret).
+如果沙盒集群无法从公共注册表中拉取，请按照[Additional images for Sandboxes](/langsmith/self-host-mirroring-images#additional-images-for-sandboxes)中的说明镜像`sandbox-host`镜像，并将运行时图表中的`images.sandboxHostImage.repository`设置为镜像存储库。将镜像的发布标签保留在镜像中并将 `images.sandboxHostImage.tag` 留空，以便镜像遵循图表的 appVersion。升级图表时，固定标签不会更改。
 
-If the sandbox cluster cannot pull from public registries, mirror the `sandbox-host` image as described in [Additional images for Sandboxes](/langsmith/self-host-mirroring-images#additional-images-for-sandboxes), and set `images.sandboxHostImage.repository` in the runtime chart to the mirrored repository. Keep the image's release tag in the mirror and leave `images.sandboxHostImage.tag` empty, so the image follows the chart's appVersion. A pinned tag does not change when you upgrade the chart.
+### 亚马逊 EKS
 
-### Amazon EKS
+* **身份**：沙箱集群的 IAM OIDC 提供商，以及信任 `system:serviceaccount:<namespace>:<service-account-name>` 的 IAM 角色。设置`sandboxHost.serviceAccount.name`，使拍摄对象保持稳定。设置`workloadIdentity.provider: aws`和`workloadIdentity.aws.roleArn`。
+* **存储补助**：`arn:aws:s3:::<bucket>/<juicefs.name>/*` 上的 `s3:GetObject`、`s3:PutObject`、`s3:DeleteObject` 和 `s3:AbortMultipartUpload`，以及 `arn:aws:s3:::<bucket>` 上的 `s3:ListBucket`，条件为 `s3:prefix`，与 `<juicefs.name>/*` 类似。仅 JuiceFS 使用的存储桶不需要任何条件。
+* **节点**：暴露KVM的实例类型，例如裸机实例。
+* **缓存**：JuiceFS 缓存默认为根卷上的`/var/cache/juicefs`。在具有本地 NVMe 的实例类型（例如 `m5d.metal`）上，安装驱动器并将 `juicefs.hostMount.cacheDirs` 指向它们。
 
-* **Identity**: An IAM OIDC provider for the sandbox cluster, and an IAM role that trusts `system:serviceaccount:<namespace>:<service-account-name>`. Set `sandboxHost.serviceAccount.name` so the subject stays stable. Set `workloadIdentity.provider: aws` and `workloadIdentity.aws.roleArn`.
-* **Storage grants**: `s3:GetObject`, `s3:PutObject`, `s3:DeleteObject`, and `s3:AbortMultipartUpload` on `arn:aws:s3:::<bucket>/<juicefs.name>/*`, and `s3:ListBucket` on `arn:aws:s3:::<bucket>` with the condition `s3:prefix` like `<juicefs.name>/*`. A bucket that only JuiceFS uses needs no condition.
-* **Nodes**: Instance types that expose KVM, such as bare-metal instances.
-* **Cache**: The JuiceFS cache defaults to `/var/cache/juicefs` on the root volume. On instance types with local NVMe, such as `m5d.metal`, mount the drives and point `juicefs.hostMount.cacheDirs` at them.
+### 谷歌 Kubernetes 引擎* **集群**：标准集群，非 Autopilot，在 `UBUNTU_CONTAINERD` 上具有节点池和嵌套虚拟化（N2、N1、C3 或 C4）。将节点池的 OAuth 范围设置为`cloud-platform`，以便 IAM 授予决定访问权限。
+* **身份**：设置`workloadIdentity.provider: gcp`。 `sandbox-host` 使用主机网络，图表也在那里运行 JuiceFS 格式化程序，因此两者都以节点池的服务帐户身份进行身份验证，并且不需要 Workload Identity 绑定。将 `juicefsFormatJob.nodeSelector` 留空，以便格式化程序在沙箱节点池上运行。
+* **存储授权**：使用仅 JuiceFS 使用的存储桶，具有统一的存储桶级别访问权限，并在其上授予节点池的服务帐户`roles/storage.objectAdmin`。如果 JuiceFS 必须共享一个存储桶，请开启统一存储桶级别的访问并使用条件`resource.name.startsWith("projects/_/buckets/<bucket>/objects/<juicefs.name>/") || resource.type == "storage.googleapis.com/Bucket"`。仅前缀条件会阻止 JuiceFS 进行的列表调用。第二个子句让沙箱节点列出存储桶中每个对象的名称和元数据。
+* **Redis**：使用`juicefs.redis.iamAuthProvider: gcp`，使用Memorystore for Redis Cluster，并授予节点池的服务帐户`roles/redis.dbConnectionUser`。
+* **缓存**：将`juicefs.hostMount.cacheDirs`指向节点本地SSD。* **命名空间**：如果沙箱集群与 LangSmith 集群共享 Google Cloud 项目并启用了 Workload Identity，请将运行时安装在LangSmith 以外的命名空间中。 Workload Identity 信任项目中每个集群的命名空间和 ServiceAccount 名称。
 
-### Google Kubernetes Engine
+### Azure Kubernetes 服务
 
-* **Cluster**: A Standard cluster, not Autopilot, with a node pool on `UBUNTU_CONTAINERD` and nested virtualization (N2, N1, C3, or C4). Set the node pool's OAuth scope to `cloud-platform`, so IAM grants decide access.
-* **Identity**: Set `workloadIdentity.provider: gcp`. `sandbox-host` uses the host network, and the chart runs the JuiceFS formatter there too, so both authenticate as the node pool's service account and need no Workload Identity binding. Leave `juicefsFormatJob.nodeSelector` empty, so the formatter runs on the sandbox node pool.
-* **Storage grants**: Use a bucket that only JuiceFS uses, with uniform bucket-level access, and grant the node pool's service account `roles/storage.objectAdmin` on it. If JuiceFS must share a bucket, turn on uniform bucket-level access and use the condition `resource.name.startsWith("projects/_/buckets/<bucket>/objects/<juicefs.name>/") || resource.type == "storage.googleapis.com/Bucket"`. A prefix-only condition blocks the list calls JuiceFS makes. The second clause lets sandbox nodes list the name and metadata of every object in the bucket.
-* **Redis**: With `juicefs.redis.iamAuthProvider: gcp`, use Memorystore for Redis Cluster and grant the node pool's service account `roles/redis.dbConnectionUser`.
-* **Cache**: Point `juicefs.hostMount.cacheDirs` at node-local SSD.
-* **Namespace**: If the sandbox cluster shares a Google Cloud project with the LangSmith cluster and has Workload Identity enabled, install the runtime in a namespace other than the LangSmith one. Workload Identity trusts a namespace and ServiceAccount name across every cluster in a project.
+* **节点**：支持嵌套虚拟化的 VM 大小。
+* **身份**：启用 OIDC 颁发者和工作负载身份，以及主题为 `system:serviceaccount:<namespace>:<service-account-name>` 的联合凭证。设置`sandboxHost.serviceAccount.name`，使拍摄对象保持稳定。设置 `workloadIdentity.provider: azure` 和 `workloadIdentity.azure.clientId`，如果与集群的租户不同，则加上 `tenantId`。该图表将 `azure.workload.identity/use` 标签添加到 `sandbox-host` 和格式化程序。
+* **存储补助**：容器上的`Storage Blob Data Contributor`。设置`juicefs.storage: wasb`和`juicefs.storageAccountName`。
+* **Redis**：通过 `rediss://` 数据库 0 上的 Azure 托管 Redis，并在数据库上设置 `NoEviction` 逐出策略。 JuiceFS 无法更改它。
+* **缓存**：将`juicefs.hostMount.cacheDirs`指向`/mnt`下的临时磁盘。
 
-### Azure Kubernetes Service
+## 配置网络
 
-* **Nodes**: A VM size that supports nested virtualization.
-* **Identity**: OIDC issuer and Workload Identity enabled, and a federated credential with the subject `system:serviceaccount:<namespace>:<service-account-name>`. Set `sandboxHost.serviceAccount.name` so the subject stays stable. Set `workloadIdentity.provider: azure` and `workloadIdentity.azure.clientId`, plus `tenantId` if it differs from the cluster's tenant. The chart adds the `azure.workload.identity/use` label to `sandbox-host` and the formatter.
-* **Storage grants**: `Storage Blob Data Contributor` on the container. Set `juicefs.storage: wasb` and `juicefs.storageAccountName`.
-* **Redis**: Azure Managed Redis on database 0 over `rediss://`, with the `NoEviction` eviction policy set on the database. JuiceFS cannot change it.
-* **Cache**: Point `juicefs.hostMount.cacheDirs` at the temporary disk under `/mnt`.
-
-## Configure the network
-
-By default, the LangSmith control plane connects directly to the node IPs that `sandbox-host` advertises, on TCP port `19190`. Allow these paths:
-
-| Source | Destination | Port | Purpose |
+默认情况下，LangSmith 控制平面在 TCP 端口 `19190` 上直接连接到 `sandbox-host` 通告的节点 IP。允许这些路径：|来源 |目的地 |港口|目的|
 | - | - | - | - |
-| LangSmith `platform-backend` and `ingest-queue` pods | Sandbox nodes | TCP `19190` | Sandbox placement, lifecycle calls, exec, files, and other sandbox traffic |
-| Other sandbox nodes | Sandbox nodes | TCP `19190` | Forwarded ingress requests, sandbox links, and live-migration streams |
-| Host ingress controller or load balancer, when enabled | Sandbox nodes | TCP `19190` | Requests that arrive through the [host ingress](#use-the-host-ingress) |
-| Sandbox nodes | `config.endpoint` | The endpoint's port, usually `443` | Host reports, lifecycle callbacks, and calls to the LangSmith API from inside Sandboxes |
-| Sandbox nodes | JuiceFS Redis and object storage | The stores' ports | Sandbox storage |
+| LangSmith `platform-backend` 和 `ingest-queue` 吊舱 |沙盒节点 | TCP `19190` |沙箱放置、生命周期调用、执行、文件和其他沙箱流量 |
+|其他沙盒节点 |沙盒节点 | TCP `19190` |转发的入口请求、沙箱链接和实时迁移流 |
+|主机入口控制器或负载均衡器（启用后） |沙盒节点 | TCP `19190` |通过 [host ingress](#use-the-host-ingress) 到达的请求 |
+|沙盒节点 | `config.endpoint` |端点的端口，通常为 `443` |主机报告、生命周期回调以及从沙箱内部调用LangSmith API |
+|沙盒节点 | JuiceFS Redis 和对象存储 |商店的端口 |沙箱存储|
 
-For the first row, allow the address that LangSmith pods appear from on your network: the node security group, the pod CIDR, or a SNAT address, depending on the CNI.
+对于第一行，允许 LangSmith Pod 在网络上出现的地址：节点安全组、Pod CIDR 或 SNAT 地址，具体取决于 CNI。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init: {'theme': 'base', 'themeVariables': {'fontFamily': 'TWK Lausanne, Inter', 'fontSize': '15px', 'lineColor': '#40668D', 'primaryTextColor': '#030710', 'textColor': '#030710', 'edgeLabelBackground': '#F2FAFF'}, 'flowchart': {'nodeSpacing': 50, 'rankSpacing': 60, 'curve': 'linear'}}}%%
@@ -135,23 +123,19 @@ flowchart TB
     class ST output
 ```
 
-> [!WARNING]
+> [!警告]
 >
-> Traffic on port `19190` is plain HTTP and carries sandbox commands, files, and credentials. Keep it on a private network you trust. If the clusters have no routed private network, or the traffic would leave one you trust, use the [host ingress](#use-the-host-ingress) with TLS.
+> 端口 `19190` 上的流量是纯 HTTP，并携带沙箱命令、文件和凭据。将其保存在您信任的专用网络上。如果集群没有路由专用网络，或者流量将离开您信任的网络，请使用带有 TLS 的 [host ingress](#use-the-host-ingress)。从沙箱节点到`config.endpoint`的路径是此拓扑中的新路径。使用嵌入式运行时，`sandbox-host`通过集群内服务DNS达到LangSmith。使用外部运行时，它通过网络调用`config.endpoint`，因此调用必须传递该地址前面的每个控件：
 
-The path from the sandbox nodes to `config.endpoint` is new in this topology. With the embedded runtime, `sandbox-host` reaches LangSmith through in-cluster Service DNS. With an external runtime, it calls `config.endpoint` over the network, so the call must pass every control in front of that address:
+* **负载均衡器白名单**：如果LangSmith负载均衡器限制源地址，则允许沙箱节点流量来自的地址。对于内部负载均衡器，这通常是沙箱节点的私有地址。对于面向互联网的，通常是沙箱节点使用的 NAT 网关的公共地址。
+* **出口过滤**：如果防火墙过滤沙箱集群的出口，则允许 LangSmith 主机名。
+* **DNS**：沙箱节点必须解析 LangSmith 主机名。仅在 LangSmith 集群的私有 DNS 中解析的地址不起作用。对于内部负载均衡器，请在安装运行时之前将记录添加到沙盒网络使用的私有 DNS 区域：启动时失败的查找可能会缓存几分钟。
 
-* **Load balancer allowlists**: If the LangSmith load balancer restricts source addresses, allow the address sandbox node traffic arrives from. For an internal load balancer, that is usually the sandbox nodes' private addresses. For an internet-facing one, it is usually the public address of the NAT gateway that the sandbox nodes use.
-* **Egress filtering**: If a firewall filters egress from the sandbox cluster, allow the LangSmith hostname.
-* **DNS**: The sandbox nodes must resolve the LangSmith hostname. An address that resolves only in the LangSmith cluster's private DNS does not work. For an internal load balancer, add the record to a private DNS zone the sandbox network uses, before you install the runtime: a lookup that fails at startup can stay cached for several minutes.
+### 使用主机入口运行时图表可以在`sandbox-host`前面创建一个Ingress。当 LangSmith 集群无法到达沙箱节点 IP 时，或者当纯 HTTP 流量将离开您信任的专用网络时，请使用它。
 
-### Use the host ingress
+要通过主机入口路由控制平面流量：
 
-The runtime chart can create an Ingress in front of `sandbox-host`. Use it when the LangSmith cluster cannot reach the sandbox node IPs, or when that plain-HTTP traffic would leave a private network you trust.
-
-To route control-plane traffic through the host ingress:
-
-1. In the runtime values, enable `sandboxHost.ingress` with a hostname and TLS:
+1. 在运行时值中，使用主机名和 TLS 启用 `sandboxHost.ingress`：
 
    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    sandboxHost:
@@ -165,7 +149,7 @@ To route control-plane traffic through the host ingress:
              - "sandbox-hosts.example.com"
    ```
 
-2. In the `langsmith` values, set the ingress origin, with no path or trailing slash:
+2. 在 `langsmith` 值中，设置入口原点，不带路径或尾部斜杠：
 
    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    sandboxes:
@@ -173,31 +157,26 @@ To route control-plane traffic through the host ingress:
        hostIngressEndpoint: "https://sandbox-hosts.example.com"
    ```
 
-TLS ends at the ingress. Inside the sandbox cluster, traffic from the ingress to the hosts and between hosts stays plain HTTP on port `19190`, so keep that network private.
+TLS 在入口处结束。在沙盒集群内部，从入口到主机以及主机之间的流量在端口 `19190` 上保持纯 HTTP，因此请保持该网络的私有性。
 
-The Ingress routes only `/internal/SandboxHost/` (host calls) and `/guest-operation/` (exec, files, tunnels, sandbox links, and browser and service URLs). It does not route `/metrics` or `/readyz`; scrape and probe those on each `sandbox-host` pod at port `19190`. Before you rely on the ingress, check:
+Ingress 仅路由`/internal/SandboxHost/`（主机调用）和`/guest-operation/`（执行、文件、隧道、沙箱链接以及浏览器和服务 URL）。它不路由`/metrics`或`/readyz`；在端口 `19190` 的每个 `sandbox-host` pod 上刮擦并探测它们。在依赖 ingress 之前，请检查：* **客户端**：LangSmith `platform-backend` 和 `ingest-queue` Pod 连接到入口，沙箱主机也连接到入口，沙箱主机拨入沙箱链接。如果入口限制源地址，则允许两者。沙箱主机还必须解析入口主机名并信任其证书。如果私有 CA 对其进行签名，请将 CA 添加到运行时图表的 `customCa` 和`langsmith` 图表的 `config.customCa`。
+* **运行状况检查**：负载均衡器直接检查 `sandbox-host` Pod，许多负载均衡器默认检查 `/` 或 Ingress 路径，返回 `404`。设置健康检查路径为`/readyz`。使用 AWS 负载均衡器控制器，将 `alb.ingress.kubernetes.io/healthcheck-path: /readyz` 和 `alb.ingress.kubernetes.io/target-type: ip` 添加到 `sandboxHost.ingress.annotations`，因为服务是 `ClusterIP`。在 GKE 上，将 `ingressClassName` 留空，设置 `kubernetes.io/ingress.class: gce` 注释，并附加 `BackendConfig` 以及 `healthCheck.requestPath: /readyz` 和 `healthCheck.port: 19190` 到 `sandboxHost.ingress.service.annotations` (`cloud.google.com/backend-config`)。
+* **超时**：LangSmith 等待执行请求最多 310 秒。 Exec 流、隧道、沙箱链接和浏览器会话是长期存在的 WebSocket 或服务器发送的事件连接。将控制器的读取、空闲和后端超时设置为 310 秒以上，如果长时间会话必须保持打开状态，则设置更高。默认值 30 到 60 秒会切断它们。在 GKE 上，将 `timeoutSec` 设置为相同的 `BackendConfig`。* **请求大小**：文件上传通过入口。将控制器的主体大小限制提高到至少您最大的上传速度。在 ingress-nginx 上，设置`nginx.ingress.kubernetes.io/proxy-body-size`，默认为`1m`。
+* **WebSockets**：控制器必须允许 Ingress 路由上的 WebSocket 升级。 Azure 应用程序网关容器仅通过网关 API 支持 WebSocket，因此它无法为此入口提供服务。使用另一个控制器，或禁用 `sandboxHost.ingress` 并使用您自己的服务和网关 API `HTTPRoute` 将两条路径路由到 `sandbox-host` Pod 的端口 `19190`。
 
-* **Clients**: The LangSmith `platform-backend` and `ingest-queue` pods connect to the ingress, and so do the sandbox hosts, which dial it for sandbox links. If the ingress restricts source addresses, allow both. The sandbox hosts must also resolve the ingress hostname and trust its certificate. If a private CA signs it, add the CA to the runtime chart's `customCa` and to the `langsmith` chart's `config.customCa`.
-* **Health checks**: Load balancers check the `sandbox-host` pods directly, and many check `/` or the Ingress path by default, which returns `404`. Set the health check path to `/readyz`. With the AWS Load Balancer Controller, add `alb.ingress.kubernetes.io/healthcheck-path: /readyz` and `alb.ingress.kubernetes.io/target-type: ip` to `sandboxHost.ingress.annotations`, because the Service is `ClusterIP`. On GKE, leave `ingressClassName` empty, set the `kubernetes.io/ingress.class: gce` annotation, and attach a `BackendConfig` with `healthCheck.requestPath: /readyz` and `healthCheck.port: 19190` through `sandboxHost.ingress.service.annotations` (`cloud.google.com/backend-config`).
-* **Timeouts**: LangSmith waits up to 310 seconds for an exec request. Exec streams, tunnels, sandbox links, and browser sessions are long-lived WebSocket or server-sent event connections. Set the controller's read, idle, and backend timeouts above 310 seconds, and higher if long sessions must stay open. Defaults of 30 to 60 seconds cut them off. On GKE, set `timeoutSec` in the same `BackendConfig`.
-* **Request size**: File uploads go through the ingress. Raise the controller's body size limit to at least your largest upload. On ingress-nginx, set `nginx.ingress.kubernetes.io/proxy-body-size`, which defaults to `1m`.
-* **WebSockets**: The controller must allow WebSocket upgrades on Ingress routes. Azure Application Gateway for Containers supports WebSockets only through the Gateway API, so it cannot serve this Ingress. Use another controller, or leave `sandboxHost.ingress` disabled and route the two paths to port `19190` of the `sandbox-host` pods with your own Service and Gateway API `HTTPRoute`.
+## 创建运行时 Secret
 
-## Create the runtime Secret
+运行时从您在沙箱命名空间中创建的 Secret 中读取其凭据。在`config.existingSecretName`中设置其名称。 Secret 包含两个值，从 LangSmith 端复制：
 
-The runtime reads its credentials from a Secret that you create in the sandbox namespace. Set its name in `config.existingSecretName`. The Secret holds two values, copied from the LangSmith side:
+* **沙箱服务身份验证秘密**：对控制平面和沙箱主机之间的调用进行签名。将其存储在`sandbox_service_auth_secret`下，或`serviceAuth.secretKey`命名的密钥下。
+* **回调签名 JWK**：签署沙箱回调的 Ed25519 私有 JWK。将其存储在`sandbox_callback_signing_jwk`下，或`config.callbackSigningJwkSecretKey`命名的密钥下。
 
-* **Sandbox service-auth secret**: Signs calls between the control plane and the sandbox hosts. Store it under `sandbox_service_auth_secret`, or the key that `serviceAuth.secretKey` names.
-* **Callback signing JWK**: The Ed25519 private JWK that signs sandbox callbacks. Store it under `sandbox_callback_signing_jwk`, or the key that `config.callbackSigningJwkSecretKey` names.
-
-Both values must equal the control plane's. Find them in the LangSmith app Secret:
-
-| Value | With the chart-managed Secret | With `config.existingSecretName` |
+两个值必须等于控制平面的值。在LangSmith应用程序Secret中找到它们：|价值|与图表管理的秘密|与 `config.existingSecretName` |
 | - | - | - |
-| Service-auth secret | Key `sandbox_service_auth_secret`, set from `sandboxes.serviceAuth.secret` | The key that `sandboxes.serviceAuth.secretKey` names |
-| Callback signing JWK | Key `sandbox_callback_signing_jwk`, set from `sandboxes.callbackSigningJwk` | Key `sandbox_callback_signing_jwk` |
+|服务授权秘密 |钥匙`sandbox_service_auth_secret`，从`sandboxes.serviceAuth.secret`设置 | `sandboxes.serviceAuth.secretKey`命名的钥匙 |
+|回调签名JWK |钥匙`sandbox_callback_signing_jwk`，从`sandboxes.callbackSigningJwk`开始设置 |钥匙`sandbox_callback_signing_jwk`|
 
-With an external runtime, the Helm install notes of the `langsmith` release print the key names for your configuration.
+使用外部运行时，`langsmith` 版本的 Helm 安装说明会打印您的配置的键名称。
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 apiVersion: v1
@@ -211,24 +190,22 @@ stringData:
   sandbox_callback_signing_jwk: '<same-ed25519-private-jwk-as-the-control-plane>'
 ```
 
-Avoid committing this file to version control. If an external secret manager supplies your Secrets, sync the same two values into this one.
+避免将此文件提交给版本控制。如果外部机密管理器提供您的机密，请将相同的两个值同步到此值中。
 
-> [!WARNING]
+> [!警告]
 >
-> Copy only these two values. Never copy the whole LangSmith app Secret into the sandbox cluster.
+> 仅复制这两个值。切勿将整个LangSmith应用程序 Secret 复制到沙箱集群中。
 
-The service-auth secret must be its own random value. Do not reuse `api_key_salt`: that value also salts LangSmith API keys and signs other LangSmith service calls, so it must not leave the LangSmith cluster. With an external runtime, the `langsmith` chart refuses to render without a dedicated value. Generate one, for example with `openssl rand -hex 32`, and set it on the control plane:
+服务验证秘密必须是它自己的随机值。不要重用 `api_key_salt`：该值还会加盐 LangSmith API 密钥并签署其他 LangSmith 服务调用，因此它不得离开 LangSmith 集群。使用外部运行时，如果没有专用值，`langsmith` 图表将拒绝渲染。生成一个，例如使用`openssl rand -hex 32`，并将其设置在控制平面上：
 
-* **Chart-managed Secret**: Set `sandboxes.serviceAuth.secret`. It must differ from `config.apiKeySalt`.
-* **`config.existingSecretName`**: Add a key with the new value to your Secret, and name it in `sandboxes.serviceAuth.secretKey`.
+* **图表管理的秘密**：设置`sandboxes.serviceAuth.secret`。它必须与`config.apiKeySalt`不同。
+* **`config.existingSecretName`**：将具有新值的密钥添加到您的 Secret 中，并将其命名为 `sandboxes.serviceAuth.secretKey`。不要更改 `api_key_salt` 本身的值：这会使每个现有的 API 密钥失效。要更改正在运行的安装的 service-auth 值，请按照 [Rotate the service-auth secret](#rotate-the-service-auth-secret) 操作。
 
-Do not change the value of `api_key_salt` itself: that invalidates every existing API key. To change the service-auth value of a running installation, follow [Rotate the service-auth secret](#rotate-the-service-auth-secret).
+### 生成回调签名 JWK
 
-### Generate a callback signing JWK
+如果 `langsmith` 版本还没有回调签名 JWK，请生成一个。在控制平面上将其设置为`sandboxes.callbackSigningJwk`，或者设置为`config.existingSecretName`中的`sandbox_callback_signing_jwk`密钥，并将相同的值复制到运行时Secret中。
 
-If the `langsmith` release has no callback signing JWK yet, generate one. Set it on the control plane as `sandboxes.callbackSigningJwk`, or as the `sandbox_callback_signing_jwk` key in `config.existingSecretName`, and copy the same value into the runtime Secret.
-
-To generate an Ed25519 private JWK with OpenSSL 1.1.1 or later, run:
+要使用 OpenSSL 1.1.1 或更高版本生成 Ed25519 私有 JWK，请运行：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openssl genpkey -algorithm ED25519 -out callback-signing.pem
@@ -238,15 +215,15 @@ printf '{"kty":"OKP","crv":"Ed25519","alg":"EdDSA","use":"sig","kid":"sandbox-ca
 rm callback-signing.pem
 ```
 
-The command prints the JWK as one line of JSON. If `openssl genpkey` reports `Algorithm ED25519 not found`, your `openssl` is an older LibreSSL build. Install OpenSSL and run the command with it.
+该命令将 JWK 作为一行 JSON 打印。如果 `openssl genpkey` 报告 `Algorithm ED25519 not found`，则您的 `openssl` 是较旧的 LibreSSL 版本。安装 OpenSSL 并使用它运行命令。
 
-## Install with Helm
+## 使用 Helm 安装
 
-Install the `langsmith` release first, then the `langsmith-sandbox` release. The examples use the namespace `langsmith-sandbox` and the release name `langsmith-sandbox`.
+首先安装 `langsmith` 版本，然后安装 `langsmith-sandbox` 版本。这些示例使用命名空间 `langsmith-sandbox` 和版本名称 `langsmith-sandbox`。
 
-**1. Configure the LangSmith release**
+**1.配置LangSmith版本**
 
-In the LangSmith cluster, add the sandbox settings to `langsmith_config.yaml`, along with the callback signing JWK described in [Create the runtime Secret](#create-the-runtime-secret):
+在LangSmith集群中，将沙箱设置添加到`langsmith_config.yaml`，以及[Create the runtime Secret](#create-the-runtime-secret)中描述的回调签名JWK：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
@@ -264,9 +241,9 @@ sandboxes:
     secret: "<random-secret>"
 ```
 
-With an external runtime, the chart ignores `sandboxes.juicefs`, `sandboxes.sandboxHost`, and `sandboxes.proxyCa`. It fails to render when `sandboxes.authProxy.httpProxy` or `sandboxes.juicefs.redis.iamAuthProvider` is set; configure those in the runtime chart.
+对于外部运行时，图表会忽略 `sandboxes.juicefs`、`sandboxes.sandboxHost` 和 `sandboxes.proxyCa`。设置`sandboxes.authProxy.httpProxy`或`sandboxes.juicefs.redis.iamAuthProvider`时渲染失败；在运行时图表中配置这些。
 
-Apply the chart:
+应用图表：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm upgrade -i langsmith langchain/langsmith \
@@ -277,129 +254,127 @@ helm upgrade -i langsmith langchain/langsmith \
   --wait
 ```
 
-**2. Prepare the sandbox cluster**
-
-Label and taint the sandbox nodes, open the [network paths](#configure-the-network), and create the namespace and the [runtime Secret](#create-the-runtime-secret):
+**2.准备沙箱集群**标记并污染沙箱节点，打开[network paths](#configure-the-network)，然后创建命名空间和[runtime Secret](#create-the-runtime-secret)：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl --context <sandbox-context> create namespace langsmith-sandbox
 kubectl --context <sandbox-context> apply -f langsmith-sandbox-runtime-secret.yaml
 ```
 
-To keep the JuiceFS Redis URL and its password out of your values file, also create a JuiceFS configuration Secret with the keys `name`, `metaurl`, `storage`, and `bucket`, and set `juicefs.existingSecretName` instead of the inline `juicefs` values. On Azure, `access-key` holds the storage account name.
+要将 JuiceFS Redis URL 及其密码保留在值文件之外，还可以使用键 `name`、`metaurl`、`storage` 和 `bucket` 创建一个 JuiceFS 配置 Secret，并设置 `juicefs.existingSecretName` 而不是内联 `juicefs` 值。在 Azure 上，`access-key` 保存存储帐户名称。
 
-**3. Write the runtime values**
+**3.写入运行时值**
 
-Create `langsmith_sandbox_config.yaml`. Replace the placeholders with your values.
+创建`langsmith_sandbox_config.yaml`。将占位符替换为您的值。
 
-**EKS**
+> [选项卡] EKS
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> config:
+>   endpoint: "https://langsmith.example.com/api"
+>   existingSecretName: "langsmith-sandbox-runtime"
+>
+> workloadIdentity:
+>   provider: aws
+>   aws:
+>     roleArn: "<role_arn>"
+>
+> juicefs:
+>   name: "sandbox-juicefs"
+>   storage: "s3"
+>   bucket: "https://bucket-name.s3.us-west-2.amazonaws.com"
+>   redis:
+>     metaURL: "rediss://<redis-host>:6379/0"
+>
+> sandboxHost:
+>   enabled: true
+>   serviceAccount:
+>     name: "langsmith-sandbox-host"
+>   deployment:
+>     nodeSelector:
+>       kubernetes.io/arch: "amd64"
+>       sandbox.langsmith.com/host: "true"
+> ```
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-config:
-  endpoint: "https://langsmith.example.com/api"
-  existingSecretName: "langsmith-sandbox-runtime"
+> [选项卡] GKE
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> config:
+>   endpoint: "https://langsmith.example.com/api"
+>   existingSecretName: "langsmith-sandbox-runtime"
+>
+> workloadIdentity:
+>   provider: gcp
+>
+> juicefs:
+>   name: "sandbox-juicefs"
+>   storage: "gs"
+>   bucket: "gs://bucket-name"
+>   redis:
+>     # Memorystore with AUTH. With in-transit encryption, use rediss:// on port 6378.
+>     metaURL: "redis://:<auth-string>@<redis-host>:6379/0"
+>   # Without local SSD on the node pool, omit hostMount to keep the cache on the
+>   # boot disk (/var/cache/juicefs).
+>   hostMount:
+>     cacheDirs:
+>       - "<node-local-ssd-path>/juicefs"
+>
+> sandboxHost:
+>   enabled: true
+>   deployment:
+>     nodeSelector:
+>       kubernetes.io/arch: "amd64"
+>       sandbox.langsmith.com/host: "true"
+> ```
 
-workloadIdentity:
-  provider: aws
-  aws:
-    roleArn: "<role_arn>"
+> [选项卡] AKS
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> config:
+>   endpoint: "https://langsmith.example.com/api"
+>   existingSecretName: "langsmith-sandbox-runtime"
+>
+> workloadIdentity:
+>   provider: azure
+>   azure:
+>     clientId: "<client_id>"
+>
+> juicefs:
+>   name: "sandbox-juicefs"
+>   storage: "wasb"
+>   bucket: "https://<container>.blob.core.windows.net"
+>   storageAccountName: "<storage-account-name>"
+>   redis:
+>     # Azure Managed Redis with an access key. With Microsoft Entra authentication,
+>     # drop the key and set iamAuthProvider: azure.
+>     metaURL: "rediss://:<url-encoded-access-key>@<redis-host>:10000/0"
+>   hostMount:
+>     cacheDirs:
+>       - "/mnt/juicefs-cache"
+>
+> sandboxHost:
+>   enabled: true
+>   serviceAccount:
+>     # Must match the subject of the managed identity's federated credential.
+>     name: "langsmith-sandbox-host"
+>   deployment:
+>     nodeSelector:
+>       kubernetes.io/arch: "amd64"
+>       sandbox.langsmith.com/host: "true"
+> ```
 
-juicefs:
-  name: "sandbox-juicefs"
-  storage: "s3"
-  bucket: "https://bucket-name.s3.us-west-2.amazonaws.com"
-  redis:
-    metaURL: "rediss://<redis-host>:6379/0"
+将 `images.sandboxHostImage.tag` 留空。然后，图表运行其 appVersion 的 `sandbox-host` 映像，即与其配对的 LangSmith 版本。
 
-sandboxHost:
-  enabled: true
-  serviceAccount:
-    name: "langsmith-sandbox-host"
-  deployment:
-    nodeSelector:
-      kubernetes.io/arch: "amd64"
-      sandbox.langsmith.com/host: "true"
-```
+**4.安装运行时图表**
 
-**GKE**
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-config:
-  endpoint: "https://langsmith.example.com/api"
-  existingSecretName: "langsmith-sandbox-runtime"
-
-workloadIdentity:
-  provider: gcp
-
-juicefs:
-  name: "sandbox-juicefs"
-  storage: "gs"
-  bucket: "gs://bucket-name"
-  redis:
-    # Memorystore with AUTH. With in-transit encryption, use rediss:// on port 6378.
-    metaURL: "redis://:<auth-string>@<redis-host>:6379/0"
-  # Without local SSD on the node pool, omit hostMount to keep the cache on the
-  # boot disk (/var/cache/juicefs).
-  hostMount:
-    cacheDirs:
-      - "<node-local-ssd-path>/juicefs"
-
-sandboxHost:
-  enabled: true
-  deployment:
-    nodeSelector:
-      kubernetes.io/arch: "amd64"
-      sandbox.langsmith.com/host: "true"
-```
-
-**AKS**
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-config:
-  endpoint: "https://langsmith.example.com/api"
-  existingSecretName: "langsmith-sandbox-runtime"
-
-workloadIdentity:
-  provider: azure
-  azure:
-    clientId: "<client_id>"
-
-juicefs:
-  name: "sandbox-juicefs"
-  storage: "wasb"
-  bucket: "https://<container>.blob.core.windows.net"
-  storageAccountName: "<storage-account-name>"
-  redis:
-    # Azure Managed Redis with an access key. With Microsoft Entra authentication,
-    # drop the key and set iamAuthProvider: azure.
-    metaURL: "rediss://:<url-encoded-access-key>@<redis-host>:10000/0"
-  hostMount:
-    cacheDirs:
-      - "/mnt/juicefs-cache"
-
-sandboxHost:
-  enabled: true
-  serviceAccount:
-    # Must match the subject of the managed identity's federated credential.
-    name: "langsmith-sandbox-host"
-  deployment:
-    nodeSelector:
-      kubernetes.io/arch: "amd64"
-      sandbox.langsmith.com/host: "true"
-```
-
-Leave `images.sandboxHostImage.tag` empty. The chart then runs the `sandbox-host` image for its appVersion, the LangSmith release it pairs with.
-
-**4. Install the runtime chart**
-
-Find the newest `langsmith-sandbox` chart whose appVersion equals the appVersion of the `langsmith` chart you installed:
+找到最新的 `langsmith-sandbox` 图表，其 appVersion 等于您安装的 `langsmith` 图表的 appVersion：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm repo update
 helm search repo langchain/langsmith-sandbox --versions --devel
 ```
 
-Install that exact version:
+安装确切的版本：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm upgrade -i langsmith-sandbox langchain/langsmith-sandbox \
@@ -410,26 +385,22 @@ helm upgrade -i langsmith-sandbox langchain/langsmith-sandbox \
   --wait
 ```
 
-### Install with Argo CD or Flux
+### 使用 Argo CD 或 Flux 安装
 
-Manage the two releases as two applications, one for each cluster:
+将两个版本作为两个应用程序进行管理，每个集群一个：* **顺序**：首先部署 `langsmith` 版本。在 `langsmith` 应用程序同步且运行正常后添加运行时（Flux：HelmRelease 为 `Ready`）。
+* **版本**：将 `langsmith-sandbox` 固定到 appVersion 匹配的确切图表版本。切勿在 Flux HelmRelease 中使用范围、`*` 或 `*-0`，也切勿省略 `version`。
+* **使用 Argo CD 进行代理 CA**：设置 `proxyCa.mode: existingSecret` 并将 `proxyCa.existingSecretName` 指向您在运行时命名空间中创建的 TLS Secret，使用密钥 `tls.crt` 和 `tls.key`，例如使用您生成的 CA 证书的 `kubectl create secret tls <name> --cert=ca.crt --key=ca.key`。默认的`generatedSecret`模式通过Helm`lookup`重用其CA，Argo CD和其他无需集群访问的渲染工具无法运行，因此每次渲染都会生成一个新的CA。 Flux 在集群中运行 Helm，因此默认模式在那里工作。
+* **安装说明**：Argo CD 和 Flux 不显示 Helm 安装说明。注释打印的规则在此页上。
+* **返回 Helm CLI**：要停止使用 Flux 管理运行时，请在删除它之前在其 HelmRelease 上设置 `spec.suspend: true`；删除活动的 HelmRelease 会卸载该版本。 Helm 4 在服务器端应用更改，因此第一个 `helm upgrade` 随后失败，并与 Flux 的 `helm-controller` 拥有的字段发生冲突。使用 `--force-conflicts` 运行一次升级。## 验证安装
 
-* **Order**: Deploy the `langsmith` release first. Add the runtime after the `langsmith` application has synced and is Healthy (Flux: the HelmRelease is `Ready`).
-* **Versions**: Pin `langsmith-sandbox` to the exact chart version whose appVersion matches. Never use a range, `*`, or `*-0`, and never omit `version` in a Flux HelmRelease.
-* **Proxy CA with Argo CD**: Set `proxyCa.mode: existingSecret` and point `proxyCa.existingSecretName` at a TLS Secret you create in the runtime namespace, with keys `tls.crt` and `tls.key`, for example `kubectl create secret tls <name> --cert=ca.crt --key=ca.key` with a CA certificate you generate. The default `generatedSecret` mode reuses its CA through Helm `lookup`, which Argo CD and other tools that render without cluster access cannot run, so each render produces a new CA. Flux runs Helm in the cluster, so the default mode works there.
-* **Install notes**: Argo CD and Flux do not show Helm install notes. The rules that the notes print are on this page.
-* **Back to the Helm CLI**: To stop managing the runtime with Flux, set `spec.suspend: true` on its HelmRelease before you delete it; deleting an active HelmRelease uninstalls the release. Helm 4 applies changes server-side, so the first `helm upgrade` afterwards fails with conflicts on fields that Flux's `helm-controller` owns. Run that one upgrade with `--force-conflicts`.
-
-## Verify the installation
-
-Check that both releases run the same LangSmith release. The `APP VERSION` columns must match:
+检查两个版本是否运行相同的 LangSmith 版本。 `APP VERSION` 列必须匹配：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm list --kube-context <langsmith-context> -n <langsmith-namespace> --filter '^langsmith$'
 helm list --kube-context <sandbox-context> -n langsmith-sandbox --filter '^langsmith-sandbox$'
 ```
 
-Argo CD renders the charts without creating Helm releases, so `helm list` shows nothing for an Argo CD install, or a stale record for a release that Helm installed before Argo CD took it over. Compare the image tags instead. Both must end in the same release:
+Argo CD 在不创建 Helm 版本的情况下呈现图表，因此 `helm list` 没有显示 Argo CD 安装的任何内容，或者在 Argo CD 接管之前 Helm 安装的版本的陈旧记录。相反，比较图像标签。两者必须以同一版本结束：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl --context <langsmith-context> -n <langsmith-namespace> get deployment langsmith-platform-backend \
@@ -438,64 +409,54 @@ kubectl --context <sandbox-context> -n langsmith-sandbox get deployment langsmit
   -o jsonpath='{.spec.template.spec.containers[?(@.name=="sandbox-host")].image}{"\n"}'
 ```
 
-Check that the hosts are ready:
+检查主机是否准备就绪：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl --context <sandbox-context> -n langsmith-sandbox rollout status deployment/langsmith-sandbox-sandbox-host
 kubectl --context <sandbox-context> -n langsmith-sandbox get pods
 ```
 
-Then run the sandbox smoke test in [Verify the installation](/langsmith/enable-self-hosted-sandboxes#verify-the-installation). If creating a sandbox fails with `NoSandboxHostsAvailable`, the control plane has no ready hosts. Check that the sandbox nodes reach `config.endpoint`, which the hosts use to register, and the other paths in [Configure the network](#configure-the-network).
+然后在[Verify the installation](/langsmith/enable-self-hosted-sandboxes#verify-the-installation)中运行沙箱冒烟测试。如果创建沙箱失败并显示`NoSandboxHostsAvailable`，则控制平面没有就绪的主机。检查沙箱节点是否到达主机用来注册的`config.endpoint`，以及[Configure the network](#configure-the-network)中的其他路径。
 
-The same error appears when the two releases hold different service-auth secrets: LangSmith and the sandbox hosts then reject each other's calls. Compare the two values by checksum, without printing them:
+当两个版本持有不同的服务身份验证密钥时，会出现相同的错误：LangSmith，并且沙箱主机会拒绝彼此的调用。通过校验和比较两个值，而不打印它们：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl --context <langsmith-context> -n <langsmith-namespace> get secret <langsmith-app-secret> \
   -o jsonpath='{.data.<service-auth-key>}' | base64 -d | openssl dgst -sha256
 kubectl --context <sandbox-context> -n langsmith-sandbox get secret langsmith-sandbox-runtime \
   -o jsonpath='{.data.sandbox_service_auth_secret}' | base64 -d | openssl dgst -sha256
-```
+````<langsmith-app-secret>` 是图表管理的 Secret（`langsmith-secrets` 对于名为 `langsmith` 的版本）或您的 `config.existingSecretName`，`<service-auth-key>` 是 `sandbox_service_auth_secret` 或 `sandboxes.serviceAuth.secretKey` 命名的密钥。两个校验和必须匹配。更正某个值后，请重新启动在该侧读取该值的 Deployments（如[Rotate the service-auth secret](#rotate-the-service-auth-secret) 中列出），因为当 Secret 数据更改时 Kubernetes 不会重新启动 Pod。之前的秘密设置仅涵盖计划的[rotation](#rotate-the-service-auth-secret)，而不是偏离的值。
 
-`<langsmith-app-secret>` is the chart-managed Secret (`langsmith-secrets` for a release named `langsmith`) or your `config.existingSecretName`, and `<service-auth-key>` is `sandbox_service_auth_secret` or the key that `sandboxes.serviceAuth.secretKey` names. The two checksums must match. After you correct a value, restart the Deployments that read it on that side, listed in [Rotate the service-auth secret](#rotate-the-service-auth-secret), because Kubernetes does not restart pods when Secret data changes. The previous-secret settings only cover a planned [rotation](#rotate-the-service-auth-secret), not values that drift apart.
+## 每次安装运行一个运行时
 
-## Run one runtime per installation
+对于每个 LangSmith 安装，仅运行一个 `langsmith-sandbox` 版本，并且仅当 `langsmith` 版本设置 `sandboxes.external.enabled: true` 时。不支持在同一安装的多个集群中运行沙箱。
 
-Run exactly one `langsmith-sandbox` release for each LangSmith installation, and only while the `langsmith` release sets `sandboxes.external.enabled: true`. Running Sandboxes in more than one cluster for the same installation is not supported.
+LangSmith 一次接受来自一个沙箱运行时的主机报告，将 `langsmith` 版本的嵌入式运行时计为 1。当一个运行时报告时，LangSmith拒绝任何其他运行时：被拒绝的运行时的主机永远不会加入主机池，并且接受的运行时的沙箱继续运行。被拒绝的运行时出现在三个地方：* 它选出的`sandbox-host` Pod 在第一次拒绝报告后约 30 秒变为未就绪，并保持未就绪状态。在第一秒内完成的 `helm install --wait` 或 `kubectl rollout status` 仍然可以报告成功，因此请在一分钟后再次检查 pod。
+* 其`sandbox-host`日志重复`the platform refused this sandbox runtime because another runtime already reports to the same LangSmith install`，错误代码为`sandbox_runtime_conflict`，每15秒一次。
+* LangSmith 记录 `refused host report from a second sandbox runtime`，包含接受和拒绝运行时的实例 ID。
 
-LangSmith accepts host reports from one sandbox runtime at a time, counting the `langsmith` release's embedded runtime as one. While one runtime reports, LangSmith refuses any other: the refused runtime's hosts never join the host pool, and the accepted runtime's Sandboxes keep running. A refused runtime shows up in three places:
+删除额外的运行时间。一旦接受的运行时在 6 分钟内没有发送报告，LangSmith 就会接受不同的运行时，因此在重新安装或移动到另一个集群后，新的运行时在其主机加入之前最多可以等待 6 分钟。它自行继续。
 
-* Its elected `sandbox-host` pod turns not ready about 30 seconds after its first refused report and stays not ready. A `helm install --wait` or `kubectl rollout status` that finishes within the first seconds can still report success, so check the pod again after a minute.
-* Its `sandbox-host` logs repeat `the platform refused this sandbox runtime because another runtime already reports to the same LangSmith install`, with the error code `sandbox_runtime_conflict`, every 15 seconds.
-* LangSmith logs `refused host report from a second sandbox runtime`, with the instance IDs of the accepted and the refused runtime.
+仅在首次安装沙箱时设置`sandboxes.clusterName`。稍后重命名会隐藏现有沙箱、[private registries](/langsmith/sandbox-snapshots#private-registries) 和主机记录。
 
-Remove the extra runtime. LangSmith accepts a different runtime once the accepted one has sent no reports for 6 minutes, so after a reinstall or a move to another cluster, the new runtime can wait up to 6 minutes before its hosts join. It continues on its own.
+## 注意版本不匹配
 
-Set `sandboxes.clusterName` only when you first install Sandboxes. Renaming it later hides existing Sandboxes, [private registries](/langsmith/sandbox-snapshots#private-registries), and host records.
-
-## Watch for a release mismatch
-
-LangSmith compares its own release with the releases that its sandbox hosts report. When they drift apart, it warns [Organization Admins](/langsmith/rbac#organization-admin) and [Organization Operators](/langsmith/rbac#organization-operator) under **Notifications** in the sidebar of the LangSmith UI:
-
-| Warning | When it appears |
+LangSmith 将其自己的版本与其沙箱托管报告的版本进行比较。当它们分开时，它会在 LangSmith UI 侧边栏中的 **通知** 下警告 [Organization Admins](/langsmith/rbac#organization-admin) 和 [Organization Operators](/langsmith/rbac#organization-operator)：|警告|当它出现时 |
 | - | - |
-| Sandbox runtime is behind LangSmith | The hosts still run an older release 72 hours after LangSmith first ran a newer one. It appears as an error at once when the hosts are two or more minor versions behind. Hosts that do not report a release count as behind. |
-| Sandbox runtime is newer than LangSmith | Hosts have run a newer release than LangSmith for more than 30 minutes. It appears as an error when that release is a newer minor version. |
-| Sandbox host rollout is incomplete | Some hosts run LangSmith's release, but others still run an older one 72 hours after LangSmith first ran a newer one, or at once when they are two or more minor versions behind. If the rollout is not progressing, see [Diagnose a stalled rollout](/langsmith/self-host-sandbox-operations#diagnose-a-stalled-rollout). |
-| Sandbox hosts stopped reporting | Hosts reported before, but none reports now. |
+|沙盒运行时落后于LangSmith |在 LangSmith 首次运行新版本 72 小时后，主机仍在运行旧版本。当主机落后两个或多个次要版本时，它会立即显示为错误。未报告发布计数落后的主机。 |
+|沙箱运行时比LangSmith更新 |主机已运行比 LangSmith 更新的版本超过 30 分钟。当该版本是较新的次要版本时，它会显示为错误。 |
+|沙箱主机推出不完整 |一些主机运行 LangSmith 的版本，但其他主机在 LangSmith 第一次运行较新版本 72 小时后仍然运行旧版本，或者当它们落后两个或更多次要版本时立即运行。如果部署没有进展，请参阅[Diagnose a stalled rollout](/langsmith/self-host-sandbox-operations#diagnose-a-stalled-rollout)。 |
+|沙盒主机停止报告 |以前有主机报告过，但现在没有报告。 |除了 **沙盒主机停止报告** 之外，在 LangSmith 转移到新版本后的前 15 分钟内不会出现任何警告，而其自身的推出也已完成。每个警告都会指定要安装的版本。要采取行动，请将 [upgrade](/langsmith/self-host-upgrades#upgrade-separate-sandbox-clusters) `langsmith-sandbox` 版本发布到与您的 `langsmith` 版本配对的图表，或者在主机较新时发布 `langsmith` 版本。忽略警告会将其隐藏 24 小时，或直到版本发生更改。
 
-Apart from **Sandbox hosts stopped reporting**, no warning appears in the first 15 minutes after LangSmith moves to a new release, while its own rollout finishes. Each warning names the release to install. To act on it, [upgrade](/langsmith/self-host-upgrades#upgrade-separate-sandbox-clusters) the `langsmith-sandbox` release to the chart that pairs with your `langsmith` release, or the `langsmith` release when the hosts are newer. Dismissing a warning hides it for 24 hours, or until the releases change.
+## 将现有安装移动到单独的集群
 
-## Move an existing installation to a separate cluster
+要将安装从嵌入式运行时移动到单独的集群，请先切换 `langsmith` 版本，然后针对相同的 JuiceFS 元数据存储和存储桶安装运行时。按照相反的顺序，LangSmith​​[refuses the new runtime](#run-one-runtime-per-installation)，而嵌入式仍然报告。两个步骤之间沙箱不可用。此后，现有的沙箱和快照将继续工作。
 
-To move an installation from the embedded runtime to a separate cluster, switch the `langsmith` release first, then install the runtime against the same JuiceFS metadata store and bucket. In the reverse order, LangSmith [refuses the new runtime](#run-one-runtime-per-installation) while the embedded one still reports. Sandboxes are unavailable between the two steps. Afterwards, existing Sandboxes and snapshots keep working.
+**1.准备沙箱集群**遇见[requirements](#check-the-requirements)并打开[network paths](#configure-the-network)。沙箱集群必须到达现有的 JuiceFS Redis 和存储桶，并拥有它们的存储授权。使用专用的服务身份验证密钥和控制平面当前使用的回调签名 JWK 创建 [runtime Secret](#create-the-runtime-secret)。如果控制平面仍然使用`api_key_salt`作为其服务身份验证密钥，则生成一个新值。如果它已经使用了专用值，请保留该值。
 
-**1. Prepare the sandbox cluster**
+**2.复制代理 CA**
 
-Meet the [requirements](#check-the-requirements) and open the [network paths](#configure-the-network). The sandbox cluster must reach the existing JuiceFS Redis and bucket, and have the storage grants for them. Create the [runtime Secret](#create-the-runtime-secret) with a dedicated service-auth secret and the callback signing JWK the control plane uses today. If the control plane still uses `api_key_salt` as its service-auth secret, generate a new value. If it already uses a dedicated value, keep that one.
-
-**2. Copy the proxy CA**
-
-Sandboxes that resume from saved memory keep trusting the egress proxy CA they started with. To keep auth proxy credential injection working for them, run the new runtime with the same CA. Copy the proxy CA Secret (`smithbox-proxy-ca` by default, with keys `tls.crt` and `tls.key`) into the sandbox namespace, and set `proxyCa.mode: existingSecret` and `proxyCa.existingSecretName` in the runtime values. Copy it before the next step, which deletes a CA Secret that the `langsmith` chart generated:
+从保存的内存恢复的沙箱继续信任它们开始时使用的出口代理 CA。为了让身份验证代理凭据注入继续为它们工作，请使用相同的 CA 运行新的运行时。将代理 CA Secret（默认为`smithbox-proxy-ca`，密钥为`tls.crt`和`tls.key`）复制到沙箱命名空间中，并在运行时值中设置`proxyCa.mode: existingSecret`和`proxyCa.existingSecretName`。在下一步之前复制它，这将删除 `langsmith` 图表生成的 CA Secret：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl --context <langsmith-context> -n <langsmith-namespace> get secret smithbox-proxy-ca -o json \
@@ -503,58 +464,50 @@ kubectl --context <langsmith-context> -n <langsmith-namespace> get secret smithb
   | kubectl --context <sandbox-context> apply -f -
 ```
 
-**3. Switch the LangSmith release**
-
-Set `sandboxes.external.enabled: true`, set the same dedicated service-auth secret as in the runtime Secret (`sandboxes.serviceAuth.secret`, or a key named in `sandboxes.serviceAuth.secretKey`), and upgrade the `langsmith` release. Keep `sandboxes.clusterName` unchanged. The release removes the embedded `sandbox-host` Deployment, and each host suspends its Sandboxes as it shuts down. A draining host first tries to live-migrate each running Sandbox to another ready host, but no other host is ready during this step, so every running Sandbox is suspended. Wait until the old host pods are gone:
+**3.切换LangSmith版本**设置 `sandboxes.external.enabled: true`，设置与运行时 Secret 中相同的专用服务身份验证密钥（`sandboxes.serviceAuth.secret`，或在 `sandboxes.serviceAuth.secretKey` 中命名的密钥），然后升级 `langsmith` 版本。保持`sandboxes.clusterName`不变。该版本删除了嵌入式 `sandbox-host` 部署，并且每个主机在关闭时都会挂起其沙箱。耗尽主机首先尝试将每个正在运行的 Sandbox 实时迁移到另一个准备就绪的主机，但在此步骤中没有其他主机准备就绪，因此每个正在运行的 Sandbox 都会暂停。等到旧主机 Pod 消失：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl --context <langsmith-context> -n <langsmith-namespace> wait --for=delete pod \
   -l app.kubernetes.io/component=langsmith-sandbox-host --timeout=15m
 ```
 
-The label assumes the release name `langsmith`. Use a timeout longer than the hosts' `terminationGracePeriodSeconds`.
+该标签采用版本名称`langsmith`。使用比主机的 `terminationGracePeriodSeconds` 更长的超时。
 
-**4. Install the runtime**
+**4.安装运行时**
 
-Install `langsmith-sandbox` as in [Install with Helm](#install-with-helm), with `juicefs` settings that point at the same metadata Redis URL, bucket, and `juicefs.name` as before. LangSmith accepts the new runtime about 6 minutes after the embedded hosts stop reporting. Until then it refuses the new runtime, and the new host turns not ready shortly after it starts, even if `helm --wait` already returned. Wait until the host stays ready, then [verify the installation](#verify-the-installation). Stopped Sandboxes start again on the new hosts when a user or API action starts or wakes them.
+按照 [Install with Helm](#install-with-helm) 的方式安装 `langsmith-sandbox`，其中 `juicefs` 设置指向与之前相同的元数据 Redis URL、存储桶和 `juicefs.name`。 LangSmith 在嵌入式主机停止报告后约 6 分钟接受新的运行时。在此之前，它拒绝新的运行时，并且新主机在启动后不久就变得未准备好，即使 `helm --wait` 已经返回。等到主机准备好，然后[verify the installation](#verify-the-installation)。当用户或 API 操作启动或唤醒已停止的沙箱时，它们会在新主机上重新启动。之后LangSmith集群的KVM节点池不再运行`sandbox-host`。当您不再需要它时，请将其连同 `sandboxes.juicefs.existingSecretName` 中命名的 JuiceFS 配置 Secret（如果您已创建）一起删除。
 
-Afterwards, the LangSmith cluster's KVM node pool no longer runs `sandbox-host`. Remove it when you no longer need it, along with the JuiceFS configuration Secret named in `sandboxes.juicefs.existingSecretName`, if you created one.
+## 轮换 service-auth 密钥
 
-## Rotate the service-auth secret
+分三步轮换沙盒服务身份验证密钥。每完成一个步骤后，应用两个版本并等待两个版本完成部署，然后再开始下一个步骤：
 
-Rotate the sandbox service-auth secret in three steps. After each step, apply both releases and wait for both to finish rolling out before you start the next one:
+1. 在两侧添加新值作为之前的秘密。在`langsmith`图表中，设置`sandboxes.serviceAuth.previousSecret`，或者使用`config.existingSecretName`，添加一个键并将其命名为`sandboxes.serviceAuth.previousSecretKey`。在运行时图表中，为运行时 Secret 添加一个密钥，并将其命名为 `serviceAuth.previousSecretKey`。
+2. 在双方上，将新值设置为当前值，将旧值设置为以前的秘密。如果您就地编辑现有 Secret，此步骤不会更改图表值，因此请重新启动读取 Secret 的部署，而不是应用版本。
+3. 两边去掉之前的秘密。对于现有 Secret，首先取消设置先前的密钥设置并应用版本，然后从 Secret 中删除该密钥：引用已删除密钥的 Pod 无法启动。
 
-1. On both sides, add the new value as the previous secret. In the `langsmith` chart, set `sandboxes.serviceAuth.previousSecret`, or with `config.existingSecretName`, add a key and name it in `sandboxes.serviceAuth.previousSecretKey`. In the runtime chart, add a key to the runtime Secret and name it in `serviceAuth.previousSecretKey`.
-2. On both sides, make the new value current and the old value the previous secret. If you edit an existing Secret in place, this step changes no chart values, so restart the Deployments that read the Secret instead of applying the releases.
-3. On both sides, remove the previous secret. With an existing Secret, first unset the previous-secret key setting and apply the release, then delete the key from the Secret: pods that reference a deleted key cannot start.
+对于嵌入式运行时，每个步骤仅适用于 `langsmith` 版本。当现有 Secret 中的数据发生变化时，Kubernetes 不会重新启动 Pod。就地编辑 Secret 后，重新启动读取它的 Deployment，例如使用 `kubectl rollout restart`。在LangSmith集群中，`<release>-backend`、`<release>-platform-backend`、`<release>-queue`和`<release>-ingest-queue`读取service-auth密钥；在沙盒集群中，`<runtime release>-sandbox-host` 可以。重新启动 `sandbox-host` 会暂停其沙箱，就像滚动升级一样。推出完成后，创建沙盒可能会失败并出现 `No sandbox hosts are available. Retry shortly.` 几秒钟，直到新主机向 LangSmith 报告。
 
-With the embedded runtime, apply each step to the `langsmith` release only.
+回调签名 JWK 没有 previous-key 设置。保持稳定：在正在运行的安装上更改它会使回调失败，直到双方都使用新值。
 
-Kubernetes does not restart pods when the data in an existing Secret changes. After you edit a Secret in place, restart the Deployments that read it, for example with `kubectl rollout restart`. In the LangSmith cluster, `<release>-backend`, `<release>-platform-backend`, `<release>-queue`, and `<release>-ingest-queue` read the service-auth secret; in the sandbox cluster, `<runtime release>-sandbox-host` does. Restarting `sandbox-host` suspends its Sandboxes, as in a rolling upgrade. Creating a Sandbox can fail with `No sandbox hosts are available. Retry shortly.` for a few seconds after the rollout finishes, until the new hosts report to LangSmith.
+## 通过转发代理路由出口
 
-The callback signing JWK has no previous-key setting. Keep it stable: changing it on a running installation makes callbacks fail until both sides use the new value.
+要通过公司转发代理发送沙箱出口，请配置运行时图表而不是 `langsmith` 图表：
 
-## Route egress through a forward proxy
+* **代理 URL**：将 URL 添加到密钥 `sandbox_egress_proxy_url` 或`authProxy.httpProxy.urlSecretKey` 命名的密钥下的运行时 Secret。 URL 可以携带凭据，因此图表仅从 Secret 中读取它。没有钥匙，沙箱可以直接到达目的地。
+* **绕过列表**：设置`authProxy.httpProxy.noProxy`。
+* **私有 CA**：对于具有私有 CA 的 HTTPS 代理，请将 CA 添加到`config.customCa`。有关代理要求和行为，请参阅[Route Sandbox egress through a forward proxy](/langsmith/self-host-sandbox-egress-proxy)。
 
-To send sandbox egress through a corporate forward proxy, configure the runtime chart instead of the `langsmith` chart:
+## 卸载
 
-* **Proxy URL**: Add the URL to the runtime Secret under the key `sandbox_egress_proxy_url`, or the key that `authProxy.httpProxy.urlSecretKey` names. The URL can carry credentials, so the chart reads it only from the Secret. Without the key, Sandboxes reach destinations directly.
-* **Bypass list**: Set `authProxy.httpProxy.noProxy`.
-* **Private CA**: For an HTTPS proxy with a private CA, add the CA to `config.customCa`.
-
-For proxy requirements and behavior, see [Route Sandbox egress through a forward proxy](/langsmith/self-host-sandbox-egress-proxy).
-
-## Uninstall
-
-Uninstall the runtime release first, then uninstall or reconfigure the `langsmith` release. The hosts report to the control plane while they shut down, so remove them while the control plane still runs:
+首先卸载运行时版本，然后卸载或重新配置 `langsmith` 版本。主机在关闭时向控制平面报告，因此在控制平面仍在运行时将其删除：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm uninstall langsmith-sandbox --kube-context <sandbox-context> -n langsmith-sandbox --wait
 ```
 
-Neither chart deletes the JuiceFS Redis or the bucket. They hold the Sandboxes' persistent data; delete them separately if you no longer need it.
+这两个图表都不会删除 JuiceFS Redis 或存储桶。它们保存沙箱的持久数据；如果不再需要，请单独删除它们。
 
-## See also
+## 另请参阅
 
 * [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)
 * [Sandbox architecture and lifecycle](/langsmith/self-host-sandbox-architecture)
@@ -564,6 +517,6 @@ Neither chart deletes the JuiceFS Redis or the bucket. They hold the Sandboxes' 
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-separate-cluster.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-separate-cluster.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -18,9 +18,9 @@
 
 ＃＃ 内容|组织层面的运营 |工作区级操作 |
 | - | - |
-| **核心管理：** • [Organization settings](#organization-settings)：组织信息和配置 • [Workspaces](#workspaces)：工作区管理 • [Organization members](#organization-members)：成员管理 • [Roles and permissions](#roles-and-permissions)：自定义角色 | **核心资源：** • [Projects](#projects)：组织跟踪和运行 • [Runs](#runs)：单独执行跟踪 • [Datasets](#datasets)：用于评估的测试数据集 • [Examples](#examples)：单独数据集示例 • [Experiments](#experiments)：比较实验 |
-| **安全和身份验证：** • [SSO and authentication](#sso-and-authentication)：单点登录设置 • [SCIM](#scim)：身份配置 • [Access policies](#access-policies)：基于属性的访问控制 | **监控和分析：** • [Rules](#rules)：自动运行规则 • [Alerts](#alerts)：监控警报规则 • [Feedback](#feedback)：输出分数和标签 • [Annotation Queues](#annotation-queues)：人工审核队列 • [Charts](#charts)：自定义可视化 |
-| **计费和帐户：** • [Billing and payments](#billing-and-payments)：订阅管理 • [API keys](#api-keys)：组织级别密钥 | **开发和配置：** • [Prompts](#prompts)：提示模板（LangChain 集线器） • [Custom apps](#custom-apps)：用户编写的迷你 Web 应用程序 • [Deployments](#deployments)：部署配置 • [MCP Servers](#mcp-servers)：模型上下文协议服务器 • [Fleet](#fleet)：队列管理操作 || **分析：** • [Charts and dashboards](#organization-charts-and-dashboards)：组织级别可视化 • [Usage and analytics](#usage-and-analytics)：使用情况跟踪和 TTL 设置 | **工作区管理：** • [Model price map](#model-price-map)：每个代币模型价格 • [Workspace settings](#workspace-settings-and-management)：成员、设置 • [Tags](#tags)​​：元数据标记系统 • [Bulk Exports](#bulk-exports)：数据导出操作 |
+| **核心管理：** • [Organization settings](#organization-settings)：组织信息和配置 • [Workspaces](#workspaces)：工作区管理 • [Organization members](#organization-members)：成员管理 • [Roles and permissions](#roles-and-permissions)：自定义角色 | **核心资源：** • [Projects](#projects)：组织跟踪和运行 • [Runs](#runs)：单个执行跟踪 • [Datasets](#datasets)：用于评估的测试数据集 • [Examples](#examples)：单个数据集示例 • [Experiments](#experiments)：比较实验 |
+| **安全和身份验证：** • [SSO and authentication](#sso-and-authentication)：单点登录设置 • [SCIM](#scim)：身份配置 • [Access policies](#access-policies)：基于属性的访问控制 • [Organization teams](#organization-teams)：团队及其工作空间访问 | **监控和分析：** • [Rules](#rules)：自动运行规则 • [Alerts](#alerts)：监控警报规则 • [Feedback](#feedback)​​：输出分数和标签 • [Annotation Queues](#annotation-queues)：人工审核队列 • [Charts](#charts)：自定义可视化 |
+| **计费和帐户：** • [Billing and payments](#billing-and-payments)：订阅管理 • [API keys](#api-keys)：组织级别密钥 | **开发和配置：** • [Prompts](#prompts)：提示模板（LangChain 集线器） • [Custom apps](#custom-apps)：用户编写的迷你 Web 应用程序 • [Deployments](#deployments)：部署配置 • [MCP Servers](#mcp-servers)：模型上下文协议服务器 • [Fleet](#fleet)：队列管理操作 || **分析：** • [Charts and dashboards](#organization-charts-and-dashboards)：组织级别可视化 • [Usage and analytics](#usage-and-analytics)：使用情况跟踪和 TTL 设置 | **工作区管理：** • [Model price map](#model-price-map)：每个代币模型价格 • [Workspace settings](#workspace-settings-and-management)：成员、设置 • [Workspace teams](#workspace-teams)：此工作区的团队成员和策略 • [Tags](#tags)：元数据标记系统 • [Bulk Exports](#bulk-exports)：数据导出操作 |
 
 **附加信息：**
 
@@ -37,131 +37,145 @@
 
 > [!注意]
 >
-> 组织级操作由组织角色控制，与 RBAC 功能分开。请参阅 [Role-based access control](/langsmith/rbac#organization-roles) 指南了解更多信息。
+> 组织级操作由组织角色控制，与 RBAC 功能分开。在[Role-based access control](/langsmith/rbac#organization-roles)指南中了解更多信息。
 
-### 组织设置|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
-| - | :-: | :-: | :-: | :-: | - |
-|查看组织信息 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|查看组织仪表板 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|更新组织信息 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|查看账单信息 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|查看公司信息 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|设置公司信息 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+> [!注意]
+>
+> [Organization Restricted](/langsmith/rbac#organization-restricted) 适用于用户和工作区范围的服务密钥。它只保存`organization:read-metadata`，因此它只能执行需要该权限的操作。它仅列出用户或密钥分配到的工作区。
+
+### 组织设置|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |组织限制 |所需权限 |
+| - | :-: | :-: | :-: | :-: | :-: | - |
+|查看组织信息 | ✓ | ✓ | ✓ | ✓ | ✓ | `organization:read-metadata` |
+|查看组织仪表板 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|更新组织信息 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|查看账单信息 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|查看公司信息 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|设置公司信息 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 
 ### 工作区
 
 组织级工作区管理操作。
 
-|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
-| - | :-: | :-: | :-: | :-: | - |
-|列出所有工作区 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|创建工作区 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |组织限制 |所需权限 |
+| - | :-: | :-: | :-: | :-: | :-: | - |
+|列出所有工作区 | ✓ | ✓ | ✓ | ✓ | ⚠ | `organization:read-metadata` |
+|创建工作区 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 
-### 组织成员|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |笔记|
-| - | :-: | :-: | :-: | :-: | - | - |
-|查看组织成员 | ✓ | ✓ | ✓ | ✓ | `organization:read` | |
-|查看活跃的组织成员 | ✓ | ✓ | ✓ | ✓ | `organization:read` | |
-|查看待定的组织成员 | ✓ | ✓ | ✓ | ✓ | `organization:read` | |
-|邀请成员加入组织 | ✓ | ⚠ | ✗ | ✗ | `organization:manage` |组织操作员只能邀请组织用户和组织查看者 |
-|邀请会员（批量）| ✓ | ⚠ | ✗ | ✗ | `organization:manage` |组织操作员只能邀请组织用户和组织查看者 |
-|添加基本​​授权成员 | ✓ | ⚠ | ✗ | ✗ | `organization:manage` |组织操作员只能添加组织用户和组织查看者 |
-|删除组织成员 | ✓ | ⚠ | ✗ | ✗ | `organization:manage` |组织操作员无法删除组织管理员 |
-|更新组织成员角色 | ✓ | ⚠ | ✗ | ✗ | `organization:manage` |组织操作员只能修改组织用户和组织查看者 |
-|删除待定的组织成员 | ✓ | ⚠ | ✗ | ✗ | `organization:manage` |组织操作员无法删除待处理的组织管理员邀请 |
+### 组织成员|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |组织限制 |所需权限 |笔记|
+| - | :-: | :-: | :-: | :-: | :-: | - | - |
+|查看组织成员 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` | |
+|查看活跃的组织成员 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` | |
+|查看待定的组织成员 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` | |
+|邀请成员加入组织 | ✓ | ⚠ | ✗ | ✗ | ✗ | `organization:manage` |组织操作员只能邀请组织用户和组织查看者 |
+|邀请会员（批量）| ✓ | ⚠ | ✗ | ✗ | ✗ | `organization:manage` |组织操作员只能邀请组织用户和组织查看者 |
+|添加基本​​授权成员 | ✓ | ⚠ | ✗ | ✗ | ✗ | `organization:manage` |组织操作员只能添加组织用户和组织查看者 |
+|删除组织成员 | ✓ | ⚠ | ✗ | ✗ | ✗ | `organization:manage` |组织操作员无法删除组织管理员 |
+|更新组织成员角色 | ✓ | ⚠ | ✗ | ✗ | ✗ | `organization:manage` |组织操作员只能修改组织用户和组织查看者 |
+|删除待定的组织成员 | ✓ | ⚠ | ✗ | ✗ | ✗ | `organization:manage` |组织操作员无法删除待处理的组织管理员邀请 |
 
-### 角色和权限|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
-| - | :-: | :-: | :-: | :-: | - |
-|列出组织角色 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|列出可用权限 | ✓ | ✓ | ✓ | ✓ |不适用（用户级）|
-|创建自定义角色 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|更新自定义角色 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|删除自定义角色 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+### 角色和权限|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |组织限制 |所需权限 |
+| - | :-: | :-: | :-: | :-: | :-: | - |
+|列出组织角色 | ✓ | ✓ | ✓ | ✓ | ✓ | `organization:read-metadata` |
+|列出可用权限 | ✓ | ✓ | ✓ | ✓ | ✓ |不适用（用户级）|
+|创建自定义角色 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|更新自定义角色 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|删除自定义角色 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 
 ### SSO 和身份验证
 
-|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
-| - | :-: | :-: | :-: | :-: | - |
-|查看 SSO 设置 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|创建 SSO 设置 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|更新 SSO 设置 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|删除 SSO 设置 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|查看登录方式 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|更新允许的登录方式 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|设置默认 SSO 规定 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |组织限制 |所需权限 |
+| - | :-: | :-: | :-: | :-: | :-: | - |
+|查看 SSO 设置 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|创建 SSO 设置 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|更新 SSO 设置 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|删除 SSO 设置 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|查看登录方式 | ✓ | ✓ | ✓ | ✓ | ✓ | `organization:read-metadata` |
+|更新允许的登录方式 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|设置默认 SSO 规定 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 
 ### SCIM
 
-用于用户配置的跨域身份管理系统。有关设置说明，请参阅[SCIM setup guide](/langsmith/user-management#set-up-scim-for-your-organization)。|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
-| - | :-: | :-: | :-: | :-: | - |
-|列出 SCIM 代币 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|获取 SCIM 代币 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|创建 SCIM 令牌 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|更新 SCIM 令牌 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|删除 SCIM 令牌 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+用于用户配置的跨域身份管理系统。有关设置说明，请参阅[SCIM setup guide](/langsmith/user-management#set-up-scim-for-your-organization)。|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |组织限制 |所需权限 |
+| - | :-: | :-: | :-: | :-: | :-: | - |
+|列出 SCIM 代币 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|获取 SCIM 代币 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|创建 SCIM 令牌 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|更新 SCIM 令牌 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|删除 SCIM 令牌 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 
 ### 访问策略
 
 基于属性的访问控制 (ABAC) 策略，实现细粒度的权限。
 
-|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
+|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |组织限制 |所需权限 |
+| - | :-: | :-: | :-: | :-: | :-: | - |
+|列出访问策略 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|获取访问策略 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|创建访问策略 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|删除访问策略| ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|将访问策略附加到角色 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+
+### 组织团队
+
+[Teams](/langsmith/teams) 及其工作空间访问权限。 `organization:manage`不允许这些操作。|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
 | - | :-: | :-: | :-: | :-: | - |
-|列出访问策略 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|获取访问策略 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|创建访问策略 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|删除访问策略 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|将访问策略附加到角色 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+|列出并查看团队、成员和访问策略 | ✓ | ✓ | ✓ | ✓ | `organization:teams:read` |
+|查看团队的工作区访问权限 | ✓ | ✓ | ✓ | ✓ | `organization:teams:read` |
+|创建、更新或删除团队 | ✓ | ✓ | ✗ | ✗ | `organization:teams:manage` |
+|添加或删除团队成员 | ✓ | ✓ | ✗ | ✗ | `organization:teams:manage-members` |
+|附加或分离访问策略 | ✓ | ✓ | ✗ | ✗ | `organization:teams:manage-policies` |
+|授予、更改或删除团队的工作区访问权限 | ✓ | ✓ | ✗ | ✗ | `organization:teams:manage-grants` |
 
-### 账单和付款|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
-| - | :-: | :-: | :-: | :-: | - |
-|创建 Stripe 设置意图 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|处理付款方式创建 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|更改付款计划 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|创建 Stripe 结账会话 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|确认结账完成 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|创建 Stripe 帐户链接 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+### 账单和付款
 
-### API 密钥
+|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |组织限制 |所需权限 |
+| - | :-: | :-: | :-: | :-: | :-: | - |
+|创建 Stripe 设置意图 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|处理付款方式创建 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|更改付款计划 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|创建 Stripe 结账会话 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|确认结账完成 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|创建 Stripe 帐户链接 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 
-|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
-| - | :-: | :-: | :-: | :-: | - |
-|列出组织范围的服务键 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|创建组织范围的服务密钥（工作空间范围）\* | ✓ | ✓ | ⚠ | ✗ | `organization:pats:create` + `workspaces:manage-keys` |
-|创建组织范围的服务密钥（组织范围）\* | ✓ | ✗ | ✗ | ✗ | `organization:pats:create` + `organization:manage` |
-|删除组织范围的服务密钥（工作空间范围）\* | ✓ | ✓ | ⚠ | ✗ | `organization:read` + `workspaces:manage-keys` |
-|更新服务关键角色 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|列出自己的个人访问令牌 (PAT) | ✓ | ✓ | ✓ | ✗ | `organization:read` |
-|列出每个成员的个人访问令牌 (PAT) | ✓ | ✓ | ✗ | ✗ | `organization:pats:read` |
-|创建个人访问令牌 (PAT) | ✓ | ✓ | ✓ | ✗ | `organization:pats:create` ||停用、重新激活或删除自己的个人访问令牌 (PAT) | ✓ | ✓ | ✓ | ✗ | `organization:read` |
-|停用、重新激活或删除其他成员的个人访问令牌 (PAT) | ✓ | ✓ | ✗ | ✗ | `organization:pats:manage` |
-
-> [!注意]
+### API 密钥|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |组织限制 |所需权限 |
+| - | :-: | :-: | :-: | :-: | :-: | - |
+|列出组织范围的服务键 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|创建组织范围的服务密钥（工作空间范围）\* | ✓ | ✓ | ⚠ | ✗ | ✗ | `organization:pats:create` + `workspaces:manage-keys` |
+|创建组织范围的服务密钥（组织范围）\* | ✓ | ✗ | ✗ | ✗ | ✗ | `organization:pats:create` + `organization:manage` |
+|删除组织范围的服务密钥（工作空间范围）\* | ✓ | ✓ | ⚠ | ✗ | ✗ | `organization:read` + `workspaces:manage-keys` |
+|更新服务关键角色 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|列出自己的个人访问令牌 (PAT) | ✓ | ✓ | ✓ | ✗ | ✗ | `organization:read` |
+|列出每个成员的个人访问令牌 (PAT) | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:pats:read` |
+|创建个人访问令牌 (PAT) | ✓ | ✓ | ✓ | ✗ | ✗ | `organization:pats:create` |
+|停用、重新激活或删除自己的个人访问令牌 (PAT) | ✓ | ✓ | ✓ | ✗ | ✗ | `organization:read` |
+|停用、重新激活或删除其他成员的个人访问令牌 (PAT) | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:pats:manage` |> [!注意]
 >
 > \* 组织操作员和组织用户只能在其角色授予 `workspaces:manage-keys` 的工作区（例如工作区管理员角色）中创建或删除工作区范围的服务密钥。创建组织范围的服务密钥需要组织管理员角色。
 
 ### 组织结构图和仪表板
 
-|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
-| - | :-: | :-: | :-: | :-: | - |
-|列出组织结构图 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|按 ID 获取组织结构图 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|创建组织结构图 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|更新组织结构图 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|删除组织结构图 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|渲染组织结构图 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|获取组织结构图部分 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|创建组织结构图部分 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|更新组织结构图部分 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|删除组织结构图部分 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|渲染组织结构图部分 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
+|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |组织限制 |所需权限 |
+| - | :-: | :-: | :-: | :-: | :-: | - |
+|列出组织结构图 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|按 ID 获取组织结构图 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|创建组织结构图 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|更新组织结构图 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|删除组织结构图 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|渲染组织结构图 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|获取组织结构图部分 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|创建组织结构图部分 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|更新组织结构图部分 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|删除组织结构图部分 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|渲染组织结构图部分 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
 
-### 使用和分析|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
-| - | :-: | :-: | :-: | :-: | - |
-|查看组织使用情况 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-| [View granular billable usage](/langsmith/granular-usage) | ✓ | ✓ | ✓ | `organization:read` | |
-| [Export granular usage as CSV](/langsmith/granular-usage#csv-export) | ✓ | ✓ | ✓ | `organization:read` | |
-|查看工作区跟踪保留设置 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|设置工作区默认跟踪层（基本/扩展） | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|设置工作区延长保留期限（企业） | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+### 使用和分析|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |组织限制 |所需权限 |
+| - | :-: | :-: | :-: | :-: | :-: | - |
+|查看组织使用情况 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+| [View granular billable usage](/langsmith/granular-usage) | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+| [Export granular usage as CSV](/langsmith/granular-usage#csv-export) | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|查看工作区跟踪保留设置 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+|设置工作区默认跟踪层（基本/扩展） | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|设置工作区延长保留期限（企业） | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 
 ## 工作区级别的操作
 
@@ -203,7 +217,7 @@
 |删除多个项目 | ✓ | ✗ | ✗ | `projects:delete` |
 |获取洞察职位 | ✓ | ✓ | ✓ | `projects:read` |
 |获得具体的工作见解 | ✓ | ✓ | ✓ | `projects:read` |
-|创建洞察工作| ✓ | ✓ | ✓ | `projects:read` + `rules:create` ||更新洞察工作 | ✓ | ✓ | ✗ | `projects:update` |
+|创建洞察工作 | ✓ | ✓ | ✓ | `projects:read` + `rules:create` ||更新洞察工作 | ✓ | ✓ | ✗ | `projects:update` |
 |删除见解作业 | ✓ | ✗ | ✗ | `projects:delete` |
 |获取作业配置见解 | ✓ | ✓ | ✓ | `rules:read` |
 |创建见解作业配置 | ✓ | ✓ | ✗ | `rules:create` |
@@ -255,7 +269,7 @@
 |查看规则日志 | ✓ | ✓ | ✓ | `rules:read` |
 |获取最后应用的规则 | ✓ | ✓ | ✓ | `rules:read` |
 |手动触发规则 | ✓ | ✓ | ✗ | `rules:update` |
-|触发多个规则 | ✓ | ✓ | ✗ | `rules:update` |
+|触发多个规则| ✓ | ✓ | ✗ | `rules:update` |
 |配置每个操作的数据保留 | ✓ | ✗ | ✗ | `rules:configure-retention` |
 
 ### 警报
@@ -314,7 +328,7 @@
 数据集中的单个示例。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |数个例子 | ✓ | ✓ | ✓ | `datasets:read` |
-|查看具体示例 | ✓ | ✓ | ✓ | `datasets:read` |
+|查看具体示例| ✓ | ✓ | ✓ | `datasets:read` |
 |列出示例 | ✓ | ✓ | ✓ | `datasets:read` |
 |创建一个新示例 | ✓ | ✓ | ✗ | `datasets:update` |
 |创建示例（批量）| ✓ | ✓ | ✗ | `datasets:update` |
@@ -361,7 +375,7 @@ LLM 输出的分数、标签和更正。
 
 > [!注意]
 >
-> 反馈公式运算已弃用，取而代之的是[composite evaluators](/langsmith/composite-evaluators-ui)，并计划于 2026 年 8 月 20 日删除。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
+> 反馈公式操作已弃用，取而代之的是[composite evaluators](/langsmith/composite-evaluators-ui)，并计划于 2026 年 8 月 20 日删除。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |列出反馈公式（已弃用）| ✓ | ✓ | ✓ | `feedback:read` |
 |获取反馈公式（已弃用）| ✓ | ✓ | ✓ | `feedback:read` |
@@ -371,7 +385,7 @@ LLM 输出的分数、标签和更正。
 |查看具体反馈 | ✓ | ✓ | ✓ | `feedback:read` |
 |列出反馈 | ✓ | ✓ | ✓ | `feedback:read` |
 |创建反馈 | ✓ | ✓ | ✗ | `feedback:create` |
-|积极创建反馈 | ✓ | ✓ | ✗ | `feedback:create` |
+|积极创建反馈| ✓ | ✓ | ✗ | `feedback:create` |
 |更新反馈 | ✓ | ✓ | ✗ | `feedback:update` |
 |删除反馈 | ✓ | ✓ | ✗ | `feedback:delete` |
 |批量摄取反馈| ✓ | ✓ | ✗ | `feedback:create` |
@@ -443,15 +457,15 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |列出评论 | ✓ | ✓ | ✓ | `prompts:read` |
 |创建评论 | ✓ | ✓ | ✗ | `prompts:read` |
 |删除评论 | ✓ | ✓ | ✗ | `prompts:read` |
-|切换类似 | ✓ | ✓ | ✗ | `prompts:read` |
+|切换类似| ✓ | ✓ | ✗ | `prompts:read` |
 |优化提示 | ✓ | ✓ | ✗ | `prompts:update` |
 |列出优化工作 | ✓ | ✓ | ✓ | `prompts:read` |
 |创建优化作业 | ✓ | ✓ | ✗ | `prompts:create` |
 |更新优化作业 | ✓ | ✓ | ✗ | `prompts:update` |
 |删除优化作业 | ✓ | ✓ | ✗ | `prompts:delete` ||调用提示画布 | ✓ | ✓ | ✗ | `prompts:update` |
 |列出快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
-|创建快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
-|删除快速行动| ✓ | ✓ | ✓ | `prompts:read` |
+|创建快速行动| ✓ | ✓ | ✓ | `prompts:read` |
+|删除快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
 |更新快动作| ✓ | ✓ | ✓ | `prompts:read` |
 
 > [!注意]
@@ -521,7 +535,18 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |查看共享实体 | ✓ | ✓ | ✓ | `workspaces:read` |
 |批量取消共享实体 | ✓ | ✗ | ✗ | `workspaces:manage` |
 
-### 标签|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
+### 工作空间团队
+
+团队在此工作区中拥有的[Workspace-only members and access policies](/langsmith/teams#add-workspace-only-members-and-policies)。 `workspaces:manage`不允许这些操作。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
+| - | :-: | :-: | :-: | - |
+|查看有权访问此工作区的团队及其仅限工作区的成员和策略 | ✓ | ✓ | ✓ | `workspaces:teams:read` |
+|查看团队在此工作区中的角色 | ✓ | ✓ | ✓ | `workspaces:teams:read` |
+|添加或删除仅限工作区的成员 | ✓ | ✗ | ✗ | `workspaces:teams:manage-members` |
+|附加或分离仅限工作区的访问策略 | ✓ | ✗ | ✗ | `workspaces:teams:manage-policies` |
+
+### 标签
+
+|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |列表标签键 | ✓ | ✓ | ✓ | `workspaces:read` |
 |获取标签密钥 | ✓ | ✓ | ✓ | `workspaces:read` |
@@ -537,12 +562,13 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |列出资源标签 | ✓ | ✓ | ✓ | `workspaces:read` |
 |列出资源标签（批量）| ✓ | ✓ | ✓ | `workspaces:read` |
 |列表标签 | ✓ | ✓ | ✓ | `workspaces:read` |
-|创建标签 | ✓ | ✗ | ✗ | `workspaces:manage` |
-|删除标签 | ✓ | ✗ | ✗ | `workspaces:manage` |
+|创建标签 | ✓ | ✗ | ✗ | `workspaces:manage` ||删除标签 | ✓ | ✗ | ✗ | `workspaces:manage` |
 
-### 批量导出|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
+### 批量导出
+
+|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
-|批量出口清单| ✓ | ✓ | ✓ | `bulk-exports:read` |
+|批量出口清单 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出运行 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出运行 | ✓ | ✓ | ✓ | `bulk-exports:read` |
@@ -564,7 +590,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 | - | :-: | :-: | :-: | - |
 |列出 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
 |获取 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
-|创建MCP服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
+|创建MCP服务器| ✓ | ✓ | ✓ | `workspaces:read` |
 |更新MCP服务器| ✓ | ✓ | ✓ | `workspaces:read` |
 |删除 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
 
@@ -585,7 +611,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 * 更新自己的用户资料
 * 列出用户的组织
 * 创建新组织
-* 列出待处理的工作空间邀请
+* 列出待处理的工作区邀请
 * 删除待处理的工作区邀请
 * 领取待处理的工作区邀请
 * 列出待处理的组织邀请
@@ -597,8 +623,10 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 ### 组织到工作区* [Organization Admin](/langsmith/rbac#organization-admin) 自动拥有所有工作区的完全权限。
 * [Organization Operator](/langsmith/rbac#organization-operator) 仅在显式添加到具有工作区级别角色的工作区（或他们创建的工作区）时才获得工作区访问权限。
 * [Organization User](/langsmith/rbac#organization-user) 和 [Organization Viewer](/langsmith/rbac#organization-viewer) 仅在显式添加到具有工作区级别角色的工作区时才获得工作区访问权限。
+* 属于 [team](/langsmith/teams) 并有权访问该工作区的工作区成员也会收到团队的工作区角色。
+* [Organization Restricted](/langsmith/rbac#organization-restricted) 用户仅在显式添加到具有工作区级别角色的工作区时才能获得工作区访问权限。具有此角色的工作区范围的服务密钥只能访问为该密钥选择的工作区。
 
-详细的角色定义请参见[Organization roles](/langsmith/rbac#organization-roles)和[Workspace roles](/langsmith/rbac#workspace-roles)。
+详细的角色定义请参考[Organization roles](/langsmith/rbac#organization-roles)和[Workspace roles](/langsmith/rbac#workspace-roles)。
 
 ### 工作区角色独立性
 

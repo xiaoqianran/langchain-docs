@@ -10,7 +10,7 @@
 
 您编写代理的智能：它的指令、它可以调用的工具、它遵循的技能，然后您选择驱动它的模型。 MDA 提供了以下所有内容：
 
-* **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统以及委托给子代理。参见[Deep Agents](/oss/javascript/deepagents/overview)。
+* **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统并委托给子代理。参见[Deep Agents](/oss/javascript/deepagents/overview)。
 * **托管运行时**：每个部署都在 [LangSmith Agent Server](/langsmith/agent-server-overview) 上运行。您无需亲自操作服务器即可获得代理服务器 API、线程、运行、流式传输和 [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -43,7 +43,7 @@ flowchart LR
 托管深度代理由一个项目文件夹组成，其中包含其行为的业务逻辑：
 
 当您使用 `mda` CLI 上传此文件夹时，它将自动在托管 LangSmith 基础设施上运行。
-您提供业务逻辑，托管Deep Agents提供代理工具和生产基础设施。
+您提供业务逻辑，托管 Deep Agents 提供代理工具和生产基础设施。
 
 要开始使用，请参阅[Managed Deep Agents quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。
 
@@ -77,19 +77,19 @@ Managed Deep Agents 在代理周围添加了一层。上面的沙箱、持久内
 
 ## 后续步骤
 
-> **[Quickstart](/langsmith/javascript/managed-deep-agents-quickstart)**
+> [卡][Quickstart](/langsmith/javascript/managed-deep-agents-quickstart)
 >
 > 使用 `mda` CLI 创建并部署您的第一个托管深度代理。
 
-> **[Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)**
+> [卡][Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)
 >
 > 添加自定义搜索工具、持久内存和每日日程安排。
 
-> **[Agent Server](/langsmith/agent-server-overview)**
+> [卡][Agent Server](/langsmith/agent-server-overview)
 >
 > 探索托管托管 Deep Agents 部署的运行时。
 
-> **[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)**
+> [卡][MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)
 >
 > 从 Claude Code 或其他 MCP 客户端调用已部署的代理作为工具。
 

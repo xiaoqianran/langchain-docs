@@ -27,7 +27,7 @@ You can manage resource tags through the [LangSmith UI](https://smith.langchain.
 > To create a tag:
 >
 > 1. Navigate to the workspace **Settings** page and click on **Resource tags** in the left-hand sidebar.
-> 2. Here, you'll find the existing tag values, grouped by key. LangSmith creates the **Application** and **Environment** keys by default. You can use the **Application** key to filter resources shown in the UI.
+> 2. Here, you'll find the existing tag values, grouped by key. LangSmith creates the **Application** and **Environment** keys by default.
 > 3. Select  **New Tag** at the top of the page. You'll be prompted to enter a key and a value for the tag. Note that you can use an existing key or create a new one.
 >
 >    ![Create resource tag modal accessed from the Settings menu in the LangSmith UI.](https://mintcdn.com/langchain-5e9cc07a/86CKyoiUyLIrfcjr/langsmith/images/create-tag-light.png?fit=max\&auto=format\&n=86CKyoiUyLIrfcjr\&q=85\&s=3b409ea215cfd522d6c31c5231b26bd3)

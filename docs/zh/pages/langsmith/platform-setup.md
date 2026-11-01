@@ -12,21 +12,21 @@
 >
 > 如果您还想在生产中部署代理，则可以将 [**LangSmith Deployment**](/langsmith/deployment) 与云、BYOC 或自托管结合使用。
 
-> **[Cloud](/langsmith/cloud)**
+> [卡][Cloud](/langsmith/cloud)
 >
 > 全面管理的可观察性、评估和及时工程。
 
-> **[BYOC](/langsmith/byoc)**
+> [卡][BYOC](/langsmith/byoc)
 >
 > 完全控制您的数据，同时 LangChain 管理基础设施。
 
-> **[Self-hosted](/langsmith/self-hosted)**
+> [卡][Self-hosted](/langsmith/self-hosted)
 >
 > 完全控制基础设施中的可观察性、评估和及时工程。
 
 [Enterprise plan](/langsmith/pricing-plans) 上提供自托管和 BYOC。 [Get a demo](https://www.langchain.com/contact-sales) 了解更多。
 
-## 比较云、BYOC 和自托管|特色 | **云** | **自带设备** | **自托管** |
+## 比较云、BYOC 和自托管|特色| **云** | **自带设备** | **自托管** |
 | - | - | - | - |
 | **谁运行基础设施** | LangChain | LangChain 运行控制平面，您运行数据平面 |你|
 | **敏感数据所在的地方** | LangChain的云 |您的 VPC |您的 VPC |
@@ -43,15 +43,15 @@
 
 ## 相关
 
-> **[Account setup](/langsmith/admin)**
+> [卡][Account setup](/langsmith/admin)
 >
 > 创建帐户、管理 API 密钥并选择定价层。
 
-> **[Plans and pricing](https://www.langchain.com/pricing)**
+> [卡][Plans and pricing](https://www.langchain.com/pricing)
 >
 > 比较 LangSmith 计划和等级。
 
-> **[Observability](/langsmith/observability)**
+> [卡][Observability](/langsmith/observability)
 >
 > 跟踪和监控您的法学硕士申请。
 

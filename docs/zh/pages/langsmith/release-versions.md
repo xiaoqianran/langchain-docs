@@ -22,7 +22,7 @@
 
 预览旨在用于测试和登台环境中的评估。 LangSmith 不建议在生产中运行预览。
 
-## 发布节奏|频道|节奏 |
+## 发布节奏|频道|节奏|
 | - | - |
 |预览 |已发布镜像 LangSmith SaaS 发布节奏 |
 |稳定：新专业（`v0.X.0`）|大约每 6 周一次（每季度两次）|
@@ -32,7 +32,7 @@
 
 | |预览 |稳定补丁|下一个专业 |
 | - | :-: | :-: | :-: |
-|新功能 |是的 |没有|是的 |
+|新功能|是的 |没有|是的 |
 |错误修复 |是的 |仅关键 |是的 |
 |安全补丁|是的 |是的 |是的 |
 |数据迁移和回填|是的 |没有|是的 |
@@ -55,9 +55,24 @@
 
 * 稳定的图表版本是`0.X.Y`，其中`X`是主要版本，`Y`随着每个补丁版本的发布而递增。
 * 预览图表版本为 `0.X.0-rc.N`，其中 `N` 随着每个候选版本而递增。
-* 两个数字独立前进。图表补丁编号和LangSmith补丁编号预计不会匹配。
+* 两个数字独立前进。图表补丁编号和 LangSmith 补丁编号预计不会匹配。
 
 用于发布列车的`vX`简写（`v16`、`v17`）指的是主要版本，因此`v17`表示图表版本`0.17.Y`。
+
+## 配对沙盒运行时图表
+
+运行 [Sandboxes in a separate cluster](/langsmith/self-host-sandbox-separate-cluster) 的安装会为沙盒运行时安装第二个图表 `langsmith-sandbox`。这两个图表按 appVersion（LangSmith 版本）配对，而不是按图表版本配对：* 运行最新的 `langsmith-sandbox` 图表，其 appVersion 等于您的 `langsmith` 图表的 appVersion。运行时图表共享主要版本，例如 `0.18`，但其补丁和候选版本号的推进独立于 `langsmith` 图表。
+* 在运行时图表中将 `images.sandboxHostImage.tag` 留空，因此运行时映像遵循图表的 appVersion。
+
+要列出运行时图表版本及其 appVersions，请运行：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+helm search repo langchain/langsmith-sandbox --versions --devel
+```
+
+[self-hosted changelog](/langsmith/self-hosted-changelog) 中的每个版本还链接其运行时图表，用于镜像图表或无法到达 Helm 存储库的安装。
+
+升级顺序请参见[Upgrade separate sandbox clusters](/langsmith/self-host-upgrades#upgrade-separate-sandbox-clusters)。
 
 ## 版本支持
 
@@ -72,7 +87,7 @@ LangSmith 支持当前稳定主要版本（`N`）和之前的稳定主要版本�
 ## 建议* **在生产中运行稳定。** 预览版仅用于评估，可能包含仍在验证中的未发布功能。
 * **在测试或登台中使用预览。** 在非生产环境中运行预览是尽早发现问题并为下一次重大升级做好准备的最佳方法。
 * **规划重大升级。** 数据迁移、服务添加或删除以及重大更改仅出现在新的主要版本中。在升级之前查看[self-hosted changelog](/langsmith/self-hosted-changelog)，并计划任何所需的数据或基础设施更改。
-* **保留受支持的版本。** LangSmith 建议在发布后立即升级到每个新的主要版本，以便按照建议的节奏进行架构改进。
+* **保留受支持的版本。** LangSmith 建议在每个新的主要版本发布后立即升级到该版本，以便按照建议的节奏进行架构改进。
 
 ## 当前版本
 

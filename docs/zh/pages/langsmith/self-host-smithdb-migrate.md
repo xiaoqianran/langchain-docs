@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 在开始本指南之前，完成 [Install LangSmith with SmithDB](/langsmith/self-host-smithdb-install) 的第 1 至 4 阶段。返回那里**迁移清理后将查询切换到 SmithDB**。
+> 在开始本指南之前，完成 [Install LangSmith with SmithDB](/langsmith/self-host-smithdb-install) 的第 1 至 4 阶段。迁移清理后返回那里**将查询切换到 SmithDB**。
 
 ## 迁移如何进行
 
@@ -36,9 +36,9 @@
 estimated allocated vCPUs = historical run count / 5,000,000 / target duration in days
 ```
 
-从图表默认的每个迁移 Pod 8 个 vCPU 和 32 GiB 开始，并将 32 GiB 视为实际最小值，而不是 CPU 的函数。因此，一天内迁移 1 亿次运行建议在作业 Pod 之间分配大约 20 个 vCPU，例如默认大小的 3 个 Pod。这会估计总 CPU，而不是 Pod 计数或每个 Pod 资源。实际要求因数据和环境而异。
+从图表默认的每个迁移 Pod 8 个 vCPU 和 32 GiB 开始，并将 32 GiB 视为实际最小值而不是 CPU 的函数。因此，一天内迁移 1 亿次运行建议在作业 Pod 之间分配大约 20 个 vCPU，例如默认大小的 3 个 Pod。这会估计总 CPU，而不是 Pod 计数或每个 Pod 资源。实际要求因数据和环境而异。
 
-您可以运行单个工作线程，TaskDB 会保留其进度，但这样的大量历史记录可能会花费不切实际的时间。根据估计的 vCPU 和可用容量一起选择并行度和每个 Pod 资源，并在 [Enable migration](#enable-migration) 下的值块中设置两者。
+您可以运行单个工作线程，TaskDB 会保留其进度，但这样的大量历史记录可能会花费不切实际的时间。根据估计的 vCPU 和可用容量一起选择并行度和每个 pod 资源，并在 [Enable migration](#enable-migration) 下的值块中设置两者。
 
 ### 扩展TaskDB
 
@@ -48,7 +48,7 @@ estimated allocated vCPUs = historical run count / 5,000,000 / target duration i
 
 引用 TaskDB Secret 并启用迁移。下面的块将每个迁移设置收集在一个位置：`langsmith`标志和TaskDB Secret是必需的，其余的是图表默认值，仅在扩展时更改。
 
-> **迁移 Helm 值示例**
+> [手风琴] 示例迁移 Helm 值
 >
 > ```yaml LangSmith 0.17 theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > smithdb:
@@ -129,14 +129,28 @@ estimated allocated vCPUs = historical run count / 5,000,000 / target duration i
 
 通过正常工作流程应用图表。它创建 TaskDB 和一个运行完成并退出的一次性迁移作业。
 
-## 等待完成
+## 暂停和恢复迁移
 
-保持 SmithDB 支持的查询处于禁用状态，直到历史迁移作业报告 Kubernetes 状况`Complete`。
+暂停迁移会停止其 pod，但会保留 Job、TaskDB 和迁移进度。
+
+> [!注意]
+>
+> 适用于所有 0.17 Helm 图表以及 0.16 系列的 0.16.40 或更高版本。
+
+设置`smithdb.migration.job.suspend: true`并应用图表暂停。保留`smithdb.langsmith.migration.enabled: true`。要从保存的进度恢复，请设置 `smithdb.migration.job.suspend: false` 并再次应用。
+
+> [!警告]
+>
+> 不要用 `smithdb.langsmith.migration.enabled: false` 暂停。这将删除作业、图表管理的 TaskDB，以及默认情况下保存迁移进度的 TaskDB PVC。
+
+## 等待完成保持 SmithDB 支持的查询处于禁用状态，直到历史迁移作业报告 Kubernetes 状况`Complete`。
 
 完成的迁移作业默认保留 7 天，以便您可以检查其日志。日志仅用于诊断； `Complete`条件是迁移完成的信号。仅在诊断需要时才保留 TaskDB。如果Job失败，保留它和TaskDB，然后参见[Migration Job failures](/langsmith/self-host-smithdb-troubleshooting#migration-job-failures)。
 
 返回 [Install LangSmith with SmithDB](/langsmith/self-host-smithdb-install#step-6-switch-queries-to-smithdb) 并完成 **将查询切换到 SmithDB** 步骤。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-migrate.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

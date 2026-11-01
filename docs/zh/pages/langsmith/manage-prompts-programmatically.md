@@ -368,7 +368,7 @@ Prompt publicPrompt = promptClient.pull("efriis/my-first-prompt");
 >
 > 如果您处于非 Node 环境中，非OpenAI 模型不支持“includeModel”，您应该使用基本 `langchain/hub` 入口点。
 
-## 与LangSmith网关配合使用如果您的工作区使用[LangSmith LLM Gateway](/langsmith/llm-gateway)，您可以通过在拉取和调用提示之前设置环境变量来通过它路由提示模型调用。无需更改其他代码。
+## 与 LLM 网关一起使用如果您的工作区使用[LLM Gateway](/langsmith/llm-gateway)，您可以通过在拉取和调用提示之前设置环境变量来通过它路由提示模型调用。无需更改其他代码。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_GATEWAY="true"
@@ -382,7 +382,7 @@ export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"
 
 > [!注意]
 >
-> 如果您需要使用默认 `LANGSMITH_API_KEY` 之外的不同 API 密钥进行网关调用，请将 `LANGSMITH_GATEWAY_API_KEY` 设置为覆盖。它必须是具有 `gateway:invoke` 权限的工作区范围密钥。
+> 如果您需要使用默认 `LANGSMITH_API_KEY` 之外的不同 API 密钥进行网关调用，请将 `LANGSMITH_GATEWAY_API_KEY` 设置为覆盖。它必须是具有 `gateway:invoke` 权限的工作区范围密钥。密钥类型和权限请参见[Authenticate to the LLM Gateway](/langsmith/llm-gateway-authentication)。
 
 设置环境变量后，像平常一样使用模型拉取并调用提示：
 
@@ -400,11 +400,11 @@ result = prompt_with_model.invoke({"topic": "cats"})
 
 > [!注意]
 >
-> LangChain 聊天模型的网关路由需要 Python 和受支持的 `langchain-*` 集成包（最低版本在[gateway quickstart](/langsmith/llm-gateway-quickstart) 中列出）。如果集成包低于最低版本，调用将绕过网关，直接转到提供商。
+> LangChain 聊天模型的网关路由需要 Python 和受支持的 `langchain-*` 集成包。使用较旧的集成包，调用会绕过网关并直接发送至提供商。
 
-有关完整的配置选项、提供商支持和区域端点，请参阅 [LLM Gateway quickstart](/langsmith/llm-gateway-quickstart)。
+有关受支持的提供商和区域端点，请参阅[Configure LangChain and Deep Agents](/langsmith/llm-gateway-direct-model-access#configure-langchain-and-deep-agents)。
 
-## 提示缓存LangSmith SDK 包含内置的内存中提示缓存。启用后，LangSmith 将在内存中缓存拉取的提示，从而减少频繁使用的提示的延迟和 API 调用。缓存使用在所有客户端之间共享的全局单例实例，并在进程的生命周期内持续存在。它实现了“重新验证时失效”模式，确保您的应用程序始终获得快速响应，同时在后台保持提示最新。
+## 提示缓存LangSmith SDK 包含用于提示的内置内存缓存。启用后，LangSmith 将在内存中缓存拉取的提示，从而减少频繁使用的提示的延迟和 API 调用。缓存使用在所有客户端之间共享的全局单例实例，并在进程的生命周期内持续存在。它实现了“重新验证时失效”模式，确保您的应用程序始终获得快速响应，同时在后台保持提示最新。
 
 **要求：**
 
@@ -415,10 +415,10 @@ result = prompt_with_model.invoke({"topic": "cats"})
 
 缓存**默认启用**。启用后，默认设置为：
 
-|设置|默认|描述 |
+|设置|默认 |描述 |
 | - | - | - |
 | `max_size` | 100 | 100缓存的最大提示数|
-| `ttl_seconds` | 300（5 分钟）|缓存的提示被视为过时之前的时间 |
+| `ttl_seconds` | 300（5 分钟）|缓存提示被视为过时之前的时间 |
 | `refresh_interval_seconds` | 60|多久检查一次过时的提示并在后台刷新它们 |
 
 刷新时，全局缓存将使用最后一个请求给定提示的客户端来获取新数据。
@@ -690,7 +690,7 @@ promptCacheSingleton.stop();
 
 ## 使用不带 LangChain 的提示
 
-如果您想将提示存储在 LangSmith 中，但直接通过模型提供者的 API 使用它们，您可以使用我们的转换方法。这些会将您的提示转换为 OpenAI 或 Anthropic API 所需的负载。
+如果您想将提示存储在 LangSmith 中，但直接通过模型提供商的 API 使用它们，则可以使用我们的转换方法。这些会将您的提示转换为 OpenAI 或 Anthropic API 所需的负载。
 
 这些转换方法依赖于LangChain集成包中的逻辑，除了您选择的官方 SDK 之外，您还需要安装适当的包作为依赖项。以下是一些示例：
 

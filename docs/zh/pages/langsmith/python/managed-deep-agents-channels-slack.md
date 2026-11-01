@@ -178,10 +178,10 @@ channel = channels.slack(name="Support Bot", reactions=choose_emoji)
 部署导入此模块来读取通道声明和
 分类器需要一个键来构造。
 
-在部署上设置 `TYPESAFE_API_KEY`。通过LangSmith网关路由
+在部署上设置 `TYPESAFE_API_KEY`。通过 LLM 网关路由
 相反，设置 `TYPESAFE_BASE_URL=https://gateway.smith.langchain.com` 并使用
-工作区范围内的 LangSmith API 密钥，其中 `TYPESAFE_API_KEY` 在您的工作区中
-[provider secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)。
+工作区范围的 LangSmith API 密钥，其中 `TYPESAFE_API_KEY` 在您的工作区中
+[provider secrets](/langsmith/llm-gateway-provider-authentication#add-a-provider-key)。
 
 ## 部署代理
 
@@ -240,7 +240,7 @@ then call `attach_file` with that path so the file arrives in Slack.
 
 * [Channels overview](/langsmith/python/managed-deep-agents-channels)：了解通道如何将消息服务连接到代理。
 * [Decision models](/langsmith/llm-gateway-decision-models)：配置反应表情评分模型。
-* [LLM Gateway setup](/langsmith/llm-gateway-admin-setup)：启用网关并添加提供者秘密反应需要。
+* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：添加反应所需的提供者密钥。
 * [Agent-owned interrupts](/langsmith/python/managed-deep-agents-agent-owned-interrupts)：从工具发布 Slack 表单并在提交时恢复运行。
 * [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes)：给代理提供文件传输读写的文件系统。
 * [Deploy an agent](/langsmith/python/managed-deep-agents-deploy)：配置和部署托管深度代理。

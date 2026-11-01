@@ -12,25 +12,27 @@
 
 直接模型访问通过特定于提供商的网关路径公开每个提供商 API。网关仍然处理身份验证、提供商机密、策略和跟踪，但它不会将请求和响应转换为另一个提供商的 API 格式。
 
-对于跨提供者的模型调用，首选 [standard model access](/langsmith/llm-gateway-quickstart)。当您想要直接访问提供商的 API、保留其本机请求和响应行为并避免网关的标准化层时，请使用直接模型访问。
+直接模型访问是默认使用的路径[LangChain and Deep Agents](#configure-langchain-and-deep-agents)。对于其他客户端，当您需要提供程序的本机请求和响应行为时使用它。要以一种 API 格式跨提供者调用模型，请改用 [standard endpoint](/langsmith/llm-gateway-api-formats)。
 
 ## 选择提供商路径
 
-将提供商路径附加到您的区域网关基本 URL：
+将提供商路径附加到您的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) 基本 URL，例如 `https://eu.gateway.smith.langchain.com/anthropic` 用于在 GCP EU 中直接访问 Anthropic：
 
-|供应商|网关路径|秘密名字|
-| - | - | - |
-| Anthropic | `/anthropic` | `ANTHROPIC_API_KEY` |
-| AWS 基岩 | `/bedrock` | `AWS_BEARER_TOKEN_BEDROCK` |
-| Azure 铸造厂 | `/azure` | `AZURE_FOUNDRY_API_KEY`，`AZURE_FOUNDRY_RESOURCE_NAME`。对于 Entra ID，请参阅[Provider authentication](/langsmith/llm-gateway-provider-authentication#configure-azure-foundry)。 |
-|巴斯坦| `/baseten` | `BASETEN_API_KEY` |
-|烟花| `/fireworks` | `FIREWORKS_API_KEY` |
-|谷歌双子座 | `/gemini` | `GOOGLE_API_KEY` |
-| Gemini企业代理平台| `/vertex` | `VERTEX_SERVICE_ACCOUNT_JSON` |
-| OpenAI | `/openai` | `OPENAI_API_KEY` |
-|缩小| `/scaledown` | `SCALEDOWN_API_KEY` |
-|类型安全 | `/typesafe` | `TYPESAFE_API_KEY` |
-| xAI | `/xai` | `XAI_API_KEY` |[Gateway Credits models](/langsmith/llm-gateway-credits) 使用标准端点而不是特定于提供者的路径。这些托管模型不需要您自己的提供商秘密。
+|供应商|网关路径|
+| - | - |
+| Anthropic | `/anthropic` |
+| AWS 基岩 | `/bedrock` |
+| Azure 铸造厂 | `/azure` |
+|巴斯坦| `/baseten` |
+|烟花| `/fireworks` |
+|谷歌双子座 | `/gemini` |
+| Gemini企业代理平台 | `/vertex` |
+| OpenAI | `/openai` |
+|缩小| `/scaledown` |
+|类型安全 | `/typesafe` |
+| xAI | `/xai` |
+
+每个路径都使用存储在调用者工作区中的提供者密钥。对于秘密名称，请参阅[Provider authentication](/langsmith/llm-gateway-provider-authentication#add-a-provider-key)。[Gateway Credits models](/langsmith/llm-gateway-credits) 使用标准端点而不是特定于提供者的路径。这些托管模型不需要您自己的提供商机密。
 
 ## 配置提供商 SDK
 
@@ -50,7 +52,7 @@ export GEMINI_API_KEY="$LANGSMITH_API_KEY"
 export GOOGLE_API_KEY="$LANGSMITH_API_KEY"
 ```
 
-网关从工作区的提供者密钥中解析实际的提供者密钥，因此提供者密钥不需要存储在本地。
+网关解析实际的提供者密钥提供者秘密，因此提供者密钥不需要存储在本地。
 
 ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
@@ -96,18 +98,24 @@ export LANGSMITH_API_KEY="lsv2_..."
 export LANGSMITH_GATEWAY="true"
 ```
 
-每个受支持的集成都会附加其自己的提供程序路径，因此 `ChatAnthropic` 调用 `https://gateway.smith.langchain.com/anthropic`，`ChatOpenAI` 调用 `https://gateway.smith.langchain.com/openai/v1`。要通过标准端点路由请求，请参阅[LLM Gateway quickstart](/langsmith/llm-gateway-quickstart#send-a-request)。
+Deep Agents 代码还需要 `LANGSMITH_GATEWAY_API_KEY`。将其设置为相同的键：
 
-## 使用区域网关
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
+```
 
-如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) 并附加提供商路径。例如，在 GCP EU 中使用 `https://eu.gateway.smith.langchain.com/anthropic` 进行直接 Anthropic 访问。
+> [!注意]
+>
+> `LANGSMITH_GATEWAY` 支持需要以下最低 Python 包版本：`langchain-anthropic>=1.5.1`、`langchain-baseten>=0.2.3`、`langchain-fireworks>=1.5.1`、`langchain-google-genai>=4.3.2` 和 `langchain-openai>=1.4.1`。
 
-## 另请参阅* [Quickstart](/langsmith/llm-gateway-quickstart)：使用标准API跨提供商调用模型。
-* [Admin setup](/langsmith/llm-gateway-admin-setup)：配置提供者机密和访问。
-* [Traces, Engine, and access control](/langsmith/llm-gateway-access)：查看网关痕迹出现的位置以及谁可以查看它们。
+每个受支持的集成都会附加其自己的提供程序路径，因此 `ChatAnthropic` 调用 `https://gateway.smith.langchain.com/anthropic`，`ChatOpenAI` 调用 `https://gateway.smith.langchain.com/openai/v1`。要通过标准端点路由请求，请参阅[Send your first LLM Gateway request](/langsmith/llm-gateway-first-request#send-a-request-from-your-code)。
 
-***
+## 另请参阅
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+* [Send your first LLM Gateway request](/langsmith/llm-gateway-first-request)：使用标准API跨提供商调用模型。
+* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：配置提供者机密和访问。
+* [View LLM Gateway traces](/langsmith/llm-gateway-traces)：查看网关痕迹出现的位置以及谁可以查看它们。
+
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-direct-model-access.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

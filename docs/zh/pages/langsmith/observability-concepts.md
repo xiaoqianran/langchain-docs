@@ -6,7 +6,7 @@
 
 LangSmith 如何将可观测性数据构建为运行、轨迹、线程和轨迹，以及如何发送轨迹。
 
-LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每一步。本页解释了如何在 LangSmith 中构建和可视化数据以及如何开始发送​​跟踪。
+LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每一步。本页解释了如何在 LangSmith 中构建和可视化数据，以及如何开始发送​​跟踪。
 
 ## LangSmith 如何构建和可视化数据
 
@@ -40,13 +40,13 @@ LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每
 
 [Learn how trajectories render in the Trajectory view](/langsmith/trajectory-view-integrations)。
 
-### 比较迹线、线程和轨迹| |追踪 |主题 |轨迹 |
+### 比较迹线、线程和轨迹| |追踪|主题 |轨迹 |
 | - | - | - | - |
-|形状|运行树 |痕迹序列|扁平化、有序的消息列表 |
+|形状|运行树 |痕迹序列 |扁平化、有序的消息列表 |
 |包含 |每次运行，都有完整的输入和输出|每个链接跟踪中的每次运行 |每个链接跟踪中的每条消息均经过重复数据删除 |
 |当 | 时伸手去拿它您正在调试为什么一项操作失败或运行缓慢 |您正在检查代理在回合中的行为方式，计时和嵌套完好无损 |您正在阅读会话中交换的内容，但没有执行详细信息 |
 
-使用 **[Chat](/langsmith/chat)** 分析跟踪、运行和线程。聊天可帮助您了解代理性能、调试问题并从对话线程中获取见解，而无需手动挖掘数据。
+使用 **[Chat](/langsmith/chat)** 分析跟踪、运行和线程。聊天可帮助您了解代理性能、调试问题并从对话线程中获得见解，而无需手动挖掘数据。
 
 ### 跟踪容器
 
@@ -54,15 +54,15 @@ LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每
 
 #### 代理和环境> [!注意]
 >
-> **基于代理的工作区。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，则您的工作区是基于项目的。跳过本节并阅读[Tracing projects](/langsmith/observability-concepts#tracing-projects)。
+> **基于代理的工作区。** 如果您的工作区按 [agent and environment](/langsmith/agent-registry) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，则您的工作区是基于项目的。跳过本节并阅读[Tracing projects](/langsmith/observability-concepts#tracing-projects)。
 
 *代理*在其工作空间内有一个稳定的标识符。使用该标识符将跟踪与生成它们的代理关联起来。代理的踪迹分为从固定的四个环境中提取的“环境”：生产、登台、开发和本地。跟踪落在一个代理的一个环境中，因此有关生产行为的查询永远不必手动排除测试流量。
 
-[Log traces to an agent](/langsmith/log-traces-to-agent)。> **与旧工作区和 API 的兼容性**
+[Log traces to an agent](/langsmith/log-traces-to-agent)。> [accordion] 与旧工作区和 API 的兼容性
 >
 >> [!注意]
 >>
->> **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的。跳过本节并阅读[Agents](/langsmith/agents)。
+>> **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，侧边栏有一个带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的。跳过本节并阅读[Agent Registry](/langsmith/agent-registry)。
 >
 > 较旧的工作区和自托管 LangSmith 将跟踪分组到跟踪项目中。在基于代理的工作区中，每个代理环境都有自己的跟踪存储：一个后备跟踪项目。一些 API 和集成仍然通过 `project_name` 和 `session_id` 等字段使用其名称或 UUID。这些字段指的是环境的跟踪存储，而不是您需要创建的其他代理。参见[Resolve an agent environment](/langsmith/resolve-an-agent)。
 
@@ -96,7 +96,7 @@ LangSmith *集成*为流行的LLM提供商和代理框架提供自动跟踪（�
 
 ### 手动仪器
 
-*手动检测*允许您向任何代码添加跟踪，无论框架如何。当您不使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：* `@traceable` / `traceable`：用于跟踪任何函数的装饰器
+*手动检测*允许您向任何代码添加跟踪，无论框架如何。当您未使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：* `@traceable` / `traceable`：用于跟踪任何函数的装饰器
 * `trace` 上下文管理器（Python）：包装特定的代码块
 * `RunTree` API：低级、显式跟踪构造
 
@@ -108,7 +108,7 @@ LangSmith (SaaS) 将跟踪数据保留 180 天。此后，痕迹将被永久删�
 
 > [!注意]
 >
-> 要使数据超出保留期限，请将其添加到 [dataset](/langsmith/manage-datasets)。即使源跟踪被删除，数据集也会无限期地保留。
+> 要保留数据超出保留期限，请将其添加到 [dataset](/langsmith/manage-datasets)。即使源跟踪被删除，数据集也会无限期地保留。
 
 要在过期日期之前删除跟踪，请参阅[Manage a trace](/langsmith/manage-trace#delete-a-trace)。
 

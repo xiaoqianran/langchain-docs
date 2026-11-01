@@ -14,11 +14,11 @@
 >
 > 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。> [!注意]
 >
-> 代理拥有的中断需要已部署代理上的 `managed-deepagents>=0.8.0` 和 [Slack channel](/langsmith/python/managed-deep-agents-channels-slack)。表单仅在 Slack 中呈现。 LangSmith Studio 显示原始中断值。
+> 代理拥有的中断需要部署代理上的`managed-deepagents>=0.8.0` 和[Slack channel](/langsmith/python/managed-deep-agents-channels-slack)。表单仅在 Slack 中呈现。 LangSmith Studio 显示原始中断值。
 
 ## 它是如何工作的
 
-1. 运行从 Slack 消息开始。您的工具从 `runtime.channel` 读取对话，并使用部署的机器人令牌将 Block Kit 消息发布到同一 Slack 线程中。
+1. 运行从 Slack 消息开始。您的工具从 `runtime.thread.origin.channel` 读取对话，并使用部署的机器人令牌将 Block Kit 消息发布到同一 Slack 线程中。
 2. 该工具使用带有关联 ID 的值调用`interrupt()`。线程停在检查点。
 3. 用户按下按钮或提交模式。 Slack 将交互发送到 Managed Deep Agents，后者将其作为 `user_prompt_response` 事件转发到部署。
 4. SDK 将事件与停放的中断进行匹配并恢复运行。 `interrupt()` 返回用户的响应，工具继续。
@@ -27,11 +27,11 @@
 
 ## 发布表单并暂停
 
-该工具需要三件事：要发布到的 Slack 对话、机器人令牌以及将表单与中断联系起来的相关 ID。* **对话**：`runtime.channel.raw_event` 是启动运行的 Slack 事件。它携带`channel`、`ts`，对于线程消息，还携带`thread_ts`。发布到该线程中，以便答案路由回同一个代理线程。
+该工具需要三件事：要发布到的 Slack 对话、机器人令牌以及将表单与中断联系起来的相关 ID。* **对话**：`runtime.thread.origin.channel.raw_event` 是启动运行的 Slack 事件。它携带`channel`、`ts`，对于线程消息，还携带`thread_ts`。发布到该线程中，以便答案路由回同一个代理线程。
 * **Bot 令牌**：`connections.get("mda/slack-bot-token", {"type": "agent"})` 解析托管 Deep Agents 为部署配置的 Slack 应用程序的令牌。该 slug 是保留的，无法使用 `mda connections create` 创建。
 * **关联 ID**：将相同的字符串放在每个按钮的 `value`（作为 JSON）中的 `INTERRUPT_CORRELATION_KEY` 以及传递给 `interrupt()` 的值中。
 
-内置 Slack 通道的 `runtime.channel.post` 仅发送文本，因此可以直接通过 Slack Web API 发布 Block Kit。
+内置 Slack 通道的 `post` 仅发送文本，因此可以直接通过 Slack Web API 发布 Block Kit。
 
 ```python tools/approval.py expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import json
@@ -53,13 +53,14 @@ async def request_approval(amount: str, runtime: ManagedDeepAgentRuntime) -> str
     Args:
         amount: The spend to approve, such as "$1,200".
     """
-    channel = runtime.channel
-    if channel is None or channel.provider != "slack":
+    origin = runtime.thread.origin
+    if origin is None or origin.channel.provider != "slack":
         return "Approval forms are available only in Slack."
+    channel = origin.channel
 
     correlation_id = str(uuid7())
-    # The tool runs again when the interrupt resumes. Post only on the first pass.
-    if channel.event["type"] != "user_prompt_response":
+    # The tool runs again when the interrupt resumes. Post only in the run the Slack message started.
+    if channel.event is not None and channel.event["type"] == "message":
         await post_approval_form(channel.raw_event, amount, correlation_id)
 
     response = interrupt({INTERRUPT_CORRELATION_KEY: correlation_id, "amount": amount})
@@ -121,7 +122,7 @@ async def post_approval_form(raw_event: dict, amount: str, correlation_id: str) 
 | `value` | JSON，可选 |按钮的 `value` 字符串，或模态框的 `state.values` 对象。对平台不透明。 |
 | `correlation_id` | `string`，可选 |当按钮的 `value` 是带有 `mda_correlation_id` 键的 JSON 时出现。模态提交从不携带模态提交。 |
 
-与 `runtime.channel.event` 相同的响应在运行上下文中可用，其中 `type` 设置为 `user_prompt_response`。 Slack 的逐字交互有效负载位于 `runtime.channel.raw_event`。对于在消息内包含输入的表单，用户的条目位于 `raw_event["state"]["values"]`，由块 ID 和操作 ID 键入。
+与 `runtime.thread.origin.channel.event` 相同的响应在运行上下文中可用，其中 `type` 设置为 `user_prompt_response`。 Slack 的逐字交互有效负载位于 `runtime.thread.origin.channel.raw_event`。对于在消息内包含输入的表单，用户的条目位于 `raw_event["state"]["values"]`，由块 ID 和操作 ID 键入。
 
 托管 Deep Agents 仅读取 Slack 交互有效负载中的第一个操作，因此按一次必须意味着一个事件。
 
@@ -133,7 +134,7 @@ Slack 不知道按钮属于哪个中断，因此 SDK 读取停放在线程上的
 |一个或多个 |呈现并完全匹配 |恢复匹配的中断。 |
 |几个|缺席 |没有任何运行。 SDK 记录歧义并确认该事件。 |
 |一个或多个 |存在但不匹配任何一个，或匹配多个 |没有任何运行。开始转弯会放弃停放的检查站。 |
-|无 |任何 |开始新的运行，没有新消息。仅可在 `runtime.channel.event` 上获取响应。 |
+|无 |任何 |开始新的运行，没有新消息。仅可在 `runtime.thread.origin.channel.event` 上获取响应。 |
 
 每当代理可能在线程上驻留多个中断时，就携带相关 ID。如果没有一个，则线程只能在恰好有一个中断待处理时得到应答。
 
@@ -165,7 +166,7 @@ Slack 不知道按钮属于哪个中断，因此 SDK 读取停放在线程上的
 
 ## 不停顿地发帖
 
-工具可以发布表单并让运行结束，而不是调用 `interrupt()`。然后提交开始重新运行，没有新消息，并且您的代码从 `runtime.channel.event` 读取答案。平台上没有任何内容跟踪未完成的提示，因此您的应用程序拥有待处理表单的状态、到期时间以及表单打开时稍后的聊天消息的含义。
+工具可以发布表单并让运行结束，而不是调用 `interrupt()`。然后提交开始重新运行，没有新消息，并且您的代码从 `runtime.thread.origin.channel.event` 读取答案。平台上没有任何内容跟踪未完成的提示，因此您的应用程序拥有待处理表单的状态、到期时间以及表单打开时稍后的聊天消息的含义。
 
 当用户下一步要做的事情预计是回答提示时，首选 `interrupt()`。
 
@@ -173,7 +174,7 @@ Slack 不知道按钮属于哪个中断，因此 SDK 读取停放在线程上的
 
 平台储备名称：|名称 |哪里 |意义|
 | - | - | - |
-| `mda_modal::` 前缀 |按钮`action_id`|单击会打开一个模式，但永远不会到达代理。 |
+| `mda_modal::` 前缀 |按钮`action_id` |单击会打开一个模式，但永远不会到达代理。 |
 | `mda_correlation_id` |按钮内的钥匙 `value` |将一次点击与一个停放的中断相匹配。导出为 `INTERRUPT_CORRELATION_KEY`。 |
 | `callback_id` |应用程序定义的视图 |设置为按钮的 `action_id`。 |
 | `private_metadata` |应用程序定义的视图 |由平台设置。提供它会阻止模态打开。 |

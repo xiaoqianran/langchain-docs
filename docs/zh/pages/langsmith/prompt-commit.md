@@ -26,7 +26,7 @@ LangSmith 提供了一个协作界面来创建、测试和迭代提示。
 3. **GitHub 个人访问令牌 (PAT)：*** LangSmith webhooks 不直接与 GitHub 交互——它们调用*您*创建的中间服务器。
    * 此服务器需要 GitHub PAT 来进行身份验证并向您的存储库提交。
    * 必须包含 `repo` 范围（`public_repo` 对于公共存储库就足够了）。
-   * 转至 **GitHub > 设置 > 开发人员设置 > 个人访问令牌 > 令牌（经典）**。
+   * 转到 **GitHub > 设置 > 开发人员设置 > 个人访问令牌 > 令牌（经典）**。
    * 单击**生成新令牌（经典）**。
    * 为其命名（例如“LangSmith Prompt Sync”），设置到期时间，然后选择所需的范围。
    * 单击**生成令牌**并**立即复制它**，因为它不会再次显示。
@@ -38,7 +38,7 @@ LangSmith 提供了一个协作界面来创建、测试和迭代提示。
 
 Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 
-> **示例 Webhook 负载**
+> [accordion] 示例 Webhook 负载
 >
 > ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > {
@@ -147,7 +147,7 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 > }
 > ```> [!注意]
 >
-> 重要的是要了解用于提示提交的 LangSmith webhooks 通常在 **工作空间级别** 触发。这意味着，如果您的 LangSmith 工作区中的*任何*提示被修改并保存了“提示提交”，则 webhook 将触发并发送提示的更新清单。有效负载可通过提示 ID 来识别。您的接收服务器在设计时应考虑到这一点。
+> 重要的是要了解用于提示提交的 LangSmith webhook 通常在 **工作空间级别** 触发。这意味着，如果您的 LangSmith 工作区中的*任何*提示被修改并保存了“提示提交”，则 webhook 将触发并发送提示的更新清单。有效负载可通过提示 ID 来识别。您的接收服务器在设计时应考虑到这一点。
 
 ## 实现用于 webhook 接收的 FastAPI 服务器
 
@@ -159,7 +159,7 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 
 对于部署，可以利用[Render.com](https://render.com/)（提供合适的免费套餐）、Vercel、Fly.io 或其他云提供商（AWS、GCP、Azure）等平台来托管 FastAPI 应用程序并获取公共 URL。
 
-服务器的核心功能将包括用于 webhook 接收的端点、用于解析清单的逻辑以及与 GitHub API 的集成（使用个人访问令牌进行身份验证）以管理提交。> **最小 FastAPI 服务器代码 ()**
+服务器的核心功能将包括用于 webhook 接收的端点、用于解析清单的逻辑以及与 GitHub API 的集成（使用个人访问令牌进行身份验证）以管理提交。> [手风琴] 最小 FastAPI 服务器代码 ()
 >
 > `main.py`
 >
@@ -367,7 +367,7 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 
 1. **提示修改：** 用户（开发人员或非技术团队成员）在 LangSmith UI 中修改提示并保存，创建新的“提示提交”。
 
-2. **Webhook 触发器：** LangSmith 检测到此新提示提交并触发配置的 Webhook。
+2. **Webhook 触发器：** LangSmith 检测到这个新的提示提交并触发配置的 webhook。
 
 3. **HTTP 请求：** LangSmith 向 FastAPI 服务器的公共 URL 发送 HTTP POST 请求（例如 `https://<your-render-service>.onrender.com/webhook/commit`）。此请求的正文包含整个工作区的 JSON 提示清单。4. **服务器接收有效负载：** FastAPI 服务器的端点接收请求。
 

@@ -22,7 +22,7 @@
 | PostgreSQL |操作数据：组织、工作区、用户、API 密钥、数据集、提示、项目、部署元数据 | **耐用** |从备份或副本恢复 |
 |点击屋 |跟踪和反馈（大量分析数据）| **耐用** |从备份或副本恢复 |
 | Blob 存储（S3/GCS/Azure Blob）|运行输入、输出、错误、清单、额外内容、事件、附件（启用时）| **耐用** |从版本化存储桶或副本恢复 |
-| Redis（或 Valkey）|临时队列状态、发布/订阅、缓存、运行心跳 |短暂的|重新配置；无需恢复|
+| Redis（或 Valkey）|临时队列状态、发布/订阅、缓存、运行心跳 |短暂的|重新配置；无需恢复 |
 | Kubernetes 对象 | Helm 值、`Secret`s、TLS 材料、IRSA / 工作负载身份绑定 |配置|从源代码管理重新应用或备份集群状态 |> [!警告]
 >
 > 所有持久数据存储必须一起受到保护。 Postgres、ClickHouse 和 Blob 存储是保存持久数据的三种存储； Redis 是短暂的，不需要备份。在没有 ClickHouse 和 blob 存储的情况下恢复 Postgres（反之亦然）会产生不一致的安装。从 Postgres 到 ClickHouse 中的运行以及 Blob 存储中的对象的引用突破了分歧点。始终采取协调备份，或使用跨存储区靠近的时间点恢复 (PITR) 目标。
@@ -48,38 +48,38 @@ LangSmith 使用 PostgreSQL 作为操作和事务数据的主要存储。 **与 
 
 ### 使用托管服务
 
-我们强烈建议在生产中的托管服务上运行 Postgres。托管服务提供内置自动备份、PITR 和 HA 故障转移。设置请参考[Connect external Postgres](/langsmith/self-host-external-postgres)。
+我们强烈建议在生产中的托管服务上运行 Postgres。托管服务提供内置自动备份、PITR 和 HA 故障转移。设置请参考[Connect external Postgres](/langsmith/self-host-external-postgres)。> [选项卡] AWS
+>
+> 在多可用区模式下运行 [Amazon RDS for PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.CreatingConnecting.PostgreSQL.html) 或 [Aurora PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html)。
+>
+> * **备份：** 启用 [automated backups](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html)，并设置与您的合规状况相匹配的保留窗口（通常为 7 到 35 天）。
+> * **PITR：** 自动备份在保留窗口内包括 PITR。
+> * **HA：** 多可用区部署通过自动故障转移在第二个可用区中保持同步备用。
+> * **跨区域容灾：** 对于 Aurora，配置[Aurora Global Database](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html)。对于 RDS，使用 [cross-region read replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.XRgn.html) 或将自动快照复制到辅助区域。
+> * **加密：** 使用客户管理的 [KMS](https://aws.amazon.com/kms/) 密钥启用存储加密。
 
-**AWS**在多可用区模式下运行[Amazon RDS for PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.CreatingConnecting.PostgreSQL.html)或[Aurora PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html)。
+> [选项卡] GCP
+>
+> 在启用 [high availability](https://cloud.google.com/sql/docs/postgres/high-availability) 的情况下运行 [Cloud SQL for PostgreSQL](https://cloud.google.com/sql/docs/postgres)。
+>
+> * **备份：** 使用 PITR 启用 [automated backups](https://cloud.google.com/sql/docs/postgres/backup-recovery/backups)。
+> * **HA:** 区域实例同步复制到第二个区域中的备用实例。
+> * **跨区域容灾：** 配置[cross-region read replicas](https://cloud.google.com/sql/docs/postgres/replication/cross-region-replicas)，并在区域故障时提升它们。
+> * **加密：** 使用[Cloud KMS customer-managed encryption keys](https://docs.cloud.google.com/sql/docs/postgres/cmek)。
 
-* **备份：** 启用 [automated backups](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html)，并设置与您的合规状况相匹配的保留窗口（通常为 7 到 35 天）。
-* **PITR：** 自动备份包括保留窗口内的 PITR。
-* **HA：** 多可用区部署通过自动故障转移在第二个可用区中保持同步备用。
-* **跨区域容灾：** Aurora 配置[Aurora Global Database](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html)。对于 RDS，使用 [cross-region read replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.XRgn.html) 或将自动快照复制到辅助区域。
-* **加密：** 使用客户管理的 [KMS](https://aws.amazon.com/kms/) 密钥启用存储加密。
-
-**GCP**
-
-在启用 [high availability](https://cloud.google.com/sql/docs/postgres/high-availability) 的情况下运行 [Cloud SQL for PostgreSQL](https://cloud.google.com/sql/docs/postgres)。
-
-* **备份：** 使用 PITR 启用 [automated backups](https://cloud.google.com/sql/docs/postgres/backup-recovery/backups)。
-* **HA:** 区域实例同步复制到第二个区域中的备用实例。
-* **跨区域容灾：** 配置[cross-region read replicas](https://cloud.google.com/sql/docs/postgres/replication/cross-region-replicas)，并在区域故障时进行提升。
-* **加密：** 使用[Cloud KMS customer-managed encryption keys](https://docs.cloud.google.com/sql/docs/postgres/cmek)。
-
-**天蓝色**
-
-使用区域冗余 HA 运行 [Azure Database for PostgreSQL Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/overview)。
-
-* **备份：** 使用异地冗余备份存储启用 [automatic backups](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-backup-restore)。
-* **HA：** 区域冗余 HA 在不同的可用区域中保持同步备用。
-* **跨区域容灾：** 在次要区域使用[read replicas](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-read-replicas)，针对区域故障进行提升。
+> [选项卡] 天蓝色
+>
+> 使用区域冗余 HA 运行 [Azure Database for PostgreSQL Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/overview)。
+>
+> * **备份：** 使用异地冗余备份存储启用 [automatic backups](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-backup-restore)。
+> * **HA：** 区域冗余 HA 在不同的可用区域中保持同步备用。
+> * **跨区域容灾：** 在次要区域使用[read replicas](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-read-replicas)，针对区域故障进行提升。
 
 ### 集群内 Postgres如果您必须从捆绑图表中在集群内运行 Postgres，则您有责任备份底层 PersistedVolume。使用 CSI 驱动程序的快照类定期对 PVC 进行快照，并将快照复制到对象存储或其他区域。 **不建议在生产环境中使用此路径。**
 
 ## ClickHouse
 
-ClickHouse 保存大量跟踪和反馈数据，通常是 LangSmith 部署中最大的数据存储。需要针对成本和恢复时间影响来规划备份和复制。
+ClickHouse 保存大量跟踪和反馈数据，通常是 LangSmith 部署中最大的数据存储。需要针对成本和恢复时间的影响来规划备份和复制。
 
 ### 托管 ClickHouse
 
@@ -104,26 +104,26 @@ ClickHouse 保存大量跟踪和反馈数据，通常是 LangSmith 部署中最�
 
 ## Blob 存储如果您已启用 [blob storage](/langsmith/self-host-blob-storage)（建议用于生产），则您的运行输入、输出、错误、清单、额外内容、事件和附件位于 S3、GCS 或 Azure Blob 存储中。云 blob 服务在设计上是持久的，但您仍然应该配置针对意外删除和区域中断的保护。
 
-**AWS**
+> [选项卡] AWS
+>
+> * 启用[S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html)以防止意外删除和覆盖。
+> * 为高安全性存储桶启用[MFA Delete](https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiFactorAuthenticationDelete.html)。
+> * 对于跨区域容灾，将[Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html)配置到您的容灾区域中的存储桶。
+> * 使用 [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 进行一次写入多次读取 (WORM) 保留。
+> * 使用 [SSE-KMS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html) 加密。 LangSmith 支持传递特定的 KMS 密钥 ARN，请参阅[KMS encryption header support](/langsmith/self-host-blob-storage#kms-encryption-header-support)。
 
-* 启用[S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html)以防止意外删除和覆盖。
-* 为高安全性存储桶启用[MFA Delete](https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiFactorAuthenticationDelete.html)。
-* 对于跨区域容灾，将[Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html)配置为您的容灾区域中的存储桶。
-* 使用 [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 进行一次写入多次读取 (WORM) 保留。
-* 使用[SSE-KMS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html)加密。 LangSmith 支持传递特定的 KMS 密钥 ARN，请参阅[KMS encryption header support](/langsmith/self-host-blob-storage#kms-encryption-header-support)。
+> [选项卡] GCP
+>
+> * 在存储桶上启用[Object Versioning](https://cloud.google.com/storage/docs/object-versioning)。
+> * 使用 [dual-region or multi-region buckets](https://cloud.google.com/storage/docs/locations) 实现异地冗余。
+> * 对于跨区域容灾，请使用[Storage Transfer Service](https://cloud.google.com/storage-transfer-service)或[Object Lifecycle Management](https://cloud.google.com/storage/docs/lifecycle)配合复制策略。
+> * 使用 [Customer-Managed Encryption Keys (CMEK)](https://cloud.google.com/storage/docs/encryption/customer-managed-keys) 加密。
 
-**GCP**
-
-* 在存储桶上启用[Object Versioning](https://cloud.google.com/storage/docs/object-versioning)。
-* 使用 [dual-region or multi-region buckets](https://cloud.google.com/storage/docs/locations) 实现异地冗余。
-* 对于跨区域容灾，请使用[Storage Transfer Service](https://cloud.google.com/storage-transfer-service)或[Object Lifecycle Management](https://cloud.google.com/storage/docs/lifecycle)配合复制策略。
-* 使用[Customer-Managed Encryption Keys (CMEK)](https://cloud.google.com/storage/docs/encryption/customer-managed-keys)加密。
-
-**天蓝色**
-
-* 选择符合您的灾难恢复目标的[redundancy tier](https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy)。在主要区域中断期间，使用 **RA-GRS** 或 **RA-GZRS** 进行跨区域读取访问。
-* 启用[soft delete and blob versioning](https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-blob-overview)。
-* 使用 [customer-managed key in Key Vault](https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview) 加密。> [!警告]
+> [选项卡] 天蓝色
+>
+> * 选择符合您灾难恢复目标的 [redundancy tier](https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy)。在主要区域中断期间，使用 **RA-GRS** 或 **RA-GZRS** 进行跨区域读取访问。
+> * 启用[soft delete and blob versioning](https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-blob-overview)。
+> * 使用 [customer-managed key in Key Vault](https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview) 加密。> [!警告]
 >
 > **将 TTL 生命周期规则保留在 DR 存储桶中。** 如果将数据复制到 DR 存储桶，请复制 `ttl_s/`、`ttl_l/` 以及任何自定义 `ttl_XXd/` 前缀的生命周期规则。 DR 存储桶中缺少规则将导致故障转移后数据无限期保留。参见[TTL configuration](/langsmith/self-host-blob-storage#ttl-configuration)。
 
@@ -213,7 +213,7 @@ Helm 图表值、Kubernetes `Secret`s 和身份绑定与数据备份一样重要
 
 **8.计划故障回复**
 
-一旦主要区域正常，就计划受控的故障恢复。这通常被安排在维护窗口中，并涉及在再次交换之前将主数据库重建为新的 DR 副本。
+一旦主要区域正常，就计划受控故障恢复。这通常被安排在维护窗口中，并涉及在再次交换之前将主数据库重建为新的 DR 副本。
 
 ### 从快照恢复如果您完全丢失了主数据存储并需要从快照恢复：
 
@@ -229,7 +229,7 @@ Helm 图表值、Kubernetes `Secret`s 和身份绑定与数据备份一样重要
 
 恢复与 Postgres 恢复点时间一致的最新 ClickHouse 备份。恢复时间尺度与数据大小。
 
-**4.恢复 blob 存储**
+**4.恢复 Blob 存储**
 
 如果丢失 Blob 数据（罕见），请从 S3/GCS/Azure 还原版本化对象或从复制的 DR 存储桶进行复制。
 

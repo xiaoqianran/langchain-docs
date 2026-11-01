@@ -188,7 +188,7 @@ export const agent = defineDeepAgent({
 
 代理名称也是默认部署名称。有关模型概念和提供程序选项，请参阅[Models](/oss/javascript/langchain/models)。
 
-> **使用其他提供商？**
+> [手风琴] 使用其他提供商？
 >
 > 您可以使用 Tavily 搜索工具。
 > 将 [Tavily API key](https://app.tavily.com) 添加到 `.env`：
@@ -282,7 +282,7 @@ bunx mda dev
 What were the main announcements from the latest LangChain release?
 ```
 
-您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。在 [agent-based workspace](/langsmith/agents) 中，在您注册代理之前，跟踪将导致错误。详情请参见[Trace local runs](/langsmith/javascript/managed-deep-agents-local-development#trace-local-runs)。
+您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。在 [agent-based workspace](/langsmith/agent-registry) 中，在您注册代理之前，跟踪将导致错误。详情请参见[Trace local runs](/langsmith/javascript/managed-deep-agents-local-development#trace-local-runs)。
 
 **7.部署代理**
 
@@ -306,15 +306,15 @@ bunx mda deploy
 
 ## 后续步骤
 
-> **[Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)**
+> [卡][Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)
 >
 > 添加自定义 Tavilly 搜索工具、持久内存和每日日程安排。
 
-> **[Custom tools](/langsmith/javascript/managed-deep-agents-tools)**
+> [卡][Custom tools](/langsmith/javascript/managed-deep-agents-tools)
 >
 > 从您的项目中添加创作的 LangChain 工具。
 
-> **[Connections](/langsmith/javascript/managed-deep-agents-connections)**
+> [卡][Connections](/langsmith/javascript/managed-deep-agents-connections)
 >
 > 作为代理或呼叫者通过外部服务进行身份验证。
 

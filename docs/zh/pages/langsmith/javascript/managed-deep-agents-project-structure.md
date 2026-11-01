@@ -100,11 +100,11 @@ MDA 将包复制到构建中。 `mda dev` 会在您编辑时重新加载，并�
 
 ## 后续步骤
 
-> **[Quickstart](/langsmith/javascript/managed-deep-agents-quickstart)**
+> [卡][Quickstart](/langsmith/javascript/managed-deep-agents-quickstart)
 >
 > 使用 `mda` CLI 创建并部署您的第一个托管深度代理。
 
-> **[Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)**
+> [卡][Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)
 >
 > 将持久记忆和每日日程添加到快速入门研究助手中。
 

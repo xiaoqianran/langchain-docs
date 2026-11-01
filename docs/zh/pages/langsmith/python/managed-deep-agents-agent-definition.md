@@ -131,7 +131,7 @@ await client.runs.create(
 
 ### 选择托管资源
 
-工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域 |省略|已选择 |已清除 |
+工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域|省略|已选择 |已清除 |
 | - | - | - | - |
 | `instructions` |使用`instructions.md`。 |使用提供的提示。 | `""` 删除编写的指令。 |
 | `skills` |展示所有项目技能。 |仅公开选定的技能。 | `[]`没有暴露任何技能。 |
@@ -203,7 +203,7 @@ agent = define_deep_agent(
 >
 > 网关型号 ID 在提供商和型号之间使用斜线 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
 
-网关按型号 ID 路由每个请求。 `moonshotai/kimi-k3` 是LangChain 托管模型，因此它不需要提供者密钥并利用 [Gateway Credits](/langsmith/llm-gateway-credits)。以您的工作区已配置的提供商开头的模型 ID（例如 `anthropic/claude-opus-5`）使用该 [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) 并向您自己的提供商帐户计费。
+网关按型号 ID 路由每个请求。 `moonshotai/kimi-k3` 是LangChain 托管模型，因此它不需要提供者密钥并利用 [Gateway Credits](/langsmith/llm-gateway-credits)。以您的工作区已配置的提供商开头的模型 ID（例如 `anthropic/claude-opus-5`）使用该 [provider secret](/langsmith/llm-gateway-provider-authentication#add-a-provider-key) 并向您自己的提供商帐户计费。
 
 欲了解更多信息，请参阅[LLM Gateway](/langsmith/llm-gateway)。
 

@@ -137,7 +137,7 @@ schedule = define_schedule(
 
 部署上线后，`mda deploy` 将此计划协调为 LangSmith cron 作业。在下一步中部署后，您应该会看到：
 
-* `mda deploy` 无进度错误地完成（不要通过`--no-wait`，否则进度不协调）。
+* `mda deploy` 在没有进度错误的情况下完成（不要通过`--no-wait`，否则进度不协调）。
 * 部署中此文件的托管 cron。计划名称与模块主干匹配：`daily_digest` (Python) 或 `daily-digest` (TypeScript)。
 * 此 cron 没有立即运行摘要。第一场火灾要等到工作日美国/洛杉矶 8:00 才会发生。
 
@@ -151,7 +151,7 @@ schedule = define_schedule(
 uv run mda deploy
 ```
 
-成功后，CLI 将打印部署仪表板 URL。部署将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
+成功后，CLI 将打印部署仪表板 URL。部署会将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
 
 打开该 URL 并确认：
 
@@ -161,15 +161,15 @@ uv run mda deploy
 
 ## 后续步骤
 
-> **[Custom middleware](/langsmith/python/managed-deep-agents-middleware)**
+> [卡片][Custom middleware](/langsmith/python/managed-deep-agents-middleware)
 >
 > 围绕模型和工具调用添加日志记录、重试、限制和护栏。
 
-> **[Identity](/langsmith/python/managed-deep-agents-identity)**
+> [卡][Identity](/langsmith/python/managed-deep-agents-identity)
 >
 > 对调用者进行身份验证并在工具和中间件中使用经过验证的身份。
 
-> **[Evals](/langsmith/python/managed-deep-agents-evals)**
+> [卡][Evals](/langsmith/python/managed-deep-agents-evals)
 >
 > 使用编码代理和评估工程技能开发 Harbor 评估。
 

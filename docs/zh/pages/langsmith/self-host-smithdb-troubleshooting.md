@@ -44,7 +44,7 @@ kubectl get pod -n NAMESPACE POD_NAME -o jsonpath='{.spec.serviceAccountName}{"\
 
 对于`create: false`，需要`name`。否则，pod 会回退到 `default` ServiceAccount，并且绑定永远不会应用。**元存储拒绝连接。** 检查数据库是否可从集群访问，`useSsl` 是否与服务器所需的内容匹配，以及 `smithdb.config.metastore` 中指定的密钥是否与密钥中实际存在的密钥匹配。
 
-**摄取或查询失败，并出现 `Unavailable` 错误。** HTTP 代理或服务网格会阻止与 SmithDB pod IP 的连接。 `ingest-queue` 日志显示诸如 `closing SmithDB ingestion stream failed: rpc error: code = Unavailable` 之类的错误。允许[Pod network access](/langsmith/self-host-smithdb-infrastructure#pod-network-access)中描述的连接。然后重新启动`platform-backend`、`ingest-queue`、`queue`和SmithDB查询，因为更改之前打开的连接不断失败。
+**摄取或查询失败并出现 `Unavailable` 错误。** HTTP 代理或服务网格会阻止与 SmithDB pod IP 的连接。 `ingest-queue` 日志显示诸如 `closing SmithDB ingestion stream failed: rpc error: code = Unavailable` 之类的错误。允许[Pod network access](/langsmith/self-host-smithdb-infrastructure#pod-network-access)中描述的连接。然后重新启动`platform-backend`、`ingest-queue`、`queue`和SmithDB查询，因为更改之前打开的连接不断失败。
 
 **缓存 I/O 速度慢。** 在本地 SSD 上，`emptyDir` 由启动磁盘而不是 SSD 支持。在网络连接的磁盘上，卷配置不足：确认 StorageClass 设置至少 7000 IOPS 和 1000 MiB/s。检查哪个设备支持正在运行的 pod 内的缓存文件系统：
 
@@ -70,7 +70,7 @@ kubectl exec -n NAMESPACE POD_NAME -- df -h /data
 
 使用此部分将 LangSmith 流量路由回 ClickHouse 并禁用 SmithDB 服务。安装割接顺序请参见[Install LangSmith with SmithDB](/langsmith/self-host-smithdb-install)。> [!警告]
 >
-> 如果历史迁移处于活动状态或者必须保留其进度，请在禁用 SmithDB 之前停止。禁用迁移会删除图表管理的 TaskDB 资源，默认情况下还会删除其 PVC。如果您需要保留迁移进度，请通过 [Support Portal](https://support.langchain.com/) 联系 LangChain。
+> 禁用迁移会删除图表管理的 TaskDB，并且默认情况下会删除其保存迁移进度的 PVC。要暂停而不丢失进度，请保持迁移启用并使用 `smithdb.migration.job.suspend: true`。参见[Pause and resume migration](/langsmith/self-host-smithdb-migrate#pause-and-resume-migration)。
 
 如果您稍后重新启用 SmithDB 摄取，则需要运行另一次迁移以使其恢复与 ClickHouse 同步。
 
@@ -110,11 +110,11 @@ smithdb:
 
 再次应用图表。将流量切换与工作负载移除分开，可以避免请求与 SmithDB 关闭竞争。
 
-### 步骤 3.（可选）删除 SmithDB 数据> [!警告]
->
-> 这种清理具有破坏性。仅在禁用 SmithDB 服务并且您不再需要数据来重新启用、诊断或恢复后才能继续。
+### 步骤 3.（可选）删除 SmithDB 数据
 
-（可选）删除专用的 SmithDB 对象存储数据和 PostgreSQL 元存储。清理后重新启用 SmithDB 需要重新创建其支持基础设施并从 ClickHouse 重新迁移数据。
+> [!警告]
+>
+> 这种清理具有破坏性。仅在禁用 SmithDB 服务并且您不再需要数据来重新启用、诊断或恢复后才能继续。（可选）删除专用的 SmithDB 对象存储数据和 PostgreSQL 元存储。清理后重新启用 SmithDB 需要重新创建其支持基础设施并从 ClickHouse 重新迁移数据。
 
 ***
 

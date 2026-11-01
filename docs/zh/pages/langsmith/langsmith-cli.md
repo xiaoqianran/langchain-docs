@@ -49,7 +49,7 @@ langsmith self-update
 
 ## 验证
 
-CLI 通过`--project` 或`LANGSMITH_PROJECT` 选择代理环境。 [Retrieve that environment's ⟦T42⟧](/langsmith/create-an-agent#use-an-environment-project) 并将其用于这些选项。名为 `project` 的命令在 [backing trace storage](/langsmith/observability-concepts#agents-and-environments) 上运行。
+CLI 通过`--project` 或`LANGSMITH_PROJECT` 选择代理环境。 [Retrieve that environment's ⟦T43⟧](/langsmith/create-an-agent#use-an-environment-project) 并将其用于这些选项。名为 `project` 的命令在 [backing trace storage](/langsmith/observability-concepts#agents-and-environments) 上运行。
 
 `langsmith auth login` 需要 LangSmith CLI `v0.2.30` 或更高版本。 `langsmith profile` 命令需要 LangSmith CLI `v0.2.26` 或更高版本。
 
@@ -113,41 +113,41 @@ langsmith --api-key lsv2_... trace list --project "<environment-tracer-session-n
 
 ### 自托管实例
 
-使用 `--api-url` 或 `LANGSMITH_ENDPOINT` 将 CLI 指向您的实例。支持基于浏览器的登录和 API 密钥。
+使用 `--api-url` 或 `LANGSMITH_ENDPOINT` 将 CLI 指向您的实例。支持基于浏览器的登录和 API 密钥。> [选项卡] OAuth
+>
+> 需要 LangSmith CLI `v0.2.46` 或更高版本，并在 LangSmith `0.16` 或更高版本上部署，并启用 OAuth 授权服务器。该图表在`/api`下公开了OAuth授权服务器，但这些端点在您[configure a signing JWKS](/langsmith/kubernetes#configure-a-signing-jwks)之前保持惰性。
+>
+> 当在 Helm 图表中设置 `config.hostname` **并且**配置签名 JWKS 时，OAuth 授权服务器会自动启用（通过 `config.signingJwks` 或 `config.existingSecretName` 中的密钥 `langsmith_signing_jwks`）。如果没有签名 JWKS，OAuth 端点将处于非活动状态，并且 CLI 将收到 `404` — 请改用 API 密钥选项卡。
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langsmith auth login --api-url https://langsmith.example.com --profile self-hosted
+> ```
+>
+> 传递实例的基本 URL。 CLI 读取部署的授权服务器元数据以查找 OAuth 端点，因此 `https://langsmith.example.com` 和 `https://langsmith.example.com/api` 都可以工作。
+>
+> 令牌存储在命名配置文件下，因此后面的命令只需要`--profile`：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langsmith --profile self-hosted project list
+> ```
 
-**OAuth**需要 LangSmith CLI `v0.2.46` 或更高版本，并在 LangSmith `0.16` 或更高版本上部署，并启用 OAuth 授权服务器。该图表在`/api`下公开了OAuth授权服务器，但这些端点在您[configure a signing JWKS](/langsmith/kubernetes#configure-a-signing-jwks)之前保持惰性。
-
-当在 Helm 图表中设置 `config.hostname` 并配置签名 JWKS（通过 `config.signingJwks` 或 `config.existingSecretName` 中的密钥 `langsmith_signing_jwks`）时，OAuth 授权服务器会自动启用。如果没有签名 JWKS，OAuth 端点将处于非活动状态，并且 CLI 将收到 `404` — 请改用 API 密钥选项卡。
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith auth login --api-url https://langsmith.example.com --profile self-hosted
-```
-
-传递您实例的基本 URL。 CLI 读取部署的授权服务器元数据以查找 OAuth 端点，因此 `https://langsmith.example.com` 和 `https://langsmith.example.com/api` 都可以工作。
-
-令牌存储在命名配置文件下，因此后面的命令只需要`--profile`：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith --profile self-hosted project list
-```
-
-**API 密钥**
-
-适用于每个 LangSmith 版本。
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_ENDPOINT="https://langsmith.example.com"
-export LANGSMITH_API_KEY="lsv2_..."
-
-langsmith project list
-```
-
-要将端点和密钥另存为可重复使用的配置文件：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-LANGSMITH_API_KEY="lsv2_..." langsmith profile create self-hosted \
-  --api-url https://langsmith.example.com --set-current
-```> [!警告]
+> [选项卡] API 密钥
+>
+> 适用于每个 LangSmith 版本。
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export LANGSMITH_ENDPOINT="https://langsmith.example.com"
+> export LANGSMITH_API_KEY="lsv2_..."
+>
+> langsmith project list
+> ```
+>
+> 要将端点和密钥另存为可重复使用的配置文件：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> LANGSMITH_API_KEY="lsv2_..." langsmith profile create self-hosted \
+>   --api-url https://langsmith.example.com --set-current
+> ```> [!警告]
 >
 > `LANGSMITH_ENDPOINT` 优先于配置文件的 `api_url`。如果在您的 shell 中进行了设置，则您选择的每个配置文件都会解析到该端点 - 这是在自托管配置文件处于活动状态时命令意外到达 LangSmith 云的常见原因。使用配置文件时取消设置它，或显式传递 `--api-url`。
 
@@ -180,6 +180,24 @@ langsmith sandbox list
 langsmith sandbox tunnel my-vm --remote-port 5432
 ```
 
+## 使用人工智能搜索
+
+[AI search](/langsmith/filter-traces#search-with-ai) 通过对话的自然语言描述来查找运行、跟踪和线程。在流式查询命令上使用`--ai-search`从终端进行搜索。
+
+> [!注意]
+>
+> 这些命令需要 LangSmith CLI v0.3.9 或更高版本以及组织管理员[enable AI search](/langsmith/filter-traces#enable-ai-search)。与 UI 中相同的数据处理和 PHI 限制适用。有关发布阶段和可用性，请参阅[Search with AI](/langsmith/filter-traces#search-with-ai)。这些命令需要 `--project-id` 并且不解析 `--project` 名称。
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith threads streaming query --project-id <project-id> --ai-search "user asks for a refund"
+langsmith traces streaming query --project-id <project-id> --ai-search "tool call failed"
+langsmith runs streaming query-v2 --project-id <project-id> --ai-search "tool call failed" --max-items 20
+```
+
+每个服务器发送的事件都打印为 JSON 补丁，并且 `--max-items` 对事件、不匹配的运行、跟踪或线程进行计数。
+
+传递最多 2,000 个 UTF-8 字节的非空描述。要使用 `AND` 将描述与结构化条件结合起来，请为运行和线程添加 `--filter`，或为跟踪添加 `--trace-filter` 和 `--tree-filter`。非流式 `traces query` 和 `threads query` 命令也接受 `--ai-search`，但服务器会拒绝这些使用 HTTP `406` 的请求，因为 AI 搜索需要流式传输。普通列表命令不支持AI搜索。
+
 ## 输出格式
 
 **默认**
@@ -208,11 +226,11 @@ langsmith trace list --project "<environment-tracer-session-name>" -o traces.jso
 
 ## 命令
 
-每个命令组都针对特定的 LangSmith 资源。大多数命令支持 `--limit`、`--offset` 和一组共享的 [filter flags](#filter-flags)。
+每个命令组都针对特定的 LangSmith 资源。大多数命令支持`--limit`、`--offset`以及一组共享的[filter flags](#filter-flags)。
 
 ### 列出跟踪存储目的地
 
-旧版 `project list` 命令列出了后备跟踪存储目标，包括与代理环境关联的目标。默认情况下，它最多返回 20 个，并按最近的活动排序。使用[⟦T77⟧](#view-experiments)列出评估实验。
+旧版 `project list` 命令列出了后备跟踪存储目标，包括与代理环境关联的目标。默认情况下最多返回 20 个，按最近的活动排序。使用[⟦T90⟧](#view-experiments)列出评估实验。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith project list
@@ -235,7 +253,9 @@ langsmith trace get <trace-id> --project "<environment-tracer-session-name>" --f
 langsmith trace export ./traces --project "<environment-tracer-session-name>" --limit 20 --full
 ```
 
-### 查询运行默认为 50 个结果（大多数其他命令默认为 20 个）。同样适用 7 天的时间窗口。使用 `--since` 或 `--last-n-minutes` 覆盖。
+### 查询运行
+
+默认为 50 个结果（大多数其他命令默认为 20 个）。同样适用 7 天的时间窗口。使用 `--since` 或 `--last-n-minutes` 覆盖。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith run list --project "<environment-tracer-session-name>" --run-type llm
@@ -254,9 +274,7 @@ langsmith thread list --project "<environment-tracer-session-name>" --last-n-min
 langsmith thread get <thread-id> --project "<environment-tracer-session-name>" --full
 ```
 
-### 管理数据集
-
-`dataset export` 导出数据集中的示例（行），而不是数据集元数据本身。
+### 管理数据集`dataset export` 导出数据集中的示例（行），而不是数据集元数据本身。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith dataset list
@@ -299,7 +317,7 @@ langsmith evaluator delete accuracy --yes
 
 ### 查看实验
 
-`experiment list`展示了评估实验。使用 [⟦T90⟧](#list-projects) 作为与代理环境关联的跟踪存储目标。
+`experiment list`展示评估实验。使用 [⟦T103⟧](#list-projects) 作为与代理环境关联的跟踪存储目标。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith experiment list
@@ -309,11 +327,13 @@ langsmith experiment get my-experiment-2024-01-15
 
 ### 管理见解
 
-`insights` 命令创建、运行和读取 [Insights](/langsmith/insights) 报告，这些报告将代理环境的跟踪分为不同类别，以显示使用模式和故障模式。每个 `insights` 命令都需要 `--project`、`--project-id` 或 `LANGSMITH_PROJECT` 环境变量。
+`insights` 命令创建、运行和读取 [Insights](/langsmith/insights) 报告，这些报告将代理环境的跟踪分为几类，以显示使用模式和故障模式。每个 `insights` 命令都需要 `--project`、`--project-id` 或 `LANGSMITH_PROJECT` 环境变量。
 
 > [!注意]
 >
-> `insights create`、`insights run` 和 `insights config` 需要 LangSmith CLI v0.2.60 或更高版本。要创建报告，请在 JSON 文件中定义它：
+> `insights create`、`insights run` 和 `insights config` 需要 LangSmith CLI v0.2.60 或更高版本。
+
+要创建报告，请在 JSON 文件中定义它：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -324,16 +344,14 @@ langsmith experiment get my-experiment-2024-01-15
   "model": "openai",
   "schedule_cron": "0 9 * * 1"
 }
-```
-
-* **`name`** 和 **`summary_prompt`**：必填。 [summary prompt](/langsmith/insights#summary-prompt) 是 Mustache 模板，必须至少引用 `{{run.inputs}}`、`{{run.outputs}}`、`{{run.error}}`、`{{run.feedback}}` 或 `{{all_thread_messages}}` 之一。 CLI 不支持自动模式，因此请说明报告应在此提示中查找的内容。
+```* **`name`** 和 **`summary_prompt`**：必填。 [summary prompt](/langsmith/insights#summary-prompt) 是 Mustache 模板，必须至少引用 `{{run.inputs}}`、`{{run.outputs}}`、`{{run.error}}`、`{{run.feedback}}` 或 `{{all_thread_messages}}` 之一。 CLI 不支持自动模式，因此请说明报告应在此提示中查找的内容。
 * **`last_n_hours`**，或 **`start_time`** 和 **`end_time`**：采样迹线的时间范围。使用一种形式，而不是同时使用两种形式。
 * **`model`**：`openai`（默认）或`anthropic`。要选择特定型号，请将 **`cluster_model`** 和 **`summary_model`** 设置在一起，分别设置为 `openai`、`anthropic` 或 [model configuration](/langsmith/model-configurations) UUID。不接受显示名称。
 * **`schedule_cron`**：循环报告的 cron 表达式。第一个作业立即开始，后面的作业按照时间表进行。对于一次性报告，请忽略它。
 
 该文件还接受 `filter`、`sample`、`hierarchy`、`partitions`、`attribute_schemas` 和 `description`。未知字段会导致错误。
 
-`insights create` 将文件保存为作业配置并启动第一个报告。报告异步运行并产生模型成本。工作区需要所选模型的机密。通过`--wait`进行轮询，直到报告成功或失败，最长持续30分钟。通过 `--config -` 从标准输入读取文件。
+`insights create` 将文件保存为作业配置并启动第一个报告。报告异步运行并产生模型成本。工作区需要所选模型的机密。通过`--wait`进行轮询，直至报告成功或失败，最长持续30分钟。通过 `--config -` 从标准输入读取文件。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith insights create --project "<environment-tracer-session-name>" --config insights.json
@@ -408,7 +426,7 @@ langsmith api sessions -H "Accept: text/csv"
 
 关键标志：
 
-|旗帜|短|默认|描述 |
+|旗帜|短|默认 |描述 |
 | - | - | - | - |
 | `--method` | `-X` | `GET` | HTTP 方法 |
 | `--field` | `-F` | — |输入 JSON 字段为 `key=value`。可重复。使用 `@<path>` 或 `@-` 作为文件/标准输入值。 |
@@ -418,7 +436,7 @@ langsmith api sessions -H "Accept: text/csv"
 | `--header` | `-H` | — |附加标头为 `Key:Value`。可重复。 |
 | `--include` | `-i` | `false` |在正文之前打印响应状态行和标题 |
 
-`--input` 和 `--body` 是互斥的。子命令 `langsmith api ls` 和 `langsmith api info` 浏览并描述缓存的 OpenAPI 规范中的端点 — 传递 `--refresh` 进行重新获取。
+`--input` 和 `--body` 是互斥的。子命令 `langsmith api ls` 和 `langsmith api info` 浏览并描述缓存的 OpenAPI 规范中的端点 — 传递 `--refresh` 以重新获取。
 
 ## 过滤标志大多数 `trace` 和 `run` 命令共享这些过滤器：
 
@@ -426,26 +444,26 @@ langsmith api sessions -H "Accept: text/csv"
 | - | - | - |
 | `--project` |代理环境的`tracer_session_name` | `--project "<environment-tracer-session-name>"` |
 | `--limit, -n` |最大结果 | `-n 10` |
-| `--offset` | Pagination offset | `--offset 20` |
+| `--offset` |分页偏移 | `--offset 20` |
 | `--last-n-minutes` |覆盖 7 天默认值 | `--last-n-minutes 60` |
 | `--since` | ISO 时间戳之后 | `--since 2024-01-15T00:00:00Z` |
 | `--error` / `--no-error` |按错误状态过滤 | `--error` |
 | `--name` |名称搜索（不区分大小写）| `--name ChatOpenAI` |
 | `--run-type` |运行类型（`llm` 或 `tool`）| `--run-type llm` |
 | `--min-latency` / `--max-latency` |延迟范围（以秒为单位）| `--min-latency 2.5` |
-| `--min-tokens` | Minimum total tokens | `--min-tokens 1000` |
+| `--min-tokens` |最低总代币 | `--min-tokens 1000` |
 | `--tags` |标签，逗号分隔（OR 逻辑）| `--tags prod,v2` |
 | `--filter` |原始LangSmith过滤器DSL | `--filter 'eq(status, "error")'` |
-| `--trace-ids` | Specific trace IDs | `--trace-ids abc123,def456` |
+| `--trace-ids` |特定跟踪 ID | `--trace-ids abc123,def456` |
 
 **详细标志** — 控制响应中包含哪些字段：
 
-|旗帜|添加 |
+|旗帜|添加|
 | - | - |
 | `--include-metadata` |状态、持续时间、代币、成本 |
-| `--include-io` | Inputs, outputs, error |
-| `--include-feedback` | Feedback stats |
-| `--full` | All of the above |
+| `--include-io` |输入、输出、错误 |
+| `--include-feedback` |反馈统计 |
+| `--full` |以上全部|
 | `--show-hierarchy` |完整运行树（仅跟踪）|
 
 ***

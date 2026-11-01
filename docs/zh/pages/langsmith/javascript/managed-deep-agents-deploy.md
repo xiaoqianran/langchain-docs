@@ -18,7 +18,7 @@
 
 在部署之前，请确保您拥有：
 
-* 具有托管 Deep Agents 公共测试版访问权限的工作区。
+* LangSmith 云工作空间。
 
 * [LangSmith API key](/langsmith/create-account-api-key) 用于该工作区，位于 `.env` 或您的 shell 环境中。在交互式终端上，`mda deploy` 会提示您输入密钥或通过浏览器登录。
 
@@ -28,9 +28,9 @@
 
 * 模型提供者凭据，例如 `.env` 中的 `OPENAI_API_KEY`、您的 shell 环境或 LangSmith 工作区机密。
 
-## 选择 SaaS 区域`LANGSMITH_ENDPOINT` 选择 CLI 部署到的 LangSmith 区域。默认情况下，CLI 以 GCP US 为目标。
+## 选择 SaaS 区域
 
-在首次部署之前，在项目的 `.env` 或 shell 环境中设置 `LANGSMITH_ENDPOINT`：
+`LANGSMITH_ENDPOINT` 选择 CLI 部署到的 LangSmith 区域。默认情况下，CLI 以 GCP US 为目标。在首次部署之前，在项目的 `.env` 或 shell 环境中设置 `LANGSMITH_ENDPOINT`：
 
 |地区 |端点 |部署支持 |
 | - | - | - |
@@ -154,25 +154,25 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 ## 后续步骤
 
-> **[Agent Server](/langsmith/agent-server-overview)**
+> [卡][Agent Server](/langsmith/agent-server-overview)
 >
 > 探索托管部署的运行时。
 
-> **[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)**
+> [卡][MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)
 >
 > 将部署的代理作为工具公开给 MCP 客户端。
 
-> **[Identity](/langsmith/javascript/managed-deep-agents-identity)**
+> [卡][Identity](/langsmith/javascript/managed-deep-agents-identity)
 >
 > 对调用者进行身份验证并提供私有线程。
 
-> **[Schedules](/langsmith/javascript/managed-deep-agents-schedules)**
+> [卡][Schedules](/langsmith/javascript/managed-deep-agents-schedules)
 >
 > 根据托管 cron 计划运行代理。
 
-> **[Custom tools](/langsmith/javascript/managed-deep-agents-tools)**
+> [卡][Custom tools](/langsmith/javascript/managed-deep-agents-tools)
 >
-> 将编写的LangChain工具添加到代理定义中。> **[CLI reference](/langsmith/javascript/managed-deep-agents-cli)**
+> 将编写的LangChain工具添加到代理定义中。> [卡][CLI reference](/langsmith/javascript/managed-deep-agents-cli)
 >
 > 查找每个 `mda` 命令和标志。
 

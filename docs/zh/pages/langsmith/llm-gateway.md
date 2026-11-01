@@ -4,77 +4,38 @@
 
 # 法学硕士网关
 
-使用一个 LangSmith API 密钥访问跨提供商的模型，同时跟踪调用并执行支出和数据保护策略。
-
-使用一个[LangSmith API key](/langsmith/create-account-api-key)跨配置的提供者调用模型。通过更改模型 ID 来切换提供商，而 LLM 网关则跟踪每个模型调用并应用集中式治理策略。
+使用一个LangSmith API 密钥访问跨提供商的模型，同时跟踪调用并执行支出和数据保护策略。
 
 > [!注意]
 >
-> **测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。
+> LLM 网关位于[beta](/langsmith/release-stages)。
 
-## 网关提供什么
+LLM Gateway 是您的应用程序和您的工作区已配置的模型提供程序之间的代理。您的应用程序使用 [LangSmith API key](/langsmith/create-account-api-key) 进行身份验证。网关将每个请求路由到其模型 ID 中指定的提供程序、跟踪调用并应用组织的治理策略。
 
-* **一键，多个提供商：** 开发人员使用 LangSmith API 密钥进行身份验证，而不是在本地存储提供商密钥。
-* **一种请求格式，多种模型：** 将聊天完成、消息或响应与跨配置的提供程序的模型一起使用。
-* **内置可观察性：** 每个网关调用都显示为 [LangSmith trace](/langsmith/llm-gateway-access)。
-* **中央治理：** 应用 [spend limits](/langsmith/llm-gateway-spend-policies)、[rate limits](/langsmith/llm-gateway-rate-limit-policies) 和 [data policies](/langsmith/llm-gateway-data-policy)。
+如果没有网关，提供程序密钥将被复制到调用模型的每个应用程序和部署上。支出和数据控制取决于每个提供商帐户。通过网关，提供商密钥保留在 LangSmith 中，每个调用都显示为 [LangSmith trace](/langsmith/llm-gateway-traces)，并且 [spend limits](/langsmith/llm-gateway-spend-policies)、[rate limits](/langsmith/llm-gateway-rate-limit-policies) 和 [data policies](/langsmith/llm-gateway-data-policy) 适用于其范围内的每个调用。
 
-## 查看请求是什么样的
+## 选择请求格式网关接受 OpenAI 聊天完成、Anthropic 消息和 OpenAI 响应请求。请求格式和提供者是独立的：聊天完成请求可以调用Anthropic模型，当提供者使用不同的本机格式时，网关会转换请求和响应。保留应用程序已使用的格式，并通过更改模型 ID 来切换提供程序。有关端点、模型 ID 语法和转换行为，请参阅 [API formats](/langsmith/llm-gateway-api-formats)。
 
-一旦管理员拥有 [completed the setup](/langsmith/llm-gateway-admin-setup)，网关调用就是使用工作区范围的 LangSmith API 密钥进行身份验证的标准聊天完成请求。此示例调用 LangSmith 云上的美国网关，并假设工作区具有 Anthropic 提供商机密：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
-
-curl https://gateway.smith.langchain.com/v1/chat/completions \
-    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{"model":"anthropic/claude-sonnet-4-6","messages":[{"role":"user","content":"Hello!"}]}'
-````200` 响应确认网关、您的 LangSmith API 密钥、权限和所选提供商机密已正确配置。要在 cURL、Python、TypeScript 或 Deep Agents 中自行发出此请求，请遵循 [quickstart](/langsmith/llm-gateway-quickstart)。
-
-## 使用标准API
-
-选择您的应用程序已使用的请求格式。该格式不限制您可以调用哪个已配置的提供商。
-
-| API格式 |端点 |
-| - | - |
-| OpenAI 聊天完成 | `POST /v1/chat/completions` |
-| Anthropic 留言 | `POST /v1/messages` |
-| OpenAI 回应 | `POST /v1/responses` |
-
-将 `model` 设置为提供者前缀的自带密钥 ID，例如 `openai/gpt-5.4-mini`、`anthropic/claude-opus-5` 或 `azure/<deployment-name>`，或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 模型段，例如 `moonshotai/kimi-k3`。
-
-要调用已保存的 [model configuration](/langsmith/llm-gateway-model-configurations)，例如指向自定义 OpenAI 兼容端点的端点，请使用 `custom/<name>`。型号ID决定上游路由。当所选提供商使用不同的本机格式时，网关会转换请求和响应。
-
-网关运行在各区域的LangSmith云、[BYOC](/langsmith/byoc)、[self-hosted](/langsmith/self-hosted)LangSmith上。在 BYOC 和自托管上，相同的路径位于 `/gateway` 前缀后面，例如 `POST /gateway/v1/chat/completions`。有关每种情况下使用的主机名，请参阅 [Check availability](/langsmith/llm-gateway-how-it-works#check-availability)。自托管安装还需要管理员[enable the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted)。有关基本 URL、示例和翻译行为，请参阅 [API formats](/langsmith/llm-gateway-api-formats)。
+LangChain 聊天模型和 Deep Agents 通过 `LANGSMITH_GATEWAY` 环境变量到达网关，该变量在每个提供商的本机格式中使用 [direct model access](/langsmith/llm-gateway-direct-model-access)，因此不适用翻译。
 
 ## 选择凭证的管理方式
 
-|选项|上游凭证|设置和计费|
-| - | - | - |
-|带上您自己的提供商帐户 |管理员将提供者密钥存储在工作区[Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)中。 |提供商将使用费用记入您的提供商帐户。 |
-| [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain 拥有上游凭证。 |不需要提供商秘密。调用费用将计入您的 LangSmith 帐户。 |
+网关使用 LangSmith 持有的凭证调用每个提供商：您自己的提供商密钥，存储为工作区秘密，或 [Gateway Credits](/langsmith/llm-gateway-credits)，LangChain 向您的 LangSmith 帐户计费。对于每个凭证来源以及计费者，请参阅 [Provider authentication](/langsmith/llm-gateway-provider-authentication#choose-a-credential-source)。
 
-## 走得更远
+## 后续步骤
 
-> **[Quickstart](/langsmith/llm-gateway-quickstart)**
+从适合您的角色的指南开始：
+
+> [卡片] [Set up the gateway for your team](/langsmith/llm-gateway-admin-setup)
 >
-> 使用 cURL、Python 或 TypeScript 发出请求，然后查看其跟踪。
+> 完成初始设置以通过网关路由请求。
 
-> **[Administrator setup](/langsmith/llm-gateway-admin-setup)**
+> [卡][Send your first request](/langsmith/llm-gateway-first-request)
 >
-> 启用网关、添加提供商凭据并授予开发人员访问权限。
+> 从模拟器发送请求，从代码调用网关，然后查看跟踪。
 
-> [!提示]
->
-> 需要使用带有存储在提示中心的提示的网关吗？请参阅[Prompt Hub with the gateway](/langsmith/manage-prompts-programmatically#use-with-the-langsmith-gateway)，了解如何使用两个环境变量通过网关路由 Prompt Hub 模型调用。
->
-> 需要提供者本机请求和响应行为？使用[Direct model access](/langsmith/llm-gateway-direct-model-access)绕过标准化层。这是标准 API 的高级替代方案。
->
-> 如有其他问题，请联系[LangChain support](https://support.langchain.com)。
+如有其他问题，请联系[LangChain support](https://support.langchain.com)。
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

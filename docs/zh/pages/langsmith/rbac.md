@@ -4,7 +4,7 @@
 
 # 基于角色的访问控制
 
-本参考资料解释了LangSmith用于管理组织级和工作区级权限的基于角色的访问控制（RBAC）系统。
+本参考资料介绍了 LangSmith 用于管理组织级和工作区级权限的基于角色的访问控制 (RBAC) 系统。
 
 > [!注意]
 >
@@ -16,28 +16,33 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 
 * 一个适用于整个组织的[**organization role**](#organization-roles)（与工作区 RBAC 分开）。
   * 组织用户和组织查看者角色仅在 [Plus and Enterprise plans](https://langchain.com/pricing) 上的组织中可用。在开发人员组织（单个工作区）中，默认情况下为所有用户分配组织管理员角色。
-* 他们所属的每个工作区一个 [**workspace role**](#workspace-roles)（需要企业 RBAC 功能）。
+* 他们所属的每个工作区分配一个 [**workspace role**](#workspace-roles)（需要企业 RBAC 功能）。
 
-在企业计划中，组织可以创建具有精细权限组合的[custom workspace roles](#custom-roles)。要了解如何设置 RBAC 并为用户分配角色，请参阅[User Management guide](/langsmith/user-management#set-up-access-control)。您的身份提供商还可以通过 [SCIM groups](/langsmith/user-management#set-up-scim-for-your-organization) 或 [SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) 自动分配角色。
+用户还可以通过 [teams](/langsmith/teams) 接收其他工作区角色。然后，用户将拥有其分配的角色以及该工作区中每个团队角色的权限。在企业计划中，组织还可以创建具有精细权限组合的[custom workspace roles](#custom-roles)。
+
+要了解如何设置 RBAC 并为用户分配角色，请参阅[User Management guide](/langsmith/user-management#set-up-access-control)。您的身份提供商还可以通过 [SCIM groups](/langsmith/user-management#set-up-scim-for-your-organization) 或 [SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) 自动分配角色。
 
 > [!注意]
 >
 > 有关所需权限以及可以执行这些权限的操作和角色的完整列表，请参阅[Organization and workspace reference](/langsmith/organization-workspace-operations)。
 
-## 角色类型
+## 组织角色
 
-### 组织角色
+组织角色控制用户可以在组织中执行的操作，例如管理计费、成员和工作区。它们与 [workspace roles](#workspace-roles) 是分开的，后者控制对工作空间内资源的访问。组织角色是系统定义的，无法修改或扩展。|角色 |描述 |可用性 |
+| - | - | - |
+| [Organization Admin](#organization-admin) |管理组织配置、用户、计费和工作区的完全权限 |所有计划|
+| [Organization Operator](#organization-operator) |对工作区和用户进行日常操作的管理访问权限，不包括管理员级别权限 | [Plus and Enterprise](https://langchain.com/pricing) |
+| [Organization User](#organization-user) |对组织信息的读取访问权限以及创建个人访问令牌的能力 | [Plus and Enterprise](https://langchain.com/pricing) |
+| [Organization Viewer](#organization-viewer) |对组织信息的只读访问权限 | [Plus and Enterprise](https://langchain.com/pricing) |
+| [Organization Restricted](#organization-restricted) |无需组织范围内的读取访问权限即可访问工作区 | [Plus and Enterprise](https://langchain.com/pricing) |
 
-组织角色**与工作区 RBAC 功能**不同，用于管理组织范围的功能。这些角色是系统定义的，无法修改或扩展。 [Organization User](#organization-user) 和 [Organization Viewer](#organization-viewer) 角色仅在 [Plus and Enterprise plans](https://langchain.com/pricing) 上的组织中可用。在开发者组织（单个工作区）中，默认情况下为所有用户分配 [Organization Admin](#organization-admin) 角色。
+> [!注意]
+>
+> 在开发者组织（单一工作区）中，默认情况下为所有用户分配 [Organization Admin](#organization-admin) 角色。
 
-|角色 |描述 |
-| - | - |
-| [Organization Admin](#organization-admin) |管理组织配置、用户、计费和工作区的完全权限 |
-| [Organization Operator](#organization-operator) |对工作区和用户进行日常操作的管理访问权限，不包括管理员级别权限 |
-| [Organization User](#organization-user) |对组织信息的读取访问权限以及创建个人访问令牌的能力 |
-| [Organization Viewer](#organization-viewer) |对组织信息的只读访问权限 |
+### 组织管理员
 
-#### 组织管理员**描述**：管理所有组织配置、用户、计费和工作区的完全权限。
+**描述**：管理所有组织配置、用户、计费和工作区的完全权限。
 
 **权限**：
 
@@ -45,9 +50,7 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 * `organization:read` - 对所有组织信息的读取权限
 * `organization:pats:create` - 创建组织级别[personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
 * `organization:pats:read` - 查看每个组织成员的个人访问令牌
-* `organization:pats:manage` - 停用、重新激活或删除任何组织成员的个人访问令牌
-
-有关所需权限以及可以执行这些权限的操作和角色的完整列表，请参阅[Organization and workspace reference](/langsmith/organization-workspace-operations)。
+* `organization:pats:manage` - 停用、重新激活或删除任何组织成员的个人访问令牌有关所需权限以及可以执行这些权限的操作和角色的完整列表，请参阅[Organization and workspace reference](/langsmith/organization-workspace-operations)。
 
 **关键能力**：
 
@@ -65,7 +68,9 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 
 有关设置和管理组织的详细信息，请参阅[Administration Overview](/langsmith/administration-overview#organizations)。
 
-#### 组织运营者日常操作的管理访问权限，包括工作区和用户管理，但无法管理组织管理员或创建组织范围的服务密钥。
+### 组织运营商
+
+日常操作的管理访问权限，包括工作区和用户管理，但无法管理组织管理员或创建组织范围的服务密钥。
 
 **权限：**
 
@@ -73,9 +78,7 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 * `organization:read` - 对所有组织信息的读取权限
 * `organization:pats:create` - 创建个人访问令牌
 * `organization:pats:read` - 查看每个组织成员的个人访问令牌
-* `organization:pats:manage` - 停用、重新激活或删除任何组织成员的个人访问令牌
-
-有关所需权限以及可以执行这些权限的操作和角色的完整列表，请参阅[Organization and workspace reference](/langsmith/organization-workspace-operations)。
+* `organization:pats:manage` - 停用、重新激活或删除任何组织成员的个人访问令牌有关所需权限以及可以执行这些权限的操作和角色的完整列表，请参阅[Organization and workspace reference](/langsmith/organization-workspace-operations)。
 
 **关键能力：**
 
@@ -85,24 +88,24 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 * 查看、停用、重新激活和删除任何会员的[personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
 * 为成员分配工作空间角色
 * 创建工作区范围的服务密钥和服务帐户
+* 管理组织[billing](/langsmith/billing)和订阅计划
+* 创建、编辑和删除[custom roles](#custom-roles)
 * 查看组织[usage](/langsmith/usage-and-billing#usage-limits)和分析
 * 查看[audit logs](/langsmith/audit-logs)（企业）
 
-**限制：*** 无法邀请、修改或删除组织管理员
+**限制：**
+
+* 无法邀请、修改或删除组织管理员
 * 无法将组织管理员角色分配给用户
 * 无法创建组织范围（非工作区特定）服务密钥
 * 不会自动添加到现有工作区（仅添加到他们创建或明确邀请的工作区）
-* 无法管理组织[billing](/langsmith/billing)或订阅计划
 * 无法配置[SSO or authentication methods](/langsmith/user-management#set-up-saml-sso-for-your-organization)
-* 无法创建或管理[custom roles](#custom-roles)
 
-#### 组织用户
+### 组织用户
 
 **描述**：对组织信息的读取访问权限以及创建个人访问令牌的能力。
 
-**权限**：
-
-* `organization:read` - 读取组织信息
+**权限**：* `organization:read` - 读取组织信息
 * `organization:pats:create` - 创建个人访问令牌
 
 有关所需权限以及可以执行这些权限的操作和角色的完整列表，请参阅[Organization and workspace reference](/langsmith/organization-workspace-operations)。
@@ -120,9 +123,11 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 * 无法管理账单或订阅
 * 无法创建或删除工作区
 * 无法邀请或删除组织成员
-* 无法管理角色或权限您可以将组织用户添加到工作区子集并分配工作区角色（如果启用了 RBAC），这些角色指定工作区级别的权限。
+* 无法管理角色或权限
 
-#### 组织查看器
+您可以将组织用户添加到工作区子集并分配工作区角色（如果启用了 RBAC），这些角色指定工作区级别的权限。
+
+### 组织查看器
 
 **描述**：对组织信息的只读访问权限。
 
@@ -137,13 +142,19 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 * 查看组织成员和工作空间
 * 查看组织设置
 
-**限制**：
-
-* 无法在组织级别修改任何内容
+**限制**：* 无法在组织级别修改任何内容
 * 无法创建个人访问令牌
 * 无法管理账单、工作区或成员
 
-### 工作区角色
+### 组织受限
+
+组织受限允许访问分配的工作区，而无需组织范围的读取访问权限。将其分配给应在自己的工作区中工作而不会看到其他组织成员或组织级别详细信息的用户。
+
+将组织限制分配给用户的方式与任何其他组织角色相同：通过成员邀请、[SCIM group](/langsmith/user-management#group-naming-convention) 或[SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) 群组匹配。 [Just-in-time (JIT) provisioning](/langsmith/jit-invite-sso) 无法分配：通过 JIT 创建的新用户接收组织用户，并且 SSO 默认角色设置仅适用于工作区角色。
+
+该角色包括`organization:read-metadata`，但不包括`organization:read`。具有此角色的用户和密钥无法列出组织成员或服务密钥。组织角色元数据仍然可见。用户或密钥在分配的工作区中可以执行的操作（包括查看该工作区的成员）取决于其工作区角色。工作空间范围的[service keys](/langsmith/administration-overview#service-keys)也可以担任这个角色。创建或编辑范围为 **特定工作空间** 的服务密钥时，选择组织查看器（默认）或组织受限。此选择不会更改可以创建或编辑服务密钥的人员。
+
+## 工作区角色
 
 工作区角色是**企业 RBAC 功能**的一部分，控制用户可以对工作区内的资源执行哪些操作：
 
@@ -151,22 +162,22 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 | - | - |
 | [Workspace Admin](#workspace-admin) |所有资源的完全权限，包括工作区设置和成员管理 |
 | [Workspace Editor](#workspace-editor) |对大多数资源具有完全权限，无法管理工作区设置或删除某些资源 |
-| [Workspace Viewer](#workspace-viewer) |对所有工作区资源的只读访问权限> [!注意]
+| [Workspace Viewer](#workspace-viewer) |对所有工作区资源的只读访问权限
+
+> [!注意]
 >
 > RBAC（基于角色的访问控制）是一项仅适用于 [Enterprise](https://langchain.com/pricing) 客户的功能。如果您对此功能感兴趣，[contact our sales team](https://www.langchain.com/contact-sales)。其他计划默认为所有用户使用管理员角色。
 
-#### 工作区管理员
+### 工作区管理员
 
-**描述**：具有所有资源的完全权限以及管理工作区的能力的角色。
+**描述**：具有所有资源的完全权限和管理工作区的能力的角色。
 
 **权限**：
 
 * 所有资源类型的所有创建、读取、更新、删除和共享权限
-* 工作区管理功能
+* 工作区管理功能有关所需权限以及可以执行这些权限的操作和角色的完整列表，请参阅[Organization and workspace reference](/langsmith/organization-workspace-operations)。
 
-有关所需权限以及可以执行这些权限的操作和角色的完整列表，请参阅[Organization and workspace reference](/langsmith/organization-workspace-operations)。
-
-#### 工作区编辑器
+### 工作区编辑器
 
 **描述**：对大多数资源拥有完全权限的角色。无法管理工作区设置或删除某些关键资源。
 
@@ -176,44 +187,57 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 * 无法管理工作区设置（更改工作区名称等）
 * 无法管理工作区成员（添加、删除或更新成员角色）
 
-#### 工作区查看器
+### 工作区查看器
 
 **描述**：对所有工作区资源的只读访问权限。
 
-**权限**：对所有资源类型的只读访问权限。有关所需权限以及可以执行这些权限的操作和角色的完整列表，请参阅[Organization and workspace reference](/langsmith/organization-workspace-operations)。
+**权限**：对所有资源类型的只读访问权限。
+
+有关所需权限以及可以执行这些权限的操作和角色的完整列表，请参阅[Organization and workspace reference](/langsmith/organization-workspace-operations)。
 
 > [!提示]
 >
-> 有关为用户分配工作区角色的分步说明，请参阅[User Management guide](/langsmith/user-management#assign-a-role-to-a-user)。
+> 有关为用户分配工作区角色的分步说明，请参阅 [User Management guide](/langsmith/user-management#assign-a-role-to-a-user)。
 
 ## 自定义角色
 
 > [!注意]
 >
-> 企业计划中的组织可以创建自定义角色。
+> 创建自定义角色仅适用于企业计划中的组织。
 
-[Organization Admins](#organization-admin) 可以根据组织的需求创建具有特定权限组合的自定义角色。
+自定义角色是您定义的工作区角色。 [Organization Admins](#organization-admin) 和 [Organization Operators](#organization-operator) 可以使用工作区级别权限的特定组合创建自定义角色，然后将它们与内置 [workspace roles](#workspace-roles) 一起分配。
 
-### 创建自定义角色
+### 创建自定义角色自定义角色在 [organization](/langsmith/administration-overview#organizations) 级别创建，可以分配给该组织内任何 [workspace](/langsmith/administration-overview#workspaces) 中的用户。
 
-自定义角色在 [organization](/langsmith/administration-overview#organizations) 级别创建，可以分配给该组织内任何 [workspace](/langsmith/administration-overview#workspaces) 中的用户。
-
-**步骤**：
+要创建自定义角色：
 
 1. 导航到组织 **设置** > **角色**。
-2. 单击**创建自定义角色**。
-3. 选择要包含在角色中的权限。
-4. 将自定义角色分配给特定工作区中的用户。
+2. 单击“**创建角色**”。
+3. 输入 **角色名称** 和可选的 **描述**。
+4. 在 **权限** 下，选择要包含在角色中的权限。
+5. 单击“**创建**”。
 
-有关每个操作需要哪些具体权限的详细信息，请参阅[Organization and workspace operations reference](/langsmith/organization-workspace-operations)。
+创建角色后，[assign it to users](/langsmith/user-management#assign-a-role-to-a-user) 在特定工作区中。
 
-请注意有关自定义角色的以下详细信息：* 自定义角色只能由组织管理员创建和管理。
+每个操作需要哪些具体权限，请参阅[Organization and workspace operations reference](/langsmith/organization-workspace-operations)。
+
+请注意有关自定义角色的以下详细信息：
+
+* 只有组织管理员和组织操作员可以创建和管理自定义角色。
 * 自定义角色是特定于组织的（不可在组织之间转移）。
 * 每个自定义角色可以具有工作区级别权限的任意组合。
 * 自定义角色不能拥有组织级别的权限。
 * 用户可以在不同的工作空间中拥有不同的角色（包括自定义角色）。
 
-### 限制角色
+### 了解权限行为
+
+某些权限在用于自定义角色时提供精细控制：* `workspaces:manage` **不** 包含管理工作区成员的功能。要允许自定义角色添加、删除或更新工作区成员，您必须显式授予 `workspaces:manage-members`。内置的工作区管理员角色自动包含这两种权限。
+* `workspaces:manage-model-configs` 控制创建、编辑或删除 [model configurations](/langsmith/model-configurations)（包括附加 [OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)）以及更改每个模型可用的 LangSmith 功能的能力。它与 `workspaces:manage` 是分开的——在应该能够配置模型的自定义角色上显式授予它。内置的工作区管理员角色自动包含它。
+* `workspaces:manage-keys` 控制创建和删除工作区 API 密钥（工作区范围内的服务密钥）的能力。它与 `workspaces:manage` 是分开的——在自定义角色上显式授予它，这些角色应该能够管理 API 密钥，而无需完整的工作区管理。为了防止权限升级，由不具有 `workspaces:manage` 的用户创建的密钥不能被授予比该用户拥有的权限更多的权限，也不能被分配组织标记为受限的角色。内置的工作区管理员角色自动包含它。* `bulk-exports:read` 和 `bulk-exports:manage` 涵盖批量导出端点（列出、创建、取消导出和管理目的地）。在自定义角色中使用它们来授予最低权限的批量导出访问权限，而无需 `workspaces:manage`。内置工作区管理员角色包括 `bulk-exports:manage`，所有具有读取功能的角色自动包括 `bulk-exports:read`。
+* `projects:increase-trace-tier`和`projects:decrease-trace-tier`是独立的，可以单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 部分启用（禁止的方向被禁用）。
+* `runs:read-inputs`和`runs:read-outputs`控制角色是否可以看到运行输入和输出，并且与`runs:read`分开。具有 `runs:read` 但没有这些权限之一的角色仍然可以列出和打开运行，但响应会忽略被拒绝的字段及其预览。消息和轨迹视图需要这两种权限。要仅隐藏特定项目中的输入或输出，请使用[access policy](/langsmith/abac#control-access-to-run-inputs-and-outputs)。* `projects:update` 仅涵盖元数据更新（名称、描述、标签），并且 **不** 授予更改跟踪保留的能力。要允许自定义角色修改跟踪层，您必须显式授予 `projects:increase-trace-tier`、`projects:decrease-trace-tier` 或两者。
+
+## 限制角色
 
 > [!注意]
 >
@@ -223,27 +247,19 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 
 这可以防止权限升级：即使用户被授权管理工作区成员身份，他们也无法授予已标记为越界的角色。
 
-**默认行为：** 默认情况下没有角色受到限制。组织必须明确切换每个角色的限制。
+默认情况下，没有角色受到限制。组织必须明确限制每个角色。
 
-要限制角色，在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-rbac)中：1. 导航到组织 **设置** > **角色**。
+要限制角色，在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-rbac)中：
+
+1. 导航到组织 **设置** > **角色**。
 2. 在角色表中找到您要限制的角色。
-3. 启用该角色的 **Restricted** 设置。
+3. 选择该角色的 **Restricted** 复选框。角色受到限制后，不拥有工作区管理员角色的用户无法在成员邀请、成员编辑或 API 密钥创建流程中查看或分配该角色。 API 还会拒绝不具有工作区管理员角色的调用者的分配尝试。如果不拥有工作区管理员角色的用户创建 API 密钥，他们无法使用自己的受限角色作为密钥的默认角色。
 
-角色受到限制后，不拥有工作区管理员角色的用户无法在成员邀请、成员编辑或 API 密钥创建流程中查看或分配该角色。 API 还会拒绝不具有工作区管理员角色的调用者的分配尝试。如果不拥有工作区管理员角色的用户创建 API 密钥，他们无法使用自己的受限角色作为密钥的默认角色。
-
-要取消限制角色，请按照相同的步骤操作并关闭 **Restricted** 设置。
+要取消限制角色，请按照相同的步骤操作并清除 **受限** 复选框。
 
 > [!注意]
 >
-> 角色限制适用于系统角色（工作区管理员、工作区编辑者、工作区查看者）和自定义角色。 LangSmith [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted) 可用。
-
-### 了解权限行为
-
-某些权限在用于自定义角色时提供精细控制：* `workspaces:manage` **不** 包含管理工作区成员的功能。要允许自定义角色添加、删除或更新工作区成员，您必须显式授予 `workspaces:manage-members`。内置的工作区管理员角色自动包含这两种权限。
-* `workspaces:manage-model-configs` 控制创建、编辑或删除 [model configurations](/langsmith/model-configurations)（包括附加 [OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)）以及更改每个模型可用的 LangSmith 功能的能力。它与 `workspaces:manage` 是分开的——在应该能够配置模型的自定义角色上显式授予它。内置的工作区管理员角色自动包含它。
-* `workspaces:manage-keys` 控制创建和删除工作区 API 密钥（工作区范围内的服务密钥）的能力。它与 `workspaces:manage` 是分开的——在自定义角色上显式授予它，这些角色应该能够管理 API 密钥，而无需完整的工作区管理。为了防止权限升级，由不具有 `workspaces:manage` 的用户创建的密钥不能被授予比该用户拥有的权限更多的权限，也不能被分配组织标记为受限的角色。内置的工作区管理员角色自动包含它。* `bulk-exports:read` 和 `bulk-exports:manage` 涵盖批量导出端点（列出、创建、取消导出和管理目的地）。在自定义角色中使用它们来授予最低权限的批量导出访问权限，而无需 `workspaces:manage`。内置工作区管理员角色包括 `bulk-exports:manage`，所有具有读取功能的角色自动包括 `bulk-exports:read`。
-* `projects:increase-trace-tier`和`projects:decrease-trace-tier`是独立的，可以单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 部分启用（禁止的方向被禁用）。
-* `runs:read-inputs`和`runs:read-outputs`控制角色是否可以看到运行输入和输出，并且与`runs:read`分开。具有 `runs:read` 但没有这些权限之一的角色仍然可以列出和打开运行，但响应会忽略被拒绝的字段及其预览。消息和轨迹视图需要这两种权限。要仅在特定项目中隐藏输入或输出，请使用[access policy](/langsmith/abac#control-access-to-run-inputs-and-outputs)。* `projects:update` 仅涵盖元数据更新（名称、描述、标签），并且 **不** 授予更改跟踪保留的能力。要允许自定义角色修改跟踪层，您必须显式授予 `projects:increase-trace-tier`、`projects:decrease-trace-tier` 或两者。
+> 角色限制适用于系统角色（工作区管理员、工作区编辑者、工作区查看者）和自定义角色。可在 LangSmith [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted) 上使用。
 
 ***
 

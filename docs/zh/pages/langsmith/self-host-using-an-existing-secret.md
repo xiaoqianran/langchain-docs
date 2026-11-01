@@ -4,13 +4,13 @@
 
 # 使用现有的密钥进行安装 (Kubernetes)
 
-默认情况下，LangSmith将提供多个 Kubernetes 密钥来存储敏感信息，例如许可证密钥、盐和其他配置参数。但是，您可能希望使用已在 Kubernetes 集群中创建的现有密钥（或通过某种密钥运算符配置）。如果您想以集中方式管理敏感信息或者您有特定的安全要求，这可能会很有用。
+默认情况下，LangSmith将提供多个 Kubernetes 密钥来存储敏感信息，例如许可证密钥、盐和其他配置参数。但是，您可能希望使用已在 Kubernetes 集群中创建的现有密钥（或通过某种密钥运算符配置）。如果您想要以集中方式管理敏感信息或者您有特定的安全要求，这可能会很有用。
 
 默认情况下，我们将提供与LangSmith的不同组件相对应的以下秘密：
 
 * `langsmith-secrets`：此秘密包含许可证密钥和其他一些基本配置参数。首先，请使用 [secrets template](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/templates/secrets.yaml)。
 * `langsmith-redis`：此密钥包含 Redis 连接字符串（或节点 URI，如果使用 Redis 集群）和密码。首先，请使用 [Redis secrets template](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/templates/redis/secrets.yaml)。
-* `langsmith-postgres`：此机密包含 Postgres 连接字符串和密码。首先，请使用 [Postgres secrets template](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/templates/postgres/secrets.yaml)。
+* `langsmith-postgres`：此秘密包含 Postgres 连接字符串和密码。首先，请使用 [Postgres secrets template](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/templates/postgres/secrets.yaml)。
 * `langsmith-clickhouse`：此秘密包含 ClickHouse 连接字符串和密码。首先，请使用 [ClickHouse secrets template](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/templates/clickhouse/secrets.yaml)。
 
 ＃＃ 要求* 现有的 Kubernetes 集群
@@ -65,12 +65,17 @@ stringData:
   # LLM auth proxy tokens. Required for self-hosted OAuth login, Remote MCP, and
   # the LLM auth proxy (see /langsmith/kubernetes#configure-a-signing-jwks).
   langsmith_signing_jwks: foo
-  # Required only when enabling LangSmith Sandboxes.
-  sandbox_x_service_auth_jwt_secret: foo
-  # Ed25519 private JWK.
+  # Required only when enabling LangSmith Sandboxes. Ed25519 private JWK.
   sandbox_callback_signing_jwk: '<ed25519-private-jwk>'
-  # Optional; include only while rotating sandbox_x_service_auth_jwt_secret.
-  sandbox_x_service_auth_jwt_secret_previous: foo
+  # A dedicated sandbox service-auth secret; name this key in
+  # sandboxes.serviceAuth.secretKey (chart 0.18.0-rc.51 or later; earlier charts
+  # sign sandbox calls with api_key_salt). Required when
+  # sandboxes.external.enabled is true. Without it, the embedded sandbox runtime
+  # uses api_key_salt.
+  sandbox_service_auth_secret: foo
+  # Optional; include only while rotating the sandbox service-auth secret, and
+  # name this key in sandboxes.serviceAuth.previousSecretKey.
+  sandbox_service_auth_secret_previous: foo
 ```
 
 ## 配置

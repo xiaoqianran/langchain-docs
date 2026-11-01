@@ -8,6 +8,10 @@
 
 [Playground](/langsmith/prompt-engineering-concepts#playground) 支持多种模型提供商。您可以选择提供商，配置您的首选设置，然后保存这些配置以在多个提示中重复使用。
 
+> [!注意]
+>
+> 要通过 [LLM Gateway](/langsmith/llm-gateway) 发送 Playground 请求，请选择 **LangSmith 网关** 作为提供商。此页面上的提供程序直接使用您的工作区密钥调用模型提供程序，因此网关策略和 [fallback chains](/langsmith/llm-gateway-fallbacks#set-fallbacks-for-a-prompt) 不适用于它们。
+
 使用此页面获取可用提供程序及其配置选项的列表：
 
 ![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/bedrock.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d6fc326f6c429075add5a742c87d12b1)
@@ -90,15 +94,17 @@ OpenAI
 
 在使用此模型之前，请确保您拥有 AWS 凭证、[IAM role](https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html) 或 [Amazon Bedrock API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html)。
 
-### 身份验证
+＃＃＃ 验证Amazon Bedrock 支持三种身份验证方法。 **IAM 可信实体是推荐的方法**，因为它避免与 LangSmith 共享长期的 AWS 访问密钥。
 
-Amazon Bedrock 支持三种身份验证方法。 **IAM 可信实体是推荐的方法**，因为它避免与 LangSmith 共享长期的 AWS 访问密钥。
+#### IAM 可信实体（推荐）
 
-#### IAM 可信实体（推荐）> [!注意]
+> [!注意]
 >
 > **不适用于 [self-hosted LangSmith](/langsmith/self-hosted) 或 [BYOC](/langsmith/byoc)。** 请改用访问密钥或 Bedrock API 密钥。
 
-通过 IAM 可信实体身份验证，您可以在 AWS 账户中创建 IAM 角色并允许 LangSmith 代入该角色。 LangSmith 中不存储访问密钥。相反，LangSmith 使用[AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) 来承担每个请求的角色。
+通过 IAM 可信实体身份验证，您可以在 AWS 账户中创建 IAM 角色并允许 LangSmith 代入该角色。 LangSmith 中不存储访问密钥。相反，LangSmith 使用 [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) 承担每个请求的角色。
+
+这里设置的`AWS_IAM_ROLE_ARN`秘密也被[LLM Gateway](/langsmith/llm-gateway-provider-authentication#use-an-iam-role)读取。其中一个角色包括 Playground、LLM 法官评估员和网关请求。
 
 要进行此设置：
 
@@ -127,15 +133,15 @@ Amazon Bedrock 支持三种身份验证方法。 **IAM 可信实体是推荐的�
 
 > [!提示]
 >
-> 您可以在[LangSmith workspace settings](https://smith.langchain.com/settings)中找到您的工作区ID。
-
-3. 在 LangSmith Playground 中，通过单击 **Key** 图标打开 Bedrock 提供程序的机密配置（模型配置下拉列表本身不提供 IAM 受信任实体选项）。然后展开 **IAM 受信任实体** 部分并输入您创建的角色的 ARN。
+> 您可以在[LangSmith workspace settings](https://smith.langchain.com/settings)中找到您的工作区ID。3. 在 LangSmith Playground 中，通过单击 **Key** 图标打开 Bedrock 提供程序的机密配置（模型配置下拉列表本身不提供 IAM 受信任实体选项）。然后展开 **IAM 受信任实体** 部分并输入您创建的角色的 ARN。
 
    ![Bedrock secrets and API keys configuration with the IAM Trusted Entity section](https://mintcdn.com/langchain-5e9cc07a/5xyMbImu-yvQUeiG/images/langsmith/bedrock-secrets-config.png?fit=max\&auto=format\&n=5xyMbImu-yvQUeiG\&q=85\&s=5ba03ea30f7bba78bc51d0fa8e273878)
 
 有关信任策略的更多详细信息，请参阅[AWS documentation](https://aws.amazon.com/blogs/security/how-to-use-trust-policies-with-iam-roles/)。
 
-#### 访问键或者，您可以使用 AWS 访问密钥（`AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY`）进行身份验证。在 Playground 的基岩提供程序配置中输入这些内容。此方法设置更简单，但安全性较低，因为它需要存储长期凭据。
+#### 访问键
+
+或者，您可以使用 AWS 访问密钥（`AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY`）进行身份验证。在 Playground 的基岩提供程序配置中输入这些内容。此方法设置更简单，但安全性较低，因为它需要存储长期凭据。
 
 #### 基岩 API 密钥
 
@@ -149,9 +155,7 @@ Bedrock API 密钥使用不记名令牌而不是 AWS 凭证对请求进行身份
 6. （可选）设置`AWS_BEDROCK_REGION`。默认为`us-east-1`。
 7. 选择**保存**。
 
-### 可用型号
-
-AWS Bedrock 提供对来自多个提供商的基础模型的访问：
+### 可用型号AWS Bedrock 提供对来自多个提供商的基础模型的访问：
 
 * **Anthropic：** 克劳德模型。
 * **亚马逊：** 泰坦型号。
@@ -165,7 +169,9 @@ AWS Bedrock 提供对来自多个提供商的基础模型的访问：
 
 参数取决于底层模型提供者：
 
-#### 适用于 Anthropic 型号使用 Anthropic 配置（请参阅下面的 [Anthropic](#anthropic) 部分）。
+#### 适用于 Anthropic 型号
+
+使用 Anthropic 配置（请参阅下面的 [Anthropic](#anthropic) 部分）。
 
 #### 对于亚马逊泰坦
 
@@ -196,13 +202,13 @@ Anthropic 提供 Claude 一代的三层型号：
 
 * **作品：** 最高的智力和能力。
 * **十四行诗：** 平衡性能和成本。
-* **俳句：** 快速且经济高效。
-
-最近的克劳德模型支持扩展思维能力来显示推理过程。
+* **俳句：** 快速且经济高效。最近的克劳德模型支持扩展思维能力来显示推理过程。
 
 有关当前可用型号的列表，请参阅[Anthropic documentation](https://docs.anthropic.com/claude/docs/models-overview)。
 
-### 配置参数|参数|范围 |默认|描述 |
+### 配置参数
+
+|参数|范围 |默认 |描述 |
 | - | - | - | - |
 | **温度** | 0.0 - 1.0 |可选|随机性控制（取消选中以使用模型默认值）|
 | **最大输出代币** | 1+ | 1024 | 1024最大响应长度|
@@ -219,7 +225,7 @@ Anthropic 提供 Claude 一代的三层型号：
 
 |参数|范围 |描述 |
 | - | - | - |
-| **启用扩展思维** |切换|显示/隐藏思维过程 |
+| **启用扩展思维** |切换 |显示/隐藏思维过程 |
 | **预算代币** | 1+ |思考的最大令牌数（默认值：1024）|
 
 启用后，响应包括：
@@ -227,16 +233,16 @@ Anthropic 提供 Claude 一代的三层型号：
 1. 模型推理的“思考”部分。
 2.最终回应。
 
-#### 高级选项
-
-* **基本 URL：** 覆盖自定义部署的 API 端点。
+#### 高级选项* **基本 URL：** 覆盖自定义部署的 API 端点。
 
 ### 工具调用
 
 * **支持的工具选择：** `auto`、`any`（至少需要一种工具）。
 * **并行执行：** 否（仅顺序执行）。
 
-## 天蓝色OpenAI在使用此模型之前，请创建一个[Azure OpenAI resource and model deployment](https://learn.microsoft.com/en-us/azure/ai-services/openai/quickstart)。
+## 天蓝色OpenAI
+
+在使用此模型之前，请创建一个[Azure OpenAI resource and model deployment](https://learn.microsoft.com/en-us/azure/ai-services/openai/quickstart)。
 
 ### 身份验证
 
@@ -244,7 +250,7 @@ Anthropic 提供 Claude 一代的三层型号：
 
 在 Azure OpenAI 提供程序配置中，输入端点、部署名称、API 版本和 API 密钥。
 
-#### 自托管 LangSmith 的工作负载标识
+#### 自托管 LangSmith 的工作负载身份
 
 > [!注意]
 >
@@ -297,7 +303,7 @@ Azure OpenAI 支持与 OpenAI 相同的参数：
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数 |对于可重复的输出 |
+| **种子** |整数|对于可重复的输出 |
 
 #### 高级参数
 
@@ -338,7 +344,7 @@ Databricks 提供的基础模型包括 Claude、GPT、Gemini 和 Llama。
 | **最大输出代币** | 1+ |令牌中的最大响应长度。 |
 | **停止序列** |字符串列表 |模型停止生成的序列。 |
 | **超时** |秒|请求超时。 |
-| **最大重试次数** |整数 |失败请求的最大重试次数。 |
+| **最大重试次数** |整数|失败请求的最大重试次数。 |
 
 选择与您的端点匹配的API路由：
 
@@ -552,7 +558,7 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数 |对于可重复的输出 |
+| **种子** |整数|对于可重复的输出 |
 
 高级：
 
@@ -577,8 +583,8 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 
 |价值|描述 |
 | - | - |
-| `auto` |系统根据负载决定（默认） |
-| `default` |标准处理队列 |
+| `auto` |系统根据负载决定（默认）|
+| `default` |标准处理队列|
 | `flex` |成本更低、延迟可变（如果型号支持）|
 | `priority` |高优先级队列，延迟更低，成本更高 |
 
@@ -606,7 +612,7 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 **必填：**
 
 * **基本 URL：** 您的端点 URL（例如，`https://your-endpoint.com/v1`）。
-* **型号名称：** 您的型号标识符。可与实现 OpenAI 兼容 API 格式的任何框架或服务配合使用，包括：
+* **型号名称：** 您的型号标识符。适用于任何实现 OpenAI 兼容 API 格式的框架或服务，包括：
 
 * 自托管开源推理服务器
 * 路由代理模型
@@ -711,20 +717,20 @@ xAI 为不同的用例提供多种尺寸的 Grok 模型。
 
 * **范围：** 0 - 500 RPS
 * **目的：** 尊重 API 速率限制，控制成本
-* **默认值：** 因提供商而异在运行实验或评估时设置此值以避免达到速率限制。
+* **默认值：** 因提供商而异在运行实验或评估时设置此项以避免达到速率限制。
 
 ## 后续步骤
 
-> **[Configure prompt settings](/langsmith/managing-model-configurations)**
+> [卡][Configure prompt settings](/langsmith/managing-model-configurations)
 >
 > 了解如何在 Playground 中创建和管理模型配置。
 
-> **[Create a prompt](/langsmith/create-a-prompt)**
+> [卡][Create a prompt](/langsmith/create-a-prompt)
 >
 > 开始与您选择的模型提供商一起构建提示。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/playground-model-providers.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

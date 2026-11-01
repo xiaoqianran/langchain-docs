@@ -10,7 +10,7 @@
 
 连接让您：
 
-* **将凭据保留在项目之外**：`mda deploy` 在每次部署时收集 `.env` 值作为部署机密。连接值仍保留在工作区中。
+* **将凭据保留在项目之外**：`mda deploy` 收集 `.env` 值作为每次部署的部署机密。连接值仍保留在工作区中。
 * **为每个呼叫者提供自己的身份**：用户拥有的连接可以解析发出请求的人的凭据，因此代理可以读取该人的文档并以他们的名义进行操作。环境变量为每个人保留一个值。
 * **跳过 OAuth 管道**：托管 Deep Agents 运行授权往返，因此项目不需要回调路由、令牌存储或同意屏幕。这些流由您的托管深度代理自动处理。* **跨代理重复使用一个 slug**：连接属于工作区，因此多个部署可以解析相同的 slug。每个部署都在该 slug 下保存自己的凭据：从每个项目根运行 `mda connections create <slug>` 一次。轮换部署的值会在下次运行时生效，无需重新部署。
 
@@ -54,7 +54,7 @@ notion_token = await connections.get("engineering-notion", {"type": "user"})
 
 ### 识别来电者
 
-用户拥有的连接根据托管Deep Agents附加到运行的调用者身份进行解析。该身份的来源取决于代理的调用方式：|表面|来电者身份|
+用户拥有的连接根据托管Deep Agents附加到运行的调用者身份进行解析。该身份的来源取决于代理的调用方式：|表面|来电者身份 |
 | - | - |
 | [Slack channel](/langsmith/python/managed-deep-agents-channels-slack) |发送消息的 Slack 用户。 |
 | LangSmith 工作室 |已登录的 LangSmith 用户。 |
@@ -196,7 +196,7 @@ uv run mda connections catalog
 
 没有默认范围的服务需要`--scope`。
 
-> **某些服务为其 API 和 MCP 服务器运行单独的 OAuth 应用程序**
+> [accordion] 某些服务为其 API 和 MCP 服务器运行单独的 OAuth 应用程序
 >
 > 观念就是其中之一。 `--oauth notion-api` 针对 Notion 的 REST API 注册应用程序，并且该应用程序未授权 Notion 的 MCP 服务器。要使用 MCP 服务器，请创建一个 [MCP OAuth connection](#create-an-mcp-oauth-connection)。当服务同时提供这两种服务时，请检查提供商的文档。GitHub 需要 OAuth 客户端 ID 和客户端密钥。设置`GITHUB_CLIENT_SECRET`，然后创建连接。将 `********` 替换为客户端 ID：
 
@@ -279,7 +279,7 @@ uv run mda connections create support-linear \
   --authorize
 ```
 
-CLI 为您登录的帐户启动授权流程，并存储部署的结果授权。运行时代码将其解析为代理拥有的凭证：
+CLI 为您登录的帐户启动授权流程，并存储部署的结果授权。运行时代码将其解析为代理拥有的凭据：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 access_token = await connections.get("support-linear", {"type": "agent"})
@@ -289,7 +289,7 @@ access_token = await connections.get("support-linear", {"type": "agent"})
 
 > [!提示]
 >
-> 授权您的团队拥有的专用帐户，而不是您自己的帐户。您登录的帐户将成为客服人员对每个呼叫者采取的每项操作背后的身份。使用个人帐户会产生三项费用：
+> 授权您的团队拥有的专用帐户，而不是您自己的帐户。您登录的帐户将成为客服人员为每个呼叫者采取的每项操作背后的身份。使用个人帐户会产生三项费用：
 >
 > * 代理获得您对该提供商的完全访问权限。
 > * 提供商的审核日志显示您的姓名以及代理所做的事情。
@@ -392,7 +392,7 @@ uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mc
     }
   ]
 }
-```一个中断会列出每一项缺失的授权。在恢复之前处理每个条目。带有 `"kind": "secret"` 的条目代表用户拥有的 API 密钥，而不是 OAuth 授权。 Slack 和 Studio 不收集这些。欲了解更多信息，请参阅[Review current limitations](#review-current-limitations)。
+```一个中断会列出每一项缺失的授权。在恢复之前处理每个条目。带有 `"kind": "secret"` 的条目表示用户拥有的 API 密钥，而不是 OAuth 授权。 Slack 和 Studio 不收集这些。欲了解更多信息，请参阅[Review current limitations](#review-current-limitations)。
 
 |领域|礼物给 |意义|
 | - | - | - |
@@ -625,14 +625,14 @@ uv run mda connections delete organization-tavily
 
 对于`mda dev`，代理拥有的不透明连接读取`MDA_DEV_<SLUG>`。 CLI 将 slug 转换为大写并用下划线替换连字符。例如，`organization-tavily` 读取为 `MDA_DEV_ORGANIZATION_TAVILY`。
 
-用户拥有的连接需要经过身份验证的调用者和代理身份验证。部署代理以端到端地执行[authorization interrupt](#handle-the-authorization-interrupt)。
+用户拥有的连接需要经过身份验证的调用者和代理身份验证。部署代理以端到端地演练[authorization interrupt](#handle-the-authorization-interrupt)。
 
 ## 查看当前限制
 
 连接是托管 Deep Agents 公共测试版的一部分。当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
-* **自定义通道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
+* **自定义渠道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
 * **工作区 UI**：LangSmith 不在 UI 中列出连接。使用 `mda connections list` 和 `mda connections get` 作为连接元数据。
-* **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示段头也是如此。从项目根目录运行`mda connections create <slug>`来创建一个。> **通过代理身份验证存储用户拥有的 API 密钥**
+* **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示段头也是如此。从项目根目录运行`mda connections create <slug>`来创建一个。> [accordion] 通过代理身份验证存储用户拥有的 API 密钥
 >
 > 具有`"kind": "secret"` 的中断入口没有`connect_url`。要在自定义前端中收集一个，请提示输入隐藏输入的值，然后根据现有连接 slug 创建凭据：
 >

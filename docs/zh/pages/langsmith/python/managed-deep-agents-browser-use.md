@@ -6,13 +6,9 @@
 
 为托管深度代理配置浏览器共享、网站登录和人工切换。
 
-为托管深度代理提供一个浏览器，以便在没有公共 API 的情况下在网站上执行操作，例如预订餐厅、通过跟踪跨网站的链接来研究主题，或者在更改代码后通过其 UI 测试应用程序。代理可以导航、单击、填写表格并检查结果。托管 Deep Agents 管理浏览器及其工具。
+为托管深度代理提供一个浏览器，以便在没有公共 API 的情况下在网站上执行操作，例如预订餐厅、通过跟踪跨网站的链接来研究主题，或者在更改代码后通过其 UI 测试应用程序。代理可以导航、单击、填写表格并检查结果。 Managed Deep Agents 管理浏览器及其工具。
 
 当支持任务时使用直接 API。请参阅 [Connections](/langsmith/python/managed-deep-agents-connections) 以使用用户连接的帐户验证 API 调用。有关浏览器选择和开源设置，请参阅[Browser use with Deep Agents](/oss/python/deepagents/browser-use)。
-
-> [!注意]
->
-> Managed Deep Agents SDK 0.10 中添加了浏览器支持。您的工作区还需要访问 LangSmith 浏览器测试版。要确认您的工作区是否有权访问或请求访问，请联系 [LangChain support](https://support.langchain.com) 并提供您的工作区 ID。
 
 ## 声明一个浏览器
 
@@ -27,19 +23,19 @@ browser = define_browser(
 )
 ```
 
-CLI 发现此根文件。不要将声明放在 `browser/` 或 `sandbox/` 内：这些位置不启用浏览器支持。|选项 |默认|描述 |
+CLI 发现此根文件。不要将声明放在 `browser/` 或 `sandbox/` 内：这些位置不启用浏览器支持。
+
+|选项 |默认 |描述 |
 | - | - | - |
 | `scope` | `"thread"` |在一个线程内或跨登录用户的线程共享浏览器 |
 | `idle_ttl_seconds` | `600` |浏览器停止前不活动的秒数；接受 `60` 至 `86400` |
 
-## 选择范围
-
-|范围 |浏览器状态 |用它来 |
+## 选择范围|范围 |浏览器状态 |用它来 |
 | - | - | - |
 | `"thread"`（默认）|每个对话使用一个浏览器；授权参与者轮流共享 |在一次对话中测试跨多个回合的 Web 应用程序更改 |
 | `"user"` |每个经过身份验证的人一个浏览器，每个线程都有一个单独的窗口并共享 cookie 和登录名 |在对话中重复使用网站登录 |
 
-线程范围开始每个新对话，无需另一个线程的 cookie 或登录。例如，使用测试帐户登录 Web 应用程序，然后在同一线程中迭代更改时重复使用选项卡和登录。单独的应用程序测试对话会获得隔离的浏览器。启动另一个线程并不会删除之前的浏览器。
+线程范围开始每个新对话，无需另一个线程的 cookie 或登录。例如，使用测试帐户登录 Web 应用程序，然后在同一线程中迭代更改时重复使用选项卡和登录。单独的应用程序测试对话会获得隔离的浏览器。启动另一个线程不会删除先前的浏览器。
 
 对于用户范围，更改声明：
 
@@ -47,9 +43,9 @@ CLI 发现此根文件。不要将声明放在 `browser/` 或 `sandbox/` 内：�
 from managed_deepagents import define_browser
 
 browser = define_browser(scope="user", idle_ttl_seconds=600)
-```例如，在一个对话中登录预订网站，然后在新线程中请求另一次预订。同一用户的新窗口可以重复登录。其他经过身份验证的人会使用不同的浏览器。用户范围遵循[verified caller identity](/langsmith/python/managed-deep-agents-identity)，而不是提示中的名称；非人员主体使用线程范围。
+```
 
-共享登录状态不是帐户隔离：注销或切换帐户可能会影响该人的其他线程。在对话中协调购买和预订。完成运行会释放客户端，而不是登录；空闲超时会停止浏览器而不是注销。网站过期或浏览器更换仍然会使保存的状态无效。
+例如，在一个对话中登录预订网站，然后在新线程中请求另一次预订。同一用户的新窗口可以重复登录。其他经过身份验证的人会使用不同的浏览器。用户范围遵循[verified caller identity](/langsmith/python/managed-deep-agents-identity)，而不是提示中的名称；非人员主体使用线程范围。共享登录状态不是帐户隔离：注销或切换帐户可能会影响该人的其他线程。在对话中协调购买和预订。完成运行会释放客户端，而不是登录；空闲超时会停止浏览器而不是注销。网站过期或浏览器更换仍然会使保存的状态无效。
 
 ## 浏览器工具
 
@@ -60,11 +56,11 @@ browser = define_browser(scope="user", idle_ttl_seconds=600)
 | `browser_snapshot` |读取活动页面的辅助功能树并为交互分配元素 ID |
 | `browser_run` |通过 JavaScript 或针对快照 ID 的批量操作进行导航和交互 |
 | `browser_screenshot` |捕获页面；可选的绝对`path`将图像保存到代理的沙箱 |
-| `browser_handoff` |使人员能够控制登录、验证码或两步身份验证的窗口 |导航后或元素 ID 过时时拍摄新快照。浏览不需要代理[sandbox](/langsmith/python/managed-deep-agents-sandboxes)；保存屏幕截图文件即可。
+| `browser_handoff` |使人员能够控制登录窗口、CAPTCHA 或双因素身份验证 |
 
-## 关闭浏览器
+导航后或元素 ID 过时时拍摄新快照。浏览不需要代理[sandbox](/langsmith/python/managed-deep-agents-sandboxes)；保存屏幕截图文件即可。
 
-人工切换可让您登录或处理代理无法自行完成的页面。代理调用 `browser_handoff(reason)` 来让您控制其线程的浏览器窗口。
+## 关闭浏览器人工切换可让您登录或处理代理无法自行完成的页面。代理调用 `browser_handoff(reason)` 来让您控制其线程的浏览器窗口。
 
 自定义客户端必须呈现切换工件以提供嵌入式浏览器或浏览器链接。
 
@@ -75,9 +71,9 @@ browser = define_browser(scope="user", idle_ttl_seconds=600)
 3. 完成后，单击浏览器窗口中的“**返还**”。
 4. 代理会收到您已交回控制权的通知。它检查当前页面以检查登录是否成功，然后继续执行任务。
 
-![Animated demo of an agent handing a travel website to a person for login and continuing after control is returned](https://mintcdn.com/langchain-5e9cc07a/oBWRTKyHBthUkwnX/images/managed-deep-agents-browser-handoff-demo.gif?s=2bd14a5bebbfee3087b53cef765b288c)动画浏览器交接演示：在网站上登录，然后将控制权交还给客服人员。
+![Animated demo of an agent handing a travel website to a person for login and continuing after control is returned](https://mintcdn.com/langchain-5e9cc07a/oBWRTKyHBthUkwnX/images/managed-deep-agents-browser-handoff-demo.gif?s=2bd14a5bebbfee3087b53cef765b288c)
 
-在 Studio 中，切换卡嵌入浏览器并在您拥有控制权时显示。使用 **Hand back** 将控制权返回给代理：
+动画浏览器交接演示：在网站上登录，然后将控制权交还给客服人员。在 Studio 中，切换卡嵌入浏览器并在您拥有控制权时显示。使用 **Hand back** 将控制权返回给代理：
 
 ![Studio chat showing The agent needs you in the browser, an embedded Hacker News page, and the Hand back control](https://mintcdn.com/langchain-5e9cc07a/oBWRTKyHBthUkwnX/images/managed-deep-agents-studio-browser-handoff.png?fit=max\&auto=format\&n=oBWRTKyHBthUkwnX\&q=85\&s=9f4d9ef969bb00ba2a62c12e5ac4dcc5)
 
@@ -89,9 +85,9 @@ Studio 中的浏览器切换，Hacker News 打开且页面上方的 Hand back �
 
 > [!警告]
 >
-> 保持交接链接的私密性：任何拥有有效链接的人都可以控制浏览器。请勿将密码存储在提示、聊天消息或代理编写的文件中。在切换期间直接登录，并避免暴露页面内容中的秘密以供代理稍后检查。浏览器范围控制会话重用；它不是密码库。## 每次运行选择一个浏览器
+> 保持交接链接的私密性：任何拥有有效链接的人都可以控制浏览器。请勿将密码存储在提示、聊天消息或代理编写的文件中。在切换期间直接登录，并避免暴露页面内容中的秘密以供代理稍后检查。浏览器范围控制会话重用；它不是密码库。
 
-在 [graph factory](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run) 中显式设置 `browser` 来选择运行的范围和空闲超时：
+## 每次运行选择一个浏览器在 [graph factory](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run) 中显式设置 `browser` 来选择运行的范围和空闲超时：
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import ManagedServerRuntime, define_browser, define_deep_agent

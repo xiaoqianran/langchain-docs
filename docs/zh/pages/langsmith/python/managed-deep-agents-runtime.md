@@ -4,9 +4,9 @@
 
 # 托管 Deep Agents 运行时
 
-从代理工厂、工具和中间件接收的本机运行时类型中读取运行上下文、已验证的调用方、通道传递和沙箱。
+从代理工厂、工具和中间件接收的本机运行时类型中读取运行上下文、已验证的调用方、线程和沙箱。
 
-代理工厂、工具和中间件挂钩各自接收一个运行时。它是本机 LangChain 或 LangGraph 运行时，添加了三个托管字段。上下文、状态和存储的工作方式与 [LangChain](/oss/python/langchain/runtime) 中的工作方式相同，并且您的类型检查器会看到您自己的上下文类型。
+代理工厂、工具和中间件挂钩各自接收一个运行时。它是本机 LangChain 或 LangGraph 运行时，添加了三个托管字段。上下文、状态和存储的工作方式与 [LangChain](/oss/python/langchain/runtime) 中一样，并且您的类型检查器会看到您自己的上下文类型。
 
 > [!注意]
 >
@@ -25,16 +25,16 @@
 类型参数遵循本机顺序，因此 `ManagedToolRuntime` 首先获取上下文，然后获取状态。这两个参数都是可选的。 `ManagedDeepAgentRuntime` 是`ManagedToolRuntime` 的别名。
 
 每种类型都保留每个本机字段和方法，例如 `context`、`state`、`store`、`stream_writer` 和 `tool_call_id`。托管Deep Agents添加了三个字段：* **`server_info`**：本机服务器元数据加上经过验证的调用者。工具和中间件接收它。
-* **`channel`**：开始运行的已验证通道交付。 `None` 直接 API 和计划运行。
+* **`thread`**：运行的线程及其来自的频道对话。参见[Thread](#thread)。
 * **`backend`**：线程的[sandbox](/langsmith/python/managed-deep-agents-sandboxes)文件系统。 `None` 当项目声明没有沙箱时。
 
 ## 独立的上下文、调用者和传递者
 
 上下文、调用者和通道传递来自不同的来源并具有不同的信任级别。运行时将它们保存在单独的字段中：
 
-* **Context** 来自 API 调用的 `context` 参数。 LangGraph 根据您的上下文模式验证它。用它来选择行为，而不是授予访问权限。
-* **服务器信息**来自[identity](/langsmith/python/managed-deep-agents-identity)，它通过经过验证的令牌解析调用者。托管Deep Agents剥离客户端通过`configurable`发送的身份密钥，因此使用此字段进行授权。
-* **通道** 来自托管的 [channel](/langsmith/python/managed-deep-agents-channels) 入口，它在运行开始之前验证交付。直接 API 调用上下文中的 `channel` 键不会创建 `runtime.channel`。
+* **Context** 来自 API 调用的 `context` 参数。 LangGraph 根据您的上下文架构对其进行验证。用它来选择行为，而不是授予访问权限。
+* **服务器信息**来自[identity](/langsmith/python/managed-deep-agents-identity)，它从经过验证的令牌解析调用者。托管Deep Agents剥离客户端通过`configurable`发送的身份密钥，因此使用此字段进行授权。
+* **通道** 来自托管的 [channel](/langsmith/python/managed-deep-agents-channels) 入口，它在运行开始之前验证交付。直接 API 调用上下文中的 `channel` 键不会创建 `runtime.thread.origin`。
 
 API 调用者在输入旁边传递上下文：
 
@@ -51,15 +51,15 @@ await client.runs.create(
 
 在通道运行中，代理工厂、工具和中间件中的上下文为`None`。
 
-要区分通道运行和直接运行，请检查`runtime.channel`。
+要区分通道运行和直接运行，请检查`runtime.thread.origin`。
 
 ## 读取代理工厂中的运行时
 
-代理工厂收到`ManagedServerRuntime`：本地[⟦T32⟧](/langsmith/graph-rebuild)加上`channel`和`backend`。要编写工厂，请参阅[Select configuration per run](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run)。
+代理工厂收到`ManagedServerRuntime`：本地[⟦T31⟧](/langsmith/graph-rebuild)加上`thread`和`backend`。要编写工厂，请参阅[Select configuration per run](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run)。
 
-代理服务器还调用工厂来读取模式和状态。 `access_context` 命名操作。 [⟦T36⟧](/langsmith/graph-rebuild#access-contexts) 是 `None` 在 `threads.create_run` 之外，因此从 `execution_runtime.context` 读取运行上下文。每次调用返回相同的图形结构和模式。
+代理服务器还调用工厂来读取架构和状态。 `access_context` 命名操作。 [⟦T35⟧](/langsmith/graph-rebuild#access-contexts) 是 `None` 在 `threads.create_run` 之外，因此从 `execution_runtime.context` 读取运行上下文。每次调用返回相同的图形结构和模式。
 
-`channel` 可用，因此工厂可以选择每个通道的配置。 `backend`始终是`None`，因为工厂选择了沙箱。原生 `user`、`store` 和 `ensure_user()` 仍然可用。
+`thread` 可用，因此工厂可以选择每个通道的配置。 `backend`始终是`None`，因为工厂选择了沙箱。本机 `user`、`store` 和 `ensure_user()` 仍然可用。
 
 ## 在工具中读取运行时
 
@@ -83,8 +83,9 @@ async def check_order(order_id: str, runtime: ManagedToolRuntime[AppContext]) ->
     principal = runtime.server_info.principal if runtime.server_info else None
     if principal is None:
         return "Sign in to check orders."
-    if runtime.channel is not None and runtime.channel.post is not None:
-        await runtime.channel.post({"type": "content", "content": "Checking that order now."})
+    origin = runtime.thread.origin
+    if origin is not None and origin.channel.post is not None:
+        await origin.channel.post({"type": "content", "content": "Checking that order now."})
     region = runtime.context.region if runtime.context else "us"
     return f"Order {order_id} for {principal.id} ships from {region}."
 ```当没有呼叫者解析时，`principal` 不存在，因为身份是选择加入的。 `post` 发送一条附加消息，代理的最终回复仍会自动发布。有关书写工具的更多信息，请参阅[Custom tools](/langsmith/python/managed-deep-agents-tools)。
@@ -111,7 +112,7 @@ def log_caller(state: AgentState, runtime: Runtime[AppContext]) -> None:
     if not isinstance(runtime, ManagedRuntime):
         return None
     principal = runtime.server_info.principal if runtime.server_info else None
-    source = runtime.channel.provider if runtime.channel else "api"
+    source = runtime.thread.origin.channel.provider if runtime.thread.origin else "api"
     print(f"{principal.id if principal else 'anonymous'} via {source}")
     return None
 ```
@@ -129,25 +130,37 @@ def log_caller(state: AgentState, runtime: Runtime[AppContext]) -> None:
 * **`link`**：帐户链接。 `status` 目前报告`"not_required"`。
 * **`source`**：跑步进入的地方。 `provider` 是一个值，例如 `"http"`、`"schedule"`、`"studio"` 或 `"slack"`，以及可选的 `thread_id`。从 `principal` 读取调用者，而不是从本机 `user` 读取。有关身份提供者和声明映射，请参阅[Identity](/langsmith/python/managed-deep-agents-identity)。
 
+### 主题
+
+`runtime.thread` 是`ManagedThread`：
+
+* **`id`**：LangGraph 线程 ID。
+* **`origin`**：线程来自的频道对话，及其最新消息的`channel`和`sender`。未在没有通道消息到达的线程上设置。
+* **`participants`**：线程上的人。每个都有一个`id`和一个`role`、`"owner"`或`"member"`。
+
+> [!警告]
+>
+> `runtime.channel` 已弃用，并将在 `managed-deepagents` 0.11 中删除。请阅读`runtime.thread.origin.channel`。
+
 ### 频道
 
-`runtime.channel` 是`RuntimeChannel`：
+`runtime.thread.origin.channel` 是`RuntimeChannel`：
 
 * **`name`**：配置的通道名称。
 * **`provider`**：提供商标签，例如`"slack"`。
-* **`event`**：打字传送。请参阅下面的事件类型。
+* **`event`**：打字传送。 `None` 在没有启动通道事件的运行中，例如 Studio 恢复。请参阅下面的事件类型。
 * **`raw_event`**：当通道提供一个时，原始提供者有效负载。对于 Slack，这是没有 HTTP 标头或触发器信封的内部 Slack 事件。简历可以省略。
 * **`post`**：一个异步函数，用于向启动运行的会话发送消息。 `None` 当通道无法发送时。
 
-`event.type` 是以下之一：
-
-* **`message`**：一条新消息。 `messages` 保存传入的消息。
-* **`user_prompt_response`**：对交互式提示的回复。携带 `action`、可选的 `value` 和可选的 `correlation_id`。参见[Agent-owned interrupts](/langsmith/python/managed-deep-agents-agent-owned-interrupts)。
+`event.type` 是以下之一：* **`message`**：一条新消息。 `messages` 保存传入的消息。
+* **`user_prompt_response`**：对交互式提示的回复。带有 `action`、可选的 `value` 和可选的 `correlation_id`。参见[Agent-owned interrupts](/langsmith/python/managed-deep-agents-agent-owned-interrupts)。
 * **`interrupt_resume`**：挂起中断的恢复。 `resume` 保存恢复值。
 
 `post` 接受内容消息 `{"type": "content", "content": ...}` 或本机消息 `{"type": "native", "native": ...}`。内置的 Slack 通道仅发送文本内容。回复目标保持私有：`post`没有地址或目标覆盖，代码无法读取或替换目标。
 
-### 后端`runtime.backend` 在线程的沙箱中读写文件。参见[Read and write sandbox files from code](/langsmith/python/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
+### 后端
+
+`runtime.backend` 在线程的沙箱中读写文件。参见[Read and write sandbox files from code](/langsmith/python/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
 
 ## 另请参阅
 

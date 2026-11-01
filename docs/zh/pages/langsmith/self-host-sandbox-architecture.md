@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Self-hosted Sandbox architecture | https://docs.langchain.com/langsmith/self-host-sandbox-architecture -->
 
-# 自托管沙箱架构
+# 自托管沙盒架构
 
 了解自托管 LangSmith 沙箱如何使用 microVM、Kubernetes 主机和共享存储来运行和恢复工作负载。
 
@@ -10,11 +10,11 @@
 
 有关支持的平台、先决条件和安装说明，请参阅[Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)。下面的架构描述了`sandbox-host`运行时。不同 Helm 版本的存储安装和配置选项可能有所不同。
 
-> **[Scaling and capacity](/langsmith/self-host-sandbox-scaling)**
+> [卡][Scaling and capacity](/langsmith/self-host-sandbox-scaling)
 >
 > 调整主机池大小、配置自动缩放以及规划内存和缓存容量。
 
-> **[Upgrades and operations](/langsmith/self-host-sandbox-operations)**
+> [卡片][Upgrades and operations](/langsmith/self-host-sandbox-operations)
 >
 > 了解主机耗尽、故障恢复和生产监控。
 
@@ -33,7 +33,7 @@
 | `platform-backend` |现有LangSmith节点池。验证和授权请求、选择主机并代理流量。不保持持久沙箱状态。 | API 不可用 当服务不可用时，沙箱 API 和代理流量失败。重新启动它不会删除沙盒磁盘。 |
 | PostgreSQL |现有LangSmith数据库。保存沙箱记录、主机注册表和放置。 | API 不可用 中断会阻止需要沙箱记录或放置的操作。持久数据面临风险 丢失数据库内容需要恢复这些记录，而不仅仅是重新启动主机。 |
 | `sandbox-host` |专用沙盒节点池，每个节点一个 pod。保存正在运行的 microVM 及其内存。 |受影响的一台主机突然丢失会停止该主机的沙箱并丢失运行内存。持久磁盘保留在共享存储上。 |
-| JuiceFS 客户端 |每个主机 Pod 内主机拥有的安装。将虚拟机连接到共享存储并管理本地缓存。 |受影响的一台主机挂载失败会隔离该主机并停止其虚拟机。重新启动需要工作共享存储。 || Kubernetes API | Kubernetes 控制平面。保留主机租赁和主机部署。 |池范围内的中断 无法续订租约的主机最终会自我隔离。集群范围内的长时间中断可能会导致整个池停止运行。 |
+| JuiceFS 客户端 |每个主机 Pod 内主机拥有的安装。将虚拟机连接到共享存储并管理本地缓存。 |受影响的一台主机挂载失败会隔离该主机并停止其虚拟机。重新启动需要工作共享存储。 || Kubernetes API | Kubernetes 控制平面。保留主机租约和主机部署。 |池范围内的中断 无法续订租约的主机最终会自我隔离。集群范围内的长时间中断可能会导致整个池停止运行。 |
 | JuiceFS Redis |专用元数据存储。保存文件树、文件大小以及到数据块的映射。 |池范围内的中断 中断会导致主机上的文件系统操作停止或失败。持久数据面临风险 丢失的元数据需要从备份中恢复。仅靠对象存储无法重建文件系统。 |
 |对象存储 |共享桶或容器。保存磁盘映像、节省的内存和快照的数据块。 |池范围内的中断 中断会阻止未缓存的读取和上传。新主机可能无法准备就绪。持久数据面临风险 已删除的数据块需要从受影响的磁盘和快照的备份中恢复。 |
 |节点本地缓存 |每个沙箱节点。保存 JuiceFS 数据块的一次性副本。 |仅缓存重建 持久数据保留在共享存储上。主机再次获取缓存的副本，在缓存预热时 I/O 速度会变慢。 |

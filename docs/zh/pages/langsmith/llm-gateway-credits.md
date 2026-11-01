@@ -10,21 +10,13 @@
 >
 > LLM 网关位于[beta](/langsmith/release-stages)。
 
-**Gateway Credits** 让您可以通过标准 LLM Gateway API 调用 LangChain 托管模型，而无需设置提供商帐户或密钥。仅使用您的 [LangSmith API key](/langsmith/create-account-api-key) 进行身份验证。不需要[provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)。
+**Gateway Credits** 让您可以通过标准 LLM Gateway API 调用 LangChain 托管模型，而无需设置提供商帐户或密钥。仅使用您的 [LangSmith API key](/langsmith/create-account-api-key) 进行身份验证。不需要[provider secret](/langsmith/llm-gateway-provider-authentication#add-a-provider-key)。
 
-网关根据其模型 ID 路由每个请求。诸如 `moonshotai/kimi-k3` 之类的托管模型 slug 使用 Gateway Credits。以配置的自带密钥提供程序（例如 `anthropic/claude-opus-5`）开头的模型 ID 会改用该提供程序的密钥。
+网关根据其模型 ID 路由每个请求。诸如 `moonshotai/kimi-k3` 之类的托管模型 slug 使用 Gateway Credits。以已配置的自带密钥提供程序（例如 `anthropic/claude-opus-5`）开头的模型 ID 使用该提供程序的密钥。
 
-> **基本网址**
+> [!注意]
 >
-> 将任何受支持的客户端指向标准网关 API：
->
-> ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> https://gateway.smith.langchain.com/v1
-> ```
->
-> 使用您的 LangSmith API 密钥作为不记名令牌进行身份验证。
->
-> 对于区域基本 URL，请参阅 [Regional gateways](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。
+> 网关积分可在除 Enterprise 之外的 [paid plans](https://www.langchain.com/pricing) 上使用。
 
 ## 可用型号
 
@@ -33,25 +25,13 @@
 |型号 ID |描述 |
 | - | - |
 | `moonshotai/kimi-k2.6` | Moonshot AI 的 Kimi K2.6。强大的通用模型。由烟花推理提供支持。 |
-| `moonshotai/kimi-k3` | Moonshot AI 的 Kimi K3。由烟花推理提供支持。 |使用标准模型列表端点列出工作区可用的每个模型，包括配置的自带密钥提供程序和托管模型：
+| `moonshotai/kimi-k3` | Moonshot AI 的 Kimi K3。由烟花推理提供支持。 |
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl https://gateway.smith.langchain.com/v1/models \
-    -H "Authorization: Bearer $LANGSMITH_API_KEY"
-```
+> [!提示]
+>
+> 要列出您工作区可用的每个模型，包括配置的自带密钥提供程序和托管模型，请致电 [⟦T7⟧](/langsmith/llm-gateway-api-formats#list-models)。使用与提示请求的 `model` 字段中所示完全相同的返回模型 ID。## 拨打电话
 
-使用与提示请求的 `model` 字段中所示完全相同的返回模型 ID。
-
-## 先决条件
-
-使用 Gateway Credits 之前：
-
-* 您的组织采用付费计划 ([Developer, Plus, Startup, or Premier](/langsmith/pricing-plans))。
-* 您有一个工作区范围的 [LangSmith API key](/langsmith/create-account-api-key) 附加到具有 `gateway:invoke` 和 `workspaces:read` [permissions](/langsmith/organization-workspace-operations) 的角色。如果您不确定，请参阅[Admin setup](/langsmith/llm-gateway-admin-setup)。
-
-## 拨打电话
-
-将与 OpenAI 兼容的客户端指向 `https://gateway.smith.langchain.com/v1`，使用您的 LangSmith API 密钥进行身份验证，并将 `model` 设置为托管模型 ID。
+托管模型使用与自带密钥模型相同的标准[API formats](/langsmith/llm-gateway-api-formats)。将与 OpenAI 兼容的客户端指向 `https://gateway.smith.langchain.com/v1`，使用工作区范围的 LangSmith API 密钥进行身份验证，并将 `model` 设置为托管模型 ID。有关密钥类型、权限和每个客户端发送的标头，请参阅[Authenticate to the LLM Gateway](/langsmith/llm-gateway-authentication)。
 
 ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl https://gateway.smith.langchain.com/v1/chat/completions \
@@ -90,30 +70,19 @@ model = init_chat_model(
 print(model.invoke("ping").content)
 ```
 
-## 支持的端点
+本例调用LangSmith云上的美国网关。其他地区请参见[Use a regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。
 
-信用资助聊天模型使用与自带密钥模型相同的标准 API 格式：
+## 定价
 
-|方法与路径|行为 |
-| - | - |
-| `POST /v1/chat/completions` | OpenAI 聊天完成，包括流媒体。 |
-| `POST /v1/messages` | Anthropic 消息，包括流媒体。 |
-| `POST /v1/responses` | OpenAI 回应。 |
-| `GET /v1/models` |列出工作区可用的模型。 |
+网关积分以 **LangChain 标准单位 (LSU)** 计价，每 LSU **\$1**；每个调用都会根据令牌使用情况消耗 LSU。有关计划详细信息和当前费率，请参阅[the pricing page](https://www.langchain.com/pricing)。
 
-有关请求示例和翻译行为，请参阅[API formats](/langsmith/llm-gateway-api-formats)。
-
-## 定价Gateway Credits 适用于除 Enterprise 之外的所有付费计划。有关计划详细信息和当前费率，请参阅[the pricing page](https://www.langchain.com/pricing)。网关积分以 **LangChain 标准单位 (LSU)** 计价，每 LSU **\$1**；每个调用都会根据令牌使用情况消耗 LSU。
-
-标准网关[spend policies](/langsmith/llm-gateway-spend-policies)适用于托管模型流量，因此您配置的任何组织、工作区、API 密钥或用户上限也管理网关积分的使用。您可以使用与自带密钥提供商相同的工具来控制网关信用消耗。例如，将每个提供商的特定 API 密钥上限限制为 200 美元/月，或者设置工作区范围内的每日限制（包括托管模型调用）。
+标准网关[spend policies](/langsmith/llm-gateway-spend-policies)适用于托管模型流量，因此任何配置的组织、工作区、API 密钥或用户上限也控制网关信用的使用。您可以使用与自带密钥提供商相同的工具来控制网关信用消耗。例如，将每个提供商的特定 API 密钥上限限制为 200 美元/月，或者设置工作区范围内的每日限制（包括托管模型调用）。
 
 ## 追踪
 
-与所有网关流量一样，托管模型调用可追溯到 LangSmith。有关痕迹落在何处以及如何控制对它们的访问，请参阅[Traces, Engine, and access control](/langsmith/llm-gateway-access)。
+与所有网关流量一样，托管模型调用可追溯到 LangSmith。有关痕迹落在何处以及如何控制对它们的访问，请参阅[View LLM Gateway traces](/langsmith/llm-gateway-traces)。
 
-## 后续步骤
-
-* [Quickstart](/langsmith/llm-gateway-quickstart)：进行您的第一个网关代理呼叫。
+## 后续步骤* [Send your first LLM Gateway request](/langsmith/llm-gateway-first-request)：进行第一个网关代理呼叫。
 * [API formats](/langsmith/llm-gateway-api-formats)：通过聊天完成、消息或响应调用模型。
 * [Spend policies](/langsmith/llm-gateway-spend-policies)：为 Gateway Credit 使用添加成本限制。
 * [Direct model access](/langsmith/llm-gateway-direct-model-access)：使用提供商原生 API 和模型 ID。

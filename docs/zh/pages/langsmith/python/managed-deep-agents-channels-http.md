@@ -33,7 +33,7 @@ my-agent/
     orders.py
 ```
 
-文件名成为通道名称和端点路径。一个项目可以声明多个HTTP通道，并且名称必须是唯一的。完整的项目布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。## 添加 HTTP 通道
+文件名成为通道名称和端点路径。一个项目可以声明多个HTTP通道，并且名称必须是唯一的。完整的项目布局，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。## 添加 HTTP 通道
 
 **1.声明通道**
 
@@ -89,7 +89,7 @@ def verify(context: HttpChannelRequest) -> bool:
 * `{"type": "message", "message": {...}}` 开始跑步。
 * `{"type": "ignore"}` 跳过该事件。
 
-两者都接受可选的 `response` 和 Starlette `Response`。
+两者都接受可选的 `response`，Starlette `Response`。
 
 该消息携带四个必填字段：* **`user_id`**：外部服务中调用者的 ID，作为字符串，从已验证的事件解析。代理身份验证将其映射到运行可能使用其凭据的主体，因此它是从经过验证的数据而不是从未经身份验证的字段派生的。使用 `str()` 转换数字提供商 ID。
 * **`thread_id`**：要运行的对话，作为 UUID。 Managed Deep Agents 将其小写并将其映射到持久代理线程，因此相同的值会继续相同的对话。
@@ -179,7 +179,7 @@ channel = channels.http(
 )
 ```
 
-托管 Deep Agents 在运行完成后发布回复，与提供商已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/python/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会被记录为传送失败。添加可选的异步 `on_error(error, target)` 回调来处理运行或交付失败。它取代了默认的错误回复。它接收经过验证的回复目标。
+托管 Deep Agents 在运行完成后发布回复，与提供者已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/python/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会被记录为传送失败。添加可选的异步 `on_error(error, target)` 回调来处理运行或交付失败。它取代了默认的错误回复。它接收经过验证的回复目标。
 
 ## 调用端点
 
@@ -209,13 +209,13 @@ POST https://<deployment-url>/channels/<name>/events
 
 ## 读取代理中的事件
 
-工具和中间件从[⟦T101⟧](/langsmith/python/managed-deep-agents-runtime#channel)读取交付。对于解析器示例，`runtime.channel.provider` 是 `"orders"`。
+工具和中间件从[⟦T101⟧](/langsmith/python/managed-deep-agents-runtime#channel)读取交付。对于解析器示例，其 `provider` 是 `"orders"`。
 
-从 `parse` 返回 `raw_event` 以在 `runtime.channel.raw_event` 公开 JSON 提供程序数据。如果省略，`runtime.channel.raw_event` 为`None`。
+从 `parse` 返回 `raw_event` 以在 `runtime.thread.origin.channel.raw_event` 公开 JSON 提供程序数据。如果省略，`raw_event` 为`None`。
 
-回复`target`保持私密。代码无法从`runtime.channel`读取它。
+回复`target`保持私密。代码无法从通道读取它。
 
-托管 Deep Agents 根据解析的消息构建 `runtime.channel.event`。它不会再次解码主体或自动保留提供者事件。
+托管 Deep Agents 根据解析的消息构建通道的 `event`。它不会再次解码主体或自动保留提供者事件。
 
 ## 部署代理
 

@@ -10,37 +10,37 @@
 >
 > SmithDB 是一个用于自托管 LangSmith 的可选数据存储。 ClickHouse 在 LangSmith 0.16 上是必需的，并且在 0.17 上保持默认值。不要在 0.17 以下的任何版本上禁用 ClickHouse。最低 LangSmith 版本取决于您的云。参见[Cloud support](#cloud-support)。
 
-SmithDB 是专为代理跟踪数据而构建的列式数据存储：深度嵌套的跨度、多模式内容以及保持打开状态数小时的跨度。它通过每个 Pod 磁盘缓存将持久数据保存在对象存储中，并与现有 ClickHouse 数据存储一起提供 LangSmith 跟踪摄取和查询。
+SmithDB 是为代理跟踪数据构建的列式数据存储：深度嵌套的跨度、多模式内容以及保持打开状态数小时的跨度。它通过每个 Pod 磁盘缓存将持久数据保存在对象存储中，并与现有 ClickHouse 数据存储一起提供 LangSmith 跟踪摄取和查询。
 
 一些 LangSmith 功能，例如轨迹视图、轨迹评估器和过滤器查询语法，需要 SmithDB。参见[SmithDB feature availability](/langsmith/self-host-smithdb-features)。
 
-> **[Feature availability](/langsmith/self-host-smithdb-features)**
+> [卡][Feature availability](/langsmith/self-host-smithdb-features)
 >
 > 查看哪些功能需要 SmithDB 以及哪些功能在 ClickHouse 上继续运行。
 
-> **[Install SmithDB](/langsmith/self-host-smithdb-install)**
+> [卡][Install SmithDB](/langsmith/self-host-smithdb-install)
 >
 > 部署基础设施、部署 SmithDB 服务、启用双重摄取并在验证后切换查询。
 
-> **[Prepare supporting infrastructure](/langsmith/self-host-smithdb-infrastructure)**
+> [卡][Prepare supporting infrastructure](/langsmith/self-host-smithdb-infrastructure)
 >
 > 提供专用的PostgreSQL元存储、对象存储和缓存存储。
 
-> **[Configure for scale](/langsmith/self-host-smithdb-scale)**
+> [卡][Configure for scale](/langsmith/self-host-smithdb-scale)
 >
-> 选择经过测试的资源层和 SmithDB 工作负载的大小。> **[Configure observability](/langsmith/self-host-smithdb-observability)**
+> 选择经过测试的资源层和 SmithDB 工作负载的大小。> [卡][Configure observability](/langsmith/self-host-smithdb-observability)
 >
 > 抓取 SmithDB 指标并将日志和跟踪导出到您的堆栈。
 
-> **[Migrate historical data](/langsmith/self-host-smithdb-migrate)**
+> [卡][Migrate historical data](/langsmith/self-host-smithdb-migrate)
 >
 > 在查询切换之前将 ClickHouse 历史记录回填到 SmithDB 中。
 
-> **[Metrics reference](/langsmith/self-host-smithdb-metrics)**
+> [卡][Metrics reference](/langsmith/self-host-smithdb-metrics)
 >
 > 每个 SmithDB 组件需要关注的指标以及如何读取它们。
 
-> **[Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting)**
+> [卡片] [Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting)
 >
 > 收集上下文、禁用 SmithDB 或安全地重置部署。
 

@@ -51,7 +51,7 @@ export OPENAI_API_KEY="<your-openai-api-key>"
 
 在发送跟踪之前，请在LangSmith中创建代理：
 
-1. 在 [agent-based workspace](/langsmith/agents) 中，打开 **+ Agent**，选择 **Observability**，并使用 **Agent name** 和 **Agent ID** 创建一个 Agent。这需要`projects:create`许可。如果代理已存在，请重用它。
+1. 在 [agent-based workspace](/langsmith/agent-registry) 中，打开 **+ Agent**，选择 **Observability**，并使用 **Agent name** 和 **Agent ID** 创建一个 Agent。这需要`projects:create`许可。如果代理已存在，请重用它。
 2. 复制 **代理 ID** 并选择环境：`local`、`development`、`staging` 或 `production`。
 3. 在运行代理之前配置[agent addressing](/langsmith/log-traces-to-agent)：
 
@@ -60,7 +60,7 @@ export OPENAI_API_KEY="<your-openai-api-key>"
    export LANGSMITH_AGENT_ENVIRONMENT="production"
    ```
 
-注册代理一次，而不是每次跟踪。从代码运行环境中删除 `LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT` 和 `LANGCHAIN_SESSION`。请勿将旧目标设置与代理寻址结合起来。要使用 SDK 调用或 API 请求创建代理，请参阅 [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically)。> **基于项目的工作区和自托管 LangSmith**
+注册代理一次，而不是每次跟踪。从代码运行环境中删除 `LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT` 和 `LANGCHAIN_SESSION`。请勿将旧目标设置与代理寻址结合起来。要使用 SDK 调用或 API 请求创建代理，请参阅 [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically)。> [手风琴] 基于项目的工作区和自托管 LangSmith
 >
 > 代理寻址可在 LangSmith 云上基于代理的工作区中使用。在基于项目的工作区（包括自托管 LangSmith）中，将 `LANGSMITH_PROJECT` 设置为跟踪项目名称，而不是设置两个代理变量。
 

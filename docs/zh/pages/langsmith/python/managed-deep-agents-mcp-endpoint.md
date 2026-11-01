@@ -30,7 +30,7 @@
 
 ## 验证请求MCP 端点使用部署的 [identity](/langsmith/python/managed-deep-agents-identity) 配置，与部署上的所有其他路由相同。发送与配置模式匹配的凭证：
 
-|身份模式|标题|
+|身份模式 |标题|
 | - | - |
 | LangSmith API 密钥（默认）| `x-api-key: <LANGSMITH_API_KEY>` |
 |苏帕巴斯| `Authorization: Bearer <access_token>` |
@@ -136,19 +136,19 @@ async with MCPAdapter(
 
 ## 后续步骤
 
-> **[Agent Server](/langsmith/agent-server-overview)**
+> [卡][Agent Server](/langsmith/agent-server-overview)
 >
 > 探索托管每个托管 Deep Agents 部署的运行时。
 
-> **[Agent Server MCP](/langsmith/server-mcp)**
+> [卡][Agent Server MCP](/langsmith/server-mcp)
 >
 > 阅读代理服务器 MCP 协议参考。
 
-> **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)**
+> [卡][MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)
 >
 > 将工具从远程 MCP 服务器添加到代理。
 
-> **[Identity](/langsmith/python/managed-deep-agents-identity)**
+> [卡][Identity](/langsmith/python/managed-deep-agents-identity)
 >
 > 对部署的调用者进行身份验证。
 

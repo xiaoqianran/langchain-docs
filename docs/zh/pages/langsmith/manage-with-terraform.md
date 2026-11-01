@@ -6,7 +6,7 @@
 
 使用官方 LangSmith Terraform 提供程序以代码形式管理工作区、访问控制、资源标签、评估器、运行规则和警报规则。
 
-官方的[LangSmith Terraform provider](https://registry.terraform.io/providers/langchain-ai/langsmith/latest)允许您以代码形式管理LangSmith组织和工作区资源：工作区、自定义角色、组织和工作区成员、资源标签、访问策略、评估器、运行规则和警报规则。它是 [managing your organization using the API](/langsmith/manage-organization-by-api) 的基础设施即代码对应物。
+官方的[LangSmith Terraform provider](https://registry.terraform.io/providers/langchain-ai/langsmith/latest)允许您以代码形式管理LangSmith组织和工作区资源：工作区、自定义角色、组织和工作区成员、资源标签、访问策略、评估器、运行规则和警报规则。它是 [managing your organization using the API](/langsmith/manage-organization-by-api) 的基础设施即代码对应。
 
 > [!注意]
 >
@@ -203,7 +203,7 @@ resource "langsmith_alert_rule" "error_rate" {
 
 资源和数据源的完整列表（包含每个参数和属性）均在 Terraform 注册表上发布并保持同步：
 
-> **[LangSmith provider on the Terraform Registry](https://registry.terraform.io/providers/langchain-ai/langsmith/latest/docs)**
+> [卡][LangSmith provider on the Terraform Registry](https://registry.terraform.io/providers/langchain-ai/langsmith/latest/docs)
 >
 > 浏览所有资源和数据源的完整参考。
 

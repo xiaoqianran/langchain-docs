@@ -8,39 +8,39 @@
 
 ## LangSmith SDK
 
-> **[Python SDK](/langsmith/smith-python-sdk)**
+> [卡][Python SDK](/langsmith/smith-python-sdk)
 >
 > LangSmith Python SDK 的参考文档。
 
-> **[JavaScript/TypeScript SDK](/langsmith/smith-js-ts-sdk)**
+> [卡][JavaScript/TypeScript SDK](/langsmith/smith-js-ts-sdk)
 >
 > LangSmith JavaScript/TypeScript SDK 的参考文档。
 
-> **[Go SDK](/langsmith/smith-go-sdk)**
+> [卡][Go SDK](/langsmith/smith-go-sdk)
 >
 > LangSmith Go SDK 的参考文档。
 
-> **[Java SDK](/langsmith/smith-java-sdk)**
+> [卡][Java SDK](/langsmith/smith-java-sdk)
 >
 > LangSmith Java SDK 的参考文档。
 
 ## LangGraph SDK
 
-> **[LangGraph Python SDK](/langsmith/langgraph-python-sdk)**
+> [卡][LangGraph Python SDK](/langsmith/langgraph-python-sdk)
 >
 > 使用 Python 部署 LangGraph 应用程序的参考文档。
 
-> **[LangGraph JS/TS SDK](/langsmith/langgraph-js-ts-sdk)**
+> [卡][LangGraph JS/TS SDK](/langsmith/langgraph-js-ts-sdk)
 >
 > 使用 JavaScript/TypeScript 部署 LangGraph 应用程序的参考文档。
 
 ## API
 
-> **[LangSmith API](/langsmith/smith-api-ref)**
+> [卡][LangSmith API](/langsmith/smith-api-ref)
 >
 > LangSmith 平台功能的完整 REST API 参考。
 
-> **[Deployment APIs](/langsmith/server-api-ref)**
+> [卡][Deployment APIs](/langsmith/server-api-ref)
 >
 > 自托管和混合 LangSmith 部署的 API 参考。
 

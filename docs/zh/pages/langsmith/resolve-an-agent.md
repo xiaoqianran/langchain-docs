@@ -22,379 +22,379 @@
 
 对于需要 `project_name`、[retrieve the agent environment](/langsmith/create-an-agent#use-an-environment-project) 并使用其 `tracer_session_name` 的集成。
 
-## What you can resolve
+## 你可以解决什么问题
 
 解决以下任一问题即可获得其`session_id`：
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import langsmith as ls
+>
+> agent = ls.agent_address("checkout", "production")  # An agent's environment
+> experiment = ls.experiment_address("<experiment-id>")  # An experiment
+> evaluators = ls.evaluator_address()  # The workspace's evaluators
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import langsmith as ls
+> [选项卡] TypeScript
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { AgentAddress, EvaluatorAddress, ExperimentAddress } from "langsmith";
+>
+> const agent = new AgentAddress("checkout", "production"); // An agent's environment
+> const experiment = new ExperimentAddress("<experiment-id>"); // An experiment
+> const evaluators = new EvaluatorAddress(); // The workspace's evaluators
+> ```
 
-agent = ls.agent_address("checkout", "production")  # An agent's environment
-experiment = ls.experiment_address("<experiment-id>")  # An experiment
-evaluators = ls.evaluator_address()  # The workspace's evaluators
-```
+> [选项卡] Java
+>
+> ```java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import com.langchain.smith.address.AgentAddress;
+> import com.langchain.smith.address.EvaluatorAddress;
+> import com.langchain.smith.address.ExperimentAddress;
+>
+> AgentAddress agent = new AgentAddress("checkout", "production"); // An agent's environment
+> ExperimentAddress experiment = new ExperimentAddress("<experiment-id>"); // An experiment
+> EvaluatorAddress evaluators = new EvaluatorAddress(); // The workspace's evaluators
+> ```
 
-**打字稿**
+> [选项卡] 前往
+>
+> ```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> // An agent's environment
+> agent, err := langsmith.NewAgentAddress("checkout", "production")
+> // An experiment
+> experiment, err := langsmith.NewExperimentAddress("<experiment-id>")
+> // The workspace's evaluators
+> evaluators := langsmith.NewEvaluatorAddress()
+> ```## 解析代理并查询其运行
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { AgentAddress, EvaluatorAddress, ExperimentAddress } from "langsmith";
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import asyncio
+>
+> import langsmith as ls
+>
+> client = ls.Client()
+> agent = ls.agent_address("checkout", "production")
+>
+>
+> async def main() -> None:
+>     project = await client.sessions.resolve(**agent)
+>
+>     async for run in client.runs.query(project_ids=[project.session_id]):
+>         print(run.id)
+>
+>
+> asyncio.run(main())
+> ```
 
-const agent = new AgentAddress("checkout", "production"); // An agent's environment
-const experiment = new ExperimentAddress("<experiment-id>"); // An experiment
-const evaluators = new EvaluatorAddress(); // The workspace's evaluators
-```
+> [选项卡] TypeScript
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { AgentAddress, Client } from "langsmith";
+>
+> const client = new Client();
+> const agent = new AgentAddress("checkout", "production");
+>
+> const project = await client.sessions.resolve(agent);
+>
+> for await (const run of client.runs.query({
+>   project_ids: [project.session_id],
+> })) {
+>   console.log(run.id);
+> }
+> ```
 
-**Java**
+> [选项卡] Java
+>
+> ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import com.langchain.smith.address.AgentAddress;
+> import com.langchain.smith.client.LangsmithClient;
+> import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+> import com.langchain.smith.models.runs.RunQueryV2Params;
+> import java.time.OffsetDateTime;
+>
+> public class ResolveAgentExample {
+>   public static void main(String[] args) throws Exception {
+>     LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+>     AgentAddress agent = new AgentAddress("checkout", "production");
+>
+>     String projectId = client.sessions().resolve(agent.toApiAddress()).sessionId();
+>
+>     client
+>         .runs()
+>         .queryV2(
+>             RunQueryV2Params.builder()
+>                 .addProjectId(projectId)
+>                 .minStartTime(OffsetDateTime.now().minusMonths(1))
+>                 .build())
+>         .items()
+>         .forEach(run -> System.out.println(run.id().get()));
+>   }
+> }
+> ```
 
-```java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import com.langchain.smith.address.AgentAddress;
-import com.langchain.smith.address.EvaluatorAddress;
-import com.langchain.smith.address.ExperimentAddress;
-
-AgentAddress agent = new AgentAddress("checkout", "production"); // An agent's environment
-ExperimentAddress experiment = new ExperimentAddress("<experiment-id>"); // An experiment
-EvaluatorAddress evaluators = new EvaluatorAddress(); // The workspace's evaluators
-```
-
-**去**
-
-```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// An agent's environment
-agent, err := langsmith.NewAgentAddress("checkout", "production")
-// An experiment
-experiment, err := langsmith.NewExperimentAddress("<experiment-id>")
-// The workspace's evaluators
-evaluators := langsmith.NewEvaluatorAddress()
-```
-
-## 解析代理并查询其运行**Python**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import asyncio
-
-import langsmith as ls
-
-client = ls.Client()
-agent = ls.agent_address("checkout", "production")
-
-
-async def main() -> None:
-    project = await client.sessions.resolve(**agent)
-
-    async for run in client.runs.query(project_ids=[project.session_id]):
-        print(run.id)
-
-
-asyncio.run(main())
-```
-
-**打字稿**
-
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { AgentAddress, Client } from "langsmith";
-
-const client = new Client();
-const agent = new AgentAddress("checkout", "production");
-
-const project = await client.sessions.resolve(agent);
-
-for await (const run of client.runs.query({
-  project_ids: [project.session_id],
-})) {
-  console.log(run.id);
-}
-```
-
-**Java**
-
-```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import com.langchain.smith.address.AgentAddress;
-import com.langchain.smith.client.LangsmithClient;
-import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
-import com.langchain.smith.models.runs.RunQueryV2Params;
-import java.time.OffsetDateTime;
-
-public class ResolveAgentExample {
-  public static void main(String[] args) throws Exception {
-    LangsmithClient client = LangsmithOkHttpClient.fromEnv();
-    AgentAddress agent = new AgentAddress("checkout", "production");
-
-    String projectId = client.sessions().resolve(agent.toApiAddress()).sessionId();
-
-    client
-        .runs()
-        .queryV2(
-            RunQueryV2Params.builder()
-                .addProjectId(projectId)
-                .minStartTime(OffsetDateTime.now().minusMonths(1))
-                .build())
-        .items()
-        .forEach(run -> System.out.println(run.id().get()));
-  }
-}
-```
-
-**去**
-
-```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-package main
-
-import (
-	"context"
-	"fmt"
-	"time"
-
-	"github.com/langchain-ai/langsmith-go"
-)
-
-func main() {
-	ctx := context.Background()
-	client := langsmith.NewClient()
-	agent, err := langsmith.NewAgentAddress("checkout", "production")
-	if err != nil {
-		panic(err.Error())
-	}
-
-	project, err := client.Sessions.Resolve(ctx, langsmith.NewSessionResolveParams(agent))
-	if err != nil {
-		panic(err.Error())
-	}
-
-	runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
-		ProjectIDs:   langsmith.F([]string{project.SessionID}),
-		MinStartTime: langsmith.F(time.Now().UTC().AddDate(0, -1, 0)),
-	})
-	if err != nil {
-		panic(err.Error())
-	}
-	for _, run := range runs.Items {
-		fmt.Println(run.ID)
-	}
-}
-```
+> [选项卡] 前往
+>
+> ```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> package main
+>
+> import (
+> 	"context"
+> 	"fmt"
+> 	"time"
+>
+> 	"github.com/langchain-ai/langsmith-go"
+> )
+>
+> func main() {
+> 	ctx := context.Background()
+> 	client := langsmith.NewClient()
+> 	agent, err := langsmith.NewAgentAddress("checkout", "production")
+> 	if err != nil {
+> 		panic(err.Error())
+> 	}
+>
+> 	project, err := client.Sessions.Resolve(ctx, langsmith.NewSessionResolveParams(agent))
+> 	if err != nil {
+> 		panic(err.Error())
+> 	}
+>
+> 	runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
+> 		ProjectIDs:   langsmith.F([]string{project.SessionID}),
+> 		MinStartTime: langsmith.F(time.Now().UTC().AddDate(0, -1, 0)),
+> 	})
+> 	if err != nil {
+> 		panic(err.Error())
+> 	}
+> 	for _, run := range runs.Items {
+> 		fmt.Println(run.ID)
+> 	}
+> }
+> ```
 
 ## 解决一个实验并查询其运行
 
 传递实验 ID。端点返回与`session_id`相同的ID。
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import asyncio
+>
+> import langsmith as ls
+>
+> client = ls.Client()
+> experiment_id = "<experiment-id>"
+> experiment = ls.experiment_address(experiment_id)
+>
+>
+> async def main() -> None:
+>     project = await client.sessions.resolve(**experiment)
+>
+>     async for run in client.runs.query(project_ids=[project.session_id]):
+>         print(run.id)
+>
+>
+> asyncio.run(main())
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import asyncio
+> [选项卡] TypeScript
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client, ExperimentAddress } from "langsmith";
+>
+> const client = new Client();
+> let experimentId = "<experiment-id>";
+> const experiment = new ExperimentAddress(experimentId);
+>
+> const project = await client.sessions.resolve(experiment);
+>
+> for await (const run of client.runs.query({
+>   project_ids: [project.session_id],
+> })) {
+>   console.log(run.id);
+> }
+> ```
 
-import langsmith as ls
+> [选项卡] Java
+>
+> ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import com.langchain.smith.address.ExperimentAddress;
+> import com.langchain.smith.client.LangsmithClient;
+> import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+> import com.langchain.smith.models.runs.RunQueryV2Params;
+> import java.time.OffsetDateTime;
+>
+> public class ResolveExperimentExample {
+>   public static void main(String[] args) {
+>     LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+>     String experimentId = "<experiment-id>";
+>     ExperimentAddress experiment = new ExperimentAddress(experimentId);
+>
+>     String projectId = client.sessions().resolve(experiment.toApiAddress()).sessionId();
+>
+>     client
+>         .runs()
+>         .queryV2(
+>             RunQueryV2Params.builder()
+>                 .addProjectId(projectId)
+>                 .minStartTime(OffsetDateTime.now().minusMonths(1))
+>                 .build())
+>         .items()
+>         .forEach(run -> System.out.println(run.id().get()));
+>   }
+> }
+> ```
 
-client = ls.Client()
-experiment_id = "<experiment-id>"
-experiment = ls.experiment_address(experiment_id)
-
-
-async def main() -> None:
-    project = await client.sessions.resolve(**experiment)
-
-    async for run in client.runs.query(project_ids=[project.session_id]):
-        print(run.id)
-
-
-asyncio.run(main())
-```
-
-**打字稿**
-
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client, ExperimentAddress } from "langsmith";
-
-const client = new Client();
-let experimentId = "<experiment-id>";
-const experiment = new ExperimentAddress(experimentId);
-
-const project = await client.sessions.resolve(experiment);
-
-for await (const run of client.runs.query({
-  project_ids: [project.session_id],
-})) {
-  console.log(run.id);
-}
-```
-
-**Java**
-
-```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import com.langchain.smith.address.ExperimentAddress;
-import com.langchain.smith.client.LangsmithClient;
-import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
-import com.langchain.smith.models.runs.RunQueryV2Params;
-import java.time.OffsetDateTime;
-
-public class ResolveExperimentExample {
-  public static void main(String[] args) {
-    LangsmithClient client = LangsmithOkHttpClient.fromEnv();
-    String experimentId = "<experiment-id>";
-    ExperimentAddress experiment = new ExperimentAddress(experimentId);
-
-    String projectId = client.sessions().resolve(experiment.toApiAddress()).sessionId();
-
-    client
-        .runs()
-        .queryV2(
-            RunQueryV2Params.builder()
-                .addProjectId(projectId)
-                .minStartTime(OffsetDateTime.now().minusMonths(1))
-                .build())
-        .items()
-        .forEach(run -> System.out.println(run.id().get()));
-  }
-}
-```
-
-**去**
-
-```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-package main
-
-import (
-	"context"
-	"fmt"
-	"time"
-
-	"github.com/langchain-ai/langsmith-go"
-)
-
-func main() {
-	ctx := context.Background()
-	client := langsmith.NewClient()
-	experimentID := "<experiment-id>"
-	experiment, err := langsmith.NewExperimentAddress(experimentID)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	project, err := client.Sessions.Resolve(ctx, langsmith.NewSessionResolveParams(experiment))
-	if err != nil {
-		panic(err.Error())
-	}
-
-	runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
-		ProjectIDs:   langsmith.F([]string{project.SessionID}),
-		MinStartTime: langsmith.F(time.Now().UTC().AddDate(0, -1, 0)),
-	})
-	if err != nil {
-		panic(err.Error())
-	}
-	for _, run := range runs.Items {
-		fmt.Println(run.ID)
-	}
-}
-```
+> [选项卡] 前往
+>
+> ```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> package main
+>
+> import (
+> 	"context"
+> 	"fmt"
+> 	"time"
+>
+> 	"github.com/langchain-ai/langsmith-go"
+> )
+>
+> func main() {
+> 	ctx := context.Background()
+> 	client := langsmith.NewClient()
+> 	experimentID := "<experiment-id>"
+> 	experiment, err := langsmith.NewExperimentAddress(experimentID)
+> 	if err != nil {
+> 		panic(err.Error())
+> 	}
+>
+> 	project, err := client.Sessions.Resolve(ctx, langsmith.NewSessionResolveParams(experiment))
+> 	if err != nil {
+> 		panic(err.Error())
+> 	}
+>
+> 	runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
+> 		ProjectIDs:   langsmith.F([]string{project.SessionID}),
+> 		MinStartTime: langsmith.F(time.Now().UTC().AddDate(0, -1, 0)),
+> 	})
+> 	if err != nil {
+> 		panic(err.Error())
+> 	}
+> 	for _, run := range runs.Items {
+> 		fmt.Println(run.ID)
+> 	}
+> }
+> ```
 
 ## 解析评估者并查询他们的运行
 
 评估器跟踪为每个工作区共享一个存储目标，因此评估器地址不包含 ID。
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import asyncio
+>
+> import langsmith as ls
+>
+> client = ls.Client()
+> evaluators = ls.evaluator_address()
+>
+>
+> async def main() -> None:
+>     project = await client.sessions.resolve(**evaluators)
+>
+>     async for run in client.runs.query(project_ids=[project.session_id]):
+>         print(run.id)
+>
+>
+> asyncio.run(main())
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import asyncio
+> [选项卡] TypeScript
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client, EvaluatorAddress } from "langsmith";
+>
+> const client = new Client();
+> const evaluators = new EvaluatorAddress();
+>
+> const project = await client.sessions.resolve(evaluators);
+>
+> for await (const run of client.runs.query({
+>   project_ids: [project.session_id],
+> })) {
+>   console.log(run.id);
+> }
+> ```
 
-import langsmith as ls
+> [选项卡] Java
+>
+> ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import com.langchain.smith.address.EvaluatorAddress;
+> import com.langchain.smith.client.LangsmithClient;
+> import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+> import com.langchain.smith.models.runs.RunQueryV2Params;
+> import java.time.OffsetDateTime;
+>
+> public class ResolveEvaluatorsExample {
+>   public static void main(String[] args) {
+>     LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+>     EvaluatorAddress evaluators = new EvaluatorAddress();
+>
+>     String projectId = client.sessions().resolve(evaluators.toApiAddress()).sessionId();
+>
+>     client
+>         .runs()
+>         .queryV2(
+>             RunQueryV2Params.builder()
+>                 .addProjectId(projectId)
+>                 .minStartTime(OffsetDateTime.now().minusMonths(1))
+>                 .build())
+>         .items()
+>         .forEach(run -> System.out.println(run.id().get()));
+>   }
+> }
+> ```
 
-client = ls.Client()
-evaluators = ls.evaluator_address()
-
-
-async def main() -> None:
-    project = await client.sessions.resolve(**evaluators)
-
-    async for run in client.runs.query(project_ids=[project.session_id]):
-        print(run.id)
-
-
-asyncio.run(main())
-```
-
-**打字稿**
-
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client, EvaluatorAddress } from "langsmith";
-
-const client = new Client();
-const evaluators = new EvaluatorAddress();
-
-const project = await client.sessions.resolve(evaluators);
-
-for await (const run of client.runs.query({
-  project_ids: [project.session_id],
-})) {
-  console.log(run.id);
-}
-```
-
-**Java**
-
-```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import com.langchain.smith.address.EvaluatorAddress;
-import com.langchain.smith.client.LangsmithClient;
-import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
-import com.langchain.smith.models.runs.RunQueryV2Params;
-import java.time.OffsetDateTime;
-
-public class ResolveEvaluatorsExample {
-  public static void main(String[] args) {
-    LangsmithClient client = LangsmithOkHttpClient.fromEnv();
-    EvaluatorAddress evaluators = new EvaluatorAddress();
-
-    String projectId = client.sessions().resolve(evaluators.toApiAddress()).sessionId();
-
-    client
-        .runs()
-        .queryV2(
-            RunQueryV2Params.builder()
-                .addProjectId(projectId)
-                .minStartTime(OffsetDateTime.now().minusMonths(1))
-                .build())
-        .items()
-        .forEach(run -> System.out.println(run.id().get()));
-  }
-}
-```
-
-**去**
-
-```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-package main
-
-import (
-	"context"
-	"fmt"
-	"time"
-
-	"github.com/langchain-ai/langsmith-go"
-)
-
-func main() {
-	ctx := context.Background()
-	client := langsmith.NewClient()
-	evaluators := langsmith.NewEvaluatorAddress()
-
-	project, err := client.Sessions.Resolve(ctx, langsmith.NewSessionResolveParams(evaluators))
-	if err != nil {
-		panic(err.Error())
-	}
-
-	runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
-		ProjectIDs:   langsmith.F([]string{project.SessionID}),
-		MinStartTime: langsmith.F(time.Now().UTC().AddDate(0, -1, 0)),
-	})
-	if err != nil {
-		panic(err.Error())
-	}
-	for _, run := range runs.Items {
-		fmt.Println(run.ID)
-	}
-}
-```
+> [选项卡] 前往
+>
+> ```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> package main
+>
+> import (
+> 	"context"
+> 	"fmt"
+> 	"time"
+>
+> 	"github.com/langchain-ai/langsmith-go"
+> )
+>
+> func main() {
+> 	ctx := context.Background()
+> 	client := langsmith.NewClient()
+> 	evaluators := langsmith.NewEvaluatorAddress()
+>
+> 	project, err := client.Sessions.Resolve(ctx, langsmith.NewSessionResolveParams(evaluators))
+> 	if err != nil {
+> 		panic(err.Error())
+> 	}
+>
+> 	runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
+> 		ProjectIDs:   langsmith.F([]string{project.SessionID}),
+> 		MinStartTime: langsmith.F(time.Now().UTC().AddDate(0, -1, 0)),
+> 	})
+> 	if err != nil {
+> 		panic(err.Error())
+> 	}
+> 	for _, run := range runs.Items {
+> 		fmt.Println(run.ID)
+> 	}
+> }
+> ```
 
 ## 错误
 
@@ -404,7 +404,7 @@ func main() {
 ## 另请参阅
 
 * [Log traces to an agent](/langsmith/log-traces-to-agent)
-* [Agents](/langsmith/agents)
+* [Agent Registry](/langsmith/agent-registry)
 * [Agent environments](/langsmith/agent-environments)
 
 ***

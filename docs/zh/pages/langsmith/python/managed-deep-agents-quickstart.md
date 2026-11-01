@@ -86,19 +86,19 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 # AZURE_OPENAI_DEPLOYMENT_NAME=<AZURE_OPENAI_DEPLOYMENT_NAME>
 ```
 
-本快速入门默认使用 OpenAI。 For Google, Anthropic, or Microsoft Foundry, set the matching values instead. `mda deploy` adds the provider key to the deployment.您也可以使用任何 [other chat provider](/oss/python/integrations/chat/)。
+本快速入门默认使用 OpenAI。对于 Google、Anthropic 或 Microsoft Foundry，请改为设置匹配值。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/python/integrations/chat/)。
 
 > [!警告]
 >
-> Do not commit the `.env` file into version control.它包含秘密。
+> 不要将 `.env` 文件提交到版本控制中。它包含秘密。
 
 **3.设置LangSmith**
 
-托管 Deep Agents 在 LangSmith 上运行。 Your LangSmith API key authenticates local development with `mda dev`, deploys the agent with `mda deploy`, and opens the agent in [LangSmith Studio](/langsmith/studio) so you can chat with it and inspect traces.
+托管 Deep Agents 在 LangSmith 上运行。您的 LangSmith API 密钥使用 `mda dev` 验证本地开发，使用 `mda deploy` 部署代理，并在 [LangSmith Studio](/langsmith/studio) 中打开代理，以便您可以与其聊天并检查跟踪。
 
 [Sign up for LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-quickstart) 如果您还没有帐户。
 
-To create a LangSmith API key, open [Settings](https://smith.langchain.com/settings), go to **API Keys**, and click **Create API Key**.欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
+要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转至 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
 
 将您的 LangSmith API 密钥添加到 `.env`：
 
@@ -108,7 +108,7 @@ LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 
 **4.编辑说明**
 
-Open `instructions.md` and describe how the agent should behave:
+打开 `instructions.md` 并描述代理应该如何表现：
 
 ```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Research assistant
@@ -178,7 +178,7 @@ agent = define_deep_agent(
 
 代理名称也是默认部署名称。有关模型概念和提供程序选项，请参阅[Models](/oss/python/langchain/models)。
 
-> **使用其他提供商？**
+> [手风琴] 使用其他提供商？
 >
 > 您可以使用 Tavily 搜索工具。
 > 将 [Tavily API key](https://app.tavily.com) 添加到 `.env`：
@@ -255,7 +255,7 @@ What were the main announcements from the latest LangChain release?
 
 您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
 
-在 [agent-based workspace](/langsmith/agents) 中，在您注册代理之前，跟踪将导致错误。详情请参见[Trace local runs](/langsmith/python/managed-deep-agents-local-development#trace-local-runs)。**7.部署代理**
+在 [agent-based workspace](/langsmith/agent-registry) 中，在您注册代理之前，跟踪将导致错误。详情请参见[Trace local runs](/langsmith/python/managed-deep-agents-local-development#trace-local-runs)。**7.部署代理**
 
 通过运行以下命令来部署项目：
 
@@ -269,15 +269,15 @@ uv run mda deploy
 
 ## 后续步骤
 
-> **[Tutorial](/langsmith/python/managed-deep-agents-tutorial)**
+> [卡][Tutorial](/langsmith/python/managed-deep-agents-tutorial)
 >
 > 添加自定义 Tavilly 搜索工具、持久内存和每日日程安排。
 
-> **[Custom tools](/langsmith/python/managed-deep-agents-tools)**
+> [卡][Custom tools](/langsmith/python/managed-deep-agents-tools)
 >
 > 从您的项目中添加创作的 LangChain 工具。
 
-> **[Connections](/langsmith/python/managed-deep-agents-connections)**
+> [卡][Connections](/langsmith/python/managed-deep-agents-connections)
 >
 > 作为代理或呼叫者通过外部服务进行身份验证。
 

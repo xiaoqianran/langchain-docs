@@ -4,9 +4,9 @@
 
 # 托管 Deep Agents 运行时
 
-从代理工厂、工具和中间件接收的本机运行时类型中读取运行上下文、已验证的调用方、通道传递和沙箱。
+从代理工厂、工具和中间件接收的本机运行时类型中读取运行上下文、已验证的调用方、线程和沙箱。
 
-代理工厂、工具和中间件挂钩各自接收一个运行时。它是添加了三个托管字段的本机 LangChain 或 LangGraph 运行时。上下文、状态和存储的工作方式与 [LangChain](/oss/javascript/langchain/runtime) 中的工作方式相同，并且您的类型检查器会看到您自己的上下文类型。
+代理工厂、工具和中间件挂钩各自接收一个运行时。它是本机 LangChain 或 LangGraph 运行时，添加了三个托管字段。上下文、状态和存储的工作方式与 [LangChain](/oss/javascript/langchain/runtime) 中一样，并且您的类型检查器会看到您自己的上下文类型。
 
 > [!注意]
 >
@@ -25,7 +25,7 @@
 类型参数遵循本机顺序，因此 `ManagedToolRuntime` 首先采用状态，然后采用上下文。这两个参数都是可选的。 `ManagedDeepAgentRuntime` 是`ManagedToolRuntime` 的别名。
 
 每种类型都保留每个本机字段和方法，例如 `context`、`state`、`store`、`writer` 和 `toolCallId`。 Managed Deep Agents 添加了三个字段：* **`serverInfo`**：本机服务器元数据加上经过验证的调用者。工具和中间件接收它。
-* **`channel`**：开始运行的已验证通道交付。 `undefined` 直接 API 和计划运行。
+* **`thread`**：运行的线程及其来自的频道对话。参见[Thread](#thread)。
 * **`backend`**：线程的[sandbox](/langsmith/javascript/managed-deep-agents-sandboxes)文件系统。 `undefined` 当项目声明没有沙箱时。
 
 ## 独立的上下文、调用者和传递者
@@ -34,7 +34,7 @@
 
 * **Context** 来自 API 调用的 `context` 参数。 LangGraph 根据您的上下文模式验证它。用它来选择行为，而不是授予访问权限。
 * **服务器信息**来自[identity](/langsmith/javascript/managed-deep-agents-identity)，它通过经过验证的令牌解析调用者。托管Deep Agents剥离客户端通过`configurable`发送的身份密钥，因此使用此字段进行授权。
-* **通道** 来自托管的 [channel](/langsmith/javascript/managed-deep-agents-channels) 入口，它在运行开始之前验证交付。直接 API 调用上下文中的 `channel` 键不会创建 `runtime.channel`。
+* **通道** 来自托管的 [channel](/langsmith/javascript/managed-deep-agents-channels) 入口，它在运行开始之前验证交付。直接 API 调用上下文中的 `channel` 键不会创建 `runtime.thread.origin`。
 
 API 调用者在输入旁边传递上下文：
 
@@ -49,15 +49,15 @@ await client.runs.create(threadId, "support", {
 
 在通道运行时，代理工厂和工具中的上下文为`undefined`，而本机中间件中的上下文为空对象。
 
-要区分通道运行和直接运行，请检查`runtime.channel`。
+要区分通道运行和直接运行，请检查`runtime.thread.origin`。
 
 ## 读取代理工厂中的运行时
 
-代理工厂收到`ManagedServerRuntime`：本机[⟦T32⟧](/langsmith/graph-rebuild)加上`channel`和`backend`。要编写工厂，请参阅[Select configuration per run](/langsmith/javascript/managed-deep-agents-agent-definition#select-configuration-per-run)。
+代理工厂收到`ManagedServerRuntime`：本地[⟦T31⟧](/langsmith/graph-rebuild)加上`thread`和`backend`。要编写工厂，请参阅[Select configuration per run](/langsmith/javascript/managed-deep-agents-agent-definition#select-configuration-per-run)。
 
-代理服务器还调用工厂来读取模式和状态。 `accessContext` 命名操作。 [⟦T36⟧](/langsmith/graph-rebuild#access-contexts) 是 `null` 在 `threads.create_run` 之外，因此从 `executionRuntime.context` 读取运行上下文。每次调用返回相同的图形结构和模式。
+代理服务器还调用工厂来读取架构和状态。 `accessContext` 命名操作。 [⟦T35⟧](/langsmith/graph-rebuild#access-contexts) 是 `null` 在 `threads.create_run` 之外，因此从 `executionRuntime.context` 读取运行上下文。每次调用返回相同的图形结构和模式。
 
-`channel` 可用，因此工厂可以选择每个通道的配置。 `backend`始终是`undefined`，因为工厂选择了沙箱。
+`thread` 可用，因此工厂可以选择每个通道的配置。 `backend`始终是`undefined`，因为工厂选择了沙箱。
 
 ## 在工具中读取运行时
 
@@ -74,7 +74,7 @@ export const checkOrder = tool(
   async ({ orderId }, runtime: ManagedToolRuntime<unknown, AppContext>) => {
     const principal = runtime.serverInfo?.principal;
     if (!principal) return "Sign in to check orders.";
-    await runtime.channel?.post?.({
+    await runtime.thread?.origin?.channel.post?.({
       type: "content",
       content: "Checking that order now.",
     });
@@ -89,7 +89,7 @@ export const checkOrder = tool(
 );
 ```
 
-当没有呼叫者解析时，`principal` 不存在，因为身份是选择加入的。 `post` 发送一条附加消息，客服人员的最终回复仍会自动发布。有关书写工具的更多信息，请参阅[Custom tools](/langsmith/javascript/managed-deep-agents-tools)。
+当没有呼叫者解析时，`principal` 不存在，因为身份是选择加入的。 `post` 发送一条附加消息，代理的最终回复仍会自动发布。有关书写工具的更多信息，请参阅[Custom tools](/langsmith/javascript/managed-deep-agents-tools)。
 
 ## 读取中间件中的运行时将钩子的运行时转换为 `ManagedRuntime` 以读取托管字段：
 
@@ -102,15 +102,15 @@ type AppContext = { region?: string };
 export const logCaller = createMiddleware({
   name: "LogCaller",
   beforeModel: (_state, runtime) => {
-    const { serverInfo, channel } = runtime as ManagedRuntime<AppContext>;
+    const { serverInfo, thread } = runtime as ManagedRuntime<AppContext>;
     const caller = serverInfo?.principal?.id ?? "anonymous";
-    console.log(`${caller} via ${channel?.provider ?? "api"}`);
+    console.log(`${caller} via ${thread?.origin?.channel.provider ?? "api"}`);
     return undefined;
   },
 });
 ```
 
-工具调用挂钩接收一个`ManagedToolRuntime`。声明性子代理接收相同的托管字段。两者都不需要身份或沙箱声明。有关编写中间件的更多信息，请参阅[Custom middleware](/langsmith/javascript/managed-deep-agents-middleware)。
+工具调用挂钩接收`ManagedToolRuntime`。声明性子代理接收相同的托管字段。两者都不需要身份或沙箱声明。有关编写中间件的更多信息，请参阅[Custom middleware](/langsmith/javascript/managed-deep-agents-middleware)。
 
 ## 引用托管字段
 
@@ -125,18 +125,28 @@ export const logCaller = createMiddleware({
 
 从 `principal` 读取调用者，而不是从本机 `user` 读取。有关身份提供者和声明映射，请参阅[Identity](/langsmith/javascript/managed-deep-agents-identity)。
 
+### 主题
+
+`runtime.thread` 是`ManagedThread`：* **`id`**：LangGraph 线程 ID。
+* **`origin`**：线程来自的频道对话，及其最新消息的`channel`和`sender`。未在没有通道消息到达的线程上设置。
+* **`participants`**：线程上的人。每个都有一个`id`和一个`role`、`"owner"`或`"member"`。
+
+> [!警告]
+>
+> `runtime.channel` 已弃用，并将在 `managed-deepagents` 0.11 中删除。请阅读`runtime.thread.origin.channel`。
+
 ### 频道
 
-`runtime.channel` 是`RuntimeChannel`：* **`name`**：配置的通道名称。
+`runtime.thread.origin.channel` 是`RuntimeChannel`：
+
+* **`name`**：配置的通道名称。
 * **`provider`**：提供商标签，例如`"slack"`。
-* **`event`**：打字传送。请参阅下面的事件类型。
+* **`event`**：打字传送。 `null` 在没有通道事件启动的运行中，例如 Studio 恢复。请参阅下面的事件类型。
 * **`rawEvent`**：当通道提供一个时，原始提供者有效负载。对于 Slack，这是没有 HTTP 标头或触发器信封的内部 Slack 事件。简历可以省略。
 * **`post`**：一个异步函数，用于向启动运行的会话发送消息。 `undefined` 当通道无法发送时。
 
-`event.type` 是以下之一：
-
-* **`message`**：一条新消息。 `messages` 保存传入消息。
-* **`user_prompt_response`**：对交互式提示的回复。带有 `action`、可选的 `value` 和可选的 `correlation_id`。参见[Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts)。
+`event.type` 是以下之一：* **`message`**：一条新消息。 `messages` 保存传入消息。
+* **`user_prompt_response`**：对交互式提示的回复。携带 `action`、可选的 `value` 和可选的 `correlation_id`。参见[Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts)。
 * **`interrupt_resume`**：挂起中断的恢复。 `resume` 保存恢复值。
 
 `post` 接受内容消息 `{"type": "content", "content": ...}` 或本机消息 `{"type": "native", "native": ...}`。内置的 Slack 通道仅发送文本内容。回复目标保持私有：`post`没有地址或目标覆盖，代码无法读取或替换目标。
@@ -155,6 +165,8 @@ export const logCaller = createMiddleware({
 * [Channels](/langsmith/javascript/managed-deep-agents-channels)
 * [Identity](/langsmith/javascript/managed-deep-agents-identity)
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-runtime.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

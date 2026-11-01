@@ -195,10 +195,10 @@ export const channel = channels.slack({
 部署导入此模块来读取通道声明和
 分类器需要一个键来构造。
 
-在部署上设置 `TYPESAFE_API_KEY`。通过LangSmith网关路由
+在部署上设置 `TYPESAFE_API_KEY`。通过 LLM 网关路由
 相反，设置 `TYPESAFE_BASE_URL=https://gateway.smith.langchain.com` 并使用
 工作区范围内的 LangSmith API 密钥，其中 `TYPESAFE_API_KEY` 在您的工作区中
-[provider secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)。
+[provider secrets](/langsmith/llm-gateway-provider-authentication#add-a-provider-key)。
 
 ## 部署代理
 
@@ -244,28 +244,28 @@ Slack 通道可以双向移动文件。在`/workspace/attachments/`下的代理�
 
 > [!注意]
 >
-> Slack 文件传输需要 `managed-deepagents>=0.8.0` 和沙箱。如果没有沙箱，则不会保存传入文件，并且不会向模型提供 `attach_file`。Managed Deep Agents stages the files on the incoming message before the run, along with files shared earlier in the same Slack thread.代理读取路径的附件状态消息，然后使用其沙箱工具打开文件。 That status and the file contents are labeled as data, not instructions.
+> Slack 文件传输需要 `managed-deepagents>=0.8.0` 和沙箱。如果没有沙箱，则不会保存传入文件，并且不会向模型提供 `attach_file`。托管 Deep Agents 在运行之前暂存传入消息上的文件，以及之前在同一 Slack 线程中共享的文件。代理读取路径的附件状态消息，然后使用其沙箱工具打开文件。该状态和文件内容被标记为数据，而不是指令。
 
-Attachment is never automatic, so state in the agent's [instructions](/langsmith/javascript/managed-deep-agents-instructions) when a file belongs in the reply:
+附件永远不是自动的，因此当文件属于回复时，请在代理的 [instructions](/langsmith/javascript/managed-deep-agents-instructions) 中注明：
 
 ```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 When someone asks for a report, write the report to a file under `/workspace`,
 then call `attach_file` with that path so the file arrives in Slack.
 ```
 
-文件的范围仅限于它们到达的 Slack 线程，因为每个线程都有自己的沙箱。 A direct message and a channel thread never share attachments. Within one thread, anyone reaches the files anyone else uploaded, since transfers use the bot's Slack access rather than the caller's.
+文件的范围仅限于它们到达的 Slack 线程，因为每个线程都有自己的沙箱。直接消息和频道线程从不共享附件。在一个线程中，任何人都可以访问其他人上传的文件，因为传输使用机器人的 Slack 访问权限而不是调用者的访问权限。
 
 ### 查看转账限制
 
 * **文件大小**：每个方向 200 MiB。
-* **Paths**: `attach_file` accepts paths under `/workspace` only.
-* **Thread history**: the scan covers recent messages in the thread. When it falls short, the attachment status reports that earlier files may be missing.
+* **路径**：`attach_file` 仅接受`/workspace` 下的路径。
+* **线程历史记录**：扫描涵盖线程中的最新消息。如果达不到要求，附件状态会报告较早的文件可能丢失。
 * **跳过的文件**：存储在 Slack 外部的文件以及从 Slack 中删除的文件。
-* **Slack scopes**: a transfer blocked by a missing `files:read`, `files:write`, or history scope reports that you need to reconnect Slack.## 另请参阅
+* **Slack 范围**：由于缺少 `files:read`、`files:write` 或历史范围报告而阻止的传输，您需要重新连接 Slack。## 另请参阅
 
 * [Channels overview](/langsmith/javascript/managed-deep-agents-channels)：了解通道如何将消息服务连接到代理。
 * [Decision models](/langsmith/llm-gateway-decision-models)：配置反应表情评分模型。
-* [LLM Gateway setup](/langsmith/llm-gateway-admin-setup)：启用网关并添加提供者秘密反应需要。
+* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：添加反应所需的provider key。
 * [Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts)：从工具发布 Slack 表单并在提交时恢复运行。
 * [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)：给代理文件传输读写的文件系统。
 * [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)：配置和部署托管深度代理。

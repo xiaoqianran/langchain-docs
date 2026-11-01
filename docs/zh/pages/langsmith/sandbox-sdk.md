@@ -397,7 +397,7 @@ const sb = await client.createSandbox({
   memBytes: 17_179_869_184,        // 16 GiB
   fsCapacityBytes: 34_359_738_368, // 32 GiB
 });
-```|资源 |默认|范围 |
+```|资源 |默认 |范围 |
 | - | - | - |
 |中央处理器 | 0.5 个 vCPU | 0.05 至 16 个 vCPU。使用`cpu_millicores`进行子核请求（`500`为0.5 vCPU）；它优先于`vcpus`。 |
 |内存|每个 vCPU 4 GiB |高达 64 GiB。必须保持在每个 vCPU 目标的 50% 以内，因此 1 个 vCPU 沙箱可接受 2 到 6 GiB。设定内存不带CPU与CPU是相同比例得出的。 |
@@ -412,7 +412,7 @@ const sb = await client.createSandbox({
 ## 沙盒寿命和保留
 
 沙箱由固定于**空闲的两阶段保留模型控制
-活动**和**`stopped`**状态。|领域 |它控制什么 |当它发生时 |
+活动**和**`stopped`**状态。|领域|它控制什么 |当它发生时 |
 | - | - | - |
 | `idle_ttl_seconds` |在闲置这么多秒后，启动器会停止沙箱。任何命令执行或文件 I/O 都会重置计时器。 `0` 禁用怠速停止。 |省略时默认为 `600`（10 分钟）。 |
 | `delete_after_stop_seconds` |一旦沙箱进入`stopped`状态，该计时器就会启动。过了一段时间后，沙箱行+文件系统克隆将被服务器端扫描永久删除。 `0` 禁用停止锚定删除（需要手动清理）。 |如果省略，服务器将应用其配置的默认值（通常为 14 天）。 |
@@ -528,7 +528,7 @@ try {
 
 ## 服务 URL (Python)
 
-通过经过身份验证的 URL 访问沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
+通过经过身份验证的 URL 访问在沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 with client.sandbox() as sb:
@@ -619,6 +619,8 @@ async def main():
 
 要在基于代理的工作区中进行跟踪，请在运行示例之前[create an agent and configure agent addressing](/langsmith/create-an-agent#configure-tracing-for-the-agent)。
 
+沙箱内的代码需要 Python 中的 `langsmith>=0.14.9` 或 TypeScript 中的 `langsmith@>=0.11.0` 来将跟踪发送到代理。
+
 通过 `run()` 上的 `env` 参数传递 LangSmith 跟踪环境变量，以发送沙箱内运行的代码的跟踪。在进程退出之前调用`flush()`以确保所有跟踪都已传递。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -667,9 +669,7 @@ try {
 
 > [!警告]
 >
-> 始终在沙箱进程退出之前调用 `flush()` — Python 中的 `langsmith.Client().flush()` 或 TypeScript 中的 `await new Client().flush()`。如果没有它，跟踪可能会丢失，因为命令完成时容器会被破坏。
-
-## 错误处理
+> 始终在沙箱进程退出之前调用 `flush()` — Python 中的 `langsmith.Client().flush()` 或 TypeScript 中的 `await new Client().flush()`。如果没有它，跟踪可能会丢失，因为命令完成时容器会被破坏。## 错误处理
 
 这两个 SDK 都提供了用于特定错误处理的类型化异常：
 
@@ -718,9 +718,11 @@ try {
     console.log(`Error: ${e.message}`);
   }
 }
-```> [!注意]
+```
+
+> [!注意]
 >
-> 有关更多详细信息，请参阅 GitHub 上[Python](https://github.com/langchain-ai/langsmith-python/tree/main/src/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-javascript/tree/main/src/lib/sandbox) 的沙箱 SDK 参考。
+> 有关更多详细信息，请参阅 GitHub 上的 [Python](https://github.com/langchain-ai/langsmith-python/tree/main/src/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-javascript/tree/main/src/lib/sandbox) 沙箱 SDK 参考。
 
 ***
 

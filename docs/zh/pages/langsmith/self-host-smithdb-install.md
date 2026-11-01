@@ -35,7 +35,7 @@
 
 从 [Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage) 添加适合您的版本的缓存值。在 LangSmith 0.17 上，通常是一行，`smithdb.cache.storageClassName`。任一版本上的本地 SSD 还需要此处显示的节点选择器和容忍度。
 
-> **SmithDB 基础设施 Helm 价值观**
+> [手风琴] SmithDB 基础设施 Helm 价值观
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > smithdb:

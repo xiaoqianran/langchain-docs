@@ -29,7 +29,7 @@ my-agent/
 
 * **入站事件**：验证并标准化提供程序事件，然后启动代理运行。
 * **出站消息传送**：将代理的响应发送回原始对话。
-* **配置**：创建并配置将服务连接到已部署代理的提供者资源。
+* **配置**：创建并配置将服务连接到已部署代理的提供程序资源。
 
 在托管Deep Agents中，通道将已部署的代理连接到消息传递提供程序。
 
@@ -75,11 +75,11 @@ flowchart LR
 
 ## 支持的频道
 
-> **[Slack](/langsmith/javascript/managed-deep-agents-channels-slack)**
+> [卡][Slack](/langsmith/javascript/managed-deep-agents-channels-slack)
 >
 > 从 Slack 提及、直接消息和话题回复开始运行。
 
-> **[HTTP](/langsmith/javascript/managed-deep-agents-channels-http)**
+> [卡片] [HTTP](/langsmith/javascript/managed-deep-agents-channels-http)
 >
 > 从任何可以发送 JSON Webhook 的服务开始运行。HTTP 适配器也可以存在于社区维护的包中。请参阅 [Share a channel adapter as a package](/langsmith/javascript/managed-deep-agents-channels-http#share-a-channel-adapter-as-a-package) 发布用户导入到其通道声明中的可重用提供商代码。
 

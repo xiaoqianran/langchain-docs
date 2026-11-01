@@ -16,7 +16,7 @@ LLM 网关（`agent-gateway` 服务）代理从代理和编码代理到上游 LL
 
 > [!注意]
 >
-> 启用网关需要 Helm Chart 版本 0.17.1 或更高版本，该版本附带 LangSmith 版本 0.17.30。
+> 启用网关需要 Helm Chart 0.17.1 或更高版本，该版本附带 LangSmith 版本 0.17.30。
 
 > [!注意]
 >
@@ -28,7 +28,7 @@ LLM 网关（`agent-gateway` 服务）代理从代理和编码代理到上游 LL
 
 > [!注意]
 >
-> `agent-gateway` 服务需要访问 Postgres 和 Redis，以及其他 LangSmith Pod 的网络访问权限，类似于 `backend` 和 `platform-backend`。您可能需要配置网络策略、Kubernetes 服务帐户和 pod 注释来启用此访问。
+> `agent-gateway` 服务需要访问 Postgres 和 Redis，以及网络访问其他 LangSmith Pod，类似于 `backend` 和 `platform-backend`。您可能需要配置网络策略、Kubernetes 服务帐户和 pod 注释来启用此访问。
 
 将这些值添加到您的 Helm 值文件中：
 
@@ -73,6 +73,8 @@ kubectl get deploy langsmith-agent-gateway
 kubectl rollout status deploy/langsmith-agent-gateway
 ```
 
+`agentGateway.enabled: true` 为安装中的每个组织打开网关。 UI 中没有单独的启用步骤。
+
 ## 启用 Presidio PII 检测（可选）
 
 [Presidio Analyzer](https://microsoft.github.io/presidio/) 是 Microsoft 维护的 NER 服务，网关可以在提示到达上游提供商之前调用该服务来检测提示中的 PII。
@@ -84,16 +86,16 @@ presidioAnalyzer:
 
 启用后，图表会将 `PRESIDIO_ANALYZER_URL` 注入网关 Pod，以便它发现集群内的分析器。无需进一步的应用程序配置。
 
-## 对外暴露网关
-
-网关使用与 LangSmith UI 和 API 相同的 Ingress。如果您的 Helm 值中已设置 `ingress.enabled=true`，则一旦您设置 `agentGateway.enabled=true`，网关就可以在 `https://<your-hostname>/gateway/` 处访问。不需要单独的 Ingress、LoadBalancer 或 DNS 记录。如果设置`config.basePath`，则路由将移动到`https://<your-hostname>/<basePath>/gateway/`，并且此页面上的每个网关 URL 都需要相同的前缀。
+## 对外暴露网关网关使用与 LangSmith UI 和 API 相同的 Ingress。如果您的 Helm 值中已设置 `ingress.enabled=true`，则一旦您设置 `agentGateway.enabled=true`，网关就可以在 `https://<your-hostname>/gateway/` 处访问。不需要单独的 Ingress、LoadBalancer 或 DNS 记录。如果设置`config.basePath`，则路由将移动到`https://<your-hostname>/<basePath>/gateway/`，并且此页面上的每个网关 URL 都需要相同的前缀。
 
 从任何可以到达您的 Ingress 的主机进行检查：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -sS -o /dev/null -w '%{http_code}\n' https://<your-hostname>/gateway/health
 # Expected: 200
-```该图表没有为`langsmith-agent-gateway`创建专用的Ingress，Service默认为`ClusterIP`。图表的服务块（`agentGateway.service.type`、`loadBalancerIP`、`loadBalancerSourceRanges`）支持直接公开端口 `8083`（通过单独的 Ingress、`service.type: LoadBalancer` 或 `hostNetwork`），但这不是预期路径。使用前端 `/gateway/` 路线，除非您有特定原因不这样做。
+```
+
+该图表没有为`langsmith-agent-gateway`创建专用的Ingress，Service默认为`ClusterIP`。图表的服务块（`agentGateway.service.type`、`loadBalancerIP`、`loadBalancerSourceRanges`）支持直接公开端口 `8083`（通过单独的 Ingress、`service.type: LoadBalancer` 或 `hostNetwork`），但这不是预期路径。使用前端 `/gateway/` 路线，除非您有特定原因不这样做。
 
 ## 回滚
 
@@ -106,11 +108,9 @@ agentGateway:
 
 ## 拨打你的第一个电话
 
-这镜像了 [SaaS quickstart](/langsmith/llm-gateway-quickstart)，并将基本 URL 调整为自托管。在继续之前完成上述步骤（部署网关、启动 Ingress）。
-
-> [!注意]
+这镜像了 [Cloud first request guide](/langsmith/llm-gateway-first-request)，并将基本 URL 调整为自托管。在继续之前，请完成上述步骤（部署网关、启动 Ingress）。> [!注意]
 >
-> 组织管理员必须将提供程序 API 密钥添加到您想要访问的模型的工作区或组织模型提供程序机密中，然后向用户授予具有 `gateway:invoke` 和 `workspaces:read` [permissions](/langsmith/organization-workspace-operations) 和 [distribute a workspace-scoped API key](/langsmith/llm-gateway-admin-setup#4-distribute-api-keys-to-users) 的角色。参见[Admin setup](/langsmith/llm-gateway-admin-setup)。
+> 在第一次调用之前，将 [add a provider key](/langsmith/llm-gateway-provider-authentication#add-a-provider-key) 作为调用该提供程序的每个工作区中的秘密，向用户授予具有 `gateway:invoke` 和 `workspaces:read` [permissions](/langsmith/organization-workspace-operations) 和 [distribute a workspace-scoped API key](/langsmith/llm-gateway-authentication#use-a-workspace-scoped-key) 的角色。参见[Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)。
 
 **1.设置环境变量**
 
@@ -127,7 +127,9 @@ export LANGSMITH_GATEWAY="https://<your-hostname>/gateway"
 export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 ```
 
-**2.拨打电话**任一标头均有效：`Authorization: Bearer <key>` 或`X-Api-Key: <key>`。下面的示例使用 `Authorization` 标头。您还可以通过 LLM Gateway 主页模拟器测试呼叫。
+**2.拨打电话**
+
+任一标头均有效：`Authorization: Bearer <key>` 或`X-Api-Key: <key>`。下面的示例使用 `Authorization` 标头。
 
 ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl "$LANGSMITH_GATEWAY_BASE_URL/chat/completions" \
@@ -187,7 +189,7 @@ print(result["messages"][-1].content)
 
 **3.查看踪迹**
 
-在 LangSmith UI 中，转到与 API 密钥绑定的工作区中名为 `gateway` 的跟踪项目。如果启用了跟踪内容，则通过网关路由的每个呼叫都会显示输入、输出、延迟和令牌使用情况。
+在 LangSmith UI 中，转到与 API 密钥绑定的工作区中名为 `gateway` 的跟踪项目。如果启用了跟踪内容，则通过网关路由的每个调用都会显示输入、输出、延迟和令牌使用情况。
 
 **4.设置支出政策（可选）**
 
@@ -199,20 +201,18 @@ print(result["messages"][-1].content)
 
 有关完整指南，请参阅[Spend policies](/langsmith/llm-gateway-spend-policies)。
 
-## 故障排除
+## 故障排除* **升级后立即网关 Pod `CrashLoopBackOff`**：检查`kubectl logs deploy/langsmith-agent-gateway`。
+* **模型调用因连接被拒绝或超时而失败 `agent-gateway`**：验证网关 Pod 为 `Running`，并且集群中没有 NetworkPolicy 阻止 LangSmith 命名空间中 Pod 之间的端口 `8083`。
 
-* **升级后立即网关 Pod `CrashLoopBackOff`**：检查`kubectl logs deploy/langsmith-agent-gateway`。
-* **模型调用失败，连接被拒绝或超时到 `agent-gateway`**：验证网关 Pod 为 `Running`，并且集群中没有 NetworkPolicy 阻止 LangSmith 命名空间中 Pod 之间的端口 `8083`。
+## 安全说明
 
-## 安全说明* 网关对提供商 LLM 端点进行出站 HTTP 调用。您配置的任何自定义提供商 URL 都必须根据您的出口策略进行验证；该服务使用 LangSmith 的 SSRF 保护库来自定义和配置提供商 URL。内置提供程序解析为固定的、提供程序拥有的主机名，而不是用户控制的 URL 路径。
+* 网关对提供商 LLM 端点进行出站 HTTP 调用。您配置的任何自定义提供商 URL 都必须根据您的出口策略进行验证；该服务使用 LangSmith 的 SSRF 保护库来自定义和配置提供商 URL。内置提供程序解析为固定的、提供程序拥有的主机名，而不是用户控制的 URL 路径。
 * 外部客户端应通过前端的 `/gateway/` 路径到达网关，以便请求继承与 LangSmith API 的其余部分相同的 TLS 终止、身份验证和速率限制。直接在端口 `8083` 创建第二个 Ingress 或 LoadBalancer 会绕过这些控制。
 * `AGENT_GATEWAY_URL` 源自 Helm 版本全名以及图表的 `agentGateway.name`、`agentGateway.service.port`、`namespace` 和 `clusterDomain` 值。覆盖现有安装中的任何一个都需要滚动重新启动读取该值的每个 Pod。
 
-## 后续步骤
-
-* [Quickstart](/langsmith/llm-gateway-quickstart)：相当于上述步骤的 SaaS。
-* [Admin setup](/langsmith/llm-gateway-admin-setup)：授予工作区用户网关访问权限并配置提供者机密。
-* [Spend policies](/langsmith/llm-gateway-spend-policies)：组织、工作区、API 密钥或用户级​​别的支出上限。
+## 后续步骤* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：连接提供商、授予用户网关访问权限并为您的组织配置策略。
+* [How the LLM Gateway works](/langsmith/llm-gateway-how-it-works)：通过网关跟踪请求，包括自托管基本 URL。
+* [Authenticate to the LLM Gateway](/langsmith/llm-gateway-authentication)：选择并发送调用者使用的API密钥。
 
 ***
 

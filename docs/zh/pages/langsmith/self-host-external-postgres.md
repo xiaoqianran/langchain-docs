@@ -182,272 +182,273 @@ commonPodSecurityContext:
 
 > [!警告]
 >
-> IAM 身份验证仅处理连接身份验证。您可能仍然需要在数据库中运行 SQL 命令来创建 IAM 用户/角色并授予其访问 LangSmith 架构所需的权限和特权。
-
-**AWS**
-
-### Amazon RDS IAM 身份验证
-
-Amazon RDS 支持 [IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html)，它允许您使用 AWS IAM 凭证而不是数据库密码对 PostgreSQL 实例进行身份验证。
-
-#### 先决条件1. 使用 [AWS IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) 或 [EKS Pod Identity](https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html) 在 Kubernetes 集群中**配置工作负载身份**
-2. **在您的 RDS PostgreSQL 实例上启用 IAM 身份验证**并授予对您的工作负载身份的访问权限
-
-#### 配置
-
-> [!警告]
+> IAM 身份验证仅处理连接身份验证。您可能仍然需要在数据库中运行 SQL 命令来创建 IAM 用户/角色并授予其访问 LangSmith 架构所需的权限和特权。> [选项卡] AWS
 >
-> 如果您在 LangSmith 运行初始迁移后切换到新的 IAM 用户，您可能需要将现有表的所有权转移给新的 IAM 用户。否则，迁移可能会由于前一个用户拥有的表的权限不足而失败。
-
-将 `iamAuthProvider` 设置为 `"aws"` 并提供 IAM 兼容的连接字符串（无密码）：
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-postgres:
-  external:
-    enabled: true
-    existingSecretName: "postgres-secret"
-    iamAuthProvider: "aws"
-```
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-apiVersion: v1
-kind: Secret
-metadata:
-  name: postgres-secret
-type: Opaque
-stringData:
-  # IAM connection URL - note no password, username is the IAM identity name
-  connection_url: "<iam-identity-name>@<rds-host>:5432/<database>?sslmode=require"
-```
-
-> [!警告]
+> ### Amazon RDS IAM 身份验证
 >
-> IAM 身份验证需要 TLS。您必须在连接字符串中包含 `sslmode=require`。
-
-#### 必需的注释
-
-您必须将 AWS IRSA 所需的 ServiceAccount 注释应用到连接到 PostgreSQL 的所有 LangSmith 组件：
-
-**部署：** `backend`、`queue`、`platformBackend`、`hostBackend`、`ingestQueue`
-
-**工作：** `migrations`、`authBootstrap`、`feedbackConfigMigration`、`feedbackDataMigration`、`e2eTest`
-
-> [!注意]
+> Amazon RDS 支持 [IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html)，它允许您使用 AWS IAM 凭证而不是数据库密码对 PostgreSQL 实例进行身份验证。
 >
-> 上面列出的所有作业（`e2eTest` 除外）都使用 `backend` 服务帐户。 `e2eTest`作业使用自己的服务帐户，并且需要单独的注释配置。
-
-后端服务的配置示例：
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-backend:
-  serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<role-name>"
-
-queue:
-  serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<role-name>"
-
-platformBackend:
-  serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<role-name>"
-
-hostBackend:
-  serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<role-name>"
-
-ingestQueue:
-  serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<role-name>"
-```有关可配置服务的完整列表，请参阅[Helm values reference](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml)。
-
-**GCP**
-
-### Cloud SQL IAM 身份验证
-
-Cloud SQL 支持 [IAM authentication](https://cloud.google.com/sql/docs/postgres/iam-authentication)，它允许您使用 GCP 服务帐户而不是数据库密码进行身份验证。
-
-#### 先决条件
-
-1. 使用 [GCP Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) 在 Kubernetes 集群中**配置工作负载身份**
-2. **在您的 Cloud SQL 实例上启用 IAM 身份验证**并授予对您的工作负载身份的访问权限
-
-#### 配置
-
-> [!警告]
+> #### 先决条件
 >
-> 如果您在 LangSmith 运行初始迁移后切换到新的 IAM 用户，您可能需要将现有表的所有权转移给新的 IAM 用户。否则，迁移可能会由于前一个用户拥有的表的权限不足而失败。
-
-将 `iamAuthProvider` 设置为 `"gcp"` 并提供 IAM 兼容的连接字符串（无密码）：
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-postgres:
-  external:
-    enabled: true
-    existingSecretName: "postgres-secret"
-    iamAuthProvider: "gcp"
-```
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-apiVersion: v1
-kind: Secret
-metadata:
-  name: postgres-secret
-type: Opaque
-stringData:
-  # IAM connection URL - note no password, username is the service account email
-  connection_url: "<service-account>@<project>.iam@<cloud-sql-host>:5432/<database>?sslmode=require"
-```
-
-> [!警告]
+> 1. 使用 [AWS IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) 或 [EKS Pod Identity](https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html) 在 Kubernetes 集群中**配置工作负载身份**
+> 2. **在您的 RDS PostgreSQL 实例上启用 IAM 身份验证**并授予对您的工作负载身份的访问权限
 >
-> IAM 身份验证需要 TLS。您必须在连接字符串中包含 `sslmode=require`。
-
-#### 必需的注释
-
-您必须将 GCP Workload Identity 所需的 ServiceAccount 注释应用到连接到 PostgreSQL 的所有 LangSmith 组件：
-
-**部署：** `backend`、`queue`、`platformBackend`、`hostBackend`、`ingestQueue`
-
-**工作：** `migrations`、`authBootstrap`、`feedbackConfigMigration`、`feedbackDataMigration`、`e2eTest`> [!注意]
+> #### 配置
 >
-> 上面列出的所有作业（`e2eTest` 除外）都使用 `backend` 服务帐户。 `e2eTest`作业使用自己的服务帐户，并且需要单独的注释配置。
-
-后端服务的配置示例：
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-backend:
-  serviceAccount:
-    annotations:
-      iam.gke.io/gcp-service-account: "<service-account>@<project>.iam.gserviceaccount.com"
-
-queue:
-  serviceAccount:
-    annotations:
-      iam.gke.io/gcp-service-account: "<service-account>@<project>.iam.gserviceaccount.com"
-
-platformBackend:
-  serviceAccount:
-    annotations:
-      iam.gke.io/gcp-service-account: "<service-account>@<project>.iam.gserviceaccount.com"
-
-hostBackend:
-  serviceAccount:
-    annotations:
-      iam.gke.io/gcp-service-account: "<service-account>@<project>.iam.gserviceaccount.com"
-
-ingestQueue:
-  serviceAccount:
-    annotations:
-      iam.gke.io/gcp-service-account: "<service-account>@<project>.iam.gserviceaccount.com"
-```
-
-有关可配置服务的完整列表，请参阅[Helm values reference](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml)。
-
-**天蓝色**
-
-### 具有 Microsoft Entra 身份验证的 Azure Database for PostgreSQL
-
-Azure Database for PostgreSQL 支持 [Microsoft Entra authentication](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-azure-ad-authentication)，它允许你使用 Azure 托管标识而不是数据库密码进行身份验证。
-
-#### 先决条件
-
-1. 使用 [Azure Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) 在 Kubernetes 集群中**配置工作负载身份**
-2. **在 Azure Database for PostgreSQL 实例上启用 Microsoft Entra 身份验证**，并授予对工作负载身份的访问权限
-
-#### 配置
-
-> [!警告]
+>> [!警告]
+>>
+>> 如果您在 LangSmith 运行初始迁移后切换到新的 IAM 用户，您可能需要将现有表的所有权转移给新的 IAM 用户。否则，迁移可能会由于前一个用户拥有的表的权限不足而失败。
 >
-> 如果您在 LangSmith 运行初始迁移后切换到新的 IAM 用户，您可能需要将现有表的所有权转移给新的 IAM 用户。否则，迁移可能会由于前一个用户拥有的表的权限不足而失败。
-
-将 `iamAuthProvider` 设置为 `"azure"` 并提供 IAM 兼容的连接字符串（无密码）：
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-postgres:
-  external:
-    enabled: true
-    existingSecretName: "postgres-secret"
-    iamAuthProvider: "azure"
-```
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-apiVersion: v1
-kind: Secret
-metadata:
-  name: postgres-secret
-type: Opaque
-stringData:
-  # IAM connection URL - note no password, username is the managed identity name
-  connection_url: "<managed-identity-name>@<azure-postgres-host>:5432/<database>?sslmode=require"
-```> [!警告]
+> 将 `iamAuthProvider` 设置为 `"aws"` 并提供 IAM 兼容的连接字符串（无密码）：
 >
-> IAM 身份验证需要 TLS。您必须在连接字符串中包含 `sslmode=require`。
-
-#### 必需的注释
-
-您必须将 Azure Workload Identity 所需的 ServiceAccount 注释和 pod 标签应用到连接到 PostgreSQL 的所有 LangSmith 组件：
-
-**部署：** `backend`、`queue`、`platformBackend`、`hostBackend`、`ingestQueue`
-
-**工作：** `migrations`、`authBootstrap`、`feedbackConfigMigration`、`feedbackDataMigration`、`e2eTest`
-
-> [!注意]
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> postgres:
+>   external:
+>     enabled: true
+>     existingSecretName: "postgres-secret"
+>     iamAuthProvider: "aws"
+> ```
 >
-> 上面列出的所有作业（`e2eTest` 除外）都使用 `backend` 服务帐户。对于这些作业，您只需要配置 pod 标签（Azure 要求 pod 上使用`azure.workload.identity/use: "true"`）。 `e2eTest`作业使用自己的服务帐户，并且需要单独的注释配置。
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> apiVersion: v1
+> kind: Secret
+> metadata:
+>   name: postgres-secret
+> type: Opaque
+> stringData:
+>   # IAM connection URL - note no password, username is the IAM identity name
+>   connection_url: "<iam-identity-name>@<rds-host>:5432/<database>?sslmode=require"
+> ```
+>
+>> [!警告]
+>>
+>> IAM 身份验证需要 TLS。您必须在连接字符串中包含 `sslmode=require`。
+>
+> #### 必需的注释
+>
+> 您必须将 AWS IRSA 所需的 ServiceAccount 注释应用到连接到 PostgreSQL 的所有 LangSmith 组件：
+>
+> **部署：** `backend`、`queue`、`platformBackend`、`hostBackend`、`ingestQueue`
+>> **工作：** `migrations`、`authBootstrap`、`feedbackConfigMigration`、`feedbackDataMigration`、`e2eTest`
+>
+>> [!注意]
+>>
+>> 上面列出的所有作业（`e2eTest` 除外）都使用 `backend` 服务帐户。 `e2eTest`作业使用自己的服务帐户，并且需要单独的注释配置。
+>
+> 后端服务配置示例：
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> backend:
+>   serviceAccount:
+>     annotations:
+>       eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<role-name>"
+>
+> queue:
+>   serviceAccount:
+>     annotations:
+>       eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<role-name>"
+>
+> platformBackend:
+>   serviceAccount:
+>     annotations:
+>       eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<role-name>"
+>
+> hostBackend:
+>   serviceAccount:
+>     annotations:
+>       eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<role-name>"
+>
+> ingestQueue:
+>   serviceAccount:
+>     annotations:
+>       eks.amazonaws.com/role-arn: "arn:aws:iam::<account-id>:role/<role-name>"
+> ```
+>
+> 请参阅[Helm values reference](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 了解可配置服务的完整列表。
 
-后端服务的配置示例：
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-backend:
-  serviceAccount:
-    annotations:
-      azure.workload.identity/client-id: "<managed-identity-client-id>"
-  deployment:
-    labels:
-      azure.workload.identity/use: "true"
-  migrations:
-    labels:
-      azure.workload.identity/use: "true"
-
-queue:
-  serviceAccount:
-    annotations:
-      azure.workload.identity/client-id: "<managed-identity-client-id>"
-  deployment:
-    labels:
-      azure.workload.identity/use: "true"
-
-platformBackend:
-  serviceAccount:
-    annotations:
-      azure.workload.identity/client-id: "<managed-identity-client-id>"
-  deployment:
-    labels:
-      azure.workload.identity/use: "true"
-
-hostBackend:
-  serviceAccount:
-    annotations:
-      azure.workload.identity/client-id: "<managed-identity-client-id>"
-  deployment:
-    labels:
-      azure.workload.identity/use: "true"
-
-ingestQueue:
-  serviceAccount:
-    annotations:
-      azure.workload.identity/client-id: "<managed-identity-client-id>"
-  deployment:
-    labels:
-      azure.workload.identity/use: "true"
-```
-
-有关可配置服务的完整列表，请参阅[Helm values reference](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml)。
+> [选项卡] GCP
+>
+> ### Cloud SQL IAM 身份验证
+>
+> Cloud SQL 支持 [IAM authentication](https://cloud.google.com/sql/docs/postgres/iam-authentication)，它允许您使用 GCP 服务帐户而不是数据库密码进行身份验证。
+>
+> #### 先决条件
+>
+> 1. 使用 [GCP Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) 在 Kubernetes 集群中**配置工作负载身份**
+> 2. **在您的 Cloud SQL 实例上启用 IAM 身份验证**并授予对您的工作负载身份的访问权限
+>
+> #### 配置
+>
+>> [!警告]
+>>
+>> 如果您在 LangSmith 运行初始迁移后切换到新的 IAM 用户，您可能需要将现有表的所有权转移给新的 IAM 用户。否则，迁移可能会由于前一个用户拥有的表的权限不足而失败。
+>
+> 将 `iamAuthProvider` 设置为 `"gcp"` 并提供 IAM 兼容的连接字符串（无密码）：
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> postgres:
+>   external:
+>     enabled: true
+>     existingSecretName: "postgres-secret"
+>     iamAuthProvider: "gcp"
+> ```
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> apiVersion: v1
+> kind: Secret
+> metadata:
+>   name: postgres-secret
+> type: Opaque
+> stringData:
+>   # IAM connection URL - note no password, username is the service account email
+>   connection_url: "<service-account>@<project>.iam@<cloud-sql-host>:5432/<database>?sslmode=require"
+> ```
+>
+>> [!警告]
+>>>> IAM 身份验证需要 TLS。您必须在连接字符串中包含 `sslmode=require`。
+>
+> #### 必需的注释
+>
+> 您必须将 GCP Workload Identity 所需的 ServiceAccount 注释应用到连接到 PostgreSQL 的所有 LangSmith 组件：
+>
+> **部署：** `backend`、`queue`、`platformBackend`、`hostBackend`、`ingestQueue`
+>
+> **工作：** `migrations`、`authBootstrap`、`feedbackConfigMigration`、`feedbackDataMigration`、`e2eTest`
+>
+>> [!注意]
+>>
+>> 上面列出的所有作业（`e2eTest` 除外）都使用 `backend` 服务帐户。 `e2eTest`作业使用自己的服务帐户，并且需要单独的注释配置。
+>
+> 后端服务配置示例：
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> backend:
+>   serviceAccount:
+>     annotations:
+>       iam.gke.io/gcp-service-account: "<service-account>@<project>.iam.gserviceaccount.com"
+>
+> queue:
+>   serviceAccount:
+>     annotations:
+>       iam.gke.io/gcp-service-account: "<service-account>@<project>.iam.gserviceaccount.com"
+>
+> platformBackend:
+>   serviceAccount:
+>     annotations:
+>       iam.gke.io/gcp-service-account: "<service-account>@<project>.iam.gserviceaccount.com"
+>
+> hostBackend:
+>   serviceAccount:
+>     annotations:
+>       iam.gke.io/gcp-service-account: "<service-account>@<project>.iam.gserviceaccount.com"
+>
+> ingestQueue:
+>   serviceAccount:
+>     annotations:
+>       iam.gke.io/gcp-service-account: "<service-account>@<project>.iam.gserviceaccount.com"
+> ```
+>
+> 有关可配置服务的完整列表，请参阅[Helm values reference](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml)。> [选项卡] 天蓝色
+>
+> ### Azure Database for PostgreSQL 具有 Microsoft Entra 身份验证
+>
+> Azure Database for PostgreSQL 支持 [Microsoft Entra authentication](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-azure-ad-authentication)，它允许您使用 Azure 托管标识而不是数据库密码进行身份验证。
+>
+> #### 先决条件
+>
+> 1. 使用 [Azure Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) 在 Kubernetes 集群中**配置工作负载身份**
+> 2. **在 Azure Database for PostgreSQL 实例上启用 Microsoft Entra 身份验证**并授予对工作负载身份的访问权限
+>
+> #### 配置
+>
+>> [!警告]
+>>
+>> 如果您在 LangSmith 运行初始迁移后切换到新的 IAM 用户，您可能需要将现有表的所有权转移给新的 IAM 用户。否则，迁移可能会由于前一个用户拥有的表的权限不足而失败。
+>
+> 将 `iamAuthProvider` 设置为 `"azure"` 并提供 IAM 兼容的连接字符串（无密码）：
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> postgres:
+>   external:
+>     enabled: true
+>     existingSecretName: "postgres-secret"
+>     iamAuthProvider: "azure"
+> ```
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> apiVersion: v1
+> kind: Secret
+> metadata:
+>   name: postgres-secret
+> type: Opaque
+> stringData:
+>   # IAM connection URL - note no password, username is the managed identity name
+>   connection_url: "<managed-identity-name>@<azure-postgres-host>:5432/<database>?sslmode=require"
+> ```
+>
+>> [!警告]
+>>
+>> IAM 身份验证需要 TLS。您必须在连接字符串中包含 `sslmode=require`。
+>
+> #### 必需的注释
+>
+> 您必须将 Azure Workload Identity 所需的 ServiceAccount 注释和 pod 标签应用到连接到 PostgreSQL 的所有 LangSmith 组件：
+>> **部署：** `backend`、`queue`、`platformBackend`、`hostBackend`、`ingestQueue`
+>
+> **工作：** `migrations`、`authBootstrap`、`feedbackConfigMigration`、`feedbackDataMigration`、`e2eTest`
+>
+>> [!注意]
+>>
+>> 上面列出的所有作业（`e2eTest` 除外）都使用 `backend` 服务帐户。对于这些作业，您只需要配置 pod 标签（Azure 要求 pod 上使用`azure.workload.identity/use: "true"`）。 `e2eTest`作业使用自己的服务帐户，并且需要单独的注释配置。
+>
+> 后端服务配置示例：
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> backend:
+>   serviceAccount:
+>     annotations:
+>       azure.workload.identity/client-id: "<managed-identity-client-id>"
+>   deployment:
+>     labels:
+>       azure.workload.identity/use: "true"
+>   migrations:
+>     labels:
+>       azure.workload.identity/use: "true"
+>
+> queue:
+>   serviceAccount:
+>     annotations:
+>       azure.workload.identity/client-id: "<managed-identity-client-id>"
+>   deployment:
+>     labels:
+>       azure.workload.identity/use: "true"
+>
+> platformBackend:
+>   serviceAccount:
+>     annotations:
+>       azure.workload.identity/client-id: "<managed-identity-client-id>"
+>   deployment:
+>     labels:
+>       azure.workload.identity/use: "true"
+>
+> hostBackend:
+>   serviceAccount:
+>     annotations:
+>       azure.workload.identity/client-id: "<managed-identity-client-id>"
+>   deployment:
+>     labels:
+>       azure.workload.identity/use: "true"
+>
+> ingestQueue:
+>   serviceAccount:
+>     annotations:
+>       azure.workload.identity/client-id: "<managed-identity-client-id>"
+>   deployment:
+>     labels:
+>       azure.workload.identity/use: "true"
+> ```
+>
+> 请参阅[Helm values reference](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 了解可配置服务的完整列表。
 
 ***
 

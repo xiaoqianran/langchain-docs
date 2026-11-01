@@ -24,40 +24,40 @@ LangSmith 提供灵活的控制来管理用户在使用 [Single Sign-On (SSO) au
 
 您可以在 LangSmith UI 中或使用 LangSmith API 更新这些设置：
 
-**用户界面**
+> [选项卡] 用户界面
+>
+> 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-jit-invite-sso) 中：
+>
+> 1. 导航到 **设置** > **组织** > **访问和安全** > **常规**。
+> 2. 根据需要切换 **启用 JIT 配置** 和 **允许邀请**。
+> 3. **设置** > **SSO 配置**中的[Configure SSO default workspaces and roles](#configure-default-sso-settings)。
 
-在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-jit-invite-sso)中：
-
-1. 导航到 **设置** > **组织** > **访问和安全** > **常规**。
-2. 根据需要切换 **启用 JIT 配置** 和 **允许邀请**。
-3. **设置** > **SSO 配置**中的[Configure SSO default workspaces and roles](#configure-default-sso-settings)。
-
-**API**
-
-使用 [Update organization info](/langsmith/smith-api/orgs/update-current-organization-info) 端点以编程方式更新组织设置：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl -X PATCH https://api.smith.langchain.com/api/v1/organizations/current/info \
-  -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jit_provisioning_enabled": true,
-    "invites_enabled": true
-  }'
-```
-
-响应包括更新的当前组织配置：
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "id": "org-uuid",
-  "display_name": "My Organization",
-  "jit_provisioning_enabled": true,
-  "invites_enabled": true,
-  "sso_login_slug": "my-org",
-  ...
-}
-```> [!注意]
+> [选项卡] API
+>
+> 使用 [Update organization info](/langsmith/smith-api/orgs/update-current-organization-info) 端点以编程方式更新组织设置：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl -X PATCH https://api.smith.langchain.com/api/v1/organizations/current/info \
+>   -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "jit_provisioning_enabled": true,
+>     "invites_enabled": true
+>   }'
+> ```
+>
+> 响应包括更新的当前组织配置：
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "id": "org-uuid",
+>   "display_name": "My Organization",
+>   "jit_provisioning_enabled": true,
+>   "invites_enabled": true,
+>   "sso_login_slug": "my-org",
+>   ...
+> }
+> ```> [!注意]
 >
 > 如果您使用 [LangSmith self-hosted](/langsmith/self-hosted)，请考虑以下事项：
 >

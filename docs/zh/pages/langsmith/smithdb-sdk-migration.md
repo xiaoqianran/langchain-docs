@@ -16,7 +16,7 @@
 
 每个 SDK 方法及其底层端点共享相同的弃用日期。
 
-|部署|弃用 |移除 |
+|部署|弃用 |移除|
 | - | - | - |
 |所有云区域 | 2026 年 7 月结束 | 2027 年 1 月 31 日 |
 |自托管 | `v0.16` | `v0.18` |
@@ -33,7 +33,7 @@
 |打字稿 | `langsmith` | `>=0.8.9` |
 |爪哇 | `langsmith-java` | `0.1.0-beta.22` |
 |去 | `langsmith-go` | `v0.25.4` |
-|命令行| `langsmith-cli` | `v0.2.44` |
+|命令行 | `langsmith-cli` | `v0.2.44` |
 
 [LangSmith CLI](/langsmith/langsmith-cli) 查询相同的 SmithDB 支持的端点，并需要 `v0.2.44` 或更高版本。## 关于自托管
 
@@ -45,27 +45,27 @@
 
 每种方法的更改前后都记录在其区域的页面上。
 
-> **[Query runs](/langsmith/smithdb-sdk-migration-query-runs)**
+> [卡][Query runs](/langsmith/smithdb-sdk-migration-query-runs)
 >
 > 搜索项目中的运行：过滤器、字段投影、排序和分页。迁移中表面积最大。
 
-> **[Retrieve runs](/langsmith/smithdb-sdk-migration-runs)**
+> [卡][Retrieve runs](/langsmith/smithdb-sdk-migration-runs)
 >
-> 按 ID 获取一个运行，加载其子运行，并在 LangSmith UI 中构建运行的 URL。
+> 按 ID 获取一次运行，加载其子运行，并在 LangSmith UI 中构建运行的 URL。
 
-> **[Traces](/langsmith/smithdb-sdk-migration-traces)**
+> [卡][Traces](/langsmith/smithdb-sdk-migration-traces)
 >
 > 查询项目中的跟踪，读取其令牌和成本聚合，并列出属于一个跟踪的运行。
 
-> **[Threads](/langsmith/smithdb-sdk-migration-threads)**
+> [卡][Threads](/langsmith/smithdb-sdk-migration-threads)
 >
 > 查询项目中的线程并列出属于一个线程的迹线（匝数）。
 
-> **[Dataset experiment runs](/langsmith/smithdb-sdk-migration-experiments)**
+> [卡][Dataset experiment runs](/langsmith/smithdb-sdk-migration-experiments)
 >
 > 查询数据集上的实验记录的运行，包括分页和按反馈分数排序。
 
-> **[Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback)**
+> [卡][Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback)
 >
 > 创建运行反馈、将运行添加到注释队列以及共享、取消共享或读取公开共享的运行。## 使用 AI 代理进行迁移
 
@@ -117,58 +117,58 @@
 如果指南未涵盖某个调用站点或参数，请停下来询问
 比猜测。
 
-## 例外情况
+## 例外情况> [选项卡] Python
+>
+> SmithDB 支持的方法引发新的异常类，而不是旧的 `langsmith.utils` 异常类。
+>
+> |之前 (`langsmith.utils`) | (`langsmith`)之后|笔记|
+> | - | - | - |
+> | `LangSmithError` | `LangsmithError` | SDK的异常基类；外壳已更改 |
+> | `LangSmithAPIError` | `InternalServerError` | 5xx |
+> | `LangSmithRequestTimeout` | `APITimeoutError` |请求超时时引发 |
+> | `LangSmithUserError` | *（已删除）* |没有直接等价物。 403 org-scoped-key 案例现在引发 `PermissionDeniedError`；客户端参数验证现在提出了标准 `ValueError` 或 `TypeError` |
+> | `LangSmithRateLimitError` | `RateLimitError` | 429；不变的名字 |
+> | `LangSmithAuthError` | `AuthenticationError` | 401 | 401
+> | `LangSmithNotFoundError` | `NotFoundError` | 404;不变的名字 |
+> | `LangSmithConflictError` | `ConflictError` | 409；不变的名字 |
+> | `LangSmithConnectionError` | `APIConnectionError` |当客户端无法连接到 API 时引发 |
+> | `LangSmithExceptionGroup` | *（已删除）* |没有同等的 |
+> | *（不可用）* | `APIError` |新增：所有 API 相关错误的基类，具有 `message`、`request` 和 `body` 属性 |
+> | *（不可用）* | `APIStatusError` |新：所有 4xx/5xx 状态错误的基类 |
+> | *（不可用）* | `BadRequestError` |新：400 |
+> | *（不可用）* | `PermissionDeniedError` |新：403 |
+> | *（不可用）* | `UnprocessableEntityError` |新：422 |
+> | *（不可用）* | `APIResponseValidationError` |新：当响应与预期模式不匹配时引发 |> [选项卡] TypeScript
+>
+> SmithDB 支持的方法引发新的异常类，而不是普通的 `Error`。
+>
+> |之前（普通`Error`）|之后(`langsmith`) |笔记|
+> | - | - | - |
+> | *（不可用）* | `LangsmithError` |所有 SDK 错误的基类 |
+> | *（不可用）* | `InternalServerError` | 5xx |
+> | *（不可用）* | `APIConnectionTimeoutError` |请求超时时引发 |
+> | *（不可用）* | `RateLimitError` | 429 | 429
+> | *（不可用）* | `AuthenticationError` | 401 | 401
+> | *（不可用）* | `NotFoundError` | 404 | 404
+> | *（不可用）* | `ConflictError` | 409 | 409
+> | *（不可用）* | `APIConnectionError` |当客户端无法连接到 API 时引发 |
+> | *（不可用）* | `APIError` |所有与 API 相关的错误的基类，具有 `status`、`headers` 和 `error` 属性 |
+> | *（不可用）* | `BadRequestError` | 400 |
+> | *（不可用）* | `PermissionDeniedError` | 403 | 403
+> | *（不可用）* | `UnprocessableEntityError` | 422 | 422
+> | *（不可用）* | `APIUserAbortError` |当请求通过 `AbortController` | 中止时引发
 
-**Python**
+> [选项卡] Java
+>
+> 没有变化。错误处理不受此迁移的影响。
 
-SmithDB 支持的方法引发新的异常类，而不是旧的 `langsmith.utils` 异常类。|之前 (`langsmith.utils`) | (`langsmith`)之后|笔记|
-| - | - | - |
-| `LangSmithError` | `LangsmithError` | SDK的异常基类；外壳已更改 |
-| `LangSmithAPIError` | `InternalServerError` | 5xx |
-| `LangSmithRequestTimeout` | `APITimeoutError` |请求超时时引发 |
-| `LangSmithUserError` | *（已删除）* |没有直接等价物。 403 org-scoped-key 案例现在引发 `PermissionDeniedError`；客户端参数验证现在提出了标准 `ValueError` 或 `TypeError` |
-| `LangSmithRateLimitError` | `RateLimitError` | 429；不变的名字 |
-| `LangSmithAuthError` | `AuthenticationError` | 401 | 401
-| `LangSmithNotFoundError` | `NotFoundError` | 404;不变的名字 |
-| `LangSmithConflictError` | `ConflictError` | 409；不变的名字 |
-| `LangSmithConnectionError` | `APIConnectionError` |当客户端无法连接到 API 时引发 |
-| `LangSmithExceptionGroup` | *（已删除）* |没有同等的 |
-| *（不可用）* | `APIError` |新增：所有 API 相关错误的基类，具有 `message`、`request` 和 `body` 属性 |
-| *（不可用）* | `APIStatusError` |新：所有 4xx/5xx 状态错误的基类 |
-| *（不可用）* | `BadRequestError` |新：400 |
-| *（不可用）* | `PermissionDeniedError` |新：403 |
-| *（不可用）* | `UnprocessableEntityError` |新：422 |
-| *（不可用）* | `APIResponseValidationError` |新：当响应与预期模式不匹配时引发 |
+> [选项卡] 前往
+>
+> 没有变化。错误处理不受此迁移的影响。
 
-**打字稿**
-
-SmithDB 支持的方法引发新的异常类，而不是普通的 `Error`。|之前（普通`Error`）|之后(`langsmith`) |笔记|
-| - | - | - |
-| *（不可用）* | `LangsmithError` |所有 SDK 错误的基类 |
-| *（不可用）* | `InternalServerError` | 5xx |
-| *（不可用）* | `APIConnectionTimeoutError` |请求超时时引发 |
-| *（不可用）* | `RateLimitError` | 429 | 429
-| *（不可用）* | `AuthenticationError` | 401 | 401
-| *（不可用）* | `NotFoundError` | 404 | 404
-| *（不可用）* | `ConflictError` | 409 | 409
-| *（不可用）* | `APIConnectionError` |当客户端无法连接到 API 时引发 |
-| *（不可用）* | `APIError` |所有与 API 相关的错误的基类，具有 `status`、`headers` 和 `error` 属性 |
-| *（不可用）* | `BadRequestError` | 400 | 400
-| *（不可用）* | `PermissionDeniedError` | 403 | 403
-| *（不可用）* | `UnprocessableEntityError` | 422 | 422
-| *（不可用）* | `APIUserAbortError` |当请求通过 `AbortController` | 中止时引发
-
-**Java**
-
-没有变化。错误处理不受此迁移的影响。
-
-**去**
-
-没有变化。错误处理不受此迁移的影响。
-
-**卷曲**
-
-没有变化。错误处理不受此迁移的影响。
+> [选项卡] 卷曲
+>
+> 没有变化。错误处理不受此迁移的影响。
 
 ## 停产以下方法已停止使用。他们调用已退役的 `/feedback/formulas` 端点，这些端点在复合反馈 v2 上返回 `410 Gone`，并计划于 2026 年 8 月 20 日删除。综合分数现在以[composite evaluators](/langsmith/composite-evaluators-ui)的形式进行管理，它将综合分数实现为代码评估器加运行规则。没有 SDK 替代品。
 
