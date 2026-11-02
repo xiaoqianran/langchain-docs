@@ -33,7 +33,7 @@ Set your [API keys](/langsmith/create-account-api-key), agent identifier, and en
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING=true
 export GOOGLE_API_KEY=<your_google_api_key>
 ```

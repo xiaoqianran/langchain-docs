@@ -4,25 +4,28 @@
 
 # 不设置环境变量进行跟踪
 
-以下环境变量允许您配置启用的跟踪、API 端点、API 密钥和跟踪项目：
+以下环境变量允许您配置启用的跟踪、API 端点、API 密钥和跟踪目标：
 
 * `LANGSMITH_TRACING`
 * `LANGSMITH_API_KEY`
 * `LANGSMITH_ENDPOINT`
-* `LANGSMITH_PROJECT`
+* `LANGSMITH_AGENT_ID`
+* `LANGSMITH_AGENT_ENVIRONMENT`
 
-在 [agent-based workspace](/langsmith/agents) 中，对新项目名称的第一个跟踪会创建一个以该项目命名的代理，该项目作为其 Production [environment](/langsmith/agent-environments)。代理的标识符源自项目名称，因此它可以与项目名称不同，并且创建代理需要创建项目的权限。已存在的项目名称会不断向该项目发送跟踪。要直接与代理人联系，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
+在设置过程中的[agent-based workspace](/langsmith/agent-registry)、[create the agent](/langsmith/create-an-agent) 中。下面的示例使用其 [agent address](/langsmith/log-traces-to-agent) 在没有环境变量的情况下配置跟踪。
 
-如果您需要使用自定义配置跟踪运行，在不支持典型环境变量（例如 Cloudflare Workers）的环境中工作，或者不希望依赖环境变量，LangSmith 允许您以编程方式配置跟踪。
+如果您需要使用自定义配置跟踪运行，在不支持典型环境变量（例如 Cloudflare Workers）的环境中工作，或者不想依赖环境变量，LangSmith 允许您以编程方式配置跟踪。
 
 > [!警告]
 >
-> 在 [Python SDK](/langsmith/smith-python-sdk) 版本 **0.1.95** 中，`with trace` 遵循 `LANGSMITH_TRACING` 环境变量。详情请参阅[release notes](https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.1.95)。要在不设置环境变量的情况下禁用或启用跟踪，请使用 `with tracing_context` 上下文管理器，如以下示例所示。* Python：在 Python 中执行此操作的推荐方法是使用 [⟦T9⟧](/langsmith/annotate-code#use-the-trace-context-manager-python-only) 上下文管理器。这适用于用 `traceable` 注释的代码和`trace` 上下文管理器中的代码。
-* TypeScript：您可以将客户端和 `tracingEnabled` 标志传递给 [⟦T13⟧](https://reference.langchain.com/javascript/langsmith/traceable) 装饰器。
+> 在 [Python SDK](/langsmith/smith-python-sdk) 版本 **0.1.95** 中，`with trace` 遵循 `LANGSMITH_TRACING` 环境变量。详情请参阅[release notes](https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.1.95)。要在不设置环境变量的情况下禁用或启用跟踪，请使用 `with tracing_context` 上下文管理器，如以下示例所示。
+
+* Python：在 Python 中执行此操作的推荐方法是使用 [⟦T10⟧](/langsmith/annotate-code#use-the-trace-context-manager-python-only) 上下文管理器。这适用于用 `traceable` 注释的代码和`trace` 上下文管理器中的代码。
+* TypeScript：您可以将客户端和 `tracingEnabled` 标志传递给 [⟦T14⟧](https://reference.langchain.com/javascript/langsmith/traceable) 装饰器。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import openai
-from langsmith import Client, tracing_context, traceable
+from langsmith import Client, agent_address, tracing_context, traceable
 from langsmith.wrappers import wrap_openai
 
 langsmith_client = Client(
@@ -50,13 +53,13 @@ def chat_pipeline(question: str):
   return chat_completion.choices[0].message.content
 
 # Can set to False to disable tracing here without changing code structure
-with tracing_context(enabled=True):
+with tracing_context(enabled=True, address=agent_address("<your-agent-id>", "local")):
   # Use langsmith_extra to pass in a custom client
   chat_pipeline("Can you summarize this morning's meetings?", langsmith_extra={"client": langsmith_client})
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "langsmith";
+import { AgentAddress, Client } from "langsmith";
 import { traceable } from "langsmith/traceable";
 import { wrapOpenAI } from "langsmith/wrappers";
 import { OpenAI } from "openai";
@@ -86,13 +89,11 @@ const pipeline = traceable(
 
         return completion.choices[0].message.content;
     },
-    { name: "Chat", client, tracingEnabled: true }
+    { name: "Chat", client, tracingEnabled: true, address: new AgentAddress("<your-agent-id>", "local") }
 );
 
 await pipeline("Can you summarize this morning's meetings?");
-```
-
-如果您更喜欢视频教程，请查看 LangSmith 课程简介中的 [Alternative Ways to Trace video](https://academy.langchain.com/pages/intro-to-langsmith-preview)。
+```如果您更喜欢视频教程，请查看 LangSmith 课程简介中的 [Alternative Ways to Trace video](https://academy.langchain.com/pages/intro-to-langsmith-preview)。
 
 ## 相关
 

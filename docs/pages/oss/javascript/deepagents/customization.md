@@ -2719,7 +2719,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
 > );
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/5c684c86-25c2-471e-a9f3-c43767036b26/r)
+> > [card] [View example trace](https://smith.langchain.com/public/2e17f007-e8df-42ea-802e-b4a4be318faf/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -2765,7 +2765,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
 > );
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/2b64039f-58ff-4bf9-930e-45e57f61c09b/r)
+> > [card] [View example trace](https://smith.langchain.com/public/55d61dd5-7a4e-4d39-9e26-0f9f0e247ea1/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -2810,7 +2810,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
 > );
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/f81b4363-f551-4eec-a7c2-16fa91834002/r)
+> > [card] [View example trace](https://smith.langchain.com/public/76616a5c-05a5-455f-9721-c9085cf7831a/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -3169,7 +3169,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > );
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/052032cf-2e25-431a-a23a-ba4fc280db51/r)
+> > [card] [View example trace](https://smith.langchain.com/public/3185eb4e-80e8-4b80-9b81-5457cb07e686/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -3567,7 +3567,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > );
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/963e0d61-3d50-40cf-847a-474387d657b6/r)
+> > [card] [View example trace](https://smith.langchain.com/public/4ab19883-e4d3-4ef8-8b73-d748a541b44f/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -3798,7 +3798,7 @@ console.log(result.structuredResponse);
 // }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/2f19229d-7862-4819-b022-a56e041b7220/r)
+> [card] [View example trace](https://smith.langchain.com/public/14e5649e-fae7-4d48-9c36-b30b8b531324/r)
 >
 > Open a public LangSmith run for this example.
 

@@ -38,7 +38,7 @@ Set your [API keys](/langsmith/create-account-api-key), agent identifier, and en
 export LANGSMITH_API_KEY="your-langsmith-api-key"
 export LANGSMITH_TRACING="true"
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export DEEPSEEK_API_KEY="your-deepseek-api-key"
 ```
 

@@ -19,7 +19,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T5⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T5⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 来自 Claude 平台的追踪Claude 平台导出您的 [Claude Managed Agents](https://platform.claude.com/docs/en/managed-agents/overview) 会话和 [Messages API](https://platform.claude.com/docs/en/api/messages) 请求的 OTel 跟踪记录。它将它们发送到*目的地*，即您在 Claude 控制台中注册的 OTel 端点。您可以添加 LangSmith 作为目标并查看这些跟踪，而无需更改代理代码。有关目的地和交付的详细信息，请参阅Anthropic文档中的[Use OpenTelemetry with the Claude API](https://platform.claude.com/docs/en/manage-claude/opentelemetry/api)。
 
@@ -62,7 +62,7 @@
 ### 解决交付问题如果 Claude 控制台 [OpenTelemetry settings page](https://platform.claude.com/settings/telemetry-destinations) 上的 **Delivery** 列显示 **Failing**，请将指针悬停在其上方以查看最后一个错误：
 
 * **HTTP 401**：目标不发送 API 密钥。
-* **HTTP 403**：API 密钥错误，或者已过期或被删除。对于没有工作区 ID 的组织范围服务密钥，LangSmith 还会返回 403。
+* **HTTP 403**：API 密钥错误，或者已过期或已删除。对于没有工作区 ID 的组织范围服务密钥，LangSmith 还会返回 403。
 * **HTTP 404**：端点 URL 错误。编辑目标并检查 **OTLP 端点 URL** 以 `/otel` 结尾（`/api/v1/otel` 对于自托管 LangSmith）并且不包含 `/v1/traces`。
 
 对于其他错误，请参阅Anthropic文档中的[Delivery errors](https://platform.claude.com/docs/en/manage-claude/opentelemetry/api#delivery-errors)。
@@ -71,7 +71,7 @@
 
 ## 来自您的代理的跟踪
 
-当您的代理应发送跟踪信息时，请使用这些方法之一。要在单个跟踪中跟踪您的 Anthropic 调用以及其余代码，请使用 LangSmith SDK 包装器。
+当您的代理应发送跟踪信息时，请使用其中一种方法。要在单个跟踪中跟踪您的 Anthropic 调用以及其余代码，请使用 LangSmith SDK 包装器。
 
 ### 使用 Claude SDKClaude SDK 在您的代理中针对其发送的每个请求以及工具运行程序运行的每个工具使用发出 OTel 跨度。 OTel 导出器库将跨度发送到LangSmith。有关 SDK 选项和 SDK 发出的范围的详细信息，请参阅 Anthropic 文档中的 [Set up SDK tracing](https://platform.claude.com/docs/en/manage-claude/opentelemetry/sdk)。
 
@@ -92,14 +92,14 @@
 
    * `x-api-key`：您的 LangSmith API 密钥。
    * `Langsmith-Agent-Id`：注册代理标识符。
-   * `Langsmith-Agent-Environment`：环境，如`production`。
+   * `Langsmith-Agent-Environment`：环境，如`local`。
    * `X-Tenant-Id`：（可选）要将跟踪发送到的 LangSmith 工作区的 ID。如果没有此标头，跟踪将转到 API 密钥所属的工作区。组织范围的服务密钥需要它。
 
    例如，使用标准 OTel 环境变量：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel
-   export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your-langsmith-api-key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=production"
+   export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your-langsmith-api-key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=local"
    ```有关导出器设置的更多信息，请参阅[Trace a non-LangChain agent](/langsmith/trace-with-opentelemetry#trace-a-non-langchain-application)。
 3. （可选）默认情况下，Claude SDK 仅记录元数据。要在跨度中包含提示和响应，请设置内容模式。请参阅 Anthropic 文档中的 [Configure the SDK](https://platform.claude.com/docs/en/manage-claude/opentelemetry/sdk#configure-the-sdk)。
 

@@ -1,10 +1,14 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace PydanticAI applications | https://docs.langchain.com/langsmith/trace-with-pydantic-ai -->
+<!-- langchain-docs: Trace PydanticAI agents | https://docs.langchain.com/langsmith/trace-with-pydantic-ai -->
 
-# 跟踪 PydanticAI 应用程序
+# 追踪 PydanticAI 代理
 
 LangSmith 可以使用其内置的 OpenTelemetry 仪器捕获 PydanticAI 生成的痕迹。本指南向您展示如何自动捕获来自 PydanticAI 代理的跟踪并将其发送到 LangSmith 进行监控和分析。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T7⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -26,24 +30,25 @@ uv add langsmith pydantic-ai opentelemetry-exporter-otlp
 
 ### 1.配置环境变量
 
-设置您的 [API keys](/langsmith/create-account-api-key) 和项目名称：
+设置您的 [API keys](/langsmith/create-account-api-key)、代理标识符和环境：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
-export LANGSMITH_PROJECT=<your_project_name>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export OPENAI_API_KEY=<your_openai_api_key>
 ```
 
 ### 2. 配置 OpenTelemetry 集成
 
-在您的 PydanticAI 应用程序中，配置 LangSmith OpenTelemetry 集成：
+在您的 PydanticAI 代理中，配置 LangSmith OpenTelemetry 集成：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.otel import configure
 from pydantic_ai import Agent
 
 # Configure LangSmith tracing
-configure(project_name="pydantic-ai-demo")
+configure()
 
 # Instrument all PydanticAI agents
 Agent.instrument_all()
@@ -62,7 +67,7 @@ from langsmith.integrations.otel import configure
 from pydantic_ai import Agent
 
 # Configure LangSmith tracing
-configure(project_name="pydantic-ai-demo")
+configure()
 
 # Instrument all PydanticAI agents
 Agent.instrument_all()
@@ -76,16 +81,14 @@ print(result.output)
 
 ## 高级用法
 
-### 自定义元数据和标签
-
-您可以使用 OpenTelemetry span 属性将自定义元数据添加到跟踪中：
+### 自定义元数据和标签您可以使用 OpenTelemetry span 属性将自定义元数据添加到跟踪中：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from opentelemetry import trace
 from pydantic_ai import Agent
 from langsmith.integrations.otel import configure
 
-configure(project_name="pydantic-ai-metadata")
+configure()
 Agent.instrument_all()
 
 tracer = trace.get_tracer(__name__)

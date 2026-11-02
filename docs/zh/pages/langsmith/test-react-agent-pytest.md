@@ -219,7 +219,7 @@ export default agent;
 
 ## 编写测试
 
-现在我们已经定义了代理，让我们编写一些测试来确保基本功能。在本教程中，我们将测试代理的工具调用能力是否有效，代理是否知道忽略不相关的问题，以及是否能够回答涉及使用所有工具的复杂问题。
+现在我们已经定义了代理，让我们编写一些测试来确保基本功能。 In this tutorial we are going to test whether the agent's tool calling abilities are working, whether the agent knows to ignore irrelevant questions, and whether it is able to answer complex questions that involve using all of the tools.
 
 我们需要首先设置一个测试文件并在文件顶部添加所需的导入。
 
@@ -634,11 +634,11 @@ ls.test(
 );
 ```
 
-## 运行测试
+## Run tests
 
 设置配置文件后（如果您使用 Vitest 或 Jest），您可以使用以下命令运行测试：
 
-> **Vitest/Jest 的配置文件**
+> [accordion] Vitest/Jest 的配置文件
 >
 > ```typescript Vitest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > Create a `ls.vitest.config.ts` file:
@@ -686,11 +686,11 @@ yarn vitest --config ls.vitest.config.ts
 yarn jest --config ls.jest.config.ts
 ```
 
-## 参考代码
+## Reference code
 
 请记住还将 Vitest 和 Jest 的配置文件添加到您的项目中。
 
-＃＃＃ 代理人> **代理代码**
+＃＃＃ 代理人> [手风琴] 代理代码
 >
 >> [!警告]
 >>
@@ -819,7 +819,7 @@ yarn jest --config ls.jest.config.ts
 
 ### 测试
 
-> **测试代码**
+> [手风琴] 测试代码
 >
 > ```python Pytest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > # from app import agent, polygon_aggregates, search_tool # import from wherever your agent is defined
@@ -1165,6 +1165,6 @@ yarn jest --config ls.jest.config.ts
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/test-react-agent-pytest.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

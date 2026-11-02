@@ -14,7 +14,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T15⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T15⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -41,14 +41,14 @@ LiteLLM 支持两种将跟踪发送到LangSmith的方法，它们在不同的层
 
 ### 使用`LANGSMITH_TRACING`和`traceable`
 
-您可以将 `LANGSMITH_TRACING=true` 与 `@traceable` 一起使用，以在 LangSmith 中实现可预测的轨迹。此方法可确保 **Input** 和 **Output** 列反映您的函数参数和返回值，从而允许您保留完整的消息结构（包括 `role` 和 `content`）。它还可以在简单的同步脚本中可靠地工作，无需异步事件循环或额外的回调配置。
+您可以将 `LANGSMITH_TRACING=true` 与 `@traceable` 一起使用，以在 LangSmith 中实现可预测的迹线。此方法可确保 **Input** 和 **Output** 列反映您的函数参数和返回值，从而允许您保留完整的消息结构（包括 `role` 和 `content`）。它还可以在简单的同步脚本中可靠地工作，无需异步事件循环或额外的回调配置。
 
-1. 设置以下环境变量以启用 LiteLLM Python SDK 使用的 LangSmith 跟踪：
+1. 向代理发送痕迹需要`langsmith>=0.14.9`。设置以下环境变量以启用 LiteLLM Python SDK 使用的 LangSmith 跟踪：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_API_KEY="your_api_key"
    export LANGSMITH_AGENT_ID="<your-agent-id>"
-   export LANGSMITH_AGENT_ENVIRONMENT="production"
+   export LANGSMITH_AGENT_ENVIRONMENT="local"
    export LANGSMITH_TRACING="true"
    ```
 
@@ -58,9 +58,7 @@ LiteLLM 支持两种将跟踪发送到LangSmith的方法，它们在不同的层
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export OPENAI_API_KEY="your_openai_key"
-   ```
-
-2. 将以下代码添加到脚本文件中：
+   ```2. 将以下代码添加到脚本文件中：
 
    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    from langsmith import traceable
@@ -81,7 +79,9 @@ LiteLLM 支持两种将跟踪发送到LangSmith的方法，它们在不同的层
 
    result = run(messages)
    print(result["content"])
-   ````@traceable` 将您的功能设置为 LangSmith 运行。当`LANGSMITH_TRACING=true`设置时，LangSmith自动：
+   ```
+
+   `@traceable` 将您的功能设置为 LangSmith 运行。当`LANGSMITH_TRACING=true`设置时，LangSmith自动：
 
    * 调用函数时创建运行。
    * 将函数参数记录为运行输入。
@@ -97,9 +97,9 @@ LiteLLM 支持两种将跟踪发送到LangSmith的方法，它们在不同的层
 
 ### 使用 `langsmith` 回调记录 LiteLLM 调用
 
-此回调使用旧目标设置。将其设置为代理环境的[⟦T32⟧](/langsmith/create-an-agent#use-an-environment-project)。使用上面的 SDK 跟踪方法进行代理寻址。
+此回调使用旧目标设置。将其设置为代理环境的[⟦T33⟧](/langsmith/create-an-agent#use-an-environment-project)。使用上面的 SDK 跟踪方法进行代理寻址。LiteLLM 可以使用其内置的 [callback system](https://docs.litellm.ai/docs/observability/callbacks) 将跟踪直接发送到 LangSmith。当在异步 Python 服务中运行 LiteLLM 并且您希望 LiteLLM 本身发出模型级日志时，这非常有用。
 
-LiteLLM 可以使用其内置的 [callback system](https://docs.litellm.ai/docs/observability/callbacks) 将跟踪直接发送到 LangSmith。当在异步 Python 服务中运行 LiteLLM 并且您希望 LiteLLM 本身发出模型级日志时，这非常有用。LiteLLM 回调在异步环境中运行。当使用`litellm.acompletion()`进行异步调用时，您可以启用`langsmith`回调来记录成功的模型调用。
+LiteLLM 回调在异步环境中运行。使用`litellm.acompletion()`进行异步调用时，您可以启用`langsmith`回调来记录成功的模型调用。
 
 > [!提示]
 >
@@ -159,9 +159,7 @@ LiteLLM 可以使用其内置的 [callback system](https://docs.litellm.ai/docs/
 
 ## 使用 LiteLLM 代理
 
-LiteLLM 代理作为独立服务器运行并公开OpenAI兼容的 API。
-
-1. 要让代理日志请求直接发送到LangSmith，请在`config.yaml`中配置回调：
+LiteLLM 代理作为独立服务器运行并公开OpenAI 兼容 API。1. 要让代理日志请求直接发送到LangSmith，请在`config.yaml`中配置回调：
 
    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    model_list:
@@ -179,7 +177,9 @@ LiteLLM 代理作为独立服务器运行并公开OpenAI兼容的 API。
    export LANGSMITH_API_KEY="your_api_key"
    export LANGSMITH_PROJECT="litellm-proxy"
    export OPENAI_API_KEY="your_openai_key"
-   ```> [!注意]
+   ```
+
+   > [!注意]
    >
    > LiteLLM 代理作为单独的服务运行。如果在代理级别启用LangSmith跟踪，则必须在代理的运行时环境中配置`LANGSMITH_API_KEY`和相关环境变量。这些设置不会与您的进程共享。
 
@@ -189,7 +189,7 @@ LiteLLM 代理作为独立服务器运行并公开OpenAI兼容的 API。
    litellm --config config.yaml
    ```
 
-   默认情况下，代理在`http://localhost:4000/v1`运行。您的代理使用任何 OpenAI 兼容客户端（Python、JavaScript、curl 等）调用它。
+   默认情况下，代理在`http://localhost:4000/v1`运行。您的代理使用任何 OpenAI 兼容的客户端（Python、JavaScript、curl 等）调用它。
 
    启用`callbacks: ["langsmith"]`后，代理将模型请求和响应数据直接发送到LangSmith。客户端代码中不需要进行跟踪配置。
 

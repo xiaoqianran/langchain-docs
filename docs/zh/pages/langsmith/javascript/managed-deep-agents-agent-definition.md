@@ -71,7 +71,7 @@ export const agent = defineDeepAgent({
 });
 ```
 
-通过项目文件而不是代理定义来配置系统提示、技能、内存、沙箱、身份、通道和计划。参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。要为每次运行选择系统提示符、技能、MCP 服务器或沙箱，请参阅[Select configuration per run](#select-configuration-per-run)。
+通过项目文件而不是代理定义来配置系统提示、技能、内存、沙箱、身份、通道和计划。参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。要为每次运行选择系统提示、技能、MCP 服务器、内存或沙箱，请参阅[Select configuration per run](#select-configuration-per-run)。
 
 `defineDeepAgent` 不编译代理。它返回一个定义，托管运行时在部署时使用 [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 对其进行编译。下面的选项是 [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 表面，不包含运行时拥有的表面。参见[Relationship to Deep Agents](/langsmith/javascript/managed-deep-agents-overview#relationship-to-deep-agents)。
 
@@ -134,6 +134,7 @@ await client.runs.create(threadId, "open-swe", {
 | `skills` |展示所有项目技能。 |仅公开选定的技能。 | `[]`没有暴露任何技能。 |
 | `mcp` |使用 `mcp` 声明。 |仅使用选定的 MCP 定义。 | `[]` 不公开 MCP 工具。 |
 | `sandbox` |使用 `sandbox` 声明。 |使用提供的沙箱。 | `null` 禁用沙箱。 |
+| `memory` |使用 `memory` 声明。 |使用选定的图层。 | `null` 禁用持久内存。 |
 | `browser` |使用根`browser.ts`。 |使用提供的浏览器定义。 | `null` 禁用浏览器工具。 |
 
 > [!注意]
@@ -142,7 +143,7 @@ await client.runs.create(threadId, "open-swe", {
 
 静态定义无法设置这些字段。技能路径必须以 `skills/<name>` 结尾，并指向项目中的技能。工厂还可以返回生成的技能定义，其名称不得与项目技能名称重复。
 
-此示例根据请求启用文档 MCP 服务器，并为一个存储库提供更长的沙箱超时。它从[⟦T57⟧](/langsmith/javascript/managed-deep-agents-mcp-connectors)和[⟦T58⟧](/langsmith/javascript/managed-deep-agents-sandboxes)导入声明：
+此示例根据请求启用文档 MCP 服务器，并为一个存储库提供更长的沙箱超时。它从[⟦T60⟧](/langsmith/javascript/managed-deep-agents-mcp-connectors)和[⟦T61⟧](/langsmith/javascript/managed-deep-agents-sandboxes)导入声明：
 
 ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
@@ -174,11 +175,11 @@ export function agent(
     contextSchema,
   });
 }
-```每次运行时不会选择内存。在项目的内存文件中声明它，并使用 `allow` 策略控制每次运行的访问。参见[Control access to a layer](/langsmith/javascript/managed-deep-agents-memory#control-access-to-a-layer)。
+```内存选择会覆盖该运行的项目内存声明。用户内存仍然仅为经过身份验证的人员安装。参见[Select layers for each run](/langsmith/javascript/managed-deep-agents-memory#select-layers-for-each-run)。
 
 ### 保持工厂可重复
 
-托管 Deep Agents 在每次运行开始时调用工厂，并在运行恢复或重试时再次调用。代理服务器还调用它来读取模式和状态。请遵循以下规则：
+托管 Deep Agents 在每次运行开始时调用工厂，并在运行恢复或重试时再次调用。代理服务器还调用它来读取架构和状态。请遵循以下规则：
 
 * **无副作用**：为相同的上下文返回相同的定义。不要创建记录、调用外部 API 或更改工厂中的共享状态。
 * **稳定中断**：保留可以在每个配置中中断运行的中间件。当运行恢复时，引发中断的中间件必须仍然存在。
@@ -191,7 +192,7 @@ export function agent(
 
 您可以使用 [LLM Gateway](/langsmith/llm-gateway) 将速率限制、回退和其他策略应用于模型调用。
 
-网关型号 ID 前面加上 `langsmith:`：
+在网关型号 ID 前面加上 `langsmith:`：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineDeepAgent } from "managed-deepagents";
@@ -204,7 +205,7 @@ export const agent = defineDeepAgent({
 >
 > 网关型号 ID 在提供商和型号之间使用斜线 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
 
-网关按型号 ID 路由每个请求。 `moonshotai/kimi-k3` 是LangChain 托管模型，因此它不需要提供商机密并利用[Gateway Credits](/langsmith/llm-gateway-credits)。以您的工作区已配置的提供商开头的模型 ID（例如 `anthropic/claude-opus-5`）使用该 [provider secret](/langsmith/llm-gateway-provider-authentication#add-a-provider-key) 并向您自己的提供商帐户计费。
+网关按型号 ID 路由每个请求。 `moonshotai/kimi-k3` 是LangChain 托管模型，因此它不需要提供者密钥并利用 [Gateway Credits](/langsmith/llm-gateway-credits)。以您的工作区已配置的提供商开头的模型 ID（例如 `anthropic/claude-opus-5`）使用该 [provider secret](/langsmith/llm-gateway-provider-authentication#add-a-provider-key) 并向您自己的提供商帐户计费。
 
 欲了解更多信息，请参阅[LLM Gateway](/langsmith/llm-gateway)。
 

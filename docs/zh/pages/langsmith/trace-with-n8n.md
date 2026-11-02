@@ -12,6 +12,10 @@
 >
 > LangSmith 跟踪仅适用于 **自托管 n8n 实例**。
 
+> [!注意]
+>
+> 此集成使用旧目标设置，例如 `project_name` 或 `LANGSMITH_PROJECT`。 [Create an agent](/langsmith/create-an-agent)，选择其环境，然后[retrieve that environment's ⟦T2⟧](/langsmith/create-an-agent#use-an-environment-project)。在目标设置和任何覆盖中使用该返回值。对于支持代理寻址的集成，请直接使用 [agent identifier and environment](/langsmith/log-traces-to-agent)。
+
 ## 先决条件
 
 * A [LangSmith account](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-n8n) 和 [API key](/langsmith/create-account-api-key)
@@ -26,18 +30,18 @@
    * `LANGCHAIN_TRACING_V2`：设置为`true`以启用跟踪。
    * `LANGCHAIN_API_KEY`：您的 LangSmith API 密钥。
 
-   可选环境变量：
-
-   * `LANGCHAIN_ENDPOINT`：LangSmith API 端点。默认为`https://api.smith.langchain.com`。如果使用自托管 LangSmith、GCP EU (`https://eu.api.smith.langchain.com`)、GCP APAC (`https://apac.api.smith.langchain.com`) 或 AWS US (`https://aws.api.smith.langchain.com`)，请设置此选项。
-   * `LANGCHAIN_PROJECT`：跟踪的项目名称。默认为`"default"`。
+   可选环境变量：* `LANGCHAIN_ENDPOINT`: LangSmith API 端点。默认为`https://api.smith.langchain.com`。如果使用自托管 LangSmith、GCP EU (`https://eu.api.smith.langchain.com`)、GCP APAC (`https://apac.api.smith.langchain.com`) 或 AWS US (`https://aws.api.smith.langchain.com`)，请设置此选项。
+   * `LANGCHAIN_PROJECT`：设置为所选代理环境的`tracer_session_name`。如果省略，则积分使用`"default"`。
    * `LANGCHAIN_CALLBACKS_BACKGROUND`：设置为 `true` 进行异步跟踪上传（默认），或设置为 `false` 进行同步上传。 （默认：`true`）
 
 2. 重启n8n实例以使环境变量生效。
 
 ## 查看LangSmith中的踪迹
 
-运行 AI 工作流程后：1. 打开[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-n8n)。
-2. 选择您的项目。如果您刚刚创建帐户，则发送第一个跟踪后会出现 `"default"` 项目。
+运行 AI 工作流程后：
+
+1. 打开[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-n8n)。
+2. 选择您在 `LANGCHAIN_PROJECT` 中配置的`tracer_session_name` 的代理和环境。
 3. 找到与您的工作流程执行相对应的跟踪。
 
 ## 其他资源

@@ -1,10 +1,14 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace Semantic Kernel applications | https://docs.langchain.com/langsmith/trace-with-semantic-kernel -->
+<!-- langchain-docs: Trace Semantic Kernel agents | https://docs.langchain.com/langsmith/trace-with-semantic-kernel -->
 
-# 跟踪语义内核应用程序
+# 跟踪语义内核代理
 
-LangSmith 可以使用其内置的 OpenTelemetry 支持捕获 [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) 生成的跟踪。本指南向您展示如何自动从语义内核应用程序捕获跟踪并将其发送到 LangSmith 进行监控和分析。
+LangSmith 可以使用其内置的 OpenTelemetry 支持捕获 [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) 生成的跟踪。本指南向您展示如何自动捕获来自语义内核代理的跟踪并将其发送到 LangSmith 进行监控和分析。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -22,24 +26,25 @@ uv add langsmith semantic-kernel opentelemetry-instrumentation-openai
 
 ### 1.配置环境变量
 
-设置您的 [API keys](/langsmith/create-account-api-key) 和项目名称：
+设置您的 [API keys](/langsmith/create-account-api-key)、代理标识符和环境：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
-export LANGSMITH_PROJECT=<your_project_name>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export OPENAI_API_KEY=<your_openai_api_key>
 ```
 
 ### 2. 配置 OpenTelemetry 集成
 
-在您的语义内核应用程序中，配置 LangSmith OpenTelemetry 集成以及 OpenAI 仪器：
+在您的语义内核代理中，配置 LangSmith OpenTelemetry 集成以及 OpenAI 仪器：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.otel import configure
 from opentelemetry.instrumentation.openai import OpenAIInstrumentor
 
 # Configure LangSmith tracing
-configure(project_name="semantic-kernel-demo")
+configure()
 
 # Instrument OpenAI calls
 OpenAIInstrumentor().instrument()
@@ -49,9 +54,9 @@ OpenAIInstrumentor().instrument()
 >
 > 您不需要设置任何 OpenTelemetry 环境变量或手动配置导出器 — `configure()` 会自动处理一切。
 
-### 3. 创建并运行您的语义内核应用程序
+### 3. 创建并运行您的语义内核代理
 
-配置完成后，您的语义内核应用程序将自动将跟踪发送到LangSmith：
+配置完成后，您的语义内核代理将自动将跟踪发送到LangSmith：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -62,7 +67,7 @@ from langsmith.integrations.otel import configure
 from opentelemetry.instrumentation.openai import OpenAIInstrumentor
 
 # Configure LangSmith tracing
-configure(project_name="semantic-kernel-assistant")
+configure()
 
 # Instrument OpenAI calls
 OpenAIInstrumentor().instrument()
@@ -117,9 +122,7 @@ if __name__ == "__main__":
 
 ## 高级用法
 
-### 自定义元数据和标签
-
-您可以通过设置 span 属性将自定义元数据添加到跟踪中：
+### 自定义元数据和标签您可以通过设置 span 属性将自定义元数据添加到跟踪中：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from opentelemetry import trace
@@ -147,7 +150,9 @@ from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
 # Initialize multiple instrumentors
 OpenAIInstrumentor().instrument()
 HTTPXClientInstrumentor().instrument()
-```## 资源
+```
+
+## 资源
 
 * [Semantic Kernel documentation](https://learn.microsoft.com/en-us/semantic-kernel/overview/)
 * [Semantic Kernel observability guide](https://learn.microsoft.com/en-us/semantic-kernel/concepts/enterprise-readiness/observability/)

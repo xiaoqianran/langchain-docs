@@ -4,13 +4,13 @@
 
 # 使用 DeepSeek 进行跟踪
 
-[DeepSeek](https://deepseek.com/)提供高性能、OpenAI兼容的语言模型，包括`deepseek-chat`（用于一般对话）和`deepseek-reasoner`（用于高级推理任务）。使用 LangSmith 允许您通过捕获输入、输出和元数据的结构化跟踪来调试、监控和评估代理。
+[DeepSeek](https://deepseek.com/)提供高性能、OpenAI兼容的语言模型，包括`deepseek-chat`（用于一般对话）和`deepseek-reasoner`（用于高级推理任务）。使用 LangSmith 允许您通过捕获输入、输出和元数据的结构化跟踪来调试、监控和评估您的代理。
 
 本指南向您展示如何在 Python 和 TypeScript 中将 DeepSeek 与 LangSmith 集成，使用 LangSmith 的 [⟦T10⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python) 和 [⟦T11⟧](https://reference.langchain.com/javascript/langsmith) (TypeScript) 实用程序自动记录 LLM 调用。
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -32,13 +32,15 @@ DeepSeek 提供了[OpenAI-compatible API](https://api-docs.deepseek.com/)，这�
 
 ## 设置
 
+将跟踪发送到代理需要 Python 中的 `langsmith>=0.14.9` 或 TypeScript 中的 `langsmith@>=0.11.0`。
+
 设置您的 [API keys](/langsmith/create-account-api-key)、代理标识符和环境：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="your-langsmith-api-key"
 export LANGSMITH_TRACING="true"
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export DEEPSEEK_API_KEY="your-deepseek-api-key"
 ```* 确保您拥有来自 [DeepSeek account](https://platform.deepseek.com/) 的 DeepSeek API 密钥。
 * 设置 `LANGSMITH_TRACING=true` 并提供您的 LangSmith API 密钥 (`LANGSMITH_API_KEY`) 激活跟踪的自动记录。
@@ -164,7 +166,7 @@ export DEEPSEEK_API_KEY="your-deepseek-api-key"
 运行示例后，您可以检查[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deepseek)中记录的痕迹：
 
 1. 打开LangSmith UI并登录您的帐户。
-2. 选择设置期间配置的代理和环境。
+2. 选择在设置过程中配置的代理和环境。
 3. 找到与您的 DeepSeek API 调用相对应的跟踪。它将通过函数名称（`DeepSeek Chat Completion`）进行识别。
 4. 单击轨迹将其打开。您将能够检查模型输入和输出，包括您发送的提示消息和 DeepSeek 的响应，以及计时信息（延迟）和令牌使用情况。通过 LangSmith 的跟踪，您可以全面了解 DeepSeek 调用，从而可以调试 DeepSeek 模型的行为、监控性能（响应时间和令牌使用情况）以及比较不同参数的运行。
 
@@ -176,7 +178,7 @@ LangSmith 可以通过估计代币使用情况并应用特定于模型的定价�
 
 要启用 LLM 呼叫的自动成本跟踪，请参阅[Automatically track costs based on token counts](/langsmith/cost-tracking#llm-calls:-automatically-track-costs-based-on-token-counts)。
 
-启用后，成本会与每次跟踪的 DeepSeek 运行一起直接显示在 LangSmith UI 中，使您可以监控使用情况并随时间比较实验。
+启用后，成本会与每次跟踪的 DeepSeek 运行一起直接显示在 LangSmith UI 中，让您可以监控使用情况并随时间比较实验。
 
 ***
 

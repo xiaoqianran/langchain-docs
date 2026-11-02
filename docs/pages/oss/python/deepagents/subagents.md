@@ -515,7 +515,7 @@ result = agent.invoke(
 )
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/4162d0a6-05b4-46f7-a800-862403926aab/r)
+> [card] [View example trace](https://smith.langchain.com/public/6f525bfa-3370-499c-8572-311b32bfbb09/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -1130,7 +1130,7 @@ if __name__ == "__main__":
             print(f"[{item.name}] status: {item.status}")
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/e676ddb7-c0bc-4628-83a8-eb0a1f10ac10/r)
+> [card] [View example trace](https://smith.langchain.com/public/33842f72-587c-4b08-a227-91c37fc18d5c/r)
 >
 > Open a public LangSmith run for this example.
 

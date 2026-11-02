@@ -12,13 +12,13 @@ Webhook 支持从 LangSmith 应用程序到外部服务的事件驱动通信。�
 
 许多 LangSmith 端点接受 `webhook` 参数。如果此参数由可以接受 POST 请求的端点指定，LangSmith 将在运行完成时发送请求。
 
-使用 LangSmith 时，您可能希望使用 Webhook 在 API 调用完成后接收更新。 Webhook 对于在运行完成处理后触发服务中的操作非常有用。为了实现这一点，您需要公开一个可以接受 `POST` 请求的端点，并将该端点作为 API 请求中的 `webhook` 参数传递。
+使用 LangSmith 时，您可能希望使用 Webhooks 在 API 调用完成后接收更新。 Webhook 对于在运行完成处理后触发服务中的操作非常有用。为了实现这一点，您需要公开一个可以接受 `POST` 请求的端点，并将该端点作为 API 请求中的 `webhook` 参数传递。
 
 目前，SDK 不提供对定义 Webhook 端点的内置支持，但您可以使用 API 请求手动指定它们。
 
 ## 支持的端点以下 API 端点接受 `webhook` 参数：
 
-|运营| HTTP 方法 |端点 |
+|运营| HTTP 方法 |端点|
 | - | - | - |
 |创建运行 | `POST` | `/thread/{thread_id}/runs` |
 |创建线程 Cron | `POST` | `/thread/{thread_id}/runs/crons` |
@@ -34,40 +34,40 @@ Webhook 支持从 LangSmith 应用程序到外部服务的事件驱动通信。�
 
 在进行 API 调用之前，请设置您的助手和线程。
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_client
+>
+> client = get_client(url=<DEPLOYMENT_URL>)
+> assistant_id = "agent"
+> thread = await client.threads.create()
+> print(thread)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_client
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client } from "@langchain/langgraph-sdk";
+>
+> const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+> const assistantID = "agent";
+> const thread = await client.threads.create();
+> console.log(thread);
+> ```
 
-client = get_client(url=<DEPLOYMENT_URL>)
-assistant_id = "agent"
-thread = await client.threads.create()
-print(thread)
-```
-
-**JavaScript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "@langchain/langgraph-sdk";
-
-const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-const assistantID = "agent";
-const thread = await client.threads.create();
-console.log(thread);
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/assistants/search \
-    --header 'Content-Type: application/json' \
-    --data '{ "limit": 10, "offset": 0 }' | jq -c 'map(select(.config == null or .config == {})) | .[0]' && \
-curl --request POST \
-    --url <DEPLOYMENT_URL>/threads \
-    --header 'Content-Type: application/json' \
-    --data '{}'
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/assistants/search \
+>     --header 'Content-Type: application/json' \
+>     --data '{ "limit": 10, "offset": 0 }' | jq -c 'map(select(.config == null or .config == {})) | .[0]' && \
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/threads \
+>     --header 'Content-Type: application/json' \
+>     --data '{}'
+> ```
 
 响应示例：
 
@@ -89,52 +89,52 @@ curl --request POST \
 
 例如，如果您的服务器在 `https://my-server.app/my-webhook-endpoint` 侦听 Webhook 事件，请在您的请求中包含以下内容：
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> input = { "messages": [{ "role": "user", "content": "Hello!" }] }
+>
+> async for chunk in client.runs.stream(
+>     thread_id=thread["thread_id"],
+>     assistant_id=assistant_id,
+>     input=input,
+>     stream_mode="events",
+>     webhook="https://my-server.app/my-webhook-endpoint"
+> ):
+>     pass
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-input = { "messages": [{ "role": "user", "content": "Hello!" }] }
+> [选项卡] JavaScript
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const input = { messages: [{ role: "human", content: "Hello!" }] };
+>
+> const streamResponse = client.runs.stream(
+>   thread["thread_id"],
+>   assistantID,
+>   {
+>     input: input,
+>     webhook: "https://my-server.app/my-webhook-endpoint"
+>   }
+> );
+>
+> for await (const chunk of streamResponse) {
+>   // Handle stream output
+> }
+> ```
 
-async for chunk in client.runs.stream(
-    thread_id=thread["thread_id"],
-    assistant_id=assistant_id,
-    input=input,
-    stream_mode="events",
-    webhook="https://my-server.app/my-webhook-endpoint"
-):
-    pass
-```
-
-**JavaScript**
-
-```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const input = { messages: [{ role: "human", content: "Hello!" }] };
-
-const streamResponse = client.runs.stream(
-  thread["thread_id"],
-  assistantID,
-  {
-    input: input,
-    webhook: "https://my-server.app/my-webhook-endpoint"
-  }
-);
-
-for await (const chunk of streamResponse) {
-  // Handle stream output
-}
-```
-
-**卷曲**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl --request POST \
-    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
-    --header 'Content-Type: application/json' \
-    --data '{
-        "assistant_id": <ASSISTANT_ID>,
-        "input": {"messages": [{"role": "user", "content": "Hello!"}]},
-        "webhook": "https://my-server.app/my-webhook-endpoint"
-    }'
-```
+> [选项卡] 卷曲
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request POST \
+>     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
+>     --header 'Content-Type: application/json' \
+>     --data '{
+>         "assistant_id": <ASSISTANT_ID>,
+>         "input": {"messages": [{"role": "user", "content": "Hello!"}]},
+>         "webhook": "https://my-server.app/my-webhook-endpoint"
+>     }'
+> ```
 
 ## Webhook 负载LangSmith 以[Run](/langsmith/runs) 的格式发送 webhook 通知。请求负载包括运行输入、配置和`kwargs`字段中的其他元数据。除了标准运行字段之外，Webhook 负载还包括 `values`、`webhook_sent_at` 和 `error` 字段。
 
@@ -199,7 +199,7 @@ curl --request POST \
 
 ## 状态值
 
-`status` 字段采用五个值之一：|价值|何时发送 |
+`status` 字段采用五个值之一：|价值|何时发送|
 | - | - |
 | `"success"` |运行正常完成。当运行在 [⟦T82⟧](https://reference.langchain.com/python/langgraph/types/interrupt) 调用等待人工输入时暂停时也会发送。挂起的中断在有效负载中不可见，因此请读取线程状态来检测它。 |
 | `"error"` |运行引发了未处理的异常。有效负载中的`error`字段包含错误类型和消息。 |
@@ -290,12 +290,12 @@ https://my-server.app/my-webhook-endpoint?token=YOUR_SECRET_TOKEN
 
 可用选项：
 
-|选项 |描述 |
+|选项|描述 |
 | - | - |
 | `allowed_domains` |主机名白名单。支持子域的通配符（例如，`*.mycompany.com`）。 |
 | `require_https` |当 `true` 时拒绝 `http://` URL。 |
 | `allowed_ports` |显式端口白名单。默认为 443 (https) 和 80 (http)。 |
-| `disable_loopback` | `true` 时禁止环回地址和相对 URL。在 `langgraph-api` 0.10.0 或更高版本中默认为 `true`。 |
+| `disable_loopback` |当 `true` 时，禁止环回地址和相对 URL。在 `langgraph-api` 0.10.0 或更高版本中默认为 `true`。 |
 | `max_url_length` |允许的最大 URL 长度（以字符为单位）。 |
 
 由于 `disable_loopback` 默认为 `true`，因此`localhost`、`127.0.0.1`、`host.docker.internal` 或相对 URL 的 Webhook 会被拒绝。这通常会影响与`langgraph dev`一起使用的本地接收器。要允许它们，请将 `disable_loopback` 设置为 `false`：

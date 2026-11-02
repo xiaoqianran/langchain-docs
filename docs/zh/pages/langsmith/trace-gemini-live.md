@@ -18,11 +18,11 @@ Gemini Live 是一种语音到语音模型，可通过 WebSocket 流式传输键
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 选择一种方法
 
-LangSmith 为连接 Gemini Live 的每种方式提供跟踪集成：
+LangSmith 为连接 Gemini Live 的每种方式提供了跟踪集成：
 
 * 如果直接连接`client.aio.live.connect(...)`，请使用`wrap_gemini_live`。
 * 如果您使用 [Google ADK](https://google.github.io/adk-docs/streaming/) 构建，请使用 `LangSmithGoogleADKLivePlugin`。
@@ -57,11 +57,13 @@ uv add "langsmith[google-adk-live]"
 
 ## 设置环境变量
 
+向代理发送痕迹需要 `langsmith>=0.14.9`。
+
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 GOOGLE_API_KEY=<your-google-api-key>
 GEMINI_LIVE_MODEL=<your-gemini-live-model>
 ```
@@ -159,7 +161,7 @@ async with (
 
 ### 设置跟踪
 
-导入`LangSmithGoogleADKLivePlugin`并将其注册到您的`Runner`上。它与您的 `run_live` 循环一起运行，因此您的循环仅处理音频播放、插入和 UI 更新：
+导入`LangSmithGoogleADKLivePlugin`并在您的`Runner`上注册。它与您的 `run_live` 循环一起运行，因此您的循环仅处理音频播放、插入和 UI 更新：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from google.adk.agents.run_config import RunConfig, StreamingMode
@@ -200,7 +202,7 @@ async for event in runner.run_live(
 >
 > 优雅地结束时，当实时请求队列关闭时，ADK 发送其 `after_run` 回调，并且插件完成跟踪。
 >
-> 在取消运行时，例如按 Ctrl-C 停止 `run_live` 的控制台应用程序，ADK 可能不会发送该回调。在拆卸过程中调用`plugin.finalize(session_id=adk_session.id)`，以便完成跟踪和音频附件。该调用是幂等的，因此如果 ADK 的回调已经运行，它不会执行任何操作。
+> 在取消的运行中，例如按 Ctrl-C 停止 `run_live` 的控制台应用程序，ADK 可能不会发送该回调。在拆卸过程中调用`plugin.finalize(session_id=adk_session.id)`，以便完成跟踪和音频附件。该调用是幂等的，因此如果 ADK 的回调已经运行，它不会执行任何操作。
 
 ### 将对话分组为线程每个对话都被捕获为其自己的跟踪，并具有自己的线程 ID。要提供 ID，例如将对话与相关交互分组在 LangSmith [thread](/langsmith/threads) 中，请将 `thread_id_provider` 传递给插件：
 
@@ -210,7 +212,7 @@ plugin = LangSmithGoogleADKLivePlugin(
 )
 ```
 
-每个 `run_live` 调用都共享一个插件实例，并在每个对话开始时解析一次线程 ID。默认情况下，并发对话是分开的。如果您在处理并发对话的服务器上传递 `thread_id_provider`，则返回当前对话的 ID，例如通过读取每次运行开始时设置的 `ContextVar`。
+每个 `run_live` 调用都共享一个插件实例，并在每个对话开始时解析一次线程 ID。默认情况下，并发对话是分开的。如果您在处理并发对话的服务器上传递 `thread_id_provider`，请返回当前对话的 ID，例如通过读取每次运行开始时设置的 `ContextVar`。
 
 ### 录制对话音频
 
@@ -225,11 +227,11 @@ plugin.record_agent_audio(played_chunk)  # agent PCM16 as played
 
 ## 后续步骤
 
-> **[Voice fundamentals](/langsmith/trace-voice-fundamentals)**
+> [卡][Voice fundamentals](/langsmith/trace-voice-fundamentals)
 >
 > 跟踪语音代理的核心约定。
 
-> **[Upload files with traces](/langsmith/upload-files-with-traces)**
+> [卡][Upload files with traces](/langsmith/upload-files-with-traces)
 >
 > 将对话录音附加到您的轨迹中。
 

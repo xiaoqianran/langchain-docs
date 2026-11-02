@@ -96,7 +96,7 @@ langsmith auth login
 
 管理员通常使用 Jamf 或 Microsoft Intune 等移动设备管理 (MDM) 工具在每台计算机上安装该文件。对于每个可以锁定的设置，请参阅[plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md)。
 
-> **设置脚本示例**
+> [手风琴] 设置脚本示例
 >
 > 以 root 身份为每个用户运行此命令，并将 `USER_HOME` 设置为该用户的主文件夹：
 >
@@ -133,7 +133,7 @@ langsmith auth login
 
 每个设置都有一个配置文件密钥和一个环境变量。当两者都设置时，环境变量获胜。
 
-|配置键 |环境变量 |默认|描述 |
+|配置键 |环境变量 |默认 |描述 |
 | - | - | - | - |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` |打开追踪。 |
 | `api_key` | `CC_LANGSMITH_API_KEY` |无 | LangSmith API 密钥。如果您使用 CLI 登录，则不需要。 |

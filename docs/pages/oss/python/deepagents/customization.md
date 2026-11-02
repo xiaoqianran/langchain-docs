@@ -4121,7 +4121,7 @@ print(result["structured_response"])
 # location='San Francisco, California' temperature=18.3 condition='Sunny' humidity=48 wind_speed=7.6 forecast='Pleasant sunny conditions expected to continue with temperatures around 64°F (18°C) during the day, dropping to around 52°F (11°C) at night. Clear skies with minimal precipitation expected.'
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/3b46bf48-9673-4de4-93a4-9621e7aa4fc7/r)
+> [card] [View example trace](https://smith.langchain.com/public/16a3e30d-ebfc-49f4-93f4-d1a9a676403d/r)
 >
 > Open a public LangSmith run for this example.
 

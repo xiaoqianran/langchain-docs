@@ -111,7 +111,7 @@ Select your provider in the tabs on each step. The Anthropic and Gemini examples
 
       ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       export LANGSMITH_AGENT_ID="<your-agent-id>"
-      export LANGSMITH_AGENT_ENVIRONMENT="production"
+      export LANGSMITH_AGENT_ENVIRONMENT="local"
       ```
 
    Register the agent once, not for every trace. Remove `LANGSMITH_PROJECT`, `LANGCHAIN_PROJECT`, and `LANGCHAIN_SESSION` from the environment where your code runs. Do not combine legacy destination settings with agent addressing. To create the agent with an SDK call or API request, see [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically).

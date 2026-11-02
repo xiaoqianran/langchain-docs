@@ -16,11 +16,11 @@ This guide shows you how to trace [Google Agent Development Kit (ADK)](https://g
 
 Install the required packages using your preferred package manager:
 
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv add "langsmith[google-adk]"
 ```
 
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install langsmith[google-adk]
 ```
 
@@ -35,7 +35,7 @@ export LANGSMITH_TRACING=true
 export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 
 export GOOGLE_API_KEY=<your_google_api_key>
 ```
@@ -45,7 +45,7 @@ LANGSMITH_TRACING=true
 LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 LANGSMITH_API_KEY=<your_langsmith_api_key>
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 
 GOOGLE_API_KEY=<your_google_api_key>
 ```
@@ -74,7 +74,7 @@ The function accepts the following optional parameters:
 
 This example creates a weather agent with a tool, then runs it with tracing enabled:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from dotenv import load_dotenv  # Optional
@@ -165,7 +165,7 @@ configure_google_adk(
 
 The integration automatically traces multi-agent workflows including sequential and parallel agent compositions:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from dotenv import load_dotenv  # Optional

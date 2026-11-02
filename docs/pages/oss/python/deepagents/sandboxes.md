@@ -99,7 +99,7 @@ These examples assume you have already created a sandbox/devbox using the provid
 >     client.delete_sandbox(ls_sandbox.name)
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/08974a6d-f496-46df-a0cc-29375c842988/r)
+> > [card] [View example trace](https://smith.langchain.com/public/a022336f-76c4-48fb-8735-862935c21196/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -143,7 +143,7 @@ These examples assume you have already created a sandbox/devbox using the provid
 >     sandbox.stop()
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/2e58456c-3eac-424e-bffd-83d779f8e5d7/r)
+> > [card] [View example trace](https://smith.langchain.com/public/afa1361d-fb53-4d32-93bc-7c2434dc438a/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -1009,7 +1009,7 @@ finally:
     client.delete_sandbox(ls_sandbox.name)
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/b2b4ae03-c454-44ae-920b-7f049763cb1c/r)
+> [card] [View example trace](https://smith.langchain.com/public/6ba53655-7a96-49d4-b1a3-b2434b056916/r)
 >
 > Open a public LangSmith run for this example.
 

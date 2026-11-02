@@ -8,19 +8,19 @@ Safari 会阻止本地主机上的纯 HTTP 流量。当使用 `langgraph dev` �
 
 ### 解决方案 1：使用 Cloudflare Tunnel
 
-**Python**
+> [选项卡] Python
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U langgraph-cli>=0.2.6
+> langgraph dev --tunnel
+> ```
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U langgraph-cli>=0.2.6
-langgraph dev --tunnel
-```
-
-**JS**
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Requires @langchain/langgraph-cli>=0.0.26
-npx @langchain/langgraph-cli dev --tunnel
-```
+> [标签] JS
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Requires @langchain/langgraph-cli>=0.0.26
+> npx @langchain/langgraph-cli dev --tunnel
+> ```
 
 该命令输出隧道 URL。连接工作室：
 
@@ -93,19 +93,19 @@ pip install -U "langgraph-cli[inmem]"
 
 ### 解决方案 2：使用 Cloudflare Tunnel
 
-**Python**
+> [选项卡] Python
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U langgraph-cli>=0.2.6
+> langgraph dev --tunnel
+> ```
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U langgraph-cli>=0.2.6
-langgraph dev --tunnel
-```
-
-**JS**
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Requires @langchain/langgraph-cli>=0.0.26
-npx @langchain/langgraph-cli dev --tunnel
-```
+> [标签] JS
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Requires @langchain/langgraph-cli>=0.0.26
+> npx @langchain/langgraph-cli dev --tunnel
+> ```
 
 该命令输出隧道 URL。连接工作室：
 
@@ -124,17 +124,17 @@ npx @langchain/langgraph-cli dev --tunnel
 
 定义路由器输出和目标节点之间的映射：
 
-**Python**
+> [选项卡] Python
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> graph.add_conditional_edges("node_a", routing_function, {True: "node_b", False: "node_c"})
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-graph.add_conditional_edges("node_a", routing_function, {True: "node_b", False: "node_c"})
-```
-
-**Javascript**
-
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-graph.addConditionalEdges("node_a", routingFunction, { true: "node_b", false: "node_c" });
-```
+> [选项卡] JavaScript
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> graph.addConditionalEdges("node_a", routingFunction, { true: "node_b", false: "node_c" });
+> ```
 
 ### 解决方案 2：路由器类型定义
 
@@ -157,10 +157,10 @@ def routing_function(state: GraphState) -> Literal["node_b","node_c"]:
 * **部署的应用程序**：如果您的应用程序部署在LangSmith上，您可能需要创建新的修订版才能启用此功能。
 * **本地开发服务器**：如果您在本地运行应用程序，请确保您已升级到最新版本的`langgraph-cli`（`pip install -U langgraph-cli`）。此外，请通过在项目的 `.env` 文件中设置 `LANGSMITH_API_KEY` 来确保启用跟踪。
 
-### 评估器结果缺失
+### 评估器结果缺失当您运行实验时，任何附加的评估器都会被安排在队列中执行。如果您没有立即看到结果，则可能意味着结果仍在等待中。
 
-当您运行实验时，任何附加的评估器都会被安排在队列中执行。如果您没有立即看到结果，则可能意味着结果仍在等待中。
+***
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/troubleshooting-studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

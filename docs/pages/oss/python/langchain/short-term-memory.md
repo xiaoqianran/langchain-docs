@@ -258,7 +258,7 @@ response = agent.invoke(
 print(response)  # "You are Bob!"
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/6fe1dc0b-6e0f-4911-90a4-4b33a46cff77/r)
+> [card] [View example trace](https://smith.langchain.com/public/84968318-b031-4e9f-8728-b794b8a2955b/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -838,11 +838,11 @@ Access short term memory (state) in [`@after_model`](https://reference.langchain
     }
 }%%
 graph TD
-    S(["\_\_start\_\_"])
+    S(["`__start__`"])
     MODEL(model)
     POST(after_model)
     TOOLS(tools)
-    END(["\_\_end\_\_"])
+    END(["`__end__`"])
     S --> MODEL
     MODEL --> POST
     POST -.-> END

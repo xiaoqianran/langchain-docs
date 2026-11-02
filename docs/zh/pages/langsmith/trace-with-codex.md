@@ -23,7 +23,7 @@ codex plugin marketplace add langchain-ai/langsmith-codex-plugins
 codex plugin add tracing@langsmith-codex-plugins
 ```
 
-然后信任 Codex 中的 `/hooks` 插件的钩子，因为在你这样做之前不会有任何跟踪。 Codex 仅在交互界面中询问，因此 `codex exec` 会跳过挂钩，直到您信任它们一次。信任 Codex 后重新启动它们。要为所有人安装插件，请参阅[Deploy to your organization](#deploy-to-your-organization)。有关安装插件的更多信息，请参阅 Codex 文档中的 [Plugins](https://developers.openai.com/codex/plugins)。
+然后信任 Codex 中带有 `/hooks` 的插件钩子，因为在您执行之前不会有任何跟踪。 Codex 仅在交互界面中询问，因此 `codex exec` 会跳过挂钩，直到您信任它们一次。信任 Codex 后重新启动它们。要为所有人安装插件，请参阅[Deploy to your organization](#deploy-to-your-organization)。有关安装插件的更多信息，请参阅 Codex 文档中的 [Plugins](https://developers.openai.com/codex/plugins)。
 
 ## 登录
 
@@ -95,7 +95,7 @@ ChatGPT 工作区管理员可以将存储库导入为市场，以便每个人都
 
 管理员通常使用 Jamf 或 Microsoft Intune 等移动设备管理 (MDM) 工具在每台计算机上安装该文件。对于每个可以锁定的设置，请参阅[plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md)。
 
-> **设置脚本示例**
+> [手风琴] 设置脚本示例
 >
 > 以 root 身份为每个用户运行此命令，并将 `USER_HOME` 设置为该用户的主文件夹：
 >
@@ -132,7 +132,7 @@ ChatGPT 工作区管理员可以将存储库导入为市场，以便每个人都
 
 ## 设置
 
-每个设置都有一个配置文件密钥和一个环境变量。当两者都设置时，环境变量获胜。|配置键 |环境变量 |默认|描述 |
+每个设置都有一个配置文件密钥和一个环境变量。当两者都设置时，环境变量获胜。|配置键 |环境变量 |默认 |描述 |
 | - | - | - | - |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` |打开追踪。 |
 | `api_key` | `LANGSMITH_CODEX_API_KEY` |无 | LangSmith API 密钥。如果您使用 CLI 登录，则不需要。 |

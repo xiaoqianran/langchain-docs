@@ -698,7 +698,7 @@ result = agent.invoke(
 )
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/1cc763be-d53d-43ac-aed7-d09fae1f5f2a/r)
+> [card] [View example trace](https://smith.langchain.com/public/1835d2f3-8da5-4e27-95d7-fb2c7d726ad5/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -897,7 +897,7 @@ result = agent.invoke(
 )
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/2b85db18-2005-4b2b-a25f-ed93b88212fb/r)
+> [card] [View example trace](https://smith.langchain.com/public/79519c6b-9286-45f0-b5c6-9afaa5ef22f8/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -927,7 +927,7 @@ for snapshot in stream.values:
         print(f"Calling tools: {[tc['name'] for tc in latest_message.tool_calls]}")
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/392c54aa-0ced-42a5-9837-1e0f8a3d4062/r)
+> [card] [View example trace](https://smith.langchain.com/public/25a56e3b-08d0-4fcd-934e-a16c0a99d629/r)
 >
 > Open a public LangSmith run for this example.
 

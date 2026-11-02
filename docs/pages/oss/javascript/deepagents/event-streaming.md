@@ -84,7 +84,7 @@ await Promise.all(watchers);
 console.log({ running, completed, failed });
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/5dd56cd6-b8fc-4e46-bb55-4e22cff7db67/r)
+> [card] [View example trace](https://smith.langchain.com/public/eb9dd2c3-48d9-4dfc-94a0-61394bb39ec6/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -139,7 +139,7 @@ for await (const subagent of stream.subagents) {
 }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/70edddb6-dc1c-411e-bb8e-3f9be190e97c/r)
+> [card] [View example trace](https://smith.langchain.com/public/065302b9-7776-473a-9052-490eb09830d0/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -173,7 +173,7 @@ for await (const subagent of stream.subagents) {
 }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/08d4d6dd-e52b-4075-884d-1968f76c91b4/r)
+> [card] [View example trace](https://smith.langchain.com/public/4fcc1fe5-1f5d-43e9-b93e-fac7468942e0/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -204,7 +204,7 @@ await Promise.all([
 ]);
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/31aef824-de7d-47a2-bff0-1e6d2b3accac/r)
+> [card] [View example trace](https://smith.langchain.com/public/cf054b78-5e0a-471c-b6b5-b427709878b5/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -232,7 +232,7 @@ for await (const event of stream) {
 }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/ccff3e57-ac8b-416f-a11c-76702f0fc6e6/r)
+> [card] [View example trace](https://smith.langchain.com/public/0817d1d1-7d3d-46a0-95b9-eecf1cd763b3/r)
 >
 > Open a public LangSmith run for this example.
 

@@ -71,7 +71,7 @@ langsmith auth login
 
 组织所有者可以将该插件添加到每个成员的 claude.ai 帐户中，这样它就可以同时到达 Cowork 和 Claude Code。设置请参见[Choose a rollout route](https://claude.com/docs/plugins/org-rollout)。
 
-### 锁定设置管理员可以使用每个用户主文件夹中`~/.langsmith-plugins/managed.json` 的托管文件锁定每个用户的跟踪设置。 Claude Code、Cursor 和 Codex 插件都会读取此文件，并且其设置会覆盖用户自己的配置文件和环境变量。
+### 锁定设置管理员可以使用每个用户主文件夹中`~/.langsmith-plugins/managed.json` 的托管文件锁定每个用户的跟踪设置。 Claude Code、Cursor 和 Codex 插件都会读取此文件，其设置会覆盖用户自己的配置文件和环境变量。
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -87,11 +87,11 @@ langsmith auth login
 * 其他用户都不能写入其中任何一个。
 * 两者都不是符号链接。
 
-如果文件存在但未通过这些检查，跟踪将停止，并且用户会看到一条消息以联系其管理员。锁定设置也会锁定与其关联的设置，因此用户无法在锁周围路由跟踪。例如，锁定 `project` 还可以阻止用户添加自己的 [replicas](/langsmith/trace-replicas) 或使用 `agent_id` 向代理发送跟踪。
+如果文件存在但未通过这些检查，跟踪将停止，用户会看到一条联系管理员的消息。锁定设置也会锁定与其关联的设置，因此用户无法在锁周围路由跟踪。例如，锁定 `project` 还可以阻止用户添加自己的 [replicas](/langsmith/trace-replicas) 或使用 `agent_id` 向代理发送跟踪。
 
 管理员通常使用 Jamf 或 Microsoft Intune 等移动设备管理 (MDM) 工具在每台计算机上安装该文件。对于每个可以锁定的设置，请参阅[plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md)。
 
-> **设置脚本示例**
+> [手风琴] 设置脚本示例
 >
 > 以 root 身份为每个用户运行此命令，并将 `USER_HOME` 设置为该用户的主文件夹：
 >
@@ -124,6 +124,6 @@ langsmith auth login
 
 Cowork 使用与 Claude Code 相同的设置。主要的参见[Settings](/langsmith/trace-claude-code#settings)。对于每个设置，请参阅[plugin settings](https://github.com/langchain-ai/langsmith-claude-code-plugins#settings)。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-claude-cowork.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

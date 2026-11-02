@@ -99,14 +99,14 @@ To send Claude SDK spans to LangSmith:
 
    * `x-api-key`: Your LangSmith API key.
    * `Langsmith-Agent-Id`: The registered agent identifier.
-   * `Langsmith-Agent-Environment`: The environment, such as `production`.
+   * `Langsmith-Agent-Environment`: The environment, such as `local`.
    * `X-Tenant-Id`: (Optional) The ID of the LangSmith workspace to send traces to. Without this header, traces go to the workspace that the API key belongs to. Organization-scoped service keys require it.
 
    For example, with the standard OTel environment variables:
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel
-   export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your-langsmith-api-key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=production"
+   export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your-langsmith-api-key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=local"
    ```
 
    For more information on exporter setup, see [Trace a non-LangChain agent](/langsmith/trace-with-opentelemetry#trace-a-non-langchain-application).

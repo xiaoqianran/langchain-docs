@@ -448,6 +448,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > GetYouTubeTranscript is an API for YouTube video transcripts (optionally with per-line timestamps) and YouTube search
 
+> [card] [HyperresearchAnswerTool](https://hyperresearch.ai/docs/answers/langchain)
+>
+> Hyperresearch Answers returns quote-checked answers to factual questions, or not\_found, plus ranked web and structured sources with verbatim passages.
+
 > [card] [Instant Expert](https://github.com/Instant-Expert/integrations/tree/main/js/langchain-instant-expert#readme)
 >
 > Toolkit for Instant Expert's MCP server that sends paid invitations to specific experts for a short call or written answer, with a free test mode.
@@ -563,6 +567,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > [card] [WebExtract](https://webextract.dev/docs/langchain)
 >
 > Web page extraction API returning clean Markdown plus fixed-schema JSON for article metadata, product prices and tables.
+
+> [card] [x402checkToolkit](https://x402check.dev)
+>
+> Preflight x402 seller endpoints before an agent pays (ok|caution|avoid plus payTo history). \$0.01 USDC on Base.
 
 > [card] [You.com](https://you.com/docs/integrations/langchain)
 >

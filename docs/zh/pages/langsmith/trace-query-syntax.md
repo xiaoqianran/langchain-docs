@@ -16,7 +16,7 @@
 | `trace_id` |获取属于特定跟踪一部分的运行。 |
 | `run_type` |获取[type of run](/langsmith/run-data-format#run-types)，例如，`llm`、`chain`、`tool`、`retriever`。 |
 | `dataset_name` / `dataset_id` |获取与指定数据集中的示例行关联的运行。这对于比较给定数据集上的提示或模型非常有用。 |
-| `reference_example_id` |获取与特定示例行关联的运行。这对于比较给定输入的提示或模型非常有用。 |
+| `reference_example_id` |获取与特定示例行关联的运行。这对于比较给定输入的提示或模型很有用。 |
 | `parent_run_id` |获取给定运行的子级运行。这对于使用上下文管理器获取分组在一起的运行或获取代理轨迹非常有用。 |
 | `error` |获取出错或未出错的运行。 || `run_ids` |使用给定的运行 ID 列表获取运行。注意：**这将忽略所有其他过滤参数。** |
 | `filter` |获取与给定结构化过滤器语句匹配的运行。欲了解更多详情，请参阅[filter query language](#filter-query-language)部分。 |
@@ -24,15 +24,14 @@
 | `tree_filter` |过滤器应用于跟踪树（根、同级或子级）中的任何运行。与 `filter` 一起使用可按跟踪内任何运行的属性缩小范围。 |
 | `is_root` |仅返回根运行。 |
 | `select` |选择要在响应中返回的字段。默认情况下，返回所有字段。请参阅[run data format](/langsmith/run-data-format)了解可用字段。 |
-| `query`（*实验*）|自然语言查询，将您的查询转换为过滤语句。 |
 
 > [!注意]
 >
 > **性能提示**：传递 `select` 参数并从列表中排除 `inputs` 和 `outputs` 可以显着提高查询性能并减少响应大小，特别是对于大型运行。
 
-## 过滤查询语言LangSmith 支持使用过滤器查询语言的过滤功能，以允许在获取运行时进行复杂的过滤操作。当通过 SDK 或 API 以编程方式查询跟踪时，这特别有用。例如，在[evaluation](/langsmith/evaluation)管道、监控脚本或检查先前[traces](/langsmith/observability-concepts#traces)的代理工作流程中。
+## 过滤查询语言
 
-### 比较器
+LangSmith 支持使用过滤器查询语言的过滤功能，以允许在获取运行时进行复杂的过滤操作。当通过 SDK 或 API 以编程方式查询跟踪时，这特别有用。例如，在[evaluation](/langsmith/evaluation)管道、监控脚本或检查先前[traces](/langsmith/observability-concepts#traces)的代理工作流程中。### 比较器
 
 过滤语法基于应用于运行对象字段的比较器函数：
 
@@ -40,10 +39,10 @@
 | - | - | - |
 | `eq` |等于 | `eq(run_type, "llm")` |
 | `neq` |不等于| `neq(status, "error")` |
-| `gt` |大于 | `gt(latency, "5s")` |
+| `gt` |大于| `gt(latency, "5s")` |
 | `gte` |大于或等于| `gte(latency, 1.5)` |
 | `lt` |小于| `lt(start_time, "2024-01-01T00:00:00Z")` |
-| `lte` |小于或等于 | `lte(feedback_score, 0.5)` |
+| `lte` |小于或等于| `lte(feedback_score, 0.5)` |
 | `like` |模式匹配； `%` 匹配任意字符序列 | `like(metadata_value, "%prod%")` |
 | `notlike` | `like` 的逆 | `notlike(metadata_value, "%staging%")` |
 | `has` |检查运行是否包含标签或元数据键值 | `has(tags, "production")` |
@@ -99,9 +98,9 @@ or(eq(status, "error"), and(eq(feedback_key, "score"), lt(feedback_score, 0.5)))
 | - | - | - |
 |是 | `name:value` | `eq(name, "value")` |
 |不是| `-name:value` | `neq(name, "value")` |
-|通配符| `name:*value*` | `like(name, "%value%")`。将每个 `*` 替换为 `%`。 |
+|通配符 | `name:*value*` | `like(name, "%value%")`。将每个 `*` 替换为 `%`。 |
 |比赛| `input:~value` | `like(inputs, "%value%")`。也适用于 `outputs` 和 `error`。 |
-|不匹配 | `-input:~value` | `notlike(inputs, "%value%")` |
+|不匹配| `-input:~value` | `notlike(inputs, "%value%")` |
 |比较| `latency:>5` | `gt(latency, 5)`。将 `gte`、`lt` 和 `lte` 用于 `>=`、`<` 和 `<=`。 |
 |存在 | `metadata.env:*` | `eq(metadata_key, "env")` |
 

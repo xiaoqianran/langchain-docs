@@ -59,7 +59,7 @@ Set both variables:
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 export LANGSMITH_AGENT_ID=checkout
-export LANGSMITH_AGENT_ENVIRONMENT=production
+export LANGSMITH_AGENT_ENVIRONMENT=local
 ```
 
 The first two are the usual tracing prerequisites rather than part of naming the agent. If only one of the two agent variables is set, the SDK logs a warning. Instead of picking an environment for you, it leaves untraced every call that names no destination in code, so nothing from those calls reaches LangSmith.
@@ -70,19 +70,19 @@ Pass an agent address.
 
 > [tab] Python
 >
-> Pass `ls.agent_address("checkout", "production")` as the `address` argument of [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable), or of [`tracing_context`](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) for everything traced inside a block:
+> Pass `ls.agent_address("checkout", "local")` as the `address` argument of [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable), or of [`tracing_context`](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) for everything traced inside a block:
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import langsmith as ls
 > from langsmith import traceable
 >
 >
-> @traceable(address=ls.agent_address("checkout", "production"))
+> @traceable(address=ls.agent_address("checkout", "local"))
 > def handle_order(order_id: str) -> dict:
 >     return {"order_id": order_id, "status": "charged"}
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import langsmith as ls
 > from langsmith import traceable, tracing_context
 >
@@ -92,29 +92,29 @@ Pass an agent address.
 >     return {"order_id": order_id, "status": "charged"}
 >
 >
-> with tracing_context(address=ls.agent_address("checkout", "production")):
+> with tracing_context(address=ls.agent_address("checkout", "local")):
 >     handle_order("A-1")
 > ```
 
 > [tab] TypeScript
 >
-> Pass `new AgentAddress("checkout", "production")` as `address` in the config of [`traceable`](https://reference.langchain.com/javascript/langsmith/traceable):
+> Pass `new AgentAddress("checkout", "local")` as `address` in the config of [`traceable`](https://reference.langchain.com/javascript/langsmith/traceable):
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { AgentAddress } from "langsmith";
 > import { traceable } from "langsmith/traceable";
 >
 > const handleOrder = traceable(
 >   async (orderId: string) => ({ orderId, status: "charged" }),
->   { name: "handle_order", address: new AgentAddress("checkout", "production") },
+>   { name: "handle_order", address: new AgentAddress("checkout", "local") },
 > );
 > ```
 
 > [tab] Java
 >
-> Pass `new AgentAddress("checkout", "production")` as `address` in the `TraceConfig` or `RunTree` builder:
+> Pass `new AgentAddress("checkout", "local")` as `address` in the `TraceConfig` or `RunTree` builder:
 >
-> ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import com.langchain.smith.address.AgentAddress;
 > import com.langchain.smith.tracing.TraceConfig;
 > import com.langchain.smith.tracing.Tracing;
@@ -128,7 +128,7 @@ Pass an agent address.
 >             orderId -> Map.of("order_id", orderId, "status", "charged"),
 >             TraceConfig.builder()
 >                 .name("handle_order")
->                 .address(new AgentAddress("checkout", "production"))
+>                 .address(new AgentAddress("checkout", "local"))
 >                 .build());
 >
 >     handleOrder.apply("A-1");
@@ -138,9 +138,9 @@ Pass an agent address.
 
 > [tab] Go
 >
-> Create the address with `langsmith.NewAgentAddress("checkout", "production")`, which returns an error for an invalid value, and set it as `Address` on a `RunCreate`. `WithTracingAddress` sets it for every run of a standalone tracing client:
+> Create the address with `langsmith.NewAgentAddress("checkout", "local")`, which returns an error for an invalid value, and set it as `Address` on a `RunCreate`. `WithTracingAddress` sets it for every run of a standalone tracing client:
 >
-> ```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > package main
 >
 > import (
@@ -152,7 +152,7 @@ Pass an agent address.
 > )
 >
 > func main() {
-> 	agent, err := langsmith.NewAgentAddress("checkout", "production")
+> 	agent, err := langsmith.NewAgentAddress("checkout", "local")
 > 	if err != nil {
 > 		panic(err.Error())
 > 	}

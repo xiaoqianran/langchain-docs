@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在 [agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -28,13 +28,16 @@ pip install langsmith[google-adk]
 
 ## 设置
 
-设置您的[API keys](/langsmith/create-account-api-key)：
+向代理发送痕迹需要 `langsmith>=0.14.9`。
+
+设置您的 [API keys](/langsmith/create-account-api-key)、代理标识符和环境：
 
 ```bash shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING=true
 export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
-export LANGSMITH_PROJECT=<your_langsmith_project>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 
 export GOOGLE_API_KEY=<your_google_api_key>
 ```
@@ -43,7 +46,8 @@ export GOOGLE_API_KEY=<your_google_api_key>
 LANGSMITH_TRACING=true
 LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 LANGSMITH_API_KEY=<your_langsmith_api_key>
-LANGSMITH_PROJECT=<your_langsmith_project>
+LANGSMITH_AGENT_ID="<your-agent-id>"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 
 GOOGLE_API_KEY=<your_google_api_key>
 ```
@@ -51,8 +55,6 @@ GOOGLE_API_KEY=<your_google_api_key>
 要创建 Google API 密钥，请参阅[Google AI Studio](https://aistudio.google.com/api-keys)。
 
 ## 配置跟踪
-
-将 `LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 设置为设置期间注册的代理。保留 `project_name` 未设置以使用此目的地。
 
 要跟踪 ADK 代理，请使用 LangSmith SDK 中的 `configure_google_adk()`。在创建任何 ADK 代理之前调用此函数一次：
 
@@ -62,7 +64,8 @@ from langsmith.integrations.google_adk import configure_google_adk
 configure_google_adk()
 ```
 
-该函数接受以下可选参数：* `project_name`：基于项目的跟踪的兼容性覆盖。保留其未设置以使用配置的代理和环境。
+该函数接受以下可选参数：* `address`：用于发送跟踪的代理地址，而不是 `LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 名称，例如 `ls.agent_address("my-agent", "production")`。不能与`project_name`组合使用。需要`langsmith>=0.14.14`。
+* `project_name`：基于项目的跟踪的兼容性覆盖。保留其未设置以使用配置的代理和环境。
 * `name`：根跟踪的名称。默认为`"google_adk.session"`。
 * `metadata`：附加上下文的键值对字典。
 * `tags`：用于对痕迹进行分类的字符串列表。
@@ -233,8 +236,6 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-google-adk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

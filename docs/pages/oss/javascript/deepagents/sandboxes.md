@@ -88,7 +88,7 @@ try {
 }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/a0de885a-7a63-4d84-92d4-77104304bf78/r)
+> [card] [View example trace](https://smith.langchain.com/public/03e69e44-9e7b-4561-93cd-eb94f95f05af/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -566,7 +566,7 @@ try {
 }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/b7e4a4a4-ae55-48ed-88c4-6d8410c70b83/r)
+> [card] [View example trace](https://smith.langchain.com/public/c57d7b8e-be63-408b-bbab-b41d910feefe/r)
 >
 > Open a public LangSmith run for this example.
 

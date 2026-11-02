@@ -326,6 +326,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Lians`](https://www.lians.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/lians-sdk/month)](https://pypi.org/project/lians-sdk/) |
 | [`HappyHorseToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/happyhorse) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-happyhorse-acedatacloud/month)](https://pypi.org/project/langchain-happyhorse-acedatacloud/) |
 | [`NanoBananaToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nano-banana-acedatacloud/month)](https://pypi.org/project/langchain-nano-banana-acedatacloud/) |
+| [`SpecStreamFindList`](https://specstream.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-specstream/month)](https://pypi.org/project/langchain-specstream/) |
 | [`ZeroGPUToolkit`](https://docs.zerogpu.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-zerogpu/month)](https://pypi.org/project/langchain-zerogpu/) |
 | [`Hydrafetch`](https://docs.hydrafetch.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hydrafetch/month)](https://pypi.org/project/langchain-hydrafetch/) |
 | [`GetYouTubeTranscriptTool`](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-getyoutubetranscript/month)](https://pypi.org/project/langchain-getyoutubetranscript/) |
@@ -379,6 +380,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`OnBaseToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#onbasetoolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`OpenDMAToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`Capsule`](https://github.com/mavdol/langchain-capsule) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-capsule/month)](https://pypi.org/project/langchain-capsule/) |
+| [`AHNLookupTool`](https://github.com/agent-help-network/agent-help-network/blob/main/clients/langchain-ahn/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ahn/month)](https://pypi.org/project/langchain-ahn/) |
 | [`TokPortalToolkit`](https://github.com/tokportal/langchain-tokportal) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tokportal/month)](https://pypi.org/project/langchain-tokportal/) |
 | [`TalorDataSerpTool`](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-talordata/month)](https://pypi.org/project/langchain-talordata/) |
 | [`generate_latam_financial_data`](https://github.com/jmendozapuche/langchain-latam-synth) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-latam-synth/month)](https://pypi.org/project/langchain-latam-synth/) |
@@ -524,14 +526,25 @@ The following table shows tools that generate video, image, or audio assets:
 | [`AgentLineToolkit`](https://docs.agentline.cloud/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentline/month)](https://pypi.org/project/langchain-agentline/) |
 | [`Delegare`](https://docs.delegare.dev/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-delegare/month)](https://pypi.org/project/langchain-delegare/) |
 | [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-toolstem/month)](https://pypi.org/project/langchain-toolstem/) |
+| [`NextmailToolkit`](https://nextmail.sh/docs/python/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nextmail/month)](https://pypi.org/project/langchain-nextmail/) |
+| [`EU Nordic Open Data tools`](https://github.com/itulo/eu-nordic-open-data-mcp/tree/main/packages/langchain-eu-nordic-open-data) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-eu-nordic-open-data/month)](https://pypi.org/project/langchain-eu-nordic-open-data/) |
+| [`SurgemeshToolkit`](https://pypi.org/project/langchain-surgemesh/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-surgemesh/month)](https://pypi.org/project/langchain-surgemesh/) |
+| [`Arche`](https://pypi.org/project/langchain-arche/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-arche/month)](https://pypi.org/project/langchain-arche/) |
 | [`AgentRAMTools`](https://github.com/seanmarkwei/langgraph-agentram) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-agentram/month)](https://pypi.org/project/langgraph-agentram/) |
+| [`GroundTruthCompanyLookup`](https://pypi.org/project/langchain-groundtruth/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-groundtruth/month)](https://pypi.org/project/langchain-groundtruth/) |
 | [`scoutwyze_rank`](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/scoutwyze-compute/month)](https://pypi.org/project/scoutwyze-compute/) |
+| [`LiquidVisionToolkit`](https://github.com/lv-analytics/liquidvision-mcp/tree/main/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-liquidvision/month)](https://pypi.org/project/langchain-liquidvision/) |
+| [`TokenUsageToolkit`](https://tokenusage.dev/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tokenusage-dev/month)](https://pypi.org/project/langchain-tokenusage-dev/) |
 | [`Hlido`](https://hlido.eu/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/hlido-trust/month)](https://pypi.org/project/hlido-trust/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
+| [`viaSocket`](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/viasocket/month)](https://pypi.org/project/viasocket/) |
+| [`HyperresearchAnswerTool`](https://hyperresearch.ai/docs/answers/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperresearch/month)](https://pypi.org/project/langchain-hyperresearch/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |
 | [`VideoGenToolkit`](https://github.com/video-gen/langchain-videogen#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-videogen/month)](https://pypi.org/project/langchain-videogen/) |
+| [`x402checkToolkit`](https://x402check.dev) | N/A |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
+| [`CleaveToolkit`](https://cleave.fi/docs/agents/langchain) | N/A |
 | [`FokalsToolkit`](https://github.com/fokals/langchain-fokals#readme) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
 | [`Stagehand`](/oss/python/integrations/tools/stagehand) | N/A |

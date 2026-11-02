@@ -8,7 +8,7 @@
 
 > [!NOTE]
 >
-> When an online evaluator runs on any run within a trace, the trace will be auto-upgraded to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This upgrade will impact trace pricing, but ensures that traces meeting your evaluation criteria (typically those most valuable for analysis) are preserved for investigation.
+> When an online evaluator runs on any run within a trace, the trace will be auto-upgraded to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This ensures that traces meeting your evaluation criteria (typically those most valuable for analysis) are preserved for investigation.
 
 ## View online evaluators
 

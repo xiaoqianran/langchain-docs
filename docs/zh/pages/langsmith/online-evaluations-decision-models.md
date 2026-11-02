@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 当在线评估器在跟踪内的任何运行上运行时，LangSmith 会将跟踪升级为 [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级会影响跟踪定价。
+> 当在线评估器在跟踪内的任何运行上运行时，LangSmith 会将跟踪升级为 [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
 ## 决策模型
 
@@ -18,7 +18,7 @@
 
 ### 支持的型号
 
-LangSmith 在跟踪项目和数据集上支持评估者的 OpenAI 和 TypeSafe 决策模型。要通过其他提供程序或在您自己的服务器上调用决策模型，请使用 OpenAI-Decisions 兼容或 TypeSafe 兼容端点。参见[Connect to a compatible decision model provider](/langsmith/compatible-decision-model-provider)。|型号|供应商|设置 |
+LangSmith 在跟踪项目和数据集上支持评估者的 OpenAI 和 TypeSafe 决策模型。要通过其他提供程序或在您自己的服务器上调用决策模型，请使用 OpenAI-Decisions 兼容或 TypeSafe 兼容端点。参见[Connect to a compatible decision model provider](/langsmith/compatible-decision-model-provider)。|型号|供应商|设置|
 | - | - | - |
 | [⟦T0⟧](/langsmith/llm-gateway-decision-models#use-openai-decision-models) | **OpenAI** |需要存储为工作区机密的 OpenAI API 密钥。默认为`OPENAI_API_KEY`。 |
 | [Jev](/langsmith/llm-gateway-decision-models#use-typesafe-jev) | **类型安全** |需要存储为工作区机密的 TypeSafe API 密钥。默认为`TYPESAFE_API_KEY`。 |
@@ -74,6 +74,6 @@ LangSmith 对决策模型问题强制执行以下限制：
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-decision-models.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

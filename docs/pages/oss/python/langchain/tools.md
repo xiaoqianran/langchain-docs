@@ -271,7 +271,7 @@ def set_user_name(new_name: str, runtime: ToolRuntime[None, CustomState]) -> Com
     )
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/51c18f86-843b-434d-8e4a-a75250b71afb/r)
+> [card] [View example trace](https://smith.langchain.com/public/d29da0cb-a0f6-4a14-b976-9f4154e46c4c/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -363,7 +363,7 @@ result = agent.invoke(
 print(result["messages"][-1].content_blocks)
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/e885406b-502e-4732-a55f-fc133bdfd936/r)
+> [card] [View example trace](https://smith.langchain.com/public/71fda0a0-84cc-4eb8-83a1-611ebbd675a5/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -550,7 +550,7 @@ def get_weather(city: str) -> str:
     return f"It is currently sunny in {city}."
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/c28f67dc-bc64-4c18-ac53-bc0fb60c6b99/r)
+> [card] [View example trace](https://smith.langchain.com/public/9c20937f-20e4-4ed2-adfa-eeda6fd63997/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -580,7 +580,7 @@ def get_weather_data(city: str) -> dict:
     }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/61bb7001-dc25-4833-a4d3-365ba3e4c9f2/r)
+> [card] [View example trace](https://smith.langchain.com/public/2f82d8ae-bcf6-4b6d-94ee-0d724c30fa98/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -686,7 +686,7 @@ result = agent.invoke({
 # "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/6cd0d12b-6c61-4b45-9096-13e73c1d376e/r)
+> [card] [View example trace](https://smith.langchain.com/public/0a2f53f6-eaea-4092-b86b-c4e0a41998bc/r)
 >
 > Open a public LangSmith run for this example.
 

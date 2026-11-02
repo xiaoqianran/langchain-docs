@@ -1,12 +1,16 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace Strands Agents applications | https://docs.langchain.com/langsmith/trace-with-strands-agents -->
+<!-- langchain-docs: Trace with Strands Agents | https://docs.langchain.com/langsmith/trace-with-strands-agents -->
 
-# Trace Stress Agents 应用程序
+# 使用 Strands 代理进行跟踪
 
-使用 LangSmith 追踪股线代理应用。
+使用 LangSmith 使用 Strands Agent 进行追踪。
 
-[Strands Agents](https://strandsagents.com/)是一个用于构建模型驱动代理的SDK。 LangSmith 提供 Strands Agents 集成，以 LangSmith 兼容格式导出 Strands OpenTelemetry 范围，包括代理运行、模型调用、工具调用、提示、完成和令牌使用。
+[Strands Agents](https://strandsagents.com/)是一个用于构建模型驱动代理的SDK。 LangSmith 提供 Strands Agents 集成，以 LangSmith 兼容格式导出 Strands OpenTelemetry 跨度，包括代理运行、模型调用、工具调用、提示、完成和令牌使用。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -26,11 +30,11 @@ uv add "langsmith[strands-agents]"
 
 ### 1.配置环境变量
 
-设置您的 [LangSmith API key](/langsmith/create-account-api-key) 和项目名称。如果您使用 Amazon Bedrock 作为 Strands Agent 的模型提供程序，还可以使用您的首选 AWS 身份验证方法配置 AWS 凭证。
+设置您的 [LangSmith API key](/langsmith/create-account-api-key) 以及代理标识符和环境。如果您使用 Amazon Bedrock 作为 Strands Agent 的模型提供程序，还可以使用您的首选 AWS 身份验证方法配置 AWS 凭证。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=https://api.smith.langchain.com/otel/v1/traces
-export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-Project=<your_project_name>"
+export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=local"
 
 # Required when using Amazon Bedrock.
 export AWS_REGION=<your_aws_region>
@@ -40,9 +44,7 @@ export AWS_REGION=<your_aws_region>
 >
 > Strands Agents 集成使用标准 OpenTelemetry OTLP 导出器。在调用`setup_langsmith_telemetry()`之前配置LangSmith端点和标头。
 
-### 2.启用 Strands Agents 遥测
-
-在创建或调用代理之前，在应用程序启动时调用 `setup_langsmith_telemetry()` 一次：
+### 2.启用 Strands Agents 遥测当进程启动时，在创建或调用代理之前调用 `setup_langsmith_telemetry()` 一次：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.strands_agents import setup_langsmith_telemetry
@@ -56,7 +58,9 @@ setup_langsmith_telemetry()
 setup_langsmith_telemetry(console=True)
 ```
 
-### 3. 创建并运行您的代理配置完成后，Strands Agent 跟踪会自动导出到 LangSmith：
+### 3. 创建并运行您的代理
+
+配置完成后，Strands Agent 跟踪会自动导出到 LangSmith：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.strands_agents import setup_langsmith_telemetry
@@ -74,7 +78,7 @@ print(response)
 
 ## 查看LangSmith中的踪迹
 
-运行应用程序后，打开 LangSmith 项目以查看跟踪，其中包括：
+运行代理后，在LangSmith中选择您的代理和环境，然后打开**跟踪**以查看跟踪，其中包括：
 
 * 代理调用跨度
 * 事件循环周期跨度
@@ -95,7 +99,8 @@ exporter = create_langsmith_exporter(
     endpoint="https://api.smith.langchain.com/otel/v1/traces",
     headers={
         "x-api-key": "<your_langsmith_api_key>",
-        "Langsmith-Project": "<your_project_name>",
+        "Langsmith-Agent-Id": "<your-agent-id>",
+        "Langsmith-Agent-Environment": "local",
     },
 )
 telemetry.tracer_provider.add_span_processor(BatchSpanProcessor(exporter))

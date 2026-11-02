@@ -555,7 +555,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
 > )
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/bbc7fc2a-05e8-4a0a-986b-73f956648c4c/r)
+> > [card] [View example trace](https://smith.langchain.com/public/3d5a77cf-c12e-449d-b76a-ecbf309338e7/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -601,7 +601,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
 >     )
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/c5dd94b2-c40b-4677-b8da-7a8da97b9642/r)
+> > [card] [View example trace](https://smith.langchain.com/public/2b3509b3-1566-442b-8db0-a9084656b78f/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -987,7 +987,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
 > item = store.get(("users",), "user_123")
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/abd06f32-c2ff-48dd-8462-188b65db1a04/r)
+> > [card] [View example trace](https://smith.langchain.com/public/86a270f5-9c40-46c8-bccc-12595155f5bd/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -1037,7 +1037,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
 >     )
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/67c2c83f-d604-4085-aae3-3ef52b427b0c/r)
+> > [card] [View example trace](https://smith.langchain.com/public/956e0e6e-14b8-47ba-b8e8-41eefe462f17/r)
 > >
 > > Open a public LangSmith run for this example.
 

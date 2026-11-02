@@ -1,10 +1,14 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace Microsoft Agent Framework applications | https://docs.langchain.com/langsmith/trace-with-microsoft-agent-framework -->
+<!-- langchain-docs: Trace with Microsoft Agent Framework | https://docs.langchain.com/langsmith/trace-with-microsoft-agent-framework -->
 
-# 跟踪 Microsoft Agent Framework 应用程序
+# 使用 Microsoft Agent Framework 进行跟踪
 
 LangSmith 可以使用其内置的 OpenTelemetry 仪器捕获 [Microsoft Agent Framework](https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview) 生成的轨迹。本指南向您展示如何自动捕获来自 Microsoft Agent Framework 代理的跟踪并将其发送到 LangSmith 进行监控和分析。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -28,12 +32,12 @@ uv add agent-framework opentelemetry-exporter-otlp-proto-http
 export ENABLE_INSTRUMENTATION=true
 export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
 export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=https://api.smith.langchain.com/otel/v1/traces
-export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-Project=<your_project_name>"
+export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=local"
 ```
 
-### 2. 在您的应用程序中启用 OpenTelemetry
+### 2. 在代理中启用 OpenTelemetry
 
-在您的 Microsoft Agent Framework 应用程序中，使用内置 `configure_otel_providers` 函数启用 OpenTelemetry 跟踪：
+在 Microsoft Agent Framework 代码中，使用内置 `configure_otel_providers` 函数启用 OpenTelemetry 跟踪：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from agent_framework.observability import configure_otel_providers
@@ -44,7 +48,7 @@ configure_otel_providers(enable_sensitive_data=True)
 
 > [!注意]
 >
-> 设置 `enable_sensitive_data=True` 允许捕获迹线中的输入和输出内容。如果您想从跟踪中排除敏感数据，请设置为 `False`。
+> 设置`enable_sensitive_data=True`允许捕获轨迹中的输入和输出内容。如果您想从跟踪中排除敏感数据，请设置为 `False`。
 
 ### 3. 创建并运行您的代理
 
@@ -67,8 +71,6 @@ result = await agent.run("What's the capital of Bavaria?")
 print(result.text)
 ```
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-microsoft-agent-framework.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

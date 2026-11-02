@@ -279,7 +279,7 @@ response = result.messages.at(-1)?.content;
 console.log(response); // "You are Bob!"
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/b512e509-c58f-4a96-8ee3-9fe060257d62/r)
+> [card] [View example trace](https://smith.langchain.com/public/bf02b24e-121a-4f24-8d94-ce7565e6d298/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -826,11 +826,11 @@ const agent = createAgent({
     }
 }%%
 graph TD
-    S(["\_\_start\_\_"])
+    S(["`__start__`"])
     MODEL(model)
     POST(after_model)
     TOOLS(tools)
-    END(["\_\_end\_\_"])
+    END(["`__end__`"])
     S --> MODEL
     MODEL --> POST
     POST -.-> END

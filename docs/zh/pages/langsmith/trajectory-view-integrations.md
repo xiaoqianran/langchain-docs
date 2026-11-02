@@ -38,7 +38,7 @@
 
 > [!注意]
 >
-> 使用 [UUID v7](https://uuid7.com) 代替 `thread_id`。 LangSmith 的 SDK 导出 `uuid7` 帮助程序，并且 UUID v7 按创建时间排序，因此线程在列表视图中保持有序。
+> 使用 [UUID v7](https://datatracker.ietf.org/doc/html/rfc9562) 代替 `thread_id`。 LangSmith 的 SDK 导出 `uuid7` 帮助程序，并且 UUID v7 按创建时间排序，因此线程在列表视图中保持有序。
 
 ### 每次调用元数据
 
@@ -177,160 +177,160 @@ const entryGuardrail = traceable(
 
 `LS_MESSAGE_VIEW_EXCLUDE`是从`langsmith`（Python和JS）导出的顶级常量，其值为字符串`"ls_message_view_exclude"`。更喜欢常量以避免拼写错误；文字字符串仍然有效。将其用于非会话轮次的 LLM 子跨度，例如分类调用、嵌入查找、安全过滤器或路由/护栏决策，您仍然希望在 LangSmith 的其他位置可见，但不希望使会话记录变得混乱。
 
-**Python**
-
-**1.在 `@traceable` 装饰器上**：排除整个函数的运行。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langsmith import LS_MESSAGE_VIEW_EXCLUDE, traceable
-
-@traceable(run_type="llm", metadata={LS_MESSAGE_VIEW_EXCLUDE: True})
-def classify_intent(query: str) -> str:
-    # This LLM call is internal routing, not part of the chat
-    return llm.predict(f"Classify the intent of: {query}")
-```
-
-**2.通过`trace`上下文管理器**：排除临时跨度。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langsmith import LS_MESSAGE_VIEW_EXCLUDE, trace
-
-with trace(
-    "safety_check",
-    run_type="llm",
-    metadata={LS_MESSAGE_VIEW_EXCLUDE: True},
-) as run:
-    result = safety_model.score(text)
-    run.end(outputs={"score": result})
-```
-
-**3.从正在运行的函数内部**：在修补运行之前的任何点设置当前运行树上的密钥。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langsmith import LS_MESSAGE_VIEW_EXCLUDE, get_current_run_tree, traceable
-
-@traceable(run_type="llm")
-def maybe_internal(query: str) -> str:
-    result = llm.predict(query)
-    if _looks_like_routing(query):
-        rt = get_current_run_tree()
-        if rt is not None:
-            rt.add_metadata({LS_MESSAGE_VIEW_EXCLUDE: True})
-    return result
-```
-
-**4.使用 `wrap_openai` / `wrap_anthropic`** 时的每次调用：将 `langsmith_extra` 传递到包装的客户端调用。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import openai
-from langsmith import LS_MESSAGE_VIEW_EXCLUDE
-from langsmith.wrappers import wrap_openai
-
-client = wrap_openai(openai.Client())
-
-resp = client.chat.completions.create(
-    model="gpt-5.6",
-    messages=[{"role": "user", "content": "Classify: ..."}],
-    langsmith_extra={"metadata": {LS_MESSAGE_VIEW_EXCLUDE: True}},
-)
-```
-
-**5. LangChain `RunnableConfig`**：排除链或聊天模型的单次调用。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_openai import ChatOpenAI
-from langsmith import LS_MESSAGE_VIEW_EXCLUDE
-
-llm = ChatOpenAI(model="gpt-5.6")
-result = llm.invoke(
-    "Classify this query",
-    config={"metadata": {LS_MESSAGE_VIEW_EXCLUDE: True}},
-)
-```
-
-**打字稿**
-
-**1.在 `traceable` 包装器上**：排除整个函数的运行。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
-import { traceable } from "langsmith/traceable";
-
-const classifyIntent = traceable(
-  async (query: string) => {
-    return await llm.predict(`Classify the intent of: ${query}`);
-  },
-  {
-    name: "classify_intent",
-    run_type: "llm",
-    metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true },
-  },
-);
-```
-
-**2.从正在运行的函数内部**：改变当前的运行树。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
-import { traceable, getCurrentRunTree } from "langsmith/traceable";
-
-const maybeInternal = traceable(
-  async (query: string) => {
-    const result = await llm.predict(query);
-    if (looksLikeRouting(query)) {
-      const rt = getCurrentRunTree();
-      rt.extra = rt.extra ?? {};
-      rt.extra.metadata = { ...rt.extra.metadata, [LS_MESSAGE_VIEW_EXCLUDE]: true };
-    }
-    return result;
-  },
-  { run_type: "llm" },
-);
-```
-
-**3.每次调用`wrapOpenAI`**：在调用时传递`langsmithExtra`。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
-import { wrapOpenAI } from "langsmith/wrappers";
-import OpenAI from "openai";
-
-const client = wrapOpenAI(new OpenAI());
-
-const resp = await client.chat.completions.create(
-  {
-    model: "gpt-5.6",
-    messages: [{ role: "user", content: "Classify: ..." }],
-  },
-  { langsmithExtra: { metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true } } },
-);
-```
-
-**4. Vercel AI SDK 中间件**：通过 `wrapAISDK` 上的 `lsConfig.metadata` 传递密钥。中间件将其合并到每个发出的 LLM 运行中。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as ai from "ai";
-import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
-import { wrapAISDK } from "langsmith/experimental/vercel";
-
-const { generateText } = wrapAISDK(ai, {
-  metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true },
-});
-```要仅排除某些调用而不排除其他调用，请正常使用 `wrapAISDK` 包装，然后从调用 AI SDK 的父级 `traceable` 内部对 `getCurrentRunTree()` 进行变异，或者使用带有 `createChild({ extra: { metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true } } })` 的子级 `RunTree`。
-
-**5.手动 `RunTree.createChild`**：当您手动构建运行时。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
-import { RunTree } from "langsmith/run_trees";
-
-const parent = new RunTree({ name: "agent", run_type: "chain" });
-const child = parent.createChild({
-  name: "safety_check",
-  run_type: "llm",
-  extra: { metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true } },
-});
-```
+> [选项卡] Python
+>
+> **1。在 `@traceable` 装饰器上**：排除整个函数的运行。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langsmith import LS_MESSAGE_VIEW_EXCLUDE, traceable
+>
+> @traceable(run_type="llm", metadata={LS_MESSAGE_VIEW_EXCLUDE: True})
+> def classify_intent(query: str) -> str:
+>     # This LLM call is internal routing, not part of the chat
+>     return llm.predict(f"Classify the intent of: {query}")
+> ```
+>
+> **2。通过`trace`上下文管理器**：排除临时跨度。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langsmith import LS_MESSAGE_VIEW_EXCLUDE, trace
+>
+> with trace(
+>     "safety_check",
+>     run_type="llm",
+>     metadata={LS_MESSAGE_VIEW_EXCLUDE: True},
+> ) as run:
+>     result = safety_model.score(text)
+>     run.end(outputs={"score": result})
+> ```
+>
+> **3。从正在运行的函数内部**：在修补运行之前的任何点设置当前运行树上的密钥。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langsmith import LS_MESSAGE_VIEW_EXCLUDE, get_current_run_tree, traceable
+>
+> @traceable(run_type="llm")
+> def maybe_internal(query: str) -> str:
+>     result = llm.predict(query)
+>     if _looks_like_routing(query):
+>         rt = get_current_run_tree()
+>         if rt is not None:
+>             rt.add_metadata({LS_MESSAGE_VIEW_EXCLUDE: True})
+>     return result
+> ```
+>
+> **4。使用 `wrap_openai` / `wrap_anthropic`** 时的每次调用：将 `langsmith_extra` 传递到包装的客户端调用。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import openai
+> from langsmith import LS_MESSAGE_VIEW_EXCLUDE
+> from langsmith.wrappers import wrap_openai
+>
+> client = wrap_openai(openai.Client())
+>
+> resp = client.chat.completions.create(
+>     model="gpt-5.6",
+>     messages=[{"role": "user", "content": "Classify: ..."}],
+>     langsmith_extra={"metadata": {LS_MESSAGE_VIEW_EXCLUDE: True}},
+> )
+> ```
+>
+> **5。 LangChain `RunnableConfig`**：排除链或聊天模型的单次调用。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain_openai import ChatOpenAI
+> from langsmith import LS_MESSAGE_VIEW_EXCLUDE
+>
+> llm = ChatOpenAI(model="gpt-5.6")
+> result = llm.invoke(
+>     "Classify this query",
+>     config={"metadata": {LS_MESSAGE_VIEW_EXCLUDE: True}},
+> )
+> ```> [选项卡] TypeScript
+>
+> **1。在 `traceable` 包装器**上：排除整个函数的运行。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
+> import { traceable } from "langsmith/traceable";
+>
+> const classifyIntent = traceable(
+>   async (query: string) => {
+>     return await llm.predict(`Classify the intent of: ${query}`);
+>   },
+>   {
+>     name: "classify_intent",
+>     run_type: "llm",
+>     metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true },
+>   },
+> );
+> ```
+>
+> **2。从正在运行的函数内部**：改变当前的运行树。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
+> import { traceable, getCurrentRunTree } from "langsmith/traceable";
+>
+> const maybeInternal = traceable(
+>   async (query: string) => {
+>     const result = await llm.predict(query);
+>     if (looksLikeRouting(query)) {
+>       const rt = getCurrentRunTree();
+>       rt.extra = rt.extra ?? {};
+>       rt.extra.metadata = { ...rt.extra.metadata, [LS_MESSAGE_VIEW_EXCLUDE]: true };
+>     }
+>     return result;
+>   },
+>   { run_type: "llm" },
+> );
+> ```
+>
+> **3。每次调用`wrapOpenAI`**：在调用时传递`langsmithExtra`。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
+> import { wrapOpenAI } from "langsmith/wrappers";
+> import OpenAI from "openai";
+>
+> const client = wrapOpenAI(new OpenAI());
+>
+> const resp = await client.chat.completions.create(
+>   {
+>     model: "gpt-5.6",
+>     messages: [{ role: "user", content: "Classify: ..." }],
+>   },
+>   { langsmithExtra: { metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true } } },
+> );
+> ```
+>
+> **4。 Vercel AI SDK 中间件**：通过 `wrapAISDK` 上的 `lsConfig.metadata` 传递密钥。中间件将其合并到每个发出的 LLM 运行中。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as ai from "ai";
+> import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
+> import { wrapAISDK } from "langsmith/experimental/vercel";
+>
+> const { generateText } = wrapAISDK(ai, {
+>   metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true },
+> });
+> ```
+>
+> 要仅排除某些调用而不排除其他调用，请正常使用 `wrapAISDK` 包装，然后从调用 AI SDK 的父级 `traceable` 内部对 `getCurrentRunTree()` 进行变异，或者使用带有 `createChild({ extra: { metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true } } })` 的子级 `RunTree`。
+>
+> **5。手动 `RunTree.createChild`**：当您手动构建运行时。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
+> import { RunTree } from "langsmith/run_trees";
+>
+> const parent = new RunTree({ name: "agent", run_type: "chain" });
+> const child = parent.createChild({
+>   name: "safety_check",
+>   run_type: "llm",
+>   extra: { metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true } },
+> });
+> ```
 
 ### 注释
 
@@ -338,9 +338,9 @@ const child = parent.createChild({
 * 在 `@traceable` (Python) 或 `traceable` (JS) 父级内部执行的子运行通过共享跟踪上下文继承排除：Python 的 `_METADATA` `ContextVar` 和 JS 的 `AsyncLocalStorage`。子级自己的装饰器时间元数据位于继承值之上。
 * 排除的运行仍显示在常规跟踪视图、运行资源管理器和指标中。只有轨迹视图会将它们过滤掉。
 
-## 手动仪器
+## 手动仪器如果您在没有 [Supported integrations](#supported-integrations) 中的包装器之一的情况下进行跟踪（例如，通过 `RunTree`、REST API 或提供商 SDK 周围的自定义包装器发出运行），请在每个 LLM 运行的元数据上设置 `ls_message_format` 以将跟踪路由到正确的提取器：
 
-如果您在没有 [Supported integrations](#supported-integrations) 中的包装器之一的情况下进行跟踪（例如，通过 `RunTree`、REST API 或提供商 SDK 周围的自定义包装器发出运行），请在每个 LLM 运行的元数据上设置 `ls_message_format` 以将跟踪路由到正确的提取器：|痕迹形状 |设置元数据 |
+|痕迹形状 |设置元数据 |
 | - | - |
 | LangChain 消息（构造函数信封）| `ls_message_format: "langchain"` |
 | OpenAI 聊天完成 | `ls_message_format: "completions"` |

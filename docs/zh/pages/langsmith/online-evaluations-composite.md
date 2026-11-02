@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留满足您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。
+> 当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。这可确保保留符合您的评估标准的迹线（通常是对分析最有价值的迹线）以供调查。
 
 ## 查看在线评估器
 
@@ -18,16 +18,16 @@
 
 ## 配置复合在线评估器
 
-您可以在 [tracing project](/langsmith/observability-concepts#tracing-projects) 上为 [online evaluations](/langsmith/evaluation-concepts#online-evaluations) 创建复合赋值器。通过 UI 中的复合评估器，您可以计算多个评估器分数的加权平均值或加权总和，并具有可配置的权重。### 1. 导航到跟踪项目
+您可以在 [tracing project](/langsmith/observability-concepts#tracing-projects) 上为 [online evaluations](/langsmith/evaluation-concepts#online-evaluations) 创建复合赋值器。通过 UI 中的复合评估器，您可以计算多个评估器分数的加权平均值或加权总和，并具有可配置的权重。
 
-要开始配置复合评估器，请导航到 **跟踪** 页面并选择跟踪项目或代理环境。
+### 1. 导航到跟踪项目要开始配置复合评估器，请导航到 **跟踪** 页面并选择跟踪项目或代理环境。
 
 从跟踪项目或代理环境视图中，导航到 **Evaluators** 选项卡。单击 **+ 评估器** 打开 **添加评估器** 面板。单击“从头开始创建”下的“综合得分”。
 
 ### 2. 配置复合求值器
 
 1. 指定您的评估员。
-2. 选择聚合方法：**平均** 或 **总和**。
+2. 选择一种聚合方法，**平均** 或 **求和**。
    * **平均**： Σ(体重\*分数) / Σ(体重)。
    * **总和**：Σ(体重\*分数)。
 3. 添加您想要包含在综合乐谱中的反馈键。

@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留满足您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。
+> 当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。这可确保保留符合您的评估标准的迹线（通常是对分析最有价值的迹线）以供调查。
 
 ## 查看在线评估器
 
@@ -32,7 +32,7 @@
 * 调用特定工具的运行。请参阅[filtering for tool calls](/langsmith/filter-traces-in-application#example-filtering-for-tool-calls)了解更多信息。
 * 与特定元数据片段匹配的运行（例如，如果您使用 `plan_type` 记录跟踪并且只想对来自企业客户的跟踪运行评估）。请参阅[adding metadata to your traces](/langsmith/add-metadata-tags)了解更多信息。
 
-评估器使用过滤器构建器，其字段和运算符与[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)中描述的相同。要处理来自早期评估器的反馈，请过滤此评估器的反馈键，然后从 `run["feedback"]` 读取分数，或从 [include extended stats](/langsmith/evaluators#include-extended-stats) 读取`run["feedback_stats"]` 分数。例如，当`answer_usefulness`反馈存在时，使用`eq(feedback_key, "answer_usefulness")`运行。过滤器基于反馈键，而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发代码评估器。欲了解更多信息，请参阅[Chain evaluators](/langsmith/evaluators#chain-evaluators)。
+评估器使用过滤器构建器，其字段和运算符与[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)中描述的相同。要处理来自早期评估器的反馈，请过滤此评估器的反馈键，然后从 `run["feedback"]` 读取分数，或从 [include extended stats](/langsmith/evaluators#include-extended-stats) 读取`run["feedback_stats"]` 分数。例如，当`answer_usefulness`反馈存在时，使用`eq(feedback_key, "answer_usefulness")`运行。过滤器基于反馈键，而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发代码评估器。有关更多信息，请参阅[Chain evaluators](/langsmith/evaluators#chain-evaluators)。
 
 > [!提示]
 >

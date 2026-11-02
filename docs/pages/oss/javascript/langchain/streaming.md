@@ -419,7 +419,7 @@ const finalState = await stream.output;
 // According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/7e1f1102-ed73-4650-bb9a-d43421fd0114/r)
+> [card] [View example trace](https://smith.langchain.com/public/af521662-0974-433d-bc77-8eedf82863d2/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -611,7 +611,7 @@ for await (const message of stream.messages) {
 }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/f9726058-fc21-4bcf-ae1a-791e55c5f462/r)
+> [card] [View example trace](https://smith.langchain.com/public/b1ae68c6-12fb-406c-91df-63364cf6dd7c/r)
 >
 > Open a public LangSmith run for this example.
 

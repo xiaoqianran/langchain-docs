@@ -8,7 +8,7 @@ LangSmith 可以使用 OpenTelemetry 仪器捕获 [AutoGen](https://microsoft.gi
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -24,18 +24,20 @@ uv add langsmith autogen-agentchat autogen-ext opentelemetry-instrumentation-ope
 
 ## 设置
 
-### 1.配置环境变量
+### 1. Configure environment variables
+
+向代理发送痕迹需要 `langsmith>=0.14.9`。
 
 设置您的 [API keys](/langsmith/create-account-api-key)、代理标识符和环境：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export OPENAI_API_KEY=<your_openai_api_key>
 ```
 
-### 2. 配置 OpenTelemetry 集成
+### 2. Configure OpenTelemetry integration
 
 在您的 AutoGen 代理中，配置 LangSmith OpenTelemetry 集成以及 OpenAI 仪器：
 
@@ -135,7 +137,7 @@ if __name__ == "__main__":
 
 ## 高级用法
 
-### 自定义元数据和标签
+### Custom metadata and tags
 
 您可以通过设置 span 属性将自定义元数据添加到跟踪中：
 
@@ -152,9 +154,9 @@ async def run_with_metadata():
 
         # Your AutoGen code here
         await Console(team.run_stream(task=task))
-```
+```### 与其他乐器结合
 
-### 与其他乐器结合You can combine AutoGen tracing with other OpenTelemetry instrumentors:
+您可以将 AutoGen 跟踪与其他 OpenTelemetry 仪器结合起来：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from opentelemetry.instrumentation.openai import OpenAIInstrumentor
@@ -172,6 +174,6 @@ HTTPXClientInstrumentor().instrument()
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-autogen.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

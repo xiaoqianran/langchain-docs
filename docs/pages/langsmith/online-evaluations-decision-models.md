@@ -8,7 +8,7 @@ Evaluate production traces in LangSmith with a decision model as the judge and r
 
 > [!NOTE]
 >
-> When an online evaluator runs on any run within a trace, LangSmith upgrades the trace to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This upgrade affects trace pricing.
+> When an online evaluator runs on any run within a trace, LangSmith upgrades the trace to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades).
 
 ## Decision models
 

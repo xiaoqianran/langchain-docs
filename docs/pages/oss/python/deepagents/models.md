@@ -187,7 +187,7 @@ result = agent.invoke(
 )
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/00753a64-5eb8-4c9e-aac1-4116a90d2ac9/r)
+> [card] [View example trace](https://smith.langchain.com/public/75459b47-934f-45bd-8d85-79cdffbfc1b4/r)
 >
 > Open a public LangSmith run for this example.
 

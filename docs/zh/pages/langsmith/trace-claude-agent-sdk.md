@@ -8,7 +8,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T9⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T9⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -32,13 +32,16 @@ npm install @anthropic-ai/claude-agent-sdk langsmith zod
 
 ## 设置
 
-设置您的[API keys](/langsmith/create-account-api-key)：
+将跟踪发送到代理需要 Python 中的 `langsmith>=0.14.9` 或 TypeScript 中的 `langsmith@>=0.11.0`。
+
+设置您的 [API keys](/langsmith/create-account-api-key)、代理标识符和环境：
 
 ```bash shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING=true
 export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
-export LANGSMITH_PROJECT=<your_langsmith_project>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 
 export ANTHROPIC_API_KEY=<your_anthropic_api_key>
 ```
@@ -47,7 +50,8 @@ export ANTHROPIC_API_KEY=<your_anthropic_api_key>
 LANGSMITH_TRACING=true
 LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 LANGSMITH_API_KEY=<your_langsmith_api_key>
-LANGSMITH_PROJECT=<your_langsmith_project>
+LANGSMITH_AGENT_ID="<your-agent-id>"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 
 ANTHROPIC_API_KEY=<your_anthropic_api_key>
 ```
@@ -167,9 +171,7 @@ for await (const chunk of query) {
 }
 ```
 
-配置完成后，所有Claude Agent SDK操作都会自动追踪到LangSmith，包括：
-
-* 代理查询和回复
+配置完成后，所有Claude Agent SDK操作都会自动追踪到LangSmith，包括：* 代理查询和回复
 * 工具调用和结果
 * 克劳德模型交互
 * MCP服务器操作

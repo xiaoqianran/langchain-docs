@@ -16,10 +16,10 @@
 
 每个 SDK 方法及其底层端点共享相同的弃用日期。
 
-|部署|弃用 |移除|
+|部署|弃用 |移除 |
 | - | - | - |
 |所有云区域 | 2026 年 7 月结束 | 2027 年 1 月 31 日 |
-|自托管 | `v0.16` | `v0.18` |
+|自托管 | `v0.16` | `v0.19` |
 
 有关LangSmith如何弃用和删除API端点和SDK方法的详细信息，请参阅[API and SDK deprecation policy](/langsmith/endpoint-deprecation)。
 
@@ -51,7 +51,7 @@
 
 > [卡][Retrieve runs](/langsmith/smithdb-sdk-migration-runs)
 >
-> 按 ID 获取一次运行，加载其子运行，并在 LangSmith UI 中构建运行的 URL。
+> 按 ID 获取一个运行，加载其子运行，并在 LangSmith UI 中构建运行的 URL。
 
 > [卡][Traces](/langsmith/smithdb-sdk-migration-traces)
 >
@@ -132,7 +132,7 @@
 > | `LangSmithNotFoundError` | `NotFoundError` | 404;不变的名字 |
 > | `LangSmithConflictError` | `ConflictError` | 409；不变的名字 |
 > | `LangSmithConnectionError` | `APIConnectionError` |当客户端无法连接到 API 时引发 |
-> | `LangSmithExceptionGroup` | *（已删除）* |没有同等的 |
+> | `LangSmithExceptionGroup` | *（已删除）* |没有同等的|
 > | *（不可用）* | `APIError` |新增：所有 API 相关错误的基类，具有 `message`、`request` 和 `body` 属性 |
 > | *（不可用）* | `APIStatusError` |新：所有 4xx/5xx 状态错误的基类 |
 > | *（不可用）* | `BadRequestError` |新：400 |
@@ -142,7 +142,7 @@
 >
 > SmithDB 支持的方法引发新的异常类，而不是普通的 `Error`。
 >
-> |之前（普通`Error`）|之后(`langsmith`) |笔记|
+> |之前（普通`Error`）|之后(`langsmith`)|笔记|
 > | - | - | - |
 > | *（不可用）* | `LangsmithError` |所有 SDK 错误的基类 |
 > | *（不可用）* | `InternalServerError` | 5xx |

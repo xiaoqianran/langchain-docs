@@ -1,8 +1,8 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace LiveKit applications | https://docs.langchain.com/langsmith/trace-with-livekit -->
+<!-- langchain-docs: Trace LiveKit agents | https://docs.langchain.com/langsmith/trace-with-livekit -->
 
-# 跟踪 LiveKit 应用程序
+# 跟踪 LiveKit 代理
 
 > [!注意]
 >
@@ -15,6 +15,10 @@
 > 此设置需要 `langsmith[livekit]>=0.11.2` 和 `livekit-agents>=1.6`。 LiveKit Agents 1.7 及更高版本需要 `langsmith[livekit]>=0.12.4`。
 
 每个对话都显示为一个 LangSmith 跟踪及其管道事件、延迟和令牌指标。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -30,12 +34,15 @@ uv add "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
 
 ## 设置环境变量
 
+向代理发送痕迹需要 `langsmith>=0.14.9`。
+
 该集成从环境中读取您的 LangSmith 凭证，并通过 OpenTelemetry 导出到 LangSmith：
 
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
-LANGSMITH_PROJECT=<your-desired-langsmith-project>
+LANGSMITH_AGENT_ID="<your-agent-id>"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 LIVEKIT_URL=<your-livekit-url>
 LIVEKIT_API_KEY=<your-livekit-api-key>
 LIVEKIT_API_SECRET=<your-livekit-api-secret>
@@ -70,11 +77,11 @@ async def my_agent(ctx: agents.JobContext):
     )
 ```
 
-`configure_livekit()` 默认使用 LiveKit 会话录音。 `record={"audio": True}` 选项告诉 LiveKit 创建录音。
+`configure_livekit()` 默认使用 LiveKit 会话录音。 `record={"audio": True}` 选项告诉 LiveKit 创建录音。此设置适用于 STT/LLM/TTS 级联和语音到语音（实时）模型。实时模型需要一次额外的调用来捕获用户的记录。欲了解更多信息，请参阅[Use a realtime model](#use-a-realtime-model)。
 
-此设置适用于 STT/LLM/TTS 级联和语音到语音（实时）模型。实时模型需要一次额外的调用来捕获用户的记录。欲了解更多信息，请参阅[Use a realtime model](#use-a-realtime-model)。
+### 使用您自己的跟踪器提供程序
 
-### 使用您自己的跟踪器提供程序如果您的应用程序已经管理 OpenTelemetry `TracerProvider`，请将 LangSmith 处理器添加到该提供程序并将其注册到 LiveKit：
+如果您的代理已经管理 OpenTelemetry `TracerProvider`，请将 LangSmith 处理器添加到该提供程序并将其注册到 LiveKit：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.livekit import LiveKitLangSmithSpanProcessor
@@ -155,15 +162,15 @@ async def my_agent(ctx: agents.JobContext):
         agent=Agent(instructions="You are a helpful assistant."),
         record={"audio": True},
     )
-```
+```默认情况下，LiveKit 集成将从 LiveKit 捕获录制内容（如果存在）。
 
-默认情况下，LiveKit 集成将从 LiveKit 捕获录制内容（如果存在）。> [!注意]
+> [!注意]
 >
 > 在控制台模式下，还可以在命令行上传递 `--record` (`python agent.py console --record`)。如果没有它，LiveKit 会创建记录器但不会启动它，因此没有要附加的文件。录音反映了向客户端播放的内容，因此插入内容会被截断。
 
 ### 记录出口
 
-当您想要在自己的对象存储中录制或需要视频时，请使用[LiveKit Egress](https://docs.livekit.io/home/egress/overview/)。出口记录传送需要线程 ID。配置 Egress 的集成，然后在 Egress 文件可用后调用 `complete_recording`：
+当您想要在自己的对象存储中进行录制或需要视频时，请使用[LiveKit Egress](https://docs.livekit.io/home/egress/overview/)。出口记录传送需要线程 ID。配置 Egress 的集成，然后在 Egress 文件可用后调用 `complete_recording`：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -262,16 +269,14 @@ async def my_agent(ctx: agents.JobContext):
 
 ## 后续步骤
 
-> **[Voice fundamentals](/langsmith/trace-voice-fundamentals)**
+> [卡][Voice fundamentals](/langsmith/trace-voice-fundamentals)
 >
 > 跟踪语音代理的核心约定。
 
-> **[Upload files with traces](/langsmith/upload-files-with-traces)**
+> [卡][Upload files with traces](/langsmith/upload-files-with-traces)
 >
 > 将对话录音附加到您的轨迹中。
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-livekit.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

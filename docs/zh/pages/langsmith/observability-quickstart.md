@@ -111,7 +111,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 
       ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       export LANGSMITH_AGENT_ID="<your-agent-id>"
-      export LANGSMITH_AGENT_ENVIRONMENT="production"
+      export LANGSMITH_AGENT_ENVIRONMENT="local"
       ```
 
    注册代理一次，而不是每次跟踪。从代码运行环境中删除 `LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT` 和 `LANGCHAIN_SESSION`。请勿将旧目标设置与代理寻址结合起来。要使用 SDK 调用或 API 请求创建代理，请参阅 [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically)。> [手风琴] 基于项目的工作区和自托管 LangSmith

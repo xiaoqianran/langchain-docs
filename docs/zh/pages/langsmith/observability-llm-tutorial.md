@@ -57,10 +57,10 @@ export OPENAI_API_KEY="<your-openai-api-key>"
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_AGENT_ID="<your-agent-id>"
-   export LANGSMITH_AGENT_ENVIRONMENT="production"
+   export LANGSMITH_AGENT_ENVIRONMENT="local"
    ```
 
-注册代理一次，而不是每次跟踪。从代码运行环境中删除 `LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT` 和 `LANGCHAIN_SESSION`。请勿将旧目标设置与代理寻址结合起来。要使用 SDK 调用或 API 请求创建代理，请参阅 [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically)。> [手风琴] 基于项目的工作区和自托管 LangSmith
+注册代理一次，而不是每次跟踪。从代码运行的环境中删除 `LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT` 和 `LANGCHAIN_SESSION`。请勿将旧目标设置与代理寻址结合起来。要使用 SDK 调用或 API 请求创建代理，请参阅 [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically)。> [手风琴] 基于项目的工作区和自托管 LangSmith
 >
 > 代理寻址可在 LangSmith 云上基于代理的工作区中使用。在基于项目的工作区（包括自托管 LangSmith）中，将 `LANGSMITH_PROJECT` 设置为跟踪项目名称，而不是设置两个代理变量。
 
@@ -245,7 +245,7 @@ langsmith trace get <trace-id> --full
 
 ## Beta 测试
 
-一旦您的应用程序在原型设计中运行良好，您就可以将其发布给一小群真实用户。在这个阶段，您通常不确切地知道用户将如何与您的应用程序交互，因此您需要更丰富的可观察性。您不仅想了解应用程序做了什么，还想了解用户对其的反应。
+一旦您的应用程序在原型设计中运行良好，您就可以将其发布给一小群真实用户。在这个阶段，您通常不知道用户将如何与您的应用程序交互，因此您需要更丰富的可观察性。您不仅想了解应用程序做了什么，还想了解用户对其的反应。
 
 ### 收集反馈
 

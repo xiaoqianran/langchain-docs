@@ -17,7 +17,7 @@
 >
 > 要配置在线评估，请访问[online evaluations](/langsmith/online-evaluations-llm-as-judge)页面。> [!注意]
 >
-> 当为该规则启用保留扩展时，自动化规则可以将匹配跟踪升级到 [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级会影响跟踪定价，但可确保保留满足自动化标准的跟踪（通常是对分析最有价值的跟踪）以供调查。每种动作类型都有自己的默认值，详细信息请参阅[action-level retention settings](#create-a-rule)。对于完全保留模型，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
+> 当为该规则启用保留扩展时，自动化规则可以将匹配跟踪升级到 [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。这可确保保留符合自动化标准的跟踪（通常是对分析最有价值的跟踪）以供调查。每种动作类型都有自己的默认值，详细信息请参阅[action-level retention settings](#create-a-rule)。对于完全保留模型，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
 ## 自动化规则如何执行
 

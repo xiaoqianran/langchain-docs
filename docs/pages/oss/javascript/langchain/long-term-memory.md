@@ -780,7 +780,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
 >  */
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/2cd647b8-b4a1-48a0-8658-8bc69f96272b/r)
+> > [card] [View example trace](https://smith.langchain.com/public/a91c3b68-a1a6-47e6-bfe3-1babfa602975/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -1101,7 +1101,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
 > );
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/c93e5609-115a-47d0-a550-f9593a14d622/r)
+> > [card] [View example trace](https://smith.langchain.com/public/1fe07645-de57-48be-af24-f0f4b67c7cb8/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -1508,7 +1508,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
 > console.log(result?.value); // Output: { name: "John Smith" }
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/971ae503-fd95-45b6-977a-2ad96d8f5f56/r)
+> > [card] [View example trace](https://smith.langchain.com/public/bba88277-4988-407b-a033-3068326a96da/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -1822,7 +1822,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
 > console.log(result?.value);
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/b1c64b5e-8048-416d-b35a-54cb09088b46/r)
+> > [card] [View example trace](https://smith.langchain.com/public/2e0429e5-831f-4ecc-93ca-231f8c95b52a/r)
 > >
 > > Open a public LangSmith run for this example.
 

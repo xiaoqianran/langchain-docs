@@ -10,12 +10,16 @@
 
 配置完成后，每个 Pi 会话都会将跟踪发送到LangSmith。每个跟踪都包括用户消息、助理响应、工具调用和单独的 LLM 调用，这使您可以全面观察 Pi 编码代理的运行情况。
 
+> [!注意]
+>
+> 此集成使用旧目标设置，例如 `project_name` 或 `LANGSMITH_PROJECT`。 [Create an agent](/langsmith/create-an-agent)，选择其环境，然后[retrieve that environment's ⟦T9⟧](/langsmith/create-an-agent#use-an-environment-project)。在目标设置和任何覆盖中使用该返回值。对于支持代理寻址的集成，请直接使用[agent identifier and environment](/langsmith/log-traces-to-agent)。
+
 ## 先决条件
 
 在设置跟踪之前，请确保您拥有：
 
 * 已安装[**Pi**](https://pi.dev)。
-* [**LangSmith API key**](/langsmith/create-account-api-key)。
+* A [**LangSmith API key**](/langsmith/create-account-api-key)。
 
 ## 安装
 
@@ -32,19 +36,19 @@ pi install npm:@langchain/langsmith-pi-extension
 ```sh theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export TRACE_TO_LANGSMITH=true
 export LANGSMITH_PI_API_KEY="<your-langsmith-api-key>"
-```
-
-[Run Pi](https://pi.dev/docs/latest/quickstart) 和往常一样。当会话启动时，扩展会报告是否启用了 LangSmith 跟踪。您还可以随时从 Pi 中检查当前的跟踪状态：
+```[Run Pi](https://pi.dev/docs/latest/quickstart) 和往常一样。当会话启动时，扩展会报告是否启用了 LangSmith 跟踪。您还可以随时从 Pi 中检查当前的跟踪状态：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 /langsmith-tracing
 ```
 
-默认情况下，跟踪会写入 `pi-coding-agent` LangSmith 项目。
+在发送跟踪之前，将 `LANGSMITH_PI_PROJECT` 设置为所选代理环境的 `tracer_session_name`。
 
 ## 配置
 
-配置可以来自环境变量或 JSON 配置文件。值按以下顺序合并，后面的源优先：1. 默认值
+配置可以来自环境变量或 JSON 配置文件。值按以下顺序合并，后面的源优先：
+
+1. 默认值
 2. `~/.pi/langsmith.json`（全局配置）
 3. `<current-working-directory>/.pi/langsmith.json`（项目配置）
 4.环境变量
@@ -54,9 +58,9 @@ export LANGSMITH_PI_API_KEY="<your-langsmith-api-key>"
 |变量|描述 |
 | - | - |
 | `TRACE_TO_LANGSMITH` |设置为 `true`、`1`、`yes` 或 `on` 时启用跟踪。设置为 `false`、`0`、`no` 或 `off` 时禁用跟踪。 |
-| `LANGSMITH_PI_API_KEY` | LangSmith API 密钥。回落至`LANGSMITH_API_KEY`。 |
+| `LANGSMITH_PI_API_KEY` | LangSmith API 密钥。回落到`LANGSMITH_API_KEY`。 |
 | `LANGSMITH_PI_ENDPOINT` | LangSmith 用于自托管或自定义部署的 API URL。回落到`LANGSMITH_ENDPOINT`。 |
-| `LANGSMITH_PI_PROJECT` | LangSmith 项目名称。回落到`LANGSMITH_PROJECT`。默认为`pi-coding-agent`。 |
+| `LANGSMITH_PI_PROJECT` |所选代理环境的`tracer_session_name`。回落到`LANGSMITH_PROJECT`。默认为 `pi-coding-agent`。 |
 | `LANGSMITH_PI_METADATA` |添加到根运行元数据的 JSON 对象。回落到`LANGSMITH_METADATA`。 |
 | `LANGSMITH_PI_RUNS_ENDPOINTS` |副本运行目标的 JSON 数组。回落到`LANGSMITH_RUNS_ENDPOINTS`。 |
 
@@ -65,47 +69,47 @@ export LANGSMITH_PI_API_KEY="<your-langsmith-api-key>"
 ```sh theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export TRACE_TO_LANGSMITH=true
 export LANGSMITH_PI_API_KEY="<your-langsmith-api-key>"
-export LANGSMITH_PI_PROJECT="pi-coding-agent-dev"
+export LANGSMITH_PI_PROJECT="<environment-tracer-session-name>"
 export LANGSMITH_PI_METADATA='{"team":"infra","environment":"local"}'
 ```
 
 ### 配置文件
 
-创建 `~/.pi/langsmith.json` 用于全局设置或在项目目录中创建 `.pi/langsmith.json` 用于本地覆盖：
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+创建 `~/.pi/langsmith.json` 用于全局设置或在项目目录中创建 `.pi/langsmith.json` 用于本地覆盖：```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "enabled": true,
   "api_key": "<your-langsmith-api-key>",
   "api_url": "https://api.smith.langchain.com",
-  "project": "pi-coding-agent",
+  "project": "<environment-tracer-session-name>",
   "metadata": { "environment": "local" }
 }
 ```
 
-配置文件字段：|领域|必填 |默认|描述 |
+配置文件字段：
+
+|领域|必填|默认 |描述 |
 | - | - | - | - |
 | `enabled` |是的 | `false` |设置为 `true` 以启用从配置文件进行跟踪。 |
 | `api_key` |否\* | — | LangSmith API 密钥。除非环境变量或副本提供，否则是必需的。 |
 | `api_url` |没有 | LangSmith SDK 默认 | LangSmith API URL，通常为`https://api.smith.langchain.com`。 |
-| `project` |没有 | `pi-coding-agent` | LangSmith 项目名称。 |
+| `project` |没有 | `pi-coding-agent` |所选代理环境的`tracer_session_name`。 |
 | `metadata` |没有 | — |对象合并到根跟踪元数据中。 |
 | `replicas` |没有 | — |用于复制跟踪的附加 LangSmith 目的地数组。 |
 
 ## 副本
 
-使用 `replicas` 同时将跟踪发送到多个 LangSmith 目的地。这对于将跟踪转发到个人工作区和共享团队项目，或者转发到 [cloud](/langsmith/cloud) 旁边的 [self-hosted LangSmith](/langsmith/self-hosted) 实例非常有用。
+使用 `replicas` 同时将跟踪发送到多个 LangSmith 目的地。这对于将跟踪转发到个人工作区和共享团队工作区，或者转发到 [cloud](/langsmith/cloud) 旁边的 [self-hosted LangSmith](/langsmith/self-hosted) 实例非常有用。
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "enabled": true,
   "api_key": "<primary-api-key>",
-  "project": "pi-coding-agent",
+  "project": "<environment-tracer-session-name>",
   "replicas": [
     {
       "api_key": "<replica-api-key>",
       "api_url": "https://replica-langsmith.example.com",
-      "project": "pi-coding-agent-replica",
+      "project": "<replica-tracer-session-name>",
       "updates": {
         "tags": ["replica"]
       }

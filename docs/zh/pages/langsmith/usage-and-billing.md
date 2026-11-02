@@ -36,7 +36,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 
 **等级设置的位置**
 
-默认保留层属于跟踪项目。在 [agent-based workspace](/langsmith/agents) 中，每个代理的 [environments](/langsmith/agent-environments) 都是其自己的跟踪项目，因此按环境设置层：一个代理可以在扩展保留中保存生产跟踪，在基础上保存开发跟踪。要更改整个代理的层，请在每个环境上进行设置。参见[Change project-level default retention](/langsmith/billing#change-project-level-default-retention)。
+默认保留层属于跟踪项目。在 [agent-based workspace](/langsmith/agent-registry) 中，每个代理的 [environments](/langsmith/agent-environments) 都是其自己的跟踪项目，因此按环境设置层：一个代理可以在扩展保留中保存生产跟踪，在基础上保存开发跟踪。要更改整个代理的层，请在每个环境上进行设置。参见[Change project-level default retention](/langsmith/billing#change-project-level-default-retention)。
 
 ### 数据保留自动升级> [!警告]
 >
@@ -187,8 +187,8 @@ LangSmith 公开了具有不同速率限制配置文件的两个版本的运行�
 
 时间窗口由`end_time - start_time`决定。如果未提供 `end_time`，LangSmith 将使用当前时间。没有 `start_time` 的查询将被视为大时间窗口查询。
 
-为了避免达到 v1 速率限制并减少查询时间：* **设置`start_time`**：省略它会触发大时间窗口层（每 10 秒 3 个请求，而不是 10 个）。尽可能使用 7 天或更短的时间窗口。
-* **使用`select`**：默认返回所有字段。仅指定您需要的字段（例如，`select=["inputs", "outputs"]`）可大大减少响应大小和查询时间。
+为了避免达到 v1 速率限制并减少查询时间：* **设置`start_time`**：省略它会触发大时间窗口层（每10秒3个请求而不是10个）。尽可能使用 7 天或更短的时间窗口。
+* **使用`select`**：默认情况下返回所有字段。仅指定您需要的字段（例如，`select=["inputs", "outputs"]`）可大大减少响应大小和查询时间。
 * **设置`limit`**：如果您不需要对所有内容进行分页，则限制结果数量。
 * **避免全文搜索**：`filter='search("...")'`具有最严格的速率限制；尽可能使用结构化过滤器（例如，`eq()`、`has()`）。
 * **避免选择`child_run_ids`**：这也会触发更严格的速率限制等级。

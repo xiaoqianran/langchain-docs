@@ -6,9 +6,13 @@
 
 了解如何使用 OpenTelemetry 跟踪 LangSmith 中的时间工作流程和活动。
 
-[Temporal](https://temporal.io/)是一个持久的执行平台，使开发人员能够构建弹性分布式应用程序。本指南向您展示如何使用 OpenTelemetry 跟踪 LangSmith 中的时间工作流程和活动。
+[Temporal](https://temporal.io/)是一个持久的执行平台，使开发人员能够构建弹性分布式工作流程。本指南向您展示如何使用 OpenTelemetry 跟踪 LangSmith 中的临时工作流程和活动。
 
-LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 OpenTelemetry 拦截器无缝集成。这可以实现跨工作流执行、活动以及其中的任何 LLM 调用的完整分布式跟踪。
+LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 OpenTelemetry 拦截器无缝集成。这可以实现跨工作流程执行、活动以及其中的任何 LLM 调用的完整分布式跟踪。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T28⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 先决条件
 
@@ -18,12 +22,11 @@ LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 O
 
 ## 环境变量
 
-为所有实现设置以下环境变量：
-
-|变量|必填 |描述 |
+为所有实现设置以下环境变量：|变量|必填|描述 |
 | - | - | - |
 | `LANGSMITH_API_KEY` |是的 |您在“设置”中的 LangSmith API 密钥。 |
-| `LANGSMITH_PROJECT` |没有 |项目名称（默认为`"default"`）。 |
+| `LANGSMITH_AGENT_ID` |是的，适用于 Python 和 TypeScript |注册代理标识符。 |
+| `LANGSMITH_AGENT_ENVIRONMENT` |是的，适用于 Python 和 TypeScript |代理环境，例如`local`。 |
 
 > [!注意]
 >
@@ -31,540 +34,543 @@ LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 O
 
 ## 设置跟踪
 
-**去**
-
-Go 使用 `langsmith-go` SDK 和 Temporal 的 OpenTelemetry 拦截器来自动跟踪工作流程和活动。**1.安装**
-
-安装 LangSmith Go SDK、Temporal SDK 和 OpenTelemetry 拦截器：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-go get github.com/langchain-ai/langsmith-go@v0.1.0-alpha.7
-go get go.temporal.io/sdk
-go get go.temporal.io/sdk/contrib/opentelemetry
-```
-
-**2.初始化跟踪器**
-
-初始化 LangSmith 跟踪器，创建 Temporal 的 OpenTelemetry 拦截器，并将其注册到 Temporal 客户端和工作线程：
-
-```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-package main
-
-import (
-	"context"
-	"log"
-
-	"github.com/langchain-ai/langsmith-go"
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/contrib/opentelemetry"
-	"go.temporal.io/sdk/interceptor"
-	"go.temporal.io/sdk/worker"
-)
-
-func main() {
-	ctx := context.Background()
-
-	// Initialize LangSmith tracer (reads LANGSMITH_API_KEY and LANGSMITH_PROJECT)
-	ls, err := langsmith.NewTracer(
-		langsmith.WithServiceName("temporal-worker"),
-	)
-	if err != nil {
-		log.Fatal("Failed to initialize LangSmith tracer:", err)
-	}
-	defer ls.Shutdown(ctx)
-
-	// Create Temporal tracing interceptor
-	tracer := ls.Tracer("temporal-app")
-	tracingInterceptor, err := opentelemetry.NewTracingInterceptor(
-		opentelemetry.TracerOptions{Tracer: tracer},
-	)
-	if err != nil {
-		log.Fatal("Failed to create tracing interceptor:", err)
-	}
-
-	// Create Temporal client with tracing
-	c, err := client.Dial(client.Options{
-		Interceptors: []interceptor.ClientInterceptor{tracingInterceptor},
-	})
-	if err != nil {
-		log.Fatal("Failed to create Temporal client:", err)
-	}
-	defer c.Close()
-
-	// Create worker with tracing (uses same client)
-	w := worker.New(c, "my-task-queue", worker.Options{})
-	w.RegisterWorkflow(MyWorkflow)
-	w.RegisterActivity(MyActivity)
-
-	// Start worker
-	if err := w.Run(worker.InterruptCh()); err != nil {
-		log.Fatal("Worker failed:", err)
-	}
-}
-```
-
-**3.定义工作流程和活动**
-
-定义执行活动的工作流。该活动演示了如何添加自定义跨度属性以实现 LangSmith 可见性：
-
-```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-package main
-
-import (
-	"context"
-	"fmt"
-	"time"
-
-	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/trace"
-	"go.temporal.io/sdk/activity"
-	"go.temporal.io/sdk/workflow"
-)
-
-// MyWorkflow executes an activity
-func MyWorkflow(ctx workflow.Context, input string) (string, error) {
-	ao := workflow.ActivityOptions{
-		StartToCloseTimeout: 10 * time.Second,
-	}
-	ctx = workflow.WithActivityOptions(ctx, ao)
-
-	var result string
-	err := workflow.ExecuteActivity(ctx, MyActivity, input).Get(ctx, &result)
-	return result, err
-}
-
-// MyActivity processes input with custom span attributes
-func MyActivity(ctx context.Context, input string) (string, error) {
-	logger := activity.GetLogger(ctx)
-	logger.Info("Processing", "input", input)
-
-	// Get the span created by Temporal's interceptor
-	span := trace.SpanFromContext(ctx)
-
-	// Add Gen AI attributes for LangSmith visibility
-	span.SetAttributes(
-		attribute.String("gen_ai.prompt", input),
-		attribute.String("gen_ai.operation.name", "chat"),
-	)
-
-	result := fmt.Sprintf("Processed: %s", input)
-
-	// Set completion attribute
-	span.SetAttributes(
-		attribute.String("gen_ai.completion", result),
-	)
-
-	return result, nil
-}
-```
-
-**4.执行工作流程**
-
-在单独的客户端应用程序中，初始化跟踪器并执行工作流程：
-
-```go client.go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// In a separate function or client application
-func executeWorkflow() {
-	ctx := context.Background()
-
-	// Initialize tracer for client
-	ls, err := langsmith.NewTracer(
-		langsmith.WithServiceName("temporal-client"),
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer ls.Shutdown(ctx)
-
-	// Create client with tracing
-	tracer := ls.Tracer("temporal-app")
-	tracingInterceptor, err := opentelemetry.NewTracingInterceptor(
-		opentelemetry.TracerOptions{Tracer: tracer},
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	c, err := client.Dial(client.Options{
-		Interceptors: []interceptor.ClientInterceptor{tracingInterceptor},
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer c.Close()
-
-	// Execute workflow
-	workflowOptions := client.StartWorkflowOptions{
-		ID:        "my-workflow-1",
-		TaskQueue: "my-task-queue",
-	}
-
-	we, err := c.ExecuteWorkflow(ctx, workflowOptions, MyWorkflow, "Hello World")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var result string
-	if err := we.Get(ctx, &result); err != nil {
-		log.Fatal(err)
-	}
-
-	log.Printf("Workflow result: %s", result)
-}
-```
-
-**Python**
-
-Python 使用带有 OpenTelemetry 拦截器的 `temporalio` SDK，通过 OTLP 将跟踪导出到 LangSmith。
-
-**1.安装**
-
-安装 Temporal SDK、LangSmith SDK 和 OpenTelemetry 包：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install temporalio
-pip install langsmith
-pip install opentelemetry-sdk
-pip install opentelemetry-exporter-otlp-proto-http
-```
-
-**2.初始化跟踪器**
-
-创建一个 OpenTelemetry `TracerProvider`，并将 OTLP 导出器配置为将跟踪发送到 LangSmith：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import asyncio
-import os
-from datetime import timedelta
-
-from opentelemetry import trace
-from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-from opentelemetry.sdk.resources import Resource, SERVICE_NAME
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import BatchSpanProcessor
-
-from temporalio import activity, workflow
-from temporalio.client import Client
-from temporalio.contrib.opentelemetry import TracingInterceptor
-from temporalio.worker import Worker
-
-
-def init_tracer_provider() -> TracerProvider:
-    """Initialize OpenTelemetry with LangSmith exporter."""
-
-    # Create OTLP exporter for LangSmith
-    exporter = OTLPSpanExporter(
-        endpoint="https://api.smith.langchain.com/otel/v1/traces",
-        headers={
-            "x-api-key": os.environ.get("LANGSMITH_API_KEY", ""),
-            "Langsmith-Project": os.environ.get("LANGSMITH_PROJECT", "default"),
-        },
-    )
-
-    # Create TracerProvider with resource attributes
-    resource = Resource.create({
-        SERVICE_NAME: "temporal-worker",
-    })
-
-    provider = TracerProvider(resource=resource)
-    provider.add_span_processor(BatchSpanProcessor(exporter))
-
-    # Set as global provider
-    trace.set_tracer_provider(provider)
-
-    return provider
-```
-
-**3.定义工作流程和活动**
-
-定义工作流类和活动函数。该活动演示了如何添加自定义跨度属性以实现 LangSmith 可见性：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-@activity.defn
-async def process_activity(input: str) -> str:
-    """Activity that processes input with custom span attributes."""
-    activity.logger.info(f"Processing: {input}")
-
-    # Get current span and add Gen AI attributes
-    span = trace.get_current_span()
-    span.set_attribute("gen_ai.prompt", input)
-    span.set_attribute("gen_ai.operation.name", "chat")
-
-    result = f"Processed: {input}"
-
-    span.set_attribute("gen_ai.completion", result)
-
-    return result
-
-
-@workflow.defn
-class MyWorkflow:
-    @workflow.run
-    async def run(self, input: str) -> str:
-        return await workflow.execute_activity(
-            process_activity,
-            input,
-            start_to_close_timeout=timedelta(seconds=10),
-        )
-```
-
-**4.运行工人**
-
-使用 `TracingInterceptor` 创建一个 Temporal 客户端并启动工作线程：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-async def main():
-    # Initialize tracing
-    provider = init_tracer_provider()
-
-    try:
-        # Create Temporal client with tracing interceptor
-        client = await Client.connect(
-            "localhost:7233",
-            interceptors=[TracingInterceptor()],
-        )
-
-        # Run worker
-        worker = Worker(
-            client,
-            task_queue="my-task-queue",
-            workflows=[MyWorkflow],
-            activities=[process_activity],
-        )
-
-        print("Starting worker...")
-        await worker.run()
-
-    finally:
-        # Shutdown tracer provider to flush traces
-        provider.shutdown()
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
-**5.执行工作流程**在单独的脚本中，使用跟踪拦截器连接到 Temporal 并执行工作流程：
-
-```python client.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import asyncio
-from temporalio.client import Client
-from temporalio.contrib.opentelemetry import TracingInterceptor
-
-# Import the same tracer setup
-from worker import init_tracer_provider
-
-
-async def main():
-    provider = init_tracer_provider()
-
-    try:
-        client = await Client.connect(
-            "localhost:7233",
-            interceptors=[TracingInterceptor()],
-        )
-
-        # Execute workflow
-        result = await client.execute_workflow(
-            MyWorkflow.run,
-            "Hello World",
-            id="my-workflow-1",
-            task_queue="my-task-queue",
-        )
-        print(f"Workflow result: {result}")
-
-    finally:
-        provider.shutdown()
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
-**TypeScript / JavaScript**
-
-TypeScript 使用 `@temporalio/sdk` 和 OpenTelemetry 拦截器将跟踪发送到 LangSmith。
-
-**1.安装**
-
-安装 Temporal SDK、OpenTelemetry 拦截器和跟踪包：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @temporalio/client @temporalio/worker @temporalio/activity @temporalio/workflow
-npm install @temporalio/interceptors-opentelemetry
-npm install @opentelemetry/sdk-node @opentelemetry/sdk-trace-node
-npm install @opentelemetry/exporter-trace-otlp-http
-npm install @opentelemetry/resources @opentelemetry/semantic-conventions
-```
-
-**2.初始化跟踪器**
-
-创建一个 `NodeTracerProvider`，并将 OTLP 导出器配置为将跟踪发送到 LangSmith：
-
-```typescript tracer.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Resource } from '@opentelemetry/resources';
-import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
-import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
-import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
-
-export function initTracerProvider(): NodeTracerProvider {
-  // Create OTLP exporter for LangSmith
-  const exporter = new OTLPTraceExporter({
-    url: 'https://api.smith.langchain.com/otel/v1/traces',
-    headers: {
-      'x-api-key': process.env.LANGSMITH_API_KEY || '',
-      'Langsmith-Project': process.env.LANGSMITH_PROJECT || 'default',
-    },
-  });
-
-  // Create TracerProvider
-  const provider = new NodeTracerProvider({
-    resource: new Resource({
-      [ATTR_SERVICE_NAME]: 'temporal-worker',
-    }),
-  });
-
-  provider.addSpanProcessor(new BatchSpanProcessor(exporter));
-  provider.register();
-
-  return provider;
-}
-```
-
-**3.定义工作流程**
-
-定义一个使用超时配置代理活动的工作流：
-
-```typescript workflows.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { proxyActivities } from '@temporalio/workflow';
-import type * as activities from './activities';
-
-const { processActivity } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '10 seconds',
-});
-
-export async function myWorkflow(input: string): Promise<string> {
-  return await processActivity(input);
-}
-```
-
-**4.定义活动**
-
-定义一个活动，演示如何添加自定义跨度属性以实现 LangSmith 可见性：
-
-```typescript activities.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { log } from '@temporalio/activity';
-import { trace } from '@opentelemetry/api';
-
-export async function processActivity(input: string): Promise<string> {
-  log.info('Processing', { input });
-
-  // Get current span and add Gen AI attributes
-  const span = trace.getActiveSpan();
-  span?.setAttribute('gen_ai.prompt', input);
-  span?.setAttribute('gen_ai.operation.name', 'chat');
-
-  const result = `Processed: ${input}`;
-
-  span?.setAttribute('gen_ai.completion', result);
-
-  return result;
-}
-```
-
-**5.运行工人**
-
-使用用于活动的 OpenTelemetry 拦截器和用于工作流跨度的工作流导出器创建工作人员：
-
-```typescript worker.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Worker, NativeConnection } from '@temporalio/worker';
-import { Resource } from '@opentelemetry/resources';
-import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
-import {
-  makeWorkflowExporter,
-  OpenTelemetryActivityInboundInterceptor,
-} from '@temporalio/interceptors-opentelemetry';
-import { trace } from '@opentelemetry/api';
-
-import * as activities from './activities';
-import { initTracerProvider } from './tracer';
-
-async function run() {
-  const provider = initTracerProvider();
-
-  try {
-    const connection = await NativeConnection.connect({
-      address: 'localhost:7233',
-    });
-
-    const worker = await Worker.create({
-      connection,
-      namespace: 'default',
-      taskQueue: 'my-task-queue',
-      workflowsPath: require.resolve('./workflows'),
-      activities,
-      sinks: {
-        exporter: makeWorkflowExporter(
-          trace.getTracer('temporal-app'),
-          new Resource({ [ATTR_SERVICE_NAME]: 'temporal-worker' })
-        ),
-      },
-      interceptors: {
-        activity: [() => ({ inbound: new OpenTelemetryActivityInboundInterceptor() })],
-      },
-    });
-
-    console.log('Starting worker...');
-    await worker.run();
-  } finally {
-    await provider.shutdown();
-  }
-}
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-```
-
-**6。执行工作流程**
-
-在单独的客户端文件中，连接到 Temporal 并执行工作流程：
-
-```typescript client.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client, Connection } from '@temporalio/client';
-import { initTracerProvider } from './tracer';
-
-async function run() {
-  // Initialize tracing
-  const provider = initTracerProvider();
-
-  try {
-    const connection = await Connection.connect({ address: 'localhost:7233' });
-    const client = new Client({ connection });
-
-    const result = await client.workflow.execute('myWorkflow', {
-      taskQueue: 'my-task-queue',
-      workflowId: 'my-workflow-1',
-      args: ['Hello World'],
-    });
-
-    console.log('Workflow result:', result);
-  } finally {
-    await provider.shutdown();
-  }
-}
-
-run().catch(console.error);
-```
+> [选项卡] 前往
+>
+> 此 Go 示例使用 `langsmith-go` SDK 和 Temporal 的 OpenTelemetry 拦截器来跟踪工作流程和活动。它使用基于项目的配置：将 `LANGSMITH_PROJECT` 设置为 [environment's ⟦T36⟧](/langsmith/create-an-agent#use-an-environment-project)，没有两个代理变量。 Python 和 TypeScript 导出器使用代理寻址标头。
+>
+> **1。安装**
+>
+> 安装 LangSmith Go SDK、Temporal SDK 和 OpenTelemetry 拦截器：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> go get github.com/langchain-ai/langsmith-go@v0.1.0-alpha.7
+> go get go.temporal.io/sdk
+> go get go.temporal.io/sdk/contrib/opentelemetry
+> ```
+>
+> **2。初始化跟踪器**
+>
+> 初始化LangSmith跟踪器，创建Temporal的OpenTelemetry拦截器，并将其注册到Temporal客户端和worker：
+>
+> ```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> package main
+>
+> import (
+> 	"context"
+> 	"log"
+>
+> 	"github.com/langchain-ai/langsmith-go"
+> 	"go.temporal.io/sdk/client"
+> 	"go.temporal.io/sdk/contrib/opentelemetry"
+> 	"go.temporal.io/sdk/interceptor"
+> 	"go.temporal.io/sdk/worker"
+> )
+>
+> func main() {
+> 	ctx := context.Background()
+>
+> 	// Initialize LangSmith tracer (reads LANGSMITH_API_KEY and LANGSMITH_PROJECT)
+> 	ls, err := langsmith.NewTracer(
+> 		langsmith.WithServiceName("temporal-worker"),
+> 	)
+> 	if err != nil {
+> 		log.Fatal("Failed to initialize LangSmith tracer:", err)
+> 	}
+> 	defer ls.Shutdown(ctx)
+>
+> 	// Create Temporal tracing interceptor
+> 	tracer := ls.Tracer("temporal-app")
+> 	tracingInterceptor, err := opentelemetry.NewTracingInterceptor(
+> 		opentelemetry.TracerOptions{Tracer: tracer},
+> 	)
+> 	if err != nil {
+> 		log.Fatal("Failed to create tracing interceptor:", err)
+> 	}
+>
+> 	// Create Temporal client with tracing
+> 	c, err := client.Dial(client.Options{
+> 		Interceptors: []interceptor.ClientInterceptor{tracingInterceptor},
+> 	})
+> 	if err != nil {
+> 		log.Fatal("Failed to create Temporal client:", err)
+> 	}
+> 	defer c.Close()
+>
+> 	// Create worker with tracing (uses same client)
+> 	w := worker.New(c, "my-task-queue", worker.Options{})
+> 	w.RegisterWorkflow(MyWorkflow)
+> 	w.RegisterActivity(MyActivity)
+>
+> 	// Start worker
+> 	if err := w.Run(worker.InterruptCh()); err != nil {
+> 		log.Fatal("Worker failed:", err)
+> 	}
+> }
+> ```
+>
+> **3。定义工作流程和活动**
+>
+> 定义执行活动的工作流程。该活动演示了如何添加自定义跨度属性以实现 LangSmith 可见性：
+>
+> ```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> package main
+>
+> import (
+> 	"context"
+> 	"fmt"
+> 	"time"
+>
+> 	"go.opentelemetry.io/otel/attribute"
+> 	"go.opentelemetry.io/otel/trace"
+> 	"go.temporal.io/sdk/activity"
+> 	"go.temporal.io/sdk/workflow"
+> )
+>
+> // MyWorkflow executes an activity
+> func MyWorkflow(ctx workflow.Context, input string) (string, error) {
+> 	ao := workflow.ActivityOptions{
+> 		StartToCloseTimeout: 10 * time.Second,
+> 	}
+> 	ctx = workflow.WithActivityOptions(ctx, ao)
+>
+> 	var result string
+> 	err := workflow.ExecuteActivity(ctx, MyActivity, input).Get(ctx, &result)
+> 	return result, err
+> }
+>
+> // MyActivity processes input with custom span attributes
+> func MyActivity(ctx context.Context, input string) (string, error) {
+> 	logger := activity.GetLogger(ctx)
+> 	logger.Info("Processing", "input", input)
+>
+> 	// Get the span created by Temporal's interceptor
+> 	span := trace.SpanFromContext(ctx)
+>
+> 	// Add Gen AI attributes for LangSmith visibility
+> 	span.SetAttributes(
+> 		attribute.String("gen_ai.prompt", input),
+> 		attribute.String("gen_ai.operation.name", "chat"),
+> 	)
+>
+> 	result := fmt.Sprintf("Processed: %s", input)
+>
+> 	// Set completion attribute
+> 	span.SetAttributes(
+> 		attribute.String("gen_ai.completion", result),
+> 	)
+>
+> 	return result, nil
+> }
+> ```
+>
+> **4。执行工作流程**
+>> 在单独的客户端进程中，初始化跟踪器并执行工作流程：
+>
+> ```go client.go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> // In a separate function or client code
+> func executeWorkflow() {
+> 	ctx := context.Background()
+>
+> 	// Initialize tracer for client
+> 	ls, err := langsmith.NewTracer(
+> 		langsmith.WithServiceName("temporal-client"),
+> 	)
+> 	if err != nil {
+> 		log.Fatal(err)
+> 	}
+> 	defer ls.Shutdown(ctx)
+>
+> 	// Create client with tracing
+> 	tracer := ls.Tracer("temporal-app")
+> 	tracingInterceptor, err := opentelemetry.NewTracingInterceptor(
+> 		opentelemetry.TracerOptions{Tracer: tracer},
+> 	)
+> 	if err != nil {
+> 		log.Fatal(err)
+> 	}
+>
+> 	c, err := client.Dial(client.Options{
+> 		Interceptors: []interceptor.ClientInterceptor{tracingInterceptor},
+> 	})
+> 	if err != nil {
+> 		log.Fatal(err)
+> 	}
+> 	defer c.Close()
+>
+> 	// Execute workflow
+> 	workflowOptions := client.StartWorkflowOptions{
+> 		ID:        "my-workflow-1",
+> 		TaskQueue: "my-task-queue",
+> 	}
+>
+> 	we, err := c.ExecuteWorkflow(ctx, workflowOptions, MyWorkflow, "Hello World")
+> 	if err != nil {
+> 		log.Fatal(err)
+> 	}
+>
+> 	var result string
+> 	if err := we.Get(ctx, &result); err != nil {
+> 		log.Fatal(err)
+> 	}
+>
+> 	log.Printf("Workflow result: %s", result)
+> }
+> ```
+
+> [选项卡] Python
+>
+> Python 使用带有 OpenTelemetry 拦截器的 `temporalio` SDK，通过 OTLP 将跟踪导出到 LangSmith。
+>
+> **1。安装**
+>
+> 安装 Temporal SDK、LangSmith SDK 和 OpenTelemetry 软件包：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install temporalio
+> pip install langsmith
+> pip install opentelemetry-sdk
+> pip install opentelemetry-exporter-otlp-proto-http
+> ```
+>
+> **2。初始化跟踪器**
+>
+> 创建一个 OpenTelemetry `TracerProvider`，并将 OTLP 导出器配置为将跟踪发送到 LangSmith：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import asyncio
+> import os
+> from datetime import timedelta
+>
+> from opentelemetry import trace
+> from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+> from opentelemetry.sdk.resources import Resource, SERVICE_NAME
+> from opentelemetry.sdk.trace import TracerProvider
+> from opentelemetry.sdk.trace.export import BatchSpanProcessor
+>
+> from temporalio import activity, workflow
+> from temporalio.client import Client
+> from temporalio.contrib.opentelemetry import TracingInterceptor
+> from temporalio.worker import Worker
+>
+>
+> def init_tracer_provider() -> TracerProvider:
+>     """Initialize OpenTelemetry with LangSmith exporter."""
+>
+>     # Create OTLP exporter for LangSmith
+>     exporter = OTLPSpanExporter(
+>         endpoint="https://api.smith.langchain.com/otel/v1/traces",
+>         headers={
+>             "x-api-key": os.environ.get("LANGSMITH_API_KEY", ""),
+>             "Langsmith-Agent-Id": os.environ["LANGSMITH_AGENT_ID"],
+>             "Langsmith-Agent-Environment": os.environ["LANGSMITH_AGENT_ENVIRONMENT"],
+>         },
+>     )
+>
+>     # Create TracerProvider with resource attributes
+>     resource = Resource.create({
+>         SERVICE_NAME: "temporal-worker",
+>     })
+>
+>     provider = TracerProvider(resource=resource)
+>     provider.add_span_processor(BatchSpanProcessor(exporter))
+>
+>     # Set as global provider
+>     trace.set_tracer_provider(provider)
+>
+>     return provider
+> ```
+>
+> **3。定义工作流程和活动**
+>
+> 定义工作流类和活动函数。该活动演示了如何添加自定义跨度属性以实现 LangSmith 可见性：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> @activity.defn
+> async def process_activity(input: str) -> str:
+>     """Activity that processes input with custom span attributes."""
+>     activity.logger.info(f"Processing: {input}")
+>
+>     # Get current span and add Gen AI attributes
+>     span = trace.get_current_span()
+>     span.set_attribute("gen_ai.prompt", input)
+>     span.set_attribute("gen_ai.operation.name", "chat")
+>
+>     result = f"Processed: {input}"
+>
+>     span.set_attribute("gen_ai.completion", result)
+>
+>     return result
+>
+>
+> @workflow.defn
+> class MyWorkflow:
+>     @workflow.run
+>     async def run(self, input: str) -> str:
+>         return await workflow.execute_activity(
+>             process_activity,
+>             input,
+>             start_to_close_timeout=timedelta(seconds=10),
+>         )
+> ```
+>
+> **4。运行工人**
+>
+> 使用 `TracingInterceptor` 创建一个 Temporal 客户端并启动工作线程：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> async def main():
+>     # Initialize tracing
+>     provider = init_tracer_provider()
+>
+>     try:
+>         # Create Temporal client with tracing interceptor
+>         client = await Client.connect(
+>             "localhost:7233",
+>             interceptors=[TracingInterceptor()],
+>         )
+>
+>         # Run worker
+>         worker = Worker(
+>             client,
+>             task_queue="my-task-queue",
+>             workflows=[MyWorkflow],
+>             activities=[process_activity],
+>         )
+>
+>         print("Starting worker...")
+>         await worker.run()
+>
+>     finally:
+>         # Shutdown tracer provider to flush traces
+>         provider.shutdown()
+>
+>
+> if __name__ == "__main__":
+>     asyncio.run(main())
+> ```
+>
+> **5。执行工作流程**
+>
+> 在单独的脚本中，使用跟踪拦截器连接到 Temporal 并执行工作流程：
+>
+> ```python client.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import asyncio
+> from temporalio.client import Client
+> from temporalio.contrib.opentelemetry import TracingInterceptor
+>
+> # Import the same tracer setup
+> from worker import init_tracer_provider
+>
+>
+> async def main():
+>     provider = init_tracer_provider()
+>
+>     try:
+>         client = await Client.connect(
+>             "localhost:7233",
+>             interceptors=[TracingInterceptor()],
+>         )
+>
+>         # Execute workflow
+>         result = await client.execute_workflow(
+>             MyWorkflow.run,
+>             "Hello World",
+>             id="my-workflow-1",
+>             task_queue="my-task-queue",
+>         )
+>         print(f"Workflow result: {result}")
+>
+>     finally:
+>         provider.shutdown()
+>
+>
+> if __name__ == "__main__":
+>     asyncio.run(main())
+> ```> [选项卡] TypeScript / JavaScript
+>
+> TypeScript 使用 `@temporalio/sdk` 和 OpenTelemetry 拦截器将跟踪发送到 LangSmith。
+>
+> **1。安装**
+>
+> 安装 Temporal SDK、OpenTelemetry 拦截器和跟踪包：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @temporalio/client @temporalio/worker @temporalio/activity @temporalio/workflow
+> npm install @temporalio/interceptors-opentelemetry
+> npm install @opentelemetry/sdk-node @opentelemetry/sdk-trace-node
+> npm install @opentelemetry/exporter-trace-otlp-http
+> npm install @opentelemetry/resources @opentelemetry/semantic-conventions
+> ```
+>
+> **2。初始化跟踪器**
+>
+> 使用配置为将跟踪发送到 LangSmith 的 OTLP 导出器创建 `NodeTracerProvider`：
+>
+> ```typescript tracer.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Resource } from '@opentelemetry/resources';
+> import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
+> import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
+> import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
+> import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
+>
+> export function initTracerProvider(): NodeTracerProvider {
+>   // Create OTLP exporter for LangSmith
+>   const exporter = new OTLPTraceExporter({
+>     url: 'https://api.smith.langchain.com/otel/v1/traces',
+>     headers: {
+>       'x-api-key': process.env.LANGSMITH_API_KEY || '',
+>       'Langsmith-Agent-Id': process.env.LANGSMITH_AGENT_ID!,
+>       'Langsmith-Agent-Environment': process.env.LANGSMITH_AGENT_ENVIRONMENT!,
+>     },
+>   });
+>
+>   // Create TracerProvider
+>   const provider = new NodeTracerProvider({
+>     resource: new Resource({
+>       [ATTR_SERVICE_NAME]: 'temporal-worker',
+>     }),
+>   });
+>
+>   provider.addSpanProcessor(new BatchSpanProcessor(exporter));
+>   provider.register();
+>
+>   return provider;
+> }
+> ```
+>
+> **3。定义工作流程**
+>
+> 定义一个使用超时配置代理活动的工作流程：
+>
+> ```typescript workflows.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { proxyActivities } from '@temporalio/workflow';
+> import type * as activities from './activities';
+>
+> const { processActivity } = proxyActivities<typeof activities>({
+>   startToCloseTimeout: '10 seconds',
+> });
+>
+> export async function myWorkflow(input: string): Promise<string> {
+>   return await processActivity(input);
+> }
+> ```
+>
+> **4。定义活动**
+>
+> 定义一个活动，演示如何为 LangSmith 可见性添加自定义跨度属性：
+>
+> ```typescript activities.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { log } from '@temporalio/activity';
+> import { trace } from '@opentelemetry/api';
+>
+> export async function processActivity(input: string): Promise<string> {
+>   log.info('Processing', { input });
+>
+>   // Get current span and add Gen AI attributes
+>   const span = trace.getActiveSpan();
+>   span?.setAttribute('gen_ai.prompt', input);
+>   span?.setAttribute('gen_ai.operation.name', 'chat');
+>
+>   const result = `Processed: ${input}`;
+>
+>   span?.setAttribute('gen_ai.completion', result);
+>
+>   return result;
+> }
+> ```
+>
+> **5。运行工人**
+>
+> 使用用于活动的 OpenTelemetry 拦截器和用于工作流跨度的工作流导出器创建工作人员：
+>
+> ```typescript worker.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Worker, NativeConnection } from '@temporalio/worker';
+> import { Resource } from '@opentelemetry/resources';
+> import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
+> import {
+>   makeWorkflowExporter,
+>   OpenTelemetryActivityInboundInterceptor,
+> } from '@temporalio/interceptors-opentelemetry';
+> import { trace } from '@opentelemetry/api';
+>
+> import * as activities from './activities';
+> import { initTracerProvider } from './tracer';
+>
+> async function run() {
+>   const provider = initTracerProvider();
+>
+>   try {
+>     const connection = await NativeConnection.connect({
+>       address: 'localhost:7233',
+>     });
+>
+>     const worker = await Worker.create({
+>       connection,
+>       namespace: 'default',
+>       taskQueue: 'my-task-queue',
+>       workflowsPath: require.resolve('./workflows'),
+>       activities,
+>       sinks: {
+>         exporter: makeWorkflowExporter(
+>           trace.getTracer('temporal-app'),
+>           new Resource({ [ATTR_SERVICE_NAME]: 'temporal-worker' })
+>         ),
+>       },
+>       interceptors: {
+>         activity: [() => ({ inbound: new OpenTelemetryActivityInboundInterceptor() })],
+>       },
+>     });
+>
+>     console.log('Starting worker...');
+>     await worker.run();
+>   } finally {
+>     await provider.shutdown();
+>   }
+> }
+>
+> run().catch((err) => {
+>   console.error(err);
+>   process.exit(1);
+> });
+> ```
+>
+> **6。执行工作流程**
+>
+> 在单独的客户端文件中，连接到 Temporal 并执行工作流程：
+>
+> ```typescript client.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { Client, Connection } from '@temporalio/client';
+> import { initTracerProvider } from './tracer';
+>
+> async function run() {
+>   // Initialize tracing
+>   const provider = initTracerProvider();
+>
+>   try {
+>     const connection = await Connection.connect({ address: 'localhost:7233' });
+>     const client = new Client({ connection });
+>
+>     const result = await client.workflow.execute('myWorkflow', {
+>       taskQueue: 'my-task-queue',
+>       workflowId: 'my-workflow-1',
+>       args: ['Hello World'],
+>     });
+>
+>     console.log('Workflow result:', result);
+>   } finally {
+>     await provider.shutdown();
+>   }
+> }
+>
+> run().catch(console.error);
+> ```
 
 ## 查看LangSmith中的踪迹
 
-配置完成后，跟踪将出现在您的 LangSmith 项目中：
+配置完成后，跟踪将出现在选定的代理环境中：
 
 1. 导航到您的 LangSmith 实例。
-2. 选择您的项目。
+2. 选择您的代理和环境。
 3. 在 **Tracing** 选项卡中查看跟踪。
 4. 单击各个迹线以查看完整跨度层次结构。
 
@@ -659,8 +665,8 @@ const provider = new NodeTracerProvider({
 
 1. **验证API密钥**：确保`LANGSMITH_API_KEY`设置正确
 2. **检查端点**：确认您正在使用`https://api.smith.langchain.com/otel/v1/traces`
-3. **关闭时刷新**：在应用程序退出之前调用`provider.shutdown()`刷新挂起的跨度
-4. **检查项目**：验证跟踪是否发送到正确的项目（默认为`"default"`）
+3. **关闭时刷新**：在进程退出之前调用`provider.shutdown()`刷新挂起的跨度
+4. **检查目的地**：验证导出器标头中注册的代理和环境。对于 Go 兼容性示例，验证配置的 `tracer_session_name`。
 
 ### 缺少活动跨度
 

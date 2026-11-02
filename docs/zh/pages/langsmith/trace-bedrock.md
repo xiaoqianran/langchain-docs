@@ -14,7 +14,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T7⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T7⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -32,14 +32,16 @@ npm install @aws-sdk/client-bedrock-runtime langsmith
 
 要启用 LangSmith 跟踪，请配置您的 [LangSmith API key](/langsmith/create-account-api-key)、代理标识符和环境。您还需要设置 AWS 凭证以通过 Bedrock 进行身份验证。
 
-### LangSmith配置
+### LangSmith配置将跟踪发送到代理需要 Python 中的 `langsmith>=0.14.9` 或 TypeScript 中的 `langsmith@>=0.11.0`。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING=true
-```您可以通过导航至 **设置** > **API 密钥**，从 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-bedrock) 获取您的 LangSmith API 密钥。代理标识符和环境选择跟踪出现的位置。
+```
+
+您可以通过导航至 **设置** > **API 密钥**，从 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-bedrock) 获取您的 LangSmith API 密钥。代理标识符和环境选择跟踪出现的位置。
 
 ### AWS 凭证
 
@@ -123,19 +125,19 @@ const invokeBedrock = traceable(
 // Invoke the traced function with a prompt
 const answer = await invokeBedrock("How can I trace AWS Bedrock model outputs to LangSmith for debugging?");
 console.log(answer);
-```
-
-**Python*** `boto3.client("bedrock-runtime")` 创建一个 Bedrock Runtime 客户端。
-* `converse` 方法将聊天提示（作为消息列表）发送到指定模型并返回结构化响应。
-* `generate_text` 函数用 `@traceable` 修饰，将对 LangSmith 的每次调用记录为跟踪（使用函数名称作为默认跟踪名称）。
-* 自定义标签（`aws-bedrock`、`langsmith`、`integration-test`）和元数据（环境、模型信息）被传递到装饰器中并附加到跟踪记录，以便在LangSmith UI 中进行过滤。
-* 当您运行此代码（使用 `LANGSMITH_TRACING=true` 和您的 API 密钥集）时，LangSmith 自动捕获输入提示、模型输出、令牌使用情况和延迟。
-
-**打字稿*** AWS SDK v3中的`BedrockRuntimeClient`提供了Bedrock运行时接口。
-* `ConverseCommand` 提供统一的聊天界面，发送用户消息并以结构化格式返回助手的响应（无需手动 JSON 解析）。
-* Bedrock 调用用 LangSmith 的 `traceable` 函数包装，将 `invokeBedrock` 转换为跟踪函数，将其执行记录到 LangSmith。
-* 自定义标签和元数据在可跟踪选项对象中提供并附加到每个跟踪。
-* 当您运行此脚本时（配置了 `LANGSMITH_TRACING=true` 和 API 密钥），请检查 LangSmith 仪表板中的跟踪条目，其中包括输入提示、模型输出、计时信息和指定的标签/元数据。
+```> [选项卡] Python
+>
+> * `boto3.client("bedrock-runtime")` 创建一个 Bedrock Runtime 客户端。
+> * `converse` 方法将聊天提示（作为消息列表）发送到指定模型并返回结构化响应。
+> * `generate_text` 函数用 `@traceable` 修饰，将对 LangSmith 的每次调用记录为跟踪（使用函数名称作为默认跟踪名称）。
+> * 自定义标签（`aws-bedrock`、`langsmith`、`integration-test`）和元数据（环境、模型信息）被传递到装饰器中并附加到跟踪记录，以便在LangSmith UI 中进行过滤。
+> * 当您运行此代码时（使用 `LANGSMITH_TRACING=true` 和您的 API 密钥集），LangSmith 自动捕获输入提示、模型输出、令牌使用情况和延迟。> [选项卡] TypeScript
+>
+> * AWS SDK v3 中的`BedrockRuntimeClient` 提供了 Bedrock 运行时接口。
+> * `ConverseCommand` 提供统一的聊天界面，发送用户消息并以结构化格式返回助手的响应（无需手动 JSON 解析）。
+> * Bedrock 调用用 LangSmith 的 `traceable` 函数包装，将 `invokeBedrock` 转换为跟踪函数，将其执行记录到 LangSmith。
+> * 自定义标签和元数据在可跟踪选项对象中提供并附加到每个跟踪。
+> * 当您运行此脚本时（配置了 `LANGSMITH_TRACING=true` 和 API 密钥），请检查 LangSmith 仪表板中的跟踪条目，其中包括输入提示、模型输出、计时信息和指定的标签/元数据。
 
 ## 查看LangSmith中的踪迹
 

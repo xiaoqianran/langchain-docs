@@ -8,7 +8,7 @@
 
 通常，托管深度代理的会话内存范围仅限于线程或会话。持久内存是代理可以跨线程、会话和部署保留的可选知识。托管Deep Agents默认没有持久内存。
 
-耐用内存由 [Context Hub](/langsmith/use-the-context-hub) 支持，分为两个独立层。启用任一层或两者。
+耐用内存由 [Context Hub](/langsmith/use-the-context-hub) 支持，分为两个独立层。启用您需要的图层。
 
 > [!注意]
 >
@@ -28,18 +28,34 @@ my-agent/
 
 完整的项目布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
 
-## 选择内存层
+## 选择一个图层
 
 层命名代理读取和写入其内存的层。每个启用的层都会在代理文件系统中安装自己的读/写树。|层 |安装|属于|用于 |
 | - | - | - | - |
 | **代理** | `/memories/agent/` |部署，由每个调用者共享 |适合每个人的知识，例如团队惯例和可重用程序 |
 | **用户** | `/memories/user/` |开始运行的经过身份验证的人 |个人偏好和呼叫者特定上下文 |
 
-省略图层会禁用它。运行时绝不会在层之间复制内容。
+大多数代理需要一层。一次挂载意味着每次模型调用中都有一个热文件，并且每次保存时都没有路由决策。通过询问代理保留谁的知识来进行选择。
+
+**当每个调用者受益于相同的知识时，**单独使用代理内存**：学习升级路径的支持代理、了解团队信任的来源的研究代理、学习存储库约定的构建代理。
+
+**当代理为多人提供服务并适应每个人时，仅使用用户记忆**：一名助理可以了解一个人的办公室、他们喜欢的答案格式或他们工作的产品领域。用户内存需要部署来验证调用者的身份。**当代理保留两种知识时，**声明两者**：学习共享约定和每个人偏好的团队助理。代理会在运行时的指导下在每次保存时选择一个装载。要在存储写入之前查看该选择，请参阅[Require approval before a memory write](#require-approval-before-a-memory-write)。要一次安装一层，请参阅[Select layers for each run](#select-layers-for-each-run)。
+
+> [!警告]
+>
+> **每个调用者都可以读取代理内存。** 在为多人提供服务的部署中，保存到 `/memories/agent/` 的特定于调用者的详细信息会向所有人公开。
+>
+> 运行时告诉代理不要在那里保存私人或呼叫者特定的信息。该指令只是指导，没有任何强制措施。
+>
+> 声明用户内存并为代理提供正确的位置来放置此类详细信息。仅特工记忆就让它无处可去。只有单独安装用户内存的部署才能彻底避免暴露。必须安装代理内存的位置，[require approval before a memory write](#require-approval-before-a-memory-write)。
+
+省略图层会禁用它。删除内存声明会关闭整个代理的持久内存。关闭内存不会删除任何内容。每层后面的 Context Hub 存储库保留其内容，代理无法再读取或写入它们。再次声明该层会安装相同的存储库，之前存储的所有内容仍然存在。运行时绝不会在层之间复制内容。
 
 使用持久内存来存储代理在运行时应该学习并在以后重用的知识。对于始终在线的行为，请改用 [instructions](/langsmith/python/managed-deep-agents-instructions)。对于特定于任务的过程，请改用[skills](/langsmith/python/managed-deep-agents-skills)。
 
-用户内存存储在一个不透明的 Context Hub 存储库中，该存储库以调用者的经过身份验证的主体为密钥，因此一个人无法访问另一个人的内存。> [!注意]
+用户内存存储在一个不透明的 Context Hub 存储库中，该存储库以调用者的经过身份验证的主体为密钥，因此一个人无法访问另一个人的内存。
+
+> [!注意]
 >
 > **用户内存先决条件**：用户内存仅为部署验证为个人的调用者安装。 LangSmith API 密钥对服务进行身份验证，因此默认身份提供程序永远不会挂载用户内存。要对登录的最终用户进行身份验证，请配置 [Supabase](/langsmith/python/managed-deep-agents-identity#configure-identity-with-supabase)。通过连接的 Slack 工作区到达的运行会解析为链接的人员并满足此要求。
 >
@@ -47,20 +63,23 @@ my-agent/
 
 ## 启用内存
 
-**1.添加内存声明**
-
-导出一个命名的 `memory` 声明，以启用您想要的层：
+**1.添加内存声明**导出启用所需层的命名 `memory` 声明。此示例启用代理内存，无需身份配置即可工作：
 
 ```python memory.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import MemoryLayer, define_memory
 
-memory = define_memory(
-    agent=MemoryLayer(),
-    user=MemoryLayer(),
-)
+memory = define_memory(agent=MemoryLayer())
 ```
 
-每层都使用其 [default access policy](#control-access-to-a-layer) ，除非您提供自己的。
+要为每个人提供自己的记忆，请声明用户层并确认您的部署将调用者验证为人：
+
+```python memory.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import MemoryLayer, define_memory
+
+memory = define_memory(user=MemoryLayer())
+```
+
+每个层都使用其[default access](#control-access-to-a-layer)，除非工厂选择运行层。
 
 **2.指导要记住的内容（可选）**
 
@@ -87,46 +106,61 @@ authorization. When you decide to persist something, use `edit_file` or
 
 `instructions.md` 始终是只读的。代理从不更新它。部署同步项目拥有的说明和技能，但不会覆盖已存储在 Context Hub 中的持久内容。
 
-## 控制对层的访问声明一个层使其可用。代理是否在给定的运行中真正达到它是第二个决定，在该运行开始时做出一次：
+## 控制对层的访问
 
-1.运行时解析调用者。除非呼叫者是经过身份验证的人，否则用户记忆将在此停止。
-2. 该层的`allow(context)`策略运行，或者当您未声明任何策略时应用其默认值。
-3. 通过挂载的层及其路径及其热内存负载。
+声明一个层使其可用。代理是否在给定的运行中达到它是第二个决定，在该运行开始时做出一次：1.运行时解析调用者。除非呼叫者是经过身份验证的人，否则用户记忆将在此停止。
+2. 代理工厂选择该运行的层，或者当没有工厂选择它们时应用项目的声明。
+3. 通过挂载的层及其路径及其热内存加载。
 
-如果没有 `allow`，托管 Deep Agents 将应用以下默认值：
+当没有选择运行的层时，托管 Deep Agents 应用以下默认值：
 
 |运行源码|代理内存|用户记忆|
 | - | - | - |
 | Slack 一对一 DM |允许 |允许 |
 | Slack 频道或群组 DM |允许 |被拒绝 |
 |直接API运行|允许 |被拒绝 |
-|工作室，已验证用户 |允许 |允许，未调用策略 |
+|工作室，已验证用户 |允许 |允许 |
 
-代理内存是部署共享的，因此默认情况下可用。用户内存是个人的，因此默认情况下仅在对话已经是一个人私有的情况下才会安装。 Slack 通道、组 DM 和直接 API 运行均不在此范围内，并且运行时无法从外部判断此类运行是否是私有的。默认拒绝意味着个人记忆永远不会到达共享对话，除非您选择加入自己的策略。运行时在安装存储之前每次运行都会评估一次策略。返回 `false` 仅删除该层的安装及其该运行的自动内存内容。存储的内存不会被删除。
+代理内存是部署共享的，因此默认情况下可用。用户内存是个人的，因此默认情况下仅在对话已经是一个人私有的情况下才会安装。 Slack 通道、群组 DM 和直接 API 运行均不在此范围内。运行时无法从外部确定此类运行是否是私有的，因此它拒绝那里的用户内存。除非部署选择加入，否则个人记忆永远不会到达共享对话。
 
-### 读取运行上下文
+### 为每次运行选择层要决定每次运行，请导出代理工厂并将 `memory` 传递给它返回的定义。工厂接收运行时，因此它可以读取调用者发送的应用程序上下文，或运行到达的[channel](/langsmith/python/managed-deep-agents-runtime#channel)。对于工厂本身，请参阅[Select configuration per run](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run)。
 
-`allow` 接收运行上下文。仅当您希望用户内存位于默认值拒绝的地方（例如您自己的应用程序调用 API）时，才需要读取它。
+默认情况下，直接 API 运行会被拒绝用户内存，因为运行时无法确定运行是否是私有的。您的应用程序有该信息。它知道它为哪个最终用户服务，以及该人是否要求代理记住他们。在运行的 `context` 字段中发送该决定​​，然后在工厂中读取它。
 
-托管通道运行在 `context.channel` 下承载当前交付，并附带原始提供商事件。默认的用户内存策略读取 Slack 通道类型，其中 `"im"` 表示一对一 DM：
+当调用者将 `remember` 设置为 `true` 时，此示例将挂载用户内存，否则挂载代理内存：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from managed_deepagents import ManagedChannelContext, MemoryLayer
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from typing import TypedDict
+
+from managed_deepagents import (
+    ManagedServerRuntime,
+    MemoryLayer,
+    define_deep_agent,
+    define_memory,
+)
 
 
-def allow_direct_message(context: object) -> bool:
-    if not isinstance(context, ManagedChannelContext):
-        return False
-    raw_event = context.channel.get("raw_event")
-    return isinstance(raw_event, dict) and raw_event.get("channel_type") == "im"
+class AppContext(TypedDict, total=False):
+    remember: bool
 
 
-user = MemoryLayer(allow=allow_direct_message)
+def agent(runtime: ManagedServerRuntime[AppContext]):
+    execution = runtime.execution_runtime
+    context = execution.context if execution is not None else None
+    remember = context is not None and context.get("remember") is True
+    return define_deep_agent(
+        name="office-helpdesk",
+        model="openai:gpt-5.5",
+        memory=(
+            define_memory(user=MemoryLayer())
+            if remember
+            else define_memory(agent=MemoryLayer())
+        ),
+        context_schema=AppContext,
+    )
 ```
 
-在默认策略下，不携带提供者事件的传递不会接收用户内存。
-
-直接 API 调用者在创建运行时提供自己的上下文：
+调用者在创建运行时提供该上下文，因此产品中的“记住我”设置将成为运行中的一个字段：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 await client.runs.create(
@@ -137,27 +171,73 @@ await client.runs.create(
 )
 ```
 
-### 替换默认策略
+工厂选择会覆盖该运行的项目内存声明。上表仅适用于没有工厂选择层的运行。
 
-提供`allow`来替换图层的默认策略。策略可以是同步的或异步的。此配置使代理内存可供所有人使用，并在调用者提供 `remember: true` 时启用用户内存：
+一条规则在覆盖后仍然有效：用户内存仅为经过身份验证的人员安装。为服务主体选择的用户层不会安装。在任何运行到达用户内存之前配置[Supabase](/langsmith/python/managed-deep-agents-identity#configure-identity-with-supabase)或您自己的后端。通过 `memory=None` 给予运行无持久内存。省略 `memory` 以保留项目声明的内容。
 
-```python memory.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from typing import TypedDict
+代理服务器调用工厂来检查图形并运行它，因此请保持选择是它接收的运行时的纯函数。参见[Keep the factory repeatable](/langsmith/python/managed-deep-agents-agent-definition#keep-the-factory-repeatable)。
 
-from managed_deepagents import MemoryLayer, define_memory
+### 从允许策略迁移
 
+层以前可以携带返回布尔值的`allow(context)`策略。从 `managed-deepagents` 0.9.0 开始，该回调已被弃用。 `memory.py`或`memory.ts`中声明的策略仍然有效，因此现有项目可以继续运行。在工厂中选择图层即可取代它。
 
-class Context(TypedDict, total=False):
-    remember: bool
+工厂中选择的内存拒绝回调：
 
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+Dynamically selected memory cannot use `allow`. Select memory layers or return None from the dynamic agent resolver instead.
+```
 
-memory = define_memory(
-    agent=MemoryLayer(),
-    user=MemoryLayer(allow=lambda context: context.get("remember") is True),
-)
-```> [!警告]
+> [!警告]
 >
-> 策略扩大了已通过身份验证的运行时调用方的访问范围。它无法为服务主体启用用户内存，也无法选择其他人的内存。运行时在调用 `allow` 之前检查经过身份验证的主体，因此上面的示例仅将用户内存授予已通过身份验证的直接 API 调用者。
+> 引发运行失败而不是拒绝安装的策略。捕获仍在运行的策略内的异常，并返回 `false`，以便不可用的数据存储拒绝用户内存并继续运行。
+
+工厂选择和`allow`策略都不会扩大经过运行时验证的调用者的访问范围。两者都不会为服务主体安装内存，也不会访问其他人的内存。
+
+### 测试内存访问当安装用户层时，经过验证的 Studio 用户会收到它：运行时会为他们跳过该层的策略。本地`mda dev`主体以相同的方式解析。因此，Studio 不是测试用户层策略的地方。省略用户层的工厂或从不声明用户层的项目会使 Studio 失去用户内存。
+
+代理层没有这样的旁路。它的策略适用于每个呼叫者，包括经过验证的 Studio 用户。
+
+代理服务器还调用工厂来检查图形，并且这些调用不携带运行上下文。读取上下文的选择将其后备分支放在那里。本机节点还需要代理服务器将运行上下文传递给图形工厂。
+
+针对部署执行来自真实调用者的选择或策略：Slack 消息，或您自己的应用程序发送自己的上下文。
+
+## 内存写入之前需要批准
+
+策略决定是否安装图层。它不决定代理向已安装的层写入什么内容。当人们在保存之前应该看到更改时，请暂停工具调用。无论代理内存安装在具有许多调用者的部署中，这一点都很重要。运行时告诉代理不要在那里保存调用者特定的信息，并且没有任何强制措施。批准卡指定了目标路径。审阅者可以看到写入的目标是哪个挂载，并可以在存储任何内容之前更正或拒绝它。
+
+在内存挂载的`mode="interrupt"`中添加`FilesystemPermission`规则：
+
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import FilesystemPermission
+from managed_deepagents import define_deep_agent
+
+from tools.policies import search_policies
+
+agent = define_deep_agent(
+    name="office-helpdesk",
+    model="openai:gpt-5.5",
+    tools=[search_policies],
+    permissions=[
+        FilesystemPermission(
+            operations=["write"],
+            paths=["/memories/**"],
+            mode="interrupt",
+        ),
+    ],
+)
+```
+
+代理在 `/memories/` 下调用 `write_file`，运行在工具运行之前暂停，Slack 或 Studio 会呈现一张批准卡，命名其前往的路径。审阅者可以批准、编辑、拒绝或回复。在 Slack 中，卡片仅提供批准和拒绝。在他们批准之前什么都不会写。
+
+`paths`决定哪个写暂停。 `/memories/**` 涵盖两个安装座。要仅在写入用户内存时暂停，请设置 `paths=["/memories/user/**"]`。
+
+> [!注意]
+>
+> 与 `create_deep_agent` 不同，`define_deep_agent` 不需要 `checkpointer` 参数。托管运行时提供了一种。
+
+中断模式规则与您传递的任何`interrupt_on`合并并以相同的方式恢复。恢复流程请参见[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。规则结构和路径匹配参见[Permissions](/oss/python/deepagents/permissions)。将 `"read"` 添加到 `operations` 即可在 `read_file`、`ls`、`glob` 和 `grep` 上暂停。预计这会经常中断：代理在读取装载之前会列出装载，因此审阅者看到的第一个批准通常是 `ls` 而不是文件。
+
+不包括自动热内存加载。 `AGENTS.md` 被注入到每个模型调用中，而无需工具调用，因此没有规则与该负载匹配。读取或写入热文件的工具调用仍然与冷文件匹配相同的路径规则。
 
 ## 识别用户记忆背后的人
 
@@ -174,16 +254,18 @@ memory = define_memory(
 
 每个挂载都包含热内存和冷内存：
 
-|路径|使用|
+|路径|使用 |
 | - | - |
-| `AGENTS.md` 在坐骑的根部 | **热记忆**用于紧凑、频繁相关的知识。它的内容被加载到每个模型调用中。 |
-|挂载下的其他文件 | **冷记忆**用于代理仅在相关时读取的详细知识。 |
+| `AGENTS.md` at the root of a mount | **热记忆**用于紧凑、频繁相关的知识。它的内容被加载到每个模型调用中。 |
+|挂载下的其他文件 | **冷记忆**详细知识，仅在代理打开文件时读取。 |
 
-保持热内存紧凑，因为它会在每次运行时消耗上下文。将详细材料（例如程序、决策日志和研究笔记）放入冷文件中，并在有用时从热内存中链接到它们。
+保持热内存紧凑，因为它会在每次运行时消耗上下文。
 
-代理使用内置的 [⟦T24⟧](/oss/python/deepagents/tools#built-in-harness-tools)、[⟦T25⟧](/oss/python/deepagents/tools#built-in-harness-tools) 和 [⟦T26⟧](/oss/python/deepagents/tools#built-in-harness-tools) 工具读取和更新内存。尚不存在的热文件在第一次写入之前将保持为空。
+运行时不会对内存进行分层。编写的说明和技能决定要记住什么以及要编写哪个文件。如果没有该指导，模型可能会继续附加到`AGENTS.md`，并且以后的每次调用都会付出代价。为了在每次模型调用中保留详细材料，请命名要写入的冷文件，例如程序、决策日志和研究笔记，并告诉代理从`AGENTS.md`链接到它们。代理使用内置的 [⟦T52⟧](/oss/python/deepagents/tools#built-in-harness-tools)、[⟦T53⟧](/oss/python/deepagents/tools#built-in-harness-tools) 和 [⟦T54⟧](/oss/python/deepagents/tools#built-in-harness-tools) 工具读取和更新内存。尚不存在的热文件在第一次写入之前将保持为空。
 
-对其他位置（包括 `/memories/` 下的其他位置）的写入是不持久的。> [!警告]
+对其他位置（包括 `/memories/` 下的其他位置）的写入是不持久的。
+
+> [!警告]
 >
 > 代理内存由部署的每个调用者共享，并且每个调用者都可以影响它。仅存储每个调用者都可以读取和修改的知识。切勿在其中存储个人或客户私有数据、凭据、API 密钥、令牌或其他机密。
 >
@@ -191,20 +273,16 @@ memory = define_memory(
 
 ## 测试内存
 
-Studio 是在没有 Slack 工作区的情况下锻炼用户记忆的方法。经过验证的 Studio 用户会收到每个声明的内存层，并且运行时不会为它们调用用户层的 `allow` 策略。在 Studio 中看似不执行任何操作的已声明图层通常根本没有声明，因此请首先检查 `memory.py` 或 `memory.ts`。
+Studio 是在没有 Slack 工作空间的情况下锻炼记忆的方法。经过验证的 Studio 用户会收到每个已声明的图层，因此看起来不执行任何操作的图层通常根本不会被声明。首先检查`memory.py`或`memory.ts`。
 
-Studio 写入的位置取决于您正在运行的内容：
+Studio 写入的位置取决于您正在运行的内容：* **部署**：内存转到 Context Hub，以您登录的 LangSmith 用户为准。
+* **`mda dev`**：内存保留在磁盘上的 `.mda/__contexthub__` 下，以 CLI 从您的个人 LangSmith API 密钥解析的 `langsmith-dev` 代理身份验证主体为密钥。
 
-* **部署**：内存转到 Context Hub，以您登录的 LangSmith 用户为准。
-* **`mda dev`**：内存保留在磁盘上的`.mda/__contexthub__`下，以 CLI 从您的个人 LangSmith API 密钥解析的 `langsmith-dev` 代理身份验证主体为密钥。本地内存和部署内存是单独的存储，因此您在 `mda dev` 下教导代理的事实在部署后不会出现。
+本地内存和部署内存是单独的存储，因此您在 `mda dev` 下教导代理的事实在部署后不会出现。
 
-运行时仅在运行执行时评估策略。检查图表并不会调用它。本机节点还需要代理服务器将运行上下文传递给图形工厂。
+访问决策是个例外。参见[Test memory access](#test-memory-access)。
 
 欲了解更多信息，请参阅[Local development](/langsmith/python/managed-deep-agents-local-development)。
-
-## 禁用内存
-
-省略一个图层即可禁用它。删除内存声明以完全关闭持久内存。禁用图层会阻止代理到达该图层，但不会删除存储的内存。
 
 ## 部署
 
@@ -212,16 +290,16 @@ Studio 写入的位置取决于您正在运行的内容：
 
 有关内存与 Context Hub 中部署拥有的指令和技能的关系，请参阅 [Context Hub](/langsmith/python/managed-deep-agents-context-hub)。
 
-## 何时使用内存|概念 |角色 |范围 |
+## 何时使用内存
+
+|概念 |角色 |范围 |
 | - | - | - |
-| **[Instructions](/langsmith/python/managed-deep-agents-instructions) 和 [skills](/langsmith/python/managed-deep-agents-skills)** |部署拥有的代理行为 |由部署共享并且对代理只读 |
+| **[Instructions](/langsmith/python/managed-deep-agents-instructions) 和 [skills](/langsmith/python/managed-deep-agents-skills)** |部署拥有的代理行为 |由部署共享并对代理只读 |
 | **线程状态** |对话连续性 |一根线 |
 | **代理内存** |在 Context Hub 中学习和保留的知识 |跨线程部署共享|
 | **用户内存** | Context Hub 中保留的个人上下文 |跨线程一名经过身份验证的人 |
 
-## 另请参阅
-
-* [Project structure](/langsmith/python/managed-deep-agents-project-structure)
+## 另请参阅* [Project structure](/langsmith/python/managed-deep-agents-project-structure)
 * [Identity](/langsmith/python/managed-deep-agents-identity)
 * [Context Hub](/langsmith/use-the-context-hub)
 

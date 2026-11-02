@@ -1,10 +1,14 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace LangChain applications (Python and JS/TS) | https://docs.langchain.com/langsmith/trace-with-langchain -->
+<!-- langchain-docs: Trace LangChain agents (Python and JS/TS) | https://docs.langchain.com/langsmith/trace-with-langchain -->
 
-# 跟踪 LangChain 应用程序（Python 和 JS/TS）
+# 跟踪 LangChain 代理（Python 和 JS/TS）
 
-LangSmith 与 LangChain（Python 和 JavaScript）无缝集成，后者是用于构建 LLM 应用程序的流行开源框架。
+LangSmith 与 LangChain（Python 和 JavaScript）无缝集成，这是用于构建代理的流行开源框架。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T30⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -35,13 +39,13 @@ pnpm add @langchain/openai @langchain/core
 ```bash wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 # This example uses OpenAI, but you can use any LLM provider of choice
 export OPENAI_API_KEY=<your-openai-api-key>
 # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
 export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
-```
-
-> [!注意]
+```> [!注意]
 >
 > 如果您的帐户位于美国以外的区域（默认），还需将 `LANGSMITH_ENDPOINT` 设置为您所在区域的 API URL。如果没有这个，您的 API 密钥将不会被识别，并且请求将无法通过身份验证。
 >
@@ -87,7 +91,8 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
 > <td>
 > `https://aws.api.smith.langchain.com`
 > </td>
-> </tr>> </tbody>
+> </tr>
+> </tbody>
 > </table>
 >
 > 例如欧盟账户：`export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`。
@@ -102,9 +107,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
 >
 > `export LANGCHAIN_CALLBACKS_BACKGROUND=false`
 
-### 2. 记录跟踪
-
-无需额外代码即可将跟踪记录到 LangSmith。只需像平常一样运行您的 LangChain 代码即可。
+### 2. 记录跟踪无需额外代码即可将跟踪记录到 LangSmith。只需像平常一样运行您的 LangChain 代码即可。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_openai import ChatOpenAI
@@ -148,15 +151,15 @@ await chain.invoke({ question: question, context: context });
 
 ### 3.查看您的踪迹
 
-默认情况下，跟踪将记录到名为 `default` 的项目中。
+在LangSmith中打开注册的代理并选择其**本地**环境来查看跟踪。
 
 ## 有选择地跟踪
 
-[previous section](#quick-start) 展示了如何通过设置单个环境变量来跟踪应用程序中 LangChain 可运行对象的所有调用。虽然这是一种方便的入门方法，但您可能只想跟踪应用程序的特定调用或部分。
+[previous section](#quick-start) 展示了如何通过启用跟踪和选择代理环境来跟踪代码中的所有 LangChain 可运行调用。虽然这是一种方便的入门方法，但您可能只想跟踪代理的特定调用或部分。
 
-在 Python 中，有两种方法可以实现此目的：手动传入 `LangChainTracer` 实例作为 [callback](https://reference.langchain.com/python/langchain_core/callbacks/)，或者使用 [⟦T42⟧ context manager](https://reference.langchain.com/python/langsmith/observability/sdk/run_helpers/#langsmith.run_helpers.tracing_context)。
+在 Python 中，有两种方法可以实现此目的：手动传入 `LangChainTracer` 实例作为 [callback](https://reference.langchain.com/python/langchain_core/callbacks/)，或者使用 [⟦T40⟧ context manager](https://reference.langchain.com/python/langsmith/observability/sdk/run_helpers/#langsmith.run_helpers.tracing_context)。
 
-在 JS/TS 中，您可以传递 [⟦T43⟧](https://reference.langchain.com/javascript/classes/_langchain_core.tracers_tracer_langchain.LangChainTracer.html) 实例作为回调。
+在 JS/TS 中，您可以传递 [⟦T41⟧](https://reference.langchain.com/javascript/classes/_langchain_core.tracers_tracer_langchain.LangChainTracer.html) 实例作为回调。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # You can opt-in to specific invocations..
@@ -187,51 +190,19 @@ await chain.invoke(
 );
 ```
 
-## 登录到特定项目
+## 选择代理和环境
 
-### 静态正如[tracing conceptual guide](/langsmith/observability-concepts)LangSmith中提到的，使用项目的概念对跟踪进行分组。如果未指定，跟踪器项目将设置为默认值。您可以设置 `LANGSMITH_PROJECT` 环境变量来为整个应用程序运行配置自定义项目名称。这应该在执行您的应用程序之前完成。
+使用`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`选择注册的代理和环境。对于每个请求路由，请在代码中传递代理地址。参见[Log traces to an agent](/langsmith/log-traces-to-agent)。
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_PROJECT=my-project
-```
-
-> [!警告]
+> [手风琴] 基于项目的工作区和自托管 LangSmith
 >
-> `LANGSMITH_PROJECT` 标志仅在 JS SDK 0.2.16 或更高版本中受支持，如果您使用的是旧版本，请使用 `LANGCHAIN_PROJECT` 代替。
+> 将 `LANGSMITH_PROJECT` 设置为跟踪项目名称，而不是设置代理变量。对于在基于代理的工作区中需要 `project_name` 的集成，请使用环境的 [⟦T46⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
-### 动态地
-
-这很大程度上是基于 [previous section](#trace-selectively) 构建的，并允许您为特定的 `LangChainTracer` 实例设置项目名称或作为 Python 中 `tracing_context` 上下文管理器的参数。
-
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# You can set the project name using the project_name parameter.
-import langsmith as ls
-
-with ls.tracing_context(project_name="My Project", enabled=True):
-    chain.invoke({"question": "Am I using a context manager?", "context": "I'm using a context manager"})
-```
-
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// You can set the project name for a specific tracer instance:
-import { LangChainTracer } from "@langchain/core/tracers/tracer_langchain";
-
-const tracer = new LangChainTracer({ projectName: "My Project" });
-await chain.invoke(
-  {
-    question: "Am I using a callback?",
-    context: "I'm using a callback"
-  },
-  { callbacks: [tracer] }
-);
-```
-
-## 将元数据和标签添加到跟踪中
-
-您可以通过在 [⟦T49⟧](https://reference.langchain.com/python/langchain_core/runnables/?h=runnablecon#langchain_core.runnables.RunnableConfig) 中提供任意元数据和标签来注释您的跟踪。这对于将附加信息与跟踪相关联非常有用，例如执行跟踪的环境或启动跟踪的用户。有关如何通过元数据和标签查询跟踪和运行的信息，请参阅[Query traces (SDK)](/langsmith/export-traces)
+## 将元数据和标签添加到跟踪中您可以通过在 [⟦T47⟧](https://reference.langchain.com/python/langchain_core/runnables/?h=runnablecon#langchain_core.runnables.RunnableConfig) 中提供任意元数据和标签来注释您的跟踪。这对于将附加信息与跟踪相关联非常有用，例如执行跟踪的环境或启动跟踪的用户。有关如何通过元数据和标签查询跟踪和运行的信息，请参阅[Query traces (SDK)](/langsmith/export-traces)
 
 > [!注意]
 >
-> 当您将元数据或标签附加到可运行对象时（通过 [⟦T50⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 或在运行时使用调用参数），它们将被该可运行对象的所有子可运行对象继承。
+> 当您将元数据或标签附加到可运行对象时（通过 [⟦T48⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 或在运行时使用调用参数），它们将被该可运行对象的所有子可运行对象继承。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_openai import ChatOpenAI
@@ -252,7 +223,9 @@ chain = (prompt | chat_model | output_parser).with_config({"tags": ["config-tag"
 
 # Tags and metadata can also be passed at runtime
 chain.invoke({"input": "What is the meaning of life?"}, {"tags": ["invoke-tag"], "metadata": {"invoke-key": "invoke-value"}})
-``````typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
@@ -275,7 +248,7 @@ await chain.invoke({input: "What is the meaning of life?"}, {tags: ["invoke-tag"
 
 ## 自定义运行名称
 
-您可以在调用或流式传输 LangChain 代码时通过在 [Config](https://reference.langchain.com/python/langchain_core/runnables/?h=runnablecon#langchain_core.runnables.RunnableConfig) 中提供给定运行的名称来自定义该名称。此名称用于标识 LangSmith 中的运行，并可用于过滤和分组运行。该名称还用作 LangSmith UI 中的运行标题。这可以通过在构造时在 [⟦T52⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 对象中设置 `run_name` 或在 JS/TS 中的调用参数中传递 `run_name` 来完成。
+您可以在调用或流式传输 LangChain 代码时通过在 [Config](https://reference.langchain.com/python/langchain_core/runnables/?h=runnablecon#langchain_core.runnables.RunnableConfig) 中提供给定运行的名称来自定义该名称。此名称用于标识 LangSmith 中的运行，并可用于过滤和分组运行。该名称还用作 LangSmith UI 中的运行标题。这可以通过在构造时在 [⟦T50⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 对象中设置 `run_name` 或在 JS/TS 的调用参数中传递 `run_name` 来完成。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # When tracing within LangChain, run names default to the class name of the traced object (e.g., 'ChatOpenAI').
@@ -293,22 +266,20 @@ await configuredChain.invoke({ input: "What is the meaning of life?" });
 
 // You can also configure the run name at invocation time, like below
 await chain.invoke({ input: "What is the meaning of life?" }, {runName: "MyCustomChain"})
-```
-
-> [!注意]
+```> [!注意]
 >
-> `run_name` 参数仅更改您调用的可运行对象的名称（例如，链、函数）。它不会重命名当您调用 LLM 对象（如 [⟦T55⟧](https://reference.langchain.com/python/langchain-openai/chat_models/base/ChatOpenAI) (`gpt-6-luna`)）时自动创建的嵌套运行。在示例中，封闭的运行将在 LangSmith 中显示为 `MyCustomChain`，而嵌套的 LLM 运行仍显示模型的默认名称。
+> `run_name` 参数仅更改您调用的可运行对象的名称（例如，链、函数）。它不会重命名当您调用 LLM 对象（如 [⟦T53⟧](https://reference.langchain.com/python/langchain-openai/chat_models/base/ChatOpenAI) (`gpt-6-luna`)）时自动创建的嵌套运行。在示例中，封闭的运行将在 LangSmith 中显示为 `MyCustomChain`，而嵌套的 LLM 运行仍显示模型的默认名称。
 >
 > 要给 LLM 运行一个更有意义的名称，您可以：
 >
-> * 将模型包装在另一个可运行的文件中，并为该步骤分配 `run_name`。
+> * 将模型包装在另一个可运行的文件中，并将 `run_name` 分配给该步骤。
 > * 使用跟踪装饰器或帮助器（例如，Python 中的 `@traceable`，或 JS/TS 中的 `langsmith` 中的 `traceable`）围绕模型调用创建自定义运行。
 
-## 覆盖跟踪中的模型名称跟踪 LangChain 模型调用时，LangSmith 自动捕获 API 调用中使用的模型标识符。但是，出于组织目的或区分不同的模型配置，您可能希望在跟踪中显示不同的、更具描述性的名称。您可以通过在构造或配置 LangChain 模型时传递 `ls_model_name` [metadata parameter](/langsmith/ls-metadata-parameters#ls_model_name) 来实现此目的。
+## 覆盖跟踪中的模型名称
 
-这在以下情况下特别有用：
+跟踪 LangChain 模型调用时，LangSmith 自动捕获 API 调用中使用的模型标识符。但是，出于组织目的或区分不同的模型配置，您可能希望在跟踪中显示不同的、更具描述性的名称。您可以通过在构建或配置 LangChain 模型时传递 `ls_model_name` [metadata parameter](/langsmith/ls-metadata-parameters#ls_model_name) 来实现此目的。
 
-* 使用自托管或本地模型，其中模型 ID 可能不具有描述性。
+这在以下情况下特别有用：* 使用自托管或本地模型，其中模型 ID 可能不具有描述性。
 * 使用相同型号不同配置并希望在痕迹中区分它们。
 * 为模型创建别名，使跟踪对您的团队来说更具可读性。
 * 标准化不同部署环境中的模型名称。
@@ -367,13 +338,13 @@ const llmFactual = new ChatOpenAI({
 const result = await llm.invoke("What is the meaning of life?");
 ```
 
-当您在模型的元数据中传递 `ls_model_name` 时，该名称将出现在涉及该模型实例的所有跟踪的 LangSmith UI 中。这适用于任何 LangChain 聊天模型或 LLM，并且由使用该模型的所有运行继承，包括当它是链的一部分时。> [!注意]
+当您在模型的元数据中传递 `ls_model_name` 时，该名称将出现在涉及该模型实例的所有跟踪的 LangSmith UI 中。这适用于任何 LangChain 聊天模型或 LLM，并且由使用该模型的所有运行继承，包括当它是链的一部分时。
+
+> [!注意]
 >
 > `ls_model_name` 元数据参数也用于[cost tracking](/langsmith/cost-tracking)。与`ls_provider`参数结合使用时，LangSmith可以自动计算自定义或自托管模型的成本。有关所有可用元数据参数的更多信息，请参阅[metadata parameters reference](/langsmith/ls-metadata-parameters)。
 
-## 自定义运行ID
-
-您可以在调用或流式传输 LangChain 代码时通过在 [Config](https://reference.langchain.com/python/langchain_core/runnables/?h=runnablecon#langchain_core.runnables.RunnableConfig) 中提供给定运行的 ID 进行自定义。该ID用于唯一标识LangSmith中的运行，并可用于查询特定运行。 ID 对于跨不同系统链接运行或实现自定义跟踪逻辑非常有用。这可以通过在构造时在 [⟦T67⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 对象中设置 `run_id` 或在调用参数中传递 `run_id` 来完成。
+## 自定义运行ID您可以在调用或流式传输 LangChain 代码时通过在 [Config](https://reference.langchain.com/python/langchain_core/runnables/?h=runnablecon#langchain_core.runnables.RunnableConfig) 中提供给定运行的 ID 进行自定义。该ID用于唯一标识LangSmith中的运行，并可用于查询特定运行。 ID 对于跨不同系统链接运行或实现自定义跟踪逻辑非常有用。这可以通过在构造时在 [⟦T65⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 对象中设置 `run_id` 或在调用参数中传递 `run_id` 来完成。
 
 > [!注意]
 >
@@ -397,7 +368,7 @@ const myUuid = uuid7();
 await chain.invoke({ input: "What is the meaning of life?" }, { runId: myUuid });
 ```
 
-请注意，如果您在跟踪的 **根** 处执行此操作（即顶级运行，则该运行 ID 将用作 `trace_id`）。
+请注意，如果您在跟踪的 **root** 处执行此操作（即顶级运行，则该运行 ID 将用作 `trace_id`）。
 
 ## 访问 LangChain 调用的运行（跨度）ID
 
@@ -425,7 +396,9 @@ context = "During this morning's meeting, we solved all world conflict."
 my_uuid = uuid7()
 result = chain.invoke({"question": question, "context": context}, {"run_id": my_uuid})
 print(my_uuid)
-``````typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
@@ -451,13 +424,11 @@ const runId = runCollector.tracedRuns[0].id;
 console.log(runId);
 ```
 
-## 确保退出前所有跟踪都已提交
-
-在 LangChain Python 中，LangSmith 的跟踪是在后台线程中完成的，以避免阻碍您的生产应用程序。这意味着您的进程可能会在所有跟踪成功发布到LangSmith之前结束。这在无服务器环境中尤其普遍，在这种环境中，一旦链或代理完成，您的虚拟机可能会立即终止。
+## 确保退出前所有跟踪都已提交在 LangChain Python 中，LangSmith 的跟踪是在后台线程中完成的，以避免阻碍您的生产代理。这意味着您的进程可能会在所有跟踪成功发布到LangSmith之前结束。这在无服务器环境中尤其普遍，在这种环境中，一旦链或代理完成，您的虚拟机可能会立即终止。
 
 您可以通过将 `LANGCHAIN_CALLBACKS_BACKGROUND` 环境变量设置为 `"false"` 来使回调同步。
 
-对于这两种语言，LangChain 公开了在退出应用程序之前等待跟踪提交的方法。下面是一个例子：
+对于这两种语言，LangChain 公开了在进程退出之前等待提交跟踪的方法。下面是一个例子：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_openai import ChatOpenAI
@@ -486,12 +457,13 @@ try {
 
 ## 不设置环境变量的跟踪
 
-正如其他指南中提到的，以下环境变量允许您配置启用跟踪、api 端点、api 密钥和跟踪项目：
+正如其他指南中提到的，以下环境变量允许您配置启用跟踪、api 端点、api 密钥和跟踪目标：
 
 * `LANGSMITH_TRACING`
 * `LANGSMITH_API_KEY`
 * `LANGSMITH_ENDPOINT`
-* `LANGSMITH_PROJECT`
+* `LANGSMITH_AGENT_ID`
+* `LANGSMITH_AGENT_ENVIRONMENT`
 
 但是，在某些环境中，无法设置环境变量。在这些情况下，您可以通过编程方式设置跟踪配置。
 
@@ -506,14 +478,14 @@ client = ls.Client(
     api_url="https://api.smith.langchain.com",  # Self-hosted, GCP EU (`eu.api...`), GCP APAC (`apac.api...`), or AWS US (`aws.api...`) as needed
 )
 
-# You can pass the client and project_name to the tracing_context
-with ls.tracing_context(client=client, project_name="test-no-env", enabled=True):
+# You can pass the client and agent address to the tracing_context
+with ls.tracing_context(client=client, address=ls.agent_address("<your-agent-id>", "production"), enabled=True):
     chain.invoke({"question": "Am I using a callback?", "context": "I'm using a callback"})
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { LangChainTracer } from "@langchain/core/tracers/tracer_langchain";
-import { Client } from "langsmith";
+import { AgentAddress, Client } from "langsmith";
 
 // You can create a client instance with an api key and api url
 const client = new Client(
@@ -523,8 +495,8 @@ const client = new Client(
     }
 );
 
-// You can pass the client and project_name to the LangChainTracer instance
-const tracer = new LangChainTracer({client, projectName: "test-no-env"});
+// You can pass the client and agent address to the LangChainTracer instance
+const tracer = new LangChainTracer({client, address: new AgentAddress("<your-agent-id>", "production")});
 await chain.invoke(
   {
     question: "Am I using a callback?",
@@ -534,7 +506,7 @@ await chain.invoke(
 );
 ```
 
-## 使用 LangChain 进行分布式跟踪 (Python)LangSmith 支持使用 LangChain Python 进行分布式跟踪。这允许您跨不同的服务和应用程序链接运行（跨度）。原理与LangSmith SDK 的[distributed tracing guide](/langsmith/distributed-tracing)类似。
+## 使用 LangChain 进行分布式跟踪 (Python)LangSmith 支持使用 LangChain Python 进行分布式跟踪。这允许您跨不同服务和代理链接运行（跨度）。原理与LangSmith SDK 的[distributed tracing guide](/langsmith/distributed-tracing)类似。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import langsmith
@@ -563,7 +535,7 @@ parent_chain.invoke({"test": 1})
 
 ## LangChain (Python) 和 LangSmith SDK 之间的互操作性
 
-如果您的应用程序的一部分使用 LangChain，其他部分使用 LangSmith SDK（请参阅 [Custom instrumentation](/langsmith/annotate-code)），您仍然可以无缝跟踪整个应用程序。
+如果您对代理的一部分使用LangChain，对其他部分使用LangSmith SDK（请参阅[Custom instrumentation](/langsmith/annotate-code)），您仍然可以无缝跟踪整个代理。
 
 在 `traceable` 函数中调用时，将跟踪 LangChain 对象，并将其绑定为 `traceable` 函数的子运行。
 
@@ -600,7 +572,7 @@ invoke_runnnable("Can you summarize this morning's meetings?", "During this morn
 
 ### 追踪 `traceable` 内的 LangChain 对象（仅限 JS）
 
-从`langchain@0.2.x`开始，LangChain对象在`@traceable`函数内部使用时会自动跟踪，继承可跟踪函数的客户端、标签、元数据和项目名称。
+从`langchain@0.2.x`开始，LangChain对象在`@traceable`函数内部使用时会自动跟踪，继承可跟踪函数的客户端、标签、元数据和跟踪目标。
 
 对于`0.2.x`以下的旧版本LangChain，您需要手动传递从`@traceable`中找到的跟踪上下文创建的实例`LangChainTracer`。
 
@@ -636,11 +608,11 @@ const main = traceable(
 >
 > 我们正在努力提高 `traceable` 和 LangChain 之间的互操作性。将 LangChain 与 `traceable` 组合使用时存在以下限制：
 >
-> 1. 改变从 RunnableLambda 上下文的`getCurrentRunTree()` 获得的 RunTree 将导致无操作。
+> 1. 改变从 RunnableLambda 上下文的`getCurrentRunTree()` 获得的 RunTree 将导致空操作。
 > 2. 不鼓励通过`getCurrentRunTree()`遍历从RunnableLambda获得的RunTree，因为它可能不包含所有RunTree节点。
 > 3. 不同的子运行可能具有相同的`execution_order`和`child_execution_order`值。因此，在极端情况下，某些运行可能会以不同的顺序结束，具体取决于`start_time`。
 
-在某些用例中，您可能希望将 `traceable` 函数作为 RunnableSequence 的一部分运行，或者跟踪通过 `RunTree` API 命令式运行的 LangChain 子运行。从 LangSmith 0.1.39 和 @langchain/core 0.2.18 开始，您可以直接在 RunnableLambda 中调用 `traceable` 包装的函数。
+在某些用例中，您可能希望将 `traceable` 函数作为 RunnableSequence 的一部分来运行，或者跟踪通过 `RunTree` API 命令式运行的 LangChain 子运行。从 LangSmith 0.1.39 和 @langchain/core 0.2.18 开始，您可以直接在 RunnableLambda 中调用 `traceable` 包装的函数。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { traceable } from "langsmith/traceable";
@@ -660,7 +632,7 @@ const parrot = new RunnableLambda({
 
 ![Trace Tree](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/trace-tree-manual-tracing.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=7b117d3aa9b419fe2a314ec6d9cc7c16)
 
-或者，您可以使用 `RunTree.fromRunnableConfig` 将 LangChain 的 [⟦T96⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 转换为等效的 RunTree 对象，或将 [⟦T98⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 作为 `traceable` 包装函数的第一个参数传递。
+或者，您可以使用 `RunTree.fromRunnableConfig` 将 LangChain 的 [⟦T95⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 转换为等效的 RunTree 对象，或将 [⟦T97⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 作为 `traceable` 包装函数的第一个参数传递。
 
 ```typescript Traceable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { traceable } from "langsmith/traceable";

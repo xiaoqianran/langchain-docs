@@ -19,7 +19,7 @@
 可以通过四种方式创建代理，这四种方式的不同之处在于标识符的设置方式以及代理启动的环境：|方法|你做什么|标识符 |创作时的环境 |
 | - | - | - | - |
 | [Build tab](/langsmith/build-an-agent) |在 LangSmith 内构建并运行代理 |为您生成 |独自生产|
-| [UI](#name-an-agent-traced-from-outside-langsmith) |在LangSmith中输入代理名称和ID来创建代理记录 |你设定吧|所有四个 |
+| [UI](#name-an-agent-traced-from-outside-langsmith) |通过在LangSmith中输入其姓名和ID来创建一条代理记录 |你设定吧|所有四个 |
 | [SDK or API](#create-an-agent-programmatically) |通过 SDK 调用或 API 请求创建代理记录 |你设定吧|所有四个 |
 | [Deployment](/langsmith/deploy-to-agent-environment) |将您的代理代码部署到 LangSmith |您传递的或从部署名称派生的代理 ID |所有四个 |
 
@@ -57,7 +57,7 @@
 
 代理创建 API 在 LangSmith 中使用所有四种环境创建代理记录。在发送跟踪之前调用一次，而不是每次代理运行时调用它。
 
-将 [personal access token or service key](/langsmith/create-account-api-key) 与 [⟦T12⟧ permission](/langsmith/organization-workspace-operations#projects) 一起使用。跟踪密钥无法调用代理创建 API。创建代理后，您的代码可以使用跟踪密钥来提交跟踪。将 `LANGSMITH_API_KEY` 设置为设置凭据。将 `LANGSMITH_WORKSPACE_ID` 设置为目标工作区 ID，并将 `LANGSMITH_ENDPOINT` 设置为您的 [region's API URL](/langsmith/create-account-api-key#configure-the-sdk)。
+将 [personal access token or service key](/langsmith/create-account-api-key) 与 [⟦T12⟧ permission](/langsmith/organization-workspace-operations#projects) 一起使用。跟踪密钥无法调用代理创建 API。创建代理后，您的代码可以使用跟踪密钥来提交跟踪。将 `LANGSMITH_API_KEY` 设置为设置凭据。将 `LANGSMITH_WORKSPACE_ID` 设置为目标工作区 ID，将 `LANGSMITH_ENDPOINT` 设置为您的 [region's API URL](/langsmith/create-account-api-key#configure-the-sdk)。
 
 > [选项卡] Python
 >
@@ -105,7 +105,7 @@
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY="<your-tracing-api-key>"
 export LANGSMITH_AGENT_ID="support-agent"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
 
 使用创建返回的标识符，而不是显示名称。从代码运行的环境中删除旧目标变量（`LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT` 和 `LANGCHAIN_SESSION`）。 SDK版本和代码配置请参见[Log traces to an agent](/langsmith/log-traces-to-agent)。

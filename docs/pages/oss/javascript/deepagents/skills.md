@@ -142,7 +142,7 @@ const result = await agent.invoke(
 );
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/3218e1ca-4a44-4b04-b386-924589552a79/r)
+> [card] [View example trace](https://smith.langchain.com/public/057f496a-0790-427f-9c0c-90b5419beb28/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -475,7 +475,7 @@ const result = await agent.invoke(
 );
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/e820ab54-7200-41fb-bf03-7639e7954b42/r)
+> [card] [View example trace](https://smith.langchain.com/public/8dbc8e55-5f6f-4247-a25e-ca7ff7c323d6/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -576,7 +576,7 @@ Deep Agents supports different backends depending on how you want to store and m
 > );
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/5c684c86-25c2-471e-a9f3-c43767036b26/r)
+> > [card] [View example trace](https://smith.langchain.com/public/2e17f007-e8df-42ea-802e-b4a4be318faf/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -622,7 +622,7 @@ Deep Agents supports different backends depending on how you want to store and m
 > );
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/2b64039f-58ff-4bf9-930e-45e57f61c09b/r)
+> > [card] [View example trace](https://smith.langchain.com/public/55d61dd5-7a4e-4d39-9e26-0f9f0e247ea1/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -667,7 +667,7 @@ Deep Agents supports different backends depending on how you want to store and m
 > );
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/f81b4363-f551-4eec-a7c2-16fa91834002/r)
+> > [card] [View example trace](https://smith.langchain.com/public/76616a5c-05a5-455f-9721-c9085cf7831a/r)
 > >
 > > Open a public LangSmith run for this example.
 
@@ -2227,7 +2227,7 @@ main().catch((err) => {
 });
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/1ea9b51a-1953-428d-ba40-f8d363139114/r)
+> [card] [View example trace](https://smith.langchain.com/public/8647c762-dc6d-44ac-9a8f-2df769536439/r)
 >
 > Open a public LangSmith run for this example.
 

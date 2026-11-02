@@ -69,21 +69,21 @@ agent = define_deep_agent(
 )
 ```
 
-通过项目文件而不是代理定义来配置系统提示、技能、内存、沙箱、身份、通道和计划。参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。要为每次运行选择系统提示符、技能、MCP 服务器或沙箱，请参阅[Select configuration per run](#select-configuration-per-run)。
+通过项目文件而不是代理定义来配置系统提示、技能、内存、沙箱、身份、通道和计划。参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。要为每次运行选择系统提示、技能、MCP 服务器、内存或沙箱，请参阅[Select configuration per run](#select-configuration-per-run)。
 
 `define_deep_agent` 不编译代理。它返回一个定义，托管运行时在部署时使用 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 对其进行编译。下面的参数是 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 表面，不包含运行时拥有的参数。参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。
 
 ＃＃ 参数|参数|它有什么作用 |
 | - | - |
 | `name=` |必需的。传递以字母开头且仅包含字母、数字、下划线或连字符的静态字符串，例如 `"research-assistant"`。  托管 Deep Agents 使用该名称作为代理的图形 ID 和默认的 LangSmith 部署名称，客户端在调用部署时将其作为 `assistant_id` 传递。您可以使用 `mda deploy --name` 覆盖部署名称，而无需更改代理定义。 |
-| `model=` |设置代理使用的聊天模型。最简单的选项是 `provider:model` 字符串。将提供商的 API 密钥添加到 `.env`，以便模型在本地和部署中运行。  当您需要在代码中配置模型参数时，请传递LangChain聊天模型实例。有关型号选项和支持的提供商，请参阅[Models](/oss/python/deepagents/models)。  要连接到 LLM Gateway，请参阅[Use LLM Gateway](#use-llm-gateway)。 |
+| `model=` |设置代理使用的聊天模型。最简单的选项是 `provider:model` 字符串。将提供商的 API 密钥添加到 `.env`，以便模型在本地和部署中运行。  当您需要在代码中配置模型参数时，请传递LangChain聊天模型实例。有关型号选项和支持的提供程序，请参阅[Models](/oss/python/deepagents/models)。  要连接到 LLM Gateway，请参阅[Use LLM Gateway](#use-llm-gateway)。 |
 | `tools=` |添加代理可以调用​​的工具。传递`tools`列表中的工具，以便代理可以调用​​应用程序逻辑或外部服务。  在本地模块中定义工具，将它们导入到代理条目中，并将它们添加到定义中。参见[Custom tools](/langsmith/python/managed-deep-agents-tools)。要从远程 MCP 服务器添加工具而不将其导入代理条目，请使用 [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)。 || `middleware=` |添加有关模型调用、工具调用和代理生命周期的行为。传递`middleware`列表中的中间件。中间件按列表顺序运行。参见[Custom middleware](/langsmith/python/managed-deep-agents-middleware)。 |
 | `subagents=` |为委派的任务定义专门的代理。当代理应委派专门或上下文繁重的工作时，传递子代理定义。每个子代理可以有自己的提示、模型和工具。请参阅[Subagents](/langsmith/python/managed-deep-agents-subagents)，包括如何在后台运行子代理。 |
 | `permissions=` |控制文件系统工具的路径级访问。传递文件系统权限规则来控制代理的内置文件系统工具可以读取或写入哪些路径。当项目声明[sandbox](/langsmith/python/managed-deep-agents-sandboxes)时清除，因为权限规则禁用了沙箱`execute`工具。参见[Permissions](/oss/python/deepagents/permissions)。 |
 | `interrupt_on=` |在选定的工具需要人工批准之前暂停。将 `interrupt_on` 设置为在选定工具调用之前暂停，以便人们可以在调用运行之前批准、编辑或拒绝调用。参见[Human-in-the-loop](/langsmith/python/managed-deep-agents-tools#human-in-the-loop)。 |
 | `response_format=` |设置代理必须返回与架构匹配的数据而不是不受约束的文本响应的时间。参见[Structured output](/oss/python/langchain/structured-output)。 |
 
-## 选择每次运行的配置要为每次运行选择代理的配置，请将函数导出为 `agent` 而不是定义。然后，一种部署可以适应不同的用户、任务或存储库。该函数是一个图形工厂，与 LangGraph 用于 [rebuild a graph at runtime](/langsmith/graph-rebuild) 的模式相同：它接收运行时并返回定义。
+## 选择每次运行的配置要为每次运行选择代理的配置，请将函数导出为 `agent` 而不是定义。然后，一种部署可以适应不同的用户、任务或存储库。该函数是一个图工厂，与 LangGraph 用于 [rebuild a graph at runtime](/langsmith/graph-rebuild) 的模式相同：它接收运行时并返回定义。
 
 此示例选择运行所处理的存储库的说明和技能。它假设该项目有`skills/python-service/`和`skills/typescript-web/`，每个都有一个[⟦T32⟧](/langsmith/python/managed-deep-agents-skills)。
 
@@ -137,15 +137,14 @@ await client.runs.create(
 | `skills` |展示所有项目技能。 |仅公开选定的技能。 | `[]`没有暴露任何技能。 |
 | `mcp` |使用 `mcp` 声明。 |仅使用选定的 MCP 定义。 | `[]` 不公开 MCP 工具。 |
 | `sandbox` |使用 `sandbox` 声明。 |使用提供的沙箱。 | `None` 禁用沙箱。 |
+| `memory` |使用 `memory` 声明。 |使用选定的图层。 | `None` 禁用持久内存。 |
 | `browser` |使用根`browser.py`。 |使用提供的浏览器定义。 | `None` 禁用浏览器工具。 |
 
 > [!注意]
 >
 > SDK 0.10 中添加了浏览器声明和每次运行选择。即使工厂选择了浏览器，也要保留 root `browser.py`。请参阅 [Choose a browser per run](/langsmith/python/managed-deep-agents-browser-use#choose-a-browser-per-run) 了解范围、覆盖和禁用浏览器工具。
 
-静态定义无法设置这些字段。技能路径必须以 `skills/<name>` 结尾，并指向项目中的技能。工厂还可以返回生成的技能定义，其名称不得与项目技能名称重复。
-
-此示例根据请求启用文档 MCP 服务器，并为一个存储库提供更长的沙箱超时。它从[⟦T56⟧](/langsmith/python/managed-deep-agents-mcp-connectors)和[⟦T57⟧](/langsmith/python/managed-deep-agents-sandboxes)导入声明：
+静态定义无法设置这些字段。技能路径必须以 `skills/<name>` 结尾，并指向项目中的技能。工厂还可以返回生成的技能定义，其名称不得与项目技能名称重复。此示例根据请求启用文档 MCP 服务器，并为一个存储库提供更长的沙箱超时。它从[⟦T59⟧](/langsmith/python/managed-deep-agents-mcp-connectors)和[⟦T60⟧](/langsmith/python/managed-deep-agents-sandboxes)导入声明：
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import TypedDict
@@ -173,7 +172,9 @@ def agent(runtime: ManagedServerRuntime[AppContext]):
         sandbox=define_sandbox(default_timeout=600) if python_service else sandbox,
         context_schema=AppContext,
     )
-```每次运行时不会选择内存。在项目的内存文件中声明它，并使用 `allow` 策略控制每次运行的访问。参见[Control access to a layer](/langsmith/python/managed-deep-agents-memory#control-access-to-a-layer)。
+```
+
+内存选择会覆盖该运行的项目内存声明。用户内存仍然仅为经过身份验证的人员安装。参见[Select layers for each run](/langsmith/python/managed-deep-agents-memory#select-layers-for-each-run)。
 
 ### 保持工厂可重复
 
@@ -184,9 +185,7 @@ def agent(runtime: ManagedServerRuntime[AppContext]):
 * **内联名称**：将 `name` 设置为内联字符串。 `mda build` 无需调用工厂即可读取它，并将其用作图形 ID 和默认部署名称。
 * **模型依赖项**：为工厂可以返回的每个模型安装集成包。构建不会检测到它们。
 
-要更改运行中模型调用之间的行为，请使用[custom middleware](/langsmith/python/managed-deep-agents-middleware)。
-
-## 使用LLM网关
+要更改运行中模型调用之间的行为，请使用[custom middleware](/langsmith/python/managed-deep-agents-middleware)。## 使用LLM网关
 
 您可以使用 [LLM Gateway](/langsmith/llm-gateway) 将速率限制、回退和其他策略应用于模型调用。
 
@@ -199,7 +198,9 @@ agent = define_deep_agent(
     name="my-agent",
     model="langsmith:moonshotai/kimi-k3",
 )
-```> [!注意]
+```
+
+> [!注意]
 >
 > 网关型号 ID 在提供商和型号之间使用斜线 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
 

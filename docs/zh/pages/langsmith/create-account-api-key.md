@@ -95,17 +95,17 @@ LangSmith 支持三种不同权限和生命周期的 API 密钥：
 
 响应返回`201 Created`、`Location`标头以及`key`中的秘密。创建秘密时复制它；列表响应不会返回它。跟踪键具有 `lsv2_tr_` 前缀。
 
-使用密钥作为 `LANGSMITH_API_KEY` 和下面的 [SDK configuration](#configure-the-sdk)。对于作用域为多个工作区的键，请将 `LANGSMITH_WORKSPACE_ID` 设置为选定的工作区。直接 API 请求使用`X-Tenant-Id`。
+使用密钥作为 `LANGSMITH_API_KEY` 和下面的 [SDK configuration](#configure-the-sdk)。对于作用于多个工作区的键，请将 `LANGSMITH_WORKSPACE_ID` 设置为选定的工作区。直接 API 请求使用`X-Tenant-Id`。
 
 ### 范围和生命周期
 
 跟踪密钥在其选定的工作区中具有固定的权限。它不会继承创建者的角色或项目标签访问策略。其工作区范围和权限无法编辑。创建替换密钥以更改范围。
 
-删除或禁用创建者不会禁用密钥跟踪。删除选定的工作区会删除对该工作区的访问权限；它不会添加对其他工作区的访问。过期和密钥删除会停止身份验证，具体取决于身份验证缓存。
+删除或禁用创建者不会禁用密钥跟踪。删除选定的工作空间将删除对该工作空间的访问权限；它不会添加对其他工作区的访问。过期和密钥删除会停止身份验证，具体取决于身份验证缓存。
 
 ### 列出并删除跟踪键在 **设置** > **API 密钥**中，选择 **跟踪** 以查看密钥。要删除密钥，请选择其删除操作并输入其描述进行确认。仅当您有权删除该密钥时，才会出现删除操作。
 
-`GET /api/v1/orgs/current/tracing-keys` 列出经过身份验证的用户可见的密钥。它返回`items`和`next_cursor`。使用`page_size`每页请求1-100个密钥；默认值为 50。将 `next_cursor` 作为 `cursor` 传递以请求下一页。可选的 `workspace_ids` 过滤器将结果限制为匹配可见工作区。
+`GET /api/v1/orgs/current/tracing-keys` 列出经过身份验证的用户可见的密钥。它返回`items`和`next_cursor`。使用`page_size`每页请求1-100个key；默认值为 50。将 `next_cursor` 作为 `cursor` 传递以请求下一页。可选的 `workspace_ids` 过滤器将结果限制为匹配可见工作区。
 
 列出密钥并不一定授予删除它的权限。对于无法访问完整范围的调用者，隐藏的工作区 ID 和名称将被省略。检查`can_delete`删除权限。
 
@@ -143,7 +143,7 @@ LangSmith 支持三种不同权限和生命周期的 API 密钥：
 export LANGSMITH_API_KEY=<your-api-key>
 export LANGSMITH_TRACING=true
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
 
 使用代理寻址时删除旧目标变量。在基于项目的工作区（包括自托管 LangSmith）中，使用 `LANGSMITH_PROJECT` 而不是两个代理变量。

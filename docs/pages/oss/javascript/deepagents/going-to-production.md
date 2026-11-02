@@ -293,7 +293,7 @@ await agent.invoke(
 );
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/44cc94e5-294b-4027-930e-d7b767d5c77c/r)
+> [card] [View example trace](https://smith.langchain.com/public/52df2606-bdc7-4290-ac88-00dd1a3cce2a/r)
 >
 > Open a public LangSmith run for this example.
 

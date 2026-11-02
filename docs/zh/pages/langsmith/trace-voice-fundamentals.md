@@ -36,7 +36,7 @@
 
 我们推荐三个高级别会议：
 
-1. [**Trace each conversation as a single trace**](#trace-each-conversation-as-a-single-trace)，而不是将其分割成多个迹线。
+1. [**Trace each conversation as a single trace**](#trace-each-conversation-as-a-single-trace)，而不是将其分割成多条迹线。
 2. [**Record a single combined audio file**](#record-a-single-combined-audio-file) 并将其附加到根运行。
 3. [**Mark the trace as audio**](#mark-the-trace-as-audio) 与 `ls_modality` 一起渲染和过滤为语音轨迹。
 
@@ -44,7 +44,7 @@
 
 不要将对话分成多个跟踪。如果您为每个交换启动新的跟踪，您将丢失**之间**交换中存在的信息：
 
-* **中断**：当用户与座席交谈并且座席停止（打断）时。
+* **中断**：当用户与座席交谈且座席停止（打断）时。
 * **时间和延迟**：发言者之间的间隙，以及客服人员响应所需的时间。
 * **上下文**：引用对话的早期部分。
 * **对话级结果**：用户的目标是否最终得到解决。
@@ -75,7 +75,7 @@ conversation                      ← root run (whole conversation; combined aud
 
 > [!注意]
 >
-> 语音代理没有可靠的“转弯”概念。扬声器重叠、中断和减弱。不要将跑步分组为合成回合。相反，跟踪真实的单元：级联中的模型调用，或语音到语音流中的事件负载。有关分组相关运行的背景信息，请参阅[Nest traces](/langsmith/nest-traces)。要为一个用户分组多个单独的会话，请使用 [Threads](/langsmith/threads)。
+> 语音代理没有可靠的“转弯”概念。扬声器重叠、中断和减弱。不要将跑步分组为合成回合。相反，跟踪实际单元：级联中的模型调用，或语音到语音流中的事件负载。有关分组相关运行的背景信息，请参阅[Nest traces](/langsmith/nest-traces)。要为一个用户分组多个单独的会话，请使用 [Threads](/langsmith/threads)。
 
 ### 录制单个组合音频文件
 
@@ -99,7 +99,7 @@ def run_conversation(session_id: str, conversation_audio: bytes):
 
 > [!提示]
 >
-> 音频文件可能很大。对于大批量生产工作负载，请考虑使用压缩格式（例如 MP3 或 Opus）进行下采样，或对完整录制的对话进行采样。### 将轨迹标记为音频
+> 音频文件可能很大。对于大批量生产工作负载，请考虑使用压缩格式（例如 MP3 或 Opus）进行下采样，或对完整录制的对话进行采样。### Mark the trace as audio
 
 在根运行上将 `ls_modality` 元数据字段设置为 `"audio"`。这会将跟踪标记为语音跟踪，以便 LangSmith 可以适当地渲染它，这样您就可以在项目中使用 [filter](/langsmith/filter-traces) 来处理语音跟踪。
 
@@ -120,32 +120,32 @@ def run_conversation(session_id: str):
 
 ## 后续步骤
 
-> **[Trace OpenAI Realtime](/langsmith/trace-openai-realtime)**
+> [卡][Trace OpenAI Realtime](/langsmith/trace-openai-realtime)
 >
 > 跟踪基于 OpenAI 实时 API 构建的语音代理。
 
-> **[Trace Gemini Live](/langsmith/trace-gemini-live)**
+> [卡][Trace Gemini Live](/langsmith/trace-gemini-live)
 >
 > 跟踪基于 Gemini Live API 构建的语音代理。
 
-> **[Trace LiveKit](/langsmith/trace-with-livekit)**
+> [卡][Trace LiveKit](/langsmith/trace-with-livekit)
 >
-> 跟踪使用 LiveKit Agents 构建的语音代理。
+> Trace voice agents built with LiveKit Agents.
 
-> **[Trace Pipecat](/langsmith/trace-with-pipecat)**
+> [卡][Trace Pipecat](/langsmith/trace-with-pipecat)
 >
-> 跟踪使用 Pipecat 构建的语音代理。
+> Trace voice agents built with Pipecat.
 
-> **[Upload files with traces](/langsmith/upload-files-with-traces)**
+> [卡][Upload files with traces](/langsmith/upload-files-with-traces)
 >
 > 将对话录音附加到您的轨迹中。
 
-> **[Log multimodal traces](/langsmith/log-multimodal-traces)**
+> [卡片][Log multimodal traces](/langsmith/log-multimodal-traces)
 >
 > 在 LangSmith UI 中渲染音频和其他媒体。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-voice-fundamentals.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

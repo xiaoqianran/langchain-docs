@@ -19,7 +19,7 @@ Register the classifier agent, then configure its identifier and environment:
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 os.environ["LANGSMITH_AGENT_ID"] = "<your-agent-id>"
-os.environ["LANGSMITH_AGENT_ENVIRONMENT"] = "production"
+os.environ["LANGSMITH_AGENT_ENVIRONMENT"] = "local"
 ```
 
 We can then create our initial agent. This will be a really simple function that just takes in a GitHub issue title and tries to label it.

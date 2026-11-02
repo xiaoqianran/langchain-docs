@@ -26,7 +26,7 @@ Set the following environment variables for all implementations:
 | - | - | - |
 | `LANGSMITH_API_KEY` | Yes | Your LangSmith API key from Settings. |
 | `LANGSMITH_AGENT_ID` | Yes, for Python and TypeScript | Registered agent identifier. |
-| `LANGSMITH_AGENT_ENVIRONMENT` | Yes, for Python and TypeScript | Agent environment, such as `production`. |
+| `LANGSMITH_AGENT_ENVIRONMENT` | Yes, for Python and TypeScript | Agent environment, such as `local`. |
 
 > [!NOTE]
 >

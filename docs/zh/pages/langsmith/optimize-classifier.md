@@ -21,7 +21,7 @@
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 os.environ["LANGSMITH_AGENT_ID"] = "<your-agent-id>"
-os.environ["LANGSMITH_AGENT_ENVIRONMENT"] = "production"
+os.environ["LANGSMITH_AGENT_ENVIRONMENT"] = "local"
 ```
 
 然后我们可以创建我们的初始代理。这将是一个非常简单的函数，仅接受 GitHub 问题标题并尝试对其进行标记。

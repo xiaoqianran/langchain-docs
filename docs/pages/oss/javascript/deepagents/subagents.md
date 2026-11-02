@@ -890,7 +890,7 @@ const result = await agent.invoke({
 });
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/063e51b3-a740-4e8f-8aea-719ece3eb063/r)
+> [card] [View example trace](https://smith.langchain.com/public/27cc9979-85f8-48f1-ae9d-f06c656dc70e/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -1916,7 +1916,7 @@ const result = await agent.invoke({
 // '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/32f86449-60f9-4efc-ad23-ba394fff2f70/r)
+> [card] [View example trace](https://smith.langchain.com/public/b09c52e3-f197-4789-a533-12ed667d437a/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -2979,7 +2979,7 @@ const verifyClaim = tool(
 );
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/5006241c-d76d-41b1-92f2-36aff3b8b7b6/r)
+> [card] [View example trace](https://smith.langchain.com/public/ed436335-2188-45cf-9626-38a179915dee/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -3008,7 +3008,7 @@ const sharedLookup = tool(
 );
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/da0b5974-be3d-4ad7-97a7-15cf187d2d6c/r)
+> [card] [View example trace](https://smith.langchain.com/public/50b0da91-0eb8-4623-8364-201330fbdcbc/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -3043,7 +3043,7 @@ const flexibleSearch = tool(
 );
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/240b9930-e85a-4b28-9f5d-01ba1c52a650/r)
+> [card] [View example trace](https://smith.langchain.com/public/548f421c-960a-4ca9-bf9e-cba22b735a0a/r)
 >
 > Open a public LangSmith run for this example.
 

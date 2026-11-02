@@ -315,9 +315,9 @@ console.log(link.download_url);
 
 ## 安装 Context Hub 存储库
 
-安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙盒代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。> [!警告]
+安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙箱代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。> [!警告]
 >
-> Context Hub 安装是**只读**。同步是单向的，从存储库到沙箱：代理在挂载路径下写入的文件永远不会被推回到存储库，并且下一次同步会覆盖它们。将沙箱输出写入挂载外部的路径，以及 [push it with the SDK](/langsmith/manage-contexts-sdk)（如果它属于存储库）。
+> Context Hub 安装是**只读**。同步是单向的，从存储库到沙箱：代理在挂载路径下写入的文件永远不会被推回到存储库，并且下一次同步会覆盖它们。将沙箱输出写入挂载外部的路径，如果它属于存储库，则将其写入[push it with the SDK](/langsmith/manage-contexts-sdk)。
 
 将安装座穿过`mount_config`。创建沙箱的 API 密钥必须有权访问存储库，否则创建会失败并显示 `403`。
 
@@ -409,10 +409,116 @@ const sb = await client.createSandbox({
 >
 > 可以在创建时通过 REST API 设置自由格式 `labels`（每个沙箱最多 128 个，每个键 256 字节，每个值 4096 字节）。沙箱继承其快照的标签，除非被覆盖。 `langsmith.sandbox` 客户端尚未公开此字段。
 
+## 创建一个非持久沙箱非持久性沙箱仅在运行时保留文件系统写入。将其用于一次性代码执行或停止后不需要文件的评估。非持久性沙箱不产生存储费用；计算使用仍然适用。
+
+默认情况下启用持久性。创建沙箱时将 `persistent` 设置为 `false` 以选择退出。此设置适用于新沙箱，而不适用于现有沙箱。
+
+> [!注意]
+>
+> 这些示例使用 Python `langsmith` 版本 0.14.17 或更高版本、TypeScript `langsmith` 版本 0.11.7 或更高版本、Go `github.com/langchain-ai/langsmith-go` v0.29.3 和 Java `com.langchain.smith:langsmith-java` 版本 0.1.0-beta.28。
+
+按照 [Create and run a sandbox](#create-and-run-a-sandbox) 中的说明设置 `LANGSMITH_API_KEY` 和 `LANGSMITH_ENDPOINT`。当沙箱运行时，文件在命令之间保持可用：
+
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.sandbox import SandboxClient
+
+client = SandboxClient()
+with client.sandbox(persistent=False) as sandbox:
+    sandbox.run("echo hello > /tmp/example.txt")
+    result = sandbox.run("cat /tmp/example.txt")
+    print(result.stdout)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { SandboxClient } from "langsmith/sandbox";
+
+const client = new SandboxClient();
+const sandbox = await client.createSandbox({ persistent: false });
+try {
+  await sandbox.run("echo hello > /tmp/example.txt");
+  const result = await sandbox.run("cat /tmp/example.txt");
+  console.log(result.stdout);
+} finally {
+  await sandbox.delete();
+}
+```
+
+```go Go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	langsmith "github.com/langchain-ai/langsmith-go"
+)
+
+func main() {
+	ctx := context.Background()
+	client := langsmith.NewClient()
+	sandbox, err := client.Sandboxes.Boxes.NewSandbox(ctx, langsmith.SandboxBoxNewParams{
+		Persistent: langsmith.F(false),
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer sandbox.Delete(ctx)
+
+	result, err := sandbox.Run(ctx, langsmith.SandboxBoxRunParams{
+		Command: langsmith.F("echo hello > /tmp/example.txt && cat /tmp/example.txt"),
+	})
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	fmt.Print(result.Stdout)
+}
+```
+
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.client.okhttp.OkHttpClient;
+import com.langchain.smith.core.ClientOptions;
+import com.langchain.smith.models.sandboxes.boxes.BoxCreateParams;
+import com.langchain.smith.sandbox.Sandbox;
+import com.langchain.smith.sandbox.SandboxClient;
+
+public class NonPersistentSandbox {
+    public static void main(String[] args) {
+        ClientOptions options = ClientOptions.builder()
+            .fromEnv()
+            .httpClient(OkHttpClient.builder().build())
+            .build();
+        try {
+            SandboxClient client = SandboxClient.of(options);
+            Sandbox sandbox = client.create(
+                BoxCreateParams.builder().persistent(false).build()
+            );
+            try {
+                sandbox.run("echo hello > /tmp/example.txt");
+                System.out.print(sandbox.run("cat /tmp/example.txt").stdoutString());
+            } finally {
+                sandbox.delete();
+            }
+        } finally {
+            options.close();
+        }
+    }
+}
+```
+
+当块退出时，Python 上下文管理器会删除沙箱。对于手动清理，请使用 `client.create_sandbox(persistent=False)` 并在完成后调用 `sandbox.delete()`。即使命令失败，TypeScript `finally` 块也会删除沙箱。
+
+> [!警告]
+>
+> 空闲超时和显式停止丢弃文件系统写入。下次启动将从快照中全新启动。在停止之前将输出保存在沙箱外部。设置 `delete_after_stop_seconds` 不会保留这些写入。非持久性沙箱无法在停止时保留内存或捕获其文件系统作为快照。从其他沙箱捕获的某些快照无法启动非持久沙箱。使用默认快照或兼容的[custom snapshot](/langsmith/sandbox-snapshots)。每个 vCPU 的磁盘容量限制为 16 GiB。
+
 ## 沙盒寿命和保留
 
 沙箱由固定于**空闲的两阶段保留模型控制
-活动**和**`stopped`**状态。|领域|它控制什么 |当它发生时 |
+活动**和**`stopped`**状态。
+
+|领域|它控制什么 |当它发生时 |
 | - | - | - |
 | `idle_ttl_seconds` |在闲置这么多秒后，启动器会停止沙箱。任何命令执行或文件 I/O 都会重置计时器。 `0` 禁用怠速停止。 |省略时默认为 `600`（10 分钟）。 |
 | `delete_after_stop_seconds` |一旦沙箱进入`stopped`状态，该计时器就会启动。过了一段时间后，沙箱行+文件系统克隆将被服务器端扫描永久删除。 `0` 禁用停止锚定删除（需要手动清理）。 |如果省略，服务器将应用其配置的默认值（通常为 14 天）。 |
@@ -421,9 +527,7 @@ const sb = await client.createSandbox({
 
 ```
 running ──(idle for idle_ttl_seconds)──▶ stopped ──(delete_after_stop_seconds)──▶ deleted
-```
-
-您还可以显式调用 `stop_sandbox` / `stopSandbox` 在空闲超时触发之前释放资源；它还会填充`stopped_at`并启动删除计时器。之后您无需再次启动它：停止的沙箱会在下一个命令、文件操作或服务 URL 请求时唤醒。
+```您还可以显式调用 `stop_sandbox` / `stopSandbox` 在空闲超时触发之前释放资源；它还会填充`stopped_at`并启动删除计时器。之后您无需再次启动它：停止的沙箱会在下一个命令、文件操作或服务 URL 请求时唤醒。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Default retention (server defaults: 10-min idle stop, 14-day delete)
@@ -475,8 +579,10 @@ await client.updateSandbox(sb.name, {
 
 ## 命令生命周期和 TTL
 
-沙箱守护进程使用两种超时机制来管理命令会话生命周期：* **会话 TTL（已完成的命令）**：命令完成后，其会话会在内存中保留一段 TTL 时间（默认值：5 分钟）。在此窗口期间，您可以重新连接以检索输出。 TTL 过期后，会话将被清除。将 `ttl_seconds` 设置为 `-1` 以无限期地保留会话。
-* **空闲超时（运行命令）**：在空闲超时（默认值：1 小时）后，没有连接客户端的运行命令将被终止。每次客户端连接时，空闲计时器都会重置。将 `idle_timeout` 设置为 `-1` 则无空闲超时。
+沙箱守护进程使用两种超时机制来管理命令会话生命周期：
+
+* **会话 TTL（已完成的命令）**：命令完成后，其会话会在内存中保留一段 TTL 时间（默认值：5 分钟）。在此窗口期间，您可以重新连接以检索输出。 TTL 过期后，会话将被清理。将 `ttl_seconds` 设置为 `-1` 以无限期地保持会话。
+* **空闲超时（运行命令）**：在空闲超时（默认值：1 小时）后，没有连接客户端的运行命令将被终止。每次客户端连接时，空闲计时器都会重置。将 `idle_timeout` 设置为 `-1` 即可无空闲超时。
 
 ### 组合生命周期选项
 
@@ -524,11 +630,9 @@ try {
 }
 ```
 
-设置 `kill_on_disconnect=True` (Python) 或 `killOnDisconnect: true` (TypeScript) 以在最后一个客户端断开连接时立即终止该命令，而不是等待空闲超时。
+设置 `kill_on_disconnect=True` (Python) 或 `killOnDisconnect: true` (TypeScript) 以在最后一个客户端断开连接时立即终止命令，而不是等待空闲超时。
 
-## 服务 URL (Python)
-
-通过经过身份验证的 URL 访问在沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
+## 服务 URL (Python)通过经过身份验证的 URL 访问沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 with client.sandbox() as sb:
@@ -546,7 +650,9 @@ with client.sandbox() as sb:
 
 有关更多详细信息，包括用例、REST API 访问和完整的 FastAPI 示例，请参阅 [Service URLs](/langsmith/sandbox-service-urls)。
 
-## TCP 隧道 (Python)访问沙箱内运行的任何 TCP 服务，就好像它是本地服务一样。隧道打开本地 TCP 端口，并通过 WebSocket 将连接转发到沙箱内的目标端口。
+## TCP 隧道 (Python)
+
+访问沙箱内运行的任何 TCP 服务，就好像它是本地服务一样。隧道打开本地 TCP 端口，并通过 WebSocket 将连接转发到沙箱内的目标端口。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import psycopg2
@@ -663,13 +769,13 @@ try {
 } finally {
   await sandbox.delete();
 }
-```
-
-在沙箱内，任何 LangSmith 检测代码（`@traceable`、LangChain、LangGraph）都会自动从注入的环境变量中获取跟踪配置。
+```在沙箱内，任何 LangSmith 检测代码（`@traceable`、LangChain、LangGraph）都会自动从注入的环境变量中获取跟踪配置。
 
 > [!警告]
 >
-> 始终在沙箱进程退出之前调用 `flush()` — Python 中的 `langsmith.Client().flush()` 或 TypeScript 中的 `await new Client().flush()`。如果没有它，跟踪可能会丢失，因为命令完成时容器会被破坏。## 错误处理
+> 始终在沙箱进程退出之前调用 `flush()` — Python 中的 `langsmith.Client().flush()` 或 TypeScript 中的 `await new Client().flush()`。如果没有它，跟踪可能会丢失，因为命令完成时容器会被破坏。
+
+## 错误处理
 
 这两个 SDK 都提供了用于特定错误处理的类型化异常：
 
@@ -722,7 +828,7 @@ try {
 
 > [!注意]
 >
-> 有关更多详细信息，请参阅 GitHub 上的 [Python](https://github.com/langchain-ai/langsmith-python/tree/main/src/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-javascript/tree/main/src/lib/sandbox) 沙箱 SDK 参考。
+> 有关更多详细信息，请参阅 GitHub 上[Python](https://github.com/langchain-ai/langsmith-python/tree/main/src/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-javascript/tree/main/src/lib/sandbox) 的沙箱 SDK 参考。
 
 ***
 

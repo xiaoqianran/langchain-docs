@@ -45,7 +45,7 @@ langsmith auth login
 2. 您的 `langsmith auth login` 登录。
 3. 来自您环境的通用`LANGSMITH_API_KEY`。
 
-当您的登录过期或您的密钥被拒绝时，跟踪就会停止，并且永远不会上传该间隙的轮次。光标无法在不停止提示的情况下显示消息，因此插件将原因写入`~/.cursor/langsmith_hook.log`。管理员还可以对每个提示进行[require a working sign-in](#require-a-working-sign-in)。
+当您的登录过期或您的密钥被拒绝时，跟踪就会停止，并且永远不会上传该间隙的轮次。如果不停止提示，光标将无法显示消息，因此插件将原因写入`~/.cursor/langsmith_hook.log`。管理员还可以对每个提示进行[require a working sign-in](#require-a-working-sign-in)。
 
 ## 开启追踪
 
@@ -63,9 +63,9 @@ langsmith auth login
 
 使用其中之一。如果两者都设置，则`agent_id`获胜。> [!警告]
 >
-> 项目可以使用 `<project>/.cursor/langsmith.json` 或 `<project>/langsmith-plugins.json` 覆盖这些设置。克隆存储库可以使用它们来打开跟踪并将您的提示和文件发送到其他人的服务器。在信任存储库之前，请查看这些文件。 Cursor 自己的 `.cursor/hooks.json` 可以运行命令，所以也回顾一下它。
+> 项目可以使用 `<project>/.cursor/langsmith.json` 或 `<project>/langsmith-plugins.json` 覆盖这些设置。克隆存储库可以使用它们来打开跟踪并将提示和文件发送到其他人的服务器。在信任存储库之前，请查看这些文件。 Cursor 自己的 `.cursor/hooks.json` 可以运行命令，所以也回顾一下它。
 
-发送提示并在[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-cursor)中打开您的代理或项目。在自动模式下，模型显示为 `default` 并且子代理不显示任何令牌计数，因为 Cursor 不报告任何一个。
+发送提示并在[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-cursor)中打开您的代理或项目。在自动模式下，模型显示为 `default` 并且子代理不显示令牌计数，因为 Cursor 不报告任何一个。
 
 ## 部署到您的组织
 
@@ -95,7 +95,7 @@ langsmith auth login
 
 管理员通常使用 Jamf 或 Microsoft Intune 等移动设备管理 (MDM) 工具在每台计算机上安装该文件。对于每个可以锁定的设置，请参阅[plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md)。
 
-> **设置脚本示例**
+> [手风琴] 设置脚本示例
 >
 > 以 root 身份为每个用户运行此命令，并将 `USER_HOME` 设置为该用户的主文件夹：
 >
@@ -132,7 +132,7 @@ langsmith auth login
 
 ＃＃ 设置每个设置都有一个配置文件密钥和一个环境变量。当两者都设置时，环境变量获胜。
 
-|配置键 |环境变量 |默认|描述 |
+|配置键 |环境变量 |默认 |描述 |
 | - | - | - | - |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` |打开追踪。 |
 | `api_key` | `LANGSMITH_CURSOR_API_KEY` |无 | LangSmith API 密钥。如果您使用 CLI 登录，则不需要。 |

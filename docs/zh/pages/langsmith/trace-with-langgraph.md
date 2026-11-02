@@ -1,10 +1,14 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace LangGraph applications | https://docs.langchain.com/langsmith/trace-with-langgraph -->
+<!-- langchain-docs: Trace LangGraph agents | https://docs.langchain.com/langsmith/trace-with-langgraph -->
 
-# 跟踪LangGraph应用程序
+# 追踪LangGraph特工
 
 LangSmith 与 LangGraph（Python 和 JS）顺利集成，以帮助您跟踪代理，无论您使用 LangChain 模块还是其他 SDK。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T15⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 与 LangChain
 
@@ -39,13 +43,15 @@ pnpm add @langchain/openai @langchain/langgraph
 ```bash wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 # This example uses OpenAI, but you can use any LLM provider of choice
 export OPENAI_API_KEY=<your-openai-api-key>
 # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
 export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
 ```> [!注意]
 >
-> 如果您的帐户位于美国以外的区域（默认），还需将 `LANGSMITH_ENDPOINT` 设置为您所在区域的 API URL。如果没有这个，您的 API 密钥将不会被识别，并且请求将无法通过身份验证。
+> 如果您的账户位于美国以外的区域（默认），还需将 `LANGSMITH_ENDPOINT` 设置为您所在区域的 API URL。如果没有这个，您的 API 密钥将不会被识别，并且请求将无法通过身份验证。
 >
 > <table>
 > <thead>
@@ -244,7 +250,7 @@ finalState.messages[finalState.messages.length - 1].content;
 
 LangSmith UI 中的 **Trajectory** 视图显示用户和代理之间的简化对话历史记录。该视图从顶级跟踪中提取消息（包括用户的初始请求、工具调用和代理的最终响应），并以类似聊天的格式表示它们。
 
-## 没有 LangChain
+## 不带 LangChain
 
 如果您在 LangGraph 中使用其他 SDK 或自定义函数，则需要 [wrap or decorate them appropriately](/langsmith/annotate-code#use-%40traceable-%2F-traceable) （使用 Python 中的 `@traceable` 装饰器或 JS 中的 `traceable` 函数，或者类似 SDK 的 `wrap_openai` ）。如果这样做，LangSmith将自动从这些包装的方法中嵌套跟踪。
 
@@ -275,11 +281,13 @@ pnpm add openai langsmith @langchain/langgraph
 ```bash wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 # This example uses OpenAI, but you can use any LLM provider of choice
 export OPENAI_API_KEY=<your-openai-api-key>
 ```> [!注意]
 >
-> 如果您的帐户位于美国以外的区域（默认），还需将 `LANGSMITH_ENDPOINT` 设置为您所在区域的 API URL。如果没有这个，您的 API 密钥将不会被识别，并且请求将无法通过身份验证。
+> 如果您的账户位于美国以外的区域（默认），还需将 `LANGSMITH_ENDPOINT` 设置为您所在区域的 API URL。如果没有这个，您的 API 密钥将不会被识别，并且请求将无法通过身份验证。
 >
 > <table>
 > <thead>
@@ -563,6 +571,6 @@ LangSmith UI 中的 **Trajectory** 视图显示用户和代理之间的简化对
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-langgraph.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

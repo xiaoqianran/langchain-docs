@@ -12,19 +12,19 @@ The [Claude Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) i
 
 Install the LangSmith integration for Claude Agent SDK
 
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv add "langsmith[claude-agent-sdk]"
 ```
 
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install langsmith[claude-agent-sdk]
 ```
 
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pnpm add @anthropic-ai/claude-agent-sdk langsmith zod
 ```
 
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install @anthropic-ai/claude-agent-sdk langsmith zod
 ```
 
@@ -39,7 +39,7 @@ export LANGSMITH_TRACING=true
 export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 
 export ANTHROPIC_API_KEY=<your_anthropic_api_key>
 ```
@@ -49,7 +49,7 @@ LANGSMITH_TRACING=true
 LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 LANGSMITH_API_KEY=<your_langsmith_api_key>
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 
 ANTHROPIC_API_KEY=<your_anthropic_api_key>
 ```
@@ -62,7 +62,7 @@ For an Anthropic API key, refer to the [Claude console](https://console.anthropi
 
 To enable LangSmith tracing for your Claude Agent SDK code, call `configure_claude_agent_sdk()` before running your agent:
 
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 from typing import Any
 
@@ -119,7 +119,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as originalSdk from '@anthropic-ai/claude-agent-sdk';
 
 import { wrapClaudeAgentSDK } from 'langsmith/experimental/anthropic';
