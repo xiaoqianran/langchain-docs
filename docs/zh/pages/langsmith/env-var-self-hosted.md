@@ -6,7 +6,7 @@
 
 部署在自承载基础设施上时，LangSmith代理服务器支持的环境变量。
 
-当部署在[self-hosted](/langsmith/deploy-to-self-hosted-overview)基础设施上时，代理服务器支持以下环境变量。有关特定于云部署的变量，请参阅[Cloud Agent Server environment variables](/langsmith/env-var-cloud)。
+部署在 [self-hosted](/langsmith/deploy-to-self-hosted-overview) 基础设施上时，代理服务器支持以下环境变量。有关特定于云部署的变量，请参阅[Cloud Agent Server environment variables](/langsmith/env-var-cloud)。
 
 ## `BG_JOB_ISOLATED_LOOPS`
 
@@ -19,7 +19,7 @@
 
 如果图/节点的实现包含同步代码，则应将此环境变量设置为`True`。在这种情况下，同步代码将阻塞服务 API 事件循环，这可能会导致 API 不可用。 API 不可用的一个症状是由于运行状况检查失败而导致应用程序不断重新启动。> [!警告]
 >
-> 当启用 `BG_JOB_ISOLATED_LOOPS` 时，每个后台工作线程都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易受到连接失败的影响，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
+> 当启用 `BG_JOB_ISOLATED_LOOPS` 时，每个后台工作线程都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易出现连接失败，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
 
 默认为`False`。
 
@@ -35,7 +35,7 @@
 
 可以增加后台运行的超时时间。但是，云部署的基础架构对 API 请求强制执行 1 小时的超时限制。这意味着客户端和服务器之间的连接将在 1 小时后超时。这是不可配置的。
 
-后台运行可以执行超过 1 小时，但如果运行时间超过 1 小时，客户端必须重新连接到服务器（例如通过 `POST /threads/{thread_id}/runs/{run_id}/stream` 加入流）以检索运行的输出。
+后台运行可以执行超过 1 小时，但如果运行时间超过 1 小时，客户端必须重新连接到服务器（例如通过`POST /threads/{thread_id}/runs/{run_id}/stream`加入流）以检索运行的输出。
 
 默认为`86400`。
 
@@ -56,22 +56,58 @@
 
 ## 支持的 Datadog 环境变量
 
-在部署上设置这些环境变量或机密，以将代理服务器跟踪和日志发送到 Datadog。每个变量仅在设置`DD_API_KEY`时生效，它将应用程序进程包装在Datadog的[⟦T41⟧](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html)跟踪器和日志收集代理中。
+在部署上设置这些环境变量或机密，以将代理服务器跟踪和日志发送到 Datadog。每个变量仅在设置`DD_API_KEY`时生效，它将应用程序进程包装在Datadog的[⟦T42⟧](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html)跟踪器和日志收集代理中。
 
 * **`DD_API_KEY`**：您的[Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/)。必需的。将任何跟踪或日志发送到 Datadog 都需要它。
 * **`DD_LOGS_ENABLED`**：设置为 `true` 将代理服务器日志转发到 Datadog。省略它或将其设置为`false`以禁用日志转发。
 * **`DD_LOGS_INJECTION`**：设置为 `true` 可将跟踪和跨度标识符添加到日志中，以便日志与跟踪相关联。
 * **`DD_TRACE_ENABLED`**：控制Datadog跟踪收集。设置为 `true` 来收集跟踪信息，或设置为 `false` 来禁用它。
-* **`DD_SITE`**：要发送数据的Datadog站点，例如`datadoghq.com`或`datadoghq.eu`。默认为`datadoghq.com`。
+* **`DD_SITE`**：要发送数据的Datadog站点，例如`datadoghq.com`或`datadoghq.eu`。默认为 `datadoghq.com`。
 * **`DD_ENV`**：应用于跟踪和日志的环境名称，例如`production`。
 * **`DD_SERVICE`**：应用于跟踪和日志的服务名称。* **`DD_TRACE_DEBUG`**：设置为 `true` 以在故障排除时在 `ddtrace` 跟踪器中启用调试日志记录。
 * **`DD_LOG_LEVEL`**：故障排除时的Datadog Agent日志级别，例如`debug`。
 
-有关完整的跟踪选项集，请参阅 [⟦T63⟧ environment variables](https://ddtrace.readthedocs.io/en/stable/configuration.html) 参考。
+有关完整的跟踪选项集，请参阅 [⟦T64⟧ environment variables](https://ddtrace.readthedocs.io/en/stable/configuration.html) 参考。
 
 > [!注意]
 >
 > 启用 `DD_API_KEY`（以及`ddtrace-run`）可能会覆盖或干扰您可能已在应用程序代码中检测的其他自动检测解决方案（例如 OpenTelemetry）。
+
+## `FF_OPTIMIZED_STREAMING`
+
+在部署上设置 `FF_OPTIMIZED_STREAMING=true` 以使用 Redis Streams 而不是 Redis Pub/Sub 来流式运行输出。
+
+> [!注意]
+>
+> `FF_OPTIMIZED_STREAMING` 需要代理服务器 v0.7.93 或更高版本。
+
+启用后，服务器将所有流事件存储在 Redis Streams 中。 `RESUMABLE_STREAM_TTL_SECONDS`仍然控制Redis保留流数据的时间，默认为`120`秒。
+
+在启用标志继续通过 Redis Pub/Sub 传输之前，不可恢复运行已开始。
+
+接受布尔值 `true` 和 `false`。默认为 `false`。
+
+## `FF_PROFILE_IMPORTS`
+
+将 `FF_PROFILE_IMPORTS` 设置为 `true` 以找出图表加载缓慢的原因。默认为 `false`。添加到`langgraph-api==0.6.8`。代理服务器在启动时导入图形模块时运行图形代码，因此导入时发生的工作会延迟准备时间。示例包括网络调用、数据库或客户端设置、读取大文件以及大量依赖项导入。当图形导入时间超过 3 秒时，服务器会记录一条警告，建议设置此变量。
+
+通过设置变量，服务器会分析从您的配置加载的每个 Python 模块的导入。这涵盖了您的图表、自定义应用程序、身份验证处理程序、存储、检查点和加密模块。如果导入中的任何函数至少需要 1 秒，服务器会记录一条 `slow_import_profile` 警告，其中列出最多 10 个最慢的函数。每个条目都会显示该函数、其累积时间以及在模块中调用该函数的位置。该报告采用以下格式，并附有说明性值：
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+Slow startup for './agent.py:graph' (12.3s)
+
+    Slowest operations:
+       10.84s  connect_to_database      clients/db.py:42
+               ↳ from agent.py (module-level)
+```
+
+该报告识别出缓慢的操作，因此您可以将其移动到函数内或延迟初始化它，而不是在导入时运行它。
+
+请记住以下几点：* 分析会增加开销，因此报告的时间比正常情况要高。解决问题后删除该变量。
+* 在模块顶层进行的调用归属于`(module-level)`，没有行号。
+* 每次耗时不到 1 秒的操作不会出现在报告中，即使其中许多操作加起来导致导入速度很慢。
+* 导入分析仅适用于 Python 图表。尚不支持 JavaScript 图表。
+* 仅分析导入时间。导入图表后的延迟（例如自定义应用程序生命周期内的延迟）不会出现。
 
 ## `LANGGRAPH_AES_KEY` 和 `LANGGRAPH_AES_JSON_KEYS`
 
@@ -85,39 +121,39 @@
 
 * [A2A agent cards](/langsmith/server-a2a#agent-card-discovery) 中的基本 URL。
 * OpenAPI 规范中的 `servers` 条目在 `/openapi.json` 上提供服务。
-* 每次运行元数据中的 `langgraph_api_url` 键。
+* 每次运行元数据中的 `langgraph_api_url` 键。如果未设置，服务器将根据传入请求构建代理卡 URL。当客户端通过不同的主机（例如反向代理）到达服务器时设置它。
 
-如果未设置，服务器将根据传入请求构建代理卡 URL。当客户端通过不同的主机（例如反向代理）到达服务器时设置它。
+## `LANGGRAPH_DEFAULT_RECURSION_LIMIT`
 
-## `LANGGRAPH_DEFAULT_RECURSION_LIMIT`将 `LANGGRAPH_DEFAULT_RECURSION_LIMIT` 设置为运行的默认 [recursion limit](/oss/python/langgraph/graph-api#recursion-limit)：图形在引发错误之前执行的最大超级步数。传入运行配置的 `recursion_limit` 会覆盖它。
+将 `LANGGRAPH_DEFAULT_RECURSION_LIMIT` 设置为运行的默认 [recursion limit](/oss/python/langgraph/graph-api#recursion-limit)：图形在引发错误之前执行的最大超级步数。传入运行配置的 `recursion_limit` 会覆盖它。
 
-默认为 `10011`。
+默认为`10011`。
 
 ## `LANGGRAPH_POSTGRES_POOL_MAX_SIZE`
 
-从 langgraph-api 版本 `0.2.12` 开始，Postgres 连接池（每个副本）的最大大小可以使用 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 环境变量进行控制。通过设置此变量，您可以确定服务器与 Postgres 数据库建立的同时连接数的上限。
+从 langgraph-api 版本 `0.2.12` 开始，可以使用 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 环境变量控制 Postgres 连接池（每个副本）的最大大小。通过设置此变量，您可以确定服务器与 Postgres 数据库建立的同时连接数的上限。
 
-例如，如果部署扩展到 10 个副本，并且 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 配置为 `150`，则最多可以建立 `1500` 到 Postgres 的连接。这对于数据库资源有限（或更多可用）的部署或者出于性能或扩展原因需要调整连接行为的部署特别有用。
-
-当[⟦T87⟧](#bg_job_isolated_loops)启用时，池不被共享。相反，每个后台工作线程都会创建自己的池，最大大小为`LANGGRAPH_POSTGRES_POOL_MAX_SIZE / N_JOBS_PER_WORKER`。减小池大小时请记住这一点。适合共享池的值可能会导致隔离循环下的每个工作线程池非常小。
+例如，如果部署扩展到 10 个副本，并且 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 配置为 `150`，则最多可以建立 `1500` 到 Postgres 的连接。这对于数据库资源有限（或更多可用）的部署或者出于性能或扩展原因需要调整连接行为的部署特别有用。当[⟦T103⟧](#bg_job_isolated_loops)启用时，池不共享。相反，每个后台工作线程都会创建自己的池，最大大小为`LANGGRAPH_POSTGRES_POOL_MAX_SIZE / N_JOBS_PER_WORKER`。减小池大小时请记住这一点。适合共享池的值可能会导致隔离循环下的每个工作线程池非常小。
 
 默认为 `150` 连接。
 
-## `LS_CHECKPOINT_DELETE`用于延迟检查点删除的 JSON 值配置。启用后，线程删除和修剪操作会将检查点排入队列以进行后台删除，而不是同步删除，从而将 I/O 移出请求热路径。有`langgraph-api>=0.8.1`可供选择。
+## `LS_CHECKPOINT_DELETE`
+
+用于延迟检查点删除的 JSON 值配置。启用后，线程删除和修剪操作会将检查点排入队列以进行后台删除，而不是同步删除，从而将 I/O 移出请求热路径。有`langgraph-api>=0.8.1`可供选择。
 
 > [!注意]
 >
 > 仅支持默认的 PostgreSQL 检查点后端。延迟删除将成为未来版本中的默认设置。
 
-接受的字段：
-
-* `enabled`（布尔值，默认`false`）：当`true`时，线程删除和修剪操作将检查点排入`checkpoint_delete_queue`并立即返回，后台工作人员清空队列。
+接受的字段：* `enabled`（布尔值，默认`false`）：当`true`时，线程删除和剪枝操作将检查点排入`checkpoint_delete_queue`并立即返回，后台工作人员清空队列。
 * `enabledWorkerOnly`（布尔值，默认`false`）：仅运行后台排出工作程序，而不将新条目排队。在将 `enabled` 回滚到 `false` 后，使用它来完成队列的排空。
 * `pollIntervalMs`（整数，默认`5000`）：worker 轮询队列的频率，以毫秒为单位。
 * `batchSize`（整数，默认`25`）：每个事务工作线程出队的检查点条目数。较小的值将 I/O 分散到更长的时间，但代价是更长的排出延迟。
 * `batchSleepMs`（整数，默认`500`）：当队列非空时，worker 在批次之间休眠的时间，以毫秒为单位。
 
-示例：`LS_CHECKPOINT_DELETE='{"enabled":true,"batchSize":10,"pollIntervalMs":1000}'`。默认为禁用（同步检查点删除）。
+示例：`LS_CHECKPOINT_DELETE='{"enabled":true,"batchSize":10,"pollIntervalMs":1000}'`。
+
+默认为禁用（同步检查点删除）。
 
 ## `LS_DEFAULT_CHECKPOINTER_BACKEND`
 
@@ -125,11 +161,9 @@
 
 如果应用程序的 `langgraph.json` 包含 `checkpointer.backend` 值，则它优先于该变量。
 
-当设置为 `"mongo"` 时，您还必须通过 [⟦T115⟧](#ls_mongodb_uri) 提供 MongoDB 连接 URI。
+当设置为 `"mongo"` 时，您还必须通过 [⟦T131⟧](#ls_mongodb_uri) 提供 MongoDB 连接 URI。
 
-## `LANGSMITH_TRACING`
-
-将 `LANGSMITH_TRACING` 设置为 `false` 以禁用对 LangSmith 的跟踪。
+## `LANGSMITH_TRACING`将 `LANGSMITH_TRACING` 设置为 `false` 以禁用对 LangSmith 的跟踪。
 
 > [!注意]
 >
@@ -139,7 +173,7 @@
 
 ## `LOG_COLOR`
 
-这主要与通过 `langgraph dev` 命令使用开发服务器的上下文有关。将 `LOG_COLOR` 设置为 `true` 以在使用默认控制台渲染器时启用 ANSI 颜色控制台输出。通过将此变量设置为 `false` 禁用颜色输出会生成单色日志。默认为`true`。
+这主要与通过 `langgraph dev` 命令使用开发服务器的上下文相关。将 `LOG_COLOR` 设置为 `true` 以在使用默认控制台渲染器时启用 ANSI 颜色的控制台输出。通过将此变量设置为 `false` 禁用颜色输出会生成单色日志。默认为`true`。
 
 ## `LOG_LEVEL`
 
@@ -149,15 +183,15 @@
 
 将 `LOG_JSON` 设置为 `true`，以使用配置的 `JSONRenderer` 将所有日志消息呈现为 JSON 对象。这会产生结构化日志，日志管理系统可以轻松解析或摄取这些日志。默认为`false`。
 
-## `N_JOBS_PER_WORKER`单个队列工作线程从代理服务器任务队列中并发执行的最大运行数。默认为`10`。
+## `N_JOBS_PER_WORKER`
+
+单个队列工作线程从代理服务器任务队列中并发执行的最大运行数。默认为 `10`。
 
 这限制了并发运行执行，而不是您的部署可以服务的 API 请求的数量。请求服务能力由 API 服务器处理，并独立于该值进行扩展。有关调整指南，请参阅[Configure Agent Server for scale](/langsmith/agent-server-scale)。
 
-## `LS_APM_OTEL_ENABLED`
+## `LS_APM_OTEL_ENABLED`要为您的部署配置 OpenTelemetry APM 跟踪，请将 `LS_APM_OTEL_ENABLED` 设置为 `true`，并将 `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` 或 `OTEL_EXPORTER_OTLP_ENDPOINT` 设置为目标跟踪摄取端点。请注意，在 `0.7.17` 之后的服务器版本中，需要 `LS_APM_OTEL_ENABLED` 和其他两个导出端点之一来激活 OpenTelemetry APM 跟踪。
 
-要为您的部署配置 OpenTelemetry APM 跟踪，请将 `LS_APM_OTEL_ENABLED` 设置为 `true`，并将 `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` 或 `OTEL_EXPORTER_OTLP_ENDPOINT` 设置为目标跟踪摄取端点。请注意，在 `0.7.17` 之后的服务器版本中，需要 `LS_APM_OTEL_ENABLED` 和其他两个导出端点之一来激活 OpenTelemetry APM 跟踪。
-
-指定其他[⟦T142⟧ environment variables](https://opentelemetry.io/docs/collector/configuration/)来配置跟踪、日志记录和其他检测。
+指定其他[⟦T158⟧ environment variables](https://opentelemetry.io/docs/collector/configuration/)来配置跟踪、日志记录和其他检测。
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # If you set LS_APM_OTEL_ENABLED AND (OTEL_EXPORTER_OTLP_TRACES_ENDPOINT or OTEL_EXPORTER_OTLP_ENDPOINT),
@@ -198,13 +232,13 @@ URI 必须指向副本集成员或`mongos` 路由器，并且必须在路径中�
 
 详情请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
 
-## `LSD_CACHE_PACKAGES_DISTRIBUTIONS`当`LSD_CACHE_PACKAGES_DISTRIBUTIONS`为`true`时，服务器每个进程缓存一次`importlib.metadata.packages_distributions()`的结果。有些包在导入时多次调用该函数，这会减慢图形加载速度，尤其是在启用 Datadog 跟踪 (`ddtrace`) 时。如果您的部署在运行时安装或删除包，请将其设置为 `false`。
+## `LSD_CACHE_PACKAGES_DISTRIBUTIONS`
 
-默认为`true`。
+当`LSD_CACHE_PACKAGES_DISTRIBUTIONS`为`true`时，服务器每个进程缓存一次`importlib.metadata.packages_distributions()`的结果。有些包在导入时多次调用该函数，这会减慢图形加载速度，尤其是在启用 Datadog 跟踪 (`ddtrace`) 时。如果您的部署在运行时安装或删除包，请将其设置为 `false`。
 
-## `REDIS_KEY_PREFIX`
+默认为 `true`。
 
-> [!注意]
+## `REDIS_KEY_PREFIX`> [!注意]
 >
 > **适用于 API 服务器版本 0.1.9+**
 > API Server 0.1.9 及以上版本支持此环境变量。
@@ -224,15 +258,15 @@ URI 必须指向副本集成员或`mongos` 路由器，并且必须在路径中�
 
 ## `REDIS_MAX_CONNECTIONS`
 
-Redis 连接池（每个副本）的最大大小可以使用 `REDIS_MAX_CONNECTIONS` 环境变量进行控制。通过设置此变量，您可以确定服务器与 Redis 实例建立的同时连接数的上限。例如，如果部署扩展到 10 个副本，并且 `REDIS_MAX_CONNECTIONS` 配置为 `150`，则最多可以建立 `1500` 与 Redis 的连接。
+Redis 连接池（每个副本）的最大大小可以使用 `REDIS_MAX_CONNECTIONS` 环境变量进行控制。通过设置此变量，您可以确定服务器与 Redis 实例建立的同时连接数的上限。
+
+例如，如果部署扩展到 10 个副本，并且 `REDIS_MAX_CONNECTIONS` 配置为 `150`，则最多可以建立 `1500` 与 Redis 的连接。
 
 默认为`2000`。
 
 ## `RESUMABLE_STREAM_TTL_SECONDS`
 
-Redis 中可恢复流数据的生存时间（以秒为单位）。
-
-创建运行并对输出进行流式传输时，可以将流配置为可恢复（例如`stream_resumable=True`）。如果流是可恢复的，则流的输出将临时存储在 Redis 中。该数据的 TTL 可以通过设置`RESUMABLE_STREAM_TTL_SECONDS`来配置。
+Redis 中可恢复流数据的生存时间（以秒为单位）。创建运行并对输出进行流式传输时，可以将流配置为可恢复（例如`stream_resumable=True`）。如果流是可恢复的，则流的输出将临时存储在 Redis 中。该数据的 TTL 可以通过设置`RESUMABLE_STREAM_TTL_SECONDS`来配置。
 
 有关如何实现可恢复流的更多详细信息，请参阅 [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.stream) 和 [JS/TS](https://reference.langchain.com/javascript/langchain-langgraph-sdk/client/RunsClient) SDK。
 
@@ -246,17 +280,17 @@ Redis 中可恢复流数据的生存时间（以秒为单位）。
 
 将 `AGENT_POSTGRES_IAM_AUTH_PROVIDER` 设置为 `aws`、`azure` 或 `gcp`，以将 PostgreSQL 连接 URI 中的密码替换为短期云身份令牌。需要`langgraph-api>=0.12.0`。
 
-有关提供程序先决条件和连接 URI 要求，请参阅 [Configure IAM authentication for data stores](/langsmith/configure-iam-auth)。## `AGENT_REDIS_IAM_AUTH_PROVIDER`
+有关提供程序先决条件和连接 URI 要求，请参阅 [Configure IAM authentication for data stores](/langsmith/configure-iam-auth)。
+
+## `AGENT_REDIS_IAM_AUTH_PROVIDER`
 
 将 `AGENT_REDIS_IAM_AUTH_PROVIDER` 设置为 `aws`、`azure` 或 `gcp`，以使用短期云身份令牌对 Redis 连接进行身份验证。需要`langgraph-api>=0.12.0`。
 
 有关提供程序先决条件和连接 URI 要求，请参阅 [Configure IAM authentication for data stores](/langsmith/configure-iam-auth)。
 
-## `LANGGRAPH_SERVER_HOST`
+## `LANGGRAPH_SERVER_HOST`设置 `LANGGRAPH_SERVER_HOST` 来控制代理服务器监听哪些地址族：
 
-设置 `LANGGRAPH_SERVER_HOST` 来控制代理服务器监听哪些地址族：
-
-* **空字符串**：同时监听 IPv4 和 IPv6。这是从 `langgraph-api>=0.14.0` 开始的默认设置。
+* **空字符串**：同时监听 IPv4 和 IPv6。这是自 `langgraph-api>=0.14.0` 起的默认设置。
 * **`0.0.0.0`**：仅在 IPv4 上侦听。
 * **`::`**：仅在 IPv6 上侦听。
 
@@ -280,12 +314,12 @@ Redis 中可恢复流数据的生存时间（以秒为单位）。
 
 指定 `POSTGRES_URI_CUSTOM` 使用自定义 Postgres 实例。 `POSTGRES_URI_CUSTOM` 的值必须是有效的 [Postgres connection URI](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING-URIS)。
 
-Postgres：* 版本 15.8 或更高版本。
+Postgres：
+
+* 版本 15.8 或更高版本。
 * 必须存在初始数据库，并且连接 URI 必须引用该数据库。
 
-控制平面功能：
-
-* 如果指定`POSTGRES_URI_CUSTOM`，控制平面将不会为服务器提供数据库。
+控制平面功能：* 如果指定`POSTGRES_URI_CUSTOM`，控制平面将不会为服务器提供数据库。
 * 如果删除`POSTGRES_URI_CUSTOM`，控制平面将不会为服务器提供数据库，也不会删除外部管理的Postgres实例。
 * 如果删除`POSTGRES_URI_CUSTOM`，修订版部署将不会成功。一旦指定了 `POSTGRES_URI_CUSTOM`，就必须始终为部署的生命周期进行设置。
 * 如果删除部署，控制平面不会删除外部管理的 Postgres 实例。
@@ -301,14 +335,16 @@ Postgres：* 版本 15.8 或更高版本。
 >
 > 此功能处于 Alpha 版本。
 
-将`REDIS_CLUSTER`设置为`True`以启用Redis集群模式。启用后，系统将使用集群模式连接到Redis。这在连接到 Redis 集群部署时非常有用。
+将 `REDIS_CLUSTER` 设置为 `True` 以启用 Redis 集群模式。启用后，系统将使用集群模式连接到Redis。这在连接到 Redis 集群部署时非常有用。
 
 默认为`False`。
 
-## `REDIS_URI_CUSTOM`指定 `REDIS_URI_CUSTOM` 使用自定义 Redis 实例。 `REDIS_URI_CUSTOM` 的值必须是有效的 [Redis connection URI](https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)。
+## `REDIS_URI_CUSTOM`
+
+指定 `REDIS_URI_CUSTOM` 使用自定义 Redis 实例。 `REDIS_URI_CUSTOM` 的值必须是有效的 [Redis connection URI](https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/env-var-self-hosted.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

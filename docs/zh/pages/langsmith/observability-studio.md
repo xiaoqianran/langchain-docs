@@ -24,7 +24,7 @@ Studio 允许您直接从图形界面编辑各个节点内使用的提示。
 
 ### 图形配置
 
-使用 `langgraph_nodes` 和 `langgraph_type` 键定义 [configuration](/oss/python/langgraph/use-graph-api#add-runtime-configuration) 以指定提示字段及其关联节点。
+使用 `langgraph_nodes` 和 `langgraph_type` 键定义 [configuration](/oss/python/langgraph/graph-api-nodes#add-runtime-configuration) 以指定提示字段及其关联节点。
 
 #### `langgraph_nodes`* **描述**：指定配置字段与图表的哪些节点关联。
 * **值类型**：字符串数组，其中每个字符串是图中节点的名称。
@@ -198,7 +198,7 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 
 ## 将节点添加到数据集
 
-从线程日志中的节点将[examples](/langsmith/evaluation-concepts#examples)添加到[LangSmith datasets](/langsmith/manage-datasets)。这对于评估代理的各个步骤很有用。1. 选择一个线程。
+将线程日志中的节点中的 [examples](/langsmith/evaluation-concepts#examples) 添加到 [LangSmith datasets](/langsmith/manage-datasets)。这对于评估代理的各个步骤很有用。1. 选择一个线程。
 2. 单击“**添加到数据集**”。
 3. 选择要添加到数据集的输入/输出的节点。
 4. 对于每个选定的节点，选择要在其中创建示例的目标数据集。默认情况下，将选择特定助手和节点的数据集。如果此数据集尚不存在，则会创建它。

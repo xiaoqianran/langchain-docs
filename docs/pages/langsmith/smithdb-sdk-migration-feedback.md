@@ -8,11 +8,11 @@ These methods add runs to annotation queues, share runs publicly, and create fee
 
 ## Annotation queues: add runs
 
-Add runs to an annotation queue. The SmithDB-backed path takes each run's full lookup key—its ID plus the `session_id` (project UUID) and `start_time` partition keys—so the run can be located directly instead of scanned for.
+Add runs to an annotation queue. The legacy `POST /api/v1/annotation-queues/{queue_id}/runs` and `POST /api/v1/annotation-queues/{queue_id}/runs/by-key` endpoints are both deprecated. Use the annotation queue items API instead: each run is one `RUN` item with its ID plus the `project_id` (project UUID) and `start_time` lookup keys, so the run can be located directly instead of scanned for.
 
 > [!NOTE]
 >
-> This method stays on the existing client, not the new `runs` v2 client, so the [Exceptions](/langsmith/smithdb-sdk-migration#exceptions) table does not apply—error handling is unchanged.
+> In Python and TypeScript, the items API is on the new client resources (`client.annotation_queues.items` / `client.annotationQueues.items`), so the [Exceptions](/langsmith/smithdb-sdk-migration#exceptions) table applies. On self-hosted, the items endpoints need LangSmith v0.16.14 or later.
 
 ### Main changes
 
@@ -20,117 +20,83 @@ Add runs to an annotation queue. The SmithDB-backed path takes each run's full l
 
 > [tab] Python
 >
-> No change—`client.add_runs_to_annotation_queue()`. The SmithDB path is selected by the parameters you pass (see Inputs below).
->
-> See the [reference](https://reference.langchain.com/python/langsmith/client/Client/add_runs_to_annotation_queue) for the full parameter list.
+> | Before | After |
+> | - | - |
+> | `client.add_runs_to_annotation_queue()` | `client.annotation_queues.items.create()` (async) |
 
 > [tab] TypeScript
 >
-> No change—`client.addRunsToAnnotationQueue()`. The SmithDB path is selected by the argument you pass (see Inputs below).
->
-> See the [reference](https://reference.langchain.com/javascript/langsmith/client/Client/addRunsToAnnotationQueue) for the full parameter list.
+> | Before | After |
+> | - | - |
+> | `client.addRunsToAnnotationQueue()` | `client.annotationQueues.items.create()` |
 
 > [tab] Java
 >
 > | Before | After |
 > | - | - |
-> | `client.annotationQueues().runs().create()` | `client.annotationQueues().runs().createByKey()` |
->
-> See the [reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/annotationqueues/RunService.html) for the full parameter list.
+> | `client.annotationQueues().runs().create()` | `client.annotationQueues().items().create()` |
 
 > [tab] Go
 >
 > | Before | After |
 > | - | - |
-> | `client.AnnotationQueues.Runs.New()` | `client.AnnotationQueues.Runs.NewByKey()` |
+> | `client.AnnotationQueues.Runs.New()` | `client.AnnotationQueues.Items.New()` |
 >
-> See the [reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#AnnotationQueueRunService.NewByKey) for the full parameter list.
+> See the [reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#AnnotationQueueItemService.New) for the full parameter list.
 
 > [tab] cURL
 >
 > | Before | After |
 > | - | - |
-> | `POST /api/v1/annotation-queues/{queue_id}/runs` | `POST /api/v1/annotation-queues/{queue_id}/runs/by-key` |
->
-> See the [API doc](/langsmith/smith-api/annotation-queues/add-runs-to-annotation-queue-by-key) for the full parameter list.
+> | `POST /api/v1/annotation-queues/{queue_id}/runs` | `POST /api/v1/platform/annotation-queues/{queue_id}/items` |
 
 #### Inputs
 
+The request takes a list of items (up to 100 per call) instead of a list of run IDs. Each run becomes one item:
+
+| Field | Value |
+| - | - |
+| `item_type` | `RUN` |
+| `run_id` | The run ID |
+| `project_id` | The run's project UUID (`project_id` on a run from `runs.query`; `session_id` is also accepted as an alias) |
+| `start_time` | The run's start time (RFC3339) |
+
+`extend_trace_retention` is unchanged and stays an optional query parameter.
+
 > [tab] Python
 >
-> > [!WARNING]
-> >
-> > The SmithDB path needs each run's `session_id` (project UUID) and `start_time` in addition to its `run_id`. These are already present on the run objects you fetch (for example from `client.list_runs()`).
->
-> | Before (`run_ids`) | After (`runs`) | Notes |
-> | - | - | - |
-> | `run_ids: list[UUID \| str]` | *(deprecated)* | Legacy path. Still works and hits `/runs`, resolving each run server-side. Will be removed in a future release |
-> | *(not available)* | `runs: Sequence[RunKey]` | **New preferred.** Each `RunKey` is a `TypedDict` with `run_id`, `session_id`, and `start_time` |
->
-> Provide exactly one of `runs` or `run_ids`; passing both raises a `LangSmithUserError`.
+> | Before | After |
+> | - | - |
+> | `run_ids=[...]` or `runs=[RunKey, ...]` | `items=[{"item_type": "RUN", "run_id", "project_id", "start_time"}, ...]` |
 
 > [tab] TypeScript
 >
-> > [!WARNING]
-> >
-> > The SmithDB path needs each run's `sessionId` (project UUID) and `startTime` in addition to its `runId`. These are already present on the run objects you fetch (for example from `client.listRuns()`).
->
-> | Before (`string[]`) | After (`RunKey[]`) | Notes |
-> | - | - | - |
-> | `runs: string[]` | *(deprecated)* | Legacy path (array of run-ID strings). Still works and hits `/runs`. Will be removed in a future release |
-> | *(not available)* | `runs: RunKey[]` | **New preferred.** Each `RunKey` is `{ runId, sessionId, startTime }`; `startTime` accepts a `Date`, epoch ms, or ISO string |
->
-> Both shapes are the same positional second argument; the SDK selects the SmithDB path when you pass `RunKey[]`.
+> | Before | After |
+> | - | - |
+> | `string[]` or `RunKey[]` (second argument) | `{ items: [{ item_type: "RUN", run_id, project_id, start_time }] }` |
 
 > [tab] Java
 >
-> | Before (`RunCreateParams`) | After (`RunCreateByKeyParams`) | Notes |
-> | - | - | - |
-> | `.bodyOfRunsUuidArray(List<String>)` | *(removed)* | Legacy body; run IDs only |
-> | *(not available)* | `.addBody(RunCreateByKeyParams.Body)` | Each `Body` has `runId`, `sessionId`, and `startTime` |
-> | `.queueId(String)` | `.queueId(String)` | Unchanged |
-> | `.extendTraceRetention(Boolean)` | `.extendTraceRetention(Boolean)` | Unchanged optional query param |
+> | Before (`RunCreateParams`) | After (`ItemCreateParams`) |
+> | - | - |
+> | `.bodyOfRunsUuidArray(List<String>)` | `.addItem(ItemCreateParams.Item)` with `itemType(RUN)`, `runId`, `projectId`, `startTime` |
+> | `.queueId(String)` | `.queueId(String)` |
 
 > [tab] Go
 >
-> | Before (`AnnotationQueueRunNewParams`) | After (`AnnotationQueueRunNewByKeyParams`) | Notes |
-> | - | - | - |
-> | `Body: AnnotationQueueRunNewParamsBodyRunsUuidArray` (`[]string`) | *(removed)* | Legacy body; run IDs only |
-> | *(not available)* | `Body: []AnnotationQueueRunNewByKeyParamsBody` | Each has `RunID`, `SessionID`, and `StartTime` |
-> | *(not available)* | `ExtendTraceRetention` | Optional query param |
+> | Before (`AnnotationQueueRunNewParams`) | After (`AnnotationQueueItemNewParams`) |
+> | - | - |
+> | `Body: AnnotationQueueRunNewParamsBodyRunsUuidArray` | `Items: []AnnotationQueueItemNewParamsItem` with `ItemType`, `RunID`, `ProjectID`, `StartTime` |
 
 > [tab] cURL
 >
-> > [!WARNING]
-> >
-> > The `/runs/by-key` request body is an array of objects, not an array of ID strings. Each object needs `run_id`, `session_id` (project UUID), and `start_time` (RFC3339).
->
-> | Before (`POST /runs` body) | After (`POST /runs/by-key` body) | Notes |
-> | - | - | - |
-> | `["<run-id>", ...]` | `[{"run_id", "session_id", "start_time"}]` | `session_id` is the project UUID; `start_time` is RFC3339 |
-> | `?extend_trace_retention` (query) | `?extend_trace_retention` (query) | Unchanged optional query param |
+> | Before (body) | After (body) |
+> | - | - |
+> | `["<run-id>", ...]` | `{"items": [{"item_type": "RUN", "run_id", "project_id", "start_time"}]}` |
 
 #### Response
 
-> [tab] Python
->
-> No change. Both `run_ids=` and `runs=` return `None`.
-
-> [tab] TypeScript
->
-> No change. Both shapes resolve to `void`.
-
-> [tab] Java
->
-> `createByKey()` returns `List<RunCreateByKeyResponse>`—the same shape `create()` returned, with `id()`, `queueId()`, `runId()`, `addedAt()`, and `lastReviewedTime()`.
-
-> [tab] Go
->
-> `NewByKey()` returns `*[]AnnotationQueueRunNewByKeyResponse`—the same shape `New()` returned, with `ID`, `QueueID`, `RunID`, `AddedAt`, and `LastReviewedTime`.
-
-> [tab] cURL
->
-> No change. `POST /runs/by-key` returns the array of created queue-run records (`id`, `queue_id`, `run_id`, `added_at`, `last_reviewed_time`), the same shape as `POST /runs`.
+The items API returns `{"items": [...]}`, one created queue item per input (`id`, `queue_id`, `item_type`, `run_id`, `project_id`, `start_time`, `added_at`, `last_reviewed_time`). Use the item `id` with the other items endpoints (update, delete, status). The legacy Python and TypeScript methods returned nothing.
 
 ### Examples
 
@@ -138,7 +104,7 @@ Add runs to an annotation queue. The SmithDB-backed path takes each run's full l
 
 > [tab] Python
 >
-> `run_ids=` takes a plain list of run IDs. `runs=` takes each run's full lookup key—read `run_id`, `session_id`, and `start_time` off the run objects you already have.
+> Build one `RUN` item per run from the run objects you already have.
 >
 > > [tab] Before
 > >
@@ -154,27 +120,43 @@ Add runs to an annotation queue. The SmithDB-backed path takes each run's full l
 > > [tab] After
 > >
 > > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import asyncio
+> > from datetime import datetime, timedelta, timezone
+> >
 > > from langsmith import Client
 > >
-> > client = Client()
-> > queue_id = "<queue-id>"
-> > runs = list(client.list_runs(project_name="default", limit=5))
-> > client.add_runs_to_annotation_queue(
-> >     queue_id,
-> >     runs=[
-> >         {
-> >             "run_id": run.id,
-> >             "session_id": run.session_id,
-> >             "start_time": run.start_time,
-> >         }
-> >         for run in runs
-> >     ],
-> > )
+> >
+> > async def main():
+> >     client = Client()
+> >     queue_id = "<queue-id>"
+> >     project_id = "<project-id>"
+> >     page = await client.runs.query(
+> >         project_ids=[project_id],
+> >         min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+> >         selects=["ID", "PROJECT_ID", "START_TIME"],
+> >         page_size=5,
+> >     )
+> >     runs = page.items
+> >     await client.annotation_queues.items.create(
+> >         queue_id,
+> >         items=[
+> >             {
+> >                 "item_type": "RUN",
+> >                 "run_id": str(run.id),
+> >                 "project_id": str(run.project_id),
+> >                 "start_time": run.start_time.isoformat(),
+> >             }
+> >             for run in runs
+> >         ],
+> >     )
+> >
+> >
+> > asyncio.run(main())
 > > ```
 
 > [tab] TypeScript
 >
-> Pass an array of run-ID strings for the legacy path, or an array of `RunKey` objects (`runId`, `sessionId`, `startTime`) built from the run objects you already have.
+> Build one `RUN` item per run from the run objects you already have.
 >
 > > [tab] Before
 > >
@@ -197,28 +179,31 @@ Add runs to an annotation queue. The SmithDB-backed path takes each run's full l
 > > [tab] After
 > >
 > > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> > import { uuid7 } from "langsmith";
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
 > > let queueId = "<queue-id>";
-> > const runs = [];
-> > for await (const run of client.listRuns({ projectName: "default", limit: 5 })) {
-> >   runs.push(run);
-> > }
-> > await client.addRunsToAnnotationQueue(
-> >   queueId,
-> >   runs.map((run) => ({
-> >     runId: run.id,
-> >     sessionId: run.session_id!,
-> >     startTime: run.start_time!,
+> > let projectId = "<project-id>";
+> > const page = await client.runs.query({
+> >   project_ids: [projectId],
+> >   min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+> >   selects: ["ID", "PROJECT_ID", "START_TIME"],
+> >   page_size: 5,
+> > });
+> > const runs = page.items ?? [];
+> > await client.annotationQueues.items.create(queueId, {
+> >   items: runs.map((run) => ({
+> >     item_type: "RUN" as const,
+> >     run_id: run.id,
+> >     project_id: run.project_id!,
+> >     start_time: run.start_time!,
 > >   })),
-> > );
+> > });
 > > ```
 
 > [tab] Java
 >
-> `create()` takes run IDs via `bodyOfRunsUuidArray`. `createByKey()` takes a `Body` per run with `runId`, `sessionId`, and `startTime`.
+> Add one `ItemCreateParams.Item` per run.
 >
 > > [tab] Before
 > >
@@ -252,34 +237,44 @@ Add runs to an annotation queue. The SmithDB-backed path takes each run's full l
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.annotationqueues.AnnotationQueueAnnotationQueuesParams
-> > import com.langchain.smith.models.annotationqueues.runs.RunCreateByKeyParams
-> > import com.langchain.smith.models.runs.RunQueryParams
+> > import com.langchain.smith.models.annotationqueues.items.ItemCreateParams
+> > import com.langchain.smith.models.runs.RunQueryV2Params
+> > import com.langchain.smith.models.runs.RunSelectField
 > > import com.langchain.smith.models.sessions.SessionListParams
+> > import java.time.OffsetDateTime
 > >
 > > val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 > >
 > > var queueId = "<queue-id>"
 > > var projectId = "<project-id>"
-> > val runs = client.runs().query(
-> >     RunQueryParams.builder().session(listOf(projectId)).limit(5L).build()
+> > val runs = client.runs().queryV2(
+> >     RunQueryV2Params.builder()
+> >         .addProjectId(projectId)
+> >         .minStartTime(OffsetDateTime.now().minusDays(30))
+> >         .addSelect(RunSelectField.ID)
+> >         .addSelect(RunSelectField.PROJECT_ID)
+> >         .addSelect(RunSelectField.START_TIME)
+> >         .pageSize(5L)
+> >         .build()
 > > ).items()
 > >
-> > val params = RunCreateByKeyParams.builder().queueId(queueId)
+> > val params = ItemCreateParams.builder().queueId(queueId)
 > > for (run in runs) {
-> >     params.addBody(
-> >         RunCreateByKeyParams.Body.builder()
-> >             .runId(run.id())
-> >             .sessionId(run.sessionId())
+> >     params.addItem(
+> >         ItemCreateParams.Item.builder()
+> >             .itemType(ItemCreateParams.Item.ItemType.RUN)
+> >             .runId(run.id().get())
+> >             .projectId(run.projectId().get())
 > >             .startTime(run.startTime().get())
 > >             .build()
 > >     )
 > > }
-> > client.annotationQueues().runs().createByKey(params.build())
+> > client.annotationQueues().items().create(params.build())
 > > ```
 
 > [tab] Go
 >
-> `New()` takes run IDs via `AnnotationQueueRunNewParamsBodyRunsUuidArray`. `NewByKey()` takes an `AnnotationQueueRunNewByKeyParamsBody` per run with `RunID`, `SessionID`, and `StartTime`.
+> Add one `AnnotationQueueItemNewParamsItem` per run.
 >
 > > [tab] Before
 > >
@@ -328,26 +323,33 @@ Add runs to an annotation queue. The SmithDB-backed path takes each run's full l
 > >
 > > queueID := "<queue-id>"
 > > projectID := "<project-id>"
-> > found, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
-> > 	Session: langsmith.F([]string{projectID}),
-> > 	Limit:   langsmith.F(int64(5)),
+> > found, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
+> > 	ProjectIDs:   langsmith.F([]string{projectID}),
+> > 	MinStartTime: langsmith.F(time.Now().UTC().AddDate(0, 0, -30)),
+> > 	Selects: langsmith.F([]langsmith.RunSelectField{
+> > 		langsmith.RunSelectFieldID,
+> > 		langsmith.RunSelectFieldProjectID,
+> > 		langsmith.RunSelectFieldStartTime,
+> > 	}),
+> > 	PageSize: langsmith.F(int64(5)),
 > > })
-> > body := make([]langsmith.AnnotationQueueRunNewByKeyParamsBody, len(found.Runs))
-> > for i, run := range found.Runs {
-> > 	body[i] = langsmith.AnnotationQueueRunNewByKeyParamsBody{
+> > items := make([]langsmith.AnnotationQueueItemNewParamsItem, len(found.Items))
+> > for i, run := range found.Items {
+> > 	items[i] = langsmith.AnnotationQueueItemNewParamsItem{
+> > 		ItemType:  langsmith.F(langsmith.AnnotationQueueItemNewParamsItemsItemTypeRun),
 > > 		RunID:     langsmith.F(run.ID),
-> > 		SessionID: langsmith.F(run.SessionID),
+> > 		ProjectID: langsmith.F(run.ProjectID),
 > > 		StartTime: langsmith.F(run.StartTime),
 > > 	}
 > > }
-> > _, err = client.AnnotationQueues.Runs.NewByKey(ctx, queueID, langsmith.AnnotationQueueRunNewByKeyParams{
-> > 	Body: body,
+> > _, err = client.AnnotationQueues.Items.New(ctx, queueID, langsmith.AnnotationQueueItemNewParams{
+> > 	Items: langsmith.F(items),
 > > })
 > > ```
 
 > [tab] cURL
 >
-> `POST /runs` takes an array of run-ID strings. `POST /runs/by-key` takes an array of objects, each with `run_id`, `session_id`, and `start_time`.
+> `POST /runs` takes an array of run-ID strings. `POST /items` takes an `items` array of objects.
 >
 > > [tab] Before
 > >
@@ -369,10 +371,10 @@ Add runs to an annotation queue. The SmithDB-backed path takes each run's full l
 > > PROJECT_ID="<project-id>"
 > > START_TIME="2026-06-01T12:00:00Z"
 > >
-> > curl -X POST "https://api.smith.langchain.com/api/v1/annotation-queues/$QUEUE_ID/runs/by-key" \
+> > curl -X POST "https://api.smith.langchain.com/api/v1/platform/annotation-queues/$QUEUE_ID/items" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" \
 > >   -H "Content-Type: application/json" \
-> >   -d "[{\"run_id\": \"$RUN_ID\", \"session_id\": \"$PROJECT_ID\", \"start_time\": \"$START_TIME\"}]"
+> >   -d "{\"items\": [{\"item_type\": \"RUN\", \"run_id\": \"$RUN_ID\", \"project_id\": \"$PROJECT_ID\", \"start_time\": \"$START_TIME\"}]}"
 > > ```
 
 ## Share and read public runs

@@ -88,12 +88,12 @@ import { ChatOpenAI } from "@langchain/openai";
 const model = new ChatOpenAI({ model: "gpt-5.5" });
 ```
 
-当将[⟦T10⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel)与`provider:model`格式一起使用时，LangChain会自动解析提供程序并加载正确的集成包。如果模型名称明确（例如，`"gpt-5.5"` 解析为 OpenAI），您还可以省略提供程序前缀。
+当使用 `provider:model` 格式的 [⟦T10⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel) 时，LangChain 自动解析提供程序并加载正确的集成包。如果模型名称明确（例如，`"gpt-5.5"` 解析为 OpenAI），您还可以省略提供程序前缀。
 
 要查找提供程序的可用模型名称，请参阅提供程序自己的文档。以下是一些受欢迎的提供商：
 
 |供应商|哪里可以找到型号名称 |
-| :-| :-|
+| :- | :- |
 | [OpenAI](/oss/javascript/integrations/providers/openai) | [OpenAI models page](https://platform.openai.com/docs/models) |
 | [Anthropic](/oss/javascript/integrations/providers/anthropic) | [Anthropic models page](https://docs.anthropic.com/en/docs/about-claude/models) |
 | [Google](/oss/javascript/integrations/providers/google) | [Google AI models page](https://ai.google.dev/gemini-api/docs/models) |
@@ -116,10 +116,9 @@ const model = await initChatModel("google:gemini-mythos");
 
 **路由器**（也称为代理或网关）使您可以通过单个 API 和凭证访问来自多个提供商的模型。它们可以简化计费，让您在不改变集成的情况下在模型之间切换，并提供自动回退和负载平衡等功能。
 
-|供应商|整合|描述 |
-| :-| :-| :-|
-| [OpenRouter](https://openrouter.ai/) | [⟦T13⟧](/oss/javascript/integrations/chat/openrouter) |统一访问来自OpenAI、Anthropic、Google、Meta 等的模型 |
-| [FuturMix](https://futurmix.ai/) | [⟦T14⟧](https://futurmix.ai/) |适用于 22 种以上型号的统一 AI 网关，具有OpenAI 兼容 API 和 99.99% SLA |
+|供应商|整合 |描述 |
+| :- | :- | :- |
+| [OpenRouter](https://openrouter.ai/) | [⟦T13⟧](/oss/javascript/integrations/chat/openrouter) |统一访问OpenAI、Anthropic、Google、Meta 等模型 |
 
 当您想要执行以下操作时，路由器很有用：* **使用单个 API 密钥和计费帐户访问许多提供商**
 * **动态切换模型**，无需管理多个提供商凭据
@@ -134,7 +133,7 @@ const response = await model.invoke("Hello!");
 
 ## OpenAI 兼容端点
 
-许多提供商提供与 OpenAI 的 [Chat Completions API](https://platform.openai.com/docs/api-reference/chat) 兼容的端点。您可以使用 [⟦T15⟧](/oss/javascript/integrations/chat/openai) 和自定义 `base_url` 连接到这些：
+许多提供商提供与 OpenAI 的 [Chat Completions API](https://platform.openai.com/docs/api-reference/chat) 兼容的端点。您可以使用 [⟦T14⟧](/oss/javascript/integrations/chat/openai) 和自定义 `base_url` 连接到这些：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
@@ -152,19 +151,19 @@ const model = new ChatOpenAI({
 
 ## 后续步骤
 
-> **[Models guide](/oss/javascript/langchain/models)**
+> [卡][Models guide](/oss/javascript/langchain/models)
 >
 > 了解如何使用模型：调用、流、批处理、工具调用等。
 
-> **[Chat model integrations](/oss/javascript/integrations/chat)**
+> [卡][Chat model integrations](/oss/javascript/integrations/chat)
 >
 > 浏览所有聊天模型集成及其功能。
 
-> **[All providers](/oss/javascript/integrations/providers/overview)**
+> [卡][All providers](/oss/javascript/integrations/providers/overview)
 >
 > 查看提供商包和集成的完整列表。
 
-> **[Agents](/oss/javascript/langchain/agents)**
+> [卡][Agents](/oss/javascript/langchain/agents)
 >
 > 构建使用模型作为推理引擎的代理。
 

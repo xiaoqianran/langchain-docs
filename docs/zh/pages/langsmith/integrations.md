@@ -34,7 +34,7 @@ Anthropic
 
 [Open](/langsmith/trace-with-google-gemini)
 
-![](https://mintcdn.com/langchain-5e9cc07a/TiT87b4RAoWyIOkQ/images/providers/light/litellm.svg?fit=max\&auto=format\&n=TiT87b4RAoWyIOkQ\&q=85\&s=3c70d2b1a246ead959c54869ecf39a74)
+![](https://mintcdn.com/langchain-5e9cc07a/eKNgyvpoV_46lkUW/images/providers/light/litellm.svg?fit=max\&auto=format\&n=eKNgyvpoV_46lkUW\&q=85\&s=d129772f59f7a294213c74cc17e9b90e)
 
 莱特法学硕士
 
@@ -130,7 +130,7 @@ OpenAI 代理
 
 ![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/opentelemetry.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=84b763868676d132f14cc4055525c34d)
 
-开放式遥测
+开放遥测
 
 [Open](/langsmith/trace-with-opentelemetry)
 
@@ -238,7 +238,7 @@ VS 代码副驾驶
 
 [Open](/langsmith/trace-with-vscode-copilot)
 
-这些编码代理集成遵循共享的[metadata contract](/langsmith/coding-agent-metadata-contract)，标准化它们发出的跟踪字段。
+这些编码代理集成遵循共享的[metadata contract](/langsmith/coding-agent-metadata-contract)，该[metadata contract](/langsmith/coding-agent-metadata-contract)标准化了它们发出的跟踪字段。
 
 ## 生产力
 

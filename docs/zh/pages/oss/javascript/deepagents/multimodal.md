@@ -32,7 +32,7 @@ const result = await agent.invoke({
 
 ## 内置`read_file`工具
 
-对于受支持的多模式文件，harness `read_file` 工具会返回 [standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks)，而不是纯文本。当所选模型支持相应的模态时，代理可以检查存储在其[filesystem](/oss/javascript/deepagents/overview#virtual-filesystem-access)中的图像、文档和媒体。检查提供商的文档以了解您的模型支持的 MIME 类型。> **支持的多模式文件扩展名**
+对于受支持的多模式文件，harness `read_file` 工具会返回 [standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks)，而不是纯文本。当所选模型支持相应的模态时，代理可以检查存储在其[filesystem](/oss/javascript/deepagents/overview#virtual-filesystem-access)中的图像、文档和媒体。检查提供商的文档以了解您的模型支持的 MIME 类型。> [accordion] 支持的多模式文件扩展名
 >
 > |类型 |扩展 |
 > | - | - |
@@ -71,7 +71,7 @@ const captureScreenshot = tool(
 ## 上下文压缩和多模式内容
 
 内置卸载和摘要针对文本和消息历史记录进行了优化：* **卸载** 仅测量文本标记。非文本块（包括图像）保留在替换消息中而不是压缩。仅包含图像的消息不会仅根据图像大小进行卸载。
-* **摘要** 将旧消息压缩为纯文本摘要。该范围内的图像、音频、视频和文件块不会被继承——模型只能看到摘要器写的关于它们的内容。最近低于保持阈值的消息保持不变。
+* **摘要** 将旧消息压缩为纯文本摘要。该范围内的图像、音频、视频和文件块不会被保留——模型只能看到摘要器写的关于它们的内容。最近低于保持阈值的消息保持不变。
 
   当摘要运行时，旧回合中的媒体块会从活动上下文中删除：
 

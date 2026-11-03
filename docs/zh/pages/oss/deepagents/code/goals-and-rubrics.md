@@ -31,7 +31,7 @@ Deep Agents 代码在开始任务之前起草验收标准以供审查。
 
 如何处理草案标准取决于您的 [approval mode](/oss/deepagents/code/approval-modes)：
 
-> **按审批模式审核行为**
+> [手风琴] 按审批模式审核行为
 >
 > * **手动**：始终打开内联审核。
 > * **自动**：默认打开审阅。在`~/.deepagents/config.toml`中设置`goals.auto_accept_criteria = true`以自动应用生成的条件。
@@ -67,9 +67,9 @@ check the docs too
 
 * 当目标完成被批准时，Deep Agents代码清除目标
 
-> **目标命令参考**
+> [手风琴] 目标命令参考
 >
-> * `/goal <objective>`：根据简单语言的目标起草验收标准，并在工作开始前对其进行审查。
+> * `/goal <objective>`：从通俗易懂的语言目标中起草验收标准，并在工作开始前对其进行审查。
 > * `/goal amend <feedback>`：建议对目标和审查标准进行协调更新。
 > * `/goal pause`：保存目标而不让它驱动工作或评分。
 > * `/goal resume`：重新激活暂停的目标并从现有对话继续。
@@ -88,13 +88,13 @@ check the docs too
 
 粘性标题适用于未来的回合，直到清除为止。下一回合标题仅适用于下一个提交的任务。
 
-> **Rubric 命令参考**
+> [手风琴] Rubric 命令参考
 >
 > * `/rubric show`：检查活动标题。
 > * `/rubric clear`：删除活动标题。
 > * `/rubric model <provider:model>`：设置评分细则结果的模型。
 
-> **在非交互模式下使用评分表**
+> [手风琴] 在非交互模式下使用评分标准
 >
 > 非交互式运行无法暂停以进行目标审核。对于已知条件的任务使用 `--rubric`：
 >

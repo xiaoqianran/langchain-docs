@@ -114,8 +114,6 @@ Managed Deep Agents, Deep Agents, LangChain, and LangGraph share the same open s
 # 
 Source: https://docs.langchain.com/index
 
-
-
 # The open agent engineering ecosystem
 
 LangChain provides open source, model-agnostic harnesses for building agents. LangSmith is the framework-agnostic platform for testing, deploying, monitoring, and improving your agents across the agent development lifecycle. You control every layer of your agent system, and keep improving it with what you learn in production.

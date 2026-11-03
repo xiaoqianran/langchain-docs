@@ -444,19 +444,19 @@ function TodoList({ todos, isLoading }: { todos: Todo[]; isLoading: boolean }) {
 渲染结构化代理状态。这些指南涵盖了相关技术
 与基于计划的代理良好配合：
 
-> **[Structured output](/oss/javascript/langchain/frontend/structured-output)**
+> [卡][Structured output](/oss/javascript/langchain/frontend/structured-output)
 >
 > 使用自定义 UI 组件而不是纯文本呈现任何结构化代理状态（而不仅仅是待办事项）。
 
-> **[Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)**
+> [卡][Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)
 >
 > 页面重新加载或选项卡切换后重新连接到正在运行的计划，而不会丢失进度。
 
-> **[Message queues](/oss/javascript/langchain/frontend/message-queues)**
+> [卡][Message queues](/oss/javascript/langchain/frontend/message-queues)
 >
 > 在代理仍在执行当前计划的同时对后续任务进行排队。
 
-> **[Human-in-the-Loop](/oss/javascript/langchain/frontend/human-in-the-loop)**
+> [卡][Human-in-the-Loop](/oss/javascript/langchain/frontend/human-in-the-loop)
 >
 > 当代理需要用户批准或输入时暂停和恢复计划执行。
 

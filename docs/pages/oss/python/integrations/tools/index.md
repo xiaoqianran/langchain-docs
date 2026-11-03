@@ -92,7 +92,7 @@ The following table shows tools that can be used to automate tasks in web browse
 | [AgentQL Toolkit](https://docs.agentql.com/) | Free trial, with pay-as-you-go and flat rate plans after | ✅ |
 | [Amazon Bedrock AgentCore Browser](/oss/python/integrations/tools/bedrock_agentcore_browser) | Pay-per-use (AWS) | ✅ |
 | [AproxPay](https://github.com/aproxpay/langchain-aproxpay) | Pay-per-use via x402 (USDC on Base); no signup | ❌ (fetch + CONNECT session pass) |
-| [Bowmark](https://bowmark.ai/docs/langchain) | \$10 free every month, then pay-as-you-go | ❌ |
+| [Bowmark](https://bowmark.ai/docs/langchain) | Free \$10, then pay-as-you-go | ❌ |
 | [BrightData Browser API](https://docs.brightdata.com/scraping-automation/scraping-browser/introduction) | Pay-as-you-go, \$2 trial credit | ✅ |
 | [BrightData Scraper Studio](https://docs.brightdata.com/datasets/scraper-studio/introduction) | 5,000 free credits/month, then pay-as-you-go | ❌ |
 | [BrightData Unlocker](https://docs.brightdata.com/scraping-automation/web-unlocker/introduction) | Pay-as-you-go | ❌ |
@@ -535,12 +535,16 @@ The following table shows tools that generate video, image, or audio assets:
 | [`scoutwyze_rank`](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/scoutwyze-compute/month)](https://pypi.org/project/scoutwyze-compute/) |
 | [`LiquidVisionToolkit`](https://github.com/lv-analytics/liquidvision-mcp/tree/main/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-liquidvision/month)](https://pypi.org/project/langchain-liquidvision/) |
 | [`TokenUsageToolkit`](https://tokenusage.dev/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tokenusage-dev/month)](https://pypi.org/project/langchain-tokenusage-dev/) |
+| [`AlterLabScrapeTool`](https://pypi.org/project/langchain-alterlab/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alterlab/month)](https://pypi.org/project/langchain-alterlab/) |
+| [`SealKeeperLookupTool`](https://sealkeeper.run/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sealkeeper/month)](https://pypi.org/project/langchain-sealkeeper/) |
 | [`Hlido`](https://hlido.eu/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/hlido-trust/month)](https://pypi.org/project/hlido-trust/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`viaSocket`](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/viasocket/month)](https://pypi.org/project/viasocket/) |
 | [`HyperresearchAnswerTool`](https://hyperresearch.ai/docs/answers/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperresearch/month)](https://pypi.org/project/langchain-hyperresearch/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |
+| [`StophyToolkit`](https://github.com/stophydotdev/stophy/tree/main/sdk/packages/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-stophy/month)](https://pypi.org/project/langchain-stophy/) |
 | [`VideoGenToolkit`](https://github.com/video-gen/langchain-videogen#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-videogen/month)](https://pypi.org/project/langchain-videogen/) |
+| [`X402CleanWebTool`](https://github.com/nohosa001-pixel/x402-cleanweb-agent/tree/main/packages/langchain-x402-cleanweb#readme) | N/A |
 | [`x402checkToolkit`](https://x402check.dev) | N/A |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |

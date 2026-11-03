@@ -29,7 +29,7 @@ recent = "google_genai:gemini-3.6-flash"   # last /model switch (written automat
 auto_classifier = "openai:gpt-5.6-luna"  # optional: cheaper model for Auto approval review
 ````[models].default` 始终优先于 `[models].recent`。 `/model` 命令仅写入`[models].recent`，因此您配置的默认值永远不会被会话中切换覆盖。要删除默认值，请使用 `/model --default --clear` 或从配置文件中删除 `default` 键。
 
-`[models].auto_classifier` 设置 [Auto approval classifier](/oss/deepagents/code/approval-modes#select-a-classifier-model) 用于审查门控工具调用的模型。未设置时，Deep Agents Code 会为支持的主模型提供程序选择较低延迟的默认值：Anthropic 为 Claude Sonnet，Google 为 Gemini Flash，OpenAI 为 GPT Luna。其他提供商继承了主代理模型。您可以在运行时使用 `--auto-classifier-model` 或 `/auto model` 覆盖它。请参阅 [Select a classifier model](/oss/deepagents/code/approval-modes#select-a-classifier-model) 了解确切的型号规格、完整优先级和安全说明。
+`[models].auto_classifier` 设置 [Auto approval classifier](/oss/deepagents/code/approval-modes#select-a-classifier-model) 用于审查门控工具调用的模型。未设置时，Deep Agents Code 会为受支持的主模型提供程序选择较低延迟的默认值：Anthropic 为 Claude Sonnet，Google 为 Gemini Flash，OpenAI 为 GPT Luna。其他提供商继承了主代理模型。您可以在运行时使用 `--auto-classifier-model` 或 `/auto model` 覆盖它。请参阅 [Select a classifier model](/oss/deepagents/code/approval-modes#select-a-classifier-model) 了解确切的型号规格、完整优先级和安全说明。
 
 ## 设置汇总模型
 
@@ -60,7 +60,7 @@ recent = "frontend-dev"  # last /agents switch (written automatically)
 
 ## 会话成本警告
 
-当每个线程的累计估计成本超过 50 美元时，Deep Agents 代码会发出警告，并建议使用 `/offload` 或 `/clear`。您可以以美元为单位配置阈值，或将其设置为`0`或负值以禁用警告：
+当每个线程的累积估计成本超过 50 美元时，Deep Agents 代码会发出警告，并建议使用 `/offload` 或 `/clear`。您可以以美元为单位配置阈值，或将其设置为`0`或负值以禁用警告：
 
 ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [warnings]
@@ -124,7 +124,7 @@ cold_cache_min_delta_usd = 1.00
 trusted_cache_endpoints = ["smith.langchain.com"]
 ```
 
-条目是完全匹配的主机名 - 信任`example.com` 不信任`gw.example.com`。一个条目涵盖通过该端点路由的每个提供商。即使受信任，通过 LangSmith 网关的跨格式路由（例如，路由到 Anthropic 模型的 OpenAI 格式请求）也会保持沉默，因为转换会重写估计假定的缓存设置。
+条目是完全匹配的主机名 - 信任`example.com` 不信任`gw.example.com`。一个条目涵盖通过该端点路由的每个提供商。即使受信任，通过 [LangSmith LLM Gateway](/langsmith/llm-gateway)​​ 的跨格式路由（例如，路由到 Anthropic 模型的 OpenAI 格式请求）也会保持沉默，因为转换会重写估计假设的缓存设置。
 
 ## 显示提供者可见的推理
 
@@ -170,7 +170,7 @@ tab_title = "{app_name} - {thread_name} | {cwd} [{branch}]"
 * **`{cwd}`**：活动工作目录。
 * **`{branch}`**：活动的 Git 分支。标题随着对话名称、目录或分支的更改而更新。设置 `tab_title = "{app_name}"` 仅保留命令名称。编辑模板后重新启动Deep Agents代码。
 
-有关如何分配名称的信息，请参阅[Name a thread](/oss/deepagents/code/cli-reference#name-a-thread)​​和[Name threads automatically](#name-threads-automatically)。
+有关如何分配名称的信息，请参阅[Name a thread](/oss/deepagents/code/cli-reference#name-a-thread)和[Name threads automatically](#name-threads-automatically)。
 
 ## 自动命名线程
 
@@ -227,7 +227,7 @@ allowed = ["anthropic:claude-fable-5", "openai:*"]
 allowed = []   # no model may be used
 ```
 
-通配符包括从捆绑的提供商配置文件或您配置的 `models` 列表中发现的模型。如果该提供商没有可用的模型，则通配符不允许任何模型。> **允许 Amazon Bedrock 模型**
+通配符包括从捆绑的提供商配置文件或您配置的 `models` 列表中发现的模型。如果该提供商没有可用的模型，则通配符不允许任何模型。> [手风琴] 允许 Amazon Bedrock 模型
 >
 > 将基岩模型 ID 写入`bedrock:<id>`，包括 ID 中的版本冒号：
 >
@@ -242,18 +242,18 @@ allowed = []   # no model may be used
 
 要禁用密文：
 
-**配置文件**
+> [选项卡] 配置文件
+>
+> ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [tracing]
+> langsmith_redact = false
+> ```
 
-```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[tracing]
-langsmith_redact = false
-```
-
-**环境变量**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DEEPAGENTS_CODE_LANGSMITH_REDACT=false
-```
+> [选项卡] 环境变量
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DEEPAGENTS_CODE_LANGSMITH_REDACT=false
+> ```
 
 环境变量优先于配置文件。启用密文后，如果无法配置密文，则Deep Agents 代码将禁用对该运行的跟踪。秘密编辑不会编辑一般个人身份信息 (PII)、跟踪元数据或 shell 进程发出的跟踪。有关更广泛的选项，请参阅[Redact secrets from traces](/langsmith/redact-secrets)。
 
@@ -283,7 +283,7 @@ temperature = 0.7
 
 **型号** `string[]`要在定义为 `<name>` 的提供程序的交互式 `/model` 切换器中显示的模型名称列表。对于已经附带模型配置文件的提供程序，除了捆绑的名称之外，您在此处添加的任何名称也会显示（对于尚未添加到包中的新发布的模型很有用）。对于[arbitrary providers](#arbitrary-providers)，此列表是切换器中模型的唯一来源。
 
-此处列出的型号**绕过**任何应用的基于配置文件的[filtering criteria](/oss/deepagents/code/providers#which-models-appear-in-the-switcher)，始终出现在切换器中。这使得它成为显示被排除的模型的推荐方法，因为它们的配置文件缺乏 `tool_calling` 支持或尚不存在。
+此处列出的型号**绕过**任何基于配置文件的[filtering criteria](/oss/deepagents/code/providers#which-models-appear-in-the-switcher)，始终出现在切换器中。这使得它成为显示被排除的模型的推荐方法，因为它们的配置文件缺乏 `tool_calling` 支持或尚不存在。
 
 该键是可选的。您始终可以将任何型号名称直接传递给`/model`或`--model`，无论它是否出现在切换器中；提供者在请求时验证名称。
 
@@ -305,7 +305,7 @@ temperature = 0.7
 
 请参阅 [Compatible APIs](#compatible-apis) 将内置提供程序指向有线兼容端点，或参阅 [Arbitrary providers](#arbitrary-providers) 了解通过 `class_path` 配置的提供程序。
 
-**基\_url\_env** `string`保存此提供程序的基本 URL 的环境变量的名称，与 `api_key_env` 平行。当端点来自环境而不是固定值时（例如，因机器或 CI 作业而异的网关 URL），请使用此值而不是 `base_url`，因此它可以在不编辑 `config.toml` 的情况下进行更改，并且可以参与端点解析和密钥/端点配对（请参阅[Endpoints, keys, and gateways](#endpoints-keys-and-gateways)）。它还将这些范围扩展到[built-in set](/oss/deepagents/code/providers#provider-reference)之外的提供商；参见[Arbitrary providers](#arbitrary-providers)。
+**基\_url\_env** `string`保存此提供程序的基本 URL 的环境变量的名称，与 `api_key_env` 平行。当端点来自环境而不是固定值时（例如，因机器或 CI 作业而异的网关 URL），请使用此值而不是 `base_url`，因此它可以在不编辑 `config.toml` 的情况下进行更改，并且可以参与端点解析和密钥/端点配对（请参阅 [Endpoints, keys, and gateways](#endpoints-keys-and-gateways)）。它还将这些范围扩展到[built-in set](/oss/deepagents/code/providers#provider-reference)之外的提供商；参见[Arbitrary providers](#arbitrary-providers)。
 
 如果两者都设置了，则静态 `base_url` 获胜：
 
@@ -325,7 +325,7 @@ base_url_env = "EXAMPLE_BASE_URL"        # ignored while base_url is set
 
 **类\_路径** `string`
 
-用于[arbitrary model](#arbitrary-providers)提供商。 `module.path:ClassName` 格式的完全限定 Python 类。设置后，Deep Agents代码会直接为提供者`<name>`导入并实例化此类。该类必须是 `BaseChatModel` 子类。
+用于 [arbitrary model](#arbitrary-providers) 提供商。 `module.path:ClassName` 格式的完全限定 Python 类。设置后，Deep Agents代码会直接为提供者`<name>`导入并实例化此类。该类必须是 `BaseChatModel` 子类。
 
 **启用** `boolean`（默认值：true）
 
@@ -407,18 +407,18 @@ mode = "auto"   # "manual" (default), "auto", or "yolo"
 
 当 [Auto mode](/oss/deepagents/code/approval-modes) 处于活动状态时，分类器有时间预算来审查每批门控操作。未在期限内审核的批次按`classifier_unavailable`拒绝；重复错过会退回到手动审批 UI。默认值为 20 秒。如果评论超时，首先要尝试的是[selecting a faster classifier model](#default-and-recent-model)（请参阅`[models].auto_classifier`）。如果您已经这样做了，但仍需要更多空间，您可以延长截止日期：
 
-**配置文件**
+> [选项卡] 配置文件
+>
+> ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [models]
+> auto_classifier_timeout = 60   # seconds; minimum 1, maximum 300
+> ```
 
-```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[models]
-auto_classifier_timeout = 60   # seconds; minimum 1, maximum 300
-```
-
-**环境变量**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DEEPAGENTS_CODE_AUTO_CLASSIFIER_TIMEOUT=60
-```
+> [选项卡] 环境变量
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DEEPAGENTS_CODE_AUTO_CLASSIFIER_TIMEOUT=60
+> ```
 
 环境变量优先于配置文件，配置文件优先于内置默认值。低于 1 或高于 300 的值将固定在地板或天花板上。非整数值会回退到默认值并带有警告。
 
@@ -443,7 +443,7 @@ max_input_tokens = 4096
 max_input_tokens = 8192
 ```
 
-创建后，配置文件覆盖将合并到模型的配置文件中。任何读取配置文件的功能（状态栏中的上下文限制显示、自动汇总阈值、功能检查）都将看到覆盖的值。> **使用 --profile-override 覆盖 CLI 配置文件**
+配置文件覆盖在创建后合并到模型的配置文件中。任何读取配置文件的功能（状态栏中的上下文限制显示、自动汇总阈值、功能检查）都将看到覆盖的值。> [accordion] CLI 配置文件使用 --profile-override 覆盖
 >
 > 要在运行时覆盖模型配置文件字段而不编辑配置文件，请通过 `--profile-override` 传递 JSON 对象：
 >
@@ -522,7 +522,7 @@ models = ["my-model"]
 > use_responses_api = false
 > ```
 
-## 任意提供者Deep Agents 代码可与任何调用 LLM 的工具配合使用，可用作 [LangChain ⟦T251⟧](https://reference.langchain.com/python/langchain-core/language_models)。 [built-in providers](/oss/deepagents/code/providers#provider-reference) 开箱即用；不太常见或内部模型需要更多的设置。将`class_path`指向其`BaseChatModel`子类，Deep Agents代码直接导入并实例化该类。
+## 任意提供者Deep Agents 代码可与任何调用 LLM 的工具配合使用，该工具可用作 [LangChain ⟦T251⟧](https://reference.langchain.com/python/langchain-core/language_models)。 [built-in providers](/oss/deepagents/code/providers#provider-reference) 开箱即用；不太常见或内部模型需要更多的设置。将`class_path`指向其`BaseChatModel`子类，Deep Agents代码直接导入并实例化该类。
 
 ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [models.providers.my_custom]
@@ -623,7 +623,7 @@ DEEPAGENTS_CODE_OPENAI_BASE_URL=https://api.openai.com/v1
 
 ### 托管网关
 
-在配备模型网关（例如，LangSmith网关）的计算机上，网关通常会一起导出网关密钥和匹配的端点变量（`OPENAI_BASE_URL`、`ANTHROPIC_BASE_URL`或`GOOGLE_GEMINI_BASE_URL`）。 Deep Agents 代码默认使用该对，因此无需配置。
+在配备模型网关（例如，LangSmith LLM 网关）的计算机上，网关通常会一起导出网关密钥和匹配的端点变量（`OPENAI_BASE_URL`、`ANTHROPIC_BASE_URL` 或 `GOOGLE_GEMINI_BASE_URL`）。 Deep Agents 代码默认使用该对，因此无需配置。
 
 要使用您自己的密钥，请将其存储为 `/auth`（将提供程序默认值的基本 URL 留空，或显式设置），或设置 `DEEPAGENTS_CODE_` 前缀密钥和端点。两者都会覆盖网关对，而不会留下不匹配的端点。
 
@@ -703,7 +703,7 @@ extra_paths = [
 
 超时的操作可能仍在服务器上运行。在重试之前检查其状态以避免重复工作。
 
-## 代理运行时间限制LangGraph图步预算是`dcode`代理图在单轮中可以执行的最大节点调用数。使用 `[runtime]` 部分配置此递归限制：
+## 代理运行时间限制LangGraph图步骤预算是`dcode`代理图在单轮中可以执行的最大节点调用数。使用 `[runtime]` 部分配置此递归限制：
 
 ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [runtime]
@@ -723,24 +723,24 @@ Deep Agents 代码未设置默认值。当没有源设置有效值时，LangGrap
 
 使用`dcode config get runtime.recursion_limit`查看有效的Deep AgentsCode值及其来源。未设置的结果将限制留给LangGraph服务器。
 
-**CLI 标志**
+> [选项卡] CLI 标志
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --recursion-limit 5000
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --recursion-limit 5000
-```
+> [选项卡] 环境变量
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DEEPAGENTS_CODE_RECURSION_LIMIT=5000
+> ```
 
-**环境变量**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DEEPAGENTS_CODE_RECURSION_LIMIT=5000
-```
-
-**配置文件**
-
-```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[runtime]
-recursion_limit = 5000
-```
+> [选项卡] 配置文件
+>
+> ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [runtime]
+> recursion_limit = 5000
+> ```
 
 > [!注意]
 >

@@ -51,7 +51,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 |天蓝色OpenAI| [⟦T49⟧](/oss/python/integrations/chat/azure_chat_openai) | `AZURE_OPENAI_API_KEY` | ✅ |
 | Anthropic | [⟦T51⟧](/oss/python/integrations/chat/anthropic) | `ANTHROPIC_API_KEY` | ✅ |
 |谷歌双子座 API | [⟦T53⟧](/oss/python/integrations/chat/google_generative_ai) | `GOOGLE_API_KEY` | ✅ |
-| Gemini企业代理平台| [⟦T55⟧](/oss/python/integrations/chat/google_generative_ai#credentials) | `GOOGLE_CLOUD_PROJECT` | ✅ |
+| Gemini企业代理平台 | [⟦T55⟧](/oss/python/integrations/chat/google_generative_ai#credentials) | `GOOGLE_CLOUD_PROJECT` | ✅ |
 | Gemini企业代理平台（Anthropic）| [⟦T57⟧](/oss/python/integrations/chat/google_anthropic_vertex) | `GOOGLE_CLOUD_PROJECT`、`GOOGLE_CLOUD_LOCATION` | ✅ |
 |巴斯坦| [⟦T60⟧](https://github.com/basetenlabs/langchain-baseten) | `BASETEN_API_KEY` | ✅ |
 | AWS 基岩 | [⟦T62⟧](/oss/python/integrations/chat/bedrock) | `AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY` | ✅ |
@@ -69,8 +69,8 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 |英伟达 | [⟦T88⟧](/oss/python/integrations/chat/nvidia_ai_endpoints) | `NVIDIA_API_KEY` | ✅ |
 | xAI | [⟦T90⟧](/oss/python/integrations/chat/xai) | `XAI_API_KEY` | ✅ |
 |困惑| [⟦T92⟧](/oss/python/integrations/chat/perplexity) | `PERPLEXITY_API_KEY`（或`PPLX_API_KEY`）| ✅ |
-|开放路由器| [⟦T95⟧](/oss/python/integrations/chat/openrouter) | `OPENROUTER_API_KEY` | ✅ |
-|莱特法学硕士 | [⟦T97⟧](/oss/python/integrations/chat/litellm) |每个提供商（请参阅[docs](https://docs.litellm.ai/)）| ❌ |> **在 NVIDIA Build 上使用 Nemotron 3.5 Super VL**
+|开放路由器 | [⟦T95⟧](/oss/python/integrations/chat/openrouter) | `OPENROUTER_API_KEY` | ✅ |
+|莱特法学硕士 | [⟦T97⟧](/oss/python/integrations/chat/litellm) |每个提供商（请参阅[docs](https://docs.litellm.ai/)）| ❌ |> [手风琴] 在 NVIDIA Build 上使用 Nemotron 3.5 Super VL
 >
 > 安装 NVIDIA 提供程序包，然后用 `/auth` 保存您的 [NVIDIA Build API key](/oss/python/integrations/chat/nvidia_ai_endpoints#access-the-nvidia-api-catalog)：
 >
@@ -85,7 +85,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 > /model --default nvidia:nvidia/nemotron-3.5-super-vl-120b-a12b
 > ```
 >
-> NVIDIA 提供商默认使用公共构建端点。检查[NVIDIA Build](https://build.nvidia.com/)以了解型号可用性。对于已配置的专用端点，设置 `NVIDIA_BASE_URL` 或通过 `dcode auth set nvidia --base-url URL` 将其 URL 与凭证配对。> **在Gemini企业代理平台上配置Anthropic型号**
+> NVIDIA 提供商默认使用公共构建端点。检查[NVIDIA Build](https://build.nvidia.com/)以了解型号可用性。对于配置的专用端点，设置 `NVIDIA_BASE_URL` 或通过 `dcode auth set nvidia --base-url URL` 将其 URL 与凭证配对。> [手风琴] 在Gemini企业代理平台上配置Anthropic型号
 >
 > `google_anthropic_vertex` 提供商通过 Gemini Enterprise Agent Platform 上的 Anthropic 消息 API 运行 Claude。它使用 Google Cloud 应用程序默认凭据 (ADC)，而不是 Anthropic API 密钥。
 >
@@ -170,7 +170,7 @@ Deep Agents 代码将您的浏览器打开至 ChatGPT 登录页面。如果无�
 
 |路由器|套餐 |配置 |
 | - | - | - |
-|开放路由器| [⟦T131⟧](/oss/python/integrations/chat/openrouter) | `openrouter:<model>`（内置，参见[Provider reference](#provider-reference)）|
+|开放路由器 | [⟦T131⟧](/oss/python/integrations/chat/openrouter) | `openrouter:<model>`（内置，参见[Provider reference](#provider-reference)）|
 |莱特法学硕士 | [⟦T133⟧](/oss/python/integrations/chat/litellm) | `litellm:<model>`（内置，参见[Provider reference](#provider-reference)）|
 
 **OpenRouter** 是一个内置提供程序 - 安装额外的并直接使用它：
@@ -207,20 +207,20 @@ dcode --install litellm
    dcode --model openai:gpt-5.5
    ```
 
-> **模型解析顺序**
+> [手风琴] 模型解析顺序
 >
 > 当Deep Agents代码启动时，它会按以下顺序解析要使用的模型：
 >
-> 1. **`--model` 标志** 提供时始终获胜。
+> 1. **`--model` 标志** 提供时总是获胜。
 > 2. `~/.deepagents/config.toml`中的**`[models].default`**——用户有意的长期偏好。
 > 3. **`~/.deepagents/config.toml`中的`[models].recent`**——最后一个模型通过`/model`切换到。自动写入；永远不会覆盖`[models].default`。
 > 4. **环境自动检测**：回退到第一个可用的启动凭据，按顺序检查：`OPENAI_API_KEY`、`ANTHROPIC_API_KEY`、`GOOGLE_API_KEY`、`GOOGLE_CLOUD_PROJECT`（Gemini Enterprise Agent Platform）。
 >
-> 此启动回退有意仅检查这四个凭据。其他受支持的提供程序（例如 Groq）仍然可以通过 `--model`、`/model` 和保存的默认值 (`[models].default` / `[models].recent`) 获得。
+> 此启动回退有意仅检查这四个凭据。其他受支持的提供程序（例如 Groq）仍然可以通过 `--model`、`/model` 和保存的默认值 (`[models].default` / `[models].recent`) 获得。### 哪些型号出现在切换器中
 
-### 哪些型号出现在切换器中`/model` 选择器从已安装的提供程序包动态构建其列表。下面展开以了解完整的标准和故障排除。
+`/model` 选择器从已安装的提供程序包动态构建其列表。下面展开以了解完整的标准和故障排除。
 
-> **切换器如何构建其模型列表**
+> [手风琴] 切换器如何构建其模型列表
 >
 > 交互式 `/model` 选择器根据已安装的提供程序包和在 `config.toml` 中配置的模型构建其列表。
 >
@@ -236,7 +236,7 @@ dcode --install litellm
 >>
 >> 凭证状态**不**影响模型是否列出。您仍然可以选择缺少凭据的模型。提供商在请求时报告身份验证错误。
 
-### 开放式重量模型
+### 开放重量模型
 
 如果您想使用开放权重模型，有两种常见路径，具体取决于您喜欢本地推理还是云托管推理。
 
@@ -248,9 +248,7 @@ dcode --install litellm
    ollama pull qwen3:4b
    ```
 
-2. 安装 Ollama 额外组件：
-
-   ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+2. 安装 Ollama 额外组件：```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    /install ollama
    ```
 
@@ -258,7 +256,9 @@ dcode --install litellm
    dcode --install ollama
    ```
 
-3、选择型号：```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+3、选择型号：
+
+   ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    /model
    ```
 

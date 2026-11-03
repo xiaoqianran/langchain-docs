@@ -10,7 +10,7 @@
 
 通过将 `.mcp.json` 配置文件添加到您的项目以在项目级别范围内添加 MCP 服务器，或在用户级别添加 MCP 服务器以应用于所有项目。
 
-将此提示粘贴到您的编码代理中以连接服务器，或按照以下步骤专门针对 Deep Agents 代码。其他编辑器请参见[Use docs programmatically](/use-these-docs)。
+将此提示粘贴到您的编码代理中以连接服务器，或具体按照以下步骤操作Deep Agents代码。其他编辑器请参见[Use docs programmatically](/use-these-docs)。
 
 连接 LangChain 文档 MCP 服务器
 
@@ -41,29 +41,29 @@
 
 如果尚不存在，请在用户级别创建 `.mcp.json` 文件，以使服务器可用于计算机上的每个项目或项目级别。
 
-**用户**
+> [选项卡] 用户
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> mkdir -p ~/.deepagents
+> touch ~/.deepagents/.mcp.json
+> ```
+>
+> 此文件 (`~/.deepagents/.mcp.json`) 中的服务器在该计算机上的每个项目中都可用。> [选项卡] 项目
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> touch .mcp.json
+> ```
+>
+> 此文件 (`<project>/.mcp.json`) 中的服务器可供该项目使用。
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-mkdir -p ~/.deepagents
-touch ~/.deepagents/.mcp.json
-```
-
-此文件 (`~/.deepagents/.mcp.json`) 中的服务器在该计算机上的每个项目中都可用。
-
-**项目**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-touch .mcp.json
-```此文件 (`<project>/.mcp.json`) 中的服务器可供该项目使用。
-
-**项目（隐藏）**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-mkdir -p .deepagents
-touch .deepagents/.mcp.json
-```
-
-此文件 (`<project>/.deepagents/.mcp.json`) 中的服务器可供该项目使用，但不位于存储库根目录中。
+> [选项卡] 项目（隐藏）
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> mkdir -p .deepagents
+> touch .deepagents/.mcp.json
+> ```
+>
+> 此文件中的服务器 (`<project>/.deepagents/.mcp.json`) 可用于该项目，但不位于存储库根目录中。
 
 有关完整的优先级规则，请参阅[Discovery locations](#discovery-locations)。
 
@@ -108,7 +108,7 @@ Deep Agents 代码自动在标准位置搜索 `.mcp.json` 文件。不需要任�
 
 按以下顺序检查配置（优先级从低到高）：|优先|地点 |范围 |
 | - | - | - |
-| 1（最低）| `~/.deepagents/.mcp.json` |用户级—适用于所有项目|
+| 1（最低）| `~/.deepagents/.mcp.json` |用户级—适用于所有项目 |
 | 2 | `<project>/.deepagents/.mcp.json` |项目级—`.deepagents`子目录 |
 | 3（最高）| `<project>/.mcp.json` |项目级—root（兼容 Claude 代码）|
 
@@ -172,7 +172,7 @@ stdio 服务器作为子进程生成。 Deep Agents 代码通过 stdin/stdout �
 }
 ```
 
-### 字段参考> **stdio（默认）**
+### 字段参考> [手风琴] stdio（默认）
 >
 > **必填：** `command`。 **可选：** `args`、`env`、`cwd`，以及共享的[tool-filter fields](#tool-filtering)。
 >
@@ -192,7 +192,7 @@ stdio 服务器作为子进程生成。 Deep Agents 代码通过 stdin/stdout �
 >
 > 子进程的工作目录。覆盖此服务器配置源的默认目录。
 
-> **sse**
+> [手风琴] sse
 >
 > **必填：** `type: "sse"`、`url`。 **可选：** `headers`、`auth`，加上共享的[tool-filter fields](#tool-filtering)。
 >
@@ -210,7 +210,7 @@ stdio 服务器作为子进程生成。 Deep Agents 代码通过 stdin/stdout �
 >
 > **授权** `"oauth"`
 >
-> 设置为 `"oauth"` 以使用 `dcode mcp login` 驱动 OAuth 登录流程，而不是提供 `Authorization` 标头。不能与 `Authorization` 标头组合。参见[OAuth login](#oauth-login)。> **http**
+> 设置为 `"oauth"` 以使用 `dcode mcp login` 驱动 OAuth 登录流程，而不是提供 `Authorization` 标头。不能与 `Authorization` 标头组合。参见[OAuth login](#oauth-login)。> [手风琴] http
 >
 > **必填：** `type: "http"`、`url`。 **可选：** `headers`、`auth`，加上共享的[tool-filter fields](#tool-filtering)。
 >
@@ -252,9 +252,9 @@ stdio 服务器作为子进程生成。 Deep Agents 代码通过 stdin/stdout �
         }
     }
 }
-```
+```## 多个服务器
 
-## 多个服务器您可以根据需要配置任意数量的服务器。来自所有服务器的工具被合并并可供代理使用：
+您可以根据需要配置任意数量的服务器。来自所有服务器的工具被合并并可供代理使用：
 
 ```json title="mcp-config.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -430,7 +430,7 @@ dcode mcp login linear --mcp-config ./mcp-config.json
 | - | - |
 | `ok` |已连接；工具已加载并可供代理使用 |
 | `unauthenticated` |需要 OAuth 登录或刷新失败 — 运行 `dcode mcp login <server>` |
-| `error` |飞行前、发现或传输设置失败；附有错误消息 |
+| `error` |飞行前、发现或传输设置失败；附有错误消息|
 
 单个失败的服务器不再中止启动。代理与任何正常运行的服务器一起运行，欢迎横幅会在工具计数旁边显示未经身份验证和错误服务器的计数。在交互式会话中打开`/mcp`，查看每个服务器的状态、传输、工具列表以及非`ok`条目的失败原因。查看器会在服务器连接时实时更新，并支持 `tab`/`shift+tab` 导航。
 
@@ -473,7 +473,7 @@ enabled_project_server_approvals = [
 ]
 ```
 
-要撤销批准，请从`enabled_project_server_approvals` 中删除其条目。要强制重新批准而不编辑`config.toml`，请更改项目的`.mcp.json`中的服务器定义；保存的指纹不再匹配。
+要撤销批准，请从 `enabled_project_server_approvals` 中删除其条目。要强制重新批准而不编辑`config.toml`，请更改项目的`.mcp.json`中的服务器定义；保存的指纹不再匹配。
 
 旧平面 `[mcp].enabled_project_servers` 列表在 `config.toml` 中被忽略。使用 `enabled_project_server_approvals` 保存批准。
 
@@ -493,7 +493,7 @@ enabled_project_server_approvals = [
 
 连接的 MCP 服务器及其工具会自动列在代理的系统提示符中，并按服务器名称和传输类型进行分组。这有助于模型推理工具来源和故障域，而无需手动上下文。
 
-## 故障排除> **服务器无法启动（stdio）**
+## 故障排除> [accordion] 服务器无法启动 (stdio)
 >
 > 验证该命令在 Deep Agents 之外是否有效 代码：
 >
@@ -503,21 +503,21 @@ enabled_project_server_approvals = [
 >
 > 常见原因：软件包未安装，`npx`不在`PATH`上，或者缺少所需的环境变量。
 
-> **连接被拒绝（SSE/HTTP）**
+> [手风琴] 连接被拒绝 (SSE/HTTP)
 >
 > 检查远程服务器是否正在运行且 URL 是否正确。如果服务器需要身份验证，请确保 `headers` 包含正确的凭据。
 
-> **工具未出现**
+> [手风琴] 工具未出现
 >
 > Deep Agents 代码打印启动时加载的工具数量（例如，`✓ Loaded 3 MCP tools`）。如果您看到`0`，则服务器已成功启动，但未公布任何工具 - 检查服务器自己的日志或文档。
 
-> **服务器在 /mcp 中显示 `unauthenticated`**
+> [手风琴] 服务器在 /mcp 中显示 `unauthenticated`
 >
-> 您尚未运行 `dcode mcp login <server>`，或者持久刷新令牌已过期或已在服务器端撤销。再次运行登录命令 - 您的会话继续运行，一旦刷新令牌，服务器将重新连接。> **`Invalid MCP config at ...`**
+> 您尚未运行 `dcode mcp login <server>`，或者持久刷新令牌已过期或已在服务器端撤销。再次运行登录命令 - 您的会话继续运行，一旦刷新令牌，服务器将重新连接。> [手风琴] `Invalid MCP config at ...`
 >
 > 飞行前验证被拒绝 `--mcp-config`（或自动发现的 `.mcp.json`）。常见原因：不支持的服务器名称（必须匹配 `[A-Za-z0-9_-]+`）、stdio 服务器上的 `auth: oauth`、在同一条目上设置的 `command` 和 `url`，或者不是字符串的标头值。修复突出显示的原因并重新启动 - Deep Agents 代码不再转储配置错误的多页面子进程跟踪。
 
-> **`$\{VAR\}` 引用失败**
+> [手风琴] `$\{VAR\}` 引用失败
 >
 > 在父 shell 中导出变量，将其添加到 `~/.deepagents/.env`，或为引用提供 `${VAR:-default}` 后备。要调试，请设置 `DEEPAGENTS_CODE_DEBUG=1` 并检查关闭时打印到 stderr 的每个会话日志路径。
 

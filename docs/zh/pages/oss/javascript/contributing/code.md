@@ -10,15 +10,15 @@
 
 如果您正在寻找解决方案，请查看我们的存储库中标记为“需要帮助”的问题：
 
-> **[LangChain](https://github.com/langchain-ai/deepagents/labels?q=help+wanted)**
+> [卡][LangChain](https://github.com/langchain-ai/deepagents/labels?q=help+wanted)
 >
 > 标签
 
-> **[LangGraph](https://github.com/langchain-ai/langgraphjs/labels?q=help+wanted)**
+> [卡][LangGraph](https://github.com/langchain-ai/langgraphjs/labels?q=help+wanted)
 >
 > 标签
 
-> **[Deep Agents](https://github.com/langchain-ai/deepagentsjs/labels?q=help+wanted)**
+> [卡][Deep Agents](https://github.com/langchain-ai/deepagentsjs/labels?q=help+wanted)
 >
 > 标签
 
@@ -137,7 +137,7 @@ pnpm --filter @langchain/core lint
 
 通过以下方式保持兼容性：
 
-> **稳定的接口**
+> [手风琴] 稳定的接口
 >
 > **始终保留**：
 >
@@ -146,7 +146,7 @@ pnpm --filter @langchain/core lint
 > * 返回值结构和类型
 > * 公共API的导入路径
 
-> **安全更改**
+> [手风琴] 安全更改
 >
 > **可接受的修改**：
 >
@@ -158,15 +158,15 @@ pnpm --filter @langchain/core lint
 >
 > * 添加新模块或功能
 
-> **进行更改之前**
+> [手风琴] 进行更改之前
 >
 > * **这会破坏现有的用户代码吗？**
 >
 > * 检查你的目标是否是公开的
 >
-> * 测试中是否存在现有的使用模式？
+> * 测试中是否存在现有的使用模式？### 新功能
 
-### 新功能我们的目标是保持新功能的高标准。如果现有问题表明对外部贡献者的新核心抽象有迫切的需求，我们通常不会接受它们。这也适用于基础设施和依赖项的更改。
+我们的目标是保持新功能的高标准。如果现有问题表明对外部贡献者的新核心抽象有迫切的需求，我们通常不会接受它们。这也适用于基础设施和依赖项的更改。
 
 一般来说，功能贡献要求包括：
 
@@ -200,19 +200,19 @@ pnpm --filter @langchain/core lint
 
 安全检查清单：
 
-> **输入验证**
+> [手风琴] 输入验证
 >
 > * 验证并清理所有用户输入
 >
 > * 正确转义模板和查询中的数据
 >
-> * 切勿使用`eval()`，因为这可能导致任意代码执行漏洞> **错误处理**
+> * 切勿使用`eval()`，因为这可能导致任意代码执行漏洞> [手风琴] 错误处理
 >
 > * 使用特定的异常类型
 > * 不要在错误消息中暴露敏感信息
 > * 实施适当的资源清理
 
-> **依赖关系**
+> [手风琴] 依赖关系
 >
 > * 避免添加硬依赖
 > * 保持最小的可选依赖关系
@@ -281,59 +281,59 @@ pnpm --filter @langchain/core lint
 
 ## 存储库结构
 
-**LangChain**
-
-LangChain 被组织为具有多个包的单一存储库：
-
-> **核心包**
+> [标签] LangChain
 >
-> * **[⟦T27⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain#readme)**（位于`libs/langchain/`）：包含链、代理和检索逻辑的主包
-> * **[⟦T29⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-core#readme)**（位于`libs/langchain-core/`）：基础接口和核心抽象
-
-> **合作伙伴套餐**
+> LangChain 被组织为具有多个包的单一存储库：
 >
-> 位于 `libs/providers/`，这些是用于特定集成的独立版本控制包。例如：
+>> [手风琴] 核心包
+>>
+>> * **[⟦T27⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain#readme)**（位于`libs/langchain/`）：包含链、代理和检索逻辑的主包
+>> * **[⟦T29⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-core#readme)**（位于`libs/langchain-core/`）：基础接口和核心抽象
 >
-> * **[⟦T32⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-openai#readme)**：[OpenAI](/oss/javascript/integrations/providers/openai) 集成
-> * **[⟦T33⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-anthropic#readme)**：[Anthropic](/oss/javascript/integrations/providers/anthropic) 集成
-> * **[⟦T34⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google#readme)**：[Google](/oss/javascript/integrations/providers/google) 集成
-
-> **支持包**
+>> [手风琴] 合作伙伴包
+>>
+>> 位于`libs/providers/`，这些是用于特定集成的独立版本控制包。例如：
+>>
+>> * **[⟦T32⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-openai#readme)**：[OpenAI](/oss/javascript/integrations/providers/openai) 集成
+>> * **[⟦T33⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-anthropic#readme)**：[Anthropic](/oss/javascript/integrations/providers/anthropic) 集成
+>> * **[⟦T34⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google#readme)**：[Google](/oss/javascript/integrations/providers/google) 集成
 >
-> * **[⟦T35⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-textsplitters#readme)**：文本分割实用程序
-> * **[⟦T36⟧](https://github.com/langchain-ai/langchainjs/tree/main/internal/standard-tests#readme)**：用于集成的标准测试套件
-> * **[⟦T37⟧](https://github.com/langchain-ai/langchainjs-community/tree/main/libs/community)**：社区维护的集成（单独的存储库）
-
-**LangGraph**LangGraph 被组织为具有多个 Python 包的 monorepo：
-
-> **核心包**
+>> [手风琴] 配套包
+>>
+>> * **[⟦T35⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-textsplitters#readme)**：文本分割实用程序
+>> * **[⟦T36⟧](https://github.com/langchain-ai/langchainjs/tree/main/internal/standard-tests#readme)**：用于集成的标准测试套件
+>> * **[⟦T37⟧](https://github.com/langchain-ai/langchainjs-community/tree/main/libs/community)**：社区维护的集成（单独的存储库）> [标签] LangGraph
 >
-> * **[⟦T38⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/langgraph#readme)**（位于`libs/langgraph/`）：用于构建有状态、多参与者代理的核心框架
-> * **[⟦T40⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/prebuilt#readme)**（位于`libs/prebuilt/`）：用于创建和运行代理和工具的高级 API
-
-> **检查点包**
+> LangGraph 被组织为具有多个 Python 包的 monorepo：
 >
-> * **[⟦T42⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint#readme)**（位于`libs/checkpoint/`）：检查点保存程序的基础接口
-> * **[⟦T44⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres#readme)**（位于`libs/checkpoint-postgres/`）：Postgres 实现
-> * **[⟦T46⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite#readme)**（位于`libs/checkpoint-sqlite/`）：SQLite 实现
-
-> **SDK 和 CLI**
+>> [手风琴] 核心包
+>>
+>> * **[⟦T38⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/langgraph#readme)**（位于`libs/langgraph/`）：用于构建有状态、多参与者代理的核心框架
+>> * **[⟦T40⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/prebuilt#readme)**（位于`libs/prebuilt/`）：用于创建和运行代理和工具的高级 API
 >
-> * **[⟦T48⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/sdk-py#readme)**（位于`libs/sdk-py/`）：用于代理服务器 API 的 Python SDK
-> * **[⟦T50⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/cli#readme)**（位于`libs/cli/`）：官方命令行界面
-
-**Deep Agents**
-
-Deep Agents 被组织为具有多个 Python 包的 monorepo：
-
-> **核心包**
+>> [手风琴] 检查点包
+>>
+>> * **[⟦T42⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint#readme)**（位于`libs/checkpoint/`）：检查点保存程序的基础接口
+>> * **[⟦T44⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres#readme)**（位于`libs/checkpoint-postgres/`）：Postgres 实现
+>> * **[⟦T46⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite#readme)**（位于`libs/checkpoint-sqlite/`）：SQLite实现
 >
-> * **[⟦T52⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents#readme)**（位于`libs/deepagents/`）：用于构建具有规划、文件系统和子代理功能的深度代理的核心框架
-> * **[⟦T54⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code#readme)**（位于`libs/code/`）：Deep Agents代码——具有对话简历、网络搜索和沙箱的交互式终端界面
-> * **[⟦T56⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/cli#readme)**（位于`libs/cli/`）：将运输代理部署工具（`deepagents deploy`、`deepagents init`、`deepagents dev`）部署到LangSmith 部署> **集成包**
+>> [手风琴] SDK 和 CLI
+>>
+>> * **[⟦T48⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/sdk-py#readme)**（位于`libs/sdk-py/`）：用于代理服务器 API 的 Python SDK
+>> * **[⟦T50⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/cli#readme)**（位于`libs/cli/`）：官方命令行界面> [标签] Deep Agents
 >
-> * **[⟦T61⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/evals#readme)**（位于 `libs/evals/`）：评估套件和 Harbor 与 LangSmith 跟踪集成
-> * **[⟦T63⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/acp#readme)**（位于`libs/acp/`）：代理客户端协议集成
+> Deep Agents 被组织为具有多个 Python 包的 monorepo：
+>
+>> [手风琴] 核心包
+>>
+>> * **[⟦T52⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents#readme)**（位于`libs/deepagents/`）：用于构建具有规划、文件系统和子代理功能的深度代理的核心框架
+>> * **[⟦T54⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code#readme)**（位于`libs/code/`）：Deep Agents代码 — 具有对话恢复、网络搜索和沙箱的交互式终端界面
+>> * **[⟦T56⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code)**（位于`libs/cli/`）：将运输代理部署工具（`deepagents deploy`、`deepagents init`、`deepagents dev`）部署到LangSmith 部署
+>
+>> [手风琴] 集成包
+>>
+>> * **[⟦T61⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/evals#readme)**（位于`libs/evals/`）：评估套件和Harbor与LangSmith跟踪的集成
+>> * **[⟦T63⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/acp#readme)**（位于`libs/acp/`）：代理客户端协议集成
 
 ***
 
@@ -351,9 +351,7 @@ Deep Agents 被组织为具有多个 Python 包的 monorepo：
 
 #### 单元测试
 
-**地点**：`src/tests/FILENAME_BEING_TESTED.test.ts`
-
-单元测试涵盖不需要调用外部 API 的模块化逻辑。如果添加新逻辑，则应该添加单元测试。在单元测试中，检查前/后处理并模拟外部依赖项。
+**地点**：`src/tests/FILENAME_BEING_TESTED.test.ts`单元测试涵盖不需要调用外部 API 的模块化逻辑。如果添加新逻辑，则应该添加单元测试。在单元测试中，检查前/后处理并模拟外部依赖项。
 
 **要求**：
 
@@ -378,7 +376,9 @@ pnpm test -t "the test that should be run"
 
 **地点**：`src/tests/FILENAME_BEING_TESTED.int.test.ts`
 
-集成测试涵盖需要调用外部 API（通常与其他服务集成）的逻辑。集成测试需要访问外部服务/提供商 API（这可能需要花钱），因此默认情况下不会运行。
+集成测试涵盖需要调用外部 API（通常与其他服务集成）的逻辑。
+
+集成测试需要访问外部服务/提供商 API（这可能需要花钱），因此默认情况下不会运行。
 
 并非每个代码更改都需要集成测试，但请记住，作为审核过程的一部分，我们将单独要求/运行集成测试。
 
@@ -398,116 +398,116 @@ pnpm test:int
 
 贡献必须遵守以下质量要求：
 
-**输入提示**
+> [选项卡] 键入提示
+>
+> **必填**：所有功能的完整类型
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> function processDocuments(
+>     docs: Document[],
+>     processor: DocumentProcessor,
+>     batchSize: number = 100
+> ): ProcessingResult {
+>     // ...
+> }
+> ```> [选项卡] 文档
+>
+> **必需**：[JSDocs](https://jsdoc.app/about-getting-started) 对于所有导出的函数和接口
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /**
+>  * Document processing instance.
+>  */
+> interface FooDocumentProcessor {
+>     /**
+>      * Process documents in batches.
+>      *
+>      * @param docs - List of documents to process.
+>      * @returns Processing results with success/failure counts.
+>      */
+>     process(docs: Document[]): ProcessingResult;
+> }
+>
+> /**
+>  * Process documents in batches.
+>  *
+>  * @param docs - List of documents to process.
+>  * @param processor - Document processing instance.
+>  * @param batchSize - Number of documents per batch.
+>  * @returns Processing results with success/failure counts.
+>  */
+> export function processDocuments(
+>     docs: Document[],
+>     processor: DocumentProcessor,
+>     batchSize: number = 100
+> ): ProcessingResult {
+>     // ...
+> }
+> ```
 
-**必需**：所有功能的完整类型
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-function processDocuments(
-    docs: Document[],
-    processor: DocumentProcessor,
-    batchSize: number = 100
-): ProcessingResult {
-    // ...
-}
-```
-
-**文档**
-
-**必需**：[JSDocs](https://jsdoc.app/about-getting-started) 对于所有导出的函数和接口
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/**
- * Document processing instance.
- */
-interface FooDocumentProcessor {
-    /**
-     * Process documents in batches.
-     *
-     * @param docs - List of documents to process.
-     * @returns Processing results with success/failure counts.
-     */
-    process(docs: Document[]): ProcessingResult;
-}
-
-/**
- * Process documents in batches.
- *
- * @param docs - List of documents to process.
- * @param processor - Document processing instance.
- * @param batchSize - Number of documents per batch.
- * @returns Processing results with success/failure counts.
- */
-export function processDocuments(
-    docs: Document[],
-    processor: DocumentProcessor,
-    batchSize: number = 100
-): ProcessingResult {
-    // ...
-}
-```
-
-**代码风格**
-
-**自动化**：格式化和检查：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm lint    # Check style and types
-pnpm format  # Apply formatting
-```
-
-**标准**：
-
-* 描述性变量名称
-* 分解复杂的函数（目标是少于 20 行）
-* 遵循代码库中的现有模式
+> [选项卡] 代码风格
+>
+> **自动化**：格式化和检查：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm lint    # Check style and types
+> pnpm format  # Apply formatting
+> ```
+>
+> **标准**：
+>
+> * 描述性变量名称
+> * 分解复杂的函数（目标是少于 20 行）
+> * 遵循代码库中的现有模式
 
 ***
 
 ### 测试写作指南
 
-为了编写有效的测试，需要遵循一些好的实践：* 将测试封装在描述被测试组件的`describe`块中
+为了编写有效的测试，需要遵循一些好的实践：
+
+* 将测试封装在描述被测试组件的`describe`块中
 * 使用自然语言描述测试名称
 * 断言要详尽无遗
 * 仅对大小合理的数据对象使用快照
 
-**单元测试**
+> [选项卡] 单元测试
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> describe("DocumentProcessor", () => {
+>     it("Should handle empty document list", () => {
+>         const processor = new DocumentProcessor();
+>         const result = processor.process([]);
+>
+>         expect(result.success).toBe(true);
+>         expect(result.processedCount).toBe(0);
+>         expect(result.errors).toHaveLength(0);
+>     });
+> });
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-describe("DocumentProcessor", () => {
-    it("Should handle empty document list", () => {
-        const processor = new DocumentProcessor();
-        const result = processor.process([]);
+> [选项卡] 集成测试
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> describe("ChatOpenAI", () => {
+>     it("Should test with real API", () => {
+>         const chat = new ChatOpenAI();
+>         const response = chat.invoke("Hello");
+>     });
+> });
+> ```
 
-        expect(result.success).toBe(true);
-        expect(result.processedCount).toBe(0);
-        expect(result.errors).toHaveLength(0);
-    });
-});
-```
-
-**集成测试**
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-describe("ChatOpenAI", () => {
-    it("Should test with real API", () => {
-        const chat = new ChatOpenAI();
-        const response = chat.invoke("Hello");
-    });
-});
-```
-
-**模拟使用**
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-describe("APIService", () => {
-    it("Should call with retry", () => {
-        const mockClient = new MockClient();
-        const service = new APIService(client: mockClient);
-        const result = service.callWithRetry();
-    });
-});
-```
+> [tab] 模拟使用
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> describe("APIService", () => {
+>     it("Should call with retry", () => {
+>         const mockClient = new MockClient();
+>         const service = new APIService(client: mockClient);
+>         const result = service.callWithRetry();
+>     });
+> });
+> ```
 
 ### 提交你的 PR
 
@@ -520,9 +520,7 @@ describe("APIService", () => {
 
 > [!注意]
 >
-> 如果您的 PR 包含人工智能生成的内容，您必须遵守我们的 [acceptable uses of LLMs](/oss/javascript/contributing/overview#acceptable-uses-of-llms) 政策。看似省力、由人工智能生成的垃圾邮件的 PR 将被关闭而不发表评论。
-
-> [!警告]
+> 如果您的 PR 包含 AI 生成的内容，您必须遵守我们的 [acceptable uses of LLMs](/oss/javascript/contributing/overview#acceptable-uses-of-llms) 政策。看似省力、由人工智能生成的垃圾邮件的 PR 将被关闭而不发表评论。> [!警告]
 >
 > 及时解决 CI 故障。维护者可以在合理的时间内关闭未通过 CI 的 PR。
 

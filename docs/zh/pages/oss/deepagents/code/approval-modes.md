@@ -68,11 +68,11 @@ mode = "yolo"
 ## 自动工作原理
 
 自动保留与手动相同的门控操作规则，但更改了审查这些操作的方式。它使用两个阶段：1. **例行操作自动运行。** 对源文件（如 `src/parser.py`）或只读 Git 命令（如`git status`）的写入将在没有提示的情况下继续进行。像`.github/workflows/ci.yml`这样的敏感目标或像`git commit`这样的变异命令会进入下一阶段。
-2. **模型审查其余部分。** 对于任何不明显例行公事的事情，主动模型会检查该操作是否与您请求的结果相匹配。即使您没有指定每个实现细节，也可以继续执行获得该结果所需的合理步骤。高风险效果（例如将本地内容发送到未配置的目的地）仍然需要显式授权。如果模型拒绝呼叫，代理会收到错误结果并可以修改其计划。
+2. **模型审查其余部分。** 对于任何不明显例行的事情，主动模型会检查该操作是否与您请求的结果相匹配。即使您没有指定每个实现细节，也可以继续执行获得该结果所需的合理步骤。高风险效果（例如将本地内容发送到未配置的目的地）仍然需要显式授权。如果模型拒绝呼叫，代理会收到错误结果并可以修改其计划。
 
 重复拒绝或分类器失败后，自动停止并向您显示下一批的正常批准提示，然后在自动模式下继续。
 
-> **自动决策流程**
+> [手风琴] 自动决策流程
 >
 > ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > flowchart TD
@@ -129,41 +129,41 @@ mode = "yolo"
 
 通过以下任意来源设置分类器模型：
 
-**TUI 命令**
-
-运行 `/auto model` 打开交互式模型选择器并为当前会话选择分类器模型。要直接指定模型，请将其作为参数传递：
-
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/auto model openai:gpt-5.6-luna
-/auto model clear
-```
-
-使用`/auto model clear`返回继承主模型。
-
-**CLI 标志**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode -y --auto-classifier-model openai:gpt-5.6-luna
-```
-
-`--auto-classifier-model` 仅在交互式 TUI 会话中接受。
-
-**环境变量**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL="openai:gpt-5.6-luna"
-```
-
-> [!警告]
+> [选项卡] TUI 命令
 >
-> **项目`.env`**无法设置`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`。只有 shell 导出、`~/.deepagents/.env`、CLI 标志和 `/auto model` 有效。
+> 运行 `/auto model` 打开交互式模型选择器并为当前会话选择分类器模型。要直接指定模型，请将其作为参数传递：
+>
+> ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /auto model openai:gpt-5.6-luna
+> /auto model clear
+> ```
+>
+> 使用`/auto model clear`返回继承主模型。
 
-**配置.toml**
+> [选项卡] CLI 标志
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode -y --auto-classifier-model openai:gpt-5.6-luna
+> ```
+>
+> `--auto-classifier-model` 仅在交互式 TUI 会话中接受。
 
-```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[models]
-auto_classifier = "openai:gpt-5.6-luna"
-```> **优先顺序**
+> [选项卡] 环境变量
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL="openai:gpt-5.6-luna"
+> ```
+>
+>> [!警告]
+>>
+>> **项目`.env`**无法设置`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`。只有 shell 导出、`~/.deepagents/.env`、CLI 标志和 `/auto model` 有效。
+
+> [选项卡] config.toml
+>
+> ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [models]
+> auto_classifier = "openai:gpt-5.6-luna"
+> ```> [手风琴] 优先顺序
 >
 > 1. **`/auto model` TUI 命令**：对当前会话立即生效。
 > 2. **`--auto-classifier-model` 标志**：在启动时设置分类器（仅限交互式 TUI 会话）。
@@ -180,7 +180,7 @@ auto_classifier = "openai:gpt-5.6-luna"
 
 决策计划与线程、模式、批处理和精确门控调用绑定。缺失或无效的状态、模式竞赛或重播将退回到人工审核。例如，如果您在分类器审查正在进行时切换到手动，则之前的自动决策无法静默执行；而是打开正常的审批 UI。
 
-### 了解范围和限制* 手动审批菜单可以为当前线程启用自动。阈值回退可以永久切换为手动或在启用自动的情况下执行一次性审核。
+### 了解范围和限制* 手动审批菜单可以为当前线程启用自动。阈值回退可以永久切换到手动或在启用自动的情况下执行一次性审核。
 * 活动模型不是独立的安全机构。 [MCP read-only annotations](/oss/deepagents/code/mcp-tools#read-only-tool-annotations-in-auto-mode) 被认为是经过深思熟虑的 beta 权衡。
 * 父级自动审查不涵盖在委派子代理或更广泛的显式配置 `js_eval` 扇出内执行的操作。即使 TUI 隐藏了分类器输入和输出，模型提供者和跟踪后端仍可能观察到它们。
 

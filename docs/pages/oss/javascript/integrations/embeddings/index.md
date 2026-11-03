@@ -339,8 +339,10 @@ The main supported way to initialize a `CacheBackedEmbeddings` is `fromBytesStor
 * **documentEmbeddingStore**: Any [`BaseStore`](/oss/javascript/integrations/stores/) for caching document embeddings.
 * **options.namespace**: (optional, defaults to `""`) The namespace to use for the document cache. Helps avoid collisions (e.g., set it to the embedding model name).
 
-- Always set the `namespace` parameter to avoid collisions when using different embedding models.
-- `CacheBackedEmbeddings` does not cache query embeddings by default. To enable this, specify a `query_embedding_store`.
+> [!TIP]
+>
+> * Always set the `namespace` parameter to avoid collisions when using different embedding models.
+> * `CacheBackedEmbeddings` does not cache query embeddings by default. To enable this, specify a `query_embedding_store`.
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { CacheBackedEmbeddings } from "@langchain/classic/embeddings/cache_backed";

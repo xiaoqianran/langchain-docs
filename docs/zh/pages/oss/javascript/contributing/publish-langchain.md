@@ -33,7 +33,7 @@
 
 ### 下载表中的列表（默认）
 
-> **[File an Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)**
+> [卡][File an Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)
 >
 > 使用固定表单字段显示名称、语言、组件、包名称、文档 URL 和简短的提供程序描述（最多 160 个字符）。
 
@@ -57,7 +57,7 @@
 
 根据您构建的集成类型，您将需要创建不同类型的文档页面。 LangChain 提供不同类型集成的模板来帮助您入门。
 
-> **[Chat models](https://github.com/langchain-ai/docs/blob/main/src/oss/javascript/integrations/chat/TEMPLATE.mdx)**
+> [卡][Chat models](https://github.com/langchain-ai/docs/blob/main/src/oss/javascript/integrations/chat/TEMPLATE.mdx)
 
 > [!提示]
 >
@@ -94,7 +94,7 @@
 
 **恭喜！** 您的集成已发布并在 LangChain 社区列出。
 
-> **[Co-marketing](/oss/javascript/contributing/comarketing)**
+> [卡][Co-marketing](/oss/javascript/contributing/comarketing)
 >
 > 与LangChain营销团队联系，探索联合营销机会。
 

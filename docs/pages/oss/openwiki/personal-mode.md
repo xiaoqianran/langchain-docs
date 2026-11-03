@@ -36,7 +36,9 @@ During an ingestion run, connector tools write raw data and manifests under `~/.
 
 Connector secrets are referenced by env var name and stored in `~/.openwiki/.env`.
 
-Connector config files should never contain raw secret values.
+> [!WARNING]
+>
+> Connector config files should never contain raw secret values.
 
 ### Built-in sources
 

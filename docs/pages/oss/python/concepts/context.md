@@ -85,7 +85,7 @@ graph.invoke(
 >     ...
 > ```
 >
-> * See [the Graph API](/oss/python/langgraph/use-graph-api#add-runtime-configuration) for details.
+> * See [the Graph API](/oss/python/langgraph/graph-api-nodes#add-runtime-configuration) for details.
 
 > [tab] In a tool
 >

@@ -27,47 +27,47 @@ dcode
 
 ## 能力
 
-> **[Remote sandboxes](/oss/deepagents/code/remote-sandboxes)**
+> [卡][Remote sandboxes](/oss/deepagents/code/remote-sandboxes)
 >
 > 远程运行代理工具，而不是在本地计算机上。
 
-> **[Goals and rubrics](/oss/deepagents/code/goals-and-rubrics)**
+> [卡][Goals and rubrics](/oss/deepagents/code/goals-and-rubrics)
 >
 > 定义可衡量的目标或评分标准，以便代理可以检查工作是否完成。
 
-> **[Subagents](/oss/deepagents/code/subagents)**
+> [卡][Subagents](/oss/deepagents/code/subagents)
 >
 > 将工作委托给特定于任务的子代理以并行执行。
 
-> **[Memory](/oss/deepagents/code/memory-and-skills#memory)**
+> [卡][Memory](/oss/deepagents/code/memory-and-skills#memory)
 >
 > 跨会话存储和检索信息，包括项目约定和学习模式。
 
-> **[Context compaction](/oss/deepagents/code/quickstart#interactive-mode)**
+> [卡][Context compaction](/oss/deepagents/code/quickstart#interactive-mode)
 >
 > 总结较旧的消息并将原始消息卸载到存储中。
 
-> **[Human-in-the-loop](/oss/deepagents/code/quickstart#interactive-mode)**
+> [卡][Human-in-the-loop](/oss/deepagents/code/quickstart#interactive-mode)
 >
-> 敏感工具操作需要人工批准。> **[Skills](/oss/deepagents/code/memory-and-skills#skills)**
+> 敏感工具操作需要人工批准。> [卡片] [Skills](/oss/deepagents/code/memory-and-skills#skills)
 >
 > 通过定制专业知识和说明扩展代理能力。
 
-> **[MCP tools](/oss/deepagents/code/mcp-tools)**
+> [卡][MCP tools](/oss/deepagents/code/mcp-tools)
 >
 > 从模型上下文协议服务器加载外部工具。
 
-> **[Tracing](/oss/deepagents/code/quickstart#trace-with-langsmith)**
+> [卡片][Tracing](/oss/deepagents/code/quickstart#trace-with-langsmith)
 >
 > 跟踪LangSmith中的代理操作，以实现可观察性和调试。
 
 ## 后续步骤
 
-> **[Quickstart](/oss/deepagents/code/quickstart)**
+> [卡][Quickstart](/oss/deepagents/code/quickstart)
 >
 > 安装Deep Agents代码，运行您的第一个任务，并使用交互或非交互模式。
 
-> **[Configuration](/oss/deepagents/code/configuration)**
+> [卡][Configuration](/oss/deepagents/code/configuration)
 >
 > 设置凭据、`config.toml`、环境变量、挂钩和 CLI 标志。
 

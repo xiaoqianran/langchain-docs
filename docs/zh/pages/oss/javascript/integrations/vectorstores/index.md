@@ -33,7 +33,7 @@ flowchart LR
 
 ### 接口
 
-LangChain 为矢量商店提供统一的接口，允许您：
+LangChain 为矢量商店提供统一的界面，允许您：
 
 * `addDocuments` - 将文档添加到商店。
 * `delete` - 按 ID 删除存储的文档。
@@ -108,16 +108,16 @@ const results = await vectorStore.similaritySearch("Hello world", 10);
 vectorStore.similaritySearch("query", 2, { source: "tweets" });
 ```
 
-<important>
-  对基于元数据的过滤的支持因实现而异。
-  有关详细信息，请检查您选择的矢量存储的文档。
-</important>
+> [!注意]
+>
+> 对基于元数据的过滤的支持因实现而异。
+> 检查您选择的矢量存储的文档以了解详细信息。
 
 ## 顶级集成
 
 **选择嵌入模型：**
 
-> **OpenAI**
+> [手风琴] OpenAI
 >
 > 安装依赖项：
 >
@@ -149,7 +149,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **天蓝色**
+> [手风琴] 天蓝色
 >
 > 安装依赖项
 >
@@ -183,7 +183,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **AWS**
+> [手风琴] AWS
 >
 > 安装依赖项：
 >
@@ -215,7 +215,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **谷歌双子座**
+> [手风琴] 谷歌双子座
 >
 > 安装依赖项：
 >
@@ -245,7 +245,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > const embeddings = new GoogleGenerativeAIEmbeddings({
 >   model: "gemini-embedding-001"
 > });
-> ```> **Gemini 企业代理平台**
+> ```> [手风琴] Gemini 企业代理平台
 >
 > 安装依赖项：
 >
@@ -277,7 +277,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **米斯特拉尔人工智能**
+> [手风琴] MistralAI
 >
 > 安装依赖项：
 >
@@ -309,7 +309,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **连贯**
+> [手风琴] Cohere
 >
 > 安装依赖项：
 >
@@ -341,7 +341,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **奥拉马**
+> [手风琴] Ollama
 >
 > 安装依赖项：
 >
@@ -368,7 +368,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **航行人工智能**
+> [手风琴] Voyage AI
 >
 > 安装依赖项：
 >
@@ -402,7 +402,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 
 **选择矢量存储：**
 
-> **内存**
+> [手风琴] 内存
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i langchain
@@ -422,66 +422,66 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > const vectorStore = new MemoryVectorStore(embeddings);
 > ```
 
-> **MongoDB**
+> [手风琴] MongoDB
 >
-> **手动嵌入**
+>> [tab] 手动嵌入
+>>
+>> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > npm install @langchain/mongodb mongodb @langchain/core
+> > ```
+>>
+>> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > yarn add @langchain/mongodb mongodb @langchain/core
+> > ```
+>>
+>> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > pnpm add @langchain/mongodb mongodb @langchain/core
+> > ```
+>>
+>> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import { MongoDBAtlasVectorSearch } from "@langchain/mongodb"
+> > import { MongoClient } from "mongodb";
+> >
+> > const client = new MongoClient(process.env.MONGODB_ATLAS_URI!);
+> > const collection = client
+> >   .db(process.env.MONGODB_ATLAS_DB_NAME)
+> >   .collection(process.env.MONGODB_ATLAS_COLLECTION_NAME);
+> >
+> > const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
+> >   collection,
+> >   indexName: "vector_index",
+> >   textKey: "text",
+> >   embeddingKey: "embedding",
+> > });
+> > ```
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> npm install @langchain/mongodb mongodb @langchain/core
-> ```
->
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> yarn add @langchain/mongodb mongodb @langchain/core
-> ```
->
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> pnpm add @langchain/mongodb mongodb @langchain/core
-> ```
->
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> import { MongoDBAtlasVectorSearch } from "@langchain/mongodb"
-> import { MongoClient } from "mongodb";
->
-> const client = new MongoClient(process.env.MONGODB_ATLAS_URI!);
-> const collection = client
->   .db(process.env.MONGODB_ATLAS_DB_NAME)
->   .collection(process.env.MONGODB_ATLAS_COLLECTION_NAME);
->
-> const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
->   collection,
->   indexName: "vector_index",
->   textKey: "text",
->   embeddingKey: "embedding",
-> });
-> ```
->
-> **自动嵌入**
->
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> npm install @langchain/mongodb mongodb @langchain/core
-> ```
->
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> yarn add @langchain/mongodb mongodb @langchain/core
-> ```
->
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> pnpm add @langchain/mongodb mongodb @langchain/core
-> ```
->
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> import { MongoDBAtlasVectorSearch } from "@langchain/mongodb"
-> import { MongoClient } from "mongodb";
->
-> const client = new MongoClient(process.env.MONGODB_ATLAS_URI!);
-> const collection = client
->   .db(process.env.MONGODB_ATLAS_DB_NAME)
->   .collection(process.env.MONGODB_ATLAS_COLLECTION_NAME);
->
-> const vectorStore = new MongoDBAtlasVectorSearch({ collection });
-> ```
+>> [选项卡] 自动嵌入
+>>
+>> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > npm install @langchain/mongodb mongodb @langchain/core
+> > ```
+>>
+>> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > yarn add @langchain/mongodb mongodb @langchain/core
+> > ```
+>>
+>> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > pnpm add @langchain/mongodb mongodb @langchain/core
+> > ```
+>>
+>> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import { MongoDBAtlasVectorSearch } from "@langchain/mongodb"
+> > import { MongoClient } from "mongodb";
+> >
+> > const client = new MongoClient(process.env.MONGODB_ATLAS_URI!);
+> > const collection = client
+> >   .db(process.env.MONGODB_ATLAS_DB_NAME)
+> >   .collection(process.env.MONGODB_ATLAS_COLLECTION_NAME);
+> >
+> > const vectorStore = new MongoDBAtlasVectorSearch({ collection });
+> > ```
 
-> **松果**
+> [手风琴] 松果
 >
 > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install @langchain/pinecone @langchain/core @pinecone-database/pinecone
@@ -506,7 +506,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **Redis**
+> [手风琴] Redis
 >
 > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install @langchain/redis @langchain/core redis
@@ -527,9 +527,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 >   redisClient: client,
 >   indexName: "langchainjs-testing",
 > });
-> ```
-
-> **Qdrant**
+> ```> [手风琴] Qdrant
 >
 > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install @langchain/qdrant @langchain/core
@@ -552,7 +550,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 > });
 > ```
 
-> **Oracle 人工智能数据库**
+> [手风琴] Oracle AI 数据库
 >
 > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i @oracle/langchain-oracledb @langchain/core
@@ -588,7 +586,9 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
 >   distanceStrategy: "DOT",
 > });
 > await vectorStore.initialize();
-> ```> **偏离**
+> ```
+
+> [手风琴] Weaviate
 >
 > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install @langchain/weaviate @langchain/core weaviate-client
@@ -616,7 +616,7 @@ LangChain.js 与各种矢量商店集成。您可以查看下面的完整列表�
 ## 所有向量存储
 
 |矢量商店 |下载 |
-| :-| :-|
+| :- | :- |
 | [⟦T90⟧](/oss/javascript/integrations/vectorstores/weaviate) | [  ⟦T109⟧](https://www.npmjs.com/package/@langchain/weaviate) |
 | [⟦T91⟧](/oss/javascript/integrations/vectorstores/pinecone) | [  ⟦T110⟧](https://www.npmjs.com/package/@langchain/pinecone) |
 | [⟦T92⟧](/oss/javascript/integrations/vectorstores/mongodb_atlas) | [  ⟦T111⟧](https://www.npmjs.com/package/@langchain/mongodb) |

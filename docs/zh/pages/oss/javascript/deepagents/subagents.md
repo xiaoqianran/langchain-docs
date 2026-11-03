@@ -8,7 +8,7 @@
 
 深度代理可以创建子代理来委派工作。您可以在 `subagents` 参数中指定自定义子代理。子代理对于[context quarantine](https://www.dbreunig.com/2025/06/26/how-to-fix-your-context.html#context-quarantine)（保持主代理的上下文干净）和提供专门的指令很有用。
 
-本页介绍**同步**子代理，其中主管程序会阻塞，直到子代理完成。对于长时间运行的任务、并行工作流或需要中途转向和取消的情况，请参阅[Async subagents](/oss/javascript/deepagents/async-subagents)。
+本页涵盖**同步**子代理，其中主管程序会阻塞，直到子代理完成。对于长时间运行的任务、并行工作流或需要中途转向和取消的情况，请参阅[Async subagents](/oss/javascript/deepagents/async-subagents)。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TB
@@ -75,7 +75,7 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已经提�
 
 ### 子代理（基于字典）
 
-将子代理定义为与 [⟦T108⟧](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) 规范匹配的字典，其中包含以下字段：|领域 |类型 |描述 |
+将子代理定义为与 [⟦T108⟧](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) 规范匹配的字典，其中包含以下字段：|领域|类型 |描述 |
 | - | - | - |
 | `name` | `string` |必需的。子代理的唯一标识符。主代理在调用`task()`工具时使用此名称。子代理名称成为 `AIMessage` 和流媒体的元数据，这有助于区分代理。 |
 | `description` | `string` |必需的。描述该子代理的作用。具体并以行动为导向。主代理使用它来决定何时进行委托。 |
@@ -84,19 +84,19 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已经提�
 | `tools` | `StructuredTool[]` |选修的。子代理可以使用的工具。保持最少并且只包含需要的内容。默认继承自主代理。指定后，将完全覆盖继承的工具。 || `model` | `LanguageModelLike \| string` |选修的。覆盖主要代理的模型。省略使用主代理的模型。默认继承自主代理。您可以传递模型标识符字符串，如 `'openai:gpt-5.5'`（使用 `'provider:model'` 格式）或 LangChain 聊天模型对象（`await initChatModel("gpt-5.5")` 或 `new ChatOpenAI({ model: "gpt-5.5" })`）。 |
 | `middleware` | `AgentMiddleware[]` |选修的。用于自定义行为、日志记录或速率限制的附加中间件。不继承自主代理。附加到[synchronous subagent stack](/oss/javascript/deepagents/customization#synchronous-subagent-stack)。 |
 | `interruptOn` | `Record<string, boolean \| InterruptOnConfig>` |选修的。为特定工具配置[human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。选项：`True`、`False`。或 `InterruptOnConfig` 与 `allowed_decisions`。需要检查点。默认继承自主代理。子代理值覆盖默认值。 |
-| `skills` | `string[]` |选修的。 [Skills](/oss/javascript/deepagents/skills) 源路径。指定后，子代理将从这些目录加载技能（例如，`["/skills/research/", "/skills/web-search/"]`）。这使得子代理可以拥有与主代理不同的技能。不从主代理继承。只有通用子代理才能继承主代理的技能。当子代理拥有技能时，它会运行自己独立的[⟦T143⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware)实例。技能状态是完全隔离的 - 子代理加载的技能对父代理不可见，反之亦然。 || `responseFormat` | `ResponseFormat` |选修的。子代理的[Structured output](/oss/javascript/langchain/structured-output)架构。设置后，父代理会收到 JSON 格式的子代理结果，而不是自由格式的文本。接受 Zod 架构、JSON 架构对象、`toolStrategy(...)` 或 `providerStrategy(...)`。参见[Structured output](#structured-output)。 |
+| `skills` | `string[]` |选修的。 [Skills](/oss/javascript/deepagents/skills) 源路径。指定后，子代理将从这些目录加载技能（例如，`["/skills/research/", "/skills/web-search/"]`）。这使得子代理可以拥有与主代理不同的技能。不从主代理继承。只有通用子代理才能继承主代理的技能。当子代理拥有技能时，它会运行自己独立的[⟦T143⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware)实例。技能状态是完全隔离的 - 子代理加载的技能对父代理不可见，反之亦然。 || `responseFormat` | `ResponseFormat` |选修的。子代理的[Structured output](/oss/javascript/langchain/structured-output)架构。设置后，父代理会收到 JSON 格式的子代理结果，而不是自由格式文本。接受 Zod 架构、JSON 架构对象、`toolStrategy(...)` 或 `providerStrategy(...)`。参见[Structured output](#structured-output)。 |
 | `permissions` | `FilesystemPermission[]` |选修的。 [Filesystem permission rules](/oss/javascript/deepagents/permissions) 为子代理。设置后，**完全替换**父代理的权限。默认继承自主代理。 |
 
 ### 编译子代理
 
 对于复杂的工作流程，请使用预构建的 LangGraph 图作为 [⟦T150⟧](https://reference.langchain.com/javascript/deepagents/middleware/CompiledSubAgent)：
 
-|领域 |类型 |描述 |
+|领域|类型 |描述 |
 | - | - | - |
 | `name` | `str` |必需的。子代理的唯一标识符。子代理名称成为 `AIMessage` 和流媒体的元数据，这有助于区分代理。 |
 | `description` | `str` |必需的。该子代理的作用。 |
 | `runnable` | `Runnable` |必需的。已编译的LangGraph图（必须首先调用`.compile()`）。 |
-| `mode` | `"isolated"` \| `"fork"` |选修的。默认为`"isolated"`。设置为 `"fork"` 以继承父级的消息历史记录。无论哪种方式，编译的图形都会保持其自己的系统提示。参见[Forked subagents](#forked-subagents)。 |
+| `mode` | `"isolated"` \| `"fork"` |选修的。默认为`"isolated"`。设置为 `"fork"` 以继承父级的消息历史记录。无论哪种方式，编译后的图表都会保持其自己的系统提示。参见[Forked subagents](#forked-subagents)。 |
 
 ## 使用子代理
 
@@ -495,7 +495,7 @@ const agent = createDeepAgent({
 ## 使用 CompiledSubAgent对于更复杂的用例，您可以为自定义子代理提供[⟦T164⟧](https://reference.langchain.com/javascript/deepagents/middleware/CompiledSubAgent)。
 您可以使用 LangChain 的 [⟦T165⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 创建自定义子代理，或者使用 [graph API](/oss/javascript/langgraph/graph-api) 创建自定义 LangGraph 图表。
 
-如果您要创建自定义 LangGraph 图表，请确保该图表具有 [state key called ⟦T166⟧](/oss/javascript/langgraph/quickstart#2-define-state)：
+如果您要创建自定义 LangGraph 图表，请确保该图表具有 [state key called ⟦T166⟧](/oss/javascript/langgraph/quickstart#3-define-state)：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { CompiledSubAgent, createDeepAgent } from "deepagents";
@@ -880,13 +880,13 @@ const result = await agent.invoke({
 });
 ```
 
-> **[View example trace](https://smith.langchain.com/public/efa7623d-0431-4516-8187-0cd7e2d3a753/r)**
+> [卡][View example trace](https://smith.langchain.com/public/27cc9979-85f8-48f1-ae9d-f06c656dc70e/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
 ### 它是如何工作的叉子接收父级的有效对话历史记录以及委派的任务描述。 Deep Agents 删除尾随委托调用，并在任务描述中附加连续前导码。如果父级已压缩其历史记录，则分叉会收到压缩后的上下文，而不是每条原始消息。
 
-在这里，分叉意味着继承委托工作的上下文，而不是复制持久线程的检查点历史记录。子代理接收为其调用准备的状态，不包括父级字段。当它完成时，它的答案作为正常工具结果返回，并且父级继续。
+在这里，分叉意味着继承委托工作的上下文，而不是复制持久线程的检查点历史记录。子代理接收为其调用准备的状态，但不包括父级字段。当它完成时，它的答案作为正常工具结果返回，并且父级继续。
 
 ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // What the parent has, right before delegating
@@ -910,7 +910,7 @@ const result = await agent.invoke({
 ]
 ```
 
-分叉可以重用父级的提示缓存来匹配其请求的前缀。更改系统提示、工具或较早的消息会缩短提供商之间的共享前缀。保持分叉的配置不变以最大限度地重用，但不能保证缓存命中。
+分叉可以重用父级的提示缓存来匹配其请求的前缀。更改系统提示、工具或早期消息会缩短提供商之间的共享前缀。保持分叉的配置不变以最大限度地重用，但不能保证缓存命中。
 
 [⟦T185⟧](https://reference.langchain.com/javascript/deepagents/middleware/CompiledSubAgent)也支持`mode: "fork"`，尽管它保留自己的系统提示，因为图形已经构建。
 
@@ -1892,11 +1892,11 @@ const result = await agent.invoke({
 // '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
 ```
 
-> **[View example trace](https://smith.langchain.com/public/f34744b4-0794-4f4f-9e31-f7c9e3f0b2e5/r)**
+> [卡][View example trace](https://smith.langchain.com/public/b09c52e3-f197-4789-a533-12ed667d437a/r)
 >
 > 为此示例打开公共 LangSmith 运行。如果没有`response_format`，父代理将按原样接收子代理的最后一条消息文本。有了它，父级始终会获得与架构匹配的有效 JSON，这在父级需要以编程方式处理结果或将其传递给下游工具时非常有用。
 
-有关架构类型和策略（工具调用与原生提供者）的完整详细信息，请参阅[Structured output](/oss/javascript/langchain/structured-output)。
+有关模式类型和策略（工具调用与原生提供者）的完整详细信息，请参阅[Structured output](/oss/javascript/langchain/structured-output)。
 
 ## 通用子代理
 
@@ -1909,7 +1909,7 @@ const result = await agent.invoke({
 
 ### 覆盖通用子代理
 
-在 `subagents` 列表中包含带有 `name: "general-purpose"` 的子代理以替换默认值。使用它可以为通用子代理配置不同的模型、工具或系统提示：
+在 `subagents` 列表中包含带有 `name: "general-purpose"` 的子代理以替换默认值。使用它为通用子代理配置不同的模型、工具或系统提示：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
@@ -2127,7 +2127,7 @@ const agent = await createDeepAgent({
 
 通用子代理非常适合上下文隔离，无需专门的行为。主代理可以将复杂的多步骤任务委托给该子代理，并返回简洁的结果，而不会因中间工具调用而导致臃肿。
 
-> **示例**
+> [卡片] 示例
 >
 > 它不是由主代理进行 10 次网络搜索并用结果填充其上下文，而是委托给通用子代理：`task(name="general-purpose", task="Research quantum computing trends")`。子代理在内部执行所有搜索并仅返回摘要。
 
@@ -2947,7 +2947,7 @@ const verifyClaim = tool(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/8e104a86-0921-4274-aa71-25ac90bd78b7/r)**
+> [卡][View example trace](https://smith.langchain.com/public/ed436335-2188-45cf-9626-38a179915dee/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -2974,7 +2974,7 @@ const sharedLookup = tool(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/50309ec3-2016-43c4-bee1-0f707e501fdf/r)**
+> [卡][View example trace](https://smith.langchain.com/public/50b0da91-0eb8-4623-8364-201330fbdcbc/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -3009,7 +3009,7 @@ const flexibleSearch = tool(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/47447223-d4cd-4265-b0f9-c6a330258b99/r)**
+> [卡][View example trace](https://smith.langchain.com/public/548f421c-960a-4ca9-bf9e-cba22b735a0a/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 

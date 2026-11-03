@@ -10,27 +10,27 @@ Deep Agents 代码将用户配置存储在其配置文件目录（默认为`~/.d
 
 主要的配置文件是：
 
-> **[Config file](/oss/deepagents/code/config-file)**
+> [卡][Config file](/oss/deepagents/code/config-file)
 >
 > 编辑 `config.toml` 以获取模型默认值、提供程序设置、主题和更新设置。
 
-> **[Managed configuration](#managed-configuration)**
+> [卡][Managed configuration](#managed-configuration)
 >
 > 使用 `managed_config.toml` 为每个用户设置管理员控制的设置。
 
-> **[Environment variables](/oss/deepagents/code/configuration#environment-variables)**
+> [卡][Environment variables](/oss/deepagents/code/configuration#environment-variables)
 >
 > 在 `~/.deepagents/.env` 或 shell 导出中设置全局 API 密钥和机密。
 
-> **[Hooks](/oss/deepagents/code/hooks)**
+> [卡][Hooks](/oss/deepagents/code/hooks)
 >
 > 订阅`hooks.json`中的外部命令生命周期事件。
 
-> **[MCP servers](/oss/deepagents/code/mcp-tools)**
+> [卡][MCP servers](/oss/deepagents/code/mcp-tools)
 >
 > 在`~/.deepagents/.mcp.json`中定义全局MCP服务器。
 
-> **[Python extensions](/oss/deepagents/code/extensions)**
+> [卡][Python extensions](/oss/deepagents/code/extensions)
 >
 > 添加自定义工具、中间件和存储路由。
 
@@ -54,7 +54,7 @@ Deep Agents 代码采用分层配置。优先顺序取决于设置类型。
 
 ## 检查配置
 
-`dcode config` 命令显示设置 Deep Agents 代码使用的设置以及每个值的来源，而无需启动会话。使用它们来确认管理员设置、环境变量或 `config.toml` 设置处于活动状态。
+`dcode config` 命令显示Deep Agents 代码使用的设置以及每个值的来源，而无需启动会话。使用它们来确认管理员设置、环境变量或 `config.toml` 设置处于活动状态。
 
 |命令|描述 |
 | - | - |
@@ -83,22 +83,22 @@ OPENAI_API_KEY=sk-...
 
 要完全跳过项目`.env`（全局`~/.deepagents/.env`仍然加载），请设置`startup.read_project_dotenv`。
 
-**配置文件**
+> [选项卡] 配置文件
+>
+> ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [startup]
+> read_project_dotenv = false
+> ```> [选项卡] 环境变量
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DEEPAGENTS_CODE_READ_PROJECT_DOTENV=0
+> ```
 
-```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[startup]
-read_project_dotenv = false
-```
-
-**环境变量**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DEEPAGENTS_CODE_READ_PROJECT_DOTENV=0
-```该设置从托管配置、环境变量和用户`config.toml`解析。所有这些都在应用任何项目 `.env` 之前读取，因此项目 `.env` 无法自行关闭（或重新打开）切换。
+该设置从托管配置、环境变量和用户`config.toml`解析。所有这些都在应用任何项目 `.env` 之前读取，因此项目 `.env` 无法自行关闭（或重新打开）切换。
 
 Deep Agents 代码会忽略来自 dotenv 文件时可能改变可执行文件查找、解释器或 shell 启动、Git 行为或信任设置的环境变量。
 
-> **查看 dotenv 文件中阻止的环境变量**
+> [accordion] 查看 dotenv 文件中屏蔽的环境变量
 >
 > 无法在项目或全局 dotenv 文件中设置以下键：
 >
@@ -181,7 +181,7 @@ Deep Agents 代码附带许多内置主题。默认主题是 `langchain`，带�
 theme = "langchain-dark"
 ```对于用户定义的主题、内置覆盖和特定于终端的映射，请参阅[Config file](/oss/deepagents/code/config-file)中的`[themes.*]`和`[ui.terminal_themes]`部分或直接在`config.toml`中配置它们：
 
-> **用户定义的主题、覆盖和终端映射**
+> [accordion] 用户定义的主题、覆盖和终端映射
 >
 > ### 用户定义的主题
 >
@@ -248,18 +248,18 @@ Deep Agents 代码默认自动检查并安装更新。
 
 要选择退出自动更新：
 
-**配置文件**
+> [选项卡] 配置文件
+>
+> ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [update]
+> auto_update = false
+> ```
 
-```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[update]
-auto_update = false
-```
-
-**环境变量**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DEEPAGENTS_CODE_AUTO_UPDATE=0
-```
+> [选项卡] 环境变量
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DEEPAGENTS_CODE_AUTO_UPDATE=0
+> ```
 
 环境变量优先于配置文件。将环境变量设置为空值会禁用该功能。启用后（默认），Deep Agents 代码会在会话启动时检查 PyPI 是否有较新版本并自动升级。禁用后，Deep Agents 代码会显示更新提示以及相应的安装命令。
 
@@ -267,18 +267,18 @@ export DEEPAGENTS_CODE_AUTO_UPDATE=0
 
 Deep Agents 代码在后台每小时从上游刷新其模型定价目录，以便成本估算保持最新。选择退出：
 
-**配置文件**
+> [选项卡] 配置文件
+>
+> ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [update]
+> prices_auto_update = false
+> ```
 
-```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[update]
-prices_auto_update = false
-```
-
-**环境变量**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DEEPAGENTS_CODE_PRICES_AUTO_UPDATE=0
-```
+> [选项卡] 环境变量
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DEEPAGENTS_CODE_PRICES_AUTO_UPDATE=0
+> ```
 
 ### 自定义定价覆盖
 
@@ -305,18 +305,18 @@ export DEEPAGENTS_CODE_PRICES_AUTO_UPDATE=0
 
 要完全禁止自动更新检查：
 
-**配置文件**
+> [选项卡] 配置文件
+>
+> ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [update]
+> check = false
+> ```
 
-```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[update]
-check = false
-```
-
-**环境变量**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DEEPAGENTS_CODE_NO_UPDATE_CHECK=1
-```
+> [选项卡] 环境变量
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DEEPAGENTS_CODE_NO_UPDATE_CHECK=1
+> ```
 
 禁用更新检查还会阻止启动时自动安装更新。
 
@@ -332,18 +332,18 @@ export DEEPAGENTS_CODE_NO_UPDATE_CHECK=1
 
 Deep Agents 代码显示会话结束时的会话使用统计信息（默认打开）：
 
-**配置文件**
+> [选项卡] 配置文件
+>
+> ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [ui]
+> show_usage_stats = false
+> ```
 
-```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[ui]
-show_usage_stats = false
-```
-
-**环境变量**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DEEPAGENTS_CODE_SHOW_USAGE_STATS=0
-```
+> [选项卡] 环境变量
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DEEPAGENTS_CODE_SHOW_USAGE_STATS=0
+> ```
 
 环境变量优先；将其设置为空值也会禁用统计信息。
 
@@ -351,35 +351,35 @@ export DEEPAGENTS_CODE_SHOW_USAGE_STATS=0
 
 聊天输入中的大量粘贴会折叠为紧凑的占位符（默认打开）。要保持完整粘贴的文本可见：
 
-**配置文件**
+> [选项卡] 配置文件
+>
+> ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [ui]
+> collapse_pastes = false
+> ```
 
-```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[ui]
-collapse_pastes = false
-```
-
-**环境变量**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DEEPAGENTS_CODE_COLLAPSE_PASTES=0
-```
+> [选项卡] 环境变量
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DEEPAGENTS_CODE_COLLAPSE_PASTES=0
+> ```
 
 ## 自动记忆
 
 Deep Agents 代码自动将学习内容保存到内存中。要在停止自动保存时继续加载内存，请更改 [automatic memory setting](/oss/deepagents/code/memory-and-skills#automatic-memory)：
 
-**配置文件**
+> [选项卡] 配置文件
+>
+> ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [memory]
+> auto_save = false
+> ```
 
-```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[memory]
-auto_save = false
-```
-
-**环境变量**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DEEPAGENTS_CODE_MEMORY_AUTO_SAVE=0
-```
+> [选项卡] 环境变量
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DEEPAGENTS_CODE_MEMORY_AUTO_SAVE=0
+> ```
 
 您仍然可以使用 `/remember` 显式保存记忆。环境变量优先于配置文件。
 
@@ -387,18 +387,18 @@ export DEEPAGENTS_CODE_MEMORY_AUTO_SAVE=0
 
 更改保留窗口，或使用 `0` 禁用清理：
 
-**配置文件**
+> [选项卡] 配置文件
+>
+> ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [history]
+> retention_days = 90   # 0 disables the sweep
+> ```
 
-```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[history]
-retention_days = 90   # 0 disables the sweep
-```
-
-**环境变量**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DEEPAGENTS_CODE_HISTORY_RETENTION_DAYS=90
-```
+> [选项卡] 环境变量
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DEEPAGENTS_CODE_HISTORY_RETENTION_DAYS=90
+> ```
 
 环境变量优先于配置文件。通过 `DEEPAGENTS_HOME` 配置文件，档案位于 `$DEEPAGENTS_HOME/conversation_history/` 下。
 
@@ -435,7 +435,7 @@ Deep Agents 代码在每个操作系统上的固定位置查找 `managed_config.
 | - | - |
 | macOS | `/Library/Application Support/dcode/managed_config.toml` |
 | Linux | `/etc/dcode/managed_config.toml` |
-|窗户 | `<ProgramData>\dcode\managed_config.toml` |
+|窗户| `<ProgramData>\dcode\managed_config.toml` |
 
 在 Windows 上，Deep Agents 代码通过系统注册表查找 ProgramData，而不是 `%ProgramData%` 环境变量。环境变量无法更改托管配置位置。如果注册表不可用，则Deep Agents代码检查`C:\ProgramData\dcode\managed_config.toml`。如果该文件也丢失，Deep Agents 代码无法确定管理员是否配置了策略，因此使用配置的命令会停止而不是在没有配置的情况下运行。
 
@@ -492,7 +492,7 @@ source = "https://config.example.com/dcode-policy.toml"
 
 配置远程策略时，本地文件只能包含 `[managed_config].source` 设置。将完整的策略放入远程 TOML 文件中。 Deep Agents 代码未结合远程和本地策略设置，并且远程文件无法指向另一个源。
 
-> **查看远程策略要求**
+> [手风琴] 查看远程策略要求
 >
 > URL 必须使用 HTTPS，不包含凭据或查询参数，并且不超过 2,048 个 ASCII 字符。 Deep Agents 代码不遵循重定向、使用代理环境变量或将远程策略保存到磁盘。
 >
@@ -517,7 +517,7 @@ dcode doctor
 
 Deep Agents 当代码无法读取或解析托管文件、无法下载完整的远程策略或无法安全地应用策略时，如果没有所需的管理员设置，代码将停止而不是运行。使用配置退出的命令带有代码`78`。您仍然可以运行`dcode config`、`dcode doctor`、`dcode auth path`和帮助命令来解决问题。
 
-如果在运行会话期间更新失败，Deep Agents 代码将继续使用以前的有效策略并报告失败。新进程在加载有效策略之前无法启动。> **查看关闭失败的设置**
+如果在运行会话期间更新失败，Deep Agents 代码将继续使用之前的有效策略并报告失败。新进程在加载有效策略之前无法启动。> [手风琴] 查看关闭失败的设置
 >
 > 以下任何设置的无效值都会停止启动，因为回退到用户值可能会删除所需的限制：
 >
@@ -586,7 +586,7 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 
 ## 环境变量引用
 
-所有Deep Agents代码特定的环境变量都使用`DEEPAGENTS_CODE_`前缀。请参阅 [⟦T317⟧ prefix](#deepagents_code_-prefix) 了解前缀如何替代第三方凭据。
+所有 Deep Agents 代码特定的环境变量都使用 `DEEPAGENTS_CODE_` 前缀。请参阅 [⟦T317⟧ prefix](#deepagents_code_-prefix) 了解前缀如何替代第三方凭据。
 
 **深度\_代码\_自动\_更新** `string`
 
@@ -640,13 +640,13 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 
 **DEEPAGENTS\_CODE\_LANGSMITH\_PROJECT** `string`
 
-覆盖 Deep Agents 代码自己的代理跟踪的 LangSmith 项目名称。 Shell 命令仍然使用用户的原始 `LANGSMITH_PROJECT` 运行，因此应用程序、测试或脚本跟踪可以出现在单独的项目中。参见[Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith)。
+使用 [⟦T376⟧](/langsmith/create-an-agent#use-an-environment-project) 为 Deep Agents 代码自己的跟踪选择代理环境。 Shell 命令仍然使用用户的原始 `LANGSMITH_PROJECT` 运行，因此来自测试或脚本的跟踪可以转到不同的代理环境。参见[Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith)。
 
 **DEEPAGENTS\_CODE\_LANGSMITH\_REDACT** `string`（默认值：true）切换Deep Agents代码的LangSmith代理跟踪输入和输出的客户端秘密编辑。默认启用。接受 `1`、`true`、`yes` 或 `on` 以启用密文，并接受 `0`、`false`、`no` 或 `off` 来禁用密文，不区分大小写。启用编辑后，如果无法配置编辑，则会禁用该运行的跟踪。参见[Configure LangSmith trace redaction](/oss/deepagents/code/config-file#redact-langsmith-trace-secrets)。
 
 **DEEPAGENTS\_CODE\_LANGSMITH\_REPLICA\_PROJECTS** `string`
 
-第二个LangSmith项目*也*写入代理跟踪。当设置和跟踪处于活动状态时，每个代理运行都会双重写入主项目（默认情况下来自`DEEPAGENTS_CODE_LANGSMITH_PROJECT`，或`deepagents-code`）和此项目。默认关闭。参见[Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith)。
+将跟踪复制到的第二个代理环境。在启用副本之前创建目标代理。将此变量和 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 设置为相应环境的 `tracer_session_name` 值。当跟踪处于活动状态时，每次运行都会写入两个目标。默认关闭。参见[Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith)。
 
 **深度\_代码\_LANGSMITH\_TRACING** `string`
 
@@ -656,7 +656,7 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 
 **DEEPAGENTS\_CODE\_MCP\_TOOL\_TIMEOUT** `number`（默认值：120）
 
-MCP 工具调用的最大持续时间（以秒为单位）。接受从 `1` 到 `900` 的值并覆盖用户配置中的 `[mcp].tool_timeout`。无效值将传递到下一个配置源。超时并不能保证服务器端取消，因此重试可能会重复工作。
+MCP 工具调用的最大持续时间（以秒为单位）。接受从 `1` 到 `900` 的值并覆盖用户配置中的 `[mcp].tool_timeout`​​。无效值将传递到下一个配置源。超时并不能保证服务器端取消，因此重试可能会重复工作。
 
 **DEEPAGENTS\_CODE\_NO\_UPDATE\_CHECK** `string`
 
@@ -666,7 +666,7 @@ MCP 工具调用的最大持续时间（以秒为单位）。接受从 `1` 到 `
 
 选择用户配置文件和信任根而不是默认的`~/.deepagents`。接受绝对路径或以`~/`开头的路径； `~user` 表单和相对路径被拒绝。必须在继承的 shell 环境中设置 — 没有 `.env` 文件可以设置它。参见[Profile location](#profile-location-deepagents_home)。
 
-**DEEPAGENTS\_CODE\_ONBOARDING** `string`覆盖首次运行的入门流程。设置为真实值以强制其在每次启动时打开；设置为虚假值以完全抑制它（对于 CI 和配置的机器很有用）。对于默认的首次运行行为，保留未设置。
+**DEEPAGENTS\_CODE\_ONBOARDING** `string`覆盖首次运行的入门流程。设置为真实值以强制其在每次启动时打开；设置为虚假值以完全抑制它（对于 CI 和配置的机器有用）。对于默认的首次运行行为，保留未设置。
 
 **DEEPAGENTS\_CODE\_PRICES\_AUTO\_UPDATE** `string`（默认值：true）
 
@@ -692,7 +692,7 @@ MCP 工具调用的最大持续时间（以秒为单位）。接受从 `1` 到 `
 
 **深度\_代码\_显示\_推理** `string`
 
-在交互式脚本中和非交互式模式下的 stderr 上显示提供者可见的推理。默认在交互式会话中打开，在非交互式模式中默认关闭。在两种模式下设置为 `1` 显示它或设置为 `0` 隐藏它。覆盖`[ui].show_reasoning`；单次启动时`--show-reasoning`优先。参见[Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning)。
+在交互式脚本中和非交互式模式下的 stderr 上显示提供者可见的推理。默认在交互式会话中打开，在非交互式模式中默认关闭。在两种模式下设置为 `1` 显示它或设置为 `0` 隐藏它。覆盖`[ui].show_reasoning`； `--show-reasoning` 对于单次启动优先。参见[Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning)。
 
 **DEEPAGENTS\_CODE\_SHOW\_USAGE\_STATS** `string`（默认值：true）会话结束时显示会话使用统计信息。设置为假值（或空）以隐藏它们。覆盖`[ui].show_usage_stats`。参见[Session usage stats](#session-usage-stats)。
 
@@ -749,7 +749,7 @@ dcode doctor
 
 Deep Agents 代码将数据存储在两个目录层次结构中：
 
-* **`~/.deepagents/`** — Deep Agents特定数据（座席记忆、技能、会话）。可通过[⟦T442⟧](#profile-location-deepagents_home)重新定位；然后，下面的路径将以该目录为根。
+* **`~/.deepagents/`** — Deep Agents特定数据（座席记忆、技能、会话）。可通过[⟦T443⟧](#profile-location-deepagents_home)重新定位；然后，下面的路径将以该目录为根。
 * **`~/.agents/`** - 与工具无关的数据（跨 AI CLI 工具共享的技能）
 
 ### 目录结构
@@ -797,14 +797,14 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 | - | - | - | - |
 | **会议** | `~/.deepagents/.state/sessions.db` |读/写| SQLite 检查点数据库 |
 | **输入历史记录** | `~/.deepagents/.state/history.jsonl` |读/写| JSON 行，向上/向下箭头调用 |
-| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写|支持[⟦T447⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
+| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写|支持[⟦T448⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
 | **基本说明** |套餐`default_agent_prompt.md` |右 |不可变，通过 Deep Agents 代码升级进行更新 |
 | **用户定制** | `~/.deepagents/{agent}/AGENTS.md` |读/写|附加到基本说明 |
 | **项目说明** | `.deepagents/AGENTS.md` 或 `AGENTS.md` |右 |两者均已加载（如果存在）|
-| **用户技能** | `~/.deepagents/{agent}/skills/` |读/写|代理特定技能 |
+| **用户技能** | `~/.deepagents/{agent}/skills/` |读/写 |代理特定技能 |
 | **共享技能** | `~/.agents/skills/` |右 |与工具无关、跨 CLI |
 | **项目技能** | `.deepagents/skills/` 或 `.agents/skills/` |右 |项目范围 |
-| **用户Python扩展** | `~/.deepagents/extensions/` |读/写|实验性；参见[Python extensions](/oss/deepagents/code/extensions)|
+| **用户Python扩展** | `~/.deepagents/extensions/` |读/写|实验性；参见[Python extensions](/oss/deepagents/code/extensions) |
 | **项目 Python 扩展** | `.deepagents/extensions/` |右 |实验性；需要项目信任 |
 | **自定义子代理** | `~/.deepagents/{agent}/agents/` |读/写|用户定义的子代理 |
 | **项目分代理** | `.deepagents/agents/` |右 |项目定义的子代理 |
@@ -820,7 +820,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 3. `.deepagents/skills/` — 项目Deep Agents代码
 4. `.agents/skills/` — 项目工具无关*（最高）*
 
-加载技能时，Deep Agents 代码会验证解析的文件路径是否保留在这些目录之一或之前批准的信任条目中。在所有可信根之外解析的符号链接将被拒绝，直到您批准目标目录（交互式）或将其添加到[⟦T464⟧](/oss/deepagents/code/configuration#skill-directory-allowlist)（无头运行所需）。参见[Invoke a skill mid-session](/oss/deepagents/code/memory-and-skills#invoke-a-skill-mid-session)。
+加载技能时，Deep Agents 代码会验证解析的文件路径是否保留在这些目录之一或之前批准的信任条目中。在所有可信根之外解析的符号链接将被拒绝，直到您批准目标目录（交互式）或将其添加到[⟦T465⟧](/oss/deepagents/code/configuration#skill-directory-allowlist)（无头运行所需）。参见[Invoke a skill mid-session](/oss/deepagents/code/memory-and-skills#invoke-a-skill-mid-session)。
 
 #### 子代理
 

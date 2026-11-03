@@ -84,7 +84,7 @@ await Promise.all(watchers);
 console.log({ running, completed, failed });
 ```
 
-> **[View example trace](https://smith.langchain.com/public/af4407a9-dadd-4090-8e7b-f77e85f0d65a/r)**
+> [卡片][View example trace](https://smith.langchain.com/public/eb9dd2c3-48d9-4dfc-94a0-61394bb39ec6/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -137,7 +137,7 @@ for await (const subagent of stream.subagents) {
     }
   }
 }
-```> **[View example trace](https://smith.langchain.com/public/036480ea-6f7d-4459-ad25-e04f3f13308b/r)**
+```> [卡][View example trace](https://smith.langchain.com/public/065302b9-7776-473a-9052-490eb09830d0/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -171,7 +171,7 @@ for await (const subagent of stream.subagents) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/a698b0c5-8151-43b6-aee4-aeac1a6926e7/r)**
+> [卡][View example trace](https://smith.langchain.com/public/4fcc1fe5-1f5d-43e9-b93e-fac7468942e0/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -202,7 +202,7 @@ await Promise.all([
 ]);
 ```
 
-> **[View example trace](https://smith.langchain.com/public/a3643504-3b56-47f4-ac30-2e6597dc7e04/r)**
+> [卡][View example trace](https://smith.langchain.com/public/cf054b78-5e0a-471c-b6b5-b427709878b5/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -230,7 +230,7 @@ for await (const event of stream) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/851be40f-46b1-424d-a13f-705a955db1a8/r)**
+> [卡][View example trace](https://smith.langchain.com/public/0817d1d1-7d3d-46a0-95b9-eecf1cd763b3/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 

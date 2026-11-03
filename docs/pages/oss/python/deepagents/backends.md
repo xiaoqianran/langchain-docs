@@ -1184,7 +1184,6 @@ Supporting types:
 * `FileInfo` with fields: `path` (required), optionally `is_dir`, `size`, `modified_at`.
 * `GrepMatch` with fields: `path`, `line`, `text`.
 * `FileData` with fields: `content` (str), `encoding` (`"utf-8"` or `"base64"`), `created_at`, `modified_at`.
-  :::
 
 ## See also
 

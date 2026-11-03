@@ -366,13 +366,11 @@ agent = create_agent(
 
 More powerful for complex middleware with multiple hooks or configuration. Use classes when you need to define both sync and async implementations for the same hook, or when you want to combine multiple hooks in a single middleware.
 
-python
 An `AgentMiddleware` subclass can declare three class attributes that the agent factory picks up at compile time:
 
 * `state_schema` — extend the agent state with custom fields. See [Custom state schema](#custom-state-schema).
 * `tools` — register additional tools that ship with the middleware (e.g., `write_todos` on the to-do list middleware).
 * `transformers` — register scope-aware stream transformer factories. See [Custom stream transformers](#custom-stream-transformers).
-  :::
 
 **Example:**
 
@@ -422,8 +420,6 @@ agent = create_agent(
 * Multiple hooks needed in a single middleware
 * Complex configuration required (e.g., configurable thresholds, custom models)
 * Reuse across projects with init-time configuration
-
-:::
 
 ## Custom state schema
 
@@ -980,8 +976,6 @@ When working with Anthropic models, use structured content blocks with cache con
 * Use `SystemMessage.content_blocks` to access content as a list of blocks, regardless of whether the original content was a string or list
 * When modifying system messages, use `content_blocks` and append new blocks to preserve existing structure
 * You can pass [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) objects directly to `create_agent`'s `system_prompt` parameter for advanced use cases like cache control
-
-:::
 
 ## Additional resources
 

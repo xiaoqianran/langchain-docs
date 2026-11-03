@@ -52,7 +52,7 @@ Studio 支持两种模式：
 
 ### 聊天模式
 
-聊天模式是一个更简单的 UI，用于迭代和测试特定于聊天的代理。它对于业务用户和想要测试整体代理行为的用户非常有用。仅状态包含或扩展[⟦T1⟧](/oss/python/langgraph/use-graph-api#messagesstate)的图支持聊天模式。
+聊天模式是一个更简单的 UI，用于迭代和测试特定于聊天的代理。它对于业务用户和想要测试整体代理行为的用户非常有用。仅状态包含或扩展[⟦T1⟧](/oss/python/langgraph/graph-api-state#messagesstate)的图支持聊天模式。
 
 ## 从 Studio 部署从 Studio 中的 [testing graphs locally](/langsmith/local-dev-testing) 直接从 Studio 中一键将它们部署到 Langsmith Cloud 上。您可以使用它来创建全新的部署以进行快速原型设计或重新部署现有部署。
 

@@ -18,88 +18,88 @@
 |用户可修复的错误（信息缺失、说明不明确）|人类 |按 `interrupt()` 暂停 | [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) |
 |供应商中断 |系统（自动）|退回到替代模型 | [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) |
 |过多的调用（失控循环）|系统（自动）|每次运行的模型和工具调用上限 | [ModelCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware)、[ToolCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware) |
-|意外错误 |开发商|让它们冒泡|无中间件；让异常传播 |以下部分通过代码示例介绍了每种策略。
+|意外错误 |开发商 |让它们冒泡|无中间件；让异常传播 |以下部分通过代码示例介绍了每种策略。
 
-**暂时性错误**
+> [选项卡] 瞬态错误
+>
+> 添加重试中间件以自动重试网络问题和速率限制。模型调用和工具调用都有自己的具有指数退避的重试中间件：
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createAgent, modelRetryMiddleware, toolRetryMiddleware } from "langchain";
+>
+> const agent = createAgent({
+>   model: "google:gemini-3.6-flash",
+>   tools: [searchTool, fetchUrlTool],
+>   middleware: [
+>     modelRetryMiddleware({ maxRetries: 3, backoffFactor: 2.0, initialDelayMs: 1000 }),
+>     toolRetryMiddleware({
+>       maxRetries: 2,
+>       tools: ["search", "fetch_url"],
+>       retryOn: [TimeoutError, TypeError],
+>     }),
+>   ],
+> });
+> ```
 
-添加重试中间件以自动重试网络问题和速率限制。模型调用和工具调用都有自己的具有指数退避的重试中间件：
+> [选项卡] 用户可修复
+>
+> 在需要时暂停并收集用户信息（例如帐户 ID、订单号或说明）。使用 `interrupt_on` 在特定工具调用之前暂停代理：
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createDeepAgent } from "deepagents";
+>
+> const agent = createDeepAgent({
+>   model: "google:gemini-3.6-flash",
+>   tools: [sendEmailTool, deleteRecordTool],
+>   interruptOn: {
+>     send_email: true,
+>     delete_record: true,
+>   },
+> });
+> ```
+>
+> 如需完整的人机交互指南，请参阅 [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent, modelRetryMiddleware, toolRetryMiddleware } from "langchain";
+> [选项卡] 提供商中断
+>
+> 如果您的主要模型提供商完全瘫痪，请使用 [ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) 切换到替代模型：
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createAgent, modelFallbackMiddleware } from "langchain";
+>
+> const agent = createAgent({
+>   model: "google:gemini-3.6-flash",
+>   tools: [searchTool],
+>   middleware: [
+>     modelFallbackMiddleware("gpt-5.5"),
+>   ],
+> });
+> ```
 
-const agent = createAgent({
-  model: "google:gemini-3.6-flash",
-  tools: [searchTool, fetchUrlTool],
-  middleware: [
-    modelRetryMiddleware({ maxRetries: 3, backoffFactor: 2.0, initialDelayMs: 1000 }),
-    toolRetryMiddleware({
-      maxRetries: 2,
-      tools: ["search", "fetch_url"],
-      retryOn: [TimeoutError, TypeError],
-    }),
-  ],
-});
-```
+> [tab] 过多的通话
+>
+> 如果没有限制，困惑的代理可以通过循环同一工具调用或进行数百个模型调用，在几分钟内耗尽您的 LLM API 预算。设置每次运行的模型调用和工具执行上限：
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createAgent, modelCallLimitMiddleware, toolCallLimitMiddleware } from "langchain";
+>
+> const agent = createAgent({
+>   model: "google:gemini-3.6-flash",
+>   tools: [searchTool],
+>   middleware: [
+>     modelCallLimitMiddleware({ runLimit: 50 }),
+>     toolCallLimitMiddleware({ runLimit: 200 }),
+>   ],
+> });
+> ```
 
-**用户可修复**
+> [选项卡] 意外
+>
+> 让它们冒泡以进行调试。不要抓住你无法处理的东西。此模式也适用于 JavaScript SDK 中的自定义中间件。
 
-需要时暂停并收集用户信息（例如帐户 ID、订单号或说明）。使用 `interrupt_on` 在特定工具调用之前暂停代理：
+## 速率限制有两种互补的方法可以限制资源使用：控制模型提供程序的请求率，并限制每次运行的调用总数。
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent } from "deepagents";
-
-const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
-  tools: [sendEmailTool, deleteRecordTool],
-  interruptOn: {
-    send_email: true,
-    delete_record: true,
-  },
-});
-```
-
-有关完整的人机交互指南，请参阅[Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。
-
-**提供商中断**
-
-如果您的主要模型提供商完全崩溃，请使用 [ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) 切换到替代模型：
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent, modelFallbackMiddleware } from "langchain";
-
-const agent = createAgent({
-  model: "google:gemini-3.6-flash",
-  tools: [searchTool],
-  middleware: [
-    modelFallbackMiddleware("gpt-5.5"),
-  ],
-});
-```
-
-**过多的通话**
-
-如果没有限制，困惑的代理可以通过循环同一工具调用或进行数百个模型调用，在几分钟内耗尽您的 LLM API 预算。设置每次运行的模型调用和工具执行上限：
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent, modelCallLimitMiddleware, toolCallLimitMiddleware } from "langchain";
-
-const agent = createAgent({
-  model: "google:gemini-3.6-flash",
-  tools: [searchTool],
-  middleware: [
-    modelCallLimitMiddleware({ runLimit: 50 }),
-    toolCallLimitMiddleware({ runLimit: 200 }),
-  ],
-});
-```
-
-**出乎意料**
-
-让它们冒泡进行调试。不要抓住你无法处理的东西。此模式也适用于 JavaScript SDK 中的自定义中间件。
-
-## 速率限制
-
-有两种互补的方法可以限制资源使用：控制模型提供程序的请求率，并限制每次运行的调用总数。### 提供商速率限制
+### 提供商速率限制
 
 聊天模型提供程序对给定时间段内可以进行的调用数量施加限制。要控制发出请求的速率，请使用 `rate_limiter` 初始化模型：
 
@@ -145,9 +145,7 @@ const agent = createAgent({
     }),
   ],
 });
-```
-
-将 [ToolRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware) 范围扩展到特定工具，而不是重试所有内容。失败的文件系统`read_file`不会从重试中受益，但超时的网络搜索可能会受益。完整配置请参见[ModelRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)。
+```将 [ToolRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware) 范围扩展到特定工具，而不是重试所有内容。失败的文件系统`read_file`不会从重试中受益，但超时的网络搜索可能会受益。完整配置请参见[ModelRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)。
 
 ## 后备方案
 
@@ -166,7 +164,9 @@ const agent = createAgent({
     modelFallbackMiddleware("gpt-5.5"),
   ],
 });
-```完整配置请参见[ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware)。
+```
+
+完整配置请参见[ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware)。
 
 ## 错误处理
 

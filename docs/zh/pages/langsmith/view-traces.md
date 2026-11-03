@@ -8,7 +8,7 @@
 
 在跟踪项目中，使用 **Threads**、**Traces** 或 **Runs** 选项卡来更改表中显示的内容。要将其缩小到特定行，[apply a filter](/langsmith/filter-traces)。单击任意行以打开侧面板。
 
-在 [agent-based workspace](/langsmith/agents) 中，跟踪项目是一个代理的一个 [environment](/langsmith/agent-environments)。选择代理，然后选择环境，以到达同一个表。
+在 [agent-based workspace](/langsmith/agent-registry) 中，跟踪项目是一个代理的一个 [environment](/langsmith/agent-environments)。选择代理，然后选择环境，以到达同一个表。
 
 侧面板围绕 [threads](/langsmith/observability-concepts#threads) 组织，作为主要导航单元。 UI 没有将每个 [run](/langsmith/observability-concepts#runs) 视为孤立的对象，而是使周围的对话保持可见，以便您可以了解运行在代理更广泛的执行中的位置。
 
@@ -18,7 +18,7 @@
 
 侧面板顶部提供三个视图：* [**Trajectory**](#trajectory-view)：会话层。将[trajectory](/langsmith/observability-concepts#trajectories)扫描为输入、输出、推理、工具调用和子代理活动。使用它来查找要查找的位置。按`T`切换到该视图。
 * [**Turns**](#turns-view)：每回合摘要。将线程中的每一圈视为显示其输入和输出的卡片，并可展开/折叠。当您想要结构概览而不需要完整的对话渲染时，请使用此选项。
-* [**Details**](#details-view)：调试层。深入研究特定运行以检查输入、输出、计时、令牌计数、错误和元数据。使用它可以了解执行中特定点发生的情况。按`D`切换到该视图。
+* [**Details**](#details-view)：调试层。深入研究特定运行以检查输入、输出、计时、令牌计数、错误和元数据。使用它可以了解执行过程中特定点发生的情况。按`D`切换到该视图。
 
 > [!注意]
 >

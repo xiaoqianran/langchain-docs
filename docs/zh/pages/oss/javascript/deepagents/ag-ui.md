@@ -84,7 +84,7 @@ const agent = new LangGraphAgent({
 });
 ```
 
-> **[AG-UI LangGraph adapter on npm](https://www.npmjs.com/package/@ag-ui/langgraph)**
+> [卡][AG-UI LangGraph adapter on npm](https://www.npmjs.com/package/@ag-ui/langgraph)
 >
 > `@ag-ui/langgraph` 包实现了 LangGraph 图的 AG-UI 协议，包括深度代理。
 
@@ -96,7 +96,7 @@ AG-UI 是一个事件流。当深度代理运行时，适配器将其 LangGraph 
 | - | - |
 |运行生命周期 | `RUN_STARTED`、`RUN_FINISHED`、`RUN_ERROR` |
 |图节点进度 | `STEP_STARTED`、`STEP_FINISHED` |
-|助理文字 | `TEXT_MESSAGE_START`、`TEXT_MESSAGE_CONTENT`、`TEXT_MESSAGE_END` |
+|助理文字| `TEXT_MESSAGE_START`、`TEXT_MESSAGE_CONTENT`、`TEXT_MESSAGE_END` |
 |工具调用| `TOOL_CALL_START`、`TOOL_CALL_ARGS`、`TOOL_CALL_END`、`TOOL_CALL_RESULT` |
 |推理| `REASONING_START`、`REASONING_MESSAGE_CONTENT`、`REASONING_END` |
 |共享状态（todos、子代理、自定义键）| `STATE_SNAPSHOT`、`STATE_DELTA` |
@@ -167,15 +167,15 @@ const input = {
 
 ## 连接前端任何 AG-UI 客户端都可以驱动通过协议公开的深度代理，因此您不必自己构建消息渲染、流式传输或状态同步。将客户端指向适配器（或包装它的运行时）并通过其 `graphId` 选择代理。
 
-> **[CopilotKit](/oss/javascript/langchain/frontend/integrations/copilotkit)**
+> [卡][CopilotKit](/oss/javascript/langchain/frontend/integrations/copilotkit)
 >
 > React 聊天运行时具有对 LangGraph 和 Deep Agents 的 AG-UI 支持，包括 Python FastAPI 桥。
 
-> **[AG-UI clients](https://docs.ag-ui.com/integrations)**
+> [卡][AG-UI clients](https://docs.ag-ui.com/integrations)
 >
 > AG-UI 客户端和 SDK 的完整列表，包括终端和移动客户端。
 
-> **[Build a custom client](https://docs.ag-ui.com/quickstart/clients)**
+> [卡][Build a custom client](https://docs.ag-ui.com/quickstart/clients)
 >
 > 通过 AG-UI SDK 直接使用事件流来构建您自己的界面。
 

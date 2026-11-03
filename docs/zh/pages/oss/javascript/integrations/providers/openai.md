@@ -54,6 +54,14 @@ import { OpenAI } from "@langchain/openai";
 import { OpenAIEmbeddings } from "@langchain/openai";
 ```
 
+## 决策模型
+
+用于路由、分类和代理中间件的键入答案和校准概率。请参阅[usage example](/oss/javascript/integrations/decision_models/openai)。
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { OpenAIDecisions } from "@langchain/openai";
+```
+
 ## 链
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -62,13 +70,15 @@ import { OpenAIModerationChain } from "@langchain/classic/chains";
 
 ## 中间件
 
-专为OpenAI型号设计的中间件。了解更多关于[middleware](/oss/javascript/langchain/middleware/overview)的信息。
-
-|中间件|描述 |
+专为OpenAI型号设计的中间件。了解更多关于[middleware](/oss/javascript/langchain/middleware/overview)的信息。|中间件|描述 |
 | - | - |
 | [Content moderation](#content-moderation) |使用 OpenAI 的审核端点审核代理流量 |
+| [Model routing](/oss/javascript/integrations/decision_models/openai#model-routing) |使用 OpenAI Decisions API（测试版）将每个代理运行路由到模型 |
+| [Tool-risk gating](/oss/javascript/integrations/decision_models/openai#tool-risk-gating) |使用 OpenAI Decisions API（测试版）阻止有风险的工具调用 |
 
-### 内容审核使用 OpenAI 的审核端点来审核代理流量（用户输入、模型输出和工具结果），以检测和处理不安全内容。内容审核对于以下用途很有用：
+### 内容审核
+
+使用 OpenAI 的审核端点来审核代理流量（用户输入、模型输出和工具结果），以检测和处理不安全内容。内容审核对于以下用途很有用：
 
 * 需要内容安全性和合规性的应用程序
 * 过滤有害、仇恨或不当内容
@@ -79,7 +89,7 @@ import { OpenAIModerationChain } from "@langchain/classic/chains";
 >
 > 了解有关 [OpenAI's moderation models](https://platform.openai.com/docs/guides/moderation) 和类别的更多信息。
 
-**API参考：** [⟦T14⟧](https://reference.langchain.com/javascript/langchain/index/openAIModerationMiddleware)
+**API参考：** [⟦T15⟧](https://reference.langchain.com/javascript/langchain/index/openAIModerationMiddleware)
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, openAIModerationMiddleware } from "langchain";
@@ -97,7 +107,7 @@ const agent = createAgent({
     }),
   ],
 });
-```> **配置选项**
+```> [手风琴] 配置选项
 >
 > **型号** `string | BaseChatModel` *必填*
 >
@@ -111,7 +121,7 @@ const agent = createAgent({
 >
 > 模型调用前是否检查用户输入消息
 >
-> **checkOutput** `boolean` （默认值：true）
+> **检查输出** `boolean` （默认值：true）
 >
 > 模型调用后是否检查模型输出消息
 >
@@ -136,9 +146,9 @@ const agent = createAgent({
 >
 > 默认：`"I'm sorry, but I can't comply with that request. It was flagged for {categories}."`
 
-> **完整示例**
+> [手风琴] 完整示例
 >
-> 中间件集成了OpenAI的审核端点来检查不同阶段的内容：
+> 中间件集成OpenAI的审核端点来检查不同阶段的内容：
 >
 > **审核阶段：**
 >

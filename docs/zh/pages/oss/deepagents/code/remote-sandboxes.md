@@ -14,168 +14,168 @@ Deep Agents 代码使用 [sandbox as tool](/oss/python/deepagents/sandboxes#sand
 
 每个内置提供程序均作为可选附加项提供。使用 `/install` 从会话中安装一个，或者使用 `dcode --install` 从 shell 中安装。第三方提供商（例如 E2B）安装为带有 `--package` 标志的软件包：
 
-**LangSmith**
+> [标签] LangSmith
+>
+> 安装`deepagents-code`时默认包含。无需额外安装。
 
-安装`deepagents-code`时默认包含。无需额外安装。
+> [选项卡] AgentCore
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /install agentcore
+> ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --install agentcore
+> ```
 
-**代理核心**
+> [标签] 代托纳
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /install daytona
+> ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --install daytona
+> ```
 
-```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/install agentcore
-```
+> [选项卡] 模态
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /install modal
+> ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --install modal
+> ```
 
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --install agentcore
-```
+> [选项卡] 运行循环
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /install runloop
+> ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --install runloop
+> ```
 
-**代托纳**
+> [标签] 维塞尔
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /install vercel
+> ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --install vercel
+> ```> [选项卡] E2B
+>
+> E2B 是由 `langchain-e2b` 包发布的 [third-party provider](#third-party-providers)。将其作为包安装，而不是`deepagents-code`额外的：
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /install langchain-e2b --package
+> ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --install langchain-e2b --package
+> ```
 
-```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/install daytona
-```
+要立即安装对每个内置提供程序的支持，请在会话中使用 `all-sandboxes` 额外功能：`/install all-sandboxes`，或从 shell 中使用 `dcode --install all-sandboxes`。 `all-sandboxes` extra 不包括 E2B 等第三方提供商。
 
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --install daytona
-```
+**2.设置提供商凭据**
 
-**莫代尔**
+> [标签] LangSmith
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export LANGSMITH_API_KEY="your-key"
+> ```
 
-```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/install modal
-```
+> [选项卡] AgentCore
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export AWS_ACCESS_KEY_ID="your-key"
+> export AWS_SECRET_ACCESS_KEY="your-secret"
+> export AWS_REGION="us-west-2"
+>
+> # Only when using temporary/STS credentials:
+> export AWS_SESSION_TOKEN="session-token"
+> ```
 
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --install modal
-```
+> [标签] 代托纳
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export DAYTONA_API_KEY="your-key"
+> ```
 
-**运行循环**
+> [选项卡] 模态
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> modal setup
+> ```
 
-```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/install runloop
-```
+> [选项卡] 运行循环
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export RUNLOOP_API_KEY="your-key"
+> ```
 
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --install runloop
-```
+> [标签] 维塞尔
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export VERCEL_TOKEN="your-token"
+> export VERCEL_PROJECT_ID="your-project-id"
+> export VERCEL_TEAM_ID="your-team-id"
+> ```
+>
+> 在 Vercel 上运行时，将自动使用 [OIDC](https://vercel.com/docs/oidc) 凭据。
 
-**韦尔塞尔**
-
-```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/install vercel
-```
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --install vercel
-```
-
-**E2B**
-
-E2B 是由 `langchain-e2b` 包发布的 [third-party provider](#third-party-providers)。将其作为包安装，而不是`deepagents-code`额外的：
-
-```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/install langchain-e2b --package
-```
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --install langchain-e2b --package
-```要立即安装对每个内置提供程序的支持，请在会话中使用 `all-sandboxes` 额外功能：`/install all-sandboxes`，或从 shell 中使用 `dcode --install all-sandboxes`。 `all-sandboxes` extra 不包括 E2B 等第三方提供商。
-
-**2.设置提供商凭证**
-
-**LangSmith**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_API_KEY="your-key"
-```
-
-**代理核心**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export AWS_ACCESS_KEY_ID="your-key"
-export AWS_SECRET_ACCESS_KEY="your-secret"
-export AWS_REGION="us-west-2"
-
-# Only when using temporary/STS credentials:
-export AWS_SESSION_TOKEN="session-token"
-```
-
-**代托纳**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export DAYTONA_API_KEY="your-key"
-```
-
-**莫代尔**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-modal setup
-```
-
-**运行循环**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export RUNLOOP_API_KEY="your-key"
-```
-
-**韦尔塞尔**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export VERCEL_TOKEN="your-token"
-export VERCEL_PROJECT_ID="your-project-id"
-export VERCEL_TEAM_ID="your-team-id"
-```
-
-在 Vercel 上运行时，会自动使用 [OIDC](https://vercel.com/docs/oidc) 凭据。
-
-**E2B**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export E2B_API_KEY="your-key"
-```
+> [选项卡] E2B
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export E2B_API_KEY="your-key"
+> ```
 
 **3.使用沙箱运行 Deep Agents 代码**
 
-**LangSmith**
+> [标签] LangSmith
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox langsmith
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox langsmith
-```
+> [选项卡] AgentCore
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox agentcore
+> ```
 
-**代理核心**
+> [标签] 代托纳
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox daytona
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox agentcore
-```
+> [选项卡] 模态
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox modal
+> ```
 
-**代托纳**
+> [选项卡] 运行循环
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox runloop
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox daytona
-```
+> [标签] 维塞尔
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox vercel
+> ```
 
-**莫代尔**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox modal
-```
-
-**运行循环**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox runloop
-```
-
-**韦尔塞尔**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox vercel
-```
-
-**E2B**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-dcode --sandbox e2b
-```
+> [选项卡] E2B
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --sandbox e2b
+> ```
 
 ## 沙箱标志和示例|旗帜|描述 |
 | - | - |
@@ -186,12 +186,12 @@ dcode --sandbox e2b
 
 每个提供程序都会在沙箱内公开一个默认工作目录。安装脚本和`execute`命令从此目录运行，除非被覆盖：
 
-|供应商|工作目录|
+|供应商|工作目录 |
 | - | - |
 | LangSmith | `/root` |
 |代理核心 | `/tmp` |
 |代托纳 | `/home/daytona` |
-|莫代尔| `/workspace` |
+|莫代尔 | `/workspace` |
 |运行循环| `/home/user` |
 |韦尔塞尔 | `/vercel/sandbox` |
 |电子商务 | `/home/user` |
@@ -244,7 +244,7 @@ dcode --sandbox e2b
 
 如果您传递未安装或声明的 `--sandbox` 名称，Deep Agents 代码会列出可用的提供程序并解释如何安装或配置缺少的提供程序。
 
-> **发布沙箱提供程序**
+> [accordion] 发布沙箱提供程序
 >
 > 要分发提供程序以便用户可以在安装软件包后运行 `dcode --sandbox <name>`，请实现 `SandboxProvider` 子类并将其注册到 `deepagents_code.sandbox_providers` 入口点组下。
 >

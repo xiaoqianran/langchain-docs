@@ -6,17 +6,17 @@
 
 Deep Agents 的文件系统后端。
 
-浏览 Deep Agents 的可用文件系统后端或为生态系统贡献您自己的后端。了解有关后端如何在 [backends docs](/oss/javascript/deepagents/backends) 中工作的更多信息。
+浏览 Deep Agents 的可用文件系统后端或为生态系统贡献自己的后端。了解有关 [backends docs](/oss/javascript/deepagents/backends) 中后端如何工作的更多信息。
 
 ## 分享你的后端
 
 自定义后端将Deep Agents连接到数据库、对象存储和虚拟文件系统等存储系统。与社区分享您的：
 
-> **[Implement a custom backend](/oss/javascript/deepagents/backends#custom-backends)**
+> [卡][Implement a custom backend](/oss/javascript/deepagents/backends#custom-backends)
 >
 > 按照自定义后端指南构建您自己的后端。
 
-> **[Share a community backend](https://github.com/langchain-ai/docs)**
+> [卡][Share a community backend](https://github.com/langchain-ai/docs)
 >
 > 打开文档存储库的 PR，将您的后端添加到下表中。
 

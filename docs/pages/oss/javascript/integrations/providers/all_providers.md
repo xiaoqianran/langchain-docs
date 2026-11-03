@@ -404,6 +404,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Paid data tools from aiworker's OpenAPI catalogue; each call settles itself in USDC over x402 from the agent's wallet, with no API key.
 
+> [card] [Arcmira](https://github.com/arcmira/integrations/tree/master/packages/langchain)
+>
+> Search indexed YouTube transcripts for timestamped quotes and resolve people, companies, and channels with Arcmira’s LangChain tools.
+
 > [card] [Atomic Mail](https://docs.atomicmail.ai/langchain)
 >
 > Email toolkit that provisions an agent-owned inbox by proof of work and sends and receives over JMAP.
@@ -653,6 +657,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > [card] [BRYDGE](https://github.com/contactkontey-dotcom/langchain-brydge#readme)
 >
 > Supervises an agent's tool calls with BRYDGE and checks the destination system's own records to report whether each action happened as permitted.
+
+> [card] [Nace](https://github.com/nace-ai/langchain-nace-js#readme)
+>
+> Drex decision models by Nace: typed answers with calibrated probabilities for routing, model selection and tool-call gating, from text and images.
 
 > [card] [RecallChatMessageHistory](https://recallmem.dev/guides/langchain)
 >

@@ -6,7 +6,7 @@
 
 使用 LangChain JavaScript 与 ChatVertexAI 聊天模型集成。
 
-[Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform) 是一项公开 Google Cloud 中可用的所有基础模型的服务，例如 `gemini-2.5-pro`、`gemini-2.5-flash` 等。
+[Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform) 是一项公开 Google Cloud 中可用的所有基础模型的服务，例如 `gemini-3.8-flash` 等。
 它还提供一些非 Google 模型，例如[Anthropic's Claude](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude)。
 
 这将帮助您开始使用 `ChatVertexAI` [chat models](/oss/javascript/langchain/models)。有关所有 `ChatVertexAI` 功能和配置的详细文档，请前往 [API reference](https://reference.langchain.com/javascript/langchain-google-vertexai/index/ChatVertexAI)。
@@ -24,8 +24,8 @@
 ### 集成细节
 
 |班级 |套餐 |可串行化| PY支持|下载 |版本 |
-| :-| :-| :-: | :-: | :-: | :-: |
-| [⟦T25⟧](https://reference.langchain.com/javascript/langchain-google-vertexai/index/ChatVertexAI) | [⟦T26⟧](https://www.npmjs.com/package/@langchain/google-vertexai) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/google-vertexai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/google-vertexai?style=flat-square\&label=%20&) |
+| :- | :- | :-: | :-: | :-: | :-: |
+| [⟦T24⟧](https://reference.langchain.com/javascript/langchain-google-vertexai/index/ChatVertexAI) | [⟦T25⟧](https://www.npmjs.com/package/@langchain/google-vertexai) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/google-vertexai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/google-vertexai?style=flat-square\&label=%20&) |
 
 ### 模型特点
 
@@ -41,7 +41,7 @@
 您正在 Node.js 环境或 Web 环境中运行。它还支持
 使用任一软件包的 Gemini Enterprise Agent Platform Express 模式使用的身份验证方法。
 
-要访问 `ChatVertexAI` 模型，您需要在 Google Cloud Platform (GCP) 帐户中设置 Gemini Enterprise Agent Platform，保存凭据文件，然后安装 `@langchain/google-vertexai` 集成包。在 Node.js 上，该包使用 [⟦T29⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google-gauth) 进行身份验证（您不需要单独安装它）。
+要访问 `ChatVertexAI` 模型，您需要在 Google Cloud Platform (GCP) 帐户中设置 Gemini Enterprise Agent Platform，保存凭据文件，然后安装 `@langchain/google-vertexai` 集成包。在 Node.js 上，该包使用 [⟦T28⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google-gauth) 进行身份验证（您不需要单独安装它）。
 
 ### 凭证
 
@@ -53,7 +53,7 @@ export GOOGLE_APPLICATION_CREDENTIALS="path/to/your/credentials.json"
 
 或者，在本地计算机上，您可以运行 `gcloud auth application-default login` 以使用应用程序默认凭据。
 
-如果在 Web 环境中运行，请安装 `@langchain/google-vertexai-web` 软件包（它使用 [⟦T33⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google-webauth) 进行身份验证）。在`GOOGLE_WEB_CREDENTIALS`中设置服务帐户JSON：
+如果在 Web 环境中运行，请安装 `@langchain/google-vertexai-web` 软件包（它使用 [⟦T32⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google-webauth) 进行身份验证）。在`GOOGLE_WEB_CREDENTIALS`中设置服务帐户JSON：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export GOOGLE_WEB_CREDENTIALS='{"type":"service_account","project_id":"YOUR_PROJECT-12345",...}'
@@ -113,7 +113,7 @@ import { ChatVertexAI } from "@langchain/google-vertexai"
 // import { ChatVertexAI } from "@langchain/google-vertexai-web"
 
 const llm = new ChatVertexAI({
-    model: "gemini-2.5-flash",
+    model: "gemini-3.8-flash",
     temperature: 0,
     maxRetries: 2,
     // For web, authOptions.credentials
@@ -161,7 +161,7 @@ J'adore programmer.
 
 ## 使用 Google 搜索检索调用工具
 
-可以使用 Google 搜索工具调用该模型，您可以使用该工具使用现实世界信息生成[ground](https://docs.cloud.google.com/gemini-enterprise-agent-platform/reference/models/grounding)内容并减少幻觉。
+可以使用 Google 搜索工具调用该模型，您可以使用它来生成具有现实世界信息的[ground](https://docs.cloud.google.com/gemini-enterprise-agent-platform/reference/models/grounding)内容并减少幻觉。
 
 `gemini-2.0-flash-exp` 目前不支持接地。
 
@@ -184,7 +184,7 @@ const searchRetrievalTool = {
 };
 
 const searchRetrievalModel = new ChatVertexAI({
-  model: "gemini-2.5-pro",
+  model: "gemini-3.8-flash",
   temperature: 0,
   maxRetries: 0,
 }).bindTools([searchRetrievalTool]);
@@ -228,7 +228,7 @@ const searchRetrievalToolWithDataset = {
 };
 
 const searchRetrievalModelWithDataset = new ChatVertexAI({
-  model: "gemini-2.5-pro",
+  model: "gemini-3.8-flash",
   temperature: 0,
   maxRetries: 0,
 }).bindTools([searchRetrievalToolWithDataset]);
@@ -258,7 +258,7 @@ Gemini Enterprise Agent Platform 提供上下文缓存功能，通过跨多个 A
 import { ChatVertexAI } from "@langchain/google-vertexai";
 
 const modelWithCachedContent = new ChatVertexAI({
-  model: "gemini-2.5-pro-002",
+  model: "gemini-3.8-flash",
   location: "us-east5",
 });
 
@@ -272,7 +272,7 @@ await modelWithCachedContent.invoke("What is in the content?", {
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const modelWithBoundCachedContent = new ChatVertexAI({
-  model: "gemini-2.5-pro-002",
+  model: "gemini-3.8-flash",
   location: "us-east5",
 }).bind({
   cachedContent:

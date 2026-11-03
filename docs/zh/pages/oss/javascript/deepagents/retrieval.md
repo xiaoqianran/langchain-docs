@@ -15,7 +15,7 @@
 
 **知识库**是检索过程中使用的文档或结构化数据的存储库。
 
-如果您需要自定义知识库，您可以使用 LangChain 的文档加载器和向量存储从您自己的数据构建一个知识库。
+如果您需要自定义知识库，您可以使用 LangChain 的文档加载器和向量存储根据您自己的数据构建一个知识库。
 
 > [!注意]
 >
@@ -24,14 +24,14 @@
 > * 将其连接为 Agentic RAG 中代理的**工具**。
 > * 查询并将检索到的内容作为上下文提供给 LLM [(2-Step RAG)](#2-step-rag)。
 
-有关更多信息，请参阅以下教程来构建可搜索的知识库和最小的 RAG 工作流程：> **[Tutorial: Semantic search](/oss/javascript/langchain/knowledge-base)**
+有关更多信息，请参阅以下教程来构建可搜索的知识库和最小的 RAG 工作流程：> [卡][Tutorial: Semantic search](/oss/javascript/langchain/knowledge-base)
 >
 > 了解如何使用 LangChain 的文档加载器、嵌入和向量存储从您自己的数据创建可搜索的知识库。
 > 在本教程中，您将在 PDF 上构建一个搜索引擎，从而能够检索与查询相关的段落。您还将在此引擎之上实现一个最小的 RAG 工作流程，以了解如何将外部知识集成到 LLM 推理中。
 
 ### 从检索到 RAG
 
-检索允许法学硕士在运行时访问相关上下文。但大多数现实世界的应用程序更进一步：它们**将检索与生成集成**以生成接地的、上下文感知的答案。
+检索允许法学硕士在运行时访问相关上下文。但大多数现实世界的应用程序更进一步：它们**将检索与生成集成**以生成接地气的、上下文感知的答案。
 
 这是**检索增强生成（RAG）**背后的核心思想。检索管道成为将搜索与生成相结合的更广泛系统的基础。
 
@@ -71,17 +71,17 @@ flowchart TB
 
 ### 构建块
 
-> **[Document loaders](/oss/javascript/integrations/document_loaders)**
+> [卡][Document loaders](/oss/javascript/integrations/document_loaders)
 >
-> 从外部源（Google Drive、Slack、Notion 等）获取数据，返回标准化的 [⟦T6⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 对象。> **[Embedding models](/oss/javascript/integrations/embeddings)**
+> 从外部源（Google Drive、Slack、Notion 等）提取数据，返回标准化的 [⟦T6⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 对象。> [卡][Embedding models](/oss/javascript/integrations/embeddings)
 >
 > 嵌入模型将文本转换为数字向量，以便具有相似含义的文本在该向量空间中紧密结合在一起。
 
-> **[Vector stores](/oss/javascript/integrations/vectorstores/)**
+> [卡片][Vector stores](/oss/javascript/integrations/vectorstores/)
 >
 > 用于存储和搜索嵌入的专用数据库。
 
-> **[Retrievers](/oss/javascript/integrations/retrievers/)**
+> [卡][Retrievers](/oss/javascript/integrations/retrievers/)
 >
 > 检索器是一个接口，它根据非结构化查询返回文档。
 
@@ -116,11 +116,11 @@ graph TB
     class B,C process
 ```
 
-> **[Tutorial: Semantic search](/oss/javascript/langchain/knowledge-base)**
+> [卡][Tutorial: Semantic search](/oss/javascript/langchain/knowledge-base)
 >
 > 使用文档加载器、嵌入和向量存储构建可搜索的知识库，然后在其上运行最小的检索然后生成 RAG 工作流程。
 
-> **[Tutorial: Evaluate a RAG application](/langsmith/evaluate-rag-tutorial)**
+> [卡][Tutorial: Evaluate a RAG application](/langsmith/evaluate-rag-tutorial)
 >
 > 构建一个简单的检索然后生成 RAG 应用程序，并使用 LangSmith 衡量答案的正确性、相关性、基础性和检索质量。
 
@@ -247,7 +247,7 @@ const response = await agent.invoke({
 console.log(response.messages.at(-1)?.content);
 ```
 
-> **[Tutorial: RAG with Deep Agents](/oss/javascript/deepagents/rag)**
+> [卡][Tutorial: RAG with Deep Agents](/oss/javascript/deepagents/rag)
 >
 > 构建一个文档问答代理，在查询时检索相关块，将它们卸载到文件系统，并将分析委托给子代理。
 
@@ -290,7 +290,7 @@ graph TB
 
 * 具有不明确或未指定查询的应用程序
 * 需要验证或质量控制步骤的系统
-* 涉及多个来源或迭代细化的工作流程> **[Tutorial: Agentic RAG with Self-Correction](/oss/javascript/langgraph/agentic-rag)**
+* 涉及多个来源或迭代细化的工作流程> [卡][Tutorial: Agentic RAG with Self-Correction](/oss/javascript/langgraph/agentic-rag)
 >
 > **混合 RAG** 的示例，它将代理推理与检索和自我纠正相结合。
 

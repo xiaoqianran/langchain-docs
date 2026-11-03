@@ -32,7 +32,7 @@ Google Gemini
 
 [Open](/langsmith/trace-with-google-gemini)
 
-![](https://mintcdn.com/langchain-5e9cc07a/TiT87b4RAoWyIOkQ/images/providers/light/litellm.svg?fit=max\&auto=format\&n=TiT87b4RAoWyIOkQ\&q=85\&s=3c70d2b1a246ead959c54869ecf39a74)
+![](https://mintcdn.com/langchain-5e9cc07a/eKNgyvpoV_46lkUW/images/providers/light/litellm.svg?fit=max\&auto=format\&n=eKNgyvpoV_46lkUW\&q=85\&s=d129772f59f7a294213c74cc17e9b90e)
 
 LiteLLM
 

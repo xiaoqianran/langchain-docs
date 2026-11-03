@@ -280,15 +280,15 @@ for await (const [namespace, chunk] of await agent.stream(
   }
   console.log(chunk);
 }
-```
-
-> **[View example trace](https://smith.langchain.com/public/ba3b5afc-8b2f-4e17-af79-b43c46a2a0a3/r)**
+```> [卡][View example trace](https://smith.langchain.com/public/610119d4-75ef-46d7-b271-3572bb9a3a10/r)
 >
-> 为此示例打开公共 LangSmith 运行。## 命名空间
+> 为此示例打开公共 LangSmith 运行。
+
+## 命名空间
 
 当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。
 
-|命名空间 |来源 |
+|命名空间|来源 |
 | - | - |
 | `()`（空）|主代理|
 | `("tools:abc123",)` |由主代理的 `task` 工具调用 `abc123` 生成的子代理 |
@@ -318,7 +318,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/80ab06ee-385f-4713-864c-c15ab35d76b3/r)**
+> [卡][View example trace](https://smith.langchain.com/public/66d8b479-5487-4ab4-ab3f-06a8f49f9374/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -704,7 +704,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/3ad634a9-907e-49bb-9415-c20c70260b02/r)**
+> [卡][View example trace](https://smith.langchain.com/public/1f6366d0-94f2-434f-94d3-c2734b2269f8/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -771,7 +771,7 @@ for await (const [namespace, chunk] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-> **[View example trace](https://smith.langchain.com/public/78ee935c-72fb-4c0d-9b7d-c73825f5ba7a/r)**
+> [卡][View example trace](https://smith.langchain.com/public/5ffd8e2d-1b8f-40e1-bddf-7ce2bde01893/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -832,7 +832,7 @@ for await (const [namespace, chunk] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-> **[View example trace](https://smith.langchain.com/public/319a8e85-061a-40d1-a368-28f222a3e08c/r)**
+> [卡][View example trace](https://smith.langchain.com/public/f04e6bd1-252f-4edd-9316-4e15d216eeb7/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -1358,7 +1358,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/8eac6b1d-4f60-437c-b35f-e7f40443033b/r)**
+> [卡][View example trace](https://smith.langchain.com/public/4d586a19-a014-44d9-b68f-92be359be054/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -1429,7 +1429,7 @@ for await (const [namespace, mode, data] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-> **[View example trace](https://smith.langchain.com/public/0f8a930f-c5ba-43e2-9fbb-39bf5066a749/r)**
+> [卡][View example trace](https://smith.langchain.com/public/e2f20f54-d1a8-4780-b7ef-545949a5cef6/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -1553,7 +1553,7 @@ for (const [id, sub] of activeSubagents) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/990d5bae-eb8d-4170-b578-6131293d657b/r)**
+> [卡][View example trace](https://smith.langchain.com/public/12d97e63-0850-49cb-8c44-16d3ccbc43d2/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -1580,9 +1580,9 @@ for await (const [mode, data] of await agent.stream(
 
 有关完整的流恢复循环模式，请参阅[Human-in-the-loop: Handle interrupts with streaming](/oss/javascript/deepagents/human-in-the-loop#handle-interrupts-with-streaming)。
 
-## 流块形状
+## 流块形状对于 `subgraphs=True`，块形状取决于您是否传递一种或多种流模式：
 
-对于 `subgraphs=True`，块形状取决于您是否传递一种或多种流模式：| `stream_mode` |块状 |
+| `stream_mode` |块状|
 | - | - |
 |单模式（例如`"updates"`）| `(namespace, data)` |
 |多种模式（例如`["messages", "updates"]`）| `(namespace, mode, data)` |

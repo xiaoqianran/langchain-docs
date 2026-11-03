@@ -1571,7 +1571,7 @@ Tool: execute_sql
 Args: {'query': 'SELECT g.Name AS Genre, AVG(t.Milliseconds) AS AvgTrackLength FROM Track t JOIN Genre g ON t.GenreId = g.GenreId GROUP BY g.Name ORDER BY AvgTrackLength DESC LIMIT 1;'}
 ```
 
-We can resume execution, in this case accepting the query, using [Command](/oss/javascript/langgraph/use-graph-api#combine-control-flow-and-state-updates-with-command):
+We can resume execution, in this case accepting the query, using [Command](/oss/javascript/langgraph/graph-api-send-command#combine-control-flow-and-state-updates-with-command):
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Command } from "@langchain/langgraph"; // [!code highlight]

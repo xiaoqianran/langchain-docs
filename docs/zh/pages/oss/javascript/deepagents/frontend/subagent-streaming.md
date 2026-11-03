@@ -197,7 +197,7 @@ stream.submit(
 
 > [!注意]
 >
-> Deep Agents 设置默认递归限制为 10,000，这足以满足
+> Deep Agents 设置默认递归限制为 10,000，这对于
 > 大多数多专家设置。您可以通过 `config.recursion_limit` 覆盖它，如果
 > 需要。
 
@@ -205,7 +205,7 @@ stream.submit(
 子代理在线程内运行。它告诉您的 UI 存在子代理，
 它位于子代理树中的位置，以及它处于什么生命周期状态。
 
-该快照**不**包括子代理的流式消息或工具调用。
+快照**不**包括子代理的流式消息或工具调用。
 相反，将快照传递给选择器挂钩，例如
 `useMessages(stream, subagent)` 或 `useToolCalls(stream, subagent)`。这些钩子
 仅使用快照命名空间订阅子代理的流原语
@@ -371,19 +371,19 @@ function DeepAgentLayout({ stream }: { stream: AnyStream }) {
 
 这些 LangChain 前端模式与子代理卡的工作方式相同
 使用单代理流。 Deep Agents 构建于相同的 `useStream`
-API，因此这些指南直接适用：> **[Tool calling](/oss/javascript/langchain/frontend/tool-calling)**
+API，因此这些指南直接适用：> [卡][Tool calling](/oss/javascript/langchain/frontend/tool-calling)
 >
 > 将每个子代理的工具调用呈现为丰富的、类型安全的 UI 卡，具有待处理、已完成和失败状态。
 
-> **[Markdown messages](/oss/javascript/langchain/frontend/markdown-messages)**
+> [卡][Markdown messages](/oss/javascript/langchain/frontend/markdown-messages)
 >
 > 将协调器和子代理消息显示为格式化的降价，并具有适当的流支持。
 
-> **[Human-in-the-Loop](/oss/javascript/langchain/frontend/human-in-the-loop)**
+> [卡片][Human-in-the-Loop](/oss/javascript/langchain/frontend/human-in-the-loop)
 >
 > 使用相同的中断 API 暂停委托子代理以供用户批准或输入。
 
-> **[Reasoning tokens](/oss/javascript/langchain/frontend/reasoning-tokens)**
+> [卡][Reasoning tokens](/oss/javascript/langchain/frontend/reasoning-tokens)
 >
 > 使用可折叠推理块在子代理卡内进行表面模型思考。
 

@@ -8,7 +8,7 @@
 
 动态子代理让代理从解释器代码中分派 [subagents](/oss/javascript/deepagents/subagents)。代理可以使用 JavaScript 循环、分支和并行批处理来跨配置的子代理路由工作并综合结果，而不是要求模型一次选择一个子代理调用。
 
-当工作跨越许多独立单元、需要多个视角或从递归分析中受益时，请使用此模式。对于一般解释器设置，请参阅[Interpreters](/oss/javascript/deepagents/interpreters)。
+当工作跨越许多独立单元、需要多个视角或受益于递归分析时，请使用此模式。对于一般解释器设置，请参阅[Interpreters](/oss/javascript/deepagents/interpreters)。
 
 > [!警告]
 >
@@ -198,7 +198,7 @@ graph LR
 
 **用例：** 对支持票证、错误日志、用户反馈或需要根据其类型进行不同处理的任何批次的项目进行分类。
 
-> **示例：分类和行动**
+> [手风琴] 示例：分类和操作
 >
 > **您配置的内容**
 >
@@ -410,7 +410,7 @@ graph LR
 > handled;
 > ```### 扇出和合成
 
-代理在许多项目中并行分派相同类型的工作，然后组合结果。
+代理在许多项目上并行分派相同类型的工作，然后组合结果。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -427,7 +427,7 @@ graph LR
 
 从解释器代码中发现文件需要[programmatic tool calling (PTC)](/oss/javascript/deepagents/interpreters#programmatic-tool-calling-ptc)。在解释器中间件的 PTC 允许列表中启用 `glob`。
 
-> **示例：扇出和合成**
+> [手风琴] 示例：扇出和合成
 >
 > **您配置的内容**
 >
@@ -578,7 +578,7 @@ graph LR
 
 **使用案例：**误报代价高昂的安全审计、合规性检查以及需要对结果具有高度信心的任何审查。
 
-> **示例：对抗性验证**
+> [手风琴] 示例：对抗性验证
 >
 > **您配置的内容**
 >
@@ -759,9 +759,9 @@ graph LR
 > const confirmed = findings.filter((_, i) => verdicts[i]?.confirmed);
 > // ... report only the confirmed vulnerabilities
 > confirmed;
-> ```
+> ```### 生成并过滤
 
-### 生成并过滤多个子代理针对同一问题生成独立的解决方案。代理在代码中对结果进行比较、评分和过滤，只保留最好的。
+多个子代理针对同一问题生成独立的解决方案。代理在代码中对结果进行比较、评分和过滤，只保留最好的结果。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -776,7 +776,7 @@ graph LR
 
 **用例：** 架构提案、重构策略、内容变化以及在提交之前探索多个选项的任何任务会产生更好的结果。
 
-> **示例：生成和过滤**
+> [accordion] 示例：生成和过滤
 >
 > **您配置的内容**
 >
@@ -921,7 +921,7 @@ graph LR
 
 **用例：** 根据主观标准、风格选择、竞争实现之间的选择进行优化。
 
-> **示例：锦标赛**
+> [手风琴] 示例：锦标赛
 >
 > **您配置的内容**
 >
@@ -1116,7 +1116,7 @@ graph LR
     Check --> |no| Done[Done]
 ```**用例：** 详尽的搜索、死代码检测、依赖性审计、任何您想要完整性而不是固定数量结果的扫描。
 
-> **示例：循环直到完成**
+> [accordion] 示例：循环直到完成
 >
 > **您配置的内容**
 >

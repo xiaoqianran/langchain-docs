@@ -52,7 +52,7 @@ ABAC complements [Role-Based Access Control (RBAC)](/langsmith/rbac) by adding t
 
 ## Access policy structure
 
-An access policy defines conditions under which access is granted or denied. Here's the structure:
+An access policy defines conditions under which access is granted or denied. Here is the structure:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -112,7 +112,7 @@ Each condition group specifies:
 
 > [!NOTE]
 >
-> Runs don't have their own tags. Run permissions (`runs:read`, `runs:read-inputs`, `runs:read-outputs`, `runs:create`, `runs:share`, `runs:delete`) are evaluated against the parent project's tags. For how the input and output permissions affect responses, refer to [Control access to run inputs and outputs](#control-access-to-run-inputs-and-outputs).
+> Runs do not have their own tags. Run permissions (`runs:read`, `runs:read-inputs`, `runs:read-outputs`, `runs:create`, `runs:share`, `runs:delete`) are evaluated against the parent project's tags. For how the input and output permissions affect responses, refer to [Control access to run inputs and outputs](#control-access-to-run-inputs-and-outputs).
 
 > [!NOTE]
 >
@@ -136,7 +136,7 @@ Each condition in the `conditions` array specifies:
 | `equals_ignore_case` | Exact match (case insensitive) |
 | `not_equals_ignore_case` | Values differ (case insensitive) |
 | `matches` | Glob pattern matching with `*` and `?` wildcards |
-| `not_matches` | Match when value doesn't match glob pattern |
+| `not_matches` | Match when value does not match glob pattern |
 
 #### `_if_exists` variants
 
@@ -149,11 +149,11 @@ Each operator has an `_if_exists` variant that matches by default when the tag k
 | `equals_ignore_case_if_exists` | Exact match (case insensitive), or if tag key absent |
 | `not_equals_ignore_case_if_exists` | Values differ (case insensitive), or if tag key absent |
 | `matches_if_exists` | Glob pattern match, or if tag key absent |
-| `not_matches_if_exists` | Match when value doesn't match glob pattern, or if tag key absent |
+| `not_matches_if_exists` | Match when value does not match glob pattern, or if tag key absent |
 
 > [!TIP]
 >
-> In an **allow** policy, `_if_exists` variants grant access to resources that either match the condition or don't have the specified tag key. In a **deny** policy, they block resources that either match the condition or don't have the tag key.
+> In an **allow** policy, `_if_exists` variants grant access to resources that either match the condition or do not have the specified tag key. In a **deny** policy, they block resources that either match the condition or do not have the tag key.
 
 ### Roles
 
@@ -304,7 +304,7 @@ Grant access only if both conditions are met - dataset is for training AND belon
 
 ### 5. Client data plus resources without a `Client` tag using `_if_exists`
 
-Consultants don't have RBAC `datasets:read` permission, but this policy grants them access to datasets tagged `Client=Acme-Corp`, as well as datasets that don't have a `Client` tag at all. Datasets tagged with a different client (e.g., `Client=Other-Corp`) remain blocked:
+Consultants do not have RBAC `datasets:read` permission, but this policy grants them access to datasets tagged `Client=Acme-Corp`, as well as datasets that do not have a `Client` tag at all. Datasets tagged with a different client (e.g., `Client=Other-Corp`) remain blocked:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {

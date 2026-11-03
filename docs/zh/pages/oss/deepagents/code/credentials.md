@@ -4,7 +4,7 @@
 
 # 提供者凭据
 
-添加和管理模型提供者、Tavily Web 搜索和 LangSmith 跟踪的 API 密钥
+添加和管理模型提供者、Tavily 网络搜索和 LangSmith 跟踪的 API 密钥
 
 Deep Agents 代码需要为您使用的每个模型提供程序提供一个 API 密钥。推荐的添加方法是[⟦T7⟧](#use-%2Fauth-recommended)凭证管理器。对于非交互式运行，请使用 [⟦T8⟧](#manage-credentials-from-the-shell-dcode-auth) 或设置 [environment variables](#environment-variables-ci-and-headless) 从 shell 管理相同的存储密钥。
 
@@ -20,7 +20,7 @@ Deep Agents 代码需要为您使用的每个模型提供程序提供一个 API 
 /auth
 ```
 
-该管理器列出了已安装的 LLM 提供程序以及它们是否具有环境密钥集，显示您可以从应用程序内添加的已知提供程序，并包括非模型服务，例如 Tavily 网络搜索。选择一个提供程序以添加或替换其密钥、安装对已卸载的提供程序的支持或删除已存储的提供程序。您添加的密钥在会话中持续存在。> **提供者行标签**
+该管理器列出了已安装的 LLM 提供程序以及它们是否具有环境密钥集，显示您可以从应用程序内添加的已知提供程序，并包括非模型服务，例如 Tavily 网络搜索。选择一个提供程序以添加或替换其密钥、安装对已卸载的提供程序的支持或删除已存储的提供程序。您添加的密钥在会话中持续存在。> [手风琴] 提供者行标签
 >
 > 每行显示提供者名称，后跟其密钥的来源：
 >
@@ -54,7 +54,7 @@ Deep Agents 代码需要为您使用的每个模型提供程序提供一个 API 
 | `dcode auth status <provider>` |打印一个提供商的解析源 |
 | `dcode auth set <provider>` |存储 API 密钥，默认从 stdin 读取 |
 | `dcode auth remove <provider>`（别名`rm`、`delete`）|删除存储的凭据 |
-| `dcode auth path` |打印凭证存储的解析路径 (`auth.json`) |
+| `dcode auth path` |打印凭证存储的已解析路径 (`auth.json`) |
 
 默认情况下，`set` 从 **stdin** 读取密钥，因此它永远不会出现在 shell 历史记录或 `argv` 中。通过管道输入密钥，或使用 `--from-env VAR` 从进程环境变量中复制它：
 
@@ -117,35 +117,35 @@ DEEPAGENTS_CODE_OPENAI_API_KEY=sk-xxxx dcode -n "..."
 
 ## 使用 Tavily 启用网络搜索
 
-内置`web_search`工具使用[Tavily](https://tavily.com)。 Deep Agents 代码在启动时显示“Web 搜索已禁用”通知，直到您提供密钥为止。您可以将密钥存储在 [⟦T61⟧](#use-%2Fauth-recommended) 凭证管理器中（Tavily 在其中显示为非模型服务），或者设置 `TAVILY_API_KEY` 环境变量。
+内置`web_search`工具使用[Tavily](https://tavily.com)。 Deep Agents 代码在启动时显示“Web 搜索已禁用”通知，直到您提供密钥为止。您可以将密钥存储在 [⟦T61⟧](#use-%2Fauth-recommended) 凭证管理器中（Tavily 在其中显示为非模型服务），或者设置 `TAVILY_API_KEY` 环境变量。> [tab] 使用 /auth （推荐）
+>
+> 从[tavily.com](https://tavily.com)获取密钥（以`tvly-`开头；免费套餐足以满足大多数Deep Agents代码使用），然后将其存储在凭证管理器中：
+>
+> ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /auth
+> ```
+>
+> 从列表中选择 **Tavily** 并粘贴密钥。您还可以通过选择“**输入 API 密钥**”直接从“Web 搜索已禁用”通知中到达此提示。
 
-**使用/auth（推荐）**
-
-从[tavily.com](https://tavily.com)获取密钥（以`tvly-`开头；免费套餐足以满足大多数Deep Agents代码使用），然后将其存储在凭证管理器中：
-
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/auth
-```从列表中选择 **Tavily** 并粘贴密钥。您还可以通过选择“**输入 API 密钥**”直接从“Web 搜索已禁用”通知中到达此提示。
-
-**设置环境变量**
-
-**1.获取钥匙**
-
-在[tavily.com](https://tavily.com)注册并复制密钥（以`tvly-`开头）。免费套餐足以满足大多数 Deep Agents 代码的使用。
-
-**2.将其添加到您的环境**
-
-将密钥添加到 `~/.deepagents/.env`，以便每个会话都会拾取它：
-
-```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-TAVILY_API_KEY=tvly-...
-```
-
-Shell 导出优先于 `.env` 值（请参阅[Loading order and precedence](/oss/deepagents/code/configuration#loading-order-and-precedence)）。要仅将密钥范围限定为 Deep Agents 代码而不影响读取 `TAVILY_API_KEY` 的其他工具，请使用 [⟦T68⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix): `DEEPAGENTS_CODE_TAVILY_API_KEY=tvly-...`。
-
-**3.重新加载或重新启动**
-
-在现有会话中，运行 `/reload` 重新读取 `.env` 文件。下次启动时，“Web 搜索已禁用”通知将消失，客服人员可以致电 `web_search`。
+> [tab] 设置环境变量
+>
+> **1。获取钥匙**
+>
+> 在[tavily.com](https://tavily.com)注册并复制密钥（以`tvly-`开头）。免费套餐足以满足大多数 Deep Agents 代码的使用。
+>
+> **2。将其添加到您的环境**
+>
+> 将密钥添加到 `~/.deepagents/.env`，以便每个会话都能获取它：
+>
+> ```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> TAVILY_API_KEY=tvly-...
+> ```
+>
+> Shell 导出优先于 `.env` 值（请参阅[Loading order and precedence](/oss/deepagents/code/configuration#loading-order-and-precedence)）。要仅将密钥范围限定为 Deep Agents 代码而不影响读取 `TAVILY_API_KEY` 的其他工具，请使用 [⟦T68⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix): `DEEPAGENTS_CODE_TAVILY_API_KEY=tvly-...`。
+>
+> **3。重新加载或重新启动**
+>
+> 在现有会话中，运行 `/reload` 重新读取 `.env` 文件。下次启动时，“Web 搜索已禁用”通知将消失，客服人员可以致电 `web_search`。
 
 ## 另请参阅
 

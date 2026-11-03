@@ -30,23 +30,23 @@
 
 输入上下文是在启动时提供给深度代理的信息，该信息成为其系统提示的一部分。最终的提示由几个来源组成：
 
-> **[System prompt](#system-prompt)**
+> [卡][System prompt](#system-prompt)
 >
 > 您提供的自定义说明以及内置代理指导。
 
-> **[Memory](#memory)**
+> [卡][Memory](#memory)
 >
 > 配置时始终加载持久 `AGENTS.md` 文件。
 
-> **[Skills](#skills)**
+> [卡][Skills](#skills)
 >
 > 相关时加载按需功能（渐进式披露）。
 
-> **[Tool prompts](#tool-prompts)**
+> [卡][Tool prompts](#tool-prompts)
 >
-> 使用内置工具或自定义工具的说明。
+> 使用内置工具或自定义工具的说明。###系统提示
 
-###系统提示您的自定义系统提示符位于内置系统提示符之前，其中包括文件系统工具和子代理的指南。用它来定义代理的角色、行为和知识：
+您的自定义系统提示符位于内置系统提示符之前，其中包括文件系统工具和子代理的指南。用它来定义代理的角色、行为和知识：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
@@ -309,7 +309,7 @@ order status. Always filter by the provided status.`,
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/a1e5187c-7d69-497f-97a0-7d5dbb63c766/r)**
+> [卡][View example trace](https://smith.langchain.com/public/2d0ed807-f897-48ec-8756-32d608e1697e/r)
 >
 > 为此示例打开公共 LangSmith 运行。> [!提示]
 >
@@ -595,11 +595,11 @@ const result = await agent.invoke(
 上下文压缩可以减少代理工作记忆中的信息大小，同时保留与任务相关的细节。
 以下技术是确保传递给 LLM 的上下文保持在其上下文窗口限制内的内置机制：
 
-> **[Offloading](#offloading)**
+> [卡][Offloading](#offloading)
 >
 > 大型工具输入和结果存储在文件系统中并替换为引用。
 
-> **[Summarization](#summarization)**
+> [卡][Summarization](#summarization)
 >
 > 当接近限制时，旧消息会被压缩到 LLM 生成的摘要中。
 
@@ -687,7 +687,7 @@ const result = await agent.invoke(
    };
    ```
 
-   > **[View example trace](https://smith.langchain.com/public/15892b34-9951-4142-a766-5d792dc0489d/r)**
+   > [卡][View example trace](https://smith.langchain.com/public/dba5570e-02bc-4dda-8260-4ccc7c0dbb9d/r)
    >
    > 为此示例打开公共 LangSmith 运行。
 
@@ -849,7 +849,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-> **[View example trace](https://smith.langchain.com/public/54c201ac-6630-4220-a36e-94cee1aa7957/r)**
+> [卡][View example trace](https://smith.langchain.com/public/630dedcd-2105-4663-8e19-7397b0a7860e/r)
 >
 > 为此示例打开公共 LangSmith 运行。您不需要使用文件预先填充 `/memories/`。
 您提供后端配置、存储和系统提示指令，告诉代理“保存什么”和“在哪里”。

@@ -134,7 +134,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 | `matches` |与 `*` 和 `?` 通配符匹配的 Glob 模式 |
 | `not_matches` |当值与全局模式不匹配时匹配 |
 
-#### `_if_exists` 变体每个运算符都有一个 `_if_exists` 变体，当标签键不存在时默认匹配，或者当标签存在时正常评估条件：
+#### `_if_exists` 变种每个运算符都有一个 `_if_exists` 变体，当标签键不存在时默认匹配，或者当标签存在时正常评估条件：
 
 |操作员|描述 |
 | - | - |
@@ -143,11 +143,11 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 | `equals_ignore_case_if_exists` |完全匹配（不区分大小写），或者如果标签键不存在 |
 | `not_equals_ignore_case_if_exists` |值不同（不区分大小写），或者如果标签键不存在 |
 | `matches_if_exists` |全局模式匹配，或者如果标签键不存在 |
-| `not_matches_if_exists` |当值与全局模式不匹配或标签键不存在时匹配 |
+| `not_matches_if_exists` |当值与全局模式不匹配或标记键不存在时匹配 |
 
 > [!提示]
 >
-> 在 **允许** 策略中，`_if_exists` 变体授予对匹配条件或不具有指定标签键的资源的访问权限。在“拒绝”策略中，它们会阻止匹配条件或没有标签键的资源。
+> 在 **允许** 策略中，`_if_exists` 变体授予对匹配条件或不具有指定标签键的资源的访问权限。在“拒绝”策略中，它们会阻止匹配条件或不具有标记键的资源。
 
 ### 角色
 
@@ -157,7 +157,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 ## 管理访问策略
 
-在组织设置中或使用 LangSmith API 管理访问策略。创建、编辑或删除策略需要 `organization:access-control:manage`，[Organization Admins](/langsmith/rbac#organization-admin) 和 [Organization Operators](/langsmith/rbac#organization-operator) 持有。在创建策略之前，请在工作区中[set up resource tags](/langsmith/set-up-resource-tags)。
+在您的组织设置中或使用 LangSmith API 管理访问策略。创建、编辑或删除策略需要 `organization:access-control:manage`，[Organization Admins](/langsmith/rbac#organization-admin) 和 [Organization Operators](/langsmith/rbac#organization-operator) 持有。在创建策略之前，请在您的工作区中[set up resource tags](/langsmith/set-up-resource-tags)。
 
 团队不制定政策。他们附加现有的：
 
@@ -179,26 +179,26 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 **功能组合：**|启用 RBAC | ABAC 已启用 |行为 |
 | - | - | - |
 | ✗ | ✗ |所有工作区成员都具有管理员级别访问权限 |
-| ✓ | ✗ |标准RBAC——基于角色权限的访问|
-| ✓ | ✓ | RBAC + ABAC - 基于标签的细粒度访问控制 |
+| ✓ | ✗ | Standard RBAC - access based on role permissions |
+| ✓ | ✓ | RBAC + ABAC - fine-grained tag-based access control |
 
 **同时启用 RBAC 和 ABAC 时：**
 
-| RBAC 许可 |允许策略匹配 |拒绝策略匹配 |结果 |
+| RBAC 许可 | Allow policy matches | Deny policy matches | Result |
 | - | - | - | - |
 | ✓ | ✓ | ✗ | **允许** |
 | ✓ | ✗ | ✗ | **允许**（RBAC 后备）|
 | ✓ | ✓ | ✓ | **被拒绝**（否认获胜）|
-| ✓ | ✗ | ✓ | **被拒绝**（否认获胜）|
+| ✓ | ✗ | ✓ | **Denied** (deny wins) |
 | ✗ | ✓ | ✗ | **允许**（ABAC 授予访问权限）|
 | ✗ | ✗ | ✗ | **被拒绝** |
-| ✗ | ✓ | ✓ | **被拒绝**（否认获胜）|
+| ✗ | ✓ | ✓ | **Denied** (deny wins) |
 
 ## 控制对运行输入和输出的访问
 
-`runs:read` 控制用户是否可以看到跑步。 `runs:read-inputs`和`runs:read-outputs`控制是否可以看到其输入和输出。这些权限的访问策略使用 `resource_type: "project"` 并针对每个运行的父项目进行评估，因此您可以隐藏某些项目中的输入、输出或两者，同时保持工作区中的其他项目不变。 RBAC 和 ABAC 组合这些权限的方式与组合任何其他权限的方式相同。详情请参阅[How ABAC works with RBAC](#how-abac-works-with-rbac)。
+`runs:read` 控制用户是否可以看到跑步。 `runs:read-inputs` and `runs:read-outputs` control whether they can see its inputs and outputs. Access policies for these permissions use `resource_type: "project"` and are evaluated against each run's parent project, so you can hide inputs, outputs, or both in some projects while leaving other projects in the workspace unchanged. RBAC and ABAC combine for these permissions the same way they do for any other permission.详情请参阅[How ABAC works with RBAC](#how-abac-works-with-rbac)。
 
-## 示例场景### 1. 将注释者限制在其数据集上
+## Example scenarios### 1. Restrict annotators to their datasets
 
 允许注释者仅访问为其注释组标记的数据集：
 
@@ -219,9 +219,9 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 }
 ```
 
-### 2. 阻止敏感数据
+### 2. Block sensitive data
 
-拒绝访问包含 PII 的数据集。由于拒绝策略会覆盖允许策略，因此即使具有 RBAC 权限的用户也会阻止访问：
+Deny access to datasets containing PII.由于拒绝策略会覆盖允许策略，因此即使具有 RBAC 权限的用户也会阻止访问：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -240,7 +240,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 }
 ```
 
-### 3. 使用通配符进行基于应用程序的访问
+### 3. Application-based access with wildcards
 
 允许工程师使用 glob 模式访问“聊天机器人”系列中任何应用程序的项目：
 
@@ -261,7 +261,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 }
 ```
 
-### 4. 客户端和目的隔离（AND 逻辑）
+### 4. Client and purpose isolation (AND logic)
 
 仅当满足两个条件时才授予访问权限 - 数据集用于训练且属于特定客户端：
 
@@ -311,7 +311,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 }
 ```
 
-### 6.隐藏敏感项目中的运行输入和输出让用户继续浏览包含 PII 的项目中的运行，但隐藏运行的输入和输出。每个权限都有自己的条件组，并且使用 OR 逻辑对这些组进行评估。用户仍然需要 `runs:read` 才能查看运行情况：
+### 6.隐藏敏感项目中的运行输入和输出Let users keep browsing runs in projects that contain PII, but hide the runs' inputs and outputs. Each permission gets its own condition group, and the groups are evaluated with OR logic. Users still need `runs:read` to see the runs:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -342,13 +342,13 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 }
 ```
 
-## 在创建时标记资源
+## Tag resources at creation time
 
-当 ABAC 策略处于活动状态时，资源将根据其标签进行访问控制。为了确保资源在创建后立即受到保护，您可以使用 `tag_value_ids` 参数直接在创建请求中提供标签。
+When ABAC policies are active, resources are access-controlled based on their tags.为了确保资源在创建后立即受到保护，您可以使用 `tag_value_ids` 参数直接在创建请求中提供标签。
 
-项目、数据集和提示创建端点（包括分叉和克隆操作）支持此功能。标签在与资源创建相同的数据库事务中以原子方式应用。
+This is supported on project, dataset, and prompt creation endpoints (including fork and clone operations). Tags are applied atomically in the same database transaction as resource creation.
 
-有关完整的详细信息和示例，请参阅资源标签指南中的[Tag a resource at creation time](/langsmith/set-up-resource-tags#tag-a-resource-at-creation-time)。
+For full details and examples, see [Tag a resource at creation time](/langsmith/set-up-resource-tags#tag-a-resource-at-creation-time) in the resource tags guide.
 
 > [!注意]
 >
@@ -356,31 +356,31 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 ## 故障排除
 
-**访问意外被拒绝？*** 检查拒绝策略是否匹配（拒绝始终优先）
-* 检查用户是否具有RBAC权限或匹配的允许策略
-* 验证资源是否具有预期的标签和值
+**Access unexpectedly denied?*** Check if a deny policy is matching (deny always takes precedence)
+* Check if the user has RBAC permissions or a matching allow policy
+* Verify the resource has the expected tag and value
 * 使用 `_if_exists` 运算符的拒绝策略会阻止缺少该标签键的资源
 * 对于区分大小写的运算符（`equals`、`not_equals`），检查大小写不匹配
-* 一组中有多个条件，所有条件都必须匹配（AND 逻辑）
+* With multiple conditions in a group, all must match (AND logic)
 
 **意外授予访问权限？**
 
-* 检查 RBAC 权限（用户可以通过其角色进行访问）
-* 检查允许策略是否太宽泛（例如，使用通配符）
-* `_if_exists` 运算符匹配缺少该标签键的资源
+* Review RBAC permissions (users may have access via their role)
+* Check if an allow policy is too broad (e.g., using wildcards)
+* `_if_exists` operators match resources missing that tag key
 
 **运行输入或输出丢失？**
 
-* 检查用户的角色是否授予 `runs:read-inputs` 和 `runs:read-outputs`，或者允许策略是否为运行的项目授予它们
-* 检查 `runs:read-inputs` 或 `runs:read-outputs` 上是否有与项目标签匹配的拒绝策略
-* 消息和轨迹视图返回`403 Forbidden`，除非这两个权限都被授予
+* Check that the user's role grants `runs:read-inputs` and `runs:read-outputs`, or that an allow policy grants them for the run's project
+* Check for a deny policy on `runs:read-inputs` or `runs:read-outputs` that matches the project's tags
+* Message and trajectory views return `403 Forbidden` unless both permissions are granted
 
 **政策未生效？**
 
-* 确认策略已附加到正确的角色
+* Confirm the policy is attached to the correct role
 * 验证用户在工作区中具有该角色
-* 检查`resource_type`和`permission`是否与正在访问的资源匹配
+* Check that `resource_type` and `permission` match the resource being accessed
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/abac.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -6,17 +6,17 @@
 
 **标准测试确保您的集成按预期工作。**
 
-当为自己创建自定义类或在 LangChain 集成中发布时，有必要添加测试以确保其按预期工作。 LangChain为您提供针对每种集成类型的全面[set of tests](https://pypi.org/project/langchain-tests/)。本指南将向您展示如何将 LangChain 的标准测试套件添加到每种集成类型。
+当为自己创建自定义类或在 LangChain 集成中发布时，有必要添加测试以确保其按预期工作。 LangChain为您提供针对每种集成类型的全面的[set of tests](https://pypi.org/project/langchain-tests/)。本指南将向您展示如何将 LangChain 的标准测试套件添加到每种集成类型。
 
 ## 设置
 
 首先，安装所需的依赖项：
 
-> **[langchain-core](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-core#readme)**
+> [卡][langchain-core](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-core#readme)
 >
 > 定义我们想要导入的接口来定义我们的自定义组件
 
-> **[langchain-tests](https://github.com/langchain-ai/langchainjs/tree/main/internal/standard-tests#readme)**
+> [卡][langchain-tests](https://github.com/langchain-ai/langchainjs/tree/main/internal/standard-tests#readme)
 >
 > 提供运行它们所需的标准测试和插件
 
@@ -42,7 +42,7 @@ bun add @langchain/standard-tests
 
 `langchain-tests`包中有2个命名空间：
 
-> **单元测试**
+> [手风琴] 单元测试
 >
 > **地点**：`src.unit_tests`
 >
@@ -50,7 +50,7 @@ bun add @langchain/standard-tests
 >
 > [View API reference](https://reference.langchain.com/python/langchain-tests/unit_tests)
 
-> **集成测试**
+> [手风琴] 集成测试
 >
 > **地点**：`src.integration_tests`
 >
@@ -58,9 +58,9 @@ bun add @langchain/standard-tests
 >
 > [View API reference](https://reference.langchain.com/python/langchain-tests/integration_tests)
 
-## 实施标准测试
+## 实施标准测试根据您的集成类型，您需要实施单元测试和集成测试之一或两者。
 
-根据您的集成类型，您需要实施单元测试和集成测试之一或两者。通过对集成类型的标准测试套件进行子类化，您可以获得该类型的标准测试的完整集合。为了使测试运行成功，只有当模型支持正在测试的功能时，给定的测试才应该通过。否则，应跳过测试。
+通过对集成类型的标准测试套件进行子类化，您可以获得该类型的标准测试的完整集合。为了使测试运行成功，只有当模型支持正在测试的功能时，给定的测试才应该通过。否则，应跳过测试。
 
 由于不同的集成提供独特的功能集，因此LangChain 提供的大多数标准测试都是**默认选择**以防止误报。因此，您需要重写属性来指示您的集成支持哪些功能 - 请参阅下面的示例以获取说明。
 

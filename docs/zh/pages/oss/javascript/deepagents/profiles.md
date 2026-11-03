@@ -4,7 +4,7 @@
 
 # 个人资料
 
-选择模型时应用 Deep Agents 的每个提供商和每个模型的默认包
+选择模型时适用的每个提供商和每个模型的默认包 Deep Agents
 
 **线束配置文件**让您可以为特定型号或提供商定制 Deep Agents 线束。您可以调整系统提示和工具描述、排除工具或中间件、添加中间件以及配置通用子代理。每当您选择匹配模型时，Deep Agents 都会应用这些设置，而无需更改代理创建代码。
 
@@ -63,7 +63,7 @@ registerHarnessProfile("openai:gpt-6-astra", {
 
 在创建代理之前注册配置文件。传递一个模型字符串或者你自己构造的模型对象；有关示例，请参阅[Configure model parameters](/oss/javascript/deepagents/models#configure-model-parameters)。线束型材适用于这两种情况。
 
-> **预配置模型实例的查找顺序**
+> [accordion] 预配置模型实例的查找顺序
 >
 > 当您传递模型对象时，线束会使用该对象报告的提供程序和标识符来查找其配置文件。
 >
@@ -117,7 +117,7 @@ registerHarnessProfile("my_provider:my-model", {
 
 |领域|合并行为 |
 | - | - |
-| `baseSystemPrompt`、`systemPromptSuffix` |设置后新值获胜；否则继承|
+| `baseSystemPrompt`、`systemPromptSuffix` |设置后新值获胜；否则继承 |
 | `toolDescriptionOverrides` |每个键的映射合并；新价值赢得共享密钥|
 | `excludedTools`、`excludedMiddleware` |设置并集|
 | `extraMiddleware` |按名称合并：新实例替换其位置上的现有实例，新条目附加 |

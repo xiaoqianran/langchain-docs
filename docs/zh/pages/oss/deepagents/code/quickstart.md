@@ -4,7 +4,7 @@
 
 # 快速入门
 
-安装Deep Agents代码，运行您的第一个任务，并使用交互或非交互模式
+安装Deep Agents代码，运行第一个任务，并使用交互或非交互模式
 
 Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/quickstart)基础上构建的终端编码代理。本指南涵盖安装、您的第一个任务、日常交互使用、管道自动化以及LangSmith跟踪。有关功能概述，请参阅[Deep Agents Code overview](/oss/deepagents/code/overview)。有关`config.toml`和提供商设置，请参阅[Configuration](/oss/deepagents/code/configuration)。
 
@@ -36,7 +36,7 @@ Create a Python script that prints "Hello, World!"
 
 **4.启用跟踪（可选）**
 
-要在 LangSmith 中记录代理操作、工具调用和决策，请运行 `/auth` 并添加您的 LangSmith API 密钥。跟踪将在下次启动时启用。有关项目命名、高级选项以及 CI 或无头设置，请参阅 [Trace with LangSmith](#trace-with-langsmith)。
+要在 LangSmith 中记录代理操作、工具调用和决策，请运行 `/auth` 并添加您的 LangSmith API 密钥。跟踪将在下次启动时启用。要选择代理环境、高级选项以及 CI 或无头设置，请参阅 [Trace with LangSmith](#trace-with-langsmith)。
 
 > [!注意]
 >
@@ -47,9 +47,9 @@ Create a Python script that prints "Hello, World!"
 就像在聊天界面中一样自然地打字。
 代理使用其内置工具、技能和内存来帮助您完成任务。
 
-> **斜线命令**
+> [手风琴] 斜线命令
 >
-> 在 Deep Agents 代码会话中使用以下命令：
+> 在 Deep Agents 代码会话中使用这些命令：
 >
 > * `/model`：切换模型或打开交互式模型选择器。
 > * `/effort`：设置当前模型的推理工作量。
@@ -79,20 +79,20 @@ Create a Python script that prints "Hello, World!"
 > * `/theme`：打开交互式主题选择器以切换颜色主题。内置主题以及任何 [user-defined themes](/oss/deepagents/code/configuration#themes) 都可用。
 > * `/scrollbar`：显示或隐藏聊天滚动条。
 > * `/line-numbers`：在新差异中显示或隐藏文件相关行号。参见[Diff line numbers](/oss/deepagents/code/config-file#diff-line-numbers)。
-> * `/update`：检查并安装 Deep Agents 内联代码更新。检测您的安装方法（uv、Homebrew、pip）并运行适当的升级命令。
+> * `/update`：检查并安装Deep Agents 内联代码更新。检测您的安装方法（uv、Homebrew、pip）并运行适当的升级命令。
 > * `/auto-update`：打开或关闭自动更新。
 > * `/install`：安装可选集成。
 > * `/trace`：在LangSmith中打开当前线程。
 > * `/editor`：在外部编辑器中打开当前提示符 (`$VISUAL` / `$EDITOR`)。参见[External editor](#external-editor)。
 > * `/restart`：重新启动代理服务器。
-> * `/timestamps`：切换消息时间戳页脚。> * `/changelog`：在浏览器中打开 Deep Agents 代码更改日志。
+> * `/timestamps`：切换消息时间戳页脚。> * `/changelog`：在浏览器中打开Deep Agents 代码更改日志。
 > * `/docs`：在浏览器中打开文档。
 > * `/feedback`：发送反馈或报告问题。
 > * `/version`（别名`/about`）- 显示已安装的`deepagents-code` 和 SDK 版本。
 > * `/help`：显示帮助和可用命令。
-> * `/quit`：退出应用程序。
+> * `/quit`：退出Deep Agents代码。
 
-> **Shell 命令**
+> [手风琴] Shell 命令
 >
 > 输入 `!` 进入 shell 模式，然后输入命令。
 >
@@ -102,11 +102,11 @@ Create a Python script that prints "Hello, World!"
 > ls -la
 > ```
 
-> **键盘快捷键**
+> [手风琴] 键盘快捷键
 >
 > **一般**
 >
-> |快捷方式|行动|
+> |快捷方式 |行动|
 > | - | - |
 > | `Enter` |提交提示 |
 > | `Shift+Enter`、`Ctrl+J`、`Alt+Enter` 或 `Ctrl+Enter` |插入换行符 |
@@ -117,7 +117,7 @@ Create a Python script that prints "Hello, World!"
 > | `Ctrl+T` |当子代理面板存在时，展开或折叠子代理面板 |
 > | `Ctrl+N` |面板打开时查看待处理的通知 |
 > | `Ctrl+O` |展开/折叠最新的工具输出 |
-> | `Escape` |中断当前操作|
+> | `Escape` |中断当前操作 |
 > | `Ctrl+C` |中断或退出 |
 > | `Ctrl+D` |退出 |
 >
@@ -125,7 +125,7 @@ Create a Python script that prints "Hello, World!"
 >
 > 聊天输入使用标准的 readline 样式绑定：
 >
-> |快捷方式|行动|
+> |快捷方式 |行动|
 > | - | - |> | `Ctrl+A` 或 `Home` |将光标移至行首 |
 > | `Ctrl+E` 或 `End` |将光标移至行尾 |
 > | `Ctrl+U` |删除从光标到行首 |
@@ -146,7 +146,7 @@ Create a Python script that prints "Hello, World!"
 >> [!注意]
 >>
 >> **macOS `Cmd+Left` / `Cmd+Right` / `Cmd+Delete`**
->>>> 终端模拟器会在 `Cmd` 修改的密钥到达正在运行的应用程序之前拦截它们，因此 Deep Agents 代码永远不会直接接收它们。相反，终端将它们转换为上面的 readline 快捷方式。
+>>>> 终端模拟器会在 `Cmd` 修改的密钥到达终端进程之前拦截它们，因此 Deep Agents 代码永远不会直接接收它们。相反，终端将它们转换为上面的 readline 快捷方式。
 >>
 >> * **Ghostty：** 开箱即用。默认情况下，`Cmd+Left`、`Cmd+Right` 和 `Cmd+Delete` 会转换为 `Ctrl+A`、`Ctrl+E` 和 `Ctrl+U`。
 >> * **iTerm2:** 默认不绑定。在 **设置 > 配置文件 > 按键 > 按键映射** 下添加以下内容作为 `Send Text with vim special chars`：
@@ -196,7 +196,7 @@ git diff | dcode --skill code-review -n 'summarize changes'
 >
 > 最大管道输入大小为 10 MiB。
 
-默认情况下，在非交互模式下禁用 Shell 执行。使用 `-S`/`--shell-allow-list` 启用特定命令（例如，`-S "pytest,git,make"`），使用 `recommended` 实现安全默认值，或使用 `all` 允许任何命令。> **盖圈数**
+默认情况下，在非交互模式下禁用 Shell 执行。使用 `-S`/`--shell-allow-list` 启用特定命令（例如，`-S "pytest,git,make"`），使用 `recommended` 实现安全默认值，或使用 `all` 允许任何命令。> [手风琴] 盖帽转动计数
 >
 > CI/CD 管道中长时间运行或行为不当的代理可能会无限期循环。 `--max-turns N` 为操作员提供了一个硬上限，而无需触及 SDK 内部：
 >
@@ -204,11 +204,11 @@ git diff | dcode --skill code-review -n 'summarize changes'
 > dcode -n "fix the failing tests" --max-turns 10
 > ```
 >
-> `N` 必须是正整数，并覆盖内部安全默认值，否则会限制失控循环。当超出预算时，以代码 124 退出（与 GNU `timeout` 匹配），因此 CI 可以区分预算命中和一般失败。需要 `-n` 或管道标准输入；否则退出并返回代码 2。
+> `N` 必须是正整数，并覆盖内部安全默认值，否则会限制失控循环。当超出预算时，以代码 124（匹配 GNU `timeout`）退出，因此 CI 可以区分预算命中和一般失败。需要 `-n` 或管道标准输入；否则退出并返回代码 2。
 >
-> 对于基于时间的限制而不是（或除此之外）回合计数限制，请参阅[Cap wall-clock time with ⟦T153⟧](#non-interactive-mode-and-piping)。
+> 对于基于时间的限制而不是（或除了）回合计数限制，请参阅 [Cap wall-clock time with ⟦T153⟧](#non-interactive-mode-and-piping)。
 
-> **限制挂钟时间**
+> [手风琴] 挂钟时间上限
 >
 > `--timeout SECONDS` 对非交互式运行实施硬挂钟限制。它通过基于时间的预算补充了`--max-turns`（轮次计数）——无论先达到哪个限制都会取消代理。
 >
@@ -220,7 +220,7 @@ git diff | dcode --skill code-review -n 'summarize changes'
 > dcode -n "refactor auth module" --timeout 300 --max-turns 20
 > ```
 >
-> 到期时，代理将被取消，流程会以代码 124 退出，与`--max-turns` 使用的代码相同，因此 CI 可以统一处理两个预算命中。需要 `-n` 或管道标准输入；否则退出并返回代码 2。> **干净的输出和缓冲**
+> 到期时，代理将被取消，流程会以代码 124 退出，与`--max-turns` 使用的代码相同，因此 CI 可以统一处理两个预算命中。需要 `-n` 或管道标准输入；否则退出并返回代码 2。> [手风琴] 干净的输出和缓冲
 >
 > 使用 `-q` 进行干净的输出，适合通过管道传输到其他命令，并使用 `--no-stream` 在写入标准输出之前缓冲完整响应（而不是流式传输）：
 >
@@ -231,7 +231,7 @@ git diff | dcode --skill code-review -n 'summarize changes'
 >
 > 在非交互模式下，代理被指示做出合理的假设并自主进行，而不是提出澄清问题。它还支持非交互式命令变体（例如，`npm init -y`、`apt-get install -y`）。
 
-> **Shell 执行示例**
+> [手风琴] Shell 执行示例
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > # Allow specific commands (validated against the list)
@@ -250,46 +250,50 @@ git diff | dcode --skill code-review -n 'summarize changes'
 >
 > `-S all`（或`--shell-allow-list all`）允许代理执行任意 shell 命令，无需人工确认。
 
-## 使用 LangSmith 进行跟踪
+## 使用 LangSmith 进行追踪
 
-启用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-code-quickstart) 跟踪以查看 LangSmith 项目中的代理操作、工具调用和决策。
+> [!注意]
+>
+> 此集成使用旧目标设置，例如 `project_name` 或 `LANGSMITH_PROJECT`。 [Create an agent](/langsmith/create-an-agent)，选择其环境，然后[retrieve that environment's ⟦T166⟧](/langsmith/create-an-agent#use-an-environment-project)。在目标设置和任何覆盖中使用该返回值。对于支持代理寻址的集成，请直接使用[agent identifier and environment](/langsmith/log-traces-to-agent)。
 
-运行 `/auth` 并添加您的 LangSmith API 密钥。跟踪在下次启动时启用，并在会话之间持续存在。有关凭证管理器的详细信息，请参阅[Provider credentials](/oss/deepagents/code/credentials#use-%2Fauth-recommended)。
+启用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-code-quickstart) 跟踪以查看LangSmith 代理环境中的代理操作、工具调用和决策。
 
-要自定义项目名称或在不使用 TUI 的情况下配置跟踪，请将密钥添加到 `~/.deepagents/.env`，以便在每个会话中启用跟踪，而无需按 shell 导出：
+运行 `/auth` 并添加您的 LangSmith API 密钥。跟踪在下次启动时启用，并在会话之间持续存在。有关凭证管理器的详细信息，请参阅[Provider credentials](/oss/deepagents/code/credentials#use-%2Fauth-recommended)。要在不使用 TUI 的情况下选择代理环境或配置跟踪，请将密钥添加到 `~/.deepagents/.env`，以便在每个会话中启用跟踪，而无需按 shell 导出：
 
 ```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_TRACING=true
 LANGSMITH_API_KEY=lsv2_...
-DEEPAGENTS_CODE_LANGSMITH_PROJECT=deepagents-code  # Project for Deep Agents Code's own traces; defaults to "deepagents-code"
-```使用 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 来命名接收 Deep Agents 代码自身跟踪的项目。它的作用域为 Deep Agents 代码，因此它不受项目的 `.env` 中设置的 `LANGSMITH_PROJECT` 的影响（它路由该项目的应用程序跟踪；请参阅下面的 **将代理跟踪与应用程序跟踪分开**）。
+DEEPAGENTS_CODE_LANGSMITH_PROJECT="<coding-agent-tracer-session-name>"
+```
 
-要覆盖特定工作目录的项目，请将 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 添加到该目录中的 `.env`。完整装载订单请参见[environment variables](/oss/deepagents/code/configuration#environment-variables)。
+将 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 设置为编码代理环境的 `tracer_session_name`。此设置控制 Deep Agents 代码自己的跟踪。存储库的 `.env` 中的单独 `LANGSMITH_PROJECT` 控制在 shell 命令中运行的代码的跟踪。请参阅下面的**将编码代理跟踪与 shell 命令跟踪分开**。
 
-> **禁用代理跟踪**
+要覆盖特定工作目录的目标，请将 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 添加到该目录中的 `.env`。完整装载订单请参见[environment variables](/oss/deepagents/code/configuration#environment-variables)。
+
+> [accordion] 禁用代理跟踪
 >
 > 启动 `dcode --no-tracing` 以禁用一个会话的 LangSmith 代理跟踪。对于将来的启动，请在 shell 中设置 `DEEPAGENTS_CODE_LANGSMITH_TRACING=false` 或 `~/.deepagents/.env`。
 >
 > 该标志会覆盖环境设置。 `DEEPAGENTS_CODE_LANGSMITH_TRACING` 中的显式 `false` 会覆盖其他跟踪启用标志，包括 `LANGSMITH_TRACING=true`。对于同一变量，Shell 导出优先于 `.env` 值。
 >
-> 禁用代理跟踪不会禁用本地对话历史记录或模型提供者请求。它与在 shell 命令中运行的应用程序发出的跟踪编辑和跟踪是分开的。> **将代理跟踪与应用程序跟踪分开**
+> 禁用代理跟踪不会禁用本地对话历史记录或模型提供者请求。它与在 shell 命令中运行的代理发出的跟踪编辑和跟踪是分开的。> [accordion] 将编码代理跟踪与 shell 命令跟踪分开
 >
 > Deep Agents 代码可以产生两种LangSmith 痕迹：
 >
 > * `Agent traces` 是Deep Agents 代码自己的模型调用、工具调用、编排和中间件。
-> * `Shell-command traces` 是Deep Agents 代码在 shell 中为您运行的代码发出的跟踪，例如测试、脚本或本地 LangGraph 应用程序。
+> * `Shell-command traces` 是Deep Agents 代码在 shell 中为您运行的代码发出的跟踪，例如测试、脚本或本地 LangGraph 代理。
 >
-> 要将Deep Agents代码自己的跟踪发送到专用项目，请设置`DEEPAGENTS_CODE_LANGSMITH_PROJECT`：
+> 要为Deep Agents代码自己的跟踪选择环境，请设置`DEEPAGENTS_CODE_LANGSMITH_PROJECT`：
 >
 > ```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> # Example value; use any LangSmith project name you want.
-> DEEPAGENTS_CODE_LANGSMITH_PROJECT=deepagents-code
+> # Use the coding agent environment's tracer_session_name.
+> DEEPAGENTS_CODE_LANGSMITH_PROJECT="<coding-agent-tracer-session-name>"
 > ```
 >
-> 然后为您的应用程序跟踪配置`LANGSMITH_PROJECT`：
+> 对于在 shell 命令中运行的代码，此兼容性示例将 `LANGSMITH_PROJECT` 与不同代理环境的 `tracer_session_name` 结合使用：
 >
 > ```bash title=".env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> LANGSMITH_PROJECT=customer-support-agent
+> LANGSMITH_PROJECT="<shell-agent-tracer-session-name>"
 > ```
 >
 > 例如，假设您要求 Deep Agents 代码来调试失败的 LangGraph 测试：
@@ -298,22 +302,22 @@ DEEPAGENTS_CODE_LANGSMITH_PROJECT=deepagents-code  # Project for Deep Agents Cod
 > uv run pytest tests/test_escalation_flow.py
 > ```
 >
-> 如果该测试在启用 LangSmith 跟踪的情况下运行您的应用程序，则这些应用程序跟踪由 shell 进程创建并转到 `customer-support-agent`。 Deep Agents 代码自身的推理和工具使用痕迹转到`deepagents-code`。
+> 如果测试在启用 LangSmith 跟踪的情况下运行代理，则其跟踪将转到为该代理配置的环境。 Deep Agents 代码自身的推理和工具使用痕迹进入编码代理的环境。
 >
-> 您还可以使用 [⟦T184⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)（例如，`DEEPAGENTS_CODE_LANGSMITH_API_KEY`）将 LangSmith 凭证范围限定为 Deep Agents 代码。> **对第二个项目的双写入跟踪**
+> 您还可以使用 [⟦T187⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)（例如 `DEEPAGENTS_CODE_LANGSMITH_API_KEY`）将 LangSmith 凭证范围限定为 Deep Agents 代码。> [accordion] 将跟踪复制到第二个代理环境
 >
-> 要将代理跟踪镜像到第二个 LangSmith 项目，请设置 `DEEPAGENTS_CODE_LANGSMITH_REPLICA_PROJECTS`。这对于将相同的跟踪发送到个人项目和共享团队项目非常有用。
+> 要将跟踪镜像到第二个代理环境，请设置 `DEEPAGENTS_CODE_LANGSMITH_REPLICA_PROJECTS`。这对于将相同的跟踪发送到个人工作区和共享团队工作区中的代理环境非常有用。
 >
 > ```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> DEEPAGENTS_CODE_LANGSMITH_REPLICA_PROJECTS=team-shared
+> DEEPAGENTS_CODE_LANGSMITH_REPLICA_PROJECTS="<replica-tracer-session-name>"
 > ```
 >
-> 当设置和跟踪处于活动状态时，每个代理运行都会写入主项目（默认为`DEEPAGENTS_CODE_LANGSMITH_PROJECT`，或`deepagents-code`）和您在此处命名的项目。保持变量未设置，以像往常一样写入单个项目。
+> 当设置和跟踪处于活动状态时，每次运行都会写入主要目标和副本目标。将两个变量设置为相应环境的 `tracer_session_name` 值。保留副本变量未设置以写入一个环境。
 
-配置后，Deep Agents代码会显示一个状态行，其中包含指向LangSmith项目的链接。在支持的终端中，单击链接直接打开。您还可以使用 `/trace` 打印 URL 并在浏览器中打开它。
+配置后，Deep Agents 代码会显示一个状态行，其中包含指向 LangSmith 中的跟踪目标的链接。在支持的终端中，单击链接直接打开。您还可以使用 `/trace` 打印 URL 并在浏览器中打开它。
 
 ```sh theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-✓ LangSmith tracing: 'my-project'
+✓ LangSmith tracing: '<coding-agent-tracer-session-name>'
 ```
 
 > [!提示]

@@ -77,7 +77,7 @@ make dev
 
 > [!提示]
 >
-> 如果您的本地预览出现问题，请尝试运行 `mint update` 以确保您使用的是最新的 Mintlify 版本。> **先决条件**
+> 如果您的本地预览出现问题，请尝试运行 `mint update` 以确保您使用的是最新的 Mintlify 版本。> [手风琴] 先决条件
 >
 > **推荐：**运行 `mise trust && mise install` 一次获取每个固定版本。 `.mise.toml` 是工具链的规范引脚，其安装后挂钩连接了预提交和预推送挂钩。
 >
@@ -96,7 +96,7 @@ make dev
 
 ## 编辑文档
 
-> **在 GitHub 上快速编辑**
+> [手风琴] GitHub 上的快速编辑
 >
 > 对于拼写错误或小的更改，直接在 GitHub 上编辑，无需本地设置：
 >
@@ -115,7 +115,7 @@ make dev
 
 > [!注意]
 >
-> 所有拉取请求必须链接到维护者批准解决方案的问题或讨论。请参阅我们的[pull request requirements](/oss/javascript/contributing/overview#pull-request-requirements)。> **创建可共享的预览版本（仅限LangChain团队）**
+> 所有拉取请求必须链接到维护者批准解决方案的问题或讨论。请参阅我们的[pull request requirements](/oss/javascript/contributing/overview#pull-request-requirements)。> [accordion] 创建可共享的预览版本（仅限LangChain团队）
 >
 > 当您创建或更新 PR 时，会自动生成 [preview branch/ID](https://github.com/langchain-ai/docs/actions/workflows/create-preview-branch.yml)。将在带有 ID 的 PR 上留下评论。
 >
@@ -149,25 +149,27 @@ make test
 
 有关更多详细信息，请参阅`README`中的[available commands](https://github.com/langchain-ai/docs?tab=readme-ov-file#available-commands)部分。
 
-所有拉取请求都会由 CI/CD 自动检查。将强制执行相同的 linting 和格式化标准，如果这些检查失败，则无法合并 PR。
+> [!注意]
+>
+> 所有拉取请求都会由 CI/CD 自动检查。将强制执行相同的 linting 和格式化标准，如果这些检查失败，则无法合并 PR。
 
 ## 文档类型
 
 所有文档均属于以下四个类别之一：
 
-> **[How-to guides](#how-to-guides)**
+> [卡][How-to guides](#how-to-guides)
 >
 > 为知道自己想要完成什么任务的用户提供面向任务的说明。
 
-> **[Conceptual guides](#conceptual-guides)**
+> [卡][Conceptual guides](#conceptual-guides)
 >
 > 提供更深入理解和见解的解释。
 
-> **[Reference](#reference)**
+> [卡][Reference](#reference)
 >
-> API 的技术描述和实施细节。> **[Tutorials](#tutorials)**
+> API 的技术描述和实施细节。> [卡][Tutorials](#tutorials)
 >
-> 指导用户通过实践活动来建立理解的课程。
+> 指导用户通过实践活动建立理解的课程。
 
 > [!注意]
 >
@@ -177,20 +179,20 @@ make test
 
 操作指南是面向任务的说明，为那些知道自己想要完成什么任务的用户提供指导。操作指南的示例位于 [LangChain](/oss/javascript/langchain/overview) 和 [LangGraph](/oss/javascript/langgraph/overview) 选项卡上。
 
-> **特点**
+> [手风琴] 特点
 >
 > * **以任务为中心**：专注于特定任务或问题
 > * **逐步**：将任务分解为更小的步骤
 > * **动手**：提供具体示例和代码片段
 
-> **提示**
+> [手风琴] 小贴士
 >
 > * 关注**如何**而不是**为什么**
 > * 使用具体示例和代码片段
 > * 将任务分解为更小的步骤
 > * 相关概念指南和参考的链接
 
-> **示例**
+> [手风琴] 示例
 >
 > * [Messages](/oss/javascript/langchain/messages)
 > * [Tools](/oss/javascript/langchain/tools)
@@ -198,14 +200,14 @@ make test
 
 ### 概念指南
 
-概念指南抽象地涵盖了核心概念，提供了深刻的理解。> **特点**
+概念指南抽象地涵盖了核心概念，提供了深刻的理解。> [手风琴] 特点
 >
 > * **以理解为中心**：解释事物为何如此运作
 > * **广阔的视角**：比其他类型更高、更宽的视野
 > * **以设计为导向**：解释决策和权衡
 > * **上下文丰富**：使用类比和比较
 
-> **提示**
+> [手风琴] 小贴士
 >
 > * 关注**“为什么”**而不是“如何”
 > * 提供功能使用不一定需要的补充信息
@@ -213,7 +215,7 @@ make test
 > * 避免混入过多参考内容
 > * 链接到相关教程和操作指南
 
-> **示例**
+> [手风琴] 示例
 >
 > * [Memory](/oss/javascript/concepts/memory)
 > * [Context](/oss/javascript/concepts/context)
@@ -224,25 +226,25 @@ make test
 
 参考文档包含详细的低级信息，准确描述了存在的功能以及如何使用它。
 
-> **[Python reference](https://reference.langchain.com/python/)**
+> [卡][Python reference](https://reference.langchain.com/python/)
 
-> **[JavaScript/TypeScript reference](https://reference.langchain.com/javascript/)**
+> [卡][JavaScript/TypeScript reference](https://reference.langchain.com/javascript/)
 
 一个好的参考应该：
 
 * 描述存在的内容（所有参数、选项、返回值）
 * 全面、结构化，方便查找
-* 作为技术细节的权威来源
-
-> **贡献参考文献**
+* 作为技术细节的权威来源> [手风琴] 贡献参考文献
 >
-> [reference.langchain.com](https://reference.langchain.com/python/) 处生成的 API 参考是在此存储库外部构建和部署的。要报告错误、丢失的包或损坏的页面，[open a reference documentation issue](https://github.com/langchain-ai/docs/issues/new?template=04-reference-docs.yml)。> **LangChain参考最佳实践**
+> [reference.langchain.com](https://reference.langchain.com/python/) 处生成的 API 参考是在此存储库外部构建和部署的。要报告错误、丢失的包或损坏的页面，[open a reference documentation issue](https://github.com/langchain-ai/docs/issues/new?template=04-reference-docs.yml)。
+
+> [手风琴] LangChain 参考最佳实践
 >
 > * **保持一致**；遵循特定于提供商的文档的现有模式
 > * 包括基本用法（代码片段）和常见的边缘情况/故障模式
 > * 当功能需要特定版本时请注意
 
-> **何时创建新的参考文档**
+> [手风琴] 何时创建新的参考文档
 >
 > * 满足 [hosted-guide eligibility criteria](/oss/javascript/contributing/publish-langchain#eligibility-for-hosted-guides) 要求的新集成（每月下载量或精选次数超过 50,000 次）
 > * 复杂的配置选项需要详细解释
@@ -251,23 +253,23 @@ make test
 
 ### 教程
 
-教程是较长的分步指南，以自身为基础，引导用户通过特定的实践活动来建立理解。教程通常可以在 [Learn](/oss/javascript/learn) 选项卡上找到。
-
-> [!注意]
+教程是较长的分步指南，以自身为基础，引导用户通过特定的实践活动来建立理解。教程通常可以在 [Learn](/oss/javascript/learn) 选项卡上找到。> [!注意]
 >
-> 如果没有迫切需要，我们通常不会合并来自外部贡献者的新教程。如果您认为文档中缺少某个主题或未充分涵盖某个主题，请[open a new issue](https://github.com/langchain-ai/docs/issues)。> **特点**
+> 如果没有迫切需要，我们通常不会合并来自外部贡献者的新教程。如果您认为文档中缺少某个主题或未充分涵盖某个主题，请[open a new issue](https://github.com/langchain-ai/docs/issues)。
+
+> [手风琴] 特点
 >
 > * **实用**：注重实践活动以建立理解。
 > * **逐步**：将活动分解为更小的步骤。
 > * **动手**：提供连续的、可工作的代码片段。
 > * **补充**：提供功能使用不一定需要的附加上下文和信息。
 
-> **提示**
+> [手风琴] 小贴士
 >
 > * 如果用户按顺序执行步骤，代码片段应该是连续的并且可以工作。
-> * 提供活动的一些背景信息，但链接到相关概念指南和参考以获取更详细的信息。
+> * 提供一些活动背景，但链接到相关概念指南和参考以获取更详细的信息。
 
-> **示例**
+> [手风琴] 示例
 >
 > * [Semantic search](/oss/javascript/langchain/knowledge-base)
 > * [RAG agent](/oss/javascript/deepagents/rag)
@@ -280,41 +282,39 @@ make test
 
 ### Mintlify 组件
 
-使用 [Mintlify components](https://mintlify.com/docs/text) 增强可读性：
+使用 [Mintlify components](https://mintlify.com/docs/text) 增强可读性：> [选项卡] 标注
+>
+> * `<Note>` 获取有用的补充信息
+> * `<Warning>` 重要注意事项和重大变更
+> * `<Tip>` 最佳实践和建议
+> * `<Info>` 用于中性上下文信息
+> * `<Check>` 用于成功确认
 
-**标注**
+> [选项卡] 结构
+>
+> * `<Steps>` 了解顺序过程的概述。 **不适用于**长的步骤或教程列表。
+> * `<Tabs>` 适用于特定于平台的内容。
+> * `<AccordionGroup>` 和 `<Accordion>` 用于默认可折叠的必备信息（例如完整的代码示例）。
+> * `<CardGroup>` 和 `<Card>` 用于突出显示内容。
 
-* `<Note>` 获取有用的补充信息
-* `<Warning>` 重要注意事项和重大变更
-* `<Tip>` 最佳实践和建议
-* `<Info>` 用于中性上下文信息
-* `<Check>` 用于成功确认
-
-**结构*** `<Steps>` 了解顺序过程的概述。 **不适用于**长的步骤或教程列表。
-* `<Tabs>` 适用于特定于平台的内容。
-* `<AccordionGroup>` 和 `<Accordion>` 用于默认可折叠的必备信息（例如完整的代码示例）。
-* `<CardGroup>` 和 `<Card>` 用于突出显示内容。
-
-**代码**
-
-* `<CodeGroup>` 适用于多种语言示例。
-* 始终在代码块上指定语言标签（例如，` ⟦T8⟧javascript`）。
-* 代码块的标题（例如`Success`、`Error Response`）
+> [选项卡] 代码
+>
+> * `<CodeGroup>` 用于多种语言示例。
+> * 始终在代码块上指定语言标签（例如，` ⟦T8⟧javascript`）。
+> * 代码块的标题（例如 `Success`、`Error Response`）
 
 ### 美人鱼图
 
 添加美人鱼图时，请使用 LangChain 品牌调色板进行节点样式设置。从任何现有图表复制`classDef`行，或使用[⟦T48⟧](https://github.com/langchain-ai/docs/blob/main/AGENTS.md#mermaid-diagram-styling)中的参考表。
 
-|角色 |填写|行程|文字|
+|角色 |填写 |行程|文字|
 | - | - | - | - |
 |流程| `#E5F4FF` | `#006DDD` | `#030710` |
 |触发| `#F6FFDB` | `#6E8900` | `#2E3900` |
 |决定| `#FDF3FF` | `#7E65AE` | `#504B5F` |
 |输出| `#EBD0F0` | `#885270` | `#441E33` |
 |警报| `#F8E8E6` | `#B27D75` | `#634643` |
-|中立 | `#F2FAFF` | `#40668D` | `#2F4B68` |
-
-请勿使用 Tailwind 默认值、Material Design 颜色或其他非品牌调色板。
+|中立 | `#F2FAFF` | `#40668D` | `#2F4B68` |请勿使用 Tailwind 默认值、Material Design 颜色或其他非品牌调色板。
 
 ### 页面结构
 
@@ -327,7 +327,9 @@ sidebarTitle: "Short title for the sidebar (optional)"
 ---
 ```
 
-### 将 Python 和 JavaScript/TypeScript 内容放在一起如果可能，所有文档都必须使用 Python 和 JavaScript/TypeScript 编写。为此，我们使用自定义内联语法来区分应以一种或两种语言出现的部分：
+### 将 Python 和 JavaScript/TypeScript 内容放在一起
+
+如果可能，所有文档都必须使用 Python 和 JavaScript/TypeScript 编写。为此，我们使用自定义内联语法来区分应以一种或两种语言出现的部分：
 
 ```mdx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 :::python
@@ -351,15 +353,15 @@ Content for both languages (not wrapped)
 
 ## 质量标准
 
-### 一般准则
-
-> **避免重复**
+### 一般准则> [手风琴] 避免重复
 >
-> 涵盖相同材料的多个页面难以维护并导致混乱。每个概念或功能应该只有一个规范页面。链接到其他指南而不是重新解释。> **经常链接**
+> 涵盖相同材料的多个页面难以维护并导致混乱。每个概念或功能应该只有一个规范页面。链接到其他指南而不是重新解释。
+
+> [手风琴] 链接频繁
 >
 > 文档部分并非凭空存在。经常链接到其他部分，让用户了解不熟悉的主题。这包括链接到 API 参考和概念部分。
 
-> **简洁**
+> [手风琴] 简洁
 >
 > 采取“少即是多”的方法。如果存在具有良好解释的另一个部分，请链接到该部分而不是重新解释，除非您的内容提出了新的角度。
 
@@ -383,9 +385,9 @@ Content for both languages (not wrapped)
 See @[`ChatAnthropic`] for all configuration options.
 
 The @[`bind_tools`][ChatAnthropic.bind_tools] method accepts...
-```
+```构建管道根据当前语言范围（Python 或 JavaScript）将它们转换为正确的 Markdown 链接。例如，`@[ChatAnthropic]` 成为 Python 或 JS API 参考页面的链接，具体取决于正在构建的文档版本，**但前提是 `link_map.py` 文件中存在条目！** 有关详细信息，请参阅下文。
 
-构建管道根据当前语言范围（Python 或 JavaScript）将它们转换为正确的 Markdown 链接。例如，`@[ChatAnthropic]` 成为 Python 或 JS API 参考页面的链接，具体取决于正在构建的文档版本，**但前提是 `link_map.py` 文件中存在条目！** 有关详细信息，请参阅下文。> **自动链接如何工作**
+> [手风琴] 自动链接如何工作
 >
 > `@[]` 语法由[⟦T74⟧](https://github.com/langchain-ai/docs/blob/main/pipeline/preprocessors/handle_auto_links.py) 处理。它在 [⟦T75⟧](https://github.com/langchain-ai/docs/blob/main/pipeline/preprocessors/link_map.py) 中查找链接键，其中包含 Python 和 JavaScript 范围的字典映射。
 >
@@ -403,14 +405,15 @@ The @[`bind_tools`][ChatAnthropic.bind_tools] method accepts...
 > 如果在地图中找不到链接，它将在输出中保持不变。要添加新的自动链接：
 >
 > 1.打开`pipeline/preprocessors/link_map.py`
-> 2. 在`LINK_MAPS`中的适当范围（`python`或`js`）添加条目
-> 3. key是`@[key]`或`@[text][key]`中使用的链接名称，value是相对于引用主机的路径
+> 2. 在`LINK_MAPS`中的适当范围（`python`或`js`）添加条目> 3. key是`@[key]`或`@[text][key]`中使用的链接名称，value是相对于引用主机的路径
 
 ### 本地化
 
 如果两个 SDK 中都存在某个功能，请为 [Python and JavaScript/TypeScript together](#co-locate-python-and-javascript%2Ftypescript-content) 记录该功能。如果仅支持一种语言，请确保该功能及其引用仅对该语言可见。
 
-### 代码内文档示例必须正确，尽可能可复制粘贴，并且在打开拉取请求之前经过**测试**。清楚地标记不可运行的片段（例如，伪代码或说明性片段）。
+### 代码内文档
+
+示例必须正确，尽可能可复制粘贴，并且在打开拉取请求之前经过**测试**。清楚地标记不可运行的片段（例如，伪代码或说明性片段）。
 
 ## 获取帮助
 

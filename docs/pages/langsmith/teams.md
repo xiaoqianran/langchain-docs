@@ -25,7 +25,7 @@ A team's role applies only to members who belong to the workspace. Giving a team
 
 > [!NOTE]
 >
-> On [self-hosted](/langsmith/self-hosted) deployments, teams require Helm chart 0.18.0-rc.50 or later (application version 0.18.19rc1).
+> On [self-hosted](/langsmith/self-hosted) deployments, teams require Helm chart 0.18.0-rc.54 or later and application version 0.18.20rc1 or later.
 
 Use one of the following options to enable teams:
 

@@ -10,11 +10,11 @@
 
 ## 注释队列：添加运行
 
-将运行添加到注释队列。 SmithDB 支持的路径采用每个运行的完整查找键（其 ID 加上 `session_id`（项目 UUID）和 `start_time` 分区键），因此可以直接定位运行而不是扫描。
+将运行添加到注释队列。旧的 `POST /api/v1/annotation-queues/{queue_id}/runs` 和 `POST /api/v1/annotation-queues/{queue_id}/runs/by-key` 端点均已弃用。请改用注释队列项 API：每个运行都是一个 `RUN` 项目，其 ID 加上 `project_id`（项目 UUID）和 `start_time` 查找键，因此可以直接定位运行而不是扫描。
 
 > [!注意]
 >
-> 此方法保留在现有客户端上，而不是新的 `runs` v2 客户端上，因此 [Exceptions](/langsmith/smithdb-sdk-migration#exceptions) 表不适用 - 错误处理不变。
+> 在 Python 和 TypeScript 中，项目 API 位于新客户端资源 (`client.annotation_queues.items` / `client.annotationQueues.items`) 上，因此[Exceptions](/langsmith/smithdb-sdk-migration#exceptions) 表适用。在自托管上，项目端点需要 LangSmith v0.16.14 或更高版本。
 
 ### 主要变化
 
@@ -22,117 +22,87 @@
 
 > [选项卡] Python
 >
-> 没有变化—`client.add_runs_to_annotation_queue()`。 SmithDB 路径由您传递的参数选择（请参阅下面的输入）。
->
-> 完整参数列表请参见[reference](https://reference.langchain.com/python/langsmith/client/Client/add_runs_to_annotation_queue)。
+> |之前 |之后 |
+> | - | - |
+> | `client.add_runs_to_annotation_queue()` | `client.annotation_queues.items.create()`（异步）|
 
 > [选项卡] TypeScript
 >
-> 没有变化—`client.addRunsToAnnotationQueue()`。 SmithDB 路径由您传递的参数选择（请参阅下面的输入）。
->
-> 完整参数列表请参见[reference](https://reference.langchain.com/javascript/langsmith/client/Client/addRunsToAnnotationQueue)。> [选项卡] Java
->
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
-> | `client.annotationQueues().runs().create()` | `client.annotationQueues().runs().createByKey()` |
->
-> 完整参数列表请参见[reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/annotationqueues/RunService.html)。
+> | `client.addRunsToAnnotationQueue()` | `client.annotationQueues.items.create()` |
 
-> [选项卡] 前往
+> [选项卡] Java
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
-> | `client.AnnotationQueues.Runs.New()` | `client.AnnotationQueues.Runs.NewByKey()` |
+> | `client.annotationQueues().runs().create()` | `client.annotationQueues().items().create()` |> [选项卡] 前往
 >
-> 完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#AnnotationQueueRunService.NewByKey)。
+> |之前 |之后 |
+> | - | - |
+> | `client.AnnotationQueues.Runs.New()` | `client.AnnotationQueues.Items.New()` |
+>
+> 完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#AnnotationQueueItemService.New)。
 
 > [选项卡] 卷曲
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
-> | `POST /api/v1/annotation-queues/{queue_id}/runs` | `POST /api/v1/annotation-queues/{queue_id}/runs/by-key` |
->
-> 完整参数列表请参见[API doc](/langsmith/smith-api/annotation-queues/add-runs-to-annotation-queue-by-key)。
+> | `POST /api/v1/annotation-queues/{queue_id}/runs` | `POST /api/v1/platform/annotation-queues/{queue_id}/items` |
 
 #### 输入
 
-> [选项卡] Python
->
->> [!警告]
->>
->> SmithDB 路径除了 `run_id` 之外，还需要每次运行的 `session_id`（项目 UUID）和 `start_time`。这些已经存在于您获取的运行对象上（例如从`client.list_runs()`）。
->
-> |之前 (`run_ids`) |之后（`runs`）|笔记|
-> | - | - | - |
-> | `run_ids: list[UUID \| str]` | *（已弃用）* |遗留路径。仍然有效并命中`/runs`，解决每个运行服务器端的问题。将在未来版本中删除 |
-> | *（不可用）* | `runs: Sequence[RunKey]` | **新首选。** 每个 `RunKey` 都是 `TypedDict`，其中包含 `run_id`、`session_id` 和 `start_time` |
->
-> 准确提供`runs`或`run_ids`之一；通过两项都会提高 `LangSmithUserError`。> [选项卡] TypeScript
->
->> [!警告]
->>
->> SmithDB 路径除了 `runId` 之外，还需要每次运行的 `sessionId`（项目 UUID）和 `startTime`。这些已经存在于您获取的运行对象上（例如从`client.listRuns()`）。
->
-> |之前 (`string[]`) |之后(`RunKey[]`)|笔记|
-> | - | - | - |
-> | `runs: string[]` | *（已弃用）* |旧路径（运行 ID 字符串数组）。仍然有效并达到`/runs`。将在未来版本中删除 |
-> | *（不可用）* | `runs: RunKey[]` | **新首选。** 每个`RunKey`都是`{ runId, sessionId, startTime }`； `startTime` 接受 `Date`、纪元 ms 或 ISO 字符串 |
->
-> 两个形状的第二个参数的位置相同；当您传递`RunKey[]`时，SDK会选择SmithDB路径。
+该请求采用项目列表（每次调用最多 100 个）而不是运行 ID 列表。每次运行都会成为一项：
 
-> [选项卡] Java
->
-> |之前 (`RunCreateParams`) |之后(`RunCreateByKeyParams`)|笔记|
-> | - | - | - |
-> | `.bodyOfRunsUuidArray(List<String>)` | *（已删除）* |旧体；仅运行 ID |
-> | *（不可用）* | `.addBody(RunCreateByKeyParams.Body)` |每个 `Body` 都有 `runId`、`sessionId` 和 `startTime` |
-> | `.queueId(String)` | `.queueId(String)` |不变 |
-> | `.extendTraceRetention(Boolean)` | `.extendTraceRetention(Boolean)` |未更改的可选查询参数 |
+|领域|价值|
+| - | - |
+| `item_type` | `RUN` |
+| `run_id` |运行 ID |
+| `project_id` |运行的项目 UUID（从 `runs.query` 运行时的`project_id`；`session_id` 也可以作为别名接受）|
+| `start_time` |运行的开始时间 (RFC3339) |
 
-> [选项卡] 前往
->
-> |之前 (`AnnotationQueueRunNewParams`) |之后(`AnnotationQueueRunNewByKeyParams`) |笔记|
-> | - | - | - |
-> | `Body: AnnotationQueueRunNewParamsBodyRunsUuidArray` (`[]string`) | *（已删除）* |旧体；仅运行 ID |
-> | *（不可用）* | `Body: []AnnotationQueueRunNewByKeyParamsBody` |每个都有 `RunID`、`SessionID` 和 `StartTime` |
-> | *（不可用）* | `ExtendTraceRetention` |可选查询参数 |> [选项卡] 卷曲
->
->> [!警告]
->>
->> `/runs/by-key`请求体是一个对象数组，而不是ID字符串数组。每个对象都需要 `run_id`、`session_id`（项目 UUID）和 `start_time` (RFC3339)。
->
-> |之前（`POST /runs`本体）|之后（`POST /runs/by-key`本体）|笔记|
-> | - | - | - |
-> | `["<run-id>", ...]` | `[{"run_id", "session_id", "start_time"}]` | `session_id`是项目UUID； `start_time` 是 RFC3339 |
-> | `?extend_trace_retention`（查询）| `?extend_trace_retention`（查询）|未更改的可选查询参数 |
-
-#### 回应
+`extend_trace_retention` 未更改，仍然是可选查询参数。
 
 > [选项卡] Python
 >
-> 没有变化。 `run_ids=`和`runs=`都返回`None`。
+> |之前 |之后 |
+> | - | - |
+> | `run_ids=[...]` 或 `runs=[RunKey, ...]` | `items=[{"item_type": "RUN", "run_id", "project_id", "start_time"}, ...]` |
 
 > [选项卡] TypeScript
 >
-> 没有变化。两种形状都解析为 `void`。
+> |之前 |之后 |
+> | - | - |
+> | `string[]` 或 `RunKey[]`（第二个参数）| `{ items: [{ item_type: "RUN", run_id, project_id, start_time }] }` |
 
 > [选项卡] Java
 >
-> `createByKey()` 返回 `List<RunCreateByKeyResponse>` — 返回相同的形状 `create()`，包括 `id()`、`queueId()`、`runId()`、`addedAt()` 和 `lastReviewedTime()`。
+> |之前 (`RunCreateParams`) |之后(`ItemCreateParams`)|
+> | - | - |
+> | `.bodyOfRunsUuidArray(List<String>)` | `.addItem(ItemCreateParams.Item)` 与 `itemType(RUN)`、`runId`、`projectId`、`startTime` |
+> | `.queueId(String)` | `.queueId(String)` |
 
 > [选项卡] 前往
 >
-> `NewByKey()` 返回 `*[]AnnotationQueueRunNewByKeyResponse` — 返回相同的形状 `New()`，包括 `ID`、`QueueID`、`RunID`、`AddedAt` 和 `LastReviewedTime`。
+> |之前 (`AnnotationQueueRunNewParams`) |之后(`AnnotationQueueItemNewParams`)|
+> | - | - |
+> | `Body: AnnotationQueueRunNewParamsBodyRunsUuidArray` | `Items: []AnnotationQueueItemNewParamsItem` 与 `ItemType`、`RunID`、`ProjectID`、`StartTime` |
 
 > [选项卡] 卷曲
 >
-> 没有变化。 `POST /runs/by-key` 返回创建的队列运行记录数组（`id`、`queue_id`、`run_id`、`added_at`、`last_reviewed_time`），与`POST /runs`形状相同。
+> |之前（正文）|之后（正文）|
+> | - | - |
+> | `["<run-id>", ...]` | `{"items": [{"item_type": "RUN", "run_id", "project_id", "start_time"}]}` |
+
+＃＃＃＃ 回复items API 返回 `{"items": [...]}`，每个输入创建一个队列项目（`id`、`queue_id`、`item_type`、`run_id`、`project_id`、`start_time`、`added_at`、`last_reviewed_time`）。将项目 `id` 与其他项目端点（更新、删除、状态）一起使用。旧版 Python 和 TypeScript 方法不返回任何内容。
 
 ### 示例
 
-#### 将运行添加到队列> [选项卡] Python
+#### 将运行添加到队列
+
+> [选项卡] Python
 >
-> `run_ids=` 采用运行 ID 的简单列表。 `runs=` 获取每次运行的完整查找键 — 从已有的运行对象中读取 `run_id`、`session_id` 和 `start_time`。
+> 每次运行从您已有的运行对象构建一个 `RUN` 项目。
 >
 >> [选项卡] 之前
 >>
@@ -148,27 +118,43 @@
 >> [选项卡] 之后
 >>
 >> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import asyncio
+> > from datetime import datetime, timedelta, timezone
+> >
 > > from langsmith import Client
 > >
-> > client = Client()
-> > queue_id = "<queue-id>"
-> > runs = list(client.list_runs(project_name="default", limit=5))
-> > client.add_runs_to_annotation_queue(
-> >     queue_id,
-> >     runs=[
-> >         {
-> >             "run_id": run.id,
-> >             "session_id": run.session_id,
-> >             "start_time": run.start_time,
-> >         }
-> >         for run in runs
-> >     ],
-> > )
+> >
+> > async def main():
+> >     client = Client()
+> >     queue_id = "<queue-id>"
+> >     project_id = "<project-id>"
+> >     page = await client.runs.query(
+> >         project_ids=[project_id],
+> >         min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+> >         selects=["ID", "PROJECT_ID", "START_TIME"],
+> >         page_size=5,
+> >     )
+> >     runs = page.items
+> >     await client.annotation_queues.items.create(
+> >         queue_id,
+> >         items=[
+> >             {
+> >                 "item_type": "RUN",
+> >                 "run_id": str(run.id),
+> >                 "project_id": str(run.project_id),
+> >                 "start_time": run.start_time.isoformat(),
+> >             }
+> >             for run in runs
+> >         ],
+> >     )
+> >
+> >
+> > asyncio.run(main())
 > > ```
 
 > [选项卡] TypeScript
 >
-> 传递旧路径的运行 ID 字符串数组，或从已有的运行对象构建的 `RunKey` 对象数组（`runId`、`sessionId`、`startTime`）。
+> 每次运行从您已有的运行对象构建一个 `RUN` 项目。
 >
 >> [选项卡] 之前
 >>
@@ -191,28 +177,31 @@
 >> [选项卡] 之后
 >>
 >> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> > import { uuid7 } from "langsmith";
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
 > > let queueId = "<queue-id>";
-> > const runs = [];
-> > for await (const run of client.listRuns({ projectName: "default", limit: 5 })) {
-> >   runs.push(run);
-> > }
-> > await client.addRunsToAnnotationQueue(
-> >   queueId,
-> >   runs.map((run) => ({
-> >     runId: run.id,
-> >     sessionId: run.session_id!,
-> >     startTime: run.start_time!,
+> > let projectId = "<project-id>";
+> > const page = await client.runs.query({
+> >   project_ids: [projectId],
+> >   min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+> >   selects: ["ID", "PROJECT_ID", "START_TIME"],
+> >   page_size: 5,
+> > });
+> > const runs = page.items ?? [];
+> > await client.annotationQueues.items.create(queueId, {
+> >   items: runs.map((run) => ({
+> >     item_type: "RUN" as const,
+> >     run_id: run.id,
+> >     project_id: run.project_id!,
+> >     start_time: run.start_time!,
 > >   })),
-> > );
+> > });
 > > ```
 
 > [选项卡] Java
 >
-> `create()` 通过 `bodyOfRunsUuidArray` 获取运行 ID。 `createByKey()` 每次运行需要 `Body` 以及 `runId`、`sessionId` 和 `startTime`。
+> 每次运行添加一个 `ItemCreateParams.Item`。
 >
 >> [选项卡] 之前
 >>
@@ -246,34 +235,44 @@
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.annotationqueues.AnnotationQueueAnnotationQueuesParams
-> > import com.langchain.smith.models.annotationqueues.runs.RunCreateByKeyParams
-> > import com.langchain.smith.models.runs.RunQueryParams
+> > import com.langchain.smith.models.annotationqueues.items.ItemCreateParams
+> > import com.langchain.smith.models.runs.RunQueryV2Params
+> > import com.langchain.smith.models.runs.RunSelectField
 > > import com.langchain.smith.models.sessions.SessionListParams
+> > import java.time.OffsetDateTime
 > >
 > > val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 > >
 > > var queueId = "<queue-id>"
 > > var projectId = "<project-id>"
-> > val runs = client.runs().query(
-> >     RunQueryParams.builder().session(listOf(projectId)).limit(5L).build()
+> > val runs = client.runs().queryV2(
+> >     RunQueryV2Params.builder()
+> >         .addProjectId(projectId)
+> >         .minStartTime(OffsetDateTime.now().minusDays(30))
+> >         .addSelect(RunSelectField.ID)
+> >         .addSelect(RunSelectField.PROJECT_ID)
+> >         .addSelect(RunSelectField.START_TIME)
+> >         .pageSize(5L)
+> >         .build()
 > > ).items()
 > >
-> > val params = RunCreateByKeyParams.builder().queueId(queueId)
+> > val params = ItemCreateParams.builder().queueId(queueId)
 > > for (run in runs) {
-> >     params.addBody(
-> >         RunCreateByKeyParams.Body.builder()
-> >             .runId(run.id())
-> >             .sessionId(run.sessionId())
+> >     params.addItem(
+> >         ItemCreateParams.Item.builder()
+> >             .itemType(ItemCreateParams.Item.ItemType.RUN)
+> >             .runId(run.id().get())
+> >             .projectId(run.projectId().get())
 > >             .startTime(run.startTime().get())
 > >             .build()
 > >     )
 > > }
-> > client.annotationQueues().runs().createByKey(params.build())
+> > client.annotationQueues().items().create(params.build())
 > > ```
 
 > [选项卡] 前往
 >
-> `New()` 通过 `AnnotationQueueRunNewParamsBodyRunsUuidArray` 获取运行 ID。 `NewByKey()` 每次运行需要 `AnnotationQueueRunNewByKeyParamsBody` 以及 `RunID`、`SessionID` 和 `StartTime`。
+> 每次运行添加一个 `AnnotationQueueItemNewParamsItem`。
 >
 >> [选项卡] 之前
 >>
@@ -322,26 +321,33 @@
 > >
 > > queueID := "<queue-id>"
 > > projectID := "<project-id>"
-> > found, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
-> > 	Session: langsmith.F([]string{projectID}),
-> > 	Limit:   langsmith.F(int64(5)),
+> > found, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
+> > 	ProjectIDs:   langsmith.F([]string{projectID}),
+> > 	MinStartTime: langsmith.F(time.Now().UTC().AddDate(0, 0, -30)),
+> > 	Selects: langsmith.F([]langsmith.RunSelectField{
+> > 		langsmith.RunSelectFieldID,
+> > 		langsmith.RunSelectFieldProjectID,
+> > 		langsmith.RunSelectFieldStartTime,
+> > 	}),
+> > 	PageSize: langsmith.F(int64(5)),
 > > })
-> > body := make([]langsmith.AnnotationQueueRunNewByKeyParamsBody, len(found.Runs))
-> > for i, run := range found.Runs {
-> > 	body[i] = langsmith.AnnotationQueueRunNewByKeyParamsBody{
+> > items := make([]langsmith.AnnotationQueueItemNewParamsItem, len(found.Items))
+> > for i, run := range found.Items {
+> > 	items[i] = langsmith.AnnotationQueueItemNewParamsItem{
+> > 		ItemType:  langsmith.F(langsmith.AnnotationQueueItemNewParamsItemsItemTypeRun),
 > > 		RunID:     langsmith.F(run.ID),
-> > 		SessionID: langsmith.F(run.SessionID),
+> > 		ProjectID: langsmith.F(run.ProjectID),
 > > 		StartTime: langsmith.F(run.StartTime),
 > > 	}
 > > }
-> > _, err = client.AnnotationQueues.Runs.NewByKey(ctx, queueID, langsmith.AnnotationQueueRunNewByKeyParams{
-> > 	Body: body,
+> > _, err = client.AnnotationQueues.Items.New(ctx, queueID, langsmith.AnnotationQueueItemNewParams{
+> > 	Items: langsmith.F(items),
 > > })
 > > ```
 
 > [选项卡] 卷曲
 >
-> `POST /runs` 采用运行 ID 字符串数组。 `POST /runs/by-key` 采用一个对象数组，每个对象都有 `run_id`、`session_id` 和 `start_time`。
+> `POST /runs` 采用运行 ID 字符串数组。 `POST /items` 采用 `items` 对象数组。
 >
 >> [选项卡] 之前
 >>
@@ -363,15 +369,15 @@
 > > PROJECT_ID="<project-id>"
 > > START_TIME="2026-06-01T12:00:00Z"
 > >
-> > curl -X POST "https://api.smith.langchain.com/api/v1/annotation-queues/$QUEUE_ID/runs/by-key" \
+> > curl -X POST "https://api.smith.langchain.com/api/v1/platform/annotation-queues/$QUEUE_ID/items" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" \
 > >   -H "Content-Type: application/json" \
-> >   -d "[{\"run_id\": \"$RUN_ID\", \"session_id\": \"$PROJECT_ID\", \"start_time\": \"$START_TIME\"}]"
+> >   -d "{\"items\": [{\"item_type\": \"RUN\", \"run_id\": \"$RUN_ID\", \"project_id\": \"$PROJECT_ID\", \"start_time\": \"$START_TIME\"}]}"
 > > ```
 
-## 分享和阅读公开跑步共享跟踪、删除其公共访问权限或读取公开共享跟踪中的运行。 v2 方法使用显式 SmithDB 坐标并返回选择驱动的运行对象。
+## 分享和阅读公开跑步
 
-公共读取方法不需要 LangSmith API 密钥。将共享令牌视为秘密，因为拥有该令牌的任何人都可以读取共享跟踪。
+共享跟踪、删除其公共访问权限或读取公开共享跟踪中的运行。 v2 方法使用显式 SmithDB 坐标并返回选择驱动的运行对象。公共读取方法不需要 LangSmith API 密钥。将共享令牌视为秘密，因为拥有该令牌的任何人都可以读取共享跟踪。
 
 ### 主要变化
 
@@ -379,7 +385,7 @@
 
 > [选项卡] Python
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.share_run()` | `client.runs.share.create()` |
 > | `client.unshare_run()` | `client.runs.share.delete()` |
@@ -389,11 +395,11 @@
 >
 >> [!注意]
 >>
->> v2 资源方法是异步的。用 `await` 打电话给他们。
+>> v2 资源方法是异步的。用`await`给他们打电话。
 
 > [选项卡] TypeScript
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.shareRun()` | `client.runs.share.create()` |
 > | `client.unshareRun()` | `client.runs.share.delete()` |
@@ -405,13 +411,13 @@
 
 > [选项卡] Java
 >
-> Java SDK 没有传统的方便迁移方法。使用[⟦T179⟧](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/runs/ShareService.html)和公共[⟦T180⟧](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/public_/RunService.html)进行v2访问。 Kotlin 使用 Java SDK；没有单独的 Kotlin 参考站点。
+> Java SDK 没有传统的方便迁移方法。使用 [⟦T118⟧](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/runs/ShareService.html) 和公共 [⟦T119⟧](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/public_/RunService.html) 进行 v2 访问。 Kotlin 使用 Java SDK；没有单独的 Kotlin 参考站点。
 
 > [选项卡] 前往
 >
-> Go SDK 没有传统的便捷迁移方法。使用 [⟦T181⟧](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#RunShareService) 和 [⟦T182⟧](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#PublicRunService) 进行 v2 访问。> [选项卡] 卷曲
+> Go SDK 没有传统的便捷迁移方法。使用 [⟦T120⟧](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#RunShareService) 和 [⟦T121⟧](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#PublicRunService) 进行 v2 访问。> [选项卡] 卷曲
 >
-> |运营|之前 |之后|
+> |运营|之前 |之后 |
 > | - | - | - |
 > |分享 | `PUT /api/v1/runs/{run_id}/share` | `POST /api/v2/runs/{run_id}/share` |
 > |取消分享 | `DELETE /api/v1/runs/{run_id}/share` | `DELETE /api/v2/runs/{trace_id}/share` |
@@ -426,7 +432,7 @@
 > [选项卡] Python
 >
 > * `runs.share.create` 将运行 ID 作为其位置参数。传递 `session_id`（跟踪项目 UUID）和 `trace_id`（根跟踪 UUID）。
-> * `runs.share.delete` 采用根跟踪 ID，而不是任意子运行 ID。将跟踪项目 UUID 作为 `session_id` 传递。
+> * `runs.share.delete` 采用根跟踪 ID，而不是任意子运行 ID。传递跟踪项目 UUID 作为 `session_id`。
 > * `share_id` 已删除。服务器生成共享令牌。
 
 > [选项卡] TypeScript
@@ -438,19 +444,19 @@
 > [选项卡] 卷曲
 >
 > * v2共享请求体包含`session_id`和`trace_id`。
-> * v2 取消共享路径标识根跟踪。其请求体包含`session_id`。
+> * v2 取消共享路径标识根跟踪。其请求正文包含`session_id`。
 > * v2 取消共享操作是幂等的并返回`204 No Content`。尽管生成的参数类型可能会将这些坐标标记为可选，但在共享时提供 `session_id` 和 `trace_id`，在取消共享时提供 `session_id`。 SmithDB 使用这些坐标进行查找。
 
 #### 公共读取参数
 
 * `public.runs.query` 获取共享代币和`selects` 列表。该令牌将查询范围限定为完整的共享跟踪。旧版运行 ID 过滤器和游标响应已被删除。
-* `public.runs.retrieve` 需要运行 ID、共享令牌、精确运行 `start_time` 和 `selects` 列表。从`public.runs.query`获取准确存储的开始时间。
+* `public.runs.retrieve` 需要运行 ID、共享代币、精确运行 `start_time` 和 `selects` 列表。从`public.runs.query`获取准确存储的开始时间。
 * 公共点读取仅返回选定的字段。对于以下示例，请使用 `ID`、`NAME`、`RUN_TYPE`、`STATUS` 和 `START_TIME`。
 * 要检索经过身份验证的运行的公共 URL，请使用 `selects=["SHARE_URL"]` 调用 `runs.retrieve`，然后读取 `run.share_url`。提供 `start_time` 可以为 SmithDB 提供最高效的查找。
 
 不要从 API 源构建公共 URL。检索 `share_url` 使用部署的已配置应用程序源，适用于云和自托管部署。
 
-#### 回应|运营|之前 |之后|
+#### 回应|运营|之前 |之后 |
 | - | - | - |
 |分享 |运行 ID、共享跟踪 ID 和共享令牌 | `share_token` |
 |取消分享 | `{"message": "Run unshared"}` | `204 No Content` |
@@ -671,7 +677,7 @@
 >>
 >> `create_feedback` 现在需要 `session_id`，即拥有运行的项目（会话）的 UUID。以前它是可选的。
 >
-> |之前 |之后|笔记|
+> |之前 |之后 |笔记|
 > | - | - | - |
 > | `session_id`（可选）| `session_id`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.read_project()` 解决它 |
 
@@ -681,7 +687,7 @@
 >>
 >> `client.createFeedback` 现在需要 `sessionId`，即拥有运行的项目（会话）的 UUID。以前它是可选的。
 >
-> |之前 |之后|笔记|
+> |之前 |之后 |笔记|
 > | - | - | - |
 > | `sessionId`（可选）| `sessionId`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.readProject()` 解决它 |
 
@@ -691,7 +697,7 @@
 >>
 >> 现在需要`FeedbackCreateSchema.sessionId()`。以前它是可选的。
 >
-> |之前 |之后|笔记|
+> |之前 |之后 |笔记|
 > | - | - | - |
 > | `sessionId()`（可选）| `sessionId()`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.sessions().list()` 解决它 |> [选项卡] 前往
 >
@@ -699,7 +705,7 @@
 >>
 >> 现在需要`FeedbackCreateSchemaParam.SessionID`。以前它是可选的。
 >
-> |之前 |之后|笔记|
+> |之前 |之后 |笔记|
 > | - | - | - |
 > | `SessionID`（可选）| `SessionID`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.Sessions.List()` 解决它 |
 
@@ -709,7 +715,7 @@
 >>
 >> `POST /api/v1/feedback` 现在要求请求正文中包含 `session_id` 字段。以前它是可选的。
 >
-> |之前 |之后|笔记|
+> |之前 |之后 |笔记|
 > | - | - | - |
 > | `session_id`（可选）| `session_id`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `GET /api/v1/sessions` 解决它 |
 
@@ -719,7 +725,7 @@
 
 > [选项卡] Python
 >
-> 除了 `run_id` 之外，`create_feedback` 现在还需要 `session_id`。
+> `create_feedback` 现在除了 `run_id` 之外还需要 `session_id`。
 >
 >> [选项卡] 之前
 >>
@@ -753,7 +759,7 @@
 
 > [选项卡] TypeScript
 >
-> 除了 `runId` 之外，`client.createFeedback` 现在还需要 `sessionId`。
+> `client.createFeedback` 现在除了 `runId` 之外还需要 `sessionId`。
 >
 >> [选项卡] 之前
 >>

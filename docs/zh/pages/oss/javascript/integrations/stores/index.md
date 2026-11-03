@@ -27,16 +27,16 @@ LangChain 提供键值存储接口，用于通过键存储和检索数据。 Lan
 
 ## 本地开发内置商店
 
-> **[InMemoryStore](/oss/javascript/integrations/stores/in_memory)**
+> [卡][InMemoryStore](/oss/javascript/integrations/stores/in_memory)
 
-> **[LocalFileStore](/oss/javascript/integrations/stores/file_system)**
+> [卡][LocalFileStore](/oss/javascript/integrations/stores/file_system)
 
 ## 定制商店您还可以通过扩展 [⟦T10⟧](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) 类来实现自己的自定义商店。更多详情请参阅[store interface documentation](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore)。
 
 ## 所有键值存储
 
 |整合 |下载 |
-| :-| :-|
+| :- | :- |
 | [⟦T11⟧](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md) | [  ⟦T14⟧](https://www.npmjs.com/package/al-buddy-memory) |
 | [⟦T12⟧](/oss/javascript/integrations/stores/in_memory) |不适用 |
 | [⟦T13⟧](/oss/javascript/integrations/stores/file_system) |不适用 |

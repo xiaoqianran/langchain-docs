@@ -30,7 +30,7 @@ Deep Agents 可与任何支持 [tool calling](/oss/javascript/langchain/models#t
 ### 模型评估[Deep Agents eval suite](https://github.com/langchain-ai/deepagents/tree/main/libs/evals#readme)测试热门型号：
 
 |型号|总体 |文件操作 |检索|工具使用|内存|对话 |总结|
-| :-| -: | -: | -: | -: | -: | -: | -: |
+| :- | -: | -: | -: | -: | -: | -: | -: |
 | google\_genai:gemini-3.6-flash | [82%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[90%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [54%](https://github.com/langchain-ai/deepagents/actions/runs/25290479270) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
 |打开：gpt-5.4 | [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | [51%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/24425363630) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |
 |打开：gpt-5.5 | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [84%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [64%](https://github.com/langchain-ai/deepagents/actions/runs/25345307822) | **[52%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
@@ -75,7 +75,7 @@ const agent = createDeepAgent({ model });
 
 > [!注意]
 >
-> 可用参数因提供商而异。有关特定于提供商的配置选项，请参阅 [chat model integrations](/oss/javascript/integrations/chat) 页面。
+> 可用参数因提供商而异。请参阅 [chat model integrations](/oss/javascript/integrations/chat) 页面了解特定于提供商的配置选项。
 
 ### 提供商简介
 
@@ -133,7 +133,7 @@ const result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/45e09f7e-1d7b-4419-856a-202e800bcb8d/r)**
+> [卡][View example trace](https://smith.langchain.com/public/e6c145db-2ccb-4d7a-b557-596a683a7922/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 

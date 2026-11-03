@@ -6173,6 +6173,76 @@
           "rel": "langsmith/smith-api/tags/update-tag.md"
         }
       ],
+      "teams": [
+        {
+          "title": "Add members to a team",
+          "rel": "langsmith/smith-api/teams/add-members-to-a-team.md"
+        },
+        {
+          "title": "Attach an access policy to a team",
+          "rel": "langsmith/smith-api/teams/attach-an-access-policy-to-a-team.md"
+        },
+        {
+          "title": "Change a team's role in a workspace",
+          "rel": "langsmith/smith-api/teams/change-a-teams-role-in-a-workspace.md"
+        },
+        {
+          "title": "Create a team",
+          "rel": "langsmith/smith-api/teams/create-a-team.md"
+        },
+        {
+          "title": "Delete a team",
+          "rel": "langsmith/smith-api/teams/delete-a-team.md"
+        },
+        {
+          "title": "Detach an access policy from a team",
+          "rel": "langsmith/smith-api/teams/detach-an-access-policy-from-a-team.md"
+        },
+        {
+          "title": "Get a team",
+          "rel": "langsmith/smith-api/teams/get-a-team.md"
+        },
+        {
+          "title": "Get a team's role in a workspace",
+          "rel": "langsmith/smith-api/teams/get-a-teams-role-in-a-workspace.md"
+        },
+        {
+          "title": "Grant a team a role in a workspace",
+          "rel": "langsmith/smith-api/teams/grant-a-team-a-role-in-a-workspace.md"
+        },
+        {
+          "title": "List a team's access policies",
+          "rel": "langsmith/smith-api/teams/list-a-teams-access-policies.md"
+        },
+        {
+          "title": "List a team's workspace grants",
+          "rel": "langsmith/smith-api/teams/list-a-teams-workspace-grants.md"
+        },
+        {
+          "title": "List organization teams",
+          "rel": "langsmith/smith-api/teams/list-organization-teams.md"
+        },
+        {
+          "title": "List team members",
+          "rel": "langsmith/smith-api/teams/list-team-members.md"
+        },
+        {
+          "title": "List workspace scoped team members",
+          "rel": "langsmith/smith-api/teams/list-workspace-scoped-team-members.md"
+        },
+        {
+          "title": "Remove a member from a team",
+          "rel": "langsmith/smith-api/teams/remove-a-member-from-a-team.md"
+        },
+        {
+          "title": "Remove a team's access to a workspace",
+          "rel": "langsmith/smith-api/teams/remove-a-teams-access-to-a-workspace.md"
+        },
+        {
+          "title": "Update a team",
+          "rel": "langsmith/smith-api/teams/update-a-team.md"
+        }
+      ],
       "tenant": [
         {
           "title": "Create tenant",
@@ -7335,12 +7405,48 @@
           "rel": "oss/javascript/langgraph/functional-api.md"
         },
         {
+          "title": "Add human-in-the-loop with the Functional API",
+          "rel": "oss/javascript/langgraph/functional-api-human-in-the-loop.md"
+        },
+        {
+          "title": "Add memory with the Functional API",
+          "rel": "oss/javascript/langgraph/functional-api-memory.md"
+        },
+        {
+          "title": "Stream with the Functional API",
+          "rel": "oss/javascript/langgraph/functional-api-streaming.md"
+        },
+        {
+          "title": "Configure Functional API tasks",
+          "rel": "oss/javascript/langgraph/functional-api-tasks.md"
+        },
+        {
+          "title": "Compose Functional API workflows",
+          "rel": "oss/javascript/langgraph/functional-api-workflows.md"
+        },
+        {
           "title": "Graph API overview",
           "rel": "oss/javascript/langgraph/graph-api.md"
         },
         {
-          "title": "Install LangGraph",
-          "rel": "oss/javascript/langgraph/install.md"
+          "title": "Build sequences, branches, and loops",
+          "rel": "oss/javascript/langgraph/graph-api-control-flow.md"
+        },
+        {
+          "title": "Configure nodes",
+          "rel": "oss/javascript/langgraph/graph-api-nodes.md"
+        },
+        {
+          "title": "Use Send and Command",
+          "rel": "oss/javascript/langgraph/graph-api-send-command.md"
+        },
+        {
+          "title": "Define and update state",
+          "rel": "oss/javascript/langgraph/graph-api-state.md"
+        },
+        {
+          "title": "Visualize your graph",
+          "rel": "oss/javascript/langgraph/graph-api-visualize.md"
         },
         {
           "title": "Interrupts",
@@ -7391,19 +7497,23 @@
           "rel": "oss/javascript/langgraph/test.md"
         },
         {
-          "title": "Thinking in LangGraph",
-          "rel": "oss/javascript/langgraph/thinking-in-langgraph.md"
+          "title": "Thinking in the Functional API",
+          "rel": "oss/javascript/langgraph/thinking-in-functional-api.md"
+        },
+        {
+          "title": "Thinking in the Graph API",
+          "rel": "oss/javascript/langgraph/thinking-in-graph-api.md"
         },
         {
           "title": "Agent Chat UI",
           "rel": "oss/javascript/langgraph/ui.md"
         },
         {
-          "title": "Use the functional API",
+          "title": "Build checklist for the Functional API",
           "rel": "oss/javascript/langgraph/use-functional-api.md"
         },
         {
-          "title": "Use the graph API",
+          "title": "Build checklist for the Graph API",
           "rel": "oss/javascript/langgraph/use-graph-api.md"
         },
         {
@@ -8197,12 +8307,48 @@
           "rel": "oss/python/langgraph/functional-api.md"
         },
         {
+          "title": "Add human-in-the-loop with the Functional API",
+          "rel": "oss/python/langgraph/functional-api-human-in-the-loop.md"
+        },
+        {
+          "title": "Add memory with the Functional API",
+          "rel": "oss/python/langgraph/functional-api-memory.md"
+        },
+        {
+          "title": "Stream with the Functional API",
+          "rel": "oss/python/langgraph/functional-api-streaming.md"
+        },
+        {
+          "title": "Configure Functional API tasks",
+          "rel": "oss/python/langgraph/functional-api-tasks.md"
+        },
+        {
+          "title": "Compose Functional API workflows",
+          "rel": "oss/python/langgraph/functional-api-workflows.md"
+        },
+        {
           "title": "Graph API overview",
           "rel": "oss/python/langgraph/graph-api.md"
         },
         {
-          "title": "Install LangGraph",
-          "rel": "oss/python/langgraph/install.md"
+          "title": "Build sequences, branches, and loops",
+          "rel": "oss/python/langgraph/graph-api-control-flow.md"
+        },
+        {
+          "title": "Configure nodes",
+          "rel": "oss/python/langgraph/graph-api-nodes.md"
+        },
+        {
+          "title": "Use Send and Command",
+          "rel": "oss/python/langgraph/graph-api-send-command.md"
+        },
+        {
+          "title": "Define and update state",
+          "rel": "oss/python/langgraph/graph-api-state.md"
+        },
+        {
+          "title": "Visualize your graph",
+          "rel": "oss/python/langgraph/graph-api-visualize.md"
         },
         {
           "title": "Interrupts",
@@ -8253,19 +8399,23 @@
           "rel": "oss/python/langgraph/test.md"
         },
         {
-          "title": "Thinking in LangGraph",
-          "rel": "oss/python/langgraph/thinking-in-langgraph.md"
+          "title": "Thinking in the Functional API",
+          "rel": "oss/python/langgraph/thinking-in-functional-api.md"
+        },
+        {
+          "title": "Thinking in the Graph API",
+          "rel": "oss/python/langgraph/thinking-in-graph-api.md"
         },
         {
           "title": "Agent Chat UI",
           "rel": "oss/python/langgraph/ui.md"
         },
         {
-          "title": "Use the functional API",
+          "title": "Build checklist for the Functional API",
           "rel": "oss/python/langgraph/use-functional-api.md"
         },
         {
-          "title": "Use the graph API",
+          "title": "Build checklist for the Graph API",
           "rel": "oss/python/langgraph/use-graph-api.md"
         },
         {

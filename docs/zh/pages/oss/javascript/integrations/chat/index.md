@@ -14,7 +14,7 @@
 >
 > 参见[this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install)。
 
-> **OpenAI**
+> [手风琴] OpenAI
 >
 > 安装：
 >
@@ -48,7 +48,7 @@
 > await model.invoke("Hello, world!")
 > ```
 
-> **Anthropic**
+> [手风琴] Anthropic
 >
 > 安装：
 >
@@ -85,7 +85,7 @@
 > await model.invoke("Hello, world!")
 > ```
 
-> **谷歌双子座**
+> [手风琴] 谷歌双子座
 >
 > 安装：
 >
@@ -119,7 +119,7 @@
 > await model.invoke("Hello, world!")
 > ```
 
-> **米斯特拉尔人工智能**
+> [手风琴] MistralAI
 >
 > 安装：
 >
@@ -154,7 +154,7 @@
 >
 > ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > await model.invoke("Hello, world!")
-> ```> **格罗克**
+> ```> [手风琴] Groq
 >
 > 安装：
 >
@@ -195,23 +195,23 @@
 
 > [!注意]
 >
-> **虽然这些 LangChain 类支持指定的高级功能**，但您可能需要参考特定于提供商的文档来了解哪些托管模型或后端支持该功能。
+> **虽然这些 LangChain 类支持指定的高级功能**，但您可能需要参考特定于提供商的文档以了解哪些托管模型或后端支持该功能。
 
 |型号|流 | [Tool Calling](/oss/javascript/langchain/tools/) | [⟦T30⟧](/oss/javascript/langchain/models#structured-output) | [⟦T31⟧](/oss/javascript/langchain/messages#multimodal) |下载 |
-| :-| :-| :-| :-| :-| :-|
-| [⟦T32⟧](/oss/javascript/integrations/chat/openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T84⟧](https://www.npmjs.com/package/@langchain/openai) |
-| [⟦T33⟧](/oss/javascript/integrations/chat/anthropic) | ✅ | ✅ | ✅ | ✅ | [  ⟦T85⟧](https://www.npmjs.com/package/@langchain/anthropic) |
-| [⟦T34⟧](/oss/javascript/integrations/chat/bedrock_converse) | ✅ | ✅ | ✅ | ✅ | [  ⟦T86⟧](https://www.npmjs.com/package/@langchain/aws) |
-| [⟦T35⟧](/oss/javascript/integrations/chat/groq) | ✅ | ✅ | ✅ | ❌ | [  ⟦T87⟧](https://www.npmjs.com/package/@langchain/groq) |
-| [⟦T36⟧](/oss/javascript/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ⟦T88⟧](https://www.npmjs.com/package/@langchain/ollama) |
-| [⟦T37⟧](/oss/javascript/integrations/chat/mistral) | ✅ | ✅ | ✅ | ✅ | [  ⟦T89⟧](https://www.npmjs.com/package/@langchain/mistralai) |
-| [⟦T38⟧](/oss/javascript/integrations/chat/google) | ✅ | ✅ | ✅ | ✅ | [  ⟦T90⟧](https://www.npmjs.com/package/@langchain/google) |
-| [⟦T39⟧](/oss/javascript/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ⟦T91⟧](https://www.npmjs.com/package/@langchain/xai) |
-| [⟦T40⟧](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ⟦T92⟧](https://www.npmjs.com/package/@langchain/cohere) |
-| [⟦T41⟧](/oss/javascript/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ❌ | [  ⟦T93⟧](https://www.npmjs.com/package/@langchain/fireworks) |
-| [⟦T42⟧](/oss/javascript/integrations/chat/cloudflare_workersai) | ✅ | ❌ | ❌ | ✅ | [  ⟦T94⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
-| [⟦T43⟧](/oss/javascript/integrations/chat/togetherai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T95⟧](https://www.npmjs.com/package/@langchain/together-ai) |
-| [⟦T44⟧](/oss/javascript/integrations/chat/perplexity) | ✅ | ❌ | ✅ | ❌ | [  ⟦T96⟧](https://www.npmjs.com/package/@langchain/perplexity) |
+| :- | :- | :- | :- | :- | :- |
+| [⟦T32⟧](/oss/javascript/integrations/chat/openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T83⟧](https://www.npmjs.com/package/@langchain/openai) |
+| [⟦T33⟧](/oss/javascript/integrations/chat/anthropic) | ✅ | ✅ | ✅ | ✅ | [  ⟦T84⟧](https://www.npmjs.com/package/@langchain/anthropic) |
+| [⟦T34⟧](/oss/javascript/integrations/chat/bedrock_converse) | ✅ | ✅ | ✅ | ✅ | [  ⟦T85⟧](https://www.npmjs.com/package/@langchain/aws) |
+| [⟦T35⟧](/oss/javascript/integrations/chat/groq) | ✅ | ✅ | ✅ | ❌ | [  ⟦T86⟧](https://www.npmjs.com/package/@langchain/groq) |
+| [⟦T36⟧](/oss/javascript/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ⟦T87⟧](https://www.npmjs.com/package/@langchain/ollama) |
+| [⟦T37⟧](/oss/javascript/integrations/chat/mistral) | ✅ | ✅ | ✅ | ✅ | [  ⟦T88⟧](https://www.npmjs.com/package/@langchain/mistralai) |
+| [⟦T38⟧](/oss/javascript/integrations/chat/google) | ✅ | ✅ | ✅ | ✅ | [  ⟦T89⟧](https://www.npmjs.com/package/@langchain/google) |
+| [⟦T39⟧](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ⟦T90⟧](https://www.npmjs.com/package/@langchain/cohere) |
+| [⟦T40⟧](/oss/javascript/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ⟦T91⟧](https://www.npmjs.com/package/@langchain/xai) |
+| [⟦T41⟧](/oss/javascript/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ❌ | [  ⟦T92⟧](https://www.npmjs.com/package/@langchain/fireworks) |
+| [⟦T42⟧](/oss/javascript/integrations/chat/cloudflare_workersai) | ✅ | ❌ | ❌ | ✅ | [  ⟦T93⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
+| [⟦T43⟧](/oss/javascript/integrations/chat/togetherai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T94⟧](https://www.npmjs.com/package/@langchain/together-ai) |
+| [⟦T44⟧](/oss/javascript/integrations/chat/perplexity) | ✅ | ❌ | ✅ | ❌ | [  ⟦T95⟧](https://www.npmjs.com/package/@langchain/perplexity) |
 
 有关更多选项，请参阅下面的[full list of chat model integrations](#all-chat-models)。
 
@@ -220,46 +220,45 @@
 |供应商|整合 |描述 |
 | - | - | - |
 | [OpenRouter](https://openrouter.ai/) | [⟦T45⟧](/oss/javascript/integrations/chat/openrouter) |统一访问来自OpenAI、Anthropic、Google、Meta 等的模型 |
-| [FuturMix](https://futurmix.ai/) | [⟦T46⟧](https://futurmix.ai/) |适用于 22 种以上型号的统一 AI 网关，具有OpenAI 兼容 API 和 99.99% SLA |
 
 ## 聊天完成 API
 
-某些模型提供商提供与 OpenAI（旧版）[Chat Completions API](https://platform.openai.com/docs/guides/completions) 兼容的端点。在这种情况下，您可以使用 [⟦T47⟧](/oss/javascript/integrations/chat/openai) 和自定义 `base_url` 连接到这些端点。请注意，`ChatOpenAI` 可能不完全支持基于聊天完成 API 构建的功能；在这种情况下，请考虑使用特定于提供者的类（如果可用）。
+某些模型提供商提供与 OpenAI（旧版）[Chat Completions API](https://platform.openai.com/docs/guides/completions) 兼容的端点。在这种情况下，您可以使用 [⟦T46⟧](/oss/javascript/integrations/chat/openai) 和自定义 `base_url` 连接到这些端点。请注意，`ChatOpenAI` 可能不完全支持基于聊天完成 API 构建的功能；在这种情况下，请考虑使用特定于提供者的类（如果可用）。
 
-## 所有聊天模型|型号|流 | [Tool Calling](/oss/javascript/langchain/tools/) | [⟦T50⟧](/oss/javascript/langchain/models#structured-output) | [⟦T51⟧](/oss/javascript/langchain/messages#multimodal) |下载 |
-| :-| :-| :-| :-| :-| :-|
-| [⟦T52⟧](/oss/javascript/integrations/chat/azure) | ✅ | ✅ | ✅ | ✅ | [  ⟦T97⟧](https://www.npmjs.com/package/@langchain/openai) |
-| [⟦T53⟧](/oss/javascript/integrations/chat/openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T98⟧](https://www.npmjs.com/package/@langchain/openai) |
-| [⟦T54⟧](/oss/javascript/integrations/chat/anthropic) | ✅ | ✅ | ✅ | ✅ | [  ⟦T99⟧](https://www.npmjs.com/package/@langchain/anthropic) |
-| [⟦T55⟧](/oss/javascript/integrations/chat/google_generative_ai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T100⟧](https://www.npmjs.com/package/@langchain/google-genai) |
-| [⟦T56⟧](/oss/javascript/integrations/chat/bedrock_converse) | ✅ | ✅ | ✅ | ✅ | [  ⟦T101⟧](https://www.npmjs.com/package/@langchain/aws) |
-| [⟦T57⟧](/oss/javascript/integrations/chat/google_vertex_ai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T102⟧](https://www.npmjs.com/package/@langchain/google-vertexai) |
-| [⟦T58⟧](/oss/javascript/integrations/chat/groq) | ✅ | ✅ | ✅ | ❌ | [  ⟦T103⟧](https://www.npmjs.com/package/@langchain/groq) |
-| [⟦T59⟧](/oss/javascript/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ⟦T104⟧](https://www.npmjs.com/package/@langchain/ollama) |
-| [⟦T60⟧](/oss/javascript/integrations/chat/mistral) | ✅ | ✅ | ✅ | ✅ | [  ⟦T105⟧](https://www.npmjs.com/package/@langchain/mistralai) |
-| [⟦T61⟧](/oss/javascript/integrations/chat/google) | ✅ | ✅ | ✅ | ✅ | [  ⟦T106⟧](https://www.npmjs.com/package/@langchain/google) |
+## 所有聊天模型|型号|流 | [Tool Calling](/oss/javascript/langchain/tools/) | [⟦T49⟧](/oss/javascript/langchain/models#structured-output) | [⟦T50⟧](/oss/javascript/langchain/messages#multimodal) |下载 |
+| :- | :- | :- | :- | :- | :- |
+| [⟦T51⟧](/oss/javascript/integrations/chat/azure) | ✅ | ✅ | ✅ | ✅ | [  ⟦T96⟧](https://www.npmjs.com/package/@langchain/openai) |
+| [⟦T52⟧](/oss/javascript/integrations/chat/openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T97⟧](https://www.npmjs.com/package/@langchain/openai) |
+| [⟦T53⟧](/oss/javascript/integrations/chat/anthropic) | ✅ | ✅ | ✅ | ✅ | [  ⟦T98⟧](https://www.npmjs.com/package/@langchain/anthropic) |
+| [⟦T54⟧](/oss/javascript/integrations/chat/google_generative_ai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T99⟧](https://www.npmjs.com/package/@langchain/google-genai) |
+| [⟦T55⟧](/oss/javascript/integrations/chat/bedrock_converse) | ✅ | ✅ | ✅ | ✅ | [  ⟦T100⟧](https://www.npmjs.com/package/@langchain/aws) |
+| [⟦T56⟧](/oss/javascript/integrations/chat/google_vertex_ai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T101⟧](https://www.npmjs.com/package/@langchain/google-vertexai) |
+| [⟦T57⟧](/oss/javascript/integrations/chat/groq) | ✅ | ✅ | ✅ | ❌ | [  ⟦T102⟧](https://www.npmjs.com/package/@langchain/groq) |
+| [⟦T58⟧](/oss/javascript/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ⟦T103⟧](https://www.npmjs.com/package/@langchain/ollama) |
+| [⟦T59⟧](/oss/javascript/integrations/chat/mistral) | ✅ | ✅ | ✅ | ✅ | [  ⟦T104⟧](https://www.npmjs.com/package/@langchain/mistralai) |
+| [⟦T60⟧](/oss/javascript/integrations/chat/google) | ✅ | ✅ | ✅ | ✅ | [  ⟦T105⟧](https://www.npmjs.com/package/@langchain/google) |
+| [⟦T61⟧](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ⟦T106⟧](https://www.npmjs.com/package/@langchain/cohere) |
 | [⟦T62⟧](/oss/javascript/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ⟦T107⟧](https://www.npmjs.com/package/@langchain/xai) |
-| [⟦T63⟧](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ⟦T108⟧](https://www.npmjs.com/package/@langchain/cohere) |
-| [⟦T64⟧](/oss/javascript/integrations/chat/openrouter) | ✅ | ✅ | ✅ | ✅ | [  ⟦T109⟧](https://www.npmjs.com/package/@langchain/openrouter) |
-| [⟦T65⟧](/oss/javascript/integrations/chat/deepseek) | ✅ | ✅ | ✅ | ❌ | [  ⟦T110⟧](https://www.npmjs.com/package/@langchain/deepseek) |
-| [⟦T66⟧](/oss/javascript/integrations/chat/cerebras) | ✅ | ✅ | ✅ | ❌ | [  ⟦T111⟧](https://www.npmjs.com/package/@langchain/cerebras) |
-| [⟦T67⟧](/oss/javascript/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ❌ | [  ⟦T112⟧](https://www.npmjs.com/package/@langchain/fireworks) |
-| [⟦T68⟧](/oss/javascript/integrations/chat/baidu_qianfan) | | | | | [  ⟦T113⟧](https://www.npmjs.com/package/@langchain/baidu-qianfan) |
-| [⟦T69⟧](/oss/javascript/integrations/chat/cloudflare_workersai) | ✅ | ❌ | ❌ | ✅ | [  ⟦T114⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
-| [⟦T70⟧](/oss/javascript/integrations/chat/togetherai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T115⟧](https://www.npmjs.com/package/@langchain/together-ai) |
-| [⟦T71⟧](/oss/javascript/integrations/chat/ibm) | ✅ | ✅ | ✅ | ✅ | [  ⟦T116⟧](https://www.npmjs.com/package/@langchain/ibm) |
-| [⟦T72⟧](/oss/javascript/integrations/chat/perplexity) | ✅ | ❌ | ✅ | ❌ | [  ⟦T117⟧](https://www.npmjs.com/package/@langchain/perplexity) |
-| [⟦T73⟧](/oss/javascript/integrations/chat/yandex) | | | | | [  ⟦T118⟧](https://www.npmjs.com/package/@langchain/yandex) |
-| [⟦T74⟧](https://interfaze.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ⟦T119⟧](https://www.npmjs.com/package/@interfaze-ai/langchain) |
-| [⟦T75⟧](https://gitlab.com/bitkaio/langchain/kserve-provider) | ✅ | ✅ | ✅ | ✅ | [  ⟦T120⟧](https://www.npmjs.com/package/@bitkaio/langchain-kserve) |
-| [⟦T76⟧](https://github.com/ykoh42/web-llm-adapters/blob/main/packages/langchain-web-llm/README.md) | ✅ | ✅ | ✅ | | [  ⟦T121⟧](https://www.npmjs.com/package/langchain-web-llm) |
+| [⟦T63⟧](/oss/javascript/integrations/chat/openrouter) | ✅ | ✅ | ✅ | ✅ | [  ⟦T108⟧](https://www.npmjs.com/package/@langchain/openrouter) |
+| [⟦T64⟧](/oss/javascript/integrations/chat/deepseek) | ✅ | ✅ | ✅ | ❌ | [  ⟦T109⟧](https://www.npmjs.com/package/@langchain/deepseek) |
+| [⟦T65⟧](/oss/javascript/integrations/chat/cerebras) | ✅ | ✅ | ✅ | ❌ | [  ⟦T110⟧](https://www.npmjs.com/package/@langchain/cerebras) |
+| [⟦T66⟧](/oss/javascript/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ❌ | [  ⟦T111⟧](https://www.npmjs.com/package/@langchain/fireworks) |
+| [⟦T67⟧](/oss/javascript/integrations/chat/baidu_qianfan) | | | | | [  ⟦T112⟧](https://www.npmjs.com/package/@langchain/baidu-qianfan) |
+| [⟦T68⟧](/oss/javascript/integrations/chat/cloudflare_workersai) | ✅ | ❌ | ❌ | ✅ | [  ⟦T113⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
+| [⟦T69⟧](/oss/javascript/integrations/chat/togetherai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T114⟧](https://www.npmjs.com/package/@langchain/together-ai) |
+| [⟦T70⟧](/oss/javascript/integrations/chat/ibm) | ✅ | ✅ | ✅ | ✅ | [  ⟦T115⟧](https://www.npmjs.com/package/@langchain/ibm) |
+| [⟦T71⟧](/oss/javascript/integrations/chat/perplexity) | ✅ | ❌ | ✅ | ❌ | [  ⟦T116⟧](https://www.npmjs.com/package/@langchain/perplexity) |
+| [⟦T72⟧](/oss/javascript/integrations/chat/yandex) | | | | | [  ⟦T117⟧](https://www.npmjs.com/package/@langchain/yandex) |
+| [⟦T73⟧](https://github.com/ykoh42/web-llm-adapters/blob/main/packages/langchain-web-llm/README.md) | ✅ | ✅ | ✅ | | [  ⟦T118⟧](https://www.npmjs.com/package/langchain-web-llm) |
+| [⟦T74⟧](https://docs.empiriolabs.ai/integrations#langchain) | ✅ | ✅ | ✅ | ✅ | [  ⟦T119⟧](https://www.npmjs.com/package/@empiriolabs/langchain) |
+| [⟦T75⟧](https://interfaze.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ⟦T120⟧](https://www.npmjs.com/package/@interfaze-ai/langchain) |
+| [⟦T76⟧](https://gitlab.com/bitkaio/langchain/kserve-provider) | ✅ | ✅ | ✅ | ✅ | [  ⟦T121⟧](https://www.npmjs.com/package/@bitkaio/langchain-kserve) |
 | [⟦T77⟧](https://recallmem.dev/guides/langchain) | | | | | [  ⟦T122⟧](https://www.npmjs.com/package/@recall-memory/langchain) |
 | [⟦T78⟧](https://scx.ai/) | ✅ | ✅ | ✅ | ✅ | [  ⟦T123⟧](https://www.npmjs.com/package/@scx-ai/langchain) |
-| [⟦T79⟧](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ |不适用 |
-| [⟦T80⟧](https://docs.empiriolabs.ai/integrations#langchain) | ✅ | ✅ | ✅ | ✅ |不适用 |
+| [⟦T79⟧](https://github.com/Obscurify-ai/langchain-obscurify) | ✅ | ✅ | ✅ | | [  ⟦T124⟧](https://www.npmjs.com/package/@obscurify/langchain) |
+| [⟦T80⟧](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ |不适用 |
 | [⟦T81⟧](/oss/javascript/integrations/chat/fake) | | | | |不适用 |
-| [⟦T82⟧](https://futurmix.ai/) | ✅ | ✅ | ✅ | ✅ |不适用 |
-| [⟦T83⟧](https://www.tuningengines.com/) | ✅ | ✅ | ✅ | ❌ |不适用 |> [!注意]
+| [⟦T82⟧](https://www.tuningengines.com/) | ✅ | ✅ | ✅ | ❌ |不适用 |> [!注意]
 >
 > 如果您想贡献集成，请参阅[Contributing integrations](/oss/javascript/contributing#add-a-new-integration)。
 
@@ -267,4 +266,4 @@
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/index.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

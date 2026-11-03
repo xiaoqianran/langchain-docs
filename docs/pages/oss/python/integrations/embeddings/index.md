@@ -199,8 +199,10 @@ The main supported way to initialize a `CacheBackedEmbeddings` is `from_bytes_st
 * **`namespace`**: (optional, defaults to `""`) The namespace to use for the document cache. Helps avoid collisions (e.g., set it to the embedding model name).
 * **`query_embedding_cache`**: (optional, defaults to `None`) A [`ByteStore`](/oss/python/integrations/stores/) for caching query embeddings, or `True` to reuse the same store as `document_embedding_cache`.
 
-- Always set the `namespace` parameter to avoid collisions when using different embedding models.
-- `CacheBackedEmbeddings` does not cache query embeddings by default. To enable this, specify a `query_embedding_cache`.
+> [!TIP]
+>
+> * Always set the `namespace` parameter to avoid collisions when using different embedding models.
+> * `CacheBackedEmbeddings` does not cache query embeddings by default. To enable this, specify a `query_embedding_cache`.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time

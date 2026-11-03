@@ -112,7 +112,7 @@ API 网址。会话 ID 不会在浏览器会话中持续存在。
 需要工具配置。构建此 UI 在生产设置之上添加了一项要求：
 **自定义 API 服务器** 在代理图之外运行，因此代理
 后端和您的文件浏览路由必须解析**相同的沙箱**
-每个线程。将沙箱 ID 存储在线程元数据上并共享单个
+每个线程。将沙箱 ID 存储在线程元数据上并共享一个
 它们之间的查找功能。
 
 ### 从线程元数据解析沙箱
@@ -293,7 +293,7 @@ export async function agent(config: LangGraphRunnableConfig) {
 >
 > 与[Going to production](/oss/javascript/deepagents/going-to-production#lifecycle)中的示例类似，
 > 代理是每次运行时调用的异步图工厂。将沙箱 ID 存储在
-> 线程元数据，因此自定义 `http.app` 路由可以调用相同的
+> 线程元数据，因此自定义`http.app`路由可以调用相同的
 > `getOrCreateSandboxForThread` 帮手。进入生产使用提供商标签
 > 当 LangGraph SDK 是唯一入口点时，改为查找。
 
@@ -380,7 +380,7 @@ app.get("/sandbox/:threadId/file", async (c) => {
 > 是唯一的事实来源——不需要内存缓存。
 
 ### 配置`langgraph.json`注册代理图和 API 服务器。 `http.app`字段告诉我们
-LangGraph 平台为您的自定义路线和默认路线提供服务。
+LangGraph 平台为您的自定义路线以及默认路线提供服务。
 参见 [application structure](/oss/javascript/langgraph/application-structure) 和
 [LangSmith Deployments](/oss/javascript/deepagents/going-to-production#langsmith-deployments)
 了解全套 `langgraph.json` 选项。
@@ -468,7 +468,7 @@ function handleNewThread() {
 }
 ```### 文件状态管理
 
-跟踪沙盒文件系统的两个快照：原始状态（在
+跟踪沙箱文件系统的两个快照：原始状态（在
 代理运行）和当前状态（实时更新）。线程ID是
 包含在 API URL 中，以便请求始终到达正确的沙箱：
 
@@ -749,7 +749,7 @@ function DiffPanel({ original, current, fileName }) {
 
 ### 更改文件摘要
 
-显示所有已修改文件的摘要以及行级添加/删除计数。
+显示所有修改文件的摘要以及行级添加/删除计数。
 这使用户可以快速了解代理的影响，类似于“git”
 状态`：
 
@@ -810,7 +810,7 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
 
 对于后端和沙箱：* **对生产应用程序使用线程范围的沙箱**。参见
   [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle)。
-* **在代理后端和 API 服务器之间共享沙箱解析**
+* **通过代理后端和 API 服务器之间共享沙箱解析**
   线程元数据，因此两者都解析相同的环境，没有内存缓存。
 * **用真实的项目为沙箱播种**。参见
   [File transfers](/oss/javascript/deepagents/going-to-production#file-transfers)。
@@ -825,19 +825,19 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
 
 ## 相关
 
-> **[Going to production](/oss/javascript/deepagents/going-to-production)**
+> [卡][Going to production](/oss/javascript/deepagents/going-to-production)
 >
 > 使用持久沙箱、身份验证、护栏和生产 `useStream` 设置来部署代理。
 
-> **[Sandboxes](/oss/javascript/deepagents/sandboxes)**
+> [卡][Sandboxes](/oss/javascript/deepagents/sandboxes)
 >
 > 沙箱提供程序、安全模型和文件传输 API。
 
-> **[Frontend overview](/oss/javascript/deepagents/frontend/overview)**
+> [卡][Frontend overview](/oss/javascript/deepagents/frontend/overview)
 >
 > 其他深层代理 UI 模式：子代理流、待办事项列表和自定义状态。
 
-> **[Application structure](/oss/javascript/langgraph/application-structure)**
+> [卡][Application structure](/oss/javascript/langgraph/application-structure)
 >
 > 完整的 `langgraph.json` 参考，包括自定义 `http.app` 路线。
 
@@ -846,17 +846,17 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
 沙箱 IDE 基于核心 LangChain 前端模式构建。这些指南涵盖
 本页使用相同的 `useStream` 原语：
 
-> **[Tool calling](/oss/javascript/langchain/frontend/tool-calling)**
+> [卡][Tool calling](/oss/javascript/langchain/frontend/tool-calling)
 >
-> 将文件和执行工具调用渲染为具有类型安全结果的专用 UI 卡。> **[Headless tools](/oss/javascript/langchain/frontend/headless-tools)**
+> 将文件和执行工具调用渲染为具有类型安全结果的专用 UI 卡。> [卡][Headless tools](/oss/javascript/langchain/frontend/headless-tools)
 >
 > 在客户端运行浏览器和设备 API — 对于在 IDE 面板中嵌入实时预览或终端输出非常有用。
 
-> **[Open-ended generative UI](/oss/javascript/langchain/frontend/open-ended-generative-ui)**
+> [卡][Open-ended generative UI](/oss/javascript/langchain/frontend/open-ended-generative-ui)
 >
 > 在生成 UI 范围的开放端渲染沙盒应用程序预览和 MCP 生成的界面。
 
-> **[Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)**
+> [卡][Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)
 >
 > 页面重新加载后重新连接到正在运行的编码会话，而不会丢失沙箱状态。
 

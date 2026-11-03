@@ -62,6 +62,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > AI-scored financial news and SEC Form 4 insider events for agents and RAG.
 
+> [card] [AlterLabScrapeTool](https://pypi.org/project/langchain-alterlab/)
+>
+> Web scraping API with anti-bot handling and JavaScript rendering, as LangChain tools and a document loader.
+
 > [card] [Ads4GPTs](https://github.com/ADS4GPTs/ads4gpts)
 >
 > Advertising platform for GPT applications and AI services.
@@ -109,6 +113,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [AgentGate](https://useagentgate.com/docs)
 >
 > Gate LangChain tools behind human approval in Slack or Microsoft Teams.
+
+> [card] [AgentGuard](https://agent-cr.com/plugins#python-langgraph)
+>
+> Cryptographic policy guard and grant verification middleware for Python AI agent tools.
 
 > [card] [AgentLair](https://agentlair.dev/docs)
 >
@@ -333,6 +341,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Bastion Prompt Protection](https://bastionsoft.com)
 >
 > Local prompt-injection and jailbreak detection for LLM apps and agents.
+
+> [card] [BhivedMiddleware](https://bhived.ai/docs/integrations/langchain)
+>
+> Recalls shared lessons from the bhived network before model calls and adds tools to write verified lessons back.
 
 > [card] [Bidda](https://bidda.com/developers)
 >
@@ -1890,9 +1902,17 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Ranks live GPU placement offers (8x H100 80GB, RunPod) by price and freshness; billed per successful match via a prepaid key or per-call via x402/USDC on Base.
 
+> [card] [SealKeeper](https://sealkeeper.run/docs/langchain)
+>
+> Looks up and verifies SealKeeper SEALs, signed credentials for AI agents and MCP servers, and gates tool calls on them.
+
 > [card] [SectionAnythingLoader](https://github.com/Omniwot/section-anything/tree/main/packages/langchain-section-anything)
 >
 > PDF loader that returns one Document per section, with heading path, level, pages and character span; rules-only mode runs locally at no cost.
+
+> [card] [SealGateMiddleware](https://sealkeeper.run/docs/langchain)
+>
+> Agent middleware that blocks a tool call unless its target holds a valid SealKeeper SEAL.
 
 > [card] [SearchApi](https://www.searchapi.io/docs/google)
 >
@@ -2029,6 +2049,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Stardog](https://github.com/stardog-union/stardog-langchain)
 >
 > Enterprise knowledge graph platform.
+
+> [card] [StophyToolkit](https://github.com/stophydotdev/stophy/tree/main/sdk/packages/langchain)
+>
+> Stophy tools for web search, reading pages as markdown, and Reddit, Google Maps, Amazon, Indeed and Zillow results.
 
 > [card] [SubmilliMiddleware](https://submilli.ai/docs/tutorials/connect-deepagents/)
 >
@@ -2445,6 +2469,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [x402checkToolkit](https://x402check.dev)
 >
 > Preflight x402 seller endpoints before an agent pays (ok|caution|avoid plus payTo history). \$0.01 USDC on Base.
+
+> [card] [X402CleanWebTool](https://github.com/nohosa001-pixel/x402-cleanweb-agent/tree/main/packages/langchain-x402-cleanweb#readme)
+>
+> X402CleanWebTool scrapes and cleans web content for LangChain agents.
 
 > [card] [xaidr](https://github.com/delphisecurity/xaidr#langchain-middleware)
 >

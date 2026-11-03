@@ -29,7 +29,7 @@
 
 ## 接口
 
-LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain-core/embeddings/Embeddings)接口为文本嵌入模型（例如OpenAI、Cohere、Hugging Face）提供标准接口。
+LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain-core/embeddings/Embeddings)接口为文本嵌入模型（例如，OpenAI、Cohere、Hugging Face）提供标准接口。
 
 有两种主要方法可用：
 
@@ -42,7 +42,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain
 
 ## 安装和使用
 
-> **OpenAI**
+> [手风琴] OpenAI
 >
 > 安装依赖项：
 >
@@ -74,7 +74,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain
 > });
 > ```
 
-> **天蓝色**
+> [手风琴] 天蓝色
 >
 > 安装依赖项
 >
@@ -108,7 +108,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain
 > });
 > ```
 
-> **AWS**
+> [手风琴] AWS
 >
 > 安装依赖项：
 >
@@ -138,7 +138,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain
 > const embeddings = new BedrockEmbeddings({
 >   model: "amazon.titan-embed-text-v1"
 > });
-> ```> **谷歌双子座**
+> ```> [手风琴] 谷歌双子座
 >
 > 安装依赖项：
 >
@@ -170,7 +170,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain
 > });
 > ```
 
-> **Gemini 企业代理平台**
+> [手风琴] Gemini 企业代理平台
 >
 > 安装依赖项：
 >
@@ -202,7 +202,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain
 > });
 > ```
 
-> **米斯特拉尔人工智能**
+> [手风琴] MistralAI
 >
 > 安装依赖项：
 >
@@ -234,7 +234,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain
 > });
 > ```
 
-> **连贯**
+> [手风琴] Cohere
 >
 > 安装依赖项：
 >
@@ -266,7 +266,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain
 > });
 > ```
 
-> **奥拉马**
+> [手风琴] Ollama
 >
 > 安装依赖项：
 >
@@ -293,7 +293,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain
 > });
 > ```
 
-> **航行人工智能**
+> [手风琴] Voyage AI
 >
 > 安装依赖项：
 >
@@ -327,16 +327,18 @@ LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain
 
 ## 缓存
 
-嵌入可以被存储或临时缓存以避免需要重新计算它们。
+嵌入可以被存储或临时缓存以避免需要重新计算它们。缓存嵌入可以使用`CacheBackedEmbeddings`来完成。该包装器将嵌入存储在键值存储中，其中对文本进行哈希处理，并将哈希值用作缓存中的键。
 
-缓存嵌入可以使用`CacheBackedEmbeddings`来完成。该包装器将嵌入存储在键值存储中，其中对文本进行哈希处理，并将哈希值用作缓存中的键。初始化`CacheBackedEmbeddings`的主要受支持方式是`fromBytesStore`。它需要以下参数：
+初始化`CacheBackedEmbeddings`的主要支持方式是`fromBytesStore`。它需要以下参数：
 
 * **underlyingEmbeddings**：用于嵌入的嵌入器。
 * **documentEmbeddingStore**：任何用于缓存文档嵌入的[⟦T50⟧](/oss/javascript/integrations/stores/)。
 * **options.namespace**：（可选，默认为`""`）用于文档缓存的命名空间。有助于避免冲突（例如，将其设置为嵌入模型名称）。
 
-- 始终设置`namespace`参数以避免使用不同嵌入模型时发生冲突。
-- `CacheBackedEmbeddings` 默认情况下不缓存查询嵌入。要启用此功能，请指定`query_embedding_store`。
+> [!提示]
+>
+> * 始终设置`namespace`参数以避免使用不同嵌入模型时发生冲突。
+> * `CacheBackedEmbeddings` 默认情况下不缓存查询嵌入。要启用此功能，请指定`query_embedding_store`。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { CacheBackedEmbeddings } from "@langchain/classic/embeddings/cache_backed";
@@ -367,10 +369,8 @@ console.log(`Cached creation time: ${Date.now() - tic}ms`);
 
 在生产中，您通常会使用更强大的持久存储，例如数据库或云存储。请参阅[stores integrations](/oss/javascript/integrations/stores/)了解选项。
 
-## 所有集成
-
-|整合 |下载 |
-| :-| :-|
+## 所有集成|整合 |下载 |
+| :- | :- |
 | [⟦T55⟧](/oss/javascript/integrations/embeddings/azure_openai) | [  ⟦T76⟧](https://www.npmjs.com/package/@langchain/openai) |
 | [⟦T56⟧](/oss/javascript/integrations/embeddings/openai) | [  ⟦T77⟧](https://www.npmjs.com/package/@langchain/openai) |
 | [⟦T57⟧](/oss/javascript/integrations/embeddings/google_generative_ai) | [  ⟦T78⟧](https://www.npmjs.com/package/@langchain/google-genai) |
@@ -387,12 +387,14 @@ console.log(`Cached creation time: ${Date.now() - tic}ms`);
 | [⟦T68⟧](/oss/javascript/integrations/embeddings/cloudflare_ai) | [  ⟦T89⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
 | [⟦T69⟧](/oss/javascript/integrations/embeddings/togetherai) | [  ⟦T90⟧](https://www.npmjs.com/package/@langchain/together-ai) |
 | [⟦T70⟧](/oss/javascript/integrations/embeddings/ibm) | [  ⟦T91⟧](https://www.npmjs.com/package/@langchain/ibm) |
-| [⟦T71⟧](/oss/javascript/integrations/embeddings/mixedbread_ai) | [  ⟦T92⟧](https://www.npmjs.com/package/@langchain/mixedbread-ai) |
-| [⟦T72⟧](https://scx.ai/) | [  ⟦T93⟧](https://www.npmjs.com/package/@scx-ai/langchain) |
-| [⟦T73⟧](https://docs.empiriolabs.ai/integrations#langchain) |不适用 |
+| [⟦T71⟧](https://docs.empiriolabs.ai/integrations#langchain) | [  ⟦T92⟧](https://www.npmjs.com/package/@empiriolabs/langchain) |
+| [⟦T72⟧](/oss/javascript/integrations/embeddings/mixedbread_ai) | [  ⟦T93⟧](https://www.npmjs.com/package/@langchain/mixedbread-ai) |
+| [⟦T73⟧](https://scx.ai/) | [  ⟦T94⟧](https://www.npmjs.com/package/@scx-ai/langchain) |
 | [⟦T74⟧](/oss/javascript/integrations/embeddings/minimax) |不适用 |
 | [⟦T75⟧](/oss/javascript/integrations/embeddings/oracleai) |不适用 |
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/embeddings/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

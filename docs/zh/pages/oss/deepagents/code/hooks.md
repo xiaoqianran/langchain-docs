@@ -75,7 +75,7 @@ Deep Agents 代码按优先顺序加载钩子配置：
 | - | - |
 | `${CLAUDE_PLUGIN_ROOT}`、`${PLUGIN_ROOT}` |安装的插件目录 |
 | `${CLAUDE_PLUGIN_DATA}`、`${PLUGIN_DATA}` |插件的可写数据目录 |
-| `${CLAUDE_PROJECT_DIR}` |项目根目录 |
+| `${CLAUDE_PROJECT_DIR}` |项目根目录|
 
 在 `command` 字符串中引用这些变量，因为安装路径可以包含空格：`"command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/format.sh\""`。当您可以时，首选可选的 `argv` 字段： Deep Agents 代码在启动之前解析变量并跳过 shell，因此您不需要引用。
 
@@ -120,19 +120,19 @@ Deep Agents 代码按优先顺序加载钩子配置：
 
 编译错误使该组无效，并在会话运行之前生成用户可见的配置诊断。
 
-## 活动Deep Agents 代码发出以下事件。客户端拥有的事件在 CLI 进程中运行。服务器拥有的事件源自代理执行路径并往返于客户端，因此命令处理程序在您的配置所在的位置运行。
+## 活动Deep Agents Code emits the following events. Client-owned events run in the CLI process.服务器拥有的事件源自代理执行路径并往返于客户端，因此命令处理程序在您的配置所在的位置运行。
 
 |活动 |业主|退出代码2效果|匹配于 |
 | - | - | - | - |
 | `SessionStart` |客户|诊断| `source` |
-| `UserPromptSubmit` |客户|阻止提示 |无 |
+| `UserPromptSubmit` |客户|阻止提示|无 |
 | `SessionEnd` |客户|诊断| `reason` |
 | `PermissionRequest` |客户|否认| `tool_name` |
 | `Notification` |客户|诊断| `notification_type` |
 | `PreToolUse` |服务器|否认| `tool_name` |
 | `PostToolUse` |服务器|反馈 | `tool_name` |
-| `PreCompact` |服务器|块压缩| `trigger` |
-| `Stop` |服务器|继续转|无 |
+| `PreCompact` |服务器|块压缩 | `trigger` |
+| `Stop` |服务器|继续转 |无 |
 | `SubagentStart` |服务器|诊断| `agent_type` |
 | `SubagentStop` |服务器|添加上下文 | `agent_type` |
 
@@ -155,9 +155,9 @@ flowchart LR
     class X alert
 ```
 
-该图仅涵盖工具调用路径。当 Deep Agents 代码即将显示权限提示时，`PermissionRequest` 是一个单独的客户端拥有的事件。
+The diagram covers the tool-call path only.当 Deep Agents 代码即将显示权限提示时，`PermissionRequest` 是一个单独的客户端拥有的事件。
 
-### 提示缓存过期前通知`cache_expiring` 通知会在跟踪的提示缓存保留窗口结束之前发出警告。在下一个回合出现缓存未命中风险之前，使用它来触发您自己的提醒。
+### Notify before the prompt cache expires`cache_expiring` 通知会在跟踪的提示缓存保留窗口结束之前发出警告。在下一个回合出现缓存未命中风险之前，使用它来触发您自己的提醒。
 
 在`hooks.json`中，在`Notification`下添加处理程序组，并将`matcher`设置为`cache_expiring`。 Deep Agents 代码在最后 60 秒内每个线程和缓存窗口发出一次。有效负载包括`notification_type`、`message`和`title`。
 
@@ -169,7 +169,7 @@ flowchart LR
 
 |领域|描述 |
 | - | - |
-| `session_id` |会话标识符|
+| `session_id` |会话标识符 |
 | `transcript_path` |对话记录的路径（如果可用）|
 | `cwd` |调用钩子时的工作目录 |
 | `hook_event_name` |触发的事件的名称 |
@@ -178,7 +178,7 @@ flowchart LR
 | `effort` |诸如 `{ "level": "medium" }` 之类的对象，其中级别为 `none`、`low`、`medium`、`high`、`xhigh` 或 `max`（如果可用）|
 | `agent_id`、`agent_type` |子代理身份（如果可用）|`transcript_path` 指向在`~/.deepagents/transcripts` 下编写的对话的 JSONL 投影。子代理事件还携带 `agent_transcript_path` 来表示子代理自己的转录本。两个文件都会在匹配的处理程序运行之前刷新，因此处理程序可以读取当前事件之前的对话。
 
-### 特定于事件的字段
+### Event-specific fields
 
 |活动 |领域 |
 | - | - |
@@ -187,14 +187,14 @@ flowchart LR
 | `SessionEnd` | `reason`（`clear`、`resume`、`prompt_input_exit`、`other`）|
 | `PermissionRequest` | `tool_name`、`tool_input`、`permission_suggestions`（目前为空）|
 | `Notification` | `message`、`notification_type`，以及可用时 `title` |
-| `PreToolUse` | `tool_name`、`tool_input`、`tool_use_id` |
+| `PreToolUse` | `tool_name`, `tool_input`, `tool_use_id` |
 | `PostToolUse` | `tool_name`、`tool_input`、`tool_response`、`tool_use_id`，以及可用时 `duration_ms` |
 | `PreCompact` | `trigger`（`manual`、`auto`）、`custom_instructions` |
-| `Stop` | `stop_hook_active`、`last_assistant_message`、`background_tasks`、`session_crons` |
+| `Stop` | `stop_hook_active`, `last_assistant_message`, `background_tasks`, `session_crons` |
 | `SubagentStart` | `agent_id`、`agent_type` |
 | `SubagentStop` | `stop_hook_active`、`agent_id`、`agent_type`、`agent_transcript_path`、`last_assistant_message`、`background_tasks`、`session_crons` |
 
-示例`PreToolUse`有效负载：
+Example `PreToolUse` payload:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -213,7 +213,7 @@ flowchart LR
 
 ### 工具名称
 
-挂钩脚本看到稳定的公共工具名称和参数形状，而不是内部Deep Agents代码工具名称。匹配并读取 `PreToolUse`、`PostToolUse` 和 `PermissionRequest` 中的这些名称：|公共工具名称|值得注意的输入字段 |
+挂钩脚本看到稳定的公共工具名称和参数形状，而不是内部Deep Agents代码工具名称。匹配并读取 `PreToolUse`、`PostToolUse` 和 `PermissionRequest` 中的这些名称：|公共工具名称 |值得注意的输入字段 |
 | - | - |
 | `Bash` | `command`，可选`timeout`（以毫秒为单位）|
 | `Write` | `file_path`、`content` |
@@ -319,7 +319,7 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 
 ## 不支持的输出字段
 
-可以识别但不应用以下兼容性字段。 Deep Agents 代码发出诊断并继续在结果列中进行回退。对于工具和权限行，这意味着普通的 [PreToolUse](#control-tool-execution-with-pretooluse) 或 [PermissionRequest](#allow-or-deny-with-permissionrequest) 决策路径，无需改变工具输入或延迟。|领域或行为 |结果 |
+可以识别但不应用以下兼容性字段。 Deep Agents 代码发出诊断并继续在结果列中进行回退。对于工具和权限行，这意味着普通的 [PreToolUse](#control-tool-execution-with-pretooluse) 或 [PermissionRequest](#allow-or-deny-with-permissionrequest) 决策路径，无需改变工具输入或延迟。|领域或行为|结果 |
 | - | - |
 | `SessionStart.initialUserMessage`、`sessionTitle`、`watchPaths`、`reloadSkills` |已解析，未应用 |
 | `UserPromptSubmit.sessionTitle` |已解析，未应用 |
@@ -332,7 +332,7 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 
 ## 示例
 
-> **阻止破坏性 Bash 命令 (PreToolUse)**
+> [手风琴] 阻止破坏性 Bash 命令 (PreToolUse)
 >
 > ```bash title="~/.deepagents/hooks/block-rm.sh" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > #!/usr/bin/env bash
@@ -366,7 +366,7 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 > }
 > ```
 
-> **在会话启动 (SessionStart) 时加载项目上下文**
+> [accordion] 在会话启动时加载项目上下文 (SessionStart)
 >
 > ```bash title="~/.deepagents/hooks/load-context.sh" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > #!/usr/bin/env bash
@@ -395,7 +395,7 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 > }
 > ```
 
-> **在 macOS 上回合结束时的桌面通知（停止）**
+> [手风琴] macOS 上回合结束时的桌面通知（停止）
 >
 > ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > {
@@ -414,7 +414,7 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 > }
 > ```
 
-> **读取有效负载的Python处理程序**
+> [accordion] 读取负载的 Python 处理程序
 >
 > ```python title="~/.deepagents/hooks/handler.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import json

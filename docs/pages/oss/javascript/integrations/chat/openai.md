@@ -827,6 +827,39 @@ await reasoningModelNullableSchema.invoke([{
 { color: null }
 ```
 
+### Changing reasoning effort mid-conversation
+
+> [!NOTE]
+>
+> `configuration_update` requires `@langchain/openai>=1.5.12`.
+
+Use a [`configuration_update`](https://developers.openai.com/api/docs/guides/reasoning?api-mode=responses#change-reasoning-mid-conversation) content block to change reasoning effort between turns without modifying the request-level `reasoning.effort` parameter — keeping the prompt prefix cacheable. Embed the block directly in a `HumanMessage`:
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { HumanMessage } from "@langchain/core/messages";
+import { ChatOpenAI } from "@langchain/openai";
+
+const llm = new ChatOpenAI({
+  model: "gpt-6-astra",
+  useResponsesApi: true,
+  reasoning: { effort: "low" },
+});
+
+const first = await llm.invoke("Hello");
+
+// Raise reasoning effort from this message onward
+const response = await llm.invoke([
+  "Hello",
+  first,
+  new HumanMessage({
+    content: [
+      { type: "configuration_update", reasoning: { effort: "high" } }, // [!code highlight]
+      { type: "text", text: "How many distinct 5-card poker hands are a full house?" },
+    ],
+  }),
+]);
+```
+
 ### Add tools mid-conversation
 
 > [!NOTE]

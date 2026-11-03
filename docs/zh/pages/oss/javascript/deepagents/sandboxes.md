@@ -88,7 +88,7 @@ try {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/9359e1b7-644d-40b7-9da6-2c5332c52039/r)**
+> [卡][View example trace](https://smith.langchain.com/public/03e69e44-9e7b-4561-93cd-eb94f95f05af/r)
 >
 > 为此示例打开公共 LangSmith 运行。> [!提示]
 >
@@ -558,7 +558,7 @@ try {
 } finally {
   await client.deleteSandbox(lsSandbox.name);
 }
-```> **[View example trace](https://smith.langchain.com/public/387db13b-d643-49ae-a60b-0bbdd0963eda/r)**
+```> [卡][View example trace](https://smith.langchain.com/public/c57d7b8e-be63-408b-bbab-b41d910feefe/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -620,13 +620,13 @@ graph TB
 ```
 bash: foobar: command not found
 [Command failed with exit code 127]
-```如果命令产生非常大的输出，结果会自动保存到文件中，并指示代理使用 `read_file` 增量访问它。 This prevents context window overflow.
+```如果命令产生非常大的输出，结果会自动保存到文件中，并指示代理使用 `read_file` 增量访问它。这可以防止上下文窗口溢出。
 
-### Two planes of file access
+### 文件访问的两个平面
 
 文件移入和移出沙箱有两种不同的方式，了解何时使用每种方式非常重要：
 
-**代理文件系统工具**：`read_file`、`write_file`、`edit_file`、`ls`、`glob`、`grep`、`execute`是LLM在执行过程中调用的工具。 These go through `execute()` inside the sandbox.代理使用它们来读取代码、写入文件和运行命令作为其任务的一部分。
+**代理文件系统工具**：`read_file`、`write_file`、`edit_file`、`ls`、`glob`、`grep`、`execute`是LLM在执行过程中调用的工具。这些通过沙箱内的`execute()`。代理使用它们来读取代码、写入文件和运行命令作为其任务的一部分。
 
 **文件传输 API**：应用程序代码调用的 `uploadFiles()` 和 `downloadFiles()` 方法。它们使用提供商的本机文件传输 API（不是 shell 命令），旨在在主机环境和沙箱之间移动文件。使用它们可以：
 

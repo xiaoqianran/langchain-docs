@@ -50,11 +50,11 @@ const res = await model.invoke([
 
 `ChatGoogle` 支持工具调用、结构化输出、多模态输入（图像、音频、视频）、推理/思考、图像生成、文本转语音以及 Gemini 特定的原生工具，例如 Google 搜索基础和代码执行。
 
-> **[ChatGoogle](/oss/javascript/integrations/chat/google)**
+> [卡][ChatGoogle](/oss/javascript/integrations/chat/google)
 >
 > 完整的聊天模型文档，包括设置、调用、流式传输、结构化输出等。
 
-> **[Gemini native tools](/oss/javascript/integrations/tools/google)**
+> [卡][Gemini native tools](/oss/javascript/integrations/tools/google)
 >
 > Google 搜索、代码执行、URL 上下文、Google 地图、文件搜索、计算机使用和 MCP 服务器。
 

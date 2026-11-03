@@ -4,7 +4,7 @@
 
 # 启用 blob 存储
 
-默认情况下，LangSmith 在 ClickHouse 中存储运行输入、输出、错误、清单、额外内容和事件。如果您选择这样做，则可以将此信息存储在 Blob 存储中，这有几个显着的好处。为了在生产部署中获得最佳结果，我们**强烈**建议使用 blob 存储，它具有以下优点：
+默认情况下，LangSmith在 ClickHouse 中存储运行输入、输出、错误、清单、额外内容和事件。如果您选择这样做，则可以将此信息存储在 Blob 存储中，这有几个显着的好处。为了在生产部署中获得最佳结果，我们**强烈**建议使用 blob 存储，它具有以下优点：
 
 1. 在高跟踪环境中，输入、输出、错误、清单、额外内容和事件可能会使数据库的大小膨胀。
 2. 如果使用 LangSmith Managed ClickHouse，您可能需要驻留在您环境中的 Blob 存储中的敏感信息。为了缓解这种情况，LangSmith 支持在外部 Blob 存储系统中存储运行输入、输出、错误、清单、额外内容、事件和附件。
@@ -16,6 +16,7 @@
 > * [Amazon S3 (AWS)](#amazon-s3)
 > * [Google Cloud Storage (GCP)](#google-cloud-storage)
 > * [Azure Blob Storage](#azure-blob-storage)
+> * [Neon Object Storage](#neon-object-storage)
 >
 > 有关完整的云特定设置和架构指南，请参阅 [AWS](/langsmith/aws-self-hosted)、[GCP](/langsmith/gcp-self-hosted) 或 [Azure](/langsmith/azure-self-hosted)。
 
@@ -30,16 +31,18 @@
   * [Amazon S3](https://aws.amazon.com/s3/)
   * [Google Cloud Storage (GCS)](https://cloud.google.com/storage?hl=en)
   * [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs)
+  * [Neon Object Storage](https://neon.com/docs/storage/get-started)（S3兼容）
 
 * Blob 存储中用于存储数据的存储桶/目录。我们强烈建议为 LangSmith 数据创建一个单独的存储桶/目录。
-  * **如果您使用 TTL**，您将需要设置生命周期策略来删除旧数据。欲了解更多信息，请参阅[configuring TTLs](/langsmith/self-host-ttl)。这些策略应反映您在 LangSmith 配置中设置的 TTL，否则您可能会遇到数据丢失。如何设置生命周期规则请参见[TTL configuration for blob storage](#ttl-configuration)。
+  * **如果您使用 TTL**，您将需要设置生命周期策略来删除旧数据。欲了解更多信息，请参阅[configuring TTLs](/langsmith/self-host-ttl)。这些策略应反映您在 LangSmith 配置中设置的 TTL，否则您可能会遇到数据丢失的情况。如何设置生命周期规则请参见[TTL configuration for blob storage](#ttl-configuration)。
 
 * 允许LangSmith服务访问存储桶/目录的凭证
-  * 您需要为您的 LangSmith 实例提供访问存储桶/目录所需的凭据。请阅读下面的认证[section](#authentication)以了解更多信息。
+  * 您需要向您的 LangSmith 实例提供访问存储桶/目录所需的凭据。请阅读下面的认证[section](#authentication)以了解更多信息。* 如果使用 S3 或 GCS，则为 Blob 存储服务的 API URL
 
-* 如果使用 S3 或 GCS，则为 Blob 存储服务的 API URL* 这将是 LangSmith 用于访问您的 Blob 存储系统的 URL
+  * 这将是 LangSmith 用于访问您的 Blob 存储系统的 URL
   * 对于 Amazon S3，这将是 S3 终端节点的 URL。类似：`https://s3.amazonaws.com` 或 `https://s3.us-west-1.amazonaws.com`（如果使用区域端点）。
   * 对于 Google Cloud Storage，这将是 GCS 端点的 URL。类似于：`https://storage.googleapis.com`
+  * 对于 Neon 对象存储，这是 Neon 分支的存储端点。类似于：`https://br-cool-darkness-a1b2c3d4.storage.c-1.us-east-2.aws.neon.tech`
 
 ## 身份验证
 
@@ -76,32 +79,33 @@
 > 1. 您需要创建一个 IAM 角色并附加策略。
 > 2. 您需要允许 LangSmith 服务帐户承担该角色。 `langsmith-queue`、`langsmith-backend`、`langsmith-platform-backend` 和 `langsmith-ingest-queue` 服务帐户需要能够承担该角色。
 >> [!警告]
->>
->> 如果您使用自定义发布名称，服务帐户名称将会不同。您可以通过在集群中运行 `kubectl get serviceaccounts` 来查找服务帐户名称。> 3. 您需要向LangSmith提供角色ARN。您可以通过将 `eks.amazonaws.com/role-arn: "<role_arn>"` 注释添加到 Helm Chart 安装中的 `queue`、`backend`、`platform-backend` 和 `ingest-queue` 服务来完成此操作。
+>>>> 如果您使用自定义发布名称，服务帐户名称将会不同。您可以通过在集群中运行 `kubectl get serviceaccounts` 来查找服务帐户名称。
+> 3. 您需要向LangSmith提供角色ARN。您可以通过将 `eks.amazonaws.com/role-arn: "<role_arn>"` 注释添加到 Helm Chart 安装中的 `queue`、`backend`、`platform-backend` 和 `ingest-queue` 服务来完成此操作。
 > 2. [Access Key and Secret Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)：您可以向LangSmith提供访问密钥和秘密密钥。这是使用 Amazon S3 进行身份验证的最简单方法。但是，不建议将其用于生产用途，因为它的安全性较低。
-> 1. 您需要创建一个附加策略的用户。然后您可以为该用户提供访问密钥和秘密密钥。
+> 1. 您需要创建一个附加策略的用户。然后，您可以为该用户提供访问密钥和秘密密钥。
 > 3. [VPC Endpoint Access](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html)：您可以通过 VPC 终端节点启用对 S3 存储桶的访问，这允许流量安全地从您的 VPC 流向 S3 存储桶。
 > 1. 您需要配置 VPC 终端节点并将其配置为允许访问您的 S3 存储桶。
 > 2. 您可以参考我们的[public Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/aws)获取指导和配置示例。
 >
 > ### KMS 加密标头支持
->
-> 从 LangSmith Helm 图表版本 **0.11.24** 开始，您可以传递 KMS 加密密钥标头，并通过提供其 ARN 来强制执行特定的 KMS 密钥进行写入。要启用此功能，请在 Helm 图表中设置以下值：
+>> 从 LangSmith Helm 图表版本 **0.11.24** 开始，您可以传递 KMS 加密密钥标头，并通过提供其 ARN 来强制执行特定的 KMS 密钥进行写入。要启用此功能，请在 Helm 图表中设置以下值：
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > config:
 >   blobStorage:
 >     kmsEncryptionEnabled: true
 >     kmsKeyArn: <your_kms_key_arn>
-> ```> [选项卡] GCP
+> ```
+
+> [选项卡] GCP
 >
 > ### 谷歌云存储
 >
-> 要使用 [Google Cloud Storage](https://cloud.google.com/storage?hl=en) 进行身份验证，您需要创建一个具有访问存储桶所需权限的 [⟦T24⟧](https://cloud.google.com/iam/docs/service-account-overview)。
+> 要使用 [Google Cloud Storage](https://cloud.google.com/storage?hl=en) 进行身份验证，您需要创建一个具有访问存储桶所需权限的 [⟦T27⟧](https://cloud.google.com/iam/docs/service-account-overview)。
 >
 > 您的服务帐户将需要 `Storage Admin` 角色或具有同等权限的自定义角色。这可以限定为 LangSmith 将使用的存储桶。
 >
-> 一旦您拥有了配置的服务帐户，您将需要为该服务帐户生成 [⟦T26⟧](https://cloud.google.com/storage/docs/authentication/hmackeys)。此密钥和秘密将用于通过 Google Cloud Storage 进行身份验证。
+> 一旦您拥有了配置的服务帐户，您将需要为该服务帐户生成 [⟦T29⟧](https://cloud.google.com/storage/docs/authentication/hmackeys)。此密钥和秘密将用于通过 Google Cloud Storage 进行身份验证。
 >
 >> [!注意]
 >>
@@ -109,10 +113,11 @@
 >>
 >> 1. **GCP 工作负载身份（推荐）**：将 `accessKey` 和 `accessKeySecret` 留空。 LangSmith 将使用 [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials)。您需要将工作负载身份注释添加到 `backend`、`platform-backend`、`queue` 和 `ingest-queue` 服务帐户。
 >> 2. **HMAC 密钥**：将 `accessKey` 和 `accessKeySecret` 设置为您的 GCS [HMAC credentials](https://cloud.google.com/storage/docs/authentication/hmackeys)。
+>>>> 对于这两种方法，请将 `apiURL` 设置为 `https://storage.googleapis.com`，并将 `bucketName` 设置为您的 GCS 存储桶名称。
 >>
->> 对于这两种方法，请将 `apiURL` 设置为 `https://storage.googleapis.com`，并将 `bucketName` 设置为您的 GCS 存储桶名称。
->>
->> 对于 0.13.29 之前的 Helm 图表版本，通过使用 HMAC 凭据设置 `engine: "S3"`，通过 S3 兼容 API 支持 GCS。> [选项卡] 天蓝色
+>> 对于 0.13.29 之前的 Helm 图表版本，通过使用 HMAC 凭据设置 `engine: "S3"`，通过 S3 兼容 API 支持 GCS。
+
+> [选项卡] 天蓝色
 >
 > ### Azure Blob 存储
 >
@@ -120,14 +125,54 @@
 >
 > 1. [Storage account and access key](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage)
 > 2.[Connection string](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string)
-> 3. [Workload identity](https://azure.github.io/azure-workload-identity/docs/introduction.html)（推荐）、托管身份或[⟦T40⟧](https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication?tabs=bash#2-authenticate-with-azure) 支持的环境变量。当上述任一选项的配置不存在时，这是默认身份验证方法。
+> 3. [Workload identity](https://azure.github.io/azure-workload-identity/docs/introduction.html)（推荐）、托管身份或[⟦T43⟧](https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication?tabs=bash#2-authenticate-with-azure) 支持的环境变量。当上述任一选项的配置不存在时，这是默认身份验证方法。
 > 1. 要使用工作负载身份，请将标签 `azure.workload.identity/use: true` 添加到 `queue`、`backend`、`platform-backend` 和 `ingest-queue` 部署。此外，将 `azure.workload.identity/client-id` 注释添加到相应的服务帐户，该帐户应该是现有 Azure AD 应用程序的客户端 ID 或用户分配的托管标识的客户端 ID。有关更多详细信息，请参阅[Azure's documentation](https://azure.github.io/azure-workload-identity/docs/topics/service-account-labels-and-annotations.html)。
 >
 >> [!注意]
->>
->> 某些部署可能需要使用服务 URL 覆盖而不是默认服务 URL (`https://<storage_account_name>.blob.core.windows.net/`) 进一步自定义连接配置。例如，为了使用不同的 blob 存储域（例如政府或中国），此覆盖是必要的。
+>>>> 某些部署可能需要使用服务 URL 覆盖而不是默认服务 URL (`https://<storage_account_name>.blob.core.windows.net/`) 进一步自定义连接配置。例如，为了使用不同的 blob 存储域（例如政府或中国），此覆盖是必要的。
 
-## 频道搜索默认情况下，LangSmith仍会存储用于在 ClickHouse 中搜索的令牌。如果您正在使用 LangSmith Managed Clickhouse，您可能需要禁用此功能以避免向 ClickHouse 发送潜在的敏感信息。您可以在 Blob 存储配置中执行此操作。
+> [标签] 霓虹灯
+>
+> ### Neon 对象存储
+>
+> [Neon Object Storage](https://neon.com/docs/storage/get-started) 是附加到 Neon 分支的 S3 兼容对象存储。 LangSmith 使用 `S3` 引擎以及访问密钥和秘密密钥连接到它。
+>
+> 要为 LangSmith 设置 Neon 对象存储：
+>
+> 1. 在您的 Neon 分支上创建一个私有存储桶，例如 `langsmith`。欲了解更多信息，请参阅[Neon buckets](https://neon.com/docs/storage/buckets)。
+>
+> 2. 创建具有 `storage:read` 和 `storage:write` 范围的凭证。 LangSmith 读取、写入和删除对象，因此它需要两个作用域：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>    neon credentials create --scope storage:read --scope storage:write --name langsmith-blob-storage
+>    ```
+>
+> 3. 将凭证的`token_id`（以`nak_live_`开头）用作`accessKey`，将其`s3_secret_access_key`（以`nsk_live_`开头）用作`accessKeySecret`。欲了解更多信息，请参阅[Neon Object Storage authentication](https://neon.com/docs/storage/authentication)。
+>
+> 4. 使用分支的存储端点作为`apiURL`。在 Neon 控制台中，单击 **连接** 并打开 **存储** 选项卡，找到它为 `AWS_ENDPOINT_URL_S3`。
+>
+> 5. 在您的[configuration](#configuration)中设置`s3UsePathStyle: true`：
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>    config:
+>      blobStorage:
+>        enabled: true
+>        engine: "S3"
+>        bucketName: "langsmith"
+>        apiURL: "https://br-cool-darkness-a1b2c3d4.storage.c-1.us-east-2.aws.neon.tech"
+>        accessKey: "nak_live_..."
+>        accessKeySecret: "nsk_live_..."
+>        s3UsePathStyle: true
+>    ```
+>
+>> [!警告]
+>>>> Neon 对象存储仅在路径样式 URL 处提供存储桶 (`<apiURL>/<bucket>/<key>`)。如果没有 `s3UsePathStyle: true`，LangSmith 会向 `<bucket>.<endpoint>` 发送请求，这会导致 TLS 验证失败，因为 Neon 证书不涵盖该主机名。 `s3UsePathStyle` 需要 Helm 图表版本 0.12.4 或更高版本。
+>
+> Neon 不运行生命周期规则，因此在启用 [TTLs](#ttl-configuration) 之前计划如何使数据过期。有关更多信息，请参阅[Neon Object Storage lifecycle rules](#neon-object-storage-lifecycle-rules)。
+
+## 频道搜索
+
+默认情况下，LangSmith仍会存储用于在 ClickHouse 中搜索的令牌。如果您正在使用 LangSmith Managed Clickhouse，您可能需要禁用此功能以避免向 ClickHouse 发送潜在的敏感信息。您可以在 Blob 存储配置中执行此操作。
 
 ## 配置
 
@@ -143,6 +188,7 @@ config:
     apiURL: "Your connection url"
     accessKey: "Your access key" # Optional. Only required if using S3 access key and secret key
     accessKeySecret: "Your access key secret" # Optional. Only required if using access key and secret key
+    s3UsePathStyle: false # Optional. Set to true for S3-compatible services that require path-style URLs, such as Neon Object Storage or MinIO
     # The following blob storage configuration values are for Azure and require blobStorage.engine = "Azure". Omit otherwise.
     azureStorageAccountName: "Your storage account name" # Optional. Only required if using storage account and access key.
     azureStorageAccountKey: "Your storage account access key" # Optional. Only required if using storage account and access key.
@@ -191,28 +237,26 @@ config:
 >
 > 如果使用访问密钥和机密，您还可以提供包含身份验证信息的现有 Kubernetes 机密。建议这样做，而不是直接在配置中提供访问密钥和秘密密钥。请参阅 [generated secret template](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/templates/secrets.yaml) 了解预期的密钥。
 
-## TTL 配置
+## TTL 配置如果将 [TTL](/langsmith/self-host-ttl) 功能与 LangSmith 一起使用，您还必须为 Blob 存储配置 TTL 规则。存储在 Blob 存储上的跟踪信息存储在特定的前缀路径上，该路径决定数据的 TTL。当跟踪的保留期延长时，其相应的 blob 存储路径会发生变化，以确保它与新的延长保留期相匹配。
 
-如果将 [TTL](/langsmith/self-host-ttl) 功能与 LangSmith 一起使用，您还必须为 Blob 存储配置 TTL 规则。存储在 Blob 存储上的跟踪信息存储在特定的前缀路径上，该路径决定数据的 TTL。当跟踪的保留期延长时，其相应的 blob 存储路径会发生变化，以确保它与新的延长保留期相匹配。
+使用以下 TTL 前缀：
 
-使用以下 TTL 前缀：* `ttl_s/`：短期（基本）TTL，配置为 14 天。
+* `ttl_s/`：短期（基本）TTL，配置为 14 天。
 * `ttl_l/`：长期（扩展）TTL，默认配置为 400 天。
 
 ### 自定义工作区级别保留前缀
 
-如果您使用 [workspace-level extended retention](/langsmith/data-purging-compliance#customize-extended-retention-policy)，LangSmith 会将 blob 数据写入`ttl_XXd/` 形式的前缀，其中 `XX` 是为该工作区配置的天数。例如，如果工作区配置了 90 天的延长保留期，则该工作区的 Blob 数据将写入 `ttl_90d/` 前缀。
+如果使用 [workspace-level extended retention](/langsmith/data-purging-compliance#customize-extended-retention-policy)，LangSmith 会将 blob 数据写入到 `ttl_XXd/` 形式的前缀，其中 `XX` 是为该工作区配置的天数。例如，如果工作区配置了 90 天的延长保留期，则该工作区的 Blob 数据将写入 `ttl_90d/` 前缀。
 
 您必须为工作区中配置的**每个**自定义保留期创建生命周期规则。常见示例：
 
 * `ttl_90d/` — 90 天保留
 * `ttl_180d/` — 180 天保留
-* `ttl_365d/` — 365 天保留
-
-> [!警告]
+* `ttl_365d/` — 365 天保留> [!警告]
 >
 > 如果在配置的保留期内缺少生命周期规则，则该前缀下的 Blob 数据永远不会被自动删除。确保每当配置新的工作区保留期时都添加匹配的生命周期规则。
 
-例如，如果您的工作区配置了 90 天和 180 天的延长保留期，则除了 ** [default ⟦T56⟧ and ⟦T57⟧ rules](#ttl-configuration) 之外，您还可以添加以下生命周期规则：
+例如，如果您的工作区配置了 90 天和 180 天的延长保留期，则除了 ** [default ⟦T76⟧ and ⟦T77⟧ rules](#ttl-configuration) 之外，您还可以添加以下生命周期规则：
 
 > [选项卡] AWS
 >
@@ -301,7 +345,13 @@ config:
 >     }
 >   }
 > }
-> ```如果您在 LangSmith 配置中自定义了 TTL，则需要调整 Blob 存储配置中的 TTL 以进行匹配。
+> ```
+
+> [标签] 霓虹灯
+>
+> Neon 对象存储不运行生命周期规则。确保您的 [cleanup job](#neon-object-storage-lifecycle-rules) 删除每个自定义前缀下的对象，例如 `ttl_90d/` 和 `ttl_180d/`，一旦它们早于该前缀的 TTL。
+
+如果您在 LangSmith 配置中自定义了 TTL，则需要调整 Blob 存储配置中的 TTL 以进行匹配。
 
 > [选项卡] AWS
 >
@@ -328,9 +378,7 @@ config:
 >     days = 400
 >   }
 > }
-> ```
-
-> [选项卡] GCP
+> ```> [选项卡] GCP
 >
 > ### Google Cloud Storage 生命周期规则
 >
@@ -412,6 +460,16 @@ config:
 >   }
 > }
 > ```
+
+> [标签] 霓虹灯
+>
+> ### Neon 对象存储生命周期规则
+>
+>> [!警告]
+>>
+>> Neon 对象存储接受并存储生命周期配置，但不运行过期规则。 `ttl_s/`、`ttl_l/` 和 `ttl_XXd/` 前缀下的对象不会自动删除，因此 Blob 数据的寿命比LangSmith 中配置的 TTL 长。欲了解更多信息，请参阅[Neon Object Storage troubleshooting](https://neon.com/docs/storage/troubleshooting)。
+>
+> 要强制执行 TTL，请运行计划作业（例如 Kubernetes CronJob）来删除早于每个前缀 TTL 的对象。
 
 ***
 

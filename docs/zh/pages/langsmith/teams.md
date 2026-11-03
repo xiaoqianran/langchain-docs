@@ -1,166 +1,154 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Teams | https://docs.langchain.com/langsmith/teams -->
 
-# Teams
+# 团队
 
-Group organization members into teams, then give each team a role and access policies in the workspaces it can access.
+将组织成员分组，然后为每个团队分配一个角色并为其可以访问的工作区提供访问策略。
 
-A team is a group of organization members. You can give a team access to several workspaces, with a specific role in each. Team members who belong to those workspaces receive the team's role there. Teams build on [role-based access control (RBAC)](/langsmith/rbac) and [attribute-based access control (ABAC)](/langsmith/abac).
+团队是一组组织成员。您可以授予团队访问多个工作区的权限，并在每个工作区中指定特定的角色。属于这些工作区的团队成员将在那里接收团队的角色。团队建立在 [role-based access control (RBAC)](/langsmith/rbac) 和 [attribute-based access control (ABAC)](/langsmith/abac) 的基础上。
 
-> [!NOTE]
+> [!注意]
 >
-> Teams are available for organizations on the [Enterprise plan](https://www.langchain.com/pricing) and for [self-hosted](/langsmith/self-hosted) deployments. [Contact our sales team](https://www.langchain.com/contact-sales) to learn more.
+> 团队适用于 [Enterprise plan](https://www.langchain.com/pricing) 和 [self-hosted](/langsmith/self-hosted) 部署的组织。 [Contact our sales team](https://www.langchain.com/contact-sales) 了解更多。
 
-## Access rules
+## 访问规则
 
-In a workspace, a user's permissions are the sum of their own [workspace role](/langsmith/rbac#workspace-roles) and the role of each team they belong to. [Access policies](/langsmith/abac) can come from those roles and from the teams themselves. A matching deny policy applies first and blocks access, whatever the roles allow. For the evaluation order, refer to [How ABAC works with RBAC](/langsmith/abac#how-abac-works-with-rbac).
+在工作空间中，用户的权限是他们自己的[workspace role](/langsmith/rbac#workspace-roles)和他们所属的每个团队的角色的总和。 [Access policies](/langsmith/abac) 可以来自这些角色和团队本身。匹配的拒绝策略首先应用并阻止访问，无论角色允许什么。评估顺序请参见[How ABAC works with RBAC](/langsmith/abac#how-abac-works-with-rbac)。
 
-A team's role applies only to members who belong to the workspace. Giving a team access does not add anyone to the workspace. To give a team member access, [add the user to the workspace](/langsmith/set-up-hierarchy#set-up-a-workspace) or [sync the team from your identity provider](#sync-team-members-from-your-identity-provider).
+团队角色仅适用于属于工作区的成员。授予团队访问权限不会将任何人添加到工作区。要授予团队成员访问权限，[add the user to the workspace](/langsmith/set-up-hierarchy#set-up-a-workspace) 或 [sync the team from your identity provider](#sync-team-members-from-your-identity-provider)。
 
-## Before you begin
+## 开始之前
 
-* Ensure that [RBAC](/langsmith/rbac) and [ABAC](/langsmith/abac) are enabled for your organization. Without ABAC, team access policies have no effect.
-* For self-hosted deployments, see below.
+* 确保为您的组织启用 [RBAC](/langsmith/rbac) 和 [ABAC](/langsmith/abac)。如果没有 ABAC，团队访问策略就不起作用。
+* 对于自托管部署，请参见下文。
 
-## Enable teams for self-hosted deployments
-
-> [!NOTE]
+## 使团队能够进行自托管部署> [!注意]
 >
-> On [self-hosted](/langsmith/self-hosted) deployments, teams require Helm chart 0.18.0-rc.50 or later (application version 0.18.19rc1).
+> 在 [self-hosted](/langsmith/self-hosted) 部署中，团队需要 Helm Chart 0.18.0-rc.54 或更高版本以及应用程序版本 0.18.20rc1 或更高版本。
 
-Use one of the following options to enable teams:
+使用以下选项之一来启用团队：
 
-* **Enable for a specific organization**: Run the following against your LangSmith PostgreSQL database, replacing `<organization_id>` with the ID copied from the organization settings page in the UI:
+* **为特定组织启用**：针对您的 LangSmith PostgreSQL 数据库运行以下命令，将 `<organization_id>` 替换为从 UI 中的组织设置页面复制的 ID：
 
   ```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   UPDATE organizations SET config = config || '{"can_use_teams": true}' WHERE id = '<organization_id>' AND NOT is_personal;
   ```
 
-* **Enable for all organizations**: Add the following environment variable to `commonEnv` in your `values.yaml`:
+* **为所有组织启用**：将以下环境变量添加到`values.yaml`中的`commonEnv`：
 
   ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   DEFAULT_ORG_FEATURE_CAN_USE_TEAMS: "true"
   ```
 
-To manage teams in the UI, also [enable ABAC](/langsmith/abac#enable-abac-for-self-hosted-deployments).
+要在 UI 中管理团队，还需[enable ABAC](/langsmith/abac#enable-abac-for-self-hosted-deployments)。
 
-## Create a team
+## 创建团队
 
-To create a team:
+创建团队：
 
-1. Navigate to Organization **Settings** > **Teams**.
-2. Click **Create team**.
-3. Enter a **Name** and, optionally, a **Description**.
-4. (Optional) Add members, workspace access, and access policies. Refer to [Edit a team](#edit-a-team).
-5. Click **Create team**.
+1. 导航到组织 **设置** > **团队**。
+2. 单击**创建团队**。
+3. 输入 **名称** 和可选的 **说明**。
+4. （可选）添加成员、工作区访问权限和访问策略。参考[Edit a team](#edit-a-team)。
+5. 单击**创建团队**。
 
-Team names must be unique across the organization.
+团队名称在整个组织中必须是唯一的。
 
-## Edit a team
+## 编辑团队
 
-To edit a team:
+编辑团队：
 
-1. Navigate to Organization **Settings** > **Teams** and click the team.
-2. Make your changes in **Members**, **Workspaces**, or **Access policies**.
-3. Click **Update team**.
+1. 导航到组织 **设置** > **团队**，然后单击团队。
+2. 在**成员**、**工作区**或**访问策略**中进行更改。
+3. 单击“**更新团队**”。
 
-LangSmith saves the changes together. If one fails, LangSmith keeps the unsaved changes so you can retry them.
+LangSmith 一起保存更改。如果失败，LangSmith 会保留未保存的更改，以便您可以重试。
 
-### Members
+### 成员单击**+ 添加成员** 添加组织成员。要删除成员，请单击其行上的删除图标。被删除的成员将失去团队授予他们的访问权限。
 
-Click **+ Add member** to add organization members. To remove a member, click the remove icon on their row. A removed member loses the access the team gave them.
+该部分还列出了团队的 [workspace-only members](#add-workspace-only-members-and-policies)，以及他们添加到的工作区的链接。
 
-The section also lists the team's [workspace-only members](#add-workspace-only-members-and-policies), with a link to the workspace they were added in.
+### 工作区
 
-### Workspaces
+单击 **+ 授予工作空间** 并选择一个工作空间，为团队成员授予其中的角色。该角色默认为[Workspace Viewer](/langsmith/rbac#workspace-viewer)。您可以选择任何内置或[custom workspace role](/langsmith/rbac#custom-roles)，然后在工作区的行上更改它。
 
-Click **+ Grant workspace** and select a workspace to give the team's members a role there. The role defaults to [Workspace Viewer](/langsmith/rbac#workspace-viewer). You can select any built-in or [custom workspace role](/langsmith/rbac#custom-roles) instead, and change it later on the workspace's row.
+要删除访问权限，请单击工作区行上的删除图标，然后键入工作区名称进行确认。删除访问权限还会删除团队的仅限工作区的成员以及该工作区中的访问策略。
 
-To remove access, click the remove icon on the workspace's row and type the workspace name to confirm. Removing access also removes the team's workspace-only members and access policies in that workspace.
+### 访问策略
 
-### Access policies
+单击 **+ 附加策略** 以附加 [access policy](/langsmith/abac#access-policy-structure)。团队的访问策略适用于团队可以访问的每个工作区中的成员。
 
-Click **+ Attach policy** to attach an [access policy](/langsmith/abac#access-policy-structure). The team's access policies apply to its members in every workspace the team can access.
+要将团队的策略限制到一个工作区，请通过 [API](#manage-teams-with-the-api) 和 `workspace_id` 集将其附加。团队必须有权访问该工作区，并且您必须是该工作区的成员。团队对话框显示应用此类策略的工作区。
 
-To limit a team's policy to one workspace, attach it through the [API](#manage-teams-with-the-api) with `workspace_id` set. The team must have access to that workspace, and you must be a member of that workspace. The team dialog shows the workspace that such a policy applies in.
+## 添加仅限工作区的成员和策略在团队可以访问的工作空间中，[Workspace Admin](/langsmith/rbac#workspace-admin) 只能向该工作空间的团队添加成员和访问策略。这使得工作区的管理员无需组织级别的权限即可管理其工作区中的访问。
 
-## Add workspace-only members and policies
+仅工作区成员不会获得团队角色。他们仅接收仅限工作区的访问策略，并且仅在该工作区中。仅工作区访问策略仅适用于仅工作区成员。
 
-In a workspace that a team can access, a [Workspace Admin](/langsmith/rbac#workspace-admin) can add members and access policies to the team for that workspace only. This lets a workspace's administrators manage access in their workspace without organization-level permissions.
+例如，`Support`团队在`Production`中具有[Workspace Editor](/langsmith/rbac#workspace-editor)角色。 `Production` 中的工作区管理员可以仅针对该工作区向 `Support` 添加更多用户，并附加允许他们读取标记为 `Environment=Development` 的项目的策略。
 
-Workspace-only members do not receive the team's role. They receive only the workspace-only access policies, and only in that workspace. Workspace-only access policies apply only to workspace-only members.
+要添加仅限工作区的成员或策略：
 
-For example, the `Support` team has the [Workspace Editor](/langsmith/rbac#workspace-editor) role in `Production`. A Workspace Admin in `Production` can add more users to `Support` for that workspace only, and attach a policy that lets them read projects tagged `Environment=Development`.
+1. 导航到工作区的 **设置** > **团队**。该页面列出了有权访问工作区的每个团队。
+2. 单击一个团队。
+3. 添加或删除成员，或者附加或分离访问策略。
+4. 单击“**更新团队**”。
 
-To add workspace-only members or policies:
+您只能添加属于工作区成员的用户。团队的名称、描述、成员和访问策略显示为只读。
 
-1. Navigate to the workspace's **Settings** > **Teams**. The page lists each team with access to the workspace.
-2. Click a team.
-3. Add or remove members, or attach or detach access policies.
-4. Click **Update team**.
+## 删除团队要删除团队，请导航到组织 **设置** > **团队**，单击团队行上的删除图标，然后键入团队名称进行确认。
 
-You can add only users who are members of the workspace. The team's name, description, members, and access policies appear as read-only.
+删除团队会删除其成员、工作区访问权限和访问策略，包括仅限工作区的成员和策略。
 
-## Delete a team
+无法删除团队在工作区中使用的角色。首先更改团队的角色或删除其工作区访问权限。
 
-To delete a team, navigate to Organization **Settings** > **Teams**, click the delete icon on the team's row, and type the team name to confirm.
+## 从您的身份提供商同步团队成员
 
-Deleting a team removes its members, workspace access, and access policies, including workspace-only members and policies.
+将团队链接到身份提供商 (IdP) 中的组，然后 LangSmith 设置该组中的团队成员。同步适用于[SCIM](/langsmith/user-management#set-up-scim-for-your-organization)和[SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative)。仅工作区成员不会同步。
 
-A role that a team uses in a workspace cannot be deleted. Change the team's role or remove its workspace access first.
+要同步团队：
 
-## Sync team members from your identity provider
+1. 导航到组织 **设置** > **团队**，然后单击团队。
+2. 在 **常规** 中，在 **IdP 组** 中输入组名称。对于 SCIM，输入 SCIM 组的名称。对于 SSO 组同步，输入 [groups claim](/langsmith/user-management#sso-groups-sync-alternative) 中的值。
+3. 选择**同步 IdP 组中的成员**。
+4. 单击“**更新团队**”。
 
-Link a team to a group in your identity provider (IdP), and LangSmith sets the team's members from that group. Sync works with [SCIM](/langsmith/user-management#set-up-scim-for-your-organization) and [SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative). Workspace-only members are not synced.
+### 同步行为
 
-To sync a team:
+* **匹配**：当组名称等于团队的 IdP 组时，组将匹配，忽略前导空格和尾随空格。匹配区分大小写。每个 IdP 组只能链接到一个团队。* **时间**：SSO 组同步会在每次登录时更新用户的团队，并且需要 **同步工作区/角色分配**。当 SCIM 组发生更改时，SCIM 会更新用户的团队。
 
-1. Navigate to Organization **Settings** > **Teams** and click the team.
-2. In **General**, enter the group's name in **IdP group**. For SCIM, enter the SCIM group's name. For SSO Groups Sync, enter a value from the [groups claim](/langsmith/user-management#sso-groups-sync-alternative).
-3. Select **Sync members from the IdP group**.
-4. Click **Update team**.
+* **成员身份**：同步团队的成员是 IdP 组中的用户。您在 LangSmith 中所做的更改将持续到该用户下次同步。
 
-### Sync behavior
+* **组织角色**：当没有`LS:`组设置用户的组织角色时，团队匹配设置它：
 
-* **Matching**: A group matches when its name equals the team's IdP group, ignoring leading and trailing spaces. Matching is case-sensitive. Each IdP group can be linked to only one team.
+  * 通过 SSO 组同步，新用户作为 [Organization Viewer](/langsmith/rbac#organization-viewer) 加入组织。 SSO Groups Sync 管理其成员资格的用户被设置为组织查看者。其他成员资格（例如来自邀请的成员资格）保留其角色。
+  * 通过 SCIM，将 SCIM 不管理成员资格的用户设置为[Organization User](/langsmith/rbac#organization-user)，之后由 SCIM 管理成员资格。这包括具有更高角色的用户，例如组织管理员。
 
-* **Timing**: SSO Groups Sync updates a user's teams at each login and requires **Sync workspace/role assignments**. SCIM updates a user's teams when their SCIM groups change.
+* **工作区成员资格**：同步将用户添加到团队可以访问的每个工作区。该成员资格本身没有任何作用。用户的访问来自团队的角色。在用户下次同步时，如果没有团队有权访问该工作区，LangSmith 将删除成员资格。* **登录门**：当启用**需要匹配组登录**时，与已同步团队匹配的组将被视为匹配组。对于 SSO 组同步，这还需要 **同步工作区/角色分配**。
 
-* **Membership**: A synced team's members are the users in the IdP group. A change you make in LangSmith lasts until that user's next sync.
+* **禁用同步**：团队保留其成员，您可以在LangSmith中管理他们。
 
-* **Organization role**: When no `LS:` group sets a user's organization role, a team match sets it:
+## 权限
 
-  * Through SSO Groups Sync, a new user joins the organization as an [Organization Viewer](/langsmith/rbac#organization-viewer). A user whose membership SSO Groups Sync manages is set to Organization Viewer. Other memberships, such as from an invite, keep their role.
-  * Through SCIM, a user whose membership SCIM does not manage is set to [Organization User](/langsmith/rbac#organization-user), and SCIM manages the membership after that. This includes users with a higher role, such as Organization Admin.
+每个动作的最小内置角色：
 
-* **Workspace membership**: Sync adds the user to each workspace the team can access. This membership has no role of its own. The user's access comes from the team's role. At the user's next sync, LangSmith removes the membership if no team has access to that workspace.
-
-* **Login gate**: When **Require matching group to sign in** is enabled, a group that matches a synced team counts as a matching group. For SSO Groups Sync, this also requires **Sync workspace/role assignments**.
-
-* **Sync disabled**: The team keeps its members, and you manage them in LangSmith.
-
-## Permissions
-
-The minimum built-in role for each action:
-
-| Action | Minimum built-in role |
+|行动|最小内置角色 |
 | - | - |
-| View teams, members, and access policies | [Organization Viewer](/langsmith/rbac#organization-viewer) |
-| Create, rename, or delete a team | [Organization Operator](/langsmith/rbac#organization-operator) |
-| Add or remove members | Organization Operator |
-| Give, change, or remove workspace access | Organization Operator |
-| Attach or detach access policies | Organization Operator |
-| View workspace-only members and policies | [Workspace Viewer](/langsmith/rbac#workspace-viewer) |
-| Add or remove workspace-only members and policies | [Workspace Admin](/langsmith/rbac#workspace-admin) |
+|查看团队、成员和访问策略 | [Organization Viewer](/langsmith/rbac#organization-viewer) |
+|创建、重命名或删除团队 | [Organization Operator](/langsmith/rbac#organization-operator) |
+|添加或删除成员 |组织运营商|
+|授予、更改或删除工作区访问权限 |组织运营商|
+|附加或分离访问策略 |组织运营商|
+|查看仅限工作区的成员和策略 | [Workspace Viewer](/langsmith/rbac#workspace-viewer) |
+|添加或删除仅限工作区的成员和策略 | [Workspace Admin](/langsmith/rbac#workspace-admin) |
 
-[Custom roles](/langsmith/rbac#custom-roles) can hold the `workspaces:teams:*` permissions. For the permission each action checks, refer to the [operations reference](/langsmith/organization-workspace-operations#workspace-teams).
+[Custom roles](/langsmith/rbac#custom-roles)可以持有`workspaces:teams:*`权限。每个操作检查的权限，请参阅[operations reference](/langsmith/organization-workspace-operations#workspace-teams)。
 
-## Manage teams with the API
+## 使用 API 管理团队
 
-The teams endpoints are under `/api/v1/platform/orgs/current/teams`. [Audit logs](/langsmith/audit-logs#tracked-operations-reference) record each change to a team.
+团队端点位于 `/api/v1/platform/orgs/current/teams` 下。 [Audit logs](/langsmith/audit-logs#tracked-operations-reference) 记录团队的每一次变化。
 
-## See also
+## 另请参阅
 
 * [Role-based access control](/langsmith/rbac)
 * [Attribute-based access control](/langsmith/abac)
@@ -170,6 +158,6 @@ The teams endpoints are under `/api/v1/platform/orgs/current/teams`. [Audit logs
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/teams.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/teams.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

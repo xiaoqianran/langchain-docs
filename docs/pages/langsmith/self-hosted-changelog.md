@@ -6,6 +6,56 @@
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want a license key to trial LangSmith in your environment.
 
+**2026-11-03**
+
+## langsmith-0.18.0-rc.57
+
+**LangSmith version:** `0.18.20rc1`
+
+* This release packages the same LangSmith application version as langsmith-0.18.0-rc.54. Refer to the [langsmith-0.18.0-rc.54](#langsmith-0-18-0-rc-54) release notes below for application changes.
+* `config.agentMigration.enabled` defaults to `true`, so existing ingest queue workers migrate existing tracing projects and experiments to Agent Platform agents after an upgrade unless `authType` is set to `none`. Do not downgrade to an app version that predates the migration once it runs.
+
+**Download the Helm chart:** [`langsmith-0.18.0-rc.57.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.57/langsmith-0.18.0-rc.57.tgz)
+
+**Sandbox runtime chart, for Sandboxes in a separate cluster:** [`langsmith-sandbox-0.18.0-rc.4.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-sandbox-0.18.0-rc.4/langsmith-sandbox-0.18.0-rc.4.tgz)
+
+**2026-11-03**
+
+## langsmith-0.17.37
+
+**LangSmith version:** `0.17.64`
+
+* Sub-agent editors show the root agent model when no override is set. Clear an override to use the root model again.
+* LangSmith Python service images install `ddtrace` 4.15.6, which fixes CVE-2026-116588 and CVE-2026-116589.
+
+**Download the Helm chart:** [`langsmith-0.17.37.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.37/langsmith-0.17.37.tgz)
+
+**2026-11-03**
+
+## langsmith-0.18.0-rc.56
+
+**LangSmith version:** `0.18.20rc1`
+
+* This release packages the same LangSmith application version as langsmith-0.18.0-rc.54. Refer to the [langsmith-0.18.0-rc.54](#langsmith-0-18-0-rc-54) release notes below for application changes.
+* Frontend requests to `/api/v1/agents`, `/api/v1/agent-environments`, and `/api/v1/sessions/resolutions` route to the platform backend instead of the Python backend, avoiding routing-related 404s.
+
+**Download the Helm chart:** [`langsmith-0.18.0-rc.56.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.56/langsmith-0.18.0-rc.56.tgz)
+
+**Sandbox runtime chart, for Sandboxes in a separate cluster:** [`langsmith-sandbox-0.18.0-rc.4.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-sandbox-0.18.0-rc.4/langsmith-sandbox-0.18.0-rc.4.tgz)
+
+**2026-11-02**
+
+## langsmith-0.18.0-rc.55
+
+**LangSmith version:** `0.18.20rc1`
+
+* This release packages the same LangSmith application version as langsmith-0.18.0-rc.54. Refer to the [langsmith-0.18.0-rc.54](#langsmith-0-18-0-rc-54) release notes below for application changes.
+* Opt in to extra ServiceAccount and SecretProviderClass manifests with `config.deployment.extraManifestsEnabled` (default: `false`). This requires a running operator, coordinated supporting images, and the LGP CRD.
+
+**Download the Helm chart:** [`langsmith-0.18.0-rc.55.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.55/langsmith-0.18.0-rc.55.tgz)
+
+**Sandbox runtime chart, for Sandboxes in a separate cluster:** [`langsmith-sandbox-0.18.0-rc.4.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-sandbox-0.18.0-rc.4/langsmith-sandbox-0.18.0-rc.4.tgz)
+
 **2026-11-02**
 
 ## langsmith-0.18.0-rc.54
