@@ -79,12 +79,12 @@
    > from langgraph.pregel.remote import RemoteGraph
    >
    > my_token = "your-token" # In practice, you would generate a signed token with your auth provider
-   > remote-graph = RemoteGraph(
+   > remote_graph = RemoteGraph(
    >     "agent",
    >     url="http://localhost:2024",
    >     headers={"Authorization": f"Bearer {my_token}"}
    > )
-   > threads = await remote-graph.ainvoke(...)
+   > threads = await remote_graph.ainvoke(...)
    > ```
 
    > [选项卡] JavaScript 客户端

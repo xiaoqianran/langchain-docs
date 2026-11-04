@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 终点为出方向。 [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors) 指出了另一种方式：它将远程 MCP 服务器中的工具添加到您的代理中。部署可以同时使用两者。
 
@@ -24,13 +24,13 @@
 <DEPLOYMENT_API_URL>/mcp
 ```
 
-`mda deploy` 打印 LangSmith 部署仪表板 URL，而不是 API URL。打开该仪表板，从部署详细信息视图中复制 **API URL**，然后附加 `/mcp`。
+`mda deploy` 打印 LangSmith 部署仪表板 URL，而不是 API URL。打开该仪表板，从部署详细信息视图中复制 **API URL**，然后附加 `/mcp`。由[⟦T9⟧](/langsmith/javascript/managed-deep-agents-local-development)启动的本地服务器服务于相同的端点。将 `/mcp` 附加到 CLI 打印的本地服务器 URL。
 
-由[⟦T9⟧](/langsmith/javascript/managed-deep-agents-local-development)启动的本地服务器服务于相同的端点。将 `/mcp` 附加到 CLI 打印的本地服务器 URL。
+## 验证请求
 
-## 验证请求MCP 端点使用部署的 [identity](/langsmith/javascript/managed-deep-agents-identity) 配置，与部署上的所有其他路由相同。发送与配置模式匹配的凭证：
+MCP 端点使用部署的 [identity](/langsmith/javascript/managed-deep-agents-identity) 配置，与部署上的所有其他路由相同。发送与配置模式匹配的凭证：
 
-|身份模式 |标题|
+|身份模式 |标题 |
 | - | - |
 | LangSmith API 密钥（默认）| `x-api-key: <LANGSMITH_API_KEY>` |
 |苏帕巴斯| `Authorization: Bearer <access_token>` |
@@ -45,11 +45,11 @@
 | 403 | 403 `{"detail":"API key is forbidden"}` |密钥无效、已撤销或已过期。 |
 | 403 | 403 `{"detail":"API key tenant mismatch"}` |密钥有效，但属于与部署不同的工作区。 |
 
-由`mda dev`启动的本地服务器不需要凭据。它为每个调用者授予一个无范围的本地服务主体，因此计算机上的任何客户端都可以调用 `/mcp` 和所有其他路由。只有部署才会强制执行标头。
-
-> [!警告]
+由`mda dev`启动的本地服务器不需要凭据。它为每个调用者授予一个无范围的本地服务主体，因此计算机上的任何客户端都可以调用 `/mcp` 和所有其他路由。只有部署才会强制执行标头。> [!警告]
 >
-> 任何持有 LangSmith API 密钥的人都可以进行部署，并且 MCP 客户端将标头存储在自己的配置中。将添加到客户端配置的密钥视为整个工作区的共享密钥。> [!注意]
+> 任何持有 LangSmith API 密钥的人都可以进行部署，并且 MCP 客户端将标头存储在自己的配置中。将添加到客户端配置的密钥视为整个工作区的共享密钥。
+
+> [!注意]
 >
 > Supabase 身份需要一个访问令牌，该令牌是人们通过登录您的应用程序获得的。仅存储静态标头的 MCP 客户端无法创建静态标头，因此请对 MCP 客户端调用的部署使用默认的 LangSmith API 密钥。
 
@@ -126,7 +126,7 @@ const tools = await client.getTools();
 
 为了在通话中保留知识，[opt in to durable memory](/langsmith/javascript/managed-deep-agents-memory)。持久内存是可选的，并由部署的每个调用者共享。当 MCP 客户端不应相互影响时，请勿启用它。
 
-## 何时使用 MCP 端点|概念|亲切 |它如何到达代理|
+## 何时使用 MCP 端点|概念 |亲切 |它如何到达代理|
 | - | - | - |
 | **MCP 端点** |部署API |将代理作为工具公开给 MCP 客户端 |
 | **[MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)** |托管配置|将远程 MCP 服务器托管的工具添加到代理 |

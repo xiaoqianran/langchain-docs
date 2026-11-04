@@ -8,6 +8,58 @@
 
 **2026-11-03**
 
+## langsmith-0.16.50
+
+**LangSmith version:** `0.16.77`
+
+* Sub-agent editors show the root agent model when no override is set. You can clear an explicit override to restore inheritance.
+
+**Download the Helm chart:** [`langsmith-0.16.50.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.50/langsmith-0.16.50.tgz)
+
+**2026-11-03**
+
+## langsmith-0.17.40
+
+**LangSmith version:** `0.17.66`
+
+* Internal improvements and maintenance updates
+
+**Download the Helm chart:** [`langsmith-0.17.40.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.40/langsmith-0.17.40.tgz)
+
+**2026-11-03**
+
+## langsmith-0.16.49
+
+**LangSmith version:** `0.16.75`
+
+* This release packages the same LangSmith application version as langsmith-0.16.47. Refer to the [langsmith-0.16.47](#langsmith-0-16-47) release notes below for application changes.
+* The operator exits at startup if the LGP CRD is missing. Install the LGP CRD before starting or upgrading the operator.
+
+**Download the Helm chart:** [`langsmith-0.16.49.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.49/langsmith-0.16.49.tgz)
+
+**2026-11-03**
+
+## langsmith-0.17.39
+
+**LangSmith version:** `0.17.65`
+
+* This release packages the same LangSmith application version as langsmith-0.17.38. Refer to the [langsmith-0.17.38](#langsmith-0-17-38) release notes below for application changes.
+* The chart's updated operator RBAC grants the operator its required permissions. Apply it when installing or upgrading.
+
+**Download the Helm chart:** [`langsmith-0.17.39.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.39/langsmith-0.17.39.tgz)
+
+**2026-11-03**
+
+## langsmith-0.17.38
+
+**LangSmith version:** `0.17.65`
+
+* Setting `GO_INGESTION_PARTITIONS_SLOT_SPREAD=true` names ingestion queue partitions so they spread evenly across Redis Cluster shards when you run more than 4 partitions. Enable it while `GO_INGESTION_QUEUE_PARTITIONS` and `GO_INGESTION_WORKER_PARTITIONS` are both 4 or fewer, then raise worker partitions before queue partitions.
+
+**Download the Helm chart:** [`langsmith-0.17.38.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.38/langsmith-0.17.38.tgz)
+
+**2026-11-03**
+
 ## langsmith-0.18.0-rc.57
 
 **LangSmith version:** `0.18.20rc1`

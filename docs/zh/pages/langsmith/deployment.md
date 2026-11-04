@@ -24,7 +24,7 @@ LangSmith 部署与框架无关，这意味着您可以部署使用以下方式�
 
 > [卡片] [Google ADK](/langsmith/deploy-google-adk)
 >
-> 使用 `deployments-wrap-sdk` 包将 Google 代理开发工具包 (ADK) 代理部署为 LangGraph。
+> 使用 `deployments-wrap-sdk` 软件包将 Google 代理开发工具包 (ADK) 代理部署为 LangGraph。
 
 > [卡][Other frameworks](/langsmith/deploy-other-frameworks)
 >
@@ -38,7 +38,7 @@ LangSmith 部署与框架无关，这意味着您可以部署使用以下方式�
 
 > [卡][Cloud](/langsmith/deploy-to-cloud-overview)
 >
-> 由 AWS 和 GCP 上的 LangChain 完全管理。在 LangSmith UI 中或使用 [⟦T2⟧](/langsmith/cli#deploy) 从 GitHub 创建部署。需要[Plus plan or above](https://www.langchain.com/pricing)。
+> 由 AWS 和 GCP 上的LangChain 完全管理。在 LangSmith UI 中或使用 [⟦T2⟧](/langsmith/cli#deploy) 从 GitHub 创建部署。需要[Plus plan or above](https://www.langchain.com/pricing)。
 
 > [卡][Self-hosted with control plane](/langsmith/deploy-with-control-plane)
 >
@@ -52,26 +52,38 @@ LangSmith 部署与框架无关，这意味着您可以部署使用以下方式�
 >
 > 使用 Docker、Compose 或 Kubernetes 部署代理服务器。带上您自己的 PostgreSQL、Redis 和 LangSmith 许可证；没有控制平面。可选 [LangSmith tracing](/langsmith/observability) 到云或自托管实例。
 
-## 常用设置* **为您的代理托管托管。** LangSmith 在 [Cloud](/langsmith/deploy-to-cloud-overview) 上部署。 LangChain 托管控制平面、数据平面和数据库。与LangSmith云配对。
+## 常用设置* **为您的代理托管。** LangSmith 在 [Cloud](/langsmith/deploy-to-cloud-overview) 上部署。 LangChain 托管控制平面、数据平面和数据库。与LangSmith云配对。
 * **您的 VPC 中的代理，受控制平面管理。** LangSmith 通过 [Hybrid](/langsmith/hybrid) 部署。 LangChain 托管控制平面；您托管代理服务器及其数据平面。与 LangSmith 云或自托管 LangSmith 配对。
 * **完整数据驻留或气隙。** [Self-hosted LangSmith Deployment](/langsmith/deploy-with-control-plane)。您可以在自己的基础设施中托管控制平面和代理服务器以及自托管 LangSmith。
 * **仅代理运行时，无控制平面。** [Standalone Agent Server](/langsmith/deploy-standalone-server)。在没有控制平面的情况下使用 Docker 或 Kubernetes 运行代理服务器容器，可选择将跟踪发送到 LangSmith 云或自托管。
 
 LangSmith平台运行位置请参见[Platform setup](/langsmith/platform-setup)。
 
-## 部署后
+## 了解部署定价
 
-部署后，代理将使用[Agent Server](/langsmith/assistants)的执行模型：**助手**用于配置，**线程**用于状态，**运行**用于工作负载。能力、教程、服务器定制和操作请参见[Agent Server](/langsmith/develop-agents-overview)。
+LangSmith 云上的部署按每个部署请求的计算和数据库资源计费。
+
+> [!注意]
+>
+> 在 LangSmith 云上部署需要 Plus 或 Enterprise 计划。欲了解更多信息，请参阅[pricing page](https://www.langchain.com/pricing)。
+
+> [卡片][LangSmith Deployment billing](/langsmith/billing#langsmith-deployment-billing)
+>
+> 查看费率、每种部署规模的每小时成本以及降低部署成本的方法。
+
+## 部署后部署后，代理将使用[Agent Server](/langsmith/assistants)的执行模型：**助手**用于配置，**线程**用于状态，**运行**用于工作负载。能力、教程、服务器定制和操作请参见[Agent Server](/langsmith/develop-agents-overview)。
 
 > [卡][Update prompts and contexts without redeploying](/langsmith/prompt-context-hub)
 >
-> 管理您部署的代理在运行时提取的提示和版本化上下文，以便您无需完全部署即可更改行为。> [卡][Interact with your deployment using RemoteGraph](/langsmith/use-remote-graph)
+> 管理您部署的代理在运行时提取的提示和版本化上下文，以便您无需完全部署即可更改行为。
+
+> [卡][Interact with your deployment using RemoteGraph](/langsmith/use-remote-graph)
 >
 > 从客户端代码调用已部署的图，就好像它是本地编译的图一样。
 
 > [卡][Find and fix failures with Engine](/langsmith/engine)
 >
-> 一旦代理投入生产，使用 LangSmith 引擎来检测其跟踪中重复出现的故障，诊断根本原因并解决它们。
+> 一旦代理投入生产，使用LangSmith引擎来检测其跟踪中重复出现的故障，诊断根本原因并解决它们。
 
 ## 全栈网络应用程序
 
@@ -93,8 +105,6 @@ LangSmith平台运行位置请参见[Platform setup](/langsmith/platform-setup)�
 >
 > ![Deno Deploy](https://mintcdn.com/langchain-5e9cc07a/Tz8fh3A43FeUPf69/images/providers/light/deno.svg?fit=max\&auto=format\&n=Tz8fh3A43FeUPf69\&q=85\&s=8d213b0000104542fcaa7ab160595224)
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deployment.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

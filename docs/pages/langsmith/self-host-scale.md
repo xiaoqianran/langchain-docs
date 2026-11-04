@@ -33,7 +33,7 @@ The table below provides an overview comparing different LangSmith configuration
 | **Redis resources** | 8 Gi (default) | 26 Gi external | 8 Gi (default) | 13Gi external | 26 Gi external |
 | **ClickHouse resources** | 4 CPU 16 Gi (default) | 10 CPU 32Gi memory | 8 CPU 16 Gi per replica | 16 CPU 24Gi memory | 14 CPU 24 Gi per replica |
 | **ClickHouse setup** | Single instance | Single instance | 3-node replicated cluster (Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).) | Single instance | 3-node replicated cluster (Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).) |
-| Postgres resources (We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) |
+| Postgres resources (We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) |
 | **Blob storage** | Disabled | Enabled | Enabled | Enabled | Enabled |
 
 > [!NOTE]
@@ -307,7 +307,7 @@ commonEnv:
 
 You have a relatively low scale of trace ingestions, but many frontend users querying traces and/or have scripts that hit the `/runs/query` or `/runs/<run-id>` endpoints frequently.
 
-**For this, we strongly recommend setting up a replicated ClickHouse cluster to enable high read scale at low latency.** See our [external ClickHouse doc](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster) for more guidance on how to setup a replicated ClickHouse cluster. For this load pattern, we recommend using a 3 node replicated setup, where each replica in the cluster should have resource requests of 8+ cores and 16+ GB memory, and resource limit of 12 cores and 32 GB memory.
+**For this, we strongly recommend setting up a replicated ClickHouse cluster to enable high read scale at low latency.** See our [external ClickHouse doc](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster) for more guidance on how to setup a replicated ClickHouse cluster. For this load pattern, we recommend using a 3 node replicated setup, where each replica in the cluster should have resource requests of 8+ cores and 16+ GB memory, and resource limit of 12 cores and 32 GB memory.
 
 For this, we recommend a configuration like this:
 
@@ -343,7 +343,7 @@ backend:
 # Update these values as needed to connect to your replicated clickhouse cluster.
 clickhouse:
   external:
-    # If using a 3 node replicated setup, each replica in the cluster should have resource requests of 8+ cores and 16+ GB memory, and resource limit of 12 cores and 32 GB memory.
+    # If using a 3 node replicated setup, each replica in the cluster should have resource requests of 8+ cores and 16+ GB memory, and resource limit of 12 cores and 32 GB memory.
     enabled: true
     host: langsmith-ch-clickhouse-replicated.default.svc.cluster.local
     port: "8123"
@@ -430,7 +430,7 @@ commonEnv:
 
 You have a very high rate of trace ingestion (approaching 1000 traces submitted per second) and also have many users querying traces on the frontend (over 50 users) and/or scripts that are consistently making requests to `/runs/query` or `/runs/<run-id>` endpoints.
 
-**For this, we very strongly recommend setting up a replicated ClickHouse cluster to prevent degraded read performance at high write scale.** See our [external ClickHouse doc](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster) for more guidance on how to set up a replicated ClickHouse cluster. For this load pattern, we recommend using a 3 node replicated setup, where each replica in the cluster should have resource requests of 14+ cores and 24+ GB memory, and resource limit of 20 cores and 48 GB memory. We also recommend that each node/instance of ClickHouse has 600 Gi of volume storage for each day of TTL that you enable (as per the configuration below).
+**For this, we very strongly recommend setting up a replicated ClickHouse cluster to prevent degraded read performance at high write scale.** See our [external ClickHouse doc](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster) for more guidance on how to set up a replicated ClickHouse cluster. For this load pattern, we recommend using a 3 node replicated setup, where each replica in the cluster should have resource requests of 14+ cores and 24+ GB memory, and resource limit of 20 cores and 48 GB memory. We also recommend that each node/instance of ClickHouse has 600 Gi of volume storage for each day of TTL that you enable (as per the configuration below).
 
 Overall, we recommend a configuration like this:
 
@@ -493,7 +493,7 @@ redis:
 # Update these values as needed to connect to your replicated clickhouse cluster.
 clickhouse:
   external:
-    # If using a 3 node replicated setup, each replica in the cluster should have resource requests of 14+ cores and 24+ GB memory, and resource limit of 20 cores and 48 GB memory.
+    # If using a 3 node replicated setup, each replica in the cluster should have resource requests of 14+ cores and 24+ GB memory, and resource limit of 20 cores and 48 GB memory.
     enabled: true
     host: langsmith-ch-clickhouse-replicated.default.svc.cluster.local
     port: "8123"

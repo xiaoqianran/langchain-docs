@@ -14,14 +14,14 @@
 
 1. [configuration file](#configuration-file-concepts) (`langgraph.json`)，指定应用程序使用的依赖项、图表和环境变量。
 2. 实现应用程序逻辑的[graphs](#graphs)。
-3. 指定运行应用程序所需的[dependencies](#dependencies)的文件。
+3. 指定运行应用程序所需的[dependencies](#dependencies) 的文件。
 4. 应用程序运行所需的[Environment variables](#environment-variables)。
 
 > [!提示]
 >
 > **与框架无关**
 >
-> LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)*图*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。更多详情请参考[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
+> LangSmith 部署支持部署[LangGraph](/oss/python/langgraph/overview) *图*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。更多详情请参考[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
 
 ## 文件结构以下是 Python 和 JavaScript 应用程序的目录结构示例：
 
@@ -94,7 +94,7 @@
 >
 > * 依赖项涉及自定义本地包和`langchain_openai`包。
 > * 将从文件 `./your_package/your_file.py` 和变量 `agent` 加载单个图表。
-> * 环境变量从`.env` 文件加载。
+> * 环境变量从`.env`文件加载。
 >
 > ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > {
@@ -143,7 +143,7 @@
 
 使用 [configuration file](#configuration-file-concepts) 中的 `graphs` 键指定哪些图表将在已部署的应用程序中可用。您可以在配置文件中指定一个或多个图表。每个图都由唯一的名称和 (1) 已编译图或 (2) 定义图的函数的路径来标识。
 
-### 在一个部署中定义多个图表
+### 在一个部署中定义多个图
 
 单个`langgraph.json`可以定义多个图，因此一个部署可以为多个代理提供服务。为每个代理添加一个条目到`graphs`：
 
@@ -164,7 +164,7 @@
 
 ### 使用任何带有 LangSmith 部署的框架
 
-虽然LangSmith部署要求将应用程序构建为LangGraph图，但该图中的各个节点可以包含任意代码。这意味着您可以在节点中使用任何框架或库，同时仍然受益于 LangSmith 的部署基础架构。
+虽然LangSmith部署要求将应用程序构建为LangGraph图，但该图中的各个节点可以包含任意代码。这意味着您可以在节点中使用任何框架或库，同时仍然受益于 LangSmith 的部署基础设施。
 
 图结构充当部署接口，但您的核心应用程序逻辑可以使用最适合您需求的工具和框架。
 
@@ -207,9 +207,9 @@
 
 > [选项卡] JavaScript
 >
-> 1. **一个LangGraph图结构**：使用[⟦T41⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html)与[⟦T42⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addnode)和[⟦T43⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addedge)定义一个图。
+> 1. **一个LangGraph图结构**：使用[⟦T41⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph)与[⟦T42⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph)和[⟦T43⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph)定义一个图。
 > 2. **具有任意逻辑的节点函数**：您的节点函数可以调用任何框架或库。
-> 3. **编译图**：[Compile](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#compile) 用于创建可部署应用程序的图。
+> 3. **编译图**：[Compile](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph) 用于创建可部署应用程序的图。
 >
 > 以下示例展示了如何将现有应用程序逻辑包装在最小的 LangGraph 结构中：
 >

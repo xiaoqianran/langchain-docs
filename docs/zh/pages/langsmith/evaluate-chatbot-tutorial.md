@@ -47,7 +47,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
 
 **架构：** 每个数据点至少应包含应用程序的输入。如果可以的话，定义预期输出也非常有帮助 - 这些输出代表您期望正常运行的应用程序输出的内容。很多时候你无法定义完美的输出——没关系！评估是一个迭代过程。有时您可能还想为每个示例定义更多信息 - 例如在 RAG 中获取的预期文档，或者作为代理采取的预期步骤。 LangSmith 数据集非常灵活，允许您定义任意模式。
 
-**数量：** 对于您应该收集多少没有硬性规定。最重要的是确保您对可能想要防范的边缘情况有适当的覆盖。即使 10-50 个示例也可以提供很多价值！不用担心开始时会得到大量的数据 - 您可以（并且应该）随着时间的推移不断添加！**如何获得：** 这可能是最棘手的部分。一旦你知道你想要收集数据集......你实际上如何去做呢？对于大多数开始新项目的团队来说，我们通常会看到他们首先手动收集前 10-20 个数据点。从这些数据点开始之后，这些数据集通常是“活的”结构，并随着时间的推移而增长。通常，在了解真实用户将如何使用您的应用程序、了解存在的痛点，然后将其中一些数据点移入该集合后，它们通常会增长。还有一些方法，例如综合生成数据，可用于增强数据集。首先，我们建议不要担心这些，只需手动标记大约 10-20 个示例。
+**数量：** 对于您应该收集多少没有硬性规定。最重要的是确保您对可能想要防范的边缘情况有适当的覆盖。即使 10-50 个示例也可以提供很多价值！不用担心开始时会得到大量的数据 - 您可以（并且应该）随着时间的推移不断添加！**如何获得：** 这可能是最棘手的部分。一旦你知道你想要收集数据集......你实际上如何去做呢？对于大多数开始新项目的团队来说，我们通常会看到他们首先手动收集前 10-20 个数据点。从这些数据点开始后，这些数据集通常是“活的”结构，并随着时间的推移而增长。通常，在了解真实用户将如何使用您的应用程序、了解存在的痛点，然后将其中一些数据点移入该集合后，它们通常会增长。还有一些方法，例如综合生成数据，可用于增强数据集。首先，我们建议不要担心这些，只需手动标记大约 10-20 个示例。
 
 获得数据集后，可以通过几种不同的方式将它们上传到LangSmith。在本教程中，我们将使用客户端，但您也可以通过 UI 上传（甚至在 UI 中创建它们）。在本教程中，我们将创建 5 个数据点进行评估。我们将评估一个问答应用程序。输入将是一个问题，输出将是一个答案。由于这是一个问答应用程序，我们可以定义预期的答案。让我们展示如何创建此数据集并将其上传到LangSmith！
 
@@ -211,7 +211,7 @@ experiment_results = client.evaluate(
 )
 ```
 
-如果我们返回数据集页面上的`Experiments`选项卡，我们应该看到所有三个运行现在都显示了！
+如果我们返回数据集页面上的 `Experiments` 选项卡，我们应该看到所有三个运行现在都显示了！
 
 ![Testing tutorial three runs](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/testing-tutorial-three-runs.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=9d74c18991c33d4fbd5180dbb12a4f91)
 
@@ -234,17 +234,17 @@ experiment_results = client.evaluate(
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def test_length_score() -> None:
     """Test that the length score is at least 80%."""
-    experiment_results = evaluate(
+    experiment_results = client.evaluate(
         ls_target, # Your AI system
         data=dataset_name, # The data to predict and grade over
         evaluators=[concision, correctness], # The evaluators to score the results
     )
-    # This will be cleaned up in the next release:
-    feedback = client.list_feedback(
-        run_ids=[r.id for r in client.list_runs(project_name=experiment_results.experiment_name)],
-        feedback_key="concision"
-    )
-    scores = [f.score for f in feedback]
+    scores = [
+        result.score
+        for row in experiment_results
+        for result in row["evaluation_results"]["results"]
+        if result.key == "concision"
+    ]
     assert sum(scores) / len(scores) >= 0.8, "Aggregate score should be at least .8"
 ```
 

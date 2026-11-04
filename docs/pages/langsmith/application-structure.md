@@ -213,9 +213,9 @@ To deploy with LangSmith, you need:
 
 > [tab] JavaScript
 >
-> 1. **A LangGraph graph structure**: Define a graph using [`StateGraph`](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html) with [`addNode`](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addnode) and [`addEdge`](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addedge).
+> 1. **A LangGraph graph structure**: Define a graph using [`StateGraph`](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph) with [`addNode`](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph) and [`addEdge`](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph).
 > 2. **Node functions with arbitrary logic**: Your node functions can call any framework or library.
-> 3. **A compiled graph**: [Compile](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#compile) the graph to create a deployable application.
+> 3. **A compiled graph**: [Compile](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph) the graph to create a deployable application.
 >
 > The following example shows how to wrap your existing application logic within a minimal LangGraph structure:
 >

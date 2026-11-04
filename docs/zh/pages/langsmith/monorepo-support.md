@@ -4,7 +4,7 @@
 
 # Monorepo 支持
 
-LangSmith 支持从 monorepo 设置部署代理，其中您的代理代码可能依赖于位于存储库中其他位置的共享包。本指南展示了如何构建 monorepo 并配置 `langgraph.json` 文件以使用共享依赖项。
+LangSmith 支持从 monorepo 设置部署代理，其中您的代理代码可能依赖于存储库中其他位置的共享包。本指南展示了如何构建 monorepo 并配置 `langgraph.json` 文件以使用共享依赖项。
 
 ## 存储库结构
 
@@ -58,8 +58,8 @@ my-monorepo/
 ```json Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "dependencies": [
-    ".",                    # Current agent package
-    "../../shared-utils"    # Relative path to shared package
+    ".",
+    "../../shared-utils"
   ],
   "graphs": {
     "customer_support": "./agent/graph.py:graph"
@@ -77,6 +77,8 @@ my-monorepo/
   "env": ".env"
 }
 ```
+
+在Python示例中，`"."`是当前代理包，`"../../shared-utils"`是共享包的相对路径。
 
 Python 实现通过以下方式自动处理父目录中的包：
 
@@ -101,9 +103,7 @@ Python 实现通过以下方式自动处理父目录中的包：
 }
 ```
 
-## 构建应用程序
-
-运行`langgraph build`：
+## 构建应用程序运行`langgraph build`：
 
 ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cd agents/customer-support
@@ -115,7 +115,9 @@ langgraph build -t my-customer-support-agent
 langgraph build -t my-customer-support-agent -c agents/customer-support/langgraph.json
 ```
 
-Python 构建过程：1.自动检测相对依赖路径。
+Python 构建过程：
+
+1.自动检测相对依赖路径。
 2. 将共享包复制到 Docker 构建上下文中。
 3. 按正确的顺序安装所有依赖项。
 4. 不需要特殊标志或命令。

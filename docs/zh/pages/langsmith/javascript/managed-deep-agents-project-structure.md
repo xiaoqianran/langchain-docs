@@ -4,13 +4,13 @@
 
 # 托管Deep Agents项目结构
 
-了解托管Deep Agents的项目布局。
+了解托管 Deep Agents 的项目布局。
 
 托管 Deep Agents 项目是一个普通的 TypeScript 包，具有​​一个必需的根代理条目。其他路径要么是您导入的普通模块，要么是 MDA 发现的用于启用托管功能的文件和目录。
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 项目布局
 
@@ -69,7 +69,7 @@ my-agent/
 
   `tools/` 包含普通模块，但有一个例外。 `tools/mcp.ts` 是一个托管声明，并导出名为 `mcp`。 `tools/` 下的所有其他模块都是您导入的应用程序代码。
 
-* **依赖关系和秘密**：在`package.json`中声明依赖关系。 MDA 在本地加载 `.env` 并将非保留值作为部署机密转发。保留的平台变量和`.env`文件不包含在构建存档中。有关更多信息，请参阅[Deploy a Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy)。
+* **依赖关系和秘密**：在`package.json`中声明依赖关系。 MDA 在本地加载 `.env` 并将非保留值作为部署机密转发。保留的平台变量和`.env`文件不包含在构建存档中。欲了解更多信息，请参阅[Deploy a Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy)。
 
 * **评估**：托管 Deep Agents [evals](/langsmith/javascript/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理版本中。
 

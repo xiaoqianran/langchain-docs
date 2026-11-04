@@ -4,9 +4,9 @@
 
 # 如何创建复合评估器
 
-*综合评估器*是将多个评估器分数组合成单个[score](/langsmith/evaluation-concepts#evaluator-outputs)的方法。当您想要评估应用程序的多个方面并将结果合并为单个结果时，这非常有用。
+*综合评估器* 是将多个评估器分数组合成一个 [score](/langsmith/evaluation-concepts#evaluator-outputs) 的方法。当您想要评估应用程序的多个方面并将结果合并为单个结果时，这非常有用。
 
-本指南介绍了如何设置使用多个评估器的评估，并使用 [LangSmith SDK](https://reference.langchain.com/python/langsmith/observability/sdk) 将其分数与自定义聚合函数相结合。
+本指南介绍了如何设置使用多个评估器的评估，并使用 [LangSmith SDK](https://reference.langchain.com/python/langsmith) 将其分数与自定义聚合函数相结合。
 
 > [!注意]
 >
@@ -132,7 +132,7 @@ results = client.evaluate(
     experiment_prefix="gpt-5.4-mini",
 )
 
-# Get the experiment name to be used in client.get_experiment_results() in the next section
+# Get the experiment name to be used in the next section
 experiment_name = results.experiment_name
 ```
 
@@ -141,8 +141,10 @@ experiment_name = results.experiment_name
 创建综合反馈，使用您的自定义函数汇总各个评估者的分数。此示例使用各个评估者分数的加权平均值。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from typing import Dict
+import asyncio
 import math
+from typing import Dict
+
 from langsmith import Client
 from dotenv import load_dotenv
 
@@ -159,11 +161,6 @@ DEFAULT_WEIGHTS: Dict[str, float] = {
 }
 WEIGHTED_FEEDBACK_NAME = "weighted_summary"
 
-# Pull experiment results
-client = Client()
-results = client.get_experiment_results(
-    name=YOUR_EXPERIMENT_NAME,
-)
 
 # Calculate weighted score for each run
 def calculate_weighted_score(feedback_stats: dict) -> float:
@@ -181,17 +178,27 @@ def calculate_weighted_score(feedback_stats: dict) -> float:
     total_score = 0.0
     for metric, weight in DEFAULT_WEIGHTS.items():
         metric_data = feedback_stats[metric]
-        if metric_data.get("n", 0) > 0 and "avg" in metric_data:
-            total_score += metric_data["avg"] * weight
+        if (metric_data.n or 0) > 0 and metric_data.avg is not None:
+            total_score += metric_data.avg * weight
         else:
             return float("nan")
 
     return total_score
 
-# Process each run and write feedback
-# Note that experiment results need to finish processing before this should be called.
-for example_with_runs in results["examples_with_runs"]:
-    for run in example_with_runs.runs:
+
+async def main():
+    client = Client()
+    # The experiment is a tracing project; its root runs carry the evaluator scores
+    experiment = client.read_project(project_name=YOUR_EXPERIMENT_NAME)
+
+    # Process each run and write feedback
+    # Note that experiment results need to finish processing before this should be called.
+    async for run in client.runs.query(
+        project_ids=[str(experiment.id)],
+        min_start_time=experiment.start_time,
+        is_root=True,
+        selects=["ID", "FEEDBACK_STATS"],
+    ):
         if run.feedback_stats:
             score = calculate_weighted_score(run.feedback_stats)
             if not math.isnan(score):
@@ -199,8 +206,11 @@ for example_with_runs in results["examples_with_runs"]:
                     run_id=run.id,
                     key=WEIGHTED_FEEDBACK_NAME,
                     score=float(score),
-                    session_id=run.session_id,
+                    session_id=experiment.id,
                 )
+
+
+asyncio.run(main())
 ```
 
 ***

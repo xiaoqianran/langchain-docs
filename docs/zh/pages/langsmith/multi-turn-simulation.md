@@ -241,7 +241,7 @@ def test_multiturn_message_with_openai():
         ],
     )
     trajectory_evaluator = create_llm_as_judge(
-        model="openai:o3-mini",
+        model="openai:gpt-5.4-mini",
         prompt="Based on the below conversation, was the user satisfied?\n{outputs}",
         feedback_key="satisfaction",
     )
@@ -315,7 +315,7 @@ ls.describe("Multiturn demo", () => {
       });
 
       const trajectoryEvaluator = createLLMAsJudge({
-        model: "openai:o3-mini",
+        model: "openai:gpt-5.4-mini",
         prompt:
           "Based on the below conversation, was the user satisfied?\n{outputs}",
         feedbackKey: "satisfaction",
@@ -345,7 +345,7 @@ ls.describe("Multiturn demo", () => {
 
 * 模拟应该是`target`函数的一部分，并且你的目标函数应该返回最终轨迹。
   * 这将使轨迹成为 `outputs`，LangSmith 将传递给您的评估者。
-* 您应该将评估器作为参数传递到 `evaluate()` 方法中，而不是使用 `trajectory_evaluators` 参数。
+* 您应该将求值器作为参数传递到 `evaluate()` 方法中，而不是使用 `trajectory_evaluators` 参数。
 * 您将需要现有的输入数据集和（可选）参考轨迹。
 
 这是一个例子：
@@ -372,7 +372,7 @@ ls_client.create_examples(
     examples=examples,
 )
 trajectory_evaluator = create_llm_as_judge(
-    model="openai:o3-mini",
+    model="openai:gpt-5.4-mini",
     prompt="Based on the below conversation, was the user satisfied?\n{outputs}",
     feedback_key="satisfaction",
 )
@@ -445,7 +445,7 @@ const dataset = await lsClient.createDataset(datasetName);
 await lsClient.createExamples([{ inputs, dataset_id: dataset.id }]);
 
 const trajectoryEvaluator = createLLMAsJudge({
-  model: "openai:o3-mini",
+  model: "openai:gpt-5.4-mini",
   prompt:
     "Based on the below conversation, was the user satisfied?\n{outputs}",
   feedbackKey: "satisfaction",
@@ -531,7 +531,7 @@ ls_client.create_examples(
     examples=examples,
 )
 trajectory_evaluator = create_llm_as_judge(
-    model="openai:o3-mini",
+    model="openai:gpt-5.4-mini",
     prompt="Based on the below conversation, was the user satisfied?\n{outputs}",
     feedback_key="satisfaction",
 )
@@ -619,7 +619,7 @@ const examples = [{
 await lsClient.createExamples(examples);
 
 const trajectoryEvaluator = createLLMAsJudge({
-  model: "openai:o3-mini",
+  model: "openai:gpt-5.4-mini",
   prompt:
     "Based on the below conversation, was the user satisfied?\n{outputs}",
   feedbackKey: "satisfaction",

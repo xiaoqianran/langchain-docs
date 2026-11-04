@@ -184,7 +184,7 @@ AWS IAM 角色身份验证可避免将过期的 ECR 授权令牌存储在 LangSm
 >
 > 仅当您的 LangSmith 部署支持时，才会显示 **AWS IAM 角色** 身份验证方法。如果该选项不可用，请使用用户名和密码身份验证。> [!注意]
 >
-> **BYOC 部署：** AWS IAM 角色身份验证适用于 [BYOC](/langsmith/byoc) AWS 数据平面，无需额外设置。请按照以下步骤操作。如果您的数据平面使用[bring your own IAM](/langsmith/byoc-byoiam)，请先应用最新版本的[⟦T56⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam)。它授予工作负载角色权限来承担您的 ECR 角色。
+> **BYOC 部署：** AWS IAM 角色身份验证适用于 [BYOC](/langsmith/byoc) AWS 数据平面，无需额外设置。请按照以下步骤操作。如果您的数据平面使用[bring your own IAM](/langsmith/byoc-byoiam-aws)，请先应用最新版本的[⟦T56⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam)。它授予工作负载角色权限来承担您的 ECR 角色。
 
 注册 ECR 角色：
 

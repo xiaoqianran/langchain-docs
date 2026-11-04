@@ -40,7 +40,7 @@ A very common way to deal with rate limit errors is retrying with exponential ba
 If you're using `langchain` components you can add retries to all model calls with the `.with_retry(...)` / `.withRetry()` method:
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain import init_chat_model
+from langchain.chat_models import init_chat_model
 
 model_with_retry = init_chat_model("gpt-5.4-mini").with_retry(stop_after_attempt=6)
 ```

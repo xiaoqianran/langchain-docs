@@ -1,4 +1,4 @@
-<!-- langchain-docs: AWS data plane cost estimate | https://docs.langchain.com/langsmith/byoc-data-plane-cost -->
+<!-- langchain-docs: AWS data plane cost estimate | https://docs.langchain.com/langsmith/byoc-data-plane-cost-aws -->
 
 # AWS data plane cost estimate
 
@@ -69,4 +69,4 @@ This is a rough monthly cost for a LangSmith data plane in your AWS account.
 
 [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-data-plane-cost.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-data-plane-cost-aws.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

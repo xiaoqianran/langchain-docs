@@ -10,7 +10,7 @@
 >
 > **适用计划限制**
 >
-> 对于2026年8月3日之后注册的客户，批量导出仅适用于[LangSmith Enterprise plan](https://www.langchain.com/pricing-langsmith)。在 2026 年 8 月 3 日或之前注册的客户可以在 2027 年 2 月 1 日之前使用 Plus 或 Enterprise 套餐的批量导出功能。
+> 对于2026年8月3日之后注册的客户，批量导出仅适用于[LangSmith Enterprise plan](https://www.langchain.com/pricing)。在 2026 年 8 月 3 日或之前注册的客户可以在 2027 年 2 月 1 日之前使用 Plus 或 Enterprise 套餐的批量导出功能。
 
 LangSmith 可以将跟踪数据以 Parquet 格式导出到 Google Cloud Storage (GCS) 存储桶。从那里，您可以将其作为外部表（从 GCS 就地查询）或本机表（复制到 BigQuery 存储中）加载到 BigQuery 中。
 
@@ -65,7 +65,7 @@ gcloud storage buckets add-iam-policy-binding gs://YOUR_BUCKET_NAME \
 
 ## 3. 生成 HMAC 密钥
 
-LangSmith 使用与 S3 兼容的 XML API 连接到 GCS，这需要 HMAC 密钥而不是服务帐户 JSON 密钥。
+LangSmith 使用 S3 兼容的 XML API 连接到 GCS，这需要 HMAC 密钥而不是服务帐户 JSON 密钥。
 
 为您的服务帐户生成 HMAC 密钥：
 
@@ -228,7 +228,7 @@ BigQuery 提供两种访问导出数据的方法。两者都需要首先授予 B
 >
 > 10. 在**高级选项**下，将新表的**写入首选项**设置为**如果为空则写入**。
 >
-> 11. 单击**创建表**。
+> 11. 单击“**创建表**”。
 >
 > BigQuery 运行加载作业来复制数据。 Hive 分区列在表中显示为常规列。有关可用数据列的完整列表，请参阅[Exportable fields](/langsmith/data-export#exportable-fields)。
 
@@ -266,8 +266,8 @@ BigQuery 提供两种访问导出数据的方法。两者都需要首先授予 B
 | - | - | - |
 | `400 Access denied` 关于目的地创建 | HMAC 凭证缺乏写入权限 |验证服务帐户在存储桶上有`storage.objects.create` |
 | `400 Key ID you provided does not exist` | HMAC 访问 ID 无效 |在 GCP 中重新生成 HMAC 密钥 |
-| `400 Invalid endpoint` |端点 URL 格式错误 |准确使用`https://storage.googleapis.com`|
-| BigQuery 表不显示任何行 |出口尚未完成|使用`GET /api/v1/bulk-exports/{export_id}`检查导出状态 |
+| `400 Invalid endpoint` |端点 URL 格式错误 |准确使用`https://storage.googleapis.com` |
+| BigQuery 表不显示任何行 |出口尚未完成 |使用`GET /api/v1/bulk-exports/{export_id}`检查导出状态 |
 | BigQuery 分区修剪不起作用 |源 URI 前缀不正确 |确保源 URI 前缀在第一个分区键之前结束，例如`gs://BUCKET/PREFIX` |
 | BigQuery 拾取 `tmp/` 文件 |广泛的文件路径 glob |在文件路径中使用 `export_id=*` 而不是 `*` |
 

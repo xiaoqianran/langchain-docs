@@ -97,7 +97,7 @@ You can configure TTLs for both checkpoints and store items in the same `langgra
 
 ## Configure per-thread TTL
 
-You can apply [TTL configurations per-thread](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.create).
+You can apply [TTL configurations per-thread](https://reference.langchain.com/python/langsmith/deployment-sdk).
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 thread = await client.threads.create(

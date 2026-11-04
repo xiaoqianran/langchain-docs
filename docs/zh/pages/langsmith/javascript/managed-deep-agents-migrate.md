@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 决定是否移动
 
@@ -18,13 +18,13 @@
 
 当您需要该层时移动代理而不运行它。当您需要拥有它时，请留在Deep Agents。| | Deep Agents |托管Deep Agents |
 | - | - | - |
-| **托管** |您可以在自己的进程或容器中运行代理，或者将其部署为[LangSmith deployment](/langsmith/deployment)。 | LangSmith 在 [Agent Server](/langsmith/agent-server-overview) 上托管代理。 `mda deploy` 是整个部署步骤。 |
+| **托管** |您可以在自己的进程或容器中运行代理，或将其部署为[LangSmith deployment](/langsmith/deployment)。 | LangSmith 在 [Agent Server](/langsmith/agent-server-overview) 上托管代理。 `mda deploy` 是整个部署步骤。 |
 | **文件系统和外壳** |任何[backend](/oss/javascript/deepagents/backends)：代理状态、本地磁盘、存储或您向提供商提供的[sandbox](/oss/javascript/deepagents/sandboxes)。 |一个托管的[sandbox](/langsmith/javascript/managed-deep-agents-sandboxes)，在文件中声明。 LangSmith 创建它，对其进行快照，并在空闲时停止它。 |
 | **对话记忆** |您自己运行存储并连接它。 |一棵共享的[memory](/langsmith/javascript/managed-deep-agents-memory)树，通过添加文件启用。 |
 | **最终用户的第三方访问** |您为每个用户配置并存储凭据。 | [Connections](/langsmith/javascript/managed-deep-agents-connections) 保存工作区机密并运行 OAuth，以便最终用户自行授权服务。 |
 | **聊天界面** |您编写集成。 | [Channels](/langsmith/javascript/managed-deep-agents-channels) 连接 Slack 和其他消息服务。 |
 | **预定运行** |您运行调度程序。 | [Schedules](/langsmith/javascript/managed-deep-agents-schedules) 运行托管 cron 作业。 |
-| **围绕代理的代码** |您可以编写，包括自定义路由和应用程序代码。 |仅限代理。对于自定义路由或应用程序代码，请使用[LangSmith deployment](/langsmith/deployment)。 |无论哪种方式，线束都是相同的。当您想要运行生产代理而无需管理基础设施时，请从 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 开始使用新代理。当您已经拥有 Deep Agents SDK 代理并需要托管运行时时，请使用本指南。要自行使用相同的 Deep Agents 工具和托管代理或运行自定义 [LangSmith Deployment](/langsmith/deployment)，请参阅 [Going to production](/oss/javascript/deepagents/going-to-production)。
+| **围绕代理的代码** |您可以编写，包括自定义路由和应用程序代码。 |仅限代理。对于自定义路由或应用程序代码，请使用[LangSmith deployment](/langsmith/deployment)。 |无论哪种方式，线束都是相同的。当您想要运行生产代理而无需管理基础设施时，请从新代理的[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)开始。当您已经拥有 Deep Agents SDK 代理并需要托管运行时时，请使用本指南。要自行使用相同的 Deep Agents 工具和托管代理或运行自定义 [LangSmith Deployment](/langsmith/deployment)，请参阅 [Going to production](/oss/javascript/deepagents/going-to-production)。
 
 ## 了解发生了什么变化
 
@@ -84,7 +84,7 @@
 | `memory` | `memory.ts` |导出`defineMemory({ scope: "agent" })`。如果没有持久内存，则省略该文件。参见[Memory](/langsmith/javascript/managed-deep-agents-memory)。 |
 | `backend` | `sandbox/` |声明一个托管沙箱而不是构建后端。参见[Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)。 |
 | `permissions` |留下一个选项 |已接受，并在项目声明沙箱时清除。参见[Permissions](/oss/javascript/deepagents/permissions)。 |
-| `store`、`checkpointer` |托管运行时 |删除两者。 |Deep Agents 后端是可插入的，并且托管运行时提供自己的后端。声明 `sandbox/` 的项目会获得一个用于代理文件系统和 shell 的托管沙箱。没有代理的项目会获得线程范围的代理状态，以及用于指令、技能和内存的只读 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 安装。没有其他后端选择，因此依赖于特定后端的代理会留在Deep Agents。
+| `store`、`checkpointer` |托管运行时 |删除两者。 |Deep Agents 后端是可插入的，并且托管运行时提供自己的后端。声明 `sandbox/` 的项目会获得一个用于代理文件系统和 shell 的托管沙箱。没有代理的项目会获得线程范围的代理状态，以及用于指令、技能和内存的只读 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 安装。没有其他后端选择，因此依赖于特定后端的代理保留在 Deep Agents 上。
 
 ## 移动代理
 
@@ -217,7 +217,7 @@ mda dev
 
 **8.部署**
 
-上传项目并让 LangSmith 构建并托管它：
+上传项目并让LangSmith构建并托管它：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 mda deploy

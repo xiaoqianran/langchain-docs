@@ -4,7 +4,7 @@
 
 # 设置指南（旧版）
 
-Legacy hybrid deployment model with a LangChain-managed control plane and a self-managed data plane.
+具有LangChain管理的控制平面和自我管理的数据平面的传统混合部署模型。
 
 > [!警告]
 >
@@ -12,21 +12,21 @@ Legacy hybrid deployment model with a LangChain-managed control plane and a self
 
 > [!注意]
 >
-> 混合选项需要 [Enterprise](https://langchain.com/pricing) 计划。 [Get a demo](https://www.langchain.com/contact-sales) 了解更多。
+> 混合选项需要 [Enterprise](https://www.langchain.com/pricing) 计划。 [Get a demo](https://www.langchain.com/contact-sales) 了解更多。
 
-The **hybrid** model splits LangSmith infrastructure between LangChain's cloud and yours:
+**混合**模型在 LangChain 的云和您的云之间拆分 LangSmith 基础设施：
 
-* **Control plane** (LangSmith UI, APIs, and orchestration) runs in LangChain's cloud, managed by LangChain.
-* **Data plane** (your Agent Servers (The server that runs your applications.) and agent workloads) runs in your cloud, managed by you.
+* **控制平面**（LangSmith UI、API 和编排）在 LangChain 的云中运行，由 LangChain 管理。
+* **数据平面**（您的代理服务器（运行应用程序的服务器。）和代理工作负载）在您的云中运行，由您管理。
 
-This combines the convenience of a managed interface with the flexibility of running workloads in your own environment.
+这将托管界面的便利性与在您自己的环境中运行工作负载的灵活性结合起来。
 
 > [!注意]
 >
-> Learn more about the [control plane](/langsmith/control-plane), [data plane](/langsmith/data-plane), and [Agent Server](/langsmith/agent-server) architecture concepts.|组件|职责|它在哪里运行 |谁来管理|
+> 了解有关 [control plane](/langsmith/control-plane)、[data plane](/langsmith/data-plane) 和 [Agent Server](/langsmith/agent-server) 架构概念的更多信息。|组件|职责|它在哪里运行 |谁来管理|
 | - | - | - | - |
-|控制平面（用于管理部署的LangSmith UI 和 API。） <ul><li>UI for creating deployments and revisions</li><li>APIs for managing deployments</li><li>Observability data storage</li></ul> | LangChain的云 | LangChain |
-|数据平面（代理服务器和代理执行的运行时环境。） <ul><li>Operator/listener to reconcile deployments</li><li>Agent Servers (agents/graphs)</li><li>Backing services (Postgres, Redis, etc.)</li></ul> |你的云 |你|
+|控制平面（用于管理部署的LangSmith UI 和 API。） <ul><li>用于创建部署和修订的UI</li><li>用于管理部署的API</li><li>可观测性数据存储</li></ul> | LangChain的云 | LangChain |
+|数据平面（代理服务器和代理执行的运行时环境。） <ul><li>用于协调部署的操作员/侦听器</li><li>代理服务器（代理/图表）</li><li>支持服务（Postgres、Redis 等）</li></ul> |你的云 |你|
 
 在混合模型中运行 LangSmith 时，您可以使用 [LangSmith API key](/langsmith/create-account-api-key) 进行身份验证。
 
@@ -253,7 +253,7 @@ LangSmith API：
 
 * 一个工作区可以与一个或多个监听器关联。
 * 一个监听器只能与一个工作区关联。 LangSmith 工作空间到监听器是一对多的关系。
-* 工作区只能部署到部署了所有监听器的 Kubernetes 集群。
+* 工作区只能部署到部署了其所有侦听器的 Kubernetes 集群。
 
 ## 用例
 

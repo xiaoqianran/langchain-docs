@@ -6,7 +6,7 @@
 
 本页面介绍如何创建、配置和管理[assistants](/langsmith/assistants)。助手允许您通过配置自定义 [deployed](/langsmith/deployment) 图形的行为（例如模型选择、提示和工具可用性），而无需更改底层图形代码。
 
-您可以使用 [SDK](https://reference.langchain.com/python/langsmith/deployment/sdk/) 或在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-configuration-cloud) 中工作。
+您可以使用 [SDK](https://reference.langchain.com/python/langsmith/deployment-sdk) 或在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-configuration-cloud) 中工作。
 
 ## 了解助手配置
 
@@ -310,7 +310,7 @@ function callModel(state: State, runtime: Runtime[ContextSchema]) {
 > "context": {"model_name": "openai", "system_prompt": "You are a mindful assistant!"}
 > }'
 > ```
->> 更新创建新版本并自动将其设置为活动状态。以后所有使用此助手 ID 的运行都将使用新配置。
+>> 更新创建新版本并自动将其设置为活动状态。所有使用此助手 ID 的未来运行都将使用新配置。
 >
 > ## 使用以前的助手版本
 >

@@ -210,7 +210,7 @@ In 0.16.0, the traces and deployments operations replace `get_granular_usage` an
 
 > [accordion] Are audit logs available on the Plus or Developer plan?
 >
-> No. Audit logs are an Enterprise feature. See [pricing](https://www.langchain.com/pricing-langsmith) for plan details.
+> No. Audit logs are an Enterprise feature. See [pricing](https://www.langchain.com/pricing) for plan details.
 
 > [accordion] Is there a UI for viewing audit logs?
 >

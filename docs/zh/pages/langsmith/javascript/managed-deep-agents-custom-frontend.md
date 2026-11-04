@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 选择身份提供商
 
@@ -22,7 +22,7 @@
 |您自己的服务器，已对用户进行身份验证 | [Your own backend](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-your-own-backend)。您的服务器断言共享入口机密背后的用户 ID。 |
 |您自己的服务器，没有自己的最终用户帐户 | [LangSmith API key](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-a-langsmith-api-key) 默认值。密钥本身就是调用者。 |
 
-任一服务器行都适合任何语言的服务器渲染应用程序。 Streamlit、Gradio 和 Dash 在服务器上运行其代码，Next.js 路由处理程序和 Express 代理也是如此。指向 [⟦T3⟧](/langsmith/javascript/managed-deep-agents-local-development#understand-local-behavior) 的前端在您配置提供程序之前运行，因为本地服务器提供测试用户。
+任一服务器行都适合任何语言的服务器渲染应用程序。 Streamlit、Gradio 和 Dash 在服务器上运行其代码，Next.js 路由处理程序和 Express 代理也是如此。在配置提供程序之前，指向 [⟦T3⟧](/langsmith/javascript/managed-deep-agents-local-development#understand-local-behavior) 的前端会起作用，因为本地服务器提供测试用户。
 
 > [!警告]
 >
@@ -53,7 +53,7 @@ export const agent = defineDeepAgent({
 | - | - | - |
 |反应 | `@langchain/react` | `useStream` |
 |视图 | `@langchain/vue` | `useStream` |
-|苗条| `@langchain/svelte` | `useStream` |
+|苗条 | `@langchain/svelte` | `useStream` |
 |角度| `@langchain/angular` | `injectStream` |
 
 前端在浏览器中运行，因此即使代理是用 Python 编写的，这些示例也是 TypeScript。
@@ -124,7 +124,7 @@ export function Chat() {
 }
 ```
 
-在后端身份下，浏览器永远不会到达部署。将 `apiUrl` 指向您自己的服务器，并从那里转发代理服务器路由，并在每个上游请求上标记 `x-mda-ingress-secret` 和您的身份验证层解析的用户 ID。有关标头和共享密钥，请参阅[Configure identity with your own backend](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-your-own-backend)。
+在后端身份下，浏览器永远不会到达部署。将 `apiUrl` 指向您自己的服务器，并从那里转发代理服务器路由，并在每个上游请求上标记 `x-mda-ingress-secret` 和您的身份验证层解析的用户 ID。对于标头和共享密钥，请参阅[Configure identity with your own backend](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-your-own-backend)。
 
 相同的前端模式适用于托管 Deep Agents 部署。请参阅 [tool-call rendering](/oss/javascript/langchain/frontend/tool-calling)、[generative UI](/oss/javascript/langchain/frontend/generative-ui-overview)、[human-in-the-loop approval](/oss/javascript/langchain/frontend/human-in-the-loop)、[queued submissions](/oss/javascript/langchain/frontend/message-queues) 和 [durable rejoin](/oss/javascript/langchain/frontend/join-rejoin)。
 

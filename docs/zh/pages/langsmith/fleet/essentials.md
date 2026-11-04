@@ -72,22 +72,22 @@ LangSmith 舰队要素是构成代理基础的核心功能。它们包括工具�
 
 > [!提示]
 >
-> 您还可以通过直接在聊天中提示客服人员来更新说明。例如：“更新您的说明，以便始终以要点进行回应。”
+> 您还可以通过直接在聊天中提示客服人员来更新说明。例如：“更新您的说明，始终以要点形式进行回复。”
 
 ## LangChain 标准单位 (LSU)
 
 车队使用情况以 LangChain 标准单位 (LSU) 衡量。 LSU 使用情况基于代理执行的 [model](#models) 工作，包括所选层及其处理和生成的内容量。> [!注意]
 >
-> 自 **2026 年 10 月 1 日**起，新的 [model tiers](#models) 和 LSU 定价适用于车队使用。如果您使用自定义模型，请[contact our sales team](https://www.langchain.com/contact-sales)了解您的转换。
+> 新的 [model tiers](#models) 和 LSU 定价适用于自 **2026 年 10 月 1 日**开始的车队使用。如果您使用自定义模型，请[contact our sales team](https://www.langchain.com/contact-sales)了解您的转换。
 
 配额在整个组织内共享并每月重置：
 
 * **免费计划**：每个组织每月 7 个 LSU。当配额用完时，Fleet 会暂停新的运行，直到配额重置或组织升级到 Plus。
 * **Plus 计划**：每个组织每月 37 个 LSU。额外使用需付费。有关当前费率，请参阅[LangSmith pricing page](https://www.langchain.com/pricing)。
 
-运行成本各不相同。舰队运行可以进行多个模型调用，并且任务的长度和复杂性各不相同。较长的任务、较大量的上下文或较高的层可能比快速层中的短任务消耗更多的 LSU。
+运行成本各不相同。舰队运行可以进行多个模型调用，任务的长度和复杂性各不相同。较长的任务、较大量的上下文或较高的层可能比快速层中的短任务消耗更多的 LSU。
 
-如果您的组织采用了祖父的 Plus 席位或跟踪定价，则当车队转向 LSU 定价时，这些费率不会发生变化。 [Contact our sales team](https://www.langchain.com/contact-sales) 确认您组织的定价。
+如果您的组织具有祖父的 Plus 席位或跟踪定价，则当车队转向 LSU 定价时，这些费率不会发生变化。 [Contact our sales team](https://www.langchain.com/contact-sales) 确认您组织的定价。
 
 ## 内存
 
@@ -102,7 +102,7 @@ LangSmith 舰队要素是构成代理基础的核心功能。它们包括工具�
 >
 > 对于在自动化 [schedules](/langsmith/fleet/schedules#add-a-schedule) 上运行的代理，我们建议使用 [disabling the approval requirement](/langsmith/fleet/manage-agent-settings#disable-required-approval-for-memory-updates)，以便代理可以在无需手动干预的情况下保留信息。
 
-有关更多信息，请参阅[How we built the memory system for Fleet (formerly known as Agent Builder)](https://www.langchain.com/conceptual-guides/how-we-built-agent-builders-memory)。
+有关更多信息，请参阅[How we built the memory system for Fleet (formerly known as Agent Builder)](https://www.langchain.com/blog/how-we-built-agent-builders-memory)。
 
 ## 型号Fleet 为您管理模型。它为每个任务选择并维护一个强大的模型，因此您无需选择提供者、配置模型或提供 API 密钥即可获得良好的结果。使用量按[LangChain Standard Units (LSUs)](#langchain-standard-units-lsus)计费。
 
@@ -131,7 +131,7 @@ Fleet 提供三个托管层。随着新模型的推出，每层背后的模型�
 使用技能可以帮助：
 
 * 通过仅提供与当前任务相关的上下文来节省令牌的使用。
-* 防止座席在系统提示中出现过多上下文，这可能会导致幻觉和错误响应。
+* 防止座席在系统提示中出现过多上下文，这可能导致出现幻觉和错误响应。
 
 要添加技能，请展开客服侧栏中的 **知识** 抽屉，然后单击 **+ 添加技能**。
 
@@ -181,7 +181,7 @@ Fleet 提供三个托管层。随着新模型的推出，每层背后的模型�
 3. 在“**诊断**”下，单击“**查看代理跟踪**”。
 
 要查看特定线程的跟踪：1. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-essentials) 中，导航至代理的收件箱。
-2. 右键单击​​要跟踪的线程并选择“**查看跟踪**”。
+2. 右键单击​​要跟踪的线程，然后选择“**查看跟踪**”。
 
 有关更多信息，请参阅[LangSmith Observability](/langsmith/observability)。
 

@@ -40,7 +40,7 @@ Build a graph by defining [state](#state), adding [nodes](#nodes) and [edges](#e
 
 You must compile the graph before you invoke or stream it. This is the smallest end-to-end example:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing_extensions import TypedDict
 
 from langgraph.graph import END, START, StateGraph
@@ -115,7 +115,7 @@ new_value = reducer(left=current_state[key], right=node_update[key])
 
 Define a reducer and attach it to a state key with `Annotated`:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Annotated
 
 from typing_extensions import TypedDict
@@ -132,7 +132,7 @@ class State(TypedDict):
 
 Calling the reducer with left and right shows how values combine:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 append_strings(left=["draft"], right=["review"])  # returns ["draft", "review"]
 ```
 
@@ -146,7 +146,7 @@ For example, start with `{"foo": 1, "bar": ["hi"]}`. An update of `{"foo": 2}` y
 
 Use a custom reducer to combine values, such as appending to a list.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import operator
 from typing import Annotated
 
@@ -180,7 +180,7 @@ Store conversation history as a list of messages in state, with a reducer that a
 
 Use [`add_messages`](https://reference.langchain.com/python/langgraph/graph/message/add_messages) on a `messages` key. Plain `operator.add` only appends, so it cannot update an existing message in place during human-in-the-loop edits.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Annotated
 
 from langchain.messages import AnyMessage
@@ -210,7 +210,7 @@ Access attributes with dot notation, for example `state["messages"][-1].content`
 
 `MessagesState` is a prebuilt state with a single `messages` key that uses [`add_messages`](https://reference.langchain.com/python/langgraph/graph/message/add_messages). Subclass it to add fields:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph import MessagesState
 
 
@@ -230,7 +230,7 @@ A node can accept:
 
 Add nodes with [`add_node`](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/add_node):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from dataclasses import dataclass
 
 from langgraph.graph import StateGraph
@@ -267,7 +267,7 @@ Behind the scenes, LangGraph wraps functions as [`RunnableLambda`](https://refer
 
 If you omit a node name, LangGraph uses the function name.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 builder.add_node(my_node)
 # Reference the node as "my_node" in edges
 ```
@@ -282,6 +282,21 @@ You can add or remove nodes and edges without breaking resume for existing threa
 
 If a node calls [tasks](/oss/python/langgraph/functional-api#task) or [`interrupt`](https://reference.langchain.com/python/langgraph/types/interrupt), stricter [determinism](/oss/python/langgraph/functional-api#determinism) rules apply on resume. Completed task results are restored from the checkpointer. Changing task or interrupt order before the resume point can mismatch cached values. See [Idempotency](/oss/python/langgraph/functional-api#idempotency).
 
+### Choose the unit of work
+
+A [node](#nodes) is a checkpoint and retry boundary. It is also where the graph can take a different path. Deterministic work such as parsing, retrieval, or a fixed tool chain does not need its own node unless you want that boundary.
+
+Ask whether the step decides what happens next, or executes something already decided. Then pick the primitive that matches the recovery behavior you need:
+
+| Primitive | Own checkpoint | On resume or retry | Choose when |
+| - | - | - | - |
+| Plain function inside a node | No. It runs inside the node's [super-step](#super-steps). | Re-runs whenever the node re-runs. | No routing fork after the step, and repeating it with the rest of the node is acceptable. |
+| [Task](/oss/python/langgraph/functional-api#task) | No new graph checkpoint. The result is stored with the running entrypoint or parent checkpoint. | The enclosing entrypoint or node replays from the start. Completed tasks return stored results. | The step has a side effect or is expensive, and must not repeat on resume. |
+| [Subgraph](/oss/python/langgraph/use-subgraphs) | Yes for stateful modes: nodes checkpoint under a namespace of the parent thread. Compile with `checkpointer=False` for no subgraph checkpoints. | Stateful modes resume inside the subgraph at the interrupted or failed node. | The unit has its own routing or state schema, or more than one parent graph reuses it. |
+| Graph node | Yes. A checkpoint follows the [super-step](#super-steps) it runs in. | Resume starts at that node. Earlier nodes do not re-run. | A routing fork is possible after the step, or you need an interrupt, resume, or [time travel](/oss/python/langgraph/use-time-travel) boundary. |
+
+For side effects under retries, see [Retry boundaries and idempotency](/oss/python/langgraph/fault-tolerance#retry-boundaries-and-idempotency). For task retries and timeouts, see [Tasks](/oss/python/langgraph/functional-api-tasks).
+
 ### Using tasks in nodes
 
 When one node runs several operations that should checkpoint independently, wrap each operation in a [task](/oss/python/langgraph/functional-api#task) instead of splitting the work across nodes. With a checkpointer, completed task results are saved, so a resumed thread can skip finished work inside the node. For patterns and examples, see [Tasks](/oss/python/langgraph/functional-api-tasks) and [Common pitfalls](/oss/python/langgraph/functional-api#common-pitfalls).
@@ -290,7 +305,7 @@ When one node runs several operations that should checkpoint independently, wrap
 
 [`START`](https://reference.langchain.com/python/langgraph/constants/START) is the virtual entry that delivers user input into the graph. Use it to mark which nodes run first.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph import START
 
 graph.add_edge(START, "node_a")
@@ -300,7 +315,7 @@ graph.add_edge(START, "node_a")
 
 `END` marks a terminal edge. Use it when a path should stop.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph import END
 
 graph.add_edge("node_a", END)
@@ -331,7 +346,7 @@ A node can have multiple outgoing edges. Destinations on those edges run in para
 
 If you always want to go from node A to node B, use [`add_edge`](https://reference.langchain.com/python/langgraph/pregel/_draw/add_edge):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph.add_edge("node_a", "node_b")
 ```
 
@@ -339,7 +354,7 @@ graph.add_edge("node_a", "node_b")
 
 If you want to optionally route to one or more nodes (or terminate), use [`add_conditional_edges`](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/add_conditional_edges). Pass the source node and a routing function to call after that node runs:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph.add_conditional_edges("node_a", routing_function)
 # Or with an explicit map:
 graph.add_conditional_edges(
@@ -361,7 +376,7 @@ The routing function can return a node name, `END`, a list of names (fan-out), o
 
 The entry point is the first node (or nodes) that run when the graph starts. Add an edge from the virtual [`START`](https://reference.langchain.com/python/langgraph/constants/START) node to the first node to execute:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph.add_edge(START, "node_a")
 ```
 
@@ -369,7 +384,7 @@ graph.add_edge(START, "node_a")
 
 A conditional entry point lets you start at different nodes depending on custom logic. Use [`add_conditional_edges`](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/add_conditional_edges) from [`START`](https://reference.langchain.com/python/langgraph/constants/START):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph.add_conditional_edges(START, routing_function)
 ```
 
@@ -385,7 +400,7 @@ Return one or more `Send` objects from a conditional edge. Each `Send` names a t
 
 The first argument to `Send` is the target node name. The second is the state (or partial state) for that invocation.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Send
 
 
@@ -425,7 +440,7 @@ Use `Command` in three places:
 
 Return [`Command`](https://reference.langchain.com/python/langgraph/types/Command) to update state and route in one step:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def my_node(state: CommandState) -> Command[Literal["my_other_node"]]:
     return Command(
         update={"foo": "bar"},
@@ -447,7 +462,7 @@ See [Combine control flow and state updates with Command](/oss/python/langgraph/
 
 From a [subgraph](/oss/python/langgraph/use-subgraphs) node, navigate to a node in the parent graph with `Command.PARENT`:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def my_node(state: CommandState) -> Command[Literal["other_subgraph"]]:
     return Command(
         update={"foo": "bar"},
@@ -480,7 +495,7 @@ When you update a parent key that the subgraph also uses, define a [reducer](#re
 
 Use `Command(resume=...)` after an [interrupt](/oss/python/langgraph/interrupts). The value becomes the return value of the paused `interrupt()` call:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph.invoke(Command(resume="yes"), config)
 ```
 
@@ -513,7 +528,7 @@ For logic changes that stay schema-compatible (for example, a new tool set), see
 
 Runtime context passes dependencies into nodes without putting them in graph state (for example, model name or a database handle).
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from dataclasses import dataclass
 
 from langgraph.graph import END, START, StateGraph

@@ -95,7 +95,7 @@ LangSmith 保留[checkpoints](/oss/python/langgraph/checkpointers#checkpoints)�
 
 ## 配置每个线程的 TTL
 
-您可以申请[TTL configurations per-thread](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.create)。
+您可以申请[TTL configurations per-thread](https://reference.langchain.com/python/langsmith/deployment-sdk)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 thread = await client.threads.create(

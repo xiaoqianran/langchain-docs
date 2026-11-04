@@ -52,10 +52,15 @@ For automated updates, use the [egress IP inventory (JSON)](/langsmith/egress-ip
 | 35.221.47.168 | | | |
 | 136.90.3.18 | | | |
 | 34.48.88.158 | | | |
+| 136.67.157.35 | | | |
+| 136.69.232.150 | | | |
+| 34.45.36.249 | | | |
+| 34.121.5.92 | | | |
+| 34.182.176.33 | | | |
 
 ## Payload size
 
-The maximum payload size for all requests sent to Cloud deployments is 25 MB. A request with a payload larger than 25 MB returns a `413 Payload Too Large` error.
+The maximum payload size for all requests sent to Cloud deployments is 25 MB. A request with a payload larger than 25 MB returns a `413 Payload Too Large` error.
 
 ## Deployment types
 

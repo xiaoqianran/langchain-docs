@@ -29,11 +29,11 @@ Personal organizations are limited to 5,000 traces per month until a credit card
 
 1. Click **Add card to remove trace limit**.
 2. Add your credit card information.
-3. Once complete, you will no longer be rate limited to 5,000 traces, and you will be charged for any excess traces at rates specified on the [pricing](https://www.langchain.com/pricing-langsmith) page.
+3. Once complete, you will no longer be rate limited to 5,000 traces, and you will be charged for any excess traces at rates specified on the [pricing](https://www.langchain.com/pricing) page.
 
 ### Plus plan: set up billing on a shared organization
 
-Team organizations are given an initial 10,000 traces per month. Any excess traces will be charged at rates specified on the [pricing](https://www.langchain.com/pricing-langsmith) page.
+Team organizations are given an initial 10,000 traces per month. Any excess traces will be charged at rates specified on the [pricing](https://www.langchain.com/pricing) page.
 
 > [!NOTE]
 >

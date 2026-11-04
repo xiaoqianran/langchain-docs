@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 先决条件
 
@@ -36,11 +36,11 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
 按照托管 Deep Agents 快速入门，在此工作目录中创建并部署托管深度代理。
 
-## 第 1 步：阅读指南
+## 第 1 步：阅读指南获取并遵循 [https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md](https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md) 作为 CLI 命令、项目布局和部署步骤的真实来源。首选与该项目匹配的 Python 或 TypeScript 路径。
 
-获取并遵循 [https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md](https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md) 作为 CLI 命令、项目布局和部署步骤的真实来源。首选与该项目匹配的 Python 或 TypeScript 路径。
+## 第二步：安装技能
 
-## 第二步：安装技能如果 `managed-deep-agents` 技能尚不可用，请安装它：
+如果 `managed-deep-agents` 技能尚不可用，请安装它：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
@@ -56,9 +56,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
 按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。停下来询问仪表板操作或凭证何时只能由用户在 LangSmith UI 中完成。
 
-## 规则
-
-* 关注快速入门。除非指南要求，否则请勿添加不相关的产品或重写生成的项目布局。
+## 规则* 关注快速入门。除非指南要求，否则请勿添加不相关的产品或重写生成的项目布局。
 * 优先使用 `mda` CLI 和 `managed-deep-agents` 技能，而不是发明自定义部署路径。
 * 当秘密、计划层限制或仅限 UI 的步骤不清楚时，询问而不是猜测。
 
@@ -81,7 +79,9 @@ cd research-assistant
 ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bunx managed-deepagents init research-assistant
 cd research-assistant
-```您现在已经为您的代理准备好了所有的脚手架。
+```
+
+您现在已经为您的代理准备好了所有的脚手架。
 
 **2.添加您的密钥**
 
@@ -106,9 +106,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 托管 Deep Agents 在 LangSmith 上运行。您的 LangSmith API 密钥使用 `mda dev` 验证本地开发，使用 `mda deploy` 部署代理，并在 [LangSmith Studio](/langsmith/studio) 中打开代理，以便您可以与其聊天并检查跟踪。
 
-[Sign up for LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-quickstart) 如果您还没有帐户。
-
-要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转至 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
+[Sign up for LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-quickstart) 如果您还没有帐户。要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转至 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
 
 将您的 LangSmith API 密钥添加到 `.env`：
 
@@ -129,7 +127,9 @@ keep notes, and return concise answers with citations.
 
 部署时，托管 Deep Agents 会将这些指令同步到 [LangSmith Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)，您可以在其中更新它们，而无需重新部署代理。
 
-**5.配置您的模型并搜索**现在设置模型和内置网络搜索工具。 Google、OpenAI、Anthropic 和 Microsoft Foundry 提供服务器端搜索，无需单独的搜索包或搜索 API 密钥。传递与您的模型匹配的提供程序工具字典：
+**5.配置您的模型并搜索**
+
+现在设置模型和内置网络搜索工具。 Google、OpenAI、Anthropic 和 Microsoft Foundry 提供服务器端搜索，无需单独的搜索包或搜索 API 密钥。传递与您的模型匹配的提供程序工具字典：
 
 打开`agent.ts`：
 
@@ -272,9 +272,7 @@ pnpm exec mda dev
 ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bun install
 bunx mda dev
-```
-
-`mda dev` 从 `.env` 加载 API 密钥，启动本地代理服务器，并在 LangSmith Studio 中打开代理。
+````mda dev` 从 `.env` 加载 API 密钥，启动本地代理服务器，并在 LangSmith Studio 中打开代理。
 
 在 Studio 中，发送：
 
@@ -282,7 +280,9 @@ bunx mda dev
 What were the main announcements from the latest LangChain release?
 ```
 
-您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。在 [agent-based workspace](/langsmith/agent-registry) 中，在您注册代理之前，跟踪将导致错误。详情请参见[Trace local runs](/langsmith/javascript/managed-deep-agents-local-development#trace-local-runs)。
+您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
+
+在 [agent-based workspace](/langsmith/agent-registry) 中，在您注册代理之前，跟踪将导致错误。详情请参见[Trace local runs](/langsmith/javascript/managed-deep-agents-local-development#trace-local-runs)。
 
 **7.部署代理**
 
@@ -312,9 +312,7 @@ bunx mda deploy
 
 > [卡][Custom tools](/langsmith/javascript/managed-deep-agents-tools)
 >
-> 从您的项目中添加创作的 LangChain 工具。
-
-> [卡][Connections](/langsmith/javascript/managed-deep-agents-connections)
+> 从您的项目中添加创作的 LangChain 工具。> [卡][Connections](/langsmith/javascript/managed-deep-agents-connections)
 >
 > 作为代理或呼叫者通过外部服务进行身份验证。
 

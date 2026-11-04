@@ -14,13 +14,13 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 扩展代理
 
 **1.添加自定义搜索工具**
 
-内置提供商搜索对于首次运行很方便。编写的工具为您提供更多控制：选择搜索 API、调整参数并将工具代码保留在您的项目中。
+内置的提供商搜索对于首次运行很方便。编写的工具为您提供更多控制：选择搜索 API、调整参数并将工具代码保留在您的项目中。
 
 > [!注意]
 >
@@ -167,7 +167,7 @@ pnpm exec mda deploy
 bunx mda deploy
 ```
 
-成功后，CLI 将打印部署仪表板 URL。部署会将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
+成功后，CLI 将打印部署仪表板 URL。部署将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
 
 打开该 URL 并确认：
 

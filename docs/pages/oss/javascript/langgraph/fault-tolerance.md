@@ -535,7 +535,7 @@ Retries and error handlers cover automatic re-attempts and compensation after ex
 
 When a tool call or parse fails in a way the model can correct, catch that error in the node, write it into state, and route back to the agent so the LLM can adjust:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Command, GraphNode, StateSchema } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -576,7 +576,7 @@ This is application-level control flow, not an `error_handler`. The node handles
 
 Do not catch failures you cannot handle. Without a matching retry policy or error handler, the exception bubbles up and fails the run so you can fix the bug:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { GraphNode, StateSchema } from "@langchain/langgraph";
 import * as z from "zod";
 

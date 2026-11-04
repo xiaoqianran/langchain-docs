@@ -35,7 +35,7 @@ BYOC 适用于希望获得数据所有权和自托管网络隔离的组织，而
 ## 另请参阅
 
 * [BYOC overview](/langsmith/byoc)
-* [BYOC architecture](/langsmith/byoc-architecture)
+* [BYOC architecture](/langsmith/byoc-architecture-aws)
 * [Self-hosted LangSmith](/langsmith/self-hosted)
 
 ***

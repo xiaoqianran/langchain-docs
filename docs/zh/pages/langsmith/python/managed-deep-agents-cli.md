@@ -12,7 +12,7 @@ mda 命令、项目文件和部署行为的参考。
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上 **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 要了解最快的端到端路径，请参阅[quickstart](/langsmith/python/managed-deep-agents-quickstart)。有关工作流程指南，请参阅 [Identity](/langsmith/python/managed-deep-agents-identity)、[Memory](/langsmith/python/managed-deep-agents-memory)、[Evals](/langsmith/python/managed-deep-agents-evals)、[Custom tools](/langsmith/python/managed-deep-agents-tools)、[Connections](/langsmith/python/managed-deep-agents-connections)、[Custom middleware](/langsmith/python/managed-deep-agents-middleware)、[Sandboxes](/langsmith/python/managed-deep-agents-sandboxes)、[Channels](/langsmith/python/managed-deep-agents-channels)、[Schedules](/langsmith/python/managed-deep-agents-schedules) 和[Deploy an agent](/langsmith/python/managed-deep-agents-deploy)。
 
@@ -48,7 +48,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 `mda deploy` 将非保留的 `.env` 条目（例如 `OPENAI_API_KEY`、MCP 令牌和自定义工具凭证）作为托管部署机密转发。保留的平台变量（包括 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY` 和 `LANGSMITH_WORKSPACE_ID`）用于 CLI 身份验证和部署路由，但不会作为用户管理的部署机密上传。
 
-## 命令概述|命令 |使用 |
+## 命令概述|命令|使用|
 | - | - |
 | `mda --help` |显示 CLI 帮助。 |
 | `mda --version` |显示已安装的 CLI 版本。 |
@@ -60,7 +60,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 | `mda deploy [path]` |编译、同步 Context Hub 上下文、上传并部署到 LangSmith。 |
 | `mda channels init slack` |将 Slack 通道声明添加到当前项目。 |
 | `mda logs [path]` |已部署代理的尾部代理服务器日志。 |
-| `mda delete [path]` / `mda destroy [path]` |删除已部署的代理及其创建的 LangSmith 资源。 |
+| `mda delete [path]` / `mda destroy [path]` |删除已部署的代理及其创建的LangSmith资源。 |
 
 ## 初始化项目
 
@@ -68,7 +68,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uvx --from managed-deepagents mda init my-agent
-```|参数或标志 |使用 |
+```|参数或标志 |使用|
 | - | - |
 | `name` |所需的项目目录名称。如果目标已存在，则该命令失败。 |
 | `--instructions TEXT` |系统提示写入`instructions.md`。 |
@@ -114,7 +114,7 @@ uv run mda channels init slack
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda build
-```|参数或标志 |使用 |
+```|参数或标志 |使用|
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--out OUT` |已编译应用程序的输出目录。默认为`<path>/.mda/build`。该目录在构建之前被清空，因此它必须丢失、为空或者是先前构建写入的目录。 |
@@ -127,7 +127,7 @@ uv run mda build
 uv run mda evals init -i
 ```
 
-|命令或标志 |使用 |
+|命令或标志 |使用|
 | - | - |
 | `mda evals init` |缺失时创建`evals/harbor-job.json`，并在`.mda/evals/`下生成Harbor适配器和运行时设置。从项目根运行此命令。 |
 | `-i`、`--interactive` |使用 eval-engineering 提示启动检测到的编码代理，或复制另一个代理的提示。 |
@@ -144,7 +144,7 @@ uv run mda evals init -i
 uv run mda dev
 ```
 
-|参数或标志 |使用 |
+|参数或标志 |使用|
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--port PORT` |将端口转发到 LangGraph 开发服务器。 |
@@ -169,7 +169,7 @@ uv run mda dev
 
 以三种模式之一创建连接：不透明机密（固定 API 密钥）、常规 OAuth（来自目录或自定义端点的 BYOT 应用程序）或 MCP OAuth（从 MCP 服务器 URL 发现并注册）。使用 `mda connections` 管理当前工作区中的这些凭据。
 
-|命令 |使用 |
+|命令|使用|
 | - | - |
 | `mda connections catalog` |列出具有预配置 OAuth 设置的服务。 |
 | `mda connections create <slug>` |创建不透明机密、常规 OAuth 或 MCP OAuth 连接。 |
@@ -189,7 +189,7 @@ uv run mda connections catalog
 uv run mda connections create organization-tavily --secret-from-env TAVILY_API_KEY
 ```
 
-以下标志控制连接创建：|旗帜|使用 |
+以下标志控制连接创建：|旗帜|使用|
 | - | - |
 | `--project PATH` |设置项目目录。默认为当前目录。 |
 | `--workspace-id WORKSPACE_ID` |覆盖`LANGSMITH_WORKSPACE_ID`。 |
@@ -221,7 +221,7 @@ uv run mda connections create organization-tavily --secret-from-env TAVILY_API_K
 uv run mda deploy
 ```
 
-|参数或标志 |使用 |
+|参数或标志 |使用|
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为`define_deep_agent`的代理`name`。 |
@@ -252,7 +252,7 @@ uv run mda deploy
 uv run mda logs
 ```
 
-|参数或标志 |使用 |
+|参数或标志 |使用|
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为项目中的代理`name`。 |
@@ -270,7 +270,7 @@ uv run mda logs
 uv run mda delete
 ```
 
-|参数或标志 |使用 |
+|参数或标志 |使用|
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为`define_deep_agent` 的代理`name`。 |

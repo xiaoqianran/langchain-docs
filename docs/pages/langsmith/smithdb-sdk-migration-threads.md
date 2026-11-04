@@ -4,7 +4,7 @@
 
 Migrate the LangSmith SDK thread methods to their SmithDB-backed equivalents.
 
-These methods query threads and list the traces inside a thread. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration).
+These methods query threads and list the traces inside a thread. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration).
 
 ## Threads: query
 

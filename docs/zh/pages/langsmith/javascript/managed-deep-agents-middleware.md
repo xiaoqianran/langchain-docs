@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 将自定义中间件放在`middleware/`下，将其导入到代理条目中，并将其传递给代理定义：
 
@@ -63,9 +63,7 @@ export const logToolCalls = createMiddleware({
     return result;
   },
 });
-```
-
-将中间件导入项目根代理条目并将其传递到`middleware`列表中：
+```将中间件导入到项目根代理条目中，并将其传递到`middleware`列表中：
 
 ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineDeepAgent } from "managed-deepagents";
@@ -77,7 +75,9 @@ export const agent = defineDeepAgent({
   model: "openai:gpt-5.5",
   middleware: [logToolCalls],
 });
-```您的中间件导入的工作方式应该与普通本地 TypeScript 项目中的工作方式相同。
+```
+
+您的中间件导入的工作方式应该与普通本地 TypeScript 项目中的工作方式相同。
 
 ## 使用运行时上下文
 
@@ -103,8 +103,6 @@ Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runti
 
 欲了解更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-middleware.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

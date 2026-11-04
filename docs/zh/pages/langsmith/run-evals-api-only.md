@@ -172,7 +172,7 @@ def run_completion_on_example(example, model_name, experiment_id):
     _patch_run(parent_run_id, {"label": output_text})
 ```
 
-现在创建实验并对所有示例运行补全。在 API 中，“实验”表示为通过 `reference_dataset_id` 引用数据集的会话（或“跟踪器会话”）。与常规跟踪的主要区别在于，实验中的运行必须有一个 `reference_example_id` 将每次运行链接到数据集中的特定示例。
+现在创建实验并对所有示例运行补全。在 API 中，“实验”表示为通过 `reference_dataset_id` 引用数据集的会话（或“跟踪器会话”）。 The key difference from regular tracing is that runs in an experiment must have a `reference_example_id` that links each run to a specific example in the dataset.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 #  Create a new experiment using the /sessions endpoint
@@ -219,20 +219,29 @@ for model_name in model_names:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Fetch the runs from one of the experiments
-# API Reference: https://docs.langchain.com/langsmith/smith-api/run/query-runs
+# API Reference: https://docs.langchain.com/langsmith/smith-api/runs/query-runs
 experiment_id = experiment_ids[0]  # Evaluate the first experiment
 
+# Without min_start_time, the query only covers the last 24 hours.
+# Start from the experiment's start time so older experiments still return all runs.
+experiment = requests.get(
+    f"https://api.smith.langchain.com/api/v1/sessions/{experiment_id}",
+    headers={"x-api-key": os.environ["LANGSMITH_API_KEY"]}
+).json()
+
 runs_resp = requests.post(
-    "https://api.smith.langchain.com/api/v1/runs/query",
+    "https://api.smith.langchain.com/api/v2/runs/query",
     headers={"x-api-key": os.environ["LANGSMITH_API_KEY"]},
     json={
-        "session": [experiment_id],
+        "project_ids": [experiment_id],
+        "min_start_time": experiment["start_time"],
         "is_root": True,  # Only fetch root runs
-        "select": ["id", "reference_example_id", "outputs", "session_id"],
+        "selects": ["ID", "REFERENCE_EXAMPLE_ID", "OUTPUTS", "PROJECT_ID"],
+        "page_size": 1000,  # Up to 1000 runs per page; follow "next_cursor" for more
     }
 )
 
-runs = runs_resp.json()["runs"]
+runs = runs_resp.json()["items"]
 
 # Evaluate each run by comparing outputs to expected values
 for run in runs:
@@ -254,7 +263,7 @@ for run in runs:
         "run_id": str(run["id"]),
         "key": "correctness",  # The name of your evaluation metric
         "score": 1.0 if is_correct else 0.0,
-        "session_id": run["session_id"],  # Required: the run's tracing project UUID
+        "session_id": run["project_id"],  # Required: the run's tracing project UUID
         "comment": f"Expected: {expected_output}, Got: {actual_output}",  # Optional
     }
 
@@ -270,7 +279,7 @@ for run in runs:
 
 ## 进行配对实验
 
-接下来，我们将演示如何进行配对实验。在成对实验中，您将两个示例相互比较。
+接下来，我们将演示如何进行配对实验。在成对实验中，您可以相互比较两个示例。
 
 欲了解更多信息，请查看[How to run a pairwise evaluation](/langsmith/evaluate-pairwise)。
 
@@ -309,17 +318,29 @@ experiment_ids = [info["id"] for info in comparative_experiment["experiments_inf
 from collections import defaultdict
 example_id_to_runs_map = defaultdict(list)
 
-#  API Reference: https://docs.langchain.com/langsmith/smith-api/run/query-runs
+# Without min_start_time, the query only covers the last 24 hours.
+# Start from the earliest experiment's start time.
+min_start_time = min(
+    requests.get(
+        f"https://api.smith.langchain.com/api/v1/sessions/{experiment_id}",
+        headers={"x-api-key": os.environ["LANGSMITH_API_KEY"]}
+    ).json()["start_time"]
+    for experiment_id in experiment_ids
+)
+
+#  API Reference: https://docs.langchain.com/langsmith/smith-api/runs/query-runs
 runs = requests.post(
-    f"https://api.smith.langchain.com/api/v1/runs/query",
+    "https://api.smith.langchain.com/api/v2/runs/query",
     headers={"x-api-key": os.environ["LANGSMITH_API_KEY"]},
     json={
-        "session": experiment_ids,
+        "project_ids": experiment_ids,
+        "min_start_time": min_start_time,
         "is_root": True, # Only fetch root runs (spans) which contain the end outputs
-        "select": ["id", "reference_example_id", "outputs", "session_id"],
+        "selects": ["ID", "REFERENCE_EXAMPLE_ID", "OUTPUTS", "PROJECT_ID"],
+        "page_size": 1000,  # Up to 1000 runs per page; follow "next_cursor" for more
     }
 ).json()
-runs = runs["runs"]
+runs = runs["items"]
 for run in runs:
     example_id = run["reference_example_id"]
     example_id_to_runs_map[example_id].append(run)
@@ -339,7 +360,7 @@ for example_id, runs in example_id_to_runs_map.items():
             "score": 1 if i == 0 else 0,
             "run_id": str(run["id"]),
             "key": "ranked_preference",
-            "session_id": run["session_id"],  # Required: the run's tracing project UUID
+            "session_id": run["project_id"],  # Required: the run's tracing project UUID
             "feedback_group_id": str(feedback_group_id),
             "comparative_experiment_id": comparative_experiment_id,
         }

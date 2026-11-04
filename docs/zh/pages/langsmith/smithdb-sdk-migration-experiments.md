@@ -6,7 +6,7 @@
 
 将 LangSmith SDK 数据集实验运行方法迁移到 SmithDB 支持的等效方法。
 
-这些方法查询附加到数据集实验的运行。有关弃用日期、最低 SDK 版本以及适用于每种方法的代理提示，请参阅 [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration)。
+这些方法查询附加到数据集实验的运行。有关弃用日期、最低 SDK 版本以及适用于每种方法的代理提示，请参阅 [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration)。
 
 ## 数据集实验运行：查询
 
@@ -18,7 +18,7 @@
 
 > [选项卡] Python
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.get_experiment_results()` | `client.datasets.experiment_runs.query()` |
 >
@@ -30,7 +30,7 @@
 
 > [选项卡] TypeScript
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | *（没有遗留的公共`Client`方法）* | `client.datasets.experimentRuns.query()` |
 >
@@ -38,7 +38,7 @@
 
 > [选项卡] Java
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.datasets().runs().query()` | `client.datasets().experimentRuns().query()` |
 >
@@ -46,13 +46,13 @@
 
 > [选项卡] 前往
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.Datasets.Runs.Query()` | `client.Datasets.ExperimentRuns.Query()` |
 >
 > 完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#DatasetExperimentRunService.Query)。> [选项卡] 卷曲
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `POST /api/v1/datasets/{dataset_id}/runs` | `POST /api/v2/datasets/{dataset_id}/experiment-runs` |
 >
@@ -66,14 +66,14 @@
 >>
 >> `experiment_ids` 是必需的并替换 `session_ids`。值仍然是实验跟踪项目 UUID - 如果您只知道实验名称，请首先解析它：异步代码中的`client.read_project(project_name="my-experiment").id`或`await client.aread_project(project_name="my-experiment")`。
 >
-> |之前 (`get_experiment_results`) |之后(`datasets.experiment_runs.query`)|笔记|
+> |之前 (`get_experiment_results`) |之后(`datasets.experiment_runs.query`) |笔记|
 > | - | - | - |
 > | `project_id` | `experiment_ids` | `get_experiment_results` 接受1个项目/实验；新方法接受必需的非空列表 |
 > | `limit` | *（已删除）* |使用 `page_size` 作为每个请求的批量大小 |
 > | *（不可用）* | `page_size` |每个请求结果计数（默认 20，最大 100）|
 > | *（内部处理）* | `cursor` |传递上一页的`next_cursor`来获取下一页 |
 > | `preview` | `selects` |省略 `selects` 仅返回运行 ID；使用 `INPUTS_PREVIEW` 和 `OUTPUTS_PREVIEW` 进行预览，或使用 `INPUTS` 和 `OUTPUTS` 进行完整有效负载 |
-> | *（未暴露）* | `sort` |使用`{by, order}`进行反馈分数排序 |
+> | *（未暴露）* | `sort` |使用`{by, order}`进行反馈分数排序|
 > | `filters` | `filters` |不变；将实验 UUID 字符串映射到过滤器表达式 |
 > | `comparative_experiment_id` | `comparative_experiment_id` |不变 |
 > | *（未暴露）* | `example_ids` |可选示例 UUID 过滤器，最大 1000 |> [选项卡] TypeScript
@@ -82,13 +82,13 @@
 >>
 >> `experiment_ids` 是必需的并替换 `session_ids`。值仍然是实验跟踪项目 UUID - 如果您只知道实验名称，请先解析它：`(await client.readProject({ projectName: "my-experiment" })).id`。
 >
-> |之前 |之后(`datasets.experimentRuns.query`) |笔记|
+> |之前 |之后（`datasets.experimentRuns.query`）|笔记|
 > | - | - | - |
 > | *（没有遗留的公共`Client`方法）* | `experiment_ids` |必填且非空 |
 > | *（没有遗留的公共`Client`方法）* | `page_size` |默认为 20，最大 100 |
 > | *（没有遗留的公共`Client`方法）* | `cursor` |传递上一页的 `next_cursor` 而不是数字偏移量 |
 > | *（没有遗留的公共`Client`方法）* | `selects` |省略 `selects` 仅返回运行 ID；使用 `INPUTS_PREVIEW` 和 `OUTPUTS_PREVIEW` 进行预览，或使用 `INPUTS` 和 `OUTPUTS` 进行完整有效负载 |
-> | *（没有遗留的公共`Client`方法）* | `sort` |使用`{ by, order }`进行反馈分数排序|
+> | *（没有遗留的公共`Client`方法）* | `sort` |使用`{ by, order }`进行反馈分数排序 |
 > | *（没有遗留的公共`Client`方法）* | `filters` |将实验 UUID 字符串映射到过滤表达式 |
 > | *（没有遗留的公共`Client`方法）* | `comparative_experiment_id` |范围成对注释反馈 |
 > | *（没有遗留的公共`Client`方法）* | `example_ids` |可选示例 UUID 过滤器，最大 1000 |> [选项卡] Java
@@ -147,7 +147,7 @@
 > | `format=csv` | *（已删除）* |新端点仅返回 JSON |
 > | `include_annotator_detail` | *（已删除）* |没有新的 JSON 等效项 |
 
-#### 响应字段每个页面项目都是一个数据集示例，并与其生成的运行配对——而不是一个裸露的`Run`。它的 `runs` 字段保存与 [Querying runs](#response-fields) 返回的相同的 `Run` 对象；请参阅该部分了解每次运行字段。下表描述了该项目的其余部分：`runs` 旁边的示例字段。
+#### 响应字段每个页面项目都是一个数据集示例，与为其生成的运行配对，而不是一个裸露的`Run`。它的 `runs` 字段保存与 [Querying runs](#response-fields) 返回的相同的 `Run` 对象；请参阅该部分了解每次运行字段。下表描述了该项目的其余部分：`runs` 旁边的示例字段。
 
 > [选项卡] Python
 >

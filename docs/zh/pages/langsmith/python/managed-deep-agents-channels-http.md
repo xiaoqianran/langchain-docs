@@ -12,7 +12,7 @@ HTTP 通道将托管深度代理转变为任何外部服务都可以调用的 HT
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 > [!注意]
 >
@@ -31,9 +31,9 @@ my-agent/
   agent.py
   channels/
     orders.py
-```
+```文件名成为通道名称和端点路径。一个项目可以声明多个HTTP通道，并且名称必须是唯一的。完整的项目布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
 
-文件名成为通道名称和端点路径。一个项目可以声明多个HTTP通道，并且名称必须是唯一的。完整的项目布局，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。## 添加 HTTP 通道
+## 添加 HTTP 通道
 
 **1.声明通道**
 
@@ -89,7 +89,7 @@ def verify(context: HttpChannelRequest) -> bool:
 * `{"type": "message", "message": {...}}` 开始跑步。
 * `{"type": "ignore"}` 跳过该事件。
 
-两者都接受可选的 `response`，Starlette `Response`。
+两者都接受可选的 `response` 和 Starlette `Response`。
 
 该消息携带四个必填字段：* **`user_id`**：外部服务中调用者的 ID，作为字符串，从已验证的事件解析。代理身份验证将其映射到运行可能使用其凭据的主体，因此它是从经过验证的数据而不是从未经身份验证的字段派生的。使用 `str()` 转换数字提供商 ID。
 * **`thread_id`**：要运行的对话，作为 UUID。 Managed Deep Agents 将其小写并将其映射到持久代理线程，因此相同的值会继续相同的对话。
@@ -179,7 +179,7 @@ channel = channels.http(
 )
 ```
 
-托管 Deep Agents 在运行完成后发布回复，与提供者已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/python/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会被记录为传送失败。添加可选的异步 `on_error(error, target)` 回调来处理运行或交付失败。它取代了默认的错误回复。它接收经过验证的回复目标。
+托管 Deep Agents 在运行完成后发布回复，与提供商已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/python/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会被记录为传送失败。添加可选的异步 `on_error(error, target)` 回调来处理运行或交付失败。它取代了默认的错误回复。它接收经过验证的回复目标。
 
 ## 调用端点
 

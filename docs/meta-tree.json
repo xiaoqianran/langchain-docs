@@ -633,34 +633,46 @@
           "rel": "langsmith/byoc.md"
         }
       ],
-      "byoc-architecture": [
+      "byoc-architecture-aws": [
         {
           "title": "BYOC architecture",
-          "rel": "langsmith/byoc-architecture.md"
+          "rel": "langsmith/byoc-architecture-aws.md"
         }
       ],
-      "byoc-billing": [
+      "byoc-architecture-azure": [
+        {
+          "title": "BYOC architecture on Azure",
+          "rel": "langsmith/byoc-architecture-azure.md"
+        }
+      ],
+      "byoc-architecture-gcp": [
+        {
+          "title": "BYOC architecture on GCP",
+          "rel": "langsmith/byoc-architecture-gcp.md"
+        }
+      ],
+      "byoc-billing-aws": [
         {
           "title": "BYOC billing",
-          "rel": "langsmith/byoc-billing.md"
+          "rel": "langsmith/byoc-billing-aws.md"
         }
       ],
-      "byoc-byoiam": [
+      "byoc-byoiam-aws": [
         {
           "title": "Bring your own IAM roles (AWS)",
-          "rel": "langsmith/byoc-byoiam.md"
+          "rel": "langsmith/byoc-byoiam-aws.md"
         }
       ],
-      "byoc-byovpc": [
+      "byoc-byovpc-aws": [
         {
           "title": "Bring your own VPC on AWS",
-          "rel": "langsmith/byoc-byovpc.md"
+          "rel": "langsmith/byoc-byovpc-aws.md"
         }
       ],
-      "byoc-data-plane-cost": [
+      "byoc-data-plane-cost-aws": [
         {
           "title": "AWS data plane cost estimate",
-          "rel": "langsmith/byoc-data-plane-cost.md"
+          "rel": "langsmith/byoc-data-plane-cost-aws.md"
         }
       ],
       "byoc-faq": [
@@ -675,16 +687,28 @@
           "rel": "langsmith/byoc-migration.md"
         }
       ],
-      "byoc-onboarding": [
+      "byoc-onboarding-aws": [
         {
           "title": "BYOC onboarding",
-          "rel": "langsmith/byoc-onboarding.md"
+          "rel": "langsmith/byoc-onboarding-aws.md"
         }
       ],
-      "byoc-operations": [
+      "byoc-onboarding-azure": [
+        {
+          "title": "BYOC onboarding on Azure",
+          "rel": "langsmith/byoc-onboarding-azure.md"
+        }
+      ],
+      "byoc-onboarding-gcp": [
+        {
+          "title": "BYOC onboarding on GCP",
+          "rel": "langsmith/byoc-onboarding-gcp.md"
+        }
+      ],
+      "byoc-operations-aws": [
         {
           "title": "BYOC operations",
-          "rel": "langsmith/byoc-operations.md"
+          "rel": "langsmith/byoc-operations-aws.md"
         }
       ],
       "byoc-shared-responsibility": [
@@ -2825,7 +2849,7 @@
       ],
       "smithdb-sdk-migration": [
         {
-          "title": "Migrate to SmithDB-backed SDK methods",
+          "title": "Migrate to SmithDB-backed APIs",
           "rel": "langsmith/smithdb-sdk-migration.md"
         }
       ],

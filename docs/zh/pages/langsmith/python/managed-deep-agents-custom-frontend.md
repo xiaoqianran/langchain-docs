@@ -12,14 +12,14 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 选择身份提供商
 
 对部署的每个请求都会命名一个调用者，并且前端提供该名称。哪个[identity provider](/langsmith/python/managed-deep-agents-identity)适合取决于前端代码运行的位置，而不是其编写的语言。|前端从哪里调用部署 |身份提供商|
 | - | - |
 |用户的浏览器 |外部身份验证提供者。浏览器发送访问令牌，部署会验证它。参见[Supabase](/langsmith/python/managed-deep-agents-identity#configure-identity-with-supabase)。 |
-|您自己的服务器，已经对用户进行了身份验证 | [Your own backend](/langsmith/python/managed-deep-agents-identity#configure-identity-with-your-own-backend)。您的服务器断言共享入口机密背后的用户 ID。 |
+|您自己的服务器，已对用户进行身份验证 | [Your own backend](/langsmith/python/managed-deep-agents-identity#configure-identity-with-your-own-backend)。您的服务器断言共享入口机密背后的用户 ID。 |
 |您自己的服务器，没有自己的最终用户帐户 | [LangSmith API key](/langsmith/python/managed-deep-agents-identity#configure-identity-with-a-langsmith-api-key) 默认值。密钥本身就是调用者。 |
 
 任一服务器行都适合任何语言的服务器渲染应用程序。 Streamlit、Gradio 和 Dash 在服务器上运行其代码，Next.js 路由处理程序和 Express 代理也是如此。在配置提供程序之前，指向 [⟦T6⟧](/langsmith/python/managed-deep-agents-local-development#understand-local-behavior) 的前端会起作用，因为本地服务器提供测试用户。
@@ -53,7 +53,7 @@ agent = define_deep_agent(
 | - | - | - |
 |反应 | `@langchain/react` | `useStream` |
 |视图 | `@langchain/vue` | `useStream` |
-|苗条| `@langchain/svelte` | `useStream` |
+|苗条 | `@langchain/svelte` | `useStream` |
 |角度| `@langchain/angular` | `injectStream` |
 
 前端在浏览器中运行，因此即使代理是用 Python 编写的，这些示例也是 TypeScript。在外部身份验证提供程序下，浏览器从登录会话发送访问令牌。该令牌会轮换，因此只要会话发生变化就重新读取它，而不是在挂载时捕获它一次：
@@ -235,7 +235,7 @@ Gradio 和 Dash 使用相同的客户端和相同的循环。将 Streamlit 占�
 ## 另请参阅
 
 * [Identity](/langsmith/python/managed-deep-agents-identity)：配置调用者如何对部署进行身份验证。
-* [Frontend overview](/oss/python/langchain/frontend/overview)：消息渲染、工具调用、中断和生成 UI 模式。
+* [Frontend overview](/oss/python/langchain/frontend/overview)：消息渲染、工具调用、中断和生成式 UI 模式。
 * [Connections](/langsmith/python/managed-deep-agents-connections)：处理 UI 中的凭证授权中断。
 * [MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)：将代理暴露给MCP客户端而不是调用API。
 * [Channels](/langsmith/python/managed-deep-agents-channels)：从 Slack 或您自己的 HTTP 服务到达代理。

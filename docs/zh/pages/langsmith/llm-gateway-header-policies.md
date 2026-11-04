@@ -4,28 +4,28 @@
 
 # 基于标头的策略
 
-通过单个 API 密钥下的自定义请求标头（例如客户、租户或团队标识符）确定范围网关支出上限、速率限制和模型访问。
+通过自定义请求标头（例如客户、租户或成本中心标识符）确定范围网关支出上限、速率限制和模型访问，而无需为每个值颁发单独的 API 密钥。
 
 > [!注意]
 >
 > LLM 网关位于[beta](/langsmith/release-stages)。
 
-基于标头的策略通过应用程序发送的请求标头（例如最终客户、租户、团队或环境标识符）来确定网关策略的范围。使用 1 为每个标头值在单个 [LangSmith API key](/langsmith/create-account-api-key) 下赋予其自己的限制，而无需为每个值发布单独的密钥。
+基于标头的策略通过应用程序发送的请求标头（例如客户、租户或成本中心标识符）来确定网关策略的范围。使用 1 为每个标头值赋予其自己的限制，而无需为每个值发出单独的 [LangSmith API key](/langsmith/create-account-api-key)。
 
-策略通过以下两种方式之一使用标头：
+相同的标题还可以归因于退款的支出。在“使用情况”选项卡上，“自定义维度”按标题值细分组支出。有关此方法以及其他归因支出的方法，请参阅[Attribute spend for chargebacks](/langsmith/llm-gateway-monitoring#attribute-spend-for-chargebacks)。
 
-* **默认由标头分隔**：默认的 [spend](/langsmith/llm-gateway-spend-policies) 或 [rate limit](/langsmith/llm-gateway-rate-limit-policies) 策略将其限制独立应用于每个标头值。例如，由 `X-Gateway-Customer-Id` 分隔的默认工作空间支出限制在每个 [workspace](/langsmith/administration-overview#workspaces) 内给出 `acme` 和 `globex` 独立限制。
-* **显式标头条件**：支出、速率限制或 [model access](/langsmith/llm-gateway-model-access-policies) 策略与一个确切的标头值匹配。例如，条件为`X-Gateway-Customer-Id: acme`的策略仅限制携带该值的请求。
+策略通过以下两种方式之一使用标头：* **默认由标头分隔**：默认的 [spend](/langsmith/llm-gateway-spend-policies) 或 [rate limit](/langsmith/llm-gateway-rate-limit-policies) 策略将其限制独立应用于每个标头值。例如，由 `X-Gateway-Customer-Id` 分隔的默认工作空间支出限制在每个 [workspace](/langsmith/administration-overview#workspaces) 内给出 `acme` 和 `globex` 独立限制。默认值适用于其类型的每个主题，因此它不能针对一个 API 密钥。
+* **显式标头条件**：支出、速率限制或[model access](/langsmith/llm-gateway-model-access-policies)策略与一个确切的标头值匹配。例如，条件为`X-Gateway-Customer-Id: acme`的策略仅限制携带该值的请求。要仅限制一个 API 密钥上的标头值，请将显式策略的范围限制为该密钥。
 
 > [!警告]
 >
-> 创建和管理策略需要`organization:gateway:manage` 权限。组织管理员和组织操作员默认拥有它。有关每个组织角色可以执行的操作，请参阅[Organization roles](/langsmith/rbac#organization-roles)。## 可匹配的标头
+> 创建和管理策略需要`organization:gateway:manage` 权限。组织管理员和组织操作员默认拥有它。有关每个组织角色可以执行的操作，请参阅[Organization roles](/langsmith/rbac#organization-roles)。
 
-网关匹配以 `X-Gateway-` 为前缀的请求标头以及`X-Gateway-Metadata` JSON 标头内的键。没有其他请求标头可匹配。
+## 可匹配的标头
 
-标头名称在匹配之前进行规范化：
+网关匹配前缀为 `X-Gateway-` 的请求标头以及`X-Gateway-Metadata` JSON 标头内的键。没有其他请求标头可匹配。
 
-* 删除 `X-Gateway-` 前缀，其余部分小写，`a-z`、`0-9` 和 `_` 之外的每个字符都替换为 `_`。
+标头名称在匹配之前进行规范化：* 删除 `X-Gateway-` 前缀，其余部分小写，`a-z`、`0-9` 和 `_` 之外的每个字符都替换为 `_`。
 * 标头 `X-Gateway-Customer-Id`、`x-gateway-customer_id` 和 `X-Gateway-CUSTOMER.ID` 均解析为匹配器键 `customer_id`。
 * 标头值作为精确、区分大小写的字符串进行比较，没有通配符或模式匹配。
 
@@ -48,6 +48,7 @@
 单独的默认值遵循以下规则：* **每个默认一个标头**：仅输入标头名称。该请求提供标识存储桶的值。
 * **独立限制**：每个主题和标头值对都会收到配置的限制。网关在请求第一次携带新标头值时创建每个限制。
 * **回退限制**：没有配置标头的请求共享其主题的回退限制。
+* **该类型的每个主题**：默认值适用于组织中的每个工作区、用户或 API 密钥。您不能仅通过一个 API 密钥的标头分隔限制。请改用作用域为该键的 [explicit header conditions](#add-an-explicit-header-condition) 。
 * **每个主题类型一个默认值**：创建默认值会替换相同主题类型的相同策略类型的现有默认值，即使两个默认值使用不同的标头也是如此。
 
 UI 仅针对默认支出限制提供标头分隔。要按标题分隔默认支出限额：1. 转至 **LLM Gateway** 并选择 **成本控制**。
@@ -307,17 +308,18 @@ curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
         }'
 ```
 
-要使速率限制与您的客户列表保持一致，请调整 [step 3 sync script](#step-3-sync-policies-with-your-customer-list)：将每个客户映射到限制列表而不是一个 `limit_usd`，从该列表构建 `config`，在列表和创建呼叫中使用 `rate_limit` 作为 `policy_type`，然后更改策略名称。保留工作区过滤器和 `parent_policy_id` 跳过，因为由标头分隔的默认速率限制也会为每个标头值创建限制。
+要使速率限制与您的客户列表保持一致，请调整 [step 3 sync script](#step-3-sync-policies-with-your-customer-list)：将每个客户映射到限制列表而不是一个 `limit_usd`，从该列表构建 `config`，在列表中使用 `rate_limit` 作为 `policy_type` 并创建呼叫，然后更改策略名称。保留工作区过滤器和 `parent_policy_id` 跳过，因为由标头分隔的默认速率限制也会为每个标头值创建限制。
 
 支出上限和费率限制是不同的系列，因此最终客户可以在同一标头值上分别持有其中一项。
 
-## 另请参阅
-
-* [Spend policies](/langsmith/llm-gateway-spend-policies)：为组织、工作区、用户和 API 密钥设置成本上限。
+## 另请参阅* [Spend policies](/langsmith/llm-gateway-spend-policies)：为组织、工作区、用户和 API 密钥设置成本上限。
 * [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies)：在滚动窗口中限制请求和令牌。
 * [Model access policies](/langsmith/llm-gateway-model-access-policies)：控制每个主体可以调用哪些模型。
+* [Monitor LLM Gateway spend](/langsmith/llm-gateway-monitoring)：按标头值细分支出并将其归因于退款。
 * [View LLM Gateway traces](/langsmith/llm-gateway-traces)：了解网关追踪到的地点以及谁可以配置策略。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-header-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

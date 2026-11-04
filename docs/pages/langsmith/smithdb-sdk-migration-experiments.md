@@ -4,7 +4,7 @@
 
 Migrate the LangSmith SDK dataset experiment run methods to their SmithDB-backed equivalents.
 
-These methods query the runs attached to a dataset experiment. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration).
+These methods query the runs attached to a dataset experiment. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration).
 
 ## Dataset experiment runs: query
 

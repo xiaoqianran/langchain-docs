@@ -8,7 +8,7 @@ Computer use gives your Fleet agent access to an isolated virtual computer. The 
 
 > [!NOTE]
 >
-> Computer use is available on the [Plus and Enterprise plans](https://langchain.com/pricing).
+> Computer use is available on the [Plus and Enterprise plans](https://www.langchain.com/pricing).
 
 ## Computer modes
 

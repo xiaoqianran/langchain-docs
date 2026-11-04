@@ -4,7 +4,7 @@
 
 Migrate the LangSmith SDK trace methods to their SmithDB-backed equivalents.
 
-These methods query traces and list the runs inside a trace. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration).
+These methods query traces and list the runs inside a trace. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration).
 
 ## Traces: query
 

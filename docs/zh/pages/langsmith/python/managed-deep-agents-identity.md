@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 将身份声明放在项目根目录下：
 
@@ -33,7 +33,7 @@ my-agent/
 |来自其他身份提供商（例如 Auth0、Okta、Clerk 或 Microsoft Entra ID）的登录最终用户 | [Another JWT provider](#configure-identity-with-another-jwt-provider) |
 |通过私人聊天登录的最终用户，已通过您自己的 API 进行身份验证 | [Your own backend](#configure-identity-with-your-own-backend) |Supabase、另一个 JWT 提供商和后端身份都为每个最终用户提供私有线程。区别在于由谁来验证用户。使用 Supabase 或其他 JWT 提供商，浏览器会发送其访问令牌，并由 Managed Deep Agents 进行验证。通过后端身份，您的 API 可以验证用户并断言生成的用户 ID。
 
-欲了解更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
+有关更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
 
 > [!注意]
 >
@@ -41,7 +41,7 @@ my-agent/
 
 ## 使用 LangSmith API 密钥配置身份
 
-`mda init` 将此身份提供者作为安全默认设置。调用者必须提供有效的 LangSmith 工作区 API 密钥。托管Deep Agents 使用LangSmith 云验证密钥。
+`mda init` 将此身份提供者作为安全默认设置。调用者必须提供有效的 LangSmith 工作区 API 密钥。托管 Deep Agents 使用 LangSmith 云验证密钥。
 
 ```python identity.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import auth, define_identity
@@ -126,7 +126,7 @@ identity = define_identity(
 
 客户端发送访问令牌为`Authorization: Bearer <access_token>`，与[Supabase example](#send-the-access-token)相同。
 
-您的工具和中间件可以从`principal.claims`读取令牌中的每个经过验证的声明。有关示例，请参阅[Read the runtime in tools](/langsmith/python/managed-deep-agents-runtime#read-the-runtime-in-tools)。
+您的工具和中间件可以从 `principal.claims` 读取令牌中的每个经过验证的声明。有关示例，请参阅[Read the runtime in tools](/langsmith/python/managed-deep-agents-runtime#read-the-runtime-in-tools)。
 
 ## 使用您自己的后端配置身份
 
@@ -187,7 +187,7 @@ response = httpx.post(
 
 ## 测试和部署
 
-使用[⟦T39⟧](/langsmith/python/managed-deep-agents-cli#develop-locally)在本地测试项目，然后使用[⟦T40⟧](/langsmith/python/managed-deep-agents-deploy)进行部署。在LangSmith中打开部署跟踪以检查模型调用、工具调用、错误和延迟。身份验证失败返回 401。对于 LangSmith API 密钥默认值，请确认客户端发送 `x-api-key`。对于 Supabase，确认客户端发送 `Authorization: Bearer <access_token>`、`project_ref` / `projectRef` 与您的 Supabase 项目匹配，并且调用方无法访问其他用户的线程 (403)。对于另一个 JWT 提供程序，确认 `issuer` 和 `audience` 与令牌中的 `iss` 和 `aud` 声明匹配，并且调用者无法访问其他用户的线程 (403)。对于后端身份，请确认您的 API 发送 `x-mda-ingress-secret` 和 `x-mda-user-id`，密钥与部署上的 `MDA_INGRESS_SECRET` 匹配，并且一个用户的标识符无法到达另一用户的线程 (403)。
+使用[⟦T39⟧](/langsmith/python/managed-deep-agents-cli#develop-locally)在本地测试项目，然后使用[⟦T40⟧](/langsmith/python/managed-deep-agents-deploy)进行部署。在LangSmith中打开部署跟踪来检查模型调用、工具调用、错误和延迟。身份验证失败返回 401。对于 LangSmith API 密钥默认值，请确认客户端发送 `x-api-key`。对于 Supabase，确认客户端发送 `Authorization: Bearer <access_token>`、`project_ref` / `projectRef` 与您的 Supabase 项目匹配，并且调用方无法访问其他用户的线程 (403)。对于另一个 JWT 提供程序，确认 `issuer` 和 `audience` 与令牌中的 `iss` 和 `aud` 声明匹配，并且调用者无法访问其他用户的线程 (403)。对于后端身份，请确认您的 API 发送 `x-mda-ingress-secret` 和 `x-mda-user-id`，密钥与部署上的 `MDA_INGRESS_SECRET` 匹配，并且一个用户的标识符无法到达另一用户的线程 (403)。
 
 ***
 

@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 启动本地工作室
 
@@ -42,11 +42,11 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 2. 将项目`.env`复制到本地构建中，并在需要时添加仅限本地的身份配置。
 3. 创建本地 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 模拟以获取指令、技能和记忆。
 4. 启动特定语言的LangGraph开发服务器。
-5. 在 Studio 中打开代理。
+5. 在 Studio 中打开代理。本地开发不会创建或更新托管部署。
 
-本地开发不会创建或更新托管部署。
+## 跟踪本地运行
 
-## 跟踪本地运行`mda dev` 将跟踪发送到代理的**本地**环境。项目名称为`{name}-local`，取自您传递给`define_deep_agent`或`defineDeepAgent`的`name`。
+`mda dev` 将跟踪发送到代理的**本地**环境。项目名称为`{name}-local`，取自您传递给`define_deep_agent`或`defineDeepAgent`的`name`。
 
 在 [agent-based workspace](/langsmith/agent-registry) 中，LangSmith 拒绝这些跟踪，直到代理记录存在。 [⟦T15⟧](/langsmith/javascript/managed-deep-agents-deploy) 创建该记录。 `mda dev` 本身则不然。
 
@@ -54,7 +54,7 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 
 ## 配置本地服务器
 
-|旗帜|使用 |
+|旗帜|使用|
 | - | - |
 | `--port PORT` |设置本地服务器端口。 |
 | `--hostname HOSTNAME` |设置服务器侦听的主机名。 |
@@ -65,11 +65,11 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 
 ## 了解当地行为
 
-`mda dev` 使用本地默认值使测试更容易：
-
-* 如果代理使用身份，Studio 会自动提供本地测试用户。
+`mda dev` 使用本地默认值使测试更容易：* 如果代理使用身份，Studio 会自动提供本地测试用户。
 * 如果配置的沙箱不可用，代理将使用临时本地文件夹。 CLI 打印文件夹路径。
-* [Schedules](/langsmith/javascript/managed-deep-agents-schedules) 不要运行。 `mda dev` 在启动时列出每个计划，但不配置它，因此不会在本地触发计划的运行。这些默认值与部署的代理不同。在生产中使用代理之前，请在开发部署中测试身份和沙箱行为。
+* [Schedules](/langsmith/javascript/managed-deep-agents-schedules) 不要运行。 `mda dev` 在启动时列出每个计划，但不配置它，因此不会在本地触发计划的运行。
+
+这些默认值与部署的代理不同。在生产中使用代理之前，请在开发部署中测试身份和沙箱行为。
 
 ***
 

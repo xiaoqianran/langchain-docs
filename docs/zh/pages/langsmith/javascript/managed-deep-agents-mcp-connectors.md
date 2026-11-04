@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 在`tools/mcp.ts`中声明MCP服务器：
 
@@ -23,7 +23,7 @@ my-agent/
     mcp.ts
 ```
 
-完整的项目布局，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
+完整的项目布局请参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
 要在项目中实现应用程序逻辑，请使用[authored tool](/langsmith/javascript/managed-deep-agents-tools)。
 
@@ -81,9 +81,9 @@ export const mcp = defineMcp({
 
 每个服务器都支持以下核心选项：
 
-|选项|描述 |
+|选项 |描述 |
 | - | - |
-| `transport` |必需的。对可流式 HTTP 使用 `http` 或对旧版 SSE 使用 `sse`。 |
+| `transport` |必需的。对于可流式 HTTP 使用 `http`，对于旧版 SSE 使用 `sse`。 |
 | `url` |必需的。远程 MCP 端点 URL。 |
 | `headers` |发送到服务器的静态标头。 |
 | `include_tools` / `includeTools` |要公开的原始 MCP 工具名称。 |
@@ -92,7 +92,7 @@ export const mcp = defineMcp({
 | `automatic_sse_fallback` / `automaticSSEFallback` |对于 HTTP，允许客户端回退到 SSE。 |
 | `reconnect` |对于 SSE，配置重新连接行为。 |
 
-MCP 定义还接受以下选项：|选项|默认|描述 |
+MCP 定义还接受以下选项：|选项 |默认 |描述 |
 | - | - | - |
 | `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` |每个工具都带有前缀 `{server}__`。 |
 | `throw_on_load_error` / `throwOnLoadError` | `true` |加载失败而不是从部分工具集开始。 |

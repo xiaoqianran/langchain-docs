@@ -70,9 +70,9 @@ SmithDB 是为代理跟踪数据构建的列式数据存储：深度嵌套的跨
 
 ## 存储要求
 
-自托管 LangSmith 安装使用 PostgreSQL 存储操作数据，使用 Redis 或 Valkey 进行排队和缓存，以及可选的 blob 存储。当安装运行双重摄取时，跟踪和反馈存在于 ClickHouse、SmithDB 或两者中。 SmithDB 添加了自己的元存储、对象存储和缓存存储。在 0.17 上，新安装可以运行 SmithDB，无需 ClickHouse；参见[Install without ClickHouse](/langsmith/self-host-smithdb-install#install-without-clickhouse)。从现有安装中停用 ClickHouse 是一个单独的过程；考虑之前请通过[Support Portal](https://support.langchain.com/)联系LangChain。
+自托管 LangSmith 安装使用 PostgreSQL 来存储操作数据，使用 Redis 或 Valkey 来进行排队和缓存，以及可选的 blob 存储。当安装运行双重摄取时，跟踪和反馈存在于 ClickHouse、SmithDB 或两者中。 SmithDB 添加了自己的元存储、对象存储和缓存存储。在 0.17 上，新安装可以运行 SmithDB，无需 ClickHouse；参见[Install without ClickHouse](/langsmith/self-host-smithdb-install#install-without-clickhouse)。从现有安装中停用 ClickHouse 是一个单独的过程；考虑之前请通过[Support Portal](https://support.langchain.com/)联系LangChain。
 
-有关适用于 ClickHouse 和 SmithDB 的 SDK 方法更改，请参阅 [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration)。
+有关适用于 ClickHouse 和 SmithDB 的 SDK 方法更改，请参阅 [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration)。
 
 ***
 

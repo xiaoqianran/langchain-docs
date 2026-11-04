@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 将编写的工具放在`tools/`下，将它们导入到代理条目中，并将它们传递给代理定义：
 
@@ -51,9 +51,7 @@ def lookup_customer(customer_id: str) -> str:
 
 使用清晰、独特的工具名称以避免冲突。有关LangChain工具定义的更多信息，请参阅[Tools](/oss/python/langchain/tools)。
 
-**2.将工具附加到代理**
-
-将工具导入到项目根代理条目中并将其传递到`tools`列表中：
+**2.将工具附加到代理**将工具导入到项目根代理条目中并将其传递到 `tools` 列表中：
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_deep_agent
@@ -65,7 +63,9 @@ agent = define_deep_agent(
     model="openai:gpt-5.5",
     tools=[lookup_customer],
 )
-```您的导入工作方式应该与在普通本地 Python 项目中的工作方式相同。
+```
+
+您的导入工作方式应该与在普通本地 Python 项目中的工作方式相同。
 
 **3.添加人机交互（可选）**
 
@@ -100,18 +100,18 @@ agent = define_deep_agent(
 
 对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
 
-## 部署
+## 部署`mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`tools/`下的模块。工具未同步到 Context Hub；他们附带代理代码。
 
-`mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`tools/`下的模块。工具未同步到 Context Hub；他们附带代理代码。
+## 何时使用工具
 
-## 何时使用工具|概念|亲切 |它如何到达代理|
+|概念 |亲切 |它如何到达代理|
 | - | - | - |
 | **工具** |申请代码 |导入并传入代理定义 |
 | **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
 | **[Skills](/langsmith/python/managed-deep-agents-skills)** |托管上下文 |代理在相关时加载的程序 |
 | **[Instructions](/langsmith/python/managed-deep-agents-instructions)** |托管上下文 |永远在线的系统提示 |
 
-欲了解更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
+有关更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
 
 ## 响应中断
 
@@ -122,11 +122,11 @@ agent = define_deep_agent(
 
 人机交互需要持久的线程状态来暂停和恢复。托管运行时拥有检查指针，因此不需要额外的设置。
 
-## 使用需要身份验证的工具
+## 使用需要身份验证的工具如果工具需要 API 密钥或 OAuth 令牌，请使用连接在运行时解析凭据。参见[Manage connections](/langsmith/python/managed-deep-agents-connections)。
 
-如果工具需要 API 密钥或 OAuth 令牌，请使用连接在运行时解析凭据。参见[Manage connections](/langsmith/python/managed-deep-agents-connections)。
+## 访问运行时上下文
 
-## 访问运行时上下文对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
+对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
 
 Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runtime](/langsmith/python/managed-deep-agents-runtime)。
 

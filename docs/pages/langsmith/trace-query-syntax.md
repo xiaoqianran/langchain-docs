@@ -128,7 +128,7 @@ and(eq(metadata_key, "env"), notlike(metadata_value, "%staging%"))
 
 ## Quick reference examples
 
-The following examples show the filter string only. Pass the string as the `filter`, `trace_filter`, or `tree_filter` argument in `client.list_runs()` or the `/runs/query` API endpoint.
+The following examples show the filter string only. Pass the string as the `filter`, `trace_filter`, or `tree_filter` argument in `client.runs.query()` or the `POST /api/v2/runs/query` API endpoint.
 
 > [!TIP]
 >

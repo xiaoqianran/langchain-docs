@@ -285,7 +285,7 @@ langgraph build -t my-agent:latest
 docker push my-agent:latest
 ```
 
-您可以推送到部署环境有权访问的任何容器注册表（Docker Hub、AWS ECR、Azure ACR、Google GCR 等）。
+您可以推送到您的部署环境有权访问的任何容器注册表（Docker Hub、AWS ECR、Azure ACR、Google GCR 等）。
 
 **支持的部署：**
 

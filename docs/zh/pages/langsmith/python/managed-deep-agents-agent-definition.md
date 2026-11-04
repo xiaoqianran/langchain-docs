@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 代理条目位于项目根目录：
 
@@ -83,7 +83,7 @@ agent = define_deep_agent(
 | `interrupt_on=` |在选定的工具需要人工批准之前暂停。将 `interrupt_on` 设置为在选定工具调用之前暂停，以便人们可以在调用运行之前批准、编辑或拒绝调用。参见[Human-in-the-loop](/langsmith/python/managed-deep-agents-tools#human-in-the-loop)。 |
 | `response_format=` |设置代理必须返回与架构匹配的数据而不是不受约束的文本响应的时间。参见[Structured output](/oss/python/langchain/structured-output)。 |
 
-## 选择每次运行的配置要为每次运行选择代理的配置，请将函数导出为 `agent` 而不是定义。然后，一种部署可以适应不同的用户、任务或存储库。该函数是一个图工厂，与 LangGraph 用于 [rebuild a graph at runtime](/langsmith/graph-rebuild) 的模式相同：它接收运行时并返回定义。
+## 选择每次运行的配置要为每次运行选择代理的配置，请将函数导出为 `agent` 而不是定义。然后，一种部署可以适应不同的用户、任务或存储库。该函数是一个图形工厂，与 LangGraph 用于 [rebuild a graph at runtime](/langsmith/graph-rebuild) 的模式相同：它接收运行时并返回定义。
 
 此示例选择运行所处理的存储库的说明和技能。它假设该项目有`skills/python-service/`和`skills/typescript-web/`，每个都有一个[⟦T32⟧](/langsmith/python/managed-deep-agents-skills)。
 
@@ -127,11 +127,11 @@ await client.runs.create(
 )
 ```
 
-运行上下文是应用程序数据，而不是经过验证的身份。根据运行时经过验证的调用者检查[tools](/langsmith/python/managed-deep-agents-tools)中的授权。
+运行上下文是应用程序数据，而不是经过验证的身份。根据运行时经过验证的调用者检查 [tools](/langsmith/python/managed-deep-agents-tools) 中的授权。
 
 ### 选择托管资源
 
-工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域|省略|已选择 |已清除 |
+工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域|省略 |已选择 |已清除 |
 | - | - | - | - |
 | `instructions` |使用`instructions.md`。 |使用提供的提示。 | `""` 删除编写的指令。 |
 | `skills` |展示所有项目技能。 |仅公开选定的技能。 | `[]`没有暴露任何技能。 |
@@ -185,7 +185,7 @@ def agent(runtime: ManagedServerRuntime[AppContext]):
 * **内联名称**：将 `name` 设置为内联字符串。 `mda build` 无需调用工厂即可读取它，并将其用作图形 ID 和默认部署名称。
 * **模型依赖项**：为工厂可以返回的每个模型安装集成包。构建不会检测到它们。
 
-要更改运行中模型调用之间的行为，请使用[custom middleware](/langsmith/python/managed-deep-agents-middleware)。## 使用LLM网关
+要更改运行中模型调用之间的行为，请使用 [custom middleware](/langsmith/python/managed-deep-agents-middleware)。## 使用LLM网关
 
 您可以使用 [LLM Gateway](/langsmith/llm-gateway) 将速率限制、回退和其他策略应用于模型调用。
 

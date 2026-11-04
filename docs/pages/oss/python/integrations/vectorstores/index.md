@@ -454,6 +454,28 @@ vector_store.similarity_search(
 > )
 > ```
 
+> [accordion] Amazon S3 Vectors
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -qU langchain-aws
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-aws
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain_aws.vectorstores import AmazonS3Vectors
+>
+> vector_store = AmazonS3Vectors(
+>     vector_bucket_name="my-vector-bucket",
+>     index_name="my-index",
+>     embedding=embeddings,
+> )
+> ```
+>
+> The S3 vector bucket must already exist. See the [Amazon S3 Vectors guide](/oss/python/integrations/vectorstores/s3_vectors) for details.
+
 > [accordion] Astra DB
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

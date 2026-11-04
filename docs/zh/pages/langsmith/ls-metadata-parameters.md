@@ -4,15 +4,15 @@
 
 # 元数据参数参考
 
-When you trace LLM calls with LangSmith, you often want to [track costs](/langsmith/cost-tracking), compare model configurations, and analyze performance across different providers. LangSmith's native integrations (like [LangChain](/langsmith/trace-with-langchain) or the [OpenAI](/langsmith/trace-openai)/[Anthropic](/langsmith/trace-anthropic) wrappers) handle this automatically, but custom model wrappers and self-hosted models require a standardized way to provide this information. LangSmith 为此目的使用 `ls_` 元数据参数。
+当您使用 LangSmith 跟踪 LLM 调用时，您通常需要 [track costs](/langsmith/cost-tracking)、比较模型配置并分析不同提供商的性能。 LangSmith 的本机集成（如 [LangChain](/langsmith/trace-with-langchain) 或 [OpenAI](/langsmith/trace-openai)/[Anthropic](/langsmith/trace-anthropic) 包装器）会自动处理此问题，但自定义模型包装器和自托管模型需要标准化的方式来提供此信息。 LangSmith 为此目的使用 `ls_` 元数据参数。
 
-These metadata parameters (all prefixed with `ls_`) let you pass model configuration and identification information through the standard `metadata` field. Once set, LangSmith can automatically calculate costs, display model information in the UI, and enable [filtering](/langsmith/filter-traces) and analytics across your traces.
+这些元数据参数（均以 `ls_` 为前缀）允许您通过标准 `metadata` 字段传递模型配置和标识信息。设置后，LangSmith 可以自动计算成本，在 UI 中显示模型信息，并启用 [filtering](/langsmith/filter-traces) 和跨跟踪分析。
 
 使用 `ls_` 元数据参数可以：* **通过识别提供商和模型名称，为自定义或自托管模型启用自动成本跟踪**。
 * **跟踪模型配置**，如温度、最大令牌和其他参数以进行实验比较。
 * **按提供商或配置设置过滤和分析跟踪**
 * **为自定义代理检测自定义轨迹视图渲染**。
-* **标记中断的错误**，因此 LangSmith 可以将中断的运行与其他错误分开渲染。
+* **标记中断的错误**，以便 LangSmith 可以将中断的运行与其他错误分开渲染。
 * **通过准确记录每次运行使用的模型设置来改进调试**。
 
 ## 基本使用示例
@@ -211,7 +211,7 @@ val myConfiguredLlm =
 
 ### 系统生成的参数|参数|类型 |描述 |
 | - | - | - |
-| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树中的深度（0=根，1=子等）- 自动计算 |
+| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树的深度（0=根，1=子，等等）- 自动计算 |
 | [⟦T55⟧](#ls_method) | `string` |使用的跟踪方法（例如“可跟踪”）- 由 SDK 设置 |
 
 ### 实验参数
@@ -444,7 +444,7 @@ metadata={
 该密钥从 `langsmith`（Python 和 JS）导出为 `LS_MESSAGE_VIEW_EXCLUDE` 常量，其值为字符串 `"ls_message_view_exclude"`。更喜欢常量以避免拼写错误；文字字符串仍然有效。
 
 **何时使用：**
-对于非对话回合的 LLM 子跨度，例如分类调用、嵌入查找、安全过滤器或路由/护栏决策，您仍然希望在 LangSmith 的其他位置可见，但不希望对话记录变得混乱。
+对于非对话轮次的 LLM 子跨度，例如分类调用、嵌入查找、安全过滤器或路由/护栏决策，您仍然希望在 LangSmith 的其他位置可见，但不希望对话记录变得混乱。
 
 **示例：**
 
@@ -564,7 +564,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 ### `ls_experiment_id`
 
 * **类型：** `string` (UUID)
-* **设置方式：** LangSmith 实验系统（自动）
+* **设置方式：** LangSmith实验系统（自动）
 
 **它的作用：**
 实验运行的唯一标识符。
@@ -635,81 +635,77 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 
 在基于代理的工作区中，将下面的 `my-app` 替换为 [environment's ⟦T160⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
-将 [⟦T161⟧](https://reference.langchain.com/python/langsmith/client/Client) 类与 [⟦T162⟧](https://reference.langchain.com/python/langsmith/client/Client/list_runs) 方法 (Python) 或 [⟦T163⟧](https://reference.langchain.com/javascript/langsmith/client/Client/listRuns) 方法 (TypeScript) 结合使用，根据元数据值查询跟踪。 [filter syntax](/langsmith/trace-query-syntax) 支持相等检查、比较和逻辑运算符。
+使用 [⟦T161⟧](https://reference.langchain.com/python/langsmith/client/Client) 类和 `client.runs.query()` 方法根据元数据值查询跟踪。它需要一个项目 ID 并回顾 1 天，除非您通过 `min_start_time`。 [filter syntax](/langsmith/trace-query-syntax) 支持相等检查、比较和逻辑运算符。有关更多示例，请参阅[Query traces using the SDK](/langsmith/export-traces)。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from datetime import datetime, timedelta, timezone
+
 from langsmith import Client
 
-client = Client()
 
-# Filter runs by provider
-runs = client.list_runs(
-    project_name="my-app",
-    filter='metadata_key = "ls_provider" AND metadata_value = "openai"'
-)
+async def main():
+    client = Client()
+    project_id = str(client.read_project(project_name="my-app").id)
+    since = datetime.now(timezone.utc) - timedelta(days=7)
 
-# Filter by specific model
-runs = client.list_runs(
-    project_name="my-app",
-    filter='metadata_key = "ls_model_name" AND metadata_value = "gpt-5.5"'
-)
+    async def query(filter: str):
+        return [
+            run
+            async for run in client.runs.query(
+                project_ids=[project_id], min_start_time=since, filter=filter
+            )
+        ]
 
-# Filter root runs only (top-level traces)
-runs = client.list_runs(
-    project_name="my-app",
-    filter='metadata_key = "ls_run_depth" AND metadata_value = 0'
-)
+    # Filter runs by provider
+    runs = await query('and(eq(metadata_key, "ls_provider"), eq(metadata_value, "openai"))')
 
-# Filter by temperature threshold
-runs = client.list_runs(
-    project_name="my-app",
-    filter='metadata_key = "ls_temperature" AND metadata_value > 0.5'
-)
+    # Filter by specific model
+    runs = await query('and(eq(metadata_key, "ls_model_name"), eq(metadata_value, "gpt-5.5"))')
+
+    # Filter root runs only (top-level traces)
+    runs = await query('and(eq(metadata_key, "ls_run_depth"), eq(metadata_value, 0))')
+
+    # Filter by temperature threshold
+    runs = await query('and(eq(metadata_key, "ls_temperature"), gt(metadata_value, 0.5))')
+
+
+asyncio.run(main())
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Client } from "langsmith";
 
 const client = new Client();
+const projectId = (await client.readProject({ projectName: "my-app" })).id;
+const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+async function query(filter: string) {
+  const runs = [];
+  for await (const run of client.runs.query({
+    project_ids: [projectId],
+    min_start_time: since,
+    filter,
+  })) {
+    runs.push(run);
+  }
+  return runs;
+}
 
 // Filter runs by provider
-const runsByProvider: any[] = [];
-for await (const run of client.listRuns({
-  projectName: "my-app",
-  filter: 'metadata_key = "ls_provider" AND metadata_value = "openai"'
-})) {
-  runsByProvider.push(run);
-}
+const runsByProvider = await query('and(eq(metadata_key, "ls_provider"), eq(metadata_value, "openai"))');
 
 // Filter by specific model
-const runsByModel: any[] = [];
-for await (const run of client.listRuns({
-  projectName: "my-app",
-  filter: 'metadata_key = "ls_model_name" AND metadata_value = "gpt-5.5"'
-})) {
-  runsByModel.push(run);
-}
+const runsByModel = await query('and(eq(metadata_key, "ls_model_name"), eq(metadata_value, "gpt-5.5"))');
 
 // Filter root runs only (top-level traces)
-const rootRuns: any[] = [];
-for await (const run of client.listRuns({
-  projectName: "my-app",
-  filter: 'metadata_key = "ls_run_depth" AND metadata_value = 0'
-})) {
-  rootRuns.push(run);
-}
+const rootRuns = await query('and(eq(metadata_key, "ls_run_depth"), eq(metadata_value, 0))');
 
 // Filter by temperature threshold
-const highTempRuns: any[] = [];
-for await (const run of client.listRuns({
-  projectName: "my-app",
-  filter: 'metadata_key = "ls_temperature" AND metadata_value > 0.5'
-})) {
-  highTempRuns.push(run);
-}
-```
+const highTempRuns = await query('and(eq(metadata_key, "ls_temperature"), gt(metadata_value, 0.5))');
+```这些示例显示了常见的过滤模式：
 
-这些示例显示了常见的过滤模式：* **按提供商或型号过滤**以分析特定型号的使用模式或成本
+* **按提供商或型号过滤**以分析特定型号的使用模式或成本
 * **按运行深度过滤**，仅获取根跟踪（深度 0）或特定嵌套级别的子运行
 * **按配置过滤**以比较不同温度、最大令牌或其他设置的实验
 
@@ -734,6 +730,6 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答复。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/ls-metadata-parameters.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

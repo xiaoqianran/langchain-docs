@@ -8,7 +8,7 @@ Agent factories, tools, and middleware hooks each receive a runtime. It is the n
 
 > [!NOTE]
 >
-> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use version 0.10 of the Managed Deep Agents CLI and SDK for BYOC.
 
 ## Understand the runtime types
 

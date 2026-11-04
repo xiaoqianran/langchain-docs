@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## Context Hub 中包含哪些内容
 
@@ -24,9 +24,9 @@
 
 有关托管运行时字段的所有权，请参阅[Agent definition](/langsmith/javascript/managed-deep-agents-agent-definition)。
 
-## 事实来源
+## 事实来源该项目和 Context Hub 都持有 `instructions.md` 和 `skills/` 的副本。哪个副本获胜取决于您在何处进行持久更改以及如何解决部署冲突。
 
-该项目和 Context Hub 都持有 `instructions.md` 和 `skills/` 的副本。哪个副本获胜取决于您在何处进行持久更改以及如何解决部署冲突。* **项目文件**：将项目中的`instructions.md`和`skills/`视为持久更改的事实来源。每个 `mda deploy` 将这些文件同步到代理的 Context Hub 存储库中。
+* **项目文件**：将项目中的`instructions.md`和`skills/`视为持久更改的事实来源。每个 `mda deploy` 将这些文件同步到代理的 Context Hub 存储库中。
 * **Context Hub 编辑**：当您需要快速更改且无需重新部署代码即可应用时，可以在 Context Hub 中编辑文件。这些 Hub 编辑将保持有效，直到稍后的部署覆盖它们，或者直到您在出现冲突提示时选择保留 Hub 副本。
 * **持久内存**：`/memories/agent/`下的内存为代理所有。部署启用树，但不会覆盖已存储在其中的内容。
 
@@ -76,7 +76,7 @@
 
 `mda dev` 创建一个本地 Context Hub 模拟，用于说明、技能和记忆。本地 Studio 会话不会创建或更新部署的托管 Context Hub 存储库。
 
-欲了解更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。
+有关更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。
 
 ## 选择上下文所属的位置|目标|使用|
 | - | - |

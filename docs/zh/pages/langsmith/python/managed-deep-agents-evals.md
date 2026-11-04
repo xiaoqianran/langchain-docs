@@ -12,7 +12,7 @@ Managed Deep Agents 初始化 Harbor 工作区。 Harbor 在隔离环境中针�
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 先决条件
 
@@ -51,7 +51,7 @@ uvx --from npx-skills skills add langchain-ai/langchain-skills --skill eval-engi
 uv run mda evals init -i
 ```
 
-交互式切换列出了检测到的编码代理，包括Deep Agents Code、Claude Code、Codex 和 Cursor。选择代理会在项目目录中启动该代理并运行 eval-engineering 提示符。您还可以复制其他代理的提示，或退出并稍后返回。
+交互式切换列出了检测到的编码代理，包括 Deep Agents Code、Claude Code、Codex 和 Cursor。选择代理会在项目目录中启动该代理并运行 eval-engineering 提示符。您还可以复制其他代理的提示，或退出并稍后返回。
 
 初始化创建：
 
@@ -117,7 +117,7 @@ uv run --env-file .env --python 3.12 --with 'harbor[langsmith]==0.21.0' harbor r
   --plugin mda_harbor.langsmith_plugin:LangSmithPlugin
 ```
 
-将 `my-agent` 替换为项目目录名称。生成的命令将填写名称并在 Windows 上使用 PowerShell 语法。编辑代理后重新运行命令会拾取项目更改。
+将 `my-agent` 替换为项目目录名称。生成的命令填写名称并在 Windows 上使用 PowerShell 语法。编辑代理后重新运行命令会拾取项目更改。
 
 **5.检查结果**
 
@@ -143,7 +143,7 @@ uv run --python 3.12 --with 'harbor[langsmith]==0.21.0' \
 * [CLI reference](/langsmith/python/managed-deep-agents-cli)：查看`mda evals init` 和相关标志。
 * [Deploy an agent](/langsmith/python/managed-deep-agents-deploy)：在评估通过后部署代理。
 * [Deep Agents Code quickstart](/oss/deepagents/code/quickstart)：安装并运行`dcode`。
-* [Harbor integrations](/langsmith/harbor-integrations)：在LangSmith中记录Harbor作业。
+* [Harbor integrations](/langsmith/harbor-integrations)：在LangSmith记录Harbor作业。
 * [Harbor task documentation](https://www.harborframework.com/docs/tasks)：配置任务、环境和验证者。
 
 ***

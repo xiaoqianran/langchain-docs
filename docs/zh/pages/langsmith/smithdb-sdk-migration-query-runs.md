@@ -6,7 +6,7 @@
 
 将 LangSmith SDK 运行查询方法迁移到 SmithDB 支持的等效方法。
 
-运行查询是迁移中最大的表面积，因此它们有自己的页面。有关弃用日期、最低 SDK 版本以及适用于每种方法的代理提示，请参阅 [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration)。
+运行查询是迁移中最大的表面积，因此它们有自己的页面。有关弃用日期、最低 SDK 版本以及适用于每种方法的代理提示，请参阅 [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration)。
 
 ## 运行：查询
 
@@ -18,7 +18,7 @@
 
 > [选项卡] Python
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.list_runs()` | `client.runs.query()` |
 >
@@ -30,7 +30,7 @@
 
 > [选项卡] TypeScript
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.listRuns()` | `client.runs.query()` |
 >
@@ -38,7 +38,7 @@
 
 > [选项卡] Java
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.runs().query()` | `client.runs().queryV2()` |
 >
@@ -46,7 +46,7 @@
 
 > [选项卡] 前往
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.Runs.Query()` | `client.Runs.QueryV2()` |
 >
@@ -54,7 +54,7 @@
 
 > [选项卡] 卷曲
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `POST /api/v1/runs/query` | `POST /api/v2/runs/query` |
 >
@@ -102,7 +102,7 @@
 >>
 >> `min_start_time` 省略时默认为 **1 天前**。没有 `startTime` 的 `listRuns` 返回所有历史运行；没有 `min_start_time` 的 `client.runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的`min_start_time`。
 >
-> |之前 (`listRuns`) |之后(`client.runs.query`) |笔记|
+> |之前 (`listRuns`) |之后(`client.runs.query`)|笔记|
 > | - | - | - |
 > | `projectName` | *（已删除）* |将 `project_ids` 与 UUID 一起使用 - 请参阅上面的警告 |
 > | `projectId` | `project_ids` |更名为`snake_case`；现在需要一个列表；与 `reference_dataset_id` 互斥 |> | `runType` | `run_type` |更名为`snake_case`；值现在必须为大写：`"LLM"`、`"CHAIN"`、`"TOOL"`、`"RETRIEVER"`、`"EMBEDDING"`、`"PROMPT"`、`"PARSER"` |
@@ -299,7 +299,7 @@
 > | `run.promptCost` | `run.prompt_cost` |更名为`snake_case`；仅供自己使用；不再从子运行中求和|
 > | `run.completionCost` | `run.completion_cost` |更名为`snake_case`；仅供自己使用；不再从子运行中求和|
 > | `run.firstTokenTime` | `run.first_token_time` |更名为`snake_case` |
-> | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒）|
+> | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒） |
 > | `run.inDataset` | `run.is_in_dataset` |更名|
 > | `run.childRunIds` | *（已删除）* |没有同等的 |
 > | `run.childRuns` | *（已删除）* |没有同等的 |
@@ -405,7 +405,7 @@
 > | `run.ParentRunIDs` | `run.ParentRunIDs` |不变 |
 > | `run.PriceModelID` | `run.PriceModelID` |不变 |> | `run.PromptCost` | `run.PromptCost` |仅供自己使用；不再从子运行中求和|
 > | `run.PromptCostDetails` | `run.PromptCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
-> | `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变） |
+> | `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变）|
 > | `run.PromptTokens` | `run.PromptTokens` |仅供自己使用；不再从子运行中求和|
 > | `run.CompletionCost` | `run.CompletionCost` |仅供自己使用；不再从子运行中求和|
 > | `run.CompletionCostDetails` | `run.CompletionCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
@@ -478,7 +478,7 @@
 > | `prompt_tokens` | `prompt_tokens` |仅供自己使用；不再从子运行中求和|
 > | `completion_cost` | `completion_cost` |仅供自己使用；不再从子运行中求和|
 > | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
-> | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
+> | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
 > | `completion_tokens` | `completion_tokens` |仅供自己使用；不再从子运行中求和|
 > | `total_cost` | `total_cost` |仅供自己使用；不再从子运行中求和|
 > | `total_tokens` | `total_tokens` |仅供自己使用；不再从子运行中求和|
@@ -731,7 +731,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] Python
 >
-> `list_runs` 返回一组默认字段，无需选择。默认情况下，`runs.query` 仅返回 `id` — 通过 `selects=[...]` ​​请求更多。字段名称现在为大写 (`"name"` → `"NAME"`)。
+> `list_runs` 返回一组默认字段，无需选择。默认情况下，`runs.query` 仅返回 `id`，请通过 `selects=[...]` ​​请求更多。字段名称现在为大写 (`"name"` → `"NAME"`)。
 >
 >> [选项卡] 之前
 >>

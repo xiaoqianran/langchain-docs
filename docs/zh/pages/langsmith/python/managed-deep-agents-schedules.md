@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公共 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 项目结构
 
@@ -59,7 +59,7 @@ schedule = define_schedule(
 )
 ```
 
-`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，则 LangSmith crons 使用 UTC。
+`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，LangSmith crons 使用 UTC。
 
 ## 选择线程行为默认情况下，调度使用临时线程。托管 Deep Agents 为每次运行创建一个新线程，并要求 LangSmith 在运行完成后删除该临时线程。
 

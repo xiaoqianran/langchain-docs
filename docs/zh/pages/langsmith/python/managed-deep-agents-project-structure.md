@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 项目布局
 
@@ -54,9 +54,9 @@ my-agent/
 
 * **托管上下文**：[⟦T8⟧](/langsmith/python/managed-deep-agents-instructions)定义系统提示符。 [⟦T9⟧](/langsmith/python/managed-deep-agents-skills) 下的每个目录都包含特定于任务的指令，例如 `SKILL.md` 和任何支持文件。 MDA 将 `instructions.md` 和 `skills/` 同步到 [Context Hub](/langsmith/python/managed-deep-agents-context-hub)。可选的 [durable memory](/langsmith/python/managed-deep-agents-memory) 也由 Context Hub 支持。
 
-* **应用程序代码**：[⟦T13⟧](/langsmith/python/managed-deep-agents-tools)和[⟦T14⟧](/langsmith/python/managed-deep-agents-middleware)下的文件是普通的项目模块。从代理条目导入它们。其他本地模块的工作方式相同。
+* **应用程序代码**：[⟦T13⟧](/langsmith/python/managed-deep-agents-tools)和[⟦T14⟧](/langsmith/python/managed-deep-agents-middleware)下的文件是普通的项目模块。从代理条目导入它们。其他本地模块的工作方式相同。* **托管配置**：某些路径在存在时启用功能。对于`channels/`和`schedules/`，只有直接子代是托管声明；嵌套模块不是。
 
-* **托管配置**：某些路径在存在时启用功能。对于`channels/`和`schedules/`，只有直接子代是托管声明；嵌套模块不是。|路径|启用|
+  |路径|启用|
   | - | - |
   | `identity.py` | [Caller authentication](/langsmith/python/managed-deep-agents-identity) |
   | `memory.py` | [Durable memory](/langsmith/python/managed-deep-agents-memory) |
@@ -81,9 +81,7 @@ uv add ../shared
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from shared import helper
-```
-
-将共享代码放在自己的包中。它的`pyproject.toml`需要`[project]`和`[build-system]`：
+```将共享代码放在自己的包中。它的`pyproject.toml`需要`[project]`和`[build-system]`：
 
 ```toml ../shared/pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [project]
@@ -97,7 +95,9 @@ build-backend = "hatchling.build"
 
 MDA 将包复制到构建中。 `mda dev` 会在您编辑时重新加载，并且 `mda deploy` 会传送它。
 
-## 后续步骤> [卡][Quickstart](/langsmith/python/managed-deep-agents-quickstart)
+## 后续步骤
+
+> [卡][Quickstart](/langsmith/python/managed-deep-agents-quickstart)
 >
 > 使用 `mda` CLI 创建并部署您的第一个托管深度代理。
 

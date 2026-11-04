@@ -14,13 +14,13 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 扩展代理
 
 **1.添加自定义搜索工具**
 
-内置提供商搜索对于首次运行很方便。编写的工具为您提供更多控制：选择搜索 API、调整参数并将工具代码保留在您的项目中。
+内置的提供商搜索对于首次运行很方便。编写的工具为您提供更多控制：选择搜索 API、调整参数并将工具代码保留在您的项目中。
 
 > [!注意]
 >
@@ -63,9 +63,9 @@ def internet_search(
         max_results=max_results,
         topic=topic,
     )
-```
+```将提供商搜索工具字典替换为您编写的工具。保留快速入门中的 `model` 值：
 
-将提供商搜索工具字典替换为您编写的工具。保留快速入门中的 `model` 值：```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_deep_agent
 
 from tools.search import internet_search
@@ -137,7 +137,7 @@ schedule = define_schedule(
 
 部署上线后，`mda deploy` 将此计划协调为 LangSmith cron 作业。在下一步中部署后，您应该会看到：
 
-* `mda deploy` 在没有进度错误的情况下完成（不要通过`--no-wait`，否则进度不协调）。
+* `mda deploy` 无进度错误地完成（不要通过`--no-wait`，否则进度不协调）。
 * 部署中此文件的托管 cron。计划名称与模块主干匹配：`daily_digest` (Python) 或 `daily-digest` (TypeScript)。
 * 此 cron 没有立即运行摘要。第一场火灾要等到工作日美国/洛杉矶 8:00 才会发生。
 
@@ -151,7 +151,7 @@ schedule = define_schedule(
 uv run mda deploy
 ```
 
-成功后，CLI 将打印部署仪表板 URL。部署会将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
+成功后，CLI 将打印部署仪表板 URL。部署将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
 
 打开该 URL 并确认：
 
@@ -161,7 +161,7 @@ uv run mda deploy
 
 ## 后续步骤
 
-> [卡片][Custom middleware](/langsmith/python/managed-deep-agents-middleware)
+> [卡][Custom middleware](/langsmith/python/managed-deep-agents-middleware)
 >
 > 围绕模型和工具调用添加日志记录、重试、限制和护栏。
 

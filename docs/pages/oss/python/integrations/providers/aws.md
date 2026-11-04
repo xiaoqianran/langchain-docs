@@ -60,7 +60,7 @@ See a [usage example](/oss/python/integrations/embeddings/bedrock).
 from langchain_aws import BedrockEmbeddings
 ```
 
-## Document loaders
+## Vector stores
 
 ### Amazon MemoryDB
 
@@ -82,6 +82,16 @@ vds = InMemoryVectorStore.from_documents(
 ```
 
 See a [usage example](/oss/python/integrations/vectorstores/memorydb).
+
+### Amazon S3 Vectors
+
+[Amazon S3 Vectors](https://aws.amazon.com/s3/features/vectors/) is cloud object storage with native support for storing and querying vectors. Use AmazonS3Vectors to store and query embeddings in an S3 vector bucket without provisioning infrastructure.
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_aws.vectorstores import AmazonS3Vectors
+```
+
+See a [usage example](/oss/python/integrations/vectorstores/s3_vectors).
 
 ### Valkey
 

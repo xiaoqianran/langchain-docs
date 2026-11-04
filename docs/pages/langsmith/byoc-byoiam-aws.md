@@ -1,4 +1,4 @@
-<!-- langchain-docs: Bring your own IAM roles (AWS) | https://docs.langchain.com/langsmith/byoc-byoiam -->
+<!-- langchain-docs: Bring your own IAM roles (AWS) | https://docs.langchain.com/langsmith/byoc-byoiam-aws -->
 
 # Bring your own IAM roles (AWS)
 
@@ -6,7 +6,7 @@ Create customer-managed IAM roles for LangSmith BYOC, remove IAM management perm
 
 Bring your own IAM (BYOIAM) lets you create and manage the AWS IAM resources used by LangSmith BYOC data planes. You control the roles, policies, and permissions boundaries while LangChain provisions and operates the data plane using those resources.
 
-If you want LangChain to manage IAM resources, follow the standard [BYOC onboarding guide](/langsmith/byoc-onboarding).
+If you want LangChain to manage IAM resources, follow the standard [BYOC onboarding guide](/langsmith/byoc-onboarding-aws).
 
 ## Before you begin
 
@@ -108,7 +108,7 @@ Setting `allow_iam_management_permissions = false` changes the role's permission
 
 Enabling `allow_delete_permissions` does not restore IAM management permissions.
 
-If you also want to [bring your own VPC](/langsmith/byoc-byovpc), set `allow_vpc_creation_permissions = false` and supply the VPC ID in `vpc_ids`.
+If you also want to [bring your own VPC](/langsmith/byoc-byovpc-aws), set `allow_vpc_creation_permissions = false` and supply the VPC ID in `vpc_ids`.
 
 ## Deploy the data plane with existing roles
 
@@ -121,7 +121,7 @@ The **Use existing IAM roles** checkbox configures the data plane to use the IAM
 To deploy the data plane:
 
 1. Go to **Settings > Data Planes** and create a data plane.
-2. Supply the name, AWS region, network configuration, and load balancer access described in [BYOC onboarding](/langsmith/byoc-onboarding). Choose a region included in the module's `regions` input.
+2. Supply the name, AWS region, network configuration, and load balancer access described in [BYOC onboarding](/langsmith/byoc-onboarding-aws). Choose a region included in the module's `regions` input.
 3. Use the provisioning role's `crossplane_role_arn` output for the **AWS IAM role ARN**.
 4. Select **Use existing IAM roles**.
 5. If you set [custom IAM names](#use-custom-iam-names), paste the values of `module.byoiam.role_names` and `module.byoiam.karpenter_instance_profile_name` into the data plane form.
@@ -131,12 +131,12 @@ Continue with provisioning and private connectivity in the onboarding guide.
 
 ## See also
 
-* [BYOC onboarding](/langsmith/byoc-onboarding)
-* [Bring your own VPC on AWS](/langsmith/byoc-byovpc)
+* [BYOC onboarding](/langsmith/byoc-onboarding-aws)
+* [Bring your own VPC on AWS](/langsmith/byoc-byovpc-aws)
 * [BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)
 
 ***
 
 [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byoiam.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byoiam-aws.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

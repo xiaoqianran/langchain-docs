@@ -67,7 +67,7 @@ These primitives let you design UIs where users can inspect, steer, pause,
 resume, and fork agent work while it is happening.
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain import create_agent
+from langchain.agents import create_agent
 from langgraph.checkpoint.memory import MemorySaver
 
 agent = create_agent(

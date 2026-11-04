@@ -507,7 +507,7 @@ Retries and error handlers cover automatic re-attempts and compensation after ex
 
 When a tool call or parse fails in a way the model can correct, catch that error in the node, write it into state, and route back to the agent so the LLM can adjust:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Literal
 
 from langgraph.types import Command
@@ -547,7 +547,7 @@ This is application-level control flow, not an `error_handler`. The node handles
 
 Do not catch failures you cannot handle. Without a matching retry policy or error handler, the exception bubbles up and fails the run so you can fix the bug:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing_extensions import TypedDict
 
 

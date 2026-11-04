@@ -108,7 +108,7 @@ Agents persist relevant details from past interactions by writing files to a **m
 >
 > For agents that run on automated [schedules](/langsmith/fleet/schedules#add-a-schedule), we recommend [disabling the approval requirement](/langsmith/fleet/manage-agent-settings#disable-required-approval-for-memory-updates) so the agent can persist information without manual intervention.
 
-For more information, see [How we built the memory system for Fleet (formerly known as Agent Builder)](https://www.langchain.com/conceptual-guides/how-we-built-agent-builders-memory).
+For more information, see [How we built the memory system for Fleet (formerly known as Agent Builder)](https://www.langchain.com/blog/how-we-built-agent-builders-memory).
 
 ## Models
 

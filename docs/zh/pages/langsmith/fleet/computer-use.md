@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> [Plus and Enterprise plans](https://langchain.com/pricing) 可以使用计算机。
+> [Plus and Enterprise plans](https://www.langchain.com/pricing) 可以使用计算机。
 
 ## 计算机模式
 

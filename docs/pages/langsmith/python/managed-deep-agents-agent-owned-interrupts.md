@@ -10,7 +10,7 @@ This differs from the platform-owned interrupts that `interrupt_on` creates. Tho
 
 > [!NOTE]
 >
-> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use version 0.10 of the Managed Deep Agents CLI and SDK for BYOC.
 
 > [!NOTE]
 >

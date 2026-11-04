@@ -10,7 +10,7 @@
 >
 > **适用计划限制**
 >
-> 对于2026年8月3日之后注册的客户，批量导出仅适用于[LangSmith Enterprise plan](https://www.langchain.com/pricing-langsmith)。在 2026 年 8 月 3 日或之前注册的客户可以在 2027 年 2 月 1 日之前使用 Plus 或 Enterprise 套餐的批量导出功能。
+> 对于2026年8月3日之后注册的客户，批量导出仅适用于[LangSmith Enterprise plan](https://www.langchain.com/pricing)。在 2026 年 8 月 3 日或之前注册的客户可以在 2027 年 2 月 1 日之前使用 Plus 或 Enterprise 套餐的批量导出功能。
 
 LangSmith 的批量数据导出功能可让您将特定项目和日期范围内的跟踪数据以 [Parquet](https://parquet.apache.org/docs/overview/) 格式导出到 S3 兼容存储桶，与 [Run data format](/langsmith/run-data-format) 中的字段匹配。这对于 BigQuery、Snowflake、Redshift 或 Jupyter Notebook 等工具中的离线分析非常有用。
 
@@ -243,7 +243,7 @@ curl --request POST \
 
 |领域|描述 |
 | - | - |
-| `name` |运行名称 |
+| `name` |运行名称|
 | `run_type` |运行类型（例如“链”、“llm”、“工具”）|
 | `start_time` |开始时间戳 (UTC) |
 | `end_time` |结束时间戳 (UTC) |

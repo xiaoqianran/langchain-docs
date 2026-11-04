@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公共 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 决定是否移动
 
@@ -18,7 +18,7 @@
 
 当您需要该层时移动代理而不运行它。当您需要拥有它时，请留在Deep Agents。| | Deep Agents |托管Deep Agents |
 | - | - | - |
-| **托管** |您可以在自己的进程或容器中运行代理，或将其部署为[LangSmith deployment](/langsmith/deployment)。 | LangSmith 在 [Agent Server](/langsmith/agent-server-overview) 上托管代理。 `mda deploy` 是整个部署步骤。 |
+| **托管** |您可以在自己的进程或容器中运行代理，或者将其部署为[LangSmith deployment](/langsmith/deployment)。 | LangSmith 在 [Agent Server](/langsmith/agent-server-overview) 上托管代理。 `mda deploy` 是整个部署步骤。 |
 | **文件系统和外壳** |任何[backend](/oss/python/deepagents/backends)：代理状态、本地磁盘、存储或您向提供商提供的[sandbox](/oss/python/deepagents/sandboxes)。 |一个托管的[sandbox](/langsmith/python/managed-deep-agents-sandboxes)，在文件中声明。 LangSmith 创建它，对其进行快照，并在空闲时停止它。 |
 | **对话记忆** |您自己运行存储并连接它。 |一棵共享的[memory](/langsmith/python/managed-deep-agents-memory)树，通过添加文件启用。 |
 | **最终用户的第三方访问** |您为每个用户配置并存储凭据。 | [Connections](/langsmith/python/managed-deep-agents-connections) 保存工作区机密并运行 OAuth，以便最终用户自行授权服务。 |
@@ -28,7 +28,7 @@
 
 ## 了解发生了什么变化
 
-[create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 在您的进程中编译代理，因此它将后端、存储和检查指针作为参数。 `define_deep_agent` 返回一个定义，托管运行时对其进行编译。定义是配置而不是可运行的代理：`mda` CLI 在`mda dev` 和 `mda deploy` 上使用它，并且运行时在此时提供托管片段。完整图片请参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。
+[create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 在您的进程中编译一个代理，因此它将后端、存储和检查指针作为参数。 `define_deep_agent` 返回一个定义，托管运行时对其进行编译。定义是配置而不是可运行的代理：`mda` CLI 在`mda dev` 和 `mda deploy` 上使用它，并且运行时在此时提供托管片段。完整图片请参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。
 
 ## 检查哪些内容没有保留
 
@@ -59,19 +59,19 @@
 * 添加静态`name`，这是必需的。使用匹配 `[a-zA-Z][a-zA-Z0-9_-]*` 的字符串。
 * 将`system_prompt`文本移至代理条目旁边的`instructions.md`，并删除参数。
 * 将`skills`引用的文件移至`skills/<name>/SKILL.md`，并去掉参数。
-* 将`memory`替换为根`memory.py`（或`memory.ts`），导出名为`memory`的变量并设置为`define_memory(scope="agent")`，并删除该参数。如果代理不需要持久内存，请保留该文件。警告用户这会挂载一棵空树，并且任何现有的内存内容都必须移至 `instructions.md` 或技能中。* 删除`backend`、`store`、`checkpointer`。运行时拥有这三个。如果代理使用沙箱后端，请添加导出 `define_sandbox(...)` 的 `sandbox/` 声明。托管沙箱是托管 Deep Agents 提供的唯一后端。
+* 将`memory`替换为根`memory.py`（或`memory.ts`），导出名为`memory`的变量并设置为`define_memory(scope="agent")`，并删除该参数。如果代理不需要持久内存，请保留该文件。警告用户这会挂载一棵空树，并且任何现有的内存内容都必须移至 `instructions.md` 或技能中。* Delete `backend`, `store`, and `checkpointer`.运行时拥有这三个。如果代理使用沙箱后端，请添加导出 `define_sandbox(...)` 的 `sandbox/` 声明。托管沙箱是托管 Deep Agents 提供的唯一后端。
 * 保持 `model`、`tools`、`middleware`、`subagents`、`permissions`、`cache` 和 `debug` 原样，以及中断、响应格式和上下文架构参数在其现有名称下。警告用户声明 `sandbox/` 的项目在清除 `permissions` 的情况下运行，因为文件系统权限规则禁用了沙箱 `execute` 工具。
 * 将工具和中间件模块保留在它们已经存在的地方，并继续从代理条目中导入它们。不要重组项目。
 
 ## 步骤 4：明确处理差距
 
-如果代码库在 Python 中传递 `state_schema`，构建自定义 `BackendProtocol`，或将代理包装在其自己的服务器路由或应用程序代码中，请停止并询问用户如何继续。托管Deep Agents不接受这些。不要发明替代品。
+如果代码库在 Python 中传递 `state_schema`，构建自定义 `BackendProtocol`，或将代理包装在其自己的服务器路由或应用程序代码中，请停止并询问用户如何继续。 Managed Deep Agents does not accept these.不要发明替代品。
 
 ## 步骤 5：验证
 
 运行`mda build`，然后运行`mda dev`，并确认代理启动并应答测试消息。 `mda build` 不验证定义调用，因此剩余的托管参数仅出现在图形加载时。报告任何无法迁移的内容。## 映射参数
 
-大部分表面转移到`define_deep_agent`不变，名称相同：`model`、`tools`、`middleware`、`subagents`、`interrupt_on`、`response_format`、`context_schema`、`cache`和`debug`。将工具和中间件模块保留在它们已经存在的地方，并继续从代理条目导入它们。
+Most of the surface transfers to `define_deep_agent` unchanged, under the same names: `model`, `tools`, `middleware`, `subagents`, `interrupt_on`, `response_format`, `context_schema`, `cache`, and `debug`。将工具和中间件模块保留在它们已经存在的地方，并继续从代理条目导入它们。
 
 `define_deep_agent` 添加一个必需参数。传递 `name` 一个以字母开头且仅包含字母、数字、下划线或连字符的静态字符串。 Managed Deep Agents 使用它作为代理的图形 ID 和默认部署名称。
 
@@ -79,13 +79,13 @@
 
 | `create_deep_agent` |它去哪儿了|笔记|
 | - | - | - |
-| `system_prompt` | `instructions.md` |将文本移动到文件中，然后删除参数。参见[Instructions](/langsmith/python/managed-deep-agents-instructions)。 |
+| `system_prompt` | `instructions.md` |将文本移至文件中，然后删除参数。参见[Instructions](/langsmith/python/managed-deep-agents-instructions)。 |
 | `skills` | `skills/` |每个技能一个目录，每个目录都有一个`SKILL.md`。参见[Skills](/langsmith/python/managed-deep-agents-skills)。 |
 | `memory` | `memory.py` |导出`define_memory(scope="agent")`。如果没有持久内存，则省略该文件。参见[Memory](/langsmith/python/managed-deep-agents-memory)。 |
 | `backend` | `sandbox/` |声明一个托管沙箱而不是构建后端。参见[Sandboxes](/langsmith/python/managed-deep-agents-sandboxes)。 |
 | `permissions` |保留参数 |已接受，并在项目声明沙箱时清除。参见[Permissions](/oss/python/deepagents/permissions)。 |
 | `store`、`checkpointer` |托管运行时 |删除两者。 |
-| `state_schema` |没有同等的| `define_deep_agent`不接受。 |Deep Agents 后端是可插拔的，托管运行时提供自己的后端。声明 `sandbox/` 的项目会获得一个用于代理文件系统和 shell 的托管沙箱。没有代理的项目会获得线程范围的代理状态，以及用于指令、技能和内存的只读 [Context Hub](/langsmith/python/managed-deep-agents-context-hub) 挂载。没有其他后端选择，因此依赖于特定后端的代理会留在Deep Agents。
+| `state_schema` |没有同等的 | `define_deep_agent`不接受。 |Deep Agents 后端是可插拔的，并且托管运行时提供自己的后端。声明 `sandbox/` 的项目会获得一个用于代理文件系统和 shell 的托管沙箱。没有代理的项目会获得线程范围的代理状态，以及用于指令、技能和内存的只读 [Context Hub](/langsmith/python/managed-deep-agents-context-hub) 安装。没有其他后端选择，因此依赖于特定后端的代理会留在Deep Agents。
 
 ## 移动代理
 
@@ -158,7 +158,7 @@ memory = define_memory(scope="agent")
 
 持久内存是可选的，没有该文件的项目不会挂载任何内容。作用域是唯一的旋钮：`"agent"` 安装部署的每个调用者共享的一棵树。要控制代理保留的内容，请将内存策略写入`instructions.md`。参见[Guide what to remember](/langsmith/python/managed-deep-agents-memory#guide-what-to-remember)。> [!警告]
 >
-> `define_memory` 挂载一个空的内存树。旧的`memory`参数指向的文件中的内容不会传输，因此在删除这些文件之前，请将代理仍需要的任何内容移动到`instructions.md`或技能中。
+> `define_memory` 挂载一个空的内存树。旧的 `memory` 参数指向的文件中的内容不会传输，因此在删除这些文件之前，请将代理仍需要的任何内容移至 `instructions.md` 或技能中。
 
 **4.声明沙箱**
 
@@ -221,7 +221,7 @@ mda dev
 >
 > `mda build` 不检查定义调用，因此即使托管参数仍然存在，它也会退出 0。当图形在 `mda dev` 下加载时，剩余参数就会出现。
 
-See [Local development](/langsmith/python/managed-deep-agents-local-development).
+参见[Local development](/langsmith/python/managed-deep-agents-local-development)。
 
 **8.部署**
 
@@ -231,7 +231,7 @@ See [Local development](/langsmith/python/managed-deep-agents-local-development)
 mda deploy
 ```
 
-See [Deploy](/langsmith/python/managed-deep-agents-deploy).
+参见[Deploy](/langsmith/python/managed-deep-agents-deploy)。
 
 > [!提示]
 >
@@ -241,7 +241,7 @@ See [Deploy](/langsmith/python/managed-deep-agents-deploy).
 > mda init research-assistant
 > ```
 >
-> 安装通道选择创作语言：npm 包支架 TypeScript，PyPI 包支架 Python。该命令创建一个新目录并且不会就地运行，因此它适合绿地项目而不是迁移。 See the [quickstart](/langsmith/python/managed-deep-agents-quickstart).
+> 安装通道选择创作语言：npm 包支架 TypeScript，PyPI 包支架 Python。该命令创建一个新目录并且不会就地运行，因此它适合绿地项目而不是迁移。请参阅[quickstart](/langsmith/python/managed-deep-agents-quickstart)。
 
 ## 另请参阅* [Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)：为什么两个入口点不同。
 * [Agent definition](/langsmith/python/managed-deep-agents-agent-definition)：完整参数参考。

@@ -34,7 +34,7 @@
 
 在 [LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine-setup) 中，选择 UI 侧栏中的 **Engine**。项目选择器列出了已配置的项目。要设置未列出的项目，请单击 **+ 设置另一个项目**，然后在 **选择要分析的项目** 下选择它。跟踪项目中的 **Engine** 选项卡也可用。
 
-**2.连接代码存储库（可选）**连接存储库是可选的，但建议这样做，因为引擎在读取源代码时会发现更好的问题。参见[Why connect a repository](/langsmith/engine#why-connect-a-repository)。在 **连接代理的代码存储库** 下，选择引擎应使用的存储库。仅显示 GitHub 应用程序可以访问的存储库。单击 **管理应用程序访问 →** 以更新权限。在LangSmith云上，一旦成为工作区管理员[connects GitLab](/langsmith/engine-repositories#connect-gitlab)，GitLab 项目就会出现。有关 GitHub 应用程序设置和组织批准，请参阅[Connect Engine to your repository](/langsmith/engine-repositories)。要为引擎提供额外的项目上下文，请在 **Context Hub 存储库** 字段中选择一个存储库。
+**2.连接代码存储库（可选）**连接存储库是可选的，但建议这样做，因为引擎在读取源代码时会发现更好的问题。参见[Why connect a repository](/langsmith/engine#why-connect-a-repository)。在 **连接代理的代码存储库** 下，选择引擎应使用的存储库。仅显示 GitHub 应用程序可以访问的存储库。单击“**管理应用程序访问权限→**”以更新权限。在LangSmith云上，GitLab项目一旦成为工作区管理员[connects GitLab](/langsmith/engine-repositories#connect-gitlab)就会出现。有关 GitHub 应用程序设置和组织批准，请参阅[Connect Engine to your repository](/langsmith/engine-repositories)。要为引擎提供额外的项目上下文，请在 **Context Hub 存储库** 字段中选择一个存储库。
 
 还要在跟踪上设置`revision_id`，以便引擎可以将每个跟踪与生成它的提交相匹配。然后，引擎从运行的代码中进行推理，例如，当指标回归时，通过比较两个版本之间传送的提交。参见[Record the code version on traces](/langsmith/add-metadata-tags#record-the-code-version-on-traces)。
 
@@ -67,13 +67,13 @@
 * **支出限额**：参见[Set spend limits and monitor usage](/langsmith/engine#set-spend-limits-and-monitor-usage)。
 * **暂停**和**删除所有问题**：请参阅[Pause Engine or delete its issues](#pause-engine-or-delete-its-issues)。### 提供有关您的代理的背景信息
 
-在设置过程中，引擎会生成一个代理概述文档，描述项目的目的、架构和关键指标。引擎将其用作所有分析的上下文，因此其准确性会影响检测到的问题的质量。在 **代理概述** 下，编辑文档以添加引擎无法从您的跟踪中推断出的任何相关上下文，并确保其准确。该文档的**用户首选项**部分还收集了引擎具有的[learned from your actions on issues](/langsmith/engine#how-engine-learns-from-your-feedback)，因此您可以在此处查看并更正这些校准。
+在设置过程中，引擎会生成一个代理概述文档，描述项目的目的、架构和关键指标。引擎将其用作所有分析的上下文，因此其准确性会影响检测到的问题的质量。在 **代理概述** 下，编辑文档以添加引擎无法从您的跟踪中推断出的任何相关上下文，并确保其准确。该文档的 **用户首选项** 部分还收集了引擎具有 [learned from your actions on issues](/langsmith/engine#how-engine-learns-from-your-actions-on-issues) 的内容，因此您可以在此处查看并更正这些校准。
 
 ### 告诉引擎要关注哪些类型的问题
 
 在**首选项**下，列出引擎应关注、优先考虑或忽略的区域。选择类别芯片，例如 **成本和令牌**、**延迟** 或 **工具调用失败**，或单击 **+ 添加特定内容** 来描述自定义问题。引擎将首选项视为权威并将其折叠到代理概述文档中。更改将在下次扫描时生效。
 
-### 告诉引擎要关注哪些跟踪将引擎聚焦于重要的跟踪，以保持分析精确并减少浪费的 LSU 支出。当项目混合多个代理或工作负载并且您希望引擎仅分析其中的某些代理或工作负载时，请使用跟踪范围（**关注特定跟踪**控件）。例如，如果一个项目同时运行生产聊天机器人和夜间批处理作业，则范围为 `Run Name is chatbot`，以便引擎忽略批处理运行。默认情况下，引擎会分析项目的所有跟踪。
+### 告诉引擎要关注哪些跟踪将引擎聚焦于重要的跟踪，以保持分析精确并减少浪费的 LSU 支出。当项目混合多个代理或工作负载并且您希望引擎仅分析其中的某些代理或工作负载时，请使用跟踪范围（**关注特定跟踪**控件）。例如，如果一个项目同时运行生产聊天机器人和夜间批处理作业，则范围为`Run Name is chatbot`，以便引擎忽略批处理运行。默认情况下，引擎会分析项目的所有跟踪。
 
 使用相同的控件在两个位置之一设置范围：
 

@@ -6,7 +6,7 @@ Enable secure access from agents to any system using OAuth 2.0 credentials with 
 
 > [!NOTE]
 >
-> Agent Auth is in **[beta](/langsmith/release-stages)** and under active development. To provide feedback or use this feature, reach out to the [LangChain team](https://forum.langchain.com/c/help/langsmith/).
+> Agent Auth is in **[beta](/langsmith/release-stages)** and under active development. To provide feedback or use this feature, reach out to the [LangChain team](https://forum.langchain.com/c/help/langsmith/8).
 
 ## Installation
 

@@ -6,7 +6,7 @@
 
 将 LangSmith SDK 反馈、注释队列和公共运行方法迁移到 SmithDB 支持的等效方法。
 
-这些方法将运行添加到注释队列、公开共享运行并创建反馈。有关弃用日期、最低 SDK 版本以及适用于每种方法的代理提示，请参阅 [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration)。
+这些方法将运行添加到注释队列、公开共享运行并创建反馈。有关弃用日期、最低 SDK 版本以及适用于每种方法的代理提示，请参阅 [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration)。
 
 ## 注释队列：添加运行
 

@@ -4,7 +4,7 @@
 
 Migrate the LangSmith SDK run query methods to their SmithDB-backed equivalents.
 
-Run queries are the largest surface area in the migration, so they have their own page. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration).
+Run queries are the largest surface area in the migration, so they have their own page. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration).
 
 ## Runs: query
 

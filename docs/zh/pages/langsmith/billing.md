@@ -29,11 +29,11 @@
 
 在添加信用卡之前，个人组织每月的跟踪次数限制为 5,000 条。添加卡：1. 单击**添加卡以删除跟踪限制**。
 2. 添加您的信用卡信息。
-3. 完成后，您将不再受到 5,000 条跟踪的费率限制，并且将按照 [pricing](https://www.langchain.com/pricing-langsmith) 页面上指定的费率向您收取任何超出的跟踪费用。
+3. 完成后，您将不再受到 5,000 条跟踪的费率限制，并且将按照 [pricing](https://www.langchain.com/pricing) 页面上指定的费率向您收取任何超出的跟踪费用。
 
 ### Plus 计划：在共享组织上设置结算
 
-团队组织每月初始获得 10,000 条跟踪。任何多余的痕迹将按照[pricing](https://www.langchain.com/pricing-langsmith)页面上指定的费率收费。
+团队组织每月初始获得 10,000 条跟踪。任何多余的痕迹将按照[pricing](https://www.langchain.com/pricing)页面上指定的费率收费。
 
 > [!注意]
 >
@@ -73,7 +73,7 @@
 > 在某些司法管辖区，LangSmith 需要征收销售税。如果您是企业，提供您的税号可能会使您有资格获得销售税豁免。
 
 要更新您组织的业务信息，请执行以下步骤：1. 导航到 **计划和账单** 选项卡。
-2. 在发票电子邮件部分下方，您将看到一个标有 **Business** 的复选框。
+2. 在发票电子邮件部分下方，您将找到一个标记为 **Business** 的复选框。
 3. 如果您的组织属于企业，请选中 **企业** 复选框。
 4. 将出现一个业务信息部分，允许您输入或更新以下详细信息：
    * 公司名称
@@ -108,11 +108,11 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 #### 设置工作空间的支出限制
 
 1. 要设置限制，请导航至 **设置** -> **计费和使用情况** -> **使用限制**。
-2. 输入所选工作空间的支出限额。 LangSmith 将确定适当数量的基本和扩展跟踪限制以匹配该支出。跟踪限制包括您的计划附带的免费跟踪分配（请参阅[pricing page](https://smith.langchain.com/settings/payments)的详细信息）。
+2. 输入所选工作空间的支出限额。 LangSmith 将确定适当数量的基本和扩展跟踪限制以匹配该支出。跟踪限制包括您的计划附带的免费跟踪分配（请参阅[pricing page](https://smith.langchain.com/settings/payments) 上的详细信息）。
 
 > [!注意]
 >
-> 对于**仅具有多个工作空间**的组织：为简单起见，LangSmith 将免费跟踪纳入**仅第一个工作空间**的成本计算中。实际上，任何工作空间都可以“消耗”免费跟踪。因此，尽管多工作空间组织的工作区级别支出限制是近似值，但组织级别支出限制是绝对的。
+> 对于**仅具有多个工作空间**的组织：为简单起见，LangSmith 将免费跟踪纳入**仅第一个工作空间**的成本计算中。实际上，任何工作空间都可以“消耗”免费跟踪。因此，虽然多工作空间组织的工作区级别支出限制是近似值，但组织级别支出限制是绝对的。
 
 #### 配置跟踪层分布LangSmith 有两个跟踪层：基本跟踪和扩展跟踪。基本跟踪具有基本保留并且是短暂的（14 天），而扩展跟踪具有延长的保留并且是长期的（默认为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。欲了解更多信息，请参阅[data retention conceptual docs](/langsmith/usage-and-billing#data-retention)。
 
@@ -146,7 +146,7 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 
 * 所有痕迹的 10%：用于一般分析或分析长期趋势。
 * 错误跟踪：彻底调查和调试问题。
-* 具有特定元数据的跟踪：用于特定功能或用户流的长期检查。
+* 具有特定元数据的跟踪：用于特定功能或用户流程的长期检查。
 
 要配置此：1. 导航到 **项目** > ***您的项目名称*** > 选择 **+ 新建** > 选择 **新建自动化**。在基于代理的工作区中，从代理的环境开始。
 2. 命名您的规则并可选择应用过滤器或采样率。有关配置过滤器的更多信息，请参阅[filtering techniques](/langsmith/filter-traces-in-application#filter-operators)。
@@ -155,7 +155,7 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 >
 > 当自动化规则与 [trace](/langsmith/observability-concepts#traces) 中的任何 [run](/langsmith/observability-concepts#runs) 匹配时，跟踪中的所有运行都会升级为延长数据保留（默认情况下为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。
 
-例如，这是保留所有跟踪的 10% 以延长数据保留的预期配置：
+例如，这是保留所有跟踪的 10% 以延长数据保留时间的预期配置：
 
 ![P2sampletraces](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/langsmith/images/P2SampleTraces.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=09bbdf5ef7cf3a5a99d6bf0a704e2143)
 
@@ -310,7 +310,7 @@ flowchart TB
 * **多个图表**：三个代理在 GCP 上的专用小型部署上运行。|改变|之前 |之后 |
 | - | - | - |
 |更短的缩减时间| `1 week`（默认）：720 小时正常运行时间，\~51.84 LSU 使用 | `1 hour`：\~66 小时的正常运行时间，\~4.75 LSU 使用量。节省约 47.09 LSU。 |
-|多个图表| 3 次部署：\~1,152 LSU | 1 个部署，包含 3 个图表：\~384 LSU。节省约 768 LSU。 |
+|多个图表 | 3 次部署：\~1,152 LSU | 1 个部署，包含 3 个图表：\~384 LSU。节省约 768 LSU。 |
 
 自动缩放会增加两种专用设置的运行时间成本。
 

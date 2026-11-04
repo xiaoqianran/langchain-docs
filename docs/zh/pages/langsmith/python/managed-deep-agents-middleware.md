@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 将自定义中间件放在`middleware/`下，将其导入到代理条目中，并将其传递给代理定义：
 
@@ -51,7 +51,7 @@ agent = define_deep_agent(
 
 对于更高级的选项，请在本地模块中定义 [custom middleware](/oss/python/langchain/middleware/custom)。> [!注意]
 >
-> 中间件是一个共享的LangChain原语。 Managed Deep Agents always invoke the agent with `ainvoke` and `astream`, so custom middleware must use async hooks. Synchronous hooks remain available when you call [Deep Agents](/oss/python/deepagents/overview) with `invoke` or `stream`.
+> 中间件是一个共享的LangChain原语。托管 Deep Agents 始终使用 `ainvoke` 和 `astream` 调用代理，因此自定义中间件必须使用异步挂钩。当您使用 `invoke` 或 `stream` 调用 [Deep Agents](/oss/python/deepagents/overview) 时，同步挂钩仍然可用。
 
 ```python middleware/audit.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from collections.abc import Awaitable, Callable
@@ -73,7 +73,7 @@ async def log_tool_calls(
     return result
 ```
 
-Import the middleware into the project-root agent entry and pass it in the `middleware` list:
+将中间件导入到项目根代理条目中，并将其传递到`middleware`列表中：
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_deep_agent
@@ -87,21 +87,21 @@ agent = define_deep_agent(
 )
 ```
 
-Your middleware imports should work the same way they do in a normal local Python project.
+您的中间件导入的工作方式应该与在普通本地 Python 项目中的工作方式相同。
 
 ## 使用运行时上下文
 
-Middleware can read per-run context through the normal LangChain runtime APIs.使用用户 ID、组织 ID、功能标志、请求元数据或默认情况下不应成为模型提示一部分的凭据的上下文。
+中间件可以通过正常的 LangChain 运行时 API 读取每次运行的上下文。使用用户 ID、组织 ID、功能标志、请求元数据或默认情况下不应成为模型提示一部分的凭据的上下文。
 
 例如，请参阅[Custom middleware](/oss/python/langchain/middleware/custom)。
 
-For the caller, channel, and sandbox fields that Managed Deep Agents adds, see [Runtime](/langsmith/python/managed-deep-agents-runtime).
+Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runtime](/langsmith/python/managed-deep-agents-runtime)。
 
-To read or write files in the thread's sandbox from a middleware hook, use `runtime.backend`.参见[Read and write sandbox files from code](/langsmith/python/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
+要从中间件挂钩读取或写入线程沙箱中的文件，请使用`runtime.backend`。参见[Read and write sandbox files from code](/langsmith/python/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
 
 ## 部署
 
-`mda dev` and `mda deploy` copy project files into the compiled build, including modules under `middleware/`.中间件未同步到 Context Hub；它附带代理代码。
+`mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`middleware/`下的模块。中间件未同步到 Context Hub；它附带代理代码。
 
 ## 何时使用中间件|概念 |亲切 |它如何到达代理|
 | - | - | - |
@@ -109,7 +109,7 @@ To read or write files in the thread's sandbox from a middleware hook, use `runt
 | **[Custom tools](/langsmith/python/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |
 | **[Instructions](/langsmith/python/managed-deep-agents-instructions)** |托管上下文 |永远在线的系统提示 |
 
-欲了解更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
+有关更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
 
 ***
 

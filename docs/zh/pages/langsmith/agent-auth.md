@@ -8,7 +8,7 @@
 
 > [!注意]
 >
-> Agent Auth 处于 **[beta](/langsmith/release-stages)** 状态并正在积极开发中。要提供反馈或使用此功能，请联系[LangChain team](https://forum.langchain.com/c/help/langsmith/)。
+> Agent Auth 处于 **[beta](/langsmith/release-stages)** 状态并正在积极开发中。要提供反馈或使用此功能，请联系[LangChain team](https://forum.langchain.com/c/help/langsmith/8)。
 
 ## 安装
 

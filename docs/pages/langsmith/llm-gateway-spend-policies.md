@@ -16,7 +16,7 @@ A spend policy defines a cost cap for a specific scope (organization, workspace,
 
 The gateway records a request's cost after the request completes. The request that crosses the cap still succeeds, and only later requests are blocked, so spend for a window can exceed the cap. Requests sent close together can all pass before the first one is recorded, so the overshoot can be larger than one request.
 
-The blocked request is traced to LangSmith with the policy violation recorded as metadata, so you can see exactly what was blocked and why. The violation also surfaces as an issue in [LangSmith Engine](/langsmith/llm-gateway-traces#langsmith-engine-integration).
+The blocked request is traced to LangSmith with the policy violation recorded as metadata, so you can see exactly what was blocked and why. The violation also surfaces as an issue in [LangSmith Engine](/langsmith/llm-gateway-traces#triage-policy-violations).
 
 > [!NOTE]
 >
@@ -76,7 +76,7 @@ Policies take effect immediately. The gateway evaluates them on every incoming r
 
 > [!TIP]
 >
-> A spend policy can also use a custom request header to give each end customer, tenant, or team an independent cap under one API key. For more information, see [Header-based policies](/langsmith/llm-gateway-header-policies).
+> A spend policy can also use a custom request header to give each end customer, tenant, or team an independent cap without issuing a separate API key for each. For more information, see [Header-based policies](/langsmith/llm-gateway-header-policies).
 
 ## View spend
 

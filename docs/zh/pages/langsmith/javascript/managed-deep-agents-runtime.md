@@ -6,11 +6,11 @@
 
 从代理工厂、工具和中间件接收的本机运行时类型中读取运行上下文、已验证的调用方、线程和沙箱。
 
-代理工厂、工具和中间件挂钩各自接收一个运行时。它是本机 LangChain 或 LangGraph 运行时，添加了三个托管字段。上下文、状态和存储的工作方式与 [LangChain](/oss/javascript/langchain/runtime) 中一样，并且您的类型检查器会看到您自己的上下文类型。
+代理工厂、工具和中间件挂钩各自接收一个运行时。它是本机 LangChain 或 LangGraph 运行时，添加了三个托管字段。上下文、状态和存储的工作方式与 [LangChain](/oss/javascript/langchain/runtime) 中的工作方式相同，并且您的类型检查器会看到您自己的上下文类型。
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 了解运行时类型
 
@@ -20,11 +20,11 @@
 | - | - | - |
 |代理工厂| `ManagedServerRuntime<Context>` | `ServerRuntime` 从 `@langchain/langgraph-sdk` |
 |工具| `ManagedToolRuntime<State, Context>` | `ToolRuntime` 从 `@langchain/core/tools` |
-|中间件钩子| `ManagedRuntime<Context>` | `Runtime` 从 `langchain` |
+|中间件钩子 | `ManagedRuntime<Context>` | `Runtime` 从 `langchain` |
 
 类型参数遵循本机顺序，因此 `ManagedToolRuntime` 首先采用状态，然后采用上下文。这两个参数都是可选的。 `ManagedDeepAgentRuntime` 是`ManagedToolRuntime` 的别名。
 
-每种类型都保留每个本机字段和方法，例如 `context`、`state`、`store`、`writer` 和 `toolCallId`。 Managed Deep Agents 添加了三个字段：* **`serverInfo`**：本机服务器元数据加上经过验证的调用者。工具和中间件接收它。
+每种类型都保留每个本机字段和方法，例如 `context`、`state`、`store`、`writer` 和 `toolCallId`。托管Deep Agents添加了三个字段：* **`serverInfo`**：本机服务器元数据加上经过验证的调用者。工具和中间件接收它。
 * **`thread`**：运行的线程及其来自的频道对话。参见[Thread](#thread)。
 * **`backend`**：线程的[sandbox](/langsmith/javascript/managed-deep-agents-sandboxes)文件系统。 `undefined` 当项目声明没有沙箱时。
 
@@ -32,8 +32,8 @@
 
 上下文、调用者和通道传递来自不同的来源并具有不同的信任级别。运行时将它们保存在单独的字段中：
 
-* **Context** 来自 API 调用的 `context` 参数。 LangGraph 根据您的上下文模式验证它。用它来选择行为，而不是授予访问权限。
-* **服务器信息**来自[identity](/langsmith/javascript/managed-deep-agents-identity)，它通过经过验证的令牌解析调用者。托管Deep Agents剥离客户端通过`configurable`发送的身份密钥，因此使用此字段进行授权。
+* **Context** 来自 API 调用的 `context` 参数。 LangGraph 根据您的上下文架构对其进行验证。用它来选择行为，而不是授予访问权限。
+* **服务器信息**来自[identity](/langsmith/javascript/managed-deep-agents-identity)，它从经过验证的令牌解析调用者。托管Deep Agents剥离客户端通过`configurable`发送的身份密钥，因此使用此字段进行授权。
 * **通道** 来自托管的 [channel](/langsmith/javascript/managed-deep-agents-channels) 入口，它在运行开始之前验证交付。直接 API 调用上下文中的 `channel` 键不会创建 `runtime.thread.origin`。
 
 API 调用者在输入旁边传递上下文：

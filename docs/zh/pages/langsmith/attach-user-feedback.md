@@ -24,7 +24,7 @@ LangSmith 可以轻松地将 [feedback](/langsmith/observability-concepts#feedba
 >
 > **非阻塞创建（仅限 Python）**
 > 如果您将 `trace_id=` 传递给 [⟦T7⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback)，Python 客户端将自动在后台创建反馈。
-> 这对于低延迟环境至关重要，您希望确保代理在创建反馈时不会被阻止。以下示例创建具有两个子运行的跟踪，然后记录针对根运行和其中一个子运行的反馈。 TypeScript 片段显示了等效的 `createFeedback` 调用形式，假设您的代理已提供 `runId`。
+> 这对于低延迟环境至关重要，您希望确保代理在创建反馈时不会被阻止。以下示例创建具有两个子运行的跟踪，然后记录针对根运行和其中一个子运行的反馈。 TypeScript 片段显示了等效的 `createFeedback` 调用形式，假设您的代理已经提供了 `runId`。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -100,7 +100,7 @@ await client.createFeedback({
 
 对于基于项目的跟踪，请使用 `readProject` 和现有项目名称来获取其 ID，而不是解析代理地址。分辨率要求请参见[Resolve an agent environment](/langsmith/resolve-an-agent)。
 
-您甚至可以使用 [⟦T11⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback) / [⟦T12⟧](https://reference.langchain.com/javascript/classes/langsmith.client.Client.html#createfeedback) 记录正在进行的运行的反馈。请参阅 [Access the current run (span) within a traced function](/langsmith/access-current-span) 了解如何获取正在进行的运行的运行 ID。
+您甚至可以使用 [⟦T11⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback) / [⟦T12⟧](https://reference.langchain.com/javascript/langsmith/client/Client) 记录正在进行的运行的反馈。请参阅 [Access the current run (span) within a traced function](/langsmith/access-current-span) 了解如何获取正在进行的运行的运行 ID。
 
 ## 从用户界面收集反馈
 

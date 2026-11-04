@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公共 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 ## 了解运行时类型
 
@@ -20,7 +20,7 @@
 | - | - | - |
 |代理工厂| `ManagedServerRuntime[Context]` | `ServerRuntime` 从 `langgraph_sdk.runtime` |
 |工具| `ManagedToolRuntime[Context, State]` | `ToolRuntime` 从 `langchain.tools` |
-|中间件钩子| `ManagedRuntime[Context]` | `Runtime` 从 `langgraph.runtime` |
+|中间件钩子 | `ManagedRuntime[Context]` | `Runtime` 从 `langgraph.runtime` |
 
 类型参数遵循本机顺序，因此 `ManagedToolRuntime` 首先获取上下文，然后获取状态。这两个参数都是可选的。 `ManagedDeepAgentRuntime` 是`ManagedToolRuntime` 的别名。
 
@@ -32,8 +32,8 @@
 
 上下文、调用者和通道传递来自不同的来源并具有不同的信任级别。运行时将它们保存在单独的字段中：
 
-* **Context** 来自 API 调用的 `context` 参数。 LangGraph 根据您的上下文架构对其进行验证。用它来选择行为，而不是授予访问权限。
-* **服务器信息**来自[identity](/langsmith/python/managed-deep-agents-identity)，它从经过验证的令牌解析调用者。托管Deep Agents剥离客户端通过`configurable`发送的身份密钥，因此使用此字段进行授权。
+* **Context** 来自 API 调用的 `context` 参数。 LangGraph 根据您的上下文模式验证它。用它来选择行为，而不是授予访问权限。
+* **服务器信息**来自[identity](/langsmith/python/managed-deep-agents-identity)，它通过经过验证的令牌解析调用者。托管Deep Agents剥离客户端通过`configurable`发送的身份密钥，因此使用此字段进行授权。
 * **通道** 来自托管的 [channel](/langsmith/python/managed-deep-agents-channels) 入口，它在运行开始之前验证交付。直接 API 调用上下文中的 `channel` 键不会创建 `runtime.thread.origin`。
 
 API 调用者在输入旁边传递上下文：
@@ -174,6 +174,6 @@ def log_caller(state: AgentState, runtime: Runtime[AppContext]) -> None:
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-runtime.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

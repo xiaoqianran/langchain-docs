@@ -6,7 +6,7 @@
 
 使用 LangSmith SDK 以编程方式管理反馈配置和 [annotation queue](/langsmith/evaluation-concepts#human) 评分标准，并将运行和线程添加到队列中以供审核。在组织级别定义可重用的反馈模式（例如准确性分数或通过/失败判断），然后使用自定义指令将它们分配到特定队列。这可以实现版本控制、跨项目自动化和一致性，对于 CI/CD 管道或跨环境复制评估设置特别有用。
 
-本指南使用 Python 和 TypeScript SDK。安装和设置请参考[Python SDK documentation](https://reference.langchain.com/python/langsmith)和[TypeScript SDK documentation](https://reference.langchain.com/javascript/modules/langsmith.html)。
+本指南使用 Python 和 TypeScript SDK。安装和设置请参考[Python SDK documentation](https://reference.langchain.com/python/langsmith)和[TypeScript SDK documentation](https://reference.langchain.com/javascript/langsmith)。
 
 > [!注意]
 >
@@ -153,7 +153,7 @@ client.delete_feedback_config("accuracy")
 await client.deleteFeedbackConfig("accuracy");
 ```
 
-## 注释队列标题项
+## 注释队列标题项目
 
 Rubric 项目将反馈配置分配给特定的注释队列。它们控制注释者在审阅该队列中的[runs](/langsmith/observability-concepts#runs)时看到哪些反馈表单，以及每个表单是必需的还是可选的。
 

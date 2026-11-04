@@ -12,9 +12,9 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。> [!注意]
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。> [!注意]
 >
-> 代理拥有的中断需要部署代理上的`managed-deepagents>=0.8.0` 和[Slack channel](/langsmith/python/managed-deep-agents-channels-slack)。表单仅在 Slack 中呈现。 LangSmith Studio 显示原始中断值。
+> 代理拥有的中断需要已部署代理上的 `managed-deepagents>=0.8.0` 和 [Slack channel](/langsmith/python/managed-deep-agents-channels-slack)。表单仅在 Slack 中呈现。 LangSmith Studio 显示原始中断值。
 
 ## 它是如何工作的
 
@@ -28,7 +28,7 @@
 ## 发布表单并暂停
 
 该工具需要三件事：要发布到的 Slack 对话、机器人令牌以及将表单与中断联系起来的相关 ID。* **对话**：`runtime.thread.origin.channel.raw_event` 是启动运行的 Slack 事件。它携带`channel`、`ts`，对于线程消息，还携带`thread_ts`。发布到该线程中，以便答案路由回同一个代理线程。
-* **Bot 令牌**：`connections.get("mda/slack-bot-token", {"type": "agent"})` 解析托管 Deep Agents 为部署配置的 Slack 应用程序的令牌。该 slug 是保留的，无法使用 `mda connections create` 创建。
+* **机器人令牌**：`connections.get("mda/slack-bot-token", {"type": "agent"})` 解析为部署配置的托管 Deep Agents 的 Slack 应用程序的令牌。该 slug 是保留的，无法使用 `mda connections create` 创建。
 * **关联 ID**：将相同的字符串放在每个按钮的 `value`（作为 JSON）中的 `INTERRUPT_CORRELATION_KEY` 以及传递给 `interrupt()` 的值中。
 
 内置 Slack 通道的 `post` 仅发送文本，因此可以直接通过 Slack Web API 发布 Block Kit。
@@ -174,7 +174,7 @@ Slack 不知道按钮属于哪个中断，因此 SDK 读取停放在线程上的
 
 平台储备名称：|名称 |哪里 |意义|
 | - | - | - |
-| `mda_modal::` 前缀 |按钮`action_id` |单击会打开一个模式，但永远不会到达代理。 |
+| `mda_modal::` 前缀 |按钮`action_id`|单击会打开一个模式，但永远不会到达代理。 |
 | `mda_correlation_id` |按钮内的钥匙 `value` |将一次点击与一个停放的中断相匹配。导出为 `INTERRUPT_CORRELATION_KEY`。 |
 | `callback_id` |应用程序定义的视图 |设置为按钮的 `action_id`。 |
 | `private_metadata` |应用程序定义的视图 |由平台设置。提供它会阻止模态打开。 |

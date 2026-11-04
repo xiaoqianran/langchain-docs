@@ -19,7 +19,7 @@
 使用 `POST /v2/sandboxes/boxes` 创建沙箱时，在顶级请求正文中设置 `access_delegation`：
 
 * **`INHERIT`**：设置`{"mode": "INHERIT"}`继承调用者当前的可委派权限。不包括 `permissions`。
-* **`EXPLICIT`**：设置`{"mode": "EXPLICIT", "permissions": ["sandboxes:read"]}`以限制对您拥有的特定权限的访问。该列表必须非空。两种模式仍然受到调用者对每个请求的当前权限的限制。工作空间和组织管理权限无法委派。工作区服务密钥还可以委派访问权限；缩小其角色范围会缩小沙箱的访问范围，而删除密钥则会撤销它。
+* **`EXPLICIT`**：设置`{"mode": "EXPLICIT", "permissions": ["sandboxes:read"]}`以限制对您拥有的特定权限的访问。该列表必须非空。这两种模式仍然受到调用者对每个请求的当前权限的限制。工作空间和组织管理权限无法委派。工作区服务密钥还可以委派访问权限；缩小其角色范围会缩小沙箱的访问范围，而删除密钥则会撤销它。
 
 在沙箱内，调用 HTTPS LangSmith API 端点，而无需提供您自己的凭据。在委派授权下运行的沙箱无法授予对另一个沙箱的访问权限。
 
@@ -28,7 +28,7 @@
 注入凭证的相同`proxy_config`还控制沙箱可以到达的目的地。沙箱主机上的每个连接都强制执行访问控制，因此对 `access_control` 的更改会立即生效。
 
 ### 出口如何工作* **访问控制适用于每个出站 TCP 连接**，无论是否为 HTTP。
-* **到与规则或回调匹配的主机的 HTTPS 由代理解密**，以便它可以注入标头；沙箱信任代理的 CA。到不匹配的主机的 HTTPS 和每个非 HTTP 连接（包括 PostgreSQL、SSH 和 Redis）均保持不变。端口 80 和 443 保留用于 HTTP 和 TLS；任一端口上的非 HTTP 协议都不起作用。
+* **到与规则或回调匹配的主机的 HTTPS 由代理解密**，以便它可以注入标头；沙箱信任代理的 CA。到不匹配主机的 HTTPS 和每个非 HTTP 连接（包括 PostgreSQL、SSH 和 Redis）均保持不变。端口 80 和 443 保留用于 HTTP 和 TLS；任一端口上的非 HTTP 协议都不起作用。
 * **默认情况下使用主机名进行直接连接。** 到公共文字 IP 的原始 TCP 需要 `allow_list` 中显式匹配的 IP 或 CIDR 条目，并且在拒绝列表模式下不可用。由于代理在 TLS 握手中需要主机名，因此放弃了到文字 IP 的 HTTPS。端口 80 上的明文 HTTP 可以使用文字 IP。
 * **只有 TCP 离开沙箱。** UDP（包括 QUIC）和 ICMP 被丢弃。
 
@@ -61,9 +61,9 @@
 >
 > 要启用原始 TCP 到文字公共 IP 地址，请使用允许列表模式并允许每个端口或特定端口上的 IP，例如 `8.8.8.8` 或 `8.8.8.8:53`。包含 CIDR 还允许该范围内的每个端口。主机名、glob 和正则表达式条目不会授权连接到文字 IP 地址的应用程序。
 
-评估 HTTP、HTTPS 和与主机名的原始 TCP 连接的访问​​控制条目。使用端口后缀将条目限制为一个端口。直接 IP 连接需要允许列表模式和显式 IP 或 CIDR 条目。> [!警告]
+访问控制条目针对 HTTP、HTTPS 和与主机名的原始 TCP 连接进行评估。使用端口后缀将条目限制为一个端口。直接 IP 连接需要允许列表模式和显式 IP 或 CIDR 条目。> [!警告]
 >
-> A `deny_list` 仅阻止您列出的主机名。 `{"deny_list": ["example.com"]}` 在每个端口上阻止 `example.com` 并让每个其他主机名在每个端口上均可访问，包括 DNS、SSH 和数据库端口。要在各处关闭原始 TCP，请使用 `allow_list`，例如 `["*:80", "*:443"]`。
+> A `deny_list` 仅阻止您列出的主机名。 `{"deny_list": ["example.com"]}` 在每个端口上阻止 `example.com` 并让每个其他主机名在每个端口上都可访问，包括 DNS、SSH 和数据库端口。要在各处关闭原始 TCP，请使用 `allow_list`，例如 `["*:80", "*:443"]`。
 
 ### 模式语法
 
@@ -171,7 +171,7 @@ await client.createSandbox({
 | `name` |必需的。规则的标识符 |
 | `type` |省略标头注入； `aws` 或 `gcp` 用于提供商身份验证； `relay` 通过[relay](/langsmith/relays) 发送匹配的连接 |
 | `match_hosts` |标头规则必需的；根据 `aws` 和 `gcp` 规则被拒绝。裸主机名，或可注册域前面的前导 `*.` 通配符（`*.github.com`，而不是 `*.com` 或 `*`）。没有方案、路径或端口。通配符与顶级域不匹配 |
-| `match_paths` |要匹配的路径（空=所有路径）。仅标头规则。模式与不带查询字符串的请求路径进行匹配；参见[Match rules by path or header](#match-rules-by-path-or-header)|
+| `match_paths` |要匹配的路径（空=所有路径）。仅标头规则。模式与不带查询字符串的请求路径进行匹配；参见[Match rules by path or header](#match-rules-by-path-or-header) |
 | `match_headers` |必须全部存在的请求标头，每个标头都写为 `"name: value"`，并带有小写名称和精确值。仅标头规则；参见[Match rules by path or header](#match-rules-by-path-or-header)|
 | `headers` |要注入的标头，每个标头都有 `name`、`type` 和 `value`。仅标题规则 |
 | `aws` / `gcp` |提供者凭证；请参阅 [Authenticate AWS requests](#authenticate-aws-requests) 和 [Authenticate GCP requests](#authenticate-gcp-requests) |
@@ -380,7 +380,7 @@ AWS 代理角色允许 LangSmith 承担客户 IAM 角色，并使用可更新的
 >
 > 下面的 SDK 示例需要支持 Python 中的 `aws_auth(role_arn=...)` 或 TypeScript 中的 `awsAuth({ roleArn })` 的版本。仅后端支持不会将这些帮助程序添加到较旧的 SDK 版本中。
 
-要配置没有挂载的角色，请将其传递到代理配置中：
+要配置不带挂载的角色，请将其传递到代理配置中：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.sandbox import SandboxClient, aws_auth, proxy_config
@@ -618,11 +618,11 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   }'
 ```## GitHub 示例
 
-[Open SWE](https://github.com/langchain-ai/open-swe/blob/main/agent/integrations/langsmith.py) 通过在沙箱外创建短期 GitHub 应用程序安装令牌来验证 GitHub 访问，然后使用只写 `opaque` 代理规则修补沙箱。这使得短暂的 GitHub 访问令牌远离沙箱文件系统和部署环境变量。
+[Open SWE](https://github.com/langchain-ai/open-swe/blob/main/openswe/sandboxes/providers/langsmith.py) 通过在沙箱外创建短期 GitHub 应用程序安装令牌来验证 GitHub 访问，然后使用只写 `opaque` 代理规则修补沙箱。这使得短暂的 GitHub 访问令牌远离沙箱文件系统和部署环境变量。
 
 配置两条规则：
 
-|主持人|标题|
+|主持人|标题 |
 | - | - |
 | `api.github.com` | `Authorization: Bearer <github-token>` 用于 `gh` 和 REST API 调用 |
 | `github.com`、`*.github.com` | `Authorization: Basic <base64("x-access-token:<github-token>")>` 用于通过 HTTPS 操作的 Git，例如克隆、获取和推送 |
@@ -780,7 +780,7 @@ X-LangSmith-Signature-JWT: <signature>
 }
 ```
 
-`identity` 告诉您的端点哪个沙箱正在请求，因此一个回调 URL 可以为多个沙箱提供服务，并为每个沙箱或每个用户生成凭据。 `ls_user_id` 是创建用户，当使用工作区或服务密钥创建沙箱时将被省略。忽略您不认识的字段和标题；代理可能会添加更多。
+`identity` 告诉您的端点哪个沙箱正在请求，因此一个回调 URL 可以为多个沙箱提供服务，并为每个沙箱或每个用户生成凭据。 `ls_user_id` 是创建用户，当使用工作区或服务密钥创建沙箱时，该用户被省略。忽略您不认识的字段和标题；代理可能会添加更多。
 
 您的端点必须使用 JSON 正文响应 `2xx`：
 

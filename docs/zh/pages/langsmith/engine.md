@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: LangSmith Engine | https://docs.langchain.com/langsmith/engine -->
 
-# LangSmith 发动机
+#LangSmith发动机
 
 LangSmith 引擎是代理工程的代理，将生产跟踪转化为整个开发生命周期中跟踪的问题、修复和数据集。
 
@@ -59,15 +59,13 @@ flowchart LR
 
 ### 引擎如何选择轨迹
 
-在为每次扫描选择和排名跟踪时，引擎会分析跟踪内容和运行反馈。它将反馈（包括在线评估者分数、注释队列分数和通过 SDK 提交的用户反馈）视为高优先级信号，而不是补充数据。
+引擎利用多个信号来决定要检查哪些跟踪。它会查找引发错误的跟踪、行为异常的跟踪以及看起来正常的跟踪中的问题，例如不引发错误的错误答案。它还使用其他策划的信号。
 
-要应用此信号，引擎：
+跟踪反馈是引擎使用的另一个信号。它包括来自在线评估者和注释队列的分数、来自用户的评分，并跟踪您[flag for Engine](/langsmith/engine-issues#flag-a-trace-for-engine)。跟踪运行后添加的反馈仍然有效，例如一周后审阅者在注释队列中留下的分数。
 
-* 读取项目中存在的反馈键，并为每个键专门提取低分跟踪，因此示例包含评估者分数较低的跟踪，而不是让它们保留在新近度中。
-* 在筛选样本时，将具有非空反馈分数的迹线优先于其他迹线。
-* 保留分析上下文中每个跟踪的反馈分数，即使跟踪有效负载被压缩以适应上下文限制也是如此。任何向运行写入反馈的源都会自动促成此优先级排序。除了评估器或注释队列之外，引擎不需要任何设置。
+引擎自动使用来自任何来源的跟踪反馈，因此您无需进行任何设置。当跟踪反馈导致引擎出现问题时，该问题会列出所使用的反馈引擎，以便您可以查看哪些分数或评级出现了问题。欲了解更多信息，请参阅[Review evidence](/langsmith/engine-issues#review-evidence)。
 
-### Engine 如何从您的反馈中学习
+### Engine 如何从您对问题的操作中学习
 
 当您解决问题时，引擎会变得更加准确。在每次计划的扫描中，它都会审查自上次扫描以来您对问题采取的操作，并将每一项操作转化为项目[agent overview](/langsmith/engine-setup#give-context-on-your-agent)的**用户首选项**部分中的一般规则。稍后的扫描使用这些规则来决定标记什么以及如何确定其优先级。
 
@@ -77,16 +75,16 @@ flowchart LR
 * **更改问题的优先级**：引擎记录该类别问题对您的客服人员的严重程度。
 * **打开拉取请求**：引擎记录该类别是真实的并且值得建议修复。例如，假设您的代理处理付款，并且引擎将包含完整信用卡号的跟踪标记为未经编辑的个人身份信息 (PII)。您的代理按照设计处理卡号，因此您将问题标记为**错误标记**，原因是“此代理将卡号作为结帐的一部分进行处理”。引擎记录支付流程中预期的卡号。如果您不断忽略同一类别中的问题，引擎会一次将该类别的严重性降低一级。它不会跌破低点，因此该模式保持可见，而不会排除紧急问题。
 
-来自自动化的更改（例如拉取请求合并）以及通过 [LangSmith Chat](/langsmith/chat#engine) 采取的操作不算作反馈。要查看或更正引擎所了解的内容，请编辑代理概述的 **用户首选项** 部分。
+引擎不会从自动化带来的更改（例如拉取请求合并）或通过[LangSmith Chat](/langsmith/chat#engine)采取的操作中学习。要查看或更正引擎所了解的内容，请编辑代理概述的 **用户首选项** 部分。
 
 ## 为什么要连接存储库连接 GitHub 存储库或 GitLab 项目是可选的，但当引擎可以读取源代码时，它会发现更多问题和更有用的问题。通过源访问，引擎可以找到失败跟踪背后的代码路径，并将其诊断和建议的修复基于您的实际实现。即使您从不合并引擎拉取请求，这也成立：您可以自己应用修复或将修复上下文复制到编码助手中。
 
 引擎的 GitHub 访问权限已修复。通过 GitHub App，Engine 可以：
 
 * **阅读**您在安装应用程序时选择的存储库。
-* **从它创建的修复分支中打开拉取请求**。
+* **从它创建的修复分支打开拉取请求**。
 
-在 GitLab 上，引擎充当工作区管理员连接其访问令牌的帐户，通常是专用服务帐户。引擎在帐户角色的权限内读取帐户所属的项目，推送修复分支并打开合并请求。引擎永远不会合并拉取或合并请求。它提出的每项更改都会经过您的审查和分支保护规则。您可以随时通过卸载 GitHub 应用程序或断开 GitLab 来撤销访问权限。有关令牌生命周期、沙箱和保留的信息，请参阅引擎安全性的 [GitHub](/langsmith/engine-security#github-integration) 和 [GitLab](/langsmith/engine-security#gitlab-integration) 部分。要连接存储库，请参阅[Connect Engine to your repository](/langsmith/engine-repositories)。
+在 GitLab 上，引擎充当工作区管理员连接其访问令牌的帐户，通常是专用服务帐户。引擎在帐户角色的权限内读取帐户所属的项目，推送修复分支并打开合并请求。引擎永远不会合并拉取或合并请求。它提出的每项更改都会经过您的审查和分支保护规则。您可以随时通过卸载 GitHub 应用程序或断开 GitLab 来撤销访问权限。有关令牌生命周期、沙箱和保留，请参阅引擎安全性的 [GitHub](/langsmith/engine-security#github-integration) 和 [GitLab](/langsmith/engine-security#gitlab-integration) 部分。要连接存储库，请参阅[Connect Engine to your repository](/langsmith/engine-repositories)。
 
 ## 管理引擎成本
 
@@ -120,7 +118,7 @@ flowchart LR
 * **组织范围限制**：选择**默认**、**无限制**或自定义上限。在管理员选择之前，默认情况下适用（每月 750 LSU，750 美元），因此即使没有人设置限制，引擎支出也是有上限的。 **引擎**设置页面命名强制限制及其来源。
 * **项目或环境限制**：将弹出框的字段留空表示没有限制。使用 **删除限制** 清除您之前设置的上限。
 
-要停止项目或整个组织的 Engine，请参阅[Pause Engine or delete its issues](/langsmith/engine-setup#pause-engine-or-delete-its-issues)。要监控使用情况，您可以在 **设置** 中的 **引擎** 页面上查看组织的每月 LSU 支出，或在其 [**Engine settings**](/langsmith/engine-setup#configure-engine) 面板中查看跟踪项目或代理环境的支出。
+要停止项目或整个组织的 Engine，请参阅 [Pause Engine or delete its issues](/langsmith/engine-setup#pause-engine-or-delete-its-issues)。要监控使用情况，您可以在 **设置** 中的 **引擎** 页面上查看组织的每月 LSU 支出，或在其 [**Engine settings**](/langsmith/engine-setup#configure-engine) 面板中查看跟踪项目或代理环境的支出。
 
 对于离线自托管部署，支出报告和限制执行有所不同。参见[Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations)。
 
@@ -147,7 +145,7 @@ flowchart LR
 * [Validate fixes automatically](/langsmith/engine-fix-validation)：重播问题的痕迹以确认问题重现并且引擎的修复解决了问题（测试版，仅限LangSmith 云）。
 * [Proactively identify issues with Red Teaming](/langsmith/engine-red-teaming)：在故障到达生产环境之前使用合成请求探测已部署的代理（测试版，仅限LangSmith 云）。
 * [Engine security](/langsmith/engine-security)：引擎如何处理您的数据，及其 GitHub 和模型子处理器控件。
-* [Engine on self-hosted and BYOC](/langsmith/engine-self-hosted)：在自托管 LangSmith 实例或 BYOC 数据平面上安装并运行 Engine。
+* [Engine on self-hosted and BYOC](/langsmith/engine-self-hosted)：在自托管LangSmith实例或BYOC数据平面上安装并运行引擎。
 
 ***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 

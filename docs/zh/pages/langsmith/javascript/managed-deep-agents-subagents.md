@@ -10,22 +10,22 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 子代理有两种类型：
 
 |类型 |代理如何使用 |用它来 |
 | - | - | - |
 |子代理 |用 `task` 调用它并等待它的答案 |重点工作，座席在继续之前需要其结果 |
-|异步子代理 |以 `start_async_task` 启动并继续工作；子代理完成后会报告 |代理无需等待的长时间运行或并行工作 |
-
-子代理在代理的图表内运行。托管 Deep Agents 在同一部署中将每个异步子代理构建为其自己的图。两种类型都在代理的[sandbox](/langsmith/javascript/managed-deep-agents-sandboxes)中工作。有关子代理如何在开源 Deep Agents SDK 中工作的信息，请参阅 [Subagents](/oss/javascript/deepagents/subagents) 和 [Async subagents](/oss/javascript/deepagents/async-subagents)。
+|异步子代理 |以 `start_async_task` 启动并继续工作；子代理完成后会报告 |代理无需等待的长时间运行或并行工作 |子代理在代理的图表内运行。托管 Deep Agents 在同一部署中将每个异步子代理构建为其自己的图。两种都在代理的[sandbox](/langsmith/javascript/managed-deep-agents-sandboxes)中工作。有关子代理如何在开源 Deep Agents SDK 中工作的信息，请参阅 [Subagents](/oss/javascript/deepagents/subagents) 和 [Async subagents](/oss/javascript/deepagents/async-subagents)。
 
 > [!注意]
 >
 > 异步子代理需要`managed-deepagents>=0.10.0`。
 
-## 声明一个子代理将子代理定义添加到[agent definition](/langsmith/javascript/managed-deep-agents-agent-definition)中的`subagents`。每人需要一个`name`和一个`description`；代理使用描述来决定何时进行委派。要使子代理异步，请将 `async` 添加到其定义中：
+## 声明一个子代理
+
+将子代理定义添加到[agent definition](/langsmith/javascript/managed-deep-agents-agent-definition)中的`subagents`。每人需要一个`name`和一个`description`；代理使用描述来决定何时进行委派。要使子代理异步，请将 `async` 添加到其定义中：
 
 > [选项卡] 子代理
 >
@@ -72,9 +72,7 @@
 
 ### 子代理继承了什么
 
-子代理从代理的配置开始，并替换其定义设置的内容：
-
-|设置|行为 |
+子代理从代理的配置开始，并替换其定义设置的内容：|设置|行为 |
 | - | - |
 | `model`、`tools`、`permissions`、`interruptOn` |使用代理的设置，除非子代理设置了自己的 |
 | `systemPrompt` |仅使用子代理的提示，而不使用代理的 [instructions](/langsmith/javascript/managed-deep-agents-instructions) |
@@ -84,15 +82,17 @@
 
 分叉模式下的子代理从代理对话的副本开始，并且还使用代理的指令、中间件、技能和内存。参见[Choose a launch mode](/oss/javascript/deepagents/async-subagents#choose-a-launch-mode)。
 
-## 异步子代理代理使用 `start_async_task` 启动异步子代理，并在子代理在其自己的线程上运行时继续工作。子代理在完成时会报告。
+## 异步子代理
+
+代理使用 `start_async_task` 启动异步子代理，并在子代理在其自己的线程上运行时继续工作。子代理在完成时会报告。
 
 ### 异步子代理如何运行
 
-每个异步子代理在部署中显示为其自己的图，以代理和子代理命名，例如 `research-assistant--researcher`。托管Deep Agents通过在构建时读取代理文件而不是运行它来查找异步子代理。将每个值直接写入 `subagents` 或变量中，并使用固定的 `name` 和 `async` 值。由函数或循环构建的异步子代理没有得到图形，并且代理无法启动。 [graph factory](/langsmith/javascript/managed-deep-agents-agent-definition#select-configuration-per-run)也可以声明异步子代理，只要它直接返回代理定义即可。
+每个异步子代理在部署中显示为其自己的图，以代理和子代理命名，例如 `research-assistant--researcher`。 Managed Deep Agents 通过在构建时读取代理文件而不是运行它来查找异步子代理。将每个值直接写入 `subagents` 或变量中，并使用固定的 `name` 和 `async` 值。由函数或循环构建的异步子代理没有得到图形，并且代理无法启动。 [graph factory](/langsmith/javascript/managed-deep-agents-agent-definition#select-configuration-per-run)也可以声明异步子代理，只要它直接返回代理定义即可。由 `mda dev` 或部署提供服务的代理还会获得 `general-purpose` 子代理的异步版本，因此代理可以在前台或后台运行委派的工作。
 
-由 `mda dev` 或部署提供服务的代理还会获得 `general-purpose` 子代理的异步版本，因此代理可以在前台或后台运行委派的工作。
+代理使用以下工具管理异步子代理：
 
-代理使用以下工具管理异步子代理：|工具|它有什么作用 |
+|工具|它有什么作用 |
 | - | - |
 | `start_async_task` |在自己的线程上启动异步子代理并立即返回任务 ID |
 | `check_async_task` |获取任务的状态以及任务完成后的结果 |
@@ -110,37 +110,37 @@
 | - | - |
 |忙碌 |代理在每次模型调用之前检查其未完成的任务，因此它会在运行中获取结果 |
 |闲置|子代理通过新的运行唤醒代理 |
-|批准后暂停 |批准不予处理；一旦用户回答，代理就会得到结果 |
+|批准后暂停 |批准不予处理；一旦用户回答，代理就会得到结果 |每个结果报告一次。在每次模型调用之前，代理会对每个未完成的任务进行一次状态检查，检查时间上限为 5 秒。
 
-每个结果报告一次。在每次模型调用之前，代理会对每个未完成的任务进行一次状态检查，检查时间上限为 5 秒。如果子代理暂停等待批准，则代理会将其任务视为`waiting`，直到有人在子代理的线程上做出答复。参见[Answer approvals in channels](#answer-approvals-in-channels)。
+如果子代理暂停等待批准，则代理会将其任务视为`waiting`，直到有人在子代理的线程上做出答复。参见[Answer approvals in channels](#answer-approvals-in-channels)。
 
 ### 配置异步子代理
 
-不要在异步子代理上设置 `graphId`、`url`、`headers` 或 `runnable`：托管 Deep Agents 自行构建并启动其图表。这些选项传递到Deep Agents：
+不要在异步子代理上设置 `graphId`、`url`、`headers` 或 `runnable`：托管 Deep Agents 自行构建并启动其图。这些选项传递到Deep Agents：
 
 |选项 |默认 |描述 |
 | - | - | - |
 | `updateStrategy` | `"interrupt"` | `"enqueue"` 将后续操作排队到当前运行之后，而不是中断它 |
 | `notifyParent` | `true` |当子代理完成且代理空闲时唤醒代理。设置为 `false` 自己处理结果，例如使用 `webhook` |
-| `webhook` |未设置 |每当子代理运行完成时，代理服务器都会调用 URL，其中包含运行的线程 ID、运行 ID 和状态。参见[Deliver results through your app](/oss/javascript/deepagents/async-subagents#deliver-results-through-your-app)|
+| `webhook` |未设置|每当子代理运行完成时，代理服务器都会调用 URL，其中包含运行的线程 ID、运行 ID 和状态。参见[Deliver results through your app](/oss/javascript/deepagents/async-subagents#deliver-results-through-your-app) |
 | `mode` | `"isolated"` | `"fork"` 使用代理对话的副本启动子代理 |
 
-有关每个选项的行为方式，请参阅[Async subagents](/oss/javascript/deepagents/async-subagents)。
+有关每个选项的行为方式，请参阅[Async subagents](/oss/javascript/deepagents/async-subagents)。要将另一个部署上的代理用作异步子代理，请使用其图形 ID 和 `url` 来声明它，并且不使用 `async`，并且托管 Deep Agents 将其原封不动地传递给 Deep Agents。对于托管深度代理，图 ID 是其 `name`。参见[remote subagents](/oss/javascript/deepagents/async-subagents#http-transport-remote)。
 
-要将另一个部署上的代理用作异步子代理，请使用其图形 ID 和 `url` 来声明它，并且不使用 `async`，并且托管 Deep Agents 将其原封不动地传递给 Deep Agents。对于托管深度代理，图 ID 是其 `name`。参见[remote subagents](/oss/javascript/deepagents/async-subagents#http-transport-remote)。
+### 异步子代理继承了什么
 
-### 异步子代理继承了什么异步子代理从代理继承的方式与 [subagent](#what-a-subagent-inherits) 相同。在 fork 模式下，它以代理对话的副本开始，但保留自己的提示、工具和中间件，因此它通常不会重用代理的[prompt cache](/oss/javascript/deepagents/async-subagents#fork-mode)。
+异步子代理从代理继承，就像 [subagent](#what-a-subagent-inherits) 一样。在 fork 模式下，它以代理对话的副本开始，但保留自己的提示、工具和中间件，因此它通常不会重用代理的[prompt cache](/oss/javascript/deepagents/async-subagents#fork-mode)。
 
 ### 共享沙箱和跟踪
 
-异步子代理在一个新线程上启动，与代理的线程分开。由于代理以同一用户身份启动它，因此它共享代理的沙箱。使用 [private threads](/langsmith/javascript/managed-deep-agents-identity)，来自不同用户的子代理运行将获得自己的沙箱。当它共享沙箱时，它会按原样使用代理的文件，并且仅刷新连接器凭据。如果代理尚未使用其沙箱，则子代理会创建它，并且代理稍后会使用相同的沙箱。
+异步子代理在新线程上启动，与代理的线程分开。由于代理以同一用户身份启动它，因此它共享代理的沙箱。使用 [private threads](/langsmith/javascript/managed-deep-agents-identity)，来自不同用户的子代理运行将获得自己的沙箱。当它共享沙箱时，它会按原样使用代理的文件，并且仅刷新连接器凭据。如果代理尚未使用其沙箱，则子代理会创建它，并且代理稍后会使用相同的沙箱。
 
 当跟踪打开时，异步子代理的运行将显示在 LangSmith 中的代理运行下方。
 
 ### 在渠道中回复批准
 
 当代理在 [channel](/langsmith/javascript/managed-deep-agents-channels) 中运行时，其异步子代理向同一通道线程报告：1. 用户请求代理在通道线程中工作，代理启动异步子代理。
-2. 如果子代理暂停[approval](/langsmith/javascript/managed-deep-agents-tools#human-in-the-loop)，Slack 会在线程中显示请求，并在线程中应答该请求并恢复子代理。其他渠道不发布请求；像在 Studio 中或通过 API 恢复任何 [interrupt](/langsmith/javascript/managed-deep-agents-tools#respond-to-an-interrupt) 一样恢复子代理的线程。
+2. 如果子代理暂停[approval](/langsmith/javascript/managed-deep-agents-tools#human-in-the-loop)，Slack 会在线程中显示该请求，并在那里应答该请求以恢复子代理。其他渠道不发布请求；像在 Studio 中或通过 API 恢复任何 [interrupt](/langsmith/javascript/managed-deep-agents-tools#respond-to-an-interrupt) 一样恢复子代理的线程。
 3. 当子代理完成时，代理会获取其结果并在线程中进行回复：如果仍在工作，则在当前运行中进行回复；如果空闲，则在新的运行中进行回复。关闭父级通知会停止新的运行。
 
 托管 Deep Agents 不会将子代理的答复发布到频道；代理决定告诉用户什么。

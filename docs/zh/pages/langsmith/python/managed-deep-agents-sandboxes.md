@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 将沙箱声明放在`sandbox/`下。仅当您想要配置快照时才添加 `sandbox/setup.sh`：
 
@@ -43,12 +43,12 @@ sandbox = define_sandbox(
     idle_ttl_seconds=600,
     default_timeout=600,
 )
-```
-
-|选项 |默认|描述 |
+```|选项 |默认 |描述 |
 | - | - | - |
 | `idle_ttl_seconds` | `600` |沙箱及其内容被删除之前不活动的秒数。删除是不可恢复的。 |
-| `default_timeout` | `600` |每个命令允许的秒数。 |## 配置沙箱代理
+| `default_timeout` | `600` |每个命令允许的秒数。 |
+
+## 配置沙箱代理
 
 沙箱代理将标头注入匹配的出站请求并控制沙箱可以到达的目的地。代理在沙箱外部运行，因此沙箱代码可以调用经过身份验证的 API，而无需处理凭据。
 
@@ -268,7 +268,7 @@ if uploaded[0].error:
 |跨线程存储持久知识 | [Memory](/langsmith/python/managed-deep-agents-memory) |
 |无需文件系统即可实现始终在线的行为 | [Instructions](/langsmith/python/managed-deep-agents-instructions) |
 
-有关更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
+欲了解更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
 
 ***
 

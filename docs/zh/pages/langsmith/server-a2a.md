@@ -74,22 +74,22 @@ A2A 端点在 [Agent Server](/langsmith/agent-server) 的 `/a2a/{assistant_id}` 
 
 响应是`TASK_STATE_SUBMITTED`或`TASK_STATE_WORKING`中的任务，没有工件。民意调查
 `GetTask` 与返回的 `id` 直到状态终止或`TASK_STATE_INPUT_REQUIRED`。一个
-已完成的任务在`artifacts`中携带代理的回复，同样部分在阻塞`SendMessage`中
+已完成的任务在`artifacts`中带有代理的回复，同样部分在阻塞`SendMessage`中
 返回。
 
 * **`returnImmediately`**：v1.0 标志。发送两个标志时优先。
-* **`blocking`**：v0.3 标志。 `"blocking": false` 的行为类似于 `"returnImmediately": true`。Each flag must be a boolean or `null`, and `null` counts as unset.任何其他值都会返回 `-32602`
+* **`blocking`**：v0.3 标志。 `"blocking": false` 的行为类似于 `"returnImmediately": true`。每个标志必须是布尔值或 `null`，`null` 视为未设置。任何其他值都会返回 `-32602`
 在创建运行之前。
 
 ### 响应中的任务历史记录
 
-上下文包含许多任务。 By default `SendMessage`, `GetTask` and `ListTasks` return the history
-of the **whole context**, not just the task you asked about.上下文中的第二个任务重播
-the first task's messages, so a client that renders every history entry shows earlier turns again —
-including earlier tool results and A2UI payloads.
+上下文包含许多任务。默认情况下`SendMessage`、`GetTask`和`ListTasks`返回历史记录
+**整个上下文**，而不仅仅是您询问的任务。上下文中的第二个任务重播
+第一个任务的消息，因此渲染每个历史记录条目的客户端会再次显示较早的内容 -
+包括早期的工具结果和 A2UI 有效负载。
 
-Set `historyScope` to `task` to get back only the messages that belong to the task you asked about.
-The default stays `context`, so existing integrations are unaffected.
+将 `historyScope` 设置为 `task` 以仅取回属于您询问的任务的消息。
+默认值保持`context`，因此现有集成不受影响。
 
 选项的去向取决于方法。 `SendMessage`从`configuration`读取：
 
@@ -110,21 +110,21 @@ The default stays `context`, so existing integrations are unaffected.
 }
 ```
 
-`GetTask` and `ListTasks` read it directly from `params`:
+`GetTask`和`ListTasks`直接从`params`读取：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {"jsonrpc": "2.0", "id": "2", "method": "GetTask",
  "params": {"id": "<taskId>", "historyScope": "task"}}
 ```
 
-If your client cannot add fields to the request body, send the header instead.中的显式值
+如果您的客户端无法将字段添加到请求正文，请改为发送标头。中的显式值
 请求胜过标头。
 
 ```
 LangGraph-A2A-History-Scope: task
 ```
 
-The agent card advertises this under `capabilities.extensions`, so you can detect support rather
+代理卡在`capabilities.extensions`下宣传这一点，因此您可以检测支持而不是
 比假设它：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -330,7 +330,7 @@ pip install "langgraph-api>=0.16.0"
 您的图表状态必须包含 `messages` 键才能接受 A2A 文本和文件部分。助理一名
 其输入模式没有 `messages` 字段将被拒绝并出现解释性错误。
 
-## 创建 A2A 兼容代理
+## 创建一个A2A兼容的代理
 
 此示例创建一个与 A2A 兼容的代理，该代理使用 OpenAI 的 API 处理传入消息并维护会话状态。代理定义基于消息的状态结构并处理 A2A 协议的消息格式。
 
@@ -435,7 +435,7 @@ graph = (
 
 一旦您的代理通过`langgraph dev`或[deployed to production](/langsmith/deployment)在本地运行，您就可以使用A2A协议促进它们之间的通信。
 
-此示例演示了两个代理如何通过向彼此的 A2A 端点发送 JSON-RPC 消息来进行通信。该脚本模拟多轮对话，其中每个代理处理对方的响应并继续对话。
+此示例演示两个代理如何通过向彼此的 A2A 端点发送 JSON-RPC 消息来进行通信。该脚本模拟多轮对话，其中每个代理处理对方的响应并继续对话。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 #!/usr/bin/env python3

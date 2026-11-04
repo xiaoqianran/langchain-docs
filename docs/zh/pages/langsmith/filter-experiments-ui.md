@@ -13,6 +13,11 @@ LangSmith 可让您通过反馈分数和元数据过滤以前的实验，以便�
 在我们的示例中，我们将围绕所使用的模型、模型提供程序和提示的已知 ID 将元数据附加到我们的实验中：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_anthropic import ChatAnthropic
+from langchain_classic import hub
+from langchain_openai import ChatOpenAI
+from langsmith import evaluate
+
 models = {
     "openai-gpt-5.5": ChatOpenAI(model="gpt-5.5", temperature=0),
     "openai-gpt-5.4-mini": ChatOpenAI(model="gpt-5.4-mini", temperature=0),

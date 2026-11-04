@@ -166,6 +166,10 @@ By default, graph runs (for example, calls made with `.invoke()` or `.stream()`)
 
 If you want to preserve the outputs of a run—for example, to support human-in-the-loop workflows—you can create a thread and pass its ID through the `config` argument. This works the same way as with a regular compiled graph:
 
+> [!NOTE]
+>
+> `RemoteGraph` sends only `recursion_limit`, `tags`, `metadata`, and `configurable` from the config to the deployment, and sends `thread_id` from `configurable` as the run's thread. It drops `run_id` and `run_name`, so you cannot set a custom run ID or run name. Agent Server assigns the run ID.
+
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph_sdk import get_sync_client
 

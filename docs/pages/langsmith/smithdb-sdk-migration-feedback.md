@@ -4,7 +4,7 @@
 
 Migrate the LangSmith SDK feedback, annotation queue, and public run methods to their SmithDB-backed equivalents.
 
-These methods add runs to annotation queues, share runs publicly, and create feedback. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration).
+These methods add runs to annotation queues, share runs publicly, and create feedback. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration).
 
 ## Annotation queues: add runs
 

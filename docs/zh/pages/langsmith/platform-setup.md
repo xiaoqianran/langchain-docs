@@ -26,12 +26,14 @@
 
 [Enterprise plan](/langsmith/pricing-plans) 上提供自托管和 BYOC。 [Get a demo](https://www.langchain.com/contact-sales) 了解更多。
 
-## 比较云、BYOC 和自托管|特色| **云** | **自带设备** | **自托管** |
+## 比较云、BYOC 和自托管|特色 | **云** | **自带设备** | **自托管** |
 | - | - | - | - |
 | **谁运行基础设施** | LangChain | LangChain 运行控制平面，您运行数据平面 |你|
 | **敏感数据所在的地方** | LangChain的云 |您的 VPC |您的 VPC |
 | **升级和补丁** |自动|自动|手册|
 | **缩放** |自动|自动，由LangChain管理 |手册|
+
+[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 已在云和 BYOC 上提供公共测试版。对于 BYOC，请使用托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 针对代理工作负载的云、BYOC 和自托管支持[LangSmith Deployment](/langsmith/deployment)。请参阅 [LangSmith Deployment overview](/langsmith/deployment) 选择拓扑（云托管、BYOC、混合、带控制平面的自托管或独立）。
 

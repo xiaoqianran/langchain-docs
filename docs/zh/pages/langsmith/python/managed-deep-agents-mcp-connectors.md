@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
 
 在`tools/mcp.py`中声明MCP服务器：
 
@@ -48,11 +48,11 @@ mcp = define_mcp(
 )
 ```
 
-该模块必须导出模块级别`mcp`。一个项目有一个 MCP 声明，因此声明其中的每个服务器。
+该模块必须导出模块级别`mcp`。一个项目有一个 MCP 声明，因此声明其中的每个服务器。托管 Deep Agents 支持可流式 HTTP (`"http"`) 和旧版 SSE (`"sse"`) 传输。不支持 Stdio MCP 服务器。通过 HTTP 公开 stdio 服务器或将其操作实现为 [authored tool](/langsmith/python/managed-deep-agents-tools)。
 
-托管 Deep Agents 支持可流式 HTTP (`"http"`) 和旧版 SSE (`"sse"`) 传输。不支持 Stdio MCP 服务器。通过 HTTP 公开 stdio 服务器或将其操作实现为 [authored tool](/langsmith/python/managed-deep-agents-tools)。
+有关连接选项，请参阅[Manage connections](/langsmith/python/managed-deep-agents-connections)。
 
-有关连接选项，请参阅[Manage connections](/langsmith/python/managed-deep-agents-connections)。**2.选择工具（可选）**
+**2.选择工具（可选）**
 
 默认情况下，托管Deep Agents公开每个服务器的每个工具。要仅公开选定的工具，请在该服务器的配置中设置允许列表：
 
@@ -72,16 +72,16 @@ mcp = define_mcp(
 
 **3.通过凭证（可选）**
 
-如果 MCP 服务器需要凭据，请在服务器配置上声明连接并在工作区中创建该连接。
+如果 MCP 服务器需要凭据，请在服务器配置上声明连接并在工作区中创建该连接。* **MCP OAuth**：对于通告 OAuth 并支持自动客户端注册的服务器，请使用`mda connections create <slug>`（从 MCP 声明推断）或`mda connections create <slug> --mcp <url>` 创建。您不提供客户端 ID 或密码。
+* **不透明机密或通用 OAuth**：对于静态 API 密钥，或您自己注册的 BYOT OAuth 应用程序，创建不透明机密或通用 OAuth 连接，然后将服务器的 `connection` 选项设置为 `connections.get(...)`。
 
-* **MCP OAuth**：对于通告 OAuth 并支持自动客户端注册的服务器，请使用`mda connections create <slug>`（从 MCP 声明推断）或`mda connections create <slug> --mcp <url>` 创建。您不提供客户端 ID 或密码。
-* **不透明机密或通用 OAuth**：对于静态 API 密钥，或您自己注册的 BYOT OAuth 应用程序，创建不透明机密或通用 OAuth 连接，然后将服务器的 `connection` 选项设置为 `connections.get(...)`。有关创建模式、所有者和运行时授权，请参阅[Manage connections](/langsmith/python/managed-deep-agents-connections)。
+有关创建模式、所有者和运行时授权，请参阅[Manage connections](/langsmith/python/managed-deep-agents-connections)。
 
 ## 配置 MCP 服务器
 
 每个服务器都支持以下核心选项：
 
-|选项|描述 |
+|选项 |描述 |
 | - | - |
 | `transport` |必需的。对可流式 HTTP 使用 `http`，对旧版 SSE 使用 `sse`。 |
 | `url` |必需的。远程 MCP 端点 URL。 |
@@ -92,9 +92,7 @@ mcp = define_mcp(
 | `automatic_sse_fallback` / `automaticSSEFallback` |对于 HTTP，允许客户端回退到 SSE。 |
 | `reconnect` |对于 SSE，配置重新连接行为。 |
 
-MCP 定义还接受以下选项：
-
-|选项|默认|描述 |
+MCP 定义还接受以下选项：|选项 |默认 |描述 |
 | - | - | - |
 | `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` |每个工具都带有前缀 `{server}__`。 |
 | `throw_on_load_error` / `throwOnLoadError` | `true` |加载失败而不是从部分工具集开始。 |
@@ -103,14 +101,16 @@ MCP 定义还接受以下选项：
 
 `mda dev`和`mda deploy`发现`tools/`下的MCP声明并将其包含在托管配置中。该声明未同步到 Context Hub。
 
-## 何时使用 MCP 连接器|概念 |亲切 |它如何到达代理|
+## 何时使用 MCP 连接器
+
+|概念 |亲切 |它如何到达代理|
 | - | - | - |
 | **MCP 服务器** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
 | **[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)** |部署API |将代理作为工具公开给 MCP 客户端 |
 | **[Authored tools](/langsmith/python/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |
 | **[Channels](/langsmith/python/managed-deep-agents-channels)** |托管配置|接收启动代理运行并传递响应的外部消息 |
 
-有关更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
+欲了解更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
 
 ***
 

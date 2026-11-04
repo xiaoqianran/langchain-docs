@@ -40,7 +40,7 @@ Build a graph by defining [state](#state), adding [nodes](#nodes) and [edges](#e
 
 You must compile the graph before you invoke or stream it. This is the smallest end-to-end example:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { END, START, StateGraph, StateSchema } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -76,7 +76,7 @@ Define state with `StateSchema`. Each field can be:
 * A **`MessagesValue`** (message list with a message-aware reducer)
 * An **`UntrackedValue`** (transient; not checkpointed)
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   StateSchema,
   ReducedValue,
@@ -132,7 +132,7 @@ const newValue = reducer(currentState[key], nodeUpdate[key]); // left, right
 
 Define a reducer and attach it to a state key with `ReducedValue`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ReducedValue, StateSchema } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -155,7 +155,7 @@ const State = new StateSchema({
 
 Calling the reducer with left and right shows how values combine:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const reducer = (left: string[], right: string[]) => left.concat(right);
 
 reducer(["draft"], ["review"]); // left, right → ["draft", "review"]
@@ -171,7 +171,7 @@ For example, start with `{"foo": 1, "bar": ["hi"]}`. An update of `{"foo": 2}` y
 
 Use a custom reducer to combine values, such as appending to a list.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema, ReducedValue } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -198,7 +198,7 @@ With a merging reducer, returning an empty value keeps prior data. That matters 
 
 `UntrackedValue` holds data during a run but never writes it to checkpoints. On resume, those values reset. Use it for connections, caches, or other data that must stay out of persistence.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema, UntrackedValue, MessagesValue } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -234,7 +234,7 @@ Store conversation history as a list of messages in state, with a reducer that a
 
 Use `MessagesValue`, which applies a message-aware reducer for IDs, updates, and deletions.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema, MessagesValue } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -269,7 +269,7 @@ A node can accept:
 
 Add nodes with `addNode`. Prefer `GraphNode` or `State.Node` for typing:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph, StateSchema, GraphNode } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -304,6 +304,21 @@ You can add or remove nodes and edges without breaking resume for existing threa
 
 If a node calls [tasks](/oss/javascript/langgraph/functional-api#task) or [`interrupt`](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt), stricter [determinism](/oss/javascript/langgraph/functional-api#determinism) rules apply on resume. Completed task results are restored from the checkpointer. Changing task or interrupt order before the resume point can mismatch cached values. See [Idempotency](/oss/javascript/langgraph/functional-api#idempotency).
 
+### Choose the unit of work
+
+A [node](#nodes) is a checkpoint and retry boundary. It is also where the graph can take a different path. Deterministic work such as parsing, retrieval, or a fixed tool chain does not need its own node unless you want that boundary.
+
+Ask whether the step decides what happens next, or executes something already decided. Then pick the primitive that matches the recovery behavior you need:
+
+| Primitive | Own checkpoint | On resume or retry | Choose when |
+| - | - | - | - |
+| Plain function inside a node | No. It runs inside the node's [super-step](#super-steps). | Re-runs whenever the node re-runs. | No routing fork after the step, and repeating it with the rest of the node is acceptable. |
+| [Task](/oss/javascript/langgraph/functional-api#task) | No new graph checkpoint. The result is stored with the running entrypoint or parent checkpoint. | The enclosing entrypoint or node replays from the start. Completed tasks return stored results. | The step has a side effect or is expensive, and must not repeat on resume. |
+| [Subgraph](/oss/javascript/langgraph/use-subgraphs) | Yes for stateful modes: nodes checkpoint under a namespace of the parent thread. Compile with `checkpointer=False` for no subgraph checkpoints. | Stateful modes resume inside the subgraph at the interrupted or failed node. | The unit has its own routing or state schema, or more than one parent graph reuses it. |
+| Graph node | Yes. A checkpoint follows the [super-step](#super-steps) it runs in. | Resume starts at that node. Earlier nodes do not re-run. | A routing fork is possible after the step, or you need an interrupt, resume, or [time travel](/oss/javascript/langgraph/use-time-travel) boundary. |
+
+For side effects under retries, see [Retry boundaries and idempotency](/oss/javascript/langgraph/fault-tolerance#retry-boundaries-and-idempotency). For task retries and timeouts, see [Tasks](/oss/javascript/langgraph/functional-api-tasks).
+
 ### Using tasks in nodes
 
 When one node runs several operations that should checkpoint independently, wrap each operation in a [task](/oss/javascript/langgraph/functional-api#task) instead of splitting the work across nodes. With a checkpointer, completed task results are saved, so a resumed thread can skip finished work inside the node. For patterns and examples, see [Tasks](/oss/javascript/langgraph/functional-api-tasks) and [Common pitfalls](/oss/javascript/langgraph/functional-api#common-pitfalls).
@@ -312,7 +327,7 @@ When one node runs several operations that should checkpoint independently, wrap
 
 [`START`](https://reference.langchain.com/javascript/langchain-langgraph/index/START) is the virtual entry that delivers user input into the graph. Use it to mark which nodes run first.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { START } from "@langchain/langgraph";
 
 graph.addEdge(START, "nodeA");
@@ -322,7 +337,7 @@ graph.addEdge(START, "nodeA");
 
 `END` marks a terminal edge. Use it when a path should stop.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { END } from "@langchain/langgraph";
 
 graph.addEdge("nodeA", END);
@@ -353,7 +368,7 @@ A node can have multiple outgoing edges. Destinations on those edges run in para
 
 If you always want to go from node A to node B, use [`add_edge`](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph/addEdge):
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph.addEdge("nodeA", "nodeB");
 ```
 
@@ -361,7 +376,7 @@ graph.addEdge("nodeA", "nodeB");
 
 If you want to optionally route to one or more nodes (or terminate), use [`add_conditional_edges`](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph/addConditionalEdges). Pass the source node and a routing function to call after that node runs:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph.addConditionalEdges("nodeA", routingFunction);
 // Or with an explicit map:
 graph.addConditionalEdges("nodeA", routingFunction, {
@@ -382,7 +397,7 @@ The routing function can return a node name, `END`, a list of names (fan-out), o
 
 The entry point is the first node (or nodes) that run when the graph starts. Add an edge from the virtual [`START`](https://reference.langchain.com/javascript/langchain-langgraph/index/START) node to the first node to execute:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph.addEdge(START, "nodeA");
 ```
 
@@ -390,7 +405,7 @@ graph.addEdge(START, "nodeA");
 
 A conditional entry point lets you start at different nodes depending on custom logic. Use [`add_conditional_edges`](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph/addConditionalEdges) from [`START`](https://reference.langchain.com/javascript/langchain-langgraph/index/START):
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph.addConditionalEdges(START, routingFunction, {
   true: "nodeB",
   false: "nodeC",
@@ -409,7 +424,7 @@ Return one or more `Send` objects from a conditional edge. Each `Send` names a t
 
 The first argument to `Send` is the target node name. The second is the state (or partial state) for that invocation.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Send } from "@langchain/langgraph";
 
 graph.addConditionalEdges("nodeA", (state) => {
@@ -448,7 +463,7 @@ Use `Command` in three places:
 
 Return [`Command`](https://reference.langchain.com/javascript/langchain-langgraph/index/Command) to update state and route in one step:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Command } from "@langchain/langgraph";
 
 graph.addNode("myNode", (state) => {
@@ -475,7 +490,7 @@ See [Combine control flow and state updates with Command](/oss/javascript/langgr
 
 From a [subgraph](/oss/javascript/langgraph/use-subgraphs) node, navigate to a node in the parent graph with `Command.PARENT`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Command } from "@langchain/langgraph";
 
 const myNode = (state: State): Command => {
@@ -507,7 +522,7 @@ When you update a parent key that the subgraph also uses, define a [reducer](#re
 
 Use `new Command({ resume: ... })` after an [interrupt](/oss/javascript/langgraph/interrupts). The value becomes the return value of the paused `interrupt()` call:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 await graph.invoke(new Command({ resume: "yes" }), config);
 ```
 
@@ -540,7 +555,7 @@ For logic changes that stay schema-compatible (for example, a new tool set), see
 
 Runtime context passes dependencies into nodes without putting them in graph state (for example, model name or a database handle).
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { END, START, StateGraph, StateSchema, GraphNode } from "@langchain/langgraph";
 import * as z from "zod";
 

@@ -8,7 +8,7 @@
 
 [LangSmith data migration tool](https://github.com/langchain-ai/langsmith-data-migration-tool) 将数据从现有 LangSmith 云组织或 [self-hosted](/langsmith/self-hosted) 实例复制到 BYOC 数据平面。该工具复制数据（而不是移动数据），因此源实例在移动过程中保持不变并保持可用。
 
-在数据平面为 [active and reachable](/langsmith/byoc-onboarding) 后运行迁移。 AWS 支持跟踪迁移。联系LangChain团队安排，并在工具旁边规划[manual steps](#move-data-the-tool-does-not-migrate)。
+在数据平面为 [active and reachable](/langsmith/byoc-onboarding-aws) 后运行迁移。 AWS 支持跟踪迁移。联系LangChain团队安排，并在工具旁边规划[manual steps](#move-data-the-tool-does-not-migrate)。
 
 ## 支持的资源
 
@@ -18,7 +18,7 @@
 |数据集 |数据集及其示例和文件附件。 |
 |实验|实验、实验运行和反馈随数据集一起迁移。 |
 |注释队列 |队列配置和设置。迁移的队列开始为空。 |
-|自动化规则 |映射到目标项目的项目自动化规则。 |
+|自动化规则|映射到目标项目的项目自动化规则。 |
 |提示|提示完整的提交历史记录。 |
 |图表|监控图表和仪表板。 |
 |定制型号定价|工作区-自定义模型价格条目。 |
@@ -40,7 +40,7 @@ langsmith-migrator --help
 
 **2.创建目标工作区**
 
-实例之间的工作空间 ID 不同，因此首先在数据平面中创建目标工作空间。请参阅 [BYOC onboarding docs](/langsmith/byoc-onboarding) 的 `Create workspaces` 部分。
+实例之间的工作空间 ID 不同，因此首先在数据平面中创建目标工作空间。请参阅 [BYOC onboarding docs](/langsmith/byoc-onboarding-aws) 的 `Create workspaces` 部分。
 
 迁移命令针对每个工作区对运行。对每一对重复这些操作。
 
@@ -65,7 +65,7 @@ export LANGSMITH_VERIFY_SSL=true
 > * **`LANGSMITH_OLD_API_KEY`**：当前部署中的 API 密钥，有权读取要迁移的所有资源。对于位于 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-migration) 的 LangSmith 云，请在 **设置 > API 密钥** 下创建它。对于另一个云区域或自托管实例，请使用该部署的 UI。
 > * **`LANGSMITH_NEW_API_KEY`**：在 **设置 > API 密钥** 下于 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建的 API 密钥。将其范围限定为目标 BYOC 数据平面中的工作区。参见[Create an API key](/langsmith/create-account-api-key#api-keys)。
 > * **`LANGSMITH_OLD_BASE_URL`**：您当前部署的 API URL。对于 GCP US 中的 LangSmith 云，请使用 `https://api.smith.langchain.com`。对于另一个云区域，使用其 [regional API URL](/langsmith/create-account-api-key#configure-the-sdk)。对于自托管 LangSmith，请使用您实例的 API URL。
-> * **`LANGSMITH_NEW_BASE_URL`**：您的目标 BYOC 数据平面的 API URL，包括 `https://`。在 **设置 > 数据平面** 下找到它。参见[BYOC onboarding](/langsmith/byoc-onboarding)。
+> * **`LANGSMITH_NEW_BASE_URL`**：您的目标 BYOC 数据平面的 API URL，包括 `https://`。在 **设置 > 数据平面** 下找到它。参见[BYOC onboarding](/langsmith/byoc-onboarding-aws)。
 
 > [!警告]
 >
@@ -136,7 +136,7 @@ langsmith-migrator migrate-all
 
 ## 另请参阅
 
-* [BYOC onboarding](/langsmith/byoc-onboarding)
+* [BYOC onboarding](/langsmith/byoc-onboarding-aws)
 * [BYOC usage](/langsmith/byoc-usage)
 * [Bulk export trace data](/langsmith/data-export)
 

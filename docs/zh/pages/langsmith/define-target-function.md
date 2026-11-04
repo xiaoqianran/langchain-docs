@@ -14,7 +14,7 @@
 
 ## 目标函数签名
 
-为了用代码评估应用程序，我们需要一种运行应用程序的方法。当使用 `evaluate()` ([Python](https://reference.langchain.com/python/langsmith/client/Client/evaluate) / [JavaScript](https://reference.langchain.com/javascript/functions/langsmith.evaluation.evaluate.html)) 时，我们将通过传入*目标函数*参数来实现这一点。这是一个函数，它接受数据集 [Example's](/langsmith/evaluation-concepts#examples) 输入并将应用程序输出作为字典返回。在此函数中，我们可以根据需要调用我们的应用程序。我们还可以根据需要格式化输出。关键是我们定义的任何评估器函数都应该与我们在目标函数中返回的输出格式一起使用。
+为了用代码评估应用程序，我们需要一种运行应用程序的方法。当使用 `evaluate()` ([Python](https://reference.langchain.com/python/langsmith/client/Client/evaluate) / [JavaScript](https://reference.langchain.com/javascript/langsmith/evaluation/evaluate)) 时，我们将通过传入*目标函数*参数来实现这一点。这是一个函数，它接受数据集 [Example's](/langsmith/evaluation-concepts#examples) 输入并将应用程序输出作为字典返回。在此函数中，我们可以根据需要调用我们的应用程序。我们还可以根据需要格式化输出。关键是我们定义的任何评估器函数都应该与我们在目标函数中返回的输出格式一起使用。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client

@@ -392,6 +392,10 @@ Connect LangGraph agents to front ends and observability platforms.
 
 ## Tools
 
+> [card] [AgentForge](https://github.com/acarchidi/agentforge-tools#langchain-js)
+>
+> DeFi safety tools for agents: transaction simulation, signature phishing checks, sanctions screening and token rug checks, paid per call over x402.
+
 > [card] [AgentSearch](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26)
 >
 > Web search tool for LangChain.js agents, free by default with no key. Pay-per-call Extract and Render (\$0.005, x402) for full pages and JS-rendered sites.

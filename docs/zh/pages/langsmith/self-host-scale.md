@@ -31,7 +31,7 @@
 | **摄取队列副本**（1 个 CPU，每个副本请求 2Gi）| 3（默认）| 24 | 3（默认）| 6 | 24 |
 | **后端副本**（1 个 CPU，每个副本请求 2Gi）| 2（默认）| 5 | 40 | 40 16 | 16 50 | 50
 | **Redis 资源** | 8 Gi（默认）| 26 Gi 外部 | 8 Gi（默认）| 13Gi 外部 | 26 Gi 外部 |
-| **ClickHouse 资源** | 4 CPU 16 Gi（默认）| 10个CPU 32Gi内存|每个副本 8 个 CPU 16 Gi | 16 CPU 24Gi 内存 |每个副本 14 个 CPU 24 Gi || **ClickHouse 设置** |单实例|单实例| 3 节点复制集群（建议用于高读取负载，以防止性能下降。另一个选择是 [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse)。） |单实例| 3 节点复制集群（建议用于高读取负载，以防止性能下降。另一个选择是[managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse)。）
+| **ClickHouse 资源** | 4 CPU 16 Gi（默认）| 10个CPU 32Gi内存|每个副本 8 个 CPU 16 Gi | 16 CPU 24Gi 内存 |每个副本 14 个 CPU 24 Gi || **ClickHouse 设置** |单实例 |单实例 | 3 节点复制集群（建议用于高读取负载，以防止性能下降。另一个选择是[managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse)。）单实例 | 3 节点复制集群（建议用于高读取负载，以防止性能下降。另一个选择是[managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse)。）
 | Postgres 资源（我们建议使用外部实例并启用磁盘自动扩展来处理不断增长的数据需求。） 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）|
 | **Blob 存储** |已禁用 |已启用 |已启用 |已启用 |已启用 |
 
@@ -42,7 +42,7 @@
 > [Default resource requests and limits](#default-resource-requests-and-limits)。
 >
 > 超过其内存限制的容器将被 OOM 杀死，超过其 CPU 限制的容器将被 OOM-killed
-> 节流。在不对结果进行负载测试的情况下，请勿将其降低到低于出厂默认值。下面我们将详细介绍读写路径，并提供一个 `values.yaml` 代码片段，供您开始构建自托管 LangSmith 实例。
+> 节流。在未对结果进行负载测试的情况下，请勿将任一值降低到低于出厂默认值。下面我们将详细介绍读写路径，并提供一个 `values.yaml` 代码片段，供您开始构建自托管 LangSmith 实例。
 
 ## 默认资源请求和限制
 
@@ -145,9 +145,9 @@ HPA 密钥为 `minReplicas` 和 `maxReplicas`； KEDA 等效项是 `minReplicaCo
 
 * 增加后端服务pod的数量。如果后端服务 Pod 达到 1 核 CPU 使用率，这将是最有影响的。
 * 给ClickHouse更多的资源（CPU或内存）。 ClickHouse 可能会占用大量资源，但它应该会带来更好的性能。
-* 移动到[replicated ClickHouse cluster](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)。添加 ClickHouse 副本有助于提高读取性能，但我们建议副本数量保持在 5 个以下（从 3 个开始）。
+* 移动到[replicated ClickHouse cluster](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)。添加 ClickHouse 副本有助于提高读取性能，但我们建议将副本数量保持在 5 个以下（从 3 个开始）。
 
-有关如何将其转换为舵图值的更精确指导，请参阅以下示例[section](#example-langsmith-configurations-for-scale)。如果您不确定为什么您的 LangSmith 实例无法处理特定的负载模式，请联系 LangChain 团队。
+有关如何将其转换为舵图值的更精确指导，请参阅以下示例[section](#example-langsmith-configurations-for-scale)。如果您不确定为什么您的 LangSmith 实例无法处理特定负载模式，请联系 LangChain 团队。
 
 ## LangSmith 队列的 KEDA 自动缩放
 
@@ -186,7 +186,7 @@ ingestQueue:
 
 ## LangSmith 规模配置示例
 
-下面我们提供一些基于预期读写负载的 LangSmith 配置示例。
+下面我们根据预期的读写负载提供一些示例 LangSmith 配置。
 
 对于读取负载（跟踪查询）：
 
@@ -200,7 +200,7 @@ ingestQueue:
 * 中表示每秒最多提交 100 条跟踪
 * 高意味着每秒最多提交 1000 条跟踪> [!注意]
 >
-> 确切的最佳配置取决于您的使用情况和跟踪负载。使用以下示例并结合上述信息和您的具体用法来更新您认为合适的 LangSmith 配置。如果您有任何疑问，请联系LangChain团队。
+> 确切的最佳配置取决于您的使用情况和跟踪负载。使用以下示例并结合上述信息和您的具体用法，根据您的需要更新您的 LangSmith 配置。如果您有任何疑问，请联系LangChain团队。
 
 ### 低读取，低写入 
 
@@ -324,7 +324,7 @@ backend:
 # Update these values as needed to connect to your replicated clickhouse cluster.
 clickhouse:
   external:
-    # If using a 3 node replicated setup, each replica in the cluster should have resource requests of 8+ cores and 16+ GB memory, and resource limit of 12 cores and 32 GB memory.
+    # If using a 3 node replicated setup, each replica in the cluster should have resource requests of 8+ cores and 16+ GB memory, and resource limit of 12 cores and 32 GB memory.
     enabled: true
     host: langsmith-ch-clickhouse-replicated.default.svc.cluster.local
     port: "8123"
@@ -472,7 +472,7 @@ redis:
 # Update these values as needed to connect to your replicated clickhouse cluster.
 clickhouse:
   external:
-    # If using a 3 node replicated setup, each replica in the cluster should have resource requests of 14+ cores and 24+ GB memory, and resource limit of 20 cores and 48 GB memory.
+    # If using a 3 node replicated setup, each replica in the cluster should have resource requests of 14+ cores and 24+ GB memory, and resource limit of 20 cores and 48 GB memory.
     enabled: true
     host: langsmith-ch-clickhouse-replicated.default.svc.cluster.local
     port: "8123"

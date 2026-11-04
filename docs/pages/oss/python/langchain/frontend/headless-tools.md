@@ -37,7 +37,7 @@ frontend `tools.ts` file.
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Any
 
-from langchain import create_agent
+from langchain.agents import create_agent
 from langchain.tools import ToolRuntime, tool
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import interrupt

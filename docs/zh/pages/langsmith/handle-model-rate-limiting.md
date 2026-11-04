@@ -42,7 +42,7 @@ def evaluator(inputs: dict, outputs: dict, reference_outputs: dict) -> dict:
 如果您使用 `langchain` 组件，您可以使用 `.with_retry(...)` / `.withRetry()` 方法向所有模型调用添加重试：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain import init_chat_model
+from langchain.chat_models import init_chat_model
 
 model_with_retry = init_chat_model("gpt-5.4-mini").with_retry(stop_after_attempt=6)
 ```

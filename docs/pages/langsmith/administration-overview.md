@@ -20,7 +20,7 @@ When you log in for the first time, a personal organization will be created for 
 
 | Feature | Personal | Shared |
 | - | - | - |
-| Maximum workspaces | 1 | Variable, depending on plan (see the [pricing page](https://www.langchain.com/pricing-langsmith)) |
+| Maximum workspaces | 1 | Variable, depending on plan (see the [pricing page](https://www.langchain.com/pricing)) |
 | Collaboration | Cannot invite users | Can invite users |
 | Billing: paid plans | Developer plan only | All other plans available |
 
@@ -303,7 +303,7 @@ LangSmith has two tiers of traces based on Data Retention with the following cha
 
 | | Base | Extended |
 | - | - | - |
-| **Price** | [See pricing page](https://www.langchain.com/pricing-langsmith) | [See pricing page](https://www.langchain.com/pricing-langsmith) |
+| **Price** | [See pricing page](https://www.langchain.com/pricing) | [See pricing page](https://www.langchain.com/pricing) |
 | **Retention Period** | 14 days | 180 days |
 
 > [!WARNING]
@@ -462,7 +462,7 @@ Each trace is limited to a maximum of 25,000 runs. Once the trace reaches this l
 
 The [`POST /runs/query`](/langsmith/smith-api/run/query-runs) endpoint has additional per-tenant rate limits based on query parameters. See [Query traces using the SDK](/langsmith/export-traces#rate-limits) for details.
 
-#### Handling 429s responses in your application
+#### Handle 429 responses in your application
 
 Since some 429 responses are temporary and may succeed on a successive call, if you are directly calling the LangSmith API in your application we recommend implementing retry logic with exponential backoff and jitter.
 
@@ -503,7 +503,7 @@ The extended data retention traces limit has side effects. If the limit is alrea
 
 Each of these features may cause an auto upgrade, so we shut them off when the limit is reached.
 
-#### Updating usage limits
+#### Update usage limits
 
 Usage limits can be updated from the `Settings` page under `Usage and Billing`. Limit values are cached, so it may take a minute or two before the new limits apply.
 

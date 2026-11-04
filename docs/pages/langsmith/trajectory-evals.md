@@ -444,7 +444,7 @@ def get_weather(city: str):
 agent = create_agent("gpt-5.5", tools=[get_weather])
 
 evaluator = create_trajectory_llm_as_judge(  # [!code highlight]
-    model="openai:o3-mini",  # [!code highlight]
+    model="openai:gpt-5.4-mini",  # [!code highlight]
     prompt=TRAJECTORY_ACCURACY_PROMPT,  # [!code highlight]
 )  # [!code highlight]
 
@@ -488,7 +488,7 @@ const agent = createAgent({
 });
 
 const evaluator = createTrajectoryLLMAsJudge({  // [!code highlight]
-  model: "openai:o3-mini",  // [!code highlight]
+  model: "openai:gpt-5.4-mini",  // [!code highlight]
   prompt: TRAJECTORY_ACCURACY_PROMPT,  // [!code highlight]
 });  // [!code highlight]
 
@@ -515,7 +515,7 @@ If you have a reference trajectory, you can add an extra variable to your prompt
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 evaluator = create_trajectory_llm_as_judge(
-    model="openai:o3-mini",
+    model="openai:gpt-5.4-mini",
     prompt=TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE,
 )
 evaluation = evaluator(
@@ -528,7 +528,7 @@ evaluation = evaluator(
 import { TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE } from "agentevals";
 
 const evaluator = createTrajectoryLLMAsJudge({
-  model: "openai:o3-mini",
+  model: "openai:gpt-5.4-mini",
   prompt: TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE,
 });
 
@@ -553,7 +553,7 @@ from agentevals.trajectory.llm import create_async_trajectory_llm_as_judge, TRAJ
 from agentevals.trajectory.match import create_async_trajectory_match_evaluator
 
 async_judge = create_async_trajectory_llm_as_judge(
-    model="openai:o3-mini",
+    model="openai:gpt-5.4-mini",
     prompt=TRAJECTORY_ACCURACY_PROMPT,
 )
 
