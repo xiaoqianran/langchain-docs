@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## Context Hub 中包含哪些内容
 
@@ -18,7 +18,7 @@
 | - | - | - | - |
 |系统提示| [⟦T3⟧](/langsmith/python/managed-deep-agents-instructions) |是的 |没有 |
 |技能 | [⟦T4⟧](/langsmith/python/managed-deep-agents-skills) |是的 |没有 |
-|持久记忆|可选的[⟦T5⟧](/langsmith/python/managed-deep-agents-memory)声明|启用树；不覆盖现有内存 |是的，在`/memories/agent/` |
+|持久记忆 |可选的[⟦T5⟧](/langsmith/python/managed-deep-agents-memory)声明 |启用树；不覆盖现有内存 |是的，在`/memories/agent/` |
 
 工具、中间件、MCP 连接器、通道、计划、沙箱和代理定义随已编译的部署一起提供。它们未同步到 Context Hub。
 
@@ -78,7 +78,7 @@
 
 有关更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development)。
 
-## 选择上下文所属的位置|目标|使用|
+## 选择上下文所属的位置|目标|使用 |
 | - | - |
 |永远在线的系统提示 | [Instructions](/langsmith/python/managed-deep-agents-instructions) |
 |特定任务的程序 | [Skills](/langsmith/python/managed-deep-agents-skills) |

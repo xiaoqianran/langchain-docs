@@ -6,13 +6,13 @@
 
 mda 命令、项目文件和部署行为的参考。
 
-`mda` CLI 编译并部署代码优先[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)。
+`mda` CLI 首先编译和部署代码[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)。
 
 它包含在 `managed-deepagents` npm 包中。
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上 **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上 **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 要了解最快的端到端路径，请参阅[quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。有关工作流程指南，请参阅 [Identity](/langsmith/javascript/managed-deep-agents-identity)、[Memory](/langsmith/javascript/managed-deep-agents-memory)、[Evals](/langsmith/javascript/managed-deep-agents-evals)、[Custom tools](/langsmith/javascript/managed-deep-agents-tools)、[Connections](/langsmith/javascript/managed-deep-agents-connections)、[Custom middleware](/langsmith/javascript/managed-deep-agents-middleware)、[Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)、[Channels](/langsmith/javascript/managed-deep-agents-channels)、[Schedules](/langsmith/javascript/managed-deep-agents-schedules) 和[Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)。
 
@@ -62,7 +62,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 `mda deploy` 转发非保留的 `.env` 条目，例如 `OPENAI_API_KEY`、MCP 令牌和自定义工具凭证，作为托管部署机密。保留的平台变量（包括 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY` 和 `LANGSMITH_WORKSPACE_ID`）用于 CLI 身份验证和部署路由，但不会作为用户管理的部署机密上传。
 
-## 命令概述|命令|使用|
+## 命令概述|命令 |使用 |
 | - | - |
 | `mda --help` |显示 CLI 帮助。 |
 | `mda --version` |显示已安装的 CLI 版本。 |
@@ -90,7 +90,7 @@ pnpm dlx managed-deepagents init my-agent
 
 ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bunx managed-deepagents init my-agent
-```|参数或标志 |使用|
+```|参数或标志 |使用 |
 | - | - |
 | `name` |所需的项目目录名称。如果目标已存在，则该命令失败。 |
 | `--instructions TEXT` |系统提示写入`instructions.md`。 |
@@ -117,7 +117,7 @@ bunx managed-deepagents init my-agent --channel slack
 
 脚手架语言来自您运行的包，而不是来自当前目录：npm 包始终编写 TypeScript 项目。从 npm 安装的 CLI 拒绝 Python 项目。
 
-脚手架创建：|文件 |描述 |
+脚手架创建：|文件|描述 |
 | - | - |
 | `agent.ts` |命名为`agent`从`defineDeepAgent(...)`导出。 |
 | `instructions.md` |托管系统提示。 |
@@ -160,7 +160,7 @@ pnpm exec mda build
 
 ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bunx mda build
-```|参数或标志 |使用|
+```|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--out OUT` |已编译应用程序的输出目录。默认为`<path>/.mda/build`。该目录在构建之前被清空，因此它必须丢失、为空或者是先前构建写入的目录。 |
@@ -181,7 +181,7 @@ pnpm exec mda evals init -i
 bunx mda evals init -i
 ```
 
-|命令或标志 |使用|
+|命令或标志|使用 |
 | - | - |
 | `mda evals init` |缺失时创建`evals/harbor-job.json`，并在`.mda/evals/`下生成Harbor适配器和运行时设置。从项目根运行此命令。 |
 | `-i`、`--interactive` |使用 eval-engineering 提示启动检测到的编码代理，或复制另一个代理的提示。 |
@@ -206,7 +206,7 @@ pnpm exec mda dev
 bunx mda dev
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--port PORT` |将端口转发到 LangGraph 开发服务器。 |
@@ -229,7 +229,7 @@ bunx mda dev
 
 以三种模式之一创建连接：不透明机密（固定 API 密钥）、常规 OAuth（来自目录或自定义端点的 BYOT 应用程序）或 MCP OAuth（从 MCP 服务器 URL 发现并注册）。使用 `mda connections` 管理当前工作区中的这些凭据。
 
-|命令|使用|
+|命令 |使用 |
 | - | - |
 | `mda connections catalog` |列出具有预配置 OAuth 设置的服务。 |
 | `mda connections create <slug>` |创建不透明机密、常规 OAuth 或 MCP OAuth 连接。 |
@@ -265,7 +265,7 @@ pnpm exec mda connections create organization-tavily --secret-from-env TAVILY_AP
 bunx mda connections create organization-tavily --secret-from-env TAVILY_API_KEY
 ```
 
-以下标志控制连接创建：|旗帜|使用|
+以下标志控制连接创建：|旗帜|使用 |
 | - | - |
 | `--project PATH` |设置项目目录。默认为当前目录。 |
 | `--workspace-id WORKSPACE_ID` |覆盖`LANGSMITH_WORKSPACE_ID`。 |
@@ -305,7 +305,7 @@ pnpm exec mda deploy
 bunx mda deploy
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为`defineDeepAgent`的代理`name`。 |
@@ -344,7 +344,7 @@ pnpm exec mda logs
 bunx mda logs
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为项目中的代理`name`。 |
@@ -370,7 +370,7 @@ pnpm exec mda delete
 bunx mda delete
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为`defineDeepAgent` 的代理`name`。 |

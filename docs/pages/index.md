@@ -3,13 +3,13 @@
 Unofficial mirror of [Docs by LangChain](https://docs.langchain.com).
 
 - Source: `llms-full.txt` + `llms.txt`
-- Pages: 1736
+- Pages: 1738
 - TOC links: 14
 
 ## Sections
 
 - **LangSmith API** (`langsmith-api`): 595 pages
-- **LangSmith** (`langsmith`): 494 pages
+- **LangSmith** (`langsmith`): 496 pages
 - **OSS · JavaScript** (`oss-js`): 207 pages
 - **OSS · Python** (`oss-python`): 200 pages
 - **Agent Server API** (`agent-server-api`): 64 pages

@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 > [!注意]
 >
@@ -30,7 +30,7 @@ my-agent/
 
 ## 选择一个图层
 
-层命名代理读取和写入其内存的层。每个启用的层都会在代理文件系统中安装自己的读/写树。|层 |安装|属于|用于|
+层命名代理读取和写入其内存的层。每个启用的层都会在代理文件系统中安装自己的读/写树。|层 |安装|属于|用于 |
 | - | - | - | - |
 | **代理** | `/memories/agent/` |部署，由每个调用者共享 |适合每个人的知识，例如团队惯例和可重用程序 |
 | **用户** | `/memories/user/` |开始运行的经过身份验证的人 |个人偏好和呼叫者特定上下文 |
@@ -83,7 +83,7 @@ export const memory = defineMemory({ user: memoryLayer() });
 
 **2.指导要记住的内容（可选）**
 
-代理根据提示决定要记住什么。为了使策略明确，请将如下指南添加到`instructions.md`并使其适应您的应用程序：
+代理根据提示决定要记住什么。为了使策略明确，请将如下指南添加到 `instructions.md` 并使其适应您的应用程序：
 
 ```md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ## Memory
@@ -239,9 +239,9 @@ export const agent = defineDeepAgent({
 
 每个挂载都包含热内存和冷内存：
 
-|路径|使用|
+|路径|使用 |
 | - | - |
-| `AGENTS.md` 在坐骑的根部 | **热记忆**用于紧凑、经常相关的知识。它的内容被加载到每个模型调用中。 |
+| `AGENTS.md` 在坐骑的根部 | **热记忆**用于紧凑、频繁相关的知识。它的内容被加载到每个模型调用中。 |
 |挂载下的其他文件 | **冷记忆**详细知识，仅在代理打开文件时读取。 |
 
 保持热内存紧凑，因为它会在每次运行时消耗上下文。
@@ -252,7 +252,7 @@ export const agent = defineDeepAgent({
 
 > [!警告]
 >
-> 代理内存由部署的每个调用者共享，并且每个调用者都可以影响它。仅存储每个调用者都可以读取和修改的知识。切勿在其中存储个人或客户私有数据、凭证、API 密钥、令牌或其他机密。
+> 代理内存由部署的每个调用者共享，并且每个调用者都可以影响它。仅存储每个调用者都可以读取和修改的知识。切勿在其中存储个人或客户私有数据、凭据、API 密钥、令牌或其他机密。
 >
 > 将内存视为不受信任的输入：为后来的调用者加载由一个调用者保存的内容，并且不得授予权限、更改工具权限或绕过批准。将这些控件保留在代理定义中。当呼叫者不应相互影响时，请勿启用代理内存。
 
@@ -277,7 +277,7 @@ Studio 写入的位置取决于您正在运行的内容：* **部署**：内存�
 
 ## 何时使用内存
 
-|概念 |角色 |范围 |
+|概念|角色 |范围 |
 | - | - | - |
 | **[Instructions](/langsmith/javascript/managed-deep-agents-instructions) 和 [skills](/langsmith/javascript/managed-deep-agents-skills)** |部署拥有的代理行为 |由部署共享并对代理只读 |
 | **线程状态** |对话连续性 |一根线 |
@@ -292,4 +292,4 @@ Studio 写入的位置取决于您正在运行的内容：* **部署**：内存�
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-memory.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-memory.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

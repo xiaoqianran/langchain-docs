@@ -6,19 +6,19 @@
 
 LangChain 提供 create_agent：一个最小的、高度可配置的代理工具。从模型、工具、提示和中间件中准确构建您的用例所需的代理。
 
-**Agent = 模型 + 线束。** LangChain 提供 `create_agent`：最小的、高度可配置的线束。线束是模型循环周围的一切：提示、工具和任何塑造行为的中间件。从原语开始，准确地组合您的用例所需的内容。支持[OpenAI, Anthropic, Google, and more](/oss/javascript/integrations/providers/overview)。
-
-> [!提示]
+**Agent = 模型 + 线束。** LangChain 提供 `create_agent`：最小的、高度可配置的线束。线束是模型循环周围的一切：提示、工具和任何塑造行为的中间件。从原语开始，准确地组合您的用例所需的内容。支持[OpenAI, Anthropic, Google, and more](/oss/javascript/integrations/providers/overview)。> [!提示]
 >
 > **LangChain 与 LangGraph 与 Deep Agents**
 >
-> 从 [Deep Agents](/oss/javascript/deepagents/overview/) 开始，获得“包含电池”的代理，具有自动上下文压缩、虚拟文件系统和子代理生成等功能。 Deep Agents 构建于 LangChain [agents](/oss/javascript/langchain/agents/) 之上，您也可以直接使用。
+> 当您想要运行生产代理而无需管理基础设施时，请从 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 开始使用包含电池的工具（上下文压缩、虚拟文件系统、子代理）。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/javascript/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。 Deep Agents 构建于 LangChain [agents](/oss/javascript/langchain/agents/) 之上，您也可以直接使用。
 >
 > 使用 [LangChain](/oss/javascript/langchain/agents) (`create_agent`) 打造高度可定制的线束，轻松根据您的用例和数据进行定制。
 >
 > 使用我们的低级编排框架[LangGraph](/oss/javascript/langgraph/overview)来满足结合确定性和代理工作流程的高级需求。
 >
-> 使用 [LangSmith](/langsmith/observability) 跟踪、调试和评估使用任何这些框架构建的代理。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。## 创建代理
+> 使用 [LangSmith](/langsmith/observability) 跟踪、调试和评估使用任何这些框架构建的代理。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
+
+## 创建代理
 
 此示例演示如何使用自定义工具创建简单的 LangChain 代理：
 
@@ -274,30 +274,30 @@ console.log(
 );
 ```
 
-请参阅 [Installation instructions](/oss/javascript/langchain/install) 和 [Quickstart guide](/oss/javascript/langchain/quickstart) 开始使用 LangChain 构建您自己的代理和应用程序。
-
-> [!提示]
+请参阅 [Installation instructions](/oss/javascript/langchain/install) 和 [Quickstart guide](/oss/javascript/langchain/quickstart) 开始使用 LangChain 构建您自己的代理和应用程序。> [!提示]
 >
 > 使用 [LangSmith](/langsmith/observability) 跟踪请求、调试代理行为并评估输出。设置 `LANGSMITH_TRACING=true` 和您的 API 密钥即可开始。
 
 ## 核心优势
 
-> **[Standard model interface](/oss/javascript/langchain/models)**
+> [卡][Standard model interface](/oss/javascript/langchain/models)
 >
 > 跨提供商使用一个界面来实现聊天模型、嵌入等。只需最少的代码更改即可切换模型，并随着需求的变化保持应用程序的可移植性。
 
-> **[Highly configurable harness](/oss/javascript/langchain/agents)**
+> [卡][Highly configurable harness](/oss/javascript/langchain/agents)
 >
 > 从 `create_agent` 作为最小的工具开始，并通过中间件逐步添加功能。仅编写您的用例所需的内容，从护栏和重试到路由和自定义工具策略。
 
-> **[Built on top of LangGraph](/oss/javascript/langgraph/overview)**
+> [卡][Built on top of LangGraph](/oss/javascript/langgraph/overview)
 >
 > LangChain 的代理构建在 LangGraph 之上。这使我们能够利用 LangGraph 的持久执行、人机交互支持、持久性等。
 
-> **[Debug with LangSmith](/langsmith/observability)**
+> [卡][Debug with LangSmith](/langsmith/observability)
 >
 > 在一处检查跟踪、工具调用、状态转换和延迟。查找故障模式、评估质量并利用执行数据改进代理行为。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

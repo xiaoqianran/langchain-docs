@@ -9,9 +9,9 @@
 `RemoteGraph` 适用于以下情况：
 
 * 开发和部署分离：使用`CompiledGraph`在本地构建和测试图，将其部署到LangSmith，然后使用[use ⟦T19⟧](#initialize-the-graph)在生产中调用它，同时使用相同的API接口。
-* 线程级持久性：具有线程 ID 的跨调用的对话的[Persist and fetch the state](#persist-state-at-the-thread-level)。
+* 线程级持久性：具有线程 ID 的跨调用之间的对话的[Persist and fetch the state](#persist-state-at-the-thread-level)。
 * 子图嵌入：通过将 `RemoteGraph` 作为 [subgraph](#use-as-a-subgraph) 嵌入到另一个图中，为多智能体工作流程构建模块化图。
-* 可重用的工作流程：使用已部署的图作为节点或[tools](https://reference.langchain.com/python/langsmith/deployment/remote_graph/#langgraph.pregel.remote.RemoteGraph.as_tool)，以便您可以重用和公开复杂的逻辑。> [!警告]
+* 可重用的工作流程：使用部署的图作为节点或[tools](https://reference.langchain.com/python/langsmith/deployment/remote_graph/#langgraph.pregel.remote.RemoteGraph.as_tool)，以便您可以重用和公开复杂的逻辑。> [!警告]
 >
 > **重要：避免调用相同的部署**
 >
@@ -162,6 +162,10 @@ for chunk in remote_graph.stream({
 
 如果您想保留运行的输出（例如，为了支持人机交互工作流程），您可以创建一个线程并通过 `config` 参数传递其 ID。这与常规编译图的工作方式相同：
 
+> [!注意]
+>
+> `RemoteGraph` 仅将 `recursion_limit`、`tags`、`metadata` 和 `configurable` 从配置发送到部署，并从 `configurable` 发送 `thread_id` 作为运行线程。它删除了 `run_id` 和 `run_name`，因此您无法设置自定义运行 ID 或运行名称。代理服务器分配运行 ID。
+
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph_sdk import get_sync_client
 
@@ -211,9 +215,7 @@ console.log(threadState);
 
 > [!注意]
 >
-> 如果您需要将 `checkpointer` 与具有 `RemoteGraph` 子图节点的图一起使用，请确保使用 UUID 作为线程 ID。
-
-一个图还可以调用多个 `RemoteGraph` 实例作为 [*subgraph*](/oss/python/langgraph/use-subgraphs) 节点。这允许模块化、可扩展的工作流程，其中不同的职责被划分在不同的图表中。
+> 如果您需要将 `checkpointer` 与具有 `RemoteGraph` 子图节点的图一起使用，请确保使用 UUID 作为线程 ID。一个图还可以调用多个 `RemoteGraph` 实例作为 [*subgraph*](/oss/python/langgraph/use-subgraphs) 节点。这允许模块化、可扩展的工作流程，其中不同的职责被划分在不同的图表中。
 
 `RemoteGraph` 公开与常规 `CompiledGraph` 相同的接口，因此您可以直接将其用作另一个图中的子图。例如：
 
@@ -272,7 +274,9 @@ for await (const chunk of await graph.stream({
 }, { subgraphs: true })) {
   console.log(chunk);
 }
-```***
+```
+
+***
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 

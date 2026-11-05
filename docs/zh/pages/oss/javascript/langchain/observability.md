@@ -4,7 +4,7 @@
 
 # LangSmith 可观测性
 
-当您使用 LangChain 构建和运行代理时，您需要了解它们的行为方式：它们调用哪些 [tools](/oss/javascript/langchain/tools)、它们生成什么提示以及它们如何做出决策。使用[⟦T6⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)构建的LangChain代理自动支持通过[LangSmith](/langsmith/observability)进行跟踪，[LangSmith](/langsmith/observability)是一个用于捕获、调试、评估和监控LLM应用程序行为的平台。
+当您使用LangChain构建和运行代理时，您需要了解它们的行为方式：它们调用哪个[tools](/oss/javascript/langchain/tools)、它们生成什么提示以及它们如何做出决策。使用[⟦T4⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)构建的LangChain代理自动支持通过[LangSmith](/langsmith/observability)进行跟踪，[LangSmith](/langsmith/observability)是一个用于捕获、调试、评估和监控代理行为的平台。
 
 [*Traces*](/langsmith/observability-concepts#traces) 记录代理执行的每一步，从初始用户输入到最终响应，包括所有工具调用、模型交互和决策点。此执行数据可帮助您调试问题、评估不同输入的性能以及监控生产中的使用模式。
 
@@ -19,9 +19,13 @@
 
 ## 启用跟踪
 
-所有LangChain代理自动支持LangSmith跟踪。要启用它，请设置以下环境变量：
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。所有LangChain代理自动支持LangSmith跟踪。要启用它，请设置以下环境变量：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 ```
@@ -53,11 +57,13 @@ const agent = createAgent({
 const response = await agent.invoke({
     messages: [{ role: "user", content: "Search for the latest AI news and email a summary to john@example.com" }]
 });
-```默认情况下，跟踪将记录到名为 `default` 的项目中。要配置自定义项目名称，请参阅[Log to a project](/langsmith/log-traces-to-project)。
+```
+
+跟踪显示在设置期间配置的目标中。
 
 ## 有选择地跟踪
 
-您可以选择使用 LangSmith 的 `tracing_context` 上下文管理器来跟踪应用程序的特定调用或部分：
+您可以选择使用 LangSmith 的 `tracing_context` 上下文管理器来跟踪特定调用或代理的部分：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { LangChainTracer } from "@langchain/core/tracers/tracer_langchain";
@@ -79,31 +85,13 @@ await agent.invoke(
 );
 ```
 
-## 登录到项目
+## 选择代理和环境
 
-> **静态**
->
-> 您可以通过设置 `LANGSMITH_PROJECT` 环境变量来为整个应用程序设置自定义项目名称：
->
-> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> export LANGSMITH_PROJECT=my-agent-project
-> ```
+使用`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`选择注册的代理和环境。对于每个请求路由，请在代码中传递代理地址。参见[Log traces to an agent](/langsmith/log-traces-to-agent)。
 
-> **动态**
+> [手风琴] 基于项目的工作区和自托管 LangSmith
 >
-> 您可以通过编程方式设置项目名称以进行特定操作：
->
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> import { LangChainTracer } from "@langchain/core/tracers/tracer_langchain";
->
-> const tracer = new LangChainTracer({ projectName: "email-agent-test" });
-> await agent.invoke(
->   {
->     messages: [{role: "user", content: "Send a test email to alice@example.com"}]
->   },
->   { callbacks: [tracer] }
-> );
-> ```
+> 将 `LANGSMITH_PROJECT` 设置为跟踪项目名称，而不是设置代理变量。对于在基于代理的工作区中需要 `project_name` 的集成，请使用环境的 [⟦T12⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 将元数据添加到跟踪中
 
@@ -112,7 +100,7 @@ await agent.invoke(
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { LangChainTracer } from "@langchain/core/tracers/tracer_langchain";
 
-const tracer = new LangChainTracer({ projectName: "email-agent-test" });
+const tracer = new LangChainTracer();
 await agent.invoke(
   {
     messages: [{role: "user", content: "Send a test email to alice@example.com"}]
@@ -135,8 +123,6 @@ await agent.invoke(
 >
 > 要了解有关如何使用跟踪来调试、评估和监控代理的更多信息，请参阅 [LangSmith documentation](/langsmith/observability)。
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/observability.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

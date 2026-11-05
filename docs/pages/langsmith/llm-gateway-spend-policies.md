@@ -76,7 +76,7 @@ Policies take effect immediately. The gateway evaluates them on every incoming r
 
 > [!TIP]
 >
-> A spend policy can also use a custom request header to give each end customer, tenant, or team an independent cap without issuing a separate API key for each. For more information, see [Header-based policies](/langsmith/llm-gateway-header-policies).
+> A spend policy can also use a custom request header to give each end customer, tenant, or cost center an independent cap without issuing a separate API key for each. For more information, see [Header-based policies](/langsmith/llm-gateway-header-policies).
 
 ## View spend
 

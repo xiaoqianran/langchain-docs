@@ -71,23 +71,23 @@ HITL 中断、摘要、PII 编辑、重试和任何自定义挂钩都与代理�
 
 ## 其他资源
 
-> **[Built-in middleware](/oss/javascript/langchain/middleware/built-in)**
+> [卡][Built-in middleware](/oss/javascript/langchain/middleware/built-in)
 >
 > 探索常见用例的内置中间件。
 
-> **[Custom middleware](/oss/javascript/langchain/middleware/custom)**
+> [卡][Custom middleware](/oss/javascript/langchain/middleware/custom)
 >
 > 使用钩子和装饰器构建您自己的中间件。
 
-> **[Middleware API reference](https://reference.langchain.com/python/langchain/middleware/)**
+> [卡][Middleware API reference](https://reference.langchain.com/python/langchain/middleware/)
 >
 > 中间件的完整 API 参考。
 
-> **[Middleware integrations](/oss/javascript/integrations/middleware/)**
+> [卡][Middleware integrations](/oss/javascript/integrations/middleware/)
 >
 > 适用于 Anthropic、AWS、OpenAI 等的提供商特定中间件。
 
-> **[Testing agents](/oss/javascript/langchain/test/)**
+> [卡][Testing agents](/oss/javascript/langchain/test/)
 >
 > 使用 LangSmith 测试您的代理。
 

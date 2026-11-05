@@ -8,7 +8,7 @@
 
 > [!提示]
 >
-> 要使用LangChain管理的线程级判断而不配置模型、API密钥或提示，请参阅[LangChain Tuned Evaluators](/langsmith/tuned-evaluators)。
+> 要使用 LangChain 管理的线程级判断而不配置模型、API 密钥或提示，请参阅 [LangChain Tuned Evaluators](/langsmith/tuned-evaluators)。
 
 您可以使用多轮评估来衡量：
 
@@ -23,9 +23,9 @@
 ## 它是如何工作的
 
 多轮在线评估器遵循以下评估生命周期：1. **跟踪摄取**：对话中的每个轮次都作为单独的运行进行跟踪，并使用共享线程 ID 与线程关联。
-2. **空闲时间检测**：摄取线程中的最后一个跟踪后，LangSmith 等待配置的空闲时间过去。此空闲期表示对话已完成并准备好进行评估。
-3. **消息组装**：LangSmith从线程中的每个跟踪中收集`messages`并将它们组装成单个对话历史记录。如果每个跟踪仅包含最新消息，则 LangSmith 将各轮消息缝合在一起。如果每个跟踪包含完整的历史记录，LangSmith 会直接使用它。由于线程中的连续跟踪经常重新发送先前的历史记录，因此 LangSmith 会删除重叠消息，因此每个消息仅出现一次。结果是 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的单个消息列表，这就是提示中的 `all_messages` 变量解析的内容。
-4. **LLM 作为法官评估**：组装的对话将传递到您配置的 LLM 作为法官提示。评估者根据您的标准对整个线程进行评分：语义意图、结果或轨迹。5. **反馈记录**：评估者使用您配置的与线程关联的反馈键将反馈写入LangSmith。
+2. **空闲时间检测**：在摄取线程中的最后一个跟踪后，LangSmith 等待配置的空闲时间过去。此空闲期表示对话已完成并准备好进行评估。
+3. **消息组装**：LangSmith从线程中的每个跟踪收集`messages`并将它们组装成单个对话历史记录。如果每个跟踪仅包含最新消息，则 LangSmith 将各轮消息缝合在一起。如果每个跟踪包含完整的历史记录，LangSmith 会直接使用它。由于线程中的连续跟踪经常重新发送先前的历史记录，因此 LangSmith 会删除重叠消息，因此每个消息仅出现一次。结果是 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的单个消息列表，这就是提示中的 `all_messages` 变量解析的结果。
+4. **LLM 作为法官评估**：组装的对话将传递到您配置的 LLM 作为法官提示。评估者根据您的标准对整个线程进行评分：语义意图、结果或轨迹。5. **反馈记录**：评估器使用您配置的与线程关联的反馈键将反馈写入LangSmith。
 
 此生命周期意味着多轮评估器每个完成的线程运行一次，而不是每个跟踪运行一次。如果您想要每条轨迹评估，请使用[run-level online evaluators](/langsmith/online-evaluations-llm-as-judge)。
 
@@ -64,11 +64,11 @@
 
 6. **配置您的模型。**
 
-   选择您想要用于评估器的提供商和模型。线程往往会变长，因此您应该使用具有较高上下文窗口的模型，以避免遇到限制。例如，OpenAI 的 GPT-5.4 mini 或 Gemini 2.5 Flash 都是不错的选择，因为它们都有 1M+ 令牌上下文窗口。
+   选择您想要用于评估器的提供商和模型。线程往往会变长，因此您应该使用具有较高上下文窗口的模型，以避免遇到限制。例如，OpenAI 的 GPT-5.4 mini 或 Gemini 2.5 Flash 都是不错的选择，因为它们都具有 1M+ 令牌上下文窗口。
 
 7. **配置您的 LLM 法官提示。**
 
-   定义您要评估的内容。该提示将用于评估线程。您还可以通过 `all_messages` 变量配置将组装对话的哪些部分传递给评估器，以控制它接收的内容：* 所有消息：以 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的 JSON 消息对象列表的形式发送完整对话，每条消息呈现为缩进的 JSON 并用空行分隔。
+   定义您要评估的内容。该提示将用于评估线程。您还可以通过 `all_messages` 变量配置将组装对话的哪些部分传递给评估器，以控制它接收的内容：* 所有消息：以 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的 JSON 消息对象列表形式发送完整对话，每条消息呈现为缩进的 JSON 并用空行分隔。
    * 人类和人工智能对：仅发送用户和助理消息，格式为`<user>...</user>`和`<assistant>...</assistant>`，不包括系统消息、工具调用和其他角色。
    * 第一个人类和最后一个人工智能：仅发送第一条用户消息和最后一个助理回复。
 
@@ -146,12 +146,12 @@
 
 您可以通过前往跟踪项目或代理环境中的 **Evaluators** 选项卡并单击您创建的评估器的 **Logs** 按钮来查看其运行历史记录，从而检查评估器上次运行的时间。
 
-**检查发送给评估者的数据**
+**检查发送给评估者的数据**检查发送到评估器的数据，方法是前往跟踪项目或代理环境中的 **Evaluators** 选项卡，单击您创建的评估器，然后单击 **Traces** 选项卡。仅当您 [turned on tracing for the evaluator](/langsmith/evaluators#trace-evaluator-runs) 时，该选项卡才会显示痕迹。新的评估者从关闭跟踪开始。
 
-检查发送到评估器的数据，方法是前往跟踪项目或代理环境中的 **Evaluators** 选项卡，单击您创建的评估器，然后单击 **Evaluator 跟踪** 选项卡。在此选项卡中，您可以看到传递到 LLM-as-a-judge 评估器的输入。如果您的消息未正确传递，您将在输入中看到空白值。如果您的消息未采用 [the expected formats](/langsmith/online-evaluations-multi-turn#prerequisites) 之一的格式，则可能会发生这种情况。
+在此选项卡中，您可以看到传递到 LLM-as-a-judge 评估器的输入。如果您的消息未正确传递，您将在输入中看到空白值。如果您的邮件未采用 [the expected formats](/langsmith/online-evaluations-multi-turn#prerequisites) 之一的格式，则可能会发生这种情况。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-multi-turn.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -6,7 +6,7 @@
 
 迁移检索单个运行或构建运行 URL 的 LangSmith SDK 方法。
 
-这些方法读取单个运行或构建到一个运行的链接。要迁移运行查询，请参阅[Query runs](/langsmith/smithdb-sdk-migration-query-runs)。有关弃用日期和最低 SDK 版本的信息，请参阅 [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration)。
+这些方法读取单个运行或构建到一个运行的链接。要迁移运行查询，请参阅[Query runs](/langsmith/smithdb-sdk-migration-query-runs)。有关弃用日期和最低 SDK 版本的信息，请参阅 [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration)。
 
 ## 运行：检索
 
@@ -18,7 +18,7 @@
 
 > [选项卡] Python
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.read_run()` | `client.runs.retrieve()` |
 >
@@ -26,11 +26,11 @@
 >>
 >> `client.runs.retrieve()` 现在是异步的。用 `await` 来调用它。
 >
-> 完整参数和字段列表请参见[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/runs/RunsResource/retrieve_v2)。
+> 有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/runs/RunsResource/retrieve_v2)。
 
 > [选项卡] TypeScript
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.readRun()` | `client.runs.retrieve()` |
 >
@@ -38,7 +38,7 @@
 
 > [选项卡] Java
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.runs().retrieve()` | `client.runs().retrieveV2()` |
 >
@@ -46,7 +46,7 @@
 
 > [选项卡] 前往
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.Runs.Get()` | `client.Runs.GetV2()` |
 >
@@ -54,7 +54,7 @@
 
 > [选项卡] 卷曲
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `GET /api/v1/runs/{run_id}` | `GET /api/v2/runs/{run_id}` |
 >
@@ -66,24 +66,24 @@
 >>
 >> `runs.retrieve` 需要一个新的 `project_id` 字段，而 `read_run` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但这不是必需的。
 >
-> |之前 (`read_run`) |之后(`runs.retrieve`)|笔记|
+> |之前 (`read_run`) |之后(`runs.retrieve`) |笔记|
 > | - | - | - |
 > | `run_id` | `run_id` |不变 |
 > | `load_child_runs` | *（已删除）* |使用 `traces.list_runs` 获取跟踪的运行并按 `parent_run_ids` 进行过滤。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
 > | *（不可用）* | `project_id` | **必需** - 拥有运行的项目的 UUID |
-> | *（不可用）* | `start_time` |可选 — 运行的开始时间 (RFC3339)；提供它可以加快检索速度|
+> | *（不可用）* | `start_time` |可选 — 运行的开始时间 (RFC3339)；提供它可以加快检索速度。 v0.18 以下仅限 SmithDB 自托管所需 |
 > | *（默认返回所有字段）* | `selects` |现场投影；仅默认为`["ID"]`；字段名称均为大写 |> [选项卡] TypeScript
 >
 >> [!警告]
 >>
->> `client.runs.retrieve` 需要一个新的 `project_id` 字段，而 `readRun` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但这不是必需的。
+>> `client.runs.retrieve` 需要一个新的 `project_id` 字段，而 `readRun` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但不是必需的。
 >
 > |之前 (`readRun`) |之后(`client.runs.retrieve`) |笔记|
 > | - | - | - |
 > | `runId` | `runId` |不变（位置参数）|
 > | `options.loadChildRuns` | *（已删除）* |使用 `client.traces.listRuns` 获取跟踪的运行并按 `parent_run_ids` 进行过滤。参见[Load a run's child runs](#load-a-runs-child-runs) |
 > | *（不可用）* | `project_id` | **必填**—`snake_case`；拥有运行的项目的 UUID |
-> | *（不可用）* | `start_time` |可选—`snake_case`；运行的开始时间（RFC3339）；提供它可以加快检索速度|
+> | *（不可用）* | `start_time` |可选—`snake_case`；运行的开始时间（RFC3339）；提供它可以加快检索速度。 v0.18 以下仅限 SmithDB 自托管所需 |
 > | *（默认返回所有字段）* | `selects` |现场投影；仅默认为`["ID"]`；字段名称均为大写 |> [选项卡] Java
 >
 >> [!警告]
@@ -94,7 +94,7 @@
 > | - | - | - |
 > | `runId()` | `runId()` |不变 |
 > | `sessionId()` | *（已删除）* |替换为`projectId()` |
-> | `startTime()` | `startTime()` |仍然是可选的；提供它可以加快检索速度|
+> | `startTime()` | `startTime()` |仍然是可选的；提供它可以加快检索速度。 v0.18 以下仅限 SmithDB 自托管所需 |
 > | `excludeS3StoredAttributes()` | *（已删除）* |没有同等的 |
 > | `excludeSerialized()` | *（已删除）* |没有同等的 |
 > | `includeMessages()` | *（已删除）* |没有同等的 |
@@ -105,14 +105,14 @@
 >>
 >> `GetV2()` 需要 `ProjectID`，它取代了删除的 `SessionID`。 `StartTime` 仍然是可选的——只要它可以加快检索速度，但不是必需的。
 >
-> |之前 (`RunGetParams`) |之后(`RunGetV2Params`) |笔记|
+> |之前 (`RunGetParams`) |之后（`RunGetV2Params`）|笔记|
 > | - | - | - |
 > | `runID`（位置）| `runID`（位置）|不变 |
 > | `ExcludeS3StoredAttributes` | *（已删除）* |没有同等的 |
 > | `ExcludeSerialized` | *（已删除）* |没有同等的 |
 > | `IncludeMessages` | *（已删除）* |没有同等的 |
 > | `SessionID` | *（已删除）* |替换为`ProjectID` |
-> | `StartTime` | `StartTime` |仍然是可选的；提供它可以加快检索速度|
+> | `StartTime` | `StartTime` |仍然是可选的；提供它可以加快检索速度。 v0.18 以下仅限 SmithDB 自托管所需 |
 > | *（不可用）* | `ProjectID` | **必需** - 拥有运行的项目的 UUID |
 > | *（默认返回所有字段）* | `Selects` |现场投影；仅默认为`["ID"]`；字段名称常量为大写（例如，`RunGetV2ParamsSelectName`）|> [选项卡] 卷曲
 >
@@ -126,7 +126,7 @@
 > | - | - | - |
 > | `run_id`（路径）| `run_id`（路径）|不变 |
 > | *（不可用）* | `project_id`（查询）| **必需** - 拥有运行的项目的 UUID |
-> | `start_time`（查询）| `start_time`（查询）|仍然是可选的；提供它可以加快检索速度|
+> | `start_time`（查询）| `start_time`（查询）|仍然是可选的；提供它可以加快检索速度。 v0.18 以下仅限 SmithDB 自托管所需 |
 > | *（默认返回所有字段）* | `selects`（查询，可重复）|现场投影；仅默认为`["ID"]`；字段名称均为大写 |
 
 #### 响应字段> [选项卡] Python
@@ -176,8 +176,8 @@
 > | *（不可用）* | `run.outputs_preview` |新：截断的输出预览 |
 > | *（不可用）* | `run.thread_id` |新：对话线程 UUID |> | *（不可用）* | `run.reference_dataset_id` |新：参考示例的数据集 UUID |
 > | *（不可用）* | `run.share_url` |新功能：公共共享 URL（仅在共享运行时设置）|
-> | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
-> | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
+> | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
+> | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
 > | `run.prompt_cost_details` | `run.prompt_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
 > | `run.completion_cost_details` | `run.completion_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|> [选项卡] TypeScript
 >
@@ -388,7 +388,7 @@
 > | `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|> | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
 > | `prompt_tokens` | `prompt_tokens` |不变 |
 > | `completion_cost` | `completion_cost` |不变 |
-> | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串） |
+> | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
 > | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
 > | `completion_tokens` | `completion_tokens` |不变 |
 > | `total_cost` | `total_cost` |不变 |
@@ -1252,7 +1252,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] Python
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.get_run_url()` | `client.runs.get_url()` |
 >
@@ -1264,7 +1264,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] TypeScript
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.getRunUrl()` | `client.runs.getURL()` |
 >
@@ -1272,9 +1272,9 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [!注意]
 >>
->> Java SDK 没有用于检索运行的 UI URL 的传统等效项。
+>> Java SDK 没有用于检索运行的 UI URL 的旧版等效项。
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | *（无遗留方法）* | `client.runs().getUrl()` |
 >
@@ -1286,7 +1286,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >>
 >> Go SDK 没有用于检索运行的 UI URL 的传统等效项。
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | *（无遗留方法）* | `client.Runs.GetURL()` |
 >
@@ -1298,7 +1298,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >>
 >> REST API 没有用于检索运行的 UI URL 的旧版本等效项。
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | *（无旧端点）* | `GET /api/v2/runs/{run_id}/url` |
 
@@ -1308,7 +1308,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >>
 >> `runs.get_url` 需要直接传递运行的 `project_id` 和 `trace_id`，而不是从 `run` 对象或 `project_name`/`project_id` 后备解析它们。
 >
-> |之前 (`get_run_url`) |之后(`runs.get_url`)|笔记|
+> |之前 (`get_run_url`) |之后(`runs.get_url`) |笔记|
 > | - | - | - |
 > | `run` (`RunBase`) | *（已删除）* |不需要完整的运行对象；单独传递其识别字段 |
 > | `project_name` | *（已删除）* |没有同等的；如果您只有项目名称，请自行解析项目 UUID |
@@ -1332,7 +1332,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] Java
 >
-> |之前 |之后(`RunGetUrlParams`)|笔记|
+> |之前 |之后(`RunGetUrlParams`) |笔记|
 > | - | - | - |
 > | *（无遗留方法）* | `runId` | **必填**（位置）；运行的 ID |
 > | *（无遗留方法）* | `projectId()` | **必需的**;项目（会话）UUID |
@@ -1359,29 +1359,29 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] Python
 >
-> |之前 |之后|笔记|
+> |之前 |之后 |笔记|
 > | - | - | - |
-> | `str`（网址）| `RunGetURLResponse.url` |响应现在被包装在一个对象中；读取`.url`属性|
+> | `str`（网址）| `RunGetURLResponse.url` |响应现在被包装在一个对象中；读取`.url`属性 |
 
 > [选项卡] TypeScript
 >
-> |之前 |之后|笔记|
+> |之前 |之后 |笔记|
 > | - | - | - |
 > | `string`（网址）| `RunGetURLResponse.url` |响应现在被包装在一个对象中；阅读`.url`属性|> [选项卡] Java
 >
-> |之前 |之后|笔记|
+> |之前 |之后 |笔记|
 > | - | - | - |
 > | *（无遗留方法）* | `RunGetUrlResponse.url`() |返回 `Optional<String>` |
 
 > [选项卡] 前往
 >
-> |之前 |之后|笔记|
+> |之前 |之后 |笔记|
 > | - | - | - |
 > | *（无遗留方法）* | `RunGetURLResponse.URL` |返回`string` |
 
 > [选项卡] 卷曲
 >
-> |之前 |之后|笔记|
+> |之前 |之后 |笔记|
 > | - | - | - |
 > | *（无旧端点）* | `{"url": "..."}` |具有单个 `url` 字段的 JSON 对象 |
 
@@ -1416,11 +1416,16 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 > > async def main():
 > >     client = Client()
 > >     run_id = "<run-id>"
-> >     run = client.read_run(run_id)
+> >     project_id = "<project-id>"
+> >     run = await client.runs.retrieve(
+> >         run_id,
+> >         project_id=project_id,
+> >         selects=["ID", "PROJECT_ID", "TRACE_ID", "START_TIME"],
+> >     )
 > >     response = await client.runs.get_url(
 > >         run.id,
-> >         project_id=str(run.session_id),
-> >         trace_id=str(run.trace_id),
+> >         project_id=run.project_id,
+> >         trace_id=run.trace_id,
 > >         start_time=run.start_time.isoformat(),  # Optional, but speeds up retrieval
 > >     )
 > >     print(response.url)
@@ -1451,11 +1456,15 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 > >
 > > const client = new Client();
 > > let runId = "<run-id>";
-> > const run = await client.readRun(runId);
-> > const response = await client.runs.getURL(run.id, {
-> >   project_id: run.session_id!,
+> > let projectId = "<project-id>";
+> > const run = await client.runs.retrieve(runId, {
+> >   project_id: projectId,
+> >   selects: ["ID", "PROJECT_ID", "TRACE_ID", "START_TIME"],
+> > });
+> > const response = await client.runs.getURL(run.id!, {
+> >   project_id: run.project_id!,
 > >   trace_id: run.trace_id!,
-> >   start_time: String(run.start_time!), // Optional, but speeds up retrieval
+> >   start_time: run.start_time!, // Optional, but speeds up retrieval
 > > });
 > > console.log(response.url);
 > > ```
@@ -1468,18 +1477,29 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 > import com.langchain.smith.client.LangsmithClient
 > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > import com.langchain.smith.models.runs.RunGetUrlParams
+> import com.langchain.smith.models.runs.RunRetrieveV2Params
 >
 > fun main() {
 >     val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 >
 >     var runId = "<run-id>"
->     val run = client.runs().retrieve(runId)
+>     var projectId = "<project-id>"
+>     val run = client.runs().retrieveV2(
+>         runId,
+>         RunRetrieveV2Params.builder()
+>             .projectId(projectId)
+>             .addSelect(RunRetrieveV2Params.Select.ID)
+>             .addSelect(RunRetrieveV2Params.Select.PROJECT_ID)
+>             .addSelect(RunRetrieveV2Params.Select.TRACE_ID)
+>             .addSelect(RunRetrieveV2Params.Select.START_TIME)
+>             .build()
+>     )
 >
 >     val response = client.runs().getUrl(
->         run.id(),
+>         run.id().get(),
 >         RunGetUrlParams.builder()
->             .projectId(run.sessionId())
->             .traceId(run.traceId())
+>             .projectId(run.projectId().get())
+>             .traceId(run.traceId().get())
 >             .startTime(run.startTime().get().toString()) // Optional, but speeds up retrieval
 >             .build()
 >     )
@@ -1507,13 +1527,22 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 > 	client := langsmith.NewClient()
 >
 > 	runID := "<run-id>"
-> 	run, err := client.Runs.Get(ctx, runID, langsmith.RunGetParams{})
+> 	projectID := "<project-id>"
+> 	run, err := client.Runs.GetV2(ctx, runID, langsmith.RunGetV2Params{
+> 		ProjectID: langsmith.F(projectID),
+> 		Selects: langsmith.F([]langsmith.RunGetV2ParamsSelect{
+> 			langsmith.RunGetV2ParamsSelectID,
+> 			langsmith.RunGetV2ParamsSelectProjectID,
+> 			langsmith.RunGetV2ParamsSelectTraceID,
+> 			langsmith.RunGetV2ParamsSelectStartTime,
+> 		}),
+> 	})
 > 	if err != nil {
 > 		panic(err.Error())
 > 	}
 >
 > 	response, err := client.Runs.GetURL(ctx, run.ID, langsmith.RunGetURLParams{
-> 		ProjectID: langsmith.F(run.SessionID),
+> 		ProjectID: langsmith.F(run.ProjectID),
 > 		TraceID:   langsmith.F(run.TraceID),
 > 		StartTime: langsmith.F(run.StartTime.Format(time.RFC3339)), // Optional, but speeds up retrieval
 > 	})
@@ -1528,10 +1557,10 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > RUN_ID="<run-id>"
+> PROJECT_ID="<project-id>"
 >
-> RUN=$(curl -s "https://api.smith.langchain.com/api/v1/runs/$RUN_ID" \
+> RUN=$(curl -s "https://api.smith.langchain.com/api/v2/runs/$RUN_ID?project_id=$PROJECT_ID&selects=TRACE_ID&selects=START_TIME" \
 >   -H "x-api-key: $LANGSMITH_API_KEY")
-> PROJECT_ID=$(echo "$RUN" | jq -r '.session_id')
 > TRACE_ID=$(echo "$RUN" | jq -r '.trace_id')
 > START_TIME=$(echo "$RUN" | jq -r '.start_time') # Optional, but speeds up retrieval
 >

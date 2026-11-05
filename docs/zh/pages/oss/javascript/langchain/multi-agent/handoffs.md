@@ -77,7 +77,7 @@ const transferToSpecialist = tool(
 
 有关完整的实现，请参阅下面的教程。
 
-> **[Tutorial: Build customer support with handoffs](/oss/javascript/langchain/multi-agent/handoffs-customer-support)**
+> [卡][Tutorial: Build customer support with handoffs](/oss/javascript/langchain/multi-agent/handoffs-customer-support)
 >
 > 了解如何使用切换模式构建客户支持代理，其中单个代理在不同配置之间进行转换。
 
@@ -117,7 +117,7 @@ const recordWarrantyStatus = tool(
 );
 ```
 
-> **完整示例：使用中间件的客户支持**
+> [手风琴] 完整示例：使用中间件的客户支持
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import {
@@ -243,7 +243,7 @@ const transferToSales = tool(
     schema: z.object({}),
   }
 );
-```> **完整示例：销售和支持交接**
+```> [手风琴] 完整示例：带交接的销售和支持
 >
 > 此示例显示了具有独立销售和支持代理的多代理系统。每个代理都是一个单独的图节点，切换工具允许代理相互转移对话。
 >
@@ -411,7 +411,7 @@ const transferToSales = tool(
 
 #### 情境工程
 
-通过子图切换，您可以准确控制代理之间的消息流。这种精度对于维护有效的对话历史记录和避免可能使下游代理感到困惑的上下文膨胀至关重要。有关此主题的更多信息，请参阅[context engineering](/oss/javascript/langchain/context-engineering)。
+通过子图切换，您可以精确控制代理之间的消息流。这种精度对于维护有效的对话历史记录和避免可能使下游代理感到困惑的上下文膨胀至关重要。有关此主题的更多信息，请参阅[context engineering](/oss/javascript/langchain/context-engineering)。
 
 **切换期间处理上下文**
 
@@ -454,7 +454,7 @@ const transferToSales = tool(
 
 > [!注意]
 >
-> **为什么不传递所有子代理消息？** 虽然您可以在切换中包含完整的子代理对话，但这通常会产生问题。接收代理可能会因不相关的内部推理而感到困惑，并且令牌成本不必要地增加。通过仅传递切换对，您可以使父图的上下文集中于高级协调。如果接收代理需要其他上下文，请考虑在 ToolMessage 内容中总结子代理的工作，而不是传递原始消息历史记录。
+> **为什么不传递所有子代理消息？** 虽然您可以在切换中包含完整的子代理对话，但这通常会产生问题。接收代理可能会因不相关的内部推理而感到困惑，并且令牌成本不必要地增加。通过仅传递切换对，您可以将父图的上下文集中于高级协调。如果接收代理需要其他上下文，请考虑在 ToolMessage 内容中总结子代理的工作，而不是传递原始消息历史记录。
 
 **将控制权返回给用户**
 

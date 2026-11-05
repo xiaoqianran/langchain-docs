@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 了解运行时类型
 
@@ -20,7 +20,7 @@
 | - | - | - |
 |代理工厂| `ManagedServerRuntime<Context>` | `ServerRuntime` 从 `@langchain/langgraph-sdk` |
 |工具| `ManagedToolRuntime<State, Context>` | `ToolRuntime` 从 `@langchain/core/tools` |
-|中间件钩子 | `ManagedRuntime<Context>` | `Runtime` 从 `langchain` |
+|中间件钩子| `ManagedRuntime<Context>` | `Runtime` 从 `langchain` |
 
 类型参数遵循本机顺序，因此 `ManagedToolRuntime` 首先采用状态，然后采用上下文。这两个参数都是可选的。 `ManagedDeepAgentRuntime` 是`ManagedToolRuntime` 的别名。
 
@@ -55,7 +55,7 @@ await client.runs.create(threadId, "support", {
 
 代理工厂收到`ManagedServerRuntime`：本地[⟦T31⟧](/langsmith/graph-rebuild)加上`thread`和`backend`。要编写工厂，请参阅[Select configuration per run](/langsmith/javascript/managed-deep-agents-agent-definition#select-configuration-per-run)。
 
-代理服务器还调用工厂来读取架构和状态。 `accessContext` 命名操作。 [⟦T35⟧](/langsmith/graph-rebuild#access-contexts) 是 `null` 在 `threads.create_run` 之外，因此从 `executionRuntime.context` 读取运行上下文。每次调用返回相同的图形结构和模式。
+代理服务器还调用工厂来读取模式和状态。 `accessContext` 命名操作。 [⟦T35⟧](/langsmith/graph-rebuild#access-contexts) 是 `null` 在 `threads.create_run` 之外，因此从 `executionRuntime.context` 读取运行上下文。每次调用返回相同的图形结构和模式。
 
 `thread` 可用，因此工厂可以选择每个通道的配置。 `backend`始终是`undefined`，因为工厂选择了沙箱。
 

@@ -41,7 +41,7 @@ API 密钥用于：
 >
 >> [!注意]
 >>
->> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+>> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 >
 > ### 设置
 >
@@ -99,9 +99,9 @@ API 密钥用于：
 > ### 构建代理
 >
 > **1。添加工具**
->> 创建自定义搜索工具。 `tavily_search` 工具使用 Tavily 进行 URL 发现，然后获取完整的网页内容，以便代理可以分析完整的源而不是摘要。
+>> Create a custom search tool. The `tavily_search` tool uses Tavily for URL discovery, then fetches full webpage content so the agent can analyze complete sources instead of summaries.
 >
-> 创建`tools/search.ts`：
+> Create `tools/search.ts`:
 >
 > ```ts tools/search.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { tool } from "langchain";
@@ -188,7 +188,7 @@ API 密钥用于：
 > );
 > ```
 >
-> **2。添加协调器指令**
+> **2。 Add orchestrator instructions**
 >
 > 将研究工作流程和子代理协调指导放入`instructions.md`。 Managed Deep Agents 加载此文件作为 Orchestrator 系统提示：
 >
@@ -298,9 +298,9 @@ API 密钥用于：
 >
 > **3。创建代理**
 >
-> 你只需将主要特工的指令放入`instructions.md`即可。将脚手架代理条目替换为下面的完整文件。它设置模型、工具、研究子代理（包括该子代理自己的提示）和[⟦T37⟧](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware)，以便代理可以为[task planning](/oss/javascript/deepagents/overview#task-planning)调用`write_todos`。 `name` 是必需的：MDA 将其用作 LangGraph 助手 ID 和默认部署名称。
+> 你只需将主要特工的指令放入`instructions.md`即可。将脚手架代理条目替换为下面的完整文件。 It sets the model, tools, the research sub-agent (including that sub-agent's own prompt), and [⟦T37⟧](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware) so the agent can call `write_todos` for [task planning](/oss/javascript/deepagents/overview#task-planning). `name` 是必需的：MDA 将其用作 LangGraph 助手 ID 和默认部署名称。
 >
-> 更换`agent.ts`。选择您的提供商：
+> Replace `agent.ts`. Choose your provider:
 >
 >> [标签] 克劳德
 >>
@@ -432,7 +432,7 @@ API 密钥用于：
 >
 > **1。本地运行**
 >
-> 安装依赖项并启动代理：
+> Install dependencies and start the agent:
 >
 > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install
@@ -456,7 +456,7 @@ API 密钥用于：
 > Compare the main approaches to context engineering for AI agents in 2025.
 > ```
 >
-> 您应该通过`write_todos`查看协调器计划，委托给研究子代理，并撰写报告。有关更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。
+> 您应该通过`write_todos`查看协调器计划，委托给研究子代理，并撰写报告。欲了解更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。
 >
 > **2。部署（可选）**
 >
@@ -938,7 +938,7 @@ API 密钥用于：
 
 有关本教程中的概念的更多信息，请参阅：* [Subagents](/oss/javascript/deepagents/subagents)：使用不同的工具和提示配置子代理
 * [Customization](/oss/javascript/deepagents/customization)：自定义模型、工具、系统提示，可选[task planning](/oss/javascript/deepagents/overview#task-planning)
-* [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)：使用托管部署基础设施构建深度代理
+* [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)：使用托管部署基础架构构建深度代理
 * [LangSmith](/langsmith/observability)：跟踪研究运行并调试多步骤行为
 * [Deep Research Course](https://academy.langchain.com/courses/deep-research-with-langgraph)：LangGraph深度研究完整课程
 

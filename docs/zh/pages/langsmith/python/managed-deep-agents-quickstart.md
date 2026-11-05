@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 先决条件
 
@@ -54,7 +54,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
 ## 步骤 4：搭建、配置、测试和部署
 
-Follow the quickstart steps in order: initialize the project with `mda`, configure the model and instructions, add search as shown on the page, test in LangSmith Studio, and deploy with the `mda` CLI.当仪表板操作或凭证只能由用户在 LangSmith UI 中完成时，停下来询问。
+按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。停下来询问仪表板操作或凭证何时只能由用户在 LangSmith UI 中完成。
 
 ## 规则* 关注快速入门。除非指南要求，否则请勿添加不相关的产品或重写生成的项目布局。
 * 优先使用 `mda` CLI 和 `managed-deep-agents` 技能，而不是发明自定义部署路径。
@@ -86,7 +86,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 # AZURE_OPENAI_DEPLOYMENT_NAME=<AZURE_OPENAI_DEPLOYMENT_NAME>
 ```
 
-本快速入门默认使用 OpenAI。对于 Google、Anthropic 或 Microsoft Foundry，请改为设置匹配值。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何[other chat provider](/oss/python/integrations/chat/)。
+本快速入门默认使用 OpenAI。对于 Google、Anthropic 或 Microsoft Foundry，请改为设置匹配值。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/python/integrations/chat/)。
 
 > [!警告]
 >
@@ -98,7 +98,9 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 [Sign up for LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-quickstart) 如果您还没有帐户。
 
-要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转到 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。将您的 LangSmith API 密钥添加到 `.env`：
+要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转至 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。在 [BYOC](/langsmith/byoc) 上，登录您自己的数据平面并在那里创建密钥。还将 `LANGSMITH_ENDPOINT` 设置为数据平面的 API URL。参见[Select a BYOC data plane](/langsmith/python/managed-deep-agents-deploy#select-a-byoc-data-plane)。
+
+将您的 LangSmith API 密钥添加到 `.env`：
 
 ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
@@ -121,7 +123,7 @@ keep notes, and return concise answers with citations.
 
 现在设置模型和内置网络搜索工具。 Google、OpenAI、Anthropic 和 Microsoft Foundry 提供服务器端搜索，无需单独的搜索包或搜索 API 密钥。传递与您的模型匹配的提供程序工具字典：
 
-Open `agent.py`:
+打开`agent.py`：
 
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_deep_agent
@@ -243,19 +245,21 @@ agent = define_deep_agent(
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv sync
 uv run mda dev
-```
-
-`mda dev` 从 `.env` 加载 API 密钥，启动本地代理服务器，并在 LangSmith Studio 中打开代理。
+````mda dev` 从 `.env` 加载 API 密钥，启动本地代理服务器，并在 LangSmith Studio 中打开代理。
 
 在 Studio 中，发送：
 
 ```txt wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 What were the main announcements from the latest LangChain release?
-```您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
+```
+
+您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
 
 在 [agent-based workspace](/langsmith/agent-registry) 中，在您注册代理之前，跟踪将导致错误。详情请参见[Trace local runs](/langsmith/python/managed-deep-agents-local-development#trace-local-runs)。
 
 **7.部署代理**
+
+在 [BYOC](/langsmith/byoc) 上，将 `--push-to <image-repository>` 添加到此步骤中的每个命令。 BYOC 数据平面从您管理的注册表中的映像进行部署。
 
 通过运行以下命令来部署项目：
 
@@ -271,9 +275,7 @@ uv run mda deploy
 
 > [卡][Tutorial](/langsmith/python/managed-deep-agents-tutorial)
 >
-> 添加自定义 Tavilly 搜索工具、持久内存和每日日程安排。
-
-> [卡][Custom tools](/langsmith/python/managed-deep-agents-tools)
+> 添加自定义 Tavilly 搜索工具、持久内存和每日日程安排。> [卡][Custom tools](/langsmith/python/managed-deep-agents-tools)
 >
 > 从您的项目中添加创作的 LangChain 工具。
 

@@ -69,14 +69,14 @@ graph LR
 从您提前注册的组件目录中。该目录充当
 护栏和边界：代理可以自由地安排和组合你的组件，但是
 不能超出您批准的范围。这就是长尾存在的地方。它
-以像素完美换取广度，适合二次交互、内部交互
-工具和仪表板，其中显示有用的内容比精确更重要
+以像素完美换取宽度，适合二次交互、内部交互
+工具和仪表板显示有用的东西比精确更重要
 控制。 [Declarative generative UI](/oss/javascript/langchain/frontend/declarative-generative-ui)
 用 [json-render](https://json-render.dev) 涵盖这一点； Google 的 A2UI，通过集成
 CopilotKit 提供相同的形状以及动态和固定模式变体。
 
 ### 开放式代理人拥有画布。该接口是在您的应用程序外部创建的，用于
-由 MCP 服务器提供的示例，并在沙箱中呈现。这给出了最宽的
+由 MCP 服务器提供的示例，并在沙箱中渲染。这给出了最宽的
 表现力范围广泛，无需前端代码即可添加新的界面功能
 您的一侧，适合一次性可视化和定制答案，其中结果
 这是令人惊讶的，而且比可预测的还要好。这也是最
@@ -106,15 +106,15 @@ CopilotKit 提供相同的形状以及动态和固定模式变体。
 
 ## 探索频谱
 
-> **[Controlled](/oss/javascript/langchain/frontend/controlled-generative-ui)**
+> [卡][Controlled](/oss/javascript/langchain/frontend/controlled-generative-ui)
 >
 > 编写组件；代理选择要渲染的内容以及要传递的数据。
 
-> **[Declarative](/oss/javascript/langchain/frontend/declarative-generative-ui)**
+> [卡][Declarative](/oss/javascript/langchain/frontend/declarative-generative-ui)
 >
 > 代理发出规范；前端由注册目录组成。
 
-> **[Open-ended](/oss/javascript/langchain/frontend/open-ended-generative-ui)**
+> [卡][Open-ended](/oss/javascript/langchain/frontend/open-ended-generative-ui)
 >
 > 渲染在其他地方创建的 UI，例如沙盒 MCP 应用程序。
 

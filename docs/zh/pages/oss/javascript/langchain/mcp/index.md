@@ -69,9 +69,9 @@ async function main() {
 await main();
 ```
 
-> **[View example trace](https://smith.langchain.com/public/871aa85b-f22e-430a-ab74-5c9669203282/r)**
+> [卡片][View example trace](https://smith.langchain.com/public/dac3776d-6aa4-42b1-8563-e5ed0e8bbda6/r)
 >
-> 为此示例打开公共 LangSmith 运行。> **LangChain 文档 MCP 服务器**
+> 为此示例打开公共 LangSmith 运行。> [手风琴] LangChain 文档 MCP 服务器
 >
 > [LangChain docs MCP server](/use-these-docs) 是位于 `https://docs.langchain.com/mcp` 的公共 HTTP 端点。
 >
@@ -103,7 +103,7 @@ await main();
 > }
 > ```
 >
->> **[View example trace](https://smith.langchain.com/public/e5a365b0-d712-46ca-ab53-61cb0e4e1acd/r)**
+>>【卡牌】[View example trace](https://smith.langchain.com/public/53109a09-d0eb-41ad-9e3a-e767b5464117/r)
 >>
 >> 为此示例打开公共 LangSmith 运行。
 >
@@ -158,7 +158,7 @@ try {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/d9a802f7-75cf-45b4-b0f6-f4a62fa06e27/r)**
+> [卡][View example trace](https://smith.langchain.com/public/f9dfd71b-21e3-4cf5-a34c-f5b9e32ee0d8/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -174,15 +174,15 @@ try {
 
 ## 后续步骤
 
-> **[Tools](/oss/javascript/langchain/mcp/tools)**
+> [卡][Tools](/oss/javascript/langchain/mcp/tools)
 >
 > 将 MCP 工具加载到代理中，控制其执行并处理其输出。
 
-> **[Connections](/oss/javascript/langchain/mcp/connections)**
+> [卡][Connections](/oss/javascript/langchain/mcp/connections)
 >
 > 连接生命周期、多个服务器、协议时代和缓存。
 
-> **[Authentication](/oss/javascript/langchain/mcp/auth)**
+> [卡][Authentication](/oss/javascript/langchain/mcp/auth)
 >
 > 承载令牌、OAuth 2.1 和每用户服务器身份验证。
 

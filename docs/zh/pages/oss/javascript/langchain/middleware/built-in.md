@@ -59,7 +59,7 @@ const agent = createAgent({
     }),
   ],
 });
-```> **配置选项**
+```> [手风琴] 配置选项
 >
 > **最大重试次数** `number`（默认值：2）
 >
@@ -96,7 +96,7 @@ const agent = createAgent({
 >
 > **抖动** `boolean`（默认值：true）
 >
-> 是否添加随机抖动（`±25%`）进行延迟以避免雷群> **完整示例**
+> 是否添加随机抖动（`±25%`）进行延迟以避免雷群> [手风琴] 完整示例
 >
 > 中间件通过指数退避自动重试失败的工具调用。
 >
@@ -246,7 +246,7 @@ const lookupRecord = tool(
 
 * 处理模型 API 调用中的瞬时故障。
 * 提高网络相关模型请求的可靠性。
-* 构建有弹性的代理，可以优雅地处理临时模型错误。
+* 构建弹性代理来优雅地处理临时模型错误。
 
 **API参考：** [⟦T75⟧](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)
 
@@ -266,7 +266,7 @@ const agent = createAgent({
 });
 ```
 
-> **配置选项**
+> [手风琴] 配置选项
 >
 > **最大重试次数** `number`（默认值：2）
 >
@@ -299,7 +299,7 @@ const agent = createAgent({
 >
 > 是否添加随机抖动（`±25%`）进行延迟以避免雷群
 
-> **完整示例**
+> [手风琴] 完整示例
 >
 > 中间件通过指数退避自动重试失败的模型调用。
 >
@@ -396,7 +396,7 @@ const agent = createAgent({
     ),
   ],
 });
-```> **配置选项**
+```> [手风琴] 配置选项
 >
 > 中间件按顺序接受表示后备模型的可变数量的字符串参数：
 >
@@ -438,7 +438,7 @@ const agent = createAgent({
     }),
   ],
 });
-```> **配置选项**
+```> [手风琴] 配置选项
 >
 >> [!提示]
 >>
@@ -487,8 +487,8 @@ const agent = createAgent({
 > **保留** `object` （默认：\{messages: 20}）
 >
 > 总结后要保留多少上下文。准确指定以下之一：
->
-> * `fraction`（数字）：要保留的模型上下文大小的分数 (0-1)> * `tokens`（数字）：要保留的绝对令牌计数
+>> * `fraction`（数字）：要保留的模型上下文大小的分数 (0-1)
+> * `tokens`（数字）：要保留的绝对令牌计数
 > * `messages`（数字）：要保留的最近消息数
 >
 > **令牌计数器** `function`
@@ -513,7 +513,7 @@ const agent = createAgent({
 >
 > **messagesToKeep** `number` *已弃用*
 >
-> **已弃用：** 使用 `keep: { messages: value }` 代替。要保留的最近消息。> **完整示例**
+> **已弃用：** 使用 `keep: { messages: value }` 代替。要保留的最近消息。> [手风琴] 完整示例
 >
 > 汇总中间件监视消息令牌计数，并在达到阈值时自动汇总旧消息。
 >
@@ -649,9 +649,7 @@ const agent = createAgent({
 });
 ```
 
-观看这个 [video guide](https://www.youtube.com/watch?v=x5jLQTFXR0Y) 演示模型调用限制中间件行为。
-
-> **配置选项**
+观看这个 [video guide](https://www.youtube.com/watch?v=x5jLQTFXR0Y) 演示模型调用限制中间件行为。> [手风琴] 配置选项
 >
 > **线程限制** `number`
 >
@@ -663,7 +661,9 @@ const agent = createAgent({
 >
 > **exitBehavior** `string`（默认：结束）
 >
-> 达到限制时的行为。选项：`'end'`（优雅终止）或`'error'`（抛出异常）### 工具调用限制
+> 达到限制时的行为。选项：`'end'`（优雅终止）或`'error'`（抛出异常）
+
+### 工具调用限制
 
 通过限制工具调用的数量来控制代理执行，无论是在所有工具中全局还是针对特定工具。工具调用限制对于以下用途很有用：
 
@@ -689,9 +689,7 @@ const agent = createAgent({
 });
 ```
 
-观看这个 [video guide](https://www.youtube.com/watch?v=oL6am5UqODY) 演示工具调用限制中间件行为。
-
-> **配置选项**
+观看这个 [video guide](https://www.youtube.com/watch?v=oL6am5UqODY) 演示工具调用限制中间件行为。> [手风琴] 配置选项
 >
 > **工具名称** `string`
 >
@@ -710,11 +708,10 @@ const agent = createAgent({
 > **退出行为** `string`（默认：继续）
 >
 > 达到限制时的行为：
->> * `'continue'`（默认）- 使用错误消息阻止超出的工具调用，让其他工具和模型继续。模型根据错误消息决定何时结束。
+>
+> * `'continue'`（默认）- 使用错误消息阻止超出的工具调用，让其他工具和模型继续。模型根据错误消息决定何时结束。
 > * `'error'` - 抛出`ToolCallLimitExceededError`异常，立即停止执行
-> * `'end'` - 立即停止执行，并针对超出的工具调用发出 ToolMessage 和 AI 消息。仅在限制单个工具时有效；如果其他工具有待处理的调用，则会抛出错误。
-
-> **完整示例**
+> * `'end'` - 立即停止执行，并针对超出的工具调用发出 ToolMessage 和 AI 消息。仅在限制单个工具时有效；如果其他工具有待处理的调用，则会抛出错误。> [手风琴] 完整示例
 >
 > 通过以下方式指定限制：
 >
@@ -744,7 +741,9 @@ const agent = createAgent({
 
 ### PII 检测
 
-使用可配置策略检测和处理对话中的个人身份信息 (PII)。 PII 检测有以下用途：* 具有合规性要求的医疗保健和金融应用。
+使用可配置策略检测和处理对话中的个人身份信息 (PII)。 PII 检测有以下用途：
+
+* 具有合规性要求的医疗保健和金融应用。
 * 需要清理日志的客户服务代理。
 * 任何处理敏感用户数据的应用程序。
 
@@ -767,13 +766,11 @@ const agent = createAgent({
 
 **创建自定义检测器的三种方法：**
 
-1. **Regex模式字符串** - 简单模式匹配
+1. **正则表达式模式字符串** - 简单模式匹配
 
 2. **RegExp 对象** - 对正则表达式标志的更多控制
 
-3. **自定义函数** - 带验证的复杂检测逻辑
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+3. **自定义函数** - 带验证的复杂检测逻辑```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, piiMiddleware, type PIIMatch } from "langchain";
 
 // Method 1: Regex pattern string
@@ -861,7 +858,7 @@ function detector(content: string): PIIMatch[] {
 > * 对简单模式使用正则表达式字符串
 > * 当需要标志时使用 RegExp 对象（例如，不区分大小写的匹配）
 > * 当您需要模式匹配之外的验证逻辑时，请使用自定义函数
-> * 自定义函数让您完全控制检测逻辑并可以实现复杂的验证规则> **配置选项**
+> * 自定义函数让您完全控制检测逻辑并可以实现复杂的验证规则> [手风琴] 配置选项
 >
 > **piiType** `string` *必填*
 >
@@ -894,14 +891,14 @@ function detector(content: string): PIIMatch[] {
 >
 > 模型调用后查看AI消息
 >
-> **applyToToolResults** `boolean`（默认值：false）
+> **applyToToolResults** `boolean` （默认值： false）
 >
 > 执行后检查工具结果消息
 
 ### 待办事项列表
 
 为代理配备任务规划和跟踪功能，以执行复杂的多步骤任务。待办事项列表对于以下用途很有用：* 复杂的多步骤任务需要跨多个工具进行协调。
-* 长期运行的操作，其中进度可见性非常重要。
+* 长期运行的操作，其中进度可见性很重要。
 
 > [!注意]
 >
@@ -919,7 +916,7 @@ const agent = createAgent({
 
 观看这个 [video guide](https://www.youtube.com/watch?v=dwvhZ1z_Pas) 演示待办事项列表中间件行为。
 
-> **配置选项**
+> [手风琴] 配置选项
 >
 > 没有可用的配置选项（使用默认值）。
 
@@ -947,7 +944,7 @@ const agent = createAgent({
     }),
   ],
 });
-```> **配置选项**
+```> [手风琴] 配置选项
 >
 > **型号** `string | BaseChatModel`
 >
@@ -1004,15 +1001,15 @@ const agent = createAgent({
     providerToolSearchMiddleware({ searchableTools: nicheTools }),
   ],
 });
-```> **配置选项**
+```> [手风琴] 配置选项
 >
 > **可搜索工具** `(string | StructuredToolInterface)[]`
 >
 > 推迟提供者工具搜索的工具，按名称或实例给出。延迟工具将从模型中保留，直到搜索显示它们为止。无论此选项如何，使用 `extras.defer_loading: true` 构建的工具都会被推迟；如果省略`searchableTools`，则仅推迟那些预先标记的工具。
 
-> **完整示例**
+> [手风琴] 完整示例
 >
-> 中间件选择使用 `searchableTools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras.defer_loading: true` 在构建时选择推迟
+> 中间件选择使用 `searchableTools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras.defer_loading: true` 在构建时选择延迟
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createAgent, providerToolSearchMiddleware } from "langchain";
@@ -1211,7 +1208,7 @@ const agent = createAgent({
     }),
   ],
 });
-```> **配置选项**
+```> [手风琴] 配置选项
 >
 > **编辑** `ContextEdit[]` （默认值：\[new ClearToolUsesEdit()]）
 >
@@ -1241,7 +1238,7 @@ const agent = createAgent({
 >
 > **占位符** `string` （默认值：\[清除]）
 >
-> 为清除的工具输出插入占位符文本。这替换了原始工具消息内容。> **完整示例**
+> 为清除的工具输出插入占位符文本。这替换了原始工具消息内容。> [手风琴] 完整示例
 >
 > 当达到令牌限制时，中间件应用上下文编辑策略。最常见的策略是`ClearToolUsesEdit`，它清除旧的工具结果，同时保留最新的结果。
 >
@@ -1250,7 +1247,7 @@ const agent = createAgent({
 > 1. 监控对话中的令牌计数
 > 2. 当达到阈值时，清除旧工具输出
 > 3.保留最近的N个工具结果
-> 4. 有选择地保留上下文的工具调用参数
+> 4. 可选择保留上下文的工具调用参数
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createAgent, contextEditingMiddleware, ClearToolUsesEdit } from "langchain";
@@ -1292,7 +1289,7 @@ const agent = createAgent({
     toolEmulatorMiddleware(), // Emulate all tools
   ],
 });
-```> **配置选项**
+```> [手风琴] 配置选项
 >
 > **工具** `(string | ClientTool | ServerTool)[]`
 >
@@ -1302,7 +1299,7 @@ const agent = createAgent({
 >
 > 用于生成模拟工具响应的模型。可以是模型标识符字符串（例如，`'google:gemini-3.6-flash'`）或`BaseChatModel`实例。如果未指定，则默认为代理的型号。
 
-> **完整示例**
+> [手风琴] 完整示例
 >
 > 中间件使用 LLM 为工具调用生成合理的响应，而不是执行实际的工具。
 >
@@ -1377,16 +1374,16 @@ const agent = createAgent({
 
 这些中间件针对特定的 LLM 提供商进行了优化。有关完整的详细信息和示例，请参阅每个提供商的文档。
 
-> **[Anthropic](/oss/javascript/integrations/middleware/anthropic)**
+> [卡][Anthropic](/oss/javascript/integrations/middleware/anthropic)
 >
 > Claude 模型的提示缓存、bash 工具、文本编辑器、内存和文件搜索中间件。
 
-> **[AWS](/oss/javascript/integrations/middleware/aws)**
+> [卡] [AWS](/oss/javascript/integrations/middleware/aws)
 >
 > Amazon Bedrock 模型的提示缓存中间件。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答复。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/middleware/built-in.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

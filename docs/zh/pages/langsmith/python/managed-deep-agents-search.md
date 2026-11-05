@@ -1,10 +1,10 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Built-in search powered by Parallel | https://docs.langchain.com/langsmith/python/managed-deep-agents-search -->
+<!-- langchain-docs: Web search | https://docs.langchain.com/langsmith/python/managed-deep-agents-search -->
 
-# 由 Parallel 提供支持的内置搜索
+# 网络搜索
 
-将由 Parallel 支持的网络搜索添加到托管 Deep Agents，无需单独的帐户或 API 密钥。
+将由 Parallel 支持的 Web 搜索添加到托管 Deep Agents，无需单独的帐户或 API 密钥。
 
 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 包括由 [Parallel](https://parallel.ai) 提供支持的内置网络搜索。让您的代理能够访问网络上的最新信息以帮助回答问题。
 
@@ -13,6 +13,8 @@ LangSmith 管理搜索基础设施，因此您无需托管服务或创建单独�
 > [!注意]
 >
 > 内置搜索仅适用于 LangSmith Plus 和 Startup 计划。内测期间免费使用。
+>
+> 内置搜索在 LangSmith 托管工具上运行，这些工具仅在 GCP US 中可用。 [BYOC](/langsmith/byoc)数据平面不能使用它。
 
 ## 开始之前
 
@@ -24,7 +26,7 @@ LangSmith 管理搜索基础设施，因此您无需托管服务或创建单独�
 
 ### 步骤 1. 设置您的工作区 ID
 
-在项目的 `.env` 文件中，设置您的 LangSmith 工作区 ID：
+在项目的 `.env` 文件中，设置 LangSmith 工作区 ID：
 
 ```shell .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_WORKSPACE_ID=YOUR_WORKSPACE_ID
@@ -40,9 +42,9 @@ LANGSMITH_API_KEY=YOUR_LANGSMITH_API_KEY
 
 您不需要并行 API 密钥。
 
-### 步骤 3. 配置搜索服务器
+### 步骤 3. 配置搜索服务器如果文件已经定义了`mcp`，请将`Parallel`添加到现有的`servers`映射中。仅定义一次`mcp`。
 
-如果文件已经定义了`mcp`，请将`Parallel`添加到现有的`servers`映射中。仅定义一次`mcp`。> [选项卡] Python
+> [选项卡] Python
 >
 > 将`Parallel`添加到`tools/mcp.py`中的`servers`地图。
 >

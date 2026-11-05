@@ -71,7 +71,9 @@ user = client.chat.completions.create(
 您可以通过使用这个包装的客户端并使用 `@traceable` 装饰这些函数来获取嵌套跟踪。
 有关如何使用 `@traceable` 装饰器注释代码以进行跟踪的更多信息，请参阅 [Custom instrumentation](/langsmith/annotate-code)。
 
-```python {highlight={2}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python {highlight={4}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import traceable
+
 # You can customize the run name with the `name` keyword argument
 @traceable(name="Extract User Details")
 def my_function(text: str) -> UserDetail:

@@ -40,7 +40,7 @@ AgentEvals 在 Python 中提供了 `create_trajectory_match_evaluator` 函数，
 
 您可以使用以下模式：|模式|描述 |使用案例|
 | - | - | - |
-| [⟦T17⟧](#strict-match) |消息和工具调用的顺序完全一致|测试特定序列（例如，授权前的策略查找）|
+| [⟦T17⟧](#strict-match) |消息与工具调用完全匹配，顺序一致 |测试特定序列（例如，授权前的策略查找）|
 | [⟦T18⟧](#unordered-match) |允许以任何顺序调用相同的工具 |当顺序无关紧要时验证信息检索 |
 | [⟦T19⟧](#subset-and-superset-match) |代理仅调用参考工具（无额外功能）|确保代理不超出预期范围 |
 | [⟦T20⟧](#subset-and-superset-match) |代理至少调用参考工具（允许额外）|验证已采取最低限度的必要措施 |
@@ -438,7 +438,7 @@ def get_weather(city: str):
 agent = create_agent("gpt-5.5", tools=[get_weather])
 
 evaluator = create_trajectory_llm_as_judge(  # [!code highlight]
-    model="openai:o3-mini",  # [!code highlight]
+    model="openai:gpt-5.4-mini",  # [!code highlight]
     prompt=TRAJECTORY_ACCURACY_PROMPT,  # [!code highlight]
 )  # [!code highlight]
 
@@ -482,7 +482,7 @@ const agent = createAgent({
 });
 
 const evaluator = createTrajectoryLLMAsJudge({  // [!code highlight]
-  model: "openai:o3-mini",  // [!code highlight]
+  model: "openai:gpt-5.4-mini",  // [!code highlight]
   prompt: TRAJECTORY_ACCURACY_PROMPT,  // [!code highlight]
 });  // [!code highlight]
 
@@ -509,7 +509,7 @@ async function testTrajectoryQuality() {
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 evaluator = create_trajectory_llm_as_judge(
-    model="openai:o3-mini",
+    model="openai:gpt-5.4-mini",
     prompt=TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE,
 )
 evaluation = evaluator(
@@ -522,7 +522,7 @@ evaluation = evaluator(
 import { TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE } from "agentevals";
 
 const evaluator = createTrajectoryLLMAsJudge({
-  model: "openai:o3-mini",
+  model: "openai:gpt-5.4-mini",
   prompt: TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE,
 });
 
@@ -545,7 +545,7 @@ from agentevals.trajectory.llm import create_async_trajectory_llm_as_judge, TRAJ
 from agentevals.trajectory.match import create_async_trajectory_match_evaluator
 
 async_judge = create_async_trajectory_llm_as_judge(
-    model="openai:o3-mini",
+    model="openai:gpt-5.4-mini",
     prompt=TRAJECTORY_ACCURACY_PROMPT,
 )
 

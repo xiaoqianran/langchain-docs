@@ -23,7 +23,7 @@
 
 本教程涵盖：
 
-* 品牌说明（托管 Deep Agents 上的 [instructions](/langsmith/javascript/managed-deep-agents-instructions) 或 SDK 上的 [memory](/oss/javascript/deepagents/memory) 文件）用于始终在线的语音和研究规则
+* 品牌说明（托管 Deep Agents 上的[instructions](/langsmith/javascript/managed-deep-agents-instructions)，或 SDK 上的 [memory](/oss/javascript/deepagents/memory) 文件），用于始终在线的语音和研究规则
 * [Skills](/oss/javascript/deepagents/skills) 用于博客和社交手册
 * [Subagents](/oss/javascript/deepagents/subagents) 用于写作前的研究
 * SDK路径上的[Filesystem backends](/oss/javascript/deepagents/backends)用于文件读写
@@ -44,9 +44,9 @@ Node.js 18 或更高版本。
 >
 >> [!注意]
 >>
->> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+>> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 >
-> 托管 Deep Agents 搭建项目并托管运行时。品牌声音进入`instructions.md`，技能保持在`skills/`，并且您在代码中声明工具和研究人员子代理。 `mda dev`期间图像工具写入项目目录下。
+> 托管 Deep Agents 搭建项目并托管运行时。品牌声音进入`instructions.md`，技能保持在`skills/`，并且您在代码中声明工具和研究人员子代理。 `mda dev`期间，图像工具写入项目目录下。
 >
 > ### 设置
 >
@@ -75,7 +75,7 @@ Node.js 18 或更高版本。
 >
 > **2。添加 API 密钥**
 >
-> `.env` 添加聊天、图片、搜索、LangSmith 键：
+> `.env`添加聊天、图片、搜索和LangSmith键：
 >
 > ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > ANTHROPIC_API_KEY=<ANTHROPIC_API_KEY>
@@ -84,7 +84,7 @@ Node.js 18 或更高版本。
 > LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 > ```
 >
-> 即使聊天模型是克劳德，生成 Gemini 图像也需要`GOOGLE_API_KEY`。
+> 即使聊天模型是克劳德，生成双子座图像也需要`GOOGLE_API_KEY`。
 >
 >> [!警告]
 >>
@@ -678,7 +678,7 @@ Node.js 18 或更高版本。
 > Write a blog post about how AI agents are transforming software development
 > ```
 >
-> 你应该看到代理加载技能，委托给`researcher`，编写markdown，调用图像工具。欲了解更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。
+> 你应该看到代理加载技能，委托给`researcher`，编写markdown，调用图像工具。有关更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。
 >
 > **2。部署（可选）**
 >
@@ -1231,7 +1231,7 @@ Node.js 18 或更高版本。
 >
 > **2。创建代理**
 >
-> 使用 [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 创建深度代理时，传递内存路径、技能目录、图像工具、内联子代理定义以及以示例目录为根的 [FilesystemBackend](/oss/javascript/deepagents/backends)，以便正确解析 `./AGENTS.md` 和 `./skills/` 等路径。
+> When creating the deep agent with [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent), pass memory paths, the skills directory, image tools, an inline subagent definition, and a [FilesystemBackend](/oss/javascript/deepagents/backends) rooted at the example directory so paths like `./AGENTS.md` and `./skills/` resolve correctly.
 >
 > ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";

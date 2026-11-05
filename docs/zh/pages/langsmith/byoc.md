@@ -12,7 +12,7 @@
 
 自带云 (BYOC) 允许您在自己的云环境中部署 LangSmith 服务并存储数据，而 LangChain 则运行、扩展和升级基础设施。 BYOC 适合需要对其数据拥有完全主权，但又不想承担配置和管理基础设施开销的组织。
 
-BYOC 使用责任分担模型：控制平面在 LangChain 的云中运行，数据平面完全在您的云环境中运行。有关 LangChain 管理的内容与您管理的内容的详细信息，请参阅 [BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)。
+BYOC 使用责任分离模型：控制平面在 LangChain 的云中运行，数据平面完全在您的云环境中运行。有关 LangChain 管理的内容与您管理的内容的详细信息，请参阅 [BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)。
 
 ## 开始吧
 
@@ -58,7 +58,7 @@ AWS 支持以下功能。对于 GCP 和 Azure beta 功能的可用性，请在�
 * **[Prompt engineering](/langsmith/prompt-context-hub#prompts)**：提示并提示提交。
 * **[LangSmith Deployment](/langsmith/deployment)**：LangSmith 部署控制平面在数据平面的集群内部运行，因此代理管理层和代理都在您的专用网络中运行。
 * **[Sandboxes](/langsmith/sandboxes)**：通过 CLI 和 SDK 的使用与云相同，只是您指向数据平面的端点。
-* **[LLM Gateway](/langsmith/llm-gateway)**：使用一个 LangSmith API 密钥跨提供商调用模型，并集中实施支出、速率限制和数据保护策略。* **[LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted)**：对模型调用强制执行您自己的身份验证流程，以便提供程序凭据永远不会暴露给最终用户。
+* **[LLM Gateway](/langsmith/llm-gateway)**：使用一个 LangSmith API 密钥跨提供商调用模型，并集中实施支出、速率限制和数据保护策略。* **[LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted)**：为模型调用强制执行您自己的身份验证流程，以便提供程序凭据永远不会暴露给最终用户。
 * **[LangSmith MCP](/langsmith/langsmith-remote-mcp)**：将MCP兼容的客户端连接到LangSmith查询数据。
 * **[Fleet](/langsmith/fleet/index)**：从模板、连接器和通道构建并运行无代码代理。
 * **[SmithDB](/langsmith/smithdb-sdk-migration)**：专门构建的跟踪数据可观测性后端，在云环境中持久保存到 AWS 上的 S3、GCP 上的云存储或 Azure 上的 Blob 存储。 2026 年 10 月 21 日或之后创建的数据平面仅运行 SmithDB。 ClickHouse 已弃用，支持在 LangSmith v0.19 结束。
@@ -67,7 +67,7 @@ AWS 支持以下功能。对于 GCP 和 Azure beta 功能的可用性，请在�
 
 > [!注意]
 >
-> 使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。要开始，请按照 [Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart) 操作。
+> 使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。要开始，请按照 [Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart) 操作。
 
 ## 先决条件
 

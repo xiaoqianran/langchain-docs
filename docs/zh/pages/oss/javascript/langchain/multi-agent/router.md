@@ -38,63 +38,63 @@ graph LR
 
 路由器对查询进行分类并将其定向到适当的代理。使用 [⟦T4⟧](/oss/javascript/langgraph/graph-api#command) 进行单代理路由，或使用 [⟦T5⟧](/oss/javascript/langgraph/graph-api#send) 并行扇出到多个代理。
 
-**单一代理**
+> [选项卡] 单一代理
+>
+> 使用 `Command` 路由至单个专业代理：
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { z } from "zod";
+> import { Command } from "@langchain/langgraph";
+>
+> const ClassificationResult = z.object({
+>   query: z.string(),
+>   agent: z.string(),
+> });
+>
+> function classifyQuery(query: string): z.infer<typeof ClassificationResult> {
+>   // Use LLM to classify query and determine the appropriate agent
+>   // Classification logic here
+>   ...
+> }
+>
+> function routeQuery(state: z.infer<typeof ClassificationResult>) {
+>   const classification = classifyQuery(state.query);
+>
+>   // Route to the selected agent
+>   return new Command({ goto: classification.agent });
+> }
+> ```
 
-使用 `Command` 路由到单个专门代理：
+> [选项卡] 多个代理（并行）
+>
+> 使用 `Send` 并行扇出到多个专门代理：
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { z } from "zod";
+> import { Command } from "@langchain/langgraph";
+>
+> const ClassificationResult = z.object({
+>   query: z.string(),
+>   agent: z.string(),
+> });
+>
+> function classifyQuery(query: string): z.infer<typeof ClassificationResult>[] {
+>   // Use LLM to classify query and determine the appropriate agent
+>   // Classification logic here
+>   ...
+> }
+>
+> function routeQuery(state: typeof State.State) {
+>   const classifications = classifyQuery(state.query);
+>
+>   // Fan out to selected agents in parallel
+>   return classifications.map(
+>     (c) => new Send(c.agent, { query: c.query })
+>   );
+> }
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { z } from "zod";
-import { Command } from "@langchain/langgraph";
-
-const ClassificationResult = z.object({
-  query: z.string(),
-  agent: z.string(),
-});
-
-function classifyQuery(query: string): z.infer<typeof ClassificationResult> {
-  // Use LLM to classify query and determine the appropriate agent
-  // Classification logic here
-  ...
-}
-
-function routeQuery(state: z.infer<typeof ClassificationResult>) {
-  const classification = classifyQuery(state.query);
-
-  // Route to the selected agent
-  return new Command({ goto: classification.agent });
-}
-```
-
-**多个代理（并行）**
-
-使用 `Send` 并行扇出到多个专门代理：
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { z } from "zod";
-import { Command } from "@langchain/langgraph";
-
-const ClassificationResult = z.object({
-  query: z.string(),
-  agent: z.string(),
-});
-
-function classifyQuery(query: string): z.infer<typeof ClassificationResult>[] {
-  // Use LLM to classify query and determine the appropriate agent
-  // Classification logic here
-  ...
-}
-
-function routeQuery(state: typeof State.State) {
-  const classifications = classifyQuery(state.query);
-
-  // Fan out to selected agents in parallel
-  return classifications.map(
-    (c) => new Send(c.agent, { query: c.query })
-  );
-}
-```
-
-有关完整的实现，请参阅下面的教程。> **[Tutorial: Build a multi-source knowledge base with routing](/oss/javascript/langchain/multi-agent/router-knowledge-base)**
+有关完整的实现，请参阅下面的教程。> [卡][Tutorial: Build a multi-source knowledge base with routing](/oss/javascript/langchain/multi-agent/router-knowledge-base)
 >
 > 构建一个并行查询 GitHub、Notion 和 Slack 的路由器，然后将结果合成为连贯的答案。涵盖状态定义、专用代理、`Send` 并行执行以及结果综合。
 

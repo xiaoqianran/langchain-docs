@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 将身份声明放在项目根目录下：
 
@@ -26,7 +26,7 @@ my-agent/
 
 默认情况下，`mda init`要求调用者提供LangSmith API密钥。拥有该密钥的任何人都可以使用相同的部署，并且可能会看到相同的线程。要为每个登录的最终用户提供私人对话，请使用 Supabase、另一个 JWT 提供商或您自己的后端：
 
-|目标|使用|
+|目标|使用 |
 | - | - |
 |锁定 SDK 客户端、脚本和服务的部署 | [LangSmith API key (default)](#configure-identity-with-a-langsmith-api-key) |
 |通过私人聊天登录的最终用户，由托管 Deep Agents 验证 | [Supabase](#configure-identity-with-supabase) |
@@ -49,7 +49,7 @@ from managed_deepagents import auth, define_identity
 identity = define_identity(auth=auth.langsmith_api_key())
 ```
 
-客户端将密钥作为`x-api-key`发送。您不需要将验证端点或租户设置添加到您的项目`.env`。 LangSmith 云提供这些。> [!警告]
+客户端将密钥作为`x-api-key`发送。您不需要将验证端点或租户设置添加到您的项目`.env`。 LangSmith 提供这些。> [!警告]
 >
 > 任何拥有密钥的人都可以访问部署，因此请将密钥视为秘密。此默认值不会为每个最终用户提供私有线程。如果 Alice 不能看到 Bob 的线程，请使用 [Supabase](#configure-identity-with-supabase)、[another JWT provider](#configure-identity-with-another-jwt-provider) 或 [your own backend](#configure-identity-with-your-own-backend)。
 
@@ -126,7 +126,7 @@ identity = define_identity(
 
 客户端发送访问令牌为`Authorization: Bearer <access_token>`，与[Supabase example](#send-the-access-token)相同。
 
-您的工具和中间件可以从 `principal.claims` 读取令牌中的每个经过验证的声明。有关示例，请参阅[Read the runtime in tools](/langsmith/python/managed-deep-agents-runtime#read-the-runtime-in-tools)。
+您的工具和中间件可以从`principal.claims`读取令牌中的每个经过验证的声明。有关示例，请参阅[Read the runtime in tools](/langsmith/python/managed-deep-agents-runtime#read-the-runtime-in-tools)。
 
 ## 使用您自己的后端配置身份
 

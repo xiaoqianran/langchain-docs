@@ -36,7 +36,7 @@ graph LR
 * 轻量级组成：技能比全分代理更简单
 * 参考意识：技能可以参考脚本、模板等资源
 
-## 何时使用当您想要一个具有许多可能的专业化的[agent](/oss/javascript/langchain/agents)，您不需要在技能之间强制实施特定约束，或者不同的团队需要独立开发功能时，请使用技能模式。常见的例子包括编码助理（不同语言或任务的技能）、知识库（不同领域的技能）和创意助理（不同格式的技能）。
+## 何时使用当您想要一个具有许多可能的专业化的[agent](/oss/javascript/langchain/agents)，您不需要在技能之间强制执行特定的约束，或者不同的团队需要独立开发功能时，请使用技能模式。常见的例子包括编码助理（不同语言或任务的技能）、知识库（不同领域的技能）和创意助理（不同格式的技能）。
 
 ## 基本实现
 
@@ -80,7 +80,7 @@ const agent = createAgent({
 
 有关完整的实现，请参阅下面的教程。
 
-> **[Tutorial: Build a SQL assistant with on-demand skills](/oss/javascript/langchain/multi-agent/skills-sql-assistant)**
+> [卡][Tutorial: Build a SQL assistant with on-demand skills](/oss/javascript/langchain/multi-agent/skills-sql-assistant)
 >
 > 了解如何通过渐进式披露来实施技能，其中代理按需而不是预先加载专门的提示和模式。
 

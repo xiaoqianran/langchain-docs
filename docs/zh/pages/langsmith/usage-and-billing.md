@@ -66,7 +66,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 1. 我们认为，符合任何这些条件的痕迹从根本上来说比其他痕迹更有趣，因此用户能够将它们保留更长时间是有好处的。
 2. 从理念上讲，我们希望对可能无法进行有意义交互的痕迹向客户收取较低的费用。我们认为自动升级使我们的定价模型与LangSmith带来的价值保持一致，其中只有具有有意义交互的痕迹才会以更高的费率收费。
 
-如果您对我们的定价模型有疑问或疑虑，请随时通过[support.langchain.com](https://support.langchain.com)联系支持人员并告诉我们您的想法！**数据保留如何影响下游功能？**
+如果您对我们的定价模型有疑问或疑虑，请随时通过[support.langchain.com](https://support.langchain.com)联系支持人员，让我们知道您的想法！**数据保留如何影响下游功能？**
 
 以下功能与保留的交互作用不同：
 
@@ -183,7 +183,7 @@ LangSmith 公开了具有不同速率限制配置文件的两个版本的运行�
 |全文检索，时间窗口短（≤7天）| 3 个请求 | 10 秒 |
 |全文检索，大时间窗口（>7天）| 1 请求 | 10 秒 |
 |选择`child_run_ids`，短时间窗口（≤7天）| 3 个请求 | 10 秒 |
-|选择`child_run_ids`，大时间窗口（> 7天） | 1 请求 | 10 秒 |
+|选择`child_run_ids`，大时间窗口（> 7天）| 1 请求 | 10 秒 |
 
 时间窗口由`end_time - start_time`决定。如果未提供 `end_time`，LangSmith 将使用当前时间。没有 `start_time` 的查询将被视为大时间窗口查询。
 
@@ -216,7 +216,7 @@ Workspace invite batch requests are rate limited per workspace to reduce bulk in
 
 The ⟦T48⟧ endpoint allows 2 requests per second per workspace. This limit applies to LangSmith Cloud only.
 
-### Handling 429s responses in your application
+### Handle 429 responses in your application
 
 Since some 429 responses are temporary and may succeed on a successive call, if you are directly calling the LangSmith API in your application we recommend implementing retry logic with exponential backoff and jitter.
 
@@ -250,9 +250,9 @@ LangSmith 允许您设置两个不同的每月限额，反映了上述数据保�
 
 不更改跟踪保留的操作不计入延长保留跟踪限制。您仍然可以在 LangSmith UI 中提交反馈，将运行或线程添加到注释队列，并在达到限制时运行自动化规则或禁用保留扩展的评估器。
 
-### 更新使用限制使用限制可以从`Usage and Billing`下的`Settings`页面更新。限制值会被缓存，因此可能需要一两分钟才能应用新限制。
+### 更新使用限制
 
-## 相关内容
+使用限制可以从`Usage and Billing`下的`Settings`页面更新。限制值会被缓存，因此可能需要一两分钟才能应用新限制。## 相关内容
 
 * 关于如何[enforce spend limits](/langsmith/billing#enforce-spend-limits)的教程
 

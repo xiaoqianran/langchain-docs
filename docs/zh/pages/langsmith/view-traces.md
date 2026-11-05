@@ -4,7 +4,7 @@
 
 # 查看痕迹
 
-使用“轨迹”视图或“详细信息”视图检查 LangSmith 中的代理线程。
+使用轨迹视图或详细信息视图检查 LangSmith 中的代理线程。
 
 在跟踪项目中，使用 **Threads**、**Traces** 或 **Runs** 选项卡来更改表中显示的内容。要将其缩小到特定行，[apply a filter](/langsmith/filter-traces)。单击任意行以打开侧面板。
 
@@ -18,7 +18,7 @@
 
 侧面板顶部提供三个视图：* [**Trajectory**](#trajectory-view)：会话层。将[trajectory](/langsmith/observability-concepts#trajectories)扫描为输入、输出、推理、工具调用和子代理活动。使用它来查找要查找的位置。按`T`切换到该视图。
 * [**Turns**](#turns-view)：每回合摘要。将线程中的每一圈视为显示其输入和输出的卡片，并可展开/折叠。当您想要结构概览而不需要完整的对话渲染时，请使用此选项。
-* [**Details**](#details-view)：调试层。深入研究特定运行以检查输入、输出、计时、令牌计数、错误和元数据。使用它可以了解执行过程中特定点发生的情况。按`D`切换到该视图。
+* [**Details**](#details-view)：调试层。深入研究特定运行以检查输入、输出、计时、令牌计数、错误和元数据。使用它可以了解执行中特定点发生的情况。按`D`切换到该视图。
 
 > [!注意]
 >
@@ -77,7 +77,7 @@
   ```
 
 * `ls_message_format`：覆盖自动格式检测。接受的值：
-  * `"langchain"`：解析为LangChain消息格式
+  * `"langchain"`: 解析为LangChain消息格式
   * `"completions"`：解析为OpenAI聊天完成格式
   * `"responses"`: 解析为OpenAI Responses API 格式
   * `"anthropic"`：解析为Anthropic消息格式
@@ -104,23 +104,67 @@
 
 ## 详情查看详细信息视图是调试层。当您单击特定的运行时，周围的线程上下文仍然可用，因此您可以了解该运行在更广泛的对话中的位置。检查输入、输出、元数据、计时、错误和子运行，而不会丢失线程的跟踪。
 
+### 在运行详细信息中搜索
+
+**在加载的内容中查找** 搜索选定的运行，包括输入、输出、标签和元数据。使用它来定位文本，而无需手动展开每个字段或消息。 Find 不会搜索跟踪中的其他运行。
+
+要在运行中查找文本：
+
+1. 打开跟踪并在 **详细信息** 视图中选择运行。
+
+2. 单击运行详细信息选项卡右侧的 **在加载的内容中查找**。当运行窗格具有焦点时，您还可以按 macOS 上的 `Cmd+F` 或 Windows 和 Linux 上的 `Ctrl+F`。
+
+   ![Magnifying glass to the right of the run detail tabs, with the Find in loaded content tooltip.](https://mintcdn.com/langchain-5e9cc07a/J33pu29ujASI6TQ-/images/langsmith/trace-search-entry.png?fit=max\&auto=format\&n=J33pu29ujASI6TQ-\&q=85\&s=0d1eb43fa2d841a9b57984d8ae42face)
+
+3. 在搜索栏中输入文本。它显示当前匹配和总匹配计数。
+
+4. 单击 **下一场比赛** 或 **上一场比赛** 在结果之间移动。聚焦搜索栏后，按 `Enter` 查找下一场比赛，或按 `Shift+Enter` 查找上一场比赛。 LangSmith 展开匹配字段或消息并滚动到突出显示的文本。
+
+   ![Find searches for hello, shows 1 of 1 matches, and highlights hello in the input value.](https://mintcdn.com/langchain-5e9cc07a/J33pu29ujASI6TQ-/images/langsmith/trace-search-match.png?fit=max\&auto=format\&n=J33pu29ujASI6TQ-\&q=85\&s=1aa003d6c9a4230e35ed2136665e314d)5. 单击 **关闭查找** ，或在搜索栏获得焦点时按 `Escape` 返回到运行详细信息选项卡。
+
+Find 支持渲染消息和结构化字段，包括 JSON 和 YAML 视图。如果运行的可搜索内容过多，或者查询匹配超过 1,000 次，搜索栏将显示搜索限制警告而不是结果。
+
+### 按突出显示的文本过滤
+
+通过突出显示运行详细信息中的文本，您可以根据所选值创建过滤器。使用它可以将表格缩小到匹配的内容，而无需键入查询。与“查找”不同，突出显示会过滤表，而不是在打开的运行中进行搜索。
+
+按突出显示的文本进行过滤需要[Filter traces](/langsmith/filter-traces)中描述的单个搜索栏。如果表格使用过滤器芯片，则选择文本不会打开工具栏。
+
+按值过滤：
+
+1. 选择单个输入、输出或元数据值中的文本。跨越多个值的选择不会打开工具栏。您可以在呈现的 Markdown、代码编辑器或结构化字段中选择文本。 LangSmith 将部分单词扩展到整个单词。
+
+2. 在所选内容上方的工具栏中，选择一个操作：* **添加过滤器** ：保留现有过滤器并根据所选文本添加条件。
+   * **排除**：保留现有过滤器并排除所选文本的匹配项。
+   * **替换所有过滤器** ：将当前查询过滤器替换为基于所选文本的过滤器。
+
+   LangSmith 应用过滤器，关闭跟踪，然后返回表。
+
+   ![Selected text opens the Add filter, Exclude, and Replace all filters toolbar. The Add filter tooltip previews the query.](https://mintcdn.com/langchain-5e9cc07a/J33pu29ujASI6TQ-/images/langsmith/trace-highlight-filter.png?fit=max\&auto=format\&n=J33pu29ujASI6TQ-\&q=85\&s=a41947eacef007fa4a5889eca6090e95)
+
+3. 查看表中的匹配行。要更改或删除条件，请编辑 [filters in the search bar](/langsmith/filter-traces)。
+
+在 **运行** 选项卡上，过滤器匹配各个运行。在其他选项卡上，根运行中的选择将在 **根运行** 范围中进行筛选，子运行中的选择将在 **任何运行** 范围中进行筛选。欲了解更多信息，请参阅[Choose what a filter matches](/langsmith/filter-traces#choose-what-a-filter-matches)。
+
+输入和输出选择创建包含文本的过滤器。选择整个元数据值会创建精确值过滤器。选择元数据字符串的一部分会创建一个包含文本的过滤器。
+
 ### 自定义详细信息视图
 
 在运行中设置 `run_type="llm"` 会导致详细信息视图呈现该运行的令牌计数和延迟。完整的消息格式规范，请参阅[Log an LLM trace](/langsmith/log-llm-trace)。
 
-当运行的 `run_type` 为 `tool` 时，工具消息会自动展开。
-
-在运行时设置 `run_type="retriever"` 会导致详细信息视图呈现每个检索到的文档及其内联内容和元数据。所需的返回格式请参考[Log retriever traces](/langsmith/log-retriever-trace)。
+当运行的 `run_type` 为 `tool` 时，工具消息会自动展开。在运行时设置 `run_type="retriever"` 会导致详细信息视图呈现每个检索到的文档及其内联内容和元数据。所需的返回格式请参考[Log retriever traces](/langsmith/log-retriever-trace)。
 
 ### 行动
 
 从详细信息视图中，您还可以：
 
 * **共享跟踪：** 生成跟踪的公共链接。参见[Manage a trace](/langsmith/manage-trace#share-a-trace)。
-* **查看服务器日志：** 访问与 LangSmith 部署生成的跟踪关联的服务器日志。请参阅[Manage a trace](/langsmith/manage-trace#view-server-logs)。
-* **添加到数据集：** 将运行保存为数据集中的示例，以便在评估中使用。参见[Manage datasets in the application](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)。
-* **添加到注释队列：** 将运行或其整个[thread](/langsmith/observability-concepts#threads)发送到队列以供人工审核和反馈。请参阅[Annotation queues](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue)。
+* **查看服务器日志：** 访问与 LangSmith 部署生成的跟踪关联的服务器日志。参见[Manage a trace](/langsmith/manage-trace#view-server-logs)。
+* **添加到数据集：** 将运行保存为数据集中的示例，以供评估使用。参见[Manage datasets in the application](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)。
+* **添加到注释队列：** 将运行或其整个[thread](/langsmith/observability-concepts#threads)发送到队列以供人工审核和反馈。参考[Annotation queues](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue)。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/view-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

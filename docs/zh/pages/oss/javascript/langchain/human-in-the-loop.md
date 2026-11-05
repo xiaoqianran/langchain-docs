@@ -24,17 +24,17 @@
 
 当多个工具调用同时暂停时，每个操作都需要单独的决策。
 
-在默认批处理模式下，按照与中断请求中出现的操作相同的顺序提供决策。在[per-call mode](#pause-once-per-tool-call)中，每个工具调用都有自己的中断并做出一个决定。当人类拒绝请求的操作时使用`reject`。仅当人类充当工具时才使用`respond`，例如回答`ask_user`提示。不要使用`respond`来拒绝副作用工具，因为它的消息被视为成功的工具结果。
+在默认批处理模式下，按照与中断请求中出现的操作相同的顺序提供决策。在[per-call mode](#pause-once-per-tool-call)中，每个工具调用都有自己的中断并做出一个决定。Use `reject` when the human is denying the requested action. Use `respond` only when the human is acting as the tool, such as answering an `ask_user` prompt. Do not use `respond` to deny side-effecting tools, because its message is treated as a successful tool result.
 
 > [!提示]
 >
-> **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
+> When **editing** tool arguments, make changes conservatively.对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
 
 ## 配置中断
 
-要使用 HITL，请在创建代理时将 [middleware](/oss/javascript/langchain/middleware/built-in#human-in-the-loop) 添加到代理的 `middleware` 列表中。
+To use HITL, add the [middleware](/oss/javascript/langchain/middleware/built-in#human-in-the-loop) to the agent's `middleware` list when creating the agent.
 
-您可以使用工具操作到每个操作允许的决策类型的映射来配置它。当工具调用与映射中的操作匹配时，中间件将中断执行。
+You configure it with a mapping of tool actions to the decision types that are allowed for each action. The middleware will interrupt execution when a tool call matches an action in the mapping.
 
 本示例使用默认的批处理模式。要每次工具调用暂停一次，请参阅[Set the interrupt mode](#set-the-interrupt-mode)。
 
@@ -76,7 +76,7 @@ const agent = createAgent({
 > 调用代理时，传递包含 **线程 ID** 的 `config`，以将执行与对话线程关联起来。
 > 详情请参阅[LangGraph interrupts documentation](/oss/javascript/langgraph/interrupts)。
 
-> **配置选项**
+> [手风琴] 配置选项
 >
 > **中断** `object` *必需*
 >
@@ -516,99 +516,99 @@ for (const interrupt of approvals) {
 
 每个选项卡都会显示一个 `write_file` 分支、与其匹配的答案以及模型收到的 [ToolMessage](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)。为了便于阅读，下面的分支省略了 `additionalProperties` 字段。
 
-**批准**
+> [选项卡] 批准
+>
+> 按照建议运行呼叫。
+>
+> ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {"type": "object", "properties": {"type": {"type": "string", "const": "approve"}}, "required": ["type"]}
+> ```
+>
+> ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> { type: "approve" }
+> ```
+>
+> ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> Wrote 14 characters to orders_archive.csv
+> ```> [选项卡] 编辑
+>
+> 使用新参数运行调用。 `edited_action.name` 必须保持 `write_file`，并且 `edited_action.args` 必须匹配 `write_file` 的参数模式。工具未声明的参数的处理方式与模型发送它们时相同：`z.object` 模式会删除它们，`z.looseObject` 模式会保留它们。
+>
+> ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "type": "object",
+>   "properties": {
+>     "type": {"type": "string", "const": "edit"},
+>     "edited_action": {
+>       "type": "object",
+>       "properties": {
+>         "name": {"type": "string", "const": "write_file"},
+>         "args": {
+>           "type": "object",
+>           "properties": {
+>             "path": {"type": "string"},
+>             "content": {"type": "string"}
+>           },
+>           "required": ["path", "content"]
+>         }
+>       },
+>       "required": ["name", "args"]
+>     }
+>   },
+>   "required": ["type", "edited_action"]
+> }
+> ```
+>
+> ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   type: "edit",
+>   edited_action: {
+>     name: "write_file",
+>     args: { path: "archive/orders_2024.csv", content: "id,total\n1,20\n" },
+>   },
+> }
+> ```
+>
+> 在审阅者替换了调用的注释后，模型收到工具的结果。在中间件上设置 `editNotice` 来更改注释，或者通过 `null` 来删除它。
+>
+> ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> Note: a human reviewer replaced this tool call before it ran. The call recorded in your message is the one you produced, not the one that executed. This was intentional and authorized. Do not re-issue your original call. Executed instead: write_file with arguments {"path":"archive/orders_2024.csv","content":"id,total\n1,20\n"}.
+>
+> Tool response:
+> Wrote 14 characters to archive/orders_2024.csv
+> ```
 
-按照建议运行呼叫。
+> [选项卡] 拒绝
+>
+> 跳过通话。 `message` 是可选的，并告诉模型原因。
+>
+> ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {"type": "object", "properties": {"type": {"type": "string", "const": "reject"}, "message": {"type": "string"}}, "required": ["type"]}
+> ```
+>
+> ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> { type: "reject", message: "Write to the archive/ folder instead." }
+> ```
+>
+> ```text Model receives (error status) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> Write to the archive/ folder instead.
+> ```
 
-```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{"type": "object", "properties": {"type": {"type": "string", "const": "approve"}}, "required": ["type"]}
-```
-
-```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{ type: "approve" }
-```
-
-```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Wrote 14 characters to orders_archive.csv
-```
-
-**编辑**使用新参数运行调用。 `edited_action.name` 必须保持 `write_file`，并且 `edited_action.args` 必须匹配 `write_file` 的参数模式。工具未声明的参数的处理方式与模型发送参数时的处理方式相同：`z.object` 模式会删除它们，`z.looseObject` 模式会保留它们。
-
-```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "type": "object",
-  "properties": {
-    "type": {"type": "string", "const": "edit"},
-    "edited_action": {
-      "type": "object",
-      "properties": {
-        "name": {"type": "string", "const": "write_file"},
-        "args": {
-          "type": "object",
-          "properties": {
-            "path": {"type": "string"},
-            "content": {"type": "string"}
-          },
-          "required": ["path", "content"]
-        }
-      },
-      "required": ["name", "args"]
-    }
-  },
-  "required": ["type", "edited_action"]
-}
-```
-
-```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  type: "edit",
-  edited_action: {
-    name: "write_file",
-    args: { path: "archive/orders_2024.csv", content: "id,total\n1,20\n" },
-  },
-}
-```
-
-在审阅者替换了调用的注释后，模型会收到工具的结果。在中间件上设置 `editNotice` 来更改注释，或者通过 `null` 来删除它。
-
-```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Note: a human reviewer replaced this tool call before it ran. The call recorded in your message is the one you produced, not the one that executed. This was intentional and authorized. Do not re-issue your original call. Executed instead: write_file with arguments {"path":"archive/orders_2024.csv","content":"id,total\n1,20\n"}.
-
-Tool response:
-Wrote 14 characters to archive/orders_2024.csv
-```
-
-**拒绝**
-
-跳过通话。 `message` 是可选的，并告诉模型原因。
-
-```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{"type": "object", "properties": {"type": {"type": "string", "const": "reject"}, "message": {"type": "string"}}, "required": ["type"]}
-```
-
-```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{ type: "reject", message: "Write to the archive/ folder instead." }
-```
-
-```text Model receives (error status) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Write to the archive/ folder instead.
-```
-
-**回应**
-
-跳过呼叫并代替该工具接听。需要`message`。该模型将其作为成功的工具结果接收，因此使用 `reject` 拒绝呼叫。
-
-```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{"type": "object", "properties": {"type": {"type": "string", "const": "respond"}, "message": {"type": "string"}}, "required": ["type", "message"]}
-```
-
-```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{ type: "respond", message: "Saved orders_archive.csv to the shared drive myself." }
-```
-
-```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Saved orders_archive.csv to the shared drive myself.
-```
+> [选项卡] 回复
+>
+> 跳过呼叫并代替该工具接听。需要`message`。该模型将其作为成功的工具结果接收，因此使用 `reject` 拒绝呼叫。
+>
+> ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {"type": "object", "properties": {"type": {"type": "string", "const": "respond"}, "message": {"type": "string"}}, "required": ["type", "message"]}
+> ```
+>
+> ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> { type: "respond", message: "Saved orders_archive.csv to the shared drive myself." }
+> ```
+>
+> ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> Saved orders_archive.csv to the shared drive myself.
+> ```
 
 ### 通过 ID 恢复每个通话
 
@@ -732,111 +732,111 @@ await agent.invoke(
 
 ### 决策类型
 
-**批准**
-
-使用 `approve` 按原样批准工具调用并在不进行更改的情况下执行它。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await agent.invoke(
-    new Command({
-        // Decisions are provided as a list, one per action under review.
-        // The order of decisions must match the order of actions
-        // in the interrupt request.
-        resume: {
-            decisions: [
-                {
-                    type: "approve",
-                }
-            ]
-        }
-    }),
-    config  // Same thread ID to resume the paused conversation
-);
-```
-
-**编辑**在执行前使用`edit`修改工具调用。
-为编辑后的操作提供新的工具名称和参数。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await agent.invoke(
-    new Command({
-        // Decisions are provided as a list, one per action under review.
-        // The order of decisions must match the order of actions
-        // in the interrupt request.
-        resume: {
-            decisions: [
-                {
-                    type: "edit",
-                    // Edited action with tool name and args
-                    editedAction: {
-                        // Tool name to call.
-                        // Will usually be the same as the original action.
-                        name: "new_tool_name",
-                        // Arguments to pass to the tool.
-                        args: { key1: "new_value", key2: "original_value" },
-                    }
-                }
-            ]
-        }
-    }),
-    config  // Same thread ID to resume the paused conversation
-);
-```
-
-> [!提示]
+> [选项卡] 批准
 >
-> **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
+> 使用 `approve` 按原样批准工具调用并在不进行任何更改的情况下执行它。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await agent.invoke(
+>     new Command({
+>         // Decisions are provided as a list, one per action under review.
+>         // The order of decisions must match the order of actions
+>         // in the interrupt request.
+>         resume: {
+>             decisions: [
+>                 {
+>                     type: "approve",
+>                 }
+>             ]
+>         }
+>     }),
+>     config  // Same thread ID to resume the paused conversation
+> );
+> ```> [选项卡] 编辑
+>
+> 在执行前使用`edit`修改工具调用。
+> 为编辑后的操作提供新的工具名称和参数。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await agent.invoke(
+>     new Command({
+>         // Decisions are provided as a list, one per action under review.
+>         // The order of decisions must match the order of actions
+>         // in the interrupt request.
+>         resume: {
+>             decisions: [
+>                 {
+>                     type: "edit",
+>                     // Edited action with tool name and args
+>                     editedAction: {
+>                         // Tool name to call.
+>                         // Will usually be the same as the original action.
+>                         name: "new_tool_name",
+>                         // Arguments to pass to the tool.
+>                         args: { key1: "new_value", key2: "original_value" },
+>                     }
+>                 }
+>             ]
+>         }
+>     }),
+>     config  // Same thread ID to resume the paused conversation
+> );
+> ```
+>
+>> [!提示]
+>>
+>> **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
 
-**拒绝**
-
-使用`reject`拒绝工具调用并提供反馈而不是执行。该工具未执行。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await agent.invoke(
-    new Command({
-        // Decisions are provided as a list, one per action under review.
-        // The order of decisions must match the order of actions
-        // in the interrupt request.
-        resume: {
-            decisions: [
-                {
-                    type: "reject",
-                    // Optional: explain why the action was rejected
-                    // and whether the agent should retry a different approach.
-                    message: "User rejected this action. Do not retry this tool call.",
-                }
-            ]
-        }
-    }),
-    config  // Same thread ID to resume the paused conversation
-);
-```
-
-`message` 作为反馈添加到对话中，以帮助代理了解操作被拒绝的原因以及应该做什么。当您省略 `message` 时，中间件将使用默认拒绝消息，告诉模型该工具未执行，并且除非用户要求，否则不要重试相同的工具调用。对于副作用工具，提供特定于域的消息，明确说明代理是否应该放弃操作、提出后续问题或尝试更安全的替代方案。
-
-**回应**使用`respond`作为“询问用户”风格的工具，该工具的真正实现是人类的回复。 `message`内容直接作为工具结果返回；该工具本身不被执行。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-await agent.invoke(
-    new Command({
-        // Decisions are provided as a list, one per action under review.
-        // The order of decisions must match the order of actions
-        // in the interrupt request.
-        resume: {
-            decisions: [
-                {
-                    type: "respond",
-                    // The human's reply, returned directly as the tool result
-                    message: "Blue.",
-                }
-            ]
-        }
-    }),
-    config  // Same thread ID to resume the paused conversation
-);
-```
-
-`message` 作为成功的 `ToolMessage` 返回给代理。当该工具有意充当人工输入的占位符时，请使用 `respond`，例如提示澄清的 `ask_user` 工具。不要使用 `respond` 拒绝提议的操作，因为它告诉模型该工具已成功完成。
+> [选项卡] 拒绝
+>
+> 使用`reject`拒绝工具调用并提供反馈而不是执行。该工具未执行。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await agent.invoke(
+>     new Command({
+>         // Decisions are provided as a list, one per action under review.
+>         // The order of decisions must match the order of actions
+>         // in the interrupt request.
+>         resume: {
+>             decisions: [
+>                 {
+>                     type: "reject",
+>                     // Optional: explain why the action was rejected
+>                     // and whether the agent should retry a different approach.
+>                     message: "User rejected this action. Do not retry this tool call.",
+>                 }
+>             ]
+>         }
+>     }),
+>     config  // Same thread ID to resume the paused conversation
+> );
+> ```
+>
+> `message` 作为反馈添加到对话中，以帮助代理了解操作被拒绝的原因以及应该做什么。当您省略 `message` 时，中间件将使用默认拒绝消息，告诉模型该工具未执行，并且除非用户要求，否则不要重试相同的工具调用。对于副作用工具，提供特定于域的消息，明确说明代理是否应该放弃操作、提出后续问题或尝试更安全的替代方案。> [选项卡] 回复
+>
+> 使用 `respond` 作为“询问用户”风格的工具，该工具的真正实现是人类的回复。 `message`内容直接作为工具结果返回；该工具本身不被执行。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await agent.invoke(
+>     new Command({
+>         // Decisions are provided as a list, one per action under review.
+>         // The order of decisions must match the order of actions
+>         // in the interrupt request.
+>         resume: {
+>             decisions: [
+>                 {
+>                     type: "respond",
+>                     // The human's reply, returned directly as the tool result
+>                     message: "Blue.",
+>                 }
+>             ]
+>         }
+>     }),
+>     config  // Same thread ID to resume the paused conversation
+> );
+> ```
+>
+> `message` 作为成功的 `ToolMessage` 返回给代理。当该工具有意充当人工输入的占位符时，请使用 `respond`，例如提示澄清的 `ask_user` 工具。不要使用 `respond` 拒绝提议的操作，因为它告诉模型该工具已成功完成。
 
 ***
 

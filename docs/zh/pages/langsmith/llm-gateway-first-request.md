@@ -1,75 +1,71 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Send your first LLM Gateway request | https://docs.langchain.com/langsmith/llm-gateway-first-request -->
 
-# Send your first LLM Gateway request
+# 发送您的第一个 LLM 网关请求
 
-Send your first request through the LLM Gateway from the Simulator, call the gateway from your code, and view the request's trace.
+从模拟器通过 LLM 网关发送您的第一个请求，从您的代码调用网关，并查看请求的跟踪。
 
-> [!NOTE]
+> [!注意]
 >
-> The LLM Gateway is in [beta](/langsmith/release-stages).
+> LLM 网关位于[beta](/langsmith/release-stages)。
 
-The [LLM Gateway](/langsmith/llm-gateway) calls models across providers through one endpoint, authenticated with one [LangSmith API key](/langsmith/create-account-api-key). Instead of copying each provider's key into every app, your code uses one key and switches providers by changing the model ID, while LangSmith traces every call and applies your team's spend limits.
+[LLM Gateway](/langsmith/llm-gateway) 通过一个端点跨提供商调用模型，并通过一个[LangSmith API key](/langsmith/create-account-api-key) 进行身份验证。 Instead of copying each provider's key into every app, your code uses one key and switches providers by changing the model ID, while LangSmith traces every call and applies your organization's spend limits.
 
-On this page, you send a request from the Simulator in the LangSmith UI and from your code. Then, view its trace in LangSmith.
+在此页面上，您可以从 LangSmith UI 中的模拟器和代码发送请求。然后，在LangSmith中查看其踪迹。
 
-> [!TIP]
+> [!提示]
 >
-> This page is for developers sending requests through the gateway. If you are setting up the gateway for your team, start with [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup).
+> 此页面供开发者通过网关发送请求。如果您要为您的组织设置网关，请从 [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup) 开始。
 
-## Before you begin
+## 开始之前
 
-You need:
+您需要：
 
 * **Membership in a LangSmith organization on a paid plan.** On the Developer plan, the Simulator offers only LangChain-hosted models, which bill [Gateway Credits](/langsmith/llm-gateway-credits) instead of using a provider key.
-* **An API key for a model provider**, unless your workspace already has one. The Simulator shows which providers are already set up.
+* **模型提供者的 API 密钥**，除非您的工作区已经有一个。模拟器会显示哪些提供商已设置。
 
-## Run a request in the Simulator
+## 在模拟器中运行请求模拟器从您的浏览器通过网关发送示例请求，以便您可以在更改任何代码之前确认您的密钥和模型工作。
 
-The Simulator sends a sample request through the gateway from your browser, so you can confirm your keys and model work before you change any code.
+网关使用两个密钥：
 
-The gateway uses two keys:
+* 您的提供商密钥作为 [workspace secret](/langsmith/llm-gateway-provider-authentication#add-a-provider-key) 保留在 LangSmith 中。网关使用它来呼叫提供商。
+* 您的网关密钥是一个 LangSmith API 密钥，以 `lsv2_` 开头，您的代码将其发送到网关。
 
-* Your provider key stays in LangSmith as a [workspace secret](/langsmith/llm-gateway-provider-authentication#add-a-provider-key). The gateway uses it to call the provider.
-* Your gateway key is a LangSmith API key, starting with `lsv2_`, that your code sends to the gateway.
+要运行请求：
 
-To run a request:
+1. 在 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-gateway-first-request) 中，转到 **LLM Gateway** 并选择 **Simulator** 选项卡。
+2. 在 **模型路由** 下，选择一个模型。 **模型图块上需要密钥**意味着您的工作区还没有该提供程序的密钥。
+3. 单击**运行请求**。如果缺少密钥，模拟器会在发送请求之前提示您输入密钥。
 
-1. In [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-gateway-first-request), go to **LLM Gateway** and select the **Simulator** tab.
-2. Under **Model routing**, select a model. **Needs key** on a model tile means your workspace has no key for that provider yet.
-3. Click **Run request**. If a key is missing, the Simulator prompts you for it before it sends the request.
+响应显示在请求下方。如果请求失败，请记下错误，并参见[Troubleshoot](#troubleshoot)。
 
-The response appears below the request. If the request fails, note the error, and see [Troubleshoot](#troubleshoot).
+## 从您的代码发送请求
 
-## Send a request from your code
+与直接调用提供商相比，网关请求改变了两件事：
 
-Compared with calling a provider directly, a gateway request changes two things:
+* 基本 URL 指向网关而不是提供商的 API。
+* API 密钥是您的 LangSmith API 密钥，而不是提供商的密钥。
 
-* The base URL points at the gateway instead of the provider's API.
-* The API key is your LangSmith API key instead of the provider's key.
+发送请求：
 
-To send a request:
-
-1. Set your LangSmith API key and the gateway's base URL in your environment:
+1. 在您的环境中设置您的 LangSmith API 密钥和网关的基本 URL：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_API_KEY="lsv2_..."
    export LANGSMITH_GATEWAY_BASE_URL="https://gateway.smith.langchain.com/v1"
-   ```
+   ```这是美国的门户。对于其他区域，请将主机名替换为您的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。在 [BYOC](/langsmith/llm-gateway-how-it-works#use-a-byoc-data-plane) 上，使用您的数据平面 URL，后跟 `/gateway/v1`。在 [self-hosted LangSmith](/langsmith/llm-gateway-self-hosted#make-your-first-call) 上，使用您的 LangSmith URL，后跟 `/gateway/v1`。
 
-   This is the US gateway. For another region, replace the hostname with your [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway). On [BYOC](/langsmith/llm-gateway-how-it-works#use-a-byoc-data-plane), use your data plane URL followed by `/gateway/v1`. On [self-hosted LangSmith](/langsmith/llm-gateway-self-hosted#make-your-first-call), use your LangSmith URL followed by `/gateway/v1`.
-
-2. [List the models](/langsmith/llm-gateway-api-formats#list-models) you can call:
+2. [List the models](/langsmith/llm-gateway-api-formats#list-models)您可以拨打：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    curl "$LANGSMITH_GATEWAY_BASE_URL/models" \
        -H "Authorization: Bearer $LANGSMITH_API_KEY"
    ```
 
-   Each `id` in the response is a model ID. The list reflects your workspace's provider keys and model access policies.
+   响应中的每个`id`都是一个模型ID。该列表反映了您的工作区的提供程序密钥和模型访问策略。
 
-3. Send a request. Replace `<MODEL_ID>` with a chat model ID from the list, such as the model you tested in the Simulator:
+3. 发送请求。将 `<MODEL_ID>` 替换为列表中的聊天模型 ID，例如您在模拟器中测试的模型：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    curl "$LANGSMITH_GATEWAY_BASE_URL/chat/completions" \
@@ -78,41 +74,37 @@ To send a request:
        -d '{"model":"<MODEL_ID>","messages":[{"role":"user","content":"Explain what an LLM gateway does in one sentence."}]}'
    ```
 
-   A successful request returns a JSON response that contains a one-sentence answer. If it fails instead, see [Fix authentication errors](/langsmith/llm-gateway-authentication#fix-authentication-errors).
+   成功的请求会返回一个 JSON 响应，其中包含一句话答案。如果失败，请参阅[Fix authentication errors](/langsmith/llm-gateway-authentication#fix-authentication-errors)。
 
-> [!TIP]
+> [!提示]
 >
-> This request uses the Chat Completions [API format](/langsmith/llm-gateway-api-formats). For the same request in Python or TypeScript, or in the Anthropic Messages or Responses format, select the format and language in the Simulator, then click the copy icon. The copied code already uses your deployment's gateway URL.
+> 此请求使用聊天完成[API format](/langsmith/llm-gateway-api-formats)。对于 Python 或 TypeScript 或 Anthropic 消息或响应格式的相同请求，请在模拟器中选择格式和语言，然后单击复制图标。复制的代码已使用您的部署的网关 URL。
 
-[LangChain](/oss/python/langchain/overview) chat models and [Deep Agents](/oss/python/deepagents/overview) need no code changes. Set `LANGSMITH_GATEWAY` to `true` alongside `LANGSMITH_API_KEY`, and every supported chat model in the process calls the gateway in its provider's native API format. For details, see [Direct model access](/langsmith/llm-gateway-direct-model-access#configure-langchain-and-deep-agents).
+[LangChain](/oss/python/langchain/overview)聊天模型和[Deep Agents](/oss/python/deepagents/overview)无需更改代码。将 `LANGSMITH_GATEWAY` 与 `LANGSMITH_API_KEY` 一起设置为 `true`，流程中每个受支持的聊天模型都会以其提供商的本机 API 格式调用网关。详情请参见[Direct model access](/langsmith/llm-gateway-direct-model-access#configure-langchain-and-deep-agents)。
 
-## View the trace
+## 查看轨迹在模拟器中，单击响应旁边的 **查看跟踪**。来自您的代码的请求出现在 **LLM Gateway** 的同一个 **Traces** 选项卡中。默认情况下，跟踪记录元数据，例如令牌计数和成本。有关更多信息，请参阅[View LLM Gateway traces](/langsmith/llm-gateway-traces)。
 
-In the Simulator, click **View trace** next to the response. Requests from your code appear in the same **Traces** tab of **LLM Gateway**. By default, a trace records metadata such as token counts and cost. For more information, see [View LLM Gateway traces](/langsmith/llm-gateway-traces).
+## 故障排除
 
-## Troubleshoot
+对于 `401` 和 `403` 错误，请参阅 [Fix authentication errors](/langsmith/llm-gateway-authentication#fix-authentication-errors)。对于 `424` 错误，请参阅 [Fix provider credential errors](/langsmith/llm-gateway-provider-authentication#fix-provider-credential-errors)。
 
-For `401` and `403` errors, see [Fix authentication errors](/langsmith/llm-gateway-authentication#fix-authentication-errors). For `424` errors, see [Fix provider credential errors](/langsmith/llm-gateway-provider-authentication#fix-provider-credential-errors).
+模拟器会发出缺少权限的信号，但不显示错误代码：
 
-The Simulator signals missing permissions without an error code:
-
-| Symptom | Cause | Fix |
+|症状|原因 |修复 |
 | - | - | - |
-| No **Run request** button | You lack the `gateway:invoke` permission. | Ask a workspace admin to grant it. |
-| The Simulator asks you to contact an admin | You lack permission to add provider keys. | Ask a workspace admin to add the provider key. |
+|没有 **运行请求** 按钮 |您缺少 `gateway:invoke` 权限。 |请工作区管理员授予它。 |
+|模拟器要求您联系管理员 |您缺乏添加提供商密钥的权限。 |要求工作区管理员添加提供程序密钥。 |
 
-## Next steps
+## 后续步骤
 
-Now that you can send requests through the gateway, explore its other capabilities:
+现在您可以通过网关发送请求，探索它的其他功能：
 
-* [Set a spend limit](/langsmith/llm-gateway-spend-policies): cap spend by organization, workspace, API key, or user.
-* [Add model fallbacks](/langsmith/llm-gateway-fallbacks): retry failed requests on backup models, and test the chain in the Simulator.
-* [API formats](/langsmith/llm-gateway-api-formats): send Chat Completions, Messages, or Responses requests.
-* [Set up coding agents](/langsmith/llm-gateway-coding-agents): route Claude Code, Codex, Gemini CLI, or Deep Agents Code through the gateway.
-* [Gateway Credits](/langsmith/llm-gateway-credits): call LangChain-hosted models without a provider key.
+* [Set a spend limit](/langsmith/llm-gateway-spend-policies)：按组织、工作区、API 密钥或用户划分的支出上限。
+* [Add model fallbacks](/langsmith/llm-gateway-fallbacks)：在备份模型上重试失败的请求，并在模拟器中测试链。
+* [API formats](/langsmith/llm-gateway-api-formats)：发送聊天完成、消息或响应请求。
+* [Set up coding agents](/langsmith/llm-gateway-coding-agents)：通过网关路由 Claude Code、Codex、Gemini CLI 或 Deep Agents Code。
+* [Gateway Credits](/langsmith/llm-gateway-credits)：无需提供者密钥即可调用 LangChain 托管模型。
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-first-request.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-first-request.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

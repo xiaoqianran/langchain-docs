@@ -88,198 +88,198 @@ process.env.LANGSMITH_API_KEY = "...";
 
 从 LangChain 的集成套件中选择聊天模型：
 
-**OpenAI**
+> [标签] OpenAI
+>
+> 👉 阅读[OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/openai
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/openai
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/openai
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/openai
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.OPENAI_API_KEY = "your-api-key";
+>
+> const model = await initChatModel("gpt-5.5");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatOpenAI } from "@langchain/openai";
+>
+> const model = new ChatOpenAI({
+>   model: "gpt-5.5",
+>   apiKey: "your-api-key"
+> });
+> ```
 
-👉 阅读[OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+> [标签] Anthropic
+>
+> 👉 阅读[Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/anthropic
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/anthropic
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/anthropic
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm add @langchain/anthropic
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.ANTHROPIC_API_KEY = "your-api-key";
+>
+> const model = await initChatModel("claude-sonnet-4-6");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatAnthropic } from "@langchain/anthropic";
+>
+> const model = new ChatAnthropic({
+>   model: "claude-sonnet-4-6",
+>   apiKey: "your-api-key"
+> });
+> ```
 
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/openai
-```
+> [选项卡] 天蓝色
+>
+> 👉 阅读[Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/azure
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/azure
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/azure
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/azure
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.AZURE_OPENAI_API_KEY = "your-api-key";
+> process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
+> process.env.OPENAI_API_VERSION = "your-api-version";
+>
+> const model = await initChatModel("azure_openai:gpt-5.5");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { AzureChatOpenAI } from "@langchain/openai";
+>
+> const model = new AzureChatOpenAI({
+>   model: "gpt-5.5",
+>   azureOpenAIApiKey: "your-api-key",
+>   azureOpenAIApiEndpoint: "your-endpoint",
+>   azureOpenAIApiVersion: "your-api-version"
+> });
+> ```
 
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/openai
-```
+> [选项卡] 谷歌双子座
+>
+> 👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/google
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/google
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/google
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/google
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.GOOGLE_API_KEY = "your-api-key";
+>
+> const model = await initChatModel("google:gemini-3.7-flash");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatGoogle } from "@langchain/google/node";
+>
+> const model = new ChatGoogle({
+>   model: "gemini-3.7-flash",
+>   apiKey: "your-api-key"
+> });
+> ```
 
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/openai
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/openai
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.OPENAI_API_KEY = "your-api-key";
-
-const model = await initChatModel("gpt-5.5");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatOpenAI } from "@langchain/openai";
-
-const model = new ChatOpenAI({
-  model: "gpt-5.5",
-  apiKey: "your-api-key"
-});
-```
-
-**Anthropic**
-
-👉 阅读[Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/anthropic
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/anthropic
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/anthropic
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm add @langchain/anthropic
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.ANTHROPIC_API_KEY = "your-api-key";
-
-const model = await initChatModel("claude-sonnet-4-6");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatAnthropic } from "@langchain/anthropic";
-
-const model = new ChatAnthropic({
-  model: "claude-sonnet-4-6",
-  apiKey: "your-api-key"
-});
-```
-
-**天蓝色**
-
-👉 阅读[Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/azure
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/azure
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/azure
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/azure
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.AZURE_OPENAI_API_KEY = "your-api-key";
-process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
-process.env.OPENAI_API_VERSION = "your-api-version";
-
-const model = await initChatModel("azure_openai:gpt-5.5");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { AzureChatOpenAI } from "@langchain/openai";
-
-const model = new AzureChatOpenAI({
-  model: "gpt-5.5",
-  azureOpenAIApiKey: "your-api-key",
-  azureOpenAIApiEndpoint: "your-endpoint",
-  azureOpenAIApiVersion: "your-api-version"
-});
-```
-
-**谷歌双子座**
-
-👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/google
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/google
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/google
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/google
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.GOOGLE_API_KEY = "your-api-key";
-
-const model = await initChatModel("google:gemini-3.7-flash");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatGoogle } from "@langchain/google/node";
-
-const model = new ChatGoogle({
-  model: "gemini-3.7-flash",
-  apiKey: "your-api-key"
-});
-```
-
-**基岩匡威**
-
-👉 阅读[AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/aws
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/aws
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/aws
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/aws
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-// Follow the steps here to configure your credentials:
-// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-const model = await initChatModel("bedrock:gpt-5.5");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatBedrockConverse } from "@langchain/aws";
-
-// Follow the steps here to configure your credentials:
-// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-const model = new ChatBedrockConverse({
-  model: "gpt-5.5",
-  region: "us-east-2"
-});
-```
+> [标签] 基岩匡威
+>
+> 👉 阅读[AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/aws
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/aws
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/aws
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/aws
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> // Follow the steps here to configure your credentials:
+> // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+>
+> const model = await initChatModel("bedrock:gpt-5.5");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatBedrockConverse } from "@langchain/aws";
+>
+> // Follow the steps here to configure your credentials:
+> // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+>
+> const model = new ChatBedrockConverse({
+>   model: "gpt-5.5",
+>   region: "us-east-2"
+> });
+> ```
 
 ## 1. 定义状态
 
@@ -1069,12 +1069,12 @@ console.log(conversationalAgentResult.messages.at(-1)?.content);
 >
 > 当您有多个独立的知识源、需要低延迟并行查询并希望对路由逻辑进行显式控制时，请使用路由器模式。
 >
-> 对于具有动态刀具选择的简单情况，请考虑[subagents pattern](/oss/javascript/langchain/multi-agent/subagents)。对于代理需要按顺序与用户对话的工作流程，请考虑[handoffs](/oss/javascript/langchain/multi-agent/handoffs)。
+> 对于具有动态刀具选择的更简单的情况，请考虑[subagents pattern](/oss/javascript/langchain/multi-agent/subagents)。对于代理需要按顺序与用户对话的工作流程，请考虑[handoffs](/oss/javascript/langchain/multi-agent/handoffs)。
 
 ## 后续步骤
 
 * 了解用于座席间对话的[handoffs](/oss/javascript/langchain/multi-agent/handoffs)
-* 探索[subagents pattern](/oss/javascript/langchain/multi-agent/subagents-personal-assistant)进行集中编排
+* 探索用于集中编排的[subagents pattern](/oss/javascript/langchain/multi-agent/subagents-personal-assistant)
 * 阅读[multi-agent overview](/oss/javascript/langchain/multi-agent)来比较不同的模式
 * 使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-router-knowledge-base)调试和监控您的路由器
 

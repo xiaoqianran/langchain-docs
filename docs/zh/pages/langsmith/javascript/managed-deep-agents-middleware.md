@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 将自定义中间件放在`middleware/`下，将其导入到代理条目中，并将其传递给代理定义：
 
@@ -95,7 +95,7 @@ Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runti
 
 ## 何时使用中间件
 
-|概念 |亲切 |它如何到达代理|
+|概念|亲切 |它如何到达代理|
 | - | - | - |
 | **中间件** |申请代码 |导入并传入代理定义 |
 | **[Custom tools](/langsmith/javascript/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |

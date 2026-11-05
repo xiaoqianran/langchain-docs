@@ -179,7 +179,7 @@ const messages = [
 ]
 
 const response = await model.invoke(messages);
-```> **属性**
+```> [手风琴] 属性
 >
 > **文字** `string`
 >
@@ -309,7 +309,7 @@ const messages = [
 const response = await model.invoke(messages);  // Model processes the result
 ```
 
-> **属性**
+> [手风琴] 属性
 >
 > **内容** `string` *必填*
 >
@@ -329,7 +329,7 @@ const response = await model.invoke(messages);  // Model processes the result
 >
 > `artifact` 字段存储不会发送到模型但可以通过编程方式访问的补充数据。这对于存储原始结果、调试信息或下游处理数据非常有用，而不会扰乱模型的上下文。
 >
->> **示例：使用工件检索元数据**
+>> [accordion] 示例：使用工件检索元数据
 >>
 >> 例如，[retrieval](/oss/javascript/deepagents/retrieval) 工具可以从文档中检索一段段落以供模型参考。当消息`content`包含模型将引用的文本时，`artifact`可以包含应用程序可以使用的文档标识符或其他元数据（例如，用于呈现页面）。请参阅下面的示例：
 >>
@@ -393,56 +393,56 @@ const humanMessage = new HumanMessage({
 
 ### 标准内容块
 
-LangChain 为跨提供商的消息内容提供标准表示。
+LangChain 提供跨提供商工作的消息内容的标准表示形式。
 
 消息对象实现一个 `contentBlocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从[⟦T64⟧](/oss/javascript/integrations/chat/anthropic)或[⟦T65⟧](/oss/javascript/integrations/chat/openai)生成的消息将包含相应提供者格式的`thinking`或`reasoning`块，但可以延迟解析为一致的[⟦T68⟧](#content-block-reference)表示：
 
-**Anthropic**
+> [标签] Anthropic
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { AIMessage } from "@langchain/core/messages";
+>
+> const message = new AIMessage({
+>   content: [
+>     {
+>       "type": "thinking",
+>       "thinking": "...",
+>       "signature": "WaUjzkyp...",
+>     },
+>     {
+>       "type":"text",
+>       "text": "...",
+>       "id": "msg_abc123",
+>     },
+>   ],
+>   response_metadata: { model_provider: "anthropic" },
+> });
+>
+> console.log(message.contentBlocks);
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { AIMessage } from "@langchain/core/messages";
-
-const message = new AIMessage({
-  content: [
-    {
-      "type": "thinking",
-      "thinking": "...",
-      "signature": "WaUjzkyp...",
-    },
-    {
-      "type":"text",
-      "text": "...",
-      "id": "msg_abc123",
-    },
-  ],
-  response_metadata: { model_provider: "anthropic" },
-});
-
-console.log(message.contentBlocks);
-```
-
-**OpenAI**
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { AIMessage } from "@langchain/core/messages";
-
-const message = new AIMessage({
-  content: [
-    {
-      "type": "reasoning",
-      "id": "rs_abc123",
-      "summary": [
-        {"type": "summary_text", "text": "summary 1"},
-        {"type": "summary_text", "text": "summary 2"},
-      ],
-    },
-    {"type": "text", "text": "..."},
-  ],
-  response_metadata: { model_provider: "openai" },
-});
-
-console.log(message.contentBlocks);
-```
+> [标签] OpenAI
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { AIMessage } from "@langchain/core/messages";
+>
+> const message = new AIMessage({
+>   content: [
+>     {
+>       "type": "reasoning",
+>       "id": "rs_abc123",
+>       "summary": [
+>         {"type": "summary_text", "text": "summary 1"},
+>         {"type": "summary_text", "text": "summary 2"},
+>       ],
+>     },
+>     {"type": "text", "text": "..."},
+>   ],
+>   response_metadata: { model_provider: "openai" },
+> });
+>
+> console.log(message.contentBlocks);
+> ```
 
 请参阅 [integrations guides](/oss/javascript/integrations/providers/overview) 开始使用
 您选择的推理提供者。> [!注意]
@@ -597,9 +597,9 @@ const message = new HumanMessage({
 
 ### 内容块引用内容块（在创建消息或访问`contentBlocks`字段时）表示为类型对象列表。列表中的每个项目必须遵守以下块类型之一：
 
-> **核心**
+> [手风琴] 核心
 >
->> **ContentBlock.Text**
+>> [手风琴] ContentBlock.Text
 >>
 >> **用途：** 标准文本输出
 >>
@@ -625,7 +625,7 @@ const message = new HumanMessage({
 > > }
 > > ```
 >
->> **ContentBlock.Reasoning**
+>> [手风琴] ContentBlock.Reasoning
 >>
 >> **目的：**模型推理步骤
 >>
@@ -644,9 +644,9 @@ const message = new HumanMessage({
 > >     type: "reasoning",
 > >     reasoning: "The user is asking about..."
 > > }
-> > ```> **多式联运**
+> > ```> [手风琴] 多式联运
 >
->> **ContentBlock.Multimodal.Image**
+>> [手风琴] ContentBlock.Multimodal.Image
 >>
 >> **用途：** 图像数据
 >>
@@ -670,7 +670,7 @@ const message = new HumanMessage({
 >>
 >> 图片[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image)（例如，`image/jpeg`、`image/png`）。对于 Base64 数据是必需的。
 >
->> **ContentBlock.Multimodal.Audio**
+>> [手风琴] ContentBlock.Multimodal.Audio
 >>
 >> **用途：** 音频数据
 >>
@@ -694,7 +694,7 @@ const message = new HumanMessage({
 >>
 >> 音频[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#audio)（例如，`audio/mpeg`、`audio/wav`）。对于 Base64 数据是必需的。
 >
->> **ContentBlock.Multimodal.Video**
+>> [手风琴] ContentBlock.Multimodal.Video
 >>
 >> **用途：**视频数据
 >>
@@ -704,10 +704,10 @@ const message = new HumanMessage({
 >>
 >> **网址** `string`
 >>
->> 指向视频位置的 URL。
->>
+>> 指向视频位置的 URL。>>
 >> **数据** `string`
->>>> Base64 编码的视频数据。
+>>
+>> Base64 编码的视频数据。
 >>
 >> **文件ID** `string`
 >>
@@ -717,7 +717,7 @@ const message = new HumanMessage({
 >>
 >> 视频 [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#video)（例如，`video/mp4`、`video/webm`）。对于 Base64 数据是必需的。
 >
->> **ContentBlock.Multimodal.File**
+>> [手风琴] ContentBlock.Multimodal.File
 >>
 >> **用途：** 通用文件（PDF等）
 >>
@@ -741,7 +741,7 @@ const message = new HumanMessage({
 >>
 >> 文件[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml)（例如，`application/pdf`）。对于 Base64 数据是必需的。
 >
->> **ContentBlock.Multimodal.PlainText**
+>> [手风琴] ContentBlock.Multimodal.PlainText
 >>
 >> **用途：** 文档文本（`.txt`、`.md`）
 >>
@@ -759,9 +759,9 @@ const message = new HumanMessage({
 >>
 >> **mimeType** `string`
 >>
->> 文本的[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml)（例如，`text/plain`、`text/markdown`）> **工具调用**
+>> 文本的[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml)（例如，`text/plain`、`text/markdown`）> [手风琴] 工具调用
 >
->> **ContentBlock.Tools.ToolCall**
+>> [手风琴] ContentBlock.Tools.ToolCall
 >>
 >> **用途：**函数调用
 >>
@@ -792,7 +792,7 @@ const message = new HumanMessage({
 > > }
 > > ```
 >
->> **ContentBlock.Tools.ToolCallChunk**
+>> [手风琴] ContentBlock.Tools.ToolCallChunk
 >>
 >> **用途：** 推流工具片段
 >>
@@ -816,7 +816,7 @@ const message = new HumanMessage({
 >>
 >> 该块在流中的位置
 >
->> **ContentBlock.Tools.InvalidToolCall**
+>> [手风琴] ContentBlock.Tools.InvalidToolCall
 >>
 >> **目的：** 格式错误的调用
 >>
@@ -833,13 +833,13 @@ const message = new HumanMessage({
 >> 无法解析的原始参数
 >>
 >> **错误** `string` *必填*
+>>>> 错误描述
 >>
->> 错误描述
->>>> **常见错误：** 无效 JSON、缺少必填字段
+>> **常见错误：** 无效 JSON、缺少必填字段
 
-> **服务器端工具执行**
+> [accordion] 服务器端工具执行
 >
->> **ContentBlock.Tools.ServerToolCall**
+>> [手风琴] ContentBlock.Tools.ServerToolCall
 >>
 >> **用途：** 在服务器端执行的工具调用。
 >>
@@ -859,7 +859,7 @@ const message = new HumanMessage({
 >>
 >> 部分工具参数（可能是不完整的 JSON）
 >
->> **ContentBlock.Tools.ServerToolCallChunk**
+>> [手风琴] ContentBlock.Tools.ServerToolCallChunk
 >>
 >> **用途：**流式传输服务器端工具调用片段
 >>
@@ -883,16 +883,16 @@ const message = new HumanMessage({
 >>
 >> 该块在流中的位置
 >
->> **ContentBlock.Tools.ServerToolResult**
+>> [手风琴] ContentBlock.Tools.ServerToolResult
 >>
 >> **用途：** 搜索结果
 >>
 >> **类型** `string` *必填*
 >>
 >> 永远`"server_tool_result"`
+>>>> **工具\_call\_id** `string` *必填*
 >>
->> **工具\_call\_id** `string` *必填*
->>>> 相应服务器工具调用的标识符。
+>> 相应服务器工具调用的标识符。
 >>
 >> **id** `string`
 >>
@@ -906,9 +906,9 @@ const message = new HumanMessage({
 >>
 >> 执行工具的输出。
 
-> **特定于提供商的块**
+> [手风琴] 特定于提供商的块
 >
->> **ContentBlock.NonStandard**
+>> [手风琴] ContentBlock.NonStandard
 >>
 >> **用途：** 提供商特定的逃生舱口
 >>
@@ -949,7 +949,7 @@ const imageBlock: ContentBlock.Multimodal.Image = {
 >
 > 内容块作为 LangChain v1 中消息的新属性引入，以标准化跨提供商的内容格式，同时保持与现有代码的向后兼容性。
 >
-> 内容块不是 [⟦T159⟧](https://reference.langchain.com/javascript/langchain-core/messages/BaseMessage) 属性的替代品，而是一个可用于以标准化格式访问消息内容的新属性。
+> 内容块并不是 [⟦T159⟧](https://reference.langchain.com/javascript/langchain-core/messages/BaseMessage) 属性的替代品，而是一个可用于以标准化格式访问消息内容的新属性。
 
 ## 序列化
 
@@ -974,7 +974,7 @@ const restored = await load<HumanMessage>(JSON.stringify(serialized));
 
 ## 与聊天模型一起使用
 
-[Chat models](/oss/javascript/langchain/models) 接受一系列消息对象作为输入，并返回 [⟦T162⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 作为输出。交互通常是无状态的，因此简单的对话循环涉及调用具有不断增长的消息列表的模型。
+[Chat models](/oss/javascript/langchain/models) 接受一系列消息对象作为输入并返回 [⟦T162⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 作为输出。交互通常是无状态的，因此简单的对话循环涉及调用具有不断增长的消息列表的模型。
 
 请参阅以下指南以了解更多信息：
 

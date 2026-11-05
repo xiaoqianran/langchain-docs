@@ -12,7 +12,7 @@ Slack 通道允许人们通过应用程序提及、直接消息和活动 Slack �
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 项目结构
 
@@ -119,7 +119,7 @@ channel = channels.slack(name="Support Bot", reactions=choose_emoji)
 ```
 
 返回一个不带冒号的 Slack 短名称。 Slack 没有这个名字
-recognize 被选择但从未出现，因此反应完全缺失。一个
+识别已被选择但从未出现，因此反应完全缺失。一个
 抛出、花费超过五秒或返回的选择器
 其他任何内容都会回到默认表情符号，并且运行会继续。
 

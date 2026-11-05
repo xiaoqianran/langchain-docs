@@ -6,35 +6,16 @@ Build your agent as a directory of files while LangSmith runs the harness and ru
 
 Managed Deep Agents (MDA) is the simplest way to build and deploy production agents. You focus on what your agent does. MDA runs it. There are no servers to run and no infrastructure to wire together.
 
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
+
 You write the agent's intelligence: its instructions, the tools it can call, the skills it follows, and you select the model that drives it. MDA provides everything underneath:
 
 * **The Deep Agents harness**: The agent loop that plans, calls tools, manages a filesystem, and delegates to subagents. See [Deep Agents](/oss/javascript/deepagents/overview).
 * **A managed runtime**: Every deployment runs on [LangSmith Agent Server](/langsmith/agent-server-overview). You get the Agent Server API, threads, runs, streaming, and the [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint) without operating the server yourself.
 
-```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-%%{init: {"theme":"base","themeVariables":{"fontFamily":"Inter, system-ui, sans-serif","lineColor":"#40668D","primaryColor":"#E5F4FF","primaryTextColor":"#030710","primaryBorderColor":"#006DDD","clusterBkg":"transparent"}}}%%
-flowchart LR
-    subgraph you["<b>You provide</b>"]
-        Logic("<div style='text-align:left;padding:2px 6px'><b>Business logic</b><br/>&nbsp;•&nbsp; Instructions<br/>&nbsp;•&nbsp; Tools<br/>&nbsp;•&nbsp; Skills<br/>&nbsp;•&nbsp; Model</div>")
-    end
-    subgraph mda["<b>Managed Deep Agents</b>"]
-        direction TB
-        Harness("<div style='text-align:left;padding:2px 6px'><b>Deep Agents harness</b><br/>&nbsp;•&nbsp; Agent loop<br/>&nbsp;•&nbsp; Filesystem<br/>&nbsp;•&nbsp; Subagents</div>")
-        Runtime("<div style='text-align:left;padding:2px 6px'><b>Managed runtime</b><br/>&nbsp;•&nbsp; Agent Server<br/>&nbsp;•&nbsp; Sandboxes<br/>&nbsp;•&nbsp; Schedules</div>")
-        Harness --> Runtime
-    end
-
-    Logic ==> mda
-
-    classDef neutral fill:#F2FAFF,stroke:#40668D,stroke-width:2px,color:#2F4B68,rx:10,ry:10
-    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710,rx:10,ry:10
-
-    class Logic neutral
-    class Harness,Runtime process
-
-    style you fill:none,stroke:#40668D,stroke-width:1.5px,stroke-dasharray:5 4
-    style mda fill:none,stroke:#40668D,stroke-width:1.5px,stroke-dasharray:5 4
-```
+![Your agent definition runs inside the Deep Agents harness, surrounded by managed Agent Server, channels, memory, sandboxes, schedules, and connections.](https://mintcdn.com/langchain-5e9cc07a/WPyMZQ4QJL4KarWB/images/managed-deep-agents-overview-light.png?fit=max\&auto=format\&n=WPyMZQ4QJL4KarWB\&q=85\&s=823ce5f1f80a9653308d03cbf5c2e583)
 
 ## Example agent
 

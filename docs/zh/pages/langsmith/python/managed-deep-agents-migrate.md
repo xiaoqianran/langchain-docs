@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公共 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公共 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 决定是否移动
 
@@ -28,7 +28,7 @@
 
 ## 了解发生了什么变化
 
-[create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 在您的进程中编译一个代理，因此它将后端、存储和检查指针作为参数。 `define_deep_agent` 返回一个定义，托管运行时对其进行编译。定义是配置而不是可运行的代理：`mda` CLI 在`mda dev` 和 `mda deploy` 上使用它，并且运行时在此时提供托管片段。完整图片请参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。
+[create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 在您的进程中编译代理，因此它将后端、存储和检查指针作为参数。 `define_deep_agent` 返回一个定义，托管运行时对其进行编译。定义是配置而不是可运行的代理：`mda` CLI 在`mda dev` 和 `mda deploy` 上使用它，并且运行时在此时提供托管片段。完整图片请参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。
 
 ## 检查哪些内容没有保留
 
@@ -59,19 +59,19 @@
 * 添加静态`name`，这是必需的。使用匹配 `[a-zA-Z][a-zA-Z0-9_-]*` 的字符串。
 * 将`system_prompt`文本移至代理条目旁边的`instructions.md`，并删除参数。
 * 将`skills`引用的文件移至`skills/<name>/SKILL.md`，并去掉参数。
-* 将`memory`替换为根`memory.py`（或`memory.ts`），导出名为`memory`的变量并设置为`define_memory(scope="agent")`，并删除该参数。如果代理不需要持久内存，请保留该文件。警告用户这会挂载一棵空树，并且任何现有的内存内容都必须移至 `instructions.md` 或技能中。* Delete `backend`, `store`, and `checkpointer`.运行时拥有这三个。如果代理使用沙箱后端，请添加导出 `define_sandbox(...)` 的 `sandbox/` 声明。托管沙箱是托管 Deep Agents 提供的唯一后端。
+* 将`memory`替换为根`memory.py`（或`memory.ts`），导出名为`memory`的变量并设置为`define_memory(scope="agent")`，并删除该参数。如果代理不需要持久内存，请保留该文件。警告用户这会挂载一棵空树，并且任何现有的内存内容都必须移至 `instructions.md` 或技能中。* 删除`backend`、`store`、`checkpointer`。运行时拥有这三个。如果代理使用沙箱后端，请添加导出 `define_sandbox(...)` 的 `sandbox/` 声明。托管沙箱是托管 Deep Agents 提供的唯一后端。
 * 保持 `model`、`tools`、`middleware`、`subagents`、`permissions`、`cache` 和 `debug` 原样，以及中断、响应格式和上下文架构参数在其现有名称下。警告用户声明 `sandbox/` 的项目在清除 `permissions` 的情况下运行，因为文件系统权限规则禁用了沙箱 `execute` 工具。
 * 将工具和中间件模块保留在它们已经存在的地方，并继续从代理条目中导入它们。不要重组项目。
 
 ## 步骤 4：明确处理差距
 
-如果代码库在 Python 中传递 `state_schema`，构建自定义 `BackendProtocol`，或将代理包装在其自己的服务器路由或应用程序代码中，请停止并询问用户如何继续。 Managed Deep Agents does not accept these.不要发明替代品。
+如果代码库在 Python 中传递 `state_schema`，构建自定义 `BackendProtocol`，或将代理包装在其自己的服务器路由或应用程序代码中，请停止并询问用户如何继续。托管Deep Agents不接受这些。不要发明替代品。
 
 ## 步骤 5：验证
 
 运行`mda build`，然后运行`mda dev`，并确认代理启动并应答测试消息。 `mda build` 不验证定义调用，因此剩余的托管参数仅出现在图形加载时。报告任何无法迁移的内容。## 映射参数
 
-Most of the surface transfers to `define_deep_agent` unchanged, under the same names: `model`, `tools`, `middleware`, `subagents`, `interrupt_on`, `response_format`, `context_schema`, `cache`, and `debug`。将工具和中间件模块保留在它们已经存在的地方，并继续从代理条目导入它们。
+大部分表面转移到`define_deep_agent`不变，名称相同：`model`、`tools`、`middleware`、`subagents`、`interrupt_on`、`response_format`、`context_schema`、`cache`和`debug`。将工具和中间件模块保留在它们已经存在的地方，并继续从代理条目导入它们。
 
 `define_deep_agent` 添加一个必需参数。传递 `name` 一个以字母开头且仅包含字母、数字、下划线或连字符的静态字符串。 Managed Deep Agents 使用它作为代理的图形 ID 和默认部署名称。
 
@@ -83,7 +83,7 @@ Most of the surface transfers to `define_deep_agent` unchanged, under the same n
 | `skills` | `skills/` |每个技能一个目录，每个目录都有一个`SKILL.md`。参见[Skills](/langsmith/python/managed-deep-agents-skills)。 |
 | `memory` | `memory.py` |导出`define_memory(scope="agent")`。如果没有持久内存，则省略该文件。参见[Memory](/langsmith/python/managed-deep-agents-memory)。 |
 | `backend` | `sandbox/` |声明一个托管沙箱而不是构建后端。参见[Sandboxes](/langsmith/python/managed-deep-agents-sandboxes)。 |
-| `permissions` |保留参数 |已接受，并在项目声明沙箱时清除。参见[Permissions](/oss/python/deepagents/permissions)。 |
+| `permissions` |保留参数|已接受，并在项目声明沙箱时清除。参见[Permissions](/oss/python/deepagents/permissions)。 |
 | `store`、`checkpointer` |托管运行时 |删除两者。 |
 | `state_schema` |没有同等的 | `define_deep_agent`不接受。 |Deep Agents 后端是可插拔的，并且托管运行时提供自己的后端。声明 `sandbox/` 的项目会获得一个用于代理文件系统和 shell 的托管沙箱。没有代理的项目会获得线程范围的代理状态，以及用于指令、技能和内存的只读 [Context Hub](/langsmith/python/managed-deep-agents-context-hub) 安装。没有其他后端选择，因此依赖于特定后端的代理会留在Deep Agents。
 

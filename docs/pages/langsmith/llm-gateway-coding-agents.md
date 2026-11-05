@@ -195,7 +195,7 @@ To use a bring-your-own-key model, keep the standard base URL and pass a provide
 For organizations rolling the gateway out to all developers, distribute the configuration through mobile device management or a shared shell profile. Distribute:
 
 1. The standard gateway base URL for each client.
-2. A workspace-scoped [LangSmith API key](/langsmith/llm-gateway-authentication#choose-a-key-type) per user or team, depending on your policy granularity.
+2. A workspace-scoped [LangSmith API key](/langsmith/llm-gateway-authentication#choose-a-key-type) per user or per cost center, depending on your policy granularity.
 3. The model IDs approved for each coding agent.
 4. The Codex `config.toml` if your organization uses Codex.
 

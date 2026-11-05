@@ -28,9 +28,9 @@
 
 ![Managed Deep Agents packages your agent configuration, tools, and runtime settings for LangSmith](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/deepagents-deploy-config.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=5c3f2961994afe5fe67a2f5c9e9ba7ac)
 
-将深度代理投入生产的推荐路径是[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)，这是一个 CLI 优先的托管运行时，用于在 LangSmith 中创建、运行和操作深度代理。托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)公开[beta](/langsmith/release-stages)。它运行相同的 Deep Agents 工具，但您将代理编写为文件项目并为托管运行时声明它，而不是自己编译它。参见[Relationship to Deep Agents](/langsmith/javascript/managed-deep-agents-overview#relationship-to-deep-agents)。对于需要自定义应用程序代码、自定义路由、高级身份验证的团队，您可以直接配置[LangSmith Deployment](/langsmith/deployment)。任一路径都会提供您的代理所需的基础设施：[threads](/langsmith/use-threads)、[runs](/langsmith/runs)、存储和检查点，因此您不必自己设置这些。传统的LangSmith部署还为您提供开箱即用的[authentication](/langsmith/auth)、[webhooks](/langsmith/use-webhooks)、[cron jobs](/langsmith/cron-jobs)和[observability](/langsmith/observability)，并且可以通过[MCP](/langsmith/server-mcp)或[A2A](/langsmith/server-a2a)公开您的代理。
+将深度代理投入生产的推荐路径是[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)，这是一个 CLI 优先的托管运行时，用于在 LangSmith 中创建、运行和操作深度代理。托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上公开 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。它运行相同的 Deep Agents 工具，但您将代理编写为文件项目并为托管运行时声明它，而不是自己编译它。参见[Relationship to Deep Agents](/langsmith/javascript/managed-deep-agents-overview#relationship-to-deep-agents)。对于需要自定义应用程序代码、自定义路由、高级身份验证的团队，您可以直接配置[LangSmith Deployment](/langsmith/deployment)。任一路径都会提供您的代理所需的基础设施：[threads](/langsmith/use-threads)、[runs](/langsmith/runs)、存储和检查点，因此您不必自己设置这些。传统的LangSmith部署还为您提供开箱即用的[authentication](/langsmith/auth)、[webhooks](/langsmith/use-webhooks)、[cron jobs](/langsmith/cron-jobs)和[observability](/langsmith/observability)，并且可以通过[MCP](/langsmith/server-mcp)或[A2A](/langsmith/server-a2a)公开您的代理。
 
-您还可以在没有LangSmith云的情况下部署在JavaScript框架和托管平台上。
+您还可以在没有 LangSmith Cloud 的情况下部署在 JavaScript 框架和托管平台上。
 
 框架和平台
 
@@ -88,7 +88,7 @@ Next.js
 }
 ````langgraph.json` 是告诉LangGraph 平台如何构建和运行应用程序的配置文件。它位于项目的根部，是本地开发（使用 `langgraph dev`）和生产部署所必需的。关键字段是：
 
-|领域|描述 |
+|领域 |描述 |
 | - | - |
 | `dependencies` |要安装的软件包。 `["."]` 将当前目录安装为包（从 `requirements.txt`、`pyproject.toml` 或 `package.json` 读取）。 |
 | `graphs` |将图形 ID 映射到其代码位置。每个条目都是 `"<id>": "./<file>:<variable>"`，其中 `<id>` 是用于通过 API 调用图形的名称，`<variable>` 是从 `<file>` 导出的已编译图形或构造函数。 |
@@ -100,10 +100,10 @@ Next.js
 
 ### 调用代理
 
-在生产中，每次调用都应携带两个运行级别参数：* **`thread_id`**（通过`config={"configurable": {"thread_id": ...}}`传递）：对话的稳定标识符。 The [checkpointer](#durability) uses it to persist and resume message history, so follow-up turns continue the same conversation.生成新的`thread_id`以开始新的对话。
-* **`context`**: per-run data your tools and middleware read at invocation time, for example `user_id`, API keys, feature flags, or session metadata.使用`context_schema`定义形状并通过`runtime.context`访问它。参见[Runtime context](/oss/javascript/deepagents/context-engineering#runtime-context)。
+在生产中，每次调用都应携带两个运行级别参数：* **`thread_id`**（通过`config={"configurable": {"thread_id": ...}}`传递）：对话的稳定标识符。 [checkpointer](#durability) 使用它来保存和恢复消息历史记录，因此后续轮流继续相同的对话。生成新的`thread_id`以开始新的对话。
+* **`context`**：工具和中间件在调用时读取的每次运行数据，例如 `user_id`、API 密钥、功能标志或会话元数据。使用`context_schema`定义形状并通过`runtime.context`访问它。参见[Runtime context](/oss/javascript/deepagents/context-engineering#runtime-context)。
 
-The two are independent and almost always passed together:
+两者是独立的并且几乎总是一起通过：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
@@ -291,7 +291,7 @@ await agent.invoke(
 >
 > 为此示例打开公共 LangSmith 运行。
 
-When deploying with the LangGraph SDK, the SDK manages threads for you and you pass the returned `thread_id` to each run:
+使用 LangGraph SDK 进行部署时，SDK 会为您管理线程，并将返回的 `thread_id` 传递给每次运行：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Client } from "@langchain/langgraph-sdk";
@@ -314,13 +314,13 @@ for await (const chunk of client.runs.stream(
 
 > [!提示]
 >
-> `thread_id` scopes the *conversation* (message history, checkpoints). `context` 携带您的工具和中间件读取的*每次运行*数据。 They are independent: changing one does not affect the other, and you can pass either or both.
+> `thread_id` 确定*对话*的范围（消息历史记录、检查点）。 `context` 携带您的工具和中间件读取的*每次运行*数据。它们是独立的：更改一个不会影响另一个，您可以通过其中一个或两个。
 
 ### 多租户
 
 当您的代理为多个用户提供服务时，您需要处理三个问题：验证每个用户的身份、控制他们可以访问的内容以及管理代理用于代表他们执行操作的凭据。
 
-![Three authentication layers compose: end-user auth, agent-acting-as-user auth, and team RBAC](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/auth-layers.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=11137d8bae74093c459416fd3e541d68)#### User identity and access control
+![Three authentication layers compose: end-user auth, agent-acting-as-user auth, and team RBAC](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/auth-layers.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=11137d8bae74093c459416fd3e541d68)#### 用户身份和访问控制
 
 [LangSmith Deployments](/langsmith/deployment) 支持[custom authentication](/langsmith/custom-auth) 建立用户身份，并支持[authorization handlers](/langsmith/auth) 控制对线程、助手和存储命名空间等资源的访问。授权处理程序在身份验证成功后运行，并且可以：
 
@@ -328,11 +328,11 @@ for await (const chunk of client.runs.stream(
 * 返回过滤器，以便用户只能看到自己的资源
 * 使用 HTTP 403 拒绝未经授权的操作
 
-For a step-by-step tutorial, see [Make conversations private](/langsmith/resource-auth). For a walkthrough, watch the [custom auth video](https://www.youtube.com/watch?v=DkNqgCz8cjE).
+有关分步教程，请参阅[Make conversations private](/langsmith/resource-auth)。如需演练，请观看 [custom auth video](https://www.youtube.com/watch?v=DkNqgCz8cjE)。
 
-您[scope memory](#scoping)和[execution environments](#execution-environment)如何确定用户之间共享哪些数据。 See the sections below for details.
+您[scope memory](#scoping)和[execution environments](#execution-environment)如何确定用户之间共享哪些数据。有关详细信息，请参阅以下部分。
 
-#### Role-based access control
+#### 基于角色的访问控制
 
 LangSmith 的 [role-based access control (RBAC)](/langsmith/rbac) 控制工作区中的哪些成员可以部署、配置和监控代理。这与上面的最终用户授权是分开的。
 
@@ -344,9 +344,9 @@ LangSmith 的 [role-based access control (RBAC)](/langsmith/rbac) 控制工作�
 
 企业计划提供具有精细权限的自定义角色。完整的权限模型请参见[RBAC reference](/langsmith/rbac)。
 
-#### End-user credentials当您的代理需要代表用户调用外部 API（例如，读取其 GitHub 存储库、发送 Slack 消息、查询其数据仓库）时，您需要一种方法将用户的凭据传递给代理而不对其进行硬编码。
+#### 最终用户凭证当您的代理需要代表用户调用外部 API（例如，读取其 GitHub 存储库、发送 Slack 消息、查询其数据仓库）时，您需要一种方法将用户的凭据传递给代理而不对其进行硬编码。
 
-**通过代理身份验证进行 OAuth。** [Agent Auth](/langsmith/agent-auth) 提供托管 OAuth 2.0 流程。配置 OAuth 提供程序，代理可以请求范围为每个用户的令牌。首次使用时，代理[interrupts](/oss/javascript/langgraph/interrupts)执行并呈现 OAuth 同意 URL。用户进行身份验证后，代理将使用有效令牌恢复。令牌会自动存储和刷新。
+**通过代理身份验证进行 OAuth。** [Agent Auth](/langsmith/agent-auth) 提供托管 OAuth 2.0 流程。配置 OAuth 提供程序，代理可以请求范围为每个用户的令牌。首次使用时，代理[interrupts](/oss/javascript/langgraph/interrupts)执行并显示 OAuth 同意 URL。用户进行身份验证后，代理将使用有效令牌恢复。令牌会自动存储和刷新。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Client } from "@langchain/auth";
@@ -367,25 +367,25 @@ const authResult = await authClient.authenticate({
 
 **工作区机密。** 对于所有用户共享的 API 密钥（例如您组织的 LLM 提供商密钥、搜索 API 密钥），请将它们存储为 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的 LangSmith。详情请参阅[Managing secrets](#managing-secrets)。
 
-### Async基于 LLM 的应用程序严重依赖 I/O：调用语言模型、数据库和外部服务。异步编程允许这些操作并发运行而不是阻塞，从而提高吞吐量和响应能力。
+### 异步基于 LLM 的应用程序严重依赖 I/O：调用语言模型、数据库和外部服务。异步编程允许这些操作并发运行而不是阻塞，从而提高吞吐量和响应能力。
 
 > [!注意]
 >
 > LangChain 遵循为异步方法名称添加前缀 `a` 的约定（例如，`ainvoke`、`abefore_agent`、`astream`）。同步和异步变体位于同一类或命名空间中。
 
-When building for production:
+为生产而构建时：
 
 * **创建异步工具。** LangChain 在单独的线程中运行同步工具以避免阻塞，但本机异步完全避免了线程开销。
 * **使用异步中间件方法。** 自定义 [middleware](/oss/javascript/langchain/middleware/custom) 应实现异步挂钩（例如，`abefore_agent` 而不是 `before_agent`）。
 * **对外部资源生命周期使用异步。** 创建 [sandboxes](#sandboxes) 或连接到 [MCP servers](/oss/javascript/langchain/mcp) 涉及网络调用，应等待。这就是为什么[graph factories](/langsmith/graph-rebuild)提供这些资源是异步的。
 
-### DurabilityDeep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [persistence](/oss/javascript/langgraph/persistence) 层检查每个步骤的状态，因此因故障、超时或 [human-in-the-loop](/oss/javascript/langgraph/interrupts) 暂停而中断的运行会从上次记录的状态恢复，而无需重新处理之前的步骤。对于产生许多子代理的长时间运行的深度代理来说，这意味着中期运行失败不会丢失已完成的工作。
+### 耐用性Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [persistence](/oss/javascript/langgraph/persistence) 层检查每个步骤的状态，因此因故障、超时或 [human-in-the-loop](/oss/javascript/langgraph/interrupts) 暂停而中断的运行会从上次记录的状态恢复，而无需重新处理之前的步骤。对于产生许多子代理的长时间运行的深度代理来说，这意味着中期运行失败不会丢失已完成的工作。
 
 ![Durable execution: when a worker crashes mid-run, another worker picks the run up from the latest checkpoint](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/durable-execution.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=d3bfd69460769dba142c68c7a20ae43b)
 
 检查点还可以：
 
-* **无限期 [interrupts](/oss/javascript/langgraph/interrupts)。** 人机交互工作流程可以暂停几分钟或几天，然后准确地从中断的地方恢复。
+* **无限期 [interrupts](/oss/javascript/langgraph/interrupts)。** 人机循环工作流程可以暂停几分钟或几天，然后准确地从中断的地方恢复。
 * **[Time travel](/oss/javascript/langgraph/use-time-travel).** 每个检查点步骤都是一个可以倒回的快照，以便在出现问题时从较早的状态重播。
 * **安全处理敏感操作。** 对于涉及付款或其他不可逆转操作的工作流程，检查点提供审计跟踪和恢复点来检查导致操作的确切状态。
 
@@ -393,17 +393,17 @@ When building for production:
 >
 > [LangSmith Deployments](/langsmith/deployment) 自动配置持久检查点。如果您是自托管，请参阅 [persistence](/oss/javascript/langgraph/persistence) 了解设置说明。
 
-＃＃ 记忆没有记忆，每一次谈话都从头开始。记忆可以让您的代理保留对话中的信息（用户偏好、学到的指令、过去的经验），以便随着时间的推移，它可以个性化其行为。有关内存类型的概述，请参阅[memory concepts guide](/oss/javascript/concepts/memory)。
+＃＃ 记忆没有记忆，每一次对话都从头开始。记忆可以让您的代理保留对话中的信息（用户偏好、学到的指令、过去的经验），以便随着时间的推移，它可以个性化其行为。 For an overview of memory types, see the [memory concepts guide](/oss/javascript/concepts/memory).
 
 ![Short-term memory is scoped to a single thread via checkpoints; long-term memory persists across threads via the store](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/memory.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=3ec585271dcd8d62e0207d79d68c296b)
 
 ### 范围界定
 
-记忆在对话中总是持久的。主要问题是它如何跨越用户和助手的界限。正确的范围取决于谁应该查看和修改数据：
+Memory is always persistent across conversations.主要问题是它如何跨越用户和助手的界限。正确的范围取决于谁应该查看和修改数据：
 
 |范围 |命名空间|使用案例|示例|
 | - | - | - | - |
-| **用户**（推荐默认）| `(user_id)` |每个用户的偏好和上下文| “我更喜欢简洁的回答”|
+| **用户**（推荐默认）| `(user_id)` |每个用户的偏好和上下文| “我更喜欢简洁的回答” |
 | **助理** | `(assistant_id)` |一名助理的共享说明 | “帖子上限为 280 个字符” |
 | **全球** | `(org_id)` |所有用户和助理的只读策略 | “永远不要透露内部定价”|> [!警告]
 >
@@ -500,7 +500,7 @@ When building for production:
 > });
 > ```
 
-您还可以使用 [Store API](/langsmith/custom-store) 从应用程序代码中读取和写入商店。有关示例，请参阅[Advanced usage](/oss/javascript/deepagents/memory#advanced-usage)。
+您还可以使用 [Store API](/langsmith/custom-store) 从应用程序代码中读取和写入商店。示例请参见[Advanced usage](/oss/javascript/deepagents/memory#advanced-usage)。
 
 有关完整的命名空间工厂 API，请参阅[namespace factories](/oss/javascript/deepagents/backends#namespace-factories)。对于自我改进指令和知识库等记忆模式，请参阅[long-term memory](/oss/javascript/deepagents/memory)。
 
@@ -523,22 +523,22 @@ When building for production:
 
 ### 沙箱
 
-如果您的代理需要运行代码（而不仅仅是读写文件），请使用[sandbox](/oss/javascript/deepagents/sandboxes)。沙箱提供文件系统和用于运行 shell 命令的`execute`工具，所有这些都在一个隔离的容器内。这种隔离还可以保护您的主机：如果代理的代码耗尽内存或崩溃，则只有沙箱受到影响。您的服务器继续运行。
+如果您的代理需要运行代码（不仅仅是读写文件），请使用[sandbox](/oss/javascript/deepagents/sandboxes)。沙箱提供文件系统和用于运行 shell 命令的`execute`工具，所有这些都在一个隔离的容器内。这种隔离还可以保护您的主机：如果代理的代码耗尽内存或崩溃，则只有沙箱受到影响。您的服务器继续运行。
 
 #### 生命周期
 
 关键的决定是沙箱的寿命有多长。每次对话都是新的，还是对话共享一个持久的环境？
 
-|范围 |沙箱 ID 存储于 |生命周期 |示例用例 |
+|范围 |沙箱 ID 存储于 |生命周期|示例用例 |
 | - | - | - | - |
 | **线程范围** | [Thread](/langsmith/use-threads) 元数据 |每次对话都是新鲜的，在 TTL 上进行了清理 |每个对话都以干净的方式开始的数据分析机器人 |
 | **助理范围** | [Assistant](/langsmith/assistants)配置|在所有对话中共享 |跨对话维护克隆存储库的编码助手 |> [!注意]
 >
 > 下面的示例使用异步 [graph factory](/langsmith/graph-rebuild) 而不是静态图，因为沙箱需要 `thread_id` 或 `assistant_id` 来查找或创建正确的沙箱。图工厂没有收到完整的`Runtime`（没有`server_info`或`execution_info`）；相反，接受 `RunnableConfig` 并从 `config["configurable"]` 读取 `thread_id` 和 `assistant_id`。该工厂是异步的，因为沙箱创建是一项 I/O 绑定操作，需要仅在调用时可用的每次运行信息。
 
-> [tab] Thread-scoped (most common)
+> [选项卡] 线程范围（最常见）
 >
-> Each conversation gets its own sandbox. [graph factory](/langsmith/graph-rebuild) 从运行配置中读取`thread_id`，因此每个[thread](/langsmith/use-threads) 自动获得自己的隔离环境。命名沙箱查找处理跨运行的重复数据删除。 Cleaned up when the sandbox [TTL](/langsmith/configure-ttl) expires.
+> 每个对话都有自己的沙箱。 [graph factory](/langsmith/graph-rebuild) 从运行配置中读取`thread_id`，因此每个[thread](/langsmith/use-threads) 自动获得自己的隔离环境。命名沙箱查找处理跨运行的重复数据删除。沙箱[TTL](/langsmith/configure-ttl)过期时清理。
 >
 > ```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, LangSmithSandbox } from "deepagents";
@@ -677,7 +677,7 @@ When building for production:
 
 有关特定于提供商的文件传输示例，请参阅[working with files](/oss/javascript/deepagents/sandboxes#working-with-files)。有关提供程序设置、安全性和生命周期模式，请参阅完整的 [sandboxes guide](/oss/javascript/deepagents/sandboxes)。> [手风琴] 示例：使用自定义中间件同步技能和记忆
 >
-> [Skill](/oss/javascript/deepagents/skills) Agent 需要执行的脚本必须在 Agent 运行之前上传到沙箱中。您可能还想同步 [memories](/oss/javascript/deepagents/memory)，以便代理可以在容器内读取和更新它们。使用 [custom middleware](/oss/javascript/langchain/middleware/custom) 与 `before_agent` 和 `after_agent` 钩子跨沙箱边界移动文件：
+> [Skill](/oss/javascript/deepagents/skills) Agent 需要执行的脚本必须在 Agent 运行之前上传到沙箱中。您可能还想同步[memories](/oss/javascript/deepagents/memory)，以便代理可以在容器内读取和更新它们。使用 [custom middleware](/oss/javascript/langchain/middleware/custom) 与 `before_agent` 和 `after_agent` 钩子跨沙箱边界移动文件：
 >
 > ```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createMiddleware } from "langchain";
@@ -792,15 +792,15 @@ When building for production:
 }
 ```
 
-`${SECRET_KEY}` 引用解析存储在 LangSmith [workspace settings](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的机密。在创建引用秘密的模板之前，先在那里配置秘密。**工作区秘密。** 对于不需要基于代理的注入的 API 密钥（例如，代理服务器本身使用的密钥，而不是沙箱代码），将它们存储为 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的 LangSmith。这些在运行时可用作工作区中所有代理的环境变量。
+`${SECRET_KEY}` 引用解析存储在 LangSmith [workspace settings](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的机密。在创建引用秘密的模板之前，先在那里配置秘密。**工作区机密。** 对于不需要基于代理的注入的 API 密钥（例如，代理服务器本身使用的密钥，而不是沙箱代码），将它们存储为 LangSmith 中的 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings)。这些在运行时可用作工作区中所有代理的环境变量。
 
 > [!警告]
 >
-> 避免通过环境变量或文件上传将机密传递到沙箱中。代理可以读取沙箱内任何可访问的文件或环境变量，包括凭据。身份验证代理将秘密完全排除在沙箱之外。
+> 避免通过环境变量或文件上传将机密传递到沙箱中。代理可以读取沙箱内的任何可访问文件或环境变量，包括凭据。身份验证代理将秘密完全排除在沙箱之外。
 
 ## 护栏
 
-生产中的代理自主运行，这意味着它们可以无限循环、达到速率限制或处理包含敏感信息的用户数据。 Deep Agents 提供两层保护：
+生产中的代理自主运行，这意味着它们可以无限循环、达到速率限制或处理包含敏感信息的用户数据。 Deep Agents提供两层保护：
 
 * **[Permissions](#permissions)**：声明性允许/拒绝规则，控制代理可以读取或写入哪些文件和目录。
 * **[Fault tolerance](#fault-tolerance)**：速率限制、重试、回退和错误处理。
@@ -849,7 +849,7 @@ function App() {
 }
 ```
 
-对于产生许多子代理的深层代理工作流程，请在提交时设置较高的 `recursionLimit` 以避免切断长时间运行的执行：
+对于产生许多子代理的深度代理工作流程，请在提交时设置较高的 `recursionLimit` 以避免切断长时间运行的执行：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream.submit(

@@ -73,7 +73,7 @@ const callResearchAgent = tool(
 
 // Main agent with subagent as a tool
 const mainAgent = createAgent({ model: "google:gemini-3.6-flash", tools: [callResearchAgent] });
-```> **[Tutorial: Build a personal assistant with subagents](/oss/javascript/langchain/multi-agent/subagents-personal-assistant)**
+```> [卡片][Tutorial: Build a personal assistant with subagents](/oss/javascript/langchain/multi-agent/subagents-personal-assistant)
 >
 > 了解如何使用子代理模式构建个人助理，其中中央主代理（主管）协调专门的工作代理。
 
@@ -91,7 +91,7 @@ const mainAgent = createAgent({ model: "google:gemini-3.6-flash", tools: [callRe
 
 ## 同步与异步
 
-子代理执行可以是**同步**（阻塞）或**异步**（后台）。你的选择取决于主代理是否需要结果才能继续。
+子代理执行可以是**同步**（阻塞）或**异步**（后台）。您的选择取决于主代理是否需要结果才能继续。
 
 |模式|主要代理行为|最适合 |权衡 |
 | - | - | - | - |
@@ -271,7 +271,7 @@ graph LR
 >
 > 这种方法的一个有趣的方面是子代理可能具有与主代理完全相同的功能。在这种情况下，调用子代理**实际上与上下文隔离**是主要原因 - 允许复杂的多步骤任务在隔离的上下文窗口中运行，而不会增加主代理的对话历史记录。子代理自主完成工作，仅返回简洁的摘要，保持主线程的专注和高效。
 
-> **具有任务调度程序的代理注册**
+> [手风琴] 带有任务调度程序的代理注册表
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { tool, createAgent } from "langchain";
@@ -454,8 +454,8 @@ const callSubagent1 = tool(
 
 [Deep Agents](/oss/javascript/deepagents/subagents#forked-subagents) 将这些模式命名为 `mode: "isolated"`（默认）和 `mode: "fork"`，并为您实现分叉：分叉的子代理接收父代理的完整消息历史记录（包括工具调用）和系统提示。|模式|子代理接收 |最适合 |权衡 |
 | - | - | - | - |
-| **隔离**（默认）|仅任务描述|无需事先背景的重点工作 |上下文隔离，但重新派生父级已经执行的所有操作 |
-| **分叉** |家长的对话历史（以及Deep Agents中的系统提示）|继续父母已经开始的任务 |播种先前的上下文，但代价是更大的提示和更少的隔离 |
+| **隔离**（默认）|仅任务描述 |无需事先背景的重点工作 |上下文隔离，但重新派生父级已经执行的所有操作 |
+| **分叉** |家长的对话历史（以及Deep Agents中的系统提示）|继续父母已经开始的任务 |植入先前的上下文，但代价是更大的提示和更少的隔离 |
 
 ### 子代理输出
 

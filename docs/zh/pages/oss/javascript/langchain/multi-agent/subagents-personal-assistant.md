@@ -13,7 +13,7 @@
 
 我们还将合并[human-in-the-loop review](/oss/javascript/langchain/human-in-the-loop)，以允许用户根据需要批准、编辑和拒绝操作（例如出站电子邮件）。
 
-### 为什么要使用主管？多代理架构允许您在工作人员之间划分 [tools](/oss/javascript/langchain/tools)，每个工作人员都有自己单独的提示或说明。考虑一个可以直接访问所有日历和电子邮件 API 的代理：它必须从许多类似的工具中进行选择，了解每个 API 的确切格式，并同时处理多个域。如果性能下降，将相关工具和关联提示分成逻辑组可能会有所帮助（部分是为了管理迭代改进）。
+### 为什么要使用主管？多代理架构允许您在工作人员之间划分[tools](/oss/javascript/langchain/tools)，每个工作人员都有自己单独的提示或说明。考虑一个可以直接访问所有日历和电子邮件 API 的代理：它必须从许多类似的工具中进行选择，了解每个 API 的确切格式，并同时处理多个域。如果性能下降，将相关工具和关联提示分成逻辑组可能会有所帮助（部分是为了管理迭代改进）。
 
 ### 概念
 
@@ -60,196 +60,196 @@ process.env.LANGSMITH_API_KEY = "...";
 
 我们需要从 LangChain 的集成套件中选择一个聊天模型：
 
-**OpenAI**
+> [标签] OpenAI
+>
+> 👉 阅读[OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/openai
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/openai
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/openai
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/openai
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.OPENAI_API_KEY = "your-api-key";
+>
+> const model = await initChatModel("gpt-5.5");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatOpenAI } from "@langchain/openai";
+>
+> const model = new ChatOpenAI({
+>   model: "gpt-5.5",
+>   apiKey: "your-api-key"
+> });
+> ```
 
-👉 阅读[OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+> [标签] Anthropic
+>
+> 👉 阅读[Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/anthropic
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/anthropic
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/anthropic
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm add @langchain/anthropic
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.ANTHROPIC_API_KEY = "your-api-key";
+>
+> const model = await initChatModel("claude-sonnet-4-6");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatAnthropic } from "@langchain/anthropic";
+>
+> const model = new ChatAnthropic({
+>   model: "claude-sonnet-4-6",
+>   apiKey: "your-api-key"
+> });
+> ```
 
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/openai
-```
+> [选项卡] 天蓝色
+>
+> 👉 阅读[Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/azure
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/azure
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/azure
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/azure
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.AZURE_OPENAI_API_KEY = "your-api-key";
+> process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
+> process.env.OPENAI_API_VERSION = "your-api-version";
+>
+> const model = await initChatModel("azure_openai:gpt-5.5");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { AzureChatOpenAI } from "@langchain/openai";
+>
+> const model = new AzureChatOpenAI({
+>   model: "gpt-5.5",
+>   azureOpenAIApiKey: "your-api-key",
+>   azureOpenAIApiEndpoint: "your-endpoint",
+>   azureOpenAIApiVersion: "your-api-version"
+> });
+> ```> [选项卡] 谷歌双子座
+>
+> 👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/google
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/google
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/google
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/google
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.GOOGLE_API_KEY = "your-api-key";
+>
+> const model = await initChatModel("google:gemini-3.7-flash");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatGoogle } from "@langchain/google/node";
+>
+> const model = new ChatGoogle({
+>   model: "gemini-3.7-flash",
+>   apiKey: "your-api-key"
+> });
+> ```
 
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/openai
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/openai
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/openai
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.OPENAI_API_KEY = "your-api-key";
-
-const model = await initChatModel("gpt-5.5");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatOpenAI } from "@langchain/openai";
-
-const model = new ChatOpenAI({
-  model: "gpt-5.5",
-  apiKey: "your-api-key"
-});
-```
-
-**Anthropic**
-
-👉 阅读[Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/anthropic
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/anthropic
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/anthropic
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm add @langchain/anthropic
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.ANTHROPIC_API_KEY = "your-api-key";
-
-const model = await initChatModel("claude-sonnet-4-6");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatAnthropic } from "@langchain/anthropic";
-
-const model = new ChatAnthropic({
-  model: "claude-sonnet-4-6",
-  apiKey: "your-api-key"
-});
-```
-
-**天蓝色**
-
-👉 阅读[Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/azure
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/azure
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/azure
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/azure
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.AZURE_OPENAI_API_KEY = "your-api-key";
-process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
-process.env.OPENAI_API_VERSION = "your-api-version";
-
-const model = await initChatModel("azure_openai:gpt-5.5");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { AzureChatOpenAI } from "@langchain/openai";
-
-const model = new AzureChatOpenAI({
-  model: "gpt-5.5",
-  azureOpenAIApiKey: "your-api-key",
-  azureOpenAIApiEndpoint: "your-endpoint",
-  azureOpenAIApiVersion: "your-api-version"
-});
-```
-
-**谷歌双子座**
-
-👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/google
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/google
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/google
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/google
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.GOOGLE_API_KEY = "your-api-key";
-
-const model = await initChatModel("google:gemini-3.7-flash");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatGoogle } from "@langchain/google/node";
-
-const model = new ChatGoogle({
-  model: "gemini-3.7-flash",
-  apiKey: "your-api-key"
-});
-```**基岩匡威**
-
-👉 阅读[AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/aws
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/aws
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/aws
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/aws
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-// Follow the steps here to configure your credentials:
-// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-const model = await initChatModel("bedrock:gpt-5.5");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatBedrockConverse } from "@langchain/aws";
-
-// Follow the steps here to configure your credentials:
-// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-const model = new ChatBedrockConverse({
-  model: "gpt-5.5",
-  region: "us-east-2"
-});
-```
+> [标签] 基岩匡威
+>
+> 👉 阅读[AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/aws
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/aws
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/aws
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/aws
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> // Follow the steps here to configure your credentials:
+> // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+>
+> const model = await initChatModel("bedrock:gpt-5.5");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatBedrockConverse } from "@langchain/aws";
+>
+> // Follow the steps here to configure your credentials:
+> // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+>
+> const model = new ChatBedrockConverse({
+>   model: "gpt-5.5",
+>   region: "us-east-2"
+> });
+> ```
 
 ## 1. 定义工具
 
@@ -407,9 +407,7 @@ The team meeting has been scheduled for next Tuesday, June 18th, at 2:00 PM and 
 
 代理将“下周二下午 2 点”解析为 ISO 格式（“2024-01-16T14:00:00”），计算结束时间，调用`create_calendar_event`，并返回自然语言确认。
 
-### 创建电子邮件代理
-
-电子邮件代理处理消息撰写和发送。它侧重于提取收件人信息、制作适当的主题行和正文以及管理电子邮件通信。
+### 创建电子邮件代理电子邮件代理处理消息撰写和发送。它侧重于提取收件人信息、制作适当的主题行和正文以及管理电子邮件通信。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const EMAIL_AGENT_PROMPT = `
@@ -478,7 +476,9 @@ Email sent to design-team@example.com - Subject: Reminder: Please Review the New
 ================================== Ai Message ==================================
 
 I've sent a reminder to the design team asking them to review the new mockups. If you need any further communication on this topic, just let me know!
-```代理从非正式请求中推断收件人，制作专业的主题行和正文，致电`send_email`，并返回确认。每个子代理都有一个特定领域的工具和提示，使其能够在特定任务中表现出色。
+```
+
+代理从非正式请求中推断收件人，制作专业的主题行和正文，致电`send_email`，并返回确认。每个子代理都有一个特定领域的工具和提示，使其能够在特定任务中表现出色。
 
 ## 3. 将子代理包装为工具
 
@@ -536,9 +536,7 @@ Input: Natural language email request (e.g., 'send them a reminder about the mee
 
 工具描述可以帮助主管决定何时使用每种工具，因此要使其清晰具体。我们仅返回子代理的最终响应，因为主管不需要查看中间推理或工具调用。
 
-## 4.创建supervisor代理
-
-现在创建协调子代理的主管。主管只能看到高级工具并在域级别（而不是单个 API 级别）做出路由决策。
+## 4.创建supervisor代理现在创建协调子代理的主管。主管只能看到高级工具并在域级别（而不是单个 API 级别）做出路由决策。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const SUPERVISOR_PROMPT = `
@@ -600,7 +598,9 @@ The team standup has been scheduled for tomorrow at 9:00 AM with Alice and Bob. 
 ================================== Ai Message ==================================
 
 The team standup with Alice and Bob is scheduled for tomorrow at 9:00 AM. If you need any further arrangements or adjustments, please let me know!
-```主管将其识别为日历任务，调用`schedule_event`，日历代理处理日期解析和事件创建。
+```
+
+主管将其识别为日历任务，调用`schedule_event`，日历代理处理日期解析和事件创建。
 
 > [!提示]
 >
@@ -663,9 +663,7 @@ I've also sent an email reminder to the design team, asking them to review the n
 Let me know if you'd like to add more details to the meeting or include additional information in the email!
 ```
 
-主管认识到这需要日历和电子邮件操作，因此致电 `schedule_event` 召开会议，然后致电 `manage_email` 进行提醒。每个子代理完成其任务，主管将两个结果合成为连贯的响应。
-
-> [!注意]
+主管认识到这需要日历和电子邮件操作，因此致电 `schedule_event` 召开会议，然后致电 `manage_email` 进行提醒。每个子代理完成其任务，主管将两个结果合成为连贯的响应。> [!注意]
 >
 > 默认情况下，主管将任务按顺序分配给子代理。每个工具调用都会在下一个工具调用开始之前完成。但是，许多 LLM 将在单个响应中发出多个工具调用（如上面的跟踪所示，其中 `schedule_event` 和 `manage_email` 一起调用），运行时并行执行。您还可以配置显式并行调度。详情请参阅[⟦T66⟧ reference docs](https://reference.langchain.com/python/langgraph-supervisor/supervisor/create_supervisor)。
 
@@ -673,7 +671,9 @@ Let me know if you'd like to add more details to the meeting or include addition
 >
 > 参考[LangSmith trace](https://smith.langchain.com/public/95cd00a3-d1f9-4dba-9731-7bf733fb6a3c/r)查看上述运行的详细信息流程，包括单独的聊天模型提示和响应。
 
-### 完整的工作示例以下是可运行脚本中的所有内容：
+### 完整的工作示例
+
+以下是可运行脚本中的所有内容：
 
 **查看完整代码**
 
@@ -892,9 +892,7 @@ await Promise.all([
 
 ### 理解架构
 
-您的系统有三层。底层包含需要精确格式的严格 API 工具。中间层包含接受自然语言、将其转换为结构化 API 调用并返回自然语言确认的子代理。顶层包含管理器，用于路由到高级功能并综合结果。
-
-这种关注点分离提供了几个好处：每个层都有一个集中的职责，您可以添加新域而不影响现有域，并且可以独立测试和迭代每个层。
+您的系统有三层。底层包含需要精确格式的严格 API 工具。中间层包含接受自然语言、将其转换为结构化 API 调用并返回自然语言确认的子代理。顶层包含管理器，用于路由到高级功能并综合结果。这种关注点分离提供了几个好处：每个层都有一个集中的职责，您可以添加新域而不影响现有域，并且可以独立测试和迭代每个层。
 
 ## 6. 添加人工参与审核
 
@@ -939,7 +937,9 @@ const supervisorAgent = createAgent({
   systemPrompt: SUPERVISOR_PROMPT,
   checkpointer: new MemorySaver(), // [!code highlight]
 });
-```让我们重复一下查询。请注意，我们将中断事件收集到一个列表中以访问下游：
+```
+
+让我们重复一下查询。请注意，我们将中断事件收集到一个列表中以访问下游：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const query =
@@ -1018,7 +1018,7 @@ Tool: send_email
 Args: {'to': ['designteam@example.com'], 'subject': 'Reminder: Review New Mockups Before Meeting Next Tuesday at 2pm', 'body': "Hello Team,\n\nThis is a reminder to review the new mockups ahead of our meeting scheduled for next Tuesday at 2pm. Your feedback and insights will be valuable for our discussion and next steps.\n\nPlease ensure you've gone through the designs and are ready to share your thoughts during the meeting.\n\nThank you!\n\nBest regards,\n[Your Name]"}
 ```
 
-我们可以通过使用[⟦T72⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command)引用每个中断的ID来指定每个中断的决策。有关更多详细信息，请参阅[human-in-the-loop guide](/oss/javascript/langchain/human-in-the-loop)。出于演示目的，这里我们将接受日历事件，但编辑出站电子邮件的主题：
+中断 ID 在每次运行时都会发生变化，因此在选择决策时匹配操作请求的工具名称，然后在发送 [⟦T72⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command) 时通过中断 ID 键入恢复映射。有关更多详细信息，请参阅[human-in-the-loop guide](/oss/javascript/langchain/human-in-the-loop)。出于演示目的，这里我们将接受日历事件，但编辑出站电子邮件的主题：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Command } from "@langchain/langgraph"; // [!code highlight]
@@ -1028,8 +1028,10 @@ for (const interrupt of interrupts) {
   const actionRequest = interrupt.payload.actionRequests[0];
   if (actionRequest.name === "send_email") {
     // Edit email
-    const editedAction = { ...actionRequest };
-    editedAction.args.subject = "Mockups reminder";
+    const editedAction = {
+      name: actionRequest.name,
+      args: { ...actionRequest.args, subject: "Mockups reminder" },
+    };
     resume[interrupt.interruptId] = {
       decisions: [{ type: "edit", editedAction }]
     };
@@ -1080,9 +1082,7 @@ Let me know if you need any further assistance!
 - An email reminder has been sent to the design team about reviewing the new mockups before the meeting.
 
 Let me know if you need any further assistance!
-```
-
-运行根据我们的输入继续进行。
+```运行根据我们的输入继续进行。
 
 ## 7. 高级：控制信息流
 
@@ -1163,15 +1163,17 @@ const scheduleEvent = tool(
     }),
   }
 );
-```**重要提示：** 确保子代理提示强调其最终消息应包含所有相关信息。常见的故障模式是子代理执行工具调用但不将结果包含在其最终响应中。
+```
+
+**重要提示：** 确保子代理提示强调其最终消息应包含所有相关信息。常见的故障模式是子代理执行工具调用但不将结果包含在其最终响应中。
 
 > [!提示]
 >
 > 有关演示具有人机循环审核和高级信息流控制的完整主管模式的完整工作示例，请查看 LangChain.js 示例中的 [⟦T73⟧](https://github.com/langchain-ai/langchainjs/blob/main/examples/src/createAgent/supervisor.ts)。
 
-## 8. 要点
+## 8. 要点主管模式创建了抽象层，其中每一层都有明确的职责。设计主管系统时，从明确的域边界开始，并为每个子代理提供重点工具和提示。为主管编写清晰的工具描述，在集成之前独立测试每一层，并根据您的具体需求控制信息流。
 
-主管模式创建了抽象层，其中每一层都有明确的职责。设计主管系统时，从清晰的域边界开始，并为每个子代理提供重点工具和提示。为主管编写清晰的工具描述，在集成之前独立测试每一层，并根据您的具体需求控制信息流。> [!提示]
+> [!提示]
 >
 > **何时使用主管模式**
 >
@@ -1185,6 +1187,4 @@ const scheduleEvent = tool(
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/subagents-personal-assistant.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/subagents-personal-assistant.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

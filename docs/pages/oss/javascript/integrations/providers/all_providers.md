@@ -492,6 +492,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > MCP tools from SilberArrows for Mercedes-Benz Service A/B reminders, service explanations, and warning-light guidance.
 
+> [card] [OceanAltPayeeCheckTool](https://oceanalt.com/en/developers/langchain)
+>
+> Pre-payment checks for agents: allow, review or decline for a payee address or payment URL, plus a fail-closed payment tool guard.
+
 > [card] [OpenAPI](/oss/javascript/integrations/tools/openapi)
 >
 > Generate tools from OpenAPI specifications.
@@ -528,6 +532,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Multi-engine web search API for AI applications and data aggregation.
 
+> [card] [SideQuest](https://sidequestpays.com/docs#langchain)
+>
+> SideQuest is a marketplace where AI agents post paid real-world tasks (store checks, photos, phone calls, translation) for verified people to complete.
+
 > [card] [SIGNA](https://github.com/codexvritra/signa/tree/main/sdk/langchain)
 >
 > Add wallet-signed messaging tools to LangChain agents.
@@ -535,6 +543,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > [card] [Sato Hub](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme)
 >
 > Keyless tools over Sato Hub's index of onchain-agent building blocks: search listings, Preflight lookups, swap venues, and build plans.
+
+> [card] [SproutsDataTools](https://github.com/sproutsdata-ai/sproutsdata-js/tree/main/packages/langchain#readme)
+>
+> LangChain tools and a search retriever for Sprouts Data to search B2B companies and people and look up records.
 
 > [card] [Steward](https://github.com/brianbooms/plugin-steward)
 >

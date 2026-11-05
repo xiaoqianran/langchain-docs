@@ -10,7 +10,7 @@ It is included with the `managed-deepagents` npm package.
 
 > [!NOTE]
 >
-> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use version 0.10 of the Managed Deep Agents CLI and SDK for BYOC.
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
 
 For the fastest end-to-end path, see the [quickstart](/langsmith/javascript/managed-deep-agents-quickstart). For workflow guidance, see [Identity](/langsmith/javascript/managed-deep-agents-identity), [Memory](/langsmith/javascript/managed-deep-agents-memory), [Evals](/langsmith/javascript/managed-deep-agents-evals), [Custom tools](/langsmith/javascript/managed-deep-agents-tools), [Connections](/langsmith/javascript/managed-deep-agents-connections), [Custom middleware](/langsmith/javascript/managed-deep-agents-middleware), [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes), [Channels](/langsmith/javascript/managed-deep-agents-channels), [Schedules](/langsmith/javascript/managed-deep-agents-schedules), and [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy).
 

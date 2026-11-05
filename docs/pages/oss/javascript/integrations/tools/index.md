@@ -89,9 +89,11 @@ The following table shows tools that generate video, image, or audio assets:
 | [`SatoHubTools`](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/satohub-langchain-tools?style=flat-square\&label=%20&)](https://www.npmjs.com/package/satohub-langchain-tools) |
 | [`aiworker`](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/aiworker-langchain-tools?style=flat-square\&label=%20&)](https://www.npmjs.com/package/aiworker-langchain-tools) |
 | [`Arcmira`](https://github.com/arcmira/integrations/tree/master/packages/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@arcmira/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@arcmira/langchain) |
+| [`SproutsDataTools`](https://github.com/sproutsdata-ai/sproutsdata-js/tree/main/packages/langchain#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/@sproutsdata.ai/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@sproutsdata.ai/langchain) |
 | [`Mercedes-Benz Service Reminder (SilberArrows)`](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/mercedes-benz-service-reminder-mcp?style=flat-square\&label=%20&)](https://www.npmjs.com/package/mercedes-benz-service-reminder-mcp) |
 | [`You.com search tools`](https://you.com/docs/integrations/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@youdotcom-oss/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@youdotcom-oss/langchain) |
 | [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-toolstem?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-toolstem) |
+| [`OceanAltPayeeCheckTool`](https://oceanalt.com/en/developers/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@oceanalt/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@oceanalt/langchain) |
 | [`Corsair`](https://docs.corsair.dev/mcp-adapters/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@corsair-dev/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@corsair-dev/langchain) |
 | [`ClickSend`](/oss/javascript/integrations/tools/clicksend) | [  ![Downloads per month](https://img.shields.io/npm/dm/@clicksend/langchain-clicksend-mcp?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@clicksend/langchain-clicksend-mcp) |
 | [`CekiToolkit`](https://ceki.me) | [  ![Downloads per month](https://img.shields.io/npm/dm/@ceki/langchain-ceki?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@ceki/langchain-ceki) |
@@ -108,6 +110,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Browserless`](https://browserless.io) | N/A |
 | [`JSON agent toolkit`](/oss/javascript/integrations/tools/json) | N/A |
 | [`NotteBrowserToolkit`](https://docs.notte.cc/integrations/langchain) | N/A |
+| [`SideQuest`](https://sidequestpays.com/docs#langchain) | N/A |
 | [`SQLToolkit`](/oss/javascript/integrations/tools/sql) | N/A |
 | [`VectorStoreToolkit`](/oss/javascript/integrations/tools/vectorstore) | N/A |
 | [`Web browser`](/oss/javascript/integrations/tools/webbrowser) | N/A |

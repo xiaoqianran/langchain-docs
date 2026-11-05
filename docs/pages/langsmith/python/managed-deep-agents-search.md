@@ -1,6 +1,6 @@
-<!-- langchain-docs: Built-in search powered by Parallel | https://docs.langchain.com/langsmith/python/managed-deep-agents-search -->
+<!-- langchain-docs: Web search | https://docs.langchain.com/langsmith/python/managed-deep-agents-search -->
 
-# Built-in search powered by Parallel
+# Web search
 
 Add web search powered by Parallel to Managed Deep Agents without a separate account or API key.
 
@@ -11,6 +11,8 @@ LangSmith manages the search infrastructure, so you can add search without hosti
 > [!NOTE]
 >
 > Built-in search is available only on LangSmith Plus and Startup plans. Usage is free during private beta.
+>
+> Built-in search runs on LangSmith managed tools, which are available in GCP US only. [BYOC](/langsmith/byoc) data planes cannot use it.
 
 ## Before you begin
 

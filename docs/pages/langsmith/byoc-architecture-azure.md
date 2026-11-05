@@ -60,7 +60,7 @@ Private DNS zones linked to the VNet resolve PostgreSQL, Redis, Key Vault, and B
 
 | Store | Configuration |
 | - | - |
-| **PostgreSQL** (LangSmith) | Azure Database for PostgreSQL flexible server, PostgreSQL 16, `GP_Standard_D2ds_v4`, 32 GiB storage with autogrow. Zone-redundant high availability in regions that support it. Backups kept 7 days, without geo-redundant backup. Microsoft Entra authentication only, no password authentication, no public access. |
+| **PostgreSQL** (LangSmith) | Azure Database for PostgreSQL flexible server, PostgreSQL 18, `GP_Standard_D2ds_v4`, 32 GiB storage with autogrow. Zone-redundant high availability in regions that support it. Backups kept 7 days, without geo-redundant backup. Microsoft Entra authentication only, no password authentication, no public access. |
 | **PostgreSQL** (SmithDB metastore) | A second flexible server, PostgreSQL 18, `GP_Standard_D2ds_v4`, 128 GiB storage. Same availability, backup, and access settings. |
 | **Azure Managed Redis** | `Balanced_B3` with high availability, OSS cluster policy, and no persistence. TLS only, access keys disabled, no public access. |
 | **Blob storage** | Storage accounts for trace payloads and attachments, and for SmithDB data. StorageV2, Standard, ZRS in regions with availability zones and LRS in other regions. HTTPS only with TLS 1.2 or later. Shared key access and public network access are disabled. |
@@ -150,17 +150,11 @@ When you delete a data plane, LangSmith deletes the AKS cluster, PostgreSQL, Red
 
 ## Scaling and operations
 
-LangChain operates Azure data planes the same way as AWS data planes. See [BYOC operations](/langsmith/byoc-operations-aws) for upgrades and maintenance. On Azure:
-
-* **Application services**: Each LangSmith service scales horizontally between its minimum and maximum replica counts. Most services target 70% CPU and 80% memory of their requested resources.
-* **Nodes**: Node auto-provisioning adds nodes for pods that cannot be scheduled, up to each node pool's limit. The system node pool stays at three nodes.
-* **Storage**: PostgreSQL storage grows automatically. Blob storage grows with usage.
-* **Monitoring**: The data plane reads PostgreSQL and Redis metrics from Azure Monitor, and reports health metrics to LangChain.
-* **Changes**: LangChain monitors the data plane and can change database sizes, replica counts, and node pool limits.
+LangChain operates your Azure data plane after provisioning. See [BYOC operations on Azure](/langsmith/byoc-operations-azure) for autoscaling, default instance sizes, upgrades, and maintenance windows. For estimated infrastructure costs, see [Azure data plane cost estimate](/langsmith/byoc-data-plane-cost-azure).
 
 ### Logs
 
-Your Azure Activity Log records every call that LangSmith makes to Azure Resource Manager. LangSmith does not configure Azure diagnostic settings or VNet flow logs, so AKS control plane and audit logs, Key Vault audit logs, PostgreSQL logs, and network flow logs are not collected by default. To collect them, add diagnostic settings and flow logs to those resources in your subscription. You are responsible for reviewing the logs and configuring alerts.
+Your Azure Activity Log records LangSmith calls to Azure Resource Manager. To collect resource and network logs, configure diagnostic settings and VNet flow logs in your subscription. See [Auditing](/langsmith/byoc-operations-azure#auditing) for the logs available and your responsibilities.
 
 ## See also
 

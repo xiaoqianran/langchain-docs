@@ -33,7 +33,7 @@
 | **升级和补丁** |自动|自动|手册|
 | **缩放** |自动|自动，由LangChain管理 |手册|
 
-[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 已在云和 BYOC 上提供公共测试版。对于 BYOC，请使用托管 Deep Agents CLI 和 SDK 版本 0.10。
+[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 已在云和 BYOC 上提供公共测试版。对于 BYOC，请使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本。
 
 针对代理工作负载的云、BYOC 和自托管支持[LangSmith Deployment](/langsmith/deployment)。请参阅 [LangSmith Deployment overview](/langsmith/deployment) 选择拓扑（云托管、BYOC、混合、带控制平面的自托管或独立）。
 

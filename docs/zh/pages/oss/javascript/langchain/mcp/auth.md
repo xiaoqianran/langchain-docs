@@ -63,9 +63,9 @@ OAuth 允许用户授权您的应用程序访问 MCP 服务器。将 `OAuthClien
 
 1. 调用`listTools()`发现工具。如果需要登录，则将用户的浏览器重定向到返回的`authorizationUrl`。
 2. 在您的回拨路线中，在同一会话中拨打`completeLogin()`。它在交换代码之前检查调用者并消耗待处理的`state`。
-3. 使用退回的工具。交换后，助手会使用保存的令牌重试发现。
+3. 使用退回的工具。交换后，帮助程序使用保存的令牌重试发现。
 
-> **会话助手**
+> [手风琴] 会话助手
 >
 > 此示例在一个 Node.js 进程中保留挂起的登录状态。对于多个进程或重新启动，请使用有期限的共享存储。检查状态、用户、会话和服务器，并在一个原子操作中使用记录。 SDK 不验证`state`。
 >
@@ -176,7 +176,7 @@ const result = await crm.listTools();
 // Otherwise, pass result.tools to your agent.
 ```
 
-保持 `crm` 可用于该应用程序的会话，直到回调完成。不要与其他会话共享其提供程序。### 完成重定向
+保持 `crm` 可用于该应用程序的会话，直到回调完成。不要与其他会话共享其提供者。### 完成重定向
 
 用户登录后，授权服务器重定向到您的提供商的`redirectUrl`。在该路由中，检索相同的 `crm` 实例以及调用者经过验证的用户和会话 ID，然后完成登录：
 
@@ -188,11 +188,11 @@ const result = await crm.completeLogin(new URL(req.url, "http://localhost"), use
 
 帮助程序将完整查询传递给 `finishAuth()`，以便 SDK 可以验证授权服务器的 `iss` 参数。它拒绝交换之前丢失、不匹配或已消耗的状态。使用其工具时保持适配器打开，然后在应用程序会话结束时调用`await crm.close()`。
 
-对于配置了 `transport: "sse"` 的服务器，请在回调帮助器中使用 `SSEClientTransport`。对于无需用户的机器对机器访问，请使用 SDK 的 `ClientCredentialsProvider` 而不是浏览器登录。
+对于配置了`transport: "sse"`的服务器，请在回调帮助器中使用`SSEClientTransport`。对于无需用户的机器对机器访问，请使用 SDK 的 `ClientCredentialsProvider` 而不是浏览器登录。
 
 ## 处理身份验证错误
 
-因凭据而被拒绝的连接会抛出 `MCPClientError`。 SDK 错误位于其 `cause` 链下一层，或者当 HTTP 连接回退到 SSE 时位于两层。此示例遍历几个级别并处理由于以下任一原因导致的 HTTP 身份验证失败：* **`UnauthorizedError`**：SDK无法自行恢复。需要 OAuth 登录，或者令牌提供商没有 `onUnauthorized`。
+因凭据而被拒绝的连接会抛出 `MCPClientError`。 SDK 错误位于其 `cause` 链下一级，或者当 HTTP 连接回退到 SSE 时位于两级。此示例遍历几个级别并处理由于以下任一原因导致的 HTTP 身份验证失败：* **`UnauthorizedError`**：SDK无法自行恢复。需要 OAuth 登录，或者令牌提供商没有 `onUnauthorized`。
 * **HTTP 401**（通过 SSE 的 `SdkHttpError` 和 `status: 401`，或 `SseError` 和 `code: 401`）：服务器拒绝凭据，或者未提供任何凭据。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

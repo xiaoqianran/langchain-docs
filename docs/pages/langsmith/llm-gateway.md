@@ -2,15 +2,15 @@
 
 # LLM Gateway
 
-Access models across providers with one LangSmith API key while tracing calls and enforcing spend and data protection policies.
+Route model calls from your agents through one LangSmith endpoint, with each call traced in LangSmith and governed by your organization's policies.
 
 > [!NOTE]
 >
 > The LLM Gateway is in [beta](/langsmith/release-stages).
 
-The LLM Gateway is a proxy between your application and the model providers your workspace has configured. Your application authenticates with a [LangSmith API key](/langsmith/create-account-api-key). The gateway routes each request to the provider named in its model ID, traces the call, and applies your organization's governance policies.
+The LLM Gateway is the control layer between the agents and applications you run and the model providers your workspace has configured. Because the gateway is part of LangSmith, each call it routes becomes a LangSmith trace that records the routing and policy decisions made for it. Your application authenticates with a [LangSmith API key](/langsmith/create-account-api-key). The gateway routes each request to the provider named in its model ID, traces the call, and applies your organization's governance policies.
 
-Without the gateway, provider keys are copied onto every application and deployment that calls a model. Spend and data controls depend on each provider account. With the gateway, provider keys stay in LangSmith, every call appears as a [LangSmith trace](/langsmith/llm-gateway-traces), and [spend limits](/langsmith/llm-gateway-spend-policies), [rate limits](/langsmith/llm-gateway-rate-limit-policies), and [data policies](/langsmith/llm-gateway-data-policy) apply to every call in their scope.
+Without the gateway, each application and deployment holds its own provider keys. Reliability, spend, and data controls are set up separately for each provider account. With the gateway, provider keys stay in LangSmith, and [model fallbacks](/langsmith/llm-gateway-fallbacks), [spend limits](/langsmith/llm-gateway-spend-policies), [rate limits](/langsmith/llm-gateway-rate-limit-policies), and [data policies](/langsmith/llm-gateway-data-policy) apply to every call in their scope. When a fallback fires or a policy blocks a call, the [trace](/langsmith/llm-gateway-traces) shows each attempt and policy check. Moreover, policy violations surface in [LangSmith Engine](/langsmith/engine) for triage.
 
 ## Choose a request format
 
@@ -26,7 +26,7 @@ The gateway calls each provider with a credential that LangSmith holds: your own
 
 Start with the guide for your role:
 
-> [card] [Set up the gateway for your team](/langsmith/llm-gateway-admin-setup)
+> [card] [Set up the gateway for your organization](/langsmith/llm-gateway-admin-setup)
 >
 > Complete the initial setup to route requests through the gateway.
 

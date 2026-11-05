@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 决定是否移动
 
@@ -130,13 +130,13 @@ export const agent = defineDeepAgent({
   model: "openai:gpt-5.5",
   tools: [internetSearch],
 });
-```该条目必须导出一个名为 `agent` 的变量，并且定义调用本身必须存在于该文件中。从另一个模块重新导出定义的根条目失败，错误名称为 `name` 而不是真正的问题。
+```该条目必须导出名为 `agent` 的变量，并且定义调用本身必须位于该文件中。从另一个模块重新导出定义的根条目失败，错误名称为 `name` 而不是真正的问题。
 
 `src/` 布局就可以了。将包保留在原处并从根条目导入它们。
 
 **3.将提示、技能和记忆移入文件**
 
-将系统提示符放在项目根目录下的`instructions.md`中。在`skills/`下为每个技能指定一个自己的目录，并带有`SKILL.md`。
+将系统提示符放在项目根目录下的`instructions.md`中。在 `skills/` 下为每个技能指定一个自己的目录，并带有 `SKILL.md`。
 
 如果代理需要跨线程保留的内存，请在导出名为 `memory` 的变量的根文件中声明它：
 
@@ -146,7 +146,7 @@ import { defineMemory } from "managed-deepagents";
 export const memory = defineMemory({ scope: "agent" });
 ```
 
-持久内存是可选的，没有该文件的项目不会挂载任何内容。范围是唯一的旋钮：`"agent"` 安装部署的每个调用者共享的一棵树。要控制代理保留的内容，请将内存策略写入`instructions.md`。参见[Guide what to remember](/langsmith/javascript/managed-deep-agents-memory#guide-what-to-remember)。
+持久内存是可选的，没有该文件的项目不会挂载任何内容。作用域是唯一的旋钮：`"agent"` 安装部署的每个调用者共享的一棵树。要控制代理保留的内容，请将内存策略写入`instructions.md`。参见[Guide what to remember](/langsmith/javascript/managed-deep-agents-memory#guide-what-to-remember)。
 
 > [!警告]
 >

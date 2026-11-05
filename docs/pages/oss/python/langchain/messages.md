@@ -682,6 +682,32 @@ Content blocks are represented (either when creating a message or accessing the 
 > >     "extras": {"signature": "abc123"},
 > > }
 > > ```
+>
+> > [accordion] RefusalContentBlock
+> >
+> > **Purpose:** An explicit refusal that the model provider reports, such as an OpenAI `refusal` content part, an Anthropic `stop_reason="refusal"`, or a Gemini safety block. LangChain does not detect refusals that the model writes as ordinary text. Requires `langchain-core>=1.7.5`.
+> >
+> > **type** `string` *required*
+> >
+> > Always `"refusal"`
+> >
+> > **refusal** `string` *required*
+> >
+> > The refusal message, or an empty string if the provider sent none
+> >
+> > **extras** `object`
+> >
+> > Additional provider-specific data, such as Anthropic's refusal `category` or Gemini's `finish_reason` or `block_reason`
+> >
+> > **Example:**
+> >
+> > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > {
+> >     "type": "refusal",
+> >     "refusal": "",
+> >     "extras": {"category": "cyber"},
+> > }
+> > ```
 
 > [accordion] Multimodal
 >
@@ -959,6 +985,8 @@ Content blocks are represented (either when creating a message or accessing the 
 > > Provider-specific data structure
 > >
 > > **Usage:** For experimental or provider-unique features
+> >
+> > When `langchain-core` adds a standard block type, payloads that match it move out of `non_standard` and into the new type. Branch on `type` instead of relying on a payload staying `non_standard`, and upgrade provider packages together with `langchain-core`.
 >
 > Additional provider-specific content types may be found within the [reference documentation](/oss/python/integrations/providers/overview) of each model provider.
 

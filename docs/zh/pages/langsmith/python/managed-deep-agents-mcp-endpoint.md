@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 终点为出方向。 [MCP connector](/langsmith/python/managed-deep-agents-mcp-connectors) 指出了另一种方式：它将远程 MCP 服务器中的工具添加到您的代理中。部署可以同时使用两者。
 
@@ -128,7 +128,7 @@ async with MCPAdapter(
 
 为了在通话中保留知识，[opt in to durable memory](/langsmith/python/managed-deep-agents-memory)。持久内存是可选的，并由部署的每个调用者共享。当 MCP 客户端不应相互影响时，请勿启用它。
 
-## 何时使用 MCP 端点|概念 |亲切 |它如何到达代理|
+## 何时使用 MCP 端点|概念|亲切 |它如何到达代理|
 | - | - | - |
 | **MCP 端点** |部署API |将代理作为工具公开给 MCP 客户端 |
 | **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)** |托管配置|将远程 MCP 服务器托管的工具添加到代理 |

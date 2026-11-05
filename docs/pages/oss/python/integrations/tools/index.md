@@ -41,6 +41,7 @@ The following table shows tools that execute online searches in some shape or fo
 | [Nia Toolkit](https://github.com/nozomio-labs/nia-langchain) | Free tier available | Code, Docs, Metadata, Sources |
 | [Nimble Search](https://docs.nimbleway.com/integrations/connectors/langchain) | Free trial available | URL, Content, Title |
 | [Nimble Web Search Agents](https://docs.nimbleway.com/integrations/connectors/langchain#agent-api-v2-web-search-agents) | Free trial available | Research answer, Sources |
+| [Oxylabs Web API Search](https://github.com/oxylabs/langchain-oxylabs#web-api) | Free trial, then monthly plans | URL, Title, Snippet |
 | [Parallel Search](/oss/python/integrations/tools/parallel_search) | Paid | URL, Title, Excerpts |
 | [Perplexity Search](/oss/python/integrations/tools/perplexity_search) | Paid (with monthly free tier) | URL, Title, Snippet, Date, Last Updated |
 | [Search1API Search](https://www.search1api.com/docs/integrations/langchain#search) | 100 free credits on sign up, no credit card | URL, Title, Snippet, Content, Images |
@@ -113,6 +114,7 @@ The following table shows tools that can be used to automate tasks in web browse
 | [Nimble Extract Templates](https://docs.nimbleway.com/integrations/connectors/langchain#extract-templates) | Free trial available | ❌ |
 | [Nimble Crawl and Map](https://docs.nimbleway.com/integrations/connectors/langchain#crawl-and-map) | Free trial available | ❌ |
 | [NodeProxy](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations) | \~\$0.002 USDC per parse (x402 on Base) | ❌ |
+| [Oxylabs Web API Scrape](https://github.com/oxylabs/langchain-oxylabs#web-api) | Free trial, then monthly plans | ❌ |
 | [Oxylabs Web Scraper API](https://github.com/oxylabs/langchain-oxylabs) | Free trial, with flat rate plans and pre-paid credits after | ❌ |
 | [ProxyClaw](https://proxyclaw.ai/docs) | Free tier available | ❌ |
 | [ProxyHat](https://docs.proxyhat.com) | Paid | ❌ |
@@ -191,6 +193,7 @@ The following table shows tools that generate video, image, or audio assets:
 | Tool/Toolkit | Pricing | Capabilities |
 | - | - | - |
 | [Magic Hour](https://docs.magichour.ai) | Free tier (400 credits + 100/day) | Text-to-video, image-to-video, and image generation with Sora 2, Veo 3.1, Kling 3.0, WAN 2.2, GPT-image, Nano Banana Pro. Sync and async, returns URLs or local downloads. |
+| [PopNow](https://popnow.ai/docs/langchain) | Pay-as-you-go in USD, every call quoted first | Image generation and editing, text-to-video, image-to-video, music and text-to-speech with Nano Banana, GPT Image, Seedream, Kling, MiniMax H3, Seedance, Wan, Suno and Gemini TTS. Sync and async, returns URLs. |
 
 ## All tools and toolkits
 
@@ -541,6 +544,12 @@ The following table shows tools that generate video, image, or audio assets:
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`viaSocket`](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/viasocket/month)](https://pypi.org/project/viasocket/) |
 | [`HyperresearchAnswerTool`](https://hyperresearch.ai/docs/answers/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperresearch/month)](https://pypi.org/project/langchain-hyperresearch/) |
+| [`SofyaSearch`](https://sofya.co/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sofya/month)](https://pypi.org/project/langchain-sofya/) |
+| [`LaneRouterToolkit`](https://lanerouter.com/docs#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lanerouter/month)](https://pypi.org/project/langchain-lanerouter/) |
+| [`ChainAnalyzerToolkit`](https://github.com/rascal-3/chainanalyzer-mcp/tree/main/packages/langchain-chainanalyzer) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-chainanalyzer/month)](https://pypi.org/project/langchain-chainanalyzer/) |
+| [`Agent Data Hub`](https://github.com/Jona1245/agentdatahub-python#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/agentdatahub/month)](https://pypi.org/project/agentdatahub/) |
+| [`EtfiqToolkit`](https://github.com/etfiq/etfiq-connectors/tree/main/langchain-etfiq) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-etfiq/month)](https://pypi.org/project/langchain-etfiq/) |
+| [`StoreRouterToolkit`](https://github.com/octogen-ai/octogen-dev/tree/main/integrations/langchain#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-storerouter/month)](https://pypi.org/project/langchain-storerouter/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |
 | [`StophyToolkit`](https://github.com/stophydotdev/stophy/tree/main/sdk/packages/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-stophy/month)](https://pypi.org/project/langchain-stophy/) |
 | [`VideoGenToolkit`](https://github.com/video-gen/langchain-videogen#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-videogen/month)](https://pypi.org/project/langchain-videogen/) |
@@ -549,8 +558,11 @@ The following table shows tools that generate video, image, or audio assets:
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
 | [`CleaveToolkit`](https://cleave.fi/docs/agents/langchain) | N/A |
+| [`FaxForAgentsToolkit`](https://github.com/faxforagents/langchain-faxforagents/blob/main/README.md) | N/A |
 | [`FokalsToolkit`](https://github.com/fokals/langchain-fokals#readme) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
+| [`PopNowToolkit`](https://popnow.ai/docs/langchain) | N/A |
+| [`SideQuest`](https://sidequestpays.com/docs#langchain) | N/A |
 | [`Stagehand`](/oss/python/integrations/tools/stagehand) | N/A |
 
 > [!NOTE]

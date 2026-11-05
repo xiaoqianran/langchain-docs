@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 将沙箱声明放在`sandbox/`下。仅当您想要配置快照时才添加 `sandbox/setup.sh`：
 
@@ -123,7 +123,7 @@ mkdir -p /workspace
 
 ## 选择烘焙底料在没有烘焙基础的情况下，LangSmith的默认沙箱模板是起点。要从其他内容开始，请准确设置其中之一：
 
-|选项 |使用|
+|选项 |使用 |
 | - | - |
 | `snapshot_name` | LangSmith 快照名称。允许使用标签。 |
 | `snapshot_id` | LangSmith 快照 ID。 |
@@ -262,7 +262,7 @@ if uploaded[0].error:
 
 托管Deep Agents拥有沙箱命名、配方烘焙、重用、恢复和清理。每个持久线程都有自己的沙箱，从当前配方快照克隆。有关平台级生命周期的详细信息，请参阅[Sandboxes](/langsmith/sandboxes)。## 何时使用沙箱
 
-|目标|使用|
+|目标|使用 |
 | - | - |
 |隔离地写入文件、运行代码或执行 shell 命令 |沙盒|
 |跨线程存储持久知识 | [Memory](/langsmith/python/managed-deep-agents-memory) |
@@ -272,6 +272,6 @@ if uploaded[0].error:
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

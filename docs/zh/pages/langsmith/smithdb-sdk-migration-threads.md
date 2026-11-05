@@ -6,7 +6,7 @@
 
 将 LangSmith SDK 线程方法迁移到 SmithDB 支持的等效方法。
 
-这些方法查询线程并列出线程内的跟踪。有关弃用日期、最低 SDK 版本以及适用于每种方法的代理提示，请参阅 [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration)。
+这些方法查询线程并列出线程内的跟踪。有关弃用日期、最低 SDK 版本以及适用于每种方法的代理提示，请参阅 [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration)。
 
 ## 主题：查询
 
@@ -77,7 +77,7 @@
 > | `offset` + `limit` | `cursor` + `page_size` |偏移分页被光标分页取代 |
 > | `filter`（根据运行进行评估）| `filter` |语法相同；现在针对每个线程的根运行进行评估 |> [选项卡] TypeScript
 >
-> |之前 (`listThreads`) |之后(`threads.query`)|笔记|
+> |之前 (`listThreads`) |之后(`threads.query`) |笔记|
 > | - | - | - |
 > | `projectId` 异或 `projectName` | `project_id` |新方法只需要 UUID；首先通过 `readProject()` 解析名称 |
 > | `startTime`（默认为 1 天前）| `min_start_time` + `max_start_time` |选修的;默认为现在结束的 1 天窗口，与 `startTime` |
@@ -181,12 +181,12 @@
 >
 > 旧版 API 从来没有专用的线程端点。最接近的等效项是 `POST /api/v1/runs/query`，在客户端按 `thread_id` 元数据分组。下面的每个字段都是新的。
 >
-> |新`threads.query`响应字段 |笔记|
+> | New `threads.query` response field |笔记|
 > | - | - |
 > | `thread_id` | |
 > | `count` | |
-> | `min_start_time`、`max_start_time`、`start_time` | |
-> | `first_trace_id`、`last_trace_id`、`trace_id` | `trace_id` 是一个代表性的根跟踪 UUID，例如对于深层链接，除了第一个/最后一个跟踪 UUID 之外 |
+> | `min_start_time`, `max_start_time`, `start_time` | |
+> | `first_trace_id`, `last_trace_id`, `trace_id` | `trace_id` 是一个代表性的根跟踪 UUID，例如对于深层链接，除了第一个/最后一个跟踪 UUID 之外 |
 > | `first_inputs`、`last_outputs` |第一个/最后一个跟踪的预览被截断 |
 > | `last_error` | |
 > | `num_errored_turns` | |
@@ -197,7 +197,7 @@
 
 ### 示例
 
-#### 列出项目中的线程
+#### List threads in a project
 
 获取某个时间范围内项目中具有活动的每个线程。
 

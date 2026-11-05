@@ -42,7 +42,7 @@ LangSmith 云上的新组织获得基于代理的工作区。在现有组织中�
 * [Agent Registry](/langsmith/agent-registry)
 * [Agent environments](/langsmith/agent-environments)
 * [Workload isolation](/langsmith/workload-isolation)
-* [Administration overview](/langsmith/administration-overview#agents-and-applications)
+* [Administration overview](/langsmith/administration-overview#agents)
 
 ***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 

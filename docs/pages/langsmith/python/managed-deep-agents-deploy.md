@@ -8,7 +8,7 @@ Deploying a Managed Deep Agent compiles a code-first project into a managed Lang
 
 > [!NOTE]
 >
-> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use version 0.10 of the Managed Deep Agents CLI and SDK for BYOC.
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
 
 This page covers secrets routing and deploy options. To test the agent before deploying, see [Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development). For command flags, the deploy step list, and troubleshooting, see the [CLI reference](/langsmith/python/managed-deep-agents-cli).
 
@@ -55,11 +55,13 @@ For more information on regions, see the [Regions FAQ](/langsmith/regions-faq).
 
 ## Select a BYOC data plane
 
-For BYOC, use version 0.10 of the Managed Deep Agents CLI and SDK. Set `LANGSMITH_ENDPOINT` to your data plane's API URL, not a SaaS regional endpoint. Find the endpoint in **Settings > Data Planes**. See [BYOC usage](/langsmith/byoc-usage).
+For BYOC, use Managed Deep Agents CLI and SDK v0.10 or later. Set `LANGSMITH_ENDPOINT` to your data plane's API URL, not a SaaS regional endpoint. Find the endpoint in **Settings > Data Planes**. See [BYOC usage](/langsmith/byoc-usage).
 
 Set `LANGSMITH_API_KEY` to a key for a workspace inside that data plane. Set `LANGSMITH_WORKSPACE_ID` to the target workspace ID, or pass `--workspace-id` to `mda deploy`. Configure these values in your project's `.env` or shell environment before deploying.
 
 The CLI derives the Deployment API URL from the data plane endpoint. Do not append `/api-host` to `LANGSMITH_ENDPOINT`.
+
+BYOC data planes do not support Serverless deployments. Run `mda deploy --push-to <image-repository>` to build and push your agent image. The CLI creates a Dedicated deployment by default, so you do not need to pass `--deployment-type dedicated`.
 
 ## Deploy to LangSmith
 

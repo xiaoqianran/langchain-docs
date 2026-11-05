@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 将代理指令放入项目根目录下的 `instructions.md` 中：
 
@@ -44,10 +44,10 @@ MDA 在每次运行时将指令插入代理的系统提示符中。
 
 有关同步哪些内容、不同步哪些内容以及如何从部署中打开存储库，请参阅[Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)。
 
-## 何时使用说明|概念 |角色 |加载时间 |
+## 何时使用说明|概念|角色 |加载时间 |
 | - | - | - |
 | **说明** |永远在线的系统提示 |每次跑步 |
-| **[Skills](/langsmith/javascript/managed-deep-agents-skills)** |特定任务的程序 |当代理选择他们时 |
+| **[Skills](/langsmith/javascript/managed-deep-agents-skills)** |特定任务的程序 |当代理选择他们时|
 | **[Memory](/langsmith/javascript/managed-deep-agents-memory)** |代理可以更新的知识 |当启用持久内存时 |
 
 欲了解更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。

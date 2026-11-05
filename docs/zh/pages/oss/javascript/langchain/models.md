@@ -6,7 +6,7 @@
 
 初始化和配置聊天模型，即LangChain代理的推理引擎，支持工具调用、结构化输出和多模态输入。
 
-[LLMs](https://en.wikipedia.org/wiki/Large_language_model) 是强大的人工智能工具，可以像人类一样解释和生成文本。他们的用途广泛，足以编写内容、翻译语言、总结和回答问题，而无需针对每项任务进行专门培训。
+[LLMs](https://en.wikipedia.org/wiki/Large_language_model) 是强大的人工智能工具，可以像人类一样解释和生成文本。他们用途广泛，足以编写内容、翻译语言、总结和回答问题，而无需针对每项任务进行专门培训。
 
 除了文本生成之外，许多模型还支持：
 
@@ -38,198 +38,198 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 
 在 LangChain 中开始使用独立模型的最简单方法是使用 `initChatModel` 从您选择的 [chat model provider](/oss/javascript/integrations/chat) 中初始化一个模型（示例如下）：
 
-**OpenAI**
+> [标签] OpenAI
+>
+> 👉 阅读[OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/openai
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/openai
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/openai
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/openai
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.OPENAI_API_KEY = "your-api-key";
+>
+> const model = await initChatModel("gpt-5.5");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatOpenAI } from "@langchain/openai";
+>
+> const model = new ChatOpenAI({
+>   model: "gpt-5.5",
+>   apiKey: "your-api-key"
+> });
+> ```
 
-👉 阅读[OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+> [标签] Anthropic
+>
+> 👉 阅读[Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/anthropic
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/anthropic
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/anthropic
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm add @langchain/anthropic
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.ANTHROPIC_API_KEY = "your-api-key";
+>
+> const model = await initChatModel("claude-sonnet-4-6");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatAnthropic } from "@langchain/anthropic";
+>
+> const model = new ChatAnthropic({
+>   model: "claude-sonnet-4-6",
+>   apiKey: "your-api-key"
+> });
+> ```
 
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/openai
-```
+> [选项卡] 天蓝色
+>
+> 👉 阅读[Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/azure
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/azure
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/azure
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/azure
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.AZURE_OPENAI_API_KEY = "your-api-key";
+> process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
+> process.env.OPENAI_API_VERSION = "your-api-version";
+>
+> const model = await initChatModel("azure_openai:gpt-5.5");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { AzureChatOpenAI } from "@langchain/openai";
+>
+> const model = new AzureChatOpenAI({
+>   model: "gpt-5.5",
+>   azureOpenAIApiKey: "your-api-key",
+>   azureOpenAIApiEndpoint: "your-endpoint",
+>   azureOpenAIApiVersion: "your-api-version"
+> });
+> ```
 
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/openai
-```
+> [选项卡] 谷歌双子座
+>
+> 👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/google
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/google
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/google
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/google
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> process.env.GOOGLE_API_KEY = "your-api-key";
+>
+> const model = await initChatModel("google:gemini-3.7-flash");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatGoogle } from "@langchain/google/node";
+>
+> const model = new ChatGoogle({
+>   model: "gemini-3.7-flash",
+>   apiKey: "your-api-key"
+> });
+> ```
 
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/openai
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/openai
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.OPENAI_API_KEY = "your-api-key";
-
-const model = await initChatModel("gpt-5.5");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatOpenAI } from "@langchain/openai";
-
-const model = new ChatOpenAI({
-  model: "gpt-5.5",
-  apiKey: "your-api-key"
-});
-```
-
-**Anthropic**
-
-👉 阅读[Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/anthropic
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/anthropic
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/anthropic
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm add @langchain/anthropic
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.ANTHROPIC_API_KEY = "your-api-key";
-
-const model = await initChatModel("claude-sonnet-4-6");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatAnthropic } from "@langchain/anthropic";
-
-const model = new ChatAnthropic({
-  model: "claude-sonnet-4-6",
-  apiKey: "your-api-key"
-});
-```
-
-**天蓝色**
-
-👉 阅读[Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/azure
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/azure
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/azure
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/azure
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.AZURE_OPENAI_API_KEY = "your-api-key";
-process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
-process.env.OPENAI_API_VERSION = "your-api-version";
-
-const model = await initChatModel("azure_openai:gpt-5.5");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { AzureChatOpenAI } from "@langchain/openai";
-
-const model = new AzureChatOpenAI({
-  model: "gpt-5.5",
-  azureOpenAIApiKey: "your-api-key",
-  azureOpenAIApiEndpoint: "your-endpoint",
-  azureOpenAIApiVersion: "your-api-version"
-});
-```
-
-**谷歌双子座**
-
-👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/google
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/google
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/google
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/google
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-process.env.GOOGLE_API_KEY = "your-api-key";
-
-const model = await initChatModel("google:gemini-3.7-flash");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatGoogle } from "@langchain/google/node";
-
-const model = new ChatGoogle({
-  model: "gemini-3.7-flash",
-  apiKey: "your-api-key"
-});
-```
-
-**基岩匡威**
-
-👉 阅读[AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/aws
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm install @langchain/aws
-```
-
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-yarn add @langchain/aws
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/aws
-```
-
-```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel } from "langchain";
-
-// Follow the steps here to configure your credentials:
-// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-const model = await initChatModel("bedrock:gpt-5.5");
-```
-
-```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatBedrockConverse } from "@langchain/aws";
-
-// Follow the steps here to configure your credentials:
-// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-const model = new ChatBedrockConverse({
-  model: "gpt-5.5",
-  region: "us-east-2"
-});
-```
+> [标签] 基岩匡威
+>
+> 👉 阅读[AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/aws
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm install @langchain/aws
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/aws
+> ```
+>
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> bun add @langchain/aws
+> ```
+>
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { initChatModel } from "langchain";
+>
+> // Follow the steps here to configure your credentials:
+> // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+>
+> const model = await initChatModel("bedrock:gpt-5.5");
+> ```
+>
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatBedrockConverse } from "@langchain/aws";
+>
+> // Follow the steps here to configure your credentials:
+> // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+>
+> const model = new ChatBedrockConverse({
+>   model: "gpt-5.5",
+>   region: "us-east-2"
+> });
+> ```
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const response = await model.invoke("Why do parrots talk?");
@@ -237,21 +237,21 @@ const response = await model.invoke("Why do parrots talk?");
 
 有关更多详细信息，请参阅[⟦T68⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel)，包括有关如何传递模型[parameters](#parameters)的信息。
 
-### 支持的提供商和模型
+### 支持的提供商和模型LangChain 通过专用集成包支持所有主要模型提供商。每个提供程序包都实现相同的标准接口，因此您可以交换提供程序而无需重写应用程序逻辑。新模型名称立即生效 - 无需 LangChain 更新 - 因为提供程序包将模型名称直接传递到提供程序的 API。
 
-LangChain 通过专用集成包支持所有主要模型提供商。每个提供程序包都实现相同的标准接口，因此您可以交换提供程序而无需重写应用程序逻辑。新模型名称立即生效 - 无需 LangChain 更新 - 因为提供程序包将模型名称直接传递到提供程序的 API。浏览 [full list of supported providers](/oss/javascript/integrations/providers/overview)，或参阅 [Providers and models](/oss/javascript/concepts/providers-and-models) 了解提供程序、包和模型名称如何在 LangChain 中协同工作的概念概述。
+浏览 [full list of supported providers](/oss/javascript/integrations/providers/overview)，或参阅 [Providers and models](/oss/javascript/concepts/providers-and-models) 了解提供程序、包和模型名称如何在 LangChain 中协同工作的概念概述。
 
 ### 关键方法
 
-> **[Invoke](#invoke)**
+> [卡][Invoke](#invoke)
 >
 > 模型将消息作为输入，并在生成完整响应后输出消息。
 
-> **[Stream](#stream)**
+> [卡][Stream](#stream)
 >
 > 调用模型，但实时生成输出。
 
-> **[Batch](#batch)**
+> [卡][Batch](#batch)
 >
 > 批量向模型发送多个请求，以实现更高效的处理。
 
@@ -263,11 +263,11 @@ LangChain 通过专用集成包支持所有主要模型提供商。每个提供�
 
 聊天模型采用可用于配置其行为的参数。支持的全套参数因型号和提供商而异，但标准参数包括：
 
-**型号** `string` *必填*
+**型号** `string` *必填*您想要与提供商一起使用的特定模型的名称或标识符。您还可以使用“:”格式在单个参数中指定模型及其提供者，例如“openai:o1”。
 
-您想要与提供商一起使用的特定模型的名称或标识符。您还可以使用“:”格式在单个参数中指定模型及其提供者，例如“openai:o1”。
+**api密钥** `string`
 
-**api密钥** `string`与模型提供者进行身份验证所需的密钥。这通常是在您注册访问模型时发出的。通常通过设置环境变量来访问（其值在程序外部设置的变量，通常通过操作系统或微服务内置的功能）。
+与模型提供者进行身份验证所需的密钥。这通常是在您注册访问模型时发出的。通常通过设置环境变量来访问（其值在程序外部设置的变量，通常通过操作系统或微服务内置的功能）。
 
 **温度** `number`
 
@@ -311,7 +311,7 @@ const model = await initChatModel("google:gemini-3.6-flash", {
 
 > [!提示]
 >
-> 对于不可靠网络上长时间运行的代理图，请考虑更高的 `max_retries`（例如 10-15）和 [checkpointer](/oss/javascript/langgraph/persistence)，以便在发生故障时保留进度。> [!注意]
+> 对于不可靠网络上长时间运行的代理图，请考虑更高的 `max_retries`（例如 10–15）和 [checkpointer](/oss/javascript/langgraph/persistence)，以便在发生故障时保留进度。> [!注意]
 >
 > 每个聊天模型集成可能具有用于控制特定于提供商的功能的附加参数。
 >
@@ -420,9 +420,9 @@ console.log(full.contentBlocks);
 
 > [!警告]
 >
-> 仅当程序中的所有步骤都知道如何处理块流时，流式处理才有效。例如，不支持流处理的应用程序需要将整个输出存储在内存中才能进行处理。> **高级流媒体主题**
+> 仅当程序中的所有步骤都知道如何处理块流时，流式处理才有效。例如，不支持流处理的应用程序需要将整个输出存储在内存中才能进行处理。> [手风琴] 高级流媒体主题
 >
->> **流媒体事件**
+>> [手风琴] 流媒体事件
 >>
 >> LangChain 聊天模型还可以使用流语义事件
 > > \[`streamEvents()`]\[BaseChatModel.streamEvents]。
@@ -458,7 +458,7 @@ console.log(full.contentBlocks);
 >>
 >> 有关事件类型和其他详细信息，请参阅[⟦T92⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/streamEvents) 参考。
 >
->> **“自动直播”聊天模式**
+>> [手风琴]“自动直播”聊天模式
 >>
 >> LangChain 通过在某些情况下自动启用流模式来简化聊天模型的流，即使您没有显式调用流方法也是如此。当您使用非流式调用方法但仍希望流式传输整个应用程序（包括聊天模型的中间结果）时，这特别有用。
 >>
@@ -489,7 +489,7 @@ for (const response of responses) {
 
 > [!提示]
 >
-> 使用`batch()`处理大量输入时，您可能需要控制最大并行调用数。这可以通过在 [⟦T100⟧](https://reference.langchain.com/javascript/langchain-core/runnables/RunnableConfig) 字典中设置 `maxConcurrency` 属性来完成。
+> 使用`batch()`处理大量输入时，您可能需要控制最大并行调用数。这可以通过设置 [⟦T100⟧](https://reference.langchain.com/javascript/langchain-core/runnables/RunnableConfig) 字典中的 `maxConcurrency` 属性来完成。
 >
 > ```typescript Batch with max concurrency theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > model.batch(
@@ -578,7 +578,7 @@ for (const tool_call of toolCalls) {
 
 下面，我们展示了一些使用工具调用的常见方法。
 
-> **工具执行循环**
+> [accordion] 工具执行循环
 >
 > 当模型返回工具调用时，您需要执行工具并将结果传递回模型。这会创建一个对话循环，模型可以在其中使用工具结果生成最终响应。 LangChain 包括为您处理此编排的 [agent](/oss/javascript/langchain/agents) 抽象。
 >
@@ -609,9 +609,7 @@ for (const tool_call of toolCalls) {
 > // "The current weather in Boston is 72°F and sunny."
 > ```
 >
-> 该工具返回的每个[⟦T105⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)都包含一个与原始工具调用匹配的`tool_call_id`，帮助模型将结果与请求关联起来。
-
-> **强制工具调用**
+> 该工具返回的每个[⟦T105⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)都包含一个与原始工具调用匹配的`tool_call_id`，帮助模型将结果与请求关联起来。> [手风琴] 强制工具调用
 >
 > 默认情况下，模型可以根据用户的输入自由选择要使用的绑定工具。但是，您可能想要强制选择一个工具，确保模型使用特定工具或给定列表中的**任何**工具：
 >
@@ -621,7 +619,9 @@ for (const tool_call of toolCalls) {
 >
 > ```typescript Force use of specific tools theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > const modelWithTools = model.bindTools([tool_1], { toolChoice: "tool_1" })
-> ```> **并行工具调用**
+> ```
+
+> [accordion] 并行工具调用
 >
 > 许多模型支持在适当的时候并行调用多个工具。这允许模型同时从不同来源收集信息。
 >
@@ -662,7 +662,7 @@ for (const tool_call of toolCalls) {
 > > model.bind_tools([get_weather], parallel_tool_calls=False)
 > > ```
 
-> **流媒体工具调用**
+> [手风琴] 流媒体工具调用
 >
 > 当流响应时，工具调用通过[⟦T108⟧](https://reference.langchain.com/javascript/langchain-core/messages/ContentBlock/Tools/ToolCallChunk)逐步构建。这使您可以在工具调用生成时查看它们，而不是等待完整的响应。
 >
@@ -706,116 +706,116 @@ for (const tool_call of toolCalls) {
 
 ***
 
-## 结构化输出
-
-可以请求模型以与给定模式匹配的格式提供响应。这对于确保输出可以轻松解析并在后续处理中使用非常有用。 LangChain 支持多种模式类型和方法来强制结构化输出。
+## 结构化输出可以请求模型以与给定模式匹配的格式提供响应。这对于确保输出可以轻松解析并在后续处理中使用非常有用。 LangChain 支持多种模式类型和方法来强制结构化输出。
 
 > [!提示]
 >
 > 要了解结构化输出，请参阅[Structured output](/oss/javascript/langchain/structured-output)。
 
-**佐德**[zod schema](https://zod.dev/) 是定义输出模式的首选方法。请注意，当提供 zod 架构时，模型输出也将使用 zod 的解析方法针对该架构进行验证。
+> [标签] 佐德
+>
+> [zod schema](https://zod.dev/) 是定义输出模式的首选方法。请注意，当提供 zod 架构时，模型输出也将使用 zod 的解析方法针对该架构进行验证。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as z from "zod";
+>
+> const Movie = z.object({
+>   title: z.string().describe("The title of the movie"),
+>   year: z.number().describe("The year the movie was released"),
+>   director: z.string().describe("The director of the movie"),
+>   rating: z.number().describe("The movie's rating out of 10"),
+> });
+>
+> const modelWithStructure = model.withStructuredOutput(Movie);
+>
+> const response = await modelWithStructure.invoke("Provide details about the movie Inception");
+> console.log(response);
+> // {
+> //   title: "Inception",
+> //   year: 2010,
+> //   director: "Christopher Nolan",
+> //   rating: 8.8,
+> // }
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
+> [选项卡] JSON 架构
+>
+> 为了最大程度地控制或互操作性，您可以提供原始 JSON 架构。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const jsonSchema = {
+>   "title": "Movie",
+>   "description": "A movie with details",
+>   "type": "object",
+>   "properties": {
+>     "title": {
+>       "type": "string",
+>       "description": "The title of the movie",
+>     },
+>     "year": {
+>       "type": "integer",
+>       "description": "The year the movie was released",
+>     },
+>     "director": {
+>       "type": "string",
+>       "description": "The director of the movie",
+>     },
+>     "rating": {
+>       "type": "number",
+>       "description": "The movie's rating out of 10",
+>     },
+>   },
+>   "required": ["title", "year", "director", "rating"],
+> }
+>
+> const modelWithStructure = model.withStructuredOutput(
+>   jsonSchema,
+>   { method: "jsonSchema" },
+> )
+>
+> const response = await modelWithStructure.invoke("Provide details about the movie Inception")
+> console.log(response)  // {'title': 'Inception', 'year': 2010, ...}
+> ```
 
-const Movie = z.object({
-  title: z.string().describe("The title of the movie"),
-  year: z.number().describe("The year the movie was released"),
-  director: z.string().describe("The director of the movie"),
-  rating: z.number().describe("The movie's rating out of 10"),
-});
-
-const modelWithStructure = model.withStructuredOutput(Movie);
-
-const response = await modelWithStructure.invoke("Provide details about the movie Inception");
-console.log(response);
-// {
-//   title: "Inception",
-//   year: 2010,
-//   director: "Christopher Nolan",
-//   rating: 8.8,
-// }
-```
-
-**JSON 架构**
-
-为了最大程度地控制或互操作性，您可以提供原始 JSON 架构。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const jsonSchema = {
-  "title": "Movie",
-  "description": "A movie with details",
-  "type": "object",
-  "properties": {
-    "title": {
-      "type": "string",
-      "description": "The title of the movie",
-    },
-    "year": {
-      "type": "integer",
-      "description": "The year the movie was released",
-    },
-    "director": {
-      "type": "string",
-      "description": "The director of the movie",
-    },
-    "rating": {
-      "type": "number",
-      "description": "The movie's rating out of 10",
-    },
-  },
-  "required": ["title", "year", "director", "rating"],
-}
-
-const modelWithStructure = model.withStructuredOutput(
-  jsonSchema,
-  { method: "jsonSchema" },
-)
-
-const response = await modelWithStructure.invoke("Provide details about the movie Inception")
-console.log(response)  // {'title': 'Inception', 'year': 2010, ...}
-```
-
-**标准架构**
-
-还支持实现 [Standard Schema](https://standardschema.dev/) 规范的库中的任何模式。标准 Schema 对象在运行时通过 schema 的 `~standard.validate()` 方法进行验证。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as v from "valibot";
-import { toStandardJsonSchema } from "@valibot/to-json-schema";
-
-const Movie = toStandardJsonSchema(
-  v.object({
-    title: v.pipe(v.string(), v.description("The title of the movie")),
-    year: v.pipe(v.number(), v.description("The year the movie was released")),
-    director: v.pipe(v.string(), v.description("The director of the movie")),
-    rating: v.pipe(v.number(), v.description("The movie's rating out of 10")),
-  })
-);
-
-const modelWithStructure = model.withStructuredOutput(Movie);
-
-const response = await modelWithStructure.invoke("Provide details about the movie Inception");
-console.log(response);
-// {
-//   title: "Inception",
-//   year: 2010,
-//   director: "Christopher Nolan",
-//   rating: 8.8,
-// }
-```
-
-> [!注意]
+> [选项卡] 标准架构
+>
+> 还支持实现 [Standard Schema](https://standardschema.dev/) 规范的库中的任何模式。标准 Schema 对象在运行时通过 schema 的 `~standard.validate()` 方法进行验证。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as v from "valibot";
+> import { toStandardJsonSchema } from "@valibot/to-json-schema";
+>
+> const Movie = toStandardJsonSchema(
+>   v.object({
+>     title: v.pipe(v.string(), v.description("The title of the movie")),
+>     year: v.pipe(v.number(), v.description("The year the movie was released")),
+>     director: v.pipe(v.string(), v.description("The director of the movie")),
+>     rating: v.pipe(v.number(), v.description("The movie's rating out of 10")),
+>   })
+> );
+>
+> const modelWithStructure = model.withStructuredOutput(Movie);
+>
+> const response = await modelWithStructure.invoke("Provide details about the movie Inception");
+> console.log(response);
+> // {
+> //   title: "Inception",
+> //   year: 2010,
+> //   director: "Christopher Nolan",
+> //   rating: 8.8,
+> // }
+> ```> [!注意]
 >
 > **结构化输出的关键考虑因素：**
 >
 > * **方法参数**：某些提供程序支持不同的方法（`'jsonSchema'`、`'functionCalling'`、`'jsonMode'`）
 > * **包含原始数据**：使用 [⟦T113⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withStructuredOutput) 获取解析输出和原始数据 [⟦T114⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage)
 > * **验证**：Zod 和 Standard Schema 对象提供自动验证，而 JSON Schema 需要手动验证
-> * **标准架构**：支持任何实现 [Standard Schema](https://standardschema.dev/) 规范的架构库，并在运行时进行验证
+> * **标准模式**：支持任何实现 [Standard Schema](https://standardschema.dev/) 规范的模式库，并在运行时进行验证
 >
-> 请参阅您的 [provider's integration page](/oss/javascript/integrations/providers/overview) 了解支持的方法和配置选项。> **示例：消息输出以及已解析的结构**
+> 请参阅您的 [provider's integration page](/oss/javascript/integrations/providers/overview) 了解支持的方法和配置选项。
+
+> [accordion] 示例：消息输出以及已解析的结构
 >
 > 返回原始 [⟦T115⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 对象以及解析后的表示以访问响应元数据（例如 [token counts](#token-usage)）可能很有用。为此，请在调用 [⟦T117⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withStructuredOutput) 时设置 [⟦T116⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withStructuredOutput)：
 >
@@ -843,7 +843,7 @@ console.log(response);
 > // }
 > ```
 
-> **示例：嵌套结构**
+> [accordion] 示例：嵌套结构
 >
 > 模式可以嵌套：
 >
@@ -889,16 +889,14 @@ model.profile;
 // }
 ```
 
-请参阅 [API reference](https://reference.langchain.com/javascript/langchain-core/language_models/profile/ModelProfile) 中的完整字段集。
+请参阅 [API reference](https://reference.langchain.com/javascript/langchain-core/language_models/profile/ModelProfile) 中的完整字段集。大部分模型配置文件数据均由 [models.dev](https://github.com/sst/models.dev) 项目提供支持，这是一个提供模型功能数据的开源计划。该数据通过附加字段进行扩充，以便与LangChain 一起使用。随着上游项目的发展，这些增强功能与上游项目保持一致。
 
-大部分模型配置文件数据均由 [models.dev](https://github.com/sst/models.dev) 项目提供支持，这是一个提供模型功能数据的开源计划。该数据通过附加字段进行扩充，以便与 LangChain 一起使用。随着上游项目的发展，这些增强功能与上游项目保持一致。
+模型配置文件数据允许应用程序动态地处理模型功能。例如：
 
-模型配置文件数据允许应用程序动态地处理模型功能。例如：1. [Summarization middleware](/oss/javascript/langchain/middleware/built-in#summarization)可以根据模型的上下文窗口大小触发摘要。
+1. [Summarization middleware](/oss/javascript/langchain/middleware/built-in#summarization)可以根据模型的上下文窗口大小触发摘要。
 2. `createAgent`中的[Structured output](/oss/javascript/langchain/structured-output)策略可以自动推断（例如，通过检查对本机结构化输出功能的支持）。
 3. 模型输入可以根据支持的[modalities](#multimodal)和最大输入令牌进行门控。
-4. [Deep Agents Code](/oss/deepagents/code) 将 [interactive model switcher](/oss/deepagents/code/providers#which-models-appear-in-the-switcher) 过滤到配置文件报告 `tool_calling` 支持和文本 I/O 的模型，并在选择器详细视图中显示上下文窗口大小和功能标志。
-
-> **修改个人资料数据**
+4. [Deep Agents Code](/oss/deepagents/code) 将 [interactive model switcher](/oss/deepagents/code/providers#which-models-appear-in-the-switcher) 过滤到配置文件报告 `tool_calling` 支持和文本 I/O 的模型，并在选择器详细视图中显示上下文窗口大小和功能标志。> [手风琴] 修改个人资料数据
 >
 > 如果模型配置文件数据丢失、过时或不正确，则可以更改。
 >
@@ -923,15 +921,15 @@ model.profile;
 > 模型配置文件数据可以通过以下过程更新：
 >
 > 1.（如果需要）通过拉取请求将[models.dev](https://models.dev/)处的源数据更新到其[repository on GitHub](https://github.com/sst/models.dev)。
-> 2.（如果需要）通过向 LangChain [integration package](/oss/javascript/integrations/providers/overview) 发出拉取请求来更新 `langchain-<package>/profiles.toml` 中的其他字段和覆盖。> [!警告]
+> 2.（如果需要）通过向 LangChain [integration package](/oss/javascript/integrations/providers/overview) 发出拉取请求来更新 `langchain-<package>/profiles.toml` 中的其他字段和覆盖。
+
+> [!警告]
 >
 > 模型配置文件是测试版功能。配置文件的格式可能会发生变化。
 
 ### 多式联运
 
-某些模型可以处理和返回非文本数据，例如图像、音频和视频。您可以通过提供 [content blocks](/oss/javascript/langchain/messages#message-content) 将非文本数据传递给模型。
-
-> [!提示]
+某些模型可以处理和返回非文本数据，例如图像、音频和视频。您可以通过提供 [content blocks](/oss/javascript/langchain/messages#message-content) 将非文本数据传递给模型。> [!提示]
 >
 > 所有具有底层多模式功能的LangChain聊天模型都支持：
 >
@@ -1027,7 +1025,7 @@ console.log(message.contentBlocks);
 > * [OpenRouter via ⟦T131⟧](/oss/javascript/integrations/chat/openrouter) (`langchain-openrouter`)
 > * [LiteLLM via ⟦T133⟧ / ⟦T134⟧](/oss/javascript/integrations/chat) (`langchain-litellm`)
 
-> **自定义基本 URL**
+> [accordion] 自定义基本 URL
 >
 > 许多模型提供商提供OpenAI兼容的API（例如[Together AI](https://www.together.ai/)、[vLLM](https://github.com/vllm-project/vllm)）。您可以通过指定适当的 `base_url` 参数来将 `initChatModel` 与这些提供程序一起使用：
 >
@@ -1046,9 +1044,9 @@ console.log(message.contentBlocks);
 >>
 >> 使用直接聊天模型类实例化时，参数名称可能因提供商而异。详情请查看相应的[reference](/oss/javascript/integrations/providers/overview)。
 
-### 对数概率
+### 对数概率通过在初始化模型时设置 `logprobs` 参数，某些模型可以配置为返回表示给定标记的可能性的标记级对数概率：
 
-通过在初始化模型时设置 `logprobs` 参数，某些模型可以配置为返回表示给定标记的可能性的标记级对数概率：```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const model = new ChatOpenAI({
     model: "gpt-5.5",
     logprobs: true,
@@ -1065,7 +1063,7 @@ responseMessage.response_metadata.logprobs.content.slice(0, 5);
 
 ### 调用配置
 
-调用模型时，您可以使用 [⟦T141⟧](https://reference.langchain.com/javascript/langchain-core/runnables/RunnableConfig) 对象通过 `config` 参数传递附加配置。这提供了对执行行为、回调和元数据跟踪的运行时控制。
+调用模型时，您可以使用 [⟦T141⟧](https://reference.langchain.com/javascript/langchain-core/runnables/RunnableConfig) 对象通过 `config` 参数传递其他配置。这提供了对执行行为、回调和元数据跟踪的运行时控制。
 
 常见的配置选项包括：
 
@@ -1086,7 +1084,7 @@ const response = await model.invoke(
 * 使用[LangSmith](/langsmith/observability)跟踪进行调试
 * 实现自定义日志记录或监控
 * 控制生产中的资源使用
-* 跟踪复杂管道中的调用> **关键配置属性**
+* 跟踪复杂管道中的调用> [accordion] 关键配置属性
 >
 > **运行名称** `string`
 >

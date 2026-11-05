@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。> [!注意]
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。> [!注意]
 >
 > 代理拥有的中断需要已部署代理上的 `managed-deepagents>=0.8.0` 和 [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack)。表单仅在 Slack 中呈现。 LangSmith Studio 显示原始中断值。
 
@@ -127,7 +127,7 @@ async function postApprovalForm(
 
 ## 阅读回复
 
-`interrupt()` 返回标准化响应。它仅包含每个提供商共享的字段：|领域|类型 |意义|
+`interrupt()` 返回标准化响应。它仅包含每个提供商共享的字段：|领域 |类型 |意义|
 | - | - | - |
 | `provider` | `"slack"` |渠道商给出了答案。 |
 | `action` | `string` |按钮的 `action_id`，或模式的 `callback_id`。 |
@@ -142,7 +142,7 @@ async function postApprovalForm(
 
 Slack 不知道按钮属于哪个中断，因此 SDK 读取停放在线程上的中断并决定：|停放中断| `correlation_id` 关于回应 |结果 |
 | - | - | - |
-|一 |缺席 |恢复中断。 |
+|一|缺席 |恢复中断。 |
 |一个或多个 |呈现并完全匹配 |恢复匹配的中断。 |
 |几个|缺席 |没有任何运行。 SDK 记录歧义并确认该事件。 |
 |一个或多个 |存在但不匹配任何一个，或匹配多个 |没有任何运行。开始转弯会放弃停放的检查站。 |
@@ -170,7 +170,7 @@ Slack 不知道按钮属于哪个中断，因此 SDK 读取停放在线程上的
 视图上的两个字段属于平台：
 
 * **`callback_id`**：设置为按钮的`action_id`，以便可识别提交。
-* **`private_metadata`**：保存打开模态的加密通道和线程。模态提交不携带通道或线程，因此这是返回对话的唯一途径。如果您的视图已设置 `private_metadata`，则模式不会打开。
+* **`private_metadata`**：保存打开模态的加密通道和线程。模态提交不携带通道或线程，因此这是返回对话的唯一途径。如果您的视图已经设置了 `private_metadata`，则模式不会打开。
 
 所有其他字段都按照您所写的那样转到 Slack。 Managed Deep Agents 不会验证视图，因此 Slack 拒绝的视图不会向用户显示任何内容。模态提交永远不会带有 `correlation_id`。仅当恰好有一个中断被停放时，模式才能应答线程。
 
@@ -186,7 +186,7 @@ Slack 不知道按钮属于哪个中断，因此 SDK 读取停放在线程上的
 
 平台储备名称：|名称 |哪里 |意义|
 | - | - | - |
-| `mda_modal::` 前缀 |按钮`action_id`|单击会打开一个模式，但永远不会到达代理。 |
+| `mda_modal::` 前缀 |按钮`action_id` |单击会打开一个模式，但永远不会到达代理。 |
 | `mda_correlation_id` |按钮内的钥匙 `value` |将一次点击与一个停放的中断相匹配。导出为 `INTERRUPT_CORRELATION_KEY`。 |
 | `callback_id` |应用程序定义的视图 |设置为按钮的 `action_id`。 |
 | `private_metadata` |应用程序定义的视图 |由平台设置。提供它会阻止模态打开。 |
@@ -207,7 +207,7 @@ Managed Deep Agents 在转发视图之前不检查的 Slack 限制：
 * **用户关闭模态。** 中断保持停放状态。没有取消路径，也没有过期时间。
 * **用户在线程中回复而不是使用表单。 ** 消息采用普通消息路径，不咨询中断状态。运行以新消息开始，停放的检查点被放弃，而卡保留其活动按钮。
 * **两个人按下同一个按钮。** 两个交互都会被转发。第一个恢复中断，第二个开始新一轮。没有什么可以消除它们的重复。
-* **多个中断被停放，并且响应没有相关 ID。** 没有任何运行。由于模态提交从不携带相关 ID，因此模态无法应答具有两个停放中断的线程。
+* **几个中断被停放，并且响应没有相关 ID。** 没有任何运行。由于模态提交从不携带相关 ID，因此模态无法应答具有两个停放中断的线程。
 * **提交不能返回 `response_action`。** 没有每字段验证错误，没有链式模态，也没有就地模态更新。
 
 ## 另请参阅* [Human-in-the-loop](/langsmith/javascript/managed-deep-agents-tools#human-in-the-loop)：在使用平台渲染的批准卡调用选定工具之前暂停。

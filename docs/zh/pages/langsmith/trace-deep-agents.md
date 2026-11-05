@@ -169,21 +169,30 @@ LangSmith UI 中的 **Trajectory** 视图显示用户和代理之间的简化对
 
 将过滤器保存为命名视图以便快速重用。有关过滤器选项的完整参考，请参阅[Filter traces](/langsmith/filter-traces)。
 
-**使用 SDK 以编程方式过滤：**[Retrieve the environment's ⟦T25⟧](/langsmith/create-an-agent#use-an-environment-project) 并将其传递给查询 API 的 `project_name` 参数。
+**使用 SDK 以编程方式过滤：**[Retrieve the environment's ⟦T25⟧](/langsmith/create-an-agent#use-an-environment-project)，查找其项目ID，并将其传递给`client.runs.query()`。除非您通过 `min_start_time`，否则查询会回溯 1 天。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from datetime import datetime, timedelta, timezone
+
 from langsmith import Client
 
-client = Client()
 
-# Fetch all runs produced by a specific subagent
-runs = client.list_runs(
-    project_name="<environment-tracer-session-name>",
-    filter='has(metadata, \'{"lc_agent_name": "research-agent"}\')',
-)
+async def main():
+    client = Client()
+    project_id = str(client.read_project(project_name="<environment-tracer-session-name>").id)
 
-for run in runs:
-    print(run.name, run.start_time, run.status)
+    # Fetch all runs produced by a specific subagent
+    async for run in client.runs.query(
+        project_ids=[project_id],
+        min_start_time=datetime.now(timezone.utc) - timedelta(days=7),
+        filter='and(eq(metadata_key, "lc_agent_name"), eq(metadata_value, "research-agent"))',
+        selects=["NAME", "START_TIME", "STATUS"],
+    ):
+        print(run.name, run.start_time, run.status)
+
+
+asyncio.run(main())
 ```
 
 有关完整的过滤器查询语言参考，请参阅[Trace query syntax](/langsmith/trace-query-syntax)。
@@ -209,9 +218,9 @@ uv add langsmith
 此示例调用同一深度代理两次：
 
 * 第一次调用是未被跟踪的，因为它在 `tracing_context` 之外运行。
-* 第二次调用被跟踪，因为它在`tracing_context(enabled=True, ...)`内部运行。
+* 第二次调用被跟踪，因为它在`tracing_context(enabled=True, ...)`内运行。
 
-您可以有选择地仅跟踪工作流程的一部分，而无需使用 `LANGSMITH_TRACING=true` 启用整个流程的全局跟踪：
+您可以有选择地仅跟踪工作流程的一部分，而无需使用 `LANGSMITH_TRACING=true` 启用对整个流程的全局跟踪：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Dict, Any, List
@@ -325,7 +334,7 @@ with ls.tracing_context(
 * `tags=[...]` 将标签附加到跟踪的运行。 [Tags](/langsmith/add-metadata-tags)出现在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents)中，您可以使用它来过滤和分组轨迹。
 * `metadata={...}` 附加任意结构化元数据（例如，环境、实验名称或功能标志）。
 
-在这个例子中，代理被调用了两次，但只记录了`tracing_context`内的调用。这演示了如何有选择地跟踪 Deep Agents 工作流的特定部分，而无需启用整个流程的全局跟踪。
+在这个例子中，代理被调用了两次，但只记录了`tracing_context`内的调用。这演示了如何有选择地跟踪 Deep Agents 工作流程的特定部分，而无需启用整个流程的全局跟踪。
 
 ***
 

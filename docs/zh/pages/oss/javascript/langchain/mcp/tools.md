@@ -38,7 +38,7 @@ async function main(server: string) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/595d3842-7630-449c-978b-27f0653155e2/r)**
+> [卡][View example trace](https://smith.langchain.com/public/aa98d2c6-c2a1-4dc0-b6d1-4b7948eebcb6/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -92,7 +92,7 @@ async function accessMultimodalToolContent(serverUrl: string) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/c5bd522f-7c6d-4046-896f-9f7d1fca6590/r)**
+> [卡][View example trace](https://smith.langchain.com/public/f925c79f-d016-4aaa-9258-491463d15cc8/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -134,7 +134,7 @@ async function readStructuredContent(serverUrl: string) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/b5c7e711-6ef7-4483-a700-73465df2f4ca/r)**
+> [卡][View example trace](https://smith.langchain.com/public/9b9c15de-85bb-4c91-80b5-001a04c57213/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -175,7 +175,7 @@ async function divideByZero(serverUrl: string) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/8301dd9e-da25-4d9a-ad13-11330f638f36/r)**
+> [卡][View example trace](https://smith.langchain.com/public/d52326db-8b2d-4ece-be63-07036ee60328/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -216,7 +216,7 @@ function isDestructive(tool: DynamicStructuredTool): boolean {
 
 ## 人机交互
 
-阅读注释可以让您根据服务器声明的内容来控制工具，而不是硬编码工具名称。 MCP 注释对工具进行分类，LangChain 的人机循环中间件强制执行批准策略。在工具发现期间从元数据中读取一次破坏性提示。然后为人机交互配置提供一个 `when` 谓词，用于接收每个待处理的工具调用并返回该调用是否需要批准：
+阅读注释可以让您根据服务器声明的内容来控制工具，而不是硬编码工具名称。 MCP 注释对工具进行分类，LangChain 的人机交互中间件强制执行审批策略。在工具发现期间从元数据中读取一次破坏性提示。然后为人机交互配置提供一个 `when` 谓词，用于接收每个待处理的工具调用并返回该调用是否需要批准：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import type { DynamicStructuredTool } from "@langchain/core/tools";
@@ -293,7 +293,7 @@ const resumed = await agent.invoke(
 
 大多数工具在通话过程中无需向客户询问任何信息即可完成。当服务器需要输入时，[⟦T44⟧](https://reference.langchain.com/javascript/langchain-mcp-adapters/MCPAdapter)将[elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation)显示为LangGraph[⟦T45⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt)。
 
-### 引出[Elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) 让 MCP 服务器在工具调用期间请求输入。适配器通过 LangGraph 中断暂停运行。您的应用程序向用户提出请求，并根据用户的回答继续运行。
+### 引出[Elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) 让 MCP 服务器在工具调用期间请求输入。适配器通过 LangGraph 中断暂停运行。您的应用程序向用户提出请求，并根据用户的回答继续运行。当通过其 MCP 端点公开的代理暂停时，代理服务器会以这种方式请求输入。欲了解更多信息，请参阅[Human-in-the-loop over MCP](/langsmith/server-mcp-elicitation)。
 
 将 [checkpointer](/oss/javascript/langchain/short-term-memory) 附加到代理，并在调用和恢复它时使用相同的 `thread_id`。
 
@@ -350,7 +350,7 @@ async function bookWithElicitation(serverUrl: string) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/f8769a01-6ca6-45c7-afae-2376a5843c0d/r)**
+> [卡][View example trace](https://smith.langchain.com/public/7b4bf951-0e34-471f-aae2-092cd41980cf/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 

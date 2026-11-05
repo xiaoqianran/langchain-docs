@@ -12,11 +12,11 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 选择身份提供商
 
-对部署的每个请求都会命名一个调用者，并且前端提供该名称。哪个[identity provider](/langsmith/python/managed-deep-agents-identity)适合取决于前端代码运行的位置，而不是其编写的语言。|前端从哪里调用部署 |身份提供商|
+对部署的每个请求都会命名一个调用者，并且前端提供该名称。哪个[identity provider](/langsmith/python/managed-deep-agents-identity)适合取决于前端代码运行的位置，而不是其编写的语言。|前端从哪里调用部署 |身份提供商 |
 | - | - |
 |用户的浏览器 |外部身份验证提供者。浏览器发送访问令牌，部署会验证它。参见[Supabase](/langsmith/python/managed-deep-agents-identity#configure-identity-with-supabase)。 |
 |您自己的服务器，已对用户进行身份验证 | [Your own backend](/langsmith/python/managed-deep-agents-identity#configure-identity-with-your-own-backend)。您的服务器断言共享入口机密背后的用户 ID。 |
@@ -53,7 +53,7 @@ agent = define_deep_agent(
 | - | - | - |
 |反应 | `@langchain/react` | `useStream` |
 |视图 | `@langchain/vue` | `useStream` |
-|苗条 | `@langchain/svelte` | `useStream` |
+|苗条| `@langchain/svelte` | `useStream` |
 |角度| `@langchain/angular` | `injectStream` |
 
 前端在浏览器中运行，因此即使代理是用 Python 编写的，这些示例也是 TypeScript。在外部身份验证提供程序下，浏览器从登录会话发送访问令牌。该令牌会轮换，因此只要会话发生变化就重新读取它，而不是在挂载时捕获它一次：

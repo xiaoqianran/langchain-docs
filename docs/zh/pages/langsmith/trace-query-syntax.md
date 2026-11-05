@@ -38,9 +38,9 @@ LangSmith 支持使用过滤器查询语言的过滤功能，以允许在获取�
 |比较器|描述 |示例|
 | - | - | - |
 | `eq` |等于 | `eq(run_type, "llm")` |
-| `neq` |不等于| `neq(status, "error")` |
-| `gt` |大于| `gt(latency, "5s")` |
-| `gte` |大于或等于| `gte(latency, 1.5)` |
+| `neq` |不等于 | `neq(status, "error")` |
+| `gt` |大于 | `gt(latency, "5s")` |
+| `gte` |大于或等于 | `gte(latency, 1.5)` |
 | `lt` |小于| `lt(start_time, "2024-01-01T00:00:00Z")` |
 | `lte` |小于或等于| `lte(feedback_score, 0.5)` |
 | `like` |模式匹配； `%` 匹配任意字符序列 | `like(metadata_value, "%prod%")` |
@@ -70,7 +70,7 @@ and(eq(run_type, "llm"), gt(latency, "2s"))
 or(eq(status, "error"), and(eq(feedback_key, "score"), lt(feedback_score, 0.5)))
 ```
 
-### 可过滤字段|领域|类型 |笔记|
+### 可过滤字段|领域 |类型 |笔记|
 | - | - | - |
 | `id` |字符串（UUID）|运行 ID |
 | `name` |字符串|运行名称 |
@@ -97,10 +97,10 @@ or(eq(status, "error"), and(eq(feedback_key, "score"), lt(feedback_score, 0.5)))
 |搜索栏操作员 |搜索栏语法 | API 比较器 |
 | - | - | - |
 |是 | `name:value` | `eq(name, "value")` |
-|不是| `-name:value` | `neq(name, "value")` |
+|不是 | `-name:value` | `neq(name, "value")` |
 |通配符 | `name:*value*` | `like(name, "%value%")`。将每个 `*` 替换为 `%`。 |
 |比赛| `input:~value` | `like(inputs, "%value%")`。也适用于 `outputs` 和 `error`。 |
-|不匹配| `-input:~value` | `notlike(inputs, "%value%")` |
+|不匹配 | `-input:~value` | `notlike(inputs, "%value%")` |
 |比较| `latency:>5` | `gt(latency, 5)`。将 `gte`、`lt` 和 `lte` 用于 `>=`、`<` 和 `<=`。 |
 |存在 | `metadata.env:*` | `eq(metadata_key, "env")` |
 
@@ -119,7 +119,7 @@ or(eq(status, "error"), and(eq(feedback_key, "score"), lt(feedback_score, 0.5)))
 and(eq(metadata_key, "env"), notlike(metadata_value, "%staging%"))
 ```
 
-## 快速参考示例以下示例仅显示过滤字符串。将字符串作为 `client.list_runs()` 或 `/runs/query` API 端点中的 `filter`、`trace_filter` 或 `tree_filter` 参数传递。
+## 快速参考示例以下示例仅显示过滤字符串。将字符串作为 `client.runs.query()` 或 `POST /api/v2/runs/query` API 端点中的 `filter`、`trace_filter` 或 `tree_filter` 参数传递。
 
 > [!提示]
 >

@@ -675,6 +675,12 @@
           "rel": "langsmith/byoc-data-plane-cost-aws.md"
         }
       ],
+      "byoc-data-plane-cost-azure": [
+        {
+          "title": "Azure data plane cost estimate",
+          "rel": "langsmith/byoc-data-plane-cost-azure.md"
+        }
+      ],
       "byoc-faq": [
         {
           "title": "BYOC FAQ",
@@ -709,6 +715,12 @@
         {
           "title": "BYOC operations",
           "rel": "langsmith/byoc-operations-aws.md"
+        }
+      ],
+      "byoc-operations-azure": [
+        {
+          "title": "BYOC operations on Azure",
+          "rel": "langsmith/byoc-operations-azure.md"
         }
       ],
       "byoc-shared-responsibility": [
@@ -3947,7 +3959,7 @@
       ],
       "managed-deep-agents-search": [
         {
-          "title": "Built-in search powered by Parallel",
+          "title": "Web search",
           "rel": "langsmith/javascript/managed-deep-agents-search.md"
         }
       ],
@@ -4139,7 +4151,7 @@
       ],
       "managed-deep-agents-search": [
         {
-          "title": "Built-in search powered by Parallel",
+          "title": "Web search",
           "rel": "langsmith/python/managed-deep-agents-search.md"
         }
       ],

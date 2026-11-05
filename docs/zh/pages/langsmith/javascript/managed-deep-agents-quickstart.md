@@ -6,13 +6,13 @@
 
 使用 mda CLI 创建并部署您的第一个托管深度代理。
 
-创建并部署您的第一个托管深度代理：构建项目，配置模型和指令，添加搜索，在[LangSmith Studio](/langsmith/studio)中进行测试，然后使用[⟦T25⟧ CLI](/langsmith/javascript/managed-deep-agents-cli)进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/javascript/deepagents/overview) 和托管运行时。
+创建并部署您的第一个托管深度代理：构建项目、配置模型和指令、添加搜索、在[LangSmith Studio](/langsmith/studio)中进行测试，然后使用[⟦T25⟧ CLI](/langsmith/javascript/managed-deep-agents-cli)进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/javascript/deepagents/overview) 和托管运行时。
 
 在本快速入门之后，[tutorial](/langsmith/javascript/managed-deep-agents-tutorial) 在同一项目上添加了耐用内存和每日计划。
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 先决条件
 
@@ -54,7 +54,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
 ## 步骤 4：搭建、配置、测试和部署
 
-按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。停下来询问仪表板操作或凭证何时只能由用户在 LangSmith UI 中完成。
+按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。当仪表板操作或凭证只能由用户在 LangSmith UI 中完成时，停下来询问。
 
 ## 规则* 关注快速入门。除非指南要求，否则请勿添加不相关的产品或重写生成的项目布局。
 * 优先使用 `mda` CLI 和 `managed-deep-agents` 技能，而不是发明自定义部署路径。
@@ -62,7 +62,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
 ## 创建并部署代理
 
-**1.设置项目**
+**1. Set up the project**
 
 创建一个项目并打开其目录：
 
@@ -83,7 +83,7 @@ cd research-assistant
 
 您现在已经为您的代理准备好了所有的脚手架。
 
-**2.添加您的密钥**
+**2. Add your keys**
 
 将您的模型提供商 API 密钥添加到 `.env`：
 
@@ -100,13 +100,15 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 > [!警告]
 >
-> 不要将 `.env` 文件提交到版本控制中。它包含秘密。
+> 不要将 `.env` 文件提交到版本控制中。 It contains secrets.
 
-**3.设置LangSmith**
+**3. Set up LangSmith**
 
 托管 Deep Agents 在 LangSmith 上运行。您的 LangSmith API 密钥使用 `mda dev` 验证本地开发，使用 `mda deploy` 部署代理，并在 [LangSmith Studio](/langsmith/studio) 中打开代理，以便您可以与其聊天并检查跟踪。
 
 [Sign up for LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-quickstart) 如果您还没有帐户。要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转至 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
+
+在 [BYOC](/langsmith/byoc) 上，登录您自己的数据平面并在其中创建密钥。还将 `LANGSMITH_ENDPOINT` 设置为数据平面的 API URL。参见[Select a BYOC data plane](/langsmith/javascript/managed-deep-agents-deploy#select-a-byoc-data-plane)。
 
 将您的 LangSmith API 密钥添加到 `.env`：
 
@@ -186,9 +188,7 @@ export const agent = defineDeepAgent({
 });
 ```
 
-代理名称也是默认部署名称。有关模型概念和提供程序选项，请参阅[Models](/oss/javascript/langchain/models)。
-
-> [手风琴] 使用其他提供商？
+代理名称也是默认部署名称。有关模型概念和提供程序选项，请参阅[Models](/oss/javascript/langchain/models)。> [手风琴] 使用其他提供商？
 >
 > 您可以使用 Tavily 搜索工具。
 > 将 [Tavily API key](https://app.tavily.com) 添加到 `.env`：
@@ -272,7 +272,9 @@ pnpm exec mda dev
 ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bun install
 bunx mda dev
-````mda dev` 从 `.env` 加载 API 密钥，启动本地代理服务器，并在 LangSmith Studio 中打开代理。
+```
+
+`mda dev` 从 `.env` 加载 API 密钥，启动本地代理服务器，并在 LangSmith Studio 中打开代理。
 
 在 Studio 中，发送：
 
@@ -286,6 +288,8 @@ What were the main announcements from the latest LangChain release?
 
 **7.部署代理**
 
+在 [BYOC](/langsmith/byoc) 上，将 `--push-to <image-repository>` 添加到此步骤中的每个命令。 BYOC 数据平面从您管理的注册表中的映像进行部署。
+
 通过运行以下命令来部署项目：
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -298,9 +302,7 @@ pnpm exec mda deploy
 
 ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bunx mda deploy
-```
-
-托管 Deep Agents 打包项目并将其作为托管部署在 [LangSmith Agent Server](/langsmith/agent-server) 上运行。部署完成后，CLI 会打印部署仪表板 URL。
+```托管 Deep Agents 打包项目并将其作为托管部署在 [LangSmith Agent Server](/langsmith/agent-server) 上运行。部署完成后，CLI 会打印部署仪表板 URL。
 
 打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。有关部署选项和机密处理的信息，请参阅[Deploy a Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy)。要在代理运行后检查其执行情况，请使用[LangSmith observability](/langsmith/observability-quickstart)。
 
@@ -312,7 +314,9 @@ bunx mda deploy
 
 > [卡][Custom tools](/langsmith/javascript/managed-deep-agents-tools)
 >
-> 从您的项目中添加创作的 LangChain 工具。> [卡][Connections](/langsmith/javascript/managed-deep-agents-connections)
+> 从您的项目中添加创作的 LangChain 工具。
+
+> [卡][Connections](/langsmith/javascript/managed-deep-agents-connections)
 >
 > 作为代理或呼叫者通过外部服务进行身份验证。
 

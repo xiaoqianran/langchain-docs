@@ -10,7 +10,7 @@
 
 连接让您：
 
-* **将凭据保留在项目之外**：`mda deploy` 收集 `.env` 值作为每次部署的部署机密。连接值仍保留在工作区中。
+* **将凭据保留在项目之外**：`mda deploy` 在每次部署时收集 `.env` 值作为部署机密。连接值仍保留在工作区中。
 * **为每个呼叫者提供自己的身份**：用户拥有的连接可以解析发出请求的人的凭据，因此代理可以读取该人的文档并以他们的名义进行操作。环境变量为每个人保留一个值。
 * **跳过 OAuth 管道**：托管 Deep Agents 运行授权往返，因此项目不需要回调路由、令牌存储或同意屏幕。这些流由您的托管深度代理自动处理。* **跨代理重用一个 slug**：连接属于工作区，因此多个部署可以解析相同的 slug。每个部署都在该 slug 下保存自己的凭据：从每个项目根运行 `mda connections create <slug>` 一次。轮换部署的值会在下次运行时生效，无需重新部署。
 
@@ -30,7 +30,7 @@ api_key = await connections.get("organization-tavily", {"type": "agent"})
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上 **公共 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上 **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 选择凭证所有者
 
@@ -205,7 +205,7 @@ uv run mda connections create frontend-github \
   --secret-from-env GITHUB_CLIENT_SECRET
 ```
 
-创建时，CLI 会打印重定向 URI 以向提供程序注册。在调用者授权之前，在提供商的应用程序设置页面上注册该 URI。 URI 遵循您的 LangSmith 主机，例如生产环境中的 `https://api.smith.langchain.com/v1/agent-auth/oauth/callback`。
+创建时，CLI 会打印重定向 URI 以向提供程序注册。在调用者授权之前，在提供商的应用程序设置页面上注册该 URI。 URI 遵循您的 LangSmith 主机，例如生产环境中的 `https://api.smith.langchain.com/v1/agent-auth/oauth/callback`。在 [BYOC](/langsmith/byoc) 上，它遵循您的数据平面端点。
 
 可选标志：
 
@@ -277,7 +277,7 @@ uv run mda connections create support-linear \
   --authorize
 ```
 
-CLI 为您登录的帐户启动授权流程，并存储部署的结果授权。运行时代码将其解析为代理拥有的凭证：
+CLI 为您登录的帐户启动授权流程，并存储部署的结果授权。运行时代码将其解析为代理拥有的凭据：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 access_token = await connections.get("support-linear", {"type": "agent"})
@@ -361,13 +361,13 @@ uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mc
 
 无方案值（例如 `mcp.notion.com/mcp`）存储为 `https://mcp.notion.com/mcp`。
 
-如果服务器无法自动注册客户端，CLI 会这样提示您并指示您使用常规 OAuth（`--oauth` 或手动端点）。
+如果服务器无法自动注册客户端，CLI 会提示您使用常规 OAuth（`--oauth` 或手动端点）。
 
 `mda deploy` 将相同的推论应用于丢失的用户拥有的 MCP 连接。它保持现有连接不变，通过 OAuth 发现创建每个唯一的缺失 MCP 连接，并在发现或注册不可用时在部署之前失败。## 处理授权中断
 
 托管 Deep Agents 为您运行 OAuth 往返。项目不需要回调路由，不需要令牌存储，不需要刷新逻辑，也不需要同意屏幕。运行暂停，调用者授予访问权限，然后使用该人的凭据恢复运行。
 
-在第一次模型转动之前，托管 Deep Agents 检查运行所需的每个用户拥有的连接。如果调用者缺少一项或多项授权，凭证门将引发一个 LangGraph 中断。 Slack 和 LangSmith Studio 为调用者处理该中断。自定义前端从 LangChain 前端 SDK 读取相同的负载，并在调用者连接后恢复。
+在第一个模型转动之前，托管 Deep Agents 检查运行所需的每个用户拥有的连接。如果调用者缺少一项或多项授权，凭证门将引发一个 LangGraph 中断。 Slack 和 LangSmith Studio 为调用者处理该中断。自定义前端从 LangChain 前端 SDK 读取相同的负载，并在调用者连接后恢复。
 
 用户拥有的连接需要经过身份验证的调用者。匿名或仅代理运行无法完成凭证门。请参阅[Identify the caller](#identify-the-caller)了解该身份的来源。
 
@@ -390,9 +390,9 @@ uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mc
     }
   ]
 }
-```一个中断会列出每一项缺失的授权。在恢复之前处理每个条目。带有 `"kind": "secret"` 的条目代表用户拥有的 API 密钥，而不是 OAuth 授权。 Slack 和 Studio 不收集这些。有关更多信息，请参阅[Review current limitations](#review-current-limitations)。
+```一个中断会列出每一项缺失的授权。在恢复之前处理每个条目。带有 `"kind": "secret"` 的条目表示用户拥有的 API 密钥，而不是 OAuth 授权。 Slack 和 Studio 不收集这些。欲了解更多信息，请参阅[Review current limitations](#review-current-limitations)。
 
-|领域|礼物给 |意义|
+|领域 |礼物给 |意义|
 | - | - | - |
 | `type` |永远 |鉴别器。必须是`credential_authorization_required`。 |
 | `message` |永远 |人类可读的摘要显示在待决拨款上方。 |
@@ -627,8 +627,8 @@ uv run mda connections delete organization-tavily
 
 ## 查看当前限制
 
-连接是 Managed Deep Agents 公共测试版的一部分。当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
-* **自定义通道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
+连接是托管 Deep Agents 公共测试版的一部分。当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
+* **自定义渠道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
 * **工作区 UI**：LangSmith 不在 UI 中列出连接。使用 `mda connections list` 和 `mda connections get` 作为连接元数据。
 * **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示段头也是如此。从项目根目录运行`mda connections create <slug>`来创建一个。> [accordion] 通过代理身份验证存储用户拥有的 API 密钥
 >

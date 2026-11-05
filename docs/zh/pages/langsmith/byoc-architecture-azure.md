@@ -10,7 +10,7 @@ Azure 上的 BYOC 在 Azure 订阅的资源组中运行 LangSmith 数据平面�
 
 > [!注意]
 >
-> Azure 上的 BYOC 位于 [beta](/langsmith/release-stages)。资源和权限可能会在版本之间发生变化。此页面上的值是当前默认值。
+> Azure 上的 BYOC 位于 [beta](/langsmith/release-stages)。资源和权限可能会在版本之间发生变化。此页面上的值是当前的默认值。
 
 要设置数据平面，请遵循[BYOC onboarding on Azure](/langsmith/byoc-onboarding-azure)。
 
@@ -26,7 +26,7 @@ Azure 上的 BYOC 在 Azure 订阅的资源组中运行 LangSmith 数据平面�
 1. 应用 LangSmith Terraform 模块，该模块创建资源组和 Key Vault，并为 LangSmith BYOC 应用程序提供资源组上的两个角色。
 2. 使用 LangSmith API 创建数据平面。控制平面检查其访问权限，并将数据平面的引导密钥写入您的 Key Vault。
 3. 控制平面在资源组中创建网络、AKS 集群、数据库和存储，然后在集群上安装 LangSmith。
-4. 数据平面向控制平面汇报，状态变为`active`。
+4. 数据面向控制面汇报，状态变为`active`。
 5. LangChain 升级、扩展和修复数据平面，直到将其删除。
 
 ## 部署什么LangSmith 创建资源组中的所有数据平面资源。 AKS 还创建节点资源组 `<name>-smith-aks-nodes` 并对其进行管理。
@@ -35,7 +35,7 @@ Azure 上的 BYOC 在 Azure 订阅的资源组中运行 LangSmith 数据平面�
 
 LangSmith 从创建请求中的 `vpc_cidr` 范围创建 VNet，并将其划分为子网。对于 `/16` VNet：
 
-|子网|尺寸|使用|
+|子网|尺寸|使用 |
 | - | - | - |
 | AKS | `/20` | AKS 节点和 Pod。出站流量通过具有一个静态公共 IP 地址的 NAT 网关。 |
 |专用端点 | `/24` | PostgreSQL、Redis、Blob 存储、Key Vault 和 LangSmith 控制平面的共享专用端点。 |
@@ -54,7 +54,7 @@ AKS 子网占用 VNet 的十六分之一，专用终结点子网占用 VNet 的 
 
 ### 数据存储|商店 |配置|
 | - | - |
-| **PostgreSQL** (LangSmith) | Azure Database for PostgreSQL 灵活服务器、PostgreSQL 16、`GP_Standard_D2ds_v4`、具有自动增长功能的 32 GiB 存储。支持区域冗余的高可用性。备份保留7天，无异地冗余备份。仅 Microsoft Entra 身份验证，无密码身份验证，无公共访问。 |
+| **PostgreSQL** (LangSmith) | Azure Database for PostgreSQL 灵活服务器、PostgreSQL 18、`GP_Standard_D2ds_v4`、具有自动增长功能的 32 GiB 存储。支持区域冗余高可用性的区域。备份保留7天，无异地冗余备份。仅 Microsoft Entra 身份验证，无密码身份验证，无公共访问。 |
 | **PostgreSQL**（SmithDB 元存储）|第二个灵活的服务器，PostgreSQL 18，`GP_Standard_D2ds_v4`，128 GiB 存储。相同的可用性、备份和访问设置。 |
 | **Azure 托管 Redis** | `Balanced_B3` 高可用，OSS集群策略，无持久化。仅 TLS，禁用访问密钥，无公共访问。 |
 | **Blob 存储** |跟踪负载和附件以及 SmithDB 数据的存储帐户。 StorageV2、标准、有可用区的区域为 ZRS，其他区域为 LRS。仅支持 TLS 1.2 或更高版本的 HTTPS。共享密钥访问和公共网络访问被禁用。 |
@@ -76,7 +76,7 @@ AKS 子网占用 VNet 的十六分之一，专用终结点子网占用 VNet 的 
 | - | - | - |
 | Azure 资源管理器的控制平面 | HTTPS 到公共 Azure 资源管理器端点 |租户中LangSmith BYOC 应用程序的 Microsoft Entra 令牌 |
 | AKS API 的控制平面 |私人链接。 LangChain 控制平面网络中的专用端点连接到集群的 API 服务器。 AKS API 没有公共端点。 | Microsoft Entra 令牌和 Azure RBAC |
-|数据平面到控制平面|私人链接。数据平面的共享专用端点子网中的专用端点连接到 LangSmith 控制平面。资源组中的私有 DNS 区域将 LangSmith API 和遥测主机名解析为其。 |数据平面令牌 ||您的用户和应用程序到数据平面|公共或内部负载均衡器 | LangSmith API 密钥和通过控制平面登录 |
+|数据平面到控制平面|私人链接。数据平面的共享专用端点子网中的专用端点连接到 LangSmith 控制平面。资源组中的私有 DNS 区域将 LangSmith API 和遥测主机名解析到它。 |数据平面令牌 ||您的用户和应用程序到数据平面|公共或内部负载均衡器 | LangSmith API 密钥和通过控制平面登录 |
 
 数据平面通过 NAT 网关从 LangChain 的容器注册表中提取 LangSmith 容器镜像。
 
@@ -86,7 +86,7 @@ AKS 子网占用 VNet 的十六分之一，专用终结点子网占用 VNet 的 
 
 LangChain 通过一个多租户 Microsoft Entra 应用程序 **LangSmith BYOC** 管理您的数据平面。您将其服务主体添加到您的租户，并为其赋予每个数据平面资源组上的角色。应用程序不请求任何 Microsoft Graph 权限。
 
-控制平面不保存您的租户的存储凭据。它在 AKS 上运行，工作负载身份联合将 pod 令牌交换为租户中 LangSmith BYOC 应用程序的令牌。只有提供和管理数据平面的控制平面服务才能获得该令牌。
+控制平面不保存您的租户的存储凭据。它在 AKS 上运行，工作负载身份联合将 pod 令牌交换为租户中的 LangSmith BYOC 应用程序的令牌。只有提供和管理数据平面的控制平面服务才能获得该令牌。
 
 ### 角色分配|角色 |范围 |为什么LangSmith需要它 |
 | - | - | - |
@@ -122,26 +122,20 @@ LangChain 通过一个多租户 Microsoft Entra 应用程序 **LangSmith BYOC** 
 |密钥库 | Microsoft 管理的密钥 | TLS，通过专用端点 |
 | AKS 磁盘 | Microsoft 管理的密钥 |流量停留在集群中 |
 
-＃＃＃ 保留* **跟踪有效负载**：Blob 生命周期规则会在其保留层结束时删除每个对象。短期跟踪的默认值为 14 天，长期跟踪的默认值为 400 天。您可以使用 `ttl` 设置更改两者。参见[Change data plane settings](/langsmith/byoc-onboarding-azure#change-data-plane-settings)。
+＃＃＃ 保留* **跟踪有效负载**：Blob 生命周期规则会在其保留层结束时删除每个对象。短期跟踪的默认值为 14 天，长期跟踪的默认值为 400 天。您可以使用 `ttl` 设置更改两者。 See [Change data plane settings](/langsmith/byoc-onboarding-azure#change-data-plane-settings).
 * **Blob 版本**：启用版本控制，以前的版本将在创建 7 天后删除。删除的容器可以在 7 天内恢复。 Blob 软删除已禁用，因此过期的跟踪不会超过其保留层的寿命。
 * **PostgreSQL**：自动备份在同一区域保留 7 天。
 * **Redis**：没有持久性，也没有备份。 Redis 仅保存短暂的数据。
 
-### 删除
+### Deletion
 
 删除数据平面时，LangSmith 会删除 AKS 集群、PostgreSQL、Redis 和网络资源。它保留您的资源组、Key Vault 以及保存跟踪和 SmithDB 数据的 Blob 存储帐户。详情请参见[Delete a data plane](/langsmith/byoc-onboarding-azure#delete-a-data-plane)。
 
 ## 扩展和操作
 
-LangChain 以与 AWS 数据平面相同的方式操作 Azure 数据平面。升级和维护请参见[BYOC operations](/langsmith/byoc-operations-aws)。在 Azure 上：* **应用程序服务**：每个LangSmith服务在其最小和最大副本计数之间水平扩展。大多数服务的目标是其请求资源的 70% CPU 和 80% 内存。
-* **节点**：节点自动配置为无法调度的 Pod 添加节点，最多可达每个节点池的限制。系统节点池为三个节点。
-* **存储**：PostgreSQL 存储自动增长。 Blob 存储随着使用量的增加而增长。
-* **监控**：数据平面从 Azure Monitor 读取 PostgreSQL 和 Redis 指标，并将运行状况指标报告给LangChain。
-* **更改**：LangChain 监视数据平面并可以更改数据库大小、副本计数和节点池限制。
+LangChain 在配置后操作您的 Azure 数据平面。请参阅 [BYOC operations on Azure](/langsmith/byoc-operations-azure) 了解自动扩展、默认实例大小、升级和维护时段。有关估计的基础设施成本，请参阅[Azure data plane cost estimate](/langsmith/byoc-data-plane-cost-azure)。
 
-### 日志
-
-您的 Azure 活动日志记录LangSmith 对 Azure 资源管理器进行的每次调用。 LangSmith 不配置 Azure 诊断设置或 VNet 流日志，因此默认情况下不会收集 AKS 控制平面和审核日志、Key Vault 审核日志、PostgreSQL 日志和网络流日志。要收集它们，请将诊断设置和流日志添加到订阅中的这些资源中。您负责查看日志并配置警报。
+### Logs您的 Azure 活动日志记录对 Azure 资源管理器的 LangSmith 调用。要收集资源和网络日志，请在订阅中配置诊断设置和 VNet 流日志。有关可用日志和您的责任，请参阅[Auditing](/langsmith/byoc-operations-azure#auditing)。
 
 ## 另请参阅
 
@@ -149,6 +143,8 @@ LangChain 以与 AWS 数据平面相同的方式操作 Azure 数据平面。升�
 * [BYOC onboarding on Azure](/langsmith/byoc-onboarding-azure)
 * [BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-architecture-azure.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

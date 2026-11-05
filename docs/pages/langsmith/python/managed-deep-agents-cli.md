@@ -10,7 +10,7 @@ It is included with the `managed-deepagents` Python package.
 
 > [!NOTE]
 >
-> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use version 0.10 of the Managed Deep Agents CLI and SDK for BYOC.
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
 
 For the fastest end-to-end path, see the [quickstart](/langsmith/python/managed-deep-agents-quickstart). For workflow guidance, see [Identity](/langsmith/python/managed-deep-agents-identity), [Memory](/langsmith/python/managed-deep-agents-memory), [Evals](/langsmith/python/managed-deep-agents-evals), [Custom tools](/langsmith/python/managed-deep-agents-tools), [Connections](/langsmith/python/managed-deep-agents-connections), [Custom middleware](/langsmith/python/managed-deep-agents-middleware), [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes), [Channels](/langsmith/python/managed-deep-agents-channels), [Schedules](/langsmith/python/managed-deep-agents-schedules), and [Deploy an agent](/langsmith/python/managed-deep-agents-deploy).
 

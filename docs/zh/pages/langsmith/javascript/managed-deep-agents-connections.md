@@ -28,7 +28,7 @@ const apiKey = await connections.get("organization-tavily", { type: "agent" });
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上 **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上 **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 选择凭证所有者
 
@@ -259,16 +259,16 @@ bunx mda connections create frontend-github \
   --secret-from-env GITHUB_CLIENT_SECRET
 ```
 
-创建时，CLI 会打印重定向 URI 以向提供程序注册。在调用者授权之前，在提供商的应用程序设置页面上注册该 URI。 URI 遵循您的 LangSmith 主机，例如生产环境中的 `https://api.smith.langchain.com/v1/agent-auth/oauth/callback`。
+创建时，CLI 会打印重定向 URI 以向提供程序注册。在调用者授权之前，在提供商的应用程序设置页面上注册该 URI。 URI 遵循您的 LangSmith 主机，例如生产中的 `https://api.smith.langchain.com/v1/agent-auth/oauth/callback`。在 [BYOC](/langsmith/byoc) 上，它遵循您的数据平面端点。
 
 可选标志：
 
 * **`--scope SCOPE`**：替换目录默认值。对每个范围重复此操作。
 * **`--allowed-scope SCOPE`**：取消可能要求的任何后续授权。默认为 `--scope` 值，并且必须覆盖每个 `--scope`。
 * **`--authorization-param KEY=VALUE`**：额外授权查询参数。对每个参数重复此操作。
-* **`--auth-method METHOD`**：客户端如何向令牌端点进行身份验证：对于公共客户端，`client_secret_basic`、`client_secret_post` 或 `none`。默认为目录服务的方法。
+* **`--auth-method METHOD`**：客户端如何向令牌端点进行身份验证：对于公共客户端，`client_secret_basic`、`client_secret_post` 或 `none`。默认为目录服务的方法。### 使用自定义端点注册提供者
 
-### 使用自定义端点注册提供者对于目录未涵盖的服务，传递两个端点以及客户端 ID 和范围：
+对于目录未涵盖的服务，传递两个端点以及客户端 ID 和范围：
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx mda connections create acme \
@@ -385,7 +385,7 @@ bunx mda connections create support-linear \
   --authorize
 ```
 
-CLI 为您登录的帐户启动授权流程，并存储部署的结果授权。运行时代码将其解析为代理拥有的凭证：
+CLI 为您登录的帐户启动授权流程，并存储部署的结果授权。运行时代码将其解析为代理拥有的凭据：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const accessToken = await connections.get("support-linear", { type: "agent" });
@@ -499,7 +499,7 @@ bunx mda connections create engineering-notion --mcp https://mcp.notion.com/mcp
 
 托管 Deep Agents 为您运行 OAuth 往返。项目不需要回调路由，不需要令牌存储，不需要刷新逻辑，也不需要同意屏幕。运行暂停，调用者授予访问权限，然后使用该人的凭据恢复运行。
 
-在第一次模型转动之前，托管 Deep Agents 检查运行所需的每个用户拥有的连接。如果调用者缺少一项或多项授权，凭证门将引发一个 LangGraph 中断。 Slack 和 LangSmith Studio 为调用者处理该中断。自定义前端从 LangChain 前端 SDK 读取相同的负载，并在调用者连接后恢复。
+在第一个模型转动之前，托管 Deep Agents 检查运行所需的每个用户拥有的连接。如果调用者缺少一项或多项授权，凭证门将引发一个 LangGraph 中断。 Slack 和 LangSmith Studio 为调用者处理该中断。自定义前端从 LangChain 前端 SDK 读取相同的负载，并在调用者连接后恢复。
 
 用户拥有的连接需要经过身份验证的调用者。匿名或仅代理运行无法完成凭证门。请参阅[Identify the caller](#identify-the-caller)了解该身份的来源。
 
@@ -524,7 +524,7 @@ bunx mda connections create engineering-notion --mcp https://mcp.notion.com/mcp
 }
 ```一个中断会列出每一项缺失的授权。在恢复之前处理每个条目。带有 `"kind": "secret"` 的条目代表用户拥有的 API 密钥，而不是 OAuth 授权。 Slack 和 Studio 不收集这些。欲了解更多信息，请参阅[Review current limitations](#review-current-limitations)。
 
-|领域|礼物给 |意义|
+|领域 |礼物给 |意义|
 | - | - | - |
 | `type` |永远 |鉴别器。必须是`credential_authorization_required`。 |
 | `message` |永远 |人类可读的摘要显示在待决拨款上方。 |
@@ -771,8 +771,8 @@ bunx mda connections delete organization-tavily
 
 ## 查看当前限制
 
-连接是 Managed Deep Agents 公共测试版的一部分。当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
-* **自定义通道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
+连接是托管 Deep Agents 公共测试版的一部分。当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
+* **自定义渠道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
 * **工作区 UI**：LangSmith 不在 UI 中列出连接。使用 `mda connections list` 和 `mda connections get` 作为连接元数据。
 * **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示了 slug。从项目根目录运行`mda connections create <slug>`来创建一个。> [accordion] 通过代理身份验证存储用户拥有的 API 密钥
 >

@@ -16,7 +16,7 @@
 >
 > **特工=模特+线束**
 >
-> 线束的工作：为给定任务在正确的时间为模型提供正确的上下文。
+> 线束的工作：为给定的任务在正确的时间为模型提供正确的上下文。
 
 [⟦T115⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 是一款高度可配置的安全带。最简单的是，您可以使用以下命令创建一个：
 
@@ -66,7 +66,7 @@ var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools });
 
 > [!提示]
 >
-> [Deep Agents](/oss/javascript/deepagents/overview) 构建于 `create_agent` 之上，并附带已组装的常用功能，例如规划、文件系统工具、子代理和内存。当您需要自己配置线束时，请使用`create_agent`。
+> [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 构建于 `create_agent` 之上，并附带已组装的常用功能，例如规划、文件系统工具、子代理和内存。为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents](/oss/javascript/deepagents/overview) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。当您需要自己配置较小的线束时，请使用`create_agent`。
 
 ## 核心组件
 
@@ -547,7 +547,7 @@ const agent = createAgent({
 >
 > 跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
 
-您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T132⟧](/oss/javascript/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/javascript/langgraph/use-graph-api#messagesvalue)；要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
+您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T132⟧](/oss/javascript/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/javascript/langgraph/graph-api-state#messagesvalue)；要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessage } from "@langchain/core/messages";
@@ -757,7 +757,7 @@ result = await agent.invoke(
   { messages: [{ role: "user", content: "What about tomorrow?" }] },
   config,
 );
-```> **[View example trace](https://smith.langchain.com/public/dc6c669f-1699-4c3c-8490-c02b7d2cf978/r)**
+```> [卡][View example trace](https://smith.langchain.com/public/e99cc93b-774e-487e-a8c3-9d1cc544f972/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -984,11 +984,11 @@ const result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/3bc1fb83-7ada-4e78-b9ac-31b749201c7d/r)**
+> [卡][View example trace](https://smith.langchain.com/public/244a3b07-ca93-427b-9957-951b014454fb/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
-`thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅 [tool context](/oss/javascript/langchain/tools#context) 和 [Runtime](/oss/javascript/langchain/runtime)。
+`thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅[tool context](/oss/javascript/langchain/tools#context) 和 [Runtime](/oss/javascript/langchain/runtime)。
 
 ## 流媒体
 
@@ -1023,7 +1023,7 @@ for await (const snapshot of stream.values) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/53397253-6f2d-47c6-aa4e-a701377341e7/r)**
+> [卡][View example trace](https://smith.langchain.com/public/4e0527e9-935e-4c1a-89bf-e7192be7d801/r)
 >
 > 为此示例打开公共 LangSmith 运行。> [!提示]
 >
@@ -1039,35 +1039,35 @@ for await (const snapshot of stream.values) {
 
 当代理承担复杂的工作时，他们需要几个关键领域的支持。中间件生态系统提供：
 
-> **[Execution environment](#execution-environment)**
+> [卡][Execution environment](#execution-environment)
 >
 > 工具、文件系统、沙箱和代码执行
 
-> **[Context management](#context-management)**
+> [卡][Context management](#context-management)
 >
 > 总结、记忆、技巧、提示缓存
 
-> **[Planning and delegation](#planning-and-delegation)**
+> [卡][Planning and delegation](#planning-and-delegation)
 >
 > 用于并行、独立工作的待办事项列表和子代理
 
-> **[Fault tolerance](#fault-tolerance)**
+> [卡][Fault tolerance](#fault-tolerance)
 >
 > 重试、回退和调用限制
 
-> **[Guardrails](#guardrails)**
+> [卡][Guardrails](#guardrails)
 >
 > PII 检测和内容控制
 
-> **[Steering](#steering)**
+> [卡][Steering](#steering)
 >
 > 在采取高影响力行动之前进行人机交互批准
 
 > [!提示]
 >
-> `create_deep_agent` 为长时间运行的编码和研究任务预先组装此堆栈（默认情况下包括文件系统、摘要、子代理和提示缓存）。请参阅[Deep Agents](/oss/javascript/deepagents/harness)了解完整的预制线束。
+> `create_deep_agent` 为长时间运行的编码和研究任务预先组装此堆栈（默认情况下包括文件系统、摘要、子代理和提示缓存）。请参阅[Deep Agents](/oss/javascript/deepagents/harness)了解完整的预制线束。### 执行环境
 
-### 执行环境当代理可以采取行动而不仅仅是生成文本时，它们特别有用。执行环境为代理提供了一个工作空间：它可以调用的工具、用于跨轮读写文件的文件系统以及用于运行脚本或 shell 命令的代码执行。
+当代理可以采取行动而不仅仅是生成文本时，它们特别有用。执行环境为代理提供了一个工作空间：它可以调用的工具、用于跨轮读写文件的文件系统以及用于运行脚本或 shell 命令的代码执行。
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent } from "langchain";
@@ -1146,7 +1146,7 @@ var agent = createAgent({
 });
 ```
 
-请参阅[⟦T144⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)、[Sandboxes](/oss/javascript/deepagents/sandboxes)、[Interpreters](/oss/javascript/deepagents/interpreters)。
+参见[⟦T144⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)、[Sandboxes](/oss/javascript/deepagents/sandboxes)、[Interpreters](/oss/javascript/deepagents/interpreters)。
 
 > [!注意]
 >
@@ -1663,7 +1663,7 @@ var agent = createAgent({
 
 ### 命名您的代理人
 
-可以选择使用代理的标识符。当将代理作为子图嵌入到 [multi-agent](/oss/javascript/langchain/multi-agent) 系统中时，这特别有用。
+可以选择使用代理的标识符。当将代理作为子图嵌入到[multi-agent](/oss/javascript/langchain/multi-agent)系统中时，这特别有用。
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 var agent = createAgent({
@@ -1900,7 +1900,7 @@ var agent = createAgent({
 });
 ```
 
-参见[⟦T150⟧](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)、[⟦T151⟧](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware)、[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
+请参阅[⟦T150⟧](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)、[⟦T151⟧](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware)、[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
 
 ### 护栏有些策略不能立即生效——无论模型做什么，它们都需要确定性地执行。 Guardrails 在数据流经代理循环时拦截数据，在工具结果到达模型上下文之前应用合规性规则或内容策略。
 
@@ -2152,15 +2152,15 @@ var agent = createAgent({
 
 ### 中间件资源
 
-> **[Middleware overview](/oss/javascript/langchain/middleware/overview)**
+> [卡片][Middleware overview](/oss/javascript/langchain/middleware/overview)
 >
 > 中间件堆栈如何工作以及钩子何时触发
 
-> **[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)**
+> [卡片][Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)
 >
 > 带有配置示例的完整参考
 
-> **[Custom middleware](/oss/javascript/langchain/middleware/custom)**
+> [卡片][Custom middleware](/oss/javascript/langchain/middleware/custom)
 >
 > 编写您自己的业务逻辑、PII 清理等挂钩
 

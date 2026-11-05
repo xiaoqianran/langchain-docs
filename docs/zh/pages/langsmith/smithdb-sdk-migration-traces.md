@@ -6,7 +6,7 @@
 
 将 LangSmith SDK 跟踪方法迁移到 SmithDB 支持的等效方法。
 
-这些方法查询跟踪并列出跟踪内的运行。有关弃用日期、最低 SDK 版本以及适用于每种方法的代理提示，请参阅 [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration)。
+这些方法查询跟踪并列出跟踪内的运行。有关弃用日期、最低 SDK 版本以及适用于每种方法的代理提示，请参阅 [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration)。
 
 ## 痕迹：查询
 
@@ -22,7 +22,7 @@
 
 > [选项卡] Python
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.list_runs(is_root=True)`（通用）| `client.traces.query()` |
 >
@@ -34,13 +34,13 @@
 
 > [选项卡] TypeScript
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.listRuns({ isRoot: true })`（通用）| `client.traces.query()` |
 >
 > 完整参数和字段列表请参见[reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Traces/query)。> [选项卡] Java
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.runs().query()`（通用，`isRoot(true)`）| `client.traces().query()` |
 >
@@ -48,7 +48,7 @@
 
 > [选项卡] 前往
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.Runs.Query()`（通用，`IsRoot: true`）| `client.Traces.Query()` |
 >
@@ -56,7 +56,7 @@
 
 > [选项卡] 卷曲
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `POST /api/v1/runs/query` (`is_root=true`) | `POST /api/v2/traces/query` |
 
@@ -122,7 +122,7 @@
 
 > [选项卡] Java
 >
-> * `rootRun()` 与运行具有相同的 `RunSchema` 形状：查询（`totalTokens()`、`name()`、`runType()`、`status()` 等），由 `selects` 门控。
+> * `rootRun()` 具有与 Runs 相同的 `RunSchema` 形状：查询（`totalTokens()`、`name()`、`runType()`、`status()` 等），由 `selects` 门控。
 > * `totalTokens()`/`totalCost()` 从 `rootRun()` 移至 `traceAggregates()`，对跟踪中的每个运行进行求和，而不仅仅是根运行。
 > * `traceAggregates().firstTokenTime()` 是新的
 
@@ -1074,7 +1074,7 @@
 
 > [选项卡] Python
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.list_runs(trace_id=...)`（通用）| `client.traces.list_runs()` |
 >
@@ -1086,7 +1086,7 @@
 
 > [选项卡] TypeScript
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.listRuns({ traceId })`（通用）| `client.traces.listRuns()` |
 >
@@ -1094,7 +1094,7 @@
 
 > [选项卡] Java
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.runs().query()`（通用，`.trace(traceId)`）| `client.traces().listRuns()` |
 >
@@ -1102,7 +1102,7 @@
 
 > [选项卡] 前往
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.Runs.Query()`（通用，`Trace: traceID`）| `client.Traces.ListRuns()` |
 >
@@ -1110,7 +1110,7 @@
 
 > [选项卡] 卷曲
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `POST /api/v1/runs/query`（`trace`字段）| `GET /api/v2/traces/{trace_id}/runs` |
 

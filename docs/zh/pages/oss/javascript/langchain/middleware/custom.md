@@ -10,11 +10,11 @@
 
 中间件提供了两种类型的钩子来拦截代理执行：
 
-> **[Node-style hooks](#node-style-hooks)**
+> [卡][Node-style hooks](#node-style-hooks)
 >
 > 在特定执行点按顺序运行。
 
-> **[Wrap-style hooks](#wrap-style-hooks)**
+> [卡][Wrap-style hooks](#wrap-style-hooks)
 >
 > 运行每个模型或工具调用。
 
@@ -30,7 +30,7 @@
 | - | - |
 | `beforeAgent` |代理启动之前（每次调用一次）|
 | `beforeModel` |每次模型调用之前 |
-| `afterModel` |每次模型响应后|
+| `afterModel` |每次模型响应后 |
 | `afterAgent` |代理完成后（每次调用一次）|
 
 **环绕式钩子**围绕每个调用运行，让您可以控制执行：
@@ -107,8 +107,8 @@ const createRetryMiddleware = (maxRetries: number = 3) => {
 
 节点式和包裹式钩子都可以更新代理状态。机制不同：
 
-* **Node-style hooks** (`beforeAgent`, `beforeModel`, `afterModel`, `afterAgent`): 直接返回一个dict。使用图的化简器将字典应用于代理状态。
-* **Wrap-style hooks** (`wrapModelCall`, `wrapToolCall`)：对于模型调用，直接返回 [⟦T42⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command) 以在模型响应旁边注入状态更新。对于工具调用，直接返回[⟦T43⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command)。当您需要根据模型或工具调用期间运行的逻辑（例如汇总触发点、使用元数据或根据请求或响应计算的自定义字段）跟踪或更新状态时，请使用这些。
+* **节点式钩子** (`beforeAgent`, `beforeModel`, `afterModel`, `afterAgent`): 直接返回一个dict。使用图的化简器将字典应用于代理状态。
+* **Wrap-style hooks** (`wrapModelCall`, `wrapToolCall`)：对于模型调用，直接返回 [⟦T39⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command) 以在模型响应旁边注入状态更新。对于工具调用，直接返回[⟦T40⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command)。当您需要根据模型或工具调用期间运行的逻辑（例如汇总触发点、使用元数据或根据请求或响应计算的自定义字段）跟踪或更新状态时，请使用这些。
 
 ### 节点式挂钩
 
@@ -133,7 +133,7 @@ const incrementAfterModel = createMiddleware({
 
 ### 缠绕式挂钩
 
-直接从 `wrapModelCall` 返回 [⟦T44⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command) 以从模型调用层注入状态更新：
+直接从 `wrapModelCall` 返回 [⟦T41⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command) 以从模型调用层注入状态更新：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as z from "zod";
@@ -152,14 +152,14 @@ const trackUsage = createMiddleware({
     return new Command({ update: { lastModelCallTokens: 150 } });
   },
 });
-```[⟦T46⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command) 流经图的化简器，因此可以正确应用更新，并且消息是附加的而不是替换现有状态。
+```[⟦T43⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command) 流经图的化简器，因此可以正确应用更新，并且消息是附加的而不是替换现有状态。
 
 #### 多个中间件的组合
 
 当多个中间件层返回响应时，框架会传递最后生成的 `AIMessage`：
 
 * **AIMessage流经：** 每个中间件的`handler()`接收来自上一层的`AIMessage`。当中间件返回 `AIMessage` 时，它将成为下一个中间件处理程序的输入。
-* **没有消息更新的命令是传递的：** 如果中间件返回一个 `Command`，其状态更新不触及 `messages`，则框架将其视为消息流的无操作。下一个中间件的处理程序从返回命令的中间件*之前*接收到 `AIMessage`。
+* **没有消息更新的命令是传递的：** 如果中间件返回状态更新不触及 `messages` 的 `Command`，则框架将其视为消息流的无操作。下一个中间件的处理程序从返回命令的中间件*之前*接收到 `AIMessage`。
 * **Reducer 行为和重试安全性：** 命令仍然通过Reducer 应用（消息附加，冲突时外部获胜）。重试逻辑会丢弃先前调用的命令。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -207,68 +207,9 @@ const innerMiddleware = createMiddleware({
 
 ## 创建中间件
 
-蟒蛇
-`AgentMiddleware` 子类可以声明代理工厂在编译时获取的三个类属性：* `state_schema` — 使用自定义字段扩展代理状态。参见[Custom state schema](#custom-state-schema)。
-* `tools` — 注册中间件附带的其他工具（例如，待办事项列表中间件上的 `write_todos`）。
-* `transformers` — 注册作用域感知的流转换器工厂。参见[Custom stream transformers](#custom-stream-transformers)。
-  :::
-
-`createMiddleware` 接受代理工厂在编译时选取的三个配置字段：
-
-* `stateSchema` — 使用自定义字段扩展代理状态。参见[Custom state schema](#custom-state-schema)。
+`createMiddleware` 接受代理工厂在编译时选取的三个配置字段：* `stateSchema` — 使用自定义字段扩展代理状态。参见[Custom state schema](#custom-state-schema)。
 * `tools` — 注册中间件附带的附加工具。
 * `streamTransformers` — 注册作用域感知的流转换器工厂。参见[Custom stream transformers](#custom-stream-transformers)。
-
-**示例：**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents.middleware import (
-    AgentMiddleware,
-    AgentState,
-    ModelRequest,
-    ModelResponse,
-)
-from langgraph.runtime import Runtime
-from typing import Any, Callable
-
-class LoggingMiddleware(AgentMiddleware):
-    def before_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
-        print(f"About to call model with {len(state['messages'])} messages")
-        return None
-
-    def after_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
-        print(f"Model returned: {state['messages'][-1].content}")
-        return None
-
-    async def abefore_model(
-        self, state: AgentState, runtime: Runtime
-    ) -> dict[str, Any] | None:
-        # Async version of before_model
-        return None
-
-    async def aafter_model(
-        self, state: AgentState, runtime: Runtime
-    ) -> dict[str, Any] | None:
-        # Async version of after_model
-        print(f"Model returned: {state['messages'][-1].content}")
-        return None
-
-
-agent = create_agent(
-    model="gpt-5.5",
-    middleware=[LoggingMiddleware()],
-    tools=[...],
-)
-```
-
-**何时使用类：**
-
-* 为同一个钩子定义同步和异步实现
-* 单个中间件中需要多个钩子
-* 需要复杂的配置（例如，可配置阈值、自定义模型）
-* 通过初始化时配置跨项目重用
-
-:::
 
 使用 `createMiddleware` 函数定义自定义中间件：
 
@@ -291,9 +232,11 @@ const loggingMiddleware = createMiddleware({
 
 ## 自定义状态模式
 
-如果您的中间件需要跨钩子跟踪状态，中间件可以使用自定义属性扩展代理的状态。这使得中间件能够：* **跟踪执行过程中的状态**：维护在代理执行生命周期中持续存在的计数器、标志或其他值
+如果您的中间件需要跨钩子跟踪状态，中间件可以使用自定义属性扩展代理的状态。这使得中间件能够：
 
-* **在钩子之间共享数据**：从`beforeModel`到`afterModel`或不同中间件实例之间传递信息
+* **跟踪执行过程中的状态**：维护在代理执行生命周期中持续存在的计数器、标志或其他值
+
+* **钩子之间共享数据**：从`beforeModel`到`afterModel`或不同中间件实例之间传递信息
 
 * **实现横切关注点**：添加速率限制、使用跟踪、用户上下文或审核日志记录等功能，而无需修改核心代理逻辑
 
@@ -338,9 +281,7 @@ const result = await agent.invoke({
   modelCallCount: 0,
   userId: "user-123",
 });
-```
-
-状态字段可以是公共的也可以是私有的。以下划线 (`_`) 开头的字段被视为私有字段，不会包含在代理的结果中。仅返回公共字段（没有前导下划线的字段）。
+```状态字段可以是公共的也可以是私有的。以下划线 (`_`) 开头的字段被视为私有字段，不会包含在代理的结果中。仅返回公共字段（没有前导下划线的字段）。
 
 这对于存储不应暴露给调用者的内部中间件状态非常有用，例如临时跟踪变量或内部标志：
 
@@ -381,7 +322,9 @@ console.log(result._internalFlag); // undefined
 
 > [!注意]
 >
-> 中间件注册变压器需要 `langchain@1.4.3` 或更高版本。中间件可以注册流转换器工厂，将事件从实时代理流投影到类型化扩展通道上。这对于在不耦合到框架的内置投影的情况下显示计数器、侧通道工件、部分输出或线级编辑非常有用。
+> 中间件注册的变压器需要 `langchain@1.4.3` 或更高版本。
+
+中间件可以注册流转换器工厂，将事件从实时代理流投影到类型化扩展通道上。这对于在不耦合到框架的内置投影的情况下显示计数器、侧通道工件、部分输出或线级编辑非常有用。
 
 在编译时，中间件注册的工厂与调用者直接传递给代理工厂的任何内容合并。 [final ordering rules](/oss/javascript/langchain/event-streaming#register-transformers-on-middleware) 将内置的 `ToolCallTransformer` 保留在前面，让调用者提供的条目最后落地。
 
@@ -400,13 +343,13 @@ const agent = createAgent({
   tools: [...],
   middleware: [toolActivityMiddleware],
 });
-```
-
-请参阅 [Register transformers on middleware](/oss/javascript/langchain/event-streaming#register-transformers-on-middleware) 了解完整的排序规则和 PII 编辑示例。
+```请参阅 [Register transformers on middleware](/oss/javascript/langchain/event-streaming#register-transformers-on-middleware) 了解完整的排序规则和 PII 编辑示例。
 
 ## 自定义上下文
 
-中间件可以定义自定义上下文架构来访问每个调用的元数据。与状态不同，上下文是只读的，并且在调用之间不会保留。这使得它非常适合：* **用户信息**：传递执行期间不会改变的用户ID、角色或偏好
+中间件可以定义自定义上下文架构来访问每个调用的元数据。与状态不同，上下文是只读的，并且在调用之间不会保留。这使得它非常适合：
+
+* **用户信息**：传递执行期间不会改变的用户ID、角色或偏好
 * **配置覆盖**：提供每次调用设置，例如速率限制或功能标志
 * **租户/工作空间上下文**：包括多租户应用程序的组织特定数据
 * **请求元数据**：传递请求 ID、API 密钥或中间件所需的其他元数据
@@ -470,9 +413,7 @@ const result = await agent.invoke(
 );
 ```
 
-## 执行顺序
-
-使用多个中间件时，了解它们如何执行：
+## 执行顺序使用多个中间件时，了解它们如何执行：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const agent = createAgent({
@@ -480,7 +421,9 @@ const agent = createAgent({
   middleware: [middleware1, middleware2, middleware3],
   tools: [...],
 });
-```> **执行流程**
+```
+
+> [手风琴] 执行流程
 >
 > **在钩子按顺序运行之前：**
 >
@@ -491,7 +434,7 @@ const agent = createAgent({
 > **代理循环开始**
 >
 > 4.`middleware1.before_model()`
-> 5.`middleware2.before_model()`
+> 5. `middleware2.before_model()`
 > 6. `middleware3.before_model()`
 >
 > **像函数调用一样包裹钩子嵌套：**
@@ -564,7 +507,7 @@ console.log(result.messages.at(-1)?.content);
 ## 最佳实践1. 集中中间件——每个中间件都应该做好一件事
 2. 优雅地处理错误——不要让中间件错误导致代理崩溃
 3. **使用适当的钩子类型**：
-   * 用于顺序逻辑的节点样式（日志记录、验证）
+   * 顺序逻辑的节点样式（日志记录、验证）
    * 控制流的环绕式（重试、回退、缓存）
 4. 清楚地记录任何自定义状态属性
 5. 集成前独立对中间件进行单元测试
@@ -577,7 +520,7 @@ console.log(result.messages.at(-1)?.content);
 
 在运行时动态修改系统提示符，以在每次模型调用之前注入上下文、用户特定的指令或其他信息。这是最常见的中间件用例之一。
 
-使用`ModelRequest`中的`systemMessage`字段读取和修改系统提示符。它包含一个 [⟦T104⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象（即使代理是使用字符串 [⟦T105⟧](https://reference.langchain.com/javascript/langchain/index/CreateAgentParams/systemPrompt) 创建的）。
+使用`ModelRequest`中的`systemMessage`字段读取和修改系统提示符。它包含一个 [⟦T96⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象（即使代理是使用字符串 [⟦T97⟧](https://reference.langchain.com/javascript/langchain/index/CreateAgentParams/systemPrompt) 创建的）。
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createMiddleware, SystemMessage, createAgent } from "langchain";
@@ -719,7 +662,7 @@ const agent = createAgent({
 });
 ```
 
-使用 [⟦T106⟧](https://reference.langchain.com/javascript/langchain-core/utils/stream/concat) 保留由其他中间件创建的缓存控制元数据或结构化内容块。
+使用 [⟦T98⟧](https://reference.langchain.com/javascript/langchain-core/utils/stream/concat) 保存由其他中间件创建的缓存控制元数据或结构化内容块。
 
 ### 动态模型选择
 
@@ -797,70 +740,7 @@ const toolMonitoringMiddleware = createMiddleware({
 
 ### 提示缓存 (Anthropic)
 
-使用 Anthropic 模型时，使用带有缓存控制指令的结构化内容块来缓存大型系统提示：
-
-**装饰器**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-from langchain.messages import SystemMessage
-from typing import Callable
-
-
-@wrap_model_call
-def add_cached_context(
-    request: ModelRequest,
-    handler: Callable[[ModelRequest], ModelResponse],
-) -> ModelResponse:
-    # Always work with content blocks
-    new_content = list(request.system_message.content_blocks) + [
-        {
-            "type": "text",
-            "text": "Here is a large document to analyze:\n\n<document>...</document>",
-            # content up until this point is cached
-            "cache_control": {"type": "ephemeral"}
-        }
-    ]
-
-    new_system_message = SystemMessage(content=new_content)
-    return handler(request.override(system_message=new_system_message))
-```
-
-**班级**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-from langchain.messages import SystemMessage
-from typing import Callable
-
-
-class CachedContextMiddleware(AgentMiddleware):
-    def wrap_model_call(
-        self,
-        request: ModelRequest,
-        handler: Callable[[ModelRequest], ModelResponse],
-    ) -> ModelResponse:
-        # Always work with content blocks
-        new_content = list(request.system_message.content_blocks) + [
-            {
-                "type": "text",
-                "text": "Here is a large document to analyze:\n\n<document>...</document>",
-                "cache_control": {"type": "ephemeral"}  # This content will be cached
-            }
-        ]
-
-        new_system_message = SystemMessage(content=new_content)
-        return handler(request.override(system_message=new_system_message))
-```
-
-**注释：**
-
-* `ModelRequest.system_message` 始终是 [⟦T108⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象，即使代理是使用 `system_prompt="string"` 创建的
-* 使用`SystemMessage.content_blocks`以块列表的形式访问内容，无论原始内容是字符串还是列表
-* 修改系统消息时，使用`content_blocks`并附加新块以保留现有结构
-* 您可以将 [⟦T112⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象直接传递给 `create_agent` 的 `system_prompt` 参数，以实现缓存控制等高级用例
-
-:::使用`ModelRequest`中的`systemMessage`字段修改中间件中的系统消息。它包含一个 [⟦T117⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象（即使代理是使用字符串 [⟦T118⟧](https://reference.langchain.com/javascript/langchain/index/CreateAgentParams/systemPrompt) 创建的）。
+使用`ModelRequest`中的`systemMessage`字段修改中间件中的系统消息。它包含一个 [⟦T101⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象（即使代理是使用字符串 [⟦T102⟧](https://reference.langchain.com/javascript/langchain/index/CreateAgentParams/systemPrompt) 创建的）。
 
 **示例：链接中间件** - 不同的中间件可以使用不同的方法：
 
@@ -922,7 +802,7 @@ new SystemMessage({
 });
 ```
 
-使用 [⟦T119⟧](https://reference.langchain.com/javascript/langchain-core/utils/stream/concat) 保留由其他中间件创建的缓存控制元数据或结构化内容块。
+使用[⟦T103⟧](https://reference.langchain.com/javascript/langchain-core/utils/stream/concat)保留由其他中间件创建的缓存控制元数据或结构化内容块。
 
 ## 其他资源
 

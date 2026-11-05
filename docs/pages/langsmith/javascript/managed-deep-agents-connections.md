@@ -27,7 +27,7 @@ The rest of this page covers the two choices around those steps: who owns the cr
 
 > [!NOTE]
 >
-> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use version 0.10 of the Managed Deep Agents CLI and SDK for BYOC.
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
 
 ## Choose a credential owner
 
@@ -274,7 +274,7 @@ bunx mda connections create frontend-github \
   --secret-from-env GITHUB_CLIENT_SECRET
 ```
 
-On create, the CLI prints the redirect URI to register with the provider. Register that URI on the provider's app settings page before callers authorize. The URI follows your LangSmith host, for example `https://api.smith.langchain.com/v1/agent-auth/oauth/callback` on production.
+On create, the CLI prints the redirect URI to register with the provider. Register that URI on the provider's app settings page before callers authorize. The URI follows your LangSmith host, for example `https://api.smith.langchain.com/v1/agent-auth/oauth/callback` on production. On [BYOC](/langsmith/byoc), it follows your data plane endpoint instead.
 
 Optional flags:
 

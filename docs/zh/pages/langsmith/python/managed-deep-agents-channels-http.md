@@ -12,7 +12,7 @@ HTTP 通道将托管深度代理转变为任何外部服务都可以调用的 HT
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用适用于 BYOC 的托管 Deep Agents CLI 和 SDK 版本 0.10。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 > [!注意]
 >
@@ -89,7 +89,7 @@ def verify(context: HttpChannelRequest) -> bool:
 * `{"type": "message", "message": {...}}` 开始跑步。
 * `{"type": "ignore"}` 跳过该事件。
 
-两者都接受可选的 `response` 和 Starlette `Response`。
+两者都接受可选的 `response`，Starlette `Response`。
 
 该消息携带四个必填字段：* **`user_id`**：外部服务中调用者的 ID，作为字符串，从已验证的事件解析。代理身份验证将其映射到运行可能使用其凭据的主体，因此它是从经过验证的数据而不是从未经身份验证的字段派生的。使用 `str()` 转换数字提供商 ID。
 * **`thread_id`**：要运行的对话，作为 UUID。 Managed Deep Agents 将其小写并将其映射到持久代理线程，因此相同的值会继续相同的对话。

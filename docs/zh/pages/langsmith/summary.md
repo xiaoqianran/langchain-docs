@@ -148,7 +148,8 @@ await evaluate(badClassifier, {
 
 Python 和 JS/TS
 
-* `dict`：`{"score": ..., "name": ...}` 形式的字典允许您传递数字或布尔分数和指标名称。
+* `dict`：`{"key": ..., "score": ...}` 形式的字典允许您传递指标名称和数字或布尔分数。
+* `list[dict]`：这些字典的列表，用于记录来自一个摘要评估器的多个指标。
 
 目前仅支持Python
 

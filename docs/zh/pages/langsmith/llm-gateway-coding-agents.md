@@ -16,7 +16,7 @@
 
 * 管理员已完成任何必需的 [gateway setup](/langsmith/llm-gateway-admin-setup)。
 * 您拥有工作区范围的 LangSmith API 密钥。有关密钥类型、权限和每个客户端发送的标头，请参阅[Authenticate to the LLM Gateway](/langsmith/llm-gateway-authentication)。
-* 对于自带密钥模型，您的工作区具有相应的提供者密钥。 [Gateway Credits models](/langsmith/llm-gateway-credits) 不需要提供商秘密。
+* 对于自带密钥模型，您的工作区具有相应的提供者密钥。 [Gateway Credits models](/langsmith/llm-gateway-credits) 不需要提供商机密。
 
 在配置客户端之前设置您的 LangSmith API 密钥：
 
@@ -187,7 +187,7 @@ dcode --model openai:moonshotai/kimi-k3
 对于向所有开发人员推出网关的组织，可以通过移动设备管理或共享 shell 配置文件分发配置。分发：
 
 1. 每个客户端的标准网关基本 URL。
-2. 每个用户或团队的工作区范围[LangSmith API key](/langsmith/llm-gateway-authentication#choose-a-key-type)，具体取决于您的策略粒度。
+2. 每个用户或每个成本中心的工作区范围[LangSmith API key](/langsmith/llm-gateway-authentication#choose-a-key-type)，具体取决于您的策略粒度。
 3. 为每个编码代理批准的型号 ID。
 4. Codex `config.toml`（如果您的组织使用 Codex）。
 

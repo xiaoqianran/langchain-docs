@@ -107,7 +107,7 @@ import { injectStream } from "@langchain/angular"; // Angular
 
 ## 类型推断
 
-将类型参数传递给 [⟦T10⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)（或 Angular 中的 [⟦T11⟧](https://reference.langchain.com/javascript/langchain-angular/injectStream)），以便对 `stream.messages`、`stream.toolCalls`、`stream.interrupt`、`stream.values` 和其他反应状态进行类型安全访问。
+将类型参数传递给 [⟦T10⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)（或 Angular 中的 [⟦T11⟧](https://reference.langchain.com/javascript/langchain-angular/injectStream)），以对 `stream.messages`、`stream.toolCalls`、`stream.interrupt`、`stream.values` 和其他反应状态进行类型安全访问。
 
 导入您的代理并传递 `typeof myAgent` 作为类型参数。 TypeScript 从编译的图中推断出状态模式：
 
@@ -126,51 +126,51 @@ const stream = useStream<typeof myAgent>({
 
 ### 渲染消息和输出
 
-> **[Markdown messages](/oss/javascript/langchain/frontend/markdown-messages)**
+> [卡][Markdown messages](/oss/javascript/langchain/frontend/markdown-messages)
 >
 > 使用正确的格式和代码突出显示来解析和渲染流式 Markdown。
 
-> **[Structured output](/oss/javascript/langchain/frontend/structured-output)**
+> [卡][Structured output](/oss/javascript/langchain/frontend/structured-output)
 >
 > 将键入的代理响应呈现为自定义 UI 组件而不是纯文本。
 
-> **[Reasoning tokens](/oss/javascript/langchain/frontend/reasoning-tokens)**
+> [卡][Reasoning tokens](/oss/javascript/langchain/frontend/reasoning-tokens)
 >
-> 在可折叠块中显示模型思维过程。> **[Generative UI](/oss/javascript/langchain/frontend/generative-ui-overview)**
+> 在可折叠块中显示模型思维过程。> [卡][Generative UI](/oss/javascript/langchain/frontend/generative-ui-overview)
 >
 > 渲染代理生成的界面，涵盖从受控到声明到开放式的各种范围。
 
 ### 显示代理操作
 
-> **[Tool calling](/oss/javascript/langchain/frontend/tool-calling)**
+> [卡片][Tool calling](/oss/javascript/langchain/frontend/tool-calling)
 >
 > 将工具调用显示为包含加载和错误状态的丰富、类型安全的 UI 卡。
 
-> **[Headless tools](/oss/javascript/langchain/frontend/headless-tools)**
+> [卡][Headless tools](/oss/javascript/langchain/frontend/headless-tools)
 >
 > 在客户端上运行浏览器和设备 API，同时在代理上保留类型化工具架构。
 
-> **[Human-in-the-loop](/oss/javascript/langchain/frontend/human-in-the-loop)**
+> [卡][Human-in-the-loop](/oss/javascript/langchain/frontend/human-in-the-loop)
 >
 > 暂停代理以通过批准、拒绝和编辑工作流程进行人工审核。
 
 ### 管理对话
 
-> **[Branching chat](/oss/javascript/langchain/frontend/branching-chat)**
+> [卡][Branching chat](/oss/javascript/langchain/frontend/branching-chat)
 >
 > 编辑消息、重新生成响应以及导航对话分支。
 
-> **[Message queues](/oss/javascript/langchain/frontend/message-queues)**
+> [卡][Message queues](/oss/javascript/langchain/frontend/message-queues)
 >
 > 将多条消息排队，同时代理按顺序处理它们。
 
 ### 高级流媒体
 
-> **[Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)**
+> [卡][Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)
 >
 > 断开并重新连接正在运行的代理流，而不会丢失进度。
 
-> **[Time travel](/oss/javascript/langchain/frontend/time-travel)**
+> [卡][Time travel](/oss/javascript/langchain/frontend/time-travel)
 >
 > 从对话历史记录中的任何检查点检查、导航和恢复。
 
@@ -192,15 +192,15 @@ const stream = useStream<typeof myAgent>({
 SDK 拥有代理运行时状态、可恢复性、中断和检查点
 下面的语义。
 
-> **[AI Elements](/oss/javascript/langchain/frontend/integrations/ai-elements)**
+> [卡][AI Elements](/oss/javascript/langchain/frontend/integrations/ai-elements)
 >
 > 用于 AI 聊天的可组合 shadcn/ui 组件：`Conversation`、`Message`、`Tool`、`Reasoning`。
 
-> **[assistant-ui](/oss/javascript/langchain/frontend/integrations/assistant-ui)**
+> [卡][assistant-ui](/oss/javascript/langchain/frontend/integrations/assistant-ui)
 >
-> 无头 React 框架，具有内置线程管理、分支和附件支持。
+> Headless React 框架，具有内置线程管理、分支和附件支持。
 
-> **[OpenUI](/oss/javascript/langchain/frontend/integrations/openui)**
+> [卡][OpenUI](/oss/javascript/langchain/frontend/integrations/openui)
 >
 > 使用 openui-lang 组件 DSL 生成数据丰富的报告和仪表板的 UI 库。
 

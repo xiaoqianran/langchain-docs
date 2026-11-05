@@ -10,7 +10,7 @@ After this quickstart, the [tutorial](/langsmith/javascript/managed-deep-agents-
 
 > [!NOTE]
 >
-> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use version 0.10 of the Managed Deep Agents CLI and SDK for BYOC.
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
 
 ## Prerequisites
 
@@ -111,6 +111,8 @@ Managed Deep Agents runs on LangSmith. Your LangSmith API key authenticates loca
 [Sign up for LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-quickstart) if you do not already have an account.
 
 To create a LangSmith API key, open [Settings](https://smith.langchain.com/settings), go to **API Keys**, and click **Create API Key**. For more details, see [Create an account and API key](/langsmith/create-account-api-key).
+
+On [BYOC](/langsmith/byoc), sign in to your own data plane and create the key there. Set `LANGSMITH_ENDPOINT` to the data plane's API URL as well. See [Select a BYOC data plane](/langsmith/javascript/managed-deep-agents-deploy#select-a-byoc-data-plane).
 
 Add your LangSmith API key to `.env`:
 
@@ -291,6 +293,8 @@ You should see the agent call the web search tool, then return a concise answer 
 In an [agent-based workspace](/langsmith/agent-registry), tracing will result in errors until you register the agent. For details, see [Trace local runs](/langsmith/javascript/managed-deep-agents-local-development#trace-local-runs).
 
 **7. Deploy the agent**
+
+On [BYOC](/langsmith/byoc), add `--push-to <image-repository>` to every command in this step. A BYOC data plane deploys from an image in a registry you manage.
 
 Deploy the project by running:
 

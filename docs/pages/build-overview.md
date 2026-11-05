@@ -138,7 +138,7 @@ LangChain provides open source, model-agnostic harnesses for building agents. La
 
 > [card] [Agent Registry](/langsmith/agent-registry)
 >
-> (Cloud only) Register, organize, and govern every agent in one place, no matter where it is hosted.
+> Register, organize, and govern every agent in one place, no matter where it is hosted.
 
 ## Products
 
