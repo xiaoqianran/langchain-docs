@@ -10,15 +10,15 @@
 
 如果您正在寻找解决方案，请查看我们的存储库中标记为“需要帮助”的问题：
 
-> **[LangChain](https://github.com/langchain-ai/langchain/labels?q=help+wanted)**
+> [卡][LangChain](https://github.com/langchain-ai/langchain/labels?q=help+wanted)
 >
 > 标签
 
-> **[LangGraph](https://github.com/langchain-ai/langgraph/labels?q=help+wanted)**
+> [卡][LangGraph](https://github.com/langchain-ai/langgraph/labels?q=help+wanted)
 >
 > 标签
 
-> **[Deep Agents](https://github.com/langchain-ai/deepagents/labels?q=help+wanted)**
+> [卡][Deep Agents](https://github.com/langchain-ai/deepagents/labels?q=help+wanted)
 >
 > 标签
 
@@ -58,7 +58,7 @@ uv sync --all-groups
 uv sync --group test
 ```
 
-如果您以前没有安装过，则需要安装[⟦T26⟧](https://docs.astral.sh/uv/)。有关软件包及其位置的完整列表，请参阅 [repository structure](#repository-structure) 部分。
+如果您之前没有安装，则需要安装 [⟦T26⟧](https://docs.astral.sh/uv/)。有关软件包及其位置的完整列表，请参阅 [repository structure](#repository-structure) 部分。
 
 **4.创建分支**
 
@@ -105,7 +105,7 @@ make integration_tests
 对于持续开发或更大贡献：
 
 1. 查看我们的 [contribution guidelines](#contribution-guidelines) 的功能、错误修复和集成
-2. 按照下面的[setup guide](#development-environment) 设置您的环境
+2. 按照下面的[setup guide](#development-environment)设置您的环境
 3. 了解[repository structure](#repository-structure)和包组织
 4. 了解我们的[development workflow](#development-workflow)，包括测试和 linting
 
@@ -125,14 +125,14 @@ make integration_tests
 
 通过以下方式保持兼容性：
 
-> **稳定的接口**
+> [手风琴] 稳定的接口
 >
 > **始终保留**：
 >
 > * 函数签名和参数名称
 > * 类接口和方法名
 > * 返回值结构和类型
-> * 公共API的导入路径> **安全更改**
+> * 公共API的导入路径> [手风琴] 安全更改
 >
 > **可接受的修改**：
 >
@@ -144,7 +144,7 @@ make integration_tests
 >
 > * 添加新模块或功能
 
-> **进行更改之前**
+> [手风琴] 进行更改之前
 >
 > * **这会破坏现有的用户代码吗？**
 >
@@ -188,19 +188,19 @@ make integration_tests
 
 安全检查清单：
 
-> **输入验证**
+> [手风琴] 输入验证
 >
 > * 验证并清理所有用户输入
 > * 正确转义模板和查询中的数据
 > * 切勿在用户数据上使用 `eval()`、`exec()` 或 `pickle`，因为这可能导致任意代码执行漏洞
 
-> **错误处理**
+> [手风琴] 错误处理
 >
 > * 使用特定的异常类型
 > * 不要在错误消息中暴露敏感信息
 > * 实施适当的资源清理
 
-> **依赖关系**
+> [手风琴] 依赖关系
 >
 > * 避免添加硬依赖
 > * 保持最小的可选依赖关系
@@ -232,7 +232,7 @@ make integration_tests
 >
 > 不要发明备用 MCP URL。配置后，确认两台服务器均已列出并且可访问。> * 安装 [LangChain Skills](https://github.com/langchain-ai/langchain-skills) 以提高代理在 LangChain 生态系统任务上的性能，然后单击此页面右上角的 **复制页面** 按钮，并将原始内容粘贴到您的代理中，以使其自动设置您的环境。
 >
-> 安装LangChain技能
+> 安装LangChain技巧
 >
 > 为我的编码代理安装 LangChain 技能，以便它可以更好地执行 LangChain、LangGraph 和 Deep Agents 任务。
 >
@@ -265,68 +265,68 @@ make integration_tests
 
 ***
 
-## 存储库结构
-
-**LangChain**LangChain 被组织为具有多个包的单一存储库：
-
-> **核心包**
+## 存储库结构> [标签] LangChain
 >
-> * **[⟦T40⟧](https://github.com/langchain-ai/langchain/tree/master/libs/langchain#readme)**（位于`libs/langchain/`）：包含链、代理和检索逻辑的主包
-> * **[⟦T42⟧](https://github.com/langchain-ai/langchain/tree/master/libs/core#readme)**（位于`libs/core/`）：基础接口和核心抽象
-
-> **合作伙伴套餐**
+> LangChain 被组织为具有多个包的单一存储库：
 >
-> 位于 `libs/partners/`，这些是用于特定集成的独立版本控制包。例如：
+>> [手风琴] 核心包
+>>
+>> * **[⟦T40⟧](https://github.com/langchain-ai/langchain/tree/master/libs/langchain#readme)**（位于`libs/langchain/`）：包含链、代理和检索逻辑的主包
+>> * **[⟦T42⟧](https://github.com/langchain-ai/langchain/tree/master/libs/core#readme)**（位于`libs/core/`）：基础接口和核心抽象
 >
-> * **[⟦T45⟧](https://github.com/langchain-ai/langchain/tree/master/libs/partners/openai#readme)**：[OpenAI](/oss/python/integrations/providers/openai) 集成
-> * **[⟦T46⟧](https://github.com/langchain-ai/langchain/tree/master/libs/partners/anthropic#readme)**：[Anthropic](/oss/python/integrations/providers/anthropic) 集成
-> * **[⟦T47⟧](https://github.com/langchain-ai/langchain-google/)**：[Google Generative AI](/oss/python/integrations/chat/google_generative_ai) 集成
+>> [手风琴] 合作伙伴包
+>>
+>> 位于`libs/partners/`，这些是用于特定集成的独立版本控制包。例如：
+>>
+>> * **[⟦T45⟧](https://github.com/langchain-ai/langchain/tree/master/libs/partners/openai#readme)**：[OpenAI](/oss/python/integrations/providers/openai) 集成
+>> * **[⟦T46⟧](https://github.com/langchain-ai/langchain/tree/master/libs/partners/anthropic#readme)**：[Anthropic](/oss/python/integrations/providers/anthropic) 集成
+>> * **[⟦T47⟧](https://github.com/langchain-ai/langchain-google/)**：[Google Generative AI](/oss/python/integrations/chat/google_generative_ai) 集成
+>>
+>> 许多合作伙伴包位于外部存储库中。详情请查看[list of integrations](/oss/python/integrations/providers/overview)。
 >
-> 许多合作伙伴包位于外部存储库中。详情请查看[list of integrations](/oss/python/integrations/providers/overview)。
-
-> **支持包**
+>> [手风琴] 配套包
+>>
+>> * **[⟦T48⟧](https://github.com/langchain-ai/langchain/tree/master/libs/text-splitters#readme)**：文本分割实用程序
+>> * **[⟦T49⟧](https://github.com/langchain-ai/langchain/tree/master/libs/standard-tests#readme)**：用于集成的标准测试套件> [标签] LangGraph
 >
-> * **[⟦T48⟧](https://github.com/langchain-ai/langchain/tree/master/libs/text-splitters#readme)**：文本分割实用程序
-> * **[⟦T49⟧](https://github.com/langchain-ai/langchain/tree/master/libs/standard-tests#readme)**：用于集成的标准测试套件
-
-**LangGraph**
-
-LangGraph 被组织为具有多个 Python 包的 monorepo：
-
-> **核心包**
+> LangGraph 被组织为具有多个 Python 包的 monorepo：
 >
-> * **[⟦T50⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/langgraph#readme)**（位于`libs/langgraph/`）：用于构建有状态、多参与者代理的核心框架
-> * **[⟦T52⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/prebuilt#readme)**（位于`libs/prebuilt/`）：用于创建和运行代理和工具的高级 API> **检查点包**
+>> [手风琴] 核心包
+>>
+>> * **[⟦T50⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/langgraph#readme)**（位于`libs/langgraph/`）：用于构建有状态、多参与者代理的核心框架
+>> * **[⟦T52⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/prebuilt#readme)**（位于`libs/prebuilt/`）：用于创建和运行代理和工具的高级 API
 >
-> * **[⟦T54⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint#readme)**（位于`libs/checkpoint/`）：检查点保存程序的基础接口
-> * **[⟦T56⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres#readme)**（位于`libs/checkpoint-postgres/`）：Postgres 实现
-> * **[⟦T58⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite#readme)**（位于`libs/checkpoint-sqlite/`）：SQLite 实现
-
-> **SDK 和 CLI**
+>> [手风琴] 检查点包
+>>
+>> * **[⟦T54⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint#readme)**（位于`libs/checkpoint/`）：检查点保存程序的基础接口
+>> * **[⟦T56⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres#readme)**（位于`libs/checkpoint-postgres/`）：Postgres 实现
+>> * **[⟦T58⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite#readme)**（位于`libs/checkpoint-sqlite/`）：SQLite 实现
 >
-> * **[⟦T60⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/sdk-py#readme)**（位于`libs/sdk-py/`）：用于代理服务器 API 的 Python SDK
-> * **[⟦T62⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/cli#readme)**（位于`libs/cli/`）：官方命令行界面
-
-**Deep Agents**
-
-Deep Agents 被组织为具有多个 Python 包的 monorepo：
-
-> **核心包**
+>> [手风琴] SDK 和 CLI
+>>
+>> * **[⟦T60⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/sdk-py#readme)**（位于`libs/sdk-py/`）：用于代理服务器 API 的 Python SDK
+>> * **[⟦T62⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/cli#readme)**（位于`libs/cli/`）：官方命令行界面> [标签] Deep Agents
 >
-> * **[⟦T64⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents#readme)**（位于`libs/deepagents/`）：用于构建具有规划、文件系统和子代理功能的深度代理的核心框架
-> * **[⟦T66⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code#readme)**（位于`libs/code/`）：Deep Agents代码 — 具有对话简历、网络搜索和沙箱的交互式终端界面
-> * **[⟦T68⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/cli#readme)**（位于`libs/cli/`）：将运输代理部署工具（`deepagents deploy`、`deepagents init`、`deepagents dev`）部署到LangSmith 部署
-
-> **集成包**
+> Deep Agents 被组织为具有多个 Python 包的 monorepo：
 >
-> * **[⟦T73⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/evals#readme)**（位于 `libs/evals/`）：评估套件和 Harbor 与 LangSmith 跟踪集成
-> * **[⟦T75⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/acp#readme)**（位于`libs/acp/`）：代理客户端协议集成
+>> [手风琴] 核心包
+>>
+>> * **[⟦T64⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents#readme)**（位于`libs/deepagents/`）：用于构建具有规划、文件系统和子代理功能的深度代理的核心框架
+>> * **[⟦T66⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code#readme)**（位于`libs/code/`）：Deep Agents代码 — 具有对话恢复、网络搜索和沙箱的交互式终端界面
+>> * **[⟦T68⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code)**（位于`libs/cli/`）：将运输代理部署工具（`deepagents deploy`、`deepagents init`、`deepagents dev`）部署到LangSmith 部署
+>
+>> [手风琴] 集成包
+>>
+>> * **[⟦T73⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/evals#readme)**（位于 `libs/evals/`）：评估套件和 Harbor 与 LangSmith 跟踪集成
+>> * **[⟦T75⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/acp#readme)**（位于`libs/acp/`）：代理客户端协议集成
 
 ***
 
 ## 开发流程
 
-### 预提交挂钩[LangChain](https://github.com/langchain-ai/langchain) 和 [Deep Agents](https://github.com/langchain-ai/deepagents) 存储库包括 [pre-commit](https://pre-commit.com/) 挂钩，可在每次提交之前自动运行格式化、linting 和验证检查。从存储库根目录安装它们：
+### 预提交挂钩
+
+[LangChain](https://github.com/langchain-ai/langchain) 和 [Deep Agents](https://github.com/langchain-ai/deepagents) 存储库包括 [pre-commit](https://pre-commit.com/) 挂钩，可在每次提交之前自动运行格式化、linting 和验证检查。从存储库根目录安装它们：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install pre-commit  # or: uv tool install pre-commit
@@ -341,9 +341,7 @@ pre-commit install
 * 智能报价和非标空间标准化
 * 每个包装 `make format` 和 `make lint`
 
-### 运行测试
-
-> [!注意]
+### 运行测试> [!注意]
 >
 > 目录与您正在使用的包相关。
 
@@ -373,15 +371,15 @@ uv run --group test pytest tests/unit_tests
 TEST_FILE=tests/unit_tests/test_imports.py make test
 ```
 
-#### 集成测试**地点**：`tests/integration_tests/`
+#### 集成测试
+
+**地点**：`tests/integration_tests/`
 
 集成测试涵盖需要调用外部 API（通常与其他服务集成）的逻辑。
 
 集成测试需要访问外部服务/提供商 API（这可能需要花钱），因此默认情况下不会运行。
 
-并非每个代码更改都需要集成测试，但请记住，作为审核过程的一部分，我们将单独要求/运行集成测试。
-
-**要求**：
+并非每个代码更改都需要集成测试，但请记住，作为审核过程的一部分，我们将单独要求/运行集成测试。**要求**：
 
 * 测试与外部服务的真实集成
 * 使用环境变量作为 API 密钥
@@ -403,178 +401,187 @@ TEST_FILE=tests/integration_tests/test_openai.py make integration_tests
 
 贡献必须遵守以下质量要求：
 
-**键入提示**
-
-**必需**：所有函数的完整类型注释
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-def process_documents(
-    docs: list[Document],
-    processor: DocumentProcessor,
-    *,
-    batch_size: int = 100
-) -> ProcessingResult:
-    """Process documents in batches.
-
-    Args:
-        docs: List of documents to process.
-        processor: Document processing instance.
-        batch_size: Number of documents per batch.
-
-    Returns:
-        Processing results with success/failure counts.
-    """
-```
-
-**文档**
-
-**必需**：[Google-style docstrings](https://google.github.io/styleguide/pyguide.html) 适用于所有公共职能。
-
-**指导原则**：文档字符串描述“什么”；本网站上的文档解释了“如何”和“为什么”。|内容类型 |地点 |目的|
-| - | - | - |
-|参数类型 |签名|自动生成 API 参考 |
-|参数说明 |文档字符串 |自动生成 API 参考 |
-|返回类型和异常 |文档字符串 | API参考|
-|最小使用示例 |文档字符串 |显示基本实例化模式 |
-|功能教程|这个网站|深入演练|
-|端到端示例 |这个网站|现实世界的使用模式 |
-|概念解释|这个网站|理解和背景|
-
-**文档字符串应包含：**
-
-1. 一行概括类/函数的作用
-2. 链接到此站点以获取教程、指南和使用模式
-3. 包含类型和描述的参数文档
-4.返回值说明
-5. 可能提出的例外情况
-6. 单个最小示例显示必要的基本实例化/用法
-
-> **良好的文档字符串示例**
+> [选项卡] 键入提示
 >
-> ````python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> class ChatAnthropic(BaseChatModel):
->     """Interface to Claude chat models.
+> **必需**：所有函数的完整类型注释
 >
->     See the [usage guide](https://docs.langchain.com/oss/python/integrations/chat/anthropic)
->     for tutorials, feature walkthroughs, and examples.
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> def process_documents(
+>     docs: list[Document],
+>     processor: DocumentProcessor,
+>     *,
+>     batch_size: int = 100
+> ) -> ProcessingResult:
+>     """Process documents in batches.
 >
 >     Args:
->         model: Model identifier (e.g., `'claude-sonnet-4-6'`).
->         temperature: Sampling temperature between `0` and `1`.
->         max_tokens: Maximum number of tokens to generate.
->         api_key: Anthropic API key.
->
->             If not provided, reads from the `ANTHROPIC_API_KEY`
->             environment variable.
->         timeout: Request timeout in seconds.
->         max_retries: Maximum number of retries for failed requests.
+>         docs: List of documents to process.
+>         processor: Document processing instance.
+>         batch_size: Number of documents per batch.
 >
 >     Returns:
->         A chat model instance that can be invoked with messages.
->
->     Raises:
->         ValueError: If the model identifier is not recognized.
->         AuthenticationError: If the API key is invalid.
->
->     Example:
->         ```python
-> 从 langchain_anthropic 导入 ChatAnthropic
->
-> 模型 = ChatAnthropic(模型 =“claude-sonnet-4-6”)
-> 响应 = model.invoke("你好！")
-> ```
+>         Processing results with success/failure counts.
 >     """
-> ````> **什么不属于文档字符串**
->
-> 避免重复属于文档字符串的内容：
->
-> * **参数类型**：这些位于函数签名中并自动生成到 API 参考中。
->
-> * **功能教程**：不包括扩展演练。相反，链接到该网站：
->
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
->   """
->   ...
->
->   See the [extended thinking guide](https://docs.langchain.com/oss/integrations/chat/anthropic#extended-thinking)
->   for configuration options.
->   """
->   ```
->
-> * **多个示例变体**：包括一个最小示例，然后链接到综合指南：
->
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
->   """
->   Example:
->       \`\`\`python
->       message = HumanMessage(content=[
->           {"type": "image", "url": "https://example.com/image.jpg"}
->       ])
->       \`\`\`
->
->   See the [multimodal guide](https://docs.langchain.com/oss/integrations/chat/anthropic#multimodal)
->   for all supported input formats.
->   """
->   ```
->
-> * **概念解释**：遵循事实参数描述。链接到文档以获取更深入的上下文。
->
-> * **MkDocs 特定语法**：避免文档字符串中的 `???+`、折叠式或制表符。它们不会在 IDE 中呈现。
+> ```
 
-**代码风格**
+> [选项卡] 文档
+>
+> **必需**：[Google-style docstrings](https://google.github.io/styleguide/pyguide.html) 适用于所有公共职能。
+>
+> **指导原则**：文档字符串描述“什么”；本网站上的文档解释了“如何”和“为什么”。
+>
+> |内容类型 |地点 |目的|
+> | - | - | - |
+> |参数类型 |签名|自动生成 API 参考 |
+> |参数说明 |文档字符串 |自动生成 API 参考 |
+> |返回类型和异常 |文档字符串 | API参考|
+> |最小使用示例 |文档字符串 |显示基本实例化模式 |
+> |功能教程|这个网站|深入演练|
+> |端到端示例 |这个网站|现实世界的使用模式 |
+> |概念解释|这个网站|理解和背景|
+>
+> **文档字符串应包含：**
+>
+> 1. 一行概括类/函数的作用
+>> 2. 链接到此站点以获取教程、指南和使用模式
+>
+> 3. 包含类型和描述的参数文档
+>
+> 4.返回值说明
+>
+> 5. 可能提出的例外情况
+>
+> 6. 单个最小示例显示必要的基本实例化/用法
+>
+>> [accordion] 很好的文档字符串示例
+>>
+>> ````python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > class ChatAnthropic(BaseChatModel):
+> >     """Interface to Claude chat models.
+> >
+> >     See the [usage guide](https://docs.langchain.com/oss/python/integrations/chat/anthropic)
+> >     for tutorials, feature walkthroughs, and examples.
+> >
+> >     Args:
+> >         model: Model identifier (e.g., `'claude-sonnet-4-6'`).
+> >         temperature: Sampling temperature between `0` and `1`.
+> >         max_tokens: Maximum number of tokens to generate.
+> >         api_key: Anthropic API key.
+> >
+> >             If not provided, reads from the `ANTHROPIC_API_KEY`
+> >             environment variable.
+> >         timeout: Request timeout in seconds.
+> >         max_retries: Maximum number of retries for failed requests.
+> >
+> >     Returns:
+> >         A chat model instance that can be invoked with messages.
+> >
+> >     Raises:
+> >         ValueError: If the model identifier is not recognized.
+> >         AuthenticationError: If the API key is invalid.
+> >
+> >     Example:
+> >         ```python
+>> 从 langchain_anthropic 导入 ChatAnthropic
+>>
+>> 模型 = ChatAnthropic(model="claude-sonnet-4-6")
+>> 响应 = model.invoke("你好！")
+>> ```
+> >     """
+> > ````
+>
+>> [accordion] 什么不属于文档字符串
+>>
+>> 避免重复属于文档字符串的内容：
+>>
+>> * **参数类型**：这些位于函数签名中并自动生成到 API 参考中。
+>>
+>> * **功能教程**：不包括扩展演练。相反，链接到该网站：
+>>
+>> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> >   """
+> >   ...
+> >
+> >   See the [extended thinking guide](https://docs.langchain.com/oss/integrations/chat/anthropic#extended-thinking)
+> >   for configuration options.
+> >   """
+> >   ```
+>>
+>> * **多个示例变体**：包括一个最小示例，然后链接到综合指南：
+>>
+>> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> >   """
+> >   Example:
+> >       \`\`\`python
+> >       message = HumanMessage(content=[
+> >           {"type": "image", "url": "https://example.com/image.jpg"}
+> >       ])
+> >       \`\`\`
+> >
+> >   See the [multimodal guide](https://docs.langchain.com/oss/integrations/chat/anthropic#multimodal)
+> >   for all supported input formats.
+> >   """
+> >   ```
+>>
+>> * **概念解释**：遵循事实参数描述。链接到文档以获取更深入的上下文。
+>>>> * **MkDocs 特定语法**：避免文档字符串中的 `???+`、折叠式或制表符。它们不会在 IDE 中呈现。
 
-**自动化**：通过 [⟦T82⟧](https://docs.astral.sh/ruff/) 进行格式化和检查
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-make format  # Apply formatting
-make lint    # Check style and types
-```
-
-**标准**：
-
-* 描述性变量名称
-* 分解复杂的函数（目标是少于 20 行）
-* 遵循代码库中的现有模式
+> [选项卡] 代码风格
+>
+> **自动化**：通过 [⟦T82⟧](https://docs.astral.sh/ruff/) 进行格式化和检查
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> make format  # Apply formatting
+> make lint    # Check style and types
+> ```
+>
+> **标准**：
+>
+> * 描述性变量名称
+> * 分解复杂的函数（目标是少于 20 行）
+> * 遵循代码库中的现有模式
 
 ### 依赖关系
 
-LangChain 软件包区分**硬依赖项**和**可选依赖项**，以保持软件包轻量级并最大限度地减少用户的安装开销。
-
-**可选依赖项**
-
-几乎所有新的依赖项都应该是可选的。在以下情况下使用可选依赖项：* 仅特定集成或功能需要依赖项
-* 用户可以在没有这种依赖性的情况下有意义地使用该包
-* 依赖关系较大或者有很多传递依赖
-
-**要求：**
-
-* 未安装依赖项的用户必须能够**导入**您的代码，而不会产生任何副作用（无警告、无错误、无异常）
-* `pyproject.toml` 和 `uv.lock` **未**修改
-
-**添加可选依赖项：**
-
-1. 将依赖项添加到适当的测试依赖项文件中（例如`extended_testing_deps.txt`）
-2. 添加至少尝试导入新代码的单元测试。理想情况下，单元测试使用轻量级的装置来测试代码的逻辑。
-3. 对任何需要依赖项的单元测试使用 `@pytest.mark.requires("package_name")` 装饰器。
-
-**硬依赖**
-
-当用户安装软件包时，会自动安装硬依赖项。仅在以下情况下使用硬依赖项：
-
-* 如果没有依赖项，该包基本上无法运行
-* 依赖关系小，具有最小的传递依赖
-* 没有合理的方法使功能可选> [!警告]
+LangChain 软件包区分**硬依赖项**和**可选依赖项**，以保持软件包轻量级并最大限度地减少用户的安装开销。> [选项卡] 可选依赖项
 >
-> 添加硬依赖项会增加所有用户的安装时间和潜在的版本冲突。
+> 几乎所有新的依赖项都应该是可选的。在以下情况下使用可选依赖项：
 >
-> 维护者将仔细检查硬依赖添加！
-
-**添加硬依赖：**
-
-1.提出一个问题或讨论，解释为什么依赖关系必须是硬依赖而不是可选的
-2. 在适当的部分下添加对`pyproject.toml`的依赖
-3. 运行`uv lock`更新锁文件
-4. 包括涵盖新功能的全面测试
+> * 仅特定集成或功能需要依赖项
+> * 用户可以在没有这种依赖性的情况下有意义地使用该包
+> * 依赖关系较大或者有很多传递依赖
+>
+> **要求：**
+>
+> * 未安装依赖项的用户必须能够**导入**您的代码，而不会产生任何副作用（无警告、无错误、无异常）
+> * `pyproject.toml` 和 `uv.lock` **未**修改
+>
+> **添加可选依赖项：**
+>
+> 1. 将依赖项添加到适当的测试依赖项文件中（例如`extended_testing_deps.txt`）
+> 2. 添加至少尝试导入新代码的单元测试。理想情况下，单元测试使用轻量级的装置来测试代码的逻辑。
+> 3. 对任何需要依赖项的单元测试使用 `@pytest.mark.requires("package_name")` 装饰器。> [选项卡] 硬依赖项
+>
+> 当用户安装软件包时，会自动安装硬依赖项。仅在以下情况下使用硬依赖项：
+>
+> * 如果没有依赖项，该包基本上无法运行
+>
+> * 依赖关系很小并且具有最小的传递依赖
+>
+> * 没有合理的方法使功能可选
+>
+>> [!警告]
+>>
+>> 添加硬依赖项会增加所有用户的安装时间和潜在的版本冲突。
+>>
+>> 维护人员将仔细检查硬依赖项的添加！
+>
+> **添加硬依赖项：**
+>
+> 1.提出一个问题或讨论，解释为什么依赖关系必须是硬依赖而不是可选的
+> 2. 在相应的节下添加`pyproject.toml`的依赖
+> 3.运行`uv lock`更新锁文件
+> 4. 包括涵盖新功能的全面测试
 
 ***
 
@@ -586,60 +593,60 @@ LangChain 软件包区分**硬依赖项**和**可选依赖项**，以保持软�
 * 使用描述性变量名称
 * 断言要详尽无遗
 
-**单元测试**
+> [选项卡] 单元测试
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> def test_document_processor_handles_empty_input():
+>     """Test processor gracefully handles empty document list."""
+>     processor = DocumentProcessor()
+>
+>     result = processor.process([])
+>
+>     assert result.success
+>     assert result.processed_count == 0
+>     assert len(result.errors) == 0
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-def test_document_processor_handles_empty_input():
-    """Test processor gracefully handles empty document list."""
-    processor = DocumentProcessor()
+> [选项卡] 集成测试
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> @pytest.mark.requires("openai")
+> def test_openai_chat_integration():
+>     """Test OpenAI chat integration with real API."""
+>
+>     chat = ChatOpenAI()
+>     response = chat.invoke("Hello")
+>
+>     assert isinstance(response.content, str)
+>     assert len(response.content) > 0
+> ```
 
-    result = processor.process([])
+> [tab] 模拟使用
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> def test_retry_mechanism(mocker):
+>     """Test retry mechanism handles transient failures."""
+>     mock_client = mocker.Mock()
+>     mock_client.call.side_effect = [
+>         ConnectionError("Temporary failure"),
+>         {"result": "success"}
+>     ]
+>
+>     service = APIService(client=mock_client)
+>     result = service.call_with_retry()
+>
+>     assert result["result"] == "success"
+>     assert mock_client.call.call_count == 2
+> ```
 
-    assert result.success
-    assert result.processed_count == 0
-    assert len(result.errors) == 0
-```
-
-**集成测试**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-@pytest.mark.requires("openai")
-def test_openai_chat_integration():
-    """Test OpenAI chat integration with real API."""
-
-    chat = ChatOpenAI()
-    response = chat.invoke("Hello")
-
-    assert isinstance(response.content, str)
-    assert len(response.content) > 0
-```
-
-**模拟使用**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-def test_retry_mechanism(mocker):
-    """Test retry mechanism handles transient failures."""
-    mock_client = mocker.Mock()
-    mock_client.call.side_effect = [
-        ConnectionError("Temporary failure"),
-        {"result": "success"}
-    ]
-
-    service = APIService(client=mock_client)
-    result = service.call_with_retry()
-
-    assert result["result"] == "success"
-    assert mock_client.call.call_count == 2
-```
-
-### 提交你的 PR
-
-一旦您的测试通过且代码符合质量标准：
+### 提交你的 PR一旦您的测试通过且代码符合质量标准：
 
 1. 推送您的分支并打开拉取请求
 2. 按照提供的 PR 模板进行操作
 3. 使用[closing keyword](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)（例如`Fixes #123`）参考相关问题
-4.等待CI检查完成> [!注意]
+4.等待CI检查完成
+
+> [!注意]
 >
 > 如果您的 PR 包含 AI 生成的内容，您必须遵守我们的 [acceptable uses of LLMs](/oss/python/contributing/overview#acceptable-uses-of-llms) 政策。看似省力、由人工智能生成的垃圾邮件的 PR 将被关闭而不发表评论。
 

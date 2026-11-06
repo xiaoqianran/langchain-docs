@@ -8,31 +8,62 @@
 
 **快照**是可重用的沙箱文件系统。当您想要从自定义文件系统映像启动沙箱时，可以从容器映像构建自定义快照。
 
-您还可以从正在运行的沙箱捕获快照 - 安装包、写入数据文件或配置状态，然后对结果进行快照并将其重新用作新的起点。
+您还可以从正在运行的沙箱捕获快照。安装软件包、写入数据文件或配置状态。然后对结果进行快照，并将其重新用作新的起点。
 
 ![Sandboxes snapshots page](https://mintcdn.com/langchain-5e9cc07a/5nd3ca6haxRbnJZj/images/langsmith/sandboxes/sb-snapshots.png?fit=max\&auto=format\&n=5nd3ca6haxRbnJZj\&q=85\&s=6f56db23342150d156d0c6d783a1ead7)
 
-## 了解默认快照
+## 了解系统快照
 
-当您创建沙箱而不选择快照时，LangSmith 使用内置的默认快照。默认提供带有通用开发工具的 Ubuntu 24.04 文件系统。 LangSmith 可能会随着时间的推移更新默认快照中包含的软件包和工具。
+当您创建沙箱而不选择快照时，LangSmith 使用内置的`system/default:latest` 快照。当前默认从`ubuntu:26.04`容器镜像开始，包括下面列出的工具。较旧的自托管版本可能包含不同的 Ubuntu 版本和软件包集。
 
-### 检查自托管部署中的默认快照文件系统
+### 检查默认工具
 
-在自托管部署中，LangSmith从嵌入沙箱运行时容器映像中的文件系统创建默认快照，`sandbox-host`：1. 在`sandbox-host`镜像构建过程中，LangSmith从Ubuntu 24.04启动并安装默认开发工具。
+默认文件系统包括以下工具。此列表总结了已安装的功能，而不是完整的软件物料清单 (SBOM)。|类别 |包含的工具|
+| - | - |
+|语言和包管理器 | Python 3 包含 pip 和 venv、uv 和 uvx，Node.js 24 包含 npm、pnpm、Yarn、Go 和 Ruby。 |
+|源代码控制| Git、GitHub CLI (`gh`) 和 `gh stack` 扩展。 |
+|构建和容器工具| `build-essential`、CMake、pkg-config、Docker、Docker Buildx、Docker Compose 和 BuildKit。 |
+| Shell 和文件实用程序 | Bash、Zsh、tmux、ttyd、ripgrep、fd、jq、bat、tree、zip、unzip、rsync 和常见 Linux 实用程序。 |
+|网络和数据工具| curl、wget、OpenSSH 客户端和服务器、DNS 和网络诊断、SQLite 和 PostgreSQL 客户端。 |
+|浏览器自动化 |用于测试的 Chrome 和 `agent-browser`。 |
+|文件处理| `python-docx`、`python-pptx`、`openpyxl` 与 `defusedxml` 和 `anydoc`。参见[Fleet document dependencies](/langsmith/fleet/computer-use#prepare-a-custom-image-for-fleet)。 |
+| LangSmith 工具 | LangSmith CLI 和自定义应用程序开发服务器。 |
+
+软件包版本可能会在 LangSmith 版本之间发生变化。要审核确切安装的软件包和传递依赖项，请按照 [Inspect the default snapshot filesystem in self-hosted deployments](#inspect-the-default-snapshot-filesystem-in-self-hosted-deployments) 中所述检查已部署映像中的文件系统。
+
+### 选择系统快照系统快照是 LangSmith 维护的、跨工作区共享的只读启动文件系统。将 `system/default:latest` 用于一般工作负载，或使用您自己的容器映像中的 [build a custom snapshot](#build-a-snapshot-from-a-container-image)。其他系统快照回特定的LangSmith功能，这些功能会自动选择它们。它们列于此处，以便您可以审核其内容。
+
+参考文献使用格式`system/<name>:<tag>`。省略标签选择`latest`。 `system/` 命名空间是保留的：您无法在其中构建、捕获、重新标记或删除快照。从使用系统快照的沙箱捕获的快照属于您的工作区。|快照参考|使用者 |基础内容和附加内容 |
+| - | - | - |
+| `system/default:latest` |一般开发和[Fleet computers](/langsmith/fleet/computer-use) | Ubuntu 26.04 与 [default tools](#inspect-the-default-tools)。 |
+| `system/custom-apps:latest` | [Custom apps](/langsmith/custom-apps) |默认文件系统加上准备好的应用程序启动器和`/workspace/app`中安装的依赖项。 |
+| `system/code-evaluators:latest` | Python 和 JavaScript [code evaluators](/langsmith/code-evaluator-ui) |默认文件系统加上 NumPy、pandas、jsonschema、SciPy、scikit-learn 以及 LangSmith Python 和 JavaScript SDK。 |
+| `system/prebuilt-voice-evaluator:latest` |托管[voice metrics evaluation](/langsmith/evaluators#voice-evaluation) |默认文件系统加上 `/opt/venv`、`ffmpeg`、`ffprobe` 中的 NumPy 以及 `/opt/langsmith_eval` 中的语音评估模块。 |
+| `system/taskset-runner:latest` |任务集执行 | Python 3.12 环境中的默认文件系统加上 Harbor 和 `smith-harbor`，位于`/opt/smith-harbor/.venv`，并缓存`langgraph-cli`以供离线使用。 |
+
+可用目录取决于您的 LangSmith 版本。在自托管部署中，它来自 LangSmith 版本中的 `sandbox-host` 映像；参见[self-hosted changelog](/langsmith/self-hosted-changelog)。
+
+LangSmith可以更新`latest`后面的内容；现有沙箱保留其原始快照 ID。当您需要重用特定版本时，请使用快照 ID 而不是可变标记。
+
+### 检查自托管部署中的默认快照文件系统在自托管部署中，LangSmith从嵌入沙箱运行时容器映像中的文件系统创建默认快照，`sandbox-host`：
+
+1. 在`sandbox-host`镜像构建过程中，LangSmith从`ubuntu:26.04`开始，并安装默认工具。
 2. LangSmith 将该文件系统打包为`/opt/sandbox-host/bin/builder-base.ext4.gz` 处的压缩 16 GiB ext4 文件。
-3. 当`sandbox-host`启动时，LangSmith使用嵌入式文件系统创建默认快照。
+3. 当`sandbox-host`启动时，LangSmith将嵌入式文件系统注册为系统快照。
+
+当前的主机镜像还包含`/opt/sandbox-host/bin/system-snapshots.json`。该清单记录了每个快照的名称、标签、负载路径、文件系统校验和、容量、架构和运行配置。命名变体在`/opt/sandbox-host/bin/system-snapshots/`下有压缩文件。要审核变体，请复制其清单 `payload_path` 处的文件，而不是默认负载。将副本保存在本地为`builder-base.ext4.gz`，以重复使用下面的解压和提取命令。
 
 压缩的 ext4 文件，而不是单独拉取的容器映像，是默认快照文件系统的源。
 
-单独扫描 `sandbox-host` 容器映像不会检查此压缩工件内的文件。要验证默认快照，请单独提取并扫描嵌入式文件系统。
-
-> [!注意]
+单独扫描 `sandbox-host` 容器映像不会检查此压缩工件内的文件。要验证默认快照，请单独提取并扫描嵌入式文件系统。> [!注意]
 >
 > 此过程验证默认快照文件系统。 LangSmith 在沙箱启动时单独提供其他所需的运行时组件；它们不是快照的一部分。
 
 要独立检查默认快照，请使用 Helm 版本配置的确切 `sandbox-host` 容器映像。如果您镜像镜像，请使用您的私人注册表中的`images.sandboxHostImage`中的参考。
 
-您需要：* 访问已部署的`sandbox-host`镜像。
+您需要：
+
+* 访问已部署的`sandbox-host`镜像。
 * Linux 系统上的 `e2fsprogs` 软件包中的 Docker、`gzip`、GNU `dd` 和 `debugfs`。
 * 支持稀疏文件的本地文件系统，以及足够的空间用于压缩工件和提取的文件。 ext4 映像的逻辑大小为 16 GiB，但稀疏解压缩避免分配其零填充的可用空间。
 
@@ -63,9 +94,7 @@ docker rm "$SANDBOX_HOST_CONTAINER"
 gzip -dc "$SNAPSHOT_WORKDIR/builder-base.ext4.gz" | \
   dd of="$SNAPSHOT_WORKDIR/builder-base.ext4" \
     bs=1M conv=sparse status=progress
-```
-
-使用`debugfs`提取ext4内容。 `debugfs` 以只读方式打开文件系统，除非您通过 `-w`：
+```使用`debugfs`提取ext4内容。 `debugfs` 以只读方式打开文件系统，除非您通过 `-w`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 mkdir -p "$SNAPSHOT_WORKDIR/rootfs"
@@ -76,7 +105,9 @@ debugfs \
 
 将文件系统或 SBOM 扫描仪指向 `$SNAPSHOT_WORKDIR/rootfs`。扫描器从 LangSmith 用于默认快照的同一根文件系统读取包数据库和文件。
 
-## 从容器镜像构建快照通过指向任何容器映像来构建快照。该调用会阻塞，直到快照准备好为止（默认超时为 60 秒；对于大图像，请提高超时时间）。
+## 从容器镜像构建快照
+
+通过指向任何容器映像来构建快照。该调用会阻塞，直到快照准备好为止（默认超时为 60 秒；对于大图像，请提高超时时间）。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.sandbox import SandboxClient
@@ -116,21 +147,22 @@ LangSmith 从您提供的容器映像中的文件系统构建自定义快照。�
 
 LangSmith 在沙箱启动时单独提供其所需的运行时工具。它们不会添加到您提供的容器映像中或包含在自定义快照中。
 
-### 私有注册表
-
-要从私有注册表中提取数据，请使用其凭据创建一次注册表，然后在构建快照时通过 ID 引用它。注册表会持续存在，因此可以跨快照重复使用注册表。
+### 私有注册表要从私有注册表中提取数据，请使用其凭据创建一次注册表，然后在构建快照时通过 ID 引用它。注册表会持续存在，因此可以跨快照重复使用注册表。
 
 #### 查找存储库和标签
 
-在 LangSmith UI 中，**容器映像 URI** 字段建议来自 Docker Hub 或所选私有注册表的存储库和标签。搜索行为取决于注册表提供商和身份验证方法：|来源 |存储库发现 |标签发现 |
+在 LangSmith UI 中，**容器映像 URI** 字段建议来自 Docker Hub 或所选私有注册表的存储库和标签。搜索行为取决于注册表提供商和身份验证方法：
+
+|来源 |存储库发现 |标签发现 |
 | - | - | - |
 | Docker Hub，没有保存注册表 |在 Docker 官方镜像中搜索裸镜像名称或指定的 Docker Hub 命名空间 |选择或输入存储库后搜索标签 |
 | Docker 注册表 |当注册表支持时搜索注册表目录 |选择或输入存储库后搜索标签 |
 |港口|搜索可访问的目录 |选择或输入存储库后搜索标签 |
-| GitHub 容器注册表 (GHCR) |在指定的 GitHub 所有者内搜索 |选择或输入存储库后搜索标签 |
-| Google Artifact 注册表 (GAR) |搜索项目和位置中的存储库，然后搜索所选存储库中的包 |选择或输入图像存储库后搜索标签 |
+| GitHub 容器注册表 (GHCR) |在指定的 GitHub 所有者内搜索 |选择或输入存储库后搜索标签 || Google Artifact 注册表 (GAR) |搜索项目和位置中的存储库，然后搜索所选存储库中的包 |选择或输入图像存储库后搜索标签 |
 | Amazon Elastic Container Registry (ECR)，带有用户名和密码 |需要您输入完整的存储库 |进入存储库后搜索标签 |
-| Amazon ECR，具有 AWS IAM 角色 |在配置的 AWS 账户中搜索存储库 |选择或输入存储库后搜索标签 |存储库和标签发现是建议性的且有限制的。您始终可以手动输入已知的存储库、标签或摘要，包括当提供程序不支持搜索或不返回匹配项时。当您需要不可变的快照源时，请使用摘要限定的图像 URI。
+| Amazon ECR，具有 AWS IAM 角色 |在配置的 AWS 账户中搜索存储库 |选择或输入存储库后搜索标签 |
+
+存储库和标签发现是建议性的且有限制的。您始终可以手动输入已知的存储库、标签或摘要，包括当提供程序不支持搜索或不返回匹配项时。当您需要不可变的快照源时，请使用摘要限定的图像 URI。
 
 #### 使用用户名和密码进行身份验证
 
@@ -174,22 +206,20 @@ const snapshot = await client.createSnapshot(
 );
 ```
 
-使用 `client.registries.list()`、`client.registries.retrieve(name)`、`client.registries.update(name, ...)` 和 `client.registries.delete(name)` 列出、检查、更新和删除注册表。
-
-#### 使用 AWS IAM 角色对 ECR 进行身份验证
+使用 `client.registries.list()`、`client.registries.retrieve(name)`、`client.registries.update(name, ...)` 和 `client.registries.delete(name)` 列出、检查、更新和删除注册表。#### 使用 AWS IAM 角色对 ECR 进行身份验证
 
 AWS IAM 角色身份验证可避免将过期的 ECR 授权令牌存储在 LangSmith 中。它支持商业AWS分区中的私有ECR注册表。公共 ECR、AWS GovCloud、AWS China 和自定义 ECR 兼容域继续使用用户名和密码身份验证。
 
 > [!注意]
 >
-> 仅当您的 LangSmith 部署支持时，才会显示 **AWS IAM 角色** 身份验证方法。如果该选项不可用，请使用用户名和密码身份验证。> [!注意]
+> 仅当您的 LangSmith 部署支持时才会显示 **AWS IAM 角色** 身份验证方法。如果该选项不可用，请使用用户名和密码身份验证。
+
+> [!注意]
 >
-> **BYOC 部署：** AWS IAM 角色身份验证适用于 [BYOC](/langsmith/byoc) AWS 数据平面，无需额外设置。请按照以下步骤操作。如果您的数据平面使用[bring your own IAM](/langsmith/byoc-byoiam-aws)，请先应用最新版本的[⟦T56⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam)。它授予工作负载角色权限来承担您的 ECR 角色。
+> **BYOC 部署：** AWS IAM 角色身份验证适用于 [BYOC](/langsmith/byoc) AWS 数据平面，无需额外设置。请按照以下步骤操作。如果您的数据平面使用[bring your own IAM](/langsmith/byoc-byoiam-aws)，请先应用最新版本的[⟦T91⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam)。它授予工作负载角色权限来承担您的 ECR 角色。
 
-注册 ECR 角色：
-
-1. 在 LangSmith 中，打开 **沙盒 > 注册表**，选择 **注册私有注册表**，然后以 `<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com` 形式输入您的注册表 URL。
-2. 在**身份验证方法**下选择**AWS IAM 角色**。复制 LangSmith 显示的 AWS 主体 ARN 和工作区 ID。 LangSmith 使用工作空间 ID 作为 `sts:ExternalId`。
+注册 ECR 角色：1. 在 LangSmith 中，打开 **沙盒 > 注册表**，选择 **注册私有注册表**，然后以 `<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com` 形式输入您的注册表 URL。
+2. 在**身份验证方法**下选择**AWS IAM 角色**。复制 LangSmith 显示的 AWS 主体 ARN 和工作区 ID。 LangSmith 使用工作空间 ID 为 `sts:ExternalId`。
 3. 在 AWS 中，创建 IAM 角色或使用信任策略更新现有角色，该信任策略使用 LangSmith 中显示的确切值：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -224,7 +254,9 @@ AWS IAM 角色身份验证可避免将过期的 ECR 授权令牌存储在 LangSm
 >   },
 >   "Action": "sts:TagSession"
 > }
-> ```4. 授予角色发现并拉取所需 ECR 映像的权限。以下策略授予对一个 AWS 账户和区域中每个存储库的访问权限。替换占位符，或将存储库资源缩小到LangSmith可以使用的存储库：
+> ```
+
+4. 授予角色发现并拉取所需 ECR 映像的权限。以下策略授予对一个 AWS 账户和区域中每个存储库的访问权限。替换占位符，或将存储库资源缩小到LangSmith可以使用的存储库：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -253,13 +285,13 @@ AWS IAM 角色身份验证可避免将过期的 ECR 授权令牌存储在 LangSm
 ```
 
 5. 对于托管 LangSmith 和 BYOC，将 `LangSmithSandboxECR=true` 标签添加到 IAM 角色。
-6. 返回LangSmith，在**AWS角色ARN**中输入角色ARN，然后注册私有注册表。
-
-LangSmith 分别承担存储库发现、标签发现和每个快照构建尝试的角色。它为延迟的作业和重试获取新的 ECR 授权令牌，并且不会保留临时 AWS 凭证或生成的 ECR 令牌。
+6. 返回LangSmith，在**AWS角色ARN**中输入角色ARN，然后注册私有注册表。LangSmith 分别承担存储库发现、标签发现和每个快照构建尝试的角色。它为延迟的作业和重试获取新的 ECR 授权令牌，并且不会保留临时 AWS 凭证或生成的 ECR 令牌。
 
 对于自托管部署，管理员必须设置 `SANDBOX_ECR_AWS_ROLE_PRINCIPAL_ARN` 并为平台后端和快照工作人员提供兼容的 AWS SDK 凭证源。不设置该设置会隐藏 AWS IAM 角色身份验证并保留用户名和密码身份验证。
 
-## 从 Dockerfile 构建快照当您有本地 `Dockerfile` 但不想先将映像发布到注册表时，请直接从 `Dockerfile` 及其构建上下文构建快照。 LangSmith 启动一个临时构建器沙箱，上传上下文，使用 [BuildKit](https://docs.docker.com/build/buildkit/) 在其中运行构建，并将生成的图像捕获为快照。构建完成后，构建器沙箱将自动拆除。
+## 从 Dockerfile 构建快照
+
+当您有本地 `Dockerfile` 但不想先将映像发布到注册表时，请直接从 `Dockerfile` 及其构建上下文构建快照。 LangSmith 启动一个临时构建器沙箱，上传上下文，使用 [BuildKit](https://docs.docker.com/build/buildkit/) 在其中运行构建，并将生成的图像捕获为快照。构建完成后，构建器沙箱将自动拆除。
 
 该调用会阻塞，直到快照准备好为止（默认超时为 60 秒；对于大型或缓慢的构建，请提高该超时值）。 `fs_capacity_bytes` 必须足够大以容纳构建上下文、中间层和最终图像。
 
@@ -291,11 +323,9 @@ const snapshot = await client.createSnapshotFromDockerfile(
 );
 
 console.log(snapshot.id);
-```
-
-> [!注意]
+```> [!注意]
 >
-> `dockerfile` 相对于 `context` 进行解析，除非您传递绝对路径，并且它必须位于上下文目录内。 `.git` 目录会自动从上传的上下文中排除。
+> `dockerfile` 相对于 `context` 解析，除非您传递绝对路径，并且它必须位于上下文目录内。 `.git` 目录会自动从上传的上下文中排除。
 
 ### 构建参数和目标阶段
 
@@ -345,7 +375,9 @@ const snapshot = await client.createSnapshotFromDockerfile(
 );
 ```
 
-### 加速冷构建`vcpus` / `vCpus` 和 `mem_bytes` / `memBytes` 调整临时构建器沙箱的大小。该构建运行 BuildKit 以及其中的本机快照程序的层副本，这些副本会争夺构建器的默认 0.5 vCPU，因此为构建器提供更多 CPU 可以大幅缩短冷构建的挂起时间。内存以每个 vCPU 4 GiB 与 CPU 绑定，并且必须保持在该目标的 50% 以内，因此 2-vCPU 构建器接受 4 到 12 GiB。省略记忆，它遵循比例。
+### 加速冷构建
+
+`vcpus` / `vCpus` 和 `mem_bytes` / `memBytes` 调整临时构建器沙箱的大小。该构建运行 BuildKit 以及其中的本机快照程序的层副本，这些副本会争夺构建器的默认 0.5 vCPU，因此为构建器提供更多 CPU 可以大幅缩短冷构建的挂起时间。内存以每个 vCPU 4 GiB 与 CPU 绑定，并且必须保持在该目标的 50% 以内，因此 2-vCPU 构建器接受 4 到 12 GiB。省略记忆，它遵循比例。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 snapshot = client.create_snapshot_from_dockerfile(
@@ -373,9 +405,7 @@ const snapshot = await client.createSnapshotFromDockerfile(
 
 > [!提示]
 >
-> 同步 `SandboxClient` 和 `AsyncSandboxClient` 都在异步客户端上使用相同的参数 — `await client.create_snapshot_from_dockerfile(...)` 公开此方法。
-
-## 从正在运行的沙箱捕获快照
+> 同步 `SandboxClient` 和 `AsyncSandboxClient` 在异步客户端上使用相同的参数 — `await client.create_snapshot_from_dockerfile(...)` 公开此方法。## 从正在运行的沙箱捕获快照
 
 从现有快照启动沙箱，安装软件包或准备数据，然后捕获结果作为新快照。返回的快照将其 `source_sandbox_id` 设置为从中捕获它的沙箱，并且可以用作任何后续 `create_sandbox` 调用的 `snapshot_id`。
 
@@ -414,7 +444,9 @@ try {
 } finally {
   await sandbox.delete();
 }
-```> [!注意]
+```
+
+> [!注意]
 >
 > 默认情况下，捕获仅保留**文件系统**。已安装的软件包（在`/usr/local`、`/root`、`/opt`、主目录等下）和写入这些位置的文件将被保留，就像`/tmp`一样。只有 `/dev/shm` 是 tmpfs，因此其他所有内容都位于沙箱的磁盘上。正在运行的进程、打开的套接字和内存中的状态都不会被保留：启动新的沙箱并再次启动您需要的进程，或者[capture memory too](#resume-from-memory)。
 
@@ -430,7 +462,7 @@ try {
 > const sb = await client.createSandbox({ snapshotName: "ml-ready" });
 > ```
 >
-> 最多传递 `snapshot_id` / `snapshot_name` 之一（或 TypeScript 中的 `snapshotId` / `snapshotName`）。省略两者以使用默认运行时。
+> 最多传递 `snapshot_id` / `snapshot_name` 之一（或 TypeScript 中的 `snapshotId` / `snapshotName`）。省略两者以使用`system/default:latest`。
 
 ### 调整捕捉时间
 
@@ -442,11 +474,11 @@ snapshot = sb.capture_snapshot("ml-ready-v2", timeout=600)
 
 ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const snapshot = await sb.captureSnapshot("ml-ready-v2", { timeout: 600 });
-```
+```### 从内存中恢复
 
-### 从内存中恢复
+快照可以携带沙箱的 RAM 及其文件系统。从其中之一启动，沙箱将从中断处恢复，其进程仍在运行，而不是冷启动。将此用于预热缓慢的环境，例如加载的模型或启动的数据库。
 
-快照可以携带沙箱的 RAM 及其文件系统。从其中之一启动，沙箱将从中断处恢复，其进程仍在运行，而不是冷启动。将此用于预热缓慢的环境，例如加载的模型或启动的数据库。> [!注意]
+> [!注意]
 >
 > 内存快照仅可通过 REST API 获取。 `langsmith.sandbox` Python 和 TypeScript 客户端尚未公开这些字段。
 
@@ -464,12 +496,10 @@ curl -X POST \
 
 一些沙箱在无法携带内存映像的覆盖文件系统运行时上运行。捕获一个会返回`include_memory is not supported for overlay-rootfs sandboxes`。 LangSmith 分配该运行时，因此它不是您为每个沙箱选择的东西。
 
-create 上的两个字段控制另一半：
-
-|领域|它有什么作用 |
+create 上的两个字段控制另一半：|领域 |它有什么作用 |
 | - | - |
 | `restore_memory` |当快照有它时忽略它以从内存中恢复，而在没有它时冷启动。 `true` 需要内存，如果快照没有内存，则请求失败。 `false` 始终冷启动。 |
-| `preserve_memory_on_stop` | `true` 在自愿停止（空闲超时或显式停止）时暂停 RAM，以便沙箱在下次唤醒时从中断处恢复，而不是冷启动。默认为`false`，仅保留文件系统。无论哪种方式，由基础设施维护触发的重新启动都会保留内存。 |
+| `preserve_memory_on_stop` | `true` 在自愿停止（空闲超时或显式停止）时暂停 RAM，以便沙盒在下次唤醒时从中断处恢复，而不是冷启动。默认为`false`，仅保留文件系统。无论哪种方式，由基础设施维护触发的重新启动都会保留内存。 |
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "$LANGSMITH_ENDPOINT/api/v2/sandboxes/boxes" \
@@ -481,7 +511,9 @@ curl -X POST "$LANGSMITH_ENDPOINT/api/v2/sandboxes/boxes" \
     "restore_memory": true,
     "preserve_memory_on_stop": true
   }'
-```仅当使用 `preserve_memory_on_stop` 创建沙箱时，才能从 **停止的** 沙箱捕获内存。如果没有它，停止会丢弃 RAM，并且没有任何内容可捕获。
+```
+
+仅当使用 `preserve_memory_on_stop` 创建沙箱时，才能从 **停止的** 沙箱捕获内存。如果没有它，停止会丢弃 RAM，并且没有任何内容可捕获。
 
 ## 列出、获取和删除快照
 
@@ -521,9 +553,7 @@ await client.deleteSnapshot(snapshot.id);
 > const page = await client.listSnapshots({ nameContains: "ml", limit: 100 });
 > ```
 
-## 停止沙箱
-
-停止的沙箱会保留其文件系统，下一个请求会自动唤醒它。您不需要自己启动它：发送您想要运行的命令，沙箱就会回来为其提供服务。
+## 停止沙箱停止的沙箱会保留其文件系统，下一个请求会自动唤醒它。您不需要自己启动它：发送您想要运行的命令，沙箱就会回来为其提供服务。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sb = client.create_sandbox(snapshot_id=snapshot.id, name="my-vm")

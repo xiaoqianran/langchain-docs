@@ -381,7 +381,7 @@ console.log(result);
 
 #### 多个结构化输出错误
 
-当模型错误调用多个结构化输出工具时，代理会在[⟦T40⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)中提供错误反馈并提示模型重试：
+当模型错误地调用多个结构化输出工具时，代理会在[⟦T41⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)中提供错误反馈并提示模型重试：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as z from "zod";
@@ -476,7 +476,7 @@ console.log(result);
 
 #### 错误处理策略
 
-您可以使用 `handleErrors` 参数自定义错误处理方式：
+您可以使用 `handleErrors` 参数自定义如何处理错误：
 
 **自定义错误消息：**
 
@@ -529,8 +529,54 @@ const responseFormat = toolStrategy(ProductRating, {
 const responseFormat = toolStrategy(ProductRating, {
     handleError: false  // All errors raised
 )
+```## 处理链中的解析错误
+
+上述策略（包括`handleError`重试）适用于使用`createAgent`创建的代理。由`.pipe()`（例如`prompt.pipe(model).pipe(parser)`）组成的链没有内置的输出解析失败重试机制。要处理链中格式错误的模型输出，请使用以下方法之一：
+
+* **模型级结构化输出**：使用[⟦T47⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withStructuredOutput)将模式绑定到模型。当提供程序支持本机结构化输出时，它会强制执行模式并避免大多数解析失败。参见[Models - Structured output](/oss/javascript/langchain/models#structured-output)。当模型支持时使用此方法。
+* **使用模型修复格式错误的输出**：将输出解析器包装在来自 [⟦T49⟧](https://www.npmjs.com/package/@langchain/classic) 的 `OutputFixingParser` 中。解析失败时，包装器会将格式错误的输出、解析器的格式指令和错误消息发送到模型，并解析正确的响应。
+
+> [!注意]
+>
+> `OutputFixingParser` 需要`@langchain/classic` 套件。在 v1 之前，它可以从 `langchain/output_parsers` 获得。
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { OutputFixingParser } from "@langchain/classic/output_parsers";
+import { StructuredOutputParser } from "@langchain/core/output_parsers";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { initChatModel } from "langchain";
+import * as z from "zod";
+
+const ProductReview = z.object({
+    rating: z.number().min(1).max(5).describe("The rating of the product (1-5)"),
+    sentiment: z.enum(["positive", "negative"]).describe("The sentiment of the review"),
+});
+
+const model = await initChatModel("gpt-5.4");
+
+const baseParser = StructuredOutputParser.fromZodSchema(ProductReview);
+const fixingParser = OutputFixingParser.fromLLM(model, baseParser);
+
+const prompt = ChatPromptTemplate.fromMessages([
+    ["system", "Analyze the product review.\n{format_instructions}"],
+    ["user", "{review}"],
+]);
+
+const chain = prompt.pipe(model).pipe(fixingParser);
+
+const result = await chain.invoke({
+    review: "Great product, 5 stars! Fast shipping, but expensive.",
+    format_instructions: baseParser.getFormatInstructions(),
+});
+// { rating: 5, sentiment: "positive" }
 ```
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+包装的解析器仅在初始解析失败时调用修复模型，因此格式良好的输出不会产生额外的模型调用。> [!警告]
+>
+> `OutputFixingParser` 仅重试抛出为 `OutputParserException` 的错误。抛出原始错误的解析器不会重试：例如，`JsonOutputParser`在无效的 JSON 上抛出一个简单的 `SyntaxError`，这会传播未捕获的内容。包装一个抛出 `OutputParserException` 的解析器，例如 `StructuredOutputParser`。
+
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/structured-output.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

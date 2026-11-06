@@ -24,7 +24,7 @@ LangGraph提供了三种管理上下文的方式，结合了可变性和生命�
 
 |上下文类型 |描述 |可变性 |终身|访问方式 |
 | - | - | - | - | - |
-| [**Static runtime context**](#static-runtime-context) |启动时传递的用户元数据、工具、数据库连接 |静态|单跑 | `context` `invoke`/`stream` 的参数 |
+| [**Static runtime context**](#static-runtime-context) |启动时传递的用户元数据、工具、数据库连接 |静态|单跑| `context` `invoke`/`stream` 的参数 |
 | [**Dynamic runtime context (state)**](#dynamic-runtime-context) |在单次运行期间演变的可变数据 |动态 |单跑| LangGraph 状态对象 |
 | [**Dynamic cross-conversation context (store)**](#dynamic-cross-conversation-context) |跨对话共享持久数据|动态 |交叉对话 | LangGraph店 |## 静态运行时上下文
 
@@ -41,64 +41,64 @@ graph.invoke(
 )
 ```
 
-**代理提示**
+> [选项卡] 代理提示
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from dataclasses import dataclass
+> from langchain.agents import create_agent
+> from langchain.agents.middleware import dynamic_prompt, ModelRequest
+>
+>
+> @dataclass
+> class ContextSchema:
+>     user_name: str
+>
+> @dynamic_prompt  # [!code highlight]
+> def personalized_prompt(request: ModelRequest) -> str:  # [!code highlight]
+>     user_name = request.runtime.context.user_name
+>     return f"You are a helpful assistant. Address the user as {user_name}."
+>
+> agent = create_agent(
+>     model="claude-sonnet-4-6",
+>     tools=[get_weather],
+>     middleware=[personalized_prompt],
+>     context_schema=ContextSchema
+> )
+>
+> agent.invoke(
+>     {"messages": [{"role": "user", "content": "what is the weather in sf"}]},
+>     context=ContextSchema(user_name="John Smith")  # [!code highlight]
+> )
+> ```
+>
+> 详情请参阅[Agents](/oss/python/langchain/agents)。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from dataclasses import dataclass
-from langchain.agents import create_agent
-from langchain.agents.middleware import dynamic_prompt, ModelRequest
+> [选项卡] 工作流程节点
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph.runtime import Runtime
+>
+> def node(state: State, runtime: Runtime[ContextSchema]):  # [!code highlight]
+>     user_name = runtime.context.user_name
+>     ...
+> ```
+>
+> * 详情请参阅[the Graph API](/oss/python/langgraph/graph-api-nodes#add-runtime-configuration)。
 
-
-@dataclass
-class ContextSchema:
-    user_name: str
-
-@dynamic_prompt  # [!code highlight]
-def personalized_prompt(request: ModelRequest) -> str:  # [!code highlight]
-    user_name = request.runtime.context.user_name
-    return f"You are a helpful assistant. Address the user as {user_name}."
-
-agent = create_agent(
-    model="claude-sonnet-4-6",
-    tools=[get_weather],
-    middleware=[personalized_prompt],
-    context_schema=ContextSchema
-)
-
-agent.invoke(
-    {"messages": [{"role": "user", "content": "what is the weather in sf"}]},
-    context=ContextSchema(user_name="John Smith")  # [!code highlight]
-)
-```
-
-详情请参阅[Agents](/oss/python/langchain/agents)。
-
-**工作流程节点**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph.runtime import Runtime
-
-def node(state: State, runtime: Runtime[ContextSchema]):  # [!code highlight]
-    user_name = runtime.context.user_name
-    ...
-```
-
-* 详情请参阅[the Graph API](/oss/python/langgraph/use-graph-api#add-runtime-configuration)。
-
-**在工具中**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.tools import tool, ToolRuntime
-
-@tool
-def get_user_email(runtime: ToolRuntime[ContextSchema]) -> str:
-    """Retrieve user information based on user ID."""
-    # simulate fetching user info from a database
-    email = get_user_email_from_db(runtime.context.user_name)  # [!code highlight]
-    return email
-```
-
-详情请参阅[tool calling guide](/oss/python/langchain/tools#context)。
+> [选项卡] 在工具中
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.tools import tool, ToolRuntime
+>
+> @tool
+> def get_user_email(runtime: ToolRuntime[ContextSchema]) -> str:
+>     """Retrieve user information based on user ID."""
+>     # simulate fetching user info from a database
+>     email = get_user_email_from_db(runtime.context.user_name)  # [!code highlight]
+>     return email
+> ```
+>
+> 详情请参阅[tool calling guide](/oss/python/langchain/tools#context)。
 
 > [!提示]
 >
@@ -109,62 +109,62 @@ def get_user_email(runtime: ToolRuntime[ContextSchema]) -> str:
 
 **动态运行时上下文**表示可以在单次运行期间演变的可变数据，并通过 LangGraph 状态对象进行管理。这包括对话历史记录、中间结果以及从工具或 LLM 输出得出的值。在LangGraph中，状态对象在运行期间充当[short-term memory](/oss/python/concepts/memory)。
 
-**在代理**
+> [选项卡] 在代理中
+>
+> 示例展示了如何将状态合并到代理**提示**中。
+>
+> 状态也可以通过代理的**工具**访问，它可以根据需要读取或更新状态。详情请参阅[tool calling guide](/oss/python/langchain/tools#short-term-memory-state)。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.agents import create_agent
+> from langchain.agents.middleware import dynamic_prompt, ModelRequest
+> from langchain.agents import AgentState
+>
+>
+> class CustomState(AgentState):  # [!code highlight]
+>     user_name: str
+>
+> @dynamic_prompt  # [!code highlight]
+> def personalized_prompt(request: ModelRequest) -> str:  # [!code highlight]
+>     user_name = request.state.get("user_name", "User")
+>     return f"You are a helpful assistant. User's name is {user_name}"
+>
+> agent = create_agent(
+>     model="claude-sonnet-4-6",
+>     tools=[...],
+>     state_schema=CustomState,  # [!code highlight]
+>     middleware=[personalized_prompt],  # [!code highlight]
+> )
+>
+> agent.invoke({
+>     "messages": "hi!",
+>     "user_name": "John Smith"
+> })
+> ```> [选项卡] 在工作流程中
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from typing_extensions import TypedDict
+> from langchain.messages import AnyMessage
+> from langgraph.graph import StateGraph
+>
+> class CustomState(TypedDict):  # [!code highlight]
+>     messages: list[AnyMessage]
+>     extra_field: int
+>
+> def node(state: CustomState):  # [!code highlight]
+>     messages = state["messages"]
+>     ...
+>     return {  # [!code highlight]
+>         "extra_field": state["extra_field"] + 1  # [!code highlight]
+>     }
+>
+> builder = StateGraph(State)
+> builder.add_node(node)
+> builder.set_entry_point("node")
+> graph = builder.compile()
+> ```
 
-示例展示了如何将状态合并到代理**提示**中。
-
-状态也可以通过代理的**工具**访问，它可以根据需要读取或更新状态。详情请参阅[tool calling guide](/oss/python/langchain/tools#short-term-memory-state)。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents import create_agent
-from langchain.agents.middleware import dynamic_prompt, ModelRequest
-from langchain.agents import AgentState
-
-
-class CustomState(AgentState):  # [!code highlight]
-    user_name: str
-
-@dynamic_prompt  # [!code highlight]
-def personalized_prompt(request: ModelRequest) -> str:  # [!code highlight]
-    user_name = request.state.get("user_name", "User")
-    return f"You are a helpful assistant. User's name is {user_name}"
-
-agent = create_agent(
-    model="claude-sonnet-4-6",
-    tools=[...],
-    state_schema=CustomState,  # [!code highlight]
-    middleware=[personalized_prompt],  # [!code highlight]
-)
-
-agent.invoke({
-    "messages": "hi!",
-    "user_name": "John Smith"
-})
-```
-
-**在工作流程中**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from typing_extensions import TypedDict
-from langchain.messages import AnyMessage
-from langgraph.graph import StateGraph
-
-class CustomState(TypedDict):  # [!code highlight]
-    messages: list[AnyMessage]
-    extra_field: int
-
-def node(state: CustomState):  # [!code highlight]
-    messages = state["messages"]
-    ...
-    return {  # [!code highlight]
-        "extra_field": state["extra_field"] + 1  # [!code highlight]
-    }
-
-builder = StateGraph(State)
-builder.add_node(node)
-builder.set_entry_point("node")
-graph = builder.compile()
-```> [!提示]
+> [!提示]
 >
 > **打开内存**
 > 有关如何启用内存的更多详细信息，请参阅[memory guide](/oss/python/langgraph/add-memory)。这是一个强大的功能，允许您在多次调用中保留代理的状态。否则，状态的范围仅限于单次运行。

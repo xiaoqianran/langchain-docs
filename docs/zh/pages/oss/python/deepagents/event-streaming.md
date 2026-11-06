@@ -32,7 +32,7 @@ for subagent in stream.subagents:
     subagent_names.append(subagent.name)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/1884fc76-062c-464d-85a9-9cf20d5286ab/r)**
+> [卡][View example trace](https://smith.langchain.com/public/cb99e8da-078c-4f7f-935f-cfee3499714d/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -76,7 +76,7 @@ for subagent in stream.subagents:
         print(f"{subagent.name}: failed")
 ```
 
-> **[View example trace](https://smith.langchain.com/public/7c517c49-b795-4a33-b782-6695349c9deb/r)**
+> [卡][View example trace](https://smith.langchain.com/public/932aef21-4019-4767-9632-246873501b39/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -97,7 +97,7 @@ for subagent in stream.subagents:
         print(f"[{subagent.name}]", message.text)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/8cdd93c9-0dff-4f08-8057-053753c68c6e/r)**
+> [卡][View example trace](https://smith.langchain.com/public/64198e44-f030-46ae-9cfc-a469b038ac89/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -124,7 +124,7 @@ for subagent in stream.subagents:
             print(call.error)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/55cbc704-a514-46e1-8559-b2cfee01298d/r)**
+> [卡][View example trace](https://smith.langchain.com/public/09b3ae28-a609-4281-af99-c66f8b27a579/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -150,7 +150,7 @@ for subagent in stream.subagents:
     subagent_names.append(subagent.name)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/51f7e14f-0d79-4f59-a817-e05db11cec22/r)**
+> [卡][View example trace](https://smith.langchain.com/public/126270dd-d295-4081-87a5-6a73d795f3d7/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -190,7 +190,7 @@ for name, item in stream.interleave("messages", "subagents"):
             print(f"[{item.name}]", message.text)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/74ef37d9-f1b4-408f-babd-af300a033e9b/r)**
+> [卡][View example trace](https://smith.langchain.com/public/c640cc12-1348-4743-84f7-987613a000dc/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -217,7 +217,7 @@ for event in stream:
         text_deltas.append(block["text"])
 ```
 
-> **[View example trace](https://smith.langchain.com/public/71b391fa-fa9d-40c0-838a-6a21874785c9/r)**
+> [卡][View example trace](https://smith.langchain.com/public/6613bc7a-0726-4fd7-bf4a-67c7ebe8664d/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 

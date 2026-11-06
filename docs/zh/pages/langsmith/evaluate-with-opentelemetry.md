@@ -4,7 +4,7 @@
 
 # 如何使用 OpenTelemetry 进行评估
 
-本指南向您展示如何使用 OpenTelemetry 跟踪和 LangSmith 运行评估。
+本指南向您展示如何使用 OpenTelemetry 跟踪和 LangSmith 来运行评估。
 
 > [!注意]
 >
@@ -52,17 +52,13 @@ AWS_SECRET_ACCESS_KEY="<your-aws-secret-access-key>"
 AWS_REGION_NAME="<your-aws-region>"
 ```
 
-> [!注意]
->
-> 如果您是 [self-hosting LangSmith](/langsmith/self-hosted)，请将 `OTEL_EXPORTER_OTLP_ENDPOINT` 替换为您的自托管 URL，并附加 `/api/v1/otel`。例如：`OTEL_EXPORTER_OTLP_ENDPOINT = "https://ai-company.com/api/v1/otel"`。
->
-> 将 `LANGSMITH_ENDPOINT` 替换为您的 LangSmith API 端点。例如：`LANGSMITH_ENDPOINT = "https://ai-company.com/api/v1"`。
+将 `LANGSMITH_ENDPOINT` 设置为您的 LangSmith API URL，并将 `OTEL_EXPORTER_OTLP_ENDPOINT` 设置为该 URL 加上 `/otel`。在自托管 LangSmith 上，API URL 包含 `/api/v1`，例如 `https://<host>/api/v1`。有关每种部署类型的 OTLP URL，请参阅 [Find your OTLP endpoint](/langsmith/trace-with-opentelemetry#find-your-otlp-endpoint)。
 
 ## 步骤 1. 创建实验会话
 
 本指南假设已在 LangSmith 中创建了数据集并包含要评估的示例。您可以通过[LangSmith UI](/langsmith/evaluation-concepts#datasets)或通过[SDK](/langsmith/manage-datasets-programmatically)创建数据集。
 
-实验会话将所有评估轨迹分组在一起。使用 LangSmith 客户端创建一个：
+实验会话将所有评估轨迹组合在一起。使用 LangSmith 客户端创建一个：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client

@@ -842,6 +842,10 @@ This process has two components:
 
 This dual approach ensures the agent maintains awareness of its goals and progress (via the summary) while preserving the ability to recover text details when needed (via filesystem search).
 
+Summarization changes the messages sent to the model, not the persisted `state["messages"]` history. Preserving that history supports replay and evaluation.
+
+For context management in custom middleware, transform the outgoing model request rather than deleting or reordering persisted messages. Reserve history edits for intentional application behavior, not routine context compression. Editing source messages does not regenerate an existing summary.
+
 ![An example of summarization showing an agent's conversation history, where several steps get compacted](https://mintcdn.com/langchain-5e9cc07a/0G7fpRWZQ2tFN1wL/oss/images/deepagents/summarization.png?fit=max\&auto=format\&n=0G7fpRWZQ2tFN1wL\&q=85\&s=a8fea59d4365dd688e49ce118e706e76)
 
 **Configuration:**

@@ -32,7 +32,7 @@ LangChain 流媒体可以实现什么：
 
 |模式|描述 |
 | - | - |
-| `updates` |每个代理步骤后流状态更新。如果在同一步骤中进行多个更新（例如，运行多个节点），则这些更新将单独进行流式传输。 |
+| `updates` |每个代理步骤后流状态更新。如果在同一步骤中进行多个更新（例如，运行多个节点），则这些更新将单独流式传输。 |
 | `messages` |从调用 LLM 的任何图形节点流式传输 `(token, metadata)` 的元组。 |
 | `custom` |使用流编写器从图形节点内部流式传输自定义数据。 |
 
@@ -46,7 +46,7 @@ LangChain 流媒体可以实现什么：
 * **工具节点**：[⟦T27⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)及执行结果
 * **LLM节点**：最终AI响应
 
-通过 `configurable` 传递 `thread_id`，因此对话会被检查点，并且后续回合可以恢复相同的历史记录。 `thread_id` 独立于`streamMode`；您还可以将 `context` 与其一起传递，以获取工具从 `runtime.context` 读取的每次运行数据。
+通过 `configurable` 传递 `thread_id`，以便对话被检查点并且后续轮次可以恢复相同的历史记录。 `thread_id` 独立于`streamMode`；您还可以将 `context` 与其一起传递，以获取工具从 `runtime.context` 读取的每次运行数据。
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, tool } from "langchain";
@@ -417,7 +417,7 @@ const finalState = await stream.output;
 // Tool call: get_weather({"city":"San Francisco"})
 // Tool result: [object ToolMessage]
 // According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
-```> **[View example trace](https://smith.langchain.com/public/d4b012af-7fb4-4417-b327-e770969de2aa/r)**
+```> [卡][View example trace](https://smith.langchain.com/public/af521662-0974-433d-bc77-8eedf82863d2/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -462,7 +462,7 @@ for await (const [token, metadata] of await agent.stream(
 
 > [!注意]
 >
-> **将代理包装为父级 `StateGraph` 中的节点？** [⟦T39⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 返回一个 `ReactAgent` 包装器；添加为节点时传递`agent.graph`。使用`subgraphs: true`，因此消息块包含子图名称空间。参见[Subgraph outputs](/oss/javascript/langgraph/streaming#subgraph-outputs)。
+> **将代理包装为父级 `StateGraph` 中的节点？** [⟦T39⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 返回一个 `ReactAgent` 包装器；添加为节点时传递`agent.graph`。使用`subgraphs: true`，因此消息块包含子图命名空间。参见[Subgraph outputs](/oss/javascript/langgraph/streaming#subgraph-outputs)。
 
 ## 自定义更新
 
@@ -607,7 +607,7 @@ for await (const message of stream.messages) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/1c167f24-489a-47da-b7df-0b4b21789d9b/r)**
+> [卡][View example trace](https://smith.langchain.com/public/b1ae68c6-12fb-406c-91df-63364cf6dd7c/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 

@@ -6,7 +6,7 @@
 
 使用假聊天模型和内存持久性测试代理逻辑，无需 API 调用。
 
-单元测试单独测试代理的小型确定性部分。通过用内存中的伪造（又名固定装置）替换真实的 LLM，您可以编写精确的响应（文本、工具调用和错误），因此测试快速、免费且可重复，无需 API 密钥。
+单元测试单独测试代理的小型确定性部分。通过用内存中的假数据（又名固定装置）替换真实的 LLM，您可以编写精确的响应（文本、工具调用和错误），因此测试快速、免费且可重复，无需 API 密钥。
 
 ## 使用`fakeModel`模拟聊天模型
 
@@ -268,7 +268,7 @@ console.log(r2.content); // "The weather is sunny."
 console.log(model.callCount); // 2
 ```
 
-> **完整示例：使用 vitest 测试工具调用代理**
+> [accordion] 完整示例：使用 vitest 测试工具调用代理
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { describe, test, expect } from "vitest";

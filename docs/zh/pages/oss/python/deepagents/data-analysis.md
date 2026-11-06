@@ -54,7 +54,7 @@ pip install langsmith slack-sdk
 
 ### LangSmith
 
-您使用LangChain构建的许多应用程序将包含多个步骤以及多次调用LLM调用。随着这些应用程序变得越来越复杂，能够检查链或代理内部到底发生了什么变得至关重要。最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-data-analysis)。
+您使用 LangChain 构建的许多应用程序将包含多个步骤以及多次调用 LLM 调用。随着这些应用程序变得越来越复杂，能够检查链或代理内部到底发生了什么变得至关重要。最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-data-analysis)。
 
 在上面的链接注册后，请确保设置环境变量以开始记录跟踪：
 
@@ -79,136 +79,136 @@ Deep Agents 使用[backends](/oss/python/deepagents/backends) 在沙盒环境中
 
 下面的示例使用 [LangSmith sandbox](/langsmith/sandboxes)。对于其他提供商，请参阅[available providers](/oss/python/deepagents/sandboxes#available-providers)。
 
-**LangSmith**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langsmith
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langsmith
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents.backends.langsmith import LangSmithSandbox
-from langsmith.sandbox import SandboxClient
-
-client = SandboxClient()
-ls_sandbox = client.create_sandbox()
-backend = LangSmithSandbox(sandbox=ls_sandbox)
-```
-
-**本地外壳**
-
-> [!警告]
+> [标签] LangSmith
 >
-> 该后端提供不受限制的文件系统和 shell 访问。仅在受控环境中使用以进行开发和测试。更多详情请参阅[security considerations](/oss/python/deepagents/backends#localshellbackend-local-shell)。
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langsmith
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langsmith
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langsmith.sandbox import SandboxClient
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> backend = LangSmithSandbox(sandbox=ls_sandbox)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents.backends import LocalShellBackend
+> [选项卡] 本地 shell
+>
+>> [!警告]
+>>
+>> 该后端提供不受限制的文件系统和 shell 访问。仅在受控环境中使用以进行开发和测试。更多详情请参阅[security considerations](/oss/python/deepagents/backends#localshellbackend-local-shell)。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents.backends import LocalShellBackend
+>
+> backend = LocalShellBackend(
+>     root_dir=".",
+>     virtual_mode=True,
+>     env={"PATH": "/usr/bin:/bin"},
+> )
+> ```
 
-backend = LocalShellBackend(
-    root_dir=".",
-    virtual_mode=True,
-    env={"PATH": "/usr/bin:/bin"},
-)
-```
+> [选项卡] AgentCore
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-agentcore-codeinterpreter
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-agentcore-codeinterpreter
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from bedrock_agentcore.tools.code_interpreter_client import CodeInterpreter
+> from langchain_agentcore_codeinterpreter import AgentCoreSandbox
+>
+> interpreter = CodeInterpreter(region="us-west-2")
+> interpreter.start()
+> backend = AgentCoreSandbox(interpreter=interpreter)
+> ```> [标签] 代托纳
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-daytona
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-daytona
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from daytona import Daytona
+>
+> from langchain_daytona import DaytonaSandbox
+>
+> sandbox = Daytona().create()
+> backend = DaytonaSandbox(sandbox=sandbox)
+> ```
+>
+> 验证沙箱是否已准备就绪：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> result = backend.execute("echo ready")
+> print(result)
+> # ExecuteResponse(output='ready', exit_code=0, ...)
+> ```
 
-**代理核心**
+> [选项卡] E2B
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-e2b
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-e2b
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from e2b import Sandbox
+> from langchain_e2b import E2BSandbox
+>
+> e2b_sandbox = Sandbox.create()
+> backend = E2BSandbox(sandbox=e2b_sandbox)
+> ```
 
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-agentcore-codeinterpreter
-```
+> [选项卡] 模态
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import modal
+>
+> from langchain_modal import ModalSandbox
+>
+> app = modal.App.lookup("your-app")
+> modal_sandbox = modal.Sandbox.create(app=app)
+> backend = ModalSandbox(sandbox=modal_sandbox)
+> ```
 
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-agentcore-codeinterpreter
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from bedrock_agentcore.tools.code_interpreter_client import CodeInterpreter
-from langchain_agentcore_codeinterpreter import AgentCoreSandbox
-
-interpreter = CodeInterpreter(region="us-west-2")
-interpreter.start()
-backend = AgentCoreSandbox(interpreter=interpreter)
-```
-
-**代托纳**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-daytona
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-daytona
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from daytona import Daytona
-
-from langchain_daytona import DaytonaSandbox
-
-sandbox = Daytona().create()
-backend = DaytonaSandbox(sandbox=sandbox)
-```
-
-验证沙箱是否准备就绪：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-result = backend.execute("echo ready")
-print(result)
-# ExecuteResponse(output='ready', exit_code=0, ...)
-```
-
-**E2B**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-e2b
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-e2b
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from e2b import Sandbox
-from langchain_e2b import E2BSandbox
-
-e2b_sandbox = Sandbox.create()
-backend = E2BSandbox(sandbox=e2b_sandbox)
-```**莫代尔**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import modal
-
-from langchain_modal import ModalSandbox
-
-app = modal.App.lookup("your-app")
-modal_sandbox = modal.Sandbox.create(app=app)
-backend = ModalSandbox(sandbox=modal_sandbox)
-```
-
-**运行循环**
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-runloop
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langchain-runloop
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from runloop_api_client import RunloopSDK
-
-from langchain_runloop import RunloopSandbox
-
-api_key = "..."
-client = RunloopSDK(bearer_token=api_key)
-
-devbox = client.devbox.create()
-backend = RunloopSandbox(devbox=devbox)
-```
+> [选项卡] 运行循环
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install langchain-runloop
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langchain-runloop
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from runloop_api_client import RunloopSDK
+>
+> from langchain_runloop import RunloopSandbox
+>
+> api_key = "..."
+> client = RunloopSDK(bearer_token=api_key)
+>
+> devbox = client.devbox.create()
+> backend = RunloopSandbox(devbox=devbox)
+> ```
 
 ### 上传样本数据
 
@@ -316,9 +316,7 @@ thread_id = str(uuid7())
 config = {"configurable": {"thread_id": thread_id}}
 ```
 
-我们包括：
-
-* [model](/oss/python/deepagents/customization#model) 的选择
+我们包括：* [model](/oss/python/deepagents/customization#model) 的选择
 * 我们定制的[tool](/oss/python/deepagents/customization#tools)
 * [backend](/oss/python/deepagents/backends)
 * [checkpointer](/oss/python/langchain/short-term-memory) 支持多轮对话
@@ -692,7 +690,9 @@ A beautiful 6-panel dashboard featuring:
 ✅ High-resolution visualization dashboard (saved as PNG)
 
 The analysis reveals that Widget A is the top performer, while Widget C shows room for improvement. All results have been sent to your Slack workspace!
-```查看此执行的完整[LangSmith trace](https://smith.langchain.com/public/ac2443a8-16ad-4e00-8f02-afde6a737534/r)。
+```
+
+查看此执行的完整[LangSmith trace](https://smith.langchain.com/public/ac2443a8-16ad-4e00-8f02-afde6a737534/r)。
 
 ## 结果
 
@@ -716,10 +716,9 @@ The analysis reveals that Widget A is the top performer, while Widget C shows ro
 
 ## 后续步骤
 
-现在您已经构建了数据分析代理，请探索以下资源来扩展其功能：
-
+现在您已经构建了数据分析代理，请探索以下资源来扩展其功能：* [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)：使用托管部署基础架构构建深度代理
 * [Backends](/oss/python/deepagents/backends)：了解Deep Agents后端系统
-* [Sandboxes](/oss/python/deepagents/sandboxes)：审查沙盒代码执行的后端，包括安全注意事项和高级配置
+* [Sandboxes](/oss/python/deepagents/sandboxes)：检查沙盒代码执行的后端，包括安全注意事项和高级配置
 * [Customization](/oss/python/deepagents/customization)：了解如何使用不同的模型、工具、提示和可选的 [task planning](/oss/python/deepagents/overview#task-planning) 自定义您的代理
 * [Code](/oss/deepagents/code/overview)：尝试使用Deep Agents编码作为终端编码代理，协助本地进行数据分析和其他代理任务
 * [Skills](/oss/python/deepagents/skills)：为您的代理配备可重复使用的常见工作流程技能

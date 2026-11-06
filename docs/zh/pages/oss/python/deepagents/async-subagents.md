@@ -4,7 +4,7 @@
 
 # 异步子代理
 
-在主管继续与用户交互的同时启动并发运行的后台子代理
+启动后台子代理，在主管继续与用户交互的同时运行
 
 异步子代理允许主管代理启动立即返回的后台任务，因此主管可以在子代理同时工作时继续与用户交互。主管可以随时检查进度、发送后续指令或取消任务。
 
@@ -30,7 +30,7 @@ graph TB
 ## 何时使用异步子代理|尺寸|同步子代理 |异步子代理 |
 | - | - | - |
 | **执行模型** |主管阻塞直到子代理完成 |立即返回作业ID；主管继续|
-| **并发** |并行但阻塞 |并行和非阻塞|
+| **并发** |并行但阻塞|并行和非阻塞|
 | **任务中期更新** |不可能|通过`update_async_task`发送后续指令 |
 | **取消** |不可能|通过`cancel_async_task`取消正在运行的任务 |
 | **有状态** |无状态——调用之间没有持久状态|有状态——跨交互在自己的线程上维护状态
@@ -38,7 +38,7 @@ graph TB
 
 ## 配置异步子代理
 
-将异步子代理定义为[⟦T16⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent)规范列表，每个都指向一个代理协议服务器：
+将异步子代理定义为 [⟦T17⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent) 规范列表，每个都指向一个代理协议服务器：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import AsyncSubAgent, create_deep_agent
@@ -69,7 +69,9 @@ agent = create_deep_agent(
 | `graph_id` | `str` |必需的。代理协议服务器上的图形 ID（或助理 ID）。对于基于 LangGraph 的部署，这必须与在 `langgraph.json` 中注册的图表匹配。 |
 | `url` | `str` |选修的。省略时，使用 ASGI 传输（进程中）。设置后，使用 HTTP 传输到远程代理协议服务器。 |
 | `headers` | `dict[str, str]` |选修的。用于向远程服务器发出请求的附加标头。用于使用自托管代理协议服务器进行自定义身份验证。 |
-| `mode` | `"isolated" \| "fork"` |选修的。控制子代理在启动时接收的对话上下文。默认为 `"isolated"`。参见[Choose a launch mode](#choose-a-launch-mode)。 |
+| `mode` | `"isolated" \| "fork"` |选修的。控制子代理在启动时接收的对话上下文。默认为`"isolated"`。参见[Choose a launch mode](#choose-a-launch-mode)。 |
+| `update_strategy` | `"interrupt" \| "enqueue"` |选修的。 `update_async_task` 如何在运行期间发送后续信息。默认为 `"interrupt"`。参见[Understand the lifecycle](#understand-the-lifecycle)。 |
+| `webhook` | `str` |选修的。每当此子代理运行完成时，代理服务器都会调用 URL。参见[Deliver results through your app](#deliver-results-through-your-app)。 || `notify_parent` | `bool` |选修的。子代理在主管空闲时完成时是否可以唤醒主管。默认为 `True`。 |
 
 对于基于 LangGraph 的部署，请在同一 `langgraph.json` 中注册所有图以进行共同部署设置：
 
@@ -85,13 +87,15 @@ agent = create_deep_agent(
 
 ## 使用异步子代理工具
 
-当配置异步子代理时，[⟦T32⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgentMiddleware)包含在[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)中，为主管提供了五种工具：|工具|目的|返回|
+配置异步子代理时，[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)中包含的[⟦T42⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgentMiddleware)为主管提供了五种工具：
+
+|工具|目的|返回|
 | - | - | - |
 | `start_async_task` |启动新的后台任务 |任务 ID（立即）|
 | `check_async_task` |获取任务的当前状态和结果 |状态+结果（如果完成）|
 | `update_async_task` |向正在运行的任务发送新指令 |确认+更新状态|
 | `cancel_async_task` |停止正在运行的任务 |确认|
-| `list_async_tasks` |列出所有跟踪任务的实时状态 |所有任务摘要|
+| `list_async_tasks` |列出所有跟踪任务的实时状态 |所有任务摘要 |
 
 主管的法学硕士将这些工具称为任何其他工具。中间件自动处理线程创建、运行管理和状态持久性。
 
@@ -119,33 +123,60 @@ sequenceDiagram
     Supervisor->>Platform: check(abc123)
     Platform-->>Supervisor: status: success, result: "findings..."
     Supervisor-->>User: "Here are the results"
-```* **Launch** 在服务器上创建一个新线程，并使用由 [launch mode](#choose-a-launch-mode) 确定的输入开始运行。隔离模式仅发送任务描述； Python fork 模式还会发送父级的有效对话历史记录。线程 ID 作为任务 ID 返回。主管将此 ID 报告给用户，并且不会轮询是否完成。
+```* **Launch** 在服务器上创建一个新线程，并使用由 [launch mode](#choose-a-launch-mode) 确定的输入开始运行。隔离模式仅发送任务描述； fork模式还发送父级的有效对话历史记录。线程 ID 作为任务 ID 返回。主管将此 ID 报告给用户，并且不会轮询是否完成。
 * **Check** 获取当前运行状态。如果运行成功，它将检索线程状态以提取子代理的最终输出。如果仍在运行，它会向用户报告该情况。
-* **更新** 使用中断多任务策略在同一线程上创建新的运行。先前的运行被中断，子代理将使用完整的对话历史记录和新指令重新启动。任务 ID 保持不变。
+* **更新** 在同一线程上创建新的运行。默认情况下，它会中断先前的运行，并且子代理将使用完整的对话历史记录和新指令重新启动。任务 ID 保持不变。
 * **取消** 在服务器上调用`runs.cancel()`，并将任务标记为`"cancelled"`。
-* **List** 迭代所有跟踪的任务。对于非终端任务，它并行从服务器获取实时状态。终端状态（`success`、`error`、`cancelled`）从缓存中返回。如果子代理因输入或批准而暂停，**检查**和**列表**将其报告为 `waiting`。更新 `waiting` 任务会删除其挂起的请求，而取消一个任务只会将其标记为 `"cancelled"`，因为它没有活动的运行。参见[Handle subagents waiting for input](#handle-subagents-waiting-for-input)。
-
-在 [Agent Protocol](https://github.com/langchain-ai/agent-protocol) 服务器上运行时，子代理会在完成时自动更新 Supervisor。如果为主管和子代理使用[single deployment](#single-deployment)，子代理将在主管空闲时唤醒主管；否则它会在下次运行开始时收到更新。
+* **List** 迭代所有跟踪的任务。对于非终端任务，它并行从服务器获取实时状态。终端状态（`success`、`error`、`cancelled`）从缓存中返回。要让后续人员等待，请设置`update_strategy="enqueue"`。 **更新**然后将新的运行排在当前运行的后面，并且任务是`pending`直到它开始。取消任务还会取消仍处于活动状态的早期运行。
+如果当前运行在后续操作开始之前暂停以进行输入或批准，则后续操作仍会开始并且该请求将被删除。
 
 > [!注意]
 >
-> 任务通知需要`deepagents>=0.7.26`。他们在[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。
+> `update_strategy` 需要 `deepagents>=0.7.30`。位于[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。
 
-通知以 `HumanMessage` 返回给主管。它们可以包括图像和其他多模式媒体。该消息在`additional_kwargs["deepagents_notification"]`中携带[⟦T48⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/TaskEvent)（`task_id`、`agent_name`、`status`、`run_id`），因此您的应用可以以与用户消息不同的方式显示通知：
+如果子代理暂停输入或批准，**检查**和**列表**将其报告为 `waiting`。更新 `waiting` 任务会删除其挂起的请求，而取消一个任务只会将其标记为 `"cancelled"`，因为它没有活动的运行。参见[Handle subagents waiting for input](#handle-subagents-waiting-for-input)。
+
+当在 [Agent Protocol](https://github.com/langchain-ai/agent-protocol) 服务器上运行时，子代理会在完成时自动更新 Supervisor。如果为主管和子代理使用[single deployment](#single-deployment)，子代理将在主管空闲时唤醒主管；否则它会在下次运行开始时收到更新。
+
+> [!注意]
+>
+> 任务通知需要`deepagents>=0.7.26`。他们在[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。通知以 `HumanMessage` 返回给主管。它们可以包括图像和其他多模式媒体。该消息在`additional_kwargs["deepagents_notification"]`中携带[⟦T62⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/TaskEvent)（`task_id`、`agent_name`、`status`、`run_id`），因此您的应用可以以与用户消息不同的方式显示通知：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for message in state["messages"]:
     if event := message.additional_kwargs.get("deepagents_notification"):
-        print(event["agent_name"], event["status"])  # success, error, timeout, or waiting
+        print(event["agent_name"], event["status"])  # success, error, timeout, cancelled, or waiting
+```
+
+### 通过您的应用程序交付结果
+
+> [!注意]
+>
+> `webhook` 和 `notify_parent` 需要 `deepagents>=0.7.30`。 `notify_parent`在[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。
+
+设置 `webhook` 以使代理服务器在子代理运行完成时调用您的应用程序。该调用包括运行的线程 ID、运行 ID、状态和元数据，包括 `parent_thread_id` 和 `subagent_name`。要通过您的应用程序提供结果而不是唤醒主管，还要关闭家长通知。当子代理运行时，主管仍然会收到子代理的更新。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import AsyncSubAgent
+
+async_subagents = [
+    AsyncSubAgent(
+        name="researcher",
+        description="Research agent for information gathering and synthesis",
+        graph_id="researcher",
+        webhook="https://my-app.example.com/hooks/subagent-finished",
+        notify_parent=False,  # Your app delivers the result
+    ),
+]
 ```
 
 ## 处理等待输入的子代理
 
 > [!注意]
 >
-> `waiting` 状态需要`deepagents>=0.7.26`。位于[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。当子代理暂停输入或批准`interrupt()`或[human-in-the-loop](/oss/python/deepagents/human-in-the-loop)时，**检查**和**列表**工具将其报告为`waiting`及其挂起的中断。主管不能代表用户答复或批准。该请求是针对用户的。
+> `waiting` 状态需要`deepagents>=0.7.26`。位于[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。
 
-您的应用程序在子代理自己的线程上回答它。任务 ID 是子代理的线程 ID：
+当子代理暂停输入或批准`interrupt()`或[human-in-the-loop](/oss/python/deepagents/human-in-the-loop)时，**检查**和**列表**工具将其报告为`waiting`及其挂起的中断。主管不能代表用户答复或批准。该请求是针对用户的。您的应用程序在子代理自己的线程上回答它。任务 ID 是子代理的线程 ID：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph_sdk import get_client
@@ -170,11 +201,11 @@ async def answer_waiting_subagent(task_id: str, graph_id: str, answer: object) -
 
 每个跟踪的任务都会记录任务 ID、代理名称、线程 ID、运行 ID、状态和时间戳（`created_at`、`last_checked_at`、`last_updated_at`）。
 
-### 查找主管的子代理线程> [!注意]
->
-> 线程标记需要`deepagents>=0.7.26`。位于[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。
+### 查找主管的子代理线程
 
-`start_async_task` 使用`metadata={"parent_thread_id": ...}`（主管的线程 ID）创建每个子代理线程。使用它来查找主管的子代理线程，或在子代理的图工厂中读取主管的线程：
+> [!注意]
+>
+> 线程标记需要`deepagents>=0.7.26`。位于[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。`start_async_task` 使用`metadata={"parent_thread_id": ...}`（主管的线程 ID）创建每个子代理线程。使用它来查找主管的子代理线程，或在子代理的图工厂中读取主管的线程：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.runnables import RunnableConfig
@@ -226,7 +257,7 @@ AsyncSubAgent(
 
 ## 选择启动模式
 
-每个 [⟦T74⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent) 规范上的 `mode` 字段控制任务启动时子代理接收的对话上下文。
+每个 [⟦T95⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent) 规范上的 `mode` 字段控制任务启动时子代理接收的对话上下文。
 
 |模式|行为 |
 | - | - |
@@ -239,7 +270,7 @@ AsyncSubAgent(
 
 > [!警告]
 >
-> `mode="fork"` 仅适用于 Python。它是实验性的，可能会在未来的版本中发生变化。
+> Fork 模式是实验性的，可能会在未来的版本中发生变化。
 
 在任何 `AsyncSubAgent` 规格上设置 `mode="fork"`：
 
@@ -252,7 +283,7 @@ async_subagents=[
         "mode": "fork",
     }
 ]
-```启动时，`start_async_task` 发送家长有效对话历史记录的快照，然后发送任务描述。如果父级已压缩其历史记录，则快照包含该压缩上下文，而不是每条原始消息。来自父级的后续消息不会转发给子级。
+```启动时，`start_async_task` 发送父级有效对话历史记录的快照，后跟任务描述。如果父级已压缩其历史记录，则快照包含该压缩上下文，而不是每条原始消息。来自父级的后续消息不会转发给子级。
 
 子代理在新的服务器线程上启动。 Fork模式发送对话消息作为运行输入；它不会复制父级的检查点历史记录或所有父级状态。元数据可以将新线程与其主管关联起来，但该关联本身并不传输对话上下文。
 
@@ -294,7 +325,7 @@ async_subagents = [
 
 ### 调整工人池规模以适应当地发展
 
-当使用 `langgraph dev` 在本地运行时，增加工作池以适应并发子代理运行。每个活动运行都会占用一个工作槽。具有 3 个并发子代理任务的主管需要 4 个插槽（1 个主管 + 3 个子代理）。配置不足会导致启动排队。
+使用 `langgraph dev` 在本地运行时，增加工作池以适应并发子代理运行。每个活动运行都会占用一个工作槽。具有 3 个并发子代理任务的主管需要 4 个插槽（1 个主管 + 3 个子代理）。配置不足会导致启动排队。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langgraph dev --n-jobs-per-worker 10
@@ -324,7 +355,7 @@ AsyncSubAgent(
 )
 ```
 
-### 使用线程 ID 进行跟踪使用基于 LangGraph 的部署时，每个异步子代理运行都是标准 LangGraph 运行，在 LangSmith 中完全可见。 Supervisor 的跟踪显示对 `launch`、`check`、`update`、`cancel` 和 `list` 的工具调用。每个子代理运行都显示为单独的跟踪，通过线程 ID 链接。使用线程 ID（任务 ID）将主管编排跟踪与子代理执行跟踪关联起来。
+### 使用线程 ID 进行跟踪使用基于 LangGraph 的部署时，每个异步子代理运行都是标准 LangGraph 运行，在 LangSmith 中完全可见。主管的跟踪显示对 `launch`、`check`、`update`、`cancel` 和 `list` 的工具调用。每个子代理运行都显示为单独的跟踪，通过线程 ID 链接。使用线程 ID（任务 ID）将主管编排跟踪与子代理执行跟踪关联起来。
 
 ## 故障排除
 
@@ -365,10 +396,10 @@ agent = create_deep_agent(
 
 ## 参考实现
 
-[async-deep-agents](https://github.com/langchain-ai/async-deep-agents) 存储库包含部署到 LangSmith 部署的 Python 和 TypeScript 工作示例。它演示了一个主管以及作为后台任务运行的研究员和编码员子代理。
+[async-deep-agents](https://github.com/langchain-ai/async-deep-agents) 存储库包含部署到 LangSmith 部署的 Python 和 TypeScript 工作示例。它演示了一个主管以及作为后台任务运行的研究员和编码器子代理。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/async-subagents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -1014,6 +1014,7 @@ vector_store.similarity_search(
 | [`LindormVectorStore`](https://help.aliyun.com/en/lindorm/user-guide/enable-vector-engine) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lindorm-integration/month)](https://pypi.org/project/langchain-lindorm-integration/) |
 | [`ChDBVectorStore`](https://github.com/chdb-io/langchain-chdb) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-chdb/month)](https://pypi.org/project/langchain-chdb/) |
 | [`YantrikDBVectorStore`](https://github.com/yantrikos/langchain-yantrikdb) | ✅ | | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-yantrikdb/month)](https://pypi.org/project/langchain-yantrikdb/) |
+| [`DXMTVectorDB`](https://github.com/dxmt/dxmt/tree/main/vectordb/clients/langchain-dxmt) | ✅ | ✅ | ✅ | ✅ | ✅ | | | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dxmt/month)](https://pypi.org/project/langchain-dxmt/) |
 | [`FAISS`](https://github.com/facebookresearch/faiss) | | | | | | | | | N/A |
 | [`InMemoryVectorStore`](/oss/python/integrations/vectorstores/in_memory) | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ | N/A |
 

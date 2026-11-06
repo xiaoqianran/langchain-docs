@@ -56,15 +56,18 @@ export LANGSMITH_ENDPOINT="https://<data_plane_host>"
 
 |服务 |路径前缀 |示例|
 | - | - | - |
-| LangSmith | `/api` | `https://<data_plane_host>/api/v1/sessions` |
-| LangSmith 部署 | `/api-host` | `https://<data_plane_host>/api-host/v2/deployments` |
-|法学硕士网关| `/gateway` | `https://<data_plane_host>/gateway/v1/chat/completions` |
+| LangSmith |无 | `https://<data_plane_host>/v1/sessions` |
+| OTLP 摄取 | `/otel` | `https://<data_plane_host>/otel/v1/traces` |
+| LangSmith 部署| `/api-host` | `https://<data_plane_host>/api-host/v2/deployments` |
+|法学硕士网关| `/gateway` | `https://<data_plane_host>/gateway/v1/chat/completions` |LangSmith API 还接受 `/api` 前缀，因此 `https://<data_plane_host>/api/v1/sessions` 到达相同的端点。 SDK使用裸数据面主机，如[Trace to a data plane](#trace-to-a-data-plane)所示。
 
-## 跟踪多个端点使用这些模式可以跟踪云和数据平面，或多个数据平面。
+## 跟踪多个端点
+
+使用这些模式可以跟踪云和数据平面，或多个数据平面。
 
 ### 双写入两个端点
 
-设置 `LANGSMITH_RUNS_ENDPOINTS` 以写入多个端点。这些副本设置使用每个代理环境的 [⟦T15⟧](/langsmith/create-an-agent#use-an-environment-project) 作为 `project_name`：
+设置 `LANGSMITH_RUNS_ENDPOINTS` 以写入多个端点。这些副本设置使用每个代理环境的 [⟦T18⟧](/langsmith/create-an-agent#use-an-environment-project) 作为 `project_name`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_RUNS_ENDPOINTS='[

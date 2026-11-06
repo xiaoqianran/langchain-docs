@@ -26,7 +26,7 @@
 
 ### 设置凭据
 
-首先，确保您有 PyPI 帐户：> **如何创建 PyPI 令牌**
+首先，确保您有 PyPI 帐户：> [手风琴] 如何创建 PyPI 令牌
 >
 > **1。创建帐户**
 >
@@ -46,7 +46,7 @@
 
 ### 构建并发布
 
-> **[How to publish a package](https://docs.astral.sh/uv/guides/package/)**
+> [卡][How to publish a package](https://docs.astral.sh/uv/guides/package/)
 >
 > 来自 `uv` 的关于如何构建包并将其发布到 PyPI 的有用指南。
 
@@ -67,7 +67,7 @@
 
 ### 下载表中的列表（默认）
 
-> **[File an Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)**
+> [卡][File an Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)
 >
 > 使用固定表单字段显示名称、语言、组件、包名称、文档 URL 和简短的提供程序描述（最多 160 个字符）。
 
@@ -91,13 +91,13 @@
 
 根据您构建的集成类型，您将需要创建不同类型的文档页面。 LangChain 提供不同类型集成的模板来帮助您入门。
 
-> **[Chat models](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/chat/TEMPLATE.mdx)**
+> [卡][Chat models](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/chat/TEMPLATE.mdx)
 
-> **[Tools/toolkits](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/tools/TEMPLATE.mdx)**
+> [卡][Tools/toolkits](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/tools/TEMPLATE.mdx)
 
-> **[Middleware](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/middleware/TEMPLATE.mdx)**
+> [卡][Middleware](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/middleware/TEMPLATE.mdx)
 
-> **[Vector stores](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/vectorstores/TEMPLATE.mdx)**
+> [卡][Vector stores](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/vectorstores/TEMPLATE.mdx)
 
 > [!提示]
 >
@@ -134,7 +134,7 @@
 
 **恭喜！** 您的集成已发布并在 LangChain 社区列出。
 
-> **[Co-marketing](/oss/python/contributing/comarketing)**
+> [卡片][Co-marketing](/oss/python/contributing/comarketing)
 >
 > 与LangChain营销团队联系，探索联合营销机会。
 

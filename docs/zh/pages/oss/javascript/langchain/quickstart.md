@@ -31,11 +31,11 @@
 
 ## 步骤 5：可选 LangSmith 追踪
 
-询问用户是否想要跟踪。如果是，请他们自行设置`LANGSMITH_TRACING=true`和`LANGSMITH_API_KEY`，然后重新运行。不要发明 LangSmith 钥匙。
+询问用户是否想要跟踪。如果是，请按照[https://docs.langchain.com/langsmith/create-an-agent](https://docs.langchain.com/langsmith/create-an-agent)在基于代理的工作区中注册代理。让他们设置 `LANGSMITH_AGENT_ID`、`LANGSMITH_AGENT_ENVIRONMENT`、`LANGSMITH_TRACING=true` 和 `LANGSMITH_API_KEY`，然后重新运行。不要发明 LangSmith 钥匙。
 
 ## 规则
 
-* 请关注本快速入门。不要添加不相关的框架、评估或生产部署。
+* 请关注本快速入门。请勿添加不相关的框架、评估或生产部署。
 * 如指南所示，从 `langchain.agents` / `langchain` 更喜欢 `create_agent`。
 * 当秘密、提供商选择或项目约定不清楚时，询问而不是猜测。> [!提示]
 >
@@ -52,7 +52,7 @@
 > * `docs-langchain`: [https://docs.langchain.com/mcp](https://docs.langchain.com/mcp)
 > * `reference-langchain`: [https://reference.langchain.com/mcp](https://reference.langchain.com/mcp)
 >
-> 检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：
+> 检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用[https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md)中的匹配设置：
 >
 > * Claude 代码：`claude mcp add --transport http` 对于每个服务器（默认情况下项目范围；仅当我要求全局访问时才使用`--scope user`）。
 > * Codex CLI：`codex mcp add` 以及每个服务器 URL。
@@ -77,7 +77,7 @@
 >   npx skills add langchain-ai/langchain-skills --skill '*' --yes --global
 >   ```
 >
-> 检测我正在使用哪个代理或编辑器。如果我使用 Claude Code 并且更喜欢插件路径，请按照该存储库自述文件中的市场安装（`/plugin marketplace add`，然后`/plugin install`）。不要发明备用技能包名称或安装 URL。安装后，确认代理可以使用该技能。
+> 检测我正在使用哪个代理或编辑器。如果我使用 Claude Code 并且更喜欢插件路径，请按照该存储库自述文件中的市场安装（`/plugin marketplace add` 然后`/plugin install`）。不要发明备用技能包名称或安装 URL。安装后，确认代理可以使用该技能。
 
 ## 安装依赖项
 
@@ -109,127 +109,125 @@ bun add langchain @langchain/core
 
 在 shell 或 `.env` 文件中设置 API 密钥，例如：
 
-**OpenAI**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export OPENAI_API_KEY="your-api-key"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-OPENAI_API_KEY=your-api-key
-```
-
-**谷歌双子座**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export GOOGLE_API_KEY="your-api-key"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-GOOGLE_API_KEY=your-api-key
-```
-
-**克劳德 (Anthropic)**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export ANTHROPIC_API_KEY="your-api-key"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-ANTHROPIC_API_KEY=your-api-key
-```
-
-**开放路由器**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export OPENROUTER_API_KEY="your-api-key"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-OPENROUTER_API_KEY=your-api-key
-```
-
-**烟花**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export FIREWORKS_API_KEY="your-api-key"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-FIREWORKS_API_KEY=your-api-key
-```
-
-**巴斯坦**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export BASETEN_API_KEY="your-api-key"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-BASETEN_API_KEY=your-api-key
-```
-
-**奥拉马**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Local: Ollama must be running (https://ollama.com)
-# Cloud: Set your Ollama API key for hosted inference
-export OLLAMA_API_KEY="your-api-key"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Local: Ollama must be running (https://ollama.com)
-# Cloud: Set your Ollama API key for hosted inference
-OLLAMA_API_KEY=your-api-key
-```
-
-**天蓝色**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export AZURE_OPENAI_API_KEY="your-api-key"
-export AZURE_OPENAI_ENDPOINT="https://your-resource.openai.azure.com"
-export AZURE_OPENAI_DEPLOYMENT_NAME="your-deployment"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-AZURE_OPENAI_API_KEY=your-api-key
-AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com
-AZURE_OPENAI_DEPLOYMENT_NAME=your-deployment
-```
-
-**AWS 基岩**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export AWS_ACCESS_KEY_ID="your-access-key"
-export AWS_SECRET_ACCESS_KEY="your-secret-key"
-export AWS_REGION="us-east-1"
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-AWS_ACCESS_KEY_ID=your-access-key
-AWS_SECRET_ACCESS_KEY=your-secret-key
-AWS_REGION=us-east-1
-```
-
-**拥抱脸**
-
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export HUGGINGFACEHUB_API_TOKEN="hf_..."
-```
-
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-HUGGINGFACEHUB_API_TOKEN=hf_...
-```
-
-**其他**
-
-查看支持的 [chat model integrations](/oss/javascript/integrations/chat) 的完整列表。
-
-要加载 `.env` 文件，请使用 [⟦T86⟧](https://www.npmjs.com/package/dotenv) (`import "dotenv/config"`)。> [!提示]
+> [标签] OpenAI
 >
-> **使用LangSmith网关**
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export OPENAI_API_KEY="your-api-key"
+> ```
 >
-> [LangSmith Gateway](/langsmith/llm-gateway) 通过 LangSmith 路由大多数主要提供商。您可以使用 [bring your own provider keys](/langsmith/llm-gateway-quickstart#send-a-request) 或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 在没有提供程序密钥的情况下访问模型。
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> OPENAI_API_KEY=your-api-key
+> ```
+
+> [选项卡] 谷歌双子座
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export GOOGLE_API_KEY="your-api-key"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> GOOGLE_API_KEY=your-api-key
+> ```
+
+> [标签] 克劳德 (Anthropic)
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export ANTHROPIC_API_KEY="your-api-key"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ANTHROPIC_API_KEY=your-api-key
+> ```
+
+> [选项卡] OpenRouter
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export OPENROUTER_API_KEY="your-api-key"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> OPENROUTER_API_KEY=your-api-key
+> ```
+
+> [选项卡] 烟花
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export FIREWORKS_API_KEY="your-api-key"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> FIREWORKS_API_KEY=your-api-key
+> ```
+
+> [标签] 巴斯坦
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export BASETEN_API_KEY="your-api-key"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> BASETEN_API_KEY=your-api-key
+> ```
+
+> [标签] 奥拉玛
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Local: Ollama must be running (https://ollama.com)
+> # Cloud: Set your Ollama API key for hosted inference
+> export OLLAMA_API_KEY="your-api-key"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Local: Ollama must be running (https://ollama.com)
+> # Cloud: Set your Ollama API key for hosted inference
+> OLLAMA_API_KEY=your-api-key
+> ```
+
+> [选项卡] 天蓝色
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export AZURE_OPENAI_API_KEY="your-api-key"
+> export AZURE_OPENAI_ENDPOINT="https://your-resource.openai.azure.com"
+> export AZURE_OPENAI_DEPLOYMENT_NAME="your-deployment"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> AZURE_OPENAI_API_KEY=your-api-key
+> AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com
+> AZURE_OPENAI_DEPLOYMENT_NAME=your-deployment
+> ```
+
+> [选项卡] AWS 基岩
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export AWS_ACCESS_KEY_ID="your-access-key"
+> export AWS_SECRET_ACCESS_KEY="your-secret-key"
+> export AWS_REGION="us-east-1"
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> AWS_ACCESS_KEY_ID=your-access-key
+> AWS_SECRET_ACCESS_KEY=your-secret-key
+> AWS_REGION=us-east-1
+> ```
+
+> [选项卡] 拥抱脸
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export HUGGINGFACEHUB_API_TOKEN="hf_..."
+> ```
+>
+> ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> HUGGINGFACEHUB_API_TOKEN=hf_...
+> ```> [选项卡] 其他
+>
+> 查看受支持的 [chat model integrations](/oss/javascript/integrations/chat) 的完整列表。
+
+要加载 `.env` 文件，请使用 [⟦T88⟧](https://www.npmjs.com/package/dotenv) (`import "dotenv/config"`)。
+
+> [!提示]
+>
+> 如果您使用 LangSmith [LLM Gateway](/langsmith/llm-gateway)，则流向提供商的流量将通过 LangSmith 路由。请改用网关密钥作为 API 密钥。
 
 ## 构建一个基本代理
 
@@ -483,7 +481,7 @@ console.log(
 
 > [!提示]
 >
-> 您可以通过更改型号名称并设置适当的 API 密钥来使用[any supported model](/oss/javascript/integrations/providers/overview)。使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 跟踪代理内部发生的情况。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。
+> 您可以通过更改模型名称并设置适当的 API 密钥来使用[any supported model](/oss/javascript/integrations/providers/overview)。使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 跟踪代理内部发生的情况。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。
 >
 > 我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
 
@@ -556,7 +554,7 @@ const fetchTextFromUrl = tool(
 >
 > 或者，您可以将 `schema` 属性定义为 [JSON schema](https://json-schema.org/overview/what-is-jsonschema) 对象。请记住，JSON 模式**不会**在运行时进行验证。
 >
->> **示例：使用 JSON 架构进行工具输入**
+>> [accordion] 示例：使用 JSON 模式进行工具输入
 >>
 >> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { tool } from "@langchain/core/tools";
@@ -912,66 +910,72 @@ main().catch((err) => {
 
 结果将根据模型和执行而有所不同。
 
-**LangChain代理商**
+> [选项卡] LangChain 代理
+>
+> ```txt wrap expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> **1) Number of lines containing `Gatsby`:** `null`
+>
+> **2) First line containing `Daisy`:** `null`
+>
+> **3) Synopsis:**
+> The Great Gatsby follows the mysterious millionaire Jay Gatsby and his obsession with reuniting with his former lover, Daisy Buchanan, as narrated by his neighbor Nick Carraway. Set against the backdrop of the Roaring Twenties on Long Island, the novel explores themes of wealth, class, and the elusive nature of the American Dream.
+>
+> **how_you_computed_counts:**
+> I successfully fetched the full text of the eBook using the `fetch_text_from_url` tool. However, because I do not have access to a code execution environment (like Python) or text-processing tools (like `grep`), I cannot deterministically split the text by line breaks, iterate through the thousands of lines, and verify the exact line numbers or match counts. LLMs cannot reliably perform exact line-counting or indexing over massive texts within their context window without external computational tools. As instructed, rather than fabricating or guessing a number, I have output `null` for the exact counts and positions.
+> ```
 
-```txt wrap expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-**1) Number of lines containing `Gatsby`:** `null`
-
-**2) First line containing `Daisy`:** `null`
-
-**3) Synopsis:**
-The Great Gatsby follows the mysterious millionaire Jay Gatsby and his obsession with reuniting with his former lover, Daisy Buchanan, as narrated by his neighbor Nick Carraway. Set against the backdrop of the Roaring Twenties on Long Island, the novel explores themes of wealth, class, and the elusive nature of the American Dream.
-
-**how_you_computed_counts:**
-I successfully fetched the full text of the eBook using the `fetch_text_from_url` tool. However, because I do not have access to a code execution environment (like Python) or text-processing tools (like `grep`), I cannot deterministically split the text by line breaks, iterate through the thousands of lines, and verify the exact line numbers or match counts. LLMs cannot reliably perform exact line-counting or indexing over massive texts within their context window without external computational tools. As instructed, rather than fabricating or guessing a number, I have output `null` for the exact counts and positions.
-```
-
-**深度代理**
-
-```txt wrap expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Based on the text fetched directly from the Gutenberg URL and analyzed using filesystem search tools, here are the answers to your questions:
-
-**1) Lines containing the substring `Gatsby`**
-**258** lines contain the exact substring `Gatsby`.
-
-**2) First line containing `Daisy`**
-Line **181** is the first line in the file that contains the exact substring `Daisy`.
-*(For context, the line reads: "Buchanans. Daisy was my second cousin once removed, and I’d known Tom")*
-
-**3) Two-sentence neutral synopsis**
-*The Great Gatsby* follows the mysterious millionaire Jay Gatsby and his obsessive pursuit to reunite with his former lover, Daisy Buchanan, in 1920s Long Island. The story is narrated by Nick Carraway, who observes the tragic consequences of Gatsby's relentless ambition and the shallow materialism of the era's wealthy elite.
-
-***
-
-**How counts were computed:**
-When fetching the document from the URL, the file was too large for the standard output and was automatically saved to the local filesystem by the system (`/large_tool_results/x246ax2x`). I then used the `grep` tool to search the saved file for the exact literal substrings `Gatsby` and `Daisy`. The `grep` tool returned every matching line along with its 1-based line number. I manually counted the exact number of lines returned for `Gatsby` (which totaled 258) and identified the first line number returned for `Daisy` (which was 181). I also verified there were no uppercase variations (`GATSBY` or `DAISY`) that would have been missed. No errors were encountered during this process.
-```如果您查看两个选项卡上的输出，您会注意到 LangChain 代理提供了答案，但它们是估计值。代理缺乏回答这个问题的工具。您还可能会收到提示太长的错误。
+> [选项卡] 深层代理
+>
+> ```txt wrap expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> Based on the text fetched directly from the Gutenberg URL and analyzed using filesystem search tools, here are the answers to your questions:
+>
+> **1) Lines containing the substring `Gatsby`**
+> **258** lines contain the exact substring `Gatsby`.
+>
+> **2) First line containing `Daisy`**
+> Line **181** is the first line in the file that contains the exact substring `Daisy`.
+> *(For context, the line reads: "Buchanans. Daisy was my second cousin once removed, and I’d known Tom")*
+>
+> **3) Two-sentence neutral synopsis**
+> *The Great Gatsby* follows the mysterious millionaire Jay Gatsby and his obsessive pursuit to reunite with his former lover, Daisy Buchanan, in 1920s Long Island. The story is narrated by Nick Carraway, who observes the tragic consequences of Gatsby's relentless ambition and the shallow materialism of the era's wealthy elite.
+>
+> ***
+>
+> **How counts were computed:**
+> When fetching the document from the URL, the file was too large for the standard output and was automatically saved to the local filesystem by the system (`/large_tool_results/x246ax2x`). I then used the `grep` tool to search the saved file for the exact literal substrings `Gatsby` and `Daisy`. The `grep` tool returned every matching line along with its 1-based line number. I manually counted the exact number of lines returned for `Gatsby` (which totaled 258) and identified the first line number returned for `Daisy` (which was 181). I also verified there were no uppercase variations (`GATSBY` or `DAISY`) that would have been missed. No errors were encountered during this process.
+> ```如果您查看两个选项卡上的输出，您会注意到 LangChain 代理提供了答案，但它们是估计值。代理缺乏回答这个问题的工具。您还可能会收到提示太长的错误。
 
 另一方面，深度代理可以：
 
-1. **规划其方法**，使用内置的[⟦T90⟧](/oss/javascript/deepagents/harness#task-planning)工具来分解研究任务。
+1. **规划其方法**，使用内置的[⟦T92⟧](/oss/javascript/deepagents/harness#task-planning)工具来分解研究任务。
 2. **通过调用`fetch_text_from_url`工具收集信息来加载文件**。
-3. **使用文件系统工具（[⟦T92⟧](/oss/javascript/deepagents/harness#virtual-filesystem-access) 和 [⟦T93⟧](/oss/javascript/deepagents/harness#virtual-filesystem-access)）管理上下文**。
+3. **使用文件系统工具（[⟦T94⟧](/oss/javascript/deepagents/harness#virtual-filesystem-access) 和 [⟦T95⟧](/oss/javascript/deepagents/harness#virtual-filesystem-access)）管理上下文**。
 4. **根据需要生成子代理**，将复杂的子任务委托给专门的子代理。
 
-对于 LangChain 代理，您必须实现更多功能才能获得类似级别的服务，并且可以根据需要自定义它们。
+对于 LangChain 代理，您必须实现更多功能才能获得类似的服务级别，并且可以根据需要自定义它们。
 
 ## 跟踪代理调用
 
-您使用 LangChain 构建的大多数有趣的应用程序都会多次调用 LLM。随着这些应用程序变得越来越复杂，能够检查代理内部到底发生了什么变得很重要。最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart)。
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T97⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
-注册一个 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 帐户并设置这些以开始记录跟踪：
+您使用LangChain构建的最有趣的代理会多次调用LLM。随着这些代理变得越来越复杂，能够检查代理内部到底发生了什么变得很重要。最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart)。注册 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 帐户并设置这些以开始记录跟踪：
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING="true"
 export LANGSMITH_API_KEY="..."
 ```
 
-设置完成后，再次运行脚本，然后检查代理调用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 期间发生的情况。> [!提示]
+设置完成后，再次运行脚本，然后检查代理调用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 期间发生的情况。
+
+> [!提示]
 >
 > 要了解有关使用 LangSmith 追踪代理的更多信息，请参阅 [LangSmith documentation](/langsmith/trace-with-langchain)。
 >
-> 我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
+> 我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
 
 ## 后续步骤
 
@@ -979,7 +983,7 @@ export LANGSMITH_API_KEY="..."
 
 * **理解上下文**并记住对话
 * **明智地使用工具**
-* **以一致的格式提供结构化响应**
+* **以一致的格式提供结构化回复**
 * **通过上下文处理用户特定信息**
 * **在交互过程中保持对话状态**
 * **计划、研究和综合**（仅限深度代理）

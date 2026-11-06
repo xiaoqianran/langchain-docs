@@ -39,7 +39,7 @@ npm install agentevals @langchain/core
 
 ## 轨迹匹配评估器AgentEvals 提供 `createTrajectoryMatchEvaluator` 函数来将代理的轨迹与参考进行匹配。有四种模式：
 
-|模式|描述 |使用案例|
+|模式|描述 |使用案例 |
 | - | - | - |
 | `strict` |消息结构和工具调用以相同顺序精确匹配（消息内容可以不同）|测试特定序列（例如，授权前的策略查找）|
 | `unordered` |与参考相同的消息结构和工具调用，但工具调用可以按任何顺序发生 |当顺序无关紧要时验证信息检索 |
@@ -72,7 +72,7 @@ const agent = createAgent({
 });
 ```
 
-> **严格匹配**
+> [手风琴] 严格匹配
 >
 > `strict` 模式确保轨迹通过相同的工具调用以相同的顺序包含相同的消息，尽管它允许消息内容存在差异。当您需要强制执行特定的操作序列（例如在授权操作之前需要进行策略查找）时，这非常有用。
 >
@@ -107,7 +107,7 @@ const agent = createAgent({
 >   });
 >   expect(evaluation.score).toBe(true);
 > }
-> ```> **无序匹配**
+> ```> [手风琴] 无序匹配
 >
 > `unordered` 模式允许以任意顺序调用相同的工具。当您想要验证是否检索到特定信息但不关心顺序时，这非常有用。例如，使用不同工具调用检查城市天气和事件的代理。
 >
@@ -165,7 +165,7 @@ const agent = createAgent({
 > }
 > ```
 
-> **子集和超集匹配**
+> [手风琴] 子集和超集匹配
 >
 > `superset` 和 `subset` 模式匹配部分轨迹。 `superset` 模式验证代理是否至少调用了参考轨迹中的工具，从而允许调用其他工具。 `subset` 模式确保代理不会调用参考中的工具之外的任何工具。
 >
@@ -224,15 +224,13 @@ const agent = createAgent({
 
 ## 法学硕士作为法官评估员
 
-您可以使用 LLM 通过 `createTrajectoryLLMAsJudge` 函数评估代理的执行路径。与轨迹匹配评估器不同，它不需要参考轨迹，但如果有的话可以提供。
-
-> **无参考轨迹**
+您可以使用 LLM 通过 `createTrajectoryLLMAsJudge` 函数评估代理的执行路径。与轨迹匹配评估器不同，它不需要参考轨迹，但如果有的话可以提供。> [手风琴] 无参考轨迹
 >
 > ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
 >
 > const evaluator = createTrajectoryLLMAsJudge({  // [!code highlight]
->   model: "openai:o3-mini",  // [!code highlight]
+>   model: "openai:gpt-5.4-mini",  // [!code highlight]
 >   prompt: TRAJECTORY_ACCURACY_PROMPT,  // [!code highlight]
 > });  // [!code highlight]
 >
@@ -246,7 +244,9 @@ const agent = createAgent({
 >   });
 >   expect(evaluation.score).toBe(true);
 > }
-> ```> **具有参考轨迹**
+> ```
+
+> [手风琴] 带有参考轨迹
 >
 > 如果您有参考轨迹，请使用预建的 `TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE` 提示：
 >
@@ -254,7 +254,7 @@ const agent = createAgent({
 > import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE } from "agentevals";
 >
 > const evaluator = createTrajectoryLLMAsJudge({
->   model: "openai:o3-mini",
+>   model: "openai:gpt-5.4-mini",
 >   prompt: TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE,
 > });
 >
@@ -279,7 +279,7 @@ export LANGSMITH_TRACING="true"
 
 LangSmith 提供两种主要的运行评估方法：[Vitest/Jest](/langsmith/vitest-jest) 集成和 `evaluate` 函数。
 
-> **使用 vitest/jest 集成**
+> [手风琴] 使用 vitest/jest 集成
 >
 > ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import * as ls from "langsmith/vitest";
@@ -288,7 +288,7 @@ LangSmith 提供两种主要的运行评估方法：[Vitest/Jest](/langsmith/vit
 > import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
 >
 > const trajectoryEvaluator = createTrajectoryLLMAsJudge({
->   model: "openai:o3-mini",
+>   model: "openai:gpt-5.4-mini",
 >   prompt: TRAJECTORY_ACCURACY_PROMPT,
 > });
 >
@@ -339,7 +339,7 @@ LangSmith 提供两种主要的运行评估方法：[Vitest/Jest](/langsmith/vit
 > jest test_trajectory.eval.ts
 > ```
 
-> **使用评估功能**
+> [手风琴] 使用评估函数
 >
 > 创建一个 [LangSmith dataset](/langsmith/manage-datasets) 并使用 `evaluate` 函数。数据集必须具有以下架构：
 >
@@ -351,7 +351,7 @@ LangSmith 提供两种主要的运行评估方法：[Vitest/Jest](/langsmith/vit
 > import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
 >
 > const trajectoryEvaluator = createTrajectoryLLMAsJudge({
->   model: "openai:o3-mini",
+>   model: "openai:gpt-5.4-mini",
 >   prompt: TRAJECTORY_ACCURACY_PROMPT,
 > });
 >

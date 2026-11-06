@@ -499,7 +499,7 @@ LangSmith 云每周更新
 * 编辑 Context Hub Webhook 现在会加载其保存的自定义标头，因此保存不再覆盖它们。
 * 加载已保存的 Bedrock Converse 配置（其模型 ID 是应用程序推理配置文件 ARN）现在会将提供程序设置在 **额外参数** 中。
 
-＃＃＃ 引擎* 引擎使用情况、支出限制和定价现在以 LangChain 标准单位 (LSU) 显示，每个价格为 1 美元。美元金额不变。 [Learn more](/langsmith/engine#manage-engine-costs)。
+＃＃＃ 引擎* 引擎使用情况、支出限制和定价现在以 LangChain 标准单位 (LSU) 显示。美元金额不变。 [Learn more](/langsmith/engine#manage-engine-costs)。
 * 问题验证请求将其判断作为工具调用，因此失败的结构化输出响应不再中止运行。
 * 之前选择编码代理技能的引擎项目现在使用标准问题分析，扫描节奏基于其配置的分析级别。
 * 引擎项目板不再显示浮动反馈调查。
@@ -1514,16 +1514,16 @@ LangSmith 云每周更新
 * LangSmith 通过托管 [MCP tools](/langsmith/langsmith-mcp-server) 和生成的 SDK 方法公开引擎问题列表和检索。代理和API客户端可以直接通过`issue ID`获取问题详细信息，或按项目、状态、严重性、标签和更新时间过滤问题。
 * 新的引擎板标注将您指向跟踪范围设置，您可以在其中将引擎的审查限制为与运行名称或元数据值匹配的运行。
 
-### 提示和游乐场* Self-hosted [Playground](/langsmith/playground-model-providers) and evaluator outbound model calls now honor proxy environment variables while preserving SSRF validation on every request.
-* When you save a prompt to an application from the playground, LangSmith keeps the workspace application filter on All Applications instead of switching the rest of the UI to that application.
+### 提示和游乐场* 自托管 [Playground](/langsmith/playground-model-providers) 和评估器出站模型调用现在支持代理环境变量，同时保留每个请求的 SSRF 验证。
+* 当您从 Playground 将提示保存到应用程序时，LangSmith 会将工作区应用程序筛选器保留在所有应用程序上，而不是将 UI 的其余部分切换到该应用程序。
 * 现在，在 [Context Hub](/langsmith/prompt-context-hub#context-hub) 搜索框中输入工作区成员的姓名或电子邮件也会返回他们创建的提示和资源。
-* The playground now includes Claude Sonnet 5, Claude Fable 5, and Claude Opus 4.8 in the Anthropic, Bedrock, and Gemini Enterprise Agent Platform model selectors.新的 Anthropic 游乐场会话默认为 Claude Sonnet 5。
+* Playground 现在包括 Anthropic、Bedrock 和 Gemini Enterprise Agent Platform 模型选择器中的 Claude Sonnet 5、Claude Fable 5 和 Claude Opus 4.8。新的 Anthropic 游乐场会话默认为 Claude Sonnet 5。
 
 ### 反馈
 
-* Editing the score on evaluator-generated feedback (for example from the experiment comparison view) now saves correctly instead of failing with "Failed to add feedback correction".
+* 现在，编辑评估者生成的反馈（例如来自实验比较视图）的分数可以正确保存，而不是因“无法添加反馈更正”而失败。
 * 从 LangSmith UI 添加反馈或审阅者注释不再将短期跟踪升级为延长保留。长期存在的痕迹不会改变。
-* Feedback statistics queries now route through the official ClickHouse client, resolving query failures and improving compatibility with ClickHouse 25.x.### 监控和警报
+* 反馈统计查询现在通过官方 ClickHouse 客户端进行路由，解决了查询失败问题并提高了与 ClickHouse 25.x 的兼容性。### 监控和警报
 
 * 警报图表预览现在一致地处理相对日期范围，防止加载 14 天或 30 天预览时出现故障。
 * [Dashboards](/langsmith/dashboards) 图表工具提示和轴现在最多显示八位小数位（以前是两位），因此非常小的成本和费率不再四舍五入为零。
@@ -1534,10 +1534,10 @@ LangSmith 云每周更新
 * 应用不带过滤器的预构建评估器现在默认仅在根运行上运行，与手动创建的评估器相匹配。以前，它在跟踪中的每个嵌套运行中运行。
 * 现在，打开或关闭在线评估器或自动化可以保存任何可以编辑规则的角色，而不是为没有保留配置权限的成员默默地恢复。
 
-## 部署* Self-hosted deployments can now request CPU and memory above the previous Cloud limits of 8/16 cores and 32/16 GB, bounded only by your cluster capacity.下限、128 的倍数粒度和 Redis 内存排序仍然强制执行。
+## 部署* 自托管部署现在可以请求高于之前 8/16 核和 32/16 GB 云限制的 CPU 和内存，仅受集群容量限制。下限、128 的倍数粒度和 Redis 内存排序仍然强制执行。
 * 自定义 Slack 应用程序触发器现在可以选择让第三方机器人触发代理。在注册上启用允许机器人触发器切换以接受来自外部机器人的事件；来自您自己的和其他 LangSmith 注册的机器人的回声仍会被丢弃以防止循环。
 * 代理现在会立即跳过无法访问或配置错误的非默认 MCP 服务器，而不是重试它们，从而消除了工具加载步骤中的缓慢往返并缩短了首次令牌的时间。
-* Standby (uptime) minutes for LangGraph Platform deployments could be billed more than once when replicas reported overlapping intervals across separate usage-reporting runs.现在，报告会在运行过程中每分钟进行重复数据删除，因此最多计费一次。
+* 当副本报告跨单独的使用情况报告运行的重叠间隔时，LangGraph 平台部署的待机（正常运行时间）分钟数可能会多次计费。现在，报告会在运行过程中每分钟进行重复数据删除，因此最多计费一次。
 
 ## 沙箱* 沙箱命令输出现在重新分块为有界的单个 WebSocket 帧，因此不重新组装连续帧（包括 Go SDK）的客户端可以读取大型流式传输或重播输出，而无需截断 JSON。
 * 当未提供时，S3 沙箱挂载现在默认为 `endpoint_url` 至 [https://s3.amazonaws.com](https://s3.amazonaws.com)，因此挂载标准 AWS S3 存储桶时不再需要该字段。

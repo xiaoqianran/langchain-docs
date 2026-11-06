@@ -14,13 +14,13 @@ OpenWiki 支持以下提供商：
 | `openai-chatgpt` | ChatGPT OAuth 令牌 |使用 ChatGPT 登录；使用量取决于 Plus/Pro/Team Codex 津贴 |
 | `copilot` | GitHub CLI 会话或 `COPILOT_API_KEY` |可选`COPILOT_BASE_URL`。 CI 需要 OAuth 令牌，而不是经典的 PAT |
 | `openrouter` | `OPENROUTER_API_KEY` |可选 `OPENWIKI_OPENROUTER_PROVIDER_ONLY` 允许名单 |
-| `anthropic` | `ANTHROPIC_API_KEY` |可选`ANTHROPIC_BASE_URL`|
+| `anthropic` | `ANTHROPIC_API_KEY` |可选`ANTHROPIC_BASE_URL` |
 | `bob` | `BOB_API_KEY` |可选`BOB_BASE_URL`。固定型号 ID `premium`；没有模型选择器|
 | `gemini` | `GEMINI_API_KEY` |谷歌人工智能工作室 |
 | `gemini-enterprise` |谷歌 ADC + `GOOGLE_CLOUD_PROJECT` |可选`GOOGLE_CLOUD_LOCATION`（默认为`global`）|
 | `bedrock` | AWS 凭证 + 区域 |显式基岩密钥或 AWS 开发工具包默认链 |
 | `baseten` | `BASETEN_API_KEY` |可选`BASETEN_BASE_URL` |
-| `fireworks` | `FIREWORKS_API_KEY` |可选`FIREWORKS_BASE_URL`|
+| `fireworks` | `FIREWORKS_API_KEY` |可选`FIREWORKS_BASE_URL` |
 | `nebius` | `NEBIUS_API_KEY` | Nebius 代币工厂 |
 | `nvidia` | `NVIDIA_API_KEY` |可选`NVIDIA_BASE_URL` |
 | `openai-compatible` | `OPENAI_COMPATIBLE_API_KEY` |需要 `OPENAI_COMPATIBLE_BASE_URL` 和自定义型号 ID |
@@ -46,13 +46,13 @@ OPENWIKI_PROVIDER_RETRY_ATTEMPTS=3
 
 `OPENWIKI_MAX_OUTPUT_TOKENS` 是每个请求输出预算的可选覆盖。设置后，它必须是正整数。 OpenWiki 将其映射到活动提供者的请求形状：
 
-* **`maxOutputTokens`**: `gemini`
+* **`maxOutputTokens`**：`gemini`
 * **`maxTokens`**：`anthropic`、`openai`、`openai-compatible`、`openrouter`、`bedrock`、Gemini Enterprise 非 Google 表面、`openai-chatgpt` 和 `copilot`
 
 取消设置时，OpenWiki 会保留每个提供商的 SDK 默认值，但这些内置上限除外：
 
 * **Anthropic**：现代 Claude 4 和 5 模型默认为 `16384` 令牌，因为较旧的 LangChain 元数据否则会在 `4096` 处限制较新的 Claude 别名
-* **基岩**：默认为`16000`代币。当模型支持较低上限时覆盖`OPENWIKI_BEDROCK_MAX_TOKENS`
+* **基岩**：默认为 `16000` 代币。当模型支持较低上限时覆盖`OPENWIKI_BEDROCK_MAX_TOKENS`
 
 要对其中任一活动的提供程序设置一个限制，请设置：
 
@@ -90,7 +90,7 @@ OPENWIKI_REASONING_EFFORT=high
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_OPENAI_COMPATIBLE_REASONING_EFFORT_SUPPORTED=true
-```设置该标志后，如果 `OPENWIKI_OPENAI_COMPATIBLE_USE_RESPONSES_API=true`，OpenWiki 将通过响应 API 映射 `OPENWIKI_REASONING_EFFORT`，否则通过聊天完成`reasoning_effort`。
+```设置该标志后，如果 `OPENWIKI_OPENAI_COMPATIBLE_USE_RESPONSES_API=true`，则 OpenWiki 通过响应 API 映射 `OPENWIKI_REASONING_EFFORT`，否则通过聊天完成`reasoning_effort`。
 
 在交互式聊天中，使用 `/effort` 选择可用值或使用 `/effort default` 恢复提供程序默认值。
 
@@ -143,10 +143,10 @@ OPENWIKI_MODEL_ID=your-gateway-model
 * **`OPENAI_COMPATIBLE_BASE_URL`**：必须使用 HTTPS 并且不能包含嵌入式凭据。
 * **`OPENAI_COMPATIBLE_ENTRA_SCOPE`**：可选。默认为 `https://cognitiveservices.azure.com/.default`，Azure OpenAI 范围。自定义网关可能需要不同的范围。
 
-OpenWiki 通过[Azure Identity](https://learn.microsoft.com/en-us/javascript/api/overview/azure/identity-readme)获取令牌，并在过期前对其进行缓存和刷新。在运行 OpenWiki 的每个环境中单独配置 Azure Identity 凭据：* **工作负载身份联合**：设置 `AZURE_CLIENT_ID`、`AZURE_TENANT_ID` 和 `AZURE_FEDERATED_TOKEN_FILE`。当设置`AZURE_FEDERATED_TOKEN_FILE`时，OpenWiki使用`WorkloadIdentityCredential`。将文件变量指向运行者提供的令牌文件。不要提交该文件。
+OpenWiki 通过[Azure Identity](https://learn.microsoft.com/en-us/javascript/api/overview/azure/identity-readme)获取令牌，并在过期前对其进行缓存和刷新。在运行 OpenWiki 的每个环境中单独配置 Azure Identity 凭据：* **工作负载身份联合**：设置 `AZURE_CLIENT_ID`、`AZURE_TENANT_ID` 和 `AZURE_FEDERATED_TOKEN_FILE`。当`AZURE_FEDERATED_TOKEN_FILE`设置时，OpenWiki使用`WorkloadIdentityCredential`。将文件变量指向运行者提供的令牌文件。不要提交该文件。
 * **其他环境**：OpenWiki 使用 `DefaultAzureCredential`，它接受 `az login` 等凭证、托管身份或环境凭证。
 
-生成的 CI 工作流保留身份验证模式和范围，但仍需要在 CI 中配置无人值守的 Azure Identity 凭据。
+生成的 CI 工作流保留身份验证模式和范围，但您仍然需要在 CI 中配置无人值守的 Azure Identity 凭据。
 
 ## OpenAI（ChatGPT 登录）
 
@@ -180,7 +180,7 @@ OPENWIKI_MODEL_ID=anthropic.claude-sonnet-5
 
 当未设置显式 Bedrock 凭证时，OpenWiki 使用 AWS SDK 默认凭证提供程序链。直接粘贴基岩模型 ID。一些较新的模型需要跨区域推理配置文件 ID（例如`us.anthropic.claude-sonnet-5`）而不是裸模型 ID。
 
-当`OPENWIKI_MAX_OUTPUT_TOKENS`和`OPENWIKI_BEDROCK_MAX_TOKENS`均未设置时，基岩默认为`16000`代币输出上限。如果没有明确的限制，Converse API 会将输出限制为 `4096` 标记，并且可以截断长 wiki 页面。
+当`OPENWIKI_MAX_OUTPUT_TOKENS`和`OPENWIKI_BEDROCK_MAX_TOKENS`均未设置时，基岩默认为`16000`代币输出上限。如果没有明确的限制，Converse API 会将输出限制为 `4096` 标记，并且可以截断较长的 wiki 页面。
 
 对于基岩流空闲超时，设置 `OPENWIKI_STREAM_IDLE_TIMEOUT` 以毫秒为单位（从 `0` 到 `2147483647` 的整数）。设置`0`禁用看门狗。如果未设置，OpenWiki 将保留 `@langchain/aws` 提供程序默认值。
 
@@ -193,9 +193,27 @@ OPENWIKI_PROVIDER=openai-compatible
 OPENAI_COMPATIBLE_API_KEY=your-gateway-key
 OPENAI_COMPATIBLE_BASE_URL=https://your-gateway.example.com/v1
 OPENWIKI_MODEL_ID=your-gateway-model-name
-```Ollama (`http://localhost:11434/v1`) 和 LM Studio (`http://localhost:1234/v1`) 等本地示例使用相同的模式。即使本地服务器忽略键值，OpenWiki 仍然需要`OPENAI_COMPATIBLE_API_KEY`。
+```Requesty 和 Opper 等托管网关与同一提供商合作。将基本 URL 设置为网关端点，并将模型 ID 设置为网关公开的模型：
 
-即使您没有在终端中观看实时输出，OpenWiki 也会在内部发送非流式请求。某些网关仅接受流请求，其中模型通过开放连接以块形式返回输出。当 OpenWiki 通过非流式请求访问这些网关之一时，网关可能会拒绝该调用或返回带有空内容的 HTTP 200。没有错误的空白 wiki 通常意味着您需要启用流式传输。
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Requesty
+OPENWIKI_PROVIDER=openai-compatible
+OPENAI_COMPATIBLE_API_KEY=your-gateway-key
+OPENAI_COMPATIBLE_BASE_URL=https://router.requesty.ai/v1
+OPENWIKI_MODEL_ID=openai/gpt-5.5
+```
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Opper
+OPENWIKI_PROVIDER=openai-compatible
+OPENAI_COMPATIBLE_API_KEY=your-opper-key
+OPENAI_COMPATIBLE_BASE_URL=https://api.opper.ai/v3/compat
+OPENWIKI_MODEL_ID=claude-sonnet-4-6
+```
+
+Ollama (`http://localhost:11434/v1`) 和 LM Studio (`http://localhost:1234/v1`) 等本地示例使用相同的模式。即使本地服务器忽略键值，OpenWiki 仍然需要`OPENAI_COMPATIBLE_API_KEY`。
+
+即使您没有在终端中观看实时输出，OpenWiki 也会在内部发送非流式请求。某些网关仅接受流请求，其中模型通过开放连接以块形式返回输出。当 OpenWiki 通过非流式请求访问这些网关之一时，该网关可能会拒绝该调用或返回带有空内容的 HTTP 200。没有错误的空白 wiki 通常意味着您需要启用流式传输。
 
 当您的网关需要时，为 `openai-compatible` 提供商启用流式传输：
 
@@ -203,9 +221,7 @@ OPENWIKI_MODEL_ID=your-gateway-model-name
 OPENWIKI_OPENAI_COMPATIBLE_STREAMING=true
 ```
 
-默认情况下，流式传输处于关闭状态，因为该提供程序可以指向任意第三方端点，而在这些端点上，不能保证流式传输能够通过代理和负载均衡器工作。启用它还可以使客户端报告估计而不是服务器报告的令牌计数。
-
-要选择将与 openai 兼容的提供商添加到 Responses API 而不是聊天完成中：
+默认情况下，流式传输处于关闭状态，因为该提供程序可以指向任意第三方端点，而在这些端点上，不能保证流式传输能够通过代理和负载均衡器工作。启用它还可以使客户端报告估计而不是服务器报告的令牌计数。要选择将与 openai 兼容的提供商添加到 Responses API 而不是聊天完成中：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_OPENAI_COMPATIBLE_USE_RESPONSES_API=true
@@ -221,7 +237,9 @@ OPENROUTER_API_KEY=your-key
 OPENWIKI_OPENROUTER_PROVIDER_ONLY=Novita
 ```
 
-## 另请参阅* [Quickstart](/oss/openwiki/quickstart)
+## 另请参阅
+
+* [Quickstart](/oss/openwiki/quickstart)
 * [CLI reference](/oss/openwiki/cli-reference)
 * [Customize OpenWiki](/oss/openwiki/customize)
 

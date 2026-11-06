@@ -8,6 +8,16 @@
 
 **2026-11-05**
 
+## langsmith-0.17.42
+
+**LangSmith version:** `0.17.67`
+
+* This release packages the same LangSmith application version as langsmith-0.17.41. Refer to the [langsmith-0.17.41](#langsmith-0-17-41) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.42.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.42/langsmith-0.17.42.tgz)
+
+**2026-11-05**
+
 ## langsmith-0.17.41
 
 **LangSmith version:** `0.17.67`

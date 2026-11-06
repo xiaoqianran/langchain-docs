@@ -2,19 +2,19 @@
 
 <!-- langchain-docs: What's new in LangChain v1 | https://docs.langchain.com/oss/javascript/releases/langchain-v1 -->
 
-# LangChain v1 的新功能
+# LangChain v1 中的新功能
 
-**LangChain v1 是一个专注于、可用于生产的构建代理基础。** 我们围绕三个核心改进简化了框架：
+**LangChain v1 是一个专注于生产的构建代理基础。** 我们围绕三个核心改进简化了框架：
 
-> **[createAgent](#createagent)**
+> [卡][createAgent](#createagent)
 >
 > 在 LangChain 中构建代理的新标准方法，用更干净、更强大的 API 替换 LangGraph 中的 `createReactAgent`。
 
-> **[Standard content blocks](#standard-content-blocks)**
+> [卡][Standard content blocks](#standard-content-blocks)
 >
 > 一个新的 `contentBlocks` 属性，提供对所有提供商的现代 LLM 功能的统一访问。
 
-> **[Simplified package](#simplified-package)**
+> [卡][Simplified package](#simplified-package)
 >
 > `langchain` 软件包已经过精简，专注于代理的基本构建块，并将遗留功能移至 `@langchain/classic`。
 
@@ -66,7 +66,7 @@ console.log(result.content);
 
 欲了解更多信息，请参阅[Agents](/oss/javascript/langchain/agents)。
 
-＃＃＃ 中间件中间件是`createAgent`的定义特征。它使`createAgent`高度可定制，提高了您可以构建的上限。
+＃＃＃ 中间件中间件是`createAgent`的定义特征。它使 `createAgent` 高度可定制，提高了您可以构建的上限。
 
 优秀的代理需要[context engineering](/oss/javascript/langchain/context-engineering)：在正确的时间向模型提供正确的信息。中间件可帮助您通过可组合的抽象来控制动态提示、对话摘要、选择性工具访问、状态管理和护栏。
 
@@ -160,27 +160,27 @@ const agent = createAgent({
 
 由于 `createAgent` 构建于 LangGraph 之上，因此您可以通过以下方式自动获得对长期运行且可靠的代理的内置支持：
 
-> **坚持**
+> [卡牌] 坚持
 >
 > 通过内置检查点，对话自动在会话之间持续存在
 
-> **流媒体**
+> [卡] 流媒体
 >
 > 实时流式传输令牌、工具调用和推理跟踪
 
-> **人在回路**
+> [卡片] 人在回路
 >
 > 在敏感操作之前暂停代理执行以供人工批准
 
-> **时间旅行**
+> 【卡片】时光旅行
 >
 > 将对话倒回到任意点并探索替代路径和提示
 
 您无需学习 LangGraph 即可使用这些功能 — 它们开箱即用。
 
-### 结构化输出
+### 结构化输出`createAgent` 改进了结构化输出生成：
 
-`createAgent` 改进了结构化输出生成：* **主循环集成**：结构化输出现在在主循环中生成，而不需要额外的 LLM 调用
+* **主循环集成**：结构化输出现在在主循环中生成，而不需要额外的 LLM 调用
 * **结构化输出策略**：模型可以选择调用工具或使用提供者端结构化输出生成
 * **降低成本**：消除额外的法学硕士通话带来的额外费用
 
@@ -228,11 +228,11 @@ console.log(result.structuredResponse);
 >
 > 计划对内容块提供更广泛的支持。
 
-### 好处
-
-* **与提供商无关**：无论提供商如何，都可以使用相同的 API 访问推理跟踪、引文、内置工具（网络搜索、代码解释器等）和其他功能
+＃＃＃ 好处* **与提供商无关**：无论提供商如何，都可以使用相同的 API 访问推理跟踪、引文、内置工具（网络搜索、代码解释器等）和其他功能
 * **类型安全**：所有内容块类型的完整类型提示
-* **向后兼容**：标准内容可以是[loaded lazily](/oss/javascript/langchain/messages#standard-content-blocks)，因此没有相关的重大更改有关更多信息，请参阅我们的 [content blocks](/oss/javascript/langchain/messages#message-content) 指南
+* **向后兼容**：标准内容可以是[loaded lazily](/oss/javascript/langchain/messages#standard-content-blocks)，因此没有相关的重大更改
+
+欲了解更多信息，请参阅我们的[content blocks](/oss/javascript/langchain/messages#message-content)指南
 
 ***
 
@@ -250,11 +250,12 @@ LangChain v1 简化了 `langchain` 包命名空间，以专注于代理的基本
 
 * 遗留链和链实现
 * 寻回犬
+* 修复格式错误的模型输出的输出解析器（例如`OutputFixingParser`）
 * 索引API
-* [⟦T46⟧](https://www.npmjs.com/package/@langchain/community) 出口
+* [⟦T47⟧](https://www.npmjs.com/package/@langchain/community) 出口
 * 其他已弃用的功能
 
-如果您使用任何此功能，请安装 [⟦T47⟧](https://www.npmjs.com/package/@langchain/classic)：
+如果您使用任何此功能，请安装 [⟦T48⟧](https://www.npmjs.com/package/@langchain/classic)：
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install @langchain/classic
@@ -280,35 +281,36 @@ import { ... } from "@langchain/classic"; // [!code ++]
 
 import { ... } from "langchain/chains"; // [!code --]
 import { ... } from "@langchain/classic/chains"; // [!code ++]
+
+import { OutputFixingParser } from "langchain/output_parsers"; // [!code --]
+import { OutputFixingParser } from "@langchain/classic/output_parsers"; // [!code ++]
 ```
 
-## 报告问题
-
-请使用 [⟦T48⟧ label](https://github.com/langchain-ai/langchainjs/issues?q=state%3Aopen%20label%3Av1) 报告 1.0 在 [GitHub](https://github.com/langchain-ai/langchainjs/issues) 上发现的任何问题。
+## 报告问题请使用 [⟦T49⟧ label](https://github.com/langchain-ai/langchainjs/issues?q=state%3Aopen%20label%3Av1) 报告 1.0 在 [GitHub](https://github.com/langchain-ai/langchainjs/issues) 上发现的任何问题。
 
 ## 其他资源
 
-> **[LangChain 1.0](https://blog.langchain.com/langchain-langchain-1-0-alpha-releases/)**
+> [卡][LangChain 1.0](https://blog.langchain.com/langchain-langchain-1-0-alpha-releases/)
 >
 > 阅读公告
 
-> **[Middleware guide](https://blog.langchain.com/agent-middleware/)**
+> [卡][Middleware guide](https://blog.langchain.com/agent-middleware/)
 >
 > 深入研究中间件
 
-> **[Agents Documentation](/oss/javascript/langchain/agents)**
+> [卡][Agents Documentation](/oss/javascript/langchain/agents)
 >
 > 完整的代理文档
 
-> **[Message Content](/oss/javascript/langchain/messages#message-content)**
+> [卡][Message Content](/oss/javascript/langchain/messages#message-content)
 >
 > 新内容块 API
 
-> **[Migration guide](/oss/javascript/migrate/langchain-v1)**
+> [卡][Migration guide](/oss/javascript/migrate/langchain-v1)
 >
 > 如何迁移到LangChain v1
 
-> **[GitHub](https://github.com/langchain-ai/langchainjs)**
+> [卡][GitHub](https://github.com/langchain-ai/langchainjs)
 >
 > 报告问题或贡献
 
@@ -317,6 +319,8 @@ import { ... } from "@langchain/classic/chains"; // [!code ++]
 * [Versioning](/oss/javascript/versioning) – 了解版本号
 * [Release policy](/oss/javascript/release-policy) – 详细发布政策
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/releases/langchain-v1.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

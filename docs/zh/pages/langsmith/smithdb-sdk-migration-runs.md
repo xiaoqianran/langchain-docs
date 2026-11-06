@@ -18,27 +18,27 @@
 
 > [选项卡] Python
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
-> | `client.read_run()` | `client.runs.retrieve()` |
+> | `client.read_run()` | `client.runs.retrieve()`（别名为`client.runs.retrieve_v2()`）|
 >
 >> [!注意]
 >>
->> `client.runs.retrieve()` 现在是异步的。用 `await` 来调用它。
+>> `client.runs.retrieve()` 现在是异步的。用`await`来称呼它。
 >
 > 有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/runs/RunsResource/retrieve_v2)。
 
 > [选项卡] TypeScript
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
-> | `client.readRun()` | `client.runs.retrieve()` |
+> | `client.readRun()` | `client.runs.retrieve()`（又名`client.runs.retrieveV2()`）|
 >
 > 有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Runs/retrieveV2)。
 
 > [选项卡] Java
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.runs().retrieve()` | `client.runs().retrieveV2()` |
 >
@@ -46,7 +46,7 @@
 
 > [选项卡] 前往
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.Runs.Get()` | `client.Runs.GetV2()` |
 >
@@ -54,11 +54,11 @@
 
 > [选项卡] 卷曲
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `GET /api/v1/runs/{run_id}` | `GET /api/v2/runs/{run_id}` |
 >
-> 有关完整参数和字段列表，请参阅[API doc](/langsmith/smith-api/runs/get-a-single-run)。
+> 完整参数和字段列表请参见[API doc](/langsmith/smith-api/runs/get-a-single-run)。
 
 #### 查询参数> [选项卡] Python
 >
@@ -66,22 +66,22 @@
 >>
 >> `runs.retrieve` 需要一个新的 `project_id` 字段，而 `read_run` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但这不是必需的。
 >
-> |之前 (`read_run`) |之后(`runs.retrieve`) |笔记|
+> |之前 (`read_run`) | (`runs.retrieve`)之后|笔记|
 > | - | - | - |
 > | `run_id` | `run_id` |不变 |
-> | `load_child_runs` | *（已删除）* |使用 `traces.list_runs` 获取跟踪的运行并按 `parent_run_ids` 进行过滤。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
+> | `load_child_runs` | *（已删除）* |使用 `traces.list_runs` 获取跟踪的运行并按 `parent_run_ids` 进行过滤。参见[Load a run's child runs](#load-a-runs-child-runs) |
 > | *（不可用）* | `project_id` | **必需** - 拥有运行的项目的 UUID |
 > | *（不可用）* | `start_time` |可选 — 运行的开始时间 (RFC3339)；提供它可以加快检索速度。 v0.18 以下仅限 SmithDB 自托管所需 |
 > | *（默认返回所有字段）* | `selects` |现场投影；仅默认为`["ID"]`；字段名称均为大写 |> [选项卡] TypeScript
 >
 >> [!警告]
 >>
->> `client.runs.retrieve` 需要一个新的 `project_id` 字段，而 `readRun` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但不是必需的。
+>> `client.runs.retrieve` 需要一个新的 `project_id` 字段，而 `readRun` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但这不是必需的。
 >
-> |之前 (`readRun`) |之后(`client.runs.retrieve`) |笔记|
+> |之前 (`readRun`) |之后（`client.runs.retrieve`）|笔记|
 > | - | - | - |
 > | `runId` | `runId` |不变（位置参数）|
-> | `options.loadChildRuns` | *（已删除）* |使用 `client.traces.listRuns` 获取跟踪的运行并按 `parent_run_ids` 进行过滤。参见[Load a run's child runs](#load-a-runs-child-runs) |
+> | `options.loadChildRuns` | *（已删除）* |使用 `client.traces.listRuns` 获取跟踪的运行并按 `parent_run_ids` 进行过滤。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
 > | *（不可用）* | `project_id` | **必填**—`snake_case`；拥有运行的项目的 UUID |
 > | *（不可用）* | `start_time` |可选—`snake_case`；运行的开始时间（RFC3339）；提供它可以加快检索速度。 v0.18 以下仅限 SmithDB 自托管所需 |
 > | *（默认返回所有字段）* | `selects` |现场投影；仅默认为`["ID"]`；字段名称均为大写 |> [选项卡] Java
@@ -103,7 +103,7 @@
 >
 >> [!警告]
 >>
->> `GetV2()` 需要 `ProjectID`，它取代了删除的 `SessionID`。 `StartTime` 仍然是可选的——只要它可以加快检索速度，但不是必需的。
+>> `GetV2()` 需要`ProjectID`，它取代了删除的`SessionID`。 `StartTime` 仍然是可选的——只要它可以加快检索速度，但不是必需的。
 >
 > |之前 (`RunGetParams`) |之后（`RunGetV2Params`）|笔记|
 > | - | - | - |
@@ -137,7 +137,7 @@
 > | - | - | - |
 > | `run.id` | `run.id` |不变；省略 `selects` 时默认返回 |
 > | `run.name` | `run.name` |不变 |
-> | `run.run_type` | `run.run_type` |值现在为大写文字：`"LLM"`、`"CHAIN"` 等。
+> | `run.run_type` | `run.run_type` |值现在为大写文字：`"LLM"`、`"CHAIN"` 等 |
 > | `run.status` | `run.status` |值：`"SUCCESS"`、`"ERROR"`、`"PENDING"` |
 > | `run.start_time` | `run.start_time` |不变 |
 > | `run.end_time` | `run.end_time` |不变 |
@@ -165,10 +165,10 @@
 > | `run.first_token_time` | `run.first_token_time` |不变 |
 > | `run.latency`（属性）| `run.latency_seconds` |更名；是一个计算的 `timedelta` 属性，现在是一个原生的 `float` 字段 |
 > | `run.in_dataset` | `run.is_in_dataset` |更名|
-> | `run.child_run_ids` | *（已删除）* |过滤 `parent_run_ids` 上的跟踪运行。参见[Load a run's child runs](#load-a-runs-child-runs)|
-> | `run.child_runs` | *（已删除）* |按 `parent_run_ids` 中的最后一个条目对跟踪运行进行分组。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
-> | `run.serialized` | *（已删除）* |使用`run.manifest` |
-> | `run.manifest_id` | *（已删除）* |使用`run.manifest`|
+> | `run.child_run_ids` | *（已删除）* |过滤 `parent_run_ids` 上的跟踪运行。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
+> | `run.child_runs` | *（已删除）* |按 `parent_run_ids` 中的最后一个条目对跟踪运行进行分组。参见[Load a run's child runs](#load-a-runs-child-runs) |
+> | `run.serialized` | *（已删除）* |使用`run.manifest`|
+> | `run.manifest_id` | *（已删除）* |使用`run.manifest` |
 > | *（不可用）* | `run.is_root` |新 |
 > | *（不可用）* | `run.manifest` |新：完整清单对象（替换`serialized`和`manifest_id`）|
 > | *（不可用）* | `run.error_preview` |新：截断的错误片段 |
@@ -176,8 +176,8 @@
 > | *（不可用）* | `run.outputs_preview` |新：截断的输出预览 |
 > | *（不可用）* | `run.thread_id` |新：对话线程 UUID |> | *（不可用）* | `run.reference_dataset_id` |新：参考示例的数据集 UUID |
 > | *（不可用）* | `run.share_url` |新功能：公共共享 URL（仅在共享运行时设置）|
-> | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
-> | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
+> | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
+> | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
 > | `run.prompt_cost_details` | `run.prompt_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
 > | `run.completion_cost_details` | `run.completion_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|> [选项卡] TypeScript
 >
@@ -213,11 +213,11 @@
 > | `run.promptCost` | `run.prompt_cost` |更名为`snake_case` |
 > | `run.completionCost` | `run.completion_cost` |更名为`snake_case` |
 > | `run.firstTokenTime` | `run.first_token_time` |更名为`snake_case` |
-> | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒） |
+> | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒）|
 > | `run.inDataset` | `run.is_in_dataset` |更名|
 > | `run.child_run_ids` | *（已删除）* |过滤 `parent_run_ids` 上的跟踪运行。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
-> | `run.child_runs` | *（已删除）* |按 `parent_run_ids` 中的最后一个条目对跟踪运行进行分组。参见[Load a run's child runs](#load-a-runs-child-runs) |
-> | `run.serialized` | *（已删除）* |使用`run.manifest` |
+> | `run.child_runs` | *（已删除）* |按 `parent_run_ids` 中的最后一个条目对跟踪运行进行分组。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
+> | `run.serialized` | *（已删除）* |使用`run.manifest`|
 > | `run.manifestId` | *（已删除）* |使用`run.manifest`|
 > | `run.shareToken` | *（已删除）* |使用`run.share_url`（完整 URL，仅在共享运行时设置）|
 > | *（不可用）* | `run.is_root` |新 |
@@ -242,8 +242,8 @@
 > | `run.status()` | `run.status()` |值：`"SUCCESS"`、`"ERROR"`、`"PENDING"` |
 > | `run.startTime()` | `run.startTime()` |不变 |
 > | `run.endTime()` | `run.endTime()` |不变 |
-> | `run.error()` | `run.error()` |不变 |
-> | `run.inputs()` | `run.inputs()`​​ |不变 |
+> | `run.error()` | `run.error()`​​ |不变 |
+> | `run.inputs()` | `run.inputs()` |不变 |
 > | `run.outputs()` | `run.outputs()` |不变 |
 > | `run.tags()` | `run.tags()` |不变 |
 > | `run.extra()` | `run.extra()` |不变 |
@@ -256,7 +256,7 @@
 > | `run.dottedOrder()` | `run.dottedOrder()` |不变 |
 > | `run.parentRunId()` | *（已删除）* |使用`run.parentRunIds()`（所有祖先UUID的列表，根在前）|
 > | `run.parentRunIds()` | `run.parentRunIds()` |不变 |
-> | `run.sessionId()` | `run.projectId()` |更名； `sessionId()` 返回项目 UUID |
+> | `run.sessionId()` | `run.projectId()` |更名； `sessionId()` 返回项目UUID |
 > | `run.appPath()` | `run.appPath()` |不变 |
 > | `run.firstTokenTime()` | `run.firstTokenTime()` |不变 |> | `run.totalTokens()` | `run.totalTokens()` |不变 |
 > | `run.promptTokens()` | `run.promptTokens()` |不变 |
@@ -275,8 +275,8 @@
 > | `run.shareToken()` | *（已删除）* |使用`run.shareUrl()`（完整 URL，仅在共享运行时设置）|
 > | `run.childRunIds()` | *（已删除）* |没有同等的 |
 > | `run.directChildRunIds()` | *（已删除）* |没有同等的 |
-> | `run.serialized()` | *（已删除）* |使用`run.manifest()`|
-> | `run.manifestId()` | *（已删除）* |使用`run.manifest()` |
+> | `run.serialized()` | *（已删除）* |使用`run.manifest()` |
+> | `run.manifestId()` | *（已删除）* |使用`run.manifest()`|
 > | `run.messages()` | *（已删除）* |没有同等的 |
 > | `run.executionOrder()` | *（已删除）* |没有同等的 |
 > | `run.lastQueuedAt()` | *（已删除）* |没有同等的 |
@@ -294,7 +294,7 @@
 > | *（不可用）* | `run.shareUrl()` |新功能：公共共享 URL（仅在共享运行时设置）|
 > | *（不可用）* | `run.threadEvaluationTime()` |新 |> [选项卡] 前往
 >
-> 将`RunGetV2ParamsSelect`常量（例如`RunGetV2ParamsSelectName`、`RunGetV2ParamsSelectStatus`）传递给`Selects`来控制填充哪些字段；未选择的字段在返回的结构上为零值。 `Selects` 默认为`ID`。
+> 将`RunGetV2ParamsSelect`常量（例如`RunGetV2ParamsSelectName`、`RunGetV2ParamsSelectStatus`）传递给`Selects`来控制填充哪些字段；未选择的字段在返回的结构上为零值。 `Selects` 仅默认为 `ID`。
 >
 > |之前（`RunSchema`字段）|之后（`Run`字段）|笔记|
 > | - | - | - |
@@ -314,7 +314,7 @@
 > | `run.FirstTokenTime` | `run.FirstTokenTime` |不变 |
 > | `run.Inputs` | `run.Inputs` |不变；类型现在为 `interface{}`（原为 `map[string]interface{}`）|
 > | `run.InputsPreview` | `run.InputsPreview` |不变 |
-> | `run.Outputs` | `run.Outputs` |不变；类型现在为`interface{}`（原为`map[string]interface{}`）|
+> | `run.Outputs` | `run.Outputs` |不变；类型现在为 `interface{}`（原为 `map[string]interface{}`）|
 > | `run.OutputsPreview` | `run.OutputsPreview` |不变 |
 > | `run.ParentRunIDs` | `run.ParentRunIDs` |不变 |
 > | `run.PriceModelID` | `run.PriceModelID` |不变 |> | `run.PromptCost` | `run.PromptCost` |不变 |
@@ -385,10 +385,10 @@
 > | `parent_run_ids` | `parent_run_ids` |不变 |
 > | `price_model_id` | `price_model_id` |不变 |
 > | `prompt_cost` | `prompt_cost` |不变 |
-> | `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|> | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
+> | `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串） |> | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
 > | `prompt_tokens` | `prompt_tokens` |不变 |
 > | `completion_cost` | `completion_cost` |不变 |
-> | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
+> | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串） |
 > | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
 > | `completion_tokens` | `completion_tokens` |不变 |
 > | `total_cost` | `total_cost` |不变 |
@@ -430,13 +430,13 @@
 
 SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制。每个 API 密钥在云中均存在限制。> [选项卡] Python
 >
-> | |之前 (`client.read_run()`) |之后(`client.runs.retrieve()`) |
+> | |之前 (`client.read_run()`) |之后(`client.runs.retrieve()`)|
 > | - | - | - |
 > |限制|每 60 秒 30 个请求 |每 10 秒 300 个请求 |
 
 > [选项卡] TypeScript
 >
-> | |之前 (`client.readRun()`) |之后(`client.runs.retrieve()`)|
+> | |之前 (`client.readRun()`) |之后(`client.runs.retrieve()`) |
 > | - | - | - |
 > |限制|每 60 秒 30 个请求 |每 10 秒 300 个请求 |
 
@@ -448,13 +448,13 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] 前往
 >
-> | |之前 (`client.Runs.Get()`) |之后(`client.Runs.GetV2()`) |
+> | |之前 (`client.Runs.Get()`) |之后(`client.Runs.GetV2()`)|
 > | - | - | - |
 > |限制|每 60 秒 30 个请求 |每 10 秒 300 个请求 |
 
 > [选项卡] 卷曲
 >
-> | |之前 (`GET /api/v1/runs/{run_id}`) |之后(`GET /api/v2/runs/{run_id}`)|
+> | |之前 (`GET /api/v1/runs/{run_id}`) |之后(`GET /api/v2/runs/{run_id}`) |
 > | - | - | - |
 > |限制|每 60 秒 30 个请求 |每 10 秒 300 个请求 |
 
@@ -466,7 +466,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] Python
 >
-> `runs.retrieve` 需要额外的 `project_id` (UUID) 参数，而 `read_run` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但不是必需的。首先通过`client.aread_project()`解析项目UUID。
+> `runs.retrieve` 需要额外的 `project_id` (UUID) 参数，而 `read_run` 不需要。它还接受可选的 `start_time` — 提供它加快检索速度，但不是必需的。首先通过`client.aread_project()`解析项目UUID。
 >
 >> [选项卡] 之前
 >>
@@ -530,7 +530,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] Java
 >
-> `retrieveV2()` 需要额外的 `projectId()` (UUID) 参数，而 `client.runs().retrieve()` 不需要。它还接受可选的 `startTime()` — 前提是它可以加快检索速度，但不是必需的。首先通过`client.sessions().list()`解析项目UUID。
+> `retrieveV2()` 需要额外的 `projectId()` (UUID) 参数，而 `client.runs().retrieve()` 不需要。它还接受可选的 `startTime()` — 提供它加快检索速度，但不是必需的。首先通过`client.sessions().list()`解析项目UUID。
 >
 >> [选项卡] 之前
 >>
@@ -619,7 +619,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] 卷曲
 >
-> `GET /api/v2/runs/{run_id}` 需要额外的 `project_id` (UUID) 查询参数，而 `GET /api/v1/runs/{run_id}` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但不是必需的。首先通过 `GET /api/v1/sessions` 请求解析项目 UUID。
+> `GET /api/v2/runs/{run_id}` 需要额外的 `project_id` (UUID) 查询参数，而 `GET /api/v1/runs/{run_id}` 不需要。它还接受可选的 `start_time` — 提供它加快检索速度，但不是必需的。首先通过 `GET /api/v1/sessions` 请求解析项目 UUID。
 >
 >> [选项卡] 之前
 >>
@@ -685,7 +685,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] TypeScript
 >
-> `readRun` 返回完整运行对象，无需选择。默认情况下，`client.runs.retrieve` 仅返回 `id` — 通过 `selects: [...]` 请求更多。
+> `readRun` 返回完整运行对象，无需选择。默认情况下，`client.runs.retrieve` 仅返回 `id`，请通过 `selects: [...]` 请求更多。
 >
 >> [选项卡] 之前
 >>
@@ -765,7 +765,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] 前往
 >
-> `Get` 返回完整的运行结构，无需选择。默认情况下，`GetV2` 仅返回 `ID` — 将 `Selects` 与您需要的字段一起传递。
+> `Get` 返回完整的运行结构，无需选择。默认情况下，`GetV2` 仅返回 `ID` - 将 `Selects` 与您需要的字段一起传递。
 >
 >> [选项卡] 之前
 >>
@@ -846,7 +846,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 #### 处理未找到的运行> [选项卡] Python
 >
-> `read_run` 因缺失运行而从 `langsmith.utils` 提高了 `LangSmithNotFoundError`。 `runs.retrieve` 从 `langsmith` 提高 `NotFoundError`。
+> `read_run` 从 `langsmith.utils` 提高了 `LangSmithNotFoundError`，以弥补缺失的运行。 `runs.retrieve` 从 `langsmith` 提高 `NotFoundError`。
 >
 >> [选项卡] 之前
 >>
@@ -991,7 +991,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] 前往
 >
-> `Get` 和 `GetV2` 都返回一个 `*langsmith.Error`，您可以使用 `errors.As` 检查 - 不变，因为 Go SDK 已经在 SmithDB 之前由不锈钢生成。检查 `StatusCode` 是否有 `404`。
+> `Get` 和 `GetV2` 都返回一个 `*langsmith.Error`，您可以使用 `errors.As` 检查 - 不变，因为 Go SDK 已经在 SmithDB 之前不锈钢生成。检查 `StatusCode` 是否有 `404`。
 >
 >> [选项卡] 之前
 >>
@@ -1058,7 +1058,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] 卷曲
 >
-> 对于丢失的运行，`GET /api/v1/runs/{run_id}` 和 `GET /api/v2/runs/{run_id}` 都会返回 HTTP 404。检查响应状态码。
+> 对于缺少运行，`GET /api/v1/runs/{run_id}` 和 `GET /api/v2/runs/{run_id}` 都会返回 HTTP 404。检查响应状态码。
 >
 >> [选项卡] 之前
 >>
@@ -1252,7 +1252,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] Python
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.get_run_url()` | `client.runs.get_url()` |
 >
@@ -1264,7 +1264,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] TypeScript
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.getRunUrl()` | `client.runs.getURL()` |
 >
@@ -1274,7 +1274,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >>
 >> Java SDK 没有用于检索运行的 UI URL 的旧版等效项。
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | *（无遗留方法）* | `client.runs().getUrl()` |
 >
@@ -1286,7 +1286,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >>
 >> Go SDK 没有用于检索运行的 UI URL 的传统等效项。
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | *（无遗留方法）* | `client.Runs.GetURL()` |
 >
@@ -1298,7 +1298,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >>
 >> REST API 没有用于检索运行的 UI URL 的旧版本等效项。
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | *（无旧端点）* | `GET /api/v2/runs/{run_id}/url` |
 
@@ -1308,7 +1308,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >>
 >> `runs.get_url` 需要直接传递运行的 `project_id` 和 `trace_id`，而不是从 `run` 对象或 `project_name`/`project_id` 后备解析它们。
 >
-> |之前 (`get_run_url`) |之后(`runs.get_url`) |笔记|
+> |之前（`get_run_url`）|之后(`runs.get_url`)|笔记|
 > | - | - | - |
 > | `run` (`RunBase`) | *（已删除）* |不需要完整的运行对象；单独传递其识别字段 |
 > | `project_name` | *（已删除）* |没有同等的；如果您只有项目名称，请自行解析项目 UUID |
@@ -1348,7 +1348,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] 卷曲
 >
-> |之前 |之后(`GET /api/v2/runs/{run_id}/url`) |笔记|
+> |之前 | (`GET /api/v2/runs/{run_id}/url`)之后|笔记|
 > | - | - | - |
 > | *（无旧端点）* | `run_id`（路径）| **必填** |
 > | *（无旧端点）* | `project_id`（查询）| **必需的**;项目（会话）UUID |
@@ -1359,29 +1359,29 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] Python
 >
-> |之前 |之后 |笔记|
+> |之前 |之后|笔记|
 > | - | - | - |
-> | `str`（网址）| `RunGetURLResponse.url` |响应现在被包装在一个对象中；读取`.url`属性 |
+> | `str`（网址）| `RunGetURLResponse.url` |响应现在被包装在一个对象中；读取`.url`属性|
 
 > [选项卡] TypeScript
 >
-> |之前 |之后 |笔记|
+> |之前 |之后|笔记|
 > | - | - | - |
 > | `string`（网址）| `RunGetURLResponse.url` |响应现在被包装在一个对象中；阅读`.url`属性|> [选项卡] Java
 >
-> |之前 |之后 |笔记|
+> |之前 |之后|笔记|
 > | - | - | - |
 > | *（无遗留方法）* | `RunGetUrlResponse.url`() |返回 `Optional<String>` |
 
 > [选项卡] 前往
 >
-> |之前 |之后 |笔记|
+> |之前 |之后|笔记|
 > | - | - | - |
 > | *（无遗留方法）* | `RunGetURLResponse.URL` |返回`string` |
 
 > [选项卡] 卷曲
 >
-> |之前 |之后 |笔记|
+> |之前 |之后|笔记|
 > | - | - | - |
 > | *（无旧端点）* | `{"url": "..."}` |具有单个 `url` 字段的 JSON 对象 |
 

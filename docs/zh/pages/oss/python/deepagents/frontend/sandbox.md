@@ -2,9 +2,9 @@
 
 <!-- langchain-docs: Sandbox | https://docs.langchain.com/oss/python/deepagents/frontend/sandbox -->
 
-# 沙盒
+# 沙箱
 
-为沙箱环境支持的编码代理构建类似 IDE 的 UI
+为沙盒环境支持的编码代理构建类似 IDE 的 UI
 
 编码代理需要的不仅仅是聊天窗口。他们需要一个文件浏览器、一个代码
 查看器、差异面板、IDE 体验。这种模式连接了很深的
@@ -62,7 +62,7 @@ graph LR
   class API orangeHighlight;
 ```## 沙箱生命周期
 
-在连接前端之前选择沙箱的生存时间以及共享沙箱的人员。
+在连接前端之前，选择沙箱的生存时间以及共享沙箱的人员。
 请参阅 [Sandbox lifecycle](/oss/python/deepagents/going-to-production#lifecycle) 了解线程范围
 与助手范围的沙箱，异步 [graph factory](/langsmith/graph-rebuild)
 设置、TTL 行为和 SDK 调用示例。
@@ -112,7 +112,7 @@ API 网址。会话 ID 不会在浏览器会话中持续存在。
 需要工具配置。构建此 UI 在生产设置之上添加了一项要求：
 **自定义 API 服务器** 在代理图之外运行，因此代理
 后端和您的文件浏览路由必须解析**相同的沙箱**
-每个线程。将沙箱 ID 存储在线程元数据上并共享单个
+每个线程。将沙箱 ID 存储在线程元数据上并共享一个
 它们之间的查找功能。
 
 ### 从线程元数据解析沙箱
@@ -464,7 +464,7 @@ LangGraph 平台为您的自定义路线和默认路线提供服务。
 
 ### 线程创建
 
-页面加载时创建一个LangGraph线程，并将其ID持久化在
+页面加载时创建一个LangGraph线程并将其ID保存在
 `sessionStorage` 因此页面重新加载重新连接到同一个沙箱：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -511,7 +511,7 @@ function handleNewThread() {
 
 ### 文件状态管理
 
-跟踪沙箱文件系统的两个快照：原始状态（在
+跟踪沙盒文件系统的两个快照：原始状态（在
 代理运行）和当前状态（实时更新）。线程ID是
 包含在 API URL 中，以便请求始终到达正确的沙箱：
 
@@ -766,7 +766,7 @@ function detectChanges(
 | - | - | - |
 |反应 | [⟦T59⟧](https://diffs.com) | `<FileDiff>` 与 `parseDiffFromFile` |
 |视图 | [⟦T62⟧](https://github.com/MrWangJustToDo/git-diff-view) | `<DiffView>` 与 `generateDiffFile` 来自 `@git-diff-view/file` |
-|苗条| [⟦T66⟧](https://github.com/MrWangJustToDo/git-diff-view) | `<DiffView>` 与 `generateDiffFile` 来自 `@git-diff-view/file` |
+|苗条 | [⟦T66⟧](https://github.com/MrWangJustToDo/git-diff-view) | `<DiffView>` 与 `generateDiffFile` 来自 `@git-diff-view/file` |
 |角度| [⟦T70⟧](https://github.com/rars/ngx-diff) | `<ngx-unified-diff>` 与 `[before]` 和 `[after]` |
 
 `@pierre/diffs` 示例（React）：
@@ -853,7 +853,7 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
 
 * **对生产应用程序使用线程范围的沙箱**。参见
   [Sandbox lifecycle](/oss/python/deepagents/going-to-production#lifecycle)。
-* **通过代理后端和 API 服务器之间共享沙箱解析**
+* **在代理后端和 API 服务器之间共享沙箱解析**
   线程元数据，因此两者都解析相同的环境，没有内存缓存。
 * **用真实的项目为沙箱播种**。参见
   [File transfers](/oss/python/deepagents/going-to-production#file-transfers)。
@@ -868,38 +868,38 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
 
 ## 相关
 
-> **[Going to production](/oss/python/deepagents/going-to-production)**
+> [卡][Going to production](/oss/python/deepagents/going-to-production)
 >
 > 使用持久沙箱、身份验证、护栏和生产 `useStream` 设置来部署代理。
 
-> **[Sandboxes](/oss/python/deepagents/sandboxes)**
+> [卡][Sandboxes](/oss/python/deepagents/sandboxes)
 >
 > 沙箱提供程序、安全模型和文件传输 API。
 
-> **[Frontend overview](/oss/python/deepagents/frontend/overview)**
+> [卡][Frontend overview](/oss/python/deepagents/frontend/overview)
 >
 > 其他深层代理 UI 模式：子代理流、待办事项列表和自定义状态。
 
-> **[Application structure](/oss/python/langgraph/application-structure)**
+> [卡][Application structure](/oss/python/langgraph/application-structure)
 >
 > 完整的 `langgraph.json` 参考，包括自定义 `http.app` 路线。
 
 ## 相关LangChain指南沙箱 IDE 基于核心 LangChain 前端模式构建。这些指南涵盖
 本页面使用相同的 `useStream` 原语：
 
-> **[Tool calling](/oss/python/langchain/frontend/tool-calling)**
+> [卡][Tool calling](/oss/python/langchain/frontend/tool-calling)
 >
 > 将文件和执行工具调用渲染为具有类型安全结果的专用 UI 卡。
 
-> **[Headless tools](/oss/python/langchain/frontend/headless-tools)**
+> [卡][Headless tools](/oss/python/langchain/frontend/headless-tools)
 >
 > 在客户端运行浏览器和设备 API — 对于在 IDE 面板中嵌入实时预览或终端输出非常有用。
 
-> **[Open-ended generative UI](/oss/python/langchain/frontend/open-ended-generative-ui)**
+> [卡][Open-ended generative UI](/oss/python/langchain/frontend/open-ended-generative-ui)
 >
 > 在生成 UI 范围的开放端渲染沙盒应用程序预览和 MCP 生成的界面。
 
-> **[Join & rejoin streams](/oss/python/langchain/frontend/join-rejoin)**
+> [卡][Join & rejoin streams](/oss/python/langchain/frontend/join-rejoin)
 >
 > 页面重新加载后重新连接到正在运行的编码会话，而不会丢失沙箱状态。
 

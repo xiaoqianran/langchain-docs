@@ -18,7 +18,7 @@
 6. **包命名空间**：遗留链、索引和社区重新导出移至`@langchain/classic`。安装 `@langchain/classic` 并更新这些导入。
 7. **标准内容块**：对于与提供商无关的内容，更喜欢 `message.contentBlocks`。现有`message.content`仍然有效。
 
-在代码库中搜索 `createReactAgent`、`@langchain/langgraph/prebuilts`、`preModelHook`、`postModelHook`，以及应移至 `@langchain/classic` 的旧版导入，并应用必要的更改。标记任何无法自动迁移的内容。本迁移指南概述了 LangChain v1 中的主要变化。要了解有关 v1 的新功能的更多信息，请参阅[introductory post](/oss/javascript/releases/langchain-v1)。
+在代码库中搜索 `createReactAgent`、`@langchain/langgraph/prebuilts`、`preModelHook`、`postModelHook`，以及应移至 `@langchain/classic` 的旧版导入，并应用必要的更改。标记任何无法自动迁移的内容。本迁移指南概述了 LangChain v1 中的主要变化。要了解有关 v1 新功能的更多信息，请参阅[introductory post](/oss/javascript/releases/langchain-v1)。
 
 要升级，
 
@@ -348,7 +348,7 @@ const agent = createReactAgent({
 
 ### 型号
 
-动态模型选择现在通过中间件进行。使用`wrapModelCall`根据状态或运行时上下文交换模型（和工具）。在 `createReactAgent` 中，这是通过传递给 `model` 参数的函数完成的。
+动态模型选择现在通过中间件进行。使用 `wrapModelCall` 根据状态或运行时上下文交换模型（和工具）。在 `createReactAgent` 中，这是通过传递给 `model` 参数的函数完成的。
 
 此功能已在 v1 中移植到中间件接口。
 
@@ -667,8 +667,8 @@ v1 包包括：
 | - | - | - |
 |代理| `createAgent`、`AgentState` |核心代理创建功能 |
 |留言 |消息类型、内容块、`trimMessages` |从`@langchain/core`转口|
-|工具| `tool`，工具类 |从`@langchain/core`复出口|
-|聊天模特| `initChatModel`、`BaseChatModel` |统一模型初始化 |
+|工具| `tool`，工具类 |从`@langchain/core`复出口 |
+|聊天模特| `initChatModel`、`BaseChatModel` |统一模型初始化|
 
 ### `@langchain/classic`
 
@@ -718,7 +718,7 @@ import { ... } from "langchain/chains";
 
 已被弃用并计划在 1.0 中删除的方法、函数和其他对象已被删除。
 
-> **查看已删除的已弃用 API**
+> [accordion] 查看已删除的已弃用的 API
 >
 > 以下已弃用的 API 已在 v1 中删除：
 >

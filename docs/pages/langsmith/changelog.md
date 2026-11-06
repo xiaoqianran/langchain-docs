@@ -652,7 +652,7 @@ Weekly updates to [LangSmith Cloud](/langsmith/observability). For LangSmith Fle
 
 ### Engine
 
-* Engine usage, spend limits, and pricing now display in LangChain Standard Units (LSUs), priced at \$1 each. Dollar amounts are unchanged. [Learn more](/langsmith/engine#manage-engine-costs).
+* Engine usage, spend limits, and pricing now display in LangChain Standard Units (LSUs). Dollar amounts are unchanged. [Learn more](/langsmith/engine#manage-engine-costs).
 * Issue validation requests its judgment as a tool call, so a failed structured-output response no longer aborts the run.
 * Engine projects that previously selected Skills for Coding Agents now use standard issue analysis, with scan cadence based on their configured analysis level.
 * Engine project boards no longer show the floating feedback survey.

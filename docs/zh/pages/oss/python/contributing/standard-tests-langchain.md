@@ -12,11 +12,11 @@
 
 首先，安装所需的依赖项：
 
-> **[langchain-core](https://github.com/langchain-ai/langchain/tree/master/libs/core#readme)**
+> [卡][langchain-core](https://github.com/langchain-ai/langchain/tree/master/libs/core#readme)
 >
 > 定义我们想要导入的接口来定义我们的自定义组件
 
-> **[langchain-tests](https://github.com/langchain-ai/langchain/tree/master/libs/standard-tests#readme)**
+> [卡][langchain-tests](https://github.com/langchain-ai/langchain/tree/master/libs/standard-tests#readme)
 >
 > 提供标准测试和运行它们所需的`pytest`插件
 
@@ -36,13 +36,13 @@ uv add langchain-tests
 
 `langchain-tests`包中有2个命名空间：
 
-> **单元测试**
+> [手风琴] 单元测试
 >
 > **地点**：`langchain_tests.unit_tests`
 >
 > 旨在隔离测试组件，无需访问外部服务
 >
-> [View API reference](https://reference.langchain.com/python/langchain-tests/unit_tests)> **集成测试**
+> [View API reference](https://reference.langchain.com/python/langchain-tests/unit_tests)> [手风琴] 集成测试
 >
 > **地点**：`langchain_tests.integration_tests`
 >
@@ -80,42 +80,42 @@ class TestChatParrotLinkStandard(ChatModelIntegrationTests):
 
 以下是来自流行集成的标准测试的一些示例实现：
 
-**单元测试**
-
-> **[ChatOpenAI](https://github.com/langchain-ai/langchain/blob/master/libs/partners/openai/tests/unit_tests/chat_models/test_base_standard.py)**
+> [选项卡] 单元测试
 >
-> 单元测试
-
-> **[ChatAnthropic](https://github.com/langchain-ai/langchain/blob/master/libs/partners/anthropic/tests/unit_tests/test_standard.py)**
+>>【卡牌】[ChatOpenAI](https://github.com/langchain-ai/langchain/blob/master/libs/partners/openai/tests/unit_tests/chat_models/test_base_standard.py)
+>>
+>> 单元测试
 >
-> 单元测试
-
-> **[ChatGenAI](https://github.com/langchain-ai/langchain-google/blob/main/libs/genai/tests/unit_tests/test_standard.py)**
+>>【卡牌】[ChatAnthropic](https://github.com/langchain-ai/langchain/blob/master/libs/partners/anthropic/tests/unit_tests/test_standard.py)
+>>
+>> 单元测试
 >
-> 单元测试
+>>【卡】[ChatGenAI](https://github.com/langchain-ai/langchain-google/blob/main/libs/genai/tests/unit_tests/test_standard.py)
+>>
+>> 单元测试
 
-**集成测试**
-
-> **[ChatOpenAI](https://github.com/langchain-ai/langchain/blob/master/libs/partners/openai/tests/integration_tests/chat_models/test_base_standard.py)**
+> [选项卡] 集成测试
 >
-> 集成测试
-
-> **[ChatAnthropic](https://github.com/langchain-ai/langchain/blob/master/libs/partners/anthropic/tests/integration_tests/test_standard.py)**
+>>【卡牌】[ChatOpenAI](https://github.com/langchain-ai/langchain/blob/master/libs/partners/openai/tests/integration_tests/chat_models/test_base_standard.py)
+>>
+>> 集成测试
 >
-> 集成测试
-
-> **[ChatGenAI](https://github.com/langchain-ai/langchain-google/blob/main/libs/genai/tests/integration_tests/test_standard.py)**
+>>【卡牌】[ChatAnthropic](https://github.com/langchain-ai/langchain/blob/master/libs/partners/anthropic/tests/integration_tests/test_standard.py)
+>>
+>> 集成测试
 >
-> 集成测试
+>>【卡牌】[ChatGenAI](https://github.com/langchain-ai/langchain-google/blob/main/libs/genai/tests/integration_tests/test_standard.py)
+>>
+>> 集成测试
 
-**沙盒集成测试**
-
-确保您的集成通过标准测试套件。
-以 [Daytona integration](https://github.com/langchain-ai/deepagents/blob/main/libs/partners/daytona/tests/integration_tests/test_integration.py) 为例。
-
-> **[Daytona](https://github.com/langchain-ai/deepagents/blob/main/libs/partners/daytona/tests/integration_tests/test_integration.py)**
+> [选项卡] 沙箱集成测试
 >
-> 沙盒集成测试
+> 确保您的集成通过标准测试套件。
+> 以 [Daytona integration](https://github.com/langchain-ai/deepagents/blob/main/libs/partners/daytona/tests/integration_tests/test_integration.py) 为例。
+>
+>>【卡牌】[Daytona](https://github.com/langchain-ai/deepagents/blob/main/libs/partners/daytona/tests/integration_tests/test_integration.py)
+>>
+>> 沙盒集成测试
 
 ## 沙盒集成
 

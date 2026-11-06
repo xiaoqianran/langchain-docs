@@ -20,33 +20,33 @@
 
 ## 上下文类型|上下文类型 |你控制什么 |范围 |
 | - | - | - |
-| **[Input context](#input-context)** |代理启动时的提示包含哪些内容（系统提示、内存、技能）|静态，每次运行均应用 |
+| **[Input context](#input-context)** |代理启动时的提示包含哪些内容（系统提示、内存、技能） |静态，每次运行均应用 |
 | **[Runtime context](#runtime-context)** |调用时传递的静态配置（用户元数据、API 密钥、连接）|每次运行，传播到子代理 |
-| **[Context compression](#context-compression)** |内置卸载和摘要，可将上下文保持在窗口限制内 |当接近极限时自动 |
+| **[Context compression](#context-compression)** |内置卸载和汇总，将上下文保持在窗口限制内 |当接近极限时自动 |
 | **[Context isolation](#context-isolation-with-subagents)** |使用子代理隔离繁重的工作，仅将结果返回给主代理 |每个子代理，当被委托时 |
 | **[Long-term memory](#long-term-memory)** |使用虚拟文件系统跨线程持久存储|对话中持续存在 |
 
 ## 输入上下文
 
-输入上下文是在启动时提供给深度代理的信息，该信息成为其系统提示的一部分。最终提示由几个来源组成：
+输入上下文是在启动时提供给深度代理的信息，该信息成为其系统提示的一部分。最终的提示由几个来源组成：
 
-> **[System prompt](#system-prompt)**
+> [卡][System prompt](#system-prompt)
 >
 > 您提供的自定义说明以及内置代理指导。
 
-> **[Memory](#memory)**
+> [卡][Memory](#memory)
 >
 > 配置时始终加载持久 `AGENTS.md` 文件。
 
-> **[Skills](#skills)**
+> [卡][Skills](#skills)
 >
 > 相关时加载按需功能（渐进式披露）。
 
-> **[Tool prompts](#tool-prompts)**
+> [卡][Tool prompts](#tool-prompts)
 >
-> 使用内置工具或自定义工具的说明。
+> 使用内置工具或自定义工具的说明。###系统提示
 
-###系统提示您的自定义系统提示符位于内置系统提示符之前，其中包括文件系统工具和子代理的指南。用它来定义代理的角色、行为和知识：
+您的自定义系统提示符位于内置系统提示符之前，其中包括文件系统工具和子代理的指南。用它来定义代理的角色、行为和知识：
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -132,8 +132,8 @@ agent = create_deep_agent(
 )
 ```
 
-`system_prompt` 参数是静态的，这意味着每次调用它都不会改变。
-对于某些用例，您可能需要动态提示：例如，告诉模型“您具有管理员访问权限”与“您具有只读访问权限”，或者注入用户首选项，例如来自 [long-term memory](#long-term-memory) 的“用户更喜欢简洁的响应”。
+`system_prompt` 参数是静态的，这意味着它在每次调用时都不会改变。
+对于某些用例，您可能需要动态提示：例如，告诉模型“您具有管理员访问权限”与“您具有只读访问权限”，或者注入用户首选项，例如来自[long-term memory](#long-term-memory)的“用户更喜欢简洁的响应”。
 如果您的提示取决于上下文或 `runtime.store`，请使用 `@dynamic_prompt` 构建上下文感知指令。您的中间件可以读取`request.runtime.context`和`request.runtime.store`。
 有关 [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack) 和添加 [custom middleware](/oss/python/langchain/middleware)，请参阅 [Customization](/oss/python/deepagents/customization#middleware)。有关示例，请参阅 [LangChain context engineering](/oss/python/langchain/context-engineering#system-prompt) 指南。
 
@@ -291,7 +291,7 @@ def search_orders(
     return f"orders for {user_id} with status {status} (limit {limit})"
 ```> [!提示]
 >
-> 要覆盖特定提供程序或模型的内置或用户提供的工具的描述，请使用按工具名称键入的 [harness profile](/oss/python/deepagents/profiles#harness-profiles) 的 `tool_description_overrides`。
+> 要覆盖特定提供者或模型的内置或用户提供的工具的描述，请使用按工具名称键入的 [harness profile](/oss/python/deepagents/profiles#harness-profiles) 的 `tool_description_overrides`。
 >
 > 未使用的内置工具仍然会每次发送其完整模式。使用 `excluded_tools` 删除代理不应调用的工具（例如只读代理上的 `write_file` 或 `execute`）。这会缩小整个运行的基线提示大小。这是配置，而不是[Context compression](#context-compression)中的自动卸载或汇总。
 >
@@ -786,13 +786,13 @@ result = agent.invoke(
 上下文压缩可以减少代理工作记忆中的信息大小，同时保留与任务相关的细节。
 以下技术是确保传递给 LLM 的上下文保持在其上下文窗口限制内的内置机制：
 
-> **[Offloading](#offloading)**
+> [卡][Offloading](#offloading)
 >
-> 大型工具输入和结果存储在文件系统中并替换为引用。> **[Summarization](#summarization)**
+> 大型工具输入和结果存储在文件系统中并替换为引用。> [卡][Summarization](#summarization)
 >
 > 当接近限制时，旧消息会被压缩到 LLM 生成的摘要中。
 
-要在压缩运行之前缩小每次发送的工具模式，请通过 [harness profile](/oss/python/deepagents/profiles#harness-profiles) (`excluded_tools`) 排除未使用的内置工具。参见[Tool prompts](#tool-prompts)。
+要在压缩运行之前缩小每轮发送的工具模式，请通过 [harness profile](/oss/python/deepagents/profiles#harness-profiles) (`excluded_tools`) 排除未使用的内置工具。参见[Tool prompts](#tool-prompts)。
 
 ### 卸载
 
@@ -820,15 +820,19 @@ Deep Agents 使用 [built-in filesystem tools](/oss/python/deepagents/overview#v
 * **上下文摘要**：LLM 生成对话的结构化摘要，包括会话意图、创建的工件和后续步骤，这会替换座席工作记忆中的完整对话历史记录。
 * **文件系统保存**：原始对话消息的文本呈现作为规范记录写入文件系统。这种双重方法确保代理保持对其目标和进度的了解（通过摘要），同时保留在需要时恢复文本详细信息的能力（通过文件系统搜索）。
 
+汇总更改发送到模型的消息，而不是持久的 `state["messages"]` 历史记录。保留历史记录支持重播和评估。
+
+对于自定义中间件中的上下文管理，请转换传出模型请求，而不是删除或重新排序持久化消息。保留有意的应用程序行为的历史编辑，而不是常规的上下文压缩。编辑源消息不会重新生成现有摘要。
+
 ![An example of summarization showing an agent's conversation history, where several steps get compacted](https://mintcdn.com/langchain-5e9cc07a/0G7fpRWZQ2tFN1wL/oss/images/deepagents/summarization.png?fit=max\&auto=format\&n=0G7fpRWZQ2tFN1wL\&q=85\&s=a8fea59d4365dd688e49ce118e706e76)
 
-**Configuration:**
+**配置：**
 
 * 在模型 `max_input_tokens` 的 [model profile](/oss/python/langchain/models#model-profiles) 的 85% 处触发
 * 保留 10% 的 token 作为最近的上下文
 * 如果模型配置文件不可用，则回落至 170,000 个令牌触发/保留 6 条消息
 * 如果任何模型调用提出标准[ContextOverflowError](https://reference.langchain.com/python/langchain-core/exceptions/ContextOverflowError)，深度代理会立即回退到摘要并使用摘要+最近保留的消息重试
-* 较旧的消息按模型进行总结
+* 较旧的消息按模型进行总结总结一下不同的（通常更便宜）模型或自定义可调用，当您 [override SummarizationMiddleware](/oss/python/deepagents/customization#override-a-default-middleware-instance) 时传递 `summarizer=`。主`model`仍然提供配置文件和令牌计数。需要`deepagents>=0.7.26`。
 
 > [!提示]
 >
@@ -850,7 +854,7 @@ Deep Agents 使用 [built-in filesystem tools](/oss/python/deepagents/overview#v
 默认情况下，自动摘要会在达到上下文阈值时运行。
 另外，您可以为代理提供 `compact_conversation` [tool](/oss/python/langchain/tools)，以便它可以按需触发压缩（例如在任务之间），而不是等待 85% 阈值。
 
-通过使用 `create_deep_agent` 上的 `middleware` 参数传递 [⟦T107⟧](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_tool_middleware) 来启用该工具。自定义中间件插入到[⟦T110⟧](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware)之后的[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)中：
+通过使用 `create_deep_agent` 上的 `middleware` 参数传递 [⟦T111⟧](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_tool_middleware) 来启用该工具。自定义中间件插入到[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)之后[⟦T114⟧](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware)：
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -882,7 +886,9 @@ agent = create_deep_agent(
         create_summarization_tool_middleware(model, backend),  # [!code highlight]
     ],  # [!code highlight]
 )
-``````python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 from deepagents.middleware.summarization import create_summarization_tool_middleware
@@ -964,11 +970,9 @@ agent = create_deep_agent(
 
 添加压缩工具不会在模型上下文限制的 85% 时禁用自动摘要。两者共享相同的摘要引擎和状态。
 
-有关详细信息，请参阅 API 参考中的[⟦T111⟧](https://reference.langchain.com/python/deepagents/middleware/summarization/SummarizationToolMiddleware) 和 [⟦T112⟧](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_tool_middleware)。
+有关详细信息，请参阅 API 参考中的[⟦T115⟧](https://reference.langchain.com/python/deepagents/middleware/summarization/SummarizationToolMiddleware) 和 [⟦T116⟧](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_tool_middleware)。
 
-## 使用子代理进行上下文隔离
-
-子代理解决了**上下文膨胀问题**。当主代理使用具有大量输出的工具（网络搜索、文件读取、数据库查询）时，上下文窗口很快就会填满。子代理隔离了这项工作——主代理仅接收最终结果，而不是产生该结果的数十个工具调用。您还可以独立于主代理配置每个子代理（例如，模型、工具、系统提示和技能）。
+## 使用子代理进行上下文隔离子代理解决了**上下文膨胀问题**。当主代理使用具有大量输出的工具（网络搜索、文件读取、数据库查询）时，上下文窗口很快就会填满。子代理隔离了这项工作——主代理仅接收最终结果，而不是产生该结果的数十个工具调用。您还可以独立于主代理配置每个子代理（例如，模型、工具、系统提示和技能）。
 
 **它是如何工作的：**
 
@@ -982,7 +986,9 @@ agent = create_deep_agent(
 
 1. **委派复杂任务**：使用子代理进行多步骤工作，这会扰乱主代理的上下文。
 
-2. **保持子代理响应简洁**：指示子代理返回摘要，而不是原始数据：```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+2. **保持子代理响应简洁**：指示子代理返回摘要，而不是原始数据：
+
+   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    research_subagent = {
        "name": "researcher",
        "description": "Conducts research on a topic",
@@ -997,9 +1003,7 @@ agent = create_deep_agent(
 
 有关配置，请参阅 [Subagents](/oss/python/deepagents/subagents)；有关运行时上下文传播和每个子代理命名空间的信息，请参阅 [context management](/oss/python/deepagents/subagents#context-management)。
 
-## 长期记忆
-
-使用默认文件系统时，深度代理将其工作内存文件存储在代理状态中，该状态仅在单个线程中持续存在。
+## 长期记忆使用默认文件系统时，深度代理将其工作内存文件存储在代理状态中，该状态仅在单个线程中持续存在。
 长期记忆使您的深度代理能够跨不同线程和对话保存信息。
 深度代理可以使用长期记忆来存储用户偏好、积累的知识、研究进展或任何应在单个会话之后持续存在的信息。
 
@@ -1151,18 +1155,20 @@ agent = create_deep_agent(
     system_prompt="""When users tell you their preferences, save them to
     /memories/user_preferences.txt so you remember them in future conversations.""",
 )
-```您不需要使用文件预先填充 `/memories/`。
+```
+
+您不需要使用文件预先填充 `/memories/`。
 您提供后端配置、存储和系统提示指令，告诉代理“保存什么”和“在哪里”。
 例如，您可以提示代理将首选项存储在`/memories/preferences.txt`中。
-该路径开始为空，当用户共享值得记住的信息时，代理会使用其文件系统工具（`write_file`、`edit_file`）按需创建文件。
-
-要预先播种内存，请在 LangSmith 上部署时使用 [Store API](/langsmith/custom-store)。
+该路径开始为空，当用户共享值得记住的信息时，代理会使用其文件系统工具（`write_file`、`edit_file`）按需创建文件。要预先播种内存，请在 LangSmith 上部署时使用 [Store API](/langsmith/custom-store)。
 有关设置和用例，请参阅[Long-term memory](/oss/python/deepagents/memory)。
 
-## 最佳实践1. **从正确的输入上下文开始**：为始终相关的约定保持最小的内存；使用专注技能来实现特定任务的能力。
+## 最佳实践
+
+1. **从正确的输入上下文开始**：为始终相关的约定保持最小的内存；使用专注技能来实现特定任务的能力。
 2. **利用子代理完成繁重的工作**：委派多步骤、输出繁重的任务，以保持主代理的上下文干净。
 3. **在配置中调整子代理输出**：如果您在调试时注意到子代理生成长输出，您可以向子代理的 `system_prompt` 添加指导以创建摘要和综合结果。
-4. **使用文件系统**：将大量输出保留到文件（例如子代理写入或[automatic offloading](#offloading)），以便活动上下文保持较小；当模型需要细节时，可以使用`read_file`和`grep`拉取片段。
+4. **使用文件系统**：将大量输出持久保存到文件中（例如子代理写入或[automatic offloading](#offloading)），以便活动上下文保持较小；当模型需要细节时，可以使用`read_file`和`grep`拉取片段。
 5. **记录长期记忆结构**：告诉代理`/memories/`里有什么以及如何使用它。
 6. **传递工具的运行时上下文**：使用 `context` 来获取用户元数据、API 密钥和工具所需的其他静态配置。
 

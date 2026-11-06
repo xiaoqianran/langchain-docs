@@ -428,7 +428,7 @@ function TodoList({ todos, isLoading }: { todos: Todo[]; isLoading: boolean }) {
 * **动画状态转换**。平滑的过渡让座席感觉更轻松
   反应灵敏。在背景颜色、文本装饰等上使用 CSS 过渡
   不透明度。
-* **仅突出显示一项 `in_progress` 项目**。代理通常只处理一项任务
+* **仅突出显示一项 `in_progress` 项目**。代理通常只执行一项任务
   一次。如果多个项目显示为 `in_progress`，则 UI 会变得嘈杂。
   考虑只脉冲第一个。
 * **折叠或变暗已完成的项目**。随着列表的增长，已完成的项目
@@ -444,19 +444,19 @@ function TodoList({ todos, isLoading }: { todos: Todo[]; isLoading: boolean }) {
 渲染结构化代理状态。这些指南涵盖了相关技术
 与基于计划的代理良好配合：
 
-> **[Structured output](/oss/python/langchain/frontend/structured-output)**
+> [卡][Structured output](/oss/python/langchain/frontend/structured-output)
 >
 > 使用自定义 UI 组件而不是纯文本呈现任何结构化代理状态（而不仅仅是待办事项）。
 
-> **[Join & rejoin streams](/oss/python/langchain/frontend/join-rejoin)**
+> [卡][Join & rejoin streams](/oss/python/langchain/frontend/join-rejoin)
 >
 > 页面重新加载或选项卡切换后重新连接到正在运行的计划，而不会丢失进度。
 
-> **[Message queues](/oss/python/langchain/frontend/message-queues)**
+> [卡][Message queues](/oss/python/langchain/frontend/message-queues)
 >
 > 在代理仍在执行当前计划的同时对后续任务进行排队。
 
-> **[Human-in-the-Loop](/oss/python/langchain/frontend/human-in-the-loop)**
+> [卡][Human-in-the-Loop](/oss/python/langchain/frontend/human-in-the-loop)
 >
 > 当代理需要用户批准或输入时暂停和恢复计划执行。
 

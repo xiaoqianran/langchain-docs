@@ -245,7 +245,7 @@ for await (const snapshot of stream.values) {
 通过并行化，法学硕士可以同时处理一项任务。这可以通过同时运行多个独立的子任务来完成，或者多次运行同一任务以检查不同的输出。并行化通常用于：
 
 * 拆分子任务并并行运行它们，从而提高速度
-* 多次运行任务以检查不同的输出，这增加了信心
+* 多次运行任务以检查不同的输出，从而增加信心
 
 一些例子包括：
 
@@ -1148,7 +1148,7 @@ const toolNode = new ToolNode([search, calculator]);
 > [!注意]
 >
 > 工具只能访问传递给`ToolNode` 的状态值。当
-> `ToolNode` 直接添加为 `StateGraph` 节点，输入为当前
+> `ToolNode`直接添加为`StateGraph`节点，输入为当前
 > 图形状态。如果您从另一个节点手动调用 `ToolNode`，请传递
 > 当工具需要自定义状态字段时的完整状态。例如，`tool_node.invoke(state)`
 > 或 `toolNode.invoke(state, config)` 公开完整状态，同时仅传递
@@ -1225,7 +1225,7 @@ const result = await graph.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/f9a855a9-4897-4c50-ab4f-8c7db93b1894/r)**
+> [卡][View example trace](https://smith.langchain.com/public/02f51418-8d32-4340-8c49-2194880ca59d/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 

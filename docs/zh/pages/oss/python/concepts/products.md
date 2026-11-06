@@ -34,7 +34,7 @@ LangChain 维护了多个开源包来帮助您构建代理。每个在代理开�
 
     <tr>
       <td>选项</td>
-      <td><ul><li>LangGraph</li><li>颞叶</li><li>摄入</li></ul></td>
+      <td><ul><li>LangGraph</li><li>颞叶</li><li>摄取</li></ul></td>
       <td><ul><li>LangChain</li><li>Vercel 的 AI SDK</li><li>CrewAI</li><li>OpenAI代理SDK</li><li>Google ADK</li><li>LlamaIndex</li></ul></td>
       <td><ul><li>Deep Agents SDK</li><li>克劳德代理SDK</li><li>手册</li></ul></td>
     </tr>
@@ -72,7 +72,7 @@ LangChain 维护了多个开源包来帮助您构建代理。每个在代理开�
 [LangGraph](/oss/python/langgraph/overview) 是一个低级编排框架和运行时，用于构建、管理和部署长期运行的有状态代理。
 
 代理框架通常是更高级别的并且在代理运行时上运行。
-例如，LangChain 1.0 构建在 LangGraph 之上。
+例如，LangChain 1.0 构建在LangGraph 之上。
 
 代理运行时的其他示例包括[Temporal](https://temporal.io/)、[Inngest](https://www.inngest.com/)和其他持久执行引擎。
 
@@ -100,12 +100,14 @@ Deep Agents 专为需要规划和分解的复杂、多步骤任务而设计。
 
 代理工具的其他示例包括 [Claude Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview)、[Manus](https://manus.im/) 和其他编码 CLI。
 
-### 何时使用Deep Agents SDK
+### 何时使用Deep Agents
 
-在以下情况下使用[Deep Agents SDK](/oss/python/deepagents/overview)：* 您正在构建长期运行的代理。
+在以下情况下使用Deep Agents：* 您正在构建长期运行的代理。
 * 您正在构建需要处理复杂、多步骤任务的代理。
 * 您想要使用预定义的工具，例如文件系统操作、bash 执行和自动化上下文工程。
 * 您想要使用预定义的提示和子代理。
+
+从 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 开始，在生产中运行该工具，无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。
 
 ## 功能比较
 
@@ -124,6 +126,7 @@ Deep Agents 专为需要规划和分解的复杂、多步骤任务而设计。
 
 * [LangChain overview](/oss/python/langchain/overview)
 * [LangGraph overview](/oss/python/langgraph/overview)
+* [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)
 * [Deep Agents overview](/oss/python/deepagents/overview)
 
 ***

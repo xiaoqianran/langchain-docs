@@ -18,7 +18,7 @@ Fetch a single run by ID. Returns only the run ID by default—specify a field s
 >
 > | Before | After |
 > | - | - |
-> | `client.read_run()` | `client.runs.retrieve()` |
+> | `client.read_run()` | `client.runs.retrieve()` (alias to `client.runs.retrieve_v2()`) |
 >
 > > [!NOTE]
 > >
@@ -30,7 +30,7 @@ Fetch a single run by ID. Returns only the run ID by default—specify a field s
 >
 > | Before | After |
 > | - | - |
-> | `client.readRun()` | `client.runs.retrieve()` |
+> | `client.readRun()` | `client.runs.retrieve()` (alias to `client.runs.retrieveV2()`) |
 >
 > See the [reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Runs/retrieveV2) for the full parameter and field list.
 

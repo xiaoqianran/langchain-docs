@@ -570,7 +570,7 @@ NamespaceFactory = Callable[[Runtime], tuple[str, ...]]
 `Runtime` 提供：
 
 * `rt.context` - 通过 LangGraph 的 [context schema](/oss/python/langgraph/graph-api#runtime-context) 传递的用户提供的上下文（例如，`user_id`）
-* `rt.server_info`—在 LangGraph 服务器上运行时特定于服务器的元数据（助理 ID、图形 ID、经过身份验证的用户）
+* `rt.server_info`—在 LangGraph 服务器上运行时特定于服务器的元数据（助手 ID、图形 ID、经过身份验证的用户）
 * `rt.execution_info`—执行身份信息（线程ID、运行ID、检查点ID）
 
 > [!注意]
@@ -898,7 +898,7 @@ agent = create_deep_agent(
 
 ## 自定义后端
 
-实现自定义后端以将 Deep Agents 连接到存储系统，例如数据库、对象存储和远程文件系统。有关示例，请参阅[community-built backends](/oss/python/integrations/backends)。
+实现自定义后端以将Deep Agents连接到存储系统，例如数据库、对象存储和远程文件系统。有关示例，请参阅[community-built backends](/oss/python/integrations/backends)。
 
 ### 实现后端协议
 
@@ -916,7 +916,7 @@ agent = create_deep_agent(
 
 对于失败情况，始终返回带有 `error` 字段的结构化结果类型。不要提出异常。
 
-> **示例：S3 式后端骨架**
+> [accordion] 示例：S3 风格的后端骨架
 >
 > 该骨架将文件系统路径映射到对象键。使用存储客户端的列表、读取、搜索、上传和读取-修改-写入操作填写每个方法。
 >
@@ -992,7 +992,7 @@ agent = create_deep_agent(
 
 ## 添加策略挂钩
 
-对于超出基于路径的允许/拒绝规则（速率限制、审核日志记录、内容检查）的自定义验证逻辑，通过子类化或包装后端来强制实施企业规则。
+对于超出基于路径的允许/拒绝规则（速率限制、审核日志记录、内容检查）的自定义验证逻辑，通过子类化或包装后端来强制执行企业规则。
 
 阻止在选定前缀（子类）下写入/编辑：
 
@@ -1058,7 +1058,7 @@ class PolicyWrapper(BackendProtocol):
 
 ### 发生了什么变化
 
-|之前（已弃用）|之后 |
+|之前（已弃用）|之后|
 | - | - |
 | `backend=lambda rt: StateBackend(rt)` | `backend=StateBackend()` |
 | `backend=lambda rt: StoreBackend(rt)` | `backend=StoreBackend()` |
@@ -1153,7 +1153,6 @@ StoreBackend(
 * `FileInfo` 包含字段：`path`（必填），可选 `is_dir`、`size`、`modified_at`。
 * `GrepMatch` 包含字段：`path`、`line`、`text`。
 * `FileData` 包含字段：`content` (str)、`encoding`（`"utf-8"` 或 `"base64"`）、`created_at`、`modified_at`。
-  :::
 
 ## 另请参阅* [OpenWiki](/oss/openwiki/overview)：生成持久存储库 Markdown，代理通过文件系统工具读取
 * [Memory](/oss/python/deepagents/memory)：文件系统支持的长期存储器

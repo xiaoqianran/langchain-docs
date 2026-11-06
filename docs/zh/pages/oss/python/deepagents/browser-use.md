@@ -1,70 +1,66 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Browser use | https://docs.langchain.com/oss/python/deepagents/browser-use -->
 
-# Browser use
+# 浏览器使用
 
-Give a deep agent a browser so it can take actions on websites and test web apps end to end.
+为深度代理提供一个浏览器，以便它可以在网站上执行操作并端到端测试 Web 应用程序。
 
-Browser use gives a deep agent a browser that it controls through tools. The agent opens pages, reads what renders, clicks, types, and takes screenshots. Use it for work that happens on the web:
+浏览器的使用为深度代理提供了一个可以通过工具控制的浏览器。代理打开页面、读取呈现的内容、单击、键入并截取屏幕截图。将其用于网络上发生的工作：
 
-* **Actions with no public API**: Book a restaurant reservation, complete a checkout, or research a topic by following links across sites.
-* **End-to-end testing**: QA a web app through its UI. [Open SWE](https://github.com/langchain-ai/open-swe), LangChain's open-source coding agent, gets a browser in each thread so it can open the app it changed and check the change in the UI.
+* **没有公共 API 的操作**：预订餐厅、完成结账或通过跨网站的链接研究主题。
+* **端到端测试**：通过 UI 对 Web 应用程序进行质量检查。 [Open SWE](https://github.com/langchain-ai/open-swe)，LangChain 的开源编码代理，在每个线程中获取一个浏览器，以便它可以打开更改的应用程序并检查 UI 中的更改。
 
-To add a browser to a managed agent, see [Browser use in Managed Deep Agents](/langsmith/python/managed-deep-agents-browser-use).
+要将浏览器添加到托管代理，请参阅[Browser use in Managed Deep Agents](/langsmith/python/managed-deep-agents-browser-use)。
 
-## Understand the basics
+## 了解基础知识
 
-An agent needs two components to use the web:
-
-| Component | Options |
+代理需要两个组件才能使用网络：|组件|选项|
 | - | - |
-| A browser | <ul><li>**Local**: Chrome or Chromium on your machine or in a [sandbox](/oss/python/deepagents/sandboxes). Reaches apps on its own `localhost` and needs no provider account. You install and update Chrome yourself.</li><li>**Remote**: A cloud browser from a provider such as [Browserbase](https://www.browserbase.com). Isolated from your machine, needs an API key, and cannot reach `localhost` on your machine or in your sandbox.</li></ul> |
-| Browser tools | [Stagehand v4](https://docs.stagehand.dev/v4/integrations/agent-frameworks/deep-agents) (recommended), [Playwright MCP](https://github.com/microsoft/playwright-mcp), or the [agent-browser](https://github.com/vercel-labs/agent-browser) CLI. |
+|浏览器 | <ul><li>**本地**：您的计算机上或 [sandbox](/oss/python/deepagents/sandboxes) 中的 Chrome 或 Chromium。自行访问应用程序 `localhost`，无需提供商帐户。您自行安装和更新 Chrome。</li><li>**远程**：来自 [Browserbase](https://www.browserbase.com) 等提供商的云浏览器。与您的机器隔离，需要 API 密钥，并且无法在您的机器或沙箱中访问 `localhost`。</li></ul> |
+|浏览器工具 | [Stagehand v4](https://docs.stagehand.dev/v4/integrations/agent-frameworks/deep-agents)（推荐）、[Playwright MCP](https://github.com/microsoft/playwright-mcp) 或 [agent-browser](https://github.com/vercel-labs/agent-browser) CLI。 |
 
-### Use Stagehand with local or remote browsers
+### 通过本地或远程浏览器使用 Stagehand
 
-[Stagehand](https://docs.stagehand.dev/v4/first-steps/introduction) provides browser tools that work with both local Chrome and remote Browserbase sessions. Choose where the browser runs without changing the tools your agent uses. Stagehand exposes three tools over one persistent browser:
+[Stagehand](https://docs.stagehand.dev/v4/first-steps/introduction) 提供可与本地 Chrome 和远程 Browserbase 会话配合使用的浏览器工具。选择浏览器的运行位置，而无需更改代理使用的工具。 Stagehand 在一个持久浏览器上公开了三种工具：
 
-| Tool | Description |
+|工具|描述 |
 | - | - |
-| `snapshot` | Reads the active page's accessibility tree and labels interactive elements with IDs. |
-| `run` | Acts on the page with a batch of snapshot actions (`click`, `hover`, `fill`, `type`, `press`, `select`) or with JavaScript that uses Playwright-style `page`, `context`, and `browser` objects. |
-| `screenshot` | Captures the rendered page as a PNG or JPEG. |
+| `snapshot` |读取活动页面的辅助功能树并使用 ID 标记交互元素。 |
+| `run` |使用一批快照操作（`click`、`hover`、`fill`、`type`、`press`、`select`）或使用 Playwright 风格的 JavaScript `page`、`context` 和`browser` 物体。 |
+| `screenshot` |将渲染的页面捕获为 PNG 或 JPEG 格式。 |元素 ID 仅对活动页面的最新快照有效，因此代理在导航后会拍摄新快照。
 
-An element ID is valid only for the latest snapshot of the active page, so the agent takes a new snapshot after it navigates.
+使用 [langchain-stagehand](https://github.com/langchain-ai/langchain-browserbase) 中的 `StagehandMiddleware` 添加这些工具。将配置好的 Stagehand 客户端传递给中间件，然后将其包含在 `middleware` 中。不需要 MCP 服务器、自定义工具定义或浏览器系统提示。
 
-Add these tools with `StagehandMiddleware` from [langchain-stagehand](https://github.com/langchain-ai/langchain-browserbase). Pass a configured Stagehand client to the middleware, then include it in `middleware`. No MCP server, custom tool definitions, or browser system prompt is needed.
+完整配置参考，请参见[Stagehand integration](/oss/python/integrations/tools/stagehand)。
 
-For the full configuration reference, see the [Stagehand integration](/oss/python/integrations/tools/stagehand).
+### 其他浏览器工具
 
-### Other browser tools
+* **[Playwright MCP](https://github.com/microsoft/playwright-mcp)**：来自 Microsoft 的 MCP 服务器，可公开 Playwright 浏览器操作。通过MCP适配器连接，命令为`npx @playwright/mcp@latest`。参见[Model Context Protocol](/oss/python/langchain/mcp)。
+* **[agent-browser](https://github.com/vercel-labs/agent-browser)**：来自 Vercel Labs 的浏览器 CLI。将其安装在[sandbox](/oss/python/deepagents/sandboxes)中，代理通过`execute`工具运行`agent-browser open`和`agent-browser snapshot`等命令。
 
-* **[Playwright MCP](https://github.com/microsoft/playwright-mcp)**: An MCP server from Microsoft that exposes Playwright browser actions. Connect it through an MCP adapter, with `npx @playwright/mcp@latest` as the command. See [Model Context Protocol](/oss/python/langchain/mcp).
-* **[agent-browser](https://github.com/vercel-labs/agent-browser)**: A browser CLI from Vercel Labs. Install it in a [sandbox](/oss/python/deepagents/sandboxes), and the agent runs commands such as `agent-browser open` and `agent-browser snapshot` through the `execute` tool.
+## 将 Stagehand 与 Browserbase 结合使用
 
-## Use Stagehand with Browserbase
+此示例提供了驱动 Browserbase 浏览器的深层代理 Stagehand 工具。该代理在您的计算机上运行。浏览器在 Browserbase 上运行。
 
-This example gives a deep agent Stagehand tools that drive a Browserbase browser. The agent runs on your machine. The browser runs on Browserbase.
-
-> [!NOTE]
+> [!注意]
 >
-> The middleware is proposed in [langchain-browserbase#1](https://github.com/langchain-ai/langchain-browserbase/pull/1) and is not published to PyPI yet. This example installs that revision from source. It requires Python 3.11 or later, LangChain 1.4.7 or later, and Stagehand 4.3.0 or later.
+> `langchain-stagehand` 需要 Python 3.11 或更高版本、LangChain 1.4.7 或更高版本以及 Stagehand 4.3.0 或更高版本。
 
-Install the middleware, Deep Agents, and the model integration:
+安装中间件Deep Agents和模型集成：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install "langchain-stagehand @ git+https://github.com/langchain-ai/langchain-browserbase.git@40d1ae1d5e0543fe1e49b13d0887df40acf1c4c8" deepagents langchain-openai
+pip install langchain-stagehand deepagents langchain-openai
 ```
 
-Set your API keys:
+设置您的 API 密钥：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export OPENAI_API_KEY="your-openai-api-key"
 export BROWSERBASE_API_KEY="your-browserbase-api-key"
 ```
 
-Create the browser and pass its Stagehand client to the middleware:
+创建浏览器并将其 Stagehand 客户端传递给中间件：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -98,51 +94,43 @@ async def main():
 
 
 asyncio.run(main())
-```
+```使用`ainvoke`或`astream`：浏览器工具是异步的。您的应用程序拥有浏览器并在完成后将其关闭。在运行中保持其打开状态以重复使用选项卡和登录名。中间件使您的系统提示保持不变，并在工具描述中包含浏览器指南。
 
-Use `ainvoke` or `astream`: the browser tools are asynchronous. Your application owns the browser and closes it when finished. Keep it open across runs to reuse tabs and logins. The middleware leaves your system prompt unchanged and includes browser guidance in tool descriptions.
+对于本地 Chrome、屏幕截图以及与 LangChain 的 `create_agent` 的使用，请参阅 [Stagehand integration](/oss/python/integrations/tools/stagehand)。
 
-For local Chrome, screenshots, and use with LangChain's `create_agent`, see the [Stagehand integration](/oss/python/integrations/tools/stagehand).
-
-> [!TIP]
+> [!提示]
 >
-> Snapshots can be long. To keep them out of the main agent's context, give the browser tools to a [subagent](/oss/python/deepagents/subagents) and let the main agent delegate browser tasks to it.
+> 快照可能很长。为了使它们脱离主代理的上下文，请将浏览器工具交给[subagent](/oss/python/deepagents/subagents)，并让主代理将浏览器任务委托给它。
 
-## Choose a browser scope
+## 选择浏览器范围
 
-Reusing a browser retains cookies and website logins, so the agent does not need to sign in on every turn. Choose which conversations share that state:
+重复使用浏览器会保留 cookie 和网站登录信息，因此客服人员无需每次都登录。选择哪些对话共享该状态：* **线程范围**：每个对话保留一个浏览器。例如，使用测试帐户测试 Web 应用程序更改。当您在同一对话中迭代时，重复使用选项卡并登录。另一个对话将获得一个单独的浏览器，而无需这些 cookie 或登录信息。共享线程中的参与者可以使用其登录帐户。
+* **用户范围**：在同一经过身份验证的用户的对话中重复使用浏览器登录状态。例如，某人登录预订网站一次，然后在新线程中请求另一次预订。
 
-* **Thread scope**: Keep one browser per conversation. For example, test a web app change using a test account. Reuse the tabs and login as you iterate in the same conversation. Another conversation gets a separate browser without those cookies or logins. Participants in a shared thread can use its signed-in accounts.
-* **User scope**: Reuse browser login state across the same authenticated user's conversations. For example, a person signs in to a booking site once, then requests another reservation in a new thread.
+不要在不相关的用户之间重复使用个人浏览器会话。其代理可以访问该浏览器的任何人都可以充当其登录帐户。使用应用程序身份验证层中经过验证的身份，而不是提示中提供的用户 ID。
 
-Do not reuse a personal browser session across unrelated users. Anyone whose agent can access that browser can act as its signed-in accounts. Use verified identity from your application's authentication layer, not a user ID supplied in a prompt.
+`StagehandMiddleware` 不选择范围或管理会话存储。您的应用程序选择要提供的 Stagehand 客户端。重用该客户端以在预期范围内进行顺序运行。为并发代理提供单独的客户端和浏览器，以避免导航冲突。
 
-`StagehandMiddleware` does not select a scope or manage session storage. Your application chooses which Stagehand client to supply. Reuse that client for sequential runs within the intended scope. Give concurrent agents separate clients and browsers to avoid conflicting navigation.
+浏览器状态不是 LangGraph 检查点的一部分。关闭或更换浏览器可能会丢失登录信息，并且网站可能会单独使登录信息过期。[Managed Deep Agents](/langsmith/python/managed-deep-agents-browser-use#choose-a-scope) 为您管理线程和用户范围，包括具有用户范围共享登录状态的单独的每线程窗口。
 
-Browser state is not part of a LangGraph checkpoint. Closing or replacing the browser can lose logins, and websites can expire them independently.
+## 在 LangSmith 沙箱中使用 Chrome 测试应用程序
 
-[Managed Deep Agents](/langsmith/python/managed-deep-agents-browser-use#choose-a-scope) manages thread and user scope for you, including separate per-thread windows with shared login state for user scope.
+此示例涵盖端到端测试：编码代理更改应用程序后，代理在浏览器中打开应用程序并检查更改。 Open SWE 从 [Managed Deep Agents](/langsmith/python/managed-deep-agents-browser-use) 获取其浏览器。以下步骤使用 LangSmith 沙箱构建相同的检查。
 
-## Test an app with Chrome in a LangSmith sandbox
+[LangSmith sandbox](/langsmith/sandboxes) 一起运行您的应用程序和 Chrome，因此浏览器可以在 `localhost` 打开应用程序。该代理在您的计算机上运行，​​并使用 `LangSmithSandbox` 后端进行文件系统访问和 `execute` 工具。
 
-This example covers end-to-end testing: after a coding agent changes an app, an agent opens the app in a browser and checks the change. Open SWE gets its browser from [Managed Deep Agents](/langsmith/python/managed-deep-agents-browser-use). The steps below build the same check with a LangSmith sandbox.
+此示例通过 `execute` 使用代理浏览器，而不是 MCP。每个 CLI 调用都会重用沙箱内命名的 `qa` 浏览器会话。您的计算机上不需要 Browserbase 帐户或 Docker 守护程序。
 
-A [LangSmith sandbox](/langsmith/sandboxes) runs your app and Chrome together, so the browser can open the app at `localhost`. The agent runs on your machine and uses the `LangSmithSandbox` backend for filesystem access and an `execute` tool.
+### 准备沙箱快照
 
-This example uses agent-browser through `execute`, rather than MCP. Each CLI call reuses the named `qa` browser session inside the sandbox. You do not need a Browserbase account or a Docker daemon on your machine.
-
-### Prepare the sandbox snapshot
-
-A [snapshot](/langsmith/sandbox-snapshots) contains the filesystem and dependencies for new sandboxes. Create one containing your app, its dependencies, Node.js, and curl. During snapshot setup, install agent-browser and Chrome for Testing:
+[snapshot](/langsmith/sandbox-snapshots) 包含新沙箱的文件系统和依赖项。创建一个包含您的应用程序、其依赖项、Node.js 和curl 的应用程序。在快照设置过程中，安装代理浏览器和 Chrome 进行测试：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install -g agent-browser@latest
 agent-browser install --with-deps
-```
+```以运行浏览器的同一用户身份运行安装。 Linux 依赖项安装程序需要安装系统软件包的权限。将准备好的文件系统捕获为快照并保留其 ID。有关快照创建和捕获，请参阅[Create a snapshot from a running sandbox](/langsmith/sandbox-snapshots#capture-a-snapshot-from-a-running-sandbox)。
 
-Run installation as the same user that runs the browser. The Linux dependency installer requires permission to install system packages. Capture the prepared filesystem as a snapshot and keep its ID. For snapshot creation and capture, see [Create a snapshot from a running sandbox](/langsmith/sandbox-snapshots#capture-a-snapshot-from-a-running-sandbox).
-
-Set these variables on the machine that runs the agent:
+在运行代理的计算机上设置这些变量：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="your-langsmith-api-key"
@@ -151,13 +139,13 @@ export QA_SNAPSHOT_ID="your-prepared-snapshot-id"
 export QA_START_COMMAND="cd /app && npm run dev -- --host 0.0.0.0 --port 3000"
 ```
 
-Replace `QA_START_COMMAND` with your app's start command. The examples expect it to serve port `3000` inside the sandbox.
+将 `QA_START_COMMAND` 替换为应用程序的启动命令。这些示例期望它为沙箱内的端口 `3000` 提供服务。
 
-### Create the QA agent
+### 创建 QA 代理
 
-The code starts the app, waits for it to respond, and opens the browser. The agent then interacts with the UI through `execute`. Download screenshots before cleanup: deleting the sandbox deletes its files.
+该代码启动应用程序，等待其响应，然后打开浏览器。然后代理通过`execute`与UI交互。清理前下载屏幕截图：删除沙箱会删除其文件。
 
-Install the host-side packages:
+安装主机端软件包：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install deepagents langsmith langchain-openai
@@ -215,21 +203,19 @@ finally:
     client.close()
 ```
 
-The examples disable Chrome's internal sandbox with `--no-sandbox` for root-run sandbox images. The disposable LangSmith sandbox supplies the outer isolation boundary. For images that support Chrome's internal sandbox, omit that flag.
+这些示例使用 `--no-sandbox` 禁用 Chrome 的内部沙箱，以用于 root 运行的沙箱映像。一次性LangSmith沙箱提供外部隔离边界。对于支持 Chrome 内部沙箱的图像，请忽略该标志。
 
-The screenshot is an artifact downloaded to your machine, not an image automatically shown to the model. For model-visible images, see [Multimodal inputs](/oss/python/deepagents/multimodal). Use independent assertions for deterministic test results: an agent's report and its instructions are not a security boundary.
+屏幕截图是下载到您的计算机上的工件，而不是自动显示给模型的图像。对于模型可见图像，请参阅[Multimodal inputs](/oss/python/deepagents/multimodal)。使用独立断言来获得确定性测试结果：代理的报告及其指令不是安全边界。## 保护浏览器会话
 
-## Secure browser sessions
+在浏览器中运行的代码可以使用会话登录的任何帐户以及浏览器可以访问的任何站点。在为代理提供浏览器之前：
 
-Code that runs in the browser can use any account the session is signed in to and any site the browser can reach. Before you give an agent a browser:
+* 对于Stagehand，使用Browserbase 作为不受信任任务的隔离边界。 `run` 在浏览器内执行模型编写的 JavaScript。请参阅 Stagehand 的 [security boundary](https://docs.stagehand.dev/v4/integrations/agent-frameworks/overview#security-boundary)。
+* 对于[sandbox QA path](#test-an-app-with-chrome-in-a-langsmith-sandbox)，LangSmith沙箱是隔离边界。一次性沙箱将 Chrome 和应用程序与您的计算机隔离。
+* 使用测试帐户并测试付款方式进行结帐和表单流程，并在进行任何购买操作之前使用[require approval](/oss/python/deepagents/human-in-the-loop)。
+* 将页面内容视为不受信任的输入。页面可以包含用于重定向代理的文本。
+* 将凭据保存在您的应用程序环境中，而不是提示或浏览器工具输入中。使用 MCP 时，仅向服务器传递其所需的凭据。
 
-* For Stagehand, use Browserbase as the isolation boundary for untrusted tasks. `run` executes model-authored JavaScript inside the browser. See Stagehand's [security boundary](https://docs.stagehand.dev/v4/integrations/agent-frameworks/overview#security-boundary).
-* For the [sandbox QA path](#test-an-app-with-chrome-in-a-langsmith-sandbox), the LangSmith sandbox is the isolation boundary. The disposable sandbox isolates Chrome and the app from your machine.
-* Use test accounts and test payment methods for checkout and form flows, and [require approval](/oss/python/deepagents/human-in-the-loop) before any action that commits a purchase.
-* Treat page content as untrusted input. A page can contain text written to redirect the agent.
-* Keep credentials in your application environment, not in prompts or browser tool inputs. When using MCP, pass the server only the credentials it needs.
-
-## See also
+## 另请参阅
 
 * [Stagehand integration](/oss/python/integrations/tools/stagehand)
 
@@ -247,6 +233,6 @@ Code that runs in the browser can use any account the session is signed in to an
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/browser-use.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/browser-use.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

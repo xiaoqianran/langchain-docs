@@ -371,19 +371,19 @@ function DeepAgentLayout({ stream }: { stream: AnyStream }) {
 
 这些 LangChain 前端模式与子代理卡的工作方式相同
 使用单代理流。 Deep Agents 构建于相同的 `useStream`
-API，因此这些指南直接适用：> **[Tool calling](/oss/python/langchain/frontend/tool-calling)**
+API，因此这些指南直接适用：> [卡][Tool calling](/oss/python/langchain/frontend/tool-calling)
 >
 > 将每个子代理的工具调用呈现为丰富的、类型安全的 UI 卡，具有待处理、已完成和失败状态。
 
-> **[Markdown messages](/oss/python/langchain/frontend/markdown-messages)**
+> [卡][Markdown messages](/oss/python/langchain/frontend/markdown-messages)
 >
 > 将协调器和子代理消息显示为格式化的降价，并具有适当的流支持。
 
-> **[Human-in-the-Loop](/oss/python/langchain/frontend/human-in-the-loop)**
+> [卡片][Human-in-the-Loop](/oss/python/langchain/frontend/human-in-the-loop)
 >
 > 使用相同的中断 API 暂停委托子代理以供用户批准或输入。
 
-> **[Reasoning tokens](/oss/python/langchain/frontend/reasoning-tokens)**
+> [卡][Reasoning tokens](/oss/python/langchain/frontend/reasoning-tokens)
 >
 > 使用可折叠推理块在子代理卡内进行表面模型思考。
 

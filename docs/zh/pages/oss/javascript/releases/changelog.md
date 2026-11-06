@@ -104,7 +104,7 @@ const graph = new StateGraph(AgentState)
 
 用于在图形生成器外部键入函数的新导出类型实用程序：
 
-* `GraphNode<Schema, Nodes?, Config?>` - 具有完全推理的类型节点函数
+* `GraphNode<Schema, Nodes?, Config?>` - 具有完整推理的类型节点函数
 * `ConditionalEdgeRouter<Schema, Nodes?>` - 类型条件边缘路由器
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -119,13 +119,13 @@ const processState = (state: typeof AgentState.State) => {
 };
 ```
 
-现有的 `Annotation` 和基于 zod 的 API 继续保持不变 - `StateSchema` 对于那些喜欢模式优先定义的人来说是一个额外的选项。> **[Learn more about StateSchema](/oss/javascript/langgraph/graph-api#schema)**
+现有的 `Annotation` 和基于 zod 的 API 继续保持不变 - `StateSchema` 对于那些喜欢模式优先定义的人来说是一个额外的选项。> [卡] [Learn more about StateSchema](/oss/javascript/langgraph/graph-api#schema)
 >
 > 请参阅使用 StateSchema、ReducedValue 和 UntrackedValue 定义图形状态的完整文档。
 
-> **[Learn about type utilities](/oss/javascript/langgraph/graph-api#type-utilities)**
+> [卡][Learn about type utilities](/oss/javascript/langgraph/graph-api#type-utilities)
 >
-> 使用 GraphNode 和 ConditionalEdgeRouter 在图形生成器之外键入函数。
+> 使用 GraphNode 和 ConditionalEdgeRouter 在图形生成器外部键入函数。
 
 **2025 年 12 月 12 日**
 
@@ -145,7 +145,7 @@ const processState = (state: typeof AgentState.State) => {
 
 ### `@langchain/anthropic`
 
-* **新的提供商内置工具：** 支持由提供商在服务器端执行的文本编辑器、Web 获取、计算机使用、工具搜索和 MCP 工具集工具。请参阅 [Server-side tool use](/oss/javascript/langchain/tools#server-side-tool-use) 和 [Anthropic](/oss/javascript/integrations/chat/anthropic) 聊天集成。
+* **新的提供商内置工具：** 支持提供商在服务器端执行的文本编辑器、Web 获取、计算机使用、工具搜索和 MCP 工具集工具。请参阅 [Server-side tool use](/oss/javascript/langchain/tools#server-side-tool-use) 和 [Anthropic](/oss/javascript/integrations/chat/anthropic) 聊天集成。
 * 外露式 `ChatAnthropicInput` 型可提高类型安全性。
 
 ## v1.1.0
@@ -180,7 +180,7 @@ const processState = (state: typeof AgentState.State) => {
 * [Summarization middleware](/oss/javascript/langchain/middleware/built-in#summarization)：更新为支持使用模型配置文件进行上下文感知摘要的灵活触发点。
 * [Structured output](/oss/javascript/langchain/structured-output)：现在可以从模型配置文件推断`ProviderStrategy` 支持（本机结构化输出）。
 * [⟦T84⟧ for ⟦T85⟧](/oss/javascript/langchain/middleware/custom#dynamic-prompt)：支持将`SystemMessage`实例直接传递给`createAgent`的`systemPrompt`参数，以及用于扩展系统消息的新`concat`方法。启用缓存控制和结构化内容块等高级功能。
-* [Dynamic system prompt middleware](/oss/javascript/langchain/short-term-memory)：`dynamicSystemPromptMiddleware` 的返回值现在纯粹是累加的。当返回[⟦T91⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage)或`string`时，它们会与现有的系统消息合并而不是替换它们，从而更容易组合多个修改提示的中间件。* **兼容性改进：** 修复了结构化输出和工具架构中 Zod v4 验证错误的错误处理，确保正确显示详细的错误消息。
+* [Dynamic system prompt middleware](/oss/javascript/langchain/short-term-memory)：`dynamicSystemPromptMiddleware` 的返回值现在纯粹是累加的。当返回[⟦T91⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage)或`string`时，它们会与现有的系统消息合并而不是替换它们，从而更容易组合多个修改提示的中间件。* **兼容性改进：** 修复了结构化输出和工具模式中 Zod v4 验证错误的错误处理，确保正确显示详细的错误消息。
 
 **2025 年 10 月 20 日**
 

@@ -8,23 +8,23 @@ LangChain 和 LangGraph Python 和 TypeScript 库的综合 API 参考文档。
 
 ## 参考站点
 
-> **[LangChain](https://reference.langchain.com/javascript/langchain)**
+> [卡][LangChain](https://reference.langchain.com/javascript/langchain)
 >
 > LangChain JavaScript/TypeScript 的完整 API 参考，包括聊天模型、工具、代理等。
 
-> **[LangGraph](https://reference.langchain.com/javascript/langchain-langgraph)**
+> [卡][LangGraph](https://reference.langchain.com/javascript/langchain-langgraph)
 >
 > LangGraph JavaScript/TypeScript 的完整 API 参考，包括图形 API、状态管理、检查点等。
 
-> **[Deep Agents](https://reference.langchain.com/javascript/deepagents)**
+> [卡][Deep Agents](https://reference.langchain.com/javascript/deepagents)
 >
 > 构建可以规划、使用子代理并利用文件系统来执行复杂任务的代理
 
-> **[MCP Adapter](https://reference.langchain.com/javascript/langchain-mcp-adapters)**
+> [卡][MCP Adapter](https://reference.langchain.com/javascript/langchain-mcp-adapters)
 >
 > 在 LangChain 和 LangGraph 应用程序中使用模型上下文协议 (MCP) 工具。
 
-> **[Deep Agents](https://reference.langchain.com/javascript/deepagents)**
+> [卡][Deep Agents](https://reference.langchain.com/javascript/deepagents)
 >
 > 构建可以规划、使用子代理并利用文件系统来执行复杂任务的代理。
 

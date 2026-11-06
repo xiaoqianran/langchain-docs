@@ -14,7 +14,7 @@
 
 对话历史是短期记忆最常见的形式。长时间的对话对当今的法学硕士提出了挑战；完整的历史记录可能不适合法学硕士的上下文窗口，从而导致上下文丢失或错误。
 
-即使您的模型支持完整的上下文长度，大多数法学硕士在长上下文中仍然表现不佳。他们会被陈旧或偏离主题的内容“分散注意力”，同时还要承受响应时间较慢和成本较高的问题。聊天模型使用[messages](/oss/javascript/langchain/messages)接受上下文，其中包括指令（系统消息）和输入（人类消息）。在聊天应用程序中，消息在人工输入和模型响应之间交替，导致消息列表随着时间的推移而变长。由于上下文窗口是有限的，许多应用程序可以从使用删除或“忘记”过时信息的技术中受益。
+即使您的模型支持完整的上下文长度，大多数法学硕士在长上下文中仍然表现不佳。他们会被陈旧或偏离主题的内容“分散注意力”，同时还要承受响应时间较慢和成本较高的问题。聊天模型使用[messages](/oss/javascript/langchain/messages)接受上下文，其中包括指令（系统消息）和输入（人类消息）。在聊天应用程序中，消息在人工输入和模型响应之间交替，导致消息列表随着时间的推移而变长。由于上下文窗口有限，许多应用程序可以从使用删除或“忘记”过时信息的技术中受益。
 
 > [!提示]
 >
@@ -277,7 +277,7 @@ response = result.messages.at(-1)?.content;
 console.log(response); // "You are Bob!"
 ```
 
-> **[View example trace](https://smith.langchain.com/public/b512e509-c58f-4a96-8ee3-9fe060257d62/r)**
+> [卡][View example trace](https://smith.langchain.com/public/bf02b24e-121a-4f24-8d94-ce7565e6d298/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -333,19 +333,19 @@ const result = await agent.invoke({
 
 ## 常见模式启用 [short-term memory](#usage) 后，长时间对话可能会超出 LLM 的上下文窗口。常见的解决方案有：
 
-> **[Trim messages](#trim-messages)**
+> [卡][Trim messages](#trim-messages)
 >
 > 删除前 N 条或后 N 条消息（在调用 LLM 之前）
 
-> **[Delete messages](#delete-messages)**
+> [卡][Delete messages](#delete-messages)
 >
 > 永久删除LangGraph状态的消息
 
-> **[Summarize messages](#summarize-messages)**
+> [卡][Summarize messages](#summarize-messages)
 >
 > 总结历史记录中较早的消息并将其替换为摘要
 
-> **自定义策略**
+> 【卡牌】自定义策略
 >
 > 自定义策略（例如消息过滤等）
 
@@ -400,7 +400,7 @@ const agent = createAgent({
 
 您可以从图形状态中删除消息以管理消息历史记录。当您想要删除特定消息或清除整个消息历史记录时，这非常有用。
 
-要从图状态中删除消息，您可以使用`RemoveMessage`。为了使 `RemoveMessage` 工作，您需要使用带有 [⟦T30⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/messagesStateReducer) [reducer](/oss/javascript/langgraph/graph-api#reducers) 的状态密钥，如 `MessagesValue`。
+要从图状态中删除消息，可以使用`RemoveMessage`。为了使 `RemoveMessage` 工作，您需要使用带有 [⟦T30⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/messagesStateReducer) [reducer](/oss/javascript/langgraph/graph-api#reducers) 的状态密钥，如 `MessagesValue`。
 
 要删除特定消息：
 
@@ -818,11 +818,11 @@ const agent = createAgent({
     }
 }%%
 graph TD
-    S(["\_\_start\_\_"])
+    S(["`__start__`"])
     MODEL(model)
     POST(after_model)
     TOOLS(tools)
-    END(["\_\_end\_\_"])
+    END(["`__end__`"])
     S --> MODEL
     MODEL --> POST
     POST -.-> END
@@ -869,6 +869,6 @@ const agent = createAgent({
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/short-term-memory.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

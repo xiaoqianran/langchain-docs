@@ -10,7 +10,7 @@ LangChain 帮助组建了生成人工智能领域最大的开发者社区，并�
 
 ## 贡献方式
 
-> **报告错误**
+> [手风琴] 报告错误
 >
 > 发现错误？请按照以下步骤帮助我们修复该问题：
 >
@@ -18,15 +18,15 @@ LangChain 帮助组建了生成人工智能领域最大的开发者社区，并�
 >
 > 检查相应存储库的 GitHub 问题中是否已存在该问题：
 >
->> **[LangChain](https://github.com/langchain-ai/langchain/issues)**
+>>【卡牌】[LangChain](https://github.com/langchain-ai/langchain/issues)
 >>
 >> 问题
 >
->> **[LangGraph](https://github.com/langchain-ai/langgraph/issues)**
+>>【卡牌】[LangGraph](https://github.com/langchain-ai/langgraph/issues)
 >>
 >> 问题
 >
->> **[Deep Agents](https://github.com/langchain-ai/deepagents/issues)**
+>>【卡牌】[Deep Agents](https://github.com/langchain-ai/deepagents/issues)
 >>
 >> 问题
 >
@@ -35,15 +35,15 @@ LangChain 帮助组建了生成人工智能领域最大的开发者社区，并�
 > 如果不存在问题，请创建一个新问题。写作时，请务必遵循提供的模板并包含[minimal, reproducible, example](https://stackoverflow.com/help/minimal-reproducible-example)。创建后，将所有相关标签附加到最终期刊上。如果项目维护人员无法重现问题，则不太可能及时得到解决。
 >
 > **3。等待**
+>> 项目维护人员将对问题进行分类，并可能要求提供更多信息。请耐心等待，因为我们需要处理大量问题。除非您有新信息要提供，否则请勿提出问题。
 >
-> 项目维护人员将对问题进行分类，并可能要求提供更多信息。请耐心等待，因为我们需要处理大量问题。除非您有新信息要提供，否则请勿提出问题。
->> 如果您要添加问题，请尽量将其集中在一个主题上。如果两个问题相关或阻塞，请[link them](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)而不是合并它们。例如：
+> 如果您要添加问题，请尽量将其集中在一个主题上。如果两个问题相关或阻塞，请[link them](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)而不是合并它们。例如：
 >
 > ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > This issue is blocked by #123 and related to #456.
 > ```
 
-> **建议功能**
+> [手风琴] 建议功能
 >
 > 对新功能或增强功能有想法吗？
 >
@@ -51,15 +51,15 @@ LangChain 帮助组建了生成人工智能领域最大的开发者社区，并�
 >
 > 在相应存储库的问题中搜索现有功能请求：
 >
->> **[LangChain](https://github.com/langchain-ai/langchain/issues?q=state%3Aopen%20label%3A%22feature%20request%22)**
+>>【卡牌】[LangChain](https://github.com/langchain-ai/langchain/issues?q=state%3Aopen%20label%3A%22feature%20request%22)
 >>
 >> 问题
 >
->> **[LangGraph](https://github.com/langchain-ai/langgraph/issues?q=state%3Aopen%20label%3Aenhancement)**
+>>【卡牌】[LangGraph](https://github.com/langchain-ai/langgraph/issues?q=state%3Aopen%20label%3Aenhancement)
 >>
 >> 问题
 >
->> **[Deep Agents](https://github.com/langchain-ai/deepagents/issues?q=is%3Aissue%20state%3Aopen%20label%3Afeature)**
+>>【卡牌】[Deep Agents](https://github.com/langchain-ai/deepagents/issues?q=is%3Aissue%20state%3Aopen%20label%3Afeature)
 >>
 >> 问题
 >
@@ -69,19 +69,19 @@ LangChain 帮助组建了生成人工智能领域最大的开发者社区，并�
 >
 > **3。描述**
 >
-> 请务必描述用例以及为什么它对其他人有价值。如果可能，请提供适用的示例或模型。概述应该通过的测试用例。
-
-> **改进文档**
+> 请务必描述用例以及为什么它对其他人有价值。如果可能，请提供适用的示例或模型。概述应该通过的测试用例。> [手风琴] 改进文档
 >
 > 欢迎改进文档！我们努力保持我们的文档清晰和全面，您的观点可以产生很大的影响。
 >
->> **[How to propose changes to the documentation](/oss/python/contributing/documentation)**
+>>【卡牌】[How to propose changes to the documentation](/oss/python/contributing/documentation)
 >>
->> 指南> **贡献代码**
+>> 指南
+
+> [手风琴] 贡献代码
 >
 > 由于用户群庞大，我们的小团队可能很难跟上所有功能请求和错误修复。如果您有能力和时间，我们将非常乐意您的帮助！
 >
->> **[How to make your first Pull Request](/oss/python/contributing/code)**
+>>【卡牌】[How to make your first Pull Request](/oss/python/contributing/code)
 >>
 >> 指南
 >
@@ -89,33 +89,33 @@ LangChain 帮助组建了生成人工智能领域最大的开发者社区，并�
 >
 > 如果您正在寻找解决方案，请查看我们的存储库中标记为“需要帮助”的问题：
 >
->> **[LangChain](https://github.com/langchain-ai/langchain/labels?q=help+wanted)**
+>>【卡牌】[LangChain](https://github.com/langchain-ai/langchain/labels?q=help+wanted)
 >>
 >> 标签
 >
->> **[LangGraph](https://github.com/langchain-ai/langgraph/labels?q=help+wanted)**
+>>【卡牌】[LangGraph](https://github.com/langchain-ai/langgraph/labels?q=help+wanted)
 >>
 >> 标签
 >
->> **[Deep Agents](https://github.com/langchain-ai/deepagents/labels?q=help+wanted)**
+>>【卡牌】[Deep Agents](https://github.com/langchain-ai/deepagents/labels?q=help+wanted)
 >>
 >> 标签
 
-> **构建新的集成**
+> [手风琴] 构建新的集成
 >
 > 任何人都可以构建和发布自己的LangChain集成包。新集成不被接受为 `langchain-ai` 存储库的 PR — 它们必须独立发布到 PyPI 或 npm。
 >
->> **[LangChain](/oss/python/contributing/integrations-langchain)**
+>>【卡牌】[LangChain](/oss/python/contributing/integrations-langchain)
 >>
 >> 构建 LangChain 集成指南
 >
->> **[Deep Agents sandboxes](/oss/python/contributing/integrations-langchain)**
+>>【卡牌】[Deep Agents sandboxes](/oss/python/contributing/integrations-langchain)
 >>
->> 构建沙箱集成指南
+>> 构建沙盒集成指南
 
-## 问题和拉取请求要求
+## 问题和拉取请求要求您可以直接提交针对拼写错误和小修复的拉取请求，无需出现问题、事先获得维护者批准或分配。
 
-您可以直接提交针对拼写错误和小修复的拉取请求，无需出现问题、事先获得维护者批准或分配。> [!警告]
+> [!警告]
 >
 > **较大的更改，例如新的教程、指南或概念页面，在打开拉取请求之前需要链接的问题和维护者批准。** 等到维护者批准您的方法并将问题分配给您。在批准和分配之前打开的较大 PR 可能会自动关闭，并且在分配之前不会进行审核。
 

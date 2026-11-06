@@ -211,7 +211,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-> **[Example coding agent](https://github.com/langchain-ai/deepagents/blob/main/libs/acp/examples/demo_agent.py)**
+> [卡][Example coding agent](https://github.com/langchain-ai/deepagents/blob/main/libs/acp/examples/demo_agent.py)
 >
 > `deepagents-acp` 软件包包含一个带有文件系统和 shell 的示例编码代理，您可以开箱即用。
 

@@ -36,10 +36,10 @@
 2. 在 **提供商** 下拉列表中，选择 **LangSmith**。表单更改为显示 LangSmith 字段。
 3. 填写字段：
    * **名称**：（可选）目的地的标签，例如`LangSmith`。
-   * **区域**：您的 LangSmith 部署的区域：**美国**、**欧盟**、**亚太地区**或**美国 AWS 上**。对于自托管 LangSmith，选择 **自托管** 并在 **LangSmith URL** 字段中输入实例的 OTel 端点 URL，例如 `https://<your-langsmith-host>/api/v1/otel`。
+   * **区域**：LangSmith 部署的区域：**美国**、**欧盟**、**亚太地区**或**美国 AWS 上**。对于自托管 LangSmith，选择 **自托管**。在 **LangSmith URL** 中，输入您的 LangSmith API URL (`LANGSMITH_ENDPOINT`) 加上 `/otel`。有关每种部署类型的 URL，请参阅 [Find your OTLP endpoint](/langsmith/trace-with-opentelemetry#find-your-otlp-endpoint)。
    * **API 密钥**：您的 LangSmith API 密钥。
-   * **项目**：要将跟踪发送到的 [environment's ⟦T9⟧](/langsmith/create-an-agent#use-an-environment-project)。在基于代理的工作区中显式设置它。如果省略，积分将使用 `default`。
-   * **LangSmith 工作区 ID**：（可选）要将跟踪发送到的 LangSmith 工作区的 ID。如果将其留空，跟踪将转到 API 密钥所属的工作区。组织范围的服务密钥需要它。要查找 ID，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
+   * **项目**：要将跟踪发送到的 [environment's ⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project)。在基于代理的工作区中显式设置它。如果省略，则积分使用`default`。
+   * **LangSmith 工作区 ID**：（可选）要将跟踪发送到的 LangSmith 工作区的 ID。如果将其留空，跟踪将转到 API 密钥所属的工作区。组织范围的服务密钥需要它。要查找 ID，请参阅 [Create an account and API key](/langsmith/create-account-api-key)。
    * **内容模式**：选择**完整内容**以在跨度中包含提示和响应。对于**仅元数据**，跨度会省略输入和输出内容。* **工作空间**：将跟踪发送到此目标的 Claude 工作空间：**全部**、**选定**或**除**之外的所有**。有关每个选项的详细信息，请参阅 Anthropic 文档中的 [Choose workspaces for a destination](https://platform.claude.com/docs/en/manage-claude/opentelemetry/api#choose-workspaces-for-a-destination)。
 4. 单击“**添加目的地**”。
 
@@ -61,39 +61,34 @@
 
 ### 解决交付问题如果 Claude 控制台 [OpenTelemetry settings page](https://platform.claude.com/settings/telemetry-destinations) 上的 **Delivery** 列显示 **Failing**，请将指针悬停在其上方以查看最后一个错误：
 
-* **HTTP 401**：目标不发送 API 密钥。
-* **HTTP 403**：API 密钥错误，或者已过期或已删除。对于没有工作区 ID 的组织范围服务密钥，LangSmith 还会返回 403。
-* **HTTP 404**：端点 URL 错误。编辑目标并检查 **OTLP 端点 URL** 以 `/otel` 结尾（`/api/v1/otel` 对于自托管 LangSmith）并且不包含 `/v1/traces`。
+|错误 |原因 |修复 |
+| - | - | - |
+| HTTP 401 |目标端不发送 API 密钥。 |将 `x-api-key` 请求标头设置为您的 LangSmith API 密钥。 |
+| HTTP 403 | 403 API 密钥错误、已过期或已删除，或者是没有工作区 ID 的组织范围服务密钥。 |将 `x-api-key` 设置为有效密钥。对于组织范围的服务密钥，还将 `X-Tenant-Id` 设置为工作区 ID。 |
+| HTTP 404 | HTTP 404端点 URL 错误。 |将 **OTLP 端点 URL** 设置为您的 LangSmith API URL (`LANGSMITH_ENDPOINT`) 加上 `/otel`，不带 `/v1/traces`。参见[Find your OTLP endpoint](/langsmith/trace-with-opentelemetry#find-your-otlp-endpoint)。 |
+|地址无效 |主机名未解析为公共 IP 地址。 |通过端口 443 上的 HTTPS 在公共主机名处提供 LangSmith 端点。
 
 对于其他错误，请参阅Anthropic文档中的[Delivery errors](https://platform.claude.com/docs/en/manage-claude/opentelemetry/api#delivery-errors)。
 
-如果 **Delivery** 列显示 **Disabled**，请将指针悬停在其上方以查看原因。例如，Claude 平台会禁用主机名解析为非公共 IP 地址的目标。请参阅 Anthropic 文档中的 [Delivery and health](https://platform.claude.com/docs/en/manage-claude/opentelemetry/api#delivery-and-health)。
+如果 **Delivery** 列显示 **Disabled**，请将指针悬停在其上方以查看原因。例如，当所有传送在 24 小时内失败或端点发送重定向时，Claude 平台会禁用目标，并且在目标被禁用时会丢弃跨度。请参阅 Anthropic 文档中的 [Delivery and health](https://platform.claude.com/docs/en/manage-claude/opentelemetry/api#delivery-and-health)。
 
-## 来自您的代理的跟踪
+## 来自您的代理的跟踪当您的代理应发送跟踪信息时，请使用其中一种方法。要在单个跟踪中跟踪您的 Anthropic 调用以及其余代码，请使用 LangSmith SDK 包装器。
 
-当您的代理应发送跟踪信息时，请使用其中一种方法。要在单个跟踪中跟踪您的 Anthropic 调用以及其余代码，请使用 LangSmith SDK 包装器。
+### 使用 Claude SDK
 
-### 使用 Claude SDKClaude SDK 在您的代理中针对其发送的每个请求以及工具运行程序运行的每个工具使用发出 OTel 跨度。 OTel 导出器库将跨度发送到LangSmith。有关 SDK 选项和 SDK 发出的范围的详细信息，请参阅 Anthropic 文档中的 [Set up SDK tracing](https://platform.claude.com/docs/en/manage-claude/opentelemetry/sdk)。
+Claude SDK 在您的代理中针对其发送的每个请求以及工具运行程序运行的每个工具使用发出 OTel 跨度。 OTel 导出器库将跨度发送到LangSmith。有关 SDK 选项和 SDK 发出的范围的详细信息，请参阅 Anthropic 文档中的 [Set up SDK tracing](https://platform.claude.com/docs/en/manage-claude/opentelemetry/sdk)。
 
 要将 Claude SDK span 发送到 LangSmith：
 
 1. [Install or upgrade the Claude SDK](https://platform.claude.com/docs/en/manage-claude/opentelemetry/sdk#install-the-sdk) 和 [register a tracer provider](https://platform.claude.com/docs/en/manage-claude/opentelemetry/sdk#register-a-tracer-provider)。
-2. 使用 LangSmith 部署的 OTel 端点 URL 配置 OTel 导出器：
-
-   | LangSmith部署| OTel 端点 URL |
-   | - | - |
-   |基仕伯美国 | `https://api.smith.langchain.com/otel` |
-   | GCP 欧盟 | `https://eu.api.smith.langchain.com/otel` |
-   |基仕伯亚太区 | `https://apac.api.smith.langchain.com/otel` |
-   | AWS 美国 | `https://aws.api.smith.langchain.com/otel` |
-   |自托管 | `https://<your-langsmith-host>/api/v1/otel` |
+2. 使用 LangSmith API URL (`LANGSMITH_ENDPOINT`) 加上 `/otel` 作为基本端点来配置 OTel 导出器。有关每种部署类型的 URL，请参阅 [Find your OTLP endpoint](/langsmith/trace-with-opentelemetry#find-your-otlp-endpoint)。
 
    设置以下请求标头：
 
    * `x-api-key`：您的 LangSmith API 密钥。
    * `Langsmith-Agent-Id`：注册代理标识符。
    * `Langsmith-Agent-Environment`：环境，如`local`。
-   * `X-Tenant-Id`：（可选）要将跟踪发送到的 LangSmith 工作区的 ID。如果没有此标头，跟踪将转到 API 密钥所属的工作区。组织范围的服务密钥需要它。
+   * `X-Tenant-Id`：（可选）要将跟踪发送到的LangSmith工作区的 ID。如果没有此标头，跟踪将转到 API 密钥所属的工作区。组织范围的服务密钥需要它。
 
    例如，使用标准 OTel 环境变量：
 
@@ -105,17 +100,19 @@
 
 ### 使用LangSmith SDK 包装器
 
-Python ([⟦T28⟧](https://reference.langchain.com/python/langsmith/wrappers/_anthropic/wrap_anthropic)) 和 TypeScript ([⟦T29⟧](https://reference.langchain.com/javascript/langsmith/wrappers/anthropic/wrapAnthropic)) 中的 Anthropic 包装器方法包装您的 Anthropic 客户端以自动记录跟踪。通过包装器，LangSmith以可读格式呈现消息，包括工具调用和多模式内容块。该包装器与 `@traceable` 装饰器 (Python) 或 `traceable` 函数 (TypeScript) 一起工作，因此您可以使用包装器跟踪 Anthropic 调用，并使用装饰器或函数跟踪代理的其他部分。
-
-> [!注意]
+Python ([⟦T29⟧](https://reference.langchain.com/python/langsmith/wrappers/_anthropic/wrap_anthropic)) 和 TypeScript ([⟦T30⟧](https://reference.langchain.com/javascript/langsmith/wrappers/anthropic/wrapAnthropic)) 中的 Anthropic 包装器方法包装您的 Anthropic 客户端以自动记录跟踪。通过包装器，LangSmith以可读格式呈现消息，包括工具调用和多模式内容块。该包装器与 `@traceable` 装饰器 (Python) 或 `traceable` 函数 (TypeScript) 一起工作，因此您可以使用包装器跟踪您的 Anthropic 调用，并使用装饰器或函数跟踪代理的其他部分。> [!注意]
 >
 > 将 `LANGSMITH_TRACING` 环境变量设置为 `'true'`，以将跟踪记录到 LangSmith，即使您使用 `wrap_anthropic` 或 `wrapAnthropic` 也是如此。这使您可以在不更改代码的情况下打开和关闭跟踪。
 >
 > 还将 `LANGSMITH_API_KEY` 环境变量设置为您的 API 密钥。要创建密钥，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
 >
+> 包装器通过 LangSmith SDK（而不是 OTLP）发送跟踪，因此将 `LANGSMITH_ENDPOINT` 设置为您的 LangSmith API URL，而不带 `/otel`。
+>
+> `LANGSMITH_ENDPOINT` 默认为 `https://api.smith.langchain.com` (GCP US)。将其设置为 [BYOC](/langsmith/byoc) 上的数据平面 URL、[self-hosted](/langsmith/self-hosted) 上的实例 URL 或其他云区域上的 [API URL for your region](/langsmith/create-account-api-key#configure-the-sdk)。
+>
 > 如果您的 LangSmith API 密钥链接到多个工作区，请设置 `LANGSMITH_WORKSPACE_ID` 环境变量以指定要使用的工作区。
 >
-> 将`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`设置为注册的代理和环境。参见[Configure tracing for the agent](/langsmith/create-an-agent#configure-tracing-for-the-agent)。
+> 将 `LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 设置为注册的代理和环境。参见[Configure tracing for the agent](/langsmith/create-an-agent#configure-tracing-for-the-agent)。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import anthropic
@@ -171,7 +168,9 @@ const chatPipeline = traceable(async (question: string) => {
 }, { name: "Chat Pipeline" });
 
 await chatPipeline("Can you summarize this morning's meetings?");
-```要使用 TypeScript `wrapAnthropic` 包装器跟踪 [Claude Managed Agents](https://platform.claude.com/docs/en/managed-agents/overview) 会话，请参阅 [Trace Claude Managed Agents](/langsmith/trace-with-claude-managed-agents)。
+```
+
+要使用 TypeScript `wrapAnthropic` 包装器跟踪 [Claude Managed Agents](https://platform.claude.com/docs/en/managed-agents/overview) 会话，请参阅 [Trace Claude Managed Agents](/langsmith/trace-with-claude-managed-agents)。
 
 ***
 

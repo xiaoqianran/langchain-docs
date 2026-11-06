@@ -31,7 +31,7 @@ for await (const chunk of await graph.stream(inputs, {
 ## 流模式
 
 将以下一种或多种流模式作为列表传递给 [⟦T36⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/CompiledStateGraph/stream) 方法：|模式|描述 |
-| :-| :-|
+| :- | :- |
 | [values](#graph-state) |每一步后的完整状态。 |
 | [updates](#graph-state) |每个步骤后状态都会更新。同一步骤中的多个更新分别进行流式传输。 |
 | [messages](#llm-tokens) |来自 LLM 调用的 2 元组（LLM 令牌、元数据）。 |
@@ -68,33 +68,33 @@ const graph = new StateGraph(State)
   .compile();
 ```
 
-**更新**
+> [标签] 更新
+>
+> 使用此功能仅传输每个步骤后节点返回的**状态更新**。流式输出包括节点的名称以及更新。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> for await (const chunk of await graph.stream(
+>   { topic: "ice cream" },
+>   { streamMode: "updates" }
+> )) {
+>   for (const [nodeName, state] of Object.entries(chunk)) {
+>     console.log(`Node ${nodeName} updated:`, state);
+>   }
+> }
+> ```
 
-使用它仅流式传输每个步骤后节点返回的**状态更新**。流式输出包括节点的名称以及更新。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-for await (const chunk of await graph.stream(
-  { topic: "ice cream" },
-  { streamMode: "updates" }
-)) {
-  for (const [nodeName, state] of Object.entries(chunk)) {
-    console.log(`Node ${nodeName} updated:`, state);
-  }
-}
-```
-
-**数值**
-
-使用它可以在每个步骤之后流式传输图表的**完整状态**。
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-for await (const chunk of await graph.stream(
-  { topic: "ice cream" },
-  { streamMode: "values" }
-)) {
-  console.log(`topic: ${chunk.topic}, joke: ${chunk.joke}`);
-}
-```
+> [选项卡] 值
+>
+> 使用它在每个步骤之后流式传输图表的**完整状态**。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> for await (const chunk of await graph.stream(
+>   { topic: "ice cream" },
+>   { streamMode: "values" }
+> )) {
+>   console.log(`topic: ${chunk.topic}, joke: ${chunk.joke}`);
+> }
+> ```
 
 ### LLM 代币
 
@@ -178,7 +178,7 @@ for await (const [msg, metadata] of await graph.stream(
 }
 ```
 
-> **扩展示例：按标签过滤**
+> [accordion] 扩展示例：按标签过滤
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatOpenAI } from "@langchain/openai";
@@ -318,7 +318,7 @@ const stream = await graph.streamEvents(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/ba51f3a8-41b5-4403-bf37-5978e9fadb99/r)**
+> [卡][View example trace](https://smith.langchain.com/public/301d6a82-68f6-49e2-9002-9be2fd0ab697/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -340,7 +340,7 @@ for await (const [msg, metadata] of await graph.stream(
 }
 ```
 
-> **扩展示例：从特定节点流式传输 LLM 令牌**
+> [accordion] 扩展示例：从特定节点流式传输 LLM 令牌
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatOpenAI } from "@langchain/openai";
@@ -401,68 +401,68 @@ for await (const [msg, metadata] of await graph.stream(
 1. 使用 `LangGraphRunnableConfig` 中的 `writer` 参数发出自定义数据。
 2. 调用`.stream()`时设置`streamMode: "custom"`，获取流中的自定义数据。您可以组合多种模式（例如，`["updates", "custom"]`），但至少一种必须是`"custom"`。
 
-**节点**
+> [选项卡] 节点
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { StateGraph, StateSchema, GraphNode, START, LangGraphRunnableConfig } from "@langchain/langgraph";
+> import * as z from "zod";
+>
+> const State = new StateSchema({
+>   query: z.string(),
+>   answer: z.string(),
+> });
+>
+> const node: GraphNode<typeof State> = async (state, config) => {
+>   // Use the writer to emit a custom key-value pair (e.g., progress update)
+>   config.writer({ custom_key: "Generating custom data inside node" });
+>   return { answer: "some data" };
+> };
+>
+> const graph = new StateGraph(State)
+>   .addNode("node", node)
+>   .addEdge(START, "node")
+>   .compile();
+>
+> const inputs = { query: "example" };
+>
+> // Set streamMode: "custom" to receive the custom data in the stream
+> for await (const chunk of await graph.stream(inputs, { streamMode: "custom" })) {
+>   console.log(chunk);
+> }
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { StateGraph, StateSchema, GraphNode, START, LangGraphRunnableConfig } from "@langchain/langgraph";
-import * as z from "zod";
-
-const State = new StateSchema({
-  query: z.string(),
-  answer: z.string(),
-});
-
-const node: GraphNode<typeof State> = async (state, config) => {
-  // Use the writer to emit a custom key-value pair (e.g., progress update)
-  config.writer({ custom_key: "Generating custom data inside node" });
-  return { answer: "some data" };
-};
-
-const graph = new StateGraph(State)
-  .addNode("node", node)
-  .addEdge(START, "node")
-  .compile();
-
-const inputs = { query: "example" };
-
-// Set streamMode: "custom" to receive the custom data in the stream
-for await (const chunk of await graph.stream(inputs, { streamMode: "custom" })) {
-  console.log(chunk);
-}
-```
-
-**工具**
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { tool } from "@langchain/core/tools";
-import { LangGraphRunnableConfig } from "@langchain/langgraph";
-import * as z from "zod";
-
-const queryDatabase = tool(
-  async (input, config: LangGraphRunnableConfig) => {
-    // Use the writer to emit a custom key-value pair (e.g., progress update)
-    config.writer({ data: "Retrieved 0/100 records", type: "progress" });
-    // perform query
-    // Emit another custom key-value pair
-    config.writer({ data: "Retrieved 100/100 records", type: "progress" });
-    return "some-answer";
-  },
-  {
-    name: "query_database",
-    description: "Query the database.",
-    schema: z.object({
-      query: z.string().describe("The query to execute."),
-    }),
-  }
-);
-
-const graph = // ... define a graph that uses this tool
-
-// Set streamMode: "custom" to receive the custom data in the stream
-for await (const chunk of await graph.stream(inputs, { streamMode: "custom" })) {
-  console.log(chunk);
-}
-```
+> [选项卡] 工具
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { tool } from "@langchain/core/tools";
+> import { LangGraphRunnableConfig } from "@langchain/langgraph";
+> import * as z from "zod";
+>
+> const queryDatabase = tool(
+>   async (input, config: LangGraphRunnableConfig) => {
+>     // Use the writer to emit a custom key-value pair (e.g., progress update)
+>     config.writer({ data: "Retrieved 0/100 records", type: "progress" });
+>     // perform query
+>     // Emit another custom key-value pair
+>     config.writer({ data: "Retrieved 100/100 records", type: "progress" });
+>     return "some-answer";
+>   },
+>   {
+>     name: "query_database",
+>     description: "Query the database.",
+>     schema: z.object({
+>       query: z.string().describe("The query to execute."),
+>     }),
+>   }
+> );
+>
+> const graph = // ... define a graph that uses this tool
+>
+> // Set streamMode: "custom" to receive the custom data in the stream
+> for await (const chunk of await graph.stream(inputs, { streamMode: "custom" })) {
+>   console.log(chunk);
+> }
+> ```
 
 ### 工具进度
 
@@ -473,7 +473,7 @@ for await (const chunk of await graph.stream(inputs, { streamMode: "custom" })) 
 |活动 |当 |有效负载|
 | - | - | - |
 | `on_tool_start` |工具调用开始 | `name`、`input`、`toolCallId` |
-| `on_tool_event` |工具产生中间数据| `name`、`data`、`toolCallId` |
+| `on_tool_event` |工具产生中间数据 | `name`、`data`、`toolCallId` |
 | `on_tool_end` |工具返回其最终结果 | `name`、`output`、`toolCallId` |
 | `on_tool_error` |工具抛出错误 | `name`、`error`、`toolCallId` |
 
@@ -597,7 +597,7 @@ function Chat() {
     </div>
   );
 }
-```> **扩展示例：具有工具进度的旅行规划代理**
+```> [手风琴] 扩展示例：带有工具进度的旅行规划代理
 >
 > 此示例显示了一个带有异步生成器工具的完整代理，该工具将搜索进度流式传输到 React UI。
 >
@@ -789,7 +789,7 @@ for await (const chunk of await graph.stream(
 > }
 > ```
 
-> **扩展示例：从子图流式传输**
+> [accordion] 扩展示例：从子图流式传输
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { StateGraph, StateSchema, START } from "@langchain/langgraph";
@@ -912,7 +912,7 @@ for await (const chunk of await graph.stream(
 }
 ```
 
-> **扩展示例：流式任意聊天模型**
+> [手风琴]扩展示例：流式任意聊天模型
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { StateGraph, StateSchema, MessagesValue, GraphNode, START, LangGraphRunnableConfig } from "@langchain/langgraph";

@@ -74,7 +74,7 @@ print(model.invoke("ping").content)
 
 ## 定价
 
-网关积分以 **LangChain 标准单位 (LSU)** 计价，每 LSU **\$1**；每个调用都会根据令牌使用情况消耗 LSU。有关计划详细信息和当前费率，请参阅[the pricing page](https://www.langchain.com/pricing)。
+网关积分以 **LangChain 标准单位 (LSU)** 计价；每个调用都会根据令牌使用情况消耗 LSU。有关计划详细信息和当前费率，请参阅[the pricing page](https://www.langchain.com/pricing)。
 
 标准网关[spend policies](/langsmith/llm-gateway-spend-policies)适用于托管模型流量，因此任何配置的组织、工作区、API 密钥或用户上限也控制网关信用的使用。您可以使用与自带密钥提供商相同的工具来控制网关信用消耗。例如，将每个提供商的特定 API 密钥上限限制为 200 美元/月，或者设置工作区范围内的每日限制（包括托管模型调用）。
 

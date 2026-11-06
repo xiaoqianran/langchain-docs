@@ -55,7 +55,7 @@ const searchDatabase = tool(
 
 > [!注意]
 >
-> 虽然`thread_id`（通过`config={"configurable": {"thread_id": ...}}`传递）作用于*对话*：消息历史记录和检查点，`context`携带您的工具和中间件在调用时读取的*每次运行*数据。持久性需要[checkpointer](/oss/javascript/langchain/short-term-memory)。在生产中，您通常会在每个对话中传递一个稳定的 `thread_id` ，并在每次调用时传递一个 `context` 对象。工具可以通过 `config` 参数访问代理的运行时上下文。配置 [checkpointer](/oss/javascript/langchain/short-term-memory) 并通过稳定的 `thread_id` 传递 `context`，以便对话在调用中持续存在：
+> 虽然`thread_id`（通过`config={"configurable": {"thread_id": ...}}`传递）范围是*对话*：消息历史记录和检查点，`context`携带您的工具和中间件在调用时读取的*每次运行*数据。持久性需要[checkpointer](/oss/javascript/langchain/short-term-memory)。在生产中，您通常会在每个对话中传递一个稳定的 `thread_id` ，并在每次调用时传递一个 `context` 对象。工具可以通过 `config` 参数访问代理的运行时上下文。配置 [checkpointer](/oss/javascript/langchain/short-term-memory) 并通过稳定的 `thread_id` 传递 `context`，以便对话在调用中持续存在：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as z from "zod";
@@ -109,7 +109,7 @@ result = await agent.invoke(
 console.log(result.messages.at(-1)?.content);
 ```
 
-> **[View example trace](https://smith.langchain.com/public/f61429d4-8472-4971-b2c3-ed4e41d859ed/r)**
+> [卡][View example trace](https://smith.langchain.com/public/86bb0a4b-1a8b-4f43-8fc9-002b4e1c9b00/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -315,7 +315,7 @@ const getWeather = tool(({ city }) => `It is currently sunny in ${city}.`, {
 });
 ```
 
-> **[View example trace](https://smith.langchain.com/public/04567cb5-57fc-49b6-8737-ec6828fcf20d/r)**
+> [卡][View example trace](https://smith.langchain.com/public/780c6bcb-ef85-4e51-adca-ac6ad4f3125c/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -347,7 +347,7 @@ const getWeatherData = tool(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/7ed64816-9681-4c3b-8c1a-803dff7b5d0e/r)**
+> [卡][View example trace](https://smith.langchain.com/public/27fa2529-89cd-496c-8618-c8bef92889b0/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -421,7 +421,7 @@ const setLanguage = tool(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/44d6ee7a-f6cf-4c15-9d19-248e28359eeb/r)**
+> [卡][View example trace](https://smith.langchain.com/public/f0b7f86f-cad9-4e53-b067-3b00e4fb2631/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -468,11 +468,11 @@ const result = await agent.invoke({
 // "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-> **[View example trace](https://smith.langchain.com/public/648dc7a3-0190-4546-946b-14fb56a18496/r)**
+> [卡][View example trace](https://smith.langchain.com/public/af9aebfd-5866-47e4-8527-c3d6ba009b5c/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
-行为：* 该工具正常执行，其输出封装在 `ToolMessage` 中。
+行为：* 该工具正常执行，其输出包装在 `ToolMessage` 中。
 * 代理停止循环并返回工具的输出作为最终响应，绕过任何其他模型调用。
 * **多个并行工具调用：** 当模型一步调用多个工具时，所有工具都会首先执行。所有工具完成后，仅当该批次中的**每个**工具都有 `return_direct=True` 时，代理才会路由到 `END`。最终响应包括该步骤中调用的每个工具的 `ToolMessage` 输出。
 
@@ -670,265 +670,265 @@ const agent = createAgent({
 
 使用动态工具，代理可用的工具集在运行时修改，而不是预先定义。并非每种工具都适合每种情况。太多的工具可能会压垮模型（超载上下文）并增加错误；太少限制了能力。动态工具选择可以根据身份验证状态、用户权限、功能标志或对话阶段来调整可用的工具集。根据工具是否提前已知，有两种方法：
 
-**过滤预注册工具**
-
-当所有可能的工具在代理创建时已知时，您可以预先注册它们并根据状态、权限或上下文动态过滤哪些工具暴露给模型。
-
-**状态**
-
-仅在某些对话里程碑后启用高级工具：
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createMiddleware, tool } from "langchain";
-import { createDeepAgent } from "deepagents";
-
-const stateBasedTools = createMiddleware({
-    name: "StateBasedTools",
-    wrapModelCall: (request, handler) => {
-        // Read from State: check authentication and conversation length
-        const state = request.state as typeof request.state & {
-            authenticated?: boolean;
-        };
-        const isAuthenticated = state.authenticated ?? false;
-        const messageCount = state.messages.length;
-
-        let filteredTools = request.tools;
-
-        // Only enable sensitive tools after authentication
-        if (!isAuthenticated) {
-            filteredTools = request.tools.filter(
-                (t: any) => typeof t.name === "string" && t.name.startsWith("public_"),
-            );
-        } else if (messageCount < 5) {
-            filteredTools = request.tools.filter(
-                (t: any) => typeof t.name === "string" && t.name !== "advanced_search",
-            );
-        }
-
-        return handler({ ...request, tools: filteredTools });
-    },
-});
-
-const agent = await createDeepAgent({
-    model: "claude-sonnet-4-6",
-    tools: tools,
-    middleware: [stateBasedTools] as any,
-});
-```
-
-**商店**
-
-根据用户偏好或商店中的功能标志过滤工具：
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createMiddleware } from "langchain";
-import { createDeepAgent, StoreBackend } from "deepagents";
-import * as z from "zod";
-import { InMemoryStore } from "@langchain/langgraph";
-
-const contextSchema = z.object({
-  userId: z.string(),
-});
-
-const storeBasedTools = createMiddleware({
-  name: "StoreBasedTools",
-  contextSchema,
-  wrapModelCall: async (request, handler) => {
-    const userId =
-      (request.runtime?.context as { userId?: string } | undefined)?.userId ??
-        "user-123";
-
-    // Read from Store: get user's enabled features
-    const runtimeStore = request.runtime?.store as InMemoryStore | undefined;
-    const rawFlags = (await runtimeStore?.get(
-      ["features"],
-      userId as string,
-    )) as unknown;
-    const featureFlags = rawFlags as FeatureFlags | undefined;
-
-    let filteredTools = request.tools;
-
-    if (featureFlags) {
-      const enabledFeatures = featureFlags.enabledTools || [];
-      filteredTools = request.tools.filter((t) =>
-        enabledFeatures.includes(t.name as string)
-      );
-    }
-
-    return handler({ ...request, tools: filteredTools });
-  },
-});
-
-const agent = await createDeepAgent({
-  model: "claude-sonnet-4-6",
-  backend: new StoreBackend(),
-  store,
-  checkpointer,
-  tools,
-  middleware: [storeBasedTools] as any,
-});
-```
-
-**运行时上下文**
-
-根据运行时上下文中的用户权限过滤工具：
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import * as z from "zod";
-import { createMiddleware } from "langchain";
-import { createDeepAgent } from "deepagents";
-
-const contextSchema = z.object({
-  userRole: z.string(),
-});
-
-const contextBasedTools = createMiddleware({
-  name: "ContextBasedTools",
-  contextSchema,
-  wrapModelCall: (request, handler) => {
-    // Read from Runtime Context: get user role
-    const userRole = request.runtime.context.userRole;
-
-    let filteredTools = request.tools;
-
-    if (userRole === "admin") {
-      // Admins get all tools
-    } else if (userRole === "editor") {
-      filteredTools = request.tools.filter((t) => t.name !== "delete_data");
-    } else {
-      filteredTools = request.tools.filter(
-        (t) => (t.name as string).startsWith("read_"),
-      );
-    }
-
-    return handler({ ...request, tools: filteredTools });
-  },
-});
-
-const agent = await createDeepAgent({
-  model: "claude-sonnet-4-6",
-  store,
-  checkpointer,
-  tools,
-  middleware: [contextBasedTools] as any,
-});
-```
-
-这种方法在以下情况下效果最佳：
-
-* 所有可能的工具在编译/启动时都是已知的
-* 您想要根据权限、功能标志或对话状态进行过滤
-* 工具是静态的，但其可用性是动态的
-
-更多示例请参见[Dynamically selecting tools](/oss/javascript/langchain/middleware/custom#dynamically-selecting-tools)。
-
-**运行时工具注册**
-
-当在运行时发现或创建工具时（例如，从 MCP 服务器加载、根据用户数据生成或从远程注册表获取），您需要注册工具并动态处理其执行。
-
-这需要两个中间件挂钩：1. `wrap_model_call` - 将动态工具添加到请求中
-2. `wrap_tool_call` - 处理动态添加工具的执行
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent, createMiddleware, tool } from "langchain";
-import * as z from "zod";
-
-// A tool that will be added dynamically at runtime
-const calculateTip = tool(
-  ({ billAmount, tipPercentage = 20 }) => {
-    const tip = billAmount * (tipPercentage / 100);
-    return `Tip: $${tip.toFixed(2)}, Total: $${(billAmount + tip).toFixed(2)}`;
-  },
-  {
-    name: "calculate_tip",
-    description: "Calculate the tip amount for a bill",
-    schema: z.object({
-      billAmount: z.number().describe("The bill amount"),
-      tipPercentage: z.number().default(20).describe("Tip percentage"),
-    }),
-  }
-);
-
-const dynamicToolMiddleware = createMiddleware({
-  name: "DynamicToolMiddleware",
-  wrapModelCall: (request, handler) => {
-    // Add dynamic tool to the request
-    // This could be loaded from an MCP server, database, etc.
-    return handler({
-      ...request,
-      tools: [...request.tools, calculateTip],
-    });
-  },
-  wrapToolCall: (request, handler) => {
-    // Handle execution of the dynamic tool
-    if (request.toolCall.name === "calculate_tip") {
-      return handler({ ...request, tool: calculateTip });
-    }
-    return handler(request);
-  },
-});
-
-const agent = createAgent({
-  model: "gpt-5.5",
-  tools: [getWeather], // Only static tools registered here
-  middleware: [dynamicToolMiddleware],
-});
-
-// The agent can now use both getWeather AND calculateTip
-const result = await agent.invoke({
-  messages: [{ role: "user", content: "Calculate a 20% tip on $85" }],
-});
-```
-
-这种方法在以下情况下效果最佳：
-
-* 工具在运行时发现（例如，从 MCP 服务器）
-* 工具根据用户数据或配置动态生成
-* 您正在与外部工具注册表集成
-
-> [!注意]
+> [选项卡] 过滤预注册工具
 >
-> 运行时注册的工具需要 `wrap_tool_call` 钩子，因为代理需要知道如何执行原始工具列表中没有的工具。如果没有它，代理将不知道如何调用动态添加的工具。
+> 当在创建代理时已知所有可能的工具时，您可以预先注册它们并根据状态、权限或上下文动态过滤向模型公开的工具。
+>
+>> [选项卡] 状态
+>>
+>> 仅在某些对话里程碑后启用高级工具：
+>>
+>> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import { createMiddleware, tool } from "langchain";
+> > import { createDeepAgent } from "deepagents";
+> >
+> > const stateBasedTools = createMiddleware({
+> >     name: "StateBasedTools",
+> >     wrapModelCall: (request, handler) => {
+> >         // Read from State: check authentication and conversation length
+> >         const state = request.state as typeof request.state & {
+> >             authenticated?: boolean;
+> >         };
+> >         const isAuthenticated = state.authenticated ?? false;
+> >         const messageCount = state.messages.length;
+> >
+> >         let filteredTools = request.tools;
+> >
+> >         // Only enable sensitive tools after authentication
+> >         if (!isAuthenticated) {
+> >             filteredTools = request.tools.filter(
+> >                 (t: any) => typeof t.name === "string" && t.name.startsWith("public_"),
+> >             );
+> >         } else if (messageCount < 5) {
+> >             filteredTools = request.tools.filter(
+> >                 (t: any) => typeof t.name === "string" && t.name !== "advanced_search",
+> >             );
+> >         }
+> >
+> >         return handler({ ...request, tools: filteredTools });
+> >     },
+> > });
+> >
+> > const agent = await createDeepAgent({
+> >     model: "claude-sonnet-4-6",
+> >     tools: tools,
+> >     middleware: [stateBasedTools] as any,
+> > });
+> > ```
+>
+>> [选项卡] 商店
+>>
+>> 根据用户偏好或商店中的功能标志过滤工具：
+>>
+>> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import { createMiddleware } from "langchain";
+> > import { createDeepAgent, StoreBackend } from "deepagents";
+> > import * as z from "zod";
+> > import { InMemoryStore } from "@langchain/langgraph";
+> >
+> > const contextSchema = z.object({
+> >   userId: z.string(),
+> > });
+> >
+> > const storeBasedTools = createMiddleware({
+> >   name: "StoreBasedTools",
+> >   contextSchema,
+> >   wrapModelCall: async (request, handler) => {
+> >     const userId =
+> >       (request.runtime?.context as { userId?: string } | undefined)?.userId ??
+> >         "user-123";
+> >
+> >     // Read from Store: get user's enabled features
+> >     const runtimeStore = request.runtime?.store as InMemoryStore | undefined;
+> >     const rawFlags = (await runtimeStore?.get(
+> >       ["features"],
+> >       userId as string,
+> >     )) as unknown;
+> >     const featureFlags = rawFlags as FeatureFlags | undefined;
+> >
+> >     let filteredTools = request.tools;
+> >
+> >     if (featureFlags) {
+> >       const enabledFeatures = featureFlags.enabledTools || [];
+> >       filteredTools = request.tools.filter((t) =>
+> >         enabledFeatures.includes(t.name as string)
+> >       );
+> >     }
+> >
+> >     return handler({ ...request, tools: filteredTools });
+> >   },
+> > });
+> >
+> > const agent = await createDeepAgent({
+> >   model: "claude-sonnet-4-6",
+> >   backend: new StoreBackend(),
+> >   store,
+> >   checkpointer,
+> >   tools,
+> >   middleware: [storeBasedTools] as any,
+> > });
+> > ```
+>
+>> [选项卡] 运行时上下文
+>>
+>> 根据运行时上下文中的用户权限过滤工具：
+>>
+>> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import * as z from "zod";
+> > import { createMiddleware } from "langchain";
+> > import { createDeepAgent } from "deepagents";
+> >
+> > const contextSchema = z.object({
+> >   userRole: z.string(),
+> > });
+> >
+> > const contextBasedTools = createMiddleware({
+> >   name: "ContextBasedTools",
+> >   contextSchema,
+> >   wrapModelCall: (request, handler) => {
+> >     // Read from Runtime Context: get user role
+> >     const userRole = request.runtime.context.userRole;
+> >
+> >     let filteredTools = request.tools;
+> >
+> >     if (userRole === "admin") {
+> >       // Admins get all tools
+> >     } else if (userRole === "editor") {
+> >       filteredTools = request.tools.filter((t) => t.name !== "delete_data");
+> >     } else {
+> >       filteredTools = request.tools.filter(
+> >         (t) => (t.name as string).startsWith("read_"),
+> >       );
+> >     }
+> >
+> >     return handler({ ...request, tools: filteredTools });
+> >   },
+> > });
+> >
+> > const agent = await createDeepAgent({
+> >   model: "claude-sonnet-4-6",
+> >   store,
+> >   checkpointer,
+> >   tools,
+> >   middleware: [contextBasedTools] as any,
+> > });
+> > ```
+>
+> 这种方法在以下情况下效果最佳：
+>
+> * 所有可能的工具在编译/启动时都是已知的
+> * 您想要根据权限、功能标志或对话状态进行过滤
+> * 工具是静态的，但其可用性是动态的
+>
+> 更多示例请参见[Dynamically selecting tools](/oss/javascript/langchain/middleware/custom#dynamically-selecting-tools)。> [tab] 运行时工具注册
+>
+> 当在运行时发现或创建工具时（例如，从 MCP 服务器加载、根据用户数据生成或从远程注册表获取），您需要注册工具并动态处理其执行。
+>
+> 这需要两个中间件钩子：
+>
+> 1. `wrap_model_call` - 将动态工具添加到请求中
+> 2. `wrap_tool_call` - 处理动态添加工具的执行
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createAgent, createMiddleware, tool } from "langchain";
+> import * as z from "zod";
+>
+> // A tool that will be added dynamically at runtime
+> const calculateTip = tool(
+>   ({ billAmount, tipPercentage = 20 }) => {
+>     const tip = billAmount * (tipPercentage / 100);
+>     return `Tip: $${tip.toFixed(2)}, Total: $${(billAmount + tip).toFixed(2)}`;
+>   },
+>   {
+>     name: "calculate_tip",
+>     description: "Calculate the tip amount for a bill",
+>     schema: z.object({
+>       billAmount: z.number().describe("The bill amount"),
+>       tipPercentage: z.number().default(20).describe("Tip percentage"),
+>     }),
+>   }
+> );
+>
+> const dynamicToolMiddleware = createMiddleware({
+>   name: "DynamicToolMiddleware",
+>   wrapModelCall: (request, handler) => {
+>     // Add dynamic tool to the request
+>     // This could be loaded from an MCP server, database, etc.
+>     return handler({
+>       ...request,
+>       tools: [...request.tools, calculateTip],
+>     });
+>   },
+>   wrapToolCall: (request, handler) => {
+>     // Handle execution of the dynamic tool
+>     if (request.toolCall.name === "calculate_tip") {
+>       return handler({ ...request, tool: calculateTip });
+>     }
+>     return handler(request);
+>   },
+> });
+>
+> const agent = createAgent({
+>   model: "gpt-5.5",
+>   tools: [getWeather], // Only static tools registered here
+>   middleware: [dynamicToolMiddleware],
+> });
+>
+> // The agent can now use both getWeather AND calculateTip
+> const result = await agent.invoke({
+>   messages: [{ role: "user", content: "Calculate a 20% tip on $85" }],
+> });
+> ```
+>
+> 这种方法在以下情况下效果最佳：
+>
+> * 在运行时发现工具（例如，从 MCP 服务器）
+>
+> * 根据用户数据或配置动态生成工具
+>
+> * 您正在与外部工具注册表集成
+>
+>> [!注意]
+>>
+>> 运行时注册的工具需要 `wrap_tool_call` 钩子，因为代理需要知道如何执行不在原始工具列表中的工具。如果没有它，代理将不知道如何调用动态添加的工具。
 
-## 无头工具
-
-某些工具应该在**用户应用程序运行的地方**（通常是浏览器）运行，而不是在进程内部运行。 **无头工具**是工具定义，其中包括您在代理的**服务器**上注册的名称、描述和参数架构。 **实现**仅在**客户端**上注册，并在短暂的中断/恢复握手后执行。
+## 无头工具某些工具应该在**用户应用程序运行的地方**（通常是浏览器）运行，而不是在进程内部运行。 **无头工具**是工具定义，其中包括您在代理的**服务器**上注册的名称、描述和参数架构。 **实现**仅在**客户端**上注册，并在短暂的中断/恢复握手后执行。
 
 这与函数体运行在服务器上的普通工具不同，也与模型提供者远程执行内置工具的[server-side tool use](#server-side-tool-use)不同。
 
-### 何时使用无头工具当工作依赖于仅存在于客户端的**环境、设备或 UI** 时，请使用它们。例如：
+### 何时使用无头工具
+
+当工作依赖于仅存在于客户端的**环境、设备或 UI** 时，请使用它们。例如：
 
 * **浏览器 API：** 地理定位、IndexedDB、剪贴板、Canvas 2D、文件选择器、电池 API 等。
 * **隐私和局部性：** 数据保留在设备上（例如，IndexedDB 中的本地“内存”）。
 * **延迟：** 纯本地操作无需额外的服务器往返。
 * **结构化、安全的效果：** 更喜欢许多小型的类型化工具（例如每个画布基元一个工具），而不是向 `eval` 发送任意代码。
 
-### 该模式如何运作
-
-在这两个运行时中，模型都会看到它可以调用的普通工具，但实际执行发生在服务器进程之外。
+### 该模式如何运作在这两个运行时中，模型都会看到它可以调用的普通工具，但实际执行发生在服务器进程之外。
 
 1. **定义**带有来自 `langchain` 的 `tool({ name, description, schema })` 的工具，仅元数据和验证，无服务器端运行器。
 2. **使用`.implement(async (args) => { ... })`附加**真实行为，它返回一个**无头工具实现**（定义+`execute`函数）。
 3. **使用 `createAgent` 或您的图形**注册**步骤 1 中的定义，以便模型在其通常的工具调用循环中看到该工具。
-4. **将**第 2 步的实现传递给流式挂钩的 `tools` 选项。> [!注意]
->
-> 将**工具定义**（`tool({ name, description, schema })`）和**实现**（`.implement(...)`）放在**单独的模块**中。从服务器代理和前端导入共享定义文件，以便名称和架构保持一致；将仅客户端执行逻辑保留在服务器永远不会加载的实现模块中。
+4. **将**第 2 步的实现传递给流式挂钩的 `tools` 选项。
 
-当模型发出对这些工具之一的工具调用时，运行**中断**，而不是在本地执行该工具。您的应用程序可以检查有效负载，在正确的环境（例如浏览器、其他服务或人工审核步骤）中执行操作，然后使用工具结果**恢复**图表。当您使用受支持的 JS SDK 挂钩时，它们可以检测无头工具中断，运行匹配的客户端实现，并为您提交恢复命令。
+> [!注意]
+>
+> 将**工具定义**（`tool({ name, description, schema })`）和**实现**（`.implement(...)`）放在**单独的模块**中。从服务器代理和前端导入共享定义文件，以便名称和架构保持一致；将仅客户端执行逻辑保留在服务器永远不会加载的实现模块中。当模型发出对这些工具之一的工具调用时，运行**中断**，而不是在本地执行该工具。您的应用程序可以检查有效负载，在正确的环境（例如浏览器、其他服务或人工审核步骤）中执行操作，然后使用工具结果**恢复**图表。当您使用受支持的 JS SDK 挂钩时，它们可以检测无头工具中断，运行匹配的客户端实现，并为您提交恢复命令。
 
 使用可选的 **`onTool`** 回调来观察生命周期事件（`start`、`success`、`error`）以获取 UI 反馈，例如旋转器或 toast。
 
-> **[Headless tools frontend pattern](/oss/javascript/langchain/frontend/headless-tools)**
+> [卡][Headless tools frontend pattern](/oss/javascript/langchain/frontend/headless-tools)
 >
 > 请参阅使用 `useStream` 在客户端中执行的仅模式工具的端到端示例。
 
-## 预构建工具LangChain 提供了大量预构建工具和工具包，用于执行 Web 搜索、代码解释、数据库访问等常见任务。这些即用型工具可以直接集成到您的代理中，无需编写自定义代码。
+## 预构建工具
+
+LangChain 提供了大量预构建工具和工具包，用于执行 Web 搜索、代码解释、数据库访问等常见任务。这些即用型工具可以直接集成到您的代理中，无需编写自定义代码。
 
 请参阅 [tools and toolkits](/oss/javascript/integrations/tools) 集成页面，获取按类别组织的可用工具的完整列表。
 
-## 来自 MCP 服务器的工具
-
-[Model Context Protocol (MCP)](https://modelcontextprotocol.io) 是一种开放协议，它标准化了应用程序如何向语言模型公开工具。您无需手动编写工具，而是连接到 MCP 服务器并将其广告的工具改编为LangChain 工具，准备好像任何其他工具一样传递给代理。
+## 来自 MCP 服务器的工具[Model Context Protocol (MCP)](https://modelcontextprotocol.io) 是一个开放协议，它标准化了应用程序如何向语言模型公开工具。您无需手动编写工具，而是连接到 MCP 服务器并将其广告的工具改编为LangChain 工具，准备好像任何其他工具一样传递给代理。
 
 LangChain代理通过[⟦T95⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-mcp-adapters)库调用MCP服务器上定义的工具，该库发现服务器的工具并将其改编为LangChain工具。
 
@@ -940,6 +940,8 @@ LangChain代理通过[⟦T95⟧](https://github.com/langchain-ai/langchainjs/tre
 
 有关启用和使用这些内置工具的详细信息，请参阅单独的 [chat model integration pages](/oss/javascript/integrations/providers) 和 [tool calling documentation](/oss/javascript/langchain/models#server-side-tool-use)。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

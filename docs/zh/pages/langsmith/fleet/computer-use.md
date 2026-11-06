@@ -74,11 +74,11 @@
 >
 > **停止计算机清理**仅适用于**每线程计算机**模式。共享计算机不会自动删除。
 
-## 基础快照
+## 选择一个基础快照
 
-快照是用于启动计算机的磁盘映像。默认情况下，所有队列代理都使用工作区默认快照。要构建、捕获或配置自定义快照，请参阅 [Sandbox snapshots](/langsmith/sandbox-snapshots)。设置弹出窗口中的[Change the snapshot for an agent](#configure-lifecycle-and-snapshot)。
+快照是用于启动计算机的磁盘映像。当未选择快照时，Fleet 使用平台默认值`system/default:latest`。当前默认从`ubuntu:26.04`开始，包括Python 3、Node.js 24、Go、Git、Docker、浏览器和文档处理库。有关完整的工具列表和其他系统快照，请参阅[Understand system snapshots](/langsmith/sandbox-snapshots#understand-system-snapshots)。
 
-> [!注意]
+要更改现有代理的快照，请在设置弹出窗口中设置 **快照**，如 [Configure lifecycle and snapshot](#configure-lifecycle-and-snapshot) 中所述。要构建或捕获您自己的快照，请参阅[Sandbox snapshots](/langsmith/sandbox-snapshots)，并包含[Prepare a custom image for Fleet](#prepare-a-custom-image-for-fleet)中列出的组件。> [!注意]
 >
 > 快照更改仅适用于代理的新计算机。 **共享计算机**模式下的单个共享计算机在其生命周期内保留其原始快照。
 
@@ -86,7 +86,9 @@
 
 代理的快照、空闲超时和停止的计算机清理均在设置弹出窗口的“计算机生命周期”部分中设置。
 
-**1.打开设置弹出窗口**在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-computer-use)中，打开代理并单击代理编辑器中的设置图标。
+**1.打开设置弹出窗口**
+
+在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-computer-use)中，打开代理并单击代理编辑器中的设置图标。
 
 **2.设置生命周期字段**
 
@@ -96,8 +98,35 @@
 
 单击**保存更改**。
 
+## 为 Fleet 准备自定义镜像
+
+自定义快照取代默认文件系统；它不继承默认工具。包括代理使用的队列功能的依赖项，即使是从最小的 Linux 映像启动也是如此。|能力|组件|
+| - | - |
+|命令执行 | `/bin/bash` 的狂欢。 Fleet 使用它运行每个命令，因此如果没有它，命令就会失败。 |
+|运行安装和文件工具 |命令必须以 `root` 或可以在 `/` 下创建目录的用户身份运行。 Python 3、`tar`、`grep` 以及核心实用程序，例如`mkdir`、`rm` 和 `ln`。 |
+| [Access profiles](#access-profiles) |位于 `/etc/ssl/certs/ca-certificates.crt` 的系统 CA 捆绑包。启动时，沙箱将代理的 CA 附加到该文件，并将公共 CA 捆绑包环境变量指向该文件。 Debian、Ubuntu、Alpine 和 Wolfi 使用此路径。 RHEL 系列映像将其捆绑包保存在其他位置，因此在此路径中提供一个映像，否则来自沙箱的 HTTPS 请求可能会导致证书验证失败。 |
+| PowerPoint 文件 (`fleet-pptx`) | Python 3 和 `python-pptx`。 |
+| Word 文件 (`fleet-docx`) | Python 3 和 `python-docx`。 |
+| Excel 文件 (`fleet-xlsx`) | Python 3、`openpyxl`、`defusedxml` 和 `lxml`。该技能要求在打开文件之前`openpyxl.xml.DEFUSEDXML`为`True`。 |
+|旧文档转换 (`fleet-document-converter`) | Node.js 20 或更高版本以及来自 `@firecrawl/anydoc` 的 `anydoc` 可执行文件，包括其特定于平台的本机包。 |如果缺少 `python-pptx` 或 `python-docx`，该技能会将固定版本安装到 `/tmp` 下的虚拟环境中，这需要 Python 的 `venv` 模块并访问 PyPI。如果缺少 `anydoc`，转换器将使用 `npx` 运行它，这需要 npm 并访问 npm 注册表。 Excel 技能没有安装后备方案。预安装无需程序包注册表访问权限即可运行的映像中的每个组件。
+
+要查看默认映像包含在您的版本中的版本，请从 `system/default:latest` 启动沙箱并运行：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+python3 -m pip list 2>/dev/null | grep -iE '^(python-docx|python-pptx|openpyxl|defusedxml|lxml|pillow|xlsxwriter) '
+anydoc --version
+```
+
+在从自定义快照启动的沙箱中运行相同的命令，以确认它已准备好用于队列。还要检查文档库导入以及强化的 XML 解析器是否处于活动状态：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+python3 -c "import docx, pptx, openpyxl.xml; assert openpyxl.xml.DEFUSEDXML"
+```
+
+您的映像不需要使用 Ubuntu 或包含默认映像中的所有开发工具。如果您使用其他发行版，请提供兼容的包及其本机依赖项。
+
+`system/default:latest` 是快照引用，而不是 Dockerfile `FROM` 指令的容器映像 URI。构建您自己的容器镜像，然后[create a snapshot from it](/langsmith/sandbox-snapshots#build-a-snapshot-from-a-container-image)。要审核默认或命名系统快照，请使用已部署的 `sandbox-host` 映像按照 [Inspect the default snapshot filesystem in self-hosted deployments](/langsmith/sandbox-snapshots#inspect-the-default-snapshot-filesystem-in-self-hosted-deployments) 进行操作。
+
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/computer-use.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/computer-use.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -41,9 +41,18 @@ flowchart TD
 
 The OpenTelemetry SDK instruments your agent code and emits spans. Spans travel via the OTLP protocol to an OpenTelemetry Collector, which batches and routes them to one or more destinations simultaneously  (*fanout*). LangSmith receives spans at its OTLP endpoint and displays them as traces in the dashboard.
 
-> [!NOTE]
->
-> Update the LangSmith URL appropriately for self-hosted installations or regional SaaS in the requests below: GCP EU uses `eu.api.smith.langchain.com`; GCP APAC uses `apac.api.smith.langchain.com`; AWS US uses `aws.api.smith.langchain.com`.
+## Find your OTLP endpoint
+
+The OTLP base URL is your LangSmith API URL (`LANGSMITH_ENDPOINT`) plus `/otel`:
+
+| LangSmith deployment | OTLP base URL |
+| - | - |
+| GCP US | `https://api.smith.langchain.com/otel` |
+| GCP EU | `https://eu.api.smith.langchain.com/otel` |
+| GCP APAC | `https://apac.api.smith.langchain.com/otel` |
+| AWS US | `https://aws.api.smith.langchain.com/otel` |
+| BYOC | `https://<data_plane_host>/otel` |
+| Self-hosted | `https://<host>/api/v1/otel` |
 
 ## Trace a LangChain agent
 
@@ -112,11 +121,9 @@ For non-LangChain agents or custom instrumentation, you can trace your agent in 
 
    > [!NOTE]
    >
-   > `OTEL_EXPORTER_OTLP_ENDPOINT` is a base URL. OTLP/HTTP exporters append the signal path (`/v1/traces`) themselves, so do not include it: setting the base endpoint to `https://api.smith.langchain.com/otel/v1/traces` sends traces to `/otel/v1/traces/v1/traces`, which returns `404`. Include the full path only with the per-signal `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` variable or a collector exporter's `traces_endpoint`, which are used exactly as given.
-
-   > [!NOTE]
+   > `OTEL_EXPORTER_OTLP_ENDPOINT` is a base URL: your LangSmith API URL (`LANGSMITH_ENDPOINT`) plus `/otel`. For the value on each deployment type, see [Find your OTLP endpoint](#find-your-otlp-endpoint). OTLP/HTTP exporters append the signal path (`/v1/traces`) themselves, so do not include it. Setting the base endpoint to `https://api.smith.langchain.com/otel/v1/traces` sends traces to `/otel/v1/traces/v1/traces`, which returns `404`.
    >
-   > If you're self-hosting LangSmith, replace the base endpoint with your LangSmith api endpoint and append `/api/v1`. For example: `OTEL_EXPORTER_OTLP_ENDPOINT=https://ai-company.com/api/v1/otel`
+   > Include the full path only with the per-signal `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` variable or a collector exporter's `traces_endpoint`, which are used exactly as given.
 
    For an agent-based workspace, set the registered agent identifier and environment in the exporter headers:
 

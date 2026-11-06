@@ -274,6 +274,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > YouTube transcript search and entity resolution tools with timestamped evidence, speaker filters, and sponsored or organic passage classifications.
 
+> [card] [ArcnmToolkit](https://github.com/arcnm/langchain-arcnm#readme)
+>
+> Manufacturing should-cost for machined and sheet-metal parts from a CAD file, with an itemised cost sheet per calculation.
+
 > [card] [ARO](https://github.com/joy7758/langchain-aro)
 >
 > Export and verify portable execution integrity artifacts for LangChain runs.
@@ -386,6 +390,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > LLM gateway with LangChain chat model and embeddings integrations.
 
+> [card] [BrewPageToolkit](https://github.com/kochetkov-ma/langchain-brewpage#readme)
+>
+> Tools that publish HTML, Markdown, JSON, key-value stores and files to BrewPage and return a shareable URL.
+
 > [card] [Brightdata](https://docs.brightdata.com/integrations/langchain)
 >
 > Web data platform and proxy services.
@@ -437,6 +445,14 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [ChatLlamay](https://github.com/kosa8ai/langchain-llamay#readme)
 >
 > Chat models served locally by llamay, a runtime for macOS, Windows, and Linux, through its Ollama-compatible API.
+
+> [card] [ChatOptiQ](https://github.com/optiq-bot/langchain-optiq)
+>
+> Chat model for OptiQ Cloud, an OpenAI-compatible API serving GLM 5.3, DeepSeek V4.1 Flash and MiniMax M3.1 Flash, with reasoning\_effort control.
+
+> [card] [ChatMeragpt](https://github.com/Sandeep85Das/langchain-meragpt)
+>
+> Chat model for meraGPT Restyler 1, which rewrites machine-written prose to read the way a person writes and is trained to keep facts and formatting.
 
 > [card] [ChatRouter](https://github.com/danielpolok/langchain-model-router)
 >
@@ -678,6 +694,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Reasoning observability and regression testing for agent runs.
 
+> [card] [DXMTVectorDB](https://github.com/dxmt/dxmt/tree/main/vectordb/clients/langchain-dxmt)
+>
+> Vector store for DXMT, an open-source memory database for personal agents: vector, BM25 and hybrid search, metadata filters, server-side embedding.
+
 > [card] [DynamicToolSelectorMiddleware](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware)
 >
 > Agent middleware for sub-100ms hybrid dense and sparse vector tool retrieval over zvec, cutting prompt token overhead from tool lists.
@@ -821,6 +841,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [FoxNose](https://langchain-foxnose.readthedocs.io/)
 >
 > Retriever, document loader and agent tool for FoxNose collections, with text, vector, hybrid and vector-boosted search over the Flux delivery API.
+
+> [card] [FrameScanTool](https://github.com/Sandeep85Das/langchain-frame)
+>
+> Tools that run the Frame static analysis security scanner on a path and check whether a later change fixed each finding.
 
 > [card] [Future AGI](https://docs.futureagi.com/docs/integrations/traceai/langchain/)
 >

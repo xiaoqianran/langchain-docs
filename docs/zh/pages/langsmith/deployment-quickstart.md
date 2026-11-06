@@ -29,9 +29,47 @@
   uv tool install langgraph-cli
   ```
 
+## 开始使用您的编码代理
+
+编码代理可以按照此快速入门来准备、测试和部署您的应用程序。首先，将此提示粘贴到您的编码代理中：将应用程序部署到LangSmith云
+
+帮助将应用程序从此工作目录部署到LangSmith云。
+
+首先阅读[https://docs.langchain.com/langsmith/deployment-quickstart.md](https://docs.langchain.com/langsmith/deployment-quickstart.md)。
+将其用作部署步骤的事实来源。阅读链接页面
+根据需要将 .md 附加到其 URL 中。
+
+1. 检查项目并询问是否部署现有应用程序
+   或创建一个新的。对于新的应用程序，询问它应该做什么，并
+   使用快速入门中的 LangGraph 模板。对于现有的
+   应用程序，保留其框架并遵循链接的应用程序
+   用于导出图表的结构和框架部署指南
+   langgraph.json。
+2. 检查先决条件，包括 Plus 计划上的 LangSmith 帐户
+   或以上。使用 uv 工具 install langgraph-cli 安装 LangGraph CLI
+   如果丢失。按照本地开发指南安装任何
+   测试应用程序所需的额外依赖项。
+3. 要求用户设置 LANGSMITH\_API\_KEY 和任何所需的模型提供程序
+   在 shell 或本地 .env 文件中输入密钥，然后等待确认。
+   不要要求他们将秘密粘贴到聊天中。确保秘密文件
+   被 Git 忽略，并且从不打印或提交凭证。
+4.读取[https://docs.langchain.com/langsmith/local-dev-testing.md](https://docs.langchain.com/langsmith/local-dev-testing.md)，运行langgraph dev，并在本地测试该图。解决之前的错误
+   部署。如果 Studio 操作需要用户，请解释该怎么做
+   并等待结果。
+5. 解释目标部署以及云使用可能会产生费用。
+   在运行 langgraph 部署之前请求确认。不要覆盖
+   未经明确批准的现有部署。
+6. 按照快速入门在 Studio 中测试已部署的应用程序并
+   通过它的 API。报告部署 URL 和测试结果，或者
+   如果部署或测试未完成，则精确阻止。
+
+要自行执行这些步骤，请继续执行以下操作。
+
 ## 1. 创建一个可部署的应用程序
 
-`langgraph deploy` 部署其 `langgraph.json` 导出图表的任何项目。选择与您创作代理的方式相匹配的路径：> [选项卡] LangGraph 模板
+`langgraph deploy` 部署其 `langgraph.json` 导出图表的任何项目。选择与您创作代理的方式相匹配的路径：
+
+> [选项卡] LangGraph 模板
 >
 > 从 [⟦T21⟧ template](https://github.com/langchain-ai/new-langgraph-project) 创建一个新应用程序：
 >
@@ -42,9 +80,7 @@
 >
 >> [!提示]
 >>
->> 运行 `langgraph new`（不带 `--template`）以获得可用模板的交互式菜单。
-
-> [tab]自带框架
+>> 运行 `langgraph new`（不带 `--template`）以获得可用模板的交互式菜单。> [tab]自带框架
 >
 > 使用 Claude Agent SDK、Strands、CrewAI、AutoGen 或 Google ADK 编写的代理一旦公开来自 `langgraph.json` 的图表，就会通过相同的 CLI 进行部署。有关端到端示例，请参阅[Deploy other frameworks](/langsmith/deploy-other-frameworks)。当您的项目导出图表后，请返回此处执行其余步骤。
 
@@ -64,7 +100,9 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 
 ## 3. 部署
 
-直接从 CLI 或通过 UI 进行部署。> [选项卡] 从 CLI 部署
+直接从 CLI 或通过 UI 进行部署。
+
+> [选项卡] 从 CLI 部署
 >
 > 从项目目录运行部署命令：
 >
@@ -78,9 +116,7 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 >>
 >> 要在更改代码后更新现有部署，请重新运行 `langgraph deploy`。它按名称查找现有部署并就地更新它。
 >
-> 您还可以使用 `langgraph deploy list` 查看所有部署，使用 `langgraph deploy logs` 跟踪运行时日志，使用 `langgraph deploy delete <ID>` 删除部署。详情请参阅[CLI reference](/langsmith/cli#deploy)。
-
-> [选项卡] 从 Studio 部署
+> 您还可以使用 `langgraph deploy list` 查看所有部署，使用 `langgraph deploy logs` 跟踪运行时日志，使用 `langgraph deploy delete <ID>` 删除部署。详情请参阅[CLI reference](/langsmith/cli#deploy)。> [选项卡] 从 Studio 部署
 >
 > 从工作室部署：
 >
@@ -104,7 +140,9 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 2. 选择您的部署以查看其详细信息。
 3、点击右上角**Studio**，打开[Studio](/langsmith/studio)。
 
-## 5. 测试 API从部署详细信息视图中复制 **API URL**，然后使用它来调用您的应用程序：
+## 5. 测试 API
+
+从部署详细信息视图中复制 **API URL**，然后使用它来调用您的应用程序：
 
 > [选项卡] Python SDK（异步）
 >
@@ -213,9 +251,7 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 >         },
 >         \"stream_mode\": \"updates\"
 >     }"
-> ```
-
-## 后续步骤
+> ```## 后续步骤
 
 > [卡][Assistants](/langsmith/assistants)
 >
@@ -227,7 +263,7 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 
 > [卡][Runs](/langsmith/background-run)
 >
-> 启动长时间运行作业的后台运行并将结果返回给您的客户端。
+> 启动长时间运行作业的后台运行，并将结果流式传输回您的客户端。
 
 ***
 

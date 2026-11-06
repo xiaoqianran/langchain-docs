@@ -59,8 +59,8 @@ for model in [openai_model, anthropic_model, google_model]:
 
 **提供商**是托管 AI 模型并通过 API 公开它们的公司或平台。示例包括 OpenAI、Anthropic、Google 和 AWS Bedrock。
 
-在LangChain中，每个提供程序都有一个专用的**集成包**（例如`langchain-openai`、`langchain-anthropic`），用于实现该提供程序模型的标准LangChain接口。这意味着：* **为每个提供程序提供专用包**，并提供适当的版本控制和依赖项管理
-* **提供者特定的功能**在您需要时可用（例如OpenAI的Responses API，Anthropic的扩展思维）
+在 LangChain 中，每个提供程序都有一个专用的**集成包**（例如 `langchain-openai`、`langchain-anthropic`），用于实现该提供程序模型的标准 LangChain 接口。这意味着：* **为每个提供程序提供专用包**，并提供适当的版本控制和依赖项管理
+* **特定于提供商的功能**在您需要时可用（例如OpenAI的Responses API、Anthropic的扩展思维）
 * **通过环境变量自动 API 密钥处理**
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -92,7 +92,7 @@ model = ChatOpenAI(model="gpt-5.5")
 要查找提供程序的可用模型名称，请参阅提供程序自己的文档。以下是一些受欢迎的提供商：
 
 |供应商|哪里可以找到型号名称 |
-| :-| :-|
+| :- | :- |
 | [OpenAI](/oss/python/integrations/providers/openai) | [OpenAI models page](https://platform.openai.com/docs/models) |
 | [Anthropic](/oss/python/integrations/providers/anthropic) | [Anthropic models page](https://docs.anthropic.com/en/docs/about-claude/models) |
 | [Google](/oss/python/integrations/providers/google) | [Google AI models page](https://ai.google.dev/gemini-api/docs/models) |
@@ -115,15 +115,14 @@ model = init_chat_model("google_genai:gemini-mythos")
 
 ## 路由器和代理
 
-**路由器**（也称为代理或网关）使您可以通过单个 API 和凭证访问来自多个提供商的模型。它们可以简化计费，让您在不改变集成的情况下在模型之间切换，并提供自动回退和负载平衡等功能。|供应商|整合 |描述 |
-| :-| :-| :-|
+**路由器**（也称为代理或网关）使您可以通过单个 API 和凭证访问来自多个提供商的模型。它们可以简化计费，让您在不改变集成的情况下在模型之间切换，并提供自动回退和负载平衡等功能。
+
+|供应商|整合 |描述 |
+| :- | :- | :- |
 | [OpenRouter](https://openrouter.ai/) | [⟦T13⟧](/oss/python/integrations/chat/openrouter) |统一访问OpenAI、Anthropic、Google、Meta 等模型 |
-| [FuturMix](https://futurmix.ai/) | [⟦T14⟧](https://futurmix.ai/) |适用于 22 种以上型号的统一 AI 网关，具有OpenAI 兼容 API 和 99.99% SLA |
-| [LiteLLM](https://www.litellm.ai/) | [⟦T15⟧](/oss/python/integrations/chat/litellm) |为 100 多家提供商提供统一界面，提供路由、回退和支出跟踪功能 |
+| [LiteLLM](https://www.litellm.ai/) | [⟦T14⟧](/oss/python/integrations/chat/litellm) |为 100 多家提供商提供统一界面，提供路由、回退和支出跟踪功能 |
 
-当您想要执行以下操作时，路由器很有用：
-
-* **使用单个 API 密钥和计费帐户访问许多提供商**
+当您想要执行以下操作时，路由器很有用：* **使用单个 API 密钥和计费帐户访问许多提供商**
 * **动态切换模型**，无需管理多个提供商凭据
 * **使用后备模型**，如果主模型失败，会自动使用不同的模型重试
 
@@ -136,7 +135,7 @@ response = model.invoke("Hello!")
 
 ## OpenAI 兼容端点
 
-许多提供商提供与 OpenAI 的 [Chat Completions API](https://platform.openai.com/docs/api-reference/chat) 兼容的端点。您可以使用 [⟦T16⟧](/oss/python/integrations/chat/openai) 和自定义 `base_url` 连接到这些：
+许多提供商提供与 OpenAI 的 [Chat Completions API](https://platform.openai.com/docs/api-reference/chat) 兼容的端点。您可以使用 [⟦T15⟧](/oss/python/integrations/chat/openai) 和自定义 `base_url` 连接到这些：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_openai import ChatOpenAI
@@ -154,17 +153,19 @@ model = ChatOpenAI(
 
 ## 后续步骤
 
-> **[Models guide](/oss/python/langchain/models)**
+> [卡][Models guide](/oss/python/langchain/models)
 >
 > 了解如何使用模型：调用、流、批处理、工具调用等。
 
-> **[Chat model integrations](/oss/python/integrations/chat)**
+> [卡][Chat model integrations](/oss/python/integrations/chat)
 >
-> 浏览所有聊天模型集成及其功能。> **[All providers](/oss/python/integrations/providers/overview)**
+> 浏览所有聊天模型集成及其功能。
+
+> [卡][All providers](/oss/python/integrations/providers/overview)
 >
 > 查看提供商包和集成的完整列表。
 
-> **[Agents](/oss/python/langchain/agents)**
+> [卡][Agents](/oss/python/langchain/agents)
 >
 > 构建使用模型作为推理引擎的代理。
 

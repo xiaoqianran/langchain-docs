@@ -30,18 +30,20 @@ openwiki personal --update "Refresh the wiki from configured connectors"
 
 ## 连接您的来源
 
-在个人模式下，OpenWiki 从您已经使用的工具中获取知识，并将其合成到您本地的 wiki 下的`~/.openwiki/wiki/` 中。首次运行入门可以设置自定义 MCP、本地 git 存储库、Notion、Gmail、X/Twitter、网络搜索、黑客新闻和 Slack。
+在个人模式下，OpenWiki 从您已使用的工具中获取知识，并将其合成到您本地的 wiki 下的`~/.openwiki/wiki/` 中。首次运行入门可以设置自定义 MCP、本地 git 存储库、Notion、Gmail、X/Twitter、网络搜索、黑客新闻和 Slack。
 
 在摄取运行期间，连接器工具在 `~/.openwiki/connectors/<connector>/raw/` 下写入原始数据和清单，然后特定于源的代理运行从这些本地文件更新 wiki。
 
 连接器机密由环境变量名称引用并存储在 `~/.openwiki/.env` 中。
 
-连接器配置文件不应包含原始秘密值。
+> [!警告]
+>
+> 连接器配置文件不应包含原始秘密值。
 
 ### 内置源|来源 |证书 |行为 |
 | - | - | - |
 | `custom-mcp` |默认情况下不需要 |连接到任何已配置的 HTTP 或 stdio MCP 服务器，并仅允许显式安全的只读工具 |
-| `git-repo` |本地路径 |读取配置的本地存储库路径并写入紧凑的清单 |
+| `git-repo` |本地路径|读取配置的本地存储库路径并写入紧凑的清单 |
 | `x` | OAuth 用户上下文凭据 |通过 X API 的主页时间线、用户帖子、提及、书签和列表帖子 |
 | `notion` |概念 OAuth（托管 MCP）|通过 Notion OAuth 进行身份验证，而不是粘贴 Notion 令牌 |
 | `google` | Gmail OAuth |在 `openwiki auth gmail` 之后通过 Gmail API 获取最近的邮件 |

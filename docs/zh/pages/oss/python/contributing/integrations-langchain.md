@@ -14,13 +14,13 @@ LangChain 为多个不同组件（语言模型、向量存储等）提供标准�
 
 ## 为什么要实施 LangChain 集成？
 
-> **可发现性**
+> [卡片] 可发现性
 >
 > LangChain 是构建 LLM 应用程序最常用的框架，每月下载量超过 2 亿次。
 
-> **互操作性**
+> [卡] 互操作性
 >
-> LangChain 组件公开标准接口，允许开发人员轻松地相互交换。如果您实现了LangChain集成，任何使用不同组件的开发人员都可以轻松地替换您的组件。> **最佳实践**
+> LangChain 组件公开标准接口，允许开发人员轻松地相互交换。如果您实现了LangChain集成，任何使用不同组件的开发人员都可以轻松地替换您的组件。> [卡片] 最佳实践
 >
 > 通过其标准接口，LangChain 组件鼓励并促进最佳实践（流、异步等），从而改善开发人员体验和应用程序性能。
 
@@ -55,19 +55,19 @@ LangChain 为多个不同组件（语言模型、向量存储等）提供标准�
 
 **1.实施你的包**
 
-> **[How to implement a LangChain integration](/oss/python/contributing/implement-langchain)**
+> [卡][How to implement a LangChain integration](/oss/python/contributing/implement-langchain)
 
 **2.通过标准测试**如果适用，请为您的集成实现对 LangChain 的 [standard test](/oss/python/contributing/standard-tests-langchain) 套件的支持并成功运行它们。
 
 **3.发布集成**
 
-> **[How to publish an integration](/oss/python/contributing/publish-langchain)**
+> [卡][How to publish an integration](/oss/python/contributing/publish-langchain)
 
 **4.列出您的集成**
 
 在 LangChain [docs repo](https://github.com/langchain-ai/docs) 中打开 PR，以便用户可以找到您的包。托管导游数量有限；大多数集成都是通过 YAML 列出的。
 
-> **列表如何运作**
+> [手风琴] 列表如何运作
 >
 > **默认（每月下载量低于 50,000 次，未推荐）：** 提交 [Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)。维护者应用 `integration-run` 后，自动化会打开一个 PR，向 [⟦T4⟧](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml) 添加一行。名称列链接到您的`docs_url`（首选合作伙伴文档，然后是 GitHub，然后是 PyPI 或 npm）。不要打开手动列表 PR 或添加新的 MDX 页面；自动化会关闭这些 PR 并重定向到问题表单。
 >

@@ -22,19 +22,19 @@
 
 解释器将该编排转移到代码中，以便模型推理“做什么”，而不是每个中间步骤。
 
-> **[Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)**
+> [卡][Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)
 >
 > 从解释器代码中调用选定的工具，包括循环、重试、分支和并行批处理。
 
-> **[Dynamic subagents](#dynamic-subagents)**
+> [卡][Dynamic subagents](#dynamic-subagents)
 >
 > 从代码中分派子代理，以进行大量输入的扇出、验证和递归工作流程。
 
-> **[Stateful work](#how-interpreters-work)**
+> [卡][Stateful work](#how-interpreters-work)
 >
 > 将中间值保持在运行时状态，而不会使模型上下文过载。
 
-> **[Deterministic transforms](#how-interpreters-work)**
+> [卡][Deterministic transforms](#how-interpreters-work)
 >
 > 对结构化数据进行排序、分组、解析、验证、评分和聚合，无需再次进行模型转换。
 
@@ -44,7 +44,7 @@
 
 |需要|使用 |
 | - | - |
-|一两个简单的外部通话 |正常工具调用 |
+|一两个简单的外部通话 |正常工具调用|
 |纯内存 JavaScript：循环、分支、重试或数据转换（无外部工具）|口译 |
 |许多从代码编排的外部工具调用（需要[PTC](#programmatic-tool-calling-ptc)）| [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) 口译员 |
 |许多独立的工作单元、多个视角或对大量输入的递归分析 | [dynamic subagents](/oss/python/deepagents/dynamic-subagents) 口译员 |
