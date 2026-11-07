@@ -69,11 +69,9 @@ Reference the TaskDB Secret and enable migration. The block below collects every
 >         requests:
 >           cpu: "8"
 >           memory: "32Gi"
->           ephemeral-storage: "100Gi"
 >         limits:
 >           cpu: "8"
 >           memory: "32Gi"
->           ephemeral-storage: "100Gi"
 >     taskdb:
 >       postgres:
 >         auth:

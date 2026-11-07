@@ -10,9 +10,9 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上 **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
-本页介绍秘密路由和部署选项。要在部署之前测试代理，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。有关命令标志、部署步骤列表和故障排除，请参阅 [CLI reference](/langsmith/javascript/managed-deep-agents-cli)。
+本页介绍秘密路由和部署选项。要在部署之前测试代理，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。有关命令标志、部署步骤列表和故障排除，请参阅 [CLI reference](/langsmith/javascript/managed-deep-agents-cli)。要部署已完成的开源项目，请参阅 [design agent](/langsmith/javascript/managed-deep-agents-design-agent) 和 [paid media agent](/langsmith/javascript/managed-deep-agents-paid-media-agent) 模板。
 
 ## 先决条件
 
@@ -24,11 +24,11 @@
 
 * 从 `managed-deepagents` 安装`mda` CLI。
 
-* 使用 `npm install` 安装 TypeScript 项目的项目依赖项。
+* 使用 `npm install` 安装 TypeScript 项目的项目依赖项。* 模型提供者凭据，例如 `.env` 中的 `OPENAI_API_KEY`、您的 shell 环境或 LangSmith 工作区机密。
 
-* 模型提供者凭据，例如 `.env` 中的 `OPENAI_API_KEY`、您的 shell 环境或 LangSmith 工作区机密。
+## 选择 SaaS 区域
 
-## 选择 SaaS 区域`LANGSMITH_ENDPOINT` 选择 CLI 部署到的 LangSmith 区域。默认情况下，CLI 以 GCP US 为目标。
+`LANGSMITH_ENDPOINT` 选择 CLI 部署到的 LangSmith 区域。默认情况下，CLI 以 GCP US 为目标。
 
 在首次部署之前，在项目的 `.env` 或 shell 环境中设置 `LANGSMITH_ENDPOINT`：
 
@@ -152,7 +152,7 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 保留的平台变量、空值、`.env`和`.env.*`文件不会复制到已编译的构建存档中。
 
-有关身份验证密钥顺序和保留变量，请参阅[CLI reference](/langsmith/javascript/managed-deep-agents-cli#authentication)。
+认证密钥顺序和保留变量请参见[CLI reference](/langsmith/javascript/managed-deep-agents-cli#authentication)。
 
 ## 部署故障排除
 

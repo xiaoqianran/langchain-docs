@@ -540,6 +540,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`TokenUsageToolkit`](https://tokenusage.dev/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tokenusage-dev/month)](https://pypi.org/project/langchain-tokenusage-dev/) |
 | [`AlterLabScrapeTool`](https://pypi.org/project/langchain-alterlab/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alterlab/month)](https://pypi.org/project/langchain-alterlab/) |
 | [`SealKeeperLookupTool`](https://sealkeeper.run/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sealkeeper/month)](https://pypi.org/project/langchain-sealkeeper/) |
+| [`FinzData`](https://pypi.org/project/langchain-finzdata/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-finzdata/month)](https://pypi.org/project/langchain-finzdata/) |
 | [`Hlido`](https://hlido.eu/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/hlido-trust/month)](https://pypi.org/project/hlido-trust/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`viaSocket`](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/viasocket/month)](https://pypi.org/project/viasocket/) |

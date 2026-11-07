@@ -94,11 +94,15 @@ To resume a paused run, see [Respond to an interrupt](#respond-to-an-interrupt).
 
 To pause on a form your own tool posts in Slack instead, see [Agent-owned interrupts](/langsmith/python/managed-deep-agents-agent-owned-interrupts).
 
+For a full project that pauses campaign changes for Slack approval, see the [paid media agent template](/langsmith/python/managed-deep-agents-paid-media-agent).
+
 ## Use secrets and context
 
-Tools can read deployment secrets from environment variables. Put local values in `.env` for `mda dev`; `mda deploy` forwards non-reserved `.env` values as hosted deployment secrets.
+A tool reads fixed configuration, such as a region or an endpoint URL, from an environment variable. Put local values in `.env` for `mda dev`. `mda deploy` forwards non-reserved `.env` values as hosted deployment secrets.
 
-For per-run values such as request metadata or feature flags, use the normal LangChain runtime context patterns for tools. See [how to access context from within your tools](/oss/python/langchain/tools#access-context).
+Credentials belong in a [connection](/langsmith/python/managed-deep-agents-connections) instead. A connection keeps the value in your LangSmith workspace rather than the project. It can also resolve a different credential for each caller. See [Use tools that require authentication](#use-tools-that-require-authentication).
+
+For per-run values such as request metadata or feature flags, see [Access runtime context](#access-runtime-context).
 
 ## Deployment
 
@@ -126,7 +130,35 @@ Human-in-the-loop needs durable thread state to pause and resume. The managed ru
 
 ## Use tools that require authentication
 
-If a tool requires an API key or OAuth token, use a connection to resolve the credential at runtime. See [Manage connections](/langsmith/python/managed-deep-agents-connections).
+If a tool requires an API key or an OAuth token, resolve it at runtime with a [connection](/langsmith/python/managed-deep-agents-connections). `connections.get(...)` takes the connection slug and the credential owner, and returns the credential as a string.
+
+The second argument selects the owner. Pass `{"type": "agent"}` for one credential that the whole deployment shares, such as a team search key. Pass `{"type": "user"}` for the calling person's own credential, so the agent acts as them. For more information, see [Choose a credential owner](/langsmith/python/managed-deep-agents-connections#choose-a-credential-owner).
+
+This tool resolves the caller's own GitHub credential:
+
+```python tools/get_github_user.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import httpx
+from langchain.tools import tool
+from managed_deepagents import connections
+
+
+@tool
+async def get_github_user() -> str:
+    """Get the authenticated caller's GitHub login."""
+    # Replace `frontend-github` with the name of your connection.
+    access_token = await connections.get("frontend-github", {"type": "user"})
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        response = await client.get(
+            "https://api.github.com/user",
+            headers={"Authorization": f"Bearer {access_token}"},
+        )
+        response.raise_for_status()
+        return response.json()["login"]
+```
+
+A user-owned connection needs a grant from each caller. The first run for someone who has not authorized the service pauses on a [`credential_authorization_required` interrupt](/langsmith/python/managed-deep-agents-connections#handle-the-authorization-interrupt). Slack and LangSmith Studio complete that interrupt for the caller.
+
+Create the connection itself with `mda connections create`. For create modes, local development, and the authorization interrupt, see [Manage connections](/langsmith/python/managed-deep-agents-connections).
 
 ## Access runtime context
 

@@ -40,6 +40,10 @@ Every `connections.get(...)` call names who owns the credential it resolves:
 | `agent` | One credential that belongs to the deployment. Every caller uses it. | Every caller needs the same capability: web search with Tavily, a shared knowledge base, or posting to one team channel. |
 | `user` | The calling person's own credential. Each person authorizes their own account. | The agent acts as the person who asked: searching Notion pages only they can see, filing an issue under their name, or sending email as them. |
 
+Two callers of the same agent share an agent-owned credential and hold separate user-owned ones:
+
+![Agent-owned on the left, where the runs of two callers both resolve one shared team Tavily key. User-owned on the right, where each run resolves that caller's own Notion token.](https://mintcdn.com/langchain-5e9cc07a/3q5FS3Rl6Grxuv-3/langsmith/images/mda-connections-owners-light.png?fit=max\&auto=format\&n=3q5FS3Rl6Grxuv-3\&q=85\&s=0273a0895d2a5739a7cbe744676f6171)
+
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 tavily_key = await connections.get("organization-tavily", {"type": "agent"})
 notion_token = await connections.get("engineering-notion", {"type": "user"})
@@ -47,7 +51,7 @@ notion_token = await connections.get("engineering-notion", {"type": "user"})
 
 `connections.get(...)` resolves to the credential value as a string.
 
-A connection is a container, and it belongs to the workspace rather than to an owner. The credentials inside it have owners. There is no `--owner` flag: the [create mode](#choose-a-create-mode) you use sets the owner.
+A connection groups credentials under one slug. It belongs to the workspace rather than to an owner. Each credential it holds has its own owner. There is no `--owner` flag: the [create mode](#choose-a-create-mode) you use sets the owner.
 
 `connections.get(...)` selects an owner. It does not create one. Asking for an owner with no credential of its own fails the run for `agent`, and raises a [`credential_authorization_required` interrupt](#handle-the-authorization-interrupt) for `user`. A credential stored under the same slug for a different owner does not satisfy the lookup.
 
@@ -80,6 +84,10 @@ Ownership decides what the agent does with a credential. The create mode decides
 | **Opaque secret** | The service uses a fixed API key or other static secret. | `--secret-from-env`, `--secret-from-file`, stdin, or an interactive prompt | The agent |
 | **General OAuth** | You register your own OAuth app (BYOT), such as with GitHub or Google. | `--oauth <service>` from the catalog, or `--authorize-url` and `--token-url` for a custom provider | Each caller, or the agent with [`--authorize`](#authorize-an-agent-owned-oauth-account) or [client credentials](#create-a-client-credentials-connection) |
 | **MCP OAuth** | An MCP server advertises OAuth and registers a client automatically. | `--mcp <url>`, or the slug alone when the project already declares that user-owned MCP server | Each caller, or the agent with [`--authorize`](#authorize-an-agent-owned-oauth-account) |
+
+The following decision tree picks the create mode a service needs and shows which owner that mode supports:
+
+![Decision tree for the create mode. A fixed API key gives a shared opaque secret. An agent that acts as each caller gives MCP OAuth for an OAuth MCP server, or general OAuth otherwise, both per caller. An agent that does not gives client credentials when the provider issues app credentials, or OAuth with --authorize, both shared.](https://mintcdn.com/langchain-5e9cc07a/3q5FS3Rl6Grxuv-3/langsmith/images/mda-connections-create-mode-light.png?fit=max\&auto=format\&n=3q5FS3Rl6Grxuv-3\&q=85\&s=9220d993c735cee46e4408dfcd843970)
 
 For example:
 
@@ -393,6 +401,10 @@ If the server cannot register a client automatically, the CLI says so and points
 ## Handle the authorization interrupt
 
 Managed Deep Agents runs the OAuth round-trip for you. A project needs no callback route, no token store, no refresh logic, and no consent screen. The run pauses, the caller grants access, and the run resumes with that person's credential.
+
+A caller who already connected the service goes straight to the tool call. A caller without a grant takes the authorization round-trip first, then reaches the same tool call:
+
+![A caller sends a message and the run checks whether that caller connected Notion. A connected caller goes straight to a tool that gets the caller's token. An unconnected caller pauses the run, which sends a connect link; the caller signs in to Notion, the run resumes, and the tool gets the same token.](https://mintcdn.com/langchain-5e9cc07a/3q5FS3Rl6Grxuv-3/langsmith/images/mda-connections-interrupt-light.png?fit=max\&auto=format\&n=3q5FS3Rl6Grxuv-3\&q=85\&s=05d4da1e74df24c4bcd755b043a6b1f5)
 
 Before the first model turn, Managed Deep Agents checks every user-owned connection the run needs. If the caller is missing one or more grants, the credential gate raises a single LangGraph interrupt. Slack and LangSmith Studio handle that interrupt for the caller. A custom frontend reads the same payload from the LangChain frontend SDK and resumes after the caller connects.
 

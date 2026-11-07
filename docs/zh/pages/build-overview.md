@@ -4,7 +4,7 @@
 
 # 构建
 
-使用托管 Deep Agents、Deep Agents、LangChain、LangGraph 和舰队构建代理。
+使用 Managed Deep Agents、Deep Agents、LangChain、LangGraph 和 Studio 构建代理。
 
 # 构建
 
@@ -12,7 +12,7 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 
 ## 选择你的起点
 
-托管 Deep Agents、Deep Agents、LangChain 和 LangGraph 共享相同的开源堆栈，因此请根据您需要的控制程度进行选择。对于托管或无代码，请从 Managed Deep Agents 或 Fleet 开始：> [选项卡] Python
+托管 Deep Agents、Deep Agents、LangChain 和 LangGraph 共享相同的开源堆栈，因此请根据您需要的控制程度进行选择。对于托管或无代码，请从 Managed Deep Agents 或 Studio 开始：> [选项卡] Python
 >
 >>【卡牌】[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)
 >>
@@ -32,9 +32,9 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 >>
 >> 用于有状态、长时间运行的代理的低级编排：持久执行、流式传输、内存和人机交互。
 >
->>【卡牌】[Prefer no-code?](/langsmith/fleet)
+>>【卡牌】[Prefer no-code?](/langsmith/build-an-agent)
 >>
->> 使用 LangSmith Fleet 构建并运行代理，无需编写代码。> [选项卡] TypeScript
+>> 使用 LangSmith Studio 构建并运行代理，无需编写代码。> [选项卡] TypeScript
 >
 >>【卡牌】[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)
 >>
@@ -54,9 +54,9 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 >>
 >> 用于有状态、长时间运行的代理的低级编排：持久执行、流式传输、内存和人机交互。
 >
->>【卡牌】[Prefer no-code?](/langsmith/fleet)
+>>【卡牌】[Prefer no-code?](/langsmith/build-an-agent)
 >>
->> 使用 LangSmith Fleet 构建并运行代理，无需编写代码。
+>> 使用 LangSmith Studio 构建并运行代理，无需编写代码。
 
 ## 使用现成的代理
 

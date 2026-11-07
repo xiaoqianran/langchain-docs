@@ -6,6 +6,102 @@
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want a license key to trial LangSmith in your environment.
 
+**2026-11-06**
+
+## langsmith-0.17.48
+
+**LangSmith version:** `0.17.70`
+
+* Internal improvements and maintenance updates
+
+**Download the Helm chart:** [`langsmith-0.17.48.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.48/langsmith-0.17.48.tgz)
+
+**2026-11-06**
+
+## langsmith-0.18.0-rc.60
+
+**LangSmith version:** `0.18.20rc1`
+
+* This release packages the same LangSmith application version as langsmith-0.18.0-rc.54. Refer to the [langsmith-0.18.0-rc.54](#langsmith-0-18-0-rc-54) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.18.0-rc.60.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.60/langsmith-0.18.0-rc.60.tgz)
+
+**Sandbox runtime chart, for Sandboxes in a separate cluster:** [`langsmith-sandbox-0.18.0-rc.4.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-sandbox-0.18.0-rc.4/langsmith-sandbox-0.18.0-rc.4.tgz)
+
+**2026-11-06**
+
+## langsmith-0.17.47
+
+**LangSmith version:** `0.17.69`
+
+* This release packages the same LangSmith application version as langsmith-0.17.45. Refer to the [langsmith-0.17.45](#langsmith-0-17-45) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.47.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.47/langsmith-0.17.47.tgz)
+
+**2026-11-06**
+
+## langsmith-0.17.46
+
+**LangSmith version:** `0.17.69`
+
+* This release packages the same LangSmith application version as langsmith-0.17.45. Refer to the [langsmith-0.17.45](#langsmith-0-17-45) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.46.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.46/langsmith-0.17.46.tgz)
+
+**2026-11-06**
+
+## langsmith-0.17.45
+
+**LangSmith version:** `0.17.69`
+
+* Internal improvements and maintenance updates
+
+**Download the Helm chart:** [`langsmith-0.17.45.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.45/langsmith-0.17.45.tgz)
+
+**2026-11-06**
+
+## langsmith-0.18.0-rc.59
+
+**LangSmith version:** `0.18.20rc1`
+
+* This release packages the same LangSmith application version as langsmith-0.18.0-rc.54. Refer to the [langsmith-0.18.0-rc.54](#langsmith-0-18-0-rc-54) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.18.0-rc.59.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.59/langsmith-0.18.0-rc.59.tgz)
+
+**Sandbox runtime chart, for Sandboxes in a separate cluster:** [`langsmith-sandbox-0.18.0-rc.4.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-sandbox-0.18.0-rc.4/langsmith-sandbox-0.18.0-rc.4.tgz)
+
+**2026-11-06**
+
+## langsmith-0.17.44
+
+**LangSmith version:** `0.17.68`
+
+* This release packages the same LangSmith application version as langsmith-0.17.43. Refer to the [langsmith-0.17.43](#langsmith-0-17-43) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.44.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.44/langsmith-0.17.44.tgz)
+
+**2026-11-06**
+
+## langsmith-0.17.43
+
+**LangSmith version:** `0.17.68`
+
+* Internal improvements and maintenance updates
+
+**Download the Helm chart:** [`langsmith-0.17.43.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.43/langsmith-0.17.43.tgz)
+
+**2026-11-06**
+
+## langsmith-0.18.0-rc.58
+
+**LangSmith version:** `0.18.20rc1`
+
+* This release packages the same LangSmith application version as langsmith-0.18.0-rc.54. Refer to the [langsmith-0.18.0-rc.54](#langsmith-0-18-0-rc-54) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.18.0-rc.58.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.58/langsmith-0.18.0-rc.58.tgz)
+
+**Sandbox runtime chart, for Sandboxes in a separate cluster:** [`langsmith-sandbox-0.18.0-rc.4.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-sandbox-0.18.0-rc.4/langsmith-sandbox-0.18.0-rc.4.tgz)
+
 **2026-11-05**
 
 ## langsmith-0.17.42

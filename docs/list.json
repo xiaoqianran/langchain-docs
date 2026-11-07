@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-11-06T16:27:19.956Z",
+  "fetchedAt": "2026-11-07T15:15:11.971Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 14,
-  "ok": 1738,
+  "ok": 1726,
   "failed": 0,
   "tracks": {
     "api-reference": {
@@ -31,11 +31,11 @@
     },
     "langsmith-js": {
       "name": "LangSmith · JS",
-      "count": 31
+      "count": 33
     },
     "langsmith-py": {
       "name": "LangSmith · Python",
-      "count": 31
+      "count": 33
     },
     "langsmith-api": {
       "name": "LangSmith API",
@@ -47,7 +47,7 @@
     },
     "oss-js": {
       "name": "OSS · JavaScript",
-      "count": 207
+      "count": 199
     },
     "oss-openwiki": {
       "name": "OSS · OpenWiki",
@@ -55,7 +55,7 @@
     },
     "oss-python": {
       "name": "OSS · Python",
-      "count": 200
+      "count": 192
     },
     "use-these-docs": {
       "name": "use-these-docs",
@@ -619,7 +619,7 @@
       "track": "build-overview",
       "trackName": "build-overview",
       "group": "pages",
-      "bytes": 7050
+      "bytes": 7072
     },
     {
       "rel": "langsmith/abac.md",
@@ -709,7 +709,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "agent-environments",
-      "bytes": 3362
+      "bytes": 3354
     },
     {
       "rel": "langsmith/agent-registry.md",
@@ -718,7 +718,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "agent-registry",
-      "bytes": 6649
+      "bytes": 6661
     },
     {
       "rel": "langsmith/agent-server.md",
@@ -1312,7 +1312,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "agent-server-changelog",
-      "bytes": 189854
+      "bytes": 192502
     },
     {
       "rel": "langsmith/agent-server-distributed-tracing.md",
@@ -1550,12 +1550,12 @@
     },
     {
       "rel": "langsmith/build-an-agent.md",
-      "title": "Build an agent in the UI",
+      "title": "Build an agent with LangSmith Studio",
       "url": "https://docs.langchain.com/langsmith/build-an-agent",
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "build-an-agent",
-      "bytes": 5894
+      "bytes": 9743
     },
     {
       "rel": "langsmith/byoc.md",
@@ -1582,7 +1582,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-architecture-azure",
-      "bytes": 14905
+      "bytes": 15077
     },
     {
       "rel": "langsmith/byoc-architecture-gcp.md",
@@ -1672,7 +1672,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-onboarding-azure",
-      "bytes": 17817
+      "bytes": 17988
     },
     {
       "rel": "langsmith/byoc-onboarding-gcp.md",
@@ -1789,7 +1789,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "cloud",
-      "bytes": 26572
+      "bytes": 27601
     },
     {
       "rel": "langsmith/cloud-platform-features.md",
@@ -2005,7 +2005,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "create-an-agent",
-      "bytes": 12182
+      "bytes": 11799
     },
     {
       "rel": "langsmith/create-few-shot-evaluators.md",
@@ -2230,7 +2230,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "decision-model-evaluator",
-      "bytes": 7263
+      "bytes": 11411
     },
     {
       "rel": "langsmith/define-target-function.md",
@@ -2302,7 +2302,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "deploy-other-frameworks",
-      "bytes": 27886
+      "bytes": 28026
     },
     {
       "rel": "langsmith/deploy-reference-overview.md",
@@ -2500,7 +2500,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-fix-validation",
-      "bytes": 18808
+      "bytes": 18962
     },
     {
       "rel": "langsmith/engine-issues.md",
@@ -2527,7 +2527,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-red-teaming",
-      "bytes": 11715
+      "bytes": 16643
     },
     {
       "rel": "langsmith/engine-repositories.md",
@@ -3274,7 +3274,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-channels-slack",
-      "bytes": 12611
+      "bytes": 12873
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-cli.md",
@@ -3292,7 +3292,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-connections",
-      "bytes": 42412
+      "bytes": 44216
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-context-hub.md",
@@ -3319,7 +3319,16 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-deploy",
-      "bytes": 9748
+      "bytes": 9971
+    },
+    {
+      "rel": "langsmith/javascript/managed-deep-agents-design-agent.md",
+      "title": "Deploy the open-source design agent",
+      "url": "https://docs.langchain.com/langsmith/javascript/managed-deep-agents-design-agent",
+      "track": "langsmith-js",
+      "trackName": "LangSmith · JS",
+      "group": "managed-deep-agents-design-agent",
+      "bytes": 10205
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-evals.md",
@@ -3409,7 +3418,16 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-overview",
-      "bytes": 7085
+      "bytes": 7393
+    },
+    {
+      "rel": "langsmith/javascript/managed-deep-agents-paid-media-agent.md",
+      "title": "Deploy the open-source paid media agent",
+      "url": "https://docs.langchain.com/langsmith/javascript/managed-deep-agents-paid-media-agent",
+      "track": "langsmith-js",
+      "trackName": "LangSmith · JS",
+      "group": "managed-deep-agents-paid-media-agent",
+      "bytes": 14399
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-project-structure.md",
@@ -3418,7 +3436,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-project-structure",
-      "bytes": 6055
+      "bytes": 6383
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-quickstart.md",
@@ -3427,7 +3445,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-quickstart",
-      "bytes": 13644
+      "bytes": 15501
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-runtime.md",
@@ -3445,7 +3463,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-sandboxes",
-      "bytes": 13673
+      "bytes": 13832
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-schedules.md",
@@ -3454,7 +3472,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-schedules",
-      "bytes": 14385
+      "bytes": 14544
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-search.md",
@@ -3472,7 +3490,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-skills",
-      "bytes": 3850
+      "bytes": 4068
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-subagents.md",
@@ -3490,7 +3508,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-tools",
-      "bytes": 7069
+      "bytes": 9453
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-tutorial.md",
@@ -3499,7 +3517,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-tutorial",
-      "bytes": 8213
+      "bytes": 9568
     },
     {
       "rel": "langsmith/jit-invite-sso.md",
@@ -3715,7 +3733,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-header-policies",
-      "bytes": 20595
+      "bytes": 21094
     },
     {
       "rel": "langsmith/llm-gateway-how-it-works.md",
@@ -3787,7 +3805,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-spend-policies",
-      "bytes": 6362
+      "bytes": 6405
     },
     {
       "rel": "langsmith/llm-gateway-traces.md",
@@ -4066,7 +4084,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "navigate-agents",
-      "bytes": 7468
+      "bytes": 7384
     },
     {
       "rel": "langsmith/nest-traces.md",
@@ -4372,7 +4390,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-channels-slack",
-      "bytes": 11879
+      "bytes": 12133
     },
     {
       "rel": "langsmith/python/managed-deep-agents-cli.md",
@@ -4390,7 +4408,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-connections",
-      "bytes": 37083
+      "bytes": 38887
     },
     {
       "rel": "langsmith/python/managed-deep-agents-context-hub.md",
@@ -4417,7 +4435,16 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-deploy",
-      "bytes": 10184
+      "bytes": 10399
+    },
+    {
+      "rel": "langsmith/python/managed-deep-agents-design-agent.md",
+      "title": "Deploy the open-source design agent",
+      "url": "https://docs.langchain.com/langsmith/python/managed-deep-agents-design-agent",
+      "track": "langsmith-py",
+      "trackName": "LangSmith · Python",
+      "group": "managed-deep-agents-design-agent",
+      "bytes": 10137
     },
     {
       "rel": "langsmith/python/managed-deep-agents-evals.md",
@@ -4507,7 +4534,16 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-overview",
-      "bytes": 9670
+      "bytes": 9970
+    },
+    {
+      "rel": "langsmith/python/managed-deep-agents-paid-media-agent.md",
+      "title": "Deploy the open-source paid media agent",
+      "url": "https://docs.langchain.com/langsmith/python/managed-deep-agents-paid-media-agent",
+      "track": "langsmith-py",
+      "trackName": "LangSmith · Python",
+      "group": "managed-deep-agents-paid-media-agent",
+      "bytes": 14347
     },
     {
       "rel": "langsmith/python/managed-deep-agents-project-structure.md",
@@ -4516,7 +4552,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-project-structure",
-      "bytes": 5904
+      "bytes": 6224
     },
     {
       "rel": "langsmith/python/managed-deep-agents-quickstart.md",
@@ -4525,7 +4561,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-quickstart",
-      "bytes": 12298
+      "bytes": 13768
     },
     {
       "rel": "langsmith/python/managed-deep-agents-runtime.md",
@@ -4543,7 +4579,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-sandboxes",
-      "bytes": 13457
+      "bytes": 13612
     },
     {
       "rel": "langsmith/python/managed-deep-agents-schedules.md",
@@ -4552,7 +4588,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-schedules",
-      "bytes": 13901
+      "bytes": 14056
     },
     {
       "rel": "langsmith/python/managed-deep-agents-search.md",
@@ -4570,7 +4606,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-skills",
-      "bytes": 3822
+      "bytes": 4032
     },
     {
       "rel": "langsmith/python/managed-deep-agents-subagents.md",
@@ -4588,7 +4624,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-tools",
-      "bytes": 6875
+      "bytes": 9076
     },
     {
       "rel": "langsmith/python/managed-deep-agents-tutorial.md",
@@ -4597,7 +4633,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-tutorial",
-      "bytes": 7448
+      "bytes": 8442
     },
     {
       "rel": "langsmith/query-threads.md",
@@ -5227,7 +5263,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-smithdb-infrastructure",
-      "bytes": 45558
+      "bytes": 45370
     },
     {
       "rel": "langsmith/self-host-smithdb-install.md",
@@ -5254,7 +5290,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-smithdb-migrate",
-      "bytes": 7758
+      "bytes": 7680
     },
     {
       "rel": "langsmith/self-host-smithdb-observability.md",
@@ -5281,7 +5317,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-smithdb-troubleshooting",
-      "bytes": 7734
+      "bytes": 7668
     },
     {
       "rel": "langsmith/self-host-sso.md",
@@ -5515,7 +5551,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-hosted-changelog",
-      "bytes": 428928
+      "bytes": 432834
     },
     {
       "rel": "langsmith/self-hosted-mission-control.md",
@@ -11041,7 +11077,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "smithdb-sdk-migration",
-      "bytes": 21397
+      "bytes": 21569
     },
     {
       "rel": "langsmith/smithdb-sdk-migration-experiments.md",
@@ -11059,7 +11095,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "smithdb-sdk-migration-feedback",
-      "bytes": 32683
+      "bytes": 49211
     },
     {
       "rel": "langsmith/smithdb-sdk-migration-query-runs.md",
@@ -11140,7 +11176,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "studio",
-      "bytes": 3069
+      "bytes": 3702
     },
     {
       "rel": "langsmith/summary.md",
@@ -12355,7 +12391,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 108174
+      "bytes": 108216
     },
     {
       "rel": "oss/javascript/deepagents/tools.md",
@@ -13129,7 +13165,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 24762
+      "bytes": 24780
     },
     {
       "rel": "oss/javascript/langchain/multi-agent/subagents-personal-assistant.md",
@@ -13345,16 +13381,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 25589
-    },
-    {
-      "rel": "oss/javascript/langgraph/choosing-apis.md",
-      "title": "Choosing between Graph and Functional APIs",
-      "url": "https://docs.langchain.com/oss/javascript/langgraph/choosing-apis",
-      "track": "oss-js",
-      "trackName": "OSS · JavaScript",
-      "group": "langgraph",
-      "bytes": 5407
+      "bytes": 25638
     },
     {
       "rel": "oss/javascript/langgraph/deploy.md",
@@ -13381,7 +13408,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 34795
+      "bytes": 34001
     },
     {
       "rel": "oss/javascript/langgraph/frontend/custom-stream-channels.md",
@@ -13417,52 +13444,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 17511
-    },
-    {
-      "rel": "oss/javascript/langgraph/functional-api-human-in-the-loop.md",
-      "title": "Add human-in-the-loop with the Functional API",
-      "url": "https://docs.langchain.com/oss/javascript/langgraph/functional-api-human-in-the-loop",
-      "track": "oss-js",
-      "trackName": "OSS · JavaScript",
-      "group": "langgraph",
-      "bytes": 8591
-    },
-    {
-      "rel": "oss/javascript/langgraph/functional-api-memory.md",
-      "title": "Add memory with the Functional API",
-      "url": "https://docs.langchain.com/oss/javascript/langgraph/functional-api-memory",
-      "track": "oss-js",
-      "trackName": "OSS · JavaScript",
-      "group": "langgraph",
-      "bytes": 17335
-    },
-    {
-      "rel": "oss/javascript/langgraph/functional-api-streaming.md",
-      "title": "Stream with the Functional API",
-      "url": "https://docs.langchain.com/oss/javascript/langgraph/functional-api-streaming",
-      "track": "oss-js",
-      "trackName": "OSS · JavaScript",
-      "group": "langgraph",
-      "bytes": 3356
-    },
-    {
-      "rel": "oss/javascript/langgraph/functional-api-tasks.md",
-      "title": "Configure Functional API tasks",
-      "url": "https://docs.langchain.com/oss/javascript/langgraph/functional-api-tasks",
-      "track": "oss-js",
-      "trackName": "OSS · JavaScript",
-      "group": "langgraph",
-      "bytes": 7371
-    },
-    {
-      "rel": "oss/javascript/langgraph/functional-api-workflows.md",
-      "title": "Compose Functional API workflows",
-      "url": "https://docs.langchain.com/oss/javascript/langgraph/functional-api-workflows",
-      "track": "oss-js",
-      "trackName": "OSS · JavaScript",
-      "group": "langgraph",
-      "bytes": 7758
+      "bytes": 16101
     },
     {
       "rel": "oss/javascript/langgraph/graph-api.md",
@@ -13471,7 +13453,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 31276
+      "bytes": 31072
     },
     {
       "rel": "oss/javascript/langgraph/graph-api-control-flow.md",
@@ -13552,7 +13534,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 5361
+      "bytes": 5414
     },
     {
       "rel": "oss/javascript/langgraph/persistence.md",
@@ -13579,7 +13561,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 29689
+      "bytes": 17818
     },
     {
       "rel": "oss/javascript/langgraph/sql-agent.md",
@@ -13627,22 +13609,13 @@
       "bytes": 6517
     },
     {
-      "rel": "oss/javascript/langgraph/thinking-in-functional-api.md",
-      "title": "Thinking in the Functional API",
-      "url": "https://docs.langchain.com/oss/javascript/langgraph/thinking-in-functional-api",
-      "track": "oss-js",
-      "trackName": "OSS · JavaScript",
-      "group": "langgraph",
-      "bytes": 18215
-    },
-    {
       "rel": "oss/javascript/langgraph/thinking-in-graph-api.md",
       "title": "Thinking in the Graph API",
       "url": "https://docs.langchain.com/oss/javascript/langgraph/thinking-in-graph-api",
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 20875
+      "bytes": 20468
     },
     {
       "rel": "oss/javascript/langgraph/ui.md",
@@ -13654,22 +13627,13 @@
       "bytes": 3159
     },
     {
-      "rel": "oss/javascript/langgraph/use-functional-api.md",
-      "title": "Build checklist for the Functional API",
-      "url": "https://docs.langchain.com/oss/javascript/langgraph/use-functional-api",
-      "track": "oss-js",
-      "trackName": "OSS · JavaScript",
-      "group": "langgraph",
-      "bytes": 3386
-    },
-    {
       "rel": "oss/javascript/langgraph/use-graph-api.md",
       "title": "Build checklist for the Graph API",
       "url": "https://docs.langchain.com/oss/javascript/langgraph/use-graph-api",
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 6495
+      "bytes": 6260
     },
     {
       "rel": "oss/javascript/langgraph/use-subgraphs.md",
@@ -13678,7 +13642,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 35852
+      "bytes": 35894
     },
     {
       "rel": "oss/javascript/langgraph/use-time-travel.md",
@@ -13696,7 +13660,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 39825
+      "bytes": 29042
     },
     {
       "rel": "oss/javascript/learn.md",
@@ -13705,7 +13669,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "learn",
-      "bytes": 4103
+      "bytes": 4131
     },
     {
       "rel": "oss/javascript/migrate/langchain-mcp-adapters.md",
@@ -14380,7 +14344,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 26329
+      "bytes": 27135
     },
     {
       "rel": "oss/python/integrations/embeddings/index.md",
@@ -14416,7 +14380,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 103424
+      "bytes": 103633
     },
     {
       "rel": "oss/python/integrations/providers/anthropic.md",
@@ -14560,7 +14524,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 92358
+      "bytes": 92553
     },
     {
       "rel": "oss/python/integrations/vectorstores/index.md",
@@ -14983,7 +14947,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 6697
+      "bytes": 6704
     },
     {
       "rel": "oss/python/langchain/multi-agent/router-knowledge-base.md",
@@ -15019,7 +14983,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 24223
+      "bytes": 24237
     },
     {
       "rel": "oss/python/langchain/multi-agent/subagents-personal-assistant.md",
@@ -15190,7 +15154,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 80271
+      "bytes": 80249
     },
     {
       "rel": "oss/python/langgraph/agentic-rag.md",
@@ -15235,16 +15199,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 49740
-    },
-    {
-      "rel": "oss/python/langgraph/choosing-apis.md",
-      "title": "Choosing between Graph and Functional APIs",
-      "url": "https://docs.langchain.com/oss/python/langgraph/choosing-apis",
-      "track": "oss-python",
-      "trackName": "OSS · Python",
-      "group": "langgraph",
-      "bytes": 5217
+      "bytes": 49789
     },
     {
       "rel": "oss/python/langgraph/deploy.md",
@@ -15271,7 +15226,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 34011
+      "bytes": 33364
     },
     {
       "rel": "oss/python/langgraph/frontend/custom-stream-channels.md",
@@ -15307,52 +15262,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 19529
-    },
-    {
-      "rel": "oss/python/langgraph/functional-api-human-in-the-loop.md",
-      "title": "Add human-in-the-loop with the Functional API",
-      "url": "https://docs.langchain.com/oss/python/langgraph/functional-api-human-in-the-loop",
-      "track": "oss-python",
-      "trackName": "OSS · Python",
-      "group": "langgraph",
-      "bytes": 8033
-    },
-    {
-      "rel": "oss/python/langgraph/functional-api-memory.md",
-      "title": "Add memory with the Functional API",
-      "url": "https://docs.langchain.com/oss/python/langgraph/functional-api-memory",
-      "track": "oss-python",
-      "trackName": "OSS · Python",
-      "group": "langgraph",
-      "bytes": 15462
-    },
-    {
-      "rel": "oss/python/langgraph/functional-api-streaming.md",
-      "title": "Stream with the Functional API",
-      "url": "https://docs.langchain.com/oss/python/langgraph/functional-api-streaming",
-      "track": "oss-python",
-      "trackName": "OSS · Python",
-      "group": "langgraph",
-      "bytes": 3999
-    },
-    {
-      "rel": "oss/python/langgraph/functional-api-tasks.md",
-      "title": "Configure Functional API tasks",
-      "url": "https://docs.langchain.com/oss/python/langgraph/functional-api-tasks",
-      "track": "oss-python",
-      "trackName": "OSS · Python",
-      "group": "langgraph",
-      "bytes": 6983
-    },
-    {
-      "rel": "oss/python/langgraph/functional-api-workflows.md",
-      "title": "Compose Functional API workflows",
-      "url": "https://docs.langchain.com/oss/python/langgraph/functional-api-workflows",
-      "track": "oss-python",
-      "trackName": "OSS · Python",
-      "group": "langgraph",
-      "bytes": 7597
+      "bytes": 18163
     },
     {
       "rel": "oss/python/langgraph/graph-api.md",
@@ -15361,7 +15271,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 29899
+      "bytes": 29703
     },
     {
       "rel": "oss/python/langgraph/graph-api-control-flow.md",
@@ -15442,7 +15352,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 4823
+      "bytes": 4880
     },
     {
       "rel": "oss/python/langgraph/persistence.md",
@@ -15469,7 +15379,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 29076
+      "bytes": 17353
     },
     {
       "rel": "oss/python/langgraph/sql-agent.md",
@@ -15517,22 +15427,13 @@
       "bytes": 6676
     },
     {
-      "rel": "oss/python/langgraph/thinking-in-functional-api.md",
-      "title": "Thinking in the Functional API",
-      "url": "https://docs.langchain.com/oss/python/langgraph/thinking-in-functional-api",
-      "track": "oss-python",
-      "trackName": "OSS · Python",
-      "group": "langgraph",
-      "bytes": 18324
-    },
-    {
       "rel": "oss/python/langgraph/thinking-in-graph-api.md",
       "title": "Thinking in the Graph API",
       "url": "https://docs.langchain.com/oss/python/langgraph/thinking-in-graph-api",
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 21476
+      "bytes": 21081
     },
     {
       "rel": "oss/python/langgraph/ui.md",
@@ -15544,22 +15445,13 @@
       "bytes": 3157
     },
     {
-      "rel": "oss/python/langgraph/use-functional-api.md",
-      "title": "Build checklist for the Functional API",
-      "url": "https://docs.langchain.com/oss/python/langgraph/use-functional-api",
-      "track": "oss-python",
-      "trackName": "OSS · Python",
-      "group": "langgraph",
-      "bytes": 3310
-    },
-    {
       "rel": "oss/python/langgraph/use-graph-api.md",
       "title": "Build checklist for the Graph API",
       "url": "https://docs.langchain.com/oss/python/langgraph/use-graph-api",
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 6230
+      "bytes": 6003
     },
     {
       "rel": "oss/python/langgraph/use-subgraphs.md",
@@ -15568,7 +15460,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 35907
+      "bytes": 35956
     },
     {
       "rel": "oss/python/langgraph/use-time-travel.md",
@@ -15586,7 +15478,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 38169
+      "bytes": 28651
     },
     {
       "rel": "oss/python/learn.md",
@@ -15595,7 +15487,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "learn",
-      "bytes": 4894
+      "bytes": 4922
     },
     {
       "rel": "oss/python/migrate/langchain-mcp-adapters.md",

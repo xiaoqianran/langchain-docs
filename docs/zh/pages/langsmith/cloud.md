@@ -23,11 +23,11 @@
 
 ## 云架构和可扩展性> [!注意]
 >
-> 本部分仅与云管理的 LangSmith（[https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud)、[https://eu.smith.langchain.com](https://eu.smith.langchain.com)、[https://apac.smith.langchain.com](https://apac.smith.langchain.com) 和 [https://aws.smith.langchain.com](https://aws.smith.langchain.com)）相关。
+> 本节仅与云管理的 LangSmith [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud)、[https://eu.smith.langchain.com](https://eu.smith.langchain.com)、[https://apac.smith.langchain.com](https://apac.smith.langchain.com) 和 [https://aws.smith.langchain.com](https://aws.smith.langchain.com) 相关。
 >
 > 有关自托管LangSmith解决方案的信息，请参阅[Self-hosted documentation](/langsmith/self-hosted)。
 
-LangSmith 对于美国、欧盟和亚太地区 SaaS 区域托管在 Google Cloud Platform (GCP) 上，对于 AWS 托管的美国 SaaS 区域托管在 Amazon Web Services (AWS) 上。该平台被设计为具有高度可扩展性。许多客户在 LangSmith 上运行生产工作负载，以实现 LLM 应用程序可观察性、评估和代理部署。
+对于美国、欧盟和亚太地区 SaaS 区域，LangSmith 托管在 Google Cloud Platform (GCP) 上；对于 AWS 托管的美国 SaaS 区域，LangSmith 托管在 Amazon Web Services (AWS) 上。该平台被设计为具有高度可扩展性。许多客户在 LangSmith 上运行生产工作负载，以实现 LLM 应用程序可观察性、评估和代理部署。
 
 位于美国的 LangSmith 服务（默认 GCP 区域）托管在 GCP 的 `us-central1`（爱荷华州）区域。
 
@@ -51,7 +51,7 @@ LangSmith 对于美国、欧盟和亚太地区 SaaS 区域托管在 Google Cloud
 | API 网址 | [https://api.smith.langchain.com](https://api.smith.langchain.com) | [https://eu.api.smith.langchain.com](https://eu.api.smith.langchain.com) | [https://apac.api.smith.langchain.com](https://apac.api.smith.langchain.com) | [https://aws.api.smith.langchain.com](https://aws.api.smith.langchain.com) |
 |云| GCP us-central1（爱荷华州）| GCP europe-west4（荷兰） | GCP 澳大利亚-southeast1（悉尼）| AWS us-east-2（俄亥俄州）|
 |苏帕巴斯| AWS us-east-1（弗吉尼亚北部）| AWS eu-central-1（德国）| AWS ap-southeast-2（悉尼）| AWS us-east-2（俄亥俄州）|
-| ClickHouse云 | us-central1（爱荷华州）| europe-west4 (荷兰) |澳大利亚-southeast1（悉尼） | us-east-2（俄亥俄州） |
+| ClickHouse云| us-central1（爱荷华州）| europe-west4 (荷兰) |澳大利亚-southeast1（悉尼） | us-east-2（俄亥俄州） |
 | [LangSmith deployment](/langsmith/deployment) | GCP us-central1（爱荷华州）； `*.us.langgraph.app` | GCP europe-west4（荷兰）； `*.eu.langgraph.app` | GCP 澳大利亚-东南部1（悉尼）； `*.apac.langgraph.app` | AWS us-east-2（俄亥俄州）； `*.aws.us.langgraph.app` |
 
 请参阅[Regions FAQ](/langsmith/regions-faq)了解更多信息。
@@ -67,8 +67,8 @@ LangSmith 对于美国、欧盟和亚太地区 SaaS 区域托管在 Google Cloud
 LangSmith 由以下服务组成，全部托管在 Google Kubernetes Engine (GKE) 上：
 
 * LangSmith 前端：服务于LangSmith UI。
-* LangSmith 后端：为LangSmith API 提供服务。
-* LangSmith 平台后端：处理身份验证和其他大批量任务。 （内部服务）
+* LangSmith后端：为LangSmith API提供服务。
+* LangSmith 平台后端：处理身份验证和其他大容量任务。 （内部服务）
 * LangSmith Playground：处理向各种 LLM 提供商转发 Playground 功能的请求。
 * LangSmith 队列：负责异步任务的处理。 （内部服务）
 
@@ -155,26 +155,29 @@ LangSmith 使用以下 AWS 存储和数据服务：
 
 ### 进入LangChain SaaS
 
-LangChain 终端节点映射到以下静态 IP 地址，以便在我们的 **GCP 负载均衡器**（美国/欧盟/亚太地区）或 **AWS US** 上终止于 `us-east-2` 中的 **网络负载均衡器** 上终止的流量（API 和网关主机名）：
+LangChain 端点映射到以下静态 IP 地址。流量终止于 **GCP 负载均衡器**（美国/欧盟/亚太地区）、`centralus` 中的 **Azure** 入口，或者对于 **AWS US**，`us-east-2` 中的 **网络负载均衡器**（API 和网关主机名）：
 
-|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
-| - | - | - | - |
-| 34.8.121.39 | 34.95.92.214 | 34.149.149.213 | 34.149.149.213 3.129.27.169 | 3.129.27.169
-| 34.107.251.234 | 34.107.251.234 34.13.73.122 | | 13.58.107.119 |
-| | | | 16.59.151.49 |
-| | | | 16.59.98.147 |
-| | | | 3.134.146.243 | 3.134.146.243
-| | | | 3.150.87.246 |
+|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |天蓝色|
+| - | - | - | - | - |
+| 34.8.121.39 | 34.95.92.214 | 34.149.149.213 | 34.149.149.213 3.129.27.169 | 3.129.27.169 20.106.1.6 |
+| 34.107.251.234 | 34.107.251.234 34.13.73.122 | | 13.58.107.119 | |
+| | | | 16.59.151.49 | |
+| | | | 16.59.98.147 | |
+| | | | 3.134.146.243 | 3.134.146.243 |
+| | | | 3.150.87.246 | |
+| 34.56.47.75（新）| 34.32.254.168（新）| 34.151.160.163（新）| | |
 
-您可能需要将这些列入许可名单，以启用从专用网络到 LangSmith SaaS 端点的流量（`api.smith.langchain.com`、`smith.langchain.com`、`beacon.langchain.com`、`eu.api.smith.langchain.com`、`eu.smith.langchain.com`、`eu.beacon.langchain.com`、`apac.api.smith.langchain.com`、 `apac.smith.langchain.com`、`apac.beacon.langchain.com`、`aws.api.smith.langchain.com`、`aws.smith.langchain.com`）。
+将您所在区域列中的每个地址列入白名单，以便您的专用网络可以访问 LangSmith 云（`api.smith.langchain.com`、`smith.langchain.com`、`beacon.langchain.com`、`eu.api.smith.langchain.com`、`eu.smith.langchain.com`、`eu.beacon.langchain.com`、`apac.api.smith.langchain.com`、`apac.smith.langchain.com`、 `apac.beacon.langchain.com`、`azure.smith.langchain.com`、`azure.api.smith.langchain.com`、`beacon.azure.langchain.com`、`aws.api.smith.langchain.com`、`aws.smith.langchain.com`）。GCP 美国、欧盟和亚太地区正在移至最后一行中的其他地址（`34.56.47.75`、`34.32.254.168` 和 `34.151.160.163`）。现在添加这些地址。当前的 GCP 地址将继续为这些主机名提供服务，直至 2027 年 2 月 10 日。在此日期之后，主机名仅使用其他地址。仅当主机名不再解析为当前 GCP 地址时，才将其从允许列表中删除。 AWS US 和 Azure 地址没有变化。
+
+此列表仅适用于LangSmith云。 BYOC 或自托管部署在您自己的环境中使用负载均衡器。如果您的专用网络通过公共互联网（包括通过 BYOC 控制平面连接）到达云，请将您所在区域的云地址列入白名单。 PrivateLink 和 Private Service Connect 不使用这些地址。
 
 ## 专用连接（企业）
 
-[**Enterprise only.**](/langsmith/pricing-plans) 专用连接专供企业客户使用。请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)以启用此功能。企业客户可以使用 **AWS PrivateLink** 或 **GCP Private Service Connect (PSC)** 连接到 LangSmith，而无需向公共互联网公开流量。
+[**Enterprise only.**](/langsmith/pricing-plans) 专用连接专供企业客户使用。请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)以启用此功能。
 
-### AWS PrivateLink
+企业客户可以使用 **AWS PrivateLink** 或 **GCP Private Service Connect (PSC)** 连接到 LangSmith，而无需向公共互联网公开流量。
 
-**AWS** 上的客户可以通过 [AWS PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/) 连接到 LangSmith，从而提供来自任何 VPC 的私有连接。原生支持跨区域连接。
+### AWS PrivateLink**AWS** 上的客户可以通过 [AWS PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/) 连接到 LangSmith，从而提供来自任何 VPC 的私有连接。原生支持跨区域连接。
 
 #### 端点服务名称
 
@@ -184,7 +187,7 @@ LangChain 终端节点映射到以下静态 IP 地址，以便在我们的 **GCP
 
 #### 设置
 
-**1.请求访问权限：** 联系您的客户代表或使用您的 AWS 账户 ID [sales@langchain.dev](mailto:sales@langchain.dev)。 LangChain 会将您的帐户添加到端点服务的允许主体列表中。
+**1.请求访问权限：** 联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev) 并提供您的 AWS 账户 ID。 LangChain 会将您的帐户添加到端点服务的允许主体列表中。
 
 **2.在您的 AWS 账户中创建接口 VPC 终端节点**。附加一个安全组，允许来自您的 VPC CIDR（或需要到达 LangSmith 的实例）的 **TCP 443 入站**：
 
@@ -210,7 +213,9 @@ resource "aws_vpc_endpoint" "langsmith" {
 
 **3.等待接受。** LangChain 将接受连接。端点状态将从`pendingAcceptance`更改为`available`。接受更改后需要几分钟时间才能完全传播，然后再测试连接。
 
-####配置DNS配置 DNS，以便 `aws.api.smith.langchain.com` 解析为您的 VPC 内的 VPC 终端节点的私有 DNS 名称。您可以使用任何私有 DNS 解决方案：Route 53 私有托管区域、公司 DNS 解析器或可从您的 VPC 访问的任何 DNS 服务器。
+####配置DNS
+
+配置 DNS，以便 `aws.api.smith.langchain.com` 解析为您的 VPC 内的 VPC 终端节点的私有 DNS 名称。您可以使用任何私有 DNS 解决方案：Route 53 私有托管区域、企业 DNS 解析器或可从您的 VPC 访问的任何 DNS 服务器。
 
 首先，获取端点的 DNS 名称：
 
@@ -219,9 +224,7 @@ aws ec2 describe-vpc-endpoints \
   --vpc-endpoint-ids <YOUR_ENDPOINT_ID> \
   --query 'VpcEndpoints[0].DnsEntries[0].DnsName' \
   --output text --region <YOUR_REGION>
-```
-
-然后，为 `aws.api.smith.langchain.com` 创建一条指向该 DNS 名称的 CNAME 记录。以下是使用 Route 53 的示例：
+```然后，为 `aws.api.smith.langchain.com` 创建一条指向该 DNS 名称的 CNAME 记录。以下是使用 Route 53 的示例：
 
 ```bash AWS CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 aws route53 create-hosted-zone \
@@ -295,7 +298,9 @@ curl https://aws.api.smith.langchain.com/ok
 |欧盟| `europe-west4.p.api.smith.langchain.com` |
 |亚太地区 | `australia-southeast1.p.api.smith.langchain.com` |
 
-＃＃＃＃ 设置**请求访问权限：** 请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)，并提供您的 GCP 项目 ID。 LangChain 会将您的项目添加到服务附件的允许使用者列表中。
+#### 设置
+
+**请求访问权限：** 请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)，并提供您的 GCP 项目 ID。 LangChain 会将您的项目添加到服务附件的允许使用者列表中。
 
 授予访问权限后，使用 gcloud CLI 或 Terraform 创建 PSC 端点并配置 DNS。
 
@@ -328,9 +333,7 @@ resource "google_compute_forwarding_rule" "langsmith_psc" {
   target                = "projects/langchain-prod/regions/<REGION>/serviceAttachments/gateway-psc-publish"
   load_balancing_scheme = ""
 }
-```
-
-####配置DNS
+```####配置DNS
 
 在您的 VPC 中创建私有 DNS 区域并添加指向 PSC 终端节点 IP 的 A 记录：
 
@@ -382,37 +385,37 @@ curl https://<REGION>.p.api.smith.langchain.com/ok
 
 ## API 速率限制
 
-LangSmith 对 API 端点实施速率限制，以确保服务稳定性和公平使用。下表显示了 GCP US 和 GCP EU 区域中不同端点的速率限制。 GCP APAC 和 AWS US 强制实施类似的服务特定限制；如果您的组织需要确切的限制，请联系支持人员。注意：* 速率限制表示为 `count / interval`，其中 count 是时间间隔内允许的请求数（以秒为单位）。例如，`2000 / 10`表示每10秒2000个请求。
-* 当端点列中未指定 HTTP 方法时，速率限制适用于该端点的所有 HTTP 方法。
-* 当列出特定方法时（例如，`POST`、`GET`），速率限制仅适用于该方法。
+LangSmith 对 API 端点实施速率限制，以确保服务稳定性和公平使用。下表显示了 GCP US 和 GCP EU 区域中不同端点的速率限制。 GCP APAC 和 AWS US 强制实施类似的服务特定限制；如果您的组织需要确切的限制，请联系支持人员。请注意：
 
-|匹配/端点（方法）|身份密钥|美国产品限价|欧盟产品限制|类别 |
+* 速率限制表示为 `count / interval`，其中 count 是时间间隔内允许的请求数（以秒为单位）。例如，`2000 / 10`表示每10秒2000个请求。
+* 当端点列中未指定 HTTP 方法时，速率限制适用于该端点的所有 HTTP 方法。
+* 当列出特定方法时（例如，`POST`、`GET`），速率限制仅适用于该方法。|匹配/端点（方法）|身份密钥 |美国产品限价|欧盟产品限制|类别 |
 | - | - | - | - | - |
 |选项，`/info`，`*/v1/metadata/submit` |知识产权| 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
 | `/auth` | `x-api-key` | 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
 | `/auth` | `x-user-id`+IP | 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
 | `/v1/beacon` |知识产权| 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
 | `/repos` | `x-api-key` | 100 / 60 | 100 / 60 100 / 60 | 100 / 60 [Repository](#rate-limit-categories) |
-| `/repos` | `x-user-id`+IP | 100 / 60 | 100 / 60 100 / 60 | 100 / 60 [Repository](#rate-limit-categories) |
+| `/repos` | `x-user-id` + IP | 100 / 60 | 100 / 60 100 / 60 | 100 / 60 [Repository](#rate-limit-categories) |
 | `POST /runs/batch` | `x-api-key` | 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
 | `POST /otel/v1/traces` | `x-api-key` | 2000 / 10 | 2000 / 10 | [Run ingest](#rate-limit-categories) |
 | `POST` 包含 `/charts` | `x-api-key` | 750 / 600 | 750 / 600 | [Charts](#rate-limit-categories) |
-| `POST` 包含 `/charts` | `x-user-id` + IP | 750 / 600 | 750 / 600 | [Charts](#rate-limit-categories) |
+| `POST` 含 `/charts` | `x-user-id` + IP | 750 / 600 | 750 / 600 | [Charts](#rate-limit-categories) |
 | `POST /runs/multipart` | `x-api-key` | 6000 / 10 | 6000 / 10 | [Multipart ingest](#rate-limit-categories) |
-| `POST /runs/query` | `x-api-key` | 15 / 10 | 15 / 10 | [Run query (API)](#rate-limit-categories) || `POST /runs/query` | `x-user-id` + IP | 300 / 10 | 300 / 10 | [Run query (User)](#rate-limit-categories) |
+| `POST /runs/query` | `x-api-key` | 15 / 10 | 15 / 10 | [Run query (API)](#rate-limit-categories) |
+| `POST /runs/query` | `x-user-id` + IP | 300 / 10 | 300 / 10 | [Run query (User)](#rate-limit-categories) |
 | `/generate` | `x-api-key` | 30 / 3600 | 30 / 3600 | [Generation](#rate-limit-categories) |
 | `/generate` | `x-user-id` + IP | 30 / 3600 | 30 / 3600 | [Generation](#rate-limit-categories) |
 | `/commits` | `x-api-key` | 10000 / 60 | 2000 / 60 | [Commits](#rate-limit-categories) |
-| `/commits` | `x-user-id`+IP | 10000 / 60 | 2000 / 60 | [Commits](#rate-limit-categories) |
+| `/commits` | `x-user-id` + IP | 10000 / 60 | 2000 / 60 | [Commits](#rate-limit-categories) |
 | `DELETE /sessions` 或 `*/trigger` | `x-api-key` | 10 / 60 | 10 / 60 | [Deletion](#rate-limit-categories) |
-| `DELETE /sessions` 或 `*/trigger` | `x-user-id` + IP | 30 / 60 | 30 / 60 | [Deletion](#rate-limit-categories) |
-| `POST /runs`（单次运行摄取）| `x-api-key` | 2000 / 10 | 2000 / 10 | [Run ingest](#rate-limit-categories) |
+| `DELETE /sessions` 或 `*/trigger` | `x-user-id` + IP | 30 / 60 | 30 / 60 | [Deletion](#rate-limit-categories) || `POST /runs`（单次运行摄取）| `x-api-key` | 2000 / 10 | 2000 / 10 | [Run ingest](#rate-limit-categories) |
 | `PATCH` 含 `/runs` | `x-api-key` | 2000 / 10 | 2000 / 10 | [Run ingest](#rate-limit-categories) |
 | `POST /feedback` | `x-api-key` | 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
 | `GET /runs/{uuid}` 或 `/api/v1/runs/{uuid}` | `x-api-key` | 30 / 60 | 30 / 60 | [Run lookup](#rate-limit-categories) |
 | `GET` 包含 `/examples` | `x-api-key` | 5000 / 60 | 5000 / 60 | [Examples](#rate-limit-categories) |
 |任何与 `x-api-key` 的请求 | `x-api-key` | 1000 / 10 | 1000 / 10 1000 / 10 | 1000 / 10 [Default (API key)](#rate-limit-categories) |
-|任何与 `x-user-id` 的请求 | `x-user-id` + IP | 1000 / 10 | 1000 / 10 1000 / 10 | 1000 / 10 [Default (User)](#rate-limit-categories) |
+|任何与 `x-user-id` 的请求 | `x-user-id`+IP | 1000 / 10 | 1000 / 10 1000 / 10 | 1000 / 10 [Default (User)](#rate-limit-categories) |
 | `/public/download` |知识产权| 5000 / 60 | 5000 / 60 | [Public download](#rate-limit-categories) |
 | `/runs/stats` | `x-api-key` | 1 / 10 | 20 / 10 | [Stats](#rate-limit-categories) |
 |所有其他 IP（包罗万象）|知识产权| 100 / 60 | 100 / 60 100 / 60 | 100 / 60 [Public (catch-all)](#rate-limit-categories) |

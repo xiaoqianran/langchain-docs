@@ -802,6 +802,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Pre-flight spend authorization for LangChain agents.
 
+> [card] [FinzData](https://pypi.org/project/langchain-finzdata/)
+>
+> Tools for point-in-time, survivorship-free US market data, futures, options gamma, COT, macro vintages and server-side backtests via MCP.
+
 > [card] [Fizzl](https://fizzl.eu/agents/python/)
 >
 > Safety checks for agents that pay: review transactions, tokens, wallet approvals, and paid APIs before signing or buying.

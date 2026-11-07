@@ -53,7 +53,7 @@ export const lookupCustomer = tool(
 
 使用清晰、独特的工具名称以避免冲突。有关LangChain工具定义的更多信息，请参阅[Tools](/oss/javascript/langchain/tools)。
 
-**2.将工具附加到代理**将工具导入到项目根代理条目中并将其传递到 `tools` 列表中：
+**2.将工具附加到代理**将工具导入到项目根代理条目中并将其传递到`tools`列表中：
 
 ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineDeepAgent } from "managed-deepagents";
@@ -98,13 +98,17 @@ export const agent = defineDeepAgent({
 
 要在 Slack 中暂停您自己的工具帖子的表单，请参阅 [Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts)。
 
+有关暂停营销活动更改以获得 Slack 批准的完整项目，请参阅 [paid media agent template](/langsmith/javascript/managed-deep-agents-paid-media-agent)。
+
 ## 使用秘密和上下文
 
-工具可以从环境变量中读取部署机密。将`mda dev`的本地值放入`.env`； `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。
+工具从环境变量中读取固定配置，例如区域或端点 URL。将 `mda dev` 的本地值放入 `.env` 中。 `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。相反，凭证属于 [connection](/langsmith/javascript/managed-deep-agents-connections)。连接将值保留在您的 LangSmith 工作区而不是项目中。它还可以为每个调用者解析不同的凭据。参见[Use tools that require authentication](#use-tools-that-require-authentication)。
 
-对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
+有关每次运行的值，例如请求元数据或功能标志，请参阅 [Access runtime context](#access-runtime-context)。
 
-## 部署`mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`tools/`下的模块。工具未同步到 Context Hub；他们附带代理代码。
+## 部署
+
+`mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`tools/`下的模块。工具未同步到 Context Hub；他们附带代理代码。
 
 ## 何时使用工具
 
@@ -121,21 +125,55 @@ export const agent = defineDeepAgent({
 
 当运行遇到中断时，它会暂停并等待人类响应，然后再继续。
 
-* **在本地开发期间**，`mda dev` 在 LangSmith Studio 中运行代理，它会显示中断，以便您可以检查挂起的工具调用并恢复运行。
-
-* **在已部署的代理上**，通过 LangGraph 服务器 API 使用恢复负载恢复暂停的运行。参见[Human-in-the-loop using server API](/langsmith/add-human-in-the-loop)。
+* **在本地开发期间**，`mda dev` 在 LangSmith Studio 中运行代理，它会显示中断，以便您可以检查挂起的工具调用并恢复运行。* **在已部署的代理上**，通过 LangGraph 服务器 API 使用恢复负载恢复暂停的运行。参见[Human-in-the-loop using server API](/langsmith/add-human-in-the-loop)。
 
 人机交互需要持久的线程状态来暂停和恢复。托管运行时拥有检查指针，因此不需要额外的设置。
 
-## 使用需要身份验证的工具如果工具需要 API 密钥或 OAuth 令牌，请使用连接在运行时解析凭据。参见[Manage connections](/langsmith/javascript/managed-deep-agents-connections)。
+## 使用需要身份验证的工具
 
-## 访问运行时上下文
+如果工具需要 API 密钥或 OAuth 令牌，请在运行时使用 [connection](/langsmith/javascript/managed-deep-agents-connections) 进行解析。 `connections.get(...)` 采用连接 slug 和凭证所有者，并将凭证作为字符串返回。
 
-对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
+第二个参数选择所有者。传递 `{"type": "agent"}` 以获得整个部署共享的一个凭证，例如团队搜索密钥。通过`{"type": "user"}`作为呼叫者自己的凭证，因此代理充当他们的角色。欲了解更多信息，请参阅[Choose a credential owner](/langsmith/javascript/managed-deep-agents-connections#choose-a-credential-owner)。
+
+该工具解析调用者自己的 GitHub 凭证：
+
+```ts tools/get-github-user.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { connections } from "managed-deepagents";
+import { z } from "zod";
+
+export const getGitHubUser = tool(
+  async () => {
+    // Replace `frontend-github` with the name of your connection.
+    const accessToken = await connections.get("frontend-github", { type: "user" });
+    const response = await fetch("https://api.github.com/user", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`GitHub request failed with status ${response.status}`);
+    }
+    const user = (await response.json()) as { login: string };
+    return user.login;
+  },
+  {
+    name: "get_github_user",
+    description: "Get the authenticated caller's GitHub login.",
+    schema: z.object({}),
+  },
+);
+```
+
+用户拥有的连接需要每个调用者的授权。未授权服务的人的第一次运行会在[⟦T24⟧ interrupt](/langsmith/javascript/managed-deep-agents-connections#handle-the-authorization-interrupt) 上暂停。 Slack 和 LangSmith Studio 为调用者完成该中断。
+
+使用 `mda connections create` 创建连接本身。创建模式、本地开发、授权中断请参见[Manage connections](/langsmith/javascript/managed-deep-agents-connections)。
+
+## 访问运行时上下文对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
 
 Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runtime](/langsmith/javascript/managed-deep-agents-runtime)。
 
-要从工具读取或写入线程沙箱中的文件，请使用 `runtime.backend`。参见[Read and write sandbox files from code](/langsmith/javascript/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
+要从工具读取或写入线程沙箱中的文件，请使用`runtime.backend`。参见[Read and write sandbox files from code](/langsmith/javascript/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
 
 ***
 

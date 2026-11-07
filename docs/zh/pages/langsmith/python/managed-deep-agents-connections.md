@@ -30,7 +30,7 @@ api_key = await connections.get("organization-tavily", {"type": "agent"})
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上 **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上**公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 选择凭证所有者
 
@@ -39,6 +39,10 @@ api_key = await connections.get("organization-tavily", {"type": "agent"})
 | `agent` |属于部署的一份凭证。每个呼叫者都使用它。 |每个呼叫者都需要相同的功能：使用 Tavily（共享知识库）进行网络搜索，或发布到一个团队频道。 |
 | `user` |呼叫者自己的凭据。每个人都授权自己的帐户。 |代理充当提出问题的人：搜索只有他们可以看到的 Notion 页面、以他们的名义提交问题或以他们的身份发送电子邮件。 |
 
+同一代理的两个调用者共享代理拥有的凭证并持有单独的用户拥有的凭证：
+
+![Agent-owned on the left, where the runs of two callers both resolve one shared team Tavily key. User-owned on the right, where each run resolves that caller's own Notion token.](https://mintcdn.com/langchain-5e9cc07a/3q5FS3Rl6Grxuv-3/langsmith/images/mda-connections-owners-light.png?fit=max\&auto=format\&n=3q5FS3Rl6Grxuv-3\&q=85\&s=0273a0895d2a5739a7cbe744676f6171)
+
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 tavily_key = await connections.get("organization-tavily", {"type": "agent"})
 notion_token = await connections.get("engineering-notion", {"type": "user"})
@@ -46,7 +50,7 @@ notion_token = await connections.get("engineering-notion", {"type": "user"})
 
 `connections.get(...)` 将凭证值解析为字符串。
 
-连接是一个容器，它属于工作区而不是所有者。其中的凭证有所有者。没有 `--owner` 标志：您使用的 [create mode](#choose-a-create-mode) 设置所有者。
+连接将凭据分组到一个 slug 下。它属于工作空间而不是所有者。它持有的每个凭证都有其自己的所有者。没有 `--owner` 标志：您使用的 [create mode](#choose-a-create-mode) 设置所有者。
 
 `connections.get(...)` 选择所有者。它不会创造一个。请求没有自己凭证的所有者无法运行 `agent`，并为 `user` 提出 [⟦T39⟧ interrupt](#handle-the-authorization-interrupt)。存储在不同所有者的同一 slug 下的凭证不满足查找。代理拥有的凭据属于项目的部署，因此在至少成功一次[⟦T41⟧](/langsmith/python/managed-deep-agents-deploy)后创建它们。部署仅读取其拥有的凭证。要解决第二个部署中的相同 slug，请从该项目根目录再次运行 `mda connections create <slug>`：在现有 slug 上，该命令会附加新的代理拥有的凭据，而不是失败。
 
@@ -58,7 +62,7 @@ notion_token = await connections.get("engineering-notion", {"type": "user"})
 | - | - |
 | [Slack channel](/langsmith/python/managed-deep-agents-channels-slack) |发送消息的 Slack 用户。 |
 | LangSmith 工作室 |已登录的 LangSmith 用户。 |
-| SDK 客户端或自定义前端 |项目的[identity declaration](/langsmith/python/managed-deep-agents-identity)验证的身份。 |
+| SDK 客户端或自定义前端 |项目[identity declaration](/langsmith/python/managed-deep-agents-identity)认证的身份。 |
 
 默认身份声明验证LangSmith API 密钥。该密钥对调用客户端（而不是个人）进行身份验证，因此提供该密钥的每个调用者都会解析为相同的身份。要为每个登录者提供自己的凭据，请声明 [Supabase identity](/langsmith/python/managed-deep-agents-identity#configure-identity-with-supabase)。
 
@@ -73,8 +77,10 @@ notion_token = await connections.get("engineering-notion", {"type": "user"})
 |模式|使用时 |使用 | 创建凭证所有者 |
 | - | - | - | - |
 | **不透明的秘密** |该服务使用固定的 API 密钥或其他静态秘密。 | `--secret-from-env`、`--secret-from-file`、stdin 或交互式提示 |代理|
-| **通用 OAuth** |您注册自己的 OAuth 应用程序 (BYOT)，例如使用 GitHub 或 Google。 |目录中的 `--oauth <service>`，或自定义提供商的 `--authorize-url` 和 `--token-url` |每个呼叫者或带有 [⟦T49⟧](#authorize-an-agent-owned-oauth-account) 或 [client credentials](#create-a-client-credentials-connection) 的座席 |
-| **MCP OAuth** | MCP 服务器通告 OAuth 并自动注册客户端。 | `--mcp <url>`，或者当项目已经声明用户拥有的 MCP 服务器时单独使用 slug |每个呼叫者或带有 [⟦T51⟧](#authorize-an-agent-owned-oauth-account) 的座席 |
+| **通用 OAuth** |您注册自己的 OAuth 应用程序 (BYOT)，例如使用 GitHub 或 Google。 |目录中的 `--oauth <service>`，或自定义提供商的 `--authorize-url` 和 `--token-url` |每个呼叫者或具有 [⟦T49⟧](#authorize-an-agent-owned-oauth-account) 或 [client credentials](#create-a-client-credentials-connection) 的座席 |
+| **MCP OAuth** | MCP 服务器通告 OAuth 并自动注册客户端。 | `--mcp <url>`，或者当项目已经声明用户拥有的 MCP 服务器时单独使用 slug |每个呼叫者或带有 [⟦T51⟧](#authorize-an-agent-owned-oauth-account) 的代理 |
+
+以下决策树选择服务所需的创建模式并显示该模式支持哪个所有者：![Decision tree for the create mode. A fixed API key gives a shared opaque secret. An agent that acts as each caller gives MCP OAuth for an OAuth MCP server, or general OAuth otherwise, both per caller. An agent that does not gives client credentials when the provider issues app credentials, or OAuth with --authorize, both shared.](https://mintcdn.com/langchain-5e9cc07a/3q5FS3Rl6Grxuv-3/langsmith/images/mda-connections-create-mode-light.png?fit=max\&auto=format\&n=3q5FS3Rl6Grxuv-3\&q=85\&s=9220d993c735cee46e4408dfcd843970)
 
 例如：
 
@@ -88,7 +94,9 @@ uv run mda connections create frontend-github --oauth github \
 
 # MCP OAuth: let the MCP server register a client for you
 uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mcp
-```不要在一个命令中混合使用模式。例如，`--mcp`不能与`--oauth`、自定义端点、`--client-id`或秘密值组合。
+```
+
+不要在一个命令中混合使用模式。例如，`--mcp`不能与`--oauth`、自定义端点、`--client-id`或秘密值组合。
 
 ### 命名连接
 
@@ -341,7 +349,7 @@ mcp = define_mcp(
 )
 ```
 
-有关更多信息，请参阅[Connect to MCP servers](/langsmith/python/managed-deep-agents-mcp-connectors)。
+欲了解更多信息，请参阅[Connect to MCP servers](/langsmith/python/managed-deep-agents-mcp-connectors)。
 
 ### 从项目声明创建
 
@@ -367,15 +375,17 @@ uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mc
 
 托管 Deep Agents 为您运行 OAuth 往返。项目不需要回调路由，不需要令牌存储，不需要刷新逻辑，也不需要同意屏幕。运行暂停，调用者授予访问权限，然后使用该人的凭据恢复运行。
 
-在第一个模型转动之前，托管 Deep Agents 检查运行所需的每个用户拥有的连接。如果调用者缺少一项或多项授权，凭证门将引发一个 LangGraph 中断。 Slack 和 LangSmith Studio 为调用者处理该中断。自定义前端从 LangChain 前端 SDK 读取相同的负载，并在调用者连接后恢复。
+已连接服务的调用者会直接进行工具调用。没有授权的调用者首先进行授权往返，然后到达相同的工具调用：
+
+![A caller sends a message and the run checks whether that caller connected Notion. A connected caller goes straight to a tool that gets the caller's token. An unconnected caller pauses the run, which sends a connect link; the caller signs in to Notion, the run resumes, and the tool gets the same token.](https://mintcdn.com/langchain-5e9cc07a/3q5FS3Rl6Grxuv-3/langsmith/images/mda-connections-interrupt-light.png?fit=max\&auto=format\&n=3q5FS3Rl6Grxuv-3\&q=85\&s=05d4da1e74df24c4bcd755b043a6b1f5)
+
+在第一次模型转动之前，托管 Deep Agents 检查运行所需的每个用户拥有的连接。如果调用者缺少一项或多项授权，凭证门将引发一个 LangGraph 中断。 Slack 和 LangSmith Studio 为调用者处理该中断。自定义前端从 LangChain 前端 SDK 读取相同的负载，并在调用者连接后恢复。
 
 用户拥有的连接需要经过身份验证的调用者。匿名或仅代理运行无法完成凭证门。请参阅[Identify the caller](#identify-the-caller)了解该身份的来源。
 
 ### 中断负载
 
-对于[⟦T179⟧](/oss/python/langchain/frontend/human-in-the-loop#setting-up-usestream) (`@langchain/react`、`@langchain/vue`、`@langchain/svelte`) 或`injectStream` (`@langchain/angular`)，待处理中断位于`stream.interrupt`。凭证门有效负载为`stream.interrupt.value`。
-
-对于缺少的 OAuth 授权，`credentials` 中的每个条目都携带调用者完成同意的 URL：
+对于[⟦T179⟧](/oss/python/langchain/frontend/human-in-the-loop#setting-up-usestream) (`@langchain/react`、`@langchain/vue`、`@langchain/svelte`) 或`injectStream` (`@langchain/angular`)，待处理中断位于`stream.interrupt`。凭证门有效负载为`stream.interrupt.value`。对于缺少的 OAuth 授权，`credentials` 中的每个条目都携带调用者完成同意的 URL：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -390,7 +400,9 @@ uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mc
     }
   ]
 }
-```一个中断会列出每一项缺失的授权。在恢复之前处理每个条目。带有 `"kind": "secret"` 的条目表示用户拥有的 API 密钥，而不是 OAuth 授权。 Slack 和 Studio 不收集这些。欲了解更多信息，请参阅[Review current limitations](#review-current-limitations)。
+```
+
+一个中断会列出每一项缺失的授权。在恢复之前处理每个条目。带有 `"kind": "secret"` 的条目表示用户拥有的 API 密钥，而不是 OAuth 授权。 Slack 和 Studio 不收集这些。有关更多信息，请参阅[Review current limitations](#review-current-limitations)。
 
 |领域 |礼物给 |意义|
 | - | - | - |
@@ -571,11 +583,11 @@ export class ChatComponent {
     );
   }
 }
-```
+```一般中断生命周期（`stream.interrupt`、恢复、检查点）请参见[Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop)。
 
-一般中断生命周期（`stream.interrupt`、恢复、检查点）请参见[Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop)。
+### 处理 OAuth 授权 (`kind: "oauth2"`)
 
-### 处理 OAuth 授权 (`kind: "oauth2"`)对于每个 OAuth 条目：
+对于每个 OAuth 条目：
 
 1. 显示 `slug` 和打开 `connect_url` 的连接控件（仅限 HTTPS；拒绝带有嵌入凭据的 URL）。
 2. 长轮询代理身份验证，直到会话完成：
@@ -603,13 +615,13 @@ GET /v1/agent-auth/oauth-authorization-sessions/{auth_id}?wait_seconds=25
 
 ### 内置 Slack 处理
 
-当代理通过 Slack 通道运行时，Slack 会呈现包含 HTTPS `connect_url` 的 OAuth 条目。调用者打开链接，完成同意，Slack 恢复运行，因此没有人需要打开 LangSmith 来连接服务。
-
-**屏幕截图占位符：** 此处添加 Slack OAuth 授权提示屏幕截图。
+当代理通过 Slack 通道运行时，Slack 会呈现包含 HTTPS `connect_url` 的 OAuth 条目。调用者打开链接，完成同意，Slack 恢复运行，因此没有人需要打开 LangSmith 来连接服务。**屏幕截图占位符：** 此处添加 Slack OAuth 授权提示屏幕截图。
 
 Slack OAuth授权提示
 
-## 检查并删除连接使用 `list` 或 `get` 检查连接元数据。 `list` 显示工作区中的每个连接，而不仅仅是该项目使用的连接：
+## 检查并删除连接
+
+使用 `list` 或 `get` 检查连接元数据。 `list` 显示工作区中的每个连接，而不仅仅是该项目使用的连接：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda connections list
@@ -627,7 +639,7 @@ uv run mda connections delete organization-tavily
 
 ## 查看当前限制
 
-连接是托管 Deep Agents 公共测试版的一部分。当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
+连接是 Managed Deep Agents 公共测试版的一部分。当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
 * **自定义渠道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
 * **工作区 UI**：LangSmith 不在 UI 中列出连接。使用 `mda connections list` 和 `mda connections get` 作为连接元数据。
 * **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示段头也是如此。从项目根目录运行`mda connections create <slug>`来创建一个。> [accordion] 通过代理身份验证存储用户拥有的 API 密钥

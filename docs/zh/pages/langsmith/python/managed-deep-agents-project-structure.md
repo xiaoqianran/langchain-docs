@@ -4,7 +4,7 @@
 
 # 托管Deep Agents项目结构
 
-了解托管 Deep Agents 的项目布局。
+了解托管Deep Agents的项目布局。
 
 托管 Deep Agents 项目是一个普通的 Python 包，具有​​一个必需的根代理条目。其他路径要么是您导入的普通模块，要么是 MDA 发现的用于启用托管功能的文件和目录。
 
@@ -104,6 +104,14 @@ MDA 将包复制到构建中。 `mda dev` 会在您编辑时重新加载，并�
 > [卡][Tutorial](/langsmith/python/managed-deep-agents-tutorial)
 >
 > 将持久记忆和每日日程添加到快速入门研究助手中。
+
+> [卡][Design agent template](/langsmith/python/managed-deep-agents-design-agent)
+>
+> 将每个根文件映射到 MDA 功能的完整项目。
+
+> [卡][Paid media agent template](/langsmith/python/managed-deep-agents-paid-media-agent)
+>
+> 将每个根文件映射到 MDA 功能的完整项目。
 
 ***
 

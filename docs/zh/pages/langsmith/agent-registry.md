@@ -8,14 +8,14 @@ LangSmith 代理注册表是什么，代理是什么，环境如何划分代理�
 
 随着组织构建更多代理，了解哪些代理存在以及它们在哪里运行就变得越来越困难。 LangSmith 代理注册表提供了一个用于注册代理的集中位置，提供了一个地方来管理您的组织运行的每个代理，无论其托管在何处。代理注册可在 [LangSmith Cloud](/langsmith/cloud) 上找到。创建代理会注册它，您可以通过四种方式创建代理：
 
-* [Build it in the UI](/langsmith/build-an-agent)。
-* [Create it](/langsmith/create-an-agent#name-an-agent-traced-from-outside-langsmith) 来自 **创建新代理** 对话框，适用于在 LangSmith 外部运行的代理。
+* [Build it in LangSmith Studio](/langsmith/build-an-agent)。
+* [Create it](/langsmith/create-an-agent#name-an-agent-traced-from-outside-langsmith) 来自 **连接代理** 对话框，适用于在 LangSmith 外部运行的代理。
 * [Create it with an SDK call or API request](/langsmith/create-an-agent#create-an-agent-programmatically)。
 * [Deploy it](/langsmith/deploy-to-agent-environment) 至 LangSmith。
 
 一旦代理存在，您就可以从它运行的任何地方、从任何可以将跟踪发送到 LangSmith 的框架来[send traces](/langsmith/log-traces-to-agent)。
 
-每个代理都会收到一个唯一的 [identifier](#identifiers-and-display-names)，LangSmith 使用它来处理其踪迹。
+每个代理都会收到一个唯一的 [identifier](#identifiers-and-display-names)，LangSmith 用于寻址其踪迹。
 
 LangSmith 的其余部分依附于这些代理。数据集、评估器、部署、跟踪和警报均附加到代理注册表中的代理：
 
@@ -67,7 +67,7 @@ flowchart LR
 每个代理都有两个名字，他们做不同的工作：
 
 * **标识符**：创建代理时设置，创建后不可编辑。无论您提供它还是LangSmith生成它取决于[how the agent was created](/langsmith/create-an-agent)。 LangSmith 使用它来寻址跟踪，因此即使显示名称发生变化，它也能保持稳定。
-* **显示名称**：在代理出现在 UI 中的任何位置显示。对于代理 [built in the UI](/langsmith/build-an-agent)，从其构建配置中的 **名称** 字段重命名它。重命名不会移动现有痕迹或更改新痕迹的放置位置。该标识符也是浏览器地址栏所携带的，因此您可以从那里读取它或从代理概述上的 **ID** 字段复制它。
+* **显示名称**：在代理出现在 UI 中的任何位置显示。对于代理 [built in LangSmith Studio](/langsmith/build-an-agent)，从其配置中的 **Name** 字段重命名它。重命名不会移动现有痕迹或更改新痕迹的放置位置。该标识符也是浏览器地址栏所携带的，因此您可以从那里读取它或从代理概述上的 **ID** 字段复制它。
 
 ## 寻找并管理代理
 
@@ -84,7 +84,7 @@ flowchart LR
 
 > [卡][Navigate agents](/langsmith/navigate-agents)
 >
-> 座席切换器、座席列表和座席概览。
+> 座席切换器、座席列表和座席概述。
 
 > [卡][Log traces to an agent](/langsmith/log-traces-to-agent)
 >

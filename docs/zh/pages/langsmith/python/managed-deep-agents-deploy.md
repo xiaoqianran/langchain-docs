@@ -10,9 +10,9 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公共 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
-本页介绍秘密路由和部署选项。要在部署之前测试代理，请参阅[Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development)。有关命令标志、部署步骤列表和故障排除，请参阅 [CLI reference](/langsmith/python/managed-deep-agents-cli)。
+本页介绍秘密路由和部署选项。要在部署之前测试代理，请参阅[Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development)。有关命令标志、部署步骤列表和故障排除，请参阅 [CLI reference](/langsmith/python/managed-deep-agents-cli)。要部署已完成的开源项目，请参阅 [design agent](/langsmith/python/managed-deep-agents-design-agent) 和 [paid media agent](/langsmith/python/managed-deep-agents-paid-media-agent) 模板。
 
 ## 先决条件
 
@@ -24,9 +24,9 @@
 
 * 从 `managed-deepagents` 安装`mda` CLI。
 
-* 使用 `uv sync` 安装生成的 Python 项目的项目依赖项。
+* 使用 `uv sync` 安装生成的 Python 项目的项目依赖项。* 模型提供者凭据，例如 `.env`、您的 shell 环境中的 `OPENAI_API_KEY` 或 LangSmith 工作区机密。
 
-* 模型提供者凭据，例如 `.env`、您的 shell 环境中的 `OPENAI_API_KEY` 或 LangSmith 工作区机密。## 选择 SaaS 区域
+## 选择 SaaS 区域
 
 `LANGSMITH_ENDPOINT` 选择 CLI 部署到的 LangSmith 区域。默认情况下，CLI 以 GCP US 为目标。
 
@@ -118,7 +118,7 @@ requires-python = ">=3.11"
 python-version = "3.14"
 ```
 
-设置后，`python-version`采用带引号的`major.minor`字符串，没有补丁版本。 MDA 将解析后的版本写入生成的 `langgraph.json` 中的 `python_version` 并选择匹配的 [Agent Server](/langsmith/agent-server-overview) 图像。 `requires-python` 仍然是项目自身的兼容性要求。
+设置后，`python-version`采用带引号的`major.minor`字符串，没有补丁版本。 MDA 将解析后的版本写入生成的`langgraph.json` 中的`python_version`，并选择匹配的[Agent Server](/langsmith/agent-server-overview) 图像。 `requires-python` 仍然是项目自身的兼容性要求。
 
 当 MDA 添加对较新 Python 的支持时，将其固定在相同的次要版本上。要在单个构建中覆盖它，请设置 `MDA_PYTHON_VERSION`：
 
@@ -148,7 +148,7 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 保留的平台变量、空值、`.env`和`.env.*`文件不会复制到已编译的构建存档中。
 
-有关身份验证密钥顺序和保留变量，请参阅[CLI reference](/langsmith/python/managed-deep-agents-cli#authentication)。
+认证密钥顺序和保留变量请参见[CLI reference](/langsmith/python/managed-deep-agents-cli#authentication)。
 
 ## 部署故障排除有关部署故障排除，请参阅[CLI reference](/langsmith/python/managed-deep-agents-cli#troubleshooting)。
 

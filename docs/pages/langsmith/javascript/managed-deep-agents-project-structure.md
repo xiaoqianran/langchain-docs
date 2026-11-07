@@ -110,6 +110,14 @@ MDA copies the package into the build. `mda dev` reloads when you edit it, and `
 >
 > Add durable memory and a daily schedule to the quickstart research assistant.
 
+> [card] [Design agent template](/langsmith/javascript/managed-deep-agents-design-agent)
+>
+> A complete project that maps each root file to an MDA capability.
+
+> [card] [Paid media agent template](/langsmith/javascript/managed-deep-agents-paid-media-agent)
+>
+> A complete project that maps each root file to an MDA capability.
+
 ***
 
 [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.

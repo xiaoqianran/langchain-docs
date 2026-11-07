@@ -12,13 +12,13 @@
 
 ### 基岩地幔
 
-[AWS Bedrock Mantle API](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-responses-api.html#bedrock-mantle-responses) 通过 OpenAI 和 Anthropic 消息协议公开模型。 `ChatOpenAIMantle` 和 `ChatAnthropicMantle` 是访问这些模型的推荐接口。
+[AWS Bedrock Mantle API](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-responses-api.html#bedrock-mantle-responses)通过OpenAI和Anthropic消息协议公开模型。 `ChatOpenAIMantle` 和 `ChatAnthropicMantle` 是访问这些模型的推荐接口。
 
 这两个类都通过 `bedrock_api_key` 参数或 `AWS_BEARER_TOKEN_BEDROCK` 环境变量接受 Bedrock API 密钥。当两者都不可用时，两者都会从标准 AWS 凭证派生短期 API 密钥并透明地刷新它们。
 
 `ChatOpenAIMantle`继承自`BaseChatOpenAI`。有关使用示例和功能，请参阅相应的[Responses API docs](/oss/python/integrations/chat/openai#responses-api)。支持的型号请参阅[AWS Mantle OpenAI-compatible API docs](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-responses-api.html#bedrock-mantle-responses)。
 
-`ChatAnthropicMantle`继承自`ChatAnthropic`，并以Mantle上的Anthropic消息端点为目标。有关使用示例和功能，请参阅 [⟦T40⟧](/oss/python/integrations/chat/anthropic) 文档。支持的型号请参阅[AWS Mantle Anthropic API docs](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html)。
+`ChatAnthropicMantle`继承自`ChatAnthropic`，并以Mantle上的Anthropic消息端点为目标。有关使用示例和功能，请参阅 [⟦T42⟧](/oss/python/integrations/chat/anthropic) 文档。支持的型号请参阅[AWS Mantle Anthropic API docs](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_aws import ChatOpenAIMantle, ChatAnthropicMantle
@@ -60,14 +60,20 @@ from langchain_aws import ChatBedrockConverse
 from langchain_aws import BedrockEmbeddings
 ```
 
-## 文档加载器
+## 向量存储
+
+### 亚马逊 DynamoDB
+
+[Amazon DynamoDB](https://aws.amazon.com/dynamodb/)是一个完全托管的NoSQL数据库。使用 DynamoDBVectorStore 将文档存储为 DynamoDB 项目，并使用 DynamoDB 矢量索引对其进行查询，因此操作数据和检索共享一张表。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_aws.vectorstores import DynamoDBVectorStore
+```
 
 ### 亚马逊内存数据库
 
 [Amazon MemoryDB](https://aws.amazon.com/memorydb/) 是一种持久的内存数据库服务，可提供超快的性能。 MemoryDB 与流行的开源数据存储 Redis OSS 兼容，
-使您能够使用当今已使用的相同灵活且友好的 Redis OSS API 和命令快速构建应用程序。
-
-InMemoryVectorStore 类提供了一个向量存储来与 Amazon MemoryDB 连接。
+使您能够使用当今已使用的相同灵活且友好的 Redis OSS API 和命令快速构建应用程序。InMemoryVectorStore 类提供了一个向量存储来与 Amazon MemoryDB 连接。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_aws.vectorstores.inmemorydb import InMemoryVectorStore
@@ -83,7 +89,19 @@ vds = InMemoryVectorStore.from_documents(
 
 请参阅[usage example](/oss/python/integrations/vectorstores/memorydb)。
 
-### 瓦尔基[Valkey](https://valkey.io/)是一个开源的高性能键/值数据存储，支持缓存、消息队列等工作负载，并且可以充当主数据库。使用 ValkeyVectorStore 与 [Amazon ElastiCache for Valkey](https://aws.amazon.com/elasticache/) 或 [Amazon MemoryDB for Valkey](https://aws.amazon.com/memorydb/) 连接。
+### 亚马逊 S3 向量
+
+[Amazon S3 Vectors](https://aws.amazon.com/s3/features/vectors/) 是云对象存储，原生支持存储和查询向量。使用 AmazonS3Vectors 在 S3 矢量存储桶中存储和查询嵌入，无需预置基础设施。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_aws.vectorstores import AmazonS3Vectors
+```
+
+请参阅[usage example](/oss/python/integrations/vectorstores/s3_vectors)。
+
+### 瓦尔基
+
+[Valkey](https://valkey.io/) 是一个开源的高性能键/值数据存储，支持缓存、消息队列等工作负载，并且可以充当主数据库。使用 ValkeyVectorStore 与 [Amazon ElastiCache for Valkey](https://aws.amazon.com/elasticache/) 或 [Amazon MemoryDB for Valkey](https://aws.amazon.com/memorydb/) 连接。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_aws.vectorstores import ValkeyVectorStore
@@ -109,7 +127,7 @@ pip install langchain-aws
 uv add langchain-aws
 ```
 
-参见[usage example](/oss/python/integrations/retrievers/bedrock)。
+请参阅[usage example](/oss/python/integrations/retrievers/bedrock)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_aws import AmazonKnowledgeBasesRetriever
@@ -130,7 +148,7 @@ pip install langchain-aws bedrock-agentcore playwright beautifulsoup4
 uv add langchain-aws bedrock-agentcore playwright beautifulsoup4
 ```
 
-参见[usage example](/oss/python/integrations/tools/bedrock_agentcore_browser)。
+请参阅[usage example](/oss/python/integrations/tools/bedrock_agentcore_browser)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -150,9 +168,7 @@ result = await agent.ainvoke(
 await toolkit.cleanup()
 ```
 
-### Amazon Bedrock AgentCore 代码解释器
-
-> [Amazon Bedrock AgentCore Code Interpreter](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/code-interpreter-tool.html)
+### Amazon Bedrock AgentCore 代码解释器> [Amazon Bedrock AgentCore Code Interpreter](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/code-interpreter-tool.html)
 > 使代理能够在安全的托管沙箱环境中执行 Python、JavaScript 和 TypeScript 代码，以进行计算、数据分析和可视化。
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -193,7 +209,9 @@ pip install langchain-aws bedrock-agentcore
 
 ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv add langchain-aws bedrock-agentcore
-```请参阅[usage example](/oss/python/integrations/tools/bedrock_agentcore_web_search)。
+```
+
+请参阅[usage example](/oss/python/integrations/tools/bedrock_agentcore_web_search)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -216,7 +234,7 @@ finally:
 
 ## 沙箱
 
-> **[AgentCoreSandbox](/oss/python/integrations/sandboxes/aws)**
+> [卡][AgentCoreSandbox](/oss/python/integrations/sandboxes/aws)
 >
 > 适用于 Deepagent 的 Amazon Bedrock AgentCore 代码解释器沙箱后端。
 
@@ -291,9 +309,7 @@ config = {
 result = graph.invoke({"messages": []}, config)
 ```
 
-主要特点：
-
-* 托管基础架构，无需设置数据库
+主要特点：* 托管基础架构，无需设置数据库
 * 自动缩放和高可用性
 * 通过`actor_id`隔离支持多代理
 * 静态和传输中加密
@@ -301,7 +317,7 @@ result = graph.invoke({"messages": []}, config)
 ### Amazon Bedrock AgentCore 内存存储
 
 > [Amazon Bedrock AgentCore Memory Store](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html)提供
-> LangGraph 代理具有语义搜索功能的长期记忆，能够跨会话存储和检索用户偏好、事实和提取的记忆。
+> 具有LangGraph代理语义搜索功能的长期记忆，能够跨会话存储和检索用户偏好、事实和提取的记忆。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph_checkpoint_aws import AgentCoreMemoryStore
@@ -325,7 +341,9 @@ def pre_model_hook(state, config, *, store):
 
 ## 链条
 
-### Amazon Comprehend 审核链> [Amazon Comprehend](https://aws.amazon.com/comprehend/) 是一项自然语言处理 (NLP) 服务，
+### Amazon Comprehend 审核链
+
+> [Amazon Comprehend](https://aws.amazon.com/comprehend/) 是一项自然语言处理 (NLP) 服务，
 > 使用机器学习来发现文本中有价值的见解和联系。
 
 我们需要安装`boto3`和`nltk`库。

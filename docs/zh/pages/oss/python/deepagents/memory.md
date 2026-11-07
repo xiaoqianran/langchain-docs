@@ -26,7 +26,7 @@
 
 ## 作用域内存
 
-代理内存可以划分范围，以便使用代理的每个人都可以访问相同的内存文件，或者每个用户都可以使用单独的内存文件。
+代理内存可以划分范围，以便使用代理的每个人都可以访问相同的内存文件，或者每个用户都可以单独使用内存文件。
 
 ### 代理范围内存
 
@@ -64,7 +64,7 @@ agent = create_deep_agent(
 )
 ```
 
-> **完整示例：种子内存和调用**
+> [手风琴] 完整示例：种子内存和调用
 >
 > 用初始记忆填充存储，然后跨两个线程调用代理以查看它记住并更新它学到的内容。
 >
@@ -162,7 +162,7 @@ agent = create_deep_agent(
 )
 ```
 
-> **完整示例：跨用户隔离内存**
+> [accordion] 完整示例：跨用户隔离内存
 >
 > 播种每个用户的记忆并以两个不同的用户身份调用代理。每个用户只能看到自己的偏好。
 >
@@ -410,7 +410,7 @@ Merge new facts, remove outdated information, and keep it concise.""",
 
 #### 计划任务
 
-[cron job](/langsmith/cron-jobs) 按固定计划运行整合代理。代理搜索最近的对话并将其合成到内存中。将计划与您的使用模式相匹配，以便整合运行大致跟踪实际活动。
+[cron job](/langsmith/cron-jobs) 按固定计划运行合并代理。代理搜索最近的对话并将其合成到内存中。将计划与您的使用模式相匹配，以便整合运行大致跟踪实际活动。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -454,7 +454,7 @@ cron_job = await client.crons.create(
 
 ### 只读内存与可写内存
 
-默认情况下，代理可以读取和写入内存文件。对于组织策略或合规性规则等共享状态，您可能希望将内存设为**只读**，以便代理可以引用它但不能修改它。这可以防止通过共享内存进行提示注入，并确保只有您的应用程序代码控制文件中的内容。|许可 |使用案例 |它是如何运作的 |
+默认情况下，代理可以读取和写入内存文件。对于组织策略或合规性规则等共享状态，您可能希望将内存设为**只读**，以便代理可以引用它但不能修改它。这可以防止通过共享内存进行提示注入，并确保只有您的应用程序代码控制文件中的内容。|许可 |使用案例|它是如何运作的 |
 | - | - | - |
 | **读写**（默认）|用户喜好，座席自我提升，学到了[skills](/oss/python/deepagents/skills) |代理通过`edit_file`工具更新文件 |
 | **只读** |组织政策、合规规则、共享知识库、开发人员定义[skills](/oss/python/deepagents/skills) |通过应用程序代码或[Store API](/langsmith/custom-store)填充。使用 [permissions](/oss/python/deepagents/permissions) 拒绝写入特定路径，或使用 [policy hooks](/oss/python/deepagents/backends#add-policy-hooks) 自定义验证逻辑。 |
@@ -493,7 +493,7 @@ StoreBackend(
 ## 另请参阅
 
 * [OpenWiki](/oss/openwiki/overview)：生成并维护编码代理通过`AGENTS.md`找到的存储库wiki
-* [Backends](/oss/python/deepagents/backends)：选择内存文件的存储位置
+* [Backends](/oss/python/deepagents/backends): 选择内存文件的存储位置
 * [Context engineering](/oss/python/deepagents/context-engineering)：短期记忆、卸载和总结
 * [Skills](/oss/python/deepagents/skills)：按需程序内存
 

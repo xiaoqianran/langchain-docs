@@ -623,7 +623,7 @@
       ],
       "build-an-agent": [
         {
-          "title": "Build an agent in the UI",
+          "title": "Build an agent with LangSmith Studio",
           "rel": "langsmith/build-an-agent.md"
         }
       ],
@@ -3867,6 +3867,12 @@
           "rel": "langsmith/javascript/managed-deep-agents-deploy.md"
         }
       ],
+      "managed-deep-agents-design-agent": [
+        {
+          "title": "Deploy the open-source design agent",
+          "rel": "langsmith/javascript/managed-deep-agents-design-agent.md"
+        }
+      ],
       "managed-deep-agents-evals": [
         {
           "title": "Evaluate Managed Deep Agents",
@@ -3925,6 +3931,12 @@
         {
           "title": "Managed Deep Agents",
           "rel": "langsmith/javascript/managed-deep-agents-overview.md"
+        }
+      ],
+      "managed-deep-agents-paid-media-agent": [
+        {
+          "title": "Deploy the open-source paid media agent",
+          "rel": "langsmith/javascript/managed-deep-agents-paid-media-agent.md"
         }
       ],
       "managed-deep-agents-project-structure": [
@@ -4059,6 +4071,12 @@
           "rel": "langsmith/python/managed-deep-agents-deploy.md"
         }
       ],
+      "managed-deep-agents-design-agent": [
+        {
+          "title": "Deploy the open-source design agent",
+          "rel": "langsmith/python/managed-deep-agents-design-agent.md"
+        }
+      ],
       "managed-deep-agents-evals": [
         {
           "title": "Evaluate Managed Deep Agents",
@@ -4117,6 +4135,12 @@
         {
           "title": "Managed Deep Agents",
           "rel": "langsmith/python/managed-deep-agents-overview.md"
+        }
+      ],
+      "managed-deep-agents-paid-media-agent": [
+        {
+          "title": "Deploy the open-source paid media agent",
+          "rel": "langsmith/python/managed-deep-agents-paid-media-agent.md"
         }
       ],
       "managed-deep-agents-project-structure": [
@@ -7409,10 +7433,6 @@
           "rel": "oss/javascript/langgraph/checkpointers.md"
         },
         {
-          "title": "Choosing between Graph and Functional APIs",
-          "rel": "oss/javascript/langgraph/choosing-apis.md"
-        },
-        {
           "title": "Deployment",
           "rel": "oss/javascript/langgraph/deploy.md"
         },
@@ -7439,26 +7459,6 @@
         {
           "title": "Functional API overview",
           "rel": "oss/javascript/langgraph/functional-api.md"
-        },
-        {
-          "title": "Add human-in-the-loop with the Functional API",
-          "rel": "oss/javascript/langgraph/functional-api-human-in-the-loop.md"
-        },
-        {
-          "title": "Add memory with the Functional API",
-          "rel": "oss/javascript/langgraph/functional-api-memory.md"
-        },
-        {
-          "title": "Stream with the Functional API",
-          "rel": "oss/javascript/langgraph/functional-api-streaming.md"
-        },
-        {
-          "title": "Configure Functional API tasks",
-          "rel": "oss/javascript/langgraph/functional-api-tasks.md"
-        },
-        {
-          "title": "Compose Functional API workflows",
-          "rel": "oss/javascript/langgraph/functional-api-workflows.md"
         },
         {
           "title": "Graph API overview",
@@ -7533,20 +7533,12 @@
           "rel": "oss/javascript/langgraph/test.md"
         },
         {
-          "title": "Thinking in the Functional API",
-          "rel": "oss/javascript/langgraph/thinking-in-functional-api.md"
-        },
-        {
           "title": "Thinking in the Graph API",
           "rel": "oss/javascript/langgraph/thinking-in-graph-api.md"
         },
         {
           "title": "Agent Chat UI",
           "rel": "oss/javascript/langgraph/ui.md"
-        },
-        {
-          "title": "Build checklist for the Functional API",
-          "rel": "oss/javascript/langgraph/use-functional-api.md"
         },
         {
           "title": "Build checklist for the Graph API",
@@ -8311,10 +8303,6 @@
           "rel": "oss/python/langgraph/checkpointers.md"
         },
         {
-          "title": "Choosing between Graph and Functional APIs",
-          "rel": "oss/python/langgraph/choosing-apis.md"
-        },
-        {
           "title": "Deployment",
           "rel": "oss/python/langgraph/deploy.md"
         },
@@ -8341,26 +8329,6 @@
         {
           "title": "Functional API overview",
           "rel": "oss/python/langgraph/functional-api.md"
-        },
-        {
-          "title": "Add human-in-the-loop with the Functional API",
-          "rel": "oss/python/langgraph/functional-api-human-in-the-loop.md"
-        },
-        {
-          "title": "Add memory with the Functional API",
-          "rel": "oss/python/langgraph/functional-api-memory.md"
-        },
-        {
-          "title": "Stream with the Functional API",
-          "rel": "oss/python/langgraph/functional-api-streaming.md"
-        },
-        {
-          "title": "Configure Functional API tasks",
-          "rel": "oss/python/langgraph/functional-api-tasks.md"
-        },
-        {
-          "title": "Compose Functional API workflows",
-          "rel": "oss/python/langgraph/functional-api-workflows.md"
         },
         {
           "title": "Graph API overview",
@@ -8435,20 +8403,12 @@
           "rel": "oss/python/langgraph/test.md"
         },
         {
-          "title": "Thinking in the Functional API",
-          "rel": "oss/python/langgraph/thinking-in-functional-api.md"
-        },
-        {
           "title": "Thinking in the Graph API",
           "rel": "oss/python/langgraph/thinking-in-graph-api.md"
         },
         {
           "title": "Agent Chat UI",
           "rel": "oss/python/langgraph/ui.md"
-        },
-        {
-          "title": "Build checklist for the Functional API",
-          "rel": "oss/python/langgraph/use-functional-api.md"
         },
         {
           "title": "Build checklist for the Graph API",

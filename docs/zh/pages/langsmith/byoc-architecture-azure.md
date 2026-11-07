@@ -49,7 +49,7 @@ AKS 子网占用 VNet 的十六分之一，专用终结点子网占用 VNet 的 
 * **AKS**：标准层上的 Kubernetes 1.35。没有公共 API 端点的私有集群。本地帐户和运行命令被禁用。身份验证使用 Microsoft Entra ID 和 Azure RBAC 进行 Kubernetes 授权。 OIDC 颁发者和工作负载身份已启用。
 * **网络插件**：Azure CNI 和 Cilium 用于数据路径和网络策略。
 * **系统节点池**：Azure Linux 上的三个 `Standard_D2s_v6` 节点，分布在该区域的可用区中，为关键附加组件保留。
-* **应用程序节点**： [Node auto-provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) 根据 Pod 需要添加和删除节点。它使用版本 5 或更高版本的按需 D、E 和 F 系列 VM。每个节点池都有 CPU 和内存限制。通用池限制为 100 个 vCPU 和 400 GiB 内存。 SmithDB 在自己的池上运行，包括具有本地 NVMe 磁盘作为缓存的虚拟机池。
+* **应用程序节点**：[Node auto-provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) 根据 Pod 需要添加和删除节点。它使用版本 5 或更高版本的按需 D、E 和 F 系列 VM。每个节点池都有 CPU 和内存限制。通用池限制为 100 个 vCPU 和 400 GiB 内存。 SmithDB 在自己的池上运行，包括具有本地 NVMe 磁盘作为缓存的虚拟机池。
 * **升级**：AKS 在数据平面的 [maintenance window](/langsmith/byoc-onboarding-azure#change-data-plane-settings) 中自动应用 Kubernetes 补丁版本和节点映像更新。
 
 ### 数据存储|商店 |配置|
@@ -91,13 +91,13 @@ LangChain 通过一个多租户 Microsoft Entra 应用程序 **LangSmith BYOC** 
 ### 角色分配|角色 |范围 |为什么LangSmith需要它 |
 | - | - | - |
 | `langsmith-byoc-<key>-<suffix>`（定制）|数据平面资源组|创建、更新和删除数据平面资源，将引导密钥写入 Key Vault，并批准 AKS API 和数据存储的专用终结点。该角色为其允许的每个操作命名。 |
-|与 `reduced_access = true` 相同的自定义角色 |数据平面资源组|数据平面处于活动状态后，减少角色操作。升级、扩展和修复数据平面，但无法删除它、其数据存储或其网络，也无法写入 Key Vault 机密。 |
-| `User Access Administrator` |数据平面资源组|为数据平面的托管身份赋予角色，并创建自定义 Blob 数据角色 |
-| `Azure Kubernetes Service RBAC Cluster Admin` |数据平面的 AKS 集群 |在集群上安装并升级LangSmith。 LangSmith 自行创建此角色分配。 |
+|与 `reduced_access = true` 相同的自定义角色 |数据平面资源组|数据平面处于活动状态后，减少角色操作。升级、扩展和修复数据平面，但无法删除它、其数据存储或其网络，也无法创建角色分配。 |
+| `User Access Administrator` |数据平面资源组|为数据平面的托管标识分配角色，并创建自定义 Blob 数据角色。当您设置 `reduced_access = true` 时，Terraform 会删除此分配。 |
+| `Azure Kubernetes Service RBAC Cluster Admin` |数据平面的 AKS 集群 |在集群上安装并升级LangSmith。 LangSmith 自行创建此角色分配。 |[Terraform module](https://github.com/langchain-ai/terraform/blob/main/modules/byoc/azure/langsmith-byoc-access/main.tf)为每个数据平面创建一个自定义角色，并将资源组作为其唯一的可分配范围。这两个角色分配都将您组织的外部 ID 作为其描述。当它们不匹配时，LangSmith 拒绝创建数据平面，这会将资源组绑定到您的 LangSmith 组织。
 
-[Terraform module](https://github.com/langchain-ai/terraform/blob/main/modules/byoc/azure/langsmith-byoc-access/main.tf)为每个数据平面创建一个自定义角色，并将资源组作为其唯一的可分配范围。这两个角色分配都将您组织的外部 ID 作为其描述。当它们不匹配时，LangSmith 拒绝创建数据平面，这会将资源组绑定到您的 LangSmith 组织。
+### LangChain 可以访问什么，不能访问什么
 
-### LangChain 可以访问什么，不能访问什么|项目 | LangChain 访问 |
+|项目 | LangChain 访问 |
 | - | - |
 |数据平面资源组中的资源 |创建、更改和删除 |
 |数据平面资源组中的角色分配 |创建和删除 |
@@ -105,16 +105,14 @@ LangChain 通过一个多租户 Microsoft Entra 应用程序 **LangSmith BYOC** 
 |您订阅中的其他资源组和资源 |无 |
 | AKS 节点资源组 |没有任何。 AKS 可以管理它。 |
 |您的 Microsoft Entra 目录和 Microsoft Graph |无 |
-| Blob 存储、PostgreSQL 和 Redis 中的数据 |无数据角色。这些角色是管理角色。 |
+| Blob 存储、PostgreSQL 和 Redis 中的数据 |无数据角色。在您设置`reduced_access = true`之前，`User Access Administrator`可以授予一个。您的活动日志记录每个角色分配。 |
 | Key Vault 秘密值 |通过 Azure 资源管理器编写。没有读取机密的角色。 |
 
-要删除LangSmith的访问权限，请参阅[Remove LangSmith access](/langsmith/byoc-onboarding-azure#remove-langsmith-access)。
+要删除 LangSmith 的访问权限，请参阅 [Remove LangSmith access](/langsmith/byoc-onboarding-azure#remove-langsmith-access)。
 
 ## 数据保护
 
-### 加密
-
-|商店 |休息时|运输途中 |
+### 加密|商店 |休息时|运输途中 |
 | - | - | - |
 | Blob 存储 | Microsoft 管理的密钥 |仅 HTTPS、TLS 1.2 或更高版本 |
 | PostgreSQL | Microsoft 管理的密钥 | TLS，采用 Microsoft Entra 身份验证 |
@@ -122,20 +120,22 @@ LangChain 通过一个多租户 Microsoft Entra 应用程序 **LangSmith BYOC** 
 |密钥库 | Microsoft 管理的密钥 | TLS，通过专用端点 |
 | AKS 磁盘 | Microsoft 管理的密钥 |流量停留在集群中 |
 
-＃＃＃ 保留* **跟踪有效负载**：Blob 生命周期规则会在其保留层结束时删除每个对象。短期跟踪的默认值为 14 天，长期跟踪的默认值为 400 天。您可以使用 `ttl` 设置更改两者。 See [Change data plane settings](/langsmith/byoc-onboarding-azure#change-data-plane-settings).
+### 保留
+
+* **跟踪有效负载**：Blob 生命周期规则会在其保留层结束时删除每个对象。短期跟踪的默认值为 14 天，长期跟踪的默认值为 400 天。您可以使用 `ttl` 设置更改两者。参见[Change data plane settings](/langsmith/byoc-onboarding-azure#change-data-plane-settings)。
 * **Blob 版本**：启用版本控制，以前的版本将在创建 7 天后删除。删除的容器可以在 7 天内恢复。 Blob 软删除已禁用，因此过期的跟踪不会超过其保留层的寿命。
 * **PostgreSQL**：自动备份在同一区域保留 7 天。
 * **Redis**：没有持久性，也没有备份。 Redis 仅保存短暂的数据。
 
-### Deletion
-
-删除数据平面时，LangSmith 会删除 AKS 集群、PostgreSQL、Redis 和网络资源。它保留您的资源组、Key Vault 以及保存跟踪和 SmithDB 数据的 Blob 存储帐户。详情请参见[Delete a data plane](/langsmith/byoc-onboarding-azure#delete-a-data-plane)。
+### 删除删除数据平面时，LangSmith 会删除 AKS 集群、PostgreSQL、Redis 和网络资源。它保留您的资源组、Key Vault 以及保存跟踪和 SmithDB 数据的 Blob 存储帐户。详情请参见[Delete a data plane](/langsmith/byoc-onboarding-azure#delete-a-data-plane)。
 
 ## 扩展和操作
 
 LangChain 在配置后操作您的 Azure 数据平面。请参阅 [BYOC operations on Azure](/langsmith/byoc-operations-azure) 了解自动扩展、默认实例大小、升级和维护时段。有关估计的基础设施成本，请参阅[Azure data plane cost estimate](/langsmith/byoc-data-plane-cost-azure)。
 
-### Logs您的 Azure 活动日志记录对 Azure 资源管理器的 LangSmith 调用。要收集资源和网络日志，请在订阅中配置诊断设置和 VNet 流日志。有关可用日志和您的责任，请参阅[Auditing](/langsmith/byoc-operations-azure#auditing)。
+### 日志
+
+您的 Azure 活动日志记录对 Azure 资源管理器的 LangSmith 调用。要收集资源和网络日志，请在订阅中配置诊断设置和 VNet 流日志。有关可用日志和您的责任，请参阅[Auditing](/langsmith/byoc-operations-azure#auditing)。
 
 ## 另请参阅
 

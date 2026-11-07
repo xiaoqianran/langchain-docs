@@ -67,11 +67,9 @@ estimated allocated vCPUs = historical run count / 5,000,000 / target duration i
 >         requests:
 >           cpu: "8"
 >           memory: "32Gi"
->           ephemeral-storage: "100Gi"
 >         limits:
 >           cpu: "8"
 >           memory: "32Gi"
->           ephemeral-storage: "100Gi"
 >     taskdb:
 >       postgres:
 >         auth:

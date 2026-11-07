@@ -4,28 +4,28 @@
 
 # Anthropic（克劳德）集成
 
-Integrate with Anthropic (Claude) using LangChain Python.
+使用 LangChain Python 与 Anthropic (Claude) 集成。
 
-This page covers all LangChain integrations with [Anthropic](https://www.anthropic.com/), the makers of Claude.
+此页面涵盖了与 Claude 的制作者 [Anthropic](https://www.anthropic.com/) 的所有 LangChain 集成。
 
-## Model interfaces
+## 模型接口
 
-> **[ChatAnthropic](/oss/python/integrations/chat/anthropic)**
+> [卡][ChatAnthropic](/oss/python/integrations/chat/anthropic)
 >
-> Anthropic chat models.
+> Anthropic 聊天模型。
 
-> **[Anthropic middleware](/oss/python/integrations/middleware/anthropic)**
+> [卡][Anthropic middleware](/oss/python/integrations/middleware/anthropic)
 >
-> Anthropic-specific middleware for Claude models.
+> Anthropic 专用于 Claude 模型的中间件。
 
-## Other
+## 其他
 
-> **[AnthropicLLM](/oss/python/integrations/llms/anthropic)**
+> [卡][AnthropicLLM](/oss/python/integrations/llms/anthropic)
 >
 >（旧版）Anthropic 文本完成模型。
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/anthropic.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/anthropic.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -34,7 +34,7 @@ kubectl describe pod -n NAMESPACE POD_NAME | grep -A5 Events
 kubectl get node NODE_NAME -o jsonpath='{.status.allocatable.ephemeral-storage}{"\n"}'
 ```
 
-要么配置更大的节点，要么选择更小的层。节点还需要高于 pod 请求的空间，以用于图像、日志和 Kubernetes 预留。如果您在 0.17 上迁移到网络附加缓存并且 Pod 仍然请求节点存储，则来自旧值文件的 `ephemeral-storage` 覆盖仍然存在；删除它。无论缓存类型如何，迁移作业都会请求节点存储。
+要么配置更大的节点，要么选择更小的层。节点还需要高于 pod 请求的空间，以用于图像、日志和 Kubernetes 预留。如果您在 0.17 上迁移到网络附加缓存并且 Pod 仍然请求节点存储，则来自旧值文件的 `ephemeral-storage` 覆盖仍然存在；删除它。
 
 **对象存储访问被拒绝。** 工作负载身份绑定与 SmithDB 实际运行的 ServiceAccount 不匹配。信任策略必须命名发布命名空​​间和ServiceAccount名称，默认为`HELM_RELEASE-smithdb`。确认 pod 使用的是什么：
 
@@ -42,9 +42,9 @@ kubectl get node NODE_NAME -o jsonpath='{.status.allocatable.ephemeral-storage}{
 kubectl get pod -n NAMESPACE POD_NAME -o jsonpath='{.spec.serviceAccountName}{"\n"}'
 ```
 
-对于`create: false`，需要`name`。否则，pod 会回退到 `default` ServiceAccount，并且绑定永远不会应用。**元存储拒绝连接。** 检查数据库是否可从集群访问，`useSsl` 是否与服务器所需的内容匹配，以及 `smithdb.config.metastore` 中指定的密钥是否与密钥中实际存在的密钥匹配。
+对于`create: false`，需要`name`。否则，pod 会回退到 `default` ServiceAccount，并且绑定永远不会应用。
 
-**摄取或查询失败并出现 `Unavailable` 错误。** HTTP 代理或服务网格会阻止与 SmithDB pod IP 的连接。 `ingest-queue` 日志显示诸如 `closing SmithDB ingestion stream failed: rpc error: code = Unavailable` 之类的错误。允许[Pod network access](/langsmith/self-host-smithdb-infrastructure#pod-network-access)中描述的连接。然后重新启动`platform-backend`、`ingest-queue`、`queue`和SmithDB查询，因为更改之前打开的连接不断失败。
+**元存储拒绝连接。** 检查数据库是否可从集群访问，`useSsl` 是否与服务器所需的内容匹配，以及 `smithdb.config.metastore` 中指定的密钥是否与密钥中实际存在的密钥匹配。**摄取或查询失败并出现 `Unavailable` 错误。** HTTP 代理或服务网格会阻止与 SmithDB pod IP 的连接。 `ingest-queue` 日志显示诸如 `closing SmithDB ingestion stream failed: rpc error: code = Unavailable` 之类的错误。允许[Pod network access](/langsmith/self-host-smithdb-infrastructure#pod-network-access)中描述的连接。然后重新启动`platform-backend`、`ingest-queue`、`queue`和SmithDB查询，因为更改之前打开的连接不断失败。
 
 **缓存 I/O 速度慢。** 在本地 SSD 上，`emptyDir` 由启动磁盘而不是 SSD 支持。在网络连接的磁盘上，卷配置不足：确认 StorageClass 设置至少 7000 IOPS 和 1000 MiB/s。检查哪个设备支持正在运行的 pod 内的缓存文件系统：
 

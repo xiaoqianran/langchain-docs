@@ -4,7 +4,7 @@
 
 Migrate the LangSmith SDK feedback, annotation queue, and public run methods to their SmithDB-backed equivalents.
 
-These methods add runs to annotation queues, share runs publicly, and create feedback. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration).
+These methods add runs to annotation queues and read them back, share runs publicly, and create feedback. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration).
 
 ## Annotation queues: add runs
 
@@ -61,7 +61,7 @@ The request takes a list of items (up to 100 per call) instead of a list of run 
 | `project_id` | The run's project UUID (`project_id` on a run from `runs.query`; `session_id` is also accepted as an alias) |
 | `start_time` | The run's start time (RFC3339) |
 
-`extend_trace_retention` is unchanged and stays an optional query parameter.
+`extend_trace_retention` is unchanged. It stays an optional query parameter and defaults to `false`. When omitted, adding runs does not change their retention. Set it to `true` to upgrade the traces of added runs from base to extended retention, as described in [Data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades). Thread items are not upgraded.
 
 > [tab] Python
 >
@@ -375,6 +375,418 @@ The items API returns `{"items": [...]}`, one created queue item per input (`id`
 > >   -H "x-api-key: $LANGSMITH_API_KEY" \
 > >   -H "Content-Type: application/json" \
 > >   -d "{\"items\": [{\"item_type\": \"RUN\", \"run_id\": \"$RUN_ID\", \"project_id\": \"$PROJECT_ID\", \"start_time\": \"$START_TIME\"}]}"
+> > ```
+
+## Annotation queues: read runs
+
+List and count the runs in an annotation queue. The legacy `GET /api/v1/annotation-queues/{queue_id}/runs`, `GET /api/v1/annotation-queues/{queue_id}/run/{index}`, and `GET /api/v1/annotation-queues/{queue_id}/size` endpoints are deprecated, as are `total_size` and `total_archived`. Use the annotation queue items API instead: list or count the items in one review status, then fetch each run with the lookup keys on its item.
+
+> [!NOTE]
+>
+> In Python and TypeScript, the items API is on the new client resources (`client.annotation_queues.items` / `client.annotationQueues.items`). The [Exceptions](/langsmith/smithdb-sdk-migration#exceptions) table applies to them. On self-hosted, listing items needs LangSmith v0.16.17 or later. `retrieve_placement` needs v0.16.20 or later. The count endpoint needs v0.17.1 or later. No 0.16 release includes it.
+
+### Main changes
+
+#### Method name
+
+> [tab] Python
+>
+> | Before | After |
+> | - | - |
+> | `client.list_runs_from_annotation_queue()` | `client.annotation_queues.items.list()` (async iterator) |
+> | `client.get_run_from_annotation_queue()` | `client.annotation_queues.items.list()` |
+> | None | `client.annotation_queues.items.retrieve_count()` (async) |
+
+> [tab] TypeScript
+>
+> | Before | After |
+> | - | - |
+> | `client.listRunsFromAnnotationQueue()` | `client.annotationQueues.items.list()` |
+> | `client.getRunFromAnnotationQueue()` | `client.annotationQueues.items.list()` |
+> | `client.getSizeFromAnnotationQueue()` | `client.annotationQueues.items.retrieveCount()` |
+
+> [tab] Java
+>
+> | Before | After |
+> | - | - |
+> | `client.annotationQueues().runs().list()` | `client.annotationQueues().items().list()` |
+> | `client.annotationQueues().retrieveRun()` | `client.annotationQueues().items().list()` |
+> | `client.annotationQueues().retrieveSize()`, `retrieveTotalSize()`, `retrieveTotalArchived()` | `client.annotationQueues().items().retrieveCount()` |
+
+> [tab] Go
+>
+> | Before | After |
+> | - | - |
+> | `client.AnnotationQueues.Runs.List()` | `client.AnnotationQueues.Items.List()` or `ListAutoPaging()` |
+> | `client.AnnotationQueues.GetRun()` | `client.AnnotationQueues.Items.List()` |
+> | `client.AnnotationQueues.GetSize()`, `GetTotalSize()`, `GetTotalArchived()` | `client.AnnotationQueues.Items.GetCount()` |
+
+> [tab] cURL
+>
+> | Before | After |
+> | - | - |
+> | `GET /api/v1/annotation-queues/{queue_id}/runs` | `GET /api/v1/platform/annotation-queues/{queue_id}/items` |
+> | `GET /api/v1/annotation-queues/{queue_id}/run/{index}` | `GET /api/v1/platform/annotation-queues/{queue_id}/items` |
+> | `GET /api/v1/annotation-queues/{queue_id}/size`, `/total_size`, `/total_archived` | `GET /api/v1/platform/annotation-queues/{queue_id}/items/count` |
+
+There is no lookup by index. To read the run at a position, page through the list with `page_size` and the cursor from the previous page. To find an item's position, use `retrieve_placement`. The method is `retrievePlacement` in TypeScript and Java, `GetPlacement` in Go, and `GET /api/v1/platform/annotation-queues/{queue_id}/items/{item_id}/placement` in cURL. It returns the item's review status (`section`), zero-based `position`, and a `cursor` for listing from that point. The cursor counts runs and threads together and ignores start-time bounds. Pass it only to a list request without `item_type`, `min_start_time`, or `max_start_time`.
+
+#### Review status
+
+The items API requires a `status`. The legacy endpoints defaulted to `needs_my_review` when you omitted it.
+
+| Before | After | Contains |
+| - | - | - |
+| `needs_my_review` (or omitted) | `needs_my_review` | Items you have not reviewed yet |
+| `needs_others_review` | `needs_others_review` | Items you reviewed that still need other reviewers |
+| `completed` | `archived` | Items that met the queue's review requirements |
+
+The legacy `archived=true` flag on the list endpoint also maps to `archived`. The items API does not accept `completed`.
+
+`needs_my_review` and `needs_others_review` are relative to the caller. A personal access token returns its owner's split. A service key returns the split for its service account, not for any human reviewer. Together they cover every item still in the queue.
+
+For counts, the legacy totals map to:
+
+| Before | `status` on the count endpoint |
+| - | - |
+| `size` | `needs_my_review` or `needs_others_review` |
+| `total_size` | `all` |
+| `total_archived` | `archived` (`start_time` and `end_time` still filter on when the item was archived) |
+
+#### Item type
+
+The items API returns runs and threads. Pass `item_type` as `RUN` to list only runs, as the legacy endpoints did. The count endpoint has no `item_type` filter, so counts include thread items.
+
+#### Response
+
+Each item holds the run's lookup keys (`run_id`, `project_id`, `start_time`) and queue metadata (`id`, `added_at`, `last_reviewed_time`, `reserved_by`, `completed_by`), not the run itself. To read a run's name, inputs, or outputs, pass those keys to the [run retrieve method](/langsmith/smithdb-sdk-migration-runs#runs-retrieve). The list returns an opaque `next_cursor` for pagination. The SDKs iterate across pages for you.
+
+The count endpoint returns `{"count": <n>}` instead of `{"size": <n>}`.
+
+### Examples
+
+#### List and count runs waiting for review
+
+> [tab] Python
+>
+> The legacy Python client had no size method, so the count is new.
+>
+> > [tab] Before
+> >
+> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > from langsmith import Client
+> >
+> > client = Client()
+> > queue_id = "<queue-id>"
+> > runs = list(
+> >     client.list_runs_from_annotation_queue(queue_id, status="needs_my_review")
+> > )
+> > for run in runs:
+> >     print(run.name)
+> >
+> > first_run = client.get_run_from_annotation_queue(queue_id, index=0)
+> > ```
+>
+> > [tab] After
+> >
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import asyncio
+> >
+> > from langsmith import Client
+> >
+> >
+> > async def main():
+> >     client = Client()
+> >     queue_id = "<queue-id>"
+> >     count = await client.annotation_queues.items.retrieve_count(
+> >         queue_id, status="needs_my_review"
+> >     )
+> >     print(count.count)
+> >
+> >     # Items carry the run's lookup keys, not its contents.
+> >     async for item in client.annotation_queues.items.list(
+> >         queue_id, status="needs_my_review", item_type="RUN"
+> >     ):
+> >         run = await client.runs.retrieve_v2(
+> >             item.run_id,
+> >             project_id=item.project_id,
+> >             start_time=item.start_time,
+> >             selects=["NAME", "STATUS", "INPUTS", "OUTPUTS"],
+> >         )
+> >         print(run.name, run.status)
+> >
+> >
+> > asyncio.run(main())
+> > ```
+
+> [tab] TypeScript
+>
+> `items.list()` returns an async iterable that fetches further pages as you loop.
+>
+> > [tab] Before
+> >
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import { Client } from "langsmith";
+> >
+> > const client = new Client();
+> > let queueId = "<queue-id>";
+> > const { size } = await client.getSizeFromAnnotationQueue(queueId);
+> > console.log(size);
+> >
+> > for await (const run of client.listRunsFromAnnotationQueue(queueId, {
+> >   status: "needs_my_review",
+> > })) {
+> >   console.log(run.name, run.status);
+> > }
+> >
+> > const firstRun = await client.getRunFromAnnotationQueue(queueId, 0);
+> > ```
+>
+> > [tab] After
+> >
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import { Client } from "langsmith";
+> >
+> > const client = new Client();
+> > let queueId = "<queue-id>";
+> > const { count } = await client.annotationQueues.items.retrieveCount(queueId, {
+> >   status: "needs_my_review",
+> > });
+> > console.log(count);
+> >
+> > // Items carry the run's lookup keys, not its contents.
+> > for await (const item of client.annotationQueues.items.list(queueId, {
+> >   status: "needs_my_review",
+> >   item_type: "RUN",
+> > })) {
+> >   const run = await client.runs.retrieveV2(item.run_id!, {
+> >     project_id: item.project_id!,
+> >     start_time: item.start_time,
+> >     selects: ["NAME", "STATUS", "INPUTS", "OUTPUTS"],
+> >   });
+> >   console.log(run.name, run.status);
+> > }
+> > ```
+
+> [tab] Java
+>
+> `autoPager()` fetches further pages as you loop.
+>
+> > [tab] Before
+> >
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import com.langchain.smith.client.LangsmithClient
+> > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+> > import com.langchain.smith.models.annotationqueues.AnnotationQueueRetrieveRunParams
+> > import com.langchain.smith.models.annotationqueues.AnnotationQueueRetrieveSizeParams
+> > import com.langchain.smith.models.annotationqueues.runs.RunListParams
+> >
+> > val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+> >
+> > var queueId = "<queue-id>"
+> > val size = client.annotationQueues().retrieveSize(
+> >     queueId,
+> >     AnnotationQueueRetrieveSizeParams.builder()
+> >         .status(AnnotationQueueRetrieveSizeParams.Status.NEEDS_MY_REVIEW)
+> >         .build()
+> > ).size()
+> > println(size)
+> >
+> > val runs = client.annotationQueues().runs().list(
+> >     queueId,
+> >     RunListParams.builder().status(RunListParams.Status.NEEDS_MY_REVIEW).build()
+> > )
+> > for (run in runs) {
+> >     println("${run.name()} ${run.status()}")
+> > }
+> >
+> > val firstRun = client.annotationQueues().retrieveRun(
+> >     0L,
+> >     AnnotationQueueRetrieveRunParams.builder().queueId(queueId).build()
+> > )
+> > ```
+>
+> > [tab] After
+> >
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > import com.langchain.smith.client.LangsmithClient
+> > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+> > import com.langchain.smith.models.annotationqueues.items.ItemListParams
+> > import com.langchain.smith.models.annotationqueues.items.ItemRetrieveCountParams
+> > import com.langchain.smith.models.runs.RunRetrieveV2Params
+> > import java.time.OffsetDateTime
+> >
+> > val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+> >
+> > var queueId = "<queue-id>"
+> > val count = client.annotationQueues().items().retrieveCount(
+> >     queueId,
+> >     ItemRetrieveCountParams.builder().status("needs_my_review").build()
+> > ).count().get()
+> > println(count)
+> >
+> > // Items carry the run's lookup keys, not its contents.
+> > val page = client.annotationQueues().items().list(
+> >     queueId,
+> >     ItemListParams.builder()
+> >         .status(ItemListParams.Status.NEEDS_MY_REVIEW)
+> >         .itemType(ItemListParams.ItemType.RUN)
+> >         .build()
+> > )
+> > for (item in page.autoPager()) {
+> >     val run = client.runs().retrieveV2(
+> >         item.runId().get(),
+> >         RunRetrieveV2Params.builder()
+> >             .projectId(item.projectId().get())
+> >             .startTime(OffsetDateTime.parse(item.startTime().get()))
+> >             .addSelect(RunRetrieveV2Params.Select.NAME)
+> >             .addSelect(RunRetrieveV2Params.Select.STATUS)
+> >             .addSelect(RunRetrieveV2Params.Select.INPUTS)
+> >             .addSelect(RunRetrieveV2Params.Select.OUTPUTS)
+> >             .build()
+> >     )
+> >     println("${run.name().orElse("")} ${run.status().map { it.toString() }.orElse("")}")
+> > }
+> > ```
+
+> [tab] Go
+>
+> `ListAutoPaging()` fetches further pages as you loop. Item start times are RFC3339 strings, so parse them before passing them to `GetV2`.
+>
+> > [tab] Before
+> >
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > package main
+> >
+> > import (
+> > 	"context"
+> > 	"fmt"
+> >
+> > 	"github.com/langchain-ai/langsmith-go"
+> > )
+> >
+> > ctx := context.Background()
+> > client := langsmith.NewClient()
+> >
+> > queueID := "<queue-id>"
+> > size, err := client.AnnotationQueues.GetSize(ctx, queueID, langsmith.AnnotationQueueGetSizeParams{
+> > 	Status: langsmith.F(langsmith.AnnotationQueueGetSizeParamsStatusNeedsMyReview),
+> > })
+> > if err != nil {
+> > 	panic(err.Error())
+> > }
+> > fmt.Println(size.Size)
+> >
+> > runs, err := client.AnnotationQueues.Runs.List(ctx, queueID, langsmith.AnnotationQueueRunListParams{
+> > 	Status: langsmith.F(langsmith.AnnotationQueueRunListParamsStatusNeedsMyReview),
+> > })
+> > if err != nil {
+> > 	panic(err.Error())
+> > }
+> > for _, run := range *runs {
+> > 	fmt.Println(run.Name)
+> > }
+> >
+> > firstRun, err := client.AnnotationQueues.GetRun(ctx, queueID, 0, langsmith.AnnotationQueueGetRunParams{})
+> > if err != nil {
+> > 	panic(err.Error())
+> > }
+> > ```
+>
+> > [tab] After
+> >
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > package main
+> >
+> > import (
+> > 	"context"
+> > 	"fmt"
+> > 	"time"
+> >
+> > 	"github.com/langchain-ai/langsmith-go"
+> > )
+> >
+> > ctx := context.Background()
+> > client := langsmith.NewClient()
+> >
+> > queueID := "<queue-id>"
+> > count, err := client.AnnotationQueues.Items.GetCount(ctx, queueID, langsmith.AnnotationQueueItemGetCountParams{
+> > 	Status: langsmith.F("needs_my_review"),
+> > })
+> > if err != nil {
+> > 	panic(err.Error())
+> > }
+> > fmt.Println(count.Count)
+> >
+> > // Items carry the run's lookup keys, not its contents.
+> > iter := client.AnnotationQueues.Items.ListAutoPaging(ctx, queueID, langsmith.AnnotationQueueItemListParams{
+> > 	Status:   langsmith.F(langsmith.AnnotationQueueItemListParamsStatusNeedsMyReview),
+> > 	ItemType: langsmith.F(langsmith.AnnotationQueueItemListParamsItemTypeRun),
+> > })
+> > for iter.Next() {
+> > 	item := iter.Current()
+> > 	startTime, err := time.Parse(time.RFC3339Nano, item.StartTime)
+> > 	if err != nil {
+> > 		panic(err.Error())
+> > 	}
+> > 	run, err := client.Runs.GetV2(ctx, item.RunID, langsmith.RunGetV2Params{
+> > 		ProjectID: langsmith.F(item.ProjectID),
+> > 		StartTime: langsmith.F(startTime),
+> > 		Selects: langsmith.F([]langsmith.RunGetV2ParamsSelect{
+> > 			langsmith.RunGetV2ParamsSelectName,
+> > 			langsmith.RunGetV2ParamsSelectStatus,
+> > 			langsmith.RunGetV2ParamsSelectInputs,
+> > 			langsmith.RunGetV2ParamsSelectOutputs,
+> > 		}),
+> > 	})
+> > 	if err != nil {
+> > 		panic(err.Error())
+> > 	}
+> > 	fmt.Println(run.Name, run.Status)
+> > }
+> > if err := iter.Err(); err != nil {
+> > 	panic(err.Error())
+> > }
+> > ```
+
+> [tab] cURL
+>
+> `GET /runs` returns an array of full runs. `GET /items` returns `{"items": [...], "next_cursor": ...}`, and each run is a separate `GET /api/v2/runs/{run_id}` call.
+>
+> > [tab] Before
+> >
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > QUEUE_ID="<queue-id>"
+> >
+> > SIZE=$(curl -s "https://api.smith.langchain.com/api/v1/annotation-queues/$QUEUE_ID/size?status=needs_my_review" \
+> >   -H "x-api-key: $LANGSMITH_API_KEY")
+> >
+> > RUNS=$(curl -s "https://api.smith.langchain.com/api/v1/annotation-queues/$QUEUE_ID/runs?status=needs_my_review" \
+> >   -H "x-api-key: $LANGSMITH_API_KEY")
+> > echo "$RUNS" | jq -r '.[] | "\(.name) \(.status)"'
+> >
+> > FIRST_RUN=$(curl -s "https://api.smith.langchain.com/api/v1/annotation-queues/$QUEUE_ID/run/0" \
+> >   -H "x-api-key: $LANGSMITH_API_KEY")
+> > ```
+>
+> > [tab] After
+> >
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > QUEUE_ID="<queue-id>"
+> >
+> > COUNT=$(curl -s "https://api.smith.langchain.com/api/v1/platform/annotation-queues/$QUEUE_ID/items/count?status=needs_my_review" \
+> >   -H "x-api-key: $LANGSMITH_API_KEY")
+> >
+> > # Items carry the run's lookup keys, not its contents. Pass next_cursor back as
+> > # ?cursor= to fetch the next page.
+> > ITEMS=$(curl -s "https://api.smith.langchain.com/api/v1/platform/annotation-queues/$QUEUE_ID/items?status=needs_my_review&item_type=RUN" \
+> >   -H "x-api-key: $LANGSMITH_API_KEY")
+> >
+> > while read -r RUN_ID PROJECT_ID START_TIME; do
+> >   RUN=$(curl -s "https://api.smith.langchain.com/api/v2/runs/$RUN_ID?project_id=$PROJECT_ID&start_time=$START_TIME&selects=NAME&selects=STATUS&selects=INPUTS&selects=OUTPUTS" \
+> >     -H "x-api-key: $LANGSMITH_API_KEY")
+> >   echo "$RUN" | jq -r '"\(.name) \(.status)"'
+> > done < <(echo "$ITEMS" | jq -r '.items[] | "\(.run_id) \(.project_id) \(.start_time)"')
 > > ```
 
 ## Share and read public runs

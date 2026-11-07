@@ -43,7 +43,7 @@ export const sandbox = defineSandbox({
   idleTtlSeconds: 600,
   defaultTimeout: 600,
 });
-```|选项 |默认 |描述 |
+```|选项|默认 |描述 |
 | - | - | - |
 | `idleTtlSeconds` | `600` |沙箱及其内容被删除之前不活动的秒数。删除是不可恢复的。 |
 | `defaultTimeout` | `600` |每个命令允许的秒数。 |
@@ -123,7 +123,7 @@ mkdir -p /workspace
 
 ## 选择烘焙底料在没有烘焙基础的情况下，LangSmith的默认沙箱模板是起点。要从其他内容开始，请准确设置其中之一：
 
-|选项 |使用 |
+|选项|使用 |
 | - | - |
 | `snapshotName` | LangSmith 快照名称。允许使用标签。 |
 | `snapshotId` | LangSmith 快照 ID。 |
@@ -284,10 +284,10 @@ if (uploaded.error) {
 |跨线程存储持久知识 | [Memory](/langsmith/javascript/managed-deep-agents-memory) |
 |无需文件系统即可实现始终在线的行为 | [Instructions](/langsmith/javascript/managed-deep-agents-instructions) |
 
-有关更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
+有关更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。对于在部署之前发布更大沙箱快照的项目，请参阅[design agent template](/langsmith/javascript/managed-deep-agents-design-agent)。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

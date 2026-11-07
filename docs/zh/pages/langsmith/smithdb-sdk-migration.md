@@ -210,7 +210,7 @@
 | `GET /public/{share_token}/run/{run_id}` | `GET /api/v2/public/{share_token}/run/{run_id}` | [Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback) |
 | `POST /public/{share_token}/runs/query` | `POST /api/v2/public/{share_token}/runs/query` | [Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback) |
 
-注释队列运行端点移动到`/api/v1/platform/annotation-queues`下的队列项API。要将运行添加到队列，请参阅[Annotation queues: add runs](/langsmith/smithdb-sdk-migration-feedback)。对于其他端点，请参阅 [API reference](/langsmith/smith-api) 了解请求和响应形状。
+注释队列运行端点移动到`/api/v1/platform/annotation-queues`下的队列项API。要将运行添加到队列，请参阅[Annotation queues: add runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-add-runs)。有关列出和计数队列项目的信息，请参阅[Annotation queues: read runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-read-runs)。对于其他端点，请参阅 [API reference](/langsmith/smith-api) 了解请求和响应形状。
 
 |已弃用 (`/annotation-queues/...`) |替换品（`/api/v1/platform/annotation-queues/...`）|
 | - | - |

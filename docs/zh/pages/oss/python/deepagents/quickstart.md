@@ -6,7 +6,9 @@
 
 在几分钟内构建您的第一个深度代理
 
-本指南将引导您使用文件系统工具和子代理功能创建第一个深度代理。您将建立一个可以进行研究和撰写报告的研究代理。
+本指南将引导您使用 Deep Agents SDK 创建第一个深度代理。使用 SDK 以获得最大的灵活性并自行托管代理或运行自定义 [LangSmith Deployment](/langsmith/deployment)。要在生产环境中运行代理而无需管理基础设施，请参阅 [Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart)。
+
+您将建立一个可以进行研究和撰写报告的研究代理。
 
 构建 Deep Agents 研究快速入门
 
@@ -31,14 +33,14 @@
 
 1. 创建互联网搜索工具（当所选型号支持时，最好使用提供商内置的搜索工具；否则使用Tavily）。
 2. 使用搜索工具调用`create_deep_agent`，指南中的`provider:model`字符串（或初始化模型），以及页面上显示的研究系统提示。
-3. （可选）通过要求用户自行设置 `LANGSMITH_TRACING=true` 和 `LANGSMITH_API_KEY` 来启用 LangSmith 跟踪。
+3. 对于可选的LangSmith 跟踪，请按照[https://docs.langchain.com/langsmith/create-an-agent](https://docs.langchain.com/langsmith/create-an-agent) 在基于代理的工作区中注册代理。请用户自行设置`LANGSMITH_AGENT_ID`、`LANGSMITH_AGENT_ENVIRONMENT`、`LANGSMITH_TRACING=true`、`LANGSMITH_API_KEY`。
 4. 根据指南中的示例研究查询运行代理并打印最终响应。
 
-## 规则
-
-* 请关注本快速入门。请勿添加托管 Deep Agents 部署、评估或不相关的框架。
+## 规则* 请关注此自托管 SDK 快速入门。请勿添加托管 Deep Agents 部署、评估或不相关的框架。如果用户需要托管路径，请将其指向托管 Deep Agents 快速入门。
 * 首选提供商内置网络搜索（如果可用）；仅在需要时使用 Tavilly。
-* 当秘密、提供商选择或项目约定不清楚时，询问而不是猜测。> [!提示]
+* 当秘密、提供商选择或项目约定不清楚时，询问而不是猜测。
+
+> [!提示]
 >
 > **使用人工智能编码助手？**
 >
@@ -56,15 +58,15 @@
 > 检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：
 >
 > * Claude 代码：`claude mcp add --transport http` 对于每个服务器（默认情况下是项目范围；仅当我要求全局访问时才使用`--scope user`）。
-> * Codex CLI：`codex mcp add` 以及每个服务器 URL。
-> * 光标、Deep Agents 代码、VS 代码或反重力：使用我的客户页面上显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
+> * Codex CLI：`codex mcp add` 以及每个服务器 URL。> * 光标、Deep Agents 代码、VS 代码或反重力：使用我的客户页面上显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
 > * Claude Desktop：在“设置”>“连接器”下添加两个 URL。
 >
 > 不要发明备用 MCP URL。配置后，确认两台服务器均已列出并且可访问。
 > * 安装 [LangChain Skills](https://github.com/langchain-ai/langchain-skills) 以提高代理在 LangChain 生态系统任务上的性能。
 >
 > 安装LangChain技能
->> 为我的编码代理安装 LangChain 技能，以便它可以更好地执行 LangChain、LangGraph 和 Deep Agents 任务。
+>
+> 为我的编码代理安装 LangChain 技能，以便它可以更好地执行 LangChain、LangGraph 和 Deep Agents 任务。
 >
 > 使用 [https://github.com/langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills) 中的代理技能安装程序：
 >
@@ -86,9 +88,7 @@
 
 > [!注意]
 >
-> Deep Agents 需要支持[tool calling](/oss/python/langchain/models#tool-calling) 的型号。请参阅[customization](/oss/python/deepagents/customization#model)了解如何配置您的模型。
-
-## 第 1 步：安装依赖项
+> Deep Agents 需要支持[tool calling](/oss/python/langchain/models#tool-calling) 的型号。请参阅[customization](/oss/python/deepagents/customization#model)了解如何配置您的模型。## 第 1 步：安装依赖项
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install deepagents
@@ -110,125 +110,123 @@ uv sync
 
 ## 第 2 步：设置您的 API 密钥
 
-**谷歌**
+> [标签] 谷歌
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export GOOGLE_API_KEY="your-api-key"
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export GOOGLE_API_KEY="your-api-key"
-```
+> [标签] OpenAI
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export OPENAI_API_KEY="your-api-key"
+> ```
 
-**OpenAI**
+> [标签] Anthropic
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export ANTHROPIC_API_KEY="your-api-key"
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export OPENAI_API_KEY="your-api-key"
-```
+> [选项卡] OpenRouter
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export OPENROUTER_API_KEY="your-api-key"
+> export TAVILY_API_KEY="your-tavily-api-key"
+> ```
 
-**Anthropic**
+> [选项卡] 烟花
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export FIREWORKS_API_KEY="your-api-key"
+> export TAVILY_API_KEY="your-tavily-api-key"
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export ANTHROPIC_API_KEY="your-api-key"
-```
+> [标签] 巴斯坦
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export BASETEN_API_KEY="your-api-key"
+> export TAVILY_API_KEY="your-tavily-api-key"
+> ```
 
-**开放路由器**
+> [标签] 奥拉马
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Local: Ollama must be running on your machine
+> # Cloud: Set your Ollama API key for hosted inference
+> export OLLAMA_API_KEY="your-api-key"
+> export TAVILY_API_KEY="your-tavily-api-key"
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export OPENROUTER_API_KEY="your-api-key"
-export TAVILY_API_KEY="your-tavily-api-key"
-```
-
-**烟花**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export FIREWORKS_API_KEY="your-api-key"
-export TAVILY_API_KEY="your-tavily-api-key"
-```
-
-**巴斯坦**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export BASETEN_API_KEY="your-api-key"
-export TAVILY_API_KEY="your-tavily-api-key"
-```
-
-**奥拉玛**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Local: Ollama must be running on your machine
-# Cloud: Set your Ollama API key for hosted inference
-export OLLAMA_API_KEY="your-api-key"
-export TAVILY_API_KEY="your-tavily-api-key"
-```**其他**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Set the API key for your provider
-export <PROVIDER>_API_KEY="your-api-key"
-export TAVILY_API_KEY="your-tavily-api-key"
-```
-
-Deep Agents 可与任何 [LangChain chat model](/oss/python/deepagents/models#supported-models) 配合使用。为您的提供商设置 API 密钥。
+> [选项卡] 其他
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Set the API key for your provider
+> export <PROVIDER>_API_KEY="your-api-key"
+> export TAVILY_API_KEY="your-tavily-api-key"
+> ```
+>
+> Deep Agents 可与任何 [LangChain chat model](/oss/python/deepagents/models#supported-models) 配合使用。为您的提供商设置 API 密钥。
 
 > [!提示]
 >
-> **使用LangSmith网关**
->
-> [LangSmith Gateway](/langsmith/llm-gateway) 通过 LangSmith 路由大多数主要提供商。您可以使用 [bring your own provider keys](/langsmith/llm-gateway-quickstart#send-a-request) 或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 在没有提供者密钥的情况下访问模型。
+> 如果您使用 LangSmith [LLM Gateway](/langsmith/llm-gateway)，则流向提供商的流量将通过 LangSmith 路由。请改用网关密钥作为 API 密钥。
 
 ## 第三步：创建搜索工具
 
 Google、OpenAI 和 Anthropic 提供在服务器端运行的内置网络搜索工具：无需额外的软件包或 API 密钥。将提供者工具字典直接传递给`create_deep_agent`。
 
-**提供商搜索（推荐）**
+> [选项卡] 提供商搜索（推荐）
+>
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+>
+> # Google's built-in search — no extra install or API key needed
+> internet_search = {"google_search": {}}
+> ```
+>
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+>
+> # OpenAI's built-in web search — no extra install or API key needed
+> internet_search = {"type": "web_search"}
+> ```
+>
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+>
+> # Anthropic's built-in web search — no extra install or API key needed
+> internet_search = {"type": "web_search_20260209", "name": "web_search"}
+> ```
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
+> [选项卡] Tavily（任何提供商）
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from typing import Literal
+>
+> from tavily import TavilyClient
+> from deepagents import create_deep_agent
+>
+> tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+>
+>
+> def internet_search(
+>     query: str,
+>     max_results: int = 5,
+>     topic: Literal["general", "news", "finance"] = "general",
+>     include_raw_content: bool = False,
+> ):
+>     """Run a web search"""
+>     return tavily_client.search(
+>         query,
+>         max_results=max_results,
+>         include_raw_content=include_raw_content,
+>         topic=topic,
+>     )
+> ```
 
-# Google's built-in search — no extra install or API key needed
-internet_search = {"google_search": {}}
-```
-
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-
-# OpenAI's built-in web search — no extra install or API key needed
-internet_search = {"type": "web_search"}
-```
-
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-
-# Anthropic's built-in web search — no extra install or API key needed
-internet_search = {"type": "web_search_20260209", "name": "web_search"}
-```
-
-**Tavily（任何提供商）**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from typing import Literal
-
-from tavily import TavilyClient
-from deepagents import create_deep_agent
-
-tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-def internet_search(
-    query: str,
-    max_results: int = 5,
-    topic: Literal["general", "news", "finance"] = "general",
-    include_raw_content: bool = False,
-):
-    """Run a web search"""
-    return tavily_client.search(
-        query,
-        max_results=max_results,
-        include_raw_content=include_raw_content,
-        topic=topic,
-    )
-```
-
-## 步骤 4：创建深度代理
-
-将您的搜索工具和型号传递给`create_deep_agent`。传递 `provider:model` 格式的 `model` 字符串，或 [initialized model instance](/oss/python/deepagents/models#configure-model-parameters)。请参阅 [supported models](/oss/python/deepagents/models#supported-models) 了解所有提供商，并参阅 [suggested models](/oss/python/deepagents/models#suggested-models) 了解经过测试的建议。
+## 步骤 4：创建深度代理将您的搜索工具和型号传递给`create_deep_agent`。传递 `provider:model` 格式的 `model` 字符串，或 [initialized model instance](/oss/python/deepagents/models#configure-model-parameters)。有关所有提供商，请参阅 [supported models](/oss/python/deepagents/models#supported-models)；有关经过测试的建议，请参阅 [suggested models](/oss/python/deepagents/models#suggested-models)。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # System prompt to steer the agent to be an expert researcher
@@ -358,11 +356,17 @@ agent = create_deep_agent(
 
 ## 步骤 5：设置 LangSmith 跟踪
 
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T52⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+
 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-quickstart) 为您提供代理执行的可见性，允许您查看工具调用、子代理委托和 LLM 响应。
 
 在 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-quickstart) 注册，创建 API 密钥，并设置以下环境变量：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY="your-langsmith-api-key"
 ```
@@ -378,16 +382,16 @@ print(result["messages"][-1].content)
 
 ## 它是如何工作的？
 
-您的深度代理会自动：1. **通过调用`internet_search`工具收集信息进行研究**。
-2. **通过使用文件系统工具（[⟦T50⟧](/oss/python/deepagents/overview#virtual-filesystem-access)、[⟦T51⟧](/oss/python/deepagents/overview#virtual-filesystem-access)）管理上下文**以卸载大型搜索结果。
+您的深度代理会自动：
+
+1. **通过调用`internet_search`工具收集信息进行研究**。
+2. **通过使用文件系统工具（[⟦T54⟧](/oss/python/deepagents/overview#virtual-filesystem-access)、[⟦T55⟧](/oss/python/deepagents/overview#virtual-filesystem-access)）管理上下文**以卸载大型搜索结果。
 3. **根据需要生成子代理**，将复杂的子任务委托给专门的子代理。
 4. **综合报告**，将调查结果汇编成连贯的回应。
 
-要使用 `write_todos` 添加结构化任务计划，请选择使用 [⟦T53⟧](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware)。参见[Task planning](/oss/python/deepagents/overview#task-planning)。
+要使用 `write_todos` 添加结构化任务计划，请选择使用 [⟦T57⟧](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware)。参见[Task planning](/oss/python/deepagents/overview#task-planning)。
 
-## 示例
-
-对于可以使用 Deep Agents 构建的代理、模式和应用程序，请参阅 [Examples](https://github.com/langchain-ai/deepagents/tree/main/examples)。
+## 示例有关可以使用 Deep Agents 构建的代理和模式的示例，请参阅 [Examples](https://github.com/langchain-ai/deepagents/tree/main/examples)。
 
 ## 流媒体
 
@@ -400,9 +404,11 @@ Deep Agents 内置 [streaming](/oss/python/langchain/event-streaming)，用于�
 
 * **自定义您的代理**：了解[customization options](/oss/python/deepagents/customization)，包括自定义系统提示、工具和子代理。
 * **添加长期记忆**：跨对话启用[persistent memory](/oss/python/deepagents/memory)。
-* **部署到生产环境**：使用[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)在LangSmith中创建、运行和操作深度代理。
+* **部署到生产**：使用[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)在LangSmith中创建、运行和操作深度代理。
 * **测试和评估**：使用 [LangSmith evaluation](/langsmith/evaluation-quickstart) 运行自动化测试并根据数据集衡量代理的性能。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 将每个技能放在项目根目录下的`skills/`下：
 
@@ -87,7 +87,7 @@ skills/
 | **技能** |特定任务的程序 |当代理选择他们时|
 | **[Memory](/langsmith/python/managed-deep-agents-memory)** |代理可以更新的知识 |当启用持久内存时 |
 
-欲了解更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
+欲了解更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。对于包含许多技能的完整项目，请参阅 [design agent](/langsmith/python/managed-deep-agents-design-agent) 和 [paid media agent](/langsmith/python/managed-deep-agents-paid-media-agent) 模板。
 
 ***
 

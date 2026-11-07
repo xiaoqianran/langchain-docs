@@ -21,9 +21,9 @@
 * **生产**
 * **分期**
 * **发展**
-* **本地**代理拥有四个中的多少个取决于[how it was created](/langsmith/create-an-agent)。通过 [Build](/langsmith/build-an-agent) 在 UI 中创建的代理仅从 **Production** 开始，其他每个代理都会在第一次向其发送跟踪时出现。以任何其他方式创建的代理都从所有四个开始。
+* **本地**
 
-除了将每个环境的痕迹分开之外，LangSmith 不为选择附加任何行为。环境不会改变代理的检测方式，并且相同的构建可以通过更改其[agent addressing](/langsmith/log-traces-to-agent)来报告到不同的环境。
+代理拥有四个中的多少个取决于[how it was created](/langsmith/create-an-agent)。代理[built in LangSmith Studio](/langsmith/build-an-agent)仅从**生产**开始，其他每个代理都会在第一次向其发送跟踪时出现。以任何其他方式创建的代理都从所有四个开始。除了将每个环境的痕迹分开之外，LangSmith 不为选择附加任何行为。环境不会改变代理的检测方式，并且相同的构建可以通过更改其[agent addressing](/langsmith/log-traces-to-agent)来报告到不同的环境。
 
 ## 选择环境
 
@@ -33,11 +33,11 @@
 
 * **工作室和警报**：**制作**。
 * **监控和部署**：您上次用于代理的环境，或**生产**（如果没有）。
-* **跟踪**：您上次用于代理的环境，然后是**本地**，然后是代理拥有的第一个环境。在部署上，**本地**不会显示，并且当预览版本打开且代理具有预览时，列表会添加 **预览** 条目。
+* **跟踪**：您上次用于代理的环境，然后是**本地**，然后是代理拥有的第一个环境。
 
-该列表仅包含代理存在的环境。
+在部署上，**本地**不会显示，并且当预览版本打开且代理具有预览时，列表会添加 **预览** 条目。
 
-此控制驱动跟踪、监控、警报、[Engine](/langsmith/engine)、Studio 和部署的环境选择。 [Evaluators](/langsmith/evaluators) 和 [Insights](/langsmith/insights) 也适用于单个环境，但它们没有此下拉菜单。
+该列表仅包含代理存在的环境。此控制驱动跟踪、监控、警报、[Engine](/langsmith/engine)、Studio 和部署的环境选择。 [Evaluators](/langsmith/evaluators) 和 [Insights](/langsmith/insights) 也适用于单个环境，但它们没有此下拉菜单。
 
 ## 另请参阅
 

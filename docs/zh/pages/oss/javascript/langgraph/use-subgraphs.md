@@ -229,7 +229,7 @@ const graph = builder.compile();
 ![SQL agent graph](https://mintcdn.com/langchain-5e9cc07a/ybiAaBfoBvFquMDz/oss/images/subgraph.png?fit=max\&auto=format\&n=ybiAaBfoBvFquMDz\&q=85\&s=c280df5c968cd4237b0b5d03823d8946)如果您的子图与父图共享状态键，您可以按照以下步骤将其添加到您的图中：
 
 1.定义子图工作流程（下例中的`subgraphBuilder`）并编译
-2.定义父图工作流程时，将编译后的子图传递给`.addNode`方法
+2.定义父图工作流程时将编译后的子图传递给`.addNode`方法
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph, StateSchema, START } from "@langchain/langgraph";
@@ -306,7 +306,7 @@ const graph = builder.compile();
 > ```
 >
 > 1. 该键与父图状态共享
-> 2. 该密钥是`SubgraphState`私有的，对父图不可见
+> 2. 该键是`SubgraphState`私有的，对父图不可见
 >
 > ```
 > { node1: { foo: 'hi! foo' } }
@@ -319,11 +319,11 @@ const graph = builder.compile();
 
 `.compile()`上的`checkpointer`参数控制子图持久化：|模式| `checkpointer=` |行为 |
 | - | - | - |
-| [Per-invocation](#per-invocation-default) | `None`（默认）|每个调用都重新开始并继承父级的检查指针以在单个调用中支持[interrupts](/oss/javascript/langgraph/interrupts)和[durable execution](/oss/javascript/langgraph/persistence)。 |
-| [Per-thread](#per-thread) | `True` |状态在同一线程上的调用之间累积。每个呼叫都会从上一个呼叫中断的地方接续。 |
-| [Stateless](#stateless) | `False` |根本没有检查点——像普通函数调用一样运行。无中断或持久执行。 |
+| [Per-invocation](#per-invocation-default) | `None` (default) | Each call starts fresh and inherits the parent's checkpointer to support [interrupts](/oss/javascript/langgraph/interrupts) and [durable execution](/oss/javascript/langgraph/persistence) within a single call. |
+| [Per-thread](#per-thread) | `True` | State accumulates across calls on the same thread. Each call picks up where the last one left off. |
+| [Stateless](#stateless) | `False` | No checkpointing at all—runs like a plain function call. No interrupts or durable execution. |
 
-对于大多数应用程序来说，每次调用是正确的选择，包括子代理处理独立请求的[multi-agent](/oss/javascript/langchain/multi-agent)系统。当子代理需要多轮对话记忆时（例如，通过多次交换构建上下文的研究助理），请使用每线程。
+Per-invocation is the right choice for most applications, including [multi-agent](/oss/javascript/langchain/multi-agent) systems where subagents handle independent requests.当子代理需要多轮对话记忆时（例如，通过多次交换构建上下文的研究助理），请使用每线程。
 
 > [!注意]
 >
@@ -331,21 +331,21 @@ const graph = builder.compile();
 
 > [!注意]
 >
-> 下面的例子使用LangChain的[⟦T47⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)，这是构建代理的常用方法。 `create_agent` 在底层生成[LangGraph graph](/oss/javascript/langgraph/graph-api)，因此所有子图持久性概念都直接适用。如果您使用原始 LangGraph `StateGraph` 进行构建，则适用相同的模式和配置选项 - 有关详细信息，请参阅 [Graph API](/oss/javascript/langgraph/graph-api)。
+> The examples below use LangChain's [⟦T47⟧](https://reference.langchain.com/javascript/langchain/index/createAgent), which is a common way to build agents. `create_agent` produces a [LangGraph graph](/oss/javascript/langgraph/graph-api) under the hood, so all subgraph persistence concepts apply directly. If you're building with raw LangGraph `StateGraph`, the same patterns and configuration options apply—see the [Graph API](/oss/javascript/langgraph/graph-api) for details.
 
-### 有状态有状态子图继承父图的检查指针，从而启用 [interrupts](/oss/javascript/langgraph/interrupts)、[persistence](/oss/javascript/langgraph/persistence) 和状态检查。这两种有状态模式的不同之处在于状态保留的时间。
+### StatefulStateful subgraphs inherit the parent graph's checkpointer, which enables [interrupts](/oss/javascript/langgraph/interrupts), [persistence](/oss/javascript/langgraph/persistence), and state inspection.这两种有状态模式的不同之处在于状态保留的时间。
 
-#### 每次调用（默认）
+#### Per-invocation (default)
 
 > [!提示]
 >
-> 这是大多数应用程序的推荐模式，包括子代理作为工具调用的[multi-agent](/oss/javascript/langchain/multi-agent)系统。它支持[interrupts](/oss/javascript/langgraph/interrupts)、[persistence](/oss/javascript/langgraph/persistence)和并行调用，同时保持每个调用的隔离。
+> This is the recommended mode for most applications, including [multi-agent](/oss/javascript/langchain/multi-agent) systems where subagents are invoked as tools. It supports [interrupts](/oss/javascript/langgraph/interrupts), [persistence](/oss/javascript/langgraph/persistence), and parallel calls while keeping each invocation isolated.
 
 当对子图的每次调用都是独立的并且子代理不需要记住之前调用的任何内容时，请使用每次调用持久性。这是最常见的模式，特别是对于 [multi-agent](/oss/javascript/langchain/multi-agent) 系统，其中子代理处理一次性请求，例如“查找该客户的订单”或“总结此文档”。
 
-省略 `checkpointer` 或将其设置为 `None`。每个调用都是全新开始的，但在单个调用中，子图继承父级的检查点，并且可以使用 `interrupt()` 暂停和恢复。
+Omit `checkpointer` or set it to `None`. Each call starts fresh, but within a single call the subgraph inherits the parent's checkpointer and can use `interrupt()` to pause and resume.
 
-以下示例使用两个子代理（水果专家、蔬菜专家）作为外部代理的工具进行包装：
+The following examples use two subagents (fruit expert, veggie expert) wrapped as tools for an outer agent:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, tool } from "langchain";
@@ -374,13 +374,13 @@ const veggieInfo = tool(
 const fruitAgent = createAgent({
   model: "gpt-5.4-mini",
   tools: [fruitInfo],
-  prompt: "You are a fruit expert. Use the fruit_info tool. Respond in one sentence.",
+  systemPrompt: "You are a fruit expert. Use the fruit_info tool. Respond in one sentence.",
 });
 
 const veggieAgent = createAgent({
   model: "gpt-5.4-mini",
   tools: [veggieInfo],
-  prompt: "You are a veggie expert. Use the veggie_info tool. Respond in one sentence.",
+  systemPrompt: "You are a veggie expert. Use the veggie_info tool. Respond in one sentence.",
 });
 
 // Wrap subagents as tools for the outer agent
@@ -416,16 +416,16 @@ const askVeggieExpert = tool(
 const agent = createAgent({
   model: "gpt-5.4-mini",
   tools: [askFruitExpert, askVeggieExpert],
-  prompt:
+  systemPrompt:
     "You have two experts: ask_fruit_expert and ask_veggie_expert. " +
     "ALWAYS delegate questions to the appropriate expert.",
   checkpointer: new MemorySaver(),
 });
 ```
 
-> [选项卡] 中断
+> [tab] Interrupts
 >
-> 每次调用都可以使用`interrupt()`来暂停和恢复。将 `interrupt()` 添加到工具函数中，以在继续之前需要用户批准：
+> 每次调用都可以使用`interrupt()`来暂停和恢复。 Add `interrupt()` to a tool function to require user approval before proceeding:
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > const fruitInfo = tool(
@@ -454,7 +454,7 @@ const agent = createAgent({
 > // Resume - approve the interrupt
 > response = await agent.invoke(new Command({ resume: true }), config);  // [!code highlight]
 > // Subagent message count: 4
-> ```> [选项卡] 多圈
+> ```> [tab] Multi-turn
 >
 > 每次调用都以新的子代理状态开始。子代理不记得以前的调用：
 >
@@ -478,7 +478,7 @@ const agent = createAgent({
 
 > [tab] 多个子图调用
 >
-> 对同一子图的多次调用不会发生冲突，因为每次调用都有自己的检查点名称空间：
+> 对同一子图的多次调用不会发生冲突，因为每次调用都有自己的检查点命名空间：
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > const config = { configurable: { thread_id: "1" } };
@@ -492,7 +492,7 @@ const agent = createAgent({
 > // Subagent message count: 4 (bananas - fresh)
 > ```
 
-#### 每线程
+#### Per-thread
 
 当子代理需要记住以前的交互时，请使用每线程持久性。例如，研究助理通过多次交换建立上下文，或者编码助理跟踪其已编辑的文件。子代理的对话历史记录和数据在同一线程上的调用之间累积。每个呼叫都会从上一个呼叫中断的地方接续。
 
@@ -522,7 +522,7 @@ const fruitInfo = tool(
 const fruitAgent = createAgent({
   model: "gpt-5.4-mini",
   tools: [fruitInfo],
-  prompt: "You are a fruit expert. Use the fruit_info tool. Respond in one sentence.",
+  systemPrompt: "You are a fruit expert. Use the fruit_info tool. Respond in one sentence.",
   checkpointer: true,  // [!code highlight]
 });
 
@@ -547,7 +547,7 @@ const askFruitExpert = tool(
 const agent = createAgent({
   model: "gpt-5.4-mini",
   tools: [askFruitExpert],
-  prompt: "You have a fruit expert. ALWAYS delegate fruit questions to ask_fruit_expert.",
+  systemPrompt: "You have a fruit expert. ALWAYS delegate fruit questions to ask_fruit_expert.",
   middleware: [  // [!code highlight]
     toolCallLimitMiddleware({ toolName: "ask_fruit_expert", runLimit: 1 }),  // [!code highlight]
   ],  // [!code highlight]
@@ -612,7 +612,7 @@ const agent = createAgent({
 >
 > 当您有多个**不同的**每线程子图（例如，水果专家和蔬菜专家）时，每个子图都需要自己的存储空间，以便它们的检查点不会相互覆盖。这称为**命名空间隔离**。
 >
-> 如果您[call subgraphs inside a node](#call-a-subgraph-inside-a-node)，LangGraph 根据调用顺序（第一次调用、第二次调用等）分配命名空间。这意味着重新排序您的调用可能会混淆哪个子图加载哪个状态。为了避免这种情况，请使用唯一的节点名称将每个子代理包装在自己的 `StateGraph` 中 - 这为每个子图提供了稳定、唯一的命名空间：
+> 如果您[call subgraphs inside a node](#call-a-subgraph-inside-a-node)，LangGraph 根据调用顺序（第一次调用、第二次调用等）分配命名空间。这意味着重新排序您的调用可能会混淆哪个子图加载哪个状态。为了避免这种情况，请将每个子代理包装在其自己的 `StateGraph` 中，并使用唯一的节点名称 - 这为每个子图提供了一个稳定、唯一的命名空间：
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { StateGraph, StateSchema, MessagesValue, START } from "@langchain/langgraph";
@@ -626,10 +626,10 @@ const agent = createAgent({
 > }
 >
 > const fruitAgent = createSubAgent("gpt-5.4-mini", {
->   name: "fruit_agent", tools: [fruitInfo], prompt: "...", checkpointer: true,
+>   name: "fruit_agent", tools: [fruitInfo], systemPrompt: "...", checkpointer: true,
 > });
 > const veggieAgent = createSubAgent("gpt-5.4-mini", {
->   name: "veggie_agent", tools: [veggieInfo], prompt: "...", checkpointer: true,
+>   name: "veggie_agent", tools: [veggieInfo], systemPrompt: "...", checkpointer: true,
 > });
 > const config = { configurable: { thread_id: "1" } };
 >
@@ -671,7 +671,7 @@ const subgraph = subgraphBuilder.compile({ checkpointer: false });  // [!code hi
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const subgraph = builder.compile({ checkpointer: false });  // or true, or null
-```|特色 |每次调用（默认）|每线程 |无国籍|
+```|特色|每次调用（默认）|每线程 |无国籍|
 | - | - | - | - |
 | `checkpointer=` | `None` | `True` | `False` |
 |中断（HITL）| ✅ | ✅ | ❌ |

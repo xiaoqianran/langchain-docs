@@ -75,7 +75,7 @@ register_harness_profile(
 
 仅当您传递字符串时，提供程序配置文件才提供构造设置。
 
-> **预配置模型实例的查找顺序**
+> [accordion] 预配置模型实例的查找顺序
 >
 > 当您传递模型对象时，线束会使用该对象报告的提供程序和标识符来查找其配置文件。
 >
@@ -134,9 +134,9 @@ register_harness_profile(
 
 ## 合并语义|领域 |合并行为 |
 | - | - |
-| `base_system_prompt`、`system_prompt_suffix` |设置后新值获胜；否则继承 |
+| `base_system_prompt`、`system_prompt_suffix` |设置后新值获胜；否则继承|
 | `tool_description_overrides` |每个键的映射合并；新价值赢得共享密钥|
-| `excluded_tools`、`excluded_middleware` |设置并集|
+| `excluded_tools`、`excluded_middleware` |设置并集 |
 | `extra_middleware` |按具体类型合并：新实例替换其位置上的现有实例，新类型追加 |
 | `general_purpose_subagent` |按字段合并（未设置的字段继承）|
 | `init_kwargs`（提供商）|字典按键合并；新价值赢得共享密钥|

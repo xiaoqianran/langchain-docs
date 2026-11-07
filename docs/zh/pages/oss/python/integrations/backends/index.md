@@ -21,17 +21,17 @@ Deep Agents 的文件系统后端。
 
 自定义后端将Deep Agents连接到数据库、对象存储和虚拟文件系统等存储系统。与社区分享您的：
 
-> **[Implement a custom backend](/oss/python/deepagents/backends#custom-backends)**
+> [卡][Implement a custom backend](/oss/python/deepagents/backends#custom-backends)
 >
 > 按照自定义后端指南构建您自己的后端。
 
-> **[Share a community backend](https://github.com/langchain-ai/docs)**
+> [卡][Share a community backend](https://github.com/langchain-ai/docs)
 >
 > 打开文档存储库的 PR，将您的后端添加到下表中。
 
 ## 所有后端
 
-|后端|描述 |套餐 |来源 |
+|后端 |描述 |套餐 |来源 |
 | - | - | - | - |
 | [Azure Blob Backend](https://github.com/langchain-ai/langchain-azure/tree/main/libs/azure-storage) | Deep Agents `BackendProtocol` 的 Azure Blob 存储实现。将代理工作区文件、内存和工件保留在 Blob 容器中。 | `langchain-azure-storage` | [⟦T2⟧](https://github.com/langchain-ai/langchain-azure/tree/main/libs/azure-storage) |
 | [MongoDB VFS Adapter](https://github.com/langchain-ai/langchain-mongodb/tree/main/libs/langchain-mongodb-deepagents-vfs) |由 MongoDB Atlas 支持的虚拟文件系统后端。将代理文件（包括内存、工件和对话历史记录）保留在 MongoDB 集合中。 | `langchain-mongodb-deepagents-vfs` | [⟦T4⟧](https://github.com/langchain-ai/langchain-mongodb/tree/main/libs/langchain-mongodb-deepagents-vfs) |

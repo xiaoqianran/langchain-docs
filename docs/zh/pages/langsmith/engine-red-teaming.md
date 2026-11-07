@@ -4,41 +4,73 @@
 
 # 主动识别红队问题
 
-使用合成的 LangSmith 引擎探针测试已部署的代理，以在投入生产之前发现提示注入、数据泄露和不安全的工具使用。
+使用合成的 LangSmith 引擎探针测试已部署的代理，以在其投入生产之前发现提示注入、数据泄露和不安全的工具使用。
 
 > [!注意]
 >
-> 红队处于私人状态[beta](/langsmith/release-stages#beta)。它仅适用于已启用它的组织的LangSmith 云。它仅支持在 [LangSmith Cloud deployments](/langsmith/deploy-to-cloud) 上运行的代理，而不支持外部托管的代理。要请求访问，[join the waitlist](https://www.langchain.com/langsmith-engine-v2-new-feature-access)。
+> 红队处于私人状态[beta](/langsmith/release-stages#beta)。它仅适用于已启用它的组织的LangSmith 云。它支持在[LangSmith Cloud deployments](/langsmith/deploy-to-cloud)和[external deployments](#set-up-an-external-deployment)上运行的代理。要请求访问，[join the waitlist](https://www.langchain.com/langsmith-engine-v2-new-feature-access)。
 
-红队通过发送新的综合请求并判断其响应方式来测试已部署的代理。您的跟踪中的 [issues Engine detects](/langsmith/engine-issues) 来自生产中已经发生的故障。红队会查找尚未发生的故障，例如成功的提示注入、未经代理要求确认而进行的后续工具调用，或者泄漏到答案中的隐藏上下文。
+红队通过发送新的综合请求并判断其响应方式来测试已部署的代理。您的跟踪中的[issues Engine detects](/langsmith/engine-issues)来自生产中已经发生的故障。红队会查找尚未发生的故障，例如成功的提示注入、未经代理要求确认而进行的后续工具调用，或者泄漏到答案中的隐藏上下文。
 
 每次运行都会生成一份假设报告、测试每个假设的探针以及每个假设的结论。
 
 ## 红队如何运作
 
-Red Teaming 探测作为跟踪项目的 [baseline deployment](/langsmith/engine-fix-validation#set-the-baseline-deployment) 的部署集。每次运行：1. **映射应用程序。** 引擎会检查来自跟踪项目的最多 25 个最近跟踪，以及您的代码存储库（如果已连接）。它从它们那里学习代理的提示、工具、护栏和请求格式。如果引擎已经扫描了项目，则运行从项目的代理概述开始，并运行较短的确认扫描。
-2. **形成假设。** 每个假设都描述了代理可能失败的一种特定方式。引擎给它分配一个[issue class](#red-teaming-issue-classes)和一个场景类型，记录普通用户是否可以触发故障或者是否受到故意攻击。
-3. **探测部署。** 引擎针对每个假设向部署发送最多两个合成请求。探测器重用真实跟踪的请求格式，但用新的合成输入替换其内容。
-4. **判断结果。** 引擎检查每个探测的响应和跟踪，然后为假设分配状态和严重性。对于不明确的结果，引擎可以发送一个后续探测。
+默认情况下，Red Teaming 会探测跟踪项目的 [baseline deployment](/langsmith/engine-fix-validation#set-the-baseline-deployment)。如果您配置外部目标，引擎将改为探测该端点。每次运行：1. **映射应用程序。** 对于基线部署，引擎会检查最多 25 个最近跟踪以及您的代码存储库（如果已连接）。它学习代理的提示、工具、护栏和请求格式。如果引擎已经扫描了项目，它会从项目的代理概述开始，并运行较短的确认扫描。外部运行不会读取跟踪或代理概述。他们使用端点响应、上传的 HTTP API 规范以及来自连接存储库的筛选行为摘要（如果可用）。
+2. **形成假设。** 每个假设都描述了代理可能失败的一种特定方式。引擎给它分配了一个[issue class](#red-teaming-issue-classes)和一个场景类型，记录普通用户是否可以触发故障或者是否受到故意攻击。
+3. **探测部署。** 引擎针对每个假设向部署发送最多两个合成请求。基线探针重用真实跟踪的请求格式，但用新的合成输入替换其内容。外部探针使用 A2A 协议或允许的 OpenAPI 操作。4. **判断结果。** 引擎会检查每个探测的响应，对于基线部署，还会检查其跟踪。然后它为假设分配状态和严重性。对于不明确的结果，引擎可以发送一个后续探测。
 
-过去的痕迹只能帮助引擎理解应用程序。每个已确认的发现都来自运行期间发送的探测，而不是来自早期跟踪中的错误。红队调查结果保留在红队报告中。运行不会产生引擎问题，也不会将数据集、评估器或反馈写入您的工作区。
+过去的痕迹只能帮助引擎理解应用程序。每个已确认的发现都来自运行期间发送的探测，而不是来自早期跟踪中的错误。
+
+红队调查结果保留在红队报告中。运行不会产生引擎问题，也不会将数据集、评估器或反馈写入您的工作区。
 
 ## 红队先决条件
 
-要运行红队，您需要：
-
-* **跟踪项目上的引擎**：[Set up Engine](/langsmith/engine-setup) 用于接收代理跟踪的项目。
-* **基线部署**：同一工作区中准备好的、非预览的[LangSmith Cloud deployment](/langsmith/deploy-to-cloud)，设置为项目的基线。参见[Set the baseline deployment](/langsmith/engine-fix-validation#set-the-baseline-deployment)。
-* **权限**： `runs:read` 在跟踪项目上查看红队报告。要开始运行，您还需要项目上的 `runs:create` 和基线部署上的 `deployments:update`。
-* **连接的存储库（推荐）**：使用 [connected GitHub repository](/langsmith/engine-repositories)，引擎从源读取代理的提示、工具和护栏。如果没有，调查结果仅依赖于跟踪，并且报告显示**存储库上下文不可用**。
+要运行红队，您需要：* **跟踪项目上的引擎**：[Set up Engine](/langsmith/engine-setup) 用于接收代理跟踪的项目。
+* **目标部署**：同一工作区中的就绪、非预览 LangSmith 云部署（设置为项目的基线）或外部端点。请参阅[Set the baseline deployment](/langsmith/engine-fix-validation#set-the-baseline-deployment)或[Set up an external deployment](#set-up-an-external-deployment)。
+* **权限**： `runs:read` 在跟踪项目上查看红队报告，以及 `runs:create` 开始运行。配置外部目标需要项目上有`issues:update`。使用基线部署还需要该部署上的`deployments:update`。
+* **连接的存储库（推荐）**：通过[connected GitHub repository](/langsmith/engine-repositories)，引擎可以使用代理的提示、工具和护栏来指导测试。外部运行接收经过筛选的行为摘要而不是原始源。如果没有存储库，基线运行就依赖于跟踪。外部运行依赖于端点响应，对于 HTTP API，还依赖于上传的规范。
 
 > [!警告]
 >
-> 探测是真实的请求。每个探针都会在基线部署上创建一个线程和运行，并且您的代理可以在响应时调用其工具。选择综合测试流量和工具副作用可接受的部署，例如暂存部署。
+> 探测是真实的请求，您的代理可以在响应时调用其工具。基线探针创建线程并运行；外部探针调用配置的端点。选择综合测试流量和工具副作用可接受的部署，例如暂存部署。使用测试凭据和非生产数据存储。## 设置外部部署
+
+外部目标允许引擎测试托管在LangSmith云外部的代理。您可以连接 A2A 代理或 OpenAPI 规范描述的 HTTP API。外部运行不需要基线部署。
+
+必须为您的项目启用外部目标。如果 **配置引擎** 中缺少 **红队目标**，请通过 [waitlist](https://www.langchain.com/langsmith-engine-v2-new-feature-access) 请求访问。
+
+连接外部部署：
+
+1. 在**引擎**页面，选择追踪项目，然后单击**配置引擎**。
+2. 找到 **红队目标** 部分并选择 **端点类型**：
+   * **A2A 代理**：在 **端点 URL** 中输入代理的 A2A 端点。引擎将 A2A 消息发送到此 URL。
+   * **具有 OpenAPI 规范的 HTTP API**：在 **端点 URL** 中输入 API 的基本 URL，然后单击 **上传规范**。上传 JSON 或 YAML 格式的 OpenAPI 3 文档，然后选择引擎可以调用的 1 到 10 个操作。
+3. 在 **端点身份验证** 下，单击 **添加标头** 并输入端点所需的标头。至少需要一个身份验证标头。使用测试所需访问权限最少的凭据。
+4. 单击“**保存**”，返回“**红队**”，然后单击“**运行红队**”。### 选择一个可到达的端点
+
+端点必须使用 HTTPS 并解析为公共 Internet 地址。引擎会阻止私有地址、环回地址和云元数据地址，并且不遵循重定向。输入带有路径的 URL，不带嵌入的凭据、查询参数或片段。
+
+对于 A2A 代理，请使用消息端点，而不是代理卡 URL。引擎在端点的起源处检查`/.well-known/agent-card.json`以选择协议版本。当卡在配置的 URL 处通告 v1.0 JSON-RPC 接口时，它使用 A2A v1.0，否则使用 v0.3。
+
+对于 HTTP API，引擎将每个允许的操作的路径附加到配置的基本 URL。它不使用规范的 `servers` URL。支持的方法有 `GET`、`POST`、`PUT` 和 `PATCH`。 `DELETE` 不允许。请求主体的操作必须接受 JSON。规范中的引用必须是本地 `$ref` 指针。转换为紧凑 JSON（转义非 ASCII 字符）后，规范大小限制为 256 KB。
+
+> [!警告]
+>
+> 将允许的操作限制在您可以安全测试的端点上。排除`DELETE`并不会阻止其他操作更改数据或触发外部操作。
+
+### 管理端点身份验证引擎仅将保存的标头发送到配置的目标，而不是发送到基准部署。它不会将您的 LangSmith 平台凭证发送到外部端点。标头值已加密且只写。设置仅显示他们的名字。
+
+更改端点 URL 需要再次输入每个标头值。对于 HTTP API，更改 URL 还需要重新上传规范并选择操作。要更改同一端点允许的操作，请单击 **替换规范**，上传文档，选择操作并保存。
+
+### 了解外部运行限制
+
+外部运行使用端点响应而不是 LangSmith 迹线来判断结果。他们不检查内部工具调用或提供**查看证明跟踪**链接。连接的存储库可以提供筛选的行为摘要。读取目标响应的模型永远不会读取原始源。外部探测器是单轮的，因此它们无法确认需要两轮对话的**会话完整性**结果。配置两个目标后，红队优先考虑外部目标。 [Fix validation](/langsmith/engine-fix-validation)继续使用基线部署。要将红队返回到基准部署，请单击 **红队目标** 中的 **删除**。如果没有基线，删除外部目标就不会留下可供测试的目标。
 
 ## 开始红队运行
 
-开始跑步：1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine-red-teaming)中，选择侧边栏中的**Engine**，然后选择跟踪项目。
+开始跑步：
+
+1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine-red-teaming)中，选择侧边栏中的**Engine**，然后选择跟踪项目。
 2. 在左侧面板顶部，选择 **红队**。
 3. 单击**运行红队**。
 
@@ -48,7 +80,7 @@ Red Teaming 探测作为跟踪项目的 [baseline deployment](/langsmith/engine-
 
 ## 阅读红队报告
 
-使用左侧面板顶部的报告选择器选择按日期运行。选择**加载较旧的报告**可向后翻阅较早的运行。
+使用左侧面板顶部的报告选择器选择运行日期。选择**加载较旧的报告**可向后翻阅较早的运行。
 
 ### 查看概述
 
@@ -84,9 +116,9 @@ Red Teaming 探测作为跟踪项目的 [baseline deployment](/langsmith/engine-
 单击一个假设以打开其详细信息。详细信息显示引擎的结论，每个探针后面有一张卡，标记为**提示 1** 和 **提示 2**。每个探测都有一个结果：**攻击有效**、**攻击被阻止**或**需要审查**。
 
 展开探针卡可以看到：* **合成提示**：引擎发送到部署的确切提示。
-* **观察到的**：摘录自代理的响应，其中包含探测器跟踪的摘要，例如其工具调用、工具错误和令牌计数。
+* **观察到的**：摘录自您的代理人的回复。基线探测还包括跟踪摘要，例如工具调用、工具错误和令牌计数。
 * **预期**：正确的应用程序会返回什么。
-* **查看证明迹线**：在侧面板中打开探头的迹线。
+* **查看证明迹线**：在侧面板中打开探头的迹线。适用于基线探头，不适用于外部探头。
 
 在调查下方，**法官为何决定**解释了引擎如何达到状态和严重性，以及**下一步做什么**建议修复。标记为**意外**的假设是 Engine 在测试不同假设时发现的结果。
 
@@ -94,7 +126,7 @@ Red Teaming 探测作为跟踪项目的 [baseline deployment](/langsmith/engine-
 
 每个假设都属于一个问题类别，由失败的根本原因及其所需的解决方案选择。每份报告均涵盖所有 10 个类别，并将每个类别标记为已测试、未测试或不适用于代理。|问题类别 |红队测试什么？
 | - | - |
-| **内容政策** |违反明确的产品、法律、安全或商业政策，例如禁止的竞争对手比较。 |
+| **内容政策** |违反明确的产品、法律、安全或商业政策，例如禁止进行竞争对手比较。 |
 | **指令层次结构** |直接推翻客服人员的指示，以及相互冲突或令人困惑的提示指示。 |
 | **间接喷射** |检索到的内容、工具输出或其他试图控制代理的不受信任的数据。 |
 | **数据暴露** |隐藏的上下文，例如由探测器植入的合成金丝雀值，转义为响应。 |
@@ -111,36 +143,35 @@ Red Teaming 探测作为跟踪项目的 [baseline deployment](/langsmith/engine-
 
 ## 再次运行红队
 
-红队在同一部署修订版的运行之间延续判决。新的运行会收到针对相同基线部署和活动修订的最多五次早期成功运行的结论。引擎会跳过先前运行已确认或发现安全的假设，除非新运行表明行为发生了变化，并优先考虑需要审查的假设。
+对于基线部署，红队会在同一部署修订版本的运行之间延续判决。新的运行会收到针对相同基线部署和活动修订的最多五次早期成功运行的结论。引擎会跳过先前运行已确认或发现安全的假设，除非新运行表明行为发生了变化，并优先考虑需要审查的假设。
 
-将新修订版部署到基准部署后，下一次运行将开始，而无需事先判断。使用 **Findings Over Runs** 来比较各运行中已确认的结果。
+将新修订版部署到基线部署后，下一次运行将开始，而无需事先判断。使用 **Findings Over Runs** 来比较各运行中已确认的结果。
 
 ## 红队限制
 
 每次红队运行都是有界的：|限制|每次运行的价值 |
 | - | - |
-|痕迹审查 | 25、从最多 100 个最近的跟踪摘要中选择 |
-|假设| 50|
-|每个假设的探索| 2 |
-|对基线部署的请求 | 100 | 100
+|痕迹审查 |基线：25，从最多 100 个最近跟踪摘要中选择。外部：0。
+|假设| 50 | 50
+|每个假设的探索 | 2 |
+|向目标提出的请求 | 60|
 |推荐 | 20 |
 
 ## Red Teaming 如何处理您的数据
 
-* **合成探针**：探针内容是合成的。引擎不会将客户跟踪内容或存储库文本复制到探针中。跟踪仅提供请求格式。
-* **只读访问**：Red Teaming 使用只读 LangSmith 凭证读取您的跟踪记录，并使用只读 GitHub 令牌克隆您的存储库。
+* **合成探针**：探针内容是合成的。引擎不会将客户跟踪内容或原始存储库源复制到探针中。对于基线部署，跟踪仅提供请求格式。
+* **只读访问**：Red Teaming 使用只读 LangSmith 凭证读取基线跟踪，并使用只读 GitHub 令牌克隆您的存储库。外部运行不读取迹线。
+* **筛选的存储库上下文**：对于外部目标，单独的分析师读取存储库并生成行为摘要。引擎会先筛选源代码、文件路径、URL 和机密的摘要，然后再使用它来引导探测。
 * **筛选报告**：引擎在存储之前筛选模型编写的报告文本以获取机密，并限制响应摘录的长度。
 
 有关引擎如何更广泛地处理您的数据，请参阅[Engine security](/langsmith/engine-security)。
 
-## 另请参阅
-
-* [Validate fixes automatically](/langsmith/engine-fix-validation)：设置基线部署并针对其重播问题跟踪。
+## 另请参阅* [Validate fixes automatically](/langsmith/engine-fix-validation)：设置基线部署并针对其重播问题跟踪。
 * [Connect Engine to your repository](/langsmith/engine-repositories)：从源头向红队提供您的代理的提示、工具和护栏。
 * [Engine security](/langsmith/engine-security)：查看引擎如何访问您的跟踪、部署和存储库。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-red-teaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

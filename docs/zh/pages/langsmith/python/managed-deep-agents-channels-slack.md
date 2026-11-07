@@ -59,7 +59,7 @@ channel = channels.slack()
 
 **图标** `string`
 
-Slack 中显示的代理图标的路径，相对于 `channels/` 目录。图标必须是 512 x 512 像素的 PNG 文件，大小不超过 1 MB。如果省略此参数，Managed Deep Agents 将为您生成一个图标。
+Slack 中显示的代理图标的路径，相对于 `channels/` 目录。图标必须是 512 x 512 像素的 PNG 文件，大小不超过 1 MB。如果省略此参数，托管Deep Agents将为您生成一个图标。
 
 **背景\_颜色** `string`
 
@@ -239,8 +239,10 @@ then call `attach_file` with that path so the file arrives in Slack.
 * **Slack 范围**：由于缺少 `files:read`、`files:write` 或历史范围报告而阻止的传输，您需要重新连接 Slack。## 另请参阅
 
 * [Channels overview](/langsmith/python/managed-deep-agents-channels)：了解通道如何将消息服务连接到代理。
+* [Design agent template](/langsmith/python/managed-deep-agents-design-agent)：部署完整的 Slack 设计代理项目。
+* [Paid media agent template](/langsmith/python/managed-deep-agents-paid-media-agent)：部署完整的 Slack 付费媒体代理项目。
 * [Decision models](/langsmith/llm-gateway-decision-models)：配置反应表情评分模型。
-* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：添加反应所需的provider key。
+* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：添加反应所需的提供者密钥。
 * [Agent-owned interrupts](/langsmith/python/managed-deep-agents-agent-owned-interrupts)：从工具发布 Slack 表单并在提交时恢复运行。
 * [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes)：给代理文件传输读写的文件系统。
 * [Deploy an agent](/langsmith/python/managed-deep-agents-deploy)：配置和部署托管深度代理。

@@ -203,7 +203,7 @@ The examples below use the `small` tier. Substitute the sizes for your tier.
 >                     storage: 100Gi
 > ```
 
-No node selectors or tolerations are needed; SmithDB runs on your general node pool. The migration Job is the exception. It does not use the cache volume and still requests 100 GiB of node `ephemeral-storage` by default, so schedule it on nodes with that much allocatable.
+No node selectors or tolerations are needed; SmithDB runs on your general node pool.
 
 Confirm each pod has a bound claim and that `/data` uses it:
 

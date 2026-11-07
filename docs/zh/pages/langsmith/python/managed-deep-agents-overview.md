@@ -162,7 +162,13 @@
 >
 > 添加自定义搜索工具、持久内存和每日日程安排。
 
-> [卡][Agent Server](/langsmith/agent-server-overview)
+> [卡][Design agent template](/langsmith/python/managed-deep-agents-design-agent)
+>
+> 将 LangChain 的开源设计代理部署到 Slack。
+
+> [卡][Paid media agent template](/langsmith/python/managed-deep-agents-paid-media-agent)
+>
+> 将LangChain的开源付费媒体代理部署到Slack。> [卡][Agent Server](/langsmith/agent-server-overview)
 >
 > 探索托管托管 Deep Agents 部署的运行时。
 
@@ -170,6 +176,8 @@
 >
 > 从 Claude Code 或其他 MCP 客户端调用已部署的代理作为工具。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

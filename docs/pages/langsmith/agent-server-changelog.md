@@ -18,9 +18,9 @@ Deployments use the newest `stable` version by default and are automatically upd
 
 ## v0.18
 
-Latest version: `0.18.0rc1`
+Latest version: `0.18.0rc4`
 
-This minor line is still a release candidate. The last stable release is `0.17.0`.
+This minor line is still a release candidate. The last stable release is `0.17.1`.
 
 ### Changes
 
@@ -41,6 +41,7 @@ This minor line is still a release candidate. The last stable release is `0.17.0
 * MCP clients on revision 2026-07-28 can now approve, edit, reject or answer tool calls that LangChain's human-in-the-loop middleware pauses, in Python and JS, in batched and per-call mode.
 * Run attempts are now stored in postgres. Note that during rollout of this change active runs might run for more than the allocated number of retries on failure.
 * Adds a feature flag to opt into multi-process execution mode, which spins up separate python processes to execute runs. Set `DISPATCH_MODE=multi-process` so the Go queue worker claims background runs and executes them. This is a beta feature in active development. It is only available for python at the moment.
+* Emits terminal run failure metrics (`lg_api_run_failed_terminal_counter`, labeled by `error_category`) and sweeper failure metrics (`lg_api_sweep_failed_counter`) in multi-process mode.
 
 #### Fixes
 
@@ -88,6 +89,9 @@ This minor line is still a release candidate. The last stable release is `0.17.0
 * Fixes a bug where worker heartbeats could be lost on redis restart causing all active runs to be swept. Worker heartbeats now write to postgres. (The redis heartbeat is also preserved until `0.19.0` for backwards compatibility during upgrades).
 * Stops copying the run context and other internal run config into every checkpoint's metadata, so checkpoint rows no longer grow with the size of the run context.
 * Fixes startup failures with FastAPI included routers when custom-route authentication or auth-first middleware ordering is enabled, while preserving nested route path parameters for authentication and middleware.
+* Ignores a `fairness_weight` returned by a priority callback, with a warning, instead of failing the run.
+* Ships langgraph-sdk 0.4.12. Its `PrioritySettings` no longer offers `fairness_weight`, and its documentation now states that -5 runs first, matching the server.
+* Exposes queue loop metrics when `DISPATCH_MODE` is set to `multi-process`.
 
 #### Security
 
@@ -99,6 +103,35 @@ This minor line is still a release candidate. The last stable release is `0.17.0
 * Patches Agent Server networking and tracing dependencies.
 
 > [accordion] v0.18 releases
+>
+> **2026-11-05**
+>
+> ## v0.18.0rc4
+>
+> ### New Features
+>
+> * Emits terminal run failure metrics (`lg_api_run_failed_terminal_counter`, labeled by `error_category`) and sweeper failure metrics (`lg_api_sweep_failed_counter`) in multi-process mode.
+>
+> ### Fixes
+>
+> * Ships langgraph-sdk 0.4.12. Its `PrioritySettings` no longer offers `fairness_weight`, and its documentation now states that -5 runs first, matching the server.
+> * Exposes queue loop metrics when `DISPATCH_MODE` is set to `multi-process`.
+>
+> **2026-11-04**
+>
+> ## v0.18.0rc3
+>
+> ### Security
+>
+> * Includes dependency and security maintenance updates.
+>
+> **2026-11-03**
+>
+> ## v0.18.0rc2
+>
+> ### Fixes
+>
+> * Ignores a `fairness_weight` returned by a priority callback, with a warning, instead of failing the run.
 >
 > **2026-10-30**
 >
@@ -180,7 +213,7 @@ This minor line is still a release candidate. The last stable release is `0.17.0
 
 ## v0.17
 
-Latest version: `0.17.0`
+Latest version: `0.17.1`
 
 ### Changes
 
@@ -223,16 +256,30 @@ Latest version: `0.17.0`
 * Fixed Postgres connections closed server-side (e.g. by idle\_session\_timeout) being reused from the pool.
 * Fixes AES-encrypted JSON data losing number formatting and precision (for example, `4.0` stored as `4`).
 * Fixed `langgraph dev` losing data: thread state and long-term store items are now saved to `.langgraph_api/` every 10 seconds as intended, and a restart no longer deletes every thread when saved state references a class from the graph file or one that was moved or renamed (an unreadable file is kept as a `.bak` copy).
+* Allows redis-py 8.x in Agent Server images and user graph dependencies.
 
 #### Security
 
 * Store operations from graphs now reject namespace labels that are empty or contain `.`, as the HTTP store API does, so such a label can no longer read or change another namespace's items.
+* Updates Agent Server Go builds, Datadog initialization, uv, and telemetry certificate dependencies.
 
 #### General Notes
 
 * Removes the built-in Python Postgres store; the Go store is now always used and `LANGGRAPH_STORE_BACKEND` is ignored. Custom stores and the in-memory runtime are unaffected.
 
 > [accordion] v0.17 releases
+>
+> **2026-11-03**
+>
+> ## v0.17.1
+>
+> ### Fixes
+>
+> * Allows redis-py 8.x in Agent Server images and user graph dependencies.
+>
+> ### Security
+>
+> * Updates Agent Server Go builds, Datadog initialization, uv, and telemetry certificate dependencies.
 >
 > **2026-10-29**
 >
@@ -354,7 +401,7 @@ Latest version: `0.17.0`
 
 ## v0.16
 
-Latest version: `0.16.9`
+Latest version: `0.16.10`
 
 ### Changes
 
@@ -420,8 +467,19 @@ Latest version: `0.16.9`
 * Updates undici in the JS graph server to a patched version to address published security advisories.
 * Updates Agent Server's Go toolchain to mitigate CVE-2026-111943 in certificate-chain verification.
 * Updates certifi, Hono and Vite to patched versions to address published security advisories.
+* Patches Agent Server networking and tracing dependencies.
+* Pins the optional OpenTelemetry tracer's certificate bundle.
 
 > [accordion] v0.16 releases
+>
+> **2026-11-03**
+>
+> ## v0.16.10
+>
+> ### Security
+>
+> * Patches Agent Server networking and tracing dependencies.
+> * Pins the optional OpenTelemetry tracer's certificate bundle.
 >
 > **2026-10-28**
 >
@@ -605,7 +663,7 @@ Latest version: `0.16.9`
 
 ## v0.15
 
-Latest version: `0.15.10`
+Latest version: `0.15.12`
 
 ### Changes
 
@@ -627,6 +685,8 @@ Latest version: `0.15.10`
 * Fix agent server startup crash (`ImportError: _ExtendedAttributes`) caused by an unpinned Datadog tracer install pulling opentelemetry-api 1.45.0.
 * Fixes a memory leak in the Go core's Postgres checkpointer caused by an outdated Datadog tracing dependency.
 * Fixes Playwright's browser driver and other subprocesses started from worker threads failing to launch on LangSmith Deployment.
+* Update bundled ddtrace to 4.15.6 to address CVE-2026-116588.
+* Fixes pyasn1 decoder denial-of-service vulnerabilities in Agent Server images.
 
 #### Security
 
@@ -643,8 +703,26 @@ Latest version: `0.15.10`
 * Updates bundled PyJWT, urllib3, Werkzeug, langgraph-sdk, and undici to clear known CVEs.
 * Updates Agent Server's Go toolchain to mitigate CVE-2026-111943 in certificate-chain verification.
 * Updates bundled certifi and Hono to clear known CVEs.
+* Patches Agent Server networking and tracing dependencies and fixes a loopback cancellation race.
 
 > [accordion] v0.15 releases
+>
+> **2026-11-06**
+>
+> ## v0.15.12
+>
+> ### Fixes
+>
+> * Update bundled ddtrace to 4.15.6 to address CVE-2026-116588.
+> * Fixes pyasn1 decoder denial-of-service vulnerabilities in Agent Server images.
+>
+> **2026-11-04**
+>
+> ## v0.15.11
+>
+> ### Security
+>
+> * Patches Agent Server networking and tracing dependencies and fixes a loopback cancellation race.
 >
 > **2026-10-27**
 >

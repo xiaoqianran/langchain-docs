@@ -46,11 +46,11 @@
 
 完整布局请参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。指令、技能和可选的持久存储器存储在[Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)中。
 
-## 与 Deep Agents 的关系
+## 与Deep Agents的关系
 
-托管 Deep Agents 运行开源 [Deep Agents](/oss/javascript/deepagents/overview) 工具，而不是第二个框架。 The agent loop, filesystem tools, subagents, and skills are the same, so there is no second API to learn and an agent you already built keeps working.
+托管 Deep Agents 运行开源 [Deep Agents](/oss/javascript/deepagents/overview) 工具，而不是第二个框架。代理循环、文件系统工具、子代理和技能是相同的，因此无需学习第二个 API，并且您已经构建的代理可以继续工作。
 
-Managed Deep Agents 在代理周围添加了一层。上面的沙箱、持久内存、通道和时间表是项目文件中的声明，而不是您构建和操作的服务。 [Connections](/langsmith/javascript/managed-deep-agents-connections) 运行 OAuth，因此最终用户可以授权他们自己的帐户，而不是您为每个帐户配置凭据。 LangSmith 将结果托管在 [Agent Server](/langsmith/agent-server-overview) 上。在代码中，差异较小：谁编译代理。* [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 返回编译后的代理。你运行它，并且拥有它周围的后端、存储、检查点和服务器。
+托管Deep Agents在代理周围添加了一层。上面的沙箱、持久内存、通道和时间表是项目文件中的声明，而不是您构建和操作的服务。 [Connections](/langsmith/javascript/managed-deep-agents-connections) 运行 OAuth，因此最终用户可以授权他们自己的帐户，而不是您为每个帐户配置凭据。 LangSmith 将结果托管在 [Agent Server](/langsmith/agent-server-overview) 上。在代码中，差异较小：谁编译代理。* [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 返回编译后的代理。你运行它，并且拥有它周围的后端、存储、检查点和服务器。
 * `defineDeepAgent` 返回一个定义。 `mda` CLI 将其交给托管运行时，后者提供这些片段以及内存、技能和系统提示符，然后使用 [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 编译代理。
 
 因此，`defineDeepAgent`采用相同的选项减去托管选项，再加上所需的静态`name`。每个`define*`函数都是这样工作的：声明代理需要什么，并将生命周期留给运行时。
@@ -67,7 +67,13 @@ Managed Deep Agents 在代理周围添加了一层。上面的沙箱、持久内
 >
 > 添加自定义搜索工具、持久内存和每日日程安排。
 
-> [卡][Agent Server](/langsmith/agent-server-overview)
+> [卡][Design agent template](/langsmith/javascript/managed-deep-agents-design-agent)
+>
+> 将 LangChain 的开源设计代理部署到 Slack。
+
+> [卡][Paid media agent template](/langsmith/javascript/managed-deep-agents-paid-media-agent)
+>
+> 将LangChain的开源付费媒体代理部署到Slack。> [卡][Agent Server](/langsmith/agent-server-overview)
 >
 > 探索托管托管 Deep Agents 部署的运行时。
 
@@ -75,6 +81,8 @@ Managed Deep Agents 在代理周围添加了一层。上面的沙箱、持久内
 >
 > 从 Claude Code 或其他 MCP 客户端调用已部署的代理作为工具。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -14,8 +14,8 @@
 
 相同的标题还可以归因于退款的支出。在“使用情况”选项卡上，“自定义维度”按标题值细分组支出。有关此方法以及其他归因支出的方法，请参阅[Attribute spend for chargebacks](/langsmith/llm-gateway-monitoring#attribute-spend-for-chargebacks)。
 
-策略通过以下两种方式之一使用标头：* **默认由标头分隔**：默认的 [spend](/langsmith/llm-gateway-spend-policies) 或 [rate limit](/langsmith/llm-gateway-rate-limit-policies) 策略将其限制独立应用于每个标头值。例如，由 `X-Gateway-Customer-Id` 分隔的默认工作空间支出限制在每个 [workspace](/langsmith/administration-overview#workspaces) 内给出 `acme` 和 `globex` 独立限制。默认值适用于其类型的每个主题，因此它不能针对一个 API 密钥。
-* **显式标头条件**：支出、速率限制或[model access](/langsmith/llm-gateway-model-access-policies)策略与一个确切的标头值匹配。例如，条件为`X-Gateway-Customer-Id: acme`的策略仅限制携带该值的请求。要仅限制一个 API 密钥上的标头值，请将显式策略的范围限制为该密钥。
+策略通过以下两种方式之一使用标头：* **默认由标头分隔**：默认的 [spend](/langsmith/llm-gateway-spend-policies) 或 [rate limit](/langsmith/llm-gateway-rate-limit-policies) 策略将其限制独立应用于每个标头值。例如，由 `X-Gateway-Customer-Id` 分隔的默认工作空间支出限制在每个 [workspace](/langsmith/administration-overview#workspaces) 内给出 `acme` 和 `globex` 独立限制。默认值适用于其类型的每个主题，除非您将其固定到一个工作区、用户或 API 密钥。
+* **显式标头条件**：支出、速率限制或[model access](/langsmith/llm-gateway-model-access-policies)策略与一个确切的标头值匹配。例如，条件为`X-Gateway-Customer-Id: acme`的策略仅限制携带该值的请求。
 
 > [!警告]
 >
@@ -23,7 +23,7 @@
 
 ## 可匹配的标头
 
-网关匹配前缀为 `X-Gateway-` 的请求标头以及`X-Gateway-Metadata` JSON 标头内的键。没有其他请求标头可匹配。
+网关匹配以 `X-Gateway-` 为前缀的请求标头以及`X-Gateway-Metadata` JSON 标头内的键。没有其他请求标头可匹配。
 
 标头名称在匹配之前进行规范化：* 删除 `X-Gateway-` 前缀，其余部分小写，`a-z`、`0-9` 和 `_` 之外的每个字符都替换为 `_`。
 * 标头 `X-Gateway-Customer-Id`、`x-gateway-customer_id` 和 `X-Gateway-CUSTOMER.ID` 均解析为匹配器键 `customer_id`。
@@ -43,33 +43,32 @@
 
 ## 通过标头分隔默认限制
 
-默认支出或费率限制对主题维度的每个成员（例如每个工作区或每个 API 密钥）应用相同的限制。通过标头将其分隔，该限制独立地应用于每个主题和标头值对，而不需要为每个值制定策略。
+默认支出或费率限制对主题维度的每个成员（例如每个工作区或每个 API 密钥）应用相同的限制。通过标头将其分隔，该限制独立地应用于每个主题和标头值对，而不需要为每个值制定策略。单独的默认值还可以固定到一个工作区、用户或 API 密钥，以便只有该主题才能获得每个标头值的限制。
 
 单独的默认值遵循以下规则：* **每个默认一个标头**：仅输入标头名称。该请求提供标识存储桶的值。
-* **独立限制**：每个主题和标头值对都会收到配置的限制。网关在请求第一次携带新标头值时创建每个限制。
-* **回退限制**：没有配置标头的请求共享其主题的回退限制。
-* **该类型的每个主题**：默认值适用于组织中的每个工作区、用户或 API 密钥。您不能仅通过一个 API 密钥的标头分隔限制。请改用作用域为该键的 [explicit header conditions](#add-an-explicit-header-condition) 。
-* **每个主题类型一个默认值**：创建默认值会替换相同主题类型的相同策略类型的现有默认值，即使两个默认值使用不同的标头也是如此。
+* **独立限制**：每个主题和标头值对都会接收配置的限制。第一次请求携带新标头值时，网关会创建这些限制。没有配置标头的请求共享其主题的回退限制。
+* **替换**：创建组织范围默认值会替换相同主题类型的相同策略类型的现有组织范围默认值，即使这两个默认值使用不同的标头也是如此。创建固定默认值仅替换相同策略类型、主题和标头的固定默认值。
+* **固定默认值优先**：对于来自其主题的请求，固定默认值将替换相同策略类型、主题类型和标头的组织范围默认值。由不同标头分隔或不由标头分隔的默认值仍然适用。
 
 UI 仅针对默认支出限制提供标头分隔。要按标题分隔默认支出限额：1. 转至 **LLM Gateway** 并选择 **成本控制**。
 2. 单击**创建支出限额**。
-3. 选择**工作空间**、**用户**或**API 密钥**
-4. 选中将限制应用于该类型的每个主题的复选框。
-5. 选择**通过自定义标头单独限制**。仅当您默认应用限制后，此复选框才会出现。
+3. 选择**工作空间**、**用户**或**API 密钥**。
+4. 选择范围：
+   * 要将限制应用于该类型的每个主题，请选中默认应用限制的复选框。
+   * 要将限制固定到一个主题，请仅选择一个工作区、用户或 API 密钥。
+5. 选择**通过自定义标头单独限制**。
 6. 在**标头名称**中，输入`X-Gateway-`之后的标头名称部分，表单将其显示在字段前面。例如，为 `X-Gateway-Customer-Id` 请求标头输入 `Customer-Id`。
 7. 设置支出限额，然后单击“**创建支出限额**”。
 
-策略表显示策略范围下的标题，例如“由 X-Gateway-Customer-Id 分隔的限制”。您还可以编辑现有的默认支出限额以添加、更改或删除标题。
+策略表显示策略范围下的标题，例如“由 X-Gateway-Customer-Id 分隔的限制”。您还可以编辑现有的默认支出限额以添加、更改或删除标题。要从固定默认值中删除标头或更改其主题，请将其删除并创建新策略。要按标头分隔默认速率限制，请通过 [LangSmith REST API](/langsmith/smith-api-ref) 创建`default_rate_limit` 策略。要通过 API 固定默认支出或费率限制，请将其主题匹配器的值设置为主题的 ID。 **速率限制** 表不显示具有默认速率限制的标头。在通过 API 创建默认值之前，请使用 `policy_type=default_spend_cap` 或 `policy_type=default_rate_limit` 列出现有默认值，这样您就不会替换其他人配置的默认值。
 
-要按标头分隔默认速率限制，请通过 [LangSmith REST API](/langsmith/smith-api-ref) 创建`default_rate_limit` 策略。 **速率限制** 表不显示具有默认速率限制的标头。在通过 API 创建默认值之前，请使用 `policy_type=default_spend_cap` 或 `policy_type=default_rate_limit` 列出现有默认值，这样您就不会替换其他人配置的默认值。
+当不同的标头值需要不同的限制时，请使用显式策略。
 
-当不同的标头值需要不同的限制时，请使用显式策略。## 添加显式标头条件
+## 添加显式标头条件
 
 明确的支出、速率限制或模型访问策略可以匹配一个精确的标头值。使用显式策略为不同的标头值分配不同的限制。
 
-显式标头条件遵循以下规则：
-
-* **每个策略一个条件**：策略接受一个标头名称和一个值。
+显式标头条件遵循以下规则：* **每个策略一个条件**：策略接受一个标头名称和一个值。
 * **一个主题范围**：将条件与组织、工作区、用户或 API 密钥范围相结合。主题方接受多个值并匹配其中的任何一个。
 * **缺少标头不匹配**：没有配置标头的请求与策略不匹配。
 * **强制执行每个匹配策略**：同时匹配普通主题策略和具有标头条件的策略的请求对两者都计数，并且任何一个都可以阻止它。
@@ -77,9 +76,9 @@ UI 仅针对默认支出限制提供标头分隔。要按标题分隔默认支�
 
 UI 提供了有关支出限制和速率限制的明确标头条件，但不提供默认标头条件。添加一个：1. 转至 **LLM Gateway**，然后选择 **Cost Controls** 作为支出限制，或选择 **Rate Limiting** 作为速率限制。
 2. 单击**创建支出限制**或**创建费率限制**。
-3. 选择主题范围并设置限制。清除 **默认情况下应用于每个...** 复选框，因为选择它会隐藏标题条件。
-4. 在 **自定义标头条件（可选）** 下，输入不带 `X-Gateway-` 前缀的 **标头名称**（例如，`Customer-Id`）和要匹配的 **标头值**（例如，`acme`）。填写两个字段或都不填写：创建按钮保持禁用状态，而只有一个字段具有值。
-5. 单击**创建支出限制**或**创建费率限制**。
+3. 选择科目类型，然后选择一个或多个科目。清除 **默认情况下应用于每个...** 复选框，因为选择它会隐藏标题条件。对于一个主题的支出限制，还请清除**自定义标题的单独限制**。
+4. 在 **自定义标头条件（可选）** 下，输入不带 `X-Gateway-` 前缀的 **标头名称**（例如，`Customer-Id`）和要匹配的 **标头值**（例如，`acme`）。
+5. 设置限制，然后单击 **创建支出限制** 或 **创建速率限制**。
 
 策略表显示主题旁边的标头值，例如 `my-key, acme`，但不显示标头名称。
 
@@ -87,7 +86,7 @@ UI 提供了有关支出限制和速率限制的明确标头条件，但不提�
 
 ## 每个最终客户的支出上限
 
-经销商或多租户应用程序通常从其自己的后端调用网关，并代表许多最终客户使用一个工作区范围的 API 密钥。当每个客户需要不同的上限时，请使用显式标头条件。如果每个顾客都使用相同的盖子，则改为[separate one default spend limit by header](#separate-a-default-limit-by-header)。
+经销商或多租户应用程序通常从其自己的后端调用网关，并代表许多最终客户使用一个工作区范围的 API 密钥。当每个客户需要不同的上限时，请使用显式标头条件。如果每个客户都使用相同的盖子，则改为[separate one default spend limit by header](#separate-a-default-limit-by-header)。
 
 ### 步骤 1. 在每次通话时发送客户标头
 
@@ -315,7 +314,7 @@ curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
 ## 另请参阅* [Spend policies](/langsmith/llm-gateway-spend-policies)：为组织、工作区、用户和 API 密钥设置成本上限。
 * [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies)：在滚动窗口中限制请求和令牌。
 * [Model access policies](/langsmith/llm-gateway-model-access-policies)：控制每个主体可以调用哪些模型。
-* [Monitor LLM Gateway spend](/langsmith/llm-gateway-monitoring)：按标头值细分支出并将其归因于退款。
+* [Monitor LLM Gateway spend](/langsmith/llm-gateway-monitoring)：按标题值细分支出并将其归因于退款。
 * [View LLM Gateway traces](/langsmith/llm-gateway-traces)：了解网关追踪到的地点以及谁可以配置策略。
 
 ***

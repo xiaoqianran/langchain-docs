@@ -10,7 +10,7 @@
 >
 > Azure 上的 BYOC 位于 **[beta](/langsmith/release-stages)**。首先，[contact our sales team](https://www.langchain.com/contact-sales)。
 
-本页面介绍如何在 Azure 订阅中创建 LangSmith BYOC 数据平面。有关如何构建和保护数据平面的信息，请参阅[BYOC architecture on Azure](/langsmith/byoc-architecture-azure)。有关 AWS 指南，请参阅 [BYOC onboarding](/langsmith/byoc-onboarding-aws)。
+本页介绍如何在 Azure 订阅中创建 LangSmith BYOC 数据平面。有关如何构建和保护数据平面的信息，请参阅[BYOC architecture on Azure](/langsmith/byoc-architecture-azure)。有关 AWS 指南，请参阅 [BYOC onboarding](/langsmith/byoc-onboarding-aws)。
 
 每个数据平面都在您的订阅中自己的资源组中运行。 Terraform 模块在其中创建资源组和 Key Vault，并仅授予该资源组上的 LangSmith BYOC 应用程序角色。然后LangChain创建并操作资源组中的数据面资源。
 
@@ -18,7 +18,7 @@
 
 您需要以下内容：* **Azure 上的 LangSmith 组织**：使用 Azure 上的 LangSmith 控制平面，位于 [azure.smith.langchain.com](https://azure.smith.langchain.com)。将您的组织 ID 发送给 LangChain 团队以启用 BYOC。
 * **Azure 订阅**：LangChain 建议专用于 LangSmith BYOC 的订阅，但这不是必需的。
-* **Azure 权限**：订阅上的 `Owner` 角色，因为 Terraform 模块创建自定义角色和角色分配并注册资源提供程序。您还需要一个 Microsoft Entra 角色，可以在租户中创建和更新多租户应用程序的服务主体，例如 `Cloud Application Administrator`。
+* **Azure 权限**：应用 Terraform 的人需要订阅上的 `Owner` 角色，因为 Terraform 模块创建自定义角色和角色分配并注册资源提供程序。您还需要一个 Microsoft Entra 角色，可以在租户中创建和更新多租户应用程序的服务主体，例如 `Cloud Application Administrator`。
 * **Terraform**：Terraform 1.11.0 或更高版本。
 * **LangSmith** 中的组织管理员：创建、更改和删除数据平面需要组织管理员角色。
 * **vCPU 配额**：AKS 系统节点池使用三个 `Standard_D2s_v6` VM。 LangSmith 在创建时检查该区域在**区域 vCPU 总数**配额和 Dsv6 VM 系列配额中至少有 6 个可用 vCPU。应用节点使用版本5及以上版本的D、E、F系列虚拟机，因此还要为这些系列规划配额。参见[Node pools](/langsmith/byoc-architecture-azure#compute)。* **区域**：Azure 上的 BYOC 可以在任何 Azure 区域中运行。如果您需要尚未启用的区域，请联系 LangChain 团队，他们可以添加它。
@@ -124,7 +124,7 @@ curl -X POST 'https://azure.api.smith.langchain.com/orgs/current/data-planes' \
   }'
 ```
 
-|领域|描述 |
+|领域 |描述 |
 | - | - |
 | `name` |最多 24 个小写字母、数字和连字符。以字母或数字开头和结尾，且不以 `internal` 开头。 |
 | `region` |数据平面的 Azure 区域，例如 `eastus`。使用资源组的区域。 |
@@ -166,7 +166,7 @@ LangChain 在您的资源组中配置数据平面资源。数据平面从`reques
 
 **7. （可选）迁移现有数据**
 
-如果您要从 LangSmith 云或 [self-hosted](/langsmith/self-hosted) 实例迁移，请联系 LangChain 团队安排迁移。仅 AWS 支持跟踪迁移。欲了解更多信息，请参阅[Migrate to BYOC](/langsmith/byoc-migration)。
+如果您要从 LangSmith 云或 [self-hosted](/langsmith/self-hosted) 实例迁移，请联系 LangChain 团队安排迁移。仅 AWS 支持跟踪迁移。有关更多信息，请参阅[Migrate to BYOC](/langsmith/byoc-migration)。
 
 要将跟踪和 API 请求发送到数据平面，请参阅[BYOC usage](/langsmith/byoc-usage)。
 
@@ -175,7 +175,7 @@ LangChain 在您的资源组中配置数据平面资源。数据平面从`reques
 |代码| HTTP 状态 |原因 |修复 |
 | - | - | - | - |
 | `azure_external_id_mismatch` | 403 | 403资源组上 LangSmith 服务主体的角色分配没有您组织的外部 ID 作为其描述。 |使用 **设置 > 数据平面** 中的外部 ID 应用 Terraform 模块，然后重试。 |
-| `azure_permissions` | 403 | 403 LangSmith 服务主体无法访问资源组，或缺少所需的权限。补救措施列出了缺少的操作。 |检查资源组是否存在以及您应用的 Terraform 模块是否没有 `reduced_access`，然后重试。 |
+| `azure_permissions` | 403 | 403 LangSmith 服务主体无法访问资源组，或缺少所需的权限。补救措施列出了缺失的操作。 |检查资源组是否存在以及您应用的 Terraform 模块是否没有 `reduced_access`，然后重试。 |
 | `azure_policy_denied` | 403 | 403订阅中的 Azure Policy 分配拒绝了请求。 |从策略中免除数据平面资源组，然后重试。 |
 | `azure_resource_group_invalid` | 400 |资源组不存在、不包含一个 Key Vault，或其保管库不使用 Azure RBAC。 |修复资源组，然后重试。 || `azure_region_unavailable` | 400 |您的订阅无法使用该区域，或者无法在其中创建 AKS 系统节点大小或 PostgreSQL 大小。 |选择其他区域，或请求 Azure 支持为您在该区域中的订阅启用 VM 大小或 PostgreSQL。 |
 | `insufficient_azure_quota` | 422 | 422该区域没有足够的可用 vCPU 配额用于 AKS 系统节点池。 |请求增加配额，或选择其他区域。 |
@@ -198,7 +198,7 @@ curl -X PATCH 'https://azure.api.smith.langchain.com/orgs/current/data-planes/<d
   -d '{"maintenance_window": "sun:07:00-sun:11:00"}'
 ```当 Azure 数据平面为 `provisioning` 或 `active` 时，您可以更改其以下设置：
 
-|设置|领域|天蓝色|
+|设置|领域 |天蓝色|
 | - | - | - |
 |维护窗口| `maintenance_window` |每周 UTC 窗口正好 4 小时，从整点开始，格式为 `ddd:HH:00-ddd:HH:00`。默认为`sun:07:00-sun:11:00`。 AKS 升级和 PostgreSQL 维护在此窗口中进行。 |
 |跟踪有效负载保留| `ttl` |支持。默认情况下，`short_days` 为 14，`long_days` 为 400。
@@ -216,34 +216,32 @@ data_planes = {
     reduced_access = true
   }
 }
-```
+```Terraform 更新适当的自定义角色操作并删除 `User Access Administrator` 分配。自定义角色分配保留，因此 LangSmith 保留访问权限。 Azure 在最多 5 分钟内应用更改。角色减少后，LangChain 仍然可以升级、扩展和修复数据平面，但无法删除数据平面、其数据库、存储帐户或网络，​​也无法创建角色分配。在添加角色分配的升级之前以及删除或重新创建数据平面之前，将 `reduced_access` 设置回 `false`。
 
-Terraform 更新了适当的自定义角色操作。角色分配保持不变，因此 LangSmith 保留访问权限。 Azure 在最多 5 分钟内应用更改。随着角色的减少，LangChain仍然可以升级、扩展和修复数据平面，但无法删除数据平面、其数据库、存储帐户或其网络，也无法写入 Key Vault 机密。在删除或重新创建数据平面之前，将 `reduced_access` 设置回 `false`。
+## 删除数据平面
 
-## 删除数据平面> [!警告]
+> [!警告]
 >
 > 在 LangSmith 中删除数据平面之前，请勿从 Terraform 模块中删除数据平面。 LangSmith 需要其角色分配来删除数据平面资源。
 
 1. 如果数据平面有`reduced_access = true`，请将其设置为`false`，运行`terraform apply`，并等待 5 分钟让 Azure 应用角色更改。
 2. 在 **设置 > 数据平面** 中删除数据平面，或使用 `DELETE /orgs/current/data-planes/<data-plane-id>` API。您可以删除处于 `provisioning`、`active` 或 `provisioning_failed` 状态的 Azure 数据平面。 LangSmith 首先检查它是否仍然可以访问您的资源组。
-3. 等待数据平面从 **设置 > 数据平面** 消失。
-
-LangSmith 删除 AKS 群集、PostgreSQL、Redis、网络和私有 DNS 区域。它将以下内容保留在您的资源组中：
+3. 等待数据平面从 **设置 > 数据平面** 消失。LangSmith 删除 AKS 群集、PostgreSQL、Redis、网络和私有 DNS 区域。它将以下内容保留在您的资源组中：
 
 * 资源组和 Key Vault。
 * 保存跟踪数据和 SmithDB 数据的 Blob 存储帐户。
 
 Azure 会将已删除的 PostgreSQL 服务器的备份保留一段有限的时间，在此期间您可以将其恢复。参见[Restore a dropped Azure Database for PostgreSQL flexible server](https://learn.microsoft.com/azure/postgresql/flexible-server/how-to-restore-dropped-server)。
 
-如果在同一资源组中创建具有相同名称的新数据平面，它将重用 Key Vault 和保留的 Blob 存储帐户。当不再需要保留的数据时，删除资源组中的 Blob 存储帐户，然后从 `data_planes` 中删除数据平面的密钥并运行 `terraform apply`。然后，Terraform 删除资源组、Key Vault 和角色分配。使用默认的 `features {}` 块，AzureRM 提供程序拒绝删除仍包含 Terraform 不管理的资源的资源组，例如保留的存储帐户。
+如果在同一资源组中创建具有相同名称的新数据平面，它将重用 Key Vault 和保留的 Blob 存储帐户。
 
-## 删除 LangSmith 访问权限
+当不再需要保留的数据时，删除资源组中的 Blob 存储帐户，然后从 `data_planes` 中删除数据平面的密钥并运行 `terraform apply`。然后，Terraform 删除资源组、Key Vault 和角色分配。使用默认的 `features {}` 块，AzureRM 提供程序拒绝删除仍包含 Terraform 不管理的资源的资源组，例如保留的存储帐户。
 
-要阻止 LangSmith 更改或删除数据平面，请删除 LangSmith 服务主体在其资源组上的两个角色分配。删除 Terraform 模块会删除服务主体和所有角色分配，因此 LangSmith 会失去对租户中每个数据平面的访问权限。数据平面资源保留在您的订阅中，LangChain 无法再升级或修复它们。如果您希望LangSmith清理其资源，请先删除数据平面。
+## 删除 LangSmith 访问权限要阻止 LangSmith 更改或删除数据平面，请删除 LangSmith 服务主体在其资源组及其 AKS 群集上的角色分配。删除 Terraform 模块会删除服务主体和所有角色分配，因此 LangSmith 会失去对租户中每个数据平面的访问权限。数据平面资源保留在您的订阅中，LangChain 无法再升级或修复它们。如果您希望LangSmith清理其资源，请先删除数据平面。
 
 ## 后续步骤
 
-* [BYOC architecture on Azure](/langsmith/byoc-architecture-azure) 涵盖您订阅中的资源、网络路径以及 LangSmith 如何访问它们。
+* [BYOC architecture on Azure](/langsmith/byoc-architecture-azure) 涵盖您订阅中的资源、网络路径以及 LangSmith 访问它们的方式。
 * [BYOC usage](/langsmith/byoc-usage) 涵盖如何将应用程序和 API 客户端指向数据平面。
 
 ***

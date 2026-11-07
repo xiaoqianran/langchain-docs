@@ -8,7 +8,7 @@
 
 本教程从[quickstart](/langsmith/python/managed-deep-agents-quickstart)继续。使用您在此处创建的 `research-assistant` 项目，以及您的模型、说明和工作 `mda dev` 设置。
 
-`mda init` 还可以构建`identity` 和 `sandbox/` 等文件。保持原样；本教程不会改变它们。
+`mda init` 还可以搭建`identity` 和 `sandbox/` 等文件。保持原样；本教程不会改变它们。
 
 本指南用编写的 [Tavily](https://tavily.com) 搜索工具替换了快速入门的内置提供商搜索，启用持久内存，添加每日计划，然后进行部署。
 
@@ -24,12 +24,10 @@
 
 > [!注意]
 >
-> 如果您按照[Quickstart](/langsmith/python/managed-deep-agents-quickstart)中的步骤使用Tavily，请跳至下一步。
-
-将 [Tavily API key](https://app.tavily.com) 添加到 `.env`：
+> 如果您已在 [quickstart](/langsmith/python/managed-deep-agents-quickstart) 中添加了带有 [connection](/langsmith/python/managed-deep-agents-connections) 的 Tavily 工具，请跳至下一步。本教程使用连接头 `research-tavily`。对于 `mda dev`，代理拥有的连接从 `MDA_DEV_<SLUG>` 读取其值。将 [Tavily API key](https://app.tavily.com) 添加到 `.env` 作为 `MDA_DEV_RESEARCH_TAVILY`：
 
 ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-TAVILY_API_KEY=<TAVILY_API_KEY>
+MDA_DEV_RESEARCH_TAVILY=<TAVILY_API_KEY>
 ```
 
 安装Tavilly客户端：
@@ -38,32 +36,33 @@ TAVILY_API_KEY=<TAVILY_API_KEY>
 uv add tavily-python
 ```
 
-创建自定义 `internet_search` 工具：
+创建自定义 `internet_search` 工具。 `connections.get(...)` 在运行时解析密钥，因此本地和部署上的工具代码是相同的：
 
 ```python tools/search.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
 from typing import Literal
 
 from langchain.tools import tool
-from tavily import TavilyClient
-
-
-tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+from managed_deepagents import connections
+from tavily import AsyncTavilyClient
 
 
 @tool
-def internet_search(
+async def internet_search(
     query: str,
     max_results: int = 5,
     topic: Literal["general", "news", "finance"] = "general",
 ) -> dict:
     """Search the internet for relevant sources."""
-    return tavily_client.search(
+    api_key = await connections.get("research-tavily", {"type": "agent"})
+    tavily_client = AsyncTavilyClient(api_key=api_key)
+    return await tavily_client.search(
         query,
         max_results=max_results,
         topic=topic,
     )
-```将提供商搜索工具字典替换为您编写的工具。保留快速入门中的 `model` 值：
+```
+
+将提供商搜索工具字典替换为您编写的工具。保留快速入门中的 `model` 值：
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_deep_agent
@@ -112,13 +111,13 @@ from managed_deepagents import MemoryLayer, define_memory
 memory = define_memory(agent=MemoryLayer())
 ```
 
-内存在整个部署中共享，并且对所有调用者可见，因此不要存储个人数据或机密。
-
-重新启动`mda dev`，以便它发现新文件。在一个线程中，要求代理研究版本并记录可重用的项目规则，例如“对于版本研究，请在二手源之前检查官方变更日志”。然后在 Studio 中创建一个 **新线程** 并询问它将如何研究下一个版本。即使新线程没有对话历史记录，也请确认它应用了共享规则。
+内存在整个部署中共享，并且对所有调用者可见，因此不要存储个人数据或机密。重新启动`mda dev`，以便它发现新文件。在一个线程中，要求代理研究版本并记录可重用的项目规则，例如“对于版本研究，请在二手源之前检查官方变更日志”。然后在 Studio 中创建一个 **新线程** 并询问它将如何研究下一个版本。即使新线程没有对话历史记录，也请确认它应用了共享规则。
 
 详情请参阅[Memory](/langsmith/python/managed-deep-agents-memory)。
 
-**4.安排每日摘要**添加 `schedules/` 模块，以便代理按 cron 节奏运行，无需用户消息。该时间表在太平洋时间每个工作日上午 8 点运行：
+**4.安排每日摘要**
+
+添加 `schedules/` 模块，以便代理按 cron 节奏运行，无需用户消息。该时间表在太平洋时间每个工作日上午 8 点运行：
 
 ```python schedules/daily_digest.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_schedule
@@ -137,13 +136,11 @@ schedule = define_schedule(
 
 部署上线后，`mda deploy` 将此计划协调为 LangSmith cron 作业。在下一步中部署后，您应该会看到：
 
-* `mda deploy` 无进度错误地完成（不要通过`--no-wait`，否则进度不协调）。
+* `mda deploy` 在没有进度错误的情况下完成（不要通过`--no-wait`，否则进度不协调）。
 * 部署中此文件的托管 cron。计划名称与模块主干匹配：`daily_digest` (Python) 或 `daily-digest` (TypeScript)。
 * 此 cron 没有立即运行摘要。第一场火灾要等到工作日美国/洛杉矶 8:00 才会发生。
 
-有关线程行为和约束，请参阅[Schedules](/langsmith/python/managed-deep-agents-schedules)。
-
-**5.部署和检查**
+有关线程行为和约束，请参阅[Schedules](/langsmith/python/managed-deep-agents-schedules)。**5.部署和检查**
 
 将项目部署到LangSmith：
 
@@ -153,11 +150,21 @@ uv run mda deploy
 
 成功后，CLI 将打印部署仪表板 URL。部署将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
 
+为此部署创建 Tavilly 连接。代理拥有的凭据属于部署。第一次成功部署后运行此命令：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv run mda connections create research-tavily --secret-from-env MDA_DEV_RESEARCH_TAVILY
+```
+
+稍后轮换该值会在下次运行时生效，无需重新部署。有关其他创建模式和每个调用者凭据，请参阅[Manage connections](/langsmith/python/managed-deep-agents-connections)。
+
 打开该 URL 并确认：
 
 * 部署已准备就绪。
 * `daily_digest` 或 `daily-digest` cron 存在。
-* 测试聊天运行显示模型调用、`internet_search` 工具调用以及跟踪中的内存读取或写入。有关部署标志和故障排除，请参阅 [Deploy an agent](/langsmith/python/managed-deep-agents-deploy) 和 [CLI reference](/langsmith/python/managed-deep-agents-cli#deploy-projects)。
+* 测试聊天运行显示模型调用、`internet_search` 工具调用以及跟踪中的内存读取或写入。
+
+有关部署标志和故障排除，请参阅 [Deploy an agent](/langsmith/python/managed-deep-agents-deploy) 和 [CLI reference](/langsmith/python/managed-deep-agents-cli#deploy-projects)。
 
 ## 后续步骤
 

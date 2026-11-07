@@ -2,7 +2,7 @@
 
 # Build
 
-Build agents with Managed Deep Agents, Deep Agents, LangChain, LangGraph, and Fleet.
+Build agents with Managed Deep Agents, Deep Agents, LangChain, LangGraph, and Studio.
 
 # Build
 
@@ -10,7 +10,7 @@ The LangChain open source stack provides the building blocks you need to design,
 
 ## Choose your starting point
 
-Managed Deep Agents, Deep Agents, LangChain, and LangGraph share the same open source stack, so choose based on how much control you need. For managed hosting or no-code, start with Managed Deep Agents or Fleet:
+Managed Deep Agents, Deep Agents, LangChain, and LangGraph share the same open source stack, so choose based on how much control you need. For managed hosting or no-code, start with Managed Deep Agents or Studio:
 
 > [tab] Python
 >
@@ -32,9 +32,9 @@ Managed Deep Agents, Deep Agents, LangChain, and LangGraph share the same open s
 > >
 > > Low-level orchestration for stateful, long-running agents: durable execution, streaming, memory, and human-in-the-loop.
 >
-> > [card] [Prefer no-code?](/langsmith/fleet)
+> > [card] [Prefer no-code?](/langsmith/build-an-agent)
 > >
-> > Build and run agents without writing code using LangSmith Fleet.
+> > Build and run agents without writing code using LangSmith Studio.
 
 > [tab] TypeScript
 >
@@ -56,9 +56,9 @@ Managed Deep Agents, Deep Agents, LangChain, and LangGraph share the same open s
 > >
 > > Low-level orchestration for stateful, long-running agents: durable execution, streaming, memory, and human-in-the-loop.
 >
-> > [card] [Prefer no-code?](/langsmith/fleet)
+> > [card] [Prefer no-code?](/langsmith/build-an-agent)
 > >
-> > Build and run agents without writing code using LangSmith Fleet.
+> > Build and run agents without writing code using LangSmith Studio.
 
 ## Use a ready-made agent
 

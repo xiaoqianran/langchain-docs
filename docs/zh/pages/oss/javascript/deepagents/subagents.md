@@ -34,7 +34,7 @@ graph TB
 * ✅ 多步骤任务会扰乱主要代理的上下文
 * ✅ 需要自定义说明或工具的专业领域
 * ✅ 需要不同模型能力的任务
-* ✅ 当你想让主要代理专注于高层协调时**何时不使用子代理：**
+* ✅ 当你想让主要代理人专注于高层协调时**何时不使用子代理：**
 
 * ❌ 简单的单步任务
 * ❌当你需要维护中间上下文时
@@ -75,7 +75,7 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已经提�
 
 ### 子代理（基于字典）
 
-将子代理定义为与 [⟦T108⟧](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) 规范匹配的字典，其中包含以下字段：|领域|类型 |描述 |
+将子代理定义为与 [⟦T108⟧](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) 规范匹配的字典，其中包含以下字段：|领域 |类型 |描述 |
 | - | - | - |
 | `name` | `string` |必需的。子代理的唯一标识符。主代理在调用`task()`工具时使用此名称。子代理名称成为 `AIMessage` 和流媒体的元数据，这有助于区分代理。 |
 | `description` | `string` |必需的。描述该子代理的作用。具体并以行动为导向。主代理使用它来决定何时进行委托。 |
@@ -91,12 +91,12 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已经提�
 
 对于复杂的工作流程，请使用预构建的 LangGraph 图作为 [⟦T150⟧](https://reference.langchain.com/javascript/deepagents/middleware/CompiledSubAgent)：
 
-|领域|类型 |描述 |
+|领域 |类型 |描述 |
 | - | - | - |
 | `name` | `str` |必需的。子代理的唯一标识符。子代理名称成为 `AIMessage` 和流媒体的元数据，这有助于区分代理。 |
 | `description` | `str` |必需的。该子代理的作用。 |
 | `runnable` | `Runnable` |必需的。已编译的LangGraph图（必须首先调用`.compile()`）。 |
-| `mode` | `"isolated"` \| `"fork"` |选修的。默认为`"isolated"`。设置为 `"fork"` 以继承父级的消息历史记录。无论哪种方式，编译后的图表都会保持其自己的系统提示。参见[Forked subagents](#forked-subagents)。 |
+| `mode` | `"isolated"` \| `"fork"` |选修的。默认为`"isolated"`。设置为 `"fork"` 以继承父级的消息历史记录。无论哪种方式，编译的图形都会保持其自己的系统提示。参见[Forked subagents](#forked-subagents)。 |
 
 ## 使用子代理
 
@@ -495,7 +495,7 @@ const agent = createDeepAgent({
 ## 使用 CompiledSubAgent对于更复杂的用例，您可以为自定义子代理提供[⟦T164⟧](https://reference.langchain.com/javascript/deepagents/middleware/CompiledSubAgent)。
 您可以使用 LangChain 的 [⟦T165⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 创建自定义子代理，或者使用 [graph API](/oss/javascript/langgraph/graph-api) 创建自定义 LangGraph 图表。
 
-如果您要创建自定义 LangGraph 图表，请确保该图表具有 [state key called ⟦T166⟧](/oss/javascript/langgraph/quickstart#3-define-state)：
+如果您要创建自定义 LangGraph 图表，请确保该图表具有 [state key called ⟦T166⟧](/oss/javascript/langgraph/quickstart#2-define-state)：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { CompiledSubAgent, createDeepAgent } from "deepagents";
@@ -520,7 +520,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent
@@ -563,7 +563,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent
@@ -606,7 +606,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent
@@ -649,7 +649,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent
@@ -692,7 +692,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent
@@ -735,7 +735,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent
@@ -778,7 +778,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent
@@ -1570,7 +1570,7 @@ for run in runs:
     print(run.name, run.start_time, run.status)
 ```
 
-要从*任何*命名的子代理（不包括主代理）获取运行，请过滤根本具有 `lc_agent_name` 键的运行：
+要从 *任何* 命名的子代理（不包括主代理）获取运行，请过滤根本具有 `lc_agent_name` 键的运行：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 runs = client.list_runs(
@@ -1896,7 +1896,7 @@ const result = await agent.invoke({
 >
 > 为此示例打开公共 LangSmith 运行。如果没有`response_format`，父代理将按原样接收子代理的最后一条消息文本。有了它，父级始终会获得与架构匹配的有效 JSON，这在父级需要以编程方式处理结果或将其传递给下游工具时非常有用。
 
-有关模式类型和策略（工具调用与原生提供者）的完整详细信息，请参阅[Structured output](/oss/javascript/langchain/structured-output)。
+有关架构类型和策略（工具调用与原生提供者）的完整详细信息，请参阅[Structured output](/oss/javascript/langchain/structured-output)。
 
 ## 通用子代理
 

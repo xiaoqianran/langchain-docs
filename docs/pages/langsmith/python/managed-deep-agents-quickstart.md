@@ -186,11 +186,12 @@ The agent name is also the default deployment name. For model concepts and provi
 
 > [accordion] Using another provider?
 >
-> You can use a Tavily search tool instead.
-> Add a [Tavily API key](https://app.tavily.com) to `.env`:
+> You can use a Tavily search tool instead. Store the key in a [connection](/langsmith/python/managed-deep-agents-connections) so it lives in your LangSmith workspace rather than the project.
+>
+> This accordion uses the connection slug `research-tavily`. For `mda dev`, an agent-owned connection reads its value from `MDA_DEV_<SLUG>`. Add a [Tavily API key](https://app.tavily.com) to `.env` as `MDA_DEV_RESEARCH_TAVILY`:
 >
 > ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> TAVILY_API_KEY=<TAVILY_API_KEY>
+> MDA_DEV_RESEARCH_TAVILY=<TAVILY_API_KEY>
 > ```
 >
 > Install the Tavily client:
@@ -199,27 +200,26 @@ The agent name is also the default deployment name. For model concepts and provi
 > uv add tavily-python
 > ```
 >
-> Create a custom `internet_search` tool:
+> Create a custom `internet_search` tool. `connections.get(...)` resolves the key at runtime, so the tool code is the same locally and on the deployment:
 >
 > ```python tools/search.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> import os
 > from typing import Literal
 >
 > from langchain.tools import tool
-> from tavily import TavilyClient
->
->
-> tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+> from managed_deepagents import connections
+> from tavily import AsyncTavilyClient
 >
 >
 > @tool
-> def internet_search(
+> async def internet_search(
 >     query: str,
 >     max_results: int = 5,
 >     topic: Literal["general", "news", "finance"] = "general",
 > ) -> dict:
 >     """Search the internet for relevant sources."""
->     return tavily_client.search(
+>     api_key = await connections.get("research-tavily", {"type": "agent"})
+>     tavily_client = AsyncTavilyClient(api_key=api_key)
+>     return await tavily_client.search(
 >         query,
 >         max_results=max_results,
 >         topic=topic,
@@ -240,7 +240,13 @@ The agent name is also the default deployment name. For model concepts and provi
 > )
 > ```
 >
-> For more authored tools, see [Custom tools](/langsmith/python/managed-deep-agents-tools).
+> After you deploy in the agent in the next step, create the agent-owned connection. Agent-owned credentials belong to the deployment, so this command comes after the first successful deploy:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv run mda connections create research-tavily --secret-from-env MDA_DEV_RESEARCH_TAVILY
+> ```
+>
+> Rotating this value later takes effect on the next run, with no redeploy. For more authored tools, see [Custom tools](/langsmith/python/managed-deep-agents-tools). For other create modes and per-caller credentials, see [Manage connections](/langsmith/python/managed-deep-agents-connections).
 
 **6. Run locally**
 
@@ -282,6 +288,14 @@ Open that URL. You should see the deployment in a ready state. Send the same res
 > [card] [Tutorial](/langsmith/python/managed-deep-agents-tutorial)
 >
 > Add a custom Tavily search tool, durable memory, and a daily schedule.
+
+> [card] [Design agent template](/langsmith/python/managed-deep-agents-design-agent)
+>
+> Deploy LangChain's open-source design agent instead of scaffolding from scratch.
+
+> [card] [Paid media agent template](/langsmith/python/managed-deep-agents-paid-media-agent)
+>
+> Deploy LangChain's open-source paid media agent for Slack campaign analysis.
 
 > [card] [Custom tools](/langsmith/python/managed-deep-agents-tools)
 >

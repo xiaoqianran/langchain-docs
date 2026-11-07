@@ -93,8 +93,8 @@ LangGraph 可以独立工作。但是，您也可以将其与其他 LangCHain �
 
 * [LangGraph quickstart](/oss/javascript/langgraph/quickstart)
 * [Graph API overview](/oss/javascript/langgraph/graph-api)
-* [Choosing between Graph and Functional APIs](/oss/javascript/langgraph/choosing-apis)
 * [Frameworks, runtimes, and harnesses](/oss/javascript/concepts/products)
+* [Incorporate existing code and other frameworks](/langsmith/deploy-other-frameworks)（包装非LangGraph代理用于LangSmith部署）
 
 ***
 

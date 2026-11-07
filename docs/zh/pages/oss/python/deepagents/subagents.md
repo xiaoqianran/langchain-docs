@@ -4,11 +4,11 @@
 
 # 子代理
 
-Learn how to use subagents to delegate work and keep context clean
+了解如何使用子代理来委派工作并保持上下文干净
 
-A deep agent can create subagents to delegate work. You can specify custom subagents in the `subagents` parameter.子代理对于[context quarantine](https://www.dbreunig.com/2025/06/26/how-to-fix-your-context.html#context-quarantine)（保持主代理的上下文干净）和提供专门的指令很有用。
+深度代理可以创建子代理来委派工作。您可以在 `subagents` 参数中指定自定义子代理。子代理对于[context quarantine](https://www.dbreunig.com/2025/06/26/how-to-fix-your-context.html#context-quarantine)（保持主代理的上下文干净）和提供专门的指令很有用。
 
-This page covers **synchronous** subagents, where the supervisor blocks until the subagent finishes. For long-running tasks, parallel workstreams, or cases where you need mid-flight steering and cancellation, see [Async subagents](/oss/python/deepagents/async-subagents).
+本页涵盖**同步**子代理，其中主管程序会阻塞，直到子代理完成。对于长时间运行的任务、并行工作流或需要中途转向和取消的情况，请参阅[Async subagents](/oss/python/deepagents/async-subagents)。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TB
@@ -27,14 +27,14 @@ graph TB
 
 ## 为什么要使用子代理？
 
-子代理解决了**上下文膨胀问题**。当代理使用具有大量输出的工具（网络搜索、文件读取、数据库查询）时，上下文窗口很快就会被中间结果填满。 Subagents isolate this detailed work—the main agent receives only the final result, not the dozens of tool calls that produced it.
+子代理解决了**上下文膨胀问题**。当代理使用具有大量输出的工具（网络搜索、文件读取、数据库查询）时，上下文窗口很快就会被中间结果填满。子代理隔离了这些详细的工作——主代理仅接收最终结果，而不是产生该结果的数十个工具调用。
 
 **何时使用子代理：**
 
-* ✅ Multi-step tasks that would clutter the main agent's context
-* ✅ Specialized domains that need custom instructions or tools
-* ✅ Tasks requiring different model capabilities
-* ✅ When you want to keep the main agent focused on high-level coordination**何时不使用子代理：**
+* ✅ 多步骤任务会扰乱主要代理的上下文
+* ✅ 需要自定义说明或工具的专业领域
+* ✅ 需要不同模型能力的任务
+* ✅ 当你想让主要代理人专注于高层协调时**何时不使用子代理：**
 
 * ❌ 简单的单步任务
 * ❌当你需要维护中间上下文时
@@ -42,7 +42,7 @@ graph TB
 
 ## 配置
 
-`subagents` 应该是字典或 [⟦T91⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent) 对象的列表。有两种类型：
+`subagents` 应该是字典或 [⟦T92⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent) 对象的列表。有两种类型：
 
 ### 默认子代理
 
@@ -61,7 +61,7 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已经提�
 1. 在活动的[harness profile](/oss/python/deepagents/profiles#harness-profiles)上设置`general_purpose_subagent=GeneralPurposeSubagentProfile(enabled=False)`。
 2. 在 `create_deep_agent` 上不通过 `subagents=` 传递同步子代理。
 
-当至少存在一个同步子代理时，Deep Agents 仅附加 [⟦T100⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware)（和 `task` 工具）。无论是默认代理还是调用者提供的代理，代理都可以在没有委派的情况下运行。
+当至少存在一个同步子代理时，Deep Agents 仅附加 [⟦T101⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware)（和 `task` 工具）。无论是默认代理还是调用者提供的代理，代理都可以在没有委派的情况下运行。
 
 异步子代理不受影响——它们通过自己的中间件和工具流动，如[Async subagents](/oss/python/deepagents/async-subagents)中所述。> [!提示]
 >
@@ -71,30 +71,30 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已经提�
 
 您可以使用`subagents`参数使用特定工具定义专门的子代理。例如，担任代码审查员、网络研究员或测试运行员。
 
-对于大多数用例，将子代理定义为带有 [SubAgent dictionaries](#subagent-dictionary-based) 的字典。对于复杂的工作流程，请使用 [⟦T107⟧](#compiledsubagent)：
+对于大多数用例，将子代理定义为带有 [SubAgent dictionaries](#subagent-dictionary-based) 的字典。对于复杂的工作流程，请使用 [⟦T108⟧](#compiledsubagent)：
 
 ### 子代理（基于字典）
 
-将子代理定义为与 [⟦T108⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgent) 规范匹配的字典，其中包含以下字段：|领域 |类型 |描述 |
+将子代理定义为与 [⟦T109⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgent) 规范匹配的字典，其中包含以下字段：|领域 |类型 |描述 |
 | - | - | - |
 | `name` | `str` |必需的。子代理的唯一标识符。主代理在调用`task()`工具时使用此名称。子代理名称成为 `AIMessage` 和流媒体的元数据，这有助于区分代理。 |
 | `description` | `str` |必需的。描述该子代理的作用。具体并以行动为导向。主代理使用它来决定何时进行委托。 |
 | `system_prompt` | `str` | `mode: "isolated"` 必需（默认）。子代理的说明。自定义隔离子代理必须定义自己的。包括工具使用指南和输出格式要求。不从主代理继承。对于 `mode: "fork"`，请忽略此字段，除非您需要仅分叉附录。参见[Forked subagents](#forked-subagents)。 |
 | `mode` | `"isolated"` \| `"fork"` |选修的。上下文模式。默认为`"isolated"`，子代理只能看到委派的任务。设置为 `"fork"` 来继承父级的对话和系统提示。参见[Forked subagents](#forked-subagents)。 |
 | `tools` | `list[Callable]` |选修的。子代理可以使用的工具。保持最少并且只包含需要的内容。默认继承自主代理。指定后，将完全覆盖继承的工具。 || `model` | `str` \| `BaseChatModel` |选修的。覆盖主要代理的模型。省略使用主代理的模型。默认继承自主代理。您可以传递模型标识符字符串，如 `'openai:gpt-5.5'`（使用 `'provider:model'` 格式）或 LangChain 聊天模型对象（`init_chat_model("gpt-5.5")` 或 `ChatOpenAI(model="gpt-5.5")`）。 |
-| `middleware` | `list[Middleware]` |选修的。用于自定义行为、日志记录或速率限制的附加中间件。隔离的子代理不会继承主代理的自定义中间件。对于fork模式下的继承和覆盖，请参见[Configure a forked subagent](#configure-a-forked-subagent)。合并到 [synchronous subagent stack](/oss/python/deepagents/customization#synchronous-subagent-stack)：`.name` 与默认值匹配的实例将其替换到位，其他任何内容都会在最后一个核心中间件条目之后、配置文件、提示缓存和内存之前落地。参见[Override a default middleware instance](/oss/python/deepagents/customization#override-a-default-middleware-instance)。例如，在此处包含带有 `tools` 白名单的 [⟦T136⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 实例，以独立于主代理限制子代理的文件系统工具。有关更多信息，请参阅[Virtual filesystem access](/oss/python/deepagents/overview#virtual-filesystem-access)下的“限制文件系统工具”部分。 |
-| `interrupt_on` | `dict[str, bool \| InterruptOnConfig]` |选修的。为特定工具配置[human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。选项：`True`、`False` 或 `InterruptOnConfig` 与 `allowed_decisions`。需要检查点。默认继承自主代理。子代理值覆盖默认值。 || `skills` | `list[str]` |选修的。 [Skills](/oss/python/deepagents/skills) 源路径。指定后，子代理会从这些目录加载技能（例如，`["/skills/researcher/"]`，其子目录是技能的容器）。这使得子代理可以拥有与主代理不同的技能。不从主代理继承。只有通用子代理才能继承主代理的技能。当子代理拥有技能时，它会运行自己独立的[⟦T147⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware)实例。技能状态是完全隔离的 - 子代理加载的技能对父代理不可见，反之亦然。 |
+| `middleware` | `list[Middleware]` |选修的。用于自定义行为、日志记录或速率限制的附加中间件。隔离的子代理不会继承主代理的自定义中间件。对于fork模式下的继承和覆盖，请参见[Configure a forked subagent](#configure-a-forked-subagent)。合并到 [synchronous subagent stack](/oss/python/deepagents/customization#synchronous-subagent-stack)：`.name` 与默认值匹配的实例将其替换到位，其他任何内容都会在最后一个核心中间件条目之后、配置文件、提示缓存和内存之前落地。参见[Override a default middleware instance](/oss/python/deepagents/customization#override-a-default-middleware-instance)。例如，在此处包含带有 `tools` 白名单的 [⟦T137⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 实例，以独立于主代理限制子代理的文件系统工具。有关更多信息，请参阅[Virtual filesystem access](/oss/python/deepagents/overview#virtual-filesystem-access)下的“限制文件系统工具”部分。 |
+| `interrupt_on` | `dict[str, bool \| InterruptOnConfig]` |选修的。为特定工具配置[human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。选项：`True`、`False` 或 `InterruptOnConfig` 与 `allowed_decisions`。需要检查点。默认继承自主代理。子代理值覆盖默认值。 || `skills` | `list[str]` |选修的。 [Skills](/oss/python/deepagents/skills) 源路径。指定后，子代理会从这些目录加载技能（例如，`["/skills/researcher/"]`，其子目录是技能的容器）。这使得子代理可以拥有与主代理不同的技能。不从主代理继承。只有通用子代理才能继承主代理的技能。当子代理拥有技能时，它会运行自己独立的[⟦T148⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware)实例。技能状态是完全隔离的 - 子代理加载的技能对父代理不可见，反之亦然。 |
 | `response_format` | `ResponseFormat` |选修的。 [Structured output](/oss/python/langchain/structured-output) 子代理的架构。设置后，父代理会收到 JSON 格式的子代理结果，而不是自由格式文本。接受 Pydantic 模型、`ToolStrategy(...)`、`ProviderStrategy(...)` 或原始模式类型。参见[Structured output](#structured-output)。 |
 | `permissions` | `list[FilesystemPermission]` |选修的。 [Filesystem permission rules](/oss/python/deepagents/permissions) 为子代理。设置后，**完全替换**父代理的权限。默认继承自主代理。 |
 
 ### 编译子代理
 
-对于复杂的工作流程，请使用预构建的 LangGraph 图作为 [⟦T154⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent)：|领域 |类型 |描述 |
+对于复杂的工作流程，请使用预构建的 LangGraph 图作为 [⟦T155⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent)：|领域 |类型 |描述 |
 | - | - | - |
 | `name` | `str` |必需的。子代理的唯一标识符。子代理名称成为 `AIMessage` 和流媒体的元数据，这有助于区分代理。 |
 | `description` | `str` |必需的。该子代理的作用。 |
 | `runnable` | `Runnable` |必需的。已编译的LangGraph图（必须首先调用`.compile()`）。 |
-| `mode` | `"isolated"` \| `"fork"` |选修的。默认为`"isolated"`。设置为 `"fork"` 以继承父级的消息历史记录。无论哪种方式，编译后的图表都会保持其自己的系统提示。参见[Forked subagents](#forked-subagents)。 |
+| `mode` | `"isolated"` \| `"fork"` |选修的。默认为`"isolated"`。设置为 `"fork"` 继承父级的消息历史记录。无论哪种方式，编译的图形都会保持其自己的系统提示。参见[Forked subagents](#forked-subagents)。 |
 
 ## 使用子代理
 
@@ -140,10 +140,10 @@ agent = create_deep_agent(
 
 ## 使用 CompiledSubAgent
 
-对于更复杂的用例，您可以为自定义子代理提供[⟦T168⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent)。
-您可以使用 LangChain 的 [⟦T169⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 创建自定义子代理，或者使用 [graph API](/oss/python/langgraph/graph-api) 创建自定义 LangGraph 图表。
+对于更复杂的用例，您可以为自定义子代理提供[⟦T169⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent)。
+您可以使用 LangChain 的 [⟦T170⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 创建自定义子代理，或者使用 [graph API](/oss/python/langgraph/graph-api) 创建自定义 LangGraph 图表。
 
-如果您要创建自定义 LangGraph 图，请确保该图具有 [state key called ⟦T170⟧](/oss/python/langgraph/quickstart#2-define-state)：
+如果您要创建自定义 LangGraph 图表，请确保该图表具有 [state key called ⟦T171⟧](/oss/python/langgraph/quickstart#2-define-state)：
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent, create_deep_agent
@@ -446,7 +446,7 @@ graph TD
 
 ### 配置分叉子代理
 
-在 [⟦T175⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgent) 上设置 `mode: "fork"`（默认为 `mode: "isolated"`）。您可以配置这些 [⟦T177⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgent) 字段：
+在 [⟦T176⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgent) 上设置 `mode: "fork"`（默认为 `mode: "isolated"`）。您可以配置这些 [⟦T178⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgent) 字段：
 `name`、`description`、`tools`、`model`、`middleware`、`interrupt_on`、`permissions`和`response_format`。
 
 分叉继承传递给父级的 `create_deep_agent` 的自定义中间件。子代理的 `middleware` 列表中的中间件用相同的 `.name` 替换继承的实例。其他实例将添加到子代理的默认中间件堆栈中。
@@ -503,7 +503,7 @@ result = agent.invoke(
 )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/6824e214-8e46-4cc4-8332-884c37bae27a/r)**
+> [卡][View example trace](https://smith.langchain.com/public/6f525bfa-3370-499c-8572-311b32bfbb09/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -535,7 +535,7 @@ result = agent.invoke(
 
 分叉可以重用父级的提示缓存来匹配其请求的前缀。更改系统提示、工具或早期消息会缩短提供商之间的共享前缀。保持分叉的配置不变以最大限度地重用，但不能保证缓存命中。
 
-[⟦T196⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent)也支持`mode: "fork"`，尽管它保留自己的系统提示，因为图形已经构建。
+[⟦T197⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent) 也支持 `mode: "fork"`，尽管它保留自己的系统提示，因为图形已经构建。
 
 ### 何时使用分叉
 
@@ -548,7 +548,7 @@ result = agent.invoke(
 
 ## 动态子代理
 
-默认情况下，主代理通过`task`工具调用委托给子代理（它可以一次性发出多个子代理以并行运行它们）。连接了[interpreter](/oss/python/deepagents/interpreters)后，代理可以从代码**分派子代理——使用循环、分支和并行批处理来跨多个项目展开计算并以编程方式合成结果。这称为[dynamic subagents](/oss/python/deepagents/dynamic-subagents)。当工作跨越多个独立单元（查看目录中的每个文件、对一批工单进行分类）、需要多个视角或从递归分析中受益时，可以使用动态子代理。
+默认情况下，主代理通过`task`工具调用委托给子代理（它可以一次发出多个子代理以并行运行它们）。附加了[interpreter](/oss/python/deepagents/interpreters)后，代理可以从代码**分派子代理——使用循环、分支和并行批处理来跨多个项目展开计算并以编程方式合成结果。这就是所谓的[dynamic subagents](/oss/python/deepagents/dynamic-subagents)。当工作跨越多个独立单元（查看目录中的每个文件、对一批工单进行分类）、需要多个视角或从递归分析中受益时，可以使用动态子代理。
 
 > [!警告]
 >
@@ -717,7 +717,7 @@ dcode
 
 Deep Agents 支持来自协调器和每个委托子代理的流式更新。
 
-使用 [⟦T212⟧](/oss/python/deepagents/event-streaming) 获取类型化投影（子代理、消息、工具调用和值的单独迭代器），以便您可以独立使用每一个。
+使用 [⟦T213⟧](/oss/python/deepagents/event-streaming) 获取类型化投影（子代理、消息、工具调用和值的单独迭代器），以便您可以独立使用每一个。
 
 ### 流式传输子代理进度
 
@@ -1108,7 +1108,7 @@ if __name__ == "__main__":
             print(f"[{item.name}] status: {item.status}")
 ```
 
-> **[View example trace](https://smith.langchain.com/public/f25e02c6-7a78-4d2c-b2d7-3d33c3599818/r)**
+> [卡][View example trace](https://smith.langchain.com/public/33842f72-587c-4b08-a227-91c37fc18d5c/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -1118,7 +1118,7 @@ if __name__ == "__main__":
 
 > [!提示]
 >
-> 在 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-subagents) 中打开运行，将协调器跟踪与每个子代理运行进行比较。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
+> 在 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-subagents) 中打开运行，将协调器跟踪与每个子代理运行进行比较。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
 
 ## 按LangSmith中的子代理过滤
 
@@ -1170,7 +1170,7 @@ runs = client.list_runs(
 >
 > 子代理的结构化输出需要 `deepagents>=0.5.3`。
 
-在子代理配置上传递 `response_format`。当子代理完成时，其结构化响应将被 JSON 序列化并作为 ⟦​​T228⟧ 内容返回到父代理。该模式接受 [⟦T229⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 支持的任何内容：Pydantic 模型、`ToolStrategy(...)`、`ProviderStrategy(...)` 或原始模式类型。
+在子代理配置上传递 `response_format`。当子代理完成时，其结构化响应将被 JSON 序列化并作为 ⟦​​T229⟧ 内容返回到父代理。该模式接受 [⟦T230⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 支持的任何内容：Pydantic 模型、`ToolStrategy(...)`、`ProviderStrategy(...)` 或原始模式类型。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -1496,7 +1496,19 @@ result = asyncio.run(main())
 
 有关模式类型和策略（工具调用与原生提供者）的完整详细信息，请参阅[Structured output](/oss/python/langchain/structured-output)。
 
-## 通用子代理
+## 拒绝模型
+
+当子代理的模型拒绝时，父代理会收到一个简短的任务结果，而不是空结果或失败的运行。然后，家长可以重新措辞任务或不继续任务：
+
+```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+The subagent stopped because a model refused the request. Retrying the same request is unlikely to succeed; rephrase it or continue without it.
+```
+
+对于Anthropic型号，结果还包括拒绝类别，例如`Category: cyber.`
+
+这涵盖了最后一条消息为[⟦T235⟧ content block](/oss/python/langchain/messages#content-block-reference)的子代理、引发[⟦T236⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)的子代理（例如，使用[⟦T237⟧](/oss/python/langchain/middleware/built-in#model-refusal)的子代理）以及拒绝无法解析的结构化输出子代理。异步子代理报告相同的结果。当子代理提出时，父代理不会收到子代理在拒绝之前更改的任何状态。
+
+主代理在自己的模型拒绝时提高[⟦T238⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)，因为[⟦T239⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware)在[Deep Agents stack](/oss/python/deepagents/customization#full-stack)中。您传递的 [⟦T240⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 首先捕获拒绝并在下一个模型上重试请求。请参阅[Handle a refusal](/oss/python/langchain/middleware/built-in#handle-a-refusal)了解回应方式。## 通用子代理
 
 除了任何用户定义的子代理之外，每个深度代理都可以随时访问`general-purpose`子代理。该子代理：
 
@@ -1507,7 +1519,7 @@ result = asyncio.run(main())
 
 ### 覆盖通用子代理
 
-在 `subagents` 列表中包含带有 `name="general-purpose"` 的子代理以替换默认值。使用它可以为通用子代理配置不同的模型、工具或系统提示：
+在 `subagents` 列表中包含带有 `name="general-purpose"` 的子代理以替换默认值。使用它为通用子代理配置不同的模型、工具或系统提示：
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -1684,13 +1696,13 @@ agent = create_deep_agent(
 )
 ```
 
-当您为子代理提供通用名称时，不会添加默认的通用子代理。您的规格完全取代了它。要完全删除内置通用子代理而不是替换它，请将活动线束配置文件的通用子代理 `enabled` 标志设置为 `False`。
+当您为子代理提供通用名称时，不会添加默认的通用子代理。您的规格完全取代了它。
+
+要完全删除内置通用子代理而不是替换它，请将活动线束配置文件的通用子代理 `enabled` 标志设置为 `False`。
 
 ### 何时使用它
 
-通用子代理非常适合上下文隔离，无需专门的行为。主代理可以将复杂的多步骤任务委托给该子代理，并返回简洁的结果，而不会因中间工具调用而导致臃肿。
-
-> **示例**
+通用子代理非常适合上下文隔离，无需专门的行为。主代理可以将复杂的多步骤任务委托给该子代理，并返回简洁的结果，而不会因中间工具调用而导致臃肿。> [卡片] 示例
 >
 > 它不是由主代理进行 10 次网络搜索并用结果填充其上下文，而是委托给通用子代理：`task(name="general-purpose", task="Research quantum computing trends")`。子代理在内部执行所有搜索并仅返回摘要。
 
@@ -1699,7 +1711,9 @@ agent = create_deep_agent(
 当配置 [skills](/oss/python/deepagents/skills) 和 `create_deep_agent` 时：
 
 * **通用子代理**：自动继承主代理的技能
-* **自定义子代理**：默认情况下不继承技能 - 使用 `skills` 参数赋予他们自己的技能> [!注意]
+* **自定义子代理**：默认情况下不继承技能 - 使用 `skills` 参数赋予他们自己的技能
+
+> [!注意]
 >
 > 只有配置了技能的子代理才能获得 `SkillsMiddleware` 实例，而没有 `skills` 参数的自定义子代理则不会。当存在时，技能状态在两个方向上完全隔离：父级的技能对子级不可见，并且子级的技能不会传播回父级。
 
@@ -1729,7 +1743,7 @@ agent = create_deep_agent(
 
 ✅ **好：** `"Analyzes financial data and generates investment insights with confidence scores"`
 
-❌ **坏：** `"Does finance stuff"`
+❌ **不好：** `"Does finance stuff"`
 
 ### 保持系统提示详细
 
@@ -1774,9 +1788,7 @@ email_agent = {
     "name": "email-sender",
     "tools": [send_email, web_search_tool, database_query, format_document],  # Unfocused
 }
-```
-
-### 按任务选择模型
+```### 按任务选择模型
 
 不同的模型擅长不同的任务：
 
@@ -2042,7 +2054,9 @@ agent = create_deep_agent(
 )
 ```
 
-**工作流程：**1. 主代理人制定高层计划
+**工作流程：**
+
+1. 主代理人制定高层计划
 2. 将数据收集委托给数据收集者
 3. 将结果传递给数据分析器
 4. 向报告撰写者发送见解
@@ -2343,9 +2357,7 @@ result = agent.invoke(
 )
 ```
 
-### 每个子代理上下文
-
-所有子代理都接收相同的父上下文。要传递特定于特定子代理的配置，请在平面 `context` 映射中使用 **命名空间键**（带有子代理名称的前缀键，例如 `researcher:max_depth`），**或** 将这些设置建模为上下文类型上的单独字段：
+### 每个子代理上下文所有子代理都接收相同的父上下文。要传递特定于特定子代理的配置，请在平面 `context` 映射中使用 **命名空间键**（带有子代理名称的前缀键，例如 `researcher:max_depth`），**或** 将这些设置建模为上下文类型上的单独字段：
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from dataclasses import dataclass
@@ -2676,7 +2688,9 @@ result = agent.invoke(
 )
 ```
 
-### 识别哪个子代理调用了工具当父代理和多个子代理之间共享同一工具时，您可以使用 `lc_agent_name` 元数据（与 [streaming](#streaming) 中使用的相同值）来确定哪个代理发起了呼叫：
+### 识别哪个子代理调用了工具
+
+当父代理和多个子代理之间共享同一工具时，您可以使用 `lc_agent_name` 元数据（与 [streaming](#streaming) 中使用的相同值）来确定哪个代理发起了呼叫：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 
@@ -2693,7 +2707,7 @@ def shared_lookup(query: str, runtime: ToolRuntime) -> str:
     return general_lookup(query)
 ```
 
-您可以组合这两种模式 - 在分支工具行为时从 `runtime.context` 读取代理特定设置并从 `runtime.config` 元数据读取 `lc_agent_name`。
+您可以组合这两种模式 - 在分支工具行为时从 `runtime.context` 读取特定于代理的设置，并从 `runtime.config` 元数据读取 `lc_agent_name`。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from dataclasses import dataclass
@@ -2897,9 +2911,7 @@ def flexible_search(query: str, runtime: ToolRuntime[Context]) -> str:
    IMPORTANT: Return only the essential summary.
    Do NOT include raw data, intermediate search results, or detailed tool outputs.
    Your response should be under 500 words."""
-   ```
-
-2. **使用文件系统处理大数据：**
+   ```2. **使用文件系统处理大数据：**
 
    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    system_prompt = """When you gather large amounts of data:

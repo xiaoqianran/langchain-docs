@@ -19,7 +19,7 @@
 
 ### 执行和状态
 
-|后端|套餐 |来源 |
+|后端 |套餐 |来源 |
 | - | - | - |
 | [In-memory](https://reference.langchain.com/python/langgraph.store/memory/InMemoryStore) | [⟦T0⟧](https://pypi.org/project/langgraph-checkpoint/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint) |
 | [PostgreSQL](https://reference.langchain.com/python/langgraph.store.postgres/PostgresStore) | [⟦T1⟧](https://pypi.org/project/langgraph-checkpoint-postgres/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres) |
@@ -27,11 +27,12 @@
 | [MongoDB](/oss/python/integrations/memory/mongodb-long-term-memory) | [⟦T3⟧](https://pypi.org/project/langgraph-store-mongodb/) | [langchain-ai/langchain-mongodb](https://github.com/langchain-ai/langchain-mongodb/tree/main/libs/langgraph-store-mongodb) |
 | Upstash Redis | [⟦T4⟧](https://pypi.org/project/langgraph-store-upstash/) | [Tghez/langgraph-store-upstash](https://github.com/Tghez/langgraph-store-upstash) |
 |奥姆 | [⟦T5⟧](https://pypi.org/project/omem-infrastructure/) | [OMEM docs](https://infrastructure.omem-cloud.com/docs) |
-| [SingleStore](https://www.singlestore.com/docs/) | [⟦T6⟧](https://pypi.org/project/langgraph-singlestore/) | [singlestore-labs/langchain-singlestore](https://github.com/singlestore-labs/langchain-singlestore) |
-| [Amazon DynamoDB (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [⟦T7⟧](https://pypi.org/project/langgraph-store-dynamodb/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/dynamodb) |
-| [PostgreSQL / pgvector (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [⟦T8⟧](https://pypi.org/project/langgraph-store-postgres/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/postgres) |
-| [Azure Cosmos DB NoSQL (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [⟦T9⟧](https://pypi.org/project/langgraph-store-cosmosdb/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/cosmosdb) |
-| [Google Firestore (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [⟦T10⟧](https://pypi.org/project/langgraph-store-firestore/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/firestore) |
+| [OpenViking](/oss/python/integrations/stores/openviking) | [⟦T6⟧](https://pypi.org/project/langchain-openviking/) | [volcengine/OpenViking](https://github.com/volcengine/OpenViking) |
+| [SingleStore](https://www.singlestore.com/docs/) | [⟦T7⟧](https://pypi.org/project/langgraph-singlestore/) | [singlestore-labs/langchain-singlestore](https://github.com/singlestore-labs/langchain-singlestore) |
+| [Amazon DynamoDB (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [⟦T8⟧](https://pypi.org/project/langgraph-store-dynamodb/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/dynamodb) |
+| [PostgreSQL / pgvector (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [⟦T9⟧](https://pypi.org/project/langgraph-store-postgres/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/postgres) |
+| [Azure Cosmos DB NoSQL (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [⟦T10⟧](https://pypi.org/project/langgraph-store-cosmosdb/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/cosmosdb) |
+| [Google Firestore (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [⟦T11⟧](https://pypi.org/project/langgraph-store-firestore/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/firestore) |
 
 ***
 

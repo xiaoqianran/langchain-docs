@@ -503,7 +503,7 @@ const agent = createDeepAgent({
 For more complex use cases, you can provide your custom subagents with [`CompiledSubAgent`](https://reference.langchain.com/javascript/deepagents/middleware/CompiledSubAgent).
 You can create a custom subagent using LangChain's [`create_agent`](https://reference.langchain.com/javascript/langchain/index/createAgent) or by making a custom LangGraph graph using the [graph API](/oss/javascript/langgraph/graph-api).
 
-If you're creating a custom LangGraph graph, make sure that the graph has a [state key called `"messages"`](/oss/javascript/langgraph/quickstart#3-define-state):
+If you're creating a custom LangGraph graph, make sure that the graph has a [state key called `"messages"`](/oss/javascript/langgraph/quickstart#2-define-state):
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { CompiledSubAgent, createDeepAgent } from "deepagents";
@@ -528,7 +528,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent
@@ -571,7 +571,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent
@@ -614,7 +614,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent
@@ -657,7 +657,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent
@@ -700,7 +700,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent
@@ -743,7 +743,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent
@@ -786,7 +786,7 @@ const specializedTools: never[] = [];
 const customGraph = createAgent({
   model: yourModel,
   tools: specializedTools,
-  prompt: "You are a specialized agent for data analysis...",
+  systemPrompt: "You are a specialized agent for data analysis...",
 });
 
 // Use it as a custom subagent

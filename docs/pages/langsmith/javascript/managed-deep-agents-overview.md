@@ -70,6 +70,14 @@ Start with Managed Deep Agents to run production agents without having to manage
 >
 > Add a custom search tool, durable memory, and a daily schedule.
 
+> [card] [Design agent template](/langsmith/javascript/managed-deep-agents-design-agent)
+>
+> Deploy LangChain's open-source design agent to Slack.
+
+> [card] [Paid media agent template](/langsmith/javascript/managed-deep-agents-paid-media-agent)
+>
+> Deploy LangChain's open-source paid media agent to Slack.
+
 > [card] [Agent Server](/langsmith/agent-server-overview)
 >
 > Explore the runtime that hosts Managed Deep Agents deployments.

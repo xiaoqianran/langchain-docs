@@ -10,7 +10,7 @@ Deploying a Managed Deep Agent compiles a code-first project into a managed Lang
 >
 > Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
 
-This page covers secrets routing and deploy options. To test the agent before deploying, see [Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development). For command flags, the deploy step list, and troubleshooting, see the [CLI reference](/langsmith/javascript/managed-deep-agents-cli).
+This page covers secrets routing and deploy options. To test the agent before deploying, see [Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development). For command flags, the deploy step list, and troubleshooting, see the [CLI reference](/langsmith/javascript/managed-deep-agents-cli). To deploy a finished open-source project instead, see the [design agent](/langsmith/javascript/managed-deep-agents-design-agent) and [paid media agent](/langsmith/javascript/managed-deep-agents-paid-media-agent) templates.
 
 ## Prerequisites
 

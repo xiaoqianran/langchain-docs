@@ -59,7 +59,7 @@ export const schedule = defineSchedule({
 });
 ```
 
-`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，则 LangSmith crons 使用 UTC。
+`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，LangSmith crons 将使用 UTC。
 
 ## 选择线程行为默认情况下，调度使用临时线程。托管 Deep Agents 为每次运行创建一个新线程，并要求 LangSmith 在运行完成后删除该临时线程。
 
@@ -305,10 +305,14 @@ await runtime.schedules!.delete(item.id, { owner });
 >
 > 部署并协调日程变更。
 
+> [卡][Paid media agent template](/langsmith/javascript/managed-deep-agents-paid-media-agent)
+>
+> 包含每周和每月报告时间表的完整项目。
+
 > [卡][CLI reference](/langsmith/javascript/managed-deep-agents-cli)
 >
-> 查找 `mda deploy` 标志和故障排除。
+> 查找 `mda deploy` 标志和故障排除。***
 
-***
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-schedules.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-schedules.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

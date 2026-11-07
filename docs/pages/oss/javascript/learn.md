@@ -89,7 +89,7 @@ These guides explain the core concepts and APIs underlying LangChain and LangGra
 
 > [card] [Functional API](/oss/javascript/langgraph/functional-api)
 >
-> Build agents as a single function.
+> Wrap an agent from another framework for LangSmith Deployment.
 
 ## Additional resources
 

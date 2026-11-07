@@ -143,8 +143,8 @@ result = agent.invoke(
 
 技能负载分为三个级别。每个级别仅在任务需要时添加更多细节：|水平|加载什么 |当 |
 | - | - | - |
-| **1.元数据** | `SKILL.md` [frontmatter](#frontmatter-fields) | [⟦T81⟧](#frontmatter-fields) 和 [⟦T82⟧](#frontmatter-fields) | Agent startup, for every configured skill |
-| **2.说明** | `SKILL.md`全身| When the skill is invoked |
+| **1.元数据** | `SKILL.md` [frontmatter](#frontmatter-fields) | [⟦T81⟧](#frontmatter-fields) 和 [⟦T82⟧](#frontmatter-fields) |代理启动，针对每个配置的技能 |
+| **2.说明** | `SKILL.md`全身|当技能被调用时|
 | **3.资源** | [Supporting files](#add-supporting-resources) 位于 `scripts/`、`references/` 和 `assets/` |调用后根据需要，当指令引用它们时 |
 
 下图显示了给定时刻代理上下文中出现的内容。启动时，每个技能的 1 级元数据都在系统提示中。当调用技能时，2 级指令会加入上下文。 3 级文件保留在后端，直到代理在调用后读取它们。
@@ -155,21 +155,21 @@ result = agent.invoke(
 
 ![How skills load in layers from metadata to instructions to resources](https://mintcdn.com/langchain-5e9cc07a/-Q4wgirblfw7Ioet/oss/images/deepagents/skills-progressive-disclosure.svg?fit=max\&auto=format\&n=-Q4wgirblfw7Ioet\&q=85\&s=ba55587d858f5588bea425dc503e3246)
 
-在Deep Agents中，[⟦T88⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware)（当你通过`skills`时，[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)的一部分）处理前两个级别，第三个级别由LLM处理：1. **Discovery** (level 1): At agent start, the middleware scans the configured skill paths, parses each `SKILL.md` [frontmatter](#frontmatter-fields), and injects the [⟦T91⟧](#frontmatter-fields) and [⟦T92⟧](#frontmatter-fields) fields into the system prompt.
+在Deep Agents中，[⟦T88⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware)（当你通过`skills`时，[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)的一部分）处理前两个级别，第三个级别由LLM处理：1. **发现**（级别1）：在代理启动时，中间件扫描配置的技能路径，解析每个`SKILL.md`[frontmatter](#frontmatter-fields)，并将[⟦T91⟧](#frontmatter-fields)和[⟦T92⟧](#frontmatter-fields)字段注入系统提示符中。
 2. **读取**（2级）：当代理调用技能时，它会通过`read_file`读取完整的`SKILL.md`内容。
-3. **Execute** (level 3): After invocation, the agent follows the skill's instructions and reads supporting files (scripts, references, assets) only as the instructions require.
+3. **执行**（级别 3）：调用后，代理遵循技能的指示，仅根据指示要求读取支持文件（脚本、参考、资产）。
 
 给代理一个技能指令而不等待它选择技能，[pin the skill](#pin-skills)。
 
 ## 何时使用技能
 
-If you find yourself giving similar instructions to an agent, especially if they are detailed and contain multiple steps, consider codifying the instructions for the agent.这样，将来当你想要完成类似的任务时，代理就已经知道该怎么做了。
+如果您发现自己向客服人员发出类似的指示，特别是如果这些指示很详细且包含多个步骤，请考虑将针对客服人员的指示编成文字。这样，将来当你想要完成类似的任务时，代理就已经知道该怎么做了。
 
 > [!提示]
 >
 > 您还可以要求您的代理为您与代理一起完成的任务编写技能。
 
-技能对于编码特别有帮助：* **分步工作流程**：跨越多个步骤的工作流程，类似于菜谱。
+Skills are especially helpful for codifying:* **分步工作流程**：跨越多个步骤的工作流程，类似于菜谱。
 * **特定领域的知识**：指导代理如何使用工作流程工具。例如，包括有关从何处提取信息的信息，包括该技能可以访问的其他参考信息或脚本。
 * **带有可执行代码的指令**：将程序与代理可以运行的脚本或模块捆绑在一起，因此它遵循经过测试的逻辑，而不是每次都从指令重新生成它。参见[Execute code with skills](#execute-code-with-skills)。
 * **指南**：向代理提供有关要遵守的护栏的支持说明。例如，遵循特定的格式或风格指南，或者指定始终将测试作为工作流程的一部分运行。
@@ -205,7 +205,7 @@ description: Helps with PDFs.
 
 **架构参考.md**
 
-**错误代码.md**代理仅在指令需要时才加载参考文件，从而保持渐进公开的每一层的大小适当。 Keep file references one level deep from `SKILL.md` and avoid deeply nested reference chains, which force the agent through multiple reads to reach the information it needs.
+**错误代码.md**代理仅在指令需要时才加载参考文件，从而保持渐进公开的每一层的大小适当。将文件引用保持在距`SKILL.md`深一层的位置，并避免深度嵌套的引用链，这会迫使代理通过多次读取来获取所需的信息。
 
 **代理的结构说明。** 将您的 `SKILL.md` 正文写为代理可以遵循的清晰说明：
 
@@ -223,7 +223,7 @@ description: Helps with PDFs.
 
 ## 添加支持资源
 
-Beyond `SKILL.md`, a skill directory can include any additional files or directories. The [Agent Skills specification](https://agentskills.io/specification) defines three optional directories for common resource types. Deep Agents does not load these files at discovery or activation.仅当您的 `SKILL.md` 指令要求时，代理才会读取或执行它们。
+除了`SKILL.md`之外，技能目录还可以包含任何其他文件或目录。 [Agent Skills specification](https://agentskills.io/specification) 为公共资源类型定义了三个可选目录。 Deep Agents 在发现或激活时不会加载这些文件。仅当您的 `SKILL.md` 指令要求时，代理才会读取或执行它们。
 
 ### `scripts/`
 
@@ -233,11 +233,11 @@ Beyond `SKILL.md`, a skill directory can include any additional files or directo
 * 包括有用的错误消息
 * 优雅地处理边缘情况
 
-支持的语言取决于您的代理设置。 Common options include Python, Bash, and JavaScript or TypeScript. To execute scripts rather than only read them, see [Execute code with skills](#execute-code-with-skills).当代理需要 shell 时使用[sandbox scripts](#sandbox-scripts)。
+支持的语言取决于您的代理设置。常见选项包括 Python、Bash 和 JavaScript 或 TypeScript。要执行脚本而不仅仅是读取它们，请参阅[Execute code with skills](#execute-code-with-skills)。当代理需要 shell 时使用[sandbox scripts](#sandbox-scripts)。
 
 ### `references/`
 
-The `references/` directory holds supplementary documentation the agent reads on demand. Use it for material that is too detailed for `SKILL.md` but still task-specific, such as:* `REFERENCE.md` 详细技术参考
+`references/` 目录包含代理按需阅读的补充文档。将其用于对于 `SKILL.md` 来说过于详细但仍针对特定任务的材料，例如：* `REFERENCE.md` 详细技术参考
 * `FORMS.md` 适用于表单模板或结构化数据格式
 * 特定领域指南（`finance.md`、`legal.md` 等）
 
@@ -268,13 +268,13 @@ scripts/extract.py
 
 ## 将工具添加到技能中
 
-技能可以自带工具。代理只有在读取技能后才能看到它们，因此它们的模式不会出现在提示中，直到任务需要它们为止。Skill tools are a Deep Agents feature, not part of the [Agent Skills specification](https://agentskills.io/specification). Deep Agents 从规范的自由格式`metadata` 字段中读取工具名称。它们与规范的 `allowed-tools` 字段无关，该字段预先批准工具而不是添加它们。
+技能可以自带工具。代理只有在读取技能后才能看到它们，因此它们的模式不会出现在提示中，直到任务需要它们为止。技能工具是Deep Agents功能，而不是[Agent Skills specification](https://agentskills.io/specification)的一部分。 Deep Agents 从规范的自由格式`metadata` 字段中读取工具名称。它们与规范的 `allowed-tools` 字段无关，该字段预先批准工具而不是添加它们。
 
 > [!注意]
 >
 > 技能工具需要`deepagents>=0.7.22`。
 
-List the tools under `metadata.include_tools` in the skill's frontmatter, separated by spaces. YAML 列表与任何工具都不匹配。
+在技​​能的 frontmatter 中列出`metadata.include_tools`下的工具，用空格分隔。 YAML 列表与任何工具都不匹配。
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 name: linear
@@ -283,7 +283,7 @@ metadata:
   include_tools: list_issues create_issue
 ```
 
-Passing `skills` to `create_deep_agent` creates a `SkillsMiddleware` for you. To add tools, create the middleware yourself and pass it in `middleware` instead. Give it your skill paths as `sources`, and your tools as `tools` on the middleware rather than on the agent:
+将 `skills` 传递给 `create_deep_agent` 会为您创建一个 `SkillsMiddleware`。要添加工具，请自行创建中间件并将其传递到 `middleware` 中。将您的技能路径指定为 `sources`，并将您的工具指定为中间件而不是代理上的 `tools`：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -321,11 +321,11 @@ agent = create_deep_agent(
 
 技能工具遵循以下规则：
 
-* 技能工具是有门控的。 Until the agent reads the skill's `SKILL.md`, a call to one fails as an unknown tool, even if the model guesses its name and arguments.
-* When [summarization](/oss/python/deepagents/context-engineering#summarization) drops that read from the conversation, the tool is unavailable until the agent reads the skill again.
-* [Pinning a skill](#pin-skills) makes its tools available the same way reading its `SKILL.md` does. They stay available until summarization drops the pinned skill's message.> [!注意]
+* 技能工具是有门控的。在代理读取技能的 `SKILL.md` 之前，即使模型猜测其名称和参数，对技能的调用也会作为未知工具而失败。
+* 当[summarization](/oss/python/deepagents/context-engineering#summarization)删除从对话中读取的内容时，该工具将不可用，直到代理再次读取该技能。
+* [Pinning a skill](#pin-skills) 使其工具可用，就像阅读其 `SKILL.md` 一样。它们将保持可用状态，直到摘要删除固定技能的消息为止。> [!注意]
 >
-> 在对话中接受新工具的模型上，Deep Agents在读取后添加了技能工具，这使提示缓存保持有效。在其他模型上，它会将该工具添加到请求的 `tools` 中，这会使缓存失效。请参阅 [Anthropic](/oss/python/integrations/chat/anthropic#change-tools-mid-conversation) 和 [OpenAI](/oss/python/integrations/chat/openai#add-tools-mid-conversation) 集成页面。
+> 在对话中接受新工具的模型上，Deep Agents在读取后添加了技能工具，这使提示缓存保持有效。在其他模型上，它将工具添加到请求的 `tools` 中，这会使缓存失效。请参阅 [Anthropic](/oss/python/integrations/chat/anthropic#change-tools-mid-conversation) 和 [OpenAI](/oss/python/integrations/chat/openai#add-tools-mid-conversation) 集成页面。
 
 ### 在运行时解析工具
 
@@ -463,7 +463,7 @@ agent = create_deep_agent(
 
 代理如何到达工具取决于您将其传递到的位置：
 
-|将工具传递给 |特工读取技能前|特工读取技能后|
+|将工具传递给 |特工读取技能前|特工读取技能后 |
 | - | - | - |
 | `SkillsMiddleware(tools=...)` |隐藏，调用失败|可见|
 |代理的`tools`，延期|可通过提供商工具搜索获得 |无需搜索即可看到 |
@@ -477,325 +477,325 @@ Deep Agents支持不同的后端，具体取决于您想要如何存储和管理
 * `StoreBackend`：将文件存储在LangGraph 存储中，以实现持久的跨线程存储。
 * `FilesystemBackend`：在可配置的`root_dir`下从磁盘读取和写入技能文件。
 
-**状态后端**
+> [选项卡] 状态后端
+>
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from urllib.request import urlopen
+> from deepagents import create_deep_agent
+> from deepagents.backends import StateBackend
+> from deepagents.backends.utils import create_file_data
+> from langgraph.checkpoint.memory import MemorySaver
+>
+> checkpointer = MemorySaver()
+> backend = StateBackend()
+>
+> skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+> with urlopen(skill_url) as response:
+>     skill_content = response.read().decode('utf-8')
+>
+> skills_files = {
+>     "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+> }
+>
+> agent = create_deep_agent(
+>     model="google_genai:gemini-3.6-flash",
+>     backend=backend,
+>     skills=["/skills/"],
+>     checkpointer=checkpointer,
+> )
+>
+> result = agent.invoke(
+>     {
+>         "messages": [{"role": "user", "content": "What is langgraph?"}],
+>         # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+>         "files": skills_files,
+>     },
+>     config={"configurable": {"thread_id": "12345"}},
+> )
+> ```
+>
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from urllib.request import urlopen
+> from deepagents import create_deep_agent
+> from deepagents.backends import StateBackend
+> from deepagents.backends.utils import create_file_data
+> from langgraph.checkpoint.memory import MemorySaver
+>
+> checkpointer = MemorySaver()
+> backend = StateBackend()
+>
+> skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+> with urlopen(skill_url) as response:
+>     skill_content = response.read().decode('utf-8')
+>
+> skills_files = {
+>     "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+> }
+>
+> agent = create_deep_agent(
+>     model="openai:gpt-5.5",
+>     backend=backend,
+>     skills=["/skills/"],
+>     checkpointer=checkpointer,
+> )
+>
+> result = agent.invoke(
+>     {
+>         "messages": [{"role": "user", "content": "What is langgraph?"}],
+>         # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+>         "files": skills_files,
+>     },
+>     config={"configurable": {"thread_id": "12345"}},
+> )
+> ```
+>
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from urllib.request import urlopen
+> from deepagents import create_deep_agent
+> from deepagents.backends import StateBackend
+> from deepagents.backends.utils import create_file_data
+> from langgraph.checkpoint.memory import MemorySaver
+>
+> checkpointer = MemorySaver()
+> backend = StateBackend()
+>
+> skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+> with urlopen(skill_url) as response:
+>     skill_content = response.read().decode('utf-8')
+>
+> skills_files = {
+>     "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+> }
+>
+> agent = create_deep_agent(
+>     model="anthropic:claude-sonnet-5",
+>     backend=backend,
+>     skills=["/skills/"],
+>     checkpointer=checkpointer,
+> )
+>
+> result = agent.invoke(
+>     {
+>         "messages": [{"role": "user", "content": "What is langgraph?"}],
+>         # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+>         "files": skills_files,
+>     },
+>     config={"configurable": {"thread_id": "12345"}},
+> )
+> ```
+>
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from urllib.request import urlopen
+> from deepagents import create_deep_agent
+> from deepagents.backends import StateBackend
+> from deepagents.backends.utils import create_file_data
+> from langgraph.checkpoint.memory import MemorySaver
+>
+> checkpointer = MemorySaver()
+> backend = StateBackend()
+>
+> skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+> with urlopen(skill_url) as response:
+>     skill_content = response.read().decode('utf-8')
+>
+> skills_files = {
+>     "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+> }
+>
+> agent = create_deep_agent(
+>     model="openrouter:z-ai/glm-5.2",
+>     backend=backend,
+>     skills=["/skills/"],
+>     checkpointer=checkpointer,
+> )
+>
+> result = agent.invoke(
+>     {
+>         "messages": [{"role": "user", "content": "What is langgraph?"}],
+>         # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+>         "files": skills_files,
+>     },
+>     config={"configurable": {"thread_id": "12345"}},
+> )
+> ```
+>
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from urllib.request import urlopen
+> from deepagents import create_deep_agent
+> from deepagents.backends import StateBackend
+> from deepagents.backends.utils import create_file_data
+> from langgraph.checkpoint.memory import MemorySaver
+>
+> checkpointer = MemorySaver()
+> backend = StateBackend()
+>
+> skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+> with urlopen(skill_url) as response:
+>     skill_content = response.read().decode('utf-8')
+>
+> skills_files = {
+>     "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+> }
+>
+> agent = create_deep_agent(
+>     model="fireworks:accounts/fireworks/models/glm-5p2",
+>     backend=backend,
+>     skills=["/skills/"],
+>     checkpointer=checkpointer,
+> )
+>
+> result = agent.invoke(
+>     {
+>         "messages": [{"role": "user", "content": "What is langgraph?"}],
+>         # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+>         "files": skills_files,
+>     },
+>     config={"configurable": {"thread_id": "12345"}},
+> )
+> ```
+>
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from urllib.request import urlopen
+> from deepagents import create_deep_agent
+> from deepagents.backends import StateBackend
+> from deepagents.backends.utils import create_file_data
+> from langgraph.checkpoint.memory import MemorySaver
+>
+> checkpointer = MemorySaver()
+> backend = StateBackend()
+>
+> skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+> with urlopen(skill_url) as response:
+>     skill_content = response.read().decode('utf-8')
+>
+> skills_files = {
+>     "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+> }
+>
+> agent = create_deep_agent(
+>     model="baseten:zai-org/GLM-5.2",
+>     backend=backend,
+>     skills=["/skills/"],
+>     checkpointer=checkpointer,
+> )
+>
+> result = agent.invoke(
+>     {
+>         "messages": [{"role": "user", "content": "What is langgraph?"}],
+>         # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+>         "files": skills_files,
+>     },
+>     config={"configurable": {"thread_id": "12345"}},
+> )
+> ```
+>
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from urllib.request import urlopen
+> from deepagents import create_deep_agent
+> from deepagents.backends import StateBackend
+> from deepagents.backends.utils import create_file_data
+> from langgraph.checkpoint.memory import MemorySaver
+>
+> checkpointer = MemorySaver()
+> backend = StateBackend()
+>
+> skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+> with urlopen(skill_url) as response:
+>     skill_content = response.read().decode('utf-8')
+>
+> skills_files = {
+>     "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+> }
+>
+> agent = create_deep_agent(
+>     model="ollama:north-mini-code-1.0",
+>     backend=backend,
+>     skills=["/skills/"],
+>     checkpointer=checkpointer,
+> )
+>
+> result = agent.invoke(
+>     {
+>         "messages": [{"role": "user", "content": "What is langgraph?"}],
+>         # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+>         "files": skills_files,
+>     },
+>     config={"configurable": {"thread_id": "12345"}},
+> )
+> ```
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from urllib.request import urlopen
-from deepagents import create_deep_agent
-from deepagents.backends import StateBackend
-from deepagents.backends.utils import create_file_data
-from langgraph.checkpoint.memory import MemorySaver
+> [选项卡] 商店后端
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from urllib.request import urlopen
+> from deepagents import create_deep_agent
+> from deepagents.backends import StoreBackend
+> from langgraph.store.memory import InMemoryStore
+>
+> store = InMemoryStore()
+> backend = StoreBackend(
+>     namespace=lambda _rt: ("filesystem",),
+>     store=store,
+> )
+>
+> skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+> with urlopen(skill_url) as response:
+>     skill_content = response.read().decode('utf-8')
+>
+> backend.upload_files(
+>     [("/skills/langgraph-docs/SKILL.md", skill_content.encode("utf-8"))]
+> )
+>
+> agent = create_deep_agent(
+>     model="google_genai:gemini-3.6-flash",
+>     backend=backend,
+>     store=store,
+>     skills=["/skills/"],
+> )
+>
+> result = agent.invoke(
+>     {"messages": [{"role": "user", "content": "What is langgraph?"}]},
+>     config={"configurable": {"thread_id": "12345"}},
+> )
+> ```
 
-checkpointer = MemorySaver()
-backend = StateBackend()
-
-skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-with urlopen(skill_url) as response:
-    skill_content = response.read().decode('utf-8')
-
-skills_files = {
-    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-}
-
-agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
-    backend=backend,
-    skills=["/skills/"],
-    checkpointer=checkpointer,
-)
-
-result = agent.invoke(
-    {
-        "messages": [{"role": "user", "content": "What is langgraph?"}],
-        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-        "files": skills_files,
-    },
-    config={"configurable": {"thread_id": "12345"}},
-)
-```
-
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from urllib.request import urlopen
-from deepagents import create_deep_agent
-from deepagents.backends import StateBackend
-from deepagents.backends.utils import create_file_data
-from langgraph.checkpoint.memory import MemorySaver
-
-checkpointer = MemorySaver()
-backend = StateBackend()
-
-skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-with urlopen(skill_url) as response:
-    skill_content = response.read().decode('utf-8')
-
-skills_files = {
-    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-}
-
-agent = create_deep_agent(
-    model="openai:gpt-5.5",
-    backend=backend,
-    skills=["/skills/"],
-    checkpointer=checkpointer,
-)
-
-result = agent.invoke(
-    {
-        "messages": [{"role": "user", "content": "What is langgraph?"}],
-        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-        "files": skills_files,
-    },
-    config={"configurable": {"thread_id": "12345"}},
-)
-```
-
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from urllib.request import urlopen
-from deepagents import create_deep_agent
-from deepagents.backends import StateBackend
-from deepagents.backends.utils import create_file_data
-from langgraph.checkpoint.memory import MemorySaver
-
-checkpointer = MemorySaver()
-backend = StateBackend()
-
-skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-with urlopen(skill_url) as response:
-    skill_content = response.read().decode('utf-8')
-
-skills_files = {
-    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-}
-
-agent = create_deep_agent(
-    model="anthropic:claude-sonnet-5",
-    backend=backend,
-    skills=["/skills/"],
-    checkpointer=checkpointer,
-)
-
-result = agent.invoke(
-    {
-        "messages": [{"role": "user", "content": "What is langgraph?"}],
-        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-        "files": skills_files,
-    },
-    config={"configurable": {"thread_id": "12345"}},
-)
-```
-
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from urllib.request import urlopen
-from deepagents import create_deep_agent
-from deepagents.backends import StateBackend
-from deepagents.backends.utils import create_file_data
-from langgraph.checkpoint.memory import MemorySaver
-
-checkpointer = MemorySaver()
-backend = StateBackend()
-
-skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-with urlopen(skill_url) as response:
-    skill_content = response.read().decode('utf-8')
-
-skills_files = {
-    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-}
-
-agent = create_deep_agent(
-    model="openrouter:z-ai/glm-5.2",
-    backend=backend,
-    skills=["/skills/"],
-    checkpointer=checkpointer,
-)
-
-result = agent.invoke(
-    {
-        "messages": [{"role": "user", "content": "What is langgraph?"}],
-        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-        "files": skills_files,
-    },
-    config={"configurable": {"thread_id": "12345"}},
-)
-```
-
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from urllib.request import urlopen
-from deepagents import create_deep_agent
-from deepagents.backends import StateBackend
-from deepagents.backends.utils import create_file_data
-from langgraph.checkpoint.memory import MemorySaver
-
-checkpointer = MemorySaver()
-backend = StateBackend()
-
-skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-with urlopen(skill_url) as response:
-    skill_content = response.read().decode('utf-8')
-
-skills_files = {
-    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-}
-
-agent = create_deep_agent(
-    model="fireworks:accounts/fireworks/models/glm-5p2",
-    backend=backend,
-    skills=["/skills/"],
-    checkpointer=checkpointer,
-)
-
-result = agent.invoke(
-    {
-        "messages": [{"role": "user", "content": "What is langgraph?"}],
-        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-        "files": skills_files,
-    },
-    config={"configurable": {"thread_id": "12345"}},
-)
-```
-
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from urllib.request import urlopen
-from deepagents import create_deep_agent
-from deepagents.backends import StateBackend
-from deepagents.backends.utils import create_file_data
-from langgraph.checkpoint.memory import MemorySaver
-
-checkpointer = MemorySaver()
-backend = StateBackend()
-
-skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-with urlopen(skill_url) as response:
-    skill_content = response.read().decode('utf-8')
-
-skills_files = {
-    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-}
-
-agent = create_deep_agent(
-    model="baseten:zai-org/GLM-5.2",
-    backend=backend,
-    skills=["/skills/"],
-    checkpointer=checkpointer,
-)
-
-result = agent.invoke(
-    {
-        "messages": [{"role": "user", "content": "What is langgraph?"}],
-        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-        "files": skills_files,
-    },
-    config={"configurable": {"thread_id": "12345"}},
-)
-```
-
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from urllib.request import urlopen
-from deepagents import create_deep_agent
-from deepagents.backends import StateBackend
-from deepagents.backends.utils import create_file_data
-from langgraph.checkpoint.memory import MemorySaver
-
-checkpointer = MemorySaver()
-backend = StateBackend()
-
-skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-with urlopen(skill_url) as response:
-    skill_content = response.read().decode('utf-8')
-
-skills_files = {
-    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-}
-
-agent = create_deep_agent(
-    model="ollama:north-mini-code-1.0",
-    backend=backend,
-    skills=["/skills/"],
-    checkpointer=checkpointer,
-)
-
-result = agent.invoke(
-    {
-        "messages": [{"role": "user", "content": "What is langgraph?"}],
-        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-        "files": skills_files,
-    },
-    config={"configurable": {"thread_id": "12345"}},
-)
-```
-
-**商店后端**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from urllib.request import urlopen
-from deepagents import create_deep_agent
-from deepagents.backends import StoreBackend
-from langgraph.store.memory import InMemoryStore
-
-store = InMemoryStore()
-backend = StoreBackend(
-    namespace=lambda _rt: ("filesystem",),
-    store=store,
-)
-
-skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-with urlopen(skill_url) as response:
-    skill_content = response.read().decode('utf-8')
-
-backend.upload_files(
-    [("/skills/langgraph-docs/SKILL.md", skill_content.encode("utf-8"))]
-)
-
-agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
-    backend=backend,
-    store=store,
-    skills=["/skills/"],
-)
-
-result = agent.invoke(
-    {"messages": [{"role": "user", "content": "What is langgraph?"}]},
-    config={"configurable": {"thread_id": "12345"}},
-)
-```
-
-**文件系统后端**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from urllib.request import urlopen
-from deepagents import create_deep_agent
-from deepagents.backends.filesystem import FilesystemBackend
-from langgraph.checkpoint.memory import MemorySaver
-
-# Checkpointer is REQUIRED for human-in-the-loop
-checkpointer = MemorySaver()
-
-skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-with urlopen(skill_url) as response:
-    skill_content = response.read().decode('utf-8')
-
-backend = FilesystemBackend(root_dir="/Users/user/{project}", virtual_mode=True)
-backend.upload_files(
-    [("/skills/langgraph-docs/SKILL.md", skill_content.encode("utf-8"))]
-)
-
-agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
-    backend=backend,
-    skills=["/skills/"],
-    interrupt_on={
-        "write_file": True,
-        "read_file": False,
-        "edit_file": True,
-    },
-    checkpointer=checkpointer,  # Required for filesystem operations!
-)
-
-result = agent.invoke(
-    {"messages": [{"role": "user", "content": "What is langgraph?"}]},
-    config={"configurable": {"thread_id": "12345"}},
-)
-```
+> [选项卡] 文件系统后端
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from urllib.request import urlopen
+> from deepagents import create_deep_agent
+> from deepagents.backends.filesystem import FilesystemBackend
+> from langgraph.checkpoint.memory import MemorySaver
+>
+> # Checkpointer is REQUIRED for human-in-the-loop
+> checkpointer = MemorySaver()
+>
+> skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+> with urlopen(skill_url) as response:
+>     skill_content = response.read().decode('utf-8')
+>
+> backend = FilesystemBackend(root_dir="/Users/user/{project}", virtual_mode=True)
+> backend.upload_files(
+>     [("/skills/langgraph-docs/SKILL.md", skill_content.encode("utf-8"))]
+> )
+>
+> agent = create_deep_agent(
+>     model="google_genai:gemini-3.6-flash",
+>     backend=backend,
+>     skills=["/skills/"],
+>     interrupt_on={
+>         "write_file": True,
+>         "read_file": False,
+>         "edit_file": True,
+>     },
+>     checkpointer=checkpointer,  # Required for filesystem operations!
+> )
+>
+> result = agent.invoke(
+>     {"messages": [{"role": "user", "content": "What is langgraph?"}]},
+>     config={"configurable": {"thread_id": "12345"}},
+> )
+> ```
 
 ## 技能可用性
 
@@ -828,7 +828,7 @@ def create_agent_for_user(user_role: str):
 >
 > 对于Deep Agents代码存储约定，请参阅[App data](/oss/deepagents/code/configuration#data-locations)。
 >
->> **模拟Deep Agents SDK 中的代码源顺序**
+>> [手风琴] 模拟Deep Agents SDK中的代码源码顺序
 >>
 >> 为了匹配 SDK 代码中的 Deep Agents 代码分层，请按照从低到高的优先级顺序显式传递所有所需的源：
 >>
@@ -924,7 +924,7 @@ result = agent.invoke(
 agent.update_state(config, {"skills_metadata": None})
 ```
 
-使用`None`，而不是空列表。空列表意味着源已加载且不包含任何技能，因此代理在线程的其余部分看不到任何技能。
+使用`None`，而不是空列表。空列表意味着源已加载且没有技能，因此代理在线程的其余部分看不到任何技能。
 
 > [!注意]
 >
@@ -1250,7 +1250,7 @@ agent = create_deep_agent(
 
 ### 写作技巧
 
-默认情况下，如果后端允许并且没有权限规则阻止路径，代理可以写入技能文件。让特工创造或完善一些技能，同时保护其他人：
+默认情况下，如果后端允许并且没有权限规则阻止路径，代理可以写入技能文件。让特工在保护其他人的同时创造或完善一些技能：
 
 1. 将可写路径路由到可以保留代理编辑的后端。
 2. 通过`skills`中的这些路径。
@@ -2012,7 +2012,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-> **[View example trace](https://smith.langchain.com/public/ce7b8594-b310-4ab0-9edb-43ab9b7d9857/r)**
+> [卡][View example trace](https://smith.langchain.com/public/0052c946-fa0d-437b-ab76-6be7f4f5e557/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -2108,7 +2108,7 @@ if __name__ == "__main__":
 | **分层** |用户，然后项目（最后获胜）|用户，然后项目（合并）|在代理创建时定义 |
 | **何时使用** |指令是特定于任务的并且可能很大 |上下文始终相关（项目惯例、偏好）|代理需要编程操作，或者无权访问文件系统 |
 
-这些是指导方针，而不是硬性界限。在实践中，技能和记忆是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为渐进式公开记忆的一种形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
+这些是指导方针，而不是硬性界限。在实践中，技能和记忆力是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为一种渐进式公开记忆的形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
 
 ### Frontmatter 字段
 

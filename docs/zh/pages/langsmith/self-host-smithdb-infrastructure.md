@@ -10,7 +10,7 @@
 >
 > 对于 pod 卡住`Pending`、对象存储访问被拒绝或元存储连接错误等故障，请参阅[Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting#supporting-infrastructure)。
 
-SmithDB 在自托管 LangSmith 部署中添加了三个基础设施依赖项：PostgreSQL 元存储、对象存储以及用于查询、摄取和压缩工作线程的缓存存储。
+SmithDB 向自托管 LangSmith 部署添加了三个基础设施依赖项：PostgreSQL 元存储、对象存储以及用于查询、摄取和压缩工作线程的缓存存储。
 
 这些是集成要求和实用建议，而不是规定的云架构。有关 AWS (EKS)、GCP (GKE) 和 Azure (AKS) 设置，请参阅 [Provider setup](#provider-setup)。最低 LangSmith 版本取决于您的云。参见[Cloud support](/langsmith/self-host-smithdb#cloud-support)。
 
@@ -26,7 +26,7 @@ SmithDB 在自托管 LangSmith 部署中添加了三个基础设施依赖项：P
 
 元存储保存 SmithDB 目录和协调数据。为元存储创建一个空数据库。 SmithDB 在安装期间初始化架构。
 
-使用 PostgreSQL 18 或更高版本并允许来自 Kubernetes 集群的数据库连接。有关数据库选项和连接，请参阅[Provider setup](#provider-setup)。
+使用 PostgreSQL 18 或更高版本并允许来自 Kubernetes 集群的数据库连接。有关数据库选项和连接性，请参阅[Provider setup](#provider-setup)。
 
 ### 元存储秘密
 
@@ -195,7 +195,7 @@ SmithDB 工作负载共享 `smithdb.serviceAccount`。* **默认**：图表创�
 >                     storage: 100Gi
 > ```
 
-不需要节点选择器或容忍； SmithDB 在您的通用节点池上运行。迁移作业是个例外。它不使用缓存卷，默认情况下仍请求 100 GiB 节点 `ephemeral-storage`，因此将其安排在具有这么多可分配空间的节点上。
+不需要节点选择器或容忍； SmithDB 在您的通用节点池上运行。
 
 确认每个 pod 都有一个绑定声明并且 `/data` 使用它：
 
@@ -264,16 +264,16 @@ kubectl exec -n NAMESPACE POD_NAME -- df -h /data
 >         - name: cache
 >           emptyDir:
 >             sizeLimit: 100Gi
-> ```> [标签] LangSmith 0.16
+> ```
+
+> [标签] LangSmith 0.16
 >
 > 在 0.16 上，层已经设置了 `ephemeral-storage` 请求和限制以及名为 `local-ssd-storage` 的 `emptyDir`，因此选择一个层就足够了。
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > smithdb:
 >   resourceTier: small
-> ```
-
-#### 安排 SmithDB 工作负载
+> ```#### 安排 SmithDB 工作负载
 
 将查询、摄取、压缩工作线程和迁移放在本地 SSD 池上。将压缩和集群管理器放在通用计算池上。节点池标签和污点必须与 Helm 选择器和容忍相匹配。 `metastoreMigration`可以在任何节点上运行，并且不需要选择器。
 
@@ -346,7 +346,7 @@ kubectl exec -n NAMESPACE POD_NAME -- df -h /data
 >
 >> [!注意]
 >>
->> 在 LangSmith 0.16 上，迁移作业的 Pod 设置位于 `smithdb.migration.deployment` 而不是 `smithdb.migration.job` 下。所有其他键都相同。
+>> 在 LangSmith 0.16 上，迁移作业的 pod 设置位于 `smithdb.migration.deployment` 而不是 `smithdb.migration.job` 下。所有其他键都相同。
 
 > [手风琴] 验证本地 SSD 容量
 >
@@ -361,7 +361,7 @@ kubectl exec -n NAMESPACE POD_NAME -- df -h /data
 > kubectl exec -n NAMESPACE POD_NAME -- df -h /data
 > ```
 >
-> 对于 Pod 卡住`Pending`、缓存 I/O 缓慢或驱逐，请参阅[Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting#supporting-infrastructure)。
+> 对于 Pod 卡住 `Pending`、缓存 I/O 缓慢或驱逐，请参阅 [Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting#supporting-infrastructure)。
 
 ## 提供商设置> [选项卡] AWS
 >
@@ -398,7 +398,7 @@ kubectl exec -n NAMESPACE POD_NAME -- df -h /data
 >
 > ### 创建缓存StorageClass
 >
-> 对于 [network-attached disk](#network-attached-disk) 选项，创建具有预配置 IOPS 和吞吐量的 gp3 StorageClass。必须安装[EBS CSI driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)。
+> 对于 [network-attached disk](#network-attached-disk) 选项，创建一个具有预配置 IOPS 和吞吐量的 gp3 StorageClass。必须安装[EBS CSI driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)。
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > apiVersion: storage.k8s.io/v1
@@ -987,7 +987,7 @@ kubectl exec -n NAMESPACE POD_NAME -- df -h /data
 > ```
 >
 > ### 使用本地 NVMe 配置 AKS 节点
->> 这适用于 [local SSD](#local-ssd) 选项。使用具有本地 NVMe 磁盘的节点池并通过 [Azure Container Storage](https://learn.microsoft.com/en-us/azure/storage/container-storage/container-storage-introduction) 公开它们。
+>> 这适用于 [local SSD](#local-ssd) 选项。使用带有本地 NVMe 磁盘的节点池并通过 [Azure Container Storage](https://learn.microsoft.com/en-us/azure/storage/container-storage/container-storage-introduction) 公开它们。
 >
 > 调整节点上每个缓存卷的 NVMe 大小。这些示例使用`Standard_L16s_v4`。
 >
@@ -1026,7 +1026,7 @@ kubectl exec -n NAMESPACE POD_NAME -- df -h /data
 > > }
 > > ```
 >
-> 在池上启用 Azure 容器存储。这需要`k8s-extension` Azure CLI 扩展并创建`local-csi` StorageClass。
+> 在池上启用 Azure 容器存储。这需要 `k8s-extension` Azure CLI 扩展并创建 `local-csi` StorageClass。
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > az aks update \
@@ -1037,7 +1037,7 @@ kubectl exec -n NAMESPACE POD_NAME -- df -h /data
 >   --azure-container-storage-nodepools smithcache
 > ```
 >
-> 将每个缓存作为临时 PVC 挂载在 `local-csi` 上，而不是`emptyDir`。该图表根据 PVC 调整查询磁盘缓存的大小，因此请跳过 `ephemeral-storage` 设置。还要添加[scheduling controls](#schedule-smithdb-workloads)。
+> 将每个缓存作为临时 PVC 挂载在 `local-csi` 上，而不是`emptyDir`。该图表根据 PVC 调整查询磁盘缓存的大小，因此请跳过 `ephemeral-storage` 设置。还要添加 [scheduling controls](#schedule-smithdb-workloads)。
 >
 >> [手风琴] Azure 容器存储缓存 Helm 值
 >>
@@ -1089,7 +1089,7 @@ SmithDB 集群管理器告诉客户端哪个摄取或查询 pod 保存了他们�
 | SmithDB 组件（端口）|客户端通过 | 连接客户|
 | - | - | - |
 |摄入 (`8082`) | Pod IP | `ingest-queue`、`queue` 和 SmithDB 查询 |
-|查询 (`8080`) | Pod IP | `platform-backend`、`ingest-queue` 和 `queue` |
+|查询(`8080`) | Pod IP | `platform-backend`、`ingest-queue`、`queue` |
 |集群管理器（`8091`）|服务名称| LangSmith 和 SmithDB 组件 |
 |压实（`8071`）|服务名称| SmithDB 压实工 |
 

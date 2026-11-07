@@ -22,12 +22,12 @@ Built-in provider search is convenient for a first run. Authored tools give you 
 
 > [!NOTE]
 >
-> If you followed the steps to use Tavily in the [Quickstart](/langsmith/javascript/managed-deep-agents-quickstart), skip to the next step.
+> If you already added the Tavily tool with a [connection](/langsmith/javascript/managed-deep-agents-connections) in the [quickstart](/langsmith/javascript/managed-deep-agents-quickstart), skip to the next step.
 
-Add a [Tavily API key](https://app.tavily.com) to `.env`:
+This tutorial uses the connection slug `research-tavily`. For `mda dev`, an agent-owned connection reads its value from `MDA_DEV_<SLUG>`. Add a [Tavily API key](https://app.tavily.com) to `.env` as `MDA_DEV_RESEARCH_TAVILY`:
 
 ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-TAVILY_API_KEY=<TAVILY_API_KEY>
+MDA_DEV_RESEARCH_TAVILY=<TAVILY_API_KEY>
 ```
 
 Install the Tavily client:
@@ -44,18 +44,20 @@ pnpm add @langchain/tavily
 bun add @langchain/tavily
 ```
 
-Create a custom `internet_search` tool:
+Create a custom `internet_search` tool. `connections.get(...)` resolves the key at runtime, so the tool code is the same locally and on the deployment:
 
 ```ts tools/search.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { TavilySearch } from "@langchain/tavily";
 import { tool } from "langchain";
+import { connections } from "managed-deepagents";
 import { z } from "zod";
 
 export const internetSearch = tool(
   async ({ query, maxResults = 5, topic = "general" }) => {
+    const tavilyApiKey = await connections.get("research-tavily", { type: "agent" });
     const tavilySearch = new TavilySearch({
       maxResults,
-      tavilyApiKey: process.env.TAVILY_API_KEY,
+      tavilyApiKey,
       topic,
     });
     return tavilySearch._call({ query });
@@ -170,6 +172,22 @@ bunx mda deploy
 ```
 
 On success, the CLI prints the deployment dashboard URL. The deploy syncs the instructions to Context Hub, uploads the compiled project, and reconciles the daily schedule.
+
+Create the Tavily connection for this deployment. Agent-owned credentials belong to the deployment. Run this command after the first successful deploy:
+
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda connections create research-tavily --secret-from-env MDA_DEV_RESEARCH_TAVILY
+```
+
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda connections create research-tavily --secret-from-env MDA_DEV_RESEARCH_TAVILY
+```
+
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda connections create research-tavily --secret-from-env MDA_DEV_RESEARCH_TAVILY
+```
+
+Rotating this value later takes effect on the next run, with no redeploy. For other create modes and per-caller credentials, see [Manage connections](/langsmith/javascript/managed-deep-agents-connections).
 
 Open that URL and confirm:
 

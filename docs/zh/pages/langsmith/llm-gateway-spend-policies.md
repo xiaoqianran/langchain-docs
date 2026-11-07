@@ -18,11 +18,11 @@
 
 请求完成后，网关会记录请求的成本。超过上限的请求仍然会成功，并且只有后面的请求才会被阻止，因此窗口的支出可能会超过上限。靠近发送的请求可以在第一个请求被记录之前全部通过，因此超调可能大于一个请求。
 
-被阻止的请求可追溯到 LangSmith，并将策略违规记录为元数据，因此您可以准确地看到被阻止的内容和原因。该违规行为也在 [LangSmith Engine](/langsmith/llm-gateway-traces#triage-policy-violations) 中作为一个问题出现。
+被阻止的请求会被追踪到LangSmith，并将策略违规记录为元数据，因此您可以准确地看到被阻止的内容和原因。该违规行为也在 [LangSmith Engine](/langsmith/llm-gateway-traces#triage-policy-violations) 中作为一个问题出现。
 
 > [!注意]
 >
-> 支出政策不适用于按 [Claude subscription](/langsmith/llm-gateway-coding-agents#use-claude-subscription-oauth) 计费的通话，并且这些通话不计入支出总额。
+> 支出政策不适用于通过 [Claude subscription](/langsmith/llm-gateway-coding-agents#use-claude-subscription-oauth) 计费的通话，并且这些通话不计入支出总额。
 
 ## 政策维度支出政策的评估从最广泛到最具体。检查所有匹配的策略，如果任何一个返回块，则请求被拒绝。您可以将策略设置为默认策略（对所有工作区、用户或 API 密钥应用一揽子支出上限）或细化策略（单独限制或对一组实体的限制）。
 
@@ -62,7 +62,7 @@
 > 创建和管理策略需要 `organization:gateway:manage` 权限。组织管理员和组织操作员默认拥有它。有关每个组织角色可以执行的操作，请参阅[Organization roles](/langsmith/rbac#organization-roles)。1. 转至 **LLM Gateway** 并选择 **成本控制**。
 2. 单击**创建支出限额**。
 3. 选择**范围**（组织、工作区、用户或 API 密钥）。
-4. （可选）要按标头分隔默认限制，请选择 **工作空间**、**用户** 或 **API 密钥**，然后默认将该限制应用于该类型的每个主题。选择**通过自定义标头分隔限制**并输入不带`X-Gateway-`的标头名称，例如`Customer-Id`。根据请求发送完整的 `X-Gateway-Customer-Id` 标头。每个主题和标头值对都会收到独立的限制。
+4. （可选）要按标头分隔默认限制，请选择 **工作空间**、**用户** 或 **API 密钥**。默认情况下，将该限制应用于该类型的每个主题。或者，只选择一个主题来对其进行限制。选择**通过自定义标头分隔限制**，然后输入标头名称，例如`Customer-Id`。根据请求发送完整的 `X-Gateway-Customer-Id` 标头。每个主题和标头值对都会收到独立的限制。
 5. 设置美元支出上限和时间窗口期（每月、每周、每天或每小时）。
 6. 单击**创建支出限额**。
 
@@ -70,11 +70,11 @@
 
 > [!提示]
 >
-> 支出策略还可以使用自定义请求标头为每个最终客户、租户或成本中心提供独立的上限，而无需为每个最终客户、租户或成本中心颁发单独的 API 密钥。欲了解更多信息，请参阅[Header-based policies](/langsmith/llm-gateway-header-policies)。
+> 支出策略还可以使用自定义请求标头为每个最终客户、租户或成本中心提供独立的上限，而无需为每个最终客户、租户或成本中心颁发单独的 API 密钥。有关更多信息，请参阅[Header-based policies](/langsmith/llm-gateway-header-policies)。
 
 ## 查看支出
 
-在 **LLM Gateway** > **成本控制** 中，**使用情况** 列显示每个保单的支出金额（以美元为单位）及其上限的百分比。要按用户、API 密钥、模型或请求标头分析一段时间内的支出，请使用 **使用情况** 选项卡。有关更多信息，请参阅[Monitor LLM Gateway spend](/langsmith/llm-gateway-monitoring)。
+在 **LLM Gateway** > **成本控制** 中，**使用情况** 列显示每个保单的支出金额（以美元为单位）及其上限的百分比。要按用户、API 密钥、模型或请求标头分析一段时间内的支出，请使用 **使用情况** 选项卡。欲了解更多信息，请参阅[Monitor LLM Gateway spend](/langsmith/llm-gateway-monitoring)。
 
 ## 另请参阅
 

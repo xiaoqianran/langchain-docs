@@ -26,7 +26,8 @@ Studio 是一款专用代理 IDE，可实现实现代理服务器 API 协议的�
 * [Run experiments over a dataset](/langsmith/observability-studio#run-experiments-over-a-dataset)
 * 管理[long term memory](/oss/python/concepts/memory)
 * 通过[time travel](/oss/python/langgraph/use-time-travel)调试代理状态
-* 1 点击部署到LangSmith云端。
+* 1 点击部署到LangSmith云。
+* [Build a no-code agent](/langsmith/build-an-agent) 通过描述它
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 flowchart
@@ -54,7 +55,11 @@ Studio 支持两种模式：
 
 聊天模式是一个更简单的 UI，用于迭代和测试特定于聊天的代理。它对于业务用户和想要测试整体代理行为的用户非常有用。仅状态包含或扩展[⟦T1⟧](/oss/python/langgraph/graph-api-state#messagesstate)的图支持聊天模式。
 
-## 从 Studio 部署从 Studio 中的 [testing graphs locally](/langsmith/local-dev-testing) 直接从 Studio 中一键将它们部署到 Langsmith Cloud 上。您可以使用它来创建全新的部署以进行快速原型设计或重新部署现有部署。
+## 构建一个无代码代理Studio 还构建无代码代理。 Studio 中的建筑代理在 [LangSmith Cloud](/langsmith/cloud) 上可用，而在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。描述您想要的代理，[LangSmith Chat](/langsmith/chat) 起草其名称、描述和说明，然后建议其连接、渠道和时间表。查看并保存配置，然后与代理聊天并在同一视图中观察其跟踪。有关更多信息，请参阅[Build an agent with LangSmith Studio](/langsmith/build-an-agent)。
+
+## 从 Studio 部署
+
+从 Studio 中的 [testing graphs locally](/langsmith/local-dev-testing) 直接从 Studio 中一键将它们部署到 Langsmith Cloud 上。您可以使用它来创建全新的部署以进行快速原型设计或重新部署现有部署。
 
 ## 了解更多
 

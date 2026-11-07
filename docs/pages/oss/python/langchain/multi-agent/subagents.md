@@ -270,12 +270,12 @@ graph LR
 > # Sub-agents developed by different teams
 > research_agent = create_agent(
 >     model="gpt-5.5",
->     prompt="You are a research specialist..."
+>     system_prompt="You are a research specialist..."
 > )
 >
 > writer_agent = create_agent(
 >     model="gpt-5.5",
->     prompt="You are a writing specialist..."
+>     system_prompt="You are a writing specialist..."
 > )
 >
 > # Registry of available sub-agents

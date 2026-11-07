@@ -87,7 +87,7 @@ LangChain 的 [agent](/oss/javascript/langchain/agents) 实现使用 [LangGraph]
 >
 > 探索 LangGraph 的声明式图形构建 API。> [卡][Functional API](/oss/javascript/langgraph/functional-api)
 >
-> 将代理构建为单一功能。
+> 从另一个框架包装代理以进行 LangSmith 部署。
 
 ## 其他资源
 

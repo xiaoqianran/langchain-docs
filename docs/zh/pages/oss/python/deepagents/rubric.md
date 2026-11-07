@@ -4,7 +4,7 @@
 
 # 评分标准
 
-法学硕士作为法官对代理人进行评分，不断迭代直至完成
+法学硕士作为法官对代理人进行评分，迭代一个标题直到完成
 
 > [!注意]
 >
@@ -167,61 +167,61 @@ agent = create_deep_agent(
 
 在调用状态上传递 `rubric` 字符串以启动自评估循环。使用 `invoke()` 进行单个阻塞调用，或将 [⟦T63⟧](/oss/python/langchain/event-streaming) 与 [⟦T64⟧](/oss/python/langchain/event-streaming#custom-updates) 结合使用以在 `stream.custom` 上发生评分事件时接收这些事件：
 
-**调用()**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.messages import HumanMessage
-
-config = {"configurable": {"thread_id": "my-rubric-thread"}}
-result = agent.invoke(
-    {
-        "messages": [HumanMessage("Write a haiku about spring.")],
-        "rubric": (
-            "- The poem has three lines\n"
-            "- Lines follow a 5-7-5 syllable pattern\n"
-            "- The theme is spring"
-        ),
-    },
-    config=config,
-)
-```
-
-**流\_events()**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.messages import HumanMessage
-from langgraph.stream import CustomTransformer
-
-config = {"configurable": {"thread_id": "my-rubric-thread"}}
-stream = agent.stream_events(
-    {
-        "messages": [HumanMessage("Write a haiku about spring.")],
-        "rubric": (
-            "- The poem has three lines\n"
-            "- Lines follow a 5-7-5 syllable pattern\n"
-            "- The theme is spring"
-        ),
-    },
-    config=config,
-    version="v3",
-    transformers=[CustomTransformer],
-)
-
-for event in stream.custom:
-    event_type = event.get("type")
-    if event_type == "rubric_evaluation_start":
-        print(
-            f"Grading iteration {event['iteration']} "
-            f"(run {event['grading_run_id']})"
-        )
-    elif event_type == "rubric_evaluation_end":
-        print(f"Verdict: {event['result']} — {event.get('explanation', '')}")
-```
-
-Rubric 评分在 `stream.custom` 上发出以下自定义事件：|活动 |被解雇时 |有效负载字段 |
-| - | - | - |
-| `rubric_evaluation_start` |在评分机运行之前。 | <ul><li>`type`：活动名称</li><li>`grading_run_id`：在一次评分标准尝试中的所有活动之间共享</li><li>`iteration`：当前评分的从零开始的索引运行</li></ul> |
-| `rubric_evaluation_end` |评分员返回后或评分员异常后。 | <ul><li>`type`：事件名称</li><li>`grading_run_id`：在一次评分规则尝试中的所有事件之间共享</li><li>`iteration`：当前评分者的从零开始的索引pass</li><li>`result`：此pass的最终判决</li><li>`explanation`：评分者的摘要</li><li>`criteria`：每个标准判决</li></ul> |
+> [选项卡] 调用()
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.messages import HumanMessage
+>
+> config = {"configurable": {"thread_id": "my-rubric-thread"}}
+> result = agent.invoke(
+>     {
+>         "messages": [HumanMessage("Write a haiku about spring.")],
+>         "rubric": (
+>             "- The poem has three lines\n"
+>             "- Lines follow a 5-7-5 syllable pattern\n"
+>             "- The theme is spring"
+>         ),
+>     },
+>     config=config,
+> )
+> ```> [选项卡] 流\_events()
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.messages import HumanMessage
+> from langgraph.stream import CustomTransformer
+>
+> config = {"configurable": {"thread_id": "my-rubric-thread"}}
+> stream = agent.stream_events(
+>     {
+>         "messages": [HumanMessage("Write a haiku about spring.")],
+>         "rubric": (
+>             "- The poem has three lines\n"
+>             "- Lines follow a 5-7-5 syllable pattern\n"
+>             "- The theme is spring"
+>         ),
+>     },
+>     config=config,
+>     version="v3",
+>     transformers=[CustomTransformer],
+> )
+>
+> for event in stream.custom:
+>     event_type = event.get("type")
+>     if event_type == "rubric_evaluation_start":
+>         print(
+>             f"Grading iteration {event['iteration']} "
+>             f"(run {event['grading_run_id']})"
+>         )
+>     elif event_type == "rubric_evaluation_end":
+>         print(f"Verdict: {event['result']} — {event.get('explanation', '')}")
+> ```
+>
+> Rubric 评分在 `stream.custom` 上发出以下自定义事件：
+>
+> |活动 |被解雇时 |有效负载字段 |
+> | - | - | - |
+> | `rubric_evaluation_start` |在评分机运行之前。 | <ul><li>`type`：活动名称</li><li>`grading_run_id`：在一次评分标准尝试中的所有活动之间共享</li><li>`iteration`：当前评分的从零开始的索引运行</li></ul> |
+> | `rubric_evaluation_end` |评分员返回后或评分员异常后。 | <ul><li>`type`：事件名称</li><li>`grading_run_id`：在一次评分规则尝试中的所有事件之间共享</li><li>`iteration`：当前评分者的从零开始的索引pass</li><li>`result`：此pass的最终判决</li><li>`explanation`：评分者的摘要</li><li>`criteria`：每个标准判决</li></ul> |
 
 ### 评分标准判决
 

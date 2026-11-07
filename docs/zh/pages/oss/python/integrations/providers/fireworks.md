@@ -22,11 +22,11 @@ uv add langchain-fireworks
 
 ## 模型接口
 
-> **[ChatFireworks](/oss/python/integrations/chat/fireworks)**
+> [卡][ChatFireworks](/oss/python/integrations/chat/fireworks)
 >
 > Fireworks AI 上托管的聊天模型的界面。
 
-> **[FireworksEmbeddings](/oss/python/integrations/embeddings/fireworks)**
+> [卡][FireworksEmbeddings](/oss/python/integrations/embeddings/fireworks)
 >
 > 由 Fireworks AI 提供服务的嵌入模型。
 

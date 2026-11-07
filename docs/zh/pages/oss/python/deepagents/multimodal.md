@@ -30,7 +30,7 @@ result = agent.invoke({
 
 ## 内置`read_file`工具
 
-对于受支持的多模式文件，harness `read_file` 工具会返回 [standard content blocks](/oss/python/langchain/messages#standard-content-blocks)，而不是纯文本。当所选模型支持相应的模态时，代理可以检查存储在其[filesystem](/oss/python/deepagents/overview#virtual-filesystem-access)中的图像、文档和媒体。检查提供商的文档以了解您的模型支持的 MIME 类型。> **支持的多模式文件扩展名**
+对于受支持的多模式文件，harness `read_file` 工具会返回 [standard content blocks](/oss/python/langchain/messages#standard-content-blocks)，而不是纯文本。当所选模型支持相应的模态时，代理可以检查存储在其[filesystem](/oss/python/deepagents/overview#virtual-filesystem-access)中的图像、文档和媒体。检查提供商的文档以了解您的模型支持的 MIME 类型。> [accordion] 支持的多模式文件扩展名
 >
 > |类型 |扩展 |
 > | - | - |

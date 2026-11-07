@@ -30,7 +30,7 @@ Deep Agents 可与任何支持 [tool calling](/oss/python/langchain/models#tool-
 [Deep Agents eval suite](https://github.com/langchain-ai/deepagents/tree/main/libs/evals#readme)测试热门机型：
 
 |型号|总体 |文件操作 |检索|工具使用|内存|对话 |总结|
-| :-| -: | -: | -: | -: | -: | -: | -: |
+| :- | -: | -: | -: | -: | -: | -: | -: |
 | google\_genai:gemini-3.6-flash | [82%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[90%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [54%](https://github.com/langchain-ai/deepagents/actions/runs/25290479270) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
 |打开：gpt-5.4 | [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | [51%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/24425363630) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |
 |打开：gpt-5.5 | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [84%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [64%](https://github.com/langchain-ai/deepagents/actions/runs/25345307822) | **[52%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
@@ -182,7 +182,7 @@ result = agent.invoke(
 )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/36cdb378-76ec-4705-8fcd-5cdba106b659/r)**
+> [卡][View example trace](https://smith.langchain.com/public/75459b47-934f-45bd-8d85-79cdffbfc1b4/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 

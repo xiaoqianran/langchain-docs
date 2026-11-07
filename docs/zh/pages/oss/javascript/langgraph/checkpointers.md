@@ -59,7 +59,7 @@ LangGraph 检查指针将图状态保存为每一步的检查点，从而实现�
 
 新输入不会清除线程。 LangGraph 使用州的[reducers](/oss/javascript/langgraph/graph-api#reducers) 应用它。使用新的 `thread_id` 从空状态开始。
 
-当最新的检查点没有未完成的工作时，Resume 返回保存的结果，而不运行节点。有关可运行的示例，请参阅 [Functional API error recovery](/oss/javascript/langgraph/functional-api-tasks#resume-after-an-error)、[resuming interrupts](/oss/javascript/langgraph/interrupts#resuming-interrupts) 和 [replaying history](/oss/javascript/langgraph/use-time-travel#replay)。
+当最新的检查点没有未完成的工作时，Resume 返回保存的结果，而不运行节点。有关可运行的示例，请参阅[resuming interrupts](/oss/javascript/langgraph/interrupts#resuming-interrupts)和[replaying history](/oss/javascript/langgraph/use-time-travel#replay)。有关包装另一个框架时的入口点恢复规则，请参阅[Functional API overview](/oss/javascript/langgraph/functional-api#run-and-resume)。
 
 ### 检查点线程在特定时间点的状态称为检查点。检查点是每个[super-step](#super-steps)处保存的图状态的快照，并由`StateSnapshot`对象表示（有关完整字段参考，请参阅[StateSnapshot fields](#statesnapshot-fields)）。
 
