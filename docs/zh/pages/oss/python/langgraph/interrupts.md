@@ -74,7 +74,7 @@ resumed = graph.stream_events(Command(resume=True), config=config, version="v3")
 final = resumed.output
 ```
 
-> **[View example trace](https://smith.langchain.com/public/cf85f039-145d-4226-9c16-3e915c35a35c/r)**
+> [卡][View example trace](https://smith.langchain.com/public/cd7406ad-294e-4d98-b0ae-d9ed7930e117/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -190,7 +190,7 @@ while True:
     stream_input = Command(resume=user_response)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/3fcd0b07-12d7-455e-9d24-8b25548a46be/r)**
+> [卡][View example trace](https://smith.langchain.com/public/acab7c09-a2a5-46f3-96fb-15bd36c8df80/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -258,7 +258,7 @@ print("Final state:", resumed.output)
 # Final state: {'vals': ['a:answer for question_a', 'b:answer for question_b']}
 ```
 
-> **[View example trace](https://smith.langchain.com/public/7cbaa580-169c-4f6d-a883-5d980309e9cf/r)**
+> [卡][View example trace](https://smith.langchain.com/public/abe5fd52-e2d3-41fc-ab1d-c812bc885c3e/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -292,7 +292,7 @@ graph.stream_events(Command(resume=True), config=config, version="v3").output
 graph.stream_events(Command(resume=False), config=config, version="v3").output
 ```
 
-> **完整示例**
+> [手风琴] 完整示例
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from typing import Literal, Optional, TypedDict
@@ -354,7 +354,7 @@ graph.stream_events(Command(resume=False), config=config, version="v3").output
 > print(resumed.output["status"])
 > ```
 >
->> **[View example trace](https://smith.langchain.com/public/81e6322b-083e-4290-bcb2-18cf98d38038/r)**
+>>【卡】[View example trace](https://smith.langchain.com/public/125fbf83-2cf8-4dc7-a148-94f39bc31b8a/r)
 >>
 >> 为此示例打开公共 LangSmith 运行。
 
@@ -386,7 +386,7 @@ graph.stream_events(
 ).output
 ```
 
-> **完整示例**
+> [手风琴] 完整示例
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from typing import TypedDict
@@ -435,7 +435,7 @@ graph.stream_events(
 > print(final_state.output["generated_text"])  # -> "Improved draft after review"
 > ```
 >
->> **[View example trace](https://smith.langchain.com/public/5efd556a-ed06-45b2-9520-a7a4819a92a6/r)**
+>>【卡】[View example trace](https://smith.langchain.com/public/0698f1a4-d39f-459b-be4c-1d189f830d06/r)
 >>
 >> 为此示例打开公共 LangSmith 运行。
 
@@ -473,7 +473,7 @@ def send_email(to: str, subject: str, body: str):
 
 当您希望批准逻辑与工具本身一起存在时，这种方法非常有用，使其可以在图表的不同部分中重复使用。 LLM 可以自然地调用该工具，每当调用该工具时中断就会暂停执行，允许您批准、编辑或取消操作。
 
-> **完整示例**
+> [手风琴] 完整示例
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import sqlite3
@@ -576,13 +576,13 @@ def send_email(to: str, subject: str, body: str):
 >     version="v3",
 > )
 > print(resumed.output["messages"][-1])  # -> Tool result returned by send_email
-> ```
+> ```### 验证人工输入
 
-### 验证人工输入有时您需要验证人类的输入并重新提示该值是否无效。推荐的方法是调用`interrupt()` **每次节点调用一次**，从状态中存储错误消息的节点返回，并使用**条件边**循环回节点，直到提供有效值。
+有时您需要验证人类的输入并重新提示该值是否无效。推荐的方法是调用`interrupt()` **每次节点调用一次**，从状态中存储错误消息的节点返回，并使用**条件边**循环回节点，直到提供有效值。
 
 > [!警告]
 >
-> **避免 `while True` + `interrupt()` 在单个节点内循环。** 因为节点在每次恢复时都从头重新运行（请参阅 [Rules of interrupts](#rules-of-interrupts)），多次调用 `interrupt()` 的循环会导致每个恢复重播所有先前的迭代：第一个恢复重播 1 次迭代，第二次重播 2 次迭代，依此类推。结果是循环体内任何代码的指数重新执行。
+> **避免 `while True` + `interrupt()` 在单个节点内循环。** 因为节点在每次恢复时都从头重新运行（请参阅 [Rules of interrupts](#rules-of-interrupts)），多次调用 `interrupt()` 的循环会导致每个恢复重播所有先前的迭代：第一个恢复重播 1 次迭代，第二次重播 2 次迭代，依此类推。
 
 正确的模式：
 
@@ -619,9 +619,9 @@ builder = StateGraph(FormState)
 builder.add_node("collect_age", get_age_node)
 builder.add_edge(START, "collect_age")
 builder.add_conditional_edges("collect_age", route)
-```每个恢复调用 `get_age_node` 一次，运行 `interrupt()` 调用一次，然后退出。当答案无效时，条件边沿循环返回，并且下一个中断会重新提示更新的问题。每个简历中没有代码运行超过一次。
+```在此示例中，无效答案会导致节点返回更新后的问题。在同一图运行期间，条件边再次调用该节点，并且此新调用在`interrupt()`处暂停。在稍后的恢复中，节点仍然从头开始重新启动，因此 `interrupt()` 之前的任何代码都会再次运行。参见[Rules of interrupts](#rules-of-interrupts)。
 
-> **完整示例**
+> [手风琴] 完整示例
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from typing import TypedDict
@@ -742,7 +742,7 @@ def node_a(state: State):
         "city": city
     }
 ```* 🔴 不要有条件地跳过节点内的 [⟦T135⟧](https://reference.langchain.com/python/langgraph/types/interrupt) 调用
-* 🔴 不要使用在执行过程中不确定的逻辑来循环 [⟦T136⟧](https://reference.langchain.com/python/langgraph/types/interrupt) 调用，包括 `while True` 验证循环。使用条件边代替（参见[Validating human input](#validating-human-input)）
+* 🔴 不要使用跨执行不确定的逻辑来循环 [⟦T136⟧](https://reference.langchain.com/python/langgraph/types/interrupt) 调用，包括 `while True` 验证循环。使用条件边（参见[Validating human input](#validating-human-input)）
 
 ```python Skipping interrupts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def node_a(state: State):
@@ -839,7 +839,9 @@ def node_a(state: State):
 
 * ✅ 在[⟦T144⟧](https://reference.langchain.com/python/langgraph/types/interrupt)之前使用幂等操作
 * ✅ 在 [⟦T145⟧](https://reference.langchain.com/python/langgraph/types/interrupt) 调用之后放置副作用
-* ✅ 如果可能，将副作用分离到单独的节点中
+* ✅尽可能将副作用分离到单独的节点中
+
+在下面的批准后示例中，副作用仅在批准成功时运行。如果节点在提交副作用后但完成之前失败，重试该节点可以重复该效果。在外部系统中使用幂等操作或重复写入。
 
 ```python Idempotent operations theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def node_a(state: State):
@@ -858,7 +860,7 @@ def node_a(state: State):
 ```python Side effects after interrupt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def node_a(state: State):
     # ✅ Good: placing side effect after the interrupt
-    # This ensures it only runs once after approval is received
+    # Approval gates this side effect; retries still need idempotency
     approved = interrupt("Approve this change?")
 
     if approved:
@@ -879,7 +881,7 @@ def approval_node(state: State):
 
 def notification_node(state: State):
     # ✅ Good: side effect happens in a separate node
-    # This runs after approval, so it only executes once
+    # Approval gates this side effect; retries still need idempotency
     if (state.approved):
         send_notification(
             user_id=state["user_id"],
@@ -920,7 +922,7 @@ def node_a(state: State):
 
 ## 与称为函数的子图一起使用
 
-当调用节点内的子图时，父图将从调用子图并触发[⟦T147⟧](https://reference.langchain.com/python/langgraph/types/interrupt)的**节点**开始处恢复执行。同样，**子图**也将从调用 [⟦T148⟧](https://reference.langchain.com/python/langgraph/types/interrupt) 的节点的开头开始恢复。
+当调用节点内的子图时，父图将从调用子图并触发[⟦T147⟧](https://reference.langchain.com/python/langgraph/types/interrupt)的**节点**开始处恢复执行。同样，**子图**也会从调用 [⟦T148⟧](https://reference.langchain.com/python/langgraph/types/interrupt) 的节点的开头开始恢复。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def node_in_parent_graph(state: State):
@@ -936,66 +938,66 @@ def node_in_subgraph(state: State):
     # ...
 ```
 
-## 使用中断进行调试要调试和测试图形，您可以使用静态中断作为断点，一次单步执行一个节点的图形执行。静态中断在节点执行之前或之后的定义点触发。您可以在编译图表时通过指定 `interrupt_before` 和 `interrupt_after` 来设置这些。
+## 使用中断进行调试要调试和测试图表，您可以使用静态中断作为断点，一次单步执行一个节点的图表执行。静态中断在节点执行之前或之后的定义点触发。您可以在编译图表时通过指定 `interrupt_before` 和 `interrupt_after` 来设置这些。
 
 > [!注意]
 >
 > **不**建议将静态中断用于人机交互工作流程。请改用 [⟦T151⟧](https://reference.langchain.com/python/langgraph/types/interrupt) 函数。
 
-**编译时**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-graph = builder.compile(
-    interrupt_before=["node_a"],  # [!code highlight]
-    interrupt_after=["node_b", "node_c"],  # [!code highlight]
-    checkpointer=checkpointer,
-)
-
-# Pass a thread ID to the graph
-config = {
-    "configurable": {
-        "thread_id": "some_thread"
-    }
-}
-
-# Run the graph until the breakpoint
-graph.invoke(inputs, config=config)  # [!code highlight]
-
-# Resume the graph
-graph.invoke(None, config=config)  # [!code highlight]
-```
-
-1. 断点设置在`compile`时间内。
-2. `interrupt_before` 指定执行该节点之前应暂停执行的节点。
-3. `interrupt_after` 指定该节点执行完毕后应暂停执行的节点。
-4. 需要一个检查点来启用断点。
-5. 运行图表直到遇到第一个断点。
-6. 通过传入 `None` 作为输入来恢复图表。这将运行图表直到遇到下一个断点。
-
-**运行时**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-config = {
-    "configurable": {
-        "thread_id": "some_thread"
-    }
-}
-
-# Run the graph until the breakpoint
-graph.invoke(
-    inputs,
-    interrupt_before=["node_a"],  # [!code highlight]
-    interrupt_after=["node_b", "node_c"],  # [!code highlight]
-    config=config,
-)
-
-# Resume the graph
-graph.invoke(None, config=config)  # [!code highlight]
-```1. 使用`interrupt_before`和`interrupt_after`参数调用`graph.invoke`。这是一个运行时配置，可以针对每次调用进行更改。
-2. `interrupt_before` 指定执行该节点之前应暂停执行的节点。
-3. `interrupt_after` 指定该节点执行完毕后应暂停执行的节点。
-4. 运行图表直到遇到第一个断点。
-5. 通过传入 `None` 作为输入来恢复图表。这将运行图表直到遇到下一个断点。
+> [选项卡] 编译时
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> graph = builder.compile(
+>     interrupt_before=["node_a"],  # [!code highlight]
+>     interrupt_after=["node_b", "node_c"],  # [!code highlight]
+>     checkpointer=checkpointer,
+> )
+>
+> # Pass a thread ID to the graph
+> config = {
+>     "configurable": {
+>         "thread_id": "some_thread"
+>     }
+> }
+>
+> # Run the graph until the breakpoint
+> graph.invoke(inputs, config=config)  # [!code highlight]
+>
+> # Resume the graph
+> graph.invoke(None, config=config)  # [!code highlight]
+> ```
+>
+> 1. 断点在`compile`时间内设置。
+> 2. `interrupt_before` 指定执行该节点之前应暂停执行的节点。
+> 3. `interrupt_after` 指定该节点执行完毕后应暂停执行的节点。
+> 4. 需要一个检查点来启用断点。
+> 5. 运行图表直至遇到第一个断点。
+> 6. 通过传入 `None` 作为输入来恢复图表。这将运行图表直到遇到下一个断点。> [选项卡] 在运行时
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> config = {
+>     "configurable": {
+>         "thread_id": "some_thread"
+>     }
+> }
+>
+> # Run the graph until the breakpoint
+> graph.invoke(
+>     inputs,
+>     interrupt_before=["node_a"],  # [!code highlight]
+>     interrupt_after=["node_b", "node_c"],  # [!code highlight]
+>     config=config,
+> )
+>
+> # Resume the graph
+> graph.invoke(None, config=config)  # [!code highlight]
+> ```
+>
+> 1. 使用`interrupt_before`和`interrupt_after`参数调用`graph.invoke`。这是一个运行时配置，可以在每次调用时更改。
+> 2. `interrupt_before` 指定执行该节点之前应暂停执行的节点。
+> 3. `interrupt_after` 指定该节点执行完毕后应暂停执行的节点。
+> 4. 运行图表直至遇到第一个断点。
+> 5. 通过传入 `None` 作为输入来恢复图表。这将运行图表直到遇到下一个断点。
 
 > [!提示]
 >

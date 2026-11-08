@@ -4,17 +4,17 @@
 
 # LangChain v1 中的新功能
 
-**LangChain v1 是一个专注于生产的构建代理基础。** 我们围绕三个核心改进简化了框架：
+**LangChain v1 是一个专注于、可用于生产的构建代理基础。** 我们围绕三个核心改进简化了框架：
 
-> **[create\_agent](#create_agent)**
+> [卡][create\_agent](#create_agent)
 >
-> LangChain中的建筑剂新标准，取代`langgraph.prebuilt.create_react_agent`。
+> LangChain中建筑剂的新标准，取代`langgraph.prebuilt.create_react_agent`。
 
-> **[Standard content blocks](#standard-content-blocks)**
+> [卡][Standard content blocks](#standard-content-blocks)
 >
 > 一个新的 `content_blocks` 属性，提供对跨提供商的现代 LLM 功能的统一访问。
 
-> **[Simplified namespace](#simplified-package)**
+> [卡][Simplified namespace](#simplified-package)
 >
 > `langchain` 命名空间已被简化，以专注于代理的基本构建块，并将旧功能移至 `langchain-classic`。
 
@@ -62,7 +62,7 @@ result = agent.invoke({
 
 #### 预构建中间件
 
-LangChain 为常见模式提供了一些[prebuilt middlewares](/oss/python/langchain/middleware#built-in-middleware)，包括：
+LangChain 提供了一些[prebuilt middlewares](/oss/python/langchain/middleware#built-in-middleware) 的常见模式，包括：
 
 * [⟦T20⟧](https://reference.langchain.com/python/langchain/agents/middleware/pii/PIIMiddleware)：在发送给模型之前编辑敏感信息
 * [⟦T21⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)：当对话历史记录太长时压缩它
@@ -117,7 +117,7 @@ agent = create_agent(
 | `before_agent` |致电代理之前 |加载内存，验证输入 |
 | `before_model` |在每次LLM通话之前|更新提示、修剪消息 |
 | `wrap_model_call` |围绕每个法学硕士通话|拦截并修改请求/响应 |
-| `wrap_tool_call` |围绕每个工具调用 |拦截并修改工具执行 |
+| `wrap_tool_call` |围绕每个工具调用|拦截并修改工具执行 |
 | `after_model` |每次LLM回复后|验证输出，应用护栏 |
 | `after_agent` |代理完成后 |保存结果，清理|
 
@@ -171,33 +171,33 @@ agent = create_agent(
 )
 ```
 
-有关更多信息，请参阅[the complete middleware guide](/oss/python/langchain/middleware)。
+欲了解更多信息，请参阅[the complete middleware guide](/oss/python/langchain/middleware)。
 
 ### 基于 LangGraph 构建
 
 由于 [⟦T30⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 构建于 [LangGraph](/oss/python/langgraph) 之上，因此您可以通过以下方式自动获得对长期运行且可靠的代理的内置支持：
 
-> **坚持**
+> [卡牌] 坚持
 >
 > 通过内置检查点，对话自动在会话之间持续存在
 
-> **流媒体**
+> [卡] 流媒体
 >
 > 实时流式传输令牌、工具调用和推理跟踪
 
-> **人在回路**
+> [卡片] 人在回路
 >
 > 在敏感操作之前暂停代理执行以供人工批准
 
-> **时间旅行**
+> 【卡片】时光旅行
 >
 > 将对话倒回到任意点并探索替代路径和提示
 
 您无需学习 LangGraph 即可使用这些功能 — 它们开箱即用。
 
-### 结构化输出
+### 结构化输出[⟦T31⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 改进了结构化输出生成：
 
-[⟦T31⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 改进了结构化输出生成：* **主循环集成**：结构化输出现在在主循环中生成，而不需要额外的 LLM 调用
+* **主循环集成**：结构化输出现在在主循环中生成，而不需要额外的 LLM 调用
 * **结构化输出策略**：模型可以选择调用工具或使用提供者端结构化输出生成
 * **降低成本**：消除额外的法学硕士通话带来的额外费用
 
@@ -229,7 +229,7 @@ print(repr(result["structured_response"]))
 # results in `Weather(temperature=70.0, condition='sunny')`
 ```
 
-**错误处理**：通过`handle_errors`参数控制错误处理到`ToolStrategy`：
+**错误处理**：通过`handle_errors`参数到`ToolStrategy`控制错误处理：
 
 * **解析错误**：模型生成的数据与所需的结构不匹配
 * **多个工具调用**：模型为结构化输出模式生成 2 个以上的工具调用
@@ -285,9 +285,9 @@ LangChain v1 简化了 [⟦T40⟧](https://pypi.org/project/langchain/) 包命�
 |模块|有什么可用的 |笔记|
 | - | - | - |
 | [⟦T41⟧](https://reference.langchain.com/python/langchain/agents) | [⟦T42⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)、[⟦T43⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState) |核心代理创建功能 |
-| [⟦T44⟧](https://reference.langchain.com/python/langchain/messages) |消息类型，[content blocks](https://reference.langchain.com/python/langchain-core/messages/content/ContentBlock)，[⟦T45⟧](https://reference.langchain.com/python/langchain-core/messages/utils/trim_messages) |从[⟦T46⟧](https://reference.langchain.com/python/langchain-core/)转口|
+| [⟦T44⟧](https://reference.langchain.com/python/langchain/messages) |消息类型，[content blocks](https://reference.langchain.com/python/langchain-core/messages/content/ContentBlock)，[⟦T45⟧](https://reference.langchain.com/python/langchain-core/messages/utils/trim_messages) |从[⟦T46⟧](https://reference.langchain.com/python/langchain-core/)复出口|
 | [⟦T47⟧](https://reference.langchain.com/python/langchain/tools) | [⟦T48⟧](https://reference.langchain.com/python/langchain-core/tools/convert/tool)、[⟦T49⟧](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool)、注射助手|从[⟦T50⟧](https://reference.langchain.com/python/langchain-core/)转口|
-| [⟦T51⟧](https://reference.langchain.com/python/langchain/models) | [⟦T52⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)、[⟦T53⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) |统一模型初始化 |
+| [⟦T51⟧](https://reference.langchain.com/python/langchain/models) | [⟦T52⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)、[⟦T53⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) |统一模型初始化|
 | [⟦T54⟧](https://reference.langchain.com/python/langchain/embeddings) | [⟦T55⟧](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings)、[⟦T56⟧](https://reference.langchain.com/python/langchain/embeddings/base/init_embeddings) |嵌入模型|
 
 为了方便起见，其中大部分都是从 `langchain-core` 重新导出的，这为您提供了一个用于构建代理的集中 API 界面。
@@ -313,12 +313,13 @@ from langchain.embeddings import init_embeddings
 
 * 遗留链和链实现
 * 检索器（例如 `MultiQueryRetriever` 或之前的 `langchain.retrievers` 模块中的任何内容）
+* 修复格式错误的模型输出的输出解析器（例如`OutputFixingParser`、`RetryOutputParser`）
 * 索引API
 * hub模块（用于以编程方式管理提示）
-* [⟦T63⟧](https://pypi.org/project/langchain-community) 出口
+* [⟦T65⟧](https://pypi.org/project/langchain-community) 出口
 * 其他已弃用的功能
 
-如果您使用任何此功能，请安装[⟦T64⟧](https://pypi.org/project/langchain-classic)：
+如果您使用任何此功能，请安装[⟦T66⟧](https://pypi.org/project/langchain-classic)：
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install langchain-classic
@@ -340,6 +341,9 @@ from langchain_classic.chains import ...  # [!code ++]
 from langchain.retrievers import ...  # [!code --]
 from langchain_classic.retrievers import ...  # [!code ++]
 
+from langchain.output_parsers import OutputFixingParser  # [!code --]
+from langchain_classic.output_parsers import OutputFixingParser  # [!code ++]
+
 from langchain import hub  # [!code --]
 from langchain_classic import hub  # [!code ++]
 ```
@@ -354,27 +358,27 @@ from langchain_classic import hub  # [!code ++]
 
 ## 其他资源
 
-> **[LangChain 1.0](https://blog.langchain.com/langchain-langchain-1-0-alpha-releases/)**
+> [卡][LangChain 1.0](https://blog.langchain.com/langchain-langchain-1-0-alpha-releases/)
 >
 > 阅读公告
 
-> **[Middleware guide](https://blog.langchain.com/agent-middleware/)**
+> [卡][Middleware guide](https://blog.langchain.com/agent-middleware/)
 >
 > 深入研究中间件
 
-> **[Agents Documentation](/oss/python/langchain/agents)**
+> [卡][Agents Documentation](/oss/python/langchain/agents)
 >
 > 完整的代理文档
 
-> **[Message Content](/oss/python/langchain/messages#message-content)**
+> [卡][Message Content](/oss/python/langchain/messages#message-content)
 >
 > 新内容块 API
 
-> **[Migration guide](/oss/python/migrate/langchain-v1)**
+> [卡][Migration guide](/oss/python/migrate/langchain-v1)
 >
 > 如何迁移到LangChain v1
 
-> **[GitHub](https://github.com/langchain-ai/langchain)**
+> [卡][GitHub](https://github.com/langchain-ai/langchain)
 >
 > 报告问题或贡献
 

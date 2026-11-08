@@ -8,23 +8,23 @@
 
 > [!提示]
 >
-> 对于内置多代理支持，请使用 [Deep Agents](/oss/python/deepagents/overview)：基于 LangChain 构建的更高级别的工具，附带 [subagents](/oss/python/deepagents/subagents)、[skills](/oss/python/deepagents/skills)、规划、虚拟文件系统和上下文管理。
+> 对于内置多代理支持，请使用 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)：基于 LangChain 构建的托管高级工具，附带 [subagents](/oss/python/deepagents/subagents)、[skills](/oss/python/deepagents/skills)、规划、虚拟文件系统和上下文管理。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents](/oss/python/deepagents/overview) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。
 
 ## 为什么要使用多代理？
 
-当开发人员说他们需要“多代理”时，他们通常会寻找以下一项或多项功能：
-
-* **上下文管理**：提供专业知识，而不会淹没模型的上下文窗口。如果上下文是无限的并且延迟为零，您可以将所有知识转储到单个提示中 - 但由于事实并非如此，您需要模式来有选择地显示相关信息。
+当开发人员说他们需要“多代理”时，他们通常会寻找以下一项或多项功能：* **上下文管理**：提供专业知识，而不会淹没模型的上下文窗口。如果上下文是无限的并且延迟为零，您可以将所有知识转储到单个提示中 - 但由于事实并非如此，您需要模式来有选择地显示相关信息。
 * **分布式开发**：允许不同团队独立开发和维护能力，组成一个边界清晰的更大系统。
-* **并行化**：为子任务生成专门的工作人员并同时执行它们以获得更快的结果。当单个代理有太多[tools](/oss/python/langchain/tools)并且对使用哪个代理做出错误的决定时，当任务需要具有广泛上下文的专业知识（长提示和特定于领域的工具）时，或者当您需要强制执行顺序约束以仅在满足某些条件后解锁功能时，多代理模式特别有价值。
+* **并行化**：为子任务生成专门的工作人员并同时执行它们以获得更快的结果。
+
+当单个代理有太多[tools](/oss/python/langchain/tools)并且对使用哪个代理做出错误的决定时，当任务需要具有广泛上下文的专业知识（长提示和特定于领域的工具）时，或者当您需要强制执行顺序约束以仅在满足某些条件后解锁功能时，多代理模式特别有价值。
 
 > [!提示]
 >
 > 多智能体设计的核心是**[context engineering](/oss/python/langchain/context-engineering)**——决定每个智能体看到什么信息。系统的质量取决于确保每个代理都能访问其任务所需的正确数据。
 
-## 模式
+## 模式以下是构建多代理系统的主要模式，每种模式适合不同的用例：
 
-以下是构建多代理系统的主要模式，每种模式适合不同的用例：|图案|它是如何运作的 |
+|图案|它是如何运作的 |
 | - | - |
 | [**Subagents**](/oss/python/langchain/multi-agent/subagents) |主代理作为工具来协调子代理。所有路由都经过主代理，主代理决定何时以及如何调用每个子代理。 |
 | [**Handoffs**](/oss/python/langchain/multi-agent/handoffs) |行为根据状态动态变化。工具调用更新状态变量，触发路由或配置更改、切换代理或调整当前代理的工具和提示。 |
@@ -34,14 +34,14 @@
 
 ### 选择模式
 
-使用此表将您的要求与正确的模式相匹配：
-
-|图案|分布式开发 |并行化 |多跳 |直接用户交互 |
+使用此表将您的要求与正确的模式相匹配：|图案|分布式开发 |并行化 |多跳|直接用户交互 |
 | - | :-: | :-: | :-: | :-: |
 | [**Subagents**](/oss/python/langchain/multi-agent/subagents) | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐ |
 | [**Handoffs**](/oss/python/langchain/multi-agent/handoffs) | - | - | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | [**Skills**](/oss/python/langchain/multi-agent/skills) | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| [**Router**](/oss/python/langchain/multi-agent/router) | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | - | ⭐⭐⭐ |* **分布式开发**：不同团队可以独立维护组件吗？
+| [**Router**](/oss/python/langchain/multi-agent/router) | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | - | ⭐⭐⭐ |
+
+* **分布式开发**：不同团队可以独立维护组件吗？
 * **并行化**：多个代理可以同时执行吗？
 * **多跳**：该模式是否支持串联调用多个子代理？
 * **直接用户交互**：子代理可以直接与用户对话吗？
@@ -52,29 +52,29 @@
 
 ### 视觉概述
 
-**子代理**
+> [选项卡] 子代理
+>
+> 主代理作为工具来协调子代理。所有路由都经过主代理。
+>
+> ![Subagents pattern: main agent coordinates subagents as tools](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/pattern-subagents.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=f924dde09057820b08f0c577e08fcfe7)
 
-主代理作为工具来协调子代理。所有路由都经过主代理。
+> [选项卡] 交接
+>
+> 代理通过工具调用相互转移控制权。每个代理可以移交给其他代理或直接响应用户。
+>
+> ![Handoffs pattern: agents transfer control via tool calls](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/pattern-handoffs.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=57d935e6a8efab4afb3faa385113f4dd)> [选项卡] 技能
+>
+> 单个代理可按需加载专门的提示和知识，同时保持控制。
+>
+> ![Skills pattern: single agent loads specialized context on-demand](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/pattern-skills.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=119131d1f19be1f0c6fb1e30f080b427)
 
-![Subagents pattern: main agent coordinates subagents as tools](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/pattern-subagents.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=f924dde09057820b08f0c577e08fcfe7)
+> [选项卡] 路由器
+>
+> 路由步骤对输入进行分类并将其定向到专门的代理。综合结果。
+>
+> ![Router pattern: routing step classifies input to specialized agents](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/pattern-router.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=ceab32819240ba87f3a132357cc78b09)
 
-**交接**
-
-代理通过工具调用相互转移控制权。每个代理可以移交给其他代理或直接响应用户。
-
-![Handoffs pattern: agents transfer control via tool calls](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/pattern-handoffs.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=57d935e6a8efab4afb3faa385113f4dd)
-
-**技能**
-
-单个代理可以按需加载专门的提示和知识，同时保持控制。
-
-![Skills pattern: single agent loads specialized context on-demand](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/pattern-skills.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=119131d1f19be1f0c6fb1e30f080b427)
-
-**路由器**
-
-路由步骤对输入进行分类并将其定向到专门的代理。综合结果。
-
-![Router pattern: routing step classifies input to specialized agents](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/pattern-router.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=ceab32819240ba87f3a132357cc78b09)> [!提示]
+> [!提示]
 >
 > 使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-index) 跟踪代理之间的完整协调流程。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。
 >
@@ -100,31 +100,31 @@
 | [**Subagents**](/oss/python/langchain/multi-agent/subagents) | 4 | |
 | [**Handoffs**](/oss/python/langchain/multi-agent/handoffs) | 3 | ✅ |
 | [**Skills**](/oss/python/langchain/multi-agent/skills) | 3 | ✅ |
-| [**Router**](/oss/python/langchain/multi-agent/router) | 3 | ✅ |
+| [**Router**](/oss/python/langchain/multi-agent/router) | 3 | ✅ |> [选项卡] 子代理
+>
+> **4 个模型调用：**
+>
+> ![Subagents one-shot: 4 model calls for buy coffee request](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/oneshot-subagents.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=bd4eeef41d8870bfa887dd0aa97d0b79)
 
-**子代理**
+> [选项卡] 交接
+>
+> **3 个模型调用：**
+>
+> ![Handoffs one-shot: 3 model calls for buy coffee request](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/oneshot-handoffs.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=42ec50519ff04f034050dc77cf869907)
 
-**4个模型调用：**
+> [选项卡] 技能
+>
+> **3 个模型调用：**
+>
+> ![Skills one-shot: 3 model calls for buy coffee request](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/oneshot-skills.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=c8dbf69ed4509e30e5280e7e8a391dab)
 
-![Subagents one-shot: 4 model calls for buy coffee request](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/oneshot-subagents.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=bd4eeef41d8870bfa887dd0aa97d0b79)
+> [选项卡] 路由器
+>
+> **3 个模型调用：**
+>
+> ![Router one-shot: 3 model calls for buy coffee request](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/oneshot-router.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=be5707931d3e520e3ae66af544f2cf2f)
 
-**交接**
-
-**3个模型调用：**
-
-![Handoffs one-shot: 3 model calls for buy coffee request](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/oneshot-handoffs.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=42ec50519ff04f034050dc77cf869907)
-
-**技能**
-
-**3个模型调用：**
-
-![Skills one-shot: 3 model calls for buy coffee request](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/oneshot-skills.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=c8dbf69ed4509e30e5280e7e8a391dab)
-
-**路由器**
-
-**3个模型调用：**
-
-![Router one-shot: 3 model calls for buy coffee request](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/oneshot-router.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=be5707931d3e520e3ae66af544f2cf2f)**关键见解：** 切换、技能和路由​​器对于单个任务（每个任务 3 个调用）最有效。子代理添加一个额外的调用，因为结果通过主代理流回 - 这一开销提供了集中控制。
+**关键见解：** 切换、技能和路由器对于单个任务（每个任务 3 个调用）最有效。子代理会添加一个额外的调用，因为结果会通过主代理流回 - 这一开销提供了集中控制。
 
 ### 重复请求
 
@@ -140,45 +140,43 @@
 | [**Skills**](/oss/python/langchain/multi-agent/skills) | 2 | 5 | ✅ |
 | [**Router**](/oss/python/langchain/multi-agent/router) | 3 | 6 | |
 
-**子代理**
+> [选项卡] 子代理
+>
+> **再次调用 4 次 → 总共 8 次**
+>
+> * 子代理**设计为无状态** - 每次调用都遵循相同的流程
+> * 主代理维护对话上下文，但子代理每次都重新开始
+> * 这提供了强大的上下文隔离，但重复了整个流程> [选项卡] 交接
+>
+> **2 次呼叫 → 总共 5 次**
+>
+> * 咖啡代理从第 1 回合开始**仍然处于活动状态**（状态持续）
+> * 无需切换——座席直接调用`buy_coffee`工具（调用1）
+> * 代理响应用户（呼叫 2）
+> * **通过跳过切换节省 1 个呼叫**
 
-**再次调用 4 次 → 总共 8 次**
+> [选项卡] 技能
+>
+> **2 次呼叫 → 总共 5 次**
+>
+> * 技能上下文**已加载**在对话历史记录中
+> * 无需重新加载——agent直接调用`buy_coffee`工具（调用1）
+> * 代理响应用户（呼叫 2）
+> * **通过重用加载的技能节省 1 次通话**
 
-* 子代理**设计为无状态** - 每次调用都遵循相同的流程
-* 主代理维护对话上下文，但子代理每次都重新开始
-* 这提供了强大的上下文隔离，但重复了整个流程
+> [选项卡] 路由器
+>
+> **再次调用 3 次 → 总共 6 次**
+>
+> * 路由器是**无状态** - 每个请求都需要 LLM 路由调用
+> * 第 2 回合：路由器 LLM 调用 (1) → Milk 代理调用 buy\_coffee (2) → Milk 代理响应 (3)
+> * 可以通过包装为有状态代理中的工具来优化
 
-**交接**
-
-**2 次呼叫 → 总共 5 次**
-
-* 咖啡代理从第 1 回合开始**仍然处于活动状态**（状态持续）
-* 无需切换——座席直接调用`buy_coffee`工具（调用1）
-* 代理响应用户（调用 2）
-* **通过跳过切换节省 1 个呼叫**
-
-**技能**
-
-**2 次呼叫 → 总共 5 次*** 技能上下文**已加载**在对话历史记录中
-* 无需重新加载——agent直接调用`buy_coffee`工具（调用1）
-* 代理响应用户（调用 2）
-* **通过重用加载的技能节省 1 次调用**
-
-**路由器**
-
-**再次调用 3 次 → 总共 6 次**
-
-* 路由器是**无状态**——每个请求都需要一个 LLM 路由调用
-* 第 2 回合：路由器 LLM 调用 (1) → Milk 代理调用 buy\_coffee (2) → Milk 代理响应 (3)
-* 可以通过包装为有状态代理中的工具来优化
-
-**关键见解：** 有状态模式（切换、技能）可节省 40-50% 的重复请求呼叫。子代理保持每个请求的一致成本——这种无状态设计提供了强大的上下文隔离，但代价是重复模型调用。
+**关键见解：** 有状态模式（交接、技能）可节省 40-50% 的重复请求呼叫。子代理保持每个请求的一致成本——这种无状态设计提供了强大的上下文隔离，但代价是重复模型调用。
 
 ### 多域
 
-> **用户：**“比较 Python、JavaScript 和 Rust 的 Web 开发”
-
-每个语言代理/技能包含约 2000 个文档标记。所有模式都可以进行并行工具调用。
+> **用户：**“比较 Python、JavaScript 和 Rust 的 Web 开发”每个语言代理/技能包含约 2000 个文档标记。所有模式都可以进行并行工具调用。
 
 |图案|模型调用 |代币总数 |最适合|
 | - | :-: | :-: | :-: |
@@ -187,41 +185,43 @@
 | [**Skills**](/oss/python/langchain/multi-agent/skills) | 3 | \~15K | |
 | [**Router**](/oss/python/langchain/multi-agent/router) | 5 | \~9K | ✅ |
 
-**子代理**
+> [选项卡] 子代理
+>
+> **5 次调用，\~9K 代币**
+>
+> ![Subagents multi-domain: 5 calls with parallel execution](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/multidomain-subagents.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=9cc5d2d46bfa98b7ceeacdc473512c94)
+>
+> 每个子代理都在**隔离**中工作，仅与其相关的上下文相关。总计：**9K 代币**。
 
-**5 次调用，\~9K 代币**
+> [选项卡] 交接
+>
+> **7+ 次调用，\~14K+ 代币**
+>
+> ![Handoffs multi-domain: 7+ sequential calls](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/multidomain-handoffs.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=7ede44260515e49ff1d0217f0030d66d)
+>
+> 切换**按顺序**执行 - 无法并行研究所有三种语言。不断增长的对话历史会增加开销。总计：**\~14K+ 代币**。
 
-![Subagents multi-domain: 5 calls with parallel execution](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/multidomain-subagents.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=9cc5d2d46bfa98b7ceeacdc473512c94)每个子代理都在**隔离**中工作，仅与其相关的上下文相关。总计：**9K 代币**。
+> [选项卡] 技能
+>
+> **3 次调用，\~15K 代币**
+>
+> ![Skills multi-domain: 3 calls with accumulated context](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/multidomain-skills.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=2162584b6076aee83396760bc6de4cf4)
+>
+> 加载后，**后续每次调用都会处理技能文档的所有 6K 令牌**。由于上下文隔离，子代理处理的令牌总体减少了 67%。总计：**15K 代币**。
 
-**交接**
-
-**7+ 次调用，\~14K+ 代币**
-
-![Handoffs multi-domain: 7+ sequential calls](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/multidomain-handoffs.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=7ede44260515e49ff1d0217f0030d66d)
-
-切换**顺序**执行——无法并行研究所有三种语言。不断增长的对话历史会增加开销。总计：**\~14K+ 代币**。
-
-**技能**
-
-**3 次调用，\~15K 代币**
-
-![Skills multi-domain: 3 calls with accumulated context](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/multidomain-skills.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=2162584b6076aee83396760bc6de4cf4)
-
-加载后，**后续每次调用都会处理技能文档的所有 6K 令牌**。由于上下文隔离，子代理处理的令牌总体减少了 67%。总计：**15K 代币**。
-
-**路由器**
-
-**5 次调用，\~9K 代币**
-
-![Router multi-domain: 5 calls with parallel execution](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/multidomain-router.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=ef11573bc65e5a2996d671bb3030ca6b)
-
-路由器使用 **LLM 进行路由**，然后并行调用代理。与子代理类似，但具有显式路由步骤。总计：**9K 代币**。
-
-**关键见解：** 对于多域任务，并行执行的模式（子代理、路由器）是最有效的。由于上下文积累，技能调用较少，但令牌使用率较高。此处的切换效率很低，它必须按顺序执行，并且无法利用并行工具调用来同时咨询多个域。
+> [选项卡] 路由器
+>
+> **5 次调用，\~9K 代币**
+>
+> ![Router multi-domain: 5 calls with parallel execution](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/multidomain-router.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=ef11573bc65e5a2996d671bb3030ca6b)
+>
+> 路由器使用 **LLM 进行路由**，然后并行调用代理。与子代理类似，但具有显式路由步骤。总计：**9K 代币**。**关键见解：** 对于多域任务，并行执行的模式（子代理、路由器）是最有效的。由于上下文积累，技能调用较少，但令牌使用率较高。此处的切换效率很低，它必须按顺序执行，并且无法利用并行工具调用来同时咨询多个域。
 
 ### 总结
 
-以下是所有三种情况下的模式比较：|图案|一击|重复请求 |多域 |
+以下是所有三种情况下的模式比较：
+
+|图案|一击|重复请求 |多域 |
 | - | :-: | :-: | :-: |
 | [**Subagents**](/oss/python/langchain/multi-agent/subagents) | 4 次通话 | 8 次通话 (4+4) | 5 次调用，9K 代币 |
 | [**Handoffs**](/oss/python/langchain/multi-agent/handoffs) | 3 次通话 | 5 次通话 (3+2) | 7+ 次调用，14K+ 代币 |
@@ -232,7 +232,7 @@
 
 |优化 | [Subagents](/oss/python/langchain/multi-agent/subagents) | [Handoffs](/oss/python/langchain/multi-agent/handoffs) | [Skills](/oss/python/langchain/multi-agent/skills) | [Router](/oss/python/langchain/multi-agent/router) |
 | - | :-: | :-: | :-: | :-: |
-|单个请求 | | ✅ | ✅ | ✅ |
+|单个请求| | ✅ | ✅ | ✅ |
 |重复请求 | | ✅ | ✅ | |
 |并行执行| ✅ | | | ✅ |
 |大上下文域 | ✅ | | | ✅ |

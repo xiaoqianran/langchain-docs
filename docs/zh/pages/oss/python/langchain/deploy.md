@@ -59,61 +59,61 @@
 
 #### 5. 测试 API
 
-您现在可以测试 API：
+您现在可以测试 API：> [选项卡] Python
+>
+> 1.安装LangGraphPython：
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U langgraph-sdk
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add langgraph-sdk
+> ```
+>
+> 2. 向代理发送消息：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph_sdk import get_sync_client # or get_client for async
+>
+> client = get_sync_client(url="your-deployment-url", api_key="your-langsmith-api-key")
+>
+> for chunk in client.runs.stream(
+>     None,    # Threadless run
+>     "agent", # Name of agent. Defined in langgraph.json.
+>     input={
+>         "messages": [{
+>             "role": "human",
+>             "content": "What is LangGraph?",
+>         }],
+>     },
+>     stream_mode="updates",
+> ):
+>     print(f"Receiving new event of type: {chunk.event}...")
+>     print(chunk.data)
+>     print("\n\n")
+> ```
 
-**Python**
-
-1.安装LangGraphPython：
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U langgraph-sdk
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add langgraph-sdk
-```
-
-2. 向代理发送消息：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph_sdk import get_sync_client # or get_client for async
-
-client = get_sync_client(url="your-deployment-url", api_key="your-langsmith-api-key")
-
-for chunk in client.runs.stream(
-    None,    # Threadless run
-    "agent", # Name of agent. Defined in langgraph.json.
-    input={
-        "messages": [{
-            "role": "human",
-            "content": "What is LangGraph?",
-        }],
-    },
-    stream_mode="updates",
-):
-    print(f"Receiving new event of type: {chunk.event}...")
-    print(chunk.data)
-    print("\n\n")
-```
-
-**休息API**```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl -s --request POST \
-    --url <DEPLOYMENT_URL>/runs/stream \
-    --header 'Content-Type: application/json' \
-    --header "X-Api-Key: <LANGSMITH API KEY> \
-    --data "{
-        \"assistant_id\": \"agent\", `# Name of agent. Defined in langgraph.json.`
-        \"input\": {
-            \"messages\": [
-                {
-                    \"role\": \"human\",
-                    \"content\": \"What is LangGraph?\"
-                }
-            ]
-        },
-        \"stream_mode\": \"updates\"
-    }"
-```
+> [选项卡] 休息API
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl -s --request POST \
+>     --url <DEPLOYMENT_URL>/runs/stream \
+>     --header 'Content-Type: application/json' \
+>     --header "X-Api-Key: <LANGSMITH API KEY> \
+>     --data "{
+>         \"assistant_id\": \"agent\", `# Name of agent. Defined in langgraph.json.`
+>         \"input\": {
+>             \"messages\": [
+>                 {
+>                     \"role\": \"human\",
+>                     \"content\": \"What is LangGraph?\"
+>                 }
+>             ]
+>         },
+>         \"stream_mode\": \"updates\"
+>     }"
+> ```
 
 > [!提示]
 >

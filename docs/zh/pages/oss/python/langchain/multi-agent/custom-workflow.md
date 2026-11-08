@@ -36,7 +36,7 @@ graph LR
 
 工作流程中的每个节点可以是一个简单的函数、一个 LLM 调用或一个完整的 [agent](/oss/python/langchain/agents) 和 [tools](/oss/python/langchain/tools)。您还可以在自定义工作流程中构建其他架构，例如，将多代理系统嵌入为单个节点。
 
-有关自定义工作流程的完整示例，请参阅下面的教程。> **[Tutorial: Build a multi-source knowledge base with routing](/oss/python/langchain/multi-agent/router-knowledge-base)**
+有关自定义工作流程的完整示例，请参阅下面的教程。> [卡][Tutorial: Build a multi-source knowledge base with routing](/oss/python/langchain/multi-agent/router-knowledge-base)
 >
 > [router pattern](/oss/python/langchain/multi-agent/router) 是自定义工作流程的示例。本教程将逐步构建一个并行查询 GitHub、Notion 和 Slack 的路由器，然后综合结果。
 >
@@ -71,7 +71,7 @@ workflow = (
 
 ## 示例：RAG 管道
 
-一个常见的用例是将 [retrieval](/oss/python/deepagents/retrieval) 与代理结合起来。此示例构建了一个 WNBA 统计助手，可以从知识库中检索并获取实时新闻。> **自定义 RAG 工作流程**
+一个常见的用例是将 [retrieval](/oss/python/deepagents/retrieval) 与代理结合起来。此示例构建了一个 WNBA 统计助手，可以从知识库中检索并获取实时新闻。> [手风琴] 自定义 RAG 工作流程
 >
 > 该工作流程演示了三种类型的节点：
 >

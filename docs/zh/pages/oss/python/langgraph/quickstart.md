@@ -4,36 +4,11 @@
 
 # 快速入门
 
-本快速入门演示了如何使用 LangGraph 图形 API 或功能 API 构建计算器代理。
+本快速入门演示了如何使用 LangGraph Graph API 构建计算器代理。
 
-构建 LangGraph 计算器快速入门
+已经有代理并想要部署它？参见[LangSmith Deployment](/langsmith/deployment)。
 
-按照 LangGraph 快速入门，在此工作目录中构建 LangGraph 计算器代理。
-
-## 第 1 步：阅读指南
-
-检测该项目是否使用Python或TypeScript/JavaScript。获取并关注匹配的页面；将其视为包名称、模型字符串和代码的真实来源：
-
-* Python：[https://docs.langchain.com/oss/python/langgraph/quickstart.md](https://docs.langchain.com/oss/python/langgraph/quickstart.md)
-* 打字稿：[https://docs.langchain.com/oss/javascript/langgraph/quickstart.md](https://docs.langchain.com/oss/javascript/langgraph/quickstart.md)
-
-询问用户是使用图形 API 还是功能 API。如果他们没有偏好，请使用 Graph API 路径。
-
-## 第二步：安装依赖项
-
-使用本项目中已使用的包管理器安装所选路径所需的包。
-
-## 步骤 3：配置模型凭据
-
-本快速入门默认使用 Anthropic。检查`ANTHROPIC_API_KEY`是否设置。如果不是，则要求用户创建一个密钥并将其设置在 shell 或 `.env` 文件中，然后停止并等待确认。请勿发明、硬编码或提交 API 密钥。如果用户更喜欢集成文档中的另一个聊天模型提供程序，请在确认后相应地调整示例。## 步骤 4：实现计算器代理
-
-端到端实施所选的快速入门路径：加法、乘法和除法工具；代理图或功能工作流程；以及练习工具调用的示例调用。打印最终结果，以便用户验证运行。
-
-## 规则
-
-* 请关注本快速入门。除非用户要求，否则不要添加部署、评估或不相关的框架。
-* 优先选择获取的指南中显示的 API 和结构，而不是发明不同的代理模式。
-* 当秘密、API 选择或项目约定不清楚时，询问而不是猜测。> [!提示]
+> [!提示]
 >
 > **使用人工智能编码助手？**
 >
@@ -54,12 +29,12 @@
 > * Codex CLI：`codex mcp add` 以及每个服务器 URL。
 > * 光标、Deep Agents 代码、VS 代码或反重力：使用我的客户页面上显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
 > * Claude Desktop：在“设置”>“连接器”下添加两个 URL。
->
-> 不要发明备用 MCP URL。配置后，确认两台服务器均已列出并且可访问。
+>> 不要发明备用 MCP URL。配置后，确认两台服务器均已列出并且可访问。
 > * 安装 [LangChain Skills](https://github.com/langchain-ai/langchain-skills) 以提高代理在 LangChain 生态系统任务上的性能。
 >
-> 安装LangChain技能
->> 为我的编码代理安装 LangChain 技能，以便它可以更好地执行 LangChain、LangGraph 和 Deep Agents 任务。
+> 安装LangChain技巧
+>
+> 为我的编码代理安装 LangChain 技能，以便它可以更好地执行 LangChain、LangGraph 和 Deep Agents 任务。
 >
 > 使用 [https://github.com/langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills) 中的特工技能安装程序：
 >
@@ -75,31 +50,90 @@
 >
 > 检测我正在使用哪个代理或编辑器。如果我使用 Claude Code 并且更喜欢插件路径，请按照该存储库自述文件中的市场安装（`/plugin marketplace add` 然后`/plugin install`）。不要发明备用技能包名称或安装 URL。安装后，确认代理可以使用该技能。
 
-* [Use the Graph API](#use-the-graph-api) 如果您更喜欢将代理定义为节点和边的图。
-* [Use the Functional API](#use-the-functional-api) 如果您希望将代理定义为单个函数。
+## 先决条件
 
-有关概念信息，请参阅 [Graph API overview](/oss/python/langgraph/graph-api) 和 [Functional API overview](/oss/python/langgraph/functional-api)。
+在开始之前，请确保您拥有模型提供商（例如 Gemini、Anthropic、OpenAI）提供的 API 密钥。
+请参阅 [chat model integrations](/oss/python/integrations/chat) 了解所有可用的提供商。
 
-> [!注意]
->
-> 对于此示例，您需要设置一个 [Claude (Anthropic)](https://www.anthropic.com/) 帐户并获取 API 密钥。然后，在终端中设置 `ANTHROPIC_API_KEY` 环境变量。请参阅[chat model integrations](/oss/python/integrations/chat)了解所有可用的提供商。如果您使用 [LangSmith Gateway](/langsmith/llm-gateway)，则可以使用 [bring your own provider keys](/langsmith/llm-gateway-quickstart#send-a-request) 或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 来访问模型而无需提供者密钥。
+如果您使用 [LangSmith Gateway](/langsmith/llm-gateway)，则可以 [bring your own provider keys](/langsmith/llm-gateway-quickstart) 或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 无需提供者密钥即可访问模型。
 
-**使用图形API**
+## 设置
 
-## 1.定义工具和模型
+安装 `langgraph`、`langchain` 和 `langchain-anthropic`：
 
-在此示例中，我们将使用 Claude Sonnet 4.5 模型并定义加法、乘法和除法工具。
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langgraph langchain langchain-anthropic
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langgraph langchain langchain-anthropic
+```
+
+此示例使用Anthropic。在 shell 或 `.env` 文件中设置 API 密钥：
+
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export ANTHROPIC_API_KEY="your-api-key"
+```
+
+```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+ANTHROPIC_API_KEY=your-api-key
+```要使用其他提供程序，请参阅 [chat model integrations](/oss/python/integrations/chat) 并在后续步骤中调整模型初始化。
+
+## 构建代理
+
+模型可以调用工具，然后代理再次调用模型，直到返回最终答案。
+
+创建一个文件。在上一步下方添加每个步骤的代码。
+
+有关概念信息，请参阅[Graph API overview](/oss/python/langgraph/graph-api)。
+
+构建 LangGraph 图形 API 计算器快速入门
+
+按照 LangGraph 快速入门，在此工作目录中使用 Graph API 构建 LangGraph 计算器代理。
+
+## 第 1 步：阅读指南
+
+检测该项目是否使用Python或TypeScript/JavaScript。获取并关注匹配的页面；将其视为包名称、模型字符串和代码的真实来源：
+
+* Python：[https://docs.langchain.com/oss/python/langgraph/quickstart.md](https://docs.langchain.com/oss/python/langgraph/quickstart.md)
+* 打字稿：[https://docs.langchain.com/oss/javascript/langgraph/quickstart.md](https://docs.langchain.com/oss/javascript/langgraph/quickstart.md)
+
+## 第二步：安装依赖项
+
+使用本项目中已使用的包管理器安装本快速入门所需的包。
+
+## 步骤 3：配置模型凭据本快速入门默认使用 Anthropic。检查`ANTHROPIC_API_KEY`是否设置。如果不是，则要求用户创建一个密钥并将其设置在 shell 或 `.env` 文件中，然后停止并等待确认。请勿发明、硬编码或提交 API 密钥。如果用户更喜欢集成文档中的另一个聊天模型提供程序，请在确认后相应地调整示例。
+
+## 步骤 4：实现计算器代理
+
+定义工具和模型，然后定义图形 API 状态、节点、边以及指南中编译的图形。
+
+## 步骤 5：可选 LangSmith 追踪
+
+询问用户是否想要跟踪。如果是，请他们自行设置`LANGSMITH_TRACING=true`和`LANGSMITH_API_KEY`。不要发明LangSmith钥匙。
+
+## 第 6 步：运行代理
+
+根据指南中的示例算术查询调用代理并打印最终结果。
+
+## 规则
+
+* 请关注本快速入门。除非用户要求，否则不要添加部署、评估或不相关的框架。
+* 更喜欢所获取的指南中显示的结构，而不是发明不同的代理模式。
+* 当秘密、提供商选择或项目约定不清楚时，询问而不是猜测。
+
+## 1.定义工具和模型此示例使用 Claude Sonnet 模型并定义加法、乘法和除法工具。
+
+为代理创建一个文件（`agent.py` 或 `agent.ts`）。添加以下内容：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from langchain.chat_models import init_chat_model
 
-
 model = init_chat_model(
     "claude-sonnet-4-6",
     temperature=0
 )
-
 
 # Define tools
 @tool
@@ -112,7 +146,6 @@ def multiply(a: int, b: int) -> int:
     """
     return a * b
 
-
 @tool
 def add(a: int, b: int) -> int:
     """Adds `a` and `b`.
@@ -122,7 +155,6 @@ def add(a: int, b: int) -> int:
         b: Second int
     """
     return a + b
-
 
 @tool
 def divide(a: int, b: int) -> float:
@@ -134,26 +166,28 @@ def divide(a: int, b: int) -> float:
     """
     return a / b
 
-
 # Augment the LLM with tools
 tools = [add, multiply, divide]
 tools_by_name = {tool.name: tool for tool in tools}
 model_with_tools = model.bind_tools(tools)
 ```
 
-## 2. 定义状态图的状态用于存储消息和 LLM 调用的数量。
+## 2. 定义状态
+
+该图的状态存储消息和 LLM 调用的数量。
+
+在工具和模型下面添加以下内容：
 
 > [!提示]
 >
 > LangGraph 中的状态在代理执行期间持续存在。
 >
-> 带有 `operator.add` 的 `Annotated` 类型确保新消息被追加到现有列表中而不是替换它。
+> 带有 `operator.add` 的 `Annotated` 类型将新消息追加到列表中而不是替换它。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import AnyMessage
 from typing_extensions import TypedDict, Annotated
 import operator
-
 
 class MessagesState(TypedDict):
     messages: Annotated[list[AnyMessage], operator.add]
@@ -162,11 +196,12 @@ class MessagesState(TypedDict):
 
 ## 3.定义模型节点
 
-模型节点用于调用LLM并决定是否调用工具。
+模型节点调用LLM并决定是否调用工具。
+
+在状态架构下方添加以下内容：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import SystemMessage
-
 
 def llm_call(state: dict):
     """LLM decides whether to call a tool or not"""
@@ -188,11 +223,12 @@ def llm_call(state: dict):
 
 ## 4.定义工具节点
 
-工具节点用于调用工具并返回结果。
+工具节点调用工具并返回结果。
+
+在模型节点下添加以下内容：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import ToolMessage
-
 
 def tool_node(state: dict):
     """Performs the tool call"""
@@ -207,12 +243,13 @@ def tool_node(state: dict):
 
 ## 5.定义结束逻辑
 
-条件边函数用于根据 LLM 是否进行工具调用来路由到工具节点或末端。
+条件边函数路由到工具节点或末尾，具体取决于 LLM 是否进行了工具调用。
+
+在工具节点下添加以下内容：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Literal
 from langgraph.graph import StateGraph, START, END
-
 
 def should_continue(state: MessagesState) -> Literal["tool_node", END]:
     """Decide if we should continue the loop or stop based upon whether the LLM made a tool call"""
@@ -230,7 +267,7 @@ def should_continue(state: MessagesState) -> Literal["tool_node", END]:
 
 ## 6. 构建并编译代理
 
-该代理使用 [⟦T26⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph) 类构建，并使用 [⟦T27⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/compile) 方法编译。
+在路由功能下面添加以下内容。使用 [⟦T35⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph) 构建图表并使用 [⟦T36⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/compile) 进行编译：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Build workflow
@@ -251,31 +288,44 @@ agent_builder.add_edge("tool_node", "llm_call")
 
 # Compile the agent
 agent = agent_builder.compile()
+```
 
-# Show the agent
-from IPython.display import Image, display
-display(Image(agent.get_graph(xray=True).draw_mermaid_png()))
+## 7. 设置 LangSmith 跟踪
 
-# Invoke
+[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langgraph-quickstart) 显示代理运行时的工具调用和模型响应。此步骤是可选的。在 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langgraph-quickstart) 注册，创建 API 密钥，并在运行代理之前在 shell 中设置这些环境变量：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_TRACING=true
+export LANGSMITH_API_KEY="your-langsmith-api-key"
+```
+
+## 8. 运行代理
+
+在编译后的图表下方添加以下内容：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import HumanMessage
+
 messages = [HumanMessage(content="Add 3 and 4.")]
 messages = agent.invoke({"messages": messages})
 for m in messages["messages"]:
     m.pretty_print()
 ```
 
-> [!提示]
->
-> 使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langgraph-quickstart) 跟踪和调试您的代理。按照[tracing quickstart](/langsmith/trace-with-langgraph)进行设置。准备好投入生产时，请参阅 [Deploy](/langsmith/deployment) 了解托管选项。
->
-> 我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
+运行文件：
 
-恭喜！您已经使用 LangGraph Graph API 构建了第一个代理。
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+python agent.py
+```
 
-> **完整代码示例**
+您应该看到人工消息、对 `add` 的工具调用、工具结果 `7` 以及最终的助理回复。确切的文本因型号而异，但工具结果是`7`。
+
+要检查您的文件，请将其与完整示例进行比较：
+
+> [手风琴] 完整代码示例
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> # Step 1: Define tools and model
+> # Step 2: Define tools and model
 >
 > from langchain.tools import tool
 > from langchain.chat_models import init_chat_model
@@ -326,7 +376,7 @@ for m in messages["messages"]:
 > tools_by_name = {tool.name: tool for tool in tools}
 > model_with_tools = model.bind_tools(tools)
 >
-> # Step 2: Define state
+> # Step 3: Define state
 >
 > from langchain.messages import AnyMessage
 > from typing_extensions import TypedDict, Annotated
@@ -337,7 +387,7 @@ for m in messages["messages"]:
 >     messages: Annotated[list[AnyMessage], operator.add]
 >     llm_calls: int
 >
-> # Step 3: Define model node
+> # Step 4: Define model node
 > from langchain.messages import SystemMessage
 >
 >
@@ -359,7 +409,7 @@ for m in messages["messages"]:
 >     }
 >
 >
-> # Step 4: Define tool node
+> # Step 5: Define tool node
 >
 > from langchain.messages import ToolMessage
 >
@@ -374,7 +424,7 @@ for m in messages["messages"]:
 >         result.append(ToolMessage(content=observation, tool_call_id=tool_call["id"]))
 >     return {"messages": result}
 >
-> # Step 5: Define logic to determine whether to end
+> # Step 6: Define end logic
 >
 > from typing import Literal
 > from langgraph.graph import StateGraph, START, END
@@ -394,7 +444,7 @@ for m in messages["messages"]:
 >     # Otherwise, we stop (reply to the user)
 >     return END
 >
-> # Step 6: Build agent
+> # Step 7: Build and compile the agent
 >
 > # Build workflow
 > agent_builder = StateGraph(MessagesState)
@@ -416,279 +466,32 @@ for m in messages["messages"]:
 > agent = agent_builder.compile()
 >
 >
-> from IPython.display import Image, display
-> # Show the agent
-> display(Image(agent.get_graph(xray=True).draw_mermaid_png()))
+> # Step 8: Set up LangSmith tracing (optional)
+> # export LANGSMITH_TRACING=true
+> # export LANGSMITH_API_KEY="your-langsmith-api-key"
 >
-> # Invoke
+> # Step 9: Run the agent
 > from langchain.messages import HumanMessage
 > messages = [HumanMessage(content="Add 3 and 4.")]
 > messages = agent.invoke({"messages": messages})
 > for m in messages["messages"]:
 >     m.pretty_print()
->
 > ```
 
-**使用函数式API**
+## 后续步骤
 
-## 1.定义工具和模型在此示例中，我们将使用 Claude Sonnet 4.5 模型并定义加法、乘法和除法工具。
+您现在有一个正在工作的计算器代理。继续以下主题之一：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.tools import tool
-from langchain.chat_models import init_chat_model
-
-
-model = init_chat_model(
-    "claude-sonnet-4-6",
-    temperature=0
-)
-
-
-# Define tools
-@tool
-def multiply(a: int, b: int) -> int:
-    """Multiply `a` and `b`.
-
-    Args:
-        a: First int
-        b: Second int
-    """
-    return a * b
-
-
-@tool
-def add(a: int, b: int) -> int:
-    """Adds `a` and `b`.
-
-    Args:
-        a: First int
-        b: Second int
-    """
-    return a + b
-
-
-@tool
-def divide(a: int, b: int) -> float:
-    """Divide `a` and `b`.
-
-    Args:
-        a: First int
-        b: Second int
-    """
-    return a / b
-
-
-# Augment the LLM with tools
-tools = [add, multiply, divide]
-tools_by_name = {tool.name: tool for tool in tools}
-model_with_tools = model.bind_tools(tools)
-
-from langgraph.graph import add_messages
-from langchain.messages import (
-    SystemMessage,
-    HumanMessage,
-    ToolCall,
-)
-from langchain_core.messages import BaseMessage
-from langgraph.func import entrypoint, task
-```
-
-## 2.定义模型节点
-
-模型节点用于调用LLM并决定是否调用工具。
-
-> [!提示]
->
-> [⟦T28⟧](https://reference.langchain.com/python/langgraph/func/task) 装饰器将函数标记为可以作为代理的一部分执行的任务。可以在入口点函数中同步或异步调用任务。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-@task
-def call_llm(messages: list[BaseMessage]):
-    """LLM decides whether to call a tool or not"""
-    return model_with_tools.invoke(
-        [
-            SystemMessage(
-                content="You are a helpful assistant tasked with performing arithmetic on a set of inputs."
-            )
-        ]
-        + messages
-    )
-```
-
-## 3.定义工具节点
-
-工具节点用于调用工具并返回结果。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-@task
-def call_tool(tool_call: ToolCall):
-    """Performs the tool call"""
-    tool = tools_by_name[tool_call["name"]]
-    return tool.invoke(tool_call)
-
-```
-
-## 4.定义代理
-
-该代理是使用 [⟦T29⟧](https://reference.langchain.com/python/langgraph/func/entrypoint) 函数构建的。
-
-> [!注意]
->
-> 在功能 API 中，您无需显式定义节点和边，而是在单个函数中编写标准控制流逻辑（循环、条件）。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-@entrypoint()
-def agent(messages: list[BaseMessage]):
-    model_response = call_llm(messages).result()
-
-    while True:
-        if not model_response.tool_calls:
-            break
-
-        # Execute tools
-        tool_result_futures = [
-            call_tool(tool_call) for tool_call in model_response.tool_calls
-        ]
-        tool_results = [fut.result() for fut in tool_result_futures]
-        messages = add_messages(messages, [model_response, *tool_results])
-        model_response = call_llm(messages).result()
-
-    messages = add_messages(messages, model_response)
-    return messages
-
-# Invoke
-messages = [HumanMessage(content="Add 3 and 4.")]
-stream = agent.stream_events(messages, version="v3")
-for snapshot in stream.values:
-    print(snapshot)
-    print("\n")
-```
-
-> [!提示]
->
-> 使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langgraph-quickstart) 跟踪和调试您的代理。按照[tracing quickstart](/langsmith/trace-with-langgraph)进行设置。准备好投入生产后，请参阅 [Deploy](/langsmith/deployment) 了解托管选项。
->
-> 我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
-
-恭喜！您已经使用 LangGraph 功能 API 构建了第一个代理。
-
-> **完整代码示例**
->
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> # Step 1: Define tools and model
->
-> from langchain.tools import tool
-> from langchain.chat_models import init_chat_model
->
->
-> model = init_chat_model(
->     "claude-sonnet-4-6",
->     temperature=0
-> )
->
->
-> # Define tools
-> @tool
-> def multiply(a: int, b: int) -> int:
->     """Multiply `a` and `b`.
->
->     Args:
->         a: First int
->         b: Second int
->     """
->     return a * b
->
->
-> @tool
-> def add(a: int, b: int) -> int:
->     """Adds `a` and `b`.
->
->     Args:
->         a: First int
->         b: Second int
->     """
->     return a + b
->
->
-> @tool
-> def divide(a: int, b: int) -> float:
->     """Divide `a` and `b`.
->
->     Args:
->         a: First int
->         b: Second int
->     """
->     return a / b
->
->
-> # Augment the LLM with tools
-> tools = [add, multiply, divide]
-> tools_by_name = {tool.name: tool for tool in tools}
-> model_with_tools = model.bind_tools(tools)
->
-> from langgraph.graph import add_messages
-> from langchain.messages import (
->     SystemMessage,
->     HumanMessage,
->     ToolCall,
-> )
-> from langchain_core.messages import BaseMessage
-> from langgraph.func import entrypoint, task
->
->
-> # Step 2: Define model node
->
-> @task
-> def call_llm(messages: list[BaseMessage]):
->     """LLM decides whether to call a tool or not"""
->     return model_with_tools.invoke(
->         [
->             SystemMessage(
->                 content="You are a helpful assistant tasked with performing arithmetic on a set of inputs."
->             )
->         ]
->         + messages
->     )
->
->
-> # Step 3: Define tool node
->
-> @task
-> def call_tool(tool_call: ToolCall):
->     """Performs the tool call"""
->     tool = tools_by_name[tool_call["name"]]
->     return tool.invoke(tool_call)
->
->
-> # Step 4: Define agent
->
-> @entrypoint()
-> def agent(messages: list[BaseMessage]):
->     model_response = call_llm(messages).result()
->
->     while True:
->         if not model_response.tool_calls:
->             break
->
->         # Execute tools
->         tool_result_futures = [
->             call_tool(tool_call) for tool_call in model_response.tool_calls
->         ]
->         tool_results = [fut.result() for fut in tool_result_futures]
->         messages = add_messages(messages, [model_response, *tool_results])
->         model_response = call_llm(messages).result()
->
->     messages = add_messages(messages, model_response)
->     return messages
->
-> # Invoke
-> messages = [HumanMessage(content="Add 3 and 4.")]
-> stream = agent.stream_events(messages, version="v3")
-> for snapshot in stream.values:
->     print(snapshot)
->     print("\n")
-> ```
+* **使用 Graph API 构建**：[Build checklist for the Graph API](/oss/python/langgraph/use-graph-api) 和 [Thinking in the Graph API](/oss/python/langgraph/thinking-in-graph-api)。
+* **添加持久性**：使用[checkpointer](/oss/python/langgraph/persistence)，以便运行可以跨会话暂停和恢复。
+* **添加人机交互**：使用 [interrupts](/oss/python/langgraph/interrupts) 暂停以进行批准或编辑。
+* **流结果**：按照 [streaming](/oss/python/langgraph/streaming) 获取令牌和状态更新。
+* **深入**：[Workflows and agents](/oss/python/langgraph/workflows-agents)。
+* **部署**：使用 [LangSmith Deployment](/langsmith/deployment) 托管代理。
+* **评估**：使用 [LangSmith evaluation](/langsmith/evaluation-quickstart) 测试行为。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

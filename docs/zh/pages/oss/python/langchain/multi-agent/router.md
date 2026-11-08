@@ -38,57 +38,57 @@ graph LR
 
 路由器对查询进行分类并将其定向到适当的代理。使用 [⟦T4⟧](/oss/python/langgraph/graph-api#command) 进行单代理路由，或使用 [⟦T5⟧](/oss/python/langgraph/graph-api#send) 并行扇出到多个代理。
 
-**单一代理**
-
-使用 `Command` 路由到单个专门代理：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph.types import Command
-
-def classify_query(query: str) -> str:
-    """Use LLM to classify query and determine the appropriate agent."""
-    # Classification logic here
-    ...
-
-def route_query(state: State) -> Command:
-    """Route to the appropriate agent based on query classification."""
-    active_agent = classify_query(state["query"])
-
-    # Route to the selected agent
-    return Command(goto=active_agent)
-```
-
-**多个代理（并行）**
-
-使用 `Send` 并行扇出到多个专门代理：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from typing import TypedDict
-from langgraph.types import Send
-
-class ClassificationResult(TypedDict):
-    query: str
-    agent: str
-
-def classify_query(query: str) -> list[ClassificationResult]:
-    """Use LLM to classify query and determine which agents to invoke."""
-    # Classification logic here
-    ...
-
-def route_query(state: State):
-    """Route to relevant agents based on query classification."""
-    classifications = classify_query(state["query"])
-
-    # Fan out to selected agents in parallel
-    return [
-        Send(c["agent"], {"query": c["query"]})
-        for c in classifications
-    ]
-```
-
-有关完整的实现，请参阅下面的教程。> **[Tutorial: Build a multi-source knowledge base with routing](/oss/python/langchain/multi-agent/router-knowledge-base)**
+> [选项卡] 单一代理
 >
-> 构建一个并行查询 GitHub、Notion 和 Slack 的路由器，然后将结果合成为连贯的答案。涵盖状态定义、专用代理、`Send` 并行执行以及结果合成。
+> 使用 `Command` 路由至单个专业代理：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langgraph.types import Command
+>
+> def classify_query(query: str) -> str:
+>     """Use LLM to classify query and determine the appropriate agent."""
+>     # Classification logic here
+>     ...
+>
+> def route_query(state: State) -> Command:
+>     """Route to the appropriate agent based on query classification."""
+>     active_agent = classify_query(state["query"])
+>
+>     # Route to the selected agent
+>     return Command(goto=active_agent)
+> ```
+
+> [选项卡] 多个代理（并行）
+>
+> 使用 `Send` 并行扇出到多个专门代理：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from typing import TypedDict
+> from langgraph.types import Send
+>
+> class ClassificationResult(TypedDict):
+>     query: str
+>     agent: str
+>
+> def classify_query(query: str) -> list[ClassificationResult]:
+>     """Use LLM to classify query and determine which agents to invoke."""
+>     # Classification logic here
+>     ...
+>
+> def route_query(state: State):
+>     """Route to relevant agents based on query classification."""
+>     classifications = classify_query(state["query"])
+>
+>     # Fan out to selected agents in parallel
+>     return [
+>         Send(c["agent"], {"query": c["query"]})
+>         for c in classifications
+>     ]
+> ```
+
+有关完整的实现，请参阅下面的教程。> [卡][Tutorial: Build a multi-source knowledge base with routing](/oss/python/langchain/multi-agent/router-knowledge-base)
+>
+> 构建一个并行查询 GitHub、Notion 和 Slack 的路由器，然后将结果合成为连贯的答案。涵盖状态定义、专用代理、`Send` 并行执行以及结果综合。
 
 ## 无状态与有状态
 
@@ -106,7 +106,7 @@ def route_query(state: State):
 > * **路由器**：专用的路由步骤（通常是单个 LLM 调用或基于规则的逻辑），用于对输入进行分类并分派给代理。路由器本身通常不维护对话历史记录或执行多轮编排 - 这是一个预处理步骤。
 > * **子代理**：主主管代理动态决定在正在进行的对话中呼叫哪个[subagents](/oss/python/langchain/multi-agent/subagents)。主代理维护上下文，可以轮流调用多个子代理，并编排复杂的多步骤工作流程。
 >
-> 当您有明确的输入类别并需要确定性或轻量级分类时，请使用**路由器**。当您需要灵活的、对话感知的编排时，请使用**主管**，其中法学硕士根据不断变化的上下文决定下一步该做什么。
+> 当您有明确的输入类别并想要确定性或轻量级分类时，请使用**路由器**。当您需要灵活的、对话感知的编排时，请使用**主管**，其中法学硕士根据不断变化的上下文决定下一步该做什么。
 
 ## 有状态
 
@@ -125,7 +125,7 @@ def search_docs(query: str) -> str:
 conversational_agent = create_agent(
     model,
     tools=[search_docs],
-    prompt="You are a helpful assistant. Use search_docs to answer questions."
+    system_prompt="You are a helpful assistant. Use search_docs to answer questions."
 )
 ```
 

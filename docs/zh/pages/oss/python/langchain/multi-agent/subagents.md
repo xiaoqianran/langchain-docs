@@ -35,7 +35,7 @@ graph LR
 * Subagents via tools：子代理通过工具调用
 * 并行执行：主代理可以单轮调用多个子代理> [!注意]
 >
-> **Supervisor 与 Router**：Supervisor 代理（此模式）与 [router](/oss/python/langchain/multi-agent/router) 不同。主管是一个完整的代理，它维护对话上下文并动态决定在多个回合中调用哪些子代理。路由器通常是一个单一的分类步骤，它在不维护正在进行的对话状态的情况下分派给代理。
+> **Supervisor 与 Router**：Supervisor 代理（此模式）与 [router](/oss/python/langchain/multi-agent/router) 不同。主管是一个完整的代理，它维护对话上下文并动态决定在多个回合中调用哪些子代理。路由器通常是一个单一的分类步骤，它向代理进行分派，而不维护正在进行的对话状态。
 
 ## 何时使用
 
@@ -64,7 +64,7 @@ def call_research_agent(query: str):
 
 # Main agent with subagent as a tool
 main_agent = create_agent(model="google_genai:gemini-3.6-flash", tools=[call_research_agent])
-```> **[Tutorial: Build a personal assistant with subagents](/oss/python/langchain/multi-agent/subagents-personal-assistant)**
+```> [卡片][Tutorial: Build a personal assistant with subagents](/oss/python/langchain/multi-agent/subagents-personal-assistant)
 >
 > 了解如何使用子代理模式构建个人助理，其中中央主代理（主管）协调专门的工作代理。
 
@@ -82,9 +82,9 @@ main_agent = create_agent(model="google_genai:gemini-3.6-flash", tools=[call_res
 
 ## 同步与异步
 
-子代理执行可以是**同步**（阻塞）或**异步**（后台）。你的选择取决于主代理是否需要结果才能继续。
+子代理执行可以是**同步**（阻塞）或**异步**（后台）。您的选择取决于主代理是否需要结果才能继续。
 
-|模式|主要代理行为|最适合 |权衡|
+|模式|主要代理行为|最适合 |权衡 |
 | - | - | - | - |
 | **同步** |等待子代理完成 |主代理需要结果才能继续 |简单，但阻碍对话 |
 | **异步** |子代理在后台运行时继续 |独立任务，用户无需等待 |反应灵敏，但更复杂 |> [!提示]
@@ -251,7 +251,7 @@ graph LR
 >
 > 这种方法的一个有趣的方面是子代理可能具有与主代理完全相同的功能。在这种情况下，调用子代理**实际上与上下文隔离**是主要原因 - 允许复杂的多步骤任务在隔离的上下文窗口中运行，而不会增加主代理的对话历史记录。子代理自主完成工作，仅返回简洁的摘要，保持主线程的专注和高效。
 
-> **具有任务调度程序的代理注册**
+> [手风琴] 带有任务调度程序的代理注册表
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.tools import tool
@@ -260,12 +260,12 @@ graph LR
 > # Sub-agents developed by different teams
 > research_agent = create_agent(
 >     model="gpt-5.5",
->     prompt="You are a research specialist..."
+>     system_prompt="You are a research specialist..."
 > )
 >
 > writer_agent = create_agent(
 >     model="gpt-5.5",
->     prompt="You are a writing specialist..."
+>     system_prompt="You are a writing specialist..."
 > )
 >
 > # Registry of available sub-agents
@@ -324,7 +324,7 @@ graph LR
 * **描述**：主代理对子代理功能的了解。具体说明它处理什么任务以及何时使用它。
 
 对于 [single dispatch tool](#single-dispatch-tool) 设计，您还必须向主代理提供有关它可以调用的子代理的信息。
-您可以根据代理的数量以及您的注册表是静态还是动态，以不同的方式提供此信息：|方法|最适合 |权衡|
+您可以根据代理的数量以及您的注册表是静态还是动态，以不同的方式提供此信息：|方法|最适合 |权衡 |
 | - | - | - |
 | **系统提示枚举** |小型静态代理列表 (\< 10 agents) | Simple, but requires prompt updates when agents change |
 | **Enum constraint** | Small, static agent lists (\< 10 agents) | Type-safe and explicit, but requires code changes when agents change |
@@ -420,9 +420,9 @@ def call_subagent1(query: str, runtime: ToolRuntime[None, CustomState]):
 
 `some_logic` 控制子代理接收多少上下文。仅传递任务描述 (`query`) 可使子代理保持隔离。相反，传递父级的消息历史记录 (`runtime.state["messages"]`) 会为子代理播种之前的工作，这在需要继续父级已开始的操作时很有帮助，例如恢复 PR 审查或修复错误。
 
-[Deep Agents](/oss/python/deepagents/subagents#forked-subagents) 将这些模式命名为 `mode: "isolated"`（默认）和 `mode: "fork"`，并为您实现分叉：分叉的子代理接收父代理的完整消息历史记录（包括工具调用）和系统提示。|模式|子代理接收 |最适合 |权衡|
+[Deep Agents](/oss/python/deepagents/subagents#forked-subagents) 将这些模式命名为 `mode: "isolated"`（默认）和 `mode: "fork"`，并为您实现分叉：分叉的子代理接收父代理的完整消息历史记录（包括工具调用）和系统提示。|模式|子代理接收 |最适合 |权衡 |
 | - | - | - | - |
-| **隔离**（默认）|仅任务描述|无需事先背景的重点工作 |上下文隔离，但重新派生父级已经执行的所有操作 |
+| **隔离**（默认）|仅任务描述 |无需事先背景的重点工作 |上下文隔离，但重新派生父级已经执行的所有操作 |
 | **分叉** |家长的对话历史（以及Deep Agents中的系统提示）|继续父母已经开始的任务 |播种先前的上下文，但代价是更大的提示和更少的隔离 |
 
 ### 子代理输出
@@ -466,7 +466,7 @@ def call_subagent1(
 
 因为子代理是在工具函数内部调用的，所以LangGraph不能[statically discover](/oss/python/langgraph/use-subgraphs#view-subgraph-state)它们。这意味着[⟦T29⟧ with ⟦T30⟧](/oss/python/langgraph/use-subgraphs#view-subgraph-state)不会返回子代理状态。如果您需要读取嵌套图状态（例如，在 [interrupt](/oss/python/langgraph/interrupts#pause-using-interrupt) 期间），请从自定义图中的 [node function](/oss/python/langgraph/use-subgraphs#call-a-subgraph-inside-a-node) 调用子代理。有关每种模式如何影响状态可见性的详细信息，请参阅[subgraph persistence](/oss/python/langgraph/use-subgraphs#subgraph-persistence)。
 
-> **[Migrate from langgraph-supervisor](/oss/python/migrate/langgraph-supervisor)**
+> [卡][Migrate from langgraph-supervisor](/oss/python/migrate/langgraph-supervisor)
 >
 > langgraph-supervisor 包不再主动维护。了解如何从 create\_supervisor 迁移到子代理模式，包括使用外部 API 回调中断和恢复流程。
 

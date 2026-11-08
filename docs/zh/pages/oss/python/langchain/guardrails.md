@@ -22,9 +22,9 @@ Guardrails 通过在代理执行的关键点验证和过滤内容，帮助您构
 
 护栏可以使用两种互补的方法来实现：
 
-> **确定性护栏**
+> 【卡片】确定性护栏
 >
-> 使用基于规则的逻辑，例如正则表达式模式、关键字匹配或显式检查。快速、可预测且具有成本效益，但可能会错过细微的违规行为。> **基于模型的护栏**
+> 使用基于规则的逻辑，例如正则表达式模式、关键字匹配或显式检查。快速、可预测且具有成本效益，但可能会错过细微的违规行为。> 【卡牌】基于模型的护栏
 >
 > 使用法学硕士或分类器通过语义理解来评估内容。捕捉规则遗漏的微妙问题，但速度更慢且成本更高。
 
@@ -40,9 +40,9 @@ PII 检测中间件对于具有合规性要求的医疗保健和金融应用程�
 
 PII 中间件支持多种处理检测到的 PII 的策略：
 
-|策略|描述 |示例|
+|战略|描述 |示例|
 | - | - | - |
-| `redact` |替换为`[REDACTED_{PII_TYPE}]` | `[REDACTED_EMAIL]` |
+| `redact` |替换为`[REDACTED_{PII_TYPE}]`| `[REDACTED_EMAIL]` |
 | `mask` |部分模糊（例如最后 4 位数字）| `****-****-****-1234` |
 | `hash` |替换为确定性哈希 | `a8f5f167...` |
 | `block` |检测到时引发异常 |抛出错误 |> [!注意]
@@ -86,7 +86,7 @@ result = agent.invoke({
 })
 ```
 
-> **内置 PII 类型和配置**
+> [accordion] 内置 PII 类型和配置
 >
 > **内置 PII 类型：**
 >
@@ -98,7 +98,7 @@ result = agent.invoke({
 >
 > **配置选项：**
 >
-> |参数|描述 |默认 |
+> |参数|描述 |默认|
 > | - | - | - |
 > | `pii_type` |要检测的 PII 类型（内置或自定义）|必填 |
 > | `strategy` |如何处理检测到的 PII（`"block"`、`"redact"`、`"mask"`、`"hash"`）| `"redact"` |
@@ -275,7 +275,7 @@ result = agent.invoke({
 
 ### 特工护栏后
 
-使用“after agent”挂钩在返回给用户之前验证最终输出一次。这对于基于模型的安全检查、质量验证或对完整代理响应的最终合规性扫描非常有用。
+在返回给用户之前，使用“after agent”挂钩验证最终输出一次。这对于基于模型的安全检查、质量验证或对完整代理响应的最终合规性扫描非常有用。
 
 ```python title="Class syntax" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import AgentMiddleware, AgentState, hook_config

@@ -4,13 +4,13 @@
 
 # 结构化输出
 
-结构化输出允许代理以特定的、可预测的格式返回数据。您无需解析自然语言响应，而是以 JSON 对象、[Pydantic models](https://docs.pydantic.dev/latest/concepts/models/#basic-model-usage) 或应用程序可以直接使用的数据类的形式获取结构化数据。
+结构化输出允许代理以特定的、可预测的格式返回数据。您无需解析自然语言响应，而是获得 JSON 对象、[Pydantic models](https://docs.pydantic.dev/latest/concepts/models/#basic-model-usage) 或应用程序可以直接使用的数据类形式的结构化数据。
 
 > [!提示]
 >
-> 本页介绍了使用 `create_agent` 的代理的结构化输出。要直接在模型上（在代理之外）使用结构化输出，请参阅[Models - Structured output](/oss/python/langchain/models#structured-output)。
+> 本页介绍使用 `create_agent` 的代理的结构化输出。要直接在模型上（在代理之外）使用结构化输出，请参阅[Models - Structured output](/oss/python/langchain/models#structured-output)。
 
-LangChain 的 [⟦T30⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 自动处理结构化输出。用户设置所需的结构化输出模式，当模型生成结构化数据时，它会被捕获、验证并以代理状态的 `'structured_response'` 键返回。
+LangChain 的 [⟦T32⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 自动处理结构化输出。用户设置所需的结构化输出模式，当模型生成结构化数据时，它会被捕获、验证并以代理状态的 `'structured_response'` 键返回。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def create_agent(
@@ -38,7 +38,7 @@ def create_agent(
 
 > [!警告]
 >
-> JSON 模式字典必须包装在显式策略中（`ProviderStrategy` 或 `ToolStrategy`）。当直接传递到`response_format`时，不会自动检测到它们。
+> JSON Schema 字典必须包装在显式策略中（`ProviderStrategy` 或 `ToolStrategy`）。当直接传递到`response_format`时，不会自动检测到它们。
 
 > [!注意]
 >
@@ -83,7 +83,7 @@ class ProviderStrategy(Generic[SchemaT]):
 
 可选的布尔参数，以启用严格的模式遵守。受某些提供商支持（例如，[OpenAI](/oss/python/integrations/chat/openai) 和 [xAI](/oss/python/integrations/chat/xai)）。默认为 `None`（禁用）。
 
-当您将模式类型直接传递给[⟦T52⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)并且模型支持本机结构化输出时，LangChain会自动使用`ProviderStrategy`：
+当您将模式类型直接传递给 [⟦T54⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 并且模型支持本机结构化输出时，LangChain 自动使用 `ProviderStrategy`：
 
 ```python Pydantic Model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from pydantic import BaseModel, Field
@@ -201,7 +201,7 @@ result["structured_response"]
 
 ## 工具调用策略对于不支持原生结构化输出的模型，LangChain使用工具调用来达到相同的结果。这适用于支持工具调用的所有模型（大多数现代模型）。
 
-要使用此策略，请配置 `ToolStrategy`：
+要使用此策略，请配置`ToolStrategy`：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 class ToolStrategy(Generic[SchemaT]):
@@ -443,7 +443,7 @@ Name: MeetingAction
 Action item captured and added to meeting notes!
 ```
 
-如果没有`tool_message_content`，我们最终的[⟦T68⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)将是：
+如果没有`tool_message_content`，我们最终的[⟦T70⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)将是：
 
 ```
 ================================= Tool Message =================================
@@ -458,7 +458,7 @@ Returning structured response: {'task': 'update the project timeline', 'assignee
 
 #### 多个结构化输出错误
 
-当模型错误调用多个结构化输出工具时，代理会在[⟦T69⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)中提供错误反馈并提示模型重试：
+当模型错误调用多个结构化输出工具时，代理会在[⟦T71⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)中提供错误反馈并提示模型重试：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from pydantic import BaseModel, Field
@@ -593,7 +593,7 @@ ToolStrategy(
 )
 ```
 
-如果 `handle_errors` 是一个字符串，代理将*总是*使用固定的工具消息提示模型重试：
+如果 `handle_errors` 是字符串，代理将*始终*使用固定工具消息提示模型重试：
 
 ```
 ================================= Tool Message =================================
@@ -698,6 +698,69 @@ response_format = ToolStrategy(
     handle_errors=False  # All errors raised
 )
 ```
+
+#### 模型拒绝
+
+当模型拒绝时，它不会返回结构化输出。持有`ProviderStrategy`，代理人加注`StructuredOutputValidationError`。使用`ToolStrategy`，代理结束时没有`structured_response`。要为任一策略提高 [⟦T82⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)，请添加 [⟦T83⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware)：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import ModelRefusalMiddleware
+
+agent = create_agent(
+    model="claude-sonnet-5-5",
+    response_format=ProductRating,
+    middleware=[ModelRefusalMiddleware()],
+)
+```
+
+`ModelRefusalMiddleware` 需要 `langchain>=1.4.9`。请参阅[Handle a refusal](/oss/python/langchain/middleware/built-in#handle-a-refusal)了解应对方法。
+
+## 处理链中的解析错误上述策略（包括`handle_errors`重试）适用于使用[⟦T87⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)创建的代理。由管道运算符（例如`prompt | model | parser`）组成的链没有针对输出解析失败的内置重试机制。要处理链中格式错误的模型输出，请使用以下方法之一：
+
+* **模型级结构化输出**：使用[⟦T89⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel/with_structured_output)将模式绑定到模型。当提供程序支持本机结构化输出时，它会强制执行模式并避免大多数解析失败。参见[Models - Structured output](/oss/python/langchain/models#structured-output)。当模型支持时使用此方法。
+* **使用模型修复格式错误的输出**：将输出解析器包装在来自 [⟦T91⟧](https://pypi.org/project/langchain-classic) 的 `OutputFixingParser` 中。解析失败时，包装器会将格式错误的输出、解析器的格式指令和错误消息发送到模型，并解析正确的响应。
+
+> [!注意]
+>
+> `OutputFixingParser` 需要 `langchain-classic` 套件。在 v1 之前，它以 `langchain.output_parsers.OutputFixingParser` 的形式提供。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.chat_models import init_chat_model
+from langchain_classic.output_parsers import OutputFixingParser
+from langchain_core.output_parsers import PydanticOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from pydantic import BaseModel, Field
+
+
+class ProductReview(BaseModel):
+    """Analysis of a product review."""
+
+    rating: int = Field(description="The rating of the product (1-5)", ge=1, le=5)
+    sentiment: str = Field(description="The sentiment of the review")
+
+
+model = init_chat_model("gpt-5.4")
+
+base_parser = PydanticOutputParser(pydantic_object=ProductReview)
+fixing_parser = OutputFixingParser.from_llm(
+    parser=base_parser,
+    llm=model,
+    max_retries=3,
+)
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "Analyze the product review.\n{format_instructions}"),
+    ("user", "{review}"),
+]).partial(format_instructions=base_parser.get_format_instructions())
+
+chain = prompt | model | fixing_parser
+
+result = chain.invoke({"review": "Great product, 5 stars! Fast shipping, but expensive."})
+# ProductReview(rating=5, sentiment='positive')
+```
+
+包装的解析器仅在初始解析失败时调用修复模型，因此格式良好的输出不会产生额外的模型调用。 `max_retries` 控制在引发原始 `OutputParserException` 之前进行的修复尝试次数。支持同步（`invoke`）和异步（`ainvoke`）执行。`OutputFixingParser` 发送格式错误的完成、解析器的格式指令和错误。它不包括原始提示。如果更正输出需要上下文的原始提示，请改用 `langchain-classic` 中的 `RetryOutputParser`。它是通过其 `parse_with_prompt(completion, prompt_value)` 方法而不是 `parse` 调用的，因此它不能直接作为链的最后一步进行管道传输。
 
 ***
 

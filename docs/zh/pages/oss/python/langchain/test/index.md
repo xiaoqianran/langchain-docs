@@ -18,15 +18,15 @@
 >
 > 大规模运行评估，跟踪一段时间内的结果，并将实验与 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-test-index) 进行比较。请参阅[Evaluate an LLM application](/langsmith/evaluate-llm-application)开始。
 
-> **[Unit testing](/oss/python/langchain/test/unit-testing)**
+> [卡][Unit testing](/oss/python/langchain/test/unit-testing)
 >
 > 模拟聊天模型并使用内存持久性来测试代理逻辑，无需 API 调用。
 
-> **[Integration testing](/oss/python/langchain/test/integration-testing)**
+> [卡][Integration testing](/oss/python/langchain/test/integration-testing)
 >
 > 使用真正的 LLM API 测试您的代理。组织测试、管理密钥、处理不稳定问题并控制成本。
 
-> **[Evals](/oss/python/langchain/test/evals)**
+> [卡][Evals](/oss/python/langchain/test/evals)
 >
 > 使用确定性匹配或 LLM-as-judge 评估器评估代理轨迹。
 

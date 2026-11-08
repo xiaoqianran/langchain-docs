@@ -256,7 +256,7 @@ response = agent.invoke(
 print(response)  # "You are Bob!"
 ```
 
-> **[View example trace](https://smith.langchain.com/public/37316651-0cd8-4bf4-a331-24c30f1c315b/r)**
+> [卡][View example trace](https://smith.langchain.com/public/84968318-b031-4e9f-8728-b794b8a2955b/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -332,19 +332,19 @@ result = agent.invoke(
 
 启用 [short-term memory](#usage) 后，长时间对话可能会超出 LLM 的上下文窗口。常见的解决方案有：
 
-> **[Trim messages](#trim-messages)**
+> [卡][Trim messages](#trim-messages)
 >
 > 删除前 N 条或后 N 条消息（在调用 LLM 之前）
 
-> **[Delete messages](#delete-messages)**
+> [卡][Delete messages](#delete-messages)
 >
 > 永久删除LangGraph状态的消息
 
-> **[Summarize messages](#summarize-messages)**
+> [卡][Summarize messages](#summarize-messages)
 >
 > 总结历史记录中较早的消息并将其替换为摘要
 
-> **自定义策略**
+> 【卡牌】自定义策略
 >
 > 自定义策略（例如消息过滤等）
 
@@ -830,11 +830,11 @@ If you'd like me to call you a nickname or use a different name, just say the wo
     }
 }%%
 graph TD
-    S(["\_\_start\_\_"])
+    S(["`__start__`"])
     MODEL(model)
     POST(after_model)
     TOOLS(tools)
-    END(["\_\_end\_\_"])
+    END(["`__end__`"])
     S --> MODEL
     MODEL --> POST
     POST -.-> END

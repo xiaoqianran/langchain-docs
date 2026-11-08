@@ -86,7 +86,7 @@ uv add "langchain[mcp]"
 * **NVIDIA 支持**：内置 Nemotron 3 Ultra 线束配置文件以及 NIM 应用程序来源归属。 （[#4192](https://github.com/langchain-ai/deepagents/pull/4192)、[#4455](https://github.com/langchain-ai/deepagents/pull/4455)）
 
 ### 重大变更* **规划待办事项是可选的**：默认情况下，`create_deep_agent`不再包含`TodoListMiddleware`，因此`write_todos`工具、`todos`状态通道和待办事项规划提示将不存在，除非使用`middleware=[TodoListMiddleware()]`恢复。 （OpenAI Codex 线束配置文件仍会自动选择加入。）([#4929](https://github.com/langchain-ai/deepagents/pull/4929))
-* **删除了后端兼容性垫片**：传递具体的 `BackendProtocol` 实例而不是工厂，使用显式 `namespace` 配置 `StoreBackend`，并使用当前的 `ls` / `glob` / `grep` / `ReadResult` API。删除的符号包括 `BackendFactory`、`BACKEND_TYPES`、`FileFormat` 和 `Unset`。新文件存储字符串`FileData.content`；较旧的 `list[str]` 内容保持可读并在下次写入时进行转换。 ([#4541](https://github.com/langchain-ai/deepagents/pull/4541))
+* **删除后端兼容性垫片**：传递具体的 `BackendProtocol` 实例而不是工厂，使用显式 `namespace` 配置 `StoreBackend`，并使用当前的 `ls` / `glob` / `grep` / `ReadResult` API。删除的符号包括 `BackendFactory`、`BACKEND_TYPES`、`FileFormat` 和 `Unset`。新文件存储字符串`FileData.content`；较旧的 `list[str]` 内容保持可读并在下次写入时进行转换。 ([#4541](https://github.com/langchain-ai/deepagents/pull/4541))
 * **输出格式更改**：空 `ls` / `glob` 输出现在为 `No files found` 而不是 `[]`，并且 `read_file` 不再呈现固定宽度的 `cat -n` 样式装订线 — 更新原始工具输出的任何解析器。 ([#4561](https://github.com/langchain-ai/deepagents/pull/4561))
 
 将以下提示复制到您的 AI 编码助手中，以迁移这些重大更改的代码库：
@@ -187,7 +187,7 @@ uv add "langchain[mcp]"
   * 更准确的令牌计数。
   * 如果聊天模型引发[⟦T198⟧](https://reference.langchain.com/python/langchain-core/exceptions/ContextOverflowError)（在`langchain-core`中定义），现在将自动触发摘要。目前`langchain-anthropic`和`langchain-openai`支持此功能。
 * 我们现在默认使用前缀为 `"openai:"` 的模型字符串的响应 API。
-  > **使用 Responses API 禁用数据保留**
+  > [accordion] 使用 Responses API 禁用数据保留
   >
   > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   > from langchain.chat_models import init_chat_model

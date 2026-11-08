@@ -16,7 +16,7 @@ Studio 连接到本地运行的代理，向您显示代理执行的每个步骤�
 
 * **LangSmith帐户**：注册（免费）或登录[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-oss-studio-py)。
 * **A LangSmith API 密钥**：遵循 [Create an API key](/langsmith/create-account-api-key) 指南。
-* 如果您不需要数据 [traced](/langsmith/observability-concepts#traces) 至 LangSmith，请在应用程序的 `.env` 文件中设置 `LANGSMITH_TRACING=false`。禁用跟踪后，没有数据离开您的本地服务器。
+* 如果您不需要数据 [traced](/langsmith/observability-concepts#traces) 至 LangSmith，请在代理的 `.env` 文件中设置 `LANGSMITH_TRACING=false`。禁用跟踪后，没有数据离开您的本地服务器。
 
 ## 设置本地Agent服务器
 
@@ -32,9 +32,9 @@ pip install -U "langgraph-cli[inmem]"
 ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Python >= 3.11 is required.
 uv add "langgraph-cli[inmem]"
-```### 2. 准备你的代理
+```
 
-如果您已经有LangChain代理，可以直接使用。此示例使用一个简单的电子邮件代理：
+### 2. 准备你的代理如果您已经有LangChain代理，可以直接使用。此示例使用一个简单的电子邮件代理：
 
 ```python title="agent.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -59,6 +59,10 @@ agent = create_agent(
 
 ### 3.环境变量
 
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T12⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+
 Studio 需要 LangSmith API 密钥来连接您的本地代理。在项目的根目录中创建一个 `.env` 文件，并从 [LangSmith](https://smith.langchain.com/settings) 添加 API 密钥。
 
 > [!警告]
@@ -67,6 +71,8 @@ Studio 需要 LangSmith API 密钥来连接您的本地代理。在项目的根�
 
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=lsv2...
+LANGSMITH_AGENT_ID="<your-agent-id>"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
 
 ### 4.创建LangGraph配置文件
@@ -83,7 +89,7 @@ LangGraph CLI 使用配置文件来查找代理并管理依赖项。在应用程
 }
 ```
 
-[⟦T14⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 函数自动返回编译后的 LangGraph 图，这正是配置文件中 `graphs` 键所期望的。
+[⟦T16⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 函数自动返回编译后的 LangGraph 图，这正是配置文件中 `graphs` 键所期望的。
 
 > [!注意]
 >
@@ -109,19 +115,19 @@ pip install langchain langchain-openai
 
 ```shell uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv add langchain langchain-openai
-```
-
-### 6. 在 Studio 中查看您的代理
+```### 6. 在 Studio 中查看您的代理
 
 启动开发服务器以将代理连接到 Studio：
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langgraph dev
-```> [!警告]
+```
+
+> [!警告]
 >
 > Safari 阻止 `localhost` 与 Studio 的连接。要解决此问题，请使用 `--tunnel` 运行上述命令，以通过安全隧道访问 Studio。
 
-服务器运行后，您的代理可以通过 `http://127.0.0.1:2024` 的 API 和 `https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024` 的 Studio UI 访问：
+服务器运行后，您的代理可以通过 `http://127.0.0.1:2024` 的 API 和`https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024` 的 Studio UI 访问：
 
 ![Agent view in the Studio UI](https://mintcdn.com/langchain-5e9cc07a/TCDks4pdsHdxWmuJ/oss/images/studio_create-agent.png?fit=max\&auto=format\&n=TCDks4pdsHdxWmuJ\&q=85\&s=ebd259e9fa24af7d011dfcc568f74be2)
 
@@ -131,7 +137,7 @@ langgraph dev
 
 有关如何运行 Studio 的更多信息，请参阅 [LangSmith docs](/langsmith/observability) 中的以下指南：
 
-* [Run application](/langsmith/use-studio#run-application)
+* [Run agent](/langsmith/use-studio#run-application)
 * [Manage assistants](/langsmith/use-studio#manage-assistants)
 * [Manage threads](/langsmith/use-studio#manage-threads)
 * [Iterate on prompts](/langsmith/observability-studio)
@@ -140,12 +146,12 @@ langgraph dev
 
 ## 视频指南
 
-[Studio](https://www.youtube.com/embed/Mi1gSlHwZLM?si=zA47TNuTC5aH0ahd)
-
-> [!提示]
+[Studio](https://www.youtube.com/embed/Mi1gSlHwZLM?si=zA47TNuTC5aH0ahd)> [!提示]
 >
 > 有关已部署代理的更多信息，请参阅[Deployment](/oss/python/langchain/deploy)。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

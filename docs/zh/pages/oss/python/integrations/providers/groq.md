@@ -12,7 +12,7 @@
 
 ## 模型接口
 
-> **[ChatGroq](/oss/python/integrations/chat/groq)**
+> [卡][ChatGroq](/oss/python/integrations/chat/groq)
 >
 > Groq 平台上托管的聊天模型的接口。
 

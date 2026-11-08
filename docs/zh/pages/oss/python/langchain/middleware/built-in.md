@@ -22,12 +22,13 @@ LangChain 为常见用例提供预构建的中间件。每个中间件均可投�
 | [Tool retry](#tool-retry) |使用指数退避自动重试失败的工具调用。 |
 | [Model retry](#model-retry) |使用指数退避自动重试失败的模型调用。 |
 | [Model fallback](#model-fallback) |当主模型出现故障时，自动回退到替代模型。 |
+| [Model refusal](#model-refusal) |当模型拒绝时引发错误，而不是将拒绝视为最终答案。 |
 | [Summarization](#summarization) |当接近令牌限制时自动总结对话历史记录。 |
 | [Human-in-the-loop](#human-in-the-loop) |暂停执行以供人工批准工具调用。 |
 | [Model call limit](#model-call-limit) |限制模型调用次数，防止成本过高。 |
-| [Tool call limit](#tool-call-limit) |通过限制调用计数来控制工具执行。 |
-| [PII detection](#pii-detection) |检测和处理个人身份信息 (PII)。 |
-| [To-do list](#to-do-list) |为代理配备任务规划和跟踪功能。 || [LLM tool selector](#llm-tool-selector) |在调用主模型之前，使用LLM选择相关工具。 |
+| [Tool call limit](#tool-call-limit) |通过限制调用计数来控制工具执行。 || [PII detection](#pii-detection) |检测和处理个人身份信息 (PII)。 |
+| [To-do list](#to-do-list) |为代理配备任务规划和跟踪功能。 |
+| [LLM tool selector](#llm-tool-selector) |在调用主模型之前，使用LLM选择相关工具。 |
 | [Provider tool search](#provider-tool-search) |将工具推迟到提供商的服务器端工具搜索后面，按需显示它们。 |
 | [Shell tool](#shell-tool) |向代理公开持久 shell 会话以执行命令。 |
 | [Filesystem](#filesystem-middleware) |为代理提供用于存储上下文和长期记忆的文件系统。 |
@@ -39,15 +40,15 @@ LangChain 为常见用例提供预构建的中间件。每个中间件均可投�
 
 ### 工具错误
 
-捕获工具执行期间引发的异常并将其转换为模型可以看到并从中恢复的错误`ToolMessage`，而不是停止代理运行。工具错误对于以下情况很有用：
-
-* 让模型使用更正的参数重试失败的工具调用。
+捕获工具执行期间引发的异常并将其转换为模型可以看到并从中恢复的错误`ToolMessage`，而不是停止代理运行。工具错误对于以下情况很有用：* 让模型使用更正的参数重试失败的工具调用。
 * 显示受控的、经过清理的错误消息，而不是原始的异常详细信息。
-* 防止意外的工具异常导致代理崩溃。> [!注意]
+* 防止意外的工具异常导致代理崩溃。
+
+> [!注意]
 >
 > 工具错误中间件不会自动重试失败的调用。对于重试，请使用放置在*inner*（稍后在`middleware`列表中）的[Tool retry](#tool-retry)中间件进行组合，并使用`on_failure="error"`进行配置，以便异常到达工具错误中间件。请参阅下面的[full example](#tool-error-full-example)。
 
-**API参考：** [⟦T45⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware)
+**API参考：** [⟦T48⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware)
 
 > [!注意]
 >
@@ -71,7 +72,7 @@ agent = create_agent(
 )
 ```
 
-> **配置选项**
+> [手风琴] 配置选项
 >
 > **关于\_错误** `Callable[[Exception, ToolCallRequest], str | list[ContentBlock] | None]`
 >
@@ -79,11 +80,11 @@ agent = create_agent(
 >
 > **aon\_error** `Callable[[Exception, ToolCallRequest], Awaitable[str | list[ContentBlock] | None]]`
 >
-> 可选的异步处理程序，用于异步执行路径。如果未提供，则回退到 `on_error`。
+> 可选的异步处理程序，用于异步执行路径。如果未提供，则回落至 `on_error`。
 >
 > **工具** `list[BaseTool | str]`
 >
-> 要应用错误处理的工具或工具名称的可选列表。如果`None`，适用于所有工具。> **工具错误完整示例**
+> 要应用错误处理的工具或工具名称的可选列表。如果`None`，适用于所有工具。> [手风琴] 工具错误完整示例
 >
 > `on_error` 处理程序接收异常和 `ToolCallRequest`（其中包括带有名称、参数和调用 ID 的工具调用字典）。对于您不想处理的异常，返回`None`，它们将正常传播。
 >
@@ -137,7 +138,7 @@ agent = create_agent(
 * 提高依赖网络的工具的可靠性。
 * 构建能够优雅地处理临时错误的弹性代理。
 
-**API参考：** [⟦T61⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware)
+**API参考：** [⟦T64⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -154,7 +155,7 @@ agent = create_agent(
         ),
     ],
 )
-```> **配置选项**
+```> [手风琴] 配置选项
 >
 > **最大重试次数** `number`（默认值：2）
 >
@@ -162,11 +163,11 @@ agent = create_agent(
 >
 > **工具** `list[BaseTool | str]`
 >
-> 要应用重试逻辑的工具或工具名称的可选列表。如果`None`，则适用于所有工具。
+> 要应用重试逻辑的工具或工具名称的可选列表。如果`None`，适用于所有工具。
 >
 > **重试\_on** `tuple[type[Exception], ...] | callable`（默认：default\_retry\_on）
 >
-> 要重试的异常类型的元组，或者是接受异常并在应该重试时返回 `True` 的可调用对象。使用`langchain>=1.3.16`，默认重试可重试的[model errors](/oss/python/langchain/models#model-exceptions)以及所有未分类的异常，并且不再重试标记为不可重试的模型错误。
+> 要重试的异常类型的元组，或者是接受异常并在应该重试时返回 `True` 的可调用对象。使用`langchain>=1.3.16`，默认重试可重试的[model errors](/oss/python/langchain/models#model-exceptions)和所有未分类的异常，并且不再重试标记为不可重试的模型错误。
 >
 > **on\_failure** `string | callable`（默认：继续）
 >
@@ -179,9 +180,9 @@ agent = create_agent(
 > **弃用的值：** `'return_message'`（使用 `'continue'` 代替）和 `'raise'`（使用 `'error'` 代替）。
 >
 > **退避\_因子** `number`（默认值：2.0）
+>> 指数退避乘数。每次重试都会等待 `initial_delay * (backoff_factor ** retry_number)` 秒。设置为 `0.0` 以获得恒定延迟。
 >
-> 指数退避乘数。每次重试都会等待 `initial_delay * (backoff_factor ** retry_number)` 秒。设置为 `0.0` 以获得恒定延迟。
->> **初始\_延迟** `number`（默认值：1.0）
+> **初始\_延迟** `number`（默认值：1.0）
 >
 > 第一次重试之前的初始延迟（以秒为单位）
 >
@@ -193,13 +194,13 @@ agent = create_agent(
 >
 > 是否添加随机抖动（`±25%`）进行延迟以避免雷群
 
-> **完整示例**
+> [手风琴] 完整示例
 >
 > 中间件通过指数退避自动重试失败的工具调用。
 >
 > **关键配置：**
 >
-> * `max_retries` - 重试尝试次数（默认值：2）
+> * `max_retries` - 重试次数（默认值：2）
 > * `backoff_factor` - 指数退避乘数（默认值：2.0）
 > * `initial_delay` - 启动延迟（以秒为单位）（默认值：1.0）
 > * `max_delay` - 延迟增长上限（默认值：60.0）
@@ -207,7 +208,7 @@ agent = create_agent(
 >
 > **故障处理：**
 >
-> * `on_failure='continue'` (默认) - 返回错误消息
+> * `on_failure='continue'`（默认）- 返回错误消息
 > * `on_failure='error'` - 重新引发异常
 > * 自定义函数-返回错误消息的函数
 >
@@ -238,9 +239,9 @@ agent = create_agent(
 
 使用可配置的指数退避自动重试失败的模型调用。模型重试对于以下情况很有用：* 处理模型 API 调用中的瞬时故障。
 * 提高网络相关模型请求的可靠性。
-* 构建弹性代理来优雅地处理临时模型错误。
+* 构建有弹性的代理，可以优雅地处理临时模型错误。
 
-**API参考：** [⟦T91⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)
+**API参考：** [⟦T94⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -259,7 +260,7 @@ agent = create_agent(
 )
 ```
 
-> **配置选项**
+> [手风琴] 配置选项
 >
 > **最大重试次数** `number`（默认值：2）
 >
@@ -267,7 +268,7 @@ agent = create_agent(
 >
 > **重试\_on** `tuple[type[Exception], ...] | callable`（默认：default\_retry\_on）
 >
-> 要重试的异常类型元组，或者是一个接受异常并在应该重试时返回 `True` 的可调用对象。使用`langchain>=1.3.16`，默认重试可重试的[model errors](/oss/python/langchain/models#model-exceptions)和所有未分类的异常，并且不再重试标记为不可重试的模型错误。
+> 要重试的异常类型元组，或者是一个接受异常并在应该重试时返回 `True` 的可调用对象。使用`langchain>=1.3.16`，默认重试可重试的[model errors](/oss/python/langchain/models#model-exceptions)以及所有未分类的异常，并且不再重试标记为不可重试的模型错误。
 >
 > **on\_failure** `string | callable`（默认：继续）
 >
@@ -292,7 +293,7 @@ agent = create_agent(
 >
 > 是否添加随机抖动（`±25%`）进行延迟以避免雷群
 
-> **完整示例**
+> [手风琴] 完整示例
 >
 > 中间件通过指数退避自动重试失败的模型调用。
 >
@@ -374,9 +375,9 @@ agent = create_agent(
 
 * 构建处理模型中断的弹性代理。
 * 通过使用更便宜的型号来优化成本。
-* OpenAI、Anthropic 等提供冗余。
+* OpenAI、Anthropic 等提供者冗余。
 
-**API参考：** [⟦T108⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)
+**API参考：** [⟦T111⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -394,15 +395,123 @@ agent = create_agent(
 )
 ```
 
-观看这个 [video guide](https://www.youtube.com/watch?v=8rCRO0DUeIM) 演示模型回退中间件行为。> **配置选项**
+观看这个 [video guide](https://www.youtube.com/watch?v=8rCRO0DUeIM) 演示模型回退中间件行为。> [手风琴] 配置选项
 >
 > **第一个\_型号** `string | BaseChatModel` *必填*
 >
 > 当主要模型失败时尝试的第一个后备模型。可以是模型标识符字符串（例如，`'openai:gpt-5.4-mini'`）或`BaseChatModel`实例。
 >
-> \***附加\_型号** `string | BaseChatModel`
+> \***其他\_型号** `string | BaseChatModel`
 >
 > 如果以前的模型失败，可以尝试其他后备模型
+
+### 模特拒绝
+
+> [!注意]
+>
+> `ModelRefusalMiddleware` 需要 `langchain>=1.4.9`。
+
+当模型拒绝时，提高[⟦T118⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)，而不是将拒绝作为代理的最终答案返回。提供商将拒绝（例如安全策略拒绝）报告为成功响应，因此如果没有此中间件，代理运行就会像成功一样结束。模型拒绝对于以下情况很有用：
+
+* 当模型拒绝时，运行明显失败。
+* 使用 [Model fallback](#model-fallback) 在另一个模型上重试被拒绝的请求。
+
+中间件检查每个模型响应是否有 [⟦T119⟧ content block](/oss/python/langchain/messages#content-block-reference)，其中 OpenAI、Anthropic 和 Gemini 模型生成。它还捕获在结构化`response_format`下无法解析的拒绝。它不会检测模型以普通文本形式写入的拒绝。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import ModelFallbackMiddleware, ModelRefusalMiddleware
+
+agent = create_agent(
+    model="claude-sonnet-5-5",
+    tools=[],
+    middleware=[
+        ModelFallbackMiddleware("gpt-6.1-sol"),
+        ModelRefusalMiddleware(),
+    ],
+)
+```将 [⟦T121⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware) 列在 [⟦T122⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 之后，以便回退捕获错误并重试下一个模型。 `ModelRetryMiddleware` 不会重试拒绝。流式传输时，模型在拒绝之前发送的文本可以在中间件引发之前到达客户端。
+
+#### 处理拒绝
+
+选择模型拒绝时您的应用程序如何响应：
+
+> [手风琴] 捕获错误并继续
+>
+> 在调用代理的地方捕获[⟦T124⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)。拒绝的回复不会保存到线程中，因此下一条消息会在相同模型或不同模型上正常继续对话：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.agents import create_agent
+> from langchain.agents.middleware import ModelRefusalMiddleware
+> from langchain_core.exceptions import ModelRefusalError
+> from langgraph.checkpoint.memory import InMemorySaver
+>
+> agent = create_agent(
+>     model="claude-sonnet-5-5",
+>     tools=[],
+>     middleware=[ModelRefusalMiddleware()],
+>     checkpointer=InMemorySaver(),
+> )
+> config = {"configurable": {"thread_id": "1"}}
+>
+> try:
+>     agent.invoke({"messages": [{"role": "user", "content": "..."}]}, config)
+> except ModelRefusalError as error:
+>     print(error)  # Tell the user the request was refused
+>
+> # The thread is still usable
+> agent.invoke({"messages": [{"role": "user", "content": "Try something else"}]}, config)
+> ```
+
+> [手风琴] 回退到另一个模型
+>
+> 将 [⟦T125⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 列在 `ModelRefusalMiddleware` 之前，如上例所示。当模型拒绝时，将在下一个模型上重试该请求，该模型可以来自同一提供商，也可以来自不同的提供商。后备模型仍然可以拒绝相同的请求，因此当每个模型都拒绝时，请将其与其他选项之一结合起来。> [accordion] 回退后回复用户
+>
+> 要回复用户而不是在每个模型拒绝时运行失败，请在 `ModelFallbackMiddleware` 之前添加一个捕获错误的中间件：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from typing import Callable
+>
+> from langchain.agents import create_agent
+> from langchain.agents.middleware import (
+>     ModelFallbackMiddleware,
+>     ModelRefusalMiddleware,
+>     ModelRequest,
+>     ModelResponse,
+>     wrap_model_call,
+> )
+> from langchain.messages import AIMessage
+> from langchain_core.exceptions import ModelRefusalError
+>
+>
+> @wrap_model_call
+> def reply_on_refusal(
+>     request: ModelRequest,
+>     handler: Callable[[ModelRequest], ModelResponse],
+> ) -> ModelResponse:
+>     try:
+>         return handler(request)
+>     except ModelRefusalError:
+>         # Every model refused: reply to the user instead of failing the run
+>         return ModelResponse(result=[AIMessage("I cannot help with that request.")])
+>
+>
+> agent = create_agent(
+>     model="claude-sonnet-5-5",
+>     tools=[],
+>     middleware=[
+>         reply_on_refusal,
+>         ModelFallbackMiddleware("gpt-6.1-sol"),
+>         ModelRefusalMiddleware(),
+>     ],
+> )
+> ```
+>
+> 当`claude-sonnet-5-5`拒绝时，请求退回到`gpt-6.1-sol`。如果该模型也拒绝，`reply_on_refusal` 返回消息。
+
+> [手风琴] 编写自定义处理
+>
+> 对于其他处理，例如在状态中记录拒绝或调用 `interrupt()` 询问人员如何继续，请跳过 `ModelRefusalMiddleware` 并在您自己的中间件中检查每个响应是否有 [⟦T133⟧ content block](/oss/python/langchain/messages#content-block-reference)。请参阅[Custom middleware](/oss/python/langchain/middleware/custom)。
 
 ### 总结
 
@@ -410,13 +519,11 @@ agent = create_agent(
 
 * 超出上下文窗口的长时间运行的对话。
 * 具有丰富历史的多轮对话。
-* 保留完整对话上下文很重要的应用程序。
-
-> [!注意]
+* 保留完整对话上下文很重要的应用程序。> [!注意]
 >
 > 摘要是面向文本的上下文压缩。它不会调整大小、缩减采样或以其他方式压缩图像/音频/视频有效负载。 `keep` 保留的最新消息仍然包含其原始多模式块，而汇总的旧多模式消息仅由生成的文本摘要表示。对于图像较多的应用程序，将媒体存储在文件系统或对象存储中，并通过消息历史记录传递 URL 或文件引用。
 
-**API参考：** [⟦T114⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)
+**API参考：** [⟦T135⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -433,7 +540,7 @@ agent = create_agent(
         ),
     ],
 )
-```> **配置选项**
+```> [手风琴] 配置选项
 >
 >> [!提示]
 >>
@@ -451,14 +558,14 @@ agent = create_agent(
 >
 > **型号** `string | BaseChatModel` *必填*
 >
-> 用于生成摘要的模型。可以是模型标识符字符串（例如，`'openai:gpt-5.4-mini'`）或`BaseChatModel`实例。请参阅[⟦T122⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
+> 用于生成摘要的模型。可以是模型标识符字符串（例如，`'openai:gpt-5.4-mini'`）或`BaseChatModel`实例。请参阅[⟦T143⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
 >
 > **触发** `ContextSize | TriggerClause | list[ContextSize | TriggerClause] | None`
 >
 > 触发汇总的条件。可以是：
 >
-> * 单个[⟦T124⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize)元组（必须满足指定阈值）
-> * 单个 [⟦T125⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 字典（必须满足所有指定的阈值 - AND 逻辑）
+> * 单个[⟦T145⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize)元组（必须满足指定阈值）
+> * 单个 [⟦T146⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 字典（必须满足所有指定的阈值 - AND 逻辑）
 > * 混合任一形式的列表（任何项目都必须满足 - OR 逻辑）
 >
 > 支持的阈值有：
@@ -467,10 +574,10 @@ agent = create_agent(
 > * `tokens` (int): 绝对令牌数
 > * `messages` (int): 消息计数
 >
-> [⟦T129⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize) 元组恰好表达一个阈值。 [⟦T130⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 字典可以包含一个或多个阈值，例如`{"tokens": 4000, "messages": 10}`，并且必须满足字典中的所有阈值（AND）。
+> [⟦T150⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize) 元组恰好表达一个阈值。 [⟦T151⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 字典可以包含一个或多个阈值，例如`{"tokens": 4000, "messages": 10}`，并且必须满足字典中的所有阈值（AND）。
 >
-> 每个 [⟦T132⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 字典必须指定至少一个阈值。如果不提供`trigger`，则不会自动触发汇总。
->> 有关更多信息，请参阅 [⟦T134⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize) 和 [⟦T135⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 的 API 参考。
+> 每个 [⟦T153⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 字典必须指定至少一个阈值。如果不提供`trigger`，则不会自动触发汇总。
+>> 有关更多信息，请参阅 [⟦T155⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize) 和 [⟦T156⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 的 API 参考。
 >
 > **保留** `ContextSize`（默认值：('messages', 20)）
 >
@@ -480,15 +587,15 @@ agent = create_agent(
 > * `tokens` (int): 要保留的绝对令牌计数
 > * `messages` (int): 要保留的最近消息数
 >
-> 有关更多信息，请参阅 [⟦T140⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize) 的 API 参考。
+> 有关更多信息，请参阅 [⟦T161⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize) 的 API 参考。
 >
-> **代币\_计数器** `function`
+> **令牌\_计数器** `function`
 >
 > 自定义令牌计数功能。默认为基于字符的计数。
 >
 > **摘要\_提示** `string`
 >
-> 自定义摘要提示模板。如果未指定，则使用内置模板。模板应包含 `{messages}` 占位符，用于插入对话历史记录。
+> 自定义摘要提示模板。如果未指定，则使用内置模板。模板应包含 `{messages}` 占位符，将在其中插入对话历史记录。
 >
 > **修剪\_tokens\_to\_summarize** `number`（默认值：4000）
 >
@@ -505,7 +612,7 @@ agent = create_agent(
 >
 > **已弃用：** 使用 `keep: ("messages", value)` 代替。要保留的最近消息。
 
-> **完整示例**
+> [手风琴] 完整示例
 >
 > 汇总中间件监视消息令牌计数，并在达到阈值时自动汇总旧消息。
 >
@@ -606,7 +713,7 @@ agent = create_agent(
 * 强制进行人工监督的合规工作流程。
 * 长时间运行的对话，人工反馈指导代理。
 
-**API参考：** [⟦T157⟧](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HumanInTheLoopMiddleware)
+**API参考：** [⟦T178⟧](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HumanInTheLoopMiddleware)
 
 默认情况下，中间件每个模型轮暂停一次。将 `interrupt_mode="per_call"` 设置为每次工具调用暂停一次，每个中断均由其 ID 应答。参见[Set the interrupt mode](/oss/python/langchain/human-in-the-loop#set-the-interrupt-mode)。
 
@@ -659,7 +766,7 @@ agent = create_agent(
 * 对生产部署实施成本控制。
 * 测试座席在特定呼叫预算内的行为。
 
-**API参考：** [⟦T159⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware)
+**API参考：** [⟦T180⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -680,7 +787,7 @@ agent = create_agent(
 )
 ```
 
-观看这个 [video guide](https://www.youtube.com/watch?v=nJEER0uaNkE) 演示模型调用限制中间件行为。> **配置选项**
+观看这个 [video guide](https://www.youtube.com/watch?v=nJEER0uaNkE) 演示模型调用限制中间件行为。> [手风琴] 配置选项
 >
 > **线程\_限制** `number`
 >
@@ -703,7 +810,7 @@ agent = create_agent(
 * 对特定工具的使用实施速率限制。
 * 防止代理失控循环。
 
-**API参考：** [⟦T165⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware)
+**API参考：** [⟦T186⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -725,7 +832,7 @@ agent = create_agent(
 )
 ```
 
-观看这个 [video guide](https://www.youtube.com/watch?v=6gYlaJJ8t0w) 演示工具调用限制中间件行为。> **配置选项**
+观看这个 [video guide](https://www.youtube.com/watch?v=6gYlaJJ8t0w) 演示工具调用限制中间件行为。> [手风琴] 配置选项
 >
 > **工具\_名称** `string`
 >
@@ -739,7 +846,7 @@ agent = create_agent(
 >
 > 每次调用的最大工具调用数（一条用户消息 → 响应周期）。每条新用户消息都会重置。 `None` 表示无运行限制。
 >
-> **注意：** 必须至少指定`thread_limit` 或`run_limit` 之一。
+> **注意：** 必须至少指定 `thread_limit` 或 `run_limit` 之一。
 >
 > **退出\_行为** `string`（默认：继续）
 >
@@ -747,7 +854,7 @@ agent = create_agent(
 >
 > * `'continue'`（默认）- 使用错误消息阻止超出的工具调用，让其他工具和模型继续。模型根据错误消息决定何时结束。
 > * `'error'` - 引发 `ToolCallLimitExceededError` 异常，立即停止执行
-> * `'end'` - 立即停止执行，并针对超出的工具调用发出 `ToolMessage` 和 AI 消息。仅在限制单个工具时有效；如果其他工具有挂起的调用，则会引发 `NotImplementedError`。> **完整示例**
+> * `'end'` - 立即停止执行，并针对超出的工具调用发出 `ToolMessage` 和 AI 消息。仅在限制单个工具时有效；如果其他工具有待处理的调用，则会引发 `NotImplementedError`。> [手风琴] 完整示例
 >
 > 通过以下方式指定限制：
 >
@@ -787,9 +894,9 @@ agent = create_agent(
 
 > [!注意]
 >
-> 使用 `apply_to_output=True`，`PIIMiddleware` 还可以通过注册的流转换器编辑流式传输输出（文本增量、工具调用参数、工具输出和状态快照）。需要`langchain>=1.3.2`。参见[Register transformers on middleware](/oss/python/langchain/event-streaming#register-transformers-on-middleware)。
+> 借助 `apply_to_output=True`，`PIIMiddleware` 还可以通过注册的流转换器编辑流式传输输出（文本增量、工具调用参数、工具输出和状态快照）。需要`langchain>=1.3.2`。参见[Register transformers on middleware](/oss/python/langchain/event-streaming#register-transformers-on-middleware)。
 
-**API参考：** [⟦T186⟧](https://reference.langchain.com/python/langchain/agents/middleware/pii/PIIMiddleware)
+**API参考：** [⟦T207⟧](https://reference.langchain.com/python/langchain/agents/middleware/pii/PIIMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -805,11 +912,11 @@ agent = create_agent(
 )
 ```
 
-#### 自定义 PII 类型
+#### 自定义 PII 类型您可以通过提供 `detector` 参数来创建自定义 PII 类型。这使您可以检测内置类型之外的特定于您的用例的模式。
 
-您可以通过提供 `detector` 参数来创建自定义 PII 类型。这使您可以检测内置类型之外的特定于您的用例的模式。**创建自定义检测器的三种方法：**
+**创建自定义检测器的三种方法：**
 
-1. **正则表达式模式字符串** - 简单模式匹配
+1. **Regex模式字符串** - 简单模式匹配
 
 2. **自定义函数** - 带验证的复杂检测逻辑
 
@@ -906,7 +1013,7 @@ def detector(content: str) -> list[PIIMatch]:
 > * 对简单模式使用正则表达式字符串
 > * 当需要标志时使用 RegExp 对象（例如，不区分大小写的匹配）
 > * 当您需要模式匹配之外的验证逻辑时，请使用自定义函数
-> * 自定义函数让您完全控制检测逻辑并可以实现复杂的验证规则> **配置选项**
+> * 自定义函数让您完全控制检测逻辑并可以实现复杂的验证规则> [手风琴] 配置选项
 >
 > **pii\_type** `string` *必填*
 >
@@ -940,13 +1047,13 @@ def detector(content: str) -> list[PIIMatch]:
 ### 待办事项列表
 
 为代理配备任务规划和跟踪功能，以执行复杂的多步骤任务。待办事项列表对于以下用途很有用：* 复杂的多步骤任务需要跨多个工具进行协调。
-* 长期运行的操作，其中进度可见性很重要。
+* 长期运行的操作，其中进度可见性非常重要。
 
 > [!注意]
 >
 > 该中间件自动为座席提供`write_todos`工具和系统提示，以指导有效的任务规划。
 
-**API参考：** [⟦T208⟧](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware)
+**API参考：** [⟦T229⟧](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -961,7 +1068,7 @@ agent = create_agent(
 
 观看这个 [video guide](https://www.youtube.com/watch?v=yTWocbVKQxw) 演示待办事项列表中间件行为。
 
-> **配置选项**
+> [手风琴] 配置选项
 >
 > **系统\_提示** `string`
 >
@@ -979,7 +1086,7 @@ agent = create_agent(
 * 通过过滤不相关的工具来减少代币使用。
 * 提高模型焦点和准确性。该中间件使用结构化输出来询问法学硕士哪些工具与当前查询最相关。结构化输出模式定义了可用的工具名称和描述。模型提供者通常会将此结构化输出信息添加到幕后的系统提示中。
 
-**API参考：** [⟦T212⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_selection/LLMToolSelectorMiddleware)
+**API参考：** [⟦T233⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_selection/LLMToolSelectorMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -998,11 +1105,11 @@ agent = create_agent(
 )
 ```
 
-> **配置选项**
+> [手风琴] 配置选项
 >
 > **型号** `string | BaseChatModel`
 >
-> 工具选择模型。可以是模型标识符字符串（例如，`'openai:gpt-5.4-mini'`）或`BaseChatModel`实例。请参阅[⟦T216⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
+> 工具选择模型。可以是模型标识符字符串（例如，`'openai:gpt-5.4-mini'`）或`BaseChatModel`实例。请参阅[⟦T237⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
 >
 > 默认为代理的主要模型。
 >
@@ -1027,7 +1134,7 @@ agent = create_agent(
 >
 > 需要具有服务器端工具搜索支持的模型：Anthropic (Claude Sonnet 4+/Opus 4+/Haiku 4.5+) 或 OpenAI (gpt-5.5+)。其他提供商提出`ValueError`。
 
-**API参考：** [⟦T221⟧](https://reference.langchain.com/python/langchain/agents/middleware/provider_tool_search/ProviderToolSearchMiddleware)
+**API参考：** [⟦T242⟧](https://reference.langchain.com/python/langchain/agents/middleware/provider_tool_search/ProviderToolSearchMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1042,15 +1149,15 @@ agent = create_agent(
 )
 ```
 
-> **配置选项**
+> [手风琴] 配置选项
 >
 > **可搜索\_工具** `list[str | BaseTool]`
 >
 > 推迟提供者工具搜索的工具，按名称或实例给出。延迟工具将从模型中保留，直到搜索显示它们为止。无论此选项如何，使用 `extras={"defer_loading": True}` 构建的工具都会被推迟；如果省略`searchable_tools`，则仅推迟那些预先标记的工具。
 
-> **完整示例**
+> [手风琴] 完整示例
 >
-> 中间件选择使用 `searchable_tools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras={"defer_loading": True}` 在构建时选择延迟。
+> 中间件选择使用 `searchable_tools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras={"defer_loading": True}` 选择在构建时延迟。
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.agents import create_agent
@@ -1088,7 +1195,7 @@ agent = create_agent(
 >
 > **限制**：持久 shell 会话当前不支持中断（人机交互）。我们预计将来会增加对此的支持。
 
-**API参考：** [⟦T230⟧](https://reference.langchain.com/python/langchain/agents/middleware/shell_tool/ShellToolMiddleware)
+**API参考：** [⟦T251⟧](https://reference.langchain.com/python/langchain/agents/middleware/shell_tool/ShellToolMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1109,7 +1216,7 @@ agent = create_agent(
 )
 ```
 
-> **配置选项**
+> [手风琴] 配置选项
 >
 > **工作空间\_root** `str | Path | None`
 >
@@ -1128,15 +1235,15 @@ agent = create_agent(
 > 控制超时、输出限制和资源配置的执行策略。选项：
 >
 > * `HostExecutionPolicy` - 完全主机访问（默认）；最适合代理已在容器或虚拟机内运行的受信任环境
-> * `DockerExecutionPolicy` - 为每个代理运行启动一个单独的 Docker 容器，提供更严格的隔离
-> * `CodexSandboxExecutionPolicy` - 重用 Codex CLI 沙箱以实现额外的系统调用/文件系统限制
->> **编辑\_规则** `tuple[RedactionRule, ...] | list[RedactionRule] | None`
+> * `DockerExecutionPolicy` - 为每个代理运行启动一个单独的 Docker 容器，提供更严格的隔离> * `CodexSandboxExecutionPolicy` - 重用 Codex CLI 沙箱以实现额外的系统调用/文件系统限制
+>
+> **编辑\_规则** `tuple[RedactionRule, ...] | list[RedactionRule] | None`
 >
 > 可选的编辑规则，用于在将命令输出返回到模型之前对其进行清理。
 >
 >> [!警告]
 >>
->> 编辑规则在执行后应用，并且在使用 `HostExecutionPolicy` 时不会阻止机密或敏感数据的泄露。
+>> 编辑规则在执行后应用，并且在使用 `HostExecutionPolicy` 时不会防止机密或敏感数据的泄露。
 >
 > **工具\_描述** `str | None`
 >
@@ -1150,7 +1257,7 @@ agent = create_agent(
 >
 > 提供给 shell 会话的可选环境变量。在命令执行之前，值被强制转换为字符串。
 
-> **完整示例**
+> [手风琴] 完整示例
 >
 > 中间件提供了一个持久的 shell 会话，代理可以使用该会话来顺序执行命令。
 >
@@ -1215,7 +1322,7 @@ agent = create_agent(
 
 ### 文件系统中间件上下文工程是构建有效代理的主要挑战。当使用返回可变长度结果的工具（例如，`web_search`和RAG）时，这尤其困难，因为长工具结果可以快速填满上下文窗口。
 
-[Deep Agents](/oss/python/deepagents/overview) 的 `FilesystemMiddleware` 提供了四种与短期和长期记忆交互的工具：
+[Deep Agents](/oss/python/deepagents/overview) 中的`FilesystemMiddleware` 提供了四种与短期和长期记忆交互的工具：
 
 * `ls`：列出文件系统中的文件
 * `read_file`：读取整个文件或文件中的特定行数
@@ -1314,7 +1421,7 @@ agent = create_agent(
 
 子代理使用**名称**、**描述**、**系统提示**和**工具**进行定义。您还可以为子代理提供自定义**模型**或附加**中间件**。当您想要为子代理提供额外的状态密钥以与主代理共享时，这尤其有用。
 
-对于更复杂的用例，您还可以提供自己的预构建 LangGraph 图作为子代理。
+对于更复杂的用例，您还可以提供自己的预构建LangGraph图作为子代理。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1355,9 +1462,9 @@ agent = create_agent(
 
 > [!注意]
 >
-> `RubricMiddleware` 需要 `deepagents>=0.6.5`。它位于[**beta**](/oss/python/versioning)； API 将来可能会发生变化。有些任务有明确的“完成”定义，代理无法在第一次尝试时可靠地完成任务。 `RubricMiddleware` 允许您将“完成的内容”声明为一个评分标准，并让代理进行自我评估和迭代，直到满足评分标准或达到最大迭代上限。
+> `RubricMiddleware` 需要 `deepagents>=0.6.5`。位于[**beta**](/oss/python/versioning)； API 将来可能会发生变化。有些任务有明确的“完成”定义，代理无法在第一次尝试时可靠地完成任务。 `RubricMiddleware` 允许您将“完成的内容”声明为一个评分标准，并让代理进行自我评估和迭代，直到满足评分标准或达到最大迭代上限。
 
-**API参考：** [⟦T265⟧](https://reference.langchain.com/python/deepagents/middleware/rubric/RubricMiddleware)
+**API参考：** [⟦T286⟧](https://reference.langchain.com/python/deepagents/middleware/rubric/RubricMiddleware)
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
@@ -1482,7 +1589,7 @@ agent = create_deep_agent(
 * 使用正则表达式搜索代码内容
 * 需要文件发现的大型代码库
 
-**API参考：** [⟦T266⟧](https://reference.langchain.com/python/langchain/agents/middleware/file_search/FilesystemFileSearchMiddleware)
+**API参考：** [⟦T287⟧](https://reference.langchain.com/python/langchain/agents/middleware/file_search/FilesystemFileSearchMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1500,7 +1607,7 @@ agent = create_agent(
 )
 ```
 
-> **配置选项**
+> [手风琴] 配置选项
 >
 > **root\_path** `str` *必填*
 >
@@ -1512,7 +1619,7 @@ agent = create_agent(
 >
 > **最大\_文件\_大小\_mb** `int`（默认值：10）
 >
-> 搜索的最大文件大小（以 MB 为单位）。大于此大小的文件将被跳过。> **完整示例**
+> 搜索的最大文件大小（以 MB 为单位）。大于此大小的文件将被跳过。> [手风琴] 完整示例
 >
 > 中间件为代理添加了两个搜索工具：
 >
@@ -1563,7 +1670,7 @@ agent = create_agent(
 * 通过删除不再相关的旧工具输出来降低代币成本
 * 仅维护上下文中最新的 N 个工具结果
 
-**API参考：** [⟦T276⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ContextEditingMiddleware)、[⟦T277⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ClearToolUsesEdit)
+**API参考：** [⟦T297⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ContextEditingMiddleware)、[⟦T298⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ClearToolUsesEdit)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1583,17 +1690,17 @@ agent = create_agent(
         ),
     ],
 )
-```> **配置选项**
+```> [手风琴] 配置选项
 >
 > **编辑** `list[ContextEdit]` （默认值：\[ClearToolUsesEdit()]）
 >
-> [⟦T279⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ContextEdit) 应用策略列表
+> [⟦T300⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ContextEdit) 应用策略列表
 >
 > **token\_count\_method** `string`（默认值：近似值）
 >
 > 令牌计数方法。选项：`'approximate'` 或 `'model'`
 >
-> **[⟦T283⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ClearToolUsesEdit) 选项：**
+> **[⟦T304⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ClearToolUsesEdit) 选项：**
 >
 > **触发** `number`（默认：100000）
 >
@@ -1607,7 +1714,7 @@ agent = create_agent(
 >
 > 必须保留的最新工具结果的数量。这些永远不会被清除。
 >
-> **clear\_tool\_inputs** `boolean`（默认值：False）
+> **清除\_tool\_inputs** `boolean`（默认值：False）
 >
 > 是否清除AI消息上的原始工具调用参数。当`True`时，工具调用参数被替换为空对象。
 >
@@ -1617,7 +1724,7 @@ agent = create_agent(
 >
 > **占位符** `string` （默认值：\[清除]）
 >
-> 为清除的工具输出插入占位符文本。这替换了原始工具消息内容。> **完整示例**
+> 为清除的工具输出插入占位符文本。这替换了原始工具消息内容。> [手风琴] 完整示例
 >
 > 当达到令牌限制时，中间件应用上下文编辑策略。最常见的策略是`ClearToolUsesEdit`，它清除旧的工具结果，同时保留最新的结果。
 >
@@ -1660,7 +1767,7 @@ agent = create_agent(
 * 当外部工具不可用或昂贵时开发代理。
 * 在实施实际工具之前对代理工作流程进行原型设计。
 
-**API参考：** [⟦T292⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_emulator/LLMToolEmulator)
+**API参考：** [⟦T313⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_emulator/LLMToolEmulator)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1673,7 +1780,7 @@ agent = create_agent(
         LLMToolEmulator(),  # Emulate all tools
     ],
 )
-```> **配置选项**
+```> [手风琴] 配置选项
 >
 > **工具** `list[str | BaseTool]`
 >
@@ -1681,9 +1788,9 @@ agent = create_agent(
 >
 > **型号** `string | BaseChatModel`
 >
-> 用于生成模拟工具响应的模型。可以是模型标识符字符串（例如，`'google_genai:gemini-3.6-flash'`）或`BaseChatModel`实例。如果未指定，则默认为代理的型号。请参阅[⟦T299⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
+> 用于生成模拟工具响应的模型。可以是模型标识符字符串（例如，`'google_genai:gemini-3.6-flash'`）或`BaseChatModel`实例。如果未指定，则默认为代理的型号。请参阅[⟦T320⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
 
-> **完整示例**
+> [手风琴] 完整示例
 >
 > 中间件使用 LLM 为工具调用生成合理的响应，而不是执行实际的工具。
 >
@@ -1730,15 +1837,15 @@ agent = create_agent(
 
 这些中间件针对特定的 LLM 提供商进行了优化。有关完整的详细信息和示例，请参阅每个提供商的文档。
 
-> **[Anthropic](/oss/python/integrations/middleware/anthropic)**
+> [卡][Anthropic](/oss/python/integrations/middleware/anthropic)
 >
 > Claude 模型的提示缓存、bash 工具、文本编辑器、内存和文件搜索中间件。
 
-> **[AWS](/oss/python/integrations/middleware/aws)**
+> [卡][AWS](/oss/python/integrations/middleware/aws)
 >
 > Amazon Bedrock 模型的提示缓存中间件。
 
-> **[OpenAI](/oss/python/integrations/middleware/openai)**
+> [卡][OpenAI](/oss/python/integrations/middleware/openai)
 >
 > 适用于 OpenAI 型号的内容审核中间件。
 

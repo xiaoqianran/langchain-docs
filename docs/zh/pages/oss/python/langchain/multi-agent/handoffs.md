@@ -71,7 +71,7 @@ def transfer_to_specialist(runtime) -> Command:
 
 有关完整的实现，请参阅下面的教程。
 
-> **[Tutorial: Build customer support with handoffs](/oss/python/langchain/multi-agent/handoffs-customer-support)**
+> [卡][Tutorial: Build customer support with handoffs](/oss/python/langchain/multi-agent/handoffs-customer-support)
 >
 > 了解如何使用切换模式构建客户支持代理，其中单个代理在不同配置之间进行转换。
 
@@ -106,7 +106,7 @@ def record_warranty_status(
     )
 ```
 
-> **完整示例：使用中间件的客户支持**
+> [手风琴] 完整示例：使用中间件的客户支持
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.agents import AgentState, create_agent
@@ -213,7 +213,7 @@ def transfer_to_sales(
         },
         graph=Command.PARENT
     )
-```> **完整示例：销售和支持交接**
+```> [手风琴] 完整示例：带交接的销售和支持
 >
 > 此示例显示了具有独立销售和支持代理的多代理系统。每个代理都是一个单独的图节点，切换工具允许代理相互转移对话。
 >

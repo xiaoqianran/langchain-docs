@@ -22,7 +22,7 @@
 >
 > **示例和教程：**
 >> * [microsoft-foundry/foundry-samples LangGraph hosted agent samples](https://github.com/microsoft-foundry/foundry-samples/tree/main/samples/python/hosted-agents/langgraph)：在本地运行 LangGraph 代理或将它们部署到带有响应、调用和 A2A 示例的 Microsoft Foundry。
-> * [Azure-Samples/langchain-azure-openai-starter](https://github.com/Azure-Samples/langchain-azure-openai-starter): Start with a production-ready LangChain and Azure OpenAI app template that lets you deploy directly to Azure with a single `azd` command.
+> * [Azure-Samples/langchain-azure-openai-starter](https://github.com/Azure-Samples/langchain-azure-openai-starter)：从生产就绪的 LangChain 和 Azure OpenAI 应用程序模板开始，让您可以使用单个 `azd` 命令直接部署到 Azure。
 > * [microsoft/langchain-for-beginners](https://github.com/microsoft/langchain-for-beginners)：介绍 LangChain 与 Azure OpenAI 的实践课程。
 > * [Azure-Samples/langchain-agent-python](https://github.com/Azure-Samples/langchain-agent-python)：在 Azure 上构建和部署 LangChain 代理。
 
@@ -34,9 +34,9 @@
 
 ## 选择一个包
 
-`langchain-azure-ai` 和 [⟦T81⟧](https://reference.langchain.com/python/langchain-openai/) 是互补而非替代。 `langchain-azure-ai` depends on `langchain-openai`, and its chat and embeddings classes subclass [⟦T84⟧](https://reference.langchain.com/python/langchain-openai/chat_models/base/ChatOpenAI) and [⟦T85⟧](https://reference.langchain.com/python/langchain-openai/embeddings/base/OpenAIEmbeddings), so installing the Azure package does not remove the OpenAI package from your dependency chain.
+`langchain-azure-ai` 和 [⟦T81⟧](https://reference.langchain.com/python/langchain-openai/) 是互补而非替代。 `langchain-azure-ai` 依赖于 `langchain-openai` 及其聊天和嵌入类子类 [⟦T84⟧](https://reference.langchain.com/python/langchain-openai/chat_models/base/ChatOpenAI) 和 [⟦T85⟧](https://reference.langchain.com/python/langchain-openai/embeddings/base/OpenAIEmbeddings)，因此安装 Azure 包不会从依赖关系链中删除 OpenAI 包。
 
-使用下表选择起点：|场景|套餐 |
+使用下表选择起点：|场景 |套餐 |
 | - | - |
 |以 Foundry 项目为中心的新应用程序 | `langchain-azure-ai` |
 | Foundry 代理服务，托管 LangGraph、工具箱、内容安全、Azure 工具或 Application Insights | `langchain-azure-ai` |
@@ -106,39 +106,39 @@ uv add langchain-openai
 
 在 v1 API 上，直接针对 Azure 端点使用 `ChatOpenAI`，无需 `api_version`：
 
-**Entra ID（推荐）**
+> [选项卡] Entra ID（推荐）
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install azure-identity
+> ```
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+> from langchain_openai import ChatOpenAI
+>
+> token_provider = get_bearer_token_provider(
+>     DefaultAzureCredential(),
+>     "https://cognitiveservices.azure.com/.default",
+> )
+>
+> llm = ChatOpenAI(
+>     model="gpt-5.4-mini",  # your Azure deployment name
+>     base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
+>     api_key=token_provider,  # callable that handles token refresh
+> )
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install azure-identity
-```
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-from langchain_openai import ChatOpenAI
-
-token_provider = get_bearer_token_provider(
-    DefaultAzureCredential(),
-    "https://cognitiveservices.azure.com/.default",
-)
-
-llm = ChatOpenAI(
-    model="gpt-5.4-mini",  # your Azure deployment name
-    base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
-    api_key=token_provider,  # callable that handles token refresh
-)
-```
-
-**API 密钥**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_openai import ChatOpenAI
-
-llm = ChatOpenAI(
-    model="gpt-5.4-mini",  # your Azure deployment name
-    base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
-    api_key="your-azure-api-key",
-)
-```对于传统 Azure OpenAI API 版本，请使用 `AzureChatOpenAI`：
+> [选项卡] API 密钥
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain_openai import ChatOpenAI
+>
+> llm = ChatOpenAI(
+>     model="gpt-5.4-mini",  # your Azure deployment name
+>     base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
+>     api_key="your-azure-api-key",
+> )
+> ```对于传统 Azure OpenAI API 版本，请使用 `AzureChatOpenAI`：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_openai import AzureChatOpenAI
@@ -150,43 +150,43 @@ from langchain_openai import AzureChatOpenAI
 
 Azure OpenAI 支持 [Responses API](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/responses)，它提供有状态对话、内置工具（Web 搜索、文件搜索、代码解释器）和结构化推理摘要。当您设置 `reasoning` 参数时，`ChatOpenAI` 自动路由到 Responses API，或者您可以使用 `use_responses_api=True` 显式选择加入：
 
-**Entra ID（推荐）**
+> [选项卡] Entra ID（推荐）
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+> from langchain_openai import ChatOpenAI
+>
+> token_provider = get_bearer_token_provider(
+>     DefaultAzureCredential(),
+>     "https://cognitiveservices.azure.com/.default",
+> )
+>
+> llm = ChatOpenAI(
+>     model="gpt-5.4-mini",
+>     base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
+>     api_key=token_provider,
+>     use_responses_api=True,
+> )
+>
+> response = llm.invoke("Summarize the bitter lesson.")
+> print(response.text)
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-from langchain_openai import ChatOpenAI
-
-token_provider = get_bearer_token_provider(
-    DefaultAzureCredential(),
-    "https://cognitiveservices.azure.com/.default",
-)
-
-llm = ChatOpenAI(
-    model="gpt-5.4-mini",
-    base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
-    api_key=token_provider,
-    use_responses_api=True,
-)
-
-response = llm.invoke("Summarize the bitter lesson.")
-print(response.text)
-```
-
-**API 密钥**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_openai import ChatOpenAI
-
-llm = ChatOpenAI(
-    model="gpt-5.4-mini",
-    base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
-    api_key="your-azure-api-key",
-    use_responses_api=True,
-)
-
-response = llm.invoke("Summarize the bitter lesson.")
-print(response.text)
-```
+> [选项卡] API 密钥
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain_openai import ChatOpenAI
+>
+> llm = ChatOpenAI(
+>     model="gpt-5.4-mini",
+>     base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
+>     api_key="your-azure-api-key",
+>     use_responses_api=True,
+> )
+>
+> response = llm.invoke("Summarize the bitter lesson.")
+> print(response.text)
+> ```
 
 有关推理工作、推理摘要以及使用 Responses API 进行流式传输的演练，请参阅 [Azure ChatOpenAI integration page](/oss/python/integrations/chat/azure_chat_openai)。
 
@@ -209,40 +209,40 @@ pip install -U langchain-openai
 uv add langchain-openai
 ```
 
-**Entra ID（推荐）**
+> [选项卡] Entra ID（推荐）
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+> from langchain_openai import AzureOpenAI
+>
+> token_provider = get_bearer_token_provider(
+>     DefaultAzureCredential(),
+>     "https://cognitiveservices.azure.com/.default",
+> )
+>
+> llm = AzureOpenAI(
+>     azure_deployment="gpt-5.4-mini",  # your Azure deployment name
+>     api_version="2025-04-01-preview",
+>     azure_ad_token_provider=token_provider,
+> )
+>
+> print(llm.invoke("Write a haiku about the ocean."))
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-from langchain_openai import AzureOpenAI
-
-token_provider = get_bearer_token_provider(
-    DefaultAzureCredential(),
-    "https://cognitiveservices.azure.com/.default",
-)
-
-llm = AzureOpenAI(
-    azure_deployment="gpt-5.4-mini",  # your Azure deployment name
-    api_version="2025-04-01-preview",
-    azure_ad_token_provider=token_provider,
-)
-
-print(llm.invoke("Write a haiku about the ocean."))
-```
-
-**API 密钥**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_openai import AzureOpenAI
-
-llm = AzureOpenAI(
-    azure_deployment="gpt-5.4-mini",  # your Azure deployment name
-    api_version="2025-04-01-preview",
-    azure_endpoint="https://YOUR-RESOURCE-NAME.openai.azure.com/",
-    api_key="your-azure-api-key",
-)
-
-print(llm.invoke("Write a haiku about the ocean."))
-```
+> [选项卡] API 密钥
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain_openai import AzureOpenAI
+>
+> llm = AzureOpenAI(
+>     azure_deployment="gpt-5.4-mini",  # your Azure deployment name
+>     api_version="2025-04-01-preview",
+>     azure_endpoint="https://YOUR-RESOURCE-NAME.openai.azure.com/",
+>     api_key="your-azure-api-key",
+> )
+>
+> print(llm.invoke("Write a haiku about the ocean."))
+> ```
 
 ## 嵌入模型
 
@@ -297,40 +297,40 @@ pip install -U langchain-openai
 uv add langchain-openai
 ```
 
-**Entra ID（推荐）**
+> [选项卡] Entra ID（推荐）
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+> from langchain_openai import AzureOpenAIEmbeddings
+>
+> token_provider = get_bearer_token_provider(
+>     DefaultAzureCredential(),
+>     "https://cognitiveservices.azure.com/.default",
+> )
+>
+> embeddings = AzureOpenAIEmbeddings(
+>     azure_deployment="text-embedding-3-small",  # your Azure deployment name
+>     api_version="2025-04-01-preview",
+>     azure_ad_token_provider=token_provider,
+> )
+>
+> vector = embeddings.embed_query("LangChain makes agents easy.")
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-from langchain_openai import AzureOpenAIEmbeddings
-
-token_provider = get_bearer_token_provider(
-    DefaultAzureCredential(),
-    "https://cognitiveservices.azure.com/.default",
-)
-
-embeddings = AzureOpenAIEmbeddings(
-    azure_deployment="text-embedding-3-small",  # your Azure deployment name
-    api_version="2025-04-01-preview",
-    azure_ad_token_provider=token_provider,
-)
-
-vector = embeddings.embed_query("LangChain makes agents easy.")
-```
-
-**API 密钥**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_openai import AzureOpenAIEmbeddings
-
-embeddings = AzureOpenAIEmbeddings(
-    azure_deployment="text-embedding-3-small",  # your Azure deployment name
-    api_version="2025-04-01-preview",
-    azure_endpoint="https://YOUR-RESOURCE-NAME.openai.azure.com/",
-    api_key="your-azure-api-key",
-)
-
-vector = embeddings.embed_query("LangChain makes agents easy.")
-```
+> [选项卡] API 密钥
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain_openai import AzureOpenAIEmbeddings
+>
+> embeddings = AzureOpenAIEmbeddings(
+>     azure_deployment="text-embedding-3-small",  # your Azure deployment name
+>     api_version="2025-04-01-preview",
+>     azure_endpoint="https://YOUR-RESOURCE-NAME.openai.azure.com/",
+>     api_key="your-azure-api-key",
+> )
+>
+> vector = embeddings.embed_query("LangChain makes agents easy.")
+> ```
 
 ## 中间件
 
@@ -805,7 +805,7 @@ from langchain_azure_ai.tools import AzureAIServicesToolkit
 
 根据客户端与代理交互的方式选择托管协议：
 
-|协议|运行参数 | SDK主机类|端点|使用时 |
+|协议|运行参数| SDK主机类|端点 |使用时 |
 | - | - | - | - | - |
 |回应 | `--protocol responses` | `ResponsesHostServer` | `/responses` |您需要OpenAI兼容的聊天、流媒体、响应历史记录或对话线程。对于大多数对话代理来说，从这里开始。 |
 |祈求| `--protocol invocations` | `InvocationsHostServer` | `/invocations` |您需要自定义 JSON 形状、Webhook 样式端点或非会话处理。 |
@@ -820,62 +820,62 @@ from langchain_azure_ai.tools import AzureAIServicesToolkit
 
 设置 Foundry 项目端点和模型部署名称，然后在启动主机时选择协议：
 
-**回应**
+> [选项卡] 回应
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export FOUNDRY_PROJECT_ENDPOINT="https://<account>.services.ai.azure.com/api/projects/<project>"
+> export AZURE_AI_MODEL_DEPLOYMENT_NAME="<model-deployment-name>"
+> python -m langchain_azure_ai.agents.hosting.run --protocol responses
+> ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export FOUNDRY_PROJECT_ENDPOINT="https://<account>.services.ai.azure.com/api/projects/<project>"
-export AZURE_AI_MODEL_DEPLOYMENT_NAME="<model-deployment-name>"
-python -m langchain_azure_ai.agents.hosting.run --protocol responses
-```
-
-**调用**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export FOUNDRY_PROJECT_ENDPOINT="https://<account>.services.ai.azure.com/api/projects/<project>"
-export AZURE_AI_MODEL_DEPLOYMENT_NAME="<model-deployment-name>"
-python -m langchain_azure_ai.agents.hosting.run --protocol invocations
-```
+> [选项卡] 调用
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export FOUNDRY_PROJECT_ENDPOINT="https://<account>.services.ai.azure.com/api/projects/<project>"
+> export AZURE_AI_MODEL_DEPLOYMENT_NAME="<model-deployment-name>"
+> python -m langchain_azure_ai.agents.hosting.run --protocol invocations
+> ```
 
 对于部署，请将 `azure.yaml` 中的代理服务上的 `codeConfiguration.entryPoint` 设置为相同的运行器和协议。保留现有项目路径、运行时和依赖项解析设置：
 
-**回应**
+> [选项卡] 回应
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> services:
+>     my-agent:
+>         codeConfiguration:
+>             entryPoint: '-m langchain_azure_ai.agents.hosting.run --protocol responses'
+> ```
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-services:
-    my-agent:
-        codeConfiguration:
-            entryPoint: '-m langchain_azure_ai.agents.hosting.run --protocol responses'
-```
-
-**调用**
-
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-services:
-    my-agent:
-        codeConfiguration:
-            entryPoint: '-m langchain_azure_ai.agents.hosting.run --protocol invocations'
-...
-```
+> [选项卡] 调用
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> services:
+>     my-agent:
+>         codeConfiguration:
+>             entryPoint: '-m langchain_azure_ai.agents.hosting.run --protocol invocations'
+> ...
+> ```
 
 #### 使用 SDK 主机类
 
-Use the SDK host classes when you need to customize server construction, control the server lifecycle directly, or implement advanced hosting behavior such as custom routes or handlers:
+当您需要自定义服务器构造、直接控制服务器生命周期或实现高级托管行为（例如自定义路由或处理程序）时，请使用 SDK 主机类：
 
-**回应**
+> [选项卡] 回应
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain_azure_ai.agents.hosting import ResponsesHostServer
+>
+> ResponsesHostServer(graph).run()
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_azure_ai.agents.hosting import ResponsesHostServer
-
-ResponsesHostServer(graph).run()
-```
-
-**调用**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_azure_ai.agents.hosting import InvocationsHostServer
-
-InvocationsHostServer(graph).run()
-```
+> [选项卡] 调用
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain_azure_ai.agents.hosting import InvocationsHostServer
+>
+> InvocationsHostServer(graph).run()
+> ```
 
 要部署任一方法，请使用 `azd ai agent init` 初始化托管代理项目，使用 `azd ai agent run` 在本地测试它，然后使用 `azd deploy` 部署它。仅当需要创建 Foundry 项目或其他 Azure 资源时，首先运行 `azd provision`。您还可以使用 Foundry Toolkit Visual Studio Code 扩展进行部署。Microsoft Learn 指南包括两种协议、对话状态、人机交互流程、测试、部署和故障排除的完整示例。
 
@@ -883,4 +883,4 @@ InvocationsHostServer(graph).run()
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/microsoft.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/microsoft.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

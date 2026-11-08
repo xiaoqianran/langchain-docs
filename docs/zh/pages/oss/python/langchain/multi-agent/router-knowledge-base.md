@@ -6,7 +6,7 @@
 
 **路由器模式**是一种[multi-agent](/oss/python/langchain/multi-agent)架构，其中路由步骤对输入进行分类并将其定向到专门的代理，并将结果合成为组合响应。当您的组织的知识分布在不同的**垂直领域**（独立的知识领域，每个知识领域都需要自己的代理以及专门的工具和提示）时，此模式非常有用。
 
-在本教程中，您将构建一个多源知识库路由器，通过实际的企业场景演示这些优势。该系统将协调三名专家：
+在本教程中，您将构建一个多源知识库路由器，通过实际的企业场景展示这些优势。该系统将协调三名专家：
 
 * 一个 **GitHub 代理**，用于搜索代码、问题和拉取请求。
 * 一个 **Notion 代理**，用于搜索内部文档和 wiki。
@@ -91,238 +91,238 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 
 从 LangChain 的集成套件中选择聊天模型：
 
-**OpenAI**
-
-👉 阅读[OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain[openai]"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain[openai]"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain.chat_models import init_chat_model
-
-os.environ["OPENAI_API_KEY"] = "sk-..."
-
-model = init_chat_model("gpt-5.5")
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain_openai import ChatOpenAI
-
-os.environ["OPENAI_API_KEY"] = "sk-..."
-
-model = ChatOpenAI(model="gpt-5.5")
-```
-
-**Anthropic**
-
-👉 阅读[Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain[anthropic]"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain[anthropic]"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain.chat_models import init_chat_model
-
-os.environ["ANTHROPIC_API_KEY"] = "sk-..."
-
-model = init_chat_model("claude-sonnet-4-6")
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain_anthropic import ChatAnthropic
-
-os.environ["ANTHROPIC_API_KEY"] = "sk-..."
-
-model = ChatAnthropic(model="claude-sonnet-4-6")
-```
-
-**天蓝色**
-
-👉 阅读[Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain[openai]"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain[openai]"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain.chat_models import init_chat_model
-
-os.environ["AZURE_OPENAI_API_KEY"] = "..."
-os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
-os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
-
-model = init_chat_model(
-    "azure_openai:gpt-5.5",
-    azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
-)
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain_openai import AzureChatOpenAI
-
-os.environ["AZURE_OPENAI_API_KEY"] = "..."
-os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
-os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
-
-model = AzureChatOpenAI(
-    model="gpt-5.5",
-    azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
-)
-```
-
-**谷歌双子座**
-
-👉 阅读[Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain[google-genai]"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain[google-genai]"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain.chat_models import init_chat_model
-
-os.environ["GOOGLE_API_KEY"] = "..."
-
-model = init_chat_model("google_genai:gemini-3.7-flash")
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain_google_genai import ChatGoogleGenerativeAI
-
-os.environ["GOOGLE_API_KEY"] = "..."
-
-model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
-```
-
-**AWS 基岩**
-
-👉 阅读[AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain[aws]"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain[aws]"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.chat_models import init_chat_model
-
-# Follow the steps here to configure your credentials:
-# https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-model = init_chat_model(
-    "us.anthropic.claude-sonnet-4-6",
-    model_provider="bedrock_converse",
-)
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_aws import ChatBedrock
-
-model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
-```
-
-**拥抱脸**
-
-👉 阅读[HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain[huggingface]"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain[huggingface]"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain.chat_models import init_chat_model
-
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
-
-model = init_chat_model(
-    "microsoft/Phi-3-mini-4k-instruct",
-    model_provider="huggingface",
-    temperature=0.7,
-    max_tokens=1024,
-)
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
-
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
-
-llm = HuggingFaceEndpoint(
-    repo_id="microsoft/Phi-3-mini-4k-instruct",
-    temperature=0.7,
-    max_length=1024,
-)
-model = ChatHuggingFace(llm=llm)
-```
-
-**开放路由器**
-
-👉 阅读[OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)
-
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install -U "langchain-openrouter"
-```
-
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv add "langchain-openrouter"
-```
-
-```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain.chat_models import init_chat_model
-
-os.environ["OPENROUTER_API_KEY"] = "sk-..."
-
-model = init_chat_model(
-    "auto",
-    model_provider="openrouter",
-)
-```
-
-```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from langchain_openrouter import ChatOpenRouter
-
-os.environ["OPENROUTER_API_KEY"] = "sk-..."
-
-model = ChatOpenRouter(model="auto")
-```
+> [标签] OpenAI
+>
+> 👉 阅读[OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain[openai]"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain[openai]"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain.chat_models import init_chat_model
+>
+> os.environ["OPENAI_API_KEY"] = "sk-..."
+>
+> model = init_chat_model("gpt-5.5")
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain_openai import ChatOpenAI
+>
+> os.environ["OPENAI_API_KEY"] = "sk-..."
+>
+> model = ChatOpenAI(model="gpt-5.5")
+> ```
+
+> [标签] Anthropic
+>
+> 👉 阅读[Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain[anthropic]"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain[anthropic]"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain.chat_models import init_chat_model
+>
+> os.environ["ANTHROPIC_API_KEY"] = "sk-..."
+>
+> model = init_chat_model("claude-sonnet-4-6")
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain_anthropic import ChatAnthropic
+>
+> os.environ["ANTHROPIC_API_KEY"] = "sk-..."
+>
+> model = ChatAnthropic(model="claude-sonnet-4-6")
+> ```
+
+> [选项卡] 天蓝色
+>
+> 👉 阅读[Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain[openai]"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain[openai]"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain.chat_models import init_chat_model
+>
+> os.environ["AZURE_OPENAI_API_KEY"] = "..."
+> os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
+> os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
+>
+> model = init_chat_model(
+>     "azure_openai:gpt-5.5",
+>     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+> )
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain_openai import AzureChatOpenAI
+>
+> os.environ["AZURE_OPENAI_API_KEY"] = "..."
+> os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
+> os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
+>
+> model = AzureChatOpenAI(
+>     model="gpt-5.5",
+>     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
+> )
+> ```
+
+> [选项卡] 谷歌双子座
+>
+> 👉 阅读[Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain[google-genai]"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain[google-genai]"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain.chat_models import init_chat_model
+>
+> os.environ["GOOGLE_API_KEY"] = "..."
+>
+> model = init_chat_model("google_genai:gemini-3.7-flash")
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain_google_genai import ChatGoogleGenerativeAI
+>
+> os.environ["GOOGLE_API_KEY"] = "..."
+>
+> model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
+> ```
+
+> [选项卡] AWS 基岩
+>
+> 👉 阅读[AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain[aws]"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain[aws]"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.chat_models import init_chat_model
+>
+> # Follow the steps here to configure your credentials:
+> # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+>
+> model = init_chat_model(
+>     "us.anthropic.claude-sonnet-4-6",
+>     model_provider="bedrock_converse",
+> )
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain_aws import ChatBedrock
+>
+> model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
+> ```
+
+> [选项卡] 拥抱脸
+>
+> 👉 阅读[HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain[huggingface]"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain[huggingface]"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain.chat_models import init_chat_model
+>
+> os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
+>
+> model = init_chat_model(
+>     "microsoft/Phi-3-mini-4k-instruct",
+>     model_provider="huggingface",
+>     temperature=0.7,
+>     max_tokens=1024,
+> )
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
+>
+> os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
+>
+> llm = HuggingFaceEndpoint(
+>     repo_id="microsoft/Phi-3-mini-4k-instruct",
+>     temperature=0.7,
+>     max_length=1024,
+> )
+> model = ChatHuggingFace(llm=llm)
+> ```
+
+> [选项卡] OpenRouter
+>
+> 👉 阅读[OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)
+>
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pip install -U "langchain-openrouter"
+> ```
+>
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add "langchain-openrouter"
+> ```
+>
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain.chat_models import init_chat_model
+>
+> os.environ["OPENROUTER_API_KEY"] = "sk-..."
+>
+> model = init_chat_model(
+>     "auto",
+>     model_provider="openrouter",
+> )
+> ```
+>
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langchain_openrouter import ChatOpenRouter
+>
+> os.environ["OPENROUTER_API_KEY"] = "sk-..."
+>
+> model = ChatOpenRouter(model="auto")
+> ```
 
 ## 1. 定义状态
 
@@ -359,11 +359,11 @@ class RouterState(TypedDict):
     classifications: list[Classification]
     results: Annotated[list[AgentOutput], operator.add]  # Reducer collects parallel results
     final_answer: str
-```
+````results` 字段使用 **reducer**（Python 中的`operator.add`，JS 中的 concat 函数）将并行代理执行的输出收集到单个列表中。
 
-`results` 字段使用 **reducer**（Python 中的`operator.add`，JS 中的 concat 函数）将并行代理执行的输出收集到单个列表中。
+## 2. 为每个垂直领域定义工具
 
-## 2. 为每个垂直领域定义工具为每个知识领域创建工具。在生产系统中，这些将调用实际的 API。在本教程中，我们使用返回模拟数据的存根实现。我们定义了 3 个垂直领域的 7 个工具：GitHub（搜索代码、问题、PR）、Notion（搜索文档、获取页面）和 Slack（搜索消息、获取线程）。
+为每个知识领域创建工具。在生产系统中，这些将调用实际的 API。在本教程中，我们使用返回模拟数据的存根实现。我们定义了 3 个垂直领域的 7 个工具：GitHub（搜索代码、问题、PR）、Notion（搜索文档、获取页面）和 Slack（搜索消息、获取线程）。
 
 ```python expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
@@ -563,9 +563,7 @@ def synthesize_results(state: RouterState) -> dict:
     ])
 
     return {"final_answer": synthesis_response.content}
-```
-
-## 5. 编译工作流程
+```## 5. 编译工作流程
 
 现在通过将节点与边连接来组装工作流程。关键是使用`add_conditional_edges`和路由功能来实现并行执行：
 
@@ -585,7 +583,9 @@ workflow = (
     .add_edge("synthesize", END)
     .compile()
 )
-````add_conditional_edges` 调用通过 `route_to_agents` 函数将分类节点连接到代理节点。当`route_to_agents`返回多个`Send`对象时，这些节点并行执行。
+```
+
+`add_conditional_edges` 调用通过 `route_to_agents` 函数将分类节点连接到代理节点。当`route_to_agents`返回多个`Send`对象时，这些节点并行执行。
 
 ## 6.使用路由器
 
@@ -642,13 +642,13 @@ OAuth scope updates.
 
 `classify_query` 函数使用**结构化输出**来分析用户的查询并确定要调用哪些代理。这就是路由智能所在的地方：
 
-* 使用 Pydantic 模型 (Python) 或 Zod 模式 (JS) 确保有效输出
+* 使用 Pydantic 模型 (Python) 或 Zod schema (JS) 确保有效输出
 * 返回`Classification`对象的列表，每个对象都有一个`source`和目标`query`
-* 只包含相关来源——不相关的被简单地省略
+* 只包含相关来源——不相关的被简单地省略这种结构化方法比自由格式的 JSON 解析更可靠，并且使路由逻辑更明确。
 
-这种结构化方法比自由格式的 JSON 解析更可靠，并且使路由逻辑更明确。
+### 与发送并行执行
 
-### 与发送并行执行`route_to_agents` 函数将分类映射到 `Send` 对象。每个`Send`指定目标节点和要传递的状态：
+`route_to_agents` 函数将分类映射到 `Send` 对象。每个`Send`指定目标节点和要传递的状态：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Classifications: [{"source": "github", "query": "..."}, {"source": "notion", "query": "..."}]
@@ -930,9 +930,9 @@ if __name__ == "__main__":
     print("\n" + "=" * 60 + "\n")
     print("Final Answer:")
     print(result["final_answer"])
-```
+```## 9. 高级：有状态路由器
 
-## 9. 高级：有状态路由器到目前为止，我们构建的路由器是**无状态**（每个请求都是独立处理的，调用之间没有内存）。对于多轮对话，您需要一种**有状态**的方法。
+到目前为止，我们构建的路由器是**无状态**（每个请求都是独立处理的，调用之间没有内存）。对于多轮对话，您需要一种**有状态**的方法。
 
 ### 工具包装方法
 

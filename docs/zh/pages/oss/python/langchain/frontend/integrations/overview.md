@@ -10,25 +10,25 @@
 
 ## 集成
 
-> **[CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit)**
+> [卡][CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit)
 >
 > 完整的人工智能聊天运行时，具有结构化生成 UI 支持。将自定义 CopilotKit 端点添加到您的 LangGraph 部署中，然后在 React 中渲染动态组件树。
 
-> **[AI Elements](/oss/python/langchain/frontend/integrations/ai-elements)**
+> [卡][AI Elements](/oss/python/langchain/frontend/integrations/ai-elements)
 >
 > 用于 AI 聊天的可组合的基于 shadcn/ui 的组件。放入 `Conversation`、`Message`、`Tool` 和 `Reasoning`，并将它们直接连接到 `stream.messages`。
 
-> **[assistant-ui](/oss/python/langchain/frontend/integrations/assistant-ui)**
+> [卡][assistant-ui](/oss/python/langchain/frontend/integrations/assistant-ui)
 >
 > 具有完整运行时层的 Headless React 框架。通过 `useExternalStoreRuntime` 适配器将 `useStream` 桥接到 `AssistantRuntimeProvider`。
 
-> **[OpenUI](/oss/python/langchain/frontend/integrations/openui)**
+> [卡][OpenUI](/oss/python/langchain/frontend/integrations/openui)
 >
 > 生成式 UI 库，使代理可以在声明性组件 DSL 中生成完整的交互式仪表板。专为数据丰富的报告式 UI 而构建。
 
 ## 选择一个库
 
-每个库都适合稍微不同的集成模型。选择取决于您要构建的 UI 类型：| |副驾驶套件 |人工智能元素|助理用户界面 |开放式用户界面 |
+每个库都适合稍微不同的集成模型。选择取决于您要构建的 UI 类型：| |副驾驶套件 |人工智能元素 |助理用户界面 |开放式用户界面 |
 | - | - | - | - | - |
 | **最适合** |完整的聊天运行时加上结构化的生成 UI |丰富的消息类型聊天 |只需最少的设置即可实现全功能聊天 |生成的仪表板和报告|
 | **用户界面风格** | CopilotKit 聊天 shell + 自定义消息呈现器 |可组合的 shadcn/ui 组件 |无头老虎机+默认主题|具有声明性 DSL 的预构建组件库 |

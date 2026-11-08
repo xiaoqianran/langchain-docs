@@ -10,37 +10,37 @@
 
 ## 模型接口
 
-> **[ChatOpenAI](/oss/python/integrations/chat/openai)**
+> [卡][ChatOpenAI](/oss/python/integrations/chat/openai)
 >
 > OpenAI 聊天模型。
 
-> **[Decisions API](/oss/python/integrations/decision_models/openai)**
+> [卡][Decisions API](/oss/python/integrations/decision_models/openai)
 >
 > 用于路由、分类和代理中间件的键入答案和校准概率。
 
-> **[AzureChatOpenAI](/oss/python/integrations/chat/azure_chat_openai)**
+> [卡][AzureChatOpenAI](/oss/python/integrations/chat/azure_chat_openai)
 >
 > 具有企业功能的 Azure OpenAI 聊天模型。
 
-> **[OpenAIEmbeddings](/oss/python/integrations/embeddings/openai)**
+> [卡][OpenAIEmbeddings](/oss/python/integrations/embeddings/openai)
 >
 > OpenAI 嵌入模型。
 
-> **[AzureOpenAIEmbeddings](/oss/python/integrations/embeddings/azure_openai)**
+> [卡][AzureOpenAIEmbeddings](/oss/python/integrations/embeddings/azure_openai)
 >
 > Azure OpenAI 嵌入具有企业功能的模型。
 
 ## 其他
 
-> **[OpenAI](/oss/python/integrations/llms/openai)**
+> [卡][OpenAI](/oss/python/integrations/llms/openai)
 >
 >（旧版）OpenAI 文本完成模型。
 
-> **[AzureOpenAI](/oss/python/integrations/llms/azure_openai)**
+> [卡][AzureOpenAI](/oss/python/integrations/llms/azure_openai)
 >
 > Azure 上托管的（旧版）OpenAI 文本完成模型的包装器。
 
-> **[OpenAIModerationMiddleware](/oss/python/integrations/middleware/openai#content-moderation)**
+> [卡][OpenAIModerationMiddleware](/oss/python/integrations/middleware/openai#content-moderation)
 >
 > 检测可能带有仇恨、暴力等内容的文本。
 

@@ -12,7 +12,7 @@
 例如 IndexedDB、地理位置、剪贴板、画布或文件选择器。
 
 当数据应保留在设备本地时，此模式特别有用。
-本页上的游乐场示例使用支持的小型浏览器内存工具包
+本页上的 Playground 示例使用一个小型浏览器内存工具包支持
 由 IndexedDB 加上完全在客户端运行的地理定位工具。
 
 ## 无头工具如何工作
@@ -32,12 +32,12 @@
 
 在服务器上定义立即调用`interrupt()`的普通工具，然后
 镜像相同的工具名称和参数字段
-frontend `tools.ts` file.
+前端`tools.ts`文件。
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Any
 
-from langchain import create_agent
+from langchain.agents import create_agent
 from langchain.tools import ToolRuntime, tool
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import interrupt
@@ -114,7 +114,7 @@ agent = create_agent(
 ```
 
 每个工具都会使用前端可以处理的结构化有效负载进行中断，然后
-返回运行恢复时提供的值。 Mirror the same tool names and
+返回运行恢复时提供的值。镜像相同的工具名称和
 客户端上的模式，以便前端可以附加实现。
 
 ```ts tools.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -148,12 +148,12 @@ export const geolocationGet = tool({
 });
 ```
 
-## Implement the browser behavior
+## 实现浏览器行为
 
 将仅限客户端的行为放在单独的模块中并将其附加
-`.implement(...)`.真正的游乐场包括一个更完整的 IndexedDB 存储
+`.implement(...)`。真正的游乐场包括一个更完整的 IndexedDB 存储
 搜索、列出、过期和删除操作。以下示例显示
-the same shape at a higher level:
+更高层次上的相同形状：
 
 ```ts impl.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
@@ -204,7 +204,7 @@ export const geolocationGet = geolocationGetDefinition.implement(
 
 ## 将实现连接到`useStream`
 
-Pass the implemented tools to `useStream`. When the agent emits a matching tool
+将实现的工具传递给`useStream`。当代理发出匹配工具时
 调用时，挂钩运行客户端实现并为您恢复运行。
 
 定义一个与代理的状态模式匹配的 TypeScript 接口并将其传递为
@@ -305,9 +305,9 @@ export class ChatComponent {
 
 ## 内联渲染工具活动
 
-The playground renders each memory or geolocation operation as its own card and
+Playground 将每个内存或地理定位操作呈现为自己的卡，并且
 在输入附近保留一个小的内存统计面板。关键的一步是匹配每个
-entry in `stream.toolCalls` back to the AI message that triggered it:
+`stream.toolCalls`中的条目返回到触发它的AI消息：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import type { ToolCallWithResult, DefaultToolCall } from "@langchain/react";
@@ -331,34 +331,34 @@ function Message({ message, toolCalls }: {
 }
 ```
 
-This works especially well with the richer UI patterns from
+这对于更丰富的 UI 模式尤其有效
 [Tool calling](/oss/python/langchain/frontend/tool-calling)，其中每个工具结果可以
-render as a specialized card instead of raw JSON.
+渲染为专用卡片而不是原始 JSON。
 
 ## 用例
 
-Use headless tools when the work depends on APIs or data that only exist in the
+当工作依赖于仅存在于应用程序中的 API 或数据时，请使用无头工具
 客户：
 
 * IndexedDB 或 `localStorage` 中的本地内存
-* Device APIs like geolocation, clipboard, camera, or file pickers
-* Canvas, audio, or other browser-only rendering primitives
-* Privacy-sensitive data that should stay on the user's device
-* UI actions that need direct access to in-memory frontend state
+* 设备 API，例如地理位置、剪贴板、相机或文件选择器
+* 画布、音频或其他仅限浏览器的渲染基元
+* 应保留在用户设备上的隐私敏感数据
+* 需要直接访问内存中前端状态的 UI 操作
 
 ## 最佳实践* 工具要小且要打字。比起一种通用的工具，更喜欢多种狭窄的工具
   “运行任意浏览器代码”工具。
 * 返回 JSON 可序列化的结果。不要尝试返回 DOM 节点、文件
-  handles, or other non-serializable browser objects.
-* Share definitions, separate implementations.代理人和客户应同意
-  on tool names and schemas, but only the client should load browser APIs.
+  句柄或其他不可序列化的浏览器对象。
+* 共享定义，单独实现。代理人和客户应同意
+  关于工具名称和模式，但只有客户端应该加载浏览器 API。
 * UI 中显示工具状态。使用`stream.toolCalls`和`onTool`来显示
-  pending, success, and error states.
-* Add review when needed. For sensitive client-side actions, pair this pattern
+  待处理、成功和错误状态。
+* 需要时添加评论。对于敏感的客户端操作，请将此模式配对
   与[Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop)。
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/headless-tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

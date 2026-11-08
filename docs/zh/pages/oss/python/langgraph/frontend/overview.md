@@ -77,9 +77,9 @@ graph.add_edge("synthesize", END)
 app = graph.compile()
 ```在前端，[⟦T4⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)公开`stream.subgraphs`用于图节点发现
 以及选择器帮助器，例如用于节点范围的 `useMessages(stream, node)`
-streaming content.当您
+流媒体内容。当您
 需要诸如最后的`synthesis`之类的字段。 Angular 使用相同的流 API
-shape through [⟦T9⟧](https://reference.langchain.com/javascript/langchain-angular/injectStream).
+通过[⟦T9⟧](https://reference.langchain.com/javascript/langchain-angular/injectStream)塑造形状。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { useStream } from "@langchain/react";
@@ -103,23 +103,23 @@ function Pipeline() {
 数据管道、数据丰富、代码审查、规划和多步骤分析。的
 前端 SDK 允许您使用图形本机信号渲染这些工作流程：
 
-| Runtime concept | Frontend UX |
+|运行时概念|前端用户体验 |
 | - | - |
 | **命名节点** |每个图形节点一张卡片、时间线步骤或状态徽章。 |
 | **状态密钥** |用于分类、来源、分析和最终综合等类型化输出的专用 UI​​ 区域。 |
-| **Streaming metadata** |将部分消息路由到生成它们的节点。 |
+| **流式元数据** |将部分消息路由到生成它们的节点。 |
 | **检查点** |检查或从先前的图形状态恢复以进行调试和可审核性。 |
 | **中断** |暂停节点以进行人工输入、批准或更正，然后继续。 |
-| **Subgraphs** |仅当用户需要更多详细信息时才显示嵌套执行。 |由于 SDK 直接公开了这些概念，因此您可以从简单的
+| **子图** |仅当用户需要更多详细信息时才显示嵌套执行。 |由于 SDK 直接公开了这些概念，因此您可以从简单的
 聊天面板到完整的工作流程调试器，无需更改后端协议。
 
 ## 模式
 
-> **[Graph execution](/oss/python/langgraph/frontend/graph-execution)**
+> [卡][Graph execution](/oss/python/langgraph/frontend/graph-execution)
 >
 > 通过每个节点的状态和流内容可视化多步骤图形管道。
 
-> **[Custom stream channels](/oss/python/langgraph/frontend/custom-stream-channels)**
+> [卡][Custom stream channels](/oss/python/langgraph/frontend/custom-stream-channels)
 >
 > 将自定义服务器端数据流式传输到前端并使用`useExtension`和`useChannel`读取它。
 

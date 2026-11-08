@@ -66,7 +66,7 @@ LangChain 的 SDK 公开了比生产代理更丰富的运行时语义
 恢复和分叉代理在其发生时工作。
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain import create_agent
+from langchain.agents import create_agent
 from langgraph.checkpoint.memory import MemorySaver
 
 agent = create_agent(
@@ -147,51 +147,51 @@ interface AgentState {
 
 ### 渲染消息和输出
 
-> **[Markdown messages](/oss/python/langchain/frontend/markdown-messages)**
+> [卡][Markdown messages](/oss/python/langchain/frontend/markdown-messages)
 >
-> 使用正确的格式和代码突出显示来解析和渲染流式 Markdown。> **[Structured output](/oss/python/langchain/frontend/structured-output)**
+> 使用正确的格式和代码突出显示来解析和渲染流式 Markdown。> [卡][Structured output](/oss/python/langchain/frontend/structured-output)
 >
 > 将键入的代理响应呈现为自定义 UI 组件而不是纯文本。
 
-> **[Reasoning tokens](/oss/python/langchain/frontend/reasoning-tokens)**
+> [卡][Reasoning tokens](/oss/python/langchain/frontend/reasoning-tokens)
 >
 > 在可折叠块中显示模型思维过程。
 
-> **[Generative UI](/oss/python/langchain/frontend/generative-ui-overview)**
+> [卡][Generative UI](/oss/python/langchain/frontend/generative-ui-overview)
 >
-> 渲染代理生成的界面，涵盖从受控到声明到开放式的各种范围。
+> 呈现代理生成的界面，涵盖从受控到声明到开放式的各种范围。
 
 ### 显示代理操作
 
-> **[Tool calling](/oss/python/langchain/frontend/tool-calling)**
+> [卡][Tool calling](/oss/python/langchain/frontend/tool-calling)
 >
 > 将工具调用显示为包含加载和错误状态的丰富、类型安全的 UI 卡。
 
-> **[Headless tools](/oss/python/langchain/frontend/headless-tools)**
+> [卡][Headless tools](/oss/python/langchain/frontend/headless-tools)
 >
 > 在客户端上运行浏览器和设备 API，同时在代理上保留类型化工具架构。
 
-> **[Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop)**
+> [卡][Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop)
 >
 > 暂停代理以通过批准、拒绝和编辑工作流程进行人工审核。
 
 ### 管理对话
 
-> **[Branching chat](/oss/python/langchain/frontend/branching-chat)**
+> [卡][Branching chat](/oss/python/langchain/frontend/branching-chat)
 >
 > 编辑消息、重新生成响应以及导航对话分支。
 
-> **[Message queues](/oss/python/langchain/frontend/message-queues)**
+> [卡][Message queues](/oss/python/langchain/frontend/message-queues)
 >
 > 将多条消息排队，同时代理按顺序处理它们。
 
 ### 高级流媒体
 
-> **[Join & rejoin streams](/oss/python/langchain/frontend/join-rejoin)**
+> [卡片][Join & rejoin streams](/oss/python/langchain/frontend/join-rejoin)
 >
 > 断开并重新连接正在运行的代理流，而不会丢失进度。
 
-> **[Time travel](/oss/python/langchain/frontend/time-travel)**
+> [卡][Time travel](/oss/python/langchain/frontend/time-travel)
 >
 > 从对话历史记录中的任何检查点检查、导航和恢复。
 
@@ -213,15 +213,15 @@ interface AgentState {
 SDK 拥有代理运行时状态、可恢复性、中断和检查点
 下面的语义。
 
-> **[AI Elements](/oss/python/langchain/frontend/integrations/ai-elements)**
+> [卡][AI Elements](/oss/python/langchain/frontend/integrations/ai-elements)
 >
 > 用于 AI 聊天的可组合 shadcn/ui 组件：`Conversation`、`Message`、`Tool`、`Reasoning`。
 
-> **[assistant-ui](/oss/python/langchain/frontend/integrations/assistant-ui)**
+> [卡][assistant-ui](/oss/python/langchain/frontend/integrations/assistant-ui)
 >
 > Headless React 框架，具有内置线程管理、分支和附件支持。
 
-> **[OpenUI](/oss/python/langchain/frontend/integrations/openui)**
+> [卡][OpenUI](/oss/python/langchain/frontend/integrations/openui)
 >
 > 使用 openui-lang 组件 DSL 生成数据丰富的报告和仪表板的 UI 库。
 

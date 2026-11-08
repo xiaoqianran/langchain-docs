@@ -39,7 +39,7 @@ async def run_agent(server) -> dict:
         )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/cdf13577-f7e0-46d5-8399-abfc6400c82b/r)**
+> [卡][View example trace](https://smith.langchain.com/public/d1f0e6b6-32e7-430e-a167-919f6427d4e2/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -81,7 +81,7 @@ async def access_multimodal_tool_content(server) -> dict:
     return result
 ```
 
-> **[View example trace](https://smith.langchain.com/public/3102a6bc-697f-42a5-88c7-100c9b9dbd25/r)**
+> [卡][View example trace](https://smith.langchain.com/public/e5bd94b5-4592-41c4-816b-265630c4af6d/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -113,7 +113,7 @@ async def run_agent_structured(server) -> dict:
     return result
 ```
 
-> **[View example trace](https://smith.langchain.com/public/339c6cf0-3f24-468e-a465-e514010915d1/r)**
+> [卡][View example trace](https://smith.langchain.com/public/bc364aff-d6df-4849-99b2-c943fd21cf75/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -152,9 +152,9 @@ async def divide_by_zero(server) -> dict:
             print(f"Tool reported: {message.text}")  # [!code highlight]
 
     return result
-```
+```服务器报告的错误作为失败的工具消息到达模型，但会引发传输或会话失败。
 
-服务器报告的错误作为失败的工具消息到达模型，但会引发传输或会话失败。## 工具元数据
+## 工具元数据
 
 每个改编工具都可以在 LangChain 工具元数据上的 `mcp` 命名空间下携带其 MCP 出处：
 
@@ -240,9 +240,7 @@ async def gate_destructive_tools(server):
             middleware=[HumanInTheLoopMiddleware(interrupt_on=interrupt_on)],
             checkpointer=InMemorySaver(),
         )
-```
-
-当代理调用谓词门控的工具时，运行会暂停。批准调用以运行它，或拒绝它以跳过该工具并告诉模型：
+```当代理调用谓词门控的工具时，运行会暂停。批准调用以运行它，或拒绝它以跳过该工具并告诉模型：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Command
@@ -251,7 +249,9 @@ from langgraph.types import Command
 resumed = await agent.ainvoke(
     Command(resume={"decisions": [{"type": "approve"}]}), config
 )
-```谓词还可以检查调用的参数。这使得工具可以自由运行以实现安全输入，并仅在有风险的情况下暂停，例如针对受保护路径的 `delete_file` 调用。
+```
+
+谓词还可以检查调用的参数。这使得工具可以自由运行以实现安全输入，并仅在有风险的情况下暂停，例如针对受保护路径的 `delete_file` 调用。
 
 通过`request.tool_call["args"]`访问参数。
 
@@ -263,11 +263,9 @@ resumed = await agent.ainvoke(
 
 ### 引出
 
-[Elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) 让 MCP 服务器在工具调用期间请求输入。适配器通过 LangGraph 中断暂停运行。您的应用程序向用户提出请求，并根据用户的回答继续运行。
+[Elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) 让 MCP 服务器在工具调用期间请求输入。适配器通过 LangGraph 中断暂停运行。您的应用程序向用户提出请求，并根据用户的回答继续运行。当通过其 MCP 端点公开的代理暂停时，代理服务器会以这种方式请求输入。欲了解更多信息，请参阅[Human-in-the-loop over MCP](/langsmith/server-mcp-elicitation)。
 
-将 [checkpointer](/oss/python/langchain/short-term-memory) 附加到代理，并在调用和恢复它时使用相同的 `thread_id`。
-
-此示例假设预订工具询问一个日期并暂停一次。将示例日期替换为用户的答案。
+将 [checkpointer](/oss/python/langchain/short-term-memory) 附加到代理，并在调用和恢复它时使用相同的 `thread_id`。此示例假设预订工具询问一个日期并暂停一次。将示例日期替换为用户的答案。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Any
@@ -304,7 +302,9 @@ async def book_with_elicitation(server) -> dict:
         )
 ```
 
-默认情况下，诱导处于启用状态。适配器通告该功能并驱动中断循环。已经带有自己的启发处理程序的预构建客户端将受到尊重，而不是被覆盖。使用 `Command(resume={"responses": {key: answer}})` 继续。中断负载和应答类型位于`langchain.mcp.elicitation`。
+默认情况下，诱导处于启用状态。适配器通告该功能并驱动中断循环。已经带有自己的启发处理程序的预构建客户端将受到尊重，而不是被覆盖。
+
+使用 `Command(resume={"responses": {key: answer}})` 继续。中断负载和应答类型位于`langchain.mcp.elicitation`。
 
 > [!注意]
 >
@@ -318,9 +318,7 @@ async def book_with_elicitation(server) -> dict:
 
 适配器将答案转发给服务器，服务器决定工具调用如何完成。
 
-只有启发式才是这样回答的。相反，请求 [sampling](https://modelcontextprotocol.io/specification/2025-06-18/client/sampling) 或 [roots](https://modelcontextprotocol.io/specification/2025-06-18/client/roots) 的服务器会引发错误，因为现代的无会话协议没有用于这些请求的实时反向通道。参见[Sampling and roots](/oss/python/migrate/langchain-mcp-adapters#sampling-and-roots)。
-
-> [!注意]
+只有启发式才是这样回答的。相反，请求 [sampling](https://modelcontextprotocol.io/specification/2025-06-18/client/sampling) 或 [roots](https://modelcontextprotocol.io/specification/2025-06-18/client/roots) 的服务器会引发错误，因为现代的无会话协议没有用于这些请求的实时反向通道。参见[Sampling and roots](/oss/python/migrate/langchain-mcp-adapters#sampling-and-roots)。> [!注意]
 >
 > 中断驱动的诱导应答服务器，以 `InputRequiredResult` 的形式返回其请求。仅通过传统握手会话推送启发的服务器无法以这种方式应答。
 
@@ -344,4 +342,6 @@ async def book_with_elicitation(server) -> dict:
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

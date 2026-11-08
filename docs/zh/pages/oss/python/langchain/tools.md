@@ -6,7 +6,7 @@
 
 定义工具，让LangChain代理获取实时数据、执行代码、查询外部数据库并采取行动。
 
-工具扩展了[agents](/oss/python/langchain/agents)的功能——让它们获取实时数据、执行代码、查询外部数据库以及在世界中采取行动。
+工具扩展了[agents](/oss/python/langchain/agents)的功能——让它们获取实时数据、执行代码、查询外部数据库以及在现实世界中采取行动。
 
 在底层，工具是可调用的函数，具有明确定义的输入和输出，并传递给[chat model](/oss/python/langchain/models)。该模型根据对话上下文决定何时调用工具以及提供哪些输入参数。
 
@@ -136,7 +136,7 @@ def get_weather(location: str, units: str = "celsius", include_forecast: bool = 
 
 当工具可以访问运行时信息（例如对话历史记录、用户数据和持久内存）时，它们是最强大的。本节介绍如何从您的工具中访问和更新此信息。
 
-工具可以通过[⟦T49⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime)参数访问运行时信息，该参数提供：|组件|描述 |使用案例 |
+工具可以通过[⟦T49⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime)参数访问运行时信息，该参数提供：|组件|描述 |使用案例|
 | - | - | - |
 | **状态** |短期记忆 - 当前对话中存在的可变数据（消息、计数器、自定义字段）|访问对话历史记录、跟踪工具调用计数 |
 | **背景** |调用时传递的不可变配置（用户 ID、会话信息）|根据用户身份个性化响应 |
@@ -265,7 +265,7 @@ def set_user_name(new_name: str, runtime: ToolRuntime[None, CustomState]) -> Com
     )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/d77e4082-5e11-4004-b5ac-351caf69c151/r)**
+> [卡][View example trace](https://smith.langchain.com/public/d29da0cb-a0f6-4a14-b976-9f4154e46c4c/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -355,7 +355,7 @@ result = agent.invoke(
 print(result["messages"][-1].content_blocks)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/1a8a880e-fdc6-4e8c-9035-f41dfab4884b/r)**
+> [卡][View example trace](https://smith.langchain.com/public/71fda0a0-84cc-4eb8-83a1-611ebbd675a5/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -413,9 +413,9 @@ agent.invoke({
 # - Name: Foo
 # - Age: 25
 # - Email: foo@langchain.dev
-```
+```### 流作者
 
-### 流作者在执行期间从工具流式传输实时更新。这对于在长时间运行的操作期间向用户提供进度反馈非常有用。
+在执行期间从工具流式传输实时更新。这对于在长时间运行的操作期间向用户提供进度反馈非常有用。
 
 使用 `runtime.stream_writer` 发出自定义更新：
 
@@ -482,7 +482,7 @@ def get_assistant_scoped_data(runtime: ToolRuntime) -> str:
 >
 > 需要`deepagents>=0.5.0`（或`langgraph>=1.1.5`）。
 
-> **从旧的注入模式迁移**
+> [accordion] 从旧的注入模式迁移
 >
 > 较旧的示例使用 `InjectedState`、`InjectedStore`、`get_runtime()` 或 `InjectedToolCallId`。使用 [⟦T86⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime) 来代替一个用于状态、上下文、存储和执行元数据的显式接口。
 >
@@ -538,7 +538,7 @@ def get_weather(city: str) -> str:
     return f"It is currently sunny in {city}."
 ```
 
-> **[View example trace](https://smith.langchain.com/public/3d0c3e6d-cb98-44a6-9335-f44180a9d7bd/r)**
+> [卡][View example trace](https://smith.langchain.com/public/9c20937f-20e4-4ed2-adfa-eeda6fd63997/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -566,7 +566,7 @@ def get_weather_data(city: str) -> dict:
         "temperature_c": 22,
         "conditions": "sunny",
     }
-```> **[View example trace](https://smith.langchain.com/public/ef7c7454-03e6-481c-b5d3-be3862290879/r)**
+```> [卡][View example trace](https://smith.langchain.com/public/2f82d8ae-bcf6-4b6d-94ee-0d724c30fa98/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -606,7 +606,7 @@ def capture_screenshot() -> list[dict]:
 返回图像或混合内容的 MCP 工具以相同的方式进行转换。参见[Multimodal content](/oss/python/langchain/mcp/tools#multimodal-content)。
 
 #### 返回命令当工具需要更新图形状态（例如，设置用户首选项或应用程序状态）时，返回[⟦T98⟧](https://reference.langchain.com/python/langgraph/types/Command)。
-当 `Command` 定位当前图形时，请在更新中包含 `ToolMessage`，其工具调用 ID 与当前工具调用匹配。
+当 `Command` 定位当前图形时，请在更新中包含一个 `ToolMessage`，其工具调用 ID 与当前工具调用匹配。
 消息历史记录中的每个工具调用都必须有一个对应的`ToolMessage`。
 
 使用 `runtime.tool_call_id` 作为 `tool_call_id` 参数。 `ToolNode` 强制执行此要求：如果更新没有 `ToolMessage` 与工具调用匹配，则会引发 `ValueError`。
@@ -670,7 +670,7 @@ result = agent.invoke({
 # "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-> **[View example trace](https://smith.langchain.com/public/73ccdc9c-8579-4a93-906c-1338c04bf047/r)**
+> [卡][View example trace](https://smith.langchain.com/public/0a2f53f6-eaea-4092-b86b-c4e0a41998bc/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -959,206 +959,206 @@ def get_message_count(runtime: ToolRuntime) -> str:
 
 使用动态工具，代理可用的工具集在运行时修改，而不是预先定义。并非每种工具都适合每种情况。太多的工具可能会压垮模型（超载上下文）并增加错误；太少限制了能力。动态工具选择可以根据身份验证状态、用户权限、功能标志或对话阶段来调整可用的工具集。
 
-根据工具是否提前已知，有两种方法：
-
-**过滤预注册工具**
-
-当所有可能的工具在代理创建时已知时，您可以预先注册它们并根据状态、权限或上下文动态过滤哪些工具暴露给模型。
-
-**状态**
-
-仅在某些对话里程碑后启用高级工具：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents import create_agent
-from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-from typing import Callable
-
-@wrap_model_call
-def state_based_tools(
-    request: ModelRequest,
-    handler: Callable[[ModelRequest], ModelResponse]
-) -> ModelResponse:
-    """Filter tools based on conversation State."""
-    # Read from State: check if user has authenticated
-    state = request.state
-    is_authenticated = state.get("authenticated", False)
-    message_count = len(state["messages"])
-
-    # Only enable sensitive tools after authentication
-    if not is_authenticated:
-        tools = [t for t in request.tools if t.name.startswith("public_")]
-        request = request.override(tools=tools)
-    elif message_count < 5:
-        # Limit tools early in conversation
-        tools = [t for t in request.tools if t.name != "advanced_search"]
-        request = request.override(tools=tools)
-
-    return handler(request)
-
-agent = create_agent(
-    model="gpt-5.5",
-    tools=[public_search, private_search, advanced_search],
-    middleware=[state_based_tools]
-)
-```
-
-**商店**
-
-根据用户偏好或商店中的功能标志过滤工具：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from dataclasses import dataclass
-from langchain.agents import create_agent
-from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-from typing import Callable
-from langgraph.store.memory import InMemoryStore
-
-@dataclass
-class Context:
-    user_id: str
-
-@wrap_model_call
-def store_based_tools(
-    request: ModelRequest,
-    handler: Callable[[ModelRequest], ModelResponse]
-) -> ModelResponse:
-    """Filter tools based on Store preferences."""
-    user_id = request.runtime.context.user_id
-
-    # Read from Store: get user's enabled features
-    store = request.runtime.store
-    feature_flags = store.get(("features",), user_id)
-
-    if feature_flags:
-        enabled_features = feature_flags.value.get("enabled_tools", [])
-        # Only include tools that are enabled for this user
-        tools = [t for t in request.tools if t.name in enabled_features]
-        request = request.override(tools=tools)
-
-    return handler(request)
-
-agent = create_agent(
-    model="gpt-5.5",
-    tools=[search_tool, analysis_tool, export_tool],
-    middleware=[store_based_tools],
-    context_schema=Context,
-    store=InMemoryStore()
-)
-```
-
-**运行时上下文**根据运行时上下文中的用户权限过滤工具：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from dataclasses import dataclass
-from langchain.agents import create_agent
-from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-from typing import Callable
-
-@dataclass
-class Context:
-    user_role: str
-
-@wrap_model_call
-def context_based_tools(
-    request: ModelRequest,
-    handler: Callable[[ModelRequest], ModelResponse]
-) -> ModelResponse:
-    """Filter tools based on Runtime Context permissions."""
-    # Read from Runtime Context: get user role
-    if request.runtime is None or request.runtime.context is None:
-        # If no context provided, default to viewer (most restrictive)
-        user_role = "viewer"
-    else:
-        user_role = request.runtime.context.user_role
-
-    if user_role == "admin":
-        # Admins get all tools
-        pass
-    elif user_role == "editor":
-        # Editors can't delete
-        tools = [t for t in request.tools if t.name != "delete_data"]
-        request = request.override(tools=tools)
-    else:
-        # Viewers get read-only tools
-        tools = [t for t in request.tools if t.name.startswith("read_")]
-        request = request.override(tools=tools)
-
-    return handler(request)
-
-agent = create_agent(
-    model="gpt-5.5",
-    tools=[read_data, write_data, delete_data],
-    middleware=[context_based_tools],
-    context_schema=Context
-)
-```
-
-这种方法在以下情况下效果最佳：
-
-* 所有可能的工具在编译/启动时都是已知的
-* 您想要根据权限、功能标志或对话状态进行过滤
-* 工具是静态的，但其可用性是动态的
-
-更多示例请参见[Dynamically selecting tools](/oss/python/langchain/middleware/custom#dynamically-selecting-tools)。
-
-**运行时工具注册**
-
-当在运行时发现或创建工具时（例如，从 MCP 服务器加载、根据用户数据生成或从远程注册表获取），您需要注册工具并动态处理其执行。
-
-这需要两个中间件挂钩：
-
-1. `wrap_model_call` - 将动态工具添加到请求中
-2. `wrap_tool_call` - 处理动态添加工具的执行
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.tools import tool
-from langchain.agents import create_agent
-from langchain.agents.middleware import AgentMiddleware, ModelRequest, ToolCallRequest
-
-# A tool that will be added dynamically at runtime
-@tool
-def calculate_tip(bill_amount: float, tip_percentage: float = 20.0) -> str:
-    """Calculate the tip amount for a bill."""
-    tip = bill_amount * (tip_percentage / 100)
-    return f"Tip: ${tip:.2f}, Total: ${bill_amount + tip:.2f}"
-
-class DynamicToolMiddleware(AgentMiddleware):
-    """Middleware that registers and handles dynamic tools."""
-
-    def wrap_model_call(self, request: ModelRequest, handler):
-        # Add dynamic tool to the request
-        # This could be loaded from an MCP server, database, etc.
-        updated = request.override(tools=[*request.tools, calculate_tip])
-        return handler(updated)
-
-    def wrap_tool_call(self, request: ToolCallRequest, handler):
-        # Handle execution of the dynamic tool
-        if request.tool_call["name"] == "calculate_tip":
-            return handler(request.override(tool=calculate_tip))
-        return handler(request)
-
-agent = create_agent(
-    model="gpt-5.5",
-    tools=[get_weather],  # Only static tools registered here
-    middleware=[DynamicToolMiddleware()],
-)
-
-# The agent can now use both get_weather AND calculate_tip
-result = agent.invoke({
-    "messages": [{"role": "user", "content": "Calculate a 20% tip on $85"}]
-})
-```
-
-这种方法在以下情况下效果最佳：
-
-* 工具在运行时发现（例如，从 MCP 服务器）
-* 工具根据用户数据或配置动态生成
-* 您正在与外部工具注册表集成
-
-> [!注意]
+根据工具是否提前已知，有两种方法：> [选项卡] 过滤预注册工具
 >
-> 运行时注册的工具需要 `wrap_tool_call` 钩子，因为代理需要知道如何执行原始工具列表中没有的工具。如果没有它，代理将不知道如何调用动态添加的工具。
+> 当在创建代理时已知所有可能的工具时，您可以预先注册它们并根据状态、权限或上下文动态过滤向模型公开的工具。
+>
+>> [选项卡] 状态
+>>
+>> 仅在某些对话里程碑后启用高级工具：
+>>
+>> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > from langchain.agents import create_agent
+> > from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+> > from typing import Callable
+> >
+> > @wrap_model_call
+> > def state_based_tools(
+> >     request: ModelRequest,
+> >     handler: Callable[[ModelRequest], ModelResponse]
+> > ) -> ModelResponse:
+> >     """Filter tools based on conversation State."""
+> >     # Read from State: check if user has authenticated
+> >     state = request.state
+> >     is_authenticated = state.get("authenticated", False)
+> >     message_count = len(state["messages"])
+> >
+> >     # Only enable sensitive tools after authentication
+> >     if not is_authenticated:
+> >         tools = [t for t in request.tools if t.name.startswith("public_")]
+> >         request = request.override(tools=tools)
+> >     elif message_count < 5:
+> >         # Limit tools early in conversation
+> >         tools = [t for t in request.tools if t.name != "advanced_search"]
+> >         request = request.override(tools=tools)
+> >
+> >     return handler(request)
+> >
+> > agent = create_agent(
+> >     model="gpt-5.5",
+> >     tools=[public_search, private_search, advanced_search],
+> >     middleware=[state_based_tools]
+> > )
+> > ```
+>
+>> [选项卡] 商店
+>>
+>> 根据用户偏好或商店中的功能标志过滤工具：
+>>
+>> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > from dataclasses import dataclass
+> > from langchain.agents import create_agent
+> > from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+> > from typing import Callable
+> > from langgraph.store.memory import InMemoryStore
+> >
+> > @dataclass
+> > class Context:
+> >     user_id: str
+> >
+> > @wrap_model_call
+> > def store_based_tools(
+> >     request: ModelRequest,
+> >     handler: Callable[[ModelRequest], ModelResponse]
+> > ) -> ModelResponse:
+> >     """Filter tools based on Store preferences."""
+> >     user_id = request.runtime.context.user_id
+> >
+> >     # Read from Store: get user's enabled features
+> >     store = request.runtime.store
+> >     feature_flags = store.get(("features",), user_id)
+> >
+> >     if feature_flags:
+> >         enabled_features = feature_flags.value.get("enabled_tools", [])
+> >         # Only include tools that are enabled for this user
+> >         tools = [t for t in request.tools if t.name in enabled_features]
+> >         request = request.override(tools=tools)
+> >
+> >     return handler(request)
+> >
+> > agent = create_agent(
+> >     model="gpt-5.5",
+> >     tools=[search_tool, analysis_tool, export_tool],
+> >     middleware=[store_based_tools],
+> >     context_schema=Context,
+> >     store=InMemoryStore()
+> > )
+> > ```
+>
+>> [选项卡] 运行时上下文
+>>
+>> 根据运行时上下文中的用户权限过滤工具：
+>>
+>> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > from dataclasses import dataclass
+> > from langchain.agents import create_agent
+> > from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+> > from typing import Callable
+> >
+> > @dataclass
+> > class Context:
+> >     user_role: str
+> >
+> > @wrap_model_call
+> > def context_based_tools(
+> >     request: ModelRequest,
+> >     handler: Callable[[ModelRequest], ModelResponse]
+> > ) -> ModelResponse:
+> >     """Filter tools based on Runtime Context permissions."""
+> >     # Read from Runtime Context: get user role
+> >     if request.runtime is None or request.runtime.context is None:
+> >         # If no context provided, default to viewer (most restrictive)
+> >         user_role = "viewer"
+> >     else:
+> >         user_role = request.runtime.context.user_role
+> >
+> >     if user_role == "admin":
+> >         # Admins get all tools
+> >         pass
+> >     elif user_role == "editor":
+> >         # Editors can't delete
+> >         tools = [t for t in request.tools if t.name != "delete_data"]
+> >         request = request.override(tools=tools)
+> >     else:
+> >         # Viewers get read-only tools
+> >         tools = [t for t in request.tools if t.name.startswith("read_")]
+> >         request = request.override(tools=tools)
+> >
+> >     return handler(request)
+> >
+> > agent = create_agent(
+> >     model="gpt-5.5",
+> >     tools=[read_data, write_data, delete_data],
+> >     middleware=[context_based_tools],
+> >     context_schema=Context
+> > )
+> > ```
+>
+> 这种方法在以下情况下效果最佳：
+>
+> * 所有可能的工具在编译/启动时都是已知的
+> * 您想要根据权限、功能标志或对话状态进行过滤
+> * 工具是静态的，但其可用性是动态的
+>
+> 更多示例请参见[Dynamically selecting tools](/oss/python/langchain/middleware/custom#dynamically-selecting-tools)。> [tab] 运行时工具注册
+>
+> 当在运行时发现或创建工具时（例如，从 MCP 服务器加载、根据用户数据生成或从远程注册表获取），您需要注册工具并动态处理其执行。
+>
+> 这需要两个中间件钩子：
+>
+> 1. `wrap_model_call` - 将动态工具添加到请求中
+> 2. `wrap_tool_call` - 处理动态添加工具的执行
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.tools import tool
+> from langchain.agents import create_agent
+> from langchain.agents.middleware import AgentMiddleware, ModelRequest, ToolCallRequest
+>
+> # A tool that will be added dynamically at runtime
+> @tool
+> def calculate_tip(bill_amount: float, tip_percentage: float = 20.0) -> str:
+>     """Calculate the tip amount for a bill."""
+>     tip = bill_amount * (tip_percentage / 100)
+>     return f"Tip: ${tip:.2f}, Total: ${bill_amount + tip:.2f}"
+>
+> class DynamicToolMiddleware(AgentMiddleware):
+>     """Middleware that registers and handles dynamic tools."""
+>
+>     def wrap_model_call(self, request: ModelRequest, handler):
+>         # Add dynamic tool to the request
+>         # This could be loaded from an MCP server, database, etc.
+>         updated = request.override(tools=[*request.tools, calculate_tip])
+>         return handler(updated)
+>
+>     def wrap_tool_call(self, request: ToolCallRequest, handler):
+>         # Handle execution of the dynamic tool
+>         if request.tool_call["name"] == "calculate_tip":
+>             return handler(request.override(tool=calculate_tip))
+>         return handler(request)
+>
+> agent = create_agent(
+>     model="gpt-5.5",
+>     tools=[get_weather],  # Only static tools registered here
+>     middleware=[DynamicToolMiddleware()],
+> )
+>
+> # The agent can now use both get_weather AND calculate_tip
+> result = agent.invoke({
+>     "messages": [{"role": "user", "content": "Calculate a 20% tip on $85"}]
+> })
+> ```
+>
+> 这种方法在以下情况下效果最佳：
+>
+> * 在运行时发现工具（例如，从 MCP 服务器）
+>
+> * 根据用户数据或配置动态生成工具
+>
+> * 您正在与外部工具注册表集成
+>
+>> [!注意]
+>>
+>> 运行时注册的工具需要 `wrap_tool_call` 钩子，因为代理需要知道如何执行原始工具列表中没有的工具。如果没有它，代理将不知道如何调用动态添加的工具。
 
 ## 无头工具某些工具应该在**用户应用程序运行的地方**（通常是浏览器）运行，而不是在进程内部运行。 **无头工具**是工具定义，其中包括您在代理的**服务器**上注册的名称、描述和参数架构。 **实现**仅在**客户端**上注册，并在短暂的中断/恢复握手后执行。
 
@@ -1178,7 +1178,7 @@ result = agent.invoke({
 1. **定义**一个带有 `tool(name=..., description=..., args_schema=...)` 和 `langchain.tools` 的无头工具。无头工具仅具有模式，没有进程内实现。
 2. **使用`create_agent`或您的LangGraph图注册**该工具，以便模型可以正常调用它。
 3. 调用该工具时**处理**中断负载。该图不是在本地运行，而是以形状类似 `{"type": "tool", "tool_call": {"id", "name", "args"}}` 的有效负载暂停。
-4. **在您的应用程序、其他服务或人工步骤执行操作后恢复**图表。对于基于浏览器的流程，您可以在前端镜像架构并在那里附加 `.implement(...)`。
+4. 在您​​的应用程序、其他服务或人工步骤执行操作后，**恢复**图表。对于基于浏览器的流程，您可以在前端镜像架构并在那里附加 `.implement(...)`。
 
 > [!注意]
 >
@@ -1186,7 +1186,7 @@ result = agent.invoke({
 
 使用可选的 **`onTool`** 回调来观察生命周期事件（`start`、`success`、`error`）以获取 UI 反馈，例如旋转器或 toast。
 
-> **[Headless tools frontend pattern](/oss/python/langchain/frontend/headless-tools)**
+> [卡片][Headless tools frontend pattern](/oss/python/langchain/frontend/headless-tools)
 >
 > 请参阅使用 `useStream` 在客户端中执行的仅模式工具的端到端示例。
 

@@ -71,7 +71,7 @@ agent = create_agent(
 
 有关完整的实现，请参阅下面的教程。
 
-> **[Tutorial: Build a SQL assistant with on-demand skills](/oss/python/langchain/multi-agent/skills-sql-assistant)**
+> [卡][Tutorial: Build a SQL assistant with on-demand skills](/oss/python/langchain/multi-agent/skills-sql-assistant)
 >
 > 了解如何通过渐进式披露来实施技能，其中代理按需而不是预先加载专门的提示和模式。
 
@@ -87,6 +87,6 @@ agent = create_agent(
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

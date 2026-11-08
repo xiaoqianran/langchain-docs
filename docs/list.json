@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-07T15:15:11.971Z",
+  "fetchedAt": "2026-11-08T15:39:07.941Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
@@ -2005,7 +2005,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "create-an-agent",
-      "bytes": 11799
+      "bytes": 12083
     },
     {
       "rel": "langsmith/create-few-shot-evaluators.md",

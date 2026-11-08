@@ -7,7 +7,7 @@
 了解从受控界面到声明式界面再到开放式界面的生成式 UI 范围
 
 生成式 UI 是代理的输出呈现用户界面的任何模式
-超越文字。代理不会将段落流式传输到聊天气泡中，而是驾驶
+超越文字。代理不会将段落流式传输到聊天气泡中，而是驱动
 表单、卡片、仪表板和交互式控件。这可以让你的 UI 进行通信
 结果与应用程序的方式相同，而代理决定显示内容和时间。
 
@@ -69,8 +69,8 @@ graph LR
 从您提前注册的组件目录中。该目录充当
 护栏和边界：代理可以自由地安排和组合你的组件，但是
 不能超出您批准的范围。这就是长尾存在的地方。它
-以像素完美换取广度，适合二次交互、内部交互
-工具和仪表板，其中显示有用的内容比精确更重要
+以像素完美换取宽度，适合二次交互、内部交互
+工具和仪表板显示有用的东西比精确更重要
 控制。 [Declarative generative UI](/oss/python/langchain/frontend/declarative-generative-ui)
 用 [json-render](https://json-render.dev) 涵盖这一点； Google 的 A2UI，通过集成
 CopilotKit 提供相同的形状以及动态和固定模式变体。
@@ -94,32 +94,32 @@ CopilotKit 提供相同的形状以及动态和固定模式变体。
 | - | - |
 |保证一组已知输出的品牌、布局和可访问性 | [Controlled](/oss/python/langchain/frontend/controlled-generative-ui) |
 |让代理仅使用经过批准的组件来构建新颖的布局 | [Declarative](/oss/python/langchain/frontend/declarative-generative-ui) |
-|由第三方编写的 Surface 界面，无需您自行构建 | [Open-ended](/oss/python/langchain/frontend/open-ended-generative-ui) |Choosing a single approach for an entire product is the most common mistake.真实
-applications mix approaches and match each surface to its purpose: controlled
-components for the high-traffic, brand-critical core, declarative composition for the
-long tail of secondary interactions, and open-ended embeds for third-party
+|由第三方编写的 Surface 界面，无需您自行构建 | [Open-ended](/oss/python/langchain/frontend/open-ended-generative-ui) |为整个产品选择单一方法是最常见的错误。真实
+应用程序混合方法并将每个表面与其目的相匹配：受控
+组件用于高流量、品牌关键的核心，声明性组合用于
+二次交互的长尾以及第三方的开放式嵌入
 能力。单个会话可以跨越所有三个会话。
 
 该范围还适用于聊天之外的领域。相同的三种方法描述了生成
-interfaces on mobile and in surfaces like Slack or email, not only in a chat
+移动设备以及 Slack 或电子邮件等表面上的界面，而不仅仅是聊天中
 成绩单。
 
-## Explore the spectrum
+## 探索频谱
 
-> **[Controlled](/oss/python/langchain/frontend/controlled-generative-ui)**
+> [卡][Controlled](/oss/python/langchain/frontend/controlled-generative-ui)
 >
-> Author the components; the agent picks which to render and what data to pass.
+> 编写组件；代理选择要渲染的内容以及要传递的数据。
 
-> **[Declarative](/oss/python/langchain/frontend/declarative-generative-ui)**
+> [卡][Declarative](/oss/python/langchain/frontend/declarative-generative-ui)
 >
-> 代理发出规范； the frontend composes from a registered catalog.
+> 代理发出规范；前端由注册目录组成。
 
-> **[Open-ended](/oss/python/langchain/frontend/open-ended-generative-ui)**
+> [卡][Open-ended](/oss/python/langchain/frontend/open-ended-generative-ui)
 >
-> Render UI created elsewhere, such as sandboxed MCP Apps.
+> 渲染在其他地方创建的 UI，例如沙盒 MCP 应用程序。
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/generative-ui-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/generative-ui-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

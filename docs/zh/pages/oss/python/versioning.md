@@ -44,41 +44,39 @@
 
 * 一些文档引用了内部结构并这样提及它们。如果文档表明某些内容是内部的，则它可能会发生变化。
 * 函数、方法和其他对象以前导下划线为前缀 (**`_`**)。这是 Python 的标准约定，表示某些内容是私有的；如果任何方法以单个 **`_`** 开头，则它是内部 API。
-  * **例外：** 某些方法以 `_` 为前缀，但不包含实现。这些方法*意味着*会被提供实现的子类覆盖。此类方法通常是LangChain的**公共API**的一部分。
+  * **例外：** 某些方法以 `_` 为前缀，但不包含实现。这些方法*意味着*会被提供实现的子类覆盖。这些方法通常是LangChain的**公共API**的一部分。
 
-## 发布周期
+## 发布周期> [手风琴] 主要版本
+>
+> 主要版本（例如，`1.0.0` → `2.0.0`）可能包括：
+>
+> * 重大 API 更改
+> * 删除已弃用的功能
+> * 重大架构改进
+>
+> 我们提供：
+>
+> * 详细的迁移指南
+> * 尽可能使用自动迁移工具
+> * 延长对先前主要版本的支持期
 
-<AccordionGroup>
-  <Accordion title="Major releases">
-    主要版本（例如，`1.0.0` → `2.0.0`）可能包括：* 重大 API 变更
-    * 删除已弃用的功能
-    * 显着的架构改进
+> [手风琴] 次要版本
+>
+> 次要版本（例如 `1.0.0` → `1.1.0`）包括：
+>
+> * 新特性和功能
+> * 性能改进
+> * 新的可选参数
+> * 向后兼容的增强功能
 
-    我们提供：
-
-    * 详细的迁移指南
-    * 尽可能使用自动迁移工具
-    * 延长对先前主要版本的支持期
-  </Accordion>
-
-  <Accordion title="Minor releases">
-    次要版本（例如 `1.0.0` → `1.1.0`）包括：
-
-    * 新特性和功能
-    * 性能改进
-    * 新的可选参数
-    * 向后兼容的增强功能
-  </Accordion>
-
-  <Accordion title="Patch releases">
-    补丁版本（例如，`1.0.0` → `1.0.1`）包括：
-
-    * 错误修复
-    * 安全更新
-    * 文档改进
-    * 无需更改 API 即可优化性能
-  </Accordion>
-</AccordionGroup>
+> [手风琴] 补丁发布
+>
+> 补丁版本（例如，`1.0.0` → `1.0.1`）包括：
+>
+> * 错误修复
+> * 安全更新
+> * 文档改进
+> * 无需更改 API 即可优化性能
 
 ## 版本支持政策
 
@@ -103,45 +101,41 @@ LangChain 和 LangGraph 1.0 都被指定为 LTS 版本：* 1.0 版将保持 ACTI
 
 要检查您安装的版本：
 
-<CodeGroup>
-  ```python LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import langchain_core
-  print(langchain_core.__version__)
-  ```
+```python LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import langchain_core
+print(langchain_core.__version__)
+```
 
-  ```python LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import langgraph
-  print(langgraph.__version__)
-  ```
-</CodeGroup>
+```python LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import langgraph
+print(langgraph.__version__)
+```
 
 ## 升级
 
-<CodeGroup>
-  ```bash LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Upgrade to the latest version
-  pip install -U langchain-core langchain
+```bash LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Upgrade to the latest version
+pip install -U langchain-core langchain
 
-  # Upgrade to a specific version
-  pip install langchain-core==1.0.0
-  ```
+# Upgrade to a specific version
+pip install langchain-core==1.0.0
+```
 
-  ```bash LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Upgrade to the latest version
-  pip install -U langgraph
+```bash LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Upgrade to the latest version
+pip install -U langgraph
 
-  # Upgrade to a specific version
-  pip install langgraph==1.0.0
-  ```
+# Upgrade to a specific version
+pip install langgraph==1.0.0
+```
 
-  ```bash Deep Agents theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Upgrade to the latest version
-  pip install -U deepagents
+```bash Deep Agents theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Upgrade to the latest version
+pip install -U deepagents
 
-  # Upgrade to a specific version
-  pip install deepagents==0.1.0
-  ```
-</CodeGroup>
+# Upgrade to a specific version
+pip install deepagents==0.1.0
+```
 
 ## 预发布版本
 
@@ -155,12 +149,6 @@ LangChain 和 LangGraph 1.0 都被指定为 LTS 版本：* 1.0 版将保持 ACTI
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/versioning.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/versioning.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

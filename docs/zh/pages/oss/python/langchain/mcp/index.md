@@ -44,9 +44,9 @@ async def main():
         return await agent.ainvoke({"messages": [{"role": "user", "content": "..."}]})
 ```
 
-> **[View example trace](https://smith.langchain.com/public/7247701e-2f85-49e6-8434-c43cf1ddbad8/r)**
+> [卡][View example trace](https://smith.langchain.com/public/a94096e8-5b52-4550-89f4-d4c40cff2834/r)
 >
-> 为此示例打开公共 LangSmith 运行。> **LangChain 文档 MCP 服务器**
+> 为此示例打开公共 LangSmith 运行。> [手风琴] LangChain 文档 MCP 服务器
 >
 > [LangChain docs MCP server](/use-these-docs) 是位于 `https://docs.langchain.com/mcp` 的公共 HTTP 端点。
 >
@@ -117,20 +117,18 @@ http = MCPAdapter("https://example.com/mcp")
 
 ## 后续步骤
 
-> **[Tools](/oss/python/langchain/mcp/tools)**
+> [卡][Tools](/oss/python/langchain/mcp/tools)
 >
 > 将 MCP 工具加载到代理中，控制其执行并处理其输出。
 
-> **[Connections](/oss/python/langchain/mcp/connections)**
+> [卡][Connections](/oss/python/langchain/mcp/connections)
 >
 > 连接生命周期、多个服务器、协议时代和缓存。
 
-> **[Authentication](/oss/python/langchain/mcp/auth)**
+> [卡][Authentication](/oss/python/langchain/mcp/auth)
 >
 > 承载令牌、OAuth 2.1 和每用户服务器身份验证。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

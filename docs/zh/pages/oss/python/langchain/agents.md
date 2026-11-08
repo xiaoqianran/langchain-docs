@@ -16,7 +16,7 @@
 >
 > **特工=模特+线束**
 >
-> 线束的工作：为给定任务在正确的时间为模型提供正确的上下文。
+> 线束的工作：为给定的任务在正确的时间为模型提供正确的上下文。
 
 [⟦T112⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 是一款高度可配置的安全带。最简单的是，您可以使用以下命令创建一个：
 
@@ -66,13 +66,13 @@ agent = create_agent(model="ollama:north-mini-code-1.0", tools=tools)
 
 > [!提示]
 >
-> [Deep Agents](/oss/python/deepagents/overview) 构建于 `create_agent` 之上，并附带已组装的常用功能，例如规划、文件系统工具、子代理和内存。当您需要自己配置线束时，请使用`create_agent`。
+> [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 构建于 `create_agent` 之上，并附带已组装的常用功能，例如规划、文件系统工具、子代理和内存。为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents](/oss/python/deepagents/overview) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。当您需要自己配置较小的线束时，请使用`create_agent`。
 
 ## 核心组件
 
 ![Agent model and harness components diagram](https://mintcdn.com/langchain-5e9cc07a/jtty0O--UJOKG0nK/oss/images/agent_model_harness.svg?fit=max\&auto=format\&n=jtty0O--UJOKG0nK\&q=85\&s=5ac6a7e0343af7cb5ba3ca632e2224af)
 
-### 型号传递模型标识符字符串 (`"provider:model"`) 或初始化的模型实例来为代理选择模型。有关参数、提供程序设置和动态模型选择，请参阅[Models](/oss/python/langchain/models)。
+### 型号传递模型标识符字符串 (`"provider:model"`) 或初始化的模型实例来为您的代理选择模型。有关参数、提供程序设置和动态模型选择，请参阅[Models](/oss/python/langchain/models)。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -519,7 +519,7 @@ agent = create_agent(
 >
 > 跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
 
-您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T131⟧](/oss/python/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/python/langgraph/use-graph-api#messagesstate)；要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
+您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T131⟧](/oss/python/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/python/langgraph/graph-api-state#messagesstate)；要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -694,7 +694,7 @@ result = agent.invoke(
     {"messages": [{"role": "user", "content": "What about tomorrow?"}]},
     config=config,
 )
-```> **[View example trace](https://smith.langchain.com/public/455ace73-fce4-413b-b47e-613b605ae01d/r)**
+```> [卡][View example trace](https://smith.langchain.com/public/1835d2f3-8da5-4e27-95d7-fb2c7d726ad5/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -893,11 +893,11 @@ result = agent.invoke(
 )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/2ccaff61-e004-4356-81f3-4c061ef7a93a/r)**
+> [卡][View example trace](https://smith.langchain.com/public/79519c6b-9286-45f0-b5c6-9afaa5ef22f8/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
-`thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅[tool context](/oss/python/langchain/tools#context) 和 [Runtime](/oss/python/langchain/runtime)。
+`thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅 [tool context](/oss/python/langchain/tools#context) 和 [Runtime](/oss/python/langchain/runtime)。
 
 ## 流媒体
 
@@ -923,7 +923,7 @@ for snapshot in stream.values:
         print(f"Calling tools: {[tc['name'] for tc in latest_message.tool_calls]}")
 ```
 
-> **[View example trace](https://smith.langchain.com/public/eb78aa8e-9575-4c73-8e79-bad82b30ef1d/r)**
+> [卡][View example trace](https://smith.langchain.com/public/25a56e3b-08d0-4fcd-934e-a16c0a99d629/r)
 >
 > 为此示例打开公共 LangSmith 运行。> [!提示]
 >
@@ -933,41 +933,41 @@ for snapshot in stream.values:
 
 `create_agent` 具有高度可扩展性。中间件是定制的基础：每个部分处理一个问题，在适当的时刻挂接到代理循环中，并与任何其他部分自由组合。准确获取您的用例所需的内容并跳过其余部分。
 
-通用模式被预先构建为一流的中间件。您可以构建任何其他东西作为 [custom middleware](/oss/python/langchain/middleware/custom)。
+通用模式被预先构建为一流的中间件。您可以构建任何其他东西作为[custom middleware](/oss/python/langchain/middleware/custom)。
 
 ![Agent harness capabilities by category](https://mintcdn.com/langchain-5e9cc07a/jtty0O--UJOKG0nK/oss/images/agent_harness_capabilities.svg?fit=max\&auto=format\&n=jtty0O--UJOKG0nK\&q=85\&s=0ff671d72badd0844826660dfcb04391)
 
 当代理承担复杂的工作时，他们需要几个关键领域的支持。中间件生态系统提供：
 
-> **[Execution environment](#execution-environment)**
+> [卡][Execution environment](#execution-environment)
 >
 > 工具、文件系统、沙箱和代码执行
 
-> **[Context management](#context-management)**
+> [卡][Context management](#context-management)
 >
 > 总结、记忆、技巧、提示缓存
 
-> **[Planning and delegation](#planning-and-delegation)**
+> [卡][Planning and delegation](#planning-and-delegation)
 >
 > 用于并行、独立工作的待办事项列表和子代理
 
-> **[Fault tolerance](#fault-tolerance)**
+> [卡][Fault tolerance](#fault-tolerance)
 >
 > 重试、回退和调用限制
 
-> **[Guardrails](#guardrails)**
+> [卡][Guardrails](#guardrails)
 >
 > PII 检测和内容控制
 
-> **[Steering](#steering)**
+> [卡][Steering](#steering)
 >
 > 在采取高影响力行动之前进行人机交互批准
 
 > [!提示]
 >
-> `create_deep_agent` 为长时间运行的编码和研究任务预先组装此堆栈（默认情况下包括文件系统、摘要、子代理和提示缓存）。请参阅[Deep Agents](/oss/python/deepagents/harness)了解完整的预制线束。
+> `create_deep_agent` 为长时间运行的编码和研究任务预先组装此堆栈（默认情况下包括文件系统、摘要、子代理和提示缓存）。请参阅[Deep Agents](/oss/python/deepagents/harness)了解完整的预制线束。### 执行环境
 
-### 执行环境当代理可以采取行动而不仅仅是生成文本时，它们特别有用。执行环境为代理提供了一个工作空间：它可以调用的工具、用于跨轮读写文件的文件系统以及用于运行脚本或 shell 命令的代码执行。
+当代理可以采取行动而不仅仅是生成文本时，它们特别有用。执行环境为代理提供了一个工作空间：它可以调用的工具、用于跨轮读写文件的文件系统以及用于运行脚本或 shell 命令的代码执行。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1053,7 +1053,7 @@ agent = create_agent(
 )
 ```
 
-请参阅[⟦T144⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware)、[Sandboxes](/oss/python/deepagents/sandboxes)、[Interpreters](/oss/python/deepagents/interpreters)。
+参见[⟦T144⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware)、[Sandboxes](/oss/python/deepagents/sandboxes)、[Interpreters](/oss/python/deepagents/interpreters)。
 
 > [!注意]
 >
@@ -1704,7 +1704,7 @@ agent = create_agent(
 )
 ```
 
-参见[⟦T150⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)、[⟦T151⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware)、[Prebuilt middleware](/oss/python/langchain/middleware/built-in)。
+请参阅[⟦T150⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)、[⟦T151⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware)、[Prebuilt middleware](/oss/python/langchain/middleware/built-in)。
 
 ### 护栏有些策略不能立即生效——无论模型做什么，它们都需要确定性地执行。 Guardrails 在数据流经代理循环时拦截数据，在工具结果到达模型上下文之前应用合规性规则或内容策略。
 
@@ -1984,15 +1984,15 @@ agent = create_agent(
 
 ### 中间件资源
 
-> **[Middleware overview](/oss/python/langchain/middleware/overview)**
+> [卡片][Middleware overview](/oss/python/langchain/middleware/overview)
 >
 > 中间件堆栈如何工作以及钩子何时触发
 
-> **[Prebuilt middleware](/oss/python/langchain/middleware/built-in)**
+> [卡片][Prebuilt middleware](/oss/python/langchain/middleware/built-in)
 >
 > 带有配置示例的完整参考
 
-> **[Custom middleware](/oss/python/langchain/middleware/custom)**
+> [卡][Custom middleware](/oss/python/langchain/middleware/custom)
 >
 > 编写您自己的业务逻辑、PII 清理等挂钩
 

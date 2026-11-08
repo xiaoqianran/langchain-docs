@@ -14,17 +14,17 @@ Ollama 允许您在本地或云端运行开源模型（如[⟦T0⟧](https://oll
 
 ## 模型接口
 
-> **[ChatOllama](/oss/python/integrations/chat/ollama)**
+> [卡][ChatOllama](/oss/python/integrations/chat/ollama)
 >
 > 奥拉玛聊天模型。
 
-> **[OllamaEmbeddings](/oss/python/integrations/embeddings/ollama)**
+> [卡][OllamaEmbeddings](/oss/python/integrations/embeddings/ollama)
 >
 > Ollama 嵌入模型。
 
 ## 其他
 
-> **[OllamaLLM](/oss/python/integrations/llms/ollama)**
+> [卡][OllamaLLM](/oss/python/integrations/llms/ollama)
 >
 >（旧版）Ollama 文本完成模型。
 

@@ -4,7 +4,7 @@
 
 # 中间件概述
 
-在每一步控制和自定义代理执行
+控制和定制代理执行的每一步
 
 中间件提供了一种更严格地控制代理内部发生的事情的方法。中间件可用于以下用途：
 
@@ -73,23 +73,23 @@ HITL 中断、摘要、PII 编辑、重试和任何自定义挂钩都与代理�
 
 ## 其他资源
 
-> **[Built-in middleware](/oss/python/langchain/middleware/built-in)**
+> [卡][Built-in middleware](/oss/python/langchain/middleware/built-in)
 >
 > 探索常见用例的内置中间件。
 
-> **[Custom middleware](/oss/python/langchain/middleware/custom)**
+> [卡][Custom middleware](/oss/python/langchain/middleware/custom)
 >
 > 使用钩子和装饰器构建您自己的中间件。
 
-> **[Middleware API reference](https://reference.langchain.com/python/langchain/middleware/)**
+> [卡][Middleware API reference](https://reference.langchain.com/python/langchain/middleware/)
 >
 > 中间件的完整 API 参考。
 
-> **[Middleware integrations](/oss/python/integrations/middleware/)**
+> [卡][Middleware integrations](/oss/python/integrations/middleware/)
 >
 > 适用于 Anthropic、AWS、OpenAI 等的提供商特定中间件。
 
-> **[Testing agents](/oss/python/langchain/test/)**
+> [卡][Testing agents](/oss/python/langchain/test/)
 >
 > 使用 LangSmith 测试您的代理。
 

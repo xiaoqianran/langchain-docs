@@ -91,7 +91,7 @@ response = model.invoke(messages)
 * [AI message](#ai-message) - 模型生成的响应，包括文本内容、工具调用和元数据
 * [Tool message](#tool-message) - 代表[tool calls](/oss/python/langchain/models#tool-calling)的输出
 
-###系统消息[⟦T33⟧](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) 表示启动模型行为的一组初始指令。您可以使用系统消息来定调、定义模型的角色并建立响应指南。
+###系统消息[⟦T34⟧](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) 表示启动模型行为的一组初始指令。您可以使用系统消息来定调、定义模型的角色并建立响应指南。
 
 ```python Basic instructions theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 system_msg = SystemMessage("You are a helpful coding assistant.")
@@ -123,7 +123,7 @@ response = model.invoke(messages)
 
 ### 人类讯息
 
-[⟦T34⟧](https://reference.langchain.com/python/langchain-core/messages/human/HumanMessage) 代表用户输入和交互。它们可以包含文本、图像、音频、文件和任何其他数量的多模式[content](#message-content)。
+[⟦T35⟧](https://reference.langchain.com/python/langchain-core/messages/human/HumanMessage) 代表用户输入和交互。它们可以包含文本、图像、音频、文件和任何其他数量的多模式[content](#message-content)。
 
 ####文字内容
 
@@ -156,16 +156,16 @@ human_msg = HumanMessage(
 
 ###人工智能消息
 
-[⟦T36⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 表示模型调用的输出。它们可以包括多模式数据、工具调用以及您稍后可以访问的特定于提供商的元数据。
+[⟦T37⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 表示模型调用的输出。它们可以包括多模式数据、工具调用以及您稍后可以访问的特定于提供商的元数据。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 response = model.invoke("Explain AI")
 print(type(response))  # <class 'langchain.messages.AIMessage'>
 ```
 
-[⟦T37⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 模型在调用时返回对象，其中包含响应中的所有关联元数据。
+[⟦T38⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 模型在调用时返回对象，其中包含响应中的所有关联元数据。
 
-提供者以不同的方式权衡/上下文化消息类型，这意味着手动创建新的 [⟦T38⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 对象并将其插入消息历史记录中有时会很有帮助，就像它来自模型一样。
+提供者以不同的方式权衡/上下文化消息类型，这意味着手动创建新的 [⟦T39⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 对象并将其插入消息历史记录中有时会很有帮助，就好像它来自模型一样。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import AIMessage, SystemMessage, HumanMessage
@@ -182,9 +182,9 @@ messages = [
 ]
 
 response = model.invoke(messages)
-```> **属性**
+```> [手风琴] 属性
 >
-> **文本** `string`
+> **文字** `string`
 >
 > 消息的文本内容。
 >
@@ -216,7 +216,7 @@ response = model.invoke(messages)
 
 #### 工具调用
 
-当模型制作[tool calls](/oss/python/langchain/models#tool-calling)时，它们包含在[⟦T46⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage)中：
+当模型制作[tool calls](/oss/python/langchain/models#tool-calling)时，它们包含在[⟦T47⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage)中：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.chat_models import init_chat_model
@@ -240,7 +240,7 @@ for tool_call in response.tool_calls:
 
 #### 代币使用
 
-[⟦T47⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 可以在其 [⟦T48⟧](https://reference.langchain.com/python/langchain-core/messages/ai/UsageMetadata) 字段中保存令牌计数和其他使用元数据：
+[⟦T48⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 可以在其 [⟦T49⟧](https://reference.langchain.com/python/langchain-core/messages/ai/UsageMetadata) 字段中保存令牌计数和其他使用元数据：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.chat_models import init_chat_model
@@ -259,11 +259,11 @@ response.usage_metadata
  'output_token_details': {'audio': 0, 'reasoning': 256}}
 ```
 
-详情请参阅[⟦T49⟧](https://reference.langchain.com/python/langchain-core/messages/ai/UsageMetadata)。
+详情请参阅[⟦T50⟧](https://reference.langchain.com/python/langchain-core/messages/ai/UsageMetadata)。
 
 #### 流和块
 
-在流式传输期间，您将收到 [⟦T50⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessageChunk) 对象，这些对象可以组合成完整的消息对象：
+在流式传输期间，您将收到 [⟦T51⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessageChunk) 对象，这些对象可以组合成完整的消息对象：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 chunks = []
@@ -285,7 +285,7 @@ for chunk in model.stream("Hi"):
 
 ### 工具消息对于支持[tool calling](/oss/python/langchain/models#tool-calling)的模型，AI消息可以包含工具调用。工具消息用于将单个工具执行的结果传递回模型。
 
-[Tools](/oss/python/langchain/tools)可以直接生成[⟦T51⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)对象。下面，我们展示一个简单的例子。阅读[tools guide](/oss/python/langchain/tools)了解更多信息。
+[Tools](/oss/python/langchain/tools)可以直接生成[⟦T52⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)对象。下面，我们展示一个简单的例子。阅读[tools guide](/oss/python/langchain/tools)了解更多信息。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import AIMessage
@@ -318,7 +318,7 @@ messages = [
 response = model.invoke(messages)  # Model processes the result
 ```
 
-> **属性**
+> [手风琴] 属性
 >
 > **内容** `string` *必填*
 >
@@ -326,7 +326,7 @@ response = model.invoke(messages)  # Model processes the result
 >
 > **工具\_call\_id** `string` *必填*
 >
-> 此消息正在响应的工具调用的 ID。必须与 [⟦T54⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 中工具调用的 ID 匹配。
+> 此消息正在响应的工具调用的 ID。必须与[⟦T55⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage)中工具调用的ID匹配。
 >
 > **姓名** `string` *必填*
 >
@@ -338,7 +338,7 @@ response = model.invoke(messages)  # Model processes the result
 >
 > `artifact` 字段存储不会发送到模型但可以通过编程方式访问的补充数据。这对于存储原始结果、调试信息或下游处理数据非常有用，而不会扰乱模型的上下文。
 >
->> **示例：使用工件检索元数据**
+>> [accordion] 示例：使用工件检索元数据
 >>
 >> 例如，[retrieval](/oss/python/deepagents/retrieval) 工具可以从文档中检索一段段落以供模型参考。当消息`content`包含模型将引用的文本时，`artifact`可以包含应用程序可以使用的文档标识符或其他元数据（例如，用于呈现页面）。请参阅下面的示例：
 >>
@@ -375,7 +375,7 @@ LangChain 聊天模型接受 `content` 属性中的消息内容。
 2. 提供者原生格式的内容块列表
 3. [LangChain's standard content blocks](#standard-content-blocks)列表
 
-请参阅下面使用 [multimodal](#multimodal) 输入的示例：
+请参阅下面的使用 [multimodal](#multimodal) 输入的示例：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import HumanMessage
@@ -403,59 +403,59 @@ human_message = HumanMessage(content_blocks=[
 
 ### 标准内容块
 
-LangChain 提供跨提供商工作的消息内容的标准表示形式。
+LangChain 为跨提供商的消息内容提供标准表示。
 
-消息对象实现一个 `content_blocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从[⟦T66⟧](/oss/python/integrations/chat/anthropic)或[⟦T67⟧](/oss/python/integrations/chat/openai)生成的消息将包含相应提供者格式的`thinking`或`reasoning`块，但可以延迟解析为一致的[⟦T70⟧](#content-block-reference)表示：
+消息对象实现了一个 `content_blocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从 [⟦T67⟧](/oss/python/integrations/chat/anthropic) 或 [⟦T68⟧](/oss/python/integrations/chat/openai) 生成的消息将包含相应提供者格式的 `thinking` 或 `reasoning` 块，但可以延迟解析为一致的 [⟦T71⟧](#content-block-reference) 表示形式：
 
-**Anthropic**
+> [标签] Anthropic
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.messages import AIMessage
+>
+> message = AIMessage(
+>     content=[
+>         {"type": "thinking", "thinking": "...", "signature": "WaUjzkyp..."},
+>         {"type": "text", "text": "..."},
+>     ],
+>     response_metadata={"model_provider": "anthropic"}
+> )
+> message.content_blocks
+> ```
+>
+> ```
+> [{'type': 'reasoning',
+>   'reasoning': '...',
+>   'extras': {'signature': 'WaUjzkyp...'}},
+>  {'type': 'text', 'text': '...'}]
+> ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.messages import AIMessage
-
-message = AIMessage(
-    content=[
-        {"type": "thinking", "thinking": "...", "signature": "WaUjzkyp..."},
-        {"type": "text", "text": "..."},
-    ],
-    response_metadata={"model_provider": "anthropic"}
-)
-message.content_blocks
-```
-
-```
-[{'type': 'reasoning',
-  'reasoning': '...',
-  'extras': {'signature': 'WaUjzkyp...'}},
- {'type': 'text', 'text': '...'}]
-```
-
-**OpenAI**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.messages import AIMessage
-
-message = AIMessage(
-    content=[
-        {
-            "type": "reasoning",
-            "id": "rs_abc123",
-            "summary": [
-                {"type": "summary_text", "text": "summary 1"},
-                {"type": "summary_text", "text": "summary 2"},
-            ],
-        },
-        {"type": "text", "text": "...", "id": "msg_abc123"},
-    ],
-    response_metadata={"model_provider": "openai"}
-)
-message.content_blocks
-```
-
-```
-[{'type': 'reasoning', 'id': 'rs_abc123', 'reasoning': 'summary 1'},
- {'type': 'reasoning', 'id': 'rs_abc123', 'reasoning': 'summary 2'},
- {'type': 'text', 'text': '...', 'id': 'msg_abc123'}]
-```
+> [标签] OpenAI
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.messages import AIMessage
+>
+> message = AIMessage(
+>     content=[
+>         {
+>             "type": "reasoning",
+>             "id": "rs_abc123",
+>             "summary": [
+>                 {"type": "summary_text", "text": "summary 1"},
+>                 {"type": "summary_text", "text": "summary 2"},
+>             ],
+>         },
+>         {"type": "text", "text": "...", "id": "msg_abc123"},
+>     ],
+>     response_metadata={"model_provider": "openai"}
+> )
+> message.content_blocks
+> ```
+>
+> ```
+> [{'type': 'reasoning', 'id': 'rs_abc123', 'reasoning': 'summary 1'},
+>  {'type': 'reasoning', 'id': 'rs_abc123', 'reasoning': 'summary 2'},
+>  {'type': 'text', 'text': '...', 'id': 'msg_abc123'}]
+> ```
 
 请参阅 [integrations guides](/oss/python/integrations/providers/overview) 开始使用
 您选择的推理提供者。> [!注意]
@@ -611,9 +611,9 @@ message = {
 
 ### 内容块引用内容块（在创建消息或访问 `content_blocks` 属性时）表示为类型化字典列表。列表中的每个项目必须遵守以下块类型之一：
 
-> **核心**
+> [手风琴] 核心
 >
->> **文本内容块**
+>> [手风琴] TextContentBlock
 >>
 >> **用途：** 标准文本输出
 >>
@@ -643,7 +643,7 @@ message = {
 > > }
 > > ```
 >
->> **推理内容块**
+>> [手风琴] ReasoningContentBlock
 >>
 >> **目的：**模型推理步骤
 >>
@@ -667,9 +667,36 @@ message = {
 > >     "reasoning": "The user is asking about...",
 > >     "extras": {"signature": "abc123"},
 > > }
-> > ```> **多式联运**
+> > ```
 >
->> **图像内容块**
+>> [手风琴] RefusalContentBlock
+>>
+>> **目的：** 模型提供者报告的明确拒绝，例如 OpenAI `refusal` 内容部分、Anthropic `stop_reason="refusal"` 或 Gemini 安全块。 LangChain 不会检测模型以普通文本形式写入的拒绝。需要`langchain-core>=1.7.5`。
+>>
+>> **类型** `string` *必填*>>
+>> 始终`"refusal"`
+>>
+>> **拒绝** `string` *必填*
+>>
+>> 拒绝消息，如果提供商未发送任何消息，则为空字符串
+>>
+>> **额外** `object`
+>>
+>> 其他提供商特定数据，例如 Anthropic 的拒绝 `category` 或 Gemini 的 `finish_reason` 或 `block_reason`
+>>
+>> **示例：**
+>>
+>> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > {
+> >     "type": "refusal",
+> >     "refusal": "",
+> >     "extras": {"category": "cyber"},
+> > }
+> > ```
+
+> [手风琴] 多式联运
+>
+>> [手风琴] ImageContentBlock
 >>
 >> **用途：** 图像数据
 >>
@@ -689,11 +716,11 @@ message = {
 >>
 >> 该内容块的唯一标识符（由提供者或LangChain生成）。
 >>
->> **哑剧\_类型** `string`
+>> **哑剧\_type** `string`
 >>
 >> 图片[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image)（例如，`image/jpeg`、`image/png`）。对于 Base64 数据是必需的。
 >
->> **音频内容块**
+>> [手风琴] AudioContentBlock
 >>
 >> **用途：** 音频数据
 >>
@@ -713,11 +740,10 @@ message = {
 >>
 >> 该内容块的唯一标识符（由提供者或LangChain生成）。
 >>
->> **mime\_type** `string`
->>
->> 音频[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#audio)（例如，`audio/mpeg`、`audio/wav`）。对于 Base64 数据是必需的。
+>> **哑剧\_类型** `string`
+>>>> 音频[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#audio)（例如，`audio/mpeg`、`audio/wav`）。对于 Base64 数据是必需的。
 >
->> **视频内容块**
+>> [手风琴] VideoContentBlock
 >>
 >> **用途：**视频数据
 >>
@@ -732,7 +758,8 @@ message = {
 >> **base64** `string`
 >>
 >> Base64 编码的视频数据。
->>>> **id** `string`
+>>
+>> **id** `string`
 >>
 >> 该内容块的唯一标识符（由提供者或LangChain生成）。
 >>
@@ -740,7 +767,7 @@ message = {
 >>
 >> 视频 [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#video)（例如，`video/mp4`、`video/webm`）。对于 Base64 数据是必需的。
 >
->> **文件内容块**
+>> [手风琴] FileContentBlock
 >>
 >> **用途：** 通用文件（PDF等）
 >>
@@ -760,11 +787,11 @@ message = {
 >>
 >> 该内容块的唯一标识符（由提供者或LangChain生成）。
 >>
->> **mime\_type** `string`
+>> **哑剧\_类型** `string`
 >>
 >> 文件[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml)（例如，`application/pdf`）。对于 Base64 数据是必需的。
 >
->> **纯文本内容块**
+>> [手风琴] PlainTextContentBlock
 >>
 >> **用途：** 文档文本（`.txt`、`.md`）
 >>
@@ -772,15 +799,16 @@ message = {
 >>
 >> 永远`"text-plain"`
 >>
->> **文本** `string`
+>> **文字** `string`
+>>>> 正文内容
 >>
->> 正文内容
+>> **mime\_type** `string`
 >>
->> **哑剧\_类型** `string`
->>
->> 文本的[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml)（例如，`text/plain`、`text/markdown`）> **工具调用**
+>> 文本的[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml)（例如，`text/plain`、`text/markdown`）
+
+> [手风琴] 工具调用
 >
->> **工具调用**
+>> [手风琴] ToolCall
 >>
 >> **用途：**函数调用
 >>
@@ -811,7 +839,7 @@ message = {
 > > }
 > > ```
 >
->> **工具调用块**
+>> [手风琴] ToolCallChunk
 >>
 >> **用途：** 流媒体工具调用片段
 >>
@@ -835,7 +863,7 @@ message = {
 >>
 >> 该块在流中的位置
 >
->> **无效工具调用**
+>> [手风琴] InvalidToolCall
 >>
 >> **目的：** 格式错误的调用，旨在捕获 JSON 解析错误。
 >>
@@ -848,14 +876,15 @@ message = {
 >> 调用失败的工具名称
 >>
 >> **参数** `object`
->>
->> 传递给工具的参数
+>>>> 传递给工具的参数
 >>
 >> **错误** `string`
 >>
->> 错误描述> **服务器端工具执行**
+>> 错误描述
+
+> [accordion] 服务器端工具执行
 >
->> **服务器工具调用**
+>> [手风琴] ServerToolCall
 >>
 >> **用途：** 在服务器端执行的工具调用。
 >>
@@ -875,7 +904,7 @@ message = {
 >>
 >> 部分工具参数（可能是不完整的 JSON）
 >
->> **ServerToolCallChunk**
+>> [手风琴] ServerToolCallChunk
 >>
 >> **用途：**流式传输服务端工具调用片段
 >>
@@ -899,7 +928,7 @@ message = {
 >>
 >> 该块在流中的位置
 >
->> **服务器工具结果**
+>> [手风琴] ServerToolResult
 >>
 >> **用途：** 搜索结果
 >>
@@ -908,13 +937,13 @@ message = {
 >> 永远`"server_tool_result"`
 >>
 >> **工具\_call\_id** `string` *必填*
->>
->> 相应服务器工具调用的标识符。
+>>>> 相应服务器工具调用的标识符。
 >>
 >> **id** `string`
 >>
 >> 与服务器工具结果关联的标识符。
->>>> **状态** `string` *必填*
+>>
+>> **状态** `string` *必填*
 >>
 >> 服务器端工具的执行状态。 `"success"` 或 `"error"`。
 >>
@@ -922,9 +951,9 @@ message = {
 >>
 >> 执行工具的输出。
 
-> **特定于提供商的块**
+> [手风琴] 特定于提供商的块
 >
->> **非标准内容块**
+>> [手风琴] NonStandardContentBlock
 >>
 >> **用途：** 提供商特定的逃生舱口
 >>
@@ -937,22 +966,24 @@ message = {
 >> 提供商特定的数据结构
 >>
 >> **用途：** 用于实验性或提供商独有的功能
+>>
+>> 当`langchain-core`添加标准块类型时，与其匹配的有效负载会从`non_standard`移出并移入新类型。在`type`上分支，而不是依赖于`non_standard`上的有效负载，并与`langchain-core`一起升级提供程序包。
 >
-> 其他特定于提供商的内容类型可以在每个模型提供商的 [reference documentation](/oss/python/integrations/providers/overview) 中找到。
+> 可以在每个模型提供商的 [reference documentation](/oss/python/integrations/providers/overview) 中找到其他特定于提供商的内容类型。
 
 > [!提示]
 >
-> 查看[API reference](https://reference.langchain.com/python/langchain/messages)中的规范类型定义。
-
-> [!注意]
+> 查看[API reference](https://reference.langchain.com/python/langchain/messages)中的规范类型定义。> [!注意]
 >
 > 内容块作为 LangChain v1 中消息的新属性引入，以标准化跨提供商的内容格式，同时保持与现有代码的向后兼容性。
 >
-> 内容块并不是 [⟦T161⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 属性的替代品，而是一个可用于以标准化格式访问消息内容的新属性。
+> 内容块并不是 [⟦T177⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 属性的替代品，而是一个可用于以标准化格式访问消息内容的新属性。
 
 ## 序列化
 
-您可以将消息序列化为普通对象进行存储，然后反序列化回消息实例。这对于保留对话历史记录和恢复会话非常有用。```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+您可以将消息序列化为普通对象进行存储，然后反序列化回消息实例。这对于保留对话历史记录和恢复会话非常有用。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import HumanMessage
 from langchain_core.load import dumpd, load
 
@@ -971,7 +1002,7 @@ restored = load(serialized)
 
 ## 与聊天模型一起使用
 
-[Chat models](/oss/python/langchain/models) 接受一系列消息对象作为输入，并返回 [⟦T164⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 作为输出。交互通常是无状态的，因此简单的对话循环涉及调用具有不断增长的消息列表的模型。
+[Chat models](/oss/python/langchain/models) 接受一系列消息对象作为输入，并返回 [⟦T180⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 作为输出。交互通常是无状态的，因此简单的对话循环涉及调用具有不断增长的消息列表的模型。
 
 请参阅以下指南以了解更多信息：
 
@@ -980,6 +1011,4 @@ restored = load(serialized)
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/messages.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/messages.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -72,7 +72,7 @@ agent = create_agent(
 > 调用代理时，传递包含 **线程 ID** 的 `config`，以将执行与对话线程关联起来。
 > 详情请参阅[LangGraph interrupts documentation](/oss/python/langgraph/interrupts)。
 
-> **配置选项**
+> [手风琴] 配置选项
 >
 > **中断\_on** `dict` *必需*
 >
@@ -87,9 +87,9 @@ agent = create_agent(
 > 代理如何暂停以进行审查。 `"batched"` 每个模型回合都会引发一个中断，并以有序列表进行响应。 `"per_call"` 每个门控调用产生一个中断，由中断 ID 应答。 `"per_call"` 需要`langchain>=1.4.6`。参见[Set the interrupt mode](#set-the-interrupt-mode)。
 >
 > **编辑\_通知** `string | None`
+>> 在调用结果之前添加文本，审阅者将其替换为 `edit` 决策，以便模型知道调用已更改。默认为人工审阅者替换了呼叫的注释。通过 `None` 不添加任何内容。
 >
-> 在调用结果之前添加文本，审阅者将其替换为 `edit` 决策，以便模型知道调用已更改。默认为人工审阅者替换了呼叫的注释。通过 `None` 不添加任何内容。
->> **`InterruptOnConfig` 选项：**
+> **`InterruptOnConfig` 选项：**
 >
 > **允许\_决定** `list[string]`
 >
@@ -148,9 +148,9 @@ agent = create_agent(
     ],
     checkpointer=InMemorySaver(),
 )
-```
+```当 `when` 谓词返回 `False` 时，调用将不间断地运行。当它返回 `True` 时，或者当您省略 `when` 时，呼叫将照常暂停。评估为 `False` 的调用永远不会暂停，因此审阅者只能看到需要决策的操作。
 
-当 `when` 谓词返回 `False` 时，调用将不间断地运行。当它返回 `True` 时，或者当您省略 `when` 时，呼叫将照常暂停。评估为 `False` 的调用永远不会暂停，因此审阅者只能看到需要决策的操作。当代理恢复时，谓词再次运行，因此它必须为同一调用返回相同的结果。如果它在简历中返回`False`，则该工具将运行并且审阅者的答案将被忽略，即使是`reject`。在批处理模式下，如果仅部分调用的结果发生变化，中间件会引发 `ValueError`。
+当代理恢复时，谓词再次运行，因此它必须为同一调用返回相同的结果。如果它在简历中返回`False`，则该工具将运行并且审阅者的答案将被忽略，即使是`reject`。在批处理模式下，如果仅部分调用的结果发生变化，中间件会引发 `ValueError`。
 
 ## 设置中断模式
 
@@ -161,9 +161,7 @@ agent = create_agent(
 
 对新代理使用每次呼叫模式。 LangChain 计划在下一个主要版本中将其设为默认值。有关并排比较和每次调用模式解决的问题，请参阅[human-in-the-loop overview](/oss/python/concepts/human-in-the-loop)。
 
-## 每次工具调用暂停一次
-
-> [!注意]
+## 每次工具调用暂停一次> [!注意]
 >
 > 每次调用中断需要`langchain>=1.4.6`。
 
@@ -463,7 +461,9 @@ agent = create_agent(
 )
 ```
 
-### 读取中断当模型一次调用所有三个工具时，`read_data` 会立即运行。这两个门控调用各自引发一个中断：
+### 读取中断
+
+当模型一次调用所有三个工具时，`read_data` 会立即运行。这两个门控调用各自引发一个中断：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config = {"configurable": {"thread_id": "1"}}
@@ -488,99 +488,99 @@ for interrupt in result.interrupts:
 
 每个选项卡都会显示一个 `write_file` 分支、与其匹配的答案以及模型收到的 [ToolMessage](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)。为了便于阅读，下面的分支扩展了 `$ref` 定义并省略了 `title` 和 `description` 字段。
 
-**批准**
+> [选项卡] 批准
+>
+> 按照建议运行呼叫。
+>
+> ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {"properties": {"type": {"const": "approve", "type": "string"}}, "required": ["type"], "type": "object"}
+> ```
+>
+> ```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {"type": "approve"}
+> ```
+>
+> ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> Wrote 14 characters to orders_archive.csv
+> ```> [选项卡] 编辑
+>
+> 使用新参数运行调用。 `edited_action.name` 必须保持 `write_file`，并且 `edited_action.args` 必须匹配 `write_file` 的参数模式。工具未声明的参数将被忽略，就像模型发送它们时一样。
+>
+> ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "properties": {
+>     "type": {"const": "edit", "type": "string"},
+>     "edited_action": {
+>       "properties": {
+>         "name": {"const": "write_file", "type": "string"},
+>         "args": {
+>           "properties": {
+>             "path": {"type": "string"},
+>             "content": {"type": "string"}
+>           },
+>           "required": ["path", "content"],
+>           "type": "object"
+>         }
+>       },
+>       "required": ["name", "args"],
+>       "type": "object"
+>     }
+>   },
+>   "required": ["type", "edited_action"],
+>   "type": "object"
+> }
+> ```
+>
+> ```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>     "type": "edit",
+>     "edited_action": {
+>         "name": "write_file",
+>         "args": {"path": "archive/orders_2024.csv", "content": "id,total\n1,20\n"},
+>     },
+> }
+> ```
+>
+> 在审阅者替换了调用的注释后，模型收到工具的结果。在中间件上设置 `edit_notice` 来更改注释，或者通过 `None` 来删除它。
+>
+> ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> Note: a human reviewer replaced this tool call before it ran. The call recorded in your message is the one you produced, not the one that executed. This was intentional and authorized. Do not re-issue your original call. Executed instead: write_file with arguments {"path": "archive/orders_2024.csv", "content": "id,total\n1,20\n"}.
+>
+> Tool response:
+> Wrote 14 characters to archive/orders_2024.csv
+> ```
 
-按照建议运行呼叫。
+> [选项卡] 拒绝
+>
+> 跳过通话。 `message` 是可选的，并告诉模型原因。
+>
+> ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {"properties": {"type": {"const": "reject", "type": "string"}, "message": {"type": "string"}}, "required": ["type"], "type": "object"}
+> ```
+>
+> ```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {"type": "reject", "message": "Write to the archive/ folder instead."}
+> ```
+>
+> ```text Model receives (error status) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> User rejected the tool call for `write_file` with reason: Write to the archive/ folder instead.
+> ```
 
-```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{"properties": {"type": {"const": "approve", "type": "string"}}, "required": ["type"], "type": "object"}
-```
-
-```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{"type": "approve"}
-```
-
-```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Wrote 14 characters to orders_archive.csv
-```
-
-**编辑**
-
-使用新参数运行调用。 `edited_action.name` 必须保持 `write_file`，并且 `edited_action.args` 必须匹配 `write_file` 的参数模式。工具未声明的参数将被忽略，就像模型发送它们时一样。
-
-```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "properties": {
-    "type": {"const": "edit", "type": "string"},
-    "edited_action": {
-      "properties": {
-        "name": {"const": "write_file", "type": "string"},
-        "args": {
-          "properties": {
-            "path": {"type": "string"},
-            "content": {"type": "string"}
-          },
-          "required": ["path", "content"],
-          "type": "object"
-        }
-      },
-      "required": ["name", "args"],
-      "type": "object"
-    }
-  },
-  "required": ["type", "edited_action"],
-  "type": "object"
-}
-```
-
-```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-    "type": "edit",
-    "edited_action": {
-        "name": "write_file",
-        "args": {"path": "archive/orders_2024.csv", "content": "id,total\n1,20\n"},
-    },
-}
-```在审阅者替换了调用的注释后，模型会收到工具的结果。在中间件上设置 `edit_notice` 来更改注释，或者通过 `None` 来删除它。
-
-```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Note: a human reviewer replaced this tool call before it ran. The call recorded in your message is the one you produced, not the one that executed. This was intentional and authorized. Do not re-issue your original call. Executed instead: write_file with arguments {"path": "archive/orders_2024.csv", "content": "id,total\n1,20\n"}.
-
-Tool response:
-Wrote 14 characters to archive/orders_2024.csv
-```
-
-**拒绝**
-
-跳过通话。 `message` 是可选的，并告诉模型原因。
-
-```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{"properties": {"type": {"const": "reject", "type": "string"}, "message": {"type": "string"}}, "required": ["type"], "type": "object"}
-```
-
-```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{"type": "reject", "message": "Write to the archive/ folder instead."}
-```
-
-```text Model receives (error status) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-User rejected the tool call for `write_file` with reason: Write to the archive/ folder instead.
-```
-
-**回应**
-
-跳过呼叫并代替该工具接听。需要`message`。该模型将其作为成功的工具结果接收，因此使用 `reject` 拒绝呼叫。
-
-```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{"properties": {"type": {"const": "respond", "type": "string"}, "message": {"type": "string"}}, "required": ["type", "message"], "type": "object"}
-```
-
-```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{"type": "respond", "message": "Saved orders_archive.csv to the shared drive myself."}
-```
-
-```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Saved orders_archive.csv to the shared drive myself.
-```
+> [选项卡] 回复
+>
+> 跳过呼叫并代替该工具接听。需要`message`。该模型将其作为成功的工具结果接收，因此使用 `reject` 拒绝呼叫。
+>
+> ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {"properties": {"type": {"const": "respond", "type": "string"}, "message": {"type": "string"}}, "required": ["type", "message"], "type": "object"}
+> ```
+>
+> ```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {"type": "respond", "message": "Saved orders_archive.csv to the shared drive myself."}
+> ```
+>
+> ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> Saved orders_archive.csv to the shared drive myself.
+> ```
 
 ### 通过 ID 恢复每个通话
 
@@ -602,13 +602,13 @@ for interrupt in result.interrupts:
 result = agent.invoke(Command(resume=decisions), config=config, version="v2")
 ```
 
-您还可以一次应答一个中断。您未应答的中断将保持待处理状态，一旦获得应答，其工具就会运行。
-
-> [!警告]
+您还可以一次应答一个中断。您未应答的中断将保持待处理状态，一旦获得应答，其工具就会运行。> [!警告]
 >
 > 如果一起发送的多个答案之一无效，其他工具可以运行，而它们的中断仍显示为待处理。再次回答他们会运行这些工具两次。在将答案一起发送之前，请根据 `response_schema` 检查答案，或一次发送一个。
 
-### 更正无效答案LangGraph 在保存答案之前对照中断的 `response_schema` 检查每个答案。无效答案会引发 `ValidationError` 并且不会保存任何内容，因此您可以向同一中断 ID 发送正确的答案。在这里，编辑遗漏了`content`：
+### 更正无效答案
+
+LangGraph 在保存答案之前对照中断的 `response_schema` 检查每个答案。无效答案会引发 `ValidationError` 并且不会保存任何内容，因此您可以向同一中断 ID 发送正确的答案。在这里，编辑遗漏了`content`：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from pydantic import ValidationError
@@ -639,13 +639,13 @@ result = agent.invoke(
 
 ### 订购中间件以进行每次调用审核
 
-在每次调用模式下，审查在工具调用开始时在工具调用中间件链内进行：
-
-* 在工具重试或错误处理中间件之前列出`HumanInTheLoopMiddleware`，例如[ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware)和[ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware)，因此它将它们包装起来。否则，重试的调用会再次询问审阅者，并且会重试无效的答案或将其作为工具错误返回给模型。
+在每次调用模式下，审查在工具调用开始时在工具调用中间件链内进行：* 在工具重试或错误处理中间件之前列出`HumanInTheLoopMiddleware`，例如[ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware)和[ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware)，因此它将它们包装起来。否则，重试的调用会再次询问审阅者，并且会重试无效的答案或将其作为工具错误返回给模型。
 * 当代理恢复时，`HumanInTheLoopMiddleware`之前列出的中间件将再次运行直到暂停，因此在调用其处理程序之前它不能有副作用。该工具仅在回答后运行。
 * 每次调用开始时都会运行 [⟦T132⟧ predicate](#conditional-interrupts)，因此它收到的 [ToolCallRequest](https://reference.langchain.com/python/langgraph.prebuilt/tool_node/ToolCallRequest) 包含该工具。
 
-## 响应中断当您调用代理时，它会一直运行，直到完成或引发中断。当工具调用与您在`interrupt_on`中配置的策略匹配时，将触发中断。使用 `version="v2"`，结果是 `GraphOutput`，其 `interrupts` 属性包含需要审核的操作。然后，您可以将这些操作呈现给审阅者，并在做出决定后恢复执行。
+## 响应中断
+
+当您调用代理时，它会一直运行，直到完成或引发中断。当工具调用与您在`interrupt_on`中配置的策略匹配时，会触发中断。使用 `version="v2"`，结果是 `GraphOutput`，其 `interrupts` 属性包含需要审核的操作。然后，您可以将这些操作呈现给审阅者，并在做出决定后恢复执行。
 
 本节中的示例和下面的决策类型使用默认的批处理模式。对于每次调用模式，请参阅[Pause once per tool call](#pause-once-per-tool-call)。
 
@@ -705,117 +705,115 @@ agent.invoke(
 
 ### 决策类型
 
-**批准**
-
-使用 `approve` 按原样批准工具调用并在不进行更改的情况下执行它。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-agent.invoke(
-    Command(
-        # Decisions are provided as a list, one per action under review.
-        # The order of decisions must match the order of actions
-        # in the interrupt request.
-        resume={
-            "decisions": [
-                {
-                    "type": "approve",
-                }
-            ]
-        }
-    ),
-    config=config,  # Same thread ID to resume the paused conversation
-    version="v2",
-)
-```
-
-**编辑**
-
-在执行前使用`edit`修改工具调用。
-为编辑后的操作提供新的工具名称和参数。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-agent.invoke(
-    Command(
-        # Decisions are provided as a list, one per action under review.
-        # The order of decisions must match the order of actions
-        # in the interrupt request.
-        resume={
-            "decisions": [
-                {
-                    "type": "edit",
-                    # Edited action with tool name and args
-                    "edited_action": {
-                        # Tool name to call.
-                        # Will usually be the same as the original action.
-                        "name": "new_tool_name",
-                        # Arguments to pass to the tool.
-                        "args": {"key1": "new_value", "key2": "original_value"},
-                    }
-                }
-            ]
-        }
-    ),
-    config=config,  # Same thread ID to resume the paused conversation
-    version="v2",
-)
-```
-
-> [!提示]
+> [选项卡] 批准
 >
-> **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
+> 使用 `approve` 按原样批准工具调用并在不进行任何更改的情况下执行它。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> agent.invoke(
+>     Command(
+>         # Decisions are provided as a list, one per action under review.
+>         # The order of decisions must match the order of actions
+>         # in the interrupt request.
+>         resume={
+>             "decisions": [
+>                 {
+>                     "type": "approve",
+>                 }
+>             ]
+>         }
+>     ),
+>     config=config,  # Same thread ID to resume the paused conversation
+>     version="v2",
+> )
+> ```> [选项卡] 编辑
+>
+> 在执行前使用`edit`修改工具调用。
+> 为编辑后的操作提供新的工具名称和参数。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> agent.invoke(
+>     Command(
+>         # Decisions are provided as a list, one per action under review.
+>         # The order of decisions must match the order of actions
+>         # in the interrupt request.
+>         resume={
+>             "decisions": [
+>                 {
+>                     "type": "edit",
+>                     # Edited action with tool name and args
+>                     "edited_action": {
+>                         # Tool name to call.
+>                         # Will usually be the same as the original action.
+>                         "name": "new_tool_name",
+>                         # Arguments to pass to the tool.
+>                         "args": {"key1": "new_value", "key2": "original_value"},
+>                     }
+>                 }
+>             ]
+>         }
+>     ),
+>     config=config,  # Same thread ID to resume the paused conversation
+>     version="v2",
+> )
+> ```
+>
+>> [!提示]
+>>
+>> **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
 
-**拒绝**
-
-使用`reject`拒绝工具调用并提供反馈而不是执行。该工具未执行。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-agent.invoke(
-    Command(
-        # Decisions are provided as a list, one per action under review.
-        # The order of decisions must match the order of actions
-        # in the interrupt request.
-        resume={
-            "decisions": [
-                {
-                    "type": "reject",
-                    # Optional: explain why the action was rejected
-                    # and whether the agent should retry a different approach.
-                    "message": "User rejected this action. Do not retry this tool call.",
-                }
-            ]
-        }
-    ),
-    config=config,  # Same thread ID to resume the paused conversation
-    version="v2",
-)
-````message` 作为反馈添加到对话中，以帮助代理了解操作被拒绝的原因以及应该做什么。当您省略 `message` 时，中间件将使用默认拒绝消息，告诉模型该工具尚未执行，并且除非用户要求，否则不要重试相同的工具调用。对于副作用工具，提供特定于域的消息，明确说明代理是否应该放弃操作、提出后续问题或尝试更安全的替代方案。
-
-**回应**
-
-使用 `respond` 作为“询问用户”风格的工具，该工具的真正实现是人类的回复。 `message`内容直接作为工具结果返回；该工具本身不被执行。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-agent.invoke(
-    Command(
-        # Decisions are provided as a list, one per action under review.
-        # The order of decisions must match the order of actions
-        # in the interrupt request.
-        resume={
-            "decisions": [
-                {
-                    "type": "respond",
-                    # The human's reply, returned directly as the tool result
-                    "message": "Blue.",
-                }
-            ]
-        }
-    ),
-    config=config,  # Same thread ID to resume the paused conversation
-    version="v2",
-)
-```
-
-`message` 作为成功的 `ToolMessage` 返回给代理。当该工具有意充当人工输入的占位符时，请使用 `respond`，例如提示澄清的 `ask_user` 工具。不要使用 `respond` 拒绝提议的操作，因为它告诉模型该工具已成功完成。
+> [选项卡] 拒绝
+>
+> 使用`reject`拒绝工具调用并提供反馈而不是执行。该工具未执行。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> agent.invoke(
+>     Command(
+>         # Decisions are provided as a list, one per action under review.
+>         # The order of decisions must match the order of actions
+>         # in the interrupt request.
+>         resume={
+>             "decisions": [
+>                 {
+>                     "type": "reject",
+>                     # Optional: explain why the action was rejected
+>                     # and whether the agent should retry a different approach.
+>                     "message": "User rejected this action. Do not retry this tool call.",
+>                 }
+>             ]
+>         }
+>     ),
+>     config=config,  # Same thread ID to resume the paused conversation
+>     version="v2",
+> )
+> ```
+>
+> `message` 作为反馈添加到对话中，以帮助代理了解操作被拒绝的原因以及应该做什么。当您省略 `message` 时，中间件将使用默认拒绝消息，告诉模型该工具尚未执行，并且除非用户要求，否则不要重试相同的工具调用。对于副作用工具，提供特定于域的消息，明确说明代理是否应该放弃操作、提出后续问题或尝试更安全的替代方案。> [选项卡] 回复
+>
+> 使用 `respond` 作为“询问用户”风格的工具，该工具的真正实现是人类的回复。 `message`内容直接作为工具结果返回；该工具本身不被执行。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> agent.invoke(
+>     Command(
+>         # Decisions are provided as a list, one per action under review.
+>         # The order of decisions must match the order of actions
+>         # in the interrupt request.
+>         resume={
+>             "decisions": [
+>                 {
+>                     "type": "respond",
+>                     # The human's reply, returned directly as the tool result
+>                     "message": "Blue.",
+>                 }
+>             ]
+>         }
+>     ),
+>     config=config,  # Same thread ID to resume the paused conversation
+>     version="v2",
+> )
+> ```
+>
+> `message` 作为成功的 `ToolMessage` 返回给代理。当该工具有意充当人工输入的占位符时，请使用 `respond`，例如提示澄清的 `ask_user` 工具。不要使用 `respond` 拒绝提议的操作，因为它告诉模型该工具已成功完成。
 
 ***
 
@@ -840,7 +838,9 @@ agent.invoke(
         }
     ]
 }
-```## 通过人机交互进行流式传输
+```
+
+## 通过人机交互进行流式传输
 
 您可以在代理运行时使用 `stream_events()` 传输实时更新并处理中断。使用 `stream.messages` 传输 LLM 令牌，并使用 `stream.values` 检查代理状态快照是否有中断。
 
@@ -886,9 +886,7 @@ for message in stream.messages:
 
 有关流模式的更多详细信息，请参阅 [Streaming](/oss/python/langchain/streaming) 指南。
 
-## 执行生命周期
-
-中间件定义了一个 `after_model` 钩子，该钩子在模型生成响应之后但在执行任何工具调用之前运行：
+## 执行生命周期中间件定义了一个 `after_model` 钩子，该钩子在模型生成响应之后但在执行任何工具调用之前运行：
 
 1. 代理调用模型来生成响应。
 2. 中间件检查工具调用的响应。
@@ -896,7 +894,9 @@ for message in stream.messages:
 4. 代理等待人类的决定。
 5. 根据`HITLResponse`决策，中间件执行批准或编辑的调用，针对拒绝的调用合成[ToolMessage](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)，直接将人工回复作为[ToolMessage](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)针对`respond`决策返回，然后恢复执行。
 
-在 [per-call mode](#pause-once-per-tool-call) 中，`after_model` 钩子不执行任何操作。相反，中间件会在每个门控调用运行时暂停它，每次调用一个[interrupt](https://reference.langchain.com/python/langgraph/types/interrupt)，并在调用决策到达后运行该工具。## 自定义 HITL 逻辑
+在 [per-call mode](#pause-once-per-tool-call) 中，`after_model` 钩子不执行任何操作。相反，中间件会在每个门控调用运行时暂停它，每次调用一个[interrupt](https://reference.langchain.com/python/langgraph/types/interrupt)，并在调用决策到达后运行该工具。
+
+## 自定义 HITL 逻辑
 
 对于更专业的工作流程，您可以直接使用 [interrupt](https://reference.langchain.com/python/langgraph/types/interrupt) 原语和 [middleware](/oss/python/langchain/middleware) 抽象构建自定义 HITL 逻辑。
 

@@ -1,18 +1,18 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Thinking in the Graph API | https://docs.langchain.com/oss/python/langgraph/thinking-in-graph-api -->
 
-# Thinking in the Graph API
+# 图 API 的思考
 
-Learn how to design agents with the LangGraph Graph API using nodes, edges, and shared state.
+了解如何使用节点、边和共享状态通过 LangGraph Graph API 设计代理。
 
-When you build an agent with the [Graph API](/oss/python/langgraph/graph-api), you break the process into discrete steps called **nodes**. Then you describe the decisions and transitions from each node. Finally, you connect nodes through a shared **state** that each node can read from and write to.
+当您使用[Graph API](/oss/python/langgraph/graph-api)构建代理时，您可以将流程分解为称为**节点**的离散步骤。然后描述每个节点的决策和转换。最后，通过每个节点都可以读取和写入的共享**状态**连接节点。
 
-This walkthrough builds a customer support email agent with the Graph API. For the same scenario with the Functional API, see [Thinking in the Functional API](/oss/python/langgraph/thinking-in-functional-api). To choose between the APIs, see [Choosing between Graph and Functional APIs](/oss/python/langgraph/choosing-apis).
+本演练使用 Graph API 构建客户支持电子邮件代理。
 
-## Start with the process you want to automate
+## 从您想要自动化的流程开始
 
-Imagine that you need to build an AI agent that handles customer support emails. Your product team has given you these requirements:
+想象一下，您需要构建一个处理客户支持电子邮件的人工智能代理。您的产品团队向您提出了以下要求：
 
 ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 The agent should:
@@ -32,140 +32,132 @@ Example scenarios to handle:
 5. Complex technical issue: "Our API integration fails intermittently with 504 errors"
 ```
 
-To implement an agent with the Graph API, this guide shows you five steps. Steps 1 and 2 are planning. Steps 3 through 5 turn that plan into state, nodes, and a compiled graph you can run.
+要使用 Graph API 实现代理，本指南向您展示了五个步骤。第 1 步和第 2 步是规划。步骤 3 到 5 将该计划转换为状态、节点和可以运行的编译图。
 
-## Step 1: Map out your workflow as discrete steps
+## 第 1 步：将您的工作流程规划为离散步骤
 
-Start by identifying the distinct steps in your process. Each step becomes a **node** (a function that does one specific thing). Then sketch how these steps connect. Do this before writing code.
+首先确定流程中的不同步骤。每个步骤都成为一个**节点**（执行一项特定操作的函数）。然后勾画出这些步骤是如何连接的。在编写代码之前执行此操作。
 
-![Graph API control flow: START through classify and draft, then human review or send, to END](https://mintcdn.com/langchain-5e9cc07a/fVUPpLd2squx_ubj/images/langgraph-graph-thinking-flow.svg?fit=max\&auto=format\&n=fVUPpLd2squx_ubj\&q=85\&s=76cebca75b2c16990b7f0dc883b4a050)
+![Graph API control flow: START through classify and draft, then human review or send, to END](https://mintcdn.com/langchain-5e9cc07a/fVUPpLd2squx_ubj/images/langgraph-graph-thinking-flow.svg?fit=max\&auto=format\&n=fVUPpLd2squx_ubj\&q=85\&s=76cebca75b2c16990b7f0dc883b4a050)实线箭头是固定边：您在构建图形时声明它们，因为下一个节点在运行之前是已知的。虚线箭头是运行时在具有 [⟦T6⟧](https://reference.langchain.com/python/langgraph/types/Command) 的节点内选择的路由。
 
-Solid arrows are fixed edges: you declare them when you build the graph because the next node is known before a run. Dashed arrows are routes chosen at runtime inside a node with [`Command`](https://reference.langchain.com/python/langgraph/types/Command).
+现在组件已经确定，接下来澄清每个节点需要做什么：
 
-Now that the components are identified, clarify what each node needs to do:
+* `Read Email`：提取并解析电子邮件内容
+* `Classify Intent`：使用法学硕士对紧急程度和主题进行分类，然后路由到搜索、错误跟踪或草稿
+* `Doc Search`：查询您的知识库以获取相关信息
+* `Bug Track`：在跟踪系统中创建或更新问题
+* `Draft Reply`：生成适当的响应，然后路由至人工审核或发送
+* `Human Review`：升级至人工代理以获得批准或处理
+* `Send Reply`：发送邮件回复
 
-* `Read Email`: Extract and parse the email content
-* `Classify Intent`: Use an LLM to categorize urgency and topic, then route to search, bug tracking, or draft
-* `Doc Search`: Query your knowledge base for relevant information
-* `Bug Track`: Create or update an issue in a tracking system
-* `Draft Reply`: Generate an appropriate response, then route to human review or send
-* `Human Review`: Escalate to a human agent for approval or handling
-* `Send Reply`: Dispatch the email response
-
-> [!TIP]
+> [!提示]
 >
-> Some nodes always continue on a fixed edge (`Read Email` to `Classify Intent`). Others choose the next node with `Command` (`Classify Intent`, `Draft Reply`, `Human Review`).
+> 某些节点始终在固定边上延续（`Read Email` 到 `Classify Intent`）。其他人选择具有`Command`（`Classify Intent`，`Draft Reply`，`Human Review`）的下一个节点。
 
-## Step 2: Identify what each step needs to do
+## 步骤 2：确定每个步骤需要做什么
 
-For each node from Step 1, decide what kind of work it is and what context it needs. Use the categories below, then expand the email-agent examples for concrete fields and retry choices.
+对于步骤 1 中的每个节点，确定它是什么类型的工作以及它需要什么上下文。使用下面的类别，然后展开具体字段的电子邮件代理示例并重试选择。
 
-> [card] [LLM steps](#llm-steps)
+> [卡][LLM steps](#llm-steps)
 >
-> Use when you need to understand, analyze, generate text, or make reasoning decisions
-
-> [card] [Data steps](#data-steps)
+> 当您需要理解、分析、生成文本或做出推理决策时使用> [卡][Data steps](#data-steps)
 >
-> Use when you need to retrieve information from external sources
+> 当您需要从外部来源检索信息时使用
 
-> [card] [Action steps](#action-steps)
+> [卡][Action steps](#action-steps)
 >
-> Use when you need to perform external actions
+> 当您需要执行外部操作时使用
 
-> [card] [User input steps](#user-input-steps)
+> [卡][User input steps](#user-input-steps)
 >
-> Use when you need human intervention
+> 当需要人工干预时使用
 
-### LLM steps
+### LLM步骤
 
-When a step needs to understand, analyze, generate text, or make reasoning decisions:
+当某个步骤需要理解、分析、生成文本或做出推理决策时：
 
-> [accordion] Classify intent
+> [手风琴] 分类意图
 >
-> * Static context (prompt): Classification categories, urgency definitions, response format
-> * Dynamic context (from state): Email content, sender information
-> * Desired outcome: Structured classification that determines routing
+> * 静态上下文（提示）：分类类别、紧急程度定义、响应格式
+> * 动态上下文（来自状态）：电子邮件内容、发件人信息
+> * 期望的结果：确定路由的结构化分类
 
-> [accordion] Draft reply
+> [手风琴] 草稿回复
 >
-> * Static context (prompt): Tone guidelines, company policies, response templates
-> * Dynamic context (from state): Classification results, search results
-> * Desired outcome: Professional email response ready for review
+> * 静态上下文（提示）：语气指南、公司政策、响应模板
+> * 动态上下文（来自状态）：分类结果、搜索结果
+> * 期望的结果：专业的电子邮件回复可供审核
 
-### Data steps
+### 数据步骤
 
-When a step needs to retrieve information from external sources:
+当步骤需要从外部源检索信息时：
 
-> [accordion] Document search
+> [手风琴] 文档搜索
 >
-> * Parameters: Query built from intent and topic
-> * Retry strategy: Yes, with exponential backoff for transient failures
-> * Caching: Could cache common queries to reduce API calls
+> * 参数：根据意图和主题构建的查询
+> * 重试策略：是的，针对瞬时故障采用指数退避
+> * 缓存：可以缓存常见查询以减少API调用
 
-### Action steps
+### 行动步骤
 
-When a step needs to perform an external action:
-
-> [accordion] Send reply
+当步骤需要执行外部操作时：> [手风琴] 发送回复
 >
-> * When to execute: After approval (human or automated)
-> * Retry strategy: Yes, with exponential backoff for network issues
-> * Should not cache: Each send is a unique action
+> * 何时执行：批准后（人工或自动）
+> * 重试策略：是的，针对网络问题采用指数退避
+> * 不应缓存：每次发送都是一个唯一的操作
 
-> [accordion] Bug track
+> [手风琴] Bug 轨迹
 >
-> * When to execute: Always when intent is "bug"
-> * Retry strategy: Yes, critical to not lose bug reports
-> * Returns: Ticket ID to include in the response
+> * 何时执行：总是当意图是“bug”时
+> * 重试策略：是的，对于不丢失错误报告至关重要
+> * 返回：要包含在响应中的票证 ID
 
-### User input steps
+### 用户输入步骤
 
-When a step needs human intervention:
+当某个步骤需要人工干预时：
 
-> [accordion] Human review
+> [手风琴] 人工审查
 >
-> * Context for decision: Original email, draft response, urgency, classification
-> * Expected input format: Approval boolean plus optional edited response
-> * When triggered: High urgency, billing, or complex issues
-> * On rejection: End the run without sending (human handles the email outside the graph)
+> * 决策背景：原始电子邮件、草稿回复、紧急程度、分类
+> * 预期输入格式：批准布尔值加上可选的编辑响应
+> * 触发时：高度紧急、计费或复杂问题
+> * 拒绝时：结束运行而不发送（人工处理图表外的电子邮件）
 
-## Step 3: Design your state
+## 步骤 3：设计你的状态
 
-State is the shared [memory](/oss/python/concepts/memory) accessible to all nodes in your agent. Think of it as the notebook your agent uses to keep track of everything it learns and decides as it works through the process.
+状态是代理中所有节点都可以访问的共享 [memory](/oss/python/concepts/memory)。将其视为您的代理用来跟踪其在整个过程中学习和做出决定的所有内容的笔记本。
 
-### What belongs in state?
+### 什么属于状态？
 
-Ask yourself these questions about each piece of data:
+针对每条数据问自己以下问题：
 
-> [card] Include in state
+> [卡] 包含在状态中
 >
-> Does it need to persist across steps? If yes, it goes in state.
-
-> [card] Do not store
+> 是否需要跨步骤坚持？如果是，则进入状态。> [卡]请勿储存
 >
-> Can you derive it from other data? If yes, compute it when needed instead of storing it in state.
+> 你能从其他数据中得出它吗？如果是，请在需要时计算它，而不是将其存储在状态中。
 
-For the email agent, track:
+对于电子邮件代理，跟踪：
 
-* The original email and sender info (cannot reconstruct these later)
-* Classification results (needed by later nodes)
-* Search results or ticket context (expensive to re-fetch)
-* The draft response (needs to persist through review)
-* Execution metadata (for debugging and recovery)
+* 原始电子邮件和发件人信息（以后无法重建）
+* 分类结果（后面节点需要）
+* 搜索结果或工单上下文（重新获取成本高昂）
+* 回复草稿（需继续审核）
+* 执行元数据（用于调试和恢复）
 
-### Keep state raw, format prompts on demand
+### 保持状态原始，按需格式化提示
 
-> [!TIP]
+> [!提示]
 >
-> Store raw data in state, not formatted prompt text. Format prompts inside nodes when you need them.
+> 以状态存储原始数据，而不是格式化提示文本。当您需要时，格式化节点内的提示。
 
-That separation means:
+这种分离意味着：
 
-* Different nodes can format the same data differently
-* You can change prompt templates without changing the state schema
-* Debugging shows the data each node received, not a baked-in prompt string
+* 不同的节点可以对相同的数据进行不同的格式化
+* 您可以更改提示模板而不更改状态架构
+* 调试显示每个节点收到的数据，而不是内置的提示字符串
 
-Define the state now. The nodes in the next steps use these fields.
+现在定义状态。后续步骤中的节点将使用这些字段。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Literal, TypedDict
@@ -187,25 +179,23 @@ class EmailAgentState(TypedDict):
     draft_response: str | None
 ```
 
-## Step 4: Build your nodes
+## 步骤 4：构建节点
 
-A node is a Python function that takes the current state and returns updates to it. When the node also chooses the next step, return a [`Command`](https://reference.langchain.com/python/langgraph/types/Command).
+节点是一个 Python 函数，它获取当前状态并返回更新。当节点也选择下一步时，返回一个[⟦T20⟧](https://reference.langchain.com/python/langgraph/types/Command)。
 
-### Handle errors appropriately
+### 适当地处理错误在填写节点主体之前，请考虑每个节点如何会发生故障。在调用外部 API 的节点上附加重试。使用`interrupt()`进行人工输入。使用此表作为指南：
 
-Before you fill in node bodies, consider how each node can fail. Attach retries on nodes that call external APIs. Use `interrupt()` for human input. Use this table as a guide:
-
-| Error type | Who fixes it | Strategy | When to use |
+|错误类型 |谁修的|战略|何时使用 |
 | - | - | - | - |
-| Transient errors (network issues, rate limits) | System (automatic) | Retry policy on the node | Temporary failures that usually resolve on retry |
-| LLM-recoverable errors (tool failures, parsing issues) | LLM | Store the error in state and route back | The model can adjust with more context |
-| User-fixable errors (missing information, unclear instructions) | Human | Pause with `interrupt()` | Need user input to proceed |
-| Recoverable failure after retries | Developer | `error_handler` (Python) / `errorHandler` (TypeScript) | Run a compensation branch after retry exhaustion |
-| Unexpected errors | Developer | Fail the run | Bugs that need a code fix |
+|瞬时错误（网络问题、速率限制）|系统（自动）|节点上的重试策略 |通常重试即可解决的临时故障 |
+| LLM 可恢复错误（工具故障、解析问题）|法学硕士 |将错误存储在状态中并返回 |该模型可以根据更多背景进行调整 |
+|用户可修复的错误（信息缺失、说明不明确）|人类 |按 `interrupt()` 暂停 |需要用户输入才能继续 |
+|重试后可恢复的故障 |开发商 | `error_handler` (Python) / `errorHandler` (TypeScript) |重试耗尽后运行补偿分支 |
+|意外错误 |开发商 |运行失败 |需要代码修复的错误 |
 
-For retry policies, timeouts, compensation handlers, LLM-recoverable loops, when to let errors bubble up, and graph-wide defaults, see [Fault tolerance](/oss/python/langgraph/fault-tolerance#recovery-strategies).
+有关重试策略、超时、补偿处理程序、LLM 可恢复循环、何时让错误冒泡以及图范围默认值，请参阅[Fault tolerance](/oss/python/langgraph/fault-tolerance#recovery-strategies)。
 
-For this example, attach a retry policy when you add a node that can hit transient failures:
+对于此示例，当您添加可能发生暂时性故障的节点时，请附加重试策略：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import RetryPolicy
@@ -217,13 +207,11 @@ workflow.add_node(
 )
 ```
 
-### Implementing the email agent nodes
+### 实现电子邮件代理节点将每个工作单元变成一个节点。每个节点读取共享状态，执行一项工作，然后返回更新。当下一步取决于结果时，返回包含更新和目的地的`Command`。人工审查仍然是一个节点：它在函数内部调用`interrupt()`，而不是单独的图元。
 
-Turn each unit of work into a node. Each node reads the shared state, does one piece of work, and returns updates. When the next step depends on the result, return a `Command` with both the update and the destination. Human review is still a node: it calls `interrupt()` inside the function, not a separate graph primitive.
+下面的存根显示了电子邮件代理的签名、状态更新和路由。将占位符主体替换为您真正的 LLM 调用和 API 集成。将这些节点放入与步骤 3 中的状态相同的文件中。
 
-The stubs below show the signatures, state updates, and routing for the email agent. Replace the placeholder bodies with your real LLM calls and API integrations. Put these nodes in the same file as the state from Step 3.
-
-`read_email` is a passthrough in this walkthrough. Keeping it as its own node still gives you a checkpoint before classification and a place to add real MIME parsing later.
+`read_email`是本演练中的一个穿越。保留它作为自己的节点仍然可以在分类之前为您提供一个检查点，并在以后添加真正的 MIME 解析。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Literal
@@ -351,11 +339,11 @@ def send_reply(state: EmailAgentState) -> dict:
     return {}
 ```
 
-You now have node functions. Next, wire them into a compiled graph.
+您现在拥有节点功能。接下来，将它们连接到编译的图中。
 
-## Step 5: Wire it together
+## 步骤 5：将其连接在一起
 
-Connect the nodes into a graph. Because routing lives inside `Command` nodes, you only need a few fixed edges. Compile with a [checkpointer](/oss/python/langgraph/persistence), which is required for `interrupt()` to pause and resume.
+将节点连接成图表。由于路由位于 `Command` 节点内部，因此您只需要一些固定边。使用 [checkpointer](/oss/python/langgraph/persistence) 进行编译，这是 `interrupt()` 暂停和恢复所必需的。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.checkpoint.memory import InMemorySaver
@@ -388,11 +376,9 @@ checkpointer = InMemorySaver()
 app = workflow.compile(checkpointer=checkpointer)
 ```
 
-Python nodes that return `Command[Literal[...]]` declare their destinations in the type hint. LangGraph uses that to know the valid edges.
+返回 `Command[Literal[...]]` 的 Python 节点在类型提示中声明其目的地。 LangGraph 使用它来了解有效边。
 
-### Try out your agent
-
-After the graph is compiled, invoke it with a sample email. With the placeholder classifier above, this urgent billing message is treated as high urgency, so the run drafts a reply, hits `interrupt()`, and you can practice resume. Use the same `thread_id` for the first invoke and the resume invoke.
+### 试试你的代理编译图表后，使用示例电子邮件调用它。使用上面的占位符分类器，这条紧急计费消息被视为高度紧急，因此运行起草回复，点击`interrupt()`，然后您可以练习恢复。对于第一次调用和恢复调用使用相同的`thread_id`。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Command
@@ -420,105 +406,95 @@ app.invoke(
 )
 ```
 
-The graph pauses at `interrupt()`, saves state to the checkpointer, and waits. When you resume with `Command(resume=...)`, the `human_review` node re-runs from the start, `interrupt()` returns your resume value, and the graph continues. The `thread_id` keeps this conversation's state together.
+该图在`interrupt()`处暂停，将状态保存到检查指针，然后等待。当您使用 `Command(resume=...)` 恢复时，`human_review` 节点从头开始重新运行，`interrupt()` 返回您的恢复值，并且图表继续。 `thread_id` 将该对话的状态保持在一起。
 
-## Summary and next steps
+## 摘要和后续步骤
 
-### Key insights
+### 关键见解
 
-Building this email agent shows the Graph API way of thinking:
+构建这个电子邮件代理展示了 Graph API 的思维方式：
 
-> [card] [Break into discrete steps](#step-1-map-out-your-workflow-as-discrete-steps)
+> [卡][Break into discrete steps](#step-1-map-out-your-workflow-as-discrete-steps)
 >
-> Each node does one thing well. Node boundaries are where the graph checkpoints, so failures and resumes redo less work.
+> 每个节点只做好一件事。节点边界是图检查点的位置，因此故障和恢复重做的工作较少。
 
-> [card] [State is shared memory](#step-3-design-your-state)
+> [卡][State is shared memory](#step-3-design-your-state)
 >
-> Store raw data, not formatted text. Different nodes can use the same information in different ways.
+> 存储原始数据，而不是格式化文本。不同的节点可以以不同的方式使用相同的信息。
 
-> [card] [Nodes are functions](#step-4-build-your-nodes)
+> [卡][Nodes are functions](#step-4-build-your-nodes)
 >
-> They take state, do work, and return updates. When they route, they return both the update and the next destination with `Command`.
+> 它们获取状态、工作并返回更新。当他们路由时，他们会返回更新和下一个目的地与`Command`。
 
-> [card] [Errors are part of the flow](#handle-errors-appropriately)
+> [卡][Errors are part of the flow](#handle-errors-appropriately)
 >
-> Transient failures get node retry policies, user-fixable problems pause with `interrupt()`, and unexpected errors fail the run.
-
-> [card] [Human input is first-class](/oss/python/langgraph/interrupts)
+> 瞬时故障获取节点重试策略，用户可修复的问题以 `interrupt()` 暂停，意外错误导致运行失败。> [卡][Human input is first-class](/oss/python/langgraph/interrupts)
 >
-> `interrupt()` pauses execution and saves state. On resume, the node re-runs from the start, so keep work before `interrupt()` idempotent.
+> `interrupt()` 暂停执行并保存状态。恢复时，节点从头开始重新运行，因此请在 `interrupt()` 幂等之前保持工作。
 
-> [card] [Graph structure stays minimal](#step-5-wire-it-together)
+> [卡][Graph structure stays minimal](#step-5-wire-it-together)
 >
-> You declare essential edges. Nodes that need dynamic routing return `Command`, which keeps control flow explicit and traceable.
+> 您声明必要的优势。需要动态路由的节点返回`Command`，这使得控制流保持明确且可追踪。
 
-### Node granularity trade-offs
+### 节点粒度权衡
 
-Most applications can use the breakdown above. Read this section when you are deciding whether to merge or split nodes.
+大多数应用程序都可以使用上面的细分。当您决定是否合并或拆分节点时，请阅读本节。
 
-LangGraph checkpoints at **node** boundaries. When a run resumes after an interrupt or failure, it restarts from the beginning of the node where execution stopped. Smaller nodes mean more frequent checkpoints and less work to repeat.
+LangGraph **节点**边界处的检查点。当运行在中断或失败后恢复时，它将从执行停止的节点的开头重新启动。较小的节点意味着更频繁的检查点和更少的重复工作。
 
-Why this breakdown fits the email agent:
+为什么此细分适合电子邮件代理：
 
-* **Isolation of external services:** Doc Search and Bug Track are separate nodes so retries stay scoped to those API calls.
-* **Visibility:** Classification is its own node, so you can inspect the structured result before the next action.
-* **Different failure modes:** LLM calls, lookups, and email sends get different retry policies.
-* **Testing:** Smaller nodes are easier to unit test and reuse.
+* **外部服务的隔离：** 文档搜索和错误跟踪是单独的节点，因此重试的范围仅限于这些 API 调用。
+* **可见性：** 分类是它自己的节点，因此您可以在下一步操作之前检查结构化结果。
+* **不同的失败模式：** LLM 调用、查找和电子邮件发送获得不同的重试策略。
+* **测试：** 较小的节点更容易进行单元测试和重用。将`Read Email`和`Classify Intent`合并到一个节点是有效的。你会失去它们之间的一个检查点，并在失败时重复这两个检查点。对于大多数代理来说，单独节点的可观察性优势是值得的。
 
-Merging `Read Email` and `Classify Intent` into one node is valid. You lose a checkpoint between them and repeat both on failure. For most agents, the observability benefit of separate nodes is worth it.
+缓存搜索结果是节点函数内的应用程序级选择。 LangGraph 没有为此规定缓存 API。更多节点并不一定意味着运行速度更慢：默认情况下，检查点在后台写入（[async durability mode](/oss/python/langgraph/checkpointers#durability-modes)）。
 
-Caching search results is an application-level choice inside your node functions. LangGraph does not prescribe a cache API for that. More nodes do not necessarily mean slower runs: by default, checkpoints write in the background ([async durability mode](/oss/python/langgraph/checkpointers#durability-modes)).
+### 从这里到哪里去
 
-### Where to go from here
+本演练介绍了 Graph API 设计。通过操作方法和相关指南来扩展它：
 
-This walkthrough introduces Graph API design. Extend it with the how-tos and related guides:
-
-> [card] [Build checklist](/oss/python/langgraph/use-graph-api)
+> [卡][Build checklist](/oss/python/langgraph/use-graph-api)
 >
-> Decision guide for state, control flow, Send, Command, and nodes
+> 状态、控制流、发送、命令和节点的决策指南
 
-> [card] [Define and update state](/oss/python/langgraph/graph-api-state)
+> [卡][Define and update state](/oss/python/langgraph/graph-api-state)
 >
-> Schemas, reducers, messages, and private channels
+> 模式、减速器、消息和私有通道
 
-> [card] [Control flow](/oss/python/langgraph/graph-api-control-flow)
+> [卡][Control flow](/oss/python/langgraph/graph-api-control-flow)
 >
-> Sequences, branches, loops, and recursion limits
+> 序列、分支、循环和递归限制
 
-> [card] [Send and Command](/oss/python/langgraph/graph-api-send-command)
+> [卡][Send and Command](/oss/python/langgraph/graph-api-send-command)
 >
-> Map-reduce fan-out and update-and-route in one step
+> 一步完成映射减少扇出和更新及布线
 
-> [card] [Configure nodes](/oss/python/langgraph/graph-api-nodes)
+> [卡][Configure nodes](/oss/python/langgraph/graph-api-nodes)
 >
-> Retries, timeouts, runtime context, and caching
+> 重试、超时、运行时上下文和缓存
 
-> [card] [Thinking in the Functional API](/oss/python/langgraph/thinking-in-functional-api)
+> [卡][Human-in-the-loop patterns](/oss/python/langgraph/interrupts)
 >
-> The same email agent with entrypoints and tasks
+> 刀具审批、批量审批以及其他中断模式
 
-> [card] [Human-in-the-loop patterns](/oss/python/langgraph/interrupts)
+> [卡][Add memory](/oss/python/langgraph/add-memory)
 >
-> Tool approval, batch approval, and other interrupt patterns
+> 短期检查点和长期存储
 
-> [card] [Add memory](/oss/python/langgraph/add-memory)
+> [卡][Fault tolerance](/oss/python/langgraph/fault-tolerance)
 >
-> Short-term checkpointers and long-term stores
+> 重试、超时、错误处理程序和图形默认值
 
-> [card] [Fault tolerance](/oss/python/langgraph/fault-tolerance)
+> [卡][Subgraphs](/oss/python/langgraph/use-subgraphs)
 >
-> Retries, timeouts, error handlers, and graph defaults
-
-> [card] [Subgraphs](/oss/python/langgraph/use-subgraphs)
+> 用于复杂多步骤操作的嵌套图> [卡][Streaming](/oss/python/langgraph/streaming)
 >
-> Nested graphs for complex multi-step operations
-
-> [card] [Streaming](/oss/python/langgraph/streaming)
->
-> Real-time progress updates for users
+> 为用户实时更新进度
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/thinking-in-graph-api.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/thinking-in-graph-api.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
