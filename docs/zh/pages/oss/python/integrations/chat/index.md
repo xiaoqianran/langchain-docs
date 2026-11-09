@@ -22,7 +22,7 @@
 > [!注意]
 >
 > **虽然这些 LangChain 类支持指定的高级功能**，但您可能需要参考特定于提供商的文档来了解哪些托管模型或后端支持该功能。|型号|流 | [Tool calling](/oss/python/langchain/tools) | [Structured output](/oss/python/langchain/structured-output/) | [Multimodal](/oss/python/langchain/messages#multimodal) |下载 |
-| :- | :- | :- | :- | :- | :- |
+| :-| :-| :-| :-| :-| :-|
 | [⟦T0⟧](/oss/python/integrations/chat/azure_chat_openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T125⟧](https://pypi.org/project/langchain-openai/) |
 | [⟦T1⟧](/oss/python/integrations/chat/openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T126⟧](https://pypi.org/project/langchain-openai/) |
 | [⟦T2⟧](/oss/python/integrations/chat/google_vertex_ai)（已弃用）| ✅ | ✅ | ✅ | ✅ | [  ⟦T127⟧](https://pypi.org/project/langchain-google-vertexai/) |
@@ -46,7 +46,7 @@
 
 ## 路由器和代理
 
-路由器和代理使您可以通过单个 API 和凭证访问来自多个提供商的模型。它们可以简化计费，让您在不改变集成的情况下在模型之间切换，并提供自动回退等功能。|供应商|整合 |描述 |
+路由器和代理使您可以通过单个 API 和凭证访问多个提供商的模型。它们可以简化计费，让您在不改变集成的情况下在模型之间切换，并提供自动回退等功能。|供应商|整合|描述 |
 | - | - | - |
 | [OpenRouter](https://openrouter.ai/) | [⟦T18⟧](/oss/python/integrations/chat/openrouter) |统一访问来自OpenAI、Anthropic、Google、Meta 等的模型 |
 | [LiteLLM](https://www.litellm.ai/) | [⟦T19⟧](/oss/python/integrations/chat/litellm) | OpenAI、Anthropic、Azure、Hugging Face 等的统一接口，具有路由和回退功能 |
@@ -62,7 +62,7 @@
 > 例如，OpenRouter 有专用的 LangChain 集成。设置和使用请参阅[⟦T26⟧ guide](/oss/python/integrations/chat/openrouter)。
 
 ## 所有聊天模型|型号|流 | [Tool calling](/oss/python/langchain/tools) | [Structured output](/oss/python/langchain/structured-output/) | [Multimodal](/oss/python/langchain/messages#multimodal) |下载 |
-| :- | :- | :- | :- | :- | :- |
+| :-| :-| :-| :-| :-| :-|
 | [⟦T27⟧](/oss/python/integrations/chat/azure_chat_openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T143⟧](https://pypi.org/project/langchain-openai/) |
 | [⟦T28⟧](/oss/python/integrations/chat/openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T144⟧](https://pypi.org/project/langchain-openai/) |
 | [⟦T29⟧](/oss/python/integrations/chat/vllm) | | | | | [  ⟦T145⟧](https://pypi.org/project/langchain-openai/) |
@@ -82,7 +82,7 @@
 | [⟦T43⟧](/oss/python/integrations/chat/deepseek) | ✅ | ✅ | ✅ | ❌ | [  ⟦T159⟧](https://pypi.org/project/langchain-deepseek/) |
 | [⟦T44⟧](/oss/python/integrations/chat/cohere) | | | | | [  ⟦T160⟧](https://pypi.org/project/langchain-cohere/) |
 | [⟦T45⟧](/oss/python/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ✅ | [  ⟦T161⟧](https://pypi.org/project/langchain-fireworks/) |
-| [⟦T46⟧](/oss/python/integrations/chat/azure_ai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T162⟧](https://pypi.org/project/langchain-azure-ai/) |
+| [⟦T46⟧](/oss/python/integrations/chat/azure_ai) | ✅ | ✅ | ✅ | ❌ | [  ⟦T162⟧](https://pypi.org/project/langchain-azure-ai/) |
 | [⟦T47⟧](/oss/python/integrations/chat/nvidia_ai_endpoints) | ✅ | ✅ | ✅ | ✅ | [  ⟦T163⟧](https://pypi.org/project/langchain-nvidia-ai-endpoints/) |
 | [⟦T48⟧](/oss/python/integrations/chat/databricks) | ✅ | ✅ | ✅ | ❌ | [  ⟦T164⟧](https://pypi.org/project/databricks-langchain/) |
 | [⟦T49⟧](/oss/python/integrations/chat/ibm_watsonx) | ✅ | ✅ | ✅ | ✅ | [  ⟦T165⟧](https://pypi.org/project/langchain-ibm/) |

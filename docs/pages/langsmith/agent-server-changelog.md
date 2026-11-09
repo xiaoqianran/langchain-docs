@@ -663,7 +663,7 @@ Latest version: `0.16.10`
 
 ## v0.15
 
-Latest version: `0.15.12`
+Latest version: `0.15.13`
 
 ### Changes
 
@@ -704,8 +704,17 @@ Latest version: `0.15.12`
 * Updates Agent Server's Go toolchain to mitigate CVE-2026-111943 in certificate-chain verification.
 * Updates bundled certifi and Hono to clear known CVEs.
 * Patches Agent Server networking and tracing dependencies and fixes a loopback cancellation race.
+* Update bundled npm tooling to address vulnerabilities in brace-expansion and undici.
 
 > [accordion] v0.15 releases
+>
+> **2026-11-07**
+>
+> ## v0.15.13
+>
+> ### Security
+>
+> * Update bundled npm tooling to address vulnerabilities in brace-expansion and undici.
 >
 > **2026-11-06**
 >
@@ -896,7 +905,7 @@ Latest version: `0.15.12`
 
 ## v0.14
 
-Latest version: `0.14.9`
+Latest version: `0.14.10`
 
 ### Changes
 
@@ -936,6 +945,14 @@ Latest version: `0.14.9`
 * Updates gRPC certificate roots and pins the optional OpenTelemetry certificate bundle.
 
 > [accordion] v0.14 releases
+>
+> **2026-11-06**
+>
+> ## v0.14.10
+>
+> ### Security
+>
+> * Includes dependency and security maintenance updates.
 >
 > **2026-10-31**
 >

@@ -35,6 +35,7 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 | [`RuntimeSandbox`](https://withruntime.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-withruntime/month)](https://pypi.org/project/langchain-withruntime/) |
 | [`NovitaSandbox`](https://github.com/novitalabs/langchain-novita) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-novita/month)](https://pypi.org/project/langchain-novita/) |
 | [`UpstashBoxSandbox`](https://upstash.com/docs/box/overall/quickstart) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-upstash-box/month)](https://pypi.org/project/langchain-upstash-box/) |
+| [`BriqSandbox`](https://github.com/briq-cloud/langchain-briq#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-briq/month)](https://pypi.org/project/langchain-briq/) |
 | [`Leap0Sandbox`](https://leap0.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-leap0/month)](https://pypi.org/project/langchain-leap0/) |
 | [`BaponiSandbox`](https://baponi.ai/docs/guides/deep-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-baponi/month)](https://pypi.org/project/langchain-baponi/) |
 | [`SuperserveSandbox`](https://docs.superserve.ai/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-superserve/month)](https://pypi.org/project/langchain-superserve/) |

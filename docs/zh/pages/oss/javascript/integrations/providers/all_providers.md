@@ -10,7 +10,7 @@
 
 > [卡][Anthropic](/oss/javascript/integrations/providers/anthropic)
 >
-> 与 Anthropic 的 Claude 模型集成以进行高级推理和对话。
+> 与 Anthropic 的 Claude 模型集成，进行高级推理和对话。
 
 > [卡][AWS](/oss/javascript/integrations/providers/aws)
 >
@@ -308,6 +308,10 @@
 >
 > 具有矢量搜索功能的内存数据库。
 
+> [卡][RushDBVectorStore](https://docs.rushdb.com/connect/langchain)
+>
+> RushDB 矢量存储和混合（矢量 + BM25）检索器，加上 LangGraph 存储和检查点，适用于 RushDB Cloud 或自托管引擎。
+
 > [卡][SAP HANA Cloud Vector Engine](/oss/javascript/integrations/vectorstores/sap_hanavector)
 >
 > 矢量存储完全集成到 SAP HANA Cloud 数据库中。
@@ -330,9 +334,7 @@
 
 > [卡][Multi-File](/oss/javascript/integrations/document_loaders/file_loaders/multi_file)
 >
-> 同时加载多个不同类型的文件。
-
-> [卡][Oracle AI Database](/oss/javascript/integrations/document_loaders/file_loaders/oracleai)
+> 同时加载多个不同类型的文件。> [卡][Oracle AI Database](/oss/javascript/integrations/document_loaders/file_loaders/oracleai)
 >
 > 加载 Oracle AI Vector Search 表和兼容文件。
 
@@ -340,7 +342,9 @@
 >
 > 通过编码检测加载纯文本文件。
 
-### 网络加载器> [卡][Google Cloud SQL PostgreSQL](/oss/javascript/integrations/document_loaders/web_loaders/google_cloudsql_pg)
+### 网络加载器
+
+> [卡][Google Cloud SQL PostgreSQL](/oss/javascript/integrations/document_loaders/web_loaders/google_cloudsql_pg)
 >
 > 从 Google Cloud SQL PostgreSQL 数据库加载数据。
 
@@ -384,13 +388,21 @@
 
 > [卡][AgentForge](https://github.com/acarchidi/agentforge-tools#langchain-js)
 >
-> 面向代理的 DeFi 安全工具：交易模拟、签名网络钓鱼检查、制裁筛查和代币地毯检查，每次调用费用超过 402 倍。
+> 面向代理的 DeFi 安全工具：交易模拟、签名网络钓鱼检查、制裁筛查和代币地毯检查，每次调用费用超过 402 倍。> [卡][AgentReader](https://github.com/grokbot1233/agentreader/tree/master/packages/agentreader-langchain)
+>
+> AgentReader 为英国/欧盟公司尽职调查、制裁筛查和 x402 上的注册数据提供按次付费的 LangChain.js 工具。
 
 > [卡][AgentSearch](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26)
 >
-> LangChain.js 代理的网页搜索工具，默认免费，无密钥。针对完整页面和 JS 渲染网站按调用付费提取和渲染（\$0.005，x402）。> [卡][agentsvc](https://agentsvc.io/docs/langchain)
+> LangChain.js 代理网络搜索工具，默认免费，无密钥。针对完整页面和 JS 渲染网站按调用付费提取和渲染（\$0.005，x402）。
+
+> [卡][agentsvc](https://agentsvc.io/docs/langchain)
 >
 > 为座席提供按次付费的网络、数据、加密、内存和收件箱工具，通过 x402 使用信用代币或 USDC 进行支付。
+
+> [卡][Agentum](https://github.com/Algiras/agentum-skills/tree/main/packages/agentum-langchain)
+>
+> 用于公司注册解析、欧盟增值税、制裁筛查、供应商 KYB、IBAN 和钱包检查的工具；免费套餐，然后通过 x402 每次调用 USDC。
 
 > [卡][aiworker](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain)
 >
@@ -406,31 +418,35 @@
 
 > [卡][Azure Dynamic Sessions](/oss/javascript/integrations/tools/azure_dynamic_sessions)
 >
-> 在 Azure 动态会话中安全执行代码。
+> 在 Azure 动态会话中安全执行代码。> [卡][Channel3Toolkit](https://channel3.ai/docs/langchain)
+>
+> 在数千家零售商中搜索产品，以及每个零售商的报价和实时价格。
 
-> [卡][ClawFetch](https://github.com/clawfetch/integrations#readme)
+> [卡片][ClawFetch](https://github.com/clawfetch/integrations#readme)
 >
 > ClawFetch 为代理提供 Web 智能工具，包括获取、JavaScript 渲染、提取、文档解析和公司研究。
 
-> [卡][Continuity tools](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools)
+> [卡片][Continuity tools](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools)
 >
-> LangChain 具有应用程序定义的权限、稳定的操作身份和仅状态恢复的合作服务工具。
+> LangChain 工具，具有应用程序定义的权限、稳定的操作身份以及针对协作服务的仅状态恢复。
 
-> [卡][Corsair](https://docs.corsair.dev/mcp-adapters/langchain)
+> [卡片][Corsair](https://docs.corsair.dev/mcp-adapters/langchain)
 >
 > 将 200 多个服务集成（Slack、GitHub、Gmail、Linear、Stripe 等）作为 OAuth 工具向 LangChain 代理公开。
 
 > [卡][DALL-E](/oss/javascript/integrations/tools/dalle)
 >
-> 使用OpenAI的DALL-E模型生成图像。> [卡片][DataBazaar](https://databazaar.io/integrations?utm_source=langchain\&utm_campaign=integration-listing#langchain)
+> 使用 OpenAI 的 DALL-E 模型生成图像。
+
+> [卡][DataBazaar](https://databazaar.io/integrations?utm_source=langchain\&utm_campaign=integration-listing#langchain)
 >
 > 用于公共搜索、样本预览和赏金发现的数据集市场工具，以及经过帐户验证的数据检索。
 
-> [卡片][Decodo](/oss/javascript/integrations/tools/decodo)
+> [卡][Decodo](/oss/javascript/integrations/tools/decodo)
 >
 > 使用 Decodo 执行和分析代码。
 
-> [卡片][Exa Search](/oss/javascript/integrations/tools/exa_search)
+> [卡][Exa Search](/oss/javascript/integrations/tools/exa_search)
 >
 > 人工智能驱动的搜索引擎可提供更好的结果。
 
@@ -440,13 +456,11 @@
 
 > [卡][GetYouTubeTranscript](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme)
 >
-> GetYouTubeTranscript 是一个用于 YouTube 视频转录（可选地带有每行时间戳）和 YouTube 搜索的 API
-
-> [卡][HyperresearchAnswerTool](https://hyperresearch.ai/docs/answers/langchain)
+> GetYouTubeTranscript 是一个用于 YouTube 视频转录（可选地带有每行时间戳）和 YouTube 搜索的 API> [卡][HyperresearchAnswerTool](https://hyperresearch.ai/docs/answers/langchain)
 >
 > 超级研究答案返回事实问题的经过引用检查的答案，或未找到的答案，以及带有逐字段落的排名网络和结构化来源。
 
-> [卡][Instant Expert](https://github.com/Instant-Expert/integrations/tree/main/js/langchain-instant-expert#readme)
+> [卡] [Instant Expert](https://github.com/Instant-Expert/integrations/tree/main/js/langchain-instant-expert#readme)
 >
 > Toolkit for Instant Expert 的 MCP 服务器向特定专家发送付费邀请，进行简短通话或书面答复，并提供免费测试模式。
 
@@ -462,9 +476,11 @@
 >
 > 在 AWS Lambda 函数中执行代码。
 
-> [卡] [Magic Hour](https://docs.magichour.ai)
+> [卡][Magic Hour](https://docs.magichour.ai)
 >
-> 一个 API 密钥背后的 AI 文本转视频、图像转视频和图像生成工具。> [卡][M91](https://github.com/MSG91/m91-sdk#langchain)
+> 一个 API 密钥背后的 AI 文本转视频、图像转视频和图像生成工具。
+
+> [卡][M91](https://github.com/MSG91/m91-sdk#langchain)
 >
 > 暂停代理的工具，直到有人在手机上批准为止；警报会通过静音模式响起并升级为语音呼叫。
 
@@ -478,13 +494,11 @@
 
 > [卡][OceanAltPayeeCheckTool](https://oceanalt.com/en/developers/langchain)
 >
-> 代理商的预付款检查：允许、审查或拒绝收款人地址或付款 URL，以及失败关闭的付款工具防护。
+> 代理预付款检查：允许、审查或拒绝收款人地址或付款 URL，以及失败关闭的付款工具防护。
 
 > [卡][OpenAPI](/oss/javascript/integrations/tools/openapi)
 >
-> 根据 OpenAPI 规范生成工具。
-
-> [卡][Oracle AI Database](/oss/javascript/integrations/tools/oracleai)
+> 根据 OpenAPI 规范生成工具。> [卡][Oracle AI Database](/oss/javascript/integrations/tools/oracleai)
 >
 > 使用 Oracle AI Vector Search 工具汇总、分块和提供数据。
 
@@ -502,7 +516,9 @@
 
 > [卡][pipe0](https://www.pipe0.com/docs/sdks/integrations/langchain)
 >
-> 跨多个数据提供商进行人员搜索和联系人丰富（工作电子邮件、电话号码、个人资料和企业结构）> [卡][Precleared](https://precleared.dev/docs/langchain)
+> 跨多个数据提供商进行人员搜索和联系人丰富（工作电子邮件、电话号码、个人资料和企业结构）
+
+> [卡][Precleared](https://precleared.dev/docs/langchain)
 >
 > 检查发送到某个地址的冷邮件或营销电子邮件在八个国家/地区是否合法，并返回决定规则、页脚要求和签名收据。
 
@@ -520,9 +536,7 @@
 
 > [卡][SIGNA](https://github.com/codexvritra/signa/tree/main/sdk/langchain)
 >
-> 将钱包签名的消息传递工具添加到LangChain代理。
-
-> [卡][Sato Hub](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme)
+> 将钱包签名的消息传递工具添加到LangChain代理。> [卡][Sato Hub](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme)
 >
 > Sato Hub 链上代理构建块索引上的无密钥工具：搜索列表、预检查找、交换场地和构建计划。
 
@@ -536,7 +550,9 @@
 
 > [卡][TalorData](https://www.talordata.com/docs)
 >
-> 跨 33 个搜索引擎的统一 SERP API，具有地理定位功能。> [卡][Tavily Crawl](/oss/javascript/integrations/tools/tavily_crawl)
+> 跨 33 个搜索引擎的统一 SERP API，具有地理定位功能。
+
+> [卡][Tavily Crawl](/oss/javascript/integrations/tools/tavily_crawl)
 >
 > Tavily 的网络爬行功能。
 
@@ -566,9 +582,7 @@
 
 > [卡][WebExtract](https://webextract.dev/docs/langchain)
 >
-> 网页提取 API 返回干净的 Markdown 以及文章元数据、产品价格和表格的固定架构 JSON。
-
-> [卡][x402checkToolkit](https://x402check.dev)
+> 网页提取 API 返回干净的 Markdown 以及文章元数据、产品价格和表格的固定架构 JSON。> [卡][x402checkToolkit](https://x402check.dev)
 >
 > 在代理付款之前预检 x402 卖家端点（确定|注意|避免加上 payTo 历史记录）。 \$0.01 USDC 基础。
 
@@ -588,7 +602,9 @@
 
 > [卡][Exa](/oss/javascript/integrations/retrievers/exa)
 >
-> 人工智能驱动的网络搜索和检索。> [卡][FoxNose](https://github.com/FoxNoseTech/langchain-foxnose-js#readme)
+> 人工智能驱动的网络搜索和检索。
+
+> [卡][FoxNose](https://github.com/FoxNoseTech/langchain-foxnose-js#readme)
 >
 > 用于 FoxNose 集合的检索器、文档加载器和代理工具，通过 Flux 交付 API 提供文本、矢量、混合和矢量增强搜索。
 
@@ -620,9 +636,7 @@
 
 > [卡][AlBuddyMemoryStore](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md)
 >
-> LangGraph 本地 SQLite 上的 BaseStore：记录作者、版本而不是覆盖，并保留信念历史。
-
-> [卡][File System](/oss/javascript/integrations/stores/file_system)
+> LangGraph 本地 SQLite 上的 BaseStore：记录作者、版本而不是覆盖，并保留信念历史。> [卡][File System](/oss/javascript/integrations/stores/file_system)
 >
 > 用于开发的本地文件系统存储。
 
@@ -640,7 +654,9 @@
 
 > [卡][Azure Cosmos DB NoSQL](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql)
 >
-> 在 Azure Cosmos DB 中缓存 LLM 响应。> [卡][BetterDB Agent Cache](https://www.betterdb.com/ai)
+> 在 Azure Cosmos DB 中缓存 LLM 响应。
+
+> [卡][BetterDB Agent Cache](https://www.betterdb.com/ai)
 >
 > 由 Valkey 或 Redis 支持的 AI 代理的多层缓存。
 
@@ -666,15 +682,15 @@
 >
 > 代理中间件，根据 Pydantic 或 JSON 模式验证工具和 HTTP 响应，并在违规时提出警告。
 
-## 回调
-
-> [卡][OpenInference](https://arize.com/docs/ax/integrations/python-agent-frameworks/langchain/langchain-tracing)
+## 回调> [卡][OpenInference](https://arize.com/docs/ax/integrations/python-agent-frameworks/langchain/langchain-tracing)
 >
 > OpenTelemetry 工具使用 OpenInference 语义约定记录 LangChain 和 LangGraph 操作。
 
 > [卡][Respan](https://www.respan.ai/docs)
 >
-> 跟踪 LangChain.js、LangGraph.js 和 Langflow 风格的回调在 Respan 中运行。> [卡][SafePrompt](https://safeprompt.dev/docs/langchain)
+> 跟踪 LangChain.js、LangGraph.js 和 Langflow 风格的回调在 Respan 中运行。
+
+> [卡][SafePrompt](https://safeprompt.dev/docs/langchain)
 >
 > 回调处理程序将每个提示和工具输出发送到 SafePrompt API，并在发现提示注入时停止运行。
 

@@ -1,23 +1,23 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Define and update state | https://docs.langchain.com/oss/python/langgraph/graph-api-state -->
 
-# Define and update state
+# 定义和更新状态
 
-Define graph state schemas, reducers, messages, and private state in the LangGraph Graph API.
+在 LangGraph Graph API 中定义图状态模式、reducer、消息和私有状态。
 
-[State](/oss/python/langgraph/graph-api#state) is the shared schema that nodes read and write. [Reducers](/oss/python/langgraph/graph-api#reducers) control how each update merges into the current value. This page covers:
+[State](/oss/python/langgraph/graph-api#state)是节点读写的共享模式。 [Reducers](/oss/python/langgraph/graph-api#reducers) 控制每次更新如何合并到当前值。此页面涵盖：
 
-1. How to use state to define a graph's [schema](/oss/python/langgraph/graph-api#schema)
-2. How to use reducers to control how state updates are processed
+1. 如何使用状态来定义图的[schema](/oss/python/langgraph/graph-api#schema)
+2. 如何使用reducers来控制状态更新的处理方式
 
-## Define state
+## 定义状态
 
-[State](/oss/python/langgraph/graph-api#state) in LangGraph can be a `TypedDict`, `Pydantic` model, or dataclass. The examples below use `TypedDict`. Prefer that form for most graphs; see [Use Pydantic models for graph state](#use-pydantic-models-for-graph-state) when you need runtime validation on inputs.
+LangGraph 中的[State](/oss/python/langgraph/graph-api#state) 可以是`TypedDict`、`Pydantic` 模型或数据类。下面的示例使用`TypedDict`。大多数图表更喜欢这种形式；当您需要对输入进行运行时验证时，请参阅[Use Pydantic models for graph state](#use-pydantic-models-for-graph-state)。
 
-By default, a graph uses the same schema for input and output, and the state determines that schema. See [Define input and output schemas](#define-input-and-output-schemas) for distinct input and output schemas.
+默认情况下，图使用相同的模式进行输入和输出，并且状态决定该模式。有关不同的输入和输出模式，请参阅[Define input and output schemas](#define-input-and-output-schemas)。
 
-Start with a [messages](/oss/python/langgraph/graph-api#working-with-messages-in-graph-state) field. That shape fits many LLM applications. For more detail, see [Working with messages in graph state](/oss/python/langgraph/graph-api#working-with-messages-in-graph-state).
+从 [messages](/oss/python/langgraph/graph-api#working-with-messages-in-graph-state) 字段开始。这种形状适合许多法学硕士申请。欲了解更多详情，请参阅[Working with messages in graph state](/oss/python/langgraph/graph-api#working-with-messages-in-graph-state)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import AnyMessage
@@ -29,11 +29,11 @@ class State(TypedDict):
     extra_field: int
 ```
 
-This state tracks a list of [message](/oss/python/langchain/messages) objects and an extra integer field. There is no reducer yet, so a node that updates `messages` must return the full list.
+此状态跟踪 [message](/oss/python/langchain/messages) 对象列表和一个额外的整数字段。目前还没有减速器，因此更新`messages`的节点必须返回完整列表。
 
-## Update state
+## 更新状态
 
-Build a graph with a single [node](/oss/python/langgraph/graph-api#nodes). The node is a Python function that reads graph state and returns updates. The first argument is always the state:
+使用单个 [node](/oss/python/langgraph/graph-api#nodes) 构建图表。该节点是一个读取图状态并返回更新的 Python 函数。第一个参数始终是状态：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import AIMessage
@@ -43,15 +43,13 @@ def node(state: State):
     messages = state["messages"]
     new_message = AIMessage("Hello!")
     return {"messages": messages + [new_message], "extra_field": 10}
-```
+```该节点通过连接返回值（还没有减速器）来附加消息并设置`extra_field`。
 
-This node appends a message by concatenating in the return value (no reducer yet) and sets `extra_field`.
-
-> [!WARNING]
+> [!警告]
 >
-> Nodes should return updates to the state directly, instead of mutating the state.
+> 节点应该直接返回状态更新，而不是改变状态。
 
-Define a simple graph with this node. Use [`StateGraph`](/oss/python/langgraph/graph-api#stategraph) for a graph that operates on this state, then [`add_node`](/oss/python/langgraph/graph-api#nodes) to populate the graph:
+使用此节点定义一个简单的图。使用 [⟦T40⟧](/oss/python/langgraph/graph-api#stategraph) 作为在此状态下运行的图，然后使用 [⟦T41⟧](/oss/python/langgraph/graph-api#nodes) 填充该图：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph import StateGraph
@@ -62,7 +60,7 @@ builder.set_entry_point("node")
 graph = builder.compile()
 ```
 
-LangGraph provides built-in utilities for visualizing a graph. See [Visualize your graph](/oss/python/langgraph/graph-api-visualize) for detail.
+LangGraph 提供用于可视化图形的内置实用程序。详情请参阅[Visualize your graph](/oss/python/langgraph/graph-api-visualize)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from IPython.display import Image, display
@@ -81,7 +79,7 @@ flowchart LR
     class startNode terminal
 ```
 
-This graph executes a single node. Invoke it:
+该图执行单个节点。调用它：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import HumanMessage
@@ -94,12 +92,12 @@ result
 {'messages': [HumanMessage(content='Hi'), AIMessage(content='Hello!')], 'extra_field': 10}
 ```
 
-Note that:
+请注意：
 
-* Invocation started by updating a single key of the state.
-* The invocation result includes the entire state.
+* 通过更新状态的单个键开始调用。
+* 调用结果包含整个状态。
 
-Inspect [message](/oss/python/langchain/messages) content with pretty-print:
+检查 [message](/oss/python/langchain/messages) 带有漂亮打印的内容：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for message in result["messages"]:
@@ -115,13 +113,13 @@ Hi
 Hello!
 ```
 
-## Process state updates with reducers
+## 使用减速器处理状态更新
 
-Each key in the state can have its own [reducer](/oss/python/langgraph/graph-api#reducers) function, which controls how updates from nodes are applied. If no reducer is specified, updates to that key replace the previous value.
+状态中的每个键都可以有自己的[reducer](/oss/python/langgraph/graph-api#reducers)函数，该函数控制如何应用节点的更新。如果未指定reducer，则对该键的更新将替换以前的值。
 
-For `TypedDict` state schemas, define reducers by annotating the field with a reducer function.
+对于`TypedDict`状态模式，通过使用reducer函数注释字段来定义reducer。
 
-In the earlier example, the node updated `"messages"` by returning the full concatenated list. Add a reducer so updates are appended automatically:
+在前面的示例中，节点通过返回完整的串联列表来更新`"messages"`。添加一个减速器，以便自动附加更新：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing_extensions import Annotated
@@ -137,7 +135,7 @@ class State(TypedDict):
     extra_field: int
 ```
 
-The node can then return only the new message:
+然后该节点只能返回新消息：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def node(state: State):
@@ -163,16 +161,14 @@ Hi
 ================================== Ai Message ==================================
 
 Hello!
-```
+```### 消息状态
 
-### MessagesState
+在实践中，消息列表需要的不仅仅是简单的串联：
 
-In practice, lists of messages need more than plain concatenation:
+* 通过 ID 更新状态中的现有消息。
+* 接受简写[message formats](/oss/python/langgraph/graph-api#serialization)，例如`{"role": "user", "content": "..."}`。
 
-* Update an existing message in the state by ID.
-* Accept shorthand [message formats](/oss/python/langgraph/graph-api#serialization), such as `{"role": "user", "content": "..."}`.
-
-LangGraph includes a built-in reducer [`add_messages`](https://reference.langchain.com/python/langgraph/graph/message/add_messages) that handles these cases:
+LangGraph 包含一个内置减速器 [⟦T45⟧](https://reference.langchain.com/python/langgraph/graph/message/add_messages)，可以处理这些情况：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph.message import add_messages
@@ -209,7 +205,7 @@ Hi
 Hello!
 ```
 
-This shape fits applications that use [chat models](/oss/python/langchain/models). For convenience, subclass the prebuilt `MessagesState`:
+此形状适合使用[chat models](/oss/python/langchain/models)的应用。为了方便起见，对预构建的 `MessagesState` 进行子类化：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph import MessagesState
@@ -219,11 +215,11 @@ class State(MessagesState):
     extra_field: int
 ```
 
-## Resetting a reducer field
+## 重置reducer字段
 
-A common source of confusion with reducers is that with a merging reducer, returning an empty value does not clear the field. The reducer merges the right argument into the left one, so an empty update is merged in and previously accumulated values are kept.
+减速器常见的混淆来源是，使用合并减速器时，返回空值不会清除字段。减速器将右侧参数合并到左侧参数中，因此合并了一个空更新，并保留了先前累积的值。
 
-This pattern matters for error buffers or retry counters that must be cleared between retry attempts:
+此模式对于必须在重试尝试之间清除的错误缓冲区或重试计数器很重要：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from operator import add
@@ -241,7 +237,7 @@ class State(TypedDict):
 # state["errors"] is still ["bad sql"]; the empty list is merged in, not cleared
 ```
 
-To clear the field while keeping a merging reducer, wrap the update with [`Overwrite`](https://reference.langchain.com/python/langgraph/types/):
+要在保留合并减速器的同时清除字段，请使用 [⟦T47⟧](https://reference.langchain.com/python/langgraph/types/) 包装更新：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from operator import add
@@ -260,15 +256,13 @@ def clear_errors(state: State):
     return {"errors": Overwrite([])}
 ```
 
-For more information, see [Bypass reducers with Overwrite](#bypass-reducers-with-overwrite).
+有关更多信息，请参阅[Bypass reducers with Overwrite](#bypass-reducers-with-overwrite)。
 
-## Bypass reducers with `Overwrite`
+## 带有 `Overwrite` 的旁路减速器
 
-In some cases, you may want to bypass a reducer and directly overwrite a state value. When a node returns a value wrapped with `Overwrite`, the reducer is bypassed and the channel is set directly to that value.
+在某些情况下，您可能希望绕过减速器并直接覆盖状态值。当节点返回用 `Overwrite` 包装的值时，reducer 会被绕过，通道会直接设置为该值。当您想要重置或替换累积状态而不是将其与现有值合并时，这非常有用。
 
-This is useful when you want to reset or replace accumulated state rather than merge it with existing values.
-
-LangGraph provides the [`Overwrite`](https://reference.langchain.com/python/langgraph/types/) type for this purpose.
+为此，LangGraph 提供了[⟦T50⟧](https://reference.langchain.com/python/langgraph/types/) 类型。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import operator
@@ -308,24 +302,24 @@ print(result["messages"])
 ['replacement message']
 ```
 
-You can also use JSON format with the special key `"__overwrite__"`:
+您还可以使用带有特殊键`"__overwrite__"`的JSON格式：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def replace_messages(state: State):
     return {"messages": {"__overwrite__": ["replacement message"]}}
 ```
 
-> [!WARNING]
+> [!警告]
 >
-> When nodes execute in parallel, only one node can use `Overwrite` on the same state key in a given super-step. If multiple nodes attempt to overwrite the same key in the same super-step, an `InvalidUpdateError` will be raised.
+> 当节点并行执行时，只有一个节点可以在给定超级步骤中的同一状态键上使用`Overwrite`。如果多个节点尝试在同一个超级步骤中覆盖相同的密钥，则会引发`InvalidUpdateError`。 `Overwrite` 还会丢弃其他节点在该超级步骤中写入同一密钥的定期更新。密钥最终只有 `Overwrite` 值。
 
-## Define input and output schemas
+## 定义输入和输出模式
 
-By default, `StateGraph` operates with a single schema, and all nodes communicate using that schema. You can also define distinct input and output schemas.
+默认情况下，`StateGraph` 使用单个模式运行，所有节点都使用该模式进行通信。您还可以定义不同的输入和输出模式。
 
-When distinct schemas are specified, an internal schema is still used for communication between nodes. The input schema validates the provided input. The output schema filters the internal data so `invoke` returns only the fields in the output schema.
+当指定不同的模式时，内部模式仍然用于节点之间的通信。输入模式验证提供的输入。输出模式会过滤内部数据，因此 `invoke` 仅返回输出模式中的字段。
 
-Define distinct input and output schemas:
+定义不同的输入和输出模式：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph import END, START, StateGraph
@@ -368,13 +362,11 @@ print(graph.invoke({"question": "hi"}))
 {'answer': 'bye'}
 ```
 
-Notice that the output of invoke only includes the output schema.
+请注意，invoke 的输出仅包括输出模式。## 在节点之间传递私有状态
 
-## Pass private state between nodes
+节点有时需要不应出现在图的主输入或输出模式中的中间数据。保持该数据的私密性，以便只有需要它的节点才能读取它。
 
-Nodes sometimes need intermediate data that should not appear in the graph's main input or output schema. Keep that data private so only the nodes that need it can read it.
-
-The following sequential graph has three nodes. Private data passes between the first two steps. The third step only sees the public overall state.
+以下顺序图具有三个节点。私有数据在前两个步骤之间传递。第三步只看公众整体状态。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph import END, START, StateGraph
@@ -448,13 +440,13 @@ Entered node `node_3`:
 Output of graph invocation: {'a': 'set by node_3'}
 ```
 
-## Private channels and streaming
+## 私人频道和流媒体
 
-Input, output, and private schemas constrain what each node reads and what `invoke` returns. They do **not** hide channels from [streaming](/oss/python/langgraph/streaming).
+输入、输出和私有模式限制每个节点读取的内容和`invoke`返回的内容。他们**不会**隐藏[streaming](/oss/python/langgraph/streaming)的频道。
 
-Values streaming emits **all** state channels by default, including private ones. That applies to the values projection from [event streaming](/oss/python/langgraph/event-streaming) (`stream.values` on `stream_events` / `streamEvents` with `version="v3"`), and to `graph.stream` with `stream_mode="values"` / `streamMode: "values"`. Values streaming uses the full state, not the output schema. A private channel can be missing from `invoke` output but visible in the stream.
+默认情况下，值流会发出**所有**状态通道，包括私有通道。这适用于从 [event streaming](/oss/python/langgraph/event-streaming)（`stream_events` / `streamEvents` 和 `version="v3"`）到 `graph.stream` 的值投影（`stream_events` / `streamEvents` 上的`stream.values` 和 `stream_mode="values"` / `streamMode: "values"`）。值流使用完整状态，而不是输出模式。 `invoke` 输出中可能会缺少专用通道，但在流中可见。
 
-This example uses distinct input, output, overall, and private schemas. `invoke` returns only the output schema:
+此示例使用不同的输入、输出、整体和私有模式。 `invoke` 仅返回输出模式：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import TypedDict
@@ -509,11 +501,11 @@ graph.invoke({"user_input": "My"})
 # {'graph_output': 'My name is Lance'}
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/370fbbfd-be69-4403-8123-716a0c2c9be6/r)
+> [卡][View example trace](https://smith.langchain.com/public/370fbbfd-be69-4403-8123-716a0c2c9be6/r)
 >
-> Open a public LangSmith run for this example.
+> 为此示例打开公共 LangSmith 运行。
 
-Streaming with the values projection still includes the private `bar` channel:
+使用值投影进行流式传输仍然包括私有 `bar` 通道：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream = graph.stream_events({"user_input": "My"}, version="v3")
@@ -523,13 +515,11 @@ for snapshot in stream.values:
 # {'foo': 'My name', 'user_input': 'My'}
 # {'foo': 'My name', 'user_input': 'My', 'bar': 'My name is'}        # <-- private channel
 # {'foo': 'My name', 'user_input': 'My', 'graph_output': 'My name is Lance', 'bar': 'My name is'}
-```
-
-> [card] [View example trace](https://smith.langchain.com/public/7d0325bb-3a2a-425f-a551-a636b297d0fb/r)
+```> [卡][View example trace](https://smith.langchain.com/public/7d0325bb-3a2a-425f-a551-a636b297d0fb/r)
 >
-> Open a public LangSmith run for this example.
+> 为此示例打开公共 LangSmith 运行。
 
-To restrict streamed values to specific channels (for example, only the output schema), pass `output_keys` to `graph.stream`:
+要将流式值限制到特定通道（例如，仅输出模式），请将 `output_keys` 传递到 `graph.stream`：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for snapshot in graph.stream(
@@ -541,24 +531,24 @@ for snapshot in graph.stream(
 # {'graph_output': 'My name is Lance'}
 ```
 
-If you only need the channels a node produced in each step (not the full accumulated state), use `stream_mode="updates"` instead. See [Streaming](/oss/python/langgraph/streaming).
+如果您只需要节点在每个步骤中生成的通道（而不是完整的累积状态），请改用`stream_mode="updates"`。参见[Streaming](/oss/python/langgraph/streaming)。
 
-## Use pydantic models for graph state
+## 使用 pydantic 模型来表示图状态
 
-A [StateGraph](https://reference.langchain.com/python/langgraph/graph/state/StateGraph) accepts a [`state_schema`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) argument that specifies the shape of the state nodes can access and update.
+[StateGraph](https://reference.langchain.com/python/langgraph/graph/state/StateGraph) 接受 [⟦T72⟧](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) 参数，该参数指定可以访问和更新的状态节点的形状。
 
-Most examples on this page use a Python-native `TypedDict` or [`dataclass`](https://docs.python.org/3/library/dataclasses.html) for `state_schema`. [`state_schema`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) can be any [type](https://docs.python.org/3/library/stdtypes.html#type-objects).
+本页上的大多数示例都使用 Python 原生 `TypedDict` 或 [⟦T74⟧](https://docs.python.org/3/library/dataclasses.html) 来表示 `state_schema`。 [⟦T76⟧](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) 可以是任意 [type](https://docs.python.org/3/library/stdtypes.html#type-objects)。
 
-Use a [Pydantic BaseModel](https://docs.pydantic.dev/latest/api/base_model/) for [`state_schema`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) when you need runtime validation on **inputs**.
+当您需要对**输入**进行运行时验证时，请使用 [Pydantic BaseModel](https://docs.pydantic.dev/latest/api/base_model/) 代替 [⟦T77⟧](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema)。
 
-> [!NOTE]
+> [!注意]
 >
-> **Known Limitations**
+> **已知限制**
 >
-> * The output of the graph is **not** an instance of a Pydantic model.
-> * Runtime validation only occurs on inputs to the first node in the graph, not on subsequent nodes or outputs.
-> * The validation error trace from Pydantic does not show which node the error arises in.
-> * Pydantic's recursive validation can be slow. For performance-sensitive applications, prefer a `dataclass`.
+> * 图表的输出**不是** Pydantic 模型的实例。
+> * 运行时验证仅发生在图中第一个节点的输入上，而不发生在后续节点或输出上。
+> * Pydantic 的验证错误跟踪不显示错误出现在哪个节点。
+> * Pydantic 的递归验证可能很慢。对于性能敏感的应用程序，首选`dataclass`。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph import END, START, StateGraph
@@ -585,7 +575,7 @@ graph = builder.compile()
 graph.invoke({"a": "hello"})
 ```
 
-Invoke the graph with an **invalid** input
+使用**无效**输入调用图表
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 try:
@@ -603,17 +593,15 @@ a
     For further information visit https://errors.pydantic.dev/2.9/v/string_type
 ```
 
-See below for additional features of Pydantic model state:
-
-> [accordion] Serialization Behavior
+有关 Pydantic 模型状态的其他功能，请参阅下文：> [手风琴] 序列化行为
 >
-> When using Pydantic models as state schemas, serialization matters especially when:
+> 当使用 Pydantic 模型作为状态模式时，序列化尤其重要，尤其是在以下情况下：
 >
-> * Passing Pydantic objects as inputs
-> * Receiving outputs from the graph
-> * Working with nested Pydantic models
+> * 将 Pydantic 对象作为输入传递
+> * 接收图表的输出
+> * 使用嵌套 Pydantic 模型
 >
-> The following example shows these behaviors:
+> 以下示例显示了这些行为：
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langgraph.graph import END, START, StateGraph
@@ -659,9 +647,9 @@ See below for additional features of Pydantic model state:
 > print(f"Converted back to Pydantic: {type(output_model)}")
 > ```
 
-> [accordion] Runtime Type Coercion
+> [手风琴] 运行时类型强制
 >
-> Pydantic performs runtime type coercion for certain data types. That can help, but it can also produce unexpected values if you do not account for it.
+> Pydantic 对某些数据类型执行运行时类型强制。这会有所帮助，但如果您不考虑它，它也可能会产生意想不到的值。
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langgraph.graph import END, START, StateGraph
@@ -697,9 +685,9 @@ See below for additional features of Pydantic model state:
 >     print(f"\nExpected validation error: {e}")
 > ```
 
-> [accordion] Working with Message Models
+> [accordion] 使用消息模型
 >
-> When working with LangChain message types in a state schema, serialization matters. Use `AnyMessage` (rather than `BaseMessage`) for proper serialization and deserialization when message objects travel over the wire.
+> 在状态模式中使用 LangChain 消息类型时，序列化很重要。当消息对象通过网络传输时，使用 `AnyMessage`（而不是 `BaseMessage`）进行正确的序列化和反序列化。
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from typing import List
@@ -738,7 +726,7 @@ See below for additional features of Pydantic model state:
 >     print(f"Message {i}: {type(msg).__name__} - {msg.content}")
 > ```
 
-## See also
+## 另请参阅
 
 * [Graph API overview](/oss/python/langgraph/graph-api#state)
 * [Working with messages in graph state](/oss/python/langgraph/graph-api#working-with-messages-in-graph-state)
@@ -748,6 +736,6 @@ See below for additional features of Pydantic model state:
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/graph-api-state.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/graph-api-state.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

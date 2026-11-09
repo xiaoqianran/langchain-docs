@@ -40,7 +40,7 @@ LangChain 为常见用例提供预构建的中间件。每个中间件均可投�
 
 ### 工具错误
 
-捕获工具执行期间引发的异常并将其转换为模型可以看到并从中恢复的错误`ToolMessage`，而不是停止代理运行。工具错误对于以下情况很有用：* 让模型使用更正的参数重试失败的工具调用。
+捕获工具执行期间引发的异常，并将其转换为模型可以看到并恢复的错误`ToolMessage`，而不是停止代理运行。工具错误对于以下情况很有用：* 让模型使用更正的参数重试失败的工具调用。
 * 显示受控的、经过清理的错误消息，而不是原始的异常详细信息。
 * 防止意外的工具异常导致代理崩溃。
 
@@ -48,7 +48,7 @@ LangChain 为常见用例提供预构建的中间件。每个中间件均可投�
 >
 > 工具错误中间件不会自动重试失败的调用。对于重试，请使用放置在*inner*（稍后在`middleware`列表中）的[Tool retry](#tool-retry)中间件进行组合，并使用`on_failure="error"`进行配置，以便异常到达工具错误中间件。请参阅下面的[full example](#tool-error-full-example)。
 
-**API参考：** [⟦T48⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware)
+**API参考：** [⟦T60⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware)
 
 > [!注意]
 >
@@ -138,7 +138,7 @@ agent = create_agent(
 * 提高依赖网络的工具的可靠性。
 * 构建能够优雅地处理临时错误的弹性代理。
 
-**API参考：** [⟦T64⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware)
+**API参考：** [⟦T76⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -167,7 +167,7 @@ agent = create_agent(
 >
 > **重试\_on** `tuple[type[Exception], ...] | callable`（默认：default\_retry\_on）
 >
-> 要重试的异常类型的元组，或者是接受异常并在应该重试时返回 `True` 的可调用对象。使用`langchain>=1.3.16`，默认重试可重试的[model errors](/oss/python/langchain/models#model-exceptions)和所有未分类的异常，并且不再重试标记为不可重试的模型错误。
+> 要重试的异常类型元组，或者是一个接受异常并在应该重试时返回 `True` 的可调用对象。使用`langchain>=1.3.16`，默认重试可重试的[model errors](/oss/python/langchain/models#model-exceptions)以及所有未分类的异常，并且不再重试标记为不可重试的模型错误。
 >
 > **on\_failure** `string | callable`（默认：继续）
 >
@@ -239,9 +239,9 @@ agent = create_agent(
 
 使用可配置的指数退避自动重试失败的模型调用。模型重试对于以下情况很有用：* 处理模型 API 调用中的瞬时故障。
 * 提高网络相关模型请求的可靠性。
-* 构建有弹性的代理，可以优雅地处理临时模型错误。
+* 构建弹性代理来优雅地处理临时模型错误。
 
-**API参考：** [⟦T94⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)
+**API参考：** [⟦T106⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -268,7 +268,7 @@ agent = create_agent(
 >
 > **重试\_on** `tuple[type[Exception], ...] | callable`（默认：default\_retry\_on）
 >
-> 要重试的异常类型元组，或者是一个接受异常并在应该重试时返回 `True` 的可调用对象。使用`langchain>=1.3.16`，默认重试可重试的[model errors](/oss/python/langchain/models#model-exceptions)以及所有未分类的异常，并且不再重试标记为不可重试的模型错误。
+> 要重试的异常类型元组，或者是接受异常并返回 `True`（如果应该重试）的可调用对象。使用`langchain>=1.3.16`，默认重试可重试的[model errors](/oss/python/langchain/models#model-exceptions)以及所有未分类的异常，并且不再重试标记为不可重试的模型错误。
 >
 > **on\_failure** `string | callable`（默认：继续）
 >
@@ -377,7 +377,7 @@ agent = create_agent(
 * 通过使用更便宜的型号来优化成本。
 * OpenAI、Anthropic 等提供者冗余。
 
-**API参考：** [⟦T111⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)
+**API参考：** [⟦T123⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -401,7 +401,7 @@ agent = create_agent(
 >
 > 当主要模型失败时尝试的第一个后备模型。可以是模型标识符字符串（例如，`'openai:gpt-5.4-mini'`）或`BaseChatModel`实例。
 >
-> \***其他\_型号** `string | BaseChatModel`
+> \***附加\_型号** `string | BaseChatModel`
 >
 > 如果以前的模型失败，可以尝试其他后备模型
 
@@ -411,12 +411,12 @@ agent = create_agent(
 >
 > `ModelRefusalMiddleware` 需要 `langchain>=1.4.9`。
 
-当模型拒绝时，提高[⟦T118⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)，而不是将拒绝作为代理的最终答案返回。提供商将拒绝（例如安全策略拒绝）报告为成功响应，因此如果没有此中间件，代理运行就会像成功一样结束。模型拒绝对于以下情况很有用：
+当模型拒绝时，提高[⟦T130⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)，而不是将拒绝作为代理的最终答案返回。提供商将拒绝（例如安全策略拒绝）报告为成功响应，因此如果没有此中间件，代理运行就会像成功一样结束。模型拒绝对于以下情况很有用：
 
 * 当模型拒绝时，运行明显失败。
 * 使用 [Model fallback](#model-fallback) 在另一个模型上重试被拒绝的请求。
 
-中间件检查每个模型响应是否有 [⟦T119⟧ content block](/oss/python/langchain/messages#content-block-reference)，其中 OpenAI、Anthropic 和 Gemini 模型生成。它还捕获在结构化`response_format`下无法解析的拒绝。它不会检测模型以普通文本形式写入的拒绝。
+中间件检查每个模型响应是否有 [⟦T131⟧ content block](/oss/python/langchain/messages#content-block-reference)，其中 OpenAI、Anthropic 和 Gemini 模型生成。它还捕获在结构化`response_format`下无法解析的拒绝。它不会检测模型以普通文本形式写入的拒绝。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -430,15 +430,15 @@ agent = create_agent(
         ModelRefusalMiddleware(),
     ],
 )
-```将 [⟦T121⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware) 列在 [⟦T122⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 之后，以便回退捕获错误并重试下一个模型。 `ModelRetryMiddleware` 不会重试拒绝。流式传输时，模型在拒绝之前发送的文本可以在中间件引发之前到达客户端。
+```将 [⟦T133⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware) 列在 [⟦T134⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 之后，以便回退捕获错误并重试下一个模型。 `ModelRetryMiddleware` 不会重试拒绝。流式传输时，模型在拒绝之前发送的文本可以在中间件引发之前到达客户端。
 
 #### 处理拒绝
 
-选择模型拒绝时您的应用程序如何响应：
+选择当模型拒绝时应用程序如何响应：
 
 > [手风琴] 捕获错误并继续
 >
-> 在调用代理的地方捕获[⟦T124⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)。拒绝的回复不会保存到线程中，因此下一条消息会在相同模型或不同模型上正常继续对话：
+> 在调用代理的地方捕获[⟦T136⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)。拒绝的回复不会保存到线程中，因此下一条消息会在相同模型或不同模型上正常继续对话：
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.agents import create_agent
@@ -465,7 +465,7 @@ agent = create_agent(
 
 > [手风琴] 回退到另一个模型
 >
-> 将 [⟦T125⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 列在 `ModelRefusalMiddleware` 之前，如上例所示。当模型拒绝时，将在下一个模型上重试该请求，该模型可以来自同一提供商，也可以来自不同的提供商。后备模型仍然可以拒绝相同的请求，因此当每个模型都拒绝时，请将其与其他选项之一结合起来。> [accordion] 回退后回复用户
+> 将 [⟦T137⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 列在 `ModelRefusalMiddleware` 之前，如上例所示。当模型拒绝时，将在下一个模型上重试该请求，该模型可以来自同一提供商，也可以来自不同的提供商。后备模型仍然可以拒绝相同的请求，因此当每个模型都拒绝时，请将其与其他选项之一结合起来。> [accordion] 回退后回复用户
 >
 > 要回复用户而不是在每个模型拒绝时运行失败，请在 `ModelFallbackMiddleware` 之前添加一个捕获错误的中间件：
 >
@@ -511,7 +511,7 @@ agent = create_agent(
 
 > [手风琴] 编写自定义处理
 >
-> 对于其他处理，例如在状态中记录拒绝或调用 `interrupt()` 询问人员如何继续，请跳过 `ModelRefusalMiddleware` 并在您自己的中间件中检查每个响应是否有 [⟦T133⟧ content block](/oss/python/langchain/messages#content-block-reference)。请参阅[Custom middleware](/oss/python/langchain/middleware/custom)。
+> 对于其他处理，例如在状态中记录拒绝或调用 `interrupt()` 询问人员如何继续，请跳过 `ModelRefusalMiddleware` 并在您自己的中间件中检查每个响应是否有 [⟦T145⟧ content block](/oss/python/langchain/messages#content-block-reference)。参见[Custom middleware](/oss/python/langchain/middleware/custom)。
 
 ### 总结
 
@@ -523,7 +523,7 @@ agent = create_agent(
 >
 > 摘要是面向文本的上下文压缩。它不会调整大小、缩减采样或以其他方式压缩图像/音频/视频有效负载。 `keep` 保留的最新消息仍然包含其原始多模式块，而汇总的旧多模式消息仅由生成的文本摘要表示。对于图像较多的应用程序，将媒体存储在文件系统或对象存储中，并通过消息历史记录传递 URL 或文件引用。
 
-**API参考：** [⟦T135⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)
+**API参考：** [⟦T147⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -544,7 +544,7 @@ agent = create_agent(
 >
 >> [!提示]
 >>
->> 如果使用 `langchain>=1.1`，`trigger` 和 `keep`（如下所示）的 `fraction` 条件依赖于聊天模型的 [profile data](/oss/python/langchain/models#model-profiles)。如果数据不可用，请使用其他条件或手动指定：
+>> 如果使用 `langchain>=1.1`，`trigger` 和 `keep`（如下所示）的`fraction` 条件依赖于聊天模型的 [profile data](/oss/python/langchain/models#model-profiles)。如果数据不可用，请使用其他条件或手动指定：
 >>
 >> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langchain.chat_models import init_chat_model
@@ -558,14 +558,14 @@ agent = create_agent(
 >
 > **型号** `string | BaseChatModel` *必填*
 >
-> 用于生成摘要的模型。可以是模型标识符字符串（例如，`'openai:gpt-5.4-mini'`）或`BaseChatModel`实例。请参阅[⟦T143⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
+> 用于生成摘要的模型。可以是模型标识符字符串（例如，`'openai:gpt-5.4-mini'`）或`BaseChatModel`实例。请参阅[⟦T155⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
 >
 > **触发** `ContextSize | TriggerClause | list[ContextSize | TriggerClause] | None`
 >
 > 触发汇总的条件。可以是：
 >
-> * 单个[⟦T145⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize)元组（必须满足指定阈值）
-> * 单个 [⟦T146⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 字典（必须满足所有指定的阈值 - AND 逻辑）
+> * 单个[⟦T157⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize)元组（必须满足指定阈值）
+> * 单个 [⟦T158⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 字典（必须满足所有指定的阈值 - AND 逻辑）
 > * 混合任一形式的列表（任何项目都必须满足 - OR 逻辑）
 >
 > 支持的阈值有：
@@ -574,10 +574,10 @@ agent = create_agent(
 > * `tokens` (int): 绝对令牌数
 > * `messages` (int): 消息计数
 >
-> [⟦T150⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize) 元组恰好表达一个阈值。 [⟦T151⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 字典可以包含一个或多个阈值，例如`{"tokens": 4000, "messages": 10}`，并且必须满足字典中的所有阈值（AND）。
+> [⟦T162⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize) 元组恰好表达一个阈值。 [⟦T163⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 字典可以包含一个或多个阈值，例如`{"tokens": 4000, "messages": 10}`，并且必须满足字典中的所有阈值（AND）。
 >
-> 每个 [⟦T153⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 字典必须指定至少一个阈值。如果不提供`trigger`，则不会自动触发汇总。
->> 有关更多信息，请参阅 [⟦T155⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize) 和 [⟦T156⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 的 API 参考。
+> 每个 [⟦T165⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 字典必须指定至少一个阈值。如果不提供`trigger`，则不会自动触发汇总。
+>> 有关更多信息，请参阅 [⟦T167⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize) 和 [⟦T168⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/TriggerClause) 的 API 参考。
 >
 > **保留** `ContextSize`（默认值：('messages', 20)）
 >
@@ -587,15 +587,15 @@ agent = create_agent(
 > * `tokens` (int): 要保留的绝对令牌计数
 > * `messages` (int): 要保留的最近消息数
 >
-> 有关更多信息，请参阅 [⟦T161⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize) 的 API 参考。
+> 有关更多信息，请参阅 [⟦T173⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize) 的 API 参考。
 >
-> **令牌\_计数器** `function`
+> **代币\_计数器** `function`
 >
 > 自定义令牌计数功能。默认为基于字符的计数。
 >
 > **摘要\_提示** `string`
 >
-> 自定义摘要提示模板。如果未指定，则使用内置模板。模板应包含 `{messages}` 占位符，将在其中插入对话历史记录。
+> 自定义摘要提示模板。如果未指定，则使用内置模板。模板应包含 `{messages}` 占位符，用于插入对话历史记录。
 >
 > **修剪\_tokens\_to\_summarize** `number`（默认值：4000）
 >
@@ -603,7 +603,7 @@ agent = create_agent(
 >
 > **摘要\_前缀** `string` *已弃用*
 >
-> **已弃用：** 使用 `summary_prompt` 来提供完整的提示。
+> **已弃用：** 使用 `summary_prompt` 来提供完整提示。
 >
 > **max\_tokens\_before\_summary** `number` *已弃用*
 >
@@ -713,7 +713,7 @@ agent = create_agent(
 * 强制进行人工监督的合规工作流程。
 * 长时间运行的对话，人工反馈指导代理。
 
-**API参考：** [⟦T178⟧](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HumanInTheLoopMiddleware)
+**API参考：** [⟦T190⟧](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HumanInTheLoopMiddleware)
 
 默认情况下，中间件每个模型轮暂停一次。将 `interrupt_mode="per_call"` 设置为每次工具调用暂停一次，每个中断均由其 ID 应答。参见[Set the interrupt mode](/oss/python/langchain/human-in-the-loop#set-the-interrupt-mode)。
 
@@ -766,7 +766,7 @@ agent = create_agent(
 * 对生产部署实施成本控制。
 * 测试座席在特定呼叫预算内的行为。
 
-**API参考：** [⟦T180⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware)
+**API参考：** [⟦T192⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -810,7 +810,7 @@ agent = create_agent(
 * 对特定工具的使用实施速率限制。
 * 防止代理失控循环。
 
-**API参考：** [⟦T186⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware)
+**API参考：** [⟦T198⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -844,9 +844,9 @@ agent = create_agent(
 >
 > **运行\_限制** `number`
 >
-> 每次调用的最大工具调用数（一条用户消息 → 响应周期）。每条新用户消息都会重置。 `None` 表示无运行限制。
+> 每次调用的最大工具调用数（一条用户消息 → 响应周期）。每条新用户消息都会重置。 `None`表示无运行限制。
 >
-> **注意：** 必须至少指定 `thread_limit` 或 `run_limit` 之一。
+> **注意：** 必须至少指定`thread_limit` 或`run_limit` 之一。
 >
 > **退出\_行为** `string`（默认：继续）
 >
@@ -854,7 +854,7 @@ agent = create_agent(
 >
 > * `'continue'`（默认）- 使用错误消息阻止超出的工具调用，让其他工具和模型继续。模型根据错误消息决定何时结束。
 > * `'error'` - 引发 `ToolCallLimitExceededError` 异常，立即停止执行
-> * `'end'` - 立即停止执行，并针对超出的工具调用发出 `ToolMessage` 和 AI 消息。仅在限制单个工具时有效；如果其他工具有待处理的调用，则会引发 `NotImplementedError`。> [手风琴] 完整示例
+> * `'end'` - 立即停止执行，并针对超出的工具调用发出 `ToolMessage` 和 AI 消息。仅在限制单个工具时有效；如果其他工具有挂起的调用，则会引发 `NotImplementedError`。> [手风琴] 完整示例
 >
 > 通过以下方式指定限制：
 >
@@ -896,7 +896,7 @@ agent = create_agent(
 >
 > 借助 `apply_to_output=True`，`PIIMiddleware` 还可以通过注册的流转换器编辑流式传输输出（文本增量、工具调用参数、工具输出和状态快照）。需要`langchain>=1.3.2`。参见[Register transformers on middleware](/oss/python/langchain/event-streaming#register-transformers-on-middleware)。
 
-**API参考：** [⟦T207⟧](https://reference.langchain.com/python/langchain/agents/middleware/pii/PIIMiddleware)
+**API参考：** [⟦T219⟧](https://reference.langchain.com/python/langchain/agents/middleware/pii/PIIMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1053,7 +1053,7 @@ def detector(content: str) -> list[PIIMatch]:
 >
 > 该中间件自动为座席提供`write_todos`工具和系统提示，以指导有效的任务规划。
 
-**API参考：** [⟦T229⟧](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware)
+**API参考：** [⟦T241⟧](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1086,7 +1086,7 @@ agent = create_agent(
 * 通过过滤不相关的工具来减少代币使用。
 * 提高模型焦点和准确性。该中间件使用结构化输出来询问法学硕士哪些工具与当前查询最相关。结构化输出模式定义了可用的工具名称和描述。模型提供者通常会将此结构化输出信息添加到幕后的系统提示中。
 
-**API参考：** [⟦T233⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_selection/LLMToolSelectorMiddleware)
+**API参考：** [⟦T245⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_selection/LLMToolSelectorMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1109,7 +1109,7 @@ agent = create_agent(
 >
 > **型号** `string | BaseChatModel`
 >
-> 工具选择模型。可以是模型标识符字符串（例如，`'openai:gpt-5.4-mini'`）或`BaseChatModel`实例。请参阅[⟦T237⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
+> 工具选择模型。可以是模型标识符字符串（例如，`'openai:gpt-5.4-mini'`）或`BaseChatModel`实例。请参阅[⟦T249⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
 >
 > 默认为代理的主要模型。
 >
@@ -1134,7 +1134,7 @@ agent = create_agent(
 >
 > 需要具有服务器端工具搜索支持的模型：Anthropic (Claude Sonnet 4+/Opus 4+/Haiku 4.5+) 或 OpenAI (gpt-5.5+)。其他提供商提出`ValueError`。
 
-**API参考：** [⟦T242⟧](https://reference.langchain.com/python/langchain/agents/middleware/provider_tool_search/ProviderToolSearchMiddleware)
+**API参考：** [⟦T254⟧](https://reference.langchain.com/python/langchain/agents/middleware/provider_tool_search/ProviderToolSearchMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1157,7 +1157,7 @@ agent = create_agent(
 
 > [手风琴] 完整示例
 >
-> 中间件选择使用 `searchable_tools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras={"defer_loading": True}` 选择在构建时延迟。
+> 中间件选择使用 `searchable_tools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras={"defer_loading": True}` 在构建时选择延迟。
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.agents import create_agent
@@ -1195,7 +1195,7 @@ agent = create_agent(
 >
 > **限制**：持久 shell 会话当前不支持中断（人机交互）。我们预计将来会增加对此的支持。
 
-**API参考：** [⟦T251⟧](https://reference.langchain.com/python/langchain/agents/middleware/shell_tool/ShellToolMiddleware)
+**API参考：** [⟦T263⟧](https://reference.langchain.com/python/langchain/agents/middleware/shell_tool/ShellToolMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1322,7 +1322,7 @@ agent = create_agent(
 
 ### 文件系统中间件上下文工程是构建有效代理的主要挑战。当使用返回可变长度结果的工具（例如，`web_search`和RAG）时，这尤其困难，因为长工具结果可以快速填满上下文窗口。
 
-[Deep Agents](/oss/python/deepagents/overview) 中的`FilesystemMiddleware` 提供了四种与短期和长期记忆交互的工具：
+[Deep Agents](/oss/python/deepagents/overview) 的 `FilesystemMiddleware` 提供了四种与短期和长期记忆交互的工具：
 
 * `ls`：列出文件系统中的文件
 * `read_file`：读取整个文件或文件中的特定行数
@@ -1387,10 +1387,11 @@ agent = create_agent(
 
 将任务交给子代理可以隔离上下文，保持主（主管）代理的上下文窗口干净，同时仍然深入执行任务。[Deep Agents](/oss/python/deepagents/overview) 的子代理中间件允许您通过 `task` 工具提供子代理。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.tools import tool
-from langchain.agents import create_agent
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.tools import tool
 
 
 @tool
@@ -1398,17 +1399,19 @@ def get_weather(city: str) -> str:
     """Get the weather in a city."""
     return f"The weather in {city} is sunny."
 
+
 agent = create_agent(
-    model="claude-sonnet-4-6",
+    model="google_genai:gemini-3.6-flash",
     middleware=[
         SubAgentMiddleware(
-            default_model="claude-sonnet-4-6",
-            default_tools=[],
+            backend=StateBackend(),
             subagents=[
                 {
                     "name": "weather",
                     "description": "This subagent can get weather in cities.",
-                    "system_prompt": "Use the get_weather tool to get the weather in a city.",
+                    "system_prompt": (
+                        "Use the get_weather tool to get the weather in a city."
+                    ),
                     "tools": [get_weather],
                     "model": "gpt-5.5",
                     "middleware": [],
@@ -1419,21 +1422,241 @@ agent = create_agent(
 )
 ```
 
-子代理使用**名称**、**描述**、**系统提示**和**工具**进行定义。您还可以为子代理提供自定义**模型**或附加**中间件**。当您想要为子代理提供额外的状态密钥以与主代理共享时，这尤其有用。
-
-对于更复杂的用例，您还可以提供自己的预构建LangGraph图作为子代理。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents import create_agent
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def get_weather(city: str) -> str:
+    """Get the weather in a city."""
+    return f"The weather in {city} is sunny."
+
+
+agent = create_agent(
+    model="openai:gpt-5.5",
+    middleware=[
+        SubAgentMiddleware(
+            backend=StateBackend(),
+            subagents=[
+                {
+                    "name": "weather",
+                    "description": "This subagent can get weather in cities.",
+                    "system_prompt": (
+                        "Use the get_weather tool to get the weather in a city."
+                    ),
+                    "tools": [get_weather],
+                    "model": "gpt-5.5",
+                    "middleware": [],
+                }
+            ],
+        )
+    ],
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents.backends import StateBackend
+from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def get_weather(city: str) -> str:
+    """Get the weather in a city."""
+    return f"The weather in {city} is sunny."
+
+
+agent = create_agent(
+    model="anthropic:claude-sonnet-5",
+    middleware=[
+        SubAgentMiddleware(
+            backend=StateBackend(),
+            subagents=[
+                {
+                    "name": "weather",
+                    "description": "This subagent can get weather in cities.",
+                    "system_prompt": (
+                        "Use the get_weather tool to get the weather in a city."
+                    ),
+                    "tools": [get_weather],
+                    "model": "gpt-5.5",
+                    "middleware": [],
+                }
+            ],
+        )
+    ],
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents.backends import StateBackend
+from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def get_weather(city: str) -> str:
+    """Get the weather in a city."""
+    return f"The weather in {city} is sunny."
+
+
+agent = create_agent(
+    model="openrouter:z-ai/glm-5.2",
+    middleware=[
+        SubAgentMiddleware(
+            backend=StateBackend(),
+            subagents=[
+                {
+                    "name": "weather",
+                    "description": "This subagent can get weather in cities.",
+                    "system_prompt": (
+                        "Use the get_weather tool to get the weather in a city."
+                    ),
+                    "tools": [get_weather],
+                    "model": "gpt-5.5",
+                    "middleware": [],
+                }
+            ],
+        )
+    ],
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents.backends import StateBackend
+from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def get_weather(city: str) -> str:
+    """Get the weather in a city."""
+    return f"The weather in {city} is sunny."
+
+
+agent = create_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    middleware=[
+        SubAgentMiddleware(
+            backend=StateBackend(),
+            subagents=[
+                {
+                    "name": "weather",
+                    "description": "This subagent can get weather in cities.",
+                    "system_prompt": (
+                        "Use the get_weather tool to get the weather in a city."
+                    ),
+                    "tools": [get_weather],
+                    "model": "gpt-5.5",
+                    "middleware": [],
+                }
+            ],
+        )
+    ],
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents.backends import StateBackend
+from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def get_weather(city: str) -> str:
+    """Get the weather in a city."""
+    return f"The weather in {city} is sunny."
+
+
+agent = create_agent(
+    model="baseten:zai-org/GLM-5.2",
+    middleware=[
+        SubAgentMiddleware(
+            backend=StateBackend(),
+            subagents=[
+                {
+                    "name": "weather",
+                    "description": "This subagent can get weather in cities.",
+                    "system_prompt": (
+                        "Use the get_weather tool to get the weather in a city."
+                    ),
+                    "tools": [get_weather],
+                    "model": "gpt-5.5",
+                    "middleware": [],
+                }
+            ],
+        )
+    ],
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents.backends import StateBackend
+from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def get_weather(city: str) -> str:
+    """Get the weather in a city."""
+    return f"The weather in {city} is sunny."
+
+
+agent = create_agent(
+    model="ollama:north-mini-code-1.0",
+    middleware=[
+        SubAgentMiddleware(
+            backend=StateBackend(),
+            subagents=[
+                {
+                    "name": "weather",
+                    "description": "This subagent can get weather in cities.",
+                    "system_prompt": (
+                        "Use the get_weather tool to get the weather in a city."
+                    ),
+                    "tools": [get_weather],
+                    "model": "gpt-5.5",
+                    "middleware": [],
+                }
+            ],
+        )
+    ],
+)
+```
+
+声明性子代理需要**名称**、**描述**、**模型**和**工具**。您还可以设置**系统提示**和附加**中间件**。当您想要为子代理提供额外的状态密钥以与主代理共享时，这尤其有用。
+
+对于更复杂的用例，您还可以提供自己的预构建 LangGraph 图作为子代理。
+
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
-from langgraph.graph import StateGraph
+from deepagents.backends import StateBackend
+from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.messages import AIMessage
+from langgraph.graph import END, START, MessagesState, StateGraph
+
 
 # Create a custom LangGraph graph
 def create_weather_graph():
-    workflow = StateGraph(...)
-    # Build your custom graph
+    workflow = StateGraph(MessagesState)
+
+    def respond(_state: MessagesState):
+        return {"messages": [AIMessage(content="The weather is sunny.")]}
+
+    workflow.add_node("respond", respond)
+    workflow.add_edge(START, "respond")
+    workflow.add_edge("respond", END)
     return workflow.compile()
+
 
 weather_graph = create_weather_graph()
 
@@ -1441,30 +1664,283 @@ weather_graph = create_weather_graph()
 weather_subagent = CompiledSubAgent(
     name="weather",
     description="This subagent can get weather in cities.",
-    runnable=weather_graph
+    runnable=weather_graph,
 )
 
 agent = create_agent(
-    model="claude-sonnet-4-6",
+    model="google_genai:gemini-3.6-flash",
     middleware=[
         SubAgentMiddleware(
-            default_model="claude-sonnet-4-6",
-            default_tools=[],
+            backend=StateBackend(),
             subagents=[weather_subagent],
         )
     ],
 )
 ```
 
-除了任何用户定义的子代理之外，主代理还可以随时访问`general-purpose`子代理。该子代理具有与主代理相同的指令以及它有权访问的所有工具。 `general-purpose` 子代理的主要目的是上下文隔离——主代理可以将复杂的任务委托给该子代理，并获得简洁的答案，而不会因中间工具调用而造成臃肿。
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import CompiledSubAgent
+from deepagents.backends import StateBackend
+from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.messages import AIMessage
+from langgraph.graph import END, START, MessagesState, StateGraph
+
+
+# Create a custom LangGraph graph
+def create_weather_graph():
+    workflow = StateGraph(MessagesState)
+
+    def respond(_state: MessagesState):
+        return {"messages": [AIMessage(content="The weather is sunny.")]}
+
+    workflow.add_node("respond", respond)
+    workflow.add_edge(START, "respond")
+    workflow.add_edge("respond", END)
+    return workflow.compile()
+
+
+weather_graph = create_weather_graph()
+
+# Wrap it in a CompiledSubAgent
+weather_subagent = CompiledSubAgent(
+    name="weather",
+    description="This subagent can get weather in cities.",
+    runnable=weather_graph,
+)
+
+agent = create_agent(
+    model="openai:gpt-5.5",
+    middleware=[
+        SubAgentMiddleware(
+            backend=StateBackend(),
+            subagents=[weather_subagent],
+        )
+    ],
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import CompiledSubAgent
+from deepagents.backends import StateBackend
+from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.messages import AIMessage
+from langgraph.graph import END, START, MessagesState, StateGraph
+
+
+# Create a custom LangGraph graph
+def create_weather_graph():
+    workflow = StateGraph(MessagesState)
+
+    def respond(_state: MessagesState):
+        return {"messages": [AIMessage(content="The weather is sunny.")]}
+
+    workflow.add_node("respond", respond)
+    workflow.add_edge(START, "respond")
+    workflow.add_edge("respond", END)
+    return workflow.compile()
+
+
+weather_graph = create_weather_graph()
+
+# Wrap it in a CompiledSubAgent
+weather_subagent = CompiledSubAgent(
+    name="weather",
+    description="This subagent can get weather in cities.",
+    runnable=weather_graph,
+)
+
+agent = create_agent(
+    model="anthropic:claude-sonnet-5",
+    middleware=[
+        SubAgentMiddleware(
+            backend=StateBackend(),
+            subagents=[weather_subagent],
+        )
+    ],
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import CompiledSubAgent
+from deepagents.backends import StateBackend
+from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.messages import AIMessage
+from langgraph.graph import END, START, MessagesState, StateGraph
+
+
+# Create a custom LangGraph graph
+def create_weather_graph():
+    workflow = StateGraph(MessagesState)
+
+    def respond(_state: MessagesState):
+        return {"messages": [AIMessage(content="The weather is sunny.")]}
+
+    workflow.add_node("respond", respond)
+    workflow.add_edge(START, "respond")
+    workflow.add_edge("respond", END)
+    return workflow.compile()
+
+
+weather_graph = create_weather_graph()
+
+# Wrap it in a CompiledSubAgent
+weather_subagent = CompiledSubAgent(
+    name="weather",
+    description="This subagent can get weather in cities.",
+    runnable=weather_graph,
+)
+
+agent = create_agent(
+    model="openrouter:z-ai/glm-5.2",
+    middleware=[
+        SubAgentMiddleware(
+            backend=StateBackend(),
+            subagents=[weather_subagent],
+        )
+    ],
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import CompiledSubAgent
+from deepagents.backends import StateBackend
+from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.messages import AIMessage
+from langgraph.graph import END, START, MessagesState, StateGraph
+
+
+# Create a custom LangGraph graph
+def create_weather_graph():
+    workflow = StateGraph(MessagesState)
+
+    def respond(_state: MessagesState):
+        return {"messages": [AIMessage(content="The weather is sunny.")]}
+
+    workflow.add_node("respond", respond)
+    workflow.add_edge(START, "respond")
+    workflow.add_edge("respond", END)
+    return workflow.compile()
+
+
+weather_graph = create_weather_graph()
+
+# Wrap it in a CompiledSubAgent
+weather_subagent = CompiledSubAgent(
+    name="weather",
+    description="This subagent can get weather in cities.",
+    runnable=weather_graph,
+)
+
+agent = create_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    middleware=[
+        SubAgentMiddleware(
+            backend=StateBackend(),
+            subagents=[weather_subagent],
+        )
+    ],
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import CompiledSubAgent
+from deepagents.backends import StateBackend
+from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.messages import AIMessage
+from langgraph.graph import END, START, MessagesState, StateGraph
+
+
+# Create a custom LangGraph graph
+def create_weather_graph():
+    workflow = StateGraph(MessagesState)
+
+    def respond(_state: MessagesState):
+        return {"messages": [AIMessage(content="The weather is sunny.")]}
+
+    workflow.add_node("respond", respond)
+    workflow.add_edge(START, "respond")
+    workflow.add_edge("respond", END)
+    return workflow.compile()
+
+
+weather_graph = create_weather_graph()
+
+# Wrap it in a CompiledSubAgent
+weather_subagent = CompiledSubAgent(
+    name="weather",
+    description="This subagent can get weather in cities.",
+    runnable=weather_graph,
+)
+
+agent = create_agent(
+    model="baseten:zai-org/GLM-5.2",
+    middleware=[
+        SubAgentMiddleware(
+            backend=StateBackend(),
+            subagents=[weather_subagent],
+        )
+    ],
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import CompiledSubAgent
+from deepagents.backends import StateBackend
+from deepagents.middleware.subagents import SubAgentMiddleware
+from langchain.agents import create_agent
+from langchain.messages import AIMessage
+from langgraph.graph import END, START, MessagesState, StateGraph
+
+
+# Create a custom LangGraph graph
+def create_weather_graph():
+    workflow = StateGraph(MessagesState)
+
+    def respond(_state: MessagesState):
+        return {"messages": [AIMessage(content="The weather is sunny.")]}
+
+    workflow.add_node("respond", respond)
+    workflow.add_edge(START, "respond")
+    workflow.add_edge("respond", END)
+    return workflow.compile()
+
+
+weather_graph = create_weather_graph()
+
+# Wrap it in a CompiledSubAgent
+weather_subagent = CompiledSubAgent(
+    name="weather",
+    description="This subagent can get weather in cities.",
+    runnable=weather_graph,
+)
+
+agent = create_agent(
+    model="ollama:north-mini-code-1.0",
+    middleware=[
+        SubAgentMiddleware(
+            backend=StateBackend(),
+            subagents=[weather_subagent],
+        )
+    ],
+)
+```
+
+`SubAgentMiddleware` 仅公开您提供的子代理。在其规范中配置每个子代理的模型和工具。使用 `create_deep_agent` 包含默认的 `general-purpose` 子代理和默认的 Deep Agents 中间件堆栈。
 
 ### 评分标准
 
 > [!注意]
 >
-> `RubricMiddleware` 需要 `deepagents>=0.6.5`。位于[**beta**](/oss/python/versioning)； API 将来可能会发生变化。有些任务有明确的“完成”定义，代理无法在第一次尝试时可靠地完成任务。 `RubricMiddleware` 允许您将“完成的内容”声明为一个评分标准，并让代理进行自我评估和迭代，直到满足评分标准或达到最大迭代上限。
+> `RubricMiddleware` 需要 `deepagents>=0.6.5`。位于[**beta**](/oss/python/versioning)； API 将来可能会发生变化。
 
-**API参考：** [⟦T286⟧](https://reference.langchain.com/python/deepagents/middleware/rubric/RubricMiddleware)
+有些任务有明确的“完成”定义，代理无法在第一次尝试时可靠地完成任务。 `RubricMiddleware` 允许您将“完成的内容”声明为评分标准，并让代理进行自我评估和迭代，直到满足评分标准或达到最大迭代上限。
+
+**API参考：** [⟦T299⟧](https://reference.langchain.com/python/deepagents/middleware/rubric/RubricMiddleware)
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
@@ -1528,9 +2004,7 @@ agent = create_deep_agent(
     ],
     checkpointer=InMemorySaver(),
 )
-```
-
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+``````python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -1589,7 +2063,7 @@ agent = create_deep_agent(
 * 使用正则表达式搜索代码内容
 * 需要文件发现的大型代码库
 
-**API参考：** [⟦T287⟧](https://reference.langchain.com/python/langchain/agents/middleware/file_search/FilesystemFileSearchMiddleware)
+**API参考：** [⟦T300⟧](https://reference.langchain.com/python/langchain/agents/middleware/file_search/FilesystemFileSearchMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1670,7 +2144,7 @@ agent = create_agent(
 * 通过删除不再相关的旧工具输出来降低代币成本
 * 仅维护上下文中最新的 N 个工具结果
 
-**API参考：** [⟦T297⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ContextEditingMiddleware)、[⟦T298⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ClearToolUsesEdit)
+**API参考：** [⟦T310⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ContextEditingMiddleware)、[⟦T311⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ClearToolUsesEdit)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1694,13 +2168,13 @@ agent = create_agent(
 >
 > **编辑** `list[ContextEdit]` （默认值：\[ClearToolUsesEdit()]）
 >
-> [⟦T300⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ContextEdit) 应用策略列表
+> [⟦T313⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ContextEdit) 应用策略列表
 >
 > **token\_count\_method** `string`（默认值：近似值）
 >
 > 令牌计数方法。选项：`'approximate'` 或 `'model'`
 >
-> **[⟦T304⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ClearToolUsesEdit) 选项：**
+> **[⟦T317⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ClearToolUsesEdit) 选项：**
 >
 > **触发** `number`（默认：100000）
 >
@@ -1714,7 +2188,7 @@ agent = create_agent(
 >
 > 必须保留的最新工具结果的数量。这些永远不会被清除。
 >
-> **清除\_tool\_inputs** `boolean`（默认值：False）
+> **clear\_tool\_inputs** `boolean`（默认值：False）
 >
 > 是否清除AI消息上的原始工具调用参数。当`True`时，工具调用参数被替换为空对象。
 >
@@ -1733,7 +2207,7 @@ agent = create_agent(
 > 1. 监控对话中的令牌计数
 > 2. 当达到阈值时，清除旧工具输出
 > 3.保留最近的N个工具结果
-> 4. 可选择保留上下文的工具调用参数
+> 4. 有选择地保留上下文的工具调用参数
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.agents import create_agent
@@ -1767,7 +2241,7 @@ agent = create_agent(
 * 当外部工具不可用或昂贵时开发代理。
 * 在实施实际工具之前对代理工作流程进行原型设计。
 
-**API参考：** [⟦T313⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_emulator/LLMToolEmulator)
+**API参考：** [⟦T326⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_emulator/LLMToolEmulator)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1784,11 +2258,11 @@ agent = create_agent(
 >
 > **工具** `list[str | BaseTool]`
 >
-> 要模拟的工具名称 (str) 或 BaseTool 实例的列表。如果`None`（默认），将模拟所有工具。如果列表为空`[]`，则不会模拟任何工具。如果数组包含工具名称/实例，则仅模拟这些工具。
+> 要模拟的工具名称 (str) 或 BaseTool 实例的列表。如果`None`（默认），将模拟所有工具。如果列表`[]`为空，则不会模拟任何工具。如果数组包含工具名称/实例，则仅模拟这些工具。
 >
 > **型号** `string | BaseChatModel`
 >
-> 用于生成模拟工具响应的模型。可以是模型标识符字符串（例如，`'google_genai:gemini-3.6-flash'`）或`BaseChatModel`实例。如果未指定，则默认为代理的型号。请参阅[⟦T320⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
+> 用于生成模拟工具响应的模型。可以是模型标识符字符串（例如，`'google_genai:gemini-3.6-flash'`）或`BaseChatModel`实例。如果未指定，则默认为代理的型号。请参阅[⟦T333⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
 
 > [手风琴] 完整示例
 >

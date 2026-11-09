@@ -43,7 +43,7 @@ LangChain 为常见用例提供预构建的中间件。每个中间件均可投�
 * 提高依赖网络的工具的可靠性。
 * 构建能够优雅地处理临时错误的弹性代理。
 
-**API参考：** [⟦T33⟧](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware)
+**API参考：** [⟦T45⟧](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware)
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, toolRetryMiddleware } from "langchain";
@@ -71,7 +71,7 @@ const agent = createAgent({
 >
 > **retryOn** `((error: Error) =\> boolean) | (new (...args: any[]) =\> Error)[]` （默认值：(error) => getRetryable(error) ?? true)
 >
-> 一个要重试的错误构造函数数组，或者一个接受错误并在应该重试时返回 `true` 的函数。对于 `langchain>=1.5.9`，默认情况下不再重试标记为不可重试的错误。重试所有其他错误。
+> 要重试的错误构造函数数组，或者接受错误并在应该重试时返回 `true` 的函数。使用`langchain>=1.5.9`，默认情况下不再重试标记为不可重试的错误。重试所有其他错误。
 >
 > **onFailure** `'error' | 'continue' | ((error: Error) =\> string)`（默认：继续）
 >
@@ -86,7 +86,7 @@ const agent = createAgent({
 >
 > 指数退避乘数。每次重试都会等待 `initialDelayMs * (backoffFactor ** retryNumber)` 毫秒。设置为 `0.0` 以获得恒定延迟。必须 >= 0。
 >
-> **initialDelayMs** `number`（默认：1000）
+> **初始延迟时间** `number`（默认：1000）
 >
 > 第一次重试之前的初始延迟（以毫秒为单位）。必须 >= 0。
 >
@@ -248,7 +248,7 @@ const lookupRecord = tool(
 * 提高网络相关模型请求的可靠性。
 * 构建弹性代理来优雅地处理临时模型错误。
 
-**API参考：** [⟦T75⟧](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)
+**API参考：** [⟦T87⟧](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, modelRetryMiddleware } from "langchain";
@@ -274,7 +274,7 @@ const agent = createAgent({
 >
 > **retryOn** `((error: Error) =\> boolean) | (new (...args: any[]) =\> Error)[]` （默认值：(error) => getRetryable(error) ?? true)
 >
-> 要重试的错误构造函数数组，或者是接受错误并在应该重试时返回 `true` 的函数。对于 `langchain>=1.5.9`，默认情况下不再重试标记为不可重试的错误。重试所有其他错误。
+> 一个要重试的错误构造函数数组，或者一个接受错误并在应该重试时返回 `true` 的函数。使用`langchain>=1.5.9`，默认情况下不再重试标记为不可重试的错误。重试所有其他错误。
 >
 > **onFailure** `'error' | 'continue' | ((error: Error) =\> string)`（默认：继续）
 >
@@ -422,7 +422,7 @@ const agent = createAgent({
 
 > [!注意]
 >
-> 摘要是面向文本的上下文压缩。它不会调整大小、缩减采样或以其他方式压缩图像/音频/视频有效负载。 `keep` 保留的最新消息仍然包含其原始多模式块，而汇总的旧多模式消息仅由生成的文本摘要表示。对于图像较多的应用程序，将媒体存储在文件系统或对象存储中，并通过消息历史记录传递 URL 或文件引用。
+> 摘要是面向文本的上下文压缩。它不会调整大小、缩减采样或以其他方式压缩图像/音频/视频有效负载。 `keep`保留的最新消息仍然包括其原始多模式块，而汇总的旧多模式消息仅由生成的文本摘要表示。对于图像较多的应用程序，将媒体存储在文件系统或对象存储中，并通过消息历史记录传递 URL 或文件引用。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, summarizationMiddleware } from "langchain";
@@ -497,7 +497,7 @@ const agent = createAgent({
 >
 > **摘要提示** `string`
 >
-> 自定义摘要提示模板。如果未指定，则使用内置模板。模板应包含 `{messages}` 占位符，用于插入对话历史记录。
+> 自定义摘要提示模板。如果未指定，则使用内置模板。模板应包含 `{messages}` 占位符，将在其中插入对话历史记录。
 >
 > **trimTokensToSummarize** `number`（默认值：4000）
 >
@@ -711,7 +711,7 @@ const agent = createAgent({
 >
 > * `'continue'`（默认）- 使用错误消息阻止超出的工具调用，让其他工具和模型继续。模型根据错误消息决定何时结束。
 > * `'error'` - 抛出`ToolCallLimitExceededError`异常，立即停止执行
-> * `'end'` - 立即停止执行，并针对超出的工具调用发出 ToolMessage 和 AI 消息。仅在限制单个工具时有效；如果其他工具有待处理的调用，则会抛出错误。> [手风琴] 完整示例
+> * `'end'` - 对于超出的工具调用，使用 ToolMessage 和 AI 消息立即停止执行。仅在限制单个工具时有效；如果其他工具有待处理的调用，则会抛出错误。> [手风琴] 完整示例
 >
 > 通过以下方式指定限制：
 >
@@ -766,7 +766,7 @@ const agent = createAgent({
 
 **创建自定义检测器的三种方法：**
 
-1. **正则表达式模式字符串** - 简单模式匹配
+1. **Regex模式字符串** - 简单模式匹配
 
 2. **RegExp 对象** - 对正则表达式标志的更多控制
 
@@ -891,14 +891,14 @@ function detector(content: string): PIIMatch[] {
 >
 > 模型调用后查看AI消息
 >
-> **applyToToolResults** `boolean` （默认值： false）
+> **applyToToolResults** `boolean`（默认值：false）
 >
 > 执行后检查工具结果消息
 
 ### 待办事项列表
 
 为代理配备任务规划和跟踪功能，以执行复杂的多步骤任务。待办事项列表对于以下用途很有用：* 复杂的多步骤任务需要跨多个工具进行协调。
-* 长期运行的操作，其中进度可见性很重要。
+* 长期运行的操作，其中进度可见性非常重要。
 
 > [!注意]
 >
@@ -973,7 +973,7 @@ const agent = createAgent({
 >
 > 需要具有服务器端工具搜索支持的模型：Anthropic (Claude Sonnet 4+/Opus 4+/Haiku 4.5+) 或 OpenAI (gpt-5.5+)。其他提供者会抛出错误。
 
-**API参考：** [⟦T177⟧](https://reference.langchain.com/javascript/langchain/index/providerToolSearchMiddleware)
+**API参考：** [⟦T189⟧](https://reference.langchain.com/javascript/langchain/index/providerToolSearchMiddleware)
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, providerToolSearchMiddleware } from "langchain";
@@ -1009,7 +1009,7 @@ const agent = createAgent({
 
 > [手风琴] 完整示例
 >
-> 中间件选择使用 `searchableTools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras.defer_loading: true` 在构建时选择延迟
+> 中间件选择使用 `searchableTools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras.defer_loading: true` 在构建时选择推迟
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createAgent, providerToolSearchMiddleware } from "langchain";
@@ -1100,7 +1100,7 @@ const agent = createAgent({
 
 [Deep Agents](/oss/javascript/deepagents/overview) 的子代理中间件允许您通过 `task` 工具提供子代理。
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -1120,7 +1120,247 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "claude-sonnet-4-6",
+  model: "google:gemini-3.6-flash",
+  middleware: [
+    createSubAgentMiddleware({
+      defaultModel: "claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [
+        {
+          name: "weather",
+          description: "This subagent can get weather in cities.",
+          systemPrompt: "Use the get_weather tool to get the weather in a city.",
+          tools: [getWeather],
+          model: "gpt-5.5",
+          middleware: [],
+        },
+      ],
+    }),
+  ],
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { createAgent } from "langchain";
+import { createSubAgentMiddleware } from "deepagents";
+import { z } from "zod";
+
+const getWeather = tool(
+  async ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const agent = createAgent({
+  model: "openai:gpt-5.5",
+  middleware: [
+    createSubAgentMiddleware({
+      defaultModel: "claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [
+        {
+          name: "weather",
+          description: "This subagent can get weather in cities.",
+          systemPrompt: "Use the get_weather tool to get the weather in a city.",
+          tools: [getWeather],
+          model: "gpt-5.5",
+          middleware: [],
+        },
+      ],
+    }),
+  ],
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { createAgent } from "langchain";
+import { createSubAgentMiddleware } from "deepagents";
+import { z } from "zod";
+
+const getWeather = tool(
+  async ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  middleware: [
+    createSubAgentMiddleware({
+      defaultModel: "claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [
+        {
+          name: "weather",
+          description: "This subagent can get weather in cities.",
+          systemPrompt: "Use the get_weather tool to get the weather in a city.",
+          tools: [getWeather],
+          model: "gpt-5.5",
+          middleware: [],
+        },
+      ],
+    }),
+  ],
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { createAgent } from "langchain";
+import { createSubAgentMiddleware } from "deepagents";
+import { z } from "zod";
+
+const getWeather = tool(
+  async ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  middleware: [
+    createSubAgentMiddleware({
+      defaultModel: "claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [
+        {
+          name: "weather",
+          description: "This subagent can get weather in cities.",
+          systemPrompt: "Use the get_weather tool to get the weather in a city.",
+          tools: [getWeather],
+          model: "gpt-5.5",
+          middleware: [],
+        },
+      ],
+    }),
+  ],
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { createAgent } from "langchain";
+import { createSubAgentMiddleware } from "deepagents";
+import { z } from "zod";
+
+const getWeather = tool(
+  async ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  middleware: [
+    createSubAgentMiddleware({
+      defaultModel: "claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [
+        {
+          name: "weather",
+          description: "This subagent can get weather in cities.",
+          systemPrompt: "Use the get_weather tool to get the weather in a city.",
+          tools: [getWeather],
+          model: "gpt-5.5",
+          middleware: [],
+        },
+      ],
+    }),
+  ],
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { createAgent } from "langchain";
+import { createSubAgentMiddleware } from "deepagents";
+import { z } from "zod";
+
+const getWeather = tool(
+  async ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  middleware: [
+    createSubAgentMiddleware({
+      defaultModel: "claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [
+        {
+          name: "weather",
+          description: "This subagent can get weather in cities.",
+          systemPrompt: "Use the get_weather tool to get the weather in a city.",
+          tools: [getWeather],
+          model: "gpt-5.5",
+          middleware: [],
+        },
+      ],
+    }),
+  ],
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { createAgent } from "langchain";
+import { createSubAgentMiddleware } from "deepagents";
+import { z } from "zod";
+
+const getWeather = tool(
+  async ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
   middleware: [
     createSubAgentMiddleware({
       defaultModel: "claude-sonnet-4-6",
@@ -1144,7 +1384,7 @@ const agent = createAgent({
 
 对于更复杂的用例，您还可以提供自己的预构建 LangGraph 图作为子代理。
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -1167,7 +1407,241 @@ const weatherSubagent: SubAgent = {
   description: "This subagent can get weather in cities.",
   systemPrompt: "Use the get_weather tool to get the weather in a city.",
   tools: [getWeather],
-  model: "gpt-5.5",
+  model: "google:gemini-3.6-flash",
+  middleware: [],
+};
+
+const agent = createAgent({
+  model: "claude-sonnet-4-6",
+  middleware: [
+    createSubAgentMiddleware({
+      defaultModel: "claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [weatherSubagent],
+    }),
+  ],
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createAgent } from "langchain";
+import { createSubAgentMiddleware, type SubAgent } from "deepagents";
+import { z } from "zod";
+
+const getWeather = tool(
+  async ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const weatherSubagent: SubAgent = {
+  name: "weather",
+  description: "This subagent can get weather in cities.",
+  systemPrompt: "Use the get_weather tool to get the weather in a city.",
+  tools: [getWeather],
+  model: "openai:gpt-5.5",
+  middleware: [],
+};
+
+const agent = createAgent({
+  model: "claude-sonnet-4-6",
+  middleware: [
+    createSubAgentMiddleware({
+      defaultModel: "claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [weatherSubagent],
+    }),
+  ],
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createAgent } from "langchain";
+import { createSubAgentMiddleware, type SubAgent } from "deepagents";
+import { z } from "zod";
+
+const getWeather = tool(
+  async ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const weatherSubagent: SubAgent = {
+  name: "weather",
+  description: "This subagent can get weather in cities.",
+  systemPrompt: "Use the get_weather tool to get the weather in a city.",
+  tools: [getWeather],
+  model: "anthropic:claude-sonnet-5",
+  middleware: [],
+};
+
+const agent = createAgent({
+  model: "claude-sonnet-4-6",
+  middleware: [
+    createSubAgentMiddleware({
+      defaultModel: "claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [weatherSubagent],
+    }),
+  ],
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createAgent } from "langchain";
+import { createSubAgentMiddleware, type SubAgent } from "deepagents";
+import { z } from "zod";
+
+const getWeather = tool(
+  async ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const weatherSubagent: SubAgent = {
+  name: "weather",
+  description: "This subagent can get weather in cities.",
+  systemPrompt: "Use the get_weather tool to get the weather in a city.",
+  tools: [getWeather],
+  model: "openrouter:z-ai/glm-5.2",
+  middleware: [],
+};
+
+const agent = createAgent({
+  model: "claude-sonnet-4-6",
+  middleware: [
+    createSubAgentMiddleware({
+      defaultModel: "claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [weatherSubagent],
+    }),
+  ],
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createAgent } from "langchain";
+import { createSubAgentMiddleware, type SubAgent } from "deepagents";
+import { z } from "zod";
+
+const getWeather = tool(
+  async ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const weatherSubagent: SubAgent = {
+  name: "weather",
+  description: "This subagent can get weather in cities.",
+  systemPrompt: "Use the get_weather tool to get the weather in a city.",
+  tools: [getWeather],
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  middleware: [],
+};
+
+const agent = createAgent({
+  model: "claude-sonnet-4-6",
+  middleware: [
+    createSubAgentMiddleware({
+      defaultModel: "claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [weatherSubagent],
+    }),
+  ],
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createAgent } from "langchain";
+import { createSubAgentMiddleware, type SubAgent } from "deepagents";
+import { z } from "zod";
+
+const getWeather = tool(
+  async ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const weatherSubagent: SubAgent = {
+  name: "weather",
+  description: "This subagent can get weather in cities.",
+  systemPrompt: "Use the get_weather tool to get the weather in a city.",
+  tools: [getWeather],
+  model: "baseten:zai-org/GLM-5.2",
+  middleware: [],
+};
+
+const agent = createAgent({
+  model: "claude-sonnet-4-6",
+  middleware: [
+    createSubAgentMiddleware({
+      defaultModel: "claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [weatherSubagent],
+    }),
+  ],
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createAgent } from "langchain";
+import { createSubAgentMiddleware, type SubAgent } from "deepagents";
+import { z } from "zod";
+
+const getWeather = tool(
+  async ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const weatherSubagent: SubAgent = {
+  name: "weather",
+  description: "This subagent can get weather in cities.",
+  systemPrompt: "Use the get_weather tool to get the weather in a city.",
+  tools: [getWeather],
+  model: "ollama:north-mini-code-1.0",
   middleware: [],
 };
 
@@ -1212,9 +1686,9 @@ const agent = createAgent({
 >
 > **编辑** `ContextEdit[]` （默认值：\[new ClearToolUsesEdit()]）
 >
-> 一系列[⟦T199⟧](https://reference.langchain.com/javascript/langchain/index/ContextEdit) 应用策略
+> 一系列[⟦T211⟧](https://reference.langchain.com/javascript/langchain/index/ContextEdit) 应用策略
 >
-> **[⟦T200⟧](https://reference.langchain.com/javascript/langchain/index/ClearToolUsesEdit) 选项：**
+> **[⟦T212⟧](https://reference.langchain.com/javascript/langchain/index/ClearToolUsesEdit) 选项：**
 >
 > **triggerTokens** `number`（默认：100000）
 >
@@ -1247,7 +1721,7 @@ const agent = createAgent({
 > 1. 监控对话中的令牌计数
 > 2. 当达到阈值时，清除旧工具输出
 > 3.保留最近的N个工具结果
-> 4. 可选择保留上下文的工具调用参数
+> 4. 有选择地保留上下文的工具调用参数
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createAgent, contextEditingMiddleware, ClearToolUsesEdit } from "langchain";
@@ -1378,12 +1852,12 @@ const agent = createAgent({
 >
 > Claude 模型的提示缓存、bash 工具、文本编辑器、内存和文件搜索中间件。
 
-> [卡] [AWS](/oss/javascript/integrations/middleware/aws)
+> [卡][AWS](/oss/javascript/integrations/middleware/aws)
 >
 > Amazon Bedrock 模型的提示缓存中间件。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答复。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/middleware/built-in.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

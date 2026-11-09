@@ -31,7 +31,7 @@ npx @langchain/langgraph-cli
 ### 2. 准备你的代理如果您已经有LangChain代理，可以直接使用。此示例使用一个简单的电子邮件代理：
 
 ```typescript title="agent.ts" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent } from "@langchain/agents";
+import { createAgent } from "langchain";
 
 function sendEmail(to: string, subject: string, body: string): string {
   const email = {
@@ -123,7 +123,7 @@ npx @langchain/langgraph-cli dev
 
 开发服务器支持热重载——对代码中的提示或工具签名进行更改，Studio 会立即反映它们。从任何步骤重新运行对话线程以测试您的更改，而无需重新开始。该工作流程从简单的单工具代理扩展到复杂的多节点图。
 
-有关如何运行 Studio 的更多信息，请参阅[LangSmith docs](/langsmith/observability)中的以下指南：
+有关如何运行 Studio 的更多信息，请参阅 [LangSmith docs](/langsmith/observability) 中的以下指南：
 
 * [Run agent](/langsmith/use-studio#run-application)
 * [Manage assistants](/langsmith/use-studio#manage-assistants)
@@ -140,6 +140,6 @@ npx @langchain/langgraph-cli dev
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

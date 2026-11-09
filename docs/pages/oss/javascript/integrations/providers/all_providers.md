@@ -316,6 +316,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > In-memory database with vector search capabilities.
 
+> [card] [RushDBVectorStore](https://docs.rushdb.com/connect/langchain)
+>
+> RushDB vector store and hybrid (vector + BM25) retriever, plus a LangGraph store and checkpointer, for RushDB Cloud or a self-hosted engine.
+
 > [card] [SAP HANA Cloud Vector Engine](/oss/javascript/integrations/vectorstores/sap_hanavector)
 >
 > Vector store fully integrated into the SAP HANA Cloud database.
@@ -396,6 +400,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > DeFi safety tools for agents: transaction simulation, signature phishing checks, sanctions screening and token rug checks, paid per call over x402.
 
+> [card] [AgentReader](https://github.com/grokbot1233/agentreader/tree/master/packages/agentreader-langchain)
+>
+> AgentReader provides pay-per-call LangChain.js tools for UK/EU company due diligence, sanctions screening, and registry data over x402.
+
 > [card] [AgentSearch](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26)
 >
 > Web search tool for LangChain.js agents, free by default with no key. Pay-per-call Extract and Render (\$0.005, x402) for full pages and JS-rendered sites.
@@ -403,6 +411,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > [card] [agentsvc](https://agentsvc.io/docs/langchain)
 >
 > Pay-per-call web, data, crypto, memory, and inbox tools for agents, paid with a credit token or USDC via x402.
+
+> [card] [Agentum](https://github.com/Algiras/agentum-skills/tree/main/packages/agentum-langchain)
+>
+> Tools for company registry resolution, EU VAT, sanctions screening, vendor KYB, IBAN and wallet checks; free tier, then USDC per call via x402.
 
 > [card] [aiworker](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain)
 >
@@ -419,6 +431,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > [card] [Azure Dynamic Sessions](/oss/javascript/integrations/tools/azure_dynamic_sessions)
 >
 > Secure code execution in Azure Dynamic Sessions.
+
+> [card] [Channel3Toolkit](https://channel3.ai/docs/langchain)
+>
+> Product search across thousands of retailers, with each retailer's offer and live price.
 
 > [card] [ClawFetch](https://github.com/clawfetch/integrations#readme)
 >

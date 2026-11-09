@@ -58,6 +58,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Governed tool execution for LangChain agents: exposes a self-hosted Algenta decision engine as BaseTools with policy-gated execution.
 
+> [card] [AlionToolkit](https://github.com/alion-io/alion-sdk/tree/main/langchain#readme)
+>
+> Company, startup, investor, job posting and pay statistics tools backed by Alion's live graph of companies worldwide.
+
 > [card] [AlphaAI](https://alphai.io/developers)
 >
 > AI-scored financial news and SEC Form 4 insider events for agents and RAG.
@@ -374,6 +378,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > High-performance analytics and data processing.
 
+> [card] [BoscoToolkit](https://github.com/Bosco-Labs/bosco-labs-data/tree/main/langchain-bosco)
+>
+> Official-records tools: KYB counterparty checks, sanctions, company registers, SEC EDGAR and law, with source URLs.
+
 > [card] [BotsRatedPreflightTool](https://github.com/botsrated/botsrated/tree/main/integrations/langchain)
 >
 > Tools that check an x402 seller against BotsRated's latest unpaid probe before an agent pays, plus an optional paid check capped by a budget.
@@ -397,6 +405,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Brightdata](https://docs.brightdata.com/integrations/langchain)
 >
 > Web data platform and proxy services.
+
+> [card] [BriqSandbox](https://github.com/briq-cloud/langchain-briq#readme)
+>
+> Sandbox backend for Deep Agents: runs shell commands and file operations in an isolated briq sandbox.
 
 > [card] [Browser Use](/oss/python/integrations/providers/browser_use)
 >
@@ -437,6 +449,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [ChainAnalyzerToolkit](https://github.com/rascal-3/chainanalyzer-mcp/tree/main/packages/langchain-chainanalyzer)
 >
 > Blockchain AML screening tools: sanctions, known-hack exposure, stablecoin freezes, and risk scores across 12 chains (x402 or API key).
+
+> [card] [Channel3Toolkit](https://channel3.ai/docs/langchain)
+>
+> Product search across thousands of retailers, with each retailer's offer and live price.
 
 > [card] [Cheaper Inference](https://cheaperinference.com/docs)
 >
@@ -1838,6 +1854,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > In-memory data structure store and cache.
 
+> [card] [ReefAPIToolkit](https://reefapi.com/docs/langchain)
+>
+> One API key for 600+ site-specific live web-data APIs (Amazon, eBay, Zillow, Reddit, Google Maps, ...) that return JSON.
+
 > [card] [RelayShield](https://api.relayshield.net/developers)
 >
 > Identity and agentic-attack-surface threat intelligence.
@@ -1877,6 +1897,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Rostam](https://github.com/rostamlabs/rostam/tree/main/clients/langchain-rostam)
 >
 > Self-hosted vector database and key-value store in a single Go binary.
+
+> [card] [RushDBVectorStore](https://docs.rushdb.com/connect/langchain)
+>
+> RushDB vector store and hybrid (vector + BM25) retriever, plus a LangGraph store and checkpointer, for RushDB Cloud or a self-hosted engine.
 
 > [card] [RustChain](https://pypi.org/project/langchain-rustchain-tools/)
 >
@@ -2092,7 +2116,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > [card] [SpecStream](https://specstream.ai/docs/langchain)
 >
-> SpecStream finds lists of companies, places, filings, and other live web records from plain-language requests with source pages and code-set price caps.
+> Web search tool for the live web. Returns ranked results with page content and the source URL for each result.
 
 > [card] [SpiceDB](https://github.com/authzed/langchain-spicedb)
 >

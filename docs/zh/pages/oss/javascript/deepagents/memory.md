@@ -20,13 +20,13 @@
 
 ## 记忆是如何运作的1. **将代理指向内存文件。** 创建代理时将文件路径传递给`memory=`。您还可以通过 `skills=` 传递 [skills](/oss/javascript/deepagents/skills) 来获取程序内存（告诉代理“如何”执行任务的可重用指令）。 [backend](/oss/javascript/deepagents/backends) 控制文件的存储位置以及谁可以访问它们。
 2. **Agent读取内存。** Agent可以在启动时将内存文件加载到系统提示符中，或者在会话过程中按需读取它们。例如，[skills](/oss/javascript/deepagents/skills)使用按需加载：代理在启动时仅读取技能描述，然后仅在与任务匹配时读取完整的技能文件。这可以保持上下文精简，直到需要某种功能为止。
-3. **Agent更新内存（可选）。** 当Agent学习到新信息时，它可以使用其内置的`edit_file`工具来更新内存文件。更新可以在对话期间（默认）进行，也可以通过 [background consolidation](#background-consolidation) 在对话之间的后台进行。更改将保留并在下一次对话中可用。并非所有内存都是可写的：开发人员定义的 [skills](/oss/javascript/deepagents/skills) 和 [organization policies](#organization-level-memory) 通常是只读的。详情请参阅[read-only vs writable memory](#read-only-vs-writable-memory)。
+3. **Agent更新内存（可选）。** 当Agent学习到新的信息时，它可以使用其内置的`edit_file`工具来更新内存文件。更新可以在对话期间（默认）进行，也可以通过 [background consolidation](#background-consolidation) 在对话之间的后台进行。更改将保留并在下一次对话中可用。并非所有内存都是可写的：开发人员定义的 [skills](/oss/javascript/deepagents/skills) 和 [organization policies](#organization-level-memory) 通常是只读的。详情请参阅[read-only vs writable memory](#read-only-vs-writable-memory)。
 
 两种最常见的模式是[agent-scoped memory](#agent-scoped-memory)（所有用户共享）和[user-scoped memory](#user-scoped-memory)（每个用户隔离）。对于编码代理通过[⟦T17⟧](https://agents.md/)发现的生成的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 
 ## 作用域内存
 
-代理内存可以划分范围，以便使用代理的每个人都可以访问相同的内存文件，或者每个用户都可以单独使用内存文件。
+代理内存可以划分范围，以便使用代理的每个人都可以访问相同的内存文件，或者每个用户都可以使用单独的内存文件。
 
 ### 代理范围内存
 
@@ -56,11 +56,11 @@ const agent = createDeepAgent({
     },
   ),
 });
-```
-
-> [手风琴] 完整示例：种子内存和调用
+```> [手风琴] 完整示例：种子内存和调用
 >
 > 用初始记忆填充存储，然后跨两个线程调用代理以查看它记住并更新它学到的内容。
+>
+> `CompositeBackend` 在转发文件操作之前删除每个路由前缀。种子后端相关密钥，例如 `/AGENTS.md` 和 `/langgraph-docs/SKILL.md`，而不是面向代理的 `/memories/` 或 `/skills/` 路径。
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend, createFileData } from "deepagents";
@@ -72,7 +72,7 @@ const agent = createDeepAgent({
 > // Seed the memory file
 > await store.put(
 >   ["my-agent"],
->   "/memories/AGENTS.md",
+>   "/AGENTS.md",
 >   createFileData(`## Response style
 > - Keep responses concise
 > - Use code examples where possible
@@ -82,7 +82,7 @@ const agent = createDeepAgent({
 > // Seed a skill
 > await store.put(
 >   ["my-agent"],
->   "/skills/langgraph-docs/SKILL.md",
+>   "/langgraph-docs/SKILL.md",
 >   createFileData(`---
 > name: langgraph-docs
 > description: Fetch relevant LangGraph documentation to provide accurate guidance.
@@ -124,7 +124,9 @@ const agent = createDeepAgent({
 > }, config2);
 > ```
 
-### 用户范围内存为每个用户提供自己的内存文件。代理会记住每个用户的偏好、上下文和历史记录，而核心代理指令保持不变。如果存储在用户范围的后端中，用户还可以拥有每个用户的[skills](/oss/javascript/deepagents/skills)。
+### 用户范围内存
+
+为每个用户提供自己的内存文件。代理会记住每个用户的偏好、上下文和历史记录，而核心代理指令保持不变。如果存储在用户范围的后端中，用户还可以拥有每个用户的[skills](/oss/javascript/deepagents/skills)。
 
 命名空间使用`(user_id,)`，因此每个用户都会获得内存文件的独立副本。用户 A 的偏好永远不会泄漏到用户 B 的对话中。
 
@@ -162,7 +164,7 @@ const agent = createDeepAgent({
 > // Seed preferences for two users
 > await store.put(
 >   ["user-alice"],
->   "/memories/preferences.md",
+>   "/preferences.md",
 >   createFileData(`## Preferences
 > - Likes concise bullet points
 > - Prefers Python examples
@@ -170,7 +172,7 @@ const agent = createDeepAgent({
 > );
 > await store.put(
 >   ["user-bob"],
->   "/memories/preferences.md",
+>   "/preferences.md",
 >   createFileData(`## Preferences
 > - Likes detailed explanations
 > - Prefers TypeScript examples
@@ -180,7 +182,7 @@ const agent = createDeepAgent({
 > // Seed a skill for Alice
 > await store.put(
 >   ["user-alice"],
->   "/skills/langgraph-docs/SKILL.md",
+>   "/langgraph-docs/SKILL.md",
 >   createFileData(`---
 > name: langgraph-docs
 > description: Fetch relevant LangGraph documentation to provide accurate guidance.
@@ -231,7 +233,7 @@ const agent = createDeepAgent({
 
 ### 情景记忆
 
-情景记忆存储过去经历的记录：发生了什么、发生的顺序以及结果是什么。与语义记忆（存储在`AGENTS.md`等文件中的事实和偏好）不同，情景记忆保留了完整的对话上下文，因此智能体可以回忆“如何”解决问题，而不仅仅是“从中学到了什么”。要为编码代理生成和维护存储库级 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。Deep Agents 已经使用了[checkpointers](/oss/javascript/langgraph/checkpointers#checkpoints)，这是支持情景记忆的机制：每个对话都作为检查点线程保存。
+情景记忆存储过去经历的记录：发生了什么、发生的顺序以及结果是什么。与语义记忆（存储在`AGENTS.md`等文件中的事实和偏好）不同，情景记忆保留了完整的对话上下文，因此代理可以回忆“如何”解决问题，而不仅仅是从中“学到什么”。要为编码代理生成和维护存储库级 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。Deep Agents已经使用了[checkpointers](/oss/javascript/langgraph/checkpointers#checkpoints)，这是支持情景记忆的机制：每个对话都作为检查点线程保存。
 
 要使过去的对话可搜索，请将线程搜索包装在工具中。 `user_id`是从运行时上下文中提取的，而不是作为参数传递：
 
@@ -335,7 +337,7 @@ await client.store.putItem(
 | **热路径**（对话期间）|记忆立即可用，对用户透明 |增加延迟，代理必须执行多任务 |
 | **背景**（对话之间）|无面向用户的延迟，可以跨多个对话进行综合 |记忆在下次对话之前不可用，需要第二个特工 |
 
-对于大多数应用程序，热路径就足够了。当您需要减少多个对话的延迟或提高内存质量时，请添加后台整合。推荐的模式是在主代理旁边部署一个**整合代理** - 一个深度代理，读取最近的对话历史记录，提取关键事实，并将它们合并到内存存储中 - 并在 [cron schedule](#cron) 上触发它。选择反映用户实际与代理交互频率的节奏：每日流量稳定的聊天产品可能每隔几个小时就会整合一次，而每周使用几次的工具只需要每晚或每周运行一次。比用户交谈更频繁的整合只会在无操作运行时烧毁代币。
+对于大多数应用程序，热路径就足够了。当您需要减少多个对话的延迟或提高内存质量时，请添加后台整合。推荐的模式是在主代理旁边部署一个**整合代理**——一个深度代理，读取最近的对话历史记录，提取关键事实，并将它们合并到内存存储中——并在[cron schedule](#cron)上触发它。选择反映用户实际与代理交互频率的节奏：每日流量稳定的聊天产品可能每隔几个小时就会整合一次，而每周使用几次的工具只需要每晚或每周运行一次。比用户交谈更频繁的整合只会在无操作运行时烧毁代币。
 
 #### 集运代理
 
@@ -442,7 +444,7 @@ const cronJob = await client.crons.create(
 
 默认情况下，代理可以读取和写入内存文件。对于组织策略或合规性规则等共享状态，您可能希望将内存设为**只读**，以便代理可以引用它但不能修改它。这可以防止通过共享内存进行提示注入，并确保只有您的应用程序代码控制文件中的内容。|许可 |使用案例|它是如何运作的 |
 | - | - | - |
-| **读写**（默认）|用户喜好，座席自我提升，学到了[skills](/oss/javascript/deepagents/skills) |代理通过`edit_file`工具更新文件|
+| **读写**（默认）|用户喜好，座席自我提升，学到了[skills](/oss/javascript/deepagents/skills) |代理通过`edit_file`工具更新文件 |
 | **只读** |组织政策、合规规则、共享知识库、开发人员定义[skills](/oss/javascript/deepagents/skills) |通过应用程序代码或[Store API](/langsmith/custom-store)填充。使用 [permissions](/oss/javascript/deepagents/permissions) 拒绝写入特定路径，或使用 [policy hooks](/oss/javascript/deepagents/backends#add-policy-hooks) 自定义验证逻辑。 |
 
 **安全注意事项：** 如果一个用户可以写入另一用户读取的内存，则恶意用户可以将指令注入共享状态。为了缓解这种情况：
@@ -479,7 +481,7 @@ new StoreBackend({
 ## 另请参阅
 
 * [OpenWiki](/oss/openwiki/overview)：生成并维护编码代理通过`AGENTS.md`找到的存储库wiki
-* [Backends](/oss/javascript/deepagents/backends): 选择内存文件的存储位置
+* [Backends](/oss/javascript/deepagents/backends)：选择内存文件的存储位置
 * [Context engineering](/oss/javascript/deepagents/context-engineering)：短期记忆、卸载和总结
 * [Skills](/oss/javascript/deepagents/skills)：按需程序内存
 

@@ -31,7 +31,7 @@ npx @langchain/langgraph-cli
 If you already have a LangChain agent, you can use it directly. This example uses a simple email agent:
 
 ```typescript title="agent.ts" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent } from "@langchain/agents";
+import { createAgent } from "langchain";
 
 function sendEmail(to: string, subject: string, body: string): string {
   const email = {

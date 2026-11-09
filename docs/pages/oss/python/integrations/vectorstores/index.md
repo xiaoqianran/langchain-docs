@@ -529,17 +529,15 @@ vector_store.similarity_search(
 > [accordion] Azure Cosmos DB Mongo vCore
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> pip install -qU langchain-azure-ai pymongo
+> pip install -qU langchain-azure-cosmosdb pymongo
 > ```
 >
 > ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> uv add pymongo
+> uv add langchain-azure-cosmosdb pymongo
 > ```
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> from langchain_azure_ai.vectorstores.azure_cosmos_db_mongo_vcore import (
->     AzureCosmosDBMongoVCoreVectorSearch,
-> )
+> from langchain_azure_cosmosdb import AzureCosmosDBMongoVCoreVectorSearch
 >
 > vectorstore = AzureCosmosDBMongoVCoreVectorSearch.from_documents(
 >     docs,
@@ -1014,6 +1012,7 @@ vector_store.similarity_search(
 | [`LindormVectorStore`](https://help.aliyun.com/en/lindorm/user-guide/enable-vector-engine) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lindorm-integration/month)](https://pypi.org/project/langchain-lindorm-integration/) |
 | [`ChDBVectorStore`](https://github.com/chdb-io/langchain-chdb) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-chdb/month)](https://pypi.org/project/langchain-chdb/) |
 | [`YantrikDBVectorStore`](https://github.com/yantrikos/langchain-yantrikdb) | ✅ | | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-yantrikdb/month)](https://pypi.org/project/langchain-yantrikdb/) |
+| [`RushDBVectorStore`](https://docs.rushdb.com/connect/langchain) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-rushdb/month)](https://pypi.org/project/langchain-rushdb/) |
 | [`DXMTVectorDB`](https://github.com/dxmt/dxmt/tree/main/vectordb/clients/langchain-dxmt) | ✅ | ✅ | ✅ | ✅ | ✅ | | | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dxmt/month)](https://pypi.org/project/langchain-dxmt/) |
 | [`FAISS`](https://github.com/facebookresearch/faiss) | | | | | | | | | N/A |
 | [`InMemoryVectorStore`](/oss/python/integrations/vectorstores/in_memory) | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ | N/A |

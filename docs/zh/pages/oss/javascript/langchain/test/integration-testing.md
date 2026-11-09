@@ -140,7 +140,7 @@ TypeScript 类型会自动包含在内，因此自动完成不需要额外的配
 
 ### 检查消息类型
 
-每个消息类别都有一个相应的匹配器：`toBeHumanMessage()`、`toBeAIMessage()`、`toBeSystemMessage()` 和 `toBeToolMessage()`。不带参数调用仅检查类型，或传递字符串也匹配内容：
+每个消息类别都有一个相应的匹配器：`toBeHumanMessage()`、`toBeAIMessage()`、`toBeSystemMessage()` 和 `toBeToolMessage()`。不带参数调用仅检查类型，或传递字符串以匹配内容：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const response = await agent.invoke({
@@ -230,15 +230,20 @@ expect(result).toHaveStructuredResponse({ name: "Alice", age: 30 });
 ## 降低成本和延迟
 
 调用 LLM API 的集成测试会产生实际成本。一些做法有助于保持测试套件快速且经济实惠：* **使用较小的模型**：`gemini-3.1-flash-lite`或等效模型，用于仅需要验证工具调用和响应结构的测试。
-* **设置`maxTokens`**：限制响应长度以避免长时间、昂贵的完成。
+* **限制输出令牌**：限制聊天模型的响应长度，以避免长时间、昂贵的完成。
 * **限制测试范围**：每个测试测试一种行为。当单轮测试就足够时，避免链接许多 LLM 调用的端到端场景。
 * **选择性运行**：使用[above](#separate-unit-and-integration-tests)的测试分离仅在 CI 中或部署之前运行集成测试，而不是在每个文件保存时运行。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, initChatModel } from "langchain";
+
+const model = await initChatModel("google-genai:gemini-3.1-flash-lite", {
+  maxOutputTokens: 256,
+});
+
 const agent = createAgent({
-  model: "gemini-3.1-flash-lite",
+  model,
   tools: [getWeather],
-  modelArgs: { maxTokens: 256 },
 });
 ```
 

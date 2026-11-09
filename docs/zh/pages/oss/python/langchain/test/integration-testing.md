@@ -6,7 +6,7 @@
 
 通过组织测试、管理密钥、处理不稳定和控制成本，使用真正的 LLM API 来测试代理。
 
-集成测试验证您的代理是否可以与模型 API 和外部服务正常工作。与使用伪造和模拟的[unit tests](/oss/python/langchain/test/unit-testing)不同，集成测试会进行实际的网络调用，以确认组件可以协同工作、凭证有效并且延迟是可以接受的。
+集成测试验证您的代理是否可以与模型 API 和外部服务正常工作。与使用伪造和模拟的[unit tests](/oss/python/langchain/test/unit-testing)不同，集成测试进行实际的网络调用，以确认组件可以协同工作、凭证有效并且延迟是可以接受的。
 
 由于 LLM 响应是不确定的，因此集成测试需要与传统软件测试不同的策略。本指南介绍了如何为代理组织、编写和运行集成测试。对于贡献LangChain本身的一般测试基础设施，请参阅[Contributing to code](/oss/python/contributing/code#running-tests)。
 
@@ -117,25 +117,24 @@ def test_agent_calls_weather_tool():
 ## 降低成本和延迟
 
 调用 LLM API 的集成测试会产生实际成本。一些做法有助于保持测试套件快速且经济实惠：* **使用较小的模型**：`gemini-3.1-flash-lite`或等效模型，用于仅需要验证工具调用和响应结构的测试。
-* **设置`maxTokens`**：限制响应长度以避免长时间、昂贵的完成。
+* **限制输出令牌**：限制聊天模型的响应长度，以避免长时间、昂贵的完成。
 * **限制测试范围**：每个测试测试一种行为。当单轮测试就足够时，避免链接许多 LLM 调用的端到端场景。
-* **选择性运行**：使用[above](#separate-unit-and-integration-tests)的测试分离仅在 CI 中或部署之前运行集成测试，而不是在每个文件保存时运行。
+* **有选择地运行**：使用[above](#separate-unit-and-integration-tests)的测试分离仅在 CI 中或部署之前运行集成测试，而不是在每个文件保存时运行。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
+from langchain.chat_models import init_chat_model
 
-agent = create_agent(
-    "gemini-3.1-flash-lite",
-    tools=[get_weather],
-    model_kwargs={"max_tokens": 256},
-)
+model = init_chat_model("google_genai:gemini-3.1-flash-lite", max_tokens=256)
+
+agent = create_agent(model, tools=[get_weather])
 ```
 
 ## 记录和重放 HTTP 调用
 
 对于在 CI 中频繁运行的测试，您可以在第一次运行时记录 HTTP 交互，并在后续运行时重播它们，而无需进行真正的 API 调用。这消除了初始录制后的成本和延迟。
 
-[⟦T22⟧](https://pypi.org/project/vcrpy/1.5.2/) 将 HTTP 请求/响应对记录到 YAML“盒式”文件中。 [⟦T23⟧](https://pypi.org/project/pytest-recording/) 插件将其与 pytest 集成。
+[⟦T21⟧](https://pypi.org/project/vcrpy/1.5.2/) 将 HTTP 请求/响应对记录到 YAML“盒式”文件中。 [⟦T22⟧](https://pypi.org/project/pytest-recording/) 插件将其与 pytest 集成。
 
 设置您的 `conftest.py` 以过滤磁带中的敏感信息：
 

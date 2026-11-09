@@ -527,17 +527,15 @@ vector_store.similarity_search(
 > [手风琴] Azure Cosmos DB Mongo vCore
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> pip install -qU langchain-azure-ai pymongo
+> pip install -qU langchain-azure-cosmosdb pymongo
 > ```
 >
 > ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> uv add pymongo
+> uv add langchain-azure-cosmosdb pymongo
 > ```
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> from langchain_azure_ai.vectorstores.azure_cosmos_db_mongo_vcore import (
->     AzureCosmosDBMongoVCoreVectorSearch,
-> )
+> from langchain_azure_cosmosdb import AzureCosmosDBMongoVCoreVectorSearch
 >
 > vectorstore = AzureCosmosDBMongoVCoreVectorSearch.from_documents(
 >     docs,
@@ -906,106 +904,107 @@ vector_store.similarity_search(
 >     text_key="text",
 >     embedding=embeddings,
 > )
-> ```|矢量商店 |按 ID 删除 |过滤|按矢量搜索|用分数搜索 |异步|通过标准测试 |多租户 |添加文档中的 ID |下载 |
-| :- | :- | :- | :- | :- | :- | :- | :- | :- | :- |
-| [⟦T117⟧](/oss/python/integrations/vectorstores/valkey) | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | [  ⟦T215⟧](https://pypi.org/project/langchain-aws/) |
-| [⟦T118⟧](/oss/python/integrations/vectorstores/mongodb_atlas) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T216⟧](https://pypi.org/project/langchain-mongodb/) |
-| [⟦T119⟧](/oss/python/integrations/vectorstores/qdrant) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | [  ⟦T217⟧](https://pypi.org/project/langchain-qdrant/) |
-| [⟦T120⟧](/oss/python/integrations/vectorstores/azure_cosmos_db_mongo_vcore) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T218⟧](https://pypi.org/project/langchain-azure-ai/) |
-| [⟦T121⟧](/oss/python/integrations/vectorstores/databricks_vector_search) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T219⟧](https://pypi.org/project/databricks-langchain/) |
-| [⟦T122⟧](/oss/python/integrations/vectorstores/pinecone) | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ | ✅ | [  ⟦T220⟧](https://pypi.org/project/langchain-pinecone/) |
-| [⟦T123⟧](/oss/python/integrations/vectorstores/milvus) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T221⟧](https://pypi.org/project/langchain-milvus/) |
-| [⟦T124⟧](/oss/python/integrations/vectorstores/weaviate) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | [  ⟦T222⟧](https://pypi.org/project/langchain-weaviate/) |
-| [⟦T125⟧](/oss/python/integrations/vectorstores/oracle) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T223⟧](https://pypi.org/project/langchain-oracledb/) |
-| [⟦T126⟧](/oss/python/integrations/vectorstores/astradb) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T224⟧](https://pypi.org/project/langchain-astradb/) |
-| [⟦T127⟧](/oss/python/integrations/vectorstores/elasticsearch) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T225⟧](https://pypi.org/project/langchain-elasticsearch/) |
-| [⟦T128⟧](/oss/python/integrations/vectorstores/redis) | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | [  ⟦T226⟧](https://pypi.org/project/langchain-redis/) |
-| [⟦T129⟧](/oss/python/integrations/vectorstores/google_alloydb) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T227⟧](https://pypi.org/project/langchain-google-alloydb-pg/) |
-| [⟦T130⟧](/oss/python/integrations/vectorstores/azure_cosmos_db_no_sql) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T228⟧](https://pypi.org/project/langchain-azure-cosmosdb/) |
+> ```|矢量商店 |按 ID 删除 |过滤 |按矢量搜索 |用分数搜索 |异步|通过标准测试 |多租户 |添加文档中的 ID |下载 |
+| :-| :-| :-| :-| :-| :-| :-| :-| :-| :-|
+| [⟦T117⟧](/oss/python/integrations/vectorstores/valkey) | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | [  ⟦T216⟧](https://pypi.org/project/langchain-aws/) |
+| [⟦T118⟧](/oss/python/integrations/vectorstores/mongodb_atlas) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T217⟧](https://pypi.org/project/langchain-mongodb/) |
+| [⟦T119⟧](/oss/python/integrations/vectorstores/qdrant) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | [  ⟦T218⟧](https://pypi.org/project/langchain-qdrant/) |
+| [⟦T120⟧](/oss/python/integrations/vectorstores/azure_cosmos_db_mongo_vcore) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T219⟧](https://pypi.org/project/langchain-azure-ai/) |
+| [⟦T121⟧](/oss/python/integrations/vectorstores/databricks_vector_search) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T220⟧](https://pypi.org/project/databricks-langchain/) |
+| [⟦T122⟧](/oss/python/integrations/vectorstores/pinecone) | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ | ✅ | [  ⟦T221⟧](https://pypi.org/project/langchain-pinecone/) |
+| [⟦T123⟧](/oss/python/integrations/vectorstores/milvus) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T222⟧](https://pypi.org/project/langchain-milvus/) |
+| [⟦T124⟧](/oss/python/integrations/vectorstores/weaviate) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | [  ⟦T223⟧](https://pypi.org/project/langchain-weaviate/) |
+| [⟦T125⟧](/oss/python/integrations/vectorstores/oracle) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T224⟧](https://pypi.org/project/langchain-oracledb/) |
+| [⟦T126⟧](/oss/python/integrations/vectorstores/astradb) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T225⟧](https://pypi.org/project/langchain-astradb/) |
+| [⟦T127⟧](/oss/python/integrations/vectorstores/elasticsearch) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T226⟧](https://pypi.org/project/langchain-elasticsearch/) |
+| [⟦T128⟧](/oss/python/integrations/vectorstores/redis) | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | [  ⟦T227⟧](https://pypi.org/project/langchain-redis/) |
+| [⟦T129⟧](/oss/python/integrations/vectorstores/google_alloydb) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T228⟧](https://pypi.org/project/langchain-google-alloydb-pg/) |
+| [⟦T130⟧](/oss/python/integrations/vectorstores/azure_cosmos_db_no_sql) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T229⟧](https://pypi.org/project/langchain-azure-cosmosdb/) |
 | [⟦T131⟧](/oss/python/integrations/vectorstores/in_memory) | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ |不适用 |
 
-## 所有向量存储|矢量商店 |按 ID 删除 |过滤|按矢量搜索|用分数搜索 |异步|通过标准测试 |多租户 |添加文档中的 ID |下载 |
-| :- | :- | :- | :- | :- | :- | :- | :- | :- | :- |
-| [⟦T132⟧](/oss/python/integrations/vectorstores/google_vertex_ai_feature_store) | | | | | | | | | [  ⟦T229⟧](https://pypi.org/project/langchain-google-vertexai/) |
-| [⟦T133⟧](/oss/python/integrations/vectorstores/google_bigquery_vector_search) | | | | | | | | | [  ⟦T230⟧](https://pypi.org/project/langchain-google-vertexai/) |
-| [⟦T134⟧](/oss/python/integrations/vectorstores/google_vertex_ai_vector_search) | | | | | | | | | [  ⟦T231⟧](https://pypi.org/project/langchain-google-vertexai/) |
-| [⟦T135⟧](/oss/python/integrations/vectorstores/memorydb) | | | | | | | | | [  ⟦T232⟧](https://pypi.org/project/langchain-aws/) |
-| [⟦T136⟧](/oss/python/integrations/vectorstores/valkey) | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | [  ⟦T233⟧](https://pypi.org/project/langchain-aws/) |
-| [⟦T137⟧](/oss/python/integrations/vectorstores/pgvector) | | | | | | | | | [  ⟦T234⟧](https://pypi.org/project/langchain-postgres/) |
-| [⟦T138⟧](/oss/python/integrations/vectorstores/pgvectorstore) | ✅ | ✅ | ✅ | ✅ | ✅ | | | ✅ | [  ⟦T235⟧](https://pypi.org/project/langchain-postgres/) |
-| [⟦T139⟧](/oss/python/integrations/vectorstores/mongodb_atlas) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T236⟧](https://pypi.org/project/langchain-mongodb/) |
-| [⟦T140⟧](/oss/python/integrations/vectorstores/chroma) | | | | | | | | | [  ⟦T237⟧](https://pypi.org/project/langchain-chroma/) |
-| [⟦T141⟧](/oss/python/integrations/vectorstores/qdrant) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | [  ⟦T238⟧](https://pypi.org/project/langchain-qdrant/) |
-| [⟦T142⟧](/oss/python/integrations/vectorstores/azure_cosmos_db_mongo_vcore) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T239⟧](https://pypi.org/project/langchain-azure-ai/) |
-| [⟦T143⟧](/oss/python/integrations/vectorstores/databricks_vector_search) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T240⟧](https://pypi.org/project/databricks-langchain/) |
-| [⟦T144⟧](/oss/python/integrations/vectorstores/pinecone_sparse) | | | | | | | | | [  ⟦T241⟧](https://pypi.org/project/langchain-pinecone/) |
-| [⟦T145⟧](/oss/python/integrations/vectorstores/pinecone) | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ | ✅ | [  ⟦T242⟧](https://pypi.org/project/langchain-pinecone/) |
-| [⟦T146⟧](/oss/python/integrations/vectorstores/milvus) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T243⟧](https://pypi.org/project/langchain-milvus/) |
-| [⟦T147⟧](/oss/python/integrations/vectorstores/weaviate) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | [  ⟦T244⟧](https://pypi.org/project/langchain-weaviate/) |
-| [⟦T148⟧](/oss/python/integrations/vectorstores/oracle) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T245⟧](https://pypi.org/project/langchain-oracledb/) |
-| [⟦T149⟧](/oss/python/integrations/vectorstores/astradb) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T246⟧](https://pypi.org/project/langchain-astradb/) |
-| [⟦T150⟧](/oss/python/integrations/vectorstores/neo4jvector) | | | | | | | | | [  ⟦T247⟧](https://pypi.org/project/langchain-neo4j/) |
-| [⟦T151⟧](/oss/python/integrations/vectorstores/elasticsearch) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T248⟧](https://pypi.org/project/langchain-elasticsearch/) |
-| [⟦T152⟧](/oss/python/integrations/vectorstores/redis) | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | [  ⟦T249⟧](https://pypi.org/project/langchain-redis/) || [⟦T153⟧](/oss/python/integrations/vectorstores/google_alloydb) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T250⟧](https://pypi.org/project/langchain-google-alloydb-pg/) |
-| [⟦T154⟧](/oss/python/integrations/vectorstores/azure_cosmos_db_no_sql) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T251⟧](https://pypi.org/project/langchain-azure-cosmosdb/) |
-| [⟦T155⟧](/oss/python/integrations/vectorstores/google_cloud_sql_pg) | | | | | | | | | [  ⟦T252⟧](https://pypi.org/project/langchain-google-cloud-sql-pg/) |
-| [⟦T156⟧](/oss/python/integrations/vectorstores/sap_hanavector) | | | | | | | | | [  ⟦T253⟧](https://pypi.org/project/langchain-hana/) |
-| [⟦T157⟧](/oss/python/integrations/vectorstores/google_firestore) | | | | | | | | | [  ⟦T254⟧](https://pypi.org/project/langchain-google-firestore/) |
-| [⟦T158⟧](https://docs.getsemantica.ai/integrations/langchain) | ❌ | | | | | | | | [  ⟦T255⟧](https://pypi.org/project/semantica/) |
-| [⟦T159⟧](/oss/python/integrations/vectorstores/google_spanner) | | | | | | | | | [  ⟦T256⟧](https://pypi.org/project/langchain-google-spanner/)​​ |
-| [⟦T160⟧](https://github.com/cockroachdb/langchain-cockroachdb/) | | | | | | | | | [  ⟦T257⟧](https://pypi.org/project/langchain-cockroachdb/) |
-| [⟦T161⟧](https://pypi.org/project/langchain-oceanbase/) | | | | | | | | | [  ⟦T258⟧](https://pypi.org/project/langchain-oceanbase/) |
-| [⟦T162⟧](https://github.com/langchain-ai/langchain-ibm/tree/main/libs/langchain-db2) | | | | | | | | | [  ⟦T259⟧](https://pypi.org/project/langchain-db2/) |
-| [⟦T163⟧](https://infino.ai/docs) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T260⟧](https://pypi.org/project/langchain-infino/) |
-| [⟦T164⟧](https://opensolr.com/langchain) | | | | | | | | | [  ⟦T261⟧](https://pypi.org/project/langchain-opensolr/) |
-| [⟦T165⟧](https://github.com/Teradata/langchain-teradata) | | | | | | | | | [  ⟦T262⟧](https://pypi.org/project/langchain-teradata/) |
-| [⟦T166⟧](https://docs.cyborg.co/versions/latest/integrations/langchain/introduction) | ✅ | ✅ | ✅ | ✅ | ✅ | | ✅ | | [  ⟦T263⟧](https://pypi.org/project/langchain-cyborgdb/) |
-| [⟦T167⟧](https://docs.singlestore.com/cloud/developer-resources/functional-extensions/working-with-vector-data/) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | [  ⟦T264⟧](https://pypi.org/project/langchain-singlestore/) |
-| [⟦T168⟧](https://ydb.tech/) | | | | | | | | | [  ⟦T265⟧](https://pypi.org/project/langchain-ydb/) |
-| [⟦T169⟧](https://docs.couchbase.com/server/current/vector-search/vector-search.html) | | | | | | | | | [  ⟦T266⟧](https://pypi.org/project/langchain-couchbase/) |
-| [⟦T170⟧](/oss/python/integrations/vectorstores/azure_db_for_postgresql) | | | | | | | | | [  ⟦T267⟧](https://pypi.org/project/langchain-azure-postgresql/) |
-| [⟦T171⟧](https://github.com/IntelLabs/vdms) | | | | | | | | | [  ⟦T268⟧](https://pypi.org/project/langchain-vdms/) |
-| [⟦T172⟧](https://learn.microsoft.com/en-us/azure/azure-sql/database/ai-artificial-intelligence-intelligent-applications?view=azuresql) | | | | | | | | | [  ⟦T269⟧](https://pypi.org/project/langchain-sqlserver/) |
-| [⟦T173⟧](https://docs.falkordb.com/genai-tools/langchain.html) | | ✅ | ✅ | | | | | | [  ⟦T270⟧](https://pypi.org/project/langchain-falkordb/) |
-| [⟦T174⟧](https://github.com/vast-data/vast-vector-store) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T271⟧](https://pypi.org/project/langchain-vastdb/) |
-| [⟦T175⟧](https://mariadb.com/docs/connectors/other/langchain-mariadb/api-reference) | | | | | | | | | [  ⟦T272⟧](https://pypi.org/project/langchain-mariadb/) |
-| [⟦T176⟧](https://github.com/sangaraju1988/amu-pgvector#readme) | ✅ | | | | | | | | [  ⟦T273⟧](https://pypi.org/project/langchain-amu/) |
-| [⟦T177⟧](https://mixpeek.com/docs/agent-integrations/langchain) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T274⟧](https://pypi.org/project/langchain-mixpeek/) |
-| [⟦T178⟧](https://surrealdb.com/docs/build/deployment/surrealdb-cloud/getting-started) | | | | | | | | | [  ⟦T275⟧](https://pypi.org/project/langchain-surrealdb/) |
-| [⟦T179⟧](https://github.com/polardb/langchain-polardbx) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T276⟧](https://pypi.org/project/langchain-polardbx/) |
-| [⟦T180⟧](https://github.com/infinispan/langchain-infinispan/blob/main/libs/infinispan/README.md) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | [  ⟦T277⟧](https://pypi.org/project/langchain-infinispan/) |
-| [⟦T181⟧](https://cloud.google.com/bigtable) | | | | | | | | | [  ⟦T278⟧](https://pypi.org/project/langchain-google-bigtable/) || [⟦T182⟧](https://github.com/apoorva-01/langchain-shannonbase) | | | | | | | | | [  ⟦T279⟧](https://pypi.org/project/langchain-shannonbase/) |
-| [⟦T183⟧](https://github.com/mpb159753/langchain-opengauss) | | | | | | | | | [  ⟦T280⟧](https://pypi.org/project/langchain-opengauss/) |
-| [⟦T184⟧](/oss/python/integrations/vectorstores/google_memorystore_redis) | | | | | | | | | [  ⟦T281⟧](https://pypi.org/project/langchain-google-memorystore-redis/) |
-| [⟦T185⟧](https://mchl-labs.github.io/chronovec/integrations/langchain) | | | | | | | | | [  ⟦T282⟧](https://pypi.org/project/chronovec/) |
-| [⟦T186⟧](/oss/python/integrations/vectorstores/turbopuffer) | | | | | | | | | [  ⟦T283⟧](https://pypi.org/project/langchain-turbopuffer/) |
-| [⟦T187⟧](https://github.com/typesense/langchain-typesense#readme) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T284⟧](https://pypi.org/project/langchain-typesense/) |
-| [⟦T188⟧](https://docs.lambdadb.ai/guides/get-started/quickstart) | | | | | | | | | [  ⟦T285⟧](https://pypi.org/project/langchain-lambdadb/) |
-| [⟦T189⟧](https://docs.zeusdb.com/en/latest/) | | | | | | | | | [  ⟦T286⟧](https://pypi.org/project/langchain-zeusdb/) |
-| [⟦T190⟧](https://docs.pixeltable.com/overview/pixeltable) | | | | | | | | | [  ⟦T287⟧](https://pypi.org/project/langchain-pixeltable/) |
-| [⟦T191⟧](https://github.com/geldata/langchain-gel) | | | | | | | | | [  ⟦T288⟧](https://pypi.org/project/langchain-gel/) |
-| [⟦T192⟧](https://www.vectorpanda.com/docs/tutorials/langchain) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T289⟧](https://pypi.org/project/langchain-vectorpanda/) |
-| [⟦T193⟧](/oss/python/integrations/vectorstores/google_cloud_sql_mysql) | | | | | | | | | [  ⟦T290⟧](https://pypi.org/project/langchain-google-cloud-sql-mysql/) |
-| [⟦T194⟧](https://github.com/kineticadb/langchain-kinetica) | | | | | | | | | [  ⟦T291⟧](https://pypi.org/project/langchain-kinetica/) |
-| [⟦T195⟧](https://github.com/moorcheh-ai/langchain-moorcheh) | | | | | | | | | [  ⟦T292⟧](https://pypi.org/project/langchain-moorcheh/) |
-| [⟦T196⟧](https://github.com/polardb/langchain-polardb-pg) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T293⟧](https://pypi.org/project/langchain-polardb-pg/) |
-| [⟦T197⟧](https://docs.vectara.com/) | | | | | | | | | [  ⟦T294⟧](https://pypi.org/project/langchain-vectara/) |
-| [⟦T198⟧](https://github.com/houyidb-community/houyidb/blob/main/sdk/python/langchain-houyidb/README.en.md) | ✅ | ✅ | | | | | | | [  ⟦T295⟧](https://pypi.org/project/langchain-houyidb/) |
-| [⟦T199⟧](https://docs.vectoraidb.actian.com) | ✅ | ✅ | ✅ | ✅ | ✅ | | | ✅ | [  ⟦T296⟧](https://pypi.org/project/langchain-actian-vectorai/) |
-| [⟦T200⟧](https://github.com/Polign/polign/tree/main/python/langchain-polign) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T297⟧](https://pypi.org/project/langchain-polign/) |
-| [⟦T201⟧](https://docs.firebolt.io/guides/integrations/langchain) | | | | | | | | | [  ⟦T298⟧](https://pypi.org/project/langchain-firebolt/) |
-| [⟦T202⟧](https://serenedb.com/docs/clients/langchain-serenedb) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T299⟧](https://pypi.org/project/langchain-serenedb/) |
-| [⟦T203⟧](https://github.com/meetdewey/langchain-dewey) | | | | | | | | | [  ⟦T300⟧](https://pypi.org/project/langchain-dewey/) |
-| [⟦T204⟧](https://docs.deeplake.ai/) | | | | | | | | | [  ⟦T301⟧](https://pypi.org/project/langchain-deeplake/) |
-| [⟦T205⟧](https://docs.volcengine.com/docs/6357?lang=en) | | | | | | | | | [  ⟦T302⟧](https://pypi.org/project/langchain-volcengine-mysql/) |
-| [⟦T206⟧](https://docs.volcengine.com/docs/6313?lang=en) | | | | | | | | | [  ⟦T303⟧](https://pypi.org/project/langchain-volcengine-mysql/) |
-| [⟦T207⟧](https://github.com/rostamlabs/rostam/tree/main/clients/langchain-rostam) | | | | | | | | | [  ⟦T304⟧](https://pypi.org/project/langchain-rostam/) |
-| [⟦T208⟧](https://github.com/wangkuahai/langchain-alibabacloud-mysql) | | | | | | | | | [  ⟦T305⟧](https://pypi.org/project/langchain-alibabacloud-mysql/) |
-| [⟦T209⟧](https://help.aliyun.com/en/lindorm/user-guide/enable-vector-engine) | | | | | | | | | [  ⟦T306⟧](https://pypi.org/project/langchain-lindorm-integration/) |
-| [⟦T210⟧](https://github.com/chdb-io/langchain-chdb) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T307⟧](https://pypi.org/project/langchain-chdb/) || [⟦T211⟧](https://github.com/yantrikos/langchain-yantrikdb) | ✅ | | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T308⟧](https://pypi.org/project/langchain-yantrikdb/) |
-| [⟦T212⟧](https://github.com/dxmt/dxmt/tree/main/vectordb/clients/langchain-dxmt) | ✅ | ✅ | ✅ | ✅ | ✅ | | | ✅ | [  ⟦T309⟧](https://pypi.org/project/langchain-dxmt/) |
-| [⟦T213⟧](https://github.com/facebookresearch/faiss) | | | | | | | | |不适用 |
-| [⟦T214⟧](/oss/python/integrations/vectorstores/in_memory) | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ |不适用 |
+## 所有向量存储|矢量商店 |按 ID 删除 |过滤 |按矢量搜索 |用分数搜索 |异步|通过标准测试 |多租户 |添加文档中的 ID |下载 |
+| :-| :-| :-| :-| :-| :-| :-| :-| :-| :-|
+| [⟦T132⟧](/oss/python/integrations/vectorstores/google_vertex_ai_feature_store) | | | | | | | | | [  ⟦T230⟧](https://pypi.org/project/langchain-google-vertexai/) |
+| [⟦T133⟧](/oss/python/integrations/vectorstores/google_bigquery_vector_search) | | | | | | | | | [  ⟦T231⟧](https://pypi.org/project/langchain-google-vertexai/) |
+| [⟦T134⟧](/oss/python/integrations/vectorstores/google_vertex_ai_vector_search) | | | | | | | | | [  ⟦T232⟧](https://pypi.org/project/langchain-google-vertexai/) |
+| [⟦T135⟧](/oss/python/integrations/vectorstores/memorydb) | | | | | | | | | [  ⟦T233⟧](https://pypi.org/project/langchain-aws/) |
+| [⟦T136⟧](/oss/python/integrations/vectorstores/valkey) | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | [  ⟦T234⟧](https://pypi.org/project/langchain-aws/) |
+| [⟦T137⟧](/oss/python/integrations/vectorstores/pgvector) | | | | | | | | | [  ⟦T235⟧](https://pypi.org/project/langchain-postgres/) |
+| [⟦T138⟧](/oss/python/integrations/vectorstores/pgvectorstore) | ✅ | ✅ | ✅ | ✅ | ✅ | | | ✅ | [  ⟦T236⟧](https://pypi.org/project/langchain-postgres/) |
+| [⟦T139⟧](/oss/python/integrations/vectorstores/mongodb_atlas) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T237⟧](https://pypi.org/project/langchain-mongodb/) |
+| [⟦T140⟧](/oss/python/integrations/vectorstores/chroma) | | | | | | | | | [  ⟦T238⟧](https://pypi.org/project/langchain-chroma/) |
+| [⟦T141⟧](/oss/python/integrations/vectorstores/qdrant) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | [  ⟦T239⟧](https://pypi.org/project/langchain-qdrant/) |
+| [⟦T142⟧](/oss/python/integrations/vectorstores/azure_cosmos_db_mongo_vcore) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T240⟧](https://pypi.org/project/langchain-azure-ai/) |
+| [⟦T143⟧](/oss/python/integrations/vectorstores/databricks_vector_search) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T241⟧](https://pypi.org/project/databricks-langchain/) |
+| [⟦T144⟧](/oss/python/integrations/vectorstores/pinecone_sparse) | | | | | | | | | [  ⟦T242⟧](https://pypi.org/project/langchain-pinecone/) |
+| [⟦T145⟧](/oss/python/integrations/vectorstores/pinecone) | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ | ✅ | [  ⟦T243⟧](https://pypi.org/project/langchain-pinecone/) |
+| [⟦T146⟧](/oss/python/integrations/vectorstores/milvus) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T244⟧](https://pypi.org/project/langchain-milvus/) |
+| [⟦T147⟧](/oss/python/integrations/vectorstores/weaviate) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | [  ⟦T245⟧](https://pypi.org/project/langchain-weaviate/) |
+| [⟦T148⟧](/oss/python/integrations/vectorstores/oracle) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T246⟧](https://pypi.org/project/langchain-oracledb/) |
+| [⟦T149⟧](/oss/python/integrations/vectorstores/astradb) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T247⟧](https://pypi.org/project/langchain-astradb/) |
+| [⟦T150⟧](/oss/python/integrations/vectorstores/neo4jvector) | | | | | | | | | [  ⟦T248⟧](https://pypi.org/project/langchain-neo4j/) |
+| [⟦T151⟧](/oss/python/integrations/vectorstores/elasticsearch) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T249⟧](https://pypi.org/project/langchain-elasticsearch/) |
+| [⟦T152⟧](/oss/python/integrations/vectorstores/redis) | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | [  ⟦T250⟧](https://pypi.org/project/langchain-redis/) || [⟦T153⟧](/oss/python/integrations/vectorstores/google_alloydb) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T251⟧](https://pypi.org/project/langchain-google-alloydb-pg/) |
+| [⟦T154⟧](/oss/python/integrations/vectorstores/azure_cosmos_db_no_sql) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T252⟧](https://pypi.org/project/langchain-azure-cosmosdb/) |
+| [⟦T155⟧](/oss/python/integrations/vectorstores/google_cloud_sql_pg) | | | | | | | | | [  ⟦T253⟧](https://pypi.org/project/langchain-google-cloud-sql-pg/) |
+| [⟦T156⟧](/oss/python/integrations/vectorstores/sap_hanavector) | | | | | | | | | [  ⟦T254⟧](https://pypi.org/project/langchain-hana/) |
+| [⟦T157⟧](/oss/python/integrations/vectorstores/google_firestore) | | | | | | | | | [  ⟦T255⟧](https://pypi.org/project/langchain-google-firestore/) |
+| [⟦T158⟧](https://docs.getsemantica.ai/integrations/langchain) | ❌ | | | | | | | | [  ⟦T256⟧](https://pypi.org/project/semantica/)​​ |
+| [⟦T159⟧](/oss/python/integrations/vectorstores/google_spanner) | | | | | | | | | [  ⟦T257⟧](https://pypi.org/project/langchain-google-spanner/) |
+| [⟦T160⟧](https://github.com/cockroachdb/langchain-cockroachdb/) | | | | | | | | | [  ⟦T258⟧](https://pypi.org/project/langchain-cockroachdb/) |
+| [⟦T161⟧](https://pypi.org/project/langchain-oceanbase/) | | | | | | | | | [  ⟦T259⟧](https://pypi.org/project/langchain-oceanbase/) |
+| [⟦T162⟧](https://github.com/langchain-ai/langchain-ibm/tree/main/libs/langchain-db2) | | | | | | | | | [  ⟦T260⟧](https://pypi.org/project/langchain-db2/) |
+| [⟦T163⟧](https://infino.ai/docs) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T261⟧](https://pypi.org/project/langchain-infino/) |
+| [⟦T164⟧](https://opensolr.com/langchain) | | | | | | | | | [  ⟦T262⟧](https://pypi.org/project/langchain-opensolr/) |
+| [⟦T165⟧](https://github.com/Teradata/langchain-teradata) | | | | | | | | | [  ⟦T263⟧](https://pypi.org/project/langchain-teradata/) |
+| [⟦T166⟧](https://docs.cyborg.co/versions/latest/integrations/langchain/introduction) | ✅ | ✅ | ✅ | ✅ | ✅ | | ✅ | | [  ⟦T264⟧](https://pypi.org/project/langchain-cyborgdb/) |
+| [⟦T167⟧](https://docs.singlestore.com/cloud/developer-resources/functional-extensions/working-with-vector-data/) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | [  ⟦T265⟧](https://pypi.org/project/langchain-singlestore/) |
+| [⟦T168⟧](https://ydb.tech/) | | | | | | | | | [  ⟦T266⟧](https://pypi.org/project/langchain-ydb/) |
+| [⟦T169⟧](https://docs.couchbase.com/server/current/vector-search/vector-search.html) | | | | | | | | | [  ⟦T267⟧](https://pypi.org/project/langchain-couchbase/) |
+| [⟦T170⟧](/oss/python/integrations/vectorstores/azure_db_for_postgresql) | | | | | | | | | [  ⟦T268⟧](https://pypi.org/project/langchain-azure-postgresql/) |
+| [⟦T171⟧](https://github.com/IntelLabs/vdms) | | | | | | | | | [  ⟦T269⟧](https://pypi.org/project/langchain-vdms/) |
+| [⟦T172⟧](https://learn.microsoft.com/en-us/azure/azure-sql/database/ai-artificial-intelligence-intelligent-applications?view=azuresql) | | | | | | | | | [  ⟦T270⟧](https://pypi.org/project/langchain-sqlserver/) |
+| [⟦T173⟧](https://docs.falkordb.com/genai-tools/langchain.html) | | ✅ | ✅ | | | | | | [  ⟦T271⟧](https://pypi.org/project/langchain-falkordb/) |
+| [⟦T174⟧](https://github.com/vast-data/vast-vector-store) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T272⟧](https://pypi.org/project/langchain-vastdb/) |
+| [⟦T175⟧](https://mariadb.com/docs/connectors/other/langchain-mariadb/api-reference) | | | | | | | | | [  ⟦T273⟧](https://pypi.org/project/langchain-mariadb/) |
+| [⟦T176⟧](https://github.com/sangaraju1988/amu-pgvector#readme) | ✅ | | | | | | | | [  ⟦T274⟧](https://pypi.org/project/langchain-amu/) |
+| [⟦T177⟧](https://mixpeek.com/docs/agent-integrations/langchain) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | [  ⟦T275⟧](https://pypi.org/project/langchain-mixpeek/) |
+| [⟦T178⟧](https://surrealdb.com/docs/build/deployment/surrealdb-cloud/getting-started) | | | | | | | | | [  ⟦T276⟧](https://pypi.org/project/langchain-surrealdb/) |
+| [⟦T179⟧](https://github.com/polardb/langchain-polardbx) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T277⟧](https://pypi.org/project/langchain-polardbx/) |
+| [⟦T180⟧](https://github.com/infinispan/langchain-infinispan/blob/main/libs/infinispan/README.md) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | [  ⟦T278⟧](https://pypi.org/project/langchain-infinispan/) |
+| [⟦T181⟧](https://cloud.google.com/bigtable) | | | | | | | | | [  ⟦T279⟧](https://pypi.org/project/langchain-google-bigtable/) || [⟦T182⟧](https://github.com/apoorva-01/langchain-shannonbase) | | | | | | | | | [  ⟦T280⟧](https://pypi.org/project/langchain-shannonbase/) |
+| [⟦T183⟧](https://github.com/mpb159753/langchain-opengauss) | | | | | | | | | [  ⟦T281⟧](https://pypi.org/project/langchain-opengauss/) |
+| [⟦T184⟧](/oss/python/integrations/vectorstores/google_memorystore_redis) | | | | | | | | | [  ⟦T282⟧](https://pypi.org/project/langchain-google-memorystore-redis/) |
+| [⟦T185⟧](https://mchl-labs.github.io/chronovec/integrations/langchain) | | | | | | | | | [  ⟦T283⟧](https://pypi.org/project/chronovec/) |
+| [⟦T186⟧](/oss/python/integrations/vectorstores/turbopuffer) | | | | | | | | | [  ⟦T284⟧](https://pypi.org/project/langchain-turbopuffer/) |
+| [⟦T187⟧](https://github.com/typesense/langchain-typesense#readme) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T285⟧](https://pypi.org/project/langchain-typesense/) |
+| [⟦T188⟧](https://docs.lambdadb.ai/guides/get-started/quickstart) | | | | | | | | | [  ⟦T286⟧](https://pypi.org/project/langchain-lambdadb/) |
+| [⟦T189⟧](https://docs.zeusdb.com/en/latest/) | | | | | | | | | [  ⟦T287⟧](https://pypi.org/project/langchain-zeusdb/) |
+| [⟦T190⟧](https://docs.pixeltable.com/overview/pixeltable) | | | | | | | | | [  ⟦T288⟧](https://pypi.org/project/langchain-pixeltable/) |
+| [⟦T191⟧](https://github.com/geldata/langchain-gel) | | | | | | | | | [  ⟦T289⟧](https://pypi.org/project/langchain-gel/) |
+| [⟦T192⟧](https://www.vectorpanda.com/docs/tutorials/langchain) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T290⟧](https://pypi.org/project/langchain-vectorpanda/) |
+| [⟦T193⟧](/oss/python/integrations/vectorstores/google_cloud_sql_mysql) | | | | | | | | | [  ⟦T291⟧](https://pypi.org/project/langchain-google-cloud-sql-mysql/) |
+| [⟦T194⟧](https://github.com/kineticadb/langchain-kinetica) | | | | | | | | | [  ⟦T292⟧](https://pypi.org/project/langchain-kinetica/) |
+| [⟦T195⟧](https://github.com/moorcheh-ai/langchain-moorcheh) | | | | | | | | | [  ⟦T293⟧](https://pypi.org/project/langchain-moorcheh/) |
+| [⟦T196⟧](https://github.com/polardb/langchain-polardb-pg) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T294⟧](https://pypi.org/project/langchain-polardb-pg/) |
+| [⟦T197⟧](https://docs.vectara.com/) | | | | | | | | | [  ⟦T295⟧](https://pypi.org/project/langchain-vectara/) |
+| [⟦T198⟧](https://github.com/houyidb-community/houyidb/blob/main/sdk/python/langchain-houyidb/README.en.md) | ✅ | ✅ | | | | | | | [  ⟦T296⟧](https://pypi.org/project/langchain-houyidb/) |
+| [⟦T199⟧](https://docs.vectoraidb.actian.com) | ✅ | ✅ | ✅ | ✅ | ✅ | | | ✅ | [  ⟦T297⟧](https://pypi.org/project/langchain-actian-vectorai/) |
+| [⟦T200⟧](https://github.com/Polign/polign/tree/main/python/langchain-polign) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T298⟧](https://pypi.org/project/langchain-polign/) |
+| [⟦T201⟧](https://docs.firebolt.io/guides/integrations/langchain) | | | | | | | | | [  ⟦T299⟧](https://pypi.org/project/langchain-firebolt/) |
+| [⟦T202⟧](https://serenedb.com/docs/clients/langchain-serenedb) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ⟦T300⟧](https://pypi.org/project/langchain-serenedb/) |
+| [⟦T203⟧](https://github.com/meetdewey/langchain-dewey) | | | | | | | | | [  ⟦T301⟧](https://pypi.org/project/langchain-dewey/) |
+| [⟦T204⟧](https://docs.deeplake.ai/) | | | | | | | | | [  ⟦T302⟧](https://pypi.org/project/langchain-deeplake/) |
+| [⟦T205⟧](https://docs.volcengine.com/docs/6357?lang=en) | | | | | | | | | [  ⟦T303⟧](https://pypi.org/project/langchain-volcengine-mysql/) |
+| [⟦T206⟧](https://docs.volcengine.com/docs/6313?lang=en) | | | | | | | | | [  ⟦T304⟧](https://pypi.org/project/langchain-volcengine-mysql/) |
+| [⟦T207⟧](https://github.com/rostamlabs/rostam/tree/main/clients/langchain-rostam) | | | | | | | | | [  ⟦T305⟧](https://pypi.org/project/langchain-rostam/) |
+| [⟦T208⟧](https://github.com/wangkuahai/langchain-alibabacloud-mysql) | | | | | | | | | [  ⟦T306⟧](https://pypi.org/project/langchain-alibabacloud-mysql/) |
+| [⟦T209⟧](https://help.aliyun.com/en/lindorm/user-guide/enable-vector-engine) | | | | | | | | | [  ⟦T307⟧](https://pypi.org/project/langchain-lindorm-integration/) |
+| [⟦T210⟧](https://github.com/chdb-io/langchain-chdb) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ⟦T308⟧](https://pypi.org/project/langchain-chdb/) || [⟦T211⟧](https://github.com/yantrikos/langchain-yantrikdb) | ✅ | | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ⟦T309⟧](https://pypi.org/project/langchain-yantrikdb/) |
+| [⟦T212⟧](https://docs.rushdb.com/connect/langchain) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | | ✅ | [  ⟦T310⟧](https://pypi.org/project/langchain-rushdb/) |
+| [⟦T213⟧](https://github.com/dxmt/dxmt/tree/main/vectordb/clients/langchain-dxmt) | ✅ | ✅ | ✅ | ✅ | ✅ | | | ✅ | [  ⟦T311⟧](https://pypi.org/project/langchain-dxmt/) |
+| [⟦T214⟧](https://github.com/facebookresearch/faiss) | | | | | | | | |不适用 |
+| [⟦T215⟧](/oss/python/integrations/vectorstores/in_memory) | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ |不适用 |
 
 ***
 

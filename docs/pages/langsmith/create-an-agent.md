@@ -74,7 +74,7 @@ Set `LANGSMITH_API_KEY` to the setup credential. Set `LANGSMITH_WORKSPACE_ID` to
 >
 > Create the agent and print its identifier:
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langsmith import Client
 >
 > client = Client()
@@ -121,7 +121,7 @@ Some integrations still require a `project_name` or `LANGSMITH_PROJECT` setting.
 
 Retrieve the agent with a credential that can read its environments. With the Python SDK:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
 
 client = Client()

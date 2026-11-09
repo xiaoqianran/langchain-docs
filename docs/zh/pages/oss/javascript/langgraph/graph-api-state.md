@@ -1,23 +1,23 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Define and update state | https://docs.langchain.com/oss/javascript/langgraph/graph-api-state -->
 
-# Define and update state
+# 定义和更新状态
 
-Define graph state schemas, reducers, messages, and private state in the LangGraph Graph API.
+在 LangGraph Graph API 中定义图状态模式、reducer、消息和私有状态。
 
-[State](/oss/javascript/langgraph/graph-api#state) is the shared schema that nodes read and write. [Reducers](/oss/javascript/langgraph/graph-api#reducers) control how each update merges into the current value. This page covers:
+[State](/oss/javascript/langgraph/graph-api#state)是节点读写的共享模式。 [Reducers](/oss/javascript/langgraph/graph-api#reducers) 控制每次更新如何合并到当前值。此页面涵盖：
 
-1. How to use state to define a graph's [schema](/oss/javascript/langgraph/graph-api#schema)
-2. How to use reducers to control how state updates are processed
+1. 如何使用状态来定义图的[schema](/oss/javascript/langgraph/graph-api#schema)
+2. 如何使用reducers来控制状态更新的处理方式
 
-## Define state
+## 定义状态
 
-[State](/oss/javascript/langgraph/graph-api#state) in LangGraph is defined with the `StateSchema` class. It accepts [standard schemas](https://standardschema.dev/) (such as [Zod](https://zod.dev/)) for individual fields, plus value types like `ReducedValue`, `MessagesValue`, and `UntrackedValue`. Prefer `StateSchema` over the [legacy alternatives](#alternative-state-definitions).
+LangGraph中的[State](/oss/javascript/langgraph/graph-api#state)是用`StateSchema`类定义的。它接受单个字段的 [standard schemas](https://standardschema.dev/)（例如 [Zod](https://zod.dev/)），以及 `ReducedValue`、`MessagesValue` 和 `UntrackedValue` 等值类型。与 [legacy alternatives](#alternative-state-definitions) 相比，更喜欢 `StateSchema`。
 
-By default, a graph uses the same schema for input and output, and the state determines that schema. See [Define input and output schemas](#define-input-and-output-schemas) for distinct input and output schemas.
+默认情况下，图使用相同的模式进行输入和输出，并且状态决定该模式。有关不同的输入和输出模式，请参阅[Define input and output schemas](#define-input-and-output-schemas)。
 
-Start with a [messages](/oss/javascript/langgraph/graph-api#working-with-messages-in-graph-state) field. That shape fits many LLM applications. For more detail, see [Working with messages in graph state](/oss/javascript/langgraph/graph-api#working-with-messages-in-graph-state).
+从 [messages](/oss/javascript/langgraph/graph-api#working-with-messages-in-graph-state) 字段开始。这种形状适合许多法学硕士申请。欲了解更多详情，请参阅[Working with messages in graph state](/oss/javascript/langgraph/graph-api#working-with-messages-in-graph-state)。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema, MessagesValue } from "@langchain/langgraph";
@@ -29,11 +29,11 @@ const State = new StateSchema({
 });
 ```
 
-This state tracks a list of [message](/oss/javascript/langchain/messages) objects and an extra integer field. `MessagesValue` includes a built-in reducer, so a node can return only the new messages to append.
+此状态跟踪 [message](/oss/javascript/langchain/messages) 对象列表和一个额外的整数字段。 `MessagesValue`包含一个内置的reducer，因此节点只能返回要追加的新消息。
 
-## Update state
+## 更新状态
 
-Build a graph with a single [node](/oss/javascript/langgraph/graph-api#nodes). The node is a TypeScript function that reads graph state and returns updates. The first argument is always the state:
+使用单个 [node](/oss/javascript/langgraph/graph-api#nodes) 构建图表。该节点是一个 TypeScript 函数，用于读取图形状态并返回更新。第一个参数始终是状态：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessage } from "@langchain/core/messages";
@@ -43,15 +43,13 @@ const node: GraphNode<typeof State> = (state) => {
   const newMessage = new AIMessage("Hello!");
   return { messages: [newMessage], extraField: 10 };
 };
-```
+```该节点仅返回新消息。 `MessagesValue`减速器将其附加到现有列表并设置`extraField`。
 
-This node returns only the new message. The `MessagesValue` reducer appends it to the existing list and sets `extraField`.
-
-> [!WARNING]
+> [!警告]
 >
-> Nodes should return updates to the state directly, instead of mutating the state.
+> 节点应该直接返回状态更新，而不是改变状态。
 
-Define a simple graph with this node. Use [`StateGraph`](/oss/javascript/langgraph/graph-api#stategraph) for a graph that operates on this state, then [`addNode`](/oss/javascript/langgraph/graph-api#nodes) to populate the graph:
+使用此节点定义一个简单的图。使用 [⟦T42⟧](/oss/javascript/langgraph/graph-api#stategraph) 作为在此状态下运行的图，然后使用 [⟦T43⟧](/oss/javascript/langgraph/graph-api#nodes) 填充该图：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph } from "@langchain/langgraph";
@@ -62,7 +60,7 @@ const graph = new StateGraph(State)
   .compile();
 ```
 
-LangGraph provides built-in utilities for visualizing a graph. See [Visualize your graph](/oss/javascript/langgraph/graph-api-visualize) for detail.
+LangGraph 提供用于可视化图形的内置实用程序。详情请参阅[Visualize your graph](/oss/javascript/langgraph/graph-api-visualize)。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as fs from "node:fs/promises";
@@ -85,7 +83,7 @@ flowchart LR
     class startNode terminal
 ```
 
-This graph executes a single node. Invoke it:
+该图执行单个节点。调用它：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { HumanMessage } from "@langchain/core/messages";
@@ -101,12 +99,12 @@ console.log(result);
 { messages: [HumanMessage { content: 'Hi' }, AIMessage { content: 'Hello!' }], extraField: 10 }
 ```
 
-Note that:
+请注意：
 
-* Invocation started by updating a single key of the state.
-* The invocation result includes the entire state.
+* 通过更新状态的单个键开始调用。
+* 调用结果包含整个状态。
 
-Inspect [message](/oss/javascript/langchain/messages) content by logging:
+通过记录检查[message](/oss/javascript/langchain/messages)内容：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for (const message of result.messages) {
@@ -119,11 +117,11 @@ human: Hi
 ai: Hello!
 ```
 
-## Process state updates with reducers
+## 使用减速器处理状态更新
 
-Each key in the state can have its own [reducer](/oss/javascript/langgraph/graph-api#reducers) function, which controls how updates from nodes are applied. If no reducer is specified, updates to that key replace the previous value.
+状态中的每个键都可以有自己的[reducer](/oss/javascript/langgraph/graph-api#reducers)函数，该函数控制如何应用节点的更新。如果未指定reducer，则对该键的更新将替换以前的值。
 
-The earlier example already used `MessagesValue`, which includes a built-in reducer. For custom fields, use `ReducedValue` to define how updates are applied.
+前面的示例已经使用了`MessagesValue`，其中包含一个内置的减速器。对于自定义字段，使用 `ReducedValue` 定义如何应用更新。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema, MessagesValue } from "@langchain/langgraph";
@@ -136,7 +134,7 @@ const State = new StateSchema({
 });
 ```
 
-The node returns only the new message; the reducer appends it:
+节点只返回新消息；减速器附加它：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { GraphNode } from "@langchain/langgraph";
@@ -167,14 +165,12 @@ human: Hi
 ai: Hello!
 ```
 
-### MessagesValue
+### 消息值在实践中，消息列表需要的不仅仅是简单的串联：
 
-In practice, lists of messages need more than plain concatenation:
+* 通过 ID 更新状态中的现有消息。
+* 接受简写[message formats](/oss/javascript/langgraph/graph-api#serialization)，例如`{ role: "user", content: "..." }`。
 
-* Update an existing message in the state by ID.
-* Accept shorthand [message formats](/oss/javascript/langgraph/graph-api#serialization), such as `{ role: "user", content: "..." }`.
-
-`MessagesValue` is a field helper with a message-aware reducer that handles these cases:
+`MessagesValue` 是一个带有消息感知减速器的字段助手，可以处理这些情况：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema, StateGraph, MessagesValue, GraphNode, START } from "@langchain/langgraph";
@@ -211,13 +207,13 @@ human: Hi
 ai: Hello!
 ```
 
-This shape fits applications that use [chat models](/oss/javascript/langchain/models). Unlike Python's `MessagesState` class, TypeScript has no separate prebuilt state type: put `MessagesValue` on the `messages` field of a `StateSchema`, as in the example above.
+此形状适合使用[chat models](/oss/javascript/langchain/models)的应用。与 Python 的 `MessagesState` 类不同，TypeScript 没有单独的预构建状态类型：将 `MessagesValue` 放在 `StateSchema` 的 `messages` 字段上，如上面的示例所示。
 
-## Resetting a reducer field
+## 重置reducer字段
 
-A common source of confusion with reducers is that with a merging reducer, returning an empty value does not clear the field. The reducer merges the right argument into the left one, so an empty update is merged in and previously accumulated values are kept.
+减速器常见的混淆来源是，使用合并减速器时，返回空值不会清除字段。减速器将右侧参数合并到左侧参数中，因此合并了一个空更新，并保留了先前累积的值。
 
-This pattern matters for error buffers or retry counters that must be cleared between retry attempts:
+此模式对于必须在重试尝试之间清除的错误缓冲区或重试计数器很重要：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ReducedValue, StateSchema } from "@langchain/langgraph";
@@ -235,11 +231,11 @@ const State = new StateSchema({
 // state.errors is still ["bad sql"]; the empty array is merged in, not cleared
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/4eafb2c7-d0bc-431c-9616-3efc73a43a46/r)
+> [卡][View example trace](https://smith.langchain.com/public/4eafb2c7-d0bc-431c-9616-3efc73a43a46/r)
 >
-> Open a public LangSmith run for this example.
+> 为此示例打开公共 LangSmith 运行。
 
-To let a node reset (clear) the field, define a custom reducer that replaces the accumulated value instead of merging it:
+要让节点重置（清除）字段，请定义一个自定义化简器来替换累积值而不是合并它：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ReducedValue, StateSchema } from "@langchain/langgraph";
@@ -255,11 +251,9 @@ const State = new StateSchema({
 // node can now clear the field with { errors: [] }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/9a3650c7-8f46-4cb6-b05c-120ca7009ca7/r)
+> [卡][View example trace](https://smith.langchain.com/public/9a3650c7-8f46-4cb6-b05c-120ca7009ca7/r)
 >
-> Open a public LangSmith run for this example.
-
-Alternatively, wrap the update with `Overwrite` to bypass the reducer for a single update, while keeping the field's normal merging behavior for every other update:
+> 为此示例打开公共 LangSmith 运行。或者，使用 `Overwrite` 包装更新以绕过单个更新的减速器，同时为每个其他更新保留字段的正常合并行为：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Overwrite, ReducedValue, StateSchema } from "@langchain/langgraph";
@@ -280,15 +274,15 @@ const clearErrors = (_state: typeof State.State) => {
 // while a normal node can still append with { errors: ["new error"] }
 ```
 
-For more information, see [Bypass reducers with Overwrite](#bypass-reducers-with-overwrite).
+欲了解更多信息，请参阅[Bypass reducers with Overwrite](#bypass-reducers-with-overwrite)。
 
-## Bypass reducers with `Overwrite`
+## 带有 `Overwrite` 的旁路减速器
 
-In some cases, you may want to bypass a reducer and directly overwrite a state value. When a node returns a value wrapped with `Overwrite`, the reducer is bypassed and the channel is set directly to that value.
+在某些情况下，您可能希望绕过减速器并直接覆盖状态值。当节点返回用 `Overwrite` 包装的值时，reducer 会被绕过，通道会直接设置为该值。
 
-This is useful when you want to reset or replace accumulated state rather than merge it with existing values.
+当您想要重置或替换累积状态而不是将其与现有值合并时，这非常有用。
 
-LangGraph provides the `Overwrite` type for this purpose.
+为此，LangGraph 提供了`Overwrite` 类型。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
@@ -335,7 +329,7 @@ console.log(result.messages);
 ["replacement message"]
 ```
 
-You can also use JSON format with the special key `"__overwrite__"`:
+您还可以使用带有特殊键`"__overwrite__"`的JSON格式：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const replaceMessages = () => {
@@ -343,17 +337,15 @@ const replaceMessages = () => {
 };
 ```
 
-> [!WARNING]
+> [!警告]
 >
-> When nodes execute in parallel, only one node can use `Overwrite` on the same state key in a given super-step. If multiple nodes attempt to overwrite the same key in the same super-step, an `InvalidUpdateError` is raised.
+> 当节点并行执行时，只有一个节点可以在给定超级步骤中的同一状态键上使用`Overwrite`。如果多个节点尝试在同一个超级步骤中覆盖相同的密钥，则会引发`InvalidUpdateError`。 `Overwrite` 还会丢弃其他节点在该超级步骤中写入同一密钥的定期更新。密钥最终只有 `Overwrite` 值。
 
-## Define input and output schemas
+## 定义输入和输出模式默认情况下，`StateGraph` 使用单个模式运行，所有节点都使用该模式进行通信。您还可以定义不同的输入和输出模式。
 
-By default, `StateGraph` operates with a single schema, and all nodes communicate using that schema. You can also define distinct input and output schemas.
+当指定不同的模式时，内部模式仍然用于节点之间的通信。输入模式验证提供的输入。输出模式会过滤内部数据，因此 `invoke` 仅返回输出模式中的字段。
 
-When distinct schemas are specified, an internal schema is still used for communication between nodes. The input schema validates the provided input. The output schema filters the internal data so `invoke` returns only the fields in the output schema.
-
-Define distinct input and output schemas:
+定义不同的输入和输出模式：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph, StateSchema, GraphNode, START, END } from "@langchain/langgraph";
@@ -400,13 +392,13 @@ console.log(await graph.invoke({ question: "hi" }));
 { answer: 'bye' }
 ```
 
-Notice that the output of invoke only includes the output schema.
+请注意，invoke 的输出仅包括输出模式。
 
-## Pass private state between nodes
+## 在节点之间传递私有状态
 
-Nodes sometimes need intermediate data that should not appear in the graph's main input or output schema. Keep that data private so only the nodes that need it can read it.
+节点有时需要不应出现在图的主输入或输出模式中的中间数据。保持该数据的私密性，以便只有需要它的节点才能读取它。
 
-The following sequential graph has three nodes. Private data passes between the first two steps. The third step only sees the public overall state.
+以下顺序图具有三个节点。私有数据在前两个步骤之间传递。第三步只看公众整体状态。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph, StateSchema, GraphNode, START, END } from "@langchain/langgraph";
@@ -480,13 +472,11 @@ Entered node 'node3':
 Output of graph invocation: {"a":"set by node3"}
 ```
 
-## Private channels and streaming
+## 私人频道和流媒体
 
-Input, output, and private schemas constrain what each node reads and what `invoke` returns. They do **not** hide channels from [streaming](/oss/javascript/langgraph/streaming).
+输入、输出和私有模式限制每个节点读取的内容和 `invoke` 返回的内容。他们**不会**隐藏[streaming](/oss/javascript/langgraph/streaming)的频道。默认情况下，值流会发出**所有**状态通道，包括私有通道。这适用于从 [event streaming](/oss/javascript/langgraph/event-streaming)（`stream_events` / `streamEvents` 和 `version="v3"`）到 `graph.stream` 的值投影（`stream.values` 和 `stream_mode="values"` / `streamMode: "values"`）。值流使用完整状态，而不是输出模式。 `invoke` 输出中可能缺少专用通道，但在流中可见。
 
-Values streaming emits **all** state channels by default, including private ones. That applies to the values projection from [event streaming](/oss/javascript/langgraph/event-streaming) (`stream.values` on `stream_events` / `streamEvents` with `version="v3"`), and to `graph.stream` with `stream_mode="values"` / `streamMode: "values"`. Values streaming uses the full state, not the output schema. A private channel can be missing from `invoke` output but visible in the stream.
-
-This example uses distinct input, output, overall, and private schemas. `invoke` returns only the output schema:
+此示例使用不同的输入、输出、整体和私有模式。 `invoke` 仅返回输出模式：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { END, START, StateGraph, StateSchema } from "@langchain/langgraph";
@@ -542,11 +532,11 @@ await graph.invoke({ userInput: "My" });
 // { graphOutput: 'My name is Lance' }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/9e51e055-c781-40e7-9c11-ab0529e5a028/r)
+> [卡][View example trace](https://smith.langchain.com/public/9e51e055-c781-40e7-9c11-ab0529e5a028/r)
 >
-> Open a public LangSmith run for this example.
+> 为此示例打开公共 LangSmith 运行。
 
-Streaming with the values projection still includes the private `bar` channel:
+使用值投影进行流式传输仍然包括私有 `bar` 通道：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { END, START, StateGraph, StateSchema } from "@langchain/langgraph";
@@ -604,11 +594,11 @@ for await (const snapshot of stream.values) {
 // { foo: 'My name', userInput: 'My', graphOutput: 'My name is Lance', bar: 'My name is' }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/bdecebeb-78fe-4831-ac5d-3bae88b8ddf6/r)
+> [卡][View example trace](https://smith.langchain.com/public/bdecebeb-78fe-4831-ac5d-3bae88b8ddf6/r)
 >
-> Open a public LangSmith run for this example.
+> 为此示例打开公共 LangSmith 运行。
 
-To restrict streamed values to specific channels (for example, only the output schema), pass `outputKeys` to `graph.stream`:
+要将流式值限制到特定通道（例如，仅输出模式），请将 `outputKeys` 传递到 `graph.stream`：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for await (const snapshot of await graph.stream(
@@ -620,26 +610,24 @@ for await (const snapshot of await graph.stream(
 // { graphOutput: 'My name is Lance' }
 ```
 
-If you only need the channels a node produced in each step (not the full accumulated state), use `streamMode: "updates"` instead. See [Streaming](/oss/javascript/langgraph/streaming).
+如果您只需要节点在每个步骤中生成的通道（而不是完整的累积状态），请改用`streamMode: "updates"`。参见[Streaming](/oss/javascript/langgraph/streaming)。
 
-## Alternative state definitions
+## 替代状态定义
 
-Prefer `StateSchema` for new graphs. LangGraph also supports the approaches below for legacy code and advanced channel control.
+对于新图表，更喜欢`StateSchema`。 LangGraph 还支持以下传统代码和高级信道控制方法。
 
-### Channels API
+### 通道 API通道 API 提供对状态管理的低级控制。 LangGraph提供了多种内置通道类型：
 
-The channels API provides low-level control over state management. LangGraph provides several built-in channel types:
-
-| Channel Type | Behavior | Use Case |
+|渠道类型|行为 |使用案例|
 | - | - | - |
-| `LastValue` | Stores the most recent value | Simple fields that get overwritten |
-| `BinaryOperatorAggregate` | Combines values using a reducer function | Accumulating values (counters, lists) |
-| `Topic` | Collects all values into a sequence | Event streams, audit logs |
-| `EphemeralValue` | Value that resets between supersteps | Temporary computation state |
+| `LastValue` |存储最新值 |被覆盖的简单字段 |
+| `BinaryOperatorAggregate` |使用减速函数组合值 |累积值（计数器、列表）|
+| `Topic` |将所有值收集到一个序列中 |事件流、审核日志 |
+| `EphemeralValue` |在超级步之间重置的值 |临时计算状态|
 
-**Using the object shorthand:**
+**使用对象简写：**
 
-When you pass an object with `reducer` and `default`, it creates a `BinaryOperatorAggregate` channel. Passing `null` creates a `LastValue` channel:
+当您传递带有 `reducer` 和 `default` 的对象时，它会创建一个 `BinaryOperatorAggregate` 通道。传递 `null` 创建一个 `LastValue` 通道：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { BaseMessage } from "@langchain/core/messages";
@@ -665,9 +653,9 @@ const workflow = new StateGraph<WorkflowState>({
 });
 ```
 
-**Using channel classes directly:**
+**直接使用通道类：**
 
-For more control, you can instantiate channel classes from `@langchain/langgraph/channels`:
+为了获得更多控制，您可以从 `@langchain/langgraph/channels` 实例化通道类：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { BaseMessage } from "@langchain/core/messages";
@@ -697,9 +685,9 @@ const workflow = new StateGraph<WorkflowState>({
 });
 ```
 
-### Annotation.Root
+### 注释.Root
 
-`Annotation.Root` provides a declarative way to define state with reducers. It is similar to `StateSchema` but uses a different syntax:
+`Annotation.Root` 提供了一种用减速器定义状态的声明式方法。它类似于 `StateSchema` 但使用不同的语法：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { BaseMessage } from "@langchain/core/messages";
@@ -720,9 +708,9 @@ const State = Annotation.Root({
 const graph = new StateGraph(State);
 ```
 
-### Zod objects with Zod v3
+### Zod 对象与 Zod v3
 
-When using Zod v3, you can define state with plain `z.object()` schemas. LangGraph extends Zod v3 with a `.langgraph` plugin that provides `.reducer()` and `.metadata()` methods:
+使用 Zod v3 时，您可以使用普通的 `z.object()` 模式定义状态。 LangGraph 使用 `.langgraph` 插件扩展了 Zod v3，该插件提供了 `.reducer()` 和 `.metadata()` 方法：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { z } from "zod/v3";
@@ -749,9 +737,7 @@ const State = z.object({
 const graph = new StateGraph(State);
 ```
 
-### Zod objects with Zod v4
-
-Zod v4 uses a registry-based approach. Use the LangGraph registry to attach metadata to schema fields:
+### Zod 对象与 Zod v4Zod v4 使用基于注册表的方法。使用 LangGraph 注册表将元数据附加到架构字段：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as z from "zod";
@@ -780,17 +766,17 @@ const State = z.object({
 const graph = new StateGraph(State);
 ```
 
-### Comparison table
+### 比较表
 
-| Approach | Reducers | Type Safety | Zod Version | Recommended |
+|方法|减速机|类型安全 |佐德版本 |推荐|
 | - | - | - | - | - |
-| `StateSchema` | ✅ Built-in | ✅ Full | v3 or v4 | ✅ Yes |
-| Channels API | ✅ Manual | ⚠️ Partial | N/A | For advanced cases |
-| `Annotation.Root` | ✅ Built-in | ✅ Full | N/A | Legacy |
-| Zod v3 + `.langgraph` | ✅ Via plugin | ✅ Full | v3 only | Legacy |
-| Zod v4 + registry | ✅ Via registry | ✅ Full | v4 only | Legacy |
+| `StateSchema` | ✅ 内置 | ✅ 满 | v3 或 v4 | ✅ 是的 |
+|渠道 API | ✅ 手册 | ⚠️部分|不适用 |对于高级病例 |
+| `Annotation.Root` | ✅ 内置 | ✅ 满 |不适用 |遗产|
+| Zod v3 + `.langgraph` | ✅ 通过插件 | ✅ 满 |仅限 v3 |遗产|
+| Zod v4 + 注册表 | ✅ 通过注册表 | ✅ 满 |仅限 v4 |遗产|
 
-## See also
+## 另请参阅
 
 * [Graph API overview](/oss/javascript/langgraph/graph-api#state)
 * [Working with messages in graph state](/oss/javascript/langgraph/graph-api#working-with-messages-in-graph-state)
@@ -800,6 +786,6 @@ const graph = new StateGraph(State);
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/graph-api-state.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/graph-api-state.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

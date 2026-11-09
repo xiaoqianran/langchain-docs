@@ -35,7 +35,7 @@ export LANGSMITH_API_KEY=<your-api-key>
 无需额外代码即可将跟踪记录到 LangSmith。只需像平常一样运行代理代码：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent } from "@langchain/agents";
+import { createAgent } from "langchain";
 
 function sendEmail(to: string, subject: string, body: string): string {
     // ... email sending logic

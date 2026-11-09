@@ -64,6 +64,8 @@ const agent = createDeepAgent({
 >
 > Populate the store with initial memories, then invoke the agent across two threads to see it remember and update what it learns.
 >
+> `CompositeBackend` removes each route prefix before forwarding file operations. Seed backend-relative keys such as `/AGENTS.md` and `/langgraph-docs/SKILL.md`, not the agent-facing `/memories/` or `/skills/` paths.
+>
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend, createFileData } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
@@ -74,7 +76,7 @@ const agent = createDeepAgent({
 > // Seed the memory file
 > await store.put(
 >   ["my-agent"],
->   "/memories/AGENTS.md",
+>   "/AGENTS.md",
 >   createFileData(`## Response style
 > - Keep responses concise
 > - Use code examples where possible
@@ -84,7 +86,7 @@ const agent = createDeepAgent({
 > // Seed a skill
 > await store.put(
 >   ["my-agent"],
->   "/skills/langgraph-docs/SKILL.md",
+>   "/langgraph-docs/SKILL.md",
 >   createFileData(`---
 > name: langgraph-docs
 > description: Fetch relevant LangGraph documentation to provide accurate guidance.
@@ -166,7 +168,7 @@ const agent = createDeepAgent({
 > // Seed preferences for two users
 > await store.put(
 >   ["user-alice"],
->   "/memories/preferences.md",
+>   "/preferences.md",
 >   createFileData(`## Preferences
 > - Likes concise bullet points
 > - Prefers Python examples
@@ -174,7 +176,7 @@ const agent = createDeepAgent({
 > );
 > await store.put(
 >   ["user-bob"],
->   "/memories/preferences.md",
+>   "/preferences.md",
 >   createFileData(`## Preferences
 > - Likes detailed explanations
 > - Prefers TypeScript examples
@@ -184,7 +186,7 @@ const agent = createDeepAgent({
 > // Seed a skill for Alice
 > await store.put(
 >   ["user-alice"],
->   "/skills/langgraph-docs/SKILL.md",
+>   "/langgraph-docs/SKILL.md",
 >   createFileData(`---
 > name: langgraph-docs
 > description: Fetch relevant LangGraph documentation to provide accurate guidance.

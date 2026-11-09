@@ -119,18 +119,17 @@ def test_agent_calls_weather_tool():
 Integration tests that call LLM APIs incur real costs. A few practices help keep test suites fast and affordable:
 
 * **Use smaller models**: `gemini-3.1-flash-lite` or equivalent for tests that only need to verify tool calling and response structure.
-* **Set `maxTokens`**: Cap response length to avoid long, expensive completions.
+* **Cap output tokens**: Limit response length on the chat model to avoid long, expensive completions.
 * **Limit test scope**: Test one behavior per test. Avoid end-to-end scenarios that chain many LLM calls when a single-turn test suffices.
 * **Run selectively**: Use the test separation from [above](#separate-unit-and-integration-tests) to run integration tests only in CI or before deploy, not on every file save.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
+from langchain.chat_models import init_chat_model
 
-agent = create_agent(
-    "gemini-3.1-flash-lite",
-    tools=[get_weather],
-    model_kwargs={"max_tokens": 256},
-)
+model = init_chat_model("google_genai:gemini-3.1-flash-lite", max_tokens=256)
+
+agent = create_agent(model, tools=[get_weather])
 ```
 
 ## Record and replay HTTP calls

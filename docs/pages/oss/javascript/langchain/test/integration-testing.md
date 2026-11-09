@@ -236,15 +236,20 @@ expect(result).toHaveStructuredResponse({ name: "Alice", age: 30 });
 Integration tests that call LLM APIs incur real costs. A few practices help keep test suites fast and affordable:
 
 * **Use smaller models**: `gemini-3.1-flash-lite` or equivalent for tests that only need to verify tool calling and response structure.
-* **Set `maxTokens`**: Cap response length to avoid long, expensive completions.
+* **Cap output tokens**: Limit response length on the chat model to avoid long, expensive completions.
 * **Limit test scope**: Test one behavior per test. Avoid end-to-end scenarios that chain many LLM calls when a single-turn test suffices.
 * **Run selectively**: Use the test separation from [above](#separate-unit-and-integration-tests) to run integration tests only in CI or before deploy, not on every file save.
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, initChatModel } from "langchain";
+
+const model = await initChatModel("google-genai:gemini-3.1-flash-lite", {
+  maxOutputTokens: 256,
+});
+
 const agent = createAgent({
-  model: "gemini-3.1-flash-lite",
+  model,
   tools: [getWeather],
-  modelArgs: { maxTokens: 256 },
 });
 ```
 

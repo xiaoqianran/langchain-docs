@@ -35,7 +35,7 @@ export LANGSMITH_API_KEY=<your-api-key>
 No extra code is needed to log a trace to LangSmith. Just run your agent code as you normally would:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent } from "@langchain/agents";
+import { createAgent } from "langchain";
 
 function sendEmail(to: string, subject: string, body: string): string {
     // ... email sending logic

@@ -339,7 +339,7 @@ const agent = createDeepAgent({
 技能工具遵循以下规则：
 
 * 技能工具是有门控的。在代理读取技能的 `SKILL.md` 之前，即使模型猜测其名称和参数，对技能的调用也会作为未知工具而失败。
-* 当[summarization](/oss/javascript/deepagents/context-engineering#summarization)删除从对话中读取的内容时，该工具将不可用，直到客服人员再次读取该技能。
+* 当[summarization](/oss/javascript/deepagents/context-engineering#summarization)删除从对话中读取的内容时，该工具将不可用，直到代理再次读取该技能。
 * [Pinning a skill](#pin-skills) 使其工具可用，就像阅读其 `SKILL.md` 一样。它们将保持可用状态，直到摘要删除固定技能的消息为止。> [!注意]
 >
 > 在对话中接受新工具的模型上，Deep Agents在读取后添加了技能工具，这使提示缓存保持有效。在其他模型上，它会将该工具添加到请求的 `tools` 中，这会使缓存失效。请参阅 [Anthropic](/oss/javascript/integrations/chat/anthropic#change-tools-mid-conversation) 和 [OpenAI](/oss/javascript/integrations/chat/openai#add-tools-mid-conversation) 集成页面。
@@ -684,7 +684,7 @@ function createAgentForUser(userRole: string) {
 >
 >> [手风琴] 模拟SDK中的Deep Agents代码源码顺序
 >>
->> 为了匹配 SDK 代码中的 Deep Agents 代码分层，请按照从低到高的优先顺序显式传递所有所需的源：
+>> 为了匹配 SDK 代码中的 Deep Agents 代码分层，请按照从低到高的优先级顺序显式传递所有所需的源：
 >>
 >> ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > [
@@ -723,20 +723,20 @@ const agent = await createDeepAgent({
     }),
   }),
 });
-```这可以保持代理配置稳定，同时后端强制代理可以访问哪个库。范围不需要特定于用户。它可以是您的应用程序使用的任何边界，包括角色、租户、工作区、组织、环境或请求类型。
+```This keeps the agent configuration stable while the backend enforces which library the agent can access.范围不需要特定于用户。 It can be any boundary your application uses, including role, tenant, workspace, organization, environment, or request type.
 
-要填充共享库，请从应用程序代码或管理工作流程中为商店播种：
+To populate a shared library, seed the store from your application code or an admin workflow:
 
-* 按组织 ID 命名空间，以获取工作区范围的技能。当代理应该使用库但不修改它时，将其与 [read-only skills](#read-only-skills) 配对。
-* 当每个用户需要独立的库时，按用户ID命名空间，如上例。
+* 按组织 ID 命名空间，以获取工作区范围的技能。 Pair this with [read-only skills](#read-only-skills) when agents should use the library but not modify it.
+* Namespace by user ID when each user needs an independent library, as in the example above.
 
-使用 `/company-policies/SKILL.md` 等键和包含 `content` 和 `encoding` 字段的值为商店播种。在从存储中读取记录之前，`/skills/` 路由前缀将被删除。
+Seed the store with keys like `/company-policies/SKILL.md` and values that include `content` and `encoding` fields. The `/skills/` route prefix is stripped before records are read from the store.
 
 您还可以组合共享库和个人库：将 `/skills/approved/` 路由到组织范围的 `StoreBackend`，将 `/skills/editable/` 路由到用户范围的后端，并在 `skills` 中传递两个路径。参见[Writable skills](#writable-skills)。
 
 ### 组合多个源
 
-当代理应该看到多个图书馆时，通过多个技能路径。例如，您可以结合批准的组织技能、特定于团队的工作流程和特定于请求的说明：
+Pass multiple skill paths when the agent should see more than one library. For example, you can combine approved organization skills, team-specific workflows, and request-specific instructions:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
@@ -1120,7 +1120,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Use for local dev; omit for LangSmith Deployment
 
 const agent = await createDeepAgent({
   model: "anthropic:claude-sonnet-4-6",
@@ -2271,7 +2271,7 @@ main().catch((err) => {
 | - | - | - | - |
 | **目的** |通过渐进式披露发现的按需功能 |启动时加载持久上下文 |代理可以调用​​的编程操作 |
 | **加载** |仅当代理确定相关性时才读取 |在代理启动时加载 |每个回合都可用 |
-| **格式** | `SKILL.md` 在命名目录中 | `AGENTS.md` 文件 |与代理绑定的功能 |
+| **格式** | `SKILL.md` 在命名目录中 | `AGENTS.md` 文件 |与代理绑定的功能|
 | **分层** |用户，然后项目（最后获胜）|用户，然后项目（合并）|在代理创建时定义 |
 | **何时使用** |指令是特定于任务的并且可能很大 |上下文始终相关（项目惯例、偏好）|代理需要编程操作，或者无权访问文件系统 |
 
@@ -2279,7 +2279,7 @@ main().catch((err) => {
 
 ### Frontmatter 字段
 
-[Agent Skills specification](https://agentskills.io/specification) 定义了以下 frontmatter 字段：|领域|必填 |描述 |
+[Agent Skills specification](https://agentskills.io/specification) 定义了以下 frontmatter 字段：|领域 |必填 |描述 |
 | - | - | - |
 | `name` |是的 |带连字符的小写字母数字，1-64 个字符。必须与父目录名称匹配。 |
 | `description` |是的 |该技能的作用是什么以及何时使用它。最多 1,024 个字符。 |

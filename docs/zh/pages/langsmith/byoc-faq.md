@@ -43,7 +43,7 @@
 > * 使用您自己的节点组和容忍度，而不是运行 LangSmith 的节点组和容忍度。
 > * 部署到 LangSmith 使用的命名空间之外的命名空间中。
 > * 请勿编辑资源LangChain 规定。
->> LangChain 对干扰工作负载引起的停机或问题不承担任何责任。
+>> LangChain 不对因工作负载干扰而导致的停机或问题负责。
 
 > [accordion] 我应该为我的角色的外部 ID 设置什么值？
 >
@@ -198,7 +198,7 @@
 >
 > 有关平台和基础设施、数据和安全以及运营和支持的完整划分，请参阅[BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)。> [手风琴] 谁升级LangSmith，多久升级一次？
 >
-> LangChain 每周升级一次数据平面中的 LangSmith 版本。升级是滚动进行的，因此不会出现整个服务停机的情况。 Istio 和 KEDA 等支持服务定期升级，LangChain 管理所有 EKS 集群升级。
+> LangChain 每天升级数据平面中的 LangSmith 版本。升级是滚动进行的，因此不会出现整个服务停机的情况。 Istio 和 KEDA 等支持服务定期升级，LangChain 管理所有 EKS 集群升级。
 >
 > 对发布渠道的支持即将推出。参见[Operations](/langsmith/byoc-operations-aws)。
 
@@ -206,42 +206,42 @@
 >
 > LangChain 在 AWS 支持终止日期之前主动拥有并执行 EKS 升级，并与您协调窗口。
 >
-> 控制平面升级是透明的。 Node group upgrades roll nodes one by one with make-before-break semantics, so you might see brief connection resets as pods restart, but no data loss.参见[Kubernetes cluster upgrades](/langsmith/byoc-operations-aws#kubernetes-cluster-upgrades)。> [手风琴] 升级会导致停机吗？
+> 控制平面升级是透明的。节点组升级使用 make-before-break 语义逐个滚动节点，因此您可能会在 Pod 重新启动时看到短暂的连接重置，但不会丢失数据。参见[Kubernetes cluster upgrades](/langsmith/byoc-operations-aws#kubernetes-cluster-upgrades)。
+
+> [手风琴] 升级会导致停机吗？
 >
 > 不会。服务运行由水平 Pod 自动缩放器调整大小的多个副本，并且 Pod 中断预算限制了同时不可用的副本数量，因此滚动更新和节点耗尽都不会导致服务低于其所需的容量。
 >
-> 可能导致停机的维护（例如重新启动 RDS 或 ElastiCache）发生在LangChain 提前与您协调的计划维护时段内。
-
-> [手风琴] 谁监控数据平面？
+> 可能导致停机的维护（例如重新启动 RDS 或 ElastiCache）发生在LangChain 提前与您协调的计划维护时段内。> [手风琴] 谁监控数据平面？
 >
 > LangChain 在配置后操作数据平面，包括监控正常运行时间和错误恢复、扩展、升级和安全修补。由于部署在您自己的帐户中运行，因此您已经操作的云控制也适用于它。
 
-> [手风琴] 我可以为 LangSmith BYOC 设置自己的可观测性吗？
+> [accordion] 我可以为 LangSmith BYOC 设置自己的可观测性吗？
 >
 > 是的。您可以在EKS集群中安装收集器、代理等可观测性工具，只要不干扰LangSmith的运行即可。
 >
-> LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因此适用相同的配置。参见[Export LangSmith telemetry to your observability backend](/langsmith/export-backend)。> [手风琴] 高可用和容灾是如何处理的？
+> LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因此适用相同的配置。参见[Export LangSmith telemetry to your observability backend](/langsmith/export-backend)。
+
+> [手风琴] 高可用和容灾是如何处理的？
 >
 > 默认情况下，数据平面已配置为实现高可用性，跨单个区域内的多个可用区运行。所有有状态组件均已备份。
 >
-> 数据平面不跨区域，因此整个区域丢失的恢复依赖于这些备份。参见[High availability](/langsmith/byoc-operations-aws#high-availability)。
-
-> [手风琴] 如何处理备份？
+> 数据平面不跨区域，因此整个区域丢失的恢复依赖于这些备份。参见[High availability](/langsmith/byoc-operations-aws#high-availability)。> [手风琴] 如何处理备份？
 >
 > 备份在您自己的帐户中运行：
 >
 > * **RDS**：每天进行备份。
 > * **SmithDB**：S3 中的对象存储保存持久跟踪数据。
 > * **ClickHouse**：在仍然运行它的数据平面上，每天进行备份并存储在 S3 存储桶中。
-> * **ElastiCache**：不进行备份，因为数据是短暂的。> [手风琴] LangChain 是否为 BYOC 数据平面提供正常运行时间 SLA？
+> * **ElastiCache**：不进行备份，因为数据是短暂的。
+
+> [手风琴] LangChain 是否为 BYOC 数据平面提供正常运行时间 SLA？
 >
 > 不会。数据平面在您的 AWS 账户中运行，因此其可用性取决于您控制的资源，包括账户本身、您配置用于访问数据平面的专用连接以及适用于账户的服务配额和策略。 LangChain 不承诺其不单独控制的基础设施的正常运行时间目标。
 >
 > LangChain 仍然监控数据平面的正常运行时间和错误恢复、扩展它并应用升级和安全补丁。参见[Operations](/langsmith/byoc-operations-aws)。
 
-## 成本
-
-> [手风琴] 我可以使用 BYOC 支付什么费用？
+＃＃ 成本> [手风琴] 我可以使用 BYOC 支付什么费用？
 >
 > 两份单独的账单：
 >
@@ -254,7 +254,9 @@
 
 > [手风琴] 哪些 LangSmith 功能适用于 BYOC？
 >
-> 请参阅 [Available features](/langsmith/byoc#available-features) 了解当前支持的功能列表。> [accordion] 我可以将现有的 LangSmith 实例迁移到 BYOC 吗？
+> 请参阅 [Available features](/langsmith/byoc#available-features) 了解当前支持的功能列表。
+
+> [accordion] 我可以将现有的 LangSmith 实例迁移到 BYOC 吗？
 >
 > 是的。可以复制用户、角色、数据集、实验、提示、注释队列配置、自动化规则、仪表板和队列资源。 AWS 支持跟踪迁移。联系LangChain团队安排。参见[Migrate to BYOC](/langsmith/byoc-migration)。
 

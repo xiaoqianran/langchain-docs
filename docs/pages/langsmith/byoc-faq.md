@@ -219,7 +219,7 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 
 > [accordion] Who upgrades LangSmith, and how often?
 >
-> LangChain upgrades the LangSmith version in your data plane once a week. Upgrades are rolling, so there is no whole-service downtime. Supporting services such as Istio and KEDA are upgraded on a regular cadence, and LangChain manages all EKS cluster upgrades.
+> LangChain upgrades the LangSmith version in your data plane daily. Upgrades are rolling, so there is no whole-service downtime. Supporting services such as Istio and KEDA are upgraded on a regular cadence, and LangChain manages all EKS cluster upgrades.
 >
 > Support for release channels is coming soon. See [Operations](/langsmith/byoc-operations-aws).
 

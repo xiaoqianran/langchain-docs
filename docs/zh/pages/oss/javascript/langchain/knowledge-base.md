@@ -393,7 +393,7 @@ LangChain 包括[integrations](/oss/javascript/integrations/vectorstores) 以及
 
 ## 加载并分割 PDF
 
-从 PDF 加载内容，然后在建立索引之前将其分割成更小的块。此示例使用[a sample Nike 10-K filing from 2023](https://github.com/langchain-ai/langchain/blob/v0.3/docs/docs/example_data/nke-10k-2023.pdf)。
+从 PDF 加载内容，然后在建立索引之前将其分割成更小的块。此示例使用[a sample Nike 10-K filing from 2023](https://github.com/langchain-ai/langchain/blob/v0.3/docs/docs/example_data/nke-10k-2023.pdf)。在运行示例之前下载示例 PDF。将 `file_path` (Python) 或 `filePath` (JavaScript) 设置为下载文件的绝对路径，或使用相对于工作目录的路径。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { readFileSync } from "node:fs";
@@ -426,7 +426,9 @@ console.log(docs.length);
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 107
-```页面通常过于粗糙而无法检索。进一步拆分页面，以便相关段落不会被周围的文本冲淡。 [⟦T80⟧](https://reference.langchain.com/javascript/langchain-textsplitters/RecursiveCharacterTextSplitter) 在公共分隔符（例如换行符）上递归分割，直到每个块达到目标大小。这是针对一般文本用例推荐的文本分割器。
+```
+
+页面通常过于粗糙而无法检索。进一步拆分页面，以便相关段落不会被周围的文本冲淡。 [⟦T82⟧](https://reference.langchain.com/javascript/langchain-textsplitters/RecursiveCharacterTextSplitter) 在公共分隔符（例如换行符）上递归分割，直到每个块达到目标大小。这是针对一般文本用例推荐的文本分割器。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
@@ -457,18 +459,16 @@ await vectorStore.addDocuments(allSplits);
 
 ## 查询向量存储
 
-将文档添加到[⟦T81⟧](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore)后，即可查询：
+将文档添加到[⟦T83⟧](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore)后，即可查询：
 
 * 同步和异步
 * 按字符串查询和按向量查询
 * 有和没有相似度分数
 * 通过相似性和[maximum marginal relevance](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore/maxMarginalRelevanceSearch)（平衡相似性和多样性）
 
-这些方法通常返回 [⟦T82⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 对象的列表。
+这些方法通常返回 [⟦T84⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 对象的列表。
 
-### 按字符串搜索
-
-嵌入将文本映射到密集向量，因此相似的含义在几何上很接近。这意味着您可以通过传递自然语言问题来检索相关段落：
+### 按字符串搜索嵌入将文本映射到密集向量，因此相似的含义在几何上很接近。这意味着您可以通过传递自然语言问题来检索相关段落：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const results1 = await vectorStore.similaritySearch(
@@ -485,7 +485,9 @@ Document {
 }
 ```
 
-### 返回分数您可以返回文档的相似度分数。分数的含义因提供商而异。在这种情况下，分数是一个与相似度成反比变化的距离度量：
+### Return scores
+
+您可以返回文档的相似度分数。分数的含义因提供商而异。在这种情况下，分数是一个与相似度成反比变化的距离度量：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const results2 = await vectorStore.similaritySearchWithScore(
@@ -504,7 +506,7 @@ Document {
 }
 ```
 
-### 按向量搜索
+### Search by vector
 
 自己嵌入查询，然后使用结果向量进行搜索：
 
@@ -539,11 +541,11 @@ Document {
 
 ## 使用检索器
 
-LangChain [⟦T83⟧](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore) 对象不会子类 [⟦T84⟧](https://reference.langchain.com/javascript/langchain-core/runnables/Runnable)。 [Retrievers](https://reference.langchain.com/javascript/langchain-core/retrievers/BaseRetriever)是Runnables，因此它们支持同步和异步`invoke`和`batch`等标准方法。
+LangChain [⟦T85⟧](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore) 对象不会子类 [⟦T86⟧](https://reference.langchain.com/javascript/langchain-core/runnables/Runnable)。 [Retrievers](https://reference.langchain.com/javascript/langchain-core/retrievers/BaseRetriever)是Runnables，因此它们支持同步和异步`invoke`和`batch`等标准方法。
 
 您还可以从向量存储构建检索器，并且检索器还可以包装非向量源（例如外部 API）。
 
-向量存储实现了返回 [⟦T88⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStoreRetriever) 的 `as_retriever` 方法。这些检索器公开 `search_type` 和 `search_kwargs` 来选择和参数化底层存储方法。复制上面的例子：
+向量存储实现了返回 [⟦T90⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStoreRetriever) 的 `as_retriever` 方法。这些检索器公开 `search_type` 和 `search_kwargs` 来选择和参数化底层存储方法。复制上面的例子：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const retriever = vectorStore.asRetriever({
@@ -570,9 +572,7 @@ await retriever.batch([
         pageContent: 'Table of Contents...',
     }],
 ]
-```
-
-您可以在更复杂的应用程序中使用检索器，例如 [retrieval-augmented generation (RAG)](/oss/javascript/deepagents/retrieval)，它将问题与检索到的上下文结合在 LLM 提示中。要了解有关构建此类应用程序的更多信息，请查看 [RAG tutorial](/oss/javascript/deepagents/rag) 教程。
+```您可以在更复杂的应用程序中使用检索器，例如 [retrieval-augmented generation (RAG)](/oss/javascript/deepagents/retrieval)，它在 LLM 提示中将问题与检索到的上下文结合起来。要了解有关构建此类应用程序的更多信息，请查看 [RAG tutorial](/oss/javascript/deepagents/rag) 教程。
 
 ## 后续步骤
 
@@ -583,7 +583,9 @@ await retriever.batch([
 * [Available embedding integrations](/oss/javascript/integrations/embeddings)
 * [Available vector store integrations](/oss/javascript/integrations/vectorstores)
 
-有关 RAG 的更多信息：* [Retrieval overview](/oss/javascript/deepagents/retrieval)
+有关 RAG 的更多信息：
+
+* [Retrieval overview](/oss/javascript/deepagents/retrieval)
 * [RAG with Deep Agents](/oss/javascript/deepagents/rag)
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial)
 
