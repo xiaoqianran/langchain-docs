@@ -20,22 +20,33 @@ relevant sections.
 * **`openwiki_search`**：返回具体问题的紧凑、排名结果
 * **`openwiki_read`**：检索您的代理从这些结果中选择的完整部分
 
-指导代理使用具体架构或依赖性问题的检索，阅读相关部分，并在落地后停止。检索是可选的上下文，而不是每个任务开始时的例行步骤。这些工具是无模型的：它们不会启动生成运行或进行自己的模型调用。
+指导代理使用检索来解决具体架构或依赖性问题，阅读相关部分，并在落地后停止。检索是可选的上下文，而不是每个任务开始时的例行步骤。这些工具是无模型的：它们不会启动生成运行或进行自己的模型调用。
 
 当存储库链接到工作区时，`openwiki_list_workspaces`和`openwiki_list_wikis`提供发现。工作空间搜索结果识别其供应`wiki`；将该 ID 与结果的页面和部分锚点一起传递给 `openwiki_read`。这些工具随[coding-agent integrations](/oss/openwiki/integrations)一起提供。安装集成后，重新启动主机并要求其搜索 wiki。
 
+### 通过读取返回出处
+
+在 `openwiki_read` 上设置 `includeProvenance`，以将页面记录的出处与所选部分一起包含在内。响应添加一个 `provenance` 对象，其中包含：
+
+* **`sources`**：按创作顺序排列的 OKF frontmatter 源条目，每个条目都有一个 `resource` 和一个可选的 `id`。
+* **`claims`**：页面的持久声明，每个声明都有其稳定的`id`和一个`resource`/`version`对数组`resource`/`version`在声明成立时记录。
+
+出处可定位页面引用的内容以及每个声明的最后建立时间。它并不断言所引用的证据是最新的或经过验证的。
+
+> [!注意]
+>
+> `includeProvenance` 需要 OpenWiki v0.7.3 或更高版本。
+
 ## 创建 wiki 工作区
 
-一项服务通常跨越多个存储库。使用 `openwiki link` 将其现有 wiki 分组到指定工作区中，以便您的代理可以在整个服务中进行搜索并阅读任何成员 wiki 中的部分。
+一项服务通常跨越多个存储库。使用 `openwiki link` 将其现有 wiki 分组到指定工作区中，以便您的代理可以搜索整个服务并阅读任何成员 wiki 中的部分。
 
 从包含存储库的目录启动工作区管理器，例如 `~/dev`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cd ~/dev
 openwiki link
-```
-
-创建一个工作区，例如 `Payments`，然后选择要包含的存储库。成员存储库保留自己的 wiki，可以属于多个工作区，并且不需要共享父目录。查找器将 Git 存储库流式传输到从启动目录开始的可编辑路径下。没有 OpenWiki 文档的存储库呈灰色显示。注册表存储在`~/.openwiki`（或`OPENWIKI_CONFIG_DIR`）下。
+```创建一个工作区，例如 `Payments`，然后选择要包含的存储库。成员存储库保留自己的 wiki，可以属于多个工作区，并且不需要共享父目录。查找器将 Git 存储库流式传输到从启动目录开始的可编辑路径下。没有 OpenWiki 文档的存储库呈灰色显示。注册表存储在`~/.openwiki`（或`OPENWIKI_CONFIG_DIR`）下。
 
 ### 搜索范围
 
@@ -44,7 +55,9 @@ openwiki link
 1. 没有工作空间的 wiki 会自行搜索。
 2. 一个工作区中的 wiki 自动搜索该工作区。
 3. 多个工作区中的 wiki 使用其活动工作区。
-4. 如果它属于多个工作区而没有主动选择，搜索将返回`workspace_required`，并且代理会询问要使用哪个工作区。从存储库内的任何位置设置、检查或清除存储库的持久活动工作区：
+4. 如果它属于多个工作区而没有主动选择，则搜索将返回`workspace_required`，并且代理会询问要使用哪个工作区。
+
+从存储库内的任何位置设置、检查或清除存储库的持久活动工作区：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki workspace use payments

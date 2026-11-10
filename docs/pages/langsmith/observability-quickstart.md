@@ -167,6 +167,9 @@ Select your provider in the tabs on each step. The Anthropic and Gemini examples
    >         `https://aws.api.smith.langchain.com`
    >       </td>
    >     </tr>
+   >
+   >     <tr><td>Azure US</td>
+   >     <td>`https://azure.api.smith.langchain.com`</td></tr>
    >   </tbody>
    > </table>
    >

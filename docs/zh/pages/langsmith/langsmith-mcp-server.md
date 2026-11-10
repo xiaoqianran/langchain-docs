@@ -10,7 +10,9 @@
 >
 > **已弃用 - 请改用 [LangSmith Remote MCP](/langsmith/langsmith-remote-mcp)。**
 >
-> LangSmith 现在在 LangSmith 云和 [self-hosted LangSmith](/langsmith/self-hosted) v0.15 或更高版本上托管经过 OAuth 身份验证的远程 MCP 服务器。云端点：
+> LangSmith 在LangSmith 云、[BYOC](/langsmith/byoc) 数据平面以及[self-hosted LangSmith](/langsmith/self-hosted) v0.16 或更高版本上托管经过 OAuth 身份验证的远程 MCP 服务器。
+>
+> 云端点：
 >
 > <table>
 > <thead>
@@ -55,28 +57,31 @@
 > `https://aws.api.smith.langchain.com/mcp`
 > </td>
 > </tr>
+>
+> <tr><td>Azure US</td>
+> <td>`https://azure.api.smith.langchain.com/mcp`</td></tr>
 > </tbody>
 > </table>
 >
 > BYOC 端点：`https://<data_plane_url>/api/mcp`，其中 `<data_plane_url>` 是[BYOC](/langsmith/byoc) 数据平面的 URL。
 >
 > 自托管端点：`https://<your-langsmith-host>/api/mcp`。
->> 它公开与本页上记录的独立服务器相同的工具界面，但通过动态客户端注册的 OAuth 2.1 进行身份验证 - 无 API 密钥、无需单独部署、无标头配置。
+>> 它公开与本页上记录的独立服务器相同的工具界面，无需单独部署。交互式客户端通过动态客户端注册的 OAuth 2.1 进行身份验证，编程客户端可以在 `X-Api-Key` 标头中发送 LangSmith API 密钥。
 >
-> 下面记录的独立服务器仍然是 v0.15 之前版本上的自托管部署以及喜欢自行运行服务器的用户的受支持路径。
+> 下面记录的独立服务器仍然是 v0.16 之前版本上的自托管部署以及喜欢自行运行服务器的用户的受支持路径。
 
 LangSmith MCP 服务器是与[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-langsmith-mcp-server) 集成的[Model Context Protocol](https://modelcontextprotocol.io/introduction) (MCP) 服务器。它允许 MCP 兼容的客户端（例如 AI 编码助手）从 LangSmith 工作区读取 [conversation history](/langsmith/observability-concepts#threads)、[prompts](/langsmith/manage-prompts-programmatically)、[runs and traces](/langsmith/observability-concepts#runs)、[datasets](/langsmith/evaluation-concepts#datasets)、[experiments](/langsmith/evaluation-concepts#experiment) 和计费使用情况。
 
 ## 示例用例* **对话历史记录**：“从项目‘my-chatbot’中的线程‘thread-123’获取我的对话历史记录”
 * **提示管理**：“获取所有公共提示”或“拉取‘法律案例摘要’提示的模板”
-* **跟踪和运行**：“从项目‘alpha’获取最新的 10 个根运行”或“按 UUID 获取跟踪的所有运行”
+* **Traces and runs**: "Fetch the latest 10 root runs from project 'alpha'" or "Get all runs for a trace by UUID"
 * **数据集**：“列出聊天类型的数据集”或“从数据集‘customer-support-qa’读取示例”
 * **实验**：“列出数据集‘my-eval-set’的实验以及延迟和成本指标”
 * **账单**：“获取 2025 年 9 月的账单使用情况”
 
 > [!提示]
 >
-> **在代码或舰队中使用服务器**
+> **Use the server in code or Fleet**
 >
 > * 要在 Python 应用程序中连接和使用远程 MCP 服务器（包括此服务器），请参阅 [MCP (Model Context Protocol)](/oss/python/langchain/mcp)。
 > * 要在 Fleet 中连接并使用此服务器，请参阅[Remote MCP servers](/langsmith/fleet/remote-mcp-servers)。
@@ -86,9 +91,9 @@ LangSmith MCP 服务器是与[LangSmith](https://smith.langchain.com?utm_source=
 LangSmith MCP 服务器的托管版本可通过 [LangSmith Remote MCP](/langsmith/langsmith-remote-mcp) 获得，因此您无需自行运行服务器即可进行连接。
 
 * **网址：** `https://api.smith.langchain.com/mcp`
-* **身份验证：** 交互式 MCP 客户端使用 OAuth 2.1。有关编程 API 密钥访问，请参阅 [LangSmith Remote MCP authentication](/langsmith/langsmith-remote-mcp#authentication)。
+* **身份验证：** 交互式 MCP 客户端使用 OAuth 2.1。 See [LangSmith Remote MCP authentication](/langsmith/langsmith-remote-mcp#authentication) for programmatic API key access.
 
-**示例（光标`mcp.json`）：**
+**Example (Cursor `mcp.json`):**
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -98,7 +103,7 @@ LangSmith MCP 服务器的托管版本可通过 [LangSmith Remote MCP](/langsmit
     }
   }
 }
-```The MCP client opens a browser window to complete the OAuth flow when you first connect.
+```当您首次连接时，MCP 客户端会打开一个浏览器窗口以完成 OAuth 流程。
 
 ## 可用工具
 
@@ -106,22 +111,22 @@ LangSmith MCP 服务器的托管版本可通过 [LangSmith Remote MCP](/langsmit
 
 |工具|描述 |
 | - | - |
-| `get_thread_history` |获取对话线程的消息历史记录。 Uses character-based pagination: pass `page_number` (1-based) and use the returned `total_pages` to request more pages.可选：`max_chars_per_page`、`preview_chars`。 |
+| `get_thread_history` |获取对话线程的消息历史记录。使用基于字符的分页：传递 `page_number` （从 1 开始）并使用返回的 `total_pages` 来请求更多页面。可选：`max_chars_per_page`、`preview_chars`。 |
 
 ### 及时管理
 
 |工具|描述 |
 | - | - |
-| `list_prompts` | List prompts with optional filtering by visibility (public/private) and limit. |
-| `get_prompt_by_name` | Get a single prompt by exact name (details and template). |
-| `push_prompt` | Documentation-only: how to create and push prompts to LangSmith. |
+| `list_prompts` |列出提示，并可按可见性（公共/私人）和限制进行可选过滤。 |
+| `get_prompt_by_name` |按确切名称（详细信息和模板）获取单个提示。 |
+| `push_prompt` |仅文档：如何创建提示并将其推送到LangSmith。 |
 
 ### 跟踪和运行
 
 |工具|描述 |
 | - | - |
-| `fetch_runs` | Fetch runs (traces, tools, chains, etc.) from one or more projects. Supports filters (`run_type`, `error`, `is_root`), FQL (`filter`, `trace_filter`, `tree_filter`), and ordering. When `trace_id` is set, results are character-based paginated;否则一批最多`limit`。始终通过`limit`和`page_number`。 |
-| `list_projects` | List projects with optional filtering by name, dataset, and detail level. |
+| `fetch_runs` |从一个或多个项目中获取运行（跟踪、工具、链等）。支持过滤器（`run_type`、`error`、`is_root`）、FQL（`filter`、`trace_filter`、`tree_filter`）和排序。设置`trace_id`时，结果按字符分页；否则一批最多`limit`。始终通过`limit`和`page_number`。 |
+| `list_projects` |列出项目，并可按名称、数据集和详细级别进行可选过滤。 |
 
 ### 数据集和示例|工具|描述 |
 | - | - |
@@ -136,7 +141,7 @@ LangSmith MCP 服务器的托管版本可通过 [LangSmith Remote MCP](/langsmit
 
 |工具|描述 |
 | - | - |
-| `list_experiments` |列出数据集的实验（参考）项目。需要 `reference_dataset_id` 或 `reference_dataset_name`。返回指标（延迟、成本、反馈）。 |
+| `list_experiments` |列出数据集的实验（参考）项目。需要`reference_dataset_id`或`reference_dataset_name`。返回指标（延迟、成本、反馈）。 |
 | `run_experiment` |仅文档：如何进行实验和评估。 |
 
 ### 计费
@@ -231,7 +236,7 @@ LangSmith MCP 服务器的托管版本可通过 [LangSmith Remote MCP](/langsmit
    curl http://localhost:8000/health
    ```
 
-有关完整的 Docker 和 HTTP 流式传输详细信息，请参阅 [LangSmith MCP Server repository](https://github.com/langchain-ai/langsmith-mcp-server)。
+有关完整的 Docker 和 HTTP-streamable 详细信息，请参阅 [LangSmith MCP Server repository](https://github.com/langchain-ai/langsmith-mcp-server)。
 
 ## 部署概述
 
@@ -268,7 +273,7 @@ flowchart LR
 
 ## 环境变量
 
-|变量|必填 |描述 |
+|变量|必填|描述 |
 | - | - | - |
 | `LANGSMITH_API_KEY` |是的 |您的 [LangSmith API key](/langsmith/create-account-api-key) 用于身份验证。 |
 | `LANGSMITH_WORKSPACE_ID` |没有 |当您的 API 密钥有权访问多个工作区时的工作区 ID。 |

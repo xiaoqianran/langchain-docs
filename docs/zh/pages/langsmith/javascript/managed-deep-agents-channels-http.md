@@ -1,8 +1,8 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Connect a Managed Deep Agent over HTTP | https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels-http -->
+<!-- langchain-docs: Connect a Managed Deep Agent to a custom channel over HTTP | https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels-http -->
 
-# 通过 HTTP 连接托管深度代理
+# 通过 HTTP 将托管深度代理连接到自定义通道
 
 Start Managed Deep Agents 从任何可以发送 Webhook 的外部服务运行，并通过您自己的传输返回响应。
 
@@ -78,31 +78,31 @@ export function verify({ request, rawBody }: HttpChannelRequest): boolean {
 }
 ```> [!警告]
 >
-> 终端无平台认证。通道事件路由在适配器内部进行身份验证，而不是通过托管 Deep Agents 入口进行身份验证。这使得 `verify` 成为公共互联网和代理运行之间的唯一障碍。始终检查签名或共享秘密，切勿无条件接受请求。
+> 终端无平台认证。 Channel event routes authenticate inside the adapter, not through Managed Deep Agents ingress. That makes `verify` the only thing standing between the public internet and an agent run.始终检查签名或共享秘密，切勿无条件接受请求。
 
-使用 [deployment secret](/langsmith/javascript/managed-deep-agents-deploy) 作为签名密钥。引发的 `verify` 回调会拒绝带有 `500` 的请求。
+使用 [deployment secret](/langsmith/javascript/managed-deep-agents-deploy) 作为签名密钥。 A `verify` callback that raises rejects the request with `500`.
 
-从环境中解析通道凭据，而不是使用 `connections.get`，这需要运行。有关代理工具在运行期间使用的凭据，请参阅[Manage connections](/langsmith/javascript/managed-deep-agents-connections)。
+Resolve channel credentials from the environment, not with `connections.get`, which requires a run.有关代理工具在运行期间使用的凭据，请参阅[Manage connections](/langsmith/javascript/managed-deep-agents-connections)。
 
 **3.将请求解析为消息**
 
-`parse` 将已验证的请求转换为启动运行的消息，或忽略该事件。它接收与 `verify` 相同的 `HttpChannelRequest`，因此请求标头在这里也可用，并且它可能是异步的。返回两个形状之一：
+`parse` converts a verified request into a message that starts a run, or ignores the event. It receives the same `HttpChannelRequest` as `verify`, so request headers are available here too, and it may be asynchronous.返回两个形状之一：
 
 * `{ type: "message", message: {...} }` 开始跑步。
 * `{ type: "ignore" }` 跳过该事件。
 
-两者都接受可选的 `response` 和标准的 `Response`。
+Both accept an optional `response`, a standard `Response`.
 
 该消息携带四个必填字段：* **`userId`**：外部服务中调用者的 ID，作为字符串，从已验证的事件解析。代理身份验证将其映射到运行可能使用其凭据的主体，因此它是从经过验证的数据而不是从未经身份验证的字段派生的。使用 `String()` 转换数字提供商 ID。
 * **`threadId`**：要运行的对话，作为 UUID。 Managed Deep Agents 将其小写并将其映射到持久代理线程，因此相同的值会继续相同的对话。
-* **`target`**：一个 JSON 值，用于标识提供程序中的回复目标。这与代理线程 UUID 是分开的。即使通道仅开始运行，也应包含它。
+* **`target`**：一个 JSON 值，用于标识提供程序中的回复目标。这与代理线程 UUID 是分开的。 Include it even when the channel only starts runs.
 * **`content`**：消息文本，或LangChain内容块的数组。
 
 > [!警告]
 >
 > `threadId` 必须是 UUID。托管 Deep Agents 拒绝使用 `400` 的任何其他值，因此在返回之前将外部会话 ID 映射到 UUID。
 
-将 `parse` 添加到包含 `verify` 的 `lib/orders` 文件中。将两个示例的导入合并到文件顶部，仅保留 `HttpChannelRequest` 的一个导入：
+Add `parse` to the `lib/orders` file that contains `verify`. Combine the imports from both examples at the top of the file, keeping only one import of `HttpChannelRequest`:
 
 ```ts lib/orders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import type {
@@ -131,7 +131,7 @@ export async function parse({
 }
 ```
 
-在`lib/ids.ts`中定义助手。使用固定的命名空间，以便相同的顺序始终映射到相同的 UUID：
+在`lib/ids.ts`中定义助手。 Use a fixed namespace so the same order always maps to the same UUID:
 
 ```ts lib/ids.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createHash } from "node:crypto";

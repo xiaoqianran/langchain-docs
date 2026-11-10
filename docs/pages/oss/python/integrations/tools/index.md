@@ -347,6 +347,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Discord`](/oss/python/integrations/tools/discord) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-discord/month)](https://pypi.org/project/langchain-discord/) |
 | [`BlopusFetch`](https://blopus.ai/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-blopus/month)](https://pypi.org/project/langchain-blopus/) |
 | [`BlopusSearch`](https://blopus.ai/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-blopus/month)](https://pypi.org/project/langchain-blopus/) |
+| [`LinkDigestTool`](https://linkdigest.dev/docs#frameworks) | [  ![Downloads per month](https://static.pepy.tech/badge/linkdigest-mcp/month)](https://pypi.org/project/linkdigest-mcp/) |
 | [`Valyucontext`](https://docs.valyu.ai/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-valyu/month)](https://pypi.org/project/langchain-valyu/) |
 | [`VeidaImageGenerator`](https://veida.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-veida/month)](https://pypi.org/project/langchain-veida/) |
 | [`FoddaContextRetriever`](https://github.com/fodda-ai/langchain-fodda#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fodda/month)](https://pypi.org/project/langchain-fodda/) |
@@ -556,10 +557,12 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Channel3Toolkit`](https://channel3.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-channel3/month)](https://pypi.org/project/langchain-channel3/) |
 | [`StoreRouterToolkit`](https://github.com/octogen-ai/octogen-dev/tree/main/integrations/langchain#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-storerouter/month)](https://pypi.org/project/langchain-storerouter/) |
 | [`ArcnmToolkit`](https://github.com/arcnm/langchain-arcnm#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-arcnm/month)](https://pypi.org/project/langchain-arcnm/) |
+| [`OutcrawlSearchTool`](https://github.com/outcrawlai/langchain-outcrawl#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-outcrawl/month)](https://pypi.org/project/langchain-outcrawl/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |
 | [`StophyToolkit`](https://github.com/stophydotdev/stophy/tree/main/sdk/packages/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-stophy/month)](https://pypi.org/project/langchain-stophy/) |
 | [`BoscoToolkit`](https://github.com/Bosco-Labs/bosco-labs-data/tree/main/langchain-bosco) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bosco/month)](https://pypi.org/project/langchain-bosco/) |
 | [`VideoGenToolkit`](https://github.com/video-gen/langchain-videogen#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-videogen/month)](https://pypi.org/project/langchain-videogen/) |
+| [`CAEL provenance tool`](https://github.com/Vovala14/CAEL/tree/codex/agent-provenance/examples/agent_provenance) | [  ![Downloads per month](https://static.pepy.tech/badge/cael-provenance-bridge/month)](https://pypi.org/project/cael-provenance-bridge/) |
 | [`X402CleanWebTool`](https://github.com/nohosa001-pixel/x402-cleanweb-agent/tree/main/packages/langchain-x402-cleanweb#readme) | N/A |
 | [`x402checkToolkit`](https://x402check.dev) | N/A |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
@@ -570,7 +573,9 @@ The following table shows tools that generate video, image, or audio assets:
 | [`FokalsToolkit`](https://github.com/fokals/langchain-fokals#readme) | N/A |
 | [`FrameScanTool`](https://github.com/Sandeep85Das/langchain-frame) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
+| [`MobileboxToolkit`](https://github.com/fifteenA/mobilebox/tree/main/packages/python/langchain-mobilebox#readme) | N/A |
 | [`PopNowToolkit`](https://popnow.ai/docs/langchain) | N/A |
+| [`ScrapeUnblockerToolkit`](https://docs.scrapeunblocker.com/sdks/langchain) | N/A |
 | [`SideQuest`](https://sidequestpays.com/docs#langchain) | N/A |
 | [`Stagehand`](/oss/python/integrations/tools/stagehand) | N/A |
 

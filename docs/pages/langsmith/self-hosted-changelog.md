@@ -8,6 +8,20 @@
 
 **2026-11-09**
 
+## langsmith-0.18.0-rc.65
+
+**LangSmith version:** `0.18.22rc1`
+
+* This release packages the same LangSmith application version as langsmith-0.18.0-rc.63. Refer to the [langsmith-0.18.0-rc.63](#langsmith-0-18-0-rc-63) release notes below for application changes.
+* When `fleet.agentAccessToken.enabled` is enabled, `platformBackend.rbac.create` also grants `platform-backend` permission to read pods, ReplicaSets, and Deployments in the release namespace. Grant these permissions yourself if RBAC creation is disabled.
+* Assign distinct service accounts to the two Fleet pods. Chart validation rejects installs and upgrades that share one service account between them.
+
+**Download the Helm chart:** [`langsmith-0.18.0-rc.65.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.65/langsmith-0.18.0-rc.65.tgz)
+
+**Sandbox runtime chart, for Sandboxes in a separate cluster:** [`langsmith-sandbox-0.18.0-rc.5.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-sandbox-0.18.0-rc.5/langsmith-sandbox-0.18.0-rc.5.tgz)
+
+**2026-11-09**
+
 ## langsmith-0.18.0-rc.64
 
 **LangSmith version:** `0.18.22rc1`

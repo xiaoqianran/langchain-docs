@@ -1167,6 +1167,9 @@ For additional information, see Microsoft's [documentation](https://learn.micros
              `https://aws.api.smith.langchain.com/scim/v2`
            </td>
          </tr>
+
+         <tr><td>Azure US</td>
+         <td>`https://azure.api.smith.langchain.com/scim/v2`</td></tr>
        </tbody>
      </table>
 
@@ -1332,6 +1335,9 @@ If you already sign in through a custom SAML app, you have two options.
           `https://aws.api.smith.langchain.com/scim/v2`
         </td>
       </tr>
+
+      <tr><td>Azure US</td>
+      <td>`https://azure.api.smith.langchain.com/scim/v2`</td></tr>
     </tbody>
   </table>
 * **Unique identifier field for users**: `userName`

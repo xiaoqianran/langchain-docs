@@ -57,7 +57,7 @@ Host-specific user-level locations:
 
 ## Pi package
 
-Pi loads OpenWiki's skill and lifecycle tools from the npm package:
+Pi loads OpenWiki's skill, retrieval, and lifecycle tools from the npm package:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pi install npm:openwiki

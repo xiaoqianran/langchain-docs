@@ -6,7 +6,7 @@
 
 定义工具，让LangChain代理获取实时数据、执行代码、查询外部数据库并采取行动。
 
-工具扩展了[agents](/oss/python/langchain/agents)的功能——让它们获取实时数据、执行代码、查询外部数据库以及在现实世界中采取行动。
+工具扩展了[agents](/oss/python/langchain/agents)的功能——让它们获取实时数据、执行代码、查询外部数据库以及在世界中采取行动。
 
 在底层，工具是可调用的函数，具有明确定义的输入和输出，并传递给[chat model](/oss/python/langchain/models)。该模型根据对话上下文决定何时调用工具以及提供哪些输入参数。
 
@@ -72,7 +72,7 @@ def calc(expression: str) -> str:
 
 ### 高级模式定义
 
-使用 Pydantic 模型或 JSON 模式定义复杂输入：
+使用 Pydantic 模型或 JSON 模式定义复杂的输入：
 
 ```python Pydantic model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from pydantic import BaseModel, Field
@@ -125,7 +125,7 @@ def get_weather(location: str, units: str = "celsius", include_forecast: bool = 
 
 以下参数名称是保留的，不能用作工具参数。使用这些名称将导致运行时错误。
 
-|参数名称|目的|
+|参数名称 |目的|
 | - | - |
 | `config` |保留用于将 `RunnableConfig` 传递给内部工具 |
 | `runtime` |为`ToolRuntime`参数保留（访问状态、上下文、存储）|要访问运行时信息，请使用 [⟦T42⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime) 参数，而不是命名您自己的参数 `config` 或 `runtime`。
@@ -140,7 +140,7 @@ def get_weather(location: str, units: str = "celsius", include_forecast: bool = 
 | - | - | - |
 | **状态** |短期记忆 - 当前对话中存在的可变数据（消息、计数器、自定义字段）|访问对话历史记录、跟踪工具调用计数 |
 | **背景** |调用时传递的不可变配置（用户 ID、会话信息）|根据用户身份个性化响应 |
-| **商店** |长期记忆 - 在对话中保存的持久数据 |保存用户偏好，维护知识库|
+| **商店** |长期记忆 - 在对话中保存的持久数据 |保存用户偏好，维护知识库 |
 | **流作家** |在工具执行期间发出实时更新 |显示长时间运行的操作的进度 |
 | **执行信息** |当前执行的标识和重试信息（线程 ID、运行 ID、尝试次数）|访问线程/运行 ID，根据重试状态调整行为 |
 | **服务器信息** |在 LangGraph 服务器上运行时的服务器特定元数据（助手 ID、图形 ID、经过身份验证的用户）|访问助手 ID、图形 ID 或经过身份验证的用户信息 |
@@ -659,7 +659,7 @@ def fetch_order_status(order_id: str) -> str:
 
 
 agent = create_agent(
-    ChatOpenAI(model="gpt-4o-mini"),
+    ChatOpenAI(model="gpt-5.4-mini"),
     tools=[fetch_order_status],
 )
 
@@ -718,7 +718,7 @@ def fetch_and_store_order(order_id: str, runtime: ToolRuntime) -> Command:
     )
 ```
 
-要写入父图，请设置 `graph=Command.PARENT`。在这种情况下，`ToolMessage`要求被取消，因为执行完全离开当前图。
+要写入父图，请设置 `graph=Command.PARENT`。在这种情况下，`ToolMessage`要求被解除，因为执行完全离开当前图。
 
 ### 错误处理
 
@@ -1178,7 +1178,7 @@ def get_message_count(runtime: ToolRuntime) -> str:
 1. **定义**一个带有 `tool(name=..., description=..., args_schema=...)` 和 `langchain.tools` 的无头工具。无头工具仅具有模式，没有进程内实现。
 2. **使用`create_agent`或您的LangGraph图注册**该工具，以便模型可以正常调用它。
 3. 调用该工具时**处理**中断负载。该图不是在本地运行，而是以形状类似 `{"type": "tool", "tool_call": {"id", "name", "args"}}` 的有效负载暂停。
-4. 在您​​的应用程序、其他服务或人工步骤执行操作后，**恢复**图表。对于基于浏览器的流程，您可以在前端镜像架构并在那里附加 `.implement(...)`。
+4. **在您的应用程序、其他服务或人工步骤执行操作后恢复**图表。对于基于浏览器的流程，您可以在前端镜像架构并在那里附加 `.implement(...)`。
 
 > [!注意]
 >

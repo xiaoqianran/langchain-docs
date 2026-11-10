@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公共 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 本页介绍秘密路由和部署选项。要在部署之前测试代理，请参阅[Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development)。有关命令标志、部署步骤列表和故障排除，请参阅 [CLI reference](/langsmith/python/managed-deep-agents-cli)。要部署已完成的开源项目，请参阅 [design agent](/langsmith/python/managed-deep-agents-design-agent) 和 [paid media agent](/langsmith/python/managed-deep-agents-paid-media-agent) 模板。
 
@@ -38,6 +38,7 @@
 | GCP 欧盟 (`eu.smith.langchain.com`) | `https://eu.api.smith.langchain.com` |支持 |
 | GCP 亚太地区 (`apac.smith.langchain.com`) | `https://apac.api.smith.langchain.com` |支持 |
 | AWS 美国 (`aws.smith.langchain.com`) | `https://aws.api.smith.langchain.com` |支持 |
+| Azure 美国 (`azure.smith.langchain.com`) | `https://azure.api.smith.langchain.com` |支持 |
 
 例如，要部署到 GCP EU：
 
@@ -53,9 +54,9 @@ LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com
 >
 > LangSmith 托管工具仅在 GCP US 中可用。
 
-## 选择 BYOC 数据平面
+## 选择 BYOC 数据平面对于 BYOC，请使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本。将 `LANGSMITH_ENDPOINT` 设置为数据平面的 API URL，而不是 SaaS 区域端点。在 **设置 > 数据平面** 中找到端点。参见[BYOC usage](/langsmith/byoc-usage)。
 
-对于 BYOC，请使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本。将 `LANGSMITH_ENDPOINT` 设置为数据平面的 API URL，而不是 SaaS 区域端点。在 **设置 > 数据平面** 中找到端点。参见[BYOC usage](/langsmith/byoc-usage)。将 `LANGSMITH_API_KEY` 设置为该数据平面内工作空间的键。将 `LANGSMITH_WORKSPACE_ID` 设置为目标工作空间 ID，或将 `--workspace-id` 传递给 `mda deploy`。在部署之前，在项目的 `.env` 或 shell 环境中配置这些值。
+将 `LANGSMITH_API_KEY` 设置为该数据平面内工作空间的键。将 `LANGSMITH_WORKSPACE_ID` 设置为目标工作空间 ID，或将 `--workspace-id` 传递给 `mda deploy`。在部署之前，在项目的 `.env` 或 shell 环境中配置这些值。
 
 CLI 从数据平面端点派生部署 API URL。请勿将 `/api-host` 附加到 `LANGSMITH_ENDPOINT`。
 
@@ -88,17 +89,17 @@ uv run mda deploy --name research-assistant
 
 `mda deploy` 默认创建无服务器部署。创建专用部署时使用 `--deployment-type dedicated`。
 
-无服务器需要受支持的 GCP SaaS 环境。 AWS、Azure、自托管和混合环境拒绝无服务器部署。使用 `dedicated` 实现始终开启的容量。
+无服务器在每个LangSmith云区域中都可用。自托管和混合环境拒绝无服务器部署。使用 `dedicated` 实现始终开启的容量。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda deploy --deployment-type dedicated
-```
-
-使用 `--no-wait` 触发构建而不轮询完成：
+```使用 `--no-wait` 触发构建而不轮询完成：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda deploy --no-wait
-```设置 `--no-wait` 时，将跳过该部署调用的计划协调，因为 CLI 在部署到达 `DEPLOYED` 之前退出。
+```
+
+设置 `--no-wait` 时，将跳过该部署调用的计划协调，因为 CLI 在部署到达 `DEPLOYED` 之前退出。
 
 成功后，CLI 将打印 LangSmith 部署仪表板 URL。有关完整的部署步骤列表，请参阅[CLI reference](/langsmith/python/managed-deep-agents-cli#deploy-projects)。
 
@@ -118,7 +119,7 @@ requires-python = ">=3.11"
 python-version = "3.14"
 ```
 
-设置后，`python-version`采用带引号的`major.minor`字符串，没有补丁版本。 MDA 将解析后的版本写入生成的`langgraph.json` 中的`python_version`，并选择匹配的[Agent Server](/langsmith/agent-server-overview) 图像。 `requires-python` 仍然是项目自身的兼容性要求。
+设置后，`python-version`采用带引号的`major.minor`字符串，没有补丁版本。 MDA 将解析后的版本写入生成的 `langgraph.json` 中的 `python_version` 并选择匹配的 [Agent Server](/langsmith/agent-server-overview) 图像。 `requires-python` 仍然是项目自身的兼容性要求。
 
 当 MDA 添加对较新 Python 的支持时，将其固定在相同的次要版本上。要在单个构建中覆盖它，请设置 `MDA_PYTHON_VERSION`：
 
@@ -126,9 +127,9 @@ python-version = "3.14"
 MDA_PYTHON_VERSION=3.12 uv run mda deploy
 ```
 
-`requires-python` 排除的目标构建失败。相反，依赖于图像的确切补丁版本的警告会发出警告，因为图像标签不会固定补丁版本。
+`requires-python` 排除的目标构建失败。相反，依赖于图像的确切补丁版本的警告会发出警告，因为图像标签不会固定补丁版本。`python-version` 仅控制部署镜像。本地构建、`mda dev`、Harbor 任务镜像和[execution sandboxes](/langsmith/python/managed-deep-agents-sandboxes) 分别选择它们的解释器。
 
-`python-version` 仅控制部署镜像。本地构建、`mda dev`、Harbor 任务镜像和[execution sandboxes](/langsmith/python/managed-deep-agents-sandboxes) 分别选择它们的解释器。## 秘密和环境文件
+## 秘密和环境文件
 
 `mda deploy` 在 shell 环境变量之前读取项目 `.env` 值。使用 `.env` 作为验证部署的 LangSmith API 密钥以及托管部署所需的运行时机密：
 
@@ -144,13 +145,13 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY`等平台变量被保留。他们可以对部署进行身份验证，但不会作为用户管理的部署机密上传。
 
-当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的秘密转发。
+当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的机密转发。保留的平台变量、空值、`.env`和`.env.*`文件不会复制到已编译的构建存档中。
 
-保留的平台变量、空值、`.env`和`.env.*`文件不会复制到已编译的构建存档中。
+有关身份验证密钥顺序和保留变量，请参阅[CLI reference](/langsmith/python/managed-deep-agents-cli#authentication)。
 
-认证密钥顺序和保留变量请参见[CLI reference](/langsmith/python/managed-deep-agents-cli#authentication)。
+## 部署故障排除
 
-## 部署故障排除有关部署故障排除，请参阅[CLI reference](/langsmith/python/managed-deep-agents-cli#troubleshooting)。
+有关部署故障排除，请参阅[CLI reference](/langsmith/python/managed-deep-agents-cli#troubleshooting)。
 
 如果部署达到`BUILD_FAILED`或`DEPLOY_FAILED`，请打开LangSmith中打印的部署URL并检查修订日志。
 
@@ -172,11 +173,11 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 >
 > 根据托管 cron 计划运行代理。
 
-> [卡][Custom tools](/langsmith/python/managed-deep-agents-tools)
+> [卡片][Custom tools](/langsmith/python/managed-deep-agents-tools)
 >
 > 将创作的 LangChain 工具添加到代理定义中。
 
-> [卡][CLI reference](/langsmith/python/managed-deep-agents-cli)
+> [卡片][CLI reference](/langsmith/python/managed-deep-agents-cli)
 >
 > 查找每个 `mda` 命令和标志。
 

@@ -3827,7 +3827,7 @@
       ],
       "managed-deep-agents-channels-http": [
         {
-          "title": "Connect a Managed Deep Agent over HTTP",
+          "title": "Connect a Managed Deep Agent to a custom channel over HTTP",
           "rel": "langsmith/javascript/managed-deep-agents-channels-http.md"
         }
       ],
@@ -4031,7 +4031,7 @@
       ],
       "managed-deep-agents-channels-http": [
         {
-          "title": "Connect a Managed Deep Agent over HTTP",
+          "title": "Connect a Managed Deep Agent to a custom channel over HTTP",
           "rel": "langsmith/python/managed-deep-agents-channels-http.md"
         }
       ],

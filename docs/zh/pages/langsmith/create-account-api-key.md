@@ -105,7 +105,7 @@ LangSmith 支持三种不同权限和生命周期的 API 密钥：
 
 ### 列出并删除跟踪键在 **设置** > **API 密钥**中，选择 **跟踪** 以查看密钥。要删除密钥，请选择其删除操作并输入其描述进行确认。仅当您有权删除该密钥时，才会出现删除操作。
 
-`GET /api/v1/orgs/current/tracing-keys` 列出经过身份验证的用户可见的密钥。它返回`items`和`next_cursor`。使用`page_size`每页请求1-100个key；默认值为 50。将 `next_cursor` 作为 `cursor` 传递以请求下一页。可选的 `workspace_ids` 过滤器将结果限制为匹配可见工作区。
+`GET /api/v1/orgs/current/tracing-keys` 列出经过身份验证的用户可见的密钥。它返回`items`和`next_cursor`。使用`page_size`每页请求1-100个密钥；默认值为 50。将 `next_cursor` 作为 `cursor` 传递以请求下一页。可选的 `workspace_ids` 过滤器将结果限制为匹配可见工作区。
 
 列出密钥并不一定授予删除它的权限。对于无法访问完整范围的调用者，隐藏的工作区 ID 和名称将被省略。检查`can_delete`删除权限。
 
@@ -193,6 +193,9 @@ export LANGSMITH_AGENT_ENVIRONMENT="local"
           `https://aws.api.smith.langchain.com`
         </td>
       </tr>
+
+      <tr><td>Azure US</td>
+      <td>`https://azure.api.smith.langchain.com`</td></tr>
     </tbody>
   </table>
 

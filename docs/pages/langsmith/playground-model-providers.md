@@ -100,16 +100,33 @@ Amazon Bedrock supports three authentication methods. **IAM trusted entity is th
 
 > [!NOTE]
 >
-> **Not available for [self-hosted LangSmith](/langsmith/self-hosted) or [BYOC](/langsmith/byoc).** Use access keys or the Bedrock API key instead.
+> **Not available for [self-hosted LangSmith](/langsmith/self-hosted) or for [BYOC](/langsmith/byoc) on GCP or Azure.** Use access keys or the Bedrock API key instead. On BYOC AWS data planes, follow [IAM trusted entity on BYOC](#iam-trusted-entity-on-byoc) instead of the steps below.
 
 With IAM trusted entity authentication, you create an IAM role in your AWS account and allow LangSmith to assume it. No access keys are stored in LangSmith. Instead, LangSmith uses [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) to assume the role on each request.
 
-The `AWS_IAM_ROLE_ARN` secret set here is also read by the [LLM Gateway](/langsmith/llm-gateway-provider-authentication#use-an-iam-role). One role covers Playground, LLM-as-a-judge evaluators, and gateway requests.
+The `AWS_IAM_ROLE_ARN` secret set here is also read by the [LLM Gateway](/langsmith/llm-gateway-provider-authentication#use-an-iam-role). One role covers Playground, LLM-as-a-judge evaluators, and gateway requests. If you also use the role with the gateway, add the [gateway's permissions](/langsmith/llm-gateway-provider-authentication#use-an-iam-role) to the role.
 
 To set this up:
 
-1. Create an IAM role in your AWS account with permissions to invoke Bedrock models (e.g., `bedrock:InvokeModel`).
-2. Add a trust policy that allows LangSmith's AWS account (`808407022534`) to assume the role, using your LangSmith workspace ID as the external ID:
+1. Create an IAM role in your AWS account with permissions to invoke Bedrock models:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+2. Add a trust policy that allows LangSmith's AWS account (`808407022534`) to assume the role, using your LangSmith workspace ID as the external ID. You can copy this policy, with your workspace ID filled in, from the Bedrock provider's secrets configuration:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -140,6 +157,47 @@ To set this up:
    ![Bedrock secrets and API keys configuration with the IAM Trusted Entity section](https://mintcdn.com/langchain-5e9cc07a/5xyMbImu-yvQUeiG/images/langsmith/bedrock-secrets-config.png?fit=max\&auto=format\&n=5xyMbImu-yvQUeiG\&q=85\&s=5ba03ea30f7bba78bc51d0fa8e273878)
 
 For more details on trust policies, see the [AWS documentation](https://aws.amazon.com/blogs/security/how-to-use-trust-policies-with-iam-roles/).
+
+#### IAM trusted entity on BYOC
+
+On [BYOC](/langsmith/byoc) AWS data planes, two roles in your data plane's AWS account assume your role. LangSmith's AWS account does not. A playground role serves the Playground and LLM-as-a-judge evaluators. The data plane's workload role serves the [LLM Gateway](/langsmith/llm-gateway-provider-authentication#use-an-iam-role). Both can only assume roles that carry the `LangSmithBedrock=true` tag, and only with an external ID.
+
+If your data plane uses [bring your own IAM](/langsmith/byoc-byoiam-aws), create it with version `v0.17.67` or later of the [`byoiam` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam). If your data plane was created with an earlier version, upgrade the module to `v0.17.67` or later and re-apply it. Then contact [LangSmith support](https://support.langchain.com) to turn on IAM trusted entity authentication for the data plane.
+
+To set this up:
+
+1. Create an IAM role with the permissions policy from [IAM trusted entity (recommended)](#iam-trusted-entity-recommended). If the LLM Gateway also uses the role, add the [gateway's permissions](/langsmith/llm-gateway-provider-authentication#use-an-iam-role) as well.
+2. Add the tag `LangSmithBedrock` with the value `true` to the role.
+3. Add a trust policy that allows both roles to assume your role, using your LangSmith workspace ID as the external ID. Because the roles tag their sessions, the policy must also allow `sts:TagSession` in a separate statement without the `sts:ExternalId` condition. Without that statement, AWS denies the role assumption. You can copy this policy, with both role ARNs and your workspace ID filled in, from the Bedrock provider's secrets configuration:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": ["<playground-role-arn>", "<gateway-role-arn>"]
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": {
+          "sts:ExternalId": "<your-langsmith-workspace-id>"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": ["<playground-role-arn>", "<gateway-role-arn>"]
+      },
+      "Action": "sts:TagSession"
+    }
+  ]
+}
+```
+
+4. In the Playground, enter the role ARN in the Bedrock provider's **IAM Trusted Entity** section, as described in step 3 of [IAM trusted entity (recommended)](#iam-trusted-entity-recommended).
 
 #### Access keys
 

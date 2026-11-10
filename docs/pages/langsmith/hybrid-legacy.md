@@ -132,6 +132,9 @@ LangSmith Deployment control plane:
         `https://aws.api.host.langchain.com`
       </td>
     </tr>
+
+    <tr><td>Azure US</td>
+    <td>`https://azure.api.host.langchain.com`</td></tr>
   </tbody>
 </table>
 
@@ -180,6 +183,9 @@ LangSmith API:
         `https://aws.api.smith.langchain.com`
       </td>
     </tr>
+
+    <tr><td>Azure US</td>
+    <td>`https://azure.api.smith.langchain.com`</td></tr>
   </tbody>
 </table>
 

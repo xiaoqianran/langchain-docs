@@ -33,7 +33,7 @@ LangChain 为常见用例提供预构建的中间件。每个中间件均可投�
 | [Shell tool](#shell-tool) |向代理公开持久 shell 会话以执行命令。 |
 | [Filesystem](#filesystem-middleware) |为代理提供用于存储上下文和长期记忆的文件系统。 |
 | [Subagent](#subagent) |添加生成子代理的能力。 |
-| [Rubric grading (Beta)](#rubric-grading) |应用法学硕士作为评判评分，以便代理进行自我评估和迭代，直到满足标准。 |
+| [Rubric grading](#rubric-grading) |应用法学硕士作为评判评分，以便代理进行自我评估和迭代，直到满足标准。 |
 | [File search](#file-search) |提供对文件系统文件的 Glob 和 Grep 搜索工具。 |
 | [Context editing](#context-editing) |通过修剪或清除工具的使用来管理对话上下文。 |
 | [LLM tool emulator](#llm-tool-emulator) |使用 LLM 模拟工具执行以进行测试。 |
@@ -239,7 +239,7 @@ agent = create_agent(
 
 使用可配置的指数退避自动重试失败的模型调用。模型重试对于以下情况很有用：* 处理模型 API 调用中的瞬时故障。
 * 提高网络相关模型请求的可靠性。
-* 构建弹性代理来优雅地处理临时模型错误。
+* 构建有弹性的代理，可以优雅地处理临时模型错误。
 
 **API参考：** [⟦T106⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)
 
@@ -434,7 +434,7 @@ agent = create_agent(
 
 #### 处理拒绝
 
-选择当模型拒绝时应用程序如何响应：
+选择模型拒绝时您的应用程序如何响应：
 
 > [手风琴] 捕获错误并继续
 >
@@ -623,7 +623,7 @@ agent = create_agent(
 > * 触发条件列表，任意一项满足时触发（OR逻辑）
 > * 每个阈值可以使用`fraction`（模型上下文大小）、`tokens`（绝对计数）或`messages`（消息计数）
 >
-> **保留条件** 控制要保留多少上下文（准确指定一个）：
+> **保留条件** 控制要保留的上下文量（准确指定一个）：
 >
 > * `fraction` - 要保留的模型上下文大小的分数
 > * `tokens` - 要保留的绝对令牌计数
@@ -1243,7 +1243,7 @@ agent = create_agent(
 >
 >> [!警告]
 >>
->> 编辑规则在执行后应用，并且在使用 `HostExecutionPolicy` 时不会防止机密或敏感数据的泄露。
+>> 编辑规则在执行后应用，并且在使用 `HostExecutionPolicy` 时不会阻止机密或敏感数据的泄露。
 >
 > **工具\_描述** `str | None`
 >
@@ -1936,7 +1936,7 @@ agent = create_agent(
 
 > [!注意]
 >
-> `RubricMiddleware` 需要 `deepagents>=0.6.5`。位于[**beta**](/oss/python/versioning)； API 将来可能会发生变化。
+> `RubricMiddleware` 需要 `deepagents>=0.6.5`。
 
 有些任务有明确的“完成”定义，代理无法在第一次尝试时可靠地完成任务。 `RubricMiddleware` 允许您将“完成的内容”声明为评分标准，并让代理进行自我评估和迭代，直到满足评分标准或达到最大迭代上限。
 
@@ -2004,7 +2004,9 @@ agent = create_deep_agent(
     ],
     checkpointer=InMemorySaver(),
 )
-``````python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2050,9 +2052,7 @@ agent = create_deep_agent(
     ],
     checkpointer=InMemorySaver(),
 )
-```
-
-有关完整的配置选项、流事件和完整的代码生成示例，请参阅[Grading rubrics](/oss/python/deepagents/rubric)。
+```有关完整的配置选项、流事件和完整的代码生成示例，请参阅[Grading rubrics](/oss/python/deepagents/rubric)。
 
 ### 文件搜索
 
@@ -2207,7 +2207,7 @@ agent = create_agent(
 > 1. 监控对话中的令牌计数
 > 2. 当达到阈值时，清除旧工具输出
 > 3.保留最近的N个工具结果
-> 4. 有选择地保留上下文的工具调用参数
+> 4. 可选择保留上下文的工具调用参数
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.agents import create_agent

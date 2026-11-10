@@ -8,11 +8,14 @@
 
 LangSmith SDK 配置文件允许您将 [API keys](/langsmith/create-account-api-key)、端点和工作区 ID 保存在可重用的 JSON 文件中，而不是在每个 shell 会话中设置相同的环境变量。
 
-当您经常在 [LangSmith Cloud regions](/langsmith/cloud#regional-storage)、自托管实例或 [workspaces](/langsmith/administration-overview#workspaces) 之间切换时，或者当您希望远程运行时从已安装的文件加载相同的 SDK 配置时，请使用配置文件。
+在以下情况下使用配置文件：
+
+* 您经常在 [LangSmith Cloud regions](/langsmith/cloud#regions)、自托管实例或 [workspaces](/langsmith/administration-overview#workspaces) 之间切换。
+* 您希望远程运行时从已安装的文件加载相同的 SDK 配置。
 
 > [!警告]
 >
-> 配置文件可以包含 API 密钥和 OAuth 刷新令牌。不要将它们提交到源代码控制、将它们烘焙到容器映像中或在日志中打印它们。像其他凭证一样小心地存储和安装它们。
+> 配置文件可以包含 API 密钥和 OAuth 刷新令牌。不要将它们提交到源代码管理、将它们烘焙到容器映像中或在日志中打印它们。像其他凭证一样小心地存储和安装它们。
 
 ## 最低版本
 
@@ -45,7 +48,7 @@ export LANGSMITH_CONFIG_FILE=/path/to/langsmith-config.json
 
 使用 `profiles` 对象创建 `~/.langsmith/config.json`。每个配置文件可以定义：
 
-|领域|描述 |
+|领域 |描述 |
 | - | - |
 | `api_url` | LangSmith API 端点。使用与 `LANGSMITH_ENDPOINT` 相同的值。 |
 | `api_key` | LangSmith API 密钥。参见[Create an account and API key](/langsmith/create-account-api-key)。 |
@@ -141,7 +144,7 @@ langsmith --format json profile list
 
 运行 `langsmith auth login` 使用 OAuth 进行身份验证，而不是手动创建 API 密钥配置文件。该命令启动基于浏览器的设备授权流程，将 OAuth 令牌存储在所选配置文件中，并将该配置文件设置为当前配置文件。> [!注意]
 >
-> `langsmith auth login` 也适用于来自 LangSmith CLI `v0.2.46` 及更高版本的自托管实例，前提是部署位于 LangSmith `0.16` 或更高版本并启用了 OAuth 授权服务器。当在 Helm 图表中设置 `config.hostname` 并配置签名 JWKS（`config.signingJwks` 或`config.existingSecretName` 中的密钥 `langsmith_signing_jwks`）时，OAuth 授权服务器会自动启用。在早期部署中，或者如果未配置签名 JWKS，请改为创建 API 密钥配置文件。
+> `langsmith auth login` also works against self-hosted instances from LangSmith CLI `v0.2.46` and later, provided the deployment is on LangSmith `0.16` or later with the OAuth authorization server enabled. The OAuth authorization server is enabled automatically when `config.hostname` is set in your Helm chart **and** a signing JWKS is configured (`config.signingJwks` or key `langsmith_signing_jwks` in `config.existingSecretName`).在早期部署中，或者如果未配置签名 JWKS，请改为创建 API 密钥配置文件。
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith auth login

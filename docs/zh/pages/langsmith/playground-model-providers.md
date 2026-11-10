@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 要通过 [LLM Gateway](/langsmith/llm-gateway) 发送 Playground 请求，请选择 **LangSmith 网关** 作为提供商。此页面上的提供程序直接使用您的工作区密钥调用模型提供程序，因此网关策略和 [fallback chains](/langsmith/llm-gateway-fallbacks#set-fallbacks-for-a-prompt) 不适用于它们。
+> 要通过 [LLM Gateway](/langsmith/llm-gateway) 发送 Playground 请求，请选择 **LangSmith 网关** 作为提供商。此页面上的提供程序直接使用您的工作区机密调用模型提供程序，因此网关策略和 [fallback chains](/langsmith/llm-gateway-fallbacks#set-fallbacks-for-a-prompt) 不适用于它们。
 
 使用此页面获取可用提供程序及其配置选项的列表：
 
@@ -100,16 +100,33 @@ OpenAI
 
 > [!注意]
 >
-> **不适用于 [self-hosted LangSmith](/langsmith/self-hosted) 或 [BYOC](/langsmith/byoc)。** 请改用访问密钥或 Bedrock API 密钥。
+> **不适用于 GCP 或 Azure 上的 [self-hosted LangSmith](/langsmith/self-hosted) 或 [BYOC](/langsmith/byoc)。** 请改用访问密钥或 Bedrock API 密钥。在 BYOC AWS 数据平面上，请遵循 [IAM trusted entity on BYOC](#iam-trusted-entity-on-byoc) 而不是以下步骤。
 
 通过 IAM 可信实体身份验证，您可以在 AWS 账户中创建 IAM 角色并允许 LangSmith 代入该角色。 LangSmith 中不存储访问密钥。相反，LangSmith 使用 [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) 承担每个请求的角色。
 
-这里设置的`AWS_IAM_ROLE_ARN`秘密也被[LLM Gateway](/langsmith/llm-gateway-provider-authentication#use-an-iam-role)读取。其中一个角色包括 Playground、LLM 法官评估员和网关请求。
+这里设置的`AWS_IAM_ROLE_ARN`秘密也被[LLM Gateway](/langsmith/llm-gateway-provider-authentication#use-an-iam-role)读取。其中一个角色包括 Playground、LLM 法官评估员和网关请求。如果您还将该角色与网关一起使用，请将 [gateway's permissions](/langsmith/llm-gateway-provider-authentication#use-an-iam-role) 添加到该角色。
 
 要进行此设置：
 
-1. 在您的 AWS 账户中创建一个 IAM 角色，该角色具有调用 Bedrock 模型的权限（例如，`bedrock:InvokeModel`）。
-2. 添加信任策略，允许 LangSmith 的 AWS 账户 (`808407022534`) 代入该角色，并使用您的 LangSmith 工作区 ID 作为外部 ID：
+1. 在您的 AWS 账户中创建一个具有调用 Bedrock 模型权限的 IAM 角色：
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+2. 添加信任策略，允许 LangSmith 的 AWS 账户 (`808407022534`) 代入该角色，并使用您的 LangSmith 工作区 ID 作为外部 ID。您可以从 Bedrock 提供程序的机密配置中复制此策略，并填写您的工作区 ID：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -129,15 +146,54 @@ OpenAI
     }
   ]
 }
-```
-
-> [!提示]
+```> [!提示]
 >
-> 您可以在[LangSmith workspace settings](https://smith.langchain.com/settings)中找到您的工作区ID。3. 在 LangSmith Playground 中，通过单击 **Key** 图标打开 Bedrock 提供程序的机密配置（模型配置下拉列表本身不提供 IAM 受信任实体选项）。然后展开 **IAM 受信任实体** 部分并输入您创建的角色的 ARN。
+> 您可以在[LangSmith workspace settings](https://smith.langchain.com/settings)中找到您的工作区ID。
+
+3. 在 LangSmith Playground 中，通过单击 **Key** 图标打开 Bedrock 提供程序的机密配置（模型配置下拉列表本身不提供 IAM 受信任实体选项）。然后展开 **IAM Trusted Entity** 部分并输入您创建的角色的 ARN。
 
    ![Bedrock secrets and API keys configuration with the IAM Trusted Entity section](https://mintcdn.com/langchain-5e9cc07a/5xyMbImu-yvQUeiG/images/langsmith/bedrock-secrets-config.png?fit=max\&auto=format\&n=5xyMbImu-yvQUeiG\&q=85\&s=5ba03ea30f7bba78bc51d0fa8e273878)
 
 有关信任策略的更多详细信息，请参阅[AWS documentation](https://aws.amazon.com/blogs/security/how-to-use-trust-policies-with-iam-roles/)。
+
+#### BYOC 上的 IAM 可信实体
+
+在 [BYOC](/langsmith/byoc) AWS 数据平面上，数据平面 AWS 账户中的两个角色将承担您的角色。 LangSmith 的 AWS 账户没有。 Playground 角色为 Playground 和 LLM 法官评估者服务。数据平面的工作负载角色服务于[LLM Gateway](/langsmith/llm-gateway-provider-authentication#use-an-iam-role)。两者都只能承担带有 `LangSmithBedrock=true` 标签的角色，并且只能具有外部 ID。
+
+如果您的数据平面使用 [bring your own IAM](/langsmith/byoc-byoiam-aws)，请使用 `v0.17.67` 或更高版本的 [⟦T13⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam) 创建它。如果您的数据平面是使用早期版本创建的，请将模块升级到`v0.17.67`或更高版本并重新应用。然后联系 [LangSmith support](https://support.langchain.com) 打开数据平面的 IAM 可信实体身份验证。
+
+要进行此设置：1. 使用 [IAM trusted entity (recommended)](#iam-trusted-entity-recommended) 中的权限策略创建 IAM 角色。如果 LLM 网关也使用该角色，请同时添加 [gateway's permissions](/langsmith/llm-gateway-provider-authentication#use-an-iam-role)。
+2. 将值为 `true` 的标签 `LangSmithBedrock` 添加到角色。
+3. 添加信任策略，允许两个角色代入您的角色，并使用您的 LangSmith 工作区 ID 作为外部 ID。由于角色标记其会话，因此策略还必须在单独的语句中允许 `sts:TagSession`，而无需 `sts:ExternalId` 条件。如果没有该声明，AWS 就会否认角色假设。您可以从 Bedrock 提供程序的密钥配置中复制此策略，并填写角色 ARN 和工作区 ID：
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": ["<playground-role-arn>", "<gateway-role-arn>"]
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": {
+          "sts:ExternalId": "<your-langsmith-workspace-id>"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": ["<playground-role-arn>", "<gateway-role-arn>"]
+      },
+      "Action": "sts:TagSession"
+    }
+  ]
+}
+```
+
+4. 在 Playground 中，在 Bedrock 提供商的 **IAM Trusted Entity** 部分中输入角色 ARN，如 [IAM trusted entity (recommended)](#iam-trusted-entity-recommended) 的步骤 3 中所述。
 
 #### 访问键
 
@@ -145,17 +201,17 @@ OpenAI
 
 #### 基岩 API 密钥
 
-Bedrock API 密钥使用不记名令牌而不是 AWS 凭证对请求进行身份验证。配置 Bedrock API 密钥：
-
-1. Amazon Bedrock 控制台中的[Generate an API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html)。
+Bedrock API 密钥使用不记名令牌而不是 AWS 凭证对请求进行身份验证。配置 Bedrock API 密钥：1. Amazon Bedrock 控制台中的[Generate an API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html)。
 2. 在 LangSmith 中，导航至 **设置** > **集成** > **提供商机密**，然后选择 **+ 机密**。
 3. 在 **提供商** 下，选择 **Amazon Bedrock**。
 4. 在 **身份验证** 下，选择 **不记名令牌**。
 5. 输入 API 密钥`AWS_BEARER_TOKEN_BEDROCK`。
 6. （可选）设置`AWS_BEDROCK_REGION`。默认为`us-east-1`。
-7. 选择**保存**。
+7. Select **Save**.
 
-### 可用型号AWS Bedrock 提供对来自多个提供商的基础模型的访问：
+### Available models
+
+AWS Bedrock 提供对来自多个提供商的基础模型的访问：
 
 * **Anthropic：** 克劳德模型。
 * **亚马逊：** 泰坦型号。
@@ -173,23 +229,21 @@ Bedrock API 密钥使用不记名令牌而不是 AWS 凭证对请求进行身份
 
 使用 Anthropic 配置（请参阅下面的 [Anthropic](#anthropic) 部分）。
 
-#### 对于亚马逊泰坦
+#### For Amazon Titan
 
 |参数|范围 |描述 |
 | - | - | - |
-| **温度** | 0.0 - 1.0 |响应随机性 |
-| **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样 |
+| **Temperature** | 0.0 - 1.0 | Response randomness |
+| **Max Tokens** | 1+ |最大响应长度|
+| **顶P** | 0.0 - 1.0 | Nucleus sampling |
 
 #### AWS 特定设置
 
 * **区域：** 用于模型部署的 AWS 区域。
 
-### 工具调用
+### Tool calling
 
-取决于底层模型：
-
-* **Anthropic 型号：** `auto`、`any`。
+取决于底层模型：* **Anthropic 型号：** `auto`、`any`。
 * **Cohere 型号：** `auto`。
 
 ## Anthropic
@@ -202,13 +256,15 @@ Anthropic 提供 Claude 一代的三层型号：
 
 * **作品：** 最高的智力和能力。
 * **十四行诗：** 平衡性能和成本。
-* **俳句：** 快速且经济高效。最近的克劳德模型支持扩展思维能力来显示推理过程。
+* **俳句：** 快速且经济高效。
+
+最近的克劳德模型支持扩展思维能力来显示推理过程。
 
 有关当前可用型号的列表，请参阅[Anthropic documentation](https://docs.anthropic.com/claude/docs/models-overview)。
 
 ### 配置参数
 
-|参数|范围 |默认 |描述 |
+|参数|范围 |默认|描述 |
 | - | - | - | - |
 | **温度** | 0.0 - 1.0 |可选|随机性控制（取消选中以使用模型默认值）|
 | **最大输出代币** | 1+ | 1024 | 1024最大响应长度|
@@ -221,9 +277,7 @@ Anthropic 提供 Claude 一代的三层型号：
 
 #### 延伸思考
 
-适用于受支持的 Claude 型号。使模型能够在响应之前显示推理，类似于OpenAI的o系列。
-
-|参数|范围 |描述 |
+适用于受支持的 Claude 型号。使模型能够在响应之前显示推理，类似于OpenAI的o系列。|参数|范围 |描述 |
 | - | - | - |
 | **启用扩展思维** |切换 |显示/隐藏思维过程 |
 | **预算代币** | 1+ |思考的最大令牌数（默认值：1024）|
@@ -233,7 +287,9 @@ Anthropic 提供 Claude 一代的三层型号：
 1. 模型推理的“思考”部分。
 2.最终回应。
 
-#### 高级选项* **基本 URL：** 覆盖自定义部署的 API 端点。
+#### 高级选项
+
+* **基本 URL：** 覆盖自定义部署的 API 端点。
 
 ### 工具调用
 
@@ -256,9 +312,7 @@ Anthropic 提供 Claude 一代的三层型号：
 >
 > Azure OpenAI 工作负载身份需要在 Azure Kubernetes 服务 (AKS) 上自托管 LangSmith `0.16.58` 或更高版本。
 
-使用 [AKS workload identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) 进行身份验证，无需存储 API 密钥：
-
-1. 在 AKS 群集上启用 OIDC 颁发者和工作负载身份。
+使用 [AKS workload identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) 进行身份验证，无需存储 API 密钥：1. 在 AKS 群集上启用 OIDC 颁发者和工作负载身份。
 2. 创建或选择用户分配的托管身份。
 3. 将 [federated identity credential](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster#create-the-federated-identity-credential) 添加到托管身份。使用 AKS OIDC 发行者和受众 `api://AzureADTokenExchange`。将其主题设置为`system:serviceaccount:<namespace>:<playground-service-account-name>`。
 4. 为托管身份分配最低权限 `Cognitive Services OpenAI User` 角色。将角色范围限定为 Azure OpenAI 资源。参见[Azure OpenAI role-based access control](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/role-based-access-control)。
@@ -274,15 +328,15 @@ playground:
       azure.workload.identity/use: "true"
 ```
 
-在 Azure OpenAI 提供程序配置中，输入端点、部署名称和 API 版本。将 API 密钥留空。当未提供显式 API 密钥或令牌提供程序时，LangSmith 自动使用 Playground 工作负载身份。它获取用于 Playground 调用和评估器批量调用的短期令牌。显式凭据优先于工作负载身份。
+在 Azure OpenAI 提供程序配置中，输入端点、部署名称和 API 版本。将 API 密钥留空。
+
+当未提供显式 API 密钥或令牌提供程序时，LangSmith 自动使用 Playground 工作负载身份。它获取用于 Playground 调用和评估器批量调用的短期令牌。显式凭据优先于工作负载身份。
 
 工作负载身份令牌仅限于端口 `443` 上的 HTTPS Azure AI 和 Azure OpenAI 端点。每个配置必须使用一个受支持的 Azure 云：公共云、美国政府云或中国云。 LangSmith 拒绝混合 Azure 云的无效端点和配置。
 
 有关更广泛的 AKS 部署指南，请参阅 [Self-host LangSmith on Azure](/langsmith/azure-self-hosted)。
 
-### 可用型号
-
-Azure OpenAI 提供与 OpenAI 相同的型号系列：
+### 可用型号Azure OpenAI 提供与 OpenAI 相同的型号系列：
 
 * **GPT 系列：** 通用聊天模型。
 * **o 系列：** 以推理为中心的模型。
@@ -296,14 +350,16 @@ Azure OpenAI 提供与 OpenAI 相同的型号系列：
 
 Azure OpenAI 支持与 OpenAI 相同的参数：
 
-#### 标准参数|参数|范围 |描述 |
+#### 标准参数
+
+|参数|范围 |描述 |
 | - | - | - |
 | **温度** | 0.0 - 2.0 |控制随机性。较低=更专注，较高=更具创造力。 |
 | **最大输出代币** | 1+ |响应的最大长度 |
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数|对于可重复的输出 |
+| **种子** |整数 |对于可重复的输出 |
 
 #### 高级参数
 
@@ -311,12 +367,12 @@ Azure OpenAI 支持与 OpenAI 相同的参数：
 
 **服务等级：** 适用于较新的型号。
 
-**其他参数：**
-
-* **JSON 模式：** 强制有效的 JSON 响应。
+**其他参数：*** **JSON 模式：** 强制有效的 JSON 响应。
 * **并行工具调用：** 同时执行多个工具。
 
-#### Azure 特定功能* **部署管理：** 模型在使用前必须进行部署。
+#### Azure 特定功能
+
+* **部署管理：** 模型在使用前必须进行部署。
 * **区域可用性：** 选择 Azure 区域作为数据驻留。
 * **内容过滤：** 内置内容审核和安全功能。
 * **托管身份：** Azure AD 身份验证支持。
@@ -344,7 +400,7 @@ Databricks 提供的基础模型包括 Claude、GPT、Gemini 和 Llama。
 | **最大输出代币** | 1+ |令牌中的最大响应长度。 |
 | **停止序列** |字符串列表 |模型停止生成的序列。 |
 | **超时** |秒|请求超时。 |
-| **最大重试次数** |整数|失败请求的最大重试次数。 |
+| **最大重试次数** |整数 |失败请求的最大重试次数。 |
 
 选择与您的端点匹配的API路由：
 
@@ -457,7 +513,7 @@ Fireworks 为流行的开源模型和微调变体提供高速推理，包括：
 }
 ```
 
-**第3步：在LangSmith Playground中配置**
+**步骤3：在LangSmith Playground中配置**
 
 在 LangSmith Playground 中，打开 Gemini Enterprise Agent Platform 提供程序配置，并将下载的 JSON 密钥文件的 **全部内容** 粘贴到 **服务帐户 JSON** 字段中。
 
@@ -558,7 +614,7 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数|对于可重复的输出 |
+| **种子** |整数 |对于可重复的输出 |
 
 高级：
 
@@ -612,7 +668,7 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 **必填：**
 
 * **基本 URL：** 您的端点 URL（例如，`https://your-endpoint.com/v1`）。
-* **型号名称：** 您的型号标识符。适用于任何实现 OpenAI 兼容 API 格式的框架或服务，包括：
+* **型号名称：** 您的型号标识符。可与实现 OpenAI 兼容 API 格式的任何框架或服务配合使用，包括：
 
 * 自托管开源推理服务器
 * 路由代理模型
@@ -717,7 +773,7 @@ xAI 为不同的用例提供多种尺寸的 Grok 模型。
 
 * **范围：** 0 - 500 RPS
 * **目的：** 尊重 API 速率限制，控制成本
-* **默认值：** 因提供商而异在运行实验或评估时设置此项以避免达到速率限制。
+* **默认值：** 因提供商而异在运行实验或评估时设置此值以避免达到速率限制。
 
 ## 后续步骤
 
@@ -731,6 +787,6 @@ xAI 为不同的用例提供多种尺寸的 Grok 模型。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/playground-model-providers.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

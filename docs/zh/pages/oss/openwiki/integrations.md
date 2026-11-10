@@ -57,7 +57,7 @@ openwiki integrations uninstall <codex|claude|copilot|opencode|cursor|bob|kiro|o
 
 ## Pi 包
 
-Pi 从 npm 包加载 OpenWiki 的技能和生命周期工具：
+Pi 从 npm 包加载 OpenWiki 的技能、检索和生命周期工具：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pi install npm:openwiki
@@ -65,9 +65,9 @@ pi install npm:openwiki
 
 使用 `pi install --local npm:openwiki` 进行项目本地安装。 Pi 扩展通过 Node 启动 OpenWiki 的 CLI，因此 `openwiki` 不需要位于 `PATH` 上。 Pi 不是`openwiki integrations install` 的目标。
 
-## 主机驱动的运行如何工作
+## 主机驱动的运行如何工作主机驱动的运行遵循与本机`openwiki --init`和`openwiki --update`相同的可恢复页面作业生命周期。编码代理驱动存储库研究和页面创作； OpenWiki 验证每个完成情况，持久化[Grounded Claims](/oss/openwiki/code-mode#grounded-claims)，并通过 MCP 最终确定元数据。
 
-主机驱动的运行遵循与本机`openwiki --init`和`openwiki --update`相同的可恢复页面作业生命周期。编码代理驱动存储库研究和页面创作； OpenWiki 验证每个完成情况，保留[Grounded Claims](/oss/openwiki/code-mode#grounded-claims)，并通过 MCP 最终确定元数据。在每个页面上，主持人提交稀疏的索赔决策（确认、修改、添加或撤回）。 OpenWiki 保留未受影响的声明，应用明确的决策，并在最终声明状态持久之前拒绝完成。当主机需要当前页面的完整声明集时，可以调用`openwiki_inspect_page_claims`。
+在每个页面上，主持人提交稀疏的索赔决策（确认、修改、添加或撤回）。 OpenWiki 保留未受影响的声明，应用明确的决策，并在最终声明状态持久之前拒绝完成。当主机需要当前页面的完整声明集时，可以调用`openwiki_inspect_page_claims`。
 
 ## 另请参阅
 

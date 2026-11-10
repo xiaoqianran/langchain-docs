@@ -55,7 +55,7 @@ Fleet 将任何客服人员变成您的团队可以直接在频道或消息中�
 
 ### 步骤 1. 连接 Fleet Slack 管理器
 
-Fleet Slack 应用程序充当您的工作空间的管理器。单个连接可以实现两件事：* **Slack 工具访问**：机器人范围为代理需要发布消息、读取频道和线程历史记录以及发送直接消息。
+Fleet Slack 应用程序充当您的工作空间的管理器。单个连接可以实现两件事：* **Slack 工具访问**：机器人确定代理需要发布消息、读取频道和线程历史记录以及发送直接消息的范围。
 * **应用程序管理**：允许 Fleet 为代理创建专用 Slack 应用程序并代表您将其安装在您的工作区中的范围，这使得一键部署成为可能。
 
 要连接，请打开[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-slack-app)中的**集成**页面，搜索**Slack**，然后单击Slack卡上的**连接**。当您第一次将 Slack 应用程序添加到代理时，Fleet 也会内联运行此连接，因此您可以跳至 [Step 2](#step-2-add-a-slack-app-to-an-agent) 并在出现提示时进行授权。
@@ -90,9 +90,20 @@ Fleet 使用其描述和图标创建一个以您的代理命名的 Slack 应用�
 
 自托管部署不使用 Fleet Slack 管理器。相反，为实例配置一次 Slack OAuth 提供程序，然后根据 Fleet 生成的清单为每个代理创建自定义 Slack 应用程序。
 
+### 允许入站 Slack 请求
+
+在 BYOC 和自托管部署中，生成的 Slack 应用程序需要对数据平面进行入站 HTTPS 访问。 Slack 将事件和按钮交互发送到应用清单中的事件订阅和交互 URL。仅对 Slack Web API 的出站访问是不够的。
+
+在创建 Slack 应用程序之前，请配置以下选项之一：
+
+* **公共端点**：使数据平面的 Slack Webhook 端点可通过 HTTPS 公开访问。如果您希望将数据平面更改为具有公共负载均衡器，请联系支持人员。
+* **代理服务**：保持数据平面私有，并通过具有公共 HTTPS 端点的反向代理将 Slack 请求转发到集群中。或者，使用套接字模式代理来维护与 Slack 的出站 WebSocket 连接并将事件转发到触发服务器。请联系支持人员以获取有关私有集群代理设置的帮助。反向代理请求时保留请求正文和 Slack 签名标头。生成的应用程序默认禁用Socket模式；使用套接字模式代理需要额外的应用程序和代理配置。
+
+此要求适用于从 Slack 调用的代理。它不适用于仅出站的 Slack 工具或引擎和警报通知。
+
 ### 步骤 1. 设置 Slack OAuth 提供商
 
-每个自托管实例都需要进行此一次性设置，然后代理才能使用 Slack。它为您的代理启用 [Slack tools](#add-slack-tools) 并打开 Slack 通道，这使您可以在第 2 步中添加自定义应用程序。
+每个自托管实例都需要进行此一次性设置，然后代理才能使用 Slack。它为您的代理启用 [Slack tools](#add-slack-tools) 并打开 Slack 通道，这使您可以在步骤 2 中添加自定义应用程序。
 
 **1.配置头盔**
 
@@ -133,9 +144,9 @@ helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --v
 * `mpim:read`
 * `team:read`
 * `users:read`
-* `users:read.email`
+* `users:read.email`**4.在 LangSmith** 中注册提供商
 
-**4.在 LangSmith** 中注册提供商从 Slack 应用程序的“基本信息”中复制“客户端 ID”和“客户端密钥”。在 LangSmith 中，转到 **设置 > OAuth 提供商** 并添加提供商：
+从 Slack 应用程序的“基本信息”中复制“客户端 ID”和“客户端密钥”。在 LangSmith 中，转到 **设置 > OAuth 提供商** 并添加提供商：
 
 * **提供商ID**：您设置为`slackOAuthProvider`的ID。
 * **客户端 ID**：来自 Slack 应用程序。
@@ -180,7 +191,7 @@ https://<hostname>/host-oauth-callback/<provider-id>
 **3.输入您的应用程序凭据**
 
 返回 Fleet，单击 **Continue To Credentials** 并从新的 Slack 应用程序复制以下值：* **应用程序ID**：来自**基本信息**。
-* **客户端ID**：来自**基本信息>应用凭证**。
+* **客户端ID**：来自**基本信息>应用程序凭证**。
 * **客户端密钥**：来自**基本信息 > 应用程序凭证**。单击 Slack 中的 **显示** 并复制整个值。
 * **签名秘密**：来自**基本信息 > 应用凭证**。单击 Slack 中的 **显示** 并复制整个值。
 
@@ -208,7 +219,7 @@ https://<hostname>/host-oauth-callback/<provider-id>
 
 在您的管理员批准该应用程序后：
 
-1. 在 **集成** 页面上，选择左侧导航栏中的 **Slack 和 Teams** 以打开 **Slack 应用程序** 部分。
+1. 在 **集成** 页面上，选择左侧导航中的 **Slack 和 Teams** 以打开 **Slack 应用程序** 部分。
 2. 单击草稿上的“**恢复设置**”。
 3. 重新输入 **客户端密钥** 和 **签名密钥**。 Fleet 不会将机密存储在草稿中，因此请再次从 Slack 复制它们。
 4. 单击“**保存凭据**”，然后单击“**连接 OAuth**”，然后单击“Slack 中的**允许**”。
@@ -266,6 +277,7 @@ https://<hostname>/host-oauth-callback/<provider-id>
 
 如果您的代理没有响应，请尝试以下操作：
 
+* 在 BYOC 或自托管部署中，验证 Slack 是否可以通过公共端点或反向代理访问两个清单请求 URL。专用端点无法接收 Slack 事件。
 * 检查 Fleet UI 中的线程是否有错误。
 * 验证代理是否已被邀请加入频道。
 * 确认 **Channels** 抽屉中的 Slack 通道未暂停。
@@ -273,19 +285,17 @@ https://<hostname>/host-oauth-callback/<provider-id>
 
 ### 不允许标记机器人
 
-如果您收到一条私人消息，提示您不允许标记机器人，则表明您的 Slack ID 未获得该代理的授权。代理的所有者需要与您[share the agent](/langsmith/fleet/manage-agent-settings#change-access-to-the-agent)，可以通过与整个LangSmith工作区共享运行访问权限，也可以与您单独共享。
+如果您收到一条私人消息，提示您不允许标记机器人，则表明您的 Slack ID 未获得该代理的授权。代理的所有者需要与您一起[share the agent](/langsmith/fleet/manage-agent-settings#change-access-to-the-agent)，可以通过与整个LangSmith工作区或单独与您共享运行访问权限。
 
 ### Slack 应用程序仍等待批准
 
-处于挂起状态的 Slack 行正在等待 Slack 管理员。请求管理员在 Slack 中批准该应用程序，然后再次单击“**完成设置**”。参见[Add an app that needs admin approval](#add-an-app-that-needs-admin-approval)。
+处于挂起状态的 Slack 行正在等待 Slack 管理员。请管理员在 Slack 中批准该应用程序，然后再次单击“**完成设置**”。参见[Add an app that needs admin approval](#add-an-app-that-needs-admin-approval)。
 
 ### 添加 Slack 应用程序已禁用
 
 在自托管上，**Slack Apps** 部分中的 **添加 Slack App** 按钮将被禁用，直到设置 `fleet.oauth.slackOAuthProvider`。参见[Set up the Slack OAuth provider](#step-1-set-up-the-slack-oauth-provider)。
 
-## 后续步骤
-
-> [卡][Add more tools](/langsmith/fleet/tools)
+## 后续步骤> [卡][Add more tools](/langsmith/fleet/tools)
 >
 > 将附加服务连接到您的代理
 
@@ -297,6 +307,8 @@ https://<hostname>/host-oauth-callback/<provider-id>
 >
 > 从预构建的代理模板开始
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/slack-app.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

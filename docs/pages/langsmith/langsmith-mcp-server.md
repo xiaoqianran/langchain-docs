@@ -8,7 +8,9 @@ Use the Model Context Protocol (MCP) server to let language models fetch convers
 >
 > **Deprecated—use the [LangSmith Remote MCP](/langsmith/langsmith-remote-mcp) instead.**
 >
-> LangSmith now hosts an OAuth-authenticated remote MCP server on LangSmith Cloud and on [self-hosted LangSmith](/langsmith/self-hosted) v0.15 or later. Cloud endpoints:
+> LangSmith hosts an OAuth-authenticated remote MCP server on LangSmith Cloud, on [BYOC](/langsmith/byoc) data planes, and on [self-hosted LangSmith](/langsmith/self-hosted) v0.16 or later.
+>
+> Cloud endpoints:
 >
 > <table>
 >   <thead>
@@ -53,6 +55,9 @@ Use the Model Context Protocol (MCP) server to let language models fetch convers
 >         `https://aws.api.smith.langchain.com/mcp`
 >       </td>
 >     </tr>
+>
+>     <tr><td>Azure US</td>
+>     <td>`https://azure.api.smith.langchain.com/mcp`</td></tr>
 >   </tbody>
 > </table>
 >
@@ -60,9 +65,9 @@ Use the Model Context Protocol (MCP) server to let language models fetch convers
 >
 > Self-hosted endpoint: `https://<your-langsmith-host>/api/mcp`.
 >
-> It exposes the same tool surface as the standalone server documented on this page, but authenticates via OAuth 2.1 with dynamic client registration—no API key, no separate deployment, no header configuration.
+> It exposes the same tool surface as the standalone server documented on this page, with no separate deployment. Interactive clients authenticate via OAuth 2.1 with dynamic client registration, and programmatic clients can send a LangSmith API key in the `X-Api-Key` header.
 >
-> The standalone server documented below remains the supported path for self-hosted deployments on versions earlier than v0.15 and for users who prefer running the server themselves.
+> The standalone server documented below remains the supported path for self-hosted deployments on versions earlier than v0.16 and for users who prefer running the server themselves.
 
 The LangSmith MCP Server is a [Model Context Protocol](https://modelcontextprotocol.io/introduction) (MCP) server that integrates with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-langsmith-mcp-server). It lets MCP-compatible clients (for example, AI coding assistants) read [conversation history](/langsmith/observability-concepts#threads), [prompts](/langsmith/manage-prompts-programmatically), [runs and traces](/langsmith/observability-concepts#runs), [datasets](/langsmith/evaluation-concepts#datasets), [experiments](/langsmith/evaluation-concepts#experiment), and billing usage from your LangSmith workspace.
 

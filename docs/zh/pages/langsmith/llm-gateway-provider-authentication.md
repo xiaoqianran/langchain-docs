@@ -31,13 +31,13 @@
 * **型号 ID**：`<provider>/<model>` ID，例如 `anthropic/claude-opus-5`，使用该提供商的提供商密钥。 `custom/<name>` ID 使用配置的秘密。 [Gateway Credits](/langsmith/llm-gateway-credits#available-models) 上列出的托管模型 ID（例如 `moonshotai/kimi-k3`）使用网关积分。
 * **Claude 订阅**：当请求携带Anthropic OAuth 令牌时，网关会将其转发到Anthropic，并且不会加载工作区的`ANTHROPIC_API_KEY`。
 
-## 添加提供商密钥网关从调用者的 API 密钥所属的工作区的机密中读取提供程序密钥。每个调用提供程序的工作区都需要该提供程序密钥的自己的副本。对于 `<provider>/<model>` 呼叫，网关不会回退到组织机密。组织秘密仅适用于[organization-scoped model configurations](/langsmith/llm-gateway-model-configurations)。
+## 添加提供商密钥网关从调用者的 API 密钥所属的工作区的机密中读取提供程序密钥。每个调用提供程序的工作区都需要该提供程序密钥的自己的副本。对于 `<provider>/<model>` 呼叫，网关不会回退到组织机密。组织机密仅适用于[organization-scoped model configurations](/langsmith/llm-gateway-model-configurations)。
 
 添加提供者密钥需要该工作区中的[permission to manage secrets](/langsmith/rbac#workspace-roles)。如果没有它，**提供者机密**页面将隐藏添加按钮并要求您联系工作区管理员。
 
 添加提供商密钥：
 
-1. 在LangSmith中，选择调用提供程序的工作区。
+1. 在LangSmith中，选择调用提供者的工作区。
 2. 转至 **设置 > 集成 > 提供商机密**。
 3. 单击**+ 秘密**。在 **Provider** 下，选择提供者，其中填写机密名称。
 4. 输入提供商密钥作为值，然后单击“**保存**”。
@@ -66,33 +66,55 @@ Amazon Bedrock 支持三种凭证方法，您可以在提供商表单中设置�
 
 |方法|秘密 |笔记|
 | - | - | - |
-| IAM 角色（推荐）| `AWS_IAM_ROLE_ARN` |网关承担该角色并使用短期凭证，因此 LangSmith 不存储长期 AWS 密钥。仅在LangSmith云上可用。 |
+| IAM 角色（推荐）| `AWS_IAM_ROLE_ARN` |网关承担该角色并使用短期凭证，因此 LangSmith 不存储长期 AWS 密钥。可在 LangSmith 云和 BYOC AWS 数据平面上使用。 |
 | AWS 凭证 | `AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY`，加上 `AWS_SESSION_TOKEN` 用于临时凭证 |两把钥匙都是必需的。临时凭证过期后将停止工作。 |
-|不记名令牌 | `AWS_BEARER_TOKEN_BEDROCK` | [Amazon Bedrock API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html)。 |
+|不记名令牌 | `AWS_BEARER_TOKEN_BEDROCK` | [Amazon Bedrock API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html)。 |在自托管 LangSmith 上，当工作区没有 Bedrock 密钥时，网关还可以使用其自己 pod 的 AWS 凭证，例如 `agent-gateway` 服务账户的 IAM 角色。在 Helm 值的 `agentGateway.serviceAccount.annotations` 中设置角色注释。
 
-在自托管 LangSmith 上，当工作区没有 Bedrock 密钥时，网关还可以使用其自己 pod 的 AWS 凭证，例如 `agent-gateway` 服务账户的 IAM 角色。在 Helm 值的 `agentGateway.serviceAccount.annotations` 中设置角色注释。如果工作区具有多个方法的机密，则网关将按以下顺序使用它找到的第一个：不记名令牌、IAM 角色、AWS 凭证，然后在自托管上使用 Pod 的凭证。
+如果工作区具有多个方法的机密，则网关将按以下顺序使用它找到的第一个：不记名令牌、IAM 角色、AWS 凭证，然后在自托管上使用 Pod 的凭证。
 
-每个方法还读取可选的`AWS_BEDROCK_REGION`，默认为`us-east-1`。将其设置为纯区域名称，而不是 URL。当未设置且模型 ID 为 [cross-Region inference profile](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html)（例如以 `eu.` 开头）时，网关将使用该配置文件地理位置中的区域。
+每个方法还读取可选的 `AWS_BEDROCK_REGION`，默认为 `us-east-1`。将其设置为纯区域名称，而不是 URL。当未设置且模型 ID 为 [cross-Region inference profile](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html)（例如以 `eu.` 开头）时，网关将使用该配置文件地理位置中的区域。
 
 ### 使用 IAM 角色
 
 > [!注意]
 >
-> IAM 角色方法仅在LangSmith 云上可用。提供商表单不会在 [self-hosted LangSmith](/langsmith/self-hosted) 或 [BYOC](/langsmith/byoc) 上显示。在 BYOC 上，使用 AWS 凭证或不记名令牌。在自托管上，请为网关 Pod 提供自己的 AWS 凭证，如 [Configure Amazon Bedrock](#configure-amazon-bedrock) 中所述。
+> IAM 角色方法在 [self-hosted LangSmith](/langsmith/self-hosted) 或 BYOC GCP 和 Azure 数据平面上不可用。在自托管上，请为网关 Pod 提供自己的 AWS 凭证，如 [Configure Amazon Bedrock](#configure-amazon-bedrock) 中所述。在 BYOC GCP 和 Azure 数据平面上，使用 AWS 凭证或不记名令牌。在 [BYOC](/langsmith/byoc) AWS 数据平面上，角色需要 `LangSmithBedrock=true` 标签和不同的信任策略。参见[IAM trusted entity on BYOC](/langsmith/playground-model-providers#iam-trusted-entity-on-byoc)。在LangSmith云上，此处设置的`AWS_IAM_ROLE_ARN`秘密与[Playground and LLM-as-a-judge evaluators](/langsmith/playground-model-providers#iam-trusted-entity-recommended)共享。一个角色涵盖了所有这三个角色。以下权限还涵盖 Playground 和评估者。
 
-在LangSmith云上，此处设置的`AWS_IAM_ROLE_ARN`秘密与[Playground and LLM-as-a-judge evaluators](/langsmith/playground-model-providers#iam-trusted-entity-recommended)共享。一个角色涵盖了所有这三个角色。
+要让网关承担 IAM 角色：
 
-要让网关承担 IAM 角色：1. 在 AWS 中，创建一个 IAM 角色，该角色有权调用您使用的 Bedrock 模型。
+1. 在 AWS 中，创建一个 IAM 角色，该角色有权调用您使用的 Bedrock 模型。网关使用短期 API 密钥调用 Bedrock。因此，该角色还需要 `bedrock:CallWithBearerToken` 和 `bedrock-mantle:*`：
+
+   ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Action": [
+           "bedrock:InvokeModel",
+           "bedrock:InvokeModelWithResponseStream",
+           "bedrock:CallWithBearerToken",
+           "bedrock-mantle:*"
+         ],
+         "Resource": "*"
+       }
+     ]
+   }
+   ```
+
 2. 在LangSmith中，选择调用基岩的工作区。转至 **设置 > 集成 > 提供商机密**，然后单击 **+ 机密**。
-3. 在 **提供商** 下，选择 **Amazon Bedrock**，然后选择 **IAM 角色** 方法。输入角色 ARN 和 AWS 区域（可选）。
-4. 复制表单显示的示例信任策略，并将其添加到 AWS 中的角色。该策略允许 LangSmith 的 AWS 账户承担该角色，并需要您的工作区 ID 作为外部 ID。
-5. 单击**保存**。
 
-网关将每个会话限制为基岩操作，即使角色允许更多操作。会话持续一小时，网关会自动续订。在 AWS CloudTrail 中，会话名称为 `langsmith-gw-`，后跟工作区 ID。
+3. 在 **提供商** 下，选择 **Amazon Bedrock**，然后选择 **IAM 角色** 方法。输入角色 ARN 和 AWS 区域（可选）。
+
+4. 复制表单显示的示例信任策略，并将其添加到 AWS 中的角色。在 LangSmith 云上，策略允许 LangSmith 的 AWS 账户承担该角色。在 BYOC AWS 数据平面上，它让您的数据平面角色代入该角色。在这两种情况下，策略都需要您的工作区 ID 作为外部 ID。
+
+5. 单击**保存**。网关将每个会话限制为基岩操作，即使角色允许更多操作。会话持续一小时，网关会自动续订。在 AWS CloudTrail 中，会话名称为 `langsmith-gw-`，后跟工作区 ID。
 
 ### 验证基岩设置
 
-使用 Bedrock 控制台中的模型 ID 发送带有 `bedrock/<model-id>` 模型 ID 的测试请求。这些错误指向凭据：* **`400` 与 `bedrock credentials not found`**：工作区没有基岩秘密。 Bedrock 在此返回 `400`，而不是其他提供商因丢失密钥而返回的 `424`。
+使用 Bedrock 控制台中的模型 ID 发送带有 `bedrock/<model-id>` 模型 ID 的测试请求。这些错误指向凭据：
+
+* **`400` 与 `bedrock credentials not found`**：工作区没有基岩秘密。 Bedrock 在此返回 `400`，而不是其他提供商因丢失密钥而返回的 `424`。
 * **`400` 与 `incomplete AWS access-key credentials`**：缺少 `AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY` 之一。
 * **`403` 与 `STS denied AssumeRole for the configured Bedrock role`**：角色的信任策略不允许 LangSmith，或其外部 ID 不是工作区 ID。在自托管 LangSmith 上，信任策略必须允许 pod 自己的身份。
 
@@ -100,19 +122,19 @@ Amazon Bedrock 支持三种凭证方法，您可以在提供商表单中设置�
 
 Azure Foundry 支持 API 密钥或 Microsoft Entra ID 服务主体。服务主体身份验证允许您使用[disable local authentication](https://learn.microsoft.com/en-us/azure/ai-services/disable-local-auth) 的资源。
 
-两种方法都需要`AZURE_FOUNDRY_RESOURCE_NAME`。将其设置为 Azure 资源名称，而不是 URL 或部署名称。网关向 Azure 公有云中的`<resource-name>.openai.azure.com`发送请求。
-
-对于 API 密钥身份验证，请通过 Azure Foundry 提供程序表单添加 `AZURE_FOUNDRY_API_KEY` 和 `AZURE_FOUNDRY_RESOURCE_NAME`，如 [Add a provider key](#add-a-provider-key) 中所述。
+两种方法都需要`AZURE_FOUNDRY_RESOURCE_NAME`。将其设置为 Azure 资源名称，而不是 URL 或部署名称。网关向 Azure 公有云中的`<resource-name>.openai.azure.com`发送请求。对于 API 密钥身份验证，请通过 Azure Foundry 提供程序表单添加 `AZURE_FOUNDRY_API_KEY` 和 `AZURE_FOUNDRY_RESOURCE_NAME`，如 [Add a provider key](#add-a-provider-key) 中所述。
 
 ### 使用 Entra ID 服务主体
 
 要使用 Entra ID 服务主体而不是 API 密钥：
 
-1. 在 Foundry 资源上部署模型，或使用现有部署。记录资源名称和部署名称。使用部署名称作为请求中的 `model` 值。2. Microsoft Entra ID 中的[Register an application](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app)，或使用现有的应用程序注册。记录其目录（租户）ID 和应用程序（客户端）ID。
+1. 在 Foundry 资源上部署模型，或使用现有部署。记录资源名称和部署名称。使用部署名称作为请求中的 `model` 值。
+
+2. Microsoft Entra ID 中的[Register an application](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app)，或使用现有的应用程序注册。记录其目录（租户）ID 和应用程序（客户端）ID。
 
 3. [Add a client secret](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-credentials) 到应用程序注册。记录秘密的值，而不是其 ID。
 
-4. 在 Foundry 资源上，而不是其中的项目，[assign the app's service principal](https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry) `Foundry User` 角色（以前为 `Azure AI User`）。通用 `Owner`、`Contributor` 和 `Reader` 角色不具有 [grant permission to call models](https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry#permissions-for-each-built-in-role)。
+4. 在 Foundry 资源上，而不是其中的项目，[assign the app's service principal](https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry) `Foundry User` 角色（以前的 `Azure AI User`）。通用 `Owner`、`Contributor` 和 `Reader` 角色不具有 [grant permission to call models](https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry#permissions-for-each-built-in-role)。
 
 5. 在 LangSmith 中，选择路由 Azure 请求的工作区。转到 **设置 > 集成 > 提供商机密** 并将以下各项添加为自定义机密：
 
@@ -121,13 +143,13 @@ Azure Foundry 支持 API 密钥或 Microsoft Entra ID 服务主体。服务主�
    | `AZURE_FOUNDRY_RESOURCE_NAME` | Azure 资源名称。 |
    | `AZURE_TENANT_ID` |目录（租户）ID。 |
    | `AZURE_CLIENT_ID` |应用程序（客户端）ID。 |
-   | `AZURE_CLIENT_SECRET` |客户端秘密值。 |
+   | `AZURE_CLIENT_SECRET` |客户端秘密值。 |在提供程序选择器中选择 **自定义** 以输入每个密钥的名称和值。 Azure Foundry 提供程序表单仅公开 API 密钥身份验证。
 
-   在提供程序选择器中选择 **自定义** 以输入每个密钥的名称和值。 Azure Foundry 提供程序表单仅公开 API 密钥身份验证。
+6. 如果设置了`AZURE_FOUNDRY_API_KEY`，请将其从工作区中删除。即使资源禁用 API 密钥身份验证，API 密钥也优先于服务主体凭据。
 
-6. 如果设置了`AZURE_FOUNDRY_API_KEY`，请将其从工作区中删除。即使资源禁用 API 密钥身份验证，API 密钥也优先于服务主体凭据。所有三个 Entra ID 密码都是必需的。网关自动获取并刷新 Azure 访问令牌。用户继续使用其 LangSmith API 密钥（而不是 Azure 凭据）对网关进行身份验证。
+所有三个 Entra ID 密码都是必需的。网关自动获取并刷新 Azure 访问令牌。用户继续使用其 LangSmith API 密钥（而不是 Azure 凭据）对网关进行身份验证。
 
-此方法使用客户端机密。它不使用托管身份或工作负载身份联合。客户端机密会过期，因此当您在 Entra ID 中轮换机密时请更新 `AZURE_CLIENT_SECRET`。
+此方法使用客户端机密。它不使用托管身份或工作负载身份联合。客户端密钥会过期，因此当您在 Entra ID 中轮换密钥时请更新 `AZURE_CLIENT_SECRET`。
 
 ### 验证设置
 
@@ -164,9 +186,9 @@ curl https://gateway.smith.langchain.com/azure/v1/chat/completions \
 
 ## 修复提供商凭证错误
 
-网关将提供者错误传递给调用者，因此大多数凭据问题显示为提供者自己的状态代码和错误正文。 [⟦T74⟧](/langsmith/llm-gateway-api-formats#read-response-metadata) 响应标头区分了两者：对于提供者错误，它包括 `"outcome":"upstream_error"` 和 `"upstream_error_source":"provider_response"`，提供者的状态为 `upstream_status_code`。
+网关将提供者错误传递给调用者，因此大多数凭据问题显示为提供者自己的状态代码和错误正文。 [⟦T78⟧](/langsmith/llm-gateway-api-formats#read-response-metadata) 响应标头区分了两者：对于提供者错误，它包括 `"outcome":"upstream_error"` 和 `"upstream_error_source":"provider_response"`，提供者的状态为 `upstream_status_code`。
 
-要查看调用者的工作区可以访问哪些提供者，请调用 [⟦T78⟧](/langsmith/llm-gateway-api-formats#list-models)。它仅列出在该工作区中拥有密钥的提供者的 `<provider>/<model>` ID。
+要查看调用者的工作区可以访问哪些提供者，请调用 [⟦T82⟧](/langsmith/llm-gateway-api-formats#list-models)。它仅列出在该工作区中拥有密钥的提供者的 `<provider>/<model>` ID。
 
 |现状和回应|原因 |修复 |
 | - | - | - |
@@ -174,7 +196,7 @@ curl https://gateway.smith.langchain.com/azure/v1/chat/completions \
 |来自提供商的 API 密钥错误，例如 OpenAI 的 `Incorrect API key provided: sk-...`，或来自 xAI 的 `400` 和 `Incorrect API key provided.` | LangSmith 中存储的提供商密钥无效或已撤销。 |替换存储的提供商密钥。 |
 | Anthropic 的 `invalid x-api-key`，客户端的基本 URL 设置为网关 |存储的Anthropic密钥无效或已撤销。 |更换存储的`ANTHROPIC_API_KEY`。 |Amazon Bedrock 和 Gemini Enterprise Agent Platform 返回 `400` 命名缺失的凭证，而不是 `424`。参见[Verify the Bedrock setup](#verify-the-bedrock-setup)。
 
-对于来自调用方的 LangSmith API 密钥（例如 `401` 和 `403`）的错误，或来自绕过网关的客户端的 `invalid x-api-key`，请参阅 [Fix authentication errors](/langsmith/llm-gateway-authentication#fix-authentication-errors)。
+对于来自调用者的 LangSmith API 密钥的错误，例如 `401` 和 `403`，或来自绕过网关的客户端的 `invalid x-api-key`，请参阅 [Fix authentication errors](/langsmith/llm-gateway-authentication#fix-authentication-errors)。
 
 ## 另请参阅
 

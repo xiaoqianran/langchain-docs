@@ -8,9 +8,9 @@
 
 > [!注意]
 >
-> **对于自托管、GCP EU、GCP APAC 和 AWS US SaaS**
+> **对于自托管、GCP EU、GCP APAC、AWS US 和 Azure US SaaS**
 >
-> 更新以下自托管安装、GCP EU (`eu.api.smith.langchain.com`)、GCP APAC (`apac.api.smith.langchain.com`) 或 AWS US (`aws.api.smith.langchain.com`) 请求中的 LangSmith URL。
+> 更新以下自托管安装、GCP EU (`eu.api.smith.langchain.com`)、GCP APAC (`apac.api.smith.langchain.com`)、AWS US (`aws.api.smith.langchain.com`) 或 Azure US (`azure.api.smith.langchain.com`) 请求中的 LangSmith URL。
 
 目标是一个命名配置，告诉 LangSmith 将导出的跟踪数据写入何处。你[create a destination](/langsmith/data-export#1-create-a-destination)一次，然后在[creating export jobs](/langsmith/data-export#2-create-an-export-job)时通过ID引用它。 LangSmith 目前支持 S3 和任何与 S3 兼容的存储桶（例如 GCS 或 MinIO）作为目标。导出的数据以 [Parquet](https://parquet.apache.org/docs/overview/) 柱状格式写入，并包含与 [Run data format](/langsmith/run-data-format) 等效的字段。
 
@@ -31,7 +31,7 @@
 * **端点 URL**：S3 存储桶的端点 URL — 对于 S3 API 兼容存储桶是必需的。
 * **访问密钥**：S3 存储桶的访问密钥。
 * **密钥**：S3 存储桶的密钥。
-* **在前缀中包含存储桶**（可选）：是否包含存储桶名称作为路径前缀的一部分。默认为`true`。当使用虚拟托管样式端点（其中存储桶名称已存在于端点 URL 中）时，设置为 `false`。
+* **在前缀中包含存储桶**（可选）：是否将存储桶名称作为路径前缀的一部分包含在内。默认为`true`。当使用虚拟托管样式端点（其中存储桶名称已存在于端点 URL 中）时，设置为 `false`。
 * **S3 配置选项**（`config_kwargs_s3`，可选）：传递给 botocore 的高级 S3 寻址样式和请求设置。最常见的用途是为需要虚拟托管或路径式请求的 S3 兼容服务设置 `addressing_style`：
   * `"virtual"`：存储桶名称是主机名的一部分（例如`bucket.endpoint/key`）。对于某些 S3 兼容服务（例如 Volcengine TOS）是必需的。
   * `"path"`：存储桶名称是 URL 路径的一部分（例如 `endpoint/bucket/key`）。
@@ -140,7 +140,7 @@ curl --request POST \
 > **需要 LangSmith Helm 版本 `0.10.34` 或更高版本（应用程序版本 `0.10.91` 或更高版本）**
 
 除了静态 `access_key_id` 和 `secret_access_key` 之外，我们还支持以下其他凭证格式：* 要使用包含 AWS 会话令牌的 [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html)，
-  创建批量导出目标时另外提供 `credentials.session_token` 密钥。
+  创建批量导出目标时另外提供`credentials.session_token`密钥。
 *（仅限自托管）：要使用基于环境的凭据，例如 [AWS IAM Roles for Service Accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) (IRSA)，
   创建批量导出目标时，省略请求中的 `credentials` 键。
   在这种情况下，将按照库定义的顺序检查[standard Boto3 credentials locations](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#credentials)。
@@ -173,7 +173,7 @@ curl --request POST \
 ### Google GCS XML S3 兼容存储桶
 
 使用 Google 的 GCS 存储桶时，您需要使用 XML S3 兼容 API，并提供 `endpoint_url`
-通常为 `https://storage.googleapis.com`。
+通常是`https://storage.googleapis.com`。
 以下是使用与 S3 兼容的 GCS XML API 时的 API 请求示例：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -433,7 +433,7 @@ resource "aws_iam_role" "langsmith_bulk_export" {
 }
 ```
 
-有关可选权限，请参阅[AWS S3 permissions](#aws-s3-permissions)。
+请参阅[AWS S3 permissions](#aws-s3-permissions)了解可选权限。
 
 ## 切换认证模式
 
@@ -441,7 +441,7 @@ resource "aws_iam_role" "langsmith_bulk_export" {
 
 [**Required permission**](/langsmith/organization-workspace-operations#bulk-exports)：`bulk-exports:manage`。
 
-LangSmith支持两种互斥模式：
+LangSmith 支持两种互斥模式：
 
 * **静态凭证** (`credentials`)：`access_key_id` 和 `secret_access_key`（带有可选的 `session_token` 用于临时凭证）。
 * **IAM 角色假设** (`aws_role_arn`)：LangSmith 假设指定的 AWS IAM 角色，因此不存储静态凭证。
@@ -542,7 +542,7 @@ aws s3 --endpoint-url=<endpoint_url> cp ./test.txt s3://<bucket-name>/tmp/test.t
 
 |错误 |描述 |
 | - | - |
-|访问被拒绝| Blob 存储凭据或存储桶无效。当提供的访问密钥和秘密密钥组合没有访问指定存储桶或执行所需操作的必要权限时，会发生此错误。 |
+|访问被拒绝 | Blob 存储凭据或存储桶无效。当提供的访问密钥和秘密密钥组合没有访问指定存储桶或执行所需操作的必要权限时，会发生此错误。 |
 |存储桶无效 |指定的 Blob 存储桶无效。当存储桶不存在或没有足够的访问权限来对存储桶执行写入操作时，会引发此错误。 |
 |您提供的密钥 ID 不存在 |提供的 Blob 存储凭据无效。当用于身份验证的访问密钥 ID 不是有效密钥时，会发生此错误。 ||无效端点 |提供的端点\_url 无效。当指定的端点是无效端点时，会引发此错误。仅支持 S3 兼容端点，例如 GCS 的`https://storage.googleapis.com`、minio 的`https://play.min.io` 等。如果使用 AWS，则应省略端点\_url。 |
 |无效的BucketName |由于寻址风格不匹配，S3 兼容服务拒绝了该请求。某些服务需要虚拟托管式寻址。在目标配置中设置 `config_kwargs_s3: {"addressing_style": "virtual"}` 来解决此问题。 |

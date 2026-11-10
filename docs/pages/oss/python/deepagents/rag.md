@@ -23,7 +23,7 @@ Deep Agents allows you to orchestrate retrieval, analysis, and synthesis in seve
 
 > [!NOTE]
 >
-> Grading rubrics require `deepagents>=0.6.5` and are currently in [beta](/langsmith/release-stages).
+> Grading rubrics require `deepagents>=0.6.5`.
 
 This tutorial implements the **retrieve, offload, and delegate** pattern. The same primitives appear in the other patterns: skills often wrap retrieval workflows, rubrics can grade any of these flows, and opt-in todo planning helps break complex questions into focused searches.
 

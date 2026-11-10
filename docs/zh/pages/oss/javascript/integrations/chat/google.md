@@ -19,8 +19,8 @@
 > [!提示]
 >
 > `@langchain/google` 是所有新的 Google Gemini 集成的推荐软件包。
-> 它取代了旧的 [⟦T42⟧](/oss/javascript/integrations/chat/google_generative_ai)
-> 和 [⟦T43⟧](/oss/javascript/integrations/chat/google_vertex_ai) 封装。
+> 它取代了旧的 [⟦T44⟧](/oss/javascript/integrations/chat/google_generative_ai)
+> 和 [⟦T45⟧](/oss/javascript/integrations/chat/google_vertex_ai) 包。
 > 有关迁移详细信息，请参阅[legacy packages](/oss/javascript/integrations/providers/google#legacy-packages)。
 
 ## 概述
@@ -28,8 +28,8 @@
 ### 集成细节
 
 |班级 |套餐 |可串行化| PY支持|下载 |版本 |
-| :-| :-| :-: | :-: | :-: | :-: |
-| [⟦T44⟧](https://reference.langchain.com/javascript/langchain-google/index/ChatGoogle) | [⟦T45⟧](https://www.npmjs.com/package/@langchain/google) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/google?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/google?style=flat-square\&label=%20&) |
+| :- | :- | :-: | :-: | :-: | :-: |
+| [⟦T46⟧](https://reference.langchain.com/javascript/langchain-google/index/ChatGoogle) | [⟦T47⟧](https://www.npmjs.com/package/@langchain/google) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/google?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/google?style=flat-square\&label=%20&) |
 
 ### 模型特点
 
@@ -459,7 +459,7 @@ console.log(res.text);
 ## 上下文缓存
 
 默认情况下，Gemini 模型进行隐式上下文缓存。如果开始时
-您发送给双子座的历史记录与双子座的上下文完全匹配
+您发送给双子座的历史记录与双子座所处的背景完全匹配
 它的缓存，它将减少该请求的令牌成本。
 
 您还可以一次显式地将一些内容传递给模型，缓存输入
@@ -571,7 +571,7 @@ Google 的 Gemini 2.5 和 Gemini 3 型号支持“思考”或“推理”步骤
 
 * `maxReasoningTokens`（或`thinkingBudget`）：指定用于推理的最大标记数。
   * `0`：关闭推理（如果支持）。
-  * `-1`：使用模型的默认值。
+  * `-1`：使用模型默认值。
   * `> 0`：设置具体的代币预算。
 
 * `reasoningEffort`（或`thinkingLevel`）：设置相对努力。
@@ -598,7 +598,7 @@ reasoningBlocks.forEach((block) => {
 console.log("Answer:", res.text);
 ```> [!注意]
 >
-> 思想块还包括一个 `reasoningContentBlock` 字段。这包含基于的`ContentBlock`
+> 思维块还包括一个 `reasoningContentBlock` 字段。这包含基于的`ContentBlock`
 > Gemini 发送的底层部分。虽然这通常是一个文本块，但对于像这样的多模式模型
 > Nano Banana Pro，它可以是图像或其他媒体块。
 
@@ -731,11 +731,51 @@ const res = await multiSpeakerLlm.invoke(`
 `);
 ```
 
-## API 参考有关所有 `ChatGoogle` 功能和配置的详细文档，请访问
+## 交互API> [!注意]
+>
+> 交互 API 支持是实验性的，需要 `@langchain/google>=0.2.13`。
+
+默认情况下，`ChatGoogle`通过`generateContent` API调用Gemini。要使用
+[Interactions API](https://ai.google.dev/api/interactions-api) 相反，设置
+`apiHandler` 至 `"interactions"`。它适用于 Google AI 和 Gemini Enterprise
+代理平台。
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const llm = new ChatGoogle({
+  model: "gemini-3.7-flash",
+  apiHandler: "interactions",
+});
+
+const res = await llm.invoke("Hello, how are you?");
+console.log(res.text);
+```
+
+`invoke`、`stream` 和 `streamEvents` 的工作方式与 `generateContent` 相同，依此类推
+进行消息、工具、结构化输出、思维和语音设置。选项仅
+`generateContent`中存在的，如`logprobs`，不发送。
+
+### 继续存储的交互
+
+响应元数据包括交互的 ID。继续对话
+服务器，将该 ID 作为 `previousInteractionId` 传递并仅发送新消息：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const first = await llm.invoke("My name is Ada.", { store: true });
+const interactionId = first.response_metadata.interaction.id;
+
+const second = await llm.invoke("What is my name?", {
+  previousInteractionId: interactionId,
+});
+console.log(second.text);
+```
+
+## API 参考
+
+有关所有 `ChatGoogle` 功能和配置的详细文档，请访问
 [API reference](https://reference.langchain.com/javascript/langchain-google/index/ChatGoogle)。
 
 ***
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

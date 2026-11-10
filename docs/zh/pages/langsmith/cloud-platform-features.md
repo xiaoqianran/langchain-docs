@@ -10,7 +10,7 @@
 
 ## 数据区域
 
-可以在两个数据区域创建部署：美国和欧盟。
+可以在任何[LangSmith Cloud region](/langsmith/cloud#regions)中创建部署。
 
 部署的数据区域由创建部署的LangSmith 组织的数据区域隐含。部署和部署的底层数据库无法在数据区域之间迁移。
 
@@ -58,7 +58,7 @@
 | 34.121.5.92 | | | |
 | 34.182.176.33 | | | |
 
-## 负载大小发送到云部署的所有请求的最大负载大小为 25 MB。负载大于 25 MB 的请求会返回 `413 Payload Too Large` 错误。
+## 负载大小发送到云部署的所有请求的最大负载大小为 25 MB。有效负载大于 25 MB 的请求会返回 `413 Payload Too Large` 错误。
 
 ## 部署类型
 
@@ -119,7 +119,7 @@
 |队列工作副本 | 1 到 10 | 1 至 20 | 1 至 40 |
 | **最低计费总运行时间** | **3 个 vCPU/6 GiB** | **6 个 vCPU/12 GiB** | **12 个 vCPU/24 GiB** |
 |数据库实例 | 1 个 vCPU / 4 GiB | 2 个 vCPU / 8 GiB | 4 个 vCPU/16 GiB |
-|数据库存储 |自动缩放磁盘 |自动缩放磁盘 |自动缩放磁盘 |最低计费运行时总数包括 2 个 API 服务器副本和 1 个队列工作线程。数据库容量单独计费，不包含在这些总计中。 [Autoscaling](#scaling) 按列出的每个副本大小添加运行时副本。
+|数据库存储 |自动缩放磁盘 |自动缩放磁盘|自动缩放磁盘 |最低计费运行时总数包括 2 个 API 服务器副本和 1 个队列工作线程。数据库容量单独计费，不包含在这些总计中。 [Autoscaling](#scaling) 按列出的每个副本大小添加运行时副本。
 
 在专用部署中，计算大小和数据库大小可以独立于**缩放**对话框进行设置。大小更改将作为新修订版推出，并保留部署的线程、检查点和 API URL。
 
@@ -127,13 +127,13 @@
 
 ### 在一个部署上运行多个代理
 
-部署是[billed on the resources they consume](/langsmith/billing#langsmith-deployment-billing)，而不是他们所服务的代理数量。要在一个部署的资源上运行多个代理，请在一个 `langgraph.json` 中运行[define multiple graphs](/langsmith/application-structure#define-multiple-graphs-in-one-deployment)。这对于专用来说效果很好：一个拥有自己数据库的始终在线实例可以托管多个生产代理。
+部署是[billed on the resources they consume](/langsmith/billing#langsmith-deployment-billing)，而不是他们服务的代理数量。要在一个部署的资源上运行多个代理，请在一个 `langgraph.json` 中运行[define multiple graphs](/langsmith/application-structure#define-multiple-graphs-in-one-deployment)。这对于专用来说效果很好：一个拥有自己数据库的始终在线实例可以托管多个生产代理。
 
 部署中的所有图表共享其计算、数据库、自动缩放和部署类型。它们也作为一个修订版一起发布。当代理需要不同的大小、延迟配置文件或与其他代理隔离时，为代理提供自己的部署。
 
 ## 数据库配置控制平面和 [data plane](/langsmith/data-plane) 侦听器应用程序协调起来，为每个云部署自动创建一个 Postgres 数据库。该数据库充当部署的[persistence layer](/oss/python/langgraph/persistence#memory-store)。
 
-实现LangGraph应用时，不需要配置[checkpointer](/oss/python/langgraph/persistence#checkpointer-libraries)。会自动为图表配置检查点。为图表配置的任何检查点都将替换为自动配置的检查点。
+实现LangGraph应用时，无需配置[checkpointer](/oss/python/langgraph/persistence#checkpointer-libraries)。会自动为图表配置检查点。为图表配置的任何检查点都将替换为自动配置的检查点。
 
 无法直接访问数据库。对数据库的所有访问都通过[Agent Server](/langsmith/agent-server) 进行。
 

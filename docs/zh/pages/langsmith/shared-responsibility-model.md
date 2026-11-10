@@ -13,17 +13,17 @@ LangSmith是一款多租户SaaS产品。在共享责任模型下，LangChain 保
 ## 责任矩阵
 
 |域名 | LangChain 责任（提供者）|客户责任（用户）|
-| :-| :-| :-|
-| **基础设施** |我们管理底层云基础设施（通过 AWS 和 GCP），包括服务器、网络、操作系统补丁和容量规划。 AWS 和 GCP 拥有物理数据中心。 |不适用。您无需在 SaaS 环境中配置或维护计算资源。 |
+| :- | :- | :- |
+| **基础设施** |我们管理底层云基础设施（在 AWS、Azure 或 GCP 上，具体取决于您所在的地区），包括服务器、网络、操作系统补丁和容量规划。云提供商拥有物理数据中心。 |不适用。您无需在 SaaS 环境中配置或维护计算资源。 |
 | **应用** |我们保护LangSmith应用程序代码、API端点和数据库集群，包括代码扫描和渗透测试。 |您对使用我们的 SDK 构建的 AI 链和代理的安全负责。 || **数据** |我们使用 AES-256 强制执行租户隔离并加密静态数据，并使用 TLS 1.2 或更高版本加密传输中的数据。 |您可以控制发送给我们的数据，并且必须在敏感 PII 离开您的环境之前通过 SDK 对其进行过滤。 |
 | **身份** |我们提供护栏，包括 SSO/SCIM、MFA 实施选项和 RBAC 框架。 |您可以管理您的用户名册、分配角色（例如管理员与查看者）并撤销已离职员工的访问权限。 |
 | **秘密** |我们安全地存储您委托给平台的秘密。 |您负责轮换您的 API 密钥并确保它们没有硬编码在您的应用程序中。 |
 
-## LangChain 职责（平台）* 我们保持 SOC 2 Type II、GDPR 和 HIPAA 合规性，并接受年度第三方审核和渗透测试。
-* 我们管理 Amazon Web Services (AWS) 和 Google Cloud Platform (GCP) 上的所有底层基础设施，包括网络防火墙、DDoS 防护和容器安全。
-* 我们根据 SLA 维护高可用性，维护每日备份，并处理 LangSmith 服务的灾难恢复。
+## LangChain 职责（平台）* We maintain SOC 2 Type II, GDPR, and HIPAA compliance and undergo annual third-party audits and penetration testing.
+* 我们管理 Amazon Web Services (AWS)、Microsoft Azure 和 Google Cloud Platform (GCP) 上的所有底层基础设施，包括网络防火墙、DDoS 防护和容器安全。
+* We maintain high availability in accordance with our SLA, maintain daily backups, and handle disaster recovery for the LangSmith service.
 * 我们在严格的服务级别协议内修补已确认的平台漏洞，严重程度的问题在不到 2 周的时间内得到修复，高度严重的问题在 30 天内得到修复。
-* 我们使用 AES-256 加密所有静态客户数据，并使用 TLS 1.2 或更高版本加密传输中的客户数据。
+* We encrypt all customer data at rest using AES-256 and in transit using TLS 1.2 or higher.
 
 ## 客户责任（使用）* 您必须强制执行最低权限访问，并立即删除离开组织的员工的访问权限。
 * 您必须确保没有禁止的数据（例如 PCI DSS 持卡人数据）发送到平台，并使用 SDK 中的屏蔽功能从源头编辑 PII。

@@ -290,7 +290,7 @@ const getAssistantScopedData = tool(
 
 在LangChain中，工具由代理使用（例如通过[⟦T50⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)），工具错误处理通过[middleware](/oss/javascript/langchain/middleware)配置。
 
-对于LangGraph工作流程，工具执行由[⟦T51⟧](https://reference.langchain.com/javascript/langchain-langgraph/prebuilt/ToolNode)处理。请参阅[ToolNode](/oss/javascript/langgraph/workflows-agents#toolnode)了解图形 API 的使用，包括工具如何访问当前图形状态和运行范围的上下文。
+对于 LangGraph 工作流程，工具执行由 [⟦T51⟧](https://reference.langchain.com/javascript/langchain-langgraph/prebuilt/ToolNode) 处理。请参阅[ToolNode](/oss/javascript/langgraph/workflows-agents#toolnode)了解图形 API 的使用，包括工具如何访问当前图形状态和运行范围的上下文。
 
 ### 工具返回值
 
@@ -389,7 +389,7 @@ const captureScreenshot = tool(
 有关块类型和提供商特定要求，请参阅[Multimodal messages](/oss/javascript/langchain/messages#multimodal)。
 
 #### 返回命令当工具需要更新图形状态（例如，设置用户首选项或应用程序状态）时，返回[⟦T60⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command)。
-当`Command`以当前图为目标时，请在更新中包含工具调用ID与当前工具调用匹配的`ToolMessage`。
+当 `Command` 定位当前图形时，请在更新中包含工具调用 ID 与当前工具调用匹配的 `ToolMessage`。
 消息历史记录中的每个工具调用都必须有对应的`ToolMessage`。
 
 使用 `runtime.toolCallId` 作为 `tool_call_id` 参数。
@@ -428,7 +428,7 @@ const setLanguage = tool(
 行为：
 
 * 该命令使用`update`更新状态。
-* 更新后的状态可用于同一运行中的后续步骤。
+* 更新的状态可用于同一运行中的后续步骤。
 * 对可能通过并行工具调用更新的字段使用缩减器。
 
 当工具不仅返回数据，而且还改变代理状态时，请使用此选项。
@@ -455,7 +455,7 @@ const fetchOrderStatus = tool(
 );
 
 const agent = createAgent({
-  model: new ChatOpenAI({ model: "gpt-4o-mini" }),
+  model: new ChatOpenAI({ model: "gpt-5.4-mini" }),
   tools: [fetchOrderStatus],
 });
 
@@ -472,7 +472,7 @@ const result = await agent.invoke({
 >
 > 为此示例打开公共 LangSmith 运行。
 
-行为：* 该工具正常执行，其输出包装在 `ToolMessage` 中。
+行为：* 该工具正常执行，其输出封装在 `ToolMessage` 中。
 * 代理停止循环并返回工具的输出作为最终响应，绕过任何其他模型调用。
 * **多个并行工具调用：** 当模型一步调用多个工具时，所有工具都会首先执行。所有工具完成后，仅当该批次中的**每个**工具都有 `return_direct=True` 时，代理才会路由到 `END`。最终响应包括该步骤中调用的每个工具的 `ToolMessage` 输出。
 
@@ -928,7 +928,7 @@ LangChain 提供了大量预构建工具和工具包，用于执行 Web 搜索�
 
 请参阅 [tools and toolkits](/oss/javascript/integrations/tools) 集成页面，获取按类别组织的可用工具的完整列表。
 
-## 来自 MCP 服务器的工具[Model Context Protocol (MCP)](https://modelcontextprotocol.io) 是一个开放协议，它标准化了应用程序如何向语言模型公开工具。您无需手动编写工具，而是连接到 MCP 服务器并将其广告的工具改编为LangChain 工具，准备好像任何其他工具一样传递给代理。
+## 来自 MCP 服务器的工具[Model Context Protocol (MCP)](https://modelcontextprotocol.io) 是一种开放协议，它标准化了应用程序如何向语言模型公开工具。您无需手动编写工具，而是连接到 MCP 服务器并将其广告的工具改编为LangChain 工具，准备好像任何其他工具一样传递给代理。
 
 LangChain代理通过[⟦T95⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-mcp-adapters)库调用MCP服务器上定义的工具，该库发现服务器的工具并将其改编为LangChain工具。
 

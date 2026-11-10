@@ -38,7 +38,7 @@ LangSmith 部署与框架无关，这意味着您可以部署使用以下方式�
 
 > [卡][Cloud](/langsmith/deploy-to-cloud-overview)
 >
-> 由 AWS 和 GCP 上的LangChain 完全管理。在 LangSmith UI 中或使用 [⟦T2⟧](/langsmith/cli#deploy) 从 GitHub 创建部署。需要[Plus plan or above](https://www.langchain.com/pricing)。
+> 由 AWS、Azure 和 GCP 上的LangChain 完全管理。在 LangSmith UI 中或使用 [⟦T2⟧](/langsmith/cli#deploy) 从 GitHub 创建部署。需要[Plus plan or above](https://www.langchain.com/pricing)。
 
 > [卡][Self-hosted with control plane](/langsmith/deploy-with-control-plane)
 >
@@ -79,7 +79,7 @@ LangSmith 云上的部署按每个部署请求的计算和数据库资源计费�
 
 > [卡][Interact with your deployment using RemoteGraph](/langsmith/use-remote-graph)
 >
-> 从客户端代码调用已部署的图，就好像它是本地编译的图一样。
+> 从客户端代码调用您部署的图，就好像它是本地编译的图一样。
 
 > [卡][Find and fix failures with Engine](/langsmith/engine)
 >

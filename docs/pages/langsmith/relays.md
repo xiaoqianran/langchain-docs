@@ -52,12 +52,51 @@ Run the connector inside your network in relay mode. The relay's page in **Setti
 
 To write the configuration yourself, use your region's API URL if your organization is not in the GCP US region:
 
-| Region | Endpoint |
-| - | - |
-| GCP US | `https://api.smith.langchain.com` (default) |
-| GCP EU | `https://eu.api.smith.langchain.com` |
-| GCP APAC | `https://apac.api.smith.langchain.com` |
-| AWS US | `https://aws.api.smith.langchain.com` |
+<table>
+  <thead>
+    <tr>
+      <th>Region</th>
+
+      <th>
+        URL
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>GCP US</td>
+
+      <td>
+        `https://api.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>GCP EU</td>
+
+      <td>
+        `https://eu.api.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>GCP APAC</td>
+
+      <td>
+        `https://apac.api.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>AWS US</td>
+
+      <td>
+        `https://aws.api.smith.langchain.com`
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 The examples allow the relay to reach `10.0.0.0/8` and `db.corp.internal:5432` in addition to its default; see [Connector policy](#connector-policy).
 

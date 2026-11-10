@@ -8,11 +8,11 @@
 
 LangSmith 远程 MCP 是由 LangSmith 托管的 [Model Context Protocol](https://modelcontextprotocol.io/introduction) (MCP) 服务器。它公开了与 [standalone LangSmith MCP Server](/langsmith/langsmith-mcp-server) 相同的工具（对话历史记录、提示、运行和跟踪、数据集、实验、计费），无需单独部署。交互式 MCP 客户端通过 OAuth 连接，无需 API 密钥或标头配置；编程客户端可以通过 `X-Api-Key` 标头使用 LangSmith API 密钥进行身份验证。
 
-远程 MCP 可在所有 LangSmith 云区域、[BYOC](/langsmith/byoc) 数据平面以及运行 v0.16 或更高版本的 [self-hosted LangSmith](/langsmith/self-hosted) 部署上使用（自托管还需要配置签名 JWKS — 请参阅 [Self-hosted LangSmith](#self-hosted-langsmith)）。早期版本上的自托管部署应继续使用 [standalone LangSmith MCP Server](/langsmith/langsmith-mcp-server)。
-
 ## 端点
 
-**LangSmith云：**
+将您的 MCP 客户端指向 LangSmith 运行位置的远程 MCP 端点：LangSmith 云上每个区域一个 URL，或者您自己的主机上用于 BYOC 和自托管 LangSmith 的路径。
+
+### LangSmith 云
 
 <table>
   <thead>
@@ -43,7 +43,9 @@ LangSmith 远程 MCP 是由 LangSmith 托管的 [Model Context Protocol](https:/
     </tr>
 
     <tr>
-      <td>GCP 亚太地区</td><td>
+      <td>GCP 亚太地区</td>
+
+      <td>
         `https://apac.api.smith.langchain.com/mcp`
       </td>
     </tr>
@@ -54,19 +56,20 @@ LangSmith 远程 MCP 是由 LangSmith 托管的 [Model Context Protocol](https:/
       <td>
         `https://aws.api.smith.langchain.com/mcp`
       </td>
-    </tr>
+    </tr><tr><td>Azure US</td>
+    <td>`https://azure.api.smith.langchain.com/mcp`</td></tr>
   </tbody>
 </table>
 
 服务器通过同一主机上的 [RFC 8414](https://datatracker.ietf.org/doc/html/rfc8414) 处的 `/.well-known/oauth-authorization-server` 发现其 OAuth 元数据的其余部分，因此兼容的 MCP 客户端只需要上面的 URL。
 
-**自托管LangSmith：**
-
-`https://<your-langsmith-host>/api/mcp`，其中 `<your-langsmith-host>` 是 LangSmith 实例的主机名。
-
-**自带设备：**
+### 自带设备
 
 `https://<data_plane_url>/api/mcp`，其中 `<data_plane_url>` 是[BYOC](/langsmith/byoc) 数据平面的 URL。
+
+### 自托管
+
+`https://<your-langsmith-host>/api/mcp`，其中 `<your-langsmith-host>` 是 LangSmith 实例的主机名。需要 LangSmith v0.16 或更高版本以及签名 JWKS。要打开它，请参阅[Enabling Remote MCP](#enabling-remote-mcp)。早期版本上的自托管部署应继续使用 [standalone LangSmith MCP Server](/langsmith/langsmith-mcp-server)。
 
 ## 身份验证
 
@@ -76,12 +79,12 @@ LangSmith 远程 MCP 是由 LangSmith 托管的 [Model Context Protocol](https:/
 
 带有 [Dynamic Client Registration (RFC 7591)](https://datatracker.ietf.org/doc/html/rfc7591) 的 OAuth 2.1 是交互式客户端的默认设置。兼容的 MCP 客户端在首次使用时自动注册 — 无需配置客户端 ID，也无需管理 API 密钥。
 
-注册后：
-
-1. 客户端在浏览器中打开授权 URL。
+注册后：1. 客户端在浏览器中打开授权 URL。
 2. 您登录LangSmith（或使用现有会话）并同意。
 3. 客户端收到访问令牌和刷新令牌。
-4. 访问令牌过期后由客户端自动刷新。该会话的范围仅限于您的 LangSmith 用户和工作区权限 - 通过 MCP 服务器的调用只能查看您的帐户有权查看的内容。
+4. 访问令牌过期后由客户端自动刷新。
+
+该会话的范围仅限于您的 LangSmith 用户和工作区权限 - 通过 MCP 服务器的调用只能查看您的帐户有权查看的内容。
 
 ### API 密钥
 
@@ -112,11 +115,11 @@ LangSmith 远程 MCP 是由 LangSmith 托管的 [Model Context Protocol](https:/
     }
   }
 }
-```
+```然后运行 ​​`/mcp` 并选择 **langsmith** 以完成 OAuth 流程。工具以 `mcp__langsmith__<tool_name>` 形式提供。
 
-然后运行 `/mcp` 并选择 **langsmith** 以完成 OAuth 流程。工具以 `mcp__langsmith__<tool_name>` 形式提供。
+### Deep Agents 代码 (`dcode`)
 
-### Deep Agents 代码 (`dcode`)将服务器添加到您的用户级 `~/.deepagents/.mcp.json` 文件中，以使其在每个 Deep Agents 代码项目中可用，或者将其添加到仅该项目的项目级 `.mcp.json` 文件中。请参阅 [Deep Agents Code MCP tools docs](/oss/deepagents/code/mcp-tools) 了解发现位置和优先规则。
+将服务器添加到您的用户级 `~/.deepagents/.mcp.json` 文件中，以使其在每个 Deep Agents 代码项目中可用，或将其添加到仅该项目的项目级 `.mcp.json` 文件中。请参阅 [Deep Agents Code MCP tools docs](/oss/deepagents/code/mcp-tools) 了解发现位置和优先规则。
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -132,7 +135,7 @@ LangSmith 远程 MCP 是由 LangSmith 托管的 [Model Context Protocol](https:/
 
 然后通过以下两种方式之一完成 OAuth 登录流程：
 
-* 在Deep Agents代码TUI中，运行`/mcp`，选择**langsmith**，然后按照登录提示操作。
+* 在Deep Agents Code TUI 中，运行`/mcp`，选择**langsmith**，然后按照登录提示操作。
 * 从你的 shell 中运行：
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -229,7 +232,7 @@ config:
   hostname: "your-langsmith-host"
 ```
 
-升级后，OAuth 发现端点和`/api/mcp` 上线。验证：
+升级后，OAuth 发现端点和 `/api/mcp` 上线。验证：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl https://<your-langsmith-host>/api/.well-known/oauth-protected-resource/mcp

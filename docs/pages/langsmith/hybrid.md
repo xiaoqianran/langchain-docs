@@ -80,6 +80,9 @@ Agent Servers send traces to LangSmith based on the `LANGSMITH_ENDPOINT` environ
           `https://aws.api.smith.langchain.com`
         </td>
       </tr>
+
+      <tr><td>Azure US</td>
+      <td>`https://azure.api.smith.langchain.com`</td></tr>
     </tbody>
   </table>
 

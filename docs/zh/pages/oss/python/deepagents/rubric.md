@@ -8,11 +8,11 @@
 
 > [!注意]
 >
-> `RubricMiddleware` 需要 `deepagents>=0.6.5`。位于[**beta**](/oss/python/versioning)； API 将来可能会发生变化。
+> `RubricMiddleware` 需要 `deepagents>=0.6.5`。
 
 一些代理任务有一个明确的“完成”定义，仅靠工作模型无法在第一次尝试中可靠地实现：正确音节模式的俳句、所有测试都通过的重构，或者满足每个所需部分的报告。 `RubricMiddleware` 允许您将“完成的内容”声明为评分标准，并让代理进行“自我评估和迭代”，直到满足评分标准，或者达到配置的最大迭代上限。
 
-**LLM-as-a-judge** 是一种模式，其中一个语言模型根据定义的标准评估另一个模型的输出。在[LangSmith evaluations](/langsmith/evaluation-concepts#llm-as-judge)中，法学硕士作为评委评估者批量离线对申请输出进行评分。 `RubricMiddleware` 在运行时应用相同的模式：深度代理生成输出后，专用的评分器模型会根据您的评分标准审查成绩单并驱动修订，直到每个标准通过（或达到配置的迭代上限）。当深度代理完成推理时，LLM 作为法官评分者子代理会审查输出并返回裁决。如果它返回`needs_revision`，则每个标准的反馈将被注入回对话中，并且代理再次运行。循环在 `satisfied`、`max_iterations_reached`、`failed` 或 `grader_error` 处终止。
+**LLM-as-a-judge** 是一种模式，其中一个语言模型根据定义的标准评估另一个模型的输出。在[LangSmith evaluations](/langsmith/evaluation-concepts#llm-as-judge)中，法学硕士作为法官评估者批量离线对申请输出进行评分。 `RubricMiddleware` 在运行时应用相同的模式：深度代理生成输出后，专用的评分器模型会根据您的评分标准审查成绩单并驱动修订，直到每个标准通过（或达到配置的迭代上限）。当深度代理完成推理时，LLM 作为法官评分者子代理会审查输出并返回裁决。如果它返回`needs_revision`，则每个标准的反馈将被注入回对话中，并且代理再次运行。循环在 `satisfied`、`max_iterations_reached`、`failed` 或 `grader_error` 处终止。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -156,7 +156,7 @@ agent = create_deep_agent(
 )
 ```
 
-|论证|必填 |默认 |描述 |
+|论证|必填|默认|描述 |
 | - | - | - | - |
 | `model` |是的 | `None` | LLM 作为评委评分员子代理使用的聊天模型。接受 `"provider:model-id"` 字符串或 `BaseChatModel` 实例。通常是比深度代理的工作模型更小或更便宜的模型。 |
 | `system_prompt` |没有 |内置评分器提示 |自定义分级说明。退回到默认系统提示，向评分者传授判决格式以及可以使用的工具。 |
@@ -165,7 +165,7 @@ agent = create_deep_agent(
 
 ## 在调用时传递标题
 
-在调用状态上传递 `rubric` 字符串以启动自评估循环。使用 `invoke()` 进行单个阻塞调用，或将 [⟦T63⟧](/oss/python/langchain/event-streaming) 与 [⟦T64⟧](/oss/python/langchain/event-streaming#custom-updates) 结合使用以在 `stream.custom` 上发生评分事件时接收这些事件：
+在调用状态上传递 `rubric` 字符串以启动自评估循环。使用 `invoke()` 进行单个阻塞调用，或将 [⟦T63⟧](/oss/python/langchain/event-streaming) 与 [⟦T64⟧](/oss/python/langchain/event-streaming#custom-updates) 一起使用以在 `stream.custom` 上发生评分事件时接收这些事件：
 
 > [选项卡] 调用()
 >

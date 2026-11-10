@@ -11,7 +11,7 @@
 CI/CD 管道提供：
 
 * **自动化测试**：单元、集成和端到端测试。
-* **离线评估**：使用[AgentEvals](/oss/python/langchain/test/evals)、[OpenEvals](/langsmith/openevals#setup)和[LangSmith](/langsmith/observability)进行绩效评估。
+* **离线评估**：使用[AgentEvals](/oss/python/langchain/test/evals)、[OpenEvals](/langsmith/openevals#setup)和[LangSmith](/langsmith/observability)进行性能评估。
 * **预览和生产部署**：使用控制平面 API 进行自动暂存和质量控制的生产版本。
 * **监控**：持续评估和警报。
 
@@ -78,7 +78,7 @@ graph TD
 
 ### 触发源
 
-您可以通过多种方式触发此管道，无论是在开发过程中还是在您的应用程序已经上线时。管道可以通过以下方式触发：* **代码更改**：推送到主/开发分支，您可以在其中修改 LangGraph 架构、尝试不同的模型、更新代理逻辑或进行任何代码改进。
+您可以通过多种方式触发此管道，无论是在开发过程中还是在您的应用程序已经上线时。管道可以通过以下方式触发：* **代码更改**：推送到主/开发分支，您可以在其中修改LangGraph架构、尝试不同的模型、更新代理逻辑或进行任何代码改进。
 * **PromptHub 更新**：对存储在 LangSmith PromptHub 中的提示模板进行更改 - 每当有新的提示提交时，系统都会触发 Webhook 来运行管道。
 * **在线评估警报**：来自实时部署的性能下降通知
 * **LangSmith 跟踪 webhooks**：基于跟踪分析和性能指标的自动触发器。
@@ -120,12 +120,12 @@ CI/CD 管道使用 GitHub Actions 以及 [Control Plane API](/langsmith/api-ref-
   >
   > 测试代理在多个交互中维护上下文的对话流。这对于处理后续问题、澄清或与用户进行扩展对话的代理至关重要。
 
-  具体测试方法请参见[LangGraph testing documentation](/oss/python/langgraph/test)，离线评估的全面概述请参见[evaluation approaches guide](/langsmith/evaluation-approaches)。
+  有关具体测试方法，请参阅[LangGraph testing documentation](/oss/python/langgraph/test)，有关离线评估的全面概述，请参阅[evaluation approaches guide](/langsmith/evaluation-approaches)。
 
 ### 先决条件
 
 在设置 CI/CD 管道之前，请确保您拥有：* 人工智能代理应用程序（在本例中使用[LangGraph](/oss/python/langgraph/overview)构建）
-* [LangSmith account](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cicd-pipeline-example)
+*一个[LangSmith account](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cicd-pipeline-example)
 * 部署代理和检索实验结果需要[LangSmith API key](/langsmith/create-account-api-key)
 * 在存储库机密中配置的特定于项目的环境变量（例如，LLM 模型 API 密钥、向量存储凭据、数据库连接）
 
@@ -140,7 +140,7 @@ LangSmith支持多种部署方式，具体取决于您的[LangSmith instance is 
 * **云LangSmith**：直接 GitHub 集成。
 * **自托管/混合**：基于容器注册表的部署。
 
-部署流程从修改代理实现开始。您的项目中至少必须有一个 [⟦T7⟧](/langsmith/application-structure) 和依赖文件（`requirements.txt` 或 `pyproject.toml`）。使用 `langgraph dev` CLI 工具检查错误 - 修复任何错误；否则部署到LangSmith部署时部署成功。
+部署流程从修改代理实现开始。您的项目中至少必须有一个 [⟦T7⟧](/langsmith/application-structure) 和依赖文件（`requirements.txt` 或 `pyproject.toml`）。使用 `langgraph dev` CLI 工具检查错误 - 修复任何错误；否则，部署到LangSmith部署时就会部署成功。
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TD
@@ -203,7 +203,7 @@ graph TD
 
 在部署代理之前，请确保您拥有：1. **LangGraph 图**：您的代理实现（例如，`./agents/simple_text2sql.py:agent`）。
 2. **依赖项**：`requirements.txt` 或 `pyproject.toml` 以及所有必需的包。
-3. **配置**：`langgraph.json`文件指定：
+3. **配置**：`langgraph.json` 文件指定：
    * 代理图的路径
    * 依赖位置
    * 环境变量
@@ -246,9 +246,9 @@ langgraph dev
 
 更多详情请参阅[LangGraph CLI documentation](/langsmith/cli#dev)。
 
-### 方法1：LangSmith部署UI
+### 方法一：LangSmith 部署界面
 
-使用 LangSmith 部署接口部署代理：
+使用 LangSmith 部署界面部署代理：
 
 1. 前往您的[LangSmith dashboard](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cicd-pipeline-example)。
 2. 导航到 **部署** 部分。
@@ -275,7 +275,7 @@ langgraph dev
 * 使用控制平面 API 通过指向 GitHub 存储库来创建部署
 * 云部署无需构建 Docker 镜像
 
-**对于自托管/混合 LangSmith：**
+**对于自托管/混合LangSmith：**
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Build Docker image
@@ -364,6 +364,9 @@ export REDIS_URI_CUSTOM="redis://host:6379/0"
         `https://aws.api.smith.langchain.com`
       </td>
     </tr>
+
+    <tr><td>Azure US</td>
+    <td>`https://azure.api.smith.langchain.com`</td></tr>
   </tbody>
 </table>
 
@@ -420,11 +423,14 @@ export REDIS_URI_CUSTOM="redis://host:6379/0"
         `https://aws.api.host.langchain.com`
       </td>
     </tr>
+
+    <tr><td>Azure US</td>
+    <td>`https://azure.api.host.langchain.com`</td></tr>
   </tbody>
-</table>
+</table>对于自托管 LangSmith 实例，请使用 `http(s)://<langsmith-url>/api-host`，其中 `<langsmith-url>` 是您的自托管实例 URL。
 
-对于自托管 LangSmith 实例，请使用 `http(s)://<langsmith-url>/api-host`，其中 `<langsmith-url>` 是您的自托管实例 URL。
+***
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cicd-pipeline-example.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

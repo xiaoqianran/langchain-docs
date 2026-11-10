@@ -4,7 +4,7 @@
 
 # 带有 Deep Agents 的检索增强生成 (RAG)
 
-Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
+Deep Agents 的 RAG 模式，包括技能引导检索、评分标准以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
 
 最强大的基于 LLM 的应用程序之一是复杂的问答 (Q\&A) 聊天机器人，它通过为 LLM 提供对一组数据的推理时访问来增强 LLM。
 这可能是私有数据、最新数据或不属于 LLM 训练数据的数据。
@@ -22,7 +22,7 @@ Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引
 
 > [!注意]
 >
-> 评分标准需要`deepagents>=0.6.5`，目前为[beta](/langsmith/release-stages)。
+> 评分标准需要`deepagents>=0.6.5`。
 
 本教程实现了**检索、卸载和委托**模式。相同的原语出现在其他模式中：技能通常包含检索工作流程，标题可以对这些流程中的任何一个进行评分，而选择加入待办事项计划有助于将复杂的问题分解为有针对性的搜索。
 
@@ -485,7 +485,7 @@ Split documentation into 782 chunks.
 > )
 > ```
 
-> [标签] 奥拉马
+> [标签] 奥拉玛
 >
 > ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-ollama

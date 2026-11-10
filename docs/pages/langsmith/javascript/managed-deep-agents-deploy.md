@@ -38,6 +38,7 @@ Set `LANGSMITH_ENDPOINT` in your project's `.env` or your shell environment befo
 | GCP EU (`eu.smith.langchain.com`) | `https://eu.api.smith.langchain.com` | Supported |
 | GCP APAC (`apac.smith.langchain.com`) | `https://apac.api.smith.langchain.com` | Supported |
 | AWS US (`aws.smith.langchain.com`) | `https://aws.api.smith.langchain.com` | Supported |
+| Azure US (`azure.smith.langchain.com`) | `https://azure.api.smith.langchain.com` | Supported |
 
 For example, to deploy to GCP EU:
 
@@ -106,7 +107,7 @@ bunx mda deploy --name research-assistant
 
 `mda deploy` creates a Serverless deployment by default. Use `--deployment-type dedicated` when creating a Dedicated deployment.
 
-Serverless requires a supported GCP SaaS environment. AWS, Azure, self-hosted, and hybrid environments reject Serverless deployments. Use `dedicated` for always-on capacity.
+Serverless is available in every LangSmith Cloud region. Self-hosted and hybrid environments reject Serverless deployments. Use `dedicated` for always-on capacity.
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx mda deploy --deployment-type dedicated

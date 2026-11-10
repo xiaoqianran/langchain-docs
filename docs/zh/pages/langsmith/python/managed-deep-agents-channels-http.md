@@ -1,8 +1,8 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Connect a Managed Deep Agent over HTTP | https://docs.langchain.com/langsmith/python/managed-deep-agents-channels-http -->
+<!-- langchain-docs: Connect a Managed Deep Agent to a custom channel over HTTP | https://docs.langchain.com/langsmith/python/managed-deep-agents-channels-http -->
 
-# 通过 HTTP 连接托管深度代理
+# 通过 HTTP 将托管深度代理连接到自定义通道
 
 Start Managed Deep Agents 从任何可以发送 Webhook 的外部服务运行，并通过您自己的传输返回响应。
 
@@ -89,7 +89,7 @@ def verify(context: HttpChannelRequest) -> bool:
 * `{"type": "message", "message": {...}}` 开始跑步。
 * `{"type": "ignore"}` 跳过该事件。
 
-两者都接受可选的 `response`，Starlette `Response`。
+两者都接受可选的 `response` 和 Starlette `Response`。
 
 该消息携带四个必填字段：* **`user_id`**：外部服务中调用者的 ID，作为字符串，从已验证的事件解析。代理身份验证将其映射到运行可能使用其凭据的主体，因此它是从经过验证的数据而不是从未经身份验证的字段派生的。使用 `str()` 转换数字提供商 ID。
 * **`thread_id`**：要运行的对话，作为 UUID。 Managed Deep Agents 将其小写并将其映射到持久代理线程，因此相同的值会继续相同的对话。

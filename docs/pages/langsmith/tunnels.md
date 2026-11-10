@@ -50,12 +50,51 @@ In **Settings** > **API Keys**, [create an organization-scoped service key](/lan
 
 Run the connector inside your network. If your organization is not in the GCP US region, set the endpoint to your region's API URL:
 
-| Region | Endpoint |
-| - | - |
-| GCP US | `https://api.smith.langchain.com` (default) |
-| GCP EU | `https://eu.api.smith.langchain.com` |
-| GCP APAC | `https://apac.api.smith.langchain.com` |
-| AWS US | `https://aws.api.smith.langchain.com` |
+<table>
+  <thead>
+    <tr>
+      <th>Region</th>
+
+      <th>
+        URL
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>GCP US</td>
+
+      <td>
+        `https://api.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>GCP EU</td>
+
+      <td>
+        `https://eu.api.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>GCP APAC</td>
+
+      <td>
+        `https://apac.api.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>AWS US</td>
+
+      <td>
+        `https://aws.api.smith.langchain.com`
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 > [tab] Kubernetes (Helm)
 >

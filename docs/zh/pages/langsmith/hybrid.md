@@ -6,7 +6,7 @@
 
 LangSmith 部署设置，您可以在基础架构中自托管代理服务器并将跟踪发送到 LangSmith 云或自托管 LangSmith 实例。
 
-Hybrid 是[LangSmith Deployment](/langsmith/deployment) 的平台设置，**在生产中部署和运行代理**。
+Hybrid 是[LangSmith Deployment](/langsmith/deployment) 的平台设置，它**在生产中部署和运行代理**。
 
 在混合平台设置中，您可以在自己的基础设施中自行托管[Agent Servers](/langsmith/agent-server)，并将其跟踪发送到LangSmith，其中LangSmith可以是[self-hosted](/langsmith/self-hosted)实例或[LangSmith Cloud](/langsmith/cloud)。
 
@@ -21,15 +21,15 @@ Hybrid 是[LangSmith Deployment](/langsmith/deployment) 的平台设置，**在�
 
 > [!注意]
 >
-> Hybrid 是LangSmith 部署（代理服务）的平台设置。要仅为可观察性、评估和提示工程设置LangSmith，请参阅[Set up LangSmith](/langsmith/platform-setup)。
+> Hybrid 是用于LangSmith 部署（代理服务）的平台设置。要仅为可观察性、评估和提示工程设置LangSmith，请参阅[Set up LangSmith](/langsmith/platform-setup)。
 
 ## 工作流程
 
 1. 在本地构建并测试您的代理。
 2. 将您的代理部署到[Agent Server running in your infrastructure](#self-host-your-agent-servers)。
-3. 将特工踪迹发送至[LangSmith (self-hosted or SaaS) for observability and evaluation](#choose-where-traces-are-sent)。
+3. 将特工踪迹发送至[LangSmith (self-hosted or SaaS) for observability and evaluation](#choose-where-traces-are-sent)。### 自托管您的代理服务器
 
-### 自托管您的代理服务器使用 Docker、Docker Compose 或 Kubernetes 部署独立代理服务器。请参阅 [standalone server guide](/langsmith/deploy-standalone-server) 了解先决条件、环境变量和特定于平台的说明。
+使用 Docker、Docker Compose 或 Kubernetes 部署独立代理服务器。请参阅 [standalone server guide](/langsmith/deploy-standalone-server) 了解先决条件、环境变量和特定于平台的说明。
 
 ### 选择跟踪的发送位置
 
@@ -80,6 +80,9 @@ Hybrid 是[LangSmith Deployment](/langsmith/deployment) 的平台设置，**在�
           `https://aws.api.smith.langchain.com`
         </td>
       </tr>
+
+      <tr><td>Azure US</td>
+      <td>`https://azure.api.smith.langchain.com`</td></tr>
     </tbody>
   </table>
 
@@ -87,8 +90,6 @@ Hybrid 是[LangSmith Deployment](/langsmith/deployment) 的平台设置，**在�
 
 在这两种情况下，请使用您要跟踪的 LangSmith 实例颁发的 [LangSmith API key](/langsmith/create-account-api-key) 进行身份验证。
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/hybrid.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

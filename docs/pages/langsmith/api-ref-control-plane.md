@@ -60,6 +60,9 @@ The control plane hosts for Cloud data regions:
         `https://aws.api.host.langchain.com`
       </td>
     </tr>
+
+    <tr><td>Azure US</td>
+    <td>`https://azure.api.host.langchain.com`</td></tr>
   </tbody>
 </table>
 

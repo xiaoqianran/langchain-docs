@@ -1,6 +1,6 @@
-<!-- langchain-docs: Connect a Managed Deep Agent over HTTP | https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels-http -->
+<!-- langchain-docs: Connect a Managed Deep Agent to a custom channel over HTTP | https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels-http -->
 
-# Connect a Managed Deep Agent over HTTP
+# Connect a Managed Deep Agent to a custom channel over HTTP
 
 Start Managed Deep Agents runs from any external service that can send a webhook, and return responses through your own transport.
 

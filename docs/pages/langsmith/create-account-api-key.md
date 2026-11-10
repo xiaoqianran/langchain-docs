@@ -209,6 +209,9 @@ You may also need the following additional environment variables:
           `https://aws.api.smith.langchain.com`
         </td>
       </tr>
+
+      <tr><td>Azure US</td>
+      <td>`https://azure.api.smith.langchain.com`</td></tr>
     </tbody>
   </table>
 

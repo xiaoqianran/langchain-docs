@@ -8,29 +8,19 @@
 
 沙箱是隔离的环境，允许代理安全地执行潜在风险的操作，例如运行任意代码或与文件系统交互，而不会影响您的主要基础设施。
 
-从[LangSmith homepage](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-sandboxes)，选择**沙箱**来管理所有沙箱资源。
+从[LangSmith homepage](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-sandboxes)，选择**沙箱**来管理您的所有沙箱资源。
 
 ![Sandboxes overview page](https://mintcdn.com/langchain-5e9cc07a/5nd3ca6haxRbnJZj/images/langsmith/sandboxes/sb-overview.png?fit=max\&auto=format\&n=5nd3ca6haxRbnJZj\&q=85\&s=6c2848ea69c0a99cbdd0930ceb91daa5)
 
-## 环境可用性
+## 可用性
 
-|环境 |状态 |
-| - | - |
-| GCP 美国 (`smith.langchain.com`) |一般可用 |
-| GCP 欧盟 (`eu.smith.langchain.com`) |一般可用 |
-| GCP 亚太地区 (`apac.smith.langchain.com`) |一般可用 |
-| AWS 美国 (`aws.smith.langchain.com`) |一般可用 |
-| [BYOC](/langsmith/byoc)（您的数据平面 URL）|一般可用 |
+沙盒通常在所有 [LangSmith Cloud regions](/langsmith/cloud#regional-storage)、[BYOC](/langsmith/byoc) 和 [self-hosted](/langsmith/enable-self-hosted-sandboxes) 部署中可用。在 BYOC 上，使用属于 BYOC 工作区的 API 密钥。
 
-> [!警告]
->
-> 在 BYOC 上，使用属于 BYOC 工作区的 API 密钥。
+有关自托管基础设施模型、扩展和升级，请参阅[Self-hosted Sandbox architecture](/langsmith/self-host-sandbox-architecture)。
 
-对于自托管 LangSmith 部署，请参阅 [Enable Sandboxes on self-hosted deployments](/langsmith/enable-self-hosted-sandboxes)。基础设施模型、扩展和升级请参见[Self-hosted Sandbox architecture](/langsmith/self-host-sandbox-architecture)。
+## 网络访问
 
-## 网络访问默认情况下，限制出站适用于非企业组织以及提出请求的组织。获得批准豁免的组织可以使用不受限制的出口。受限沙箱使用通用包注册表、源存储库和模型 API 的托管允许列表。 LangSmith 会阻止白名单之外的目的地，即使您将它们添加到沙箱的代理配置中也是如此。
-
-如果您需要不受限制的出口，请在 [file a support ticket](https://support.langchain.com) 中注明您的组织或工作区 ID、区域、所需的目的地和端口以及用例。欲了解更多信息，请参阅[restricted egress and access requests](/langsmith/sandbox-auth-proxy#organization-level-restricted-egress)。
+默认情况下，限制出站适用于非企业组织以及提出请求的组织。获得批准豁免的组织可以使用不受限制的出口。受限沙箱使用通用包注册表、源存储库和模型 API 的托管允许列表。 LangSmith 会阻止白名单之外的目的地，即使您将它们添加到沙箱的代理配置中也是如此。如果您需要不受限制的出口，请在 [file a support ticket](https://support.langchain.com) 中注明您的组织或工作区 ID、区域、所需的目的地和端口以及用例。有关更多信息，请参阅[restricted egress and access requests](/langsmith/sandbox-auth-proxy#organization-level-restricted-egress)。
 
 ## 开始吧
 
@@ -82,7 +72,9 @@ await sandbox.delete();
 
 ### 4. 与代理一起使用沙箱
 
-要将沙箱连接到代理代码中，请参阅开源文档：* **Deep Agents**：[Use ⟦T9⟧ as a backend](/oss/python/integrations/sandboxes/langsmith)，涵盖安装、后端创建和清理。
+要将沙箱连接到代理代码中，请参阅开源文档：
+
+* **Deep Agents**：[Use ⟦T5⟧ as a backend](/oss/python/integrations/sandboxes/langsmith)，涵盖安装、后端创建和清理。
 * **沙箱作为代理后端**：[Configure any sandbox as the execution backend](/oss/python/deepagents/sandboxes) 自动为您的代理提供`execute` 和文件系统工具。
 * **LangChain / LangGraph 集成**：使用 LangSmith 沙箱作为第一方选项，或使用 [connect third-party providers](/oss/python/integrations/sandboxes)，例如 AgentCore、Daytona、E2B、Modal、Runloop 和 Vercel。
 
@@ -98,9 +90,7 @@ await sandbox.delete();
 
 > [卡][Auth proxy](/langsmith/sandbox-auth-proxy)
 >
-> 将凭证注入出站 API 请求，无需硬编码机密。
-
-> [卡][Mounts](/langsmith/sandbox-mounts)
+> 将凭证注入出站 API 请求，无需硬编码机密。> [卡][Mounts](/langsmith/sandbox-mounts)
 >
 > 将 S3 存储桶、GCS 存储桶和公共 Git 存储库附加到沙箱文件系统。
 
@@ -118,7 +108,9 @@ await sandbox.delete();
 
 > [卡][Self-hosted setup](/langsmith/enable-self-hosted-sandboxes)
 >
-> 使用 Helm 或 Terraform 在自托管 LangSmith 部署上启用沙箱。> [卡][Harbor](/langsmith/harbor-integrations#sandboxes)
+> 使用 Helm 或 Terraform 在自托管 LangSmith 部署上启用沙箱。
+
+> [卡][Harbor](/langsmith/harbor-integrations#sandboxes)
 >
 > 在 LangSmith 沙盒上运行 Harbor 评估和部署。
 

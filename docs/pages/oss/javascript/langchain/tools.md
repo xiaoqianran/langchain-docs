@@ -463,7 +463,7 @@ const fetchOrderStatus = tool(
 );
 
 const agent = createAgent({
-  model: new ChatOpenAI({ model: "gpt-4o-mini" }),
+  model: new ChatOpenAI({ model: "gpt-5.4-mini" }),
   tools: [fetchOrderStatus],
 });
 

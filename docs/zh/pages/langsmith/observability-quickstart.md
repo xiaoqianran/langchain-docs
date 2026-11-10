@@ -4,7 +4,7 @@
 
 # 跟踪快速入门
 
-在几分钟内将 LangSmith 跟踪添加到代理。
+只需几分钟即可将 LangSmith 跟踪添加到代理。
 
 LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为您提供对代理的端到端可见性；请求期间运行的每个步骤的完整记录，从传入的输入到返回的最终输出。
 
@@ -165,11 +165,14 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
    > `https://aws.api.smith.langchain.com`
    > </td>
    > </tr>
-   > </tbody>> </table>
+   >> <tr><td>Azure US</td>
+   > <td>`https://azure.api.smith.langchain.com`</td></tr>
+   > </tbody>
+   > </table>
    >
    > 例如欧盟账户：`export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`。
 
-   对于其他提供商，请使用 [⟦T37⟧ decorator](/langsmith/annotate-code#use-%40traceable-%2F-traceable) 手动跟踪呼叫。
+   对于其他提供商，请使用 [⟦T38⟧ decorator](/langsmith/annotate-code#use-%40traceable-%2F-traceable) 手动跟踪呼叫。
 
 ## 2. 构建应用程序
 
@@ -498,9 +501,9 @@ npx tsx index.ts
 ./gradlew run
 ```
 
-## 4. 查看您的踪迹在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-quickstart) 中，选择您的代理，转到 **跟踪**，然后选择在设置过程中配置的环境。在基于项目的工作区中，打开名为 `LANGSMITH_PROJECT` 的项目。欲了解更多信息，请参阅[Navigate agents](/langsmith/navigate-agents)。
+## 4. 查看您的踪迹在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-quickstart)中，选择您的代理，转到**跟踪**，然后选择设置期间配置的环境。在基于项目的工作区中，打开名为 `LANGSMITH_PROJECT` 的项目。有关更多信息，请参阅[Navigate agents](/langsmith/navigate-agents)。
 
-单击`assistant`行打开跟踪。 **轨迹**选项卡显示发送到模型的对话。选择 **详细信息** 选项卡可查看完整的运行树，包括带有 `get_context` 工具调用的 `assistant` 函数以及嵌套在其中的模型调用。
+单击 `assistant` 行打开跟踪。 **轨迹**选项卡显示发送到模型的对话。选择 **详细信息** 选项卡可查看完整的运行树，包括带有 `get_context` 工具调用的 `assistant` 函数以及嵌套在其中的模型调用。
 
 ![LangSmith UI showing a trace with an outer agent span and a nested LLM call span.](https://mintcdn.com/langchain-5e9cc07a/EKYgNtnIIDPnseTv/langsmith/images/trace-quickstart-app.png?fit=max\&auto=format\&n=EKYgNtnIIDPnseTv\&q=85\&s=35b19b5e1e978d13cdbb61058334eeb4)
 

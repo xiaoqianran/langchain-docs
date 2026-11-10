@@ -418,6 +418,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Headless browser automation platform.
 
+> [card] [CAEL provenance tool](https://github.com/Vovala14/CAEL/tree/codex/agent-provenance/examples/agent_provenance)
+>
+> Local logical-premise tool with source quotes, replayable proofs and explicit unknown/conflicting results; separately licensed CAEL engine.
+
 > [card] [CAMB AI](https://docs.camb.ai)
 >
 > Multilingual audio and localization services supporting 140+ languages.
@@ -1234,6 +1238,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Alibaba Cloud's multi-model database service.
 
+> [card] [LinkDigestTool](https://linkdigest.dev/docs#frameworks)
+>
+> Tool that reads Douyin, Xiaohongshu, Bilibili, TikTok, YouTube and X posts as text: timed transcript, on-screen text and image descriptions.
+
 > [card] [LinkUp](https://github.com/LinkupPlatform/langchain-linkup)
 >
 > Real-time job market data and search.
@@ -1397,6 +1405,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [MistralAI](/oss/python/integrations/providers/mistralai)
 >
 > Efficient open-source language models.
+
+> [card] [MobileboxToolkit](https://github.com/fifteenA/mobilebox/tree/main/packages/python/langchain-mobilebox#readme)
+>
+> Tools that let agents create cloud Android phones, read the screen, tap, type and install apps with Mobilebox.
 
 > [card] [Modal](/oss/python/integrations/providers/modal)
 >
@@ -1633,6 +1645,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Opedd](https://opedd.com/for-ai-agents)
 >
 > Licensed, rights-cleared content for RAG and agents with verifiable license keys.
+
+> [card] [OutcrawlSearchTool](https://github.com/outcrawlai/langchain-outcrawl#readme)
+>
+> Web search and page scrape tools, plus a document loader, for the Outcrawl API.
 
 > [card] [oxidize-pdf](https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain)
 >
@@ -1978,6 +1994,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Web scraping API and proxy service.
 
+> [card] [ScrapeUnblockerToolkit](https://docs.scrapeunblocker.com/sdks/langchain)
+>
+> ScrapeUnblockerToolkit uses a web data API to load pages in a real browser and return Markdown or structured JSON.
+
 > [card] [ScrapingBee](https://www.scrapingbee.com/documentation/langchain/)
 >
 > Web scraping and search API with headless browsers, proxies, and AI extraction.
@@ -2125,6 +2145,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Spidra](https://docs.spidra.io)
 >
 > AI-powered web scraping platform with real browsers, CAPTCHA solving, and structured data extraction.
+
+> [card] [SQLiteGraphMemoryRetriever](https://github.com/tonydzi/langchain-sqlite-graph-memory#readme)
+>
+> Local retriever over markdown notes: vector search, 1-hop wikilink graph expansion and cross-encoder rerank, with no server.
 
 > [card] [SRARiskGateMiddleware](https://github.com/sriram1983007-dev/langchain-sra-riskgate#readme)
 >

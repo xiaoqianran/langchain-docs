@@ -97,7 +97,7 @@ This lifecycle means that multi-turn evaluators run once per completed thread, n
 
 > [!NOTE]
 >
-> On [LangSmith Cloud](/langsmith/cloud), the `trajectory` variable is available in the GCP US region ([smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-multi-turn)) only. It is not available in the GCP EU, GCP APAC, or AWS US regions, or on [BYOC](/langsmith/byoc) deployments.
+> On [LangSmith Cloud](/langsmith/cloud), the `trajectory` variable is available in the GCP US, GCP EU, GCP APAC, and AWS US regions. It is not available on [BYOC](/langsmith/byoc) deployments.
 >
 > [Self-hosted](/langsmith/self-hosted) installations support the `trajectory` variable on LangSmith v0.17 or later, after you [switch queries to SmithDB](/langsmith/self-host-smithdb-install#step-6-switch-queries-to-smithdb). See [SmithDB feature availability](/langsmith/self-host-smithdb-features).
 

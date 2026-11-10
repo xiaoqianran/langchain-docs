@@ -4,13 +4,13 @@
 
 # 隧道
 
-通过仅出站连接器从 LangSmith 访问专用网络上的服务，而无需将其暴露于公共互联网。
+通过仅出站连接器从 LangSmith 访问专用网络上的服务，而无需将它们暴露于公共互联网。
 
 > [!注意]
 >
 > 隧道位于[alpha](/langsmith/release-stages)。要为您的组织请求访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
 
-隧道可让 LangSmith 到达在您的专用网络上运行的服务，例如模型端点或 MCP 服务器，而无需向 Internet 开放该服务。您在网络内运行一个小型连接器。连接器打开到 LangSmith 的出站连接，LangSmith 通过该连接发送服务请求。要通过网络发送沙箱的出站连接，请使用 [relay](/langsmith/relays)。
+隧道可以让 LangSmith 到达在您的专用网络上运行的服务，例如模型端点或 MCP 服务器，而无需向 Internet 开放该服务。您在网络内运行一个小型连接器。连接器打开到 LangSmith 的出站连接，LangSmith 通过该连接发送服务请求。要通过网络发送沙箱的出站连接，请使用 [relay](/langsmith/relays)。
 
 每个地区的 [LangSmith Cloud](/langsmith/cloud) 上都有隧道。它们不可用于自托管或混合部署。
 
@@ -42,18 +42,57 @@
 
 **4.为连接器创建 API 密钥**
 
-在 **设置** > **API 密钥** 中，[create an organization-scoped service key](/langsmith/create-account-api-key) 具有组织管理员或组织操作员角色。连接器使用此键连接到LangSmith。将其存储在连接器可以读取的位置，并且不要将其提交到源代码管理。
+在 **设置** > **API 密钥** 中，[create an organization-scoped service key](/langsmith/create-account-api-key) 具有组织管理员或组织操作员角色。连接器使用此密钥连接到LangSmith。将其存储在连接器可以读取的位置，并且不要将其提交到源代码管理。
 
 **5.运行连接器**
 
 在网络内运行连接器。如果您的组织不在 GCP US 区域，请将端点设置为您所在区域的 API URL：
 
-|地区 |端点|
-| - | - |
-|基仕伯美国 | `https://api.smith.langchain.com`（默认）|
-| GCP 欧盟 | `https://eu.api.smith.langchain.com` |
-|基仕伯亚太区 | `https://apac.api.smith.langchain.com` |
-| AWS 美国 | `https://aws.api.smith.langchain.com` |> [选项卡] Kubernetes（Helm）
+<table>
+  <thead>
+    <tr>
+      <th>地区</th>
+
+      <th>
+        网址
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>GCP 美国</td>
+
+      <td>
+        `https://api.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>GCP 欧盟</td>
+
+      <td>
+        `https://eu.api.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>GCP 亚太地区</td>
+
+      <td>
+        `https://apac.api.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>AWS 美国</td>
+
+      <td>
+        `https://aws.api.smith.langchain.com`
+      </td>
+    </tr>
+  </tbody>
+</table>> [选项卡] Kubernetes（Helm）
 >
 > 将 API 密钥存储在 Secret 中，然后安装 [⟦T9⟧ chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-connector)：
 >
@@ -101,7 +140,7 @@
 curl -H "X-Api-Key: $LANGSMITH_API_KEY" https://<handle>.tunnels.smith.langchain.com/
 ```
 
-响应来自您的服务。没有有效 API 密钥的请求将返回 `403` 和 `connection access denied`。如果隧道停留在 **等待连接器**，请检查连接器的日志。每次连接器连接失败时，它都会记录一条警告并说明原因并重试。常见原因是 API 密钥没有组织管理员或组织操作员角色、隧道 ID 错误或隧道已禁用。
+响应来自您的服务。没有有效 API 密钥的请求将返回 `403` 和 `connection access denied`。如果隧道停留在 **等待连接器**，请检查连接器的日志。每次连接器连接失败时，它都会记录一条警告并说明原因并重试。常见原因是没有组织管理员或组织操作员角色的 API 密钥、错误的隧道 ID 或禁用的隧道。
 
 ### 目标
 
@@ -131,7 +170,7 @@ curl -H "X-Api-Key: $LANGSMITH_API_KEY" https://<handle>.tunnels.smith.langchain
 
 ### 仅出站连接
 
-连接器通过 TLS 与您所在区域的 LangSmith API 端点在端口 443 上建立出站 WebSocket 连接。您不打开入站端口或更改 LangSmith 的防火墙规则，并且连接器 Pod 不公开任何端口。
+连接器通过 TLS 在端口 443 上与您所在区域的 LangSmith API 端点建立出站 WebSocket 连接。您不打开入站端口或更改 LangSmith 的防火墙规则，并且连接器 Pod 不公开任何端口。
 
 ### 身份验证和授权* **连接器**：连接器使用有权连接隧道的组织 API 密钥进行身份验证。 LangSmith 仅在启用隧道时接受连接器。
 * **每个请求**：LangSmith 授权每个请求到隧道 URL。调用者必须是代表隧道组织成员的 LangSmith 服务，或者必须提供该组织的 API 密钥。必须启用隧道。隧道 URL 不是秘密，本身不授予访问权限。

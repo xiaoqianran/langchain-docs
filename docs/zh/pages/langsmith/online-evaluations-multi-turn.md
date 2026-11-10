@@ -8,7 +8,7 @@
 
 > [!提示]
 >
-> 要使用 LangChain 管理的线程级判断而不配置模型、API 密钥或提示，请参阅 [LangChain Tuned Evaluators](/langsmith/tuned-evaluators)。
+> 要使用LangChain管理的线程级判断而不配置模型、API密钥或提示，请参阅[LangChain Tuned Evaluators](/langsmith/tuned-evaluators)。
 
 您可以使用多轮评估来衡量：
 
@@ -23,9 +23,9 @@
 ## 它是如何工作的
 
 多轮在线评估器遵循以下评估生命周期：1. **跟踪摄取**：对话中的每个轮次都作为单独的运行进行跟踪，并使用共享线程 ID 与线程关联。
-2. **空闲时间检测**：在摄取线程中的最后一个跟踪后，LangSmith 等待配置的空闲时间过去。此空闲期表示对话已完成并准备好进行评估。
-3. **消息组装**：LangSmith从线程中的每个跟踪收集`messages`并将它们组装成单个对话历史记录。如果每个跟踪仅包含最新消息，则 LangSmith 将各轮消息缝合在一起。如果每个跟踪包含完整的历史记录，LangSmith 会直接使用它。由于线程中的连续跟踪经常重新发送先前的历史记录，因此 LangSmith 会删除重叠消息，因此每个消息仅出现一次。结果是 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的单个消息列表，这就是提示中的 `all_messages` 变量解析的结果。
-4. **LLM 作为法官评估**：组装的对话将传递到您配置的 LLM 作为法官提示。评估者根据您的标准对整个线程进行评分：语义意图、结果或轨迹。5. **反馈记录**：评估器使用您配置的与线程关联的反馈键将反馈写入LangSmith。
+2. **空闲时间检测**：摄取线程中的最后一个跟踪后，LangSmith 等待配置的空闲时间过去。此空闲期表示对话已完成并准备好进行评估。
+3. **消息组装**：LangSmith从线程中的每个跟踪中收集`messages`并将它们组装成单个对话历史记录。如果每个跟踪仅包含最新消息，则 LangSmith 将各轮消息缝合在一起。如果每个跟踪包含完整的历史记录，LangSmith 会直接使用它。由于线程中的连续跟踪经常重新发送先前的历史记录，因此 LangSmith 会删除重叠消息，因此每个消息仅出现一次。结果是 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的单个消息列表，这就是提示中的 `all_messages` 变量解析的结果。
+4. **LLM 作为法官评估**：组装的对话将传递到您配置的 LLM 作为法官提示。评估者根据您的标准对整个线程进行评分：语义意图、结果或轨迹。5. **反馈记录**：评估者使用您配置的与线程关联的反馈键将反馈写入LangSmith。
 
 此生命周期意味着多轮评估器每个完成的线程运行一次，而不是每个跟踪运行一次。如果您想要每条轨迹评估，请使用[run-level online evaluators](/langsmith/online-evaluations-llm-as-judge)。
 
@@ -44,7 +44,7 @@
 
 ＃＃ 配置1. 导航到 **跟踪** 页面并选择跟踪项目或代理环境。
 
-2. 单击“**评估器**”选项卡，然后单击“**+ 评估器**”。在“从头开始创建”下选择“LLM 作为法官评估者”。在“**源**”下，选择“**线程**”。
+2. 单击“**评估器**”选项卡，然后单击“**+ 评估器**”。在“从头开始创建”下选择“LLM-as-a-Judge Evaluator”。在“**源**”下，选择“**线程**”。
 
 3. **指定您的评估员**。
 
@@ -68,7 +68,7 @@
 
 7. **配置您的 LLM 法官提示。**
 
-   定义您要评估的内容。该提示将用于评估线程。您还可以通过 `all_messages` 变量配置将组装对话的哪些部分传递给评估器，以控制它接收的内容：* 所有消息：以 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的 JSON 消息对象列表形式发送完整对话，每条消息呈现为缩进的 JSON 并用空行分隔。
+   定义您要评估的内容。该提示将用于评估线程。您还可以通过 `all_messages` 变量配置将组装对话的哪些部分传递给评估器，以控制它接收的内容：* 所有消息：以 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的 JSON 消息对象列表的形式发送完整对话，每条消息呈现为缩进的 JSON 并用空行分隔。
    * 人类和人工智能对：仅发送用户和助理消息，格式为`<user>...</user>`和`<assistant>...</assistant>`，不包括系统消息、工具调用和其他角色。
    * 第一个人类和最后一个人工智能：仅发送第一条用户消息和最后一个助理回复。
 
@@ -84,11 +84,11 @@
 
    保存后，您的评估器将出现在**评估器**选项卡中。保存后创建的任何新线程的空闲时间过去后，您可以对其进行测试。
 
-## 评估轨迹`trajectory` 是线程求值器可以使用的变量之一，与 `all_messages`、`human_ai_pairs` 和 `first_human_last_ai` 一起使用。它解析为对话的[trajectory](/langsmith/observability-concepts#trajectories)：从开始到结束的扁平、有序的消息列表，包括工具调用及其结果。用它来对代理所采取的路径进行评分，例如它是否选择了正确的工具，遵循其计划，并没有浪费步骤到达目的地。
+## Evaluate trajectories`trajectory` 是线程求值器可以使用的变量之一，与 `all_messages`、`human_ai_pairs` 和 `first_human_last_ai` 一起使用。它解析为对话的[trajectory](/langsmith/observability-concepts#trajectories)：从开始到结束的扁平、有序的消息列表，包括工具调用及其结果。用它来对代理所采取的路径进行评分，例如它是否选择了正确的工具，遵循其计划，并没有浪费步骤到达目的地。
 
 > [!注意]
 >
-> 在 [LangSmith Cloud](/langsmith/cloud) 上，`trajectory` 变量仅在 GCP 美国区域 ([smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-multi-turn)) 中可用。它不适用于 GCP EU、GCP APAC 或 AWS 美国区域，也不适用于 [BYOC](/langsmith/byoc) 部署。
+> 在 [LangSmith Cloud](/langsmith/cloud) 上，`trajectory` 变量在 GCP US、GCP EU、GCP APAC 和 AWS US 区域可用。它不适用于 [BYOC](/langsmith/byoc) 部署。
 >
 > 在 [switch queries to SmithDB](/langsmith/self-host-smithdb-install#step-6-switch-queries-to-smithdb) 之后，[Self-hosted](/langsmith/self-hosted) 安装支持 LangSmith v0.17 或更高版本上的 `trajectory` 变量。参见[SmithDB feature availability](/langsmith/self-host-smithdb-features)。
 
@@ -108,7 +108,7 @@
 
 仅当您尚未编辑默认提示时，在 **运行 ** 和 **线程 ** 之间切换 **源 ** 才会重新播种默认提示。编辑提示后，您的版本将被保留，并且您可以自己映射变量。
 
-`{{trajectory}}` 不能与 `{{all_messages}}`、`{{human_ai_pairs}}` 或 `{{first_human_last_ai}}` 一起出现。映射轨迹源后，变量源下拉列表中的其他源将被禁用，并且一旦映射其他源之一，轨迹源将被禁用。无论哪种方式，下拉列表都解释了轨迹变量和非轨迹变量不能一起使用。保存混合它们的评估器也会以同样的方式失败。当评估器完成时，LangSmith 在您配置的反馈键下将反馈写入线程中最近的根运行，并将该反馈与线程关联。稍后要查找它，请参阅[View feedback](/langsmith/threads#view-feedback)。
+`{{trajectory}}` 不能与 `{{all_messages}}`、`{{human_ai_pairs}}` 或 `{{first_human_last_ai}}` 一起出现。 Once you map the trajectory source, the other sources are disabled in the variable source dropdown, and once you map one of the others, the trajectory source is disabled.无论哪种方式，下拉列表都解释了轨迹变量和非轨迹变量不能一起使用。保存混合它们的评估器也会以同样的方式失败。当评估器完成时，LangSmith 在您配置的反馈键下将反馈写入线程中最近的根运行，并将该反馈与线程关联。稍后要找到它，请参阅[View feedback](/langsmith/threads#view-feedback)。
 
 有关您可以改编的完整提示，请参阅[Example with trajectory context](/langsmith/prompt-template-format#example-with-trajectory-context)。
 

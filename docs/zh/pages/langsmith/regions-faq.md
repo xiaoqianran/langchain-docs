@@ -6,7 +6,7 @@
 
 > [!注意]
 >
-> 请参阅 [cloud architecture reference](/langsmith/cloud#cloud-architecture-and-scalability) 了解更多详细信息。
+> 请参阅[cloud architecture reference](/langsmith/cloud#cloud-architecture-and-scalability) 了解更多详细信息。
 
 ## 法律与合规
 
@@ -50,9 +50,58 @@ LangSmith 目前不支持此功能，但如果您有兴趣，请通过 [support.
 
 #### *我如何查看我的组织的区域？*
 
-检查您的 URL - [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-regions-faq) 上的组织位于 GCP US，[https://eu.smith.langchain.com](https://eu.smith.langchain.com) 上的组织位于 GCP EU，[https://apac.smith.langchain.com](https://apac.smith.langchain.com) 上的组织位于 GCP APAC，[https://aws.smith.langchain.com](https://aws.smith.langchain.com) 上的组织位于 AWS US。
+打开 LangSmith UI，然后检查浏览器地址栏中的主机名。每个区域都有自己的主机名：
 
-#### *我可以在区域之间切换我的组织吗？*目前我们不支持跨区域迁移，但如果您对此功能感兴趣，请通过[support.langchain.com](https://support.langchain.com)联系支持。
+<table>
+  <thead>
+    <tr>
+      <th>地区</th>
+
+      <th>
+        主持人
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>GCP 美国</td><td>
+        `smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>GCP 欧盟</td>
+
+      <td>
+        `eu.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>GCP 亚太地区</td>
+
+      <td>
+        `apac.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>AWS 美国</td>
+
+      <td>
+        `aws.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr><td>Azure US</td>
+    <td>`azure.smith.langchain.com`</td></tr>
+  </tbody>
+</table>
+
+#### *我可以在区域之间切换我的组织吗？*
+
+目前我们不支持跨区域迁移，但如果您对此功能感兴趣，请通过[support.langchain.com](https://support.langchain.com)联系支持。
 
 ## 计划和定价
 

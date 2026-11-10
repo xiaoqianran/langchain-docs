@@ -50,7 +50,56 @@ See the [cloud architecture reference](/langsmith/cloud#cloud-architecture-and-s
 
 #### *How can I see my organization's region?*
 
-Check your URL - organizations on [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-regions-faq) are in GCP US, organizations on [https://eu.smith.langchain.com](https://eu.smith.langchain.com) are in GCP EU, organizations on [https://apac.smith.langchain.com](https://apac.smith.langchain.com) are in GCP APAC, and organizations on [https://aws.smith.langchain.com](https://aws.smith.langchain.com) are in AWS US.
+Open the LangSmith UI, and check the hostname in your browser's address bar. Each region has its own hostname:
+
+<table>
+  <thead>
+    <tr>
+      <th>Region</th>
+
+      <th>
+        Host
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>GCP US</td>
+
+      <td>
+        `smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>GCP EU</td>
+
+      <td>
+        `eu.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>GCP APAC</td>
+
+      <td>
+        `apac.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>AWS US</td>
+
+      <td>
+        `aws.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr><td>Azure US</td>
+    <td>`azure.smith.langchain.com`</td></tr>
+  </tbody>
+</table>
 
 #### *Can I switch my organization between regions?*
 
