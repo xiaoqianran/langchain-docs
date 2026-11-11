@@ -15,8 +15,6 @@ LangChain manages the LangSmith platform (UI, APIs, and datastores), your Agent 
 
 If you're ready to deploy your app to LangSmith Cloud, follow the [Cloud deployment quickstart](/langsmith/deployment-quickstart) or the [full setup guide](/langsmith/deploy-to-cloud). This page explains the Cloud managed architecture for reference.
 
-![Cloud deployment: LangChain hosts and manages all components including the UI, APIs, and your Agent Servers.](https://mintcdn.com/langchain-5e9cc07a/JOyLr_spVEW0t2KF/langsmith/images/langgraph-cloud-architecture.png?fit=max\&auto=format\&n=JOyLr_spVEW0t2KF\&q=85\&s=3f0316122425895270d0ecd47b12e139)
-
 ## Cloud architecture and scalability
 
 > [!NOTE]
@@ -66,9 +64,9 @@ Data listed here is stored exclusively in the US:
 
 ### Architecture
 
-Every region runs the same LangSmith components. The following sections list the cloud services that host them in each region. The Azure US region uses SmithDB where the diagram shows ClickHouse.
+Every region runs the same LangSmith components. The following sections list the cloud services that host them in each region.
 
-![Light mode overview](https://mintcdn.com/langchain-5e9cc07a/rqYqeBEA_2oeiw17/langsmith/images/cloud-arch-light.png?fit=max\&auto=format\&n=rqYqeBEA_2oeiw17\&q=85\&s=0790cbdf4fe131c74d1e60bb120834e3)
+![LangSmith Cloud architecture: clients reach the LangSmith services through the edge and load balancer, and the services store data in Postgres, Redis, ClickHouse or SmithDB, and blob storage.](https://mintcdn.com/langchain-5e9cc07a/Qw3s9uCyOGTESt6V/langsmith/images/cloud-arch-light.png?fit=max\&auto=format\&n=Qw3s9uCyOGTESt6V\&q=85\&s=c14c56f8495614dd93d6d7998cbccecd)
 
 ### GCP services
 
@@ -81,6 +79,8 @@ LangSmith is composed of the following services, all hosted on Google Kubernetes
 * LangSmith Platform Backend: handles authentication and other high-volume tasks. (Internal service)
 * LangSmith Playground: handles forwarding requests to various LLM providers for the Playground feature.
 * LangSmith Queue: handles processing of asynchronous tasks. (Internal service)
+* LangSmith ACE Backend: runs custom code evaluators in an isolated runtime. (Internal service)
+* LangSmith Ingest Queue: processes incoming traces. (Internal service)
 
 LangSmith uses the following GCP storage services:
 
@@ -106,6 +106,8 @@ LangSmith is composed of the following services, all hosted on Amazon EKS:
 * LangSmith Platform Backend: handles authentication and other high-volume tasks. (Internal service)
 * LangSmith Playground: handles forwarding requests to various LLM providers for the Playground feature.
 * LangSmith Queue: handles processing of asynchronous tasks. (Internal service)
+* LangSmith ACE Backend: runs custom code evaluators in an isolated runtime. (Internal service)
+* LangSmith Ingest Queue: processes incoming traces. (Internal service)
 
 LangSmith uses the following AWS storage and data services:
 
@@ -131,6 +133,8 @@ LangSmith is composed of the following services, all hosted on AKS:
 * LangSmith Platform Backend: handles authentication and other high-volume tasks. (Internal service)
 * LangSmith Playground: handles forwarding requests to various LLM providers for the Playground feature.
 * LangSmith Queue: handles processing of asynchronous tasks. (Internal service)
+* LangSmith ACE Backend: runs custom code evaluators in an isolated runtime. (Internal service)
+* LangSmith Ingest Queue: processes incoming traces. (Internal service)
 
 LangSmith uses the following Azure storage and data services:
 

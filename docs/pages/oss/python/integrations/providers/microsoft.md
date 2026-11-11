@@ -44,6 +44,10 @@ Browse common LangChain Python integrations with [Microsoft Azure](https://porta
 
 > [card] [Azure Blob Storage](/oss/python/integrations/document_loaders/azure_blob_storage)
 
+> [card] [Azure AI Search](/oss/python/integrations/vectorstores/azuresearch)
+
+> [card] [Azure AI Search retriever](/oss/python/integrations/retrievers/azure_ai_search)
+
 > [card] [Azure Cosmos DB for MongoDB vCore](/oss/python/integrations/vectorstores/azure_cosmos_db_mongo_vcore)
 
 > [card] [Azure Cosmos DB NoSQL](/oss/python/integrations/vectorstores/azure_cosmos_db_no_sql)
@@ -71,6 +75,8 @@ Browse common LangChain Python integrations with [Microsoft Azure](https://porta
 > [card] [Azure Logic Apps](/oss/python/integrations/tools/azure_logic_apps)
 
 > [card] [Microsoft Foundry hosted agents](/oss/python/integrations/providers/azure_ai#microsoft-foundry-hosted-agents)
+
+> [card] [Azure Durable Task Scheduler (LangGraph)](/oss/python/integrations/providers/azure_ai#durable-langgraph-execution-with-azure-durable-task-scheduler)
 
 ***
 

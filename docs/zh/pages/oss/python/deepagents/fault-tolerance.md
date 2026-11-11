@@ -10,15 +10,16 @@
 
 ## 错误处理策略
 
-不同的错误需要不同的处理策略：|错误类型 |谁修的|战略|中间件或功能 |
+不同的错误需要不同的处理策略：
+
+|错误类型 |谁修的|战略|中间件或功能 |
 | - | - | - | - |
 |瞬时错误（网络问题、速率限制）|系统（自动）|使用指数退避重试 | [ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)、[ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) |
-| LLM 可恢复错误（工具故障、解析问题）|法学硕士 |转换为误差`ToolMessage`并让模型调整 | [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) |
-|模特拒绝|系统或开发者 |退回到另一个模型，然后捕获错误 | [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)、[ModelRefusalMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware) |
-|用户可修复的错误（信息缺失、说明不明确）|人类 |按 `interrupt()` 暂停 | [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) |
-|供应商中断 |系统（自动）|退回到替代模型 | [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) |
-|过多的调用（失控循环）|系统（自动）|每次运行的模型和工具调用上限 | [ModelCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware)、[ToolCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware) |
-|意外错误 |开发商|让它们冒泡|无中间件；让异常传播 |
+| LLM 可恢复错误（工具故障、解析问题）|法学硕士 |转换为误差`ToolMessage`并让模型调整| [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) |
+|模特拒绝|系统或开发者 |回退到另一个模型，然后捕获错误 | [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)、[ModelRefusalMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware) |\|用户可修复的错误（信息缺失、说明不明确）|人类 |按 `interrupt()` 暂停 | [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) |
+\|供应商中断 |系统（自动）|退回到替代模型 | [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) |
+\|过多的调用（失控循环）|系统（自动）|每次运行的模型和工具调用上限 | [ModelCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware)、[ToolCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware) |
+\|意外错误 |开发商 |让它们冒泡|无中间件；让异常传播 |
 
 以下部分通过代码示例介绍了每种策略。
 
@@ -42,7 +43,9 @@
 >         ),
 >     ],
 > )
-> ```> [选项卡] LLM-可恢复
+> ```
+
+> [选项卡] LLM-可恢复
 >
 > 使用[ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware)捕获工具异常并将其转换为错误`ToolMessage`，以便LLM可以看到出了什么问题并重试：
 >
@@ -85,9 +88,7 @@
 > )
 > ```
 >
-> 有关完整的人机交互指南，请参阅 [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。
-
-> [选项卡] 提供商中断
+> 有关完整的人机交互指南，请参阅 [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。> [选项卡] 提供商中断
 >
 > 如果您的主要模型提供商完全瘫痪，请使用 [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 切换到替代模型：
 >
@@ -134,7 +135,9 @@
 >     # Everything else (unexpected errors) propagates and halts the run
 > ```
 
-## 速率限制有两种互补的方法可以限制资源使用：控制模型提供程序的请求率，并限制每次运行的调用总数。
+## 速率限制
+
+有两种互补的方法可以限制资源使用：控制模型提供程序的请求率，并限制每次运行的调用总数。
 
 ### 提供商速率限制
 
@@ -160,9 +163,7 @@ agent = create_deep_agent(model=model, tools=[search_tool])
 
 完整配置请参见[Rate limiting](/oss/python/langchain/models#rate-limiting)。
 
-### 通话限制
-
-如果没有限制，困惑的代理可以通过循环同一工具调用或进行数百个模型调用，在几分钟内耗尽您的 LLM API 预算。设置每次运行的模型调用和工具执行上限：
+### 通话限制如果没有限制，困惑的代理可以通过循环同一工具调用或进行数百个模型调用，在几分钟内耗尽您的 LLM API 预算。设置每次运行的模型调用和工具执行上限：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -200,7 +201,9 @@ agent = create_deep_agent(
         ),
     ],
 )
-```将 [ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) 范围限定于特定工具，而不是重试所有内容。失败的文件系统`read_file`不会从重试中受益，但超时的网络搜索可能会受益。完整配置请参见[ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)。
+```
+
+将 [ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) 范围限定于特定工具，而不是重试所有内容。失败的文件系统`read_file`不会从重试中受益，但超时的网络搜索可能会受益。完整配置请参见[ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)。
 
 > [!注意]
 >
@@ -223,17 +226,19 @@ agent = create_deep_agent(
 )
 ```
 
-完整配置请参见[ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)。
+完整配置请参见[ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)。### 模型拒绝
 
-### 模型拒绝
+提供者可以拒绝请求（例如根据安全策略），但仍然返回成功的响应。当模型拒绝时，Deep Agents提高[⟦T22⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)，因此运行不会像成功一样结束。 [⟦T23⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware) 在中间件之后运行，因此您传递的 [⟦T24⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 首先会在下一个模型上重试被拒绝的请求，并且仅当没有留下后备时才会引发运行。后备模型可以来自同一提供商或不同的提供商，并且它仍然可以拒绝相同的请求。
 
-提供者可以拒绝请求（例如根据安全策略），但仍然返回成功的响应。当模型拒绝时，Deep Agents提高[⟦T22⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)，因此运行不会像成功一样结束。 [⟦T23⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware) 在中间件之后运行，因此您传递的 [⟦T24⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 首先会在下一个模型上重试被拒绝的请求，并且仅当没有留下后备时才会引发运行。后备模型可以来自同一个提供商，也可以来自不同的提供商，并且它仍然可以拒绝相同的请求。
+模型级 `with_fallbacks` 不会捕获拒绝，因为中间件在模型调用返回后检测到它们。请使用 [⟦T26⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 代替。
 
-模型级 `with_fallbacks` 不会捕获拒绝，因为中间件在模型调用返回后检测到它们。请改用[⟦T26⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)。当每个模型都拒绝时，在调用代理的地方捕获`ModelRefusalError`。拒绝的回复不会保存到线程中，因此您可以告诉用户并继续对话。对于此选项和其他选项，请参阅[Handle a refusal](/oss/python/langchain/middleware/built-in#handle-a-refusal)。有关子代理拒绝如何到达父代理的信息，请参阅[Model refusals](/oss/python/deepagents/subagents#model-refusals)。
+当每个模型都拒绝时，在调用代理的地方捕获`ModelRefusalError`。拒绝的回复不会保存到线程中，因此您可以告诉用户并继续对话。对于此选项和其他选项，请参阅[Handle a refusal](/oss/python/langchain/middleware/built-in#handle-a-refusal)。有关子代理拒绝如何到达父代理的信息，请参阅[Model refusals](/oss/python/deepagents/subagents#model-refusals)。
 
-## 错误处理
+> [!注意]
+>
+> 默认情况下，对模型拒绝提出要求 `deepagents>=0.7.33`。
 
-当工具在执行期间引发异常时，代理运行默认停止。使用 [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) 捕获特定异常并将其转换为模型可以看到并从中恢复的错误 ToolMessage，而不是使运行崩溃。
+## 错误处理当工具在执行期间引发异常时，代理运行默认停止。使用 [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) 捕获特定异常并将其转换为模型可以看到并从中恢复的错误 ToolMessage，而不是导致运行崩溃。
 
 > [!注意]
 >

@@ -81,9 +81,9 @@ export const mcp = defineMcp({
 
 每个服务器都支持以下核心选项：
 
-|选项 |描述 |
+|选项|描述 |
 | - | - |
-| `transport` |必需的。对于可流式 HTTP 使用 `http`，对于旧版 SSE 使用 `sse`。 |
+| `transport` |必需的。对可流式 HTTP 使用 `http` 或对旧版 SSE 使用 `sse`。 |
 | `url` |必需的。远程 MCP 端点 URL。 |
 | `headers` |发送到服务器的静态标头。 |
 | `include_tools` / `includeTools` |要公开的原始 MCP 工具名称。 |
@@ -92,10 +92,11 @@ export const mcp = defineMcp({
 | `automatic_sse_fallback` / `automaticSSEFallback` |对于 HTTP，允许客户端回退到 SSE。 |
 | `reconnect` |对于 SSE，配置重新连接行为。 |
 
-MCP 定义还接受以下选项：|选项 |默认 |描述 |
+MCP 定义还接受以下选项：|选项|默认 |描述 |
 | - | - | - |
-| `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` |每个工具都带有前缀 `{server}__`。 |
-| `throw_on_load_error` / `throwOnLoadError` | `true` |加载失败而不是从部分工具集开始。 |
+| `prefixToolNameWithServerName` | `true` |每个工具都带有前缀 `{server}__`。 |
+| `throwOnLoadError` | `true` |加载失败而不是从部分工具集开始。 |
+| `jitAuth` | `false` |仅适用于 LangSmith 托管工具 URL。当`true`时，模型还会获取调用者尚未连接的提供者的工具。第一次调用其中一个工具时会要求用户进行连接。当`false`时，运行在开始之前会询问每个丢失的连接。需要 `managed-deepagents` 0.10.2 或更高版本。 |
 
 ## 部署
 
@@ -103,17 +104,15 @@ MCP 定义还接受以下选项：|选项 |默认 |描述 |
 
 ## 何时使用 MCP 连接器
 
-|概念|亲切 |它如何到达代理|
+|概念 |亲切 |它如何到达代理|
 | - | - | - |
-| **MCP 服务器** |托管配置|在MCP模块中的`tools/`下声明；没有导入到代理条目|
+| **MCP 服务器** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
 | **[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)** |部署API |将代理作为工具公开给 MCP 客户端 |
-| **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |
+| **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** |申请代码|导入并传入代理定义 |
 | **[Channels](/langsmith/javascript/managed-deep-agents-channels)** |托管配置|接收启动代理运行并传递响应的外部消息 |
 
 欲了解更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp-connectors.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

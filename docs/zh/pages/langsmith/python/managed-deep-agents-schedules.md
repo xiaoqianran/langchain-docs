@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上 **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 项目结构
 
@@ -63,19 +63,13 @@ schedule = define_schedule(
 
 ## 选择线程行为默认情况下，调度使用临时线程。托管 Deep Agents 为每次运行创建一个新线程，并要求 LangSmith 在运行完成后删除该临时线程。
 
-仅当计划运行应在调用之间累积持久线程状态时，才使用持久线程。
+当计划运行应共享一个线程历史记录时，请使用持久线程。当您省略 `id` 时，`mda deploy` 会为计划创建一个线程，并键入代理和计划名称。重命名调度文件会启动一个新线程。要使用特定线程，请将 `id` 设置为 UUID。 `mda deploy` 如果线程不存在则创建该线程，并拒绝另一个调用者拥有的线程。
 
-持久线程 ID 必须是部署中已存在的线程的 UUID。托管 Deep Agents 将值直接传递到代理服务器，代理服务器会拒绝任何非 UUID 的 ID。
-
-### 创建持久线程
-
-在部署计划之前创建线程。在[LangSmith Studio](/langsmith/studio)中打开部署，创建一个新线程，并复制其线程ID。 `mda deploy` 打印部署 URL，LangSmith 在部署页面上列出它。
-
-托管 Deep Agents 和 `mda` CLI 都不会创建线程，因此这是每个持久计划的一次性手动步骤。
+> [!注意]
+>
+> 省略 `id` 需要 `managed-deepagents>=0.10.2`。早期版本需要现有线程的 UUID。
 
 ### 声明持久调度
-
-在调度声明中使用该线程 ID。
 
 > [!注意]
 >
@@ -87,7 +81,7 @@ from managed_deepagents import define_schedule
 schedule = define_schedule(
     cron="0 3 * * *",
     prompt="Review the current project memory and list follow-up tasks.",
-    thread={"mode": "persistent", "id": "<thread-uuid>"},
+    thread={"mode": "persistent"},
 )
 ```
 
@@ -95,9 +89,11 @@ schedule = define_schedule(
 
 设置 `deliver_to` 通过配置的 [Slack channel](/langsmith/python/managed-deep-agents-channels-slack) 发布最终响应。
 
-使用 Slack 通道 ID，因为计划运行没有原始线程。> [!注意]
+使用 Slack 通道 ID，因为计划运行没有原始线程。
+
+> [!注意]
 >
-> 安排送货需要`managed-deepagents>=0.4.0`。
+> 安排交货需要`managed-deepagents>=0.4.0`。
 
 ```python schedules/monday_greeting.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_schedule
@@ -119,9 +115,7 @@ Slack 机器人必须有权访问目的地。
 
 ## 使用静态声明
 
-时间表声明是在编译时提取的。保持调度配置静态可序列化：
-
-* 使用文字、列表、字典和对顶级文字常量的引用。
+时间表声明是在编译时提取的。保持调度配置静态可序列化：* 使用文字、列表、字典和对顶级文字常量的引用。
 
 * 不要读取环境变量、调用函数、使用`**kwargs`或动态计算调度值。
 
@@ -137,9 +131,9 @@ Slack 机器人必须有权访问目的地。
 
 ## 部署计划
 
-使用[⟦T26⟧](/langsmith/python/managed-deep-agents-cli#develop-locally)在本地测试项目，然后使用[⟦T27⟧](/langsmith/python/managed-deep-agents-deploy)进行部署。在LangSmith中打开部署跟踪以检查模型调用、工具调用、错误和延迟。当部署达到 `DEPLOYED` 时，`mda deploy` 会删除早期 `schedules/` 声明创建的 cron 作业，并为当前声明创建 cron 作业。删除本地计划文件并重新部署会删除相应的托管 cron。在运行时创建的计划不受影响。
+使用[⟦T30⟧](/langsmith/python/managed-deep-agents-cli#develop-locally)在本地测试项目，然后使用[⟦T31⟧](/langsmith/python/managed-deep-agents-deploy)进行部署。在LangSmith中打开部署跟踪以检查模型调用、工具调用、错误和延迟。
 
-> [!警告]
+当部署达到 `DEPLOYED` 时，`mda deploy` 会删除早期 `schedules/` 声明创建的 cron 作业，并为当前声明创建 cron 作业。删除本地计划文件并重新部署会删除相应的托管 cron。在运行时创建的计划不受影响。> [!警告]
 >
 > 如果使用 `--no-wait` 进行部署，CLI 会在部署达到 `DEPLOYED` 之前触发远程构建并退出，因此它不会在该调用期间协调计划。添加、更改或删除计划时，运行 `mda deploy`，而不运行 `--no-wait`。
 
@@ -151,13 +145,13 @@ Slack 机器人必须有权访问目的地。
 
 `schedules/` 中的声明在部署时已修复。 `runtime.schedules` 在代理运行时创建计划，因此代理可以设置重复性或一次性工作来响应对话。它在工具和[middleware](/langsmith/python/managed-deep-agents-middleware)接收的运行时上可用，并且它充当当前运行的调用者。每个计划都属于当前用户或代理。
 
-代理只能通过您编写的工具来访问此 API。公开代理需要的呼叫，并忽略不应该接通的呼叫。当工具在 [channel](/langsmith/python/managed-deep-agents-channels) 运行期间创建计划（例如 Slack 对话）时，计划会继承该通道。每次运行都会将其最终答案发回给它。新线程发布新的 Slack 消息，当前线程在现有 Slack 线程中回复。
+代理只能通过您编写的工具来访问此 API。公开代理需要的呼叫，并忽略不应该接通的呼叫。
+
+当工具在 [channel](/langsmith/python/managed-deep-agents-channels) 运行期间创建计划（例如 Slack 对话）时，该计划将继承该通道。每次运行都会将其最终答案发回给它。新线程发布新的 Slack 消息，当前线程在现有 Slack 线程中回复。
 
 `new_thread` 决定时间表使用两者中的哪一个。
 
-### 创建定期计划
-
-`remind_me` 为代理提供了一种为其正在交谈的人设置重复提醒的方法。代理调用它时会提示运行提示以及运行频率的 cron 表达式。每次 cron 触发时，都会开始新的运行，并以该提示作为其用户消息。代理决定每个计划的运行被要求做什么。
+### 创建定期计划`remind_me` 为代理提供了一种为其正在交谈的人设置重复提醒的方法。代理调用它时会提示运行提示以及运行频率的 cron 表达式。每次 cron 触发时，都会开始新的运行，并以该提示作为其用户消息。代理决定每个计划的运行被要求做什么。
 
 ```python tools/schedules.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
@@ -178,7 +172,7 @@ async def remind_me(
     return f"Created schedule {item['id']}."
 ```
 
-当要求 Slack 每个工作日发送站立提醒时，客服人员会致电 `remind_me`。它传递了自己的措辞和 cron `0 9 * * 1-5` 的提示。每个工作日运行都会将其对 Slack 对话的答案作为新消息发布，因为 `cron` 会默认安排到新线程。
+当要求 Slack 每个工作日发送站立提醒时，客服人员会致电 `remind_me`。它传递了自己的措辞和 cron `0 9 * * 1-5` 的提示。每个工作日的运行都会将其对 Slack 对话的答案作为新消息发布，因为 `cron` 会默认安排到新线程。
 
 ### 创建一次性计划
 
@@ -200,13 +194,13 @@ async def follow_up_later(prompt: str, hours: int, runtime: ManagedDeepAgentRunt
         prompt=prompt,
     )
     return f"Scheduled a one-time follow-up: {item['id']}."
-```一次性计划默认为当前线程，因此它的运行会继续创建它的对话并在同一个 Slack 线程中进行回复。
+```
+
+一次性计划默认为当前线程，因此它的运行会继续创建它的对话并在同一个 Slack 线程中进行回复。
 
 ### 创建选项
 
-**所有者** `object` *必填*
-
-`{ type: "user" }` 选择当前运行的经过身份验证的人员，并且计划以该人员身份运行。可选的 `id` 必须与该人匹配。 `{ type: "agent" }` 选择代理拥有的计划，这些计划作为代理的服务身份运行。
+**所有者** `object` *必填*`{ type: "user" }` 选择当前运行的经过身份验证的人员，并且计划以该人员身份运行。可选的 `id` 必须与该人匹配。 `{ type: "agent" }` 选择代理拥有的计划，这些计划作为代理的服务身份运行。
 
 **计划** `string`
 
@@ -214,7 +208,7 @@ async def follow_up_later(prompt: str, hours: int, runtime: ManagedDeepAgentRunt
 
 **在** `datetime | str`
 
-带有时区的 `datetime`，或以 `Z` 或 UTC 偏移量结尾的 ISO 8601 时间戳。该计划运行一次。运行时将其四舍五入到下一整分钟。它必须是至少一分钟、最多 365 天的未来。
+带有时区的 `datetime`，或以 `Z` 或 UTC 偏移量结尾的 ISO 8601 时间戳。该计划运行一次。运行时将其四舍五入到下一整分钟。它必须是至少一分钟，最多 365 天的未来。
 
 **时区** `string`（默认：UTC）
 
@@ -230,7 +224,9 @@ async def follow_up_later(prompt: str, hours: int, runtime: ManagedDeepAgentRunt
 
 **新\_线程** `bool`
 
-`True` 在新线程上开始每次运行。 `False` 继续当前线程。默认为 `True` 与 `cron` 以及 `False` 与 `at`。**暂停** `boolean`（默认值：false）
+`True` 在新线程上开始每次运行。 `False` 继续当前线程。默认为 `True` 与 `cron` 以及 `False` 与 `at`。
+
+**暂停** `boolean`（默认值：false）
 
 创建计划而不运行它。
 
@@ -238,9 +234,7 @@ async def follow_up_later(prompt: str, hours: int, runtime: ManagedDeepAgentRunt
 
 JSON 元数据供您自己使用。以 `mda_` 开头的键被保留。
 
-### 管理日程
-
-`runtime.schedules` 上的`list`、`get`、`update` 和`delete` 涵盖了计划生命周期的剩余时间。当代理应该管理它创建的计划时，将它们公开为工具。具有`list`和`delete`的客服人员可以回答“我有什么提醒？”并根据要求取消一项。使用 `update` 暂停日程安排，而不是在用户稍后想要恢复日程安排时将其删除。
+### 管理日程`runtime.schedules` 上的`list`、`get`、`update` 和`delete` 涵盖了计划生命周期的剩余时间。当代理应该管理它创建的计划时，将它们公开为工具。具有`list`和`delete`的客服人员可以回答“我有什么提醒？”并根据要求取消一项。使用 `update` 暂停日程安排，而不是在用户稍后想要恢复日程安排时将其删除。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 owner = {"type": "user"}
@@ -257,7 +251,9 @@ await runtime.schedules.delete(item["id"], owner=owner)
 
 每个所有者的每个代理最多可以有 20 个运行时计划。暂停的计划计数。过期的一次性时间表和`schedules/`中的时间表不计算在内。超过限制的创建或更新失败并显示 `Schedule limit reached`。
 
-要更改限制，请在部署环境中设置以下变量：|变量|限制 |
+要更改限制，请在部署环境中设置以下变量：
+
+|变量|限制 |
 | - | - |
 | `MDA_MAX_AGENT_SCHEDULES` |船期表归代理商所有|
 | `MDA_MAX_USER_SCHEDULES` |每个用户拥有的时间表 |
@@ -268,9 +264,7 @@ await runtime.schedules.delete(item["id"], owner=owner)
 
 ## 日程安排疑难解答
 
-* `must export a named schedule declaration`：在`schedules/`中的每个文件中定义一个顶级`schedule`。
-
-* `must define exactly one of prompt or input`：添加 `prompt` 或 `input`，但不能同时添加两者。
+* `must export a named schedule declaration`：在`schedules/`中的每个文件中定义一个顶级`schedule`。* `must define exactly one of prompt or input`：添加 `prompt` 或 `input`，但不能同时添加两者。
 
 * `cron must be a standard 5-field expression`：使用五个 cron 字段，而不是基于秒的 cron 语法。
 
@@ -278,7 +272,7 @@ await runtime.schedules.delete(item["id"], owner=owner)
 
 * `failed to create cron for schedule`：打开LangSmith中的部署URL并确认部署的Agent Server是健康的。
 
-* `Invalid thread ID: must be a UUID (HTTP 422)`：持久调度声明的线程ID不是UUID。将其替换为现有线程的 UUID。参见[Choose thread behavior](#choose-thread-behavior)。
+* `schedule '<name>' persistent thread id must be a UUID`：持久调度声明的线程ID不是UUID。早期版本从代理服务器报告`Invalid thread ID: must be a UUID (HTTP 422)`。将其替换为 UUID，或省略 `id`。参见[Choose thread behavior](#choose-thread-behavior)。
 
 * `Schedule limit reached`：所有者已达到运行时间表限制。删除计划或提高限制。参见[Schedule limits](#schedule-limits)。
 
@@ -300,4 +294,6 @@ await runtime.schedules.delete(item["id"], owner=owner)
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-schedules.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-schedules.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

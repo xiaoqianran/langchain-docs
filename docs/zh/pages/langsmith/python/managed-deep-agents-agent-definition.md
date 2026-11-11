@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公共 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 代理条目位于项目根目录：
 
@@ -82,10 +82,37 @@ agent = define_deep_agent(
 | `permissions=` |控制文件系统工具的路径级访问。传递文件系统权限规则来控制代理的内置文件系统工具可以读取或写入哪些路径。当项目声明[sandbox](/langsmith/python/managed-deep-agents-sandboxes)时清除，因为权限规则禁用了沙箱`execute`工具。参见[Permissions](/oss/python/deepagents/permissions)。 |
 | `interrupt_on=` |在选定的工具需要人工批准之前暂停。将 `interrupt_on` 设置为在选定工具调用之前暂停，以便人们可以在调用运行之前批准、编辑或拒绝调用。参见[Human-in-the-loop](/langsmith/python/managed-deep-agents-tools#human-in-the-loop)。 |
 | `response_format=` |设置代理必须返回与架构匹配的数据而不是不受约束的文本响应的时间。参见[Structured output](/oss/python/langchain/structured-output)。 |
+| `routes=` |在路径前缀处安装 Deep Agents 后端。参见[Mount your own backends](#mount-your-own-backends)。 |
 
-## 选择每次运行的配置要为每次运行选择代理的配置，请将函数导出为 `agent` 而不是定义。然后，一种部署可以适应不同的用户、任务或存储库。该函数是一个图形工厂，与 LangGraph 用于 [rebuild a graph at runtime](/langsmith/graph-rebuild) 的模式相同：它接收运行时并返回定义。
+## 安装你自己的后端`routes` 在路径前缀处挂载 Deep Agents [backends](/oss/python/deepagents/backends)，与 [⟦T33⟧](/oss/python/deepagents/backends#compositebackend-router) 路由的方式相同。前缀下的路径会转到删除了前缀的后端。所有其他路径都保留在托管后端上。
 
-此示例选择运行所处理的存储库的说明和技能。它假设该项目有`skills/python-service/`和`skills/typescript-web/`，每个都有一个[⟦T32⟧](/langsmith/python/managed-deep-agents-skills)。
+> [!注意]
+>
+> `routes` 需要 `managed-deepagents` 0.10.3 或更高版本。
+
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents.backends import StoreBackend
+from managed_deepagents import define_deep_agent
+
+agent = define_deep_agent(
+    name="research-assistant",
+    routes={
+        "/documents/": StoreBackend(namespace=lambda _rt: ("documents",)),
+    },
+)
+```
+
+通过此路由，代理的文件工具在商店后端中将 `/documents/a.md` 读取并写入为 `/a.md`。
+
+* 每个前缀必须是以`/`开头和结尾的绝对目录，例如`"/documents/"`。
+* 前缀不能与 Managed Deep Agents 安装自身的路径重叠：`/instructions.md`、`/skills/` 和 `/memories/`。
+* 路径仅适用于文件工具。 [sandbox](/langsmith/python/managed-deep-agents-sandboxes) 中的 Shell 命令看不到它们。
+
+## 选择每次运行的配置
+
+要为每次运行选择代理的配置，请将函数导出为 `agent` 而不是定义。然后，一种部署可以适应不同的用户、任务或存储库。该函数是一个图形工厂，与 LangGraph 用于 [rebuild a graph at runtime](/langsmith/graph-rebuild) 的模式相同：它接收运行时并返回定义。
+
+此示例选择运行所处理的存储库的说明和技能。它假设该项目有`skills/python-service/`和`skills/typescript-web/`，每个都有一个[⟦T46⟧](/langsmith/python/managed-deep-agents-skills)。
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import TypedDict
@@ -112,9 +139,7 @@ def agent(runtime: ManagedServerRuntime[AppContext]):
         skills=["./skills/python-service" if python_service else "./skills/typescript-web"],
         context_schema=AppContext,
     )
-```
-
-工厂可以是同步的或异步的。它接收一个`ManagedServerRuntime`，它扩展了原生的LangGraph`ServerRuntime`。从`execution_runtime.context`读取运行上下文。通道运行时为`None`，Agent Server 加载代理进行检查时`execution_runtime` 为`None`。
+```工厂可以是同步的或异步的。它接收一个`ManagedServerRuntime`，它扩展了原生的LangGraph`ServerRuntime`。从`execution_runtime.context`读取运行上下文。通道运行时为`None`，Agent Server 加载代理进行检查时`execution_runtime` 为`None`。
 
 调用者通过运行的`context`选择配置：
 
@@ -127,11 +152,11 @@ await client.runs.create(
 )
 ```
 
-运行上下文是应用程序数据，而不是经过验证的身份。根据运行时经过验证的调用者检查 [tools](/langsmith/python/managed-deep-agents-tools) 中的授权。
+运行上下文是应用程序数据，而不是经过验证的身份。根据运行时经过验证的调用者检查[tools](/langsmith/python/managed-deep-agents-tools)中的授权。
 
 ### 选择托管资源
 
-工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域 |省略|已选择 |已清除 |
+工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域|省略 |已选择 |已清除 |
 | - | - | - | - |
 | `instructions` |使用`instructions.md`。 |使用提供的提示。 | `""` 删除编写的指令。 |
 | `skills` |展示所有项目技能。 |仅公开选定的技能。 | `[]`没有暴露任何技能。 |
@@ -144,7 +169,7 @@ await client.runs.create(
 >
 > SDK 0.10 中添加了浏览器声明和每次运行选择。即使工厂选择了浏览器，也要保留 root `browser.py`。请参阅 [Choose a browser per run](/langsmith/python/managed-deep-agents-browser-use#choose-a-browser-per-run) 了解范围、覆盖和禁用浏览器工具。
 
-静态定义无法设置这些字段。技能路径必须以 `skills/<name>` 结尾，并指向项目中的技能。工厂还可以返回生成的技能定义，其名称不得与项目技能名称重复。此示例根据请求启用文档 MCP 服务器，并为一个存储库提供更长的沙箱超时。它从[⟦T59⟧](/langsmith/python/managed-deep-agents-mcp-connectors)和[⟦T60⟧](/langsmith/python/managed-deep-agents-sandboxes)导入声明：
+静态定义无法设置这些字段。技能路径必须以 `skills/<name>` 结尾，并指向项目中的技能。工厂还可以返回生成的技能定义，其名称不得与项目技能名称重复。此示例根据请求启用文档 MCP 服务器，并为一个存储库提供更长的沙箱超时。它从[⟦T73⟧](/langsmith/python/managed-deep-agents-mcp-connectors)和[⟦T74⟧](/langsmith/python/managed-deep-agents-sandboxes)导入声明：
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import TypedDict
@@ -182,10 +207,41 @@ def agent(runtime: ManagedServerRuntime[AppContext]):
 
 * **无副作用**：为相同的上下文返回相同的定义。不要创建记录、调用外部 API 或更改工厂中的共享状态。
 * **稳定中断**：保留可以在每个配置中中断运行的中间件。当运行恢复时，引发中断的中间件必须仍然存在。
-* **内联名称**：将 `name` 设置为内联字符串。 `mda build` 无需调用工厂即可读取它，并将其用作图形 ID 和默认部署名称。
+* **内联名称**：将 `name` 设置为内联字符串。 `mda build` 无需调用工厂即可读取它，并将其用作图 ID 和默认部署名称。
 * **模型依赖项**：为工厂可以返回的每个模型安装集成包。构建不会检测到它们。
 
-要更改运行中模型调用之间的行为，请使用 [custom middleware](/langsmith/python/managed-deep-agents-middleware)。## 使用LLM网关
+要更改运行中模型调用之间的行为，请使用[custom middleware](/langsmith/python/managed-deep-agents-middleware)。### 缓存编译图
+
+`cached_agent` 保留工厂编译的图表，并在以后使用相同参数的运行中重用它。如果没有它，工厂会在每次运行时编译一个新图，并且每次运行都会等待该编译。
+
+`keyed_by` 返回图所依赖的参数，作为 JSON 可序列化值。托管Deep Agents为每个不同的值编译一个图表。工厂仅获取这些参数，因此在工具或中间件中读取每次运行的数据，例如凭证。
+
+> [!注意]
+>
+> `cached_agent` 需要 `managed-deepagents>=0.10.2`。
+
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import ManagedServerRuntime, cached_agent, define_deep_agent
+
+PROMPTS = {"support": "Answer support questions.", "sales": "Answer sales questions."}
+
+
+def agent_params(runtime: ManagedServerRuntime) -> dict:
+    execution = runtime.execution_runtime
+    context = (execution.context if execution is not None else None) or {}
+    return {"mode": context.get("mode", "support")}
+
+
+@cached_agent(keyed_by=agent_params)
+def agent(params: dict):
+    return define_deep_agent(
+        name="assistant",
+        model="openai:gpt-5.5",
+        instructions=PROMPTS[params["mode"]],
+    )
+```
+
+## 使用LLM网关
 
 您可以使用 [LLM Gateway](/langsmith/llm-gateway) 将速率限制、回退和其他策略应用于模型调用。
 
@@ -202,13 +258,11 @@ agent = define_deep_agent(
 
 > [!注意]
 >
-> 网关型号 ID 在提供商和型号之间使用斜杠 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
+> 网关型号 ID 在提供商和型号之间使用斜线 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
 
 网关按型号 ID 路由每个请求。 `moonshotai/kimi-k3` 是LangChain 托管模型，因此它不需要提供者密钥并利用 [Gateway Credits](/langsmith/llm-gateway-credits)。以您的工作区已配置的提供商开头的模型 ID（例如 `anthropic/claude-opus-5`）使用该 [provider secret](/langsmith/llm-gateway-provider-authentication#add-a-provider-key) 并向您自己的提供商帐户计费。
 
-欲了解更多信息，请参阅[LLM Gateway](/langsmith/llm-gateway)。
-
-要搭建一个从一开始就使用 Gateway 的项目，请在初始化时传递 `--gateway`：
+欲了解更多信息，请参阅[LLM Gateway](/langsmith/llm-gateway)。要搭建一个从一开始就使用 Gateway 的项目，请在初始化时传递 `--gateway`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 mda init my-agent --gateway

@@ -8,7 +8,7 @@
 
 > [!提示]
 >
-> 本页介绍使用 `createAgent` 的代理的结构化输出。要直接在模型上（在代理之外）使用结构化输出，请参阅[Models - Structured output](/oss/javascript/langchain/models#structured-output)。
+> 本页介绍了使用 `createAgent` 的代理的结构化输出。要直接在模型上（在代理之外）使用结构化输出，请参阅[Models - Structured output](/oss/javascript/langchain/models#structured-output)。
 
 LangChain 的预构建 ReAct 代理 `createAgent` 自动处理结构化输出。用户设置所需的结构化输出模式，当模型生成结构化数据时，它会被捕获、验证并以代理状态的 `structuredResponse` 键返回。
 
@@ -58,9 +58,9 @@ const agent = createAgent({
 
 ## 提供商策略
 
-一些模型提供者通过其 API 原生支持结构化输出（例如 OpenAI、xAI (Grok)、Gemini、Anthropic (Claude)）。这是可用时最可靠的方法。
+一些模型提供者通过其 API 原生支持结构化输出（例如 OpenAI、xAI (Grok)、Gemini、Anthropic (Claude)）。 This is the most reliable method when available.
 
-要使用此策略，请配置 `ProviderStrategy`：
+To use this strategy, configure a `ProviderStrategy`:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 function providerStrategy<StructuredResponseT>(
@@ -72,9 +72,9 @@ function providerStrategy<StructuredResponseT>(
 
 定义结构化输出格式的模式。支持：
 
-* **Zod Schema**：zod 架构
+* **Zod Schema**: A zod schema
 * **标准模式**：任何实现 [Standard Schema](https://standardschema.dev/) 规范的模式
-* **JSON Schema**：JSON 模式对象
+* **JSON Schema**: A JSON schema object
 
 当您将模式类型直接传递给`createAgent.responseFormat`并且模型支持本机结构化输出时，LangChain会自动使用`ProviderStrategy`：
 
@@ -381,7 +381,7 @@ console.log(result);
 
 #### 多个结构化输出错误
 
-当模型错误地调用多个结构化输出工具时，代理会在[⟦T41⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)中提供错误反馈并提示模型重试：
+当模型错误调用多个结构化输出工具时，代理会在[⟦T42⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)中提供错误反馈并提示模型重试：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as z from "zod";
@@ -529,12 +529,28 @@ const responseFormat = toolStrategy(ProductRating, {
 const responseFormat = toolStrategy(ProductRating, {
     handleError: false  // All errors raised
 )
-```## 处理链中的解析错误
+```#### 模型拒绝
+
+当模型拒绝时，它不会返回结构化输出。对于 `providerStrategy`，代理会抛出 `StructuredOutputParsingError`。对于`toolStrategy`，代理结束时没有`structuredResponse`。要为任一策略抛出 [⟦T48⟧](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError)，请添加 [⟦T49⟧](https://reference.langchain.com/javascript/langchain/index/modelRefusalMiddleware)：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, modelRefusalMiddleware } from "langchain";
+
+const agent = createAgent({
+  model: "claude-sonnet-5-5",
+  responseFormat: ProductRating,
+  middleware: [modelRefusalMiddleware()],
+});
+```
+
+`modelRefusalMiddleware` 需要 `langchain>=1.6.4`。请参阅[Handle a refusal](/oss/javascript/langchain/middleware/built-in#handle-a-refusal)了解应对方法。
+
+## 处理链中的解析错误
 
 上述策略（包括`handleError`重试）适用于使用`createAgent`创建的代理。由`.pipe()`（例如`prompt.pipe(model).pipe(parser)`）组成的链没有内置的输出解析失败重试机制。要处理链中格式错误的模型输出，请使用以下方法之一：
 
-* **模型级结构化输出**：使用[⟦T47⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withStructuredOutput)将模式绑定到模型。当提供程序支持本机结构化输出时，它会强制执行模式并避免大多数解析失败。参见[Models - Structured output](/oss/javascript/langchain/models#structured-output)。当模型支持时使用此方法。
-* **使用模型修复格式错误的输出**：将输出解析器包装在来自 [⟦T49⟧](https://www.npmjs.com/package/@langchain/classic) 的 `OutputFixingParser` 中。解析失败时，包装器会将格式错误的输出、解析器的格式指令和错误消息发送到模型，并解析正确的响应。
+* **模型级结构化输出**：使用[⟦T56⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withStructuredOutput)将模式绑定到模型。当提供程序支持本机结构化输出时，它会强制执行模式并避免大多数解析失败。参见[Models - Structured output](/oss/javascript/langchain/models#structured-output)。当模型支持时使用此方法。
+* **使用模型修复格式错误的输出**：将输出解析器包装在来自 [⟦T58⟧](https://www.npmjs.com/package/@langchain/classic) 的 `OutputFixingParser` 中。解析失败时，包装器会将格式错误的输出、解析器的格式指令和错误消息发送到模型，并解析正确的响应。
 
 > [!注意]
 >
@@ -569,9 +585,9 @@ const result = await chain.invoke({
     format_instructions: baseParser.getFormatInstructions(),
 });
 // { rating: 5, sentiment: "positive" }
-```
+```包装的解析器仅在初始解析失败时调用修复模型，因此格式良好的输出不会产生额外的模型调用。
 
-包装的解析器仅在初始解析失败时调用修复模型，因此格式良好的输出不会产生额外的模型调用。> [!警告]
+> [!警告]
 >
 > `OutputFixingParser` 仅重试抛出为 `OutputParserException` 的错误。抛出原始错误的解析器不会重试：例如，`JsonOutputParser`在无效的 JSON 上抛出一个简单的 `SyntaxError`，这会传播未捕获的内容。包装一个抛出 `OutputParserException` 的解析器，例如 `StructuredOutputParser`。
 

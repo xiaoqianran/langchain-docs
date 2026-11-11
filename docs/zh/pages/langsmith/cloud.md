@@ -13,11 +13,9 @@
 * **从 GitHub 部署代理服务器**：只需单击几下即可连接您的存储库并将 [Agent Servers](/langsmith/deployment) 部署到云。
 * **代理服务器的自动化 CI/CD**：[Agent Servers](/langsmith/deployment) 的构建和部署过程由平台自动处理。
 
-LangChain 管理LangSmith 平台（UI、API 和数据存储）、您的代理服务器以及应用程序的 CI/CD。它们全部运行在 AWS、Azure 或 GCP 上的 LangChain 云中，具体取决于您的 [region](#regions)。
+LangChain 管理 LangSmith 平台（UI、API 和数据存储）、代理服务器以及应用程序的 CI/CD。它们全部运行在 AWS、Azure 或 GCP 上的 LangChain 云中，具体取决于您的 [region](#regions)。
 
 如果您准备好将应用程序部署到LangSmith云，请按照[Cloud deployment quickstart](/langsmith/deployment-quickstart)或[full setup guide](/langsmith/deploy-to-cloud)进行操作。本页介绍了云托管架构以供参考。
-
-![Cloud deployment: LangChain hosts and manages all components including the UI, APIs, and your Agent Servers.](https://mintcdn.com/langchain-5e9cc07a/JOyLr_spVEW0t2KF/langsmith/images/langgraph-cloud-architecture.png?fit=max\&auto=format\&n=JOyLr_spVEW0t2KF\&q=85\&s=3f0316122425895270d0ecd47b12e139)
 
 ## 云架构和可扩展性> [!注意]
 >
@@ -62,9 +60,9 @@ LangSmith 部署上的代理服务器与该区域的其他部分在同一云位�
 
 ### 架构
 
-每个区域都运行相同的LangSmith组件。以下部分列出了在每个区域托管它们的云服务。 Azure 美国区域使用 SmithDB，其中图表显示了 ClickHouse。
+每个区域都运行相同的LangSmith组件。以下部分列出了在每个区域托管它们的云服务。
 
-![Light mode overview](https://mintcdn.com/langchain-5e9cc07a/rqYqeBEA_2oeiw17/langsmith/images/cloud-arch-light.png?fit=max\&auto=format\&n=rqYqeBEA_2oeiw17\&q=85\&s=0790cbdf4fe131c74d1e60bb120834e3)
+![LangSmith Cloud architecture: clients reach the LangSmith services through the edge and load balancer, and the services store data in Postgres, Redis, ClickHouse or SmithDB, and blob storage.](https://mintcdn.com/langchain-5e9cc07a/Qw3s9uCyOGTESt6V/langsmith/images/cloud-arch-light.png?fit=max\&auto=format\&n=Qw3s9uCyOGTESt6V\&q=85\&s=c14c56f8495614dd93d6d7998cbccecd)
 
 ### GCP 服务
 
@@ -77,6 +75,8 @@ LangSmith 由以下服务组成，全部托管在 Google Kubernetes Engine (GKE)
 * LangSmith 平台后端：处理身份验证和其他大批量任务。 （内部服务）
 * LangSmith Playground：处理向各种 LLM 提供商转发 Playground 功能的请求。
 * LangSmith 队列：负责异步任务的处理。 （内部服务）
+* LangSmith ACE 后端：在隔离的运行时运行自定义代码评估器。 （内部服务）
+* LangSmith 摄取队列：处理传入的跟踪。 （内部服务）
 
 LangSmith 使用以下 GCP 存储服务：* 用于运行输入和输出的 Google 云存储 (GCS)。
 * 用于事务工作负载的 Google Cloud SQL PostgreSQL。
@@ -98,6 +98,8 @@ LangSmith 由以下服务组成，全部托管在 Amazon EKS 上：* LangSmith �
 * LangSmith 平台后端：处理身份验证和其他大批量任务。 （内部服务）
 * LangSmith Playground：处理向各种 LLM 提供商转发 Playground 功能的请求。
 * LangSmith 队列：负责异步任务的处理。 （内部服务）
+* LangSmith ACE 后端：在隔离的运行时运行自定义代码评估器。 （内部服务）
+* LangSmith 摄取队列：处理传入的跟踪。 （内部服务）
 
 LangSmith 使用以下 AWS 存储和数据服务：
 
@@ -106,21 +108,21 @@ LangSmith 使用以下 AWS 存储和数据服务：
 * Amazon ElastiCache for Redis 用于排队和缓存。
 * `us-east-2` 中基于 AWS PrivateLink 的 ClickHouse Cloud 用于跟踪摄取和分析，与上表[regional storage](#regional-storage) 一致。
 
-我们使用的一些其他 AWS 服务包括：
-
-* Elastic Load Balancing（网络负载均衡器）和 Istio 入口，用于将流量路由到 LangSmith 服务。已记录的 API 速率限制在 Istio 入口网关处强制执行。详情请参见[Rate limits](/langsmith/usage-and-billing#rate-limits)。
+我们使用的一些其他 AWS 服务包括：* Elastic Load Balancing（网络负载均衡器）和 Istio 入口，用于将流量路由到 LangSmith 服务。已记录的 API 速率限制在 Istio 入口网关处强制执行。详情请参见[Rate limits](/langsmith/usage-and-billing#rate-limits)。
 * Amazon CloudFront 用于缓存静态资产（包括 Web UI 主机名 `aws.smith.langchain.com`）。
 * CloudFront 上的 AWS WAF，用于边缘的托管规则组（例如，AWS 托管规则常见保护和机器人控制）。
 
-### Azure 服务以下内容适用于`centralus`（爱荷华州）的 **Azure US** SaaS 区域。相同的逻辑 LangSmith 组件在 **Azure Kubernetes Service (AKS)** 而不是 GKE 上运行。身份验证数据是例外：Supabase 将其单独托管在 AWS `us-east-1`（弗吉尼亚北部）。
+### Azure 服务
 
-LangSmith 由以下服务组成，全部托管在 AKS 上：
+以下内容适用于`centralus`（爱荷华州）的 **Azure US** SaaS 区域。相同的逻辑 LangSmith 组件在 **Azure Kubernetes Service (AKS)** 而不是 GKE 上运行。身份验证数据是例外：Supabase 将其单独托管在 AWS `us-east-1`（弗吉尼亚北部）。
 
-* LangSmith 前端：服务于LangSmith UI。
+LangSmith 由以下服务组成，全部托管在 AKS 上：* LangSmith 前端：服务于LangSmith UI。
 * LangSmith 后端：为LangSmith API 提供服务。
 * LangSmith 平台后端：处理身份验证和其他大批量任务。 （内部服务）
 * LangSmith Playground：处理向各种 LLM 提供商转发 Playground 功能的请求。
 * LangSmith 队列：负责异步任务的处理。 （内部服务）
+* LangSmith ACE 后端：在隔离的运行时中运行自定义代码评估器。 （内部服务）
+* LangSmith 摄取队列：处理传入的跟踪。 （内部服务）
 
 LangSmith 使用以下 Azure 存储和数据服务：
 
@@ -131,13 +133,13 @@ LangSmith 使用以下 Azure 存储和数据服务：
 
 LangSmith 还使用 AKS 上的 Istio 入口网关将流量路由到 LangSmith 服务。
 
-## 将 IP 地址列入白名单### 来自 LangChain SaaS 的出站流量
+## 将 IP 地址列入白名单
 
-离开 LangSmith 服务的互联网流量通过 NAT 网关进行路由，并源自以下 IP 地址。 Vertex AI 请求可以使用不同的路径，如 [Allow Vertex AI access](#allow-vertex-ai-access) 中所述。
+### 来自 LangChain SaaS 的出站流量离开 LangSmith 服务的互联网流量通过 NAT 网关进行路由，并源自以下 IP 地址。 Vertex AI 请求可以使用不同的路径，如 [Allow Vertex AI access](#allow-vertex-ai-access) 中所述。
 
 > [!注意]
 >
-> [LangSmith Deployment](/langsmith/deployment) 出口处的工作人员从 [separate IP list](/langsmith/cloud-platform-features#allowlist-ip-addresses) 出口。
+> [LangSmith Deployment](/langsmith/deployment) 出口处的特工人员从 [separate IP list](/langsmith/cloud-platform-features#allowlist-ip-addresses) 出口。
 
 |基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |蔚蓝美国 |
 | - | - | - | - | - |
@@ -152,7 +154,7 @@ LangSmith 还使用 AKS 上的 Istio 入口网关将流量路由到 LangSmith �
 
 如果连接到您自己的 AzureOpenAI 服务或 Playground 或在线评估可能需要的其他端点，将这些 IP 地址列入白名单可能会有所帮助。
 
-#### 允许 Vertex AI 访问对于来自 GCP 上的LangSmith SaaS 的 Vertex AI 连接，单独的公共出口 IP 许可名单可能无法满足 VPC 服务控制。专用 Google 访问将 Google API 流量保留在 Google 网络内，而不是使用 NAT 网关的公共 IP 地址。请参阅 Google 的 [source IP access guidance](https://docs.cloud.google.com/vpc-service-controls/docs/access-level-design#granting_access_based_on_source_ip)。
+#### 允许 Vertex AI 访问对于来自 GCP 上的LangSmith SaaS 的 Vertex AI 连接，单独的公共出口 IP 允许列表可能无法满足 VPC 服务控制。专用 Google 访问将 Google API 流量保留在 Google 网络内，而不是使用 NAT 网关的公共 IP 地址。请参阅 Google 的 [source IP access guidance](https://docs.cloud.google.com/vpc-service-controls/docs/access-level-design#granting_access_based_on_source_ip)。
 
 为您的 LangSmith SaaS 区域对应的源项目配置 VPC Service Controls 入口规则：
 
@@ -180,7 +182,7 @@ LangSmith 还使用 AKS 上的 Istio 入口网关将流量路由到 LangSmith �
 
 LangChain 端点映射到以下静态 IP 地址。流量终止于 **GCP 负载均衡器**（美国/欧盟/亚太地区）、`centralus` 中的 **Azure** 入口，或者对于 **AWS US**，`us-east-2` 中的 **网络负载均衡器**（API 和网关主机名）：|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |天蓝色|
 | - | - | - | - | - |
-| 34.8.121.39 | 34.95.92.214 | 34.149.149.213 | 34.149.149.213 3.129.27.169 | 3.129.27.169 20.106.1.6 |
+| 34.8.121.39 | 34.95.92.214 | 34.149.149.213 | 34.149.149.213 3.129.27.169 | 20.106.1.6 |
 | 34.107.251.234 | 34.107.251.234 34.13.73.122 | | 13.58.107.119 | |
 | | | | 16.59.151.49 | |
 | | | | 16.59.98.147 | |
@@ -210,7 +212,7 @@ GCP 美国、欧盟和亚太地区正在移至最后一行中的其他地址（`
 
 #### 设置
 
-**1.请求访问权限：** 联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev) 并提供您的 AWS 账户 ID。 LangChain 会将您的帐户添加到端点服务的允许主体列表中。**2.在您的 AWS 账户中创建接口 VPC 终端节点**。附加一个安全组，允许来自您的 VPC CIDR（或需要到达 LangSmith 的实例）的 **TCP 443 入站**：
+**1.请求访问权限：** 联系您的客户代表或使用您的 AWS 账户 ID [sales@langchain.dev](mailto:sales@langchain.dev)。 LangChain 会将您的帐户添加到端点服务的允许主体列表中。**2.在您的 AWS 账户中创建接口 VPC 终端节点**。附加一个安全组，允许来自您的 VPC CIDR（或需要到达 LangSmith 的实例）的 **TCP 443 入站**：
 
 ```bash AWS CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 aws ec2 create-vpc-endpoint \
@@ -236,7 +238,7 @@ resource "aws_vpc_endpoint" "langsmith" {
 
 ####配置DNS
 
-配置 DNS，以便 `aws.api.smith.langchain.com` 解析为您的 VPC 内的 VPC 终端节点的私有 DNS 名称。您可以使用任何私有 DNS 解决方案：Route 53 私有托管区域、公司 DNS 解析器或可从您的 VPC 访问的任何 DNS 服务器。
+配置 DNS，以便 `aws.api.smith.langchain.com` 解析为您的 VPC 内的 VPC 终端节点的私有 DNS 名称。您可以使用任何私有 DNS 解决方案：Route 53 私有托管区域、企业 DNS 解析器或可从您的 VPC 访问的任何 DNS 服务器。
 
 首先，获取端点的 DNS 名称：
 
@@ -321,7 +323,7 @@ curl https://aws.api.smith.langchain.com/ok
 
 #### 设置
 
-**请求访问权限：** 请联系您的客户代表或使用您的 GCP 项目 ID [sales@langchain.dev](mailto:sales@langchain.dev)。 LangChain 会将您的项目添加到服务附件的允许使用者列表中。
+**请求访问权限：** 请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)，并提供您的 GCP 项目 ID。 LangChain 会将您的项目添加到服务附件的允许使用者列表中。
 
 授予访问权限后，使用 gcloud CLI 或 Terraform 创建 PSC 端点并配置 DNS。
 
@@ -412,7 +414,7 @@ curl https://<REGION>.p.api.smith.langchain.com/ok
 
 #### 请求访问权限请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)，并提供您的 Azure 订阅 ID 和所需的终结点区域。 LangChain 将您的订阅添加到专用链接服务自动批准列表中。 LangChain还提供服务资源ID。
 
-在创建专用终端节点之前，等待LangChain确认已启用订阅访问。来自允许列表订阅的新连接会自动获得批准。来自其他订阅的连接需要手动批准。
+在创建专用端点之前，等待LangChain确认已启用订阅访问。来自允许列表订阅的新连接会自动获得批准。来自其他订阅的连接需要手动批准。
 
 #### 创建私有端点
 

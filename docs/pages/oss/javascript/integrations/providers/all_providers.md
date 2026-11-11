@@ -404,9 +404,9 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > AgentReader provides pay-per-call LangChain.js tools for UK/EU company due diligence, sanctions screening, and registry data over x402.
 
-> [card] [AgentSearch](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26)
+> [card] [AgentSearch](https://agentsearchhq.com/blog/add-web-search-to-langchain-js-agent)
 >
-> Web search tool for LangChain.js agents, free by default with no key. Pay-per-call Extract and Render (\$0.005, x402) for full pages and JS-rendered sites.
+> Live web search for LangChain.js agents, free with no API key, plus pay-per-call extract and JS render via x402 (USDC on Base).
 
 > [card] [agentsvc](https://agentsvc.io/docs/langchain)
 >

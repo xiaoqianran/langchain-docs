@@ -6,15 +6,15 @@
 
 使用配置文件、管理员设置、环境变量、挂钩和 CLI 标志配置 Deep Agents 代码
 
-Deep Agents 代码将用户配置存储在其配置文件目录（默认为`~/.deepagents/`）和项目级点文件中。管理员可以使用 [⟦T38⟧](#managed-configuration) 从固定系统路径强制设置。有关完整的目录树、会话存储和技能路径，请参阅[Data locations](/oss/deepagents/code/configuration#data-locations)。
+Deep Agents 代码将用户配置存储在其配置文件目录（默认为`~/.deepagents/`）和项目级点文件中。管理员可以使用[⟦T38⟧](#managed-configuration)从固定系统路径强制设置。有关完整的目录树、会话存储和技能路径，请参阅[Data locations](/oss/deepagents/code/configuration#data-locations)。
 
 主要的配置文件是：
 
-> [卡][Config file](/oss/deepagents/code/config-file)
+> [卡片][Config file](/oss/deepagents/code/config-file)
 >
 > 编辑 `config.toml` 以获取模型默认值、提供程序设置、主题和更新设置。
 
-> [卡][Managed configuration](#managed-configuration)
+> [卡片][Managed configuration](#managed-configuration)
 >
 > 使用 `managed_config.toml` 为每个用户设置管理员控制的设置。
 
@@ -131,7 +131,7 @@ DEEPAGENTS_CODE_ANTHROPIC_API_KEY=
 
 ## 技能目录白名单
 
-默认情况下，当Deep Agents代码加载技能时，它会验证已解析的技能文件路径是否保留在标准[skill directories](/oss/deepagents/code/configuration#skills)之一内。这可以防止技能目录内的符号链接读取这些根目录之外的任意文件。如果您将共享技能资产存储在非标准位置并使用标准技能目录中的符号链接来引用它们，则可以将该位置添加到遏制允许列表中。这不会**添加新的技能发现位置：技能仍然只能从标准目录中发现。
+默认情况下，当Deep Agents代码加载技能时，它会验证解析的技能文件路径是否保留在标准[skill directories](/oss/deepagents/code/configuration#skills)之一内。这可以防止技能目录内的符号链接读取这些根目录之外的任意文件。如果您将共享技能资产存储在非标准位置并使用标准技能目录中的符号链接来引用它们，则可以将该位置添加到遏制允许列表中。这不会**添加新的技能发现位置：技能仍然只能从标准目录中发现。
 
 **额外\_允许\_目录** `string[]`
 
@@ -261,7 +261,7 @@ Deep Agents 代码默认自动检查并安装更新。
 > export DEEPAGENTS_CODE_AUTO_UPDATE=0
 > ```
 
-环境变量优先于配置文件。将环境变量设置为空值会禁用该功能。启用后（默认），Deep Agents 代码会在会话启动时检查 PyPI 是否有较新版本并自动升级。禁用后，Deep Agents 代码会显示更新提示以及相应的安装命令。
+环境变量优先于配置文件。将环境变量设置为空值会禁用该功能。启用（默认）后，Deep Agents代码会在会话启动时检查 PyPI 是否有较新版本并自动升级。禁用后，Deep Agents 代码会显示更新提示以及相应的安装命令。
 
 ### 定价目录自动更新
 
@@ -320,7 +320,7 @@ Deep Agents 代码在后台每小时从上游刷新其模型定价目录，以�
 
 禁用更新检查还会阻止启动时自动安装更新。
 
-您仍然可以随时使用 `/update` 斜线命令手动检查和安装更新，该命令运行按需检查并内联报告成功或失败。升级后，Deep Agents 代码会在下次启动时显示“新增内容”横幅，并附有更改日志的链接。
+您仍然可以随时使用 `/update` 斜线命令手动检查和安装更新，该命令运行按需检查并内联报告成功或失败。升级后，Deep Agents代码会在下次启动时显示“新增内容”横幅，并附有更改日志的链接。
 
 会话退出时，如果在会话期间检测到较新版本，则会显示更新横幅作为提醒。
 
@@ -586,7 +586,7 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 
 ## 环境变量引用
 
-所有 Deep Agents 代码特定的环境变量都使用 `DEEPAGENTS_CODE_` 前缀。请参阅 [⟦T317⟧ prefix](#deepagents_code_-prefix) 了解前缀如何替代第三方凭据。
+所有Deep Agents代码特定的环境变量都使用`DEEPAGENTS_CODE_`前缀。请参阅 [⟦T317⟧ prefix](#deepagents_code_-prefix) 了解前缀如何替代第三方凭据。
 
 **深度\_代码\_自动\_更新** `string`
 
@@ -634,15 +634,19 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 
 **DEEPAGENTS\_CODE\_FORKED\_SUBAGENTS** `string`（默认值：true）让内置`general-purpose`子代理继承父对话和系统提示。设置为 `0`、`false`、`no` 或 `off`（或空值）以使用隔离模式。在 shell 或全局 `~/.deepagents/.env` 中设置此变量； Deep Agents 代码在项目 `.env` 文件中忽略它，因为继承可以包含私有父状态。参见[Continue the parent conversation](/oss/deepagents/code/subagents#continue-the-parent-conversation)。
 
+**DEEPAGENTS\_CODE\_GIT\_ATTRIBUTION** `string`（默认值：true）
+
+启用只读 Git 检查标签 LangSmith 是否跟踪代理更改的存储库和分支。设置为 `0`、`false`、`no` 或 `off`（或空值）以跳过对主代理和子代理的这些检查。覆盖用户配置文件中的 `[tracing].git_attribution` 而不禁用 LangSmith 跟踪。参见[Disable Git trace attribution](/oss/deepagents/code/config-file#disable-git-trace-attribution)。
+
 **DEEPAGENTS\_CODE\_HISTORY\_RETENTION\_DAYS** `integer`（默认值：30）
 
 在启动扫描将其删除之前，已卸载的对话历史记录存档的保留天数； `0` 禁用清理。覆盖`[history].retention_days`。参见[Conversation history retention](#conversation-history-retention)。
 
 **DEEPAGENTS\_CODE\_LANGSMITH\_PROJECT** `string`
 
-使用 [⟦T376⟧](/langsmith/create-an-agent#use-an-environment-project) 为 Deep Agents 代码自己的跟踪选择代理环境。 Shell 命令仍然使用用户的原始 `LANGSMITH_PROJECT` 运行，因此来自测试或脚本的跟踪可以转到不同的代理环境。参见[Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith)。
+使用 [⟦T382⟧](/langsmith/create-an-agent#use-an-environment-project) 为 Deep Agents 代码自己的跟踪选择代理环境。 Shell 命令仍然使用用户的原始 `LANGSMITH_PROJECT` 运行，因此来自测试或脚本的跟踪可以转到不同的代理环境。参见[Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith)。**DEEPAGENTS\_CODE\_LANGSMITH\_REDACT** `string`（默认值：true）
 
-**DEEPAGENTS\_CODE\_LANGSMITH\_REDACT** `string`（默认值：true）切换Deep Agents代码的LangSmith代理跟踪输入和输出的客户端秘密编辑。默认启用。接受 `1`、`true`、`yes` 或 `on` 以启用密文，并接受 `0`、`false`、`no` 或 `off` 来禁用密文，不区分大小写。启用编辑后，如果无法配置编辑，则会禁用该运行的跟踪。参见[Configure LangSmith trace redaction](/oss/deepagents/code/config-file#redact-langsmith-trace-secrets)。
+切换Deep Agents代码的LangSmith代理跟踪输入和输出的客户端秘密编辑。默认启用。接受 `1`、`true`、`yes` 或 `on` 以启用密文，并接受 `0`、`false`、`no` 或 `off` 来禁用密文，不区分大小写。启用编辑后，如果无法配置编辑，则会禁用该运行的跟踪。参见[Configure LangSmith trace redaction](/oss/deepagents/code/config-file#redact-langsmith-trace-secrets)。
 
 **DEEPAGENTS\_CODE\_LANGSMITH\_REPLICA\_PROJECTS** `string`
 
@@ -650,13 +654,13 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 
 **深度\_代码\_LANGSMITH\_TRACING** `string`
 
-设置为 `false` 以禁用 LangSmith 代理跟踪。显式的 `false` 会覆盖其他跟踪启用标志，包括 `LANGSMITH_TRACING=true`。 `--no-tracing` 标志为一次启动设置此覆盖。本地历史记录和模型提供商的请求保持不变。参见[Disable agent tracing](/oss/deepagents/code/quickstart#trace-with-langsmith)。
+设置为 `false` 以禁用 LangSmith 代理跟踪。显式的 `false` 会覆盖其他跟踪启用标志，包括 `LANGSMITH_TRACING=true`。 `--no-tracing`​​ 标志为一次启动设置此覆盖。本地历史记录和模型提供商的请求保持不变。参见[Disable agent tracing](/oss/deepagents/code/quickstart#trace-with-langsmith)。
 
 **DEEPAGENTS\_CODE\_MEMORY\_AUTO\_SAVE** `string`（默认值：true）让代理主动将学习内容保存到内存中。设置为假值（或空）以继续加载内存，同时停止无提示的自动保存；显式保存仍然有效。覆盖`[memory].auto_save`。参见[Automatic memory](/oss/deepagents/code/memory-and-skills#automatic-memory)。
 
 **DEEPAGENTS\_CODE\_MCP\_TOOL\_TIMEOUT** `number`（默认值：120）
 
-MCP 工具调用的最大持续时间（以秒为单位）。接受从 `1` 到 `900` 的值并覆盖用户配置中的 `[mcp].tool_timeout`​​。无效值将传递到下一个配置源。超时并不能保证服务器端取消，因此重试可能会重复工作。
+MCP 工具调用的最大持续时间（以秒为单位）。接受从 `1` 到 `900` 的值并覆盖用户配置中的 `[mcp].tool_timeout`。无效值将传递到下一个配置源。超时并不能保证服务器端取消，因此重试可能会重复工作。
 
 **DEEPAGENTS\_CODE\_NO\_UPDATE\_CHECK** `string`
 
@@ -690,9 +694,9 @@ MCP 工具调用的最大持续时间（以秒为单位）。接受从 `1` 到 `
 
 允许使用逗号分隔的 shell 命令（或 `recommended` / `all`）。
 
-**深度\_代码\_显示\_推理** `string`
+**深度\_代码\_展示\_推理** `string`
 
-在交互式脚本中和非交互式模式下的 stderr 上显示提供者可见的推理。默认在交互式会话中打开，在非交互式模式中默认关闭。在两种模式下设置为 `1` 显示它或设置为 `0` 隐藏它。覆盖`[ui].show_reasoning`； `--show-reasoning` 对于单次启动优先。参见[Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning)。
+在交互式脚本中和非交互式模式下的 stderr 上显示提供者可见的推理。默认在交互式会话中打开，在非交互式模式中默认关闭。在两种模式下设置为 `1` 显示它或设置为 `0` 隐藏它。覆盖`[ui].show_reasoning`；单次启动时`--show-reasoning`优先。参见[Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning)。
 
 **DEEPAGENTS\_CODE\_SHOW\_USAGE\_STATS** `string`（默认值：true）会话结束时显示会话使用统计信息。设置为假值（或空）以隐藏它们。覆盖`[ui].show_usage_stats`。参见[Session usage stats](#session-usage-stats)。
 
@@ -749,7 +753,7 @@ dcode doctor
 
 Deep Agents 代码将数据存储在两个目录层次结构中：
 
-* **`~/.deepagents/`** — Deep Agents特定数据（座席记忆、技能、会话）。可通过[⟦T443⟧](#profile-location-deepagents_home)重新定位；然后，下面的路径将以该目录为根。
+* **`~/.deepagents/`** — Deep Agents特定数据（座席记忆、技能、会话）。可通过[⟦T449⟧](#profile-location-deepagents_home)重新定位；下面的路径将以该目录为根。
 * **`~/.agents/`** - 与工具无关的数据（跨 AI CLI 工具共享的技能）
 
 ### 目录结构
@@ -793,18 +797,18 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
             └── SKILL.md
 ```
 
-#### 什么去哪里|数据|地点 |读/写|笔记|
+#### 什么去哪里|数据|地点 |读/写 |笔记|
 | - | - | - | - |
 | **会议** | `~/.deepagents/.state/sessions.db` |读/写| SQLite 检查点数据库 |
 | **输入历史记录** | `~/.deepagents/.state/history.jsonl` |读/写| JSON 行，向上/向下箭头调用 |
-| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写|支持[⟦T448⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
-| **基本说明** |套餐`default_agent_prompt.md` |右 |不可变，通过 Deep Agents 代码升级进行更新 |
+| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写|支持[⟦T454⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
+| **基本说明** |封装`default_agent_prompt.md` |右 |不可变，通过 Deep Agents 代码升级进行更新 |
 | **用户定制** | `~/.deepagents/{agent}/AGENTS.md` |读/写|附加到基本说明 |
 | **项目说明** | `.deepagents/AGENTS.md` 或 `AGENTS.md` |右 |两者均已加载（如果存在）|
 | **用户技能** | `~/.deepagents/{agent}/skills/` |读/写 |代理特定技能 |
 | **共享技能** | `~/.agents/skills/` |右 |与工具无关、跨 CLI |
 | **项目技能** | `.deepagents/skills/` 或 `.agents/skills/` |右 |项目范围 |
-| **用户Python扩展** | `~/.deepagents/extensions/` |读/写|实验性；参见[Python extensions](/oss/deepagents/code/extensions) |
+| **用户Python扩展** | `~/.deepagents/extensions/` |读/写 |实验性；参见[Python extensions](/oss/deepagents/code/extensions) |
 | **项目 Python 扩展** | `.deepagents/extensions/` |右 |实验性；需要项目信任 |
 | **自定义子代理** | `~/.deepagents/{agent}/agents/` |读/写|用户定义的子代理 |
 | **项目分代理** | `.deepagents/agents/` |右 |项目定义的子代理 |
@@ -820,7 +824,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 3. `.deepagents/skills/` — 项目Deep Agents代码
 4. `.agents/skills/` — 项目工具无关*（最高）*
 
-加载技能时，Deep Agents 代码会验证解析的文件路径是否保留在这些目录之一或之前批准的信任条目中。在所有可信根之外解析的符号链接将被拒绝，直到您批准目标目录（交互式）或将其添加到[⟦T465⟧](/oss/deepagents/code/configuration#skill-directory-allowlist)（无头运行所需）。参见[Invoke a skill mid-session](/oss/deepagents/code/memory-and-skills#invoke-a-skill-mid-session)。
+加载技能时，Deep Agents 代码会验证解析的文件路径是否保留在这些目录之一或之前批准的信任条目中。在所有可信根之外解析的符号链接将被拒绝，直到您批准目标目录（交互式）或将其添加到[⟦T471⟧](/oss/deepagents/code/configuration#skill-directory-allowlist)（无头运行所需）。参见[Invoke a skill mid-session](/oss/deepagents/code/memory-and-skills#invoke-a-skill-mid-session)。
 
 #### 子代理
 
@@ -843,7 +847,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 ### `.deepagents` vs `.agents`|目录 |目的|何时使用 |
 | - | - | - |
 | `.deepagents/` | Deep Agents 代码特定 |使用 Deep Agents 代码特定功能的技能和配置 |
-| `.agents/` |与工具无关 |您想要在不同的 AI CLI 工具之间共享的技能 |
+| `.agents/` |与工具无关 |您希望在不同的 AI CLI 工具之间分享的技能 |
 
 > [!提示]
 >
@@ -859,7 +863,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 |清除输入历史记录 | `rm ~/.deepagents/.state/history.jsonl` |
 |清除存储的 API 密钥 | `rm ~/.deepagents/.state/auth.json` |
 |清除 MCP OAuth 令牌 | `rm -rf ~/.deepagents/.state/mcp-tokens` |
-|清除已保存的 MCP 项目审批 |从 `~/.deepagents/config.toml` 中的 `[mcp]` 表中删除 `enabled_project_server_approvals` |
+|清除已保存的 MCP 项目审批 |从 `~/.deepagents/config.toml` 的 `[mcp]` 表中删除 `enabled_project_server_approvals` |
 |重新运行首次运行入职 | `rm ~/.deepagents/.state/onboarding_complete` |
 |重置代理说明 | `dcode agents reset --agent {name}` |
 |删除技能 | `rm -rf ~/.deepagents/{agent}/skills/{skill-name}` |

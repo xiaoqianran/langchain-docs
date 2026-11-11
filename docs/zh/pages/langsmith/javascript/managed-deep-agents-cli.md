@@ -6,7 +6,7 @@
 
 mda 命令、项目文件和部署行为的参考。
 
-`mda` CLI 首先编译和部署代码[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)。
+`mda` CLI 以代码优先方式编译和部署 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)。
 
 它包含在 `managed-deepagents` npm 包中。
 
@@ -62,7 +62,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 `mda deploy` 转发非保留的 `.env` 条目，例如 `OPENAI_API_KEY`、MCP 令牌和自定义工具凭证，作为托管部署机密。保留的平台变量（包括 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY` 和 `LANGSMITH_WORKSPACE_ID`）用于 CLI 身份验证和部署路由，但不会作为用户管理的部署机密上传。
 
-## 命令概述|命令 |使用 |
+## 命令概述|命令|使用 |
 | - | - |
 | `mda --help` |显示 CLI 帮助。 |
 | `mda --version` |显示已安装的 CLI 版本。 |
@@ -70,11 +70,14 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 | `mda build [path]` |将项目编译为托管 LangGraph 应用程序，无需部署。 |
 | `mda evals …` |初始化 Harbor 工作区并继续在编码代理中进行评估创作。 |
 | `mda dev [path]` |编译一个项目并在本地LangGraph开发服务器上运行。 |
+| `mda chat [path]` |通过本地开发服务器从终端与代理聊天。 |
 | `mda connections …` |管理工具和 MCP 连接器的身份验证。 |
 | `mda deploy [path]` |编译、同步 Context Hub 上下文、上传并部署到 LangSmith。 |
+| `mda pull [path]` |将说明和技能从 Context Hub 提取到本地项目中。 |
 | `mda channels init slack` |将 Slack 通道声明添加到当前项目。 |
+| `mda channels setup [channel]` |为已部署的代理设置项目通道，而无需进行部署。 |
 | `mda logs [path]` |已部署代理的尾部代理服务器日志。 |
-| `mda delete [path]` / `mda destroy [path]` |删除已部署的代理及其创建的LangSmith资源。 |
+| `mda delete [path]` / `mda destroy [path]` |删除已部署的代理及其创建的 LangSmith 资源。 |
 
 ## 初始化项目
 
@@ -144,7 +147,7 @@ pnpm exec mda channels init slack
 bunx mda channels init slack
 ```
 
-该命令在 `channels/` 目录中创建 Slack 通道声明。接下来`mda deploy` 设置代理需要出现在 Slack 中的资源。有关完整的工作流程，请参阅[Connect a Managed Deep Agent to Slack](/langsmith/javascript/managed-deep-agents-channels-slack)。
+该命令在 `channels/` 目录中创建 Slack 通道声明。接下来的`mda deploy` 设置代理需要出现在 Slack 中的资源。有关完整的工作流程，请参阅[Connect a Managed Deep Agent to Slack](/langsmith/javascript/managed-deep-agents-channels-slack)。
 
 ## 构建项目
 
@@ -223,13 +226,35 @@ bunx mda dev
 
 配置沙箱后，`mda dev` 会尝试配置的提供程序。如果提供程序凭据不可用或提供程序创建失败，它将回退到本地临时目录沙箱并打印所选路径。
 
-对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭证。
+对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭据。
 
-## 管理连接连接将托管深度代理链接到外部服务。该凭证位于 LangSmith 工作区中，因此无需重新部署即可轮换，并且用户拥有的连接可以解析呼叫代理的人员的凭证。工具和 MCP 连接器在运行时使用 `connections.get(...)` 解析连接。
+## 从终端聊天使用`mda chat`从终端与客服人员交谈。它重用已运行的本地开发服务器，或为会话启动一个服务器：
 
-以三种模式之一创建连接：不透明机密（固定 API 密钥）、常规 OAuth（来自目录或自定义端点的 BYOT 应用程序）或 MCP OAuth（从 MCP 服务器 URL 发现并注册）。使用 `mda connections` 管理当前工作区中的这些凭据。
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda chat
+```
 
-|命令 |使用 |
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda chat
+```
+
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda chat
+```
+
+|参数或标志 |使用 |
+| - | - |
+| `path` |项目目录。默认为当前目录。 |
+| `--url URL` |要使用的代理服务器 URL，而不是本地 URL。必须是本地开发服务器或到其中之一的隧道，因为 `mda chat` 不发送凭据。 |
+| `--assistant ID` |助理 ID。默认为上演的`mda dev`，然后是特工`name`。 |
+| `-t`、`--thread ID` |继续现有线程。 |
+| `--env-file PATH` |当`mda chat`启动开发服务器时，从此文件而不是项目`.env`读取环境变量。需要 `mda` 0.10.0 或更高版本。 |
+
+## 管理连接
+
+连接将托管深度代理链接到外部服务。该凭证位于 LangSmith 工作区中，因此无需重新部署即可轮换，并且用户拥有的连接可解析调用代理的人员的凭证。工具和 MCP 连接器在运行时使用 `connections.get(...)` 解析连接。以三种模式之一创建连接：不透明机密（固定 API 密钥）、常规 OAuth（来自目录或自定义端点的 BYOT 应用程序）或 MCP OAuth（从 MCP 服务器 URL 发现并注册）。使用 `mda connections` 管理当前工作区中的这些凭据。
+
+|命令|使用 |
 | - | - |
 | `mda connections catalog` |列出具有预配置 OAuth 设置的服务。 |
 | `mda connections create <slug>` |创建不透明机密、常规 OAuth 或 MCP OAuth 连接。 |
@@ -272,7 +297,7 @@ bunx mda connections create organization-tavily --secret-from-env TAVILY_API_KEY
 | `--secret-from-env VAR` |从 shell 或项目 `.env` 读取固定值或 OAuth 客户端密钥。 |
 | `--secret-from-file PATH` |从文件中读取固定值或 OAuth 客户端密钥。 |
 | `--oauth SERVICE` |使用 `mda connections catalog` 中服务的预配置设置。 |
-| `--grant-type GRANT` |将 OAuth 授权设置为 `authorization_code` 或 `client_credentials`。默认为`authorization_code`。 |
+| `--grant-type GRANT` |将 OAuth 授予设置为 `authorization_code` 或 `client_credentials`。默认为`authorization_code`。 |
 | `--client-id CLIENT_ID` |设置 OAuth 客户端 ID。 |
 | `--auth-method METHOD` |将令牌端点方法设置为`client_secret_basic`、`client_secret_post`或`none`。 |
 | `--scope SCOPE` |替换提供者的默认范围。对每个范围重复此操作。 |
@@ -315,14 +340,14 @@ bunx mda deploy
 | `--no-wait` |触发远程构建并退出，无需轮询部署完成情况。 |
 
 部署运行以下步骤：1. 验证项目目录并加载代理条目文件。
-2. 解析 LangSmith API 密钥和可选工作区 ID。
+2. 解析LangSmith API 密钥和可选工作区 ID。
 3. 收集非保留的 `.env` 值作为托管部署机密。
 4. 验证模型提供程序 API 密钥可从 `.env`、shell 环境或 LangSmith 工作区机密获取。
 5. 将部署拥有的上下文同步到 Context Hub。
 6. 将项目编译为`.mda/build`并提取可选的`schedules/`和`channels/`声明。
 7. 按名称创建或查找 LangSmith 托管部署。
 8. 归档构建、上传并触发远程构建。
-9. 轮询修订版，直到达到`DEPLOYED`，除非设置了`--no-wait`。
+9. 轮询修订版本，直到达到 `DEPLOYED`，除非设置了 `--no-wait`。
 10. 协调计划的托管 LangSmith cron 作业，除非设置了 `--no-wait`。
 11. 配置已声明的 Slack 通道。如果需要 Slack 授权或工作区批准，请显示操作并在完成后继续。
 
@@ -330,9 +355,72 @@ bunx mda deploy
 
 成功后，CLI 将打印 LangSmith 部署仪表板 URL。有关秘密路由和部署技巧，请参阅[Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)。
 
-## 读取部署日志使用 `mda logs` 跟踪已部署代理的代理服务器日志：
+## 从LangSmith提取上下文使用 `mda pull` 将 `instructions.md` 和 `skills/` 从已部署代理的 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 条目复制到本地项目中。当有人在 LangSmith 中编辑代理的指令或技能并且您希望在本地项目中进行这些更改后使用它。
+
+> [!注意]
+>
+> `mda pull` 需要 `mda` 0.10.2 或更高版本。
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda pull --dry-run
+```
+
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda pull --dry-run
+```
+
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda pull --dry-run
+```
+
+`mda pull` 列出它添加、覆盖或删除的每个文件，然后在更改文件之前进行询问。它不会更改代理代码或内存，并且不会进行远程写入。
+
+|参数或标志 |使用 |
+| - | - |
+| `path` |项目目录。默认为当前目录。 |
+| `-n`、`--name NAME` |部署名称。默认为代理`name`。 |
+| `--dry-run` |显示更改而不更改文件。 |
+| `-y`、`--yes` |无需询问即可应用更改。无需终端即可需要。 |
+| `--workspace-id ID` |从中读取的工作区。覆盖`LANGSMITH_WORKSPACE_ID`。 |
+| `--agent-environment ENV` |从中读取的代理环境。默认为`.env`中的`LANGSMITH_AGENT_ENVIRONMENT`。 |
+| `--env-file PATH` |从此文件而不是项目 `.env` 读取凭据。 |
+
+## 设置通道而不部署
+
+使用 `mda channels setup` 将通道添加到已部署的代理。它运行与`mda deploy`相同的通道设置，无需部署。要检查通道状态而不更改任何内容，请添加 `--json`。如果未设置通道，该命令将以非零代码退出，因此您可以将其用作 CI 中的检查。
+
+> [!注意]
+>
+> `mda channels setup` 需要 `mda` 0.10.1 或更高版本，并且处于实验阶段。
+
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda channels setup
+```
+
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda channels setup
+```
+
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda channels setup
+```
+
+在终端中，该命令询问要设置哪些通道。没有终端，或者有`--json`，它只报告每个通道的状态。除非每个通道都已设置，否则它会以非零值退出。
+
+|参数或标志 |使用 |
+| - | - |
+| `channel` |要设置的频道，如`slack`。默认为项目中的每个通道。 |
+| `-n`、`--name NAME` |部署名称。默认为代理`name`。 |
+| `--json` |将每个通道的状态打印为 JSON。不设置任何东西。 |
+| `--workspace-id ID` |部署的工作区。覆盖`LANGSMITH_WORKSPACE_ID`。 |
+| `--agent-environment ENV` |目标代理环境。默认为`.env`中的`LANGSMITH_AGENT_ENVIRONMENT`。 |
+| `--env-file PATH` |从此文件而不是项目`.env`读取环境变量。 |
+
+`mda deploy` 还在上传新版本之前设置现有部署的通道。无法设置的通道会在上传之前停止部署。
+
+## 读取部署日志
+
+使用 `mda logs` 跟踪已部署代理的代理服务器日志：```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx mda logs
 ```
 
@@ -373,7 +461,7 @@ bunx mda delete
 |参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
-| `--name NAME` |部署名称。默认为`defineDeepAgent` 的代理`name`。 |
+| `--name NAME` |部署名称。默认为`defineDeepAgent`的代理`name`。 |
 | `--workspace-id WORKSPACE_ID` |部署所在的工作区 ID。覆盖 `LANGSMITH_WORKSPACE_ID`。 |
 | `--yes` |删除时无需询问确认。 |
 
@@ -390,6 +478,6 @@ bunx mda delete
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-cli.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

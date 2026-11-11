@@ -4,7 +4,7 @@
 
 # 团队
 
-将组织成员分组，然后为每个团队分配一个角色并为其可以访问的工作区提供访问策略。
+将组织成员分组，然后为每个团队指定一个角色并为其可以访问的工作区提供访问策略。
 
 团队是一组组织成员。您可以授予团队访问多个工作区的权限，并在每个工作区中指定特定的角色。属于这些工作区的团队成员将在那里接收团队的角色。团队建立在 [role-based access control (RBAC)](/langsmith/rbac) 和 [attribute-based access control (ABAC)](/langsmith/abac) 的基础上。
 
@@ -41,7 +41,7 @@
   DEFAULT_ORG_FEATURE_CAN_USE_TEAMS: "true"
   ```
 
-要在 UI 中管理团队，还需[enable ABAC](/langsmith/abac#enable-abac-for-self-hosted-deployments)。
+要在 UI 中管理团队，还需[enable ABAC](/langsmith/abac#enable-abac-on-a-self-hosted-deployment)。
 
 ## 创建团队
 
@@ -121,7 +121,7 @@ LangSmith 一起保存更改。如果失败，LangSmith 会保留未保存的更
 
 * **组织角色**：当没有`LS:`组设置用户的组织角色时，团队匹配设置它：
 
-  * 通过 SSO 组同步，新用户作为 [Organization Viewer](/langsmith/rbac#organization-viewer) 加入组织。 SSO Groups Sync 管理其成员资格的用户被设置为组织查看者。其他成员资格（例如来自邀请的成员资格）保留其角色。
+  * 通过 SSO 组同步，新用户作为 [Organization Viewer](/langsmith/rbac#organization-viewer) 加入组织。 SSO Groups Sync 管理其成员身份的用户被设置为组织查看者。其他成员资格（例如来自邀请的成员资格）保留其角色。
   * 通过 SCIM，将 SCIM 不管理成员资格的用户设置为[Organization User](/langsmith/rbac#organization-user)，之后由 SCIM 管理成员资格。这包括具有更高角色的用户，例如组织管理员。
 
 * **工作区成员资格**：同步将用户添加到团队可以访问的每个工作区。该成员资格本身没有任何作用。用户的访问来自团队的角色。在用户下次同步时，如果没有团队有权访问该工作区，LangSmith 将删除成员资格。* **登录门**：当启用**需要匹配组登录**时，与已同步团队匹配的组将被视为匹配组。对于 SSO 组同步，这还需要 **同步工作区/角色分配**。

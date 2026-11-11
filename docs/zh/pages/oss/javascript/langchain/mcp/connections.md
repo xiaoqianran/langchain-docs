@@ -23,7 +23,7 @@ LangChain 中的连接生命周期、多服务器、部署扩展、协议时代�
 
 要发现工具、运行代理并释放连接，请将 MCP 服务器的 HTTP URL 传递到 `runAgent`：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
 import { createAgent } from "langchain";
 
@@ -50,7 +50,7 @@ async function runAgent(serverUrl: string) {
 
 > [卡][View example trace](https://smith.langchain.com/public/2ec0a05d-a8c6-429f-a716-7f8a9711da39/r)
 >
-> 为此示例打开公共 LangSmith 运行。`close()` 中止正在进行的适配器工作、关闭其连接并清除其缓存。您可以再次调用`listTools()`打开新的连接，但使用新返回的工具。先前退回的工具保留其已关闭的客户。
+> 为此示例打开公共 LangSmith 运行。`close()` 中止正在进行的适配器工作、关闭其连接并清除其缓存。您可以再次调用`listTools()`打开新的连接，但使用新返回的工具。先前返回的工具保留其已关闭的客户。
 
 ## 多个服务器
 
@@ -58,7 +58,7 @@ async function runAgent(serverUrl: string) {
 
 要从两种传输方式发现工具，请将日历服务器的 HTTP URL 和文件服务器的脚本路径传递给 `listServerTools`：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
 
 async function listServerTools(calendarUrl: string, filesServerPath: string) {
@@ -85,7 +85,7 @@ async function listServerTools(calendarUrl: string, filesServerPath: string) {
 >
 > 为此示例打开公共 LangSmith 运行。
 
-`listToolsets()` 按服务器名称对工具进行分组。 `listTools()` 返回一个数组；传递服务器名称或名称数组来选择它返回的工具。选择会过滤结果，但发现仍然会联系每个已配置的服务器。未选择的服务器出现故障可能会使呼叫失败。
+`listToolsets()` 按服务器名称对工具进行分组。 `listTools()` 返回一个数组；传递服务器名称或名称数组来选择它返回的工具。选择会过滤结果，但发现仍会联系每个已配置的服务器。未选择的服务器发生故障可能会使呼叫失败。
 
 默认情况下，适配器会为其工具名称添加服务器名称前缀，例如 `calendar_search` 和 `files_search`。设置 `prefixToolNameWithServerName: false` 以保留原始名称。如果所选工具包含重复名称，则`listTools()`抛出异常。OpenAI 和 Anthropic 工具名称 (`^[a-zA-Z0-9_-]+$`) 中仅接受字母、数字、`_` 和 `-`，OpenAI 最多 64 个字符，Anthropic 最多 128 个字符。适配器不会重命名违反这些限制的前缀名称，因此请保持服务器名称简短且不含点和空格。
 
@@ -95,7 +95,7 @@ async function listServerTools(calendarUrl: string, filesServerPath: string) {
 
 在图工厂之外的模块范围内创建适配器。每个工厂调用都可以发现当前的工具目录并使用共享连接构建代理：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
 import { createAgent } from "langchain";
 
@@ -145,7 +145,7 @@ const tools = await adapter.listTools([], { cacheMode: "refresh" });
 
 传统时代从`initialize`握手开始。现代时代使用`server/discover`来发现服务器功能。当您需要特定时代时覆盖`mode`：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
 
 async function listToolsAcrossEras(modernUrl: string, legacyUrl: string) {

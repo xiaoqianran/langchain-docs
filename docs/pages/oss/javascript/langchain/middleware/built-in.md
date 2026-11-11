@@ -19,6 +19,7 @@ The following middleware work with any LLM provider:
 | [Tool retry](#tool-retry) | Automatically retry failed tool calls with exponential backoff. |
 | [Model retry](#model-retry) | Automatically retry failed model calls with exponential backoff. |
 | [Model fallback](#model-fallback) | Automatically fallback to alternative models when primary fails. |
+| [Model refusal](#model-refusal) | Throw an error when the model refuses, instead of treating the refusal as a final answer. |
 | [Summarization](#summarization) | Automatically summarize conversation history when approaching token limits. |
 | [Human-in-the-loop](#human-in-the-loop) | Pause execution for human approval of tool calls. |
 | [Model call limit](#model-call-limit) | Limit the number of model calls to prevent excessive costs. |
@@ -422,6 +423,121 @@ const agent = createAgent({
 >   // ... more models
 > )
 > ```
+
+### Model refusal
+
+> [!NOTE]
+>
+> `modelRefusalMiddleware` requires `langchain>=1.6.4`.
+
+Throw [`ModelRefusalError`](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError) when the model refuses, instead of returning the refusal as the agent's final answer. Providers report a refusal, such as a safety-policy refusal, as a successful response. Without this middleware, the agent run ends as if it succeeded. Model refusal is useful for the following:
+
+* Failing a run clearly when the model refuses.
+* Retrying a refused request on another model with [Model fallback](#model-fallback).
+
+The middleware checks each model response for a [`refusal` content block](/oss/javascript/langchain/messages#content-block-reference), which OpenAI, Anthropic, and Gemini models produce. It also catches refusals that fail to parse under a structured `responseFormat`. It does not detect refusals the model writes as ordinary text.
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createAgent,
+  modelFallbackMiddleware,
+  modelRefusalMiddleware,
+} from "langchain";
+
+const agent = createAgent({
+  model: "claude-sonnet-5-5",
+  tools: [],
+  middleware: [
+    modelFallbackMiddleware("openai:gpt-6.1-sol"),
+    modelRefusalMiddleware(),
+  ],
+});
+```
+
+List [`modelRefusalMiddleware`](https://reference.langchain.com/javascript/langchain/index/modelRefusalMiddleware) after [`modelFallbackMiddleware`](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) so the fallback catches the error and retries on the next model. `modelRetryMiddleware` does not retry refusals. With its default `onFailure: "continue"`, it returns the error as the final answer. List it after `modelRefusalMiddleware`, or set `onFailure: "error"`. When streaming, text the model sends before refusing can reach the client before the middleware throws.
+
+#### Handle a refusal
+
+Choose how your application responds when the model refuses:
+
+> [accordion] Catch the error and continue
+>
+> Catch [`ModelRefusalError`](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError) where you invoke the agent. The refused reply is not saved to the thread, so the next message continues the conversation normally, on the same model or a different one:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createAgent, modelRefusalMiddleware } from "langchain";
+> import { ModelRefusalError } from "@langchain/core/errors";
+> import { MemorySaver } from "@langchain/langgraph";
+>
+> const agent = createAgent({
+>   model: "claude-sonnet-5-5",
+>   tools: [],
+>   middleware: [modelRefusalMiddleware()],
+>   checkpointer: new MemorySaver(),
+> });
+> const config = { configurable: { thread_id: "1" } };
+>
+> try {
+>   await agent.invoke({ messages: [{ role: "user", content: "..." }] }, config);
+> } catch (error) {
+>   if (!ModelRefusalError.isInstance(error)) throw error;
+>   console.log(error.message); // Tell the user the request was refused
+> }
+>
+> // The thread is still usable
+> await agent.invoke(
+>   { messages: [{ role: "user", content: "Try something else" }] },
+>   config
+> );
+> ```
+
+> [accordion] Fall back to another model
+>
+> List [`modelFallbackMiddleware`](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) before `modelRefusalMiddleware`, as in the example above. When the model refuses, the fallback middleware retries the request on the next model, which can be from the same provider or a different one. A fallback model can still refuse the same request. Combine this with one of the other options for when every model refuses.
+
+> [accordion] Reply to the user after fallback
+>
+> To reply to the user instead of failing the run when every model refuses, add a middleware before `modelFallbackMiddleware` that catches the error:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import {
+>   AIMessage,
+>   createAgent,
+>   createMiddleware,
+>   modelFallbackMiddleware,
+>   modelRefusalMiddleware,
+> } from "langchain";
+> import { ModelRefusalError } from "@langchain/core/errors";
+>
+> const replyOnRefusal = createMiddleware({
+>   name: "replyOnRefusal",
+>   wrapModelCall: async (request, handler) => {
+>     try {
+>       return await handler(request);
+>     } catch (error) {
+>       if (!ModelRefusalError.isInstance(error)) throw error;
+>       // Every model refused: reply to the user instead of failing the run
+>       return new AIMessage("I cannot help with that request.");
+>     }
+>   },
+> });
+>
+> const agent = createAgent({
+>   model: "claude-sonnet-5-5",
+>   tools: [],
+>   middleware: [
+>     replyOnRefusal,
+>     modelFallbackMiddleware("openai:gpt-6.1-sol"),
+>     modelRefusalMiddleware(),
+>   ],
+> });
+> ```
+>
+> When `claude-sonnet-5-5` refuses, the request falls back to `gpt-6.1-sol`. If that model also refuses, `replyOnRefusal` returns the message.
+
+> [accordion] Write custom handling
+>
+> For other handling, such as recording the refusal in state or calling `interrupt()` to ask a human how to continue, skip `modelRefusalMiddleware` and check each response for a [`refusal` content block](/oss/javascript/langchain/messages#content-block-reference) in your own middleware. See [Custom middleware](/oss/javascript/langchain/middleware/custom).
 
 ### Summarization
 

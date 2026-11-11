@@ -392,9 +392,9 @@
 >
 > AgentReader 为英国/欧盟公司尽职调查、制裁筛查和 x402 上的注册数据提供按次付费的 LangChain.js 工具。
 
-> [卡][AgentSearch](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26)
+> [卡][AgentSearch](https://agentsearchhq.com/blog/add-web-search-to-langchain-js-agent)
 >
-> LangChain.js 代理网络搜索工具，默认免费，无密钥。针对完整页面和 JS 渲染网站按调用付费提取和渲染（\$0.005，x402）。
+> LangChain.js 代理的实时网络搜索，免费，无需 API 密钥，以及通过 x402（USDC on Base）按调用付费的提取和 JS 渲染。
 
 > [卡][agentsvc](https://agentsvc.io/docs/langchain)
 >

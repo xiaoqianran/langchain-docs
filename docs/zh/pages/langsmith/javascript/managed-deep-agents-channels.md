@@ -51,6 +51,14 @@ flowchart LR
     class Reply output;
 ```提供程序适配器确定接受哪些事件、提供程序对话如何映射到托管Deep Agents线程以及如何传递响应。通道声明公开了该提供程序支持的配置。
 
+### 向正在运行的代理发送消息
+
+引导允许用户添加到已经在进行中的运行中。当代理在该线程上运行时，同一用户发送消息时，该消息会在下一次模型调用时加入活动运行。它不会开始新的运行。
+
+> [!注意]
+>
+> 转向处于测试阶段，需要 `managed-deepagents` 0.10.2 或更高版本。
+
 ## 声明项目中的通道
 
 将每个通道放在`channels/`下的单独模块中。
@@ -69,19 +77,19 @@ flowchart LR
 
 请参阅提供程序指南以了解其声明、应用程序配置和部署过程。
 
-## 区分通道和连接器
-
-通道接收启动代理运行并传递响应的消息。 [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors) 为远程 MCP 服务器提供代理工具。项目可以使用其中之一或两者。
+## 区分通道和连接器通道接收启动代理运行并传递响应的消息。 [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors) 为远程 MCP 服务器提供代理工具。项目可以使用其中之一或两者。
 
 ## 支持的频道
 
-> [卡片] [Slack](/langsmith/javascript/managed-deep-agents-channels-slack)
+> [卡][Slack](/langsmith/javascript/managed-deep-agents-channels-slack)
 >
 > 从 Slack 提及、直接消息和话题回复开始运行。
 
-> [卡][Custom (HTTP)](/langsmith/javascript/managed-deep-agents-channels-http)
+> [卡片][Custom (HTTP)](/langsmith/javascript/managed-deep-agents-channels-http)
 >
-> 从任何可以发送 JSON Webhook 的服务开始运行。HTTP 适配器也可以存在于社区维护的包中。请参阅 [Share a channel adapter as a package](/langsmith/javascript/managed-deep-agents-channels-http#share-a-channel-adapter-as-a-package) 发布用户导入到其通道声明中的可重用提供商代码。
+> 从任何可以发送 JSON Webhook 的服务开始运行。
+
+HTTP 适配器也可以存在于社区维护的包中。请参阅 [Share a channel adapter as a package](/langsmith/javascript/managed-deep-agents-channels-http#share-a-channel-adapter-as-a-package) 发布用户导入到其通道声明中的可重用提供者代码。
 
 ## 另请参阅
 

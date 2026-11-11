@@ -158,7 +158,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > AgentReader is a paid read API (small free tier) that turns web page and PDF URLs into Markdown documents with title, author and date metadata.
 
-> [card] [AgentSearch](https://agentsearchhq.com/blog/add-web-search-to-langchain-agent?utm_source=langchain-docs\&utm_medium=integration-listing\&utm_campaign=promo-oct26)
+> [card] [AgentSearch](https://agentsearchhq.com/blog/langchain-agent-search-then-read-page)
 >
 > Live web search for agents, free by default with no API key, plus pay-per-call Extract and Render for full pages and JS sites.
 
@@ -394,6 +394,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Cloud content management and collaboration.
 
+> [card] [BoxdSandbox](https://github.com/boxd-sh/boxd-langchain#readme)
+>
+> Deep Agents sandbox backend that runs an agent's commands and files in a boxd machine, a Linux microVM that can hibernate and fork.
+
 > [card] [Brainiall](https://app.brainiall.com/docs)
 >
 > LLM gateway with LangChain chat model and embeddings integrations.
@@ -605,6 +609,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [CrustAPI](https://crustapi.com/docs)
 >
 > Google and public LinkedIn data as structured JSON for search and agents.
+
+> [card] [CyberWareX](https://github.com/cyberwareX/langchain-cyberwarex#readme)
+>
+> Tools for live web search and reading web pages as Markdown, paid per call in USDC via x402 with no account or API key. Small free trial.
 
 > [card] [CyborgVectorStore](https://docs.cyborg.co/versions/latest/integrations/langchain/introduction)
 >
@@ -1785,6 +1793,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Privy](/oss/python/integrations/providers/privy)
 >
 > Wallets and payments for AI agents.
+
+> [card] [PrizedSandbox](https://prized.dev/docs/sandboxes-langchain?utm_source=langchain\&utm_medium=listing\&utm_campaign=lw-sdk)
+>
+> Firecracker microVM sandboxes for Deep Agents and Deep Agents Code that can pause with their memory and fork into running copies.
 
 > [card] [Prolog](https://langchain-prolog.readthedocs.io)
 >

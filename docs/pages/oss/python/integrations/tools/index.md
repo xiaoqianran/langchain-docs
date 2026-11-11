@@ -23,6 +23,7 @@ The following table shows tools that execute online searches in some shape or fo
 
 | Tool/Toolkit | Free/Paid | Return Data |
 | - | - | - |
+| [AgentSearch](https://agentsearchhq.com/blog/langchain-agent-search-then-read-page) | Free (25 searches/day per IP, no API key); paid per call via x402 | URL, Title, Content; page text via extract |
 | [Amazon Bedrock AgentCore Web Search](/oss/python/integrations/tools/bedrock_agentcore_web_search) | Pay-per-use (AWS) | Title, URL, Published date, Extract |
 | [BrightData SERP](https://docs.brightdata.com/scraping-automation/serp-api/introduction) | Pay-per-successful-request | URL, Snippet, Title, Search Rank |
 | [cloro](https://cloro.dev/docs) | 500 free credits/month, no card | URL, Snippet, Title, Answer |
@@ -41,6 +42,7 @@ The following table shows tools that execute online searches in some shape or fo
 | [Nia Toolkit](https://github.com/nozomio-labs/nia-langchain) | Free tier available | Code, Docs, Metadata, Sources |
 | [Nimble Search](https://docs.nimbleway.com/integrations/connectors/langchain) | Free trial available | URL, Content, Title |
 | [Nimble Web Search Agents](https://docs.nimbleway.com/integrations/connectors/langchain#agent-api-v2-web-search-agents) | Free trial available | Research answer, Sources |
+| [Olostep Search](https://docs.olostep.com/integrations/langchain) | 500 free requests, then paid plans | URL, Title, Description, Page Content |
 | [Oxylabs Web API Search](https://github.com/oxylabs/langchain-oxylabs#web-api) | Free trial, then monthly plans | URL, Title, Snippet |
 | [Parallel Search](/oss/python/integrations/tools/parallel_search) | Paid | URL, Title, Excerpts |
 | [Perplexity Search](/oss/python/integrations/tools/perplexity_search) | Paid (with monthly free tier) | URL, Title, Snippet, Date, Last Updated |
@@ -114,6 +116,7 @@ The following table shows tools that can be used to automate tasks in web browse
 | [Nimble Extract Templates](https://docs.nimbleway.com/integrations/connectors/langchain#extract-templates) | Free trial available | ❌ |
 | [Nimble Crawl and Map](https://docs.nimbleway.com/integrations/connectors/langchain#crawl-and-map) | Free trial available | ❌ |
 | [NodeProxy](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations) | \~\$0.002 USDC per parse (x402 on Base) | ❌ |
+| [Olostep](https://docs.olostep.com/integrations/langchain) | 500 free requests, then paid plans | ❌ |
 | [Oxylabs Web API Scrape](https://github.com/oxylabs/langchain-oxylabs#web-api) | Free trial, then monthly plans | ❌ |
 | [Oxylabs Web Scraper API](https://github.com/oxylabs/langchain-oxylabs) | Free trial, with flat rate plans and pre-paid credits after | ❌ |
 | [ProxyClaw](https://proxyclaw.ai/docs) | Free tier available | ❌ |
@@ -311,7 +314,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Olostep`](https://github.com/olostep-api/langchain-olostep#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-olostep/month)](https://pypi.org/project/langchain-olostep/) |
 | [`MeshArcScrape`](https://mesharc.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mesharc/month)](https://pypi.org/project/langchain-mesharc/) |
 | [`MeshArcSearch`](https://mesharc.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mesharc/month)](https://pypi.org/project/langchain-mesharc/) |
-| [`AgentSearchTool`](https://agentsearchhq.com/blog/add-web-search-to-langchain-agent?utm_source=langchain-docs\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentsearch/month)](https://pypi.org/project/langchain-agentsearch/) |
+| [`AgentSearchTool`](https://agentsearchhq.com/blog/langchain-agent-search-then-read-page) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentsearch/month)](https://pypi.org/project/langchain-agentsearch/) |
 | [`Hyperbrowser browser agent`](https://www.hyperbrowser.ai/docs/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperbrowser/month)](https://pypi.org/project/langchain-hyperbrowser/) |
 | [`Hyperbrowser web scraping`](https://www.hyperbrowser.ai/docs/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperbrowser/month)](https://pypi.org/project/langchain-hyperbrowser/) |
 | [`WaveSpeedImageGeneration`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
@@ -547,6 +550,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Hlido`](https://hlido.eu/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/hlido-trust/month)](https://pypi.org/project/hlido-trust/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`viaSocket`](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/viasocket/month)](https://pypi.org/project/viasocket/) |
+| [`CyberWareX`](https://github.com/cyberwareX/langchain-cyberwarex#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cyberwarex/month)](https://pypi.org/project/langchain-cyberwarex/) |
 | [`HyperresearchAnswerTool`](https://hyperresearch.ai/docs/answers/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperresearch/month)](https://pypi.org/project/langchain-hyperresearch/) |
 | [`SofyaSearch`](https://sofya.co/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sofya/month)](https://pypi.org/project/langchain-sofya/) |
 | [`LaneRouterToolkit`](https://lanerouter.com/docs#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lanerouter/month)](https://pypi.org/project/langchain-lanerouter/) |

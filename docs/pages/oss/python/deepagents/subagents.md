@@ -1538,6 +1538,10 @@ This covers a subagent whose last message is a [`refusal` content block](/oss/py
 
 The main agent raises [`ModelRefusalError`](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError) when its own model refuses, because [`ModelRefusalMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware) is in the [Deep Agents stack](/oss/python/deepagents/customization#full-stack). A [`ModelFallbackMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) you pass catches the refusal first and retries the request on the next model. See [Handle a refusal](/oss/python/langchain/middleware/built-in#handle-a-refusal) for ways to respond.
 
+> [!NOTE]
+>
+> Subagent refusal results require `deepagents>=0.7.33`.
+
 ## The general-purpose subagent
 
 In addition to any user-defined subagents, every deep agent has access to a `general-purpose` subagent at all times. This subagent:

@@ -32,7 +32,7 @@ const response = await model.invoke(messages);  // Returns AIMessage
 
 > [!提示]
 >
-> 多回合[agents](/oss/javascript/langchain/agents)累积长消息历史。 [LangSmith](/langsmith/observability) 记录每个回合、工具结果和模型响应，以便您可以检查完整的对话。按照[tracing quickstart](/langsmith/trace-with-langchain)启用跟踪。
+> 多回合[agents](/oss/javascript/langchain/agents)积累长消息历史。 [LangSmith](/langsmith/observability) 记录每个回合、工具结果和模型响应，以便您可以检查完整的对话。按照[tracing quickstart](/langsmith/trace-with-langchain)启用跟踪。
 >
 > 我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
 
@@ -89,7 +89,7 @@ const response = await model.invoke(messages);
 * [AI message](#ai-message) - 模型生成的响应，包括文本内容、工具调用和元数据
 * [Tool message](#tool-message) - 代表[tool calls](/oss/javascript/langchain/models#tool-calling)的输出
 
-###系统消息[⟦T32⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 表示启动模型行为的一组初始指令。您可以使用系统消息来定调、定义模型的角色并建立响应指南。
+###系统消息[⟦T33⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 表示启动模型行为的一组初始指令。您可以使用系统消息来定调、定义模型的角色并建立响应指南。
 
 ```typescript Basic instructions theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { SystemMessage, HumanMessage, AIMessage } from "langchain";
@@ -123,7 +123,7 @@ const response = await model.invoke(messages);
 
 ### 人类讯息
 
-[⟦T33⟧](https://reference.langchain.com/javascript/langchain-core/messages/HumanMessage) 代表用户输入和交互。它们可以包含文本、图像、音频、文件和任何其他数量的多模式[content](#message-content)。
+[⟦T34⟧](https://reference.langchain.com/javascript/langchain-core/messages/HumanMessage) 代表用户输入和交互。它们可以包含文本、图像、音频、文件和任何其他数量的多模式[content](#message-content)。
 
 ####文字内容
 
@@ -155,16 +155,16 @@ const humanMsg = new HumanMessage({
 
 ###人工智能消息
 
-[⟦T35⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 表示模型调用的输出。它们可以包括多模式数据、工具调用以及您稍后可以访问的特定于提供商的元数据。
+[⟦T36⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 表示模型调用的输出。它们可以包括多模式数据、工具调用以及您稍后可以访问的特定于提供商的元数据。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const response = await model.invoke("Explain AI");
 console.log(typeof response);  // AIMessage
 ```
 
-[⟦T36⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 模型在调用时返回对象，其中包含响应中的所有关联元数据。
+[⟦T37⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 模型在调用时返回对象，其中包含响应中的所有关联元数据。
 
-提供者以不同的方式权衡/上下文化消息类型，这意味着手动创建新的 [⟦T37⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 对象并将其插入消息历史记录中有时会很有帮助，就像它来自模型一样。
+提供者以不同的方式权衡/上下文化消息类型，这意味着手动创建新的 [⟦T38⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 对象并将其插入消息历史记录中有时会很有帮助，就好像它来自模型一样。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessage, SystemMessage, HumanMessage } from "langchain";
@@ -181,7 +181,7 @@ const messages = [
 const response = await model.invoke(messages);
 ```> [手风琴] 属性
 >
-> **文字** `string`
+> **文本** `string`
 >
 > 消息的文本内容。
 >
@@ -205,7 +205,7 @@ const response = await model.invoke(messages);
 >
 > **使用\_元数据** `UsageMetadata | None`
 >
-> 消息的使用元数据，其中可以包含令牌计数（如果可用）。参见[⟦T44⟧](https://reference.langchain.com/javascript/langchain-core/messages/UsageMetadata)。
+> 消息的使用元数据，其中可以包含令牌计数（如果可用）。参见[⟦T45⟧](https://reference.langchain.com/javascript/langchain-core/messages/UsageMetadata)。
 >
 > **响应\_元数据** `ResponseMetadata | None`
 >
@@ -213,7 +213,7 @@ const response = await model.invoke(messages);
 
 #### 工具调用
 
-当模型制作[tool calls](/oss/javascript/langchain/models#tool-calling)时，它们包含在[⟦T46⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage)中：
+当模型制作[tool calls](/oss/javascript/langchain/models#tool-calling)时，它们包含在[⟦T47⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage)中：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const modelWithTools = model.bindTools([getWeather]);
@@ -230,7 +230,7 @@ for (const toolCall of response.tool_calls) {
 
 #### 代币使用
 
-[⟦T47⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 可以在其 [⟦T48⟧](https://reference.langchain.com/javascript/langchain-core/messages/UsageMetadata) 字段中保存令牌计数和其他使用元数据：
+[⟦T48⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 可以在其 [⟦T49⟧](https://reference.langchain.com/javascript/langchain-core/messages/UsageMetadata) 字段中保存令牌计数和其他使用元数据：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { initChatModel } from "langchain";
@@ -255,11 +255,11 @@ console.log(response.usage_metadata);
 }
 ```
 
-详情请参阅[⟦T49⟧](https://reference.langchain.com/javascript/langchain-core/messages/UsageMetadata)。
+详情请参阅[⟦T50⟧](https://reference.langchain.com/javascript/langchain-core/messages/UsageMetadata)。
 
 #### 流和块
 
-在流式传输期间，您将收到 [⟦T50⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessageChunk) 对象，这些对象可以组合成完整的消息对象：
+在流式传输期间，您将收到 [⟦T51⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessageChunk) 对象，这些对象可以组合成完整的消息对象：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessageChunk } from "langchain";
@@ -281,7 +281,7 @@ for (const chunk of chunks) {
 
 ### 工具消息对于支持[tool calling](/oss/javascript/langchain/models#tool-calling)的模型，AI消息可以包含工具调用。工具消息用于将单个工具执行的结果传递回模型。
 
-[Tools](/oss/javascript/langchain/tools)可以直接生成[⟦T51⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)对象。下面，我们展示一个简单的例子。阅读[tools guide](/oss/javascript/langchain/tools)了解更多信息。
+[Tools](/oss/javascript/langchain/tools)可以直接生成[⟦T52⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)对象。下面，我们展示一个简单的例子。阅读[tools guide](/oss/javascript/langchain/tools)了解更多信息。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessage, ToolMessage } from "langchain";
@@ -317,7 +317,7 @@ const response = await model.invoke(messages);  // Model processes the result
 >
 > **工具\_call\_id** `string` *必填*
 >
-> 此消息正在响应的工具调用的 ID。必须与 [⟦T54⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 中工具调用的 ID 匹配。
+> 此消息正在响应的工具调用的 ID。必须与[⟦T55⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage)中工具调用的ID匹配。
 >
 > **姓名** `string` *必填*
 >
@@ -395,7 +395,7 @@ const humanMessage = new HumanMessage({
 
 LangChain 提供跨提供商工作的消息内容的标准表示形式。
 
-消息对象实现一个 `contentBlocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从[⟦T64⟧](/oss/javascript/integrations/chat/anthropic)或[⟦T65⟧](/oss/javascript/integrations/chat/openai)生成的消息将包含相应提供者格式的`thinking`或`reasoning`块，但可以延迟解析为一致的[⟦T68⟧](#content-block-reference)表示：
+消息对象实现一个 `contentBlocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从 [⟦T65⟧](/oss/javascript/integrations/chat/anthropic) 或 [⟦T66⟧](/oss/javascript/integrations/chat/openai) 生成的消息将包含相应提供者格式的 `thinking` 或 `reasoning` 块，但可以延迟解析为一致的 [⟦T69⟧](#content-block-reference) 表示形式：
 
 > [标签] Anthropic
 >
@@ -631,7 +631,7 @@ const message = new HumanMessage({
 >>
 >> **类型** `string` *必填*
 >>
->> 永远`"reasoning"`
+>> 始终`"reasoning"`
 >>
 >> **推理** `string` *必填*
 >>
@@ -644,7 +644,34 @@ const message = new HumanMessage({
 > >     type: "reasoning",
 > >     reasoning: "The user is asking about..."
 > > }
-> > ```> [手风琴] 多式联运
+> > ```
+>
+>> [手风琴] ContentBlock.Refusal
+>>
+>> **目的：** 模型提供者报告的明确拒绝，例如 OpenAI `refusal` 内容部分、Anthropic `stop_reason: "refusal"` 或 Gemini 安全完成原因。 LangChain 不会检测模型以普通文本形式写入的拒绝。需要`@langchain/core>=1.3.7`。
+>>
+>> **类型** `string` *必填*
+>>
+>> 永远`"refusal"`
+>>
+>> **拒绝** `string` *必填*
+>>>> 拒绝消息，如果提供商未发送任何消息，则为空字符串
+>>
+>> **额外** `object`
+>>
+>> 其他特定于提供商的数据，例如 Anthropic 的拒绝 `category` 或 Gemini 的 `finishReason`
+>>
+>> **示例：**
+>>
+>> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > {
+> >     type: "refusal",
+> >     refusal: "",
+> >     extras: { category: "cyber" }
+> > }
+> > ```
+
+> [手风琴] 多式联运
 >
 >> [手风琴] ContentBlock.Multimodal.Image
 >>
@@ -664,11 +691,11 @@ const message = new HumanMessage({
 >>
 >> **文件ID** `string`
 >>
->> 引用外部文件存储系统中的图像（例如，OpenAI或Anthropic的文件API）。
+>> 引用外部文件存储系统中的图像（例如OpenAI或Anthropic的文件API）。
 >>
 >> **mimeType** `string`
 >>
->> 图片[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image)（例如，`image/jpeg`、`image/png`）。对于 Base64 数据是必需的。
+>> 图片 [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image)（例如，`image/jpeg`、`image/png`）。对于 Base64 数据是必需的。
 >
 >> [手风琴] ContentBlock.Multimodal.Audio
 >>
@@ -676,7 +703,7 @@ const message = new HumanMessage({
 >>
 >> **类型** `string` *必填*
 >>
->> 始终`"audio"`
+>> 永远`"audio"`
 >>
 >> **网址** `string`
 >>
@@ -691,8 +718,7 @@ const message = new HumanMessage({
 >> 引用外部文件存储系统中的音频文件（例如OpenAI或Anthropic的文件API）。
 >>
 >> **mimeType** `string`
->>
->> 音频[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#audio)（例如，`audio/mpeg`、`audio/wav`）。对于 Base64 数据是必需的。
+>>>> 音频[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#audio)（例如，`audio/mpeg`、`audio/wav`）。对于 Base64 数据是必需的。
 >
 >> [手风琴] ContentBlock.Multimodal.Video
 >>
@@ -704,7 +730,8 @@ const message = new HumanMessage({
 >>
 >> **网址** `string`
 >>
->> 指向视频位置的 URL。>>
+>> 指向视频位置的 URL。
+>>
 >> **数据** `string`
 >>
 >> Base64 编码的视频数据。
@@ -735,7 +762,7 @@ const message = new HumanMessage({
 >>
 >> **文件ID** `string`
 >>
->> 引用外部文件存储系统中的文件（例如OpenAI或Anthropic的文件API）。
+>> 引用外部文件存储系统中的文件（例如，OpenAI或Anthropic的文件API）。
 >>
 >> **mimeType** `string`
 >>
@@ -746,8 +773,7 @@ const message = new HumanMessage({
 >> **用途：** 文档文本（`.txt`、`.md`）
 >>
 >> **类型** `string` *必填*
->>
->> 永远`"text-plain"`
+>>>> 永远`"text-plain"`
 >>
 >> **文字** `string` *必填*
 >>
@@ -759,7 +785,9 @@ const message = new HumanMessage({
 >>
 >> **mimeType** `string`
 >>
->> 文本的[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml)（例如，`text/plain`、`text/markdown`）> [手风琴] 工具调用
+>> 文本的[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml)（例如，`text/plain`、`text/markdown`）
+
+> [手风琴] 工具调用
 >
 >> [手风琴] ContentBlock.Tools.ToolCall
 >>
@@ -821,8 +849,7 @@ const message = new HumanMessage({
 >> **目的：** 格式错误的调用
 >>
 >> **类型** `string` *必填*
->>
->> 永远`"invalid_tool_call"`
+>>>> 永远`"invalid_tool_call"`
 >>
 >> **姓名** `string`
 >>
@@ -833,7 +860,8 @@ const message = new HumanMessage({
 >> 无法解析的原始参数
 >>
 >> **错误** `string` *必填*
->>>> 错误描述
+>>
+>> 错误描述
 >>
 >> **常见错误：** 无效 JSON、缺少必填字段
 
@@ -880,8 +908,7 @@ const message = new HumanMessage({
 >> 部分工具参数（可能是不完整的 JSON）
 >>
 >> **索引** `number | string`
->>
->> 该块在流中的位置
+>>>> 该块在流中的位置
 >
 >> [手风琴] ContentBlock.Tools.ServerToolResult
 >>
@@ -890,7 +917,8 @@ const message = new HumanMessage({
 >> **类型** `string` *必填*
 >>
 >> 永远`"server_tool_result"`
->>>> **工具\_call\_id** `string` *必填*
+>>
+>> **工具\_call\_id** `string` *必填*
 >>
 >> 相应服务器工具调用的标识符。
 >>
@@ -924,7 +952,7 @@ const message = new HumanMessage({
 >
 > 其他特定于提供商的内容类型可以在每个模型提供商的 [reference documentation](/oss/javascript/integrations/providers/overview) 中找到。
 
-在导入 [⟦T158⟧](https://reference.langchain.com/javascript/langchain-core/messages/ContentBlock) 类型时，上述每个内容块都可以作为类型单独寻址。
+在导入 [⟦T168⟧](https://reference.langchain.com/javascript/langchain-core/messages/ContentBlock) 类型时，上述每个内容块都可以作为类型单独寻址。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ContentBlock } from "langchain";
@@ -949,7 +977,7 @@ const imageBlock: ContentBlock.Multimodal.Image = {
 >
 > 内容块作为 LangChain v1 中消息的新属性引入，以标准化跨提供商的内容格式，同时保持与现有代码的向后兼容性。
 >
-> 内容块并不是 [⟦T159⟧](https://reference.langchain.com/javascript/langchain-core/messages/BaseMessage) 属性的替代品，而是一个可用于以标准化格式访问消息内容的新属性。
+> 内容块不是 [⟦T169⟧](https://reference.langchain.com/javascript/langchain-core/messages/BaseMessage) 属性的替代品，而是一个可用于以标准化格式访问消息内容的新属性。
 
 ## 序列化
 
@@ -974,11 +1002,11 @@ const restored = await load<HumanMessage>(JSON.stringify(serialized));
 
 ## 与聊天模型一起使用
 
-[Chat models](/oss/javascript/langchain/models) 接受一系列消息对象作为输入并返回 [⟦T162⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 作为输出。交互通常是无状态的，因此简单的对话循环涉及调用具有不断增长的消息列表的模型。
+[Chat models](/oss/javascript/langchain/models) 接受一系列消息对象作为输入并返回 [⟦T172⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 作为输出。交互通常是无状态的，因此简单的对话循环涉及调用具有不断增长的消息列表的模型。
 
 请参阅以下指南以了解更多信息：
 
-* [persisting and managing conversation histories](/oss/javascript/langchain/short-term-memory)的内置功能
+* [persisting and managing conversation histories](/oss/javascript/langchain/short-term-memory) 的内置功能
 * 管理上下文窗口的策略，包括[trimming and summarizing messages](/oss/javascript/langchain/short-term-memory#common-patterns)
 
 ***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。

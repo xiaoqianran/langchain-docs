@@ -659,6 +659,32 @@ Content blocks are represented (either when creating a message or accessing the 
 > >     reasoning: "The user is asking about..."
 > > }
 > > ```
+>
+> > [accordion] ContentBlock.Refusal
+> >
+> > **Purpose:** An explicit refusal that the model provider reports, such as an OpenAI `refusal` content part, an Anthropic `stop_reason: "refusal"`, or a Gemini safety finish reason. LangChain does not detect refusals that the model writes as ordinary text. Requires `@langchain/core>=1.3.7`.
+> >
+> > **type** `string` *required*
+> >
+> > Always `"refusal"`
+> >
+> > **refusal** `string` *required*
+> >
+> > The refusal message, or an empty string if the provider sent none
+> >
+> > **extras** `object`
+> >
+> > Additional provider-specific data, such as Anthropic's refusal `category` or Gemini's `finishReason`
+> >
+> > **Example:**
+> >
+> > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > {
+> >     type: "refusal",
+> >     refusal: "",
+> >     extras: { category: "cyber" }
+> > }
+> > ```
 
 > [accordion] Multimodal
 >

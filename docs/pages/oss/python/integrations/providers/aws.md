@@ -205,7 +205,7 @@ await toolkit.cleanup()
 
 ### Amazon Bedrock AgentCore Web Search
 
-[Amazon Bedrock AgentCore Web Search](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-target-connector-web-search-tool.html) gives agents current information from the web with a source URL on every result, authenticated with your AWS credentials rather than a search API key.
+[Amazon Bedrock AgentCore Web Search](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/web-search-api.html) gives agents current information from the web with a source URL on every result, authenticated with your AWS credentials rather than a search API key. By default, the toolkit calls the Web Search API directly.
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install langchain-aws bedrock-agentcore
@@ -221,11 +221,8 @@ See a [usage example](/oss/python/integrations/tools/bedrock_agentcore_web_searc
 from langchain.agents import create_agent
 from langchain_aws.tools import create_web_search_toolkit
 
-# Needs a gateway with a web search connector target. The factory is synchronous.
-toolkit, tools = create_web_search_toolkit(
-    region="us-east-1",
-    gateway_id="my-web-search-gateway-abc123",
-)
+# The factory is synchronous. With no gateway argument, it calls the Web Search API.
+toolkit, tools = create_web_search_toolkit(region="us-east-1")
 
 try:
     agent = create_agent(model=llm, tools=tools)

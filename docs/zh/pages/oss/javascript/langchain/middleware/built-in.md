@@ -21,13 +21,14 @@ LangChain 为常见用例提供预构建的中间件。每个中间件均可投�
 | [Tool retry](#tool-retry) |使用指数退避自动重试失败的工具调用。 |
 | [Model retry](#model-retry) |使用指数退避自动重试失败的模型调用。 |
 | [Model fallback](#model-fallback) |当主模型出现故障时，自动回退到替代模型。 |
+| [Model refusal](#model-refusal) |当模型拒绝时抛出错误，而不是将拒绝视为最终答案。 |
 | [Summarization](#summarization) |当接近令牌限制时自动总结对话历史记录。 |
 | [Human-in-the-loop](#human-in-the-loop) |暂停执行以供人工批准工具调用。 |
 | [Model call limit](#model-call-limit) |限制模型调用次数，防止成本过高。 |
 | [Tool call limit](#tool-call-limit) |通过限制调用计数来控制工具执行。 |
-| [PII detection](#pii-detection) |检测和处理个人身份信息 (PII)。 |
-| [To-do list](#to-do-list) |为代理配备任务规划和跟踪功能。 |
-| [LLM tool selector](#llm-tool-selector) |在调用主模型之前，使用LLM选择相关工具。 || [Provider tool search](#provider-tool-search) |将工具推迟到提供商的服务器端工具搜索后面，按需显示它们。 |
+| [PII detection](#pii-detection) |检测和处理个人身份信息 (PII)。 || [To-do list](#to-do-list) |为代理配备任务规划和跟踪功能。 |
+| [LLM tool selector](#llm-tool-selector) |在调用主模型之前，使用LLM选择相关工具。 |
+| [Provider tool search](#provider-tool-search) |将工具推迟到提供商的服务器端工具搜索后面，按需显示它们。 |
 | [Filesystem](#filesystem-middleware) |为代理提供用于存储上下文和长期记忆的文件系统。 |
 | [Subagent middleware](#subagent) |添加生成子代理的能力。 |
 | [Context editing](#context-editing) |通过修剪或清除工具的使用来管理对话上下文。 |
@@ -43,7 +44,7 @@ LangChain 为常见用例提供预构建的中间件。每个中间件均可投�
 * 提高依赖网络的工具的可靠性。
 * 构建能够优雅地处理临时错误的弹性代理。
 
-**API参考：** [⟦T45⟧](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware)
+**API参考：** [⟦T48⟧](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware)
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, toolRetryMiddleware } from "langchain";
@@ -67,11 +68,11 @@ const agent = createAgent({
 >
 > **工具** `(ClientTool | ServerTool | string)[]`
 >
-> 要应用重试逻辑的可选工具或工具名称数组。可以是 `BaseTool` 实例列表或工具名称字符串。如果`undefined`，适用于所有工具。
+> 要应用重试逻辑的可选工具或工具名称数组。可以是`BaseTool`实例或工具名称字符串的列表。如果`undefined`，适用于所有工具。
 >
 > **retryOn** `((error: Error) =\> boolean) | (new (...args: any[]) =\> Error)[]` （默认值：(error) => getRetryable(error) ?? true)
 >
-> 要重试的错误构造函数数组，或者接受错误并在应该重试时返回 `true` 的函数。使用`langchain>=1.5.9`，默认情况下不再重试标记为不可重试的错误。重试所有其他错误。
+> 要重试的错误构造函数数组，或者是接受错误并在应该重试时返回 `true` 的函数。使用`langchain>=1.5.9`，默认情况下不再重试标记为不可重试的错误。重试所有其他错误。
 >
 > **onFailure** `'error' | 'continue' | ((error: Error) =\> string)`（默认：继续）
 >
@@ -86,7 +87,7 @@ const agent = createAgent({
 >
 > 指数退避乘数。每次重试都会等待 `initialDelayMs * (backoffFactor ** retryNumber)` 毫秒。设置为 `0.0` 以获得恒定延迟。必须 >= 0。
 >
-> **初始延迟时间** `number`（默认：1000）
+> **初始延迟Ms** `number`（默认：1000）
 >
 > 第一次重试之前的初始延迟（以毫秒为单位）。必须 >= 0。
 >
@@ -227,7 +228,7 @@ const lookupRecord = tool(
 );
 ```
 
-对于无法在另一次尝试中成功的失败，传递 `false`；对于暂时性失败，传递 `true`。您未标记的错误将被重试，因此现有工具将保持其当前行为。标记错误不会改变其类型或形状，因此 `instanceof` 检查它会继续工作。要读回标记，请调用 `getRetryable(error)`，当错误从未被标记时，它会返回 `true`、`false` 或 `undefined`。
+对于在另一次尝试中无法成功的失败，传递 `false`；对于暂时性失败，传递 `true`。您未标记的错误将被重试，因此现有工具将保持其当前行为。标记错误不会改变其类型或形状，因此 `instanceof` 检查它会继续工作。要读回标记，请调用 `getRetryable(error)`，当错误从未被标记时，它会返回 `true`、`false` 或 `undefined`。
 
 聊天模型集成已经标记了它们识别的故障，因此您不需要自己标记这些故障。以下内容在第一次尝试时失败，而不是消耗重试：
 
@@ -248,7 +249,7 @@ const lookupRecord = tool(
 * 提高网络相关模型请求的可靠性。
 * 构建弹性代理来优雅地处理临时模型错误。
 
-**API参考：** [⟦T87⟧](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)
+**API参考：** [⟦T90⟧](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, modelRetryMiddleware } from "langchain";
@@ -274,7 +275,7 @@ const agent = createAgent({
 >
 > **retryOn** `((error: Error) =\> boolean) | (new (...args: any[]) =\> Error)[]` （默认值：(error) => getRetryable(error) ?? true)
 >
-> 一个要重试的错误构造函数数组，或者一个接受错误并在应该重试时返回 `true` 的函数。使用`langchain>=1.5.9`，默认情况下不再重试标记为不可重试的错误。重试所有其他错误。
+> 要重试的错误构造函数数组，或者是接受错误并在应该重试时返回 `true` 的函数。使用`langchain>=1.5.9`，默认情况下不再重试标记为不可重试的错误。重试所有其他错误。
 >
 > **onFailure** `'error' | 'continue' | ((error: Error) =\> string)`（默认：继续）
 >
@@ -381,7 +382,7 @@ const agent = createAgent({
 
 * 构建处理模型中断的弹性代理。
 * 通过使用更便宜的型号来优化成本。
-* OpenAI、Anthropic 等提供者冗余。
+* OpenAI、Anthropic 等提供冗余。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, modelFallbackMiddleware } from "langchain";
@@ -412,17 +413,126 @@ const agent = createAgent({
 > )
 > ```
 
+### 模特拒绝
+
+> [!注意]
+>
+> `modelRefusalMiddleware` 需要 `langchain>=1.6.4`。
+
+当模型拒绝时抛出[⟦T110⟧](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError)，而不是将拒绝作为代理的最终答案返回。提供商将拒绝（例如安全政策拒绝）报告为成功的响应。如果没有这个中间件，代理运行就会像成功一样结束。模型拒绝对于以下情况很有用：
+
+* 当模型拒绝时，运行明显失败。
+* 使用 [Model fallback](#model-fallback) 在另一个模型上重试被拒绝的请求。
+
+中间件检查每个模型响应是否有 [⟦T111⟧ content block](/oss/javascript/langchain/messages#content-block-reference)，其中 OpenAI、Anthropic 和 Gemini 模型生成。它还捕获在结构化`responseFormat`下无法解析的拒绝。它不会检测模型以普通文本形式写入的拒绝。
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createAgent,
+  modelFallbackMiddleware,
+  modelRefusalMiddleware,
+} from "langchain";
+
+const agent = createAgent({
+  model: "claude-sonnet-5-5",
+  tools: [],
+  middleware: [
+    modelFallbackMiddleware("openai:gpt-6.1-sol"),
+    modelRefusalMiddleware(),
+  ],
+});
+```将 [⟦T113⟧](https://reference.langchain.com/javascript/langchain/index/modelRefusalMiddleware) 列在 [⟦T114⟧](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) 之后，以便回退捕获错误并重试下一个模型。 `modelRetryMiddleware` 不会重试拒绝。使用默认的`onFailure: "continue"`，它返回错误作为最终答案。将其列在`modelRefusalMiddleware`之后，或设置`onFailure: "error"`。流式传输时，模型在拒绝之前发送的文本可以在中间件抛出之前到达客户端。
+
+#### 处理拒绝
+
+选择当模型拒绝时应用程序如何响应：
+
+> [手风琴] 捕获错误并继续
+>
+> 在调用代理的地方捕获[⟦T119⟧](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError)。拒绝的回复不会保存到线程中，因此下一条消息会在相同模型或不同模型上正常继续对话：
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createAgent, modelRefusalMiddleware } from "langchain";
+> import { ModelRefusalError } from "@langchain/core/errors";
+> import { MemorySaver } from "@langchain/langgraph";
+>
+> const agent = createAgent({
+>   model: "claude-sonnet-5-5",
+>   tools: [],
+>   middleware: [modelRefusalMiddleware()],
+>   checkpointer: new MemorySaver(),
+> });
+> const config = { configurable: { thread_id: "1" } };
+>
+> try {
+>   await agent.invoke({ messages: [{ role: "user", content: "..." }] }, config);
+> } catch (error) {
+>   if (!ModelRefusalError.isInstance(error)) throw error;
+>   console.log(error.message); // Tell the user the request was refused
+> }
+>
+> // The thread is still usable
+> await agent.invoke(
+>   { messages: [{ role: "user", content: "Try something else" }] },
+>   config
+> );
+> ```
+
+> [手风琴] 回退到另一个模型
+>
+> 将 [⟦T120⟧](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) 列在 `modelRefusalMiddleware` 之前，如上例所示。当模型拒绝时，后备中间件会在下一个模型上重试请求，该模型可以来自同一提供商，也可以来自不同的提供商。后备模型仍然可以拒绝相同的请求。当每个模型都拒绝时，将此与其他选项之一结合起来。> [accordion] 回退后回复用户
+>
+> 要回复用户而不是在每个模型拒绝时运行失败，请在 `modelFallbackMiddleware` 之前添加一个捕获错误的中间件：
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import {
+>   AIMessage,
+>   createAgent,
+>   createMiddleware,
+>   modelFallbackMiddleware,
+>   modelRefusalMiddleware,
+> } from "langchain";
+> import { ModelRefusalError } from "@langchain/core/errors";
+>
+> const replyOnRefusal = createMiddleware({
+>   name: "replyOnRefusal",
+>   wrapModelCall: async (request, handler) => {
+>     try {
+>       return await handler(request);
+>     } catch (error) {
+>       if (!ModelRefusalError.isInstance(error)) throw error;
+>       // Every model refused: reply to the user instead of failing the run
+>       return new AIMessage("I cannot help with that request.");
+>     }
+>   },
+> });
+>
+> const agent = createAgent({
+>   model: "claude-sonnet-5-5",
+>   tools: [],
+>   middleware: [
+>     replyOnRefusal,
+>     modelFallbackMiddleware("openai:gpt-6.1-sol"),
+>     modelRefusalMiddleware(),
+>   ],
+> });
+> ```
+>
+> 当`claude-sonnet-5-5`拒绝时，请求退回到`gpt-6.1-sol`。如果该模型也拒绝，`replyOnRefusal` 返回消息。
+
+> [手风琴] 编写自定义处理
+>
+> 对于其他处理，例如在状态中记录拒绝或调用 `interrupt()` 询问人员如何继续，请跳过 `modelRefusalMiddleware` 并在您自己的中间件中检查每个响应是否有 [⟦T128⟧ content block](/oss/javascript/langchain/messages#content-block-reference)。参见[Custom middleware](/oss/javascript/langchain/middleware/custom)。
+
 ### 总结
 
 当接近令牌限制时自动总结对话历史记录，保留最近的消息，同时压缩旧的上下文。总结对于以下方面很有用：
 
 * 超出上下文窗口的长时间运行的对话。
 * 具有丰富历史的多轮对话。
-* 保留完整对话上下文很重要的应用程序。
-
-> [!注意]
+* 保留完整对话上下文很重要的应用程序。> [!注意]
 >
-> 摘要是面向文本的上下文压缩。它不会调整大小、缩减采样或以其他方式压缩图像/音频/视频有效负载。 `keep`保留的最新消息仍然包括其原始多模式块，而汇总的旧多模式消息仅由生成的文本摘要表示。对于图像较多的应用程序，将媒体存储在文件系统或对象存储中，并通过消息历史记录传递 URL 或文件引用。
+> 摘要是面向文本的上下文压缩。它不会调整大小、缩减采样或以其他方式压缩图像/音频/视频有效负载。 `keep` 保留的最新消息仍然包含其原始多模式块，而汇总的旧多模式消息仅由生成的文本摘要表示。对于图像较多的应用程序，将媒体存储在文件系统或对象存储中，并通过消息历史记录传递 URL 或文件引用。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, summarizationMiddleware } from "langchain";
@@ -438,11 +548,13 @@ const agent = createAgent({
     }),
   ],
 });
-```> [手风琴] 配置选项
+```
+
+> [手风琴] 配置选项
 >
 >> [!提示]
 >>
->> 如果使用 `langchain@1.1.0`，`trigger` 和 `keep` 的`fraction` 条件（如下所示）依赖于聊天模型的 [profile data](/oss/javascript/langchain/models#model-profiles)。如果数据不可用，请使用其他条件或手动指定：
+>> 如果使用 `langchain@1.1.0`，`trigger` 和 `keep`（如下所示）的 `fraction` 条件依赖于聊天模型的 [profile data](/oss/javascript/langchain/models#model-profiles)。如果数据不可用，请使用其他条件或手动指定：
 >>
 >> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > const customProfile: ModelProfile = {
@@ -474,8 +586,7 @@ const agent = createAgent({
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 >   // Trigger when tokens >= 3000 OR messages >= 6
 >   trigger: [{ tokens: 3000 }, { messages: 6 }]
->   ```
->
+>   ```>
 > 每个条件可以包括：
 >
 > * `fraction`（数字）：模型上下文大小的分数 (0-1)
@@ -484,10 +595,11 @@ const agent = createAgent({
 >
 > 每个条件必须至少指定一个属性。如果未提供，则不会自动触发摘要。
 >
-> **保留** `object` （默认：\{messages: 20}）
+> **保留** `object`（默认：\{messages: 20}）
 >
 > 总结后要保留多少上下文。准确指定以下之一：
->> * `fraction`（数字）：要保留的模型上下文大小的分数 (0-1)
+>
+> * `fraction`（数字）：要保留的模型上下文大小的分数 (0-1)
 > * `tokens`（数字）：要保留的绝对令牌计数
 > * `messages`（数字）：要保留的最近消息数
 >
@@ -504,8 +616,7 @@ const agent = createAgent({
 > 生成摘要时要包含的最大标记数。在汇总之前，消息将被修剪以适应此限制。
 >
 > **摘要前缀** `string`
->
-> 添加到摘要消息的前缀。如果未提供，则使用默认前缀。
+>> 添加到摘要消息的前缀。如果未提供，则使用默认前缀。
 >
 > **maxTokensBeforeSummary** `number` *已弃用*
 >
@@ -513,7 +624,9 @@ const agent = createAgent({
 >
 > **messagesToKeep** `number` *已弃用*
 >
-> **已弃用：** 使用 `keep: { messages: value }` 代替。要保留的最近消息。> [手风琴] 完整示例
+> **已弃用：** 使用 `keep: { messages: value }` 代替。要保留的最近消息。
+
+> [手风琴] 完整示例
 >
 > 汇总中间件监视消息令牌计数，并在达到阈值时自动汇总旧消息。
 >
@@ -576,13 +689,13 @@ const agent = createAgent({
 > });
 > ```
 
-### 人机交互
-
-在执行之前暂停代理执行，以便人工批准、编辑或拒绝工具调用。 [Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop) 适用于以下情况：
+### 人机交互在执行之前暂停代理执行，以便人工批准、编辑或拒绝工具调用。 [Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop) 适用于以下情况：
 
 * 需要人工批准的高风险操作（例如数据库写入、金融交易）。
 * 强制进行人工监督的合规工作流程。
-* 长时间运行的对话，人工反馈指导代理。默认情况下，中间件每个模型轮暂停一次。将 `interruptMode: "per_call"` 设置为每次工具调用暂停一次，每个中断均由其 ID 应答。参见[Set the interrupt mode](/oss/javascript/langchain/human-in-the-loop#set-the-interrupt-mode)。
+* 长时间运行的对话，人工反馈指导代理。
+
+默认情况下，中间件每个模型轮暂停一次。将 `interruptMode: "per_call"` 设置为每次工具调用暂停一次，每个中断均由其 ID 应答。参见[Set the interrupt mode](/oss/javascript/langchain/human-in-the-loop#set-the-interrupt-mode)。
 
 > [!警告]
 >
@@ -703,7 +816,7 @@ const agent = createAgent({
 >
 > 每次调用的最大工具调用数（一条用户消息 → 响应周期）。每条新用户消息都会重置。 `undefined` 表示无运行限制。
 >
-> **注意：** 必须至少指定 `threadLimit` 或 `runLimit` 之一。
+> **注意：** 必须至少指定`threadLimit` 或`runLimit` 之一。
 >
 > **退出行为** `string`（默认：继续）
 >
@@ -711,7 +824,7 @@ const agent = createAgent({
 >
 > * `'continue'`（默认）- 使用错误消息阻止超出的工具调用，让其他工具和模型继续。模型根据错误消息决定何时结束。
 > * `'error'` - 抛出`ToolCallLimitExceededError`异常，立即停止执行
-> * `'end'` - 对于超出的工具调用，使用 ToolMessage 和 AI 消息立即停止执行。仅在限制单个工具时有效；如果其他工具有待处理的调用，则会抛出错误。> [手风琴] 完整示例
+> * `'end'` - 立即停止执行，并针对超出的工具调用发出 ToolMessage 和 AI 消息。仅在限制单个工具时有效；如果其他工具有待处理的调用，则会抛出错误。> [手风琴] 完整示例
 >
 > 通过以下方式指定限制：
 >
@@ -891,7 +1004,7 @@ function detector(content: string): PIIMatch[] {
 >
 > 模型调用后查看AI消息
 >
-> **applyToToolResults** `boolean`（默认值：false）
+> **applyToToolResults** `boolean` （默认值： false）
 >
 > 执行后检查工具结果消息
 
@@ -973,7 +1086,7 @@ const agent = createAgent({
 >
 > 需要具有服务器端工具搜索支持的模型：Anthropic (Claude Sonnet 4+/Opus 4+/Haiku 4.5+) 或 OpenAI (gpt-5.5+)。其他提供者会抛出错误。
 
-**API参考：** [⟦T189⟧](https://reference.langchain.com/javascript/langchain/index/providerToolSearchMiddleware)
+**API参考：** [⟦T213⟧](https://reference.langchain.com/javascript/langchain/index/providerToolSearchMiddleware)
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, providerToolSearchMiddleware } from "langchain";
@@ -1009,7 +1122,7 @@ const agent = createAgent({
 
 > [手风琴] 完整示例
 >
-> 中间件选择使用 `searchableTools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras.defer_loading: true` 在构建时选择推迟
+> 中间件选择使用 `searchableTools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras.defer_loading: true` 在构建时选择延迟
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createAgent, providerToolSearchMiddleware } from "langchain";
@@ -1036,7 +1149,7 @@ const agent = createAgent({
 
 上下文工程是构建有效代理的主要挑战。当使用返回可变长度结果的工具（例如，`web_search`和RAG）时，这尤其困难，因为长工具结果可以快速填充您的上下文窗口。
 
-[Deep Agents](/oss/javascript/deepagents/overview) 中的`FilesystemMiddleware` 提供了四种与短期和长期记忆交互的工具：
+[Deep Agents](/oss/javascript/deepagents/overview) 的`FilesystemMiddleware` 提供了四种与短期和长期记忆交互的工具：
 
 * `ls`：列出文件系统中的文件
 * `read_file`：读取整个文件或文件中的特定行数
@@ -1064,7 +1177,7 @@ const agent = createAgent({
 });
 ```
 
-#### 短期与长期文件系统默认情况下，这些工具会写入图形状态下的本地“文件系统”。要跨线程启用持久存储，请配置将特定路径（如 `/memories/`）路由到 `StoreBackend` 的 `CompositeBackend`。
+#### 短期与长期文件系统默认情况下，这些工具会写入图形状态下的本地“文件系统”。要启用跨线程的持久存储，请配置将特定路径（如 `/memories/`）路由到 `StoreBackend` 的 `CompositeBackend`。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent } from "langchain";
@@ -1382,7 +1495,7 @@ const agent = createAgent({
 
 子代理使用**名称**、**描述**、**系统提示**和**工具**进行定义。您还可以为子代理提供自定义**模型**或附加**中间件**。当您想要为子代理提供额外的状态密钥以与主代理共享时，这尤其有用。
 
-对于更复杂的用例，您还可以提供自己的预构建 LangGraph 图作为子代理。
+对于更复杂的用例，您还可以提供自己的预构建LangGraph图作为子代理。
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
@@ -1686,9 +1799,9 @@ const agent = createAgent({
 >
 > **编辑** `ContextEdit[]` （默认值：\[new ClearToolUsesEdit()]）
 >
-> 一系列[⟦T211⟧](https://reference.langchain.com/javascript/langchain/index/ContextEdit) 应用策略
+> 一系列[⟦T235⟧](https://reference.langchain.com/javascript/langchain/index/ContextEdit) 应用策略
 >
-> **[⟦T212⟧](https://reference.langchain.com/javascript/langchain/index/ClearToolUsesEdit) 选项：**
+> **[⟦T236⟧](https://reference.langchain.com/javascript/langchain/index/ClearToolUsesEdit) 选项：**
 >
 > **triggerTokens** `number`（默认：100000）
 >
@@ -1710,7 +1823,7 @@ const agent = createAgent({
 >
 > 要从清除中排除的工具名称列表。这些工具的输出永远不会被清除。
 >
-> **占位符** `string` （默认值：\[清除]）
+> **占位符** `string`（默认值：\[清除]）
 >
 > 为清除的工具输出插入占位符文本。这替换了原始工具消息内容。> [手风琴] 完整示例
 >
@@ -1767,7 +1880,7 @@ const agent = createAgent({
 >
 > **工具** `(string | ClientTool | ServerTool)[]`
 >
-> 要模拟的工具名称（字符串）或工具实例的列表。如果`undefined`（默认），将模拟所有工具。如果空数组`[]`，则不会模拟任何工具。如果数组包含工具名称/实例，则仅模拟这些工具。
+> 要模拟的工具名称（字符串）或工具实例的列表。如果`undefined`（默认），将模拟所有工具。如果为空数组`[]`，则不会模拟任何工具。如果数组包含工具名称/实例，则仅模拟这些工具。
 >
 > **型号** `string | BaseChatModel`
 >
@@ -1848,7 +1961,7 @@ const agent = createAgent({
 
 这些中间件针对特定的 LLM 提供商进行了优化。有关完整的详细信息和示例，请参阅每个提供商的文档。
 
-> [卡][Anthropic](/oss/javascript/integrations/middleware/anthropic)
+> [卡] [Anthropic](/oss/javascript/integrations/middleware/anthropic)
 >
 > Claude 模型的提示缓存、bash 工具、文本编辑器、内存和文件搜索中间件。
 
@@ -1858,6 +1971,6 @@ const agent = createAgent({
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/middleware/built-in.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

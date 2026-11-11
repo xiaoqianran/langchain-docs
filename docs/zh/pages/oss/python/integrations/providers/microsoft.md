@@ -44,6 +44,10 @@
 
 > [卡][Azure Blob Storage](/oss/python/integrations/document_loaders/azure_blob_storage)
 
+> [卡][Azure AI Search](/oss/python/integrations/vectorstores/azuresearch)
+
+> [卡][Azure AI Search retriever](/oss/python/integrations/retrievers/azure_ai_search)
+
 > [卡][Azure Cosmos DB for MongoDB vCore](/oss/python/integrations/vectorstores/azure_cosmos_db_mongo_vcore)
 
 > [卡][Azure Cosmos DB NoSQL](/oss/python/integrations/vectorstores/azure_cosmos_db_no_sql)
@@ -62,15 +66,17 @@
 
 > [卡][Microsoft Foundry middleware](/oss/python/integrations/middleware/azure_ai)
 
-> [卡][Microsoft Foundry tools](/oss/python/integrations/tools/azure_ai)
+> [卡片][Microsoft Foundry tools](/oss/python/integrations/tools/azure_ai)
 
 > [卡][Microsoft Foundry service tools](/oss/python/integrations/tools/azure_ai_services)
 
-> [卡片][Azure Container Apps Dynamic Sessions](/oss/python/integrations/tools/azure_dynamic_sessions)
+> [卡][Azure Container Apps Dynamic Sessions](/oss/python/integrations/tools/azure_dynamic_sessions)
 
 > [卡][Azure Logic Apps](/oss/python/integrations/tools/azure_logic_apps)
 
 > [卡][Microsoft Foundry hosted agents](/oss/python/integrations/providers/azure_ai#microsoft-foundry-hosted-agents)
+
+> [卡][Azure Durable Task Scheduler (LangGraph)](/oss/python/integrations/providers/azure_ai#durable-langgraph-execution-with-azure-durable-task-scheduler)
 
 ***
 

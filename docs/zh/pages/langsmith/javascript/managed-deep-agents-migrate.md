@@ -24,7 +24,7 @@
 | **最终用户的第三方访问** |您为每个用户配置并存储凭据。 | [Connections](/langsmith/javascript/managed-deep-agents-connections) 保存工作区机密并运行 OAuth，以便最终用户自行授权服务。 |
 | **聊天界面** |您编写集成。 | [Channels](/langsmith/javascript/managed-deep-agents-channels) 连接 Slack 和其他消息服务。 |
 | **预定运行** |您运行调度程序。 | [Schedules](/langsmith/javascript/managed-deep-agents-schedules) 运行托管 cron 作业。 |
-| **围绕代理的代码** |您可以编写，包括自定义路由和应用程序代码。 |仅限代理。对于自定义路由或应用程序代码，请使用[LangSmith deployment](/langsmith/deployment)。 |无论哪种方式，线束都是相同的。当您想要运行生产代理而无需管理基础设施时，请从新代理的[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)开始。当您已经拥有 Deep Agents SDK 代理并需要托管运行时时，请使用本指南。要自行使用相同的 Deep Agents 工具和托管代理或运行自定义 [LangSmith Deployment](/langsmith/deployment)，请参阅 [Going to production](/oss/javascript/deepagents/going-to-production)。
+| **围绕代理的代码** |您可以编写，包括自定义路由和应用程序代码。 |仅限代理。对于自定义路由或应用程序代码，请使用[LangSmith deployment](/langsmith/deployment)。 |无论哪种方式，线束都是相同的。当您想要运行生产代理而无需管理基础设施时，请从 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 开始使用新代理。当您已经拥有 Deep Agents SDK 代理并需要托管运行时时，请使用本指南。要自行使用相同的 Deep Agents 工具和托管代理或运行自定义 [LangSmith Deployment](/langsmith/deployment)，请参阅 [Going to production](/oss/javascript/deepagents/going-to-production)。
 
 ## 了解发生了什么变化
 
@@ -32,10 +32,10 @@
 
 ## 检查哪些内容没有保留
 
-大多数代理移动时不会对条目文件进行任何更改。有四种情况需要首先做出决定：* **自定义后端**：手写的 `BackendProtocol` 实现没有等效项。运行时拥有后端，[managed sandbox](/langsmith/javascript/managed-deep-agents-sandboxes)是为代理提供文件系统和 shell 的唯一选择。
+大多数代理移动时不会对条目文件进行任何更改。有四种情况需要首先做出决定：* **自定义后端**：托管 Deep Agents 提供代理的默认后端。这是线程范围的代理状态，或者当项目声明一个时为[managed sandbox](/langsmith/javascript/managed-deep-agents-sandboxes)。您无法替换默认后端。要保留您自己的后端，请将其安装在路径前缀处，例如 `/documents/`，带有 [⟦T17⟧](/langsmith/javascript/managed-deep-agents-agent-definition#mount-your-own-backends)。路由需要 0.10.3 或更高版本。
 * **您自己的存储或检查点**：线程、运行和持久性来自[Agent Server](/langsmith/agent-server-overview)。依赖于特定商店实现的代理需要将逻辑移至工具或中间件中。
 * **自定义应用程序代码和路由**：托管 Deep Agents 托管代理，而不是任意 Web 应用程序。对于代理周围的自定义路由、高级身份验证或应用程序代码，请改用 [LangSmith deployment](/langsmith/deployment)。
-* **Python 中的自定义状态模式**：`define_deep_agent` 不接受 `state_schema`，因此扩展 `DeepAgentState` 的代理无法按原样移动。 TypeScript `defineDeepAgent` 确实接受 `stateSchema`。
+* **Python 中的自定义状态模式**：`define_deep_agent` 不接受 `state_schema`，因此扩展 `DeepAgentState` 的代理无法按原样移动。 TypeScript `defineDeepAgent` 接受 `stateSchema`。
 
 如果这些都不适用，则代理逻辑将按写入方式进行传输。
 
@@ -43,37 +43,35 @@
 
 将此代码库从自托管 Deep Agents 代理转换为托管 Deep Agents (MDA) 项目。
 
-## 第 1 步：阅读指南
+## 第 1 步：阅读指南获取并遵循 [https://docs.langchain.com/langsmith/javascript/managed-deep-agents-migrate.md](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-migrate.md) 作为参数映射和项目布局的真实来源。
 
-获取并遵循 [https://docs.langchain.com/langsmith/javascript/managed-deep-agents-migrate.md](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-migrate.md) 作为参数映射和项目布局的真实来源。
+## 第二步：添加SDK
 
-## 第二步：添加SDK就地转换项目；不要运行 `mda init`，它只会创建一个新目录。将 `managed-deepagents` 添加到现有项目清单，固定到版本 `mda --version` 报告，并保留每个现有依赖项。
+就地转换项目；不要运行 `mda init`，它只会创建一个新目录。将 `managed-deepagents` 添加到现有项目清单，固定到版本 `mda --version` 报告，并保留每个现有依赖项。
 
 在 Python 中，如果清单设置了 `build-backend = "hatchling.build"`，则还要添加 `[tool.hatch.metadata] allow-direct-references = true`。 `mda build` 将要求重写为路径引用，否则 Hatchling 在安装时会拒绝该路径引用。
 
 ## 第三步：移动配置
 
-找到`create_deep_agent`（或`createDeepAgent`）调用站点，然后：
-
-* 将项目根目录下`agent.py`（或`agent.ts`）中的`define_deep_agent`（或`defineDeepAgent`）替换为`define_deep_agent`（或`defineDeepAgent`），导出名为`agent`的变量。定义调用必须存在于该文件中，而不是重新导出到其中。
+找到`create_deep_agent`（或`createDeepAgent`）调用站点，然后：* 将项目根目录下`agent.py`（或`agent.ts`）中的`define_deep_agent`（或`defineDeepAgent`）替换为`define_deep_agent`（或`defineDeepAgent`），导出名为`agent`的变量。定义调用必须存在于该文件中，而不是重新导出到其中。
 * 添加静态`name`，这是必需的。使用匹配 `[a-zA-Z][a-zA-Z0-9_-]*` 的字符串。
 * 将`system_prompt`文本移至代理条目旁边的`instructions.md`，并删除参数。
 * 将`skills`引用的文件移至`skills/<name>/SKILL.md`，并去掉参数。
-* 将`memory`替换为根`memory.py`（或`memory.ts`），导出名为`memory`的变量并设置为`define_memory(scope="agent")`，并删除该参数。如果代理不需要持久内存，请保留该文件。警告用户这会挂载一棵空树，并且任何现有的内存内容都必须移至 `instructions.md` 或技能中。* 删除`backend`、`store`、`checkpointer`。运行时拥有这三个。如果代理使用沙箱后端，请添加导出 `define_sandbox(...)` 的 `sandbox/` 声明。托管沙箱是托管 Deep Agents 提供的唯一后端。
-* 保持 `model`、`tools`、`middleware`、`subagents`、`permissions`、`cache` 和 `debug` 原样，以及中断、响应格式和上下文模式参数在其现有名称下。警告用户声明 `sandbox/` 的项目在清除 `permissions` 的情况下运行，因为文件系统权限规则禁用了沙箱 `execute` 工具。
+* 将`memory`替换为根`memory.py`（或`memory.ts`），导出名为`memory`的变量并设置为`define_memory(scope="agent")`，并删除该参数。如果代理不需要持久内存，请保留该文件。警告用户这会挂载一棵空树，并且任何现有的内存内容都必须移至 `instructions.md` 或技能中。
+* 删除`backend`、`store`、`checkpointer`。运行时拥有这三个。如果代理使用沙箱后端，请添加导出 `define_sandbox(...)` 的 `sandbox/` 声明。如果代理通过 `CompositeBackend` 路由发送到其他后端的路径，请将这些路由移动到 `define_deep_agent` 上的 `routes`。* 保持 `model`、`tools`、`middleware`、`subagents`、`permissions`、`cache` 和 `debug` 原样，以及中断、响应格式和上下文架构参数在其现有名称下。警告用户声明 `sandbox/` 的项目在清除 `permissions` 的情况下运行，因为文件系统权限规则禁用了沙箱 `execute` 工具。
 * 将工具和中间件模块保留在它们已经存在的地方，并继续从代理条目中导入它们。不要重组项目。
 
 ## 步骤 4：明确处理差距
 
-如果代码库在 Python 中传递 `state_schema`，构建自定义 `BackendProtocol`，或将代理包装在其自己的服务器路由或应用程序代码中，请停止并询问用户如何继续。托管Deep Agents不接受这些。不要发明替代品。
+如果代码库在 Python 中通过 `state_schema`，需要为每个路径提供一个自定义后端而不是在前缀下，或者将代理包装在其自己的服务器路由或应用程序代码中，请停止并询问用户如何继续。托管Deep Agents不接受这些。不要发明替代品。
 
 ## 步骤 5：验证
 
-运行`mda build`，然后运行`mda dev`，并确认代理启动并应答测试消息。 `mda build` 不验证定义调用，因此剩余的托管参数仅出现在图形加载时。报告任何无法迁移的内容。## 映射参数
+运行`mda build`，然后运行`mda dev`，并确认代理启动并应答测试消息。 `mda build` 不验证定义调用，因此剩余的托管参数仅出现在图形加载时。报告任何无法迁移的内容。
 
-大部分表面转移到`defineDeepAgent`不变，名称相同：`model`、`tools`、`middleware`、`subagents`、`interruptOn`、`responseFormat`、`contextSchema`、`stateSchema`、 `cache`和`debug`。将工具和中间件模块保留在它们已经存在的地方，并继续从代理条目导入它们。
+## 映射参数大部分表面转移到`defineDeepAgent`不变，名称相同：`model`、`tools`、`middleware`、`subagents`、`interruptOn`、`responseFormat`、`contextSchema`、`stateSchema`、 `cache`和`debug`。将工具和中间件模块保留在它们已经存在的地方，并继续从代理条目导入它们。
 
-`defineDeepAgent` 添加一项必选选项。传递 `name` 一个以字母开头且仅包含字母、数字、下划线或连字符的静态字符串。 Managed Deep Agents 使用它作为代理的图形 ID 和默认部署名称。
+`defineDeepAgent` 增加一项必选选项。传递 `name` 一个以字母开头且仅包含字母、数字、下划线或连字符的静态字符串。 Managed Deep Agents 使用它作为代理的图形 ID 和默认部署名称。
 
 其余的移动到项目文件或成为运行时的工作：
 
@@ -81,10 +79,10 @@
 | - | - | - |
 | `systemPrompt` | `instructions.md` |将文本移至文件中，然后删除该选项。参见[Instructions](/langsmith/javascript/managed-deep-agents-instructions)。 |
 | `skills` | `skills/` |每个技能一个目录，每个目录都有一个`SKILL.md`。参见[Skills](/langsmith/javascript/managed-deep-agents-skills)。 |
-| `memory` | `memory.ts` |导出`defineMemory({ scope: "agent" })`。如果没有持久内存，则省略该文件。参见[Memory](/langsmith/javascript/managed-deep-agents-memory)。 |
-| `backend` | `sandbox/` |声明一个托管沙箱而不是构建后端。参见[Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)。 |
+| `memory` | `memory.ts` |出口`defineMemory({ scope: "agent" })`。如果没有持久内存，则省略该文件。参见[Memory](/langsmith/javascript/managed-deep-agents-memory)。 |
+| `backend` | `sandbox/` 或 `routes` |为文件系统和 shell 声明一个托管沙箱。要保留其他后端，请将它们安装在带有 `routes` 的路径前缀处。参见[Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)和[Mount your own backends](/langsmith/javascript/managed-deep-agents-agent-definition#mount-your-own-backends)。 |
 | `permissions` |留下一个选项 |已接受，并在项目声明沙箱时清除。参见[Permissions](/oss/javascript/deepagents/permissions)。 |
-| `store`、`checkpointer` |托管运行时 |删除两者。 |Deep Agents 后端是可插入的，并且托管运行时提供自己的后端。声明 `sandbox/` 的项目会获得一个用于代理文件系统和 shell 的托管沙箱。没有代理的项目会获得线程范围的代理状态，以及用于指令、技能和内存的只读 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 安装。没有其他后端选择，因此依赖于特定后端的代理保留在 Deep Agents 上。
+| `store`、`checkpointer` |托管运行时 |删除两者。 |Deep Agents 后端是可插拔的，并且托管运行时提供自己的后端。声明 `sandbox/` 的项目会获得一个用于代理文件系统和 shell 的托管沙箱。没有代理的项目会获得线程范围的代理状态，以及用于指令、技能和内存的只读 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 挂载。您无法替换此默认后端。要保留特定后端，请将其安装在带有 [⟦T100⟧](/langsmith/javascript/managed-deep-agents-agent-definition#mount-your-own-backends) 的路径前缀处。每条路径都需要自己的后端的代理会停留在Deep Agents上。
 
 ## 移动代理
 
@@ -130,9 +128,9 @@ export const agent = defineDeepAgent({
   model: "openai:gpt-5.5",
   tools: [internetSearch],
 });
-```该条目必须导出名为 `agent` 的变量，并且定义调用本身必须位于该文件中。从另一个模块重新导出定义的根条目失败，错误名称为 `name` 而不是真正的问题。
+```该条目必须导出一个名为 `agent` 的变量，并且定义调用本身必须位于该文件中。从另一个模块重新导出定义的根条目失败，错误名称为 `name` 而不是真正的问题。
 
-`src/` 布局就可以了。将包保留在原处并从根条目导入它们。
+否则，`src/` 布局就很好。将包保留在原处并从根条目导入它们。
 
 **3.将提示、技能和记忆移入文件**
 
@@ -146,11 +144,11 @@ import { defineMemory } from "managed-deepagents";
 export const memory = defineMemory({ scope: "agent" });
 ```
 
-持久内存是可选的，没有该文件的项目不会挂载任何内容。作用域是唯一的旋钮：`"agent"` 安装部署的每个调用者共享的一棵树。要控制代理保留的内容，请将内存策略写入`instructions.md`。参见[Guide what to remember](/langsmith/javascript/managed-deep-agents-memory#guide-what-to-remember)。
+持久内存是可选的，没有该文件的项目不会挂载任何内容。范围是唯一的旋钮：`"agent"` 安装部署的每个调用者共享的一棵树。要控制代理保留的内容，请将内存策略写入`instructions.md`。参见[Guide what to remember](/langsmith/javascript/managed-deep-agents-memory#guide-what-to-remember)。
 
 > [!警告]
 >
-> `define_memory` 挂载一个空的内存树。旧的`memory`参数指向的文件中的内容不会传输，因此在删除这些文件之前，请将代理仍需要的任何内容移动到`instructions.md`或技能中。
+> `define_memory` 挂载一个空的内存树。旧的 `memory` 参数指向的文件中的内容不会传输，因此在删除这些文件之前，请将代理仍需要的任何内容移至 `instructions.md` 或技能中。
 
 **4.声明沙箱**通过沙箱`backend`的代理需要托管沙箱声明。创建目录并声明它：
 

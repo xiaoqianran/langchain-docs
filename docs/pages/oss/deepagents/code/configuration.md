@@ -674,6 +674,10 @@ Colon-separated paths added to the [skill containment allowlist](#skill-director
 
 Let the built-in `general-purpose` subagent inherit the parent conversation and system prompt. Set to `0`, `false`, `no`, or `off` (or an empty value) to use isolated mode. Set this variable in your shell or global `~/.deepagents/.env`; Deep Agents Code ignores it in project `.env` files because inheritance can include private parent state. See [Continue the parent conversation](/oss/deepagents/code/subagents#continue-the-parent-conversation).
 
+**DEEPAGENTS\_CODE\_GIT\_ATTRIBUTION** `string` (default: true)
+
+Enable read-only Git checks that label LangSmith traces with the repository and branch the agent changed. Set to `0`, `false`, `no`, or `off` (or an empty value) to skip these checks for the main agent and subagents. Overrides `[tracing].git_attribution` in the user config file without disabling LangSmith tracing. See [Disable Git trace attribution](/oss/deepagents/code/config-file#disable-git-trace-attribution).
+
 **DEEPAGENTS\_CODE\_HISTORY\_RETENTION\_DAYS** `integer` (default: 30)
 
 Days an offloaded conversation-history archive is kept before the startup sweep deletes it; `0` disables cleanup. Overrides `[history].retention_days`. See [Conversation history retention](#conversation-history-retention).

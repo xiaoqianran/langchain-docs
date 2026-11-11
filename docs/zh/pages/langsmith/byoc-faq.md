@@ -12,7 +12,15 @@
 >
 > BYOC 在具有美国控制平面的 AWS 上普遍可用 (GA)。 GCP 和 Azure 上的 BYOC 在 [beta](/langsmith/release-stages) 中可用。请参阅 [Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers) 了解受支持的 AWS 区域以及 GCP 和 Azure 区域的可用性。
 
-> [手风琴] 我需要专用的 AWS 账户吗？
+> [手风琴] BYOC 是否支持政府云区域或符合 FIPS 的映像？
+>
+> 不可以。BYOC 不支持政府云区域，例如 AWS GovCloud（美国），也不提供符合 FIPS 的容器映像。
+
+> [手风琴] 一个云上的控制平面可以管理另一个云上的数据平面吗？
+>
+> 否。不支持跨云部署。数据平面必须与其控制平面运行在同一云提供商上。例如，AWS 控制平面无法管理 GCP 上的数据平面。
+>
+> 每个云提供商都有自己的 LangSmith 实例，具有独立的用户和组织。要在多个云提供商上部署数据平面，请在每个提供商的实例上创建一个 LangSmith 组织。有关实例 URL，请参阅 [Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers)。> [手风琴] 我需要专用的 AWS 账户吗？
 >
 > 否。LangChain 建议使用新帐户以实现更清晰的计费，并且因为某些权限无法限定于特定资源，但这不是必需的。
 
@@ -24,11 +32,11 @@
 
 > [手风琴] 我可以在同一个VPC中部署多个数据平面吗？
 >
-> 是的。在同一个VPC中部署多个数据平面需要[Bring your own VPC (BYOVPC)](/langsmith/byoc-byovpc-aws)。每个数据平面必须使用不同的子网。不要在数据平面之间共享子网。> [accordion] 我可以将现有数据平面移至我自己的 VPC 中吗？
->
-> 不可以。不支持将现有数据平面移动到不同的 VPC，也不支持在创建后更改其 VPC 和子网配置。
+> 是的。在同一个VPC中部署多个数据平面需要[Bring your own VPC (BYOVPC)](/langsmith/byoc-byovpc-aws)。每个数据平面必须使用不同的子网。不要在数据平面之间共享子网。
 
-> [accordion] 我可以将 BYOC 安装到现有的 EKS 集群中吗？
+> [accordion] 我可以将现有数据平面移至我自己的 VPC 中吗？
+>
+> 不可以。不支持将现有数据平面移动到不同的 VPC，也不支持在创建后更改其 VPC 和子网配置。> [accordion] 我可以将 BYOC 安装到现有的 EKS 集群中吗？
 >
 > 不，并且没有计划支持它。 LangChain 代表您操作集群，包括升级和修补，专用集群使可靠的管理成为可能。
 
@@ -42,12 +50,11 @@
 >
 > * 使用您自己的节点组和容忍度，而不是运行 LangSmith 的节点组和容忍度。
 > * 部署到 LangSmith 使用的命名空间之外的命名空间中。
-> * 请勿编辑资源LangChain 规定。
->> LangChain 不对因工作负载干扰而导致的停机或问题负责。
-
-> [accordion] 我应该为我的角色的外部 ID 设置什么值？
+> * 请勿编辑资源LangChain条款。
 >
-> LangChain 提供外部 ID。导航到 **设置 > 数据平面**，然后使用 **数据平面** 标题旁边的复制按钮进行复制。应用 `langsmith-byoc-role` Terraform 模块时使用此值。角色的信任策略必须在其 `ExternalId` 条件下使用此值。
+> LangChain 不对因工作负载干扰而导致的停机或问题负责。> [accordion] 我应该为我的角色的外部 ID 设置什么值？
+>
+> LangChain 提供外部ID。导航到 **设置 > 数据平面**，然后使用 **数据平面** 标题旁边的复制按钮进行复制。应用 `langsmith-byoc-role` Terraform 模块时使用此值。角色的信任策略必须在其 `ExternalId` 条件下使用此值。
 
 > [手风琴] 配置需要多长时间？
 >
@@ -55,7 +62,7 @@
 
 > [accordion] 如果配置失败会发生什么？
 >
-> 数据平面转换至`Provisioning Failed`。失败通常是由于缺少跨账户角色的权限引起的，或者是由于服务控制策略 (SCP) 阻止了LangChain 需要执行的操作而引起的。
+> 数据平面转换至`Provisioning Failed`。失败通常是由于缺少跨账户角色的权限造成的，或者是由于服务控制策略 (SCP) 阻止了LangChain 需要执行的操作造成的。
 >
 > 完全按照发布的方式应用 [⟦T6⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role)，无需任何编辑或更改。修改的模块是缺少权限的常见原因。
 >
@@ -166,9 +173,9 @@
 
 > [accordion] 我可以使用自己的私人注册表吗？
 >
-> 不是今天。容器镜像是通过 VPC 终端节点从 LangChain AWS 账户中提取的。对私有注册中心的支持已列入路线图。> [手风琴] 控制平面如何到达我的 Kubernetes API 服务器？
+> 不是今天。容器映像是通过 VPC 终端节点从 LangChain AWS 账户中提取的。对私有注册中心的支持已列入路线图。> [手风琴] 控制平面如何到达我的 Kubernetes API 服务器？
 >
-> 通过 AWS PrivateLink。管理路径仅公开集群的 Kubernetes API 服务器，LangChain 用于安装和协调 LangSmith 组件。
+> 通过 AWS PrivateLink。管理路径仅公开集群的 Kubernetes API 服务器，LangChain 使用它来安装和协调 LangSmith 组件。
 >
 > EKS 集群是私有的：API 服务器端点没有公共访问权限，工作节点没有公共 IP 地址。无法通过该连接访问您的数据，并且 LangChain 无法通过公共互联网访问您的环境。参见[Connectivity](/langsmith/byoc-architecture-aws#connectivity)。
 
@@ -235,7 +242,7 @@
 > * **ClickHouse**：在仍然运行它的数据平面上，每天进行备份并存储在 S3 存储桶中。
 > * **ElastiCache**：不进行备份，因为数据是短暂的。
 
-> [手风琴] LangChain 是否为 BYOC 数据平面提供正常运行时间 SLA？
+> [accordion] LangChain 是否为 BYOC 数据平面提供正常运行时间 SLA？
 >
 > 不会。数据平面在您的 AWS 账户中运行，因此其可用性取决于您控制的资源，包括账户本身、您配置用于访问数据平面的专用连接以及适用于账户的服务配额和策略。 LangChain 不承诺其不单独控制的基础设施的正常运行时间目标。
 >

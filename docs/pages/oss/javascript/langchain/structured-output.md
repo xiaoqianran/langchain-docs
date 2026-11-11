@@ -535,6 +535,22 @@ const responseFormat = toolStrategy(ProductRating, {
 )
 ```
 
+#### Model refusal
+
+When the model refuses, it returns no structured output. With `providerStrategy`, the agent throws `StructuredOutputParsingError`. With `toolStrategy`, the agent ends without a `structuredResponse`. To throw [`ModelRefusalError`](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError) for either strategy, add [`modelRefusalMiddleware`](https://reference.langchain.com/javascript/langchain/index/modelRefusalMiddleware):
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, modelRefusalMiddleware } from "langchain";
+
+const agent = createAgent({
+  model: "claude-sonnet-5-5",
+  responseFormat: ProductRating,
+  middleware: [modelRefusalMiddleware()],
+});
+```
+
+`modelRefusalMiddleware` requires `langchain>=1.6.4`. See [Handle a refusal](/oss/javascript/langchain/middleware/built-in#handle-a-refusal) for ways to respond.
+
 ## Handle parsing errors in chains
 
 The strategies above, including `handleError` retries, apply to agents created with `createAgent`. Chains composed with `.pipe()` (for example, `prompt.pipe(model).pipe(parser)`) have no built-in retry mechanism for output parsing failures. To handle malformed model output in a chain, use one of the following approaches:

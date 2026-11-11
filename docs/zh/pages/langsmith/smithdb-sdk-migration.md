@@ -12,28 +12,39 @@
 
 使用 SmithDB 查询跟踪记录需要新的 SDK 方法。本指南可帮助您迁移代码库。
 
-## 使用 AI 代理进行迁移
+## 为什么要迁移
 
-将以下提示复制到您的编码代理中。它会查找每个 SDK 方法以及对已弃用端点的直接 API 调用，等待您的批准，然后将它们迁移到本地。仅当您批准时，它才会推送并打开拉取请求。
+* SmithDB 上的查询运行速度提高了 12 倍。请参阅[benchmarks](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs#performance)。
+* 在 LangSmith Cloud 上，新查询端点的速率限制高于已弃用的查询端点。
+* [traces](/langsmith/smithdb-sdk-migration-traces)和[threads](/langsmith/smithdb-sdk-migration-threads)的专用方法取代手动过滤运行。
+* 已弃用的方法将于 2027 年 1 月 31 日在LangSmith Cloud 上停止工作，并且当 ClickHouse 在自托管上关闭时，最迟在 v0.19 中停止工作。尽早迁移可以避免最后一刻的匆忙。
+
+## 使用 AI 代理进行迁移将以下提示复制到您的编码代理中。它首先用简单的文字总结出变化并等待您的操作。然后，它会找到每个 SDK 方法以及对已弃用端点的直接 API 调用，等待您的批准，并将它们迁移到本地。仅当您批准时，它才会推送并打开拉取请求。
 
 迁移已弃用的 LangSmith 端点
 
-帮助我将此代码库从已弃用的 LangSmith API 端点迁移出去。在 LangSmith Cloud 上，它们将于 2027 年 1 月 31 日停止工作。在自托管上，当 ClickHouse 关闭时，它们会停止工作，最迟升级到 v0.19。调用可以通过 LangSmith SDK（Python、TypeScript/JavaScript、Go 或 Java）或直接通过 HTTP 进行；处理所有这些。工作分 4 个阶段，按顺序进行。仅在阶段显示“停止”的地方停止，然后等待我的离开。在我批准第 2 阶段之前，请勿编辑任何文件。
+帮助我将此代码库从已弃用的 LangSmith API 端点迁移出去。在 LangSmith Cloud 上，它们将于 2027 年 1 月 31 日停止工作。在自托管上，当 ClickHouse 关闭时，它们会停止工作，最迟升级到 v0.19。调用可以通过 LangSmith SDK（Python、TypeScript/JavaScript、Go 或 Java）或直接通过 HTTP 进行；处理所有这些。
 
-**阶段 1：解释（简短）**
+工作分 4 个阶段，按顺序进行。仅在阶段显示“停止”的地方停止，然后等待我的离开。在我批准第 2 阶段之前，请勿编辑任何文件。
 
-在 3 到 5 行中，告诉我发生了什么变化以及原因：LangSmith将运行存储移动到 SmithDB，v1 运行查询/读取端点和调用它们的 SDK 方法被 v2 端点取代，以及如果我们什么都不做会中断什么。
+**阶段 1：简单的文字总结（只读）**
 
-事实来源：首先获取[https://docs.langchain.com/langsmith/smithdb-sdk-migration.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration.md)（每种语言的最低 SDK 版本、异常更改、已停止的方法）。然后仅获取该代码库需要的区域页面。每一个都有 Python、TypeScript、Go、Java 和 cURL 的前后示例：
-
-* 搜索项目中的运行：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs.md)
+事实来源：首先获取[https://docs.langchain.com/langsmith/smithdb-sdk-migration.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration.md)（每种语言的最低 SDK 版本、异常更改、已停止的方法）。然后仅获取该代码库需要的区域页面。每一个都有 Python、TypeScript、Go、Java 和 cURL 的前后示例：* 搜索项目中的运行：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs.md)
 * 通过 ID 获取一个运行、其子运行及其 URL：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-runs.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-runs.md)
-* 查询跟踪、它们的令牌和成本聚合，以及一个跟踪中的运行：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md)
+* 查询跟踪、它们的令牌和成本聚合以及一个跟踪中的运行：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md)
 * 查询线程以及单个线程中的踪迹：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-threads.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-threads.md)
 * 查询数据集上实验的运行情况：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-experiments.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-experiments.md)
 * 反馈、注释队列和共享运行：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-feedback.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-feedback.md)
 
-然后直接进入第 2 阶段。
+然后向不知道这个代码库的人解释一下。没有代码，没有文件路径，最多 5 个简短的项目符号：
+
+* 一言以蔽之，LangSmith正在改变什么。
+* 为什么我们需要迁移：为什么 LangSmith 进行此更改，以及它给我们带来了什么（请参阅指南的“为什么迁移”部分；较高的速率限制仅适用于 LangSmith 云）。
+* 当已弃用的端点停止为我们工作时（请参阅此提示的顶部：云上的日期，自托管的版本），以及如果我们不采取任何措施会出现什么问题。
+* 通过快速搜索（例如“评估脚本”），该代码库的哪些部分似乎受到影响。
+* 作品的大致尺寸：小、中、大。
+
+然后停下来问我是否继续进入第二阶段。
 
 **第二阶段：库存和计划（只读）**在指南概述页面的“受影响的方法和端点”部分中搜索整个存储库（应用程序代码、脚本、笔记本、测试、CI 和基础设施配置，使用其使用的每种语言）以查找每个 SDK 方法和端点：
 
@@ -57,7 +68,7 @@
 
 **第3阶段：迁移（批准后，仅限我批准的范围和决定）**1. 将正在使用的每个LangSmith SDK 升级到最新的稳定版本（及其锁定文件：uv.lock/poetry.lock、package-lock/pnpm-lock/yarn.lock、go.sum、Gradle/Maven）。指南的最低限度只是地板。如果最新版本破坏了与此迁移无关的内容，请使用有效的最新版本，切勿低于最低版本，并在 PR 中说明原因。
 2. 从表中迁移每个调用站点。 v2 查询采用 `project_ids` (UUID)，而不是项目名称。按照指南所示按名称解析普通项目。如果项目是代理环境、实验或工作区评估器，建议使用[https://docs.langchain.com/langsmith/resolve-an-agent](https://docs.langchain.com/langsmith/resolve-an-agent)解决它，并标记它是测试版并且需要更新的 SDK 和服务器。
-3. 为所涉及的每种语言运行测试、检查和构建。重新运行第 2 阶段搜索并显示没有找到任何内容，或解释每个剩余内容。
+3. 为涉及的每种语言运行测试、检查和构建。重新运行第 2 阶段搜索并显示没有找到任何内容，或解释每个剩余内容。
 4. 将更改保留在本地：提交，而不是推送。显示摘要：每个文件、更改内容和原因，以及尚待审核的内容。然后停止。仅在我批准的情况下推送并打开拉取请求。
 
 **第四阶段：反馈和跟进**1. 列出第 2 阶段中记录的可以使用 SDK 方法的原始 HTTP 调用。对于每个，说明 SDK 将为该调用站点带来什么，例如自动分页、速率限制和服务器错误的退避重试、捕获字段重命名的键入参数、删除端点之前的弃用警告或环境中的配置，以及适用于它的任何其他内容。然后问我是否想在单独的更改中切换它们。如果没有则跳过此操作。
@@ -126,7 +137,7 @@
 
 ## 受影响的方法和端点
 
-下面的每个 SDK 方法和 API 端点均已弃用，并在上面的删除日期停止工作。在您的代码库中搜索所有这些内容。端点路径是相对于`/api/v1`；除非另有说明，各区域页面均包含之前/之后的示例。
+下面的每个 SDK 方法和 API 端点均已弃用，并在上面的删除日期停止工作。在您的代码库中搜索所有这些内容。端点路径是相对于`/api/v1`；除非另有说明，各区域页面都有前后示例。
 
 ### SDK方法> [选项卡] Python
 >
@@ -210,7 +221,7 @@
 | `GET /public/{share_token}/run/{run_id}` | `GET /api/v2/public/{share_token}/run/{run_id}` | [Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback) |
 | `POST /public/{share_token}/runs/query` | `POST /api/v2/public/{share_token}/runs/query` | [Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback) |
 
-注释队列运行端点移动到`/api/v1/platform/annotation-queues`下的队列项API。要将运行添加到队列，请参阅[Annotation queues: add runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-add-runs)。有关列出和计数队列项目的信息，请参阅[Annotation queues: read runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-read-runs)。对于其他端点，请参阅 [API reference](/langsmith/smith-api) 了解请求和响应形状。
+注释队列运行端点移动到`/api/v1/platform/annotation-queues`下的队列项API。要将运行添加到队列，请参阅[Annotation queues: add runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-add-runs)。有关列出和计数队列项目的信息，请参阅[Annotation queues: read runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-read-runs)。对于其他端点，请参阅请求和响应形状的[API reference](/langsmith/smith-api)。
 
 |已弃用 (`/annotation-queues/...`) |替换品（`/api/v1/platform/annotation-queues/...`）|
 | - | - |
@@ -276,7 +287,7 @@
 
 ## 停产
 
-以下方法已停止使用。他们调用已退役的 `/feedback/formulas` 端点，这些端点在复合反馈 v2 上返回 `410 Gone`，并计划于 2026 年 8 月 20 日删除。综合分数现在作为[composite evaluators](/langsmith/composite-evaluators-ui)进行管理，它将综合分数实现为代码评估器加运行规则。没有 SDK 替代品。
+以下方法已停止使用。他们调用已退役的 `/feedback/formulas` 端点，这些端点在复合反馈 v2 上返回 `410 Gone`，并计划于 2026 年 8 月 20 日删除。综合分数现在以[composite evaluators](/langsmith/composite-evaluators-ui)的形式进行管理，它将综合分数实现为代码评估器加运行规则。没有 SDK 替代品。
 
 ###反馈公式方法
 

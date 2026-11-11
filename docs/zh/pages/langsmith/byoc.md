@@ -31,7 +31,7 @@ BYOC 在 AWS 上全面可用 (GA)。 GCP 和 Azure 上的 BYOC 在 [beta](/langs
 | **欧盟** | `eu-central-1`、`eu-west-1`、`eu-west-2`、`eu-west-3`、`eu-north-1` |
 | **亚太地区** | `ap-south-1`、`ap-northeast-1`、`ap-northeast-2`、`ap-northeast-3`、`ap-southeast-1`、`ap-southeast-2` |
 
-无论您将 AWS 数据平面放置在何处，AWS 控制平面都在 `us-east-2` 中运行。如果您在美国境外配置数据平面，您的敏感应用程序数据将保留在该区域，而控制平面元数据将保留在美国：
+无论您将 AWS 数据平面放置在何处，AWS 控制平面都在 `us-east-2` 和 [aws.smith.langchain.com](https://aws.smith.langchain.com) 运行。如果您在美国境外配置数据平面，您的敏感应用程序数据将保留在该区域，而控制平面元数据将保留在美国：
 
 |控制平面（美国）|数据平面（您所在的地区）|
 | - | - |
@@ -82,6 +82,6 @@ AWS 支持以下功能。对于 GCP 和 Azure beta 功能的可用性，请在�
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

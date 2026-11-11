@@ -64,7 +64,7 @@
 | [⟦T23⟧](https://agentsvc.io/docs/langchain) | [  ⟦T99⟧](https://www.npmjs.com/package/agentsvc) |
 | [⟦T24⟧](https://precleared.dev/docs/langchain) | [  ⟦T100⟧](https://www.npmjs.com/package/precleared) |
 | [⟦T25⟧](https://docs.pexafy.com/langchain) | [  ⟦T101⟧](https://www.npmjs.com/package/langchain-pexafy) |
-| [⟦T26⟧](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | [  ⟦T102⟧](https://www.npmjs.com/package/@agentsearchhq/langchain) |
+| [⟦T26⟧](https://agentsearchhq.com/blog/add-web-search-to-langchain-js-agent) | [  ⟦T102⟧](https://www.npmjs.com/package/@agentsearchhq/langchain) |
 | [⟦T27⟧](https://safeprompt.dev/docs/langchain) | [  ⟦T103⟧](https://www.npmjs.com/package/@safeprompt.dev/langchain) |
 | [⟦T28⟧](https://github.com/Algiras/agentum-skills/tree/main/packages/agentum-langchain) | [  ⟦T104⟧](https://www.npmjs.com/package/agentum-langchain) |
 | [⟦T29⟧](https://channel3.ai/docs/langchain) | [  ⟦T105⟧](https://www.npmjs.com/package/@channel3/agent-toolkit) |
