@@ -64,7 +64,7 @@ const agent = await createDeepAgent({
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt: `You are a research assistant specializing in scientific literature.
   Always cite sources. Use subagents for parallel research on different topics.`,
 });
@@ -149,7 +149,7 @@ const agent = await createDeepAgent({
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   memory: ["/project/AGENTS.md", "~/.deepagents/preferences.md"],
 });
 ```
@@ -220,7 +220,7 @@ const agent = await createDeepAgent({
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   skills: ["/skills/research/", "/skills/web-search/"],
 });
 ```
@@ -413,7 +413,7 @@ const fetchUserData = tool(
 );
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [fetchUserData],
   contextSchema,
 });
@@ -757,7 +757,7 @@ import {
 import { InMemoryStore } from "@langchain/langgraph";
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   store: new InMemoryStore(),
   backend: new CompositeBackend(new StateBackend(), {
     "/memories/": new StoreBackend({

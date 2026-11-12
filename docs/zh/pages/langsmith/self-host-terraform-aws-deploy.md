@@ -57,7 +57,7 @@ graph TB
 | - | - | - |
 | AWS CLI | v2 |身份验证、查询 AWS 资源、管理 EKS kubeconfig |
 |地形 | 1.11 或更高版本 |运行基础设施模块 |
-| `kubectl` | 1.34 或更高版本 |检查EKS集群|
+| `kubectl` | 1.34 或更高版本 |检查EKS集群 |
 |头盔| 3.12 或更高版本 |安装和管理LangSmith图表|
 | `eksctl` |最新 |可选，方便 kubeconfig 和调试 |
 
@@ -116,7 +116,7 @@ aws ec2 describe-availability-zones --query 'AvailabilityZones[].ZoneName' --out
 两个独立的设置控制能力：
 
 * **基础设施容量**直接通过基础设施变量`eks_managed_node_groups`、`postgres_instance_type`、`redis_instance_type` 设置实例类型和节点数量。模块默认为 1 个 `m5.4xlarge` 节点组（最少 3 个，最多 10 个）、`db.t3.large`（适用于 RDS）和 `cache.m6g.xlarge`（适用于 ElastiCache）。 `infra/terraform.tfvars.dev`、`terraform.tfvars.minimum` 和 `terraform.tfvars.production` 模板设置更小或更大的值。
-* **`sizing_profile`** 选择 Helm 大小调整覆盖（pod 资源请求和限制）。 `init-values.sh`和`deploy.sh`阅读； Terraform 没有。在部署之前，根据目标层调整基础架构的大小。有关每层建议，请参阅[Scaling guidance](/langsmith/self-host-scale)。
+* **`sizing_profile`** 选择 Helm 大小调整覆盖（pod 资源请求和限制）。 `init-values.sh`和`deploy.sh`阅读； Terraform 没有。在部署之前，根据目标层调整基础设施的规模。有关每层建议，请参阅[Scaling guidance](/langsmith/self-host-scale)。
 
 > [!注意]
 >
@@ -169,7 +169,7 @@ make quickdeploy          # interactive, prompts before terraform apply
 make quickdeploy-auto     # non-interactive, auto-approves terraform
 ```
 
-`make quickdeploy` 首先检查`setup-env.sh` 导出是否已加载并且`infra/terraform.tfvars` 存在，如果其中一个缺失，则停止并运行命令。如果 `infra/.terraform/` 不存在，则运行 `terraform init`，然后运行 ​​`terraform apply`，源 `set-kubeconfig.sh`，并运行 `init-values` 和 `deploy.sh`。如果 `terraform apply` 失败，请修复问题并重新运行 `make quickdeploy`。如果后面的步骤失败，该命令将打印 `make` 目标以重试。
+`make quickdeploy` 首先检查`setup-env.sh` 导出是否已加载并且`infra/terraform.tfvars` 存在，如果其中一个缺失，则停止并运行命令。如果 `infra/.terraform/` 不存在，则运行 `terraform init`，然后运行 ​​`terraform apply`，源 `set-kubeconfig.sh`，并运行 `init-values` 和 `deploy.sh`。如果 `terraform apply` 失败，请修复问题并重新运行 `make quickdeploy`。如果后面的步骤失败，该命令会打印 `make` 目标以重试。
 
 以下部分详细介绍了每个阶段。
 
@@ -270,7 +270,7 @@ source infra/scripts/setup-env.sh
 | `langsmith-license-key` |提示|来自 [the LangChain sales team](https://www.langchain.com/contact-sales) |
 | `langsmith-admin-password` |提示|至少 12 个字符，包含小写字母、大写字母和符号 |
 | `langsmith-admin-email` |提示|初始组织管理员 |
-| `deployments-encryption-key` |自动生成 Fernet 密钥 | LangSmith 部署插件 |
+| `deployments-encryption-key` |自动生成 Fernet 密钥 |代理服务器托管附加组件 |
 | `agent-builder-encryption-key` |自动生成 Fernet 密钥 |由舰队使用；该名称早于重命名 |
 | `insights-encryption-key` |自动生成 Fernet 密钥 |见解附加组件 |
 | `polly-encryption-key` |自动生成 Fernet 密钥 | LangSmith 聊天（以前称为 Polly）附加组件 |
@@ -289,7 +289,7 @@ make secrets
 make init
 make plan
 make apply
-````make plan` shows the proposed diff. Review the output before applying. `make apply` 在所有模块上运行单个`terraform apply`； Terraform orders the resources by dependency. Pass `ARGS="-auto-approve"` to skip the confirmation prompt.
+````make plan` 显示了建议的差异。在应用之前检查输出。 `make apply` 在所有模块上运行单个`terraform apply`； Terraform 按依赖关系对资源进行排序。通过`ARGS="-auto-approve"`跳过确认提示。
 
 ### 配置 kubectl
 
@@ -299,9 +299,9 @@ kubectl get nodes
 kubectl get pods -A
 ```
 
-`set-kubeconfig.sh` 写入专用的 `~/.kube/langsmith-<cluster>` 文件并导出 `KUBECONFIG`，因此它使 `~/.kube/config` 保持不变。 `make kubeconfig` only prints this command.
+`set-kubeconfig.sh` 写入专用的 `~/.kube/langsmith-<cluster>` 文件并导出 `KUBECONFIG`，因此它使 `~/.kube/config` 保持不变。 `make kubeconfig` 只打印该命令。
 
-All nodes should report `Ready`.核心附加组件应该是`Running`：CoreDNS、kube-proxy 和`kube-system` 中的 VPC CNI、`keda` 中的 KEDA、`external-secrets` 中的外部 Secrets Operator 以及`envoy-gateway-system` 中的 Envoy Gateway。 cert-manager 仅在 `tls_certificate_source = "letsencrypt"` 或 `create_cert_manager_irsa = true` 时运行。
+所有节点都应报告`Ready`。核心附加组件应该是`Running`：CoreDNS、kube-proxy 和`kube-system` 中的 VPC CNI、`keda` 中的 KEDA、`external-secrets` 中的外部 Secrets Operator 以及`envoy-gateway-system` 中的 Envoy Gateway。 cert-manager 仅在 `tls_certificate_source = "letsencrypt"` 或 `create_cert_manager_irsa = true` 时运行。
 
 ## 部署LangSmith
 
@@ -312,7 +312,7 @@ make deploy
 
 `make init-values` 从 `terraform.tfvars` 读取 `sizing_profile` 和 `enable_*` 标志，从 Terraform 输出写入 `helm/values/langsmith-values-overrides.yaml`，并将匹配值文件从 `helm/values/examples/` 复制到 `helm/values/`。它重用现有覆盖文件中的管理员电子邮件，或从`LANGSMITH_ADMIN_EMAIL`（由`setup-env.sh`设置）中获取，或提示输入。重新运行时，它会刷新 Terraform 输出，并仅在附加值文件丢失时才复制该文件，因此您对现有文件的编辑会保留下来。
 
-`make deploy` runs `helm/scripts/deploy.sh`, which:1.解决图表版本，确认在v17线上。
+`make deploy` 运行 `helm/scripts/deploy.sh`，其中：1.解决图表版本，确认在v17线上。
 2. 使用 `aws eks update-kubeconfig` 刷新 kubeconfig。
 3. 运行预检检查（AWS 凭证、集群可达性、`langchain` Helm 存储库）。
 4. 应用外部 Secrets Operator `ClusterSecretStore` 和 `ExternalSecret`，以便集群直接从 SSM 读取机密。
@@ -364,7 +364,7 @@ kubectl get httproute -n langsmith
 ## 启用附加组件每个附加组件都由 `infra/terraform.tfvars` 中的标志控制。设置标志，运行`make apply`，重新运行`make init-values`以复制匹配值文件，然后重新运行`make deploy`。 Terraform 提供的附加组件需要`make apply`：具有外部存储的舰队（默认）、LangSmith 具有外部存储、沙箱和 SmithDB 的聊天或见解。沙箱和 SmithDB 创建 AWS 资源。外部存储在现有 RDS 实例和匹配的 Kubernetes 密钥上创建数据库。对于其余部分，`make apply` 不做任何更改。
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-enable_deployments     = true            # LangSmith Deployment (listener, operator, host-backend)
+enable_deployments     = true            # Agent Server hosting (listener, operator, host-backend)
 enable_fleet           = true            # Fleet (formerly Agent Builder)
 fleet_storage          = "external"      # default; "in-cluster" uses chart StatefulSets
 enable_polly           = true            # LangSmith Chat (formerly Polly)
@@ -384,7 +384,7 @@ make deploy
 
 `enable_agent_builder` 在图表 v16 中被删除。将其设置为 `true` 无法在 `terraform plan` 进行验证，因此从现有 `tfvars` 文件中删除它并使用 `enable_fleet`。 `enable_standalone_polly` 和 `enable_standalone_insights` 保留为传统速记形式，支持使用外部存储进行附加（`enable_polly = true` 与 `polly_storage = "external"`，对于 Insights 也是如此）。
 
-Agent部署详情请参见[LangSmith Deployment](/langsmith/enable-self-hosted-deployment)。
+Agent部署详情请参见[Agent Server hosting](/langsmith/enable-self-hosted-deployment)。
 
 ### 舰队
 
@@ -402,7 +402,7 @@ Agent部署详情请参见[LangSmith Deployment](/langsmith/enable-self-hosted-d
 
 ### 沙箱
 
-`enable_sandboxes = true` 在带有 KVM 的裸机 x86\_64 实例上添加了一个沙箱主机节点组（默认为`m5d.metal`）以及一个用于 JuiceFS 元数据的专用 ElastiCache 实例。沙盒需要 LangSmith Helm Chart v16 或更高版本。`sandbox-host` 安装 JuiceFS 本身，`juicefs-format` 作业格式化卷。 `make init-values`写入`sandboxes.juicefs.existingSecretName`指向`juicefs-csi-config`Secret，将`sandboxes.juicefs.hostMount.cacheDirs`设置为沙箱主机节点上的本地NVMe缓存路径（如果有的话），并将IRSA角色注释放在`sandboxes.sandboxHost.serviceAccount`上。
+`enable_sandboxes = true` 在带有 KVM 的裸机 x86\_64 实例上添加了一个沙箱主机节点组（默认为`m5d.metal`）以及一个用于 JuiceFS 元数据的专用 ElastiCache 实例。沙箱需要 LangSmith Helm Chart v16 或更高版本。`sandbox-host` 安装 JuiceFS 本身，`juicefs-format` 作业格式化卷。 `make init-values`写入`sandboxes.juicefs.existingSecretName`指向`juicefs-csi-config`Secret，将`sandboxes.juicefs.hostMount.cacheDirs`设置为沙箱主机节点上的本地NVMe缓存路径（如果有的话），并将IRSA角色注释放在`sandboxes.sandboxHost.serviceAccount`上。
 
 > [!注意]
 >
@@ -501,7 +501,7 @@ kubectl apply -f helm/values/examples/dataplane-rbac.yaml
 * 参考[AWS variables](/langsmith/self-host-terraform-aws-variables)和[quick reference](/langsmith/self-host-terraform-aws-quick-reference)。
 * 查看 [AWS architecture](/langsmith/self-host-terraform-aws-architecture) 的平台层、IRSA 和模块依赖性。
 * 当出现故障时，请检查[AWS troubleshooting guide](/langsmith/self-host-terraform-aws-troubleshooting)。
-* 使用 [LangSmith Deployment](/langsmith/enable-self-hosted-deployment) 在 UI 中启用代理部署。***
+* 使用 [Agent Server hosting](/langsmith/enable-self-hosted-deployment) 在 UI 中启用代理部署。***
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 

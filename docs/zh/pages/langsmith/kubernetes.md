@@ -18,7 +18,7 @@
 * **后端服务**：队列、游乐场和 ACE。
 * **数据存储**：PostgreSQL、Redis、ClickHouse 和可选的 blob 存储。
 
-LangSmith 可以在任何符合要求的 Kubernetes 集群上运行。它已经在以下发行版上进行了测试：
+LangSmith 可在任何符合要求的 Kubernetes 集群上运行。它已经在以下发行版上进行了测试：
 
 * 谷歌 Kubernetes 引擎 (GKE)
 * 亚马逊弹性 Kubernetes 服务 (EKS)
@@ -324,14 +324,14 @@ curl https://<your-langsmith-host>/.well-known/jwks.json
 
 3. 将您的代理指向实例并开始跟踪。参见[Interact with your self-hosted instance](/langsmith/self-host-usage)。
 
-4. 与您的基础设施管理员合作：
+4. 与基础设施管理员合作：
 
    * 为您的 LangSmith 实例设置 DNS 以方便访问。
    * 配置 SSL 以确保提交到LangSmith 的跟踪数据在传输过程中加密。
    * 使用 [Single Sign-On](/langsmith/self-host-sso) 配置 LangSmith 以保护您的 LangSmith 实例。
    * 设置[blob storage](/langsmith/self-host-blob-storage)来存储大文件。
 
-5. 可选：添加沙箱、引擎、队列或LangSmith部署。仅遵循 [Configure additional self-hosted features](/langsmith/self-host-additional-features) 中您的用例所需的设置指南。
+5. 可选：添加沙箱、引擎、队列或代理服务器托管。仅遵循 [Configure additional self-hosted features](/langsmith/self-host-additional-features) 中您的用例所需的设置指南。
 
 ***
 

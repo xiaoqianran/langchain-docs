@@ -1,18 +1,22 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Enable LangSmith Deployment | https://docs.langchain.com/langsmith/enable-self-hosted-deployment -->
+<!-- langchain-docs: Enable Agent Server hosting | https://docs.langchain.com/langsmith/enable-self-hosted-deployment -->
 
-# 启用LangSmith部署
+# 启用代理服务器托管
 
 添加控制平面和数据平面以在自托管LangSmith上部署和管理代理。
 
-[LangSmith Deployment](/langsmith/deployment) 在您的安装中添加了 [control plane](/langsmith/control-plane) 和 [data plane](/langsmith/data-plane)。它允许您通过LangSmith UI 部署和管理代理。
-
-对于可观察性和评估来说，部署是可选的。首先完成[Kubernetes installation](/langsmith/kubernetes)。其他可选功能请参见[Configure additional features](/langsmith/self-host-additional-features)。对于没有控制平面的代理服务器，请参阅[Standalone servers](/langsmith/deploy-standalone-server)。
+[LangSmith Agent Server](/langsmith/deployment) 托管将 [control plane](/langsmith/control-plane) 和 [data plane](/langsmith/data-plane) 添加到您的自托管 LangSmith 安装中。它允许您通过LangSmith UI 部署和管理代理服务器。
 
 > [!注意]
 >
-> LangSmith 部署需要[Enterprise](https://langchain.com/pricing) 计划。
+> LangSmith 部署现在为 **LangSmith 代理服务器**。
+
+对于可观察性和评估而言，代理服务器托管是可选的。首先完成[Kubernetes installation](/langsmith/kubernetes)。其他可选功能请参见[Configure additional features](/langsmith/self-host-additional-features)。对于没有控制平面的代理服务器，请参阅[Standalone servers](/langsmith/deploy-standalone-server)。
+
+> [!注意]
+>
+> 代理服务器托管需要[Enterprise](https://langchain.com/pricing) 计划。
 
 ## 先决条件
 
@@ -37,11 +41,11 @@ helm upgrade --install keda kedacore/keda --namespace keda --create-namespace
 
 为您的 LangSmith 实例配置入口、网关或 Istio。所有代理都将部署为该入口后面的 Kubernetes 服务。参见[Set up an ingress](/langsmith/self-host-ingress)。您必须在 [⟦T16⟧](/langsmith/kubernetes#configure-your-helm-charts) 中提供 `hostname`。
 
-**4.验证集群容量**
+**4.验证集群容量**确保您的集群具有可用于多个部署的可用容量。建议使用集群自动缩放程序。
 
-确保您的集群具有可用于多个部署的可用容量。建议使用集群自动缩放程序。
+**5.验证存储**
 
-**5.验证存储**确保集群上有有效的动态 PV 配置程序或 PV。
+确保集群上有有效的动态 PV 配置程序或 PV。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get storageclass
@@ -53,20 +57,20 @@ kubectl get storageclass
 
 确保通往 `https://beacon.langchain.com` 的出口可用。请参阅[egress documentation](/langsmith/self-host-egress)。
 
-## 启用LangSmith部署
+## 启用代理服务器托管
 
 ### 组件
 
-启用 LangSmith 部署会在集群中配置以下资源：
+启用代理服务器托管可在集群中配置以下资源：
 
 * `listener`：监听 [control plane](/langsmith/control-plane) 对部署的更改并创建或更新下游 CRD。
-* `LangGraphPlatform CRD`：管理LangSmith部署的实例。
+* `LangGraphPlatform CRD`：管理代理服务器部署。
 * `operator`：处理对 LangSmith CRD 的更改。
 * `host-backend`：[control plane](/langsmith/control-plane)。
 
 ### 启用该功能
 
-要启用 LangSmith 部署，请更新您的 [⟦T25⟧](/langsmith/kubernetes#configure-your-helm-charts)：
+要启用代理服务器托管，请更新您的 [⟦T25⟧](/langsmith/kubernetes#configure-your-helm-charts)：
 
 **1.在您的配置中启用部署**
 
@@ -82,9 +86,7 @@ config:
 >
 > 从 v0.12.0 开始，`langgraphPlatform` 选项已弃用。 v0.12.0 之后的任何版本都使用 `config.deployment`。
 
-**2. （可选）配置镜像**
-
-如果您需要将映像镜像到私有注册表，请在 [⟦T32⟧](/langsmith/kubernetes#configure-your-helm-charts) 中配置 `hostBackendImage` 和 `operatorImage` 选项。使用[latest LangSmith Helm chart release](https://github.com/langchain-ai/helm/releases)中指定的图像标签。
+**2. （可选）配置镜像**如果您需要将映像镜像到私有注册表，请在 [⟦T32⟧](/langsmith/kubernetes#configure-your-helm-charts) 中配置 `hostBackendImage` 和 `operatorImage` 选项。使用[latest LangSmith Helm chart release](https://github.com/langchain-ai/helm/releases)中指定的图像标签。
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 hostBackendImage:
@@ -95,7 +97,9 @@ operatorImage:
   pullPolicy: IfNotPresent
 ```
 
-**3. （可选）配置基本代理模板**如果您需要自定义 Operator 创建代理 Kubernetes 资源的方式，请覆盖 [base agent templates in ⟦T33⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L1428)。最常见的用例是添加 `imagePullSecrets` 以使用私有容器注册表进行身份验证。详情请参阅[Configure authentication for private registries](#configure-authentication-for-private-registries)。
+**3. （可选）配置基本代理模板**
+
+如果您需要自定义 Operator 创建代理 Kubernetes 资源的方式，请覆盖 [base agent templates in ⟦T33⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L1428)。最常见的用例是添加 `imagePullSecrets` 以使用私有容器注册表进行身份验证。详情请参阅[Configure authentication for private registries](#configure-authentication-for-private-registries)。要将卷（例如 Amazon EFS）装载到代理 Pod 中，请参阅 [Volumes](/langsmith/self-hosted-platform-features#volumes)。
 
 **4.应用更改**
 
@@ -119,17 +123,17 @@ kubectl get pods -n <namespace>
 
 > [!警告]
 >
-> **不推荐；已计划弃用。** 不推荐通过控制平面配置其他数据平面，并且将在未来版本中弃用。相反，部署 [standalone Agent Servers](/langsmith/deploy-standalone-server) 并将其配置为跟踪您的自托管 LangSmith 实例。
+> **不推荐；已计划弃用。** 不推荐通过控制平面配置其他数据平面，并且将在未来版本中弃用。相反，部署 [standalone Agent Servers](/langsmith/deploy-standalone-server) 并将其配置为跟踪您的自托管 LangSmith 实例。除了上面创建的数据平面之外，您还可以在不同的 Kubernetes 集群或不同命名空间下的同一集群中创建更多数据平面。有多种方法可以实现此目的，因此请实施最适合您的用例的解决方案。
 
-除了上面创建的数据平面之外，您还可以在不同的 Kubernetes 集群或不同命名空间下的同一集群中创建更多数据平面。有多种方法可以实现此目的，因此请实施最适合您的用例的解决方案。
+#### 先决条件
 
-#### 先决条件**1.审查集群组织**
+**1.审查集群组织**
 
 通读 [hybrid (legacy) documentation](/langsmith/hybrid-legacy#listeners) 中的集群组织指南，了解如何针对您的用例进行组织。
 
 **2.验证混合先决条件**
 
-验证新集群的 [hybrid section](/langsmith/hybrid-legacy#prerequisites) 中的先决条件。在[prerequisites](/langsmith/hybrid-legacy#prerequisites)的步骤5中，配置到[self-hosted LangSmith instance](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith)的出口，而不是`https://api.host.langchain.com`和`https://api.smith.langchain.com`。
+验证新集群的 [hybrid section](/langsmith/hybrid-legacy#prerequisites) 中的先决条件。在[prerequisites](/langsmith/hybrid-legacy#prerequisites)的步骤5中，将出口配置为[self-hosted LangSmith instance](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith)，而不是`https://api.host.langchain.com`和`https://api.smith.langchain.com`。
 
 **3.在 Postgres 中启用该功能**
 
@@ -152,18 +156,18 @@ update tenants set config = config || '{"langgraph_remote_reconciler_enabled": t
 
 #### 部署到同一集群中的不同命名空间
 
-**1.更新您的配置**
+**1.更新您的配置**在您的[⟦T40⟧](/langsmith/kubernetes#configure-your-helm-charts)中，进行以下修改：
 
-在您的[⟦T40⟧](/langsmith/kubernetes#configure-your-helm-charts)中，进行以下修改：
-
-* 将 `operator.watchNamespaces` 设置为您的自托管 LangSmith 实例运行所在的当前命名空间。这可以防止与新数据平面添加的运算符发生冲突。
+* 将 `operator.watchNamespaces` 设置为您的自托管 LangSmith 实例正在运行的当前命名空间。这可以防止与新数据平面添加的运算符发生冲突。
 * 使用 [Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api) 或 [Istio Gateway](/langsmith/self-host-ingress#option-3%3A-istio-gateway)。相应地调整您的`langsmith_config.yaml`。
 
 **2.应用更改**
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-```**3.遵循混合设置指南**
+```
+
+**3.遵循混合设置指南**
 
 按照 [hybrid setup guide](/langsmith/hybrid-legacy#setup) 中的步骤 2 至 6 进行操作。将 `config.langsmithWorkspaceId` 设置为上一步中的工作区 ID。将 `config.watchNamespaces` 设置为与现有数据平面使用的名称空间不同的名称空间。
 
@@ -173,7 +177,7 @@ helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --v
 
 ### 配置私有注册表的身份验证
 
-如果您的 [Agent Server deployments](/langsmith/agent-server) 将使用私有容器注册表（例如，AWS ECR、Azure ACR 或 GCP Artifact Registry）中的映像，请配置映像拉取密钥。此配置自动应用于所有部署，允许它们通过您的私有注册表进行身份验证。
+如果您的 [Agent Server deployments](/langsmith/agent-server) 将使用私有容器注册表（例如 AWS ECR、Azure ACR 或 GCP Artifact Registry）中的映像，请配置映像拉取密钥。此配置自动应用于所有部署，允许它们通过您的私有注册表进行身份验证。
 
 **1.创建 Kubernetes 镜像拉取机密**
 
@@ -186,9 +190,7 @@ kubectl create secret docker-registry langsmith-registry-secret \
     -n langsmith
 ```
 
-将这些值替换为您的注册表凭据：
-
-* `myregistry.com`：您的注册表 URL
+将这些值替换为您的注册表凭据：* `myregistry.com`：您的注册表 URL
 * `your-username`：您的注册表用户名
 * `your-password`：您的注册表密码或访问令牌
 * `langsmith`：安装LangSmith的 Kubernetes 命名空间
@@ -247,7 +249,9 @@ operator:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-```通过 LangSmith UI 创建的所有用户部署都将继承这些注册表凭据。
+```
+
+通过LangSmith UI 创建的所有用户部署都将继承这些注册表凭据。
 
 有关注册表特定的身份验证方法，请参阅[Kubernetes documentation on pulling images from private registries](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)。
 
@@ -255,9 +259,7 @@ helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --v
 
 > [!警告]
 >
-> 对于控制平面（`host-backend`）和数据平面（`listener`）部署在不同 Kubernetes 集群中的自托管部署，不支持检索服务器日志。
-
-对于控制平面和数据平面位于同一集群中的部署，请确保控制平面 Kubernetes 部署 (`host-backend`) 具有 `get`、`list` 和 `watch` Kubernetes `deployments`、`pods`、`replicasets` 和 `logs` 的权限代理服务器部署所在的命名空间。有不同的方法可以实现这一目标。以下示例使用 Kubernetes RBAC，但请使用最适合您的用例的方法：
+> 对于控制平面（`host-backend`）和数据平面（`listener`）部署在不同 Kubernetes 集群中的自托管部署，不支持检索服务器日志。对于控制平面和数据平面位于同一集群中的部署，请确保控制平面 Kubernetes 部署 (`host-backend`) 具有 `get`、`list` 和 `watch` Kubernetes `deployments`、`pods`、`replicasets` 和 `logs` 的权限代理服务器部署所在的命名空间。有不同的方法可以实现这一目标。以下示例使用 Kubernetes RBAC，但请使用最适合您的用例的方法：
 
 **1.创建具有所需权限的角色**
 
@@ -312,13 +314,15 @@ roleRef:
   kind: Role
   name: read-agent-server-logs-role
 EOF
-```> [!注意]
+```
+
+> [!注意]
 >
 > 在此示例中，Role 和 RoleBinding 在与 Agent Server 部署相同的 Kubernetes 命名空间中定义。您可以为 Role 和 RoleBinding 分配任何名称，并根据需要自定义它们。
 
 ## 后续步骤
 
-启用 LangSmith 部署后，请参阅 [Deploy with control plane](/langsmith/deploy-with-control-plane) 通过 LangSmith UI 构建和部署应用程序。
+启用代理服务器托管后，请参阅 [Deploy with control plane](/langsmith/deploy-with-control-plane) 通过 LangSmith UI 构建和部署应用程序。
 
 ***
 

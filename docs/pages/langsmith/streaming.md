@@ -2,7 +2,7 @@
 
 # Streaming API
 
-The [LangGraph SDK](/langsmith/langgraph-python-sdk) lets you stream outputs from the [LangSmith Deployment API](/langsmith/server-api-ref) in multiple modes, from full state snapshots after each step to token-by-token LLM output. Thread streaming also supports resumability: if a connection drops, reconnect with the last event ID to pick up where you left off.
+The [LangGraph SDK](/langsmith/langgraph-python-sdk) lets you stream outputs from the [LangSmith Agent Server API](/langsmith/server-api-ref) in multiple modes, from full state snapshots after each step to token-by-token LLM output. Thread streaming also supports resumability: if a connection drops, reconnect with the last event ID to pick up where you left off.
 
 > [!NOTE]
 >

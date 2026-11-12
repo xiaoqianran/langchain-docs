@@ -95,11 +95,11 @@ Moderate agent traffic (user input, model output, and tool results) using OpenAI
 import { createAgent, openAIModerationMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [searchTool, databaseTool],
   middleware: [
     openAIModerationMiddleware({
-      model: "openai:gpt-5.5",
+      model: "openai:gpt-6.1-sol",
       moderationModel: "omni-moderation-latest",
       checkInput: true,
       checkOutput: true,
@@ -113,7 +113,7 @@ const agent = createAgent({
 >
 > **model** `string | BaseChatModel` *required*
 >
-> OpenAI model to use for moderation. Can be either a model name string (e.g., `"openai:gpt-5.5"`) or a `BaseChatModel` instance. The middleware will use this model's client to access the moderation endpoint.
+> OpenAI model to use for moderation. Can be either a model name string (e.g., `"openai:gpt-6.1-sol"`) or a `BaseChatModel` instance. The middleware will use this model's client to access the moderation endpoint.
 >
 > **moderationModel** `ModerationModel` (default: omni-moderation-latest)
 >
@@ -170,11 +170,11 @@ const agent = createAgent({
 >
 > // Basic moderation
 > const agent = createAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   tools: [searchTool, customerDataTool],
 >   middleware: [
 >     openAIModerationMiddleware({
->       model: "openai:gpt-5.5",
+>       model: "openai:gpt-6.1-sol",
 >       moderationModel: "omni-moderation-latest",
 >       checkInput: true,
 >       checkOutput: true,
@@ -184,11 +184,11 @@ const agent = createAgent({
 >
 > // Strict moderation with custom message
 > const agentStrict = createAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   tools: [searchTool, customerDataTool],
 >   middleware: [
 >     openAIModerationMiddleware({
->       model: "openai:gpt-5.5",
+>       model: "openai:gpt-6.1-sol",
 >       moderationModel: "omni-moderation-latest",
 >       checkInput: true,
 >       checkOutput: true,
@@ -203,11 +203,11 @@ const agent = createAgent({
 >
 > // Moderation with replacement behavior
 > const agentReplace = createAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   tools: [searchTool],
 >   middleware: [
 >     openAIModerationMiddleware({
->       model: "openai:gpt-5.5",
+>       model: "openai:gpt-6.1-sol",
 >       checkInput: true,
 >       exitBehavior: "replace",
 >       violationMessage: "[Content removed due to safety policies]",

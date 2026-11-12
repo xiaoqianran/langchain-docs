@@ -1,20 +1,20 @@
-<!-- langchain-docs: Monitor a deployment | https://docs.langchain.com/langsmith/monitor-deployment -->
+<!-- langchain-docs: Monitor an Agent Server | https://docs.langchain.com/langsmith/monitor-deployment -->
 
-# Monitor a deployment
+# Monitor an Agent Server
 
-View build logs, server logs, and metrics for a LangSmith Cloud deployment.
+View build logs, server logs, and metrics for an Agent Server on LangSmith Cloud.
 
-Monitor a Cloud deployment with build logs, Agent Server logs, and runtime metrics. Use logs to investigate a specific revision and metrics to track deployment performance over time.
+Monitor an Agent Server on LangSmith Cloud with build logs, Agent Server logs, and runtime metrics. Use logs to investigate a specific revision and metrics to track Agent Server performance over time.
 
-## View deployment logs
+## View Agent Server logs
 
 Each revision includes build logs and server logs.
 
 > [tab] LangSmith UI
 >
-> From the **Deployments** view:
+> From the **Agent Servers** view:
 >
-> 1. Select a deployment.
+> 1. Select an Agent Server.
 > 2. In the **Revisions** table, select a revision. The details panel opens with the **Build** tab selected.
 > 3. Review the build logs.
 > 4. Select the **Server** tab to view server logs. Server logs become available after LangSmith deploys the revision.
@@ -46,37 +46,37 @@ Each revision includes build logs and server logs.
 > langgraph deploy logs --start-time 2026-03-01T00:00:00Z --level ERROR
 > ```
 >
-> To select a deployment, pass its name or ID:
+> To select an Agent Server, pass its name or ID:
 >
 > ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > langgraph deploy logs --name my-agent
-> langgraph deploy logs --deployment-id <DEPLOYMENT_ID>
+> langgraph deploy logs --agent-server-id <AGENT_SERVER_ID>
 > ```
 >
 > For all options, see the [`deploy logs` CLI reference](/langsmith/cli#deploy-logs).
 
 ## Forward server logs to Datadog
 
-To forward Agent Server logs to Datadog, configure these environment variables or secrets on the deployment:
+To forward Agent Server logs to Datadog, configure these environment variables or secrets on the Agent Server:
 
 * **`DD_API_KEY`**: Your [Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/).
 * **`DD_LOGS_ENABLED=true`**: Enables log forwarding.
 
 To correlate logs with traces, also set `DD_LOGS_INJECTION=true`. For all supported Datadog variables, see [Supported Datadog environment variables](/langsmith/env-var#dd_api_key).
 
-## View deployment metrics
+## View Agent Server metrics
 
-To view deployment metrics:
+To view Agent Server metrics:
 
-1. From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-monitor-deployment), select **Deployments**.
-2. Select a deployment.
+1. From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-monitor-deployment), select **Agent Servers**.
+2. Select an Agent Server.
 3. Select the **Monitoring** tab. For metric definitions, see [Control plane monitoring](/langsmith/control-plane#monitoring).
 4. Adjust the date and time range as needed. The default range is **Last 15 minutes**.
 
 ## See also
 
 * [Revisions](/langsmith/deployment-revisions)
-* [Manage a deployment](/langsmith/manage-deployment)
+* [Manage an Agent Server](/langsmith/manage-deployment)
 
 ***
 

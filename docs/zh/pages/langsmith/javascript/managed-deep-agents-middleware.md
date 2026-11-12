@@ -39,7 +39,7 @@ import { modelCallLimitMiddleware, piiMiddleware } from "langchain";
 
 export const agent = defineDeepAgent({
   name: "support-agent",
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   middleware: [
     piiMiddleware("email", { strategy: "redact", applyToInput: true }),
     modelCallLimitMiddleware({ runLimit: 50 }),
@@ -63,7 +63,7 @@ export const logToolCalls = createMiddleware({
     return result;
   },
 });
-```将中间件导入到项目根代理条目中，并将其传递到`middleware`列表中：
+```将中间件导入项目根代理条目并将其传递到`middleware`列表中：
 
 ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineDeepAgent } from "managed-deepagents";
@@ -72,7 +72,7 @@ import { logToolCalls } from "./middleware/audit";
 
 export const agent = defineDeepAgent({
   name: "support-agent",
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   middleware: [logToolCalls],
 });
 ```
@@ -95,10 +95,10 @@ Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runti
 
 ## 何时使用中间件
 
-|概念|亲切 |它如何到达代理|
+|概念 |亲切 |它如何到达代理|
 | - | - | - |
-| **中间件** |申请代码 |导入并传入代理定义 |
-| **[Custom tools](/langsmith/javascript/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |
+| **中间件** |申请代码|导入并传入代理定义 |
+| **[Custom tools](/langsmith/javascript/managed-deep-agents-tools)** |申请代码|导入并传入代理定义 |
 | **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** |托管上下文 |永远在线的系统提示 |
 
 欲了解更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。

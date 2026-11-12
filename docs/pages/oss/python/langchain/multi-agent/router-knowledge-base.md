@@ -111,7 +111,7 @@ Select a chat model from LangChain's suite of integrations:
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = init_chat_model("gpt-5.5")
+> model = init_chat_model("gpt-6.1-sol")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -120,7 +120,7 @@ Select a chat model from LangChain's suite of integrations:
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = ChatOpenAI(model="gpt-5.5")
+> model = ChatOpenAI(model="gpt-6.1-sol")
 > ```
 
 > [tab] Anthropic
@@ -174,7 +174,7 @@ Select a chat model from LangChain's suite of integrations:
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = init_chat_model(
->     "azure_openai:gpt-5.5",
+>     "azure_openai:gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 > )
 > ```
@@ -188,7 +188,7 @@ Select a chat model from LangChain's suite of integrations:
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = AzureChatOpenAI(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
 > )
 > ```
@@ -423,7 +423,7 @@ Create an agent for each vertical. Each agent has domain-specific tools and a pr
 from langchain.agents import create_agent
 from langchain.chat_models import init_chat_model
 
-model = init_chat_model("openai:gpt-5.5")
+model = init_chat_model("openai:gpt-6.1-sol")
 
 github_agent = create_agent(
     model,
@@ -792,7 +792,7 @@ def get_thread(thread_id: str) -> str:
 
 
 # Models and agents
-model = init_chat_model("openai:gpt-5.5")
+model = init_chat_model("openai:gpt-6.1-sol")
 router_llm = init_chat_model("openai:gpt-5.4-mini")
 
 github_agent = create_agent(

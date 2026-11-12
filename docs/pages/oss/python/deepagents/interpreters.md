@@ -79,7 +79,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[CodeInterpreterMiddleware()],
 )
 ```
@@ -200,7 +200,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
 )
 ```
@@ -342,7 +342,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[
         CodeInterpreterMiddleware(
             mode="thread",  # Default
@@ -441,7 +441,7 @@ from langchain_quickjs import CodeInterpreterMiddleware
 from langgraph.checkpoint.memory import MemorySaver
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     checkpointer=MemorySaver(),
     middleware=[CodeInterpreterMiddleware(mode="thread")],
 )

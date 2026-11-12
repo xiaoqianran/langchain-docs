@@ -10,7 +10,7 @@ LangGraph exposes a [`Runtime`](https://reference.langchain.com/javascript/langc
 2. **Store**: a [BaseStore](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) instance used for [long-term memory](/oss/javascript/langchain/long-term-memory)
 3. **Stream writer**: an object used for streaming information via the `"custom"` stream mode
 4. **Execution info**: identity and retry information for the current execution (thread ID, run ID, attempt number)
-5. **Server info**: server-specific metadata when running on LangGraph Server (assistant ID, graph ID, authenticated user)
+5. **Server info**: server-specific metadata when running on LangSmith Agent Server (assistant ID, graph ID, authenticated user)
 
 > [!TIP]
 >
@@ -33,7 +33,7 @@ const contextSchema = z.object({ // [!code highlight]
 }); // [!code highlight]
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [
     /* ... */
   ],
@@ -91,7 +91,7 @@ const fetchUserEmailPreferences = tool(
 
 ### Execution info and server info inside tools
 
-Access execution identity (thread ID, run ID) via `runtime.executionInfo`, and server-specific metadata (assistant ID, authenticated user) via `runtime.serverInfo` when running on LangGraph Server:
+Access execution identity (thread ID, run ID) via `runtime.executionInfo`, and server-specific metadata (assistant ID, authenticated user) via `runtime.serverInfo` when running on Agent Server:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -103,7 +103,7 @@ const contextAwareTool = tool(
     const info = runtime.executionInfo;
     console.log(`Thread: ${info.threadId}, Run: ${info.runId}`);  // [!code highlight]
 
-    // Access server info (only available on LangGraph Server)
+    // Access server info (only available on Agent Server)
     const server = runtime.serverInfo;
     if (server != null) {
       console.log(`Assistant: ${server.assistantId}`);  // [!code highlight]
@@ -122,7 +122,7 @@ const contextAwareTool = tool(
 );
 ```
 
-`serverInfo` is `null` when not running on LangGraph Server (e.g., during local development).
+`serverInfo` is `null` when not running on Agent Server (e.g., during local development).
 
 > [!NOTE]
 >
@@ -174,7 +174,7 @@ const loggingMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [
     /* ... */
   ],

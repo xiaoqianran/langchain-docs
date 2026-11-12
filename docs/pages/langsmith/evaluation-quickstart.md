@@ -330,7 +330,7 @@ Before you begin, make sure you have:
 > def correctness_evaluator(inputs: dict, outputs: dict, reference_outputs: dict):
 >     evaluator = create_llm_as_judge(
 >         prompt=CORRECTNESS_PROMPT,
->         model="openai:gpt-5.5",
+>         model="openai:gpt-6.1-sol",
 >         feedback_key="correctness",
 >     )
 >     return evaluator(
@@ -362,7 +362,7 @@ Before you begin, make sure you have:
 >
 > const judge = createLLMAsJudge({
 >   prompt: CORRECTNESS_PROMPT,
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   feedbackKey: "correctness",
 > });
 >
@@ -420,7 +420,7 @@ Before you begin, make sure you have:
 >    def correctness_evaluator(inputs: dict, outputs: dict, reference_outputs: dict):
 >        evaluator = create_llm_as_judge(
 >            prompt=CORRECTNESS_PROMPT,
->            model="openai:gpt-5.5",
+>            model="openai:gpt-6.1-sol",
 >            feedback_key="correctness",
 >        )
 >        return evaluator(
@@ -470,7 +470,7 @@ Before you begin, make sure you have:
 >
 >    const judge = createLLMAsJudge({
 >    prompt: CORRECTNESS_PROMPT,
->    model: "openai:gpt-5.5",
+>    model: "openai:gpt-6.1-sol",
 >    feedbackKey: "correctness",
 >    });
 >

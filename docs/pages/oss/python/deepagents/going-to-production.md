@@ -4,7 +4,7 @@
 
 Take your deep agent to production with persistent memory, sandboxes, resilience middleware, and deployment options
 
-This guide covers considerations for taking a deep agent from a local prototype to a production deployment with the SDK. To run production agents without having to manage infrastructure, start with [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) or [migrate to Managed Deep Agents](/langsmith/python/managed-deep-agents-migrate) instead. The rest of this page walks through scoping memory, configuring execution environments, adding guardrails, and connecting a frontend when you host agents yourself or run a custom [LangSmith Deployment](/langsmith/deployment).
+This guide covers considerations for taking a deep agent from a local prototype to a production deployment with the SDK. To run production agents without having to manage infrastructure, start with [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) or [migrate to Managed Deep Agents](/langsmith/python/managed-deep-agents-migrate) instead. The rest of this page walks through scoping memory, configuring execution environments, adding guardrails, and connecting a frontend when you host agents yourself or run a custom [Agent Server](/langsmith/deployment).
 
 ## Overview
 
@@ -17,20 +17,20 @@ In production, there are a few primitives that determine how information is shar
 
 This page covers:
 
-* **[LangSmith Deployments](#langsmith-deployments)**: Managed Deep Agents (recommended), or a custom LangSmith Deployment with auth, webhooks, and cron
+* **[LangSmith Agent Server](#langsmith-deployments)**: Managed Deep Agents (recommended), or a custom Agent Server with auth, webhooks, and cron
 * **[Production considerations](#production-considerations)**: invocation, multi-tenancy, authentication, credentials, async, and durability
 * **[Memory](#memory)**: persist information across conversations
 * **[Execution environment](#execution-environment)**: file storage and code execution
 * **[Guardrails](#guardrails)**: permissions and data privacy
 * **[Frontend](#frontend)**: connect your UI to a deployed agent
 
-## LangSmith Deployments
+## LangSmith Agent Server
 
 ![Managed Deep Agents packages your agent configuration, tools, and runtime settings for LangSmith](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/deepagents-deploy-config.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=5c3f2961994afe5fe67a2f5c9e9ba7ac)
 
 The recommended path for taking a Deep Agent to production is [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview), a CLI-first hosted runtime for creating, running, and operating deep agents in LangSmith. Managed Deep Agents is in public [beta](/langsmith/release-stages) on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC. It runs the same Deep Agents harness, but you author the agent as a project of files and declare it for the managed runtime rather than compiling it yourself. See [Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents).
 
-For teams that need custom application code, custom routes, advanced authentication, you can configure a [LangSmith Deployment](/langsmith/deployment) directly. Either path provisions the infrastructure your agent needs: [threads](/langsmith/use-threads), [runs](/langsmith/runs), a store, and a checkpointer, so you don't have to set these up yourself. A traditional LangSmith Deployment also gives you [authentication](/langsmith/auth), [webhooks](/langsmith/use-webhooks), [cron jobs](/langsmith/cron-jobs), and [observability](/langsmith/observability) out of the box, and can expose your agent via [MCP](/langsmith/server-mcp) or [A2A](/langsmith/server-a2a).
+For teams that need custom application code, custom routes, advanced authentication, you can configure [LangSmith Agent Server](/langsmith/deployment) directly. Either path provisions the infrastructure your agent needs: [threads](/langsmith/use-threads), [runs](/langsmith/runs), a store, and a checkpointer, so you don't have to set these up yourself. A custom Agent Server also gives you [authentication](/langsmith/auth), [webhooks](/langsmith/use-webhooks), [cron jobs](/langsmith/cron-jobs), and [observability](/langsmith/observability) out of the box, and can expose your agent via [MCP](/langsmith/server-mcp) or [A2A](/langsmith/server-a2a).
 
 > [!TIP]
 >
@@ -48,7 +48,7 @@ All code snippets on this page use the following `langgraph.json` unless otherwi
 }
 ```
 
-`langgraph.json` is the configuration file that tells the LangGraph platform how to build and run your application. It lives at the root of your project and is required for both local development (with `langgraph dev`) and production deployment. The key fields are:
+`langgraph.json` is the configuration file that tells the LangGraph CLI and Agent Server how to build and run your application. It lives at the root of your project and is required for both local development (with `langgraph dev`) and production deployment. The key fields are:
 
 | Field | Description |
 | - | - |
@@ -115,7 +115,7 @@ class Context:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     context_schema=Context,
 )
 
@@ -334,7 +334,7 @@ When your agent serves multiple users, you need to handle three concerns: verify
 
 #### User identity and access control
 
-[LangSmith Deployments](/langsmith/deployment) supports [custom authentication](/langsmith/custom-auth) to establish user identity and [authorization handlers](/langsmith/auth) to control access to resources like threads, assistants, and store namespaces. Authorization handlers run after authentication succeeds and can:
+[LangSmith Agent Server](/langsmith/deployment) supports [custom authentication](/langsmith/custom-auth) to establish user identity and [authorization handlers](/langsmith/auth) to control access to resources like threads, assistants, and store namespaces. Authorization handlers run after authentication succeeds and can:
 
 * Tag resources with ownership metadata (e.g., `owner: user_id`)
 * Return filters so users only see their own resources
@@ -412,7 +412,7 @@ Checkpointing also enables:
 
 > [!TIP]
 >
-> [LangSmith Deployments](/langsmith/deployment) configure a persistent checkpointer automatically. If you are self-hosting, see [persistence](/oss/python/langgraph/persistence) for setup instructions.
+> [LangSmith Agent Server](/langsmith/deployment) configures a persistent checkpointer automatically. If you are self-hosting, see [persistence](/oss/python/langgraph/persistence) for setup instructions.
 
 ## Memory
 
@@ -899,7 +899,7 @@ For the default Deep Agents middleware stack, see [Customization](/oss/python/de
 
 Deep Agents use [`useStream`](/oss/python/langchain/frontend/overview) to connect your UI to the agent backend. [`useStream`](https://reference.langchain.com/javascript/langchain-react/index/useStream) is a frontend hook (available for React, Vue, Svelte, and Angular) that streams messages, subagent progress, and custom state from your agent in real time.
 
-Locally, `useStream` points at `http://localhost:2024`. In production, point it at your [LangSmith Deployment](/langsmith/deployment) and configure reconnection so users don't lose progress if their connection drops.
+Locally, `useStream` points at `http://localhost:2024`. In production, point it at your [Agent Server](/langsmith/deployment) and configure reconnection so users don't lose progress if their connection drops.
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { useStream } from "@langchain/react";

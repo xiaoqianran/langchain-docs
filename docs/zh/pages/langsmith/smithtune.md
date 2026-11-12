@@ -32,7 +32,7 @@ Smithtune 是一个命令行工具，用于在[trajectories](/langsmith/observab
 
 **5.部署端点（可选）**
 
-为您的应用程序提供调整后的模型。要运行在生产中使用它的代理，请参阅[LangSmith Deployment](/langsmith/deployment)。
+为您的应用程序提供调整后的模型。要运行在生产中使用它的代理，请参阅[LangSmith Agent Server](/langsmith/deployment)。
 
 > [!提示]
 >

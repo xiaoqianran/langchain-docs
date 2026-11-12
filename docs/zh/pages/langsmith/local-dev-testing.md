@@ -11,7 +11,7 @@
 * [⟦T27⟧](#langgraph-dev)：快速迭代的轻量级开发服务器。
 * [⟦T28⟧](#langgraph-up)：用于验证的类似生产的测试环境。
 
-|特色| `langgraph dev` | `langgraph up` |
+|特色 | `langgraph dev` | `langgraph up` |
 | - | - | - |
 | **需要 Docker** |没有 |是的 |
 | **安装** | `pip install langgraph-cli[inmem]` | `pip install langgraph-cli` |
@@ -20,7 +20,7 @@
 | **热重载** |是（默认）|可选（`--watch`标志）|
 | **默认端口** | `2024` | `8123` |
 | **资源使用** |轻量化|更重（为服务器、PostgreSQL 和 Redis 构建并运行单独的 docker 容器）|
-| **IDE 调试** |内置[DAP](https://microsoft.github.io/debug-adapter-protocol/)支持|定期容器调试|
+| **IDE 调试** |内置[DAP](https://microsoft.github.io/debug-adapter-protocol/)支持 |定期容器调试 |
 | **自定义授权** |是的 |是（带有许可证密钥）|
 
 > [!提示]
@@ -489,7 +489,7 @@ VPN 连接、防火墙规则或公司代理设置可能会影响本地 Docker �
 **探索功能：**
 
 * **[Studio](/langsmith/studio)**：使用 Studio UI 可视化、交互和调试您的应用程序。尝试一下[Studio quickstart](/langsmith/quick-start-studio)。
-* **API 参考**：[LangSmith Deployment API](/langsmith/server-api-ref)、[Python SDK](/langsmith/langgraph-python-sdk)、[JS/TS SDK](/langsmith/langgraph-js-ts-sdk)
+* **API 参考**：[LangSmith Agent Server API](/langsmith/server-api-ref)、[Python SDK](/langsmith/langgraph-python-sdk)、[JS/TS SDK](/langsmith/langgraph-js-ts-sdk)
 
 ## 相关资源
 

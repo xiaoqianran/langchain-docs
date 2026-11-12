@@ -6,7 +6,7 @@
 
 通过 API 取消单次运行或多次运行，并在中断和回滚操作之间进行选择。
 
-本指南介绍了如何通过 [LangSmith Deployment API](/langsmith/server-api-ref) 取消代理的运行。您可以按 ID 取消单次运行，也可以按线程或状态取消多次运行。取消对于停止长时间运行或卡住的运行，或者当用户放弃请求时非常有用。
+本指南介绍了如何通过 [LangSmith Agent Server API](/langsmith/server-api-ref) 取消代理的运行。您可以按 ID 取消单次运行，也可以按线程或状态取消多次运行。取消对于停止长时间运行或卡住的运行，或者当用户放弃请求时非常有用。
 
 ## 设置
 
@@ -49,7 +49,7 @@
 
 **中断** 停止工作线程执行运行并将运行标记为`interrupted`。没有删除任何内容：* 运行记录保留（状态为`interrupted`）。您可以获取它，检查输入/输出，并查看执行历史记录。
 * 该运行的所有检查点均保持存储。保留最后完成步骤的线程状态。
-* 您可以稍后从检查点恢复（例如，使用 [time travel](/langsmith/human-in-the-loop-time-travel)）或检查部分状态。
+* 您稍后可以从检查点恢复（例如，使用 [time travel](/langsmith/human-in-the-loop-time-travel)）或检查部分状态。
 
 当您想要停止运行但保留它以进行调试、审核或从检查点恢复时，请使用 **中断**。
 

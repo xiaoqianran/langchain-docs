@@ -178,7 +178,7 @@ await vectorStore.addDocuments(allSplits);
 from langchain_openai import ChatOpenAI
 from langsmith import traceable
 
-llm = ChatOpenAI(model="gpt-5.5", temperature=1)
+llm = ChatOpenAI(model="gpt-6.1-sol", temperature=1)
 
 # Add decorator so this function is traced in LangSmith
 @traceable()
@@ -208,7 +208,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { traceable } from "langsmith/traceable";
 
 const llm = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   temperature: 1,
 });
 
@@ -363,7 +363,7 @@ A correctness value of False means that the student's answer does not meet all o
 Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset."""
 
 # Grader LLM
-grader_llm = ChatOpenAI(model="gpt-5.5", temperature=0).with_structured_output(
+grader_llm = ChatOpenAI(model="gpt-6.1-sol", temperature=0).with_structured_output(
     CorrectnessGrade, method="json_schema", strict=True
 )
 
@@ -397,7 +397,7 @@ A correctness value of False means that the student's answer does not meet all o
 Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset.`;
 
 const graderLLM = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   temperature: 0,
 }).withStructuredOutput(
   z
@@ -455,7 +455,7 @@ A relevance value of False means that the student's answer does not meet all of 
 Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset."""
 
 # Grader LLM
-relevance_llm = ChatOpenAI(model="gpt-5.5", temperature=0).with_structured_output(
+relevance_llm = ChatOpenAI(model="gpt-6.1-sol", temperature=0).with_structured_output(
     RelevanceGrade, method="json_schema", strict=True
 )
 
@@ -483,7 +483,7 @@ A relevance value of False means that the student's answer does not meet all of 
 Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset.`;
 
 const relevanceLLM = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   temperature: 0,
 }).withStructuredOutput(
   z
@@ -539,7 +539,7 @@ A grounded value of False means that the student's answer does not meet all of t
 Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset."""
 
 # Grader LLM
-grounded_llm = ChatOpenAI(model="gpt-5.5", temperature=0).with_structured_output(
+grounded_llm = ChatOpenAI(model="gpt-6.1-sol", temperature=0).with_structured_output(
     GroundedGrade, method="json_schema", strict=True
 )
 
@@ -567,7 +567,7 @@ A grounded value of False means that the student's answer does not meet all of t
 Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset.`;
 
 const groundedLLM = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   temperature: 0,
 }).withStructuredOutput(
   z
@@ -602,7 +602,7 @@ async function groundedness({
 }
 ```### 检索相关性：检索的文档与输入
 
-使用 LLM 作为法官对检索到的文档是否与用户问题相关进行评分：
+使用法学硕士作为法官对检索到的文档是否与用户问题相关进行评分：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Grade output schema
@@ -628,7 +628,7 @@ Explain your reasoning in a step-by-step manner to ensure your reasoning and con
 
 # Grader LLM
 retrieval_relevance_llm = ChatOpenAI(
-    model="gpt-5.5", temperature=0
+    model="gpt-6.1-sol", temperature=0
 ).with_structured_output(RetrievalRelevanceGrade, method="json_schema", strict=True)
 
 def retrieval_relevance(inputs: dict, outputs: dict) -> bool:
@@ -657,7 +657,7 @@ A relevance value of False means that the FACTS are completely unrelated to the 
 Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset.`;
 
 const retrievalRelevanceLLM = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   temperature: 0,
 }).withStructuredOutput(
   z
@@ -784,7 +784,7 @@ const experimentResults = await evaluate(targetFunc, {
 > # With langchain we can easily turn any vector store into a retrieval component:
 > retriever = vectorstore.as_retriever(k=6)
 >
-> llm = ChatOpenAI(model="gpt-5.5", temperature=1)
+> llm = ChatOpenAI(model="gpt-6.1-sol", temperature=1)
 >
 > # Add decorator so this function is traced in LangSmith
 > @traceable()
@@ -856,7 +856,7 @@ const experimentResults = await evaluate(targetFunc, {
 > Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset."""
 >
 > # Grader LLM
-> grader_llm = ChatOpenAI(model="gpt-5.5", temperature=0).with_structured_output(
+> grader_llm = ChatOpenAI(model="gpt-6.1-sol", temperature=0).with_structured_output(
 >     CorrectnessGrade, method="json_schema", strict=True
 > )
 >
@@ -893,7 +893,7 @@ const experimentResults = await evaluate(targetFunc, {
 > Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset."""
 >
 > # Grader LLM
-> relevance_llm = ChatOpenAI(model="gpt-5.5", temperature=0).with_structured_output(
+> relevance_llm = ChatOpenAI(model="gpt-6.1-sol", temperature=0).with_structured_output(
 >     RelevanceGrade, method="json_schema", strict=True
 > )
 >
@@ -926,7 +926,7 @@ const experimentResults = await evaluate(targetFunc, {
 > Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset."""
 >
 > # Grader LLM
-> grounded_llm = ChatOpenAI(model="gpt-5.5", temperature=0).with_structured_output(
+> grounded_llm = ChatOpenAI(model="gpt-6.1-sol", temperature=0).with_structured_output(
 >     GroundedGrade, method="json_schema", strict=True
 > )
 >
@@ -965,7 +965,7 @@ const experimentResults = await evaluate(targetFunc, {
 >
 > # Grader LLM
 > retrieval_relevance_llm = ChatOpenAI(
->     model="gpt-5.5", temperature=0
+>     model="gpt-6.1-sol", temperature=0
 > ).with_structured_output(RetrievalRelevanceGrade, method="json_schema", strict=True)
 >
 > def retrieval_relevance(inputs: dict, outputs: dict) -> bool:
@@ -1048,7 +1048,7 @@ const experimentResults = await evaluate(targetFunc, {
 > await vectorStore.addDocuments(allSplits);
 >
 > const llm = new ChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   temperature: 1,
 > });
 >
@@ -1121,7 +1121,7 @@ const experimentResults = await evaluate(targetFunc, {
 > Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset.`;
 >
 > const graderLLM = new ChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   temperature: 0,
 > }).withStructuredOutput(
 >   z
@@ -1165,7 +1165,7 @@ const experimentResults = await evaluate(targetFunc, {
 > Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset.`;
 >
 > const relevanceLLM = new ChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   temperature: 0,
 > }).withStructuredOutput(
 >   z
@@ -1207,7 +1207,7 @@ const experimentResults = await evaluate(targetFunc, {
 > Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset.`;
 >
 > const groundedLLM = new ChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   temperature: 0,
 > }).withStructuredOutput(
 >   z
@@ -1253,7 +1253,7 @@ const experimentResults = await evaluate(targetFunc, {
 > Explain your reasoning in a step-by-step manner to ensure your reasoning and conclusion are correct. Avoid simply stating the correct answer at the outset.`;
 >
 > const retrievalRelevanceLLM = new ChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   temperature: 0,
 > }).withStructuredOutput(
 >   z

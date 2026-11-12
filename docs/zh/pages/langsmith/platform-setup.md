@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 如果您还想在生产中部署代理，则可以将 [**LangSmith Deployment**](/langsmith/deployment) 与云、BYOC 或自托管结合使用。
+> 如果您还想在生产中部署代理，则可以将 [**LangSmith Agent Server**](/langsmith/deployment) 与云、BYOC 或自托管结合使用。
 
 > [卡][Cloud](/langsmith/cloud)
 >
@@ -35,13 +35,13 @@
 
 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 已在云和 BYOC 上提供公共测试版。对于 BYOC，请使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本。
 
-针对代理工作负载的云、BYOC 和自托管支持[LangSmith Deployment](/langsmith/deployment)。请参阅 [LangSmith Deployment overview](/langsmith/deployment) 选择拓扑（云托管、BYOC、混合、带控制平面的自托管或独立）。
+针对代理工作负载的云、BYOC 和自托管支持[LangSmith Agent Server](/langsmith/deployment)。请参阅 [LangSmith Agent Server overview](/langsmith/deployment) 选择拓扑（云托管、BYOC、混合、带控制平面的自托管或独立）。
 
-## 常用设置* **启动速度最快，管理一切。** [LangSmith Cloud](/langsmith/cloud) 与[LangSmith Deployment](/langsmith/deployment) 在云端配对。 LangChain 托管平台，并且当您使用 LangSmith 部署时，还托管您的 [Agent Servers](/langsmith/agent-server)。
+## 常用设置* **启动速度最快，管理一切。** [LangSmith Cloud](/langsmith/cloud) 与[LangSmith Agent Server](/langsmith/deployment) 在云端配对。 LangChain 托管平台，并且当您使用 LangSmith 代理服务器时，还托管您的 [Agent Servers](/langsmith/agent-server)。
 * **自带云。** 数据保留在您的 VPC 中，LangChain 管理基础设施。请参阅[BYOC overview](/langsmith/byoc)。
-* **可观测性数据必须保留在您的基础设施中。** 自托管 LangSmith，与任何 LangSmith 部署拓扑配对，包括用于代理工作负载的 [self-hosted LangSmith Deployment](/langsmith/deploy-with-control-plane)。
-* **托管可观察性，VPC 中的代理。** LangSmith 云与 [Hybrid](/langsmith/hybrid) LangSmith 部署配对。跟踪和评估保留在 SaaS 上，而代理工作负载保留在您的基础设施中。
-* **仅可观察性，无代理托管。** LangSmith 云或自托管，无需 LangSmith 部署。在您已经运行应用程序的地方运行您的代理并将跟踪发送到LangSmith。
+* **可观测性数据必须保留在您的基础设施中。** 自托管 LangSmith，与任何代理服务器托管拓扑配对，包括用于代理工作负载的 [self-hosted Agent Server hosting](/langsmith/deploy-with-control-plane)。
+* **托管可观察性，VPC 中的代理。** LangSmith 云与 [Hybrid](/langsmith/hybrid) LangSmith 代理服务器配对。跟踪和评估保留在 SaaS 上，而代理工作负载保留在您的基础设施中。
+* **仅可观察性，无代理托管。** LangSmith 云或自托管，无代理服务器托管。在您已经运行应用程序的地方运行您的代理并将跟踪发送到LangSmith。
 
 ## 相关
 

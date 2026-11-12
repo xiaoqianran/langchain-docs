@@ -2,9 +2,9 @@
 
 # Deploy with LangSmith and Vite
 
-Deploy a LangChain deep agent to LangSmith Deployment and stream from a Vite React chat UI on Vercel, Netlify, or Cloudflare Pages.
+Deploy a LangChain deep agent to LangSmith Agent Server and stream from a Vite React chat UI on Vercel, Netlify, or Cloudflare Pages.
 
-This example gets you from a local checkout to a deployed LangChain deep agent with a working chat UI. The backend runs as a [LangSmith Deployment](/langsmith/deployment), and the frontend is a Vite + React app that streams from it.
+This example gets you from a local checkout to a deployed LangChain deep agent with a working chat UI. The backend runs on [LangSmith Agent Server](/langsmith/deployment), and the frontend is a Vite + React app that streams from it.
 
 Use this guide when you want to run the agent locally, deploy it to LangSmith, and point the UI at the deployed Agent Server.
 
@@ -12,7 +12,7 @@ Source: [`js-langsmith`](https://github.com/langchain-ai/deployment-cookbook/tre
 
 ## What you are deploying
 
-A **LangSmith Deployment** runs a LangGraph graph on LangSmith's hosted Agent Server. In this example:
+An **Agent Server** runs a LangGraph graph on LangSmith's hosted infrastructure. In this example:
 
 * `agent/` contains the deep agent graph, subagents, middleware, and tools.
 * `langgraph.json` tells the LangGraph CLI which graph to serve and deploy.
@@ -29,7 +29,7 @@ The deployed agent is a coordinator with two subagents:
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init: {"themeVariables": {"lineColor": "#40668D", "primaryColor": "#E5F4FF", "primaryTextColor": "#030710", "primaryBorderColor": "#006DDD"}}}%%
 flowchart LR
-  A["agent/<br/>createDeepAgent graph"] -->|"pnpm run deploy"| B["LangSmith Deployment<br/>Agent Server"]
+  A["agent/<br/>createDeepAgent graph"] -->|"pnpm run deploy"| B["Agent Server"]
   C["React chat UI<br/>src/"] -->|"LangGraph SDK<br/>threads + streaming"| B
 
   classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
@@ -211,7 +211,7 @@ The agent and the UI deploy separately. After `pnpm run deploy` succeeds, host t
 * The agent fails to answer locally: confirm `OPENAI_API_KEY` is set in `.env`.
 * `pnpm run deploy` fails with an auth error: confirm `LANGSMITH_API_KEY` has deployment access.
 * The remote UI fails to connect: confirm `VITE_AGENT_API_URL` is the deployment root URL with no path suffix.
-* Threads disappear after restarting local dev: local `langgraph dev` uses the in-memory `MemorySaver`; LangSmith Deployment provides durable storage in production.
+* Threads disappear after restarting local dev: local `langgraph dev` uses the in-memory `MemorySaver`; LangSmith Agent Server provides durable storage in production.
 * You changed files in `agent/` but production did not change: run `pnpm run deploy` again.
 
 ## Learn about the project
@@ -227,7 +227,7 @@ The agent and the UI deploy separately. After `pnpm run deploy` succeeds, host t
 > └── tools.ts       # custom code tools
 > ```
 >
-> `agent/index.ts` exports the graph that LangGraph serves locally and LangSmith deploys. The local `MemorySaver` checkpointer is only used by `langgraph dev`. LangSmith Deployment replaces it with durable Postgres-backed storage in production without code changes.
+> `agent/index.ts` exports the graph that LangGraph serves locally and LangSmith deploys. The local `MemorySaver` checkpointer is only used by `langgraph dev`. LangSmith Agent Server replaces it with durable Postgres-backed storage in production without code changes.
 
 > [accordion] LangGraph config
 >
@@ -292,7 +292,7 @@ The agent and the UI deploy separately. After `pnpm run deploy` succeeds, host t
 ## See also
 
 * [Frameworks and platforms overview](/langsmith/deploy-frameworks-and-platforms)
-* [LangSmith Deployment overview](/langsmith/deployment)
+* [LangSmith Agent Server overview](/langsmith/deployment)
 * [LangGraph CLI](/langsmith/cli)
 * [Deep Agents going to production](/oss/python/deepagents/going-to-production)
 

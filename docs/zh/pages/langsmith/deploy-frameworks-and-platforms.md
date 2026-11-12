@@ -12,13 +12,13 @@
 
 ## 示例
 
-### 与 LangSmith 部署配对
+### 与LangSmith代理服务器配对
 
-该代理作为 LangSmith 部署运行，并且是来自代理服务器 API 的单独 Web 应用程序流。
+代理在 LangSmith 代理服务器上运行，并且有一个来自代理服务器 API 的单独的 Web 应用程序流。
 
 > [卡][LangSmith + Vite](/langsmith/deploy-vite-langsmith)
 >
-> LangSmith 部署的代理图；来自 Agent Server API 的 Vite + React UI 流。
+> LangSmith代理服务器上的代理图；来自 Agent Server API 的 Vite + React UI 流。
 
 ### 嵌入您的网络框架
 
@@ -28,7 +28,7 @@
 
 > [卡][SvelteKit](/langsmith/deploy-sveltekit)
 >
-> SvelteKit 服务器在 Cloudflare Workers 上路由，具有 `@langchain/svelte` 和用于 SSE 重放的每线程持久对象。
+> SvelteKit 服务器在 Cloudflare Workers 上路由，具有 `@langchain/svelte` 和用于 SSE 重播的每线程持久对象。
 
 > [卡][Nuxt](/langsmith/deploy-nuxt)
 >
@@ -86,7 +86,7 @@ HTTP 路由处理程序在 `/api/threads/...` 下实现 [Agent Streaming Protoco
 
 ## 另请参阅
 
-* [LangSmith Deployment overview](/langsmith/deployment)
+* [LangSmith Agent Server overview](/langsmith/deployment)
 * [Agent Server](/langsmith/agent-server)
 * [Configure checkpointer](/langsmith/configure-checkpointer)
 * [Frontend overview](/oss/python/langchain/frontend/overview)

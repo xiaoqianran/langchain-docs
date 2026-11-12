@@ -4,7 +4,7 @@
 
 # 使用 HTTP 标头进行运行时配置
 
-LangGraph 允许运行时配置动态修改代理行为和权限。使用[LangSmith Deployment](/langsmith/deployment-quickstart)时，可以在请求体（`config`）或特定请求头中传递此配置。这使得可以根据用户身份或其他请求进行调整。
+LangGraph 允许运行时配置动态修改代理行为和权限。使用[LangSmith Agent Server](/langsmith/deployment-quickstart)时，可以在请求体（`config`）或特定请求头中传递此配置。这使得可以根据用户身份或其他请求进行调整。
 
 为了隐私，请通过 [⟦T8⟧](/langsmith/application-structure#configuration-file) 文件中的 `http.configurable_headers` 部分控制将哪些标头传递到运行时配置。
 

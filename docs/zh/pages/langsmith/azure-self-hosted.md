@@ -11,11 +11,11 @@
 * [Initial setup steps](#initial-setup) 用于部署到 AKS、配置托管服务和设置身份验证。
 * [Azure-specific architecture patterns](#reference-architecture) 和参考图。
 * [Compute and networking guidance](#compute-and-networking-on-azure) 和最佳实践。
-* 针对 Azure 部署的[Security and access control](#security-and-access-control) 建议。
+* [Security and access control](#security-and-access-control) 针对 Azure 部署的建议。
 
 > [!注意]
 >
-> LangChain 发布生产就绪的 [Terraform modules for Azure](https://github.com/langchain-ai/terraform/tree/main/modules/azure)，可在单个工作流程中预配 AKS、Azure Database for PostgreSQL、Azure 托管 Redis、Blob 存储和 Key Vault。从 [Deploy with Terraform overview](/langsmith/self-host-terraform) 开始，在 Terraform 和仅 Helm 路径之间进行选择。
+> LangChain publishes production-ready [Terraform modules for Azure](https://github.com/langchain-ai/terraform/tree/main/modules/azure) that provision AKS, Azure Database for PostgreSQL, Azure Managed Redis, Blob Storage, and Key Vault in a single workflow.从 [Deploy with Terraform overview](/langsmith/self-host-terraform) 开始，在 Terraform 和仅 Helm 路径之间进行选择。
 
 ## 初始设置
 
@@ -32,7 +32,7 @@
 
 对于生产部署，请连接到 Azure 托管服务：
 
-> [卡片][Azure Blob Storage](/langsmith/self-host-blob-storage#azure-blob-storage)
+> [卡][Azure Blob Storage](/langsmith/self-host-blob-storage#azure-blob-storage)
 >
 > 将跟踪数据存储在 Azure Blob 中
 
@@ -64,14 +64,14 @@
 
 | |组件|如何安装 |
 | - | - | - |
-| **LangSmith 头盔释放** |前端、后端、队列、平台后端、Playground、ACE 以及可选的 LangSmith 部署控制/数据平面 | [⟦T1⟧](https://github.com/langchain-ai/helm/tree/main/charts/langsmith) 图表中的一个`helm upgrade --install` |
-| **您提供** | AKS、PostgreSQL、托管 Redis、Blob 存储、Key Vault、入口和 ClickHouse |安装 LangSmith 之前的 IaC 工具（Terraform、ARM 模板或 Azure 门户）|
+| **LangSmith 头盔释放** |前端、后端、队列、平台后端、Playground、ACE 以及可选的 LangSmith 代理服务器控制/数据平面 | [⟦T1⟧](https://github.com/langchain-ai/helm/tree/main/charts/langsmith) 图表中的一个`helm upgrade --install` |
+| **您提供** | AKS、PostgreSQL、托管 Redis、Blob 存储、Key Vault、入口和 ClickHouse |安装之前的 IaC 工具（Terraform、ARM 模板或 Azure 门户） LangSmith |
 
 ![Architecture diagram showing Azure relations to LangSmith services](https://mintcdn.com/langchain-5e9cc07a/_pHMPlUcXtBZtZXs/langsmith/images/azure-architecture-self-hosted.png?fit=max\&auto=format\&n=_pHMPlUcXtBZtZXs\&q=85\&s=b865048fe887c518fced3d41b3220d40)
 
-**安装顺序：**配置Azure基础设施→配置或订阅ClickHouse→配置Entra ID和Workload Identity→运行`helm upgrade --install`。 LangSmith 部署、队列、见解和聊天是通过同一 Helm 版本启用的，而不是单独安装。**合规性表面：** 针对 LangSmith 图表及其容器映像的一项应用程序审查，以及针对每个托管资源的标准 Azure 服务审查。 ClickHouse Cloud 添加了一项第三方 SaaS 评论。
+**安装顺序：**配置Azure基础设施→配置或订阅ClickHouse→配置Entra ID和Workload Identity→运行`helm upgrade --install`。代理服务器托管、队列、Insights 和聊天是通过同一 Helm 版本启用的，而不是单独安装。**合规性表面：** 针对 LangSmith 图表及其容器映像的一项应用程序审查，以及针对每个托管资源的标准 Azure 服务审查。 ClickHouse Cloud 添加了一项第三方 SaaS 评论。
 
-* **客户端接口**：用户通过网络浏览器或LangChain SDK 与LangSmith 交互。所有流量都终止于 [Azure Load Balancer](https://azure.microsoft.com/en-us/products/load-balancer/) 并路由到 [AKS](https://azure.microsoft.com/en-us/products/kubernetes-service/) 集群中的前端 (NGINX)，然后在必要时路由到集群中的另一个服务。
+* **客户端界面**：用户通过网络浏览器或LangChain SDK 与LangSmith 交互。所有流量都终止于 [Azure Load Balancer](https://azure.microsoft.com/en-us/products/load-balancer/) 并路由到 [AKS](https://azure.microsoft.com/en-us/products/kubernetes-service/) 集群中的前端 (NGINX)，然后在必要时路由到集群中的另一个服务。
 * **存储服务**：平台需要持久存储痕迹、元数据和缓存。在 Azure 上推荐的服务是：
   * **[Azure Database for PostgreSQL (Flexible Server)](https://azure.microsoft.com/en-us/products/postgresql/)** 用于事务数据（例如运行、项目）。 Azure 的高可用性选项在另一个区域中配置备用副本；数据同步提交到主服务器和备用服务器。 LangSmith 需要 PostgreSQL 版本 14 或更高版本。* **[Azure Managed Redis](https://azure.microsoft.com/en-us/products/managed-redis/)** 用于队列和缓存。最佳实践包括存储小值并将大对象分解为多个键，使用管道来最大化吞吐量并确保客户端和服务器驻留在同一区域。您还可以使用[Azure Cache for Redis](https://azure.microsoft.com/en-us/products/cache)，以单实例或集群模式运行。 LangSmith 需要 Redis OSS 6.2 或更高版本。
   * **ClickHouse** 用于大量跟踪分析。我们建议使用[externally managed ClickHouse solution](/langsmith/self-host-external-clickhouse)。如果出于安全或合规性原因，这不是一个选项，请使用开源 Operator 在 AKS 上部署 ClickHouse 集群。确保跨[availability zones](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview)进行复制以实现持久性。混合部署不需要 Clickhouse。
@@ -87,7 +87,11 @@
 
 #### 入口和负载平衡
 
-使用 Kubernetes Ingress 资源和控制器来分发 HTTP/HTTPS 流量。入口控制器在第 7 层运行，可以根据 URL 路径路由流量并处理 TLS 终止。与第 4 层负载均衡器相比，它们减少了公共 IP 地址的数量。将 [application routing add-on](https://learn.microsoft.com/en-us/azure/aks/app-routing) 用于与 SSL 证书集成的 [Azure DNS](https://azure.microsoft.com/en-us/products/dns/) 和 [Key Vault](https://azure.microsoft.com/en-us/products/key-vault/) 的托管 NGINX 入口控制器。
+使用第 7 层入口，它通过 URL 路径路由 HTTP/HTTPS 流量，终止 TLS，并且比第 4 层负载均衡器需要更少的公共 IP 地址。 LangSmith 支持标准 Ingress、Gateway API 和 Istio Gateway 路由。有关每个选项所需的 Helm 值，请参阅 [Create an Ingress for installations](/langsmith/self-host-ingress)。
+
+在 AKS 上，Microsoft 仅在 2026 年 11 月之前支持具有关键安全补丁的 [application routing add-on](https://learn.microsoft.com/en-us/azure/aks/app-routing) 中的托管 NGINX 入口。Microsoft 建议迁移到其 [Gateway API implementation](https://learn.microsoft.com/en-us/azure/aks/app-routing-gateway-api) 或其他受支持的实现。使用 Envoy Gateway，[LangSmith Azure Terraform module](/langsmith/self-host-terraform-azure-architecture#ingress-options) 默认部署。该模块还处理 DNS 和证书。对于 DNS，它分配 Azure DNS 标签，或为自定义域创建 Azure DNS 区域和 A 记录。对于证书，它安装 cert-manager，它通过 HTTP-01 或 DNS-01 颁发 Let's Encrypt 证书。您可以提供自己的证书作为 Kubernetes 密钥，并自行更新。有关哪些控制器支持哪些证书选项，请参阅模块存储库中的[ingress and TLS guide](https://github.com/langchain-ai/terraform/blob/main/modules/azure/INGRESS_CONTROLLERS.md)。
+
+Envoy Gateway 路径不会从 Key Vault 加载证书。如果您的组织需要 Key Vault 证书，可以选择 Microsoft 的托管网关 API。它管理 Azure DNS 记录和 Key Vault TLS 证书，但仅适用于 `approuting-istio` 或 `istio` GatewayClass，Terraform 模块不使用这些网关类。欲了解更多信息，请参阅[Configure Azure DNS and TLS](https://learn.microsoft.com/en-us/azure/aks/app-routing-gateway-api-dns-tls)。
 
 #### Web 应用程序防火墙 (WAF)
 
@@ -117,7 +121,7 @@
 
 #### 备份和灾难恢复
 
-启用 [automatic backups](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-backup-restore) 并配置异地冗余备份存储以防止区域范围内的中断。对于关键应用程序，在次要区域中创建只读副本。
+启用[automatic backups](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-backup-restore)并配置异地冗余备份存储以防止区域范围内的中断。对于关键应用程序，在次要区域中创建只读副本。
 
 #### 缩放
 
@@ -129,7 +133,7 @@
 
 选择提供复制和持久性的层。配置 Redis 持久性或数据备份以实现持久性。为了获得高可用性，请根据层使用[active geo-replication](https://learn.microsoft.com/en-us/azure/redis/how-to-active-geo-replication)或区域冗余缓存。
 
-### Azure 上的 ClickHouseClickHouse 用于分析工作负载（跟踪和反馈）。如果无法使用外部管理的解决方案，请使用 Helm 或官方运营商在 AKS 上部署 ClickHouse 集群。为了实现弹性，跨节点和可用区复制数据。考虑使用 [Azure Disks](https://azure.microsoft.com/en-us/products/storage/disks/) 进行本地存储并将其挂载为 StatefulSet。
+### Azure 上的 ClickHouseClickHouse 用于分析工作负载（跟踪和反馈）。如果无法使用外部管理的解决方案，请使用 Helm 或官方运营商在 AKS 上部署 ClickHouse 集群。为了实现弹性，跨节点和可用区复制数据。考虑使用 [Azure Disks](https://azure.microsoft.com/en-us/products/storage/disks/) 进行本地存储并将它们挂载为 StatefulSet。
 
 ### Azure Blob 存储
 
@@ -181,7 +185,7 @@
 
 ### 管理 Prometheus 和 Grafana
 
-启用[Azure Monitor managed Prometheus](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/prometheus-metrics-overview)收集Kubernetes指标。将其与[Grafana dashboards](https://azure.microsoft.com/en-us/products/managed-grafana/)结合起来进行可视化。定义服务级别目标 (SLO) 并相应配置警报。
+启用 [Azure Monitor managed Prometheus](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/prometheus-metrics-overview) 收集 Kubernetes 指标。将其与[Grafana dashboards](https://azure.microsoft.com/en-us/products/managed-grafana/)结合起来进行可视化。定义服务级别目标 (SLO) 并相应配置警报。
 
 ### 容器洞察
 
@@ -193,7 +197,7 @@
 
 ## 持续集成
 
-* 管理[LangSmith deployments](/langsmith/deployment)的首选方法是创建一个CI进程来构建[Agent Server](/langsmith/agent-server)图像并将其推送到[Azure Container Registry](https://azure.microsoft.com/en-us/products/container-registry)。在 PR 合并时将新修订部署到暂存或生产之前，为拉取请求创建测试部署。
+* 管理[Agent Servers](/langsmith/deployment)的首选方法是创建一个CI进程来构建[Agent Server](/langsmith/agent-server)图像并将其推送到[Azure Container Registry](https://azure.microsoft.com/en-us/products/container-registry)。在 PR 合并时将新修订部署到暂存或生产之前，为拉取请求创建测试部署。
 
 ***
 

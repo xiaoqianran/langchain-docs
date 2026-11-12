@@ -87,7 +87,7 @@ The following steps describe how to connect your self-hosted data plane to the m
 
 5. You will need to enable egress to two control plane URLs. The listener polls these endpoints for deployments. Use the pair that matches your LangSmith region.
 
-LangSmith Deployment control plane:
+LangSmith Agent Server control plane:
 
 <table>
   <thead>
@@ -205,7 +205,7 @@ LangSmith API:
    > Creating a listener from the LangSmith UI does not install the listener application in the Kubernetes cluster.
 3. A [Helm chart](https://github.com/langchain-ai/helm/tree/main/charts/langgraph-dataplane) is provided to install the necessary components in your Kubernetes cluster.
    * `langgraph-dataplane-listener`: This is a service that listens to LangChain's [control plane](/langsmith/control-plane) for changes to your deployments and creates/updates downstream CRDs. This is the [listener application](/langsmith/data-plane#listener-application).
-   * `LangGraphPlatform CRD`: A CRD for LangSmith Deployment. This contains the spec for managing an instance of a LangSmith Deployment.
+   * `LangGraphPlatform CRD`: A CRD for LangSmith Agent Server. This contains the spec for managing an Agent Server.
    * `langgraph-dataplane-operator`: This operator handles changes to your LangSmith CRDs.
    * `langgraph-dataplane-redis`: A Redis instance is used by the `langgraph-dataplane-listener` to manage various tasks (mainly creating and deleting deployments).
 4. Configure your `langgraph-dataplane-values.yaml` file.
@@ -213,7 +213,7 @@ LangSmith API:
      config:
        langsmithApiKey: "" # API Key of your Workspace
        langsmithWorkspaceId: "" # Workspace ID
-       hostBackendUrl: "https://api.host.langchain.com" # Use the matching regional LangSmith Deployment control plane URL from the table above
+       hostBackendUrl: "https://api.host.langchain.com" # Use the matching regional LangSmith Agent Server control plane URL from the table above
        smithBackendUrl: "https://api.smith.langchain.com" # Use the matching regional LangSmith API URL from the table above
        langgraphListenerId: "" # Listener ID from Step 2f
        watchNamespaces: "" # comma-separated list of Kubernetes namespaces that the listener and operator will deploy to

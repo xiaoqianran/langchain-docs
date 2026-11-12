@@ -57,11 +57,11 @@ as needed by appending .md to their URLs.
    langgraph dev, and test the graph locally. Resolve errors before
    deploying. If a Studio action requires the user, explain what to do
    and wait for the result.
-5. Explain the target deployment and that cloud usage can incur charges.
+5. Explain the target Agent Server and that cloud usage can incur charges.
    Ask for confirmation before running langgraph deploy. Do not overwrite
-   an existing deployment without explicit approval.
+   an existing Agent Server without explicit approval.
 6. Follow the quickstart to test the deployed application in Studio and
-   through its API. Report the deployment URL and test result, or the
+   through its API. Report the Agent Server URL and test result, or the
    exact blocker if deployment or testing did not complete.
 
 To follow the steps yourself, continue below.
@@ -113,13 +113,13 @@ Deploy directly from the CLI or via the UI.
 > langgraph deploy
 > ```
 >
-> This creates a Serverless deployment named after your project directory. Use `--name` to change the name, or `--deployment-type dedicated` for a [Dedicated deployment](/langsmith/cloud-platform-features#deployment-types).
+> This creates a Serverless Agent Server named after your project directory. Use `--name` to change the name, or `--agent-server-type dedicated` for a [Dedicated Agent Server](/langsmith/cloud-platform-features#deployment-types).
 >
 > > [!TIP]
 > >
-> > To update an existing deployment after making code changes, re-run `langgraph deploy`. It finds the existing deployment by name and updates it in place.
+> > To update an existing Agent Server after making code changes, re-run `langgraph deploy`. It finds the existing Agent Server by name and updates it in place.
 >
-> You can also use `langgraph deploy list` to see all deployments, `langgraph deploy logs` to tail runtime logs, and `langgraph deploy delete <ID>` to remove a deployment. For details, refer to the [CLI reference](/langsmith/cli#deploy).
+> You can also use `langgraph deploy list` to see all Agent Servers, `langgraph deploy logs` to tail runtime logs, and `langgraph deploy delete <ID>` to remove an Agent Server. For details, refer to the [CLI reference](/langsmith/cli#deploy).
 
 > [tab] Deploy from Studio
 >
@@ -137,17 +137,17 @@ Deploy directly from the CLI or via the UI.
 
 ## 4. Test in Studio
 
-[Studio](/langsmith/studio) is an interactive agent IDE connected directly to your deployment. Use it to send messages, inspect intermediate state at each node, edit state mid-run, and replay from any prior checkpoint without writing code.
+[Studio](/langsmith/studio) is an interactive agent IDE connected directly to your Agent Server. Use it to send messages, inspect intermediate state at each node, edit state mid-run, and replay from any prior checkpoint without writing code.
 
-Once the deployment is ready:
+Once the Agent Server is ready:
 
-1. Go to [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-quickstart) and select **Deployments** in the left sidebar.
-2. Select your deployment to view its details.
+1. Go to [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-quickstart) and select **Agent Servers** in the left sidebar.
+2. Select your Agent Server to view its details.
 3. Click **Studio** in the top right corner to open [Studio](/langsmith/studio).
 
 ## 5. Test the API
 
-Copy the **API URL** from the deployment details view, then use it to call your application:
+In LangSmith, copy the Agent Server address from the **URL** row in the Agent Server details view. Use it to call your application:
 
 > [tab] Python SDK (Async)
 >

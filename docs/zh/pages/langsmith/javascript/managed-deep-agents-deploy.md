@@ -20,7 +20,7 @@
 
 * LangSmith 云工作空间或[BYOC data plane](/langsmith/byoc-onboarding-aws) 中的工作空间。
 
-* 在 `.env` 或您的 shell 环境中，该工作区的 [LangSmith API key](/langsmith/create-account-api-key)。在交互式终端上，`mda deploy` 会提示您输入密钥或通过浏览器登录。
+* 该工作区的 [LangSmith API key](/langsmith/create-account-api-key)，位于 `.env` 或您的 shell 环境中。在交互式终端上，`mda deploy` 会提示您输入密钥或通过浏览器登录。
 
 * 从 `managed-deepagents` 安装`mda` CLI。
 
@@ -32,7 +32,7 @@
 
 在首次部署之前，在项目的 `.env` 或 shell 环境中设置 `LANGSMITH_ENDPOINT`：
 
-|地区 |端点 |部署支持 |
+|地区 |端点|部署支持 |
 | - | - | - |
 | GCP 美国 (`smith.langchain.com`) | `https://api.smith.langchain.com` |支持 |
 | GCP 欧盟 (`eu.smith.langchain.com`) | `https://eu.api.smith.langchain.com` |支持 |
@@ -60,7 +60,7 @@ LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com
 
 CLI 从数据平面端点派生部署 API URL。请勿将 `/api-host` 附加到 `LANGSMITH_ENDPOINT`。
 
-BYOC 数据平面不支持 Serverless 部署。运行 `mda deploy --push-to <image-repository>` 来构建并推送您的代理映像。 CLI 默认创建专用部署，因此您不需要传递 `--deployment-type dedicated`。
+BYOC 数据平面不支持 Serverless Agent 服务器。运行 `mda deploy --push-to <image-repository>` 来构建并推送您的代理映像。 CLI 默认创建专用代理服务器，因此您不需要传递`--agent-server-type dedicated`。
 
 ## 部署到LangSmith
 
@@ -103,18 +103,18 @@ pnpm exec mda deploy --name research-assistant
 bunx mda deploy --name research-assistant
 ```
 
-`mda deploy` 默认创建无服务器部署。创建专用部署时使用 `--deployment-type dedicated`。
+`mda deploy` 默认创建一个 Serverless Agent Server。创建专用代理服务器时使用`--agent-server-type dedicated`。传统的 `--deployment-type` 拼写仍然被接受。如果您的 CLI 无法识别代理服务器标志，请使用旧拼写或升级。无服务器在每个LangSmith云区域中都可用。自托管和混合环境拒绝无服务器部署。使用 `dedicated` 实现始终开启的能力。
 
-无服务器在每个LangSmith云区域中都可用。自托管和混合环境拒绝无服务器部署。使用 `dedicated` 实现始终开启的容量。```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npx mda deploy --deployment-type dedicated
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda deploy --agent-server-type dedicated
 ```
 
 ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm exec mda deploy --deployment-type dedicated
+pnpm exec mda deploy --agent-server-type dedicated
 ```
 
 ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bunx mda deploy --deployment-type dedicated
+bunx mda deploy --agent-server-type dedicated
 ```
 
 使用 `--no-wait` 触发构建而不轮询完成：
@@ -149,7 +149,7 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 仅当项目声明[backend identity](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-your-own-backend)时才需要`MDA_INGRESS_SECRET`。当存在该声明且缺少该值时，部署将在预检中失败。
 
-`LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY`等平台变量保留。他们可以对部署进行身份验证，但不会作为用户管理的部署机密上传。当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的秘密转发。
+`LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY`等平台变量被保留。他们可以对部署进行身份验证，但不会作为用户管理的部署机密上传。当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的秘密转发。
 
 保留的平台变量、空值、`.env`和`.env.*`文件不会复制到已编译的构建存档中。
 

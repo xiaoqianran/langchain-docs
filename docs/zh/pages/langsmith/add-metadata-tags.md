@@ -124,7 +124,7 @@ await traceableCallOpenAI(messages);
 
 > [!提示]
 >
-> **LangSmith 部署**：要在代理服务器部署中每次调用动态添加元数据，我们建议在 [factory function](/langsmith/graph-rebuild) 中使用 `tracing_context`。示例请参见[Customize tracing in deployed agents](/langsmith/conditional-tracing#customize-tracing-in-deployed-agents)。
+> **LangSmith 代理服务器**：要在代理服务器部署中每次调用动态添加元数据，我们建议在 [factory function](/langsmith/graph-rebuild) 中使用 `tracing_context`。示例请参见[Customize tracing in deployed agents](/langsmith/conditional-tracing#customize-tracing-in-deployed-agents)。
 
 ## 在踪迹上记录代码版本
 

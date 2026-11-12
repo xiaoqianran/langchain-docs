@@ -6,7 +6,7 @@
 
 在自托管 LangSmith 上配置 Insights 和 Chat 的加密密钥和模型访问权限、禁用任一功能或升级旧配置。
 
-[Insights](/langsmith/insights) 分析痕迹，[Chat](/langsmith/chat)（以前称为 Polly）帮助您处理 LangSmith 数据。两者都是基本安装的一部分，并且在 Helm Chart 0.15.1 或更高版本中默认启用。它们不需要任何 [additional features](/langsmith/self-host-additional-features)，例如沙箱、队列或 LangSmith 部署。
+[Insights](/langsmith/insights) 分析痕迹，[Chat](/langsmith/chat)（以前称为 Polly）帮助您处理 LangSmith 数据。两者都是基本安装的一部分，并且在 Helm Chart 0.15.1 或更高版本中默认启用。它们不需要任何 [additional features](/langsmith/self-host-additional-features)，例如沙箱、队列或代理服务器托管。
 
 > [!注意]
 >

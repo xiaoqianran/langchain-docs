@@ -33,7 +33,7 @@
 >
 > agent = define_deep_agent(
 >     name="research-assistant",
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     tools=[internet_search],
 >     middleware=[log_tool_calls],
 > )
@@ -100,7 +100,7 @@
 >     result = await handler(request)
 >     print(f"Finished tool: {request.tool_call['name']}")
 >     return result
-> ```> [选项卡] MCP 连接器
+> ```> [tab] MCP Connectors
 >
 > ```python tools/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from managed_deepagents import define_mcp
@@ -119,7 +119,7 @@
 当您使用 `mda` CLI 上传此文件夹时，它将自动在托管 LangSmith 基础设施上运行。
 您提供业务逻辑，托管Deep Agents提供代理工具和生产基础设施。
 
-要开始使用，请参阅 [Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart)。
+To get started, see the [Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart).
 
 ## 核心能力
 
@@ -139,22 +139,22 @@
 | [Schedules](/langsmith/python/managed-deep-agents-schedules) | `schedules/` |定期运行代理的托管 cron 计划。 |
 | [Evals](/langsmith/python/managed-deep-agents-evals) | `evals/` |港口测试代理的任务。 |
 
-完整布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。指令、技能和可选的持久存储器存储在[Context Hub](/langsmith/python/managed-deep-agents-context-hub)中。
+For the full layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).指令、技能和可选的持久存储器存储在[Context Hub](/langsmith/python/managed-deep-agents-context-hub)中。
 
-## 与Deep Agents的关系
+## Relationship to Deep Agents
 
 托管 Deep Agents 运行开源 [Deep Agents](/oss/python/deepagents/overview) 工具，而不是第二个框架。代理循环、文件系统工具、子代理和技能是相同的，因此无需学习第二个 API，并且您已经构建的代理可以继续工作。
 
-托管Deep Agents在代理周围添加了一层。上面的沙箱、持久内存、通道和时间表是项目文件中的声明，而不是您构建和操作的服务。 [Connections](/langsmith/python/managed-deep-agents-connections) 运行 OAuth，因此最终用户可以授权他们自己的帐户，而不是您为每个帐户配置凭据。 LangSmith 将结果托管在 [Agent Server](/langsmith/agent-server-overview) 上。在代码中，差异较小：谁编译代理。* [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 返回编译后的代理。你运行它，并且拥有它周围的后端、存储、检查点和服务器。
+托管Deep Agents在代理周围添加了一层。上面的沙箱、持久内存、通道和时间表是项目文件中的声明，而不是您构建和操作的服务。 [Connections](/langsmith/python/managed-deep-agents-connections) 运行 OAuth，因此最终用户可以授权他们自己的帐户，而不是您为每个帐户配置凭据。 LangSmith hosts the result on [Agent Server](/langsmith/agent-server-overview).在代码中，差异较小：谁编译代理。* [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 返回编译后的代理。你运行它，并且拥有它周围的后端、存储、检查点和服务器。
 * `define_deep_agent` 返回一个定义。 `mda` CLI 将其交给托管运行时，后者提供这些片段以及内存、技能和系统提示符，然后使用 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 编译代理。
 
 因此，`define_deep_agent`采用相同的参数减去托管参数，再加上所需的静态`name`。每个`define_*`函数都是这样工作的：声明代理需要什么，并将生命周期留给运行时。
 
-从托管Deep Agents开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。有关并排比较以及转换已构建的代理的步骤，请参阅[Move from Deep Agents](/langsmith/python/managed-deep-agents-migrate)。
+从托管Deep Agents开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。有关并排比较以及转换已构建的代理的步骤，请参阅[Move from Deep Agents](/langsmith/python/managed-deep-agents-migrate)。
 
 ## 后续步骤
 
-> [卡][Quickstart](/langsmith/python/managed-deep-agents-quickstart)
+> [card] [Quickstart](/langsmith/python/managed-deep-agents-quickstart)
 >
 > 使用 `mda` CLI 创建并部署您的第一个托管深度代理。
 
@@ -168,11 +168,11 @@
 
 > [卡][Paid media agent template](/langsmith/python/managed-deep-agents-paid-media-agent)
 >
-> 将LangChain的开源付费媒体代理部署到Slack。> [卡][Agent Server](/langsmith/agent-server-overview)
+> 将LangChain的开源付费媒体代理部署到Slack。> [card] [Agent Server](/langsmith/agent-server-overview)
 >
 > 探索托管托管 Deep Agents 部署的运行时。
 
-> [卡][MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)
+> [card] [MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)
 >
 > 从 Claude Code 或其他 MCP 客户端调用已部署的代理作为工具。
 

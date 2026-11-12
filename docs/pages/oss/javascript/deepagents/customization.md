@@ -24,7 +24,7 @@ const agent = await createDeepAgent({
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt: "You are a helpful assistant.",
   tools: [search, fetchUrl],
   memory: ["./AGENTS.md"],
@@ -121,7 +121,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 
 > [!TIP]
 >
-> Use the `provider:model` format (for example `openai:gpt-5.5`) to quickly switch between models.
+> Use the `provider:model` format (for example `openai:gpt-6.1-sol`) to quickly switch between models.
 
 > [tab] OpenAI
 >
@@ -148,7 +148,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > process.env.OPENAI_API_KEY = "your-api-key";
 >
-> const agent = createDeepAgent({ model: "gpt-5.5" });
+> const agent = createDeepAgent({ model: "gpt-6.1-sol" });
 > // this calls initChatModel for the specified model with default parameters
 > // to use specific model parameters, use initChatModel directly
 > ```
@@ -159,7 +159,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > process.env.OPENAI_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("gpt-5.5");
+> const model = await initChatModel("gpt-6.1-sol");
 > const agent = createDeepAgent({
 >   model,
 >   temperature: 0,
@@ -172,7 +172,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > const agent = createDeepAgent({
 >   model: new ChatOpenAI({
->     model: "gpt-5.5",
+>     model: "gpt-6.1-sol",
 >     apiKey: "your-api-key",
 >     temperature: 0,
 >   }),
@@ -262,7 +262,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
 > process.env.OPENAI_API_VERSION = "your-api-version";
 >
-> const agent = createDeepAgent({ model: "azure_openai:gpt-5.5" });
+> const agent = createDeepAgent({ model: "azure_openai:gpt-6.1-sol" });
 > // this calls initChatModel for the specified model with default parameters
 > // to use specific model parameters, use initChatModel directly
 > ```
@@ -275,7 +275,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
 > process.env.OPENAI_API_VERSION = "your-api-version";
 >
-> const model = await initChatModel("azure_openai:gpt-5.5");
+> const model = await initChatModel("azure_openai:gpt-6.1-sol");
 > const agent = createDeepAgent({
 >   model,
 >   temperature: 0,
@@ -288,7 +288,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > const agent = createDeepAgent({
 >   model: new AzureChatOpenAI({
->     model: "gpt-5.5",
+>     model: "gpt-6.1-sol",
 >     azureOpenAIApiKey: "your-api-key",
 >     azureOpenAIApiEndpoint: "your-endpoint",
 >     azureOpenAIApiVersion: "your-api-version",
@@ -523,7 +523,7 @@ const internetSearch = tool(
 );
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [internetSearch],
 });
 ```
@@ -814,7 +814,7 @@ const client = new MultiServerMCPClient({
 const tools = await client.getTools();
 
 const agent = await createDeepAgent({
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     tools,
 });
 
@@ -972,7 +972,7 @@ const researchInstructions =
   `write a polished report.`;
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt: researchInstructions,
 });
 ```
@@ -1255,7 +1255,7 @@ const logToolCallsMiddleware = createMiddleware({
 });
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [getWeather] as any,
   middleware: [logToolCallsMiddleware] as any,
 });
@@ -1553,7 +1553,7 @@ import {
 } from "deepagents";
 
 const backend = new StateBackend();
-const model = "openai:gpt-5.5";
+const model = "openai:gpt-6.1-sol";
 
 const customSummarization = createSummarizationMiddleware({
   model,
@@ -1627,7 +1627,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   middleware: [createCodeInterpreterMiddleware()],
 });
 ```
@@ -1790,7 +1790,7 @@ const researchSubagent: SubAgent = {
   description: "Used to research more in depth questions",
   systemPrompt: "You are a great researcher",
   tools: [internetSearch],
-  model: "openai:gpt-5.5", // Optional override, defaults to main agent model
+  model: "openai:gpt-6.1-sol", // Optional override, defaults to main agent model
 };
 const subagents = [researchSubagent];
 
@@ -2129,7 +2129,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
 > });
 > ```
@@ -2210,7 +2210,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > const backend = new LocalShellBackend({ workingDirectory: "." });
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   backend,
 > });
 > ```
@@ -2278,7 +2278,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
 >   model: "google:gemini-3.6-flash",
@@ -2293,10 +2293,10 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   backend: new StoreBackend({
 >     namespace: (rt) => [rt.serverInfo.user.identity],
 >   }),
@@ -2308,7 +2308,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
 >   model: "anthropic:claude-sonnet-5",
@@ -2323,7 +2323,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
 >   model: "openrouter:z-ai/glm-5.2",
@@ -2338,7 +2338,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
 >   model: "fireworks:accounts/fireworks/models/glm-5p2",
@@ -2353,7 +2353,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
 >   model: "baseten:zai-org/GLM-5.2",
@@ -2368,7 +2368,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
 >   model: "ollama:north-mini-code-1.0",
@@ -2381,7 +2381,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 >
 > > [!NOTE]
 > >
-> > When deploying to [LangSmith Deployment](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
+> > When deploying to [LangSmith Agent Server](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
 >
 > > [!TIP]
 > >
@@ -2431,7 +2431,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > const store = new InMemoryStore();
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   backend: new CompositeBackend(new StateBackend(), {
 >     "/memories/": new StoreBackend({
 >       namespace: () => ["memories"],
@@ -2908,7 +2908,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > }
 >
 > const agent = await createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   memory: ["/AGENTS.md"],
 >   checkpointer: checkpointer,
 > });
@@ -3269,7 +3269,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > const checkpointer = new MemorySaver();
 >
 > const agent = await createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   backend: new StoreBackend({
 >     namespace: () => ["filesystem"],
 >   }),
@@ -3605,7 +3605,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > const checkpointer = new MemorySaver();
 >
 > const agent = await createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
 >   memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
 >   interruptOn: {

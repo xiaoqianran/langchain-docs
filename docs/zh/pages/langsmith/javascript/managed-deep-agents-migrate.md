@@ -18,13 +18,13 @@
 
 当您需要该层时移动代理而不运行它。当您需要拥有它时，请留在Deep Agents。| | Deep Agents |托管Deep Agents |
 | - | - | - |
-| **托管** |您可以在自己的进程或容器中运行代理，或将其部署为[LangSmith deployment](/langsmith/deployment)。 | LangSmith 在 [Agent Server](/langsmith/agent-server-overview) 上托管代理。 `mda deploy` 是整个部署步骤。 |
+| **托管** |您可以在自己的进程或容器中运行代理，或者将其部署在[LangSmith Agent Server](/langsmith/deployment)上。 | LangSmith 在 [Agent Server](/langsmith/agent-server-overview) 上托管代理。 `mda deploy` 是整个部署步骤。 |
 | **文件系统和外壳** |任何[backend](/oss/javascript/deepagents/backends)：代理状态、本地磁盘、存储或您向提供商提供的[sandbox](/oss/javascript/deepagents/sandboxes)。 |一个托管的[sandbox](/langsmith/javascript/managed-deep-agents-sandboxes)，在文件中声明。 LangSmith 创建它，对其进行快照，并在空闲时停止它。 |
 | **对话记忆** |您自己运行存储并连接它。 |一棵共享的[memory](/langsmith/javascript/managed-deep-agents-memory)树，通过添加文件启用。 |
 | **最终用户的第三方访问** |您为每个用户配置并存储凭据。 | [Connections](/langsmith/javascript/managed-deep-agents-connections) 保存工作区机密并运行 OAuth，以便最终用户自行授权服务。 |
 | **聊天界面** |您编写集成。 | [Channels](/langsmith/javascript/managed-deep-agents-channels) 连接 Slack 和其他消息服务。 |
 | **预定运行** |您运行调度程序。 | [Schedules](/langsmith/javascript/managed-deep-agents-schedules) 运行托管 cron 作业。 |
-| **围绕代理的代码** |您可以编写，包括自定义路由和应用程序代码。 |仅限代理。对于自定义路由或应用程序代码，请使用[LangSmith deployment](/langsmith/deployment)。 |无论哪种方式，线束都是相同的。当您想要运行生产代理而无需管理基础设施时，请从 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 开始使用新代理。当您已经拥有 Deep Agents SDK 代理并需要托管运行时时，请使用本指南。要自行使用相同的 Deep Agents 工具和托管代理或运行自定义 [LangSmith Deployment](/langsmith/deployment)，请参阅 [Going to production](/oss/javascript/deepagents/going-to-production)。
+| **围绕代理的代码** |您可以编写，包括自定义路由和应用程序代码。 |仅限代理。对于自定义路由或应用程序代码，请使用[LangSmith Agent Server](/langsmith/deployment)。 |无论哪种方式，线束都是相同的。当您想要运行生产代理而无需管理基础设施时，请从 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 开始使用新代理。当您已经拥有 Deep Agents SDK 代理并需要托管运行时时，请使用本指南。要自行使用相同的 Deep Agents 工具和托管代理或运行自定义 [Agent Server](/langsmith/deployment)，请参阅 [Going to production](/oss/javascript/deepagents/going-to-production)。
 
 ## 了解发生了什么变化
 
@@ -34,7 +34,7 @@
 
 大多数代理移动时不会对条目文件进行任何更改。有四种情况需要首先做出决定：* **自定义后端**：托管 Deep Agents 提供代理的默认后端。这是线程范围的代理状态，或者当项目声明一个时为[managed sandbox](/langsmith/javascript/managed-deep-agents-sandboxes)。您无法替换默认后端。要保留您自己的后端，请将其安装在路径前缀处，例如 `/documents/`，带有 [⟦T17⟧](/langsmith/javascript/managed-deep-agents-agent-definition#mount-your-own-backends)。路由需要 0.10.3 或更高版本。
 * **您自己的存储或检查点**：线程、运行和持久性来自[Agent Server](/langsmith/agent-server-overview)。依赖于特定商店实现的代理需要将逻辑移至工具或中间件中。
-* **自定义应用程序代码和路由**：托管 Deep Agents 托管代理，而不是任意 Web 应用程序。对于代理周围的自定义路由、高级身份验证或应用程序代码，请改用 [LangSmith deployment](/langsmith/deployment)。
+* **自定义应用程序代码和路由**：托管 Deep Agents 托管代理，而不是任意 Web 应用程序。对于自定义路由、高级身份验证或代理周围的应用程序代码，请改用 [LangSmith Agent Server](/langsmith/deployment)。
 * **Python 中的自定义状态模式**：`define_deep_agent` 不接受 `state_schema`，因此扩展 `DeepAgentState` 的代理无法按原样移动。 TypeScript `defineDeepAgent` 接受 `stateSchema`。
 
 如果这些都不适用，则代理逻辑将按写入方式进行传输。

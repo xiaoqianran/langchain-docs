@@ -4,7 +4,7 @@
 
 # 流媒体 API
 
-[LangGraph SDK](/langsmith/langgraph-python-sdk) 允许您以多种模式流式传输 [LangSmith Deployment API](/langsmith/server-api-ref) 的输出，从每个步骤后的完整状态快照到逐个令牌的 LLM 输出。线程流还支持可恢复性：如果连接断开，则使用最后一个事件 ID 重新连接以从中断的位置继续。
+[LangGraph SDK](/langsmith/langgraph-python-sdk) 允许您以多种模式流式传输 [LangSmith Agent Server API](/langsmith/server-api-ref) 的输出，从每个步骤后的完整状态快照到逐个令牌的 LLM 输出。线程流还支持可恢复性：如果连接断开，则使用最后一个事件 ID 重新连接以从中断的位置继续。
 
 > [!注意]
 >
@@ -210,9 +210,9 @@
 ### 支持的流模式|模式|描述 | LangGraph 库方法 |
 | - | - | - |
 | [⟦T61⟧](#stream-graph-state) |在每个[super-step](/langsmith/graph-rebuild#define-graphs)之后流式传输完整的图状态。 | `.stream()` / `.astream()` 与 [⟦T64⟧](/oss/python/langgraph/streaming#graph-state) |
-| [⟦T65⟧](#stream-graph-state) |在图表的每个步骤之后将更新流式传输到状态。如果在同一步骤中进行多个更新（例如，运行多个节点），则这些更新将单独流式传输。 | `.stream()` / `.astream()` 与 [⟦T68⟧](/oss/python/langgraph/streaming#graph-state) |
+| [⟦T65⟧](#stream-graph-state) |在图表的每个步骤之后将更新流式传输到状态。如果在同一步骤中进行多个更新（例如，运行多个节点），则这些更新将单独进行流式传输。 | `.stream()` / `.astream()` 与 [⟦T68⟧](/oss/python/langgraph/streaming#graph-state) |
 | [⟦T69⟧](#messages) |流式传输调用 LLM 的图形节点的 LLM 令牌和元数据（对于聊天应用程序有用）。 | `.stream()` / `.astream()` 与 [⟦T72⟧](/oss/python/langgraph/streaming#messages) |
-| [⟦T73⟧](#debug) |在图表的执行过程中流式传输尽可能多的信息。 | `.stream()` / `.astream()` 与 [⟦T76⟧](/oss/python/langgraph/streaming#graph-state) |
+| [⟦T73⟧](#debug) |在整个图表的执行过程中流式传输尽可能多的信息。 | `.stream()` / `.astream()` 与 [⟦T76⟧](/oss/python/langgraph/streaming#graph-state) |
 | [⟦T77⟧](#stream-custom-data) |从图表内部传输自定义数据 | `.stream()` / `.astream()` 与 [⟦T80⟧](/oss/python/langgraph/streaming#custom-data) |
 | [⟦T81⟧](#stream-events) |流式传输所有事件（包括图的状态）；在迁移大型 LCEL 应用程序时主要有用。 | `.astream_events()` |
 

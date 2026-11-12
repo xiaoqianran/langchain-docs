@@ -10,7 +10,7 @@ LangChain provides create_agent: a minimal, highly configurable agent harness. C
 >
 > **LangChain vs. LangGraph vs. Deep Agents**
 >
-> Start with [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) for a batteries-included harness (context compression, virtual filesystem, subagents) when you want to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, use the [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) and host agents yourself, or run a custom [LangSmith Deployment](/langsmith/deployment). Deep Agents is built on LangChain [agents](/oss/python/langchain/agents/), which you can also use directly.
+> Start with [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) for a batteries-included harness (context compression, virtual filesystem, subagents) when you want to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, use the [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) and host agents yourself, or run a custom [Agent Server](/langsmith/deployment). Deep Agents is built on LangChain [agents](/oss/python/langchain/agents/), which you can also use directly.
 >
 > Use [LangChain](/oss/python/langchain/agents) (`create_agent`) for a highly customizable harness, easily tailored to your use case and data.
 >
@@ -31,7 +31,7 @@ def get_weather(city: str) -> str:
     return f"It's always sunny in {city}!"
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[get_weather],
     system_prompt="You are a helpful assistant",
 )
@@ -173,7 +173,7 @@ def get_weather(city: str) -> str:
     return f"It's always sunny in {city}!"
 
 model = init_chat_model(
-    "azure_openai:gpt-5.5",
+    "azure_openai:gpt-6.1-sol",
     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 )
 agent = create_agent(

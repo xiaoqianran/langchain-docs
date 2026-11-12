@@ -131,7 +131,7 @@ ls_client.create_examples(
 需要`langsmith>=0.2.0`
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-judge_llm = init_chat_model("gpt-5.5")
+judge_llm = init_chat_model("gpt-6.1-sol")
 
 async def correct(outputs: dict, reference_outputs: dict) -> bool:
     instructions = (
@@ -382,7 +382,7 @@ async def main():
 >
 > # Define evaluators
 >
-> judge_llm = init_chat_model("gpt-5.5")
+> judge_llm = init_chat_model("gpt-6.1-sol")
 >
 > async def correct(outputs: dict, reference_outputs: dict) -> bool:
 >     instructions = (

@@ -10,7 +10,7 @@ LangChain provides create_agent: a minimal, highly configurable agent harness. C
 >
 > **LangChain vs. LangGraph vs. Deep Agents**
 >
-> Start with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) for a batteries-included harness (context compression, virtual filesystem, subagents) when you want to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, use the [Deep Agents SDK](/oss/javascript/deepagents/overview#self-host-with-the-sdk) and host agents yourself, or run a custom [LangSmith Deployment](/langsmith/deployment). Deep Agents is built on LangChain [agents](/oss/javascript/langchain/agents/), which you can also use directly.
+> Start with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) for a batteries-included harness (context compression, virtual filesystem, subagents) when you want to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, use the [Deep Agents SDK](/oss/javascript/deepagents/overview#self-host-with-the-sdk) and host agents yourself, or run a custom [Agent Server](/langsmith/deployment). Deep Agents is built on LangChain [agents](/oss/javascript/langchain/agents/), which you can also use directly.
 >
 > Use [LangChain](/oss/javascript/langchain/agents) (`create_agent`) for a highly customizable harness, easily tailored to your use case and data.
 >
@@ -39,7 +39,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather],
 });
 
@@ -235,7 +235,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "azure_openai:gpt-5.5",
+  model: "azure_openai:gpt-6.1-sol",
   tools: [getWeather],
 });
 
@@ -263,7 +263,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "bedrock:gpt-5.5",
+  model: "bedrock:gpt-6.1-sol",
   tools: [getWeather],
 });
 

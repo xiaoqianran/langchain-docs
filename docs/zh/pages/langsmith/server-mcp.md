@@ -6,7 +6,7 @@
 
 模型上下文协议 (MCP) 是一种开放协议，用于以与模型无关的格式描述工具和数据源，使法学硕士能够通过结构化 API 发现和使用它们。
 
-[Agent Server](/langsmith/agent-server) 使用[Streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) 实现 MCP。这允许 LangGraph **代理** 作为 **MCP 工具**公开，使它们可与任何支持 Streamable HTTP 的 MCP 兼容客户端一起使用。
+[Agent Server](/langsmith/agent-server) 使用[Streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) 实现 MCP。这允许 LangGraph **代理** 公开为 **MCP 工具**，使它们可与任何支持 Streamable HTTP 的 MCP 兼容客户端一起使用。
 
 MCP 端点在 [Agent Server](/langsmith/agent-server) 的 `/mcp` 可用。
 
@@ -159,7 +159,7 @@ uv add "langgraph-api>=0.2.3" "langgraph-sdk>=0.1.61"
 >         # Load the remote graph as if it was a tool
 >         tools = await adapter.list_tools()
 >
->         agent = create_agent("gpt-5.5", tools)
+>         agent = create_agent("gpt-6.1-sol", tools)
 >         agent_response = await agent.ainvoke(
 >             {"messages": "What can the finance agent do for me?"}
 >         )
@@ -306,7 +306,7 @@ MCP 端点不使用会话。每个`/mcp`请求都是独立的，代理服务器�
 
 这将防止服务器公开 `/mcp` 端点。
 
-端点通过运行 API 运行每个工具调用。当`disable_runs`为`true`时，每个工具调用都会失败并出现JSON-RPC错误`-32602`。
+端点通过运行 API 运行每个工具调用。当 `disable_runs` 为 `true` 时，每个工具调用都会失败，并出现 JSON-RPC 错误 `-32602`。
 
 ***
 

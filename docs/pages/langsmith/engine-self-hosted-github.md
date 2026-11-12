@@ -9,7 +9,7 @@ Register a GitHub App and configure self-hosted LangSmith or a BYOC data plane s
 * **BYOC**: An Organization Admin saves the App's credentials in the LangSmith UI. See [Configure the App on BYOC](#configure-the-app-on-byoc).
 * **Self-hosted**: An operator configures the App's credentials in Helm values. See [Configure the App on self-hosted](#configure-the-app-on-self-hosted).
 
-This configuration is separate from GitHub setup for LangSmith Deployments builds and previews.
+This configuration is separate from GitHub setup for Agent Server builds and previews.
 
 ## Configure the App on BYOC
 
@@ -62,7 +62,7 @@ On self-hosted LangSmith, an operator registers the App, configures LangSmith, a
 
 > [!NOTE]
 >
-> Configuring GitHub for Engine on self-hosted requires LangSmith Helm chart version 0.17.2 or later. Earlier charts expose the `/api-host` routes that GitHub authorization and webhooks use only when LangSmith Deployment is enabled (`config.deployment.enabled`).
+> Configuring GitHub for Engine on self-hosted requires LangSmith Helm chart version 0.17.2 or later. Earlier charts expose the `/api-host` routes that GitHub authorization and webhooks use only when Agent Server hosting is enabled (`config.deployment.enabled`).
 
 Use the LangSmith application images supplied with your Helm chart release.
 

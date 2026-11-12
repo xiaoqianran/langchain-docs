@@ -12,7 +12,7 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 
 > [!注意]
 >
-> [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
+> [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在 [project-based](/langsmith/observability-concepts#tracing-projects) 工作区中，它显示 LangSmith 徽标。
 
 ## 先决条件
 
@@ -53,9 +53,9 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
    langgraphjs deploy --agent-id my-agent --agent-environment staging --remote
    ```
 
-传递两个标志或都不传递，因为 CLI 会自行拒绝其中任一标志。不要将它们与 `--name` 或 `--deployment-id` 结合使用，它们直接命名部署，并且 CLI 会拒绝与代理一起使用。
+传递两个标志或都不传递，因为 CLI 会自行拒绝其中任一标志。请勿将它们与 `--name` 或代理服务器 ID 标志结合使用。 Python CLI 使用 `--agent-server-id`，并接受 `--deployment-id` 作为兼容性别名；较旧的 Python 版本可能需要旧的拼写。上面的 TypeScript 预发行版使用 `--deployment-id`。这些标志名称与代理绑定的版本要求是分开的。
 
-`--remote` 强制远程构建。如果没有它，只要 Docker 可用，CLI 就会在本地构建。对于其余标志，请参阅[⟦T31⟧](/langsmith/cli#deploy)。
+`--remote` 强制远程构建。如果没有它，只要 Docker 可用，CLI 就会在本地构建。对于其余标志，请参阅[⟦T33⟧](/langsmith/cli#deploy)。
 
 ## 使用 mda CLI 进行部署
 
@@ -70,9 +70,7 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 
    ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    npm install "managed-deepagents@0.7.5-dev.4"
-   ```
-
-2. 在当前文件夹中部署项目：
+   ```2. 在当前文件夹中部署项目：
 
    ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    mda deploy . --agent-id my-agent --agent-environment staging
@@ -80,13 +78,15 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 
    ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    npx mda deploy . --agent-id my-agent --agent-environment staging
-   ```在 Python 中，将 CLI 作为工具安装并将相同版本固定为项目依赖项，可以使全局 `mda` 二进制文件和项目自身的依赖项保持在一个版本上。对于其余标志，请参阅 [Deploy projects](/langsmith/python/managed-deep-agents-cli#deploy-projects)，对于不使用代理标志的部署，请参阅 [Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
+   ```
+
+在 Python 中，将 CLI 作为工具安装并将相同版本固定为项目依赖项，可以使全局 `mda` 二进制文件和项目自身的依赖项保持在一个版本上。对于其余标志，请参阅 [Deploy projects](/langsmith/python/managed-deep-agents-cli#deploy-projects)，对于不使用代理标志的部署，请参阅 [Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
 
 ## 确认绑定
 
-打开代理并阅读其 [Overview](/langsmith/navigate-agents#read-the-agent-overview) 的 **部署** 部分。部署成功后，新部署将立即显示为一行，并且该行链接到该部署。
+打开代理的[Overview](/langsmith/navigate-agents#read-the-agent-overview)，然后在标题中选择**代理服务器**。检查代理服务器是否出现在预期环境中。当活动修订版可用时，标题还会按环境显示修订版信息。
 
-如果新部署没有行，或者概述没有 **Deployments** 部分，则部署不会绑定到代理。当您设置 `LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 变量并使用 `mda` CLI 进行部署时，通常会发生这种情况，该 CLI 会忽略它们。将 `--agent-id` 和 `--agent-environment` 添加到部署命令中。
+如果目标环境中缺少代理服务器，请检查传递给 CLI 的代理 ID 和环境。上述固定的 `mda` 版本需要显式 `--agent-id` 和 `--agent-environment` 标志；他们忽略`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`。
 
 ## 另请参阅
 

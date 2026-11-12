@@ -12,7 +12,7 @@
 
 舰队需要 [Enterprise](https://langchain.com/pricing) 计划和 [LangSmith Self-Hosted v0.13](https://changelog.langchain.com/announcements/langsmith-self-hosted-v0-13) 或更高版本。此独立部署配置需要 v0.15 或更高版本。首先安装[base LangSmith platform](/langsmith/kubernetes)。
 
-Fleet 提供 API 服务器、任务队列、PostgreSQL、Redis、工具服务器和触发器服务器。它不需要LangSmith部署。
+Fleet 提供 API 服务器、任务队列、PostgreSQL、Redis、工具服务器和触发器服务器。它不需要代理服务器托管。
 
 ## 启用舰队
 
@@ -412,7 +412,7 @@ fleet:
 >>
 >> 外部客户端应用程序在两个位置进行配置：**设置**（上一步中的 OAuth 定义）和 **策略**（此步骤）。两者都必须得救。
 >
-> **4。复制凭证**
+> **4。复制凭据**
 >> 在 **设置** 选项卡上的 **OAuth 设置** 下，选择 **消费者密钥和秘密**。 **消费者密钥**是您的客户端 ID，**消费者秘密**是您的客户端秘密。
 >
 >> [!注意]
@@ -421,7 +421,7 @@ fleet:
 >
 > **5。在 LangSmith** 中配置 OAuth 提供程序
 >
-> 在LangSmith中，进入**设置 > OAuth 提供商**，点击**OAuth 提供商**，然后填写：
+> 在LangSmith中，进入**设置 > OAuth 提供商**，点击**OAuth 提供商**，并填写：
 >
 > * **提供商 ID**：唯一字符串，例如：`salesforce-oauth-provider`。在下一步中对 `salesforceOAuthProvider` 使用相同的值。
 > * **显示名称**：例如，`Salesforce`
@@ -454,7 +454,7 @@ fleet:
 >>
 >> 如果登录失败：确认 Salesforce 中的 **回调 URL** 与 `https://<hostname>/host-oauth-callback/<provider-id>` 完全匹配（HTTPS，无尾部斜杠）；如果您选择**管理员批准的用户已预先授权**，请通过权限集分配应用程序；如果您的组织强制执行登录 IP 范围，请在用户的个人资料中将您的队列服务器的出口 IP 列入白名单，或在应用程序的策略中将 **IP 放宽** 设置为 **放宽 IP 限制**。
 
-> [手风琴] Slack OAuth 提供程序
+> [手风琴] Slack OAuth 提供者
 >
 > 一个 Slack OAuth 提供商为您添加到各个代理的 Slack 工具和 Slack 应用程序提供支持，因此 Slack 设置可以与 Slack 集成的其余部分一起使用。
 >
@@ -535,7 +535,7 @@ python3 -c "import secrets; print(secrets.token_urlsafe(48))"
 
 **7.创建应用程序**
 
-单击“**创建 GitHub 应用程序**”。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量 |
+单击 **创建 GitHub 应用程序**。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量 |
 | - | - | - |
 | **应用程序ID** |数字，位于页面顶部 | `FLEET_GITHUB_APP_ID` |
 | **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet` | `FLEET_GITHUB_APP_PUBLIC_LINK` |

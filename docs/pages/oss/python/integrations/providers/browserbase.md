@@ -54,7 +54,7 @@ uv add "browserbase>=1.21.0" deepagents langchain-openai
 export OPENAI_API_KEY="your-openai-api-key"
 ```
 
-The example uses OpenAI's [GPT-5.5 snapshot](https://developers.openai.com/api/docs/models/gpt-5.5). Omit `provider` on `search.web` to use your project's default search provider:
+The example uses OpenAI's [GPT-6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol) model. Omit `provider` on `search.web` to use your project's default search provider:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
@@ -80,7 +80,7 @@ def fetch_page(url: str) -> str:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5-2026-04-23",
+    model="openai:gpt-6.1-sol",
     tools=[web_search, fetch_page],
     system_prompt="Search to find pages, then fetch the pages you need to read.",
 )

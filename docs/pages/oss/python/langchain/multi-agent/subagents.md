@@ -269,12 +269,12 @@ graph LR
 >
 > # Sub-agents developed by different teams
 > research_agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     system_prompt="You are a research specialist..."
 > )
 >
 > writer_agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     system_prompt="You are a writing specialist..."
 > )
 >
@@ -305,7 +305,7 @@ graph LR
 >
 > # Main coordinator agent
 > main_agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[task],
 >     system_prompt=(
 >         "You coordinate specialized sub-agents. "

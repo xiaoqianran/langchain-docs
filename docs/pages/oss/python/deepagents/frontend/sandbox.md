@@ -176,7 +176,7 @@ def get_thread_id_from_config() -> str:
 
 def agent():
     return create_deep_agent(
-        model="openai:gpt-5.5",
+        model="openai:gpt-6.1-sol",
         backend=lambda _runtime: get_or_create_sandbox_for_thread(
             get_thread_id_from_config()
         ),
@@ -428,9 +428,9 @@ async def read_file(
 ### Configure `langgraph.json`
 
 Register both the agent graph and the API server. The `http.app` field tells
-the LangGraph platform to serve your custom routes alongside the default ones.
+Agent Server to serve your custom routes alongside the default ones.
 See [application structure](/oss/python/langgraph/application-structure) and
-[LangSmith Deployments](/oss/python/deepagents/going-to-production#langsmith-deployments)
+[LangSmith Agent Server](/oss/python/deepagents/going-to-production#langsmith-deployments)
 for the full set of `langgraph.json` options.
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -461,7 +461,7 @@ chat panel. It uses [`useStream`](https://reference.langchain.com/javascript/lan
 endpoints for file browsing.
 
 For production deployment, point `apiUrl` at your
-[LangSmith Deployment](/langsmith/deployment), and pass a stable
+[Agent Server URL](/langsmith/deployment), and pass a stable
 `thread_id` on each run. See
 [Frontend](/oss/python/deepagents/going-to-production#frontend) in
 [Going to production](/oss/python/deepagents/going-to-production) for those settings

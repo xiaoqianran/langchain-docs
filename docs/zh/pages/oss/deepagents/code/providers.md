@@ -51,7 +51,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 |天蓝色OpenAI| [⟦T49⟧](/oss/python/integrations/chat/azure_chat_openai) | `AZURE_OPENAI_API_KEY` | ✅ |
 | Anthropic | [⟦T51⟧](/oss/python/integrations/chat/anthropic) | `ANTHROPIC_API_KEY` | ✅ |
 |谷歌双子座 API | [⟦T53⟧](/oss/python/integrations/chat/google_generative_ai) | `GOOGLE_API_KEY` | ✅ |
-| Gemini企业代理平台 | [⟦T55⟧](/oss/python/integrations/chat/google_generative_ai#credentials) | `GOOGLE_CLOUD_PROJECT` | ✅ |
+| Gemini企业代理平台| [⟦T55⟧](/oss/python/integrations/chat/google_generative_ai#credentials) | `GOOGLE_CLOUD_PROJECT` | ✅ |
 | Gemini企业代理平台（Anthropic）| [⟦T57⟧](/oss/python/integrations/chat/google_anthropic_vertex) | `GOOGLE_CLOUD_PROJECT`、`GOOGLE_CLOUD_LOCATION` | ✅ |
 |巴斯坦| [⟦T60⟧](https://github.com/basetenlabs/langchain-baseten) | `BASETEN_API_KEY` | ✅ |
 | AWS 基岩 | [⟦T62⟧](/oss/python/integrations/chat/bedrock) | `AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY` | ✅ |
@@ -85,7 +85,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 > /model --default nvidia:nvidia/nemotron-3.5-super-vl-120b-a12b
 > ```
 >
-> NVIDIA 提供商默认使用公共构建端点。检查[NVIDIA Build](https://build.nvidia.com/)以了解型号可用性。对于配置的专用端点，设置 `NVIDIA_BASE_URL` 或通过 `dcode auth set nvidia --base-url URL` 将其 URL 与凭证配对。> [手风琴] 在Gemini企业代理平台上配置Anthropic型号
+> NVIDIA 提供商默认使用公共构建端点。检查[NVIDIA Build](https://build.nvidia.com/)以了解型号可用性。对于已配置的专用端点，设置 `NVIDIA_BASE_URL` 或通过 `dcode auth set nvidia --base-url URL` 将其 URL 与凭证配对。> [手风琴] 在Gemini企业代理平台上配置Anthropic型号
 >
 > `google_anthropic_vertex` 提供商通过 Gemini Enterprise Agent Platform 上的 Anthropic 消息 API 运行 Claude。它使用 Google Cloud 应用程序默认凭据 (ADC)，而不是 Anthropic API 密钥。
 >
@@ -151,14 +151,14 @@ Deep Agents 代码将您的浏览器打开至 ChatGPT 登录页面。如果无�
 登录后，Codex 模型将显示在 `openai_codex` 提供商下的 `/model` 切换器中。直接根据其规格切换到一个：
 
 ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/model openai_codex:gpt-5.5
+/model openai_codex:gpt-6.1-sol
 ```
 
 您的登录在各个会话中持续存在。要检查您的状态或注销，请运行`/auth`，选择`openai_codex`，然后选择重新验证或注销。
 
 > [!注意]
 >
-> `openai_codex` 与 `openai` 是分开的。要使用带有标准 API 密钥的 OpenAI 模型，请使用常规 `openai` 提供程序（例如 `/model openai:gpt-5.5`）。> [!注意]
+> `openai_codex` 与 `openai` 是分开的。要使用带有标准 API 密钥的 OpenAI 模型，请使用常规 `openai` 提供程序（例如 `/model openai:gpt-6.1-sol`）。> [!注意]
 >
 > 某些提供商特定的帐户类型或关键范围可能不适用于 API 访问。如果提供程序在 `/auth` 中已配置，但请求仍然失败，请验证帐户计划和 API 密钥权限是否符合提供程序的 API 要求。
 
@@ -199,12 +199,12 @@ dcode --install litellm
 
 1. **通过 `/model` 命令使用交互式模型切换器**。> [!注意]
    >
-   > 此处并未显示所有型号。如果您的型号丢失，请直接传递型号名称（例如`/model gpt-5.5`）或将其添加到`config.toml`。
-2. **直接指定模型名称**作为参数，例如`/model gpt-5.5`。您可以使用所选提供商支持的任何模型，无论它是否出现在选项 1 的列表中。模型名称将传递到 API 请求。
+   > 此处并未显示所有型号。如果您的型号丢失，请直接传递型号名称（例如`/model gpt-6.1-sol`）或将其添加到`config.toml`。
+2. **直接指定模型名称**作为参数，例如`/model gpt-6.1-sol`。您可以使用所选提供商支持的任何模型，无论它是否出现在选项 1 的列表中。模型名称将传递到 API 请求。
 3. **通过`--model`指定启动时的型号**，例如
 
    ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   dcode --model openai:gpt-5.5
+   dcode --model openai:gpt-6.1-sol
    ```
 
 > [手风琴] 模型解析顺序
@@ -373,7 +373,7 @@ dcode --default-model
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    # OpenAI reasoning effort
-   dcode --model openai:gpt-5.5 --model-params '{"reasoning": {"effort": "high"}}'
+   dcode --model openai:gpt-6.1-sol --model-params '{"reasoning": {"effort": "high"}}'
 
    # Anthropic extended thinking
    dcode --model anthropic:claude-opus-4-8 --model-params '{"thinking": {"type": "enabled", "budget_tokens": 10000}, "max_tokens": 16000}'

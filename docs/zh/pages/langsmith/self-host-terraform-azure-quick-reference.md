@@ -12,13 +12,13 @@
 
 ## 部署概述
 
-|舞台|部署什么 |命令|
+|舞台|部署什么 |命令 |
 | - | - | - |
 |基础设施| AKS + Postgres + Redis + Blob + Key Vault + 证书管理器 + KEDA + 入口 | `make apply` |
 |应用程序秘密 | LangSmith 应用程序机密写入 Key Vault。永远不会覆盖现有的秘密 | `make seed-secrets` |
 |集群凭据 | Key Vault 中的 Kubeconfig + Kubernetes 秘密 | `make kubeconfig && make k8s-secrets` |
 | LangSmith | LangSmith 通过 shell 脚本发布 Helm | `make init-values && make deploy` |
-| LangSmith 部署插件 |主机后端、侦听器、操作员。首先将 `default_node_pool_min_count` 提升到 5 | `make apply && make init-values && make deploy` |
+|代理服务器托管附加组件 |主机后端、侦听器、操作员。首先将 `default_node_pool_min_count` 提升到 5 | `make apply && make init-values && make deploy` |
 |舰队附加组件 |舰队工具服务器和触发器服务器，以及专用的 `langsmith_fleet` Postgres 数据库。需要 `enable_deployments` 和 `postgres_source = "external"` | `make apply && make init-values && make deploy` |
 |代理生成器附加组件 | Fleet 取代的传统路径：工具服务器和触发服务器 | `make init-values && make deploy` |
 |见解 + Polly 附加组件 |洞察分析，Polly 评估代理 | `make init-values && make deploy` ||史密斯数据库 | PostgreSQL 18 元存储、Blob 容器、工作负载身份。需要图表 0.17，`v0.17.*` 模块标签上的默认值 | `make apply && make init-values && make deploy` |
@@ -97,7 +97,7 @@ make keyvault                                       # interactive menu
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # infra/terraform.tfvars
 sizing_profile       = "production"   # minimum | dev | production | production-large
-enable_deployments   = true           # LangSmith Deployment add-on (listener + operator + host-backend)
+enable_deployments   = true           # Agent Server hosting add-on (listener + operator + host-backend)
 enable_fleet         = true           # Fleet add-on (requires enable_deployments and postgres_source = "external")
 enable_agent_builder = false          # legacy Agent Builder (requires enable_deployments); cannot be combined with enable_fleet
 enable_insights      = true           # Insights analytics add-on
@@ -109,7 +109,7 @@ enable_sso_oidc      = false          # OIDC SSO; enable only after logging in a
 
 > [!警告]
 >
-> LangSmith 部署插件首先需要 `default_node_pool_min_count = 5`。操作员生成的 pod 需要节点净空；如果没有它，特工吊舱将无限期地停留在 `Pending` 中。
+> 代理服务器托管附加组件首先需要 `default_node_pool_min_count = 5`。操作员生成的 pod 需要节点净空；如果没有它，特工吊舱将无限期地停留在 `Pending` 中。
 
 ## 尺寸配置文件
 
@@ -158,7 +158,7 @@ helm status langsmith -n langsmith
 helm history langsmith -n langsmith
 helm get values langsmith -n langsmith
 
-# LangSmith Deployment
+# Agent Server hosting
 kubectl get lgp -n langsmith
 kubectl get crd | grep langchain
 ```
@@ -220,7 +220,7 @@ make tf ARGS="state list"
 ## 关键限制* `make apply` 运行三个目标阶段（Azure 基础设施、Kubernetes 引导程序，然后是其他所有阶段），每个阶段都会提示确认。 `ARGS="-auto-approve"` 跳过所有三个提示。
 * 在`terraform destroy`之前卸载Helm。 Azure 负载均衡器拥有子网引用；保留它会阻止 VNet 删除。首先运行`make uninstall`。
 * `config.deployment.url` 必须包含 `https://`。如果没有它，操作员产生的代理就会陷入`DEPLOYING`。
-* LangSmith 部署附加组件需要`config.deployment.enabled: true`。仅设置不带 `enabled: true` 的 URL 会静默跳过 `listener` 和 `operator`。
+* 代理服务器托管附加组件需要`config.deployment.enabled: true`。仅设置不带 `enabled: true` 的 URL 会静默跳过 `listener` 和 `operator`。
 * 首次启用后加密密钥不得更改。旋转`insights_encryption_key`或`polly_encryption_key`会永久破坏现有的加密数据。
 * 首次启用 Polly 后滚动前端。 Polly 注册后出现`langsmith-polly-config` ConfigMap；较早启动的前端 Pod 不接收它。
 * `letsencrypt` (HTTP-01) 仅适用于 `nginx`、`istio`（自我管理）和 `envoy-gateway`。对于 `istio-addon` 或 `agic`，请将 `dns01` 与自定义域一起使用，将 `existing` 与您自己的证书一起使用，或将 `none` 用于仅 HTTP。
@@ -231,7 +231,7 @@ make tf ARGS="state list"
 ## 拆解
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-make uninstall   # removes Helm release + LangSmith Deployment resources; prompts to delete namespace
+make uninstall   # removes Helm release + Agent Server hosting resources; prompts to delete namespace
 helm uninstall ingress-nginx -n ingress-nginx --wait   # only with ingress_controller = "nginx"
 make destroy     # destroys all Azure infrastructure via terraform destroy
 make clean       # removes local secrets, config, helm values, and tfstate files

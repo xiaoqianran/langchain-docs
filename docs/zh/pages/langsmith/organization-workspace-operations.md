@@ -214,10 +214,10 @@
 |更新过滤器视图 | ✓ | ✓ | ✗ | `projects:update` |
 |删除筛选视图 | ✓ | ✗ | ✗ | `projects:delete` |
 |删除项目 | ✓ | ✗ | ✗ | `projects:delete` |
-|删除多个项目 | ✓ | ✗ | ✗ | `projects:delete` |
+|删除多个项目| ✓ | ✗ | ✗ | `projects:delete` |
 |获取洞察职位 | ✓ | ✓ | ✓ | `projects:read` |
 |获得具体的工作见解 | ✓ | ✓ | ✓ | `projects:read` |
-|创建洞察工作 | ✓ | ✓ | ✓ | `projects:read` + `rules:create` ||更新洞察工作 | ✓ | ✓ | ✗ | `projects:update` |
+|创建洞察工作| ✓ | ✓ | ✓ | `projects:read` + `rules:create` ||更新洞察工作 | ✓ | ✓ | ✗ | `projects:update` |
 |删除见解作业 | ✓ | ✗ | ✗ | `projects:delete` |
 |获取作业配置见解 | ✓ | ✓ | ✓ | `rules:read` |
 |创建见解作业配置 | ✓ | ✓ | ✗ | `rules:create` |
@@ -229,7 +229,7 @@
 
 > [!注意]
 >
-> \* `projects:increase-trace-tier` 和 `projects:decrease-trace-tier` 是独立的，可以在自定义角色中单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 部分启用（禁止的方向被禁用）。
+> \* `projects:increase-trace-tier` 和 `projects:decrease-trace-tier` 是独立的，可以在自定义角色中单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 将部分启用（禁用不允许的方向）。
 
 > [!注意]
 >
@@ -274,7 +274,7 @@
 
 ### 警报
 
-用于监控运行状况的警报规则。
+用于监控运行条件的警报规则。
 
 |运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
@@ -309,7 +309,7 @@
 |公开分享数据集 | ✓ | ✗ | ✗ | `datasets:share` |
 |取消共享数据集 | ✓ | ✗ | ✗ | `datasets:share` |
 |获取索引信息 | ✓ | ✓ | ✓ | `datasets:read` |
-|索引数据集| ✓ | ✓ | ✗ | `datasets:update` |
+|索引数据集 | ✓ | ✓ | ✗ | `datasets:update` |
 |同步数据集索引 | ✓ | ✓ | ✗ | `datasets:update` ||删除数据集索引 | ✓ | ✓ | ✗ | `datasets:update` |
 |搜索数据集 | ✓ | ✓ | ✓ | `datasets:read` |
 |生成综合示例 | ✓ | ✓ | ✗ | `datasets:update` |
@@ -328,7 +328,7 @@
 数据集中的单个示例。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |数个例子 | ✓ | ✓ | ✓ | `datasets:read` |
-|查看具体示例| ✓ | ✓ | ✓ | `datasets:read` |
+|查看具体示例 | ✓ | ✓ | ✓ | `datasets:read` |
 |列出示例 | ✓ | ✓ | ✓ | `datasets:read` |
 |创建一个新示例 | ✓ | ✓ | ✗ | `datasets:update` |
 |创建示例（批量）| ✓ | ✓ | ✗ | `datasets:update` |
@@ -379,13 +379,13 @@ LLM 输出的分数、标签和更正。
 | - | :-: | :-: | :-: | - |
 |列出反馈公式（已弃用）| ✓ | ✓ | ✓ | `feedback:read` |
 |获取反馈公式（已弃用）| ✓ | ✓ | ✓ | `feedback:read` |
-|创建反馈公式（已弃用） | ✓ | ✓ | ✗ | `feedback:create` |
+|创建反馈公式（已弃用）| ✓ | ✓ | ✗ | `feedback:create` |
 |更新反馈公式（已弃用）| ✓ | ✓ | ✗ | `feedback:update` |
 |删除反馈公式（已弃用）| ✓ | ✓ | ✗ | `feedback:delete` |
 |查看具体反馈 | ✓ | ✓ | ✓ | `feedback:read` |
 |列出反馈 | ✓ | ✓ | ✓ | `feedback:read` |
 |创建反馈 | ✓ | ✓ | ✗ | `feedback:create` |
-|积极创建反馈| ✓ | ✓ | ✗ | `feedback:create` |
+|积极创建反馈 | ✓ | ✓ | ✗ | `feedback:create` |
 |更新反馈 | ✓ | ✓ | ✗ | `feedback:update` |
 |删除反馈 | ✓ | ✓ | ✗ | `feedback:delete` |
 |批量摄取反馈| ✓ | ✓ | ✗ | `feedback:create` |
@@ -463,8 +463,8 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |创建优化作业 | ✓ | ✓ | ✗ | `prompts:create` |
 |更新优化作业 | ✓ | ✓ | ✗ | `prompts:update` |
 |删除优化作业 | ✓ | ✓ | ✗ | `prompts:delete` ||调用提示画布 | ✓ | ✓ | ✗ | `prompts:update` |
-|列出快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
-|创建快速行动| ✓ | ✓ | ✓ | `prompts:read` |
+|列出快速行动| ✓ | ✓ | ✓ | `prompts:read` |
+|创建快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
 |删除快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
 |更新快动作| ✓ | ✓ | ✓ | `prompts:read` |
 
@@ -493,7 +493,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 
 ### 部署
 
-[LangSmith Deployment](/langsmith/deployment) 配置。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
+[LangSmith Agent Server](/langsmith/deployment) 配置。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |创建部署 | ✓ | ✓ | ✗ | `deployments:create` |
 |查看部署 | ✓ | ✓ | ✓ | `deployments:read` |
@@ -557,7 +557,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |获取标签值 | ✓ | ✓ | ✓ | `workspaces:read` |
 |创建标签值 | ✓ | ✗ | ✗ | `workspaces:manage` |
 |更新标签值 | ✓ | ✗ | ✗ | `workspaces:manage` |
-|删除标签值 | ✓ | ✗ | ✗ | `workspaces:manage` |
+|删除标签值| ✓ | ✗ | ✗ | `workspaces:manage` |
 |列表标签 | ✓ | ✓ | ✓ | `workspaces:read` |
 |列出资源标签 | ✓ | ✓ | ✓ | `workspaces:read` |
 |列出资源标签（批量）| ✓ | ✓ | ✓ | `workspaces:read` |
@@ -590,7 +590,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 | - | :-: | :-: | :-: | - |
 |列出 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
 |获取 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
-|创建MCP服务器| ✓ | ✓ | ✓ | `workspaces:read` |
+|创建MCP服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
 |更新MCP服务器| ✓ | ✓ | ✓ | `workspaces:read` |
 |删除 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
 
@@ -611,9 +611,9 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 * 更新自己的用户资料
 * 列出用户的组织
 * 创建新组织
-* 列出待处理的工作区邀请
+* 列出待处理的工作空间邀请
 * 删除待处理的工作区邀请
-* 领取待处理的工作区邀请
+* 领取待处理的工作空间邀请
 * 列出待处理的组织邀请
 * 删除待处理的组织邀请
 * 领取待定组织邀请

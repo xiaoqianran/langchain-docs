@@ -62,7 +62,7 @@ import { lookupCustomer } from "./tools/customer";
 
 export const agent = defineDeepAgent({
   name: "support-agent",
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [lookupCustomer],
 });
 ```
@@ -82,7 +82,7 @@ import { lookupCustomer } from "./tools/customer";
 
 export const agent = defineDeepAgent({
   name: "support-agent",
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [lookupCustomer],
   interruptOn: {
     lookup_customer: true,
@@ -129,7 +129,7 @@ When a run hits an interrupt, it pauses and waits for a human response before co
 
 * **During local development**, `mda dev` runs the agent in LangSmith Studio, which surfaces the interrupt so you can inspect the pending tool call and resume the run.
 
-* **On a deployed agent**, resume the paused run through the LangGraph server API with a resume payload. See [Human-in-the-loop using server API](/langsmith/add-human-in-the-loop).
+* **On a deployed agent**, resume the paused run through the Agent Server API with a resume payload. See [Human-in-the-loop using server API](/langsmith/add-human-in-the-loop).
 
 Human-in-the-loop needs durable thread state to pause and resume. The managed runtime owns the checkpointer, so no extra setup is required.
 

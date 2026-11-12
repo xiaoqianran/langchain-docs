@@ -21,7 +21,7 @@ This page explains how to:
 
 > [!TIP]
 >
-> When you deploy on [LangSmith Deployment](/langsmith/deployment), a store is provisioned automatically. Use [LangSmith](/langsmith/observability) tracing to debug file paths, permission denials, and cross-thread storage. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up.
+> When you deploy on [LangSmith Agent Server](/langsmith/deployment), a store is provisioned automatically. Use [LangSmith](/langsmith/observability) tracing to debug file paths, permission denials, and cross-thread storage. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up.
 >
 > We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
 
@@ -99,11 +99,11 @@ from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
 # By default we provide a StateBackend
-agent = create_deep_agent(model="openai:gpt-5.5")
+agent = create_deep_agent(model="openai:gpt-6.1-sol")
 
 # Under the hood, it looks like
 agent2 = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=StateBackend(),
 )
 ```
@@ -243,7 +243,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=FilesystemBackend(root_dir=".", virtual_mode=True),
 )
 ```
@@ -384,7 +384,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
 )
 ```
@@ -463,7 +463,7 @@ agent = create_deep_agent(
     backend=StoreBackend(
         namespace=lambda rt: (rt.server_info.user.identity,),
     ),
-    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 )
 ```
 
@@ -473,11 +473,11 @@ from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=StoreBackend(
         namespace=lambda rt: (rt.server_info.user.identity,),
     ),
-    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 )
 ```
 
@@ -491,7 +491,7 @@ agent = create_deep_agent(
     backend=StoreBackend(
         namespace=lambda rt: (rt.server_info.user.identity,),
     ),
-    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 )
 ```
 
@@ -505,7 +505,7 @@ agent = create_deep_agent(
     backend=StoreBackend(
         namespace=lambda rt: (rt.server_info.user.identity,),
     ),
-    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 )
 ```
 
@@ -519,7 +519,7 @@ agent = create_deep_agent(
     backend=StoreBackend(
         namespace=lambda rt: (rt.server_info.user.identity,),
     ),
-    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 )
 ```
 
@@ -533,7 +533,7 @@ agent = create_deep_agent(
     backend=StoreBackend(
         namespace=lambda rt: (rt.server_info.user.identity,),
     ),
-    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 )
 ```
 
@@ -547,13 +547,13 @@ agent = create_deep_agent(
     backend=StoreBackend(
         namespace=lambda rt: (rt.server_info.user.identity,),
     ),
-    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 )
 ```
 
 > [!NOTE]
 >
-> When deploying to [LangSmith Deployment](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
+> When deploying to [LangSmith Agent Server](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
 
 > [!TIP]
 >
@@ -566,7 +566,7 @@ agent = create_deep_agent(
 **Best for:**
 
 * When you already run with a configured LangGraph store (for example, Redis, Postgres, or cloud implementations behind [`BaseStore`](https://reference.langchain.com/python/langchain-core/stores/BaseStore)).
-* When you're deploying your agent through [LangSmith Deployment](/langsmith/deployment) (a store is automatically provisioned for your agent).
+* When you're deploying your agent through [LangSmith Agent Server](/langsmith/deployment) (a store is automatically provisioned for your agent).
 
 #### Namespace factories
 
@@ -581,7 +581,7 @@ NamespaceFactory = Callable[[Runtime], tuple[str, ...]]
 The `Runtime` provides:
 
 * `rt.context`—User-supplied context passed via LangGraph's [context schema](/oss/python/langgraph/graph-api#runtime-context) (for example, `user_id`)
-* `rt.server_info`—Server-specific metadata when running on LangGraph Server (assistant ID, graph ID, authenticated user)
+* `rt.server_info`—Server-specific metadata when running on Agent Server (assistant ID, graph ID, authenticated user)
 * `rt.execution_info`—Execution identity information (thread ID, run ID, checkpoint ID)
 
 > [!NOTE]
@@ -652,7 +652,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=ContextHubBackend("my-agent"),
 )
 ```
@@ -755,7 +755,7 @@ from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=CompositeBackend(
         default=StateBackend(),
         routes={

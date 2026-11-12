@@ -103,7 +103,7 @@ make preflight-ssm
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # infra/terraform.tfvars
-enable_deployments     = true   # LangSmith Deployment (listener, operator, host-backend)
+enable_deployments     = true   # Agent Server hosting (listener, operator, host-backend)
 enable_fleet           = true   # Fleet (formerly Agent Builder); needs external Postgres and Redis when fleet_storage = "external" (default)
 enable_insights        = true   # AI-powered trace analysis
 enable_polly           = true   # LangSmith Chat (formerly Polly)
@@ -132,7 +132,7 @@ sizing_profile = "default"           # chart defaults (no sizing file)
 
 ## 制定目标
 
-### 设置和秘密|命令|描述 |
+### 设置和秘密|命令 |描述 |
 | - | - |
 | `make quickstart` |交互式向导。生成`infra/terraform.tfvars`（区域、节点大小、TLS 方法、附加组件）。 |
 | `make setup-env` |打印用于将机密加载到 shell 中的确切 `source` 命令。无法直接导出变量。 |
@@ -142,7 +142,7 @@ sizing_profile = "default"           # chart defaults (no sizing file)
 
 ### 飞行前
 
-|命令|描述 |
+|命令 |描述 |
 | - | - |
 | `make preflight` |在 Terraform 运行之前验证 AWS 凭证、IAM 权限和所需的 CLI 工具。 |
 | `make preflight-post` |在`make init-values`之后、`make deploy`之前运行。检查 kubectl 上下文、集群可访问性、填充的 SSM 参数、存在的 Helm 值、TLS 配置。 |
@@ -150,7 +150,7 @@ sizing_profile = "default"           # chart defaults (no sizing file)
 
 ### 基础设施
 
-`make init`、`make plan`、`make apply` 和 `make destroy` 将 `ARGS` 传递到 Terraform。例如：`make plan ARGS="-target=module.eks"`、`make plan ARGS="-out=tfplan"`，然后`make apply ARGS="tfplan"`、`make apply ARGS="-auto-approve"` 或 `make init ARGS="-upgrade"`。|命令|描述 |
+`make init`、`make plan`、`make apply` 和 `make destroy` 将 `ARGS` 传递到 Terraform。例如：`make plan ARGS="-target=module.eks"`、`make plan ARGS="-out=tfplan"`，然后`make apply ARGS="tfplan"`、`make apply ARGS="-auto-approve"` 或 `make init ARGS="-upgrade"`。|命令 |描述 |
 | - | - |
 | `make init` | `terraform init`。下载提供程序和模块。可以安全地重新运行。 |
 | `make plan` | `terraform plan`。预览更改。每次申请前都要审查。 |
@@ -160,7 +160,7 @@ sizing_profile = "default"           # chart defaults (no sizing file)
 | `make purge-secrets` |在 `make destroy` 之后删除此部署的 SSM 参数。当 Terraform 状态仍然有资源时拒绝，并要求您输入前缀进行确认。 |
 | `make teardown-byo-sg BYO_SECURITY_GROUP_IDS="sg-..."` |从模块创建的 VPC 中删除在 Terraform 外部创建的安全组，以便 `make destroy` 可以删除 VPC。 |
 
-### 头盔部署|命令|描述 |
+### 头盔部署|命令 |描述 |
 | - | - |
 | `make init-values` |从 Terraform 输出生成 `helm/values/langsmith-values-overrides.yaml`。根据 `enable_*` 标志复制附加值文件。 |
 | `make deploy` |通过 Helm 部署或升级 LangSmith。更新 kubeconfig、运行预检、ESO 同步、分层值构建和核心准备情况检查。清除卡住的 `pending-upgrade` 或 `pending-install` 版本，并刷新过时的 ALB 主机名。 |
@@ -169,26 +169,26 @@ sizing_profile = "default"           # chart defaults (no sizing file)
 
 ### 快速路径
 
-|命令|描述 |
+|命令 |描述 |
 | - | - |
 | `make quickdeploy` |通过一个命令进行完整部署。链 `terraform apply`、kubeconfig、`init-values` 和 Helm 使用门进行部署。需要 `make quickstart` 和来源的 `setup-env.sh`。 |
 | `make quickdeploy-auto` |与`quickdeploy`相同，但非交互式。将 `-auto-approve` 传递给 terraform。 |
 | `make deploy-all` |依次运行 `make apply`、`make kubeconfig`、`make init-values` 和 `make deploy`。 `make deploy` 在安装前刷新 kubeconfig。 |
 
-### 实用程序|命令|描述 |
+### 实用程序|命令 |描述 |
 | - | - |
 | `make status` |检查所有层的部署状态，打印下一步要运行的内容。启用 SmithDB 时报告 SmithDB 摄取和查询门。 |
 | `make status-quick` |与 `status` 相同，但跳过 SSM、kubeconfig、Helm 发布和 Kubernetes 查询（更快）。 |
 | `make kubeconfig` |打印要运行的`source infra/scripts/set-kubeconfig.sh`命令。将其导出 `KUBECONFIG` 到专用的 `~/.kube/langsmith-<cluster>` 文件，而不是编辑 `~/.kube/config`。 |
-| `make tls` | BYO ACM 证书 + Route 53 A 别名。当设置了`langsmith_domain`并且需要DNS布线时使用。 |
-| `make clean` |删除本地 Terraform 状态、备份、日志、生成的 Helm 值和 `terraform.tfvars`。追随`make destroy`和`make purge-secrets`。当 Terraform 状态仍跟踪资源或保留 SSM 参数时拒绝。如果状态已消失但本地状态备份仍然存在，则要求您在删除它们之前输入`DELETE BACKUPS`。 |
+| `make tls` | BYO ACM 证书 + Route 53 A 别名。当设置`langsmith_domain`并且需要DNS布线时使用。 |
+| `make clean` |删除本地 Terraform 状态、备份、日志、生成的 Helm 值和 `terraform.tfvars`。追随`make destroy`和`make purge-secrets`。当 Terraform 状态仍跟踪资源或保留 SSM 参数时拒绝。如果状态消失但本地状态备份仍然存在，则要求您在删除它们之前输入`DELETE BACKUPS`。 |
 
-### 测试|命令|描述 |
+### 测试|命令 |描述 |
 | - | - |
 | `make test-e2e` |针对当前集群的端到端网关测试（ALB 或 Envoy Gateway）。 |
 | `make test-permutations` |在当前集群上按顺序进行排列测试。使用 `ARGS="1 2 5"` 作为子集。 |
 | `make test-parallel` |跨隔离集群并行排列测试。您的集群未受影响。 |
-| `make test-quickstart` |测试 `make quickstart` Route 53 选择和更新模式默认值。 Makes no AWS calls. |
+| `make test-quickstart` |测试 `make quickstart` Route 53 选择和更新模式默认值。不进行 AWS 调用。 |
 
 ## kubectl
 
@@ -223,7 +223,7 @@ helm get values langsmith -n langsmith
 # IRSA: check per-component service account annotations
 kubectl get sa -n langsmith -o yaml | grep eks.amazonaws.com
 
-# LangSmith Deployment (LangGraph Platform)
+# Agent Server hosting
 kubectl get lgp -n langsmith
 kubectl get crd | grep langchain
 kubectl get pods -n keda
@@ -266,7 +266,7 @@ aws ssm get-parameters-by-path --path "/langsmith/<name_prefix>-<environment>/" 
 aws iam get-role --role-name <irsa-role-name>
 ```
 
-## Terraform
+## 地形
 
 从 `modules/aws/` 运行这些：
 
@@ -282,7 +282,7 @@ make tf ARGS="output -raw bucket_name"
 make tf ARGS="state list"
 ```
 
-## Teardown
+## 拆解
 
 > [!警告]
 >

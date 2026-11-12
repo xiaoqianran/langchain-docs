@@ -239,7 +239,7 @@ For the full negotiation rules, see [Protocol negotiation](https://gofastmcp.com
 
 * [Authentication](/oss/python/langchain/mcp/auth): Bearer, OAuth, and per-user credentials.
 
-* [Deploy a LangGraph server](/oss/python/langgraph/local-server): Graph factories for long-lived deployments.
+* [Run a local Agent Server](/oss/python/langgraph/local-server): Graph factories for long-lived deployments.
 
 * [Rebuild a graph at runtime](/langsmith/graph-rebuild): Factory forms for Agent Server, including the context manager pattern.
 

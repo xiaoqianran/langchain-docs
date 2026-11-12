@@ -4,27 +4,27 @@
 
 # 部署到自托管
 
-在您自己的基础设施上运行 LangSmith 部署平台，完全控制数据、网络和资源。
+在您自己的基础设施上托管 LangSmith 代理服务器，完全控制数据、网络和资源。
 
-自托管 LangSmith 部署在您操作的基础设施内运行 [Agent Server](/langsmith/agent-server)、控制平面、数据平面和支持数据库。
+自托管代理服务器托管在您操作的基础设施内运行 [LangSmith Agent Server](/langsmith/agent-server) 及其支持数据库。通过完整的自托管 LangSmith 安装，您还可以运行控制平面和数据平面侦听器。
 
-LangChain 运送容器镜像、Helm 图表和许可证；您提供 Kubernetes 集群（或 Docker 主机）、PostgreSQL、Redis 以及适合您环境的网络和可观察性工具。当您有数据驻留、监管限制、自定义网络或气隙要求时，自托管是最佳部署选项。
+LangChain 发送容器镜像、Helm 图表和许可证；您提供 Kubernetes 集群（或 Docker 主机）、PostgreSQL、Redis 以及适合您环境的网络和可观察性工具。当您有数据驻留、监管限制、自定义网络或气隙要求时，自托管是最佳部署选项。
 
 自托管部署需要随该计划提供的 [Enterprise plan](https://www.langchain.com/pricing) 和 LangSmith 许可证密钥。有关设置指南，请参阅[Self-hosted LangSmith](/langsmith/self-hosted)。
 
 ## 拓扑结构
 
-LangSmith 支持三种自托管拓扑，可在设置复杂性与控制平面功能之间进行权衡。 [platform features](/langsmith/self-hosted-platform-features)、[Agent Server metrics](/langsmith/self-hosted-agent-server-metrics) 和 [diagnostics](/langsmith/diagnostics-self-hosted) 的参考页适用于所有三个。
-
-> [卡][Full self-hosted platform](/langsmith/deploy-with-control-plane)
+LangSmith 支持三种自托管拓扑，可在设置复杂性与控制平面功能之间进行权衡。 [platform features](/langsmith/self-hosted-platform-features)、[Agent Server metrics](/langsmith/self-hosted-agent-server-metrics) 和 [diagnostics](/langsmith/diagnostics-self-hosted) 的参考页适用于所有三个。> [卡][Full self-hosted platform](/langsmith/deploy-with-control-plane)
 >
-> 完整的 LangSmith 平台 — [control plane](/langsmith/control-plane) UI 和 API、[data plane](/langsmith/data-plane) 监听器、可观察性、评估和代理部署管理。最适合希望在自己的网络中获得 LangSmith 产品体验的团队。> [卡][Hybrid](/langsmith/hybrid)
+> 完整的 LangSmith 平台 — [control plane](/langsmith/control-plane) UI 和 API、[data plane](/langsmith/data-plane) 监听器、可观察性、评估和代理部署管理。最适合希望在自己的网络中获得 LangSmith 产品体验的团队。
+
+> [卡][Hybrid](/langsmith/hybrid)
 >
 > LangChain 托管控制平面以及基础设施中的数据平面（代理服务器和数据库）。当您需要托管部署工作流程但需要代理工作负载和客户数据保留在 VPC 内时，这是最佳选择。
 
 > [卡][Standalone server](/langsmith/deploy-standalone-server)
 >
-> 最轻的选项 - 具有您自己的 PostgreSQL 和 Redis 的代理服务器容器（API + 队列工作人员）。没有控制平面，没有托管 UI。最适合将运行时嵌入现有基础设施或气隙运行。
+> 最轻的选项 - 带有您自己的 PostgreSQL 和 Redis 的代理服务器容器（API + 队列工作线程）。没有控制平面，没有托管 UI。最适合将运行时嵌入现有基础设施或气隙运行。
 
 > [卡片] [Platform features](/langsmith/self-hosted-platform-features)
 >
@@ -32,15 +32,15 @@ LangSmith 支持三种自托管拓扑，可在设置复杂性与控制平面功�
 
 > [卡][Agent Server metrics](/langsmith/self-hosted-agent-server-metrics)
 >
-> Agent Server 的 Prometheus 和 Datadog 导出，包括部署 UI 指标和内部指标。
+> Agent Server 的 Prometheus 和 Datadog 导出，包括 Agent Server UI 指标和内部指标。
 
 > [卡片][Diagnostics](/langsmith/diagnostics-self-hosted)
 >
 > 收集日志、检查状态并对自承载安装进行故障排除。
 
-## 谁管理什么
+## 谁管理什么自托管将基础设施运营的所有权从LangChain转移给您的团队，这为您配置和操作层的方式提供了灵活性和控制：
 
-自托管将基础设施运营的所有权从LangChain转移给您的团队，这为您配置和操作层的方式提供了灵活性和控制：| | **谁管理它** | **它在哪里运行** |
+| | **谁管理它** | **它在哪里运行** |
 | - | - | - |
 | LangSmith 平台（UI、API、数据存储）|你|您的基础设施|
 |代理服务器运行时 |你|您的基础设施|
@@ -56,7 +56,7 @@ LangSmith 支持三种自托管拓扑，可在设置复杂性与控制平面功�
 >
 > 比较独立服务器、完整平台和混合服务器以找到合适的选择。
 
-> [卡][Enable LangSmith Deployment](/langsmith/enable-self-hosted-deployment)
+> [卡][Enable Agent Server hosting](/langsmith/enable-self-hosted-deployment)
 >
 > 添加控制平面和数据平面以在自托管LangSmith上部署和管理代理。
 

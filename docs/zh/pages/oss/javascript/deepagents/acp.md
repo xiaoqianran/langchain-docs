@@ -154,12 +154,12 @@ CLI 是启动 ACP 服务器的最快方法。它不需要任何代码 - 只需�
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx deepagents-acp [options]
-```|选项|短|描述 |
+```|选项 |短|描述 |
 | - | - | - |
 | `--name <name>` | `-n` |代理名称（默认：`"deepagents"`）|
 | `--description <desc>` | `-d` |代理说明 |
 | `--model <model>` | `-m` | LLM模型（默认：`"claude-sonnet-4-5-20250929"`）|
-| `--workspace <path>` | `-w` |工作区根目录（默认：cwd） |
+| `--workspace <path>` | `-w` |工作区根目录（默认：cwd）|
 | `--skills <paths>` | `-s` |以逗号分隔的技能路径 |
 | `--memory <paths>` | |逗号分隔的 AGENTS.md 路径 |
 | `--debug` | |启用调试日志记录到 stderr |
@@ -232,7 +232,7 @@ const server = new DeepAgentsServer({
     {
       name: "code-agent",
       description: "Full-featured coding assistant",
-      model: "openai:gpt-5.5",
+      model: "openai:gpt-6.1-sol",
       skills: ["./skills/"],
       memory: ["./.deepagents/AGENTS.md"],
     },
@@ -386,7 +386,7 @@ const server = new DeepAgentsServer({
 await server.start();
 ```
 
-#### 服务器选项|选项|类型 |默认 |描述 |
+#### 服务器选项|选项 |类型 |默认|描述 |
 | - | - | - | - |
 | `agents` | `DeepAgentConfig \| DeepAgentConfig[]` |必填|代理配置 |
 | `serverName` | `string` | `"deepagents-acp"` | ACP | 的服务器名称
@@ -396,7 +396,7 @@ await server.start();
 
 #### 代理配置
 
-|选项|类型 |描述 |
+|选项 |类型 |描述 |
 | - | - | - |
 | `name` | `string` |唯一的代理名称（必填）|
 | `description` | `string` |代理说明 |
@@ -408,7 +408,7 @@ await server.start();
 | `skills` | `string[]` |技能来源路径|
 | `memory` | `string[]` |内存源路径(AGENTS.md) |
 | `interruptOn` | `Record<string, boolean \| InterruptOnConfig>` |需要用户批准的工具 (HITL) |
-| `commands` | `Array<{ name, description, input? }>` |自定义斜杠命令|
+| `commands` | `Array<{ name, description, input? }>` |自定义斜杠命令 |
 
 ## 定制
 

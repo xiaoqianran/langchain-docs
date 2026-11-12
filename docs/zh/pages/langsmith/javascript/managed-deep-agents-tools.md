@@ -6,15 +6,15 @@
 
 为托管深度代理项目定义创作工具。
 
-自定义工具是代理可以调用​​的应用程序代码，用于获取实时数据、查询数据库、执行代码和采取操作。与 [instructions](/langsmith/javascript/managed-deep-agents-instructions) 和 [skills](/langsmith/javascript/managed-deep-agents-skills) 不同，MDA 不会自动发现它们。
+Custom tools are application code the agent can call for fetching real-time data, querying databases, executing code, and taking actions.与 [instructions](/langsmith/javascript/managed-deep-agents-instructions) 和 [skills](/langsmith/javascript/managed-deep-agents-skills) 不同，MDA 不会自动发现它们。
 
-要从远程 MCP 服务器加载工具，请参阅[Connect to MCP servers](/langsmith/javascript/managed-deep-agents-mcp-connectors)。
+To load tools from a remote MCP server, see [Connect to MCP servers](/langsmith/javascript/managed-deep-agents-mcp-connectors).
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc).使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
-将编写的工具放在`tools/`下，将它们导入到代理条目中，并将它们传递给代理定义：
+Put authored tools under `tools/`, import them into the agent entry, and pass them to the agent definition:
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-agent/
@@ -25,13 +25,13 @@ my-agent/
 
 完整的项目布局请参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
-要从远程 MCP 服务器加载工具而不将其导入代理条目，请改用 [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors)。
+To load tools from a remote MCP server without importing them into the agent entry, use an [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors) instead.
 
-MCP 连接器也在 `tools/` 下声明，因此 `tools/mcp.ts` 文件名是为该声明保留的。
+MCP connectors are declared under `tools/` as well, so the `tools/mcp.ts` file name is reserved for that declaration.
 
 ## 添加工具
 
-使用编写的工具来处理业务逻辑、私有 API、数据库访问以及属于代理项目的其他代码。
+Use authored tools for business logic, private APIs, database access, and other code that belongs in your agent project.
 
 **1.定义工具模块**
 
@@ -51,7 +51,7 @@ export const lookupCustomer = tool(
 );
 ```
 
-使用清晰、独特的工具名称以避免冲突。有关LangChain工具定义的更多信息，请参阅[Tools](/oss/javascript/langchain/tools)。
+Use clear, unique tool names to avoid collisions. For more about LangChain tool definitions, see [Tools](/oss/javascript/langchain/tools).
 
 **2.将工具附加到代理**将工具导入到项目根代理条目中并将其传递到`tools`列表中：
 
@@ -62,7 +62,7 @@ import { lookupCustomer } from "./tools/customer";
 
 export const agent = defineDeepAgent({
   name: "support-agent",
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [lookupCustomer],
 });
 ```
@@ -82,7 +82,7 @@ import { lookupCustomer } from "./tools/customer";
 
 export const agent = defineDeepAgent({
   name: "support-agent",
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [lookupCustomer],
   interruptOn: {
     lookup_customer: true,
@@ -112,9 +112,9 @@ export const agent = defineDeepAgent({
 
 ## 何时使用工具
 
-|概念|亲切 |它如何到达代理|
+|概念 |亲切 |它如何到达代理|
 | - | - | - |
-| **工具** |申请代码 |导入并传入代理定义 |
+| **工具** |申请代码|导入并传入代理定义 |
 | **[MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
 | **[Skills](/langsmith/javascript/managed-deep-agents-skills)** |托管上下文 |代理在相关时加载的程序 |
 | **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** |托管上下文 |永远在线的系统提示 |
@@ -125,7 +125,7 @@ export const agent = defineDeepAgent({
 
 当运行遇到中断时，它会暂停并等待人类响应，然后再继续。
 
-* **在本地开发期间**，`mda dev` 在 LangSmith Studio 中运行代理，它会显示中断，以便您可以检查挂起的工具调用并恢复运行。* **在已部署的代理上**，通过 LangGraph 服务器 API 使用恢复负载恢复暂停的运行。参见[Human-in-the-loop using server API](/langsmith/add-human-in-the-loop)。
+* **During local development**, `mda dev` runs the agent in LangSmith Studio, which surfaces the interrupt so you can inspect the pending tool call and resume the run.* **在已部署的代理上**，通过代理服务器 API 使用恢复负载恢复暂停的运行。参见[Human-in-the-loop using server API](/langsmith/add-human-in-the-loop)。
 
 人机交互需要持久的线程状态来暂停和恢复。托管运行时拥有检查指针，因此不需要额外的设置。
 
@@ -133,7 +133,7 @@ export const agent = defineDeepAgent({
 
 如果工具需要 API 密钥或 OAuth 令牌，请在运行时使用 [connection](/langsmith/javascript/managed-deep-agents-connections) 进行解析。 `connections.get(...)` 采用连接 slug 和凭证所有者，并将凭证作为字符串返回。
 
-第二个参数选择所有者。传递 `{"type": "agent"}` 以获得整个部署共享的一个凭证，例如团队搜索密钥。通过`{"type": "user"}`作为呼叫者自己的凭证，因此代理充当他们的角色。欲了解更多信息，请参阅[Choose a credential owner](/langsmith/javascript/managed-deep-agents-connections#choose-a-credential-owner)。
+第二个参数选择所有者。传递 `{"type": "agent"}` 以获得整个部署共享的一个凭证，例如团队搜索密钥。传递`{"type": "user"}`作为呼叫者自己的凭证，因此代理充当他们的角色。欲了解更多信息，请参阅[Choose a credential owner](/langsmith/javascript/managed-deep-agents-connections#choose-a-credential-owner)。
 
 该工具解析调用者自己的 GitHub 凭证：
 

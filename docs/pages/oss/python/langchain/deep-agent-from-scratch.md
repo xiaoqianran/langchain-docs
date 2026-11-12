@@ -110,7 +110,7 @@ agent = create_agent(model="google_genai:gemini-3.6-flash", tools=[])
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 
-agent = create_agent(model="openai:gpt-5.5", tools=[])
+agent = create_agent(model="openai:gpt-6.1-sol", tools=[])
 ```
 
 ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -187,7 +187,7 @@ sandbox = client.create_sandbox(name="langchain-docs", snapshot_name="docs-test-
 backend = LangSmithSandbox(sandbox=sandbox)
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     middleware=[FilesystemMiddleware(backend=backend)],
 )
@@ -355,7 +355,7 @@ agent = create_agent(
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.middleware import FilesystemMiddleware, SummarizationMiddleware
 
-model = "openai:gpt-5.5"
+model = "openai:gpt-6.1-sol"
 
 agent = create_agent(
     model=model,
@@ -513,7 +513,7 @@ agent = create_agent(
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.middleware import FilesystemMiddleware, SkillsMiddleware, SummarizationMiddleware
 
-model = "openai:gpt-5.5"
+model = "openai:gpt-6.1-sol"
 
 agent = create_agent(
     model=model,
@@ -659,7 +659,7 @@ from deepagents.middleware import (
 )
 from langchain.agents.middleware import TodoListMiddleware
 
-model = "openai:gpt-5.5"
+model = "openai:gpt-6.1-sol"
 
 visualizer: SubAgent = {
     "name": "visualizer",

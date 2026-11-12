@@ -30,7 +30,7 @@ my-agent/
 
 ## 选择一个图层
 
-层命名代理读取和写入其内存的层。每个启用的层都会在代理文件系统中安装自己的读/写树。|层 |安装|属于|用于 |
+层命名代理读取和写入其内存的层。每个启用的层都会在代理文件系统中安装自己的读/写树。|层|安装|属于|用于 |
 | - | - | - | - |
 | **代理** | `/memories/agent/` |部署，由每个调用者共享 |适合每个人的知识，例如团队惯例和可重用程序 |
 | **用户** | `/memories/user/` |开始运行的经过身份验证的人 |个人偏好和呼叫者特定上下文 |
@@ -45,7 +45,7 @@ my-agent/
 >
 > **每个调用者都可以读取代理内存。** 在为多人提供服务的部署中，保存到 `/memories/agent/` 的特定于调用者的详细信息会向所有人公开。
 >
-> 运行时告诉代理不要在那里保存私人或呼叫者特定的信息。该指令只是指导，没有任何强制措施。
+> 运行时告诉代理不要在那里保存私人或呼叫者特定的信息。该指示只是指导，没有任何强制措施。
 >
 > 声明用户内存并为代理提供正确的位置来放置此类详细信息。仅特工记忆就让它无处可去。只有单独安装用户内存的部署才能彻底避免暴露。必须安装代理内存的位置，[require approval before a memory write](#require-approval-before-a-memory-write)。
 
@@ -110,7 +110,7 @@ authorization. When you decide to persist something, use `edit_file` or
 
 声明一个层使其可用。代理是否在给定的运行中达到它是第二个决定，在该运行开始时做出一次：1.运行时解析调用者。除非呼叫者是经过身份验证的人，否则用户记忆将在此停止。
 2. 代理工厂选择该运行的层，或者当没有工厂选择它们时应用项目的声明。
-3. 通过挂载的层及其路径及其热内存负载。
+3. 通过挂载的层及其路径及其热内存加载。
 
 当没有选择运行的层时，托管 Deep Agents 应用以下默认值：
 
@@ -150,7 +150,7 @@ def agent(runtime: ManagedServerRuntime[AppContext]):
     remember = context is not None and context.get("remember") is True
     return define_deep_agent(
         name="office-helpdesk",
-        model="openai:gpt-5.5",
+        model="openai:gpt-6.1-sol",
         memory=(
             define_memory(user=MemoryLayer())
             if remember
@@ -205,7 +205,7 @@ Dynamically selected memory cannot use `allow`. Select memory layers or return N
 
 策略决定是否安装图层。它不决定代理向已安装的层写入什么内容。当人们在保存之前应该看到更改时，请暂停工具调用。无论代理内存安装在具有许多调用者的部署中，这一点都很重要。运行时告诉代理不要在那里保存调用者特定的信息，并且没有任何强制措施。批准卡指定了目标路径。审阅者可以看到写入的目标是哪个挂载，并可以在存储任何内容之前更正或拒绝它。
 
-在内存挂载的`mode="interrupt"`中添加`FilesystemPermission`规则：
+Add a `FilesystemPermission` rule in `mode="interrupt"` over the memory mounts:
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import FilesystemPermission
@@ -215,7 +215,7 @@ from tools.policies import search_policies
 
 agent = define_deep_agent(
     name="office-helpdesk",
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[search_policies],
     permissions=[
         FilesystemPermission(
@@ -227,17 +227,17 @@ agent = define_deep_agent(
 )
 ```
 
-代理在 `/memories/` 下调用 `write_file`，运行在工具运行之前暂停，Slack 或 Studio 会呈现一张批准卡，命名其前往的路径。审阅者可以批准、编辑、拒绝或回复。在 Slack 中，卡片仅提供批准和拒绝。在他们批准之前什么都不会写。
+代理在 `/memories/` 下调用 `write_file`，运行在工具运行之前暂停，Slack 或 Studio 会呈现一张批准卡，命名其前往的路径。 The reviewer can approve, edit, reject, or respond. In Slack the card offers only approve and reject. Nothing is written until they approve.
 
-`paths`决定哪个写暂停。 `/memories/**` 涵盖两个安装座。要仅在写入用户内存时暂停，请设置 `paths=["/memories/user/**"]`。
+`paths` decides which writes pause. `/memories/**` covers both mounts. To pause only on writes to user memory, set `paths=["/memories/user/**"]`.
 
 > [!注意]
 >
-> 与 `create_deep_agent` 不同，`define_deep_agent` 不需要 `checkpointer` 参数。托管运行时提供了一种。
+> Unlike `create_deep_agent`, `define_deep_agent` needs no `checkpointer` argument. The managed runtime supplies one.
 
-中断模式规则与您传递的任何`interrupt_on`合并并以相同的方式恢复。恢复流程请参见[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。规则结构和路径匹配参见[Permissions](/oss/python/deepagents/permissions)。将 `"read"` 添加到 `operations` 即可在 `read_file`、`ls`、`glob` 和 `grep` 上暂停。预计这会经常中断：代理在读取装载之前会列出装载，因此审阅者看到的第一个批准通常是 `ls` 而不是文件。
+Interrupt-mode rules merge with any `interrupt_on` you pass and resume the same way. For the resume flow, see [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop). For rule structure and path matching, see [Permissions](/oss/python/deepagents/permissions).Add `"read"` to `operations` to pause on `read_file`, `ls`, `glob`, and `grep` as well.预计这会经常中断：代理在读取装载之前会列出装载，因此审阅者看到的第一个批准通常是 `ls` 而不是文件。
 
-不包括自动热内存加载。 `AGENTS.md` 被注入到每个模型调用中，而无需工具调用，因此没有规则与该负载匹配。读取或写入热文件的工具调用仍然与冷文件匹配相同的路径规则。
+不包括自动热内存加载。 `AGENTS.md` is injected into every model call without a tool call, so no rule matches that load. Tool calls that read or write the hot file still match the same path rules as cold files.
 
 ## 识别用户记忆背后的人
 
@@ -247,14 +247,14 @@ agent = define_deep_agent(
 | - | - |
 |松弛|事件解析到的连接工作区中的人员 |
 | Studio 部署 |已登录的LangSmith用户 |
-| `mda dev` |您自己的 `langsmith-dev` 代理身份验证主体，通过您的个人 LangSmith API 密钥解析 |
-|直接API运行|无论您的 [identity](/langsmith/python/managed-deep-agents-identity) 提供商以个人身份进行身份验证 |每个人的记忆都位于从部署和主体派生的单独 Context Hub 存储库中。因此，两个部署永远不会共享一个人的内存，即使是同一个人在同一个 Slack 工作区中也是如此。代理内存是用于存储知识的层，这些知识应该在一次部署中传达给每个人。
+| `mda dev` | Your own `langsmith-dev` Agent Auth principal, resolved from your personal LangSmith API key |
+|直接API运行| Whoever your [identity](/langsmith/python/managed-deep-agents-identity) provider authenticates as a person |每个人的记忆都位于从部署和主体派生的单独 Context Hub 存储库中。因此，两个部署永远不会共享一个人的内存，即使是同一个人在同一个 Slack 工作区中也是如此。代理内存是用于存储知识的层，这些知识应该在一次部署中传达给每个人。
 
 ## 代理如何使用内存
 
 每个挂载都包含热内存和冷内存：
 
-|路径|使用 |
+|路径|使用|
 | - | - |
 | `AGENTS.md` 在坐骑的根部 | **热记忆**用于紧凑、频繁相关的知识。它的内容被加载到每个模型调用中。 |
 |挂载下的其他文件 | **冷记忆**详细知识，仅在代理打开文件时读取。 |
@@ -263,7 +263,7 @@ agent = define_deep_agent(
 
 运行时不会对内存进行分层。编写的说明和技能决定要记住什么以及要编写哪个文件。如果没有该指导，模型可能会继续附加到`AGENTS.md`，并且以后的每次调用都会付出代价。为了在每次模型调用中保留详细材料，请命名要写入的冷文件，例如程序、决策日志和研究笔记，并告诉代理从`AGENTS.md`链接到它们。代理使用内置的 [⟦T52⟧](/oss/python/deepagents/tools#built-in-harness-tools)、[⟦T53⟧](/oss/python/deepagents/tools#built-in-harness-tools) 和 [⟦T54⟧](/oss/python/deepagents/tools#built-in-harness-tools) 工具读取和更新内存。尚不存在的热文件在第一次写入之前将保持为空。
 
-对其他位置（包括 `/memories/` 下的其他位置）的写入是不持久的。
+对其他位置（包括 `/memories/` 下的其他位置）的写入并不持久。
 
 > [!警告]
 >
@@ -280,7 +280,7 @@ Studio 写入的位置取决于您正在运行的内容：* **部署**：内存�
 
 本地内存和部署内存是单独的存储，因此您在 `mda dev` 下教导代理的事实在部署后不会出现。
 
-访问决策是个例外。参见[Test memory access](#test-memory-access)。
+访问决策是个例外。 See [Test memory access](#test-memory-access).
 
 欲了解更多信息，请参阅[Local development](/langsmith/python/managed-deep-agents-local-development)。
 
@@ -292,7 +292,7 @@ Studio 写入的位置取决于您正在运行的内容：* **部署**：内存�
 
 ## 何时使用内存
 
-|概念|角色 |范围 |
+|概念 |角色 |范围 |
 | - | - | - |
 | **[Instructions](/langsmith/python/managed-deep-agents-instructions) 和 [skills](/langsmith/python/managed-deep-agents-skills)** |部署拥有的代理行为 |由部署共享并对代理只读 |
 | **线程状态** |对话连续性 |一根线 |
@@ -305,6 +305,6 @@ Studio 写入的位置取决于您正在运行的内容：* **部署**：内存�
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-memory.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

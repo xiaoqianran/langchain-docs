@@ -208,7 +208,7 @@ const AgentOutputFormatSchema = z.object({
 const tools = [codeTool, searchTool, tickerTool];
 
 const agent = createReactAgent({
-  llm: new ChatOpenAI({ model: "gpt-5.5" }),
+  llm: new ChatOpenAI({ model: "gpt-6.1-sol" }),
   tools: tools,
   responseFormat: AgentOutputFormatSchema,
   stateModifier: "You are a financial expert. Respond to the users query accurately",
@@ -219,7 +219,7 @@ export default agent;
 
 ## 编写测试
 
-现在我们已经定义了代理，让我们编写一些测试来确保基本功能。 In this tutorial we are going to test whether the agent's tool calling abilities are working, whether the agent knows to ignore irrelevant questions, and whether it is able to answer complex questions that involve using all of the tools.
+现在我们已经定义了代理，让我们编写一些测试来确保基本功能。在本教程中，我们将测试代理的工具调用能力是否有效，代理是否知道忽略不相关的问题，以及是否能够回答涉及使用所有工具的复杂问题。
 
 我们需要首先设置一个测试文件并在文件顶部添加所需的导入。
 
@@ -506,7 +506,7 @@ class Grade(TypedDict):
       "Return True if the answer is fully grounded in the source documents, otherwise False.",
   ]
 
-judge_llm = init_chat_model("gpt-5.5").with_structured_output(Grade)
+judge_llm = init_chat_model("gpt-6.1-sol").with_structured_output(Grade)
 
 @pytest.mark.langsmith
 def test_grounded_in_source_info() -> None:
@@ -552,7 +552,7 @@ def test_grounded_in_source_info() -> None:
 
 ```typescript Vitest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // THIS CODE GOES OUTSIDE THE TEST - IT IS JUST A HELPER FUNCTION
-const judgeLLM = new ChatOpenAI({ model: "gpt-5.5" });
+const judgeLLM = new ChatOpenAI({ model: "gpt-6.1-sol" });
 const groundedEvaluator = async (params: {
   answer: string;
   referenceDocuments: string,
@@ -594,7 +594,7 @@ ls.test(
 
 ```typescript Jest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // THIS CODE GOES OUTSIDE THE TEST - IT IS JUST A HELPER FUNCTION
-const judgeLLM = new ChatOpenAI({ model: "gpt-5.5" });
+const judgeLLM = new ChatOpenAI({ model: "gpt-6.1-sol" });
 const groundedEvaluator = async (params: {
   answer: string;
   referenceDocuments: string,
@@ -634,7 +634,7 @@ ls.test(
 );
 ```
 
-## Run tests
+## 运行测试
 
 设置配置文件后（如果您使用 Vitest 或 Jest），您可以使用以下命令运行测试：
 
@@ -686,7 +686,7 @@ yarn vitest --config ls.vitest.config.ts
 yarn jest --config ls.jest.config.ts
 ```
 
-## Reference code
+## 参考代码
 
 请记住还将 Vitest 和 Jest 的配置文件添加到您的项目中。
 
@@ -808,7 +808,7 @@ yarn jest --config ls.jest.config.ts
 > const tools = [codeTool, searchTool, tickerTool];
 >
 > const agent = createReactAgent({
->     llm: new ChatOpenAI({ model: "gpt-5.5" }),
+>     llm: new ChatOpenAI({ model: "gpt-6.1-sol" }),
 >     tools: tools,
 >     responseFormat: AgentOutputFormatSchema,
 >     stateModifier: "You are a financial expert. Respond to the users query accurately",
@@ -908,7 +908,7 @@ yarn jest --config ls.jest.config.ts
 >       "Return True if the answer is fully grounded in the source documents, otherwise False.",
 >   ]
 >
-> judge_llm = init_chat_model("gpt-5.5").with_structured_output(Grade)
+> judge_llm = init_chat_model("gpt-6.1-sol").with_structured_output(Grade)
 >
 > @pytest.mark.langsmith
 > def test_grounded_in_source_info() -> None:
@@ -959,7 +959,7 @@ yarn jest --config ls.jest.config.ts
 > import { AIMessage, ToolMessage } from "@langchain/core/messages";
 > import { ChatOpenAI } from "@langchain/openai";
 >
-> const judgeLLM = new ChatOpenAI({ model: "gpt-5.5" });
+> const judgeLLM = new ChatOpenAI({ model: "gpt-6.1-sol" });
 >
 > const groundedEvaluator = async (params: {
 >   answer: string;
@@ -1067,7 +1067,7 @@ yarn jest --config ls.jest.config.ts
 > import { AIMessage } from "@langchain/core/messages";
 > import { ChatOpenAI } from "@langchain/openai";
 >
-> const judgeLLM = new ChatOpenAI({ model: "gpt-5.5" });
+> const judgeLLM = new ChatOpenAI({ model: "gpt-6.1-sol" });
 >
 > const groundedEvaluator = async (params: {
 >   answer: string;
@@ -1165,6 +1165,6 @@ yarn jest --config ls.jest.config.ts
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/test-react-agent-pytest.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

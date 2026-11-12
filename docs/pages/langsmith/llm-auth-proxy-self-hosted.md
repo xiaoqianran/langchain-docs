@@ -368,7 +368,7 @@ Control which phases are sent to your transformer via `processingMode`. Only ena
 Example with `ext_proc` enabled for header injection and body rewriting:
 
 ```
-curl -H "X-LangSmith-LLM-Auth: <JWT>" -d '{"model":"gpt-5.5",...}'
+curl -H "X-LangSmith-LLM-Auth: <JWT>" -d '{"model":"gpt-6.1-sol",...}'
   -> Envoy(:10000)
   -> built-in Envoy JWT filter (validate sig, iss, aud)
   -> `ext_proc` filter -> transformer:50051 (gRPC)

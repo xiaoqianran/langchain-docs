@@ -88,7 +88,7 @@ from langsmith import evaluate
 
 # See the prompt: https://smith.langchain.com/hub/langchain-ai/pairwise-evaluation-2
 prompt = hub.pull("langchain-ai/pairwise-evaluation-2")
-model = init_chat_model("gpt-5.5")
+model = init_chat_model("gpt-6.1-sol")
 chain = prompt | model
 
 def ranked_preference(inputs: dict, outputs: list[dict]) -> list:
@@ -142,7 +142,7 @@ async function rankedPreference({
   };
 
   const output = await openai.chat.completions.create({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     messages: [
       {
         role: "system",
@@ -226,7 +226,7 @@ await evaluate(["earnest-name-40", "reflecting-pump-91"], {
 
 ![Pairwise Comparison View](https://mintcdn.com/langchain-5e9cc07a/H9jA2WRyA-MV4-H0/langsmith/images/pairwise-comparison-view.png?fit=max\&auto=format\&n=H9jA2WRyA-MV4-H0\&q=85\&s=8afa7467faf707c0bb5ede23b007beda)
 
-您可以通过单击表标题中的“拇指向上”/“拇指向下”按钮来筛选第一个实验更好的运行，反之亦然：
+您可以通过单击表标题中的“向上/向下”按钮来过滤第一个实验更好的运行，反之亦然：
 
 ![Pairwise Filtering](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/filter-pairwise.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=677c48099cee9848d2119c154c7b0d88)
 

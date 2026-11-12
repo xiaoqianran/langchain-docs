@@ -79,7 +79,7 @@ Studio 允许您直接从图形界面编辑各个节点内使用的提示。
 >         Literal[
 >             "anthropic/claude-sonnet-4-6",
 >             "anthropic/claude-haiku-4-5-20251001",
->             "openai/gpt-5.5",
+>             "openai/gpt-6.1-sol",
 >             "openai/gpt-5.4-mini",
 >         ],
 >         {"__template_metadata__": {"kind": "llm"}},

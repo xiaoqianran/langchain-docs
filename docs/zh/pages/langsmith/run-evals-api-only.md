@@ -172,14 +172,14 @@ def run_completion_on_example(example, model_name, experiment_id):
     _patch_run(parent_run_id, {"label": output_text})
 ```
 
-现在创建实验并对所有示例运行补全。在 API 中，“实验”表示为通过 `reference_dataset_id` 引用数据集的会话（或“跟踪器会话”）。 The key difference from regular tracing is that runs in an experiment must have a `reference_example_id` that links each run to a specific example in the dataset.
+现在创建实验并对所有示例运行补全。在 API 中，“实验”表示为通过 `reference_dataset_id` 引用数据集的会话（或“跟踪器会话”）。与常规跟踪的主要区别在于，实验中的运行必须有一个 `reference_example_id` 将每次运行链接到数据集中的特定示例。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 #  Create a new experiment using the /sessions endpoint
 #  An experiment is a collection of runs with a reference to the dataset used
 #  API Reference: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/create-tracer-session
 
-model_names = ("gpt-5.4-mini", "gpt-5.5")
+model_names = ("gpt-5.4-mini", "gpt-6.1-sol")
 experiment_ids = []
 for model_name in model_names:
     resp = requests.post(

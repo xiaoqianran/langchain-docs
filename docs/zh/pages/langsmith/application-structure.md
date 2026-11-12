@@ -14,14 +14,14 @@
 
 1. [configuration file](#configuration-file-concepts) (`langgraph.json`)，指定应用程序使用的依赖项、图表和环境变量。
 2. 实现应用程序逻辑的[graphs](#graphs)。
-3. 指定运行应用程序所需的[dependencies](#dependencies) 的文件。
+3. 指定运行应用程序所需的[dependencies](#dependencies)的文件。
 4. 应用程序运行所需的[Environment variables](#environment-variables)。
 
 > [!提示]
 >
 > **与框架无关**
 >
-> LangSmith 部署支持部署[LangGraph](/oss/python/langgraph/overview) *图*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。更多详情请参考[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
+> LangSmith Agent Server 支持部署[LangGraph](/oss/python/langgraph/overview) *graph*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith代理服务器上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。更多详情请参考[Use any framework with LangSmith Agent Server](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
 
 ## 文件结构以下是 Python 和 JavaScript 应用程序的目录结构示例：
 
@@ -94,7 +94,7 @@
 >
 > * 依赖项涉及自定义本地包和`langchain_openai`包。
 > * 将从文件 `./your_package/your_file.py` 和变量 `agent` 加载单个图表。
-> * 环境变量从`.env`文件加载。
+> * 环境变量从`.env` 文件加载。
 >
 > ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > {
@@ -143,7 +143,7 @@
 
 使用 [configuration file](#configuration-file-concepts) 中的 `graphs` 键指定哪些图表将在已部署的应用程序中可用。您可以在配置文件中指定一个或多个图表。每个图都由唯一的名称和 (1) 已编译图或 (2) 定义图的函数的路径来标识。
 
-### 在一个部署中定义多个图
+### 在一个部署中定义多个图表
 
 单个`langgraph.json`可以定义多个图，因此一个部署可以为多个代理提供服务。为每个代理添加一个条目到`graphs`：
 
@@ -162,9 +162,9 @@
 
 在一个部署上运行多个代理也可以降低成本。参见[Run multiple agents on one deployment](/langsmith/cloud-platform-features#run-multiple-agents-on-one-deployment)。
 
-### 使用任何带有 LangSmith 部署的框架
+### 使用任何框架与LangSmith代理服务器
 
-虽然LangSmith部署要求将应用程序构建为LangGraph图，但该图中的各个节点可以包含任意代码。这意味着您可以在节点中使用任何框架或库，同时仍然受益于 LangSmith 的部署基础设施。
+虽然LangSmith代理服务器要求将应用程序构建为LangGraph图，但该图中的各个节点可以包含任意代码。这意味着您可以在节点中使用任何框架或库，同时仍然受益于 LangSmith 的部署基础设施。
 
 图结构充当部署接口，但您的核心应用程序逻辑可以使用最适合您需求的工具和框架。
 
@@ -243,16 +243,16 @@
 > export const app = graph.compile();
 > ```
 
-在此示例中，节点函数（对于 Python 为`my_app_node`，对于 JavaScript 为`myAppNode`）可以包含对任何框架或库的调用。 LangGraph结构仅提供部署接口和编排层。有关端到端示例，请参阅[Google ADK](/langsmith/deploy-google-adk)和[Claude Agent SDK, Strands, CrewAI, and AutoGen](/langsmith/deploy-other-frameworks)的部署指南。 LangSmith 通过 [⟦T46⟧](https://pypi.org/project/deployments-wrap-sdk/) 添加了对 Google ADK 的支持，[⟦T46⟧](https://pypi.org/project/deployments-wrap-sdk/) 是一个可扩展包，用于包装代理 SDK 以在 LangSmith 部署上运行。
+在此示例中，节点函数（对于 Python 为`my_app_node`，对于 JavaScript 为`myAppNode`）可以包含对任何框架或库的调用。 LangGraph结构仅提供部署接口和编排层。For end-to-end examples, refer to the deployment guides for [Google ADK](/langsmith/deploy-google-adk) and [Claude Agent SDK, Strands, CrewAI, and AutoGen](/langsmith/deploy-other-frameworks). LangSmith added support for Google ADK through [⟦T46⟧](https://pypi.org/project/deployments-wrap-sdk/), an extensible package for wrapping agent SDKs to run on LangSmith Agent Server.
 
 ## 环境变量
 
-如果您正在使用已部署的 LangGraph 应用程序 [locally](/langsmith/local-dev-testing)，则可以在 [configuration file](#configuration-file-concepts) 的 `env` 键中配置环境变量。
+If you're working with a deployed LangGraph application [locally](/langsmith/local-dev-testing), you can configure environment variables in the `env` key of the [configuration file](#configuration-file-concepts).
 
-对于生产部署，您通常需要在部署环境中配置环境变量。
+For a production deployment, you will typically want to configure the environment variables in the deployment environment.
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/application-structure.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

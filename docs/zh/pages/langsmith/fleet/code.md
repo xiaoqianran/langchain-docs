@@ -13,7 +13,7 @@
 
 ## 从代码中调用
 
-您可以使用 [LangGraph SDK](/langsmith/reference) 或 REST API 从应用程序调用 LangSmith 队列代理。舰队代理在[Agent Server](/langsmith/agent-server)上运行，因此您可以使用与任何其他[LangSmith deployment](/langsmith/deployment)相同的API方法。
+您可以使用 [LangGraph SDK](/langsmith/reference) 或 REST API 从应用程序调用 LangSmith 队列代理。舰队代理在[Agent Server](/langsmith/agent-server)上运行，因此您可以使用与任何其他[Agent Server](/langsmith/deployment)相同的API方法。
 
 REST API 允许您从支持 HTTP 请求的任何语言或平台调用代理。
 
@@ -615,7 +615,7 @@ make run    # terminal REPL via cli.py — text-only chat
 
 ### 5.自定义代理启动器将舰队拥有的文件与您拥有的文件分开，并且可以自由编辑：
 
-|文件/目录|业主|目的|
+|文件/目录 |业主|目的|
 | - | - | - |
 | `fleet/` |舰队|将导出内容拖放到此处。重新解压即可更新；没有其他的东西被触及。 |
 | `agent.py` |你|图形接线。通过替换 `model = components.pop("model")` 行来覆盖模型。 |

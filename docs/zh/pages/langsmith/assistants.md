@@ -10,13 +10,13 @@
 
 ![assistant versions](https://mintcdn.com/langchain-5e9cc07a/IMK8wJkjSpMCGODD/langsmith/images/assistants.png?fit=max\&auto=format\&n=IMK8wJkjSpMCGODD\&q=85\&s=05402316c8fe86fead077ec774e873f0)
 
-代理服务器 API 提供了多个用于创建和管理助手及其版本的端点。更多详情请参阅[API reference](/langsmith/server-api-ref)。
+代理服务器 API 提供了多个用于创建和管理助手及其版本的端点。 See the [API reference](/langsmith/server-api-ref) for more details.
 
 > [!注意]
 >
-> 助手是一个 [LangSmith Deployment](/langsmith/deployment) 概念。它们在开源 LangGraph 库中不可用。
+> Assistants are a [LangSmith Agent Server](/langsmith/deployment) concept.它们在开源 LangGraph 库中不可用。
 
-## 助手如何处理部署当您使用 LangSmith 部署部署图形时，[Agent Server](/langsmith/agent-server) 会自动创建一个与该图形的默认配置绑定的**默认助手**。然后，您可以为同一图表创建其他助手，每个助手都有自己的配置。
+## 助手如何处理部署当您将图表部署到[LangSmith Agent Server](/langsmith/agent-server)时，它会自动创建一个与该图表的默认配置绑定的**默认助手**。然后，您可以为同一图表创建其他助手，每个助手都有自己的配置。
 
 如果您的部署在[⟦T3⟧](/langsmith/application-structure#configuration-file)中定义了多个图，则每个图都有自己的默认助手：
 
@@ -34,9 +34,9 @@
 助手有几个主要功能：
 
 * **[Managed via API and UI](/langsmith/configuration-cloud)**：使用代理服务器/LangGraph SDK 或[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-assistants) 创建、列出、更新、版本和获取助手。
-* **一个图表，多个助手**：单个部署的图表可以支持多个助手，每个助手具有不同的配置（例如提示、模型、工具）。
+* **One graph, multiple assistants**: A single deployed graph can support multiple assistants, each with different configurations (e.g., prompts, models, tools).
 * **[Versioned](#versioning)配置**：每个助手通过版本控制维护自己的配置历史记录。编辑助手会创建一个新版本，您可以升级或回滚到任何版本。
-* **[Configuration](#configuration)更新无需图形更改**：通过助手配置更新提示、模型选择和其他设置，无需修改或重新部署图形代码即可实现快速迭代。> [!注意]
+* **[Configuration](#configuration) updates without graph changes**: Update prompts, model selection, and other settings through assistant configurations, enabling rapid iteration without modifying or redeploying your graph code.> [!注意]
 >
 > 调用助手时，您可以在[⟦T4⟧](/langsmith/application-structure#configuration-file)中指定：
 >
@@ -49,9 +49,9 @@
 
 助手基于 [configuration](/oss/python/langgraph/graph-api#runtime-context) 的 LangGraph 开源概念构建。
 
-虽然开源 LangGraph 库中提供了配置，但助手仅出现在 [LangSmith Deployment](/langsmith/deployment) 中，因为它们与您部署的图形紧密耦合。部署后，[Agent Server](/langsmith/agent-server)将使用图表的默认配置设置自动为每个图表创建一个默认助手。
+虽然开源 LangGraph 库中提供了配置，但助手仅出现在 [LangSmith Agent Server](/langsmith/deployment) 中，因为它们与您部署的图形紧密耦合。部署后，[Agent Server](/langsmith/agent-server)将使用图表的默认配置设置自动为每个图表创建一个默认助手。
 
-实际上，助手只是具有特定配置的图的“实例”。因此，多个助手可以引用相同的图表，但可以包含不同的配置（例如提示、模型、工具）。 LangSmith 部署 API 提供了多个用于创建和管理助手的端点。有关如何创建助手的更多详细信息，请参阅[API reference](/langsmith/server-api-ref)和[this how-to](/langsmith/configuration-cloud)。
+实际上，助手只是具有特定配置的图的“实例”。因此，多个助手可以引用相同的图表，但可以包含不同的配置（例如提示、模型、工具）。 LangSmith代理服务器 API 提供了多个用于创建和管理助手的端点。有关如何创建助手的更多详细信息，请参阅[API reference](/langsmith/server-api-ref)和[this how-to](/langsmith/configuration-cloud)。
 
 ### 用例当您需要部署具有不同配置的相同图形架构时，助手是理想的选择。常见用例包括：
 

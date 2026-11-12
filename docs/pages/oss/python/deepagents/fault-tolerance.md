@@ -102,7 +102,7 @@ The sections below cover each strategy with code examples.
 >     model="google_genai:gemini-3.6-flash",
 >     tools=[search_tool],
 >     middleware=[
->         ModelFallbackMiddleware("gpt-5.5"),
+>         ModelFallbackMiddleware("gpt-6.1-sol"),
 >     ],
 > )
 > ```
@@ -225,7 +225,7 @@ agent = create_deep_agent(
     model="google_genai:gemini-3.6-flash",
     middleware=[
         # If the primary model is fully down, fall back to an alternative
-        ModelFallbackMiddleware("gpt-5.5"),
+        ModelFallbackMiddleware("gpt-6.1-sol"),
     ],
 )
 ```

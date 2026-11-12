@@ -29,7 +29,7 @@
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export DEEPAGENTS_CODE_FORKED_SUBAGENTS=false
-```frontmatter 需要`name` 和`description`（与[⟦T10⟧ dictionary spec](/oss/python/deepagents/subagents#subagent-dictionary-based) 相同）。 Markdown 主体成为子代理的 `system_prompt`。除了基本规范之外，`AGENTS.md` 文件还支持可选的 `model` frontmatter 字段，该字段会覆盖该子代理的主代理模型。使用 `provider:model-name` 格式（例如，`anthropic:claude-opus-4-8`、`openai:gpt-5.5`）。省略它以继承主代理的模型。
+```frontmatter 需要`name` 和`description`（与[⟦T10⟧ dictionary spec](/oss/python/deepagents/subagents#subagent-dictionary-based) 相同）。 Markdown 主体成为子代理的 `system_prompt`。除了基本规范之外，`AGENTS.md` 文件还支持可选的 `model` frontmatter 字段，该字段会覆盖该子代理的主代理模型。使用 `provider:model-name` 格式（例如，`anthropic:claude-opus-4-8`、`openai:gpt-6.1-sol`）。省略它以继承主代理的模型。
 
 > [!注意]
 >
@@ -37,7 +37,7 @@ export DEEPAGENTS_CODE_FORKED_SUBAGENTS=false
 
 ## 文件格式
 
-子代理 `AGENTS.md` 文件使用 YAML frontmatter 后跟 markdown 正文：
+子代理 `AGENTS.md` 文件使用 YAML frontmatter 后跟 markdown body：
 
 ```markdown theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ---
@@ -65,7 +65,7 @@ You are a research assistant with access to web search.
 
 ## 示例：具有成本效益的子代理
 
-使用更便宜、更快的模型来执行简单的委托任务，同时将主代理保持在更强大的模型上：
+使用更便宜、更快的模型来执行简单的委托任务，同时使主代理保持在更强大的模型上：
 
 ```markdown theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ---

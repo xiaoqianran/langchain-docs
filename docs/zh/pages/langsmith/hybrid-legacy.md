@@ -83,7 +83,7 @@
 
 5. 您需要启用两个控制平面 URL 的出口。侦听器轮询这些端点以进行部署。使用与您的 LangSmith 区域匹配的对。
 
-LangSmith 部署控制平面：
+LangSmith Agent Server 控制平面：
 
 <table>
   <thead>
@@ -192,19 +192,19 @@ LangSmith API：
    5. 在页面右上角，选择`Submit`。6. 创建监听后，复制监听ID。稍后在 Kubernetes 集群中安装实际侦听器应用程序时您将使用它（步骤 5）。
    > [!注意]
    >
-   > **Important**
+   > **重要**
    > 从 LangSmith UI 创建侦听器不会在 Kubernetes 集群中安装侦听器应用程序。
 3. 提供[Helm chart](https://github.com/langchain-ai/helm/tree/main/charts/langgraph-dataplane)用于在 Kubernetes 集群中安装必要的组件。
-   * `langgraph-dataplane-listener`：这是一项监听 LangChain 的 [control plane](/langsmith/control-plane) 以了解部署更改并创建/更新下游 CRD 的服务。 This is the [listener application](/langsmith/data-plane#listener-application).
-   * `LangGraphPlatform CRD`：LangSmith 部署的 CRD。这包含管理 LangSmith 部署实例的规范。
-   * `langgraph-dataplane-operator`：此操作员处理您的 LangSmith CRD 的更改。
+   * `langgraph-dataplane-listener`：这是一项监听 LangChain 的 [control plane](/langsmith/control-plane) 以了解部署更改并创建/更新下游 CRD 的服务。这是[listener application](/langsmith/data-plane#listener-application)。
+   * `LangGraphPlatform CRD`：LangSmith 代理服务器的 CRD。这包含管理代理服务器的规范。
+   * `langgraph-dataplane-operator`：此操作符处理对您的LangSmith CRD 的更改。
    * `langgraph-dataplane-redis`：`langgraph-dataplane-listener`使用Redis实例来管理各种任务（主要是创建和删除部署）。
 4. 配置您的 `langgraph-dataplane-values.yaml` 文件。
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
      config:
        langsmithApiKey: "" # API Key of your Workspace
        langsmithWorkspaceId: "" # Workspace ID
-       hostBackendUrl: "https://api.host.langchain.com" # Use the matching regional LangSmith Deployment control plane URL from the table above
+       hostBackendUrl: "https://api.host.langchain.com" # Use the matching regional LangSmith Agent Server control plane URL from the table above
        smithBackendUrl: "https://api.smith.langchain.com" # Use the matching regional LangSmith API URL from the table above
        langgraphListenerId: "" # Listener ID from Step 2f
        watchNamespaces: "" # comma-separated list of Kubernetes namespaces that the listener and operator will deploy to
@@ -217,8 +217,8 @@ LangSmith API：
        enabled: true
        createCRDs: true # set this to `false` if the CRD has been previously installed in the current Kubernetes cluster
    ```
-   * `config.langsmithApiKey`：`langgraph-listener` 部署通过 `langsmithApiKey` 的 LangGraph 控制平面 API 进行身份验证。* `config.langsmithWorkspaceId`：`langgraph-listener` 部署与LangSmith 工作区中的代理服务器部署耦合。换句话说，`langgraph-listener`部署只能管理指定LangSmith工作区ID中的Agent Server部署。
-   * `config.langgraphListenerId`：除了与LangSmith工作区耦合之外，`langgraph-listener`部署还与侦听器耦合。创建新的代理服务器部署时，它会自动耦合到`langgraphListenerId`。指定 `langgraphListenerId` 可确保 `langgraph-listener` 部署只能管理与 `langgraphListenerId` 耦合的代理服务器部署。
+   * `config.langsmithApiKey`：`langgraph-listener` 部署通过 `langsmithApiKey` 的 LangGraph 控制平面 API 进行身份验证。
+   * `config.langsmithWorkspaceId`：`langgraph-listener` 部署与LangSmith 工作区中的代理服务器部署耦合。换句话说，`langgraph-listener`部署只能管理指定LangSmith工作区ID中的Agent Server部署。* `config.langgraphListenerId`：除了与LangSmith工作区耦合之外，`langgraph-listener`部署还与侦听器耦合。创建新的代理服务器部署时，它会自动耦合到`langgraphListenerId`。指定 `langgraphListenerId` 可确保 `langgraph-listener` 部署只能管理与 `langgraphListenerId` 耦合的代理服务器部署。
    * `config.watchNamespaces`：`langgraph-listener` 部署将部署到的 Kubernetes 命名空间的逗号分隔列表。此列表应与步骤 2d 中指定的命名空间列表匹配。
    * `config.enableLGPDeploymentHealthCheck`：要禁用代理服务器运行状况检查，请将其设置为`false`。
    * `ingress.hostname`：作为部署工作流程的一部分，`langgraph-listener` 部署尝试调用代理服务器运行状况检查端点 (`GET /ok`) 以验证应用程序是否已正确启动。典型设置涉及为代理服务器部署创建共享 DNS 记录或域。这不是由 LangSmith 管理的。创建完成后，将`ingress.hostname`设置为域，它将用于完成健康检查。* `operator.createCRDs`：如果 Kubernetes 集群已安装 `LangGraphPlatform CRD`，请将此值设置为 `false`。安装过程中，如果已经安装了CRD，则会出现错误。如果同一个 Kubernetes 集群上部署了多个监听器，则可能会出现这种情况。

@@ -13,7 +13,7 @@
 1. **基础设施**：Terraform 提供 AKS、Postgres、Redis、Blob 存储、Key Vault、证书管理器、KEDA 和入口。
 2. **应用程序**：Helm 针对集群安装 LangSmith 图表。
 
-基本安装完成后，通过设置标志和重新部署来启用可选附加组件（LangSmith Deployment、Fleet、Insights、Polly、SmithDB 和 LLM Gateway）和 SSO。> [!注意]
+基本安装完成后，通过设置标志和重新部署来启用可选附加组件（代理服务器托管、Fleet、Insights、Polly、SmithDB 和 LLM Gateway）和 SSO。> [!注意]
 >
 > 这些页面遵循模块的 `v0.17.*` 发布标签，部署 LangSmith Helm 图表 0.17 行。在模块标签中，前两个数字命名图表线，最后一个数字是模块修订版，因此`v0.17.4`仍然部署最新的0.17图表补丁。 `v0.16.*`标签部署图表0.16。他们没有 LLM 网关或 SSO 标志，并联合 8 个工作负载身份服务帐户而不是 10 个。从 v0.16.56 开始，他们仅部署 SmithDB，并将 `langsmith_helm_chart_version` 设置为 `~0.17.0`。运行图表 0.17 的部署无法返回到 0.16。
 
@@ -153,7 +153,7 @@ Terraform 提供以下 Azure 资源：
 | PostgreSQL 灵活服务器 | `azurerm_postgresql_flexible_server` |组织配置，运行元数据（外部层）|
 | Azure 托管 Redis | `azapi_resource` (Microsoft.Cache/redisEnterprise) |跟踪摄取队列，发布/订阅（外部层）|
 | Blob 存储 | `azurerm_storage_account` |原始跟踪对象，始终需要 |
-|托管身份| `azurerm_user_assigned_identity` |用于 Pod 到 Blob 身份验证的工作负载身份 |
+|托管身份 | `azurerm_user_assigned_identity` |用于 Pod 到 Blob 身份验证的工作负载身份 |
 | Azure 密钥保管库 | `azurerm_key_vault` |存储所有LangSmith秘密 |
 |证书经理 |头盔|自动化 TLS 证书管理 |
 |科达|头盔|为工作人员提供事件驱动的自动缩放功能
@@ -406,7 +406,7 @@ make k8s-secrets    # re-create langsmith-config-secret from Key Vault
 
 > [!警告]
 >
-> 升级前备份数据库。 LangSmith 数据库迁移是只向前的，因此部署在运行 0.17 后无法返回到图表 0.16。有关更多信息，请参阅[Upgrade an installation](/langsmith/self-host-upgrades)。
+> 升级前备份数据库。 LangSmith 数据库迁移是只向前的，因此部署在运行 0.17 后无法返回到图表 0.16。欲了解更多信息，请参阅[Upgrade an installation](/langsmith/self-host-upgrades)。
 
 要将部署从图表 0.16 移至 0.17：
 
@@ -433,19 +433,19 @@ make k8s-secrets    # re-create langsmith-config-secret from Key Vault
 
 7. 运行`make deploy`。如果您在自己的值中启用了 Engine，图表 0.17 还需要 `engine.usageSigningSecret`（至少 32 个字符），或者 `config.existingSecretName` 命名的 Secret 中的 `engine_usage_signing_secret` 键。
 
-除了两个联合凭据之外，Azure 上的升级仅移动图表图钉。仍在图表 0.15 上的安装必须首先遵循 [⟦T242⟧](https://github.com/langchain-ai/terraform/blob/main/MIGRATION-0.15-to-0.16.md)。有关图表更改的完整列表，请参阅[⟦T243⟧](https://github.com/langchain-ai/terraform/blob/main/MIGRATION-0.16-to-0.17.md)。
+除了两个联合凭据之外，Azure 上的升级仅移动图表图钉。仍在图 0.15 上的安装必须首先遵循 [⟦T242⟧](https://github.com/langchain-ai/terraform/blob/main/MIGRATION-0.15-to-0.16.md)。有关图表更改的完整列表，请参阅[⟦T243⟧](https://github.com/langchain-ai/terraform/blob/main/MIGRATION-0.16-to-0.17.md)。
 
 ## 启用附加组件
 
 每个附加组件都由 `infra/terraform.tfvars` 中的标志控制。设置标志，重新运行`make init-values`以重新生成值，然后重新运行`make deploy`。
 
-### LangSmith 部署
+### 代理服务器托管
 
-启用 [LangSmith Deployment](/langsmith/enable-self-hosted-deployment)，它允许您直接从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-self-host-terraform-azure-deploy) 将代理部署和管理为 API 服务器。这添加了三个新的 Pod。
+启用 [Agent Server hosting](/langsmith/enable-self-hosted-deployment)，它允许您直接从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-self-host-terraform-azure-deploy) 将代理部署和管理为 API 服务器。这添加了三个新的 Pod。
 
 |吊舱 |角色 |工作负载身份 |
 | - | - | - |
-| `langsmith-host-backend` | LangSmith 部署控制平面API。管理部署生命周期，将状态存储在共享 PostgreSQL 中。 |是的 |
+| `langsmith-host-backend` |代理服务器控制平面 API。管理部署生命周期，将状态存储在共享 PostgreSQL 中。 |是的 |
 | `langsmith-listener` |监视主机后端，在 Kubernetes 中创建和更新 `LangGraphPlatform` CRD。 |是的 |
 | `langsmith-operator` |协调 CRD。创建每个部署的 Deployment、StatefulSet 和服务。 |没有 |
 
@@ -467,7 +467,7 @@ make init-values    # picks up enable_deployments = true → generates add-on ov
 make deploy         # rolls out host-backend + listener + operator
 ```
 
-`make init-values` 将LangSmith 部署附加覆盖层 (`langsmith-values-agent-deploys.yaml`) 添加到价值链。它会自动注入：
+`make init-values` 将代理服务器托管附加覆盖 (`langsmith-values-agent-deploys.yaml`) 附加到价值链。它会自动注入：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
@@ -485,10 +485,10 @@ config:
 # All three pods Running
 kubectl get pods -n langsmith | grep -E "host-backend|listener|operator"
 
-# LangSmith Deployment CRDs registered
+# Agent Server hosting CRDs registered
 kubectl get crd | grep langchain
 
-# List LangSmith Deployments (empty on first deploy, populated when you create a deployment)
+# List Agent Servers (empty on first deploy, populated when you create an Agent Server)
 kubectl get lgp -n langsmith
 ```
 
@@ -547,14 +547,14 @@ make deploy
 
 ### 见解和波莉
 
-两个特征，彼此独立；启用其中一个而不启用另一个。 Polly 在 LangSmith 部署上运行，因此设置 `enable_deployments = true`。部署脚本不会检查这一点。* **见解**：人工智能驱动的跟踪分析。 LangSmith 痕迹中的表面图案和异常。作为静态 `standalone-insights` api 服务器和队列 Pod 运行。覆盖设置顶级`insights.enabled: true`。
+两个特征，彼此独立；启用其中一个而不启用另一个。 Polly 运行在 Agent Server 上，因此请设置 `enable_deployments = true`。部署脚本不会检查这一点。* **见解**：人工智能驱动的跟踪分析。 LangSmith 痕迹中的表面图案和异常。作为静态 `standalone-insights` api 服务器和队列 Pod 运行。覆盖设置顶级`insights.enabled: true`。
 * **Polly**：人工智能驱动的评估和监控代理。作为静态 `standalone-polly` api 服务器和队列 Pod 运行。覆盖设置顶级`polly.enabled: true`。
 
 无需`terraform apply`；运行`make init-values && make deploy`。
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # infra/terraform.tfvars
-enable_deployments = true    # Polly runs on LangSmith Deployment
+enable_deployments = true    # Polly runs on Agent Server
 enable_insights    = true    # Insights analytics
 enable_polly       = true    # Polly AI evaluation agent
 ```
@@ -581,13 +581,13 @@ helm get values langsmith -n langsmith | grep -A3 insights
 >
 > **首次启用后加密密钥不得更改。** 更改 `insights_encryption_key` 或 `polly_encryption_key` 会永久损坏所有现有加密数据。没有恢复路径。这些密钥位于 Key Vault 中并且永远不会自动轮换。
 
-如果 Polly UI 在首次启用后显示“无法连接到 LangGraph 服务器”，则前端在 `langsmith-polly-config` ConfigMap 存在之前启动。运行`kubectl rollout restart deployment langsmith-frontend -n langsmith`。
+如果 Polly UI 在第一次启用后显示 `Unable to connect to LangGraph server`，则前端在 `langsmith-polly-config` ConfigMap 存在之前启动。运行`kubectl rollout restart deployment langsmith-frontend -n langsmith`。
 
 ### 史密斯数据库
 
 > [!警告]
 >
-> Azure 上的 SmithDB 需要 LangSmith Helm 图表 0.17 系列上的稳定版本，`v0.17.*` 模块标签默认部署该版本。 0.17 候选版本不是受支持的配置。在 `v0.16.*` 标签上，SmithDB 需要 v0.16.56 或更高版本以及 `langsmith_helm_chart_version = "~0.17.0"`。`enable_smithdb = true` 提供 SmithDB 所需的 Azure 基础设施：专用的 PostgreSQL 18 元存储、Blob 容器、工作负载身份和高级 SSD v2 缓存卷。它还需要一个非空的`availability_zones`，因为高级 SSD v2 仅附加到大多数区域中的区域虚拟机。 AKS 仅在创建集群时应用区域，因此如果您计划使用 SmithDB，请在第一个 `make apply` 中设置 `availability_zones`。在没有区域创建的集群上，稍后添加它们会通过计划，但模块会忽略现有节点池上的区域更改：节点保持非区域性，并且每个计划都会打印区域漂移警告。
+> Azure 上的 SmithDB 需要 LangSmith Helm 图表 0.17 系列上的稳定版本，`v0.17.*` 模块标签默认部署该版本。 0.17 候选版本不是受支持的配置。在 `v0.16.*` 标签上，SmithDB 需要 v0.16.56 或更高版本以及 `langsmith_helm_chart_version = "~0.17.0"`。`enable_smithdb = true` 提供 SmithDB 所需的 Azure 基础设施：专用的 PostgreSQL 18 元存储、Blob 容器、工作负载身份和高级 SSD v2 缓存卷。它还需要非空 `availability_zones`，因为高级 SSD v2 仅附加到大多数区域中的区域虚拟机。 AKS 仅在创建集群时应用区域，因此如果您计划使用 SmithDB，请在第一个 `make apply` 中设置 `availability_zones`。在没有区域创建的集群上，稍后添加它们会通过计划，但模块会忽略现有节点池上的区域更改：节点保持非区域性，并且每个计划都会打印区域漂移警告。
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # infra/terraform.tfvars
@@ -662,14 +662,14 @@ make deploy
 ### 附加组件摘要|相|新豆荚 |总\~运行|
 | - | - | - |
 |基础安装 |核心LangSmith（后端、前端、队列、摄取队列、clickhouse 等）| \~17 |
-| LangSmith 部署| `host-backend`、`listener`、`operator` | \~20 |
+|代理服务器托管 | `host-backend`、`listener`、`operator` | \~20 |
 |舰队| `fleet-tool-server`、`fleet-trigger-server` 和 Fleet 集群内 Redis |变化 |
 |见解和波莉 | `standalone-insights` 和 `standalone-polly` api 服务器和队列 Pod |变化 |
 |法学硕士网关| `agent-gateway`，加上带有 PII 编辑的 `presidio-analyzer` |变化 |
 
 ## 入口控制器
 
-将`ingress_controller`设置在`terraform.tfvars`之前`make apply`。有关完整的 TLS 兼容性矩阵，请参阅 [Azure module repo](https://github.com/langchain-ai/terraform/blob/main/modules/azure/INGRESS_CONTROLLERS.md) 中的 `INGRESS_CONTROLLERS.md`。|价值| Terraform 安装什么 |最适合 |
+将`ingress_controller`设置在`terraform.tfvars`之前`make apply`。有关完整的 TLS 兼容性矩阵，请参阅 [Azure module repo](https://github.com/langchain-ai/terraform/blob/main/modules/azure/INGRESS_CONTROLLERS.md) 中的`INGRESS_CONTROLLERS.md`。|价值| Terraform 安装什么 |最适合 |
 | - | - | - |
 | `envoy-gateway` *（默认）* | `gateway-helm` OCI 图表，Kubernetes 网关 API |标准部署。本机网关 API。 |
 | `nginx` | `ingress-nginx` 带有 Azure LB 的 Helm 图表 |旧版 Ingress 兼容性。 |
@@ -680,13 +680,13 @@ make deploy
 
 > [!警告]
 >
-> 在现有部署上更改 `ingress_controller` 会删除旧控制器及其负载均衡器，并且公共 IP 会发生更改。如果部署运行 ingress-nginx 并且 `ingress_controller` 未设置，`make plan` 和 `make apply` 将停止并出现错误。设置`ingress_controller = "nginx"`以保留NGINX，或设置`ingress_controller = "envoy-gateway"`以移动。要移动，请连续运行 `make apply`、`make init-values` 和 `make deploy`，然后更新指向旧 IP 的任何 DNS A 记录。> [!警告]
+> 在现有部署上更改 `ingress_controller` 会删除旧控制器及其负载均衡器，并且公共 IP 会发生变化。如果部署运行 ingress-nginx 并且 `ingress_controller` 未设置，`make plan` 和 `make apply` 将停止并出现错误。设置`ingress_controller = "nginx"`以保留NGINX，或设置`ingress_controller = "envoy-gateway"`以移动。要移动，请连续运行 `make apply`、`make init-values` 和 `make deploy`，然后更新指向旧 IP 的任何 DNS A 记录。> [!警告]
 >
-> `letsencrypt` (HTTP-01) 仅适用于 `nginx`、`istio`（自我管理）和 `envoy-gateway`。 `istio-addon` 不会创建 IngressClass，因此 ACME 求解器无法接收流量。使用 `agic`，应用程序网关重写了 ACME 质询路径，因此 HTTP-01 求解器失败。对于两者，请将 `dns01` 与自定义域一起使用，将 `existing` 与您自己的证书一起使用，或将 `none` 用于仅 HTTP。
+> `letsencrypt` (HTTP-01) 仅适用于 `nginx`、`istio`（自我管理）和 `envoy-gateway`。 `istio-addon` 不会创建 IngressClass，因此 ACME 求解器无法接收流量。使用 `agic`，应用程序网关重写了 ACME 质询路径，因此 HTTP-01 求解器失败。对于这两种情况，请将 `dns01` 与自定义域一起使用，将 `existing` 与您自己的证书一起使用，或将 `none` 用于仅 HTTP。
 
 ## DNS 和 TLS
 
-`dns_label` 为您提供免费的 Azure 子域 `<label>.<region>.cloudapp.azure.com`，无需域注册或 DNS 区域。 `deploy.sh` 自动注释正确的 LoadBalancer 服务。对于 `envoy-gateway`，它在 EnvoyProxy 资源上设置标签。
+`dns_label` 为您提供免费的 Azure 子域 `<label>.<region>.cloudapp.azure.com`，无需域注册或 DNS 区域。 `deploy.sh` 自动标注正确的 LoadBalancer 服务。对于 `envoy-gateway`，它在 EnvoyProxy 资源上设置标签。
 
 默认 `tls_certificate_source` 为 `letsencrypt`。
 
@@ -739,7 +739,7 @@ kubectl -n langsmith create secret generic <secret-name> --from-file=ca.crt=ca-b
 2. 在您的注册商处，为指向这 4 个名称服务器的子域添加 NS 记录。使用 NS 委派，而不是 CNAME：cert-manager 将 DNS-01 TXT 记录写入区域，因此 Azure DNS 必须对该子域具有权威性。
 3. 验证：`dig NS langsmith.mycompany.com @8.8.8.8`。
 4. `make deploy` 自动通过 DNS-01 颁发证书（Workload Identity 将 TXT 记录写入 Azure DNS）。
-5. 获取LB IP，将`ingress_ip = "<ip>"`添加到`terraform.tfvars`，然后添加`make apply`（创建A记录）。对于`envoy-gateway`，运行`kubectl get svc -n envoy-gateway-system -l gateway.envoyproxy.io/owning-gateway-name=langsmith-gateway`。对于`nginx`​​，运行`kubectl get svc -n ingress-nginx`。
+5. 获取LB IP，将`ingress_ip = "<ip>"`添加到`terraform.tfvars`，然后添加`make apply`（创建A记录）。对于`envoy-gateway`，运行`kubectl get svc -n envoy-gateway-system -l gateway.envoyproxy.io/owning-gateway-name=langsmith-gateway`​​。对于`nginx`，运行`kubectl get svc -n ingress-nginx`。
 6. `make status` 准确显示每个阶段要添加的 NS 和 A 记录。
 
 ## 后续步骤
@@ -747,7 +747,7 @@ kubectl -n langsmith create secret generic <secret-name> --from-file=ca.crt=ca-b
 * 参考[Azure variables](/langsmith/self-host-terraform-azure-variables)和[quick reference](/langsmith/self-host-terraform-azure-quick-reference)。
 * 查看 [Azure architecture](/langsmith/self-host-terraform-azure-architecture) 的模块结构、流量和工作负载身份。
 * 当出现故障时，请检查[Azure troubleshooting guide](/langsmith/self-host-terraform-azure-troubleshooting)。
-* 使用 [LangSmith Deployment](/langsmith/enable-self-hosted-deployment) 在 UI 中启用代理部署。
+* 使用 [Agent Server hosting](/langsmith/enable-self-hosted-deployment) 在 UI 中启用代理部署。
 
 ***
 

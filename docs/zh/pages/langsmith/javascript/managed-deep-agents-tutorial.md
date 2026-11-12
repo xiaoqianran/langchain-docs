@@ -24,7 +24,7 @@
 
 > [!注意]
 >
-> 如果您已在 [quickstart](/langsmith/javascript/managed-deep-agents-quickstart) 中添加了带有 [connection](/langsmith/javascript/managed-deep-agents-connections) 的 Tavily 工具，请跳至下一步。本教程使用连接头 `research-tavily`。对于`mda dev`，代理拥有的连接从`MDA_DEV_<SLUG>`读取其值。将 [Tavily API key](https://app.tavily.com) 添加到 `.env` 作为 `MDA_DEV_RESEARCH_TAVILY`：
+> 如果您已在 [quickstart](/langsmith/javascript/managed-deep-agents-quickstart) 中添加了带有 [connection](/langsmith/javascript/managed-deep-agents-connections) 的 Tavily 工具，请跳至下一步。本教程使用连接插头 `research-tavily`。对于`mda dev`，代理拥有的连接从`MDA_DEV_<SLUG>`读取其值。将 [Tavily API key](https://app.tavily.com) 添加到 `.env` 作为 `MDA_DEV_RESEARCH_TAVILY`：
 
 ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 MDA_DEV_RESEARCH_TAVILY=<TAVILY_API_KEY>
@@ -83,7 +83,7 @@ import { internetSearch } from "./tools/search";
 
 export const agent = defineDeepAgent({
   name: "research-assistant",
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [internetSearch],
 });
 ```

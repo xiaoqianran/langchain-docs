@@ -2,11 +2,11 @@
 
 <!-- langchain-docs: Run backtests on a new version of an agent | https://docs.langchain.com/langsmith/run-backtests-new-agent -->
 
-# 在新版本的代理上运行回测
+# Run backtests on a new version of an agent
 
 部署代理只是持续改进过程的开始。部署到生产环境后，您需要通过增强提示、语言模型、工具和体系结构来完善系统。回溯测试涉及使用历史数据评估代理的新版本，并将新输出与原始输出进行比较。与使用预生产数据集的评估相比，回溯测试可以更清楚地表明代理的新版本是否比当前部署有所改进。
 
-以下是回测的基本步骤：
+Here are the basic steps for backtesting:
 
 1. 从代理的生产环境中选择示例运行进行测试。
 2. 将运行输入转换为数据集，并将运行输出记录为针对该数据集的初始实验。
@@ -58,7 +58,7 @@ os.environ["OPENAI_API_KEY"] = "YOUR OPENAI API KEY"
 os.environ["TAVILY_API_KEY"] = "YOUR TAVILY API KEY"
 ```
 
-### 定义代理
+### Define the agent
 
 对于此示例，让我们创建一个简单的推文编写代理，该代理可以访问一些互联网搜索工具：
 
@@ -124,7 +124,7 @@ agent.batch(
 
 第一步是根据生产*输入*生成数据集。然后复制所有迹线作为基线实验。### 选择要回测的运行
 
-您可以使用 `list_runs` 的 `filter` 参数选择要回测的运行。 `filter` 参数使用 LangSmith [trace query syntax](/langsmith/trace-query-syntax) 选择运行。
+You can select the runs to backtest on using the `filter` argument of `list_runs`. The `filter` argument uses the LangSmith [trace query syntax](/langsmith/trace-query-syntax) to select runs.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -153,10 +153,10 @@ prod_runs = list(
 
 ### 将运行转换为实验
 
-`convert_runs_to_test` 是一个需要运行几次并执行以下操作的函数：
+`convert_runs_to_test` is a function which takes some runs and does the following:
 
-1. 输入和可选的输出作为示例保存到数据集。
-2. 输入和输出存储为实验，就好像您运行了 `evaluate` 函数并收到了这些输出一样。
+1. The inputs, and optionally the outputs, are saved to a dataset as Examples.
+2. The inputs and outputs are stored as an experiment, as if you had run the `evaluate` function and received those outputs.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Name of the dataset we want to create
@@ -179,17 +179,17 @@ convert_runs_to_test(
 )
 ```
 
-完成此步骤后，您应该在 LangSmith 工作区中看到一个名为“Tweetwriting Task-backtesting TODAYS DATE”的新数据集，其中包含一个如下实验：
+Once this step is complete, you should see a new dataset in your LangSmith workspace called "Tweet Writing Task-backtesting TODAYS DATE", with a single experiment like so:
 
 ![Baseline experiment](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/baseline-experiment.png?fit=max\&auto=format\&n=E8FdemkcQxROovD9\&q=85\&s=73b60a75d6b33f2830f5ed68464c586b)
 
 ## 新系统基准测试
 
-现在我们可以开始针对新系统对我们的生产运行进行基准测试。
+Now we can start the process of benchmarking our production runs against a new system.
 
 ### 定义评估者
 
-首先，让我们定义用于比较两个系统的评估器。请注意，我们没有参考输出，因此我们需要提出仅需要实际输出的评估指标。
+First let's define the evaluators we will use to compare the two systems. Note that we have no reference outputs, so we'll need to come up with evaluation metrics that only require the actual outputs.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import emoji
@@ -205,7 +205,7 @@ grounded_instructions = f"""You have given somebody some contextual information 
 Grade whether their response is fully supported by the context you have provided. \
 If any meaningful part of their statement is not backed up directly by the context you provided, then their response is not grounded. \
 Otherwise it is grounded."""
-grounded_model = init_chat_model(model="gpt-5.5").with_structured_output(Grade)
+grounded_model = init_chat_model(model="gpt-6.1-sol").with_structured_output(Grade)
 
 def lt_280_chars(outputs: dict) -> bool:
     messages = convert_to_openai_messages(outputs["messages"])
@@ -237,7 +237,7 @@ async def is_grounded(outputs: dict) -> bool:
 
 ### 评估基线
 
-现在，让我们针对基线实验运行我们的评估器。
+Now, let's run our evaluators against the baseline experiment.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 baseline_results = await client.aevaluate(
@@ -248,20 +248,20 @@ baseline_results = await client.aevaluate(
 # baseline_results.to_pandas()
 ```
 
-### 定义和评估新系统现在，让我们定义并评估我们的新系统。在此示例中，我们的新系统将与旧系统相同，但将使用 GPT-4o 而不是 GPT-3.5。由于我们已经使模型可配置，因此我们只需更新传递给代理的默认配置即可：
+### 定义和评估新系统Now, let's define and evaluate our new system.在此示例中，我们的新系统将与旧系统相同，但将使用 GPT-4o 而不是 GPT-3.5。由于我们已经使模型可配置，因此我们只需更新传递给代理的默认配置即可：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 candidate_results = await client.aevaluate(
-    agent.with_config(model="gpt-5.5"),
+    agent.with_config(model="gpt-6.1-sol"),
     data=dataset_name,
     evaluators=[lt_280_chars, gte_3_emojis, is_grounded],
-    experiment_prefix="candidate-gpt-5.5",
+    experiment_prefix="candidate-gpt-6.1-sol",
 )
 # If you have pandas installed can easily explore results as df:
 # candidate_results.to_pandas()
 ```
 
-## 比较结果
+## Comparing the results
 
 运行这两个实验后，您可以在数据集中查看它们：
 
@@ -274,7 +274,7 @@ candidate_results = await client.aevaluate(
 
 为了说明接地问题：在 [this example run](https://smith.langchain.com/public/be060e19-0bc0-4798-94f5-c3d35719a5f6/r/07d43e7a-8632-479d-ae28-c7eac6e54da4) 中，GPT-4o 包含了有关 Abu Bakr Muhammad ibn Zakariyyā al-Rāzī 的医学贡献的事实，但这些事实未出现在搜索结果中。这展示了它如何从其内部知识中提取而不是严格使用所提供的信息。
 
-这次回溯测试表明，虽然 GPT-4o 通常被认为是一个功能更强大的模型，但简单地升级到它并不能改善我们的推文撰写者。为了有效地使用 GPT-4o，我们需要：* 完善我们的提示，更加强调仅使用提供的信息
+这次回溯测试表明，虽然 GPT-4o 通常被认为是一个功能更强大的模型，但简单地升级到它并不能改善我们的推文撰写者。 To effectively use GPT-4o, we would need to:* 完善我们的提示，更加强调仅使用提供的信息
 * 或者修改我们的系统架构以更好地约束模型的输出
 
 这种见解证明了回溯测试的价值 - 它帮助我们在部署之前识别潜在问题。

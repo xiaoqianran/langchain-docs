@@ -99,7 +99,7 @@ const adapter = new MCPAdapter({
 try {
   const tools = await adapter.listTools();
   const agent = createDeepAgent({
-    model: "openai:gpt-5.5-2026-04-23",
+    model: "openai:gpt-6.1-sol",
     tools,
     systemPrompt: SYSTEM_PROMPT,
   });
@@ -210,7 +210,7 @@ try {
   }
 
   const agent = createDeepAgent({
-    model: "openai:gpt-5.5-2026-04-23",
+    model: "openai:gpt-6.1-sol",
     backend,
     systemPrompt:
       "Test the app through its UI using execute and agent-browser. " +

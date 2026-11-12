@@ -25,7 +25,7 @@ my-app/
 
 > [!提示]
 >
-> LangSmith 部署支持部署[LangGraph](/oss/python/langgraph/overview) *图*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。更多详情请参考[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
+> LangSmith Agent Server 支持部署[LangGraph](/oss/python/langgraph/overview) *graph*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith代理服务器上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。更多详情请参考[Use any framework with LangSmith Agent Server](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
 
 每个步骤之后，都会提供一个示例文件目录来演示如何组织代码。
 
@@ -105,7 +105,7 @@ async function callModel(state: typeof MessagesAnnotation.State) {
    * Feel free to customize the prompt, model, and other logic!
    */
   const model = new ChatOpenAI({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
   }).bindTools(tools);
 
   const response = await model.invoke([

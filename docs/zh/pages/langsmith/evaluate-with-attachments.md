@@ -77,7 +77,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
 >> [!提示]
 >>
 >> 如果您的跟踪在其输入或输出中包含 base64 编码的多模式内容（例如，如果您遵循 [log multimodal traces](/langsmith/log-multimodal-traces) 指南），则不需要附件来评估它们。在评估器提示中使用标准变量映射（例如 `{{input}}` 或 `{{output}}`），base64 内容将正确传递到 LLM 评估器进行可视化和评估。
->> 有关定义自定义赋值器的更多信息，请参阅 [LLM as Judge](/langsmith/llm-as-judge) 指南。
+>> 有关定义自定义求值器的更多信息，请参阅 [LLM as Judge](/langsmith/llm-as-judge) 指南。
 >
 > ## 4. 更新带有附件的示例
 >
@@ -435,7 +435,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
 >
 >   image_url = attachments["my_img"]["presigned_url"]
 >   response = client.beta.chat.completions.parse(
->       model="gpt-5.5",
+>       model="gpt-6.1-sol",
 >       messages=[
 >           {
 >               "role": "system",
@@ -481,7 +481,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
 >
 >   const imageUrl = attachments?.["my_img"]?.presigned_url
 >   const completion = await client.beta.chat.completions.parse({
->       model: "gpt-5.5",
+>       model: "gpt-6.1-sol",
 >       messages: [
 >           {
 >               role: "system",

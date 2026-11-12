@@ -327,7 +327,7 @@ Most applications choose either one sandbox per [thread](/langsmith/use-threads)
 
 Sandboxes consume resources and cost money until they are shut down. Make sure you shut sandboxes down once they are no longer in use.
 
-For the full lifecycle table, async [graph factory](/langsmith/graph-rebuild) notes, TTL behavior, LangGraph Deployment wiring, and client-side examples, see [Sandbox lifecycle](/oss/python/deepagents/going-to-production#lifecycle) in Going to production.
+For the full lifecycle table, async [graph factory](/langsmith/graph-rebuild) notes, TTL behavior, Agent Server wiring, and client-side examples, see [Sandbox lifecycle](/oss/python/deepagents/going-to-production#lifecycle) in Going to production.
 
 ### Thread-scoped (default)
 
@@ -392,7 +392,7 @@ async def agent(config: RunnableConfig):
             idle_ttl_seconds=3600,  # TTL: clean up when idle
         )
     return create_deep_agent(
-        model="openai:gpt-5.5",
+        model="openai:gpt-6.1-sol",
         backend=LangSmithSandbox(sandbox=ls_sandbox),
     )
 ```
@@ -604,7 +604,7 @@ async def agent(config: RunnableConfig):
     else:
         ls_sandbox = client.create_sandbox(name=sandbox_name)
     return create_deep_agent(
-        model="openai:gpt-5.5",
+        model="openai:gpt-6.1-sol",
         backend=LangSmithSandbox(sandbox=ls_sandbox),
     )
 ```
@@ -833,7 +833,7 @@ ls_sandbox = client.create_sandbox()
 backend = LangSmithSandbox(sandbox=ls_sandbox)
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=backend,
     system_prompt="You are a coding assistant with sandbox access. You can create and run code in the sandbox.",
 )

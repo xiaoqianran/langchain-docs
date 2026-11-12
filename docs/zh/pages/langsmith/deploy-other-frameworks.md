@@ -4,17 +4,17 @@
 
 # 部署其他框架
 
-将使用 Claude Agent SDK、Strands、CrewAI、AutoGen 和其他框架构建的代理部署到 LangSmith 部署。
+将使用 Claude Agent SDK、Strands、CrewAI、AutoGen 等框架构建的代理部署到LangSmith代理服务器。
 
-本指南介绍了如何将在LangGraph（Claude Agent SDK、Strands、CrewAI、AutoGen 等）之外构建的代理部署到[LangSmith Deployment](/langsmith/deployment)，包括跟踪[LangSmith Observability](/langsmith/observability)。它逐步使用[Functional API](/oss/python/langgraph/functional-api)包装这些代理，以便代理服务器可以运行它们。有关功能 API 概念（入口点、任务、检查点和恢复规则），请参阅 [Functional API overview](/oss/python/langgraph/functional-api)。
+本指南介绍了如何将在LangGraph（Claude Agent SDK、Strands、CrewAI、AutoGen 等）之外构建的代理部署到[LangSmith Agent Server](/langsmith/deployment)，包括跟踪[LangSmith Observability](/langsmith/observability)。它逐步使用[Functional API](/oss/python/langgraph/functional-api)包装这些代理，以便代理服务器可以运行它们。有关功能 API 概念（入口点、任务、检查点和恢复规则），请参阅 [Functional API overview](/oss/python/langgraph/functional-api)。
 
-LangSmith 部署运行任何框架。对于不是基于 Deep Agents、LangChain 或 LangGraph 构建的代理，请使用 [⟦T38⟧](https://pypi.org/project/deployments-wrap-sdk/) 包 (Google ADK) 或 LangGraph 功能 API（Claude Agent SDK、Strands、CrewAI、AutoGen 和其他库）进行部署。
+LangSmith Agent Server 运行任何框架。对于不是基于 Deep Agents、LangChain 或 LangGraph 构建的代理，请使用 [⟦T38⟧](https://pypi.org/project/deployments-wrap-sdk/) 包 (Google ADK) 或 LangGraph 功能 API（Claude Agent SDK、Strands、CrewAI、AutoGen 和其他库）进行部署。
 
 > [!提示]
 >
-> 对于新构建，请考虑[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)：一种托管开源工具，用于规划、使用工具、委托给子代理并长期工作。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。
+> 对于新构建，请考虑[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)：一种托管开源工具，用于规划、使用工具、委托给子代理并长期工作。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。
 
-## 支持的框架本指南中的以下框架包含端到端示例。每个示例从 `agent.py` 导出一个 LangGraph 兼容图，[Agent Server](/langsmith/agent-server) 可以提供服务：
+## 支持的框架本指南中的以下框架包含端到端示例。每个示例从 `agent.py` 导出LangGraph 兼容图，[Agent Server](/langsmith/agent-server) 可以提供服务：
 
 ![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/claude.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d3cae2da0f353a45594f57b7f2382aba)
 
@@ -152,7 +152,7 @@ LangSmith 部署运行任何框架。对于不是基于 Deep Agents、LangChain 
 >
 > assistant = AssistantAgent(
 >     name="assistant",
->     model_client=OpenAIChatCompletionClient(model="gpt-5.5"),
+>     model_client=OpenAIChatCompletionClient(model="gpt-6.1-sol"),
 > )
 > ```
 
@@ -455,7 +455,7 @@ LangSmith 部署运行任何框架。对于不是基于 Deep Agents、LangChain 
 >
 > assistant = AssistantAgent(
 >     name="assistant",
->     model_client=OpenAIChatCompletionClient(model="gpt-5.5"),
+>     model_client=OpenAIChatCompletionClient(model="gpt-6.1-sol"),
 > )
 >
 > @task

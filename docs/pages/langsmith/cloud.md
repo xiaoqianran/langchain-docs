@@ -42,7 +42,7 @@ Cloud-managed LangSmith stores trace and application data in the cloud location 
 * **Authentication data**: [Supabase](https://supabase.com) hosts authentication and authorization data on AWS, in the location listed in the Supabase column. This location can differ from the region's cloud location. For example, the Azure US region runs in Azure `centralus` (Iowa), while its authentication data is in AWS `us-east-1` (N. Virginia).
 * **Billing data**: Payment and billing information is stored in the US, as described in [Region-independent storage](#region-independent-storage).
 
-| Region | Cloud location | Supabase | Trace datastore | [LangSmith Deployment](/langsmith/deployment) domain |
+| Region | Cloud location | Supabase | Trace datastore | [LangSmith Agent Server](/langsmith/deployment) domain |
 | - | - | - | - | - |
 | GCP US | GCP us-central1 (Iowa) | AWS us-east-1 (N. Virginia) | [ClickHouse Cloud](https://clickhouse.com/cloud), us-central1 (Iowa) | `*.us.langgraph.app` |
 | GCP EU | GCP europe-west4 (Netherlands) | AWS eu-central-1 (Germany) | ClickHouse Cloud, europe-west4 (Netherlands) | `*.eu.langgraph.app` |
@@ -50,7 +50,7 @@ Cloud-managed LangSmith stores trace and application data in the cloud location 
 | AWS US | AWS us-east-2 (Ohio) | AWS us-east-2 (Ohio) | ClickHouse Cloud, us-east-2 (Ohio) | `*.aws.us.langgraph.app` |
 | Azure US | Azure centralus (Iowa) | AWS us-east-1 (N. Virginia) | SmithDB, centralus (Iowa) | `*.azure.us.langgraph.app` |
 
-Agent Servers on LangSmith Deployment run in the same cloud location as the rest of the region.
+Agent Servers on LangSmith run in the same cloud location as the rest of the region.
 
 > [!TIP]
 >
@@ -153,7 +153,7 @@ Internet-bound traffic leaving LangSmith services is routed through a NAT gatewa
 
 > [!NOTE]
 >
-> Agents on [LangSmith Deployment](/langsmith/deployment) egress from a [separate IP list](/langsmith/cloud-platform-features#allowlist-ip-addresses).
+> Agents on [LangSmith Agent Server](/langsmith/deployment) egress from a [separate IP list](/langsmith/cloud-platform-features#allowlist-ip-addresses).
 
 | GCP US | GCP EU | GCP APAC | AWS US | AZURE US |
 | - | - | - | - | - |

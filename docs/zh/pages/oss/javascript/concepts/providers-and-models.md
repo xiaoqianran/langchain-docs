@@ -4,7 +4,7 @@
 
 # 提供者和模型
 
-了解 LangChain 如何使用提供者为您提供适用于任何提供者的任何模型的单一 API
+了解 LangChain 如何使用提供程序为来自任何提供程序的任何模型提供单一 API
 
 LangChain 为您提供了一个统一的 API，可以使用任何提供商的模型。安装提供程序包，选择模型名称，然后开始构建 - 无论您使用 OpenAI、Anthropic、Google 还是任何其他受支持的提供程序，都可以使用相同的代码。
 
@@ -46,7 +46,7 @@ graph LR
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { initChatModel } from "langchain/chat_models/universal";
 
-const openaiModel = await initChatModel("openai:gpt-5.5");
+const openaiModel = await initChatModel("openai:gpt-6.1-sol");
 const anthropicModel = await initChatModel("anthropic:claude-opus-4-8");
 const googleModel = await initChatModel("google:gemini-3.1-pro-preview");
 
@@ -79,16 +79,16 @@ npm install @langchain/google       # For Google models
 ```typescript Provider prefix format theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { initChatModel } from "langchain/chat_models/universal";
 
-const model = await initChatModel("openai:gpt-5.5");
+const model = await initChatModel("openai:gpt-6.1-sol");
 ```
 
 ```typescript Direct class instantiation theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
 
-const model = new ChatOpenAI({ model: "gpt-5.5" });
+const model = new ChatOpenAI({ model: "gpt-6.1-sol" });
 ```
 
-当使用 `provider:model` 格式的 [⟦T10⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel) 时，LangChain 自动解析提供程序并加载正确的集成包。如果模型名称明确（例如，`"gpt-5.5"` 解析为 OpenAI），您还可以省略提供程序前缀。
+当使用 `provider:model` 格式的 [⟦T10⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel) 时，LangChain 自动解析提供程序并加载正确的集成包。如果模型名称明确（例如，`"gpt-6.1-sol"` 解析为 OpenAI），您还可以省略提供程序前缀。
 
 要查找提供程序的可用模型名称，请参阅提供程序自己的文档。以下是一些受欢迎的提供商：
 

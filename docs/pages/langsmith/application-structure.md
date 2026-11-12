@@ -19,7 +19,7 @@ To deploy using LangSmith, provide the following information:
 >
 > **Framework agnostic**
 >
-> LangSmith Deployment supports deploying a [LangGraph](/oss/python/langgraph/overview) *graph*. However, the implementation of a *node* of a graph can contain arbitrary code. This means any framework can be implemented within a node and deployed on LangSmith Deployment. This lets you implement your core application logic without using additional LangGraph OSS APIs while still using LangSmith for [deployment](/langsmith/deployment), scaling, and [observability](/langsmith/observability). For more details, refer to [Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment).
+> LangSmith Agent Server supports deploying a [LangGraph](/oss/python/langgraph/overview) *graph*. However, the implementation of a *node* of a graph can contain arbitrary code. This means any framework can be implemented within a node and deployed on LangSmith Agent Server. This lets you implement your core application logic without using additional LangGraph OSS APIs while still using LangSmith for [deployment](/langsmith/deployment), scaling, and [observability](/langsmith/observability). For more details, refer to [Use any framework with LangSmith Agent Server](/langsmith/application-structure#use-any-framework-with-langsmith-deployment).
 
 ## File structure
 
@@ -166,9 +166,9 @@ Each key is a graph ID. All graphs in the file share the deployment's `dependenc
 
 Running several agents on one deployment also reduces cost. See [Run multiple agents on one deployment](/langsmith/cloud-platform-features#run-multiple-agents-on-one-deployment).
 
-### Use any framework with LangSmith Deployment
+### Use any framework with LangSmith Agent Server
 
-While LangSmith Deployment requires applications to be structured as a LangGraph graph, individual nodes within that graph can contain arbitrary code. This means you can use any framework or library within your nodes while still benefiting from LangSmith's deployment infrastructure.
+While LangSmith Agent Server requires applications to be structured as a LangGraph graph, individual nodes within that graph can contain arbitrary code. This means you can use any framework or library within your nodes while still benefiting from LangSmith's deployment infrastructure.
 
 The graph structure serves as a deployment interface, but your core application logic can use whichever tools and frameworks best suit your needs.
 
@@ -251,7 +251,7 @@ To deploy with LangSmith, you need:
 
 In this example, the node functions (`my_app_node` for Python and `myAppNode` for JavaScript) can contain calls to any framework or library. The LangGraph structure simply provides the deployment interface and orchestration layer.
 
-For end-to-end examples, refer to the deployment guides for [Google ADK](/langsmith/deploy-google-adk) and [Claude Agent SDK, Strands, CrewAI, and AutoGen](/langsmith/deploy-other-frameworks). LangSmith added support for Google ADK through [`deployments-wrap-sdk`](https://pypi.org/project/deployments-wrap-sdk/), an extensible package for wrapping agent SDKs to run on LangSmith Deployment.
+For end-to-end examples, refer to the deployment guides for [Google ADK](/langsmith/deploy-google-adk) and [Claude Agent SDK, Strands, CrewAI, and AutoGen](/langsmith/deploy-other-frameworks). LangSmith added support for Google ADK through [`deployments-wrap-sdk`](https://pypi.org/project/deployments-wrap-sdk/), an extensible package for wrapping agent SDKs to run on LangSmith Agent Server.
 
 ## Environment variables
 

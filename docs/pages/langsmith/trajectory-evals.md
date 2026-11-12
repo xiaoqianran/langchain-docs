@@ -63,7 +63,7 @@ def get_weather(city: str):
     """Get weather information for a city."""
     return f"It's 75 degrees and sunny in {city}."
 
-agent = create_agent("gpt-5.5", tools=[get_weather])
+agent = create_agent("gpt-6.1-sol", tools=[get_weather])
 
 evaluator = create_trajectory_match_evaluator(  # [!code highlight]
     trajectory_match_mode="strict",  # [!code highlight]
@@ -114,7 +114,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather]
 });
 
@@ -176,7 +176,7 @@ def get_events(city: str):
     """Get events happening in a city."""
     return f"Concert at the park in {city} tonight."
 
-agent = create_agent("gpt-5.5", tools=[get_weather, get_events])
+agent = create_agent("gpt-6.1-sol", tools=[get_weather, get_events])
 
 evaluator = create_trajectory_match_evaluator(  # [!code highlight]
     trajectory_match_mode="unordered",  # [!code highlight]
@@ -238,7 +238,7 @@ const getEvents = tool(
 );
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather, getEvents]
 });
 
@@ -310,7 +310,7 @@ def get_detailed_forecast(city: str):
     """Get detailed weather forecast for a city."""
     return f"Detailed forecast for {city}: sunny all week."
 
-agent = create_agent("gpt-5.5", tools=[get_weather, get_detailed_forecast])
+agent = create_agent("gpt-6.1-sol", tools=[get_weather, get_detailed_forecast])
 
 evaluator = create_trajectory_match_evaluator(  # [!code highlight]
     trajectory_match_mode="superset",  # [!code highlight]
@@ -373,7 +373,7 @@ const getDetailedForecast = tool(
 );
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather, getDetailedForecast]
 });
 
@@ -441,7 +441,7 @@ def get_weather(city: str):
     """Get weather information for a city."""
     return f"It's 75 degrees and sunny in {city}."
 
-agent = create_agent("gpt-5.5", tools=[get_weather])
+agent = create_agent("gpt-6.1-sol", tools=[get_weather])
 
 evaluator = create_trajectory_llm_as_judge(  # [!code highlight]
     model="openai:gpt-5.4-mini",  # [!code highlight]
@@ -483,7 +483,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather]
 });
 

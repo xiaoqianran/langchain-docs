@@ -441,7 +441,7 @@ This guide covers how to create examples with attachments, build multimodal prom
 >
 >   image_url = attachments["my_img"]["presigned_url"]
 >   response = client.beta.chat.completions.parse(
->       model="gpt-5.5",
+>       model="gpt-6.1-sol",
 >       messages=[
 >           {
 >               "role": "system",
@@ -487,7 +487,7 @@ This guide covers how to create examples with attachments, build multimodal prom
 >
 >   const imageUrl = attachments?.["my_img"]?.presigned_url
 >   const completion = await client.beta.chat.completions.parse({
->       model: "gpt-5.5",
+>       model: "gpt-6.1-sol",
 >       messages: [
 >           {
 >               role: "system",

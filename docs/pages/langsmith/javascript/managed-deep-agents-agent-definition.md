@@ -28,7 +28,7 @@ import { defineDeepAgent } from "managed-deepagents";
 
 export const agent = defineDeepAgent({
   name: "research-assistant",
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
 });
 ```
 
@@ -133,7 +133,7 @@ export function agent(
 
   return defineDeepAgent({
     name: "open-swe",
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     instructions: pythonService
       ? "Follow the payments service's API and reliability conventions."
       : "Follow the storefront's frontend and accessibility conventions.",
@@ -201,7 +201,7 @@ export function agent(
 
   return defineDeepAgent({
     name: "open-swe",
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     mcp: context?.needsDocs ? [mcp] : [],
     sandbox: pythonService ? defineSandbox({ defaultTimeout: 600 }) : sandbox,
     contextSchema,

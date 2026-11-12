@@ -9,7 +9,7 @@ LangSmith pytest 插件允许 Python 开发人员将他们的数据集和评估�
 与标准评估流程相比，这在以下情况下很有用：
 
 * **每个示例需要不同的评估逻辑**：标准评估流程假设所有数据集示例中的应用程序和评估器执行一致。对于更复杂的系统或更全面的评估，特定的系统子集可能需要使用特定的输入类型和指标进行评估。这些异构评估更容易编写为一起跟踪的不同测试用例套件。
-* **您想要断言二进制期望**：跟踪 LangSmith 中的断言并在本地引发断言错误（例如在 CI 管道中）。测试工具有助于评估系统输出并断言它们的基本属性。
+* **您想要断言二进制期望**：跟踪 LangSmith 中的断言并在本地引发断言错误（例如在 CI 管道中）。测试工具有助于评估系统输出并断言其基本属性。
 * **您想要类似 pytest 的终端输出**：获取熟悉的 pytest 输出格式
 * **您已经使用 pytest 来测试您的应用程序**：将 LangSmith 跟踪添加到现有 pytest 工作流程
 
@@ -226,7 +226,7 @@ import pytest
 @pytest.fixture(scope="session")
 def langsmith_experiment_metadata():
     return {
-        "model": "gpt-5.5",
+        "model": "gpt-6.1-sol",
         "prompt_version": "v2.3",
         "environment": os.environ.get("ENV", "local"),
     }
@@ -239,7 +239,7 @@ def langsmith_experiment_metadata():
 将 `LANGSMITH_EXPERIMENT_METADATA` 设置为 JSON 字符串。这在您不想修改代码的 CI/CD 管道中非常有用：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-LANGSMITH_EXPERIMENT_METADATA='{"model":"gpt-5.5","env":"staging"}' pytest tests/
+LANGSMITH_EXPERIMENT_METADATA='{"model":"gpt-6.1-sol","env":"staging"}' pytest tests/
 ```
 
 如果同时设置了固定装置和环境变量，则固定装置优先。系统管理的元数据密钥（例如 `revision_id` 和 git info）始终优先于用户提供的密钥。
@@ -250,7 +250,7 @@ LANGSMITH_EXPERIMENT_METADATA='{"model":"gpt-5.5","env":"staging"}' pytest tests
 
 ## 缓存
 
-CI 中每次提交的法学硕士可能会变得昂贵。为了节省时间和资源，LangSmith允许您将 HTTP 请求缓存到磁盘。要启用缓存，请使用 `langsmith[pytest]` 安装并设置环境变量：`LANGSMITH_TEST_CACHE=/my/cache/path`：
+CI 中每次提交的法学硕士可能会变得昂贵。为了节省时间和资源，LangSmith 允许您将 HTTP 请求缓存到磁盘。要启用缓存，请使用 `langsmith[pytest]` 安装并设置环境变量：`LANGSMITH_TEST_CACHE=/my/cache/path`：
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install -U "langsmith[pytest]"

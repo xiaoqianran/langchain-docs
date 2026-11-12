@@ -4,7 +4,7 @@
 
 This page describes how to create, configure, and manage [assistants](/langsmith/assistants). Assistants allow you to customize your [deployed](/langsmith/deployment) graph's behavior through configuration—such as model selection, prompts, and tool availability—without changing the underlying graph code.
 
-You can work with the [SDK](https://reference.langchain.com/python/langsmith/deployment-sdk) or in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-configuration-cloud).
+You can work with the [SDK](https://reference.langchain.com/python/langsmith/deployment-sdk) or in the LangSmith UI.
 
 ## Understand assistant configuration
 
@@ -47,11 +47,9 @@ When you create an assistant, you provide specific values for these configuratio
 
 For more information on configuration in [LangGraph](/oss/python/langgraph/overview), refer to the [runtime context documentation](/oss/python/langgraph/graph-api#runtime-context).
 
-**Select SDK or UI for your workflow:**
+## Create an assistant
 
 > [tab] SDK
->
-> ## Create an assistant
 >
 > Use the [`assistants.create`](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.create) method to create a new assistant. This method requires:
 >
@@ -137,11 +135,27 @@ For more information on configuration in [LangGraph](/oss/python/langgraph/overv
 > > * **Graph ID** (e.g., `"agent"`): Uses the default assistant for that graph
 > > * **Assistant ID** (UUID): Uses the specific assistant configuration
 > >
-> > See [Use an assistant](#use-an-assistant) for examples.
+> > See [Use an assistant](#use-an-assistant).
+
+> [tab] UI
 >
-> ## Use an assistant
+> You can create assistants from the LangSmith UI:
 >
-> To use an assistant, pass its `assistant_id` when creating a run. The example below uses the assistant we created above:
+> 1. Navigate to your deployment and select the **Assistants** tab.
+> 2. Click **+ Assistant**.
+> 3. In the form that opens:
+>    * Select the graph this assistant is for.
+>    * Provide a name and description.
+>    * Configure the assistant using the configuration schema for that graph.
+> 4. Click **Create assistant**.
+>
+> This will take you to [Studio](/langsmith/studio) where you can test the assistant. Return to the **Assistants** tab to see your newly created assistant in the table.
+
+## Use an assistant
+
+> [tab] SDK
+>
+> To use an assistant, pass its `assistant_id` when creating a run. The example below uses the assistant created above:
 >
 > ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > # Create a thread for the conversation
@@ -245,21 +259,23 @@ For more information on configuration in [LangGraph](/oss/python/langgraph/overv
 > {'agent': {'messages': [{'content': 'I was created by OpenAI...', ...}]}}
 > ```
 >
-> > [!NOTE]
-> >
-> > **Using graph ID vs assistant ID**
-> >
-> > You can pass either a **graph ID** or **assistant ID** when running your graph:
-> >
-> > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> > # Option 1: Use graph ID to get the default assistant
-> > client.runs.stream(thread_id, "agent", input=input)
-> >
-> > # Option 2: Use assistant ID (UUID) for a specific configuration
-> > client.runs.stream(thread_id, "62e209ca-9154-432a-b9e9-2d75c7a9219b", input=input)
-> > ```
+> To run the graph with its default assistant instead, pass the graph ID (for example, `"agent"`) in place of the assistant ID.
+
+> [tab] UI
 >
-> ## Create a new version for your assistant
+> To use an assistant in the LangSmith UI:
+>
+> 1. Navigate to your deployment and select the **Assistants** tab.
+> 2. Find the assistant you want to use.
+> 3. Click **Studio** for that assistant.
+>
+> This opens [Studio](/langsmith/studio) with the selected assistant. When you submit an input (in **Graph** or **Chat** mode), the assistant's configuration will be applied to the run.
+
+## Create a new version for your assistant
+
+Updating an assistant creates a new version and sets it as the active version. All future runs that use the assistant ID use the new configuration.
+
+> [tab] SDK
 >
 > Use the [`assistants.update`](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.update) method to create a new version of an assistant.
 >
@@ -311,10 +327,28 @@ For more information on configuration in [LangGraph](/oss/python/langgraph/overv
 > "context": {"model_name": "openai", "system_prompt": "You are a mindful assistant!"}
 > }'
 > ```
+
+> [tab] UI
 >
-> The update creates a new version and automatically sets it as active. All future runs using this assistant ID will use the new configuration.
+> To create a new version from the Assistants tab:
 >
-> ## Use a previous assistant version
+> 1. Navigate to your deployment and select the **Assistants** tab.
+> 2. Click the assistant's row to open the **Edit assistant** pane.
+> 3. Modify the assistant's name, description, or configuration.
+> 4. Click **Save**.
+>
+> To create a new version from Studio:
+>
+> 1. Open Studio for the assistant.
+> 2. Click **Manage Assistants**.
+> 3. Edit the assistant's configuration.
+> 4. Click **Save**.
+
+## Use a previous assistant version
+
+You can set an earlier version of an assistant as active. All future runs that use the assistant ID then use that version's configuration.
+
+> [tab] SDK
 >
 > Use the `setLatest` method to change which version is active:
 >
@@ -346,55 +380,8 @@ For more information on configuration in [LangGraph](/oss/python/langgraph/overv
 > "version": 1
 > }'
 > ```
->
-> After changing the active version, all runs using this assistant ID will use the specified version's configuration.
 
 > [tab] UI
->
-> ## Create an assistant
->
-> You can create assistants from the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-configuration-cloud):
->
-> 1. Navigate to your deployment and select the **Assistants** tab.
-> 2. Click **+ New assistant**.
-> 3. In the form that opens:
->    * Select the graph this assistant is for.
->    * Provide a name and description.
->    * Configure the assistant using the configuration schema for that graph.
-> 4. Click **Create assistant**.
->
-> This will take you to [Studio](/langsmith/studio) where you can test the assistant. Return to the **Assistants** tab to see your newly created assistant in the table.
->
-> ## Use an assistant
->
-> To use an assistant in the LangSmith UI:
->
-> 1. Navigate to your deployment and select the **Assistants** tab.
-> 2. Find the assistant you want to use.
-> 3. Click **Studio** for that assistant.
->
-> This opens [Studio](/langsmith/studio) with the selected assistant. When you submit an input (in **Graph** or **Chat** mode), the assistant's configuration will be applied to the run.
->
-> ## Create a new version for your assistant
->
-> To update an assistant and create a new version from the UI, you can use either the Assistants tab or Studio. Either method creates a new version and sets it as the active version:
->
-> > [tab] Assistants tab
-> >
-> > 1. Navigate to your deployment and select the **Assistants** tab.
-> > 2. Find the assistant you want to edit.
-> > 3. Click **Edit**.
-> > 4. Modify the assistant's name, description, or configuration.
-> > 5. Save your changes.
->
-> > [tab] Studio
-> >
-> > 1. Open Studio for the assistant.
-> > 2. Click **Manage Assistants**.
-> > 3. Edit the assistant's configuration.
-> > 4. Save your changes.
->
-> ## Use a previous assistant version
 >
 > To set a previous version as active from Studio:
 >
@@ -402,12 +389,56 @@ For more information on configuration in [LangGraph](/oss/python/langgraph/overv
 > 2. Click **Manage Assistants**.
 > 3. Locate the assistant and select the version you want to use.
 > 4. Toggle the **Active** switch for that version.
+
+## Delete an assistant
+
+Deleting an assistant permanently removes it and all of its versions. You cannot delete a single version. To stop using a version, [set a different version as active](#use-a-previous-assistant-version).
+
+It also deletes the assistant's cron jobs and interrupts any of its runs that are in progress. The deployment keeps running. To stop it, [delete the deployment](/langsmith/manage-deployment#delete-a-deployment).
+
+> [tab] SDK
 >
-> This updates the assistant to use the selected version for all future runs.
+> Use the `assistants.delete` method to delete an assistant by its UUID. To also delete its threads, set `delete_threads` (Python) or `deleteThreads` (JavaScript) to `true`. This deletes every thread whose metadata `assistant_id` matches the assistant, along with the runs and checkpoints in those threads:
 >
-> > [!WARNING]
-> >
-> > Deleting an assistant will delete **all** of its versions. There is currently no way to delete a single version. To skip a version, simply set a different version as active.
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.assistants.delete(
+>     openai_assistant["assistant_id"],  # Assistant ID (UUID)
+>     delete_threads=True,
+> )
+> ```
+>
+> ```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.assistants.delete(
+>     openAIAssistant["assistant_id"],  // Assistant ID (UUID)
+>     { deleteThreads: true },
+> );
+> ```
+>
+> ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request DELETE \
+>     --url "<DEPLOYMENT_URL>/assistants/<ASSISTANT_ID>?delete_threads=true" \
+>     --header 'Content-Type: application/json'
+> ```
+>
+> `delete_threads` defaults to `false`. If your deployment uses [custom authorization](/langsmith/auth), it deletes only the threads the caller is authorized to access.
+
+> [tab] UI
+>
+> You can delete an assistant from the Assistants tab or from Studio. Deleting from the UI keeps the assistant's threads. To delete its threads as well, use the SDK with `delete_threads` set to `true`. You cannot delete the default assistant that the deployment creates for each graph.
+>
+> To delete an assistant from the Assistants tab:
+>
+> 1. Navigate to your deployment and select the **Assistants** tab.
+> 2. Select the checkbox for the assistant you want to delete. You can delete one assistant at a time.
+> 3. Click **Delete**.
+> 4. In the confirmation dialog, click **Delete**.
+>
+> To delete an assistant from Studio:
+>
+> 1. Open Studio for the assistant.
+> 2. Click **Manage Assistants**. If an assistant is selected, the button shows that assistant's name instead.
+> 3. Select the assistant you want to delete, then click **Delete Assistant**.
+> 4. In the confirmation dialog, click **Delete**.
 
 ***
 

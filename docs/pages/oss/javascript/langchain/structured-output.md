@@ -89,7 +89,7 @@ const ContactInfo = z.object({
 });
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: providerStrategy(ContactInfo)
 });
@@ -116,7 +116,7 @@ const ContactInfo = toStandardJsonSchema(
 );
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: providerStrategy(ContactInfo)
 });
@@ -144,7 +144,7 @@ const contactInfoSchema = {
 }
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: providerStrategy(contactInfoSchema)
 });
@@ -214,7 +214,7 @@ const ProductReview = z.object({
 });
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy(ProductReview)
 })
@@ -241,7 +241,7 @@ const ProductReview = toStandardJsonSchema(
 );
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy(ProductReview)
 })
@@ -282,7 +282,7 @@ const productReviewSchema = {
 }
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy(productReviewSchema)
 });
@@ -312,7 +312,7 @@ const CustomerComplaint = z.object({
 });
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy([ProductReview, CustomerComplaint])
 });
@@ -340,7 +340,7 @@ const MeetingAction = z.object({
 });
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy(MeetingAction, {
         toolMessageContent: "Action item captured and added to meeting notes!"
@@ -402,7 +402,7 @@ const EventDetails = z.object({
 });
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy([ContactInfo, EventDetails]),
 });
@@ -448,7 +448,7 @@ const ProductRating = z.object({
 });
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy(ProductRating),
 });

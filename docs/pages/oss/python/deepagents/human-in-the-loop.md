@@ -110,7 +110,7 @@ def notify_email(to: str, subject: str, body: str) -> str:
 checkpointer = MemorySaver()
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[remove_file, fetch_file, notify_email],
     interrupt_on={
         "remove_file": True,  # Default: approve, edit, reject, respond
@@ -393,7 +393,7 @@ def writes_outside_workspace(request: ToolCallRequest) -> bool:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     interrupt_on={
         "write_file": {
             "allowed_decisions": ["approve", "edit", "reject"],

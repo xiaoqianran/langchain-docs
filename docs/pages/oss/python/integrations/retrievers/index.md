@@ -149,6 +149,7 @@ The below retrievers will search over an external index (e.g., constructed from 
 | [`IMAP`](https://github.com/jfouret/langchain-imap) | | | [`langchain-imap`](https://pypi.org/project/langchain-imap/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-imap/month)](https://pypi.org/project/langchain-imap/) |
 | [`Perigon`](https://perigon.io/docs/api/intro) | | | [`langchain-perigon`](https://pypi.org/project/langchain-perigon/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-perigon/month)](https://pypi.org/project/langchain-perigon/) |
 | [`OpenMemoryRetriever`](https://github.com/nullure/langchain-openmemory) | | | [`langchain-openmemory`](https://pypi.org/project/langchain-openmemory/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openmemory/month)](https://pypi.org/project/langchain-openmemory/) |
+| [`ChopperCompressor`](https://github.com/wiiiktor/chopper_demo/tree/main/integrations/chopper-rag) | | | [`chopper-rag`](https://pypi.org/project/chopper-rag/) | N/A |
 | [`SQLiteGraphMemoryRetriever`](https://github.com/tonydzi/langchain-sqlite-graph-memory#readme) | | | [`langchain-sqlite-graph-memory`](https://pypi.org/project/langchain-sqlite-graph-memory/) | N/A |
 
 ***

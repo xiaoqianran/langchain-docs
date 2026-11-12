@@ -30,7 +30,7 @@ my-agent/
 
 ## 选择一个图层
 
-层命名代理读取和写入其内存的层。每个启用的层都会在代理文件系统中安装自己的读/写树。|层 |安装|属于|用于 |
+层命名代理读取和写入其内存的层。每个启用的层都会在代理文件系统中安装自己的读/写树。|层|安装|属于|用于 |
 | - | - | - | - |
 | **代理** | `/memories/agent/` |部署，由每个调用者共享 |适合每个人的知识，例如团队惯例和可重用程序 |
 | **用户** | `/memories/user/` |开始运行的经过身份验证的人 |个人偏好和呼叫者特定上下文 |
@@ -45,7 +45,7 @@ my-agent/
 >
 > **每个调用者都可以读取代理内存。** 在为多人提供服务的部署中，保存到 `/memories/agent/` 的特定于调用者的详细信息会向所有人公开。
 >
-> 运行时告诉代理不要在那里保存私人或呼叫者特定的信息。该指令只是指导，没有任何强制措施。
+> 运行时告诉代理不要在那里保存私人或呼叫者特定的信息。该指示只是指导，没有任何强制措施。
 >
 > 声明用户内存并为代理提供正确的位置来放置此类详细信息。仅特工记忆就让它无处可去。只有单独安装用户内存的部署才能彻底避免暴露。必须安装代理内存的位置，[require approval before a memory write](#require-approval-before-a-memory-write)。
 
@@ -110,7 +110,7 @@ authorization. When you decide to persist something, use `edit_file` or
 
 声明一个层使其可用。代理是否在给定的运行中达到它是第二个决定，在该运行开始时做出一次：1.运行时解析调用者。除非呼叫者是经过身份验证的人，否则用户记忆将在此停止。
 2. 代理工厂选择该运行的层，或者当没有工厂选择它们时应用项目的声明。
-3. 通过挂载的层及其路径及其热内存负载。
+3. 通过挂载的层及其路径及其热内存加载。
 
 当没有选择运行的层时，托管 Deep Agents 应用以下默认值：
 
@@ -147,7 +147,7 @@ export function agent(
 
   return defineDeepAgent({
     name: "office-helpdesk",
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     memory: remember
       ? defineMemory({ user: memoryLayer() })
       : defineMemory({ agent: memoryLayer() }),
@@ -212,7 +212,7 @@ import { searchPolicies } from "./tools/policies";
 
 export const agent = defineDeepAgent({
   name: "office-helpdesk",
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [searchPolicies],
   permissions: [
     {
@@ -239,7 +239,7 @@ export const agent = defineDeepAgent({
 
 每个挂载都包含热内存和冷内存：
 
-|路径|使用 |
+|路径|使用|
 | - | - |
 | `AGENTS.md` 在坐骑的根部 | **热记忆**用于紧凑、频繁相关的知识。它的内容被加载到每个模型调用中。 |
 |挂载下的其他文件 | **冷记忆**详细知识，仅在代理打开文件时读取。 |
@@ -260,10 +260,10 @@ export const agent = defineDeepAgent({
 
 Studio 是在没有 Slack 工作空间的情况下锻炼记忆的方法。经过验证的 Studio 用户会收到每个已声明的图层，因此看起来不执行任何操作的图层通常根本不会被声明。首先检查`memory.py`或`memory.ts`。
 
-Studio 写入的位置取决于您正在运行的内容：* **部署**：内存转到 Context Hub，以您登录的 LangSmith 用户为准。
+Studio 写入的位置取决于您正在运行的内容：* **A deployment**: memory goes to Context Hub, keyed on your logged-in LangSmith user.
 * **`mda dev`**：内存保留在磁盘上的`.mda/__contexthub__`下，以 CLI 从您的个人 LangSmith API 密钥解析的 `langsmith-dev` 代理身份验证主体为密钥。
 
-本地内存和部署内存是单独的存储，因此您在 `mda dev` 下教导代理的事实在部署后不会出现。
+Local memory and deployed memory are separate stores, so a fact you teach the agent under `mda dev` does not appear after you deploy.
 
 访问决策是个例外。参见[Test memory access](#test-memory-access)。
 
@@ -271,15 +271,15 @@ Studio 写入的位置取决于您正在运行的内容：* **部署**：内存�
 
 ## 部署
 
-当您运行 `mda deploy` 时，托管 Deep Agents 会启用项目中声明的层并通过 Context Hub 支持它们。部署不会覆盖已存储在 Context Hub 中的持久内容。
+When you run `mda deploy`, Managed Deep Agents enables the layers declared in the project and backs them with Context Hub. Deploys do not overwrite durable content already stored in Context Hub.
 
-有关内存与 Context Hub 中部署拥有的指令和技能的关系，请参阅 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)。
+For how memory relates to deploy-owned instructions and skills in Context Hub, see [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub).
 
 ## 何时使用内存
 
-|概念|角色 |范围 |
+|概念 |角色 |范围 |
 | - | - | - |
-| **[Instructions](/langsmith/javascript/managed-deep-agents-instructions) 和 [skills](/langsmith/javascript/managed-deep-agents-skills)** |部署拥有的代理行为 |由部署共享并对代理只读 |
+| **[Instructions](/langsmith/javascript/managed-deep-agents-instructions) 和 [skills](/langsmith/javascript/managed-deep-agents-skills)** |部署拥有的代理行为 | Shared by the deployment and read-only to the agent |
 | **线程状态** |对话连续性 |一根线 |
 | **代理内存** |在 Context Hub 中学习和保留的知识 |跨线程部署共享|
 | **用户内存** | Context Hub 中保留的个人上下文 |跨线程一名经过身份验证的人 |
@@ -292,4 +292,4 @@ Studio 写入的位置取决于您正在运行的内容：* **部署**：内存�
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-memory.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-memory.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

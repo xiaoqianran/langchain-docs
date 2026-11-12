@@ -82,7 +82,8 @@ const contextSchema = z.object({
 });
 
 const agent = createAgent({
-  model: new ChatOpenAI({ model: "gpt-5.5" }),
+  // GPT-6 models need the Responses API for tool calling in @langchain/openai.
+  model: new ChatOpenAI({ model: "gpt-6.1-sol", useResponsesApi: true }),
   tools: [getUserName],
   checkpointer: new MemorySaver(),
   contextSchema,
@@ -169,7 +170,7 @@ const saveUserInfo = tool(
 );
 
 const agent = createAgent({
-  model: new ChatOpenAI({ model: "gpt-5.5" }),
+  model: new ChatOpenAI({ model: "gpt-6.1-sol" }),
   tools: [getUserInfo, saveUserInfo],
   store,
 });
@@ -259,7 +260,7 @@ const logExecutionContext = tool(
 
 ### Server info
 
-When your tool runs on LangGraph Server, access the assistant ID, graph ID, and authenticated user via `runtime.server_info`:
+When your tool runs on Agent Server, access the assistant ID, graph ID, and authenticated user via `runtime.server_info`:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -284,7 +285,7 @@ const getAssistantScopedData = tool(
 );
 ```
 
-`serverInfo` is `null` when the tool is not running on LangGraph Server.
+`serverInfo` is `null` when the tool is not running on Agent Server.
 
 > [!NOTE]
 >
@@ -546,7 +547,7 @@ const handleToolErrors = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [],
   middleware: [handleToolErrors],
 });
@@ -885,7 +886,7 @@ There are two approaches depending on whether tools are known ahead of time:
 > });
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [getWeather], // Only static tools registered here
 >   middleware: [dynamicToolMiddleware],
 > });

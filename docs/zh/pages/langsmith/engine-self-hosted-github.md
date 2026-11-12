@@ -11,7 +11,7 @@
 * **BYOC**：组织管理员将应用程序的凭据保存在 LangSmith UI 中。参见[Configure the App on BYOC](#configure-the-app-on-byoc)。
 * **自托管**：操作员在 Helm 值中配置应用程序的凭据。参见[Configure the App on self-hosted](#configure-the-app-on-self-hosted)。
 
-此配置与 LangSmith 部署构建和预览的 GitHub 设置是分开的。
+此配置独立于代理服务器构建和预览的 GitHub 设置。
 
 ## 在 BYOC 上配置应用程序
 
@@ -58,7 +58,7 @@ GitHub 将拉取请求 Webhook 发送到数据平面上的 **Webhook URL**。如
 
 > [!注意]
 >
-> 在自托管上配置 GitHub for Engine 需要 LangSmith Helm 图表版本 0.17.2 或更高版本。早期的图表公开了 GitHub 授权和 Webhooks 仅在启用 LangSmith 部署 (`config.deployment.enabled`) 时才使用的 `/api-host` 路由。
+> 在自托管上配置 GitHub for Engine 需要 LangSmith Helm 图表版本 0.17.2 或更高版本。早期图表公开了 GitHub 授权和 Webhook 仅在启用代理服务器托管 (`config.deployment.enabled`) 时使用的 `/api-host` 路由。
 
 使用 Helm 图表版本附带的 LangSmith 应用程序映像。
 
@@ -101,7 +101,7 @@ GitHub 将拉取请求 Webhook 发送到数据平面上的 **Webhook URL**。如
 
 GitHub.com 和 `ghe.com` 从您的网络外部发送 webhook； GHES 从您的 GHES 环境发送它们。 Webhook URL 必须可从该源访问。通过 VPN 的浏览器访问不会建立 Webhook 访问。
 
-对于 GitHub IP 允许列表，包括 LangSmith 服务和沙箱主机的出站地址，包括任何 NAT 网关地址。沙箱 Git 流量需要直接路由到 GitHub。不支持强制上游 HTTP/HTTPS 转发代理； LangSmith API pod 上的`HTTPS_PROXY` 不配置沙箱 Git 访问。
+对于 GitHub IP 允许列表，包括 LangSmith 服务和沙箱主机的出站地址，包括任何 NAT 网关地址。沙盒 Git 流量需要直接路由到 GitHub。不支持强制上游 HTTP/HTTPS 转发代理； LangSmith API pod 上的`HTTPS_PROXY` 不配置沙箱 Git 访问。
 
 对于私有 IP 地址或私有 CA，请在配置下面的 LangSmith 时包含 [private-GHES settings](#private-ghes-deployments)。
 
@@ -119,7 +119,7 @@ GitHub.com 和 `ghe.com` 从您的网络外部发送 webhook； GHES 从您的 G
 | - | - |
 |一个组织中的存储库 |在该组织中创建应用程序。如果不需要在其他地方安装，请选择**仅在此帐户上**。 |
 |企业内多个组织的存储库 |创建企业拥有的应用程序并将其安装在每个组织中。这使得安装仅限于企业。 |
-|多个组织中的存储库，或组织和个人帐户混合的存储库，没有托管用户 |使用**任何帐户**创建组织拥有的应用程序，然后将其安装在每个目标帐户中。在 GHES 上，**任何帐户**仅适用于该服务器内。 |
+|多个组织中的存储库，或组织和个人帐户的混合，没有托管用户 |使用**任何帐户**创建组织拥有的应用程序，然后将其安装在每个目标帐户中。在 GHES 上，**任何帐户**仅适用于该服务器内。 |
 |由一个个人帐户拥有的存储库，没有托管用户 |在个人帐户中创建应用程序并选择**仅在此帐户上**。 |
 
 公开可见性允许其他帐户安装该应用程序。它不会公开存储库或在未安装的情况下授予访问权限。
@@ -160,17 +160,17 @@ GitHub.com 和 `ghe.com` 从您的网络外部发送 webhook； GHES 从您的 G
 >
 > 有关 GitHub 的说明，请参阅[Create an App for your enterprise](https://docs.github.com/en/enterprise-cloud@latest/admin/managing-github-apps-for-your-enterprise/creating-github-apps-for-your-enterprise)。> [选项卡] 个人帐户
 >
-> 将此选项用于没有受管理用户的个人帐户。
+> 对于没有托管用户的个人帐户，请使用此选项。
 >
 > 打开您的个人资料菜单并选择 **设置** > **开发人员设置** > **GitHub 应用程序** > **新 GitHub 应用程序**。
 
 #### 填写注册表
 
-对所有 GitHub 环境和应用程序所有者使用这些设置。有关字段定义，请参阅[Register a GitHub App](https://docs.github.com/en/enterprise-cloud@latest/apps/creating-github-apps/registering-a-github-app/registering-a-github-app)。将 `https://langsmith.example.com` 替换为 LangSmith 部署的面向浏览器的 URL。
+将这些设置用于所有 GitHub 环境和应用程序所有者。有关字段定义，请参阅[Register a GitHub App](https://docs.github.com/en/enterprise-cloud@latest/apps/creating-github-apps/registering-a-github-app/registering-a-github-app)。将 `https://langsmith.example.com` 替换为 LangSmith 部署的面向浏览器的 URL。
 
 GitHub 标记授权回调字段 **回调 URL** 或 **重定向 URI**。这两个名称均指 GitHub 在授权后返回用户的 URL。
 
-如果 LangSmith 使用基本路径，请包含它。例如，位于 `https://langsmith.example.com/langsmith` 的部署使用 `https://langsmith.example.com/langsmith/api-host/v1/integrations/forge/github/callback` 作为其授权回调 URL。| GitHub 设置 |价值|
+如果 LangSmith 使用基本路径，请包含它。例如，`https://langsmith.example.com/langsmith` 的部署使用 `https://langsmith.example.com/langsmith/api-host/v1/integrations/forge/github/callback` 作为其授权回调 URL。| GitHub 设置 |价值|
 | - | - |
 | **GitHub 应用程序名称** |您的部署的唯一名称，例如 `acme-langsmith-engine`。 |
 | **主页网址** |您的 LangSmith URL，例如 `https://langsmith.example.com`。 |
@@ -335,7 +335,7 @@ LangSmith 服务和沙箱主机必须信任签署您的 GHES 证书的 CA。仅�
 
 对于私钥轮换，请在 GitHub 中添加新密钥，更新部署 Secret，然后重新启动受影响的工作负载。在删除旧密钥之前验证连接。遵循 GitHub 支持多个客户端密钥的相同重叠方法。
 
-对于 webhook-secret 轮换，请协调 GitHub 和 LangSmith 值。不匹配期间的交付无法通过签名验证。在双方使用新密钥后，查看**最近的交付**并重新交付失败事件。替换应用程序需要安装替换版本并重新连接受影响的 LangSmith 工作区。计划好中断，直到存储库访问恢复为止。转移应用程序所有权还可以更改其安装位置及其公共链接；在进行更改之前检查 GitHub 的传输行为。
+对于 webhook-secret 轮换，请协调 GitHub 和 LangSmith 值。不匹配期间的交付无法通过签名验证。在双方使用新密钥后，查看**最近的交付**并重新交付失败事件。替换应用程序需要安装替换版本并重新连接受影响的 LangSmith 工作区。计划中断，直到存储库访问恢复为止。转移应用程序所有权还可以更改其安装位置及其公共链接；在进行更改之前检查 GitHub 的传输行为。
 
 请勿在迁移过程中更改现有连接部署上的`ENGINE_GITHUB_WEB_BASE_URL`。更改 URL 不会迁移存储库连接或现有 PR 引用。在切换 GitHub 实例之前，计划使用 LangChain 支持进行迁移。
 
@@ -343,7 +343,7 @@ LangSmith 服务和沙箱主机必须信任签署您的 GHES 证书的 CA。仅�
 
 * [Connect Engine to your repository](/langsmith/engine-repositories)：配置 GitHub 应用程序后连接存储库。
 * [Engine on self-hosted and BYOC](/langsmith/engine-self-hosted)：安装引擎并选择其运行模型的方式。
-* [Engine security](/langsmith/engine-security)：引擎如何处理您的数据和存储库访问。
+* [Engine security](/langsmith/engine-security)：引擎如何处理数据和存储库访问。
 
 ***
 

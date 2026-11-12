@@ -68,7 +68,7 @@ const EXAMPLE_QUERY =
   "How do I stream intermediate tool results from a subagent?";
 
 const baselineAgent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [],
   systemPrompt:
     "You are a helpful LangChain documentation assistant. Answer questions about LangChain APIs and patterns.",
@@ -884,7 +884,7 @@ const chunkAnalystSubagent = {
 };
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [searchDocumentation],
   backend,
   systemPrompt: instructions,
@@ -1450,7 +1450,7 @@ const chunkAnalystSubagent = {
 };
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [searchDocumentation],
   backend,
   systemPrompt: instructions,
@@ -2405,7 +2405,7 @@ You implemented one RAG pattern with [`createDeepAgent`](https://reference.langc
 * Add [Skills](/oss/javascript/deepagents/skills) to package retrieval workflows and domain-specific search guidance
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) with LangSmith datasets and evaluators
 * Read [Context engineering](/oss/javascript/deepagents/context-engineering) for offloading and subagent isolation strategies
-* Deploy with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, host agents yourself or use a custom [LangSmith Deployment](/langsmith/deployment)
+* Deploy with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, host agents yourself or use a custom [Agent Server](/langsmith/deployment)
 
 ***
 

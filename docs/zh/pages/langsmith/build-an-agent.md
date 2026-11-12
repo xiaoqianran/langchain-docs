@@ -39,7 +39,7 @@ LangSmith Studio 根据描述构建无代码代理。您描述代理应该做什
 
 如果聊天在填写名称、描述和说明之前停止，请单击 **重试** 再次发送原始提示。 **重试**仅在创建代理之前出现，因此重试不会创建第二个代理。
 
-然后，聊天会一次一个地建议其余步骤：连接、频道和时间表。您还可以直接编辑任何步骤。
+然后，聊天会一次建议一个剩余步骤：连接、频道和时间表。您还可以直接编辑任何步骤。
 
 ## 配置代理
 
@@ -97,9 +97,9 @@ Studio 将新代理创建为 **每用户**。标题显示类型但不会更改�
 
 Studio 仅使用 **Production** [environment](/langsmith/agent-environments) 创建代理，并且其运行在那里。只有当有东西向其他环境报告时，它才会获得其他环境。
 
-要查找代理的踪迹，请选择代理并打开**跟踪**。要查看其环境，请阅读 [agent Overview](/langsmith/navigate-agents#read-the-agent-overview) 上的摘要。
+要查找代理的踪迹，请选择代理并打开 **跟踪**。要查看其环境，请阅读 [agent Overview](/langsmith/navigate-agents#read-the-agent-overview) 上的摘要。
 
-LangSmith 为您运行代理，因此无需部署。它的概述中没有 **部署** 部分，并且您无法为其创建部署，因此 [agent environment deploy flags](/langsmith/deploy-to-agent-environment) 不适用于它。选择该代理后，“部署”仅显示所选代理的部署，因此它是空的。
+LangSmith 在 Studio 运行时上运行代理，因此您无法为其创建代理服务器。 [agent environment deploy flags](/langsmith/deploy-to-agent-environment) 不适用，并且其概述标题中的 **代理服务器** 链接被禁用。
 
 ## 另请参阅
 

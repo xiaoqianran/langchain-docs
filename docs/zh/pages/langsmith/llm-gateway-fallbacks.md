@@ -14,25 +14,25 @@
 
 在 LangSmith 中定义一次后备顺序，然后继续在应用程序中使用标准 LLM 网关端点和模型 ID。
 
-## 它是如何工作的
+## 了解后备行为
 
 ### 链条组件
 
 模型后备链具有：* **主模型**：请求失败时触发链的提供者和模型。
 * **一到五个后备**：提供者模型的有序列表或保存的[model configurations](/langsmith/model-configurations)。提供程序模型使用该提供程序的工作区密钥，或适用于符合条件的托管模型的网关积分。
 * **回退触发器**：将请求移至下一个模型的 HTTP 状态代码。默认值涵盖速率限制、过载、服务器和请求超时错误，例如 `408`、`429`、`500` 和 `503`。
-* **第一次输出的时间**：每次尝试在网关移动到下一个模型之前可以等待多长时间。默认情况下，它会在 120 秒后开启，每次尝试都会获得一个新的计时器。 [unified API format](/langsmith/llm-gateway-api-formats) 中的流请求等待第一个输出。非流式请求和[direct model access](/langsmith/llm-gateway-direct-model-access)请求等待响应标头。
+* **第一次输出的时间**：每次尝试在网关移动到下一个模型之前可以等待多长时间。默认情况下，它会在 120 秒后打开，每次尝试都会获得一个新的计时器。 [unified API format](/langsmith/llm-gateway-api-formats) 中的流请求等待第一个输出。非流式请求和[direct model access](/langsmith/llm-gateway-direct-model-access)请求等待响应标头。
 * **模型冷却**（可选）：有多少次失败使网关跳过模型，以及持续多长时间。默认情况下它是关闭的。请参阅[Model cooldowns](#model-cooldowns)了解更多信息。> [!提示]
 >
 > 两种状态在回退方面表现不同：
 >
 > * **`429`来自速率限制策略**：[rate limit policy](/langsmith/llm-gateway-rate-limit-policies)在网关调用主模型之前阻塞请求，因此其`429`不会触发链。只有来自提供商的 `429` 才可以。
-> * **`424` 缺少提供商密钥**：默认触发器不包括 `424`。添加它可以让链跳过工作区中没有 [provider key](/langsmith/llm-gateway-provider-authentication#fix-provider-credential-errors) 的回退。没有密钥的主模型会返回`424`，而无需尝试链。
+> * **`424` 对于缺少的提供者密钥**：默认触发器不包括 `424`。添加它可以让链跳过工作区中没有 [provider key](/langsmith/llm-gateway-provider-authentication#fix-provider-credential-errors) 的回退。没有密钥的主模型会返回`424`，而无需尝试链。
 
 ### 模型冷却时间
 
-冷却时间是指网关跳过回退链中的模型而不调用它的时间段。跳过可能失败的模型可以节省每个请求失败尝试的延迟。模型通过两种方式进入冷却时间：* **提供商速率限制**：当提供商返回 `429` 时，网关会跳过该模型以应对提供商响应中的重试延迟。如果响应没有设置延迟，则冷却时间持续 5 秒。冷却时间不会超过 300 秒。工作区中触发器包括 `429` 的每个链都会跳过模型。
-* **模型冷却**：当您为链打开**模型冷却**时，在冷却期内未能触发链指定次数的模型将在冷却期内被该链跳过。触发器状态、超时和提供程序传输错误均视为失败。其他状态和取消的请求不会，并且成功不会重置计数。每个链中的每个模型都会对失败进行计数，因此其他链会继续调用该模型。启用后，默认情况下模型在 3 次失败后会跳过 60 秒。当该周期结束时，网关再次调用该模型，并且其失败计数重新开始。
+冷却时间是指网关跳过后备链中的模型而不调用它的时间段。跳过可能失败的模型可以节省每个请求失败尝试的延迟。模型通过两种方式进入冷却时间：* **提供商速率限制**：当提供商返回 `429` 时，网关会跳过该模型以应对提供商响应中的重试延迟。如果响应没有设置延迟，则冷却时间持续 5 秒。冷却时间不会超过 300 秒。工作区中触发器包括 `429` 的每个链都会跳过该模型。
+* **模型冷却**：当您为链打开**模型冷却**时，在冷却期内未能触发链指定次数的模型将在冷却期内被该链跳过。触发器状态、超时和提供程序传输错误均视为失败。其他状态和取消的请求不会，并且成功不会重置计数。每个链中的每个模型都会对失败进行计数，因此其他链会继续调用该模型。启用后，默认情况下模型在 3 次失败后会跳过 60 秒。当该周期结束时，网关再次调用该模型，并且其故障计数重新开始。
 
 链中的最后一个模型总是被调用，即使它正在冷却。
 
@@ -46,27 +46,29 @@
    * 没有后备措施。
 4. 网关以客户端使用的API 格式返回最后一次响应。
 
+每次尝试都会收到原始请求，并在需要时转换为模型的 API 格式。网关不会缩短对话以适应后备模型的上下文窗口。因此，具有较小上下文窗口的模型可以返回`400`，这会结束链，除非`400`是触发状态。
+
 网关会跳过除最后一个之外的任何 [cooling down](#model-cooldowns) 模型，而不调用它。跳过的模型不会出现在响应正文中。要查看跳过的模型，[investigate the chain's attempts](#investigate-fallback-attempts)。
 
 一旦流响应开始发送输出，网关就会提交该模型并且不再回退，即使流稍后失败也是如此。> [!提示]
 >
 > 所有尝试都出现在一次 [gateway trace](/langsmith/llm-gateway-traces#read-the-trace-tree) 中，在 `gateway.request` 根运行下。使用两个回退的请求具有三个 `gateway.attempt #N` 子运行：主要尝试和两个回退尝试。
 >
-> 每个提供商调用都单独贡献给[spend policies](/langsmith/llm-gateway-spend-policies)，但内容记录的请求在跟踪计费中计数一次，无论尝试次数如何。跳过冷却的模型仍显示为 `gateway.attempt #N` 运行，且 `gateway.attempt.outcome` 设置为 `skipped`，但它没有提供程序 LLM 运行。
+> 每个提供商调用都单独贡献给[spend policies](/langsmith/llm-gateway-spend-policies)，但内容记录的请求在跟踪计费中计数一次，无论尝试次数如何。跳过冷却的模型仍显示为 `gateway.attempt #N` 运行，且 `gateway.attempt.outcome` 设置为 `skipped`，但它没有提供商 LLM 运行。
 
 ### 支持的格式和端点
 
 后备模型可以使用与主要模型不同的提供程序和 API 格式。网关在[supported API formats](/langsmith/llm-gateway-api-formats)之间转换请求和响应。例如，Anthropic 主模型可以回退到 OpenAI 模型，而无需客户端更改。
 
-后备链适用于统一端点和直接模型访问路径上的聊天完成、响应和消息请求。其他端点（例如嵌入）无需回退即可调用所请求的模型。
+后备链适用于统一端点和直接模型访问路径上的聊天完成、响应和消息请求。其他端点（例如嵌入和通过直接模型访问的 Gemini `generateContent` 请求）无需回退即可调用所请求的模型。
 
-## 创建后备链
-
-> [!警告]
+## 创建后备链> [!警告]
 >
 > 创建和管理后备链需要 `organization:gateway:manage` 权限。组织管理员和组织操作员默认拥有它。有关每个组织角色可以执行的操作，请参阅[Organization roles](/langsmith/rbac#organization-roles)。
 
-创建后备链：1. 转到 **LLM Gateway**，然后选择 **模型回退** 选项卡。
+创建后备链：
+
+1. 转到 **LLM Gateway**，然后选择 **模型回退** 选项卡。
 2. 单击**创建后备链**。
 3. 选择链适用的**工作区**。
 4. 选择主要提供商和型号。当主要尝试失败时，对此提供者前缀的模型 ID 的请求将使用该链。
@@ -74,13 +76,13 @@
 6. 在 **回退触发器** 下，查看将请求发送到下一个模型的状态代码。根据需要调整它们。
 7. （可选）调整[**Time to first output**](#chain-components)，以秒为单位。将该字段留空以删除超时。
 8.（可选）开启[**Model cooldown**](#model-cooldowns)，并设置跳过模型的时间以及失败次数开始冷却。
-9. 单击**创建链**。
-
-> [!提示]
+9. 单击**创建链**。> [!提示]
 >
 > 提供者和模型在每个工作区中最多可以有一个后备链。要更改其行为，请编辑现有链。
 
-## 测试后备链模拟器通过回退链发送请求，其中包含您为每个模型选择的行为，例如速率限制或中断。这样，您可以在提供商在生产中出现故障之前检查链的路由和增加的延迟。
+## 测试后备链
+
+模拟器通过回退链发送请求，其中包含您为每个模型选择的行为，例如速率限制或中断。这样，您可以在提供商在生产中出现故障之前检查链的路由和增加的延迟。
 
 测试链：
 
@@ -111,12 +113,12 @@ curl "$LANGSMITH_GATEWAY_BASE_URL/chat/completions" \
 ## 调查后备尝试
 
 当链运行时，响应记录网关尝试的模型、每次尝试的状态代码以及服务请求的模型：* **在网关跟踪中**：在[gateway tracing project](/langsmith/llm-gateway-traces#find-gateway-traces)中打开请求，并展开`gateway.request`。每个`gateway.attempt #N`都包含其策略检查，并且在进行后，其提供商LLM将运行。选择检查其结果和上游错误元数据的尝试。
-* **在应用程序跟踪中**：如果您的应用程序通过 Python 中的 LangChain 聊天模型（`langchain-openai>=1.6.7` 或 `langchain-anthropic>=1.7.5`）调用网关且[tracing](/langsmith/observability) 打开，则该模型的运行将有一个 **Gateway** 部分，其中列出了每次尝试。聊天模型从下一项中描述的响应标头中读取此内容。
-* **在响应中**：其他客户端可以读取`X-LangSmith-Gateway-Metadata`[response header](/langsmith/llm-gateway-api-formats#read-response-metadata)。它的 `attempt_details` 字段列出了每次尝试的模型和状态代码，并且 `selected_model` 命名了服务该请求的模型。模型被跳过，因为它是 [cooling down](#model-cooldowns)，且 `fallback_trigger` 设置为 `cooldown` 并且没有状态代码。
+* **在应用程序跟踪中**：如果您的应用程序在启用 [tracing](/langsmith/observability) 的情况下通过 Python 中的 LangChain 聊天模型（`langchain-openai>=1.6.7` 或 `langchain-anthropic>=1.7.5`）调用网关，则该模型的运行将有一个 **Gateway** 部分，其中列出了每次尝试。聊天模型从下一项中描述的响应标头中读取此内容。
+* **在响应中**：其他客户端可以读取`X-LangSmith-Gateway-Metadata` [response header](/langsmith/llm-gateway-api-formats#read-response-metadata)。它的 `attempt_details` 字段列出了每次尝试的模型和状态代码，并且 `selected_model` 命名了服务请求的模型。模型被跳过，因为它是 [cooling down](#model-cooldowns)，其 `fallback_trigger` 设置为 `cooldown` 并且没有状态代码。
 
 ## 设置提示的后备
 
-保存在 LangSmith 中的 [prompt](/langsmith/prompt-engineering-concepts#prompts-in-langsmith) 存储模型选择及其模板，因此您的应用程序可以将两者一起拉取并运行。后备链适用于对其工作区中的主要模型的每个请求。要为同一模型提供与其他流量不同的提示后备行为，请将提示指向其自己保存的[model configuration](/langsmith/llm-gateway-model-configurations)，并将该配置设为链的主要配置。提示符将配置调用为`custom/<name>`，网关应用该配置的链。
+保存在 LangSmith 中的 [prompt](/langsmith/prompt-engineering-concepts#prompts-in-langsmith) 存储模型选择及其模板，因此您的应用程序可以将两者一起拉取并运行。后备链适用于对其工作区中的主要模型的每个请求。要为同一模型提供与其他流量不同的提示回退行为，请将提示指向其自己保存的[model configuration](/langsmith/llm-gateway-model-configurations)，并将该配置设为链的主要配置。提示符将配置调用为`custom/<name>`，网关应用该配置的链。
 
 要配置提示的后备：
 

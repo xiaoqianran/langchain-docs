@@ -108,7 +108,7 @@ Most applications choose either one sandbox per [thread](/langsmith/use-threads)
 
 Sandboxes consume resources and cost money until they are shut down. Make sure you shut sandboxes down once they are no longer in use.
 
-For the full lifecycle table, async [graph factory](/langsmith/graph-rebuild) notes, TTL behavior, LangGraph Deployment wiring, and client-side examples, see [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle) in Going to production.
+For the full lifecycle table, async [graph factory](/langsmith/graph-rebuild) notes, TTL behavior, Agent Server wiring, and client-side examples, see [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle) in Going to production.
 
 ### Thread-scoped (default)
 
@@ -164,7 +164,7 @@ export async function agent(config: LangGraphRunnableConfig) {
       idleTtlSeconds: 3600, // TTL: clean up when idle
     }));
   return createDeepAgent({
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     backend: new LangSmithSandbox({ sandbox: lsSandbox }),
   });
 }
@@ -352,7 +352,7 @@ export async function agent(config: LangGraphRunnableConfig) {
       name: sandboxName,
     }));
   return createDeepAgent({
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     backend: new LangSmithSandbox({ sandbox: lsSandbox }),
   });
 }

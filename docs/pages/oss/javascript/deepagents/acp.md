@@ -234,7 +234,7 @@ const server = new DeepAgentsServer({
     {
       name: "code-agent",
       description: "Full-featured coding assistant",
-      model: "openai:gpt-5.5",
+      model: "openai:gpt-6.1-sol",
       skills: ["./skills/"],
       memory: ["./.deepagents/AGENTS.md"],
     },

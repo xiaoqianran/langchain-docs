@@ -233,7 +233,7 @@ Register each agent before enabling dynamic routing. Replica configurations requ
 >
 > ## Customize tracing in deployed agents
 >
-> Tracing is enabled by default within LangSmith Deployment's [Agent Server](/langsmith/agent-server). When using a [factory function](/langsmith/graph-rebuild), you can wrap the yielded graph with `tracing_context` to control tracing per-execution. This is useful for adding custom metadata, disabling tracing entirely, or customizing tracing based on the authenticated user.
+> Tracing is enabled by default within [Agent Server](/langsmith/agent-server). When using a [factory function](/langsmith/graph-rebuild), you can wrap the yielded graph with `tracing_context` to control tracing per-execution. This is useful for adding custom metadata, disabling tracing entirely, or customizing tracing based on the authenticated user.
 >
 > ### Disable tracing for a graph
 >

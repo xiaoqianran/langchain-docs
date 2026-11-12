@@ -261,7 +261,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
 >
 >
 > agent: Runnable = create_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     tools=[get_user_info],
 >     # Pass store to agent - enables agent to access store when running tools
 >     store=store,
@@ -700,7 +700,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
 >
 >
 > agent: Runnable = create_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     tools=[save_user_info],
 >     store=store,
 >     context_schema=Context,

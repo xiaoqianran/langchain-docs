@@ -17,7 +17,7 @@ We call this "double texting".
 
 > [!NOTE]
 >
-> Double texting is a feature of LangSmith Deployment. It is not available in the [LangGraph open source framework](/oss/python/langgraph/overview).
+> Double texting is a feature of LangSmith Agent Server. It is not available in the [LangGraph open source framework](/oss/python/langgraph/overview).
 
 ![Double-text strategies across first vs. second run: Reject keeps only the first; Enqueue runs the second afterward; Interrupt halts the first to run the second; Rollback reverts the first and reruns with the second.](https://mintcdn.com/langchain-5e9cc07a/Hucw5hmCzWXDanL-/langsmith/images/double-texting.png?fit=max\&auto=format\&n=Hucw5hmCzWXDanL-\&q=85\&s=1cae1e8cd4920872e7992460b081f76d)
 

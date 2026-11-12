@@ -1,14 +1,14 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Control plane API reference for LangSmith Deployment | https://docs.langchain.com/langsmith/api-ref-control-plane -->
+<!-- langchain-docs: Control plane API reference for Agent Server hosting | https://docs.langchain.com/langsmith/api-ref-control-plane -->
 
-# LangSmith 部署的控制平面 API 参考
+# 用于代理服务器托管的控制平面 API 参考
 
-使用控制平面 API 在 LangSmith 部署中以编程方式创建、管理和自动化代理服务器部署。
+使用 LangSmith 控制平面 API 以编程方式创建、管理和自动化代理服务器部署。
 
-控制平面 API 是 [LangSmith Deployment](/langsmith/deployment) 的一部分。借助控制平面 API，您可以以编程方式创建、管理和自动化您的 [Agent Server](/langsmith/agent-server) 部署，例如，作为自定义 CI/CD 工作流程的一部分。
+控制平面 API 管理[Agent Server hosting](/langsmith/deployment)。借助控制平面 API，您可以以编程方式创建、管理和自动化您的 [Agent Server](/langsmith/agent-server) 部署，例如，作为自定义 CI/CD 工作流程的一部分。
 
-浏览侧边栏 **控制平面 API** 部分中的完整 API 参考，或参阅端点组：
+在侧边栏的 **控制平面 API** 部分中浏览完整的 API 参考，或参阅端点组：
 
 * [Integrations (v1)](/api-reference/integrations-v1/list-github-integrations)：GitHub 集成和存储库列表
 * [Deployments (v2)](/api-reference/deployments-v2)：创建、管理和更新代理服务器部署
@@ -87,8 +87,8 @@ curl --request GET \
 
 ## 快速开始
 
-1. 调用`POST /v2/deployments`创建一个新的Deployment。响应正文包含部署 ID (`id`) 和最新（也是第一个）修订版的 ID (`latest_revision_id`)。
-2. 调用`GET /v2/deployments/{deployment_id}`检索Deployment。将 URL 中的 `deployment_id` 设置为部署 ID (`id`) 的值。
+1. 调用`POST /v2/deployments`创建部署。响应正文包含部署 ID (`id`) 和最新（也是第一个）修订版的 ID (`latest_revision_id`)。
+2. 调用`GET /v2/deployments/{deployment_id}`检索部署。将 URL 中的 `deployment_id` 设置为步骤 1 中的部署 ID (`id`)。
 3. 通过调用 `GET /v2/deployments/{deployment_id}/revisions/{latest_revision_id}` 轮询修订版 `status`，直到 `status` 为 `DEPLOYED`。
 4. 调用`PATCH /v2/deployments/{deployment_id}`更新部署。
 
@@ -98,6 +98,8 @@ curl --request GET \
 * **默认限制为请求的 2 倍**：如果您设置 CPU 或内存请求并忽略其限制，则限制默认为请求的 2 倍。 Redis 内存限制是例外：`redis_memory_limit_mb` 默认为 `redis_memory_mb`。在自托管数据平面上，CPU 限制还设置 [autoscaling target](/langsmith/data-plane#autoscaling)。
 * **CPU 值四舍五入到小数点后 1 位**：舍入使用浮点运算，因此某些值会向下舍入。例如，`0.25` 存储为 `0.2`。
 * **Redis 内存有自己的范围**：`redis_memory_mb` 和 `redis_memory_limit_mb` 接受 512 到 16384（128 的倍数）。API 在验证器中强制执行此范围，因此它不会出现在 OpenAPI 架构中。对于自托管部署，数据平面中的侦听器使用其自己版本的规则再次验证`resource_spec`。返回 `200` 的 `PATCH` 仍然可能在旧侦听器上部署时失败。参见[Listener version requirements](/langsmith/self-hosted-platform-features#listener-version-requirements)。
+
+要将持久存储（例如 Amazon EFS）挂载到自托管部署的 Pod 中，请在 `resource_spec` 中设置 `volumes` 和 `volume_mounts`。有关更多信息，请参阅[Volumes](/langsmith/self-hosted-platform-features#volumes)。
 
 ## 示例代码
 

@@ -4,7 +4,7 @@
 
 Build your first deep agent in minutes
 
-This guide walks you through creating your first deep agent with the Deep Agents SDK. Use the SDK for maximum flexibility and host agents yourself or run a custom [LangSmith Deployment](/langsmith/deployment). To run agents in production without having to manage infrastructure, see the [Managed Deep Agents quickstart](/langsmith/javascript/managed-deep-agents-quickstart) instead.
+This guide walks you through creating your first deep agent with the Deep Agents SDK. Use the SDK for maximum flexibility and host agents yourself or run a custom [Agent Server](/langsmith/deployment). To run agents in production without having to manage infrastructure, see the [Managed Deep Agents quickstart](/langsmith/javascript/managed-deep-agents-quickstart) instead.
 
 You will build a research agent that can conduct research and write reports.
 
@@ -296,7 +296,7 @@ Use this to run an internet search for a given query. You can specify the max nu
 `;
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [internetSearch],
   systemPrompt: researchInstructions,
 });

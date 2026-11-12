@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: How to define a code evaluator | https://docs.langchain.com/langsmith/code-evaluator-sdk -->
 
-# 如何定义代码评估器
+# How to define a code evaluator
 
 代码评估器是一种函数，它采用数据集示例和生成的应用程序输出，并返回一个或多个指标。这些函数可以直接传递到[⟦T4⟧](https://reference.langchain.com/python/langsmith/client/Client/evaluate)或[⟦T5⟧](https://reference.langchain.com/python/langsmith/client/Client/aevaluate)函数中。
 
@@ -49,7 +49,7 @@ const correct = async ({ outputs, referenceOutputs }: {
 * `example: Example`：完整数据集[Example](/langsmith/example-data-format)，包括示例输入、输出（如果可用）和元数据（如果可用）。
 * `inputs: dict`：与数据集中单个示例相对应的输入字典。
 * `outputs: dict`：应用程序在给定`inputs`上生成的输出的字典。
-* `reference_outputs/referenceOutputs: dict`：与示例相关的参考输出的字典（如果有）。对于大多数用例，您只需要 `inputs`、`outputs` 和 `reference_outputs`。仅当您需要应用程序实际输入和输出之外的一些额外跟踪或示例元数据时，`run` 和 `example` 才有用。
+* `reference_outputs/referenceOutputs: dict`：与示例相关的参考输出的字典（如果有）。对于大多数用例，您只需要 `inputs`、`outputs` 和 `reference_outputs`。 `run` and `example` are useful only if you need some extra trace or example metadata outside of the actual inputs and outputs of the application.
 
 当使用 JS/TS 时，这些都应该作为单个对象参数的一部分传入。
 
@@ -59,7 +59,7 @@ const correct = async ({ outputs, referenceOutputs }: {
 
 Python 和 JS/TS
 
-* `dict`：`{"score" | "value": ..., "key": ...}` 形式的字典允许您自定义指标类型（“分数”表示数字，“值”表示分类）和指标名称。例如，如果您想要将整数记录为分类指标，则此功能很有用。
+* `dict`: dicts of the form `{"score" | "value": ..., "key": ...}` allow you to customize the metric type ("score" for numerical and "value" for categorical) and metric name.例如，如果您想要将整数记录为分类指标，则此功能很有用。
 
 仅限Python
 
@@ -173,7 +173,7 @@ Answer: ${outputs.answer}
 Reasoning: ${outputs.reasoning}`;
 
     const response = await openai.chat.completions.create({
-        model: "gpt-5.5",
+        model: "gpt-6.1-sol",
         messages: [
             { role: "system", content: instructions },
             { role: "user", content: msg }

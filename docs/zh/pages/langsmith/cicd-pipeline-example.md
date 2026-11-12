@@ -1,10 +1,10 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Implement a CI/CD pipeline using LangSmith Deployment and Evaluation | https://docs.langchain.com/langsmith/cicd-pipeline-example -->
+<!-- langchain-docs: Implement a CI/CD pipeline using LangSmith Agent Server and Evaluation | https://docs.langchain.com/langsmith/cicd-pipeline-example -->
 
-# 使用LangSmith部署和评估实现 CI/CD 管道
+# 使用LangSmith代理服务器和评估实现 CI/CD 管道
 
-本指南演示了如何为LangSmith部署中部署的AI代理应用程序实现全面的CI/CD管道。在此示例中，您将使用 [LangGraph](/oss/python/langgraph/overview) 开源框架来编排和构建代理，使用 [LangSmith](/langsmith/observability) 来进行可观察性和评估。该管道基于[cicd-pipeline-example repository](https://github.com/langchain-ai/cicd-pipeline-example)。
+本指南演示了如何为LangSmith代理服务器中部署的AI代理应用程序实现全面的CI/CD管道。在此示例中，您将使用 [LangGraph](/oss/python/langgraph/overview) 开源框架来编排和构建代理，使用 [LangSmith](/langsmith/observability) 来进行可观察性和评估。该管道基于[cicd-pipeline-example repository](https://github.com/langchain-ai/cicd-pipeline-example)。
 
 ## 概述
 
@@ -80,7 +80,7 @@ graph TD
 
 您可以通过多种方式触发此管道，无论是在开发过程中还是在您的应用程序已经上线时。管道可以通过以下方式触发：* **代码更改**：推送到主/开发分支，您可以在其中修改LangGraph架构、尝试不同的模型、更新代理逻辑或进行任何代码改进。
 * **PromptHub 更新**：对存储在 LangSmith PromptHub 中的提示模板进行更改 - 每当有新的提示提交时，系统都会触发 Webhook 来运行管道。
-* **在线评估警报**：来自实时部署的性能下降通知
+* **在线评估警报**：来自实时代理服务器的性能下降通知
 * **LangSmith 跟踪 webhooks**：基于跟踪分析和性能指标的自动触发器。
 * **手动触发**：手动启动管道以进行测试或紧急部署。
 
@@ -98,7 +98,7 @@ CI/CD 管道使用 GitHub Actions 以及 [Control Plane API](/langsmith/api-ref-
 
 工作流程包括：
 
-* **新代理部署**：当打开新 PR 并测试通过时，将使用 [Control Plane API](/langsmith/api-ref-control-plane) 在 LangSmith 部署中创建新的预览部署。这使您可以在升级到生产环境之前在暂存环境中测试代理。* **代理部署修订**：当找到具有相同 ID 的现有部署，或者 PR 合并到主部署时，就会发生修订。在合并到主部署的情况下，预览部署将被删除并创建生产部署。这可确保对代理的任何更新都正确部署并集成到生产基础设施中。
+* **新代理部署**：当打开新的 PR 并测试通过时，将使用 [Control Plane API](/langsmith/api-ref-control-plane) 创建新的预览代理服务器。这使您可以在升级到生产环境之前在暂存环境中测试代理。* **代理部署修订版**：当找到具有相同 ID 的现有代理服务器，或者 PR 合并到 main 时，就会发生修订。在合并到主服务器的情况下，预览代理服务器将被删除，并创建生产代理服务器。这可确保对代理的任何更新都正确部署并集成到生产基础设施中。
 
   ![Agent Deployment Revision Workflow](https://mintcdn.com/langchain-5e9cc07a/-UAx6PdOIJpPyTy2/langsmith/images/cicd-new-lgp-revision.png?fit=max\&auto=format\&n=-UAx6PdOIJpPyTy2\&q=85\&s=3ef7d51a322b8b5e2f9c2c70579fcc97)
 
@@ -124,7 +124,7 @@ CI/CD 管道使用 GitHub Actions 以及 [Control Plane API](/langsmith/api-ref-
 
 ### 先决条件
 
-在设置 CI/CD 管道之前，请确保您拥有：* 人工智能代理应用程序（在本例中使用[LangGraph](/oss/python/langgraph/overview)构建）
+在设置 CI/CD 管道之前，请确保您拥有：* 一个人工智能代理应用程序（在本例中使用[LangGraph](/oss/python/langgraph/overview)构建）
 *一个[LangSmith account](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cicd-pipeline-example)
 * 部署代理和检索实验结果需要[LangSmith API key](/langsmith/create-account-api-key)
 * 在存储库机密中配置的特定于项目的环境变量（例如，LLM 模型 API 密钥、向量存储凭据、数据库连接）
@@ -140,7 +140,7 @@ LangSmith支持多种部署方式，具体取决于您的[LangSmith instance is 
 * **云LangSmith**：直接 GitHub 集成。
 * **自托管/混合**：基于容器注册表的部署。
 
-部署流程从修改代理实现开始。您的项目中至少必须有一个 [⟦T7⟧](/langsmith/application-structure) 和依赖文件（`requirements.txt` 或 `pyproject.toml`）。使用 `langgraph dev` CLI 工具检查错误 - 修复任何错误；否则，部署到LangSmith部署时就会部署成功。
+部署流程从修改代理实现开始。您的项目中至少必须有一个 [⟦T7⟧](/langsmith/application-structure) 和依赖文件（`requirements.txt` 或 `pyproject.toml`）。使用 `langgraph dev` CLI 工具检查错误 - 修复任何错误；否则部署到LangSmith代理服务器时部署成功。
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TD
@@ -203,7 +203,7 @@ graph TD
 
 在部署代理之前，请确保您拥有：1. **LangGraph 图**：您的代理实现（例如，`./agents/simple_text2sql.py:agent`）。
 2. **依赖项**：`requirements.txt` 或 `pyproject.toml` 以及所有必需的包。
-3. **配置**：`langgraph.json` 文件指定：
+3. **配置**：`langgraph.json`文件指定：
    * 代理图的路径
    * 依赖位置
    * 环境变量
@@ -246,13 +246,13 @@ langgraph dev
 
 更多详情请参阅[LangGraph CLI documentation](/langsmith/cli#dev)。
 
-### 方法一：LangSmith 部署界面
+### 方法 1：LangSmith 代理服务器 UI
 
-使用 LangSmith 部署界面部署代理：
+使用 LangSmith 代理服务器 UI 部署代理：
 
 1. 前往您的[LangSmith dashboard](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cicd-pipeline-example)。
-2. 导航到 **部署** 部分。
-3. 单击右上角的 **+ 新建部署** 按钮。
+2. 导航到 **代理服务器** 部分。
+3. 单击右上角的 **+ 代理服务器** 按钮。
 4. 从下拉菜单中选择包含 LangGraph 代理的 GitHub 存储库。
 
 **支持的部署：*** **Cloud LangSmith**：直接 GitHub 与下拉菜单集成
@@ -303,7 +303,7 @@ docker push my-agent:latest
 
 #### 数据库和缓存配置
 
-默认情况下，LangSmith部署会为您创建 PostgreSQL 和 Redis 实例。要使用外部服务，请在新部署或修订中设置以下环境变量：
+默认情况下，代理服务器托管为您提供 PostgreSQL 和 Redis 实例。要使用外部服务，请在新代理服务器或修订版中设置以下环境变量：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Set environment variables for external services
@@ -376,9 +376,9 @@ export REDIS_URI_CUSTOM="redis://host:6379/0"
 >
 > 如果您在 `LANGSMITH_ENDPOINT` 环境变量中设置端点，请使用 API URL，例如 `https://api.smith.langchain.com` 或 `http(s)://<langsmith-url>/api`（如果是自托管）。
 
-#### LangSmith 部署 API（部署）
+#### 控制平面 API（代理服务器部署）
 
-对于 LangSmith 部署操作（部署、修订）：
+对于控制平面操作（代理服务器部署和修订）：
 
 <table>
   <thead>

@@ -14,11 +14,11 @@
 
 Azure 上的LangSmith 分阶段部署。每个阶段都会在前一个阶段的基础上添加一个功能层。所有层共享相同的 AKS 集群和 `langsmith` 命名空间。
 
-![LangSmith on Azure service layout](https://mintcdn.com/langchain-5e9cc07a/D6uoP5M0BV8YGC-1/images/self-hosted-terraform/azure-architecture.png?fit=max\&auto=format\&n=D6uoP5M0BV8YGC-1\&q=85\&s=5ee76baf8bca85d865a4e75e2ab7d4b6)|舞台|层 |添加了什么 |
+![LangSmith on Azure service layout](https://mintcdn.com/langchain-5e9cc07a/D6uoP5M0BV8YGC-1/images/self-hosted-terraform/azure-architecture.png?fit=max\&auto=format\&n=D6uoP5M0BV8YGC-1\&q=85\&s=5ee76baf8bca85d865a4e75e2ab7d4b6)|舞台|层|添加了什么 |
 | - | - | - |
 |基础设施| Azure 基础设施 | VNet、AKS、Postgres、Redis、Blob、Key Vault、证书管理器、KEDA、入口控制器、可选的 SmithDB 元存储 |
 |应用 | LangSmith底座|前端、后端、平台后端、队列、摄取队列、ace 后端、clickhouse、游乐场 |
-| LangSmith 部署插件 | LangSmith 部署|主机后端、侦听器、操作员 + 每个部署的 pod |
+|代理服务器托管附加组件 |代理服务器托管 |主机后端、侦听器、操作员 + 每个部署的 pod |
 |舰队附加组件 |舰队|舰队工具服务器、舰队触发服务器、集群内舰队 Redis |
 |见解 + Polly 附加组件 |见解+波莉|见解分析（ClickHouse 支持）、Polly 评估代理（静态 `standalone-polly` Pod）|
 | LLM 网关插件 | LLM 网关（测试版）|代理网关，加上具有 PII 编辑功能的 presidio-analyzer |
@@ -110,7 +110,7 @@ Terraform 还会在 `enable_smithdb = true` 时创建 `subnet-postgres`，在 `c
 
 > [!警告]
 >
-> 集群内 ClickHouse 仅适用于 dev/POC（单个 pod，无复制，无备份）。对于生产使用[LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse)或自我管理的外部集群。> [!注意]
+> 集群内 ClickHouse 仅用于 dev/POC（单个 pod，无复制，无备份）。对于生产使用[LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse)或自我管理的外部集群。> [!注意]
 >
 > [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) 是 LangSmith 专门构建的可观测性后端，从版本 0.16.0 开始可用于自托管 LangSmith（请参阅 [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)）。这些 Terraform 模块默认配置 ClickHouse，因此前面部分中的指南适用于大多数部署。设置 `enable_smithdb = true` 以添加 SmithDB 基础设施：专用 PostgreSQL 18 元存储、存储帐户和 Blob 容器、工作负载身份和高级 SSD v2 缓存卷。在 Azure 上，SmithDB 需要 LangSmith Helm 图表 0.17 系列上的稳定版本，`v0.17.*` 模块标签部署该版本。在`v0.16.*`线上，SmithDB需要模块标签v0.16.56或更高版本以及`langsmith_helm_chart_version = "~0.17.0"`。
 
@@ -122,9 +122,9 @@ Terraform 还会在 `enable_smithdb = true` 时创建 `subnet-postgres`，在 `c
 | `langsmith-backend-ch-migrations` | ClickHouse 架构迁移 |
 | `langsmith-backend-auth-bootstrap` |在 `langsmith-config-secret` 中从 `initial_org_admin_password` 创建初始组织和管理员帐户 |
 
-## LangSmith 部署插件|服务 |目的|工作负载身份 |
+## 代理服务器托管附加组件|服务 |目的|工作负载身份 |
 | - | - | - |
-| `langsmith-host-backend` | LangSmith 部署控制平面API。管理部署生命周期，提供部署元数据。 |是的 |
+| `langsmith-host-backend` |代理服务器控制平面 API。管理部署生命周期，提供部署元数据。 |是的 |
 | `langsmith-listener` |监视主机后端的状态更改，创建和更新 `LangGraphPlatform` CRD。 |是的 |
 | `langsmith-operator` | Kubernetes 运营商。 Azure 特定：注入 `azure.workload.identity/use: "true"` + `langsmith-ksa`，以便每个代理 Pod 通过 Workload Identity 访问 Blob 存储。 |没有 |
 
@@ -142,26 +142,26 @@ Fleet 将其数据存储在 Azure PostgreSQL 服务器上的专用 `langsmith_fl
 
 ## Insights 和 Polly 附加组件
 
-**见解**：作为静态 `standalone-insights` api 服务器和队列 Pod 运行。从 `langsmith-config-secret` 读取 `insights_encryption_key`。切勿轮换此密钥：它会永久破坏现有的 Insights 数据。**Polly**：作为静态 `standalone-polly` api 服务器和队列 Pod 运行，并且需要 `enable_deployments = true`。 Reads `polly_encryption_key` from `langsmith-config-secret`. Same rotation warning as Insights.
+**见解**：作为静态 `standalone-insights` api 服务器和队列 Pod 运行。从 `langsmith-config-secret` 读取 `insights_encryption_key`。切勿轮换此密钥：它会永久破坏现有的 Insights 数据。**Polly**：作为静态 `standalone-polly` api 服务器和队列 Pod 运行，并且需要 `enable_deployments = true`。从 `langsmith-config-secret` 读取 `polly_encryption_key`。与 Insights 相同的轮换警告。
 
-## Azure managed services
+## Azure 托管服务
 
 当`postgres_source = "external"`和`redis_source = "external"`（推荐的生产设置）时，Terraform规定：
 
-### Azure DB for PostgreSQL Flexible Server
+### Azure DB for PostgreSQL 灵活服务器
 
 * 保存组织、用户、项目、API 密钥、设置。
-* PostgreSQL 14 or later required. `postgres_version` defaults to `16`.
+* 需要 PostgreSQL 14 或更高版本。 `postgres_version` 默认为 `16`。
 * 由`postgres`模块自动启用的扩展：`btree_gin`、`btree_gist`、`pgcrypto`、`citext`、`pg_trgm`、`ltree`。
-* Private VNet only (`subnet-postgres`), SSL port 5432.
+* 仅专用 VNet (`subnet-postgres`)，SSL 端口 5432。
 * 秘密：`langsmith-postgres-secret`，由`k8s-bootstrap` Terraform 模块创建。
 
 ### Azure 托管 Redis
 
 * 跟踪摄取队列、发布/订阅、短期缓存。
-* Azure Managed Redis 管理引擎版本； there is no version variable to set.
+* Azure Managed Redis 管理引擎版本；没有要设置的版本变量。
 * 每个LangSmith安装必须使用自己专用的Redis。共享实例会导致部署任务路由不正确。
-* Private VNet only (`subnet-redis`), TLS port 10000.
+* 仅专用 VNet (`subnet-redis`)，TLS 端口 10000。
 * 秘密：`langsmith-redis-secret`，由`k8s-bootstrap` Terraform 模块创建。
 
 ### Azure Blob 存储* 跟踪有效负载：大量输入和输出、附件。
@@ -212,8 +212,8 @@ graph TB
 | `langsmith-platform-backend` |应用 |是的 |
 | `langsmith-queue` |应用 |是的 |
 | `langsmith-ingest-queue` |应用 |是的 |
-| `langsmith-host-backend` | LangSmith 部署插件 |是的 |
-| `langsmith-listener` | LangSmith 部署插件 |是的 |
+| `langsmith-host-backend` |代理服务器托管附加组件 |是的 |
+| `langsmith-listener` |代理服务器托管附加组件 |是的 |
 | `langsmith-fleet-tool-server` |舰队附加组件 |是的 |
 | `langsmith-fleet-trigger-server` |舰队附加组件 |是的 |
 | `langsmith-agent-gateway` | LLM 网关插件 |是的 |
@@ -222,7 +222,7 @@ graph TB
 | `langsmith-playground` |应用 |没有 |
 | `langsmith-ace-backend` |应用 |没有 |
 | `langsmith-clickhouse` |应用 |没有 |
-| `langsmith-operator` | LangSmith 部署插件 |没有 |
+| `langsmith-operator` |代理服务器托管附加组件 |没有 |
 
 所有联合凭据均在 `infra/modules/k8s-cluster/main.tf` 下的 `service_accounts_for_workload_identity` 下注册。每个名称都是 `<release>-<component>`，其中 `<release>` 是图表全名（默认为 `langsmith`）。无论是否设置 `enable_llm_gateway`，Terraform 都会注册两个 LLM 网关凭据。 `v0.16.*` 模块标签注册除两个 LLM 网关凭证之外的所有模块标签。 SmithDB 使用自己的 ServiceAccount 和身份。添加访问 Blob 存储的新 Pod 需要将其 ServiceAccount 名称添加到该列表并运行 `make apply`。
 
@@ -233,9 +233,9 @@ panic: blob-storage health-check failed: get container properties failed:
 DefaultAzureCredential: failed to acquire a token.
 WorkloadIdentityCredential authentication failed.
   AADSTS700213: No matching federated identity record found for presented assertion subject
-```
+```## 秘密流程
 
-## 秘密流程```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init: {'flowchart': {'nodeSpacing': 25, 'rankSpacing': 30}}}%%
 graph TB
     subgraph stage1["Set up infrastructure"]
@@ -276,7 +276,7 @@ graph TB
 2. `make apply` 创建密钥保管库。 Terraform 仅向其写入 `postgres-admin-password` 和 `langsmith-license-key`，并且仅在 `keyvault_manage_secrets = true`（默认）时写入。 `k8s-bootstrap` 模块创建 `langsmith-license`，以及用于外部 Postgres 和 Redis 的 `langsmith-postgres-secret` 和 `langsmith-redis-secret`。
 3. `make seed-secrets` 将应用程序机密直接写入 Key Vault：管理员密码（提示或`LANGSMITH_ADMIN_PASSWORD`）、API 密钥盐、JWT 机密和四个 Fernet 加密密钥。使用`keyvault_manage_secrets = false`，它还写入了 Terraform 跳过的两个秘密。
 4. `make kubeconfig` 获取 AKS 凭据。然后，`make k8s-secrets` 读取 Key Vault 并使用所有八个密钥创建 `langsmith-config-secret`，以及当 Key Vault 中存在 `langsmith-oauth-*` 机密时，加上 `oauth_client_id`、`oauth_client_secret` 和 `oauth_issuer_url`。
-5. `make init-values` 和`make deploy` 使用`config.existingSecretName = "langsmith-config-secret"` 安装图表。任何值文​​件中都不会内嵌出现秘密。**关键规则：** `secrets.auto.tfvars` 永远不会被提交。在任何机器上重新运行 `make setup-env` 即可恢复。 The app secrets never pass through Terraform state. `make seed-secrets` never overwrites an existing secret, because a new API key salt, JWT secret, or Fernet key breaks a running deployment.使用`make keyvault`故意轮换秘密。
+5. `make init-values` 和`make deploy` 使用`config.existingSecretName = "langsmith-config-secret"` 安装图表。任何值文​​件中都不会内嵌出现秘密。**关键规则：** `secrets.auto.tfvars` 永远不会被提交。在任何机器上重新运行 `make setup-env` 即可恢复。应用程序机密永远不会通过 Terraform 状态。 `make seed-secrets` 永远不会覆盖现有密钥，因为新的 API 密钥盐、JWT 密钥或 Fernet 密钥会破坏正在运行的部署。使用`make keyvault`故意轮换秘密。
 
 ## 入口选项
 
@@ -285,37 +285,37 @@ graph TB
 | `nginx` | `ingress_controller = "nginx"` |是的 | NGINX 通过 Helm，标准 Kubernetes Ingress。 |
 | `istio-addon` | `ingress_controller = "istio-addon"` |是的 | AKS 管理的 Istio 服务网格。使用 `istio_addon_revision` 固定修订版。 |
 | `istio` | `ingress_controller = "istio"` |是的 |通过 Helm 自我管理 Istio。完全控制修订和配置。 |
-| `agic` | `ingress_controller = "agic"` |是的 | Azure Application Gateway v2 + AKS-managed `ingress_application_gateway` add-on.网关运行`Standard_v2`； `create_waf = true` moves it to `WAF_v2` and attaches the WAF policy. HTTP-only, `dns01` with a custom domain, or `existing` with your own certificate. |
+| `agic` | `ingress_controller = "agic"` |是的 | Azure 应用程序网关 v2 + AKS 管理的 `ingress_application_gateway` 附加组件。网关运行`Standard_v2`； `create_waf = true` 将其移至 `WAF_v2` 并附加 WAF 策略。仅 HTTP、带有自定义域的 `dns01` 或带有您自己的证书的 `existing`。 |
 | `envoy-gateway` *（默认）* | `ingress_controller = "envoy-gateway"` |是的 |本机网关 API。使用`envoyproxy/gateway-helm`。 |
-| `none` | `ingress_controller = "none"` |没有 |带上你自己的入口。 |Azure Public IP DNS labels (`dns_label`) work with every controller except `none`. For `nginx`, `istio`, and `istio-addon`, `deploy.sh` applies the `service.beta.kubernetes.io/azure-dns-label-name` annotation to the controller's LoadBalancer service. For `envoy-gateway`, the EnvoyProxy resource carries the label. For `agic`, Terraform sets the label on the Application Gateway public IP.
+| `none` | `ingress_controller = "none"` |没有 |带上你自己的入口。 |Azure 公共 IP DNS 标签 (`dns_label`) 适用于除 `none` 之外的所有控制器。对于 `nginx`、`istio` 和 `istio-addon`，`deploy.sh` 将 `service.beta.kubernetes.io/azure-dns-label-name` 注解应用于控制器的 LoadBalancer 服务。对于 `envoy-gateway`，EnvoyProxy 资源带有标签。对于 `agic`，Terraform 在应用程序网关公共 IP 上设置标签。
 
-For the full TLS compatibility matrix and per-controller setup, see `INGRESS_CONTROLLERS.md` in the [Azure module repo](https://github.com/langchain-ai/terraform/blob/main/modules/azure/INGRESS_CONTROLLERS.md).
+有关完整的 TLS 兼容性矩阵和每个控制器设置，请参阅 [Azure module repo](https://github.com/langchain-ai/terraform/blob/main/modules/azure/INGRESS_CONTROLLERS.md) 中的`INGRESS_CONTROLLERS.md`。
 
 ## 资源大小
 
 有四种尺寸可供选择。
 
-|简介 |使用案例 |通过 | 设置
+|简介 |使用案例|通过 | 设置
 | - | - | - |
-| `minimum` | Cost parking, CI smoke tests, single-user demos | `sizing_profile = "minimum"` 在 `terraform.tfvars` |
+| `minimum` |停车成本、CI 冒烟测试、单用户演示 | `sizing_profile = "minimum"` 在 `terraform.tfvars` |
 | `dev` |开发人员使用、集成测试、POC | `sizing_profile = "dev"` |
 | `production` |真实流量、多副本+HPA | `sizing_profile = "production"` *（推荐）* |
 | `production-large` | \~50 个用户，\~1000 条跟踪/秒 | `sizing_profile = "production-large"` |
 
 ### AKS 节点池
 
-|泳池|虚拟机大小 | vCPU |内存 |最小|最大|目的|
+|泳池|虚拟机大小 | vCPU |内存|最小 |最大|目的|
 | - | - | - | - | - | - | - |
-|默认 | `Standard_D8s_v5` | 8 | 32GB| 1 | 10 | 10 Core LangSmith, system pods (set min 3 for production) |
-|大| `Standard_D16s_v5` | 16 | 16 64GB| 0 | 2 | ClickHouse (in-cluster), LangSmith Deployment agent pods |> [!注意]
+|默认 | `Standard_D8s_v5` | 8 | 32GB| 1 | 10 | 10核心 LangSmith，系统 Pod（生产时至少设置 3 个）|
+|大| `Standard_D16s_v5` | 16 | 16 64GB| 0 | 2 | ClickHouse（集群内）、代理服务器 Pod |> [!注意]
 >
-> ClickHouse（在集群中时）根据配置文件请求 1 到 4 个 CPU 和 2 到 16 GB RAM。对于 [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse)，仅 LangSmith 部署操作员生成的代理 Pod 才需要 `large` 池。
+> ClickHouse（在集群中时）根据配置文件请求 1 到 4 个 CPU 和 2 到 16 GB RAM。对于 [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse)，仅 Agent Server 操作员生成的代理 Pod 才需要 `large` 池。
 
 ## 可选模块
 
 每个模块都是计数控制的（`0` 禁用，`1` 启用）。启用任意组合；核心部署无需它们即可工作。
 
-|模块|变量|使用案例 |
+|模块|变量|使用案例|
 | - | - | - |
 | `waf` | `create_waf = true` | Azure WAF 策略（OWASP 3.2 + 机器人防护），默认处于 `Detection` 模式 (`waf_mode`)。通过 `ingress_controller = "agic"`，Terraform 将其附加到应用程序网关。对于任何其他控制器，该策略将保持独立状态，直到您拥有的应用程序网关引用它。 Azure 前门无法使用此策略类型。 |
 | `diagnostics` | `create_diagnostics = true` | `ingress_controller = "agic"` 时的 Log Analytics 工作区 + AKS、Key Vault、PostgreSQL 和应用程序网关的诊断设置。推荐用于生产可观察性。 |

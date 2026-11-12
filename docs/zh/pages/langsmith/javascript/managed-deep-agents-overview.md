@@ -55,7 +55,7 @@
 
 因此，`defineDeepAgent`采用相同的选项减去托管选项，再加上所需的静态`name`。每个`define*`函数都是这样工作的：声明代理需要什么，并将生命周期留给运行时。
 
-从托管Deep Agents开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/javascript/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。有关并排比较以及转换已构建的代理的步骤，请参阅[Move from Deep Agents](/langsmith/javascript/managed-deep-agents-migrate)。
+从托管Deep Agents开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/javascript/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。有关并排比较以及转换已构建的代理的步骤，请参阅[Move from Deep Agents](/langsmith/javascript/managed-deep-agents-migrate)。
 
 ## 后续步骤
 
@@ -69,7 +69,7 @@
 
 > [卡][Design agent template](/langsmith/javascript/managed-deep-agents-design-agent)
 >
-> 将 LangChain 的开源设计代理部署到 Slack。
+> 将LangChain的开源设计代理部署到Slack。
 
 > [卡][Paid media agent template](/langsmith/javascript/managed-deep-agents-paid-media-agent)
 >

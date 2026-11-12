@@ -107,7 +107,7 @@ Deep Agents 专为需要规划和分解的复杂、多步骤任务而设计。
 * 您想要使用预定义的工具，例如文件系统操作、bash 执行和自动化上下文工程。
 * 您想要使用预定义的提示和子代理。
 
-从 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 开始，在生产中运行该工具，无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/javascript/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。
+从 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 开始，在生产中运行该工具，无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/javascript/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。
 
 ## 功能比较
 

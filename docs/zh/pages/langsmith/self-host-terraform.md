@@ -16,7 +16,7 @@ LangChain 在 [github.com/langchain-ai/terraform](https://github.com/langchain-a
 
 每个模块发布标签都会部署一个 Helm 图表行：`v0.17.*` 标签部署图表 0.17，`v0.16.*` 标签部署图表 0.16。在配置模块之前，请检查所需图表线的标签。> [!提示]
 >
-> **更喜欢 Helm？** [Kubernetes setup guide](/langsmith/kubernetes) 会针对任何符合要求的集群使用 Helm 进行安装，无需 Terraform。 Terraform 路径将集群配置、秘密连接和 Helm 发布捆绑到一个工作流程中。
+> **更喜欢 Helm？** [Kubernetes setup guide](/langsmith/kubernetes) 会针对任何一致的集群使用 Helm 进行安装，无需 Terraform。 Terraform 路径将集群配置、秘密连接和 Helm 发布捆绑到一个工作流程中。
 
 ## 选择一个提供商
 
@@ -51,7 +51,7 @@ LangChain 在 [github.com/langchain-ai/terraform](https://github.com/langchain-a
 
 每个层都是`terraform.tfvars`中设置的组合：`postgres_source`、`redis_source`和`clickhouse_source`将每个数据存储放置在集群或托管服务中，并且`sizing_profile`调整工作负载的大小。
 
-|等级 | PostgreSQL | Redis |点击屋 |使用案例 |
+|等级 | PostgreSQL | Redis |点击屋|使用案例|
 | - | - | - | - | - |
 | `dev` |集群内|集群内|集群内|演示、评估、短暂的 POC |
 | `production` |云托管（RDS、Cloud SQL、Azure Database for PostgreSQL）|云托管（ElastiCache、Memorystore、Azure 托管 Redis）| [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) |持续、可扩展的生产 |
@@ -69,7 +69,7 @@ LangChain 在 [github.com/langchain-ai/terraform](https://github.com/langchain-a
 
 ## 企业功能切换
 
-每个模块都公开可选的 LangSmith 附加组件的标志。在 `terraform.tfvars` 中切换每个。每个模块的部署脚本都会读取标志并生成匹配的 Helm 值。* **[LangSmith Deployment](/langsmith/enable-self-hosted-deployment)** (`enable_deployments`)：代理服务器加上运行和管理已部署代理的主机后端、侦听器和操作员。
+每个模块都公开可选的 LangSmith 附加组件的标志。在 `terraform.tfvars` 中切换每个。每个模块的部署脚本都会读取标志并生成匹配的 Helm 值。* **[Agent Server hosting](/langsmith/enable-self-hosted-deployment)** (`enable_deployments`)：代理服务器加上运行和管理已部署代理的主机后端、侦听器和操作员。
 * **[Fleet](/langsmith/fleet)** (`enable_fleet`)：代理构建产品，以前称为 Agent Builder，作为独立服务部署。
 * **Insights** (`enable_insights`)：ClickHouse 支持的分析。
 * **Polly** (`enable_polly`)：AI 评估和监控。
@@ -85,7 +85,7 @@ LangChain 在 [github.com/langchain-ai/terraform](https://github.com/langchain-a
 ## 后续步骤* 选择上面的提供商并遵循部署指南。
 * 查看 PostgreSQL、ClickHouse、Redis 和 Kubernetes 的 [required dependency versions](/langsmith/self-host-dependency-versions)。
 * 使用 [scaling guide](/langsmith/self-host-scale) 规划容量。
-* 应用程序运行后，启用[LangSmith Deployment](/langsmith/enable-self-hosted-deployment)即可在UI上添加代理部署和管理。
+* 应用程序运行后，启用[Agent Server hosting](/langsmith/enable-self-hosted-deployment)即可在UI上添加代理部署和管理。
 
 ***
 

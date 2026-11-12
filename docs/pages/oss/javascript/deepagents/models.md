@@ -10,7 +10,7 @@ Deep Agents work with any [LangChain chat model](/oss/javascript/langchain/model
 
 Specify models in `provider:model` format (for example, `google:gemini-3.6-flash`, `openai:gpt-5.4`, or `anthropic:claude-sonnet-4-6`). The provider prefix selects the LangChain integration, and everything after the colon is passed through to that provider as the model identifier. For valid provider strings, see [`initChatModel`](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel). For provider-specific configuration, see [chat model integrations](/oss/javascript/integrations/chat).
 
-The model identifier must match the format expected by the provider. Some providers use simple names like `gpt-5.5`; others use namespaced IDs or deployment paths like `zai-org/GLM-5.2`, so the full Deep Agents string would be `baseten:zai-org/GLM-5.2`. Check the provider's model catalog or integration docs for the current identifiers.
+The model identifier must match the format expected by the provider. Some providers use simple names like `gpt-6.1-sol`; others use namespaced IDs or deployment paths like `zai-org/GLM-5.2`, so the full Deep Agents string would be `baseten:zai-org/GLM-5.2`. Check the provider's model catalog or integration docs for the current identifiers.
 
 ### Suggested models
 
@@ -120,7 +120,11 @@ const configurableModel = createMiddleware({
   name: "ConfigurableModel",
   wrapModelCall: async (request, handler) => {
     const modelName = request.runtime.context.model;
-    const model = await initChatModel(modelName);
+    // GPT-6 models need the Responses API for tool calling in @langchain/openai.
+    const model = await initChatModel(
+      modelName,
+      /(?:^|:)gpt-6/.test(modelName) ? { useResponsesApi: true } : undefined,
+    );
     return handler({ ...request, model });
   },
 });
@@ -134,7 +138,7 @@ const agent = await createDeepAgent({
 // Invoke with the user's model selection
 const result = await agent.invoke(
   { messages: [{ role: "user", content: "Hello!" }] },
-  { context: { model: "openai:gpt-5.5" } },
+  { context: { model: "openai:gpt-6.1-sol" } },
 );
 ```
 

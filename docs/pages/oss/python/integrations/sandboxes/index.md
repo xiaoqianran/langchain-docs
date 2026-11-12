@@ -40,8 +40,10 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 | [`Leap0Sandbox`](https://leap0.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-leap0/month)](https://pypi.org/project/langchain-leap0/) |
 | [`BaponiSandbox`](https://baponi.ai/docs/guides/deep-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-baponi/month)](https://pypi.org/project/langchain-baponi/) |
 | [`SuperserveSandbox`](https://docs.superserve.ai/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-superserve/month)](https://pypi.org/project/langchain-superserve/) |
+| [`WBXSandbox`](https://github.com/WBX-Sandbox/langchain-wbxsandbox#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wbxsandbox/month)](https://pypi.org/project/langchain-wbxsandbox/) |
 | [`BoxdSandbox`](https://github.com/boxd-sh/boxd-langchain#readme) | N/A |
 | [`LangSmith sandbox`](/oss/python/integrations/sandboxes/langsmith) | N/A |
+| [`NoMacSandbox`](https://github.com/NoMac-app/langchain-nomac#readme) | N/A |
 
 If you'd like to contribute a sandbox, see [Implement a sandbox integration](/oss/python/contributing/implement-langchain).
 

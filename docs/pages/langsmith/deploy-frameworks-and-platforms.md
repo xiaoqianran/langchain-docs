@@ -10,13 +10,13 @@ Use these guides when you need to ship an agent-backed product: copy the stack t
 
 ## Examples
 
-### Pair with LangSmith Deployment
+### Pair with LangSmith Agent Server
 
-The agent runs as a LangSmith Deployment, and a separate web app streams from the Agent Server API.
+The agent runs on LangSmith Agent Server, and a separate web app streams from the Agent Server API.
 
 > [card] [LangSmith + Vite](/langsmith/deploy-vite-langsmith)
 >
-> Agent graph on LangSmith Deployment; Vite + React UI streams from the Agent Server API.
+> Agent graph on LangSmith Agent Server; Vite + React UI streams from the Agent Server API.
 
 ### Embed in your web framework
 
@@ -90,7 +90,7 @@ These bindings ship no components of their own. Hooks like `useStream` return pl
 
 ## See also
 
-* [LangSmith Deployment overview](/langsmith/deployment)
+* [LangSmith Agent Server overview](/langsmith/deployment)
 * [Agent Server](/langsmith/agent-server)
 * [Configure checkpointer](/langsmith/configure-checkpointer)
 * [Frontend overview](/oss/python/langchain/frontend/overview)

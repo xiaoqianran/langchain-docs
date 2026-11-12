@@ -23,7 +23,7 @@ graph TB
 
 > [!NOTE]
 >
-> Async subagents run on any server that implements the [Agent Protocol](https://github.com/langchain-ai/agent-protocol), such as [LangSmith Deployments](/langsmith/deployment) or a self-hosted Agent Protocol server. Each subagent runs independently of the supervisor. The supervisor starts, checks, updates, and cancels it through the SDK. Notifications and webhooks require [Agent Server](/langsmith/agent-server).
+> Async subagents run on any server that implements the [Agent Protocol](https://github.com/langchain-ai/agent-protocol), such as [LangSmith Agent Server](/langsmith/deployment) or a self-hosted Agent Protocol server. Each subagent runs independently of the supervisor. The supervisor starts, checks, updates, and cancels it through the SDK. Notifications and webhooks require [Agent Server](/langsmith/agent-server).
 
 ## Compare sync and async subagents
 
@@ -434,7 +434,7 @@ agent = create_deep_agent(
 
 ## Reference implementation
 
-The [async-deep-agents](https://github.com/langchain-ai/async-deep-agents) repository contains working examples in both Python and TypeScript that deploy to LangSmith Deployments. It demonstrates a supervisor with researcher and coder subagents running as background tasks.
+The [async-deep-agents](https://github.com/langchain-ai/async-deep-agents) repository contains working examples in both Python and TypeScript that deploy to LangSmith Agent Server. It demonstrates a supervisor with researcher and coder subagents running as background tasks.
 
 ***
 

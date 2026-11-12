@@ -184,11 +184,11 @@ If we go back to the dataset page and select the `Experiments` tab, we can now s
 
 ![Testing tutorial one run](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/testing-tutorial-one-run.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=4c30f7474727d2f537c75e5f80ae1298)
 
-Let's now try it out with a different model! Let's try `gpt-5.5`
+Let's now try it out with a different model! Let's try `gpt-6.1-sol`
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def ls_target_v2(inputs: str) -> dict:
-    return {"response": my_app(inputs["question"], model="gpt-5.5")}
+    return {"response": my_app(inputs["question"], model="gpt-6.1-sol")}
 
 experiment_results = client.evaluate(
     ls_target_v2,
@@ -206,7 +206,7 @@ instructions_v3 = "Respond to the users question in a short, concise manner (one
 def ls_target_v3(inputs: str) -> dict:
     response = my_app(
         inputs["question"],
-        model="gpt-5.5",
+        model="gpt-6.1-sol",
         instructions=instructions_v3
     )
     return {"response": response}
@@ -368,7 +368,7 @@ Additionally, there are other ways to evaluate data besides in this "offline" ma
 > )
 >
 > def ls_target_v2(inputs: str) -> dict:
->     return {"response": my_app(inputs["question"], model="gpt-5.5")}
+>     return {"response": my_app(inputs["question"], model="gpt-6.1-sol")}
 >
 > experiment_results_v2 = client.evaluate(
 >     ls_target_v2,
@@ -382,7 +382,7 @@ Additionally, there are other ways to evaluate data besides in this "offline" ma
 > def ls_target_v3(inputs: str) -> dict:
 >     response = my_app(
 >         inputs["question"],
->         model="gpt-5.5",
+>         model="gpt-6.1-sol",
 >         instructions=instructions_v3
 >     )
 >     return {"response": response}

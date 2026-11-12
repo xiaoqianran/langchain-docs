@@ -789,7 +789,7 @@ Reset the stored metadata to load every source again on the next model call.
 
 > [!NOTE]
 >
-> Local runs often have no checkpointer, so skill edits take effect immediately and skills appear to reload on their own. [LangSmith Deployments](/langsmith/deployment) configure a persistent checkpointer automatically, so the same agent holds its skills for the life of a thread once deployed. See [Going to production](/oss/javascript/deepagents/going-to-production).
+> Local runs often have no checkpointer, so skill edits take effect immediately and skills appear to reload on their own. [LangSmith Agent Server](/langsmith/deployment) configures a persistent checkpointer automatically, so the same agent holds its skills for the life of a thread once deployed. See [Going to production](/oss/javascript/deepagents/going-to-production).
 
 > [!NOTE]
 >
@@ -944,7 +944,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "google:gemini-3.6-flash",
@@ -974,10 +974,10 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   backend: new CompositeBackend(new StateBackend(), {
     "/skills/": new StoreBackend({
       namespace: (rt) => ["curated-skills", rt.context.orgId],
@@ -1004,7 +1004,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "anthropic:claude-sonnet-5",
@@ -1034,7 +1034,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "openrouter:z-ai/glm-5.2",
@@ -1064,7 +1064,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "fireworks:accounts/fireworks/models/glm-5p2",
@@ -1094,7 +1094,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "baseten:zai-org/GLM-5.2",
@@ -1124,7 +1124,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "ollama:north-mini-code-1.0",
@@ -1164,7 +1164,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Use for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Use for local dev; omit for LangSmith Agent Server
 
 const agent = await createDeepAgent({
   model: "anthropic:claude-sonnet-4-6",
@@ -1519,7 +1519,7 @@ async function main() {
 
   try {
     const agent = await createDeepAgent({
-      model: "openai:gpt-5.5",
+      model: "openai:gpt-6.1-sol",
       backend,
       skills: ["/skills/"],
       store,

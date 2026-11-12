@@ -39,7 +39,7 @@ from managed_deepagents import define_deep_agent
 
 agent = define_deep_agent(
     name="support-agent",
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[
         PIIMiddleware("email", strategy="redact", apply_to_input=True),
         ModelCallLimitMiddleware(run_limit=50),
@@ -82,7 +82,7 @@ from middleware.audit import log_tool_calls
 
 agent = define_deep_agent(
     name="support-agent",
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[log_tool_calls],
 )
 ```
@@ -103,10 +103,10 @@ Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runti
 
 `mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`middleware/`下的模块。中间件未同步到 Context Hub；它附带代理代码。
 
-## 何时使用中间件|概念|亲切 |它如何到达代理|
+## 何时使用中间件|概念 |亲切 |它如何到达代理|
 | - | - | - |
-| **中间件** |申请代码 |导入并传入代理定义 |
-| **[Custom tools](/langsmith/python/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |
+| **中间件** |申请代码|导入并传入代理定义 |
+| **[Custom tools](/langsmith/python/managed-deep-agents-tools)** |申请代码|导入并传入代理定义 |
 | **[Instructions](/langsmith/python/managed-deep-agents-instructions)** |托管上下文 |永远在线的系统提示 |
 
 有关更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。

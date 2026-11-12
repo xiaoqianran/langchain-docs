@@ -95,7 +95,7 @@ LangSmith 根据您的要求支持多种计算选项：
 * 使用 IaC ([Terraform](https://www.terraform.io/) / [Deployment Manager](https://cloud.google.com/deployment-manager)) 自动化部署。
 * 使用[Secret Manager](https://cloud.google.com/secret-manager)进行配置和敏感数据。
 * 将您的LangSmith实例配置为[export telemetry data](/langsmith/export-backend)并通过[Cloud Logging](https://cloud.google.com/logging)持续监控。
-* 管理[LangSmith deployments](/langsmith/deployment)的首选方法是创建一个CI进程来构建[Agent Server](/langsmith/agent-server)图像并将其推送到[Artifact Registry](https://cloud.google.com/artifact-registry)。在 PR 合并时将新修订部署到暂存或生产之前，为拉取请求创建测试部署。
+* 管理[Agent Servers](/langsmith/deployment)的首选方法是创建一个CI进程来构建[Agent Server](/langsmith/agent-server)图像并将其推送到[Artifact Registry](https://cloud.google.com/artifact-registry)。在 PR 合并时将新修订部署到暂存或生产之前，为拉取请求创建测试部署。
 
 ### 安全
 
@@ -104,7 +104,7 @@ LangSmith 根据您的要求支持多种计算选项：
 * 与 [Secret Manager](https://cloud.google.com/secret-manager) 集成以获取凭证。
 * 使用 [Identity Platform](https://cloud.google.com/identity-platform) 或 [Workload Identity Federation](https://cloud.google.com/iam/docs/workload-identity-federation) 作为 IDP 与 LangSmith 的内置身份验证和授权功能结合使用，以确保对代理及其工具的访问安全。
 
-### 可靠性* 跨地域复制LangSmith[data plane](/langsmith/data-plane)：将相同的数据平面部署到不同地域的Kubernetes集群上，进行LangSmith部署。跨多个可用区部署[Cloud SQL](https://cloud.google.com/sql/docs/postgres/high-availability)和[GKE](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/configuration-overview)服务。
+### 可靠性* 跨地域复制LangSmith [data plane](/langsmith/data-plane)：为LangSmith Agent Server 将相同的数据平面部署到不同地域的 Kubernetes 集群中。跨多个可用区部署[Cloud SQL](https://cloud.google.com/sql/docs/postgres/high-availability)和[GKE](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/configuration-overview)服务。
 * 使用 [Horizontal Pod Autoscaler](https://cloud.google.com/kubernetes-engine/docs/concepts/horizontalpodautoscaler) 和 [Cluster Autoscaler](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-autoscaler) 为后端工作人员实现 [autoscaling](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-autoscaler)。
 * 使用[Cloud DNS](https://cloud.google.com/dns)健康检查和故障转移策略。
 
@@ -115,7 +115,7 @@ LangSmith 根据您的要求支持多种计算选项：
 
 ### 成本优化
 
-* 使用 [Committed Use Discounts](https://cloud.google.com/compute/docs/instances/signing-up-committed-use-discounts) 和 [Sustained Use Discounts](https://cloud.google.com/compute/docs/sustained-use-discounts) 调整[GKE](https://cloud.google.com/kubernetes-engine) 集群的大小。
+* 使用 [Committed Use Discounts](https://cloud.google.com/compute/docs/instances/signing-up-committed-use-discounts) 和 [Sustained Use Discounts](https://cloud.google.com/compute/docs/sustained-use-discounts) 调整[GKE](https://cloud.google.com/kubernetes-engine) 簇的大小。
 * 使用 [Cloud Billing](https://cloud.google.com/billing/docs) 仪表板和 [Cost Management](https://cloud.google.com/cost-management) 工具监控成本 KPI。
 
 ### 可持续性
@@ -128,9 +128,9 @@ LangSmith 根据您的要求支持多种计算选项：
 
 LangSmith 可配置为：
 
-* 仅[Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect) 访问（除了计费所需的出口外，没有公共互联网暴露）。
+* 仅[Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect) 访问（除了计费所需的出口之外，没有公共互联网暴露）。
 * 适用于 Cloud Storage、Cloud SQL 和持久磁盘的基于[Cloud KMS](https://cloud.google.com/kms) 的加密密钥。
-* 审计日志记录到 [Cloud Logging](https://cloud.google.com/logging) 和 [Cloud Audit Logs](https://cloud.google.com/logging/docs/audit)。客户可以根据需要在[Assured Workloads](https://cloud.google.com/assured-workloads)区域进行部署，以符合 ISO、HIPAA 或其他法规要求。
+* 审计日志记录到 [Cloud Logging](https://cloud.google.com/logging) 和 [Cloud Audit Logs](https://cloud.google.com/logging/docs/audit)。客户可以根据需要在[Assured Workloads](https://cloud.google.com/assured-workloads)区域进行部署，以符合 ISO、HIPAA 或其他监管要求。
 
 ## 监控和评估
 

@@ -28,7 +28,7 @@ from managed_deepagents import define_deep_agent
 
 agent = define_deep_agent(
     name="research-assistant",
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
 )
 ```
 
@@ -130,7 +130,7 @@ def agent(runtime: ManagedServerRuntime[AppContext]):
     python_service = context is not None and context.get("repository") == "payments-service"
     return define_deep_agent(
         name="open-swe",
-        model="openai:gpt-5.5",
+        model="openai:gpt-6.1-sol",
         instructions=(
             "Follow the payments service's API and reliability conventions."
             if python_service
@@ -156,7 +156,7 @@ await client.runs.create(
 
 ### 选择托管资源
 
-工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域|省略 |已选择 |已清除 |
+工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域 |省略 |已选择 |已清除 |
 | - | - | - | - |
 | `instructions` |使用`instructions.md`。 |使用提供的提示。 | `""` 删除编写的指令。 |
 | `skills` |展示所有项目技能。 |仅公开选定的技能。 | `[]`没有暴露任何技能。 |
@@ -192,7 +192,7 @@ def agent(runtime: ManagedServerRuntime[AppContext]):
     needs_docs = context is not None and context.get("needs_docs", False)
     return define_deep_agent(
         name="open-swe",
-        model="openai:gpt-5.5",
+        model="openai:gpt-6.1-sol",
         mcp=[mcp] if needs_docs else [],
         sandbox=define_sandbox(default_timeout=600) if python_service else sandbox,
         context_schema=AppContext,

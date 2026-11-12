@@ -49,7 +49,7 @@ Automatically retry failed tool calls with configurable exponential backoff. Too
 import { createAgent, toolRetryMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool, databaseTool],
   middleware: [
     toolRetryMiddleware({
@@ -126,7 +126,7 @@ const agent = createAgent({
 >
 > // Basic usage with default settings (2 retries, exponential backoff)
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [searchTool, databaseTool],
 >   middleware: [toolRetryMiddleware()],
 > });
@@ -263,7 +263,7 @@ Automatically retry failed model calls with configurable exponential backoff. Mo
 import { createAgent, modelRetryMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool, databaseTool],
   middleware: [
     modelRetryMiddleware({
@@ -318,7 +318,7 @@ const agent = createAgent({
 >
 > // Basic usage with default settings (2 retries, exponential backoff)
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [searchTool],
 >   middleware: [modelRetryMiddleware()],
 > });
@@ -397,7 +397,7 @@ Automatically fallback to alternative models when the primary model fails. Model
 import { createAgent, modelFallbackMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     modelFallbackMiddleware(
@@ -555,7 +555,7 @@ Automatically summarize conversation history when approaching token limits, pres
 import { createAgent, summarizationMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [weatherTool, calculatorTool],
   middleware: [
     summarizationMiddleware({
@@ -667,7 +667,7 @@ const agent = createAgent({
 >
 > // Single condition (AND logic): trigger if tokens >= 4000 AND messages >= 10
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [weatherTool, calculatorTool],
 >   middleware: [
 >     summarizationMiddleware({
@@ -680,7 +680,7 @@ const agent = createAgent({
 >
 > // Multiple conditions (OR logic): trigger if tokens >= 3000 OR messages >= 6
 > const agent2 = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [weatherTool, calculatorTool],
 >   middleware: [
 >     summarizationMiddleware({
@@ -696,7 +696,7 @@ const agent = createAgent({
 >
 > // Using fractional limits
 > const agent3 = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [weatherTool, calculatorTool],
 >   middleware: [
 >     summarizationMiddleware({
@@ -736,7 +736,7 @@ function sendEmailTool(recipient: string, subject: string, body: string): string
 }
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [readEmailTool, sendEmailTool],
   middleware: [
     humanInTheLoopMiddleware({
@@ -770,7 +770,7 @@ import { createAgent, modelCallLimitMiddleware } from "langchain";
 import { MemorySaver } from "@langchain/langgraph";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   checkpointer: new MemorySaver(), // Required for thread limiting
   tools: [],
   middleware: [
@@ -812,7 +812,7 @@ Control agent execution by limiting the number of tool calls, either globally ac
 import { createAgent, toolCallLimitMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool, databaseTool],
   middleware: [
     toolCallLimitMiddleware({ threadLimit: 20, runLimit: 10 }),
@@ -873,7 +873,7 @@ Watch this [video guide](https://www.youtube.com/watch?v=oL6am5UqODY) demonstrat
 > const strictLimiter = toolCallLimitMiddleware({ toolName: "scrape_webpage", runLimit: 2, exitBehavior: "error" });
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [searchTool, databaseTool, scraperTool],
 >   middleware: [globalLimiter, searchLimiter, databaseLimiter, strictLimiter],
 > });
@@ -891,7 +891,7 @@ Detect and handle Personally Identifiable Information (PII) in conversations usi
 import { createAgent, piiMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     piiMiddleware("email", { strategy: "redact", applyToInput: true }),
@@ -917,7 +917,7 @@ import { createAgent, piiMiddleware, type PIIMatch } from "langchain";
 
 // Method 1: Regex pattern string
 const agent1 = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     piiMiddleware("api_key", {
@@ -929,7 +929,7 @@ const agent1 = createAgent({
 
 // Method 2: RegExp object
 const agent2 = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     piiMiddleware("phone_number", {
@@ -961,7 +961,7 @@ function detectSSN(content: string): PIIMatch[] {
 }
 
 const agent3 = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     piiMiddleware("ssn", {
@@ -1054,7 +1054,7 @@ Equip agents with task planning and tracking capabilities for complex multi-step
 import { createAgent, todoListMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [readFile, writeFile, runTests],
   middleware: [todoListMiddleware()],
 });
@@ -1080,7 +1080,7 @@ This middleware uses structured output to ask an LLM which tools are most releva
 import { createAgent, llmToolSelectorMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [tool1, tool2, tool3, tool4, tool5, ...],
   middleware: [
     llmToolSelectorMiddleware({
@@ -1283,7 +1283,7 @@ const agent = createAgent({
           description: "This subagent can get weather in cities.",
           systemPrompt: "Use the get_weather tool to get the weather in a city.",
           tools: [getWeather],
-          model: "gpt-5.5",
+          model: "gpt-6.1-sol",
           middleware: [],
         },
       ],
@@ -1312,7 +1312,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   middleware: [
     createSubAgentMiddleware({
       defaultModel: "claude-sonnet-4-6",
@@ -1323,7 +1323,7 @@ const agent = createAgent({
           description: "This subagent can get weather in cities.",
           systemPrompt: "Use the get_weather tool to get the weather in a city.",
           tools: [getWeather],
-          model: "gpt-5.5",
+          model: "gpt-6.1-sol",
           middleware: [],
         },
       ],
@@ -1363,7 +1363,7 @@ const agent = createAgent({
           description: "This subagent can get weather in cities.",
           systemPrompt: "Use the get_weather tool to get the weather in a city.",
           tools: [getWeather],
-          model: "gpt-5.5",
+          model: "gpt-6.1-sol",
           middleware: [],
         },
       ],
@@ -1403,7 +1403,7 @@ const agent = createAgent({
           description: "This subagent can get weather in cities.",
           systemPrompt: "Use the get_weather tool to get the weather in a city.",
           tools: [getWeather],
-          model: "gpt-5.5",
+          model: "gpt-6.1-sol",
           middleware: [],
         },
       ],
@@ -1443,7 +1443,7 @@ const agent = createAgent({
           description: "This subagent can get weather in cities.",
           systemPrompt: "Use the get_weather tool to get the weather in a city.",
           tools: [getWeather],
-          model: "gpt-5.5",
+          model: "gpt-6.1-sol",
           middleware: [],
         },
       ],
@@ -1483,7 +1483,7 @@ const agent = createAgent({
           description: "This subagent can get weather in cities.",
           systemPrompt: "Use the get_weather tool to get the weather in a city.",
           tools: [getWeather],
-          model: "gpt-5.5",
+          model: "gpt-6.1-sol",
           middleware: [],
         },
       ],
@@ -1523,7 +1523,7 @@ const agent = createAgent({
           description: "This subagent can get weather in cities.",
           systemPrompt: "Use the get_weather tool to get the weather in a city.",
           tools: [getWeather],
-          model: "gpt-5.5",
+          model: "gpt-6.1-sol",
           middleware: [],
         },
       ],
@@ -1598,7 +1598,7 @@ const weatherSubagent: SubAgent = {
   description: "This subagent can get weather in cities.",
   systemPrompt: "Use the get_weather tool to get the weather in a city.",
   tools: [getWeather],
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   middleware: [],
 };
 
@@ -1823,7 +1823,7 @@ Manage conversation context by clearing older tool call outputs when token limit
 import { createAgent, contextEditingMiddleware, ClearToolUsesEdit } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     contextEditingMiddleware({
@@ -1885,7 +1885,7 @@ const agent = createAgent({
 > import { createAgent, contextEditingMiddleware, ClearToolUsesEdit } from "langchain";
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [searchTool, calculatorTool, databaseTool],
 >   middleware: [
 >     contextEditingMiddleware({
@@ -1915,7 +1915,7 @@ Emulate tool execution using an LLM for testing purposes, replacing actual tool 
 import { createAgent, toolEmulatorMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather, searchDatabase, sendEmail],
   middleware: [
     toolEmulatorMiddleware(), // Emulate all tools
@@ -1965,14 +1965,14 @@ const agent = createAgent({
 >
 > // Emulate all tools (default behavior)
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [getWeather, sendEmail],
 >   middleware: [toolEmulatorMiddleware()],
 > });
 >
 > // Emulate specific tools by name
 > const agent2 = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [getWeather, sendEmail],
 >   middleware: [
 >     toolEmulatorMiddleware({
@@ -1983,7 +1983,7 @@ const agent = createAgent({
 >
 > // Emulate specific tools by passing tool instances
 > const agent3 = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [getWeather, sendEmail],
 >   middleware: [
 >     toolEmulatorMiddleware({
@@ -1994,7 +1994,7 @@ const agent = createAgent({
 >
 > // Use custom model for emulation
 > const agent5 = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [getWeather, sendEmail],
 >   middleware: [
 >     toolEmulatorMiddleware({

@@ -213,7 +213,7 @@ EXPERIMENT_METADATA = {
             "id": ["langchain", "chat_models", "openai", "ChatOpenAI"],
             "lc": 1,
             "type": "constructor",
-            "kwargs": {"model_name": "gpt-5.5", "temperature": 0.2},
+            "kwargs": {"model_name": "gpt-6.1-sol", "temperature": 0.2},
         },
     ],
     "prompts": ["my-org/my-eval-prompt:abc12345"],
@@ -254,7 +254,7 @@ const EXPERIMENT_METADATA = {
       id: ["langchain", "chat_models", "openai", "ChatOpenAI"],
       lc: 1,
       type: "constructor",
-      kwargs: { model_name: "gpt-5.5", temperature: 0.2 },
+      kwargs: { model_name: "gpt-6.1-sol", temperature: 0.2 },
     },
   ],
   prompts: ["my-org/my-eval-prompt:abc12345"],
@@ -296,7 +296,7 @@ await evaluate((inputs) => toxicityClassifier(inputs["input"]), {
 
 ## 探索结果
 
-每次调用 `evaluate()` 都会创建一个 [experiment](/langsmith/evaluation-concepts#experiment)，您可以在 LangSmith UI 中查看或通过 SDK 查询。更多详情请参见[Analyze an experiment](/langsmith/analyze-an-experiment)。
+每次调用 `evaluate()` 都会创建一个 [experiment](/langsmith/evaluation-concepts#experiment)，您可以在 LangSmith UI 中查看或通过 SDK 查询。更多详情请参阅[Analyze an experiment](/langsmith/analyze-an-experiment)。
 
 针对数据集运行的实验列在实验表中。
 
@@ -392,7 +392,7 @@ await evaluate((inputs) => toxicityClassifier(inputs["input"]), {
 >             "id": ["langchain", "chat_models", "openai", "ChatOpenAI"],
 >             "lc": 1,
 >             "type": "constructor",
->             "kwargs": {"model_name": "gpt-5.5", "temperature": 0.2},
+>             "kwargs": {"model_name": "gpt-6.1-sol", "temperature": 0.2},
 >         },
 >     ],
 >     "prompts": ["my-org/my-eval-prompt:abc12345"],
@@ -495,7 +495,7 @@ await evaluate((inputs) => toxicityClassifier(inputs["input"]), {
 >       id: ["langchain", "chat_models", "openai", "ChatOpenAI"],
 >       lc: 1,
 >       type: "constructor",
->       kwargs: { model_name: "gpt-5.5", temperature: 0.2 },
+>       kwargs: { model_name: "gpt-6.1-sol", temperature: 0.2 },
 >     },
 >   ],
 >   prompts: ["my-org/my-eval-prompt:abc12345"],

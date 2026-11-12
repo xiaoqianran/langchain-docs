@@ -32,7 +32,7 @@
 
 在首次部署之前，在项目的 `.env` 或 shell 环境中设置 `LANGSMITH_ENDPOINT`：
 
-|地区 |端点 |部署支持 |
+|地区 |端点|部署支持 |
 | - | - | - |
 | GCP 美国 (`smith.langchain.com`) | `https://api.smith.langchain.com` |支持 |
 | GCP 欧盟 (`eu.smith.langchain.com`) | `https://eu.api.smith.langchain.com` |支持 |
@@ -60,7 +60,7 @@ LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com
 
 CLI 从数据平面端点派生部署 API URL。请勿将 `/api-host` 附加到 `LANGSMITH_ENDPOINT`。
 
-BYOC 数据平面不支持 Serverless 部署。运行 `mda deploy --push-to <image-repository>` 来构建并推送您的代理映像。 CLI 默认创建专用部署，因此您不需要传递 `--deployment-type dedicated`。
+BYOC 数据平面不支持 Serverless Agent 服务器。运行 `mda deploy --push-to <image-repository>` 来构建并推送您的代理映像。 CLI 默认创建专用代理服务器，因此您不需要传递 `--agent-server-type dedicated`。
 
 ## 部署到LangSmith
 
@@ -87,13 +87,13 @@ uv run mda deploy
 uv run mda deploy --name research-assistant
 ```
 
-`mda deploy` 默认创建无服务器部署。创建专用部署时使用 `--deployment-type dedicated`。
-
-无服务器在每个LangSmith云区域中都可用。自托管和混合环境拒绝无服务器部署。使用 `dedicated` 实现始终开启的容量。
+`mda deploy` 默认创建一个 Serverless Agent Server。创建专用代理服务器时使用`--agent-server-type dedicated`。遗留的 `--deployment-type` 拼写仍然被接受。如果您的 CLI 无法识别代理服务器标志，请使用旧拼写或升级。无服务器在每个LangSmith云区域中都可用。自托管和混合环境拒绝无服务器部署。使用 `dedicated` 实现始终开启的容量。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv run mda deploy --deployment-type dedicated
-```使用 `--no-wait` 触发构建而不轮询完成：
+uv run mda deploy --agent-server-type dedicated
+```
+
+使用 `--no-wait` 触发构建而不轮询完成：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda deploy --no-wait
@@ -119,19 +119,19 @@ requires-python = ">=3.11"
 python-version = "3.14"
 ```
 
-设置后，`python-version`采用带引号的`major.minor`字符串，没有补丁版本。 MDA 将解析后的版本写入生成的 `langgraph.json` 中的 `python_version` 并选择匹配的 [Agent Server](/langsmith/agent-server-overview) 图像。 `requires-python` 仍然是项目自身的兼容性要求。
+设置后，`python-version`采用带引号的`major.minor`字符串，没有补丁版本。 MDA 将解析后的版本写入生成的`langgraph.json` 中的`python_version`，并选择匹配的[Agent Server](/langsmith/agent-server-overview) 图像。 `requires-python` 仍然是项目自身的兼容性要求。
 
 当 MDA 添加对较新 Python 的支持时，将其固定在相同的次要版本上。要在单个构建中覆盖它，请设置 `MDA_PYTHON_VERSION`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 MDA_PYTHON_VERSION=3.12 uv run mda deploy
-```
+````requires-python` 排除的目标构建失败。相反，依赖于图像的确切补丁版本的警告会发出警告，因为图像标签不会固定补丁版本。
 
-`requires-python` 排除的目标构建失败。相反，依赖于图像的确切补丁版本的警告会发出警告，因为图像标签不会固定补丁版本。`python-version` 仅控制部署镜像。本地构建、`mda dev`、Harbor 任务镜像和[execution sandboxes](/langsmith/python/managed-deep-agents-sandboxes) 分别选择它们的解释器。
+`python-version` 仅控制部署映像。本地构建、`mda dev`、Harbor 任务镜像和[execution sandboxes](/langsmith/python/managed-deep-agents-sandboxes) 分别选择它们的解释器。
 
 ## 秘密和环境文件
 
-`mda deploy` 在 shell 环境变量之前读取项目 `.env` 值。使用 `.env` 作为验证部署的 LangSmith API 密钥以及托管部署所需的运行时机密：
+`mda deploy` 在 shell 环境变量之前读取项目 `.env` 值。使用 `.env` 作为 LangSmith API 密钥来验证部署以及托管部署所需的运行时机密：
 
 ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
@@ -143,11 +143,11 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 仅当项目声明[backend identity](/langsmith/python/managed-deep-agents-identity#configure-identity-with-your-own-backend)时才需要`MDA_INGRESS_SECRET`。当存在该声明且缺少该值时，部署将在预检中失败。
 
-`LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY`等平台变量被保留。他们可以对部署进行身份验证，但不会作为用户管理的部署机密上传。
+`LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY`等平台变量被保留。他们可以对部署进行身份验证，但不会作为用户管理的部署机密上传。当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的秘密转发。
 
-当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的机密转发。保留的平台变量、空值、`.env`和`.env.*`文件不会复制到已编译的构建存档中。
+保留的平台变量、空值、`.env`和`.env.*`文件不会复制到已编译的构建存档中。
 
-有关身份验证密钥顺序和保留变量，请参阅[CLI reference](/langsmith/python/managed-deep-agents-cli#authentication)。
+认证密钥顺序和保留变量请参见[CLI reference](/langsmith/python/managed-deep-agents-cli#authentication)。
 
 ## 部署故障排除
 
@@ -169,20 +169,18 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 >
 > 对调用者进行身份验证并提供私有线程。
 
-> [卡][Schedules](/langsmith/python/managed-deep-agents-schedules)
+> [卡片][Schedules](/langsmith/python/managed-deep-agents-schedules)
 >
 > 根据托管 cron 计划运行代理。
 
 > [卡片][Custom tools](/langsmith/python/managed-deep-agents-tools)
 >
-> 将创作的 LangChain 工具添加到代理定义中。
-
-> [卡片][CLI reference](/langsmith/python/managed-deep-agents-cli)
+> 将创作的 LangChain 工具添加到代理定义中。> [卡片][CLI reference](/langsmith/python/managed-deep-agents-cli)
 >
 > 查找每个 `mda` 命令和标志。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-deploy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

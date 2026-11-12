@@ -31,7 +31,7 @@
 4. 告诉我您需要哪些钥匙。我将在终端或设置控制台 (`uv run paid-media-agent setup`) 中使用 `uv run paid-media-agent config set <KEY>` 自行输入它们；永远不要让我在聊天中粘贴密钥。
 5. 帮助我连接我的广告帐户并编写我的业务背景。
 6. 运行`uv run paid-media-agent mda check`，直到没有任何阻碍。然后让我在自己的终端中运行第一个部署`uv run paid-media-agent mda deploy --yes`，因为它设置了 Slack 应用程序。
-7. 当它上线时，引导我在 Slack 中向应用程序发送消息并询问第一个问题。
+7. 当它上线时，引导我在 Slack 中向该应用程序发送消息并询问第一个问题。
 
 自行部署：
 
@@ -45,7 +45,7 @@ cd paid-media-agent
 uv run paid-media-agent demo --with-proposal
 ```
 
-该演示分析合成帐户并模拟预算变化，无需任何密钥。
+该演示分析合成帐户并模拟预算变化，无需密钥。
 
 **2.添加您的密钥**
 
@@ -90,7 +90,7 @@ uv run paid-media-agent mda deploy --yes
 * **报告设计**：颜色、排版和布局位于 `workspace/skills/report-design/DESIGN.md`。要求您的编码代理遵循 `.agents/skills/paid-media-design/SKILL.md` 以使渲染器保持同步。
 * **Slack 应用**：在`channels/slack.py` 中设置名称、描述和触发器。
 * **内存**：内存默认关闭。当每个呼叫者都可以分享代理学到的内容时，添加`memory.py`以打开[memory](/langsmith/python/managed-deep-agents-memory)。
-* **实时更改**：写入广告帐户需要来自 `config/write-policy.example.toml`、[release checks](https://github.com/langchain-ai/paid-media-agent/blob/main/docs/operations/live-write-runbook.md) 和授权审核者的写入策略。待处理的提案存在于部署过程中，默认的无服务器部署可能会缩小规模并在批准之前丢失一个提案，因此在打开实时更改之前使用 `--deployment-type dedicated` 进行部署。
+* **实时更改**：写入广告帐户需要来自 `config/write-policy.example.toml`、[release checks](https://github.com/langchain-ai/paid-media-agent/blob/main/docs/operations/live-write-runbook.md) 和授权审核者的写入策略。待处理的提案存在于部署过程中，默认的无服务器部署可能会缩小规模并在批准之前丢失一个提案，因此在打开实时更改之前使用 `--agent-server-type dedicated` 进行部署。
 
 要尝试更改并发货，请使用这些 [⟦T31⟧ commands](/langsmith/python/managed-deep-agents-cli)：|命令 |它有什么作用 |
 | - | - |
@@ -108,28 +108,28 @@ uv run paid-media-agent mda deploy --yes
 | - | - | - |
 | `agent.py` |使用 `define_deep_agent` 从模型、工具、中间件和审批策略的一个共享组件构建代理 | [Agent definition](/langsmith/python/managed-deep-agents-agent-definition) |
 | `instructions.md` |永远在线的提示| [Instructions](/langsmith/python/managed-deep-agents-instructions) |
-| `skills/` |分析、报告、报告设计和变更建议的技能，以及付费媒体维基，用 `workspace/skills/` 编辑 | [Skills](/langsmith/python/managed-deep-agents-skills) |
-| `sandbox/` | Python 3.13，带有 ripgrep、jq 和 PDF 库，由 `mda deploy` 构建 | [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes) |
-| `channels/slack.py` |用于提及、DM、话题和批准按钮的托管 Slack 应用程序 | [Slack channel](/langsmith/python/managed-deep-agents-channels-slack) |
-| `schedules/` |周报、月报以及每日内务管理 | [Schedules](/langsmith/python/managed-deep-agents-schedules) |
+| `skills/` | Skills for analysis, reports, report design, and change proposals, plus a paid-media wiki, edited in `workspace/skills/` | [Skills](/langsmith/python/managed-deep-agents-skills) |
+| `sandbox/` | Python 3.13 with ripgrep, jq, and PDF libraries, built by `mda deploy` | [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes) |
+| `channels/slack.py` | The managed Slack app for mentions, DMs, threads, and approval buttons | [Slack channel](/langsmith/python/managed-deep-agents-channels-slack) |
+| `schedules/` |周报、月报、每日内务管理| [Schedules](/langsmith/python/managed-deep-agents-schedules) |
 | `identity.py` |使用 LangSmith API 密钥对调用者进行身份验证 | [Identity](/langsmith/python/managed-deep-agents-identity) |
-| `src/paid_media_agent/` |代理入口导入的应用程序代码，例如广告平台工具、指标和报告渲染 | [Tools](/langsmith/python/managed-deep-agents-tools) |
+| `src/paid_media_agent/` | Application code the agent entry imports, such as ad platform tools, metrics, and report rendering | [Tools](/langsmith/python/managed-deep-agents-tools) |
 
 ## 架构
 
-托管 Deep Agents 提供 Slack 应用程序、身份、计划和每个线程的沙箱。该存储库添加了广告平台工具、分析技能和审批政策。
+托管 Deep Agents 提供 Slack 应用程序、身份、计划和每个线程的沙箱。 The repository adds ad platform tools, analysis skills, and the approval policy.
 
 ![A Slack question or a weekly or monthly report reaches the main agent on Managed Deep Agents. The agent reads skills and a wiki, calls ad platform tools whose keys stay on the host, works in a sandbox per thread, and answers in the same Slack thread, where a proposed change waits for approval. Managed Deep Agents provides Slack, identity, schedules, durable runs, tracing, and mda deploy.](https://mintcdn.com/langchain-5e9cc07a/iUeSEP3j6ExFou6p/langsmith/images/paid-media-agent-architecture-light.png?fit=max\&auto=format\&n=iUeSEP3j6ExFou6p\&q=85\&s=8dde78cdd8ba52ede4592e8737518ec0)
 
-从 Slack 或调度通过代理返回线程的请求路径。模型决定研究什么。代码计算指标并根据源数据检查报告数字。大型工具结果保留在文件中。该模型读取带有源、日期窗口和数据质量标志的摘要。
+从 Slack 或调度通过代理返回线程的请求路径。模型决定研究什么。代码计算指标并根据源数据检查报告数字。 Large tool results stay in files.该模型读取带有源、日期窗口和数据质量标志的摘要。
 
-活动更改从提案开始：之前和之后的值、原因以及检查和撤消它的计划。运行暂停，审批者列表中的审阅者批准或拒绝 Slack 中的具体提案。编辑提出了需要自己批准的新提案。
+营销活动变更从提案开始：之前和之后的值、原因以及检查和撤销的计划。运行暂停，审批者列表中的审阅者批准或拒绝 Slack 中的具体提案。编辑提出了需要自己批准的新提案。
 
 ![A Slack approval card for a new Google Search campaign. It lists the campaign type, bidding strategy, a daily budget of 30 dollars, the market, and network settings, notes that the campaign starts paused, and ends with Approve all, Edit details, and Reject buttons.](https://mintcdn.com/langchain-5e9cc07a/iUeSEP3j6ExFou6p/langsmith/images/paid-media-agent-approval-card.png?fit=max\&auto=format\&n=iUeSEP3j6ExFou6p\&q=85\&s=32d06c5e2f2e75bdffc0844e6608122b)
 
-拟议的活动变更的宽松审批卡。
+拟议的活动变更的宽松批准卡。
 
-批准后，主机在接触帐户之前检查每个门，进行更改，然后读回以记录收据。默认情况下，实时更改处于关闭状态。要打开它们，请按照[live-write runbook](https://github.com/langchain-ai/paid-media-agent/blob/main/docs/operations/live-write-runbook.md)操作。
+批准后，主机在接触帐户之前检查每个门，进行更改，然后读回以记录收据。 Live changes are off by default. To turn them on, follow the [live-write runbook](https://github.com/langchain-ai/paid-media-agent/blob/main/docs/operations/live-write-runbook.md).
 
 ![Five steps from left to right. Propose: before and after values, a reason, and how to check and undo it. Approve: a reviewer on the approver list approves the exact proposal in Slack. Check gates: kill switch, writes turned on, a released tool, and a signed approval; if any gate fails, the proposal is rejected and nothing changes. Execute: one change with the approved payload and no automatic retries. Verify: read the object back and record a receipt that is verified, failed, or unknown. An edit at the approval step loops back to a new proposal.](https://mintcdn.com/langchain-5e9cc07a/iUeSEP3j6ExFou6p/langsmith/images/paid-media-agent-approval-flow-light.png?fit=max\&auto=format\&n=iUeSEP3j6ExFou6p\&q=85\&s=d645d87066e0670192d3c376488596cf)
 

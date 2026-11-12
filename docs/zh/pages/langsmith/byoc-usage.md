@@ -58,7 +58,7 @@ export LANGSMITH_ENDPOINT="https://<data_plane_host>"
 | - | - | - |
 | LangSmith |无 | `https://<data_plane_host>/v1/sessions` |
 | OTLP 摄取 | `/otel` | `https://<data_plane_host>/otel/v1/traces` |
-| LangSmith 部署| `/api-host` | `https://<data_plane_host>/api-host/v2/deployments` |
+| LangSmith 代理服务器 | `/api-host` | `https://<data_plane_host>/api-host/v2/deployments` |
 |法学硕士网关| `/gateway` | `https://<data_plane_host>/gateway/v1/chat/completions` |LangSmith API 还接受 `/api` 前缀，因此 `https://<data_plane_host>/api/v1/sessions` 到达相同的端点。 SDK使用裸数据面主机，如[Trace to a data plane](#trace-to-a-data-plane)所示。
 
 ## 跟踪多个端点

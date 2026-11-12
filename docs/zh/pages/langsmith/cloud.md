@@ -40,7 +40,7 @@ LangSmith 云在 Google Cloud Platform (GCP)、Amazon Web Services (AWS) 和 Mic
 云托管 LangSmith 将跟踪和应用程序数据存储在注册发生区域的云位置中。每个区域都使用区域跟踪数据存储来进行跟踪摄取和分析。有两种数据存储在其他地方：* **身份验证数据**：[Supabase](https://supabase.com) 在 AWS 上托管身份验证和授权数据，位于 Supabase 列中列出的位置。此位置可能与区域的云位置不同。例如，Azure 美国区域在 Azure `centralus`（爱荷华州）中运行，而其身份验证数据位于 AWS `us-east-1`（弗吉尼亚北部）中。
 * **账单数据**：付款和账单信息存储在美国，如[Region-independent storage](#region-independent-storage)中所述。
 
-|地区 |云定位|苏帕巴斯|跟踪数据存储 | [LangSmith Deployment](/langsmith/deployment) 域名 |
+|地区 |云定位|苏帕巴斯|跟踪数据存储 | [LangSmith Agent Server](/langsmith/deployment) 域名 |
 | - | - | - | - | - |
 |基仕伯美国 | GCP us-central1（爱荷华州）| AWS us-east-1（弗吉尼亚北部）| [ClickHouse Cloud](https://clickhouse.com/cloud)，us-central1（爱荷华州）| `*.us.langgraph.app` |
 | GCP 欧盟 | GCP europe-west4（荷兰） | AWS eu-central-1（德国）| ClickHouse Cloud，europe-west4（荷兰） | `*.eu.langgraph.app` |
@@ -48,7 +48,7 @@ LangSmith 云在 Google Cloud Platform (GCP)、Amazon Web Services (AWS) 和 Mic
 | AWS 美国 | AWS us-east-2（俄亥俄州）| AWS us-east-2（俄亥俄州）| ClickHouse 云，us-east-2（俄亥俄州）| `*.aws.us.langgraph.app` |
 | Azure 美国 | Azure Centralus（爱荷华州）| AWS us-east-1（弗吉尼亚北部）| SmithDB，centralus（爱荷华州）| `*.azure.us.langgraph.app` |
 
-LangSmith 部署上的代理服务器与该区域的其他部分在同一云位置中运行。> [!提示]
+LangSmith 上的代理服务器与该区域的其他部分在同一云位置中运行。> [!提示]
 >
 > 请参阅[Regions FAQ](/langsmith/regions-faq) 了解更多信息。
 
@@ -139,7 +139,7 @@ LangSmith 还使用 AKS 上的 Istio 入口网关将流量路由到 LangSmith �
 
 > [!注意]
 >
-> [LangSmith Deployment](/langsmith/deployment) 出口处的特工人员从 [separate IP list](/langsmith/cloud-platform-features#allowlist-ip-addresses) 出口。
+> [LangSmith Agent Server](/langsmith/deployment) 出口处的特工人员从 [separate IP list](/langsmith/cloud-platform-features#allowlist-ip-addresses) 出口。
 
 |基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |蔚蓝美国 |
 | - | - | - | - | - |

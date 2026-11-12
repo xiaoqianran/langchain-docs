@@ -18,7 +18,7 @@
 
 要继续操作，您需要：
 
-* Python 和 `uv`。
+* Python and `uv`.
 
 * 您选择的模型提供商的 API 密钥。
 
@@ -54,7 +54,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
 ## 步骤 4：搭建、配置、测试和部署
 
-按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。停下来询问仪表板操作或凭证何时只能由用户在 LangSmith UI 中完成。
+Follow the quickstart steps in order: initialize the project with `mda`, configure the model and instructions, add search as shown on the page, test in LangSmith Studio, and deploy with the `mda` CLI.当仪表板操作或凭证只能由用户在 LangSmith UI 中完成时，停下来询问。
 
 ## 规则* 关注快速入门。除非指南要求，否则请勿添加不相关的产品或重写生成的项目布局。
 * 优先使用 `mda` CLI 和 `managed-deep-agents` 技能，而不是发明自定义部署路径。
@@ -86,19 +86,19 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 # AZURE_OPENAI_DEPLOYMENT_NAME=<AZURE_OPENAI_DEPLOYMENT_NAME>
 ```
 
-本快速入门默认使用 OpenAI。对于 Google、Anthropic 或 Microsoft Foundry，请改为设置匹配值。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/python/integrations/chat/)。
+本快速入门默认使用 OpenAI。 For Google, Anthropic, or Microsoft Foundry, set the matching values instead. `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/python/integrations/chat/)。
 
 > [!警告]
 >
-> 不要将 `.env` 文件提交到版本控制中。它包含秘密。
+> Do not commit the `.env` file into version control.它包含秘密。
 
-**3.设置LangSmith**
+**3. Set up LangSmith**
 
 托管 Deep Agents 在 LangSmith 上运行。您的 LangSmith API 密钥使用 `mda dev` 验证本地开发，使用 `mda deploy` 部署代理，并在 [LangSmith Studio](/langsmith/studio) 中打开代理，以便您可以与其聊天并检查跟踪。
 
 [Sign up for LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-quickstart) 如果您还没有帐户。
 
-要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转到 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。在 [BYOC](/langsmith/byoc) 上，登录您自己的数据平面并在其中创建密钥。还将 `LANGSMITH_ENDPOINT` 设置为数据平面的 API URL。参见[Select a BYOC data plane](/langsmith/python/managed-deep-agents-deploy#select-a-byoc-data-plane)。
+To create a LangSmith API key, open [Settings](https://smith.langchain.com/settings), go to **API Keys**, and click **Create API Key**.欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。On [BYOC](/langsmith/byoc), sign in to your own data plane and create the key there. Set `LANGSMITH_ENDPOINT` to the data plane's API URL as well.参见[Select a BYOC data plane](/langsmith/python/managed-deep-agents-deploy#select-a-byoc-data-plane)。
 
 将您的 LangSmith API 密钥添加到 `.env`：
 
@@ -108,7 +108,7 @@ LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 
 **4.编辑说明**
 
-打开 `instructions.md` 并描述代理应该如何表现：
+Open `instructions.md` and describe how the agent should behave:
 
 ```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Research assistant
@@ -117,13 +117,13 @@ You are a careful research assistant. Use internet search to find sources,
 keep notes, and return concise answers with citations.
 ```
 
-部署时，托管 Deep Agents 会将这些指令同步到 [LangSmith Context Hub](/langsmith/python/managed-deep-agents-context-hub)，您可以在其中更新它们，而无需重新部署代理。
+When you deploy, Managed Deep Agents syncs these instructions to [LangSmith Context Hub](/langsmith/python/managed-deep-agents-context-hub), where you can update them without redeploying the agent.
 
 **5.配置您的模型并搜索**
 
-现在设置模型和内置网络搜索工具。 Google、OpenAI、Anthropic 和 Microsoft Foundry 提供服务器端搜索，无需单独的搜索包或搜索 API 密钥。传递与您的模型匹配的提供程序工具字典：
+现在设置模型和内置网络搜索工具。 Google, OpenAI, Anthropic, and Microsoft Foundry offer server-side search without a separate search package or search API key.传递与您的模型匹配的提供程序工具字典：
 
-打开`agent.py`：
+Open `agent.py`:
 
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_deep_agent
@@ -131,7 +131,7 @@ from managed_deepagents import define_deep_agent
 # OpenAI's built-in web search — no extra install or API key needed
 agent = define_deep_agent(
     name="research-assistant",
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[{"type": "web_search"}],
 )
 ```
@@ -178,11 +178,11 @@ agent = define_deep_agent(
 )
 ```
 
-代理名称也是默认部署名称。有关模型概念和提供程序选项，请参阅[Models](/oss/python/langchain/models)。> [手风琴] 使用其他提供商？
+代理名称也是默认部署名称。 For model concepts and provider options, see [Models](/oss/python/langchain/models).> [手风琴] 使用其他提供商？
 >
-> 您可以使用 Tavily 搜索工具。将密钥存储在 [connection](/langsmith/python/managed-deep-agents-connections) 中，以便它位于您的 LangSmith 工作区而不是项目中。
+> 您可以使用 Tavily 搜索工具。 Store the key in a [connection](/langsmith/python/managed-deep-agents-connections) so it lives in your LangSmith workspace rather than the project.
 >
-> 该手风琴使用连接头 `research-tavily`。对于 `mda dev`，代理拥有的连接从 `MDA_DEV_<SLUG>` 读取其值。将 [Tavily API key](https://app.tavily.com) 添加到 `.env` 作为 `MDA_DEV_RESEARCH_TAVILY`：
+> This accordion uses the connection slug `research-tavily`. For `mda dev`, an agent-owned connection reads its value from `MDA_DEV_<SLUG>`. Add a [Tavily API key](https://app.tavily.com) to `.env` as `MDA_DEV_RESEARCH_TAVILY`:
 >
 > ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > MDA_DEV_RESEARCH_TAVILY=<TAVILY_API_KEY>
@@ -194,7 +194,7 @@ agent = define_deep_agent(
 > uv add tavily-python
 > ```
 >
-> 创建自定义 `internet_search` 工具。 `connections.get(...)` 在运行时解析密钥，因此本地和部署上的工具代码是相同的：
+> Create a custom `internet_search` tool. `connections.get(...)` resolves the key at runtime, so the tool code is the same locally and on the deployment:
 >
 > ```python tools/search.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from typing import Literal
@@ -229,7 +229,7 @@ agent = define_deep_agent(
 >
 > agent = define_deep_agent(
 >     name="research-assistant",
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     tools=[internet_search],
 > )
 > ```
@@ -240,7 +240,7 @@ agent = define_deep_agent(
 > uv run mda connections create research-tavily --secret-from-env MDA_DEV_RESEARCH_TAVILY
 > ```
 >
-> 稍后轮换该值会在下次运行时生效，无需重新部署。有关更多创作工具，请参阅[Custom tools](/langsmith/python/managed-deep-agents-tools)。有关其他创建模式和每个调用者凭据，请参阅[Manage connections](/langsmith/python/managed-deep-agents-connections)。
+> 稍后轮换该值会在下次运行时生效，无需重新部署。有关更多创作工具，请参阅[Custom tools](/langsmith/python/managed-deep-agents-tools)。 For other create modes and per-caller credentials, see [Manage connections](/langsmith/python/managed-deep-agents-connections).
 
 **6。本地运行**
 
@@ -251,19 +251,19 @@ uv sync
 uv run mda dev
 ```
 
-`mda dev` 从 `.env` 加载 API 密钥，启动本地代理服务器，并在 LangSmith Studio 中打开代理。
+`mda dev` loads the API keys from `.env`, starts a local Agent Server, and opens the agent in LangSmith Studio.
 
 在 Studio 中，发送：
 
 ```txt wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 What were the main announcements from the latest LangChain release?
-```您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
+```您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。 If search never appears in the trace, confirm the provider tool dict matches the model you set in `agent.py` or `agent.ts`.
 
-在 [agent-based workspace](/langsmith/agent-registry) 中，在您注册代理之前，跟踪将导致错误。详情请参见[Trace local runs](/langsmith/python/managed-deep-agents-local-development#trace-local-runs)。
+In an [agent-based workspace](/langsmith/agent-registry), tracing will result in errors until you register the agent.详情请参见[Trace local runs](/langsmith/python/managed-deep-agents-local-development#trace-local-runs)。
 
 **7.部署代理**
 
-在 [BYOC](/langsmith/byoc) 上，将 `--push-to <image-repository>` 添加到此步骤中的每个命令。 BYOC 数据平面从您管理的注册表中的映像进行部署。
+On [BYOC](/langsmith/byoc), add `--push-to <image-repository>` to every command in this step. BYOC 数据平面从您管理的注册表中的映像进行部署。
 
 通过运行以下命令来部署项目：
 
@@ -271,9 +271,9 @@ What were the main announcements from the latest LangChain release?
 uv run mda deploy
 ```
 
-托管 Deep Agents 打包项目并将其作为托管部署在 [LangSmith Agent Server](/langsmith/agent-server) 上运行。部署完成后，CLI 会打印部署仪表板 URL。
+Managed Deep Agents packages the project and runs it as a hosted deployment on [LangSmith Agent Server](/langsmith/agent-server).部署完成后，CLI 会打印部署仪表板 URL。
 
-打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。有关部署选项和机密处理的信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。要在代理运行后检查其执行情况，请使用[LangSmith observability](/langsmith/observability-quickstart)。
+打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。 For deployment options and secrets handling, see [Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy). To inspect the agent's execution after it runs, use [LangSmith observability](/langsmith/observability-quickstart).
 
 ## 后续步骤
 
@@ -283,7 +283,7 @@ uv run mda deploy
 
 > [卡][Design agent template](/langsmith/python/managed-deep-agents-design-agent)
 >
-> 部署LangChain的开源设计代理，而不是从头开始搭建脚手架。> [卡][Paid media agent template](/langsmith/python/managed-deep-agents-paid-media-agent)
+> Deploy LangChain's open-source design agent instead of scaffolding from scratch.> [卡][Paid media agent template](/langsmith/python/managed-deep-agents-paid-media-agent)
 >
 > 部署 LangChain 的开源付费媒体代理以进行 Slack 活动分析。
 

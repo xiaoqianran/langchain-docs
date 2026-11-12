@@ -2,7 +2,7 @@
 
 # Cloud platform features
 
-Cloud-only platform features for LangSmith Deployment, including data regions, static IP addresses, payload limits, and deployment types.
+Cloud-only platform features for LangSmith Agent Server, including data regions, static IP addresses, payload limits, and deployment types.
 
 This page describes the platform features that apply only to [Cloud](/langsmith/cloud) deployments. For self-hosted equivalents, see [Deploy to self-hosted](/langsmith/deploy-to-self-hosted-overview).
 
@@ -70,7 +70,7 @@ The control plane offers two deployment types: Serverless and Dedicated. Each is
 >
 > `langgraph deploy` creates Serverless deployments by default. Older CLI versions use `dev` for legacy Development deployments without scale-to-zero and `prod` for Dedicated deployments. Legacy `dev` is not equivalent to Serverless; see [`langgraph deploy`](/langsmith/cli#deploy).
 
-| **Deployment type** | **Scaling** | **Database** | **Best for** |
+| **Agent Server type** | **Scaling** | **Database** | **Best for** |
 | - | - | - | - |
 | Serverless | Scales to zero after inactivity, wakes on the next request | Shared, multi-tenant | Background and other latency-tolerant production workloads, development, and testing |
 | Dedicated | Always-on, autoscales across replicas | Dedicated, with automatic backups and high availability | Latency-sensitive workloads that need always-on capacity |
@@ -100,7 +100,7 @@ The replica does not scale out. Its queue worker handles up to 10 concurrent run
 
 A Dedicated deployment stays on and [autoscales](#scaling) separate API server and queue worker replicas. Each has its own database with automatic backups, point-in-time recovery, and high availability. It suits latency-sensitive workloads that need always-on capacity.
 
-Dedicated deployments are billed separately for runtime compute and database capacity, including while idle. Autoscaling changes runtime charges, not database charges. For rates and examples, see [LangSmith Deployment billing](/langsmith/billing#langsmith-deployment-billing).
+Dedicated deployments are billed separately for runtime compute and database capacity, including while idle. Autoscaling changes runtime charges, not database charges. For rates and examples, see [LangSmith Agent Server billing](/langsmith/billing#langsmith-deployment-billing).
 
 To request more resources, [contact support](https://support.langchain.com). Increases depend on your use case and available capacity.
 

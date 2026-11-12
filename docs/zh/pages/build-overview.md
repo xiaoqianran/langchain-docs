@@ -22,7 +22,7 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 >
 >>【卡牌】[Deep Agents](/oss/python/deepagents/overview)
 >>
->> 相同的Deep Agents安全带，具有最大的灵活性。自己托管代理，或者当您需要对运行时进行更多控制时运行自定义 LangSmith 部署。
+>> 相同的Deep Agents安全带，具有最大的灵活性。您自己托管代理，或者当您需要对运行时进行更多控制时运行自定义代理服务器。
 >
 >>【卡牌】[LangChain](/oss/python/langchain/overview)
 >>
@@ -44,7 +44,7 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 >
 >>【卡牌】[Deep Agents](/oss/javascript/deepagents/overview)
 >>
->> 相同的Deep Agents安全带，具有最大的灵活性。自己托管代理，或者当您需要对运行时进行更多控制时运行自定义 LangSmith 部署。
+>> 相同的Deep Agents安全带，具有最大的灵活性。您自己托管代理，或者当您需要对运行时进行更多控制时运行自定义代理服务器。
 >
 >>【卡牌】[LangChain](/oss/javascript/langchain/overview)
 >>
@@ -62,7 +62,7 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 
 > [卡][Deep Agents Code](/oss/deepagents/code/overview)
 >
-> 基于Deep Agents SDK 构建的开源终端编码代理 (`dcode`)。在会话中切换模型、自定义技能和内存，并批准从 CLI 执行 shell。
+> 基于Deep Agents SDK 构建的开源终端编码代理（`dcode`）。在会话中切换模型、自定义技能和内存，并从 CLI 批准 shell 执行。
 
 ＃＃ 探索> [选项卡] Python
 >
@@ -180,7 +180,7 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 
 > [卡][LangSmith status](https://status.smith.langchain.com/)
 >
-> LangSmith 服务和 API 的实时状态。
+> LangSmith服务和API的实时状态。
 
 > [卡][Trust Center](https://trust.langchain.com/)
 >

@@ -4,9 +4,9 @@
 
 # 使用LangSmith和Vite进行部署
 
-将 LangChain 深度代理部署到 LangSmith 从 Vercel、Netlify 或 Cloudflare 页面上的 Vite React 聊天 UI 进行部署和流式传输。
+将 LangChain 深度代理部署到 LangSmith 代理服务器，并从 Vercel、Netlify 或 Cloudflare 页面上的 Vite React 聊天 UI 进行流式传输。
 
-此示例让您从本地结帐到已部署的具有工作聊天 UI 的 LangChain 深度代理。后端作为 [LangSmith Deployment](/langsmith/deployment) 运行，前端是一个从其流式传输的 Vite + React 应用程序。
+此示例让您从本地结帐到已部署的具有工作聊天 UI 的 LangChain 深度代理。后端运行在[LangSmith Agent Server](/langsmith/deployment)上，前端是一个从它流式传输的Vite + React应用程序。
 
 当您想要在本地运行代理、将其部署到 LangSmith 并将 UI 指向已部署的代理服务器时，请使用本指南。
 
@@ -14,12 +14,12 @@
 
 ## 您正在部署什么
 
-**LangSmith 部署** 在 LangSmith 的托管代理服务器上运行 LangGraph 图。在这个例子中：
+**代理服务器** 在 LangSmith 的托管基础设施上运行 LangGraph 图。在这个例子中：
 
 * `agent/` 包含深层代理图、子代理、中间件和工具。
 * `langgraph.json` 告诉 LangGraph CLI 要提供和部署哪个图。
 * `src/` 包含 React 聊天 UI。
-* UI 通过 LangGraph SDK 和 `@langchain/react` 与代理服务器 API 进行对话。
+* UI 通过 LangGraph SDK 和 `@langchain/react` 与代理服务器 API 进行通信。
 
 部署的代理是一个具有两个子代理的协调器：
 
@@ -31,7 +31,7 @@
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init: {"themeVariables": {"lineColor": "#40668D", "primaryColor": "#E5F4FF", "primaryTextColor": "#030710", "primaryBorderColor": "#006DDD"}}}%%
 flowchart LR
-  A["agent/<br/>createDeepAgent graph"] -->|"pnpm run deploy"| B["LangSmith Deployment<br/>Agent Server"]
+  A["agent/<br/>createDeepAgent graph"] -->|"pnpm run deploy"| B["Agent Server"]
   C["React chat UI<br/>src/"] -->|"LangGraph SDK<br/>threads + streaming"| B
 
   classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
@@ -205,7 +205,7 @@ pnpm run dev
 * 座席本地无法应答：确认`OPENAI_API_KEY`设置为`.env`。
 * `pnpm run deploy` 失败并出现身份验证错误：确认 `LANGSMITH_API_KEY` 具有部署访问权限。
 * 远程UI连接失败：确认`VITE_AGENT_API_URL`是部署根URL，不带路径后缀。
-* 重启本地开发后线程消失：本地`langgraph dev`使用内存中的`MemorySaver`； LangSmith 部署在生产中提供持久存储。
+* 重启本地开发后线程消失：本地`langgraph dev`使用内存中的`MemorySaver`； LangSmith Agent Server 在生产中提供持久存储。
 * 您更改了`agent/`中的文件，但生产没有改变：再次运行`pnpm run deploy`。
 
 ## 了解该项目> [手风琴] 代理文件
@@ -219,7 +219,7 @@ pnpm run dev
 > └── tools.ts       # custom code tools
 > ```
 >
-> `agent/index.ts` 导出LangGraph 本地服务和LangSmith 部署的图。本地`MemorySaver`检查指针仅由`langgraph dev`使用。 LangSmith 部署将其替换为生产中由 Postgres 支持的持久存储，无需更改代码。
+> `agent/index.ts` 导出LangGraph 本地服务和LangSmith 部署的图。本地`MemorySaver`检查指针仅由`langgraph dev`使用。 LangSmith Agent Server 在生产中将其替换为持久的 Postgres 支持的存储，无需更改代码。
 
 > [手风琴] LangGraph 配置
 >
@@ -282,7 +282,7 @@ pnpm run dev
 ## 另请参阅
 
 * [Frameworks and platforms overview](/langsmith/deploy-frameworks-and-platforms)
-* [LangSmith Deployment overview](/langsmith/deployment)
+* [LangSmith Agent Server overview](/langsmith/deployment)
 * [LangGraph CLI](/langsmith/cli)
 * [Deep Agents going to production](/oss/python/deepagents/going-to-production)
 

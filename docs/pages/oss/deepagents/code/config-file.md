@@ -304,7 +304,7 @@ Each provider is a TOML table under `[models.providers]`:
 [models.providers.<name>]
 display_name = "My Provider"
 api_key_url = "https://provider.example/keys"
-models = ["gpt-5.5"]
+models = ["gpt-6.1-sol"]
 api_key_env = "OPENAI_API_KEY"
 base_url = "https://api.openai.com/v1"
 class_path = "my_package.models:MyChatModel"
@@ -314,7 +314,7 @@ enabled = true
 temperature = 0
 max_tokens = 4096
 
-[models.providers.<name>.params."gpt-5.5"]
+[models.providers.<name>.params."gpt-6.1-sol"]
 temperature = 0.7
 ```
 
@@ -362,7 +362,7 @@ base_url_env = "EXAMPLE_BASE_URL"        # ignored while base_url is set
 
 **params** `object`
 
-Extra keyword arguments forwarded to the model constructor. Flat keys (e.g., `temperature = 0`) apply to every model from this provider. Model-keyed sub-tables (e.g., `[params."gpt-5.5"]`) override individual values for that model only; the merge is shallow (model wins on conflict).
+Extra keyword arguments forwarded to the model constructor. Flat keys (e.g., `temperature = 0`) apply to every model from this provider. Model-keyed sub-tables (e.g., `[params."gpt-6.1-sol"]`) override individual values for that model only; the merge is shallow (model wins on conflict).
 
 Do not put credentials (e.g., `api_key`) in `params`. Use [`api_key_env`](#provider-configuration) to point at an environment variable instead.
 
@@ -785,7 +785,7 @@ The LangGraph graph step budget is the maximum number of node invocations the `d
 recursion_limit = 5000
 ```
 
-Deep Agents Code does not set a default. When no source sets a valid value, the LangGraph server default applies. Values from managed configuration, the environment, and `config.toml` must be integers from `25` to `100000` (inclusive). Invalid values log a warning and resolution continues to the next source. The `--recursion-limit` flag accepts any integer greater than or equal to `1`.
+Deep Agents Code does not set a default. When no source sets a valid value, the LangSmith Agent Server default applies. Values from managed configuration, the environment, and `config.toml` must be integers from `25` to `100000` (inclusive). Invalid values log a warning and resolution continues to the next source. The `--recursion-limit` flag accepts any integer greater than or equal to `1`.
 
 Precedence (highest to lowest):
 
@@ -794,9 +794,9 @@ Precedence (highest to lowest):
 3. `DEEPAGENTS_CODE_RECURSION_LIMIT` environment variable
 4. `[runtime].recursion_limit` in `config.toml`
 5. `LANGGRAPH_DEFAULT_RECURSION_LIMIT` environment variable
-6. LangGraph server default
+6. Agent Server default
 
-Use `dcode config get runtime.recursion_limit` to see the effective Deep Agents Code value and its source. An unset result leaves the limit to the LangGraph server.
+Use `dcode config get runtime.recursion_limit` to see the effective Deep Agents Code value and its source. An unset result leaves the limit to Agent Server.
 
 > [tab] CLI flag
 >

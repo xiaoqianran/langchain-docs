@@ -22,7 +22,7 @@ Managed Deep Agents, Deep Agents, LangChain, and LangGraph share the same open s
 >
 > > [card] [Deep Agents](/oss/python/deepagents/overview)
 > >
-> > The same Deep Agents harness with maximum flexibility. Host agents yourself, or run a custom LangSmith Deployment when you need more control over the runtime.
+> > The same Deep Agents harness with maximum flexibility. Host agents yourself, or run a custom Agent Server when you need more control over the runtime.
 >
 > > [card] [LangChain](/oss/python/langchain/overview)
 > >
@@ -46,7 +46,7 @@ Managed Deep Agents, Deep Agents, LangChain, and LangGraph share the same open s
 >
 > > [card] [Deep Agents](/oss/javascript/deepagents/overview)
 > >
-> > The same Deep Agents harness with maximum flexibility. Host agents yourself, or run a custom LangSmith Deployment when you need more control over the runtime.
+> > The same Deep Agents harness with maximum flexibility. Host agents yourself, or run a custom Agent Server when you need more control over the runtime.
 >
 > > [card] [LangChain](/oss/javascript/langchain/overview)
 > >

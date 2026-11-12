@@ -10,13 +10,13 @@
 
 ## 部署概述
 
-|舞台|部署什么 |命令|
+|舞台|部署什么 |命令 |
 | - | - | - |
 |基础设施| VPC + GKE + Cloud SQL + Memorystore + GCS + IAM + 证书管理器 + KEDA + Envoy 网关 | `make apply` |
 |集群凭据 | Kubeconfig 连接到新的 GKE 集群 | `make kubeconfig` |
 | LangSmith底座|前端、后端、摄取、队列、ClickHouse | `make init-values && make deploy` |
 |舰队附加组件（独立）| Standalone-fleet-\* API 服务器、工具服务器、触发服务器、队列 | `make apply && make init-values && make deploy` |
-| LangSmith 部署插件 |主机后端、侦听器、操作员 | `make init-values && make deploy` |
+|代理服务器托管附加组件 |主机后端、侦听器、操作员 | `make init-values && make deploy` |
 | Agent Builder 附加组件（已弃用）|工具服务器、触发服务器| `make init-values && make deploy` |
 |见解 + Polly 附加组件 |洞察分析，Polly 评估代理 | `make init-values && make deploy` |
 | SmithDB 附加组件 | Metastore、对象存储桶、节点池、SmithDB 服务 | `make apply && make init-values && make deploy` ||沙盒附加组件 |沙盒主机节点池、JuiceFS 元数据 Redis | `make apply && make init-values && make deploy` |
@@ -156,7 +156,7 @@ helm status langsmith -n langsmith
 helm history langsmith -n langsmith
 helm get values langsmith -n langsmith
 
-# LangSmith Deployment
+# Agent Server hosting
 kubectl get lgp -n langsmith
 kubectl get crd | grep langchain
 ```
@@ -229,8 +229,8 @@ terraform refresh
 ## 关键限制
 
 * 在`terraform destroy`之前卸载Helm。 Envoy Gateway 负载均衡器引用 VPC；保留它会阻止网络删除。始终先运行 `make uninstall`。
-* `config.deployment.url` 必须包含 `https://`。如果没有协议，操作员产生的代理就会陷入`DEPLOYING`。
-* LangSmith 部署附加组件需要`config.deployment.enabled: true`。仅设置不带 `enabled: true` 的 URL 会静默跳过 `listener` 和 `operator`。
+* `config.deployment.url` 必须包含 `https://`。如果没有协议，操作员生成的代理就会陷入`DEPLOYING`。
+* 代理服务器托管附加组件需要`config.deployment.enabled: true`。仅设置不带 `enabled: true` 的 URL 会静默跳过 `listener` 和 `operator`。
 * 首次启用后加密密钥不得更改。旋转`langsmith_insights_encryption_key`或`langsmith_polly_encryption_key`会永久破坏现有的加密数据。
 * Envoy 网关 IP 在拆卸时发生变化。删除网关后，GCP 会释放外部 IP。 `terraform destroy`后重新申请，更新您的 DNS A 记录。* 从图表 0.16 升级有门。 `deploy.sh` 拒绝升级，而 `values-overrides.yaml` 仍具有 `sandboxes.juicefs.csi` 块，而 JuiceFS CSI 卷或挂载 Pod 仍保留，或者当 `helm/values/` 仍具有图表 0.16 SmithDB 覆盖。每次拒绝都会打印清除它的命令。完整程序请参见[Upgrade from chart 0.16](/langsmith/self-host-terraform-gcp-deploy#upgrade-from-chart-0-16)。
 * `langsmith-ksa` 注释不是永久的。 Terraform 在 Helm 版本之外的 `k8s-bootstrap` 模块中创建 ServiceAccount，因此它无法在命名空间删除后保留下来。 `deploy.sh` 幂等地重新创建并重新注释它。
@@ -256,7 +256,7 @@ gcloud sql export sql "$PG" "$BACKUP_BUCKET/${PG}-final.sql.gz" \
 ```
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# 1. Remove LangSmith Deployment resources (if the add-on was enabled)
+# 1. Remove Agent Server hosting resources (if the add-on was enabled)
 kubectl delete lgp --all -n langsmith 2>/dev/null || true
 
 # 2. Uninstall LangSmith

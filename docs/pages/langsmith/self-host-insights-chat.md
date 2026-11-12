@@ -4,7 +4,7 @@
 
 Configure encryption keys and model access for Insights and Chat on self-hosted LangSmith, disable either feature, or upgrade a legacy configuration.
 
-[Insights](/langsmith/insights) analyzes traces, and [Chat](/langsmith/chat) (formerly Polly) helps you work with LangSmith data. Both are part of the base installation and are enabled by default in Helm chart version 0.15.1 or later. They do not require any [additional features](/langsmith/self-host-additional-features), such as Sandboxes, Fleet, or LangSmith Deployment.
+[Insights](/langsmith/insights) analyzes traces, and [Chat](/langsmith/chat) (formerly Polly) helps you work with LangSmith data. Both are part of the base installation and are enabled by default in Helm chart version 0.15.1 or later. They do not require any [additional features](/langsmith/self-host-additional-features), such as Sandboxes, Fleet, or Agent Server hosting.
 
 > [!NOTE]
 >

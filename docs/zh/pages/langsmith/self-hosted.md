@@ -4,23 +4,23 @@
 
 # 自托管LangSmith
 
-在您自己的 Kubernetes 集群中运行 LangSmith，默认情况下启用 Insights 和 Chat，以及沙盒、引擎、队列、LLM 网关和 LangSmith 部署等可选功能。
+在您自己的 Kubernetes 集群中运行 LangSmith，默认情况下启用 Insights 和 Chat，以及沙箱、引擎、队列、LLM 网关和代理服务器托管等可选功能。
 
 > [!注意]
 >
 > 自托管 LangSmith 是企业计划的附加组件，专为 LangChain 最大、最具安全意识的客户而设计。更多详情请参考[Pricing](https://www.langchain.com/pricing)。 [Contact our sales team](https://www.langchain.com/contact-sales) 如果您想要许可证密钥在您的环境中试用LangSmith。
 
-自托管 LangSmith 在您自己的基础设施中运行 LangSmith 平台，以便跟踪和操作数据保留在您的环境中。基本安装包括 [observability](/langsmith/observability)、[evaluation](/langsmith/evaluation)、[prompt engineering](/langsmith/prompt-context-hub#prompts)、[Insights](/langsmith/insights) 和 [Chat](/langsmith/chat)。当您的用例需要时，您可以添加 [Sandboxes](/langsmith/sandboxes)、[Engine](/langsmith/engine)、[Fleet](/langsmith/fleet/index)、[LLM Gateway](/langsmith/llm-gateway) 和 [LangSmith Deployment](/langsmith/deployment)。
+自托管 LangSmith 在您自己的基础设施中运行 LangSmith 平台，以便跟踪和操作数据保留在您的环境中。基本安装包括 [observability](/langsmith/observability)、[evaluation](/langsmith/evaluation)、[prompt engineering](/langsmith/prompt-context-hub#prompts)、[Insights](/langsmith/insights) 和 [Chat](/langsmith/chat)。当您的用例需要时，您可以添加 [Sandboxes](/langsmith/sandboxes)、[Engine](/langsmith/engine)、[Fleet](/langsmith/fleet/index)、[LLM Gateway](/langsmith/llm-gateway) 和 [Agent Server hosting](/langsmith/deployment)。
 
-＃＃ 特征|特色|可用性 |需要什么设置 |
+＃＃ 特征|特色 |可用性 |需要什么设置 |
 | - | - | - |
 |可观察性、评估和及时工程 |包含 | [base installation](/langsmith/kubernetes)。 |
 | [Insights](/langsmith/insights) 和 [Chat](/langsmith/chat)（以前称为 Polly）|在 Helm Chart 0.15.1 或更高版本中默认启用 |每个功能和模型访问一个加密密钥。参见[Configure Insights and Chat](/langsmith/self-host-insights-chat)。 |
 | [Sandboxes](/langsmith/enable-self-hosted-sandboxes) |可选| EKS、GKE 或 AKS 上支持 KVM 的节点和 JuiceFS 存储。 |
 | [Engine](/langsmith/engine-self-hosted) |可选|沙盒、具有引擎权利的许可证以及 Helm 图表版本 0.16.0 或更高版本。气隙安装需要 Helm Chart 0.17.0 或更高版本。 |
-| [Fleet](/langsmith/enable-self-hosted-fleet) |可选|集群中的队列服务。不需要LangSmith部署。 |
+| [Fleet](/langsmith/enable-self-hosted-fleet) |可选|集群中的队列服务。不需要代理服务器托管。 |
 | [LLM Gateway](/langsmith/llm-gateway-self-hosted) |可选（测试版）| Helm 图表版本 0.17.1 或更高版本。 `agent-gateway` 服务需要访问 PostgreSQL、Redis 和其他 LangSmith Pod。 |
-| [LangSmith Deployment](/langsmith/enable-self-hosted-deployment) |可选| KEDA、入口、控制平面和数据平面。要在没有控制平面的情况下运行代理服务器，请参阅[standalone servers](/langsmith/deploy-standalone-server)。 |
+| [Agent Server hosting](/langsmith/enable-self-hosted-deployment) |可选| KEDA、入口、控制平面和数据平面。要在没有控制平面的情况下运行代理服务器，请参阅[standalone servers](/langsmith/deploy-standalone-server)。 |
 
 ## 架构
 
@@ -38,9 +38,9 @@
 | - | - |
 |  **LangSmith前端** |前端使用 Nginx 来服务 LangSmith UI 并将 API 请求路由到其他服务器。它作为应用程序的入口点，并且是唯一必须向用户公开的组件。 |
 |  **LangSmith后端** |后端是 CRUD API 请求的主要入口点，并处理应用程序的大部分业务逻辑。这包括处理来自前端和 SDK 的请求、准备摄取跟踪以及支持集线器 API。 ||  **LangSmith队列** |队列处理传入的跟踪和反馈，以确保它们被异步摄取并持久保存到跟踪和反馈数据存储中，处理数据完整性检查并确保成功插入到数据存储中，处理数据库错误或暂时无法连接到数据库等情况下的重试。 |
-|  **LangSmith 摄取队列** |摄取队列是一个工作线程，它将排队的运行和反馈持久保存到跟踪和反馈数据存储中。它还运行后台任务，例如回填。 |
+|  **LangSmith摄取队列** |摄取队列是一个工作线程，它将排队的运行和反馈持久保存到跟踪和反馈数据存储中。它还运行后台任务，例如回填。 |
 |  **LangSmith平台后端** |平台后端是另一个关键服务，主要处理身份验证、运行摄取和其他大容量任务。 |
-|  **LangSmith游乐场** | Playground 是一项处理转发请求到各种 LLM API 以支持 Playground 功能的服务。这也可用于连接到您自己的自定义模型服务器。 |
+|  **LangSmith 游乐场** | Playground 是一项处理转发请求到各种 LLM API 以支持 Playground 功能的服务。这也可用于连接到您自己的自定义模型服务器。 |
 |  **LangSmith ACE（任意代码执行）后端** | ACE 后端是一种在安全环境中处理执行任意代码的服务。这用于支持在LangSmith内运行自定义代码。 ||  **见解和聊天代理** | [Insights](/langsmith/insights) 和 [Chat](/langsmith/chat) 代理作为单独的部署运行，每个代理都有自己捆绑的 PostgreSQL 和 Redis。两者均默认启用。参见[Configure Insights and Chat](/langsmith/self-host-insights-chat)。 |
 
 ### 存储服务

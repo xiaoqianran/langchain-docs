@@ -17,90 +17,90 @@ GCP GKE 上自托管的 LangSmith Terraform 变量的完整参考。
 
 对于端到端安装，请参阅[deploy guide](/langsmith/self-host-terraform-gcp-deploy)。有关模块如何组合在一起的信息，请参阅[architecture reference](/langsmith/self-host-terraform-gcp-architecture)。
 
-＃＃ 核|变量|默认|必填 |描述 |
+＃＃ 核|变量|默认|必填|描述 |
 | - | - | - | - |
-| `project_id` | — |是的 | GCP project ID where resources are created. |
-| `region` | `us-west2` |没有| GCP region for regional resources. |
-| `zone` | `us-west2-a` |没有| GCP zone for zonal resources. |
+| `project_id` | — |是的 |创建资源的 GCP 项目 ID。 |
+| `region` | `us-west2` |没有| GCP 区域提供区域资源。 |
+| `zone` | `us-west2-a` |没有|用于区域资源的 GCP 区域。 |
 | `environment` | `prod` |没有|应用于标签和资源名称的环境名称：`dev`、`staging`、`prod`、`test` 或 `uat`。 `setup-env.sh` 将`terraform.tfvars` 的值导出，回落到`dev`。明确设置它：当它丢失时，`setup-env.sh`仍然用空值（`langsmith-<name_prefix>--<key>`）命名秘密。 |
-| `name_prefix` | `ls` |没有|所有资源名称的前缀。 1～11个字符，以小写字母开头； lowercase letters, numbers, and hyphens only. |
-| `unique_suffix` | `true` |没有| Append a random suffix to resource names.推荐用于多租户项目。 |
+| `name_prefix` | `ls` |没有|所有资源名称的前缀。 1～11个字符，以小写字母开头；仅限小写字母、数字和连字符。 |
+| `unique_suffix` | `true` |没有|将随机后缀附加到资源名称。推荐用于多租户项目。 |
 | `owner` | `platform-team` |没有|所有者标签应用于所有资源。 Sourcing `setup-env.sh` 使用 `LANGSMITH_OWNER` 环境变量覆盖它，未设置时该变量为空。 |
-| `cost_center` | `""` |没有| Cost center label for billing attribution.采购 `setup-env.sh` 会用 `LANGSMITH_COST_CENTER` 覆盖它。 |
+| `cost_center` | `""` |没有|用于计费归属的成本中心标签。采购 `setup-env.sh` 会用 `LANGSMITH_COST_CENTER` 覆盖它。 |
 | `labels` | `{}` |没有|附加标签应用于所有资源。 |
 
-## 网络|变量|默认|必填 |描述 |
+## 网络|变量|默认|必填|描述 |
 | - | - | - | - |
 | `subnet_cidr` | `10.0.0.0/20` |没有| GKE 子网的 CIDR。不得与现有范围重叠。 |
 | `pods_cidr` | `10.4.0.0/14` |没有| GKE Pod 的 CIDR。不得与子网或服务范围重叠。 |
 | `services_cidr` | `10.8.0.0/20` |没有| GKE 服务的 CIDR。不得与子网或 Pod 范围重叠。 |
 | `gke_master_authorized_cidrs` | `[]` |没有|允许外部 CIDR 到达 GKE 控制平面端点。空使控制平面可公开访问，因此 Terraform 管理的 Helm 和 `kubectl` 步骤可以从任何应用主机工作。填充用于生产的操作员和 CI 出口 CIDR。 |
 
-## GKE|变量|默认|必填 |描述 |
+## GKE|变量|默认|必填|描述 |
 | - | - | - | - |
-| `gke_use_autopilot` | `false` |没有|使用 GKE Autopilot 模式。 Autopilot always uses Dataplane V2. |
+| `gke_use_autopilot` | `false` |没有|使用 GKE Autopilot 模式。 Autopilot 始终使用 Dataplane V2。 |
 | `gke_node_count` | `2` |没有|每个区域的初始节点数（仅限标准模式）。 |
 | `gke_min_nodes` | `2` |没有|每个区域用于自动缩放的最小节点数。 |
-| `gke_max_nodes` | `10` |没有| Maximum nodes per zone for autoscaling. |
+| `gke_max_nodes` | `10` |没有|每个区域用于自动缩放的最大节点数。 |
 | `gke_machine_type` | `e2-standard-4` |没有| GKE 节点机器类型（例如 `e2-standard-4`、`n2-standard-8`）。 |
 | `gke_disk_size` | `100` |没有|节点磁盘大小（以 GB 为单位）。 |
 | `gke_release_channel` | `REGULAR` |没有| GKE 发布通道：`RAPID`、`REGULAR` 或 `STABLE`。 |
 | `gke_deletion_protection` | `true` |没有|在 GKE 集群上启用删除保护。 |
-| `gke_node_service_account_email` | `null` |没有| Service account for Standard-mode GKE nodes. `null` 保留 GKE 默认值；生产部署应传递最低权限的节点服务帐户。 Pod 单独使用 Workload Identity。 |
+| `gke_node_service_account_email` | `null` |没有|标准模式 GKE 节点的服务帐户。 `null` 保留 GKE 默认值；生产部署应传递最低权限的节点服务帐户。 Pod 单独使用 Workload Identity。 |
 | `gke_network_policy_provider` | `DATA_PLANE_V2` |没有|网络策略提供程序：`CALICO`（旧版）或`DATA_PLANE_V2`（基于 Cilium，推荐）。 |
 
-## PostgreSQL (Cloud SQL)|变量|默认|必填 |描述 |
+## PostgreSQL（云 SQL）|变量|默认|必填|描述 |
 | - | - | - | - |
 | `postgres_source` | `external` |没有| `external`（具有私有 IP 的 Cloud SQL）或 `in-cluster`（通过 Helm 部署）。 |
-| `postgres_version` | `POSTGRES_15` |没有| Cloud SQL PostgreSQL version. |
+| `postgres_version` | `POSTGRES_15` |没有| Cloud SQL PostgreSQL 版本。 |
 | `postgres_tier` | `db-custom-2-8192` |没有| Cloud SQL 机器层（例如 `db-f1-micro`、`db-custom-2-8192`）。 |
 | `postgres_disk_size` | `50` |没有| Cloud SQL 磁盘大小（以 GB 为单位）。 |
-| `postgres_high_availability` | `true` |没有| Enable Cloud SQL HA (regional standby). |
-| `postgres_deletion_protection` | `true` |没有| Prevent deletion of the Cloud SQL instance from Terraform and from the Cloud SQL API.设置 `false` 并在运行 destroy 之前应用该更改。 |
-| `postgres_database_flags` | see description |没有| Cloud SQL 实例上设置的数据库标志。 Defaults to `max_connections = 500` plus checkpoint and connection logging flags. |
-| `postgres_ssl_mode` | `ENCRYPTED_ONLY` |没有| Cloud SQL SSL enforcement. `ENCRYPTED_ONLY` 每个连接都需要 TLS。 `ALLOW_UNENCRYPTED_AND_ENCRYPTED` accepts plaintext. `TRUSTED_CLIENT_CERTIFICATE_REQUIRED` also requires a client certificate. |
-| `postgres_password` | `""` |当外部 | Cloud SQL password. Set via `TF_VAR_postgres_password`, or stored in Secret Manager by `setup-env.sh`. |
+| `postgres_high_availability` | `true` |没有|启用 Cloud SQL HA（区域备用）。 |
+| `postgres_deletion_protection` | `true` |没有|防止从 Terraform 和 Cloud SQL API 中删除 Cloud SQL 实例。设置 `false` 并在运行 destroy 之前应用该更改。 |
+| `postgres_database_flags` |见描述|没有| Cloud SQL 实例上设置的数据库标志。默认为 `max_connections = 500` 加上检查点和连接日志记录标志。 |
+| `postgres_ssl_mode` | `ENCRYPTED_ONLY` |没有| Cloud SQL SSL 强制执行。 `ENCRYPTED_ONLY` 每个连接都需要 TLS。 `ALLOW_UNENCRYPTED_AND_ENCRYPTED` 接受明文。 `TRUSTED_CLIENT_CERTIFICATE_REQUIRED` 还需要客户端证书。 |
+| `postgres_password` | `""` |当外部 |云 SQL 密码。通过`TF_VAR_postgres_password`设置，或通过`setup-env.sh`存储在Secret Manager中。 |
 
-## Redis (Memorystore)|变量|默认|必填 |描述 |
+## Redis（内存存储）|变量|默认|必填|描述 |
 | - | - | - | - |
-| `redis_source` | `external` |没有| `external` (Memorystore with private IP) or `in-cluster` (deployed via Helm). |
-| `redis_version` | `REDIS_7_0` |没有| Memorystore Redis version. |
-| `redis_memory_size` | `5` |没有| Memorystore Redis memory size in GB. |
-| `redis_high_availability` | `true` |没有| Enable Memorystore HA (Standard HA tier). |
-| `redis_prevent_destroy` | `false` |没有| Prevent accidental Terraform destroy of the Redis instance. |
+| `redis_source` | `external` |没有| `external`（具有私有IP的Memorystore）或`in-cluster`（通过Helm部署）。 |
+| `redis_version` | `REDIS_7_0` |没有| Memorystore Redis 版本。 |
+| `redis_memory_size` | `5` |没有| Memorystore Redis 内存大小（以 GB 为单位）。 |
+| `redis_high_availability` | `true` |没有|启用 Memorystore HA（标准 HA 层）。 |
+| `redis_prevent_destroy` | `false` |没有|防止 Redis 实例被 Terraform 意外破坏。 |
 
 ## ClickHouse
 
-|变量|默认|必填 |描述 |
+|变量|默认|必填|描述 |
 | - | - | - | - |
-| `clickhouse_source` | `in-cluster` |没有| `in-cluster` (dev/POC only), `langsmith-managed` (recommended for production), or `external` (self-hosted). |
-| `clickhouse_host` | `""` | when managed or external | ClickHouse host. |
-| `clickhouse_port` | `9440` |没有| ClickHouse native protocol port (`9440` for TLS, `9000` for non-TLS). |
-| `clickhouse_http_port` | `8443` |没有| ClickHouse HTTP port (`8443` for TLS, `8123` for non-TLS). |
-| `clickhouse_user` | `default` |没有| ClickHouse username. |
-| `clickhouse_password` | `""` | when managed or external | ClickHouse password. |
-| `clickhouse_database` | `default` |没有| ClickHouse database name. |
-| `clickhouse_tls` | `true` |没有| Enable TLS for ClickHouse connections. || `clickhouse_ca_cert` | `""` |没有|用于 TLS 验证的 ClickHouse CA 证书 (PEM)。 Empty 使用系统 CA。 |
+| `clickhouse_source` | `in-cluster` |没有| `in-cluster`（仅限开发/POC）、`langsmith-managed`（建议用于生产）或`external`（自托管）。 |
+| `clickhouse_host` | `""` |当管理或外部时| ClickHouse 主机。 |
+| `clickhouse_port` | `9440` |没有| ClickHouse 本机协议端口（`9440` 对于 TLS，`9000` 对于非 TLS）。 |
+| `clickhouse_http_port` | `8443` |没有| ClickHouse HTTP 端口（`8443` 对于 TLS，`8123` 对于非 TLS）。 |
+| `clickhouse_user` | `default` |没有| ClickHouse 用户名。 |
+| `clickhouse_password` | `""` |当管理或外部时|点击房屋密码。 |
+| `clickhouse_database` | `default` |没有| ClickHouse 数据库名称。 |
+| `clickhouse_tls` | `true` |没有|为 ClickHouse 连接启用 TLS。 || `clickhouse_ca_cert` | `""` |没有|用于 TLS 验证的 ClickHouse CA 证书 (PEM)。 Empty 使用系统 CA。 |
 
 ## GCS 存储
 
-|变量|默认|必填 |描述 |
+|变量|默认|必填|描述 |
 | - | - | - | - |
-| `storage_ttl_short_days` | `14` |没有| GCS TTL in days for the `ttl_s/` prefix. |
-| `storage_ttl_long_days` | `400` |没有| GCS TTL in days for the `ttl_l/` prefix. |
-| `storage_force_destroy` | `false` |没有| Allow bucket deletion even with objects inside.谨慎使用。 |
+| `storage_ttl_short_days` | `14` |没有| `ttl_s/` 前缀的 GCS TTL（以天为单位）。 |
+| `storage_ttl_long_days` | `400` |没有| `ttl_l/` 前缀的 GCS TTL（以天为单位）。 |
+| `storage_force_destroy` | `false` |没有|即使存储桶内有对象，也允许删除存储桶。谨慎使用。 |
 
-## LangSmith application
+## LangSmith 申请
 
-|变量|默认|必填 |描述 |
+|变量|默认|必填|描述 |
 | - | - | - | - |
-| `langsmith_namespace` | `langsmith` |没有| Kubernetes namespace for LangSmith. |
-| `langsmith_domain` | `langsmith.example.com` |没有| Fully qualified domain name for LangSmith. |
+| `langsmith_namespace` | `langsmith` |没有| LangSmith 的 Kubernetes 命名空间。 |
+| `langsmith_domain` | `langsmith.example.com` |没有| LangSmith 的完全限定域名。 |
 | `langsmith_license_key` | `""` |没有|许可证密钥。使用`TF_VAR_langsmith_license_key`。 |
-| `langsmith_helm_chart_version` | `""` |没有| Helm chart version for the deploy script.清空安装最新的`0.17.x`补丁（`~0.17.0`）。 An exported `CHART_VERSION` takes precedence.部署脚本拒绝 0.17 行之外的版本。在图表 0.16 上，默认值为 `~0.16.0`，线条为 0.16。 |
+| `langsmith_helm_chart_version` | `""` |没有|部署脚本的 Helm 图表版本。清空安装最新的`0.17.x`补丁（`~0.17.0`）。导出的 `CHART_VERSION` 优先。部署脚本拒绝 0.17 行之外的版本。在图表 0.16 上，默认值为 `~0.16.0`，线条为 0.16。 |
 | `langsmith_release_name` | `langsmith` |没有|头盔发布名称。必须与部署步骤安装的版本匹配，因为图表创建的服务帐户名称源自该版本。 |
 
-## 入口和 TLS|变量|默认|必填 |描述 |
+## 入口和 TLS|变量|默认|必填|描述 |
 | - | - | - | - |
 | `install_ingress` | `true` |没有|通过 Terraform 安装 Envoy Gateway。网关侦听器遵循 `tls_certificate_source`：`none` 创建 HTTP 侦听器，`letsencrypt` 创建 HTTP 和 HTTPS 侦听器，`existing` 仅创建 HTTPS 侦听器。 |
 | `ingress_type` | `envoy` |没有|入口类型：`envoy`（已实现）或`istio` / `other`（保留）。 |
@@ -113,11 +113,11 @@ GCP GKE 上自托管的 LangSmith Terraform 变量的完整参考。
 
 ## 科达
 
-|变量|默认|必填 |描述 |
+|变量|默认|必填|描述 |
 | - | - | - | - |
-| `enable_langsmith_deployment` | `true` |没有|安装 KEDA 以实现 LangSmith 工作线程的队列驱动自动缩放。这是 KEDA 安装开关，而不是LangSmith 部署功能（请参阅`enable_deployments`）。 |
+| `enable_langsmith_deployment` | `true` |没有|安装 KEDA 以实现 LangSmith 工作线程的队列驱动自动缩放。这是 KEDA 安装开关，而不是代理服务器托管功能（请参阅`enable_deployments`）。 |
 
-## 可选的 GCP 模块|变量|默认|必填 |描述 |
+## 可选的 GCP 模块|变量|默认|必填|描述 |
 | - | - | - | - |
 | `enable_gcp_iam_module` | `true` |没有|线路 `modules/iam` 用于工作负载身份和存储桶 IAM 绑定。 |
 | `enable_secret_manager_module` | `false` |没有|连接 `modules/secrets` 将生成的引导凭据存储在 Secret Manager 中。 |
@@ -129,10 +129,10 @@ GCP GKE 上自托管的 LangSmith Terraform 变量的完整参考。
 
 ## 尺寸和功能标志
 
-Helm 部署脚本从 `terraform.tfvars` 读取这些标志以启用匹配的图表组件，而 Terraform 读取 `enable_fleet`、`enable_standalone_polly` 和 `enable_standalone_insights` 以在 Postgres 和 Redis 为外部时配置每个功能数据库。部署脚本读取 `sizing_profile` 来选择 Helm 大小调整覆盖。|变量|默认|必填 |描述 |
+Helm 部署脚本从 `terraform.tfvars` 读取这些标志以启用匹配的图表组件，而 Terraform 读取 `enable_fleet`、`enable_standalone_polly` 和 `enable_standalone_insights` 以在 Postgres 和 Redis 为外部时配置每个功能数据库。部署脚本读取 `sizing_profile` 来选择 Helm 大小调整覆盖。|变量|默认|必填|描述 |
 | - | - | - | - |
 | `sizing_profile` | `default` |没有| Helm 大小：`production`（\~20 个用户，\~100 条记录/秒）、`production-large`（\~50 个用户，\~1000 条记录/秒）、`dev`（单副本）、`minimum`（停车楼层成本，不用于生产），或`default`（图表默认值）。对于 `enable_smithdb = true`，还设置 `smithdb_sizing` 默认值，并设置 `sandbox_host_machine_type` 默认值。 |
-| `enable_deployments` | `false` |没有|启用LangSmith部署（侦听器、操作员、主机后端）。需要部署许可证权利。 |
+| `enable_deployments` | `false` |没有|启用代理服务器托管（侦听器、操作员、主机后端）。需要部署许可证权利。 |
 | `enable_agent_builder` | `false` |没有|启用代理生成器。需要 `enable_deployments = true` 和 Agent Builder 权利。 |
 | `enable_insights` | `false` |没有|启用 Insights（ClickHouse 支持的分析）。需要 Insights 权利。 |
 | `enable_polly` | `false` |没有|启用 Polly（AI 评估和监控）。需要 `enable_deployments = true` 和 Polly 权利。 |
@@ -143,7 +143,7 @@ Helm 部署脚本从 `terraform.tfvars` 读取这些标志以启用匹配的图�
 
 ## 史密斯数据库
 
-SmithDB 需要 GKE 标准。 Terraform 在 Autopilot 上拒绝 `enable_smithdb`，并拒绝迁移和查询门，除非 `smithdb_ingestion_enabled = true`。|变量|默认|必填 |描述 |
+SmithDB 需要 GKE 标准。 Terraform 在 Autopilot 上拒绝 `enable_smithdb`，并拒绝迁移和查询门，除非 `smithdb_ingestion_enabled = true`。|变量|默认|必填|描述 |
 | - | - | - | - |
 | `enable_smithdb` | `false` |没有|配置 SmithDB 依赖项：Cloud SQL 元存储、GCS 对象存储、Workload Identity 服务帐户以及缓存和计算节点池。 |
 | `smithdb_sizing` | `null` |没有| `minimal`、`small`、`medium` 或 `large`。 `null`跟随`sizing_profile`：`minimum`给出`minimal`，`dev`和`default`给出`small`，`production`给出`medium`，并且`production-large` 给出 `large`。 `minimal`不创建SmithDB节点池，运行在普通节点池上。图表 0.16 上不可用。 |
@@ -183,7 +183,7 @@ SmithDB 需要 GKE 标准。 Terraform 在 Autopilot 上拒绝 `enable_smithdb`�
 
 ## 沙箱
 
-沙箱需要 GKE 标准和 `enable_gcp_iam_module = true`。|变量|默认|必填 |描述 |
+沙箱需要 GKE 标准和 `enable_gcp_iam_module = true`。|变量|默认|必填|描述 |
 | - | - | - | - |
 | `enable_sandboxes` | `false` |没有|为LangSmith沙箱配置基础设施。需要标准 GKE、外部 Redis、工作负载身份和具有可用 Linux KVM (`/dev/kvm`) 的沙箱主机节点。 |
 | `sandbox_host_image_tag` | `""` |没有|已弃用并被忽略；将其从 `terraform.tfvars` 中删除。部署脚本从图表的应用程序版本中设置沙箱主机映像标签。在图表 0.16 上，启用沙箱时需要，并且 `init-values.sh` 在没有它的情况下退出。 |
@@ -211,7 +211,7 @@ Sourcing `infra/scripts/setup-env.sh` 将这些内容作为 `langsmith-<name_pre
 | `langsmith_admin_password` |初始组织管理员密码。提示。至少 12 个字符，包含一个小写字母、一个大写字母和一个符号。 |
 | `langsmith_api_key_salt` |用于散列 API 密钥的盐。首次部署后必须保持稳定。 |
 | `langsmith_jwt_secret` |基本身份验证会话的 JWT 密钥。必须保持稳定。 |
-| `langsmith_deployments_encryption_key` |用于 LangSmith 部署的 Fernet 密钥。绝对不能改变。 |
+| `langsmith_deployments_encryption_key` |用于代理服务器托管的 Fernet 密钥。绝对不能改变。 |
 | `langsmith_agent_builder_encryption_key` | Agent Builder 的 Fernet 密钥。绝对不能改变。 |
 | `langsmith_insights_encryption_key` | Fernet 洞察的关键。绝对不能改变。 |
 | `langsmith_polly_encryption_key` |波莉的 Fernet 钥匙。绝对不能改变。 |

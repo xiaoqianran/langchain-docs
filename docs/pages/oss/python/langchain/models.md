@@ -58,7 +58,7 @@ The easiest way to get started with a standalone model in LangChain is to use [`
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = init_chat_model("gpt-5.5")
+> model = init_chat_model("gpt-6.1-sol")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -67,7 +67,7 @@ The easiest way to get started with a standalone model in LangChain is to use [`
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = ChatOpenAI(model="gpt-5.5")
+> model = ChatOpenAI(model="gpt-6.1-sol")
 > ```
 
 > [tab] Anthropic
@@ -121,7 +121,7 @@ The easiest way to get started with a standalone model in LangChain is to use [`
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = init_chat_model(
->     "azure_openai:gpt-5.5",
+>     "azure_openai:gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 > )
 > ```
@@ -135,7 +135,7 @@ The easiest way to get started with a standalone model in LangChain is to use [`
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = AzureChatOpenAI(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
 > )
 > ```
@@ -1265,7 +1265,7 @@ To help manage rate limits, chat model integrations accept a `rate_limiter` para
 > )
 >
 > model = init_chat_model(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     model_provider="openai",
 >     rate_limiter=rate_limiter  # [!code highlight]
 > )
@@ -1313,7 +1313,7 @@ You can configure a custom base URL for providers that implement the OpenAI Chat
 > from langchain_openai import ChatOpenAI
 >
 > model = ChatOpenAI(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     openai_proxy="http://proxy.example.com:8080"
 > )
 > ```
@@ -1328,7 +1328,7 @@ Certain models can be configured to return token-level log probabilities represe
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 model = init_chat_model(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     model_provider="openai"
 ).bind(logprobs=True)
 
@@ -1598,7 +1598,7 @@ from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResp
 
 
 basic_model = ChatOpenAI(model="gpt-5.4-mini")
-advanced_model = ChatOpenAI(model="gpt-5.5")
+advanced_model = ChatOpenAI(model="gpt-6.1-sol")
 
 @wrap_model_call
 def dynamic_model_selection(request: ModelRequest, handler) -> ModelResponse:

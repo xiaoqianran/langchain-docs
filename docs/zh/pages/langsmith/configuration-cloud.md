@@ -6,11 +6,11 @@
 
 本页面介绍如何创建、配置和管理[assistants](/langsmith/assistants)。助手允许您通过配置自定义 [deployed](/langsmith/deployment) 图形的行为（例如模型选择、提示和工具可用性），而无需更改底层图形代码。
 
-您可以使用 [SDK](https://reference.langchain.com/python/langsmith/deployment-sdk) 或在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-configuration-cloud) 中工作。
+您可以使用 [SDK](https://reference.langchain.com/python/langsmith/deployment-sdk) 或在 LangSmith UI 中工作。
 
 ## 了解助手配置
 
-助手存储在运行时自定义图形行为的“上下文”值。您可以在图形代码中定义上下文架构，然后在通过 [⟦T17⟧ parameter](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.create) 创建助手时提供特定的上下文值。
+助手存储在运行时自定义图形行为的“上下文”值。您可以在图形代码中定义上下文模式，然后在通过 [⟦T19⟧ parameter](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.create) 创建助手时提供特定的上下文值。
 
 考虑这个 `call_model` 节点的示例，它从上下文中读取 `model_name`：
 
@@ -47,13 +47,11 @@ function callModel(state: State, runtime: Runtime[ContextSchema]) {
 
 创建助手时，您可以为这些配置字段提供特定值。助手会存储此配置并在图形运行时应用它。
 
-有关[LangGraph](/oss/python/langgraph/overview)中的配置的更多信息，请参阅[runtime context documentation](/oss/python/langgraph/graph-api#runtime-context)。
+有关[LangGraph](/oss/python/langgraph/overview)的更多配置信息，请参阅[runtime context documentation](/oss/python/langgraph/graph-api#runtime-context)。
 
-**为您的工作流程选择 SDK 或 UI：**> [标签] SDK
+## 创建助手> [标签] SDK
 >
-> ## 创建助手
->
-> 使用[⟦T20⟧](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.create)方法创建一个新助手。该方法需要：
+> 使用[⟦T22⟧](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.create)方法创建新助手。该方法需要：
 >
 > * **图形 ID**：该助手将使用的已部署图形的名称（例如，`"agent"`）。
 > * **上下文**：与图形的上下文模式匹配的配置值。
@@ -133,14 +131,30 @@ function callModel(state: State, runtime: Runtime[ContextSchema]) {
 >> **图形 ID 与助理 ID**
 >>
 > > 创建助手时，您指定**图ID**（图名称如`"agent"`）。这将返回一个**助理 ID**（UUID，例如 `"62e209ca..."`）。您可以在运行图表时使用：
->>>> * **图形 ID**（例如，`"agent"`）：使用该图形的默认助手
->> * **助手ID** (UUID)：使用特定的助手配置
 >>
->> 示例请参见[Use an assistant](#use-an-assistant)。
+>> * **图形 ID**（例如，`"agent"`）：使用该图形的默认助手>> * **助手ID** (UUID)：使用特定的助手配置
+>>
+>> 参见[Use an assistant](#use-an-assistant)。
+
+> [选项卡] 用户界面
 >
-> ## 使用助手
+> 您可以从LangSmith UI 创建助手：
 >
-> 要使用助手，请在创建运行时传递其 `assistant_id`。下面的示例使用我们上面创建的助手：
+> 1. 导航到您的部署并选择 **Assistants** 选项卡。
+> 2. 单击**+ 助手**。
+> 3. 在打开的表格中：
+> * 选择该助手所针对的图表。
+> * 提供名称和描述。
+> * 使用该图的配置模式配置助手。
+> 4. 单击“**创建助手**”。
+>
+> 这将带您到[Studio](/langsmith/studio)，您可以在那里测试助手。返回**助手**选项卡，在表中查看您新创建的助手。
+
+## 使用助手
+
+> [标签] SDK
+>
+> 要使用助手，请在创建运行时传递其 `assistant_id`。下面的示例使用上面创建的助手：
 >
 > ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > # Create a thread for the conversation
@@ -244,23 +258,23 @@ function callModel(state: State, runtime: Runtime[ContextSchema]) {
 > {'agent': {'messages': [{'content': 'I was created by OpenAI...', ...}]}}
 > ```
 >
->> [!注意]
->>
->> **使用图 ID 与助手 ID**
->>
->> 运行图表时，您可以传递 **图表 ID** 或 **助手 ID**：
->>
->> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> > # Option 1: Use graph ID to get the default assistant
-> > client.runs.stream(thread_id, "agent", input=input)
-> >
-> > # Option 2: Use assistant ID (UUID) for a specific configuration
-> > client.runs.stream(thread_id, "62e209ca-9154-432a-b9e9-2d75c7a9219b", input=input)
-> > ```
+> 要使用其默认助手运行图表，请传递图表 ID（例如，`"agent"`）来代替助手 ID。> [选项卡] 用户界面
 >
-> ## 为你的助手创建一个新版本
+> 在 LangSmith UI 中使用助手：
 >
-> 使用[⟦T35⟧](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.update)方法创建新版本的助手。
+> 1. 导航到您的部署并选择 **Assistants** 选项卡。
+> 2. 找到您要使用的助手。
+> 3. 单击该助手的 **Studio**。
+>
+> 这将使用所选助手打开[Studio](/langsmith/studio)。当您提交输入（在**图表**或**聊天**模式）时，助手的配置将应用于运行。
+
+## 为你的助手创建一个新版本
+
+更新助手会创建新版本并将其设置为活动版本。所有使用助手 ID 的未来运行都将使用新配置。
+
+> [标签] SDK
+>
+> 使用[⟦T38⟧](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.update)方法创建新版本的助手。
 >
 >> [!警告]
 >>
@@ -309,10 +323,27 @@ function callModel(state: State, runtime: Runtime[ContextSchema]) {
 > --data '{
 > "context": {"model_name": "openai", "system_prompt": "You are a mindful assistant!"}
 > }'
-> ```
->> 更新创建新版本并自动将其设置为活动状态。所有使用此助手 ID 的未来运行都将使用新配置。
+> ```> [选项卡] 用户界面
 >
-> ## 使用以前的助手版本
+> 要从“助手”选项卡创建新版本：
+>
+> 1. 导航到您的部署并选择 **Assistants** 选项卡。
+> 2. 单击助手所在行，打开 **编辑助手** 窗格。
+> 3. 修改助手的名称、描述或配置。
+> 4. 单击“**保存**”。
+>
+> 要从 Studio 创建新版本：
+>
+> 1. 打开助手的Studio。
+> 2. 单击**管理助手**。
+> 3. 编辑助手配置。
+> 4. 单击“**保存**”。
+
+## 使用以前的助手版本
+
+您可以将早期版本的助手设置为活动状态。所有使用助手 ID 的未来运行都会使用该版本的配置。
+
+> [标签] SDK
 >
 > 使用 `setLatest` 方法更改激活的版本：
 >
@@ -344,54 +375,8 @@ function callModel(state: State, runtime: Runtime[ContextSchema]) {
 > "version": 1
 > }'
 > ```
->
-> 更改活动版本后，所有使用此助手 ID 的运行都将使用指定版本的配置。
 
 > [选项卡] 用户界面
->
-> ## 创建助手
->
-> 您可以从[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-configuration-cloud)创建助手：
->
-> 1. 导航到您的部署并选择 **Assistants** 选项卡。
-> 2. 单击 **+ 新助手**。
-> 3. 在打开的表格中：
-> * 选择该助手所针对的图表。
-> * 提供名称和描述。
-> * 使用该图的配置模式配置助手。
-> 4. 单击“**创建助手**”。
->
-> 这将带您到[Studio](/langsmith/studio)，您可以在那里测试助手。返回**助手**选项卡，在表中查看您新创建的助手。
->
-> ## 使用助手
->
-> 在 LangSmith UI 中使用助手：
->
-> 1. 导航到您的部署并选择 **Assistants** 选项卡。
-> 2. 找到您要使用的助手。
-> 3. 单击该助手的 **Studio**。
->> 这将使用所选助手打开[Studio](/langsmith/studio)。当您提交输入（在**图表**或**聊天**模式）时，助手的配置将应用于运行。
->
-> ## 为你的助手创建一个新版本
->
-> 要从 UI 更新助手并创建新版本，您可以使用“助手”选项卡或 Studio。这两种方法都会创建一个新版本并将其设置为活动版本：
->
->> [选项卡] 助手选项卡
->>
-> > 1. 导航到您的部署并选择 **Assistants** 选项卡。
->> 2.找到您要编辑的助手。
-> > 3. 单击“**编辑**”。
->> 4. 修改助手的名称、描述或配置。
-> > 5. 保存更改。
->
->> [选项卡] 工作室
->>
->> 1. 打开助手的Studio。
-> > 2. 单击“**管理助手**”。
->> 3. 编辑助手配置。
->> 4. 保存更改。
->
-> ## 使用以前的助手版本
 >
 > 要从 Studio 将先前版本设置为活动版本：
 >
@@ -399,11 +384,52 @@ function callModel(state: State, runtime: Runtime[ContextSchema]) {
 > 2. 单击**管理助手**。
 > 3. 找到助手并选择您要使用的版本。
 > 4. 切换该版本的 **Active** 开关。
+
+## 删除助手
+
+删除助手会永久删除它及其所有版本。您无法删除单个版本。要停止使用某个版本，[set a different version as active](#use-a-previous-assistant-version)。它还删除助手的 cron 作业并中断任何正在进行的运行。部署继续运行。为了阻止它，[delete the deployment](/langsmith/manage-deployment#delete-a-deployment)。
+
+> [标签] SDK
 >
-> 这将更新助手以在所有未来运行中使用所选版本。
->>> [!警告]
->>
->> 删除助手将删除其**所有**版本。目前无法删除单个版本。要跳过某个版本，只需将另一个版本设置为活动版本即可。
+> 使用`assistants.delete`方法通过UUID删除助手。要同时删除其线程，请将 `delete_threads` (Python) 或 `deleteThreads` (JavaScript) 设置为 `true`。这将删除元数据 `assistant_id` 与助手匹配的每个线程，以及这些线程中的运行和检查点：
+>
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.assistants.delete(
+>     openai_assistant["assistant_id"],  # Assistant ID (UUID)
+>     delete_threads=True,
+> )
+> ```
+>
+> ```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await client.assistants.delete(
+>     openAIAssistant["assistant_id"],  // Assistant ID (UUID)
+>     { deleteThreads: true },
+> );
+> ```
+>
+> ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl --request DELETE \
+>     --url "<DEPLOYMENT_URL>/assistants/<ASSISTANT_ID>?delete_threads=true" \
+>     --header 'Content-Type: application/json'
+> ```
+>
+> `delete_threads` 默认为 `false`。如果您的部署使用[custom authorization](/langsmith/auth)，它只会删除调用者有权访问的线程。> [选项卡] 用户界面
+>
+> 您可以从“助理”选项卡或从 Studio 删除助理。从 UI 中删除会保留助手的线程。要同时删除其线程，请使用 SDK 将 `delete_threads` 设置为 `true`。您无法删除部署为每个图表创建的默认助手。
+>
+> 要从“助理”选项卡中删除助理：
+>
+> 1. 导航到您的部署并选择 **Assistants** 选项卡。
+> 2. 选中您要删除的助手的复选框。您一次可以删除一名助手。
+> 3. 单击**删除**。
+> 4. 在确认对话框中，单击“**删除**”。
+>
+> 要从 Studio 中删除助手：
+>
+> 1. 打开助手的Studio。
+> 2. 单击**管理助手**。如果选择了助理，该按钮将显示该助理的姓名。
+> 3. 选择要删除的助手，然后单击“**删除助手**”。
+> 4. 在确认对话框中，单击“**删除**”。
 
 ***
 

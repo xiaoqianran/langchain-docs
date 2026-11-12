@@ -289,12 +289,12 @@ graph LR
 >
 > // Sub-agents developed by different teams
 > const researchAgent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   systemPrompt: "You are a research specialist...",
 > });
 >
 > const writerAgent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   systemPrompt: "You are a writing specialist...",
 > });
 >
@@ -334,7 +334,7 @@ graph LR
 >
 > // Main coordinator agent
 > const mainAgent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [task],
 >   systemPrompt: (
 >     "You coordinate specialized sub-agents. " +

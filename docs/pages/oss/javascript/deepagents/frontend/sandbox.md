@@ -184,7 +184,7 @@ export async function agent(config: LangGraphRunnableConfig) {
   const backend = await getOrCreateSandboxForThread(threadId);
 
   return createDeepAgent({
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     backend,
     systemPrompt: "You are an expert developer working on a project in /app.",
   });
@@ -386,9 +386,9 @@ app.get("/sandbox/:threadId/file", async (c) => {
 ### Configure `langgraph.json`
 
 Register both the agent graph and the API server. The `http.app` field tells
-the LangGraph platform to serve your custom routes alongside the default ones.
+Agent Server to serve your custom routes alongside the default ones.
 See [application structure](/oss/javascript/langgraph/application-structure) and
-[LangSmith Deployments](/oss/javascript/deepagents/going-to-production#langsmith-deployments)
+[LangSmith Agent Server](/oss/javascript/deepagents/going-to-production#langsmith-deployments)
 for the full set of `langgraph.json` options.
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -420,7 +420,7 @@ chat panel. It uses [`useStream`](https://reference.langchain.com/javascript/lan
 endpoints for file browsing.
 
 For production deployment, point `apiUrl` at your
-[LangSmith Deployment](/langsmith/deployment), and pass a stable
+[Agent Server URL](/langsmith/deployment), and pass a stable
 `thread_id` on each run. See
 [Frontend](/oss/javascript/deepagents/going-to-production#frontend) in
 [Going to production](/oss/javascript/deepagents/going-to-production) for those settings

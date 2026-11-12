@@ -147,7 +147,7 @@ Tools can access runtime information through the [`ToolRuntime`](https://referen
 | **Store** | Long-term memory - persistent data that survives across conversations | Save user preferences, maintain knowledge base |
 | **Stream Writer** | Emit real-time updates during tool execution | Show progress for long-running operations |
 | **Execution Info** | Identity and retry information for the current execution (thread ID, run ID, attempt number) | Access thread/run IDs, adjust behavior based on retry state |
-| **Server Info** | Server-specific metadata when running on LangGraph Server (assistant ID, graph ID, authenticated user) | Access assistant ID, graph ID, or authenticated user info |
+| **Server Info** | Server-specific metadata when running on LangSmith Agent Server (assistant ID, graph ID, authenticated user) | Access assistant ID, graph ID, or authenticated user info |
 | **Config** | [`RunnableConfig`](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) for the execution | Access callbacks, tags, and metadata |
 | **Tool Call ID** | Unique identifier for the current tool invocation | Correlate tool calls for logs and model invocations |
 
@@ -335,7 +335,7 @@ def get_account_info(runtime: ToolRuntime[UserContext]) -> str:
     return "User not found"
 
 
-model = ChatOpenAI(model="gpt-5.5")
+model = ChatOpenAI(model="gpt-6.1-sol")
 agent = create_agent(
     model,
     tools=[get_account_info],
@@ -399,7 +399,7 @@ def save_user_info(user_id: str, name: str, age: int, email: str, runtime: ToolR
     store.put(("users",), user_id, {"name": name, "age": age, "email": email})
     return "Successfully saved user info."
 
-model = ChatOpenAI(model="gpt-5.5")
+model = ChatOpenAI(model="gpt-6.1-sol")
 
 store = InMemoryStore()
 agent = create_agent(
@@ -470,7 +470,7 @@ def log_execution_context(runtime: ToolRuntime) -> str:
 
 ### Server info
 
-When your tool runs on LangGraph Server, access the assistant ID, graph ID, and authenticated user via `runtime.server_info`:
+When your tool runs on Agent Server, access the assistant ID, graph ID, and authenticated user via `runtime.server_info`:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool, ToolRuntime
@@ -486,7 +486,7 @@ def get_assistant_scoped_data(runtime: ToolRuntime) -> str:
     return "done"
 ```
 
-`server_info` is `None` when the tool is not running on LangGraph Server (e.g., during local development or testing).
+`server_info` is `None` when the tool is not running on Agent Server (e.g., during local development or testing).
 
 > [!NOTE]
 >
@@ -800,7 +800,7 @@ def handle_tool_errors(
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     middleware=[handle_tool_errors],
 )
@@ -1019,7 +1019,7 @@ There are two approaches depending on whether tools are known ahead of time:
 > >     return handler(request)
 > >
 > > agent = create_agent(
-> >     model="gpt-5.5",
+> >     model="gpt-6.1-sol",
 > >     tools=[public_search, private_search, advanced_search],
 > >     middleware=[state_based_tools]
 > > )
@@ -1061,7 +1061,7 @@ There are two approaches depending on whether tools are known ahead of time:
 > >     return handler(request)
 > >
 > > agent = create_agent(
-> >     model="gpt-5.5",
+> >     model="gpt-6.1-sol",
 > >     tools=[search_tool, analysis_tool, export_tool],
 > >     middleware=[store_based_tools],
 > >     context_schema=Context,
@@ -1111,7 +1111,7 @@ There are two approaches depending on whether tools are known ahead of time:
 > >     return handler(request)
 > >
 > > agent = create_agent(
-> >     model="gpt-5.5",
+> >     model="gpt-6.1-sol",
 > >     tools=[read_data, write_data, delete_data],
 > >     middleware=[context_based_tools],
 > >     context_schema=Context
@@ -1163,7 +1163,7 @@ There are two approaches depending on whether tools are known ahead of time:
 >         return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[get_weather],  # Only static tools registered here
 >     middleware=[DynamicToolMiddleware()],
 > )

@@ -77,7 +77,7 @@ def get_user_info() -> str:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[get_user_info],
     checkpointer=InMemorySaver(),  # [!code highlight]
 )
@@ -290,7 +290,7 @@ DB_URI = "postgresql://postgres:postgres@localhost:5432/postgres?sslmode=disable
 with PostgresSaver.from_conn_string(DB_URI) as checkpointer:
     checkpointer.setup() # auto create tables in PostgreSQL
     agent = create_agent(
-        "gpt-5.5",
+        "gpt-6.1-sol",
         tools=[get_user_info],
         checkpointer=checkpointer,  # [!code highlight]
     )
@@ -316,7 +316,7 @@ class CustomAgentState(AgentState):  # [!code highlight]
     preferences: dict  # [!code highlight]
 
 agent = create_agent(
-    "gpt-5.5",
+    "gpt-6.1-sol",
     tools=[get_user_info],
     state_schema=CustomAgentState,  # [!code highlight]
     checkpointer=InMemorySaver(),
@@ -393,7 +393,7 @@ def trim_messages(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
     }
 
 agent = create_agent(
-    "gpt-5.5",
+    "gpt-6.1-sol",
     tools=[...],
     middleware=[trim_messages],
     checkpointer=InMemorySaver(),
@@ -539,7 +539,7 @@ from langchain_core.runnables import RunnableConfig
 checkpointer = InMemorySaver()
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[...],
     middleware=[
         SummarizationMiddleware(

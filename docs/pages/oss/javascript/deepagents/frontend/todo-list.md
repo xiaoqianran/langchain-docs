@@ -51,7 +51,7 @@ import { createDeepAgent } from "deepagents";
 import { todoListMiddleware } from "langchain";
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   middleware: [todoListMiddleware()],
 });
 ```

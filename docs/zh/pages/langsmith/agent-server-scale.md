@@ -18,10 +18,10 @@ LangSmith 代理服务器的默认配置旨在处理各种不同工作负载的�
 
 ## 请求与运行并发
 
-两种独立的并发决定了代理服务器的扩展方式，并且它们是单独控制的：* **请求并发** 是指部署一次服务的 API 请求数（创建运行、读取线程状态、流式传输结果）。 API 服务器异步处理请求，请求并发量随着 API 服务器副本的数量水平扩展。
+两种独立的并发决定了代理服务器的扩展方式，并且它们是单独控制的：* **请求并发** 是部署一次服务的 API 请求数（创建运行、读取线程状态、流式处理结果）。 API 服务器异步处理请求，请求并发量随着 API 服务器副本的数量水平扩展。
 * **运行并发** 是一次执行的运行数量。单个队列工作线程最多可并发运行 [⟦T12⟧](/langsmith/env-var-self-hosted)（默认 10）。运行并发上限为队列工作线程数乘以`N_JOBS_PER_WORKER`。
 
-创建运行是一个快速写入请求：API 服务器会保留待处理的运行并立即返回，而无需等待运行执行。如果每个运行槽都忙，则额外的运行将在 [queue](/langsmith/agent-server#run-execution-lifecycle) 中等待，直到槽空闲。提高 `N_JOBS_PER_WORKER` 或添加队列工作线程会增加运行吞吐量；它不会改变部署可以同时服务的请求数量。
+创建运行是一个快速写入请求：API 服务器会保留待处理的运行并立即返回，而无需等待运行执行。如果每个运行槽都忙，则额外的运行将在 [queue](/langsmith/agent-server#run-execution-lifecycle) 中等待，直到槽空闲。提高`N_JOBS_PER_WORKER`或添加队列工作程序会增加运行吞吐量；它不会改变部署可以同时服务的请求数量。
 
 ## 写入负载
 
@@ -34,7 +34,7 @@ LangSmith 代理服务器的默认配置旨在处理各种不同工作负载的�
 * 创建新的[assistants](/langsmith/assistants)
 * 删除运行、检查点、线程、助手和 cron 作业以下组件主要负责处理写入负载：
 
-* API 服务器：处理对数据库的初始请求和数据持久化。
+* API服务器：处理对数据库的初始请求和数据持久化。
 * 队列工作者：处理运行的执行。
 * Redis：处理有关正在进行的运行的临时数据的存储。
 * Postgres：处理所有数据的存储，包括运行、线程、助手、cron 作业、检查点和长期内存。
@@ -165,12 +165,12 @@ number_of_queue_workers = throughput_per_second * average_run_execution_time_sec
 > 确切的最佳配置取决于您的应用程序复杂性、请求模式和数据要求。将以下示例与前面部分中的信息以及您的具体用法结合使用，根据需要更新您的部署配置。如果您有任何疑问，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 
 下表提供了针对各种负载模式（每秒读取请求/每秒写入请求）和标准助手特征（平均运行执行时间为 1 秒、中等 CPU 和内存使用率）的不同代理服务器配置的比较概览。请求速率驱动所需的稳态运行吞吐量，该吞吐量通过队列工作线程和 `N_JOBS_PER_WORKER` 调整大小，而 API 服务器副本的大小则根据请求量本身进行调整：| | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | [Medium / medium](#medium-reads-medium-writes) | [High / high](#high-reads-high-writes) |
-| :- | :- | :- | :- | :- | :- |
-|每秒写入请求数（部署每秒处理的写入请求数）| 5 | 5 | 500 | 500 50| 500 | 500
-|每秒读取请求数（部署每秒处理的读取请求数）| 5 | 500 | 500 5 | 50| 500 | 500
+| :- | :- | :-| :- | :-| :- |
+|每秒写入请求数（部署每秒处理的写入请求数）| 5 | 5 | 500 | 500 50 | 50 500 | 500
+|每秒读取请求数（部署每秒处理的读取请求数）| 5 | 500 | 500 5 | 50 | 50 500 | 500
 | **API 服务器**（1 个 CPU，每台服务器 2Gi）| 1（默认）| 6 | 10 | 10 3 | 15 | 15
 | **队列工作人员**（1 个 CPU，每个工作人员 2Gi）| 1（默认）| 10 | 10 1（默认）| 5 | 10 | 10
-| **`N_JOBS_PER_WORKER`** | 10（默认）| 50| 10 | 10 10 | 10 50|
+| **`N_JOBS_PER_WORKER`** | 10（默认）| 50 | 50 10 | 10 10 | 10 50 | 50
 | **Redis 资源** | 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）|
 | **Postgres 资源** | 2 CPU 8 Gi（默认）| 4 CPU 16 Gi 内存 | 4 个 CPU 16 Gi | 4 CPU 16 Gi 内存 | 8 CPU 32 Gi 内存 |
 
@@ -182,7 +182,7 @@ number_of_queue_workers = throughput_per_second * average_run_execution_time_sec
 
 ### 低读取，低写入
 
-默认的 [LangSmith Deployment](/langsmith/deployment) 配置将处理此负载。这里不需要自定义资源配置。
+默认的 [LangSmith Agent Server](/langsmith/deployment) 配置将处理此负载。这里不需要自定义资源配置。
 
 ### 低读取，高写入
 
@@ -372,7 +372,7 @@ postgres:
       memory: "64Gi"
 ```
 
-### 自动缩放如果您的部署遇到突发流量，您可以启用自动扩展来扩展 API 服务器和队列工作线程的数量来处理负载。
+### 自动缩放If your deployment experiences bursty traffic, you can enable autoscaling to scale the number of API servers and queue workers to handle the load.
 
 以下是针对高读取和高写入的自动缩放的示例配置：
 

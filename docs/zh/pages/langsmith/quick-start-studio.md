@@ -4,26 +4,26 @@
 
 # 开始使用 Studio
 
-[LangSmith Deployment UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-quick-start-studio)中的[Studio](/langsmith/studio)支持连接两种类型的图：
+[LangSmith Agent Server UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-quick-start-studio)中的[Studio](/langsmith/studio)支持连接两种类型的图：
 
-* 图表部署于[cloud or self-hosted](#deployed-graphs)。
+* Graphs deployed on [cloud or self-hosted](#deployed-graphs).
 * 使用 [Agent Server](#local-development-server) 在本地运行的图表。
 
-## 部署图
+## Deployed graphs
 
-Studio 可通过 **部署** 导航在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-quick-start-studio) 中访问。
+Studio 可通过 **代理服务器** 导航在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-quick-start-studio) 中访问。
 
-对于 [deployed](/langsmith/deployment-quickstart) 的应用程序，您可以在部署过程中访问 Studio。为此，请导航到 UI 中的部署并选择 **Studio**。
+对于 [deployed](/langsmith/deployment-quickstart) 的应用程序，您可以将 Studio 作为该代理服务器的一部分进行访问。为此，请导航到 UI 中的代理服务器并选择 **Studio**。
 
-这将加载连接到实时部署的 Studio，允许您在该部署中创建、读取和更新 [threads](/oss/python/langgraph/checkpointers#threads)、[assistants](/langsmith/assistants) 和 [memory](/oss/python/concepts/memory)。
+这将加载连接到实时代理服务器的 Studio，允许您在该代理服务器中创建、读取和更新 [threads](/oss/python/langgraph/checkpointers#threads)、[assistants](/langsmith/assistants) 和 [memory](/oss/python/concepts/memory)。
 
-## 本地开发服务器
+## Local development server
 
 ### 先决条件
 
 要使用 Studio 在本地测试您的应用程序：
 
-* 首先遵循[local application quickstart](/langsmith/local-dev-testing)。
+* Follow the [local application quickstart](/langsmith/local-dev-testing) first.
 * 如果您不需要数据 [traced](/langsmith/observability-concepts#traces) 至 LangSmith，请在应用程序的 `.env` 文件中设置 `LANGSMITH_TRACING=false`。禁用跟踪后，没有数据离开您的本地服务器。
 
 ### 设置
@@ -45,9 +45,9 @@ Studio 可通过 **部署** 导航在 [LangSmith UI](https://smith.langchain.com
    ```> [!警告]
    >
    > **浏览器兼容性**
-   > Safari 阻止 `localhost` 与 Studio 的连接。要解决此问题，请使用 `--tunnel` 运行命令以通过安全隧道访问 Studio。您需要通过单击 Studio UI 中的 **连接到本地服务器** 来手动将隧道 URL 添加到允许的源。步骤请参阅[troubleshooting guide](/langsmith/troubleshooting-studio#safari-connection-issues)。
+   > Safari blocks `localhost` connections to Studio. To work around this, run the command with `--tunnel` to access Studio via a secure tunnel. You'll need to manually add the tunnel URL to allowed origins by clicking **Connect to a local server** in the Studio UI.步骤请参阅[troubleshooting guide](/langsmith/troubleshooting-studio#safari-connection-issues)。
 
-   这将在本地启动代理服务器，并在内存中运行。服务器将以监视模式运行，侦听代码更改并自动重新启动。阅读此[reference](/langsmith/cli#dev)，了解启动 API 服务器的所有选项。
+   This will start the Agent Server locally, running in-memory. The server will run in watch mode, listening for and automatically restarting on code changes. Read this [reference](/langsmith/cli#dev) to learn about all the options for starting the API server.
 
    您将看到以下日志：
 
@@ -61,18 +61,18 @@ Studio 可通过 **部署** 导航在 [LangSmith UI](https://smith.langchain.com
    > - LangSmith Studio Web UI: https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024
    ```
 
-   运行后，您将自动定向到 Studio。
+   Once running, you will automatically be directed to Studio.
 
-2. 对于正在运行的服务器，请使用以下方式之一访问 Dbugger：
+2. For a running server, access the Dbugger with one of the following:
 
-   1. 直接导航至以下网址：`https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024`。
-   2. 导航到 UI 中的 **部署**，单击部署上的 **Studio** 按钮，输入 `http://127.0.0.1:2024` 并单击 **连接**。
+   1. Directly navigate to the following URL: `https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024`.
+   2. Navigate to **Agent Servers** in the UI, click the **Studio** button on an Agent Server, enter `http://127.0.0.1:2024` and click **Connect**.
 
-   如果在不同的主机或端口上运行服务器，请更新 `baseUrl` 以匹配。
+   If running your server at a different host or port, update the `baseUrl` to match.
 
 ### （可选）附加调试器
 
-要使用断点和变量检查进行逐步调试，请运行以下命令：
+For step-by-step debugging with breakpoints and variable inspection, run the following:
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Install debugpy package
@@ -109,16 +109,16 @@ langgraph dev --debug-port 5678
 > 1. 转到运行 > 编辑配置
 > 2.点击+并选择“Python调试服务器”
 > 3.设置IDE主机名：`localhost`
-> 4. 设置端口：`5678`（或者您在上一步中选择的端口号）
+> 4. Set port: `5678` (or the port number you chose in the previous step)
 > 5.点击“确定”开始调试
 
 > [!提示]
 >
-> 有关入门问题，请参阅[troubleshooting guide](/langsmith/troubleshooting-studio)。
+> For issues getting started, refer to the [troubleshooting guide](/langsmith/troubleshooting-studio).
 
 ## 后续步骤
 
-有关如何运行 Studio 的更多信息，请参阅以下指南：
+For more information on how to run Studio, refer to the following guides:
 
 * [Run application](/langsmith/use-studio#run-application)
 * [Manage assistants](/langsmith/use-studio#manage-assistants)

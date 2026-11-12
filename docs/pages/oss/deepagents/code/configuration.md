@@ -496,7 +496,7 @@ allowed = [
     "openai:*",
 ]
 default = "acme:production"
-auto_classifier = "openai:gpt-5.5"
+auto_classifier = "openai:gpt-6.1-sol"
 ```
 
 If you omit `allowed`, users can select any model. An empty list blocks all models. If a user's list is invalid, Deep Agents Code blocks all models. If the administrator's list is invalid, Deep Agents Code blocks startup, reload, and other commands that use configuration. The administrator's list replaces the user's list rather than combining with it. The managed `default`, `recent`, and `auto_classifier` values must also appear in the administrator's allowlist.
@@ -732,7 +732,7 @@ Maximum number of recent threads to load and display in thread lists and selecto
 
 **DEEPAGENTS\_CODE\_RECURSION\_LIMIT** `integer`
 
-LangGraph graph step budget, which is the maximum number of node invocations the `dcode` agent graph may execute per turn. Invalid values log a warning and resolution continues to the next source. When unset, Deep Agents Code inherits `LANGGRAPH_DEFAULT_RECURSION_LIMIT` or leaves the limit to the LangGraph server. See [Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits).
+LangGraph graph step budget, which is the maximum number of node invocations the `dcode` agent graph may execute per turn. Invalid values log a warning and resolution continues to the next source. When unset, Deep Agents Code inherits `LANGGRAPH_DEFAULT_RECURSION_LIMIT` or leaves the limit to LangSmith Agent Server. See [Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits).
 
 **LANGGRAPH\_DEFAULT\_RECURSION\_LIMIT** `integer`
 

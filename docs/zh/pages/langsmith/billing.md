@@ -10,7 +10,7 @@
 * [Track contract usage (Enterprise)](#track-contract-usage-enterprise)：查看预付费合约消费。
 * [Update your information](#update-your-information-paid-plans-only)：修改您组织的发票电子邮件地址、业务信息和税号。
 * [Enforce spend limits](#enforce-spend-limits)：了解如何通过使用限制和数据保留来管理您的支出。
-* [LangSmith Deployment billing](#langsmith-deployment-billing)：了解部署费用，比较规模和每小时成本，降低部署成本。
+* [LangSmith Agent Server billing](#langsmith-deployment-billing)：了解部署费用，比较规模和每小时成本，降低部署成本。
 
 ## 为您的帐户设置账单
 
@@ -73,7 +73,7 @@
 > 在某些司法管辖区，LangSmith 需要征收销售税。如果您是企业，提供您的税号可能会使您有资格获得销售税豁免。
 
 要更新您组织的业务信息，请执行以下步骤：1. 导航到 **计划和账单** 选项卡。
-2. 在发票电子邮件部分下方，您将找到一个标记为 **Business** 的复选框。
+2. 在发票电子邮件部分下方，您将看到一个标有 **Business** 的复选框。
 3. 如果您的组织属于企业，请选中 **企业** 复选框。
 4. 将出现一个业务信息部分，允许您输入或更新以下详细信息：
    * 公司名称
@@ -108,11 +108,11 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 #### 设置工作空间的支出限制
 
 1. 要设置限制，请导航至 **设置** -> **计费和使用情况** -> **使用限制**。
-2. 输入所选工作空间的支出限额。 LangSmith 将确定适当数量的基本和扩展跟踪限制以匹配该支出。跟踪限制包括您的计划附带的免费跟踪分配（请参阅[pricing page](https://smith.langchain.com/settings/payments) 上的详细信息）。
+2. 输入所选工作空间的支出限额。 LangSmith 将确定适当数量的基本和扩展跟踪限制以匹配该支出。跟踪限制包括您的计划附带的免费跟踪分配（请参阅[pricing page](https://smith.langchain.com/settings/payments)的详细信息）。
 
 > [!注意]
 >
-> 对于**仅具有多个工作空间**的组织：为简单起见，LangSmith 将免费跟踪纳入**仅第一个工作空间**的成本计算中。实际上，任何工作空间都可以“消耗”免费跟踪。因此，虽然多工作空间组织的工作区级别支出限制是近似值，但组织级别支出限制是绝对的。
+> 对于**仅具有多个工作空间**的组织：为简单起见，LangSmith 将免费跟踪纳入**仅第一个工作空间**的成本计算中。实际上，任何工作空间都可以“消耗”免费跟踪。因此，尽管多工作空间组织的工作区级别支出限制是近似值，但组织级别支出限制是绝对的。
 
 #### 配置跟踪层分布LangSmith 有两个跟踪层：基本跟踪和扩展跟踪。基本跟踪具有基本保留并且是短暂的（14 天），而扩展跟踪具有延长的保留并且是长期的（默认为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。欲了解更多信息，请参阅[data retention conceptual docs](/langsmith/usage-and-billing#data-retention)。
 
@@ -124,7 +124,7 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 
 > [!注意]
 >
-> 一旦达到延长的数据保留限制，可能会导致跟踪以外的功能停止工作。如果您打算使用此功能，请阅读有关其[functionality and side effects](/langsmith/usage-and-billing#side-effects-of-extended-data-retention-traces-limit)的更多信息。
+> 延长的数据保留限制一旦达到，可能会导致跟踪以外的功能停止工作。如果您打算使用此功能，请阅读有关其[functionality and side effects](/langsmith/usage-and-billing#side-effects-of-extended-data-retention-traces-limit)的更多信息。
 
 ### 管理痕迹的其他方法
 
@@ -146,7 +146,7 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 
 * 所有痕迹的 10%：用于一般分析或分析长期趋势。
 * 错误跟踪：彻底调查和调试问题。
-* 具有特定元数据的跟踪：用于特定功能或用户流程的长期检查。
+* 具有特定元数据的跟踪：用于特定功能或用户流的长期检查。
 
 要配置此：1. 导航到 **项目** > ***您的项目名称*** > 选择 **+ 新建** > 选择 **新建自动化**。在基于代理的工作区中，从代理的环境开始。
 2. 命名您的规则并可选择应用过滤器或采样率。有关配置过滤器的更多信息，请参阅[filtering techniques](/langsmith/filter-traces-in-application#filter-operators)。
@@ -155,7 +155,7 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 >
 > 当自动化规则与 [trace](/langsmith/observability-concepts#traces) 中的任何 [run](/langsmith/observability-concepts#runs) 匹配时，跟踪中的所有运行都会升级为延长数据保留（默认情况下为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。
 
-例如，这是保留所有跟踪的 10% 以延长数据保留时间的预期配置：
+例如，这是保留所有跟踪的 10% 以延长数据保留的预期配置：
 
 ![P2sampletraces](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/langsmith/images/P2SampleTraces.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=09bbdf5ef7cf3a5a99d6bf0a704e2143)
 
@@ -165,9 +165,9 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 
 如果您对进一步管理支出有疑问，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 
-## LangSmith 部署计费
+## LangSmith 代理服务器计费
 
-除了跟踪之外，LangSmith还通过LangSmith部署对部署的代理进行收费。部署根据其消耗的资源进行计费：* **计算**：每个正在运行的副本请求的 vCPU 和内存，以 LangChain 标准单位 (LSU) 为单位进行测量。 [Autoscaling](/langsmith/cloud-platform-features#scaling) 添加了可计费副本。 [Serverless](/langsmith/cloud-platform-features#serverless) 计算费用在规模缩小时停止，而不是在流量停止时停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 连续运行。
+除了跟踪之外，LangSmith还通过LangSmith代理服务器对部署的代理进行收费。部署根据其消耗的资源进行计费：* **计算**：每个正在运行的副本请求的 vCPU 和内存，以 LangChain 标准单位 (LSU) 为单位进行测量。 [Autoscaling](/langsmith/cloud-platform-features#scaling) 添加了可计费副本。 [Serverless](/langsmith/cloud-platform-features#serverless) 计算费用在规模缩小时停止，而不是在流量停止时停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 连续运行。
 * **数据库**：专用数据库费用基于配置的 vCPU 和内存，包括空闲时。运行时自动缩放不会改变数据库费用。数据库磁盘存储和共享无服务器数据库不计费。
 
 托管 Redis 不按任何部署类型或规模计费。
@@ -307,7 +307,7 @@ flowchart TB
 下表显示了两项更改的效果。每月费用使用 720 小时：
 
 * **更短的缩减时间**：无服务器小型部署每个工作日、每月 22 天接收 2 小时的请求。
-* **多个图表**：三个代理在 GCP 上的专用小型部署上运行。|改变 |之前 |之后|
+* **多个图表**：三个代理在 GCP 上的专用小型部署上运行。|改变|之前 |之后 |
 | - | - | - |
 |更短的缩减时间| `1 week`（默认）：720 小时正常运行时间，\~51.84 LSU 使用 | `1 hour`：\~66 小时的正常运行时间，\~4.75 LSU 使用量。节省约 47.09 LSU。 |
 |多个图表 | 3 次部署：\~1,152 LSU | 1 个部署，包含 3 个图表：\~384 LSU。节省约 768 LSU。 |

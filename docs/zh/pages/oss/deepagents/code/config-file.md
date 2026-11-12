@@ -284,7 +284,7 @@ allowed = []   # no model may be used
 [models.providers.<name>]
 display_name = "My Provider"
 api_key_url = "https://provider.example/keys"
-models = ["gpt-5.5"]
+models = ["gpt-6.1-sol"]
 api_key_env = "OPENAI_API_KEY"
 base_url = "https://api.openai.com/v1"
 class_path = "my_package.models:MyChatModel"
@@ -294,7 +294,7 @@ enabled = true
 temperature = 0
 max_tokens = 4096
 
-[models.providers.<name>.params."gpt-5.5"]
+[models.providers.<name>.params."gpt-6.1-sol"]
 temperature = 0.7
 ```
 
@@ -338,7 +338,7 @@ base_url_env = "EXAMPLE_BASE_URL"        # ignored while base_url is set
 
 **参数** `object`
 
-额外的关键字参数转发到模型构造函数。平键（例如，`temperature = 0`）适用于该提供商的每个型号。模型键控子表（例如，`[params."gpt-5.5"]`）仅覆盖该模型的各个值；合并很浅（模型在冲突中获胜）。
+额外的关键字参数转发到模型构造函数。平键（例如，`temperature = 0`）适用于该提供商的每个型号。模型键控子表（例如，`[params."gpt-6.1-sol"]`）仅覆盖该模型的各个值；合并很浅（模型在冲突中获胜）。
 
 请勿将凭据（例如，`api_key`）放入`params`。使用 [⟦T182⟧](#provider-configuration) 来指向环境变量。
 
@@ -731,7 +731,7 @@ extra_paths = [
 recursion_limit = 5000
 ```
 
-Deep Agents 代码未设置默认值。当没有源设置有效值时，将应用 LangGraph 服务器默认值。托管配置、环境和 `config.toml` 的值必须是从 `25` 到 `100000`（含）的整数。无效值会记录警告，并继续解决下一个来源。 `--recursion-limit` 标志接受任何大于或等于 `1` 的整数。
+Deep Agents 代码未设置默认值。当没有源设置有效值时，LangSmith代理服务器默认值适用。托管配置、环境和 `config.toml` 的值必须是从 `25` 到 `100000`（含）的整数。无效值会记录警告，并继续解决下一个来源。 `--recursion-limit` 标志接受任何大于或等于 `1` 的整数。
 
 优先级（从最高到最低）：
 
@@ -740,9 +740,9 @@ Deep Agents 代码未设置默认值。当没有源设置有效值时，将应�
 3. `DEEPAGENTS_CODE_RECURSION_LIMIT`环境变量
 4.`[runtime].recursion_limit`在`config.toml`
 5. `LANGGRAPH_DEFAULT_RECURSION_LIMIT`环境变量
-6. LangGraph服务器默认
+6.代理服务器默认
 
-使用`dcode config get runtime.recursion_limit`查看有效的Deep AgentsCode值及其来源。未设置的结果将限制留给LangGraph服务器。
+使用`dcode config get runtime.recursion_limit`查看有效的Deep AgentsCode值及其来源。未设置的结果将限制留给代理服务器。
 
 > [选项卡] CLI 标志
 >

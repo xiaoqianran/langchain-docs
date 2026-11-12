@@ -76,7 +76,7 @@ LangSmith 提供用于创建、版本化、测试和协作提示的工具。您�
 > * [Gemini's Introduction to prompt design](https://ai.google.dev/gemini-api/docs/prompting-intro)> * 使用提示画布（LangSmith 中的交互式工具）构建和完善您的提示。在[Prompt Canvas guide](/langsmith/write-prompt-with-ai)了解更多信息。
 > * 标记特定提交以标记提交历史记录中的重要时刻。
 > 1. 要创建提交，请导航至 **Playground** 并选择 **Commit**。选择要提交更改的提示，然后**提交**。
-> 2. 导航至左侧菜单中的**提示**。选择提示。在提示详情页面，选择右上角的**标签**，添加一个[commit tag](/langsmith/manage-prompts#commit-tags)。
+> 2. 导航至左侧菜单中的 **提示**。选择提示。在提示详情页面，选择右上角的**标签**，添加一个[commit tag](/langsmith/manage-prompts#commit-tags)。
 
 > [标签] SDK
 >
@@ -183,7 +183,7 @@ LangSmith 提供用于创建、版本化、测试和协作提示的工具。您�
 >    formatted_prompt = prompt.invoke({"question": "What is the color of the sky?"})
 >
 >    response = oai_client.chat.completions.create(
->        model="gpt-5.5",
+>        model="gpt-6.1-sol",
 >        messages=convert_to_openai_messages(formatted_prompt.messages),
 >    )
 >    ```
@@ -201,7 +201,7 @@ LangSmith 提供用于创建、版本化、测试和协作提示的工具。您�
 >    const formattedPrompt = await prompt.invoke({ question: "What is the color of the sky?" });
 >
 >    const response = await oaiClient.chat.completions.create({
->        model: "gpt-5.5",
+>        model: "gpt-6.1-sol",
 >        messages: convertPromptToOpenAI(formattedPrompt).messages,
 >    });
 >    ```

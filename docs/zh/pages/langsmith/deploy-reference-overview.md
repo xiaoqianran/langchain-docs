@@ -4,13 +4,13 @@
 
 # 参考
 
-用于部署代理并与代理交互的 LangSmith 部署 SDK、CLI 和 API 的参考。
+用于部署代理并与代理交互的LangSmith代理服务器 SDK、CLI 和 API 的参考。
 
 本部分是用于在 [Agent Server](/langsmith/agent-server) 运行时上部署代理并与代理交互的 SDK、CLI 和 API 的参考。
 
 ## SDK 和 CLI
 
-> [卡][LangSmith Deployments SDK](/langsmith/smith-deployments-sdk)
+> [卡][LangSmith Agent Server SDK](/langsmith/smith-deployments-sdk)
 >
 > 使用 LangGraph SDK 管理 LangSmith 部署和修订。
 

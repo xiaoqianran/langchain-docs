@@ -108,7 +108,7 @@ check the docs too
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > dcode -n "implement OAuth refresh handling" \
 >   --rubric "tests pass; no unrelated files changed" \
->   --rubric-model openai:gpt-5.5 \
+>   --rubric-model openai:gpt-6.1-sol \
 >   --rubric-max-iterations 3
 > ```
 

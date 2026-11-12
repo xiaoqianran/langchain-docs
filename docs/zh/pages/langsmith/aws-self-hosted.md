@@ -95,7 +95,7 @@ LangSmith根据您的要求支持多种计算选项：
 * 使用 IaC ([CloudFormation](https://aws.amazon.com/cloudformation/) / [Terraform](https://www.terraform.io/)) 自动化部署。
 * 使用[AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html)进行配置。
 * 将您的LangSmith实例配置为[export telemetry data](/langsmith/export-backend)并通过[CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)持续监控。
-* 管理[LangSmith deployments](/langsmith/deployment)的首选方法是创建一个CI进程来构建[Agent Server](/langsmith/agent-server)图像并将其推送到[ECR](https://aws.amazon.com/ecr/)。在 PR 合并时将新修订部署到暂存或生产之前，为拉取请求创建测试部署。
+* 管理[Agent Servers](/langsmith/deployment)的首选方法是创建一个CI进程来构建[Agent Server](/langsmith/agent-server)图像并将其推送到[ECR](https://aws.amazon.com/ecr/)。在 PR 合并时将新修订部署到暂存或生产之前，为拉取请求创建测试部署。
 
 ### 安全
 
@@ -106,7 +106,7 @@ LangSmith根据您的要求支持多种计算选项：
 
 ### 可靠性
 
-* 跨地域复制LangSmith[data plane](/langsmith/data-plane)：将相同的数据平面部署到不同地域的Kubernetes集群上，进行LangSmith部署。跨 [Multi-AZ](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/) 部署 [RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZSingleStandby.html) 和 [ECS](https://aws.amazon.com/ecs/) 服务。
+* 跨地域复制LangSmith [data plane](/langsmith/data-plane)：为LangSmith Agent Server 将相同的数据平面部署到不同地域的 Kubernetes 集群中。跨 [Multi-AZ](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/) 部署 [RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZSingleStandby.html) 和 [ECS](https://aws.amazon.com/ecs/) 服务。
 * 为后端工作者实施[auto-scaling](https://aws.amazon.com/autoscaling/)。
 * 使用[Amazon Route 53](https://aws.amazon.com/route53/)健康检查和故障转移策略。
 

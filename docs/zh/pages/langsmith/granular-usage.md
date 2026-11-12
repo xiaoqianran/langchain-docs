@@ -4,7 +4,7 @@
 
 # 细粒度的计费使用
 
-检索详细跟踪和按工作区、项目、用户或 API 密钥细分的 LangSmith 部署使用数据。
+检索按工作区、项目、用户或 API 密钥细分的详细跟踪和代理服务器使用数据。
 
 > [!注意]
 >
@@ -19,12 +19,12 @@
 >
 > 从自托管版本 0.16.0 开始，不再跟踪 [Self-hosted](/langsmith/self-hosted) 部署的长期跟踪使用情况。对于这些部署，**仅限长期**保留过滤器始终显示零结果。
 >
-> **LangSmith 部署使用** 使用单独的数据源。更多详情请参阅[LangSmith Deployment section](/langsmith/granular-usage#langsmith-deployment-usage-kind%3Dlangsmith_deployments)。
+> **代理服务器使用** 使用单独的数据源。更多详情请参阅[Agent Server usage section](/langsmith/granular-usage#langsmith-deployment-usage-kind%3Dlangsmith_deployments)。
 
 LangSmith 提供精细的计费使用 API，可让您检索按工作区、项目、用户或 API 密钥细分的详细使用数据。同一端点支持两个计费域，通过 `kind` 查询参数选择：
 
 * **跟踪使用**（`kind=traces`，默认）：摄取的跟踪数量。
-* **LangSmith 部署使用** (`kind=langsmith_deployments`)：[LangSmith Deployment](/langsmith/billing) 执行的节点、代理运行和代理正常运行时间。两种类型共享相同的查询参数（时间范围、工作区过滤器、分组维度）并返回相同的时间桶形状。数据源是独立的，因此一种返回的记录不会出现在另一种中。
+* **代理服务器使用情况** (`kind=langsmith_deployments`)：[LangSmith Agent Server](/langsmith/billing) 执行的节点、代理运行和代理正常运行时间。两种类型共享相同的查询参数（时间范围、工作区过滤器、分组维度）并返回相同的时间桶形状。数据源是独立的，因此一种返回的记录不会出现在另一种中。
 
 这些 API 使您能够：
 
@@ -40,9 +40,9 @@ LangSmith 提供精细的计费使用 API，可让您检索按工作区、项目
 
 ## 在用户界面中查看
 
-您还可以在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-granular-usage)中查看详细的使用数据：1. 导航至 **设置** > **计费和使用情况**
+您还可以在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-granular-usage)中查看详细的使用情况数据：1. 导航至 **设置** > **计费和使用情况**
 2. 选择 **粒度使用** 选项卡
-3. 在 **LangSmith Traces** 和 **LangSmith Deployments** 子选项卡之间切换以查看每个域。活动子选项卡反映在 URL（`?tab=traces` 或 `?tab=deployments`）中，因此您可以为页面添加书签以登陆到同一视图上。
+3. 在 **LangSmith Traces** 和 **Agent Server** 子选项卡之间切换以查看每个域。活动子选项卡反映在 URL（`?tab=traces` 或 `?tab=agent_server`）中，因此您可以为页面添加书签以登陆到同一视图上。
 4. 使用控件来：
    * 选择时间范围（最近 7 天、30 天、3 个月、6 个月、1 年或自定义）
    * 按工作区、项目、用户或 API 密钥分组
@@ -50,7 +50,7 @@ LangSmith 提供精细的计费使用 API，可让您检索按工作区、项目
    * 在 **LangSmith 跟踪** 选项卡上，可选择按保留层 (`All Retention` / `Long-lived only` / `Short-lived only`) 进行筛选
 5. 单击 **导出 CSV** 下载活动选项卡的数据。
 
-时间范围和工作区过滤器在两个子选项卡之间共享，切换选项卡会保留您选择的内容。 **LangSmith 部署** 选项卡显示三个统计卡（执行的节点总数/代理运行总数/代理运行时间总数（秒））以及垂直堆叠的每个指标一张图表，因为这三个指标使用不同的单位。
+时间范围和工作区过滤器在两个子选项卡之间共享，切换选项卡会保留您选择的内容。 **代理服务器** 选项卡显示三张统计数据卡（执行的节点总数/代理运行总数/代理运行时间总计（秒））以及垂直堆叠的每个指标一张图表，因为这三个指标使用不同的单位。
 
 ## 查询参数
 
@@ -197,13 +197,13 @@ for record in data["usage"]:
     print(f"{user_email}: {record['traces']} long-lived traces")
 ```
 
-### LangSmith 部署使用（`kind=langsmith_deployments`）
+### 代理服务器使用情况 (`kind=langsmith_deployments`)
 
-每条记录都包含三个指标，因此一次获取即可为整个部署视图提供支持。> [!注意]
+每条记录都包含三个指标，因此一次提取即可支持整个代理服务器视图。> [!注意]
 >
-> **LangSmith 部署使用情况** 与跟踪使用情况分开获取，并且可用于部署使用情况的完整保留窗口。
+> **代理服务器使用情况**与跟踪使用情况分开获取，并且可用于代理服务器使用情况的完整保留窗口。
 >
-> 对于自托管实例，部署使用端点是可选的。通过以下方式启用它：
+> 对于自托管实例，代理服务器使用端点是可选的。通过以下方式启用它：
 >
 > ```env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > REMOTE_METRICS_ROLLUP_ENABLED=true
@@ -234,13 +234,13 @@ for record in data["usage"]:
 }
 ```
 
-|领域|描述 |
+|领域 |描述 |
 | - | - |
 | `nodes_executed` |该时间段内总共执行了LangGraph个节点。 |
 | `agent_runs` |时间段内代理运行总数（图形调用）。 |
-| `agent_uptime_seconds` |总副本正常运行时间（以秒为单位）是跨部署副本的总和。用于开票的去重待机分钟数由计费管道单独计算；该字段是用于细分和分析的原始金额。 |
+| `agent_uptime_seconds` |总副本正常运行时间（以秒为单位）是代理服务器副本之间的总和。用于开票的去重待机分钟数由计费管道单独计算；该字段是用于细分和分析的原始金额。 |
 
-#### 示例：按工作区获取部署使用情况
+#### 示例：按工作区获取代理服务器使用情况
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 response = client.get(
@@ -311,7 +311,7 @@ GET /api/v1/orgs/current/billing/granular-usage/export
 对于`kind=traces`，值列是`Traces`。对于 `kind=langsmith_deployments`，值列为 `Nodes Executed`、`Agent Runs` 和 `Agent Uptime (seconds)`。|专栏 |出现时间 |
 | - | - |
 |时间桶开始|永远 |
-|时间桶结束|永远 |
+|时间桶结束 |永远 |
 |工作区 ID/名称 |始终（在 `group_by=workspace` 时填充）|
 |项目 ID / 名称 |始终（在 `group_by=project` 时填充）|
 |用户 ID / 电子邮件 |始终（在 `group_by=user` 时填充）|
@@ -356,10 +356,10 @@ group_by=workspace" \
 | - | - | - | - |
 | `workspace` |按工作区分组 | `workspace_id`、`workspace_name` |两种 |
 | `project` |按项目分组 | `project_id`、`project_name` |两种 |
-| `user` |按用户分组 | `user_id`、`user_email` |两种 |
+| `user` |按用户分组| `user_id`、`user_email` |两种 |
 | `api_key` |按 API 密钥分组 | `api_key_short_key` |两种 |
 
-对于跟踪使用，“项目”指的是[LangSmith tracer session](/langsmith/observability-concepts)。对于部署使用，“项目”指的是 LangSmith 部署项目（已部署的代理）。在 [agent-based workspace](/langsmith/agent-registry) 中，按项目分组是导出最接近代理的方式，因为没有代理或环境维度。每个跟踪使用情况行覆盖一个代理的一个 [environment](/langsmith/agent-environments)，因此合计代理的使用情况意味着对其环境行进行求和。 LangSmith 将其为环境创建的跟踪项目命名为 `<agent>-<environment>`，例如 `support-triage-production`，而早于代理的项目则保留其已有的名称。
+对于跟踪使用，“项目”指的是[LangSmith tracer session](/langsmith/observability-concepts)。对于代理服务器用法，“项目”是指代理服务器（已部署的代理）。在 [agent-based workspace](/langsmith/agent-registry) 中，按项目分组是导出最接近代理的方式，因为没有代理或环境维度。每个跟踪使用情况行覆盖一个代理的一个 [environment](/langsmith/agent-environments)，因此合计代理的使用情况意味着对其环境行进行求和。 LangSmith 将其为环境创建的跟踪项目命名为 `<agent>-<environment>`，例如 `support-triage-production`，而早于代理的项目则保留其已有的名称。
 
 ## 相关资源
 

@@ -78,7 +78,7 @@ async def main():
     try:
         stagehand = await Stagehand.create(browser=browser)
         agent = create_deep_agent(
-            model="openai:gpt-5.5-2026-04-23",
+            model="openai:gpt-6.1-sol",
             middleware=[StagehandMiddleware(stagehand=stagehand)],
         )
         result = await agent.ainvoke({
@@ -186,7 +186,7 @@ try:
             raise RuntimeError(response.output)
 
     agent = create_deep_agent(
-        model="openai:gpt-5.5-2026-04-23",
+        model="openai:gpt-6.1-sol",
         backend=backend,
         system_prompt=(
             "Test the app through its UI using execute and agent-browser. "

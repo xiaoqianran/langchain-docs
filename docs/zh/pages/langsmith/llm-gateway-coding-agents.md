@@ -16,7 +16,7 @@
 
 * 管理员已完成任何必需的 [gateway setup](/langsmith/llm-gateway-admin-setup)。
 * 您拥有工作区范围的 LangSmith API 密钥。有关密钥类型、权限和每个客户端发送的标头，请参阅[Authenticate to the LLM Gateway](/langsmith/llm-gateway-authentication)。
-* 对于自带密钥模型，您的工作区具有相应的提供者密钥。 [Gateway Credits models](/langsmith/llm-gateway-credits) 不需要提供商机密。
+* 对于自带密钥模型，您的工作区具有相应的提供者密钥。 [Gateway Credits models](/langsmith/llm-gateway-credits) 不需要提供商秘密。
 
 在配置客户端之前设置您的 LangSmith API 密钥：
 
@@ -92,15 +92,23 @@ Claude Code 始终使用您的 LangSmith API 密钥对网关进行身份验证�
 > claude
 > ```
 
-型号 ID 是示例。将每个层映射到工作区机密中配置的或通过 [Gateway Credits](/langsmith/llm-gateway-credits) 提供的任何模型；网关处理跨提供商的请求转换。详情请参见[API formats](/langsmith/llm-gateway-api-formats#understand-translation-behavior)。
+型号 ID 是示例。将每个层映射到工作区机密中配置的或通过 [Gateway Credits](/langsmith/llm-gateway-credits) 提供的任何模型；网关处理跨提供商的请求转换。详情请参阅[API formats](/langsmith/llm-gateway-api-formats#understand-translation-behavior)。> [!警告]
+>
+> Claude Code 默认使用[tool search](https://code.claude.com/docs/en/agent-sdk/tool-search)，网关无法将工具搜索转换为 Chat Completions 格式。映射到网关仅通过聊天完成才能到达的模型的层（例如 Google Gemini 模型或 OpenAI 兼容的 [custom configuration](/langsmith/llm-gateway-model-configurations)）会失败，并出现 `400` 错误，该错误在网关调用提供商之前提及 `deferred tools, tool search`。
+>
+> 要避免该错误，请执行以下操作之一：
+>
+> * 将层映射到Anthropic、OpenAI 或 Fireworks 的模型，网关通过消息或响应格式到达该模型。
+> * 使用 Anthropic 兼容的配置，或为 Responses API 设置的 OpenAI 兼容的配置。
+> * 在您的设置文件或环境中设置`ENABLE_TOOL_SEARCH=false`。然后，克劳德代码每次都会将每个工具定义加载到上下文中，这会使用更多的输入标记。
 
-### 使用 Claude 订阅 OAuth> [!注意]
+### 使用 Claude 订阅 OAuth
+
+> [!注意]
 >
 > Claude 订阅 OAuth 需要有效的 Claude Code Plus 或 Max 订阅。如果您使用工作区 Anthropic API 密钥，请改用 [workspace provider secret](#use-a-workspace-provider-secret) 方法。
 
-Claude Code Plus 和 Max 用户可以通过网关发送其保存的 Anthropic OAuth 凭证。此模式不需要工作区提供者机密中的`ANTHROPIC_API_KEY`。
-
-使用您的订阅登录 Claude Code，然后配置网关。
+Claude Code Plus 和 Max 用户可以通过网关发送其保存的 Anthropic OAuth 凭证。此模式不需要工作区提供者机密中的`ANTHROPIC_API_KEY`。使用您的订阅登录 Claude Code，然后配置网关。
 
 > [tab] 设置文件（推荐）
 >
@@ -133,7 +141,7 @@ Claude Code 使用并刷新其保存的登录中的 OAuth 凭据，包括 `anthr
 
 > [!警告]
 >
-> 配置网关时，Claude Desktop 插件会中断。
+> 配置网关时，克劳德桌面插件会中断。
 
 ## Codex CLI
 
@@ -161,7 +169,7 @@ codex
 
 > [!警告]
 >
-> 配置网关时 Codex Desktop 插件会中断。 TOML 配置强制通过网关进行身份验证，因此OpenAI 不再直接处理插件身份验证。## Gemini CLI
+> 配置网关时，Codex Desktop 插件会中断。 TOML 配置强制通过网关进行身份验证，因此OpenAI 不再直接处理插件身份验证。## Gemini CLI
 
 Gemini CLI 发送 Google 的本机生成内容请求，标准端点不会公开该请求。按照[Direct model access](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks)配置`/gemini`路由，然后运行：
 
@@ -210,7 +218,7 @@ dcode --model openai:moonshotai/kimi-k3
 
 要显式设置线程 ID，请发送 `X-Gateway-Thread-Id` 或在 `X-Gateway-Metadata` 的 JSON 对象中设置 `thread_id`。非空显式值会覆盖自动检测。如果两个元数据标头都指定了线程 ID，则`X-Gateway-Metadata` 优先。
 
-如果网关没有找到显式 ID、可识别的会话标头或正文字段，则不会添加 `thread_id` 元数据。
+如果网关未找到显式 ID、可识别的会话标头或正文字段，则不会添加 `thread_id` 元数据。
 
 ## 验证设置配置编码代理后，进行测试呼叫并确认：
 

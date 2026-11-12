@@ -1,10 +1,10 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Agent Server API reference for LangSmith Deployment | https://docs.langchain.com/langsmith/server-api-ref -->
+<!-- langchain-docs: Agent Server API reference | https://docs.langchain.com/langsmith/server-api-ref -->
 
-# LangSmith 部署的代理服务器 API 参考
+# 代理服务器 API 参考
 
-浏览 LangSmith 部署的代理服务器 API 参考，该参考在 /docs 端点的每个部署中可用。
+浏览代理服务器 API 参考，该参考可在每个代理服务器的 /docs 端点处找到。
 
 代理服务器 API 参考可在 `/docs` 端点的每个 [deployment](/langsmith/deployment) 内使用（例如 `http://localhost:8124/docs`）。
 
@@ -22,7 +22,7 @@
 
 ## 身份验证
 
-对于部署到LangSmith，需要身份验证。将每个请求的 `X-Api-Key` 标头传递给代理服务器。标头的值应设置为部署代理服务器的组织的有效 LangSmith API 密钥。
+对于LangSmith的部署，需要身份验证。将每个请求的 `X-Api-Key` 标头传递给代理服务器。标头的值应设置为部署代理服务器的组织的有效 LangSmith API 密钥。
 
 `curl`命令示例：
 

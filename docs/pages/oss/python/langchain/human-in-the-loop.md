@@ -47,7 +47,7 @@ from langgraph.checkpoint.memory import InMemorySaver # [!code highlight]
 
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[write_file, execute_sql, read_data],
     middleware=[
         HumanInTheLoopMiddleware( # [!code highlight]
@@ -135,7 +135,7 @@ def is_write_query(request: ToolCallRequest) -> bool:
 
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[write_file, execute_sql, read_data],
     middleware=[
         HumanInTheLoopMiddleware(
@@ -244,7 +244,7 @@ def read_data(table: str) -> str:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[write_file, execute_sql, read_data],
     middleware=[
         HumanInTheLoopMiddleware(

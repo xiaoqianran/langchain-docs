@@ -34,7 +34,7 @@
 >
 > export const agent = defineDeepAgent({
 >   name: "research-assistant",
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [
 >     {
 >       name: "reviewer",
@@ -52,7 +52,7 @@
 >
 > export const agent = defineDeepAgent({
 >   name: "research-assistant",
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [
 >     {
 >       name: "researcher",
@@ -186,7 +186,7 @@ export function agent(_runtime: ManagedServerRuntime) {
 
 ### 配置异步子代理
 
-不要在异步子代理上设置 `graphId`、`url`、`headers` 或 `runnable`：托管 Deep Agents 自行构建并启动其图。这些选项传递到Deep Agents：|选项|默认 |描述 |
+不要在异步子代理上设置 `graphId`、`url`、`headers` 或 `runnable`：托管 Deep Agents 自行构建并启动其图。这些选项传递到Deep Agents：|选项 |默认|描述 |
 | - | - | - |
 | `updateStrategy` | `"interrupt"` | `"enqueue"` 将后续操作排队到当前运行之后，而不是中断它 |
 | `notifyParent` | `true` |当子代理完成且代理空闲时唤醒代理。设置为 `false` 自己处理结果，例如使用 `webhook` |

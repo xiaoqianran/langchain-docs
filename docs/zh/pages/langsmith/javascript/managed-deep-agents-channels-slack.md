@@ -135,9 +135,9 @@ export const channel = channels.slack({
 ```
 
 返回一个不带冒号的 Slack 短名称。 Slack 没有这个名字
-识别已被选择但从未出现，因此反应完全缺失。一个
+recognize 被选择但从未出现，因此反应完全缺失。一个
 抛出、花费超过五秒或返回的选择器
-其他任何内容都会回到默认表情符号，并且运行会继续。
+其他任何内容都会回退到默认表情符号，并且运行将以任何方式继续。
 
 ### 选择具有决策模型的表情符号
 
@@ -174,19 +174,22 @@ const classifier = () =>
   (cached ??= new TypeSafeClassifier({
     model: "typesafe/jev-latest",
     timeout: 5_000,
-    questions: {
-      emoji: {
-        type: "choice",
-        instructions: "Which emoji best acknowledges this message?",
-        criteria: VOCABULARY,
-      },
-    },
   }));
 
 export const channel = channels.slack({
   name: "Support Bot",
   reactions: async ({ text }) => {
-    const { emoji } = (await classifier().invoke(text.slice(0, 2000))).choices;
+    const response = await classifier().invoke({
+      state: text.slice(0, 2000),
+      questions: {
+        emoji: {
+          type: "choice",
+          instructions: "Which emoji best acknowledges this message?",
+          criteria: VOCABULARY,
+        },
+      },
+    });
+    const emoji = response.choices.emoji;
     // Below this the model has no real view, so prefer a generic reaction.
     return emoji.confidence >= 0.25 ? emoji.choice : "eyes";
   },
@@ -267,9 +270,9 @@ then call `attach_file` with that path so the file arrives in Slack.
 * [Design agent template](/langsmith/javascript/managed-deep-agents-design-agent)：部署完整的 Slack 设计代理项目。
 * [Paid media agent template](/langsmith/javascript/managed-deep-agents-paid-media-agent)：部署完整的 Slack 付费媒体代理项目。
 * [Decision models](/langsmith/llm-gateway-decision-models)：配置反应表情评分模型。
-* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：添加反应所需的provider key。
+* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：添加反应所需的提供者密钥。
 * [Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts)：从工具发布 Slack 表单并在提交时恢复运行。
-* [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)：给代理提供文件传输读写的文件系统。
+* [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)：给代理文件传输读写的文件系统。
 * [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)：配置和部署托管深度代理。
 * [CLI reference](/langsmith/javascript/managed-deep-agents-cli)：查看托管 Deep Agents 命令和标志。
 

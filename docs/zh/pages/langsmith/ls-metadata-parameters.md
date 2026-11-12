@@ -100,7 +100,7 @@ val myCustomLlm =
     run_type="llm",
     metadata={
         "ls_provider": "openai",
-        "ls_model_name": "gpt-5.5",
+        "ls_model_name": "gpt-6.1-sol",
         "ls_temperature": 0.7,
         "ls_max_tokens": 4096,
         "ls_stop": ["END"],
@@ -121,7 +121,7 @@ const myConfiguredLlm = traceable(
     run_type: "llm",
     metadata: {
       ls_provider: "openai",
-      ls_model_name: "gpt-5.5",
+      ls_model_name: "gpt-6.1-sol",
       ls_temperature: 0.7,
       ls_max_tokens: 4096,
       ls_stop: ["END"],
@@ -146,7 +146,7 @@ import java.util.function.Function;
 
 Map<String, Object> metadata = new HashMap<>();
 metadata.put("ls_provider", "openai");
-metadata.put("ls_model_name", "gpt-5.5");
+metadata.put("ls_model_name", "gpt-6.1-sol");
 metadata.put("ls_temperature", 0.7);
 metadata.put("ls_max_tokens", 4096);
 metadata.put("ls_stop", Collections.singletonList("END"));
@@ -174,7 +174,7 @@ val myConfiguredLlm =
             .metadata(
                 mapOf(
                     "ls_provider" to "openai",
-                    "ls_model_name" to "gpt-5.5",
+                    "ls_model_name" to "gpt-6.1-sol",
                     "ls_temperature" to 0.7,
                     "ls_max_tokens" to 4096,
                     "ls_stop" to listOf("END"),
@@ -202,7 +202,7 @@ val myConfiguredLlm =
 | [⟦T33⟧](#ls_temperature) | `number` |没有 |使用的温度参数|
 | [⟦T35⟧](#ls_max_tokens) | `number` |没有 |使用的最大令牌参数 |
 | [⟦T37⟧](#ls_stop) | `string[]` |没有 |使用的停止序列 |
-| [⟦T39⟧](#ls_invocation_params) | `object` |没有 |附加调用参数|
+| [⟦T39⟧](#ls_invocation_params) | `object` |没有 |附加调用参数 |
 | [⟦T41⟧](#ls_agent_type) | `string` |没有 |控制代理运行在轨迹视图中的显示方式：`"root"`、`"subagent"` 或 `"middleware"` |
 | [⟦T46⟧](#ls_message_view_exclude) | `boolean` |没有 |从轨迹视图中隐藏运行 |
 | [⟦T48⟧](#ls_is_error_interrupt) | `boolean` |没有 |当设置为 `true` 时，将错误运行标记为中断 |
@@ -211,7 +211,7 @@ val myConfiguredLlm =
 
 ### 系统生成的参数|参数|类型 |描述 |
 | - | - | - |
-| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树的深度（0=根，1=子，等等）- 自动计算 |
+| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树中的深度（0=根，1=子等）- 自动计算 |
 | [⟦T55⟧](#ls_method) | `string` |使用的跟踪方法（例如“可跟踪”）- 由 SDK 设置 |
 
 ### 实验参数
@@ -254,7 +254,7 @@ val myConfiguredLlm =
     run_type="llm",
     metadata={
         "ls_provider": "openai",
-        "ls_model_name": "gpt-5.5"
+        "ls_model_name": "gpt-6.1-sol"
     }
 )
 def my_llm_call(prompt: str):
@@ -274,7 +274,7 @@ def my_llm_call(prompt: str):
 
 **共同价值观：**
 
-* OpenAI: `"gpt-5.5"`, `"gpt-5.4-mini"`
+* OpenAI: `"gpt-6.1-sol"`, `"gpt-5.4-mini"`
 * Anthropic: `"claude-sonnet-5-5"`, `"claude-opus-4-8"`
 * 自定义：任何型号标识符
 
@@ -316,7 +316,7 @@ def my_claude_call(messages: list):
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 metadata={
     "ls_provider": "openai",
-    "ls_model_name": "gpt-5.5",
+    "ls_model_name": "gpt-6.1-sol",
     "ls_temperature": 0.7
 }
 ```
@@ -342,7 +342,7 @@ metadata={
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 metadata={
     "ls_provider": "openai",
-    "ls_model_name": "gpt-5.5",
+    "ls_model_name": "gpt-6.1-sol",
     "ls_max_tokens": 4096
 }
 ```
@@ -366,7 +366,7 @@ metadata={
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 metadata={
     "ls_provider": "openai",
-    "ls_model_name": "gpt-5.5",
+    "ls_model_name": "gpt-6.1-sol",
     "ls_stop": ["END", "STOP", "\n\n"]
 }
 ```
@@ -394,7 +394,7 @@ metadata={
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 metadata={
     "ls_provider": "openai",
-    "ls_model_name": "gpt-5.5",
+    "ls_model_name": "gpt-6.1-sol",
     "ls_invocation_params": {
         "top_p": 0.9,
         "frequency_penalty": 0.5,
@@ -661,7 +661,7 @@ async def main():
     runs = await query('and(eq(metadata_key, "ls_provider"), eq(metadata_value, "openai"))')
 
     # Filter by specific model
-    runs = await query('and(eq(metadata_key, "ls_model_name"), eq(metadata_value, "gpt-5.5"))')
+    runs = await query('and(eq(metadata_key, "ls_model_name"), eq(metadata_value, "gpt-6.1-sol"))')
 
     # Filter root runs only (top-level traces)
     runs = await query('and(eq(metadata_key, "ls_run_depth"), eq(metadata_value, 0))')
@@ -696,7 +696,7 @@ async function query(filter: string) {
 const runsByProvider = await query('and(eq(metadata_key, "ls_provider"), eq(metadata_value, "openai"))');
 
 // Filter by specific model
-const runsByModel = await query('and(eq(metadata_key, "ls_model_name"), eq(metadata_value, "gpt-5.5"))');
+const runsByModel = await query('and(eq(metadata_key, "ls_model_name"), eq(metadata_value, "gpt-6.1-sol"))');
 
 // Filter root runs only (top-level traces)
 const rootRuns = await query('and(eq(metadata_key, "ls_run_depth"), eq(metadata_value, 0))');
@@ -715,7 +715,7 @@ const highTempRuns = await query('and(eq(metadata_key, "ls_temperature"), gt(met
 
 ```
 metadata_key = 'ls_provider' AND metadata_value = 'openai'
-metadata_key = 'ls_model_name' AND metadata_value = 'gpt-5.5'
+metadata_key = 'ls_model_name' AND metadata_value = 'gpt-6.1-sol'
 metadata_key = 'ls_run_depth' AND metadata_value = 0
 ```
 

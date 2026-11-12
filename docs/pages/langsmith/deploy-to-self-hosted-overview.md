@@ -2,9 +2,9 @@
 
 # Deploy to self-hosted
 
-Run the LangSmith Deployment platform on your own infrastructure with full control over data, networking, and resources.
+Host LangSmith Agent Server on your own infrastructure with full control over data, networking, and resources.
 
-Self-hosted LangSmith Deployment runs the [Agent Server](/langsmith/agent-server), control plane, data plane, and supporting databases inside infrastructure that you operate.
+Self-hosted Agent Server hosting runs [LangSmith Agent Server](/langsmith/agent-server) and its supporting databases inside infrastructure that you operate. With a full self-hosted LangSmith installation, you also run the control plane and data plane listener.
 
 LangChain ships the container images, Helm charts, and license; you provide the Kubernetes cluster (or Docker host), PostgreSQL, Redis, and the networking and observability tooling that fit your environment. Self-hosted is the best deployment option when you have data residency, regulatory constraints, custom networking, or air-gapped requirements.
 
@@ -32,7 +32,7 @@ LangSmith supports three self-hosted topologies that trade off setup complexity 
 
 > [card] [Agent Server metrics](/langsmith/self-hosted-agent-server-metrics)
 >
-> Prometheus and Datadog export for Agent Server, including Deployment UI metrics and internal metrics.
+> Prometheus and Datadog export for Agent Server, including Agent Server UI metrics and internal metrics.
 
 > [card] [Diagnostics](/langsmith/diagnostics-self-hosted)
 >
@@ -58,7 +58,7 @@ In return, you can integrate with your own [Postgres](/langsmith/self-hosted-pla
 >
 > Compare standalone server, full platform, and hybrid to find the right fit.
 
-> [card] [Enable LangSmith Deployment](/langsmith/enable-self-hosted-deployment)
+> [card] [Enable Agent Server hosting](/langsmith/enable-self-hosted-deployment)
 >
 > Add a control plane and data plane to deploy and manage agents on self-hosted LangSmith.
 

@@ -122,7 +122,7 @@ await traceableCallOpenAI(messages);
 
 > [!TIP]
 >
-> **LangSmith Deployments**: To add metadata dynamically per invocation in Agent Server deployments, we recommend using `tracing_context` in a [factory function](/langsmith/graph-rebuild). See [Customize tracing in deployed agents](/langsmith/conditional-tracing#customize-tracing-in-deployed-agents) for examples.
+> **LangSmith Agent Server**: To add metadata dynamically per invocation in Agent Server deployments, we recommend using `tracing_context` in a [factory function](/langsmith/graph-rebuild). See [Customize tracing in deployed agents](/langsmith/conditional-tracing#customize-tracing-in-deployed-agents) for examples.
 
 ## Record the code version on traces
 

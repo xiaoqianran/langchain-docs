@@ -6,7 +6,7 @@
 
 LangGraph 提供了 [**time travel**](/oss/python/langgraph/use-time-travel) 功能，可以从先前的检查点恢复执行，重播相同的状态或修改它以探索替代方案。在所有情况下，恢复过去的执行都会在历史中产生一个新的分叉。
 
-使用 LangSmith 部署 API 进行时间旅行（通过 LangGraph SDK）：
+使用 LangSmith Agent Server API 进行时间旅行（通过 LangGraph SDK）：
 
 1. **使用 [LangGraph SDK](/langsmith/langgraph-python-sdk) 的 [client.runs.wait](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.wait) 或 [client.runs.stream](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.stream) API 使用初始输入运行图表**。
 2. **识别现有线程中的检查点**：使用[client.threads.get\_history](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_history)方法检索特定`thread_id`的执行历史记录并找到所需的`checkpoint_id`。

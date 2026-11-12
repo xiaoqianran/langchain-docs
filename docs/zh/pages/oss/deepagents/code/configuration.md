@@ -56,7 +56,7 @@ Deep Agents 代码采用分层配置。优先顺序取决于设置类型。
 
 `dcode config` 命令显示Deep Agents 代码使用的设置以及每个值的来源，而无需启动会话。使用它们来确认管理员设置、环境变量或 `config.toml` 设置处于活动状态。
 
-|命令|描述 |
+|命令 |描述 |
 | - | - |
 | `dcode config` |显示每个设置、其当前值以及该值的来源 |
 | `dcode config get <key>` |显示一项设置的当前值和来源，例如 `dcode config get interpreter.memory_limit_mb` |
@@ -474,7 +474,7 @@ allowed = [
     "openai:*",
 ]
 default = "acme:production"
-auto_classifier = "openai:gpt-5.5"
+auto_classifier = "openai:gpt-6.1-sol"
 ```如果省略`allowed`，用户可以选择任意型号。空列表会阻止所有模型。如果用户的列表无效，Deep Agents 代码会阻止所有模型。如果管理员列表无效，Deep Agents 代码会阻止启动、重新加载和其他使用配置的命令。管理员列表会替换用户列表，而不是与其合并。托管的 `default`、`recent` 和 `auto_classifier` 值也必须出现在管理员的允许列表中。
 
 在`[models.providers.<name>].models`下添加模型使其可供选择，但不会自动允许。将确切的型号或提供商通配符添加到允许列表中。通配符仅涵盖该提供商可用的模型。如果没有可用型号，Deep Agents代码无法选择默认值。当Deep Agents代码可以识别界面中输入的裸模型名称的提供者时，它会在检查白名单之前将该名称转换为`provider:model`。
@@ -684,7 +684,7 @@ MCP 工具调用的最大持续时间（以秒为单位）。接受从 `1` 到 `
 
 在线程列表和选择器中加载和显示的最近线程的最大数量。低于 `1` 的值被限制为 `1`，非整数值使用默认值。 `-n` 或 `--limit` 会覆盖 `dcode threads list` 的此值。
 
-**深度\_代码\_递归\_限制** `integer`LangGraph图步预算，这是`dcode`代理图每回合可以执行的最大节点调用数。无效值会记录警告，并继续解决下一个来源。未设置时，Deep Agents代码继承`LANGGRAPH_DEFAULT_RECURSION_LIMIT`或将限制留给LangGraph服务器。参见[Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits)。
+**深度\_代码\_递归\_限制** `integer`LangGraph图步预算，这是`dcode`代理图每回合可以执行的最大节点调用数。无效值会记录警告，并继续解决下一个来源。未设置时，Deep Agents代码继承`LANGGRAPH_DEFAULT_RECURSION_LIMIT`或将限制留给LangSmith代理服务器。参见[Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits)。
 
 **LANGGRAPH\_DEFAULT\_RECURSION\_LIMIT** `integer`
 
@@ -805,10 +805,10 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 | **基本说明** |封装`default_agent_prompt.md` |右 |不可变，通过 Deep Agents 代码升级进行更新 |
 | **用户定制** | `~/.deepagents/{agent}/AGENTS.md` |读/写|附加到基本说明 |
 | **项目说明** | `.deepagents/AGENTS.md` 或 `AGENTS.md` |右 |两者均已加载（如果存在）|
-| **用户技能** | `~/.deepagents/{agent}/skills/` |读/写 |代理特定技能 |
+| **用户技能** | `~/.deepagents/{agent}/skills/` |读/写|代理特定技能 |
 | **共享技能** | `~/.agents/skills/` |右 |与工具无关、跨 CLI |
 | **项目技能** | `.deepagents/skills/` 或 `.agents/skills/` |右 |项目范围 |
-| **用户Python扩展** | `~/.deepagents/extensions/` |读/写 |实验性；参见[Python extensions](/oss/deepagents/code/extensions) |
+| **用户Python扩展** | `~/.deepagents/extensions/` |读/写|实验性；参见[Python extensions](/oss/deepagents/code/extensions) |
 | **项目 Python 扩展** | `.deepagents/extensions/` |右 |实验性；需要项目信任 |
 | **自定义子代理** | `~/.deepagents/{agent}/agents/` |读/写|用户定义的子代理 |
 | **项目分代理** | `.deepagents/agents/` |右 |项目定义的子代理 |

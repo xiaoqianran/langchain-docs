@@ -4,11 +4,11 @@
 
 # 隔离每个用户的存储数据
 
-使用身份验证处理程序将长期存储数据的范围限定为 LangSmith 部署中的每个经过身份验证的用户。
+使用身份验证处理程序将长期存储数据范围限定到LangSmith代理服务器中的每个经过身份验证的用户。
 
-每个[LangSmith Deployment](/langsmith/deployment)都包含一个Postgres支持的[store](/oss/python/langgraph/stores)，用于长期内存和跨线程数据。默认情况下，存储命名空间在所有调用者之间共享。要为每个用户提供自己的独立存储，请配置 [custom authentication](/langsmith/custom-auth) 并添加一个存储 [authorization handler](/langsmith/auth#authorization) ，该存储重写命名空间以包含经过身份验证的用户身份。
+每个[Agent Server](/langsmith/deployment)都包含一个Postgres支持的[store](/oss/python/langgraph/stores)，用于长期内存和跨线程数据。默认情况下，存储命名空间在所有调用者之间共享。要为每个用户提供自己的独立存储，请配置 [custom authentication](/langsmith/custom-auth) 并添加一个存储 [authorization handler](/langsmith/auth#authorization) ，该存储重写命名空间以包含经过身份验证的用户身份。
 
-本指南展示了如何在 LangSmith 部署中配置该隔离。相同的模式适用于启用自定义身份验证的 [self-hosted](/langsmith/self-hosted) 部署。
+本指南介绍如何在 LangSmith 代理服务器中配置该隔离。相同的模式适用于启用自定义身份验证的 [self-hosted](/langsmith/self-hosted) 部署。
 
 ## 它是如何工作的
 
@@ -24,10 +24,10 @@
 
 ## 先决条件
 
-* 配置了 [custom authentication](/langsmith/set-up-custom-auth) 的 LangSmith 部署。
+* 配置了[custom authentication](/langsmith/set-up-custom-auth)的代理服务器。
 * 一个 `@auth.authenticate` 处理程序，为每个最终用户返回一个稳定、唯一的 `identity`。
 
-## 在 LangSmith 部署中配置身份验证
+## 在LangSmith代理服务器中配置身份验证
 
 将您的部署指向 [⟦T18⟧](/langsmith/application-structure#configuration-file-concepts) 中的身份验证模块：
 
@@ -108,7 +108,7 @@ async def scope_store(
 
 当客户端调用不带前缀的`list_namespaces`时，`value["namespace"]`为空。上面的处理程序将空命名空间视为 `(ctx.user.identity,)`，因此用户只能看到自己的命名空间。
 
-这种模式使代理代码更加简单，因为身份验证层透明地处理用户隔离。权衡是您不能在应用程序代码中也添加命名空间前缀，否则您将双重作用域数据并中断读取。选择一个范围层：身份验证重写**或**应用程序级命名空间，而不是两者兼而有之。
+这种模式使代理代码更加简单，因为身份验证层透明地处理用户隔离。权衡是您不能在应用程序代码中也添加命名空间前缀，否则您将双重作用域数据并中断读取。选择一个作用域层：auth 重写**或**应用程序级命名空间，而不是两者兼而有之。
 
 ## 在代理代码中使用命名空间如果您使用自动前缀重写，您的图形代码将使用不带用户前缀的逻辑命名空间。身份验证层在请求时自动添加用户范围。将以下内容放入图形节点或工具中（例如，`graph.py`）：
 
@@ -159,7 +159,7 @@ StoreBackend(
 )
 ```
 
-或者，如果您在图表内按用户确定范围（例如，使用 `rt.server_info.user.identity`），请确保您的身份验证处理程序不会使用双前缀命名空间。选择一个范围层：身份验证重写**或**应用程序级命名空间，而不是两者兼而有之。
+或者，如果您在图表内按用户确定范围（例如，使用 `rt.server_info.user.identity`），请确保您的身份验证处理程序不会使用双前缀命名空间。选择一个作用域层：auth 重写**或**应用程序级命名空间，而不是两者兼而有之。
 
 有关命名空间设计的更多信息，请参阅[Deep Agents backends](/oss/python/deepagents/backends#namespace-factories)和[user-scoped memory](/oss/python/deepagents/memory#user-scoped-memory)。
 

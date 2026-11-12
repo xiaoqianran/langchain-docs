@@ -27,7 +27,7 @@ agent = create_agent(model="google_genai:gemini-3.6-flash", tools=tools)
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 
-agent = create_agent(model="openai:gpt-5.5", tools=tools)
+agent = create_agent(model="openai:gpt-6.1-sol", tools=tools)
 ```
 
 ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -64,7 +64,7 @@ Building on that, you can configure the basics directly with the `model=`, `tool
 
 > [!TIP]
 >
-> [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) builds on `create_agent` and comes with commonly useful capabilities already assembled, such as planning, file system tools, subagents, and memory. For maximum flexibility while using the same Deep Agents harness, use [Deep Agents](/oss/python/deepagents/overview) and host agents yourself, or run a custom [LangSmith Deployment](/langsmith/deployment). Use `create_agent` when you need to configure a smaller harness yourself.
+> [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) builds on `create_agent` and comes with commonly useful capabilities already assembled, such as planning, file system tools, subagents, and memory. For maximum flexibility while using the same Deep Agents harness, use [Deep Agents](/oss/python/deepagents/overview) and host agents yourself, or run a custom [Agent Server](/langsmith/deployment). Use `create_agent` when you need to configure a smaller harness yourself.
 
 ## Core components
 
@@ -83,7 +83,7 @@ agent = create_agent(model="google_genai:gemini-3.6-flash", tools=tools)
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 
-agent = create_agent(model="openai:gpt-5.5", tools=tools)
+agent = create_agent(model="openai:gpt-6.1-sol", tools=tools)
 ```
 
 ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -145,7 +145,7 @@ def search(query: str) -> str:
     return f"Results for: {query}"
 
 
-agent = create_agent(model="openai:gpt-5.5", tools=[search])
+agent = create_agent(model="openai:gpt-6.1-sol", tools=[search])
 ```
 
 ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -232,7 +232,7 @@ agent = create_agent(
 
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=tools,
     system_prompt="You are a helpful assistant. Be concise and accurate.",
 )
@@ -307,7 +307,7 @@ class Answer(BaseModel):
     confidence: float
 
 
-agent = create_agent(model="openai:gpt-5.5", tools=tools, response_format=Answer)
+agent = create_agent(model="openai:gpt-6.1-sol", tools=tools, response_format=Answer)
 result = agent.invoke({"messages": [{"role": "user", "content": "Summarize AI trends"}]})
 result["structured_response"]  # Answer(summary=..., confidence=...)
 ```
@@ -427,7 +427,7 @@ class MyState(AgentState):
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     state_schema=MyState,  # [!code highlight]
 )
@@ -554,7 +554,7 @@ from langchain_core.utils.uuid import uuid7
 from langgraph.checkpoint.memory import InMemorySaver
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     checkpointer=InMemorySaver(),
 )
@@ -749,7 +749,7 @@ class Context:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     context_schema=Context,
     checkpointer=InMemorySaver(),
@@ -995,7 +995,7 @@ from deepagents.backends import StateBackend
 from deepagents.middleware import FilesystemMiddleware
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[search],
     middleware=[FilesystemMiddleware(backend=StateBackend())],
 )
@@ -1103,7 +1103,7 @@ from deepagents.backends import StateBackend
 from deepagents.middleware import FilesystemMiddleware, MemoryMiddleware, SkillsMiddleware, SummarizationMiddleware
 
 backend = StateBackend()
-model = "openai:gpt-5.5"
+model = "openai:gpt-6.1-sol"
 
 agent = create_agent(
     model=model,
@@ -1288,7 +1288,7 @@ def search(query: str) -> str:
 backend = StateBackend()
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[search],
     middleware=[
         FilesystemMiddleware(backend=backend),
@@ -1533,7 +1533,7 @@ agent = create_agent(model="google_genai:gemini-3.6-flash", tools=tools, name="r
 ```
 
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-agent = create_agent(model="openai:gpt-5.5", tools=tools, name="research_assistant")
+agent = create_agent(model="openai:gpt-6.1-sol", tools=tools, name="research_assistant")
 ```
 
 ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1595,7 +1595,7 @@ def search(query: str) -> str:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[search],
     middleware=[
         ModelRetryMiddleware(max_retries=3),
@@ -1752,7 +1752,7 @@ def search(query: str) -> str:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[search],
     middleware=[PIIMiddleware("email")],
 )
@@ -1891,7 +1891,7 @@ def search(query: str) -> str:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[search],
     middleware=[HumanInTheLoopMiddleware(interrupt_on={"write_file": True})],
 )

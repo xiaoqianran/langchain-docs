@@ -13,22 +13,22 @@ AWS EKS 上自托管的 LangSmith 的平台层、服务、IRSA 角色、网络�
 * 平台层和应用程序核心服务。
 * AWS 托管服务、IRSA 角色和集群基础设施。
 * 网络拓扑、入口选项和 TLS/DNS 策略。
-* LangSmith 部署插件。
+* 代理服务器托管附加组件。
 * 模块依赖图和选择加入的安全模块。
 
 如果您准备好安装，请从[deployment walkthrough](/langsmith/self-host-terraform-aws-deploy)开始。
 
 ## 平台层
 
-AWS 上的LangSmith 分两个阶段部署，并带有一个可选附加组件。基础设施阶段提供云基础。应用阶段安装LangSmithHelm图表。 LangSmith 部署附加组件是可选的，并添加主机后端、侦听器和操作员服务，用于从 UI 管理 LangGraph 应用程序。
+AWS 上的LangSmith 分两个阶段部署，并带有一个可选附加组件。基础设施阶段提供云基础。应用阶段安装LangSmithHelm图表。代理服务器托管附加组件是可选的，并添加主机后端、侦听器和操作员服务，用于从 UI 管理 LangGraph 应用程序。
 
-![LangSmith on AWS service layout](https://mintcdn.com/langchain-5e9cc07a/D6uoP5M0BV8YGC-1/images/self-hosted-terraform/aws-architecture.png?fit=max\&auto=format\&n=D6uoP5M0BV8YGC-1\&q=85\&s=b5c82e77df6510b1c3d0d8589ffc4ae7)|舞台|层 |添加了什么 |
+![LangSmith on AWS service layout](https://mintcdn.com/langchain-5e9cc07a/D6uoP5M0BV8YGC-1/images/self-hosted-terraform/aws-architecture.png?fit=max\&auto=format\&n=D6uoP5M0BV8YGC-1\&q=85\&s=b5c82e77df6510b1c3d0d8589ffc4ae7)|舞台|层|添加了什么 |
 | - | - | - |
 |基础设施| AWS 基础设施 | VPC + 私有/公有子网 + 单个 NAT 网关、EKS 集群 + 托管节点组 + 集群自动缩放程序、RDS PostgreSQL、ElastiCache Redis、S3 存储桶 + VPC 网关端点、ALB + ALB 控制器 + EBS CSI 驱动程序 + 指标服务器、k8s-bootstrap（默认情况下为 KEDA、ESO、Envoy 网关）。可选：网络防火墙、WAF、CloudTrail、ALB 访问日志、SmithDB、沙箱。 |
-|应用 | LangSmith 应用 |后端、前端、playground、队列、ace-backend、clickhouse。存储：RDS PostgreSQL（元数据）+ S3（通过 VPC 端点跟踪 blob）。入口：Terraform ALB 转发到 Envoy Gateway（默认）、Istio 或 NGINX。通过`enable_envoy_gateway = false`，ALB 控制器为 Ingress 提供自己的 ALB。 |
-|附加组件 (`enable_deployments = true`) | LangSmith 部署 |主机后端、侦听器、操作员。每个部署的图：api-server、queue、redis、postgres（操作员管理）。需要 KEDA（通过 k8s-bootstrap 与基础设施一起安装）。 |
+|应用 | LangSmith申请|后端、前端、playground、队列、ace-backend、clickhouse。存储：RDS PostgreSQL（元数据）+ S3（通过 VPC 端点跟踪 blob）。入口：Terraform ALB 转发到 Envoy Gateway（默认）、Istio 或 NGINX。通过`enable_envoy_gateway = false`，ALB 控制器为 Ingress 提供自己的 ALB。 |
+|附加组件 (`enable_deployments = true`) |代理服务器托管 |主机后端、侦听器、操作员。每个部署的图：api-server、queue、redis、postgres（操作员管理）。需要 KEDA（通过 k8s-bootstrap 与基础设施一起安装）。 |
 
-## 组件到存储的映射|组件|存储后端 |访问方式 |
+## 组件到存储的映射|组件|存储后端 |访问方式|
 | - | - | - |
 | `backend` | RDS PostgreSQL |私有子网、安全组|
 | `backend` | S3桶| IRSA + VPC 网关端点 |
@@ -51,7 +51,7 @@ AWS 上的LangSmith 分两个阶段部署，并带有一个可选附加组件。
 
 > [!警告]
 >
-> 集群内 ClickHouse 仅适用于 dev/POC（单个 pod，无复制，无备份）。对于生产使用[LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse)或自我管理的外部集群。> [!注意]
+> 集群内 ClickHouse 仅用于 dev/POC（单个 pod，无复制，无备份）。对于生产使用[LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse)或自我管理的外部集群。> [!注意]
 >
 > [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) 是 LangSmith 专门构建的可观测性后端，从 Chart v16 开始可用于自托管（请参阅 [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)）。 AWS 模块默认配置 ClickHouse。设置 `enable_smithdb = true` 还提供 SmithDB 的依赖项：专用元存储 RDS PostgreSQL 实例（默认为 `smithdb_metastore_source = "create"`）、S3 对象存储存储桶、IRSA 角色以及用于 NVMe 实例存储节点的 Karpenter NodePools。 ClickHouse 在图表 v16 和 v17 上保持启用状态。请参阅部署指南中的[SmithDB](/langsmith/self-host-terraform-aws-deploy#smithdb)。
 
@@ -65,7 +65,7 @@ Helm 图表在安装和升级时运行三个作业：
 | `langsmith-backend-ch-migrations` | ClickHouse 架构迁移 |
 | `langsmith-backend-auth-bootstrap` |在 `langsmith-config` 中从 `initial_org_admin_password` 创建初始组织和管理员帐户 |
 
-## LangSmith 部署插件
+## 代理服务器托管附加组件
 
 当`enable_deployments = true`时，安装了三个附加服务并注册了`LangGraphPlatform` CRD。用户在 LangSmith UI 中创建的每个部署都会在 `langsmith` 命名空间中生成一个 Kubernetes 部署，由操作员管理。|服务 |目的|
 | - | - |
@@ -103,7 +103,7 @@ Helm 图表在安装和升级时运行三个作业：
 
 ### SSM 参数存储
 
-* 所有 LangSmith 秘密的集中秘密存储。
+* 所有LangSmith秘密的集中秘密存储。
 * 流程：`source infra/scripts/setup-env.sh`将秘密写入SSM。 ESO `ClusterSecretStore` 读取它们并投射 Helm 图表通过 `config.existingSecretName` 挂载的 `langsmith-config` Kubernetes Secret。
 * 前缀：`/langsmith/{name_prefix}-{environment}/`。
 
@@ -115,7 +115,7 @@ Helm 图表在安装和升级时运行三个作业：
 | `cluster-autoscaler` | `eks` | `kube-system` |是的 |根据 Pod 调度压力扩展 EC2 节点组。 |
 | `ebs-csi-driver` | `eks` | `kube-system` |是的 |为 PersistentVolumeClaims（由 ClickHouse 使用）配置 EBS 卷。 |
 |卡彭特| `eks` | `karpenter` |是的 |配置 SmithDB 的 NVMe 实例存储和计算节点。仅当`enable_smithdb = true`时安装。 |
-|科达| `k8s-bootstrap` | `keda` |没有 | Kubernetes 事件驱动的自动缩放。在 Redis 队列深度上缩放 `queue` 和 `ingest-queue`。 LangSmith 部署附加组件所需。 |
+|科达| `k8s-bootstrap` | `keda` |没有 | Kubernetes 事件驱动的自动缩放。在 Redis 队列深度上缩放 `queue` 和 `ingest-queue`。代理服务器托管附加组件所需。 |
 |特使网关 | `k8s-bootstrap` | `envoy-gateway-system` |没有 | ALB 后面的默认入口网关。当您选择 Istio、NGINX 或 ALB Ingress 时会跳过。 |
 |证书经理 | `k8s-bootstrap` | `cert-manager` |可选|自动颁发 TLS 证书。对于 `tls_certificate_source = letsencrypt`，它通过 ALB 使用 HTTP-01 颁发者，不需要 IRSA。对于 `create_cert_manager_irsa = true`，它通过具有 IRSA 角色的 Route 53 使用 DNS-01。仅在这两种情况下安装。 ||外部秘密运营商| `k8s-bootstrap` | `external-secrets` |是的 |将 SSM 参数同步到 `langsmith-config` Kubernetes Secret。 |
 
@@ -264,7 +264,7 @@ ALB 目标组转发到端口 10080 上的 Envoy 代理 Pod。不需要值覆盖�
 
 |发行人 |何时使用 |
 | - | - |
-|让我们加密*（默认）* |公共领域，互联网接入，免费 |
+|让我们加密*（默认）* |公共领域，互联网接入，免费|
 | ACM 私有 CA (`aws-privateca-issuer`) | AWS 原生、气隙友好、私有域、付费 |
 |韦纳菲 (`cert-manager-venafi`) |企业 PKI，受监管的环境 |
 | HashiCorp Vault (`cert-manager-vault`) |自托管 PKI |
@@ -334,7 +334,7 @@ vpc ─► firewall (optional, create_firewall = true)
 | 3 | `name_prefix`长度|最多 15 个字符。诸如 `dz-nginx-tst`（12 个字符）之类的名称是有效的。 |
 | 4 | Istio 端口 | Istio 1.23 或更高版本的 ingressgateway 通过 `NET_BIND_SERVICE` 侦听端口 80，而不是端口 8080。ALB TGB 运行状况检查和安全组规则必须以端口 80 为目标。
 | 5 | NGINX TGB 端口 | NGINX ingress-nginx 控制器 Pod 侦听端口 80。TargetGroupBinding 目标类型为 `ip`。 |
-| 6 | Envoy 网关端口 | Envoy 代理 Pod 侦听端口 10080（网关的端口 80 加上 Envoy 的非 root 端口 10000 偏移量）。 ALB目标组和节点安全组规则使用10080； TargetGroupBinding 引用端口 80 上的 Envoy `ClusterIP` 服务，目标类型为 `ip`。 || 7 |销毁订单 |在 `make destroy` 之前运行 `make uninstall`。有关完整序列，包括删除保护应用和清空跟踪存储桶，请参阅[Teardown](/langsmith/self-host-terraform-aws-quick-reference#teardown)。不要预删除命名空间：Helm 无法干净地卸载到终止命名空间，因此 `helm_release` 资源超时。 |
+| 6 | Envoy 网关端口 | Envoy 代理 Pod 侦听端口 10080（网关的端口 80 加上 Envoy 的非 root 端口 10000）。 ALB目标组和节点安全组规则使用10080； TargetGroupBinding 引用端口 80 上的 Envoy `ClusterIP` 服务，目标类型为 `ip`。 || 7 |销毁订单 |在 `make destroy` 之前运行 `make uninstall`。有关完整序列，包括删除保护应用和清空跟踪存储桶，请参阅[Teardown](/langsmith/self-host-terraform-aws-quick-reference#teardown)。不要预删除命名空间：Helm 无法干净地卸载到终止命名空间，因此 `helm_release` 资源超时。 |
 | 8 |卡住终止名称空间 | KEDA 的陈旧`external.metrics.k8s.io/v1beta1` API 组导致`NamespaceDeletionDiscoveryFailure`。修复：清除命名空间的`spec.finalizers`，并使用`kubectl replace --raw "/api/v1/namespaces/<ns>/finalize" -f -`将结果提交到finalize子资源，然后重新运行`make destroy`。 |
 
 ## 验证命令

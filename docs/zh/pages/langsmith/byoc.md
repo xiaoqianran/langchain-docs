@@ -56,7 +56,7 @@ AWS 支持以下功能。对于 GCP 和 Azure beta 功能的可用性，请在�
 * **[Insights](/langsmith/insights)**：自动分析表面使用模式、常见代理行为和故障模式的痕迹。
 * **[LangSmith Chat](/langsmith/chat)**：从工作区内部分析跟踪、线程、提示和评估。
 * **[Prompt engineering](/langsmith/prompt-context-hub#prompts)**：提示并提示提交。
-* **[LangSmith Deployment](/langsmith/deployment)**：LangSmith 部署控制平面在数据平面的集群内部运行，因此代理管理层和代理都在您的专用网络中运行。
+* **[LangSmith Agent Server](/langsmith/deployment)**：LangSmith代理服务器控制平面在您的数据平面集群内部运行，因此代理管理层和您的代理都在您的专用网络中运行。
 * **[Sandboxes](/langsmith/sandboxes)**：通过 CLI 和 SDK 的使用与云相同，只是您指向数据平面的端点。
 * **[LLM Gateway](/langsmith/llm-gateway)**：使用一个 LangSmith API 密钥跨提供商调用模型，并集中实施支出、速率限制和数据保护策略。* **[LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted)**：为模型调用强制执行您自己的身份验证流程，以便提供程序凭据永远不会暴露给最终用户。
 * **[LangSmith MCP](/langsmith/langsmith-remote-mcp)**：将MCP兼容的客户端连接到LangSmith查询数据。

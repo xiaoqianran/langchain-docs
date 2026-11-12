@@ -60,7 +60,7 @@ from tools.customer import lookup_customer
 
 agent = define_deep_agent(
     name="support-agent",
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[lookup_customer],
 )
 ```
@@ -80,7 +80,7 @@ from tools.customer import lookup_customer
 
 agent = define_deep_agent(
     name="support-agent",
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[lookup_customer],
     interrupt_on={"lookup_customer": True},
 )
@@ -98,9 +98,9 @@ agent = define_deep_agent(
 
 ## 使用秘密和上下文
 
-工具从环境变量中读取固定配置，例如区域或端点 URL。将 `mda dev` 的本地值放入 `.env` 中。 `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。相反，凭证属于 [connection](/langsmith/python/managed-deep-agents-connections)。连接将值保留在您的 LangSmith 工作区而不是项目中。它还可以为每个调用者解析不同的凭据。参见[Use tools that require authentication](#use-tools-that-require-authentication)。
+工具从环境变量中读取固定配置，例如区域或端点 URL。将 `mda dev` 的本地值放入 `.env` 中。 `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。相反，凭证属于 [connection](/langsmith/python/managed-deep-agents-connections)。 A connection keeps the value in your LangSmith workspace rather than the project.它还可以为每个调用者解析不同的凭据。参见[Use tools that require authentication](#use-tools-that-require-authentication)。
 
-对于每次运行的值，例如请求元数据或功能标志，请参阅 [Access runtime context](#access-runtime-context)。
+For per-run values such as request metadata or feature flags, see [Access runtime context](#access-runtime-context).
 
 ## 部署
 
@@ -108,9 +108,9 @@ agent = define_deep_agent(
 
 ## 何时使用工具
 
-|概念|亲切 |它如何到达代理|
+|概念 |亲切 |它如何到达代理|
 | - | - | - |
-| **工具** |申请代码 |导入并传入代理定义 |
+| **工具** |申请代码|导入并传入代理定义 |
 | **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
 | **[Skills](/langsmith/python/managed-deep-agents-skills)** |托管上下文 |代理在相关时加载的程序 |
 | **[Instructions](/langsmith/python/managed-deep-agents-instructions)** |托管上下文 |永远在线的系统提示 |
@@ -120,7 +120,7 @@ agent = define_deep_agent(
 ## 响应中断
 
 当运行遇到中断时，它会暂停并等待人类响应，然后再继续。* **在本地开发期间**，`mda dev` 在 LangSmith Studio 中运行代理，它会显示中断，以便您可以检查挂起的工具调用并恢复运行。
-* **在已部署的代理上**，使用 `Command(resume=...)` 负载通过 LangGraph 服务器 API 恢复暂停的运行。参见[Human-in-the-loop using server API](/langsmith/add-human-in-the-loop)。
+* **在已部署的代理上**，通过具有 `Command(resume=...)` 负载的代理服务器 API 恢复暂停的运行。参见[Human-in-the-loop using server API](/langsmith/add-human-in-the-loop)。
 
 人机交互需要持久的线程状态来暂停和恢复。托管运行时拥有检查指针，因此不需要额外的设置。
 
@@ -152,11 +152,11 @@ async def get_github_user() -> str:
         return response.json()["login"]
 ```
 
-用户拥有的连接需要每个调用者的授权。未授权该服务的人的第一次运行会在 [⟦T25⟧ interrupt](/langsmith/python/managed-deep-agents-connections#handle-the-authorization-interrupt) 上暂停。 Slack 和 LangSmith Studio 为调用者完成该中断。使用 `mda connections create` 创建连接本身。创建模式、本地开发、授权中断请参见[Manage connections](/langsmith/python/managed-deep-agents-connections)。
+用户拥有的连接需要每个调用者的授权。未授权该服务的人的第一次运行会在 [⟦T25⟧ interrupt](/langsmith/python/managed-deep-agents-connections#handle-the-authorization-interrupt) 上暂停。 Slack 和 LangSmith Studio 为调用者完成该中断。Create the connection itself with `mda connections create`.创建模式、本地开发、授权中断请参见[Manage connections](/langsmith/python/managed-deep-agents-connections)。
 
 ## 访问运行时上下文
 
-对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
+对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。 See [how to access context from within your tools](/oss/python/langchain/tools#access-context).
 
 Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runtime](/langsmith/python/managed-deep-agents-runtime)。
 

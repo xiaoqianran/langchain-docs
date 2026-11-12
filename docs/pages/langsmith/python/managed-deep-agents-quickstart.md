@@ -135,7 +135,7 @@ from managed_deepagents import define_deep_agent
 # OpenAI's built-in web search — no extra install or API key needed
 agent = define_deep_agent(
     name="research-assistant",
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[{"type": "web_search"}],
 )
 ```
@@ -235,7 +235,7 @@ The agent name is also the default deployment name. For model concepts and provi
 >
 > agent = define_deep_agent(
 >     name="research-assistant",
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     tools=[internet_search],
 > )
 > ```

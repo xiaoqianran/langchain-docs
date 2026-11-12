@@ -2,15 +2,15 @@
 
 # Deploy other frameworks
 
-Deploy agents built with Claude Agent SDK, Strands, CrewAI, AutoGen, and other frameworks to LangSmith Deployment.
+Deploy agents built with Claude Agent SDK, Strands, CrewAI, AutoGen, and other frameworks to LangSmith Agent Server.
 
-This guide is the how-to for deploying agents built outside LangGraph (Claude Agent SDK, Strands, CrewAI, AutoGen, and similar) to [LangSmith Deployment](/langsmith/deployment), including tracing for [LangSmith Observability](/langsmith/observability). It walks through wrapping those agents with the [Functional API](/oss/python/langgraph/functional-api) so Agent Server can run them. For Functional API concepts (entrypoints, tasks, checkpointing, and resume rules), see the [Functional API overview](/oss/python/langgraph/functional-api).
+This guide is the how-to for deploying agents built outside LangGraph (Claude Agent SDK, Strands, CrewAI, AutoGen, and similar) to [LangSmith Agent Server](/langsmith/deployment), including tracing for [LangSmith Observability](/langsmith/observability). It walks through wrapping those agents with the [Functional API](/oss/python/langgraph/functional-api) so Agent Server can run them. For Functional API concepts (entrypoints, tasks, checkpointing, and resume rules), see the [Functional API overview](/oss/python/langgraph/functional-api).
 
-LangSmith Deployment runs any framework. For agents not built on Deep Agents, LangChain, or LangGraph, deploy using either the [`deployments-wrap-sdk`](https://pypi.org/project/deployments-wrap-sdk/) package (Google ADK) or the LangGraph Functional API (Claude Agent SDK, Strands, CrewAI, AutoGen, and other libraries).
+LangSmith Agent Server runs any framework. For agents not built on Deep Agents, LangChain, or LangGraph, deploy using either the [`deployments-wrap-sdk`](https://pypi.org/project/deployments-wrap-sdk/) package (Google ADK) or the LangGraph Functional API (Claude Agent SDK, Strands, CrewAI, AutoGen, and other libraries).
 
 > [!TIP]
 >
-> For new builds, consider [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview): a managed open-source harness for agents that plan, use tools, delegate to subagents, and work over long horizons. Alternatively, for maximum flexibility while using the same Deep Agents harness, use the [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) and host agents yourself, or run a custom [LangSmith Deployment](/langsmith/deployment).
+> For new builds, consider [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview): a managed open-source harness for agents that plan, use tools, delegate to subagents, and work over long horizons. Alternatively, for maximum flexibility while using the same Deep Agents harness, use the [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) and host agents yourself, or run a custom [Agent Server](/langsmith/deployment).
 
 ## Supported frameworks
 
@@ -156,7 +156,7 @@ Build your agent using the framework of your choice, exactly as you would outsid
 >
 > assistant = AssistantAgent(
 >     name="assistant",
->     model_client=OpenAIChatCompletionClient(model="gpt-5.5"),
+>     model_client=OpenAIChatCompletionClient(model="gpt-6.1-sol"),
 > )
 > ```
 
@@ -461,7 +461,7 @@ The following examples combine agent definition, Functional API wrapping, tracin
 >
 > assistant = AssistantAgent(
 >     name="assistant",
->     model_client=OpenAIChatCompletionClient(model="gpt-5.5"),
+>     model_client=OpenAIChatCompletionClient(model="gpt-6.1-sol"),
 > )
 >
 > @task

@@ -31,7 +31,7 @@ Studio 是一款专用代理 IDE，可实现实现代理服务器 API 协议的�
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 flowchart
-    subgraph LangSmith Deployment
+    subgraph LangSmith Agent Server
         A[LangGraph CLI] -->|creates| B(Agent Server deployment)
         B <--> D[Studio]
         B <--> E[SDKs]

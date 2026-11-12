@@ -4,37 +4,37 @@
 
 # 修订
 
-创建和管理 LangSmith 云部署的修订。
+在 LangSmith 云上创建和管理代理服务器的修订。
 
-修订将应用程序的一个版本部署到现有的云部署。创建修订版本以发布代码更改，而无需创建另一个部署。
+修订将应用程序的一个版本部署到LangSmith云上的现有代理服务器。创建修订版以发布代码更改，而无需创建另一个代理服务器。
 
 ## 创建修订版
 
-当您 [create a deployment](/langsmith/deploy-to-cloud) 时，LangSmith 创建其第一个修订版。使用 LangSmith UI 或 LangGraph CLI 创建后续修订。
+当您 [create an Agent Server](/langsmith/deploy-to-cloud) 时，LangSmith 创建其第一个修订版。使用 LangSmith UI 或 LangGraph CLI 创建后续修订。
 
 > [选项卡] LangSmith 用户界面
 >
-> 从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-revisions)，选择 **部署**，然后选择一个部署。
+> 从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-revisions)，选择 **代理服务器**，然后选择一个代理服务器。
 >
-> 1. 在**部署**视图的右上角，选择**+ 新修订版**。
+> 1. 在 **代理服务器** 视图的右上角，选择 **+ 新修订**。
 > 2. 在 **New Revision** 模式中，指定 [API configuration file](/langsmith/cli#configuration-file) 的完整路径，包括文件名。例如，如果文件位于存储库根目录中，请输入 `langgraph.json`。
-> 3. 选择是否通过[Studio](/langsmith/studio)使部署可共享。
-> 4. 添加、删除或更新环境变量和机密。现有值已预先填充。欲了解更多信息，请参阅[Environment variables](/langsmith/env-var-cloud)。
+> 3. 选择是否通过[Studio](/langsmith/studio) 共享代理服务器。
+> 4. 添加、删除或更新环境变量和机密。现有值已预先填充。有关更多信息，请参阅[Environment variables](/langsmith/env-var-cloud)。
 > 5. 选择**提交**。 LangSmith 将修订排队以进行部署。> [选项卡] LangGraph CLI
 >
-> 从项目目录再次运行 `langgraph deploy`。该命令按名称查找现有部署，并使用最新的代码更改创建修订：
+> 从项目目录再次运行 `langgraph deploy`。该命令按名称查找现有代理服务器，并使用最新的代码更改创建修订版：
 >
 > ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > langgraph deploy
 > ```
 >
-> 要按 ID 定位部署，请运行：
+> 要按 ID 定位代理服务器，请运行：
 >
 > ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> langgraph deploy --deployment-id <DEPLOYMENT_ID>
+> langgraph deploy --agent-server-id <AGENT_SERVER_ID>
 > ```
 >
-> 要查看部署 ID，请运行：
+> 要查看代理服务器 ID，请运行：
 >
 > ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > langgraph deploy list
@@ -42,7 +42,7 @@
 >
 >> [!注意]
 >>
->> `langgraph deploy` 只能更新最初使用 `langgraph deploy` 创建的部署。使用 LangSmith UI 更新通过 UI 或 GitHub 集成创建的部署。
+>> CLI 更新支持取决于代理服务器的源和构建模式，而不仅仅是其创建位置。推送到托管注册表的本地构建需要 `internal_docker` 源。对于使用您管理的注册表的代理服务器，请使用 `--push-to` 或 `--image-uri`。请参阅[CLI reference](/langsmith/cli#deploy)。
 
 ## 中断修订
 
@@ -50,19 +50,19 @@
 
 > [!警告]
 >
-> 中断的修订具有未定义的行为。 LangChain 将来可能会删除此功能。
+> 中断的修订具有未定义的行为。 LangChain将来可能会删除此功能。
 
 要中断修订：
 
-1. 从 **部署** 视图中，选择一个部署。
+1. 从 **代理服务器** 视图中，选择代理服务器。
 2. 在 **修订版** 表中，选择修订版的菜单图标。
 3. 选择**中断**。
 4. 查看确认消息，然后选择 **中断修订**。
 
 ## 另请参阅
 
-* [Monitor a deployment](/langsmith/monitor-deployment)
-* [Manage a deployment](/langsmith/manage-deployment)
+* [Monitor an Agent Server](/langsmith/monitor-deployment)
+* [Manage an Agent Server](/langsmith/manage-deployment)
 
 ***
 

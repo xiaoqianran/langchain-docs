@@ -1,8 +1,8 @@
-<!-- langchain-docs: Implement a CI/CD pipeline using LangSmith Deployment and Evaluation | https://docs.langchain.com/langsmith/cicd-pipeline-example -->
+<!-- langchain-docs: Implement a CI/CD pipeline using LangSmith Agent Server and Evaluation | https://docs.langchain.com/langsmith/cicd-pipeline-example -->
 
-# Implement a CI/CD pipeline using LangSmith Deployment and Evaluation
+# Implement a CI/CD pipeline using LangSmith Agent Server and Evaluation
 
-This guide demonstrates how to implement a comprehensive CI/CD pipeline for AI agent applications deployed in LangSmith Deployment. In this example, you'll use the [LangGraph](/oss/python/langgraph/overview) open source framework for orchestrating and building the agent, [LangSmith](/langsmith/observability) for observability and evaluations. This pipeline is based on the [cicd-pipeline-example repository](https://github.com/langchain-ai/cicd-pipeline-example).
+This guide demonstrates how to implement a comprehensive CI/CD pipeline for AI agent applications deployed in LangSmith Agent Server. In this example, you'll use the [LangGraph](/oss/python/langgraph/overview) open source framework for orchestrating and building the agent, [LangSmith](/langsmith/observability) for observability and evaluations. This pipeline is based on the [cicd-pipeline-example repository](https://github.com/langchain-ai/cicd-pipeline-example).
 
 ## Overview
 
@@ -80,7 +80,7 @@ There are multiple ways you can trigger this pipeline, either during development
 
 * &#x20;**Code changes**: Pushes to main/development branches where you can modify the LangGraph architecture, try different models, update agent logic, or make any code improvements.
 * &#x20;**PromptHub updates**: Changes to prompt templates stored in LangSmith PromptHub—whenever there's a new prompt commit, the system triggers a webhook to run the pipeline.
-* &#x20;**Online evaluation alerts**: Performance degradation notifications from live deployments
+* &#x20;**Online evaluation alerts**: Performance degradation notifications from live Agent Servers
 * &#x20;**LangSmith traces webhooks**: Automated triggers based on trace analysis and performance metrics.
 * &#x20;**Manual trigger**: Manual initiation of the pipeline for testing or emergency deployments.
 
@@ -100,9 +100,9 @@ The CI/CD pipeline uses GitHub Actions with the [Control Plane API](/langsmith/a
 
 The workflow includes:
 
-* **New agent deployment**: When a new PR is opened and tests pass, a new preview deployment is created in LangSmith Deployment using the [Control Plane API](/langsmith/api-ref-control-plane). This allows you to test the agent in a staging environment before promoting to production.
+* **New agent deployment**: When a new PR is opened and tests pass, a new preview Agent Server is created using the [Control Plane API](/langsmith/api-ref-control-plane). This allows you to test the agent in a staging environment before promoting to production.
 
-* **Agent deployment revision**: A revision happens when an existing deployment with the same ID is found, or when the PR is merged into main. In the case of merging to main, the preview deployment is deleted and a production deployment is created. This ensures that any updates to the agent are properly deployed and integrated into the production infrastructure.
+* **Agent deployment revision**: A revision happens when an existing Agent Server with the same ID is found, or when the PR is merged into main. In the case of merging to main, the preview Agent Server is deleted and a production Agent Server is created. This ensures that any updates to the agent are properly deployed and integrated into the production infrastructure.
 
   ![Agent Deployment Revision Workflow](https://mintcdn.com/langchain-5e9cc07a/-UAx6PdOIJpPyTy2/langsmith/images/cicd-new-lgp-revision.png?fit=max\&auto=format\&n=-UAx6PdOIJpPyTy2\&q=85\&s=3ef7d51a322b8b5e2f9c2c70579fcc97)
 
@@ -148,7 +148,7 @@ LangSmith supports multiple deployment methods, depending on how your [LangSmith
 * &#x20;**Cloud LangSmith**: Direct GitHub integration.
 * &#x20;**Self-Hosted/Hybrid**: Container registry-based deployments.
 
-The deployment flow starts by modifying your agent implementation. At minimum, you must have a [`langgraph.json`](/langsmith/application-structure) and dependency file in your project (`requirements.txt` or `pyproject.toml`). Use the `langgraph dev` CLI tool to check for errors—fix any errors; otherwise, the deployment will succeed when deployed to LangSmith Deployment.
+The deployment flow starts by modifying your agent implementation. At minimum, you must have a [`langgraph.json`](/langsmith/application-structure) and dependency file in your project (`requirements.txt` or `pyproject.toml`). Use the `langgraph dev` CLI tool to check for errors—fix any errors; otherwise, the deployment will succeed when deployed to LangSmith Agent Server.
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TD
@@ -256,13 +256,13 @@ This will:
 
 See the [LangGraph CLI documentation](/langsmith/cli#dev) for more details.
 
-### Method 1: LangSmith Deployment UI
+### Method 1: LangSmith Agent Server UI
 
-Deploy your agent using the LangSmith deployment interface:
+Deploy your agent using the LangSmith Agent Server UI:
 
 1. Go to your [LangSmith dashboard](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cicd-pipeline-example).
-2. Navigate to the **Deployments** section.
-3. Click the **+ New Deployment** button in the top right.
+2. Navigate to the **Agent Servers** section.
+3. Click the **+ Agent Server** button in the top right.
 4. Select your GitHub repository containing your LangGraph agent from the dropdown menu.
 
 **Supported deployments:**
@@ -317,7 +317,7 @@ See the [LangGraph CLI build documentation](/langsmith/cli#build) for more detai
 
 #### Database & cache configuration
 
-By default, LangSmith Deployment creates PostgreSQL and Redis instances for you. To use external services, set the following environment variables in your new deployment or revision:
+By default, Agent Server hosting provisions PostgreSQL and Redis instances for you. To use external services, set the following environment variables in your new Agent Server or revision:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Set environment variables for external services
@@ -392,9 +392,9 @@ For self-hosted LangSmith instances, use `http(s)://<langsmith-url>/api` where `
 >
 > If you set the endpoint in the `LANGSMITH_ENDPOINT` environment variable, use the API URL, such as `https://api.smith.langchain.com` or `http(s)://<langsmith-url>/api` if self-hosted.
 
-#### LangSmith Deployment API (Deployments)
+#### Control Plane API (Agent Server deployments)
 
-For LangSmith Deployment operations (deployments, revisions):
+For control plane operations (Agent Server deployments and revisions):
 
 <table>
   <thead>

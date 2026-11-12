@@ -56,6 +56,10 @@ LLM Gateway 位于您的应用程序和工作区已配置的模型提供程序�
 |基仕伯亚太区 | `apac.gateway.smith.langchain.com` |
 | AWS 美国 | `aws.gateway.smith.langchain.com` |
 
+> [!注意]
+>
+> 来自一个区域的 API 密钥不适用于另一区域的网关。
+
 ### 使用 BYOC 数据平面
 
 在 BYOC 上，将网关主机名替换为您的 [data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint) 并使用 `/gateway` 作为路径前缀：
@@ -66,13 +70,13 @@ LLM Gateway 位于您的应用程序和工作区已配置的模型提供程序�
 | Anthropic 留言 | `https://<data_plane_host>/gateway` | `POST /v1/messages` |
 | OpenAI 回应 | `https://<data_plane_host>/gateway/v1` | `POST /responses` |
 
-使用作用域为该数据平面中工作区的 API 密钥进行身份验证，并在 [Send the key](/langsmith/llm-gateway-authentication#send-the-key) 中列出的任何标头中发送。提供者机密、模型 ID、策略和跟踪的行为与云上相同。
-
-> [!警告]
+使用作用域为该数据平面中工作区的 API 密钥进行身份验证，并在 [Send the key](/langsmith/llm-gateway-authentication#send-the-key) 中列出的任何标头中发送。提供者机密、模型 ID、策略和跟踪的行为与云上相同。> [!警告]
 >
-> 默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能到达基本 URL，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。### 使用自托管安装
+> 默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能到达基本 URL，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。
 
-在自托管 LangSmith 上，首先是管理员 [enables the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted)。然后将网关主机名替换为您的 LangSmith 主机名，并使用 `/gateway` 为路径添加前缀：
+### 使用自托管安装
+
+在自托管 LangSmith 上，首先是管理员 [enables the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted)。然后将网关主机名替换为您的 LangSmith 主机名，并在路径前添加 `/gateway`：
 
 | API格式 |基本网址 |提示端点 |
 | - | - | - |

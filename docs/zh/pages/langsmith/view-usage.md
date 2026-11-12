@@ -29,7 +29,7 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 | - | - |
 | **LangSmith 痕迹（基本电荷）** |在计费期间发送到LangSmith的每个跟踪，无论数据保留层如何。 |
 | **LangSmith 跟踪（扩展数据保留升级）** |跟踪升级为延长保留期（截至 2026 年 9 月 14 日，默认为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。这些费用是在基本费用之外收取的。 |
-| **LangSmith 部署运行** |已部署的LangGraph代理的端到端调用。有关定价详情，请参阅[LangSmith Deployment billing](/langsmith/billing#langsmith-deployment-billing)。 |
+| **LangSmith 部署运行** |已部署的LangGraph代理的端到端调用。有关定价详情，请参阅[LangSmith Agent Server billing](/langsmith/billing#langsmith-deployment-billing)。 |
 | **LangSmith 舰队运行** | [Fleet](/langsmith/fleet) 代理的端到端调用。单独跟踪云托管和自托管部署。 |
 | **LangSmith 执行的部署节点** |跨部署代理的单独LangGraph节点执行。已部署代理图中的每个步骤都算作一个节点执行。单独跟踪云托管和自托管部署。 |
 
@@ -107,7 +107,7 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 
 ### 自托管的聚合使用情况
 
-使用情况图可在运行 Helm Chart 0.9.5 或更高版本的 [Self-hosted](/langsmith/self-hosted) 上获得。 LangSmith 自动生成并同步组织使用情况图表，可在**设置** > **使用情况和计费** > **使用情况图表**下找到：* **工作空间的使用情况**：每个工作空间的跟踪计数（根运行）
+使用情况图表可在运行 Helm Chart 0.9.5 或更高版本的 [Self-hosted](/langsmith/self-hosted) 上获得。 LangSmith 自动生成并同步组织使用情况图表，可在**设置** > **使用情况和计费** > **使用情况图表**下找到：* **工作空间的使用情况**：每个工作空间的跟踪计数（根运行）
 * **组织使用情况**：整个组织的总跟踪计数
 
 图表每 5 分钟刷新一次以包含新工作区，并且不可编辑。

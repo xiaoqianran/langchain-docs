@@ -22,7 +22,7 @@ agent = create_deep_agent(
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt="You are a helpful assistant.",
     tools=[search, fetch_url],
     memory=["./AGENTS.md"],
@@ -147,7 +147,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 
 > [!TIP]
 >
-> Use the `provider:model` format (for example `openai:gpt-5.5`) to quickly switch between models.
+> Use the `provider:model` format (for example `openai:gpt-6.1-sol`) to quickly switch between models.
 
 > [tab] OpenAI
 >
@@ -167,7 +167,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> agent = create_deep_agent(model="openai:gpt-5.5")
+> agent = create_deep_agent(model="openai:gpt-6.1-sol")
 > # this calls init_chat_model for the specified model with default parameters
 > # to use specific model parameters, use init_chat_model directly
 > ```
@@ -179,7 +179,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = init_chat_model(model="openai:gpt-5.5")
+> model = init_chat_model(model="openai:gpt-6.1-sol")
 > agent = create_deep_agent(model=model)
 > ```
 >
@@ -190,7 +190,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = ChatOpenAI(model="gpt-5.5")
+> model = ChatOpenAI(model="gpt-6.1-sol")
 > agent = create_deep_agent(model=model)
 > ```
 
@@ -259,7 +259,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
-> agent = create_deep_agent(model="azure_openai:gpt-5.5")
+> agent = create_deep_agent(model="azure_openai:gpt-6.1-sol")
 > # this calls init_chat_model for the specified model with default parameters
 > # to use specific model parameters, use init_chat_model directly
 > ```
@@ -274,7 +274,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = init_chat_model(
->     model="azure_openai:gpt-5.5",
+>     model="azure_openai:gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 > )
 > agent = create_deep_agent(model=model)
@@ -290,7 +290,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = AzureChatOpenAI(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 > )
 > agent = create_deep_agent(model=model)
@@ -553,7 +553,7 @@ def internet_search(
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[internet_search],
 )
 ```
@@ -757,7 +757,7 @@ async def main():
     async with MCPAdapter(config) as adapter:
         tools = await adapter.list_tools()
         agent = create_deep_agent(
-            model="openai:gpt-5.5",
+            model="openai:gpt-6.1-sol",
             tools=tools,
         )
         await agent.ainvoke(
@@ -924,7 +924,7 @@ thorough research, and then write a polished report. \
 """
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt=research_instructions,
 )
 ```
@@ -1189,7 +1189,7 @@ def log_tool_calls(request, handler):
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[get_weather],
     middleware=[log_tool_calls],
 )
@@ -1447,7 +1447,7 @@ from deepagents.backends import StateBackend
 from deepagents.middleware import SummarizationMiddleware
 
 backend = StateBackend()
-model = "openai:gpt-5.5"
+model = "openai:gpt-6.1-sol"
 
 custom_summarization = SummarizationMiddleware(
     model=model,
@@ -1677,7 +1677,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[CodeInterpreterMiddleware()],
 )
 ```
@@ -1768,7 +1768,7 @@ research_subagent = {
     "description": "Used to research more in depth questions",
     "system_prompt": "You are a great researcher",
     "tools": [internet_search],
-    "model": "openai:gpt-5.5",  # Optional override, defaults to main agent model
+    "model": "openai:gpt-6.1-sol",  # Optional override, defaults to main agent model
 }
 subagents = [research_subagent]
 
@@ -1811,11 +1811,11 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > from deepagents.backends import StateBackend
 >
 > # By default we provide a StateBackend
-> agent = create_deep_agent(model="openai:gpt-5.5")
+> agent = create_deep_agent(model="openai:gpt-6.1-sol")
 >
 > # Under the hood, it looks like
 > agent2 = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=StateBackend(),
 > )
 > ```
@@ -1915,7 +1915,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > from deepagents.backends import FilesystemBackend
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=FilesystemBackend(root_dir=".", virtual_mode=True),
 > )
 > ```
@@ -1999,7 +1999,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > from deepagents.backends import LocalShellBackend
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
 > )
 > ```
@@ -2068,7 +2068,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
@@ -2078,11 +2078,11 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > from langgraph.store.memory import InMemoryStore
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
@@ -2096,7 +2096,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
@@ -2110,7 +2110,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
@@ -2124,7 +2124,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
@@ -2138,7 +2138,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
@@ -2152,13 +2152,13 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
 > > [!NOTE]
 > >
-> > When deploying to [LangSmith Deployment](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
+> > When deploying to [LangSmith Agent Server](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
 >
 > > [!TIP]
 > >
@@ -2183,7 +2183,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > from deepagents.backends import ContextHubBackend
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=ContextHubBackend("my-agent"),
 > )
 > ```
@@ -2267,7 +2267,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > from langgraph.store.memory import InMemoryStore
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=CompositeBackend(
 >         default=StateBackend(),
 >         routes={
@@ -2690,7 +2690,7 @@ def notify_email(to: str, subject: str, body: str) -> str:
 checkpointer = MemorySaver()
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[remove_file, fetch_file, notify_email],
     interrupt_on={
         "remove_file": True,  # Default: approve, edit, reject, respond
@@ -2966,7 +2966,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
 > }
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=backend,
 >     skills=["/skills/"],
 >     checkpointer=checkpointer,
@@ -3292,7 +3292,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > checkpointer = MemorySaver()
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     memory=[
 >         "/AGENTS.md"
 >     ],
@@ -3562,7 +3562,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
 >     store=store,
 >     memory=["/AGENTS.md"],
@@ -3843,7 +3843,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > checkpointer = MemorySaver()
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=FilesystemBackend(root_dir="/Users/user/{project}"),
 >     memory=[
 >         "./AGENTS.md"
@@ -4053,9 +4053,9 @@ A single profile can carry: a custom base system prompt (`base_system_prompt`), 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import HarnessProfile, register_harness_profile
 
-# Append a system-prompt suffix whenever gpt-5.5 is selected.
+# Append a system-prompt suffix whenever gpt-6.1-sol is selected.
 register_harness_profile(
-    "openai:gpt-5.5",
+    "openai:gpt-6.1-sol",
     HarnessProfile(system_prompt_suffix="Respond in under 100 words."),
 )
 ```

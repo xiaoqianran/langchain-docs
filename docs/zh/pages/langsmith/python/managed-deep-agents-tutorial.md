@@ -71,7 +71,7 @@ from tools.search import internet_search
 
 agent = define_deep_agent(
     name="research-assistant",
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[internet_search],
 )
 ```
@@ -136,7 +136,7 @@ schedule = define_schedule(
 
 部署上线后，`mda deploy` 将此计划协调为 LangSmith cron 作业。在下一步中部署后，您应该会看到：
 
-* `mda deploy` 在没有进度错误的情况下完成（不要通过`--no-wait`，否则进度不协调）。
+* `mda deploy` 在没有进度错误的情况下完成（不要通过 `--no-wait`，否则进度不协调）。
 * 部署中此文件的托管 cron。计划名称与模块主干匹配：`daily_digest` (Python) 或 `daily-digest` (TypeScript)。
 * 此 cron 没有立即运行摘要。第一场火灾要等到工作日美国/洛杉矶 8:00 才会发生。
 

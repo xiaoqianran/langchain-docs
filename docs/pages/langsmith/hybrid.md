@@ -2,9 +2,9 @@
 
 # Hybrid
 
-A LangSmith Deployment setup where you self-host Agent Servers in your infrastructure and send traces to LangSmith Cloud or a self-hosted LangSmith instance.
+A LangSmith Agent Server setup where you self-host Agent Servers in your infrastructure and send traces to LangSmith Cloud or a self-hosted LangSmith instance.
 
-Hybrid is a platform setup for [LangSmith Deployment](/langsmith/deployment), which **deploys and runs agents in production**.
+Hybrid is a hosting setup for [LangSmith Agent Server](/langsmith/deployment), which **deploys and runs agents in production**.
 
 In a hybrid platform setup, you self-host [Agent Servers](/langsmith/agent-server) in your own infrastructure and send their traces to LangSmith, where LangSmith can be either a [self-hosted](/langsmith/self-hosted) instance or [LangSmith Cloud](/langsmith/cloud).
 
@@ -14,12 +14,12 @@ This setup gives you control over where your agent workloads run while letting y
 
 | Component | Where it runs | Who manages it |
 | - | - | - |
-| Agent Servers (The server that runs your applications.) for [LangSmith Deployment](/langsmith/deployment) | Your infrastructure | You |
+| Agent Servers (The server that runs your applications.) | Your infrastructure | You |
 | LangSmith (tracing, evaluation, prompts) | Self-hosted in your infrastructure, or LangSmith SaaS | You (self-hosted) or LangSmith (SaaS) |
 
 > [!NOTE]
 >
-> Hybrid is a platform setup for LangSmith Deployment (agent serving). To set up LangSmith for observability, evaluation, and prompt engineering only, see [Set up LangSmith](/langsmith/platform-setup).
+> Hybrid is an Agent Server hosting setup (agent serving). To set up LangSmith for observability, evaluation, and prompt engineering only, see [Set up LangSmith](/langsmith/platform-setup).
 
 ## Workflow
 

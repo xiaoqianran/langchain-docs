@@ -23,11 +23,11 @@
 | [SDK or API](#create-an-agent-programmatically) |通过 SDK 调用或 API 请求创建代理记录 |你设定吧|所有四个 |
 | [Deployment](/langsmith/deploy-to-agent-environment) |将您的代理代码部署到 LangSmith |您传递的或从部署名称派生的代理 ID |所有四个 |
 
-并不是每个特工都能拥有[deployment](/langsmith/deployment)。部署代理代码会从一开始就通过部署创建代理。使用 SDK 或 API 或通过 [**Connect an agent**](#name-an-agent-traced-from-outside-langsmith) 对话框创建的代理一开始无需部署，但稍后您可以进行 [deploy to it](/langsmith/deploy-to-agent-environment) 部署。 Studio 中构建的代理无法进行部署，因为它在 Studio 运行时上运行。部署后，代理的概述会显示 **部署** 部分。
+并不是每个特工都能拥有[deployment](/langsmith/deployment)。部署代理代码会从一开始就通过部署创建代理。使用 SDK 或 API 或通过 [**Connect an agent**](#name-an-agent-traced-from-outside-langsmith) 对话框创建的代理一开始无需部署，但稍后可以进行 [deploy to it](/langsmith/deploy-to-agent-environment) 部署。 Studio 中构建的代理无法进行部署，因为它在 Studio 运行时上运行。要检查已部署代理的代理服务器和环境，请在其概述标题中选择 **代理服务器**。
 
-当第一次将跟踪寻址到某个环境时，Studio 中内置的代理就会获得其其他环境。关于这四个是什么，请参见[Agent environments](/langsmith/agent-environments#environment-names)。
+当第一次将跟踪寻址到某个环境时，Studio 中内置的代理就会获得其其他环境。关于这四个是什么，请参见[Agent environments](/langsmith/agent-environments#environment-names)。当LangSmith通过这些流程构建或部署代理时，它会处理注册。重用该代理进行跟踪。不要为同一部署创建单独的外部代理。
 
-当LangSmith通过这些流程构建或部署代理时，它会处理注册。重用该代理进行跟踪。不要为同一部署创建单独的外部代理。## 标识符规则
+## 标识符规则
 
 标识符长度为1～63个字符，由小写字母、数字和连字符组成。它必须以字母开头并以字母或数字结尾，因此 `support-agent` 和 `billing-v2` 有效。其他任何事情都会被拒绝。
 
@@ -35,9 +35,9 @@
 
 创建代理后，标识符无法更改。显示名称即可。对于哪个值是哪个，请参阅[Identifiers and display names](/langsmith/agent-registry#identifiers-and-display-names)。
 
-## 从新的代理菜单开始
+## 从新的代理菜单开始两个控件可打开新代理菜单：代理列表上的 **+ 代理**，以及代理切换器中搜索框旁边的 **+** 按钮，该按钮悬停时会显示 **新代理** 工具提示。切换器按钮仅对具有 `projects:create` 权限的用户显示。菜单分为三个流程：
 
-两个控件可打开新代理菜单：代理列表上的 **+ 代理**，以及代理切换器中搜索框旁边的 **+** 按钮，该按钮悬停时会显示 **新代理** 工具提示。切换器按钮仅对具有 `projects:create` 权限的用户显示。菜单分为三个流程：* **构建** > **无代码**：打开 Studio，您可以在其中描述代理，然后 LangSmith Chat 起草它。参见[Build an agent with LangSmith Studio](/langsmith/build-an-agent)。
+* **构建** > **无代码**：打开 Studio，您可以在其中描述代理，然后 LangSmith Chat 起草它。参见[Build an agent with LangSmith Studio](/langsmith/build-an-agent)。
 * **构建** > **使用代码**：打开 **使用代码构建** 窗格。 **由 LangSmith** 托管，涵盖 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)，它会在您部署时创建代理并需要付费计划。 **自行托管**涵盖使用 [open source frameworks](/oss/python/langchain/overview) 进行构建，然后使用下面的 UI 或 API 创建代理的 LangSmith 记录。
 * **连接** > **连接现有代理**：打开 **连接代理** 对话框，您可以在其中命名从外部跟踪的代理 LangSmith。请参阅下一节。
 

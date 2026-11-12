@@ -4,7 +4,7 @@
 
 # 代理服务器指标
 
-有关自托管部署的代理服务器 OpenTelemetry 指标的参考，包括部署 UI 指标、内部指标和 Datadog 导出。
+有关自托管部署的代理服务器 OpenTelemetry 指标的参考，包括代理服务器 UI 指标、内部指标和 Datadog 导出。
 
 [Agent Server](/langsmith/agent-server) 通过 OpenTelemetry (OTel) 客户端发出指标。默认情况下，指标使用 `lg_api_` 名称前缀（使用 `METRIC_PREFIX` 覆盖）。
 
@@ -14,10 +14,10 @@
 
 代理服务器将指标分为两组：
 
-* **部署 UI 指标**：默认情况下，出现在 LangSmith 部署 UI 中，并在代理服务器 Prometheus 抓取端点（`GET /metrics`、`format=prometheus`）上公开。
-* **内部指标**：LangChain 操作员使用的操作和调试指标。配置后发送至 Datadog。在 Prometheus 上，内部指标仅在您选择加入时才会出现。|后端 |公制集|启用 |
+* **代理服务器 UI 指标**：默认情况下，出现在 LangSmith 代理服务器 UI 中，并在代理服务器 Prometheus 抓取端点（`GET /metrics`、`format=prometheus`）上公开。
+* **内部指标**：LangChain 操作员使用的操作和调试指标。配置后发送至 Datadog。在 Prometheus 上，内部指标仅在您选择加入时才会出现。|后端 |公制集 |启用 |
 | - | - | - |
-| **普罗米修斯**（刮`GET /metrics`）|默认情况下的部署 UI 指标。设置 `EXPOSE_INTERNAL_METRICS_PROMETHEUS=true` 也可以在同一端点上公开内部指标。 |安装 OTel Prometheus 导出器后可用 |
+| **普罗米修斯**（刮`GET /metrics`）|默认情况下，代理服务器 UI 指标。设置 `EXPOSE_INTERNAL_METRICS_PROMETHEUS=true` 也可以在同一端点上公开内部指标。 |安装 OTel Prometheus 导出器后可用 |
 | **Datadog**（OTLP 推送）|仅内部指标 |设置`LSD_DD_API_KEY`（或`CUSTOM_LSD_DD_API_KEY`）。指标推送到`https://{LSD_DD_ENDPOINT}/v1/metrics`（默认端点：`otlp.us5.datadoghq.com`）。 |
 
 Prometheus 和 Datadog 可以同时运行。 Datadog 接收内部补充，因此 UI 指标不会在两个后端中重复。
@@ -31,13 +31,13 @@ Prometheus 和 Datadog 可以同时运行。 Datadog 接收内部补充，因此
 | **关键** | `1` |核心健康和故障信号。启用内部指标时始终记录，包括在 `dev` / `dev_free` 部署上。 |
 | **信息** | `2` |生产监控的操作细节。生产中的默认上限 (`METRIC_MAX_EMITTING_TIER=2`)。 |
 | **调试** | `3` |更深入的诊断以排除故障。除非您加注`METRIC_MAX_EMITTING_TIER`，否则请忽略。 |
-| **深度\_调试** | `4` |详细的诊断。除非您加注`METRIC_MAX_EMITTING_TIER`，否则请忽略。 |将 `METRIC_MAX_EMITTING_TIER` 设置为您想要记录内部指标的最高层。部署 UI 指标会忽略此设置并始终发出。
+| **深度\_调试** | `4` |详细的诊断。除非您加注`METRIC_MAX_EMITTING_TIER`，否则请忽略。 |将 `METRIC_MAX_EMITTING_TIER` 设置为您想要记录内部指标的最高层。代理服务器 UI 指标会忽略此设置并始终发出。
 
 ## 配置导出
 
 ### 普罗米修斯
 
-要抓取部署 UI 指标：
+要抓取代理服务器 UI 指标：
 
 1. 将 Prometheus 收集器指向代理服务器 `/metrics` 端点（例如 `https://<agent-server-host>/metrics`）。
 2. 使用默认的`format=prometheus`查询参数（或省略）。
@@ -55,11 +55,11 @@ EXPOSE_INTERNAL_METRICS_PROMETHEUS=true
 1. 将 `LSD_DD_API_KEY` 设置为您的 Datadog API 密钥。 `DATADOG_METRICS_ENABLED` 当钥匙存在时自动打开。
 2. （可选）设置 `LSD_DD_ENDPOINT`（默认：`otlp.us5.datadoghq.com`）或旧别名 `CUSTOM_LSD_DD_API_KEY` / `CUSTOM_LSD_DD_ENDPOINT`。
 
-Datadog 仅接收内部指标。继续在 Prometheus 或 Grafana 中抓取 `/metrics` 的部署 UI 指标。
+Datadog 仅接收内部指标。继续在 Prometheus 或 Grafana 中抓取 `/metrics` 的代理服务器 UI 指标。
 
-## 部署 UI 指标
+## 代理服务器 UI 指标
 
-这些指标有`lsd_web_metric=true`。它们默认出现在 Prometheus `/metrics` scrape 上，并为 LangSmith 部署 UI 提供支持。列出等级值以供参考；无论`METRIC_MAX_EMITTING_TIER`如何，这些指标始终会发出。|名称 |类型 |等级 |描述 |
+这些指标有`lsd_web_metric=true`。它们默认出现在 Prometheus `/metrics` scrape 上，并为 LangSmith Agent Server UI 提供支持。列出等级值以供参考；无论`METRIC_MAX_EMITTING_TIER`如何，这些指标始终会发出。|名称 |类型 |等级 |描述 |
 | - | - | - | - |
 | `lg_api_http_requests_total` |专柜|信息|对代理服务器的 HTTP 请求总数。 |
 | `lg_api_http_requests_latency` |直方图（毫秒）|信息| HTTP 请求延迟。 |
@@ -85,7 +85,7 @@ Datadog 仅接收内部指标。继续在 Prometheus 或 Grafana 中抓取 `/met
 
 |名称 |类型 |等级 |描述 |
 | - | - | - | - |
-| `lg_api_reencrypt_writeback_succeeded_counter` |专柜|信息|惰性重新加密替换写回成功。 |
+| `lg_api_reencrypt_writeback_succeeded_counter` |专柜|信息|延迟重新加密替换成功的写回。 |
 | `lg_api_reencrypt_writeback_cas_skipped_counter` |专柜|信息|替换写回被跳过，因为并发更新更改了存储的值。 |
 | `lg_api_reencrypt_writeback_failed_counter` |专柜|信息|替换失败的写回。读取仍返回解密数据。 |
 

@@ -1,22 +1,26 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: LangSmith Deployment | https://docs.langchain.com/langsmith/deployment -->
+<!-- langchain-docs: LangSmith Agent Server | https://docs.langchain.com/langsmith/deployment -->
 
-# LangSmith 部署
+# LangSmith 代理服务器
 
 通过持久执行、实时流和水平扩展来部署和管理代理。
 
-**LangSmith 部署** 是专为代理工作负载构建的工作流编排运行时。它提供了在生产中大规模可靠运行所需的托管基础​​设施代理，支持从本地开发到部署的整个生命周期。部署到云、BYOC 或您自己的基础设施。
+**LangSmith 代理服务器** 是专为代理工作负载构建的工作流编排运行时。代理服务器托管为大规模生产中运行代理提供基础架构和部署管理。部署到云、BYOC 或您自己的基础设施，或在没有控制平面的情况下运行独立的代理服务器。
 
 > [!注意]
 >
-> 本页介绍您的 **代理** 如何通过 **LangSmith 部署** 在生产环境中运行。
+> LangSmith 部署现在是 **LangSmith 代理服务器**。
+
+> [!注意]
+>
+> 本页介绍您的 **代理** 如何使用 **LangSmith 代理服务器** 在生产环境中运行。
 >
 > 在哪里运行LangSmith进行可观察性、评估和提示工程是分开的；详情请参阅[Platform setup](/langsmith/platform-setup)。
 
 ## 可部署的产品
 
-LangSmith 部署与框架无关，这意味着您可以部署使用以下方式构建的代理：
+LangSmith 代理服务器与框架无关，这意味着您可以部署使用以下方式构建的代理：
 
 > [卡][LangGraph (and LangChain)](/langsmith/deployment-quickstart)
 >
@@ -28,21 +32,21 @@ LangSmith 部署与框架无关，这意味着您可以部署使用以下方式�
 
 > [卡][Other frameworks](/langsmith/deploy-other-frameworks)
 >
-> 使用功能 API 或 `deployments-wrap-sdk` 部署 Claude Agent SDK、Strands、CrewAI、AutoGen 和其他代理框架。
-
-> [卡片][Looking to deploy Deep Agents?](/langsmith/python/managed-deep-agents-overview)
+> 使用功能 API 或 `deployments-wrap-sdk` 部署 Claude Agent SDK、Strands、CrewAI、AutoGen 和其他代理框架。> [卡片][Looking to deploy Deep Agents?](/langsmith/python/managed-deep-agents-overview)
 >
 > 使用托管Deep Agents：用于部署代码优先Deep Agents的托管运行时。
 
-## LangSmith 部署环境根据您希望运行 [control plane](/langsmith/control-plane) 和 [data plane](/langsmith/data-plane)（代理服务器及其数据库）的位置选择环境。所有基础设施类型都使用相同的[Agent Server](/langsmith/agent-server)运行时。
+## 代理服务器托管环境
+
+根据您希望运行 [control plane](/langsmith/control-plane) 和 [data plane](/langsmith/data-plane)（代理服务器及其数据库）的位置选择环境。所有基础设施类型都使用相同的[Agent Server](/langsmith/agent-server)运行时。
 
 > [卡][Cloud](/langsmith/deploy-to-cloud-overview)
 >
-> 由 AWS、Azure 和 GCP 上的LangChain 完全管理。在 LangSmith UI 中或使用 [⟦T2⟧](/langsmith/cli#deploy) 从 GitHub 创建部署。需要[Plus plan or above](https://www.langchain.com/pricing)。
+> 由 AWS、Azure 和 GCP 上的 LangChain 完全管理。在 LangSmith UI 中或使用 [⟦T2⟧](/langsmith/cli#deploy) 从 GitHub 创建部署。需要[Plus plan or above](https://www.langchain.com/pricing)。
 
 > [卡][Self-hosted with control plane](/langsmith/deploy-with-control-plane)
 >
-> 在您自己的 Kubernetes 集群中运行 LangSmith 部署控制平面和代理服务器，以及自托管 LangSmith。需要启用 LangSmith 部署的 [Enterprise plan](https://www.langchain.com/pricing)。
+> 在您自己的 Kubernetes 集群中运行 LangSmith 代理服务器控制平面和代理服务器，以及自托管 LangSmith。需要启用代理服务器托管的[Enterprise plan](https://www.langchain.com/pricing)。
 
 > [卡][Hybrid](/langsmith/hybrid)
 >
@@ -52,9 +56,9 @@ LangSmith 部署与框架无关，这意味着您可以部署使用以下方式�
 >
 > 使用 Docker、Compose 或 Kubernetes 部署代理服务器。带上您自己的 PostgreSQL、Redis 和 LangSmith 许可证；没有控制平面。可选 [LangSmith tracing](/langsmith/observability) 到云或自托管实例。
 
-## 常用设置* **为您的代理托管。** LangSmith 在 [Cloud](/langsmith/deploy-to-cloud-overview) 上部署。 LangChain 托管控制平面、数据平面和数据库。与LangSmith云配对。
-* **您的 VPC 中的代理，受控制平面管理。** LangSmith 通过 [Hybrid](/langsmith/hybrid) 部署。 LangChain 托管控制平面；您托管代理服务器及其数据平面。与 LangSmith 云或自托管 LangSmith 配对。
-* **完整数据驻留或气隙。** [Self-hosted LangSmith Deployment](/langsmith/deploy-with-control-plane)。您可以在自己的基础设施中托管控制平面和代理服务器以及自托管 LangSmith。
+## 常用设置* **为您的代理托管托管。** LangSmith 代理服务器位于 [Cloud](/langsmith/deploy-to-cloud-overview) 上。 LangChain 托管控制平面、数据平面和数据库。与LangSmith云配对。
+* **VPC 中的代理，由控制平面管理。** LangSmith 代理服务器通过 [Hybrid](/langsmith/hybrid)。 LangChain 托管控制平面；您托管代理服务器及其数据平面。与 LangSmith 云或自托管 LangSmith 配对。
+* **完整数据驻留或气隙。** [Self-hosted Agent Server hosting](/langsmith/deploy-with-control-plane)。您可以在自己的基础设施中托管控制平面和代理服务器以及自托管 LangSmith。
 * **仅代理运行时，无控制平面。** [Standalone Agent Server](/langsmith/deploy-standalone-server)。在没有控制平面的情况下使用 Docker 或 Kubernetes 运行代理服务器容器，可选择将跟踪发送到 LangSmith 云或自托管。
 
 LangSmith平台运行位置请参见[Platform setup](/langsmith/platform-setup)。
@@ -67,7 +71,7 @@ LangSmith 云上的部署按每个部署请求的计算和数据库资源计费�
 >
 > 在 LangSmith 云上部署需要 Plus 或 Enterprise 计划。欲了解更多信息，请参阅[pricing page](https://www.langchain.com/pricing)。
 
-> [卡片][LangSmith Deployment billing](/langsmith/billing#langsmith-deployment-billing)
+> [卡片][LangSmith Agent Server billing](/langsmith/billing#langsmith-deployment-billing)
 >
 > 查看费率、每种部署规模的每小时成本以及降低部署成本的方法。
 
@@ -87,11 +91,11 @@ LangSmith 云上的部署按每个部署请求的计算和数据库资源计费�
 
 ## 全栈网络应用程序
 
-将 LangChain.js 代理和聊天 UI 作为单个 Web 应用程序一起发布。 Vite 示例使用 LangSmith Deployment 作为单独 UI 背后的代理后端。其他示例将代理嵌入到 Web 框架的路由处理程序中并发送到主机平台。
+将 LangChain.js 代理和聊天 UI 作为单个 Web 应用程序一起发布。 Vite 示例使用 LangSmith 代理服务器作为单独 UI 后面的代理后端。其他示例将代理嵌入到 Web 框架的路由处理程序中并发送到主机平台。
 
 > [卡][Full-stack web apps](/langsmith/deploy-frameworks-and-platforms)
 >
-> 发布 LangChain.js 聊天应用程序：将代理嵌入 Next.js、SvelteKit、Nuxt、Cloudflare Workers 或 Deno Deploy（无需代理服务器），或将 LangSmith 部署与 Vite + React UI 配对。
+> 发布 LangChain.js 聊天应用程序：将代理嵌入 Next.js、SvelteKit、Nuxt、Cloudflare Workers 或 Deno Deploy（无需代理服务器），或将 LangSmith 代理服务器与 Vite + React UI 配对。
 >
 > ![LangSmith](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/langchain.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=b910ed9cd0b6b8adb4b6da400882e92c)
 >

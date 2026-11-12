@@ -533,7 +533,7 @@
       ],
       "api-ref-control-plane": [
         {
-          "title": "Control plane API reference for LangSmith Deployment",
+          "title": "Control plane API reference for Agent Server hosting",
           "rel": "langsmith/api-ref-control-plane.md"
         }
       ],
@@ -767,7 +767,7 @@
       ],
       "cicd-pipeline-example": [
         {
-          "title": "Implement a CI/CD pipeline using LangSmith Deployment and Evaluation",
+          "title": "Implement a CI/CD pipeline using LangSmith Agent Server and Evaluation",
           "rel": "langsmith/cicd-pipeline-example.md"
         }
       ],
@@ -821,7 +821,7 @@
       ],
       "components": [
         {
-          "title": "LangSmith Deployment components",
+          "title": "LangSmith Agent Server components",
           "rel": "langsmith/components.md"
         }
       ],
@@ -1151,7 +1151,7 @@
       ],
       "deploy-to-cloud": [
         {
-          "title": "Create a deployment",
+          "title": "Create an Agent Server",
           "rel": "langsmith/deploy-to-cloud.md"
         }
       ],
@@ -1181,7 +1181,7 @@
       ],
       "deployment": [
         {
-          "title": "LangSmith Deployment",
+          "title": "LangSmith Agent Server",
           "rel": "langsmith/deployment.md"
         }
       ],
@@ -1217,7 +1217,7 @@
       ],
       "enable-self-hosted-deployment": [
         {
-          "title": "Enable LangSmith Deployment",
+          "title": "Enable Agent Server hosting",
           "rel": "langsmith/enable-self-hosted-deployment.md"
         }
       ],
@@ -1859,7 +1859,7 @@
       ],
       "manage-deployment": [
         {
-          "title": "Manage a deployment",
+          "title": "Manage an Agent Server",
           "rel": "langsmith/manage-deployment.md"
         }
       ],
@@ -1931,7 +1931,7 @@
       ],
       "monitor-deployment": [
         {
-          "title": "Monitor a deployment",
+          "title": "Monitor an Agent Server",
           "rel": "langsmith/monitor-deployment.md"
         }
       ],
@@ -2777,7 +2777,7 @@
       ],
       "server-api-ref": [
         {
-          "title": "Agent Server API reference for LangSmith Deployment",
+          "title": "Agent Server API reference",
           "rel": "langsmith/server-api-ref.md"
         }
       ],

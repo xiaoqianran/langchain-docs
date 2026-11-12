@@ -4,7 +4,7 @@
 
 # 如何添加自定义路由
 
-将代理部署到 LangSmith 部署时，您的服务器会自动公开用于创建运行和线程、与长期内存存储交互、管理可配置助手和其他核心功能 ([see all default API endpoints](/langsmith/server-api-ref)) 的路由。
+将代理部署到 LangSmith 代理服务器时，您的服务器会自动公开用于创建运行和线程、与长期内存存储交互、管理可配置助手以及其他核心功能 ([see all default API endpoints](/langsmith/server-api-ref)) 的路由。
 
 您可以通过提供自己的应用程序对象并在 `langgraph.json` 中传递其路径（例如，Python 中的 [⟦T9⟧](https://starlette.dev/applications/) 应用程序或 TypeScript 中的 [⟦T10⟧](https://hono.dev/) 应用程序）来添加自定义路由。
 

@@ -62,7 +62,7 @@ Set `LANGSMITH_API_KEY` to a key for a workspace inside that data plane. Set `LA
 
 The CLI derives the Deployment API URL from the data plane endpoint. Do not append `/api-host` to `LANGSMITH_ENDPOINT`.
 
-BYOC data planes do not support Serverless deployments. Run `mda deploy --push-to <image-repository>` to build and push your agent image. The CLI creates a Dedicated deployment by default, so you do not need to pass `--deployment-type dedicated`.
+BYOC data planes do not support Serverless Agent Servers. Run `mda deploy --push-to <image-repository>` to build and push your agent image. The CLI creates a Dedicated Agent Server by default, so you do not need to pass `--agent-server-type dedicated`.
 
 ## Deploy to LangSmith
 
@@ -105,20 +105,20 @@ pnpm exec mda deploy --name research-assistant
 bunx mda deploy --name research-assistant
 ```
 
-`mda deploy` creates a Serverless deployment by default. Use `--deployment-type dedicated` when creating a Dedicated deployment.
+`mda deploy` creates a Serverless Agent Server by default. Use `--agent-server-type dedicated` when creating a Dedicated Agent Server. The legacy `--deployment-type` spelling remains accepted. If your CLI does not recognize the Agent Server flag, use the legacy spelling or upgrade.
 
 Serverless is available in every LangSmith Cloud region. Self-hosted and hybrid environments reject Serverless deployments. Use `dedicated` for always-on capacity.
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npx mda deploy --deployment-type dedicated
+npx mda deploy --agent-server-type dedicated
 ```
 
 ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm exec mda deploy --deployment-type dedicated
+pnpm exec mda deploy --agent-server-type dedicated
 ```
 
 ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bunx mda deploy --deployment-type dedicated
+bunx mda deploy --agent-server-type dedicated
 ```
 
 Use `--no-wait` to trigger the build without polling for completion:

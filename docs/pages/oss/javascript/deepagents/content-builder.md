@@ -40,7 +40,7 @@ Node.js 18 or later.
 
 ## Choose your path
 
-Start with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, use the Deep Agents SDK and host agents yourself, or run a custom [LangSmith Deployment](/langsmith/deployment).
+Start with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, use the Deep Agents SDK and host agents yourself, or run a custom [Agent Server](/langsmith/deployment).
 
 > [tab] Managed Deep Agents
 >
@@ -704,7 +704,7 @@ Start with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overv
 
 > [tab] Deep Agents SDK
 >
-> Use the open source SDK when you want to host the agent yourself or run a custom [LangSmith Deployment](/langsmith/deployment). The example keeps behavior in memory files, skills, and subagent definitions, plus a [FilesystemBackend](/oss/javascript/deepagents/backends).
+> Use the open source SDK when you want to host the agent yourself or run a custom [Agent Server](/langsmith/deployment). The example keeps behavior in memory files, skills, and subagent definitions, plus a [FilesystemBackend](/oss/javascript/deepagents/backends).
 >
 > ### Setup
 >
@@ -1283,7 +1283,7 @@ Start with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overv
 >   };
 >
 >   return createDeepAgent({
->     model: "openai:gpt-5.5",
+>     model: "openai:gpt-6.1-sol",
 >     memory: ["./AGENTS.md"],
 >     skills: ["./skills/"],
 >     tools: [generateCover, generateSocialImage],

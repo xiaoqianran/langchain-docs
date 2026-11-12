@@ -275,7 +275,7 @@ const callCounterMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [...],
   middleware: [callCounterMiddleware],
 });
@@ -393,7 +393,7 @@ const userContextMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   middleware: [userContextMiddleware],
   tools: [],
   contextSchema,
@@ -427,7 +427,7 @@ When using multiple middleware, understand how they execute:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   middleware: [middleware1, middleware2, middleware3],
   tools: [...],
 });
@@ -483,7 +483,7 @@ To exit early from middleware, return a dictionary with `jump_to`:
 import { createAgent, createMiddleware, AIMessage } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   middleware: [
     createMiddleware({
       name: "BlockedContentMiddleware",
@@ -568,7 +568,7 @@ const addContextMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt: "You are a helpful assistant.",
   middleware: [addContextMiddleware],
 });
@@ -724,7 +724,7 @@ const toolSelectorMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: allTools,
   middleware: [toolSelectorMiddleware],
 });

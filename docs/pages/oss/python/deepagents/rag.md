@@ -68,7 +68,7 @@ from langchain.messages import HumanMessage
 EXAMPLE_QUERY = "How do I stream intermediate tool results from a subagent?"
 
 baseline_agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     system_prompt=(
         "You are a helpful LangChain documentation assistant. "
@@ -1039,7 +1039,7 @@ chunk_analyst_subagent = {
     "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
 }
 
-model = init_chat_model(model="openai:gpt-5.5")
+model = init_chat_model(model="openai:gpt-6.1-sol")
 
 agent = create_deep_agent(
     model=model,
@@ -1471,7 +1471,7 @@ You implemented one RAG pattern with [`create_deep_agent`](https://reference.lan
 * Add [Skills](/oss/python/deepagents/skills) to package retrieval workflows and domain-specific search guidance
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) with LangSmith datasets and evaluators
 * Read [Context engineering](/oss/python/deepagents/context-engineering) for offloading and subagent isolation strategies
-* Deploy with [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, host agents yourself or use a custom [LangSmith Deployment](/langsmith/deployment)
+* Deploy with [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, host agents yourself or use a custom [Agent Server](/langsmith/deployment)
 * Use [Grading rubrics](/oss/python/deepagents/rubric) to verify answers are grounded in retrieved source material
 
 ***

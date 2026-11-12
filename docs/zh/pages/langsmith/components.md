@@ -1,16 +1,20 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: LangSmith Deployment components | https://docs.langchain.com/langsmith/components -->
+<!-- langchain-docs: LangSmith Agent Server components | https://docs.langchain.com/langsmith/components -->
 
-# LangSmith 部署组件
+# LangSmith 代理服务器组件
 
-代理服务器、LangGraph CLI、Studio、SDK、RemoteGraph、控制平面和数据平面组件的概述。
+代理服务器、LangGraph CLI、Studio、SDK、RemoteGraph、控制平面和数据平面组件概述。
 
-[LangSmith Deployment](/langsmith/deployment) 安装包括几个关键组件。这些工具和服务共同提供了用于构建、部署和管理图形（包括代理应用程序）的完整解决方案，无论是在 [Cloud](/langsmith/cloud) 上还是在您自己的 [self-hosted](/langsmith/self-hosted) 基础设施中：
+[LangSmith Agent Server](/langsmith/deployment) 及其托管基础设施包括以下组件。这些工具和服务共同提供了用于构建、部署和管理图形（包括代理应用程序）的完整解决方案，无论是在 [Cloud](/langsmith/cloud) 上还是在您自己的 [self-hosted](/langsmith/self-hosted) 基础设施中：
+
+> [!注意]
+>
+> LangSmith 部署现在是 **LangSmith 代理服务器**。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 flowchart
-    subgraph LangSmith Deployment
+    subgraph LangSmith Agent Server
         A[LangGraph CLI] -->|creates| B(Agent Server deployment)
         B <--> D[Studio]
         B <--> E[SDKs]
@@ -26,8 +30,8 @@ flowchart
 * [LangGraph CLI](/langsmith/cli)：用于在本地构建、打包图形并与图形交互并准备部署的命令行界面。
 * [Studio](/langsmith/studio)：专门用于可视化、交互和调试的IDE。连接到本地代理服务器以开发和测试您的图形。
 * [Python/JS SDK](/langsmith/reference)：Python/JS SDK 提供了一种编程方式来与应用程序中部署的图形和代理进行交互。
-* [RemoteGraph](/langsmith/use-remote-graph)：允许您与已部署的图进行交互，就像它在本地运行一样。
-* [Control Plane](/langsmith/control-plane)：用于创建、更新和管理代理服务器部署的 UI 和 API。* [Data Plane](/langsmith/data-plane): The runtime layer that executes your graphs, including Agent Servers, their backing services (PostgreSQL, Redis, etc.), and the listener that reconciles state from the control plane.
+* [RemoteGraph](/langsmith/use-remote-graph)：允许您与已部署的图进行交互，就像它在本地运行一样。* [Control Plane](/langsmith/control-plane)：用于创建、更新和管理代理服务器部署的 UI 和 API。
+* [Data Plane](/langsmith/data-plane)：执行图形的运行时层，包括代理服务器、其支持服务（PostgreSQL、Redis 等）以及协调控制平面状态的侦听器。
 
 ***
 

@@ -20,7 +20,7 @@ rate_limiter = InMemoryRateLimiter(
     max_bucket_size=10,  # Controls the maximum burst size.
 )
 
-model = init_chat_model("gpt-5.5", rate_limiter=rate_limiter)
+model = init_chat_model("gpt-6.1-sol", rate_limiter=rate_limiter)
 
 def app(inputs: dict) -> dict:
     response = model.invoke(...)
@@ -50,7 +50,7 @@ model_with_retry = init_chat_model("gpt-5.4-mini").with_retry(stop_after_attempt
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { initChatModel } from "langchain";
 
-const model = await initChatModel("gpt-5.5", {
+const model = await initChatModel("gpt-6.1-sol", {
     modelProvider: "openai",
 });
 

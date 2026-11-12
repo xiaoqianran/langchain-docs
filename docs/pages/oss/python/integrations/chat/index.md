@@ -153,6 +153,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`ChatKalibr`](https://kalibr.systems/docs) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kalibr/month)](https://pypi.org/project/langchain-kalibr/) |
 | [`ChatRuncrate`](https://www.runcrate.ai/docs/sdks/langchain?utm_source=langchain\&utm_medium=directory\&utm_campaign=integrations) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-runcrate/month)](https://pypi.org/project/langchain-runcrate/) |
 | [`ChatRevana`](https://github.com/Aribk7/langchain-revana#readme) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-revana/month)](https://pypi.org/project/langchain-revana/) |
+| [`ChatLinkrra`](https://github.com/weare-linkrra/linkrra-synap/tree/main/langchain-linkrra#readme) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-linkrra/month)](https://pypi.org/project/langchain-linkrra/) |
 | [`1Claw`](https://docs.1claw.xyz) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`API-Route`](https://www.api-route.com/docs/overview) | | | | | N/A |
 | [`Auxen`](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ | N/A |
@@ -161,6 +162,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`Cheaper Inference`](https://cheaperinference.com/docs) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`DaoXE`](https://daoxe.com) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`GPTZZZ`](https://gptzzz.ai/docs/) | ✅ | ✅ | ✅ | ✅ | N/A |
+| [`HopBase`](https://hop-base.com/en/docs) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`Snowflake Cortex REST API`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-rest-api) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`Synthorai`](https://synthorai.io/docs/) | | | | | N/A |
 | [`TokenMix`](https://tokenmix.ai/docs) | ✅ | ✅ | ✅ | ❌ | N/A |

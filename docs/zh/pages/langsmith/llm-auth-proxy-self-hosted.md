@@ -33,7 +33,7 @@ LLM 身份验证代理是一个基于 [Envoy](https://www.envoyproxy.io/) 的组
 
 ## 先决条件
 
-* LangSmith 企业计划（SaaS 或自托管版本 0.13.33+）
+* LangSmith 企业计划（SaaS 或版本 0.13.33+ 上的自托管）
 * 带有 Helm 3 的 Kubernetes 集群
 * Envoy v1.37 或更高版本（Helm 图表默认为`envoyproxy/envoy:v1.37-latest`）
 * 您的上游 LLM 提供商或网关的 URL（代理将请求转发到的目的地）
@@ -112,7 +112,7 @@ helm repo update
 ```
 
 使用上游 URL 和 JWT 验证设置创建 `values.yaml`。 JWKS 配置有两个选项：* **`jwksUri`（推荐）：** 指向您的 LangSmith 实例的 `/.well-known/jwks.json` 端点。 Envoy 自动获取并缓存公钥，支持无缝密钥轮换。
-* **`jwksJson`（内联）：** 将 JWKS JSON 直接粘贴到 `values.yaml`。将此用于测试或气隙环境，其中身份验证代理无法访问 LangSmith 的出站网络。需要更新图表才能轮换密钥。仅包含公钥组件；省略 `d` 字段（私钥）。
+* **`jwksJson`（内联）：** 将 JWKS JSON 直接粘贴到 `values.yaml` 中。将此用于测试或气隙环境，其中身份验证代理无法访问 LangSmith 的出站网络。需要更新图表才能轮换密钥。仅包含公钥组件；省略 `d` 字段（私钥）。
 
 如果两者都设置了，则`jwksUri`优先。
 
@@ -332,7 +332,7 @@ authProxy:
 
 通过 `processingMode` 控制将哪些相发送到变压器。仅启用您需要的阶段，因为禁用未使用的阶段会减少延迟。
 
-|领域|选项|描述 |
+|领域 |选项|描述 |
 | - | - | - |
 | `requestHeaderMode` | `SEND`、`SKIP`、`DEFAULT` |是否转发请求头。 |
 | `responseHeaderMode` | `SEND`、`SKIP`、`DEFAULT` |是否转发响应头。 |
@@ -342,7 +342,7 @@ authProxy:
 | `responseTrailerMode` | `SEND`、`SKIP` |是否转发响应预告片。 |
 
 * 使用`BUFFERED`进行请求正文重写：在发送之前缓冲完整的正文，最简单的 JSON 重写。
-* 使用 `STREAMED` 进行流式 LLM 响应正文重写：在块到达时发送块，延迟较低，但实现起来更复杂。
+* 使用`STREAMED`进行流式LLM响应正文重写：在块到达时发送块，延迟较低，但实现起来更复杂。
 * 使用`NONE`完全跳过一个阶段。> [!警告]
 >
 > 当改变主体时，您的 `ext_proc` 服务还必须更新 `content-length` 标头，以通过 `HeaderMutation` 匹配新的主体大小。 Envoy 拒绝 `content-length` 与突变体不匹配的响应。
@@ -352,7 +352,7 @@ authProxy:
 启用 `ext_proc` 进行标头注入和正文重写的示例：
 
 ```
-curl -H "X-LangSmith-LLM-Auth: <JWT>" -d '{"model":"gpt-5.5",...}'
+curl -H "X-LangSmith-LLM-Auth: <JWT>" -d '{"model":"gpt-6.1-sol",...}'
   -> Envoy(:10000)
   -> built-in Envoy JWT filter (validate sig, iss, aud)
   -> `ext_proc` filter -> transformer:50051 (gRPC)

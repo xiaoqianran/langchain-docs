@@ -326,7 +326,7 @@
 > def correctness_evaluator(inputs: dict, outputs: dict, reference_outputs: dict):
 >     evaluator = create_llm_as_judge(
 >         prompt=CORRECTNESS_PROMPT,
->         model="openai:gpt-5.5",
+>         model="openai:gpt-6.1-sol",
 >         feedback_key="correctness",
 >     )
 >     return evaluator(
@@ -358,7 +358,7 @@
 >
 > const judge = createLLMAsJudge({
 >   prompt: CORRECTNESS_PROMPT,
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   feedbackKey: "correctness",
 > });
 >
@@ -416,7 +416,7 @@
 >    def correctness_evaluator(inputs: dict, outputs: dict, reference_outputs: dict):
 >        evaluator = create_llm_as_judge(
 >            prompt=CORRECTNESS_PROMPT,
->            model="openai:gpt-5.5",
+>            model="openai:gpt-6.1-sol",
 >            feedback_key="correctness",
 >        )
 >        return evaluator(
@@ -465,7 +465,7 @@
 >
 >    const judge = createLLMAsJudge({
 >    prompt: CORRECTNESS_PROMPT,
->    model: "openai:gpt-5.5",
+>    model: "openai:gpt-6.1-sol",
 >    feedbackKey: "correctness",
 >    });
 >
@@ -527,7 +527,7 @@
 >
 > 以下是您接下来可能想要探索的一些主题：
 >
-> * [Evaluation concepts](/langsmith/evaluation-concepts) 提供了LangSmith 中评估关键术语的描述。
+> * [Evaluation concepts](/langsmith/evaluation-concepts) 提供了LangSmith 中评估的关键术语的描述。
 > * [OpenEvals README](https://github.com/langchain-ai/openevals) 查看所有可用的预构建评估器以及如何自定义它们。
 > * [Define custom evaluators](/langsmith/code-evaluator-ui)。
 > * [Python](https://reference.langchain.com/python/langsmith) 或 [TypeScript](https://reference.langchain.com/javascript/langsmith) SDK 参考，提供每个类和函数的全面描述。

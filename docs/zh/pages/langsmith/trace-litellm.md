@@ -67,7 +67,7 @@ LiteLLM 支持两种将跟踪发送到LangSmith的方法，它们在不同的层
    @traceable(name="LiteLLM Chat Completion")
    def run(messages):
        response = completion(
-           model="gpt-5.5",
+           model="gpt-6.1-sol",
            messages=messages,
        )
        # Return the assistant message so the LangSmith UI shows role + content
@@ -99,7 +99,7 @@ LiteLLM 支持两种将跟踪发送到LangSmith的方法，它们在不同的层
 
 此回调使用旧目标设置。将其设置为代理环境的[⟦T33⟧](/langsmith/create-an-agent#use-an-environment-project)。使用上面的 SDK 跟踪方法进行代理寻址。LiteLLM 可以使用其内置的 [callback system](https://docs.litellm.ai/docs/observability/callbacks) 将跟踪直接发送到 LangSmith。当在异步 Python 服务中运行 LiteLLM 并且您希望 LiteLLM 本身发出模型级日志时，这非常有用。
 
-LiteLLM 回调在异步环境中运行。使用`litellm.acompletion()`进行异步调用时，您可以启用`langsmith`回调来记录成功的模型调用。
+LiteLLM 回调在异步环境中运行。当使用`litellm.acompletion()`进行异步调用时，您可以启用`langsmith`回调来记录成功的模型调用。
 
 > [!提示]
 >
@@ -139,7 +139,7 @@ LiteLLM 回调在异步环境中运行。使用`litellm.acompletion()`进行异�
 
    async def main():
        response = await acompletion(
-           model="gpt-5.5",
+           model="gpt-6.1-sol",
            messages=[
                {"role": "user", "content": "Explain observability in LLM systems."}
            ],
@@ -204,7 +204,7 @@ LiteLLM 代理作为独立服务器运行并公开OpenAI 兼容 API。1. 要让�
    )
 
    response = client.chat.completions.create(
-       model="gpt-5.5",
+       model="gpt-6.1-sol",
        messages=[
            {"role": "user", "content": "What is LiteLLM?"}
        ],
@@ -222,7 +222,7 @@ LiteLLM 代理作为独立服务器运行并公开OpenAI 兼容 API。1. 要让�
    });
 
    const response = await client.chat.completions.create({
-   model: "gpt-5.5",
+   model: "gpt-6.1-sol",
    messages: [
        { role: "user", content: "Explain LiteLLM tracing." }
    ],

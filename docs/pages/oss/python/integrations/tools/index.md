@@ -302,7 +302,6 @@ The following table shows tools that generate video, image, or audio assets:
 | [`FinancialEvidenceToolkit`](https://github.com/beepboop2025/langchain-financial-evidence#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-financial-evidence/month)](https://pypi.org/project/langchain-financial-evidence/) |
 | [`Salesforce`](https://github.com/colesmcintosh/langchain-salesforce) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-salesforce/month)](https://pypi.org/project/langchain-salesforce/) |
 | [`ReefAPIToolkit`](https://reefapi.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-reefapi/month)](https://pypi.org/project/langchain-reefapi/) |
-| [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
 | [`CatchAllTools`](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-catchall/month)](https://pypi.org/project/langchain-catchall/) |
 | [`DiffbotAskTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotDQLProbeTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
@@ -504,6 +503,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Synoppy`](https://synoppy.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synoppy/month)](https://pypi.org/project/langchain-synoppy/) |
 | [`BiddaComplianceTool`](https://bidda.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bidda/month)](https://pypi.org/project/langchain-bidda/) |
 | [`MagicHourToolkit`](https://docs.magichour.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-magic-hour/month)](https://pypi.org/project/langchain-magic-hour/) |
+| [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
 | [`Instanode`](https://instanode.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-instanode/month)](https://pypi.org/project/langchain-instanode/) |
 | [`AproxPayProxyGetTool`](https://github.com/aproxpay/langchain-aproxpay) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aproxpay/month)](https://pypi.org/project/langchain-aproxpay/) |
 | [`Simplepages`](https://simplepages.ai/mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-simplepages/month)](https://pypi.org/project/langchain-simplepages/) |
@@ -540,6 +540,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`SurgemeshToolkit`](https://pypi.org/project/langchain-surgemesh/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-surgemesh/month)](https://pypi.org/project/langchain-surgemesh/) |
 | [`Arche`](https://pypi.org/project/langchain-arche/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-arche/month)](https://pypi.org/project/langchain-arche/) |
 | [`AgentRAMTools`](https://github.com/seanmarkwei/langgraph-agentram) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-agentram/month)](https://pypi.org/project/langgraph-agentram/) |
+| [`ScrapelyActorsTool`](https://scrape.ly/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapely/month)](https://pypi.org/project/langchain-scrapely/) |
 | [`GroundTruthCompanyLookup`](https://pypi.org/project/langchain-groundtruth/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-groundtruth/month)](https://pypi.org/project/langchain-groundtruth/) |
 | [`scoutwyze_rank`](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/scoutwyze-compute/month)](https://pypi.org/project/scoutwyze-compute/) |
 | [`LiquidVisionToolkit`](https://github.com/lv-analytics/liquidvision-mcp/tree/main/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-liquidvision/month)](https://pypi.org/project/langchain-liquidvision/) |
@@ -548,6 +549,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`SealKeeperLookupTool`](https://sealkeeper.run/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sealkeeper/month)](https://pypi.org/project/langchain-sealkeeper/) |
 | [`FinzData`](https://pypi.org/project/langchain-finzdata/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-finzdata/month)](https://pypi.org/project/langchain-finzdata/) |
 | [`Hlido`](https://hlido.eu/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/hlido-trust/month)](https://pypi.org/project/hlido-trust/) |
+| [`BhivedToolkit`](https://bhived.ai/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bhived/month)](https://pypi.org/project/langchain-bhived/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`viaSocket`](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/viasocket/month)](https://pypi.org/project/viasocket/) |
 | [`CyberWareX`](https://github.com/cyberwareX/langchain-cyberwarex#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cyberwarex/month)](https://pypi.org/project/langchain-cyberwarex/) |
@@ -567,9 +569,11 @@ The following table shows tools that generate video, image, or audio assets:
 | [`BoscoToolkit`](https://github.com/Bosco-Labs/bosco-labs-data/tree/main/langchain-bosco) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bosco/month)](https://pypi.org/project/langchain-bosco/) |
 | [`VideoGenToolkit`](https://github.com/video-gen/langchain-videogen#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-videogen/month)](https://pypi.org/project/langchain-videogen/) |
 | [`CAEL provenance tool`](https://github.com/Vovala14/CAEL/tree/codex/agent-provenance/examples/agent_provenance) | [  ![Downloads per month](https://static.pepy.tech/badge/cael-provenance-bridge/month)](https://pypi.org/project/cael-provenance-bridge/) |
+| [`SocialScrapeToolkit`](https://socialscrape.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-socialscrape/month)](https://pypi.org/project/langchain-socialscrape/) |
 | [`X402CleanWebTool`](https://github.com/nohosa001-pixel/x402-cleanweb-agent/tree/main/packages/langchain-x402-cleanweb#readme) | N/A |
 | [`x402checkToolkit`](https://x402check.dev) | N/A |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
+| [`AutomSearch`](https://github.com/automdev/langchain-autom#readme) | N/A |
 | [`BrewPageToolkit`](https://github.com/kochetkov-ma/langchain-brewpage#readme) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
 | [`CleaveToolkit`](https://cleave.fi/docs/agents/langchain) | N/A |
@@ -578,6 +582,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`FrameScanTool`](https://github.com/Sandeep85Das/langchain-frame) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
 | [`MobileboxToolkit`](https://github.com/fifteenA/mobilebox/tree/main/packages/python/langchain-mobilebox#readme) | N/A |
+| [`PiloterrGoogleSearch`](https://github.com/piloterr/langchain-piloterr#readme) | N/A |
 | [`PopNowToolkit`](https://popnow.ai/docs/langchain) | N/A |
 | [`ScrapeUnblockerToolkit`](https://docs.scrapeunblocker.com/sdks/langchain) | N/A |
 | [`SideQuest`](https://sidequestpays.com/docs#langchain) | N/A |

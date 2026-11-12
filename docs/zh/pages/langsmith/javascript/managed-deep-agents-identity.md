@@ -26,7 +26,7 @@ my-agent/
 
 默认情况下，`mda init`要求调用者提供LangSmith API密钥。拥有该密钥的任何人都可以使用相同的部署，并且可能会看到相同的线程。要为每个登录的最终用户提供私人对话，请使用 Supabase、另一个 JWT 提供商或您自己的后端：
 
-|目标|使用 |
+|目标|使用|
 | - | - |
 |锁定 SDK 客户端、脚本和服务的部署 | [LangSmith API key (default)](#configure-identity-with-a-langsmith-api-key) |
 |通过私人聊天登录的最终用户，由托管 Deep Agents 验证 | [Supabase](#configure-identity-with-supabase) |
@@ -41,7 +41,7 @@ my-agent/
 
 ## 使用 LangSmith API 密钥配置身份
 
-`mda init` 将此身份提供者作为安全默认设置。调用者必须提供有效的 LangSmith 工作区 API 密钥。托管 Deep Agents 使用 LangSmith 云验证密钥。
+`mda init` 将此身份提供者作为安全默认设置。调用者必须提供有效的 LangSmith 工作区 API 密钥。托管Deep Agents使用LangSmith云验证密钥。
 
 ```ts identity.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { auth, defineIdentity } from "managed-deepagents";
@@ -57,7 +57,7 @@ export const identity = defineIdentity({
 
 ## 使用 Supabase 配置身份
 
-当浏览器或其他客户端作为登录实体调用部署时，使用 Supabase。每个用户都有私有线程。托管 Deep Agents 为您配置该所有权。有关底层 LangSmith 部署模式的更多信息，请参阅 [Make conversations private](/langsmith/resource-auth)。
+当浏览器或其他客户端作为登录实体调用部署时，使用 Supabase。每个用户都有私有线程。托管 Deep Agents 为您配置该所有权。有关底层 LangSmith 代理服务器模式的更多信息，请参阅 [Make conversations private](/langsmith/resource-auth)。
 
 **1.在 Supabase 中启用身份验证**
 
@@ -187,7 +187,7 @@ await fetch(`${deploymentUrl}/threads/${threadId}/runs`, {
 
 ## 测试和部署
 
-使用[⟦T39⟧](/langsmith/javascript/managed-deep-agents-cli#develop-locally)在本地测试项目，然后使用[⟦T40⟧](/langsmith/javascript/managed-deep-agents-deploy)进行部署。在LangSmith中打开部署跟踪来检查模型调用、工具调用、错误和延迟。身份验证失败返回 401。对于 LangSmith API 密钥默认值，请确认客户端发送 `x-api-key`。对于 Supabase，确认客户端发送 `Authorization: Bearer <access_token>`、`project_ref` / `projectRef` 与您的 Supabase 项目匹配，并且调用方无法访问其他用户的线程 (403)。对于另一个 JWT 提供程序，确认 `issuer` 和 `audience` 与令牌中的 `iss` 和 `aud` 声明匹配，并且调用者无法访问其他用户的线程 (403)。对于后端身份，请确认您的 API 发送 `x-mda-ingress-secret` 和 `x-mda-user-id`，密钥与部署上的 `MDA_INGRESS_SECRET` 匹配，并且一个用户的标识符无法到达另一用户的线程 (403)。
+使用[⟦T39⟧](/langsmith/javascript/managed-deep-agents-cli#develop-locally)在本地测试项目，然后使用[⟦T40⟧](/langsmith/javascript/managed-deep-agents-deploy)进行部署。在LangSmith中打开部署跟踪来检查模型调用、工具调用、错误和延迟。身份验证失败返回 401。对于 LangSmith API 密钥默认值，请确认客户端发送 `x-api-key`。对于 Supabase，确认客户端发送 `Authorization: Bearer <access_token>`、`project_ref` / `projectRef` 与您的 Supabase 项目匹配，并且调用者无法访问其他用户的线程 (403)。对于另一个 JWT 提供程序，确认 `issuer` 和 `audience` 与令牌中的 `iss` 和 `aud` 声明匹配，并且调用者无法访问其他用户的线程 (403)。对于后端身份，请确认您的 API 发送 `x-mda-ingress-secret` 和 `x-mda-user-id`，密钥与部署上的 `MDA_INGRESS_SECRET` 匹配，并且一个用户的标识符无法到达另一用户的线程 (403)。
 
 ***
 

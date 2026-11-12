@@ -15,7 +15,7 @@ LangSmith 代理注册表是什么，代理是什么，环境如何划分代理�
 
 一旦代理存在，您就可以从它运行的任何地方、从任何可以将跟踪发送到 LangSmith 的框架来[send traces](/langsmith/log-traces-to-agent)。
 
-每个代理都会收到一个唯一的 [identifier](#identifiers-and-display-names)，LangSmith 用于寻址其踪迹。
+每个代理都会收到一个唯一的 [identifier](#identifiers-and-display-names)，LangSmith 使用它来处理其踪迹。
 
 LangSmith 的其余部分依附于这些代理。数据集、评估器、部署、跟踪和警报均附加到代理注册表中的代理：
 
@@ -67,7 +67,7 @@ flowchart LR
 每个代理都有两个名字，他们做不同的工作：
 
 * **标识符**：创建代理时设置，创建后不可编辑。无论您提供它还是LangSmith生成它取决于[how the agent was created](/langsmith/create-an-agent)。 LangSmith 使用它来寻址跟踪，因此即使显示名称发生变化，它也能保持稳定。
-* **显示名称**：在代理出现在 UI 中的任何位置显示。对于代理 [built in LangSmith Studio](/langsmith/build-an-agent)，从其配置中的 **Name** 字段重命名它。重命名不会移动现有痕迹或更改新痕迹的放置位置。该标识符也是浏览器地址栏所携带的，因此您可以从那里读取它或从代理概述上的 **ID** 字段复制它。
+* **显示名称**：在代理出现在 UI 中的任何位置显示。对于代理 [built in LangSmith Studio](/langsmith/build-an-agent)，从其配置中的 **Name** 字段重命名它。重命名不会移动现有痕迹或更改新痕迹的放置位置。使用标识符进行跟踪，而不是代理概述上的 **ID** 徽章复制的 UUID。如果标题显示 **Identifier**，请打开它以复制目标环境的标识符。
 
 ## 寻找并管理代理
 

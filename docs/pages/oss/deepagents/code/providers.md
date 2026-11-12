@@ -159,14 +159,14 @@ Deep Agents Code opens your browser to the ChatGPT sign-in page. If it cannot op
 Once signed in, the Codex models appear in the `/model` switcher under the `openai_codex` provider. Switch to one directly with its spec:
 
 ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/model openai_codex:gpt-5.5
+/model openai_codex:gpt-6.1-sol
 ```
 
 Your sign-in persists across sessions. To check your status or sign out, run `/auth`, select `openai_codex`, and choose to re-authenticate or sign out.
 
 > [!NOTE]
 >
-> `openai_codex` is separate from `openai`. To use OpenAI models with a standard API key instead, use the regular `openai` provider (e.g. `/model openai:gpt-5.5`).
+> `openai_codex` is separate from `openai`. To use OpenAI models with a standard API key instead, use the regular `openai` provider (e.g. `/model openai:gpt-6.1-sol`).
 
 > [!NOTE]
 >
@@ -211,12 +211,12 @@ To switch models in Deep Agents Code, either:
 
    > [!NOTE]
    >
-   > Not all models appear here. If yours is missing, pass the model name directly (e.g. `/model gpt-5.5`) or add it to `config.toml`.
-2. **Specify a model name directly** as an argument, e.g. `/model gpt-5.5`. You can use any model supported by the chosen provider, regardless of whether it appears in the list from option 1. The model name will be passed to the API request.
+   > Not all models appear here. If yours is missing, pass the model name directly (e.g. `/model gpt-6.1-sol`) or add it to `config.toml`.
+2. **Specify a model name directly** as an argument, e.g. `/model gpt-6.1-sol`. You can use any model supported by the chosen provider, regardless of whether it appears in the list from option 1. The model name will be passed to the API request.
 3. **Specify the model at launch** via `--model`, e.g.
 
    ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   dcode --model openai:gpt-5.5
+   dcode --model openai:gpt-6.1-sol
    ```
 
 > [accordion] Model resolution order
@@ -391,7 +391,7 @@ Pass extra constructor kwargs to the model—sampling controls, reasoning/thinki
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    # OpenAI reasoning effort
-   dcode --model openai:gpt-5.5 --model-params '{"reasoning": {"effort": "high"}}'
+   dcode --model openai:gpt-6.1-sol --model-params '{"reasoning": {"effort": "high"}}'
 
    # Anthropic extended thinking
    dcode --model anthropic:claude-opus-4-8 --model-params '{"thinking": {"type": "enabled", "budget_tokens": 10000}, "max_tokens": 16000}'

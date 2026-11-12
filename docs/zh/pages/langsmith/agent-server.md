@@ -4,7 +4,11 @@
 
 # 代理服务器
 
-LangSmith 部署的 **代理服务器** 提供用于创建和管理基于代理的应用程序的 API。它建立在[assistants](/langsmith/assistants)的概念之上，[assistants](/langsmith/assistants)是为特定任务配置的代理，并包括内置的[persistence](/oss/python/langgraph/persistence#memory-store)和[task queue](#task-queue)。这种多功能 API 支持广泛的代理应用程序用例，从后台处理到实时交互。
+**LangSmith 代理服务器** 是代理工作负载的工作流编排运行时。它提供了用于创建和管理基于代理的应用程序的 API。它建立在[assistants](/langsmith/assistants)的概念之上，[assistants](/langsmith/assistants)是为特定任务配置的代理，并包括内置的[persistence](/oss/python/langgraph/persistence#memory-store)和[task queue](#task-queue)。这种多功能 API 支持广泛的代理应用程序用例，从后台处理到实时交互。
+
+> [!注意]
+>
+> LangSmith 部署现在是 **LangSmith 代理服务器**。
 
 使用代理服务器创建和管理：
 
@@ -32,11 +36,11 @@ LangSmith 部署的 **代理服务器** 提供用于创建和管理基于代理�
 >
 > [LangSmith cloud](/langsmith/cloud) 为您管理数据库。如果您要在 [own infrastructure](/langsmith/self-hosted) 上部署，则需要自行设置。
 
-## 部署的各个部分
+## 部署的各个部分当您部署代理服务器时，您将部署一个或多个[graphs](#graphs)、[persistence](/oss/python/langgraph/persistence) 的数据库以及[task queue](#task-queue)。
 
-当您部署代理服务器时，您将部署一个或多个[graphs](#graphs)、[persistence](/oss/python/langgraph/persistence) 的数据库以及[task queue](#task-queue)。
+### 图表
 
-### 图表当您使用 Agent Server 部署图形时，您正在部署 [Assistant](/langsmith/assistants) 的“蓝图”。
+当您使用 Agent Server 部署图形时，您正在部署 [Assistant](/langsmith/assistants) 的“蓝图”。
 
 图最常实现 [agent](/oss/python/langgraph/workflows-agents)，但并非必须如此。例如，图可以实现一个简单的聊天机器人，仅支持来回对话，而无法影响任何应用程序控制流。实际上，随着应用程序变得越来越复杂，图通常会实现更复杂的流程，可能会使用 [multiple agents](/oss/python/langchain/multi-agent) 协同工作。
 
@@ -61,7 +65,7 @@ Agent Server 持久保存三种类型的数据，默认情况下均由 [PostgreS
 
 ### 任务队列
 
-当客户端创建运行时，API 服务器将其放入队列，然后队列工作线程将其拾取以执行。还可以通知工作人员取消正在进行的运行，并发布打开 `/stream` 连接的输出事件，实时转发到客户端。[Redis](https://redis.io/) 处理 API 服务器和队列工作人员之间的信令、取消和流媒体发布/订阅。它仅存储临时数据 - Redis 中不会保留任何用户或运行数据。运行数据本身总是从 PostgreSQL 读取和写入。
+当客户端创建运行时，API 服务器将其放入队列，然后队列工作线程将其拾取以执行。还可以通知工作人员取消正在进行的运行，并发布打开 `/stream` 连接的输出事件，实时转发到客户端。[Redis](https://redis.io/) 处理 API 服务器和队列工作人员之间的信令、取消和流媒体发布/订阅。它仅存储临时数据——Redis 中不会保留任何用户或运行数据。运行数据本身始终从 PostgreSQL 读取和写入。
 
 有关如何设置和管理这些组件的更多信息，请查看 [hosting options](/langsmith/platform-setup) 指南。
 
@@ -72,7 +76,7 @@ Agent Server 持久保存三种类型的数据，默认情况下均由 [PostgreS
 Agent Server 支持三种运行时配置：
 
 * **单主机**：API 服务器直接管理任务队列，没有单独的队列工作人员。这是自托管部署的默认设置，适用于开发和低流量用例。
-* **拆分 API 和队列**：专用队列工作程序在与 API 服务器不同的主机上处理运行执行。对于自托管部署，请通过在配置中设置 `queue.enabled: true` 来启用此功能。每个层都可以独立扩展 - API 服务器根据请求量进行扩展，队列工作线程根据挂起的运行计数进行扩展。* **分布式运行时**：API 和队列进程再次单独运行，但分布式运行时使用一个进程进行编排，一个进程用于执行，而不是使用单个队列进程来处理图形的编排和执行。将此用于具有高并发要求的大规模部署。
+* **拆分 API 和队列**：专用队列工作程序在与 API 服务器不同的主机上处理运行执行。对于自托管部署，请通过在配置中设置 `queue.enabled: true` 来启用此功能。每个层都可以独立扩展——API 服务器根据请求量进行扩展，队列工作线程根据挂起的运行计数进行扩展。* **分布式运行时**：API 和队列进程再次单独运行，但分布式运行时使用一个进程进行编排，一个进程用于执行，而不是使用单个队列进程来处理图形的编排和执行。将此用于具有高并发要求的大规模部署。
 
 下面描述的容器架构和运行生命周期适用于单主机和拆分 API 和队列配置。
 

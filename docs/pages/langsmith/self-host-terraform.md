@@ -78,7 +78,7 @@ On AWS and Azure, start from the `terraform.tfvars.example`, `terraform.tfvars.m
 
 Each module exposes flags for the optional LangSmith add-ons. Toggle each in `terraform.tfvars`. Each module's deploy scripts read the flags and generate the matching Helm values.
 
-* **[LangSmith Deployment](/langsmith/enable-self-hosted-deployment)** (`enable_deployments`): Agent Server plus the host-backend, listener, and operator that run and manage deployed agents.
+* **[Agent Server hosting](/langsmith/enable-self-hosted-deployment)** (`enable_deployments`): Agent Server plus the host-backend, listener, and operator that run and manage deployed agents.
 * **[Fleet](/langsmith/fleet)** (`enable_fleet`): The agent-building product, formerly Agent Builder, deployed as a standalone service.
 * **Insights** (`enable_insights`): ClickHouse-backed analytics.
 * **Polly** (`enable_polly`): AI evaluation and monitoring.
@@ -96,7 +96,7 @@ Each module exposes flags for the optional LangSmith add-ons. Toggle each in `te
 * Pick a provider above and follow the deployment guide.
 * Review [required dependency versions](/langsmith/self-host-dependency-versions) for PostgreSQL, ClickHouse, Redis, and Kubernetes.
 * Plan capacity with the [scaling guide](/langsmith/self-host-scale).
-* After the application is running, enable [LangSmith Deployment](/langsmith/enable-self-hosted-deployment) to add agent deployment and management to the UI.
+* After the application is running, enable [Agent Server hosting](/langsmith/enable-self-hosted-deployment) to add agent deployment and management to the UI.
 
 ***
 

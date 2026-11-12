@@ -25,7 +25,7 @@ Not sure which package to use?
 > * **Gemini Developer API**: Quick setup with API key, ideal for individual developers and rapid prototyping
 > * **Gemini Enterprise Agent Platform**: Enterprise features with Google Cloud integration (requires GCP project)
 >
-> Use the `langchain-google-genai` package for chat models, LLMs, and embeddings.
+> Use the `langchain-google-genai` package for chat models, decision models, LLMs, and embeddings.
 >
 > [See integrations.](#google-generative-ai)
 
@@ -50,6 +50,12 @@ Access Google Gemini models via the [Gemini Developer API](https://ai.google.dev
 > [card] [ChatGoogleGenerativeAI](/oss/python/integrations/chat/google_generative_ai)
 >
 > Google Gemini chat models via **Gemini Developer API** or **Gemini Enterprise Agent Platform**.
+
+### Decision models
+
+> [card] [GoogleGenAIClassifier](/oss/python/integrations/decision_models/google_generative_ai)
+>
+> Typed answers and probabilities from the Gemini Decisions API for routing, classification, and review.
 
 ### LLMs
 

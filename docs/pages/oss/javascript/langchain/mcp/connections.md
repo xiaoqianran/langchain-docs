@@ -21,7 +21,7 @@ Constructing an adapter validates its configuration without opening connections.
 
 To discover tools, run an agent, and release the connections, pass your MCP server's HTTP URL to `runAgent`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
 import { createAgent } from "langchain";
 
@@ -58,7 +58,7 @@ Each named entry in `servers` gets its own connection, authentication, and [prot
 
 To discover tools from both transports, pass a calendar server's HTTP URL and a files server's script path to `listServerTools`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
 
 async function listServerTools(calendarUrl: string, filesServerPath: string) {
@@ -97,7 +97,7 @@ Set `defaultToolTimeout` (in milliseconds) at the top level to apply it to every
 
 Create the adapter at module scope, outside the graph factory. Each factory call can discover the current tool catalog and build an agent using the shared connections:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
 import { createAgent } from "langchain";
 
@@ -151,7 +151,7 @@ The adapter negotiates the MCP protocol separately for each server. The default 
 
 The legacy era starts with an `initialize` handshake. The modern era uses `server/discover` to discover server capabilities. Override `mode` when you need to require a specific era:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
 
 async function listToolsAcrossEras(modernUrl: string, legacyUrl: string) {

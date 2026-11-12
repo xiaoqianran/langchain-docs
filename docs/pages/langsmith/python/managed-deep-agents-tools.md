@@ -60,7 +60,7 @@ from tools.customer import lookup_customer
 
 agent = define_deep_agent(
     name="support-agent",
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[lookup_customer],
 )
 ```
@@ -80,7 +80,7 @@ from tools.customer import lookup_customer
 
 agent = define_deep_agent(
     name="support-agent",
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[lookup_customer],
     interrupt_on={"lookup_customer": True},
 )
@@ -124,7 +124,7 @@ For more information, see [Project structure](/langsmith/python/managed-deep-age
 When a run hits an interrupt, it pauses and waits for a human response before continuing.
 
 * **During local development**, `mda dev` runs the agent in LangSmith Studio, which surfaces the interrupt so you can inspect the pending tool call and resume the run.
-* **On a deployed agent**, resume the paused run through the LangGraph server API with a `Command(resume=...)` payload. See [Human-in-the-loop using server API](/langsmith/add-human-in-the-loop).
+* **On a deployed agent**, resume the paused run through the Agent Server API with a `Command(resume=...)` payload. See [Human-in-the-loop using server API](/langsmith/add-human-in-the-loop).
 
 Human-in-the-loop needs durable thread state to pause and resume. The managed runtime owns the checkpointer, so no extra setup is required.
 

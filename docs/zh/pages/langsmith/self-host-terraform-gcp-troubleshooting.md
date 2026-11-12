@@ -161,7 +161,7 @@ kubectl get serviceaccount langsmith-backend -n langsmith \
   -o jsonpath='{.metadata.annotations.iam\.gke\.io/gcp-service-account}'
 ```
 
-GCP 服务帐号的存储桶上必须有 `roles/storage.objectAdmin`。如果注释本身丢失，请应用下面的“工作负载身份”部分中的修复。对于 S3 兼容模式，请在 **云存储** > **设置** > **互操作性** 下创建 HMAC 密钥；它的服务帐户还需要存储桶上的`roles/storage.objectAdmin`。
+GCP 服务帐号的存储桶上必须有 `roles/storage.objectAdmin`。如果注释本身丢失，请应用下面的“工作负载身份”部分中的修复。对于 S3 兼容模式，请在 **云存储** > **设置** > **互操作性**下创建 HMAC 密钥；它的服务帐户还需要存储桶上的`roles/storage.objectAdmin`。
 
 ### Envoy Gateway Webhook 阻止 GKE 操作
 
@@ -348,7 +348,7 @@ ERROR: enable_smithdb = true but smithdb_helm_values or the resolved metastore T
        outputs are missing. The state is older than this module. Run 'make apply'.
 ```
 
-**原因：** Terraform 状态早于图表 0.17 模块，该模块添加了 SmithDB 大小调整和元存储输出。**Fix:** Run `make apply`, then `make init-values`.
+**原因：** Terraform 状态早于图表 0.17 模块，该模块添加了 SmithDB 大小调整和元存储输出。**修复：**运行`make apply`，然后运行`make init-values`。
 
 ### 部署拒绝，因为 SmithDB 回填作业已更改
 
@@ -363,7 +363,7 @@ ERROR: the existing <job-name> Job does not match what this deploy renders,
 
 **修复：** 使用错误打印的命令删除作业，然后再次运行`make deploy`。回填将其进度保留在任务数据库中，因此新作业将继续而不是重新开始。
 
-### JuiceFS format Job fails
+### JuiceFS 格式化作业失败
 
 **症状**
 
@@ -387,7 +387,7 @@ ERROR: the existing <job-name> Job does not match what this deploy renders,
    kubectl logs -n langsmith -l app.kubernetes.io/component=juicefs-format
    ```
 
-2. Delete the failed Job and deploy again.当清单未更改时，Helm 不会重新运行失败的作业，因此必须首先删除该作业：```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+2. 删除失败的Job并重新部署。当清单未更改时，Helm 不会重新运行失败的作业，因此必须首先删除该作业：```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    kubectl delete job -n langsmith -l app.kubernetes.io/component=juicefs-format
    make deploy
    ```
@@ -400,9 +400,9 @@ ERROR: the existing <job-name> Job does not match what this deploy renders,
 Error: UPGRADE FAILED: another operation (install/upgrade/rollback) is in progress
 ```
 
-**Cause:** A previous `helm upgrade` was interrupted (Ctrl+C during `--wait`). Helm 将释放锁定。
+**原因：** 之前的`helm upgrade`被中断（在`--wait`期间按Ctrl+C）。 Helm 将释放锁定。
 
-**Fix:** `deploy.sh` detects and auto-recovers this state. If running manually:
+**修复：** `deploy.sh` 检测并自动恢复此状态。如果手动运行：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm rollback langsmith -n langsmith --wait --timeout 5m
@@ -418,7 +418,7 @@ ERROR: PERMISSION_DENIED: Permission 'secretmanager.versions.access'
   denied on resource 'projects/.../secrets/...'
 ```
 
-**Cause:** Either `secretmanager.googleapis.com` is not enabled, or the operator account lacks `roles/secretmanager.admin`.
+**原因：** 要么`secretmanager.googleapis.com`未启用，要么操作员账户缺少`roles/secretmanager.admin`。
 
 **修复**
 
@@ -430,13 +430,13 @@ gcloud projects add-iam-policy-binding <project-id> \
   --role="roles/secretmanager.admin"
 ```
 
-您添加的将 Secret Manager 读取为 LangSmith 服务帐户的工作负载在升级到 `main` 或 `v0.17.x` 标签后将失去访问权限，因为项目范围的 `roles/secretmanager.secretAccessor` 授权现已选择加入。 Grant access on the specific secrets, or set `grant_project_secret_accessor = true` and run `make apply`.
+您添加的将 Secret Manager 读取为 LangSmith 服务帐户的工作负载在升级到 `main` 或 `v0.17.x` 标签后将失去访问权限，因为项目范围的 `roles/secretmanager.secretAccessor` 授权现已选择加入。授予对特定机密的访问权限，或设置`grant_project_secret_accessor = true`并运行`make apply`。
 
 ### `langsmith-postgres-credentials` 或 `langsmith-redis-credentials` 秘密缺失
 
-**Symptom:** Pods crash with database connection errors immediately after deploy, or `kubectl get secrets -n langsmith` does not list `langsmith-postgres-credentials` / `langsmith-redis-credentials`.
+**症状：** Pod 在部署后立即崩溃并出现数据库连接错误，或者 `kubectl get secrets -n langsmith` 未列出 `langsmith-postgres-credentials` / `langsmith-redis-credentials`。
 
-**Cause:** The `k8s-bootstrap` module creates these Secrets when `postgres_source` or `redis_source` is `external`. They are absent if `terraform apply` was not run, failed partway through, or the namespace was deleted out-of-band.
+**原因：** 当 `postgres_source` 或 `redis_source` 为 `external` 时，`k8s-bootstrap` 模块创建这些 Secret。如果 `terraform apply` 未运行、中途失败或命名空间被带外删除，则它们不存在。
 
 **修复**
 
@@ -492,15 +492,15 @@ kubectl get pods -n envoy-gateway-system
 helm status langsmith -n langsmith
 helm history langsmith -n langsmith
 helm get values langsmith -n langsmith
-```
+```### 代理服务器托管
 
-### LangSmith 部署```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n langsmith | grep -E "host-backend|listener|operator"
 kubectl get lgp -n langsmith
 kubectl get crd | grep langchain
 ```
 
-### Workload Identity and IAM
+### 工作负载身份和 IAM
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get serviceaccount langsmith-backend -n langsmith \
@@ -515,7 +515,7 @@ gsutil iam get gs://$BUCKET
 gcloud iam service-accounts list --project <project-id> --filter="displayName:langsmith"
 ```
 
-### Secrets and bootstrap
+### 秘密和引导程序
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get secrets -n langsmith
@@ -550,4 +550,4 @@ echo "=== Helm ===" && helm status langsmith -n langsmith 2>/dev/null | grep -E 
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-troubleshooting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

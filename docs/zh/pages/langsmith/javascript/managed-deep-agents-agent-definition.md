@@ -30,7 +30,7 @@ import { defineDeepAgent } from "managed-deepagents";
 
 export const agent = defineDeepAgent({
   name: "research-assistant",
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
 });
 ```
 
@@ -130,7 +130,7 @@ export function agent(
 
   return defineDeepAgent({
     name: "open-swe",
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     instructions: pythonService
       ? "Follow the payments service's API and reliability conventions."
       : "Follow the storefront's frontend and accessibility conventions.",
@@ -153,7 +153,7 @@ await client.runs.create(threadId, "open-swe", {
 
 ### 选择托管资源
 
-工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域|省略 |已选择 |已清除 |
+工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域 |省略 |已选择 |已清除 |
 | - | - | - | - |
 | `instructions` |使用`instructions.md`。 |使用提供的提示。 | `""` 删除编写的指令。 |
 | `skills` |展示所有项目技能。 |仅公开选定的技能。 | `[]`没有暴露任何技能。 |
@@ -192,7 +192,7 @@ export function agent(
 
   return defineDeepAgent({
     name: "open-swe",
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     mcp: context?.needsDocs ? [mcp] : [],
     sandbox: pythonService ? defineSandbox({ defaultTimeout: 600 }) : sandbox,
     contextSchema,

@@ -328,7 +328,7 @@ pnpm --filter @langchain/core lint
 >>
 >> * **[⟦T52⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents#readme)**（位于`libs/deepagents/`）：用于构建具有规划、文件系统和子代理功能的深度代理的核心框架
 >> * **[⟦T54⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code#readme)**（位于`libs/code/`）：Deep Agents代码 — 具有对话恢复、网络搜索和沙箱的交互式终端界面
->> * **[⟦T56⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code)**（位于`libs/cli/`）：将运输代理部署工具（`deepagents deploy`、`deepagents init`、`deepagents dev`）部署到LangSmith 部署
+>> * **[⟦T56⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code)**（位于`libs/cli/`）：将运输代理部署工具（`deepagents deploy`、`deepagents init`、`deepagents dev`）到LangSmith代理服务器
 >
 >> [手风琴] 集成包
 >>
@@ -520,7 +520,7 @@ pnpm test:int
 
 > [!注意]
 >
-> 如果您的 PR 包含 AI 生成的内容，您必须遵守我们的 [acceptable uses of LLMs](/oss/javascript/contributing/overview#acceptable-uses-of-llms) 政策。看似省力、由人工智能生成的垃圾邮件的 PR 将被关闭而不发表评论。> [!警告]
+> 如果您的 PR 包含人工智能生成的内容，您必须遵守我们的 [acceptable uses of LLMs](/oss/javascript/contributing/overview#acceptable-uses-of-llms) 政策。看似省力、由人工智能生成的垃圾邮件的 PR 将被关闭而不发表评论。> [!警告]
 >
 > 及时解决 CI 故障。维护者可以在合理的时间内关闭未通过 CI 的 PR。
 

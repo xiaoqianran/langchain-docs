@@ -68,7 +68,7 @@ Select a model that supports [tool-calling](/oss/python/integrations/providers/o
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = init_chat_model("gpt-5.5")
+> model = init_chat_model("gpt-6.1-sol")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -77,7 +77,7 @@ Select a model that supports [tool-calling](/oss/python/integrations/providers/o
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = ChatOpenAI(model="gpt-5.5")
+> model = ChatOpenAI(model="gpt-6.1-sol")
 > ```
 
 > [tab] Anthropic
@@ -131,7 +131,7 @@ Select a model that supports [tool-calling](/oss/python/integrations/providers/o
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = init_chat_model(
->     "azure_openai:gpt-5.5",
+>     "azure_openai:gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 > )
 > ```
@@ -145,7 +145,7 @@ Select a model that supports [tool-calling](/oss/python/integrations/providers/o
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = AzureChatOpenAI(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
 > )
 > ```
@@ -665,7 +665,7 @@ The agent correctly wrote a query, checked the query, and ran it to inform its f
 > from langchain.tools import tool
 >
 > # Initialize an LLM
-> model = init_chat_model("gpt-5.5")
+> model = init_chat_model("openai:gpt-6.1-sol")
 >
 > # Get the database, store it locally
 > url = "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db"

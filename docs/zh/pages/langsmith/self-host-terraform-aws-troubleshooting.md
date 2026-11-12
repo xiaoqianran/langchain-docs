@@ -129,7 +129,7 @@ make apply ARGS="-target=module.postgres"
 
 **症状：** 读取或写入 S3 时，后端日志显示`AccessDenied`。
 
-**原因：** 组件服务帐户中缺少 IRSA 注释，或者 S3 VPC 网关端点未正确路由。
+**原因：** 组件服务帐户中缺少 IRSA 注释，或者 S3 VPC 网关终端节点未正确路由。
 
 **修复**
 
@@ -146,7 +146,7 @@ kubectl run s3-test --rm -it --image=amazon/aws-cli -n langsmith \
   s3 ls s3://<bucket-name>
 ```
 
-`make init-values` 注释每个组件的服务帐户（后端、平台后端、队列、摄取队列、游乐场和 LangSmith 部署服务）。如果注释缺失，请验证`terraform.tfvars`中的`create_langsmith_irsa_role = true`，然后运行`make init-values && make deploy`。
+`make init-values` 注释每个组件的服务帐户（后端、平台后端、队列、摄取队列、游乐场和代理服务器托管服务）。如果注释丢失，请验证`terraform.tfvars`中的`create_langsmith_irsa_role = true`，然后运行`make init-values && make deploy`。
 
 ### ElastiCache Redis 连接超时
 
@@ -322,13 +322,13 @@ unset TF_VAR_postgres_password
 source ./infra/scripts/setup-env.sh
 make apply
 kubectl rollout restart deployment -n langsmith
-```Run a full `make apply`, not `-target=module.postgres`: the target skips the `langsmith-postgres` Secret, so RDS and LangSmith would hold different passwords. Skip the restart on a new deployment that has no running pods.
+```运行完整的 `make apply`，而不是 `-target=module.postgres`：目标会跳过 `langsmith-postgres` Secret，因此 RDS 和 LangSmith 将保存不同的密码。在没有正在运行的 pod 的新部署上跳过重新启动。
 
-### Private EKS cluster unreachable (bastion required)
+### 私有 EKS 集群无法访问（需要堡垒）
 
 **现象：** 当`enable_public_eks_cluster = false`时，`kubectl`和`terraform apply`超时。
 
-**原因：** EKS API 端点是私有的。 Commands must run from within the VPC, either via the bastion host or a VPN connection.
+**原因：** EKS API 端点是私有的。命令必须在 VPC 内通过堡垒主机或 VPN 连接运行。
 
 **修复**
 
@@ -341,7 +341,7 @@ aws eks update-kubeconfig --region <region> --name <cluster-name>
 kubectl get nodes
 ```
 
-If no bastion was provisioned, set `create_bastion = true` and re-apply, or temporarily set `enable_public_eks_cluster = true`.
+如果没有配置堡垒，请设置`create_bastion = true`并重新申请，或暂时设置`enable_public_eks_cluster = true`。
 
 ### ALB没有公共地址（内部方案）
 
@@ -361,9 +361,9 @@ make init-values
 make deploy
 ```
 
-With `create_vpc = false`, an internet-facing ALB also needs `public_subnets`.
+有了`create_vpc = false`，面向互联网的ALB还需要`public_subnets`。
 
-### ALB hostname changed after ingress recreation
+### ALB 主机名在入口重新创建后更改
 
 此条目适用于经典 ALB 入口模式，其中 ALB 控制器拥有 ALB。在该模式下，`alb_dns_name`指的是未使用的 Terraform 管理的 ALB。**症状：** LangSmith URL 停止工作。代理部署陷入`DEPLOYING`。 DNS 记录或书签指向不再解析的旧 ALB 主机名。
 
@@ -533,7 +533,7 @@ make tf ARGS="output langsmith_irsa_role_arn"
 aws iam get-role --role-name <irsa-role-name>
 ```
 
-### LangSmith 部署
+### 代理服务器托管
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n langsmith | grep -E "host-backend|listener|operator"

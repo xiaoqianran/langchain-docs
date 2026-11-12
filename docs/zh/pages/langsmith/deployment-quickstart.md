@@ -56,11 +56,11 @@
 4.读取[https://docs.langchain.com/langsmith/local-dev-testing.md](https://docs.langchain.com/langsmith/local-dev-testing.md)，运行langgraph dev，并在本地测试该图。解决之前的错误
    部署。如果 Studio 操作需要用户，请解释该怎么做
    并等待结果。
-5. 解释目标部署以及云使用可能会产生费用。
+5. 解释目标代理服务器以及云使用可能会产生费用。
    在运行 langgraph 部署之前请求确认。不要覆盖
-   未经明确批准的现有部署。
+   未经明确批准的现有代理服务器。
 6. 按照快速入门在 Studio 中测试已部署的应用程序并
-   通过它的 API。报告部署 URL 和测试结果，或者
+   通过它的 API。报告代理服务器 URL 和测试结果，或者
    如果部署或测试未完成，则精确阻止。
 
 要自行执行这些步骤，请继续执行以下操作。
@@ -110,13 +110,13 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 > langgraph deploy
 > ```
 >
-> 这将创建一个以您的项目目录命名的无服务器部署。使用 `--name` 更改名称，或使用 `--deployment-type dedicated` 更改 [Dedicated deployment](/langsmith/cloud-platform-features#deployment-types)。
+> 这将创建一个以您的项目目录命名的无服务器代理服务器。使用 `--name` 更改名称，或使用 `--agent-server-type dedicated` 更改 [Dedicated Agent Server](/langsmith/cloud-platform-features#deployment-types)。
 >
 >> [!提示]
 >>
->> 要在更改代码后更新现有部署，请重新运行 `langgraph deploy`。它按名称查找现有部署并就地更新它。
+>> 要在更改代码后更新现有代理服务器，请重新运行 `langgraph deploy`。它按名称查找现有代理服务器并就地更新它。
 >
-> 您还可以使用 `langgraph deploy list` 查看所有部署，使用 `langgraph deploy logs` 跟踪运行时日志，使用 `langgraph deploy delete <ID>` 删除部署。详情请参阅[CLI reference](/langsmith/cli#deploy)。> [选项卡] 从 Studio 部署
+> 您还可以使用 `langgraph deploy list` 查看所有代理服务器，`langgraph deploy logs` 跟踪运行时日志，以及 `langgraph deploy delete <ID>` 删除代理服务器。详情请参阅[CLI reference](/langsmith/cli#deploy)。> [选项卡] 从 Studio 部署
 >
 > 从工作室部署：
 >
@@ -132,17 +132,17 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 
 ## 4. 在 Studio 中测试
 
-[Studio](/langsmith/studio) 是直接连接到您的部署的交互式代理 IDE。使用它来发送消息、检查每个节点的中间状态、编辑运行中的状态以及从任何先前的检查点重放，而无需编写代码。
+[Studio](/langsmith/studio) 是直接连接到代理服务器的交互式代理 IDE。使用它来发送消息、检查每个节点的中间状态、编辑运行中的状态以及从任何先前的检查点重放，而无需编写代码。
 
-部署准备就绪后：
+代理服务器准备就绪后：
 
-1. 转到[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-quickstart)并选择左侧边栏中的**部署**。
-2. 选择您的部署以查看其详细信息。
+1. 转到[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-quickstart)并选择左侧边栏中的**代理服务器**。
+2. 选择您的代理服务器以查看其详细信息。
 3、点击右上角**Studio**，打开[Studio](/langsmith/studio)。
 
 ## 5. 测试 API
 
-从部署详细信息视图中复制 **API URL**，然后使用它来调用您的应用程序：
+在 LangSmith 中，从代理服务器详细信息视图中的 **URL** 行复制代理服务器地址。用它来调用您的应用程序：
 
 > [选项卡] Python SDK（异步）
 >
@@ -198,9 +198,7 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 >        print(f"Receiving new event of type: {chunk.event}...")
 >        print(chunk.data)
 >        print("\n\n")
->    ```
-
-> [选项卡] JavaScript SDK
+>    ```> [选项卡] JavaScript SDK
 >
 > 1.安装LangGraphJS SDK：
 > ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -232,7 +230,7 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 >    }
 >    ```
 
-> [选项卡] 休息 API
+> [选项卡] 休息API
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > curl -s --request POST \
@@ -251,7 +249,9 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 >         },
 >         \"stream_mode\": \"updates\"
 >     }"
-> ```## 后续步骤
+> ```
+
+## 后续步骤
 
 > [卡][Assistants](/langsmith/assistants)
 >
@@ -263,7 +263,7 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 
 > [卡][Runs](/langsmith/background-run)
 >
-> 启动长时间运行作业的后台运行，并将结果流式传输回您的客户端。
+> 启动长时间运行作业的后台运行并将结果返回给您的客户端。
 
 ***
 

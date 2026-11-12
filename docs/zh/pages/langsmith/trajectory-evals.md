@@ -40,7 +40,7 @@ AgentEvals 在 Python 中提供了 `create_trajectory_match_evaluator` 函数，
 
 您可以使用以下模式：|模式|描述 |使用案例|
 | - | - | - |
-| [⟦T17⟧](#strict-match) |消息与工具调用完全匹配，顺序一致 |测试特定序列（例如，授权前的策略查找）|
+| [⟦T17⟧](#strict-match) |消息和工具调用的顺序完全一致|测试特定序列（例如，授权前的策略查找）|
 | [⟦T18⟧](#unordered-match) |允许以任何顺序调用相同的工具 |当顺序无关紧要时验证信息检索 |
 | [⟦T19⟧](#subset-and-superset-match) |代理仅调用参考工具（无额外功能）|确保代理不超出预期范围 |
 | [⟦T20⟧](#subset-and-superset-match) |代理至少调用参考工具（允许额外）|验证已采取最低限度的必要措施 |
@@ -61,7 +61,7 @@ def get_weather(city: str):
     """Get weather information for a city."""
     return f"It's 75 degrees and sunny in {city}."
 
-agent = create_agent("gpt-5.5", tools=[get_weather])
+agent = create_agent("gpt-6.1-sol", tools=[get_weather])
 
 evaluator = create_trajectory_match_evaluator(  # [!code highlight]
     trajectory_match_mode="strict",  # [!code highlight]
@@ -112,7 +112,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather]
 });
 
@@ -174,7 +174,7 @@ def get_events(city: str):
     """Get events happening in a city."""
     return f"Concert at the park in {city} tonight."
 
-agent = create_agent("gpt-5.5", tools=[get_weather, get_events])
+agent = create_agent("gpt-6.1-sol", tools=[get_weather, get_events])
 
 evaluator = create_trajectory_match_evaluator(  # [!code highlight]
     trajectory_match_mode="unordered",  # [!code highlight]
@@ -236,7 +236,7 @@ const getEvents = tool(
 );
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather, getEvents]
 });
 
@@ -306,7 +306,7 @@ def get_detailed_forecast(city: str):
     """Get detailed weather forecast for a city."""
     return f"Detailed forecast for {city}: sunny all week."
 
-agent = create_agent("gpt-5.5", tools=[get_weather, get_detailed_forecast])
+agent = create_agent("gpt-6.1-sol", tools=[get_weather, get_detailed_forecast])
 
 evaluator = create_trajectory_match_evaluator(  # [!code highlight]
     trajectory_match_mode="superset",  # [!code highlight]
@@ -369,7 +369,7 @@ const getDetailedForecast = tool(
 );
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather, getDetailedForecast]
 });
 
@@ -435,7 +435,7 @@ def get_weather(city: str):
     """Get weather information for a city."""
     return f"It's 75 degrees and sunny in {city}."
 
-agent = create_agent("gpt-5.5", tools=[get_weather])
+agent = create_agent("gpt-6.1-sol", tools=[get_weather])
 
 evaluator = create_trajectory_llm_as_judge(  # [!code highlight]
     model="openai:gpt-5.4-mini",  # [!code highlight]
@@ -477,7 +477,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather]
 });
 

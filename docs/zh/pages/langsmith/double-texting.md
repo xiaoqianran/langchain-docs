@@ -19,7 +19,7 @@
 
 > [!注意]
 >
-> 双重短信是LangSmith部署的一个功能。 [LangGraph open source framework](/oss/python/langgraph/overview) 中不可用。
+> 双短信是LangSmith代理服务器的一项功能。 [LangGraph open source framework](/oss/python/langgraph/overview) 中不可用。
 
 ![Double-text strategies across first vs. second run: Reject keeps only the first; Enqueue runs the second afterward; Interrupt halts the first to run the second; Rollback reverts the first and reruns with the second.](https://mintcdn.com/langchain-5e9cc07a/Hucw5hmCzWXDanL-/langsmith/images/double-texting.png?fit=max\&auto=format\&n=Hucw5hmCzWXDanL-\&q=85\&s=1cae1e8cd4920872e7992460b081f76d)
 
@@ -31,7 +31,7 @@
 
 ## 拒绝
 
-当当前运行正在进行时，此选项会拒绝任何额外的传入运行，并防止并发执行或重复发短信。
+当当前运行正在进行时，此选项会拒绝任何额外的传入运行，并防止并发执行或双重发短信。
 
 有关配置拒绝双文本选项，请参阅[how-to guide](/langsmith/reject-concurrent)。
 

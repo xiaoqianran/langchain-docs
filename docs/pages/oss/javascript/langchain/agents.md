@@ -27,7 +27,7 @@ var agent = createAgent({ model: "google:gemini-3.6-flash", tools });
 ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent } from "langchain";
 
-var agent = createAgent({ model: "openai:gpt-5.5", tools });
+var agent = createAgent({ model: "openai:gpt-6.1-sol", tools });
 ```
 
 ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -64,7 +64,7 @@ Building on that, you can configure the basics directly with the `model=`, `tool
 
 > [!TIP]
 >
-> [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) builds on `create_agent` and comes with commonly useful capabilities already assembled, such as planning, file system tools, subagents, and memory. For maximum flexibility while using the same Deep Agents harness, use [Deep Agents](/oss/javascript/deepagents/overview) and host agents yourself, or run a custom [LangSmith Deployment](/langsmith/deployment). Use `create_agent` when you need to configure a smaller harness yourself.
+> [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) builds on `create_agent` and comes with commonly useful capabilities already assembled, such as planning, file system tools, subagents, and memory. For maximum flexibility while using the same Deep Agents harness, use [Deep Agents](/oss/javascript/deepagents/overview) and host agents yourself, or run a custom [Agent Server](/langsmith/deployment). Use `create_agent` when you need to configure a smaller harness yourself.
 
 ## Core components
 
@@ -83,7 +83,7 @@ var agent = createAgent({ model: "google:gemini-3.6-flash", tools });
 ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent } from "langchain";
 
-var agent = createAgent({ model: "openai:gpt-5.5", tools });
+var agent = createAgent({ model: "openai:gpt-6.1-sol", tools });
 ```
 
 ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -143,7 +143,7 @@ var search = tool(({ query }) => `Results for: ${query}`, {
   schema: z.object({ query: z.string() }),
 });
 
-var agent = createAgent({ model: "openai:gpt-5.5", tools: [search] });
+var agent = createAgent({ model: "openai:gpt-6.1-sol", tools: [search] });
 ```
 
 ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -225,7 +225,7 @@ var agent = createAgent({
 
 ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools,
   systemPrompt: "You are a helpful assistant. Be concise and accurate.",
 });
@@ -293,7 +293,7 @@ result.structuredResponse; // { summary: ..., confidence: ... }
 const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools,
   responseFormat: Answer,
 });
@@ -425,7 +425,7 @@ const stateMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [],
   middleware: [stateMiddleware],
 });
@@ -588,7 +588,7 @@ import { createAgent } from "langchain";
 import { MemorySaver } from "@langchain/langgraph";
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [],
   checkpointer: new MemorySaver(),
 });
@@ -814,7 +814,7 @@ const contextSchema = z.object({
 });
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [],
   contextSchema,
   checkpointer: new MemorySaver(),
@@ -1093,7 +1093,7 @@ import { createAgent } from "langchain";
 import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [search],
   middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
 });
@@ -1209,7 +1209,7 @@ import {
 } from "deepagents";
 
 var backend = new StateBackend();
-const model = "openai:gpt-5.5";
+const model = "openai:gpt-6.1-sol";
 
 var agent = createAgent({
   model,
@@ -1419,7 +1419,7 @@ var search = tool(({ query }) => `Search results for: ${query}`, {
 var backend = new StateBackend();
 
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [search],
   middleware: [
     createFilesystemMiddleware({ backend }),
@@ -1434,7 +1434,7 @@ var agent = createAgent({
           systemPrompt:
             "Use the search tool to research the question and summarize key points.",
           tools: [search],
-          model: "openai:gpt-5.5",
+          model: "openai:gpt-6.1-sol",
           middleware: [],
         },
       ],
@@ -1685,7 +1685,7 @@ var agent = createAgent({
 
 ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools,
   name: "research_assistant",
 });
@@ -1776,7 +1776,7 @@ var search = tool(({ query }) => `Search results for: ${query}`, {
 });
 
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [search],
   middleware: [
     modelRetryMiddleware({ maxRetries: 3 }),
@@ -1944,7 +1944,7 @@ var search = tool(({ query }) => `Search results for: ${query}`, {
 });
 
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [search],
   middleware: [piiMiddleware("email")],
 });
@@ -2069,7 +2069,7 @@ var search = tool(({ query }) => `Search results for: ${query}`, {
 });
 
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [search],
   middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
 });

@@ -21,7 +21,7 @@ import {
 } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [...],
   middleware: [summarizationMiddleware, humanInTheLoopMiddleware],
 });

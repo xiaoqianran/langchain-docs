@@ -10,7 +10,7 @@
 
 > [!提示]
 >
-> 升级之前，请查看 [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) 的重大更改和所需的变量更新。在运行任何 `kubectl` 命令之前运行 `make kubeconfig`。它获取集群凭据，并在 Microsoft Entra ID 集群上将其转换为 `kubelogin`。
+> 升级之前，请查看 [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) 以了解重大更改和所需的变量更新。在运行任何 `kubectl` 命令之前运行 `make kubeconfig`。它获取集群凭据，并在 Microsoft Entra ID 集群上将其转换为 `kubelogin`。
 
 有关本页中使用的 `kubectl`、`helm` 和 `az` 调用的复制粘贴参考，请跳至 [Diagnostic commands](#diagnostic-commands)。
 
@@ -94,12 +94,12 @@ az vm list-usage --location eastus --query "[?contains(name.value,'DSv5')]" -o t
 
 ### `LocationIsOfferRestricted`：Postgres 灵活服务器在该区域被阻止
 
-**症状：** AKS 创建成功，然后 Postgres 失败并显示 `Status: "LocationIsOfferRestricted"` 或 `ParameterOutOfRange: The value of the 'Version' should be in: []`。**原因：** Azure 阻止某些订阅优惠类型（免费试用、Visual Studio 和 MSDN 积分、Azure Pass、一些赞助订阅）在高需求区域预配 PostgreSQL 灵活服务器。决定结果的是订阅类型，而不是地区。 `make preflight` 在申请开始之前报告此情况。
+**症状：** AKS 创建成功，然后 Postgres 失败并显示 `Status: "LocationIsOfferRestricted"` 或 `ParameterOutOfRange: The value of the 'Version' should be in: []`。**原因：** Azure 阻止某些订阅优惠类型（免费试用、Visual Studio 和 MSDN 积分、Azure Pass、一些赞助订阅）在高需求区域预配 PostgreSQL 灵活服务器。决定结果的是订阅类型，而不是区域。 `make preflight` 在申请开始之前报告此情况。
 
 **修复：** 按优先顺序使用以下选项之一：
 
 1. 将订阅转换为按量付费。
-2. 在[aka.ms/postgres-request-quota-increase](https://aka.ms/postgres-request-quota-increase)申请豁免。
+2. 通过[aka.ms/postgres-request-quota-increase](https://aka.ms/postgres-request-quota-increase)申请豁免。
 3. 对于开发或演示部署，设置 `postgres_source = "in-cluster"`。不适合生产。
 4. 将`terraform.tfvars`更改为`location`。 Postgres 必须与 VNet 位于同一区域，因此整个部署会移动。
 
@@ -196,7 +196,7 @@ make apply
 
 对于`postgres-admin-password`，导入到`module.keyvault.azurerm_key_vault_secret.postgres_admin_password[0]`。为了让 Terraform 完全远离金库的秘密，请设置 `keyvault_manage_secrets = false` 并让 `make seed-secrets` 写入所有内容。在已应用的部署中，首先从状态中删除这两个密钥，或者 Terraform 将从保管库中删除它们。
 
-### 现有 Key Vault：应用创建角色分配，然后失败并显示 403 密钥
+### 现有 Key Vault：应用创建角色分配，然后失败并显示机密 403
 
 **症状：** 对于 `create_keyvault = false`，应用会超过 `azurerm_role_assignment`，并在第一个 `azurerm_key_vault_secret` 和 `StatusCode=403` 上失败。 `make seed-secrets` 同样失败。
 
@@ -229,7 +229,7 @@ az keyvault secret list --vault-name <vault> --query "length(@)"
 **原因：** `ingress_controller` 默认值从 `nginx` 更改为 `envoy-gateway`。从未设置变量的部署仍然运行 ingress-nginx，并且应用新的默认值将删除 ingress-nginx 及其负载均衡器，从而更改公共 IP。保护脚本会停止运行，直到您选择为止。
 
 **修复：** 将 `ingress_controller` 设置为 `terraform.tfvars`：* 保留NGINX：`ingress_controller = "nginx"`。
-* 要移动到 Envoy Gateway：`ingress_controller = "envoy-gateway"`，然后连续运行 `make apply`、`make init-values` 和 `make deploy`。在部署完成之前，无法从应用程序访问LangSmith。更新指向旧 IP 的所有 DNS A 记录。
+* 要移动到 Envoy Gateway：`ingress_controller = "envoy-gateway"`，然后连续运行 `make apply`、`make init-values` 和 `make deploy`。在部署完成之前，无法从应用程序访问LangSmith。更新指向旧 IP 的任何 DNS A 记录。
 
 ## 申请阶段
 
@@ -398,7 +398,7 @@ EOF
 make deploy
 ```对于外部 ClickHouse，设置 `clickhouse_source = "external"` 并重新运行 `make init-values`，这会提示输入连接详细信息并创建 `langsmith-clickhouse` 密钥。当手工制作的秘密缺少钥匙时，也会出现相同的症状。该图表需要全部七个：`clickhouse_host`、`clickhouse_port`、`clickhouse_native_port`、`clickhouse_user`、`clickhouse_password`、`clickhouse_db` 和 `clickhouse_tls`。
 
-### Polly 显示“无法连接到 LangGraph 服务器”
+### 波莉表演`Unable to connect to LangGraph server`
 
 **症状：** Polly 聊天小部件显示连接错误。浏览器控制台：`POST http://localhost:8123/threads net::ERR_FAILED` 和 CORS 错误。
 
@@ -416,9 +416,9 @@ kubectl exec -n langsmith deploy/langsmith-frontend -- env | grep POLLY
 
 **修复：**完全删除`polly.agent.extraEnv`块。操作员自动注入`LANGCHAIN_ENDPOINT`。
 
-### 启用 LangSmith 部署后，`listener` 和 `operator` Pod 永远不会出现
+### 启用代理服务器托管后，`listener` 和 `operator` Pod 永远不会出现
 
-**原因：** 设置了`config.deployment.url`，但省略了`config.deployment.enabled: true`。当 `enabled` 为 false（默认值）时，图表会默默地跳过创建 `listener` 和 `operator`。
+**原因：** 设置了`config.deployment.url`，但省略了`config.deployment.enabled: true`。当 `enabled` 为 false（默认值）时，图表会自动跳过创建 `listener` 和 `operator`。
 
 **修复：** 在 `deployment` 块内添加 `enabled: true`：
 
@@ -429,7 +429,7 @@ config:
     url: "https://<your-hostname>"
 ```
 
-### 重复顶级`config:`键会默默地删除值**原因：** YAML 不允许重复的顶级键。第二个`config:`块默默地掉落其中一个。
+### 重复的顶级`config:`键会默默地删除值**原因：** YAML 不允许重复的顶级键。第二个`config:`块默默地掉落其中一个。
 
 **修复：** 始终在现有 `config:` 键内添加新的配置块。使用`helm get values langsmith -n langsmith`进行验证。
 
@@ -438,7 +438,7 @@ config:
 首次使用后更改 `deployments_encryption_key`、`agent_builder_encryption_key`、`insights_encryption_key` 或 `polly_encryption_key` 会永久损坏其保护的数据。没有恢复。
 
 * 请勿旋转这些钥匙。
-* 不要在 `values-overrides.yaml` 中内联设置 `config.agentBuilder.encryptionKey`、`fleet.encryptionKey`、`insights.encryptionKey` 或 `polly.encryptionKey`。该图表从 `langsmith-config-secret` 到 `existingSecretName` 读取它们。设置内联会覆盖秘密引用。
+* 不要在`values-overrides.yaml`中内联设置`config.agentBuilder.encryptionKey`、`fleet.encryptionKey`、`insights.encryptionKey`或`polly.encryptionKey`。该图表从 `langsmith-config-secret` 到 `existingSecretName` 读取它们。设置内联会覆盖秘密引用。
 
 CrashLoopBackOff 中的 ### `fleet-tool-server` 或 `polly`
 
@@ -470,8 +470,8 @@ service_accounts_for_workload_identity = [
   "${var.langsmith_release_name}-platform-backend",
   "${var.langsmith_release_name}-queue",
   "${var.langsmith_release_name}-ingest-queue",
-  "${var.langsmith_release_name}-host-backend",          # LangSmith Deployment add-on
-  "${var.langsmith_release_name}-listener",              # LangSmith Deployment add-on
+  "${var.langsmith_release_name}-host-backend",          # Agent Server hosting add-on
+  "${var.langsmith_release_name}-listener",              # Agent Server hosting add-on
   "${var.langsmith_release_name}-fleet-tool-server",     # Fleet add-on
   "${var.langsmith_release_name}-fleet-trigger-server",  # Fleet add-on
   "${var.langsmith_release_name}-agent-gateway",         # LLM Gateway add-on
@@ -511,9 +511,9 @@ kubectl rollout restart deployment/langsmith-<service> -n langsmith
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 az group delete --name langsmith-rg-<name_prefix> --yes --no-wait
 az group show --name langsmith-rg-<name_prefix> 2>&1 | grep -E "provisioningState|ResourceGroupNotFound"
-```对于 `unique_resource_names = true`，资源组为 `ls-rg-<name_prefix>`。不要在`create_resource_group = false`时删除该组，因为该模块没有创建它。
+```对于`unique_resource_names = true`，资源组为`ls-rg-<name_prefix>`。不要在`create_resource_group = false`时删除该组，因为该模块没有创建它。
 
-如果您随后重复使用相同的 `name_prefix`，Azure 可能会在下一个 `terraform apply` 上恢复软删除的 Key Vault。使用`keyvault_purge_protection = false`，先将其清除。找到它的名称`az keyvault list-deleted -o table`，然后运行`az keyvault purge --name <vault> --location <region>`。
+如果您之后重复使用相同的 `name_prefix`，Azure 可能会在下一个 `terraform apply` 上恢复软删除的 Key Vault。使用`keyvault_purge_protection = false`，先将其清除。找到它的名称`az keyvault list-deleted -o table`，然后运行`az keyvault purge --name <vault> --location <region>`。
 
 ### `terraform destroy` 在 VNet/子网删除时停止
 
@@ -528,7 +528,7 @@ kubectl delete namespace langsmith --timeout=60s
 make destroy
 ```
 
-### 升级到图表 0.16 后孤立的`langsmith-agent-bootstrap` 工作
+### 升级到图表0.16后孤立的`langsmith-agent-bootstrap`工作
 
 **症状：** 从图表 0.15 升级后，已完成的 `langsmith-agent-bootstrap` 作业仍保留在命名空间中，而 `helm uninstall` 将其留在后面。
 
@@ -540,13 +540,13 @@ make destroy
 kubectl delete job langsmith-agent-bootstrap -n langsmith --ignore-not-found
 ```
 
-### `listener` pod OOMKilled**原因：** `make deploy` 在附加叠加层之后加载大小调整文件，因此其侦听器限制胜过 `langsmith-values-agent-deploys.yaml` 叠加层。 `dev` 和 `production` 配置文件将侦听器上限设置为 `2Gi`，而 `minimum` 将其上限设置为 `1536Mi`。持续部署负载可能会超过该限制。
+### `listener` pod OOMKilled**原因：** `make deploy` 在附加叠加层之后加载大小调整文件，因此其侦听器限制胜过 `langsmith-values-agent-deploys.yaml` 叠加层。 `dev` 和 `production` 配置文件将侦听器限制在 `2Gi`，而 `minimum` 将其限制在 `1536Mi`。持续部署负载可能会超过该限制。
 
-**修复：** 在`terraform.tfvars`中设置`sizing_profile = "production-large"`，这会为侦听器提供`4Gi`，然后运行`make init-values`和`make deploy`。要保留您的个人资料，请在 `helm/values/langsmith-values-sizing-<profile>.yaml` 中加注 `listener.deployment.resources.limits.memory` 并运行 `make deploy`。 `make init-values` 再次复制大小文件，因此每次运行后重复编辑。
+**修复：** 在`terraform.tfvars`中设置`sizing_profile = "production-large"`，这会为侦听器提供`4Gi`，然后运行`make init-values`和`make deploy`。要保留您的个人资料，请在 `helm/values/langsmith-values-sizing-<profile>.yaml` 中加注 `listener.deployment.resources.limits.memory` 并运行 `make deploy`。 `make init-values`​​ 再次复制尺寸文件，因此每次运行后重复编辑。
 
 > [!注意]
 >
-> 图表上显示集装箱限制为 `listener.deployment.resources`，而不是统一的 `listener.resources`。任何覆盖文件中的 `listener.resources` 值都会被静默忽略。
+> 图表显示集装箱限制为 `listener.deployment.resources`，而不是扁平的 `listener.resources`。任何覆盖文件中的 `listener.resources` 值都会被静默忽略。
 
 ### 过时的 HPA 将 `listener` 或 `host-backend` 扩展到最大副本数
 
@@ -606,7 +606,7 @@ kubectl annotate ingress langsmith-ingress -n langsmith touch="$(date +%s)" --ov
 
 ### AGIC拒绝`ingressClassName: azure/application-gateway`
 
-**原因：** 旧注释 `kubernetes.io/ingress.class: azure/application-gateway`（带斜杠）不是有效的 `ingressClassName`。 AKS 将 `IngressClass` 创建为 `azure-application-gateway`（连字符）。
+**原因：** 旧注释 `kubernetes.io/ingress.class: azure/application-gateway`（带斜线）不是有效的 `ingressClassName`。 AKS 将 `IngressClass` 创建为 `azure-application-gateway`（连字符）。
 
 **修复：** 使用`ingressClassName: azure-application-gateway`。 `make init-values` 自动设置。
 
@@ -690,7 +690,7 @@ helm history langsmith -n langsmith
 helm get values langsmith -n langsmith
 ```
 
-### LangSmith 部署
+### 代理服务器托管
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n langsmith | grep -E "host-backend|listener|operator"
@@ -720,4 +720,4 @@ make status-quick   # skip the Key Vault, kubeconfig, Kubernetes, and Helm check
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-troubleshooting.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-troubleshooting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

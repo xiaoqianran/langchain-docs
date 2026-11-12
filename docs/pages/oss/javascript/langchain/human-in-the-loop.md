@@ -45,7 +45,7 @@ import { createAgent, humanInTheLoopMiddleware } from "langchain"; // [!code hig
 import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [writeFileTool, executeSQLTool, readDataTool],
     middleware: [
         humanInTheLoopMiddleware({
@@ -137,7 +137,7 @@ const isWriteQuery = (request: ToolCallRequest) =>
     .startsWith("SELECT");
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [writeFile, executeSql, readData],
   middleware: [
     humanInTheLoopMiddleware({
@@ -248,7 +248,7 @@ const readData = tool(({ table }) => `3 rows from ${table}`, {
 });
 
 let agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [writeFile, executeSql, readData],
   middleware: [
     humanInTheLoopMiddleware({
