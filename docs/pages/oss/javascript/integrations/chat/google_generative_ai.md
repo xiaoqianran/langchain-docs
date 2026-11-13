@@ -171,7 +171,7 @@ J'adore programmer.
 
 ## Safety settings
 
-Gemini models have default safety settings that can be overridden. If you are receiving lots of "Safety Warnings" from your models, you can try tweaking the safety\_settings attribute of the model. For example, to turn off safety blocking for dangerous content, you can import enums from the `@google/generative-ai` package, then construct your LLM as follows:
+Gemini models have default safety settings that can be overridden. If you are receiving lots of "Safety Warnings" from your models, you can try tweaking the safety_settings attribute of the model. For example, to turn off safety blocking for dangerous content, you can import enums from the `@google/generative-ai` package, then construct your LLM as follows:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
@@ -222,7 +222,7 @@ const fakeBrowserTool = tool((_) => {
 })
 
 const llmWithTool = new ChatGoogleGenerativeAI({
-  model: "gemini-3.6-flash",
+  model: "gemini-4-hydrogen",
 }).bindTools([fakeBrowserTool]) // Bind your tools to the model
 
 const toolRes = await llmWithTool.invoke([
@@ -574,7 +574,7 @@ const fileResult = await fileManager.uploadFile(pathToVideoFile, {
 
 // creates cached content AFTER uploading is finished
 const cachedContent = await cacheManager.create({
-    model: "models/gemini-2.5-flash",
+    model: "models/gemini-4-hydrogen",
     displayName: displayName,
     systemInstruction: "You are an expert video analyzer, and your job is to answer " +
       "the user's query based on the video file you have access to.",

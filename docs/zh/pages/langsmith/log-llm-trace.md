@@ -8,10 +8,10 @@
 
 功能齐全的 LLM 跟踪有四个要求：
 
-|要求 |该怎么办 |启用|
+|要求|该怎么办 |启用|
 | - | - | - |
 | 1. 设置[⟦T10⟧](/langsmith/run-data-format#run-types) |通过 `run_type="llm"` 至 `@traceable` | LLM 特定渲染、代币/成本显示 |
-| 2. 格式化输入/输出 |使用OpenAI、Anthropic或LangChain消息格式 |结构化消息渲染、Playground 支持 |
+| 2. 格式化输入/输出|使用OpenAI、Anthropic或LangChain消息格式 |结构化消息渲染、Playground 支持 |
 | 3. 设置`ls_provider`和`ls_model_name` | `metadata` 均通过 |成本跟踪、Playground 模型选择 |
 | 4. 提供代币数量 |在运行时设置`usage_metadata` |代币数量和成本计算 |
 
@@ -85,7 +85,7 @@ Base64 编码的图像数据。
 
 **id** `string`外部存储图像的参考 ID（例如，在提供商的文件系统或存储桶中）。
 
-**哑剧\_类型** `string`
+**mime_type** `string`
 
 图片[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image)（例如`image/jpeg`、`image/png`）。
 
@@ -105,7 +105,7 @@ Base64 编码的文件数据。
 
 外部存储文件的参考 ID（例如，在提供商的文件系统或存储桶中）。
 
-**哑剧\_类型** `string`
+**mime_type** `string`
 
 文件[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image)（例如`application/pdf`）。
 
@@ -125,7 +125,7 @@ Base64 编码的音频数据。
 
 外部存储的音频文件的参考 ID（例如，在提供商的文件系统或存储桶中）。
 
-**哑剧\_类型** `string`
+**mime_type** `string`
 
 音频[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image)（例如`audio/mpeg`、`audio/wav`）。
 
@@ -145,11 +145,11 @@ Base64 编码的视频数据。
 
 外部存储的视频文件的参考 ID（例如，在提供商的文件系统或存储桶中）。
 
-**哑剧\_类型** `string`
+**mime_type** `string`
 
 视频 [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image)（例如，`video/mp4`、`video/webm`）。
 
-**工具\_call**
+**工具调用**
 
 **类型** `literal('tool_call')` *必填*
 
@@ -161,7 +161,7 @@ Base64 编码的视频数据。
 
 该工具调用的唯一标识符。
 
-**服务器\_工具\_调用**
+**服务器工具调用**
 
 **类型** `literal('server_tool_call')` *必填*
 
@@ -177,11 +177,11 @@ Base64 编码的视频数据。
 
 要传递给工具的参数。
 
-**服务器\_工具\_结果**
+**服务器工具结果**
 
 **类型** `literal('server_tool_result')` *必填*
 
-**工具\_call\_id** `string` *必填*
+**tool_call_id** `string` *必填*
 
 相应服务器工具调用的标识符。
 
@@ -197,11 +197,11 @@ Base64 编码的视频数据。
 
 已执行工具的输出。
 
-**工具\_call\_id** `string`
+**工具_调用_id** `string`
 
 必须与先前 `assistant` 消息的 `tool_calls[i]` 条目的 `id` 匹配。仅当`role`为`tool`时有效。
 
-**使用\_元数据** `object`
+**使用_元数据** `object`
 
 使用此字段可以随模型的输出一起发送令牌计数和/或成本。更多详情请参见[Provide token and cost information](/langsmith/log-llm-trace#provide-token-and-cost-information)。
 
@@ -538,7 +538,7 @@ list(
 
 ### 支持的 `usage_metadata` 字段
 
-|领域|类型 |描述 |
+|领域 |类型 |描述 |
 | - | - | - |
 | `input_tokens` | `int` |输入/提示令牌总数 |
 | `output_tokens` | `int` |总输出/完成代币 |

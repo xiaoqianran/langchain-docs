@@ -1256,7 +1256,7 @@ Start with [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)
 >
 > **2. Create the agent**
 >
-> When creating the deep agent with [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent), pass memory paths, the skills directory, image tools, subagents from YAML, and a [FilesystemBackend](/oss/python/deepagents/backends) rooted at the example directory so paths like `./AGENTS.md` and `./skills/` resolve correctly.
+> When creating the deep agent with [create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent), pass memory paths, the skills directory, image tools, subagents from YAML, and a [FilesystemBackend](/oss/python/deepagents/backends) rooted at the example directory so paths like `./AGENTS.md` and `./skills/` resolve correctly.
 >
 > ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
@@ -1266,7 +1266,7 @@ Start with [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)
 > def create_content_writer():
 >     """Create a content writer agent configured by filesystem files."""
 >     return create_deep_agent(
->         model="google_genai:gemini-3.6-flash",
+>         model="google_genai:gemini-4-hydrogen",
 >         memory=["./AGENTS.md"],
 >         skills=["./skills/"],
 >         tools=[generate_cover, generate_social_image],

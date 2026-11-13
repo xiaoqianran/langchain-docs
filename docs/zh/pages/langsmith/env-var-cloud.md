@@ -46,7 +46,7 @@
 * 允许单一来源的示例：`CORS_ALLOW_ORIGINS=https://example.com`
 * 允许多个来源的示例：`CORS_ALLOW_ORIGINS=https://example.com,https://app.example.com`
 
-有关高级 CORS 配置，请参阅[how to add custom CORS configuration](/langsmith/cli#customizing-http-middleware-and-headers)。
+如需高级 CORS 配置，请参阅[how to add custom CORS configuration](/langsmith/cli#customizing-http-middleware-and-headers)。
 
 默认为 `*`（所有来源）。
 
@@ -58,7 +58,7 @@
 
 在部署上设置这些环境变量或机密，以将代理服务器跟踪和日志发送到 Datadog。每个变量仅在设置`DD_API_KEY`时生效，它将应用程序进程包装在Datadog的[⟦T42⟧](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html)跟踪器和日志收集代理中。
 
-* **`DD_API_KEY`**：你的[Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/)。必需的。将任何跟踪或日志发送到 Datadog 都需要它。
+* **`DD_API_KEY`**：您的[Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/)。必需的。将任何跟踪或日志发送到 Datadog 都需要它。
 * **`DD_LOGS_ENABLED`**：设置为 `true` 将代理服务器日志转发到 Datadog。省略它或将其设置为`false`以禁用日志转发。
 * **`DD_LOGS_INJECTION`**：设置为 `true` 可将跟踪和跨度标识符添加到日志中，以便日志与跟踪相关联。
 * **`DD_TRACE_ENABLED`**：控制Datadog跟踪收集。设置为 `true` 来收集跟踪信息，或设置为 `false` 来禁用它。
@@ -75,23 +75,23 @@
 
 ## `FF_OPTIMIZED_STREAMING`
 
-在部署上设置 `FF_OPTIMIZED_STREAMING=true` 以使用 Redis Streams 而不是 Redis Pub/Sub 来流式运行输出。
+控制 API 服务器如何从 Redis 读取流式运行输出。启用后，它们从 Redis Streams 读取它。禁用后，他们通过 Redis Pub/Sub 读取它。
 
 > [!注意]
 >
-> `FF_OPTIMIZED_STREAMING` 需要代理服务器 v0.7.93 或更高版本。
+> `FF_OPTIMIZED_STREAMING` 需要代理服务器 v0.7.93 或更高版本。从 v0.19.0rc1 开始，存储每次运行的事件和 v0.19.0 候选版本中的 `true` 默认首舰。
 
-启用后，服务器将所有流事件存储在 Redis Streams 中。 `RESUMABLE_STREAM_TTL_SECONDS`仍然控制Redis保留流数据的时间，默认为`120`秒。
+从 Agent Server v0.19.0rc1 开始，服务器将每次运行的流事件存储在 Redis Streams 中，无论 `FF_OPTIMIZED_STREAMING` 的值是多少。客户端可以恢复任何运行的流，而不仅仅是使用`stream_resumable=True`创建的运行。 [⟦T72⟧](#resumable_stream_ttl_seconds) 设置Redis 保留事件的时间。要调整它们的 Redis 内存大小，请参阅 [Size Redis memory for streaming](/langsmith/agent-server-scale#size-redis-memory-for-streaming)。设置 `FF_OPTIMIZED_STREAMING=false` 以通过 Redis Pub/Sub 继续读取。一旦部署运行 v0.19.0rc1 或更高版本，请更改其自己的部署中的值。如果部署从早期版本升级并更改值，则打开的流可能会错过仍在早期版本上的副本中的实时事件，直到客户端重新连接。对于 Redis 集群，如果变量设置为 `true`，请在一次部署中将其删除，然后在下一次部署中将其设置为 `false`。在集群模式下，变量显式为 `true` 的服务器不会发送实时 Pub/Sub 事件，因此标记关闭的服务器上的读取器会错过其事件，直到重新连接为止。
 
-在启用标志继续通过 Redis Pub/Sub 流式传输之前，不可恢复运行已开始。
+在早期版本中，服务器仅在禁用该标志时存储可恢复运行的事件。在启用标志继续通过 Redis Pub/Sub 传输之前，不可恢复运行已开始。
 
-接受布尔值 `true` 和 `false`。默认为 `false`。
+接受布尔值 `true` 和 `false`。从 Agent Server v0.19.0rc1 开始默认为 `true`，在早期版本中默认为 `false`。
 
 ## `FF_PROFILE_IMPORTS`
 
-将 `FF_PROFILE_IMPORTS` 设置为 `true` 以找出图表加载缓慢的原因。默认为 `false`。添加到`langgraph-api==0.6.8`。代理服务器在启动时导入图形模块时运行图形代码，因此导入时发生的工作会延迟准备时间。示例包括网络调用、数据库或客户端设置、读取大文件以及大量依赖项导入。当图形导入时间超过 3 秒时，服务器会记录一条警告，建议设置此变量。
+将 `FF_PROFILE_IMPORTS` 设置为 `true` 以找出图表加载缓慢的原因。默认为`false`。添加到`langgraph-api==0.6.8`。代理服务器在启动时导入图形模块时运行图形代码，因此导入时发生的工作会延迟准备时间。示例包括网络调用、数据库或客户端设置、读取大文件以及大量依赖项导入。当图形导入时间超过 3 秒时，服务器会记录一条警告，建议设置此变量。
 
-设置变量后，服务器会分析从您的配置加载的每个 Python 模块的导入。这涵盖了您的图表、自定义应用程序、身份验证处理程序、存储、检查点和加密模块。如果导入中的任何函数至少需要 1 秒，服务器会记录一条 `slow_import_profile` 警告，其中列出最多 10 个最慢的函数。每个条目都会显示该函数、其累积时间以及在模块中调用该函数的位置。该报告采用以下格式，并附有说明性值：
+通过设置变量，服务器会分析从您的配置加载的每个 Python 模块的导入。这涵盖了您的图表、自定义应用程序、身份验证处理程序、存储、检查点和加密模块。如果导入中的任何函数至少需要 1 秒，服务器会记录一条 `slow_import_profile` 警告，其中列出最多 10 个最慢的函数。每个条目都会显示该函数、其累积时间以及在模块中调用该函数的位置。该报告采用以下格式，并附有说明性值：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 Slow startup for './agent.py:graph' (12.3s)
@@ -104,7 +104,7 @@ Slow startup for './agent.py:graph' (12.3s)
 该报告识别出缓慢的操作，因此您可以将其移动到函数内或延迟初始化它，而不是在导入时运行它。
 
 请记住以下几点：* 分析会增加开销，因此报告的时间比正常情况要高。解决问题后删除该变量。
-* 在模块顶层进行的调用归属于`(module-level)`，没有行号。
+* 在模块顶层进行的调用归因于`(module-level)`，没有行号。
 * 每次耗时不到 1 秒的操作不会出现在报告中，即使其中许多操作加起来导致导入速度很慢。
 * 导入分析仅适用于 Python 图表。尚不支持 JavaScript 图表。
 * 仅分析导入时间。导入图表后的延迟（例如自定义应用程序生命周期内的延迟）不会出现。
@@ -131,9 +131,9 @@ Slow startup for './agent.py:graph' (12.3s)
 
 ## `LANGGRAPH_POSTGRES_POOL_MAX_SIZE`
 
-从 langgraph-api 版本 `0.2.12` 开始，可以使用 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 环境变量控制 Postgres 连接池（每个副本）的最大大小。通过设置此变量，您可以确定服务器与 Postgres 数据库建立的同时连接数的上限。
+从 langgraph-api 版本 `0.2.12` 开始，Postgres 连接池（每个副本）的最大大小可以使用 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 环境变量进行控制。通过设置此变量，您可以确定服务器与 Postgres 数据库建立的同时连接数的上限。
 
-例如，如果部署扩展到 10 个副本，并且 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 配置为 `150`，则最多可以建立 `1500` 到 Postgres 的连接。这对于数据库资源有限（或更多可用）的部署或者出于性能或扩展原因需要调整连接行为的部署特别有用。当[⟦T103⟧](#bg_job_isolated_loops)启用时，池不共享。相反，每个后台工作线程都会创建自己的池，最大大小为`LANGGRAPH_POSTGRES_POOL_MAX_SIZE / N_JOBS_PER_WORKER`。减小池大小时请记住这一点。适合共享池的值可能会导致隔离循环下的每个工作线程池非常小。
+例如，如果部署扩展到 10 个副本，并且 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 配置为 `150`，则最多可以建立 `1500` 与 Postgres 的连接。这对于数据库资源有限（或更多可用）的部署或者出于性能或扩展原因需要调整连接行为的部署特别有用。当[⟦T109⟧](#bg_job_isolated_loops)启用时，池不共享。相反，每个后台工作线程都会创建自己的池，最大大小为`LANGGRAPH_POSTGRES_POOL_MAX_SIZE / N_JOBS_PER_WORKER`。减小池大小时请记住这一点。适合共享池的值可能会导致隔离循环下的每个工作线程池非常小。
 
 默认为 `150` 连接。
 
@@ -143,11 +143,11 @@ Slow startup for './agent.py:graph' (12.3s)
 
 如果下一个状态将使响应超过此限制，服务器将返回迄今为止的状态，该状态可能小于`limit`。始终包含最新状态，即使它本身就大于限制。要阅读较旧的状态，请使用 `before` 进行翻页。
 
-该限制适用于 JSON 编码的响应。一旦达到限制，服务器就会停止读取检查点，因此这也限制了历史请求使用的内存量。负值会阻止服务器启动。有`langgraph-api>=0.17.0`可供选择。
+该限制适用于 JSON 编码的响应。一旦达到限制，服务器就会停止读取检查点，因此这也限制了历史请求使用的内存量。负值会阻止服务器启动。提供`langgraph-api>=0.17.0`。
 
 默认为`0`，即没有限制。
 
-## `LS_CHECKPOINT_DELETE`用于延迟检查点删除的 JSON 值配置。启用后，线程删除和修剪操作会将检查点排入队列以进行后台删除，而不是同步删除，从而将 I/O 移出请求热路径。提供`langgraph-api>=0.8.1`。
+## `LS_CHECKPOINT_DELETE`用于延迟检查点删除的 JSON 值配置。启用后，线程删除和修剪操作会将检查点排入队列以进行后台删除，而不是同步删除，从而将 I/O 移出请求热路径。适用于`langgraph-api>=0.8.1`。
 
 > [!注意]
 >
@@ -169,7 +169,7 @@ Slow startup for './agent.py:graph' (12.3s)
 
 如果应用程序的 `langgraph.json` 包含 `checkpointer.backend` 值，则它优先于该变量。
 
-当设置为 `"mongo"` 时，您还必须通过 [⟦T136⟧](#ls_mongodb_uri) 提供 MongoDB 连接 URI。
+当设置为 `"mongo"` 时，您还必须通过 [⟦T142⟧](#ls_mongodb_uri) 提供 MongoDB 连接 URI。
 
 ## `LANGSMITH_TRACING`
 
@@ -179,11 +179,11 @@ Slow startup for './agent.py:graph' (12.3s)
 >
 > 对于基于运行时条件（例如每个客户端要求或数据敏感性）的选择性跟踪控制，请参阅[Conditional tracing](/langsmith/conditional-tracing)。
 
-默认为 `true`。
+默认为`true`。
 
 ## `LOG_COLOR`
 
-这主要与通过 `langgraph dev` 命令使用开发服务器的上下文有关。将 `LOG_COLOR` 设置为 `true` 以在使用默认控制台渲染器时启用 ANSI 颜色控制台输出。通过将此变量设置为 `false` 禁用颜色输出会生成单色日志。默认为`true`。
+这主要与通过 `langgraph dev` 命令使用开发服务器的上下文相关。将 `LOG_COLOR` 设置为 `true` 以在使用默认控制台渲染器时启用 ANSI 颜色的控制台输出。通过将此变量设置为 `false` 禁用颜色输出会生成单色日志。默认为`true`。
 
 ## `LOG_LEVEL`
 
@@ -199,9 +199,9 @@ Slow startup for './agent.py:graph' (12.3s)
 
 ## `LS_APM_OTEL_ENABLED`
 
-要为您的部署配置 OpenTelemetry APM 跟踪，请将 `LS_APM_OTEL_ENABLED` 设置为 `true`，并将 `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` 或 `OTEL_EXPORTER_OTLP_ENDPOINT` 设置为目标跟踪引入端点。请注意，在 `0.7.17` 之后的服务器版本中，需要 `LS_APM_OTEL_ENABLED` 和其他两个导出端点之一来激活 OpenTelemetry APM 跟踪。
+要为您的部署配置 OpenTelemetry APM 跟踪，请将 `LS_APM_OTEL_ENABLED` 设置为 `true`，并将 `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` 或 `OTEL_EXPORTER_OTLP_ENDPOINT` 设置为目标跟踪摄取端点。请注意，在 `0.7.17` 之后的服务器版本中，需要 `LS_APM_OTEL_ENABLED` 和其他两个导出端点之一来激活 OpenTelemetry APM 跟踪。
 
-指定其他[⟦T163⟧ environment variables](https://opentelemetry.io/docs/collector/configuration/)来配置跟踪、日志记录和其他检测。
+指定其他[⟦T169⟧ environment variables](https://opentelemetry.io/docs/collector/configuration/)来配置跟踪、日志记录和其他检测。
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # If you set LS_APM_OTEL_ENABLED AND (OTEL_EXPORTER_OTLP_TRACES_ENDPOINT or OTEL_EXPORTER_OTLP_ENDPOINT),
@@ -266,17 +266,25 @@ URI 必须指向副本集成员或`mongos` 路由器，并且必须在路径中�
 
 指定 `REDIS_URI_CUSTOM` 使用自定义 Redis 实例。 `REDIS_URI_CUSTOM` 的值必须是有效的 [Redis connection URI](https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)。
 
-## `REDIS_MAX_CONNECTIONS`
+## `REDIS_MAX_CONNECTIONS`Redis 连接池（每个副本）的最大大小可以使用 `REDIS_MAX_CONNECTIONS` 环境变量进行控制。它调整 Go 核心池和 Python 服务器池的大小。这些池并不保存副本打开到 Redis 的每个连接。例如，启用 [⟦T189⟧](#ff_optimized_streaming) 后，流读取将使用大小为 [⟦T190⟧](#redis_stream_read_max_connections) 的单独池。
 
-Redis 连接池（每个副本）的最大大小可以使用 `REDIS_MAX_CONNECTIONS` 环境变量进行控制。通过设置此变量，您可以确定服务器与 Redis 实例建立的同时连接数的上限。例如，如果部署扩展到 10 个副本，并且 `REDIS_MAX_CONNECTIONS` 配置为 `150`，则最多可以建立 `1500` 与 Redis 的连接。
+对于 Go 核心，默认为 `500`；对于 Python 服务器，默认为 `2000`。
+
+## `REDIS_STREAM_READ_MAX_CONNECTIONS`
+
+`REDIS_STREAM_READ_MAX_CONNECTIONS` 设置每个副本用于读取流的 Redis 连接池的最大大小。仅当[⟦T195⟧](#ff_optimized_streaming)启用时才适用。每个打开的流在等待事件时都会从该池中获取一个连接。在代理服务器 v0.19.0rc1 及更高版本中可用。
+
+该池与 [⟦T196⟧](#redis_max_connections) 是分开的。启用 `FF_OPTIMIZED_STREAMING` 后，每个副本可以在这些池之上打开最多 `REDIS_STREAM_READ_MAX_CONNECTIONS` Redis 连接。
+
+如果副本的打开流多于池的连接数，则流将等待空闲连接，并且它们的事件会延迟到达。发生这种情况时提高该值，只要 Redis `maxclients` 限制有空间容纳来自每个副本的额外连接。
 
 默认为`2000`。
 
 ## `RESUMABLE_STREAM_TTL_SECONDS`
 
-Redis 中可恢复流数据的生存时间（以秒为单位）。
+Redis 中可恢复流数据的生存时间（以秒为单位）。创建运行并对输出进行流式传输时，可以将流配置为可恢复（例如`stream_resumable=True`）。如果流是可恢复的，则流的输出将临时存储在 Redis 中。该数据的 TTL 可以通过设置`RESUMABLE_STREAM_TTL_SECONDS`来配置。
 
-创建运行并对输出进行流式传输时，可以将流配置为可恢复（例如`stream_resumable=True`）。如果流是可恢复的，则流的输出将临时存储在 Redis 中。该数据的 TTL 可以通过设置`RESUMABLE_STREAM_TTL_SECONDS`来配置。
+从 Agent Server v0.19.0rc1 开始，服务器存储每次运行的流输出，无论是否可恢复。线程上的每个新事件都会修剪该线程早于 `RESUMABLE_STREAM_TTL_SECONDS` 的事件，并且其余事件在该线程的最新事件之后 `RESUMABLE_STREAM_TTL_SECONDS` 过期。
 
 有关如何实现可恢复流的更多详细信息，请参阅 [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.stream) 和 [JS/TS](https://reference.langchain.com/javascript/langchain-langgraph-sdk/client/RunsClient) SDK。
 
@@ -285,6 +293,7 @@ Redis 中可恢复流数据的生存时间（以秒为单位）。
 > [!注意]
 >
 > 当存在大量具有大量或频繁流输出的并发运行时，为 `RESUMABLE_STREAM_TTL_SECONDS` 设置非常高的值可能会导致大量 Redis 内存使用。将此值设置为最小值以在网络中断期间启用恢复，并首选检查点以实现长期持久性和执行快照。
+> 要调整存储事件的 Redis 内存大小，请参阅 [Size Redis memory for streaming](/langsmith/agent-server-scale#size-redis-memory-for-streaming)。
 
 ***
 

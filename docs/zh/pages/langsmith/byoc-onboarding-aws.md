@@ -26,21 +26,26 @@ LangChain 提供 IAM 角色的外部 ID。导航到 **设置 > 数据平面**，
 
 对于 BYOVPC，设置 `allow_vpc_creation_permissions = false` 并在 `vpc_ids` 中提供您的 VPC ID。参见[Create the reduced-permission IAM role](/langsmith/byoc-byovpc-aws#create-the-reduced-permission-iam-role)。
 
-> [!注意]
+要使用您自己的 KMS 密钥加密数据平面，还需设置 `cmk_service_key_arns`。参见[Bring your own keys](/langsmith/byoc-byok-aws)。> [!注意]
 >
 > LangChain 建议专门用于 LangSmith BYOC 的新 AWS 账户。
 
-**3.创建数据平面**导航到 **设置 > 数据平面** 并使用以下参数创建数据平面：
+**3.创建数据平面**
+
+导航到 **设置 > 数据平面** 并使用以下参数创建数据平面：
 
 * **名称**：小写字母、数字和连字符，最多 24 个字符。
 * **AWS 区域**：[supported regions](/langsmith/byoc#regions-and-cloud-providers) 之一。
-* **AWS IAM 角色 ARN**：您在上一步中创建的角色的 ARN，LangSmith 在您的账户中采用该角色。
-* **网络配置**：对于 LangChain 管理的 VPC，提供从 `/16` 到 `/18` 的私有 RFC 1918 CIDR 范围。对于 BYOVPC，请提供 [VPC and subnet IDs](/langsmith/byoc-byovpc-aws#supply-the-vpc-and-subnet-ids) 而不是 CIDR 范围。
-* **负载均衡器访问**：默认情况下为私有，这使得入口负载均衡器只能从您的 VPC 访问。将其设置为 **Public** 以使负载均衡器面向互联网。
+* **AWS IAM 角色 ARN**：您在上一步中创建的角色的 ARN，LangSmith 在您的账户中代入。
 
-**4.等待配置**
+在 **配置** 下，默认值适用于大多数数据平面。您可以更改这些设置：* **网络**：默认情况下，LangSmith 从`/16` 到 `/18` 的私有 RFC 1918 CIDR 范围创建 VPC，例如 `10.20.0.0/16`。要使用您自己的 VPC，请选择 **使用现有 VPC** 并提供 [VPC and subnet IDs](/langsmith/byoc-byovpc-aws#supply-the-vpc-and-subnet-ids)。默认情况下，负载均衡器是**私有**，只能从 VPC 内部访问。选择 **面向 Internet** 为您的应用程序提供公共端点。对于您自己的 VPC，面向互联网的负载均衡器需要公有子网 ID。
+* **IAM 角色**：默认情况下，LangSmith 创建数据平面 IAM 角色。要使用您创建的角色，请选择 **使用现有 IAM 角色** 并按照 [Bring your own IAM roles](/langsmith/byoc-byoiam-aws) 操作。
+* **加密密钥**：默认情况下，AWS 管理的密钥对静态数据进行加密。要使用您自己的 KMS 密钥，请为所有服务选择一个密钥或为每个服务选择一个密钥。参见[Bring your own keys](/langsmith/byoc-byok-aws)。
+* **沙箱**：默认关闭。打开它们来运行 [sandboxes](/langsmith/sandboxes)，这是引擎和一些评估器所需要的。
+* **EKS API 访问**：新数据平面默认通过 PrivateLink 到达 EKS API。
+* **标签**：最多 40 个应用于 LangSmith 创建的 AWS 资源的自定义标签。键必须是唯一的，值可以为空。 AWS 和LangSmith 系统标签已保留。
 
-LangChain 代表您配置基础设施。数据平面从`Requested`移动到`Provisioning`再到`Active`。
+**4.等待配置**LangChain 代表您配置基础设施。数据平面从`Requested`移动到`Provisioning`再到`Active`。
 
 对于 BYOVPC，LangSmith 在预配之前验证您的 VPC 和子网，然后在您的 VPC 内创建工作负载基础设施。
 
@@ -50,7 +55,9 @@ LangChain 代表您配置基础设施。数据平面从`Requested`移动到`Prov
 
 在 **设置 > 数据平面** 中跟踪其状态。如果数据平面过渡到`Provisioning Failed`，请联系LangChain团队。
 
-**5.设置专用连接**默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能访问它，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。
+**5.设置专用连接**
+
+默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能访问它，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。
 
 在 **设置 > 数据平面** 下找到 API URL。
 
@@ -60,11 +67,11 @@ LangChain 代表您配置基础设施。数据平面从`Requested`移动到`Prov
 
 从此屏幕中，您可以切换到可访问的数据平面上的工作区，该工作区可以是云工作区。
 
-**6。创建工作区**
+**6。创建工作区**名为 `dp-<data_plane_name>` 的工作空间会在新数据平面内自动配置。在数据平面可达之前，它是不可访问的。
 
-名为 `dp-<data_plane_name>` 的工作空间会在新数据平面内自动配置。在数据平面可达之前，它是不可访问的。
+您可以在数据平面中创建其他工作区。创建每个数据平面时选择目标数据平面：一个工作空间只属于一个数据平面，一个数据平面可以容纳多个工作空间。
 
-您可以在数据平面中创建其他工作区。创建每个数据平面时选择目标数据平面：一个工作空间只属于一个数据平面，一个数据平面可以容纳多个工作空间。> [!警告]
+> [!警告]
 >
 > 创建工作区时请仔细选择正确的数据平面。工作空间创建后无法移动到另一个数据平面。
 
@@ -72,7 +79,7 @@ LangChain 代表您配置基础设施。数据平面从`Requested`移动到`Prov
 
 如果您从现有的LangSmith云或[self-hosted](/langsmith/self-hosted)实例迁移，则可以复制用户、角色、数据集、提示、实验、注释队列配置、自动化规则、仪表板和队列资源。 AWS 支持跟踪迁移。联系LangChain团队安排。
 
-有关更多信息，请参阅[Migrate to BYOC](/langsmith/byoc-migration)。
+欲了解更多信息，请参阅[Migrate to BYOC](/langsmith/byoc-migration)。
 
 ## 后续步骤
 

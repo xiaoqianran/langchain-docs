@@ -217,7 +217,7 @@ Terraform rejects a configuration that sets more than one of `enable_envoy_gatew
 
 | Variable | Default | Required | Description |
 | - | - | - | - |
-| `enable_sandboxes` | `false` | no | Provision LangSmith Sandboxes prerequisites: a dedicated JuiceFS metadata ElastiCache, a `sandbox-host` node group, and the JuiceFS config secret. Sandbox hosts need usable KVM (`/dev/kvm`): bare-metal or nested-virtualization x86\_64 types. Requires LangSmith Helm chart v16 or later. |
+| `enable_sandboxes` | `false` | no | Provision LangSmith Sandboxes prerequisites: a dedicated JuiceFS metadata ElastiCache, a `sandbox-host` node group, and the JuiceFS config secret. Sandbox hosts need usable KVM (`/dev/kvm`): bare-metal or nested-virtualization x86_64 types. Requires LangSmith Helm chart v16 or later. |
 | `sandbox_host_node_count` | `1` | no | Fixed number of sandbox-host nodes. At least `1`. |
 | `sandbox_host_instance_types` | `["m5d.metal"]` | no | Instance types for the sandbox-host node group. Must expose KVM. On types without instance store, set `sandbox_host_local_nvme_bootstrap_enabled = false`. |
 | `sandbox_host_local_nvme_bootstrap_enabled` | `true` | no | Format local NVMe instance-store devices: the first as swap, the rest as JuiceFS cache. |

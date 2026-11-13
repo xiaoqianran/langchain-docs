@@ -4,13 +4,13 @@
 
 # 如何创建复合评估器
 
-*综合评估器* 是将多个评估器分数组合成一个 [score](/langsmith/evaluation-concepts#evaluator-outputs) 的方法。当您想要评估应用程序的多个方面并将结果合并为单个结果时，这非常有用。
+*综合评估器*是将多个评估器分数组合成单个[score](/langsmith/evaluation-concepts#evaluator-outputs)的方法。当您想要评估应用程序的多个方面并将结果合并为单个结果时，这非常有用。
 
 本指南介绍了如何设置使用多个评估器的评估，并使用 [LangSmith SDK](https://reference.langchain.com/python/langsmith) 将其分数与自定义聚合函数相结合。
 
 > [!注意]
 >
-> 需要朗史密斯>=0.4.29
+> 需要朗史密斯>=0.4.29 
 
 > [!提示]
 >

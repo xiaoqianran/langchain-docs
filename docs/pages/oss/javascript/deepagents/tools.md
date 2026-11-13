@@ -12,7 +12,7 @@ import { createDeepAgent } from "deepagents";
 
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [search, fetchUrl, runQuery],
 });
 ```
@@ -124,7 +124,7 @@ const internetSearch = tool(
 );
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [internetSearch],
 });
 ```
@@ -442,7 +442,7 @@ const client = new MultiServerMCPClient({
 const tools = await client.getTools();
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools,
 });
 

@@ -19,8 +19,8 @@ parallel in the same super-step share a checkpoint boundary. Each persisted stat
 is a [ThreadState](https://reference.langchain.com/javascript/langchain-langgraph-sdk/index/ThreadState) object that captures:
 
 * **checkpoint**: The checkpoint identifier, including its ID and namespace.
-* **created\_at**: The snapshot creation time.
-* **parent\_checkpoint**: The previous checkpoint in this path.
+* **created_at**: The snapshot creation time.
+* **parent_checkpoint**: The previous checkpoint in this path.
 * **values**: The full agent state at this point (messages, custom keys).
 * **tasks**: The graph nodes that were scheduled to run next.
 * **next**: The names of upcoming nodes in the execution plan.

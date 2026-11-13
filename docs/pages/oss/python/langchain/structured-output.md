@@ -230,12 +230,12 @@ The schema defining the structured output format. Supports:
 * **JSON Schema**: Dictionary with JSON schema specification. Must include top-level `title` and `description` keys. Returns dict.
 * **Union types**: Multiple schema options. The model will choose the most appropriate schema based on the context.
 
-**tool\_message\_content**
+**tool_message_content**
 
 Custom content for the tool message returned when structured output is generated.
 If not provided, defaults to a message showing the structured response data.
 
-**handle\_errors**
+**handle_errors**
 
 Error handling strategy for structured output validation failures. Defaults to `True`.
 

@@ -313,11 +313,11 @@ AWS IAM 角色假设允许 GCP 托管的 LangSmith SaaS 导出到 S3，而无需
 
 传递 `aws_role_arn` 而不是 `credentials` 以使用 IAM 角色假设。> [!注意]
 >
-> IAM 角色代入仅适用于 GCP 托管的 LangSmith SaaS。它不适用于 AWS 托管的 SaaS 或自托管部署。
+> IAM role assumption is available only on GCP-hosted LangSmith SaaS. It is not available on AWS-hosted SaaS or self-hosted deployments.
 
 ### 创建AWS角色
 
-创建一个具有信任策略的 AWS IAM 角色，该策略允许来自您所在区域的三个主体 ID 的 Web 身份联合。授予角色对导出存储桶的访问权限。选择您的 LangSmith 区域以使用相应的主题 ID。每个 Terraform 示例都使用所需的最低 `s3:PutObject` 权限：
+Create an AWS IAM role with a trust policy that permits web identity federation from the three subject IDs for your region. Grant the role access to your export bucket. Select your LangSmith region to use the corresponding subject IDs. Each Terraform example uses the minimum required `s3:PutObject` permission:
 
 ```hcl US theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 resource "aws_iam_role" "langsmith_bulk_export" {
@@ -433,20 +433,20 @@ resource "aws_iam_role" "langsmith_bulk_export" {
 }
 ```
 
-请参阅[AWS S3 permissions](#aws-s3-permissions)了解可选权限。
+See [AWS S3 permissions](#aws-s3-permissions) for optional permissions.
 
-## 切换认证模式
+## Switch authentication mode
 
-在静态凭据和 [AWS IAM role assumption](#authenticate-with-an-aws-iam-role) 之间切换现有目标，而无需重新创建它。使用`PATCH /api/v1/bulk-exports/destinations/{destination_id}`。
+Switch an existing destination between static credentials and [AWS IAM role assumption](#authenticate-with-an-aws-iam-role) without recreating it.使用`PATCH /api/v1/bulk-exports/destinations/{destination_id}`。
 
 [**Required permission**](/langsmith/organization-workspace-operations#bulk-exports)：`bulk-exports:manage`。
 
-LangSmith 支持两种互斥模式：
+LangSmith supports two mutually exclusive modes:
 
-* **静态凭证** (`credentials`)：`access_key_id` 和 `secret_access_key`（带有可选的 `session_token` 用于临时凭证）。
-* **IAM 角色假设** (`aws_role_arn`)：LangSmith 假设指定的 AWS IAM 角色，因此不存储静态凭证。
+* **Static credentials** (`credentials`): An `access_key_id` and `secret_access_key` (with an optional `session_token` for temporary credentials).
+* **IAM role assumption** (`aws_role_arn`): LangSmith assumes the specified AWS IAM role, so no static credentials are stored.
 
-要切换到 AWS IAM 角色假设，请在 PATCH 正文中提供 `aws_role_arn`。要切换到静态凭据，请提供 `credentials`。当任一字段存在且非空时，LangSmith 清除另一个字段。在切换之前，请确保新的身份验证配置对目标存储桶具有写权限。 LangSmith 在保存之前通过测试写入验证配置。
+To switch to AWS IAM role assumption, provide `aws_role_arn` in the PATCH body. To switch to static credentials, provide `credentials`. When either field is present and nonempty, LangSmith clears the other.在切换之前，请确保新的身份验证配置对目标存储桶具有写权限。 LangSmith 在保存之前通过测试写入验证配置。
 
 ### 从静态凭证切换到 AWS IAM 角色
 
@@ -463,7 +463,7 @@ curl --request PATCH \
   }'
 ```
 
-### 从 AWS IAM 角色切换到静态凭证
+### Switch from AWS IAM role to static credentials
 
 在 PATCH 主体中提供一个 `credentials` 对象。这会清除存储的角色 ARN。
 
@@ -492,9 +492,9 @@ curl --request PATCH \
 
 ## 调试目标错误
 
-目的地 API 端点将验证目的地和凭证是否有效以及写入访问权限
+The destinations API endpoint will validate that the destination and credentials are valid and that write access
 存在于桶中。如果您收到错误，并且想要调试此错误，您可以使用 [AWS CLI](https://aws.amazon.com/cli/)
-测试与存储桶的连接。您应该能够使用相同的 CLI 编写文件
+to test the connectivity to the bucket.您应该能够使用相同的 CLI 编写文件
 您提供给上述目的地 API 的数据。
 
 **AWS S3：**
@@ -515,10 +515,10 @@ touch ./test.txt
 aws s3 cp ./test.txt s3://<bucket-name>/tmp/test.txt
 ```
 
-**GCS 兼容铲斗：**
+**GCS Compatible Buckets:**
 
-您需要提供带有 `--endpoint-url` 选项的端点\_url。
-对于 GCS，`endpoint_url` 通常为 `https://storage.googleapis.com`：
+您需要提供带有 `--endpoint-url` 选项的端点_url。
+For GCS, the `endpoint_url` is typically `https://storage.googleapis.com`:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 aws configure
@@ -542,13 +542,13 @@ aws s3 --endpoint-url=<endpoint_url> cp ./test.txt s3://<bucket-name>/tmp/test.t
 
 |错误 |描述 |
 | - | - |
-|访问被拒绝 | Blob 存储凭据或存储桶无效。当提供的访问密钥和秘密密钥组合没有访问指定存储桶或执行所需操作的必要权限时，会发生此错误。 |
-|存储桶无效 |指定的 Blob 存储桶无效。当存储桶不存在或没有足够的访问权限来对存储桶执行写入操作时，会引发此错误。 |
-|您提供的密钥 ID 不存在 |提供的 Blob 存储凭据无效。当用于身份验证的访问密钥 ID 不是有效密钥时，会发生此错误。 ||无效端点 |提供的端点\_url 无效。当指定的端点是无效端点时，会引发此错误。仅支持 S3 兼容端点，例如 GCS 的`https://storage.googleapis.com`、minio 的`https://play.min.io` 等。如果使用 AWS，则应省略端点\_url。 |
-|无效的BucketName |由于寻址风格不匹配，S3 兼容服务拒绝了该请求。某些服务需要虚拟托管式寻址。在目标配置中设置 `config_kwargs_s3: {"addressing_style": "virtual"}` 来解决此问题。 |
+|访问被拒绝| Blob 存储凭据或存储桶无效。 This error occurs when the provided access key and secret key combination doesn't have the necessary permissions to access the specified bucket or perform the required operations. |
+|存储桶无效 | The specified blob store bucket is not valid.当存储桶不存在或没有足够的访问权限来对存储桶执行写入操作时，会引发此错误。 |
+| Key ID you provided does not exist |提供的 Blob 存储凭据无效。当用于身份验证的访问密钥 ID 不是有效密钥时，会发生此错误。 || Invalid endpoint | The endpoint_url provided is invalid.当指定的端点是无效端点时，会引发此错误。仅支持 S3 兼容端点，例如 GCS 的`https://storage.googleapis.com`、minio 的`https://play.min.io` 等。如果使用 AWS，则应省略 endpoint_url。 |
+| InvalidBucketName |由于寻址风格不匹配，S3 兼容服务拒绝了该请求。某些服务需要虚拟托管式寻址。在目标配置中设置 `config_kwargs_s3: {"addressing_style": "virtual"}` 来解决此问题。 |
 
 ***
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-destinations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-destinations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

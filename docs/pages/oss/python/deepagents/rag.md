@@ -46,7 +46,7 @@ from langchain.messages import HumanMessage
 EXAMPLE_QUERY = "How do I stream intermediate tool results from a subagent?"
 
 baseline_agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[],
     system_prompt=(
         "You are a helpful LangChain documentation assistant. "
@@ -281,7 +281,7 @@ Indexing commonly works in four steps:
 3. **[Embed](#select-an-embeddings-model)**: [Embeddings](/oss/python/integrations/embeddings) models convert each chunk into a numeric vector that captures its meaning, enabling similarity search over your content.
 4. **[Store](#store-chunks-and-embeddings-in-vectorstore)**: Use a [VectorStore](/oss/python/integrations/vectorstores) to index chunks and their embeddings for retrieval.
 
-![index\_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_indexing.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=21403ce0d0c772da84dcc5b75cff4451)
+![index_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_indexing.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=21403ce0d0c772da84dcc5b75cff4451)
 
 In the indexing step, fetch documentation pages, split them into chunks, embed the chunks, and store them in a `VectorStore`. The agent searches this index at runtime; it does not re-fetch the full site on every question.
 
@@ -871,7 +871,7 @@ The next step is to build a Deep Agent that searches this index at run time, off
 1. **Retrieve**: Given a user input, relevant splits are retrieved from storage using a [Retriever](/oss/python/integrations/retrievers).
 2. **Generate**: A [model](/oss/python/langchain/models) produces an answer using a prompt that includes both the question and the retrieved data.
 
-![retrieval\_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_retrieval_generation.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=994c3585cece93c80873d369960afd44)
+![retrieval_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_retrieval_generation.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=994c3585cece93c80873d369960afd44)
 
 ## Build the agent
 
@@ -1003,7 +1003,7 @@ chunk_analyst_subagent = {
     "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
 }
 
-model = init_chat_model(model="google_genai:gemini-3.6-flash")
+model = init_chat_model(model="google_genai:gemini-4-hydrogen")
 
 agent = create_deep_agent(
     model=model,

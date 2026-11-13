@@ -237,7 +237,7 @@ Select a chat model from LangChain's suite of integrations:
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = init_chat_model("google_genai:gemini-3.7-flash")
+> model = init_chat_model("google_genai:gemini-4-hydrogen")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -246,7 +246,7 @@ Select a chat model from LangChain's suite of integrations:
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
+> model = ChatGoogleGenerativeAI(model="gemini-4-hydrogen")
 > ```
 
 > [tab] AWS Bedrock
@@ -584,7 +584,7 @@ The middleware appends skill descriptions to the system prompt, making the agent
 
 > [!NOTE]
 >
-> **Production consideration**: This tutorial loads the skill list in `__init__` for simplicity. In a production system, you may want to load skills in the `before_agent` hook instead, allowing them to be refreshed periodically to reflect up-to-date changes (e.g., when new skills are added or existing ones are modified). See the [before\_agent hook documentation](/oss/python/langchain/middleware/custom#node-style-hooks) for details.
+> **Production consideration**: This tutorial loads the skill list in `__init__` for simplicity. In a production system, you may want to load skills in the `before_agent` hook instead, allowing them to be refreshed periodically to reflect up-to-date changes (e.g., when new skills are added or existing ones are modified). See the [before_agent hook documentation](/oss/python/langchain/middleware/custom#node-style-hooks) for details.
 
 ## 4. Create the agent with skill support
 
@@ -732,7 +732,7 @@ The agent saw the lightweight skill description in its system prompt, recognized
 >     skills_loaded: NotRequired[list[str]]  # Track which skills have been loaded  # [!code highlight]
 > ```
 >
-> ### Update load\_skill to modify state
+> ### Update load_skill to modify state
 >
 > Modify the `load_skill` tool to update state when a skill is loaded:
 >

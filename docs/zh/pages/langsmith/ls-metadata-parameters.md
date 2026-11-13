@@ -195,14 +195,14 @@ val myConfiguredLlm =
 
 ### 用户可配置的参数
 
-|参数|类型 |必填|描述 |
+|参数|类型 |必填 |描述 |
 | - | - | - | - |
 | [⟦T29⟧](#ls_provider) | `string` |是\* |用于成本跟踪的 LLM 提供商名称 |
 | [⟦T31⟧](#ls_model_name) | `string` |是\* |用于成本跟踪的型号标识符 |
 | [⟦T33⟧](#ls_temperature) | `number` |没有 |使用的温度参数|
 | [⟦T35⟧](#ls_max_tokens) | `number` |没有 |使用的最大令牌参数 |
 | [⟦T37⟧](#ls_stop) | `string[]` |没有 |使用的停止序列 |
-| [⟦T39⟧](#ls_invocation_params) | `object` |没有 |附加调用参数 |
+| [⟦T39⟧](#ls_invocation_params) | `object` |没有 |附加调用参数|
 | [⟦T41⟧](#ls_agent_type) | `string` |没有 |控制代理运行在轨迹视图中的显示方式：`"root"`、`"subagent"` 或 `"middleware"` |
 | [⟦T46⟧](#ls_message_view_exclude) | `boolean` |没有 |从轨迹视图中隐藏运行 |
 | [⟦T48⟧](#ls_is_error_interrupt) | `boolean` |没有 |当设置为 `true` 时，将错误运行标记为中断 |
@@ -211,7 +211,7 @@ val myConfiguredLlm =
 
 ### 系统生成的参数|参数|类型 |描述 |
 | - | - | - |
-| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树中的深度（0=根，1=子等）- 自动计算 |
+| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树的深度（0=根，1=子，等等）- 自动计算 |
 | [⟦T55⟧](#ls_method) | `string` |使用的跟踪方法（例如“可跟踪”）- 由 SDK 设置 |
 
 ### 实验参数
@@ -500,7 +500,7 @@ metadata={
 * 等
 
 **使用时：**
-在跟踪摄取期间自动计算。用于过滤（例如，“仅显示根运行”）和 UI 可视化。
+在跟踪摄取期间自动计算。 Used for filtering (e.g., "show only root runs") and UI visualization.
 
 **查询示例：**
 
@@ -519,7 +519,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 * **设置者：** SDK（自动）
 
 **它的作用：**
-指示哪个 SDK 方法创建了跟踪（通常为 `@traceable` 装饰器使用 `"traceable"`）。
+Indicates which SDK method created the trace (commonly `"traceable"` for `@traceable` decorator).
 
 **使用时：**
 由跟踪SDK自动设置。用于调试和分析。
@@ -533,7 +533,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 
 * **类型：** 任何（取决于示例元数据）
 * **图案：** `ls_example_{original_key}`
-* **设置方式：** LangSmith实验系统（自动）**它的作用：**
+* **Set by:** LangSmith experiments system (automatic)**它的作用：**
 运行 [experiments on datasets](/langsmith/evaluation-quickstart) 时，示例中的元数据会自动添加 `ls_example_` 前缀并添加到跟踪中。
 
 **特殊参数：**
@@ -590,7 +590,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 **附加要求：**
 
 * 运行必须有`run_type="llm"`（或者必须启用[arbitrary cost tracking](/langsmith/cost-tracking#other-runs-send-costs)）。
-* [Token usage data](/langsmith/log-llm-trace#provide-token-and-cost-information) 必须出现在跟踪中（prompt\_tokens、completion\_tokens）。
+* [Token usage data](/langsmith/log-llm-trace#provide-token-and-cost-information) 必须出现在跟踪中（prompt_tokens、completion_tokens）。
 * 型号必须存在于定价数据库中或具有[custom pricing configured](/langsmith/cost-tracking#llm-calls-automatically-track-costs-based-on-token-counts)。
 
 **回退行为：**

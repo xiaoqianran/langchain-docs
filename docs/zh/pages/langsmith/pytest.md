@@ -118,7 +118,7 @@ def test_foo() -> None:
     assert True
 ```
 
-运行此测试将创建/更新一个名为“test\_foo”的示例，输入`{"a": 1, "b": 2}`，参考输出`{"foo": "bar"}`，并跟踪输出`{"foo": "baz"}`的运行。
+运行此测试将创建/更新一个名为“test_foo”的示例，输入`{"a": 1, "b": 2}`，参考输出`{"foo": "bar"}`，并跟踪输出`{"foo": "baz"}`的运行。
 
 **注意**：如果运行 `log_inputs`、`log_outputs` 或 `log_reference_outputs` 两次，之前的值将被覆盖。
 
@@ -142,7 +142,7 @@ def test_cd(c: int, d: int) -> None:
     assert result == d
 ```
 
-这将创建/同步一个名为“test\_cd”的示例，输入`{"c": 5}`和参考输出`{"d": 6}`，并运行输出`{"d": 10}`。
+这将创建/同步一个名为“test_cd”的示例，输入`{"c": 5}`和参考输出`{"d": 6}`，并运行输出`{"d": 10}`。
 
 ## 记录反馈默认情况下，LangSmith收集每个测试用例的`pass`反馈键下的通过/失败率。您可以使用 `log_feedback` 添加其他反馈。
 
@@ -250,7 +250,7 @@ LANGSMITH_EXPERIMENT_METADATA='{"model":"gpt-6.1-sol","env":"staging"}' pytest t
 
 ## 缓存
 
-CI 中每次提交的法学硕士可能会变得昂贵。为了节省时间和资源，LangSmith 允许您将 HTTP 请求缓存到磁盘。要启用缓存，请使用 `langsmith[pytest]` 安装并设置环境变量：`LANGSMITH_TEST_CACHE=/my/cache/path`：
+CI 中每次提交的法学硕士可能会变得昂贵。为了节省时间和资源，LangSmith允许您将 HTTP 请求缓存到磁盘。要启用缓存，请使用 `langsmith[pytest]` 安装并设置环境变量：`LANGSMITH_TEST_CACHE=/my/cache/path`：
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install -U "langsmith[pytest]"
@@ -334,7 +334,7 @@ pytest --langsmith-output tests
 
 **注意：** 该标志曾经是 `langsmith<=0.3.3` 中的 `--output=langsmith`，但已更新以避免与其他 pytest 插件发生冲突。
 
-每个测试套件都会有一个漂亮的表，当结果上传到LangSmith时，该表会实时更新：
+每个测试套件都会有一个不错的表格，当结果上传到 LangSmith 时，该表格会实时更新：
 
 ![Rich pytest outputs](https://mintcdn.com/langchain-5e9cc07a/Fr2lazPB4XVeEA7l/langsmith/images/rich-pytest-outputs.png?fit=max\&auto=format\&n=Fr2lazPB4XVeEA7l\&q=85\&s=10712bc97e37900ca83cb70df1c9357d)
 

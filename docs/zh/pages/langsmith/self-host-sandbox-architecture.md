@@ -4,7 +4,7 @@
 
 # 自托管沙盒架构
 
-了解自托管 LangSmith 沙箱如何使用 microVM、Kubernetes 主机和共享存储来运行和恢复工作负载。
+了解自托管 LangSmith 沙盒如何使用 microVM、Kubernetes 主机和共享存储来运行和恢复工作负载。
 
 [LangSmith Sandboxes](/langsmith/sandboxes) 在专用 Kubernetes 节点池上的隔离 microVM 中运行代码。本指南解释了组件在哪里运行、请求如何到达沙箱以及主机重新启动后哪种状态仍然存在。
 
@@ -40,7 +40,7 @@
 
 有关防护、恢复行为和存储保护的信息，请参阅[Understand failure impact](/langsmith/self-host-sandbox-operations#understand-failure-impact)。一台当选的主机观察池健康状况并运行 [host autoscaler](/langsmith/self-host-sandbox-scaling#understand-the-two-scaling-layers)。其他主机继续提供沙箱服务，但不拥有领导权。
 
-### 检查一个沙箱节点
+### 检查一个沙盒节点
 
 主机 Pod 运行沙箱守护进程和 Firecracker 进程。在具有主机拥有的 JuiceFS 安装的部署中，它还运行 JuiceFS 客户端。守护进程通过`vsock`连接到每个访客内部的代理。
 
@@ -50,7 +50,7 @@
 
 主机在端口 `19190` 上使用主机网络。平台后端连接主机的节点地址；客户端使用 LangSmith API 或 [service URLs](/langsmith/sandbox-service-urls)，而不是直接使用主机侦听器。将主机侦听器保留在专用网络上。
 
-主机 Pod 需要虚拟化、网络和安装的特权访问权限。使用专用节点并限制对它们的管理访问。来宾隔离不会使主机 Pod 成为非特权工作负载。
+主机 Pod 需要虚拟化、网络和安装的特权访问权限。使用专用节点并限制对它们的管理访问。
 
 ## 遵循请求
 
@@ -83,7 +83,7 @@ sequenceDiagram
     V->>H: Response
     H->>P: Response
     P->>C: Response
-```放置会考虑已提交的 CPU，并在负载接近负载最小的候选主机时优先选择沙箱的前一个主机。返回该主机可以重用缓存的数据。这是一种偏好，而不是保证沙箱保留在一个节点上。
+```放置会考虑已提交的 CPU，并在负载接近负载最少的候选主机时优先选择沙箱的前一个主机。返回该主机可以重用缓存的数据。这是一种偏好，而不是保证沙箱保留在一个节点上。
 
 > [!注意]
 >

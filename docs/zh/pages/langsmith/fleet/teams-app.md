@@ -119,18 +119,18 @@
 
 > [!提示]
 >
-> 您还可以要求您的代理自行添加这些工具。在代理聊天中，尝试：“添加 Teams 工具，以便可以回复消息。”1. 在侧栏中，展开 **连接** 抽屉并单击 **添加连接**。
+> 您还可以要求您的代理自行添加这些工具。在代理聊天中，尝试：“添加 Teams 工具，以便可以回复消息。”1. 在边栏中，展开 **连接** 抽屉并单击 **添加连接**。
 2.搜索“Teams”并添加您需要的工具：
-   * **teams\_bot\_send\_proactive\_message**：将消息发送回 Teams 对话
-   * **microsoft\_teams\_list\_my\_teams**：列出经过身份验证的用户所属的团队
-   * **microsoft\_teams\_list\_channels**：列出团队中的频道
-   * **microsoft\_teams\_post\_channel\_message**：将消息发布到频道
-   * **microsoft\_teams\_read\_channel\_messages**：从频道读取最近的消息
-3. 如果出现提示，请单击 **连接** 以授权 Microsoft Graph 工具。
+   * **teams_bot_send_proactive_message**：将消息发送回团队对话
+   * **microsoft_teams_list_my_teams**：列出经过身份验证的用户所属的团队
+   * **microsoft_teams_list_channels**：列出团队中的频道
+   * **microsoft_teams_post_channel_message**：将消息发布到频道
+   * **microsoft_teams_read_channel_messages**：从频道读取最近的消息
+3. 如果出现提示，请单击“**连接**”以授权 Microsoft Graph 工具。
 
 > [!注意]
 >
-> `teams_bot_send_proactive_message` 工具使用 Bot Framework 凭据，不需要单独的 OAuth 授权。其他团队工具使用 Microsoft Graph API，可能需要 OAuth 同意。
+> `teams_bot_send_proactive_message` 工具使用 Bot Framework 凭据，不需要单独的 OAuth 授权。其他 Teams 工具使用 Microsoft Graph API，可能需要 OAuth 同意。
 
 ## 配置代理行为（可选）
 
@@ -141,12 +141,12 @@ Update your instructions to handle the Teams Trigger and Teams Tools
 for bidirectional communication
 ```
 
-根据您的用例调整说明 - 例如，您可能希望代理仅响应某些类型的问题，或者在回复之前从特定来源提取信息。## 故障排除
+根据您的用例调整说明 - 例如，您可能希望代理仅响应某些类型的问题，或者在回复之前从特定来源提取信息。
 
-### 代理没有回应
+## 故障排除### 代理没有回应
 
 * 检查 Fleet 中的线程是否有任何需要人工输入的批准。
-* 在频道对话中，请确保您 **@提及** 机器人。没有提及的频道消息将被忽略。
+* 在频道对话中，确保您 **@提及** 机器人。没有提及的频道消息将被忽略。
 * 检查 **Feed** 选项卡是否有错误。
 * 验证 Azure Bot 资源中的消息传递终结点是否与队列中的 Webhook URL 匹配。
 * 确保 Fleet 中的机器人注册未暂停。
@@ -178,4 +178,6 @@ for bidirectional communication
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/teams-app.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/teams-app.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

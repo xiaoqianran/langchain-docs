@@ -45,7 +45,7 @@ def get_user_info() -> str:
 
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[get_user_info],
     checkpointer=InMemorySaver(),  # [!code highlight]
 )

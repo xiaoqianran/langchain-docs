@@ -341,7 +341,7 @@ Wait for the affected API and worker rollouts to finish before connecting reposi
 After the rollout, [connect a test repository and verify the connection](/langsmith/engine-repositories#verify-the-connection). While creating and merging the test PR, check the App's webhook deliveries:
 
 1. In the GitHub App's settings, open **Advanced** > **Recent deliveries**.
-2. Confirm that **pull\_request** deliveries reach LangSmith successfully. LangSmith returns HTTP 202 when it accepts a valid signed delivery.
+2. Confirm that **pull_request** deliveries reach LangSmith successfully. LangSmith returns HTTP 202 when it accepts a valid signed delivery.
 
 A successful webhook response alone does not prove the event matched an Engine issue. Complete the merge check in [Verify the connection](/langsmith/engine-repositories#verify-the-connection).
 

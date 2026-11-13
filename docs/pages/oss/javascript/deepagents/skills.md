@@ -34,7 +34,7 @@ Each skill is a directory containing a `SKILL.md` file: a markdown file with YAM
 
 **scripts**
 
-**fetch\_docs.py**
+**fetch_docs.py**
 
 **references**
 
@@ -919,7 +919,7 @@ const researchSubagent = {
 };
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   skills: ["/skills/main/"], // Main agent and GP subagent get these
   subagents: [researchSubagent], // Researcher gets only its own skills
 });
@@ -947,7 +947,7 @@ import {
 const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   backend: new CompositeBackend(new StateBackend(), {
     "/skills/": new StoreBackend({
       namespace: (rt) => ["curated-skills", rt.context.orgId],
@@ -1381,7 +1381,7 @@ async function main() {
 
   try {
     const agent = await createDeepAgent({
-      model: "google:gemini-3.6-flash",
+      model: "google:gemini-4-hydrogen",
       backend,
       skills: ["/skills/"],
       store,

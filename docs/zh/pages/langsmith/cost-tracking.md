@@ -541,46 +541,46 @@ UI 将代币使用和成本分为三类：* **输入**：发送到模型的提�
    >
    > `usage_metadata` 字典中的以下字段可以被LangSmith 识别。您可以直接查看完整的[Python types](https://github.com/langchain-ai/langsmith-sdk/blob/e705fbd362be69dd70229f94bc09651ef8056a61/python/langsmith/schemas.py#L1196-L1227)或[TypeScript interfaces](https://github.com/langchain-ai/langsmith-sdk/blob/e705fbd362be69dd70229f94bc09651ef8056a61/js/src/schemas.ts#L637-L689)。
    >
-   > **输入\_tokens** `number`
+   > **输入令牌** `number`
    >
    > 模型输入中使用的标记数量。所有输入标记类型的总和。
    >
-   > **输出\_tokens** `number`
+   > **输出令牌** `number`
    >
    > 模型响应中使用的标记数量。所有输出令牌类型的总和。
    >
-   > **总计\_代币** `number`
+   > **total_tokens** `number`
    >
-   > 输入和输出中使用的令牌数量。可选的，可以推断。输入令牌+输出令牌之和。
+   > 输入和输出中使用的令牌数量。可选的，可以推断。输入令牌+输出令牌的总和。
    >
-   > **输入\_token\_details** `object`
+   > **输入令牌详细信息** `object`
    >
    > 输入令牌类型的细分。键是标记类型的字符串，值是计数。示例`{"cache_read": 5}`。
    >
    > 已知字段包括：`audio`、`text`、`image`、`cache_read`、`cache_creation`、`cache_read_over_200k`（Gemini）、`ephemeral_5m_input_tokens`、`ephemeral_1h_input_tokens`（Anthropic 临时缓存）层）。根据型号或提供商的不同，可能还会有其他字段。
    >
-   > **输出\_token\_details** `object`
+   > **输出令牌详细信息** `object`
    >
    > 输出令牌类型的细分。键是标记类型的字符串，值是计数。示例`{"reasoning": 5}`。
    >> 已知字段包括：`audio`、`text`、`image`、`reasoning`。根据型号或提供商的不同，可能还会有其他字段。
    >
-   > **输入\_成本** `number`
+   > **输入成本** `number`
    >
    > 输入代币的成本。
    >
-   > **产量\_成本** `number`
+   > **产出成本** `number`
    >
    > 输出代币的成本。
    >
-   > **总\_成本** `number`
+   > **总成本** `number`
    >
    > 代币成本。可选的，可以推断。  输入成本+输出成本之和。
    >
-   > **输入\_成本\_详细信息** `object`
+   > **输入_成本_详细信息** `object`
    >
    > 输入成本的详细信息。键是令牌类型的字符串，值是成本金额。
    >
-   > **输出\_成本\_详细信息** `object`
+   > **输出_成本_详细信息** `object`
    >
    > 输出成本的详细信息。键是令牌类型的字符串，值是成本金额。
    >
@@ -618,7 +618,7 @@ UI 将代币使用和成本分为三类：* **输入**：发送到模型的提�
 
    对于针对不同令牌类型（例如多模式或缓存令牌）具有不同定价的模型，您可以指定每种令牌类型的价格细目。将鼠标悬停在 **输入价格** 和 **输出价格** 条目旁边的 **...** 上会显示按代币类型划分的价格细分。> [!注意]
    >
-   > LangSmith 不会在已记录的跟踪成本中反映模型定价图的更新。不支持回填模型定价更改。
+   > LangSmith 不会在**已**记录的跟踪成本中反映模型定价图的更新。不支持回填模型定价更改。
 
 #### 创建新的或修改现有的模型价格条目
 

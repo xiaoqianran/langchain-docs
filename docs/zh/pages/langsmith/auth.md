@@ -123,8 +123,8 @@ async def authenticate(headers: dict) -> Auth.types.MinimalUserDict:
 > * 请求（Request）：原始ASGI请求对象
 > * path (str): 请求路径，例如`"/threads/abcd-1234-abcd-1234/runs/abcd-1234-abcd-1234/stream"`
 > * method (str): HTTP 方法，例如 `"GET"`
-> * path\_params(dict\[str, str])：URL路径参数，例如`{"thread_id": "abcd-1234-abcd-1234", "run_id": "abcd-1234-abcd-1234"}`
-> * query\_params(dict\[str, str])：URL查询参数，例如`{"stream": "true"}`
+> * path_params(dict\[str, str])：URL路径参数，例如`{"thread_id": "abcd-1234-abcd-1234", "run_id": "abcd-1234-abcd-1234"}`
+> * query_params(dict\[str, str])：URL查询参数，例如`{"stream": "true"}`
 > * headers(dict\[bytes, bytes]): 请求头
 > * 授权 (str | None)：授权标头值（例如，`"Bearer <token>"`）
 >
@@ -337,7 +337,7 @@ async def on_assistant_create(
 * `$eq`：完全匹配（例如，`{"owner": {"$eq": user_id}}`）- 这相当于上面的简写，`{"owner": user_id}`
 * `$contains`：列出成员资格（例如，`{"allowed_users": {"$contains": user_id}}`）或列表包含（例如，`{"allowed_users": {"$contains": [user_id_1, user_id_2]}}`）。这里的值必须分别是列表的元素或列表元素的子集。存储资源中的元数据必须是列表/容器类型。
 
-使用逻辑 `AND` 过滤器处理具有多个键的字典。例如，`{"owner": org_id, "allowed_users": {"$contains": user_id}}`将仅匹配“所有者”为`org_id`且“允许\_用户”列表包含`user_id`的元数据的资源。
+使用逻辑 `AND` 过滤器处理具有多个键的字典。例如，`{"owner": org_id, "allowed_users": {"$contains": user_id}}`将仅匹配“所有者”为`org_id`且“allowed_users”列表包含`user_id`的元数据的资源。
 有关更多信息，请参阅参考文献[⟦T51⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth)(Auth)。
 
 ## 常见访问模式
@@ -437,7 +437,7 @@ LangGraph 提供三个级别的授权处理程序，从最通用到最具体：
 
 #### 支持的操作和类型
 
-以下是所有支持的操作处理程序：|资源 |处理程序 |描述 |值类型 |
+以下是所有支持的操作处理程序：|资源 |处理程序 |描述 |值类型|
 | - | - | - | - |
 | **话题** | `@auth.on.threads.create` |线程创建 | [⟦T63⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsCreate) |
 | | `@auth.on.threads.read` |主题检索 | [⟦T65⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsRead) |
@@ -445,7 +445,7 @@ LangGraph 提供三个级别的授权处理程序，从最通用到最具体：
 | | `@auth.on.threads.delete` |删除主题 | [⟦T69⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsDelete) |
 | | `@auth.on.threads.search` |列出主题 | [⟦T71⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsSearch) |
 | | `@auth.on.threads.create_run` |创建或更新运行 | [⟦T73⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/RunsCreate) |
-| **助理** | `@auth.on.assistants.create` |助理创作 | [⟦T75⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsCreate) |
+| **助理** | `@auth.on.assistants.create` |助理创作| [⟦T75⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsCreate) |
 | | `@auth.on.assistants.read` |助理检索 | [⟦T77⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsRead) |
 | | `@auth.on.assistants.update` |助理更新 | [⟦T79⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsUpdate) |
 | | `@auth.on.assistants.delete` |助理删除| [⟦T81⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsDelete) |

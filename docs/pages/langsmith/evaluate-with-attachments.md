@@ -102,7 +102,7 @@ This guide covers how to create examples with attachments, build multimodal prom
 >
 > ## 1. Create examples with attachments
 >
-> To upload examples with attachments using the SDK, use the [create\_examples](https://reference.langchain.com/python/langsmith/client/Client/create_examples) / [update\_examples](https://reference.langchain.com/python/langsmith/client/Client/update_examples) Python methods or the [uploadExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/uploadExamplesMultipart) / [updateExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/updateExamplesMultipart) TypeScript methods.
+> To upload examples with attachments using the SDK, use the [create_examples](https://reference.langchain.com/python/langsmith/client/Client/create_examples) / [update_examples](https://reference.langchain.com/python/langsmith/client/Client/update_examples) Python methods or the [uploadExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/uploadExamplesMultipart) / [updateExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/updateExamplesMultipart) TypeScript methods.
 >
 > #### Python
 >
@@ -264,7 +264,7 @@ This guide covers how to create examples with attachments, build multimodal prom
 > The target function you are evaluating must have two positional arguments in order to consume the attachments associated with the example, the first must be called `inputs` and the second must be called `attachments`.
 >
 > * The `inputs` argument is a dictionary that contains the input data for the example, excluding the attachments.
-> * The `attachments` argument is a dictionary that maps the attachment name to a dictionary containing a presigned url, mime\_type, and a reader of the bytes content of the file. You can use either the presigned url or the reader to get the file contents. Each value in the attachments dictionary is a dictionary with the following structure:
+> * The `attachments` argument is a dictionary that maps the attachment name to a dictionary containing a presigned url, mime_type, and a reader of the bytes content of the file. You can use either the presigned url or the reader to get the file contents. Each value in the attachments dictionary is a dictionary with the following structure:
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > {

@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。这可确保保留符合您的评估标准的迹线（通常是对分析最有价值的迹线）以供调查。
+> 当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。这可确保保留符合您的评估标准的迹线（通常是对分析最有价值的迹线）以供调查。 
 
 ## 查看在线评估器
 
@@ -50,7 +50,7 @@
 
 要将规则应用于过去的运行或线程，请在 **配置评估器** 面板中：1. 在**源**中，选择**运行**或**线程**。
 2. 展开**高级**。
-3. 切换到 **应用到从日期开始的过去运行** 或 **应用到从日期开始的过去线程**，然后输入日期。
+3. 切换到**应用于日期以来的过去运行**或**应用到日期以来的过去线程**，然后输入日期。
 
 您只能在创建规则时回填。
 
@@ -78,21 +78,21 @@
 
 ## 使用决策模型作为判断
 
-您可以使用决策模型代替法学硕士作为判断。您定义的每个问题都会返回一个键入的答案，例如概率、选定的选项或分数，并且 LangSmith 将每个问题记录在其自己的反馈键下。参见[Set up decision model online evaluators](/langsmith/online-evaluations-decision-models)。
+您可以使用决策模型代替法学硕士作为判断。 Each question you define returns a typed answer, such as a probability, a selected option, or a score, and LangSmith records each one under its own feedback key.参见[Set up decision model online evaluators](/langsmith/online-evaluations-decision-models)。
 
 ## 将多模式内容映射到评估器
 
-如果您的跟踪包含图像、音频或文档等多模式内容，您可以将此内容包含在评估器提示中。有两种方法：* **使用跟踪中的 Base64 编码内容**：如果您的应用程序将多模式内容记录为跟踪中的 Base64 编码数据（例如，在运行的输入或输出中），您可以使用模板变量在评估器提示中直接引用此内容。评估器将从跟踪中提取 base64 数据并将其传递给 LLM。
-* **使用痕迹中的附件**：与[offline evaluations with attachments](/langsmith/evaluate-with-attachments)类似，您可以在在线评估中使用痕迹中的附件。由于您的跟踪已经包含通过 SDK 记录的附件，因此您可以直接在评估器中引用它们。
+如果您的跟踪包含图像、音频或文档等多模式内容，您可以将此内容包含在评估器提示中。有两种方法：* **使用跟踪中的 Base64 编码内容**：如果您的应用程序将多模式内容记录为跟踪中的 Base64 编码数据（例如，在运行的输入或输出中），您可以使用模板变量在评估器提示中直接引用此内容。 The evaluator will extract the base64 data from the trace and pass it to the LLM.
+* **Using attachments from traces**: Similar to [offline evaluations with attachments](/langsmith/evaluate-with-attachments), you can use attachments from your traces in online evaluations. Since your traces already include attachments logged via the SDK, you can reference them directly in your evaluator.
 
   1. 从数据集页面选择 **+ Evaluator**。
-  2. 在 **模板变量** 编辑器中，为附件添加一个变量以包括：
+  2. In the **Template variables** editor, add a variable for the attachment(s) to include:
      * 如果要包含特定附件，可以使用建议的变量名称，例如`{{attachment.file_name}}`，这会将附件列表中带有`file_name`的文件映射到将其传递给评估器。
-     * 如果要包含所有附件，请使用 `{{attachments}`}\` 变量。
+     * If you want to include all attachments, use the `{{attachments}`}\` variable.
 
   ![Edit evaluator modal with an image attachment selected for the input.](https://mintcdn.com/langchain-5e9cc07a/PCte2XqN2om94BaK/langsmith/images/variable-multimodal-content-light.png?fit=max\&auto=format\&n=PCte2XqN2om94BaK\&q=85\&s=4f96e959ec461208c43add7c5c02b8b0)
 
-然后，评估者可以在评估跟踪时访问这些附件。这对于需要执行以下操作的评估人员非常有用：* 验证图像描述是否与跟踪中的实际图像匹配。
+The evaluator can then access these attachments when evaluating the trace.这对于需要执行以下操作的评估人员非常有用：* 验证图像描述是否与跟踪中的实际图像匹配。
 * 检查转录是否准确反映了音频输入。
 * 验证从文档中提取的文本是否正确。
 

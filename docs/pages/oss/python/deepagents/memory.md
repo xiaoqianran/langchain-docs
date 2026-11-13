@@ -45,7 +45,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     memory=["/memories/AGENTS.md"],
     skills=["/skills/"],
     backend=CompositeBackend(
@@ -108,7 +108,7 @@ agent = create_deep_agent(
 > )
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     memory=["/memories/AGENTS.md"],
 >     skills=["/skills/"],
 >     backend=CompositeBackend(
@@ -151,7 +151,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     memory=["/memories/preferences.md"],
     skills=["/skills/"],
     backend=CompositeBackend(
@@ -217,7 +217,7 @@ agent = create_deep_agent(
 > )
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     memory=["/memories/preferences.md"],
 >     skills=["/skills/"],
 >     backend=CompositeBackend(
@@ -315,7 +315,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     memory=[
         "/memories/preferences.md",
         "/policies/compliance.md",
@@ -402,7 +402,7 @@ async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt="""Review recent conversations and update the user's memory file.
 Merge new facts, remove outdated information, and keep it concise.""",
     tools=[search_recent_conversations],

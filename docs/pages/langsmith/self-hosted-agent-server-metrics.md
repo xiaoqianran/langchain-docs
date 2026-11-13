@@ -31,7 +31,7 @@ Each metric is assigned a tier that controls whether internal metrics are record
 | **CRITICAL** | `1` | Core health and failure signals. Always recorded when internal metrics are enabled, including on `dev` / `dev_free` deployments. |
 | **INFO** | `2` | Operational detail for production monitoring. Default ceiling in production (`METRIC_MAX_EMITTING_TIER=2`). |
 | **DEBUG** | `3` | Deeper diagnostics for troubleshooting. Omitted unless you raise `METRIC_MAX_EMITTING_TIER`. |
-| **DEEP\_DEBUG** | `4` | Verbose diagnostics. Omitted unless you raise `METRIC_MAX_EMITTING_TIER`. |
+| **DEEP_DEBUG** | `4` | Verbose diagnostics. Omitted unless you raise `METRIC_MAX_EMITTING_TIER`. |
 
 Set `METRIC_MAX_EMITTING_TIER` to the highest tier you want recorded for internal metrics. Agent Server UI metrics ignore this setting and always emit.
 

@@ -663,6 +663,12 @@
           "rel": "langsmith/byoc-byoiam-aws.md"
         }
       ],
+      "byoc-byok-aws": [
+        {
+          "title": "Bring your own keys (CMK)",
+          "rel": "langsmith/byoc-byok-aws.md"
+        }
+      ],
       "byoc-byovpc-aws": [
         {
           "title": "Bring your own VPC on AWS",

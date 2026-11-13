@@ -19,9 +19,9 @@ LangSmith 代理服务器的默认配置旨在处理各种不同工作负载的�
 ## 请求与运行并发
 
 两种独立的并发决定了代理服务器的扩展方式，并且它们是单独控制的：* **请求并发** 是部署一次服务的 API 请求数（创建运行、读取线程状态、流式处理结果）。 API 服务器异步处理请求，请求并发量随着 API 服务器副本的数量水平扩展。
-* **运行并发** 是一次执行的运行数量。单个队列工作线程最多可并发运行 [⟦T12⟧](/langsmith/env-var-self-hosted)（默认 10）。运行并发上限为队列工作线程数乘以`N_JOBS_PER_WORKER`。
+* **运行并发** 是一次执行的运行数量。单个队列工作线程最多可并发运行 [⟦T13⟧](/langsmith/env-var-self-hosted)（默认 10）。运行并发上限为队列工作线程数乘以`N_JOBS_PER_WORKER`。
 
-创建运行是一个快速写入请求：API 服务器会保留待处理的运行并立即返回，而无需等待运行执行。如果每个运行槽都忙，则额外的运行将在 [queue](/langsmith/agent-server#run-execution-lifecycle) 中等待，直到槽空闲。提高`N_JOBS_PER_WORKER`或添加队列工作程序会增加运行吞吐量；它不会改变部署可以同时服务的请求数量。
+创建运行是一个快速写入请求：API 服务器会保留待处理的运行并立即返回，而无需等待运行执行。如果每个运行槽都忙，则额外的运行将在 [queue](/langsmith/agent-server#run-execution-lifecycle) 中等待，直到槽空闲。提高 `N_JOBS_PER_WORKER` 或添加队列工作线程会增加运行吞吐量；它不会改变部署可以同时服务的请求数量。
 
 ## 写入负载
 
@@ -34,14 +34,14 @@ LangSmith 代理服务器的默认配置旨在处理各种不同工作负载的�
 * 创建新的[assistants](/langsmith/assistants)
 * 删除运行、检查点、线程、助手和 cron 作业以下组件主要负责处理写入负载：
 
-* API服务器：处理对数据库的初始请求和数据持久化。
+* API 服务器：处理对数据库的初始请求和数据持久化。
 * 队列工作者：处理运行的执行。
 * Redis：处理有关正在进行的运行的临时数据的存储。
 * Postgres：处理所有数据的存储，包括运行、线程、助手、cron 作业、检查点和长期内存。
 
 ### 根据助手特性调整`N_JOBS_PER_WORKER`
 
-[⟦T16⟧](/langsmith/env-var-self-hosted)的默认值为10。您可以根据助手的特性更改此值以缩放单个队列工作人员一次可以执行的最大运行次数。
+[⟦T17⟧](/langsmith/env-var-self-hosted)的默认值为10。您可以根据助手的特性更改此值以缩放单个队列工作人员一次可以执行的最大运行次数。
 
 更改`N_JOBS_PER_WORKER`的一些一般准则：
 
@@ -75,7 +75,7 @@ async def my_function():
 
 ### 最小化冗余检查点
 
-通过将 [⟦T24⟧](/oss/python/langgraph/checkpointers#durability-modes) 设置为确保数据持久所需的最小值，最大限度地减少冗余检查点。默认的持久性模式是`"async"`，这意味着检查点是在每个步骤之后异步写入的。如果助手只需要保存运行的最终状态，可以将`durability`设置为`"exit"`，仅存储运行的最终状态。这可以在创建运行时设置：
+通过将 [⟦T25⟧](/oss/python/langgraph/checkpointers#durability-modes) 设置为确保数据持久所需的最小值，最大限度地减少冗余检查点。默认的持久性模式是`"async"`，这意味着检查点是在每个步骤之后异步写入的。如果助手只需要保存运行的最终状态，可以将`durability`设置为`"exit"`，仅存储运行的最终状态。这可以在创建运行时设置：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph_sdk import get_client
@@ -129,22 +129,34 @@ number_of_queue_workers = throughput_per_second * average_run_execution_time_sec
 
 默认情况下禁用自动缩放，但应针对突发工作负载进行配置。使用与上一节相同的计算，您可以根据最大预期吞吐量确定应允许自动缩放器缩放的队列工作线程的最大数量。
 
+### 用于流式传输的 Redis 内存大小
+
+从 Agent Server v0.19.0rc1 开始，Redis 存储每次运行的流事件，因此其内存随着运行流的数量而增长。默认情况下，线程上的每个新事件都会修剪早于 [⟦T33⟧](/langsmith/env-var-cloud#resumable_stream_ttl_seconds)、`120` 秒的线程事件。其余事件在线程最近的事件发生后`RESUMABLE_STREAM_TTL_SECONDS`过期，因此事件在 Redis 中最多保留 TTL 的两倍。
+
+Redis 至少需要以下内存来存储事件：
+
+```
+stream_memory_bytes = peak_streamed_bytes_per_second * (RESUMABLE_STREAM_TTL_SECONDS + min(p95_run_duration_seconds, RESUMABLE_STREAM_TTL_SECONDS)) * 1.35
+````1.35` 因子涵盖了 Redis 在事件字节之上使用的内存。将 `stream_memory_bytes` 保持在 `maxmemory` 以下，并为重播或读取流的客户端留出额外的空间。例如，使用默认 TTL，`maxmemory` 为其限制的 75% 的 2 Gi Redis 在运行持续 120 秒或更长时间时每秒最多可保存约 5 MB 的流式事件，而在运行时间较短时每秒最多可保存约 10 MB 的流式事件。
+
+对于您自己运行的 Redis 实例，例如自托管部署或具有 [⟦T40⟧](/langsmith/env-var-cloud#redis_uri_custom) 的一组，请将 `maxmemory` 设置为低于内存限制，并将 `maxmemory-policy` 设置为 `noeviction`。当 Redis 达到 `maxmemory` 时，它会拒绝新的写入，直到事件过期。如果没有 `maxmemory`，完整的 Redis 会耗尽内存并重新启动，这会丢失排队运行并中断每个打开的流。
+
 ## 读取负载
 
 读取负载主要由以下因素驱动：
 
 * 获取[run](/langsmith/background-run)的结果
 * 获取[thread](/langsmith/use-threads)的状态
-* 搜索 [runs](/langsmith/background-run)、[threads](/langsmith/use-threads)、[cron jobs](/langsmith/cron-jobs) 和 [assistants](/langsmith/assistants)
+* 搜索[runs](/langsmith/background-run)、[threads](/langsmith/use-threads)、[cron jobs](/langsmith/cron-jobs) 和 [assistants](/langsmith/assistants)
 * 检索检查点和长期记忆
 
-以下组件主要负责处理读取负载：
-
-* API服务器：处理请求并直接从数据库检索数据。
+以下组件主要负责处理读取负载：* API服务器：处理请求并直接从数据库检索数据。
 * Postgres：处理所有数据的存储，包括运行、线程、助手、cron 作业、检查点和长期内存。
-* Redis：处理有关正在进行的运行的临时数据的存储，包括从队列工作程序到 API 服务器的流式消息。### 使用过滤来减少每个请求的结果
+* Redis：处理有关正在进行的运行的临时数据的存储，包括从队列工作程序到 API 服务器的流式消息。
 
-[Agent Server](/langsmith/agent-server) 为每种资源类型提供搜索 API。这些 API 默认实现分页并提供许多过滤选项。使用过滤来减少每个请求返回的资源数量并提高性能。
+### 使用过滤来减少每个请求的结果
+
+[Agent Server](/langsmith/agent-server) 为每种资源类型提供搜索API。这些 API 默认实现分页并提供许多过滤选项。使用过滤来减少每个请求返回的资源数量并提高性能。
 
 ### 设置 TTL 以自动删除旧数据
 
@@ -156,16 +168,16 @@ number_of_queue_workers = throughput_per_second * average_run_execution_time_sec
 
 如果您需要实时监控运行的输出，请使用 `/stream` API 端点。此方法流式传输运行输出，包括运行的最终状态。
 
-### 为突发读取工作负载配置自动缩放
+### 为突发读取工作负载配置自动缩放默认情况下禁用自动缩放，但应针对突发工作负载进行配置。根据最大预期吞吐量确定应允许自动缩放程序扩展的 API 服务器的最大数量。
 
-默认情况下禁用自动缩放，但应针对突发工作负载进行配置。根据最大预期吞吐量确定应允许自动缩放程序扩展的 API 服务器的最大数量。
+## 配置示例
 
-## 配置示例> [!注意]
+> [!注意]
 >
 > 确切的最佳配置取决于您的应用程序复杂性、请求模式和数据要求。将以下示例与前面部分中的信息以及您的具体用法结合使用，根据需要更新您的部署配置。如果您有任何疑问，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 
 下表提供了针对各种负载模式（每秒读取请求/每秒写入请求）和标准助手特征（平均运行执行时间为 1 秒、中等 CPU 和内存使用率）的不同代理服务器配置的比较概览。请求速率驱动所需的稳态运行吞吐量，该吞吐量通过队列工作线程和 `N_JOBS_PER_WORKER` 调整大小，而 API 服务器副本的大小则根据请求量本身进行调整：| | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | [Medium / medium](#medium-reads-medium-writes) | [High / high](#high-reads-high-writes) |
-| :- | :- | :-| :- | :-| :- |
+| :- | :-| :-| :-| :- | :- |
 |每秒写入请求数（部署每秒处理的写入请求数）| 5 | 5 | 500 | 500 50 | 50 500 | 500
 |每秒读取请求数（部署每秒处理的读取请求数）| 5 | 500 | 500 5 | 50 | 50 500 | 500
 | **API 服务器**（1 个 CPU，每台服务器 2Gi）| 1（默认）| 6 | 10 | 10 3 | 15 | 15
@@ -174,21 +186,23 @@ number_of_queue_workers = throughput_per_second * average_run_execution_time_sec
 | **Redis 资源** | 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）|
 | **Postgres 资源** | 2 CPU 8 Gi（默认）| 4 CPU 16 Gi 内存 | 4 个 CPU 16 Gi | 4 CPU 16 Gi 内存 | 8 CPU 32 Gi 内存 |
 
-要为每个部署调整 Redis 大小，请设置 [⟦T41⟧](/langsmith/api-ref-control-plane#resource-spec) 的 `redis_cpu`、`redis_cpu_limit`、`redis_memory_mb` 和 `redis_memory_limit_mb` 字段。 Redis 内存接受 512 到 16384 MB，因此最小值为 512 Mi。 Redis CPU需要listener 0.13.22或更高版本，Redis内存低于2048需要listener 0.13.27或更高版本。参见[Listener version requirements](/langsmith/self-hosted-platform-features#listener-version-requirements)。
+要为每个部署调整 Redis 大小，请设置 [⟦T55⟧](/langsmith/api-ref-control-plane#resource-spec) 的 `redis_cpu`、`redis_cpu_limit`、`redis_memory_mb` 和 `redis_memory_limit_mb` 字段。 Redis 内存接受 512 到 16384 MB，因此最小值为 512 Mi。 Redis CPU需要listener 0.13.22或更高版本，Redis内存低于2048需要listener 0.13.27或更高版本。参见[Listener version requirements](/langsmith/self-hosted-platform-features#listener-version-requirements)。从 Agent Server v0.19.0rc1 开始，Redis 内存还取决于您的运行流的数量。 To size it, see [Size Redis memory for streaming](#size-redis-memory-for-streaming).
 
-示例中的负载级别定义为：* 低意味着每秒大约 5 个请求
+Load levels in the examples are defined as:
+
+* Low means approximately 5 requests per second
 * 中意味着每秒大约 50 个请求
 * 高意味着每秒大约 500 个请求
 
-### 低读取，低写入
+### Low reads, low writes
 
-默认的 [LangSmith Agent Server](/langsmith/deployment) 配置将处理此负载。这里不需要自定义资源配置。
+默认的 [LangSmith Agent Server](/langsmith/deployment) 配置将处理此负载。 No custom resource configuration is needed here.
 
-### 低读取，高写入
+### Low reads, high writes
 
 您的部署正在处理大量写入请求（每秒 500 个），但读取请求相对较少（每秒 5 个）。
 
-为此，我们推荐这样的配置：
+For this, we recommend a configuration like this:
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Example configuration for low reads, high writes (5 read/500 write requests per second)
@@ -236,7 +250,7 @@ postgres:
 
 您的读取请求量很大（每秒 500 个），但写入请求相对较少（每秒 5 个）。
 
-为此，我们推荐这样的配置：
+For this, we recommend a configuration like this:
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Example configuration for high reads, low writes (500 read/5 write requests per second)
@@ -281,9 +295,9 @@ postgres:
 
 ### 中等读取，中等写入
 
-这是一个平衡配置，应处理中等读取和写入负载（每秒 50 个读取/50 个写入请求）。
+This is a balanced configuration that should handle moderate read and write loads (50 read/50 write requests per second).
 
-为此，我们推荐这样的配置：
+For this, we recommend a configuration like this:
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Example configuration for medium reads, medium writes (50 read/50 write requests per second)
@@ -324,9 +338,7 @@ postgres:
       memory: "32Gi"
 ```
 
-### 高读取，高写入
-
-您有大量的读取和写入请求（每秒 500 个读取/500 个写入请求）。
+### High reads, high writes您有大量的读取和写入请求（每秒 500 个读取/50​​0 个写入请求）。
 
 为此，我们推荐这样的配置：
 
@@ -372,7 +384,9 @@ postgres:
       memory: "64Gi"
 ```
 
-### 自动缩放If your deployment experiences bursty traffic, you can enable autoscaling to scale the number of API servers and queue workers to handle the load.
+### 自动缩放
+
+如果您的部署遇到突发流量，您可以启用自动扩展来扩展 API 服务器和队列工作线程的数量来处理负载。
 
 以下是针对高读取和高写入的自动缩放的示例配置：
 

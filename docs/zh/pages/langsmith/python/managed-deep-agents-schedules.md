@@ -147,7 +147,7 @@ Slack 机器人必须有权访问目的地。
 
 代理只能通过您编写的工具来访问此 API。公开代理需要的呼叫，并忽略不应该接通的呼叫。
 
-当工具在 [channel](/langsmith/python/managed-deep-agents-channels) 运行期间创建计划（例如 Slack 对话）时，该计划将继承该通道。每次运行都会将其最终答案发回给它。新线程发布新的 Slack 消息，当前线程在现有 Slack 线程中回复。
+当工具在 [channel](/langsmith/python/managed-deep-agents-channels) 运行期间创建计划（例如 Slack 对话）时，计划将继承该通道。每次运行都会将其最终答案发回给它。新线程发布新的 Slack 消息，当前线程在现有 Slack 线程中回复。
 
 `new_thread` 决定时间表使用两者中的哪一个。
 
@@ -172,7 +172,7 @@ async def remind_me(
     return f"Created schedule {item['id']}."
 ```
 
-当要求 Slack 每个工作日发送站立提醒时，客服人员会致电 `remind_me`。它传递了自己的措辞和 cron `0 9 * * 1-5` 的提示。每个工作日的运行都会将其对 Slack 对话的答案作为新消息发布，因为 `cron` 会默认安排到新线程。
+当要求在 Slack 中每个工作日发送站立提醒时，客服人员会致电 `remind_me`。它传递了自己的措辞和 cron `0 9 * * 1-5` 的提示。每个工作日运行都会将其对 Slack 对话的答案作为新消息发布，因为 `cron` 会默认安排到新线程。
 
 ### 创建一次性计划
 
@@ -222,7 +222,7 @@ async def follow_up_later(prompt: str, hours: int, runtime: ManagedDeepAgentRunt
 
 每次运行的结构化LangGraph输入。
 
-**新\_线程** `bool`
+**新线程** `bool`
 
 `True` 在新线程上开始每次运行。 `False` 继续当前线程。默认为 `True` 与 `cron` 以及 `False` 与 `at`。
 

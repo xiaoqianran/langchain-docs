@@ -42,7 +42,7 @@ Fields in this schema are marked with one of three availability tiers:
 | Tier | Meaning |
 | - | - |
 | **always** | Must be present on every run. |
-| **where\_known** | Required whenever the runtime can expose the value. Omit only when the runtime genuinely cannot provide the information. |
+| **where_known** | Required whenever the runtime can expose the value. Omit only when the runtime genuinely cannot provide the information. |
 | **contextual** | Optional metadata. Omit when not applicable. |
 
 ## Run types

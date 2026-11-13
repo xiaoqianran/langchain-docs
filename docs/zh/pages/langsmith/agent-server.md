@@ -22,9 +22,9 @@
 
 > [!提示]
 >
-> **API参考**\\
->
-> 有关API端点和数据模型的详细信息，请参阅[Agent Server API reference](/langsmith/server-api-ref)。
+> **API 参考**\
+> 
+有关 API 端点和数据模型的详细信息，请参阅[Agent Server API reference](/langsmith/server-api-ref)。
 
 ## 应用程序结构
 
@@ -65,7 +65,7 @@ Agent Server 持久保存三种类型的数据，默认情况下均由 [PostgreS
 
 ### 任务队列
 
-当客户端创建运行时，API 服务器将其放入队列，然后队列工作线程将其拾取以执行。还可以通知工作人员取消正在进行的运行，并发布打开 `/stream` 连接的输出事件，实时转发到客户端。[Redis](https://redis.io/) 处理 API 服务器和队列工作人员之间的信令、取消和流媒体发布/订阅。它仅存储临时数据——Redis 中不会保留任何用户或运行数据。运行数据本身始终从 PostgreSQL 读取和写入。
+当客户端创建运行时，API 服务器将其放入队列，然后队列工作线程将其拾取以执行。还可以通知工作人员取消正在进行的运行，并发布打开 `/stream` 连接的输出事件，实时转发到客户端。[Redis](https://redis.io/) 处理 API 服务器和队列工作人员之间的信令、取消和流媒体发布/订阅。它仅存储临时数据——Redis 中不会保留任何用户或运行数据。运行数据本身总是从 PostgreSQL 读取和写入。
 
 有关如何设置和管理这些组件的更多信息，请查看 [hosting options](/langsmith/platform-setup) 指南。
 
@@ -76,7 +76,7 @@ Agent Server 持久保存三种类型的数据，默认情况下均由 [PostgreS
 Agent Server 支持三种运行时配置：
 
 * **单主机**：API 服务器直接管理任务队列，没有单独的队列工作人员。这是自托管部署的默认设置，适用于开发和低流量用例。
-* **拆分 API 和队列**：专用队列工作程序在与 API 服务器不同的主机上处理运行执行。对于自托管部署，请通过在配置中设置 `queue.enabled: true` 来启用此功能。每个层都可以独立扩展——API 服务器根据请求量进行扩展，队列工作线程根据挂起的运行计数进行扩展。* **分布式运行时**：API 和队列进程再次单独运行，但分布式运行时使用一个进程进行编排，一个进程用于执行，而不是使用单个队列进程来处理图形的编排和执行。将此用于具有高并发要求的大规模部署。
+* **拆分 API 和队列**：专用队列工作程序在与 API 服务器不同的主机上处理运行执行。对于自托管部署，请通过在配置中设置 `queue.enabled: true` 来启用此功能。每个层都可以独立扩展 - API 服务器根据请求量进行扩展，队列工作线程根据挂起的运行计数进行扩展。* **分布式运行时**：API 和队列进程再次单独运行，但分布式运行时使用一个进程进行编排，一个进程用于执行，而不是使用单个队列进程来处理图形的编排和执行。将此用于具有高并发要求的大规模部署。
 
 下面描述的容器架构和运行生命周期适用于单主机和拆分 API 和队列配置。
 
@@ -148,6 +148,6 @@ flowchart TB
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-server.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

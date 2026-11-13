@@ -8,7 +8,7 @@ This guide describes setting up an evaluation that uses multiple evaluators and 
 
 > [!NOTE]
 >
-> Requires langsmith>=0.4.29
+> &#x20;Requires langsmith>=0.4.29&#x20;
 
 > [!TIP]
 >

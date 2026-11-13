@@ -50,9 +50,9 @@
 
 [Connect repositories](/langsmith/engine-repositories#connect-repositories) 和 [verify the connection](/langsmith/engine-repositories#verify-the-connection)。测试时，请检查 GitHub 是否提供 Webhook，如 [Verify webhook delivery](#verify-webhook-delivery) 中所述。
 
-GitHub 将拉取请求 Webhook 发送到数据平面上的 **Webhook URL**。如果 GitHub 无法访问该 URL，Engine 仍然可以读取代码、生成修复程序并打开拉取请求。合并后拉取请求链接和自动问题完成不起作用。要稍后更改应用程序，请单击“**管理 GitHub 应用程序**”，然后单击“**编辑或替换应用程序**”。要删除它，请单击“**删除配置**”。替换应用程序需要您重新连接存储库。有关旋转指导，请参阅[Change or rotate configuration](#change-or-rotate-configuration)。
+GitHub 将拉取请求 Webhook 发送到数据平面上的 **Webhook URL**。如果 GitHub 无法访问该 URL，Engine 仍然可以读取代码、生成修复程序并打开拉取请求。合并后拉取请求链接和自动问题完成不起作用。要稍后更改应用程序，请单击“**管理 GitHub 应用程序**”，然后单击“**编辑或替换应用程序**”。 To remove it, click **Delete configuration**.替换应用程序需要您重新连接存储库。 For rotation guidance, see [Change or rotate configuration](#change-or-rotate-configuration).
 
-## 在自托管上配置应用程序
+## Configure the App on self-hosted
 
 在自托管 LangSmith 上，操作员注册应用程序、配置 LangSmith 并验证连接。
 
@@ -70,7 +70,7 @@ GitHub 将拉取请求 Webhook 发送到数据平面上的 **Webhook URL**。如
 * **GitHub 管理**：在目标存储库上注册和安装应用程序的权限。企业或组织的政策可能需要批准。
 * **网络访问**：浏览器、服务和沙箱连接，以及可从 GitHub 访问的 Webhook 路由。参见[Allow network access](#allow-network-access)。
 
-### 选择您的 GitHub 环境每个 LangSmith 安装配置一个 GitHub 实例和一个应用程序。
+### Choose your GitHub environment每个 LangSmith 安装配置一个 GitHub 实例和一个应用程序。
 
 将 `ENGINE_GITHUB_WEB_BASE_URL` 设置为您的 GitHub 实例的网址：
 
@@ -82,13 +82,13 @@ GitHub 将拉取请求 Webhook 发送到数据平面上的 **Webhook URL**。如
 
 将示例企业地址或 GHES 主机名占位符替换为您自己的。 GHES 在云基础设施和本地使用相同的配置。
 
-在端口 443 上使用 HTTPS 和完全限定的主机名，不带路径（例如 `/api/v3`）或组织名称。 LangSmith 自动确定 API 端点。不支持 SSH Git URL 和自定义 GitHub 端口。
+在端口 443 上使用 HTTPS 和完全限定的主机名，无需路径（例如 `/api/v3`）或组织名称。 LangSmith 自动确定 API 端点。不支持 SSH Git URL 和自定义 GitHub 端口。
 
 #### 允许网络访问
 
 所有连接均使用 HTTPS。为每个源配置 DNS、路由和证书信任：|来源 |目的地 |目的|
 | - | - | - |
-|用户的浏览器| GitHub Web 主机和LangSmith 授权回调 URL |登录、App授权、安装。 |
+|用户的浏览器 | GitHub Web 主机和LangSmith 授权回调 URL |登录、App授权、安装。 |
 | LangSmith 服务和发动机工人 | GitHub Web 和 API 主机 |授权、存储库信息、分支和差异操作、PR 创建/状态和应用程序身份。 |
 |沙盒主机 | GitHub 虚拟主机 |克隆存储库并推送修复分支。 |
 | GitHub | LangSmith webhook URL |将 PR 链接到问题并在合并后完成问题。 |
@@ -101,7 +101,7 @@ GitHub 将拉取请求 Webhook 发送到数据平面上的 **Webhook URL**。如
 
 GitHub.com 和 `ghe.com` 从您的网络外部发送 webhook； GHES 从您的 GHES 环境发送它们。 Webhook URL 必须可从该源访问。通过 VPN 的浏览器访问不会建立 Webhook 访问。
 
-对于 GitHub IP 允许列表，包括 LangSmith 服务和沙箱主机的出站地址，包括任何 NAT 网关地址。沙盒 Git 流量需要直接路由到 GitHub。不支持强制上游 HTTP/HTTPS 转发代理； LangSmith API pod 上的`HTTPS_PROXY` 不配置沙箱 Git 访问。
+对于 GitHub IP 允许列表，包括 LangSmith 服务和沙箱主机的出站地址，包括任何 NAT 网关地址。沙箱 Git 流量需要直接路由到 GitHub。不支持强制上游 HTTP/HTTPS 转发代理； LangSmith API pod 上的`HTTPS_PROXY` 不配置沙箱 Git 访问。
 
 对于私有 IP 地址或私有 CA，请在配置下面的 LangSmith 时包含 [private-GHES settings](#private-ghes-deployments)。
 
@@ -119,7 +119,7 @@ GitHub.com 和 `ghe.com` 从您的网络外部发送 webhook； GHES 从您的 G
 | - | - |
 |一个组织中的存储库 |在该组织中创建应用程序。如果不需要在其他地方安装，请选择**仅在此帐户上**。 |
 |企业内多个组织的存储库 |创建企业拥有的应用程序并将其安装在每个组织中。这使得安装仅限于企业。 |
-|多个组织中的存储库，或组织和个人帐户的混合，没有托管用户 |使用**任何帐户**创建组织拥有的应用程序，然后将其安装在每个目标帐户中。在 GHES 上，**任何帐户**仅适用于该服务器内。 |
+|多个组织中的存储库，或组织和个人帐户混合的存储库，没有托管用户 |使用**任何帐户**创建组织拥有的应用程序，然后将其安装在每个目标帐户中。在 GHES 上，**任何帐户**仅适用于该服务器内。 |
 |由一个个人帐户拥有的存储库，没有托管用户 |在个人帐户中创建应用程序并选择**仅在此帐户上**。 |
 
 公开可见性允许其他帐户安装该应用程序。它不会公开存储库或在未安装的情况下授予访问权限。
@@ -160,13 +160,13 @@ GitHub.com 和 `ghe.com` 从您的网络外部发送 webhook； GHES 从您的 G
 >
 > 有关 GitHub 的说明，请参阅[Create an App for your enterprise](https://docs.github.com/en/enterprise-cloud@latest/admin/managing-github-apps-for-your-enterprise/creating-github-apps-for-your-enterprise)。> [选项卡] 个人帐户
 >
-> 对于没有托管用户的个人帐户，请使用此选项。
+> 将此选项用于没有受管理用户的个人帐户。
 >
 > 打开您的个人资料菜单并选择 **设置** > **开发人员设置** > **GitHub 应用程序** > **新 GitHub 应用程序**。
 
 #### 填写注册表
 
-将这些设置用于所有 GitHub 环境和应用程序所有者。有关字段定义，请参阅[Register a GitHub App](https://docs.github.com/en/enterprise-cloud@latest/apps/creating-github-apps/registering-a-github-app/registering-a-github-app)。将 `https://langsmith.example.com` 替换为 LangSmith 部署的面向浏览器的 URL。
+对所有 GitHub 环境和应用程序所有者使用这些设置。有关字段定义，请参阅[Register a GitHub App](https://docs.github.com/en/enterprise-cloud@latest/apps/creating-github-apps/registering-a-github-app/registering-a-github-app)。将 `https://langsmith.example.com` 替换为 LangSmith 部署的面向浏览器的 URL。
 
 GitHub 标记授权回调字段 **回调 URL** 或 **重定向 URI**。这两个名称均指 GitHub 在授权后返回用户的 URL。
 
@@ -311,7 +311,7 @@ LangSmith 服务和沙箱主机必须信任签署您的 GHES 证书的 CA。仅�
 推出后，[connect a test repository and verify the connection](/langsmith/engine-repositories#verify-the-connection)。创建和合并测试 PR 时，检查应用程序的 webhook 交付：
 
 1. 在 GitHub 应用程序的设置中，打开 **高级** > **最近交付**。
-2. 确认 **pull\_request** 交付成功到达LangSmith。 LangSmith 在接受有效的签名交付时返回 HTTP 202。仅成功的 Webhook 响应并不能证明该事件与引擎问题匹配。完成[Verify the connection](/langsmith/engine-repositories#verify-the-connection)中的合并检查。
+2. 确认 **pull_request** 交付成功到达LangSmith。 LangSmith 在接受有效的签名交付时返回 HTTP 202。仅成功的 Webhook 响应并不能证明该事件与引擎问题匹配。完成[Verify the connection](/langsmith/engine-repositories#verify-the-connection)中的合并检查。
 
 ### 设置疑难解答
 

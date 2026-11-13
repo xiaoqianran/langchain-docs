@@ -277,7 +277,7 @@ for run in runs:
     resp.raise_for_status()
 ```
 
-You can add multiple feedback scores with different keys to track various metrics. For example, you might add both a "correctness" score and a "toxicity\_detected" score.
+You can add multiple feedback scores with different keys to track various metrics. For example, you might add both a "correctness" score and a "toxicity_detected" score.
 
 ## Run a pairwise experiment
 

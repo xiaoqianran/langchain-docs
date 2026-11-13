@@ -61,7 +61,7 @@ channel = channels.slack()
 
 Slack 中显示的代理图标的路径，相对于 `channels/` 目录。图标必须是 512 x 512 像素的 PNG 文件，大小不超过 1 MB。如果省略此参数，托管Deep Agents将为您生成一个图标。
 
-**背景\_颜色** `string`
+**背景颜色** `string`
 
 代理图标后面的背景颜色为六位十六进制颜色，例如`#1d4ed8`。
 
@@ -88,11 +88,11 @@ channel = channels.slack(
 
 ### 配置哪些消息开始运行
 
-**触发\_on\_all\_messages** `bool`（默认值：False）
+**trigger_on_all_messages** `bool`（默认值：False）
 
 是否每个新的通道消息都可以启动代理运行。当`False`时，通道消息仅在提及代理时才开始运行；直接消息仍然开始运行。
 
-**允许\_bot\_triggers** `bool`（默认值：False）
+**allow_bot_triggers** `bool`（默认值：False）
 
 来自其他 Slack 机器人的消息是否可以启动代理运行。
 
@@ -195,7 +195,7 @@ channel = channels.slack(name="Support Bot", reactions=choose_emoji)
 uv run mda deploy
 ```
 
-Managed Deep Agents 部署代理并设置它需要出现在 Slack 中的资源。
+托管 Deep Agents 部署代理并设置它需要出现在 Slack 中的资源。
 
 **2.如果出现提示，请授权 Slack**
 

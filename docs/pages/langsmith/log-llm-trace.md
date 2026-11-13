@@ -87,7 +87,7 @@ Base64-encoded image data.
 
 Reference ID to an externally stored image (e.g., in a provider’s file system or in a bucket).
 
-**mime\_type** `string`
+**mime_type** `string`
 
 Image [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image) (e.g., `image/jpeg`, `image/png`).
 
@@ -107,7 +107,7 @@ Base64-encoded file data.
 
 Reference ID to an externally stored file (e.g., in a provider’s file system or in a bucket).
 
-**mime\_type** `string`
+**mime_type** `string`
 
 File [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image) (e.g., `application/pdf`).
 
@@ -127,7 +127,7 @@ Base64-encoded audio data.
 
 Reference ID to an externally stored audio file (e.g., in a provider’s file system or in a bucket).
 
-**mime\_type** `string`
+**mime_type** `string`
 
 Audio [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image) (e.g., `audio/mpeg`, `audio/wav`).
 
@@ -147,11 +147,11 @@ Base64-encoded video data.
 
 Reference ID to an externally stored video file (e.g., in a provider’s file system or in a bucket).
 
-**mime\_type** `string`
+**mime_type** `string`
 
 Video [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image) (e.g., `video/mp4`, `video/webm`).
 
-**tool\_call**
+**tool_call**
 
 **type** `literal('tool_call')` *required*
 
@@ -165,7 +165,7 @@ Arguments to pass to the tool.
 
 Unique identifier for this tool call.
 
-**server\_tool\_call**
+**server_tool_call**
 
 **type** `literal('server_tool_call')` *required*
 
@@ -181,11 +181,11 @@ The name of the tool to be called.
 
 Arguments to pass to the tool.
 
-**server\_tool\_result**
+**server_tool_result**
 
 **type** `literal('server_tool_result')` *required*
 
-**tool\_call\_id** `string` *required*
+**tool_call_id** `string` *required*
 
 Identifier of the corresponding server tool call.
 
@@ -201,11 +201,11 @@ Execution status of the server-side tool. One of: `success` | `error`.
 
 Output of the executed tool.
 
-**tool\_call\_id** `string`
+**tool_call_id** `string`
 
 Must match the `id` of a prior `assistant` message’s `tool_calls[i]` entry. Only valid when `role` is `tool`.
 
-**usage\_metadata** `object`
+**usage_metadata** `object`
 
 Use this field to send token counts and/or costs with your model's output. See [Provide token and cost information](/langsmith/log-llm-trace#provide-token-and-cost-information) for more details.
 

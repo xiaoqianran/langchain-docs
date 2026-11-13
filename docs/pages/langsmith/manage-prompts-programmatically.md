@@ -302,7 +302,7 @@ PromptValue formattedPrompt = prompt.invoke(Map.of("topic", "cats"));
 // Use formattedPrompt with your model provider — see "Use a prompt without LangChain" below.
 ```
 
-Similar to pushing a prompt, you can also pull a prompt as a RunnableSequence of a prompt and a model. Just specify include\_model when pulling the prompt. If the stored prompt includes a model, it will be returned as a RunnableSequence. Make sure you have the proper environment variables set for the model you are using.
+Similar to pushing a prompt, you can also pull a prompt as a RunnableSequence of a prompt and a model. Just specify include_model when pulling the prompt. If the stored prompt includes a model, it will be returned as a RunnableSequence. Make sure you have the proper environment variables set for the model you are using.
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client

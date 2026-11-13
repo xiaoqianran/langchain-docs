@@ -104,7 +104,7 @@ def yearly_balance_schedule(
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[compute_compound_interest, yearly_balance_schedule],
     system_prompt=(
         "You are a careful assistant. "
@@ -142,7 +142,7 @@ Click on the trace, and toggle to the **Details** view on the top right. Your tr
 * Agent run (top level) representing the full Deep Agents invocation.
 * LLM call where the agent analyzes the user request and decides which tools to use.
 * Tool run: `compute_compound_interest`:
-  * Displays the tool inputs (for example, principal, annual\_rate, years, and compounds\_per\_year).
+  * Displays the tool inputs (for example, principal, annual_rate, years, and compounds_per_year).
   * Displays the structured output, including the ending balance and total interest earned.
 * LLM call that interprets the calculation results and determines the next step.
 * Tool run: `yearly_balance_schedule`:
@@ -167,7 +167,7 @@ Deep Agents automatically writes the subagent's `name` to the `lc_agent_name` me
 3. Click **Add filter** and select **Metadata**.
 4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name, for example `coordinator`.
 
-![LangSmith Runs view with a metadata filter on lc\_agent\_name set to coordinator](https://mintcdn.com/langchain-5e9cc07a/t_yuR4Fo_XGdcWGH/langsmith/images/deepagents-lc-agent-name-filter.png?fit=max\&auto=format\&n=t_yuR4Fo_XGdcWGH\&q=85\&s=ffc65c0b9b5292fce5f0589b8f2478ce)
+![LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator](https://mintcdn.com/langchain-5e9cc07a/t_yuR4Fo_XGdcWGH/langsmith/images/deepagents-lc-agent-name-filter.png?fit=max\&auto=format\&n=t_yuR4Fo_XGdcWGH\&q=85\&s=ffc65c0b9b5292fce5f0589b8f2478ce)
 
 Save the filter as a named view for quick reuse. For a full reference on filter options, see [Filter traces](/langsmith/filter-traces).
 
@@ -280,7 +280,7 @@ def yearly_balance_schedule(
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[compute_compound_interest, yearly_balance_schedule],
     system_prompt=(
         "You are a careful assistant. "

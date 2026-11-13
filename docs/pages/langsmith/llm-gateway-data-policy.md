@@ -130,7 +130,7 @@ The gateway prepends the disclaimer so the model treats the placeholders as valu
 
 Placeholders follow the format `[SAFE_TO_USE:<CATEGORY>_<suffix>]`:
 
-* **SAFE\_TO\_USE:** fixed prefix marking the value as a redacted placeholder.
+* **SAFE_TO_USE:** fixed prefix marking the value as a redacted placeholder.
 * **\<CATEGORY>:** the detected type. Examples: `PERSON`, `LOCATION`, `US_SSN`, `US_PHONE_NUMBER`, `OPENAI_API_KEY`, `GITHUB_PAT`, `LANGSMITH_PERSONAL_TOKEN`.
 * **\<suffix>:** an 8-character tag. A value that appears twice in one request gets the same placeholder both times, and the tags cannot be correlated across requests.
 

@@ -54,7 +54,7 @@ from langchain.tools import tool
 from langchain.agents import create_agent
 
 # Create a subagent
-subagent = create_agent(model="google_genai:gemini-3.6-flash", tools=[...])
+subagent = create_agent(model="google_genai:gemini-4-hydrogen", tools=[...])
 
 # Wrap it as a tool
 @tool("research", description="Research a topic and return findings")
@@ -63,7 +63,7 @@ def call_research_agent(query: str):
     return result["messages"][-1].content
 
 # Main agent with subagent as a tool
-main_agent = create_agent(model="google_genai:gemini-3.6-flash", tools=[call_research_agent])
+main_agent = create_agent(model="google_genai:gemini-4-hydrogen", tools=[call_research_agent])
 ```
 
 > [card] [Tutorial: Build a personal assistant with subagents](/oss/python/langchain/multi-agent/subagents-personal-assistant)
@@ -170,7 +170,7 @@ sequenceDiagram
 2. **Check status**: Returns current state (pending, running, completed, failed)
 3. **Get result**: Retrieves the completed result
 
-**Handling job completion:** When a job finishes, your application needs to notify the user. One approach: surface a notification that, when clicked, sends a `HumanMessage` like "Check job\_123 and summarize the results."
+**Handling job completion:** When a job finishes, your application needs to notify the user. One approach: surface a notification that, when clicked, sends a `HumanMessage` like "Check job_123 and summarize the results."
 
 ## Tool patterns
 
@@ -514,7 +514,7 @@ Because subagents are called inside tool functions, LangGraph cannot [statically
 
 > [card] [Migrate from langgraph-supervisor](/oss/python/migrate/langgraph-supervisor)
 >
-> The langgraph-supervisor package is no longer actively maintained. Learn how to migrate from create\_supervisor to the subagents pattern, including interrupt and resume flows with external API callbacks.
+> The langgraph-supervisor package is no longer actively maintained. Learn how to migrate from create_supervisor to the subagents pattern, including interrupt and resume flows with external API callbacks.
 
 ***
 

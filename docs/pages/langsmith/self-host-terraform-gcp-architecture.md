@@ -43,7 +43,7 @@ SmithDB (`enable_smithdb`) and Sandboxes (`enable_sandboxes`) are optional add-o
 | `networking` | `infra/modules/networking/` | VPC, subnet with secondary ranges, Cloud Router, Cloud NAT, private service connection for Cloud SQL and Memorystore |
 | `k8s-cluster` | `infra/modules/k8s-cluster/` | GKE Standard or Autopilot cluster, private nodes, node pool with autoscaling, Workload Identity enabled |
 | `postgres` | `infra/modules/postgres/` | Cloud SQL PostgreSQL instance, regional HA standby, private IP, deletion protection |
-| `redis` | `infra/modules/redis/` | Memorystore Redis STANDARD\_HA tier, private IP within VPC |
+| `redis` | `infra/modules/redis/` | Memorystore Redis STANDARD_HA tier, private IP within VPC |
 | `storage` | `infra/modules/storage/` | GCS bucket with versioning and lifecycle rules for `ttl_s/` (14 days) and `ttl_l/` (400 days) prefixes |
 | `k8s-bootstrap` | `infra/modules/k8s-bootstrap/` | `langsmith` namespace and `langsmith-ksa` ServiceAccount, Kubernetes Secrets for Postgres, Redis, the license key, ClickHouse, and TLS, resource quotas and network policies, cert-manager and KEDA Helm releases |
 | `ingress` | `infra/modules/ingress/` | Envoy Gateway Helm release, Gateway API CRDs, GatewayClass, and Gateway (HTTP and optional HTTPS listeners) |
@@ -158,7 +158,7 @@ When `postgres_source = "external"` and `redis_source = "external"` (the recomme
 
 ### Memorystore Redis
 
-* Default 5 GB, STANDARD\_HA tier, private IP, port 6379.
+* Default 5 GB, STANDARD_HA tier, private IP, port 6379.
 * Trace ingestion queue, pub/sub, short-lived cache.
 * No auth token required. Access is controlled by VPC private IP only.
 * Terraform writes the connection URL directly to the `langsmith-redis-credentials` Kubernetes Secret.

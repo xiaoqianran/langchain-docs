@@ -48,7 +48,7 @@ import { defineDeepAgent } from "managed-deepagents";
 
 export const agent = defineDeepAgent({
   name: "research-assistant",
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
 });
 ```
 
@@ -86,7 +86,7 @@ export const agent = defineDeepAgent({
 | `responseFormat` |设置代理必须返回与架构匹配的数据而不是不受约束的文本响应的时间。参见[Structured output](/oss/javascript/langchain/structured-output)。 |
 | `routes` |在路径前缀处安装 Deep Agents 后端。参见[Mount your own backends](#mount-your-own-backends)。 |
 
-## 安装你自己的后端`routes` 在路径前缀处挂载 Deep Agents [backends](/oss/javascript/deepagents/backends)，与 [⟦T34⟧](/oss/javascript/deepagents/backends#compositebackend-router) 路由的方式相同。前缀下的路径会转到删除了前缀的后端。所有其他路径都保留在托管后端上。
+## 安装你自己的后端`routes` mounts Deep Agents [backends](/oss/javascript/deepagents/backends) at path prefixes, the same way [⟦T34⟧](/oss/javascript/deepagents/backends#compositebackend-router) routes do. A path under a prefix goes to that backend with the prefix removed.所有其他路径都保留在托管后端上。
 
 > [!注意]
 >
@@ -104,17 +104,17 @@ export const agent = defineDeepAgent({
 });
 ```
 
-通过此路由，代理的文件工具在商店后端中将 `/documents/a.md` 读写为 `/a.md`。
+With this route, the agent's file tools read and write `/documents/a.md` as `/a.md` in the store backend.
 
-* 每个前缀必须是以`/`开头和结尾的绝对目录，例如`"/documents/"`。
-* 前缀不能与 Managed Deep Agents 安装自身的路径重叠：`/instructions.md`、`/skills/` 和 `/memories/`。
+* Each prefix must be an absolute directory that starts and ends with `/`, such as `"/documents/"`.
+* A prefix cannot overlap the paths Managed Deep Agents mounts itself: `/instructions.md`, `/skills/`, and `/memories/`.
 * 路径仅适用于文件工具。 [sandbox](/langsmith/javascript/managed-deep-agents-sandboxes) 中的 Shell 命令看不到它们。
 
 ## 选择每次运行的配置
 
-要为每次运行选择代理的配置，请将函数导出为 `agent` 而不是定义。然后，一种部署可以适应不同的用户、任务或存储库。该函数是一个图工厂，与 LangGraph 用于 [rebuild a graph at runtime](/langsmith/graph-rebuild) 的模式相同：它接收运行时并返回定义。
+To select the agent's configuration for each run, export a function as `agent` instead of a definition. One deployment can then adapt to different users, tasks, or repositories. The function is a graph factory, the same pattern LangGraph uses to [rebuild a graph at runtime](/langsmith/graph-rebuild): it receives the runtime and returns a definition.
 
-此示例选择运行所处理的存储库的说明和技能。它假设该项目有`skills/python-service/`和`skills/typescript-web/`，每个都有一个[⟦T47⟧](/langsmith/javascript/managed-deep-agents-skills)。
+This example selects instructions and skills for the repository a run works on. It assumes the project has `skills/python-service/` and `skills/typescript-web/`, each with a [⟦T47⟧](/langsmith/javascript/managed-deep-agents-skills).
 
 ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineDeepAgent, type ManagedServerRuntime } from "managed-deepagents";
@@ -204,7 +204,7 @@ export function agent(
 
 ### 保持工厂可重复
 
-托管 Deep Agents 在每次运行开始时调用工厂，并在运行恢复或重试时再次调用。代理服务器还调用它来读取模式和状态。请遵循以下规则：
+托管 Deep Agents 在每次运行开始时调用工厂，并在运行恢复或重试时再次调用。代理服务器还调用它来读取架构和状态。请遵循以下规则：
 
 * **无副作用**：为相同的上下文返回相同的定义。不要创建记录、调用外部 API 或更改工厂中的共享状态。
 * **稳定中断**：保留可以在每个配置中中断运行的中间件。当运行恢复时，引发中断的中间件必须仍然存在。
@@ -256,7 +256,7 @@ export const agent = defineDeepAgent({
 
 > [!注意]
 >
-> 网关型号 ID 在提供商和型号之间使用斜杠 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
+> 网关型号 ID 在提供商和型号之间使用斜线 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
 
 网关按型号 ID 路由每个请求。 `moonshotai/kimi-k3` 是LangChain 托管模型，因此它不需要提供者密钥并利用 [Gateway Credits](/langsmith/llm-gateway-credits)。以您的工作区已配置的提供商开头的模型 ID（例如 `anthropic/claude-opus-5`）使用该 [provider secret](/langsmith/llm-gateway-provider-authentication#add-a-provider-key) 并向您自己的提供商帐户计费。
 

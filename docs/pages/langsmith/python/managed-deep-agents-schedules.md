@@ -230,7 +230,7 @@ A prompt that each run receives as a user message. Give exactly one of `prompt` 
 
 A structured LangGraph input for each run.
 
-**new\_thread** `bool`
+**new_thread** `bool`
 
 `True` starts each run on a new thread. `False` continues the current thread. Defaults to `True` with `cron` and `False` with `at`.
 

@@ -49,7 +49,7 @@ as needed by appending .md to their URLs.
    or above. Install the LangGraph CLI with uv tool install langgraph-cli
    if it is missing. Follow the local development guide to install any
    additional dependencies needed to test the application.
-3. Ask the user to set LANGSMITH\_API\_KEY and any required model provider
+3. Ask the user to set LANGSMITH_API_KEY and any required model provider
    keys in the shell or a local .env file, then wait for confirmation.
    Do not ask them to paste secrets into chat. Ensure secret files are
    ignored by Git, and never print or commit credentials.

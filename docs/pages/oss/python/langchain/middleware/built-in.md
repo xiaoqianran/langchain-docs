@@ -77,11 +77,11 @@ agent = create_agent(
 
 > [accordion] Configuration options
 >
-> **on\_error** `Callable[[Exception, ToolCallRequest], str | list[ContentBlock] | None]`
+> **on_error** `Callable[[Exception, ToolCallRequest], str | list[ContentBlock] | None]`
 >
 > Sync handler called for each exception raised by tool execution. Return content (a `str` or list of content blocks) to convert the exception into a `ToolMessage(status="error")`. Return `None` or omit a return statement to let the exception propagate. Used on the sync path and, unless `aon_error` is given, on the async path.
 >
-> **aon\_error** `Callable[[Exception, ToolCallRequest], Awaitable[str | list[ContentBlock] | None]]`
+> **aon_error** `Callable[[Exception, ToolCallRequest], Awaitable[str | list[ContentBlock] | None]]`
 >
 > Optional async handler, used on the async execution path. Falls back to `on_error` when not provided.
 >
@@ -164,7 +164,7 @@ agent = create_agent(
 
 > [accordion] Configuration options
 >
-> **max\_retries** `number` (default: 2)
+> **max_retries** `number` (default: 2)
 >
 > Maximum number of retry attempts after the initial call (3 total attempts with default)
 >
@@ -172,11 +172,11 @@ agent = create_agent(
 >
 > Optional list of tools or tool names to apply retry logic to. If `None`, applies to all tools.
 >
-> **retry\_on** `tuple[type[Exception], ...] | callable` (default: default\_retry\_on)
+> **retry_on** `tuple[type[Exception], ...] | callable` (default: default_retry_on)
 >
 > Either a tuple of exception types to retry on, or a callable that takes an exception and returns `True` if it should be retried. With `langchain>=1.3.16`, the default retries retryable [model errors](/oss/python/langchain/models#model-exceptions) and all unclassified exceptions, and no longer retries model errors marked non-retryable.
 >
-> **on\_failure** `string | callable` (default: continue)
+> **on_failure** `string | callable` (default: continue)
 >
 > Behavior when all retries are exhausted. Options:
 >
@@ -186,15 +186,15 @@ agent = create_agent(
 >
 > **Deprecated values:** `'return_message'` (use `'continue'` instead) and `'raise'` (use `'error'` instead).
 >
-> **backoff\_factor** `number` (default: 2.0)
+> **backoff_factor** `number` (default: 2.0)
 >
 > Multiplier for exponential backoff. Each retry waits `initial_delay * (backoff_factor ** retry_number)` seconds. Set to `0.0` for constant delay.
 >
-> **initial\_delay** `number` (default: 1.0)
+> **initial_delay** `number` (default: 1.0)
 >
 > Initial delay in seconds before first retry
 >
-> **max\_delay** `number` (default: 60.0)
+> **max_delay** `number` (default: 60.0)
 >
 > Maximum delay in seconds between retries (caps exponential backoff growth)
 >
@@ -272,15 +272,15 @@ agent = create_agent(
 
 > [accordion] Configuration options
 >
-> **max\_retries** `number` (default: 2)
+> **max_retries** `number` (default: 2)
 >
 > Maximum number of retry attempts after the initial call (3 total attempts with default)
 >
-> **retry\_on** `tuple[type[Exception], ...] | callable` (default: default\_retry\_on)
+> **retry_on** `tuple[type[Exception], ...] | callable` (default: default_retry_on)
 >
 > Either a tuple of exception types to retry on, or a callable that takes an exception and returns `True` if it should be retried. With `langchain>=1.3.16`, the default retries retryable [model errors](/oss/python/langchain/models#model-exceptions) and all unclassified exceptions, and no longer retries model errors marked non-retryable.
 >
-> **on\_failure** `string | callable` (default: continue)
+> **on_failure** `string | callable` (default: continue)
 >
 > Behavior when all retries are exhausted. Options:
 >
@@ -288,15 +288,15 @@ agent = create_agent(
 > * `'error'` - Re-raise the exception (stops agent execution)
 > * Custom callable - Function that takes the exception and returns a string for the `AIMessage` content
 >
-> **backoff\_factor** `number` (default: 2.0)
+> **backoff_factor** `number` (default: 2.0)
 >
 > Multiplier for exponential backoff. Each retry waits `initial_delay * (backoff_factor ** retry_number)` seconds. Set to `0.0` for constant delay.
 >
-> **initial\_delay** `number` (default: 1.0)
+> **initial_delay** `number` (default: 1.0)
 >
 > Initial delay in seconds before first retry
 >
-> **max\_delay** `number` (default: 60.0)
+> **max_delay** `number` (default: 60.0)
 >
 > Maximum delay in seconds between retries (caps exponential backoff growth)
 >
@@ -410,11 +410,11 @@ Watch this [video guide](https://www.youtube.com/watch?v=8rCRO0DUeIM) demonstrat
 
 > [accordion] Configuration options
 >
-> **first\_model** `string | BaseChatModel` *required*
+> **first_model** `string | BaseChatModel` *required*
 >
 > First fallback model to try when the primary model fails. Can be a model identifier string (e.g., `'openai:gpt-5.4-mini'`) or a `BaseChatModel` instance.
 >
-> \***additional\_models** `string | BaseChatModel`
+> \***additional_models** `string | BaseChatModel`
 >
 > Additional fallback models to try in order if previous models fail
 
@@ -611,27 +611,27 @@ agent = create_agent(
 >
 > See the API reference for [`ContextSize`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/ContextSize) for more information.
 >
-> **token\_counter** `function`
+> **token_counter** `function`
 >
 > Custom token counting function. Defaults to character-based counting.
 >
-> **summary\_prompt** `string`
+> **summary_prompt** `string`
 >
 > Custom prompt template for summarization. Uses built-in template if not specified. The template should include `{messages}` placeholder where conversation history will be inserted.
 >
-> **trim\_tokens\_to\_summarize** `number` (default: 4000)
+> **trim_tokens_to_summarize** `number` (default: 4000)
 >
 > Maximum number of tokens to include when generating the summary. Messages will be trimmed to fit this limit before summarization.
 >
-> **summary\_prefix** `string` *deprecated*
+> **summary_prefix** `string` *deprecated*
 >
 > **Deprecated:** Use `summary_prompt` to provide the full prompt instead.
 >
-> **max\_tokens\_before\_summary** `number` *deprecated*
+> **max_tokens_before_summary** `number` *deprecated*
 >
 > **Deprecated:** Use `trigger: ("tokens", value)` instead. Token threshold for triggering summarization.
 >
-> **messages\_to\_keep** `number` *deprecated*
+> **messages_to_keep** `number` *deprecated*
 >
 > **Deprecated:** Use `keep: ("messages", value)` instead. Recent messages to preserve.
 
@@ -816,15 +816,15 @@ Watch this [video guide](https://www.youtube.com/watch?v=nJEER0uaNkE) demonstrat
 
 > [accordion] Configuration options
 >
-> **thread\_limit** `number`
+> **thread_limit** `number`
 >
 > Maximum model calls across all runs in a thread. Defaults to no limit.
 >
-> **run\_limit** `number`
+> **run_limit** `number`
 >
 > Maximum model calls per single invocation. Defaults to no limit.
 >
-> **exit\_behavior** `string` (default: end)
+> **exit_behavior** `string` (default: end)
 >
 > Behavior when limit is reached. Options: `'end'` (graceful termination) or `'error'` (raise exception)
 
@@ -863,21 +863,21 @@ Watch this [video guide](https://www.youtube.com/watch?v=6gYlaJJ8t0w) demonstrat
 
 > [accordion] Configuration options
 >
-> **tool\_name** `string`
+> **tool_name** `string`
 >
 > Name of specific tool to limit. If not provided, limits apply to **all tools globally**.
 >
-> **thread\_limit** `number`
+> **thread_limit** `number`
 >
 > Maximum tool calls across all runs in a thread (conversation). Persists across multiple invocations with the same thread ID. Requires a checkpointer to maintain state. `None` means no thread limit.
 >
-> **run\_limit** `number`
+> **run_limit** `number`
 >
 > Maximum tool calls per single invocation (one user message → response cycle). Resets with each new user message. `None` means no run limit.
 >
 > **Note:** At least one of `thread_limit` or `run_limit` must be specified.
 >
-> **exit\_behavior** `string` (default: continue)
+> **exit_behavior** `string` (default: continue)
 >
 > Behavior when limit is reached:
 >
@@ -1052,7 +1052,7 @@ def detector(content: str) -> list[PIIMatch]:
 
 > [accordion] Configuration options
 >
-> **pii\_type** `string` *required*
+> **pii_type** `string` *required*
 >
 > Type of PII to detect. Can be a built-in type (`email`, `credit_card`, `ip`, `mac_address`, `url`) or a custom type name.
 >
@@ -1069,15 +1069,15 @@ def detector(content: str) -> list[PIIMatch]:
 >
 > Custom detector function or regex pattern. If not provided, uses built-in detector for the PII type.
 >
-> **apply\_to\_input** `boolean` (default: True)
+> **apply_to_input** `boolean` (default: True)
 >
 > Check user messages before model call
 >
-> **apply\_to\_output** `boolean` (default: False)
+> **apply_to_output** `boolean` (default: False)
 >
 > Check AI messages after model call. With `langchain>=1.3.2`, also redacts streamed wire output (text deltas, tool-call args, tool outputs, state snapshots) via a registered stream transformer. See [event streaming](/oss/python/langchain/event-streaming#register-transformers-on-middleware).
 >
-> **apply\_to\_tool\_results** `boolean` (default: False)
+> **apply_to_tool_results** `boolean` (default: False)
 >
 > Check tool result messages after execution
 
@@ -1109,11 +1109,11 @@ Watch this [video guide](https://www.youtube.com/watch?v=yTWocbVKQxw) demonstrat
 
 > [accordion] Configuration options
 >
-> **system\_prompt** `string`
+> **system_prompt** `string`
 >
 > Custom system prompt for guiding todo usage. Uses built-in prompt if not specified.
 >
-> **tool\_description** `string`
+> **tool_description** `string`
 >
 > Custom description for the `write_todos` tool. Uses built-in description if not specified.
 
@@ -1154,17 +1154,17 @@ agent = create_agent(
 >
 > Defaults to the agent's main model.
 >
-> **system\_prompt** `string`
+> **system_prompt** `string`
 >
 > Instructions for the selection model. Uses built-in prompt if not specified.
 >
-> **max\_tools** `number`
+> **max_tools** `number`
 >
-> Maximum number of tools to select. If the model selects more, only the first max\_tools will be used. No limit if not specified.
+> Maximum number of tools to select. If the model selects more, only the first max_tools will be used. No limit if not specified.
 >
-> **always\_include** `list[string]`
+> **always_include** `list[string]`
 >
-> Tool names to always include regardless of selection. These do not count against the max\_tools limit.
+> Tool names to always include regardless of selection. These do not count against the max_tools limit.
 
 ### Model router
 
@@ -1258,7 +1258,7 @@ agent = create_agent(
 
 > [accordion] Configuration options
 >
-> **searchable\_tools** `list[str | BaseTool]`
+> **searchable_tools** `list[str | BaseTool]`
 >
 > Tools to defer behind the provider's tool search, given by name or instance. Deferred tools are withheld from the model until its search surfaces them. Tools constructed with `extras={"defer_loading": True}` are deferred regardless of this option; if `searchable_tools` is omitted, only those pre-marked tools are deferred.
 
@@ -1327,19 +1327,19 @@ agent = create_agent(
 
 > [accordion] Configuration options
 >
-> **workspace\_root** `str | Path | None`
+> **workspace_root** `str | Path | None`
 >
 > Base directory for the shell session. If omitted, a temporary directory is created when the agent starts and removed when it ends.
 >
-> **startup\_commands** `tuple[str, ...] | list[str] | str | None`
+> **startup_commands** `tuple[str, ...] | list[str] | str | None`
 >
 > Optional commands executed sequentially after the session starts
 >
-> **shutdown\_commands** `tuple[str, ...] | list[str] | str | None`
+> **shutdown_commands** `tuple[str, ...] | list[str] | str | None`
 >
 > Optional commands executed before the session shuts down
 >
-> **execution\_policy** `BaseExecutionPolicy | None`
+> **execution_policy** `BaseExecutionPolicy | None`
 >
 > Execution policy controlling timeouts, output limits, and resource configuration. Options:
 >
@@ -1347,7 +1347,7 @@ agent = create_agent(
 > * `DockerExecutionPolicy` - Launches a separate Docker container for each agent run, providing harder isolation
 > * `CodexSandboxExecutionPolicy` - Reuses the Codex CLI sandbox for additional syscall/filesystem restrictions
 >
-> **redaction\_rules** `tuple[RedactionRule, ...] | list[RedactionRule] | None`
+> **redaction_rules** `tuple[RedactionRule, ...] | list[RedactionRule] | None`
 >
 > Optional redaction rules to sanitize command output before returning it to the model.
 >
@@ -1355,11 +1355,11 @@ agent = create_agent(
 > >
 > > Redaction rules are applied post execution and do not prevent exfiltration of secrets or sensitive data when using `HostExecutionPolicy`.
 >
-> **tool\_description** `str | None`
+> **tool_description** `str | None`
 >
 > Optional override for the registered shell tool description
 >
-> **shell\_command** `Sequence[str] | str | None`
+> **shell_command** `Sequence[str] | str | None`
 >
 > Optional shell executable (string) or argument sequence used to launch the persistent session. Defaults to `/bin/bash`.
 >
@@ -1515,7 +1515,7 @@ def get_weather(city: str) -> str:
 
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[
         SubAgentMiddleware(
             backend=StateBackend(),
@@ -1782,7 +1782,7 @@ weather_subagent = CompiledSubAgent(
 )
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[
         SubAgentMiddleware(
             backend=StateBackend(),
@@ -2061,7 +2061,7 @@ from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[
         RubricMiddleware(
             model="anthropic:claude-haiku-4-5",
@@ -2199,15 +2199,15 @@ agent = create_agent(
 
 > [accordion] Configuration options
 >
-> **root\_path** `str` *required*
+> **root_path** `str` *required*
 >
 > Root directory to search. All file operations are relative to this path.
 >
-> **use\_ripgrep** `bool` (default: True)
+> **use_ripgrep** `bool` (default: True)
 >
 > Whether to use ripgrep for search. Falls back to Python regex if ripgrep is unavailable.
 >
-> **max\_file\_size\_mb** `int` (default: 10)
+> **max_file_size_mb** `int` (default: 10)
 >
 > Maximum file size to search in MB. Files larger than this are skipped.
 
@@ -2290,7 +2290,7 @@ agent = create_agent(
 >
 > List of [`ContextEdit`](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ContextEdit) strategies to apply
 >
-> **token\_count\_method** `string` (default: approximate)
+> **token_count_method** `string` (default: approximate)
 >
 > Token counting method. Options: `'approximate'` or `'model'`
 >
@@ -2300,7 +2300,7 @@ agent = create_agent(
 >
 > Token count that triggers the edit. When the conversation exceeds this token count, older tool outputs will be cleared.
 >
-> **clear\_at\_least** `number` (default: 0)
+> **clear_at_least** `number` (default: 0)
 >
 > Minimum number of tokens to reclaim when the edit runs. If set to 0, clears as much as needed.
 >
@@ -2308,11 +2308,11 @@ agent = create_agent(
 >
 > Number of most recent tool results that must be preserved. These will never be cleared.
 >
-> **clear\_tool\_inputs** `boolean` (default: False)
+> **clear_tool_inputs** `boolean` (default: False)
 >
 > Whether to clear the originating tool call parameters on the AI message. When `True`, tool call arguments are replaced with empty objects.
 >
-> **exclude\_tools** `list[string]` (default: ())
+> **exclude_tools** `list[string]` (default: ())
 >
 > List of tool names to exclude from clearing. These tools will never have their outputs cleared.
 >
@@ -2386,7 +2386,7 @@ agent = create_agent(
 >
 > **model** `string | BaseChatModel`
 >
-> Model to use for generating emulated tool responses. Can be a model identifier string (e.g., `'google_genai:gemini-3.6-flash'`) or a `BaseChatModel` instance. Defaults to the agent's model if not specified. See [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) for more information.
+> Model to use for generating emulated tool responses. Can be a model identifier string (e.g., `'google_genai:gemini-4-hydrogen'`) or a `BaseChatModel` instance. Defaults to the agent's model if not specified. See [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) for more information.
 
 > [accordion] Full example
 >

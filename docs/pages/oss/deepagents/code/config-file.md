@@ -23,7 +23,7 @@ Configure model providers, defaults, retries, and gateways in config.toml
 ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [models]
 default = "ollama:qwen3:4b"             # your intentional long-term preference
-recent = "google_genai:gemini-3.6-flash"   # last /model switch (written automatically)
+recent = "google_genai:gemini-4-hydrogen"   # last /model switch (written automatically)
 auto_classifier = "openai:gpt-5.6-luna"  # optional: cheaper model for Auto approval review
 ```
 
@@ -328,27 +328,27 @@ Models listed here **bypass** any applied profile-based [filtering criteria](/os
 
 This key is optional. You can always pass any model name directly to `/model` or `--model` regardless of whether it appears in the switcher; the provider validates the name at request time.
 
-**api\_key\_env** `string`
+**api_key_env** `string`
 
 The **name** of the environment variable that holds the API key (e.g., `"OPENAI_API_KEY"`). Deep Agents Code reads the credential from this env var at startup to verify access before creating the model.
 
 Most chat model packages read from a default env var automatically. See the [Provider reference](/oss/deepagents/code/providers#provider-reference) table for which variable name each built-in provider checks. For a provider not in that table, set `api_key_env` to its variable name (see [Arbitrary providers](#arbitrary-providers)).
 
-**display\_name** `string`
+**display_name** `string`
 
 Human-readable provider name shown in auth UI. Use this for arbitrary providers whose config key is optimized for machines (for example, `my_gateway`) but whose UI label should include spaces or brand capitalization.
 
-**api\_key\_url** `string`
+**api_key_url** `string`
 
 URL for the provider page where users create or manage API keys. The `/auth` modal links to this page before the API-key input. This value is a URL, not a credential.
 
-**base\_url** `string`
+**base_url** `string`
 
 Override the base URL used by the provider, if supported. Refer to your provider packages' [reference docs](https://reference.langchain.com/python/integrations/) for more info.
 
 See [Compatible APIs](#compatible-apis) for pointing a built-in provider at a wire-compatible endpoint, or [Arbitrary providers](#arbitrary-providers) for one configured via `class_path`.
 
-**base\_url\_env** `string`
+**base_url_env** `string`
 
 Name of the environment variable that holds this provider's base URL, parallel to `api_key_env`. Reach for this instead of `base_url` when the endpoint comes from the environment rather than a fixed value — for example a gateway URL that differs by machine or CI job — so it can change without editing `config.toml` and can take part in endpoint resolution and key/endpoint pairing (see [Endpoints, keys, and gateways](#endpoints-keys-and-gateways)). It also extends those to providers outside the [built-in set](/oss/deepagents/code/providers#provider-reference); see [Arbitrary providers](#arbitrary-providers).
 
@@ -370,7 +370,7 @@ Do not put credentials (e.g., `api_key`) in `params`. Use [`api_key_env`](#provi
 
 (Advanced) Override fields in the model's runtime [profile](/oss/python/langchain/models#model-profiles) (e.g., `max_input_tokens`). Flat keys apply to every model from this provider. Model-keyed sub-tables (e.g., `[profile."claude-sonnet-4-5"]`) override individual values for that model only; the merge is shallow (model wins on conflict). These overrides are applied after the model is created, so they take effect for context-limit display, auto-summarization, and any other feature that reads the profile. See [Profile overrides](#profile-overrides-advanced) for examples and the `--profile-override` flag.
 
-**class\_path** `string`
+**class_path** `string`
 
 Used for [arbitrary model](#arbitrary-providers) providers. Fully-qualified Python class in `module.path:ClassName` format. When set, Deep Agents Code imports and instantiates this class directly for provider `<name>`. The class must be a `BaseChatModel` subclass.
 
@@ -506,7 +506,7 @@ Profile overrides are merged into the model's profile after creation. Any featur
 > dcode --profile-override '{"max_input_tokens": 4096}'
 >
 > # Combine with --model
-> dcode --model google_genai:gemini-3.6-flash --profile-override '{"max_input_tokens": 4096}'
+> dcode --model google_genai:gemini-4-hydrogen --profile-override '{"max_input_tokens": 4096}'
 >
 > # In non-interactive mode
 > dcode -n "Summarize this repo" --profile-override '{"max_input_tokens": 4096}'
@@ -709,23 +709,23 @@ ptc = "safe"                    # default: "safe"
 ptc_acknowledge_unsafe = false  # default
 ```
 
-**enable\_interpreter** `boolean` (default: true)
+**enable_interpreter** `boolean` (default: true)
 
 Wire the QuickJS REPL middleware (`js_eval`) into the main agent (local sessions only). Set to `false` to disable the interpreter entirely; re-enable for a session with `--interpreter`.
 
-**timeout\_seconds** `number` (default: 5.0)
+**timeout_seconds** `number` (default: 5.0)
 
 Per-call wall-clock timeout for the QuickJS REPL.
 
-**memory\_limit\_mb** `integer` (default: 64)
+**memory_limit_mb** `integer` (default: 64)
 
 QuickJS heap memory cap in MB, shared across a session.
 
-**max\_ptc\_calls** `integer` (default: 256)
+**max_ptc_calls** `integer` (default: 256)
 
 Maximum `tools.*` host-bridge invocations per `js_eval` call.
 
-**max\_result\_chars** `integer` (default: 4000)
+**max_result_chars** `integer` (default: 4000)
 
 Cap in characters on the `js_eval` result and captured stdout before truncation.
 
@@ -738,7 +738,7 @@ Cap in characters on the `js_eval` result and captured stdout before truncation.
 * A list of tool names, e.g. `["safe", "web_search"]` — the `"safe"` entry expands to the preset. `"all"` is not allowed inside a list.
 * `false` or `[]`: no tool access from the REPL (pure interpreter). `true` is rejected — use `"safe"`, `"all"`, or an explicit list.
 
-**ptc\_acknowledge\_unsafe** `boolean` (default: false)
+**ptc_acknowledge_unsafe** `boolean` (default: false)
 
 Acknowledge that `ptc = "all"` exposes every tool to PTC calls that bypass approval prompts. Required for `ptc = "all"` unless running with approvals disabled.
 
@@ -764,7 +764,7 @@ Enable Python extension discovery for every source, including `-e` / `--extensio
 
 Set the default policy for project extensions in `<project>/.deepagents/extensions/`: `ask` prompts in an interactive launch, `always` loads them, and `never` skips them. Set `DEEPAGENTS_CODE_EXTENSIONS_TRUST` to override this value. Only use `always` when every project you open is trusted.
 
-**extra\_paths** `string[]` (default: \[])
+**extra_paths** `string[]` (default: \[])
 
 Add user-authorized Python extension files or directories. Relative paths resolve from the Deep Agents Code profile directory; `~` expands to your home directory.
 

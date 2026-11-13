@@ -140,7 +140,7 @@ By default, when Deep Agents Code loads skills it validates that a resolved skil
 
 If you store shared skill assets in a non-standard location and use symlinks from a standard skill directory to reference them, you can add that location to the containment allowlist. This does **not** add a new skill discovery location: skills are still only discovered from the standard directories.
 
-**extra\_allowed\_dirs** `string[]`
+**extra_allowed_dirs** `string[]`
 
 Paths added to the skill containment allowlist. Supports `~` expansion.
 
@@ -586,31 +586,31 @@ The install script reads environment variables that let you pin a version, selec
 curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 ```
 
-**DEEPAGENTS\_CODE\_VERSION** `string`
+**DEEPAGENTS_CODE_VERSION** `string`
 
 Exact package version to install, e.g. `0.1.0` (or a pre-release such as `0.1.0rc1`). Mutually exclusive with `DEEPAGENTS_CODE_PRERELEASE` — setting both is an error, since an exact pin already selects a single version.
 
-**DEEPAGENTS\_CODE\_PRERELEASE** `string`
+**DEEPAGENTS_CODE_PRERELEASE** `string`
 
 uv pre-release strategy applied when resolving the latest version: `disallow`, `allow`, `if-necessary`, `explicit`, or `if-necessary-or-explicit`. Mutually exclusive with `DEEPAGENTS_CODE_VERSION`.
 
-**DEEPAGENTS\_CODE\_EXTRAS** `string`
+**DEEPAGENTS_CODE_EXTRAS** `string`
 
 Comma-separated pip extras to install, e.g. `ollama`, `ollama,groq`, or `daytona`. See [`pyproject.toml`](https://github.com/langchain-ai/deepagents/blob/main/libs/code/pyproject.toml) for the available extras.
 
-**DEEPAGENTS\_CODE\_PYTHON** `string` (default: 3.13)
+**DEEPAGENTS_CODE_PYTHON** `string` (default: 3.13)
 
 Python version to use for the install.
 
-**DEEPAGENTS\_CODE\_SKIP\_OPTIONAL** `string`
+**DEEPAGENTS_CODE_SKIP_OPTIONAL** `string`
 
 Set to `1` to skip optional tool checks.
 
-**DEEPAGENTS\_CODE\_VERBOSE** `string`
+**DEEPAGENTS_CODE_VERBOSE** `string`
 
 Set to `1` to show uv's raw stderr (timing lines, unfiltered package diff) and the quiet-by-default status lines (optional-tool checks, post-install footer). Useful when debugging an install.
 
-**UV\_BIN** `string`
+**UV_BIN** `string`
 
 Path to the uv binary. Auto-detected if unset.
 
@@ -622,31 +622,31 @@ To route every user's model traffic through a managed gateway (provisioning a ga
 
 All Deep Agents Code-specific environment variables use the `DEEPAGENTS_CODE_` prefix. See [`DEEPAGENTS_CODE_` prefix](#deepagents_code_-prefix) for how the prefix also works as an override for third-party credentials.
 
-**DEEPAGENTS\_CODE\_AUTO\_UPDATE** `string`
+**DEEPAGENTS_CODE_AUTO_UPDATE** `string`
 
 Toggle automatic Deep Agents Code updates. Enabled by default; set to `0`, `false`, `no`, or `off` (or an empty value) to opt out.
 
-**DEEPAGENTS\_CODE\_AUTO\_CLASSIFIER\_TIMEOUT** `integer`
+**DEEPAGENTS_CODE_AUTO_CLASSIFIER_TIMEOUT** `integer`
 
 Time budget in seconds for the [Auto mode](/oss/deepagents/code/approval-modes) classifier to review each batch of gated actions. Valid range: `1`–`300`. Out-of-range or non-integer values fall back to the default (`20`). Consider [selecting a faster classifier model](/oss/deepagents/code/config-file#default-and-recent-model) before raising this value. Overrides `[models].auto_classifier_timeout` in `config.toml`. See [Auto classifier timeout](/oss/deepagents/code/config-file#auto-classifier-timeout).
 
-**DEEPAGENTS\_CODE\_DEBUG** `string`
+**DEEPAGENTS_CODE_DEBUG** `string`
 
 Enable verbose debug logging to a file. Accepts `1`, `true`, `yes`, `on` (case-insensitive) as enabled; `0`, `false`, `no`, `off`, empty string, or unset disables it. When enabled, the per-session server log file is preserved on shutdown and its path is printed to stderr for triage.
 
-**DEEPAGENTS\_CODE\_EXPERIMENTAL** `string`
+**DEEPAGENTS_CODE_EXPERIMENTAL** `string`
 
 Opt into experimental, unstable Deep Agents Code behavior. Set to `1` (or any truthy value) to enable experimental features.
 
-**DEEPAGENTS\_CODE\_EXTENSIONS** `string` (default: true)
+**DEEPAGENTS_CODE_EXTENSIONS** `string` (default: true)
 
 Enable or disable [Python extension](/oss/deepagents/code/extensions) discovery for every source, including `-e` / `--extension`. Overrides `[extensions].enabled` in `config.toml`. `DEEPAGENTS_CODE_EXPERIMENTAL=1` is still required.
 
-**DEEPAGENTS\_CODE\_EXTENSIONS\_TRUST** `string` (default: "ask")
+**DEEPAGENTS_CODE_EXTENSIONS_TRUST** `string` (default: "ask")
 
 Set the default project extension trust policy to `ask`, `always`, or `never`. Overrides `[extensions].trust` in `config.toml`. Only use `always` when every project you open is trusted.
 
-**DEEPAGENTS\_CODE\_DEBUG\_FILE** `string` (default: /tmp/deepagents\_debug.log)
+**DEEPAGENTS_CODE_DEBUG_FILE** `string` (default: /tmp/deepagents_debug.log)
 
 Path for the debug log file.
 
@@ -654,103 +654,103 @@ Path for the debug log file.
 >
 > The project MCP trust variables below require `deepagents-code>=0.1.40`. This version ignores the former `DEEPAGENTS_CODE_ENABLED_PROJECT_MCP_SERVERS` variable; use `DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS` for the same name-based behavior.
 
-**DEEPAGENTS\_CODE\_DISABLED\_PROJECT\_MCP\_SERVERS** `string`
+**DEEPAGENTS_CODE_DISABLED_PROJECT_MCP_SERVERS** `string`
 
 Comma-separated project MCP server names to always reject by name. Deep Agents Code combines these names with `[mcp].disabled_project_servers`; denies win over saved approvals and the `--trust-project-mcp` flag.
 
-**DEEPAGENTS\_CODE\_DANGEROUSLY\_ENABLE\_PROJECT\_MCP\_SERVERS** `string`
+**DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS** `string`
 
 Comma-separated project MCP server names to pre-approve by name for any project. This is a process-wide escape hatch: A different project, command change, or URL change under the same server name still matches. When set, this variable replaces saved approvals for the process. Prefer saved approvals from the project MCP prompt when possible.
 
-**DEEPAGENTS\_CODE\_COLLAPSE\_PASTES** `string` (default: true)
+**DEEPAGENTS_CODE_COLLAPSE_PASTES** `string` (default: true)
 
 Collapse large chat-input pastes into compact placeholders. Set to a falsy value (or empty) to keep full pasted text visible. Overrides `[ui].collapse_pastes`. See [Collapse large pastes](#collapse-large-pastes).
 
-**DEEPAGENTS\_CODE\_EXTRA\_SKILLS\_DIRS** `string`
+**DEEPAGENTS_CODE_EXTRA_SKILLS_DIRS** `string`
 
 Colon-separated paths added to the [skill containment allowlist](#skill-directory-allowlist).
 
-**DEEPAGENTS\_CODE\_FORKED\_SUBAGENTS** `string` (default: true)
+**DEEPAGENTS_CODE_FORKED_SUBAGENTS** `string` (default: true)
 
 Let the built-in `general-purpose` subagent inherit the parent conversation and system prompt. Set to `0`, `false`, `no`, or `off` (or an empty value) to use isolated mode. Set this variable in your shell or global `~/.deepagents/.env`; Deep Agents Code ignores it in project `.env` files because inheritance can include private parent state. See [Continue the parent conversation](/oss/deepagents/code/subagents#continue-the-parent-conversation).
 
-**DEEPAGENTS\_CODE\_GIT\_ATTRIBUTION** `string` (default: true)
+**DEEPAGENTS_CODE_GIT_ATTRIBUTION** `string` (default: true)
 
 Enable read-only Git checks that label LangSmith traces with the repository and branch the agent changed. Set to `0`, `false`, `no`, or `off` (or an empty value) to skip these checks for the main agent and subagents. Overrides `[tracing].git_attribution` in the user config file without disabling LangSmith tracing. See [Disable Git trace attribution](/oss/deepagents/code/config-file#disable-git-trace-attribution).
 
-**DEEPAGENTS\_CODE\_HISTORY\_RETENTION\_DAYS** `integer` (default: 30)
+**DEEPAGENTS_CODE_HISTORY_RETENTION_DAYS** `integer` (default: 30)
 
 Days an offloaded conversation-history archive is kept before the startup sweep deletes it; `0` disables cleanup. Overrides `[history].retention_days`. See [Conversation history retention](#conversation-history-retention).
 
-**DEEPAGENTS\_CODE\_LANGSMITH\_PROJECT** `string`
+**DEEPAGENTS_CODE_LANGSMITH_PROJECT** `string`
 
 Select the agent environment for Deep Agents Code's own traces using its [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project). Shell commands still run with the user's original `LANGSMITH_PROJECT`, so traces from tests or scripts can go to a different agent environment. See [Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith).
 
-**DEEPAGENTS\_CODE\_LANGSMITH\_REDACT** `string` (default: true)
+**DEEPAGENTS_CODE_LANGSMITH_REDACT** `string` (default: true)
 
 Toggle client-side secret redaction for Deep Agents Code's LangSmith agent-trace inputs and outputs. Enabled by default. Accepts `1`, `true`, `yes`, or `on` to enable redaction and `0`, `false`, `no`, or `off` to disable it, case-insensitively. When redaction is enabled, tracing is disabled for that run if redaction cannot be configured. See [Configure LangSmith trace redaction](/oss/deepagents/code/config-file#redact-langsmith-trace-secrets).
 
-**DEEPAGENTS\_CODE\_LANGSMITH\_REPLICA\_PROJECTS** `string`
+**DEEPAGENTS_CODE_LANGSMITH_REPLICA_PROJECTS** `string`
 
 A second agent environment to copy traces to. Create the destination agent before enabling replicas. Set this variable and `DEEPAGENTS_CODE_LANGSMITH_PROJECT` to the respective environments' `tracer_session_name` values. When tracing is active, each run is written to both destinations. Off by default. See [Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith).
 
-**DEEPAGENTS\_CODE\_LANGSMITH\_TRACING** `string`
+**DEEPAGENTS_CODE_LANGSMITH_TRACING** `string`
 
 Set to `false` to disable LangSmith agent tracing. An explicit `false` overrides other tracing-enable flags, including `LANGSMITH_TRACING=true`. The `--no-tracing` flag sets this override for one launch. Local history and model-provider requests are unchanged. See [Disable agent tracing](/oss/deepagents/code/quickstart#trace-with-langsmith).
 
-**DEEPAGENTS\_CODE\_MEMORY\_AUTO\_SAVE** `string` (default: true)
+**DEEPAGENTS_CODE_MEMORY_AUTO_SAVE** `string` (default: true)
 
 Let the agent proactively save learnings to memory. Set to a falsy value (or empty) to keep loading memory while stopping unprompted auto-saving; explicit saves still work. Overrides `[memory].auto_save`. See [Automatic memory](/oss/deepagents/code/memory-and-skills#automatic-memory).
 
-**DEEPAGENTS\_CODE\_MCP\_TOOL\_TIMEOUT** `number` (default: 120)
+**DEEPAGENTS_CODE_MCP_TOOL_TIMEOUT** `number` (default: 120)
 
 Maximum duration of an MCP tool call, in seconds. Accepts values from `1` through `900` and overrides `[mcp].tool_timeout` in user config. Invalid values fall through to the next configuration source. A timeout does not guarantee server-side cancellation, so retries can duplicate work.
 
-**DEEPAGENTS\_CODE\_NO\_UPDATE\_CHECK** `string`
+**DEEPAGENTS_CODE_NO_UPDATE_CHECK** `string`
 
 Disable automatic update checking when set. This also prevents automatic update installs at startup.
 
-**DEEPAGENTS\_HOME** `string`
+**DEEPAGENTS_HOME** `string`
 
 Select the user profile and trust root instead of the default `~/.deepagents`. Accepts an absolute path or a path beginning with `~/`; `~user` forms and relative paths are rejected. Must be set in the inherited shell environment — no `.env` file may set it. See [Profile location](#profile-location-deepagents_home).
 
-**DEEPAGENTS\_CODE\_ONBOARDING** `string`
+**DEEPAGENTS_CODE_ONBOARDING** `string`
 
 Override the first-run onboarding flow. Set to a truthy value to force it open on every startup; set to a falsy value to suppress it entirely (useful for CI and provisioned machines). Leave unset for the default first-run behavior.
 
-**DEEPAGENTS\_CODE\_PRICES\_AUTO\_UPDATE** `string` (default: true)
+**DEEPAGENTS_CODE_PRICES_AUTO_UPDATE** `string` (default: true)
 
 Refresh the model pricing catalog from upstream hourly in the background. Set to a falsy value (or empty) to opt out. Overrides `[update].prices_auto_update`. See [Pricing catalog auto-update](#pricing-catalog-auto-update).
 
-**DEEPAGENTS\_CODE\_READ\_PROJECT\_DOTENV** `string` (default: true)
+**DEEPAGENTS_CODE_READ_PROJECT_DOTENV** `string` (default: true)
 
 Load the project `.env` (found walking up from the working directory) into the process environment. Set to a falsy value to skip an untrusted repository's file; the global `~/.deepagents/.env` still loads. Overrides `[startup].read_project_dotenv`. See [Loading order and precedence](#loading-order-and-precedence).
 
-**DEEPAGENTS\_CODE\_RECENT\_THREADS** `integer` (default: 100)
+**DEEPAGENTS_CODE_RECENT_THREADS** `integer` (default: 100)
 
 Maximum number of recent threads to load and display in thread lists and selectors. Values below `1` are clamped to `1`, and non-integer values use the default. `-n` or `--limit` overrides this value for `dcode threads list`.
 
-**DEEPAGENTS\_CODE\_RECURSION\_LIMIT** `integer`
+**DEEPAGENTS_CODE_RECURSION_LIMIT** `integer`
 
 LangGraph graph step budget, which is the maximum number of node invocations the `dcode` agent graph may execute per turn. Invalid values log a warning and resolution continues to the next source. When unset, Deep Agents Code inherits `LANGGRAPH_DEFAULT_RECURSION_LIMIT` or leaves the limit to LangSmith Agent Server. See [Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits).
 
-**LANGGRAPH\_DEFAULT\_RECURSION\_LIMIT** `integer`
+**LANGGRAPH_DEFAULT_RECURSION_LIMIT** `integer`
 
 Upstream LangGraph graph step budget inherited when no Deep Agents recursion-limit source wins. Set it in your shell or the global `~/.deepagents/.env`. Deep Agents Code ignores it in a project `.env` because it bypasses the bounded `runtime.recursion_limit` resolver. See [Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits).
 
-**DEEPAGENTS\_CODE\_SHELL\_ALLOW\_LIST** `string`
+**DEEPAGENTS_CODE_SHELL_ALLOW_LIST** `string`
 
 Comma-separated shell commands to allow (or `recommended` / `all`).
 
-**DEEPAGENTS\_CODE\_SHOW\_REASONING** `string`
+**DEEPAGENTS_CODE_SHOW_REASONING** `string`
 
 Show provider-visible reasoning in the interactive transcript and on stderr in non-interactive mode. Defaults to on in interactive sessions and off in non-interactive mode. Set to `1` to show it or `0` to hide it in both modes. Overrides `[ui].show_reasoning`; `--show-reasoning` takes precedence for a single launch. See [Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning).
 
-**DEEPAGENTS\_CODE\_SHOW\_USAGE\_STATS** `string` (default: true)
+**DEEPAGENTS_CODE_SHOW_USAGE_STATS** `string` (default: true)
 
 Show session usage statistics when a session ends. Set to a falsy value (or empty) to hide them. Overrides `[ui].show_usage_stats`. See [Session usage stats](#session-usage-stats).
 
-**DEEPAGENTS\_CODE\_USER\_ID** `string`
+**DEEPAGENTS_CODE_USER_ID** `string`
 
 Attach a user identifier to LangSmith trace metadata.
 

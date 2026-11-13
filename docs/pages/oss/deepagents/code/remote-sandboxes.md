@@ -316,11 +316,11 @@ supports_snapshot_name = false
 region = "us-east-1"
 ```
 
-**class\_path** `string`
+**class_path** `string`
 
 Fully-qualified provider class in `module.path:ClassName` format. Deep Agents Code imports and instantiates this class for the provider.
 
-**working\_dir** `string`
+**working_dir** `string`
 
 Default working directory inside the sandbox. Defaults to `/workspace`.
 
@@ -328,11 +328,11 @@ Default working directory inside the sandbox. Defaults to `/workspace`.
 
 Package name suggested in error messages when the provider's dependencies are missing.
 
-**supports\_sandbox\_id** `boolean`
+**supports_sandbox_id** `boolean`
 
 Whether `--sandbox-id` reattach is allowed for this provider. Defaults to `true`.
 
-**supports\_snapshot\_name** `boolean`
+**supports_snapshot_name** `boolean`
 
 Whether `--sandbox-snapshot-name` is allowed for this provider. Defaults to `false`.
 

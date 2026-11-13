@@ -428,7 +428,7 @@ Fleet reuses the `agent-builder-encryption-key` SSM parameter, so deployments th
 
 ### Sandboxes
 
-`enable_sandboxes = true` adds a sandbox-host node group on bare-metal x86\_64 instances with KVM (`m5d.metal` by default) and a dedicated ElastiCache instance for JuiceFS metadata. Sandboxes require LangSmith Helm chart v16 or later.
+`enable_sandboxes = true` adds a sandbox-host node group on bare-metal x86_64 instances with KVM (`m5d.metal` by default) and a dedicated ElastiCache instance for JuiceFS metadata. Sandboxes require LangSmith Helm chart v16 or later.
 
 `sandbox-host` mounts JuiceFS itself, and a `juicefs-format` Job formats the volume. `make init-values` writes `sandboxes.juicefs.existingSecretName` pointing at the `juicefs-csi-config` Secret, sets `sandboxes.juicefs.hostMount.cacheDirs` to the local NVMe cache paths on sandbox-host nodes when there are any, and puts the IRSA role annotation on `sandboxes.sandboxHost.serviceAccount`.
 

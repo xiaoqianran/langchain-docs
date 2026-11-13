@@ -69,7 +69,7 @@ df[["inputs.question", "outputs.answer", "reference.answer", "feedback.is_concis
 {'answer': "What do mammals and birds have in common? is a good question. I don't know the answer."}
 ```
 
-| | inputs.question | outputs.answer | reference.answer | feedback.is\_concise |
+| | inputs.question | outputs.answer | reference.answer | feedback.is_concise |
 | - | - | - | - | - |
 | 0 | What is the largest mammal? | What is the largest mammal? is a good question. I don't know the answer. | The blue whale | False |
 | 1 | What do mammals and birds have in common? | What do mammals and birds have in common? is a good question. I don't know the answer. | They are both warm-blooded | False |

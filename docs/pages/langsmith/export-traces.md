@@ -321,7 +321,7 @@ RunQueryV2Params threadRuns = RunQueryV2Params.builder()
     .build();
 ```
 
-### List all runs called "extractor" whose root of the trace was assigned feedback "user\_score" score of 1
+### List all runs called "extractor" whose root of the trace was assigned feedback "user_score" score of 1
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 client.runs.query(
@@ -350,7 +350,7 @@ RunQueryV2Params extractorRuns = RunQueryV2Params.builder()
     .build();
 ```
 
-### List runs with "star\_rating" key whose score is greater than 4
+### List runs with "star_rating" key whose score is greater than 4
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 client.runs.query(
@@ -414,7 +414,7 @@ RunQueryV2Params runs = RunQueryV2Params.builder()
     .build();
 ```
 
-### List all runs where start\_time is greater than a specific timestamp
+### List all runs where start_time is greater than a specific timestamp
 
 To bound the time window itself, prefer the `min_start_time` and `max_start_time` arguments; a `start_time` filter only narrows results inside that window.
 
@@ -788,7 +788,7 @@ RunQueryV2Params runs = RunQueryV2Params.builder()
 
 ### Tree filter
 
-List all runs named "RetrieveDocs" whose root run has a "user\_score" feedback of 1 and any run in the full trace is named "ExpandQuery".
+List all runs named "RetrieveDocs" whose root run has a "user_score" feedback of 1 and any run in the full trace is named "ExpandQuery".
 
 This type of query is useful if you want to extract a specific run conditional on various states or steps being reached within the trace.
 

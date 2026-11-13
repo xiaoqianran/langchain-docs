@@ -96,7 +96,7 @@
 > https://smith.langchain.com/host-oauth-callback/{provider_id}
 > ```
 >
-> 例如，如果您的提供商\_id 是“github-local-dev”，请使用：
+> 例如，如果您的provider_id是“github-local-dev”，请使用：
 >
 > ```
 > https://smith.langchain.com/host-oauth-callback/github-local-dev
@@ -108,7 +108,7 @@
 > https://{your-langsmith-instance}/host-oauth-callback/{provider_id}
 > ```
 >
-> 例如，如果您的实例是 `langsmith.example.com` 并且provider\_id 是“github”，请使用：
+> 例如，如果您的实例是 `langsmith.example.com` 并且provider_id 是“github”，请使用：
 >
 > ```
 > https://langsmith.example.com/host-oauth-callback/github

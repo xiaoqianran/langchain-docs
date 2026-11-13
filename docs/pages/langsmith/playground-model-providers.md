@@ -663,7 +663,7 @@ Controls reasoning depth before responding. Higher effort = better quality for c
 
 > [!NOTE]
 >
-> When reasoning\_effort is active (not `none`), temperature, top\_p, and penalties are automatically disabled.
+> When reasoning_effort is active (not `none`), temperature, top_p, and penalties are automatically disabled.
 
 **Service Tier**: Available on newer models.
 

@@ -54,7 +54,7 @@ If your cluster cannot pull from public registries, also mirror the sandbox runt
 
 Your cluster must include dedicated nodes that can run nested workloads with Linux KVM available at `/dev/kvm`.
 
-These can be bare-metal machines or supported cloud instances with nested virtualization enabled. On AWS and GCP, use x86\_64 Linux instances that expose `/dev/kvm` to the sandbox runtime.
+These can be bare-metal machines or supported cloud instances with nested virtualization enabled. On AWS and GCP, use x86_64 Linux instances that expose `/dev/kvm` to the sandbox runtime.
 
 > [!WARNING]
 >

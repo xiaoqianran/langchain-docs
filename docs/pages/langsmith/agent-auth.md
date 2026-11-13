@@ -96,7 +96,7 @@ Before agents can authenticate, you need to configure an OAuth provider using th
 > https://smith.langchain.com/host-oauth-callback/{provider_id}
 > ```
 >
-> For example, if your provider\_id is "github-local-dev", use:
+> For example, if your provider_id is "github-local-dev", use:
 >
 > ```
 > https://smith.langchain.com/host-oauth-callback/github-local-dev
@@ -108,7 +108,7 @@ Before agents can authenticate, you need to configure an OAuth provider using th
 > https://{your-langsmith-instance}/host-oauth-callback/{provider_id}
 > ```
 >
-> For example, if your instance is `langsmith.example.com` and provider\_id is "github", use:
+> For example, if your instance is `langsmith.example.com` and provider_id is "github", use:
 >
 > ```
 > https://langsmith.example.com/host-oauth-callback/github

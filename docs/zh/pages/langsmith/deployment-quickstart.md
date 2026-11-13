@@ -6,7 +6,7 @@
 
 使用 LangGraph CLI 将您的第一个应用程序部署到 GCP 中的 LangSmith 云。
 
-本快速入门向您展示如何使用 [⟦T13⟧](/langsmith/cli#deploy) 命令将应用程序部署到 GCP 中的 LangSmith 云。任何从 [⟦T14⟧](/langsmith/application-structure#configuration-file-concepts) 配置导出图表的应用程序都会以相同的方式部署，无论您使用哪个框架来编写代理。
+本快速入门向您展示如何使用 [⟦T13⟧](/langsmith/cli#deploy) 命令将应用程序部署到 GCP 中的 LangSmith 云。任何从 [⟦T14⟧](/langsmith/application-structure#configuration-file-concepts) 配置导出图表的应用程序都以相同的方式部署，无论您使用哪个框架来编写代理。
 
 > [!提示]
 >
@@ -49,7 +49,7 @@
    或以上。使用 uv 工具 install langgraph-cli 安装 LangGraph CLI
    如果丢失。按照本地开发指南安装任何
    测试应用程序所需的额外依赖项。
-3. 要求用户设置 LANGSMITH\_API\_KEY 和任何所需的模型提供程序
+3. 要求用户设置 LANGSMITH_API_KEY 和任何所需的模型提供程序
    在 shell 或本地 .env 文件中输入密钥，然后等待确认。
    不要要求他们将秘密粘贴到聊天中。确保秘密文件
    被 Git 忽略，并且从不打印或提交凭证。
@@ -230,7 +230,7 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 >    }
 >    ```
 
-> [选项卡] 休息API
+> [选项卡] 休息 API
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > curl -s --request POST \

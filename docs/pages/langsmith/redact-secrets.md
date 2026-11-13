@@ -275,7 +275,7 @@ const anonymizer = createAnonymizer(redactSecretValues);
 const client = new Client({ anonymizer });
 ```
 
-## Combine with LANGSMITH\_HIDE\_INPUTS
+## Combine with LANGSMITH_HIDE_INPUTS
 
 If your use case requires completely suppressing all inputs (for example, for zero-retention compliance), use `LANGSMITH_HIDE_INPUTS=true` instead. The anonymizer is skipped when `LANGSMITH_HIDE_INPUTS` or `LANGSMITH_HIDE_OUTPUTS` is set to `true`.
 

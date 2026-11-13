@@ -69,7 +69,7 @@ df[["inputs.question", "outputs.answer", "reference.answer", "feedback.is_concis
 {'answer': "What is the largest mammal? is a good question. I don't know the answer."}
 {'question': 'What do mammals and birds have in common?'}
 {'answer': "What do mammals and birds have in common? is a good question. I don't know the answer."}
-```| |输入问题 |输出.answer |参考答案 |反馈是\_简洁的|
+```| |输入问题 |输出.answer |参考答案 |反馈。是_简洁 |
 | - | - | - | - | - |
 | 0 |最大的哺乳动物是什么？ |最大的哺乳动物是什么？这是一个好问题。我不知道答案。 |蓝鲸|假 |
 | 1 |哺乳动物和鸟类有什么共同点？ |哺乳动物和鸟类有什么共同点？这是一个好问题。我不知道答案。 |他们都是热血人|假 |

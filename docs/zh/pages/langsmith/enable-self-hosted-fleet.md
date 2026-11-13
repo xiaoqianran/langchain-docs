@@ -393,7 +393,7 @@ fleet:
 > ```
 > https://<hostname>/host-oauth-callback/<provider-id>
 > ```
->> * **选定的 OAuth 范围**：添加 **通过 API (api) 管理用户数据** 和 **随时执行请求（刷新\_token、离线\_access）**。
+>> * **选定的 OAuth 范围**：添加 **通过 API (api) 管理用户数据** 和 **随时执行请求（refresh_token、offline_access）**。
 > * 保持选中**需要 Web 服务器流的秘密**。
 > * 保留 **启用授权代码和凭证流** 和 **启用客户端凭证流** 未选中。 Fleet 使用标准 Web 服务器（授权代码）流程。
 >
@@ -412,7 +412,7 @@ fleet:
 >>
 >> 外部客户端应用程序在两个位置进行配置：**设置**（上一步中的 OAuth 定义）和 **策略**（此步骤）。两者都必须得救。
 >
-> **4。复制凭据**
+> **4。复制凭证**
 >> 在 **设置** 选项卡上的 **OAuth 设置** 下，选择 **消费者密钥和秘密**。 **消费者密钥**是您的客户端 ID，**消费者秘密**是您的客户端秘密。
 >
 >> [!注意]
@@ -434,7 +434,7 @@ fleet:
 >
 >> [!注意]
 >>
-> > 将 `<MyDomain>` 替换为您组织的 My Domain（位于 **设置 > My Domain** 下）。对于沙箱，请使用 `https://<MyDomain>--<SandboxName>.sandbox.my.salesforce.com/services/oauth2/authorize` 和匹配的令牌 URL。
+> > 将 `<MyDomain>` 替换为您组织的 My Domain，可在 **设置 > My Domain** 下找到。对于沙箱，请使用 `https://<MyDomain>--<SandboxName>.sandbox.my.salesforce.com/services/oauth2/authorize` 和匹配的令牌 URL。
 >
 > **6。应用更改**
 >
@@ -535,10 +535,10 @@ python3 -c "import secrets; print(secrets.token_urlsafe(48))"
 
 **7.创建应用程序**
 
-单击 **创建 GitHub 应用程序**。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量 |
+单击“**创建 GitHub 应用程序**”。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量 |
 | - | - | - |
 | **应用程序ID** |数字，位于页面顶部 | `FLEET_GITHUB_APP_ID` |
-| **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet` | `FLEET_GITHUB_APP_PUBLIC_LINK` |
+| **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet`| `FLEET_GITHUB_APP_PUBLIC_LINK` |
 |应用程序块 |公共链接的最后一个路径段 | `FLEET_GITHUB_APP_SLUG` |
 | **客户端ID** |在 **关于** |下`FLEET_GITHUB_APP_CLIENT_ID` |
 
@@ -575,7 +575,7 @@ kubectl create secret generic fleet-github-app \
 
 对于生产部署，通过现有密钥工作流程管理此密钥（例如，[Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) 或 [External Secrets Operator](https://external-secrets.io/)）。更多信息请参见[Use an existing secret](/langsmith/self-host-using-an-existing-secret)。
 
-**12.将配置添加到您的 langsmith\_config.yaml**添加以下内容，将占位符值替换为上面收集的非敏感值：
+**12.将配置添加到您的 langsmith_config.yaml**添加以下内容，将占位符值替换为上面收集的非敏感值：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 commonEnv:

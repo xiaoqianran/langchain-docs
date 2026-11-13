@@ -102,11 +102,11 @@ The response JSON will be a dict with keys `experiment` and `dataset`, each of w
 
 ## Considerations
 
-You may upload multiple experiments to the same dataset by providing the same dataset\_id or dataset\_name between multiple calls. Your experiments will be grouped together under a single dataset, and you will be able to [use the comparison view to compare results between experiments](/langsmith/compare-experiment-results).
+You may upload multiple experiments to the same dataset by providing the same dataset_id or dataset_name between multiple calls. Your experiments will be grouped together under a single dataset, and you will be able to [use the comparison view to compare results between experiments](/langsmith/compare-experiment-results).
 
 Ensure that the start and end times of your individual rows are all between the start and end time of your experiment.
 
-You must provide either a dataset\_id or a dataset\_name. If you only provide an ID and the dataset does not yet exist, we will generate a name for you, and vice versa if you only provide a name.
+You must provide either a dataset_id or a dataset_name. If you only provide an ID and the dataset does not yet exist, we will generate a name for you, and vice versa if you only provide a name.
 
 You may not upload experiments to a dataset that was not created via this endpoint. Uploading experiments is only supported for externally-managed datasets.
 

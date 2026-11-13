@@ -38,7 +38,7 @@
 * 由 Redis 支持的 JuiceFS 元数据存储以及由 S3、GCS 或 Azure Blob 存储支持的对象存储。
 * 可选通配符入口用于从沙箱内部公开的服务。
 
-默认情况下，`langsmith`版本与LangSmith一起部署沙箱运行时。对于 `sandboxes.external.enabled: true`，运行时是外部的：第二个 Helm 版本 `langsmith-sandbox` 将其部署，通常在专用集群中，通配符入口保留在 LangSmith 集群中。
+默认情况下，`langsmith` 版本与 LangSmith 一起部署沙箱运行时。对于 `sandboxes.external.enabled: true`，运行时是外部的：第二个 Helm 版本 `langsmith-sandbox` 将其部署，通常在专用集群中，通配符入口保留在 LangSmith 集群中。
 
 ## 先决条件
 
@@ -54,7 +54,7 @@
 
 您的集群必须包含专用节点，这些节点可以使用 `/dev/kvm` 上提供的 Linux KVM 运行嵌套工作负载。
 
-这些可以是裸机机器或启用了嵌套虚拟化的受支持的云实例。在 AWS 和 GCP 上，使用将 `/dev/kvm` 暴露给沙箱运行时的 x86\_64 Linux 实例。> [!警告]
+这些可以是裸机机器或启用了嵌套虚拟化的受支持的云实例。在 AWS 和 GCP 上，使用将 `/dev/kvm` 暴露给沙箱运行时的 x86_64 Linux 实例。> [!警告]
 >
 > 在 EKS 上，VPC CNI 插件必须是 **v1.21 或更高版本**。 `v1.20.0` 第八代崩溃
 > Intel实例（例如`m8i`）：`aws-node`进入`CrashLoopBackOff`，节点报告
@@ -80,7 +80,7 @@ taint:
 
 * 与 Redis 兼容的元数据存储。
 * 对象存储桶或桶根。
-* JuiceFS 配置 Secret，或足够的 Helm 值供图表创建。
+* JuiceFS 配置 Secret，或足够的 Helm 值供图表创建一个。
 
 将这些对象存储后端用于 `sandboxes.juicefs.storage` 和 `sandboxes.juicefs.bucket`：
 
@@ -144,7 +144,7 @@ rm callback-signing.pem
 
 在无需实时集群访问即可渲染清单的 GitOps 工作流程中，首选 `existingSecret`。 `generatedSecret` 模式使用 Helm 的实时 `lookup` 行为在升级时重用生成的 Secret；纯渲染工作流程无法读取实时 Secret，并且可能会在每次渲染上生成新的证书材料。
 
-## 配置 OpenShift在 Red Hat OpenShift 上，沙箱运行时需要允许特权容器的安全上下文约束 (SCC)。沙盒运行时 Pod 具有主机网络的特权运行，因为它们管理微虚拟机、网络命名空间并在其节点上挂载。其他 LangSmith 组件，包括捆绑的 PostgreSQL、Redis 和 ClickHouse，在默认的 `restricted-v2` SCC 下运行。
+## 配置 OpenShift在 Red Hat OpenShift 上，沙箱运行时需要允许特权容器的安全上下文约束 (SCC)。沙箱运行时 Pod 具有主机网络的特权运行，因为它们管理微虚拟机、网络命名空间并在其节点上挂载。其他 LangSmith 组件，包括捆绑的 PostgreSQL、Redis 和 ClickHouse，在默认的 `restricted-v2` SCC 下运行。
 
 要准备 OpenShift 集群，请在 [enable Sandboxes with Helm](#enable-with-helm) 之前完成以下步骤：
 
@@ -175,7 +175,7 @@ oc adm policy add-scc-to-user privileged -z langsmith-sandbox-host -n <namespace
 
 ## 裸机和本地集群的节点要求
 
-在托管云集群上，支持 KVM 的节点池满足了这些要求。在裸机和本地 Kubernetes 集群上，请在[enable Sandboxes with Helm](#enable-with-helm)之前确认每个沙盒节点和集群都满足它们。
+在托管云集群上，支持 KVM 的节点池满足了这些要求。在裸机和本地 Kubernetes 集群上，请在[enable Sandboxes with Helm](#enable-with-helm)之前确认每个沙箱节点和集群都满足它们。
 
 每个沙箱节点需要：
 
@@ -187,7 +187,7 @@ oc adm policy add-scc-to-user privileged -z langsmith-sandbox-host -n <namespace
 * **JuiceFS 缓存的本地磁盘**：`sandboxes.juicefs.hostMount.cacheDirs` 的节点本地路径，默认为 `/var/cache/juicefs`，缓存大小为 50 GiB。
 
 集群需要：* **特权 Pod**：沙盒运行时 Pod 以特权运行，具有主机网络和 `hostPath` 卷。如果您的集群强制执行 Pod 安全准入，请标记 LangSmith 命名空间以允许特权 Pod，例如 `pod-security.kubernetes.io/enforce=privileged`。
-* **节点端口可达性**：LangSmith 平台后端通过 TCP 端口 `19190` 连接到每个沙箱节点。允许从 LangSmith Pod 到沙箱节点的流量，并将端口保留在专用网络上。
+* **节点端口可达性**：LangSmith 平台后端通过 TCP 端口 `19190` 连接到每个沙盒节点。允许从 LangSmith Pod 到沙箱节点的流量，并将端口保留在专用网络上。
 * **出站访问**：沙箱节点需要对 JuiceFS Redis 元数据存储、对象存储后端以及沙箱调用的目的地进行网络访问。要通过公司 HTTP 代理发送沙箱出口，请设置 `sandboxes.authProxy.httpProxy`。
 
 如果您的集群无法从公共注册表中提取，请镜像沙箱运行时映像。欲了解更多信息，请参阅[Additional images for Sandboxes](/langsmith/self-host-mirroring-images#additional-images-for-sandboxes)。
@@ -451,7 +451,7 @@ sandboxes:
 
 ## 验证安装
 
-升级完成后，验证沙箱运行时 Pod 和 JuiceFS 卷是否已准备就绪：
+升级完成后，验证沙盒运行时 Pod 和 JuiceFS 卷是否已准备就绪：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl rollout status deployment/sandbox-host -n <namespace>

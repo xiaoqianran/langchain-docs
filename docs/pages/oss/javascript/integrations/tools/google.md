@@ -17,7 +17,7 @@ The `googleSearch` tool grounds model responses with real-time Google Search res
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       googleSearch: {},
@@ -31,7 +31,7 @@ console.log(res.text);
 You can optionally filter search results to a specific time range:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
   {
     googleSearch: {
@@ -57,7 +57,7 @@ The `codeExecution` tool allows Gemini to generate and run Python code to solve 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       codeExecution: {},
@@ -89,7 +89,7 @@ The `urlContext` tool allows Gemini to fetch and use content from URLs to ground
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       urlContext: {},
@@ -109,7 +109,7 @@ The `googleMaps` tool grounds responses with geospatial context from Google Maps
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       googleMaps: {},
@@ -123,7 +123,7 @@ console.log(res.text);
 You can enable a widget context token for rendering a Google Maps widget:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       googleMaps: {
@@ -148,7 +148,7 @@ The `fileSearch` tool performs semantic retrieval from file search stores. Files
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       fileSearch: {
@@ -176,7 +176,7 @@ The `computerUse` tool enables Gemini to interact with a browser environment. Th
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       computerUse: {
@@ -200,7 +200,7 @@ The `mcpServers` field allows Gemini to connect to remote MCP (Model Context Pro
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       mcpServers: [

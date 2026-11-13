@@ -30,7 +30,7 @@ The harness is the same either way. Start with [Managed Deep Agents](/langsmith/
 
 ## Understand what changes
 
-[create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) compiles an agent in your process, so it takes the backend, store, and checkpointer as parameters. `define_deep_agent` returns a definition instead, and the managed runtime compiles it. The definition is configuration rather than a runnable agent: the `mda` CLI consumes it on `mda dev` and `mda deploy`, and the runtime supplies the managed pieces at that point. For the full picture, see [Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents).
+[create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) compiles an agent in your process, so it takes the backend, store, and checkpointer as parameters. `define_deep_agent` returns a definition instead, and the managed runtime compiles it. The definition is configuration rather than a runnable agent: the `mda` CLI consumes it on `mda dev` and `mda deploy`, and the runtime supplies the managed pieces at that point. For the full picture, see [Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents).
 
 ## Check what does not carry over
 

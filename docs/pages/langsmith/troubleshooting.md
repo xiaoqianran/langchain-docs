@@ -46,7 +46,7 @@ You can then use [Google's HAR analyzer](https://toolbox.googleapps.com/apps/har
 
 ## Common issues
 
-### *DB::Exception: Cannot reserve 1.00 MiB, not enough space: While executing WaitForAsyncInsert. (NOT\_ENOUGH\_SPACE)*
+### *DB::Exception: Cannot reserve 1.00 MiB, not enough space: While executing WaitForAsyncInsert. (NOT_ENOUGH_SPACE)*
 
 This error occurs when ClickHouse runs out of disk space. You will need to increase the disk space available to ClickHouse.
 
@@ -119,7 +119,7 @@ frontend:
 
 2. Apply your changes to the cluster.
 
-### *Details: code: 497, message: default: Not enough privileges. to execute this query, it's necessary to have the grant CREATE ROW POLICY ON default.feedbacks\_rmt*
+### *Details: code: 497, message: default: Not enough privileges. to execute this query, it's necessary to have the grant CREATE ROW POLICY ON default.feedbacks_rmt*
 
 This error occurs when your user does not have the necessary permissions to create row policies in Clickhouse. When deploying the Docker deployment, you need to copy the `users.xml` file from the github repo as well. This adds the `<access_management>` tag to the `users.xml` file, which allows the user to create row policies. Below is the default `users.xml` file that we expect to be used.
 

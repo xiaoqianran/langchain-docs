@@ -165,7 +165,7 @@ terminal-bench/
 Pass agent kwargs with `--ak`:
 
 * **`--agent langgraph`**: Selects the LangGraph agent.
-* **`--model <provider:model>`**: The model to run. There is no default, so this value is required. The agent resolves it with [init\_chat\_model](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model), so it must be resolvable by an installed `langchain-*` provider in `provider:model` format, for example `anthropic:claude-opus-4-8`. A `provider/model` value is normalized to `provider:model`. The model comes from `configurable['model']` or the `HARBOR_MODEL` environment variable, and an unresolvable or missing value raises a `ValueError`.
+* **`--model <provider:model>`**: The model to run. There is no default, so this value is required. The agent resolves it with [init_chat_model](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model), so it must be resolvable by an installed `langchain-*` provider in `provider:model` format, for example `anthropic:claude-opus-4-8`. A `provider/model` value is normalized to `provider:model`. The model comes from `configurable['model']` or the `HARBOR_MODEL` environment variable, and an unresolvable or missing value raises a `ValueError`.
 * **`--ak project_path=<dir>`**: The local directory that contains `langgraph.json`.
 * **`--ak graph=<name>`**: Which graph in `langgraph.json` to run.
 * **`--ak config=<file>`**: The config filename inside `project_path` that declares the graphs. Defaults to `langgraph.json`.
@@ -191,7 +191,7 @@ The agent loads graphs from the `langgraph.json` file in `project_path`. The fil
 }
 ```
 
-The project exposes two graphs, selected with `--ak graph`. Both build a Deep Agent with [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) and differ only in their inputs:
+The project exposes two graphs, selected with `--ak graph`. Both build a Deep Agent with [create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) and differ only in their inputs:
 
 * **`deep_agent`** resolves to `make_graph`, a Deep Agent created with only the model.
 * **`research_agent`** resolves to `make_research_graph`, the same Deep Agent with a research system prompt.

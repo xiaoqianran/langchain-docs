@@ -24,7 +24,7 @@ For instructions, refer to [Add metadata and tags to traces](/langsmith/add-meta
 >
 > **Important:** To ensure filtering and token counting work correctly across your entire thread, you must set the thread metadata (`session_id` or `thread_id`) on **all runs**, including child runs within a trace.
 >
-> If child runs don't have the thread\_id metadata, they won't be included when:
+> If child runs don't have the thread_id metadata, they won't be included when:
 >
 > * Filtering runs by thread.
 > * Calculating token usage for a thread.

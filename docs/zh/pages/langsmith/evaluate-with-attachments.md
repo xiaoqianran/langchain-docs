@@ -40,7 +40,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
 > LangSmith UI 允许您在评估多模式模型时在提示中包含附件：
 >
 > 首先，单击消息中要添加多模式内容的文件图标。接下来，为每个示例要包含的附件​​添加模板变量。
->> * 如果要包含特定附件，可以使用建议的变量名称，例如`{{attachment.file_name}}`，这会将附件列表中带有`file_name`的文件映射到评估器
+>> * 如果要包含特定附件，可以使用建议的变量名称，例如`{{attachment.file_name}}`，这将在附件列表中映射带有`file_name`的文件，将其传递给评估器
 > * 如果要包含所有附件，请使用 `{{attachments}}` 变量。
 >
 > ![Adding multimodal variable](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/adding-multimodal-variable.gif?s=07a15c9fc5e6fc743f92b6b41ab8c9e0)
@@ -77,7 +77,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
 >> [!提示]
 >>
 >> 如果您的跟踪在其输入或输出中包含 base64 编码的多模式内容（例如，如果您遵循 [log multimodal traces](/langsmith/log-multimodal-traces) 指南），则不需要附件来评估它们。在评估器提示中使用标准变量映射（例如 `{{input}}` 或 `{{output}}`），base64 内容将正确传递到 LLM 评估器进行可视化和评估。
->> 有关定义自定义求值器的更多信息，请参阅 [LLM as Judge](/langsmith/llm-as-judge) 指南。
+>> 有关定义自定义赋值器的更多信息，请参阅 [LLM as Judge](/langsmith/llm-as-judge) 指南。
 >
 > ## 4. 更新带有附件的示例
 >
@@ -99,7 +99,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
 >
 > ## 1. 创建带附件的示例
 >
-> 要使用 SDK 上传带有附件的示例，请使用 [create\_examples](https://reference.langchain.com/python/langsmith/client/Client/create_examples) / [update\_examples](https://reference.langchain.com/python/langsmith/client/Client/update_examples) Python 方法或 [uploadExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/uploadExamplesMultipart) / [updateExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/updateExamplesMultipart) TypeScript 方法。
+> 要使用 SDK 上传带有附件的示例，请使用 [create_examples](https://reference.langchain.com/python/langsmith/client/Client/create_examples) / [update_examples](https://reference.langchain.com/python/langsmith/client/Client/update_examples) Python 方法或 [uploadExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/uploadExamplesMultipart) / [updateExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/updateExamplesMultipart) TypeScript 方法。
 >
 > ####Python
 >
@@ -259,7 +259,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
 >
 > 您正在评估的目标函数必须有两个位置参数才能使用与示例关联的附件，第一个必须调用 `inputs`，第二个必须调用 `attachments`。
 >
-> * `inputs` 参数是一个字典，包含示例的输入数据（不包括附件）。> * `attachments` 参数是一个字典，它将附件名称映射到包含预签名 url、mime\_type 和文件字节内容读取器的字典。您可以使用预先签名的 url 或阅读器来获取文件内容。附件字典中的每个值都是具有以下结构的字典：
+> * `inputs` 参数是一个字典，包含示例的输入数据（不包括附件）。> * `attachments` 参数是一个字典，它将附件名称映射到包含预签名 url、mime_type 和文件字节内容读取器的字典。您可以使用预先签名的 url 或阅读器来获取文件内容。附件字典中的每个值都是具有以下结构的字典：
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > {

@@ -179,7 +179,7 @@ Terraform provisions the following GCP resources:
 | Private service connection | VPC peering for Cloud SQL and Memorystore private IPs |
 | GKE cluster (Standard or Autopilot) | Kubernetes compute, Workload Identity enabled |
 | Cloud SQL PostgreSQL | LangSmith operational data, HA standby, private IP |
-| Memorystore Redis | Queue and cache, STANDARD\_HA tier, private IP |
+| Memorystore Redis | Queue and cache, STANDARD_HA tier, private IP |
 | GCS bucket | Trace payload blob storage, lifecycle rules |
 | Workload Identity service account | Per-pod GCP access without static keys |
 | cert-manager, KEDA, Envoy Gateway | Bootstrap workloads installed alongside infrastructure |

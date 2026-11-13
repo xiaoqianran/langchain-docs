@@ -122,7 +122,7 @@ The below document loaders allow you to load data from common data formats.
 | [`Unstructured`](/oss/python/integrations/document_loaders/unstructured_file) | Many file types (see [https://docs.unstructured.io/platform/supported-file-types](https://docs.unstructured.io/platform/supported-file-types)) |
 | [`HwpHwpxLoader`](https://github.com/jaypakdevkr/HWP-Loader) | HWP/HWPX files |
 | [`DoclingLoader`](/oss/python/integrations/document_loaders/docling) | Various file types (see [https://docling-project.github.io/docling/](https://docling-project.github.io/docling/)) |
-| [`PolarisAIDataInsightLoader`](https://datainsight.polarisoffice.com/playground) | Various file types (see [https://datainsight.polarisoffice.com/documentation?docType=doc\_extract](https://datainsight.polarisoffice.com/documentation?docType=doc_extract)) |
+| [`PolarisAIDataInsightLoader`](https://datainsight.polarisoffice.com/playground) | Various file types (see [https://datainsight.polarisoffice.com/documentation?docType=doc_extract](https://datainsight.polarisoffice.com/documentation?docType=doc_extract)) |
 
 > [!NOTE]
 >

@@ -207,7 +207,7 @@ const server = new DeepAgentsServer({
     {
       name: "code-agent",
       description: "Full-featured coding assistant",
-      model: "google:gemini-3.6-flash",
+      model: "google:gemini-4-hydrogen",
       skills: ["./skills/"],
       memory: ["./.deepagents/AGENTS.md"],
     },

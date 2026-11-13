@@ -533,7 +533,7 @@ aws s3 cp ./test.txt s3://<bucket-name>/tmp/test.txt
 
 **GCS Compatible Buckets:**
 
-You will need to supply the endpoint\_url with `--endpoint-url` option.
+You will need to supply the endpoint_url with `--endpoint-url` option.
 For GCS, the `endpoint_url` is typically `https://storage.googleapis.com`:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -561,7 +561,7 @@ Here are some common errors:
 | Access denied | The blob store credentials or bucket are not valid. This error occurs when the provided access key and secret key combination doesn't have the necessary permissions to access the specified bucket or perform the required operations. |
 | Bucket is not valid | The specified blob store bucket is not valid. This error is thrown when the bucket doesn't exist or there is not enough access to perform writes on the bucket. |
 | Key ID you provided does not exist | The blob store credentials provided are not valid. This error occurs when the access key ID used for authentication is not a valid key. |
-| Invalid endpoint | The endpoint\_url provided is invalid. This error is raised when the specified endpoint is an invalid endpoint. Only S3 compatible endpoints are supported, for example `https://storage.googleapis.com` for GCS, `https://play.min.io` for minio, etc. If using AWS, you should omit the endpoint\_url. |
+| Invalid endpoint | The endpoint_url provided is invalid. This error is raised when the specified endpoint is an invalid endpoint. Only S3 compatible endpoints are supported, for example `https://storage.googleapis.com` for GCS, `https://play.min.io` for minio, etc. If using AWS, you should omit the endpoint_url. |
 | InvalidBucketName | The S3-compatible service rejected the request due to addressing style mismatch. Some services require virtual-hosted style addressing. Set `config_kwargs_s3: {"addressing_style": "virtual"}` in your destination config to resolve this. |
 
 ***

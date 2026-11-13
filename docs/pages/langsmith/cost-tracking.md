@@ -547,47 +547,47 @@ To compute cost automatically from token usage, you need to provide **token coun
    >
    > The following fields in the `usage_metadata` dict are recognized by LangSmith. You can view the full [Python types](https://github.com/langchain-ai/langsmith-sdk/blob/e705fbd362be69dd70229f94bc09651ef8056a61/python/langsmith/schemas.py#L1196-L1227) or [TypeScript interfaces](https://github.com/langchain-ai/langsmith-sdk/blob/e705fbd362be69dd70229f94bc09651ef8056a61/js/src/schemas.ts#L637-L689) directly.
    >
-   > **input\_tokens** `number`
+   > **input_tokens** `number`
    >
    > Number of tokens used in the model input. Sum of all input token types.
    >
-   > **output\_tokens** `number`
+   > **output_tokens** `number`
    >
    > Number of tokens used in the model response. Sum of all output token types.
    >
-   > **total\_tokens** `number`
+   > **total_tokens** `number`
    >
-   > Number of tokens used in the input and output. Optional, can be inferred. Sum of input\_tokens + output\_tokens.
+   > Number of tokens used in the input and output. Optional, can be inferred. Sum of input_tokens + output_tokens.
    >
-   > **input\_token\_details** `object`
+   > **input_token_details** `object`
    >
    > Breakdown of input token types. Keys are token-type strings, values are counts. Example `{"cache_read": 5}`.
    >
    > Known fields include: `audio`, `text`, `image`, `cache_read`, `cache_creation`, `cache_read_over_200k` (Gemini), `ephemeral_5m_input_tokens`, `ephemeral_1h_input_tokens` (Anthropic ephemeral caching tiers). Additional fields are possible depending on the model or provider.
    >
-   > **output\_token\_details** `object`
+   > **output_token_details** `object`
    >
    > Breakdown of output token types. Keys are token-type strings, values are counts. Example `{"reasoning": 5}`.
    >
    > Known fields include: `audio`, `text`, `image`, `reasoning`. Additional fields are possible depending on the model or provider.
    >
-   > **input\_cost** `number`
+   > **input_cost** `number`
    >
    > Cost of the input tokens.
    >
-   > **output\_cost** `number`
+   > **output_cost** `number`
    >
    > Cost of the output tokens.
    >
-   > **total\_cost** `number`
+   > **total_cost** `number`
    >
-   > Cost of the tokens. Optional, can be inferred.  Sum of input\_cost + output\_cost.
+   > Cost of the tokens. Optional, can be inferred.  Sum of input_cost + output_cost.
    >
-   > **input\_cost\_details** `object`
+   > **input_cost_details** `object`
    >
    > Details of the input cost. Keys are token-type strings, values are cost amounts.
    >
-   > **output\_cost\_details** `object`
+   > **output_cost_details** `object`
    >
    > Details of the output cost. Keys are token-type strings, values are cost amounts.
    >

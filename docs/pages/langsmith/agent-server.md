@@ -20,9 +20,8 @@ Use Agent Server to create and manage:
 
 > [!TIP]
 >
-> **API reference**\\
->
-> For detailed information on the API endpoints and data models, refer to the [Agent Server API reference](/langsmith/server-api-ref).
+> **API reference**\
+> &#xA;For detailed information on the API endpoints and data models, refer to the [Agent Server API reference](/langsmith/server-api-ref).
 
 ## Application structure
 

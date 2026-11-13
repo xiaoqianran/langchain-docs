@@ -6,11 +6,11 @@
 
 **订阅**：我们的变更日志包括一个 [RSS feed](https://docs.langchain.com/langsmith/agent-server-changelog/rss.xml)，可以与 [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack)、[email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email)、Discord 机器人（如 [Readybot](https://readybot.io/) 或 [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot)）以及其他订阅工具集成。
 
-[Agent Server](/langsmith/agent-server) 是一个用于创建和管理基于代理的应用程序的 API 平台。它提供内置持久性、任务队列，并支持大规模部署、配置和运行助手（代理工作流）。此变更日志记录了代理服务器版本的所有值得注意的更新、功能和修复。
+[Agent Server](/langsmith/agent-server)是一个用于创建和管理基于代理的应用程序的API平台。它提供内置持久性、任务队列，并支持大规模部署、配置和运行助手（代理工作流）。此变更日志记录了代理服务器版本的所有值得注意的更新、功能和修复。
 
 ## 发布节奏
 
-`langgraph-api` 维护三个发布流：* `latest`：每天早上发布最新的错误修复和测试功能。语义版本控制使用次要版本之外的开发标签，例如 `0.9.0.dev1`。
+`langgraph-api` 维护三个发布流：* `latest`：每天早上发布最新的错误修复和测试功能。语义版本控制使用次要版本之外的开发标记，例如 `0.9.0.dev1`。
 * `rc`（候选版本）：每三周发布一次，并在关键错误回填的烘焙窗口期间根据需要进行修补。推荐给想要测试下一个稳定版本中的功能的用户。语义版本控制使用次要版本的 rc 标签，例如 `0.9.0rc1`。
 * `stable`：从 rc 起每三周发布一次。修补了与安全相关的依赖项冲突或关键错误修复。这是新部署使用的默认版本，建议用于生产使用。语义版本控制使用小凹凸进行常规促销（例如`0.9.0`），并使用补丁凹凸进行回填（例如`0.9.1`）。
 
@@ -46,7 +46,7 @@
 * 修复了当中断仍在运行时`input.respond` 因`no_such_interrupt` 失败的问题；现在，答案已排队并在运行暂停时应用。
 * 修复了当引发中断的运行失败、超时或被取消或从较早的检查点开始时，`input.respond` 使用 `no_such_interrupt` 拒绝中断。
 * 忽略运行或 cron 的 `config.configurable`、`context` 或 `checkpoint` 中发送的 `cron_id`；服务器将其设置为 cron 运行。
-* 当线程在多个中断上暂停时发送的 `run.start` 输入现在返回 `invalid_argument` 并使线程保持暂停状态，而不是启动失败的运行。* 当服务器保留的键（例如 cron\_id 和 **after\_seconds**）到达 v2 事件流 run.start 配置、cron 的存储检查点或与 http.configurable\_headers 匹配的请求标头时，会忽略它们，就像 REST 路由已经对请求主体所做的那样。
+* 当线程在多个中断上暂停时发送的 `run.start` 输入现在返回 `invalid_argument` 并使线程保持暂停状态，而不是启动失败的运行。* 当服务器保留的键（例如 cron_id 和 **after_seconds**）到达 v2 事件流 run.start 配置、cron 的存储检查点或与 http.configurable_headers 匹配的请求标头时，会忽略它们，就像 REST 路由已经对请求主体所做的那样。
 * 降低流 v2 SSE 连接的代理服务器内存使用量，不再保留每次运行事件重播缓冲区。
 * 线程事件流现在拒绝调用者在流式传输之前无法读取的线程：`POST /threads/{thread_id}/stream/events` 返回 403 或 404，而不是带有错误帧的 200（对于格式错误的线程 ID 为 422），并且 WebSocket 端点以 4403、4404 或 4422 关闭。
 * 在运行期间使用 `run.start` 发送的消息现在会立即排队，而不是最多等待 5 秒，并且在应答中断正在运行时或取消没有打开的运行后发送时不再丢失。
@@ -73,12 +73,12 @@
 * 线程流现在接受负数`Last-Event-ID`，例如`-1`，就像 run join 所做的那样，并重放每个事件。
 * 修复了 `langgraph dev` 让线程的下一次运行在中断的运行停止之前开始，中断不停止超过四分钟的运行，以及在重新启动重新运行运行之前请求回滚。* 修复了 `langgraph dev` 中的内存泄漏，其中每个关闭的线程流都留下一个不断接收状态更新的队列。
 * `stream_mode="events"` 现在会忽略标记为 `nostream` 的运行中的事件（LangGraph.js 中的`langsmith:nostream`），就像 `messages` 流模式一样。
-* 恢复中断和回滚流运行的终端错误事件，包括可恢复流上的中断重放，并将用户中断报告为中断而不是 v2 流上的失败。
+* Restores terminal error events for interrupted and rolled-back streamed runs, including interrupt replay on resumable streams, and reports user interrupts as interrupted rather than failed on v2 streams.
 * 修复了当 `stream_mode` 列出多种模式时，`GET /threads/{thread_id}/runs/{run_id}/stream` 仅返回一种模式，如 Python SDK 和 JS SDK 1.12+ 发送。
-* 修复了 redis 重新启动时工作进程心跳可能会丢失，从而导致所有活动运行被清除的错误。工作人员心跳现在写入 postgres。 （redis 心跳也保留到`0.19.0`，以便在升级过程中向后兼容）。
-* 停止将运行上下文和其他内部运行配置复制到每个检查点的元数据中，因此检查点行不再随着运行上下文的大小而增长。
-* 修复了启用自定义路由身份验证或身份验证优先中间件排序时包含 FastAPI 的路由器的启动失败问题，同时保留身份验证和中间件的嵌套路由路径参数。* 忽略优先级回调返回的`fairness_weight`，并发出警告，而不是使运行失败。
-* 发布 langgraph-sdk 0.4.12。它的 `PrioritySettings` 不再提供 `fairness_weight`，并且它的文档现在声明 -5 首先运行，与服务器匹配。
+* Fixes a bug where worker heartbeats could be lost on redis restart causing all active runs to be swept. Worker heartbeats now write to postgres. （redis 心跳也保留到`0.19.0`，以便在升级过程中向后兼容）。
+* Stops copying the run context and other internal run config into every checkpoint's metadata, so checkpoint rows no longer grow with the size of the run context.
+* Fixes startup failures with FastAPI included routers when custom-route authentication or auth-first middleware ordering is enabled, while preserving nested route path parameters for authentication and middleware.* 忽略优先级回调返回的`fairness_weight`，并发出警告，而不是使运行失败。
+* Ships langgraph-sdk 0.4.12.它的 `PrioritySettings` 不再提供 `fairness_weight`，并且它的文档现在声明 -5 首先运行，与服务器匹配。
 * 当`DISPATCH_MODE`设置为`multi-process`时公开队列循环指标。
 
 #### 安全
@@ -87,7 +87,7 @@
 * 更新 Python 依赖项以解决已知的安全漏洞。
 * MCP 端点现在会在每个 MCP 修订版上拒绝其 `Origin` 标头服务器 CORS 设置不允许的请求 (HTTP 403)，以阻止 DNS 重新绑定。始终允许环回源，并且 `*` 通配符不允许其他源，因此请在 `CORS_ALLOW_ORIGINS` 或 `CORS_CONFIG` 中列出浏览器 MCP 客户端的源。还修复了 `CORS_CONFIG`，仅允许 `allow_origin_regex` 允许每个来源。
 * 更新 Go 版本以减轻 eMudhra 证书颁发机构的危害。
-* 更新 Python 证书信任包。
+* Updates Python certificate trust bundles.
 * 修补代理服务器网络和跟踪依赖性。> [手风琴] v0.18 发布
 >
 > **2026-11-05**
@@ -147,7 +147,7 @@
 > * 修复了当中断仍在运行时 `input.respond` 因`no_such_interrupt` 失败的问题；现在，答案已排队并在运行暂停时应用。
 > * 修复了当引发中断的运行失败、超时或被取消或从较早的检查点开始时，`input.respond` 使用 `no_such_interrupt` 拒绝中断。> * 忽略运行或 cron 的 `config.configurable`、`context` 或 `checkpoint` 中发送的 `cron_id`；服务器将其设置为 cron 运行。
 > * 当线程在多个中断上暂停时发送的 `run.start` 输入现在返回 `invalid_argument` 并使线程保持暂停状态，而不是启动失败的运行。
-> * 当服务器保留的键（例如 cron\_id 和 **after\_seconds**）到达 v2 事件流 run.start 配置、cron 的存储检查点或与 http.configurable\_headers 匹配的请求标头时，会忽略它们，就像 REST 路由已经对请求主体所做的那样。
+> * 当服务器保留的键（例如 cron_id 和 **after_seconds**）到达 v2 事件流 run.start 配置、cron 的存储检查点或与 http.configurable_headers 匹配的请求标头时，会忽略它们，就像 REST 路由已经对请求主体所做的那样。
 > * 降低流 v2 SSE 连接的代理服务器内存使用量，不再保留每次运行事件重播缓冲区。
 > * 线程事件流现在拒绝调用者在流式传输之前无法读取的线程：`POST /threads/{thread_id}/stream/events` 返回 403 或 404，而不是带有错误帧的 200（对于格式错误的线程 ID 为 422），并且 WebSocket 端点以 4403、4404 或 4422 关闭。
 > * 在运行时使用 `run.start` 发送的消息现在会立即排队，而不是最多等待 5 秒，并且在应答中断正在运行时或取消没有打开的运行后发送时不再丢失。> * 修复了运行取消，以便工作线程在取消期间启动的运行仍会停止，在取消期间完成的运行保持其最终状态，并且正在运行的运行在一个心跳间隔内停止，即使它们的取消信号丢失。
@@ -183,7 +183,7 @@
 >
 > * 图表中的存储操作现在拒绝空的或包含 `.` 的命名空间标签，就像 HTTP 存储 API 所做的那样，因此此类标签无法再读取或更改另一个命名空间的项目。
 > * 更新 Python 依赖项以解决已知的安全漏洞。
-> * MCP 端点现在会在每个 MCP 修订版上拒绝其 `Origin` 标头服务器 CORS 设置不允许的请求 (HTTP 403)，以阻止 DNS 重新绑定。始终允许环回源，并且 `*` 通配符不允许其他源，因此请在 `CORS_ALLOW_ORIGINS` 或 `CORS_CONFIG` 中列出浏览器 MCP 客户端的源。还修复了 `CORS_CONFIG`，仅允许 `allow_origin_regex` 允许每个来源。
+> * MCP 端点现在会在每个 MCP 修订版上拒绝其 `Origin` 标头服务器 CORS 设置不允许的请求 (HTTP 403)，以阻止 DNS 重新绑定。始终允许环回源，并且 `*` 通配符不允许其他源，因此请在 `CORS_ALLOW_ORIGINS` 或 `CORS_CONFIG` 中列出浏览器 MCP 客户端的源。还修复了仅允许每个来源的 `CORS_CONFIG`。
 > * 更新 Go 版本以减轻 eMudhra 证书颁发机构的危害。
 > * 更新 Python 证书信任包。
 > * 修补代理服务器网络和跟踪依赖性。
@@ -224,7 +224,7 @@
 * 删除了代理服务器在使用 LangSmith API 密钥而不是许可证密钥进行验证时记录的过时的“以精简模式运行”警告。这些服务器已经具备了所有功能。* 修复了在第一个检查点之前取消或回滚运行后显示为 `idle` 的暂停线程。现在，取消的运行会在 `cancel_reason` 中报告原因，而不是在线程的 `error` 中。
 * 修复了使用顶级 `context` 创建的 cron 在内存运行时首次运行后停止的问题。
 * 修复了当核心服务器拥有所有数据库访问权限时，`GET /threads/{thread_id}/storage` 返回 500。
-* 修复了服务器端关闭的 Postgres 连接（例如通过空闲\_会话\_超时）从池中重用。
+* 修复了服务器端关闭的 Postgres 连接（例如通过idle_session_timeout）从池中重用。
 * 修复了 AES 加密的 JSON 数据丢失数字格式和精度的问题（例如，`4.0` 存储为 `4`）。
 * 修复了`langgraph dev`丢失数据的问题：线程状态和长期存储项现在按预期每10秒保存到`.langgraph_api/`，并且当保存的状态引用图形文件中的类或移动或重命名的类时，重新启动不再删除每个线程（不可读的文件保留为`.bak`副本）。
 * 允许在代理服务器映像和用户图依赖项中使用 redis-py 8.x。
@@ -234,7 +234,7 @@
 
 #### 一般说明
 
-* 删除内置的Python Postgres存储；现在始终使用 Go 存储，并且忽略 `LANGGRAPH_STORE_BACKEND`。自定义存储和内存运行时不受影响。
+* 删除内置的Python Postgres存储；现在始终使用 Go 存储，并忽略 `LANGGRAPH_STORE_BACKEND`。自定义存储和内存中运行时不受影响。
 
 > [手风琴] v0.17 发布
 >
@@ -355,12 +355,12 @@
 > * 修复了在第一个检查点之前取消或回滚运行后显示为 `idle` 的暂停线程。现在，取消的运行会在 `cancel_reason` 中报告原因，而不是在线程的 `error` 中。
 > * 修复了使用顶级 `context` 创建的 cron 在内存运行时首次运行后停止的问题。
 > * 修复了当核心服务器拥有所有数据库访问权限时 `GET /threads/{thread_id}/storage` 返回 500。
-> * 修复了服务器端关闭的 Postgres 连接（例如通过空闲\_会话\_超时）从池中重用。
+> * 修复了服务器端关闭的 Postgres 连接（例如通过idle_session_timeout）从池中重用。
 > * 修复了 AES 加密的 JSON 数据丢失数字格式和精度的问题（例如，`4.0` 存储为 `4`）。> * 修复了`langgraph dev`丢失数据的问题：线程状态和长期存储项现在按预期每10秒保存到`.langgraph_api/`，并且当保存的状态引用图形文件中的类或移动或重命名的类时，重新启动不再删除每个线程（不可读的文件保留为`.bak`副本）。
 >
 > ### 一般说明
 >
-> * 删除内置的 Python Postgres 存储；现在始终使用 Go 存储，并忽略 `LANGGRAPH_STORE_BACKEND`。自定义存储和内存运行时不受影响。
+> * 删除内置的 Python Postgres 存储；现在始终使用 Go 存储，并且忽略 `LANGGRAPH_STORE_BACKEND`。自定义存储和内存中运行时不受影响。
 
 ## v0.16
 
@@ -377,7 +377,7 @@
 
 #### 修复
 
-* Studio 身份验证用户现在包括 ls\_user\_id（如果可用）。
+* Studio 身份验证用户现在包含 ls_user_id（如果可用）。
 * 添加了对包含单个消息对象的 A2UI DataParts 的支持。
 * 将可选的 OpenTelemetry 跟踪器的请求依赖项固定到独立于应用程序锁定文件的修补版本。
 * 修复运行时隐式创建线程（包括使用 `if_not_exists="create"` 创建的命名线程）时未应用全局检查点 TTL 的问题。
@@ -534,7 +534,7 @@
 >
 > ### 安全
 >
-> * Updates bundled Datadog serverless-init, ddtrace, langgraph-sdk, and MongoDB Go driver to clear known CVEs.
+> * 更新捆绑的 Datadog serverless-init、ddtrace、langgraph-sdk 和 MongoDB Go 驱动程序以清除已知的 CVE。
 >
 > **2026-10-07**
 >
@@ -543,7 +543,7 @@
 > ### 修复
 >
 > * 修复了由过时的 Datadog 跟踪依赖项导致的 Go 核心 Postgres 检查指针中的内存泄漏。
-> * Fixes `run_id` missing from checkpoint metadata in thread history and state on deployments that use the Go checkpointer.
+> * 修复了使用 Go 检查点的部署中线程历史记录和状态中检查点元数据缺失的 `run_id`。
 > * Cron 调度程序在有界批次中声明到期的 cron，因此大量积压不再出现 OOM 并丢弃 cron。
 >
 > **2026-10-06**
@@ -569,7 +569,7 @@
 >
 > ### 修复
 >
-> * 修复代理服务器启动崩溃 (`ImportError: _ExtendedAttributes`)，该崩溃是由于未固定的 Datadog 跟踪器安装拉动 opentelemetry-api 1.45.0 引起的。
+> * 修复因未固定的 Datadog 跟踪器安装拉动 opentelemetry-api 1.45.0 导致代理服务器启动崩溃 (`ImportError: _ExtendedAttributes`)。
 >
 > **2026-09-25**
 >
@@ -584,11 +584,11 @@
 >
 > ### 修复
 >
-> * Studio 身份验证用户现在包括 ls\_user\_id（如果可用）。
+> * Studio 身份验证用户现在包含 ls_user_id（如果可用）。
 > * 添加了对包含单个消息对象的 A2UI DataParts 的支持。
 > * 将可选的 OpenTelemetry 跟踪器的请求依赖项固定到独立于应用程序锁定文件的修补版本。
 > * 修复运行时隐式创建线程（包括使用 `if_not_exists="create"` 创建的命名线程）时未应用全局检查点 TTL 的问题。
-> * 修复了在消耗剩余流事件时删除运行时内存中回滚取消错误的问题。
+> * 修复在消耗剩余流事件时删除运行时的内存中回滚取消错误。
 > * 修复了使用 gRPC 检查点时历史子图重播的问题。
 > * 防止过时的 Python 包文件和元数据在代理服务器映像中保留依赖项升级。> * 修复私有运行时配置包含非 JSON 值时 gRPC 检查指针失败的问题。
 > * 修复了 0.15.0rc4 及更高版本上的 HTTPS webhook 因 `AttributeError: 'bytes' object has no attribute 'encode'` 失败的问题。
@@ -614,7 +614,7 @@
 
 #### 新功能
 
-* 添加 A2A\_A2UI\_ENABLED 和 A2A\_A2UI\_TOOL\_CALL\_RESULTS，以便可以为每个助手启用 A2UI，并从列出的工具中将其作为规范 DataPart 发布到未更改的工具结果旁边，接受对象值 A2UI DataPart，并阻止 A2A 回复重复先前回合的答案或 UI。
+* 添加 A2A_A2UI_ENABLED 和 A2A_A2UI_TOOL_CALL_RESULTS，以便可以为每个助手启用 A2UI，并从列出的工具中将其发布为未更改工具结果旁边的规范 DataPart，接受对象值 A2UI DataPart，并阻止 A2A 回复重复先前回合的答案或 UI。
 * 支持 OpenTelemetry SDK 1.45 和 Prometheus 导出器 0.66。 Prometheus 指标现在包括`otel_scope_*` 标签，资源属性包括`service.instance.id`。
 
 #### 修复* 扩展 `sse-starlette` 兼容性以包含 3.4.x 发行版。
@@ -765,7 +765,7 @@
 >
 > ### 新功能
 >
-> * 添加 A2A\_A2UI\_ENABLED 和 A2A\_A2UI\_TOOL\_CALL\_RESULTS，以便可以为每个助手启用 A2UI，并从列出的工具中将其发布为未更改工具结果旁边的规范 DataPart，接受对象值 A2UI DataPart，并阻止 A2A 回复重复先前回合的答案或 UI。
+> * 添加 A2A_A2UI_ENABLED 和 A2A_A2UI_TOOL_CALL_RESULTS，以便可以为每个助手启用 A2UI，并从列出的工具中将其发布为未更改工具结果旁边的规范 DataPart，接受对象值 A2UI DataPart，并阻止 A2A 回复重复先前回合的答案或 UI。
 >
 > **2026-09-24**
 >
@@ -847,7 +847,7 @@
 #### 新功能
 
 * 自定义加密 (`LANGGRAPH_ENCRYPTION`) 现在可与 gRPC Postgres 检查点 (`PREFER_GRPC_CHECKPOINTER=true`) 配合使用。迁移到自定义加密时，现有 AES 加密检查点仍然可读。
-* 自定义身份验证现在可以接受 LangSmith API 密钥以及现有处理程序。将`auth.allow_langsmith_api_keys: true`设置为`langgraph.json`（需要`LANGGRAPH_AUTH_TYPE=langsmith`）。带有 `Authorization` 标头的请求仍会进行自定义身份验证。所有其他人都转到LangSmith（`x-api-key`）。 LangSmith经过身份验证的调用者有两个参数：ctx.user.identity = LangSmith user\_id（或缺失）和 ctx.permissions = \["authenticated"]。 `@auth.on` 处理程序仍在运行。默认关闭。
+* 自定义身份验证现在可以接受 LangSmith API 密钥以及现有处理程序。将`auth.allow_langsmith_api_keys: true`设置为`langgraph.json`（需要`LANGGRAPH_AUTH_TYPE=langsmith`）。带有 `Authorization` 标头的请求仍会进行自定义身份验证。所有其他人都转到LangSmith（`x-api-key`）。 LangSmith 经过身份验证的调用者有两个参数：ctx.user.identity = LangSmith user_id（或缺失）和 ctx.permissions = \["authenticated"]。 `@auth.on` 处理程序仍在运行。默认关闭。
 * 支持 OpenTelemetry SDK 1.45 和 Prometheus 导出器 0.66。 Prometheus 指标现在包括`otel_scope_*` 标签，资源属性包括`service.instance.id`。
 
 #### 修复* 修复了增量通道重建，删除在通道种子检查点早于通道迁移到 DeltaChannel 之前存储的写入。
@@ -856,7 +856,7 @@
 * 修复了 webhook 字段白名单。
 * 修复了由于自定义加密的线程锁争用而导致的间歇性运行创建失败。
 * 修复了清理器可能会因待处理运行的大量积压日志而失败的错误。
-*修复了runs.join不遵守cancel\_on\_disconnect参数的问题。
+*修复了runs.join不遵守cancel_on_disconnect参数的问题。
 * 修复了 Redis Cluster `MOVED` 重定向导致的 v2 线程流故障。
 * 修复了 JavaScript 代理运行的取消问题，以便信号感知图形节点、工具和模型调用在中断后停止。
 * 修复了历史子图重播的错误。* 重建基于 Wolfi 的 Python 和 Node Agent Server 映像时刷新系统包。
@@ -865,7 +865,7 @@
 * 修复了由过时的 Datadog 跟踪依赖项导致的 Go 核心 Postgres 检查指针中的内存泄漏。
 * 修复了 Playwright 的浏览器驱动程序和其他从工作线程启动的子进程无法在 LangSmith 部署上启动的问题。
 
-＃＃＃＃ 安全* 修复了使用 if\_not\_exists 运行可以绕过 create\_run auth 的错误。
+＃＃＃＃ 安全* 修复了使用 if_not_exists 运行可以绕过 create_run auth 的错误。
 * 修复了默认通配符 CORS 策略，因此除非配置了可信来源，否则浏览器凭据将被禁用。
 * 将@langchain/langgraph 映射到`1.4.12`，将@langchain/langgraph-checkpoint 映射到`1.1.5` 以解析[GHSA-j87f-x5h5-gr75](https://github.com/langchain-ai/langgraphjs/security/advisories/GHSA-j87f-x5h5-gr75)。
 * 修补服务器依赖项中的 AnyIO 漏洞，保留 HTTPS webhook 兼容性，并防止过时的 Python 包文件在映像升级中幸存。
@@ -905,7 +905,7 @@
 >
 > ### 新功能
 >
-> * 支持 OpenTelemetry SDK 1.45 和 Prometheus 导出器 0.66。 Prometheus 指标现在包括`otel_scope_*` 标签，资源属性包括`service.instance.id`。
+> * 支持 OpenTelemetry SDK 1.45 和 Prometheus 导出器 0.66。 Prometheus 指标现在包括 `otel_scope_*` 标签，资源属性包括 `service.instance.id`。
 >
 > ### 安全
 >
@@ -1028,7 +1028,7 @@
 >
 > ## 新功能
 >
-> * 自定义身份验证现在可以接受 LangSmith API 密钥以及现有处理程序。将`auth.allow_langsmith_api_keys: true`设置为`langgraph.json`（需要`LANGGRAPH_AUTH_TYPE=langsmith`）。带有 `Authorization` 标头的请求仍会进行自定义身份验证。所有其他人都转到LangSmith（`x-api-key`）。 LangSmith经过身份验证的调用者有两个参数：ctx.user.identity = LangSmith user\_id（或缺失）和 ctx.permissions = \["authenticated"]。 `@auth.on` 处理程序仍在运行。默认关闭。
+> * 自定义身份验证现在可以接受 LangSmith API 密钥以及现有处理程序。将`auth.allow_langsmith_api_keys: true`设置为`langgraph.json`（需要`LANGGRAPH_AUTH_TYPE=langsmith`）。带有 `Authorization` 标头的请求仍会进行自定义身份验证。所有其他人都转到LangSmith（`x-api-key`）。 LangSmith 经过身份验证的调用者有两个参数：ctx.user.identity = LangSmith user_id（或缺失）和 ctx.permissions = \["authenticated"]。 `@auth.on` 处理程序仍在运行。默认关闭。
 >
 > ### 修复
 >
@@ -1039,7 +1039,7 @@
 >
 > ### 修复
 >
-> * 修复了runs.join 不遵守cancel\_on\_disconnect 参数的问题。
+> * 修复了runs.join 不遵守cancel_on_disconnect 参数的问题。
 >
 > **2026-08-21**
 >
@@ -1059,7 +1059,7 @@
 > * 修复了清理器可能会因待处理运行的大量积压日志而失败的错误。
 >
 > ### 安全
->> * 修复了使用 if\_not\_exists 运行可以绕过 create\_run auth 的错误。
+>> * 修复了使用 if_not_exists 运行可以绕过 create_run auth 的错误。
 > * 修复了默认通配符 CORS 策略，因此除非配置了可信来源，否则浏览器凭据将被禁用。
 > * 将@langchain/langgraph 碰撞到`1.4.12` 并将@langchain/langgraph-checkpoint 碰撞到`1.1.5` 以解析[GHSA-j87f-x5h5-gr75](https://github.com/langchain-ai/langgraphjs/security/advisories/GHSA-j87f-x5h5-gr75)。
 
@@ -1080,14 +1080,14 @@
 * 添加 `A2A_ALLOWED_TOOL_CALL_RESULTS` 环境变量，将 A2A 工具调用结果限制为工具名称白名单。
 
 #### 修复* 修复 Go 核心日志中丢失的请求元数据和跟踪相关性。
-* 修复启用 X 射线渲染时带有子图的工厂图形的自托管 Studio 图形可视化。
+* 修复启用 X 射线渲染时带有子图的工厂图的自托管 Studio 图形可视化。
 * 禁用速率限制并在速率限制配置无效时发出警告，而不是阻止服务器启动。
 * 通过环境变量专门配置核心速率限制。
 * 将 Postgres IAM 身份验证提供程序环境变量重命名为 `AGENT_POSTGRES_IAM_AUTH_PROVIDER`。
-* 将 Redis IAM 身份验证提供程序环境变量重命名为 AGENT\_REDIS\_IAM\_AUTH\_PROVIDER。
+* 将 Redis IAM 身份验证提供程序环境变量重命名为 AGENT_REDIS_IAM_AUTH_PROVIDER。
 * 修复队列入口点导入顺序，以防止与 API 一起运行时发生端口绑定冲突。
 * 修复 A2A 流以将最终输出作为工件返回，并过滤任务历史记录以进行公共对话。
-* 修复存储搜索和 list\_namespaces 的范围命名空间匹配段边界，并将命名空间标签视为文字字符。
+* 将存储搜索和 list_namespaces 修复为与段边界匹配的范围名称空间，并将名称空间标签视为文字字符。
 * 修复了如果工作人员在确认取消之前死亡则可以重试取消的运行的错误。
 * 修复工具路由使用 Send 对象时 JavaScript 图形检查点失败的问题。
 * 在 gRPC 序列化中拒绝 Send.timeout，以防止每个任务超时语义的无提示丢失。* 修复配置自定义静态加密时 DeltaChannel 线程的静默修剪失败问题。
@@ -1242,10 +1242,10 @@
 > * 修复启用 X 射线渲染时带有子图的工厂图形的自托管 Studio 图形可视化。
 > * 禁用速率限制并在速率限制配置无效时发出警告，而不是阻止服务器启动。
 > * 通过环境变量专门配置核心速率限制。
-> * 将 Postgres IAM 身份验证提供程序环境变量重命名为 `AGENT_POSTGRES_IAM_AUTH_PROVIDER`。> * 将 Redis IAM 身份验证提供程序环境变量重命名为 AGENT\_REDIS\_IAM\_AUTH\_PROVIDER。
+> * 将 Postgres IAM 身份验证提供程序环境变量重命名为 `AGENT_POSTGRES_IAM_AUTH_PROVIDER`。> * 将 Redis IAM 身份验证提供程序环境变量重命名为 AGENT_REDIS_IAM_AUTH_PROVIDER。
 > * 修复队列入口点导入顺序，以防止与 API 一起运行时发生端口绑定冲突。
 > * 修复 A2A 流，以将最终输出作为工件返回，并过滤任务历史记录以进行公共对话。
-> * 修复存储搜索和 list\_namespaces 的范围命名空间匹配段边界，并将命名空间标签视为文字字符。
+> * 将存储搜索和 list_namespaces 修复为与段边界匹配的范围名称空间，并将名称空间标签视为文字字符。
 > * 修复了如果工作人员在确认取消之前死亡则可以重试取消的运行的错误。
 > * 修复工具路由使用 Send 对象时 JavaScript 图形检查点故障。
 > * 在 gRPC 序列化中拒绝 Send.timeout，以防止每个任务超时语义的无提示丢失。
@@ -1258,7 +1258,7 @@
 ### 变化
 
 #### 新功能* 通过 OpenTelemetry Prometheus 客户端发出代理服务器指标，将延迟单位更新为毫秒并重命名多个池计数器。
-* 添加助手、运行、cron 和线程的搜索结果成本限制。
+* 添加助手、运行、crons 和线程的搜索结果成本限制。
 * 添加 Redis 运行队列的选择加入跟踪日志记录。
 * 添加 gRPC 支持的存储后端，支持使用 TTL 进行 get 和 put 操作。
 * 将速率限制配置限制仪表和每个存储桶关键标签添加到运行时指标。
@@ -1271,9 +1271,9 @@
 
 #### 修复* 将面向客户的支持链接更新到支持门户。
 * 修复仅 TLS 集群上的 Redis 集群发布/订阅连接失败问题。
-* 修复了在无状态线程命令上导致虚假 no\_such\_interrupt 错误的竞争条件。
-* 修复在 JS 部署中使用 stream\_subgraphs=True 时删除子图的自定义流事件。
-* 修复 join\_stream 以在按流模式过滤时正确包含命名空间子图事件。
+* 修复了在无状态线程命令上导致虚假 no_such_interrupt 错误的竞争条件。
+* 修复在 JS 部署中使用stream_subgraphs=True 时删除子图的自定义流事件。
+* 修复 join_stream 以在按流模式过滤时正确包含命名空间子图事件。
 * 修复受影响助手、事件流和 inmem 部署路由的 OpenAPI 文档字符串解析警告。
 * 通过等待中断持续来修复 WebSocket 输入响应中的竞争条件。
 * 为每个入口点分配 JavaScript 工作端口，以防止共享网络命名空间中发生冲突。
@@ -1287,7 +1287,7 @@
 * 重命名 Postgres 和 Redis 的 IAM 身份验证环境变量以防止命名冲突。
 * 接受 A2A FilePart 输入并将其转换为 LangChain 多模式内容块。
 * 修复并置 API 和队列工作进程之间的自定义 JavaScript 身份验证端口冲突。
-* 修复存储搜索和 list\_namespaces 以精确匹配命名空间段，并将 `_` 和 `%` 视为文字字符。
+* 修复存储搜索和 list_namespaces 以完全匹配命名空间段，并将 `_` 和 `%` 视为文字字符。
 * 修复工具路由使用 Send 对象时 JS 图形检查点失败的问题。
 * 修复 A2A 流，以在终端状态之前将最终输出作为工件返回，并将任务历史记录限制为公共客户端和代理对话轮次。
 * 从 0.3.5 开始恢复对 `langgraph-sdk` 版本的支持。
@@ -1434,7 +1434,7 @@
 >
 > ### 修复
 >
-> * 修复存储搜索和 list\_namespaces 以完全匹配命名空间段，并将 `_` 和 `%` 视为文字字符。
+> * 修复存储搜索和 list_namespaces 以精确匹配命名空间段，并将 `_` 和 `%` 视为文字字符。
 > * 修复工具路由使用 Send 对象时 JS 图形检查点失败的问题。
 >
 > **2026-07-24**
@@ -1505,9 +1505,9 @@
 >
 > * 将面向客户的支持链接更新到支持门户。
 > * 修复仅 TLS 集群上的 Redis 集群发布/订阅连接失败问题。
-> * 修复在无状态线程命令上导致虚假 no\_such\_interrupt 错误的竞争条件。
-> * 修复在 JS 部署中使用 stream\_subgraphs=True 时删除子图的自定义流事件。
-> * 修复 join\_stream 以在按流模式过滤时正确包含命名空间子图事件。
+> * 修复在无状态线程命令上导致虚假 no_such_interrupt 错误的竞争条件。
+> * 修复在 JS 部署中使用stream_subgraphs=True 时删除子图的自定义流事件。
+> * 修复 join_stream 以在按流模式过滤时正确包含命名空间子图事件。
 > * 修复受影响助手、事件流和 inmem 部署路由的 OpenAPI 文档字符串解析警告。
 > * 通过等待中断持续来修复 WebSocket 输入响应中的竞争条件。
 > * 为每个入口点分配 JavaScript 工作端口，以防止共享网络命名空间中发生冲突。
@@ -1557,8 +1557,8 @@
 * 修复了在 JS 部署上使用 `stream_mode=["custom"]` 和 `stream_subgraphs=True` 时，从子图发出的自定义流事件不会转发到客户端的问题。
 * 修复了使用 `stream_mode` 过滤器调用 `join_stream` 可能导致子图中的非消息事件从结果中错误过滤的错误。* 修复了当 API 服务器和队列工作线程在同一个 Kubernetes Pod 中作为单独的容器运行时，JS 工作线程端口冲突。队列入口点现在偏移环回端口。
 * 修复了 Redis Cluster pub/sub 在 `REDIS_CLUSTER=true` 时无法在仅 TLS 集群上连接的问题，之前曾尝试拨打端口 `0`。
-* 修复了指标迁移后的 OTLP 延迟直方图存储桶配置，因此延迟指标使用转换为毫秒的传统秒级存储桶，为长时间 HTTP 轮询、队列等待和运行执行恢复准确的 p95/p99。
-* 使队列运行查询字段选择明确以实现向后兼容性，因此可以添加新的运行架构字段，而不会在回滚期间破坏旧服务器版本。
+* Fixed OTLP latency histogram bucket configuration after the metrics migration so latency metrics use legacy second-scale buckets converted to milliseconds, restoring accurate p95/p99 for long HTTP polls, queue waits, and run execution.
+* Made queue runs query field selection explicit for backwards compatibility, so new run schema fields can be added without breaking older server versions during rollbacks.
 * 当给定无效的速率限制配置时，禁用速率限制并发出警告，而不是阻止启动。
 
 ＃＃＃＃ 安全* 在 Postgres 运行时创建条件线程期间强制执行线程授权过滤器 ([GHSA-747p-c922-m55f](https://github.com/langchain-ai/helm/security/advisories/GHSA-747p-c922-m55f))。受影响的版本并未始终在此路径上应用自定义`@auth`过滤器，因此知道其他用户线程 ID 的经过身份验证的用户可以针对该线程创建运行并观察或修改其对话状态。仅使用内存运行时的部署不受影响。
@@ -1566,9 +1566,9 @@
 #### 一般说明
 
 * 包括 PyJWT、LangSmith、密码学、Hono、undici、`golang.org/x/net`、`golang.org/x/crypto` 和 Starlette 的安全依赖项更新。
-* 代理服务器指标现在通过专用 Prometheus 抓取端点上的 OpenTelemetry/Prometheus 客户端发出（`LSD_PROM_METRICS_PORT`，默认 9464）。设置 `LSD_PROM_METRICS_ENABLED=true` 以启用端点，设置 `EXPOSE_INTERNAL_METRICS_PROMETHEUS=true` 以公开从主 API `/metrics` 路径迁移的内部指标。默认情况下，Prometheus 端点仅提供 LSD 部署 UI 指标。* **对于 Prometheus 抓取工具和仪表板可能会造成破坏**：点收集器位于 OTLP Prometheus 端口，而不是主 API `/metrics` 路径。 `lg_api_http_requests_latency_seconds` 现在是 `lg_api_http_requests_latency` 并报告毫秒而不是秒。池请求计数器现在使用 `_total` 后缀（`lg_api_pg_pool_requests_queued_total`、`lg_api_pg_pool_requests_errors_total`）。删除了 `lg_api_pending_runs_wait_time_*` 仪表，取而代之的是 `lg_api_run_queue_wait_time_1st_attempt` 延迟直方图。
-* Wolfi (`chainguard-base-fips`) 服务器映像现在提供符合 FIPS 的 Go 核心服务器和 FIPS 模式节点，并且不再包含未使用的 Bun 运行时。
-* 针对 `thread_ls_user_id_idx` 和 `thread_assistant_id_idx` btree 索引应用搁浅的 Postgres 迁移 `061`。> [手风琴] v0.11 发布
+* 代理服务器指标现在通过专用 Prometheus 抓取端点上的 OpenTelemetry/Prometheus 客户端发出（`LSD_PROM_METRICS_PORT`，默认 9464）。设置 `LSD_PROM_METRICS_ENABLED=true` 以启用端点，设置 `EXPOSE_INTERNAL_METRICS_PROMETHEUS=true` 以公开从主 API `/metrics` 路径迁移的内部指标。默认情况下，Prometheus 端点仅提供 LSD 部署 UI 指标。* **Potentially breaking** for Prometheus scrapers and dashboards: point collectors at the OTLP Prometheus port instead of the main API `/metrics` path. `lg_api_http_requests_latency_seconds` is now `lg_api_http_requests_latency` and reports milliseconds instead of seconds.池请求计数器现在使用 `_total` 后缀（`lg_api_pg_pool_requests_queued_total`、`lg_api_pg_pool_requests_errors_total`）。 The `lg_api_pending_runs_wait_time_*` gauges are removed in favor of the `lg_api_run_queue_wait_time_1st_attempt` latency histogram.
+* Wolfi (`chainguard-base-fips`) server images now ship a FIPS-compliant Go core-server and FIPS-mode Node, and no longer include the unused bun runtime.
+* Applied stranded Postgres migration `061` for `thread_ls_user_id_idx` and `thread_assistant_id_idx` btree indexes.> [手风琴] v0.11 发布
 >
 > **2026-08-20**
 >
@@ -1576,7 +1576,7 @@
 >
 > ### 安全
 >
-> * 将 @langchain/langgraph 升级到 1.4.12，将 @langchain/langgraph-checkpoint 升级到 1.1.5 以解决 [GHSA-j87f-x5h5-gr75](https://github.com/langchain-ai/langgraphjs/security/advisories/GHSA-j87f-x5h5-gr75)。
+> * Bumping @langchain/langgraph to 1.4.12 and @langchain/langgraph-checkpoint to 1.1.5 to resolve [GHSA-j87f-x5h5-gr75](https://github.com/langchain-ai/langgraphjs/security/advisories/GHSA-j87f-x5h5-gr75).
 >
 > **2026-08-17**
 >
@@ -1584,7 +1584,7 @@
 >
 > ### 安全
 >
-> * 在 Postgres 运行时创建条件线程期间强制执行线程授权过滤器 ([GHSA-747p-c922-m55f](https://github.com/langchain-ai/helm/security/advisories/GHSA-747p-c922-m55f))。受影响的版本并未始终在此路径上应用自定义 `@auth` 过滤器，因此知道其他用户线程 ID 的经过身份验证的用户可以针对该线程创建运行并观察或修改其对话状态。仅使用内存运行时的部署不受影响。
+> * Enforce thread authorization filters during conditional thread creation on the Postgres runtime ([GHSA-747p-c922-m55f](https://github.com/langchain-ai/helm/security/advisories/GHSA-747p-c922-m55f)).受影响的版本并未始终在此路径上应用自定义 `@auth` 过滤器，因此知道其他用户线程 ID 的经过身份验证的用户可以针对该线程创建运行并观察或修改其对话状态。仅使用内存运行时的部署不受影响。
 >
 > **2026-07-28**
 >
@@ -1608,14 +1608,14 @@
 >
 > ### 新功能
 >
-> * 添加了 DeltaChannel 感知修剪，仅保留状态重建所需的最小祖先检查点，取代了之前拒绝修剪具有活动 Delta 通道的线程的方法。> * 添加了选择加入 Prometheus 指标抓取支持。设置 `LSD_PROM_METRICS_ENABLED=true` 以在端口 `LSD_PROM_METRICS_PORT`（默认 9464）的专用 Prometheus 抓取端点上公开 OTel 指标（运行生命周期、延迟、流、工作量指标）。当两者都配置完毕后，Datadog OTLP 推送将继续与 Prometheus 一起工作。
-> * 添加了 `coreApi.runQueueTraceLog` 配置标志（`LSD_RUN_QUEUE_TRACE_LOG` 环境变量，默认为 `false`）以启用详细的 Redis 运行队列跟踪日志。
-> * 在每次运行中添加了 `langsmith_session_name` 字段，并通过 `/info` 公开支持，以便 Studio 可以检测支持该字段的 API 版本。
+> * 添加了 DeltaChannel 感知修剪，仅保留状态重建所需的最小祖先检查点，取代了之前拒绝修剪具有活动 Delta 通道的线程的方法。> * Added opt-in Prometheus metrics scrape support.设置 `LSD_PROM_METRICS_ENABLED=true` 以在端口 `LSD_PROM_METRICS_PORT`（默认 9464）的专用 Prometheus 抓取端点上公开 OTel 指标（运行生命周期、延迟、流、工作量指标）。当两者都配置完毕后，Datadog OTLP 推送将继续与 Prometheus 一起工作。
+> * Added `coreApi.runQueueTraceLog` config flag (`LSD_RUN_QUEUE_TRACE_LOG` env var, default `false`) to enable verbose Redis run-queue trace logs.
+> * Added the `langsmith_session_name` field to each run and exposed support via `/info` so Studio can detect API versions that support this field.
 > * 添加了 Wolfi Python 和 JS 服务器映像的 `-fips` 变体（例如 `3.13-wolfi-fips`、`22-wolfi-fips`），使用 Go FIPS 140 加密模块和适用于 Node.js 的 FIPS 强化 OpenSSL 构建。
 >
 > ### 修复
 >
-> * 修复了协议 v2 在 JS 图上运行时默默失败的问题。由于严格的流模式验证，sidecar 以 400 拒绝了`streamEvents`，错误被吞没，并运行错误地报告成功，执行了 0 个节点。在 HTTP 边界处放宽了流模式验证，现在在非 2xx sidecar 响应上引发明显的错误，而不是掩盖故障。> * 修复了针对 JS sidecar（远程）图的协议 v2 事件流，该事件流通过遗留重建路径被错误地提供。远程图现在使用 LangGraphJS 的本机 v3 流进行 v2 事件流运行，解决工具调用不渲染、无头中断从不执行或恢复以及恢复后最终消息上出现 `400: tool_use ids must be unique` 错误的问题。
+> * Fixed protocol v2 runs on JS graphs failing silently.由于严格的流模式验证，sidecar 以 400 拒绝了`streamEvents`，错误被吞没，并运行错误地报告成功，执行了 0 个节点。在 HTTP 边界处放宽了流模式验证，现在在非 2xx sidecar 响应上引发明显的错误，而不是掩盖故障。> * 修复了针对 JS sidecar（远程）图的协议 v2 事件流，该事件流通过遗留重建路径被错误地提供。远程图现在使用 LangGraphJS 的本机 v3 流进行 v2 事件流运行，解决工具调用不渲染、无头中断从不执行或恢复以及恢复后最终消息上出现 `400: tool_use ids must be unique` 错误的问题。
 > * 现在删除运行会跳过使用 DeltaChannel 的线程的检查点删除，并仅删除运行记录。存储增量写入的检查点稍后检查点所依赖的将被保留。使用线程修剪 API 回收增量通道线程上的检查点存储。
 > * 修复了 Event Streaming v2 的 HTTP `input.respond` 验证，以从持久线程行读取挂起的中断，而不是重建线程状态，从而防止有效的 HITL 恢复在重新连接、重新部署或线程状态查找失败后错误地返回 `no_such_interrupt`。
 > * 修复了 `input.respond`，因此可选的 `update` 和 `goto` 参数将转发到与恢复值相同的 `Command`。> * 修复了从非增量通道迁移到 DeltaChannel 的通道的 DeltaChannel 重播问题。检查点无法正确识别头部种子检查点，这可能会为非加法减速器产生错误的重建状态。
@@ -1751,7 +1751,7 @@
 >
 > * 添加了 DeltaChannel 感知修剪，仅保留状态重建所需的最小祖先检查点，取代了之前拒绝修剪具有活动 Delta 通道的线程的方法。支持 Postgres、SQLite、DeferredDelete 和内存运行时。
 > * 为 MongoDB 检查点添加了 DeltaChannel 感知修剪，仅保留状态重建所需的最小祖先检查点和 delta 通道 blob。
-> * 添加了选择加入 Prometheus 指标抓取支持。设置 `LSD_PROM_METRICS_ENABLED=true` 以在端口 `LSD_PROM_METRICS_PORT`（默认 9464）的专用 Prometheus 抓取端点上公开 OTel 指标（运行生命周期、延迟、流、工作量指标）。当两者都配置完毕后，Datadog OTLP 推送将继续与 Prometheus 一起工作。
+> * 添加了选择加入 Prometheus 指标抓取支持。设置 `LSD_PROM_METRICS_ENABLED=true` 以在端口 `LSD_PROM_METRICS_PORT`（默认 9464）的专用 Prometheus 抓取端点上公开 OTel 指标（运行生命周期、延迟、流、工作量表）。当两者都配置完毕后，Datadog OTLP 推送将继续与 Prometheus 一起工作。
 > * 添加了针对一元 core-api RPC 和 Redis 流发布字节的选择加入 Go 核心速率限制，以及 Redis 支持的 GCRA 强制、影子/强制模式以及带有 YAML 覆盖的 `LS_RATE_LIMITS` 引导配置。
 > * 允许传递自定义证书和密钥文件（`ssl_certfile`、`ssl_keyfile`）以通过 HTTPS 运行开发服务器。
 >
@@ -1877,8 +1877,8 @@
 ### 一般说明
 
 * 在 /runs/crons/search 和 /runs/crons/count 中添加了 cron 元数据过滤，匹配助手/线程已有的元数据过滤行为。
-* 添加了 Postgres 检查点池调整旋钮，适用于一次加载大量大型检查点的情况。现在可以设置 LANGGRAPH\_CHECKPOINTER\_POSTGRES\_POOL\_MIN\_SIZE 和 LANGGRAPH\_CHECKPOINTER\_POSTGRES\_POOL\_TIMEOUT\_SECONDS。
-* 修复了当线程没有先前检查点时 mongo 检查点中的 update\_state 崩溃的问题。
+* 添加了 Postgres 检查点池调整旋钮，适用于一次加载大量大型检查点的情况。现在可以设置 LANGGRAPH_CHECKPOINTER_POSTGRES_POOL_MIN_SIZE 和 LANGGRAPH_CHECKPOINTER_POSTGRES_POOL_TIMEOUT_SECONDS。
+* 修复了当线程没有先前检查点时 mongo 检查点中的 update_state 崩溃的问题。
 * 包括针对安全漏洞的依赖项更新。
 
 ### 新功能
@@ -2073,7 +2073,7 @@
 
 ## v0.7.86
 
-* 在所有镜像中设置默认值`DD_TRACE_ENABLED=false`，以减少非 Datadog 部署的 Orchestrion 日志噪音。
+* 在所有映像中设置默认值`DD_TRACE_ENABLED=false`，以减少非 Datadog 部署的 Orchestrion 日志噪音。
 
 **2026-03-23**
 
@@ -2122,7 +2122,7 @@
 
 ## v0.7.73
 
-* 通过避免不必要的大型 JSONB 值的解构，改进了`extract` 的线程搜索性能。
+* 通过避免不必要的大型 JSONB 值的解构，提高了`extract` 的线程搜索性能。
 
 **2026-03-13**
 
@@ -2222,7 +2222,7 @@
 ## v0.7.52
 
 * 当提供 `feedback_keys` 时，在 `__feedback__` 键下向 `/wait` 和 `/join` 端点响应添加了反馈 URL。
-* 添加了对分布式运行时的反馈\_keys 支持，包括使用 langsmith-go SDK 生成预签名的反馈令牌。
+* 添加了对分布式运行时的 Feedback_keys 支持，包括使用 langsmith-go SDK 生成预签名的反馈令牌。
 * 将 Werkzeug 从版本 3.1.5 升级到 3.1.6，以解决多段路径中特殊设备名称的 Windows 安全问题。
 * 将 Go 运行时升级到 1.25.7，以解决漏洞扫描中发现的关键和高严重性 CVE。
 
@@ -2300,10 +2300,10 @@
 **2026-02-13**
 
 ## v0.7.33* 通过删除自定义检查点测试跳过、改进类型化序列化以及添加缺失的 Redis 方法来增强 Redis 固定装置。
-* 通过清理单引号 HTML onload 属性中的消息名称，解决了 handle\_ui 端点中存储的 XSS 漏洞。
+* 通过清理单引号 HTML onload 属性中的消息名称，解决了 handle_ui 端点中存储的 XSS 漏洞。
 * 修复了`put_item`中的授权绕过问题，以确保身份验证处理程序正确重写命名空间。
 * 在运行创建期间强制执行助理所有权检查，防止在无主助理上执行，同时确保所有经过身份验证的用户仍然可以访问系统助理。
-* 使用 LANGGRAPH\_AES\_KEY 时，对检查点 blob 实施 AES 加密并写入 Go 检查点。
+* 使用 LANGGRAPH_AES_KEY 时，对检查点 blob 实施 AES 加密并写入 Go 检查点。
 * 使用所有必要的方法和转换帮助程序实现了初始检查点 gRPC 服务程序。
 
 **2026-02-11**
@@ -2311,7 +2311,7 @@
 ## v0.7.32* 清理流和 A2A 响应中的错误消息，以保护数据库连接字符串和内部主机名等敏感信息。
 * 修复了`join_run_stream`中的错误，以正确处理多个`stream_mode`参数，确保正确解析字符串化的JSON列表。
 * 添加了 Node.js 24 镜像的构建、测试和发布流程，支持最新的 LTS 版本。
-* 增强的自定义检查点适配器具有新功能和改进的元数据丰富性，以实现一致的 API 响应。
+* 增强的自定义检查点适配器具有新功能和改进的元数据丰富，以实现一致的 API 响应。
 * 对执行器 Docker 镜像中的 langgraph 库添加了更严格的版本限制，以防止意外升级。
 * 通过清理 SSE 事件和 id 字段以防止 CR/LF 注入来增强安全性。
 * 修复了导致 cron 创建的运行使用默认加密上下文而不是正确传播指定加密上下文的问题。
@@ -2463,7 +2463,7 @@
 * 在`message/stream`和`message/send`路由中为`parts`、`role`和`messageId`字段添加了A2A验证检查。
 * 添加了原生 A2A 中断支持：当图形中断时，现在会返回`input-required` 状态。在 `message/stream` 和 `message/send` 请求中使用新的 `command` 参数，以使用 `Command` 负载恢复。
 * 将 `.well-known/agent-card.json` 安装在 `/a2a/{assistant_id}/` 下，用于 A2A 代理发现。
-* 在`tasks/cancel`中为任务存在检查添加了正确的A2A错误代码。
+* 在`tasks/cancel`中添加了用于任务存在检查的正确A2A错误代码。
 
 **2026-01-21**
 
@@ -2521,7 +2521,7 @@
 
 ## v0.6.31
 
-* 正确遵守disable\_a2a 设置以确保准确的配置处理。
+* 正确遵守disable_a2a 设置以确保准确的配置处理。
 
 **2026-01-09**
 
@@ -2612,7 +2612,7 @@
 
 **2025-12-23**
 
-## v0.6.12* 改进了resolve\_embeddings，使其更加健壮，支持多次调用而不会出现错误。
+## v0.6.12* 改进了resolve_embeddings，使其更加健壮，允许多次调用而不会出现错误。
 * 将`@langchain/langgraph`从版本1.0.4更新到1.0.7，添加了对远程图上的resumableStreams的支持并取消了toolsCondition。
 * 实现`RemoteCheckpointer`以启用子图检查点，增强任务执行的可靠性。
 
@@ -2705,7 +2705,7 @@
 
 ## v0.5.41
 
-通过确保 ENTERPRISE\_SAAS 全局标志的正确初始化，修复了混合模式下 cron 作业的问题。
+通过确保 ENTERPRISE_SAAS 全局标志的正确初始化，修复了混合模式下 cron 作业的问题。
 
 **2025-12-10**
 
@@ -2788,14 +2788,14 @@
 ## v0.5.25
 
 * 引入了使用新端点通过 `name` 搜索助手的功能。
-* 将 store\_get 返回类型转换为 JavaScript 中的元组，以确保类型一致性。
+* 将 store_get 返回类型转换为 JavaScript 中的元组，以确保类型一致性。
 
 **2025-11-21**
 
 ## v0.5.24
 
-* 添加了 Datadog 的执行器指标并增强了核心流 API 指标，以实现更好的性能跟踪。
-* 禁用 Redis Go 维护通知，以防止在 Redis 8 以下版本中因不支持的命令而导致启动错误。
+* 添加了 Datadog 的执行程序指标并增强了核心流 API 指标，以实现更好的性能跟踪。
+* 禁用 Redis Go 维护通知，以防止在低于 8 的 Redis 版本中出现不支持的命令启动错误。
 
 **2025-11-20**
 
@@ -2890,7 +2890,7 @@
 
 ## v0.5.2
 
-在启动期间添加了 PostgreSQL 连接的重试逻辑，以增强部署可靠性，并改进了错误日志记录以方便调试。
+添加了启动期间 PostgreSQL 连接的重试逻辑，以增强部署可靠性，并改进了错误日志记录以方便调试。
 
 **2025-11-03**
 
@@ -3033,58 +3033,58 @@
 
 **2025-09-25**
 
-## v0.4.28* 向队列指标服务器添加了格式参数以增强自定义功能。
-* 更正了 CLI 中的 `MOUNT_PREFIX` 环境变量用法，以与文档保持一致并防止混淆。
-* 添加了一项功能，用于在由于没有订阅者而丢失消息时记录警告，可通过功能标志进行控制。
-* 在 Node 镜像中添加了对 Bookworm 和 Bullseye 发行版的支持。
-* 通过将执行器定义从 `langgraph-go` 存储库中移出，提高了可管理性并更新了服务器迁移的检查点设置方法，从而合并了执行器定义。
-* 确保为 a2a 发送正确的响应标头，提高兼容性和通信。
-* 整合 PostgreSQL 检查点实现，添加`/core`目录的 CI 测试，修复 RemoteStore 测试错误，并通过事务增强 Store 实现。
-* 将 PostgreSQL 迁移添加到队列服务器，以防止在执行迁移之前添加图表时出现错误。
+## v0.4.28* Added a format parameter to the queue metrics server for enhanced customization.
+* Corrected `MOUNT_PREFIX` environment variable usage in CLI for consistency with documentation and to prevent confusion.
+* Added a feature to log warnings when messages are dropped due to no subscribers, controllable via a feature flag.
+* Added support for Bookworm and Bullseye distributions in Node images.
+* Consolidated executor definitions by moving them from the `langgraph-go` repository, improving manageability and updating the checkpointer setup method for server migrations.
+* Ensured correct response headers are sent for a2a, improving compatibility and communication.
+* Consolidated PostgreSQL checkpoint implementation, added CI testing for the `/core` directory, fixed RemoteStore test errors, and enhanced the Store implementation with transactions.
+* Added PostgreSQL migrations to the queue server to prevent errors from graphs being added before migrations are performed.
 
 **2025-09-23**
 
 ## v0.4.27
 
-将 `coredis` 替换为 `redis-py`，以提高高流量负载下的连接处理和可靠性。
+Replaced `coredis` with `redis-py` to improve connection handling and reliability under high traffic loads.
 
 **2025-09-22**
 
-## v0.4.24* 添加了根据 A2A 规范返回 A2A 调用的完整消息历史记录的功能。
-* 在 Dockerfiles 中添加了 `LANGGRAPH_SERVER_HOST` 环境变量，以支持双堆栈模式的自定义主机设置。
+## v0.4.24* Added functionality to return full message history for A2A calls in accordance with the A2A spec.
+* Added a `LANGGRAPH_SERVER_HOST` environment variable to Dockerfiles to support custom host settings for dual stack mode.
 
 **2025-09-22**
 
 ## v0.4.23
 
-使用更快的消息编解码器进行 Redis 流式处理。
+Use a faster message codec for redis streaming.
 
 **2025-09-19**
 
 ## v0.4.22
 
-将长流处理移植到运行流、加入和取消端点，以改进流管理。
+Ported long-stream handling to the run stream, join, and cancel endpoints for improved stream management.
 
 **2025-09-18**
 
 ## v0.4.21
 
-* 添加了 A2A 流媒体功能并增强了 A2A SDK 的测试。
-* 添加了 Prometheus 指标来跟踪图形、中间件和身份验证中的语言使用情况，以提高洞察力。
-* 修复了开源软件中与块消息转换相关的错误。
-* 从 pubsub 订阅中删除了等待，以减少集群测试中的不稳定，并在关闭套件中添加重试以增强 API 稳定性。
+* Added A2A streaming functionality and enhanced testing with the A2A SDK.
+* Added Prometheus metrics to track language usage in graphs, middleware, and authentication for improved insights.
+* Fixed bugs in Open Source Software related to message conversion for chunks.
+* Removed await from pubsub subscribes to reduce flakiness in cluster tests and added retries in the shutdown suite to enhance API stability.
 
 **2025-09-11**
 
 ## v0.4.20
 
-优化 Pubsub 初始化，以防止开销并解决订阅计时问题，确保更顺畅的运行执行。
+Optimized Pubsub initialization to prevent overhead and address subscription timing issues, ensuring smoother run execution.
 
 **2025-09-11**
 
 ## v0.4.19
 
-通过解决版本 3.2.10 中引入的功能检查，删除了 psycopg 中的警告。
+Removed warnings from psycopg by addressing function checks introduced in version 3.2.10.
 
 **2025-09-11**
 
@@ -3095,7 +3095,7 @@
 ## v0.4.16
 
 * 添加了对 a2a 中隐式线程创建的支持以简化操作。
-* 改进了分布式运行时流中的错误序列化和发射，从而实现更全面的测试。
+* Improved error serialization and emission in distributed runtime streams, enabling more comprehensive testing.
 
 **2025-09-09**
 
@@ -3156,7 +3156,7 @@
 
 ## v0.4.4
 
-* 将无状态运行的自定义身份验证线程_id 设置为 None 以防止冲突。
+* 将无状态运行的自定义身份验证 thread_id 设置为 None 以防止冲突。
 * 通过添加唤醒工作线程和 Redis 锁实现，改进了 Go 运行时中的 Redis 信号传输，并更新了扫描逻辑。**2025-08-27**
 
 ## v0.4.3
@@ -3177,11 +3177,11 @@
 次要版本 0.4 带来了许多改进以及一些重大更改。
 
 * 在线程流中正确发出尝试消息。
-* 通过在集群映射中仅使用线程 ID 进行散列来减少集群冲突，并通过 Stream\_thread\_cache 优先考虑效率。
+* 通过在集群映射中仅使用线程 ID 进行散列来减少集群冲突，并通过 Stream_thread_cache 优先考虑效率。
 * 引入了线程流端点来跟踪顺序执行的运行中的所有输出。
 * 使 PostgreSQL 中的过滤器查询生成器对格式错误的表达式更加强大，并改进了验证以防止潜在的安全风险。
 
-此次要版本还包括一些重大更改，以提高服务的可用性和安全性：* 在此次要版本中，我们停止了在运行中自动包含标头作为可配置值的做法。 You can opt-in to specific patterns by setting **configurable\_headers** in your agent server config.
+此次要版本还包括一些重大更改，以提高服务的可用性和安全性：* 在此次要版本中，我们停止了在运行中自动包含标头作为可配置值的做法。您可以通过在代理服务器配置中设置 **configurable_headers** 来选择特定模式。
 * 运行流事件 ID（对于可恢复流）现在采用 `ms-seq` 格式，而不是以前的格式。我们保留对旧格式的向后兼容性，但我们建议对新代码使用新格式。
 
 **2025-08-25**
@@ -3208,7 +3208,7 @@
 ## v0.3.0
 
 * 设置默认的15分钟语句超时，并对长时间运行的查询进行监控，以确保系统效率。
-* 停止将运行可配置值传播到线程配置，因为如果您指定检查点\_id，这可能会导致后续运行出现问题。这是行为上的**轻微破坏性变化**，因为线程值将不再自动反映最近运行的联合配置。然而，我们认为这种行为更直观。
+* 停止将运行可配置值传播到线程配置，因为如果您指定 checkpoint_id，这可能会导致后续运行出现问题。这是行为上的**轻微破坏性变化**，因为线程值将不再自动反映最近运行的联合配置。然而，我们认为这种行为更直观。
 * 通过处理 ops.py 中通道名称中的事件数据，增强了与旧工作版本的兼容性。
 
 **2025-08-20**
@@ -3232,35 +3232,35 @@
 
 **2025-08-18**
 
-## v0.2.134Enhanced search functionality to improve performance by allowing users to select specific columns for query results.
+## v0.2.134增强的搜索功能，允许用户为查询结果选择特定列，从而提高性能。
 
 **2025-08-18**
 
 ## v0.2.133
 
-* Added count endpoints for crons, threads, and assistants to enhance data tracking (#1132).
-* Improved SSH functionality for better reliability and stability.
-* Updated @langchain/langgraph-api to version 0.0.59 to fix an invalid state schema issue.
+* 添加了 cron、线程和助手的计数端点以增强数据跟踪 (#1132)。
+* 改进了 SSH 功能，以获得更好的可靠性和稳定性。
+* 将 @langchain/langgraph-api 更新到版本 0.0.59 以修复无效状态架构问题。
 
 **2025-08-15**
 
 ## v0.2.132
 
-* Added Go language images to enhance project compatibility and functionality.
-* Printed internal PIDs for JS workers to facilitate process inspection via SIGUSR1 signal.
-* Resolved a `run_pkey` error that occurred when attempting to insert duplicate runs.
-* Added `ty run` command and switched to using uuid7 for generating run IDs.
-* Implemented the initial Golang runtime to expand language support.
+* 新增Go语言镜像，增强项目兼容性和功能。
+* 为 JS 工作人员打印内部 PID，以便于通过 SIGUSR1 信号进行过程检查。
+* 解决了尝试插入重复运行时发生的`run_pkey` 错误。
+* 添加了`ty run`命令并切换为使用uuid7来生成运行ID。
+* 实现了最初的 Golang 运行时以扩展语言支持。
 
 **2025-08-14**
 
 ## v0.2.131
 
-Added support for `object agent spec` with descriptions in JS.
+添加了对 `object agent spec` 的支持，并带有 JS 描述。
 
 **2025-08-13**
 
-## v0.2.130* 添加了一个功能标志 (FF\_RICH\_THREADS=false) 以禁用运行创建时的线程更新，减少锁争用并简化线程状态处理。
+## v0.2.130* 添加了功能标志 (FF_RICH_THREADS=false) 以禁用运行创建时的线程更新，减少锁争用并简化线程状态处理。
 * 利用`aput`和`apwrite`操作的现有连接来提高性能。
 * 改进了解码问题的错误处理，以增强数据处理的可靠性。
 * 从日志中排除标头以提高安全性，同时保持运行时功能。
@@ -3457,7 +3457,7 @@ Added support for `object agent spec` with descriptions in JS.
 ## v0.2.94
 
 * 通过省略 langgraph 0.5 及更高版本的待处理发送来提高性能。
-* 改进了服务器启动日志，以便在设置 DD\_API\_KEY 环境变量时提供更清晰的警告。
+* 改进了服务器启动日志，以便在设置 DD_API_KEY 环境变量时提供更清晰的警告。
 
 **2025-07-16**
 
@@ -3473,7 +3473,7 @@ Added support for `object agent spec` with descriptions in JS.
 
 ## v0.2.91
 
-通过内联小值（null、numeric、str 等）减少对 `checkpoint_blobs` 表的写入。这意味着我们不需要为尚未更新的通道存储额外的值。
+通过内联小值（null、numeric、str 等）减少对 `checkpoint_blobs` 表的写入。这意味着我们不需要为尚未更新的频道存储额外的值。
 
 **2025-07-16**
 
@@ -3576,7 +3576,7 @@ Added support for `object agent spec` with descriptions in JS.
 
 ## v0.2.73
 
-* 修复了无限帧循环问题，并删除了由于 structlog 的意外行为而导致的 dict\_parser。
+* 修复了无限帧循环问题，并删除了由于 structlog 的意外行为而导致的 dict_parser。
 * 在运行取消期间发生死锁时抛出 409 错误，以优雅地处理锁冲突。
 
 **2025-06-27**
@@ -3606,7 +3606,7 @@ Added support for `object agent spec` with descriptions in JS.
 
 ## v0.2.66
 
-修复了使用 `on_not_exist="create"` 创建具有相同线程\_id 的多个运行时的 404 错误。
+修复了使用 `on_not_exist="create"` 创建具有相同 thread_id 的多个运行时的 404 错误。
 
 **2025-06-25**
 
@@ -3691,7 +3691,7 @@ Added support for `object agent spec` with descriptions in JS.
 * 在元数据和日志中添加了 LG API 版本和请求 ID，以提高可追溯性。
 * 通过并发创建索引提高数据库性能。
 * 确保仅在设置 Redis 运行标记以防止竞争条件后才提交 postgres 写入。
-* 通过在 thread\_id/running 上添加唯一索引、优化行锁并确保确定性运行选择，增强查询效率和可靠性。
+* 通过在 thread_id/running 上添加唯一索引、优化行锁并确保确定性运行选择，增强查询效率和可靠性。
 * 通过确保 Postgres 更新仅在设置 Redis 运行标记后发生来解决竞争条件。
 
 **2025-06-07**

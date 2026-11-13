@@ -48,7 +48,7 @@ For example, if you are using the bundled version with port-forwarding, the comm
 sh get_query_stats.sh "clickhouse://default:password@localhost:8123/default" --output query_stats.csv
 ```
 
-and after running this command you should see a file, query\_stats.csv, has been created with LangSmith query statistics.
+and after running this command you should see a file, query_stats.csv, has been created with LangSmith query statistics.
 
 ***
 

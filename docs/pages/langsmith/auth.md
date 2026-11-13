@@ -125,8 +125,8 @@ The returned user information is available:
 > * request (Request): The raw ASGI request object
 > * path (str): The request path, e.g., `"/threads/abcd-1234-abcd-1234/runs/abcd-1234-abcd-1234/stream"`
 > * method (str): The HTTP method, e.g., `"GET"`
-> * path\_params (dict\[str, str]): URL path parameters, e.g., `{"thread_id": "abcd-1234-abcd-1234", "run_id": "abcd-1234-abcd-1234"}`
-> * query\_params (dict\[str, str]): URL query parameters, e.g., `{"stream": "true"}`
+> * path_params (dict\[str, str]): URL path parameters, e.g., `{"thread_id": "abcd-1234-abcd-1234", "run_id": "abcd-1234-abcd-1234"}`
+> * query_params (dict\[str, str]): URL query parameters, e.g., `{"stream": "true"}`
 > * headers (dict\[bytes, bytes]): Request headers
 > * authorization (str | None): The Authorization header value (e.g., `"Bearer <token>"`)
 >
@@ -347,7 +347,7 @@ A filter dictionary is a dictionary with keys that match the resource metadata. 
 * `$eq`: Exact match (e.g., `{"owner": {"$eq": user_id}}`) - this is equivalent to the shorthand above, `{"owner": user_id}`
 * `$contains`: List membership (e.g., `{"allowed_users": {"$contains": user_id}}`) or list containment (e.g., `{"allowed_users": {"$contains": [user_id_1, user_id_2]}}`). The value here must be an element of the list or a subset of the elements of the list, respectively. The metadata in the stored resource must be a list/container type.
 
-A dictionary with multiple keys is treated using a logical `AND` filter. For example, `{"owner": org_id, "allowed_users": {"$contains": user_id}}` will only match resources with metadata whose "owner" is `org_id` and whose "allowed\_users" list contains `user_id`.
+A dictionary with multiple keys is treated using a logical `AND` filter. For example, `{"owner": org_id, "allowed_users": {"$contains": user_id}}` will only match resources with metadata whose "owner" is `org_id` and whose "allowed_users" list contains `user_id`.
 See the reference [`Auth`](https://reference.langchain.com/python/langgraph-sdk/auth/Auth)(Auth) for more information.
 
 ## Common access patterns

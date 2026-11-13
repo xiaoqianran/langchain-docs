@@ -110,7 +110,7 @@ Integrate with chat models using LangChain JavaScript.
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatGoogle } from "@langchain/google";
 >
-> const model = new ChatGoogle("gemini-2.5-flash");
+> const model = new ChatGoogle("gemini-4-hydrogen");
 > ```
 >
 > ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -255,6 +255,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's (legac
 | [`ChatYandexGPT`](/oss/javascript/integrations/chat/yandex) | | | | | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/yandex?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/yandex) |
 | [`ChatWebLLM`](https://github.com/ykoh42/web-llm-adapters/blob/main/packages/langchain-web-llm/README.md) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-web-llm?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-web-llm) |
 | [`ChatEmpirioLabs`](https://docs.empiriolabs.ai/integrations#langchain) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@empiriolabs/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@empiriolabs/langchain) |
+| [`ChatExaone`](https://github.com/ykoh42/exaone-integrations/tree/main/packages/langchain-exaone-ts) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-exaone?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-exaone) |
 | [`ChatInterfaze`](https://interfaze.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@interfaze-ai/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@interfaze-ai/langchain) |
 | [`ChatKServe`](https://gitlab.com/bitkaio/langchain/kserve-provider) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@bitkaio/langchain-kserve?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@bitkaio/langchain-kserve) |
 | [`RecallToolkit`](https://recallmem.dev/guides/langchain) | | | | | [  ![Downloads per month](https://img.shields.io/npm/dm/@recall-memory/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@recall-memory/langchain) |

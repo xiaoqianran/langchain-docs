@@ -18,8 +18,8 @@
 
 ＃＃ 内容|组织层面的运营 |工作区级操作 |
 | - | - |
-| **核心管理：** • [Organization settings](#organization-settings)：组织信息和配置 • [Workspaces](#workspaces)：工作区管理 • [Organization members](#organization-members)：成员管理 • [Roles and permissions](#roles-and-permissions)：自定义角色 | **核心资源：** • [Projects](#projects)：组织跟踪和运行 • [Runs](#runs)：单个执行跟踪 • [Datasets](#datasets)：用于评估的测试数据集 • [Examples](#examples)：单个数据集示例 • [Experiments](#experiments)：比较实验 |
-| **安全和身份验证：** • [SSO and authentication](#sso-and-authentication)：单点登录设置 • [SCIM](#scim)：身份配置 • [Access policies](#access-policies)：基于属性的访问控制 • [Organization teams](#organization-teams)：团队及其工作空间访问 | **监控和分析：** • [Rules](#rules)：自动运行规则 • [Alerts](#alerts)：监控警报规则 • [Feedback](#feedback)​​：输出分数和标签 • [Annotation Queues](#annotation-queues)：人工审核队列 • [Charts](#charts)：自定义可视化 |
+| **核心管理：** • [Organization settings](#organization-settings)：组织信息和配置 • [Workspaces](#workspaces)：工作区管理 • [Organization members](#organization-members)：成员管理 • [Roles and permissions](#roles-and-permissions)：自定义角色 | **核心资源：** • [Projects](#projects)：组织跟踪和运行 • [Runs](#runs)：单独执行跟踪 • [Datasets](#datasets)：用于评估的测试数据集 • [Examples](#examples)：单独数据集示例 • [Experiments](#experiments)：比较实验 |
+| **安全和身份验证：** • [SSO and authentication](#sso-and-authentication)：单点登录设置 • [SCIM](#scim)：身份配置 • [Access policies](#access-policies)：基于属性的访问控制 • [Organization teams](#organization-teams)：团队及其工作区访问 | **监控和分析：** • [Rules](#rules)：自动运行规则 • [Alerts](#alerts)​​：监控警报规则 • [Feedback](#feedback)：输出分数和标签 • [Annotation Queues](#annotation-queues)：人工审核队列 • [Charts](#charts)：自定义可视化 |
 | **计费和帐户：** • [Billing and payments](#billing-and-payments)：订阅管理 • [API keys](#api-keys)：组织级别密钥 | **开发和配置：** • [Prompts](#prompts)：提示模板（LangChain 集线器） • [Custom apps](#custom-apps)：用户编写的迷你 Web 应用程序 • [Deployments](#deployments)：部署配置 • [MCP Servers](#mcp-servers)：模型上下文协议服务器 • [Fleet](#fleet)：队列管理操作 || **分析：** • [Charts and dashboards](#organization-charts-and-dashboards)：组织级别可视化 • [Usage and analytics](#usage-and-analytics)：使用情况跟踪和 TTL 设置 | **工作区管理：** • [Model price map](#model-price-map)：每个代币模型价格 • [Workspace settings](#workspace-settings-and-management)：成员、设置 • [Workspace teams](#workspace-teams)：此工作区的团队成员和策略 • [Tags](#tags)：元数据标记系统 • [Bulk Exports](#bulk-exports)：数据导出操作 |
 
 **附加信息：**
@@ -37,7 +37,7 @@
 
 > [!注意]
 >
-> 组织级操作由组织角色控制，与 RBAC 功能分开。在[Role-based access control](/langsmith/rbac#organization-roles)指南中了解更多信息。
+> 组织级操作由组织角色控制，与 RBAC 功能分开。请参阅 [Role-based access control](/langsmith/rbac#organization-roles) 指南了解更多信息。
 
 > [!注意]
 >
@@ -86,12 +86,12 @@
 |运营|组织管理员 |组织运营商|组织用户 |组织查看器 |组织限制 |所需权限 |
 | - | :-: | :-: | :-: | :-: | :-: | - |
 |查看 SSO 设置 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
-|创建 SSO 设置 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
-|更新 SSO 设置 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
-|删除 SSO 设置 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|创建 SSO 设置 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:authentication:manage` + `organization:access-control:manage` |
+|更新 SSO 设置 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:authentication:manage` |
+|删除 SSO 设置 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:authentication:manage` |
 |查看登录方式 | ✓ | ✓ | ✓ | ✓ | ✓ | `organization:read-metadata` |
 |更新允许的登录方式 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
-|设置默认 SSO 规定 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|设置默认 SSO 规定 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:authentication:manage` |
 
 ### SCIM
 
@@ -112,7 +112,7 @@
 |列出访问策略 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
 |获取访问策略 | ✓ | ✓ | ✓ | ✓ | ✗ | `organization:read` |
 |创建访问策略 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
-|删除访问策略| ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|删除访问策略 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 |将访问策略附加到角色 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 
 ### 组织团队
@@ -133,7 +133,7 @@
 |创建 Stripe 设置意图 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 |处理付款方式创建 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 |更改付款计划 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
-|创建 Stripe 结账会话 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
+|创建 Stripe 结帐会话 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 |确认结账完成 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 |创建 Stripe 帐户链接 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 
@@ -229,7 +229,7 @@
 
 > [!注意]
 >
-> \* `projects:increase-trace-tier` 和 `projects:decrease-trace-tier` 是独立的，可以在自定义角色中单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 将部分启用（禁用不允许的方向）。
+> \* `projects:increase-trace-tier` 和 `projects:decrease-trace-tier` 是独立的，可以在自定义角色中单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 部分启用（禁止的方向被禁用）。
 
 > [!注意]
 >
@@ -269,12 +269,12 @@
 |查看规则日志 | ✓ | ✓ | ✓ | `rules:read` |
 |获取最后应用的规则 | ✓ | ✓ | ✓ | `rules:read` |
 |手动触发规则 | ✓ | ✓ | ✗ | `rules:update` |
-|触发多个规则| ✓ | ✓ | ✗ | `rules:update` |
+|触发多个规则 | ✓ | ✓ | ✗ | `rules:update` |
 |配置每个操作的数据保留 | ✓ | ✗ | ✗ | `rules:configure-retention` |
 
 ### 警报
 
-用于监控运行条件的警报规则。
+用于监控运行状况的警报规则。
 
 |运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
@@ -309,7 +309,7 @@
 |公开分享数据集 | ✓ | ✗ | ✗ | `datasets:share` |
 |取消共享数据集 | ✓ | ✗ | ✗ | `datasets:share` |
 |获取索引信息 | ✓ | ✓ | ✓ | `datasets:read` |
-|索引数据集 | ✓ | ✓ | ✗ | `datasets:update` |
+|索引数据集| ✓ | ✓ | ✗ | `datasets:update` |
 |同步数据集索引 | ✓ | ✓ | ✗ | `datasets:update` ||删除数据集索引 | ✓ | ✓ | ✗ | `datasets:update` |
 |搜索数据集 | ✓ | ✓ | ✓ | `datasets:read` |
 |生成综合示例 | ✓ | ✓ | ✗ | `datasets:update` |
@@ -353,7 +353,7 @@
 评估法学硕士输出的比较实验。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |查看对比实验| ✓ | ✓ | ✓ | `projects:read` |
-|创建比较实验 | ✓ | ✓ | ✗ | `experiments:run` |
+|创建对比实验 | ✓ | ✓ | ✗ | `experiments:run` |
 |删除对比实验| ✓ | ✗ | ✗ | `projects:delete` |
 |查看运行示例 | ✓ | ✓ | ✓ | `datasets:read` |
 |查看带有运行的分组示例 | ✓ | ✓ | ✓ | `datasets:read` |
@@ -379,7 +379,7 @@ LLM 输出的分数、标签和更正。
 | - | :-: | :-: | :-: | - |
 |列出反馈公式（已弃用）| ✓ | ✓ | ✓ | `feedback:read` |
 |获取反馈公式（已弃用）| ✓ | ✓ | ✓ | `feedback:read` |
-|创建反馈公式（已弃用）| ✓ | ✓ | ✗ | `feedback:create` |
+|创建反馈公式（已弃用） | ✓ | ✓ | ✗ | `feedback:create` |
 |更新反馈公式（已弃用）| ✓ | ✓ | ✗ | `feedback:update` |
 |删除反馈公式（已弃用）| ✓ | ✓ | ✗ | `feedback:delete` |
 |查看具体反馈 | ✓ | ✓ | ✓ | `feedback:read` |
@@ -404,7 +404,7 @@ LLM 输出的人工审核队列。|运营|工作区管理员 |工作区编辑器
 |获取注释队列 | ✓ | ✓ | ✓ | `annotation-queues:read` |
 |创建注释队列 | ✓ | ✓ | ✗ | `annotation-queues:create` |
 |更新注释队列 | ✓ | ✓ | ✗ | `annotation-queues:update` |
-|删除注释队列 | ✓ | ✗ | ✗ | `annotation-queues:delete` |
+|删除注释队列| ✓ | ✗ | ✗ | `annotation-queues:delete` |
 |填充注释队列 | ✓ | ✓ | ✗ | `annotation-queues:update` |
 |从队列中获取运行 | ✓ | ✓ | ✓ | `annotation-queues:read` |
 |从队列中获取运行（按索引）| ✓ | ✓ | ✓ | `annotation-queues:read` |
@@ -415,7 +415,7 @@ LLM 输出的人工审核队列。|运营|工作区管理员 |工作区编辑器
 |将运行添加到队列 | ✓ | ✓ | ✗ | `annotation-queues:update` |
 |更新在队列中运行 | ✓ | ✓ | ✗ | `annotation-queues:update` |
 |从队列中删除运行 | ✓ | ✓ | ✗ | `annotation-queues:update` |
-|从队列中删除运行（批量） | ✓ | ✓ | ✗ | `annotation-queues:update` |
+|从队列中删除运行（批量）| ✓ | ✓ | ✗ | `annotation-queues:update` |
 |创建身份标注队列运行状态| ✓ | ✓ | ✗ | `annotation-queues:update` |
 |导出存档的运行 | ✓ | ✓ | ✓ | `annotation-queues:read` |
 
@@ -452,7 +452,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |获取所有标签 | ✓ | ✓ | ✓ | `prompts:read` |
 |创建标签 | ✓ | ✓ | ✗ | `prompts:tag` |
 |更新标签 | ✓ | ✓ | ✗ | `prompts:tag` |
-|删除标签| ✓ | ✓ | ✗ | `prompts:tag` |
+|删除标签 | ✓ | ✓ | ✗ | `prompts:tag` |
 |查看活动 | ✓ | ✓ | ✓ | `prompts:read` |
 |列出评论 | ✓ | ✓ | ✓ | `prompts:read` |
 |创建评论 | ✓ | ✓ | ✗ | `prompts:read` |
@@ -463,7 +463,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |创建优化作业 | ✓ | ✓ | ✗ | `prompts:create` |
 |更新优化作业 | ✓ | ✓ | ✗ | `prompts:update` |
 |删除优化作业 | ✓ | ✓ | ✗ | `prompts:delete` ||调用提示画布 | ✓ | ✓ | ✗ | `prompts:update` |
-|列出快速行动| ✓ | ✓ | ✓ | `prompts:read` |
+|列出快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
 |创建快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
 |删除快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
 |更新快动作| ✓ | ✓ | ✓ | `prompts:read` |
@@ -537,7 +537,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 
 ### 工作空间团队
 
-团队在此工作区中拥有的[Workspace-only members and access policies](/langsmith/teams#add-workspace-only-members-and-policies)。 `workspaces:manage`不允许这些操作。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
+团队在此工作区中拥有的[Workspace-only members and access policies](/langsmith/teams#add-workspace-only-members-and-policies)。 `workspaces:manage` 不允许这些操作。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |查看有权访问此工作区的团队及其仅限工作区的成员和策略 | ✓ | ✓ | ✓ | `workspaces:teams:read` |
 |查看团队在此工作区中的角色 | ✓ | ✓ | ✓ | `workspaces:teams:read` |
@@ -568,11 +568,11 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 
 |运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
-|批量出口清单 | ✓ | ✓ | ✓ | `bulk-exports:read` |
+|批量出口清单| ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出运行 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出运行 | ✓ | ✓ | ✓ | `bulk-exports:read` |
-|创建批量导出 | ✓ | ✗ | ✗ | `bulk-exports:manage` |
+|创建批量导出| ✓ | ✗ | ✗ | `bulk-exports:manage` |
 |取消批量导出 | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 |获取批量出口目的地 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量出口目的地 | ✓ | ✓ | ✓ | `bulk-exports:read` |
@@ -611,7 +611,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 * 更新自己的用户资料
 * 列出用户的组织
 * 创建新组织
-* 列出待处理的工作空间邀请
+* 列出待处理的工作区邀请
 * 删除待处理的工作区邀请
 * 领取待处理的工作空间邀请
 * 列出待处理的组织邀请
@@ -624,14 +624,14 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 * [Organization Operator](/langsmith/rbac#organization-operator) 仅在显式添加到具有工作区级别角色的工作区（或他们创建的工作区）时才获得工作区访问权限。
 * [Organization User](/langsmith/rbac#organization-user) 和 [Organization Viewer](/langsmith/rbac#organization-viewer) 仅在显式添加到具有工作区级别角色的工作区时才获得工作区访问权限。
 * 属于 [team](/langsmith/teams) 并有权访问该工作区的工作区成员也会收到团队的工作区角色。
-* [Organization Restricted](/langsmith/rbac#organization-restricted) 用户仅在显式添加到具有工作区级别角色的工作区时才能获得工作区访问权限。具有此角色的工作区范围的服务密钥只能访问为该密钥选择的工作区。
+* [Organization Restricted](/langsmith/rbac#organization-restricted) 用户只有在显式添加到具有工作区级别角色的工作区时才能获得工作区访问权限。具有此角色的工作区范围的服务密钥只能访问为该密钥选择的工作区。
 
 详细的角色定义请参考[Organization roles](/langsmith/rbac#organization-roles)和[Workspace roles](/langsmith/rbac#workspace-roles)。
 
 ### 工作区角色独立性
 
 * 用户在不同的工作空间中可以拥有不同的工作空间角色。
-* 用户可能是一个工作区中的 [Workspace Admin](/langsmith/rbac#workspace-admin)，而另一个工作区中的 [Workspace Viewer](/langsmith/rbac#workspace-viewer)。
+* 用户可能在一个工作区中是 [Workspace Admin](/langsmith/rbac#workspace-admin)，在另一个工作区中是 [Workspace Viewer](/langsmith/rbac#workspace-viewer)。
 
 ***
 

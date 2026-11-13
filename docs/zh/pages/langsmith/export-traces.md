@@ -268,7 +268,7 @@ Run run = client.runs().retrieveV2(
 
 > [!提示]
 >
-> **使用 LangGraph** 在本地重放跟踪
+> **使用 LangGraph** 在本地重播跟踪记录
 >
 > 如果您将 LangGraph 与检查点结合使用，则可以从 LangSmith 获取跟踪并在本地重播以进行调试。有关从检查点恢复执行的详细信息，请参阅[LangGraph's time travel and replay documentation](/oss/python/langgraph/use-time-travel)。
 
@@ -317,7 +317,7 @@ RunQueryV2Params threadRuns = RunQueryV2Params.builder()
     .build();
 ```
 
-### 列出所有名为“extractor”的运行，其跟踪根被分配反馈“user\_score”分数为 1
+### 列出所有名为“extractor”的运行，其跟踪根被分配反馈“user_score”分数为 1
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 client.runs.query(
@@ -346,7 +346,7 @@ RunQueryV2Params extractorRuns = RunQueryV2Params.builder()
     .build();
 ```
 
-### 列出使用“star\_ rating”键运行且分数大于 4 的列表
+### 列出得分大于 4 的“star_ rating”键的运行情况
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 client.runs.query(
@@ -410,7 +410,7 @@ RunQueryV2Params runs = RunQueryV2Params.builder()
     .build();
 ```
 
-### 列出 start\_time 大于特定时间戳的所有运行
+### 列出 start_time 大于特定时间戳的所有运行
 
 要限制时间窗口本身，首选 `min_start_time` 和 `max_start_time` 参数； `start_time` 过滤器仅缩小该窗口内的结果范围。
 
@@ -778,7 +778,7 @@ RunQueryV2Params runs = RunQueryV2Params.builder()
     .build();
 ```
 
-### 树过滤器列出名为“RetrieveDocs”的所有运行，其根运行的“user\_score”反馈为 1，并且完整跟踪中的任何运行都名为“ExpandQuery”。
+### 树过滤器列出名为“RetrieveDocs”的所有运行，其根运行的“user_score”反馈为 1，并且完整跟踪中的任何运行都名为“ExpandQuery”。
 
 如果您想要提取跟踪中达到的各种状态或步骤的特定运行条件，则这种类型的查询非常有用。
 

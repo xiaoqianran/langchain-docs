@@ -61,7 +61,7 @@ A description of what the agent does. The description can contain up to 139 char
 
 A path to the agent icon shown in Slack, relative to the `channels/` directory. The icon must be a 512 by 512 pixel PNG file no larger than 1 MB. If you omit this parameter, Managed Deep Agents will generate an icon for you.
 
-**background\_color** `string`
+**background_color** `string`
 
 The background color behind the agent icon as a six-digit hexadecimal color, such as `#1d4ed8`.
 
@@ -88,11 +88,11 @@ channel = channels.slack(
 
 ### Configure which messages start runs
 
-**trigger\_on\_all\_messages** `bool` (default: False)
+**trigger_on_all_messages** `bool` (default: False)
 
 Whether every new channel message can start an agent run. When `False`, channel messages start runs only when they mention the agent; direct messages still start runs.
 
-**allow\_bot\_triggers** `bool` (default: False)
+**allow_bot_triggers** `bool` (default: False)
 
 Whether messages from other Slack bots can start agent runs.
 

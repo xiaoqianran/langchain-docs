@@ -450,7 +450,7 @@ Create a file called `app.py`, `index.ts`, `App.java`, or `App.kt` with the foll
 > def assistant(question: str) -> str:
 >     context = get_context(question)
 >     response = client.models.generate_content(
->         model="gemini-3.8-flash",
+>         model="gemini-4-hydrogen",
 >         contents=question,
 >         config={"system_instruction": f"Answer using the context below.\n\nContext: {context}"},
 >     )
@@ -478,7 +478,7 @@ Create a file called `app.py`, `index.ts`, `App.java`, or `App.kt` with the foll
 > const assistant = traceable(async function assistant(question: string) { // capture the full pipeline as a single trace
 >     const context = await getContext(question);
 >     const response = await client.models.generateContent({
->         model: "gemini-3.8-flash",
+>         model: "gemini-4-hydrogen",
 >         contents: question,
 >         config: { systemInstruction: `Answer using the context below.\n\nContext: ${context}` },
 >     });
@@ -512,7 +512,7 @@ Click the `assistant` row to open the trace. The **Trajectory** tab shows the co
 
 ![LangSmith UI showing a trace with an outer agent span and a nested LLM call span.](https://mintcdn.com/langchain-5e9cc07a/EKYgNtnIIDPnseTv/langsmith/images/trace-quickstart-app.png?fit=max\&auto=format\&n=EKYgNtnIIDPnseTv\&q=85\&s=35b19b5e1e978d13cdbb61058334eeb4)
 
-The outer span captures your `assistant` function's inputs and outputs. The nested **get\_context** span (**getContext** in TypeScript) records the tool call, and the model span (**ChatOpenAI**, **ChatAnthropic**, or **ChatGoogleGenerativeAI**) records the exact prompt sent to the model and the response returned.
+The outer span captures your `assistant` function's inputs and outputs. The nested **get_context** span (**getContext** in TypeScript) records the tool call, and the model span (**ChatOpenAI**, **ChatAnthropic**, or **ChatGoogleGenerativeAI**) records the exact prompt sent to the model and the response returned.
 
 > [!TIP]
 >

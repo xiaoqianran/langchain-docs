@@ -48,7 +48,7 @@ sh get_clickhouse_stats.sh <clickhouse_url> --output path/to/file.csv
 sh get_clickhouse_stats.sh "clickhouse://default:password@localhost:8123/default" --output clickhouse_stats.csv
 ```
 
-运行此命令后，您应该会看到已使用 Clickhouse 统计信息创建了一个文件 clickhouse\_stats.csv。
+运行此命令后，您应该会看到已使用 Clickhouse 统计信息创建了一个文件 clickhouse_stats.csv。
 
 ***
 

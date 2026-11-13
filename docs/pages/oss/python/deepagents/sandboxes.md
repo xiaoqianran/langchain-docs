@@ -362,7 +362,7 @@ async def agent(config: RunnableConfig):
             idle_ttl_seconds=3600,  # TTL: clean up when idle
         )
     return create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
+        model="google_genai:gemini-4-hydrogen",
         backend=LangSmithSandbox(sandbox=ls_sandbox),
     )
 ```
@@ -577,7 +577,7 @@ async def agent(config: RunnableConfig):
     else:
         ls_sandbox = client.create_sandbox(name=sandbox_name)
     return create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
+        model="google_genai:gemini-4-hydrogen",
         backend=LangSmithSandbox(sandbox=ls_sandbox),
     )
 ```
@@ -802,7 +802,7 @@ ls_sandbox = client.create_sandbox()
 backend = LangSmithSandbox(sandbox=ls_sandbox)
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=backend,
     system_prompt="You are a coding assistant with sandbox access. You can create and run code in the sandbox.",
 )

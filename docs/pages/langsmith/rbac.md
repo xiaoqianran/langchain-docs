@@ -96,6 +96,7 @@ For a comprehensive list of required permissions along with the operations and r
 * Create workspace-scoped service keys and service accounts
 * Manage organization [billing](/langsmith/billing) and subscription plans
 * Create, edit, and delete [custom roles](#custom-roles)
+* Configure [SSO and authentication methods](/langsmith/user-management#set-up-saml-sso-for-your-organization)
 * View organization [usage](/langsmith/usage-and-billing#usage-limits) and analytics
 * View [audit logs](/langsmith/audit-logs) (Enterprise)
 
@@ -105,7 +106,6 @@ For a comprehensive list of required permissions along with the operations and r
 * Cannot assign the Organization Admin role to users
 * Cannot create organization-wide (non-workspace-specific) service keys
 * Not automatically added to existing workspaces (only added to workspaces they create or are explicitly invited to)
-* Cannot configure [SSO or authentication methods](/langsmith/user-management#set-up-saml-sso-for-your-organization)
 
 ### Organization User
 

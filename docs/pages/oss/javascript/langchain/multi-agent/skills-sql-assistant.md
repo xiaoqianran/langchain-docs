@@ -256,14 +256,14 @@ Select a chat model from LangChain's suite of integrations:
 >
 > process.env.GOOGLE_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("google:gemini-3.7-flash");
+> const model = await initChatModel("google:gemini-4-hydrogen");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatGoogle } from "@langchain/google/node";
 >
 > const model = new ChatGoogle({
->   model: "gemini-3.7-flash",
+>   model: "gemini-4-hydrogen",
 >   apiKey: "your-api-key"
 > });
 > ```
@@ -550,7 +550,7 @@ The middleware appends skill descriptions to the system prompt, making the agent
 
 > [!NOTE]
 >
-> **Production consideration**: This tutorial loads the skill list in `__init__` for simplicity. In a production system, you may want to load skills in the `before_agent` hook instead, allowing them to be refreshed periodically to reflect up-to-date changes (e.g., when new skills are added or existing ones are modified). See the [before\_agent hook documentation](/oss/javascript/langchain/middleware/custom#node-style-hooks) for details.
+> **Production consideration**: This tutorial loads the skill list in `__init__` for simplicity. In a production system, you may want to load skills in the `before_agent` hook instead, allowing them to be refreshed periodically to reflect up-to-date changes (e.g., when new skills are added or existing ones are modified). See the [before_agent hook documentation](/oss/javascript/langchain/middleware/custom#node-style-hooks) for details.
 
 ## 4. Create the agent with skill support
 
@@ -695,7 +695,7 @@ The agent saw the lightweight skill description in its system prompt, recognized
 > });
 > ```
 >
-> ### Update load\_skill to modify state
+> ### Update load_skill to modify state
 >
 > Modify the `load_skill` tool to update state when a skill is loaded:
 >

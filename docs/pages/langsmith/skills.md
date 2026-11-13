@@ -47,7 +47,7 @@ export LANGSMITH_PROJECT="<environment-tracer-session-name>"
 ## What these skills cover
 
 * [Traces](/langsmith/observability-concepts#traces): Add tracing to agents; list, filter, inspect, and export traces for debugging and analysis.
-* [Datasets](/langsmith/evaluation-concepts#datasets): Turn traces into evaluation datasets (final\_response, single\_step, trajectory, RAG) and optionally upload to LangSmith.
+* [Datasets](/langsmith/evaluation-concepts#datasets): Turn traces into evaluation datasets (final_response, single_step, trajectory, RAG) and optionally upload to LangSmith.
 * [Evaluators](/langsmith/evaluation-concepts#evaluators): Define code or LLM‑as‑judge evaluators and attach them to datasets (offline) or agent environments (online).
 
 Each skill directory ships with a `SKILL.md` plus optional `scripts/` helpers you can run or adapt. These skills are designed to plug into compatible coding agents (such as Claude Code or Deep Agents Code), though you can also reuse the helper scripts directly if you prefer not to wire up a full agent. For heavier querying, exports, or automation, you can pair these skills with the [LangSmith CLI](/langsmith/langsmith-cli) to script against the same agent environments, datasets, and evaluators from your terminal.

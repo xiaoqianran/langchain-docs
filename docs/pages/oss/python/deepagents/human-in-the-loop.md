@@ -71,7 +71,7 @@ def notify_email(to: str, subject: str, body: str) -> str:
 checkpointer = MemorySaver()
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[remove_file, fetch_file, notify_email],
     interrupt_on={
         "remove_file": True,  # Default: approve, edit, reject, respond
@@ -369,7 +369,7 @@ def writes_outside_workspace(request: ToolCallRequest) -> bool:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     interrupt_on={
         "write_file": {
             "allowed_decisions": ["approve", "edit", "reject"],
@@ -728,7 +728,7 @@ Each subagent can have its own `interrupt_on` configuration that overrides the m
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[delete_file, read_file],
     interrupt_on={
         "delete_file": True,
@@ -799,7 +799,7 @@ def main():
     )
 
     parent_agent = create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
+        model="google_genai:gemini-4-hydrogen",
         checkpointer=checkpointer,
         subagents=[
             CompiledSubAgent(
@@ -935,7 +935,7 @@ from langgraph.checkpoint.memory import MemorySaver
 
 checkpointer = MemorySaver()
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[...],
     interrupt_on={...},
     checkpointer=checkpointer  # Required for HITL

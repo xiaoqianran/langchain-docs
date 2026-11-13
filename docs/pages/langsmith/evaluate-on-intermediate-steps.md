@@ -181,7 +181,7 @@ const ragPipeline = traceable(
 );
 ```
 
-This pipeline will produce a trace that looks something like: ![evaluation\_intermediate\_trace.png](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/evaluation-intermediate-trace.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=3b691ca56f9d60035dcba2c248692fa1)
+This pipeline will produce a trace that looks something like: ![evaluation_intermediate_trace.png](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/evaluation-intermediate-trace.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=3b691ca56f9d60035dcba2c248692fa1)
 
 ## 2. Create a dataset and examples to evaluate the pipeline
 
@@ -400,7 +400,7 @@ await evaluate((inputs) => ragPipeline({ question: inputs.input }), {
 });
 ```
 
-The experiment will contain the results of the evaluation, including the scores and comments from the evaluators: ![evaluation\_intermediate\_experiment.png](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/evaluation-intermediate-experiment.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=e926744573c6b9757ba22ff245a3da2c)
+The experiment will contain the results of the evaluation, including the scores and comments from the evaluators: ![evaluation_intermediate_experiment.png](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/evaluation-intermediate-experiment.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=e926744573c6b9757ba22ff245a3da2c)
 
 ## Related
 

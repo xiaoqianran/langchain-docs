@@ -141,7 +141,7 @@ Fetch a single run by ID. Returns only the run ID by default—specify a field s
 
 > [tab] Python
 >
-> Pass SCREAMING\_SNAKE\_CASE strings to `selects` (eg. `"ID"`, `"NAME"`, `"STATUS"`) to control which fields are populated on the returned `Run`; only selected fields are non-`None`. Default `selects` contains only `"ID"`.
+> Pass SCREAMING_SNAKE_CASE strings to `selects` (eg. `"ID"`, `"NAME"`, `"STATUS"`) to control which fields are populated on the returned `Run`; only selected fields are non-`None`. Default `selects` contains only `"ID"`.
 >
 > | Before (v1 `Run` attribute) | After (v2 `Run` attribute) | Notes |
 > | - | - | - |
@@ -195,7 +195,7 @@ Fetch a single run by ID. Returns only the run ID by default—specify a field s
 
 > [tab] TypeScript
 >
-> Pass SCREAMING\_SNAKE\_CASE strings to `selects` (eg. `"ID"`, `"NAME"`, `"STATUS"`) to control which fields are populated on the returned `Run`. Default `selects` contains only `"ID"`.
+> Pass SCREAMING_SNAKE_CASE strings to `selects` (eg. `"ID"`, `"NAME"`, `"STATUS"`) to control which fields are populated on the returned `Run`. Default `selects` contains only `"ID"`.
 >
 > | Before (v1 `Run` property) | After (v2 `Run` property) | Notes |
 > | - | - | - |
@@ -386,7 +386,7 @@ Fetch a single run by ID. Returns only the run ID by default—specify a field s
 
 > [tab] cURL
 >
-> Pass SCREAMING\_SNAKE\_CASE strings as repeated `selects` query parameters (eg. `selects=NAME&selects=STATUS`) to control which fields are populated. Default `selects` contains only `"ID"`.
+> Pass SCREAMING_SNAKE_CASE strings as repeated `selects` query parameters (eg. `selects=NAME&selects=STATUS`) to control which fields are populated. Default `selects` contains only `"ID"`.
 >
 > | Before (v1 response field) | After (v2 response field) | Notes |
 > | - | - | - |

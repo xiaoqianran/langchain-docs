@@ -48,7 +48,7 @@ For example, if you are using the bundled version with port-forwarding, the comm
 sh get_clickhouse_stats.sh "clickhouse://default:password@localhost:8123/default" --output clickhouse_stats.csv
 ```
 
-and after running this command you should see a file, clickhouse\_stats.csv, has been created with Clickhouse statistics.
+and after running this command you should see a file, clickhouse_stats.csv, has been created with Clickhouse statistics.
 
 ***
 

@@ -8,7 +8,7 @@ Some metrics can only be defined on the entire experiment level as opposed to th
 
 Here, we'll compute the f1-score, which is a combination of precision and recall.
 
-This sort of metric can only be computed over all of the examples in our experiment, so our evaluator takes in a list of outputs, and a list of reference\_outputs.
+This sort of metric can only be computed over all of the examples in our experiment, so our evaluator takes in a list of outputs, and a list of reference_outputs.
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def f1_score_summary_evaluator(outputs: list[dict], reference_outputs: list[dict]) -> dict:
@@ -130,7 +130,7 @@ await evaluate(badClassifier, {
 
 In the LangSmith UI, you'll the summary evaluator's score displayed with the corresponding key.
 
-![summary\_eval.png](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/summary-eval.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=d0f259baa7d7467bf172ef8197c3bb17)
+![summary_eval.png](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/summary-eval.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=d0f259baa7d7467bf172ef8197c3bb17)
 
 ## Summary evaluator args
 

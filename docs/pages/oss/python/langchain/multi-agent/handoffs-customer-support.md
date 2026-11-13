@@ -209,7 +209,7 @@ Select a chat model from LangChain's suite of integrations:
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = init_chat_model("google_genai:gemini-3.7-flash")
+> model = init_chat_model("google_genai:gemini-4-hydrogen")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -218,7 +218,7 @@ Select a chat model from LangChain's suite of integrations:
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
+> model = ChatGoogleGenerativeAI(model="gemini-4-hydrogen")
 > ```
 
 > [tab] AWS Bedrock
@@ -526,7 +526,7 @@ def apply_step_config(
 
 This middleware:
 
-1. **Reads current step**: Gets `current_step` from state (defaults to "warranty\_collector").
+1. **Reads current step**: Gets `current_step` from state (defaults to "warranty_collector").
 2. **Looks up configuration**: Finds the matching entry in `STEP_CONFIG`.
 3. **Validates dependencies**: Ensures required state fields exist.
 4. **Formats prompt**: Injects state values into the prompt template.
@@ -789,7 +789,7 @@ from langchain.chat_models import init_chat_model
 from langchain.messages import HumanMessage, ToolMessage
 from langchain.tools import tool, ToolRuntime
 
-model = init_chat_model("google_genai:gemini-3.6-flash")
+model = init_chat_model("google_genai:gemini-4-hydrogen")
 
 
 # Define the possible workflow steps

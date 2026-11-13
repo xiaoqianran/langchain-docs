@@ -300,7 +300,7 @@ PromptClient promptClient = PromptClient.create(client);
 Prompt prompt = promptClient.pull("joke-generator");
 PromptValue formattedPrompt = prompt.invoke(Map.of("topic", "cats"));
 // Use formattedPrompt with your model provider — see "Use a prompt without LangChain" below.
-```与推送提示类似，您也可以将提示拉取为提示和模型的 RunnableSequence。只需在拉取提示时指定 include\_model 即可。如果存储的提示包含模型，它将作为 RunnableSequence 返回。确保为您使用的模型设置了正确的环境变量。
+```与推送提示类似，您也可以将提示拉取为提示和模型的 RunnableSequence。只需在拉取提示时指定 include_model 即可。如果存储的提示包含模型，它将作为 RunnableSequence 返回。确保为您使用的模型设置了正确的环境变量。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
@@ -404,7 +404,7 @@ result = prompt_with_model.invoke({"topic": "cats"})
 
 有关受支持的提供商和区域端点，请参阅[Configure LangChain and Deep Agents](/langsmith/llm-gateway-direct-model-access#configure-langchain-and-deep-agents)。
 
-## 提示缓存LangSmith SDK 包含用于提示的内置内存缓存。启用后，LangSmith 将在内存中缓存拉取的提示，从而减少频繁使用的提示的延迟和 API 调用。缓存使用在所有客户端之间共享的全局单例实例，并在进程的生命周期内持续存在。它实现了“重新验证时失效”模式，确保您的应用程序始终获得快速响应，同时在后台保持提示最新。
+## 提示缓存LangSmith SDK 包含内置的内存中提示缓存。启用后，LangSmith 将在内存中缓存拉取的提示，从而减少频繁使用的提示的延迟和 API 调用。缓存使用在所有客户端之间共享的全局单例实例，并在进程的生命周期内持续存在。它实现了“重新验证时失效”模式，确保您的应用程序始终获得快速响应，同时在后台保持提示最新。
 
 **要求：**
 
@@ -418,7 +418,7 @@ result = prompt_with_model.invoke({"topic": "cats"})
 |设置|默认 |描述 |
 | - | - | - |
 | `max_size` | 100 | 100缓存的最大提示数|
-| `ttl_seconds` | 300（5 分钟）|缓存提示被视为过时之前的时间 |
+| `ttl_seconds` | 300（5 分钟）|缓存的提示被视为过时之前的时间 |
 | `refresh_interval_seconds` | 60|多久检查一次过时的提示并在后台刷新它们 |
 
 刷新时，全局缓存将使用最后一个请求给定提示的客户端来获取新数据。
@@ -686,11 +686,11 @@ promptCacheSingleton.stop();
 
 > [!注意]
 >
-> 仅当您首次在缓存中设置值且`ttl_seconds` 不是`None` 时，才会启动后台刷新任务。如果`ttl_seconds`是`None`（离线模式），则不会创建后台任务。
+> The background refresh task is only started when you first set a value in the cache, and only if `ttl_seconds` is not `None`. If `ttl_seconds` is `None` (offline mode), no background task is created.
 
 ## 使用不带 LangChain 的提示
 
-如果您想将提示存储在 LangSmith 中，但直接通过模型提供商的 API 使用它们，则可以使用我们的转换方法。这些会将您的提示转换为 OpenAI 或 Anthropic API 所需的负载。
+If you want to store your prompts in LangSmith but use them directly with a model provider's API, you can use our conversion methods. These convert your prompt into the payload required for the OpenAI or Anthropic API.
 
 这些转换方法依赖于LangChain集成包中的逻辑，除了您选择的官方 SDK 之外，您还需要安装适当的包作为依赖项。以下是一些示例：
 
@@ -842,7 +842,7 @@ Message message = anthropic.messages().create(
 
 ## 列出、删除和点赞提示
 
-您还可以使用 `list prompts`、`delete prompt`、`like prompt` 和 `unlike prompt` 方法列出、删除以及喜欢/不喜欢提示。有关这些方法的详细文档，请参阅 [Python SDK](https://github.com/langchain-ai/langsmith-python) 和 [JavaScript SDK](https://github.com/langchain-ai/langsmith-javascript)。
+您还可以使用 `list prompts`、`delete prompt`、`like prompt` 和 `unlike prompt` 方法列出、删除以及喜欢/不喜欢提示。 See the [Python SDK](https://github.com/langchain-ai/langsmith-python) and [JavaScript SDK](https://github.com/langchain-ai/langsmith-javascript) for extensive documentation on these methods.
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # List all prompts in my workspace

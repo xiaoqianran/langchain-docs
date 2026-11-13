@@ -20,9 +20,9 @@
 
 * Node.js 和 npm。
 
-* An API key for your model provider of choice.
+* 您选择的模型提供商的 API 密钥。
 
-## Add the `managed-deep-agents` skill
+## 添加`managed-deep-agents`技能
 
 [⟦T30⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/managed-deep-agents/SKILL.md) 引导编码代理使用 `mda` CLI 构建、测试和部署托管深度代理。要将其添加到当前项目，请运行：
 
@@ -36,29 +36,29 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
 按照托管 Deep Agents 快速入门，在此工作目录中创建并部署托管深度代理。
 
-## 第 1 步：阅读指南Fetch and follow [https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md](https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md) as the source of truth for CLI commands, project layout, and deployment steps. Prefer the Python or TypeScript path that matches this project.
+## 第 1 步：阅读指南获取并遵循 [https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md](https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md) 作为 CLI 命令、项目布局和部署步骤的真实来源。首选与该项目匹配的 Python 或 TypeScript 路径。
 
 ## 第二步：安装技能
 
-If the `managed-deep-agents` skill is not already available, install it:
+如果 `managed-deep-agents` 技能尚不可用，请安装它：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 ```
 
-Use that skill for the rest of the workflow when it is available.
+当该技能可用时，将其用于工作流程的其余部分。
 
 ## 步骤 3：先决条件和秘密
 
-Confirm the user has LangSmith access and any required model or search credentials. If a required API key is missing, ask them to set it in the shell or a `.env` file, then wait.不要发明、硬编码或提交秘密。
+确认用户具有 LangSmith 访问权限以及任何所需的模型或搜索凭据。如果缺少所需的 API 密钥，请要求他们在 shell 或 `.env` 文件中设置它，然后等待。不要发明、硬编码或提交秘密。
 
 ## 步骤 4：搭建、配置、测试和部署
 
-按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。 Stop and ask when a dashboard action or credential can only be completed by the user in the LangSmith UI.
+按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。当仪表板操作或凭证只能由用户在 LangSmith UI 中完成时，停下来询问。
 
-## 规则* 关注快速入门。 Do not add unrelated products or rewrite the generated project layout unless the guide requires it.
-* Prefer the `mda` CLI and the `managed-deep-agents` skill over inventing a custom deployment path.
-* Ask rather than guess when a secret, plan-tier limit, or UI-only step is unclear.
+## 规则* 关注快速入门。除非指南要求，否则请勿添加不相关的产品或重写生成的项目布局。
+* 优先使用 `mda` CLI 和 `managed-deep-agents` 技能，而不是发明自定义部署路径。
+* 当秘密、计划层限制或仅限 UI 的步骤不清楚时，询问而不是猜测。
 
 ## 创建并部署代理
 
@@ -96,11 +96,11 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 # AZURE_OPENAI_DEPLOYMENT_NAME=<AZURE_OPENAI_DEPLOYMENT_NAME>
 ```
 
-本快速入门默认使用 OpenAI。 For Google, Anthropic, or Microsoft Foundry, set the matching values instead. `mda deploy` adds the provider key to the deployment.您也可以使用任何 [other chat provider](/oss/javascript/integrations/chat/)。
+本快速入门默认使用 OpenAI。对于 Google、Anthropic 或 Microsoft Foundry，请改为设置匹配值。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/javascript/integrations/chat/)。
 
 > [!警告]
 >
-> Do not commit the `.env` file into version control.它包含秘密。
+> 不要将 `.env` 文件提交到版本控制中。它包含秘密。
 
 **3.设置LangSmith**
 
@@ -152,7 +152,7 @@ import { defineDeepAgent } from "managed-deepagents";
 // Google's built-in search — no extra install or API key needed
 export const agent = defineDeepAgent({
   name: "research-assistant",
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [{ googleSearch: {} }],
 });
 ```
@@ -337,7 +337,7 @@ bunx mda deploy
 
 > [卡][Custom tools](/langsmith/javascript/managed-deep-agents-tools)
 >
-> 从您的项目中添加创作的 LangChain 工具。
+> 从您的项目添加创作的 LangChain 工具。
 
 > [卡][Connections](/langsmith/javascript/managed-deep-agents-connections)
 >

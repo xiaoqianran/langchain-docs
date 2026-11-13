@@ -447,7 +447,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 > def assistant(question: str) -> str:
 >     context = get_context(question)
 >     response = client.models.generate_content(
->         model="gemini-3.8-flash",
+>         model="gemini-4-hydrogen",
 >         contents=question,
 >         config={"system_instruction": f"Answer using the context below.\n\nContext: {context}"},
 >     )
@@ -475,7 +475,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 > const assistant = traceable(async function assistant(question: string) { // capture the full pipeline as a single trace
 >     const context = await getContext(question);
 >     const response = await client.models.generateContent({
->         model: "gemini-3.8-flash",
+>         model: "gemini-4-hydrogen",
 >         contents: question,
 >         config: { systemInstruction: `Answer using the context below.\n\nContext: ${context}` },
 >     });
@@ -507,7 +507,7 @@ npx tsx index.ts
 
 ![LangSmith UI showing a trace with an outer agent span and a nested LLM call span.](https://mintcdn.com/langchain-5e9cc07a/EKYgNtnIIDPnseTv/langsmith/images/trace-quickstart-app.png?fit=max\&auto=format\&n=EKYgNtnIIDPnseTv\&q=85\&s=35b19b5e1e978d13cdbb61058334eeb4)
 
-外部跨度捕获 `assistant` 函数的输入和输出。嵌套 **get\_context** 范围（TypeScript 中的 **getContext**）记录工具调用，模型范围（**ChatOpenAI**、**ChatAnthropic** 或 **ChatGoogleGenerativeAI**）记录发送到模型的确切提示和返回的响应。
+外部跨度捕获 `assistant` 函数的输入和输出。嵌套 **get_context** 范围（TypeScript 中的 **getContext**）记录工具调用，模型范围（**ChatOpenAI**、**ChatAnthropic** 或 **ChatGoogleGenerativeAI**）记录发送到模型的确切提示和返回的响应。
 
 > [!提示]
 >

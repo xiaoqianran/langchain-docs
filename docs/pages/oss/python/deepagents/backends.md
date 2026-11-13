@@ -35,12 +35,12 @@ Here are a few prebuilt filesystem backends that you can quickly use with your d
 
 | Built-in backend | Description |
 | - | - |
-| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")`  Thread-scoped. The default filesystem backend for an agent is stored in `langgraph` state. Files persist across turns within a thread (via your checkpointer) and are not shared across threads. |
-| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` This gives the deep agent access to your local machine's filesystem. You can specify the root directory that the agent has access to. Note that any provided `root_dir` must be an absolute path. Typically, wrap in a [CompositeBackend](#compositebackend-router) to keep internal agent data (offloaded tool results, conversation history) separate from your project files. |
-| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())` This gives the agent access to long-term storage that is *persisted across threads*. This is great for storing longer term memories or instructions that are applicable to the agent over multiple executions. |
-| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` Stores files durably in a LangSmith Hub repo, without provisioning a separate LangGraph store. |
-| [Sandbox](/oss/python/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` Execute code in isolated environments. Sandboxes provide filesystem tools plus the `execute` tool for running shell commands. Choose from LangSmith, AgentCore, Daytona, or other [sandbox integrations](/oss/python/integrations/sandboxes). |
-| [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` Filesystem and shell execution directly on the host. No isolation—use only in controlled development environments. See [security considerations](#localshellbackend-local-shell) below. |
+| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen")`  Thread-scoped. The default filesystem backend for an agent is stored in `langgraph` state. Files persist across turns within a thread (via your checkpointer) and are not shared across threads. |
+| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` This gives the deep agent access to your local machine's filesystem. You can specify the root directory that the agent has access to. Note that any provided `root_dir` must be an absolute path. Typically, wrap in a [CompositeBackend](#compositebackend-router) to keep internal agent data (offloaded tool results, conversation history) separate from your project files. |
+| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=StoreBackend())` This gives the agent access to long-term storage that is *persisted across threads*. This is great for storing longer term memories or instructions that are applicable to the agent over multiple executions. |
+| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=ContextHubBackend("my-agent"))` Stores files durably in a LangSmith Hub repo, without provisioning a separate LangGraph store. |
+| [Sandbox](/oss/python/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=sandbox)` Execute code in isolated environments. Sandboxes provide filesystem tools plus the `execute` tool for running shell commands. Choose from LangSmith, AgentCore, Daytona, or other [sandbox integrations](/oss/python/integrations/sandboxes). |
+| [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` Filesystem and shell execution directly on the host. No isolation—use only in controlled development environments. See [security considerations](#localshellbackend-local-shell) below. |
 | [Composite](#compositebackend-router) | Thread-scoped by default, `/memories/` persisted across threads. The Composite backend is maximally flexible. You can specify different routes in the filesystem to point towards different backends. See Composite routing below for a ready-to-paste example. |
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -85,11 +85,11 @@ from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
 # By default we provide a StateBackend
-agent = create_deep_agent(model="google_genai:gemini-3.6-flash")
+agent = create_deep_agent(model="google_genai:gemini-4-hydrogen")
 
 # Under the hood, it looks like
 agent2 = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=StateBackend(),
 )
 ```
@@ -233,7 +233,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=FilesystemBackend(root_dir=".", virtual_mode=True),
 )
 ```
@@ -374,7 +374,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
 )
 ```
@@ -459,7 +459,7 @@ from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=StoreBackend(
         namespace=lambda rt: (rt.server_info.user.identity,),
     ),
@@ -642,7 +642,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=ContextHubBackend("my-agent"),
 )
 ```
@@ -738,7 +738,7 @@ from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=CompositeBackend(
         default=StateBackend(),
         routes={
@@ -877,7 +877,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, FilesystemBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=CompositeBackend(
         default=StateBackend(),
         routes={
@@ -927,15 +927,15 @@ Implement a custom backend to connect Deep Agents to storage systems such as dat
 
 Subclass [`BackendProtocol`](https://reference.langchain.com/python/deepagents/backends/protocol/BackendProtocol) and implement the following methods:
 
-| Method | Signature | What it does | | |
-| - | - | - | - | - |
-| `ls` | `(path: str) -> LsResult` | List files and directories at the given path. | | |
-| `read` | `(file_path: str, offset: int, limit: int) -> ReadResult` | Return file contents, optionally paginated. | | |
-| `write` | `(file_path: str, content: str) -> WriteResult` | Create or overwrite a file. | | |
-| `edit` | `(file_path: str, old_string: str, new_string: str, replace_all: bool) -> EditResult` | Find-and-replace within an existing file. | | |
-| `glob` | \`(pattern: str, path: str | None) -> GlobResult\` | Return paths matching a glob pattern. | |
+| Method | Signature | What it does |
+| - | - | - |
+| `ls` | `(path: str) -> LsResult` | List files and directories at the given path. |
+| `read` | `(file_path: str, offset: int, limit: int) -> ReadResult` | Return file contents, optionally paginated. |
+| `write` | `(file_path: str, content: str) -> WriteResult` | Create or overwrite a file. |
+| `edit` | `(file_path: str, old_string: str, new_string: str, replace_all: bool) -> EditResult` | Find-and-replace within an existing file. |
+| `glob` | \`(pattern: str, path: str | None) -> GlobResult\` | Return paths matching a glob pattern. |
 | `grep` | \`(pattern: str, path: str | None, glob: str | None) -> GrepResult\` | Search file contents for a literal string. |
-| `delete` | `(file_path: str) -> DeleteResult` | Optional. Remove a file or, recursively, a directory. If the backend does not support deletion, the tool is automatically hidden from the model at request time. | | |
+| `delete` | `(file_path: str) -> DeleteResult` | Optional. Remove a file or, recursively, a directory. If the backend does not support deletion, the tool is automatically hidden from the model at request time. |
 
 To also support the `execute` tool (running shell commands), implement [`SandboxBackendProtocol`](https://reference.langchain.com/python/deepagents/backends/protocol/SandboxBackendProtocol) instead, which extends `BackendProtocol` with an `execute` method.
 
@@ -991,7 +991,7 @@ Use [permissions](/oss/python/deepagents/permissions) to declaratively control w
 from deepagents import create_deep_agent, FilesystemPermission
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=CompositeBackend(
         default=StateBackend(),
         routes={
@@ -1115,7 +1115,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=lambda rt: CompositeBackend(
         default=StateBackend(rt),
         routes={"/memories/": StoreBackend(rt, namespace=lambda rt: (rt.server_info.user.identity,))},
@@ -1124,7 +1124,7 @@ agent = create_deep_agent(
 
 # After
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=CompositeBackend(
         default=StateBackend(),
         routes={"/memories/": StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,))},

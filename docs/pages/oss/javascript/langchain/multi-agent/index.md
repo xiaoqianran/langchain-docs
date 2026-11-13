@@ -179,7 +179,7 @@ The user repeats the same request in the same conversation.
 > **3 calls again → 6 total**
 >
 > * Routers are **stateless**—each request requires an LLM routing call
-> * Turn 2: Router LLM call (1) → Milk agent calls buy\_coffee (2) → Milk agent responds (3)
+> * Turn 2: Router LLM call (1) → Milk agent calls buy_coffee (2) → Milk agent responds (3)
 > * Can be optimized by wrapping as a tool in a stateful agent
 
 **Key insight:** Stateful patterns (Handoffs, Skills) save 40-50% of calls on repeat requests. Subagents maintain consistent cost per request—this stateless design provides strong context isolation but at the cost of repeated model calls.

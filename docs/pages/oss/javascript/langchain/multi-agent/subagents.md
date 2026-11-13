@@ -54,7 +54,7 @@ import { createAgent, tool } from "langchain";
 import { z } from "zod";
 
 // Create a subagent
-const subagent = createAgent({ model: "google:gemini-3.6-flash", tools: [...] });
+const subagent = createAgent({ model: "google:gemini-4-hydrogen", tools: [...] });
 
 // Wrap it as a tool
 const callResearchAgent = tool(
@@ -72,7 +72,7 @@ const callResearchAgent = tool(
 );
 
 // Main agent with subagent as a tool
-const mainAgent = createAgent({ model: "google:gemini-3.6-flash", tools: [callResearchAgent] });
+const mainAgent = createAgent({ model: "google:gemini-4-hydrogen", tools: [callResearchAgent] });
 ```
 
 > [card] [Tutorial: Build a personal assistant with subagents](/oss/javascript/langchain/multi-agent/subagents-personal-assistant)
@@ -179,7 +179,7 @@ sequenceDiagram
 2. **Check status**: Returns current state (pending, running, completed, failed)
 3. **Get result**: Retrieves the completed result
 
-**Handling job completion:** When a job finishes, your application needs to notify the user. One approach: surface a notification that, when clicked, sends a `HumanMessage` like "Check job\_123 and summarize the results."
+**Handling job completion:** When a job finishes, your application needs to notify the user. One approach: surface a notification that, when clicked, sends a `HumanMessage` like "Check job_123 and summarize the results."
 
 ## Tool patterns
 

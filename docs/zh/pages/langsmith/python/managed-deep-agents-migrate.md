@@ -28,13 +28,13 @@
 
 ## 了解发生了什么变化
 
-[create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 在您的进程中编译代理，因此它将后端、存储和检查指针作为参数。 `define_deep_agent` 返回一个定义，托管运行时对其进行编译。定义是配置而不是可运行的代理：`mda` CLI 在`mda dev` 和 `mda deploy` 上使用它，并且运行时在此时提供托管片段。完整图片请参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。
+[create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 在您的进程中编译代理，因此它将后端、存储和检查指针作为参数。 `define_deep_agent` 返回一个定义，托管运行时对其进行编译。定义是配置而不是可运行的代理：`mda` CLI 在`mda dev` 和 `mda deploy` 上使用它，并且运行时在此时提供托管片段。完整图片请参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。
 
 ## 检查哪些内容没有保留
 
 大多数代理移动时不会对条目文件进行任何更改。有四种情况需要首先做出决定：* **自定义后端**：托管 Deep Agents 提供代理的默认后端。这是线程范围的代理状态，或者当项目声明一个时为[managed sandbox](/langsmith/python/managed-deep-agents-sandboxes)。您无法替换默认后端。要保留您自己的后端，请将其安装在路径前缀处，例如 `/documents/` 和 [⟦T18⟧](/langsmith/python/managed-deep-agents-agent-definition#mount-your-own-backends)。路由需要 0.10.3 或更高版本。
 * **您自己的存储或检查点**：线程、运行和持久性来自[Agent Server](/langsmith/agent-server-overview)。依赖于特定商店实现的代理需要将逻辑移至工具或中间件中。
-* **自定义应用程序代码和路由**：托管 Deep Agents 托管代理，而不是任意 Web 应用程序。对于自定义路由、高级身份验证或代理周围的应用程序代码，请改用 [LangSmith Agent Server](/langsmith/deployment)。
+* **自定义应用程序代码和路由**：托管 Deep Agents 托管代理，而不是任意 Web 应用程序。对于代理周围的自定义路由、高级身份验证或应用程序代码，请改用 [LangSmith Agent Server](/langsmith/deployment)。
 * **Python 中的自定义状态模式**：`define_deep_agent` 不接受 `state_schema`，因此扩展 `DeepAgentState` 的代理无法按原样移动。 TypeScript `defineDeepAgent` 接受 `stateSchema`。
 
 如果这些都不适用，则代理逻辑将按写入方式进行传输。
@@ -75,13 +75,13 @@
 
 其余的移动到项目文件或成为运行时的工作：| `create_deep_agent` |它去哪儿了|笔记|
 | - | - | - |
-| `system_prompt` | `instructions.md` |将文本移至文件中，然后删除参数。参见[Instructions](/langsmith/python/managed-deep-agents-instructions)。 |
+| `system_prompt` | `instructions.md` |将文本移动到文件中，然后删除参数。参见[Instructions](/langsmith/python/managed-deep-agents-instructions)。 |
 | `skills` | `skills/` |每个技能一个目录，每个目录都有一个`SKILL.md`。参见[Skills](/langsmith/python/managed-deep-agents-skills)。 |
 | `memory` | `memory.py` |出口`define_memory(scope="agent")`。如果没有持久内存，则省略该文件。参见[Memory](/langsmith/python/managed-deep-agents-memory)。 |
 | `backend` | `sandbox/` 或 `routes` |为文件系统和 shell 声明一个托管沙箱。要保留其他后端，请将它们安装在带有 `routes` 的路径前缀处。参见[Sandboxes](/langsmith/python/managed-deep-agents-sandboxes)和[Mount your own backends](/langsmith/python/managed-deep-agents-agent-definition#mount-your-own-backends)。 |
-| `permissions` |保留参数 |已接受，并在项目声明沙箱时清除。参见[Permissions](/oss/python/deepagents/permissions)。 |
+| `permissions` |保留参数|已接受，并在项目声明沙箱时清除。参见[Permissions](/oss/python/deepagents/permissions)。 |
 | `store`、`checkpointer` |托管运行时 |删除两者。 |
-| `state_schema` |没有同等的 | `define_deep_agent`不接受。 |
+| `state_schema` |没有同等的| `define_deep_agent`不接受。 |
 
 Deep Agents 后端是可插入的，并且托管运行时提供自己的后端。声明 `sandbox/` 的项目会获得一个用于代理文件系统和 shell 的托管沙箱。没有代理的项目会获得线程范围的代理状态，以及用于指令、技能和内存的只读 [Context Hub](/langsmith/python/managed-deep-agents-context-hub) 挂载。您无法替换此默认后端。要保留特定后端，请将其安装在带有 [⟦T102⟧](/langsmith/python/managed-deep-agents-agent-definition#mount-your-own-backends) 的路径前缀处。每条路径都需要自己的后端的代理会停留在Deep Agents上。
 

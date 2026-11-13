@@ -19,7 +19,7 @@
 ]
 ```
 
-要使用 JS/TS SDK 执行此操作，请返回一个带有“结果”键的对象，然后返回上述表单的列表
+要使用 JS/TS SDK 执行此操作，请返回一个带有“结果”键的对象，然后返回上述形式的列表
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {results: [{ key: string, score: number }, ...]};
@@ -62,7 +62,7 @@ function multipleScores(rootRun: Run, example: Example) {
 
 结果实验中的行将显示每个分数。
 
-![multiple\_scores.png](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/multiple-scores.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=7f0a67189b7202a46d5e093cce9ea283)
+![multiple_scores.png](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/multiple-scores.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=7f0a67189b7202a46d5e093cce9ea283)
 
 ## 相关
 

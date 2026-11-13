@@ -48,7 +48,7 @@ sh get_query_stats.sh <clickhouse_url> --output path/to/file.csv
 sh get_query_stats.sh "clickhouse://default:password@localhost:8123/default" --output query_stats.csv
 ```
 
-运行此命令后，您应该会看到一个包含 LangSmith 查询统计信息的文件 query\_stats.csv。
+运行此命令后，您应该看到一个包含 LangSmith 查询统计信息的文件 query_stats.csv。
 
 ***
 

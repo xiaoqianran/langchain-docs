@@ -193,7 +193,7 @@ Wiring [`useStream`](https://reference.langchain.com/javascript/langchain-react/
 | **Mid-token churn** | `useStableText` — gate Renderer updates on complete statement boundaries (`name = Expr(…)`) rather than every token |
 | **Chart null-data crashes** | `chartDataRefsResolved` — verify a chart's `Series` and label arrays are defined before including it in the snapshot |
 | **No `root` yet / fallback** | `buildProgressiveRoot` — synthesise a `root = Stack([…])` from top-level variables when the model hasn't written one |
-| **Snake\_case identifiers** | `sanitizeIdentifiers` — the parser only accepts camelCase; convert any `snake_case` names the model emits |
+| **Snake_case identifiers** | `sanitizeIdentifiers` — the parser only accepts camelCase; convert any `snake_case` names the model emits |
 
 Copy the full block into your project and pass `stable` to `<Renderer>`:
 

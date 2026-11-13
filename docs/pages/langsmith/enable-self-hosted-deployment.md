@@ -203,7 +203,7 @@ Replace the values with your registry credentials:
 * `your-password`: Your registry password or access token
 * `langsmith`: The Kubernetes namespace where LangSmith is installed
 
-**2. Configure the deployment template in your langsmith\_config.yaml**
+**2. Configure the deployment template in your langsmith_config.yaml**
 
 To enable agent server deployments to use the private registry secret, add `imagePullSecrets` to the operator's deployment template:
 

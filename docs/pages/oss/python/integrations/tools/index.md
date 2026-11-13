@@ -37,7 +37,7 @@ The following table shows tools that execute online searches in some shape or fo
 | [iFlow Search](https://platform.iflow.cn/) | Paid | URL, Title, Snippet, Date |
 | [Keenable](https://docs.keenable.ai/integrations/langchain) | Free keyless tier available | Title, URL, Snippet (page text), Published Date, Index Date; page markdown for fetch |
 | [Linkup Search](https://github.com/LinkupPlatform/langchain-linkup) | 2000 free searches/month | URL, Content, Sources |
-| [Octen](https://docs.octen.ai) | Paid | Title, URL, highlight, authors, time\_published |
+| [Octen](https://docs.octen.ai) | Paid | Title, URL, highlight, authors, time_published |
 | [Mixpeek](https://docs.mixpeek.com/agent-integrations/langchain) | Free tier available | Multimodal search results (video, image, audio, document) |
 | [Nia Toolkit](https://github.com/nozomio-labs/nia-langchain) | Free tier available | Code, Docs, Metadata, Sources |
 | [Nimble Search](https://docs.nimbleway.com/integrations/connectors/langchain) | Free trial available | URL, Content, Title |
@@ -55,7 +55,7 @@ The following table shows tools that execute online searches in some shape or fo
 | [Apify](https://docs.apify.com/integrations/langchain) | Free tier, pay-per-use (varies by Actor) | Actor output (varies by Actor) |
 | [Xpoz](https://www.xpoz.ai/docs) | Free tier available | Posts, user profiles, comments, engagement metrics (Twitter/X, Instagram, Reddit, TikTok) |
 | [You.com Search](https://you.com/docs/integrations/langchain) | \$100 in credits on sign up | URL, Title, Page Content |
-| [Querit](https://querit.com/docs) | 1000 free searches/month on sign up | URL, Snippet, Title, Page\_Age, Site\_Name, Site\_Icon |
+| [Querit](https://querit.com/docs) | 1000 free searches/month on sign up | URL, Snippet, Title, Page_Age, Site_Name, Site_Icon |
 | [SerpApi Search Tools](https://serpapi.github.io/serpapi-search-tools-python/docs/sdk-examples/langchain.html) | 250 free searches/month | URL, Title, Snippet, Answer Box, Knowledge Graph, AI Overview |
 
 ## Code interpreter
@@ -179,7 +179,7 @@ The following table shows tools that can be used for security-related tasks:
 
 | Tool/Toolkit | Pricing | Capabilities |
 | - | - | - |
-| [URLCheck](https://urlcheck.dev) | 100 free requests/day | Verify URL safety before agent navigation. Supports optional intent-aware risk analysis. Returns actionable access directives (ALLOW/DENY/RETRY\_LATER). |
+| [URLCheck](https://urlcheck.dev) | 100 free requests/day | Verify URL safety before agent navigation. Supports optional intent-aware risk analysis. Returns actionable access directives (ALLOW/DENY/RETRY_LATER). |
 | [Bidda](https://bidda.com/developers) | Free discovery tier | Source-verified regulatory and compliance intelligence lookup with primary-source citations. |
 | [AI Identity](https://ai-identity.co/docs) | Free tier available | Per-agent cryptographic API keys, scoped policy enforcement, and tamper-evident audit logging via a gateway in front of tools and LLM calls. |
 | [Aidress](https://aidress.ai) | Free keyless tier available | Verify a counterpart agent's trust score, capabilities, and transaction history before delegating work or moving value. Discovery by capability, plus bearer-key issuance and rotation. |
@@ -327,7 +327,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`ContextFetchSearch`](https://github.com/lachy3433/langchain-contextfetch#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-contextfetch/month)](https://pypi.org/project/langchain-contextfetch/) |
 | [`ClawFetchToolkit`](https://github.com/clawfetch/integrations#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-clawfetch/month)](https://pypi.org/project/langchain-clawfetch/) |
 | [`Manifest`](https://omfang.io/manifest-docs) | [  ![Downloads per month](https://static.pepy.tech/badge/manifest-api/month)](https://pypi.org/project/manifest-api/) |
-| [`SnapRender`](https://snap-render.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-snaprender/month)](https://pypi.org/project/langchain-snaprender/) |
+| [`SnapRender`](https://github.com/User0856/snaprender-integrations/tree/main/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-snaprender/month)](https://pypi.org/project/langchain-snaprender/) |
 | [`WebExtract`](https://webextract.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webextract/month)](https://pypi.org/project/langchain-webextract/) |
 | [`GPTImageToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gpt-image-acedatacloud/month)](https://pypi.org/project/langchain-gpt-image-acedatacloud/) |
 | [`Lians`](https://www.lians.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/lians-sdk/month)](https://pypi.org/project/lians-sdk/) |
@@ -522,9 +522,6 @@ The following table shows tools that generate video, image, or audio assets:
 | [`CoworkingViewToolkit`](https://coworkingview.com/en/mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-coworkingview/month)](https://pypi.org/project/langchain-coworkingview/) |
 | [`KeiroSearchTool`](https://github.com/Keirolabs-API/langchain-keiro) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-keiro/month)](https://pypi.org/project/langchain-keiro/) |
 | [`FlipCoinToolkit`](https://github.com/flipcoin-fun/flipcoin-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flipcoin/month)](https://pypi.org/project/langchain-flipcoin/) |
-| [`ScrapelessCrawlerScrapeTool`](https://github.com/scrapeless-ai/langchain-scrapeless) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
-| [`ScrapelessDeepSerpGoogleSearchTool`](https://github.com/scrapeless-ai/langchain-scrapeless) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
-| [`ScrapelessUniversalScrapingTool`](https://github.com/scrapeless-ai/langchain-scrapeless) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
 | [`SignatrustGenerateReceiptTool`](https://signatrust.net/docs/api) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-signatrust/month)](https://pypi.org/project/langchain-signatrust/) |
 | [`Synap DocuAnalyzer`](https://github.com/synapsoft-DA/langchain-synapsoft) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synapsoft/month)](https://pypi.org/project/langchain-synapsoft/) |
 | [`GoodSender Toolkit`](https://goodsender.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-goodsender/month)](https://pypi.org/project/langchain-goodsender/) |
@@ -535,6 +532,10 @@ The following table shows tools that generate video, image, or audio assets:
 | [`AgentLineToolkit`](https://docs.agentline.cloud/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentline/month)](https://pypi.org/project/langchain-agentline/) |
 | [`Delegare`](https://docs.delegare.dev/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-delegare/month)](https://pypi.org/project/langchain-delegare/) |
 | [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-toolstem/month)](https://pypi.org/project/langchain-toolstem/) |
+| [`ScrapelessAIScraperTool`](https://docs.scrapeless.com/en/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
+| [`ScrapelessCrawlerScrapeTool`](https://docs.scrapeless.com/en/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
+| [`ScrapelessDeepSerpGoogleSearchTool`](https://docs.scrapeless.com/en/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
+| [`ScrapelessUniversalScrapingTool`](https://docs.scrapeless.com/en/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
 | [`NextmailToolkit`](https://nextmail.sh/docs/python/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nextmail/month)](https://pypi.org/project/langchain-nextmail/) |
 | [`EU Nordic Open Data tools`](https://github.com/itulo/eu-nordic-open-data-mcp/tree/main/packages/langchain-eu-nordic-open-data) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-eu-nordic-open-data/month)](https://pypi.org/project/langchain-eu-nordic-open-data/) |
 | [`SurgemeshToolkit`](https://pypi.org/project/langchain-surgemesh/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-surgemesh/month)](https://pypi.org/project/langchain-surgemesh/) |

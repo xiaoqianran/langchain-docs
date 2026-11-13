@@ -32,31 +32,31 @@ register_harness_profile(
 )
 ```
 
-**base\_system\_prompt** `string`
+**base_system_prompt** `string`
 
 Set the profile's base instructions. For the main agent, these follow the caller's system instructions; no base instructions are added by default. For declarative subagents, this replaces their authored system prompt.
 
-**system\_prompt\_suffix** `string`
+**system_prompt_suffix** `string`
 
 Append text after the caller's instructions and the profile's base instructions. Applied to the main agent, declarative subagents, and the auto-added general-purpose subagent.
 
-**tool\_description\_overrides** `Mapping[str, str]`
+**tool_description_overrides** `Mapping[str, str]`
 
 Override individual tool descriptions, keyed by tool name.
 
-**excluded\_tools** `frozenset[str]`
+**excluded_tools** `frozenset[str]`
 
 Remove specific harness-level tools from the tool set. Matched by tool name (string), applied as a post-injection filter so it can drop both user-supplied tools and tools added by harness middleware. See [Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) for a worked example.
 
-**excluded\_middleware** `frozenset[type[AgentMiddleware] | str]`
+**excluded_middleware** `frozenset[type[AgentMiddleware] | str]`
 
 Strip specific middleware classes from the [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack). Accepts middleware classes or string names.
 
-**extra\_middleware** `Sequence[AgentMiddleware] | Callable[[], Sequence[AgentMiddleware]]`
+**extra_middleware** `Sequence[AgentMiddleware] | Callable[[], Sequence[AgentMiddleware]]`
 
 Append middleware to every stack this profile applies to. See the [Deep Agents stack](/oss/python/deepagents/customization#full-stack) for the built-in ordering.
 
-**general\_purpose\_subagent** `GeneralPurposeSubagentProfile`
+**general_purpose_subagent** `GeneralPurposeSubagentProfile`
 
 Disable, rename, or re-prompt the general-purpose subagent. When this field's `system_prompt` is set alongside `base_system_prompt`, the general-purpose-specific subagent prompt wins—see [General-purpose subagent prompt](/oss/python/deepagents/customization#general-purpose-subagent-prompt).
 
@@ -183,15 +183,15 @@ register_provider_profile(
 
 Future construction of this model uses `temperature=0` and `timeout=60`. These registrations leave existing model objects unchanged.
 
-**init\_kwargs** `Mapping[str, Any]`
+**init_kwargs** `Mapping[str, Any]`
 
 Static initialization arguments forwarded to `init_chat_model`.
 
-**pre\_init** `Callable[[str], None]`
+**pre_init** `Callable[[str], None]`
 
 Side effects to run before construction (for example, credential validation).
 
-**init\_kwargs\_factory** `Callable[[], dict[str, Any]]`
+**init_kwargs_factory** `Callable[[], dict[str, Any]]`
 
 Kwargs derived from runtime state (for example, headers pulled from environment variables).
 

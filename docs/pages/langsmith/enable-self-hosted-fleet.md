@@ -407,7 +407,7 @@ fleet:
 > https://<hostname>/host-oauth-callback/<provider-id>
 > ```
 >
-> * **Selected OAuth Scopes**: add **Manage user data via APIs (api)** and **Perform requests at any time (refresh\_token, offline\_access)**.
+> * **Selected OAuth Scopes**: add **Manage user data via APIs (api)** and **Perform requests at any time (refresh_token, offline_access)**.
 > * Keep **Require Secret for the Web Server Flow** selected.
 > * Leave **Enable Authorization Code and Credentials Flow** and **Enable Client Credentials Flow** unselected. Fleet uses the standard web server (authorization code) flow.
 >
@@ -597,7 +597,7 @@ kubectl create secret generic fleet-github-app \
 
 For production deployments, manage this secret through your existing secrets workflow (for example, [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) or [External Secrets Operator](https://external-secrets.io/)). See [Use an existing secret](/langsmith/self-host-using-an-existing-secret) for more.
 
-**12. Add the configuration to your langsmith\_config.yaml**
+**12. Add the configuration to your langsmith_config.yaml**
 
 Add the following, replacing the placeholder values with the non-sensitive values gathered above:
 

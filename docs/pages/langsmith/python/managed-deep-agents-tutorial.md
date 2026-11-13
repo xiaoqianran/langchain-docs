@@ -140,7 +140,7 @@ If memory is empty on the first fire, the agent still returns open questions.
 
 * `mda deploy` finish without schedule errors (do not pass `--no-wait`, or schedules are not reconciled).
 * A managed cron for this file on the deployment. The schedule name matches the module stem: `daily_digest` (Python) or `daily-digest` (TypeScript).
-* No immediate digest run from this cron. The first fire waits until 8:00 America/Los\_Angeles on a weekday.
+* No immediate digest run from this cron. The first fire waits until 8:00 America/Los_Angeles on a weekday.
 
 For thread behavior and constraints, see [Schedules](/langsmith/python/managed-deep-agents-schedules).
 

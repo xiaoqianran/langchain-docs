@@ -158,7 +158,7 @@ The easiest way to get started with a standalone model in LangChain is to use [`
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = init_chat_model("google_genai:gemini-3.7-flash")
+> model = init_chat_model("google_genai:gemini-4-hydrogen")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -167,7 +167,7 @@ The easiest way to get started with a standalone model in LangChain is to use [`
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
+> model = ChatGoogleGenerativeAI(model="gemini-4-hydrogen")
 > ```
 
 > [tab] AWS Bedrock
@@ -311,7 +311,7 @@ A chat model takes parameters that can be used to configure its behavior. The fu
 
 The name or identifier of the specific model you want to use with a provider. You can also specify both the model and its provider in a single argument using the ':' format, for example, 'openai:o1'.
 
-**api\_key** `string`
+**api_key** `string`
 
 The key required for authenticating with the model's provider. This is usually issued when you sign up for access to the model. Often accessed by setting an environment variable (A variable whose value is set outside the program, typically through functionality built into the operating system or microservice.).
 
@@ -319,7 +319,7 @@ The key required for authenticating with the model's provider. This is usually i
 
 Controls the randomness of the model's output. A higher number makes responses more creative; lower ones make them more deterministic.
 
-**max\_tokens** `number`
+**max_tokens** `number`
 
 Limits the total number of tokens (The basic unit that a model reads and generates. Providers may define them differently, but in general, they can represent a whole or part of word.) in the response, effectively controlling how long the output can be.
 
@@ -327,7 +327,7 @@ Limits the total number of tokens (The basic unit that a model reads and generat
 
 The maximum time (in seconds) to wait for a response from the model before canceling the request.
 
-**max\_retries** `number` (default: 6)
+**max_retries** `number` (default: 6)
 
 The maximum number of attempts the system will make to resend a request if it fails due to issues like network timeouts or rate limits. Retries use exponential backoff with jitter. Network errors, rate limits (429), and server errors (5xx) are retried automatically. Client errors such as 401 (unauthorized) or 404 are not retried. For long-running [agent](/oss/python/deepagents/overview) tasks on unreliable networks, consider increasing this to 10–15.
 
@@ -354,7 +354,7 @@ You can adjust `max_retries` and `timeout` when creating a model, then pass that
 from langchain.chat_models import init_chat_model
 
 model = init_chat_model(
-    "google_genai:gemini-3.6-flash",
+    "google_genai:gemini-4-hydrogen",
     max_retries=10,  # Increase for unreliable networks (default: 6)
     timeout=120,  # Seconds; increase for slow connections
 )
@@ -1439,7 +1439,7 @@ These configuration values are particularly useful when:
 
 > [accordion] Key configuration attributes
 >
-> **run\_name** `string`
+> **run_name** `string`
 >
 > Identifies this specific invocation in logs and traces. Not inherited by sub-calls.
 >
@@ -1451,7 +1451,7 @@ These configuration values are particularly useful when:
 >
 > Custom key-value pairs for tracking additional context, inherited by all sub-calls.
 >
-> **max\_concurrency** `number`
+> **max_concurrency** `number`
 >
 > Controls the maximum number of parallel calls when using [`batch()`](https://reference.langchain.com/python/langchain_core/language_models/#langchain_core.language_models.chat_models.BaseChatModel.batch) or [`batch_as_completed()`](https://reference.langchain.com/python/langchain_core/language_models/#langchain_core.language_models.chat_models.BaseChatModel.batch_as_completed).
 >
@@ -1459,7 +1459,7 @@ These configuration values are particularly useful when:
 >
 > Handlers for monitoring and responding to events during execution.
 >
-> **recursion\_limit** `number`
+> **recursion_limit** `number`
 >
 > Maximum recursion depth for chains to prevent infinite loops in complex pipelines.
 

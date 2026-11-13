@@ -35,7 +35,7 @@ To start configuring a composite evaluator, navigate to the **Tracing** or **Dat
 
 > [!TIP]
 >
-> If you need to adjust the weights for the composite scores, they can be updated after the evaluator is created. The resulting scores will be updated for all runs that have the evaluator configured.
+> &#x20;If you need to adjust the weights for the composite scores, they can be updated after the evaluator is created. The resulting scores will be updated for all runs that have the evaluator configured.&#x20;
 
 ### 3. View composite evaluator results
 
@@ -54,7 +54,7 @@ Composite scores are attached to a run as **feedback**, similarly to feedback fr
 
 > [!NOTE]
 >
-> If any of the constituent evaluators are not configured on the run, the composite score will not be calculated for that run.
+> &#x20;If any of the constituent evaluators are not configured on the run, the composite score will not be calculated for that run.&#x20;
 
 ***
 

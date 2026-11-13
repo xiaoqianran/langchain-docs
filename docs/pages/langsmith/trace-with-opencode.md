@@ -117,7 +117,7 @@ Set `replicas` in `langsmith.json` or `LANGSMITH_OPENCODE_RUNS_ENDPOINTS` to sen
 }
 ```
 
-Replica objects support both snake\_case and LangSmith SDK-style camelCase field names. snake\_case is recommended in config files.
+Replica objects support both snake_case and LangSmith SDK-style camelCase field names. snake_case is recommended in config files.
 
 | Field | Description |
 | - | - |

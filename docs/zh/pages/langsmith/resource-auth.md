@@ -107,7 +107,7 @@ async def add_owner(
     return filters
 ```
 
-处理程序接收两个参数：1. `ctx` ([AuthContext](https://reference.langchain.com/python/langgraph-sdk/auth/types/AuthContext))：包含当前`user`、用户的`permissions`、`resource`（“线程”、“crons”、“助手”）和正在使用的`action`（“创建”、“读取”、“更新”、“删除”、 “搜索”、“创建\_运行”）
+处理程序接收两个参数：1. `ctx` ([AuthContext](https://reference.langchain.com/python/langgraph-sdk/auth/types/AuthContext))：包含当前`user`、用户的`permissions`、`resource`（“线程”、“crons”、“助手”）和正在使用的`action`（“创建”、“读取”、“更新”、“删除”、 “搜索”、“创建运行”）
 2. `value` (`dict`)：正在创建或访问的数据。该字典的内容取决于正在访问的资源和操作。有关如何获得更严格范围的访问控制的信息，请参阅下面的[adding scoped authorization handlers](#scoped-authorization)。
 
 请注意，简单处理程序做了两件事：
@@ -188,7 +188,7 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2. 用户无法看到彼此的话题
 3. 列出线程仅显示您自己的线程
 
-## 3. 添加范围授权处理程序广泛的 `@auth.on` 处理程序与所有 [authorization events](/langsmith/auth#supported-resources) 匹配。这很简洁，但这意味着 `value` 字典的内容范围不明确，并且相同的用户级访问控制应用于每个资源。如果想要更细粒度，还可以控制对资源的特定操作。
+## 3. 添加范围授权处理程序广泛的 `@auth.on` 处理程序与所有 [authorization events](/langsmith/auth#supported-resources) 匹配。这很简洁，但这意味着 `value` 字典的内容范围不明确，并且相同的用户级访问控制应用于每个资源。如果想要更细粒度，还可以控制对资源的具体操作。
 
 更新 `src/security/auth.py` 添加特定资源类型的处理程序：
 

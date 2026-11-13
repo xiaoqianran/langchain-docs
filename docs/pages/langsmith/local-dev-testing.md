@@ -91,9 +91,8 @@ The [`langgraph dev`](/langsmith/cli#dev) command runs a lightweight server dire
 >
 > > [!TIP]
 > >
-> > **Additional templates**\\
-> >
-> > If you use [`langgraph new`](/langsmith/cli) without specifying a template, you will be presented with an interactive menu that will allow you to choose from a list of available templates.
+> > **Additional templates**\
+> > &#xA;If you use [`langgraph new`](/langsmith/cli) without specifying a template, you will be presented with an interactive menu that will allow you to choose from a list of available templates.
 >
 > **2. Install dependencies**
 >

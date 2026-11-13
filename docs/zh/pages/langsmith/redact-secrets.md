@@ -100,7 +100,7 @@ Python 和 TypeScript 预设保留相同的规则，因此其中一个编辑的�
 |私钥|用于 RSA、EC、OpenSSH、DSA 和 PGP 密钥的 PEM 块 |
 |命名作业 | `API_KEY`、`SECRET`、`TOKEN`、`PASSWORD`、`PASSWD`、`PRIVATE_KEY`、`ACCESS_KEY`、`AUTH_TOKEN` 或 `CLIENT_SECRET`，后跟 `=` 或`:` 且值为六个或更多字符 |
 |凭证标头 | `Authorization`、`X-Api-Key`、`X-Auth-Token`，以及裸露的`Bearer <token>` |
-| URL 凭证 | `scheme://user:password@host`中的密码 |名称规则需要组件边界，因此 `TOKEN` 匹配 `api_token` 和 `mytoken`，但不匹配 `tokenizer` 或 `tokens`。标头和`Bearer`规则保留标头名称和方案字，并仅编辑后面的凭据。
+| URL 凭证 | `scheme://user:password@host`中的密码 |名称规则需要组件边界，因此 `TOKEN` 匹配 `api_token` 和 `mytoken`，但不匹配 `tokenizer` 或 `tokens`。标头和`Bearer`规则保留标头名称和方案字，并仅编辑后面的凭证。
 
 ### 将您自己的规则添加到预设中
 
@@ -266,7 +266,7 @@ const anonymizer = createAnonymizer(redactSecretValues);
 const client = new Client({ anonymizer });
 ```
 
-## 与 LANGSMITH\_HIDE\_INPUTS 结合
+## 与 LANGSMITH_HIDE_INPUTS 结合
 
 如果您的用例需要完全抑制所有输入（例如，为了实现零保留合规性），请改用 `LANGSMITH_HIDE_INPUTS=true`。当 `LANGSMITH_HIDE_INPUTS` 或 `LANGSMITH_HIDE_OUTPUTS` 设置为 `true` 时，将跳过匿名器。
 

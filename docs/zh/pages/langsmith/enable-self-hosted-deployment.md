@@ -195,7 +195,7 @@ kubectl create secret docker-registry langsmith-registry-secret \
 * `your-password`：您的注册表密码或访问令牌
 * `langsmith`：安装LangSmith的 Kubernetes 命名空间
 
-**2.在 langsmith\_config.yaml 中配置部署模板**
+**2.在 langsmith_config.yaml 中配置部署模板**
 
 要使代理服务器部署能够使用私有注册表密钥，请将 `imagePullSecrets` 添加到操作员的部署模板中：
 

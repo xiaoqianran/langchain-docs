@@ -11,7 +11,7 @@
 * [⟦T27⟧](#langgraph-dev)：快速迭代的轻量级开发服务器。
 * [⟦T28⟧](#langgraph-up)：用于验证的类似生产的测试环境。
 
-|特色 | `langgraph dev` | `langgraph up` |
+|特色| `langgraph dev` | `langgraph up` |
 | - | - | - |
 | **需要 Docker** |没有 |是的 |
 | **安装** | `pip install langgraph-cli[inmem]` | `pip install langgraph-cli` |
@@ -89,9 +89,9 @@ flowchart LR
 >
 >> [!提示]
 >>
->> **附加模板**\\
->>
->> 如果您在未指定模板的情况下使用[⟦T47⟧](/langsmith/cli)，您将看到一个交互式菜单，允许您从可用模板列表中进行选择。
+>> **附加模板**\
+>> 
+如果您使用[⟦T47⟧](/langsmith/cli)而不指定模板，您将看到一个交互式菜单，允许您从可用模板列表中进行选择。
 >
 > **2。安装依赖项**
 >
@@ -306,7 +306,7 @@ flowchart LR
 
 * **Docker 故障排除**：调试仅在生产中出现的容器特定问题、网络问题或环境变量配置时。
 
-## 部署前检查表
+## 部署前检查清单
 
 在部署应用程序之前，请使用 `langgraph up` 验证以下内容：* 所有[dependencies](/langsmith/setup-app-requirements-txt)正确安装在容器中。
 * 应用程序启动时没有错误。
@@ -400,7 +400,7 @@ flowchart LR
 
 当您运行 [⟦T69⟧](/langsmith/cli#up) 时，CLI 将按照以下步骤安装应用程序的依赖项：
 
-1. [⟦T70⟧](/langsmith/application-structure#configuration-file) 告诉 CLI **在哪里**寻找您的应用程序代码。 `dependencies: ["."]`字段指向当前目录。
+1. [⟦T70⟧](/langsmith/application-structure#configuration-file) 告诉 CLI **在哪里**查找您的应用程序代码。 `dependencies: ["."]`字段指向当前目录。
 2. **查找包配置**：CLI 在该目录中查找包配置文件（[⟦T72⟧](/langsmith/setup-pyproject)、[⟦T73⟧](/langsmith/setup-app-requirements-txt) 或 [⟦T74⟧](/langsmith/setup-javascript)）。
 3. **读取依赖项列表**：CLI 从配置文件中读取包列表。
 4. **安装包**：CLI 使用适合您的语言的包管理器安装所有包（对于 Python 为`uv` 或 `pip`，对于 JavaScript 为`npm`）。

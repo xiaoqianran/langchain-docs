@@ -60,7 +60,7 @@ function multipleScores(rootRun: Run, example: Example) {
 
 Rows from the resulting experiment will display each of the scores.
 
-![multiple\_scores.png](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/multiple-scores.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=7f0a67189b7202a46d5e093cce9ea283)
+![multiple_scores.png](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/multiple-scores.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=7f0a67189b7202a46d5e093cce9ea283)
 
 ## Related
 

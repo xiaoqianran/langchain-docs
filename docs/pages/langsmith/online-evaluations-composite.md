@@ -8,7 +8,7 @@
 
 > [!NOTE]
 >
-> When an online evaluator runs on any run within a trace, the trace will be auto-upgraded to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This ensures that traces meeting your evaluation criteria (typically those most valuable for analysis) are preserved for investigation.
+> When an online evaluator runs on any run within a trace, the trace will be auto-upgraded to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This ensures that traces meeting your evaluation criteria (typically those most valuable for analysis) are preserved for investigation.&#x20;
 
 ## View online evaluators
 
@@ -36,7 +36,7 @@ From the tracing project or agent environment view, navigate to the **Evaluators
 
 > [!TIP]
 >
-> If you need to adjust the weights for the composite scores, they can be updated after the evaluator is created. The resulting scores will be updated for all runs that have the evaluator configured.
+> &#x20;If you need to adjust the weights for the composite scores, they can be updated after the evaluator is created. The resulting scores will be updated for all runs that have the evaluator configured.&#x20;
 
 ### 3. View composite evaluator results
 
@@ -50,7 +50,7 @@ Composite scores are attached to a run as **feedback**, similarly to feedback fr
 
 > [!NOTE]
 >
-> If any of the constituent evaluators are not configured on the run, the composite score will not be calculated for that run.
+> &#x20;If any of the constituent evaluators are not configured on the run, the composite score will not be calculated for that run.&#x20;
 
 ***
 

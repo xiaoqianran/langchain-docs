@@ -205,7 +205,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
 >
 >
 > agent: Runnable = create_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     tools=[get_user_info],
 >     # Pass store to agent - enables agent to access store when running tools
 >     store=store,
@@ -646,7 +646,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
 >
 >
 > agent: Runnable = create_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     tools=[save_user_info],
 >     store=store,
 >     context_schema=Context,

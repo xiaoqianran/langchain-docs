@@ -156,7 +156,7 @@ terminal-bench/
 ### 配置代理
 
 使用 `--ak` 传递代理 kwargs：* **`--agent langgraph`**：选择LangGraph代理。
-* **`--model <provider:model>`**：要运行的模型。没有默认值，因此该值是必需的。代理使用 [init\_chat\_model](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) 解析它，因此它必须可由已安装的 `langchain-*` 提供程序以 `provider:model` 格式解析，例如 `anthropic:claude-opus-4-8`。 `provider/model` 值标准化为 `provider:model`。该模型来自 `configurable['model']` 或 `HARBOR_MODEL` 环境变量，无法解析或缺失的值会引发 `ValueError`。
+* **`--model <provider:model>`**：要运行的模型。没有默认值，因此该值是必需的。代理使用 [init_chat_model](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) 解析它，因此它必须可由已安装的 `langchain-*` 提供程序以 `provider:model` 格式解析，例如 `anthropic:claude-opus-4-8`。 `provider/model` 值标准化为 `provider:model`。该模型来自 `configurable['model']` 或 `HARBOR_MODEL` 环境变量，无法解析或缺失的值会引发 `ValueError`。
 * **`--ak project_path=<dir>`**：包含`langgraph.json`的本地目录。
 * **`--ak graph=<name>`**：运行`langgraph.json`中的哪个图。
 * **`--ak config=<file>`**：`project_path`内声明图形的配置文件名。默认为`langgraph.json`。
@@ -180,7 +180,7 @@ terminal-bench/
 }
 ```
 
-该项目公开了两个图表，使用 `--ak graph` 选择。两者都使用 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 构建深度代理，仅输入不同：
+该项目公开了两个图表，使用 `--ak graph` 选择。两者都使用 [create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 构建深度代理，仅输入不同：
 
 * **`deep_agent`** 解析为 `make_graph`，一个仅使用模型创建的深度代理。
 * **`research_agent`** 解析为 `make_research_graph`，具有研究系统提示的相同深度代理。

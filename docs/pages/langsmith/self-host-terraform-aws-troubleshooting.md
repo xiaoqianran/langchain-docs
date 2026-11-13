@@ -26,7 +26,7 @@ make status
 
 ## Known issues
 
-### EKS node group creation fails: CREATE\_FAILED
+### EKS node group creation fails: CREATE_FAILED
 
 **Symptom**
 
@@ -226,7 +226,7 @@ dig +short <your-langsmith-domain>
 # Expected: CNAME to the ALB DNS name
 ```
 
-### postgres\_deletion\_protection blocks terraform destroy
+### postgres_deletion_protection blocks terraform destroy
 
 **Symptom**
 

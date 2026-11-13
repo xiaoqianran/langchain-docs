@@ -226,7 +226,7 @@ Query runs from a project with optional filtering and field projection. Returns 
 
 > [tab] Python
 >
-> Pass SCREAMING\_SNAKE\_CASE strings to `selects` (eg. `"ID"`, `"NAME"`, `"STATUS"`) to control which fields are populated on each `Run`; only selected fields are non-`None`. Default `selects` contains only `"ID"`.
+> Pass SCREAMING_SNAKE_CASE strings to `selects` (eg. `"ID"`, `"NAME"`, `"STATUS"`) to control which fields are populated on each `Run`; only selected fields are non-`None`. Default `selects` contains only `"ID"`.
 >
 > | Before (v1 `Run` attribute) | After (v2 `Run` attribute) | Notes |
 > | - | - | - |
@@ -280,7 +280,7 @@ Query runs from a project with optional filtering and field projection. Returns 
 
 > [tab] TypeScript
 >
-> Pass SCREAMING\_SNAKE\_CASE strings to `selects` (eg. `"ID"`, `"NAME"`, `"STATUS"`) to control which fields are populated on each `Run`. Default `selects` contains only `"ID"`.
+> Pass SCREAMING_SNAKE_CASE strings to `selects` (eg. `"ID"`, `"NAME"`, `"STATUS"`) to control which fields are populated on each `Run`. Default `selects` contains only `"ID"`.
 >
 > | Before (v1 `Run` property) | After (v2 `Run` property) | Notes |
 > | - | - | - |
@@ -473,7 +473,7 @@ Query runs from a project with optional filtering and field projection. Returns 
 >
 > Field names in the JSON response use `snake_case`.
 >
-> Pass SCREAMING\_SNAKE\_CASE strings in the `selects` JSON array (eg. `"ID"`, `"NAME"`, `"STATUS"`) to control which fields are populated. Default `selects` contains only `"ID"`.
+> Pass SCREAMING_SNAKE_CASE strings in the `selects` JSON array (eg. `"ID"`, `"NAME"`, `"STATUS"`) to control which fields are populated. Default `selects` contains only `"ID"`.
 >
 > | Before (v1 response field) | After (v2 response field) | Notes |
 > | - | - | - |
@@ -1035,7 +1035,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 
 > [tab] TypeScript
 >
-> `startTime` (camelCase) becomes `min_start_time` (snake\_case, matching the v2 request body), and `runType` values are now uppercase (`"llm"` → `"LLM"`).
+> `startTime` (camelCase) becomes `min_start_time` (snake_case, matching the v2 request body), and `runType` values are now uppercase (`"llm"` → `"LLM"`).
 >
 > > [tab] Before
 > >
@@ -1241,7 +1241,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 
 > [tab] TypeScript
 >
-> `isRoot` (camelCase) becomes `is_root` (snake\_case, matching the v2 request body).
+> `isRoot` (camelCase) becomes `is_root` (snake_case, matching the v2 request body).
 >
 > > [tab] Before
 > >
@@ -2395,7 +2395,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 > >   -d "$(jq -n --arg pid "$PROJECT_ID" --arg f "$FILTER" '{"project_ids": [$pid], "filter": $f}')"
 > > ```
 
-#### Scoped filters: filter, trace\_filter, tree\_filter
+#### Scoped filters: filter, trace_filter, tree_filter
 
 > [tab] Python
 >

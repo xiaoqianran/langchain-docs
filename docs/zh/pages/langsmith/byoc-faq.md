@@ -20,7 +20,7 @@
 >
 > 否。不支持跨云部署。数据平面必须与其控制平面运行在同一云提供商上。例如，AWS 控制平面无法管理 GCP 上的数据平面。
 >
-> 每个云提供商都有自己的 LangSmith 实例，具有独立的用户和组织。要在多个云提供商上部署数据平面，请在每个提供商的实例上创建一个 LangSmith 组织。有关实例 URL，请参阅 [Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers)。> [手风琴] 我需要专用的 AWS 账户吗？
+> 每个云提供商都有自己的LangSmith实例，具有独立的用户和组织。要在多个云提供商上部署数据平面，请在每个提供商的实例上创建一个 LangSmith 组织。有关实例 URL，请参阅 [Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers)。> [手风琴] 我需要专用的 AWS 账户吗？
 >
 > 否。LangChain 建议使用新帐户以实现更清晰的计费，并且因为某些权限无法限定于特定资源，但这不是必需的。
 
@@ -50,9 +50,9 @@
 >
 > * 使用您自己的节点组和容忍度，而不是运行 LangSmith 的节点组和容忍度。
 > * 部署到 LangSmith 使用的命名空间之外的命名空间中。
-> * 请勿编辑资源LangChain条款。
+> * 请勿编辑资源LangChain 规定。
 >
-> LangChain 不对因工作负载干扰而导致的停机或问题负责。> [accordion] 我应该为我的角色的外部 ID 设置什么值？
+> LangChain 对干扰工作负载引起的停机或问题不承担任何责任。> [accordion] 我应该为我的角色的外部 ID 设置什么值？
 >
 > LangChain 提供外部ID。导航到 **设置 > 数据平面**，然后使用 **数据平面** 标题旁边的复制按钮进行复制。应用 `langsmith-byoc-role` Terraform 模块时使用此值。角色的信任策略必须在其 `ExternalId` 条件下使用此值。
 
@@ -66,7 +66,7 @@
 >
 > 完全按照发布的方式应用 [⟦T6⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role)，无需任何编辑或更改。修改的模块是缺少权限的常见原因。
 >
-> 联系LangChain团队。更正权限后，配置会自动协调。> [accordion] 我应该使用什么 VPC CIDR 范围？
+> 联系 LangChain 团队。更正权限后，配置会自动协调。> [accordion] 我应该使用什么 VPC CIDR 范围？
 >
 > `/18` 和 `/16` 之间的私有 RFC 1918 范围。如果您计划使用 VPC 对等互连，请选择一个与您想要建立对等互连的 VPC 不重叠的范围。 CIDR 范围在配置后无法更改。
 
@@ -125,7 +125,7 @@
 
 > [手风琴] LangSmith 支持客户管理的加密密钥吗？
 >
-> 是的。根据请求，AWS BYOC 部署支持客户管理的加密密钥 (CMK)。联系LangChain团队协调设置。默认情况下，数据使用云提供商管理的密钥进行静态加密。> [手风琴] 如何撤销LangChain的访问权限？
+> 是的，在 AWS 上。创建数据平面时，您可以使用自己的 AWS KMS 密钥加密其 S3 存储桶、EBS 卷、EKS 密钥、RDS 数据库和 ElastiCache。参见[Bring your own keys](/langsmith/byoc-byok-aws)。默认情况下，数据使用云提供商管理的密钥进行静态加密。> [手风琴] 如何撤销LangChain的访问权限？
 >
 > 您在自己的账户中创建并拥有跨账户角色，因此您可以撤消访问权限，而无需涉及LangChain。删除角色或其与LangChain帐户的信任关系，会阻止控制平面承担该角色，并停止数据平面资源的协调。
 
@@ -173,7 +173,7 @@
 
 > [accordion] 我可以使用自己的私人注册表吗？
 >
-> 不是今天。容器映像是通过 VPC 终端节点从 LangChain AWS 账户中提取的。对私有注册中心的支持已列入路线图。> [手风琴] 控制平面如何到达我的 Kubernetes API 服务器？
+> 不是今天。容器映像是通过 VPC 终端节点从 LangChain AWS 账户中提取的。对私有注册表的支持已列入路线图。> [手风琴] 控制平面如何到达我的 Kubernetes API 服务器？
 >
 > 通过 AWS PrivateLink。管理路径仅公开集群的 Kubernetes API 服务器，LangChain 使用它来安装和协调 LangSmith 组件。
 >

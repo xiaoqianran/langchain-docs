@@ -61,7 +61,7 @@ const asyncSubagents: AsyncSubAgent[] = [
 ];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents: [...asyncSubagents],
 });
 ```
@@ -395,7 +395,7 @@ function researcher(config: LangGraphRunnableConfig) {
   // Set when a supervisor launched this run with `start_async_task`
   const parentThreadId = config.metadata?.parent_thread_id;
   return createDeepAgent({
-    model: "google:gemini-3.6-flash",
+    model: "google:gemini-4-hydrogen",
     systemPrompt: "You research topics thoroughly.",
   });
 }
@@ -668,7 +668,7 @@ Subagents on the same deployment also receive the supervisor's trace headers. To
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   systemPrompt: `...your instructions...
 
     After launching an async subagent, ALWAYS return control to the user.
@@ -687,7 +687,7 @@ const agent = createDeepAgent({
 
 **Problem**: The supervisor truncates or reformats the task ID, causing `check_async_task` or `cancel_async_task` to fail.
 
-**Solution**: The task ID argument of each tool tells the model to pass the full task ID. If truncation persists, the cause is typically model-specific. Try a different model, or add "always show the full task\_id, never truncate or abbreviate it" to your system prompt.
+**Solution**: The task ID argument of each tool tells the model to pass the full task ID. If truncation persists, the cause is typically model-specific. Try a different model, or add "always show the full task_id, never truncate or abbreviate it" to your system prompt.
 
 ### Subagent launches queue instead of running
 

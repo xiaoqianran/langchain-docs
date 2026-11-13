@@ -458,7 +458,7 @@ For message events, the following attributes are extracted:
 
 * `content` → message content
 * `role` → message role
-* `id` → tool\_call\_id (for tool messages)
+* `id` → tool_call_id (for tool messages)
 * `gen_ai.event.content` → full message JSON
 
 For choice events:
@@ -505,7 +505,7 @@ configure()
 async def main():
     agent = LlmAgent(
         name="travel_assistant",
-        model="gemini-3.8-flash",
+        model="gemini-4-hydrogen",
         instruction="You are a helpful travel assistant.",
     )
 
@@ -661,7 +661,7 @@ async def main():
     agent = LlmAgent(
         name="travel_assistant",
         tools=[get_flight_info, get_hotel_recommendations],
-        model="gemini-3.8-flash",
+        model="gemini-4-hydrogen",
         instruction="You are a helpful travel assistant that can help with flights and hotels.",
     )
 

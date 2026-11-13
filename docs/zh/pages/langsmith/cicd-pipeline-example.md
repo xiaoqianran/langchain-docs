@@ -94,7 +94,7 @@ graph TD
 
 ## GitHub 操作工作流程
 
-CI/CD 管道使用 GitHub Actions 以及 [Control Plane API](/langsmith/api-ref-control-plane) 和 [LangSmith API](/langsmith/smith-api-ref) 来自动化部署。帮助程序脚本管理 API 交互和部署：[https://github.com/langchain-ai/cicd-pipeline-example/blob/main/.github/scripts/langgraph\_api.py](https://github.com/langchain-ai/cicd-pipeline-example/blob/main/.github/scripts/langgraph_api.py)。
+CI/CD 管道使用 GitHub Actions 以及 [Control Plane API](/langsmith/api-ref-control-plane) 和 [LangSmith API](/langsmith/smith-api-ref) 来自动化部署。帮助程序脚本管理 API 交互和部署：[https://github.com/langchain-ai/cicd-pipeline-example/blob/main/.github/scripts/langgraph_api.py](https://github.com/langchain-ai/cicd-pipeline-example/blob/main/.github/scripts/langgraph_api.py)。
 
 工作流程包括：
 
@@ -120,7 +120,7 @@ CI/CD 管道使用 GitHub Actions 以及 [Control Plane API](/langsmith/api-ref-
   >
   > 测试代理在多个交互中维护上下文的对话流。这对于处理后续问题、澄清或与用户进行扩展对话的代理至关重要。
 
-  有关具体测试方法，请参阅[LangGraph testing documentation](/oss/python/langgraph/test)，有关离线评估的全面概述，请参阅[evaluation approaches guide](/langsmith/evaluation-approaches)。
+  具体测试方法请参见[LangGraph testing documentation](/oss/python/langgraph/test)，离线评估的全面概述请参见[evaluation approaches guide](/langsmith/evaluation-approaches)。
 
 ### 先决条件
 

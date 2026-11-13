@@ -228,14 +228,14 @@ Select a chat model from LangChain's suite of integrations:
 >
 > process.env.GOOGLE_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("google:gemini-3.7-flash");
+> const model = await initChatModel("google:gemini-4-hydrogen");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatGoogle } from "@langchain/google/node";
 >
 > const model = new ChatGoogle({
->   model: "gemini-3.7-flash",
+>   model: "gemini-4-hydrogen",
 >   apiKey: "your-api-key"
 > });
 > ```
@@ -512,7 +512,7 @@ const applyStepMiddleware = createMiddleware({
 
 This middleware:
 
-1. **Reads current step**: Gets `current_step` from state (defaults to "warranty\_collector").
+1. **Reads current step**: Gets `current_step` from state (defaults to "warranty_collector").
 2. **Looks up configuration**: Finds the matching entry in `STEP_CONFIG`.
 3. **Validates dependencies**: Ensures required state fields exist.
 4. **Formats prompt**: Injects state values into the prompt template.

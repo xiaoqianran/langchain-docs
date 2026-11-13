@@ -103,7 +103,7 @@ This lifecycle means that multi-turn evaluators run once per completed thread, n
 
 The variables differ in what the judge receives:
 
-* **`all_messages`, `human_ai_pairs`, and `first_human_last_ai`** resolve to the conversation assembled from the inputs and outputs of each root run in the thread. Work that happens in child runs, such as intermediate model calls, tool calls, and tool result, is not included unless a root run's own inputs or outputs contain it. human\_ai\_pairs and first\_human\_last\_ai narrow further to user and assistant messages only.
+* **`all_messages`, `human_ai_pairs`, and `first_human_last_ai`** resolve to the conversation assembled from the inputs and outputs of each root run in the thread. Work that happens in child runs, such as intermediate model calls, tool calls, and tool result, is not included unless a root run's own inputs or outputs contain it. human_ai_pairs and first_human_last_ai narrow further to user and assistant messages only.
 * **`trajectory`** resolves to the trajectory built from the model and tool calls inside each trace. The tool calls and tool results the other views omit are preserved.
 
 For the message shape each variable resolves to, see [Thread message variables](/langsmith/prompt-template-format#thread-message-variables).

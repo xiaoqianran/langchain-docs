@@ -474,6 +474,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Product search across thousands of retailers, with each retailer's offer and live price.
 
+> [card] [ChatEXAONE](https://github.com/ykoh42/exaone-integrations/tree/main/packages/langchain-exaone-py)
+>
+> Community-maintained EXAONE chat model integration for LangChain with streaming, tool calling, structured output, and reasoning history.
+
 > [card] [Cheaper Inference](https://cheaperinference.com/docs)
 >
 > OpenAI-compatible LLM gateway that serves models from many labs below list price.
@@ -488,7 +492,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > [card] [ChatOptiQ](https://github.com/optiq-bot/langchain-optiq)
 >
-> Chat model for OptiQ Cloud, an OpenAI-compatible API serving GLM 5.3, DeepSeek V4.1 Flash and MiniMax M3.1 Flash, with reasoning\_effort control.
+> Chat model for OptiQ Cloud, an OpenAI-compatible API serving GLM 5.3, DeepSeek V4.1 Flash and MiniMax M3.1 Flash, with reasoning_effort control.
 
 > [card] [ChatMeragpt](https://github.com/Sandeep85Das/langchain-meragpt)
 >
@@ -784,7 +788,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > [card] [EnConvert](https://github.com/enconvert/langchain-enconvert)
 >
-> Document loader that turns URLs or whole sites into Documents with a render\_quality score on every read.
+> Document loader that turns URLs or whole sites into Documents with a render_quality score on every read.
 
 > [card] [Engram](https://docs.engram.ai/integrations/langchain)
 >
@@ -1092,7 +1096,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > [card] [HyperresearchAnswerTool](https://hyperresearch.ai/docs/answers/langchain)
 >
-> Hyperresearch Answers returns quote-checked answers to factual questions, or not\_found, plus ranked web and structured sources with verbatim passages.
+> Hyperresearch Answers returns quote-checked answers to factual questions, or not_found, plus ranked web and structured sources with verbatim passages.
 
 > [card] [IBM](/oss/python/integrations/providers/ibm)
 >
@@ -1193,6 +1197,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Keiro](https://keirolabs.cloud)
 >
 > Web search, embeddings, and retrieval for agents with structured, citable sources.
+
+> [card] [Keln](https://github.com/kris-holy/langchain-keln#readme)
+>
+> Keln is an inference platform for open models, with an OpenAI-compatible API for chat, tool calling and structured output.
 
 > [card] [Kerq](https://kerq.dev/docs)
 >
@@ -1321,6 +1329,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [LongProbe](https://endevsols.github.io/LongProbe)
 >
 > Sub-second RAG retrieval regression testing and stability monitoring.
+
+> [card] [LoomStore](https://github.com/ClickHouse/loom/blob/main/docs/features/integrations/frameworks.md#langgraph)
+>
+> LangGraph BaseStore backed by a self-hosted ClickHouse Loom server: long-term memory shared across agents, with search by meaning.
 
 > [card] [LoopGrid](https://loopgrid.io/integrations/langchain/)
 >
@@ -1896,7 +1908,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > [card] [RecallMiddleware](https://recallmem.dev/guides/langchain)
 >
-> Long-term memory for create\_agent agents: adds what Recall learned about the user to the system prompt and records each exchange.
+> Long-term memory for create_agent agents: adds what Recall learned about the user to the system prompt and records each exchange.
 
 > [card] [RecallRetriever](https://recallmem.dev/guides/langchain)
 >
@@ -1990,6 +2002,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Firecracker microVM sandboxes for Deep Agents from Runtime.
 
+> [card] [SaefMiddleware](https://github.com/guillermollopis/soma-ai-emission-factors#integrations)
+>
+> Agent middleware that estimates CO2e and water per model call from token usage, model and cloud region. Estimates, not measurements.
+
 > [card] [Sail](https://docs.lakesail.com/sail/latest/guide/integrations/langchain.html)
 >
 > Rust-based drop-in Spark replacement with Spark Connect and a Sail SQL toolkit for LangChain agents.
@@ -2034,9 +2050,9 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > AI-powered web scraping framework.
 
-> [card] [Scrapeless](https://github.com/scrapeless-ai/langchain-scrapeless)
+> [card] [Scrapeless](https://docs.scrapeless.com/en/integrations/langchain/)
 >
-> Web scraping API and proxy service.
+> Google Search, Web Unlocker, Crawl, and AI Scraper tools for LangChain through the Scrapeless Python SDK.
 
 > [card] [ScrapelyActorsTool](https://scrape.ly/docs/langchain)
 >
@@ -2150,9 +2166,9 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > x402-native clean web reader for AI agents.
 
-> [card] [SnapRender](https://snap-render.com)
+> [card] [SnapRender](https://github.com/User0856/snaprender-integrations/tree/main/langchain)
 >
-> Capture website screenshots as PNG, JPEG, WebP, or PDF.
+> Tools that capture web pages as PNG, JPEG, WebP or PDF screenshots in a real browser via the SnapRender API.
 
 > [card] [Snowflake](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-rest-api)
 >
@@ -2406,7 +2422,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Extended toolkit for LangChain applications.
 
-> [card] [TopxAI](https://ai.topxea.com/docs/use-topxai-with-langchain)
+> [card] [TopxAI](https://api.topxai.xyz/docs/use-topxai-with-langchain)
 >
 > TopxAI is an API gateway that serves Claude, GPT, Grok, GLM, Kimi, and DeepSeek models through one OpenAI-compatible API.
 

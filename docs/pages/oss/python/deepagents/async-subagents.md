@@ -61,7 +61,7 @@ async_subagents = [
 ]
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     subagents=async_subagents,
 )
 ```
@@ -405,7 +405,7 @@ Subagents on the same deployment also receive the supervisor's trace headers. To
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt="""...your instructions...
 
     After launching an async subagent, ALWAYS return control to the user.
@@ -424,7 +424,7 @@ agent = create_deep_agent(
 
 **Problem**: The supervisor truncates or reformats the task ID, causing `check_async_task` or `cancel_async_task` to fail.
 
-**Solution**: The task ID argument of each tool tells the model to pass the full task ID. If truncation persists, the cause is typically model-specific. Try a different model, or add "always show the full task\_id, never truncate or abbreviate it" to your system prompt.
+**Solution**: The task ID argument of each tool tells the model to pass the full task ID. If truncation persists, the cause is typically model-specific. Try a different model, or add "always show the full task_id, never truncate or abbreviate it" to your system prompt.
 
 ### Subagent launches queue instead of running
 

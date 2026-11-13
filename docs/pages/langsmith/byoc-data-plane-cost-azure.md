@@ -36,7 +36,7 @@ This example budget assumes two to six application nodes, one SmithDB cache node
 
 Estimated monthly subtotal for priced items, excluding sandboxes: **\$3,283–\$4,460**. Add the additional charges above, taxes, and LangSmith fees to estimate the full bill.
 
-The system-node reduction from three `Standard_D4s_v6` to three `Standard_D2s_v6` saves about \$221 per month in VM compute. The older D8s\_v5-only SmithDB estimate does not represent the dedicated NVMe pool. Smaller system nodes alone do not establish a lower total bill.
+The system-node reduction from three `Standard_D4s_v6` to three `Standard_D2s_v6` saves about \$221 per month in VM compute. The older D8s_v5-only SmithDB estimate does not represent the dedicated NVMe pool. Smaller system nodes alone do not establish a lower total bill.
 
 The PostgreSQL estimates use \$0.089 per vCore-hour and \$0.115 per GiB-month of provisioned storage. Each server has two vCores and a matching standby. Storage growth and backup storage beyond the included allowance cost extra.
 

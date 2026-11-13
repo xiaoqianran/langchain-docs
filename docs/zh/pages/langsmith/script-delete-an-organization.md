@@ -4,7 +4,7 @@
 
 # 删除组织
 
-LangSmith UI 目前不支持从 LangSmith 自托管实例中删除单个组织。不过，这可以通过直接从 ClickHouse 中的所有物化视图（runs\_history 视图除外）以及运行和反馈表中删除所有跟踪，然后从 Postgres 租户表中删除 Organization 来实现。
+LangSmith UI 目前不支持从 LangSmith 自托管实例中删除单个组织。然而，这可以通过直接从 ClickHouse 中的所有物化视图（runs_history 视图除外）以及运行和反馈表中删除所有跟踪，然后从 Postgres 租户表中删除组织来完成。
 
 该命令使用组织 ID 作为参数。
 

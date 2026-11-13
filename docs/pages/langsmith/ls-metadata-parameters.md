@@ -608,7 +608,7 @@ For LangSmith to automatically calculate costs, several parameters must work tog
 **Additional requirements:**
 
 * Run must have `run_type="llm"` (or [arbitrary cost tracking](/langsmith/cost-tracking#other-runs-send-costs) must be enabled).
-* [Token usage data](/langsmith/log-llm-trace#provide-token-and-cost-information) must be present in the trace (prompt\_tokens, completion\_tokens).
+* [Token usage data](/langsmith/log-llm-trace#provide-token-and-cost-information) must be present in the trace (prompt_tokens, completion_tokens).
 * Model must exist in pricing database or have [custom pricing configured](/langsmith/cost-tracking#llm-calls-automatically-track-costs-based-on-token-counts).
 
 **Fallback behavior:**

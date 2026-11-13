@@ -68,7 +68,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [getWeather],
   checkpointer: new MemorySaver(),
 });

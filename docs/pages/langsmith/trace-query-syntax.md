@@ -229,7 +229,7 @@ and(gt(latency, "10s"), eq(feedback_key, "correctness"), lt(feedback_score, 0.5)
 and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))
 ```
 
-### Using trace\_filter and tree\_filter
+### Using trace_filter and tree_filter
 
 `filter` applies to the returned run. `trace_filter` applies to the root run of the trace. `tree_filter` applies to any run anywhere in the trace tree.
 

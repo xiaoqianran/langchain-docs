@@ -44,7 +44,7 @@ from managed_deepagents import define_deep_agent
 
 agent = define_deep_agent(
     name="research-assistant",
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
 )
 ```
 
@@ -69,7 +69,7 @@ agent = define_deep_agent(
 
 Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/python/managed-deep-agents-project-structure). To select the system prompt, skills, MCP servers, memory, or sandbox for each run, see [Select configuration per run](#select-configuration-per-run).
 
-`define_deep_agent` does not compile an agent. It returns a definition, and the managed runtime compiles it with [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) at deploy time. The parameters below are the [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) surface without the ones the runtime owns. See [Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents).
+`define_deep_agent` does not compile an agent. It returns a definition, and the managed runtime compiles it with [create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) at deploy time. The parameters below are the [create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) surface without the ones the runtime owns. See [Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents).
 
 ## Parameters
 

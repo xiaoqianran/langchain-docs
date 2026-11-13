@@ -181,7 +181,7 @@ const ragPipeline = traceable(
 );
 ```
 
-该管道将生成类似于以下内容的跟踪：![evaluation\_intermediate\_trace.png](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/evaluation-intermediate-trace.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=3b691ca56f9d60035dcba2c248692fa1)
+该管道将生成类似于以下内容的跟踪：![evaluation_intermediate_trace.png](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/evaluation-intermediate-trace.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=3b691ca56f9d60035dcba2c248692fa1)
 
 ## 2. 创建数据集和示例来评估管道
 
@@ -398,7 +398,7 @@ await evaluate((inputs) => ragPipeline({ question: inputs.input }), {
   evaluators: [hallucination, documentRelevance],
   experimentPrefix: "rag-wiki-oai",
 });
-```实验将包含评估结果，包括评估者的分数和评论：![evaluation\_intermediate\_experiment.png](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/evaluation-intermediate-experiment.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=e926744573c6b9757ba22ff245a3da2c)
+```实验将包含评估结果，包括评估者的分数和评论：![evaluation_intermediate_experiment.png](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/evaluation-intermediate-experiment.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=e926744573c6b9757ba22ff245a3da2c)
 
 ## 相关
 

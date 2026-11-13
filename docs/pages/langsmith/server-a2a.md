@@ -26,7 +26,7 @@ existing v0.3 clients keep working. The agent card declares one interface:
 > [!WARNING]
 >
 > The method name you send also selects the enum case in the response. A v1.0 name returns
-> SCREAMING\_SNAKE\_CASE (`TASK_STATE_WORKING`, `ROLE_AGENT`); a v0.3 name returns lowercase
+> SCREAMING_SNAKE_CASE (`TASK_STATE_WORKING`, `ROLE_AGENT`); a v0.3 name returns lowercase
 > (`working`, `agent`). Pick one family per client and stay on it.
 >
 > The envelope varies by method, not by family: `SendMessage` wraps the task in `result.task`, while
@@ -554,7 +554,7 @@ For non-LangGraph agents in an agent-based workspace, [register the agent and co
 
 When multiple agents communicate over A2A, LangSmith can group all their [traces](/langsmith/observability-concepts#traces) into a single [thread](/langsmith/observability-concepts#threads), which gives you a unified view of the entire multi-agent conversation.
 
-### How contextId maps to thread\_id
+### How contextId maps to thread_id
 
 The Agent Server A2A endpoint automatically converts the A2A `contextId` to `thread_id` for LangSmith tracing. This means every message in a conversation, across all participating agents, is grouped under the same thread in LangSmith without any extra configuration on your part.
 
@@ -661,7 +661,7 @@ asyncio.run(run_conversation(
 
 **3. Share the context across agents**: Let the first agent mint the `contextId`, then pass that same value to every agent for the rest of the conversation. That is what groups their traces into one thread.
 
-### Receive thread\_id in non-LangGraph agents
+### Receive thread_id in non-LangGraph agents
 
 The [previous section](#tracing-across-multiple-agents) covers the client side — propagating `contextId` when sending messages. If one of your agents is not built on LangGraph, it also needs to read that `contextId` on the receiving end and attach it as the thread identifier, so its traces land in the same LangSmith thread. Use `langsmith.integrations.otel.configure()` to set up automatic tracing, and read `params.message.contextId` from the incoming A2A request.
 
@@ -775,7 +775,7 @@ Read this before you build against a capability:
 | - | - |
 | Response wire shape is still v0.3 | Tasks, messages and parts carry `kind` and `mimeType` instead of v1.0 member-presence discrimination |
 | Streaming events are flat | SSE emits v0.3 objects with `final`, not `statusUpdate` / `artifactUpdate` wrappers |
-| `tool_results` is snake\_case | v1.0 expects `toolResults`. Kept deliberately, because live A2UI clients read this key |
+| `tool_results` is snake_case | v1.0 expects `toolResults`. Kept deliberately, because live A2UI clients read this key |
 | Timestamps | Serialized as `+00:00` rather than an ISO 8601 `Z` suffix |
 | `SubscribeToTask` | Returns `-32601` where the spec requires `-32001` |
 | Push notification config | Returns `-32601` where the spec requires `-32003` |

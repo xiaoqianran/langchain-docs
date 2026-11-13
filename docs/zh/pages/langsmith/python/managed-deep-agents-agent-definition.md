@@ -46,7 +46,7 @@ from managed_deepagents import define_deep_agent
 
 agent = define_deep_agent(
     name="research-assistant",
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
 )
 ```
 
@@ -71,7 +71,7 @@ agent = define_deep_agent(
 
 通过项目文件而不是代理定义来配置系统提示、技能、内存、沙箱、身份、通道和计划。参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。要为每次运行选择系统提示、技能、MCP 服务器、内存或沙箱，请参阅[Select configuration per run](#select-configuration-per-run)。
 
-`define_deep_agent` 不编译代理。它返回一个定义，托管运行时在部署时使用 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 对其进行编译。下面的参数是 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 表面，不包含运行时拥有的参数。参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。
+`define_deep_agent` 不编译代理。它返回一个定义，托管运行时在部署时使用 [create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 对其进行编译。下面的参数是 [create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 表面，不包含运行时拥有的参数。参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。
 
 ＃＃ 参数|参数|它有什么作用 |
 | - | - |
@@ -102,7 +102,7 @@ agent = define_deep_agent(
 )
 ```
 
-通过此路由，代理的文件工具在商店后端中将 `/documents/a.md` 读取并写入为 `/a.md`。
+通过此路由，代理的文件工具在商店后端中将 `/documents/a.md` 读写为 `/a.md`。
 
 * 每个前缀必须是以`/`开头和结尾的绝对目录，例如`"/documents/"`。
 * 前缀不能与 Managed Deep Agents 安装自身的路径重叠：`/instructions.md`、`/skills/` 和 `/memories/`。
@@ -110,7 +110,7 @@ agent = define_deep_agent(
 
 ## 选择每次运行的配置
 
-要为每次运行选择代理的配置，请将函数导出为 `agent` 而不是定义。然后，一种部署可以适应不同的用户、任务或存储库。该函数是一个图形工厂，与 LangGraph 用于 [rebuild a graph at runtime](/langsmith/graph-rebuild) 的模式相同：它接收运行时并返回定义。
+要为每次运行选择代理的配置，请将函数导出为 `agent` 而不是定义。然后，一种部署可以适应不同的用户、任务或存储库。该函数是一个图工厂，与 LangGraph 用于 [rebuild a graph at runtime](/langsmith/graph-rebuild) 的模式相同：它接收运行时并返回定义。
 
 此示例选择运行所处理的存储库的说明和技能。它假设该项目有`skills/python-service/`和`skills/typescript-web/`，每个都有一个[⟦T46⟧](/langsmith/python/managed-deep-agents-skills)。
 
@@ -203,7 +203,7 @@ def agent(runtime: ManagedServerRuntime[AppContext]):
 
 ### 保持工厂可重复
 
-托管 Deep Agents 在每次运行开始时调用工厂，并在运行恢复或重试时再次调用。代理服务器还调用它来读取模式和状态。请遵循以下规则：
+托管 Deep Agents 在每次运行开始时调用工厂，并在运行恢复或重试时再次调用。代理服务器还调用它来读取架构和状态。请遵循以下规则：
 
 * **无副作用**：为相同的上下文返回相同的定义。不要创建记录、调用外部 API 或更改工厂中的共享状态。
 * **稳定中断**：保留可以在每个配置中中断运行的中间件。当运行恢复时，引发中断的中间件必须仍然存在。
@@ -258,7 +258,7 @@ agent = define_deep_agent(
 
 > [!注意]
 >
-> 网关型号 ID 在提供商和型号之间使用斜线 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
+> 网关型号 ID 在提供商和型号之间使用斜杠 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
 
 网关按型号 ID 路由每个请求。 `moonshotai/kimi-k3` 是LangChain 托管模型，因此它不需要提供者密钥并利用 [Gateway Credits](/langsmith/llm-gateway-credits)。以您的工作区已配置的提供商开头的模型 ID（例如 `anthropic/claude-opus-5`）使用该 [provider secret](/langsmith/llm-gateway-provider-authentication#add-a-provider-key) 并向您自己的提供商帐户计费。
 

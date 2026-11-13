@@ -30,8 +30,8 @@ Weekly updates to [LangSmith Fleet](/langsmith/fleet).
 > * Agent runs no longer fail when a sandbox is missing a file that the agent reads, such as `/memories/AGENTS.md`. The agent now continues without that file instead of stopping before the model is called.
 > * Google Workspace tools, including Gmail, Calendar, Drive, Docs, Sheets, Slides, and Meet, now send their requests through your configured `HTTPS_PROXY`, so calls no longer bypass your forward proxy.
 > * Creating a Slack app in a workspace at its app limit now returns a clear 422 error that tells you to remove unused apps or ask a Slack admin to raise the limit, instead of a 502 server error.
-> * Slack file tools, such as **slack\_send\_file**, now work through Managed Tools. Previously, they failed because the Slack connection did not request the `files:write` scope. If you connected Slack before this fix, reconnect it to grant the new scope.
-> * Slack approval cards for tool servers in search mode now name the tool you are approving, such as **gmail\_send\_email**, instead of the proxy tool `call_tool`.
+> * Slack file tools, such as **slack_send_file**, now work through Managed Tools. Previously, they failed because the Slack connection did not request the `files:write` scope. If you connected Slack before this fix, reconnect it to grant the new scope.
+> * Slack approval cards for tool servers in search mode now name the tool you are approving, such as **gmail_send_email**, instead of the proxy tool `call_tool`.
 > * Creating a Slack app no longer fails when your agent description contains emoji or curly quotes. Descriptions are now capped at 139 bytes, and Slack's validation message appears when Slack rejects a manifest.
 > * Fixed an issue where the dropdowns and text inputs in the access profile editor opened from Configure did not respond. The editor now opens in a centered dialog, and you can use its dropdowns, search, and text inputs.
 > * Sandbox requests that use a Slack connection no longer fail with a 500 error when Slack returns nested user details during authentication.
@@ -43,7 +43,7 @@ Weekly updates to [LangSmith Fleet](/langsmith/fleet).
 * Workspace skill deletion in Agent Builder is now limited to skill owners with the `fleet-skills:delete` permission, and an open deletion confirmation closes if that permission is removed.
 * Workspace webhooks can now be run by users who have the Fleet agent create permission, not only workspace admins, when Fleet RBAC is enabled. Create-only users can run a webhook from the Configure panel and the Settings menu, and users without the permission see a message that they cannot run these webhooks.
 * You can now create, edit, and delete access profiles through `/v1/fleet/access-profiles`, with an optional `description` on each profile and `created_by` and `updated_by` fields that record who made each change. Deleting a profile that a live computer environment uses returns a 409 that lists those environments, and only workspace admins signed in as a user can make these changes.
-* Computer environments now refuse access profiles that mix an allow network with a deny or block\_all network, and access profile network changes are refused when they would mix a live environment that uses them, so runs no longer fail on a mixed network.
+* Computer environments now refuse access profiles that mix an allow network with a deny or block_all network, and access profile network changes are refused when they would mix a live environment that uses them, so runs no longer fail on a mixed network.
 * Sandboxes for v2 enterprise agents now inject OAuth tokens from the agent's own connections instead of the creator's personal tokens. If the agent is not connected to a provider, its sandbox requests get a 403 for that provider.
 * Crons stay paused when Fleet is disabled for your organization. They no longer resume automatically when limits reset, and you can resume them from the Fleet API or the agent's trigger settings.
 * The Executive Assistant template now creates a Per-user agent, which can connect your own Gmail and Outlook inboxes in addition to Slack. Email the agent handles runs as you, using your own Google account. Teams remains available only for Shared agents.
@@ -211,7 +211,7 @@ Weekly updates to [LangSmith Fleet](/langsmith/fleet).
 
 ## Fleet
 
-* New managed Fleet sandboxes inherit the platform retention policy when you omit delete\_after\_stop\_seconds. Explicit zero and positive values remain unchanged.
+* New managed Fleet sandboxes inherit the platform retention policy when you omit delete_after_stop_seconds. Explicit zero and positive values remain unchanged.
 * Threads that stop for an approval or a question now receive their title while they wait, so scheduled runs no longer sit in the inbox untitled until someone opens them. The inbox shows the title loading indicator only while a title is actually on its way.
 * Opening a workspace skill just added to an agent in Fleet no longer shows an empty modal before the agent is saved. The skill detail now opens with its full file tree, the Add to agent button waits for the skill's files to load, and a failed load can be retried.
 * Agent owners can trigger a workspace webhook against an agent again from the Configure panel's Advanced settings. The rows were missing since the Configure panel replaced the standalone agent editor, and each run packages the agent's saved files rather than unsaved edits.
@@ -251,12 +251,12 @@ Weekly updates to [LangSmith Fleet](/langsmith/fleet).
 * Claude Sonnet 5 is now available as a directly selectable Anthropic model in Fleet and Agent Builder, with adaptive thinking enabled.
 * GET /v1/fleet/users lists and searches the members of your workspace by email or name, returning the user ID that agent sharing takes. API-only Fleet clients no longer need a user ID from elsewhere before sharing an agent.
 * Managed Deep Agent channel setup now accepts LangSmith API keys and bearer tokens while enforcing workspace secret and deployment permissions before provisioning.
-* Deployments can now have the general-purpose agent build a new agent directly in the chat, writing its name, description, tools, triggers, and instructions, instead of showing a Create agent button that hands setup to the new agent. Set FLEET\_INLINE\_AGENT\_GENERATION on the Fleet API server, the Fleet queue, and the platform backend to turn it on. Off by default.
-* POST /v1/fleet/sandboxes creates a sandbox from a snapshot and returns it ready to use, so a headless client on external OIDC can provision one without reaching for the platform sandboxes API. Choose the boot image with snapshot\_id or a name:tag reference, or omit both for the workspace default.
+* Deployments can now have the general-purpose agent build a new agent directly in the chat, writing its name, description, tools, triggers, and instructions, instead of showing a Create agent button that hands setup to the new agent. Set FLEET_INLINE_AGENT_GENERATION on the Fleet API server, the Fleet queue, and the platform backend to turn it on. Off by default.
+* POST /v1/fleet/sandboxes creates a sandbox from a snapshot and returns it ready to use, so a headless client on external OIDC can provision one without reaching for the platform sandboxes API. Choose the boot image with snapshot_id or a name:tag reference, or omit both for the workspace default.
 * DELETE /v1/fleet/sandboxes/ removes one sandbox, so a headless client on external OIDC can clean up a sandbox without reaching for the platform sandboxes API. It is idempotent; deleting a sandbox that is already gone still returns 204; and the sandbox is torn down in the background, so a read taken right after shows it in a deleting state rather than absent.
 * GET /v1/fleet/sandboxes//files/content returns the raw bytes of a file in a sandbox. Byte ranges are supported via the Range header, and HEAD reports a file's size without transferring it.
 * POST /v1/fleet/sandboxes//files writes a file into a sandbox from a multipart/form-data body, completing the Fleet file API alongside the existing list and read endpoints. The path query parameter names the destination on its own, so the upload no longer depends on reaching a sandbox's dataplane URL directly. Files are streamed rather than buffered, and files larger than 100 megabytes are refused with 413.
-* GET /v1/fleet/sandboxes//files returns the files under a path in a sandbox, matched by a glob pattern and paged with page\_size and an opaque cursor. Paging replaces the silent result cap the sandbox glob applied, so a large directory can be read in full instead of stopping partway.
+* GET /v1/fleet/sandboxes//files returns the files under a path in a sandbox, matched by a glob pattern and paged with page_size and an opaque cursor. Paging replaces the silent result cap the sandbox glob applied, so a large directory can be read in full instead of stopping partway.
 * DELETE /v1/fleet/sandbox-snapshots/ removes a sandbox snapshot, which pairs with snapshot creation for the delete-then-recreate retry after a failed build. It is idempotent, and returns 409 while any sandbox is still booted from the snapshot, including a stopped one.
 * GET /v1/fleet/sandbox-snapshots/ returns one sandbox snapshot, so a client can watch a snapshot's build status without re-reading the whole list. The path parameter accepts a snapshot id or a Docker-style reference, where a bare name means name:latest.
 * Fleet usage charts now display spend, tool, and model data instead of appearing blank.
@@ -317,7 +317,7 @@ Weekly updates to [LangSmith Fleet](/langsmith/fleet).
 * The new agent creation experience is now enabled for everyone. Asking the assistant for an agent surfaces the Create agent button, and the new agent runs its own setup conversation instead of being built inline.
 * A conversation whose stored state grew past the API's usual single-response size limit now loads in full, up to 32 MiB, instead of failing. The response marks the conversation as oversized, and updates to it still fail until its state shrinks.
 * Sandbox-backed Fleet agents can build a new deck, revise an existing one, and answer questions about the contents of a .pptx file without installing presentation tooling first. A built-in skill guides authoring and validates the file before delivery.
-* Fleet agents can send workspace files to Slack channels, threads, and direct messages using slack\_send\_file and slack\_send\_file\_to\_user.
+* Fleet agents can send workspace files to Slack channels, threads, and direct messages using slack_send_file and slack_send_file_to_user.
 * Fleet agents now correctly route sandbox creation and org config requests to the Go platform-backend service on self-hosted deployments where the Go and Python services run on separate addresses, eliminating the need for a reverse-proxy workaround.
 
 **July 20-24, 2026**
@@ -331,7 +331,7 @@ Weekly updates to [LangSmith Fleet](/langsmith/fleet).
 * When a Google Docs, Sheets, Drive, or Slides tool can't open a file (a 403 or 404), the agent now explains it can only access files it created itself with its connected Google account, instead of wrongly saying the file doesn't exist.
 * Fleet now shows a warning (inline above the failing tool call in chat, and as a message in Slack) when a Google Docs, Sheets, Drive, or Slides tool hits a 403 or 404, explaining the agent can only access files it created itself with its connected Google account.
 * Fleet's configure panel now shows the connection format selector so you can choose whether an agent uses shared or per-user accounts.
-* Agents connected to Slack can now send a file from their workspace into a Slack channel using the new slack\_send\_file tool, for example a report, export, or chart the agent has generated. The file is uploaded server-side and the agent never sees the Slack token.
+* Agents connected to Slack can now send a file from their workspace into a Slack channel using the new slack_send_file tool, for example a report, export, or chart the agent has generated. The file is uploaded server-side and the agent never sees the Slack token.
 * Fleet agents retain DeltaChannel conversation history when thread state is updated, including when users continue trigger-started conversations in chat.
 * Fleet thread APIs can now include the current agent's ID and name, making thread lists and details easier to display without fetching full agent records.
 * Fleet agents with Slack file tools can now send files from thread-scoped and agent-scoped sandbox workspaces.
@@ -350,7 +350,7 @@ Weekly updates to [LangSmith Fleet](/langsmith/fleet).
 * The load previous conversations tool now writes conversation files into the attached Computer sandbox when one is enabled, so agents can inspect the downloaded history with their normal file tools.
 * Creating a new agent no longer fails with a contentBlocks.push error when the chat stream returns string message content.
 * Reloading an agent chat page no longer flashes the thread list through loading and loaded states multiple times. The sidebar now waits for agent scope to finish loading before fetching threads, so the list settles once.
-* Fleet agents now discover tools with find\_tools or an /tools listing before opening a tool's reference doc, so they no longer waste a turn reading guessed tool filenames that do not exist.
+* Fleet agents now discover tools with find_tools or an /tools listing before opening a tool's reference doc, so they no longer waste a turn reading guessed tool filenames that do not exist.
 * The Fleet Fast model tier (`gpt-5.4-mini`) now runs at medium reasoning effort instead of low, improving response quality on harder tasks.
 * The [templates](/langsmith/fleet/templates) gallery now features the Executive Assistant and Software Engineer templates as large cards with a hero illustration, each showing the agent's own icon.
 * Each tool inside a connection in the agent Configure panel now has a remove action (a trash button revealed on hover, matching the connection remove) instead of an on/off switch. The switch implied a reversible toggle, but turning a tool off actually removed it from the agent, so the control now reflects what it does.

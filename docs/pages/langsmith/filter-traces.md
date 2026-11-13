@@ -103,7 +103,7 @@ For example, in the **Threads** view, find threads longer than 20 turns that con
 | Thread | `turn_count:>20` |
 | Any run | `run_type:tool AND status:error` |
 
-![Two filter rows in the search bar. The first is scoped to 'in thread' with a turn\_count greater than 20 clause. The second, labeled AND, is scoped to 'in any run' with run\_type tool AND status error, and ends with the Add AI search and Add filter scope icons. Below the bar, the Threads selection is active](https://mintcdn.com/langchain-5e9cc07a/MoWOdSpeRhP-SZId/langsmith/images/filter-multiple-scopes-light.png?fit=max\&auto=format\&n=MoWOdSpeRhP-SZId\&q=85\&s=9ba96eba5232495b7233fed5fbca4b55)
+![Two filter rows in the search bar. The first is scoped to 'in thread' with a turn_count greater than 20 clause. The second, labeled AND, is scoped to 'in any run' with run_type tool AND status error, and ends with the Add AI search and Add filter scope icons. Below the bar, the Threads selection is active](https://mintcdn.com/langchain-5e9cc07a/MoWOdSpeRhP-SZId/langsmith/images/filter-multiple-scopes-light.png?fit=max\&auto=format\&n=MoWOdSpeRhP-SZId\&q=85\&s=9ba96eba5232495b7233fed5fbca4b55)
 
 ### Scopes a table selection cannot use
 

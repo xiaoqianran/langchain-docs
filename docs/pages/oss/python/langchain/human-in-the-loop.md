@@ -78,25 +78,25 @@ agent = create_agent(
 
 > [accordion] Configuration options
 >
-> **interrupt\_on** `dict` *required*
+> **interrupt_on** `dict` *required*
 >
 > Mapping of tool names to approval configs. Values can be `True` (interrupt with default config), `False` (auto-approve), or an `InterruptOnConfig` object.
 >
-> **description\_prefix** `string` (default: Tool execution requires approval)
+> **description_prefix** `string` (default: Tool execution requires approval)
 >
 > Prefix for action request descriptions
 >
-> **interrupt\_mode** `string` (default: batched)
+> **interrupt_mode** `string` (default: batched)
 >
 > How the agent pauses for review. `"batched"` raises one interrupt per model turn, answered with an ordered list. `"per_call"` raises one interrupt per gated call, answered by interrupt ID. `"per_call"` requires `langchain>=1.4.6`. See [Set the interrupt mode](#set-the-interrupt-mode).
 >
-> **edit\_notice** `string | None`
+> **edit_notice** `string | None`
 >
 > Text added before the result of a call that a reviewer replaced with an `edit` decision, so the model knows the call changed. Defaults to a note that a human reviewer replaced the call. Pass `None` to add nothing.
 >
 > **`InterruptOnConfig` options:**
 >
-> **allowed\_decisions** `list[string]`
+> **allowed_decisions** `list[string]`
 >
 > List of allowed decisions: `'approve'`, `'edit'`, `'reject'`, or `'respond'`
 >
@@ -202,7 +202,7 @@ def read_data(table: str) -> str:
 
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[write_file, execute_sql, read_data],
     middleware=[
         HumanInTheLoopMiddleware(

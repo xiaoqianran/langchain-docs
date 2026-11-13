@@ -205,7 +205,7 @@ const readData = tool(({ table }) => `3 rows from ${table}`, {
 });
 
 let agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [writeFile, executeSql, readData],
   middleware: [
     humanInTheLoopMiddleware({

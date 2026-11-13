@@ -90,6 +90,7 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 * 创建工作区范围的服务密钥和服务帐户
 * 管理组织[billing](/langsmith/billing)和订阅计划
 * 创建、编辑和删除[custom roles](#custom-roles)
+* 配置[SSO and authentication methods](/langsmith/user-management#set-up-saml-sso-for-your-organization)
 * 查看组织[usage](/langsmith/usage-and-billing#usage-limits)和分析
 * 查看[audit logs](/langsmith/audit-logs)（企业）
 
@@ -99,7 +100,6 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 * 无法将组织管理员角色分配给用户
 * 无法创建组织范围（非工作区特定）服务密钥
 * 不会自动添加到现有工作区（仅添加到他们创建或明确邀请的工作区）
-* 无法配置[SSO or authentication methods](/langsmith/user-management#set-up-saml-sso-for-your-organization)
 
 ### 组织用户
 
@@ -170,7 +170,7 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 
 ### 工作区管理员
 
-**描述**：具有所有资源的完全权限和管理工作区的能力的角色。
+**描述**：具有所有资源的完全权限以及管理工作区的能力的角色。
 
 **权限**：
 
@@ -255,7 +255,7 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 2. 在角色表中找到您要限制的角色。
 3. 选择该角色的 **Restricted** 复选框。角色受到限制后，不拥有工作区管理员角色的用户无法在成员邀请、成员编辑或 API 密钥创建流程中查看或分配该角色。 API 还会拒绝不具有工作区管理员角色的调用者的分配尝试。如果不拥有工作区管理员角色的用户创建 API 密钥，他们无法使用自己的受限角色作为密钥的默认角色。
 
-要取消限制角色，请按照相同的步骤操作并清除 **受限** 复选框。
+要取消限制角色，请按照相同的步骤操作并清除 **Restricted** 复选框。
 
 > [!注意]
 >

@@ -12,7 +12,7 @@ Depending on your model is an instruct-style or chat-style model, you will need 
 
 ## Adding configurable fields
 
-It is often useful to configure your model with different parameters. These might include temperature, model\_name, max\_tokens, etc.
+It is often useful to configure your model with different parameters. These might include temperature, model_name, max_tokens, etc.
 
 To make your model configurable in the Playground, you need to add configurable fields to your model server. These fields can be used to change model parameters from the Playground.
 

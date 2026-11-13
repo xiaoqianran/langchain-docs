@@ -55,7 +55,7 @@ One Kubernetes pod contains multiple microVMs. The host needs KVM access; guest 
 
 The host uses host networking on port `19190`. The platform backend connects to the host's node address; clients use the LangSmith API or [service URLs](/langsmith/sandbox-service-urls), not the host listener directly. Keep host listeners on private networks.
 
-Host pods require privileged access for virtualization, networking, and mounts. Use dedicated nodes and restrict administrative access to them. Guest isolation does not make the host pod an unprivileged workload.
+Host pods require privileged access for virtualization, networking, and mounts. Use dedicated nodes and restrict administrative access to them.
 
 ## Follow a request
 
