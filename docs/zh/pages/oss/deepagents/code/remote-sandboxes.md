@@ -191,7 +191,7 @@ Deep Agents 代码使用 [sandbox as tool](/oss/python/deepagents/sandboxes#sand
 | LangSmith | `/root` |
 |代理核心 | `/tmp` |
 |代托纳 | `/home/daytona` |
-|莫代尔 | `/workspace` |
+|莫代尔| `/workspace` |
 |运行循环| `/home/user` |
 |韦尔塞尔 | `/vercel/sandbox` |
 |电子商务 | `/home/user` |
@@ -310,9 +310,9 @@ supports_snapshot_name = false
 region = "us-east-1"
 ```
 
-**类\_路径** `string``module.path:ClassName` 格式的完全限定提供程序类。 Deep Agents 代码为提供者导入并实例化此类。
+**类路径** `string``module.path:ClassName` 格式的完全限定提供程序类。 Deep Agents 代码为提供者导入并实例化此类。
 
-**工作\_dir** `string`
+**工作目录** `string`
 
 沙箱内的默认工作目录。默认为`/workspace`。
 
@@ -320,11 +320,11 @@ region = "us-east-1"
 
 当提供程序的依赖项缺失时，错误消息中建议的包名称。
 
-**支持\_sandbox\_id** `boolean`
+**支持_sandbox_id** `boolean`
 
 该提供程序是否允许 `--sandbox-id` 重新附加。默认为 `true`。
 
-**支持\_快照\_名称** `boolean`
+**支持快照名称** `boolean`
 
 该提供商是否允许使用`--sandbox-snapshot-name`。默认为`false`。
 

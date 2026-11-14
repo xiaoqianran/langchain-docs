@@ -8,7 +8,7 @@
 
 Deep Agents 是[agent harness](/oss/javascript/concepts/products#agent-harnesses-like-the-deep-agents-sdk)，适用于复杂、多步骤的工作。它在 LangChain 和 LangGraph 之上添加了规划、用于上下文的虚拟文件系统、子代理生成和长期内存。
 
-从[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](#self-host-with-the-sdk) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。
+从[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。
 
 ## 选择如何运行Deep Agents
 
@@ -18,7 +18,7 @@ Deep Agents 是[agent harness](/oss/javascript/concepts/products#agent-harnesses
 
 > [卡][Deep Agents SDK](#self-host-with-the-sdk)
 >
-> 相同的深层代理具有最大的灵活性。自己托管代理，或者当您需要对运行时进行更多控制时运行自定义 LangSmith 部署。
+> 相同的深层代理具有最大的灵活性。您自己托管代理，或者当您需要对运行时进行更多控制时运行自定义代理服务器。
 
 Deep Agents 包括以下功能：* **在环境中采取行动**：通过工具采取行动，读写文件，执行代码
 * **连接到您的数据**：在适当的时刻加载记忆、技能和领域知识
@@ -31,7 +31,7 @@ Deep Agents 包括以下功能：* **在环境中采取行动**：通过工具�
 
 ## 使用 SDK 自托管
 
-当您在自己的进程或容器中运行代理，需要自定义 [backend](/oss/javascript/deepagents/backends)、存储或检查点，或者想要自己配置的 [LangSmith Deployment](/langsmith/deployment) 时，请使用开源 SDK。对于托管部署，请参阅[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)。
+当您在自己的进程或容器中运行代理，需要自定义 [backend](/oss/javascript/deepagents/backends)、存储或检查点，或者想要自己配置的 [Agent Server](/langsmith/deployment) 时，请使用开源 SDK。对于托管部署，请参阅[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)。
 
 ### 尝试一下
 
@@ -67,11 +67,11 @@ console.log(
 >
 > 为此示例打开公共 LangSmith 运行。
 
-请参阅 [Quickstart](/oss/javascript/deepagents/quickstart/) 和 [Customization guide](/oss/javascript/deepagents/customization/) 使用 SDK 进行构建。
-
-> [!提示]
+请参阅 [Quickstart](/oss/javascript/deepagents/quickstart/) 和 [Customization guide](/oss/javascript/deepagents/customization/) 使用 SDK 进行构建。> [!提示]
 >
-> 使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview) 跟踪请求、调试代理行为并评估输出。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。## 核心能力
+> 使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview) 跟踪请求、调试代理行为并评估输出。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
+
+## 核心能力
 
 ![Agent harness capabilities by category](https://mintcdn.com/langchain-5e9cc07a/jtty0O--UJOKG0nK/oss/images/agent_harness_capabilities.svg?fit=max\&auto=format\&n=jtty0O--UJOKG0nK\&q=85\&s=0ff671d72badd0844826660dfcb04391)
 
@@ -100,9 +100,9 @@ Deep Agents 是["agent harness"](/oss/javascript/concepts/products#agent-harness
 
 要构建没有这些内置功能的自定义代理，请考虑使用 LangChain 的 [⟦T10⟧](/oss/javascript/langchain/agents) 或构建自定义 [LangGraph](/oss/javascript/langgraph/overview) 工作流程。
 
-## 执行环境
+## 执行环境执行环境是代理执行操作的地方。它有四层：
 
-执行环境是代理执行操作的地方。它有四层：* **[Tools](#tools-and-mcp)**：代理可以调用的自定义函数、API 和数据库
+* **[Tools](#tools-and-mcp)**：代理可以调用的自定义函数、API 和数据库
 * **[Virtual filesystem](#virtual-filesystem-access)**：由可插拔后端支持的文件工具
 * **[Filesystem permissions](#filesystem-permissions)**：代理可以读取或写入的路径的声明性访问控制
 * **[Code execution](#code-execution)**：沙盒 shell 执行和进程内 JavaScript 解释器
@@ -111,7 +111,7 @@ Deep Agents 是["agent harness"](/oss/javascript/concepts/products#agent-harness
 
 ### 工具和 MCP
 
-使用 `tools=` 参数传递自定义函数、LangChain 工具或任何 [MCP server](/oss/javascript/deepagents/tools#mcp-tools) 中的工具。 Deep Agents 完全支持[Model Context Protocol (MCP)](/oss/javascript/langchain/mcp)，让您通过标准接口连接到数据库、API、文件系统等。
+使用 `tools=` 参数传递自定义函数、LangChain 工具或来自任何 [MCP server](/oss/javascript/deepagents/tools#mcp-tools) 的工具。 Deep Agents 完全支持[Model Context Protocol (MCP)](/oss/javascript/langchain/mcp)，让您通过标准接口连接到数据库、API、文件系统等。
 
 有关定义自定义工具、使用 MCP 服务器以及内置线束工具的完整列表的更多信息，请参阅[Tools](/oss/javascript/deepagents/tools)。
 
@@ -126,7 +126,7 @@ Deep Agents 是["agent harness"](/oss/javascript/concepts/products#agent-harness
 | `write_file` |创建新文件 |
 | `edit_file` |在文件中执行精确的字符串替换（使用全局替换模式）|
 | `glob` |查找匹配模式的文件（例如，`**/*.py`）|
-| `grep` |使用多种输出模式搜索文件内容（仅文件、带有上下文的内容或计数）|
+| `grep` |使用多种输出模式搜索文件内容（仅文件、带上下文的内容或计数）|
 | `execute` |在环境中运行 shell 命令（仅适用于[sandbox backends](/oss/javascript/deepagents/sandboxes)）|
 
 > [accordion] 支持的多模式文件扩展名
@@ -156,7 +156,7 @@ Deep Agents 是["agent harness"](/oss/javascript/concepts/products#agent-harness
 > 通过 `excluded_middleware` 移除 [⟦T46⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) 本身被故意拒绝——它需要在 [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack) 中搭建脚手架。使用 `excluded_tools` 仅隐藏模型可见的工具表面并将中间件保留在适当的位置。要删除 `task` 工具，请参阅[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
 
 虚拟文件系统由其他几个工具功能使用，例如技能、内存、代码执行和上下文管理。
-您还可以在为Deep Agents构建自定义工具和中间件时使用文件系统。
+您还可以在为 Deep Agents 构建自定义工具和中间件时使用文件系统。
 
 有关更多信息，请参阅[backends](/oss/javascript/deepagents/backends)。要生成代理可以从文件系统读取的持久存储库 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 
@@ -204,7 +204,7 @@ Deep Agents支持两种方式执行代码：
 
 每个技能都遵循 [Agent Skills standard](https://agentskills.io/) 并位于带有 `SKILL.md` 文件的目录中。技能还可以包括脚本、模板、参考文档和其他支持资源。
 
-Deep Agents 以渐进式披露的方式加载技能：代理在启动时读取`SKILL.md` frontmatter，然后仅在任务需要时读取完整的技能内容。这使得启动上下文保持紧凑，同时仍然可以按需提供丰富的功能。
+Deep Agents 以渐进式披露方式加载技能：代理在启动时读取`SKILL.md` frontmatter，然后仅在任务需要时才读取完整的技能内容。这使得启动上下文保持紧凑，同时仍然可以按需提供丰富的功能。
 
 有关更多信息，请参阅[Skills](/oss/javascript/deepagents/skills)。
 
@@ -261,7 +261,7 @@ import { createDeepAgent } from "deepagents";
 import { todoListMiddleware } from "langchain";
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   middleware: [todoListMiddleware()],
 });
 ```
@@ -271,7 +271,7 @@ import { createDeepAgent } from "deepagents";
 import { todoListMiddleware } from "langchain";
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   middleware: [todoListMiddleware()],
 });
 ```
@@ -339,7 +339,7 @@ const agent = await createDeepAgent({
 * **自主执行**：子代理独立运行直到完成。
 * **单次切换**：它将一份最终报告返回给主代理。
 * **可配置策略**：使用[default ⟦T85⟧ subagent](/oss/javascript/deepagents/subagents#default-subagent)（默认启用）或定义[custom subagents](/oss/javascript/deepagents/subagents#custom-subagents)。
-* **无状态消息传送**：子代理是无状态的，不能发回多条消息。
+* **无状态消息传递**：子代理是无状态的，不能发回多条消息。
 * **上下文和令牌效率**：繁重的子任务工作保持隔离并被压缩为紧凑的结果。
 
 有关更多信息，请参阅[Subagents](/oss/javascript/deepagents/subagents)。要删除 `task` 工具，请参阅[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。

@@ -6,7 +6,7 @@
 
 将选项卡式 SmithDB 和 Sandbox 仪表板导入您自己的监控实例并配置组件遥测收集。
 
-LangSmith 自托管仪表板将运营指标分组到 SmithDB 和 Sandboxes 选项卡中。使用它们从每个监控平台的一个仪表板监控基础架构中运行的组件。
+LangSmith 自托管仪表板将运营指标分组到 SmithDB 和 Sandboxes 选项卡中。使用它们从每个监控平台的一个仪表板监控基础设施中运行的组件。
 
 从[LangSmith observability bundle](https://github.com/langchain-ai/helm/tree/main/charts/langsmith/examples/langsmith-observability)下载定义和集合示例。将它们导入您自己的 Datadog 组织或 Grafana 实例中。从存储库下载这些文件，而不是 Helm 图表存档。下载内容包含查询，而不是遥测或对 LangChain 托管监控的访问。
 
@@ -24,7 +24,7 @@ Grafana 的 Sandbox 选项卡不假设 Prometheus 中存在 Datadog 派生的指
 
 ## 检查先决条件
 
-使用现有的[self-hosted LangSmith deployment](/langsmith/self-hosted)和监控装置。仅对您操作的组件启用收集。这些示例不安装监控软件或启用 SmithDB 或沙箱。* **Datadog**：使用具有 Kubernetes 自动发现和 [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/) 的代理。沙盒注释需要 Agent 7.36 或更高版本。
+使用现有的[self-hosted LangSmith deployment](/langsmith/self-hosted)和监控装置。仅对您操作的组件启用收集。这些示例不安装监控软件或启用 SmithDB 或沙箱。* **Datadog**：使用具有 Kubernetes 自动发现和 [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/) 的代理。沙箱注释需要 Agent 7.36 或更高版本。
 * **Grafana**：将 Grafana 13 或更高版本用于本机选项卡和 V2 仪表板资源格式。配置现有的 Prometheus 数据源。
 * **专用连接**：收集器需要访问组件指标端点。不要通过公众进入暴露它们。沙箱主机使用节点网络，因此通过节点防火墙配置来限制访问。
 * **权限**：您需要导入仪表板和更新集合配置的权限。 Prometheus Pod 发现需要访问选定的 Kubernetes 命名空间。
@@ -39,7 +39,7 @@ Grafana 的 Sandbox 选项卡不假设 Prometheus 中存在 Datadog 派生的指
 
 ### 史密斯数据库遵循 [Configure SmithDB observability](/langsmith/self-host-smithdb-observability) 并使用 `components/smithdb/` 中适当的集合示例。这些示例还从摄取队列和平台后端收集摄取路径指标。
 
-Datadog 下载默认使用 SmithDB 指标的 `smithdb.` 前缀； Grafana 使用原始的 Prometheus 名称。公制含义请参见[SmithDB metrics reference](/langsmith/self-host-smithdb-metrics)。 Datadog 的 SmithDB 错误日志面板还需要匹配`service:smithdb*` 的日志。
+Datadog 下载默认为 SmithDB 指标的 `smithdb.` 前缀； Grafana 使用原始的 Prometheus 名称。公制含义请参见[Essential SmithDB metrics](/langsmith/self-host-smithdb-metrics)。 Datadog 的 SmithDB 错误日志面板还需要匹配`service:smithdb*` 的日志。
 
 如果您的收集器使用其他命名空间，请从 Helm 存储库的本地副本重新生成仪表板：
 
@@ -48,7 +48,7 @@ python3 charts/langsmith/examples/langsmith-observability/generate_dashboards.py
   --smithdb-metrics-prefix custom_smithdb.
 ```
 
-包含尾随点，或传递 `--smithdb-metrics-prefix ''` 以获取无前缀的 SmithDB 指标。该选项仅更改 Datadog 导出中的 SmithDB 指标名称及其前缀注释。 Grafana、沙盒查询、无前缀 `langsmith_*` 指标和日志过滤器保持不变。
+包含尾随点，或传递 `--smithdb-metrics-prefix ''` 以获得无前缀的 SmithDB 指标。该选项仅更改 Datadog 导出中的 SmithDB 指标名称及其前缀注释。 Grafana、沙箱查询、无前缀 `langsmith_*` 指标和日志过滤器保持不变。
 
 生成器不会修改收集设置。将 SmithDB OpenMetrics 命名空间与前缀相匹配：使用 `namespace: custom_smithdb` 作为示例，或者使用空命名空间来表示无前缀的指标。
 
@@ -77,7 +77,7 @@ Grafana 选项卡使用来自主机和可选 JuiceFS 安装的 Prometheus 指标
 |数据狗过滤器|标签 |范围 |
 | - | - | - |
 | `env` | `env` | SmithDB、Sandbox 主机、JuiceFS 和 APM |
-| `cluster` | `cluster_name` 用于 SmithDB； `kube_cluster_name` 用于 Sandbox 主机和 JuiceFS |共享集群选择 |
+| `cluster` | `cluster_name` 用于 SmithDB； `kube_cluster_name` 用于 Sandbox 主机和 JuiceFS |共享集群选择|
 | `namespace` | `kube_namespace` | SmithDB、Sandbox 主机和 JuiceFS |
 | `api_service` | `service` |仅限沙箱 APM |
 | `gcs_bucket` | `bucket_name` |仅限 GCS 存储 |
@@ -85,15 +85,15 @@ Grafana 选项卡使用来自主机和可选 JuiceFS 安装的 Prometheus 指标
 
 默认情况下，Datadog 集群选择器会发现`cluster_name` 中的值。如果您的帐户仅公开 `kube_cluster_name`，请将其用作选择器的标签键。查询将 `$cluster.value` 与每个组件的显式标记键一起使用，因此更改选择器不会重新标记指标。标签键必须使用匹配的集群名称值。如果您的指标使用其他标签键，还需更新相关的查询过滤器和 group-by 子句。APM仅使用`env`和`api_service`；云指标使用其存储桶选择器。 API 服务和存储桶选择器遵循共享过滤器。 Datadog 将溢出控件放置在其附加变量菜单中。
 
-Grafana 显示了三个控件：数据源、命名空间和沙盒集群。数据源和命名空间适用于这两个选项卡。命名空间列表包括SmithDB和Sandbox指标命名空间，并支持多种选择。沙箱集群仅适用于沙箱，因为 SmithDB 集合示例不保证 `cluster` 标签。
+Grafana 显示了三个控件：数据源、命名空间和沙箱集群。数据源和命名空间适用于这两个选项卡。命名空间列表包括SmithDB和Sandbox指标命名空间，并支持多种选择。沙箱集群仅适用于沙箱，因为 SmithDB 集合示例不保证 `cluster` 标签。
 
 Grafana `sandbox_job` 和 `juicefs_job` 变量默认为 All，并且在普通标头中隐藏。编辑其保存的值或在变量设置中取消隐藏它们以区分收集作业。即使这些过滤器选择“全部”，也可以避免重复抓取。具有单独 Prometheus 后端的安装必须自定义组件面板和可变数据源引用；默认捆绑包使用一个后端。
 
 仪表板过滤器不是访问控制；使用监控实例的权限来控制对遥测的访问。
 
-## 阅读沙盒面板仪表板将最近的车队快照与历史趋势区分开来。他们精心设计的网格混合了面板宽度，而不是强制使用两列。紧凑趋势共享三面板行。密集图表和存储比较使用半宽面板，长标签排名有更多空间。标题卡在一个部分有两张时保持配对。
+## 阅读沙箱面板仪表板将最近的车队快照与历史趋势区分开来。他们精心设计的网格混合了面板宽度，而不是强制使用两列。紧凑趋势共享三面板行。密集图表和存储比较使用半宽面板，长标签排名有更多空间。标题卡在一个部分有两张时保持配对。
 
-* **舰队快照**：计数和主机排名使用五分钟面板窗口。 Datadog 每个主机样本最多对齐 60 秒。 Grafana 在范围末端评估快照仪表，并要求在 60 秒内提供样本。
+* **舰队快照**：计数和主机排名使用五分钟面板窗口。 Datadog 每个主机样本的对齐时间长达 60 秒。 Grafana 在范围末端评估快照仪表，并要求在 60 秒内提供样本。
 * **池计数**：就绪和所需计数使用`max`，而不是添加连续的领导者报告。它们描述的是一个选定的池，而不是跨池的总数。所需副本目标仅在自动缩放处于活动状态时更新。
 * **计数**：排名和错误总数遵循所选范围。 Grafana 在聚合之前使用 `increase` 来处理计数器重置。它的计数可能是小数，因为 Prometheus 推断了刮擦边界。
 * **持续时间**：主机图表显示平均值，而不是百分位数。 Datadog 公共 HTTP 端点排名使用整个窗口 p95，而不是间隔百分位数的平均值。Grafana 时间序列计数面板显示超过 `$__rate_interval` 的滚动增长，而不是不相交的 Datadog 存储桶。图例统计总结了标绘点，而不是整个范围的事件加权统计。故障摘要包括没有记录阶段的错误。缺失数据意味着未知，而不是零。
@@ -108,7 +108,7 @@ JuiceFS 默认为环回。这些示例不会更改其侦听器。如果更改绑
 
 ## 预览 Datadog Sandbox 选项卡
 
-Datadog 预览显示共享过滤器、组件选项卡和彩色沙盒部分。其图表显示匿名开发遥测，而不是性能基准。
+Datadog 预览显示共享过滤器、组件选项卡和彩色沙箱部分。其图表显示匿名开发遥测，而不是性能基准。
 
 ![Datadog dashboard with shared deployment filters, SmithDB and Sandboxes tabs, colored sections, and boot-path charts](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-datadog-overview.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=fd4fc7074e51092bde0dae9bf59af38e)
 
@@ -120,7 +120,7 @@ Datadog 预览显示共享过滤器、组件选项卡和彩色沙盒部分。其
 >
 > ![Sandbox operation errors, operation rates, and creation duration by outcome and stage](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-lifecycle.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=d6b1e082b6bfd9afa22e0f11e6da240b)
 
-## 预览 Grafana Sandbox 选项卡Grafana 预览显示共享过滤器和混合宽度沙箱面板。它的图表使用合成示例数据，而不是实时遥测或性能基准。
+## 预览 Grafana Sandbox 选项卡Grafana 预览显示共享过滤器和混合宽度沙盒面板。它的图表使用合成示例数据，而不是实时遥测或性能基准。
 
 ![Grafana dashboard with shared data source and namespace selectors, component tabs, and mixed-width Sandbox charts](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-grafana-overview.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=fff175f785cfe9ae664480a12dd770a9)
 
@@ -130,7 +130,7 @@ Datadog 预览显示共享过滤器、组件选项卡和彩色沙盒部分。其
 
 之前的`smithdb-observability/`目录已被删除。更新书签和自动化以使用统一捆绑包的下载路径；已导入的仪表板不受影响。
 
-对于没有本机选项卡的 Grafana 安装，请下载 [standalone SmithDB dashboard in Classic format](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/langsmith-observability/components/smithdb/grafana.json)。它仅包含 SmithDB 面板。这些仪表板示例不需要已弃用的 LangSmith Observability Helm 图表。
+对于没有本机选项卡的 Grafana 安装，请下载 [standalone SmithDB dashboard in Classic format](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/langsmith-observability/components/smithdb/grafana.json)。它仅包含 SmithDB 面板。这些仪表板示例不需要已弃用的 LangSmith 可观测性 Helm 图表。
 
 ## 解决丢失数据的问题
 

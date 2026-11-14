@@ -40,7 +40,7 @@ Node.js 18 或更高版本。
 
 ## 选择你的路径
 
-从 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 工具时获得最大灵活性，请自行使用 Deep Agents SDK 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。> [选项卡] 托管 Deep Agents
+从 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 工具时获得最大灵活性，请自行使用 Deep Agents SDK 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。> [选项卡] 托管 Deep Agents
 >
 >> [!注意]
 >>
@@ -696,7 +696,7 @@ Node.js 18 或更高版本。
 >
 > 参见[Deploy](/langsmith/javascript/managed-deep-agents-deploy)。> [标签] Deep Agents SDK
 >
-> 当您想要自己托管代理或运行自定义 [LangSmith Deployment](/langsmith/deployment) 时，请使用开源 SDK。该示例将行为保存在内存文件、技能和子代理定义中，以及 [FilesystemBackend](/oss/javascript/deepagents/backends)。
+> 当您想要自己托管代理或运行自定义 [Agent Server](/langsmith/deployment) 时，请使用开源 SDK。该示例将行为保存在内存文件、技能和子代理定义中，以及 [FilesystemBackend](/oss/javascript/deepagents/backends)。
 >
 > ### 设置
 >
@@ -1231,7 +1231,7 @@ Node.js 18 或更高版本。
 >
 > **2。创建代理**
 >
-> When creating the deep agent with [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent), pass memory paths, the skills directory, image tools, an inline subagent definition, and a [FilesystemBackend](/oss/javascript/deepagents/backends) rooted at the example directory so paths like `./AGENTS.md` and `./skills/` resolve correctly.
+> 使用 [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 创建深度代理时，传递内存路径、技能目录、图像工具、内联子代理定义以及以示例目录为根的 [FilesystemBackend](/oss/javascript/deepagents/backends)，以便正确解析 `./AGENTS.md` 和 `./skills/` 等路径。
 >
 > ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
@@ -1247,7 +1247,7 @@ Node.js 18 或更高版本。
 >   };
 >
 >   return createDeepAgent({
->     model: "google:gemini-3.6-flash",
+>     model: "google:gemini-4-hydrogen",
 >     memory: ["./AGENTS.md"],
 >     skills: ["./skills/"],
 >     tools: [generateCover, generateSocialImage],
@@ -1271,7 +1271,7 @@ Node.js 18 或更高版本。
 >   };
 >
 >   return createDeepAgent({
->     model: "openai:gpt-5.5",
+>     model: "openai:gpt-6.1-sol",
 >     memory: ["./AGENTS.md"],
 >     skills: ["./skills/"],
 >     tools: [generateCover, generateSocialImage],

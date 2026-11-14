@@ -104,7 +104,7 @@ dcode --model anthropic:claude-opus-4-8 --model-params '{"thinking": {"type": "e
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode --profile-override '{"max_input_tokens": 4096}'
-dcode --model google_genai:gemini-3.6-flash --profile-override '{"max_input_tokens": 4096}'
+dcode --model google_genai:gemini-4-hydrogen --profile-override '{"max_input_tokens": 4096}'
 ```
 
 对于暂时性错误的重试计数，请使用 `--max-retries` 或 `config.toml` 中的 `[retries]` 部分。请参阅[Model parameters](/oss/deepagents/code/providers#model-parameters)和[Profile overrides](/oss/deepagents/code/config-file#profile-overrides-advanced)。
@@ -379,7 +379,7 @@ By model since this thread was loaded:
 - anthropic:claude-sonnet-4-5: $1.03
 ```
 
-总数包括来自助手、子代理、卸载、自动分类和评分标准的模型调用。当您恢复或切换线程时它仍然存在。估计使用[genai-prices](https://github.com/pydantic/genai-prices)目录；不包括未定价的请求。使用`/tokens`作为估计背后的令牌计数。对于未覆盖的型号，[add a custom pricing override](/oss/deepagents/code/configuration#custom-pricing-overrides)。
+总数包括来自助理、子代理、卸载、自动分类和评分标准的模型调用。当您恢复或切换线程时它仍然存在。估计使用[genai-prices](https://github.com/pydantic/genai-prices)目录；不包括未定价的请求。使用`/tokens`作为估计背后的令牌计数。对于未覆盖的型号，[add a custom pricing override](/oss/deepagents/code/configuration#custom-pricing-overrides)。
 
 ### 问一个附带问题
 
@@ -414,7 +414,7 @@ dcode --sandbox
 >
 > 由于 `--sandbox` 接受可选值，因此请在命令行上保留裸形式**最后**。否则，以下参数（例如，`dcode --sandbox agents`）将被用作标志的值。
 
-使用 `dcode --install` 安装沙箱附加组件（例如 `dcode --install daytona` 或 `dcode --install all-sandboxes`）。请参阅 [Remote sandboxes](/oss/deepagents/code/remote-sandboxes) 了解提供程序设置、工作目录和第三方提供程序。
+使用 `dcode --install` 安装沙箱附加功能（例如 `dcode --install daytona` 或 `dcode --install all-sandboxes`）。请参阅 [Remote sandboxes](/oss/deepagents/code/remote-sandboxes) 了解提供程序设置、工作目录和第三方提供程序。
 
 ## MCP 标志
 
@@ -435,7 +435,7 @@ dcode -n "run tests" --trust-project-mcp
 
 对标记为 `auth: "oauth"` 和 `dcode mcp login <server>` 的 MCP 服务器运行 OAuth 登录。运行不带服务器名称的`dcode mcp login`，列出已配置的需要登录的 OAuth 服务器。参见[MCP tools](/oss/deepagents/code/mcp-tools)。
 
-## 命令行选项|选项 |描述 |
+## 命令行选项|选项|描述 |
 | - | - |
 | `-a`、`--agent NAME` |使用具有独立内存的命名代理。覆盖 `config.toml` 中的 `[agents].recent` 和 `[agents].default`。默认值：`agent`（如果设置了`[agents].recent`，则为最近使用的代理）|
 | `-M`、`--model MODEL` |使用特定型号（`provider:model`）|
@@ -460,7 +460,7 @@ dcode -n "run tests" --trust-project-mcp
 | `-y`、`--auto-approve` |启用分类器支持的[Auto](/oss/deepagents/code/approval-modes)模式。需要交互式本地会话；在交互式会话期间使用 `Shift+Tab` 进行切换 |
 | `--auto-classifier-model MODEL` | [Auto classifier](/oss/deepagents/code/approval-modes#select-a-classifier-model) 用于检查门控工具调用的模型（`provider:model` 格式）。覆盖 `config.toml` 中的 `DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL` 和 `[models].auto_classifier`。仅限交互式 TUI 会话 |
 | `--yolo` |一次性本地风险确认后，无需审查即可运行门控操作。仅交互模式 || `-S`、`--shell-allow-list LIST` |用于自动批准的以逗号分隔的 shell 命令，`'recommended'` 用于安全默认值，或 `'all'` 用于允许任何命令。适用于`-n`和交互模式 |
-| `--allow-fs-tools LIST` |要公开的文件系统工具。默认为`all`。参见[Restrict filesystem tools](#restrict-filesystem-tools)|
+| `--allow-fs-tools LIST` |要公开的文件系统工具。默认为`all`。参见[Restrict filesystem tools](#restrict-filesystem-tools) |
 | `--json` |从支持的管理子命令发出机器可读的 JSON，包括 `tools`、`agents`、`threads`、`skills` 和 `update`。输出包络：`{"schema_version": 1, "command": "...", "data": ...}` |
 | `--sandbox TYPE` |用于代码执行的远程沙箱：`none`（默认）、`langsmith`、`agentcore`、`daytona`、`modal`、`runloop`、`vercel`和第三方提供商。包含LangSmith；其他内置功能需要额外的东西。传递`--sandbox`，但没有值可以使用配置中的`[sandboxes].default` |
 | `--sandbox-id ID` |重用现有沙箱（跳过创建和清理）|
@@ -470,15 +470,15 @@ dcode -n "run tests" --trust-project-mcp
 | `--no-tracing` |禁用此会话的 LangSmith 代理跟踪。请参阅[Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith) |
 | `--no-mcp` |禁用所有 MCP 工具加载 || `--trust-project-mcp` |信任项目级 MCP 服务器，而不提示当前运行。明确否认仍然适用。 |
 | `-e`、`--extension PATH` |为此运行加载 Python 扩展文件或目录。重复添加多个路径。需要 `DEEPAGENTS_CODE_EXPERIMENTAL=1` 并启用扩展发现 (`[extensions].enabled` / `DEEPAGENTS_CODE_EXTENSIONS`)。请参阅[Python extensions](/oss/deepagents/code/extensions) |
-| `--trust-project-extensions` |此次运行信任项目级 `.deepagents/extensions/` Python 扩展。需要`DEEPAGENTS_CODE_EXPERIMENTAL=1`。参见[Python extensions](/oss/deepagents/code/extensions#trust-project-extensions)|
+| `--trust-project-extensions` |此次运行信任项目级 `.deepagents/extensions/` Python 扩展。需要`DEEPAGENTS_CODE_EXPERIMENTAL=1`。参见[Python extensions](/oss/deepagents/code/extensions#trust-project-extensions) |
 | `--interpreter` |当在配置中禁用 JS 解释器 (`js_eval`) 中间件时，在主代理上启用它。 `js_eval` 默认启用。 |
 | `--interpreter-tools VALUE` | `js_eval` 的 PTC 允许列表：`safe`、`all` 或以逗号分隔的工具名称列表。默认值：`safe`（只读`read_file`/`glob`/`grep`预设）。请参阅[JS interpreter](/oss/deepagents/code/config-file#js-interpreter) |
 | `--profile-override JSON` |将模型配置文件字段覆盖为 JSON 字符串（例如，`'{"max_input_tokens": 4096}'`）。合并在配置文件配置文件覆盖之上 |
 | `--acp` |通过 stdio 作为 ACP 服务器运行，而不是启动交互式 UI |
 | `--update` |检查并安装更新，然后退出 |
-| `--auto-update` |打开或关闭自动更新，然后退出 || `--install NAME` |安装可选的附加组件（例如，`quickjs`、`daytona`、`fireworks`），然后退出。添加 `--package` 将 `NAME` 视为通过 `uv --with` 安装的自定义提供程序包，而不是额外的（请参阅 [arbitrary providers](/oss/deepagents/code/config-file#arbitrary-providers)），并添加 `--yes` 跳过确认提示 |
+| `--auto-update` |打开或关闭自动更新，然后退出 || `--install NAME` |安装可选的附加组件（例如，`quickjs`、`daytona`、`fireworks`），然后退出。 Add `--package` to treat `NAME` as a custom provider package installed via `uv --with` rather than an extra (see [arbitrary providers](/oss/deepagents/code/config-file#arbitrary-providers)), and `--yes` to skip confirmation prompts |
 | `--uninstall NAME` |删除已安装的可选附加组件并退出。 `dcode uninstall NAME` 的别名 |
-| `-v`、`--version` |显示版本 |
+| `-v`、`--version` |显示版本|
 | `-h`、`--help` |显示帮助 |
 
 ## 管理凭证 (`dcode auth`)
@@ -514,7 +514,7 @@ dcode config path
 
 提供者凭据仅报告为已配置或未配置；不打印值。所有四个命令都接受`--json`。参见[Inspect configuration](/oss/deepagents/code/configuration#inspect-configuration)。## 运行诊断 (`dcode doctor`)
 
-当 Deep Agents 代码未正确启动、提供商或 MCP 服务器未连接、跟踪配置错误或者安装或更新看起来错误时，请使用 `dcode doctor`。它总结了安装方法、依赖项版本、更新状态、跟踪配置和数据目录运行状况，而无需启动会话。
+Use `dcode doctor` when Deep Agents Code is not starting correctly, a provider or MCP server does not connect, tracing is misconfigured, or an install or update looks wrong.它总结了安装方法、依赖项版本、更新状态、跟踪配置和数据目录运行状况，而无需启动会话。
 
 当您需要高级运行状况检查和特定设置的确切来源时，请将 `dcode doctor` 与 `dcode config show` 配对。参见[Run diagnostics with ⟦T366⟧](/oss/deepagents/code/configuration#run-diagnostics-with-dcode-doctor)。
 
@@ -533,7 +533,7 @@ dcode config path
 | `dcode skills list [--project]` |列出所有技能（别名：`ls`）|| `dcode skills create NAME [--project]` |使用模板`SKILL.md`创建新技能。幂等 - 重新创建现有技能会打印信息性消息而不是错误 |
 | `dcode skills info NAME [--project]` |显示有关技能的详细信息 |
 | `dcode skills delete NAME [--project] [-f]` |删除技能及其内容。支持`--dry-run` |
-| `dcode threads list [--agent NAME] [--limit N]` |列出会话（别名：`ls`），包括设置时每个线程的名称。默认限制：100。设置 `DEEPAGENTS_CODE_RECENT_THREADS` 更改默认值，或使用 `-n` 作为 `--limit` 的短标志。其他标志：`--sort {created,updated}`、`--branch TEXT`（按 git 分支过滤）、`--cwd [PATH]`（按工作目录过滤；裸标志使用当前目录）、`-v`/`--verbose`（显示所有列，包括分支、创建时间和初始提示）， `-r`/`--relative`（相对时间戳）|
+| `dcode threads list [--agent NAME] [--limit N]` |列出会话（别名：`ls`），包括设置时每个线程的名称。默认限制：100。设置 `DEEPAGENTS_CODE_RECENT_THREADS` 更改默认值，或使用 `-n` 作为 `--limit` 的短标志。 Additional flags: `--sort {created,updated}`, `--branch TEXT` (filter by git branch), `--cwd [PATH]` (filter by working directory; bare flag uses current directory), `-v`/`--verbose` (show all columns including branch, created time, and initial prompt), `-r`/`--relative`（相对时间戳）|
 | `dcode threads delete ID` |删除会话。支持`--dry-run` |
 | `dcode mcp login [NAME] [--mcp-config PATH]` |使用 `NAME`，为标记为 `auth: "oauth"` 的服务器运行 OAuth 登录流程。省略 `NAME` 以列出已配置的需要登录的 OAuth 服务器。请参阅[MCP tools](/oss/deepagents/code/mcp-tools#oauth-login) |
 | `dcode mcp config` |显示 MCP 配置发现路径 |

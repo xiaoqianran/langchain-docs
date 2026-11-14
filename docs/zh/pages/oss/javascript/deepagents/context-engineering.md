@@ -22,7 +22,7 @@
 | - | - | - |
 | **[Input context](#input-context)** |代理启动时的提示包含哪些内容（系统提示、内存、技能） |静态，每次运行均应用 |
 | **[Runtime context](#runtime-context)** |调用时传递的静态配置（用户元数据、API 密钥、连接）|每次运行，传播到子代理 |
-| **[Context compression](#context-compression)** |内置卸载和汇总，将上下文保持在窗口限制内 |当接近极限时自动 |
+| **[Context compression](#context-compression)** |内置卸载和摘要，可将上下文保持在窗口限制内 |当接近极限时自动 |
 | **[Context isolation](#context-isolation-with-subagents)** |使用子代理隔离繁重的工作，仅将结果返回给主代理 |每个子代理，当被委托时 |
 | **[Long-term memory](#long-term-memory)** |使用虚拟文件系统跨线程持久存储|对话中持续存在 |
 
@@ -52,7 +52,7 @@
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   systemPrompt: `You are a research assistant specializing in scientific literature.
   Always cite sources. Use subagents for parallel research on different topics.`,
 });
@@ -62,7 +62,7 @@ const agent = await createDeepAgent({
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt: `You are a research assistant specializing in scientific literature.
   Always cite sources. Use subagents for parallel research on different topics.`,
 });
@@ -136,7 +136,7 @@ const agent = await createDeepAgent({
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   memory: ["/project/AGENTS.md", "~/.deepagents/preferences.md"],
 });
 ```
@@ -145,7 +145,7 @@ const agent = await createDeepAgent({
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   memory: ["/project/AGENTS.md", "~/.deepagents/preferences.md"],
 });
 ```
@@ -201,13 +201,13 @@ const agent = await createDeepAgent({
 
 ### 技能
 
-技能提供**按需**能力。代理在启动时从每个`SKILL.md`读取frontmatter，然后仅在确定技能相关时加载完整的技能内容。这减少了令牌的使用，同时仍然提供专门的工作流程：
+技能提供**按需**功能。代理在启动时从每个`SKILL.md`读取frontmatter，然后仅在确定技能相关时加载完整的技能内容。这减少了令牌的使用，同时仍然提供专门的工作流程：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   skills: ["/skills/research/", "/skills/web-search/"],
 });
 ```
@@ -216,7 +216,7 @@ const agent = await createDeepAgent({
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   skills: ["/skills/research/", "/skills/web-search/"],
 });
 ```
@@ -364,7 +364,7 @@ const fetchUserData = tool(
 );
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [fetchUserData],
   contextSchema,
 });
@@ -399,7 +399,7 @@ const fetchUserData = tool(
 );
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [fetchUserData],
   contextSchema,
 });
@@ -667,7 +667,7 @@ const result = await agent.invoke(
 **它是如何工作的：*** 主代理有一个`task`工具来委派工作
 * 子代理以自己的新上下文运行
 * 子代理自主执行直至完成
-* 子代理返回一份最终报告给主代理
+* 子代理向主代理返回一份最终报告
 * 主要代理的上下文保持干净
 
 **最佳实践：**
@@ -712,7 +712,7 @@ import {
 import { InMemoryStore } from "@langchain/langgraph";
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   store: new InMemoryStore(),
   backend: new CompositeBackend(new StateBackend(), {
     "/memories/": new StoreBackend({
@@ -733,7 +733,7 @@ import {
 import { InMemoryStore } from "@langchain/langgraph";
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   store: new InMemoryStore(),
   backend: new CompositeBackend(new StateBackend(), {
     "/memories/": new StoreBackend({
@@ -856,7 +856,7 @@ const agent = await createDeepAgent({
 例如，您可以提示代理将首选项存储在`/memories/preferences.txt`中。
 该路径开始为空，当用户共享值得记住的信息时，代理会使用其文件系统工具（`write_file`、`edit_file`）按需创建文件。
 
-要预先播种记忆，请在 LangSmith 上部署时使用 [Store API](/langsmith/custom-store)。
+要预先播种内存，请在 LangSmith 上部署时使用 [Store API](/langsmith/custom-store)。
 有关设置和用例，请参阅[Long-term memory](/oss/javascript/deepagents/memory)。
 
 ## 最佳实践1. **从正确的输入上下文开始**：为始终相关的约定保持最小的内存；使用专注技能来实现特定任务的能力。

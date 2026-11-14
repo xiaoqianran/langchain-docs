@@ -29,7 +29,7 @@ Deep Agents 通过`ls`、`read_file`、`write_file`、`edit_file`、`glob` 和 `
 
 > [!提示]
 >
-> 当您在 [LangSmith Deployment](/langsmith/deployment) 上部署时，会自动配置商店。使用 [LangSmith](/langsmith/observability) 跟踪来调试文件路径、权限拒绝和跨线程存储。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
+> 当您在 [LangSmith Agent Server](/langsmith/deployment) 上部署时，会自动配置商店。使用 [LangSmith](/langsmith/observability) 跟踪来调试文件路径、权限拒绝和跨线程存储。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
 >
 > 我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 
@@ -41,11 +41,11 @@ Deep Agents 通过`ls`、`read_file`、`write_file`、`edit_file`、`glob` 和 `
 
 以下是一些预构建的文件系统后端，您可以将它们快速与深度代理一起使用：|内置后端|描述 |
 | - | - |
-| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")` 线程范围。代理的默认文件系统后端存储在`langgraph`状态。文件在线程内持续存在（通过检查点），并且不会跨线程共享。 |
-| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` 这使深度代理可以访问本地计算机的文件系统。您可以指定代理有权访问的根目录。请注意，任何提供的 `root_dir` 必须是绝对路径。通常，包装在 [CompositeBackend](#compositebackend-router) 中，以将内部代理数据（卸载的工具结果、对话历史记录）与项目文件分开。 |
-| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())` 这使代理可以访问“跨线程持久化”的长期存储。这对于存储适用于代理多次执行的长期记忆或指令非常有用。 |
-| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` 将文件持久存储在 LangSmith Hub 存储库中，无需配置单独的 LangGraph 存储。 |
-| [Sandbox](/oss/javascript/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` 在隔离环境中执行代码。沙箱提供文件系统工具以及用于运行 shell 命令的`execute`工具。从 LangSmith、AgentCore、Daytona 或其他 [sandbox integrations](/oss/javascript/integrations/sandboxes) 中进行选择。 || [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` 文件系统和 shell 直接在主机上执行。无隔离——仅在受控开发环境中使用。请参阅下面的[security considerations](#localshellbackend-local-shell)。 |
+| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen")` 线程范围。代理的默认文件系统后端存储在`langgraph`状态。文件在线程内持续存在（通过检查点），并且不会跨线程共享。 |
+| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` 这使深度代理可以访问本地计算机的文件系统。您可以指定代理有权访问的根目录。请注意，任何提供的 `root_dir` 必须是绝对路径。通常，包装在 [CompositeBackend](#compositebackend-router) 中，以将内部代理数据（卸载的工具结果、对话历史记录）与项目文件分开。 |
+| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=StoreBackend())` 这使代理可以访问“跨线程持久化”的长期存储。这对于存储适用于代理多次执行的长期记忆或指令非常有用。 |
+| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=ContextHubBackend("my-agent"))` 将文件持久存储在 LangSmith Hub 存储库中，无需配置单独的 LangGraph 存储。 |
+| [Sandbox](/oss/javascript/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=sandbox)` 在隔离环境中执行代码。沙箱提供文件系统工具以及用于运行 shell 命令的`execute`工具。从 LangSmith、AgentCore、Daytona 或其他 [sandbox integrations](/oss/javascript/integrations/sandboxes) 中进行选择。 || [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` 文件系统和 shell 直接在主机上执行。无隔离——仅在受控开发环境中使用。请参阅下面的[security considerations](#localshellbackend-local-shell)。 |
 | [Composite](#compositebackend-router) |默认情况下是线程范围的，`/memories/`跨线程持久化。复合后端具有最大程度的灵活性。您可以在文件系统中指定不同的路由以指向不同的后端。有关准备粘贴的示例，请参阅下面的复合路由。 |
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -148,7 +148,7 @@ const agent2 = createDeepAgent({
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
 });
 ```
@@ -157,7 +157,7 @@ const agent = createDeepAgent({
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
 });
 ```
@@ -278,7 +278,7 @@ import { createDeepAgent, LocalShellBackend } from "deepagents";
 const backend = new LocalShellBackend({ workingDirectory: "." });
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   backend,
 });
 ```
@@ -289,7 +289,7 @@ import { createDeepAgent, LocalShellBackend } from "deepagents";
 const backend = new LocalShellBackend({ workingDirectory: "." });
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   backend,
 });
 ```
@@ -367,10 +367,10 @@ const agent = createDeepAgent({
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   backend: new StoreBackend({
     namespace: (rt) => [rt.serverInfo.user.identity],
   }),
@@ -382,10 +382,10 @@ const agent = createDeepAgent({
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   backend: new StoreBackend({
     namespace: (rt) => [rt.serverInfo.user.identity],
   }),
@@ -397,7 +397,7 @@ const agent = createDeepAgent({
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "anthropic:claude-sonnet-5",
@@ -412,7 +412,7 @@ const agent = createDeepAgent({
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "openrouter:z-ai/glm-5.2",
@@ -427,7 +427,7 @@ const agent = createDeepAgent({
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "fireworks:accounts/fireworks/models/glm-5p2",
@@ -442,7 +442,7 @@ const agent = createDeepAgent({
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "baseten:zai-org/GLM-5.2",
@@ -457,7 +457,7 @@ const agent = createDeepAgent({
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "ollama:north-mini-code-1.0",
@@ -470,7 +470,7 @@ const agent = createDeepAgent({
 
 > [!注意]
 >
-> 部署到[LangSmith Deployment](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
+> 部署到[LangSmith Agent Server](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
 
 > [!提示]
 >
@@ -481,7 +481,7 @@ const agent = createDeepAgent({
 **最适合：**
 
 * 当您已经使用配置的 LangGraph 存储运行时（例如，Redis、Postgres 或[⟦T105⟧](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) 背后的云实现）。
-* 当您通过 [LangSmith Deployment](/langsmith/deployment) 部署代理时（会自动为您的代理配置商店）。
+* 当您通过 [LangSmith Agent Server](/langsmith/deployment) 部署代理时（会自动为您的代理配置商店）。
 
 #### 命名空间工厂
 
@@ -497,7 +497,7 @@ NamespaceFactory = Callable[[Runtime], tuple[str, ...]]
 
 * `rt.context` - 通过 LangGraph 的 [context schema](/oss/javascript/langgraph/graph-api#runtime-context) 传递的用户提供的上下文（例如，`user_id`）
 
-* `rt.serverInfo`—在 LangGraph 服务器上运行时特定于服务器的元数据（助理 ID、图形 ID、经过身份验证的用户）
+* `rt.serverInfo`—在代理服务器上运行时特定于服务器的元数据（助理 ID、图形 ID、经过身份验证的用户）
 
 * `rt.executionInfo`—执行身份信息（线程ID、运行ID、检查点ID）
 
@@ -564,7 +564,7 @@ const backend = new StoreBackend({
 
 **最适合：**
 
-* LangSmith-原生持久文件系统持久性，无需单独连接LangGraph`BaseStore`。
+* LangSmith-本机持久文件系统持久性，无需单独连接LangGraph`BaseStore`。
 * 受益于文件系统更改的集线器提交历史记录的工作流程。
 
 ### CompositeBackend（路由器）
@@ -581,7 +581,7 @@ import { InMemoryStore } from "@langchain/langgraph";
 const store = new InMemoryStore();
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   backend: new CompositeBackend(new StateBackend(), {
     "/memories/": new StoreBackend({
       namespace: () => ["memories"],
@@ -603,7 +603,7 @@ import { InMemoryStore } from "@langchain/langgraph";
 const store = new InMemoryStore();
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   backend: new CompositeBackend(new StateBackend(), {
     "/memories/": new StoreBackend({
       namespace: () => ["memories"],
@@ -744,7 +744,7 @@ const agent = createDeepAgent({
 
 ## 路由到不同的后端
 
-将命名空间的部分路由到不同的后端。通常用于跨线程持久化 `/memories/*` 并保持其他所有内容都在线程范围内。
+将命名空间的部分路由到不同的后端。通常用于跨线程持久保存 `/memories/*` 并保持其他所有内容都在线程范围内。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, CompositeBackend, FilesystemBackend, StateBackend } from "deepagents";
@@ -864,7 +864,7 @@ const agent = createDeepAgent({
 
 ## 添加策略挂钩
 
-对于超出基于路径的允许/拒绝规则（速率限制、审核日志记录、内容检查）的自定义验证逻辑，通过子类化或包装后端来强制实施企业规则。
+对于超出基于路径的允许/拒绝规则（速率限制、审核日志记录、内容检查）的自定义验证逻辑，通过子类化或包装后端来强制执行企业规则。
 
 阻止在选定前缀（子类）下写入/编辑：
 
@@ -1049,7 +1049,7 @@ const agent = createDeepAgent({
 });
 ```
 
-### 从 `BackendContext` 迁移在 `deepagents>=0.5.2` (Python) 和 `deepagents>=1.9.1` (TypeScript) 中，命名空间工厂直接接收 LangGraph [⟦T303⟧](https://reference.langchain.com/javascript/langchain/index/Runtime) 而不是 `BackendContext` 包装器。旧的 `BackendContext` 形式仍然可以通过向后兼容的 `.runtime` 和 `.state` 访问器工作，但这些访问器会发出弃用警告，并将在 `deepagents>=0.7` 中删除。
+### 从 `BackendContext` 迁移在 `deepagents>=0.5.2` (Python) 和 `deepagents>=1.9.1` (TypeScript) 中，命名空间工厂直接接收 LangGraph [⟦T303⟧](https://reference.langchain.com/javascript/langchain/index/Runtime)，而不是 `BackendContext` 包装器。旧的 `BackendContext` 形式仍然可以通过向后兼容的 `.runtime` 和 `.state` 访问器工作，但这些访问器会发出弃用警告，并将在 `deepagents>=0.7` 中删除。
 
 **改变了什么：**
 
@@ -1076,7 +1076,7 @@ new StoreBackend({
 ### 必需的方法
 
 * **`ls(path: string) → LsResult`**
-  * 列出指定目录中的文件和目录（非递归）。目录的路径中有一个尾随的 `/` 和 `is_dir=true`。如果可用，请包括 `is_dir`、`size`、`modified_at`。* **`read(filePath: string, offset?: number, limit?: number) → ReadResult`**
+  * 列出指定目录中的文件和目录（非递归）。目录的路径中有一个尾随的 `/` 和 `is_dir=true`。包括 `is_dir`、`size`、`modified_at`（如果有）。* **`read(filePath: string, offset?: number, limit?: number) → ReadResult`**
   * 读取文件内容。对于文本文件，内容按行偏移量/限制（默认偏移量 0，限制 500）分页。对于二进制文件，将返回完整的原始 `Uint8Array` 内容以及 `mimeType` 字段集。如果文件丢失，则返回`{ error: "File '/x' not found" }`。
 
 * **`readRaw(filePath: string) → ReadRawResult`**

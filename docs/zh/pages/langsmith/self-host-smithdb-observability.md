@@ -70,7 +70,7 @@ SmithDB 组件公开应用程序指标，并可以将日志和跟踪导出到现
 
 这些是普罗米修斯风格的注释。拥有自己的发现格式的提供商（例如 Datadog）需要将该格式应用于相同的端口和路径。使用现有基础设施监控来监控 PostgreSQL 元存储、Kubernetes 节点和云服务。
 
-有关要观察哪些指标以及如何读取它们，请参阅[SmithDB metrics reference](/langsmith/self-host-smithdb-metrics)。
+有关要观察哪些指标以及如何读取它们，请参阅[Essential SmithDB metrics](/langsmith/self-host-smithdb-metrics)。
 
 ## 日志和痕迹SmithDB 使用[Export LangSmith telemetry to your observability backend](/langsmith/export-backend) 中描述的图表级 OpenTelemetry 跟踪配置，但有一个区别：SmithDB 仅通过 OTLP gRPC 导出。将 `config.observability.tracing.exporter` 设置为 `grpc`。对于 `http`，SmithDB 导出保持禁用状态，SmithDB 日志保持仅限控制台。该图表自动将 SmithDB pod 和容器名称添加为 OpenTelemetry 资源属性。
 

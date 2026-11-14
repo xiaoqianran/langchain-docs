@@ -4,12 +4,12 @@
 
 # 待办事项列表
 
-通过从座席状态同步的实时待办事项列表来跟踪座席进度
+通过与座席状态同步的实时待办事项列表来跟踪座席进度
 
 并非每个代理交互都是聊天。有时代理正在执行
 多步骤计划，显示进度的最佳方式是**待办事项列表**
 实时更新。深度代理待办事项列表模式读取 `todos` 数组
-直接来自代理的状态，将每个项目的当前状态渲染为
+直接从代理的状态，将每个项目的当前状态渲染为
 代理人按照其计划行事。这是一个基于相同内容构建的进度仪表板
 `useStream` 用于聊天的钩子。它表明代理状态可以为任何 UI 提供支持，
 不仅仅是消息泡沫。
@@ -17,7 +17,7 @@
 ## 它是如何工作的
 
 当您选择加入 [⟦T20⟧](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware) 时，深度代理可以公开 **`todos` 状态** 通道。该中间件添加了 `write_todos` 工具，并在代理执行其计划时保留任务进度。当代理执行时，它会更新每个
-todo的状态从`"pending"`到`"in_progress"`再到`"completed"`。的
+todo 的状态从 `"pending"` 到 `"in_progress"` 到 `"completed"`。的
 [⟦T25⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 钩子通过 `stream.values.todos` 公开此状态，并且您的 UI
 反应性地渲染它。
 
@@ -41,7 +41,7 @@ import { createDeepAgent } from "deepagents";
 import { todoListMiddleware } from "langchain";
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   middleware: [todoListMiddleware()],
 });
 ```
@@ -51,7 +51,7 @@ import { createDeepAgent } from "deepagents";
 import { todoListMiddleware } from "langchain";
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   middleware: [todoListMiddleware()],
 });
 ```

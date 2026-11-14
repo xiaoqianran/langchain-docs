@@ -62,7 +62,7 @@ graph LR
   class API orangeHighlight;
 ```## 沙箱生命周期
 
-在连接前端之前选择沙箱的生存时间以及共享沙箱的人员。
+在连接前端之前，选择沙箱的生存时间以及共享沙箱的人员。
 请参阅 [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle) 了解线程范围
 与助手范围的沙箱，异步 [graph factory](/langsmith/graph-rebuild)
 设置、TTL 行为和 SDK 调用示例。
@@ -162,7 +162,7 @@ export async function agent(config: LangGraphRunnableConfig) {
   const backend = await getOrCreateSandboxForThread(threadId);
 
   return createDeepAgent({
-    model: "google:gemini-3.6-flash",
+    model: "google:gemini-4-hydrogen",
     backend,
     systemPrompt: "You are an expert developer working on a project in /app.",
   });
@@ -182,7 +182,7 @@ export async function agent(config: LangGraphRunnableConfig) {
   const backend = await getOrCreateSandboxForThread(threadId);
 
   return createDeepAgent({
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     backend,
     systemPrompt: "You are an expert developer working on a project in /app.",
   });
@@ -298,16 +298,16 @@ export async function agent(config: LangGraphRunnableConfig) {
 > 当 LangGraph SDK 是唯一入口点时，改为查找。
 
 ### 种子项目文件在代理运行之前，使用 `uploadFiles` / 上传启动文件
-`upload_files`。参见[File transfers](/oss/javascript/deepagents/going-to-production#file-transfers)
+`upload_files`. See [File transfers](/oss/javascript/deepagents/going-to-production#file-transfers)
 用于播种模式、提供程序示例和同步
 [memories](/oss/javascript/deepagents/memory) 或 [skills](/oss/javascript/deepagents/skills) 进入
-沙箱。对于LangSmith沙箱，从a传递`templateName`
+the sandbox.对于LangSmith沙箱，从a传递`templateName`
 [sandbox snapshot](/langsmith/sandbox-snapshots) 创建容器时。
 
 > [!提示]
 >
 > 上传后运行`sandbox.execute("cd /app && npm install")`
-> `package.json` 因此依赖关系在第一个代理轮流之前就已准备好。
+> `package.json` 因此依赖关系在第一个代理轮流之前就已准备就绪。
 
 ## 添加文件浏览API
 
@@ -320,7 +320,7 @@ export async function agent(config: LangGraphRunnableConfig) {
 沙箱 API 端点使用线程 ID 作为 URL 路径参数。这个
 确保前端始终访问当前的正确沙箱
 对话，使用与 相同的 `getOrCreateSandboxForThread` 功能
-代理后台：
+agent's backend:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // src/api/app.ts
@@ -374,15 +374,15 @@ app.get("/sandbox/:threadId/file", async (c) => {
 >
 > 代理后端和API服务器都调用相同的
 >
-> `getOrCreateSandboxForThread`功能。这确保他们始终能够解决
+> `getOrCreateSandboxForThread` function.这确保他们始终能够解决
 >
 > 给定线程的同一沙箱。线程元数据中的沙箱 ID
 > 是唯一的事实来源——不需要内存缓存。
 
-### 配置`langgraph.json`注册代理图和 API 服务器。 `http.app`字段告诉我们
-LangGraph 平台为您的自定义路线以及默认路线提供服务。
+### Configure `langgraph.json`注册代理图和 API 服务器。 `http.app`字段告诉我们
+代理服务器为您的自定义路由和默认路由提供服务。
 参见 [application structure](/oss/javascript/langgraph/application-structure) 和
-[LangSmith Deployments](/oss/javascript/deepagents/going-to-production#langsmith-deployments)
+[LangSmith Agent Server](/oss/javascript/deepagents/going-to-production#langsmith-deployments)
 了解全套 `langgraph.json` 选项。
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -414,7 +414,7 @@ LangGraph 平台为您的自定义路线以及默认路线提供服务。
 文件浏览的端点。
 
 对于生产部署，请将 `apiUrl` 指向您的
-[LangSmith Deployment](/langsmith/deployment)，并通过稳定
+[Agent Server URL](/langsmith/deployment)，并通过稳定
 每次运行`thread_id`。参见
 [Frontend](/oss/javascript/deepagents/going-to-production#frontend) 在
 [Going to production](/oss/javascript/deepagents/going-to-production) 对于这些设置
@@ -423,7 +423,7 @@ LangGraph 平台为您的自定义路线以及默认路线提供服务。
 
 ### 线程创建
 
-页面加载时创建一个LangGraph线程并将其ID保存在
+页面加载时创建一个LangGraph线程，并将其ID持久化在
 `sessionStorage` 因此页面重新加载重新连接到同一个沙箱：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -810,7 +810,7 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
 
 对于后端和沙箱：* **对生产应用程序使用线程范围的沙箱**。参见
   [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle)。
-* **通过代理后端和 API 服务器之间共享沙箱解析**
+* **在代理后端和 API 服务器之间共享沙箱解析**
   线程元数据，因此两者都解析相同的环境，没有内存缓存。
 * **用真实的项目为沙箱播种**。参见
   [File transfers](/oss/javascript/deepagents/going-to-production#file-transfers)。

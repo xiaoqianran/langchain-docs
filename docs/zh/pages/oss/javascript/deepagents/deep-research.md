@@ -35,7 +35,7 @@ API 密钥用于：
 * [Tavily](https://www.tavily.com/) 用于网络搜索（可选；免费套餐就足够了）
 * [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-deep-research) 用于跟踪（如果您使用 SDK，则可选；对于托管 Deep Agents 是必需的）
 
-## 选择你的路径本指南展示了如何使用 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 和 Deep Agnets SDK 构建此agenet。托管Deep Agents让您无需管理基础设施即可部署代理。 Deep Agents SDK 可让您在使用相同的 Deep Agents 工具时获得最大的灵活性，并且您可以自己托管代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。
+## 选择你的路径本指南展示了如何使用 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 和 Deep Agnets SDK 构建此agenet。托管Deep Agents让您无需管理基础设施即可部署代理。 Deep Agents SDK 可让您在使用相同的 Deep Agents 工具时获得最大的灵活性，并且您可以自己托管代理，或运行自定义 [Agent Server](/langsmith/deployment)。
 
 > [选项卡] 托管 Deep Agents
 >
@@ -99,9 +99,9 @@ API 密钥用于：
 > ### 构建代理
 >
 > **1。添加工具**
->> Create a custom search tool. The `tavily_search` tool uses Tavily for URL discovery, then fetches full webpage content so the agent can analyze complete sources instead of summaries.
+>> 创建自定义搜索工具。 `tavily_search` 工具使用 Tavily 进行 URL 发现，然后获取完整的网页内容，以便代理可以分析完整的源而不是摘要。
 >
-> Create `tools/search.ts`:
+> 创建`tools/search.ts`：
 >
 > ```ts tools/search.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { tool } from "langchain";
@@ -188,7 +188,7 @@ API 密钥用于：
 > );
 > ```
 >
-> **2。 Add orchestrator instructions**
+> **2。添加协调器指令**
 >
 > 将研究工作流程和子代理协调指导放入`instructions.md`。 Managed Deep Agents 加载此文件作为 Orchestrator 系统提示：
 >
@@ -298,9 +298,9 @@ API 密钥用于：
 >
 > **3。创建代理**
 >
-> 你只需将主要特工的指令放入`instructions.md`即可。将脚手架代理条目替换为下面的完整文件。 It sets the model, tools, the research sub-agent (including that sub-agent's own prompt), and [⟦T37⟧](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware) so the agent can call `write_todos` for [task planning](/oss/javascript/deepagents/overview#task-planning). `name` 是必需的：MDA 将其用作 LangGraph 助手 ID 和默认部署名称。
+> 你只需将主要特工的指令放入`instructions.md`即可。将脚手架代理条目替换为下面的完整文件。它设置模型、工具、研究子代理（包括子代理自己的提示）和[⟦T37⟧](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware)，以便代理可以为[task planning](/oss/javascript/deepagents/overview#task-planning)调用`write_todos`。 `name` 是必需的：MDA 将其用作 LangGraph 助手 ID 和默认部署名称。
 >
-> Replace `agent.ts`. Choose your provider:
+> 更换`agent.ts`。选择您的提供商：
 >
 >> [标签] 克劳德
 >>
@@ -432,7 +432,7 @@ API 密钥用于：
 >
 > **1。本地运行**
 >
-> Install dependencies and start the agent:
+> 安装依赖项并启动代理：
 >
 > ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install

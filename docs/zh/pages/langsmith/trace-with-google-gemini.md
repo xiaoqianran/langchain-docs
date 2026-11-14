@@ -65,7 +65,7 @@ def main():
 
     # Make a traced Gemini call
     response = client.models.generate_content(
-        model="gemini-3.8-flash",
+        model="gemini-4-hydrogen",
         contents="Explain quantum computing in simple terms.",
     )
 
@@ -96,7 +96,7 @@ const client = wrapGemini(geminiClient, {
 
 // Make a traced call - tracing happens automatically
 const response = await client.models.generateContent({
-  model: "gemini-3.8-flash",
+  model: "gemini-4-hydrogen",
   contents: "Explain quantum computing in simple terms.",
 });
 

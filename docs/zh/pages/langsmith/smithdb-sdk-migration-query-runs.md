@@ -18,7 +18,7 @@
 
 > [选项卡] Python
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.list_runs()` | `client.runs.query()`（别名为`client.runs.query_v2()`）|
 >
@@ -30,7 +30,7 @@
 
 > [选项卡] TypeScript
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.listRuns()` | `client.runs.query()`（别名为`client.runs.queryV2()`）|
 >
@@ -38,7 +38,7 @@
 
 > [选项卡] Java
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.runs().query()` | `client.runs().queryV2()` |
 >
@@ -46,13 +46,13 @@
 
 > [选项卡] 前往
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.Runs.Query()` | `client.Runs.QueryV2()` |
 >
 > 完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#RunService.QueryV2AutoPaging)。> [选项卡] 卷曲
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `POST /api/v1/runs/query` | `POST /api/v2/runs/query` |
 >
@@ -215,7 +215,7 @@
 >
 > 要读取跟踪的总代币和成本，请使用 [Traces: query](/langsmith/smithdb-sdk-migration-traces) 并从 `trace_aggregates` 读取 `total_tokens` 和 `total_cost`。 `trace_aggregates` 没有提示或完成分割。> [选项卡] Python
 >
-> 将 SCREAMING\_SNAKE\_CASE 字符串传递给`selects`（例如`"ID"`、`"NAME"`、`"STATUS"`）来控制每个`Run`上填充哪些字段；只有选定的字段是非`None`。默认 `selects`​​ 仅包含 `"ID"`。
+> 将 SCREAMING_SNAKE_CASE 字符串传递给`selects`（例如`"ID"`、`"NAME"`、`"STATUS"`）来控制每个`Run`上填充哪些字段；只有选定的字段是非`None`。默认 `selects`​​ 仅包含 `"ID"`。
 >
 > |之前（v1 `Run` 属性）| (v2 `Run` 属性) | 之后笔记|
 > | - | - | - |
@@ -252,7 +252,7 @@
 > | `run.child_run_ids` | *（已删除）* |没有同等的 |
 > | `run.child_runs` | *（已删除）* |没有同等的 |
 > | `run.serialized` | *（已删除）* |使用`run.manifest` |
-> | `run.manifest_id` | *（已删除）* |使用`run.manifest` |
+> | `run.manifest_id` | *（已删除）* |使用`run.manifest`|
 > | *（不可用）* | `run.is_root` |新 |
 > | *（不可用）* | `run.manifest` |新：完整清单对象（替换`serialized`和`manifest_id`）|
 > | *（不可用）* | `run.error_preview` |新：截断的错误片段 |
@@ -265,7 +265,7 @@
 > | `run.prompt_cost_details` | `run.prompt_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
 > | `run.completion_cost_details` | `run.completion_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|> [选项卡] TypeScript
 >
-> 将 SCREAMING\_SNAKE\_CASE 字符串传递给 `selects`（例如 `"ID"`、`"NAME"`、`"STATUS"`）以控制每个 `Run` 上填充哪些字段。默认 `selects` 仅包含 `"ID"`。
+> 将 SCREAMING_SNAKE_CASE 字符串传递给`selects`（例如`"ID"`、`"NAME"`、`"STATUS"`）以控制每个`Run`上填充哪些字段。默认 `selects` 仅包含 `"ID"`。
 >
 > |之前（v1 `Run` 属性）|之后（v2 `Run` 属性）|笔记|
 > | - | - | - |
@@ -297,7 +297,7 @@
 > | `run.promptCost` | `run.prompt_cost` |更名为`snake_case`；仅供自己使用；不再从子运行中求和|
 > | `run.completionCost` | `run.completion_cost` |更名为`snake_case`；仅供自己使用；不再从子运行中求和|
 > | `run.firstTokenTime` | `run.first_token_time` |更名为`snake_case` |
-> | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒） |
+> | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒）|
 > | `run.inDataset` | `run.is_in_dataset` |更名|
 > | `run.childRunIds` | *（已删除）* |没有同等的 |
 > | `run.childRuns` | *（已删除）* |没有同等的 |
@@ -403,7 +403,7 @@
 > | `run.ParentRunIDs` | `run.ParentRunIDs` |不变 |
 > | `run.PriceModelID` | `run.PriceModelID` |不变 |> | `run.PromptCost` | `run.PromptCost` |仅供自己使用；不再从子运行中求和|
 > | `run.PromptCostDetails` | `run.PromptCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
-> | `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变） |
+> | `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变）|
 > | `run.PromptTokens` | `run.PromptTokens` |仅供自己使用；不再从子运行中求和|
 > | `run.CompletionCost` | `run.CompletionCost` |仅供自己使用；不再从子运行中求和|
 > | `run.CompletionCostDetails` | `run.CompletionCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
@@ -447,7 +447,7 @@
 >
 > JSON 响应中的字段名称使用 `snake_case`。
 >
-> 在 `selects` JSON 数组中传递 SCREAMING\_SNAKE\_CASE 字符串（例如 `"ID"`、`"NAME"`、`"STATUS"`）来控制填充哪些字段。默认 `selects` 仅包含 `"ID"`。
+> 在 `selects` JSON 数组中传递 SCREAMING_SNAKE_CASE 字符串（例如 `"ID"`、`"NAME"`、`"STATUS"`）来控制填充哪些字段。默认 `selects` 仅包含 `"ID"`。
 >
 > |之前（v1 响应字段）|之后（v2 响应字段）|笔记|
 > | - | - | - |
@@ -472,10 +472,10 @@
 > | `price_model_id` | `price_model_id` |不变 |
 > | `prompt_cost` | `prompt_cost` |仅供自己使用；不再从子运行中求和|
 > | `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串） |
-> | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
+> | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
 > | `prompt_tokens` | `prompt_tokens` |仅供自己使用；不再从子运行中求和|
 > | `completion_cost` | `completion_cost` |仅供自己使用；不再从子运行中求和|
-> | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
+> | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|
 > | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
 > | `completion_tokens` | `completion_tokens` |仅供自己使用；不再从子运行中求和|
 > | `total_cost` | `total_cost` |仅供自己使用；不再从子运行中求和|
@@ -1000,7 +1000,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] TypeScript
 >
-> `startTime` (camelCase) 变为 `min_start_time`（snake\_case，匹配 v2 请求正文），`runType` 值现在为大写 (`"llm"` → `"LLM"`)。
+> `startTime` (camelCase) 变为 `min_start_time` (snake_case，匹配 v2 请求正文)，`runType` 值现在为大写 (`"llm"` → `"LLM"`)。
 >
 >> [选项卡] 之前
 >>
@@ -1204,7 +1204,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] TypeScript
 >
-> `isRoot` (camelCase) 变为 `is_root` (snake\_case，匹配 v2 请求正文)。
+> `isRoot` (camelCase) 变为 `is_root` (snake_case，匹配 v2 请求正文)。
 >
 >> [选项卡] 之前
 >>
@@ -2348,7 +2348,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 > >   -d "$(jq -n --arg pid "$PROJECT_ID" --arg f "$FILTER" '{"project_ids": [$pid], "filter": $f}')"
 > > ```
 
-#### 作用域过滤器：filter、trace\_filter、tree\_filter
+#### 作用域过滤器：filter、trace_filter、tree_filter
 
 > [选项卡] Python
 >

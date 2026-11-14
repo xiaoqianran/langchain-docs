@@ -44,7 +44,7 @@
 
 |需要|使用|
 | - | - |
-|一两个简单的外部通话 |正常工具调用|
+|一两个简单的外部通话 |正常工具调用 |
 |纯内存 JavaScript：循环、分支、重试或数据转换（无外部工具）|口译 |
 |许多从代码编排的外部工具调用（需要[PTC](#programmatic-tool-calling-ptc)）| [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) 口译员 |
 |许多独立的工作单元、多个视角或对大量输入的递归分析 | [dynamic subagents](/oss/javascript/deepagents/dynamic-subagents) 口译员 |
@@ -71,7 +71,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   middleware: [createCodeInterpreterMiddleware()],
 });
 ```
@@ -81,7 +81,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   middleware: [createCodeInterpreterMiddleware()],
 });
 ```
@@ -136,7 +136,7 @@ const agent = createDeepAgent({
 });
 ```
 
-## 口译员如何工作中间件向代理添加了一个`eval`工具。 When useful, the agent writes JavaScript and calls `eval`;您不直接致电口译员。 The tool runs code in a QuickJS context whose variables can persist between `eval` calls, depending on the persistence `mode`. It captures `console.log`, `console.warn`, and `console.error`, and returns the result of the last expression.
+## 口译员如何工作中间件向代理添加了一个`eval`工具。当有用时，代理编写 JavaScript 并调用 `eval`；您不直接致电口译员。该工具在 QuickJS 上下文中运行代码，其变量可以在 `eval` 调用之间持续存在，具体取决于持久性 `mode`。它捕获 `console.log`、`console.warn` 和 `console.error`，并返回最后一个表达式的结果。
 
 代理可以编写如下代码：
 
@@ -156,18 +156,18 @@ const totals = rows.reduce((acc, row) => {
 totals;
 ```
 
-代码运行在[**QuickJS**](https://github.com/quickjs-ng/quickjs)，一个轻量级的 JavaScript 运行时。默认情况下，解释器代码无法访问主机文件系统、网络、shell、包管理器或时钟。 It can compute, hold state, and write to `console.log`, `console.warn`, or `console.error`, and nothing more.
+代码运行于[**QuickJS**](https://github.com/quickjs-ng/quickjs)，一个轻量级的 JavaScript 运行时。默认情况下，解释器代码无法访问主机文件系统、网络、shell、包管理器或时钟。它可以计算、保存状态以及写入 `console.log`、`console.warn` 或 `console.error`，仅此而已。
 
 两个明确的桥梁扩展了这一范围：
 
-* **工具**，通过 [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)。在 `tools` 命名空间下提供一个工具允许列表作为异步函数。 These can be the agent's own tools or standalone tools you define and pass in.
-* **子代理**，通过 [dynamic subagents](/oss/javascript/deepagents/dynamic-subagents)。当代理配置了子代理时，解释器会公开一个 `task()` 全局变量，用于从代码中分派它们。Programmatic tool calling is off until you [enable it](#enable-ptc). Subagent dispatch through `task()` is on by default whenever the agent has subagents, and you can turn it off. Nothing else crosses the QuickJS boundary.
+* **工具**，通过 [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)。在 `tools` 命名空间下提供一个工具允许列表作为异步函数。这些可以是代理自己的工具或您定义并传入的独立工具。
+* **子代理**，通过 [dynamic subagents](/oss/javascript/deepagents/dynamic-subagents)。当代理配置了子代理时，解释器会公开一个 `task()` 全局变量，用于从代码中分派它们。编程工具调用将关闭，直到您[enable it](#enable-ptc)。当代理有子代理时，通过 `task()` 进行子代理调度默认处于打开状态，您可以将其关闭。没有其他东西跨越 QuickJS 的边界。
 
-## Programmatic tool calling (PTC)
+## 编程工具调用 (PTC)
 
-Programmatic tool calling (PTC) exposes selected agent tools inside the interpreter under the global `tools` namespace.代理可以编写在循环、分支、重试或并行批次中调用工具的代码，而不是要求模型发出一个工具调用、等待结果，然后决定下一次调用。
+编程工具调用 (PTC) 在全局 `tools` 命名空间下公开解释器内选定的代理工具。代理可以编写在循环、分支、重试或并行批次中调用工具的代码，而不是要求模型发出一个工具调用、等待结果，然后决定下一次调用。
 
-当中间结果仅作为下一步的输入时，这会有所帮助：解释器在任何内容返回到模型之前过滤或聚合它们，从而保持多步骤工作流的令牌效率。 It is model-agnostic, implemented by middleware rather than a provider-specific tool-calling API.中间件将每个列入白名单的工具公开为 `tools` 下的异步函数。代理使用 `await` 调用它，在代码中处理结果，模型只能看到最终的解释器输出，而不是每个中间值。工具名称将转换为驼峰式命名法，而输入对象仍遵循工具的架构，因此名为 `web_search` 的工具将变为 `tools.webSearch(...)`：
+当中间结果仅作为下一步的输入时，这会有所帮助：解释器在任何内容返回到模型之前过滤或聚合它们，从而保持多步骤工作流的令牌效率。它与模型无关，由中间件而不是特定于提供商的工具调用 API 实现。中间件将每个列入白名单的工具公开为 `tools` 下的异步函数。代理使用 `await` 调用它，在代码中处理结果，模型只能看到最终的解释器输出，而不是每个中间值。工具名称将转换为驼峰式命名法，而输入对象仍遵循工具的架构，因此名为 `web_search` 的工具将变为 `tools.webSearch(...)`：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const result: string = await tools.webSearch({
@@ -175,16 +175,16 @@ const result: string = await tools.webSearch({
 });
 ```
 
-### Enable PTC
+### 启用 PTC
 
-Enable PTC with an explicit allowlist:
+使用显式允许列表启用 PTC：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
 });
 ```
@@ -194,7 +194,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
 });
 ```
@@ -267,7 +267,7 @@ results.join("\n\n");
 >
 > PTC 调用当前通过解释器桥执行，不经过正常的工具调用路径。因此，每次 PTC 调用的工具调用都不会强制执行`interruptOn` 批准工作流程。
 
-## Dynamic subagents
+## 动态子代理
 
 以下概述涵盖了何时使用动态子代理和最小 `task()` 模式。有关配置、编排示例、工作流触发器和安全注意事项，请参阅[Dynamic subagents](/oss/javascript/deepagents/dynamic-subagents)。动态子代理允许解释器使用内置的 `task()` 全局从代码中分派配置的 [subagents](/oss/javascript/deepagents/subagents)。跨越许多独立单元的任务（例如检查目录中的每个文件或对一批票进行分类）会成为一个循环，将工作展开并综合结果。
 

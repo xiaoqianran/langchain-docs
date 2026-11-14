@@ -16,7 +16,7 @@
 | - | - | - | - |
 |瞬时错误（网络问题、速率限制）|系统（自动）|使用指数退避重试 | [ModelRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)、[ToolRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware) |
 
-\|模特拒绝|系统或开发者 |回退到另一个模型，然后捕获错误 | [modelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware)、[modelRefusalMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRefusalMiddleware) |\|用户可修复的错误（信息缺失、说明不明确）|人类 |按 `interrupt()` 暂停 | [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) |
+\|模特拒绝|系统或开发者|退回到另一个模型，然后捕获错误 | [modelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware)、[modelRefusalMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRefusalMiddleware) |\|用户可修复的错误（信息缺失、说明不明确）|人类 |按 `interrupt()` 暂停 | [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) |
 \|供应商中断 |系统（自动）|退回到替代模型 | [ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) |
 \|过多的调用（失控循环）|系统（自动）|每次运行的模型和工具调用上限 | [ModelCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/modelCallLimitMiddleware)、[ToolCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/toolCallLimitMiddleware) |
 \|意外错误 |开发商 |让它们冒泡|无中间件；让异常传播 |
@@ -31,7 +31,7 @@
 > import { createAgent, modelRetryMiddleware, toolRetryMiddleware } from "langchain";
 >
 > const agent = createAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   tools: [searchTool, fetchUrlTool],
 >   middleware: [
 >     modelRetryMiddleware({ maxRetries: 3, backoffFactor: 2.0, initialDelayMs: 1000 }),
@@ -52,7 +52,7 @@
 > import { createDeepAgent } from "deepagents";
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   tools: [sendEmailTool, deleteRecordTool],
 >   interruptOn: {
 >     send_email: true,
@@ -71,10 +71,10 @@
 > import { createAgent, modelFallbackMiddleware } from "langchain";
 >
 > const agent = createAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   tools: [searchTool],
 >   middleware: [
->     modelFallbackMiddleware("gpt-5.5"),
+>     modelFallbackMiddleware("gpt-6.1-sol"),
 >   ],
 > });
 > ```> [tab] 过多的通话
@@ -85,7 +85,7 @@
 > import { createAgent, modelCallLimitMiddleware, toolCallLimitMiddleware } from "langchain";
 >
 > const agent = createAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   tools: [searchTool],
 >   middleware: [
 >     modelCallLimitMiddleware({ runLimit: 50 }),
@@ -114,7 +114,7 @@
 import { createAgent, modelCallLimitMiddleware, toolCallLimitMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   middleware: [
     modelCallLimitMiddleware({ runLimit: 50 }),
     toolCallLimitMiddleware({ runLimit: 200 }),
@@ -134,7 +134,7 @@ import {
 } from "langchain";
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   middleware: [
     // Retry model calls on rate limits, timeouts, and 5xx errors
     modelRetryMiddleware({ maxRetries: 3, backoffFactor: 2.0, initialDelayMs: 1000 }),
@@ -150,7 +150,7 @@ const agent = createAgent({
 
 将 [ToolRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware) 范围扩展到特定工具，而不是重试所有内容。失败的文件系统`read_file`不会从重试中受益，但超时的网络搜索可能会受益。完整配置请参见[ModelRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)。
 
-## 后备方案
+## Fallbacks
 
 如果您的主要模型提供程序完全崩溃，后备中间件将切换到替代模型：
 
@@ -161,17 +161,17 @@ import {
 } from "langchain";
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   middleware: [
     // If the primary model is fully down, fall back to an alternative
-    modelFallbackMiddleware("gpt-5.5"),
+    modelFallbackMiddleware("gpt-6.1-sol"),
   ],
 });
 ```
 
 完整配置请参见[ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware)。
 
-### 模型拒绝提供者可以拒绝请求（例如根据安全策略），但仍然返回成功的响应。当模型拒绝时，Deep Agents抛出[⟦T13⟧](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError)，因此即使是拒绝，运行看起来也不像成功的运行。 [⟦T14⟧](https://reference.langchain.com/javascript/langchain/index/modelRefusalMiddleware) 在您的中间件之后运行。因此，您通过的 [⟦T15⟧](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) 首先在下一个模型上重试被拒绝的请求。仅当没有后备措施时，运行才会抛出。后备模型可以来自同一提供商或不同的提供商，并且它仍然可以拒绝相同的请求。
+### Model refusals提供者可以拒绝请求（例如根据安全策略），但仍然返回成功的响应。当模型拒绝时，Deep Agents抛出[⟦T13⟧](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError)，因此即使是拒绝，运行看起来也不像成功的运行。 [⟦T14⟧](https://reference.langchain.com/javascript/langchain/index/modelRefusalMiddleware) 在您的中间件之后运行。因此，您通过的 [⟦T15⟧](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) 首先在下一个模型上重试被拒绝的请求。仅当没有后备措施时，运行才会抛出。后备模型可以来自同一提供商或不同的提供商，并且它仍然可以拒绝相同的请求。
 
 模型级`withFallbacks`不会捕获拒绝，因为中间件在模型调用返回后检测到它们。请使用 [⟦T17⟧](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) 代替。
 
@@ -187,4 +187,4 @@ const agent = createAgent({
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/fault-tolerance.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/fault-tolerance.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

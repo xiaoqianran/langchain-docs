@@ -10,19 +10,19 @@
 
 |错误代码 |
 | - |
-| [GRAPH\_RECURSION\_LIMIT](/oss/javascript/langgraph/errors/GRAPH_RECURSION_LIMIT) |
-| [INVALID\_CHAT\_HISTORY](/oss/javascript/langgraph/errors/INVALID_CHAT_HISTORY) |
-| [INVALID\_CONCURRENT\_GRAPH\_UPDATE](/oss/javascript/langgraph/errors/INVALID_CONCURRENT_GRAPH_UPDATE) |
-| [INVALID\_GRAPH\_NODE\_RETURN\_VALUE](/oss/javascript/langgraph/errors/INVALID_GRAPH_NODE_RETURN_VALUE) |
-| [INVALID\_PROMPT\_INPUT](/oss/javascript/langchain/errors/INVALID_PROMPT_INPUT) |
-| [INVALID\_TOOL\_RESULTS](/oss/javascript/langchain/errors/INVALID_TOOL_RESULTS) |
-| [MESSAGE\_COERCION\_FAILURE](/oss/javascript/langchain/errors/MESSAGE_COERCION_FAILURE) |
-| [MISSING\_CHECKPOINTER](/oss/javascript/langgraph/errors/MISSING_CHECKPOINTER) |
-| [MODEL\_AUTHENTICATION](/oss/javascript/langchain/errors/MODEL_AUTHENTICATION) |
-| [MODEL\_NOT\_FOUND](/oss/javascript/langchain/errors/MODEL_NOT_FOUND) |
-| [MODEL\_RATE\_LIMIT](/oss/javascript/langchain/errors/MODEL_RATE_LIMIT) |
-| [MULTIPLE\_SUBGRAPHS](/oss/javascript/langgraph/errors/MULTIPLE_SUBGRAPHS) |
-| [OUTPUT\_PARSING\_FAILURE](/oss/javascript/langchain/errors/OUTPUT_PARSING_FAILURE) |
+| [GRAPH_RECURSION_LIMIT](/oss/javascript/langgraph/errors/GRAPH_RECURSION_LIMIT) |
+| [INVALID_CHAT_HISTORY](/oss/javascript/langgraph/errors/INVALID_CHAT_HISTORY) |
+| [INVALID_CONCURRENT_GRAPH_UPDATE](/oss/javascript/langgraph/errors/INVALID_CONCURRENT_GRAPH_UPDATE) |
+| [INVALID_GRAPH_NODE_RETURN_VALUE](/oss/javascript/langgraph/errors/INVALID_GRAPH_NODE_RETURN_VALUE) |
+| [INVALID_PROMPT_INPUT](/oss/javascript/langchain/errors/INVALID_PROMPT_INPUT) |
+| [INVALID_TOOL_RESULTS](/oss/javascript/langchain/errors/INVALID_TOOL_RESULTS) |
+| [MESSAGE_COERCION_FAILURE](/oss/javascript/langchain/errors/MESSAGE_COERCION_FAILURE) |
+| [MISSING_CHECKPOINTER](/oss/javascript/langgraph/errors/MISSING_CHECKPOINTER) |
+| [MODEL_AUTHENTICATION](/oss/javascript/langchain/errors/MODEL_AUTHENTICATION) |
+| [MODEL_NOT_FOUND](/oss/javascript/langchain/errors/MODEL_NOT_FOUND) |
+| [MODEL_RATE_LIMIT](/oss/javascript/langchain/errors/MODEL_RATE_LIMIT) |
+| [MULTIPLE_SUBGRAPHS](/oss/javascript/langgraph/errors/MULTIPLE_SUBGRAPHS) |
+| [OUTPUT_PARSING_FAILURE](/oss/javascript/langchain/errors/OUTPUT_PARSING_FAILURE) |
 
 ***
 

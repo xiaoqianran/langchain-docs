@@ -4,21 +4,21 @@
 
 # 隧道
 
-通过仅出站连接器从 LangSmith 访问专用网络上的服务，而无需将它们暴露于公共互联网。
+通过仅出站连接器从 LangSmith 访问专用网络上的服务，而无需将其暴露于公共互联网。
 
 > [!注意]
 >
 > 隧道位于[alpha](/langsmith/release-stages)。要为您的组织请求访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
 
-隧道可以让 LangSmith 到达在您的专用网络上运行的服务，例如模型端点或 MCP 服务器，而无需向 Internet 开放该服务。您在网络内运行一个小型连接器。连接器打开到 LangSmith 的出站连接，LangSmith 通过该连接发送服务请求。要通过网络发送沙箱的出站连接，请使用 [relay](/langsmith/relays)。
+隧道可让 LangSmith 到达在您的专用网络上运行的服务，例如模型端点或 MCP 服务器，而无需向 Internet 开放该服务。您在网络内运行一个小型连接器。连接器打开到 LangSmith 的出站连接，LangSmith 通过该连接发送服务请求。要通过网络发送沙箱的出站连接，请使用 [relay](/langsmith/relays)。
 
-每个地区的 [LangSmith Cloud](/langsmith/cloud) 上都有隧道。它们不可用于自托管或混合部署。
+每个地区的 [LangSmith Cloud](/langsmith/cloud) 上都有隧道。它们不可用于自托管或混合部署，也不适用于个人组织。
 
 ## 隧道如何工作1. 组织管理员在 LangSmith 中创建隧道。
 2. 您在网络内运行连接器，并使用隧道 ID、API 密钥和一个或多个 **目标** 对其进行配置。目标是映射到私有地址的名称，例如映射到 `http://litellm.internal:4000`。
 3. 连接器通过 HTTPS（端口 443）将出站连接到LangSmith。没有任何东西连接到您的网络，并且连接器不公开任何端口。
 4. 每个 HTTP 目标都会获得一个 **隧道 URL**。无论您在何处使用该服务的地址，都可以在 LangSmith 中使用该 URL。
-5. 当 LangSmith 功能调用隧道 URL 时，LangSmith 检查调用者是否属于隧道组织，并将请求发送到连接器，连接器将其转发到目标。
+5. 当请求到达隧道 URL 时，LangSmith 检查调用者是否属于隧道组织。然后，LangSmith 将请求发送到连接器，连接器将其转发到目标。
 
 ## 设置隧道
 
@@ -28,15 +28,13 @@
 
 在 LangSmith 中，转到 **设置**，然后选择 **基础设施** 下的 **隧道**。
 
-![Tunnels settings page with no tunnels and a Create tunnel button](https://mintcdn.com/langchain-5e9cc07a/zroKByT8uOSRQ7j4/langsmith/images/tunnels-empty.png?fit=max\&auto=format\&n=zroKByT8uOSRQ7j4\&q=85\&s=5e7a6d33e54cb555f8652a1d4ac6e733)
-
 **2.创建隧道**
 
 选择**创建隧道**。输入名称和可选描述，然后选择“**创建隧道**”。
 
 ![Create tunnel dialog with a name and a description filled in](https://mintcdn.com/langchain-5e9cc07a/zroKByT8uOSRQ7j4/langsmith/images/tunnels-create-dialog.png?fit=max\&auto=format\&n=zroKByT8uOSRQ7j4\&q=85\&s=e6fe6129c82295b0f446963a3a761a6d)**3.复制连接器配置**
 
-新隧道显示**正在等待连接器**。其**连接器配置**部分以环境变量或 YAML 文件的形式显示隧道 ID 和连接器所需的设置。复制它们，并将示例目标替换为您自己的目标（请参阅[Targets](#targets)）。
+新隧道显示**正在等待连接器**。其 **连接器配置** 部分以环境变量或 YAML 文件的形式显示隧道 ID 和连接器所需的设置。复制它们，并将示例目标替换为您自己的目标（请参阅[Targets](#targets)）。
 
 ![Tunnel details showing Waiting for connector, the tunnel ID, and the connector configuration as environment variables](https://mintcdn.com/langchain-5e9cc07a/zroKByT8uOSRQ7j4/langsmith/images/tunnels-connector-config.png?fit=max\&auto=format\&n=zroKByT8uOSRQ7j4\&q=85\&s=ed5ea182a8ed537402e80d72f37fa4af)
 
@@ -85,16 +83,16 @@
     </tr>
 
     <tr>
-      <td>AWS 美国</td>
-
-      <td>
+      <td>AWS 美国</td><td>
         `https://aws.api.smith.langchain.com`
       </td>
     </tr>
   </tbody>
-</table>> [选项卡] Kubernetes（Helm）
+</table>
+
+> [选项卡] Kubernetes（Helm）
 >
-> 将 API 密钥存储在 Secret 中，然后安装 [⟦T9⟧ chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-connector)：
+> 将 API 密钥存储在 Secret 中，然后安装 [⟦T11⟧ chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-connector)：
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > kubectl create namespace langsmith-connector
@@ -130,7 +128,7 @@
 
 **6。检查隧道是否已连接**
 
-连接器启动后几秒钟内，隧道就会显示 **已连接** 并列出连接器服务的每个目标及其隧道 URL。
+连接器启动后几秒钟内，隧道会显示 **已连接** 并列出连接器服务的每个目标及其隧道 URL。
 
 ![Tunnel details showing Connected and two available HTTP targets, each with a tunnel URL and a copy button](https://mintcdn.com/langchain-5e9cc07a/zroKByT8uOSRQ7j4/langsmith/images/tunnels-connected.png?fit=max\&auto=format\&n=zroKByT8uOSRQ7j4\&q=85\&s=07630d1a827360d71bac1e4e7f3f4889)
 
@@ -140,7 +138,7 @@
 curl -H "X-Api-Key: $LANGSMITH_API_KEY" https://<handle>.tunnels.smith.langchain.com/
 ```
 
-响应来自您的服务。没有有效 API 密钥的请求将返回 `403` 和 `connection access denied`。如果隧道停留在 **等待连接器**，请检查连接器的日志。每次连接器连接失败时，它都会记录一条警告并说明原因并重试。常见原因是没有组织管理员或组织操作员角色的 API 密钥、错误的隧道 ID 或禁用的隧道。
+响应来自您的服务。没有有效 API 密钥的请求将返回 `403` 和 `connection access denied`。如果隧道停留在 **等待连接器**，请检查连接器的日志。每次连接器连接失败时，它都会记录一条警告并说明原因并重试。常见原因是 API 密钥没有组织管理员或组织操作员角色、隧道 ID 错误或隧道已禁用。
 
 ### 目标
 
@@ -158,6 +156,7 @@ curl -H "X-Api-Key: $LANGSMITH_API_KEY" https://<handle>.tunnels.smith.langchain
 您可以在以下位置使用隧道 URL 代替服务地址：* [Model configurations](/langsmith/model-configurations) 和 [custom model endpoints](/langsmith/custom-endpoint)，作为基本 URL。这涵盖了使用该模型的 Playground、实验和在线评估器。
 * [LangSmith Fleet](/langsmith/fleet)，作为模型的基本 URL 或 MCP 服务器 URL。
 * 使用 OAuth 作为令牌端点的 MCP 服务器。授权端点必须保持可从浏览器访问，因此它不能是隧道 URL。
+* LangSmith 云上的[Agent Servers](/langsmith/deploy-to-cloud)，来自您代理自己的代码。参见[Call a tunnel from an Agent Server](#call-a-tunnel-from-an-agent-server)。
 
 请记住以下几点：
 
@@ -166,38 +165,64 @@ curl -H "X-Api-Key: $LANGSMITH_API_KEY" https://<handle>.tunnels.smith.langchain
 * 通过隧道到达的模型在其配置中需要有自己的 API 密钥。 LLM 身份验证代理凭据不通过隧道发送。
 * 您的目标必须在 30 秒内开始响应。单个请求的传输时间最长可达 1 小时，请求正文最大可达 32 MiB。
 
+## 从代理服务器调用隧道
+
+在 LangSmith 云上的代理服务器上运行的代理可以从其自己的代码调用隧道 URL。隧道组织中的任何代理服务器都可以调用隧道，无论其工作空间如何。在 `X-Api-Key` 标头中发送代理服务器的 LangSmith API 密钥。您不需要创建密钥：控制平面在它创建的每个代理服务器上设置`LANGSMITH_API_KEY`。欲了解更多信息，请参阅[LangSmith integration](/langsmith/control-plane#langsmith-integration)。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+
+import httpx
+
+TUNNEL_URL = "https://<handle>.tunnels.smith.langchain.com"
+
+response = httpx.get(
+    TUNNEL_URL,
+    headers={"X-Api-Key": os.environ["LANGSMITH_API_KEY"]},
+)
+```LangSmith 检查密钥，将其删除，然后将请求转发给您的服务。没有密钥的请求返回 `403` 和 `connection access denied`。
+
+`Authorization` 标头不变地通过。如果您的服务需要自己的 `X-Api-Key` 或 `Cookie` 标头，请将其作为 `X-Tunnel-Origin-X-Api-Key` 或 `X-Tunnel-Origin-Cookie` 发送。 LangSmith 在请求到达您的服务之前将其重命名：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+headers = {
+    "X-Api-Key": os.environ["LANGSMITH_API_KEY"],
+    "X-Tunnel-Origin-X-Api-Key": os.environ["MY_SERVICE_API_KEY"],
+}
+```
+
 ## 安全
 
 ### 仅出站连接
 
-连接器通过 TLS 在端口 443 上与您所在区域的 LangSmith API 端点建立出站 WebSocket 连接。您不打开入站端口或更改 LangSmith 的防火墙规则，并且连接器 Pod 不公开任何端口。
+连接器通过 TLS 与您所在区域的 LangSmith API 端点在端口 443 上建立出站 WebSocket 连接。您不打开入站端口或更改 LangSmith 的防火墙规则，并且连接器 Pod 不公开任何端口。
 
-### 身份验证和授权* **连接器**：连接器使用有权连接隧道的组织 API 密钥进行身份验证。 LangSmith 仅在启用隧道时接受连接器。
+### 身份验证和授权
+
+* **连接器**：连接器使用有权连接隧道的组织 API 密钥进行身份验证。 LangSmith 仅在启用隧道时接受连接器。
 * **每个请求**：LangSmith 授权每个请求到隧道 URL。调用者必须是代表隧道组织成员的 LangSmith 服务，或者必须提供该组织的 API 密钥。必须启用隧道。隧道 URL 不是秘密，本身不授予访问权限。
 
-### 你的网络暴露了什么
-
-* LangSmith 仅向连接器发送目标名称。连接器在自己的配置中查找名称并拒绝它没有的名称，因此 LangSmith 只能到达您配置的目标。
+### 你的网络暴露了什么* LangSmith 仅向连接器发送目标名称。连接器在自己的配置中查找名称并拒绝它没有的名称，因此 LangSmith 只能到达您配置的目标。
 * 连接器不连接到云元数据地址。
 * 对于 HTTP 目标，目标的主机和端口与 LangSmith 共享，因此请求携带正确的 `Host` 标头。
 
 ### 标题
 
-LangSmith 在请求到达您的服务之前删除自己的凭据和身份标头：`X-Service-Key`、`X-Api-Key`、`X-Tenant-Id`、`X-Organization-Id`、`X-User-Id`、`X-Data-Plane-Auth`、`Cookie` 以及以以下开头的任何标头`X-Langsmith-` 或 `X-Langchain-`。 `Authorization` 通过，因此使用不记名令牌进行身份验证的服务无需更改即可工作。如果您的服务使用自己的 `X-Api-Key` 或 `Cookie` 标头进行身份验证，LangSmith 功能会将您配置的标头传递给您的服务。以 LangSmith 的身份标头命名的标头（例如 `X-Tenant-Id`）永远不会到达您的服务。
+LangSmith 在请求到达您的服务之前删除自己的凭据和身份标头：`X-Service-Key`、`X-Api-Key`、`X-Tenant-Id`、`X-Organization-Id`、`X-User-Id`、`X-Data-Plane-Auth`、`Cookie` 以及以以下开头的任何标头`X-Langsmith-` 或 `X-Langchain-`。 `Authorization` 通过，因此使用不记名令牌进行身份验证的服务无需更改即可工作。
 
-### 加密
+如果您的服务使用自己的 `X-Api-Key` 或 `Cookie` 标头进行身份验证，LangSmith 功能会将您配置的标头传递给您的服务。从您自己的代码中，发送带有 `X-Tunnel-Origin-` 前缀的标头，如 [Call a tunnel from an Agent Server](#call-a-tunnel-from-an-agent-server) 中所述。以 LangSmith 的身份标头命名的标头（例如 `X-Tenant-Id`）永远不会到达您的服务。
 
-* LangSmith 和连接器之间的流量在 TLS 加密的 WebSocket 连接内传输。
+### 加密* LangSmith 和连接器之间的流量在 TLS 加密的 WebSocket 连接内传输。
 * LangSmith 终止隧道 URL 的 TLS 并处理内存中的每个请求以将其路由到连接器。
 * 在连接器和您的服务之间，使用 `https://` 目标来加密流量。连接器根据系统证书颁发机构验证服务的证书。要信任私有证书颁发机构，请在连接器上设置 `SSL_CERT_FILE`。到 `http://` 目标的流量在您的网络内部未加密。
 
 ### 日志记录和数据存储
 
-LangSmith 不记录通过隧道发送的请求或响应主体。对于失败的请求，LangSmith 记录隧道、组织、目标、状态和错误。 LangSmith 仅存储到达连接器所需的路由信息​​。连接器也不记录请求或响应正文。默认情况下，它仅记录失败，例如无法到达的目标。在调试级别，它还记录每个请求的目标、地址、持续时间和大小。
+LangSmith 不记录通过隧道发送的请求或响应主体。对于失败的请求，LangSmith 记录隧道、组织、目标、状态和错误。 LangSmith 仅存储到达连接器所需的路由信息​​。
 
-### 撤销访问权限
+连接器也不记录请求或响应正文。默认情况下，它仅记录失败，例如无法到达的目标。在调试级别，它还记录每个请求的目标、地址、持续时间和大小。
 
-要阻止 LangSmith 访问您的服务，请在 **设置** > **隧道** 中禁用或删除隧道。然后，LangSmith 拒绝对其隧道 URL 的请求并拒绝新的连接器连接。您还可以停止连接器，或撤销其 API 密钥。
+### 撤销访问权限要阻止 LangSmith 访问您的服务，请在 **设置** > **隧道** 中禁用或删除隧道。然后，LangSmith 拒绝对其隧道 URL 的请求并拒绝新的连接器连接。您还可以停止连接器，或撤销其 API 密钥。
 
 ***
 

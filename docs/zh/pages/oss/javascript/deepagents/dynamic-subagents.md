@@ -27,7 +27,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents: [{
     name: "reviewer",
     description: "Reviews code for security issues, citing lines and severity",
@@ -42,7 +42,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   subagents: [{
     name: "reviewer",
     description: "Reviews code for security issues, citing lines and severity",
@@ -207,7 +207,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   subagents: [
 >     {
 >       name: "bug-fixer",
@@ -234,7 +234,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [
 >     {
 >       name: "bug-fixer",
@@ -436,7 +436,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   subagents: [{
 >     name: "reviewer",
 >     description: "Reviews code for security issues, citing lines and severity",
@@ -451,7 +451,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [{
 >     name: "reviewer",
 >     description: "Reviews code for security issues, citing lines and severity",
@@ -587,7 +587,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   subagents: [
 >     {
 >       name: "reviewer",
@@ -609,7 +609,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [
 >     {
 >       name: "reviewer",
@@ -761,7 +761,7 @@ graph LR
 > confirmed;
 > ```### 生成并过滤
 
-多个子代理针对同一问题生成独立的解决方案。代理在代码中对结果进行比较、评分和过滤，只保留最好的结果。
+多个子代理针对同一问题生成独立的解决方案。代理在代码中对结果进行比较、评分和过滤，只保留最好的。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -785,7 +785,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   subagents: [{
 >     name: "architect",
 >     description: "Proposes a database schema design with tradeoff analysis",
@@ -800,7 +800,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [{
 >     name: "architect",
 >     description: "Proposes a database schema design with tradeoff analysis",
@@ -930,7 +930,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   subagents: [
 >     {
 >       name: "writer",
@@ -952,7 +952,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [
 >     {
 >       name: "writer",
@@ -1125,7 +1125,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   subagents: [{
 >     name: "analyzer",
 >     description: "Analyzes code for unused exports, functions, and dead code paths",
@@ -1140,7 +1140,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [{
 >     name: "analyzer",
 >     description: "Analyzes code for unused exports, functions, and dead code paths",
@@ -1258,7 +1258,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
   middleware: [createCodeInterpreterMiddleware({ subagents: false })],
 });
@@ -1269,7 +1269,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
   middleware: [createCodeInterpreterMiddleware({ subagents: false })],
 });

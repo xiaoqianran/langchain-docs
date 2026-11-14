@@ -47,7 +47,7 @@ export LANGSMITH_PROJECT="<environment-tracer-session-name>"
 ```
 
 ## 这些技能涵盖哪些内容* [Traces](/langsmith/observability-concepts#traces)：添加对代理的跟踪；列出、过滤、检查和导出跟踪以进行调试和分析。
-* [Datasets](/langsmith/evaluation-concepts#datasets)：将轨迹转换为评估数据集（最终响应、单步、轨迹、RAG）并可选择上传到LangSmith。
+* [Datasets](/langsmith/evaluation-concepts#datasets)：将轨迹转换为评估数据集（final_response、single_step、轨迹、RAG）并可选择上传到LangSmith。
 * [Evaluators](/langsmith/evaluation-concepts#evaluators)：定义代码或LLM作为法官评估器并将它们附加到数据集（离线）或代理环境（在线）。
 
 每个技能目录都附带一个 `SKILL.md` 以及您可以运行或调整的可选 `scripts/` 帮助程序。这些技能旨在插入兼容的编码代理（例如 Claude Code 或 Deep Agents Code），但如果您不想连接完整的代理，也可以直接重用帮助程序脚本。对于更繁重的查询、导出或自动化，您可以将这些技能与 [LangSmith CLI](/langsmith/langsmith-cli) 配对，以便从终端针对相同的代理环境、数据集和评估器编写脚本。

@@ -28,7 +28,7 @@ A2A 端点在 [Agent Server](/langsmith/agent-server) 的 `/a2a/{assistant_id}` 
 > [!警告]
 >
 > 您发送的方法名称还会选择响应中的枚举情况。 v1.0 名称返回
-> 尖叫蛇案 (`TASK_STATE_WORKING`, `ROLE_AGENT`); v0.3 名称返回小写
+> SCREAMING_SNAKE_CASE (`TASK_STATE_WORKING`, `ROLE_AGENT`); v0.3 名称返回小写
 >（`working`，`agent`）。为每个客户选择一个家庭并坚持下去。
 >
 > 信封因方法而异，而不是因系列而异：`SendMessage` 将任务包装在 `result.task` 中，而
@@ -311,7 +311,7 @@ A2A_ALLOWED_TOOL_CALL_RESULTS=generative_ui_tool,another_tool
 
 取消设置意味着发布所有工具结果。该过滤器适用于任务历史记录和流式传输。
 
-＃＃ 要求|特色 |最低版本 |
+＃＃ 要求|特色|最低版本 |
 | - | - |
 | A2A 端点 | `langgraph-api >= 0.4.21` |
 |入境`FilePart` | `0.12.0` |
@@ -435,7 +435,7 @@ graph = (
 
 一旦您的代理通过`langgraph dev`或[deployed to production](/langsmith/deployment)在本地运行，您就可以使用A2A协议促进它们之间的通信。
 
-此示例演示两个代理如何通过向彼此的 A2A 端点发送 JSON-RPC 消息来进行通信。该脚本模拟多轮对话，其中每个代理处理对方的响应并继续对话。
+此示例演示了两个代理如何通过向彼此的 A2A 端点发送 JSON-RPC 消息来进行通信。该脚本模拟多轮对话，其中每个代理处理对方的响应并继续对话。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 #!/usr/bin/env python3
@@ -536,7 +536,7 @@ if __name__ == "__main__":
 
 当多个座席通过 A2A 进行通信时，LangSmith 可以将所有[traces](/langsmith/observability-concepts#traces) 分组为一个 [thread](/langsmith/observability-concepts#threads)，从而为您提供整个多座席对话的统一视图。
 
-### contextId 如何映射到 thread\_id
+### contextId 如何映射到 thread_id
 
 代理服务器 A2A 端点会自动将 A2A `contextId` 转换为 `thread_id` 以进行 LangSmith 跟踪。这意味着对话中所有参与代理的每条消息都被分组在 LangSmith 中的同一线程下，而无需您进行任何额外配置。
 
@@ -639,7 +639,7 @@ asyncio.run(run_conversation(
 
 **2.发送**：`contextId` 在 `params.message` 内行驶。 Agent Server 将其用作LangGraph `thread_id`，因此无需设置单独的跟踪字段。**3.跨代理共享上下文**：让第一个代理创建`contextId`，然后将相同的值传递给对话其余部分的每个代理。这就是将他们的踪迹分组到一个线程中的原因。
 
-### 在非LangGraph代理中接收线程\_id
+### 在非LangGraph代理中接收thread_id
 
 [previous section](#tracing-across-multiple-agents)覆盖客户端——发送消息时传播`contextId`。如果您的代理之一不是基于 LangGraph 构建的，它还需要在接收端读取 `contextId` 并将其附加为线程标识符，以便其跟踪落在同一个 LangSmith 线程中。使用`langsmith.integrations.otel.configure()`设置自动跟踪，并从传入的A2A请求中读取`params.message.contextId`。
 
@@ -749,7 +749,7 @@ Agent Server 在每个 CI 构建上运行 TCK 作为必需的检查，根据签�
 | - | - |
 |响应线形状仍为v0.3 |任务、消息和部件带有 `kind` 和 `mimeType`，而不是 v1.0 成员存在歧视 |
 |流媒体事件表现平平 | SSE 发出带有 `final` 的 v0.3 对象，而不是 `statusUpdate` / `artifactUpdate` 包装器 |
-| `tool_results` 是蛇\_case | v1.0 预计为 `toolResults`。故意保留，因为实时 A2UI 客户端会读取此密钥 |
+| `tool_results`是snake_case | v1.0 预计为 `toolResults`。故意保留，因为实时 A2UI 客户端会读取此密钥 |
 |时间戳 |序列化为 `+00:00` 而不是 ISO 8601 `Z` 后缀 |
 | `SubscribeToTask` |在规范要求 `-32001` 的情况下返回 `-32601` |
 |推送通知配置 |在规范要求 `-32003` 的情况下返回 `-32601` |

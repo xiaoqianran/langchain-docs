@@ -33,7 +33,7 @@
 
 在此步骤结束时，SmithDB Helm 值的共享基础设施部分可能如下所示。保持 SmithDB 禁用直到第 3 步。
 
-从 [Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage) 添加适合您的版本的缓存值。在 LangSmith 0.17 上，通常是一行，`smithdb.cache.storageClassName`。任一版本上的本地 SSD 还需要此处显示的节点选择器和容忍度。
+从 [Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage) 添加适合您的版本的缓存值。在 LangSmith 0.17 通常是一行，`smithdb.cache.storageClassName`。任一版本上的本地 SSD 还需要此处显示的节点选择器和容忍度。
 
 > [手风琴] SmithDB 基础设施 Helm 价值观
 >
@@ -134,7 +134,7 @@ kubectl get pods -n NAMESPACE | grep smithdb
 kubectl get job -n NAMESPACE HELM_RELEASE-smithdb-metastore-migration
 ```
 
-SmithDB 组件在启动时验证元存储和对象存储连接，因此正在运行的 pod 已经确认了两者。卡在 `Pending` 或 `CrashLoopBackOff` 的 Pod 则不会。参见[Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting#supporting-infrastructure)。
+SmithDB 组件在启动时验证元存储和对象存储连接，因此正在运行的 pod 已经确认了两者。卡在 `Pending` 或 `CrashLoopBackOff` 的 Pod 则没有。参见[Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting#supporting-infrastructure)。
 
 在这些检查通过之前，请勿启用 LangSmith 集成标志。### 步骤 4. 启用双重摄取
 
@@ -163,7 +163,7 @@ smithdb:
 curl -s https://LANGSMITH_HOST/api/v1/info | jq '.instance_flags | {sdb_ingestion_enabled, sdb_query_enabled}'
 ```
 
-写入必须始终持续到达 ClickHouse。 [SmithDB metrics reference](/langsmith/self-host-smithdb-metrics) 涵盖了其余的摄取指标。
+写入必须始终持续到达 ClickHouse。请参阅 [Essential SmithDB metrics](/langsmith/self-host-smithdb-metrics) 了解剩余的摄取指标。
 
 ### 步骤 5. 选择如何处理历史数据
 

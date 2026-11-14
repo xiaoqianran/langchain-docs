@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-11-13T16:50:14.629Z",
+  "fetchedAt": "2026-11-14T15:23:59.128Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 14,
-  "ok": 1727,
+  "ok": 1731,
   "failed": 0,
   "tracks": {
     "api-reference": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 497
+      "count": 501
     },
     "agent-server-api": {
       "name": "Agent Server API",
@@ -1150,7 +1150,7 @@
       "track": "agent-server-api",
       "trackName": "Agent Server API",
       "group": "thread-runs",
-      "bytes": 346
+      "bytes": 1050
     },
     {
       "rel": "langsmith/agent-server-api/thread-runs/list-runs.md",
@@ -1312,7 +1312,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "agent-server-changelog",
-      "bytes": 192754
+      "bytes": 198064
     },
     {
       "rel": "langsmith/agent-server-distributed-tracing.md",
@@ -1789,7 +1789,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "cli",
-      "bytes": 61511
+      "bytes": 61836
     },
     {
       "rel": "langsmith/cloud.md",
@@ -3067,7 +3067,7 @@
       "track": "fleet",
       "trackName": "Fleet",
       "group": "teams-app",
-      "bytes": 7762
+      "bytes": 7991
     },
     {
       "rel": "langsmith/fleet/templates.md",
@@ -4825,6 +4825,15 @@
       "bytes": 3165
     },
     {
+      "rel": "langsmith/run-priority.md",
+      "title": "Prioritize runs",
+      "url": "https://docs.langchain.com/langsmith/run-priority",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "run-priority",
+      "bytes": 8589
+    },
+    {
       "rel": "langsmith/runs.md",
       "title": "Runs",
       "url": "https://docs.langchain.com/langsmith/runs",
@@ -5254,7 +5263,34 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-smithdb",
-      "bytes": 5125
+      "bytes": 5353
+    },
+    {
+      "rel": "langsmith/self-host-smithdb-architecture.md",
+      "title": "SmithDB architecture",
+      "url": "https://docs.langchain.com/langsmith/self-host-smithdb-architecture",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "self-host-smithdb-architecture",
+      "bytes": 5343
+    },
+    {
+      "rel": "langsmith/self-host-smithdb-common-issues.md",
+      "title": "Common SmithDB issues to monitor",
+      "url": "https://docs.langchain.com/langsmith/self-host-smithdb-common-issues",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "self-host-smithdb-common-issues",
+      "bytes": 12265
+    },
+    {
+      "rel": "langsmith/self-host-smithdb-data-paths.md",
+      "title": "How SmithDB handles data",
+      "url": "https://docs.langchain.com/langsmith/self-host-smithdb-data-paths",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "self-host-smithdb-data-paths",
+      "bytes": 6836
     },
     {
       "rel": "langsmith/self-host-smithdb-features.md",
@@ -5281,16 +5317,16 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-smithdb-install",
-      "bytes": 10820
+      "bytes": 10817
     },
     {
       "rel": "langsmith/self-host-smithdb-metrics.md",
-      "title": "SmithDB metrics reference",
+      "title": "Essential SmithDB metrics",
       "url": "https://docs.langchain.com/langsmith/self-host-smithdb-metrics",
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-smithdb-metrics",
-      "bytes": 8554
+      "bytes": 25670
     },
     {
       "rel": "langsmith/self-host-smithdb-migrate.md",

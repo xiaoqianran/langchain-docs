@@ -133,7 +133,7 @@ DEEPAGENTS_CODE_ANTHROPIC_API_KEY=
 
 默认情况下，当Deep Agents代码加载技能时，它会验证解析的技能文件路径是否保留在标准[skill directories](/oss/deepagents/code/configuration#skills)之一内。这可以防止技能目录内的符号链接读取这些根目录之外的任意文件。如果您将共享技能资产存储在非标准位置并使用标准技能目录中的符号链接来引用它们，则可以将该位置添加到遏制允许列表中。这不会**添加新的技能发现位置：技能仍然只能从标准目录中发现。
 
-**额外\_允许\_目录** `string[]`
+**额外允许的目录** `string[]`
 
 添加到技能限制允许列表的路径。支持`~`扩展。
 
@@ -239,7 +239,7 @@ theme = "langchain-dark"
 >
 > 1. `DEEPAGENTS_CODE_THEME` 环境变量（显式覆盖）。
 > 2. `[ui.terminal_themes]` 映射当前`TERM_PROGRAM`。
-> 3. `[ui] theme`已保存的偏好设置（由`/theme`设置）。
+> 3. `[ui] theme` 保存的偏好设置（通过`/theme` 设置）。
 > 4. 内置默认值（`langchain`）。
 
 ## 自动更新
@@ -261,7 +261,7 @@ Deep Agents 代码默认自动检查并安装更新。
 > export DEEPAGENTS_CODE_AUTO_UPDATE=0
 > ```
 
-环境变量优先于配置文件。将环境变量设置为空值会禁用该功能。启用（默认）后，Deep Agents代码会在会话启动时检查 PyPI 是否有较新版本并自动升级。禁用后，Deep Agents 代码会显示更新提示以及相应的安装命令。
+环境变量优先于配置文件。将环境变量设置为空值会禁用该功能。启用后（默认），Deep Agents代码会在会话启动时检查 PyPI 是否有较新版本并自动升级。禁用后，Deep Agents 代码会显示更新提示以及相应的安装命令。
 
 ### 定价目录自动更新
 
@@ -435,7 +435,7 @@ Deep Agents 代码在每个操作系统上的固定位置查找 `managed_config.
 | - | - |
 | macOS | `/Library/Application Support/dcode/managed_config.toml` |
 | Linux | `/etc/dcode/managed_config.toml` |
-|窗户| `<ProgramData>\dcode\managed_config.toml` |
+|窗户 | `<ProgramData>\dcode\managed_config.toml` |
 
 在 Windows 上，Deep Agents 代码通过系统注册表查找 ProgramData，而不是 `%ProgramData%` 环境变量。环境变量无法更改托管配置位置。如果注册表不可用，则Deep Agents代码检查`C:\ProgramData\dcode\managed_config.toml`。如果该文件也丢失，Deep Agents 代码无法确定管理员是否配置了策略，因此使用配置的命令会停止而不是在没有配置的情况下运行。
 
@@ -554,31 +554,31 @@ Deep Agents 当代码无法读取或解析托管文件、无法下载完整的�
 curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 ```
 
-**深度\_代码\_版本** `string`
+**深度代码版本** `string`
 
 要安装的确切软件包版本，例如`0.1.0`（或预发布版，例如`0.1.0rc1`）。与 `DEEPAGENTS_CODE_PRERELEASE` 互斥 — 设置两者都是错误的，因为确切的引脚已经选择了单个版本。
 
-**深度\_代码\_预发布** `string`
+**DEEPAGENTS_CODE_PRERELEASE** `string`
 
 解析最新版本时应用 uv 预发布策略：`disallow`、`allow`、`if-necessary`、`explicit` 或 `if-necessary-or-explicit`。与`DEEPAGENTS_CODE_VERSION`互斥。
 
-**深度\_代码\_额外** `string`
+**DEEPAGENTS_CODE_EXTRAS** `string`
 
 要安装的以逗号分隔的 pip extra，例如`ollama`、`ollama,groq` 或 `daytona`。请参阅[⟦T303⟧](https://github.com/langchain-ai/deepagents/blob/main/libs/code/pyproject.toml)了解可用的附加功能。
 
-**DEEPAGENTS\_CODE\_PYTHON** `string`（默认值：3.13）
+**DEEPAGENTS_CODE_PYTHON** `string`（默认值：3.13）
 
 用于安装的 Python 版本。
 
-**深度\_代码\_跳过\_可选** `string`
+**DEEPAGENTS_CODE_SKIP_OPTIONAL** `string`
 
 设置为 `1` 以跳过可选工具检查。
 
-**深度\_代码\_详细** `string`
+**DEEPAGENTS_CODE_VERBOSE** `string`
 
 设置为 `1` 以显示 uv 的原始 stderr（时间线、未过滤的包差异）和默认安静状态线（可选工具检查、安装后页脚）。调试安装时很有用。
 
-**UV\_BIN** `string`uv 二进制文件的路径。如果未设置则自动检测。
+**UV_BIN** `string`uv 二进制文件的路径。如果未设置则自动检测。
 
 默认情况下，托管安装启用自动更新。要控制每个用户的更新，请在[⟦T312⟧](#managed-configuration)中设置`[update] auto_update = false`或`[update] check = false`。对于其他安装，请使用`DEEPAGENTS_CODE_AUTO_UPDATE=0`、`DEEPAGENTS_CODE_NO_UPDATE_CHECK=1`或`~/.deepagents/config.toml`中的相应设置。
 
@@ -588,119 +588,119 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 
 所有Deep Agents代码特定的环境变量都使用`DEEPAGENTS_CODE_`前缀。请参阅 [⟦T317⟧ prefix](#deepagents_code_-prefix) 了解前缀如何替代第三方凭据。
 
-**深度\_代码\_自动\_更新** `string`
+**DEEPAGENTS_CODE_AUTO_UPDATE** `string`
 
 切换自动 Deep Agents 代码更新。默认启用；设置为 `0`、`false`、`no` 或 `off`（或空值）以选择退出。
 
-**DEEPAGENTS\_CODE\_AUTO\_CLASSIFIER\_TIMEOUT** `integer`
+**DEEPAGENTS_CODE_AUTO_CLASSIFIER_TIMEOUT** `integer`
 
 [Auto mode](/oss/deepagents/code/approval-modes) 分类器审查每批门控操作的时间预算（以秒为单位）。有效范围：`1`–`300`。超出范围或非整数值将回退到默认值 (`20`)。在提高此值之前请考虑[selecting a faster classifier model](/oss/deepagents/code/config-file#default-and-recent-model)。覆盖 `config.toml` 中的 `[models].auto_classifier_timeout`。参见[Auto classifier timeout](/oss/deepagents/code/config-file#auto-classifier-timeout)。
 
-**深度\_代码\_调试** `string`启用对文件的详细调试日志记录。接受`1`、`true`、`yes`、`on`（不区分大小写）作为启用； `0`、`false`、`no`、`off`、空字符串或未设置会禁用它。启用后，每个会话服务器日志文件将在关闭时保留，并将其路径打印到 stderr 以进行分类。
+**DEEPAGENTS_CODE_DEBUG** `string`启用对文件的详细调试日志记录。接受`1`、`true`、`yes`、`on`（不区分大小写）作为启用； `0`、`false`、`no`、`off`、空字符串或未设置会禁用它。启用后，每个会话的服务器日志文件将在关闭时保留，并将其路径打印到 stderr 以进行分类。
 
-**深度\_代码\_实验** `string`
+**深度_代码_实验** `string`
 
 选择实验性的、不稳定的Deep Agents代码行为。设置为 `1` （或任何真值）以启用实验功能。
 
-**DEEPAGENTS\_CODE\_EXTENSIONS** `string`（默认值：true）
+**DEEPAGENTS_CODE_EXTENSIONS** `string`（默认值：true）
 
 启用或禁用每个源的[Python extension](/oss/deepagents/code/extensions)发现，包括`-e`/`--extension`。覆盖 `config.toml` 中的 `[extensions].enabled`。仍然需要`DEEPAGENTS_CODE_EXPERIMENTAL=1`。
 
-**DEEPAGENTS\_CODE\_EXTENSIONS\_TRUST** `string`（默认值：“询问”）
+**DEEPAGENTS_CODE_EXTENSIONS_TRUST** `string`（默认值：“询问”）
 
 将默认项目扩展信任策略设置为`ask`、`always`或`never`。覆盖 `config.toml` 中的 `[extensions].trust`。仅当您打开的每个项目都可信时才使用`always`。
 
-**DEEPAGENTS\_CODE\_DEBUG\_FILE** `string`（默认：/tmp/deepagents\_debug.log）
+**DEEPAGENTS_CODE_DEBUG_FILE** `string`（默认：/tmp/deepagents_debug.log）
 
 调试日志文件的路径。
 
 > [!注意]
 >
-> 下面的项目MCP信任变量需要`deepagents-code>=0.1.40`。该版本忽略了之前的`DEEPAGENTS_CODE_ENABLED_PROJECT_MCP_SERVERS`变量；使用 `DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS` 来实现相同的基于名称的行为。**DEEPAGENTS\_CODE\_DISABLED\_PROJECT\_MCP\_SERVERS** `string`
+> 下面的项目MCP信任变量需要`deepagents-code>=0.1.40`。该版本忽略了之前的`DEEPAGENTS_CODE_ENABLED_PROJECT_MCP_SERVERS`变量；使用 `DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS` 来实现相同的基于名称的行为。**DEEPAGENTS_CODE_DISABLED_PROJECT_MCP_SERVERS** `string`
 
 以逗号分隔的项目 MCP 服务器名称始终按名称拒绝。 Deep Agents 代码将这些名称与`[mcp].disabled_project_servers`组合起来；拒绝赢得已保存的批准和 `--trust-project-mcp` 标志。
 
-**深度\_代码\_危险\_启用\_项目\_MCP\_服务器** `string`
+**DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS** `string`
 
 以逗号分隔的项目 MCP 服务器名称，可按名称预先批准任何项目。这是一个进程范围的逃生口：同一服务器名称下的不同项目、命令更改或 URL 更改仍然匹配。设置后，此变量将替换保存的流程批准。如果可能，最好从项目 MCP 提示中保存批准。
 
-**DEEPAGENTS\_CODE\_COLLAPSE\_PASTES** `string`（默认值：true）
+**DEEPAGENTS_CODE_COLLAPSE_PASTES** `string`（默认值：true）
 
 将大型聊天输入粘贴折叠到紧凑的占位符中。设置为假值（或空）以保持完整粘贴的文本可见。覆盖`[ui].collapse_pastes`。参见[Collapse large pastes](#collapse-large-pastes)。
 
-**深度\_代码\_额外\_技能\_目录** `string`
+**DEEPAGENTS_CODE_EXTRA_SKILLS_DIRS** `string`
 
 添加到 [skill containment allowlist](#skill-directory-allowlist) 的冒号分隔路径。
 
-**DEEPAGENTS\_CODE\_FORKED\_SUBAGENTS** `string`（默认值：true）让内置`general-purpose`子代理继承父对话和系统提示。设置为 `0`、`false`、`no` 或 `off`（或空值）以使用隔离模式。在 shell 或全局 `~/.deepagents/.env` 中设置此变量； Deep Agents 代码在项目 `.env` 文件中忽略它，因为继承可以包含私有父状态。参见[Continue the parent conversation](/oss/deepagents/code/subagents#continue-the-parent-conversation)。
+**DEEPAGENTS_CODE_FORKED_SUBAGENTS** `string`（默认值：true）让内置`general-purpose`子代理继承父对话和系统提示。设置为 `0`、`false`、`no` 或 `off`（或空值）以使用隔离模式。在 shell 或全局 `~/.deepagents/.env` 中设置此变量； Deep Agents 代码在项目 `.env` 文件中忽略它，因为继承可以包含私有父状态。参见[Continue the parent conversation](/oss/deepagents/code/subagents#continue-the-parent-conversation)。
 
-**DEEPAGENTS\_CODE\_GIT\_ATTRIBUTION** `string`（默认值：true）
+**DEEPAGENTS_CODE_GIT_ATTRIBUTION** `string`（默认值：true）
 
 启用只读 Git 检查标签 LangSmith 是否跟踪代理更改的存储库和分支。设置为 `0`、`false`、`no` 或 `off`（或空值）以跳过对主代理和子代理的这些检查。覆盖用户配置文件中的 `[tracing].git_attribution` 而不禁用 LangSmith 跟踪。参见[Disable Git trace attribution](/oss/deepagents/code/config-file#disable-git-trace-attribution)。
 
-**DEEPAGENTS\_CODE\_HISTORY\_RETENTION\_DAYS** `integer`（默认值：30）
+**DEEPAGENTS_CODE_HISTORY_RETENTION_DAYS** `integer`（默认值：30）
 
 在启动扫描将其删除之前，已卸载的对话历史记录存档的保留天数； `0` 禁用清理。覆盖`[history].retention_days`。参见[Conversation history retention](#conversation-history-retention)。
 
-**DEEPAGENTS\_CODE\_LANGSMITH\_PROJECT** `string`
+**DEEPAGENTS_CODE_LANGSMITH_PROJECT** `string`
 
-使用 [⟦T382⟧](/langsmith/create-an-agent#use-an-environment-project) 为 Deep Agents 代码自己的跟踪选择代理环境。 Shell 命令仍然使用用户的原始 `LANGSMITH_PROJECT` 运行，因此来自测试或脚本的跟踪可以转到不同的代理环境。参见[Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith)。**DEEPAGENTS\_CODE\_LANGSMITH\_REDACT** `string`（默认值：true）
+使用 [⟦T382⟧](/langsmith/create-an-agent#use-an-environment-project) 为 Deep Agents 代码自己的跟踪选择代理环境。 Shell 命令仍然使用用户的原始 `LANGSMITH_PROJECT` 运行，因此来自测试或脚本的跟踪可以转到不同的代理环境。参见[Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith)。**DEEPAGENTS_CODE_LANGSMITH_REDACT** `string`（默认值：true）
 
 切换Deep Agents代码的LangSmith代理跟踪输入和输出的客户端秘密编辑。默认启用。接受 `1`、`true`、`yes` 或 `on` 以启用密文，并接受 `0`、`false`、`no` 或 `off` 来禁用密文，不区分大小写。启用编辑后，如果无法配置编辑，则会禁用该运行的跟踪。参见[Configure LangSmith trace redaction](/oss/deepagents/code/config-file#redact-langsmith-trace-secrets)。
 
-**DEEPAGENTS\_CODE\_LANGSMITH\_REPLICA\_PROJECTS** `string`
+**DEEPAGENTS_CODE_LANGSMITH_REPLICA_PROJECTS** `string`
 
 将跟踪复制到的第二个代理环境。在启用副本之前创建目标代理。将此变量和 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 设置为相应环境的 `tracer_session_name` 值。当跟踪处于活动状态时，每次运行都会写入两个目标。默认关闭。参见[Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith)。
 
-**深度\_代码\_LANGSMITH\_TRACING** `string`
+**DEEPAGENTS_CODE_LANGSMITH_TRACING** `string`
 
 设置为 `false` 以禁用 LangSmith 代理跟踪。显式的 `false` 会覆盖其他跟踪启用标志，包括 `LANGSMITH_TRACING=true`。 `--no-tracing`​​ 标志为一次启动设置此覆盖。本地历史记录和模型提供商的请求保持不变。参见[Disable agent tracing](/oss/deepagents/code/quickstart#trace-with-langsmith)。
 
-**DEEPAGENTS\_CODE\_MEMORY\_AUTO\_SAVE** `string`（默认值：true）让代理主动将学习内容保存到内存中。设置为假值（或空）以继续加载内存，同时停止无提示的自动保存；显式保存仍然有效。覆盖`[memory].auto_save`。参见[Automatic memory](/oss/deepagents/code/memory-and-skills#automatic-memory)。
+**DEEPAGENTS_CODE_MEMORY_AUTO_SAVE** `string`（默认值：true）让代理主动将学习内容保存到内存中。设置为假值（或空）以继续加载内存，同时停止无提示的自动保存；显式保存仍然有效。覆盖`[memory].auto_save`。参见[Automatic memory](/oss/deepagents/code/memory-and-skills#automatic-memory)。
 
-**DEEPAGENTS\_CODE\_MCP\_TOOL\_TIMEOUT** `number`（默认值：120）
+**DEEPAGENTS_CODE_MCP_TOOL_TIMEOUT** `number`（默认值：120）
 
 MCP 工具调用的最大持续时间（以秒为单位）。接受从 `1` 到 `900` 的值并覆盖用户配置中的 `[mcp].tool_timeout`。无效值将传递到下一个配置源。超时并不能保证服务器端取消，因此重试可能会重复工作。
 
-**DEEPAGENTS\_CODE\_NO\_UPDATE\_CHECK** `string`
+**DEEPAGENTS_CODE_NO_UPDATE_CHECK** `string`
 
 设置后禁用自动更新检查。这也会阻止启动时自动安装更新。
 
-**DEEPAGENTS\_HOME** `string`
+**DEEPAGENTS_HOME** `string`
 
 选择用户配置文件和信任根而不是默认的`~/.deepagents`。接受绝对路径或以`~/`开头的路径； `~user` 表单和相对路径被拒绝。必须在继承的 shell 环境中设置 — 没有 `.env` 文件可以设置它。参见[Profile location](#profile-location-deepagents_home)。
 
-**DEEPAGENTS\_CODE\_ONBOARDING** `string`覆盖首次运行的入门流程。设置为真实值以强制其在每次启动时打开；设置为虚假值以完全抑制它（对于 CI 和配置的机器有用）。对于默认的首次运行行为，保留未设置。
+**DEEPAGENTS_CODE_ONBOARDING** `string`覆盖首次运行的入门流程。设置为真实值以强制其在每次启动时打开；设置为虚假值以完全抑制它（对于 CI 和配置的机器有用）。对于默认的首次运行行为，保留未设置。
 
-**DEEPAGENTS\_CODE\_PRICES\_AUTO\_UPDATE** `string`（默认值：true）
+**DEEPAGENTS_CODE_PRICES_AUTO_UPDATE** `string`（默认值：true）
 
 每小时在后台从上游刷新模型定价目录。设置为假值（或空）以选择退出。覆盖`[update].prices_auto_update`。参见[Pricing catalog auto-update](#pricing-catalog-auto-update)。
 
-**DEEPAGENTS\_CODE\_READ\_PROJECT\_DOTENV** `string`（默认值：true）
+**DEEPAGENTS_CODE_READ_PROJECT_DOTENV** `string`（默认值：true）
 
 将项目`.env`（从工作目录向上找到）加载到流程环境中。设置为假值以跳过不受信任的存储库的文件；全局`~/.deepagents/.env`仍在加载。覆盖`[startup].read_project_dotenv`。参见[Loading order and precedence](#loading-order-and-precedence)。
 
-**深度\_代码\_最近\_线程** `integer`（默认值：100）
+**DEEPAGENTS_CODE_RECENT_THREADS** `integer`（默认值：100）
 
 在线程列表和选择器中加载和显示的最近线程的最大数量。低于 `1` 的值被限制为 `1`，非整数值使用默认值。 `-n` 或 `--limit` 会覆盖 `dcode threads list` 的此值。
 
-**深度\_代码\_递归\_限制** `integer`LangGraph图步预算，这是`dcode`代理图每回合可以执行的最大节点调用数。无效值会记录警告，并继续解决下一个来源。未设置时，Deep Agents代码继承`LANGGRAPH_DEFAULT_RECURSION_LIMIT`或将限制留给LangSmith代理服务器。参见[Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits)。
+**DEEPAGENTS_CODE_RECURSION_LIMIT** `integer`LangGraph图步预算，这是`dcode`代理图每回合可以执行的最大节点调用数。无效值会记录警告，并继续解决下一个来源。未设置时，Deep Agents代码继承`LANGGRAPH_DEFAULT_RECURSION_LIMIT`或将限制留给LangSmith代理服务器。参见[Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits)。
 
-**LANGGRAPH\_DEFAULT\_RECURSION\_LIMIT** `integer`
+**LANGGRAPH_DEFAULT_RECURSION_LIMIT** `integer`
 
 当没有 Deep Agents 递归限制源获胜时，上游 LangGraph 图步骤预算继承。将其设置在您的 shell 或全局 `~/.deepagents/.env` 中。 Deep Agents 代码在项目 `.env` 中忽略它，因为它绕过了有界的 `runtime.recursion_limit` 解析器。参见[Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits)。
 
-**DEEPAGENTS\_CODE\_SHELL\_ALLOW\_LIST** `string`
+**DEEPAGENTS_CODE_SHELL_ALLOW_LIST** `string`
 
 允许使用逗号分隔的 shell 命令（或 `recommended` / `all`）。
 
-**深度\_代码\_展示\_推理** `string`
+**DEEPAGENTS_CODE_SHOW_REASONING** `string`
 
 在交互式脚本中和非交互式模式下的 stderr 上显示提供者可见的推理。默认在交互式会话中打开，在非交互式模式中默认关闭。在两种模式下设置为 `1` 显示它或设置为 `0` 隐藏它。覆盖`[ui].show_reasoning`；单次启动时`--show-reasoning`优先。参见[Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning)。
 
-**DEEPAGENTS\_CODE\_SHOW\_USAGE\_STATS** `string`（默认值：true）会话结束时显示会话使用统计信息。设置为假值（或空）以隐藏它们。覆盖`[ui].show_usage_stats`。参见[Session usage stats](#session-usage-stats)。
+**DEEPAGENTS_CODE_SHOW_USAGE_STATS** `string`（默认值：true）会话结束时显示会话使用统计信息。设置为假值（或空）以隐藏它们。覆盖`[ui].show_usage_stats`。参见[Session usage stats](#session-usage-stats)。
 
-**DEEPAGENTS\_CODE\_USER\_ID** `string`
+**DEEPAGENTS_CODE_USER_ID** `string`
 
 将用户标识符附加到 LangSmith 跟踪元数据。
 
@@ -800,17 +800,17 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 #### 什么去哪里|数据|地点 |读/写 |笔记|
 | - | - | - | - |
 | **会议** | `~/.deepagents/.state/sessions.db` |读/写| SQLite 检查点数据库 |
-| **输入历史记录** | `~/.deepagents/.state/history.jsonl` |读/写| JSON 行，向上/向下箭头调用 |
-| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写|支持[⟦T454⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
+| **输入历史记录** | `~/.deepagents/.state/history.jsonl` |读/写 | JSON 行，向上/向下箭头调用 |
+| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写 |支持[⟦T454⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
 | **基本说明** |封装`default_agent_prompt.md` |右 |不可变，通过 Deep Agents 代码升级进行更新 |
-| **用户定制** | `~/.deepagents/{agent}/AGENTS.md` |读/写|附加到基本说明 |
+| **用户定制** | `~/.deepagents/{agent}/AGENTS.md` |读/写 |附加到基本说明 |
 | **项目说明** | `.deepagents/AGENTS.md` 或 `AGENTS.md` |右 |两者均已加载（如果存在）|
 | **用户技能** | `~/.deepagents/{agent}/skills/` |读/写|代理特定技能 |
 | **共享技能** | `~/.agents/skills/` |右 |与工具无关、跨 CLI |
 | **项目技能** | `.deepagents/skills/` 或 `.agents/skills/` |右 |项目范围 |
-| **用户Python扩展** | `~/.deepagents/extensions/` |读/写|实验性；参见[Python extensions](/oss/deepagents/code/extensions) |
+| **用户Python扩展** | `~/.deepagents/extensions/` |读/写 |实验性；参见[Python extensions](/oss/deepagents/code/extensions) |
 | **项目 Python 扩展** | `.deepagents/extensions/` |右 |实验性；需要项目信任 |
-| **自定义子代理** | `~/.deepagents/{agent}/agents/` |读/写|用户定义的子代理 |
+| **自定义子代理** | `~/.deepagents/{agent}/agents/` |读/写 |用户定义的子代理 |
 | **项目分代理** | `.deepagents/agents/` |右 |项目定义的子代理 |
 
 ### 优先规则当同一项目存在于多个位置时，**较高的优先级完全获胜**（不合并）。

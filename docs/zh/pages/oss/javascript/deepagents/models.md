@@ -10,9 +10,9 @@ Deep Agents 可与任何支持 [tool calling](/oss/javascript/langchain/models#t
 
 ## 支持的型号
 
-以 `provider:model` 格式指定模型（例如，`google:gemini-3.6-flash`、`openai:gpt-5.4` 或 `anthropic:claude-sonnet-4-6`）。提供程序前缀选择 LangChain 集成，冒号后面的所有内容都会作为模型标识符传递给该提供程序。有关有效的提供程序字符串，请参阅[⟦T7⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel)。对于特定于提供商的配置，请参阅[chat model integrations](/oss/javascript/integrations/chat)。
+以 `provider:model` 格式指定模型（例如，`google:gemini-4-hydrogen`、`openai:gpt-5.4` 或 `anthropic:claude-sonnet-4-6`）。提供程序前缀选择 LangChain 集成，冒号后面的所有内容都会作为模型标识符传递给该提供程序。有关有效的提供程序字符串，请参阅[⟦T7⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel)。对于特定于提供商的配置，请参阅[chat model integrations](/oss/javascript/integrations/chat)。
 
-模型标识符必须与提供者期望的格式匹配。一些提供商使用简单的名称，例如 `gpt-5.5`；其他人使用命名空间 ID 或部署路径，例如 `zai-org/GLM-5.2`，因此完整的 Deep Agents 字符串将是 `baseten:zai-org/GLM-5.2`。检查提供商的模型目录或集成文档以获取当前标识符。
+模型标识符必须与提供者期望的格式匹配。一些提供商使用简单的名称，例如 `gpt-6.1-sol`；其他人使用命名空间 ID 或部署路径，例如 `zai-org/GLM-5.2`，因此完整的 Deep Agents 字符串将是 `baseten:zai-org/GLM-5.2`。检查提供商的模型目录或集成文档以获取当前标识符。
 
 ### 建议型号
 
@@ -20,7 +20,7 @@ Deep Agents 可与任何支持 [tool calling](/oss/javascript/langchain/models#t
 
 |供应商|型号|
 | - | - |
-| [Google](/oss/javascript/integrations/providers/google) | `gemini-3.1-pro-preview`、`gemini-3.6-flash` |
+| [Google](/oss/javascript/integrations/providers/google) | `gemini-3.1-pro-preview`、`gemini-4-hydrogen` |
 | [OpenAI](/oss/javascript/integrations/providers/openai) | `gpt-5.5`、`gpt-5.4` |
 | [Anthropic](/oss/javascript/integrations/providers/anthropic) | `claude-opus-4-8`、`claude-opus-4-7`、`claude-opus-4-6` |
 |自由重量 | `GLM-5.2`、`Kimi-K2.7 Code`、`MiniMax-M3` |
@@ -31,7 +31,7 @@ Deep Agents 可与任何支持 [tool calling](/oss/javascript/langchain/models#t
 
 |型号|总体 |文件操作 |检索|工具使用|内存|对话 |总结|
 | :- | -: | -: | -: | -: | -: | -: | -: |
-| google\_genai:gemini-3.6-flash | [82%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[90%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [54%](https://github.com/langchain-ai/deepagents/actions/runs/25290479270) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
+| google_genai:gemini-3.6-flash | [82%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[90%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [54%](https://github.com/langchain-ai/deepagents/actions/runs/25290479270) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
 |打开：gpt-5.4 | [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | [51%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/24425363630) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |
 |打开：gpt-5.5 | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [84%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [64%](https://github.com/langchain-ai/deepagents/actions/runs/25345307822) | **[52%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
 |人类：claude-opus-4-6 | [26%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [26%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | **[69%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [22%](https://github.com/langchain-ai/deepagents/actions/runs/24363491527) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |
@@ -50,13 +50,13 @@ Deep Agents 可与任何支持 [tool calling](/oss/javascript/langchain/models#t
 
 以 `provider:model` 格式将模型字符串传递给 [⟦T21⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent)，或传递已配置的模型实例以实现完全控制。在底层，模型字符串通过 [⟦T23⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel) 解析。
 
-要配置特定于模型的参数，请使用[⟦T24⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel)或直接实例化提供者模型类：
+要配置特定于模型的参数，请使用[⟦T24⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel)或直接实例化提供程序模型类：
 
 ```ts initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { initChatModel } from "langchain/chat_models/universal";
 import { createDeepAgent } from "deepagents";
 
-const model = await initChatModel("google:gemini-3.6-flash", {
+const model = await initChatModel("google:gemini-4-hydrogen", {
   reasoningEffort: "medium", // [!code highlight]
 });
 const agent = createDeepAgent({ model });
@@ -75,7 +75,7 @@ const agent = createDeepAgent({ model });
 
 > [!注意]
 >
-> 可用参数因提供商而异。请参阅 [chat model integrations](/oss/javascript/integrations/chat) 页面了解特定于提供商的配置选项。
+> 可用参数因提供商而异。有关特定于提供商的配置选项，请参阅 [chat model integrations](/oss/javascript/integrations/chat) 页面。
 
 ### 提供商简介
 
@@ -115,13 +115,17 @@ const configurableModel = createMiddleware({
   name: "ConfigurableModel",
   wrapModelCall: async (request, handler) => {
     const modelName = request.runtime.context.model;
-    const model = await initChatModel(modelName);
+    // GPT-6 models need the Responses API for tool calling in @langchain/openai.
+    const model = await initChatModel(
+      modelName,
+      /(?:^|:)gpt-6/.test(modelName) ? { useResponsesApi: true } : undefined,
+    );
     return handler({ ...request, model });
   },
 });
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   middleware: [configurableModel],
   contextSchema,
 });
@@ -129,7 +133,7 @@ const agent = await createDeepAgent({
 // Invoke with the user's model selection
 const result = await agent.invoke(
   { messages: [{ role: "user", content: "Hello!" }] },
-  { context: { model: "openai:gpt-5.5" } },
+  { context: { model: "openai:gpt-6.1-sol" } },
 );
 ```
 

@@ -102,11 +102,11 @@
 
 ## 注意事项
 
-您可以通过在多次调用之间提供相同的 dataset\_id 或 dataset\_name 来将多个实验上传到同一数据集。您的实验将被分组在一个数据集下，您将能够[use the comparison view to compare results between experiments](/langsmith/compare-experiment-results)。
+您可以通过在多次调用之间提供相同的 dataset_id 或 dataset_name 将多个实验上传到同一数据集。您的实验将被分组在一个数据集下，您将能够[use the comparison view to compare results between experiments](/langsmith/compare-experiment-results)。
 
 确保各行的开始时间和结束时间均位于实验的开始时间和结束时间之间。
 
-您必须提供数据集\_id 或数据集\_name。如果您仅提供 ID 并且数据集尚不存在，我们将为您生成一个名称，如果您仅提供名称，则反之亦然。
+您必须提供 dataset_id 或 dataset_name。如果您仅提供 ID 并且数据集尚不存在，我们将为您生成一个名称，如果您仅提供名称，则反之亦然。
 
 您不得将实验上传到不是通过此端点创建的数据集。仅外部管理的数据集支持上传实验。
 

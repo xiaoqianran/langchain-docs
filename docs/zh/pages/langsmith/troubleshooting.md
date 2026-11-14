@@ -113,7 +113,7 @@ frontend:
   maxBodySize: "100M"
 ```2. 将更改应用到集群。
 
-### *详细信息：代码：497，消息：默认：权限不足。要执行此查询，需要授予 CREATE ROW POLICY ON default.feedbacks\_rmt*
+### *详细信息：代码：497，消息：默认：权限不足。要执行此查询，需要授予 CREATE ROW POLICY ON default.feedbacks_rmt*
 
 当您的用户没有在 Clickhouse 中创建行策略的必要权限时，会出现此错误。在部署 Docker 部署时，还需要从 github 存储库复制 `users.xml` 文件。这会将 `<access_management>` 标签添加到 `users.xml` 文件中，从而允许用户创建行策略。下面是我们期望使用的默认 `users.xml` 文件。
 

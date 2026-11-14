@@ -132,7 +132,7 @@ await evaluate(badClassifier, {
 
 在LangSmith UI 中，您将使用相应的键显示摘要评估器的分数。
 
-![summary\_eval.png](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/summary-eval.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=d0f259baa7d7467bf172ef8197c3bb17)
+![summary_eval.png](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/summary-eval.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=d0f259baa7d7467bf172ef8197c3bb17)
 
 ## 评估器参数摘要
 

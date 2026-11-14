@@ -2265,6 +2265,12 @@
           "rel": "langsmith/run-evaluation-from-playground.md"
         }
       ],
+      "run-priority": [
+        {
+          "title": "Prioritize runs",
+          "rel": "langsmith/run-priority.md"
+        }
+      ],
       "runs": [
         {
           "title": "Runs",
@@ -2553,6 +2559,24 @@
           "rel": "langsmith/self-host-smithdb.md"
         }
       ],
+      "self-host-smithdb-architecture": [
+        {
+          "title": "SmithDB architecture",
+          "rel": "langsmith/self-host-smithdb-architecture.md"
+        }
+      ],
+      "self-host-smithdb-common-issues": [
+        {
+          "title": "Common SmithDB issues to monitor",
+          "rel": "langsmith/self-host-smithdb-common-issues.md"
+        }
+      ],
+      "self-host-smithdb-data-paths": [
+        {
+          "title": "How SmithDB handles data",
+          "rel": "langsmith/self-host-smithdb-data-paths.md"
+        }
+      ],
       "self-host-smithdb-features": [
         {
           "title": "SmithDB feature availability",
@@ -2573,7 +2597,7 @@
       ],
       "self-host-smithdb-metrics": [
         {
-          "title": "SmithDB metrics reference",
+          "title": "Essential SmithDB metrics",
           "rel": "langsmith/self-host-smithdb-metrics.md"
         }
       ],

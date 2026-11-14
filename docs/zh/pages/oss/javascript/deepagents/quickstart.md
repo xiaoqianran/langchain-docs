@@ -6,7 +6,7 @@
 
 在几分钟内构建您的第一个深度代理
 
-本指南将引导您使用 Deep Agents SDK 创建您的第一个深度代理。使用 SDK 以获得最大的灵活性并自行托管代理或运行自定义 [LangSmith Deployment](/langsmith/deployment)。要在生产环境中运行代理而无需管理基础设施，请参阅 [Managed Deep Agents quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。
+本指南将引导您使用 Deep Agents SDK 创建第一个深度代理。使用 SDK 以获得最大的灵活性并自行托管代理或运行自定义 [Agent Server](/langsmith/deployment)。要在生产环境中运行代理而无需管理基础设施，请参阅 [Managed Deep Agents quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。
 
 您将建立一个可以进行研究和撰写报告的研究代理。
 
@@ -57,7 +57,7 @@
 >
 > 检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：
 >
-> * Claude 代码：`claude mcp add --transport http` 对于每个服务器（默认情况下项目范围；仅当我要求全局访问时才使用`--scope user`）。
+> * Claude 代码：`claude mcp add --transport http` 对于每个服务器（默认情况下是项目范围；仅当我要求全局访问时才使用`--scope user`）。
 > * Codex CLI：`codex mcp add` 以及每个服务器 URL。> * 光标、Deep Agents 代码、VS 代码或反重力：使用我的客户页面上显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
 > * Claude Desktop：在“设置”>“连接器”下添加两个 URL。
 >
@@ -151,7 +151,7 @@ pnpm add deepagents langchain @langchain/core
 > export TAVILY_API_KEY="your-tavily-api-key"
 > ```
 
-> [标签] 奥拉玛
+> [标签] 奥拉马
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > # Local: Ollama must be running on your machine
@@ -269,7 +269,7 @@ Use this to run an internet search for a given query. You can specify the max nu
 `;
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [internetSearch],
   systemPrompt: researchInstructions,
 });
@@ -289,7 +289,7 @@ Use this to run an internet search for a given query. You can specify the max nu
 `;
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [internetSearch],
   systemPrompt: researchInstructions,
 });

@@ -31,7 +31,7 @@ Prometheus 和 Datadog 可以同时运行。 Datadog 接收内部补充，因此
 | **关键** | `1` |核心健康和故障信号。启用内部指标时始终记录，包括在 `dev` / `dev_free` 部署上。 |
 | **信息** | `2` |生产监控的操作细节。生产中的默认上限 (`METRIC_MAX_EMITTING_TIER=2`)。 |
 | **调试** | `3` |更深入的诊断以排除故障。除非您加注`METRIC_MAX_EMITTING_TIER`，否则请忽略。 |
-| **深度\_调试** | `4` |详细的诊断。除非您加注`METRIC_MAX_EMITTING_TIER`，否则请忽略。 |将 `METRIC_MAX_EMITTING_TIER` 设置为您想要记录内部指标的最高层。代理服务器 UI 指标会忽略此设置并始终发出。
+| **深度调试** | `4` |详细的诊断。除非您加注`METRIC_MAX_EMITTING_TIER`，否则请忽略。 |将 `METRIC_MAX_EMITTING_TIER` 设置为您想要记录内部指标的最高层。代理服务器 UI 指标会忽略此设置并始终发出。
 
 ## 配置导出
 

@@ -8,7 +8,7 @@
 
 本概念指南根据记忆范围涵盖两种类型的记忆：
 
-* [Short-term memory](#short-term-memory) 或 [thread](/oss/javascript/langgraph/checkpointers#threads) 范围内存，通过维护会话中的消息历史记录来跟踪正在进行的对话。 LangGraph 管理短期记忆，作为代理 [state](/oss/javascript/langgraph/graph-api#state) 的一部分。状态使用 [checkpointer](/oss/javascript/langgraph/checkpointers#checkpoints) 保存到数据库中，因此可以随时恢复线程。当调用图或完成一个步骤时，短期内存会更新，并且在每个步骤开始时读取状态。
+* [Short-term memory](#short-term-memory) 或 [thread](/oss/javascript/langgraph/checkpointers#threads) 范围内存，通过维护会话中的消息历史记录来跟踪正在进行的对话。 LangGraph 作为代理[state](/oss/javascript/langgraph/graph-api#state) 的一部分来管理短期记忆。状态使用 [checkpointer](/oss/javascript/langgraph/checkpointers#checkpoints) 保存到数据库中，因此可以随时恢复线程。当调用图或完成一个步骤时，短期内存会更新，并且在每个步骤开始时读取状态。
 * [Long-term memory](#long-term-memory) 跨会话存储用户特定或应用程序级数据，并在*跨*会话线程之间共享。它可以在*任何时间*和*在任何线程*中被调用。内存的范围是任何自定义命名空间，而不仅仅是单个线程 ID 内。 LangGraph提供[stores](/oss/javascript/langgraph/stores)（[reference doc](https://reference.langchain.com/python/langgraph.store/base/BaseStore)）让您保存和调用长期记忆。
 
 ![Short vs long](https://mintcdn.com/langchain-5e9cc07a/dL5Sn6Cmy9pwtY0V/oss/images/short-vs-long.png?fit=max\&auto=format\&n=dL5Sn6Cmy9pwtY0V\&q=85\&s=62665893848db800383dffda7367438a)## 短期记忆
@@ -19,7 +19,7 @@ LangGraph 将短期内存作为代理状态的一部分进行管理，并通过�
 
 ### 管理短期记忆
 
-对话历史是短期记忆最常见的形式，而长时间对话对当今的法学硕士提出了挑战。完整的历史记录可能不适合法学硕士的上下文窗口，从而导致不可恢复的错误。即使您的法学硕士支持完整的上下文长度，大多数法学硕士在长上下文中仍然表现不佳。他们会被陈旧或偏离主题的内容“分散注意力”，同时还要承受响应时间较慢和成本较高的问题。聊天模型使用消息接受上下文，其中包括开发人员提供的指令（系统消息）和用户输入（人工消息）。在聊天应用程序中，消息在人工输入和模型响应之间交替，导致消息列表随着时间的推移而变长。由于上下文窗口有限，并且令牌丰富的消息列表可能成本高昂，因此许多应用程序可以从使用手动删除或忘记过时信息的技术中受益。
+对话历史是短期记忆最常见的形式，而长时间对话对当今的法学硕士提出了挑战。完整的历史记录可能不适合法学硕士的上下文窗口，从而导致不可恢复的错误。即使您的法学硕士支持完整的上下文长度，大多数法学硕士在长上下文中仍然表现不佳。他们会被陈旧或偏离主题的内容“分散注意力”，同时还要承受响应时间较慢和成本较高的问题。聊天模型使用消息接受上下文，其中包括开发人员提供的指令（系统消息）和用户输入（人工消息）。在聊天应用程序中，消息在人工输入和模型响应之间交替，从而导致消息列表随着时间的推移而变长。由于上下文窗口有限，并且令牌丰富的消息列表可能成本高昂，因此许多应用程序可以从使用手动删除或忘记过时信息的技术中受益。
 
 ![Filter](https://mintcdn.com/langchain-5e9cc07a/-_xGPoyjhyiDWTPJ/oss/images/filter.png?fit=max\&auto=format\&n=-_xGPoyjhyiDWTPJ\&q=85\&s=89c50725dda7add80732bd2096e07ef2)
 
@@ -122,7 +122,7 @@ const updateInstructions = async (state: State, store: BaseStore) => {
 
 在运行时创建内存既有优点也有挑战。从积极的一面来看，这种方法允许实时更新，使新的记忆立即可用于后续的交互。它还实现了透明度，因为当创建和存储记忆时可以通知用户。然而，这种方法也面临着挑战。如果代理需要新工具来决定将哪些内容提交到内存中，则可能会增加复杂性。此外，推理将哪些内容保存到内存的过程可能会影响代理延迟。最后，代理必须在内存创建和其他职责之间执行多任务，这可能会影响创建的内存的数量和质量。
 
-例如，ChatGPT 使用 [save\_memories](https://openai.com/index/memory-and-new-controls-for-chatgpt/) 工具将内存作为内容字符串更新插入，决定是否以及如何在每个用户消息中使用此工具。请参阅我们的 [memory-agent](https://github.com/langchain-ai/memory-agent) 模板作为参考实现。
+例如，ChatGPT 使用 [save_memories](https://openai.com/index/memory-and-new-controls-for-chatgpt/) 工具将内存作为内容字符串更新插入，决定是否以及如何在每个用户消息中使用此工具。请参阅我们的 [memory-agent](https://github.com/langchain-ai/memory-agent) 模板作为参考实现。
 
 #### 在后台
 

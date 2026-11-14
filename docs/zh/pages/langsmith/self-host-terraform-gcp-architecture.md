@@ -26,7 +26,7 @@ GCP 上的LangSmith 最多可分为五个阶段进行部署。每个阶段都会
 | - | - | - |
 | 1 | GCP 基础设施 | VPC、GKE、Cloud SQL、Memorystore、GCS、K8s 引导程序、证书管理器、KEDA、Envoy 网关 |
 | 2 | LangSmith底座|前端、后端、平台后端、队列、ace 后端、clickhouse、游乐场 |
-| 3 |代理服务器托管 |主机后端、侦听器、操作员 + 每个部署的 pod |
+| 3 |代理服务器托管|主机后端、侦听器、操作员 + 每个部署的 pod |
 | 4 |舰队|独立舰队 API 服务器、独立舰队队列、舰队工具服务器、舰队触发服务器 |
 | 5 |见解+波莉|见解分析（ClickHouse 支持）、Polly 评估代理 |
 
@@ -41,7 +41,7 @@ SmithDB (`enable_smithdb`) 和沙箱 (`enable_sandboxes`) 是这些阶段之外�
 | `networking` | `infra/modules/networking/` | VPC、具有辅助范围的子网、Cloud Router、Cloud NAT、Cloud SQL 和 Memorystore 的专用服务连接 |
 | `k8s-cluster` | `infra/modules/k8s-cluster/` | GKE Standard 或 Autopilot 集群、私有节点、具有自动扩展功能的节点池、启用 Workload Identity |
 | `postgres` | `infra/modules/postgres/` | Cloud SQL PostgreSQL实例，区域HA备用，私有IP，删除保护 |
-| `redis` | `infra/modules/redis/` | Memorystore Redis STANDARD\_HA 层，VPC 内的私有 IP |
+| `redis` | `infra/modules/redis/` | Memorystore Redis STANDARD_HA 层，VPC 内的私有 IP |
 | `storage` | `infra/modules/storage/` |具有 `ttl_s/`（14 天）和 `ttl_l/`（400 天）前缀的版本控制和生命周期规则的 GCS 存储桶 |
 | `k8s-bootstrap` | `infra/modules/k8s-bootstrap/` | `langsmith` 命名空间和 `langsmith-ksa` ServiceAccount、Postgres、Redis 的 Kubernetes Secret、许可证密钥、ClickHouse 和 TLS、资源配额和网络策略、证书管理器和 KEDA Helm 版本 |
 | `ingress` | `infra/modules/ingress/` | Envoy Gateway Helm 版本、Gateway API CRD、GatewayClass 和 Gateway（HTTP 和可选的 HTTPS 侦听器）|
@@ -134,7 +134,7 @@ GCS Bucket (Workload Identity, no static keys)
 | - | - | - |
 | `langsmith-host-backend` | LangGraph 控制平面 API。管理部署生命周期，提供部署元数据。 |是（GCS）|
 | `langsmith-listener` |监视主机后端的状态更改，创建和更新 `LangGraphPlatform` CRD。 |是（GCS）|
-| `langsmith-operator` | Kubernetes 运营商。协调 `LangGraphPlatform` CRD，创建和删除部署和服务。 |用于部署和服务的 RBAC |在 UI 中创建的每个 LangGraph 部署都会在 `langsmith` 命名空间中生成一个 Kubernetes 部署，其中 pod 作为 `langsmith-ksa` ServiceAccount 运行。该 ServiceAccount 必须携带 `iam.gke.io/gcp-service-account` 注释，`deploy.sh` 幂等地应用。
+| `langsmith-operator` | Kubernetes 运营商。协调 `LangGraphPlatform` CRD，创建和删除部署和服务。 |用于部署和服务的 RBAC |在 UI 中创建的每个 LangGraph 部署都会在 `langsmith` 命名空间中生成一个 Kubernetes 部署，其中 pod 作为 `langsmith-ksa` ServiceAccount 运行。该 ServiceAccount 必须携带 `iam.gke.io/gcp-service-account` 注释，`deploy.sh` 以幂等方式应用。
 
 ## GCP 托管服务
 
@@ -149,7 +149,7 @@ GCS Bucket (Workload Identity, no static keys)
 
 ### 内存存储 Redis
 
-* 默认 5 GB、STANDARD\_HA 层、私有 IP、端口 6379。
+* 默认 5 GB、STANDARD_HA 层、私有 IP、端口 6379。
 * 跟踪摄取队列、发布/订阅、短期缓存。
 * 不需要身份验证令牌。访问仅由 VPC 私有 IP 控制。
 * Terraform 将连接 URL 直接写入 `langsmith-redis-credentials` Kubernetes Secret。
@@ -166,7 +166,7 @@ GCS Bucket (Workload Identity, no static keys)
 * 可选的 `secrets` 模块 (`enable_secret_manager_module = true`) 添加一个单独的 JSON 包，其中包含生成的 LangSmith 密钥以及 Postgres 和 Redis 密码。
 * Kubernetes Secrets 由 Terraform 和部署脚本编写，不从 Secret Manager 同步。参见[Secret Manager integration](#secret-manager-integration)。
 
-## 集群基础设施|服务 |命名空间 |安装者 |需要 |
+## 集群基础设施|服务 |命名空间|安装者 |需要 |
 | - | - | - | - |
 |特使网关 | `envoy-gateway-system` | `ingress`模块（`install_ingress = true`，默认）|所有入口 |
 |科达| `keda` | `k8s-bootstrap` 模块时 `enable_langsmith_deployment = true` |代理服务器托管附加组件及更高版本 |
@@ -186,17 +186,17 @@ GKE pod
         └── IAM binding: roles/iam.workloadIdentityUser
               └── GCP Service Account
                     └── roles/storage.objectAdmin on the GCS bucket
-```|组件|注释|权限|
+```|组件|注释|权限 |
 | - | - | - |
 | `langsmith-backend` | `iam.gke.io/gcp-service-account: <gsa>` | LangSmith 铲斗上的 GCS `storage.objectAdmin` |
-| `langsmith-platform-backend` |相同 | GCS `storage.objectAdmin` |
-| `langsmith-queue` |相同 | GCS `storage.objectAdmin` |
-| `langsmith-ingest-queue` |相同 | GCS `storage.objectAdmin` |
-| `langsmith-host-backend` |相同 | GCS `storage.objectAdmin` |
-| `langsmith-listener` |相同 | GCS `storage.objectAdmin` |
-| `langsmith-ksa`（操作员舱）|相同 | GCS `storage.objectAdmin` |
-| `langsmith-sandbox-host`（juicefs 格式作业）|相同 | GCS `storage.objectAdmin` |
-| `juicefs-csi-node-sa` |相同 | GCS `storage.objectAdmin`。图表所使用的0.16 JuiceFS CSI驱动程序； Terraform 保留绑定，以便旧的挂载点可以读取存储桶，直到升级删除驱动程序。 |
+| `langsmith-platform-backend` |相同| GCS `storage.objectAdmin` |
+| `langsmith-queue` |相同| GCS `storage.objectAdmin` |
+| `langsmith-ingest-queue` |相同| GCS `storage.objectAdmin` |
+| `langsmith-host-backend` |相同| GCS `storage.objectAdmin` |
+| `langsmith-listener` |相同| GCS `storage.objectAdmin` |
+| `langsmith-ksa`（操作员舱）|相同| GCS `storage.objectAdmin` |
+| `langsmith-sandbox-host`（juicefs 格式作业）|相同| GCS `storage.objectAdmin` |
+| `juicefs-csi-node-sa` |相同| GCS `storage.objectAdmin`。图表所使用的0.16 JuiceFS CSI驱动程序； Terraform 保留绑定，以便旧的挂载点可以读取存储桶，直到升级删除驱动程序。 |
 
 sandbox-host 在主机网络上运行，GKE 不提供 Workload Identity。它作为沙箱节点服务帐户读取和写入 JuiceFS 数据，Terraform 授予该帐户仅限于存储桶的 JuiceFS 前缀的`storage.objectAdmin`。
 
@@ -209,7 +209,7 @@ GSA 由`iam` 模块定义并输出为`workload_identity_annotation`。 `init-val
 |子网| `10.0.0.0/20` | GKE 节点 |
 |豆荚 | `10.4.0.0/14` | GKE Pod IP（次要范围）|
 |服务 | `10.8.0.0/20` | GKE ClusterIP 服务（次要范围）|
-|私人服务连接 | `/16` 由 Google 分配 | Cloud SQL、Memorystore 私有 IP |
+|私人服务连接| `/16` 由 Google 分配 | Cloud SQL、Memorystore 私有 IP |
 
 Cloud SQL 和 Memorystore 只能通过私有 IP 访问。每当 `postgres_source = "external"`、`redis_source = "external"`、`enable_sandboxes = true` 或 SmithDB 创建自己的元存储（`enable_smithdb = true` 和 `smithdb_metastore_source = "create"`）时，网络模块都会建立私有服务连接（VPC 对等到 Google 的托管网络）。
 
@@ -240,8 +240,8 @@ Internal traffic (private IPs, never leaving VPC):
 | - | - | - | - | - |
 | `backend` |组织配置，运行元数据 |摄取队列 | — |跟踪对象 |
 | `platform-backend` | — | — | — | Blob 路由 |
-| `queue` | — |流行音乐职位| — |写入跟踪 blob |
-| `clickhouse` | — | — |跟踪搜索索引 | — |
+| `queue` | — |流行音乐职位 | — |写入跟踪 blob |
+| `clickhouse` | — | — |跟踪搜索索引| — |
 | `host-backend` |部署生命周期状态 | — | — | — |
 
 ## 秘密管理器集成

@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Sandboxes | https://docs.langchain.com/oss/javascript/deepagents/sandboxes -->
 
-# 沙箱
+# 沙盒
 
 在具有沙箱后端的隔离环境中执行代码
 
@@ -106,7 +106,7 @@ try {
 
 沙箱会消耗资源并耗费金钱，直到它们被关闭为止。确保在不再使用沙箱后将其关闭。
 
-有关完整生命周期表、异步 [graph factory](/langsmith/graph-rebuild) 注释、TTL 行为、LangGraph 部署接线和客户端示例，请参阅进入生产中的 [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle)。
+有关完整生命周期表、异步 [graph factory](/langsmith/graph-rebuild) 注释、TTL 行为、代理服务器接线和客户端示例，请参阅投入生产中的 [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle)。
 
 ### 线程范围（默认）
 
@@ -134,7 +134,7 @@ export async function agent(config: LangGraphRunnableConfig) {
       idleTtlSeconds: 3600, // TTL: clean up when idle
     }));
   return createDeepAgent({
-    model: "google:gemini-3.6-flash",
+    model: "google:gemini-4-hydrogen",
     backend: new LangSmithSandbox({ sandbox: lsSandbox }),
   });
 }
@@ -160,7 +160,7 @@ export async function agent(config: LangGraphRunnableConfig) {
       idleTtlSeconds: 3600, // TTL: clean up when idle
     }));
   return createDeepAgent({
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     backend: new LangSmithSandbox({ sandbox: lsSandbox }),
   });
 }
@@ -323,7 +323,7 @@ export async function agent(config: LangGraphRunnableConfig) {
       name: sandboxName,
     }));
   return createDeepAgent({
-    model: "google:gemini-3.6-flash",
+    model: "google:gemini-4-hydrogen",
     backend: new LangSmithSandbox({ sandbox: lsSandbox }),
   });
 }
@@ -348,7 +348,7 @@ export async function agent(config: LangGraphRunnableConfig) {
       name: sandboxName,
     }));
   return createDeepAgent({
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     backend: new LangSmithSandbox({ sandbox: lsSandbox }),
   });
 }

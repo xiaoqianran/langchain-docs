@@ -25,7 +25,7 @@ graph TB
 
 > [!注意]
 >
-> 异步子代理可以在任何实现 [Agent Protocol](https://github.com/langchain-ai/agent-protocol) 的服务器上运行，例如 [LangSmith Deployments](/langsmith/deployment) 或自托管代理协议服务器。每个子代理独立于主管运行。 Supervisor通过SDK启动、检查、更新、取消。通知和 Webhook 需要 [Agent Server](/langsmith/agent-server)。
+> 异步子代理可以在任何实现 [Agent Protocol](https://github.com/langchain-ai/agent-protocol) 的服务器上运行，例如 [LangSmith Agent Server](/langsmith/deployment) 或自托管代理协议服务器。每个子代理独立于主管运行。 Supervisor通过SDK启动、检查、更新、取消。通知和 Webhook 需要 [Agent Server](/langsmith/agent-server)。
 
 ## 比较同步和异步子代理|尺寸|同步子代理 |异步子代理 |
 | - | - | - |
@@ -61,7 +61,7 @@ const asyncSubagents: AsyncSubAgent[] = [
 ];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents: [...asyncSubagents],
 });
 ```
@@ -85,7 +85,7 @@ const asyncSubagents: AsyncSubAgent[] = [
 ];
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   subagents: [...asyncSubagents],
 });
 ```
@@ -208,7 +208,7 @@ const agent = createDeepAgent({
   model: "ollama:north-mini-code-1.0",
   subagents: [...asyncSubagents],
 });
-```|领域|类型 |描述 |
+```|领域 |类型 |描述 |
 | - | - | - |
 | `name` | `string` |必需的。唯一标识符。主管在启动任务时使用它。 |
 | `description` | `string` |必需的。该子代理的作用。主管用它来决定委托给哪个代理。 |
@@ -313,7 +313,7 @@ for (const message of state.messages) {
 >
 > `webhook` 和 `notifyParent` 需要 `deepagents>=1.16.0`。 `notifyParent`在[**beta**](/oss/javascript/versioning)； API 和行为可能会在版本之间发生变化。
 
-设置 `webhook` 以使代理服务器在子代理运行完成时调用您的应用程序。该调用包括运行的线程 ID、运行 ID、状态和元数据，包括 `parent_thread_id` 和 `subagent_name`。要通过应用程序提供结果而不是唤醒主管，还要关闭家长通知。 Supervisor 在运行时仍会收到通知。
+设置 `webhook` 以使代理服务器在子代理运行完成时调用您的应用程序。该调用包括运行的线程 ID、运行 ID、状态和元数据，包括 `parent_thread_id` 和 `subagent_name`。要通过您的应用程序提供结果而不是唤醒主管，还要关闭家长通知。 Supervisor 在运行时仍会收到通知。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import type { AsyncSubAgent } from "deepagents";
@@ -382,7 +382,7 @@ function researcher(config: LangGraphRunnableConfig) {
   // Set when a supervisor launched this run with `start_async_task`
   const parentThreadId = config.metadata?.parent_thread_id;
   return createDeepAgent({
-    model: "google:gemini-3.6-flash",
+    model: "google:gemini-4-hydrogen",
     systemPrompt: "You research topics thoroughly.",
   });
 }
@@ -402,7 +402,7 @@ function researcher(config: LangGraphRunnableConfig) {
   // Set when a supervisor launched this run with `start_async_task`
   const parentThreadId = config.metadata?.parent_thread_id;
   return createDeepAgent({
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     systemPrompt: "You research topics thoroughly.",
   });
 }
@@ -645,7 +645,7 @@ langgraph dev --n-jobs-per-worker 10
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   systemPrompt: `...your instructions...
 
     After launching an async subagent, ALWAYS return control to the user.
@@ -664,7 +664,7 @@ const agent = createDeepAgent({
 
 **问题**：主管截断或重新格式化任务ID，导致`check_async_task`或`cancel_async_task`失败。
 
-**解决方案**：每个工具的任务 ID 参数告诉模型传递完整的任务 ID。如果截断仍然存在，则原因通常是特定于模型的。尝试不同的模型，或将“始终显示完整的任务\_id，从不截断或缩写它”添加到系统提示符中。### 子代理启动队列而不是运行
+**解决方案**：每个工具的任务 ID 参数告诉模型传递完整的任务 ID。如果截断仍然存在，原因通常是特定于模型的。尝试不同的模型，或在系统提示符中添加“始终显示完整的任务 ID，切勿截断或缩写它”。### 子代理启动队列而不是运行
 
 **问题**：启动子代理挂起或需要很长时间才能启动。
 
@@ -672,7 +672,7 @@ const agent = createDeepAgent({
 
 ## 参考实现
 
-[async-deep-agents](https://github.com/langchain-ai/async-deep-agents) 存储库包含部署到 LangSmith 部署的 Python 和 TypeScript 工作示例。它演示了一个主管以及作为后台任务运行的研究员和编码器子代理。
+[async-deep-agents](https://github.com/langchain-ai/async-deep-agents) 存储库包含部署到 LangSmith 代理服务器的 Python 和 TypeScript 工作示例。它演示了一个主管以及作为后台任务运行的研究员和编码器子代理。
 
 ***
 

@@ -172,10 +172,10 @@ kubectl get gateway -n envoy-gateway-system \
 Terraform 提供以下 GCP 资源：|资源 |目的|
 | - | - |
 | VPC+子网+云NAT |集群和托管服务的专用网络|
-|私人服务连接 | Cloud SQL 和 Memorystore 私有 IP 的 VPC 对等互连 |
+|私人服务连接| Cloud SQL 和 Memorystore 私有 IP 的 VPC 对等互连 |
 | GKE 集群（标准或 Autopilot）| Kubernetes 计算、启用 Workload Identity |
 |云 SQL PostgreSQL | LangSmith 运营数据、HA备用、私有IP |
-|内存存储Redis |队列和缓存、STANDARD\_HA 层、私有 IP |
+|内存存储Redis |队列和缓存、STANDARD_HA 层、私有 IP |
 | GCS铲斗|跟踪有效负载 blob 存储、生命周期规则 |
 | Workload Identity 服务帐户 |无需静态密钥的每个 Pod GCP 访问 |
 |证书管理器、KEDA、Envoy Gateway |与基础设施一起安装的 Bootstrap 工作负载 |
@@ -656,7 +656,7 @@ make deploy
 
 6. 运行 `make init-values` 重新生成没有图表 0.16 `sandboxes.juicefs.csi` 块的沙箱值。7. 运行`make deploy`。启用沙箱后，部署会停止，而沙箱卷仍通过 JuiceFS CSI 驱动程序挂载，并打印沙箱主机工作负载和 JuiceFS 声明的 `kubectl delete` 命令。运行它们，等到只剩下 `juicefs-csi-*` Pod，然后再次运行 `make deploy`。运行沙箱停止，但它们的数据保留在对象存储和 Redis 中，图 0.17 挂载相同的 JuiceFS 卷。
 
-8. 如果您在步骤 2 中固定了 `sandbox_host_machine_type`，请移除该引脚并再次运行 `make apply`。 GKE 会为新机器类型重新创建每个沙箱主机节点，并且正在运行的沙箱会停止。
+8. 如果您在步骤 2 中固定了 `sandbox_host_machine_type`，请移除该引脚并再次运行 `make apply`。 GKE 为新机器类型重新创建每个沙箱主机节点，并且正在运行的沙箱停止。
 
 如果您在自己的值中启用了 Engine，图表 0.17 还需要 `engine.usageSigningSecret`（至少 32 个字符），或者 `config.existingSecretName` 命名的 Secret 中的 `engine_usage_signing_secret` 键。
 

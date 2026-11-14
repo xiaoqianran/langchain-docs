@@ -116,7 +116,7 @@ aws ec2 describe-availability-zones --query 'AvailabilityZones[].ZoneName' --out
 两个独立的设置控制能力：
 
 * **基础设施容量**直接通过基础设施变量`eks_managed_node_groups`、`postgres_instance_type`、`redis_instance_type` 设置实例类型和节点数量。模块默认为 1 个 `m5.4xlarge` 节点组（最少 3 个，最多 10 个）、`db.t3.large`（适用于 RDS）和 `cache.m6g.xlarge`（适用于 ElastiCache）。 `infra/terraform.tfvars.dev`、`terraform.tfvars.minimum` 和 `terraform.tfvars.production` 模板设置更小或更大的值。
-* **`sizing_profile`** 选择 Helm 大小调整覆盖（pod 资源请求和限制）。 `init-values.sh`和`deploy.sh`阅读； Terraform 没有。在部署之前，根据目标层调整基础设施的规模。有关每层建议，请参阅[Scaling guidance](/langsmith/self-host-scale)。
+* **`sizing_profile`** 选择 Helm 大小调整覆盖（pod 资源请求和限制）。 `init-values.sh`和`deploy.sh`阅读； Terraform 没有。在部署之前，根据目标层调整基础架构的大小。有关每层建议，请参阅[Scaling guidance](/langsmith/self-host-scale)。
 
 > [!注意]
 >
@@ -169,7 +169,7 @@ make quickdeploy          # interactive, prompts before terraform apply
 make quickdeploy-auto     # non-interactive, auto-approves terraform
 ```
 
-`make quickdeploy` 首先检查`setup-env.sh` 导出是否已加载并且`infra/terraform.tfvars` 存在，如果其中一个缺失，则停止并运行命令。如果 `infra/.terraform/` 不存在，则运行 `terraform init`，然后运行 ​​`terraform apply`，源 `set-kubeconfig.sh`，并运行 `init-values` 和 `deploy.sh`。如果 `terraform apply` 失败，请修复问题并重新运行 `make quickdeploy`。如果后面的步骤失败，该命令会打印 `make` 目标以重试。
+`make quickdeploy` 首先检查`setup-env.sh` 导出是否已加载并且`infra/terraform.tfvars` 存在，如果其中一个缺失，则停止并运行命令。如果 `infra/.terraform/` 不存在，则运行 `terraform init`，然后运行 ​​`terraform apply`，源 `set-kubeconfig.sh`，并运行 `init-values` 和 `deploy.sh`。如果 `terraform apply` 失败，请修复问题并重新运行 `make quickdeploy`。如果后面的步骤失败，该命令将打印 `make` 目标以重试。
 
 以下部分详细介绍了每个阶段。
 
@@ -257,7 +257,7 @@ langsmith_domain       = "langsmith.example.com"
 source infra/scripts/setup-env.sh
 ```
 
-该脚本读取 `terraform.tfvars`，派生 SSM 路径 `/langsmith/{name_prefix}-{environment}/`，然后对于每个机密，要么重复使用导出的值，要么读取现有的 SSM 参数，自动生成一个，或者提示您。您以交互方式提供三个值：许可证密钥、管理员密码和管理员电子邮件。必须获取该脚本（而不是执行），因为 `make` 无法将环境变量导出回父 shell。
+该脚本读取 `terraform.tfvars`，派生 SSM 路径 `/langsmith/{name_prefix}-{environment}/`，然后对于每个机密，要么重复使用导出的值，要么读取现有的 SSM 参数，自动生成一个，或者提示您。您以交互方式提供三个值：许可证密钥、管理员密码和管理员电子邮件。必须获取脚本（而不是执行），因为 `make` 无法将环境变量导出回父 shell。
 
 该脚本管理以下 SSM 参数：| SSM 密钥 |如何设置 |笔记|
 | - | - | - |
@@ -340,7 +340,7 @@ kubectl get httproute -n langsmith
 >
 > 不支持从图表 v17 降级到 v16。升级前备份数据库。
 
-使用 `enable_sandboxes = false` 和 `enable_smithdb = false` 的部署仅移动图表图钉。沙箱和 SmithDB 需要以下额外步骤。该模块没有设置引擎值，因此如果您在自己的值覆盖中启用了引擎，也可以应用[Upgrade from v16 to v17](/langsmith/self-host-upgrades#upgrade-from-v16-to-v17)中的引擎更改。1. 查看`v0.17.*`标签，或拉动`main`。
+使用 `enable_sandboxes = false` 和 `enable_smithdb = false` 的部署仅移动图表图钉。沙箱和 SmithDB 需要以下额外步骤。该模块未设置任何引擎值，因此如果您在自己的值覆盖中启用了引擎，则还要应用[Upgrade from v16 to v17](/langsmith/self-host-upgrades#upgrade-from-v16-to-v17)中的引擎更改。1. 查看`v0.17.*`标签，或拉动`main`。
 2. 如果 `terraform.tfvars` 将 `langsmith_helm_chart_version` 固定到 `0.16.x` 补丁，请清除它或设置 `0.17.x` 补丁，并运行 `unset CHART_VERSION`（如果您的 shell 设置了它）。 Terraform 验证在计划时拒绝 `0.16.x` 引脚，并且 `deploy.sh` 拒绝 `CHART_VERSION` 中的 `0.16.x` 值。
 3. 运行`make apply`。从模块版本 `v0.16.83` 或更高版本开始，v17 模块不会更改任何 AWS 资源，因此 Terraform 不会报告基础设施更改。从早期的 `v0.16.*` 版本开始，请在申请之前查看 `make plan`。
 4. 运行`make init-values`。它重写了 Chart v17 沙盒架构中的`langsmith-values-overrides.yaml`。
@@ -402,7 +402,7 @@ Agent部署详情请参见[Agent Server hosting](/langsmith/enable-self-hosted-d
 
 ### 沙箱
 
-`enable_sandboxes = true` 在带有 KVM 的裸机 x86\_64 实例上添加了一个沙箱主机节点组（默认为`m5d.metal`）以及一个用于 JuiceFS 元数据的专用 ElastiCache 实例。沙箱需要 LangSmith Helm Chart v16 或更高版本。`sandbox-host` 安装 JuiceFS 本身，`juicefs-format` 作业格式化卷。 `make init-values`写入`sandboxes.juicefs.existingSecretName`指向`juicefs-csi-config`Secret，将`sandboxes.juicefs.hostMount.cacheDirs`设置为沙箱主机节点上的本地NVMe缓存路径（如果有的话），并将IRSA角色注释放在`sandboxes.sandboxHost.serviceAccount`上。
+`enable_sandboxes = true` 在带有 KVM 的裸机 x86_64 实例上添加了一个沙箱主机节点组（默认为`m5d.metal`）以及一个用于 JuiceFS 元数据的专用 ElastiCache 实例。沙箱需要 LangSmith Helm Chart v16 或更高版本。`sandbox-host` 安装 JuiceFS 本身，`juicefs-format` 作业格式化卷。 `make init-values`写入`sandboxes.juicefs.existingSecretName`指向`juicefs-csi-config`Secret，将`sandboxes.juicefs.hostMount.cacheDirs`设置为沙箱主机节点上的本地NVMe缓存路径（如果有的话），并将IRSA角色注释放在`sandboxes.sandboxHost.serviceAccount`上。
 
 > [!注意]
 >

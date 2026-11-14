@@ -28,7 +28,7 @@ make status
 
 ## 已知问题
 
-### EKS 节点组创建失败：CREATE\_FAILED
+### EKS 节点组创建失败：CREATE_FAILED
 
 **症状**
 
@@ -129,7 +129,7 @@ make apply ARGS="-target=module.postgres"
 
 **症状：** 读取或写入 S3 时，后端日志显示`AccessDenied`。
 
-**原因：** 组件服务帐户中缺少 IRSA 注释，或者 S3 VPC 网关终端节点未正确路由。
+**原因：** 组件服务帐户中缺少 IRSA 注释，或者 S3 VPC 网关端点未正确路由。
 
 **修复**
 
@@ -146,7 +146,7 @@ kubectl run s3-test --rm -it --image=amazon/aws-cli -n langsmith \
   s3 ls s3://<bucket-name>
 ```
 
-`make init-values` 注释每个组件的服务帐户（后端、平台后端、队列、摄取队列、游乐场和代理服务器托管服务）。如果注释丢失，请验证`terraform.tfvars`中的`create_langsmith_irsa_role = true`，然后运行`make init-values && make deploy`。
+`make init-values` 注释每个组件的服务帐户（后端、平台后端、队列、摄取队列、游乐场和代理服务器托管服务）。如果注释缺失，请验证`terraform.tfvars`中的`create_langsmith_irsa_role = true`，然后运行`make init-values && make deploy`。
 
 ### ElastiCache Redis 连接超时
 
@@ -222,7 +222,7 @@ dig +short <your-langsmith-domain>
 # Expected: CNAME to the ALB DNS name
 ```
 
-### postgres\_deletion\_protection 阻止 terraform destroy
+### postgres_deletion_protection 阻止 terraform 销毁
 
 **症状**
 
@@ -431,7 +431,7 @@ make deploy
 
 **现象：** 获取`setup-env.sh`后，`make secrets`各参数显示为`✗ MISSING`，`aws sts get-caller-identity`失败。
 
-**原因：** 没有有效的 AWS 凭证。该脚本仍然导出 `TF_VAR_*` 并仅打印警告。**修复：** 登录，然后在同一 shell 中重新获取脚本。它将导出的值回填到 SSM，而不会再次提示。首先运行 `make preflight` 来捕获它。
+**原因：** 没有有效的 AWS 凭证。该脚本仍然导出 `TF_VAR_*` 并仅打印警告。**修复：** 登录，然后在同一 shell 中重新获取脚本源。它将导出的值回填到 SSM，而不会再次提示。首先运行 `make preflight` 来捕获它。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 aws sso login --profile <profile>
@@ -446,7 +446,7 @@ source infra/scripts/setup-env.sh
 
 **症状：** 在 `terraform.tfvars` 中更改 `min_size` 或 `max_size` 在 `terraform plan` 上显示“无更改”。
 
-**原因：** ASG 已在带外更改（AWS CLI、控制台或集群自动缩放程序），并且 Terraform 状态已反映新值。社区 EKS 模块忽略 `desired_size` 更改，以便自动缩放器可以对其进行管理； `min_size` 和 `max_size` 应正常传播。
+**原因：** ASG 已在带外（AWS CLI、控制台或集群自动缩放程序）更改，并且 Terraform 状态已反映新值。社区 EKS 模块忽略 `desired_size` 更改，以便自动缩放器可以对其进行管理； `min_size` 和 `max_size` 应正常传播。
 
 **修复**
 

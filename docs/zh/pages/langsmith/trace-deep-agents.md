@@ -104,7 +104,7 @@ def yearly_balance_schedule(
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[compute_compound_interest, yearly_balance_schedule],
     system_prompt=(
         "You are a careful assistant. "
@@ -142,13 +142,13 @@ print(result)
 * 代理运行（顶层）代表完整的 Deep Agents 调用。
 * LLM 调用，代理分析用户请求并决定使用哪些工具。
 * 工具运行：`compute_compound_interest`：
-  * 显示工具输入（例如，本金、年率、年数和每年的化合物）。
+  * 显示工具输入（例如，本金、annual_rate、years 和compounds_per_year）。
   * 显示结构化输出，包括期末余额和赚取的总利息。
 * LLM 调用解释计算结果并确定下一步。
 * 工具运行：`yearly_balance_schedule`：
   * 显示用于生成计划的输入。
   * 返回期末余额和利息收入的逐年细目。
-* 最终 LLM 回复为用户总结了结果。生成的跟踪包含多个嵌套跨度，使您可以在 LangSmith UI 中遵循代理的规划、计算步骤和解释流程。
+* 最终 LLM 回复，总结了用户的结果。生成的跟踪包含多个嵌套跨度，使您可以在 LangSmith UI 中遵循代理的规划、计算步骤和解释流程。
 
 ### 轨迹视图
 
@@ -165,7 +165,7 @@ LangSmith UI 中的 **Trajectory** 视图显示用户和代理之间的简化对
 3. 单击“**添加过滤器**”并选择“**元数据**”。
 4. 将 **Key** 设置为 `lc_agent_name`，将 **Value** 设置为子代理名称，例如 `coordinator`。
 
-![LangSmith Runs view with a metadata filter on lc\_agent\_name set to coordinator](https://mintcdn.com/langchain-5e9cc07a/t_yuR4Fo_XGdcWGH/langsmith/images/deepagents-lc-agent-name-filter.png?fit=max\&auto=format\&n=t_yuR4Fo_XGdcWGH\&q=85\&s=ffc65c0b9b5292fce5f0589b8f2478ce)
+![LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator](https://mintcdn.com/langchain-5e9cc07a/t_yuR4Fo_XGdcWGH/langsmith/images/deepagents-lc-agent-name-filter.png?fit=max\&auto=format\&n=t_yuR4Fo_XGdcWGH\&q=85\&s=ffc65c0b9b5292fce5f0589b8f2478ce)
 
 将过滤器保存为命名视图以便快速重用。有关过滤器选项的完整参考，请参阅[Filter traces](/langsmith/filter-traces)。
 
@@ -276,7 +276,7 @@ def yearly_balance_schedule(
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[compute_compound_interest, yearly_balance_schedule],
     system_prompt=(
         "You are a careful assistant. "

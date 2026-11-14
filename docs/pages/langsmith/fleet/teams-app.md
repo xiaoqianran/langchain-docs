@@ -32,16 +32,20 @@ Before registering in Fleet, you need to create an Azure Bot resource and obtain
    * **Bot handle**: A unique identifier for your bot.
    * **Subscription**: Select your Azure subscription.
    * **Resource group**: Create a new one or select an existing one.
-   * **Type of App**: Select **Multi Tenant**.
+   * **Type of App**: Select **Single Tenant**.
    * **Creation type**: Select **Create new Microsoft App ID**.
 4. Click **Review + create**, then **Create**.
+
+> [!NOTE]
+>
+> Azure no longer allows new Multi Tenant bots. Existing Multi Tenant bots still work.
 
 **2. Get your app credentials**
 
 After the resource is created:
 
 1. Navigate to your bot resource and click **Configuration** in the left sidebar.
-2. Copy the **Microsoft App ID**. You will need this later.
+2. Copy the **Microsoft App ID** and the **App Tenant ID**. You will need both later.
 3. Click **Manage Password** next to the App ID.
 4. Click **New client secret**, add a description, and click **Add**.
 5. Copy the **Value** of the new secret immediately — it is only shown once.
@@ -69,7 +73,7 @@ Fill in the following fields:
 * **App Name**: A display name for the bot in Fleet.
 * **Azure App ID**: The Microsoft App ID from the Azure Bot resource.
 * **Azure App Password**: The client secret value you copied earlier.
-* **Azure Tenant ID** (optional): Your Azure AD tenant ID. Leave as default for multi-tenant bots.
+* **Azure Tenant ID**: The App Tenant ID from the Azure Bot resource. Required for Single Tenant bots. Leave it empty only for an existing Multi Tenant bot.
 
 Click **Create** to register the bot.
 
@@ -163,7 +167,7 @@ Adjust the instructions based on your use case—for example, you might want the
 
 * Verify that the **Azure App ID** and **App Password** (client secret) are correct.
 * Make sure the client secret has not expired. Create a new secret in Azure if needed.
-* Check that the bot type is set to **Multi Tenant** in Azure.
+* For a Single Tenant bot, check that the **Azure Tenant ID** in Fleet matches the App Tenant ID in Azure.
 
 ### Bot works in direct messages but not in channels
 

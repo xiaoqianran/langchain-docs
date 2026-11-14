@@ -39,10 +39,10 @@ LangSmith 支持使用过滤器查询语言的过滤功能，以允许在获取�
 | - | - | - |
 | `eq` |等于 | `eq(run_type, "llm")` |
 | `neq` |不等于 | `neq(status, "error")` |
-| `gt` |大于 | `gt(latency, "5s")` |
-| `gte` |大于或等于 | `gte(latency, 1.5)` |
+| `gt` |大于| `gt(latency, "5s")` |
+| `gte` |大于或等于| `gte(latency, 1.5)` |
 | `lt` |小于| `lt(start_time, "2024-01-01T00:00:00Z")` |
-| `lte` |小于或等于| `lte(feedback_score, 0.5)` |
+| `lte` |小于或等于 | `lte(feedback_score, 0.5)` |
 | `like` |模式匹配； `%` 匹配任意字符序列 | `like(metadata_value, "%prod%")` |
 | `notlike` | `like` 的逆 | `notlike(metadata_value, "%staging%")` |
 | `has` |检查运行是否包含标签或元数据键值 | `has(tags, "production")` |
@@ -83,7 +83,7 @@ or(eq(status, "error"), and(eq(feedback_key, "score"), lt(feedback_score, 0.5)))
 | `metadata_key` |字符串|输入运行的元数据字典 |
 | `metadata_value` |字符串|运行元数据字典中的值 |
 | `feedback_key` |字符串|反馈分数名称 |
-| `feedback_score` |数量 |反馈分数的数值 |
+| `feedback_score` |数量 |反馈分数的数值|
 
 ### 值格式
 
@@ -100,7 +100,7 @@ or(eq(status, "error"), and(eq(feedback_key, "score"), lt(feedback_score, 0.5)))
 |不是 | `-name:value` | `neq(name, "value")` |
 |通配符 | `name:*value*` | `like(name, "%value%")`。将每个 `*` 替换为 `%`。 |
 |比赛| `input:~value` | `like(inputs, "%value%")`。也适用于 `outputs` 和 `error`。 |
-|不匹配 | `-input:~value` | `notlike(inputs, "%value%")` |
+|不匹配| `-input:~value` | `notlike(inputs, "%value%")` |
 |比较| `latency:>5` | `gt(latency, 5)`。将 `gte`、`lt` 和 `lte` 用于 `>=`、`<` 和 `<=`。 |
 |存在 | `metadata.env:*` | `eq(metadata_key, "env")` |
 
@@ -220,7 +220,7 @@ and(gt(latency, "10s"), eq(feedback_key, "correctness"), lt(feedback_score, 0.5)
 and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))
 ```
 
-### 使用trace\_filter 和tree\_filter
+### 使用trace_filter和tree_filter
 
 `filter` 适用于返回的运行。 `trace_filter` 适用于跟踪的根运行。 `tree_filter` 适用于跟踪树中任何位置的任何运行。
 

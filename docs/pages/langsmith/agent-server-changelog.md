@@ -16,11 +16,53 @@
 
 Deployments use the newest `stable` version by default and are automatically updated to the newest `stable` version on each new revision. To pin to a specific version, set [`api_version`](/langsmith/cli#pinning-api-version) to the desired version in langgraph.json.
 
+## v0.19
+
+Latest version: `0.19.0rc1`
+
+This minor line is still a release candidate. The last stable release is `0.18.0`.
+
+### Changes
+
+#### New Features
+
+* `langgraph dev` runs on the Go core with SQLite, matching deployed servers more closely.
+* On 0.19 only, set `FF_INMEM_CORE=false` to run `langgraph dev` on the Python in-memory runtime instead of the Go core; install `langgraph-runtime-inmem>=0.39,<0.40` if your environment doesn't already have it. Data saved by one runtime doesn't appear in the other.
+
+#### Fixes
+
+* Fixes checkpoint writes from JS graphs continuing to run after the graph's request to the checkpointer timed out.
+* Fixes the per-priority queue metrics to count only runs that can start, and renames them to `lg_api_num_startable_runs` and `lg_api_startable_runs_wait_time_{max,med}`; the `/metrics?format=json` keys under `queue.by_priority` change to match.
+* Fixes store reads over 4 MiB failing with `RESOURCE_EXHAUSTED`.
+
+#### General Notes
+
+* The Agent Server OpenAPI spec is now titled "LangSmith Agent Server".
+
+> [accordion] v0.19 releases
+>
+> **2026-11-12**
+>
+> ## v0.19.0rc1
+>
+> ### New Features
+>
+> * `langgraph dev` runs on the Go core with SQLite, matching deployed servers more closely.
+> * On 0.19 only, set `FF_INMEM_CORE=false` to run `langgraph dev` on the Python in-memory runtime instead of the Go core; install `langgraph-runtime-inmem>=0.39,<0.40` if your environment doesn't already have it. Data saved by one runtime doesn't appear in the other.
+>
+> ### Fixes
+>
+> * Fixes checkpoint writes from JS graphs continuing to run after the graph's request to the checkpointer timed out.
+> * Fixes the per-priority queue metrics to count only runs that can start, and renames them to `lg_api_num_startable_runs` and `lg_api_startable_runs_wait_time_{max,med}`; the `/metrics?format=json` keys under `queue.by_priority` change to match.
+> * Fixes store reads over 4 MiB failing with `RESOURCE_EXHAUSTED`.
+>
+> ### General Notes
+>
+> * The Agent Server OpenAPI spec is now titled "LangSmith Agent Server".
+
 ## v0.18
 
-Latest version: `0.18.0rc4`
-
-This minor line is still a release candidate. The last stable release is `0.17.1`.
+Latest version: `0.18.0`
 
 ### Changes
 
@@ -92,6 +134,13 @@ This minor line is still a release candidate. The last stable release is `0.17.1
 * Ignores a `fairness_weight` returned by a priority callback, with a warning, instead of failing the run.
 * Ships langgraph-sdk 0.4.12. Its `PrioritySettings` no longer offers `fairness_weight`, and its documentation now states that -5 runs first, matching the server.
 * Exposes queue loop metrics when `DISPATCH_MODE` is set to `multi-process`.
+* Allows redis-py 8.x in Agent Server images and user graph dependencies.
+* Reduces memory use for thread get and search responses on large threads, because thread values are no longer decoded and re-encoded.
+* Fixes dropped events in live streams on LangSmith-hosted deployments when a thread streams large state (over 8 MB) more than a minute apart.
+* Fixes `run.start` with a fork checkpoint while the thread waits on an interrupt: it now starts a new run from that checkpoint instead of answering the interrupt, or being refused when several are pending.
+* Replays a run's stored events in pages instead of inside Redis, so rejoining a long run no longer stalls Redis for other clients
+* Fixes the per-priority queue metrics to count only runs that can start, and renames them to `lg_api_num_startable_runs` and `lg_api_startable_runs_wait_time_{max,med}`; the `/metrics?format=json` keys under `queue.by_priority` change to match.
+* Fixes store reads over 4 MiB failing with `RESOURCE_EXHAUSTED`.
 
 #### Security
 
@@ -101,8 +150,56 @@ This minor line is still a release candidate. The last stable release is `0.17.1
 * Updates Go builds to mitigate the eMudhra certificate authority compromise.
 * Updates Python certificate trust bundles.
 * Patches Agent Server networking and tracing dependencies.
+* Updates bundled dependencies to address security vulnerabilities.
 
 > [accordion] v0.18 releases
+>
+> **2026-11-12**
+>
+> ## v0.18.0
+>
+> ### Fixes
+>
+> * Fixes the per-priority queue metrics to count only runs that can start, and renames them to `lg_api_num_startable_runs` and `lg_api_startable_runs_wait_time_{max,med}`; the `/metrics?format=json` keys under `queue.by_priority` change to match.
+> * Fixes store reads over 4 MiB failing with `RESOURCE_EXHAUSTED`.
+>
+> ### Security
+>
+> * Updates bundled dependencies to address security vulnerabilities.
+>
+> **2026-11-11**
+>
+> ## v0.18.0rc8
+>
+> ### Fixes
+>
+> * Replays a run's stored events in pages instead of inside Redis, so rejoining a long run no longer stalls Redis for other clients
+>
+> **2026-11-10**
+>
+> ## v0.18.0rc7
+>
+> ### Security
+>
+> * Includes dependency and security maintenance updates.
+>
+> **2026-11-10**
+>
+> ## v0.18.0rc6
+>
+> ### Fixes
+>
+> * Fixes `run.start` with a fork checkpoint while the thread waits on an interrupt: it now starts a new run from that checkpoint instead of answering the interrupt, or being refused when several are pending.
+>
+> **2026-11-10**
+>
+> ## v0.18.0rc5
+>
+> ### Fixes
+>
+> * Allows redis-py 8.x in Agent Server images and user graph dependencies.
+> * Reduces memory use for thread get and search responses on large threads, because thread values are no longer decoded and re-encoded.
+> * Fixes dropped events in live streams on LangSmith-hosted deployments when a thread streams large state (over 8 MB) more than a minute apart.
 >
 > **2026-11-05**
 >
@@ -213,7 +310,7 @@ This minor line is still a release candidate. The last stable release is `0.17.1
 
 ## v0.17
 
-Latest version: `0.17.1`
+Latest version: `0.17.2`
 
 ### Changes
 
@@ -257,17 +354,31 @@ Latest version: `0.17.1`
 * Fixes AES-encrypted JSON data losing number formatting and precision (for example, `4.0` stored as `4`).
 * Fixed `langgraph dev` losing data: thread state and long-term store items are now saved to `.langgraph_api/` every 10 seconds as intended, and a restart no longer deletes every thread when saved state references a class from the graph file or one that was moved or renamed (an unreadable file is kept as a `.bak` copy).
 * Allows redis-py 8.x in Agent Server images and user graph dependencies.
+* Replays a run's stored events in pages instead of inside Redis, so rejoining a long run no longer stalls Redis for other clients
 
 #### Security
 
 * Store operations from graphs now reject namespace labels that are empty or contain `.`, as the HTTP store API does, so such a label can no longer read or change another namespace's items.
 * Updates Agent Server Go builds, Datadog initialization, uv, and telemetry certificate dependencies.
+* Updates bundled dependencies to address security vulnerabilities.
 
 #### General Notes
 
 * Removes the built-in Python Postgres store; the Go store is now always used and `LANGGRAPH_STORE_BACKEND` is ignored. Custom stores and the in-memory runtime are unaffected.
 
 > [accordion] v0.17 releases
+>
+> **2026-11-12**
+>
+> ## v0.17.2
+>
+> ### Fixes
+>
+> * Replays a run's stored events in pages instead of inside Redis, so rejoining a long run no longer stalls Redis for other clients
+>
+> ### Security
+>
+> * Updates bundled dependencies to address security vulnerabilities.
 >
 > **2026-11-03**
 >
@@ -401,7 +512,7 @@ Latest version: `0.17.1`
 
 ## v0.16
 
-Latest version: `0.16.10`
+Latest version: `0.16.11`
 
 ### Changes
 
@@ -469,8 +580,17 @@ Latest version: `0.16.10`
 * Updates certifi, Hono and Vite to patched versions to address published security advisories.
 * Patches Agent Server networking and tracing dependencies.
 * Pins the optional OpenTelemetry tracer's certificate bundle.
+* Updates bundled dependencies to address security vulnerabilities.
 
 > [accordion] v0.16 releases
+>
+> **2026-11-12**
+>
+> ## v0.16.11
+>
+> ### Security
+>
+> * Updates bundled dependencies to address security vulnerabilities.
 >
 > **2026-11-03**
 >
@@ -663,7 +783,7 @@ Latest version: `0.16.10`
 
 ## v0.15
 
-Latest version: `0.15.13`
+Latest version: `0.15.14`
 
 ### Changes
 
@@ -705,8 +825,17 @@ Latest version: `0.15.13`
 * Updates bundled certifi and Hono to clear known CVEs.
 * Patches Agent Server networking and tracing dependencies and fixes a loopback cancellation race.
 * Update bundled npm tooling to address vulnerabilities in brace-expansion and undici.
+* Fixes a crash when decoding malformed compressed stream frames.
 
 > [accordion] v0.15 releases
+>
+> **2026-11-12**
+>
+> ## v0.15.14
+>
+> ### Security
+>
+> * Fixes a crash when decoding malformed compressed stream frames.
 >
 > **2026-11-07**
 >

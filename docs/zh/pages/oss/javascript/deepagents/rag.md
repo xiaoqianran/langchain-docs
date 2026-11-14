@@ -42,7 +42,7 @@ const EXAMPLE_QUERY =
   "How do I stream intermediate tool results from a subagent?";
 
 const baselineAgent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [],
   systemPrompt:
     "You are a helpful LangChain documentation assistant. Answer questions about LangChain APIs and patterns.",
@@ -65,7 +65,7 @@ const EXAMPLE_QUERY =
   "How do I stream intermediate tool results from a subagent?";
 
 const baselineAgent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [],
   systemPrompt:
     "You are a helpful LangChain documentation assistant. Answer questions about LangChain APIs and patterns.",
@@ -280,7 +280,7 @@ export LANGSMITH_API_KEY="..."
 3. **[Embed](#select-an-embeddings-model)**：[Embeddings](/oss/javascript/integrations/embeddings)模型将每个块转换为捕获其含义的数字向量，从而实现对内容的相似性搜索。
 4. **[Store](#store-chunks-and-embeddings-in-vectorstore)**：使用[VectorStore](/oss/javascript/integrations/vectorstores)来索引块及其嵌入以进行检索。
 
-![index\_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_indexing.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=21403ce0d0c772da84dcc5b75cff4451)在索引步骤中，获取文档页面，将它们分成块，嵌入块，并将它们存储在`VectorStore`中。代理在运行时搜索该索引；它不会重新获取每个问题的完整站点。
+![index_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_indexing.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=21403ce0d0c772da84dcc5b75cff4451)在索引步骤中，获取文档页面，将它们分成块，嵌入块，并将它们存储在`VectorStore`中。代理在运行时搜索该索引；它不会重新获取每个问题的完整网站。
 
 LangChain 在 `https://docs.langchain.com/{path}.md` 发布降价。本教程对开源文档路径的精选列表进行索引。您可以扩展 `DOC_PATHS` 或解析 [llms.txt](https://docs.langchain.com/llms.txt) 中的 URL 以覆盖更多页面。
 
@@ -381,7 +381,7 @@ This might be private data, recent data, or data that is not part of the trainin
 ### 分割文档
 
 加载的文档很长，总共超过 100k 个标记，这使得它太大而无法适应许多模型的上下文窗口。
-即使对于那些可以在其上下文窗口中容纳完整语料库的模型，模型也可能很难在很长的输入中找到信息。对大量内容使用上下文窗口也不是令牌有效的。为了便于使用，将 [⟦T110⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 对象分成块。这些块将在接下来的步骤中用于嵌入和向量存储。
+即使对于那些可以在其上下文窗口中容纳完整语料库的模型，模型也可能很难在很长的输入中找到信息。对大量内容使用上下文窗口也不是令牌有效的。为了便于使用，将 [⟦T110⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 对象分割成块。这些块将在接下来的步骤中用于嵌入和向量存储。
 
 使用 `RecursiveCharacterTextSplitter` 使用常见分隔符（例如换行符）递归拆分文档，直到每个块的大小合适。
 对于通用文本用例，推荐使用 `RecursiveCharacterTextSplitter` `TextSplitter`。
@@ -711,7 +711,7 @@ Indexed 722 chunks.
 1. **检索**：给定用户输入，使用[Retriever](/oss/javascript/integrations/retrievers)从存储中检索相关分割。
 2. **生成**：[model](/oss/javascript/langchain/models) 使用提示生成答案，其中包括问题和检索到的数据。
 
-![retrieval\_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_retrieval_generation.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=994c3585cece93c80873d369960afd44)
+![retrieval_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_retrieval_generation.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=994c3585cece93c80873d369960afd44)
 
 ## 构建代理
 
@@ -838,7 +838,7 @@ const chunkAnalystSubagent = {
 };
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [searchDocumentation],
   backend,
   systemPrompt: instructions,
@@ -869,7 +869,7 @@ const chunkAnalystSubagent = {
 };
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [searchDocumentation],
   backend,
   systemPrompt: instructions,
@@ -1246,7 +1246,7 @@ const chunkAnalystSubagent = {
 };
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [searchDocumentation],
   backend,
   systemPrompt: instructions,
@@ -1431,7 +1431,7 @@ const chunkAnalystSubagent = {
 };
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [searchDocumentation],
   backend,
   systemPrompt: instructions,
@@ -2384,7 +2384,7 @@ if (import.meta.main) {
 您使用 [⟦T135⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 实现了一种 RAG 模式。将其与其他 Deep Agents 功能相结合，或尝试与 [RAG patterns](#rag-patterns) 不同的模式：* 将 [Skills](/oss/javascript/deepagents/skills) 添加到包检索工作流程和特定领域的搜索指南
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) 与 LangSmith 数据集和评估器
 * 阅读 [Context engineering](/oss/javascript/deepagents/context-engineering) 了解卸载和子代理隔离策略
-* 使用 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 进行部署以运行生产代理，而无需管理基础设施。或者，为了在使用相同的Deep Agents安全带时获得最大的灵活性，您可以自己托管代理或使用自定义的[LangSmith Deployment](/langsmith/deployment)
+* 使用 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 进行部署以运行生产代理，而无需管理基础设施。或者，为了在使用相同的Deep Agents安全带时获得最大的灵活性，您可以自己托管代理或使用自定义的[Agent Server](/langsmith/deployment)
 
 ***
 

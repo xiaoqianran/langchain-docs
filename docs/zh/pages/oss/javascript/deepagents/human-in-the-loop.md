@@ -103,7 +103,7 @@ const notifyEmail = tool(
 const checkpointer = new MemorySaver();
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [removeFile, fetchFile, notifyEmail],
   interruptOn: {
     remove_file: true, // Default: approve, edit, reject, respond
@@ -144,7 +144,7 @@ const interruptOn = {
 };
 ```
 
-## 处理中断当中断被触发时，代理暂停执行并返回控制权。检查结果中是否有中断并进行相应处理。如果用户拒绝某个操作，请包含一个明确的 `message`，告诉代理该工具未执行以及下一步要做什么。
+## 处理中断当中断被触发时，代理暂停执行并返回控制权。检查结果中是否存在中断并进行相应处理。如果用户拒绝某个操作，请包含一个明确的 `message`，告诉代理该工具未执行以及下一步要做什么。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { v7 as uuid7 } from "uuid";
@@ -268,7 +268,7 @@ process.stdout.write("\n");
 >
 > 组合 `"messages"` 和 `"updates"` 流模式，向用户显示实时 LLM 令牌，同时仍捕获 HITL 中断。 `"messages"`模式流令牌； `"updates"` 模式提供中断负载。
 
-## 多个工具调用当代理调用需要批准的多个工具时，所有中断都会在单个中断中批量处理。您必须按顺序为每一项做出决定。
+## 多个工具调用当代理调用需要批准的多个工具时，所有中断都会在一个中断中批量处理。您必须按顺序为每一项做出决定。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const config = { configurable: { thread_id: uuid7() } };
@@ -376,7 +376,7 @@ const agent = createDeepAgent({
 });
 ```
 
-当子代理触发中断时，处理是相同的 - 检查结果中的 `__interrupt__` 并使用 `Command` 恢复。流式传输时，子代理中断也会作为父 `updates` 流中的 `__interrupt__` 条目出现。您不需要 `subgraphs=True` 来进行中断传递。如果您还想流式传输子代理令牌和进度事件，请启用 `subgraphs=True`。完整图案请参见[Handle interrupts with streaming](#handle-interrupts-with-streaming)。
+当子代理触发中断时，处理是相同的 - 检查结果中的 `__interrupt__` 并使用 `Command` 恢复。流式传输时，子代理中断也会作为父 `updates` 流中的 `__interrupt__` 条目出现。您不需要 `subgraphs=True` 来进行中断传送。如果您还想流式传输子代理令牌和进度事件，请启用 `subgraphs=True`。完整图案请参见[Handle interrupts with streaming](#handle-interrupts-with-streaming)。
 
 ### 工具调用中的中断
 

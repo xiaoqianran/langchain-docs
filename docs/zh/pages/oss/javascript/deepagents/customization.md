@@ -14,7 +14,7 @@
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   systemPrompt: "You are a helpful assistant.",
   tools: [search, fetchUrl],
   memory: ["./AGENTS.md"],
@@ -26,7 +26,7 @@ const agent = await createDeepAgent({
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt: "You are a helpful assistant.",
   tools: [search, fetchUrl],
   memory: ["./AGENTS.md"],
@@ -119,7 +119,7 @@ const agent = await createDeepAgent({
 
 > [!提示]
 >
-> 使用`provider:model`格式（例如`openai:gpt-5.5`）在模型之间快速切换。
+> 使用`provider:model`格式（例如`openai:gpt-6.1-sol`）在模型之间快速切换。
 
 > [标签] OpenAI
 >
@@ -146,7 +146,7 @@ const agent = await createDeepAgent({
 >
 > process.env.OPENAI_API_KEY = "your-api-key";
 >
-> const agent = createDeepAgent({ model: "gpt-5.5" });
+> const agent = createDeepAgent({ model: "gpt-6.1-sol" });
 > // this calls initChatModel for the specified model with default parameters
 > // to use specific model parameters, use initChatModel directly
 > ```
@@ -157,7 +157,7 @@ const agent = await createDeepAgent({
 >
 > process.env.OPENAI_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("gpt-5.5");
+> const model = await initChatModel("gpt-6.1-sol");
 > const agent = createDeepAgent({
 >   model,
 >   temperature: 0,
@@ -170,7 +170,7 @@ const agent = await createDeepAgent({
 >
 > const agent = createDeepAgent({
 >   model: new ChatOpenAI({
->     model: "gpt-5.5",
+>     model: "gpt-6.1-sol",
 >     apiKey: "your-api-key",
 >     temperature: 0,
 >   }),
@@ -260,7 +260,7 @@ const agent = await createDeepAgent({
 > process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
 > process.env.OPENAI_API_VERSION = "your-api-version";
 >
-> const agent = createDeepAgent({ model: "azure_openai:gpt-5.5" });
+> const agent = createDeepAgent({ model: "azure_openai:gpt-6.1-sol" });
 > // this calls initChatModel for the specified model with default parameters
 > // to use specific model parameters, use initChatModel directly
 > ```
@@ -273,7 +273,7 @@ const agent = await createDeepAgent({
 > process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
 > process.env.OPENAI_API_VERSION = "your-api-version";
 >
-> const model = await initChatModel("azure_openai:gpt-5.5");
+> const model = await initChatModel("azure_openai:gpt-6.1-sol");
 > const agent = createDeepAgent({
 >   model,
 >   temperature: 0,
@@ -286,7 +286,7 @@ const agent = await createDeepAgent({
 >
 > const agent = createDeepAgent({
 >   model: new AzureChatOpenAI({
->     model: "gpt-5.5",
+>     model: "gpt-6.1-sol",
 >     azureOpenAIApiKey: "your-api-key",
 >     azureOpenAIApiEndpoint: "your-endpoint",
 >     azureOpenAIApiVersion: "your-api-version",
@@ -474,7 +474,7 @@ const internetSearch = tool(
 );
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [internetSearch],
 });
 ```
@@ -521,7 +521,7 @@ const internetSearch = tool(
 );
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [internetSearch],
 });
 ```
@@ -786,7 +786,7 @@ const client = new MultiServerMCPClient({
 const tools = await client.getTools();
 
 const agent = await createDeepAgent({
-    model: "google:gemini-3.6-flash",
+    model: "google:gemini-4-hydrogen",
     tools,
 });
 
@@ -810,7 +810,7 @@ const client = new MultiServerMCPClient({
 const tools = await client.getTools();
 
 const agent = await createDeepAgent({
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     tools,
 });
 
@@ -954,7 +954,7 @@ const researchInstructions =
   `write a polished report.`;
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   systemPrompt: researchInstructions,
 });
 ```
@@ -968,7 +968,7 @@ const researchInstructions =
   `write a polished report.`;
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt: researchInstructions,
 });
 ```
@@ -1192,7 +1192,7 @@ const logToolCallsMiddleware = createMiddleware({
 });
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [getWeather] as any,
   middleware: [logToolCallsMiddleware] as any,
 });
@@ -1241,7 +1241,7 @@ const logToolCallsMiddleware = createMiddleware({
 });
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [getWeather] as any,
   middleware: [logToolCallsMiddleware] as any,
 });
@@ -1535,7 +1535,7 @@ import {
 } from "deepagents";
 
 const backend = new StateBackend();
-const model = "openai:gpt-5.5";
+const model = "openai:gpt-6.1-sol";
 
 const customSummarization = createSummarizationMiddleware({
   model,
@@ -1595,7 +1595,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   middleware: [createCodeInterpreterMiddleware()],
 });
 ```
@@ -1605,7 +1605,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   middleware: [createCodeInterpreterMiddleware()],
 });
 ```
@@ -1712,12 +1712,12 @@ const researchSubagent: SubAgent = {
   description: "Used to research more in depth questions",
   systemPrompt: "You are a great researcher",
   tools: [internetSearch],
-  model: "google:gemini-3.6-flash", // Optional override, defaults to main agent model
+  model: "google:gemini-4-hydrogen", // Optional override, defaults to main agent model
 };
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -1768,12 +1768,12 @@ const researchSubagent: SubAgent = {
   description: "Used to research more in depth questions",
   systemPrompt: "You are a great researcher",
   tools: [internetSearch],
-  model: "openai:gpt-5.5", // Optional override, defaults to main agent model
+  model: "openai:gpt-6.1-sol", // Optional override, defaults to main agent model
 };
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -1829,7 +1829,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -1885,7 +1885,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -1941,7 +1941,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -1997,7 +1997,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -2053,7 +2053,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -2096,7 +2096,7 @@ const agent = createDeepAgent({
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
 > });
 > ```
@@ -2105,7 +2105,7 @@ const agent = createDeepAgent({
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
 > });
 > ```
@@ -2175,7 +2175,7 @@ const agent = createDeepAgent({
 > const backend = new LocalShellBackend({ workingDirectory: "." });
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   backend,
 > });
 > ```
@@ -2186,7 +2186,7 @@ const agent = createDeepAgent({
 > const backend = new LocalShellBackend({ workingDirectory: "." });
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   backend,
 > });
 > ```
@@ -2252,10 +2252,10 @@ const agent = createDeepAgent({
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   backend: new StoreBackend({
 >     namespace: (rt) => [rt.serverInfo.user.identity],
 >   }),
@@ -2267,10 +2267,10 @@ const agent = createDeepAgent({
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   backend: new StoreBackend({
 >     namespace: (rt) => [rt.serverInfo.user.identity],
 >   }),
@@ -2282,7 +2282,7 @@ const agent = createDeepAgent({
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
 >   model: "anthropic:claude-sonnet-5",
@@ -2297,7 +2297,7 @@ const agent = createDeepAgent({
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
 >   model: "openrouter:z-ai/glm-5.2",
@@ -2312,7 +2312,7 @@ const agent = createDeepAgent({
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
 >   model: "fireworks:accounts/fireworks/models/glm-5p2",
@@ -2327,7 +2327,7 @@ const agent = createDeepAgent({
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
 >   model: "baseten:zai-org/GLM-5.2",
@@ -2342,7 +2342,7 @@ const agent = createDeepAgent({
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
-> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+> const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
 >   model: "ollama:north-mini-code-1.0",
@@ -2355,7 +2355,7 @@ const agent = createDeepAgent({
 >
 >> [!注意]
 >>
->> 部署到[LangSmith Deployment](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
+>> 部署到[LangSmith Agent Server](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
 >
 >> [!提示]
 >>
@@ -2383,7 +2383,7 @@ const agent = createDeepAgent({
 > const store = new InMemoryStore();
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   backend: new CompositeBackend(new StateBackend(), {
 >     "/memories/": new StoreBackend({
 >       namespace: () => ["memories"],
@@ -2405,7 +2405,7 @@ const agent = createDeepAgent({
 > const store = new InMemoryStore();
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   backend: new CompositeBackend(new StateBackend(), {
 >     "/memories/": new StoreBackend({
 >       namespace: () => ["memories"],
@@ -2626,7 +2626,7 @@ const notifyEmail = tool(
 const checkpointer = new MemorySaver();
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [removeFile, fetchFile, notifyEmail],
   interruptOn: {
     remove_file: true, // Default: approve, edit, reject, respond
@@ -2637,7 +2637,7 @@ const agent = createDeepAgent({
 });
 ```
 
-您可以在工具调用时以及工具调用内部为代理和子代理配置中断。
+您可以在工具调用时以及工具调用内为代理和子代理配置中断。
 有关更多信息，请参阅[Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。
 
 ## 技能
@@ -2829,7 +2829,7 @@ const agent = createDeepAgent({
 > }
 >
 > const agent = await createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   memory: ["/AGENTS.md"],
 >   checkpointer: checkpointer,
 > });
@@ -2878,7 +2878,7 @@ const agent = createDeepAgent({
 > }
 >
 > const agent = await createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   memory: ["/AGENTS.md"],
 >   checkpointer: checkpointer,
 > });
@@ -3183,7 +3183,7 @@ const agent = createDeepAgent({
 > const checkpointer = new MemorySaver();
 >
 > const agent = await createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   backend: new StoreBackend({
 >     namespace: () => ["filesystem"],
 >   }),
@@ -3239,7 +3239,7 @@ const agent = createDeepAgent({
 > const checkpointer = new MemorySaver();
 >
 > const agent = await createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   backend: new StoreBackend({
 >     namespace: () => ["filesystem"],
 >   }),
@@ -3555,7 +3555,7 @@ const agent = createDeepAgent({
 > const checkpointer = new MemorySaver();
 >
 > const agent = await createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
 >   memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
 >   interruptOn: {
@@ -3575,7 +3575,7 @@ const agent = createDeepAgent({
 > const checkpointer = new MemorySaver();
 >
 > const agent = await createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
 >   memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
 >   interruptOn: {
@@ -3691,7 +3691,7 @@ const agent = createDeepAgent({
 
 Deep Agents 支持[structured output](/oss/javascript/langchain/structured-output)。您可以通过将其作为`responseFormat`参数传递给`createDeepAgent()`调用来设置所需的结构化输出模式。
 将模式包装在策略中，例如来自 `langchain` 的 `toolStrategy()` 或 `providerStrategy()`。
-当模型生成结构化数据时，它会被捕获、验证并在代理状态的“structedResponse”键中返回。
+当模型生成结构化数据时，它会被捕获、验证并在代理状态的“structuralResponse”键中返回。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, toolStrategy } from "langchain";
