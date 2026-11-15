@@ -66,7 +66,7 @@ console.log(result.content);
 
 欲了解更多信息，请参阅[Agents](/oss/javascript/langchain/agents)。
 
-＃＃＃ 中间件中间件是`createAgent`的定义特征。它使 `createAgent` 高度可定制，提高了您可以构建的上限。
+＃＃＃ 中间件中间件是`createAgent`的定义特征。它使`createAgent`高度可定制，提高了您可以构建的上限。
 
 优秀的代理需要[context engineering](/oss/javascript/langchain/context-engineering)：在正确的时间向模型提供正确的信息。中间件可帮助您通过可组合的抽象来控制动态提示、对话摘要、选择性工具访问、状态管理和护栏。
 
@@ -136,7 +136,7 @@ const expertiseBasedToolMiddleware = createMiddleware({
     if (userLevel === "expert") {
       const tools = [advancedSearch, dataAnalysis];
       return handler(
-        request.replace("openai:gpt-5.5", tools)
+        request.replace("openai:gpt-6.1-sol", tools)
       );
     }
     const tools = [simpleSearch, basicCalculator];

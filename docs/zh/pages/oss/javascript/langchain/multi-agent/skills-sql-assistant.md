@@ -6,7 +6,7 @@
 
 本教程展示如何使用**渐进式披露**（一种上下文管理技术，其中代理按需加载信息而不是预先加载信息）来实现**技能**（基于提示的专门指令）。代理通过工具调用加载技能，而不是动态更改系统提示，仅发现并加载每个任务所需的技能。
 
-**用例：**想象一下构建一个代理来帮助在大型企业中跨不同业务垂直领域编写 SQL 查询。您的组织可能为每个垂直行业拥有单独的数据存储，或者具有数千个表的单个整体数据库。无论哪种方式，预先加载所有模式都会淹没上下文窗口。渐进式公开通过在需要时仅加载相关模式来解决这个问题。该架构还使不同的产品所有者和利益相关者能够独立贡献和维护其特定业务垂直领域的技能。**您将构建什么：** 具有两项技能（销售分析和库存管理）的 SQL 查询助手。代理在其系统提示中看到轻量级技能描述，然后仅在与用户查询相关时通过工具调用加载完整的数据库模式和业务逻辑。
+**用例：** 想象一下构建一个代理来帮助在大型企业中跨不同业务垂直领域编写 SQL 查询。您的组织可能为每个垂直行业拥有单独的数据存储，或者具有数千个表的单个整体数据库。无论哪种方式，预先加载所有模式都会淹没上下文窗口。渐进式公开通过在需要时仅加载相关模式来解决这个问题。该架构还使不同的产品所有者和利益相关者能够独立贡献和维护其特定业务垂直领域的技能。**您将构建什么：** 具有两项技能（销售分析和库存管理）的 SQL 查询助手。代理在其系统提示中看到轻量级技能描述，然后仅在与用户查询相关时通过工具调用加载完整的数据库模式和业务逻辑。
 
 > [!注意]
 >
@@ -135,14 +135,14 @@ process.env.LANGSMITH_API_KEY = "...";
 >
 > process.env.OPENAI_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("gpt-5.5");
+> const model = await initChatModel("gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatOpenAI } from "@langchain/openai";
 >
 > const model = new ChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   apiKey: "your-api-key"
 > });
 > ```
@@ -211,14 +211,14 @@ process.env.LANGSMITH_API_KEY = "...";
 > process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
 > process.env.OPENAI_API_VERSION = "your-api-version";
 >
-> const model = await initChatModel("azure_openai:gpt-5.5");
+> const model = await initChatModel("azure_openai:gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { AzureChatOpenAI } from "@langchain/openai";
 >
 > const model = new AzureChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   azureOpenAIApiKey: "your-api-key",
 >   azureOpenAIApiEndpoint: "your-endpoint",
 >   azureOpenAIApiVersion: "your-api-version"
@@ -250,14 +250,14 @@ process.env.LANGSMITH_API_KEY = "...";
 >
 > process.env.GOOGLE_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("google:gemini-3.7-flash");
+> const model = await initChatModel("google:gemini-4-hydrogen");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatGoogle } from "@langchain/google/node";
 >
 > const model = new ChatGoogle({
->   model: "gemini-3.7-flash",
+>   model: "gemini-4-hydrogen",
 >   apiKey: "your-api-key"
 > });
 > ```
@@ -288,7 +288,7 @@ process.env.LANGSMITH_API_KEY = "...";
 > // Follow the steps here to configure your credentials:
 > // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 >
-> const model = await initChatModel("bedrock:gpt-5.5");
+> const model = await initChatModel("bedrock:gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -298,7 +298,7 @@ process.env.LANGSMITH_API_KEY = "...";
 > // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 >
 > const model = new ChatBedrockConverse({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   region: "us-east-2"
 > });
 > ```
@@ -540,7 +540,7 @@ const skillMiddleware = createMiddleware({  // [!code highlight]
 
 中间件将技能描述附加到系统提示中，使客服人员无需加载完整内容即可了解可用技能。 `load_skill` 工具注册为类变量，使其可供代理使用。> [!注意]
 >
-> **生产考虑**：为了简单起见，本教程加载`__init__`中的技能列表。在生产系统中，您可能希望在 `before_agent` 挂钩中加载技能，从而允许定期刷新它们以反映最新的更改（例如，当添加新技能或修改现有技能时）。详情请参阅[before\_agent hook documentation](/oss/javascript/langchain/middleware/custom#node-style-hooks)。
+> **生产考虑**：为了简单起见，本教程加载`__init__`中的技能列表。在生产系统中，您可能希望在 `before_agent` 挂钩中加载技能，从而允许定期刷新它们以反映最新的更改（例如，当添加新技能或修改现有技能时）。详情请参阅[before_agent hook documentation](/oss/javascript/langchain/middleware/custom#node-style-hooks)。
 
 ## 4. 创建具有技能支持的代理
 
@@ -683,7 +683,7 @@ This query:
 > });
 > ```
 >
-> ### 更新 load\_skill 来修改状态
+> ### 更新 load_skill 来修改状态
 >
 > 修改`load_skill`工具，在技能加载时更新状态：
 >
@@ -1066,7 +1066,7 @@ This query:
 > * `load_skill` 按需加载工具
 > * `SkillMiddleware` 将技能描述注入系统提示符中
 > * 使用中间件和检查点创建代理
-> * 示例用法显示代理如何加载技能并编写 SQL 查询
+> * 示例用法显示代理如何加载技能和编写 SQL 查询
 >
 > 要运行此程序，您需要：
 >

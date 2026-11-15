@@ -34,29 +34,29 @@ register_harness_profile(
 )
 ```
 
-**基本\_系统\_提示** `string`设置配置文件的基本说明。对于主代理来说，这些遵循呼叫者的系统指令；默认情况下不添加基本指令。对于声明性子代理，这会替换其编写的系统提示符。
+**基本系统提示** `string`设置配置文件的基本说明。对于主代理来说，这些遵循呼叫者的系统指令；默认情况下不添加基本指令。对于声明性子代理，这会替换其编写的系统提示符。
 
-**系统\_提示符\_后缀** `string`
+**系统提示符后缀** `string`
 
 在呼叫者的说明和个人资料的基本说明之后附加文本。应用于主代理、声明性子代理和自动添加的通用子代理。
 
-**工具\_描述\_覆盖** `Mapping[str, str]`
+**工具描述_覆盖** `Mapping[str, str]`
 
 覆盖按工具名称键入的各个工具描述。
 
-**排除\_工具** `frozenset[str]`
+**排除_工具** `frozenset[str]`
 
 从工具集中删除特定的线束级工具。按工具名称（字符串）匹配，用作注入后过滤器，以便它可以删除用户提供的工具和由线束中间件添加的工具。有关有效示例，请参阅[Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access)。
 
-**排除\_中间件** `frozenset[type[AgentMiddleware] | str]`
+**排除_中间件** `frozenset[type[AgentMiddleware] | str]`
 
 从 [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack) 中剥离特定的中间件类。接受中间件类或字符串名称。
 
-**额外\_中间件** `Sequence[AgentMiddleware] | Callable[[], Sequence[AgentMiddleware]]`
+**额外的中间件** `Sequence[AgentMiddleware] | Callable[[], Sequence[AgentMiddleware]]`
 
 将中间件附加到此配置文件适用的每个堆栈。有关内置排序，请参阅[Deep Agents stack](/oss/python/deepagents/customization#full-stack)。
 
-**通用\_目的\_子代理** `GeneralPurposeSubagentProfile`禁用、重命名或重新提示通用子代理。当此字段的 `system_prompt` 与 `base_system_prompt` 一起设置时，通用特定子代理提示符获胜 - 请参阅 [General-purpose subagent prompt](/oss/python/deepagents/customization#general-purpose-subagent-prompt)。
+**通用_子代理** `GeneralPurposeSubagentProfile`禁用、重命名或重新提示通用子代理。当此字段的 `system_prompt` 与 `base_system_prompt` 一起设置时，通用特定子代理提示符获胜 - 请参阅 [General-purpose subagent prompt](/oss/python/deepagents/customization#general-purpose-subagent-prompt)。
 
 > [!注意]
 >
@@ -66,7 +66,7 @@ register_harness_profile(
 >
 > 要在不使用 `task` 工具的情况下运行代理，请参阅 [Running without subagents](/oss/python/deepagents/subagents#running-without-subagents) — 设置 `general_purpose_subagent=GeneralPurposeSubagentProfile(enabled=False)` 并通过 `subagents=` 不传递任何同步子代理。 `SubAgentMiddleware`（和 `task` 工具）仅在至少存在一个同步子代理时附加，因此此配置将其完全排除。异步子代理不受影响。
 >
-> 列出 `FilesystemMiddleware`、`SubAgentMiddleware` 或 `excluded_middleware` 中的内部权限中间件会引发 `ValueError` — 它们需要 [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack) 中的脚手架。要在模型中隐藏其工具而不删除中间件，请改用`excluded_tools` — 请参阅[Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access)。
+> 列出 `FilesystemMiddleware`、`SubAgentMiddleware` 或 `excluded_middleware` 中的内部权限中间件会引发 `ValueError` — 它们需要 [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack) 中的脚手架。要在模型中隐藏其工具而不删除中间件，请改用 `excluded_tools` — 请参阅 [Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access)。
 
 `excluded_middleware` 中的条目接受两种形式：* 中间件*类*（按精确类型匹配），或匹配`AgentMiddleware.name`的纯字符串。对内置和公共别名使用纯字符串，例如 `"SummarizationMiddleware"`。
 * `module:Class` 导入引用（例如，`"my_pkg.middleware:TelemetryMiddleware"`）用于从配置文件中定位精确的中间件类。导入引用会延迟解析，因此仅将它们用于受信任的本地配置 - 加载一个导入 Python 代码。
@@ -173,13 +173,13 @@ register_provider_profile(
 
 该模型的未来构建使用`temperature=0`和`timeout=60`。这些注册使现有模型对象保持不变。
 
-**init\_kwargs** `Mapping[str, Any]`
+**init_kwargs** `Mapping[str, Any]`
 
-静态初始化参数转发到`init_chat_model`。**预\_init** `Callable[[str], None]`
+静态初始化参数转发到`init_chat_model`。**预初始化** `Callable[[str], None]`
 
 在构建之前运行的副作用（例如，凭据验证）。
 
-**init\_kwargs\_factory** `Callable[[], dict[str, Any]]`
+**init_kwargs_factory** `Callable[[], dict[str, Any]]`
 
 Kwargs 源自运行时状态（例如，从环境变量中提取的标头）。
 

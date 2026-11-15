@@ -83,14 +83,14 @@ export LANGSMITH_API_KEY="..."
 >
 > process.env.OPENAI_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("gpt-5.5");
+> const model = await initChatModel("gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatOpenAI } from "@langchain/openai";
 >
 > const model = new ChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   apiKey: "your-api-key"
 > });
 > ```
@@ -159,14 +159,14 @@ export LANGSMITH_API_KEY="..."
 > process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
 > process.env.OPENAI_API_VERSION = "your-api-version";
 >
-> const model = await initChatModel("azure_openai:gpt-5.5");
+> const model = await initChatModel("azure_openai:gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { AzureChatOpenAI } from "@langchain/openai";
 >
 > const model = new AzureChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   azureOpenAIApiKey: "your-api-key",
 >   azureOpenAIApiEndpoint: "your-endpoint",
 >   azureOpenAIApiVersion: "your-api-version"
@@ -198,14 +198,14 @@ export LANGSMITH_API_KEY="..."
 >
 > process.env.GOOGLE_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("google:gemini-3.7-flash");
+> const model = await initChatModel("google:gemini-4-hydrogen");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatGoogle } from "@langchain/google/node";
 >
 > const model = new ChatGoogle({
->   model: "gemini-3.7-flash",
+>   model: "gemini-4-hydrogen",
 >   apiKey: "your-api-key"
 > });
 > ```
@@ -236,7 +236,7 @@ export LANGSMITH_API_KEY="..."
 > // Follow the steps here to configure your credentials:
 > // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 >
-> const model = await initChatModel("bedrock:gpt-5.5");
+> const model = await initChatModel("bedrock:gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -246,7 +246,7 @@ export LANGSMITH_API_KEY="..."
 > // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 >
 > const model = new ChatBedrockConverse({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   region: "us-east-2"
 > });
 > ```
@@ -404,7 +404,7 @@ Rules:
 import { createAgent } from "langchain";
 
 let agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [executeSql],
   systemPrompt: await getSystemPrompt(),
 });
@@ -414,7 +414,7 @@ let agent = createAgent({
 import { createAgent } from "langchain";
 
 let agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [executeSql],
   systemPrompt: await getSystemPrompt(),
 });
@@ -648,7 +648,7 @@ ai: Sci Fi & Fantasy — average track length ≈ 48.5 minutes (about 2,911,783 
 > `);
 >
 > export const agent = createAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   tools: [executeSql],
 >   systemPrompt: await getSystemPrompt(),
 > });
@@ -764,7 +764,7 @@ ai: Sci Fi & Fantasy — average track length ≈ 48.5 minutes (about 2,911,783 
 > `);
 >
 > export const agent = createAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   tools: [executeSql],
 >   systemPrompt: await getSystemPrompt(),
 > });
@@ -1365,7 +1365,7 @@ import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
 import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
 
 agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [executeSql],
   systemPrompt: await getSystemPrompt(),
   middleware: [
@@ -1387,7 +1387,7 @@ import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
 import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
 
 agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [executeSql],
   systemPrompt: await getSystemPrompt(),
   middleware: [
@@ -1516,7 +1516,7 @@ agent = createAgent({
 
 > [!注意]
 >
-> 我们在代理中添加了 [checkpointer](/oss/javascript/langchain/short-term-memory)，以允许暂停和恢复执行。有关此内容以及可用中间件配置的详细信息，请参阅 [human-in-the-loop guide](/oss/javascript/langchain/human-in-the-loop)。
+> 我们在代理中添加了 [checkpointer](/oss/javascript/langchain/short-term-memory)，以允许暂停和恢复执行。有关此内容以及可用中间件配置的详细信息，请参阅[human-in-the-loop guide](/oss/javascript/langchain/human-in-the-loop)。
 
 在运行代理时，它现在将在执行 `execute_sql` 工具之前暂停以进行审查：
 

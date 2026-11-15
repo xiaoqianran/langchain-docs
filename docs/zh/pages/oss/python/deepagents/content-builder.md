@@ -40,13 +40,13 @@ Python 3.11 或更高版本。
 
 ## 选择你的路径
 
-从 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 工具时获得最大灵活性，请自行使用 Deep Agents SDK 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。> [选项卡] 托管 Deep Agents
+从[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 工具时获得最大灵活性，请自行使用 Deep Agents SDK 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。> [选项卡] 托管 Deep Agents
 >
 >> [!注意]
 >>
 >> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 >
-> 托管 Deep Agents 搭建项目并托管运行时。品牌声音进入`instructions.md`，技能保持在`skills/`，并且您在代码中声明工具和研究人员子代理。 `mda dev`期间，图像工具写入项目目录下。
+> 托管 Deep Agents 搭建项目并托管运行时。品牌声音进入`instructions.md`，技能保留在`skills/`，并且您在代码中声明工具和研究人员子代理。 `mda dev`期间，图像工具写入项目目录下。
 >
 > ### 设置
 >
@@ -648,7 +648,7 @@ Python 3.11 或更高版本。
 >
 > 参见[Deploy](/langsmith/python/managed-deep-agents-deploy)。> [标签] Deep Agents SDK
 >
-> 当您想要自己托管代理或运行自定义 [LangSmith Deployment](/langsmith/deployment) 时，请使用开源 SDK。该示例将行为保存在内存文件、技能和子代理定义中，以及 [FilesystemBackend](/oss/python/deepagents/backends)。
+> 当您想要自己托管代理或运行自定义 [Agent Server](/langsmith/deployment) 时，请使用开源 SDK。该示例将行为保存在内存文件、技能和子代理定义中，以及 [FilesystemBackend](/oss/python/deepagents/backends)。
 >
 > ### 设置
 >
@@ -1244,7 +1244,7 @@ Python 3.11 或更高版本。
 >
 > **2。创建代理**
 >
-> 使用 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 创建深度代理时，传递内存路径、技能目录、图像工具、来自 YAML 的子代理以及以示例目录为根的 [FilesystemBackend](/oss/python/deepagents/backends)，以便正确解析 `./AGENTS.md` 和 `./skills/` 等路径。
+> 使用 [create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 创建深度代理时，传递内存路径、技能目录、图像工具、来自 YAML 的子代理以及以示例目录为根的 [FilesystemBackend](/oss/python/deepagents/backends)，以便正确解析 `./AGENTS.md` 和 `./skills/` 等路径。
 >
 > ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
@@ -1254,7 +1254,7 @@ Python 3.11 或更高版本。
 > def create_content_writer():
 >     """Create a content writer agent configured by filesystem files."""
 >     return create_deep_agent(
->         model="google_genai:gemini-3.6-flash",
+>         model="google_genai:gemini-4-hydrogen",
 >         memory=["./AGENTS.md"],
 >         skills=["./skills/"],
 >         tools=[generate_cover, generate_social_image],
@@ -1271,7 +1271,7 @@ Python 3.11 或更高版本。
 > def create_content_writer():
 >     """Create a content writer agent configured by filesystem files."""
 >     return create_deep_agent(
->         model="openai:gpt-5.5",
+>         model="openai:gpt-6.1-sol",
 >         memory=["./AGENTS.md"],
 >         skills=["./skills/"],
 >         tools=[generate_cover, generate_social_image],
@@ -1432,7 +1432,7 @@ Python 3.11 或更高版本。
 
 * 在`instructions.md`（托管Deep Agents）或`AGENTS.md`（SDK）中编辑品牌规则
 * 在`skills/<name>/SKILL.md`下添加新内容类型的技能
-* SDK路径上，在`subagents.yaml`中添加子代理，在`load_subagents`中注册工具；在托管 Deep Agents 上，编辑 `agent.py` 或 `agent.ts` 中的内联 `researcher`
+* 在SDK路径上，在`subagents.yaml`中添加子代理，在`load_subagents`中注册工具；在托管 Deep Agents 上，编辑 `agent.py` 或 `agent.ts` 中的内联 `researcher`
 *阅读[Subagents](/oss/python/deepagents/subagents)、[Skills](/oss/python/deepagents/skills)和[Customization](/oss/python/deepagents/customization)
 * [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 和 [Move from Deep Agents](/langsmith/python/managed-deep-agents-migrate)
 

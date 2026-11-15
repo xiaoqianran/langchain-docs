@@ -6,7 +6,7 @@
 
 **路由器模式**是一种[multi-agent](/oss/javascript/langchain/multi-agent)架构，其中路由步骤对输入进行分类并将其定向到专门的代理，并将结果合成为组合响应。当您的组织的知识分布在不同的**垂直领域**（独立的知识领域，每个知识领域都需要自己的代理以及专门的工具和提示）时，此模式非常有用。
 
-在本教程中，您将构建一个多源知识库路由器，通过实际的企业场景展示这些优势。该系统将协调三名专家：
+在本教程中，您将构建一个多源知识库路由器，通过实际的企业场景演示这些优势。该系统将协调三名专家：
 
 * 一个 **GitHub 代理**，用于搜索代码、问题和拉取请求。
 * 一个 **Notion 代理**，用于搜索内部文档和 wiki。
@@ -113,14 +113,14 @@ process.env.LANGSMITH_API_KEY = "...";
 >
 > process.env.OPENAI_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("gpt-5.5");
+> const model = await initChatModel("gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatOpenAI } from "@langchain/openai";
 >
 > const model = new ChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   apiKey: "your-api-key"
 > });
 > ```
@@ -189,14 +189,14 @@ process.env.LANGSMITH_API_KEY = "...";
 > process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
 > process.env.OPENAI_API_VERSION = "your-api-version";
 >
-> const model = await initChatModel("azure_openai:gpt-5.5");
+> const model = await initChatModel("azure_openai:gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { AzureChatOpenAI } from "@langchain/openai";
 >
 > const model = new AzureChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   azureOpenAIApiKey: "your-api-key",
 >   azureOpenAIApiEndpoint: "your-endpoint",
 >   azureOpenAIApiVersion: "your-api-version"
@@ -228,14 +228,14 @@ process.env.LANGSMITH_API_KEY = "...";
 >
 > process.env.GOOGLE_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("google:gemini-3.7-flash");
+> const model = await initChatModel("google:gemini-4-hydrogen");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatGoogle } from "@langchain/google/node";
 >
 > const model = new ChatGoogle({
->   model: "gemini-3.7-flash",
+>   model: "gemini-4-hydrogen",
 >   apiKey: "your-api-key"
 > });
 > ```
@@ -266,7 +266,7 @@ process.env.LANGSMITH_API_KEY = "...";
 > // Follow the steps here to configure your credentials:
 > // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 >
-> const model = await initChatModel("bedrock:gpt-5.5");
+> const model = await initChatModel("bedrock:gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -276,7 +276,7 @@ process.env.LANGSMITH_API_KEY = "...";
 > // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 >
 > const model = new ChatBedrockConverse({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   region: "us-east-2"
 > });
 > ```
@@ -423,7 +423,7 @@ const getThread = tool(
 import { createAgent } from "langchain";
 import { ChatOpenAI } from "@langchain/openai";
 
-const llm = new ChatOpenAI({ model: "gpt-5.5" });
+const llm = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
 const githubAgent = createAgent({
   model: llm,
@@ -816,7 +816,7 @@ const getThread = tool(
 import { createAgent } from "langchain";
 import { ChatOpenAI } from "@langchain/openai";
 
-const llm = new ChatOpenAI({ model: "gpt-5.5" });
+const llm = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
 const githubAgent = createAgent({
   model: llm,

@@ -8,7 +8,15 @@
 
 **订阅**：我们的变更日志包括一个 [RSS feed](https://docs.langchain.com/oss/javascript/releases/changelog/rss.xml)，可以与 [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack)、[email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email)、Discord 机器人（如 [Readybot](https://readybot.io/) 或 [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot)）以及其他订阅工具集成。
 
-**2026 年 10 月 22 日**
+**2026 年 11 月 11 日**
+
+## `@langchain/core` v1.4.0
+
+`@langchain/core` 1.4 增加了决策模型，`langchain` 1.6.5 增加了决策驱动中间件。
+
+* **决策 API**：`@langchain/core/decisions` 引入了 `BaseDecisionModel`，用于有关文本、消息和结构化状态的类型化概率答案。问题支持二元判断 (`noul`)、分类选择 (`choice`)、序数分数 (`score`) 和边界框 (`box`)。答案是根据您提出的问题输入的。 ([langchainjs#12178](https://github.com/langchain-ai/langchainjs/pull/12178))
+* **决策驱动的中间件（测试版）**：`modelRouterMiddleware` 根据您配置的选择和指令为每次运行选择一个模型。 `autoModeMiddleware` 对配置的工具调用进行分类，并阻止那些它认为有风险的调用。这些中间件的版本之前已在 `@langchain/typesafe` 中发布。他们现在需要通过`classifier`建立一个明确的决策模型。 ([langchainjs#12183](https://github.com/langchain-ai/langchainjs/pull/12183))
+* **TypeSafe 0.1**：`TypeSafeClassifier` 实现决策 API 并添加图像输入和 `box` 答案。不推荐使用其 `@langchain/typesafe/middleware` 导出：使用 `classifier: new TypeSafeClassifier()` 从 `langchain` 导入。有关使用和迁移详细信息，请参阅[TypeSafe integration guide](/oss/javascript/integrations/providers/typesafe)。**2026 年 10 月 22 日**
 
 ## `@langchain/core` v1.3.0
 
@@ -23,11 +31,11 @@
    * `@langchain/openai` 至 1.7.0 或更高版本
    * `@langchain/anthropic` 至 1.6.0 或更高版本
    * `@langchain/aws` 至 1.5.0 或更高版本
-   * `@langchain/xai` 至 1.5.0 或更高版本升级 `langchain`、`deepagents` 或提供程序包可以引入 `@langchain/core` 1.3.0。要阻止服务器直到升级每个客户端，请将 `@langchain/core` 固定到 `package.json` 中的 `<1.3.0`。步骤 2 中的提供程序版本需要 `@langchain/core` 1.3.0，因此在引脚就位时无法安装它们。
+   * `@langchain/xai` 至 1.5.0 或更高版本
 
-**2026 年 10 月 15 日**
+升级 `langchain`、`deepagents` 或提供程序包可以引入 `@langchain/core` 1.3.0。要在升级每个客户端之前阻止服务器，请将 `@langchain/core` 固定到 `package.json` 中的 `<1.3.0`。步骤 2 中的提供程序版本需要 `@langchain/core` 1.3.0，因此在引脚就位时无法安装它们。
 
-## `langchain` v1.5.18
+**2026 年 10 月 15 日**## `langchain` v1.5.18
 
 `humanInTheLoopMiddleware` 现在可以在每次工具调用时暂停一次。设置`interruptMode: "per_call"`，每个门控调用都会引发自己的中断，您可以通过中断 ID 应答该中断。批处理模式仍然是默认的。
 
@@ -46,13 +54,13 @@ humanInTheLoopMiddleware({ interruptOn: {...}, interruptMode: "per_call" });
 
 **2026 年 3 月 24 日**
 
-## `deepagents` v1.9.0-alpha.0`deepagents` v1.9.0 的 Alpha 版本。
+## `deepagents` v1.9.0-alpha.0
 
-* **[Async subagents](/oss/javascript/deepagents/async-subagents)**：Deep Agents可以启动非阻塞后台任务，因此用户可以在子代理同时工作的同时继续与代理交互。子代理需要[LangSmith Deployment](/langsmith/deployment)。
+`deepagents` v1.9.0 的 Alpha 版本。
 
-* **[Backend](/oss/javascript/deepagents/backends) 协议 v2**：我们引入了新的 v2 后端协议 (`BackendProtocolV2`)，并对 Deep Agents 后端接口进行了向后兼容的更改。主要变化：
-  * **结构化结果类型**：所有方法现在都返回结构化 `Result` 对象（例如 `ReadResult`、`LsResult`、`GrepResult`、`GlobResult`），并通过 `error` 字段进行一致的错误处理，而不是返回原始值或引发异常。
-  * **多模式文件支持**：`read()`返回带有`.content`字段的`ReadResult`而不是纯字符串。对于二进制文件（图像、PDF、音频、视频），完整的原始 `Uint8Array` 内容通过 `readRaw()` 返回，使代理能够本地处理多模式文件。
+* **[Async subagents](/oss/javascript/deepagents/async-subagents)**：Deep Agents可以启动非阻塞后台任务，因此用户可以在子代理同时工作的同时继续与代理交互。子代理需要[LangSmith Deployment](/langsmith/deployment)。* **[Backend](/oss/javascript/deepagents/backends) 协议 v2**：我们引入了新的 v2 后端协议 (`BackendProtocolV2`)，并对 Deep Agents 后端接口进行了向后兼容的更改。主要变化：
+  * **结构化结果类型**：所有方法现在都返回结构化 `Result` 对象（例如，`ReadResult`、`LsResult`、`GrepResult`、`GlobResult`），并通过 `error` 字段进行一致的错误处理，而不是返回原始值或引发异常。
+  * **多模式文件支持**：`read()` 返回带有 `.content` 字段的 `ReadResult`，而不是纯字符串。对于二进制文件（图像、PDF、音频、视频），完整的原始 `Uint8Array` 内容通过 `readRaw()` 返回，使代理能够本地处理多模式文件。
   * **简化方法名称**：`lsInfo` -> `ls`、`grepRaw` -> `grep`、`globInfo` -> `glob`。
   * **向后兼容**：现有的 v1 后端可以使用 `adaptBackendProtocol` 适配 v2 接口。 v1 接口（`BackendProtocolV1`、`SandboxBackendProtocolV1`）已弃用，但为了兼容性而保留。
 
@@ -60,11 +68,11 @@ humanInTheLoopMiddleware({ interruptOn: {...}, interruptMode: "per_call" });
 
 ## v1.1.0
 
-### `@langchain/langgraph`引入 **StateSchema** - 一种更干净、与库无关的方式来定义图形状态，可与任何 [Standard Schema](https://github.com/standard-schema/standard-schema) 兼容的验证库一起使用。
+### `@langchain/langgraph`
 
-### 标准 JSON 模式支持
+引入 **StateSchema** - 一种更干净、与库无关的方式来定义图形状态，可与任何 [Standard Schema](https://github.com/standard-schema/standard-schema) 兼容的验证库一起使用。
 
-LangGraph 现在支持[Standard JSON Schema](https://standardschema.dev/json-schema)，这是由 Zod 4、Valibot、ArkType 和其他模式库实现的开放规范。这意味着您可以使用您喜欢的验证库而无需锁定：
+### 标准 JSON 模式支持LangGraph 现在支持[Standard JSON Schema](https://standardschema.dev/json-schema)，这是由 Zod 4、Valibot、ArkType 和其他模式库实现的开放规范。这意味着您可以使用您喜欢的验证库而无需锁定：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { z } from "zod"; // or valibot, arktype, etc.
@@ -119,11 +127,11 @@ const processState = (state: typeof AgentState.State) => {
 };
 ```
 
-现有的 `Annotation` 和基于 zod 的 API 继续保持不变 - `StateSchema` 对于那些喜欢模式优先定义的人来说是一个额外的选项。> [卡] [Learn more about StateSchema](/oss/javascript/langgraph/graph-api#schema)
->
-> 请参阅使用 StateSchema、ReducedValue 和 UntrackedValue 定义图形状态的完整文档。
+现有的 `Annotation` 和基于 zod 的 API 继续保持不变 - `StateSchema` 对于那些喜欢模式优先定义的人来说是一个额外的选项。
 
-> [卡][Learn about type utilities](/oss/javascript/langgraph/graph-api#type-utilities)
+> [卡][Learn more about StateSchema](/oss/javascript/langgraph/graph-api#schema)
+>
+> 请参阅使用 StateSchema、ReducedValue 和 UntrackedValue 定义图形状态的完整文档。> [卡][Learn about type utilities](/oss/javascript/langgraph/graph-api#type-utilities)
 >
 > 使用 GraphNode 和 ConditionalEdgeRouter 在图形生成器外部键入函数。
 
@@ -133,7 +141,7 @@ const processState = (state: typeof AgentState.State) => {
 
 ### `langchain`
 
-* [Structured output](/oss/javascript/langchain/structured-output)：添加了在使用`providerStrategy`进行结构化输出时手动设置`strict`模式的功能。
+* [Structured output](/oss/javascript/langchain/structured-output)：添加了使用`providerStrategy`进行结构化输出时手动设置`strict`模式的功能。
 
 ### `@langchain/openai`
 
@@ -146,7 +154,7 @@ const processState = (state: typeof AgentState.State) => {
 ### `@langchain/anthropic`
 
 * **新的提供商内置工具：** 支持提供商在服务器端执行的文本编辑器、Web 获取、计算机使用、工具搜索和 MCP 工具集工具。请参阅 [Server-side tool use](/oss/javascript/langchain/tools#server-side-tool-use) 和 [Anthropic](/oss/javascript/integrations/chat/anthropic) 聊天集成。
-* 外露式 `ChatAnthropicInput` 型可提高类型安全性。
+* 外露式 `ChatAnthropicInput` 型，提高类型安全性。
 
 ## v1.1.0
 
@@ -176,11 +184,11 @@ const processState = (state: typeof AgentState.State) => {
 
 ## v1.1.0* [Model profiles](/oss/javascript/langchain/models#model-profiles)：聊天模型现在通过`.profile` getter 公开支持的特性和功能。这些数据来源于[models.dev](https://models.dev)，一个提供模型能力数据的开源项目。
 * [Model retry middleware](/oss/javascript/langchain/middleware/built-in#model-retry)：新的中间件，用于通过可配置的指数退避自动重试失败的模型调用，从而提高代理可靠性。
-* [Content moderation middleware](/oss/javascript/langchain/middleware/built-in#provider-specific-middleware)：OpenAI内容审核中间件，用于检测和处理代理交互中的不安全内容。支持检查用户输入、模型输出和工具结果。
+* [Content moderation middleware](/oss/javascript/langchain/middleware/built-in#provider-specific-middleware)：OpenAI 内容审核中间件，用于检测和处理代理交互中的不安全内容。支持检查用户输入、模型输出和工具结果。
 * [Summarization middleware](/oss/javascript/langchain/middleware/built-in#summarization)：更新为支持使用模型配置文件进行上下文感知摘要的灵活触发点。
 * [Structured output](/oss/javascript/langchain/structured-output)：现在可以从模型配置文件推断`ProviderStrategy` 支持（本机结构化输出）。
-* [⟦T84⟧ for ⟦T85⟧](/oss/javascript/langchain/middleware/custom#dynamic-prompt)：支持将`SystemMessage`实例直接传递给`createAgent`的`systemPrompt`参数，以及用于扩展系统消息的新`concat`方法。启用缓存控制和结构化内容块等高级功能。
-* [Dynamic system prompt middleware](/oss/javascript/langchain/short-term-memory)：`dynamicSystemPromptMiddleware` 的返回值现在纯粹是累加的。当返回[⟦T91⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage)或`string`时，它们会与现有的系统消息合并而不是替换它们，从而更容易组合多个修改提示的中间件。* **兼容性改进：** 修复了结构化输出和工具模式中 Zod v4 验证错误的错误处理，确保正确显示详细的错误消息。
+* [⟦T102⟧ for ⟦T103⟧](/oss/javascript/langchain/middleware/custom#dynamic-prompt)：支持将`SystemMessage`实例直接传递给`createAgent`的`systemPrompt`参数，以及用于扩展系统消息的新`concat`方法。启用缓存控制和结构化内容块等高级功能。
+* [Dynamic system prompt middleware](/oss/javascript/langchain/short-term-memory)：`dynamicSystemPromptMiddleware` 的返回值现在纯粹是累加的。当返回[⟦T109⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage)或`string`时，它们会与现有的系统消息合并而不是替换它们，从而更容易组合多个修改提示的中间件。* **兼容性改进：** 修复了结构化输出和工具模式中 Zod v4 验证错误的错误处理，确保正确显示详细的错误消息。
 
 **2025 年 10 月 20 日**
 

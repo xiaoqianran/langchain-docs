@@ -10,7 +10,7 @@
 
 除了文本生成之外，许多模型还支持：
 
-* [Tool calling](#tool-calling) - 调用外部工具（如数据库查询或 API 调用）并在其响应中使用结果。
+* [Tool calling](#tool-calling) - 调用外部工具（例如数据库查询或 API 调用）并在其响应中使用结果。
 * [Structured output](#structured-output) - 模型的响应被限制为遵循定义的格式。
 * [Multimodality](#multimodal) - 处理并返回文本以外的数据，例如图像、音频和视频。
 * [Reasoning](#reasoning) - 模型执行多步骤推理以得出结论。
@@ -63,14 +63,14 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 >
 > process.env.OPENAI_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("gpt-5.5");
+> const model = await initChatModel("gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatOpenAI } from "@langchain/openai";
 >
 > const model = new ChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   apiKey: "your-api-key"
 > });
 > ```
@@ -139,14 +139,14 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 > process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
 > process.env.OPENAI_API_VERSION = "your-api-version";
 >
-> const model = await initChatModel("azure_openai:gpt-5.5");
+> const model = await initChatModel("azure_openai:gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { AzureChatOpenAI } from "@langchain/openai";
 >
 > const model = new AzureChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   azureOpenAIApiKey: "your-api-key",
 >   azureOpenAIApiEndpoint: "your-endpoint",
 >   azureOpenAIApiVersion: "your-api-version"
@@ -178,14 +178,14 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 >
 > process.env.GOOGLE_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("google:gemini-3.7-flash");
+> const model = await initChatModel("google:gemini-4-hydrogen");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatGoogle } from "@langchain/google/node";
 >
 > const model = new ChatGoogle({
->   model: "gemini-3.7-flash",
+>   model: "gemini-4-hydrogen",
 >   apiKey: "your-api-key"
 > });
 > ```
@@ -216,7 +216,7 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 > // Follow the steps here to configure your credentials:
 > // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 >
-> const model = await initChatModel("bedrock:gpt-5.5");
+> const model = await initChatModel("bedrock:gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -226,7 +226,7 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 > // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 >
 > const model = new ChatBedrockConverse({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   region: "us-east-2"
 > });
 > ```
@@ -303,7 +303,7 @@ LangChain 聊天模型会通过指数退避自动重试失败的 API 请求。�
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { initChatModel } from "langchain";
 
-const model = await initChatModel("google:gemini-3.6-flash", {
+const model = await initChatModel("google:gemini-4-hydrogen", {
   maxRetries: 10, // Increase for unreliable networks (default: 6)
   timeout: 120_000, // Milliseconds; increase for slow connections
 });
@@ -460,9 +460,9 @@ console.log(full.contentBlocks);
 >
 >> [手风琴]“自动直播”聊天模式
 >>
-> > LangChain simplifies streaming from chat models by automatically enabling streaming mode in certain cases, even when you're not explicitly calling the streaming methods. This is particularly useful when you use the non-streaming invoke method but still want to stream the entire application, including intermediate results from the chat model.
+>> LangChain 通过在某些情况下自动启用流模式来简化聊天模型的流，即使您没有显式调用流方法也是如此。当您使用非流式调用方法但仍希望流式传输整个应用程序（包括聊天模型的中间结果）时，这特别有用。
 >>
-> > In [LangGraph agents](/oss/javascript/langchain/agents), for example, you can call `model.invoke()` within nodes, but LangChain will automatically delegate to streaming if running in a streaming mode.
+>> 例如，在[LangGraph agents](/oss/javascript/langchain/agents)中，您可以在节点内调用`model.invoke()`，但如果运行在流模式下，LangChain将自动委托给流。
 >>
 >> #### 它是如何工作的
 >>>> 当您使用`invoke()`聊天模式时，如果LangChain检测到您正在尝试流式传输整个应用程序，它会自动切换到内部流式传输模式。就使用 invoke 的代码而言，调用的结果将是相同的；然而，当聊天模型被流式传输时，LangChain将负责在LangChain的回调系统中调用[⟦T97⟧](https://reference.langchain.com/javascript/langchain-core/callbacks/base/BaseCallbackHandler/handleLLMNewToken)事件。
@@ -546,7 +546,7 @@ sequenceDiagram
 
 > [!提示]
 >
-> 有关创建工具的详细信息和其他选项，请参阅 [tools guide](/oss/javascript/langchain/tools)。
+> 有关创建工具的详细信息和其他选项，请参阅[tools guide](/oss/javascript/langchain/tools)。
 
 ```typescript Binding user tools theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -564,7 +564,7 @@ const getWeather = tool(
   },
 );
 
-const model = new ChatOpenAI({ model: "gpt-5.5" });
+const model = new ChatOpenAI({ model: "gpt-6.1-sol" });
 const modelWithTools = model.bindTools([getWeather]);  // [!code highlight]
 
 const response = await modelWithTools.invoke("What's the weather like in Boston?");
@@ -580,7 +580,7 @@ for (const tool_call of toolCalls) {
 
 > [accordion] 工具执行循环
 >
-> 当模型返回工具调用时，您需要执行工具并将结果传递回模型。这会创建一个对话循环，模型可以在其中使用工具结果生成最终响应。 LangChain 包括 [agent](/oss/javascript/langchain/agents) 为您处理此编排的抽象。
+> 当模型返回工具调用时，您需要执行工具并将结果传递回模型。这会创建一个对话循环，模型可以在其中使用工具结果生成最终响应。 LangChain 包括为您处理此编排的 [agent](/oss/javascript/langchain/agents) 抽象。
 >
 > 以下是如何执行此操作的简单示例：
 >
@@ -1080,7 +1080,7 @@ console.log(message.contentBlocks);
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const model = new ChatOpenAI({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     logprobs: true,
 });
 
@@ -1138,7 +1138,7 @@ const response = await model.invoke(
 >
 > 用于在执行期间监视和响应事件的处理程序。
 >
-> **递归\_限制** `number`
+> **递归限制** `number`
 >
 > 链的最大递归深度，以防止复杂管道中的无限循环。
 
@@ -1155,7 +1155,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { createAgent, createMiddleware } from "langchain";
 
 const basicModel = new ChatOpenAI({ model: "gpt-5.4-mini" });
-const advancedModel = new ChatOpenAI({ model: "gpt-5.5" });
+const advancedModel = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
 const dynamicModelSelection = createMiddleware({
   name: "DynamicModelSelection",

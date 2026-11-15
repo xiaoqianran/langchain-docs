@@ -14,7 +14,7 @@ from deepagents import create_deep_agent
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[search, fetch_url, run_query],
 )
 ```
@@ -24,7 +24,7 @@ from deepagents import create_deep_agent
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[search, fetch_url, run_query],
 )
 ```
@@ -109,7 +109,7 @@ def internet_search(
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[internet_search],
 )
 ```
@@ -139,7 +139,7 @@ def internet_search(
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[internet_search],
 )
 ```
@@ -300,9 +300,9 @@ agent = create_deep_agent(
 
 > [!注意]
 >
-> Deep Agents 完全支持[Model Context Protocol (MCP)](/oss/python/langchain/mcp)，用于将代理连接到外部服务的开放标准。从任何 MCP 服务器加载工具并将其直接传递到`create_deep_agent`。MCP 是一种开放协议，允许代理通过标准接口连接到不断增长的服务器生态系统（数据库、API、文件系统、浏览器等）。 Instead of writing custom integration code for each service, you point Deep Agents at an MCP server and it gets all the tools that server exposes.
+> Deep Agents 完全支持[Model Context Protocol (MCP)](/oss/python/langchain/mcp)，用于将代理连接到外部服务的开放标准。从任何 MCP 服务器加载工具并将其直接传递到`create_deep_agent`。MCP 是一种开放协议，允许代理通过标准接口连接到不断增长的服务器生态系统（数据库、API、文件系统、浏览器等）。您无需为每个服务编写自定义集成代码，而是将 Deep Agents 指向 MCP 服务器，它会获取服务器公开的所有工具。
 
-Install LangChain with the `mcp` extra to connect to MCP servers:
+安装 LangChain 和 `mcp` 额外组件以连接到 MCP 服务器：
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install "langchain[mcp]"
@@ -324,7 +324,7 @@ async def main():
     async with MCPAdapter(config) as adapter:
         tools = await adapter.list_tools()
         agent = create_deep_agent(
-            model="google_genai:gemini-3.6-flash",
+            model="google_genai:gemini-4-hydrogen",
             tools=tools,
         )
         await agent.ainvoke(
@@ -349,7 +349,7 @@ async def main():
     async with MCPAdapter(config) as adapter:
         tools = await adapter.list_tools()
         agent = create_deep_agent(
-            model="openai:gpt-5.5",
+            model="openai:gpt-6.1-sol",
             tools=tools,
         )
         await agent.ainvoke(
@@ -491,7 +491,7 @@ async def main():
 
 ## 内置线束工具
 
-In addition to the tools you provide, every Deep Agent comes with a built-in set of tools from the harness:|工具|描述 |
+除了您提供的工具之外，每个 Deep Agent 还附带来自线束的一组内置工具：|工具|描述 |
 | - | - |
 | `ls` |列出目录中的文件。 |
 | `read_file` |读取文件内容（具有分页和多模式支持）。 |

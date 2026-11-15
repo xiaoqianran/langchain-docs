@@ -16,20 +16,20 @@
 >
 > **特工=模特+线束**
 >
-> 线束的工作：为给定的任务在正确的时间为模型提供正确的上下文。
+> 线束的工作：为给定任务在正确的时间为模型提供正确的上下文。
 
 [⟦T115⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 是一款高度可配置的安全带。最简单的是，您可以使用以下命令创建一个：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent } from "langchain";
 
-var agent = createAgent({ model: "google:gemini-3.6-flash", tools });
+var agent = createAgent({ model: "google:gemini-4-hydrogen", tools });
 ```
 
 ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent } from "langchain";
 
-var agent = createAgent({ model: "openai:gpt-5.5", tools });
+var agent = createAgent({ model: "openai:gpt-6.1-sol", tools });
 ```
 
 ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -66,7 +66,7 @@ var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools });
 
 > [!提示]
 >
-> [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 构建于 `create_agent` 之上，并附带已组装的常用功能，例如规划、文件系统工具、子代理和内存。为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents](/oss/javascript/deepagents/overview) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。当您需要自己配置较小的线束时，请使用`create_agent`。
+> [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 构建于 `create_agent` 之上，并附带已组装的常用功能，例如规划、文件系统工具、子代理和内存。为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents](/oss/javascript/deepagents/overview) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。当您需要自己配置较小的线束时，请使用`create_agent`。
 
 ## 核心组件
 
@@ -77,13 +77,13 @@ var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools });
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent } from "langchain";
 
-var agent = createAgent({ model: "google:gemini-3.6-flash", tools });
+var agent = createAgent({ model: "google:gemini-4-hydrogen", tools });
 ```
 
 ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent } from "langchain";
 
-var agent = createAgent({ model: "openai:gpt-5.5", tools });
+var agent = createAgent({ model: "openai:gpt-6.1-sol", tools });
 ```
 
 ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -130,7 +130,7 @@ var search = tool(({ query }) => `Results for: ${query}`, {
   schema: z.object({ query: z.string() }),
 });
 
-var agent = createAgent({ model: "google:gemini-3.6-flash", tools: [search] });
+var agent = createAgent({ model: "google:gemini-4-hydrogen", tools: [search] });
 ```
 
 ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -143,7 +143,7 @@ var search = tool(({ query }) => `Results for: ${query}`, {
   schema: z.object({ query: z.string() }),
 });
 
-var agent = createAgent({ model: "openai:gpt-5.5", tools: [search] });
+var agent = createAgent({ model: "openai:gpt-6.1-sol", tools: [search] });
 ```
 
 ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -217,7 +217,7 @@ var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools: [search] }
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 var agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools,
   systemPrompt: "You are a helpful assistant. Be concise and accurate.",
 });
@@ -225,7 +225,7 @@ var agent = createAgent({
 
 ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools,
   systemPrompt: "You are a helpful assistant. Be concise and accurate.",
 });
@@ -279,7 +279,7 @@ var agent = createAgent({
 const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
 var agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools,
   responseFormat: Answer,
 });
@@ -293,7 +293,7 @@ result.structuredResponse; // { summary: ..., confidence: ... }
 const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools,
   responseFormat: Answer,
 });
@@ -401,7 +401,7 @@ const stateMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [],
   middleware: [stateMiddleware],
 });
@@ -423,7 +423,7 @@ const stateMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [],
   middleware: [stateMiddleware],
 });
@@ -556,7 +556,7 @@ import { createAgent } from "langchain";
 import { MemorySaver } from "@langchain/langgraph";
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [],
   checkpointer: new MemorySaver(),
 });
@@ -586,7 +586,7 @@ import { createAgent } from "langchain";
 import { MemorySaver } from "@langchain/langgraph";
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [],
   checkpointer: new MemorySaver(),
 });
@@ -779,7 +779,7 @@ const contextSchema = z.object({
 });
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [],
   contextSchema,
   checkpointer: new MemorySaver(),
@@ -810,7 +810,7 @@ const contextSchema = z.object({
 });
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [],
   contextSchema,
   checkpointer: new MemorySaver(),
@@ -1074,7 +1074,7 @@ import { createAgent } from "langchain";
 import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
 var agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [search],
   middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
 });
@@ -1085,7 +1085,7 @@ import { createAgent } from "langchain";
 import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [search],
   middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
 });
@@ -1178,7 +1178,7 @@ import {
 } from "deepagents";
 
 var backend = new StateBackend();
-const model = "google:gemini-3.6-flash";
+const model = "google:gemini-4-hydrogen";
 
 var agent = createAgent({
   model,
@@ -1201,7 +1201,7 @@ import {
 } from "deepagents";
 
 var backend = new StateBackend();
-const model = "openai:gpt-5.5";
+const model = "openai:gpt-6.1-sol";
 
 var agent = createAgent({
   model,
@@ -1367,7 +1367,7 @@ var search = tool(({ query }) => `Search results for: ${query}`, {
 var backend = new StateBackend();
 
 var agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [search],
   middleware: [
     createFilesystemMiddleware({ backend }),
@@ -1382,7 +1382,7 @@ var agent = createAgent({
           systemPrompt:
             "Use the search tool to research the question and summarize key points.",
           tools: [search],
-          model: "google:gemini-3.6-flash",
+          model: "google:gemini-4-hydrogen",
           middleware: [],
         },
       ],
@@ -1409,7 +1409,7 @@ var search = tool(({ query }) => `Search results for: ${query}`, {
 var backend = new StateBackend();
 
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [search],
   middleware: [
     createFilesystemMiddleware({ backend }),
@@ -1424,7 +1424,7 @@ var agent = createAgent({
           systemPrompt:
             "Use the search tool to research the question and summarize key points.",
           tools: [search],
-          model: "openai:gpt-5.5",
+          model: "openai:gpt-6.1-sol",
           middleware: [],
         },
       ],
@@ -1667,7 +1667,7 @@ var agent = createAgent({
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 var agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools,
   name: "research_assistant",
 });
@@ -1675,7 +1675,7 @@ var agent = createAgent({
 
 ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools,
   name: "research_assistant",
 });
@@ -1741,7 +1741,7 @@ var search = tool(({ query }) => `Search results for: ${query}`, {
 });
 
 var agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [search],
   middleware: [
     modelRetryMiddleware({ maxRetries: 3 }),
@@ -1766,7 +1766,7 @@ var search = tool(({ query }) => `Search results for: ${query}`, {
 });
 
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [search],
   middleware: [
     modelRetryMiddleware({ maxRetries: 3 }),
@@ -1915,7 +1915,7 @@ var search = tool(({ query }) => `Search results for: ${query}`, {
 });
 
 var agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [search],
   middleware: [piiMiddleware("email")],
 });
@@ -1932,7 +1932,7 @@ var search = tool(({ query }) => `Search results for: ${query}`, {
 });
 
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [search],
   middleware: [piiMiddleware("email")],
 });
@@ -2040,7 +2040,7 @@ var search = tool(({ query }) => `Search results for: ${query}`, {
 });
 
 var agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [search],
   middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
 });
@@ -2057,7 +2057,7 @@ var search = tool(({ query }) => `Search results for: ${query}`, {
 });
 
 var agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [search],
   middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
 });

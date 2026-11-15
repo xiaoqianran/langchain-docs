@@ -54,7 +54,7 @@ import { createAgent, tool } from "langchain";
 import { z } from "zod";
 
 // Create a subagent
-const subagent = createAgent({ model: "google:gemini-3.6-flash", tools: [...] });
+const subagent = createAgent({ model: "google:gemini-4-hydrogen", tools: [...] });
 
 // Wrap it as a tool
 const callResearchAgent = tool(
@@ -72,7 +72,7 @@ const callResearchAgent = tool(
 );
 
 // Main agent with subagent as a tool
-const mainAgent = createAgent({ model: "google:gemini-3.6-flash", tools: [callResearchAgent] });
+const mainAgent = createAgent({ model: "google:gemini-4-hydrogen", tools: [callResearchAgent] });
 ```> [卡片][Tutorial: Build a personal assistant with subagents](/oss/javascript/langchain/multi-agent/subagents-personal-assistant)
 >
 > 了解如何使用子代理模式构建个人助理，其中中央主代理（主管）协调专门的工作代理。
@@ -173,7 +173,7 @@ sequenceDiagram
 2. **检查状态**：返回当前状态（待处理、正在运行、已完成、失败）
 3. **获取结果**：检索完成的结果
 
-**处理作业完成：** 当作业完成时，您的应用程序需要通知用户。一种方法：显示一条通知，单击该通知后，会发送一个 `HumanMessage`，例如“检查作业\_123 并总结结果”。
+**处理作业完成：** 当作业完成时，您的应用程序需要通知用户。一种方法：显示一条通知，单击该通知后，会发送一个 `HumanMessage`，例如“检查 job_123 并总结结果”。
 
 ## 工具模式
 
@@ -279,12 +279,12 @@ graph LR
 >
 > // Sub-agents developed by different teams
 > const researchAgent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   systemPrompt: "You are a research specialist...",
 > });
 >
 > const writerAgent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   systemPrompt: "You are a writing specialist...",
 > });
 >
@@ -324,7 +324,7 @@ graph LR
 >
 > // Main coordinator agent
 > const mainAgent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [task],
 >   systemPrompt: (
 >     "You coordinate specialized sub-agents. " +
@@ -454,8 +454,8 @@ const callSubagent1 = tool(
 
 [Deep Agents](/oss/javascript/deepagents/subagents#forked-subagents) 将这些模式命名为 `mode: "isolated"`（默认）和 `mode: "fork"`，并为您实现分叉：分叉的子代理接收父代理的完整消息历史记录（包括工具调用）和系统提示。|模式|子代理接收 |最适合 |权衡 |
 | - | - | - | - |
-| **隔离**（默认）|仅任务描述 |无需事先背景的重点工作 |上下文隔离，但重新派生父级已经执行的所有操作 |
-| **分叉** |家长的对话历史（以及Deep Agents中的系统提示）|继续父母已经开始的任务 |植入先前的上下文，但代价是更大的提示和更少的隔离 |
+| **隔离**（默认）|仅任务描述|无需事先背景的重点工作 |上下文隔离，但重新派生父级已经执行的所有操作 |
+| **分叉** |家长的对话历史（以及Deep Agents中的系统提示）|继续父母已经开始的任务 |播种先前的上下文，但代价是更大的提示和更少的隔离 |
 
 ### 子代理输出
 

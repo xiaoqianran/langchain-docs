@@ -50,7 +50,7 @@
 
 ### 数据来源在整个过程中，您的代理访问（读取/写入）不同的数据源：
 
-|数据来源|也称为|范围 |示例 |
+|数据来源|也称为 |范围 |示例 |
 | - | - | - | - |
 | **运行时上下文** |静态配置|对话范围 |用户 ID、API 密钥、数据库连接、权限、环境设置 |
 | **状态** |短期记忆 |对话范围 |当前消息、上传的文件、身份验证状态、工具结果 |
@@ -75,7 +75,7 @@ LangChain [middleware](/oss/javascript/langchain/middleware) 是使上下文工�
 >
 > 开发人员向法学硕士发出的基本指示。> [卡][Messages](#messages)
 >
-> 发送给 LLM 的消息（对话历史记录）的完整列表。
+> 发送给法学硕士的消息（对话历史记录）的完整列表。
 
 > [卡片][Tools](#tools)
 >
@@ -91,11 +91,11 @@ LangChain [middleware](/oss/javascript/langchain/middleware) 是使上下文工�
 
 所有这些类型的模型上下文都可以从**状态**（短期记忆）、**存储**（长期记忆）或**运行时上下文**（静态配置）中获取。
 
-### System Prompt
+###系统提示
 
 系统提示设置 LLM 的行为和能力。不同的用户、上下文或对话阶段需要不同的指令。成功的代理利用记忆、偏好和配置来为当前对话状态提供正确的指令。
 
-> [tab] State
+> [选项卡] 状态
 >
 > 从状态访问消息计数或对话上下文：
 >
@@ -103,7 +103,7 @@ LangChain [middleware](/oss/javascript/langchain/middleware) 是使上下文工�
 > import { createAgent } from "langchain";
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [...],
 >   middleware: [
 >     dynamicSystemPromptMiddleware((state) => {
@@ -122,7 +122,7 @@ LangChain [middleware](/oss/javascript/langchain/middleware) 是使上下文工�
 > });
 > ```
 
-> [tab] Store
+> [选项卡] 商店
 >
 > 从长期记忆中访问用户偏好：
 >
@@ -137,7 +137,7 @@ LangChain [middleware](/oss/javascript/langchain/middleware) 是使上下文工�
 > type Context = z.infer<typeof contextSchema>;
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [...],
 >   contextSchema,
 >   middleware: [
@@ -177,7 +177,7 @@ LangChain [middleware](/oss/javascript/langchain/middleware) 是使上下文工�
 > type Context = z.infer<typeof contextSchema>;
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [...],
 >   contextSchema,
 >   middleware: [
@@ -205,9 +205,9 @@ LangChain [middleware](/oss/javascript/langchain/middleware) 是使上下文工�
 > ```
 
 ### 消息消息构成发送给 LLM 的提示。
-管理消息内容至关重要，以确保法学硕士拥有正确的信息来做出良好回应。
+管理消息内容至关重要，以确保法学硕士拥有正确的信息来做出良好的回应。
 
-> [tab] State
+> [选项卡] 状态
 >
 > 当与当前查询相关时，从状态注入上传的文件上下文：
 >
@@ -244,7 +244,7 @@ LangChain [middleware](/oss/javascript/langchain/middleware) 是使上下文工�
 > });
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [...],
 >   middleware: [injectFileContext],
 > });
@@ -426,7 +426,7 @@ const searchOrders = tool(
 
 > [选项卡] 商店
 >
-> 根据用户偏好或商店中的功能标志过滤工具：
+> 根据用户偏好或商店中的功能标记过滤工具：
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import * as z from "zod";
@@ -506,7 +506,7 @@ const searchOrders = tool(
 >
 > // Initialize models once outside the middleware
 > const largeModel = initChatModel("claude-sonnet-4-6");
-> const standardModel = initChatModel("gpt-5.5");
+> const standardModel = initChatModel("gpt-6.1-sol");
 > const efficientModel = initChatModel("gpt-5.4-mini");
 >
 > const stateBasedModel = createMiddleware({
@@ -543,7 +543,7 @@ const searchOrders = tool(
 >
 > // Initialize available models once
 > const MODEL_MAP = {
->   "gpt-5.5": initChatModel("gpt-5.5"),
+>   "gpt-6.1-sol": initChatModel("gpt-6.1-sol"),
 >   "gpt-5.4-mini": initChatModel("gpt-5.4-mini"),
 >   "claude-sonnet": initChatModel("claude-sonnet-4-6"),
 > };
@@ -587,7 +587,7 @@ const searchOrders = tool(
 >
 > // Initialize models once outside the middleware
 > const premiumModel = initChatModel("claude-sonnet-4-6");
-> const standardModel = initChatModel("gpt-5.5");
+> const standardModel = initChatModel("gpt-6.1-sol");
 > const budgetModel = initChatModel("gpt-5.4-mini");
 >
 > const contextBasedModel = createMiddleware({
@@ -878,7 +878,7 @@ const customerSupportTicket = z.object({
 > );
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [fetchUserData],
 >   contextSchema,
 > });
@@ -978,7 +978,7 @@ LangChain为此提供了内置中间件：
 import { createAgent, summarizationMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [...],
   middleware: [
     summarizationMiddleware({
@@ -990,7 +990,7 @@ const agent = createAgent({
 });
 ```
 
-当对话超过令牌限制时，`SummarizationMiddleware`自动：
+当会话超过令牌限制时，`SummarizationMiddleware`自动：
 
 1. 使用单独的 LLM 调用总结旧消息
 2. 将它们替换为状态中的摘要消息（永久）

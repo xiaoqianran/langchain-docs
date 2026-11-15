@@ -23,7 +23,7 @@ import {
 } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [...],
   middleware: [summarizationMiddleware, humanInTheLoopMiddleware],
 });
@@ -31,7 +31,7 @@ const agent = createAgent({
 
 ## 代理循环
 
-核心代理循环涉及调用模型，让它选择要执行的工具，然后在不再调用工具时结束：
+核心代理循环涉及调用模型，让它选择要执行的工具，然后在不再调用工具时完成：
 
 ![Core agent loop diagram](https://mintcdn.com/langchain-5e9cc07a/Tazq8zGc0yYUYrDl/oss/images/core_agent_loop.png?fit=max\&auto=format\&n=Tazq8zGc0yYUYrDl\&q=85\&s=ac72e48317a9ced68fd1be64e89ec063)
 

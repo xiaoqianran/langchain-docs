@@ -6,7 +6,7 @@
 
 为LangChain代理添加长期记忆，以跨对话和会话存储和调用数据
 
-长期记忆让您的座席能够存储和回忆不同对话和会话中的信息。
+长期记忆可让您的客服人员存储和回忆不同对话和会话中的信息。
 与仅限于单个线程的[short-term memory](/oss/javascript/langchain/short-term-memory)不同，长期记忆跨线程持续存在并且可以随时调用。
 
 长期记忆建立在[LangGraph stores](/oss/javascript/langgraph/stores)之上，它将数据保存为按命名空间和键组织的 JSON 文档。
@@ -25,7 +25,7 @@
 > const store = new InMemoryStore();
 >
 > const agent = createAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   tools: [],
 >   store,
 > });
@@ -39,7 +39,7 @@
 > const store = new InMemoryStore();
 >
 > const agent = createAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   tools: [],
 >   store,
 > });
@@ -132,7 +132,7 @@
 > await store.setup();
 >
 > const agent = createAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   tools: [],
 >   store,
 > });
@@ -149,7 +149,7 @@
 > await store.setup();
 >
 > const agent = createAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   tools: [],
 >   store,
 > });
@@ -252,7 +252,7 @@
 
 ## 内存存储
 
-LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/langgraph/stores) 中。每个内存都组织在自定义的 `namespace` （类似于文件夹）和独特的 `key` （类似于文件名）下。命名空间通常包含用户或组织 ID 或其他标签，以便更轻松地组织信息。
+LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/langgraph/stores) 中。每个内存都按照自定义的 `namespace`（类似于文件夹）和独特的 `key`（类似于文件名）进行组织。命名空间通常包含用户或组织 ID 或其他标签，以便更轻松地组织信息。
 
 这种结构可以实现存储器的分层组织。然后通过内容过滤器支持跨命名空间搜索。
 
@@ -373,7 +373,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
 > );
 >
 > const agent = createAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   tools: [getUserInfo],
 >   contextSchema,
 >   // Pass store to agent - enables agent to access store when running tools
@@ -437,7 +437,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
 > );
 >
 > const agent = createAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   tools: [getUserInfo],
 >   contextSchema,
 >   // Pass store to agent - enables agent to access store when running tools
@@ -819,7 +819,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
 > );
 >
 > const agent = createAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   tools: [getUserInfo],
 >   contextSchema,
 >   store,
@@ -864,7 +864,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
 > );
 >
 > const agent = createAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   tools: [getUserInfo],
 >   contextSchema,
 >   store,
@@ -1148,7 +1148,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
 > );
 >
 > const agent = createAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   tools: [saveUserInfo],
 >   contextSchema,
 >   store,
@@ -1205,7 +1205,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
 > );
 >
 > const agent = createAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   tools: [saveUserInfo],
 >   contextSchema,
 >   store,
@@ -1543,7 +1543,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
 > );
 >
 > const agent = createAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   tools: [saveUserInfo],
 >   contextSchema,
 >   store,
@@ -1587,7 +1587,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
 > );
 >
 > const agent = createAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   tools: [saveUserInfo],
 >   contextSchema,
 >   store,

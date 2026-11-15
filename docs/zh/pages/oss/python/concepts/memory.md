@@ -13,7 +13,7 @@
 
 ![Short vs long](https://mintcdn.com/langchain-5e9cc07a/dL5Sn6Cmy9pwtY0V/oss/images/short-vs-long.png?fit=max\&auto=format\&n=dL5Sn6Cmy9pwtY0V\&q=85\&s=62665893848db800383dffda7367438a)## 短期记忆
 
-[Short-term memory](/oss/python/langgraph/add-memory#add-short-term-memory) 让您的应用程序记住单个 [thread](/oss/python/langgraph/checkpointers#threads) 或对话中之前的交互。 [thread](/oss/python/langgraph/checkpointers#threads) 在一个会话中组织多个交互，类似于电子邮件在单个对话中对消息进行分组的方式。
+[Short-term memory](/oss/python/langgraph/add-memory#add-short-term-memory) 让您的应用程序记住单个 [thread](/oss/python/langgraph/checkpointers#threads) 或对话中之前的交互。 [thread](/oss/python/langgraph/checkpointers#threads) 在会话中组织多个交互，类似于电子邮件在单个对话中对消息进行分组的方式。
 
 LangGraph 将短期内存作为代理状态的一部分进行管理，并通过线程范围的检查点进行持久化。此状态通常可以包括对话历史记录以及其他状态数据，例如上传的文件、检索的文档或生成的工件。通过将这些存储在图表的状态中，机器人可以访问给定对话的完整上下文，同时保持不同线程之间的分离。
 
@@ -113,7 +113,7 @@ def update_instructions(state: State, store: BaseStore):
 
 在运行时创建内存既有优点也有挑战。从积极的一面来看，这种方法允许实时更新，使新的记忆立即可用于后续的交互。它还实现了透明度，因为当创建和存储记忆时可以通知用户。然而，这种方法也面临着挑战。如果代理需要新工具来决定将哪些内容提交到内存中，则可能会增加复杂性。此外，推理将哪些内容保存到内存的过程可能会影响代理延迟。最后，代理必须在内存创建和其他职责之间执行多任务，这可能会影响创建的内存的数量和质量。
 
-例如，ChatGPT 使用 [save\_memories](https://openai.com/index/memory-and-new-controls-for-chatgpt/) 工具将内存作为内容字符串更新插入，决定是否以及如何在每条用户消息中使用此工具。请参阅我们的 [memory-agent](https://github.com/langchain-ai/memory-agent) 模板作为参考实现。
+例如，ChatGPT 使用 [save_memories](https://openai.com/index/memory-and-new-controls-for-chatgpt/) 工具将内存作为内容字符串更新插入，决定是否以及如何在每条用户消息中使用此工具。请参阅我们的 [memory-agent](https://github.com/langchain-ai/memory-agent) 模板作为参考实现。
 
 #### 在后台
 

@@ -43,7 +43,7 @@ from langchain.messages import HumanMessage
 EXAMPLE_QUERY = "How do I stream intermediate tool results from a subagent?"
 
 baseline_agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[],
     system_prompt=(
         "You are a helpful LangChain documentation assistant. "
@@ -65,7 +65,7 @@ from langchain.messages import HumanMessage
 EXAMPLE_QUERY = "How do I stream intermediate tool results from a subagent?"
 
 baseline_agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     system_prompt=(
         "You are a helpful LangChain documentation assistant. "
@@ -274,7 +274,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 3. **[Embed](#select-an-embeddings-model)**：[Embeddings](/oss/python/integrations/embeddings)模型将每个块转换为捕获其含义的数字向量，从而实现对内容的相似性搜索。
 4. **[Store](#store-chunks-and-embeddings-in-vectorstore)**：使用[VectorStore](/oss/python/integrations/vectorstores)来索引块及其嵌入以进行检索。
 
-![index\_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_indexing.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=21403ce0d0c772da84dcc5b75cff4451)在索引步骤中，获取文档页面，将它们分成块，嵌入块，并将它们存储在`VectorStore`中。代理在运行时搜索该索引；它不会重新获取每个问题的完整站点。
+![index_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_indexing.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=21403ce0d0c772da84dcc5b75cff4451)在索引步骤中，获取文档页面，将它们分成块，嵌入块，并将它们存储在`VectorStore`中。代理在运行时搜索该索引；它不会重新获取每个问题的完整网站。
 
 LangChain 在 `https://docs.langchain.com/{path}.md` 发布降价。本教程对开源文档路径的精选列表进行索引。您可以扩展 `DOC_PATHS` 或解析 [llms.txt](https://docs.langchain.com/llms.txt) 中的 URL 以覆盖更多页面。
 
@@ -485,7 +485,7 @@ Split documentation into 782 chunks.
 > )
 > ```
 
-> [标签] 奥拉玛
+> [标签] 奥拉马
 >
 > ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-ollama
@@ -856,7 +856,7 @@ Indexed 782 chunks.
 1. **检索**：给定用户输入，使用[Retriever](/oss/python/integrations/retrievers)从存储中检索相关分割。
 2. **生成**：[model](/oss/python/langchain/models) 使用提示生成答案，其中包括问题和检索到的数据。
 
-![retrieval\_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_retrieval_generation.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=994c3585cece93c80873d369960afd44)
+![retrieval_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_retrieval_generation.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=994c3585cece93c80873d369960afd44)
 
 ## 构建代理
 
@@ -986,7 +986,7 @@ chunk_analyst_subagent = {
     "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
 }
 
-model = init_chat_model(model="google_genai:gemini-3.6-flash")
+model = init_chat_model(model="google_genai:gemini-4-hydrogen")
 
 agent = create_deep_agent(
     model=model,
@@ -1022,7 +1022,7 @@ chunk_analyst_subagent = {
     "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
 }
 
-model = init_chat_model(model="openai:gpt-5.5")
+model = init_chat_model(model="openai:gpt-6.1-sol")
 
 agent = create_deep_agent(
     model=model,
@@ -1213,7 +1213,7 @@ agent = create_deep_agent(
 )
 ```
 
-主代理保留`search_documentation`工具。 `chunk-analyst`子代理使用内置文件系统工具来读取块文件，但不直接搜索矢量存储。
+主代理保留`search_documentation`工具。 `chunk-analyst`子代理使用内置文件系统工具来读取块文件，但不直接搜索向量存储。
 
 ## 运行代理
 
@@ -1450,7 +1450,7 @@ if __name__ == "__main__":
 * 将 [Skills](/oss/python/deepagents/skills) 添加到包检索工作流程和特定领域的搜索指南
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) 与 LangSmith 数据集和评估器
 * 阅读 [Context engineering](/oss/python/deepagents/context-engineering) 了解卸载和子代理隔离策略
-* 使用 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 进行部署以运行生产代理，而无需管理基础设施。或者，为了在使用相同的Deep Agents安全带时获得最大的灵活性，您可以自己托管代理或使用自定义的[LangSmith Deployment](/langsmith/deployment)
+* 使用 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 进行部署以运行生产代理，而无需管理基础设施。或者，为了在使用相同的Deep Agents安全带时获得最大的灵活性，您可以自己托管代理或使用自定义的[Agent Server](/langsmith/deployment)
 * 使用 [Grading rubrics](/oss/python/deepagents/rubric) 验证答案是否基于检索到的源材料
 
 ***

@@ -22,7 +22,7 @@
 | - | - | - |
 | **[Input context](#input-context)** |代理启动时的提示包含哪些内容（系统提示、内存、技能） |静态，每次运行均应用 |
 | **[Runtime context](#runtime-context)** |调用时传递的静态配置（用户元数据、API 密钥、连接）|每次运行，传播到子代理 |
-| **[Context compression](#context-compression)** |内置卸载和汇总，将上下文保持在窗口限制内 |当接近极限时自动 |
+| **[Context compression](#context-compression)** |内置卸载和摘要，可将上下文保持在窗口限制内 |当接近极限时自动 |
 | **[Context isolation](#context-isolation-with-subagents)** |使用子代理隔离繁重的工作，仅将结果返回给主代理 |每个子代理，当被委托时 |
 | **[Long-term memory](#long-term-memory)** |使用虚拟文件系统跨线程持久存储|对话中持续存在 |
 
@@ -52,7 +52,7 @@
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt=(
         "You are a research assistant specializing in scientific literature. "
         "Always cite sources. Use subagents for parallel research on different topics."
@@ -64,7 +64,7 @@ agent = create_deep_agent(
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt=(
         "You are a research assistant specializing in scientific literature. "
         "Always cite sources. Use subagents for parallel research on different topics."
@@ -132,7 +132,7 @@ agent = create_deep_agent(
 )
 ```
 
-`system_prompt` 参数是静态的，这意味着它在每次调用时都不会改变。
+`system_prompt` 参数是静态的，这意味着每次调用它都不会改变。
 对于某些用例，您可能需要动态提示：例如，告诉模型“您具有管理员访问权限”与“您具有只读访问权限”，或者注入用户首选项，例如来自[long-term memory](#long-term-memory)的“用户更喜欢简洁的响应”。
 如果您的提示取决于上下文或 `runtime.store`，请使用 `@dynamic_prompt` 构建上下文感知指令。您的中间件可以读取`request.runtime.context`和`request.runtime.store`。
 有关 [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack) 和添加 [custom middleware](/oss/python/langchain/middleware)，请参阅 [Customization](/oss/python/deepagents/customization#middleware)。有关示例，请参阅 [LangChain context engineering](/oss/python/langchain/context-engineering#system-prompt) 指南。
@@ -147,14 +147,14 @@ agent = create_deep_agent(
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     memory=["/project/AGENTS.md", "~/.deepagents/preferences.md"],
 )
 ```
 
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     memory=["/project/AGENTS.md", "~/.deepagents/preferences.md"],
 )
 ```
@@ -204,14 +204,14 @@ agent = create_deep_agent(
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     skills=["/skills/"],
 )
 ```
 
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     skills=["/skills/"],
 )
 ```
@@ -341,7 +341,7 @@ def fetch_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[fetch_user_data],
     context_schema=Context,
 )
@@ -373,7 +373,7 @@ def fetch_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[fetch_user_data],
     context_schema=Context,
 )
@@ -576,7 +576,7 @@ def cite_page(runtime: ToolRuntime) -> str:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[cite_page],
     state_schema=ResearchState,
 )
@@ -607,7 +607,7 @@ def cite_page(runtime: ToolRuntime) -> str:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[cite_page],
     state_schema=ResearchState,
 )
@@ -863,7 +863,7 @@ from deepagents.middleware.summarization import create_summarization_tool_middle
 
 backend = StateBackend  # if using default backend
 
-model = "google_genai:gemini-3.6-flash"
+model = "google_genai:gemini-4-hydrogen"
 agent = create_deep_agent(
     model=model,
     middleware=[  # [!code highlight]
@@ -879,7 +879,7 @@ from deepagents.middleware.summarization import create_summarization_tool_middle
 
 backend = StateBackend  # if using default backend
 
-model = "openai:gpt-5.5"
+model = "openai:gpt-6.1-sol"
 agent = create_deep_agent(
     model=model,
     middleware=[  # [!code highlight]
@@ -1018,7 +1018,7 @@ from langgraph.store.memory import InMemoryStore
 store = InMemoryStore()
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     store=store,
     backend=CompositeBackend(
         default=StateBackend(),
@@ -1039,7 +1039,7 @@ from langgraph.store.memory import InMemoryStore
 store = InMemoryStore()
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     store=store,
     backend=CompositeBackend(
         default=StateBackend(),

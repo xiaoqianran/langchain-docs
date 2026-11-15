@@ -98,14 +98,14 @@ INFO:langgraph_api.cli:
 - 📚 API Docs: http://127.0.0.1:2024/docs
 
 This in-memory server is designed for development and testing.
-For production use, please use LangSmith Deployment.
+For production use, please use LangSmith Agent Server.
 ```
 
 `langgraph dev` 命令以内存模式启动 Agent Server。该模式适合开发和测试目的。对于生产使用，部署可以访问持久存储后端的代理服务器。欲了解更多信息，请参阅[Platform setup overview](/langsmith/platform-setup)。
 
 ## 6. 在 Studio 中测试您的代理
 
-[Studio](/langsmith/studio) 是一个专用 UI，您可以连接到 LangGraph API 服务器以在本地可视化、交互和调试代理。通过访问 `langgraph dev` 命令输出中提供的 URL 来测试您的图形：
+[Studio](/langsmith/studio) 是一个专门的 UI，您可以连接到 LangGraph API 服务器以在本地可视化、交互和调试代理。通过访问 `langgraph dev` 命令输出中提供的 URL 来测试您的图形：
 
 ```
 >    - LangGraph Studio Web UI: https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024

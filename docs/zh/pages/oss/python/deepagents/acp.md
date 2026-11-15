@@ -41,7 +41,7 @@ from deepagents_acp.server import AgentServerACP
 
 async def main() -> None:
     agent = create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
+        model="google_genai:gemini-4-hydrogen",
         # You can customize your deep agent here: set a custom prompt,
         # add your own tools, attach middleware, or compose subagents.
         system_prompt="You are a helpful coding assistant",
@@ -67,7 +67,7 @@ from deepagents_acp.server import AgentServerACP
 
 async def main() -> None:
     agent = create_deep_agent(
-        model="openai:gpt-5.5",
+        model="openai:gpt-6.1-sol",
         # You can customize your deep agent here: set a custom prompt,
         # add your own tools, attach middleware, or compose subagents.
         system_prompt="You are a helpful coding assistant",

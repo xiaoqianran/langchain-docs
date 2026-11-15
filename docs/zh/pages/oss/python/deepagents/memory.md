@@ -20,13 +20,13 @@
 
 ## 记忆是如何运作的1. **将代理指向内存文件。** 创建代理时将文件路径传递给`memory=`。您还可以通过 `skills=` 传递 [skills](/oss/python/deepagents/skills) 来获取程序内存（告诉代理“如何”执行任务的可重用指令）。 [backend](/oss/python/deepagents/backends) 控制文件的存储位置以及谁可以访问它们。
 2. **Agent读取内存。** Agent可以在启动时将内存文件加载到系统提示符中，或者在会话过程中按需读取它们。例如，[skills](/oss/python/deepagents/skills)使用按需加载：代理在启动时仅读取技能描述，然后仅在与任务匹配时读取完整的技能文件。这可以保持上下文精简，直到需要某种功能为止。
-3. **Agent更新内存（可选）。** 当Agent学习到新的信息时，它可以使用其内置的`edit_file`工具来更新内存文件。更新可以在对话期间（默认）进行，也可以通过 [background consolidation](#background-consolidation) 在对话之间的后台进行。更改将保留并在下一次对话中可用。并非所有内存都是可写的：开发人员定义的 [skills](/oss/python/deepagents/skills) 和 [organization policies](#organization-level-memory) 通常是只读的。详情请参阅[read-only vs writable memory](#read-only-vs-writable-memory)。
+3. **Agent更新内存（可选）。** 当Agent学习到新信息时，它可以使用其内置的`edit_file`工具来更新内存文件。更新可以在对话期间（默认）进行，也可以通过 [background consolidation](#background-consolidation) 在对话之间的后台进行。更改将保留并在下一次对话中可用。并非所有内存都是可写的：开发人员定义的 [skills](/oss/python/deepagents/skills) 和 [organization policies](#organization-level-memory) 通常是只读的。详情请参阅[read-only vs writable memory](#read-only-vs-writable-memory)。
 
 两种最常见的模式是[agent-scoped memory](#agent-scoped-memory)（所有用户共享）和[user-scoped memory](#user-scoped-memory)（每个用户隔离）。对于编码代理通过[⟦T17⟧](https://agents.md/)发现的生成的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 
 ## 作用域内存
 
-代理内存可以划分范围，以便使用代理的每个人都可以访问相同的内存文件，或者每个用户都可以使用单独的内存文件。
+代理内存可以划分范围，以便使用代理的每个人都可以访问相同的内存文件，或者每个用户都可以单独使用内存文件。
 
 ### 代理范围内存
 
@@ -43,7 +43,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     memory=["/memories/AGENTS.md"],
     skills=["/skills/"],
     backend=CompositeBackend(
@@ -104,7 +104,7 @@ agent = create_deep_agent(
 > )
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     memory=["/memories/AGENTS.md"],
 >     skills=["/skills/"],
 >     backend=CompositeBackend(
@@ -147,7 +147,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     memory=["/memories/preferences.md"],
     skills=["/skills/"],
     backend=CompositeBackend(
@@ -213,7 +213,7 @@ agent = create_deep_agent(
 > )
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     memory=["/memories/preferences.md"],
 >     skills=["/skills/"],
 >     backend=CompositeBackend(
@@ -307,7 +307,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     memory=[
         "/memories/preferences.md",
         "/policies/compliance.md",
@@ -390,7 +390,7 @@ async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt="""Review recent conversations and update the user's memory file.
 Merge new facts, remove outdated information, and keep it concise.""",
     tools=[search_recent_conversations],
@@ -454,9 +454,9 @@ cron_job = await client.crons.create(
 
 ### 只读内存与可写内存
 
-默认情况下，代理可以读取和写入内存文件。对于组织策略或合规性规则等共享状态，您可能希望将内存设为**只读**，以便代理可以引用它但不能修改它。这可以防止通过共享内存进行提示注入，并确保只有您的应用程序代码控制文件中的内容。|许可 |使用案例|它是如何运作的 |
+默认情况下，代理可以读取和写入内存文件。对于组织策略或合规性规则等共享状态，您可能希望将内存设为**只读**，以便代理可以引用它但不能修改它。这可以防止通过共享内存进行提示注入，并确保只有您的应用程序代码控制文件中的内容。|许可 |使用案例 |它是如何运作的 |
 | - | - | - |
-| **读写**（默认）|用户喜好，座席自我提升，学到了[skills](/oss/python/deepagents/skills) |代理通过`edit_file`工具更新文件 |
+| **读写**（默认）|用户喜好，座席自我提升，学到了[skills](/oss/python/deepagents/skills) |代理通过`edit_file`工具更新文件|
 | **只读** |组织政策、合规规则、共享知识库、开发人员定义[skills](/oss/python/deepagents/skills) |通过应用程序代码或[Store API](/langsmith/custom-store)填充。使用 [permissions](/oss/python/deepagents/permissions) 拒绝写入特定路径，或使用 [policy hooks](/oss/python/deepagents/backends#add-policy-hooks) 自定义验证逻辑。 |
 
 **安全注意事项：** 如果一个用户可以写入另一用户读取的内存，则恶意用户可以将指令注入共享状态。为了缓解这种情况：

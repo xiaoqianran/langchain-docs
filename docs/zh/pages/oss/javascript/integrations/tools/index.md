@@ -37,8 +37,8 @@
 | - | - | - |
 | [Magic Hour](https://docs.magichour.ai) |免费套餐（400 积分 + 100/天）|使用 Sora 2、Veo 3.1、Kling 3.0、WAN 2.2、GPT-image、Nano Banana Pro 进行文本到视频、图像到视频和图像生成。同步和异步，返回 URL 或本地下载。 |
 
-## 所有工具和工具包|整合|下载 |
-| :-| :-|
+## 所有工具和工具包|整合 |下载 |
+| :- | :- |
 | [⟦T1⟧](/oss/javascript/integrations/tools/dalle) | [  ⟦T77⟧](https://www.npmjs.com/package/@langchain/openai) |
 | [⟦T2⟧](/oss/javascript/integrations/tools/openai) | [  ⟦T78⟧](https://www.npmjs.com/package/@langchain/openai) |
 | [⟦T3⟧](/oss/javascript/integrations/tools/openapi) | [  ⟦T79⟧](https://www.npmjs.com/package/@langchain/langgraph) |
@@ -81,7 +81,7 @@
 | [⟦T40⟧](https://github.com/fidacy/fidacy-open) | [  ⟦T116⟧](https://www.npmjs.com/package/@fidacy/langchain) |
 | [⟦T41⟧](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | [  ⟦T117⟧](https://www.npmjs.com/package/@tubeagentkit/langchain-getyoutubetranscript) |
 | [⟦T42⟧](/oss/javascript/integrations/tools/falkordb) | [  ⟦T118⟧](https://www.npmjs.com/package/@falkordb/langchain-ts) |
-| [⟦T43⟧](https://snap-render.com) | [  ⟦T119⟧](https://www.npmjs.com/package/langchain-snaprender) |
+| [⟦T43⟧](https://github.com/User0856/snaprender-integrations/tree/main/langchain) | [  ⟦T119⟧](https://www.npmjs.com/package/langchain-snaprender) |
 | [⟦T44⟧](/oss/javascript/integrations/tools/azure_dynamic_sessions) | [  ⟦T120⟧](https://www.npmjs.com/package/@langchain/azure-dynamic-sessions) |
 | [⟦T45⟧](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | [  ⟦T121⟧](https://www.npmjs.com/package/langchain-talordata) |
 | [⟦T46⟧](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js) | [  ⟦T122⟧](https://www.npmjs.com/package/@pushary/langgraph) |

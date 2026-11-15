@@ -34,7 +34,7 @@
 
 **脚本**
 
-**获取\_docs.py**
+**fetch_docs.py**
 
 **参考文献**
 
@@ -492,7 +492,7 @@ const agent = createDeepAgent({
 
 代理如何到达工具取决于您将其传递到的位置：
 
-|将工具传递给 |特工读取技能前|特工读取技能后 |
+|将工具传递给 |特工读取技能前|特工读取技能后|
 | - | - | - |
 | `createSkillsMiddleware({ tools })` |隐藏，调用失败|可见|
 |代理的`tools`，延期|可通过提供商工具搜索获得 |无需搜索即可看到 |
@@ -684,7 +684,7 @@ function createAgentForUser(userRole: string) {
 >
 >> [手风琴] 模拟SDK中的Deep Agents代码源码顺序
 >>
->> 为了匹配 SDK 代码中的 Deep Agents 代码分层，请按照从低到高的优先级顺序显式传递所有所需的源：
+>> 为了匹配 SDK 代码中的 Deep Agents 代码分层，请按照从低到高的优先顺序显式传递所有所需的源：
 >>
 >> ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > [
@@ -723,20 +723,20 @@ const agent = await createDeepAgent({
     }),
   }),
 });
-```This keeps the agent configuration stable while the backend enforces which library the agent can access.范围不需要特定于用户。 It can be any boundary your application uses, including role, tenant, workspace, organization, environment, or request type.
+```这可以保持代理配置稳定，同时后端强制代理可以访问哪个库。范围不需要特定于用户。它可以是您的应用程序使用的任何边界，包括角色、租户、工作区、组织、环境或请求类型。
 
-To populate a shared library, seed the store from your application code or an admin workflow:
+要填充共享库，请从应用程序代码或管理工作流程中为商店播种：
 
-* 按组织 ID 命名空间，以获取工作区范围的技能。 Pair this with [read-only skills](#read-only-skills) when agents should use the library but not modify it.
-* Namespace by user ID when each user needs an independent library, as in the example above.
+* 按组织 ID 命名空间，以获取工作区范围的技能。当代理应该使用库但不修改它时，将其与 [read-only skills](#read-only-skills) 配对。
+* 当每个用户需要独立的库时，按用户ID命名空间，如上例。
 
-Seed the store with keys like `/company-policies/SKILL.md` and values that include `content` and `encoding` fields. The `/skills/` route prefix is stripped before records are read from the store.
+使用 `/company-policies/SKILL.md` 等键和包含 `content` 和 `encoding` 字段的值为商店播种。在从存储中读取记录之前，`/skills/` 路由前缀将被删除。
 
 您还可以组合共享库和个人库：将 `/skills/approved/` 路由到组织范围的 `StoreBackend`，将 `/skills/editable/` 路由到用户范围的后端，并在 `skills` 中传递两个路径。参见[Writable skills](#writable-skills)。
 
 ### 组合多个源
 
-Pass multiple skill paths when the agent should see more than one library. For example, you can combine approved organization skills, team-specific workflows, and request-specific instructions:
+当代理应该看到多个图书馆时，通过多个技能路径。例如，您可以结合批准的组织技能、特定于团队的工作流程和特定于请求的说明：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
@@ -755,7 +755,7 @@ const agent = await createDeepAgent({
 
 > [!注意]
 >
-> 本地运行通常没有检查点，因此技能编辑会立即生效，并且技能似乎会自行重新加载。 [LangSmith Deployments](/langsmith/deployment) 自动配置持久性检查点，因此同一代理在部署后的线程生命周期内保留其技能。参见[Going to production](/oss/javascript/deepagents/going-to-production)。
+> 本地运行通常没有检查点，因此技能编辑会立即生效，并且技能似乎会自行重新加载。 [LangSmith Agent Server](/langsmith/deployment) 自动配置持久性检查点，因此同一代理在部署后的线程生命周期内保留其技能。参见[Going to production](/oss/javascript/deepagents/going-to-production)。
 
 > [!注意]
 >
@@ -777,7 +777,7 @@ const result = await agent.invoke(
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 await agent.updateState(config, { skillsMetadata: null });
-```使用`null`，而不是空列表。空列表意味着源已加载且没有技能，因此代理在线程的其余部分看不到任何技能。
+```使用`null`，而不是空列表。空列表意味着源已加载且不包含任何技能，因此代理在线程的其余部分看不到任何技能。
 
 > [!注意]
 >
@@ -835,7 +835,7 @@ const result = await agent.invoke(
 
 固定技能遵循以下规则：
 
-* 消息按书面形式保留在对话中。稍后编辑`SKILL.md`不会更改它，并且再次固定该技能会附加当前文本。较早的消息永远不会改变，因此提示缓存保持有效。
+* 消息按书面形式保留在对话中。稍后编辑 `SKILL.md` 不会更改它，并且再次固定该技能会附加当前文本。较早的消息永远不会改变，因此提示缓存保持有效。
 * 中间件会跳过与未加载技能匹配的名称，以及无法读取 `SKILL.md` 的技能。
 * 当您固定技能时，其[skill tools](#add-tools-to-skills)可供代理使用，与代理读取其`SKILL.md`时相同。
 
@@ -879,7 +879,7 @@ const researchSubagent = {
 };
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   skills: ["/skills/main/"], // Main agent and GP subagent get these
   subagents: [researchSubagent], // Researcher gets only its own skills
 });
@@ -902,10 +902,10 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   backend: new CompositeBackend(new StateBackend(), {
     "/skills/": new StoreBackend({
       namespace: (rt) => ["curated-skills", rt.context.orgId],
@@ -932,10 +932,10 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   backend: new CompositeBackend(new StateBackend(), {
     "/skills/": new StoreBackend({
       namespace: (rt) => ["curated-skills", rt.context.orgId],
@@ -962,7 +962,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "anthropic:claude-sonnet-5",
@@ -992,7 +992,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "openrouter:z-ai/glm-5.2",
@@ -1022,7 +1022,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "fireworks:accounts/fireworks/models/glm-5p2",
@@ -1052,7 +1052,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "baseten:zai-org/GLM-5.2",
@@ -1082,7 +1082,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 
 const agent = createDeepAgent({
   model: "ollama:north-mini-code-1.0",
@@ -1120,7 +1120,7 @@ import {
   StoreBackend,
 } from "deepagents";
 
-const store = new InMemoryStore(); // Use for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Use for local dev; omit for LangSmith Agent Server
 
 const agent = await createDeepAgent({
   model: "anthropic:claude-sonnet-4-6",
@@ -1177,7 +1177,7 @@ const agent = await createDeepAgent({
 
 技能通过[sandbox scripts](#sandbox-scripts)执行代码：代理在需要安装依赖项、运行测试、调用 CLI 或使用操作系统文件系统时运行捆绑脚本。
 
-### 沙箱脚本
+### 沙盒脚本
 
 技能可以包含脚本以及 `SKILL.md` 文件。参考`SKILL.md`中的脚本，以便代理知道它们存在以及何时运行它们：
 
@@ -1333,7 +1333,7 @@ async function main() {
 
   try {
     const agent = await createDeepAgent({
-      model: "google:gemini-3.6-flash",
+      model: "google:gemini-4-hydrogen",
       backend,
       skills: ["/skills/"],
       store,
@@ -1471,7 +1471,7 @@ async function main() {
 
   try {
     const agent = await createDeepAgent({
-      model: "openai:gpt-5.5",
+      model: "openai:gpt-6.1-sol",
       backend,
       skills: ["/skills/"],
       store,
@@ -2213,7 +2213,7 @@ main().catch((err) => {
 
 ### 启动时缺少的技能
 
-**问题**：代理未在其系统提示中列出技能，或`SKILL.md`上的`read_file`失败。
+**问题**：代理未在其系统提示中列出技能，或 `SKILL.md` 上的 `read_file` 失败。
 
 **解决方案**：
 
@@ -2275,11 +2275,11 @@ main().catch((err) => {
 | **分层** |用户，然后项目（最后获胜）|用户，然后项目（合并）|在代理创建时定义 |
 | **何时使用** |指令是特定于任务的并且可能很大 |上下文始终相关（项目惯例、偏好）|代理需要编程操作，或者无权访问文件系统 |
 
-这些是指导方针，而不是硬性界限。在实践中，技能和记忆力是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为渐进式公开记忆的一种形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
+这些是指导方针，而不是硬性界限。在实践中，技能和记忆是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为一种渐进式公开记忆的形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
 
 ### Frontmatter 字段
 
-[Agent Skills specification](https://agentskills.io/specification) 定义了以下 frontmatter 字段：|领域 |必填 |描述 |
+[Agent Skills specification](https://agentskills.io/specification) 定义了以下 frontmatter 字段：|领域 |必填|描述 |
 | - | - | - |
 | `name` |是的 |带连字符的小写字母数字，1-64 个字符。必须与父目录名称匹配。 |
 | `description` |是的 |该技能的作用是什么以及何时使用它。最多 1,024 个字符。 |

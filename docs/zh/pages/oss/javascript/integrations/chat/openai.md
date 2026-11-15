@@ -79,7 +79,7 @@ pnpm add @langchain/openai @langchain/core
 import { ChatOpenAI } from "@langchain/openai"
 
 const llm = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   temperature: 0,
   // other params...
 })
@@ -141,7 +141,7 @@ J'adore la programmation.
 import { ChatOpenAI } from "@langchain/openai";
 
 const llmWithCustomURL = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   temperature: 0.9,
   configuration: {
     baseURL: "https://your_custom_url.com",
@@ -163,7 +163,7 @@ await llmWithCustomURL.invoke("Hi there!");
 import { ChatOpenAI } from "@langchain/openai";
 
 const llmWithCustomHeaders = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   temperature: 0.9,
   configuration: {
     defaultHeaders: {
@@ -181,7 +181,7 @@ await llmWithCustomHeaders.invoke("Hi there!");
 import { ChatOpenAI } from "@langchain/openai";
 
 const llmWithoutStreamUsage = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   temperature: 0.9,
   streamUsage: false,
   configuration: {
@@ -222,7 +222,7 @@ import { ChatOpenAI } from "@langchain/openai";
 
 // See https://cookbook.openai.com/examples/using_logprobs for details
 const llmWithLogprobs = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   logprobs: true,
   // topLogprobs: 5,
 });
@@ -319,7 +319,7 @@ const codeTool = customTool(
   }
 );
 
-const model = new ChatOpenAI({ model: "gpt-5.5" });
+const model = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
 const agent = createAgent({
   model,
@@ -364,7 +364,7 @@ console.log(result);
     }
   );
 
-  const model = new ChatOpenAI({ model: "gpt-5.5" });
+  const model = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
   const agent = createAgent({
     model,
@@ -406,7 +406,7 @@ const weatherTool = tool((_) => "no-op", {
 })
 
 const llmWithStrictTrue = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
 }).bindTools([weatherTool], {
   strict: true,
   tool_choice: weatherTool.name,
@@ -450,7 +450,7 @@ const toolSchema = {
 };
 
 const llmWithStrictTrueTools = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
 }).bindTools([toolSchema], {
   strict: true,
 });
@@ -541,7 +541,7 @@ await llm.invoke("What was a positive news story from today?");
 
 请注意，响应包括结构化的[content blocks](/oss/javascript/langchain/messages/#message-content)，其中包括响应文本和引用其来源的OpenAI[annotations](https://platform.openai.com/docs/guides/tools-web-search?api-mode=responses#output-and-citations)。输出消息还将包含来自任何工具调用的信息。
 
-#### 文件搜索要触发文件搜索，请将 [file search tool](https://platform.openai.com/docs/guides/tools-file-search) 传递给模型，就像使用其他工具一样。您将需要填充 OpenAI 管理的向量存储并将向量存储 ID 包含在工具定义中。更多详情请参见[OpenAI documentation](https://platform.openai.com/docs/guides/tools-file-search)。
+#### 文件搜索要触发文件搜索，请将 [file search tool](https://platform.openai.com/docs/guides/tools-file-search) 传递给模型，就像使用其他工具一样。您将需要填充 OpenAI 管理的矢量存储并在工具定义中包含矢量存储 ID。更多详情请参见[OpenAI documentation](https://platform.openai.com/docs/guides/tools-file-search)。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
@@ -739,7 +739,7 @@ ChatOpenAI 允许您使用内置的 [image generation tool](https://platform.ope
 import { ChatOpenAI } from "@langchain/openai";
 
 const llm = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   useResponsesApi: true,
 });
 

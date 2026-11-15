@@ -113,14 +113,14 @@ process.env.LANGSMITH_API_KEY = "...";
 >
 > process.env.OPENAI_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("gpt-5.5");
+> const model = await initChatModel("gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatOpenAI } from "@langchain/openai";
 >
 > const model = new ChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   apiKey: "your-api-key"
 > });
 > ```
@@ -189,14 +189,14 @@ process.env.LANGSMITH_API_KEY = "...";
 > process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
 > process.env.OPENAI_API_VERSION = "your-api-version";
 >
-> const model = await initChatModel("azure_openai:gpt-5.5");
+> const model = await initChatModel("azure_openai:gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { AzureChatOpenAI } from "@langchain/openai";
 >
 > const model = new AzureChatOpenAI({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   azureOpenAIApiKey: "your-api-key",
 >   azureOpenAIApiEndpoint: "your-endpoint",
 >   azureOpenAIApiVersion: "your-api-version"
@@ -228,14 +228,14 @@ process.env.LANGSMITH_API_KEY = "...";
 >
 > process.env.GOOGLE_API_KEY = "your-api-key";
 >
-> const model = await initChatModel("google:gemini-3.7-flash");
+> const model = await initChatModel("google:gemini-4-hydrogen");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatGoogle } from "@langchain/google/node";
 >
 > const model = new ChatGoogle({
->   model: "gemini-3.7-flash",
+>   model: "gemini-4-hydrogen",
 >   apiKey: "your-api-key"
 > });
 > ```
@@ -266,7 +266,7 @@ process.env.LANGSMITH_API_KEY = "...";
 > // Follow the steps here to configure your credentials:
 > // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 >
-> const model = await initChatModel("bedrock:gpt-5.5");
+> const model = await initChatModel("bedrock:gpt-6.1-sol");
 > ```
 >
 > ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -276,7 +276,7 @@ process.env.LANGSMITH_API_KEY = "...";
 > // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 >
 > const model = new ChatBedrockConverse({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   region: "us-east-2"
 > });
 > ```
@@ -508,10 +508,10 @@ const applyStepMiddleware = createMiddleware({
 });
 ```
 
-这个中间件：1. **读取当前步骤**：从状态获取`current_step`（默认为“warranty\_collector”）。
+这个中间件：1. **读取当前步骤**：从状态获取`current_step`（默认为“warranty_collector”）。
 2. **查找配置**：在`STEP_CONFIG`中查找匹配条目。
 3. **验证依赖关系**：确保所需的状态字段存在。
-4. **格式化提示**：将状态值注入到提示模板中。
+4. **格式化提示**：将状态值插入提示模板中。
 5. **应用配置**：覆盖系统提示和可用工具。
 
 `request.override()` 方法是关键 - 它允许我们根据状态动态更改代理的行为，而无需创建单独的代理实例。

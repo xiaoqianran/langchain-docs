@@ -75,13 +75,13 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已经提�
 
 ### 子代理（基于字典）
 
-将子代理定义为与 [⟦T109⟧](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) 规范匹配的字典，其中包含以下字段：|领域|类型 |描述 |
+将子代理定义为与 [⟦T109⟧](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) 规范匹配的字典，其中包含以下字段：|领域 |类型 |描述 |
 | - | - | - |
 | `name` | `string` |必需的。子代理的唯一标识符。主代理在调用`task()`工具时使用此名称。子代理名称成为 `AIMessage` 和流媒体的元数据，这有助于区分代理。 |
 | `description` | `string` |必需的。描述该子代理的作用。具体并以行动为导向。主代理使用它来决定何时进行委托。 |
-| `systemPrompt` | `string` | `mode: "isolated"` 必需（默认）。子代理的说明。自定义隔离子代理必须定义自己的。包括工具使用指南和输出格式要求。不从主代理继承。对于 `mode: "fork"`，请忽略此字段，除非您需要仅用于分叉的附录。参见[Forked subagents](#forked-subagents)。 |
+| `systemPrompt` | `string` | `mode: "isolated"` 必需（默认）。子代理的说明。自定义隔离子代理必须定义自己的。包括工具使用指南和输出格式要求。不从主代理继承。对于 `mode: "fork"`，请忽略此字段，除非您需要仅分叉附录。参见[Forked subagents](#forked-subagents)。 |
 | `mode` | `"isolated"` \| `"fork"` |选修的。上下文模式。默认为`"isolated"`，子代理只能看到委派的任务。设置为 `"fork"` 来继承父级的对话和系统提示。参见[Forked subagents](#forked-subagents)。 |
-| `tools` | `StructuredTool[]` |选修的。子代理可以使用的工具。保持最少并且只包含需要的内容。默认继承自主代理。指定后，将完全覆盖继承的工具。 || `model` | `LanguageModelLike \| string` |选修的。覆盖主要代理的模型。省略使用主代理的模型。默认继承自主代理。您可以传递模型标识符字符串，如 `'openai:gpt-5.5'`（使用 `'provider:model'` 格式）或 LangChain 聊天模型对象（`await initChatModel("gpt-5.5")` 或 `new ChatOpenAI({ model: "gpt-5.5" })`）。 |
+| `tools` | `StructuredTool[]` |选修的。子代理可以使用的工具。保持最少并且只包含需要的内容。默认继承自主代理。指定后，将完全覆盖继承的工具。 || `model` | `LanguageModelLike \| string` |选修的。覆盖主要代理的模型。省略使用主代理的模型。默认继承自主代理。您可以传递模型标识符字符串，如 `'openai:gpt-6.1-sol'`（使用 `'provider:model'` 格式）或 LangChain 聊天模型对象（`await initChatModel("gpt-6.1-sol")` 或 `new ChatOpenAI({ model: "gpt-6.1-sol" })`）。 |
 | `middleware` | `AgentMiddleware[]` |选修的。用于自定义行为、日志记录或速率限制的附加中间件。不继承自主代理。附加到[synchronous subagent stack](/oss/javascript/deepagents/customization#synchronous-subagent-stack)。 |
 | `interruptOn` | `Record<string, boolean \| InterruptOnConfig>` |选修的。为特定工具配置[human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。选项：`True`、`False`。或 `InterruptOnConfig` 与 `allowed_decisions`。需要检查点。默认继承自主代理。子代理值覆盖默认值。 |
 | `skills` | `string[]` |选修的。 [Skills](/oss/javascript/deepagents/skills) 源路径。指定后，子代理将从这些目录加载技能（例如，`["/skills/research/", "/skills/web-search/"]`）。这使得子代理可以拥有与主代理不同的技能。不从主代理继承。只有通用子代理才能继承主代理的技能。当子代理拥有技能时，它会运行自己独立的[⟦T144⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware)实例。技能状态是完全隔离的 - 子代理加载的技能对父代理不可见，反之亦然。 || `responseFormat` | `ResponseFormat` |选修的。 [Structured output](/oss/javascript/langchain/structured-output) 子代理的架构。设置后，父代理会收到 JSON 格式的子代理结果，而不是自由格式的文本。接受 Zod 架构、JSON 架构对象、`toolStrategy(...)` 或 `providerStrategy(...)`。参见[Structured output](#structured-output)。 |
@@ -91,7 +91,7 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已经提�
 
 对于复杂的工作流程，请使用预构建的 LangGraph 图作为 [⟦T151⟧](https://reference.langchain.com/javascript/deepagents/middleware/CompiledSubAgent)：
 
-|领域|类型 |描述 |
+|领域 |类型 |描述 |
 | - | - | - |
 | `name` | `str` |必需的。子代理的唯一标识符。子代理名称成为 `AIMessage` 和流媒体的元数据，这有助于区分代理。 |
 | `description` | `str` |必需的。该子代理的作用。 |
@@ -146,12 +146,12 @@ const researchSubagent: SubAgent = {
   description: "Used to research more in depth questions",
   systemPrompt: "You are a great researcher",
   tools: [internetSearch],
-  model: "google:gemini-3.6-flash", // Optional override, defaults to main agent model
+  model: "google:gemini-4-hydrogen", // Optional override, defaults to main agent model
 };
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -202,12 +202,12 @@ const researchSubagent: SubAgent = {
   description: "Used to research more in depth questions",
   systemPrompt: "You are a great researcher",
   tools: [internetSearch],
-  model: "openai:gpt-5.5", // Optional override, defaults to main agent model
+  model: "openai:gpt-6.1-sol", // Optional override, defaults to main agent model
 };
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -263,7 +263,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -319,7 +319,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -375,7 +375,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -431,7 +431,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -487,7 +487,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -513,7 +513,7 @@ const internetSearch = tool(
 );
 
 const researchInstructions = "You are a research coordinator.";
-const yourModel = "google:gemini-3.6-flash";
+const yourModel = "google:gemini-4-hydrogen";
 const specializedTools: never[] = [];
 
 // Create a custom agent graph
@@ -533,7 +533,7 @@ const customSubagent: CompiledSubAgent = {
 const subagents = [customSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [internetSearch],
   systemPrompt: researchInstructions,
   subagents: subagents,
@@ -556,7 +556,7 @@ const internetSearch = tool(
 );
 
 const researchInstructions = "You are a research coordinator.";
-const yourModel = "google:gemini-3.6-flash";
+const yourModel = "google:gemini-4-hydrogen";
 const specializedTools: never[] = [];
 
 // Create a custom agent graph
@@ -576,7 +576,7 @@ const customSubagent: CompiledSubAgent = {
 const subagents = [customSubagent];
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [internetSearch],
   systemPrompt: researchInstructions,
   subagents: subagents,
@@ -599,7 +599,7 @@ const internetSearch = tool(
 );
 
 const researchInstructions = "You are a research coordinator.";
-const yourModel = "google:gemini-3.6-flash";
+const yourModel = "google:gemini-4-hydrogen";
 const specializedTools: never[] = [];
 
 // Create a custom agent graph
@@ -642,7 +642,7 @@ const internetSearch = tool(
 );
 
 const researchInstructions = "You are a research coordinator.";
-const yourModel = "google:gemini-3.6-flash";
+const yourModel = "google:gemini-4-hydrogen";
 const specializedTools: never[] = [];
 
 // Create a custom agent graph
@@ -685,7 +685,7 @@ const internetSearch = tool(
 );
 
 const researchInstructions = "You are a research coordinator.";
-const yourModel = "google:gemini-3.6-flash";
+const yourModel = "google:gemini-4-hydrogen";
 const specializedTools: never[] = [];
 
 // Create a custom agent graph
@@ -728,7 +728,7 @@ const internetSearch = tool(
 );
 
 const researchInstructions = "You are a research coordinator.";
-const yourModel = "google:gemini-3.6-flash";
+const yourModel = "google:gemini-4-hydrogen";
 const specializedTools: never[] = [];
 
 // Create a custom agent graph
@@ -771,7 +771,7 @@ const internetSearch = tool(
 );
 
 const researchInstructions = "You are a research coordinator.";
-const yourModel = "google:gemini-3.6-flash";
+const yourModel = "google:gemini-4-hydrogen";
 const specializedTools: never[] = [];
 
 // Create a custom agent graph
@@ -910,7 +910,7 @@ const result = await agent.invoke({
 ]
 ```
 
-分叉可以重用父级的提示缓存来匹配其请求的前缀。更改系统提示、工具或较早的消息会缩短提供商之间的共享前缀。保持分叉的配置不变以最大限度地重用，但不能保证缓存命中。
+分叉可以重用父级的提示缓存来匹配其请求的前缀。更改系统提示、工具或早期消息会缩短提供商之间的共享前缀。保持分叉的配置不变以最大限度地重用，但不能保证缓存命中。
 
 [⟦T186⟧](https://reference.langchain.com/javascript/deepagents/middleware/CompiledSubAgent)也支持`mode: "fork"`，尽管它保留自己的系统提示，因为图形已经构建。
 
@@ -952,7 +952,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents: [{
     name: "reviewer",
     description: "Reviews code for security issues, citing lines and severity",
@@ -967,7 +967,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   subagents: [{
     name: "reviewer",
     description: "Reviews code for security issues, citing lines and severity",
@@ -1108,7 +1108,7 @@ Deep Agents 支持来自协调器和每个委托子代理的流式更新。
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   name: "main-agent",
   systemPrompt:
     "You are a project coordinator with no research knowledge. " +
@@ -1169,7 +1169,7 @@ async function streamSubagentProgress() {
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   name: "main-agent",
   systemPrompt:
     "You are a project coordinator with no research knowledge. " +
@@ -1550,7 +1550,7 @@ async function streamSubagentProgress() {
 3. 单击“**添加过滤器**”并选择“**元数据**”。
 4. 将 **Key** 设置为 `lc_agent_name`，将 **Value** 设置为子代理名称，例如 `coordinator`。
 
-![LangSmith Runs view with a metadata filter on lc\_agent\_name set to coordinator](https://mintcdn.com/langchain-5e9cc07a/t_yuR4Fo_XGdcWGH/langsmith/images/deepagents-lc-agent-name-filter.png?fit=max\&auto=format\&n=t_yuR4Fo_XGdcWGH\&q=85\&s=ffc65c0b9b5292fce5f0589b8f2478ce)这仅显示该子代理生成的运行。您可以将过滤器保存为命名视图以供重复使用。有关过滤选项的完整参考，请参阅[Filter traces](/langsmith/filter-traces)。
+![LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator](https://mintcdn.com/langchain-5e9cc07a/t_yuR4Fo_XGdcWGH/langsmith/images/deepagents-lc-agent-name-filter.png?fit=max\&auto=format\&n=t_yuR4Fo_XGdcWGH\&q=85\&s=ffc65c0b9b5292fce5f0589b8f2478ce)这仅显示该子代理生成的运行。您可以将过滤器保存为命名视图以供重复使用。有关过滤选项的完整参考，请参阅[Filter traces](/langsmith/filter-traces)。
 
 ### 使用 SDK 以编程方式过滤
 
@@ -1620,7 +1620,7 @@ const researchSubagent = {
 };
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents: [researchSubagent],
 });
 
@@ -1663,7 +1663,7 @@ const researchSubagent = {
 };
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   subagents: [researchSubagent],
 });
 
@@ -1943,7 +1943,7 @@ const internetSearch = tool(
 
 // Main agent uses Gemini; general-purpose subagent uses GPT
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [internetSearch],
   subagents: [
     {
@@ -1951,7 +1951,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -1973,7 +1973,7 @@ const internetSearch = tool(
 
 // Main agent uses Gemini; general-purpose subagent uses GPT
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [internetSearch],
   subagents: [
     {
@@ -1981,7 +1981,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -2011,7 +2011,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -2041,7 +2041,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -2071,7 +2071,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -2101,7 +2101,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -2131,7 +2131,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -2170,7 +2170,7 @@ const researchSubagent = {
 };
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   skills: ["/skills/main/"], // Main agent and GP subagent get these
   subagents: [researchSubagent], // Researcher gets only its own skills
 });
@@ -2241,14 +2241,14 @@ const subagents = [
     description: "Reviews legal documents and contracts",
     systemPrompt: "You are an expert legal reviewer...",
     tools: [readDocument, analyzeContract],
-    model: "google:gemini-3.6-flash", // Large context for long documents
+    model: "google:gemini-4-hydrogen", // Large context for long documents
   },
   {
     name: "financial-analyst",
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2260,14 +2260,14 @@ const subagents = [
     description: "Reviews legal documents and contracts",
     systemPrompt: "You are an expert legal reviewer...",
     tools: [readDocument, analyzeContract],
-    model: "openai:gpt-5.5", // Large context for long documents
+    model: "openai:gpt-6.1-sol", // Large context for long documents
   },
   {
     name: "financial-analyst",
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2286,7 +2286,7 @@ const subagents = [
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2305,7 +2305,7 @@ const subagents = [
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2324,7 +2324,7 @@ const subagents = [
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2343,7 +2343,7 @@ const subagents = [
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2362,7 +2362,7 @@ const subagents = [
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2418,7 +2418,7 @@ const subagents = [
 ];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   systemPrompt:
     "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
   subagents: subagents,
@@ -2450,7 +2450,7 @@ const subagents = [
 ];
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt:
     "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
   subagents: subagents,
@@ -2662,7 +2662,7 @@ const researchSubagent = {
 };
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents: [researchSubagent],
   contextSchema,
 });
@@ -2705,7 +2705,7 @@ const researchSubagent = {
 };
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   subagents: [researchSubagent],
   contextSchema,
 });

@@ -25,13 +25,13 @@ graph TB
 
 > [!注意]
 >
-> 异步子代理可以在任何实现 [Agent Protocol](https://github.com/langchain-ai/agent-protocol) 的服务器上运行，例如 [LangSmith Deployments](/langsmith/deployment) 或自托管代理协议服务器。每个子代理独立于主管运行。 Supervisor通过SDK启动、检查、更新、取消。通知和 Webhook 需要 [Agent Server](/langsmith/agent-server)。
+> 异步子代理可以在任何实现 [Agent Protocol](https://github.com/langchain-ai/agent-protocol) 的服务器上运行，例如 [LangSmith Agent Server](/langsmith/deployment) 或自托管代理协议服务器。每个子代理独立于主管运行。 Supervisor通过SDK启动、检查、更新、取消。通知和 Webhook 需要 [Agent Server](/langsmith/agent-server)。
 
 ## 比较同步和异步子代理|尺寸|同步子代理 |异步子代理 |
 | - | - | - |
 | **执行模型** |主管阻塞直到子代理完成 |立即返回任务ID；主管继续|
 | **它在哪里运行** |在主管的运行中|在服务器（代理服务器或另一个代理协议服务器）上的自己的线程上 |
-| **并发** |并行但阻塞 |并行和非阻塞|
+| **并发** |并行但阻塞|并行和非阻塞|
 | **结果** |作为工具结果返回 |在代理服务器上，子代理通知主管；否则主管会致电 `check_async_task` |
 | **任务中期更新** |不可能|通过`update_async_task`发送后续指令 |
 | **取消** |不阻止主管就不可能 |通过`cancel_async_task`取消任务 |
@@ -40,7 +40,7 @@ graph TB
 
 ## 配置异步子代理
 
-将异步子代理定义为 [⟦T19⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent) 规范列表，每个都指向一个代理协议服务器：
+将异步子代理定义为[⟦T19⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent)规范列表，每个都指向一个代理协议服务器：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import AsyncSubAgent, create_deep_agent
@@ -61,10 +61,10 @@ async_subagents = [
 ]
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     subagents=async_subagents,
 )
-```|领域|类型 |描述 |
+```|领域 |类型 |描述 |
 | - | - | - |
 | `name` | `str` |必需的。唯一标识符。主管在启动任务时使用它。 |
 | `description` | `str` |必需的。该子代理的作用。主管用它来决定委托给哪个代理。 |
@@ -137,7 +137,7 @@ sequenceDiagram
 >
 > `update_strategy` 需要 `deepagents>=0.7.30`。位于[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。
 
-如果子代理暂停输入或批准，**检查**和**列表**将其报告为 `waiting`。更新 `waiting` 任务会删除其挂起的请求，而取消一个任务只会将其标记为 `"cancelled"`，因为它没有活动的运行。参见[Handle subagents waiting for input](#handle-subagents-waiting-for-input)。
+如果子代理因输入或批准而暂停，**检查**和**列表**将其报告为 `waiting`。更新 `waiting` 任务会删除其挂起的请求，而取消一个任务只会将其标记为 `"cancelled"`，因为它没有活动的运行。参见[Handle subagents waiting for input](#handle-subagents-waiting-for-input)。
 
 在[Agent Server](/langsmith/agent-server)，子代理在完成、失败或需要输入时通知主管。当主管忙碌时，它会在下一次模型调用之前收到这些通知。完成或失败的子代理会通过新的运行唤醒空闲的主管（如果两者都在[same deployment](#single-deployment)上）。只有深度代理的子代理才能唤醒空闲的主管。等待输入的子代理不会唤醒主管。主管在下次运行时会收到该通知。> [!注意]
 >
@@ -298,7 +298,7 @@ async_subagents=[
 
 启动时，`start_async_task` 发送父级有效对话历史记录的快照，后跟任务描述。如果父级已压缩其历史记录，则快照包含该压缩上下文，而不是每条原始消息。来自父级的后续消息不会转发给子级。
 
-子代理在新的服务器线程上启动。 Fork模式发送对话消息作为运行输入；它不会复制父级的检查点历史记录或所有父级状态。元数据可以将新线程与其主管相关联，但该关联本身并不传输对话上下文。
+子代理在新的服务器线程上启动。 Fork模式发送对话消息作为运行输入；它不会复制父级的检查点历史记录或所有父级状态。元数据可以将新线程与其主管关联起来，但该关联本身并不传输对话上下文。
 
 **提示缓存重用。** 要获得对分叉对话前缀的缓存命中，请使用与父代理相同的模型、系统提示、工具和提示处理中间件来配置远程代理。 Fork模式复制对话历史记录；它不会同步这些设置。匹配配置是必要的，但还不够：呈现的前缀必须匹配，缓存命中取决于提供者。
 
@@ -384,7 +384,7 @@ AsyncSubAgent(
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt="""...your instructions...
 
     After launching an async subagent, ALWAYS return control to the user.
@@ -401,7 +401,7 @@ agent = create_deep_agent(
 
 **问题**：主管截断或重新格式化任务ID，导致`check_async_task`或`cancel_async_task`失败。
 
-**解决方案**：每个工具的任务 ID 参数告诉模型传递完整的任务 ID。如果截断仍然存在，则原因通常是特定于模型的。尝试不同的模型，或将“始终显示完整的任务\_id，从不截断或缩写它”添加到系统提示符中。
+**解决方案**：每个工具的任务 ID 参数告诉模型传递完整的任务 ID。如果截断仍然存在，原因通常是特定于模型的。尝试不同的模型，或在系统提示符中添加“始终显示完整的任务 ID，切勿截断或缩写它”。
 
 ### 子代理启动队列而不是运行
 
@@ -409,7 +409,7 @@ agent = create_deep_agent(
 
 **解决方案**：工作池可能已耗尽。使用 `--n-jobs-per-worker` 增加池大小。参见[Size the worker pool](#size-the-worker-pool-for-local-development)。
 
-## 参考实现[async-deep-agents](https://github.com/langchain-ai/async-deep-agents) 存储库包含部署到 LangSmith 部署的 Python 和 TypeScript 工作示例。它演示了一个主管以及作为后台任务运行的研究员和编码器子代理。
+## 参考实现[async-deep-agents](https://github.com/langchain-ai/async-deep-agents) 存储库包含部署到 LangSmith 代理服务器的 Python 和 TypeScript 工作示例。它演示了一个主管以及作为后台任务运行的研究员和编码员子代理。
 
 ***
 

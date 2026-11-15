@@ -12,9 +12,9 @@
 
 ## 它是如何工作的
 
-1. **生成系统提示符：**启动时调用一次`openuiLibrary.prompt()`；它生成一个完整的 openui-lang 参考，模型用它来编写有效的组件树
-2. **在第一条消息上注入：** 当新对话开始时发送系统提示作为打开系统消息
-3. **模型编写 openui-lang:** 模型用类似 `root = Stack([header, kpis, chart])` 的程序而不是散文进行响应
+1. **生成系统提示：**启动时调用一次`openuiLibrary.prompt()`；它生成一个完整的 openui-lang 参考，模型用它来编写有效的组件树
+2. **在第一条消息上注入：** 在新对话开始时发送系统提示作为打开系统消息
+3. **模型编写 openui-lang:** 模型以类似 `root = Stack([header, kpis, chart])` 的程序响应，而不是散文
 4. **使用`Renderer`渲染：**将文本传递给OpenUI的`Renderer`和组件库；它解析并渲染树
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -189,7 +189,7 @@ marketSection = Card([CardHeader("Market Breakdown"), tbl, ch1])
 | **中期代币流失** | `useStableText` — 门渲染器更新完整语句边界 (`name = Expr(…)`)，而不是每个标记 |
 | **图表空数据崩溃** | `chartDataRefsResolved` — 在将图表包含在快照中之前验证图表的 `Series` 和标签数组是否已定义 |
 | **还没有`root`/后备** | `buildProgressiveRoot` — 当模型尚未编写时，从顶级变量合成一个 `root = Stack([…])` |
-| **Snake\_case 标识符** | `sanitizeIdentifiers` — 解析器仅接受驼峰命名法；转换模型发出的任何 `snake_case` 名称 |
+| **Snake_case 标识符** | `sanitizeIdentifiers` — 解析器仅接受驼峰命名法；转换模型发出的任何 `snake_case` 名称 |
 
 将完整块复制到您的项目中并将 `stable` 传递给 `<Renderer>`：
 
@@ -538,7 +538,7 @@ import { calendarTools, githubTools, posthogTools, stripeTools } from "./tools.j
 // The coordinator only routes, so a fast model handles it; panels generate
 // strict openui-lang and stay on the frontier model.
 const COORDINATOR_MODEL = "openai:gpt-5.4-mini";
-const PANEL_MODEL = "openai:gpt-5.5";
+const PANEL_MODEL = "openai:gpt-6.1-sol";
 
 // Generate the shared panel prompt once at module load so the model prefix
 // stays stable for provider prompt caching.

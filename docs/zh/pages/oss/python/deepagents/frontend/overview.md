@@ -8,9 +8,9 @@
 
 构建实时可视化深层代理工作流程的前端。这些图案
 展示如何呈现子代理进度、任务规划、流内容以及
-使用 `createDeepAgent` 创建的代理提供类似 IDE 的沙箱体验。
+使用 `createDeepAgent` 创建的代理提供类似 IDE 的沙盒体验。
 
-当 UI 使委托可见时，深度代理最为有用。而不是
+当 UI 使委派可见时，深度代理最为有用。而不是
 显示单个不透明的助手气泡，LangChain SDK 公开了
 协调器、子代理发现、自定义状态和沙箱支持的工件，以便
 用户可以检查长时间运行的任务是如何分解和完成的。
@@ -61,7 +61,7 @@ graph LR
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[get_weather],
     system_prompt="You are a helpful assistant",
     subagents=[
@@ -111,7 +111,7 @@ function App() {
 >
 > 显示具有流媒体内容、进度跟踪和可折叠卡片的专家子代理。> [卡][Todo list](/oss/python/deepagents/frontend/todo-list)
 >
-> 当代理选择任务计划时，通过实时待办事项列表跟踪进度。
+> 当客服人员选择任务计划时，通过实时待办事项列表跟踪进度。
 
 > [卡][Sandbox](/oss/python/deepagents/frontend/sandbox)
 >

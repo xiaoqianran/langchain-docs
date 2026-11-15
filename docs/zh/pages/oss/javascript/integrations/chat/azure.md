@@ -15,7 +15,7 @@ Azure OpenAI 是一项 Microsoft Azure 服务，提供来自 OpenAI 的强大语
 ### 集成细节
 
 |班级 |套餐 |可串行化| [PY support](/oss/python/integrations/chat/azure_chat_openai) |下载 |版本 |
-| :-| :-| :-: | :-: | :-: | :-: |
+| :- | :- | :-: | :-: | :-: | :-: |
 | [⟦T21⟧](https://reference.langchain.com/javascript/langchain-openai/AzureChatOpenAI) | [⟦T22⟧](https://www.npmjs.com/package/@langchain/openai) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
 
 ### 模型特点
@@ -78,7 +78,7 @@ pnpm add @langchain/openai @langchain/core
 import { AzureChatOpenAI } from "@langchain/openai"
 
 const llm = new AzureChatOpenAI({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     temperature: 0,
     maxTokens: undefined,
     maxRetries: 2,

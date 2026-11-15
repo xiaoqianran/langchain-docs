@@ -32,11 +32,11 @@ pip install deepagents "langgraph-cli[inmem]"
 uv add deepagents "langgraph-cli[inmem]"
 ```
 
-使用`createDeepAgent`（Python 中的`create_deep_agent`）创建的深度代理是一个LangGraph 图。通过将其作为 LangGraph 服务器将其公开给 AG-UI 客户端，然后将 AG-UI 适配器指向该服务器。
+使用`createDeepAgent`（Python 中的`create_deep_agent`）创建的深度代理是一个LangGraph 图。通过使用 LangSmith 代理服务器为其提供服务，将其公开给 AG-UI 客户端，然后将 AG-UI 适配器指向该服务器。
 
 ### 创建深度代理
 
-定义代理并导出图表，以便 LangGraph 服务器可以加载它。
+定义代理并导出图表，以便代理服务器可以加载它。
 
 ```python icon="robot" title="agent.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -69,7 +69,7 @@ langgraph dev
 
 ### 连接 AG-UI 适配器
 
-TypeScript `@ag-ui/langgraph` 适配器将运行图包装为任何客户端都可以驱动的 AG-UI 代理。将其指向 LangGraph 服务器并命名要加载的图表。无论图表是用 Python 还是 TypeScript 编写的，这都有效。
+TypeScript `@ag-ui/langgraph` 适配器将运行图包装为任何客户端都可以驱动的 AG-UI 代理。将其指向正在运行的代理服务器并命名要加载的图形。无论图表是用 Python 还是 TypeScript 编写的，这都有效。
 
 ```ts icon="plug" title="ag-ui agent" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { LangGraphAgent } from "@ag-ui/langgraph";
@@ -175,7 +175,7 @@ const input = {
 >
 > 通过 AG-UI SDK 直接使用事件流来构建您自己的界面。
 
-## 编程 API`LangGraphAgent` 连接到 LangGraph 服务器上的深度代理并将其公开为 AG-UI 代理。使用要加载的图形构建它，然后使用几种方法驱动它。
+## 编程 API`LangGraphAgent` 连接到代理服务器上的深度代理并将其公开为 AG-UI 代理。使用要加载的图形构建它，然后使用几种方法驱动它。
 
 ```ts icon="plug" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { LangGraphAgent } from "@ag-ui/langgraph";

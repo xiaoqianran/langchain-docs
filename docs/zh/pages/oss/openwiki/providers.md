@@ -14,7 +14,7 @@ OpenWiki 支持以下提供商：
 | `openai-chatgpt` | ChatGPT OAuth 令牌 |使用 ChatGPT 登录；使用量取决于 Plus/Pro/Team Codex 津贴 |
 | `copilot` | GitHub CLI 会话或 `COPILOT_API_KEY` |可选`COPILOT_BASE_URL`。 CI 需要 OAuth 令牌，而不是经典的 PAT |
 | `openrouter` | `OPENROUTER_API_KEY` |可选 `OPENWIKI_OPENROUTER_PROVIDER_ONLY` 允许名单 |
-| `anthropic` | `ANTHROPIC_API_KEY` |可选`ANTHROPIC_BASE_URL` |
+| `anthropic` | `ANTHROPIC_API_KEY` |可选`ANTHROPIC_BASE_URL`|
 | `bob` | `BOB_API_KEY` |可选`BOB_BASE_URL`。固定型号 ID `premium`；没有模型选择器|
 | `gemini` | `GEMINI_API_KEY` |谷歌人工智能工作室 |
 | `gemini-enterprise` |谷歌 ADC + `GOOGLE_CLOUD_PROJECT` |可选`GOOGLE_CLOUD_LOCATION`（默认为`global`）|
@@ -81,16 +81,16 @@ OPENWIKI_REASONING_EFFORT=high
 | `openai` | `gpt-5.6-terra`、`gpt-5.6-luna`、`gpt-5.6-sol` | `none`、`low`、`medium`、`high`、`xhigh`、`max` |响应 API `reasoning.effort` |
 | `openai-chatgpt` | `gpt-5.6-terra`、`gpt-5.6-luna`、`gpt-5.6-sol` | `none`、`low`、`medium`、`high`、`xhigh`、`max` |响应 API `reasoning.effort` |
 | `nvidia` | `nvidia/nemotron-3-super-120b-a12b` | `none`、`low`、`high` |聊天完成`reasoning_effort` |
-| `gemini` | `gemini-3.6-flash` | `low`、`medium`、`high` |双子座思维水平|
+| `gemini` | `gemini-4-hydrogen` | `low`、`medium`、`high`、`xhigh` |双子座思维水平|
 | `openai-compatible` |任何型号 ID（启用后）| `none`、`low`、`medium`、`high`、`xhigh`、`max` |响应 API `reasoning.effort` 或聊天完成 `reasoning_effort` |
 
 所有其他提供程序和模型组合（包括 OpenRouter）不提供推理工作选择。
 
-对于 `openai-compatible`，推理工作将保持关闭，直到您选择加入：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+对于 `openai-compatible`，推理工作将保持关闭，直到您选择加入：```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_OPENAI_COMPATIBLE_REASONING_EFFORT_SUPPORTED=true
-```设置该标志后，如果 `OPENWIKI_OPENAI_COMPATIBLE_USE_RESPONSES_API=true`，则 OpenWiki 通过响应 API 映射 `OPENWIKI_REASONING_EFFORT`，否则通过聊天完成`reasoning_effort`。
+```
+
+设置该标志后，如果 `OPENWIKI_OPENAI_COMPATIBLE_USE_RESPONSES_API=true`，OpenWiki 将通过响应 API 映射 `OPENWIKI_REASONING_EFFORT`，否则通过聊天完成`reasoning_effort`。
 
 在交互式聊天中，使用 `/effort` 选择可用值或使用 `/effort default` 恢复提供程序默认值。
 
@@ -112,13 +112,13 @@ BOB_API_KEY=your-bob-api-key
 要使用 GitHub Copilot：
 
 1. 在`openwiki --init`期间选择 GitHub Copilot。如果您有活动的 GitHub CLI 会话，OpenWiki 可以重用它。否则，从凭据提示符处运行 `gh auth login`。
-2. 选择型号（例如`gpt-5.5`）。
+2. 选择型号（例如`gpt-6.1-sol`）。
 
 OpenWiki 将 GitHub CLI 令牌保留在 GitHub CLI 凭证存储中。它不会将该令牌复制到`~/.openwiki/.env`。对于没有 GitHub CLI 会话的 CI 或无头环境，请将 `COPILOT_API_KEY` 设置为 GitHub **OAuth 令牌**。个人访问令牌（经典或细粒度）被用于第三方集成的 Copilot API 拒绝。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_PROVIDER=copilot
-OPENWIKI_MODEL_ID=gpt-5.5
+OPENWIKI_MODEL_ID=gpt-6.1-sol
 ```
 
 ## 微软 Entra 授权OpenWiki 支持 Microsoft Entra ID（以前称为 Azure Active Directory）作为 OpenAI 兼容端点的令牌提供程序，这些端点需要 Entra 承载令牌而不是静态 API 密钥。
@@ -143,10 +143,10 @@ OPENWIKI_MODEL_ID=your-gateway-model
 * **`OPENAI_COMPATIBLE_BASE_URL`**：必须使用 HTTPS 并且不能包含嵌入式凭据。
 * **`OPENAI_COMPATIBLE_ENTRA_SCOPE`**：可选。默认为 `https://cognitiveservices.azure.com/.default`，Azure OpenAI 范围。自定义网关可能需要不同的范围。
 
-OpenWiki 通过[Azure Identity](https://learn.microsoft.com/en-us/javascript/api/overview/azure/identity-readme)获取令牌，并在过期前对其进行缓存和刷新。在运行 OpenWiki 的每个环境中单独配置 Azure Identity 凭据：* **工作负载身份联合**：设置 `AZURE_CLIENT_ID`、`AZURE_TENANT_ID` 和 `AZURE_FEDERATED_TOKEN_FILE`。当`AZURE_FEDERATED_TOKEN_FILE`设置时，OpenWiki使用`WorkloadIdentityCredential`。将文件变量指向运行者提供的令牌文件。不要提交该文件。
+OpenWiki 通过[Azure Identity](https://learn.microsoft.com/en-us/javascript/api/overview/azure/identity-readme)获取令牌，并在过期前对其进行缓存和刷新。在运行 OpenWiki 的每个环境中单独配置 Azure Identity 凭据：* **工作负载身份联合**：设置 `AZURE_CLIENT_ID`、`AZURE_TENANT_ID` 和 `AZURE_FEDERATED_TOKEN_FILE`。当设置`AZURE_FEDERATED_TOKEN_FILE`时，OpenWiki使用`WorkloadIdentityCredential`。将文件变量指向运行者提供的令牌文件。不要提交该文件。
 * **其他环境**：OpenWiki 使用 `DefaultAzureCredential`，它接受 `az login` 等凭证、托管身份或环境凭证。
 
-生成的 CI 工作流保留身份验证模式和范围，但您仍然需要在 CI 中配置无人值守的 Azure Identity 凭据。
+生成的 CI 工作流保留身份验证模式和范围，但仍需要在 CI 中配置无人值守的 Azure Identity 凭据。
 
 ## OpenAI（ChatGPT 登录）
 
@@ -166,7 +166,7 @@ OPENWIKI_PROVIDER=openai-chatgpt openwiki code --init
 OPENWIKI_PROVIDER=gemini-enterprise
 GOOGLE_CLOUD_PROJECT=your-gcp-project
 GOOGLE_CLOUD_LOCATION=global
-```凭证需要 Gemini Enterprise Agent Platform 访问权限 (`roles/aiplatform.user`)，并且您使用的模型必须在 Model Garden 中启用。合作伙伴/开放权重 (MaaS) 模型是特定于区域的，因此在使用它们时明确设置 `GOOGLE_CLOUD_LOCATION`。
+```The credentials need Gemini Enterprise Agent Platform access (`roles/aiplatform.user`), and the models you use must be enabled in Model Garden.合作伙伴/开放权重 (MaaS) 模型是特定于区域的，因此在使用它们时明确设置 `GOOGLE_CLOUD_LOCATION`。
 
 ## AWS 基岩
 
@@ -178,29 +178,29 @@ BEDROCK_AWS_REGION=us-east-1
 OPENWIKI_MODEL_ID=anthropic.claude-sonnet-5
 ```
 
-当未设置显式 Bedrock 凭证时，OpenWiki 使用 AWS SDK 默认凭证提供程序链。直接粘贴基岩模型 ID。一些较新的模型需要跨区域推理配置文件 ID（例如`us.anthropic.claude-sonnet-5`）而不是裸模型 ID。
+When explicit Bedrock credentials are not set, OpenWiki uses the AWS SDK default credential provider chain.直接粘贴基岩模型 ID。一些较新的模型需要跨区域推理配置文件 ID（例如`us.anthropic.claude-sonnet-5`）而不是裸模型 ID。
 
-当`OPENWIKI_MAX_OUTPUT_TOKENS`和`OPENWIKI_BEDROCK_MAX_TOKENS`均未设置时，基岩默认为`16000`代币输出上限。如果没有明确的限制，Converse API 会将输出限制为 `4096` 标记，并且可以截断较长的 wiki 页面。
+Bedrock defaults to a `16000`-token output ceiling when neither `OPENWIKI_MAX_OUTPUT_TOKENS` nor `OPENWIKI_BEDROCK_MAX_TOKENS` is set. Without an explicit limit, the Converse API caps output at `4096` tokens and can truncate long wiki pages.
 
-对于基岩流空闲超时，设置 `OPENWIKI_STREAM_IDLE_TIMEOUT` 以毫秒为单位（从 `0` 到 `2147483647` 的整数）。设置`0`禁用看门狗。如果未设置，OpenWiki 将保留 `@langchain/aws` 提供程序默认值。
+For Bedrock stream idle timeout, set `OPENWIKI_STREAM_IDLE_TIMEOUT` in milliseconds (an integer from `0` to `2147483647`).设置`0`禁用看门狗。 If unset, OpenWiki preserves the `@langchain/aws` provider default.
 
 ## OpenAI 兼容端点
 
-将 `openai-compatible` 提供程序用于公开 OpenAI 兼容聊天完成的网关或本地服务器：
+Use the `openai-compatible` provider for gateways or local servers that expose OpenAI-compatible chat completions:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_PROVIDER=openai-compatible
 OPENAI_COMPATIBLE_API_KEY=your-gateway-key
 OPENAI_COMPATIBLE_BASE_URL=https://your-gateway.example.com/v1
 OPENWIKI_MODEL_ID=your-gateway-model-name
-```Requesty 和 Opper 等托管网关与同一提供商合作。将基本 URL 设置为网关端点，并将模型 ID 设置为网关公开的模型：
+```Hosted gateways such as Requesty and Opper work with the same provider. Set the base URL to the gateway endpoint and the model ID to the model the gateway exposes:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Requesty
 OPENWIKI_PROVIDER=openai-compatible
 OPENAI_COMPATIBLE_API_KEY=your-gateway-key
 OPENAI_COMPATIBLE_BASE_URL=https://router.requesty.ai/v1
-OPENWIKI_MODEL_ID=openai/gpt-5.5
+OPENWIKI_MODEL_ID=openai/gpt-6.1-sol
 ```
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -211,9 +211,9 @@ OPENAI_COMPATIBLE_BASE_URL=https://api.opper.ai/v3/compat
 OPENWIKI_MODEL_ID=claude-sonnet-4-6
 ```
 
-Ollama (`http://localhost:11434/v1`) 和 LM Studio (`http://localhost:1234/v1`) 等本地示例使用相同的模式。即使本地服务器忽略键值，OpenWiki 仍然需要`OPENAI_COMPATIBLE_API_KEY`。
+Ollama (`http://localhost:11434/v1`) 和 LM Studio (`http://localhost:1234/v1`) 等本地示例使用相同的模式。 OpenWiki still requires `OPENAI_COMPATIBLE_API_KEY` even when the local server ignores the key value.
 
-即使您没有在终端中观看实时输出，OpenWiki 也会在内部发送非流式请求。某些网关仅接受流请求，其中模型通过开放连接以块形式返回输出。当 OpenWiki 通过非流式请求访问这些网关之一时，该网关可能会拒绝该调用或返回带有空内容的 HTTP 200。没有错误的空白 wiki 通常意味着您需要启用流式传输。
+OpenWiki sends non-streaming requests internally, even when you are not watching live output in the terminal.某些网关仅接受流请求，其中模型通过开放连接以块形式返回输出。当 OpenWiki 通过非流式请求访问这些网关之一时，该网关可能会拒绝该调用或返回带有空内容的 HTTP 200。 A blank wiki with no error usually means you need to enable streaming.
 
 当您的网关需要时，为 `openai-compatible` 提供商启用流式传输：
 
@@ -221,7 +221,7 @@ Ollama (`http://localhost:11434/v1`) 和 LM Studio (`http://localhost:1234/v1`) 
 OPENWIKI_OPENAI_COMPATIBLE_STREAMING=true
 ```
 
-默认情况下，流式传输处于关闭状态，因为该提供程序可以指向任意第三方端点，而在这些端点上，不能保证流式传输能够通过代理和负载均衡器工作。启用它还可以使客户端报告估计而不是服务器报告的令牌计数。要选择将与 openai 兼容的提供商添加到 Responses API 而不是聊天完成中：
+默认情况下，流式传输处于关闭状态，因为该提供程序可以指向任意第三方端点，而在这些端点上，不能保证流式传输能够通过代理和负载均衡器工作。 Enabling it also makes the client report estimated rather than server-reported token counts.要选择将与 openai 兼容的提供商添加到 Responses API 而不是聊天完成中：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_OPENAI_COMPATIBLE_USE_RESPONSES_API=true

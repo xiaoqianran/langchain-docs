@@ -73,7 +73,7 @@ def notify_email(to: str, subject: str, body: str) -> str:
 checkpointer = MemorySaver()
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[remove_file, fetch_file, notify_email],
     interrupt_on={
         "remove_file": True,  # Default: approve, edit, reject, respond
@@ -112,7 +112,7 @@ def notify_email(to: str, subject: str, body: str) -> str:
 checkpointer = MemorySaver()
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[remove_file, fetch_file, notify_email],
     interrupt_on={
         "remove_file": True,  # Default: approve, edit, reject, respond
@@ -367,7 +367,7 @@ def writes_outside_workspace(request: ToolCallRequest) -> bool:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     interrupt_on={
         "write_file": {
             "allowed_decisions": ["approve", "edit", "reject"],
@@ -391,7 +391,7 @@ def writes_outside_workspace(request: ToolCallRequest) -> bool:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     interrupt_on={
         "write_file": {
             "allowed_decisions": ["approve", "edit", "reject"],
@@ -528,7 +528,7 @@ agent = create_deep_agent(
 
 ## 处理中断
 
-当中断被触发时，代理暂停执行并返回控制权。检查结果中是否存在中断并进行相应处理。如果用户拒绝某个操作，请包含一个明确的 `message`，告诉代理该工具未执行以及下一步要做什么。
+当中断被触发时，代理暂停执行并返回控制权。检查结果中是否有中断并进行相应处理。如果用户拒绝某个操作，请包含一个明确的 `message`，告诉代理该工具未执行以及下一步要做什么。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.utils.uuid import uuid7
@@ -722,7 +722,7 @@ if result.get("__interrupt__"):  # [!code highlight]
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[delete_file, read_file],
     interrupt_on={
         "delete_file": True,
@@ -747,7 +747,7 @@ agent = create_deep_agent(
 
 流式传输时，子代理中断也会作为父 `updates` 流中的 `__interrupt__` 条目出现。您不需要 `subgraphs=True` 来进行中断传递。如果您还想流式传输子代理令牌和进度事件，请启用`subgraphs=True`。完整图案请参见[Handle interrupts with streaming](#handle-interrupts-with-streaming)。### 工具调用中的中断
 
-Subagent tools can call `interrupt()` directly to pause execution and await approval:
+子代理工具可以直接调用`interrupt()`暂停执行并等待批准：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -791,7 +791,7 @@ def main():
     )
 
     parent_agent = create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
+        model="google_genai:gemini-4-hydrogen",
         checkpointer=checkpointer,
         subagents=[
             CompiledSubAgent(
@@ -869,7 +869,7 @@ Execution completed!
 
 > [!注意]
 >
-> Filesystem permission interrupts require `deepagents>=0.6.8`.
+> 文件系统权限中断需要`deepagents>=0.6.8`。
 
 除了`interrupt_on`之外，您还可以通过用`mode="interrupt"`标记[permission rule](/oss/python/deepagents/permissions)来暂停内置文件系统工具。当代理在与中断模式规则匹配的路径上调用 `write_file` 或 `edit_file` 时，`create_deep_agent` 会引发与配置工具相同的人机循环中断，并使用文件系统工具的名称作为操作名称。
 
@@ -891,7 +891,7 @@ agent = create_deep_agent(
 )
 ```
 
-Handle and resume the interrupt the same way as a tool-call interrupt: run until it pauses, inspect the request, then resume with a decision.
+处理和恢复中断的方式与工具调用中断相同：运行直到暂停，检查请求，然后做出决定继续。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Command
@@ -920,14 +920,14 @@ if result.get("__interrupt__"):
 
 ### 始终使用检查指针
 
-Human-in-the-loop requires a checkpointer to persist agent state between the interrupt and resume:
+人机交互需要一个检查指针来在中断和恢复之间保持代理状态：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.checkpoint.memory import MemorySaver
 
 checkpointer = MemorySaver()
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[...],
     interrupt_on={...},
     checkpointer=checkpointer  # Required for HITL

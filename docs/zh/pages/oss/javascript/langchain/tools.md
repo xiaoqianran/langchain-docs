@@ -80,7 +80,8 @@ const contextSchema = z.object({
 });
 
 const agent = createAgent({
-  model: new ChatOpenAI({ model: "gpt-5.5" }),
+  // GPT-6 models need the Responses API for tool calling in @langchain/openai.
+  model: new ChatOpenAI({ model: "gpt-6.1-sol", useResponsesApi: true }),
   tools: [getUserName],
   checkpointer: new MemorySaver(),
   contextSchema,
@@ -167,7 +168,7 @@ const saveUserInfo = tool(
 );
 
 const agent = createAgent({
-  model: new ChatOpenAI({ model: "gpt-5.5" }),
+  model: new ChatOpenAI({ model: "gpt-6.1-sol" }),
   tools: [getUserInfo, saveUserInfo],
   store,
 });
@@ -257,7 +258,7 @@ const logExecutionContext = tool(
 
 ### 服务器信息
 
-当您的工具运行在LangGraph服务器上时，通过`runtime.server_info`访问助手ID、图形ID和经过身份验证的用户：
+当您的工具在 Agent Server 上运行时，通过 `runtime.server_info` 访问助手 ID、图形 ID 和经过身份验证的用户：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -280,7 +281,7 @@ const getAssistantScopedData = tool(
     schema: z.object({}),
   }
 );
-```当该工具未在 LangGraph 服务器上运行时，`serverInfo` 为 `null`。
+```当该工具未在代理服务器上运行时，`serverInfo` 为`null`。
 
 > [!注意]
 >
@@ -288,7 +289,7 @@ const getAssistantScopedData = tool(
 
 ## 工具执行
 
-在LangChain中，工具由代理使用（例如通过[⟦T50⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)），工具错误处理通过[middleware](/oss/javascript/langchain/middleware)配置。
+在LangChain中，代理使用工具（例如通过[⟦T50⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)），并通过[middleware](/oss/javascript/langchain/middleware)配置工具错误处理。
 
 对于 LangGraph 工作流程，工具执行由 [⟦T51⟧](https://reference.langchain.com/javascript/langchain-langgraph/prebuilt/ToolNode) 处理。请参阅[ToolNode](/oss/javascript/langgraph/workflows-agents#toolnode)了解图形 API 的使用，包括工具如何访问当前图形状态和运行范围的上下文。
 
@@ -510,7 +511,7 @@ const handleToolErrors = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [],
   middleware: [handleToolErrors],
 });
@@ -534,7 +535,7 @@ const handleToolErrors = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [],
   middleware: [handleToolErrors],
 });
@@ -869,7 +870,7 @@ const agent = createAgent({
 > });
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [getWeather], // Only static tools registered here
 >   middleware: [dynamicToolMiddleware],
 > });

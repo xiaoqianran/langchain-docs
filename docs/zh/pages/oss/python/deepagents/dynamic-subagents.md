@@ -6,9 +6,9 @@
 
 使用解释器从代码中调度和编排 Deep Agents 子代理
 
-动态子代理让代理从解释器代码中分派 [subagents](/oss/python/deepagents/subagents)。代理可以使用 JavaScript 循环、分支和并行批处理来跨配置的子代理路由工作并综合结果，而不是要求模型一次选择一个子代理调用。
+动态子代理让代理从解释器代码中分派[subagents](/oss/python/deepagents/subagents)。代理可以使用 JavaScript 循环、分支和并行批处理来跨配置的子代理路由工作并综合结果，而不是要求模型一次选择一个子代理调用。
 
-当工作跨越许多独立单元、需要多个视角或从递归分析中受益时，请使用此模式。对于一般解释器设置，请参阅[Interpreters](/oss/python/deepagents/interpreters)。
+当工作跨越许多独立单元、需要多个视角或受益于递归分析时，请使用此模式。对于一般解释器设置，请参阅[Interpreters](/oss/python/deepagents/interpreters)。
 
 > [!警告]
 >
@@ -27,7 +27,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     subagents=[{
         "name": "reviewer",
         "description": "Reviews code for security issues, citing lines and severity",
@@ -42,7 +42,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     subagents=[{
         "name": "reviewer",
         "description": "Reviews code for security issues, citing lines and severity",
@@ -209,7 +209,7 @@ graph LR
 > from langchain_quickjs import CodeInterpreterMiddleware
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     subagents=[
 >         {
 >             "name": "bug-fixer",
@@ -236,7 +236,7 @@ graph LR
 > from langchain_quickjs import CodeInterpreterMiddleware
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     subagents=[
 >         {
 >             "name": "bug-fixer",
@@ -440,7 +440,7 @@ graph LR
 > from langchain_quickjs import CodeInterpreterMiddleware
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     subagents=[{
 >         "name": "reviewer",
 >         "description": "Reviews code for security issues, citing lines and severity",
@@ -455,7 +455,7 @@ graph LR
 > from langchain_quickjs import CodeInterpreterMiddleware
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     subagents=[{
 >         "name": "reviewer",
 >         "description": "Reviews code for security issues, citing lines and severity",
@@ -589,7 +589,7 @@ graph LR
 > from langchain_quickjs import CodeInterpreterMiddleware
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     subagents=[
 >         {
 >             "name": "reviewer",
@@ -611,7 +611,7 @@ graph LR
 > from langchain_quickjs import CodeInterpreterMiddleware
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     subagents=[
 >         {
 >             "name": "reviewer",
@@ -765,7 +765,7 @@ graph LR
 
 ### 生成并过滤
 
-多个子代理针对同一问题生成独立的解决方案。代理在代码中对结果进行比较、评分和过滤，只保留最好的结果。
+多个子代理针对同一问题生成独立的解决方案。代理在代码中对结果进行比较、评分和过滤，只保留最好的。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -789,7 +789,7 @@ graph LR
 > from langchain_quickjs import CodeInterpreterMiddleware
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     subagents=[{
 >         "name": "architect",
 >         "description": "Proposes a database schema design with tradeoff analysis",
@@ -804,7 +804,7 @@ graph LR
 > from langchain_quickjs import CodeInterpreterMiddleware
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     subagents=[{
 >         "name": "architect",
 >         "description": "Proposes a database schema design with tradeoff analysis",
@@ -934,7 +934,7 @@ graph LR
 > from langchain_quickjs import CodeInterpreterMiddleware
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     subagents=[
 >         {
 >             "name": "writer",
@@ -956,7 +956,7 @@ graph LR
 > from langchain_quickjs import CodeInterpreterMiddleware
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     subagents=[
 >         {
 >             "name": "writer",
@@ -1129,7 +1129,7 @@ graph LR
 > from langchain_quickjs import CodeInterpreterMiddleware
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     subagents=[{
 >         "name": "analyzer",
 >         "description": "Analyzes code for unused exports, functions, and dead code paths",
@@ -1144,7 +1144,7 @@ graph LR
 > from langchain_quickjs import CodeInterpreterMiddleware
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     subagents=[{
 >         "name": "analyzer",
 >         "description": "Analyzes code for unused exports, functions, and dead code paths",
@@ -1262,7 +1262,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     subagents=[{"name": "reviewer", "description": "Reviews code", "system_prompt": "Review code."}],
     middleware=[CodeInterpreterMiddleware(subagents=False)],
 )
@@ -1273,7 +1273,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     subagents=[{"name": "reviewer", "description": "Reviews code", "system_prompt": "Review code."}],
     middleware=[CodeInterpreterMiddleware(subagents=False)],
 )

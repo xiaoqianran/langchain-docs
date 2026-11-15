@@ -42,9 +42,9 @@
 
 使用 [sandboxes](/oss/python/deepagents/sandboxes) 针对环境编写代码：shell 命令、包安装、测试、文件系统编辑和操作系统级执行。
 
-|需要|使用 |
+|需要|使用|
 | - | - |
-|一两个简单的外部通话 |正常工具调用|
+|一两个简单的外部通话|正常工具调用 |
 |纯内存 JavaScript：循环、分支、重试或数据转换（无外部工具）|口译 |
 |许多从代码编排的外部工具调用（需要[PTC](#programmatic-tool-calling-ptc)）| [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) 口译员 |
 |许多独立的工作单元、多个视角或对大量输入的递归分析 | [dynamic subagents](/oss/python/deepagents/dynamic-subagents) 口译员 |
@@ -67,7 +67,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[CodeInterpreterMiddleware()],
 )
 ```
@@ -77,7 +77,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[CodeInterpreterMiddleware()],
 )
 ```
@@ -182,7 +182,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
 )
 ```
@@ -192,7 +192,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
 )
 ```
@@ -298,7 +298,7 @@ reviews.join("\n\n");
 * **`"turn"`**：状态在一个代理回合内的多个 `eval` 调用中持续存在，然后在下一回合重置。
 * **`"call"`**：每个 `eval` 调用都在新的 REPL 中运行，不会继承之前的调用。对于 `mode="thread"`，快照是解释器内存中 JavaScript 状态的序列化副本，包括代理完成运行代码时存在的全局变量、变量、函数和导入模块。在对话轮次中，生命周期是：
 
-1. 一轮开始，中间件恢复该线程最新的解释器快照。
+1、一轮开始，中间件恢复该线程最新的解释器快照。
 2. 座席拨打`eval`一次或多次。这些调用共享一个实时上下文；中间件不会在它们之间创建快照。
 3. 回合结束，中间件将更新的快照写入图状态。
 4. 下一轮从该快照恢复，而不是空运行时间。
@@ -316,7 +316,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[
         CodeInterpreterMiddleware(
             mode="thread",  # Default
@@ -330,7 +330,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[
         CodeInterpreterMiddleware(
             mode="thread",  # Default
@@ -415,7 +415,7 @@ from langchain_quickjs import CodeInterpreterMiddleware
 from langgraph.checkpoint.memory import MemorySaver
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     checkpointer=MemorySaver(),
     middleware=[CodeInterpreterMiddleware(mode="thread")],
 )
@@ -427,7 +427,7 @@ from langchain_quickjs import CodeInterpreterMiddleware
 from langgraph.checkpoint.memory import MemorySaver
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     checkpointer=MemorySaver(),
     middleware=[CodeInterpreterMiddleware(mode="thread")],
 )

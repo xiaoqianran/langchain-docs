@@ -4,7 +4,7 @@
 
 # 评分标准
 
-法学硕士作为法官对代理人进行评分，迭代一个标题直到完成
+法学硕士作为法官对代理人进行评分，不断迭代直至完成
 
 > [!注意]
 >
@@ -12,7 +12,7 @@
 
 一些代理任务有一个明确的“完成”定义，仅靠工作模型无法在第一次尝试中可靠地实现：正确音节模式的俳句、所有测试都通过的重构，或者满足每个所需部分的报告。 `RubricMiddleware` 允许您将“完成的内容”声明为评分标准，并让代理进行“自我评估和迭代”，直到满足评分标准，或者达到配置的最大迭代上限。
 
-**LLM-as-a-judge** 是一种模式，其中一个语言模型根据定义的标准评估另一个模型的输出。在[LangSmith evaluations](/langsmith/evaluation-concepts#llm-as-judge)中，法学硕士作为法官评估者批量离线对申请输出进行评分。 `RubricMiddleware` 在运行时应用相同的模式：深度代理生成输出后，专用的评分器模型会根据您的评分标准审查成绩单并驱动修订，直到每个标准通过（或达到配置的迭代上限）。当深度代理完成推理时，LLM 作为法官评分者子代理会审查输出并返回裁决。如果它返回`needs_revision`，则每个标准的反馈将被注入回对话中，并且代理再次运行。循环在 `satisfied`、`max_iterations_reached`、`failed` 或 `grader_error` 处终止。
+**LLM-as-a-judge** 是一种模式，其中一个语言模型根据定义的标准评估另一个模型的输出。在[LangSmith evaluations](/langsmith/evaluation-concepts#llm-as-judge)中，法学硕士作为评委评估者批量离线对申请输出进行评分。 `RubricMiddleware` 在运行时应用相同的模式：深度代理生成输出后，专用的评分器模型会根据您的评分标准审查成绩单并驱动修订，直到每个标准通过（或达到配置的迭代上限）。当深度代理完成推理时，LLM 作为法官评分者子代理会审查输出并返回裁决。如果它返回`needs_revision`，则每个标准的反馈将被注入回对话中，并且代理再次运行。循环在 `satisfied`、`max_iterations_reached`、`failed` 或 `grader_error` 处终止。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -49,7 +49,7 @@ from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[
         RubricMiddleware(
             model="anthropic:claude-haiku-4-5",
@@ -65,7 +65,7 @@ from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[
         RubricMiddleware(
             model="anthropic:claude-haiku-4-5",
@@ -156,7 +156,7 @@ agent = create_deep_agent(
 )
 ```
 
-|论证|必填|默认|描述 |
+|论证|必填|默认 |描述 |
 | - | - | - | - |
 | `model` |是的 | `None` | LLM 作为评委评分员子代理使用的聊天模型。接受 `"provider:model-id"` 字符串或 `BaseChatModel` 实例。通常是比深度代理的工作模型更小或更便宜的模型。 |
 | `system_prompt` |没有 |内置评分器提示 |自定义分级说明。退回到默认系统提示，向评分者传授判决格式以及可以使用的工具。 |
@@ -184,7 +184,7 @@ agent = create_deep_agent(
 >     },
 >     config=config,
 > )
-> ```> [选项卡] 流\_events()
+> ```> [选项卡]stream_events()
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.messages import HumanMessage
@@ -249,10 +249,10 @@ def log_evaluation(ev: RubricEvaluation) -> None:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[
         RubricMiddleware(
-            model="google_genai:gemini-3.6-flash",
+            model="google_genai:gemini-4-hydrogen",
             on_evaluation=log_evaluation,
         ),
     ],
@@ -284,10 +284,10 @@ def log_evaluation(ev: RubricEvaluation) -> None:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[
         RubricMiddleware(
-            model="openai:gpt-5.5",
+            model="openai:gpt-6.1-sol",
             on_evaluation=log_evaluation,
         ),
     ],
@@ -492,7 +492,7 @@ agent.invoke(
 
 ### 分级师通行证事件|活动 |描述 |
 | - | - |
-| **成功评分** |每次传递触发一次，包括中间 `needs_revision` 判决和最终 `satisfied` 或 `failed` 判决。   当评分者返回`needs_revision`但已达到`max_iterations`时，回调仍会收到`result: "needs_revision"`（评分者的结论）。运行的终端状态是私有状态 `_rubric_status` 上的 `max_iterations_reached`，而不是在评估记录中。在 `invoke` 完成后检查 `_rubric_status`，或与 `_rubric_iterations` 一起读取 `_rubric_evaluations` 中的最后一个条目，以在上限耗尽时进行分支。 |
+| **成功评分** |每次传递触发一次，包括中间 `needs_revision` 判决和最终 `satisfied` 或 `failed` 判决。  当评分者返回`needs_revision`但已达到`max_iterations`时，回调仍会收到`result: "needs_revision"`（评分者的结论）。运行的终端状态是私有状态 `_rubric_status` 上的 `max_iterations_reached`，而不是在评估记录中。在 `invoke` 完成后检查 `_rubric_status`，或与 `_rubric_iterations` 一起读取 `_rubric_evaluations` 中的最后一个条目，以在上限耗尽时进行分支。 |
 | **评分者例外** |触发 `result: "grader_error"`、从异常派生的解释以及空的 `criteria` 列表。 |
 | **您的回调中出现错误** |异常情况会被记录并抑制。评分循环继续进行。不要使用 `on_evaluation` 来强制控制流（例如，引发以停止代理）。 |
 
@@ -510,7 +510,7 @@ agent.invoke(
 
 **1.定义 Rubric 中间件**
 
-该中间件在基本代理之上添加了一个 LLM 作为法官评分器循环。配置评分器模型、可选的自定义提示、证据收集工具和最大迭代上限。
+该中间件在基本代理之上添加了一个 LLM-as-a-judge 评分器循环。配置评分器模型、可选的自定义提示、证据收集工具和最大迭代上限。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware
@@ -549,7 +549,7 @@ def run_test_suite(code: str) -> dict:
 
 
 rubric_middleware = RubricMiddleware(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt="You are a code reviewer grading generated code against a rubric.",
     tools=[run_test_suite],
     max_iterations=5,
@@ -593,7 +593,7 @@ def run_test_suite(code: str) -> dict:
 
 
 rubric_middleware = RubricMiddleware(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt="You are a code reviewer grading generated code against a rubric.",
     tools=[run_test_suite],
     max_iterations=5,
@@ -829,7 +829,7 @@ from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt=(
         "You are a careful Python engineer. Write correct, readable code. "
         "Follow the user's instructions exactly."
@@ -844,7 +844,7 @@ from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt=(
         "You are a careful Python engineer. Write correct, readable code. "
         "Follow the user's instructions exactly."

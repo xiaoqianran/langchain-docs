@@ -1,69 +1,65 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Build a data analysis agent from scratch | https://docs.langchain.com/oss/javascript/langchain/deep-agent-from-scratch -->
 
-# Build a data analysis agent from scratch
+# 从头开始构建一个数据分析代理
 
-Build a data analysis agent step by step using create_agent and Deep Agents middleware.
+使用create_agent和Deep Agents中间件逐步构建数据分析代理。
 
-This guide builds a data analysis agent from first principles using `create_agent` and Deep Agents middleware.
+本指南使用 `create_agent` 和 Deep Agents 中间件从第一原则构建数据分析代理。
 
-Both `create_agent` and `create_deep_agent` provide you with fine-grained control over tools, memory, and more.
-The main difference between both is that Deep Agents comes with a range of commonly useful capabilities already built in, such as planning, file system tools, and subagents.
-If the Deep Agents default harness does not fit your needs, this guide shows you how to start with `create_agent` and assemble the harness one piece at a time, so you can see exactly what each component adds and swap in only what your use case needs.
+`create_agent`和`create_deep_agent`都为您提供对工具、内存等的细粒度控制。
+两者之间的主要区别在于 Deep Agents 附带了一系列内置的常用功能，例如规划、文件系统工具和子代理。
+如果 Deep Agents 默认线束不能满足您的需求，本指南将向您展示如何从 `create_agent` 开始并一次组装一件线束，以便您可以准确地看到每个组件添加的内容，并仅交换您的用例所需的内容。
 
-Follow this guide to build an agent that:
+按照本指南构建一个代理：
 
-1. Accepts a CSV file for analysis
-2. Writes and executes Python code in an isolated sandbox
-3. Delegates visualization work to a specialized subagent
-4. Loads data analysis patterns from a skills file
+1. 接受 CSV 文件进行分析
+2. 在隔离的沙箱中编写并执行Python代码
+3. 将可视化工作委托给专门的子代理
+4. 从技能文件加载数据分析模式
 
-The final stack mirrors what `create_deep_agent` assembles by default.
+最终的堆栈反映了 `create_deep_agent` 默认组装的内容。
 
-## What you will learn
+## 你将学到什么
 
-Each step adds one capability to the same data analysis agent:
-
-| Step | Problem without it | What you add |
+每个步骤都会为同一数据分析代理添加一项功能：|步骤|没有它的问题 |您添加的内容 |
 | - | - | - |
-| Minimal agent | — | Baseline loop: model + tools, no harness |
-| Sandbox + filesystem | Agent cannot read CSVs or run Python | Isolated [backend](/oss/javascript/deepagents/backends) + file and execute tools |
-| Summarization | Long sessions hit context limits | Automatic history compression |
-| Skills | Domain rules bloat the system prompt | On-demand expertise via [progressive disclosure](/oss/javascript/langchain/multi-agent/skills-sql-assistant) |
-| Subagent | Chart iteration crowds the main thread | Isolated worker + parallel delegation |
+|最小代理 | — |基线循环：模型+工具，无线束|
+|沙箱+文件系统|代理无法读取 CSV 或运行 Python |隔离[backend](/oss/javascript/deepagents/backends) + 文件和执行工具 |
+|总结|长时间会话达到上下文限制 |自动历史压缩 |
+|技能 |域规则使系统提示变得臃肿|通过 [progressive disclosure](/oss/javascript/langchain/multi-agent/skills-sql-assistant) 按需获取专业知识 |
+|子代理 |图表迭代挤满主线程 |隔离工作者+并行委托|
 
-## Setup
+## 设置
 
-**1. Install packages**
+**1.安装软件包**
 
-Install the packages for this tutorial:
+安装本教程的软件包：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install deepagents langsmith
 ```
 
-**2. Set up LangSmith API keys**
+**2.设置 LangSmith API 密钥**
 
-This tutorial uses [`LangSmithSandbox`](https://reference.langchain.com/javascript/deepagents/backends/LangSmithSandbox), which provisions sandboxes through `SandboxClient`. That client authenticates with LangSmith using `LANGSMITH_API_KEY` from your environment, so an API key is required to run the tutorial. Setting up LangSmith also allows you to see traces of what happens when your agent runs.
+本教程使用[⟦T55⟧](https://reference.langchain.com/javascript/deepagents/backends/LangSmithSandbox)，它通过`SandboxClient`配置沙箱。该客户端使用您环境中的 `LANGSMITH_API_KEY` 对 LangSmith 进行身份验证，因此需要 API 密钥才能运行本教程。设置 LangSmith 还可以让您查看代理运行时发生的情况的痕迹。
 
-1. [Sign up for a free account](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-deep-agent-from-scratch). You can use Google, GitHub, or email.
-2. [Create an API key](/langsmith/create-account-api-key) in **Settings > API Keys**.
-3. Export the LangSmith API key:
+1. [Sign up for a free account](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-deep-agent-from-scratch)。您可以使用 Google、GitHub 或电子邮件。
+2. **设置 > API 密钥**中的[Create an API key](/langsmith/create-account-api-key)。
+3. 导出LangSmith API 密钥：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=...
 ```
 
-4. Enable tracing to inspect tool calls, middleware steps, and subagent delegation as you add each piece:
+4. 在添加每个部分时启用跟踪以检查工具调用、中间件步骤和子代理委派：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING=true
 ```
 
-**3. Add a model provider API key**
-
-Export the API key for the model provider you use in the code samples:
+**3.添加模型提供商 API 密钥**导出您在代码示例中使用的模型提供程序的 API 密钥：
 
 ```bash Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export GOOGLE_API_KEY=...
@@ -95,19 +91,19 @@ export BASETEN_API_KEY=...
 export OLLAMA_API_KEY=...
 ```
 
-## Build the agent
+## 构建代理
 
-## Create the minimal agent
+## 创建最小代理
 
-A data analysis agent needs more than a chat loop, but to begin with, start with the baseline: only a model and a loop.
+数据分析代理需要的不仅仅是聊天循环，但首先要从基线开始：只有一个模型和一个循环。
 
-Use [`create_agent`](https://reference.langchain.com/javascript/langchain/index/createAgent) and specify the model that you want to use:
+使用 [⟦T58⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 并指定您要使用的型号：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent } from "langchain";
 
 let agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [],
 });
 ```
@@ -116,7 +112,7 @@ let agent = createAgent({
 import { createAgent } from "langchain";
 
 let agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [],
 });
 ```
@@ -166,21 +162,19 @@ let agent = createAgent({
 });
 ```
 
-This runs, but the agent has no filesystem and no way to execute code. If you ask it to analyze a CSV, it can only guess from the prompt. The next steps add real file access and code execution.
+它会运行，但代理没有文件系统，也无法执行代码。如果你要求它分析 CSV，它只能根据提示进行猜测。接下来的步骤添加真正的文件访问和代码执行。
 
-## Add a sandbox backend
+## 添加沙箱后端
 
-To analyze data efficiently, the agent needs to run code on files. This requires two things:
+为了有效地分析数据，代理需要在文件上运行代码。这需要两件事：
 
-* An isolated [sandbox](/oss/javascript/deepagents/sandboxes) where the agent can place files and run code on the files without giving the agent access to your host machine.
+* 一个隔离的[sandbox](/oss/javascript/deepagents/sandboxes)，代理可以在其中放置文件并在文件上运行代码，而无需授予代理访问主机的权限。
 
-* A [backend](/oss/javascript/deepagents/backends) which provides the file system tools to work with the sandbox (`read_file`, `write_file`, `edit_file`, `glob`, `grep`) using the [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware):\*\*. Because the `LangSmithSandbox` backend implements the sandbox protocol, [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) also adds the `execute` tool, which allows the agent to run shell commands.
+* [backend](/oss/javascript/deepagents/backends)，它提供使用 [⟦T64⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware):\*\* 与沙箱（`read_file`、`write_file`、`edit_file`、`glob`、`grep`）配合使用的文件系统工具。由于`LangSmithSandbox`后端实现了沙箱协议，[⟦T66⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)还添加了`execute`工具，该工具允许代理运行shell命令。[⟦T68⟧](https://reference.langchain.com/javascript/deepagents/backends/LangSmithSandbox) 是文件存活和命令运行的地方。 [⟦T69⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) 是将环境作为工具暴露给模型的。如果您稍后交换后端，相同的中间件可以与其他后端一起使用。
 
-[`LangSmithSandbox`](https://reference.langchain.com/javascript/deepagents/backends/LangSmithSandbox) is where files live and commands run. [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) is what exposes that environment to the model as tools. The same middleware works with other backends if you swap the backend later.
+[⟦T70⟧](https://reference.langchain.com/javascript/deepagents/backends/LangSmithSandbox) 为代理提供了一个隔离环境，其中包含文件系统和用于运行 shell 命令的 `execute` 工具。有了它，代理可以安装包、编写脚本并运行它们，而无需接触主机。要从自定义映像而不是默认运行时启动，请将 `snapshotId` 传递给 `LangSmithSandbox.create()`；参见[Sandbox snapshots](/langsmith/sandbox-snapshots)。
 
-[`LangSmithSandbox`](https://reference.langchain.com/javascript/deepagents/backends/LangSmithSandbox) gives the agent an isolated environment with a filesystem and an `execute` tool for running shell commands. With it, the agent can install packages, write scripts, and run them without touching the host. To boot from a custom image instead of the default runtime, pass `snapshotId` to `LangSmithSandbox.create()`; see [Sandbox snapshots](/langsmith/sandbox-snapshots).
-
-Replace the agent from the previous step with one that includes [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware):
+将上一步中的代理替换为包含 [⟦T74⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) 的代理：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createFilesystemMiddleware, LangSmithSandbox } from "deepagents";
@@ -194,7 +188,7 @@ const sandbox = await client.createSandbox({
 const backend = new LangSmithSandbox({ sandbox });
 
 agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [],
   middleware: [createFilesystemMiddleware({ backend })],
 });
@@ -212,7 +206,7 @@ const sandbox = await client.createSandbox({
 const backend = new LangSmithSandbox({ sandbox });
 
 agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [],
   middleware: [createFilesystemMiddleware({ backend })],
 });
@@ -308,7 +302,7 @@ agent = createAgent({
 });
 ```
 
-The sandbox filesystem is separate from your laptop. You must upload the files you need to it before you invoke the agent:
+沙箱文件系统与您的笔记本电脑是分开的。在调用代理之前，您必须将所需的文件上传到其中：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const rows = [
@@ -346,32 +340,30 @@ await Promise.all([
 ]);
 ```
 
-> [!NOTE]
+> [!注意]
 >
-> With [`LangSmithSandbox`](https://reference.langchain.com/javascript/deepagents/backends/LangSmithSandbox), upload paths must be absolute POSIX paths (for example, `/sales.csv`). Relative paths such as `sales.csv` are rejected with `invalid_path` and the file is not written to the sandbox.
+> 对于 [⟦T75⟧](https://reference.langchain.com/javascript/deepagents/backends/LangSmithSandbox)，上传路径必须是绝对 POSIX 路径（例如，`/sales.csv`）。诸如 `sales.csv` 之类的相对路径会被 `invalid_path` 拒绝，并且文件不会写入沙箱。
 
-Combine the code from the previous steps into one script and run it:
+将前面步骤中的代码合并到一个脚本中并运行它：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx tsx analyze-sales.ts
-```
+```第一次运行时，LangSmith 会配置一个沙箱（这可能需要几秒钟）。该脚本上传 `sales.csv`，流式传输代理运行，并在助理消息到达时打印它们。您应该看到示例销售数据的分析：产品级收入、哪些小部件销量最高，以及简要趋势说明。确切的措辞因模型运行而异。
 
-On the first run, LangSmith provisions a sandbox (this can take a few seconds). The script uploads `sales.csv`, streams the agent run, and prints assistant messages as they arrive. You should see an analysis of the sample sales data: product-level revenue, which widgets sold most, and brief trend notes. Exact wording varies by model run.
+在 [LangSmith](https://smith.langchain.com/?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-deep-agent-from-scratch) 中打开运行，并观察代理在回复之前使用文件系统工具（`read_file` 和 `execute`，如果它在沙箱中运行 Python）。
 
-Open the run in [LangSmith](https://smith.langchain.com/?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-deep-agent-from-scratch) and watch the agent use filesystem tools (`read_file`, and `execute` if it runs Python in the sandbox) before it replies.
+## 添加上下文管理
 
-## Add context management
+步骤 2 之后，每个工具结果都会保留在消息历史记录中。真正的分析会话（多个绘图、失败的脚本、大的`read_file`输出）会快速填充上下文窗口。
 
-After step 2, every tool result stays in the message history. A real analysis session (multiple plots, failed scripts, large `read_file` output) fills the context window quickly.
+当历史记录变得太大时，[⟦T83⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware) 会压缩较旧的回合，因此代理可以继续工作，而无需您手动修剪消息。这对于第一个 `sales.csv` 问题不太重要，而对于后续问题（例如“现在按产品细分并绘制每月趋势”）更重要。
 
-[`SummarizationMiddleware`](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware) compresses older turns when history grows too large, so the agent keeps working without you manually trimming messages. This matters less on the first `sales.csv` question and more on follow-ups such as "Now segment by product and plot monthly trends."
-
-Update your agent from step 2 by adding [`SummarizationMiddleware`](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware) to the middleware list:
+通过将 [⟦T85⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware) 添加到中间件列表来更新步骤 2 中的代理：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createSummarizationMiddleware } from "deepagents";
 
-let model = "google:gemini-3.6-flash";
+let model = "google:gemini-4-hydrogen";
 
 agent = createAgent({
   model,
@@ -389,7 +381,7 @@ agent = createAgent({
 ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createSummarizationMiddleware } from "deepagents";
 
-let model = "openai:gpt-5.5";
+let model = "openai:gpt-6.1-sol";
 
 agent = createAgent({
   model,
@@ -492,17 +484,15 @@ agent = createAgent({
     }),
   ],
 });
-```
+```运行多轮会话以查看摘要的实际效果。初步分析后，提出引发更多文件读取或脚本运行的后续问题。在LangSmith中，在后续模型调用之前查找汇总步骤。欲了解更多信息，[Context engineering](/oss/javascript/langchain/context-engineering)。
 
-Run a multi-turn session to see summarization in action. After the initial analysis, ask follow-up questions that trigger more file reads or script runs. In LangSmith, look for a summarization step before later model calls. For more information, [Context engineering](/oss/javascript/langchain/context-engineering).
+## 添加技能
 
-## Add skills
+[Skills](/oss/javascript/langchain/multi-agent/skills-sql-assistant) 提供了一种在需要时使用渐进式披露为代理提供按需领域知识的方法。技能可以包括多步骤工作流程、规则和约定。通过将此信息放入技能中，默认情况下不会将其添加到系统提示中，从而确保仅在任务需要技能信息时才使用令牌。
 
-[Skills](/oss/javascript/langchain/multi-agent/skills-sql-assistant) provide a way to give an agent on-demand domain knowledge when needed using progressive disclosure. Skills can include multi-step workflows, rules, and conventions. By placing this information in a skill, it isn't added to the system prompt by default which ensures the tokens are only used when the information from the skill is needed for a task.
+当代理启动时，它只能看到有关每个技能的轻量级元数据。当任务需要技能时，代理会按需加载完整的技能文件。
 
-When the agent starts, it sees only lightweight metadata about each skill. When a task needs a skill, the agent loads the full skill file on demand.
-
-Create a skill file in a skills directory:
+在技能目录中创建技能文件：
 
 ```
 skills/
@@ -527,9 +517,9 @@ Save figures with `plt.savefig("output.png", dpi=150, bbox_inches="tight")`.
 Write a markdown summary to `report.md` alongside any generated charts.
 ```
 
-This skill contains information on how the visualization should be done.
+该技能包含有关如何进行可视化的信息。
 
-With [`LangSmithSandbox`](https://reference.langchain.com/javascript/deepagents/backends/LangSmithSandbox), skill paths resolve on the sandbox filesystem, not your local machine. Upload your local `skills/` directory before configuring [`SkillsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware):
+使用 [⟦T86⟧](https://reference.langchain.com/javascript/deepagents/backends/LangSmithSandbox)，技能路径在沙箱文件系统上解析，而不是在本地计算机上解析。在配置[⟦T88⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware)之前上传本地`skills/`目录：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { readFileSync, readdirSync, statSync } from "node:fs";
@@ -558,12 +548,12 @@ collectSkillFiles(skillsDir);
 await backend.uploadFiles(skillFiles);
 ```
 
-Then create your agent with your skills by adding [`SkillsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware):
+然后通过添加 [⟦T89⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware) 来创建您的代理：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createSkillsMiddleware } from "deepagents";
 
-model = "google:gemini-3.6-flash";
+model = "google:gemini-4-hydrogen";
 
 agent = createAgent({
   model,
@@ -579,7 +569,7 @@ agent = createAgent({
 ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createSkillsMiddleware } from "deepagents";
 
-model = "openai:gpt-5.5";
+model = "openai:gpt-6.1-sol";
 
 agent = createAgent({
   model,
@@ -670,23 +660,21 @@ agent = createAgent({
     createSkillsMiddleware({ backend, sources: ["/skills/"] }),
   ],
 });
-```
+```您可以尝试诸如“使用我们的 pandas 模式分析 sales.csv”之类的提示。当需要绘制或报告指导时，代理将加载技能。如果您提出不需要该技能的不同问题，代理将不会加载它。
 
-You can try a prompt such as "Analyze sales.csv using our pandas patterns." The agent will load the skill when it needs plotting or reporting guidance. If you ask a different question that does not need the skill, the agent will not load it.
+## 添加可视化子代理
 
-## Add a visualization subagent
+某些任务会产生大量中间输出（脚本草稿、失败的运行、文件读取），如果将其保留在一个线程中，这些输出会占用主代理的上下文。 [subagent](/oss/javascript/deepagents/subagents) 在自己的上下文窗口中运行，因此主管只能看到最终结果，而不是一路上的每个工具调用。这样可以保持主要分析的重点，并为后续问题留出空间。
 
-Some tasks produce large intermediate output (script drafts, failed runs, file reads) that would crowd the main agent's context if kept in one thread. A [subagent](/oss/javascript/deepagents/subagents) runs in its own context window so the supervisor sees only the final result, not every tool call along the way. That keeps the main analysis focused and leaves room for follow-up questions.
+使用子代理有意义的一个例子是图表生成。绘图通常意味着在图形准备好之前迭代 Python 脚本、安装包以及读取错误输出。下面的`visualizer`子代理可以独立处理该工作，而主代理则继续规划和分析。通过[⟦T91⟧](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware)，主代理还可以并行委托该图表工作，而不是在每个图上阻塞。
 
-One example where using a subagent makes sense is chart generation. Plotting often means iterating on Python scripts, installing packages, and reading error output before a figure is ready. The following `visualizer` subagent can handle that work in isolation while the main agent continues planning and analysis. With [`TodoListMiddleware`](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware), the main agent can also delegate that chart work in parallel instead of blocking on each plot.
-
-Update your agent from step 4 by adding [`TodoListMiddleware`](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware) and [`SubAgentMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware):
+通过添加 [⟦T92⟧](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware) 和 [⟦T93⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware) 来更新步骤 4 中的代理：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { todoListMiddleware } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 
-model = "google:gemini-3.6-flash";
+model = "google:gemini-4-hydrogen";
 
 const visualizer: SubAgent = {
   name: "visualizer",
@@ -719,7 +707,7 @@ agent = createAgent({
 import { todoListMiddleware } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 
-model = "openai:gpt-5.5";
+model = "openai:gpt-6.1-sol";
 
 const visualizer: SubAgent = {
   name: "visualizer",
@@ -911,31 +899,29 @@ agent = createAgent({
     }),
   ],
 });
-```
+```尝试使用诸如“分析 sales.csv，然后按产品创建收入条形图”之类的提示。主代理处理分析和规划，并通过`task`工具将图表生成委托给`visualizer`子代理。
 
-Try a prompt such as "Analyze sales.csv, then create a bar chart of revenue by product." The main agent handles analysis and planning and delegates chart generation to the `visualizer` subagent via the `task` tool.
+如果您在[Setup](#setup)中启用了跟踪，请在[LangSmith](https://smith.langchain.com/?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-deep-agent-from-scratch)中打开运行。您应该看到对 `visualizer` 的 `task` 调用，一个具有自己的工具循环的单独子运行，以及返回给主管的简短结果。
 
-If you enabled tracing in [Setup](#setup), open the run in [LangSmith](https://smith.langchain.com/?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-deep-agent-from-scratch). You should see a `task` call to `visualizer`, a separate sub-run with its own tool loop, and a short result returned to the supervisor.
+## 你构建了什么
 
-## What you built
+您已经使用以下中间件构建了自定义代理：
 
-You've built a customized agent with the following middleware:
-
-| Middleware | What it adds |
+|中间件|添加了什么 |
 | - | - |
-| [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) + `LangSmithSandbox` | Isolated filesystem + `execute` tool |
-| [`SummarizationMiddleware`](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware) | Automatic context compression |
-| [`SkillsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware) | Domain knowledge loaded on demand |
-| [`TodoListMiddleware`](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware) + [`SubAgentMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware) | Parallel visualization subagent |
+| [⟦T98⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) + `LangSmithSandbox` |隔离文件系统 + `execute` 工具 |
+| [⟦T101⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware) |自动上下文压缩 |
+| [⟦T102⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware) |领域知识按需加载 |
+| [⟦T103⟧](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware) + [⟦T104⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware) |并行可视化子代理 |
 
-This is the same foundation as [`createDeepAgent`](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent): assembled manually so you control exactly what's included.
+这与 [⟦T105⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 具有相同的基础：手动组装，因此您可以准确控制所包含的内容。
 
-The possibilities don't end here: see [Prebuilt middleware](/oss/javascript/langchain/middleware/built-in) for the full list of composable capabilities, and the [`create_agent`](https://reference.langchain.com/javascript/langchain/index/createAgent) reference for all configuration options.
+可能性并不止于此：请参阅 [Prebuilt middleware](/oss/javascript/langchain/middleware/built-in) 了解可组合功能的完整列表，以及 [⟦T106⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 参考了解所有配置选项。
 
-To work with the pre-assembled version, see [Customize Deep Agents](/oss/javascript/deepagents/customization).
+要使用预组装版本，请参阅[Customize Deep Agents](/oss/javascript/deepagents/customization)。
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/deep-agent-from-scratch.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/deep-agent-from-scratch.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

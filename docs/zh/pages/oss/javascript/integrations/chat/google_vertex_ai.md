@@ -6,7 +6,7 @@
 
 使用 LangChain JavaScript 与 ChatVertexAI 聊天模型集成。
 
-[Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform) 是一项公开 Google Cloud 中可用的所有基础模型的服务，例如 `gemini-3.8-flash` 等。
+[Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform) 是一项公开 Google Cloud 中可用的所有基础模型的服务，例如 `gemini-4-hydrogen` 等。
 它还提供一些非 Google 模型，例如[Anthropic's Claude](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude)。
 
 这将帮助您开始使用 `ChatVertexAI` [chat models](/oss/javascript/langchain/models)。有关所有 `ChatVertexAI` 功能和配置的详细文档，请前往 [API reference](https://reference.langchain.com/javascript/langchain-google-vertexai/index/ChatVertexAI)。
@@ -113,8 +113,7 @@ import { ChatVertexAI } from "@langchain/google-vertexai"
 // import { ChatVertexAI } from "@langchain/google-vertexai-web"
 
 const llm = new ChatVertexAI({
-    model: "gemini-3.8-flash",
-    temperature: 0,
+    model: "gemini-4-hydrogen",
     maxRetries: 2,
     // For web, authOptions.credentials
     // authOptions: { ... }
@@ -184,8 +183,7 @@ const searchRetrievalTool = {
 };
 
 const searchRetrievalModel = new ChatVertexAI({
-  model: "gemini-3.8-flash",
-  temperature: 0,
+  model: "gemini-4-hydrogen",
   maxRetries: 0,
 }).bindTools([searchRetrievalTool]);
 
@@ -228,8 +226,7 @@ const searchRetrievalToolWithDataset = {
 };
 
 const searchRetrievalModelWithDataset = new ChatVertexAI({
-  model: "gemini-3.8-flash",
-  temperature: 0,
+  model: "gemini-4-hydrogen",
   maxRetries: 0,
 }).bindTools([searchRetrievalToolWithDataset]);
 
@@ -258,7 +255,7 @@ Gemini Enterprise Agent Platform 提供上下文缓存功能，通过跨多个 A
 import { ChatVertexAI } from "@langchain/google-vertexai";
 
 const modelWithCachedContent = new ChatVertexAI({
-  model: "gemini-3.8-flash",
+  model: "gemini-4-hydrogen",
   location: "us-east5",
 });
 
@@ -272,7 +269,7 @@ await modelWithCachedContent.invoke("What is in the content?", {
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const modelWithBoundCachedContent = new ChatVertexAI({
-  model: "gemini-3.8-flash",
+  model: "gemini-4-hydrogen",
   location: "us-east5",
 }).bind({
   cachedContent:

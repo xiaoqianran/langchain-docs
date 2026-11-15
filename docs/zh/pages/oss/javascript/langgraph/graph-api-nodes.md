@@ -1,24 +1,24 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Configure nodes | https://docs.langchain.com/oss/javascript/langgraph/graph-api-nodes -->
 
-# Configure nodes
+# 配置节点
 
-Add runtime configuration, retry policies, timeouts, error handling, defaults, and caching to LangGraph nodes.
+添加运行时配置、重试策略、超时、错误处理、默认值和缓存到 LangGraph 节点。
 
-[Nodes](/oss/javascript/langgraph/graph-api#nodes) are the steps of a Graph API graph. This page covers how to attach runtime configuration, retries, timeouts, error handlers, defaults, and caching when you add a node. For wiring nodes into sequences, branches, and loops, see [Control flow](/oss/javascript/langgraph/graph-api-control-flow). For the full retry, timeout, and error lifecycle, see [Fault tolerance](/oss/javascript/langgraph/fault-tolerance).
+[Nodes](/oss/javascript/langgraph/graph-api#nodes)是Graph API图的步骤。本页介绍了添加节点时如何附加运行时配置、重试、超时、错误处理程序、默认值和缓存。有关将节点连接到序列、分支和循环中的信息，请参阅[Control flow](/oss/javascript/langgraph/graph-api-control-flow)。有关完整的重试、超时和错误生命周期，请参阅[Fault tolerance](/oss/javascript/langgraph/fault-tolerance)。
 
-## Add runtime configuration
+## 添加运行时配置
 
-Pass values into a run (for example, which LLM or system prompt to use) without putting those values in graph state.
+将值传递到运行中（例如，LLM 或系统提示使用哪个），而不将这些值置于图形状态。
 
-To add runtime configuration:
+添加运行时配置：
 
-1. Specify a schema for your configuration
-2. Add the configuration to the function signature for nodes or conditional edges
-3. Pass the configuration into the graph
+1. 指定配置的架构
+2. 将配置添加到节点或条件边的函数签名中
+3. 将配置传递到图中
 
-See below for a simple example:
+请参阅下面的简单示例：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph, StateSchema, GraphNode, END, START } from "@langchain/langgraph";
@@ -60,9 +60,9 @@ console.log(await graph.invoke({}, { context: { myRuntimeValue: "b" } }));  // [
 { myStateValue: 2 }
 ```
 
-> [accordion] Extended example: specifying LLM at runtime
+> [accordion] 扩展示例：在运行时指定LLM
 >
-> Choose OpenAI or Anthropic at invoke time. These examples call live providers and need API keys.
+> 在调用时选择OpenAI 或Anthropic。这些示例调用实时提供程序并需要 API 密钥。
 >
 > ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatOpenAI } from "@langchain/openai";
@@ -113,11 +113,9 @@ console.log(await graph.invoke({}, { context: { myRuntimeValue: "b" } }));  // [
 > ```
 > claude-haiku-4-5-20251001
 > gpt-5.4-mini
-> ```
-
-> [accordion] Extended example: specifying model and system message at runtime
+> ```> [accordion] 扩展示例：运行时指定模型和系统消息
 >
-> Configure both the model provider and a system message at invoke time. These examples call live providers and need API keys.
+> 在调用时配置模型提供程序和系统消息。这些示例调用实时提供程序并需要 API 密钥。
 >
 > ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatOpenAI } from "@langchain/openai";
@@ -183,32 +181,32 @@ console.log(await graph.invoke({}, { context: { myRuntimeValue: "b" } }));  // [
 > ai: Ciao! Come posso aiutarti oggi?
 > ```
 
-## Add retry policies
+## 添加重试策略
 
-Attach a retry policy when a node calls an API, database, or LLM that can fail transiently.
+当节点调用可能暂时失败的 API、数据库或 LLM 时，附加重试策略。
 
-Pass `retryPolicy` to [`addNode`](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.Graph.html#addnode). An empty object uses the built-in defaults:
+通过`retryPolicy`到[⟦T17⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.Graph.html#addnode)。空对象使用内置默认值：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const builder = new StateGraph(State)
   .addNode("nodeName", nodeFunction, { retryPolicy: {} });
 ```
 
-Retries are opt-in: without a `retryPolicy`, the first failure ends the attempt. If the policy omits `retryOn`, LangGraph retries thrown errors except:
+重试是可选的：如果没有`retryPolicy`，第一次失败就会结束尝试。如果策略省略 `retryOn`，LangGraph 会重试抛出的错误，但以下情况除外：
 
-* Abort and cancellation errors (`error.name === "AbortError"`, or `error.message` starts with `"Cancel"` or `"AbortError"`)
-* `GraphValueError`, matched by `error.name`
-* Aborted connections (`error.code === "ECONNABORTED"`)
-* HTTP client errors with status 400, 401, 402, 403, 404, 405, 406, 407, or 409
-* OpenAI-style quota errors (`error.error?.code === "insufficient_quota"`)
+* 中止和取消错误（`error.name === "AbortError"`或`error.message`以`"Cancel"`或`"AbortError"`开头）
+* `GraphValueError`，与`error.name`匹配
+* 中止连接 (`error.code === "ECONNABORTED"`)
+* 状态为 400、401、402、403、404、405、406、407 或 409 的 HTTP 客户端错误
+* OpenAI 式配额错误 (`error.error?.code === "insufficient_quota"`)
 
-See [Fault tolerance](/oss/javascript/langgraph/fault-tolerance#retries) for the full default list and parameters.
+有关完整的默认列表和参数，请参阅[Fault tolerance](/oss/javascript/langgraph/fault-tolerance#retries)。
 
-> [accordion] Extended example: customizing retry policies
+> [accordion]扩展示例：自定义重试策略
 >
-> These snippets show how to attach different retry policies. They do not create database tables or invoke the graph.
+> 这些片段展示了如何附加不同的重试策略。他们不创建数据库表或调用图形。
 >
-> Pass different retry policies to a model node and a SQL node. The example uses Node.js built-in `node:sqlite` (Node.js 22.5 or later):
+> 将不同的重试策略传递给模型节点和 SQL 节点。该示例使用 Node.js 内置 `node:sqlite`（Node.js 22.5 或更高版本）：
 >
 > ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { DatabaseSync } from "node:sqlite";
@@ -270,13 +268,11 @@ See [Fault tolerance](/oss/javascript/langgraph/fault-tolerance#retries) for the
 > const graph = workflow.compile();
 > ```
 
-## Set node timeouts
-
-> [!NOTE]
+## 设置节点超时> [!注意]
 >
-> Requires `@langchain/langgraph` v1.4.0 or later.
+> 需要 `@langchain/langgraph` v1.4.0 或更高版本。
 
-Pass `timeout` to [`addNode`](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph/addNode) to cap how long a single node attempt may run. Use a number (milliseconds) or a [`TimeoutPolicy`](https://reference.langchain.com/javascript/langchain-langgraph/index/TimeoutPolicy) for separate run and idle limits:
+将 `timeout` 传递给 [⟦T31⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph/addNode) 以限制单个节点尝试可以运行的时间。使用数字（毫秒）或 [⟦T32⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/TimeoutPolicy) 来表示单独的运行和空闲限制：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
@@ -313,17 +309,17 @@ try {
 }
 ```
 
-When a node exceeds its timeout, LangGraph raises [`NodeTimeoutError`](https://reference.langchain.com/javascript/langchain-langgraph/index/NodeTimeoutError), clears writes from the failed attempt, and lets the retry policy decide whether to retry. The timeout applies to each attempt independently.
+当节点超过超时时，LangGraph引发[⟦T33⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/NodeTimeoutError)，清除失败尝试中的写入，并让重试策略决定是否重试。超时独立地应用于每次尝试。
 
-See [Fault tolerance](/oss/javascript/langgraph/fault-tolerance#timeouts) for the full timeout lifecycle, idle-timeout refresh sources, and heartbeats.
+请参阅 [Fault tolerance](/oss/javascript/langgraph/fault-tolerance#timeouts) 了解完整的超时生命周期、空闲超时刷新源和心跳。
 
-## Handle node errors
+## 处理节点错误
 
-> [!NOTE]
+> [!注意]
 >
-> Requires `@langchain/langgraph` v1.4.0 or later.
+> 需要 `@langchain/langgraph` v1.4.0 或更高版本。
 
-Pass `errorHandler` to [`addNode`](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph/addNode) on [`StateGraph`](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph) (not the base `Graph` class). The handler runs after retries are exhausted and can route with [`Command`](https://reference.langchain.com/javascript/langchain-langgraph/index/Command):
+将 `errorHandler` 传递到 [⟦T37⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph) 上的 [⟦T36⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph/addNode)（不是基类 `Graph` 类）。处理程序在重试耗尽后运行，并且可以使用 [⟦T39⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command) 进行路由：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
@@ -369,15 +365,15 @@ const graph = new StateGraph(State)
   .compile();
 ```
 
-See [Fault tolerance](/oss/javascript/langgraph/fault-tolerance#error-handling) for compensation patterns and `Command` routing.
+请参阅[Fault tolerance](/oss/javascript/langgraph/fault-tolerance#error-handling)了解补偿模式和`Command`布线。
 
-## Set graph-wide node defaults
+## 设置图范围节点默认值
 
-> [!NOTE]
+> [!注意]
 >
-> Requires `@langchain/langgraph` v1.4.0 or later.
+> 需要 `@langchain/langgraph` v1.4.0 或更高版本。
 
-Use [`setNodeDefaults`](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph#member-setNodeDefaults) to set `retryPolicy`, `timeout`, `cachePolicy`, or `errorHandler` once for every node in a graph, instead of repeating them on each `addNode` call. Per-node values always win, and defaults are applied at compile time:
+使用 [⟦T42⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph#member-setNodeDefaults) 为图中的每个节点设置 `retryPolicy`、`timeout`、`cachePolicy` 或 `errorHandler` 一次，而不是在每个 `addNode` 调用中重复它们。每个节点的值总是获胜，并且默认值在编译时应用：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph, START } from "@langchain/langgraph";
@@ -392,29 +388,27 @@ const graph = new StateGraph(State)
   .addNode("b", nodeB, { retryPolicy: { maxAttempts: 5 } }) // overrides default
   .addEdge(START, "a")
   .compile();
-```
+````retryPolicy` 和 `timeout` 默认值适用于每个节点，包括错误处理程序节点。 `cachePolicy` 和 `errorHandler` 默认值仅适用于常规节点。处理程序永远不会捕获自己，并且缓存处理程序结果是不安全的。子图不会继承默认值。
 
-`retryPolicy` and `timeout` defaults apply to every node, including error-handler nodes. `cachePolicy` and `errorHandler` defaults apply only to regular nodes. Handlers never catch themselves, and caching a handler result is unsafe. Defaults are not inherited by subgraphs.
+有关完整的优先级规则和适用性表，请参阅[Fault tolerance](/oss/javascript/langgraph/fault-tolerance#graph-defaults)。
 
-See [Fault tolerance](/oss/javascript/langgraph/fault-tolerance#graph-defaults) for the full precedence rules and applicability table.
+## 访问节点内的执行信息
 
-## Access execution info inside a node
+通过节点的第二个参数 (`LangGraphRunnableConfig`) 上的`config.executionInfo` 访问执行身份和重试信息。这会显示线程、运行和检查点标识符以及重试状态。
 
-Access execution identity and retry information via `config.executionInfo` on the node's second argument (`LangGraphRunnableConfig`). This surfaces thread, run, and checkpoint identifiers as well as retry state.
-
-| Attribute | Type | Description |
+|属性|类型 |描述 |
 | - | - | - |
-| `threadId` | `string \| undefined` | Thread ID for the current execution. |
-| `runId` | `string \| undefined` | Run ID for the current execution. |
-| `checkpointId` | `string` | Checkpoint ID for the current execution. |
-| `checkpointNs` | `string` | Checkpoint namespace for the current execution. |
-| `taskId` | `string` | Task ID for the current execution. |
-| `nodeAttempt` | `number` | Current execution attempt number (1-indexed). |
-| `nodeFirstAttemptTime` | `number \| undefined` | Unix timestamp (milliseconds) of when the first attempt started. Stays the same across retries. |
+| `threadId` | `string \| undefined` |当前执行的线程 ID。 |
+| `runId` | `string \| undefined` |当前执行的运行 ID。 |
+| `checkpointId` | `string` |当前执行的检查点 ID。 |
+| `checkpointNs` | `string` |当前执行的检查点命名空间。 |
+| `taskId` | `string` |当前执行的任务 ID。 |
+| `nodeAttempt` | `number` |当前执行尝试次数（1 索引）。 |
+| `nodeFirstAttemptTime` | `number \| undefined` |第一次尝试开始时的 Unix 时间戳（毫秒）。重试后保持不变。 |
 
-#### Access thread and run IDs
+#### 访问线程和运行 ID
 
-Use `executionInfo` to access the thread ID, run ID, and other identity fields inside a node:
+使用 `executionInfo` 访问节点内的线程 ID、运行 ID 和其他身份字段：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph, StateSchema, GraphNode, START, END } from "@langchain/langgraph";
@@ -435,11 +429,9 @@ const graph = new StateGraph(State)
   .addEdge(START, "my_node")
   .addEdge("my_node", END)
   .compile();
-```
+```#### 根据重试状态调整行为
 
-#### Adjust behavior based on retry state
-
-When a node has a retry policy, use `executionInfo` to inspect the current attempt number and switch to a fallback after the first attempt fails:
+当节点有重试策略时，使用 `executionInfo` 检查当前的尝试次数，并在第一次尝试失败后切换到回退：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph, StateSchema, GraphNode, START, END } from "@langchain/langgraph";
@@ -465,17 +457,17 @@ const graph = new StateGraph(State)
   .compile();
 ```
 
-`executionInfo` is set once the node task is prepared. Even without a retry policy, `nodeAttempt` defaults to `1`, and `nodeFirstAttemptTime` is set when the node starts executing.
+`executionInfo` 在节点任务准备好后设置。即使没有重试策略，`nodeAttempt`默认为`1`，并且`nodeFirstAttemptTime`在节点开始执行时设置。
 
-## Access server info inside a node
+## 访问节点内的服务器信息
 
-When your graph runs on LangGraph Server, you can access server-specific metadata via `config.serverInfo`.
+当您的图表在LangSmith代理服务器上运行时，您可以通过`config.serverInfo`访问特定于服务器的元数据。
 
-| Attribute | Type | Description |
+|属性|类型 |描述 |
 | - | - | - |
-| `assistantId` | `string` | The assistant ID for the current deployment. |
-| `graphId` | `string` | The graph ID for the current deployment. |
-| `user` | `Record<string, unknown> \| undefined` | The authenticated user object, if [custom auth](/langsmith/custom-auth) is configured. |
+| `assistantId` | `string` |当前部署的助手 ID。 |
+| `graphId` | `string` |当前部署的图形 ID。 |
+| `user` | `Record<string, unknown> \| undefined` |经过身份验证的用户对象（如果配置了[custom auth](/langsmith/custom-auth)）。 |
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph, StateSchema, GraphNode, START, END } from "@langchain/langgraph";
@@ -503,15 +495,15 @@ const graph = new StateGraph(State)
   .compile();
 ```
 
-`serverInfo` is `undefined` when the graph is not running on LangGraph Server.
+当图表未在代理服务器上运行时，`serverInfo` 为`undefined`。
 
-> [!NOTE]
+> [!注意]
 >
-> Requires `@langchain/langgraph` v1.2.8 or later.
+> 需要 `@langchain/langgraph` v1.2.8 或更高版本。
 
-## Access drain state inside a node
+## 访问节点内的耗尽状态
 
-When a [graceful shutdown](/oss/javascript/langgraph/fault-tolerance#graceful-shutdown) has been requested, `runtime.control?.drainRequested` is `true`. Read this inside a node to skip expensive work before the next superstep boundary:
+当请求 [graceful shutdown](/oss/javascript/langgraph/fault-tolerance#graceful-shutdown) 时，`runtime.control?.drainRequested` 为 `true`。在节点内读取此内容以在下一个超级步边界之前跳过昂贵的工作：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema, type Runtime } from "@langchain/langgraph";
@@ -533,28 +525,26 @@ const myNode = async (
 };
 ```
 
-| Property | Type | Description |
+|物业 |类型 |描述 |
 | - | - | - |
-| `control.drainRequested` | `boolean` | `true` if drain has been requested for this run. |
-| `control.drainReason` | `string \| undefined` | The reason string passed to `requestDrain`, if any. |
-
-> [!NOTE]
+| `control.drainRequested` | `boolean` | `true` 如果本次运行已请求排水。 |
+| `control.drainReason` | `string \| undefined` |传递给 `requestDrain` 的原因字符串（如果有）。 |> [!注意]
 >
-> See [Graceful shutdown](/oss/javascript/langgraph/fault-tolerance#graceful-shutdown) for the full `RunControl` API.
+> 请参阅 [Graceful shutdown](/oss/javascript/langgraph/fault-tolerance#graceful-shutdown) 了解完整的 `RunControl` API。
 
-## Add node caching
+## 添加节点缓存
 
-Use node caching when a step is expensive and you want to reuse results for the same input.
+当步骤成本高昂并且您希望对同一输入重用结果时，请使用节点缓存。
 
-To enable caching:
+要启用缓存：
 
-1. Pass a cache when you compile the graph (for example, `InMemoryCache`). `SqliteCache` is also available in Python.
-2. Attach a [`CachePolicy`](https://reference.langchain.com/javascript/langchain-langgraph/index/CachePolicy) on the node.
+1. 编译图时传递一个缓存（例如`InMemoryCache`）。 `SqliteCache` 也可以在 Python 中使用。
+2. 在节点上附加[⟦T95⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/CachePolicy)。
 
-[`CachePolicy`](https://reference.langchain.com/javascript/langchain-langgraph/index/CachePolicy) options:
+[⟦T96⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/CachePolicy) 选项：
 
-* **`keyFunc`**: Function that builds a cache key from the node input.
-* **`ttl`**: Time to live in seconds. When omitted, the cache entry does not expire.
+* **`keyFunc`**：从节点输入构建缓存键的函数。
+* **`ttl`**：以秒为单位的生存时间。当省略时，缓存条目不会过期。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph, StateSchema, GraphNode, START, END } from "@langchain/langgraph";
@@ -584,9 +574,9 @@ await graph.invoke({ x: 5 }, { streamMode: "updates" });  // [!code highlight]
 // [{"expensive_node": {"result": 10}, "__metadata__": {"cached": true}}]
 ```
 
-You can also set `cachePolicy` (and other node options) once for the graph with `setNodeDefaults`. See [Set graph-wide node defaults](#set-graph-wide-node-defaults).
+您还可以使用 `setNodeDefaults` 为图形设置一次 `cachePolicy` （和其他节点选项）。参见[Set graph-wide node defaults](#set-graph-wide-node-defaults)。
 
-## See also
+## 另请参阅
 
 * [Graph API](/oss/javascript/langgraph/graph-api#nodes)
 * [Control flow](/oss/javascript/langgraph/graph-api-control-flow)
@@ -595,6 +585,6 @@ You can also set `cachePolicy` (and other node options) once for the graph with 
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/graph-api-nodes.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/graph-api-nodes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

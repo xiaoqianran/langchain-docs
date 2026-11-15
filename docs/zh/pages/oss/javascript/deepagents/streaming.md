@@ -27,7 +27,7 @@ Deep Agents 使用 LangGraph 的子图流来处理来自子代理执行的表面
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   systemPrompt: "You are a helpful research assistant",
   subagents: [
     {
@@ -64,7 +64,7 @@ for await (const [namespace, chunk] of await agent.stream(
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt: "You are a helpful research assistant",
   subagents: [
     {
@@ -288,7 +288,7 @@ for await (const [namespace, chunk] of await agent.stream(
 
 当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。
 
-|命名空间|来源 |
+|命名空间 |来源 |
 | - | - |
 | `()`（空）|主代理|
 | `("tools:abc123",)` |由主代理的 `task` 工具调用 `abc123` 生成的子代理 |
@@ -330,7 +330,7 @@ for await (const [namespace, chunk] of await agent.stream(
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   systemPrompt:
     "You are a project coordinator with no research knowledge. " +
     "For every user request, you must call the task() tool with " +
@@ -384,7 +384,7 @@ for await (const [namespace, chunk] of await agent.stream(
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt:
     "You are a project coordinator with no research knowledge. " +
     "For every user request, you must call the task() tool with " +
@@ -875,7 +875,7 @@ const analyzeData = tool(
 );
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   systemPrompt:
     "You are a coordinator. For any analysis request, you MUST delegate " +
     "to the analyst subagent using the task tool. Never try to answer directly. " +
@@ -949,7 +949,7 @@ const analyzeData = tool(
 );
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt:
     "You are a coordinator. For any analysis request, you MUST delegate " +
     "to the analyst subagent using the task tool. Never try to answer directly. " +
@@ -1582,7 +1582,7 @@ for await (const [mode, data] of await agent.stream(
 
 ## 流块形状对于 `subgraphs=True`，块形状取决于您是否传递一种或多种流模式：
 
-| `stream_mode` |块状|
+| `stream_mode` |块状 |
 | - | - |
 |单模式（例如`"updates"`）| `(namespace, data)` |
 |多种模式（例如`["messages", "updates"]`）| `(namespace, mode, data)` |

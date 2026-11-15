@@ -37,7 +37,7 @@
 
 |钩|当它运行时 |
 | - | - |
-| `wrapModelCall` |各地型号调用 |
+| `wrapModelCall` |各地型号调用|
 | `wrapToolCall` |围绕每个工具调用|
 
 **示例：**
@@ -271,7 +271,7 @@ const callCounterMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [...],
   middleware: [callCounterMiddleware],
 });
@@ -385,7 +385,7 @@ const userContextMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   middleware: [userContextMiddleware],
   tools: [],
   contextSchema,
@@ -417,7 +417,7 @@ const result = await agent.invoke(
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   middleware: [middleware1, middleware2, middleware3],
   tools: [...],
 });
@@ -473,7 +473,7 @@ const agent = createAgent({
 import { createAgent, createMiddleware, AIMessage } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   middleware: [
     createMiddleware({
       name: "BlockedContentMiddleware",
@@ -536,7 +536,7 @@ const addContextMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   systemPrompt: "You are a helpful assistant.",
   middleware: [addContextMiddleware],
 });
@@ -556,7 +556,7 @@ const addContextMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt: "You are a helpful assistant.",
   middleware: [addContextMiddleware],
 });
@@ -710,7 +710,7 @@ const toolSelectorMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: allTools,
   middleware: [toolSelectorMiddleware],
 });
@@ -780,7 +780,7 @@ const myOtherMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   systemPrompt: "You are a helpful assistant.",
   middleware: [myMiddleware, myOtherMiddleware],
 });
@@ -802,7 +802,7 @@ new SystemMessage({
 });
 ```
 
-使用[⟦T103⟧](https://reference.langchain.com/javascript/langchain-core/utils/stream/concat)保留由其他中间件创建的缓存控制元数据或结构化内容块。
+使用 [⟦T103⟧](https://reference.langchain.com/javascript/langchain-core/utils/stream/concat) 保存由其他中间件创建的缓存控制元数据或结构化内容块。
 
 ## 其他资源
 

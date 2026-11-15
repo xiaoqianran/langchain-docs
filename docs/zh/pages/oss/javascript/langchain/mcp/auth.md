@@ -57,7 +57,7 @@ const adapter = new MCPAdapter({
 
 OAuth 允许用户授权您的应用程序访问 MCP 服务器。将 `OAuthClientProvider` 传递为 `authProvider`。 SDK 处理发现、客户端注册、代码交换和令牌刷新。您的应用程序提供提供者的存储、浏览器重定向和回调处理程序。
 
-添加 `@modelcontextprotocol/client` 2.2.0 或更高版本作为直接依赖项。适配器依赖于相同的范围，因此您的应用程序和适配器共享一份 SDK 副本。回调传输，`SdkHttpError`和`SseError`来自它。使用 SDK 的 [OAuth client guide](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/docs/clients/oauth.md) 实现您的提供程序。为您的回调路由配置其`redirectUrl`，并存储客户端信息、令牌、PKCE 验证程序和发现状态。包含 `invalidateCredentials()`，因此拒绝的刷新凭据可以触发新的登录。对于每个用户和 MCP 服务器，将每个提供程序及其存储分开。下面的示例还将每个挂起的登录绑定到经过身份验证的应用程序会话。从应用程序的会话中间件读取用户和会话 ID，而不是从回调查询参数中读取。
+添加 `@modelcontextprotocol/client` 2.2.0 或更高版本作为直接依赖项。适配器依赖于相同的范围，因此您的应用程序和适配器共享一份 SDK 副本。回调传输，`SdkHttpError`和`SseError`来自它。使用 SDK 的 [OAuth client guide](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/docs/clients/oauth.md) 实现您的提供程序。为您的回调路由配置其`redirectUrl`，并存储客户端信息、令牌、PKCE 验证程序和发现状态。包含 `invalidateCredentials()`，因此拒绝的刷新凭据可以触发新的登录。对于每个用户和 MCP 服务器，将每个提供者及其存储分开。下面的示例还将每个挂起的登录绑定到经过身份验证的应用程序会话。从应用程序的会话中间件读取用户和会话 ID，而不是从回调查询参数中读取。
 
 下面的 `createMcpSession()` 帮助器连接了这些步骤：
 
@@ -176,7 +176,7 @@ const result = await crm.listTools();
 // Otherwise, pass result.tools to your agent.
 ```
 
-保持 `crm` 可用于该应用程序的会话，直到回调完成。不要与其他会话共享其提供者。### 完成重定向
+保持 `crm` 可用于该应用程序的会话，直到回调完成。不要与其他会话共享其提供程序。### 完成重定向
 
 用户登录后，授权服务器重定向到您的提供商的`redirectUrl`。在该路由中，检索相同的 `crm` 实例以及调用者经过验证的用户和会话 ID，然后完成登录：
 
@@ -262,14 +262,14 @@ const tools = await crm.listTools(["crm"], {
 * **每个提供者对象一个连接**：每个不同的提供者对象都有自己的连接，一直保留到`close()`。每个用户重用一个提供程序对象，而不是每次调用创建一个提供程序对象。
 * **隔离目录**：目录由提供者对象和标头作为键控，因此一个用户永远不会收到另一用户的缓存工具列表。当同一提供者对象背后的帐户发生更改时，重新创建适配器。
 
-从传入请求中解析用户，例如使用 LangGraph 服务器上的 [custom auth handler](/langsmith/auth)。
+从传入请求中解析用户，例如使用代理服务器上的[custom auth handler](/langsmith/auth)。
 
 ## 另请参阅
 
 * [Migrate to ⟦T83⟧ 2.0](/oss/javascript/migrate/langchain-mcp-adapters)
 * [MCP authorization specification](https://modelcontextprotocol.io/specification/draft/basic/authorization)
 * [MCP TypeScript SDK OAuth client guide](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/docs/clients/oauth.md)
-* [Custom authentication for a LangGraph server](/langsmith/auth)
+* [Custom authentication for Agent Server](/langsmith/auth)
 
 ***
 

@@ -95,11 +95,11 @@ import { OpenAIModerationChain } from "@langchain/classic/chains";
 import { createAgent, openAIModerationMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [searchTool, databaseTool],
   middleware: [
     openAIModerationMiddleware({
-      model: "openai:gpt-5.5",
+      model: "openai:gpt-6.1-sol",
       moderationModel: "omni-moderation-latest",
       checkInput: true,
       checkOutput: true,
@@ -111,7 +111,7 @@ const agent = createAgent({
 >
 > **型号** `string | BaseChatModel` *必填*
 >
-> OpenAI 用于审核的模型。可以是模型名称字符串（例如，`"openai:gpt-5.5"`）或`BaseChatModel`实例。中间件将使用此模型的客户端来访问审核端点。
+> OpenAI 用于审核的模型。可以是模型名称字符串（例如，`"openai:gpt-6.1-sol"`）或`BaseChatModel`实例。中间件将使用此模型的客户端来访问审核端点。
 >
 > **moderationModel** `ModerationModel`（默认：omni-moderation-latest）
 >
@@ -167,11 +167,11 @@ const agent = createAgent({
 >
 > // Basic moderation
 > const agent = createAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   tools: [searchTool, customerDataTool],
 >   middleware: [
 >     openAIModerationMiddleware({
->       model: "openai:gpt-5.5",
+>       model: "openai:gpt-6.1-sol",
 >       moderationModel: "omni-moderation-latest",
 >       checkInput: true,
 >       checkOutput: true,
@@ -181,11 +181,11 @@ const agent = createAgent({
 >
 > // Strict moderation with custom message
 > const agentStrict = createAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   tools: [searchTool, customerDataTool],
 >   middleware: [
 >     openAIModerationMiddleware({
->       model: "openai:gpt-5.5",
+>       model: "openai:gpt-6.1-sol",
 >       moderationModel: "omni-moderation-latest",
 >       checkInput: true,
 >       checkOutput: true,
@@ -200,11 +200,11 @@ const agent = createAgent({
 >
 > // Moderation with replacement behavior
 > const agentReplace = createAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   tools: [searchTool],
 >   middleware: [
 >     openAIModerationMiddleware({
->       model: "openai:gpt-5.5",
+>       model: "openai:gpt-6.1-sol",
 >       checkInput: true,
 >       exitBehavior: "replace",
 >       violationMessage: "[Content removed due to safety policies]",

@@ -14,13 +14,13 @@
 
 1. **非推理网络搜索**：模型将查询直接传递到搜索工具的快速查找
 2. **带有推理模型的代理搜索**：模型主动管理搜索过程，分析结果并决定是否继续搜索
-3. **深入研究**：使用`o3-deep-research`或`gpt-5`等模型进行扩展调查，并进行大量推理
+3. **深入研究**：使用 `o3-deep-research` 或 `gpt-5` 等模型进行深入研究，并进行大量推理
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI, tools } from "@langchain/openai";
 
 const model = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
 });
 
 // Basic usage
@@ -90,7 +90,7 @@ MCP 工具有两种使用方法：
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI, tools } from "@langchain/openai";
 
-const model = new ChatOpenAI({ model: "gpt-5.5" });
+const model = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
 const response = await model.invoke("Roll 2d4+1", {
   tools: [
@@ -135,7 +135,7 @@ const response = await model.invoke("What's on my calendar today?", {
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI, tools } from "@langchain/openai";
 
-const model = new ChatOpenAI({ model: "gpt-5.5" });
+const model = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
 // Basic usage with auto container (default 1GB memory)
 const response = await model.invoke("Solve the equation 3x + 11 = 14", {
@@ -200,7 +200,7 @@ const response = await model.invoke("Continue working with the data", {
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI, tools } from "@langchain/openai";
 
-const model = new ChatOpenAI({ model: "gpt-5.5" });
+const model = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
 const response = await model.invoke("What is deep research by OpenAI?", {
   tools: [
@@ -234,7 +234,7 @@ const response = await model.invoke("What is deep research by OpenAI?", {
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI, tools } from "@langchain/openai";
 
-const model = new ChatOpenAI({ model: "gpt-5.5" });
+const model = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
 // Basic usage - generate an image
 const response = await model.invoke(
@@ -342,7 +342,7 @@ const response2 = await model.invoke(
 
 > **测试版**：计算机使用处于测试阶段。仅在沙盒环境中使用，请勿用于高风险或经过身份验证的任务。始终对重要决策实施人机参与。
 
-**工作原理**：该工具连续循环运行：
+**工作原理**：该工具以连续循环方式运行：
 
 1.模型发送计算机动作（点击、打字、滚动等）
 2. 您的代码在受控环境中执行这些操作
@@ -395,7 +395,7 @@ const response = await llmWithComputer.invoke(
 ### 本地 shell 工具
 
 本地 Shell 工具允许模型在您提供的计算机上本地运行 shell 命令。命令在您自己的运行时内执行 - API 仅返回指令。> **安全警告**：运行任意 shell 命令可能很危险。在将命令转发到系统 shell 之前，始终执行沙箱执行或添加严格的允许/拒绝列表。
-> **注意**：此工具设计用于 [Codex CLI](https://github.com/openai/codex) 和 `codex-mini-latest` 型号。
+> **注意**：该工具设计用于 [Codex CLI](https://github.com/openai/codex) 和 `codex-mini-latest` 型号。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI, tools } from "@langchain/openai";

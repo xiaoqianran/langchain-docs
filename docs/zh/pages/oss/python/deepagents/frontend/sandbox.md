@@ -4,7 +4,7 @@
 
 # 沙箱
 
-为沙盒环境支持的编码代理构建类似 IDE 的 UI
+为沙箱环境支持的编码代理构建类似 IDE 的 UI
 
 编码代理需要的不仅仅是聊天窗口。他们需要一个文件浏览器、一个代码
 查看器、差异面板、IDE 体验。这种模式连接了很深的
@@ -62,7 +62,7 @@ graph LR
   class API orangeHighlight;
 ```## 沙箱生命周期
 
-在连接前端之前，选择沙箱的生存时间以及共享沙箱的人员。
+在连接前端之前选择沙箱的生存时间以及共享沙箱的人员。
 请参阅 [Sandbox lifecycle](/oss/python/deepagents/going-to-production#lifecycle) 了解线程范围
 与助手范围的沙箱，异步 [graph factory](/langsmith/graph-rebuild)
 设置、TTL 行为和 SDK 调用示例。
@@ -112,7 +112,7 @@ API 网址。会话 ID 不会在浏览器会话中持续存在。
 需要工具配置。构建此 UI 在生产设置之上添加了一项要求：
 **自定义 API 服务器** 在代理图之外运行，因此代理
 后端和您的文件浏览路由必须解析**相同的沙箱**
-每个线程。将沙箱 ID 存储在线程元数据上并共享一个
+每个线程。将沙箱 ID 存储在线程元数据上并共享单个
 它们之间的查找功能。
 
 ### 从线程元数据解析沙箱
@@ -142,7 +142,7 @@ def get_thread_id_from_config() -> str:
 
 def agent():
     return create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
+        model="google_genai:gemini-4-hydrogen",
         backend=lambda _runtime: get_or_create_sandbox_for_thread(
             get_thread_id_from_config()
         ),
@@ -174,7 +174,7 @@ def get_thread_id_from_config() -> str:
 
 def agent():
     return create_deep_agent(
-        model="openai:gpt-5.5",
+        model="openai:gpt-6.1-sol",
         backend=lambda _runtime: get_or_create_sandbox_for_thread(
             get_thread_id_from_config()
         ),
@@ -424,9 +424,9 @@ async def read_file(
 ### 配置`langgraph.json`
 
 注册代理图和 API 服务器。 `http.app`字段告诉我们
-LangGraph 平台为您的自定义路线和默认路线提供服务。
+代理服务器为您的自定义路由和默认路由提供服务。
 参见 [application structure](/oss/python/langgraph/application-structure) 和
-[LangSmith Deployments](/oss/python/deepagents/going-to-production#langsmith-deployments)
+[LangSmith Agent Server](/oss/python/deepagents/going-to-production#langsmith-deployments)
 了解全套 `langgraph.json` 选项。
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -455,7 +455,7 @@ LangGraph 平台为您的自定义路线和默认路线提供服务。
 文件浏览的端点。
 
 对于生产部署，请将 `apiUrl` 指向您的
-[LangSmith Deployment](/langsmith/deployment)，并通过稳定
+[Agent Server URL](/langsmith/deployment)，并通过稳定
 每次运行时`thread_id`。参见
 [Frontend](/oss/python/deepagents/going-to-production#frontend) 在
 [Going to production](/oss/python/deepagents/going-to-production) 对于这些设置
@@ -464,7 +464,7 @@ LangGraph 平台为您的自定义路线和默认路线提供服务。
 
 ### 线程创建
 
-页面加载时创建一个LangGraph线程并将其ID保存在
+页面加载时创建一个LangGraph线程，并将其ID持久化在
 `sessionStorage` 因此页面重新加载重新连接到同一个沙箱：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -766,7 +766,7 @@ function detectChanges(
 | - | - | - |
 |反应 | [⟦T59⟧](https://diffs.com) | `<FileDiff>` 与 `parseDiffFromFile` |
 |视图 | [⟦T62⟧](https://github.com/MrWangJustToDo/git-diff-view) | `<DiffView>` 与 `generateDiffFile` 来自 `@git-diff-view/file` |
-|苗条 | [⟦T66⟧](https://github.com/MrWangJustToDo/git-diff-view) | `<DiffView>` 与 `generateDiffFile` 来自 `@git-diff-view/file` |
+|苗条| [⟦T66⟧](https://github.com/MrWangJustToDo/git-diff-view) | `<DiffView>` 与 `generateDiffFile` 来自 `@git-diff-view/file` |
 |角度| [⟦T70⟧](https://github.com/rars/ngx-diff) | `<ngx-unified-diff>` 与 `[before]` 和 `[after]` |
 
 `@pierre/diffs` 示例（React）：
@@ -853,7 +853,7 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
 
 * **对生产应用程序使用线程范围的沙箱**。参见
   [Sandbox lifecycle](/oss/python/deepagents/going-to-production#lifecycle)。
-* **在代理后端和 API 服务器之间共享沙箱解析**
+* **通过代理后端和 API 服务器之间共享沙箱解析**
   线程元数据，因此两者都解析相同的环境，没有内存缓存。
 * **用真实的项目为沙箱播种**。参见
   [File transfers](/oss/python/deepagents/going-to-production#file-transfers)。
@@ -884,7 +884,7 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
 >
 > 完整的 `langgraph.json` 参考，包括自定义 `http.app` 路线。
 
-## 相关LangChain指南沙箱 IDE 基于核心 LangChain 前端模式构建。这些指南涵盖
+## 相关LangChain指南沙盒 IDE 基于核心 LangChain 前端模式构建。这些指南涵盖
 本页面使用相同的 `useStream` 原语：
 
 > [卡][Tool calling](/oss/python/langchain/frontend/tool-calling)

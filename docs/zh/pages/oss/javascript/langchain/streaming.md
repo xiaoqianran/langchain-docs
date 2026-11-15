@@ -32,7 +32,7 @@ LangChain 流媒体可以实现什么：
 
 |模式|描述 |
 | - | - |
-| `updates` |每个代理步骤后流状态更新。如果在同一步骤中进行多个更新（例如，运行多个节点），则这些更新将单独流式传输。 |
+| `updates` |每个代理步骤后流状态更新。如果在同一步骤中进行多个更新（例如，运行多个节点），则这些更新将单独进行流式传输。 |
 | `messages` |从调用 LLM 的任何图形节点流式传输 `(token, metadata)` 的元组。 |
 | `custom` |使用流编写器从图形节点内部流式传输自定义数据。 |
 
@@ -46,7 +46,7 @@ LangChain 流媒体可以实现什么：
 * **工具节点**：[⟦T27⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)及执行结果
 * **LLM节点**：最终AI响应
 
-通过 `configurable` 传递 `thread_id`，以便对话被检查点并且后续轮次可以恢复相同的历史记录。 `thread_id` 独立于`streamMode`；您还可以将 `context` 与其一起传递，以获取工具从 `runtime.context` 读取的每次运行数据。
+通过 `configurable` 传递 `thread_id`，因此对话会被检查点，并且后续回合可以恢复相同的历史记录。 `thread_id` 独立于`streamMode`；您还可以将 `context` 与其一起传递，以获取工具从 `runtime.context` 读取的每次运行数据。
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, tool } from "langchain";
@@ -68,7 +68,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [getWeather],
   checkpointer: new MemorySaver(),
 });
@@ -121,7 +121,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [getWeather],
   checkpointer: new MemorySaver(),
 });
@@ -423,7 +423,7 @@ const finalState = await stream.output;
 
 > [!注意]
 >
-> 保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/javascript/langchain/long-term-memory) 配置代理。在 [LangSmith deployments](/langsmith/deployment) 上，会自动配置检查点。在本地，显式传递一个，例如 `createAgent({ ..., checkpointer: new MemorySaver() })`。为了简洁起见，此页面上的其余片段省略了 `thread_id`，但您应该在生产中传递它。
+> 保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/javascript/langchain/long-term-memory) 配置代理。在 [LangSmith Agent Server](/langsmith/deployment) 上，会自动配置检查点。在本地，显式传递一个，例如 `createAgent({ ..., checkpointer: new MemorySaver() })`。为了简洁起见，此页面上的其余片段省略了 `thread_id`，但您应该在生产中传递它。
 
 ## LLM 代币
 
@@ -634,7 +634,7 @@ The weather in San Francisco is: It's always sunny in San Francisco!
 import { ChatOpenAI } from "@langchain/openai";
 
 const model = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   streaming: false,  // [!code highlight]
 });
 ```

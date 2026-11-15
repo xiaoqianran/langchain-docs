@@ -8,7 +8,7 @@
 
 [Google AI](https://ai.google.dev/)提供多种不同的聊天模式，包括功能强大的Gemini系列。有关最新型号、其功能、上下文窗口等的信息，请前往[Google AI docs](https://ai.google.dev/gemini-api/docs/models/gemini)。
 
-这将帮助您开始使用 `ChatGoogleGenerativeAI` [chat models](/oss/javascript/langchain/models)。有关所有`ChatGoogleGenerativeAI`功能和配置的详细文档，请前往[API reference](https://reference.langchain.com/javascript/langchain-google-genai/ChatGoogleGenerativeAI)。
+这将帮助您开始使用 `ChatGoogleGenerativeAI` [chat models](/oss/javascript/langchain/models)。有关所有 `ChatGoogleGenerativeAI` 功能和配置的详细文档，请前往 [API reference](https://reference.langchain.com/javascript/langchain-google-genai/ChatGoogleGenerativeAI)。
 
 > [!注意]
 >
@@ -24,7 +24,7 @@
 ### 集成细节
 
 |班级 |套餐 |可串行化| [PY support](/oss/python/integrations/chat/google_generative_ai) |下载 |版本 |
-| :-| :-| :-: | :-: | :-: | :-: |
+| :- | :- | :-: | :-: | :-: | :-: |
 | [⟦T24⟧](https://reference.langchain.com/javascript/langchain-google-genai/ChatGoogleGenerativeAI) | [⟦T25⟧](https://www.npmjs.com/package/@langchain/google-genai) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/google-genai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/google-genai?style=flat-square\&label=%20&) |
 
 ### 模型特点
@@ -171,7 +171,7 @@ J'adore programmer.
 
 ## 安全设置
 
-Gemini 型号具有可以覆盖的默认安全设置。如果您从模型中收到大量“安全警告”，您可以尝试调整模型的 safety\_settings 属性。例如，要关闭对危险内容的安全阻止，您可以从 `@google/generative-ai` 包导入枚举，然后按如下方式构建 LLM：
+Gemini 型号具有可以覆盖的默认安全设置。如果您从模型中收到大量“安全警告”，您可以尝试调整模型的 safety_settings 属性。例如，要关闭对危险内容的安全阻止，您可以从 `@google/generative-ai` 包导入枚举，然后按如下方式构建 LLM：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
@@ -220,7 +220,7 @@ const fakeBrowserTool = tool((_) => {
 })
 
 const llmWithTool = new ChatGoogleGenerativeAI({
-  model: "gemini-3.6-flash",
+  model: "gemini-4-hydrogen",
 }).bindTools([fakeBrowserTool]) // Bind your tools to the model
 
 const toolRes = await llmWithTool.invoke([
@@ -572,7 +572,7 @@ const fileResult = await fileManager.uploadFile(pathToVideoFile, {
 
 // creates cached content AFTER uploading is finished
 const cachedContent = await cacheManager.create({
-    model: "models/gemini-2.5-flash",
+    model: "models/gemini-4-hydrogen",
     displayName: displayName,
     systemInstruction: "You are an expert video analyzer, and your job is to answer " +
       "the user's query based on the video file you have access to.",
@@ -604,7 +604,7 @@ await model.invoke("Summarize the video");
 
 ## 双子座提示常见问题解答
 
-截至本文档撰写时（2023/12/12），Gemini对其接受的提示的类型和结构有一些限制。具体来说：
+截至本文档撰写时（2023/12/12），Gemini对其接受的提示类型和结构有一些限制。具体来说：
 
 1. 提供多模式（图像）输入时，最多只能显示 1 条“人类”（用户）类型的消息。您不能传递多条消息（尽管单个人工消息可能有多个内容条目）
 2. 系统消息不受本机支持，并且将与第一条人工消息（如果存在）合并。

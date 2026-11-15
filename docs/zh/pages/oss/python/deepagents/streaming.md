@@ -12,22 +12,22 @@
 
 Deep Agents 构建在 LangGraph 的流基础架构上，为子代理流提供一流的支持。当深度代理将工作委托给子代理时，您可以独立地传输来自每个子代理的更新 - 实时跟踪进度、LLM 令牌和工具调用。
 
-What's possible with deep agent streaming:
+深度代理流可以实现什么：
 
 * [**Stream subagent progress**](#subagent-progress)—跟踪每个子代理并行运行时的执行情况。
-* [**Stream LLM tokens**](#llm-tokens)—stream tokens from the main agent and each subagent.
+* [**Stream LLM tokens**](#llm-tokens)—来自主代理和每个子代理的流令牌。
 * [**Stream tool calls**](#tool-calls)—查看子代理执行中的工具调用和结果。
 * [**Stream custom updates**](#custom-updates)—从内部子代理节点发出用户定义的信号。
 
-## Enable subgraph streaming
+## 启用子图流
 
-Deep Agents use LangGraph's subgraph streaming to surface events from subagent execution.要接收子代理事件，请在流式传输时启用 `stream_subgraphs`。
+Deep Agents 使用 LangGraph 的子图流来处理来自子代理执行的表面事件。要接收子代理事件，请在流式传输时启用 `stream_subgraphs`。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt="You are a helpful research assistant",
     subagents=[
         {
@@ -58,7 +58,7 @@ for chunk in agent.stream(
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt="You are a helpful research assistant",
     subagents=[
         {
@@ -242,9 +242,9 @@ for chunk in agent.stream(
 
 ## 命名空间当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。
 
-|命名空间|来源 |
+|命名空间 |来源 |
 | - | - |
-| `()`（空）| Main agent |
+| `()`（空）|主代理|
 | `("tools:abc123",)` |由主代理的 `task` 工具调用 `abc123` 生成的子代理 |
 | `("tools:abc123", "model_request:def456")` |子代理内的模型请求节点 |
 
@@ -281,7 +281,7 @@ for chunk in agent.stream(
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt=(
         "You are a project coordinator with no research knowledge. "
         "For every user request, you must call the task() tool with "
@@ -329,7 +329,7 @@ for chunk in agent.stream(
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt=(
         "You are a project coordinator with no research knowledge. "
         "For every user request, you must call the task() tool with "
@@ -624,7 +624,7 @@ Subagent complete: task
 [main agent] step: model_request
 ```
 
-## LLM tokens
+## LLM 代币
 
 使用 `stream_mode="messages"` 从主代理和子代理流式传输各个令牌。每个消息事件都包含标识源代理的元数据。
 
@@ -662,7 +662,7 @@ for chunk in agent.stream(
 print()
 ```
 
-## Tool calls
+## 工具调用
 
 当子代理使用工具时，您可以流式传输工具调用事件以显示每个子代理正在执行的操作。工具调用块以`messages`流模式出现。
 
@@ -740,7 +740,7 @@ def analyze_data(topic: str) -> str:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt=(
         "You are a coordinator. For any analysis request, you MUST delegate "
         "to the analyst subagent using the task tool. Never try to answer directly. "
@@ -807,7 +807,7 @@ def analyze_data(topic: str) -> str:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt=(
         "You are a coordinator. For any analysis request, you MUST delegate "
         "to the analyst subagent using the task tool. Never try to answer directly. "
@@ -1185,7 +1185,7 @@ for chunk in agent.stream(
 [tools:call_abc123] {'status': 'complete', 'progress': 100}
 ```
 
-## 多种流模式Combine multiple stream modes to get a complete picture of agent execution:
+## 多种流模式结合多种流模式来全面了解代理执行情况：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Skip internal middleware steps - only show meaningful node names
@@ -1308,7 +1308,7 @@ for sub_id, sub in active_subagents.items():
 
 ### 处理人机交互中断
 
-配置 [⟦T42⟧](/oss/python/deepagents/human-in-the-loop) 时，`updates` 流可能包含暂停执行以供人工批准的 `__interrupt__` 条目。 Detect them by checking for the `__interrupt__` key in update chunks. Resume with the same flat `{"decisions": [...]}` payload you use with `.invoke()`:
+配置 [⟦T42⟧](/oss/python/deepagents/human-in-the-loop) 时，`updates` 流可能包含暂停执行以供人工批准的 `__interrupt__` 条目。通过检查更新块中的 `__interrupt__` 键来检测它们。使用与 `.invoke()` 使用的相同平面 `{"decisions": [...]}` 有效负载继续：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.utils.uuid import uuid7
@@ -1332,7 +1332,7 @@ for mode, data in agent.stream(
 
 对于 `subgraphs=True`，块形状取决于您是否传递一种或多种流模式：
 
-| `stream_mode` |块状|
+| `stream_mode` |块状 |
 | - | - |
 |单模式（例如`"updates"`）| `(namespace, data)` |
 |多种模式（例如`["messages", "updates"]`）| `(namespace, mode, data)` |
@@ -1360,7 +1360,7 @@ for namespace, mode, data in agent.stream(
     print(data)
 ```
 
-LangGraph 1.1 and later also support a unified `version="v2"` `StreamPart` dict format.参见[Stream output format (v2)](/oss/python/langgraph/streaming#stream-output-format-v2)。本页的Deep Agents示例使用元组格式，与LangGraph当前依赖的Deep Agents版本相匹配。
+LangGraph 1.1 及更高版本还支持统一的 `version="v2"` `StreamPart` dict 格式。参见[Stream output format (v2)](/oss/python/langgraph/streaming#stream-output-format-v2)。本页的Deep Agents示例使用元组格式，与LangGraph当前依赖的Deep Agents版本相匹配。
 
 ＃＃ 有关的* [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)—为敏感工具操作配置审批工作流程
 * [Subagents](/oss/python/deepagents/subagents)—通过 Deep Agents 配置和使用子代理

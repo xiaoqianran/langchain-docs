@@ -24,17 +24,17 @@
 
 当多个工具调用同时暂停时，每个操作都需要单独的决策。
 
-在默认批处理模式下，按照与中断请求中出现的操作相同的顺序提供决策。在[per-call mode](#pause-once-per-tool-call)中，每个工具调用都有自己的中断并做出一个决定。Use `reject` when the human is denying the requested action. Use `respond` only when the human is acting as the tool, such as answering an `ask_user` prompt. Do not use `respond` to deny side-effecting tools, because its message is treated as a successful tool result.
+在默认批处理模式下，按照与中断请求中出现的操作相同的顺序提供决策。在[per-call mode](#pause-once-per-tool-call)中，每个工具调用都有自己的中断并做出一个决定。当人类拒绝请求的操作时使用`reject`。仅当人类充当工具时才使用`respond`，例如回答`ask_user`提示。不要使用`respond`来拒绝副作用工具，因为它的消息被视为成功的工具结果。
 
 > [!提示]
 >
-> When **editing** tool arguments, make changes conservatively.对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
+> **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
 
 ## 配置中断
 
-To use HITL, add the [middleware](/oss/javascript/langchain/middleware/built-in#human-in-the-loop) to the agent's `middleware` list when creating the agent.
+要使用 HITL，请在创建代理时将 [middleware](/oss/javascript/langchain/middleware/built-in#human-in-the-loop) 添加到代理的 `middleware` 列表中。
 
-You configure it with a mapping of tool actions to the decision types that are allowed for each action. The middleware will interrupt execution when a tool call matches an action in the mapping.
+您可以使用工具操作到每个操作允许的决策类型的映射来配置它。当工具调用与映射中的操作匹配时，中间件将中断执行。
 
 本示例使用默认的批处理模式。要每次工具调用暂停一次，请参阅[Set the interrupt mode](#set-the-interrupt-mode)。
 
@@ -43,7 +43,7 @@ import { createAgent, humanInTheLoopMiddleware } from "langchain"; // [!code hig
 import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [writeFileTool, executeSQLTool, readDataTool],
     middleware: [
         humanInTheLoopMiddleware({
@@ -132,7 +132,7 @@ const isWriteQuery = (request: ToolCallRequest) =>
     .startsWith("SELECT");
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [writeFile, executeSql, readData],
   middleware: [
     humanInTheLoopMiddleware({
@@ -196,7 +196,7 @@ const readData = tool(({ table }) => `3 rows from ${table}`, {
 });
 
 let agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [writeFile, executeSql, readData],
   middleware: [
     humanInTheLoopMiddleware({
@@ -239,7 +239,7 @@ const readData = tool(({ table }) => `3 rows from ${table}`, {
 });
 
 let agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [writeFile, executeSql, readData],
   middleware: [
     humanInTheLoopMiddleware({
@@ -631,7 +631,7 @@ result = await agent.invoke(new Command({ resume: decisions }), config);
 
 您还可以一次应答一个中断。您未应答的中断将保持待处理状态，一旦获得应答，其工具就会运行。> [!警告]
 >
-> 如果一起发送的多个答案之一无效，其他工具可以运行，而它们的中断仍显示为待处理。再次回答他们会运行这些工具两次。在将答案一起发送之前，请根据 `response_schema` 检查答案，或一次发送一个。
+> 如果一起发送的多个答案之一无效，其他工具可以运行，而它们的中断仍显示为待处理。再次回答他们会运行这些工具两次。在将答案一起发送之前，请根据 `response_schema` 检查答案，或者一次发送一个。
 
 ### 更正无效答案
 

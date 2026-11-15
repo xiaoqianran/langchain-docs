@@ -14,7 +14,7 @@
 
 对话历史是短期记忆最常见的形式。长时间的对话对当今的法学硕士提出了挑战；完整的历史记录可能不适合法学硕士的上下文窗口，从而导致上下文丢失或错误。
 
-即使您的模型支持完整的上下文长度，大多数法学硕士在长上下文中仍然表现不佳。他们会被陈旧或偏离主题的内容“分散注意力”，同时还要承受响应时间较慢和成本较高的问题。聊天模型使用[messages](/oss/javascript/langchain/messages)接受上下文，其中包括指令（系统消息）和输入（人类消息）。在聊天应用程序中，消息在人工输入和模型响应之间交替，导致消息列表随着时间的推移而变长。由于上下文窗口有限，许多应用程序可以从使用删除或“忘记”过时信息的技术中受益。
+即使您的模型支持完整的上下文长度，大多数法学硕士在长上下文中仍然表现不佳。他们会被陈旧或偏离主题的内容“分散注意力”，同时还要承受响应时间较慢和成本较高的问题。聊天模型使用[messages](/oss/javascript/langchain/messages)接受上下文，其中包括指令（系统消息）和输入（人类消息）。在聊天应用程序中，消息在人工输入和模型响应之间交替，导致消息列表随着时间的推移而变长。由于上下文窗口是有限的，许多应用程序可以从使用删除或“忘记”过时信息的技术中受益。
 
 > [!提示]
 >
@@ -46,7 +46,7 @@ const getUserInfo = tool(() => "No user profile on file.", {
 const checkpointer = new MemorySaver(); // [!code highlight]
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [getUserInfo],
   checkpointer,
 });
@@ -81,7 +81,7 @@ const getUserInfo = tool(() => "No user profile on file.", {
 const checkpointer = new MemorySaver(); // [!code highlight]
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [getUserInfo],
   checkpointer,
 });
@@ -317,7 +317,7 @@ const stateExtensionMiddleware = createMiddleware({
 
 const checkpointer = new MemorySaver();
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     middleware: [stateExtensionMiddleware],  // [!code highlight]
     checkpointer,
@@ -389,7 +389,7 @@ const trimMessages = createMiddleware({
 
 const checkpointer = new MemorySaver();
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [...],
   middleware: [trimMessages],
   checkpointer,
@@ -449,7 +449,7 @@ const deleteOldMessages = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   systemPrompt: "Please be concise and to the point.",
   middleware: [deleteOldMessages],
@@ -522,7 +522,7 @@ import { MemorySaver } from "@langchain/langgraph";
 const checkpointer = new MemorySaver();
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     summarizationMiddleware({
@@ -869,6 +869,6 @@ const agent = createAgent({
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/short-term-memory.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -4,12 +4,12 @@
 
 # 待办事项列表
 
-通过与座席状态同步的实时待办事项列表来跟踪座席进度
+通过从座席状态同步的实时待办事项列表来跟踪座席进度
 
 并非每个代理交互都是聊天。有时代理正在执行
 多步骤计划，显示进度的最佳方式是**待办事项列表**
 实时更新。深度代理待办事项列表模式读取 `todos` 数组
-直接从代理的状态，将每个项目的当前状态渲染为
+直接来自代理的状态，将每个项目的当前状态渲染为
 代理人按照其计划行事。这是一个基于相同内容构建的进度仪表板
 `useStream` 用于聊天的钩子。它表明代理状态可以为任何 UI 提供支持，
 不仅仅是消息泡沫。
@@ -41,7 +41,7 @@ from deepagents import create_deep_agent
 from langchain.agents.middleware import TodoListMiddleware
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[TodoListMiddleware()],
 )
 ```
@@ -51,7 +51,7 @@ from deepagents import create_deep_agent
 from langchain.agents.middleware import TodoListMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[TodoListMiddleware()],
 )
 ```

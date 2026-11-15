@@ -58,9 +58,9 @@ const agent = createAgent({
 
 ## 提供商策略
 
-一些模型提供者通过其 API 原生支持结构化输出（例如 OpenAI、xAI (Grok)、Gemini、Anthropic (Claude)）。 This is the most reliable method when available.
+一些模型提供者通过其 API 原生支持结构化输出（例如 OpenAI、xAI (Grok)、Gemini、Anthropic (Claude)）。这是可用时最可靠的方法。
 
-To use this strategy, configure a `ProviderStrategy`:
+要使用此策略，请配置 `ProviderStrategy`：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 function providerStrategy<StructuredResponseT>(
@@ -72,9 +72,9 @@ function providerStrategy<StructuredResponseT>(
 
 定义结构化输出格式的模式。支持：
 
-* **Zod Schema**: A zod schema
+* **Zod Schema**：zod 架构
 * **标准模式**：任何实现 [Standard Schema](https://standardschema.dev/) 规范的模式
-* **JSON Schema**: A JSON schema object
+* **JSON Schema**：JSON 模式对象
 
 当您将模式类型直接传递给`createAgent.responseFormat`并且模型支持本机结构化输出时，LangChain会自动使用`ProviderStrategy`：
 
@@ -89,7 +89,7 @@ const ContactInfo = z.object({
 });
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: providerStrategy(ContactInfo)
 });
@@ -116,7 +116,7 @@ const ContactInfo = toStandardJsonSchema(
 );
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: providerStrategy(ContactInfo)
 });
@@ -144,7 +144,7 @@ const contactInfoSchema = {
 }
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: providerStrategy(contactInfoSchema)
 });
@@ -210,7 +210,7 @@ const ProductReview = z.object({
 });
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy(ProductReview)
 })
@@ -237,7 +237,7 @@ const ProductReview = toStandardJsonSchema(
 );
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy(ProductReview)
 })
@@ -278,7 +278,7 @@ const productReviewSchema = {
 }
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy(productReviewSchema)
 });
@@ -308,7 +308,7 @@ const CustomerComplaint = z.object({
 });
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy([ProductReview, CustomerComplaint])
 });
@@ -336,7 +336,7 @@ const MeetingAction = z.object({
 });
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy(MeetingAction, {
         toolMessageContent: "Action item captured and added to meeting notes!"
@@ -398,7 +398,7 @@ const EventDetails = z.object({
 });
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy([ContactInfo, EventDetails]),
 });
@@ -444,7 +444,7 @@ const ProductRating = z.object({
 });
 
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     responseFormat: toolStrategy(ProductRating),
 });

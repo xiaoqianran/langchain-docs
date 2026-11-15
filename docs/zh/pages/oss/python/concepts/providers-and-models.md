@@ -6,7 +6,7 @@
 
 了解 LangChain 如何使用提供者为您提供适用于任何提供者的任何模型的单一 API
 
-LangChain 为您提供了一个统一的 API，可以使用任何提供商的模型。安装提供程序包，选择模型名称，然后开始构建 - 无论您使用 OpenAI、Anthropic、Google 还是任何其他受支持的提供程序，都可以使用相同的代码。
+LangChain 为您提供了一个统一的 API，可以使用任何提供商的模型。 Install a provider package, pick a model name, and start building—the same code works whether you use OpenAI, Anthropic, Google, or any other supported provider.
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -46,7 +46,7 @@ graph LR
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.chat_models import init_chat_model
 
-openai_model = init_chat_model("openai:gpt-5.5")
+openai_model = init_chat_model("openai:gpt-6.1-sol")
 anthropic_model = init_chat_model("anthropic:claude-opus-4-8")
 google_model = init_chat_model("google-genai:gemini-3.1-pro-preview")
 
@@ -59,7 +59,7 @@ for model in [openai_model, anthropic_model, google_model]:
 
 **提供商**是托管 AI 模型并通过 API 公开它们的公司或平台。示例包括 OpenAI、Anthropic、Google 和 AWS Bedrock。
 
-在 LangChain 中，每个提供程序都有一个专用的**集成包**（例如 `langchain-openai`、`langchain-anthropic`），用于实现该提供程序模型的标准 LangChain 接口。这意味着：* **为每个提供程序提供专用包**，并提供适当的版本控制和依赖项管理
+In LangChain, each provider has a dedicated **integration package** (for example `langchain-openai`, `langchain-anthropic`) that implements the standard LangChain interface for that provider's models.这意味着：* **为每个提供程序提供专用包**，并提供适当的版本控制和依赖项管理
 * **特定于提供商的功能**在您需要时可用（例如OpenAI的Responses API、Anthropic的扩展思维）
 * **通过环境变量自动 API 密钥处理**
 
@@ -78,16 +78,16 @@ uv add langchain-google-genai # For Google models
 ```python Provider prefix format theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.chat_models import init_chat_model
 
-model = init_chat_model("openai:gpt-5.5")
+model = init_chat_model("openai:gpt-6.1-sol")
 ```
 
 ```python Direct class instantiation theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_openai import ChatOpenAI
 
-model = ChatOpenAI(model="gpt-5.5")
+model = ChatOpenAI(model="gpt-6.1-sol")
 ```
 
-当将[⟦T10⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)与`provider:model`格式一起使用时，LangChain会自动解析提供程序并加载正确的集成包。如果模型名称明确（例如，`"gpt-5.5"` 解析为 OpenAI），您还可以省略提供程序前缀。
+当将[⟦T10⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)与`provider:model`格式一起使用时，LangChain会自动解析提供程序并加载正确的集成包。如果模型名称明确（例如，`"gpt-6.1-sol"` 解析为 OpenAI），您还可以省略提供程序前缀。
 
 要查找提供程序的可用模型名称，请参阅提供程序自己的文档。以下是一些受欢迎的提供商：
 
@@ -122,9 +122,9 @@ model = init_chat_model("google_genai:gemini-mythos")
 | [OpenRouter](https://openrouter.ai/) | [⟦T13⟧](/oss/python/integrations/chat/openrouter) |统一访问OpenAI、Anthropic、Google、Meta 等模型 |
 | [LiteLLM](https://www.litellm.ai/) | [⟦T14⟧](/oss/python/integrations/chat/litellm) |为 100 多家提供商提供统一界面，提供路由、回退和支出跟踪功能 |
 
-当您想要执行以下操作时，路由器很有用：* **使用单个 API 密钥和计费帐户访问许多提供商**
+当您想要执行以下操作时，路由器很有用：* **Access many providers** with a single API key and billing account
 * **动态切换模型**，无需管理多个提供商凭据
-* **使用后备模型**，如果主模型失败，会自动使用不同的模型重试
+* **Use fallback models** that automatically retry with a different model if the primary one fails
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.chat_models import init_chat_model
@@ -135,7 +135,7 @@ response = model.invoke("Hello!")
 
 ## OpenAI 兼容端点
 
-许多提供商提供与 OpenAI 的 [Chat Completions API](https://platform.openai.com/docs/api-reference/chat) 兼容的端点。您可以使用 [⟦T15⟧](/oss/python/integrations/chat/openai) 和自定义 `base_url` 连接到这些：
+Many providers offer endpoints compatible with OpenAI's [Chat Completions API](https://platform.openai.com/docs/api-reference/chat). You can connect to these using [⟦T15⟧](/oss/python/integrations/chat/openai) with a custom `base_url`:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_openai import ChatOpenAI
@@ -171,6 +171,6 @@ model = ChatOpenAI(
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/providers-and-models.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

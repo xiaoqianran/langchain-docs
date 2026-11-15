@@ -38,7 +38,7 @@ for subagent in stream.subagents:
 
 ## 子代理流字段
 
-每个子代理流都公开与父运行相同类型的投影，例如消息、工具调用、嵌套子代理和最终输出。对于一般的父运行流模型，请参见[LangChain Event Streaming](/oss/python/langchain/event-streaming)。Python 使用 Snake\_case 投影名称，例如 `tool_calls`。每个子代理流可以公开 `.messages`、`.tool_calls`、`.values`、`.subagents` 和 `.output`。
+每个子代理流都公开与父运行相同类型的投影，例如消息、工具调用、嵌套子代理和最终输出。对于一般的父运行流模型，请参见[LangChain Event Streaming](/oss/python/langchain/event-streaming)。Python 使用snake_case 投影名称，例如`tool_calls`。每个子代理流可以公开 `.messages`、`.tool_calls`、`.values`、`.subagents` 和 `.output`。
 
 |领域 |描述 |
 | - | - |

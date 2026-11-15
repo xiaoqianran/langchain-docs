@@ -4,7 +4,7 @@
 
 # 学习
 
-帮助您入门的教程、概念指南和资源。
+可帮助您入门的教程、概念指南和资源。
 
 在文档的 **学习** 部分，您将找到一系列教程、概念概述和其他资源，以帮助您使用托管 Deep Agents、Deep Agents、LangChain 和 LangGraph 构建功能强大的应用程序。
 
@@ -26,7 +26,7 @@
 
 ### Deep Agents
 
-为了在使用与 [Managed Deep Agents](#managed-deep-agents) 相同的 Deep Agents 工具时获得最大灵活性，请自行使用 Deep Agents SDK 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。
+为了在使用与 [Managed Deep Agents](#managed-deep-agents) 相同的 Deep Agents 工具时获得最大灵活性，请自行使用 Deep Agents SDK 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。
 
 > [卡][Deep research](/oss/javascript/deepagents/deep-research)
 >
@@ -87,7 +87,7 @@ LangChain 的 [agent](/oss/javascript/langchain/agents) 实现使用 [LangGraph]
 >
 > 探索 LangGraph 的声明式图形构建 API。> [卡][Functional API](/oss/javascript/langgraph/functional-api)
 >
-> 从另一个框架包装代理以进行 LangSmith 部署。
+> 将另一个框架的代理包装为 LangSmith 代理服务器。
 
 ## 其他资源
 

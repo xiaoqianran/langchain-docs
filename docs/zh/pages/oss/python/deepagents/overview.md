@@ -8,7 +8,7 @@
 
 Deep Agents 是[agent harness](/oss/python/concepts/products#agent-harnesses-like-the-deep-agents-sdk)，适用于复杂、多步骤的工作。它在 LangChain 和 LangGraph 之上添加了规划、用于上下文的虚拟文件系统、子代理生成和长期内存。
 
-从[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](#self-host-with-the-sdk) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。
+从[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。
 
 ## 选择如何运行Deep Agents
 
@@ -18,7 +18,7 @@ Deep Agents 是[agent harness](/oss/python/concepts/products#agent-harnesses-lik
 
 > [卡][Deep Agents SDK](#self-host-with-the-sdk)
 >
-> 相同的深层代理具有最大的灵活性。自己托管代理，或者当您需要对运行时进行更多控制时运行自定义 LangSmith 部署。
+> 相同的深层代理具有最大的灵活性。您自己托管代理，或者当您需要对运行时进行更多控制时运行自定义代理服务器。
 
 Deep Agents 包括以下功能：* **在环境中采取行动**：通过工具采取行动，读写文件，执行代码
 * **连接到您的数据**：在适当的时刻加载记忆、技能和领域知识
@@ -31,7 +31,7 @@ Deep Agents 包括以下功能：* **在环境中采取行动**：通过工具�
 
 ## 使用 SDK 自托管
 
-当您在自己的进程或容器中运行代理，需要自定义 [backend](/oss/python/deepagents/backends)、存储或检查点，或者想要自己配置的 [LangSmith Deployment](/langsmith/deployment) 时，请使用开源 SDK。对于托管部署，请参阅[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)。
+当您在自己的进程或容器中运行代理，需要自定义 [backend](/oss/python/deepagents/backends)、存储或检查点，或者想要自己配置的 [Agent Server](/langsmith/deployment) 时，请使用开源 SDK。对于托管部署，请参阅[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)。
 
 ### 尝试一下
 
@@ -47,7 +47,7 @@ def get_weather(city: str) -> str:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[get_weather],
     system_prompt="You are a helpful assistant",
 )
@@ -68,7 +68,7 @@ def get_weather(city: str) -> str:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[get_weather],
     system_prompt="You are a helpful assistant",
 )
@@ -247,7 +247,7 @@ agent = create_deep_agent(
 
 ### 虚拟文件系统访问
 
-该工具提供了一个可配置的虚拟文件系统，可以由不同的 [pluggable backends](/oss/python/deepagents/backends) 支持：内存状态、本地磁盘、LangGraph 存储、复合路由或具有 [permission rules](/oss/python/deepagents/permissions) 用于读写访问的自定义后端。
+该工具提供了一个可配置的虚拟文件系统，可以由不同的[pluggable backends](/oss/python/deepagents/backends)支持：内存状态、本地磁盘、LangGraph存储、复合路由或具有[permission rules](/oss/python/deepagents/permissions)用于读写访问的自定义后端。
 
 后端支持以下文件系统操作：|工具|描述 |
 | - | - |
@@ -294,7 +294,7 @@ agent = create_deep_agent(
 >>
 >> `FilesystemMiddleware` 上的 `tools` 允许列表需要 `deepagents>=0.7`。
 >
-> 要仅公开上面列出的文件系统工具的子集，而不是将它们全部隐藏，请将 `tools` 允许列表传递给 [⟦T65⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 并通过 `middleware=` 提供实例。列表中未列出的任何内置文件系统工具都会从模型的工具列表中删除。
+> 要仅公开上面列出的文件系统工具的子集，而不是将它们全部隐藏，请将 `tools` 允许列表传递给 [⟦T65⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 并通过 `middleware=` 提供实例。列表中未列出的任何内置文件系统工具都将从模型的工具列表中删除。
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
@@ -419,7 +419,7 @@ from deepagents import create_deep_agent
 from langchain.agents.middleware import TodoListMiddleware
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[TodoListMiddleware()],
 )
 ```
@@ -429,7 +429,7 @@ from deepagents import create_deep_agent
 from langchain.agents.middleware import TodoListMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[TodoListMiddleware()],
 )
 ```

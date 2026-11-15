@@ -35,7 +35,7 @@ API 密钥用于：
 * [Tavily](https://www.tavily.com/) 用于网络搜索（可选；免费套餐就足够了）
 * [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-deep-research) 用于跟踪（如果您使用 SDK，则可选；对于托管 Deep Agents 是必需的）
 
-## 选择你的路径本指南展示了如何使用 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 和 Deep Agnets SDK 构建此agenet。托管Deep Agents让您无需管理基础设施即可部署代理。 Deep Agents SDK 可让您在使用相同的 Deep Agents 工具时获得最大的灵活性，并且您可以自己托管代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。
+## 选择你的路径本指南展示了如何使用 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 和 Deep Agnets SDK 构建此agenet。托管Deep Agents让您无需管理基础设施即可部署代理。 Deep Agents SDK 可让您在使用相同的 Deep Agents 工具时获得最大的灵活性，并且您可以自己托管代理，或运行自定义 [Agent Server](/langsmith/deployment)。
 
 > [选项卡] 托管 Deep Agents
 >
@@ -865,7 +865,7 @@ API 密钥用于：
 
 * [Subagents](/oss/python/deepagents/subagents)：使用不同的工具和提示配置子代理
 * [Customization](/oss/python/deepagents/customization)：自定义模型、工具、系统提示，可选[task planning](/oss/python/deepagents/overview#task-planning)
-* [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)：使用托管部署基础架构构建深度代理
+* [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)：使用托管部署基础设施构建深度代理
 * [LangSmith](/langsmith/observability)：跟踪研究运行并调试多步骤行为
 * [Deep Research Course](https://academy.langchain.com/courses/deep-research-with-langgraph)：LangGraph深度研究完整课程
 

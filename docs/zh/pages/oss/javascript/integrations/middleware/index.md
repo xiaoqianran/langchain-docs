@@ -23,7 +23,7 @@
 ## 官方集成|供应商|可用的中间件 |来源 |下载 |
 | :- | :- | :- | :- |
 | [⟦T0⟧](/oss/javascript/integrations/middleware/aws) |提示缓存 | [⟦T1⟧](https://github.com/langchain-ai/langchain-aws) | [  ⟦T16⟧](https://www.npmjs.com/package/@langchain/aws) |
-| [⟦T2⟧](https://recallmem.dev/guides/langchain) | create\_agent 代理的长期记忆：将 Recall 了解到的有关用户的信息添加到系统提示中并记录每次交换。 | [⟦T3⟧](https://github.com/recallmem/recall) | [  ⟦T17⟧](https://www.npmjs.com/package/@recall-memory/sdk) |
+| [⟦T2⟧](https://recallmem.dev/guides/langchain) | create_agent 代理的长期记忆：将 Recall 了解到的有关用户的信息添加到系统提示中并记录每次交换。 | [⟦T3⟧](https://github.com/recallmem/recall) | [  ⟦T17⟧](https://www.npmjs.com/package/@recall-memory/sdk) |
 | [⟦T4⟧](https://github.com/contactkontey-dotcom/langchain-brydge#readme) |监督代理工具与 BRYDGE 的调用，并检查目标系统自己的记录，以报告每个操作是否在允许的情况下发生。 | [⟦T5⟧](https://github.com/contactkontey-dotcom/langchain-brydge) | [  ⟦T18⟧](https://www.npmjs.com/package/brydge-langchain) |
 | [⟦T6⟧](https://recallmem.dev/guides/langchain) |聊天消息历史记录存储在 Recall 会话中，因此 Recall 还可以从中了解用户。 | [⟦T7⟧](https://github.com/recallmem/recall) | [  ⟦T19⟧](https://www.npmjs.com/package/@recall-memory/langchain) |
 | [⟦T8⟧](https://github.com/moltbot-den/openentity/tree/main/integrations/langchain) |代理中间件，根据 Pydantic 或 JSON Schema 验证工具和 HTTP 响应并引发违规。 | [⟦T9⟧](https://github.com/moltbot-den/openentity/tree/main/integrations/langchain) | [  ⟦T20⟧](https://www.npmjs.com/package/@openentity/langchain) |

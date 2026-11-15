@@ -311,7 +311,7 @@ graph LR
 
 > [!提示]
 >
-> [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-sandboxes) 跟踪显示哪些 shell 命令在沙箱内运行以及代理如何使用文件系统工具。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。对于托管沙盒托管，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
+> [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-sandboxes) 跟踪显示哪些 shell 命令在沙箱内运行以及代理如何使用文件系统工具。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。对于托管沙箱托管，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
 >
 > 我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 
@@ -323,7 +323,7 @@ graph LR
 
 大多数应用程序为每个[thread](/langsmith/use-threads)（线程范围）选择一个沙箱，或者为同一[assistant](/langsmith/assistants)（助理范围）上的每个线程选择一个共享沙箱。沙箱会消耗资源并耗费金钱，直到它们被关闭为止。确保在不再使用沙箱后将其关闭。
 
-有关完整生命周期表、异步 [graph factory](/langsmith/graph-rebuild) 注释、TTL 行为、LangGraph 部署接线和客户端示例，请参阅走向生产中的 [Sandbox lifecycle](/oss/python/deepagents/going-to-production#lifecycle)。
+有关完整生命周期表、异步 [graph factory](/langsmith/graph-rebuild) 注释、TTL 行为、代理服务器接线和客户端示例，请参阅投入生产中的 [Sandbox lifecycle](/oss/python/deepagents/going-to-production#lifecycle)。
 
 ### 线程范围（默认）
 
@@ -358,7 +358,7 @@ async def agent(config: RunnableConfig):
             idle_ttl_seconds=3600,  # TTL: clean up when idle
         )
     return create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
+        model="google_genai:gemini-4-hydrogen",
         backend=LangSmithSandbox(sandbox=ls_sandbox),
     )
 ```
@@ -388,7 +388,7 @@ async def agent(config: RunnableConfig):
             idle_ttl_seconds=3600,  # TTL: clean up when idle
         )
     return create_deep_agent(
-        model="openai:gpt-5.5",
+        model="openai:gpt-6.1-sol",
         backend=LangSmithSandbox(sandbox=ls_sandbox),
     )
 ```
@@ -571,7 +571,7 @@ async def agent(config: RunnableConfig):
     else:
         ls_sandbox = client.create_sandbox(name=sandbox_name)
     return create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
+        model="google_genai:gemini-4-hydrogen",
         backend=LangSmithSandbox(sandbox=ls_sandbox),
     )
 ```
@@ -598,7 +598,7 @@ async def agent(config: RunnableConfig):
     else:
         ls_sandbox = client.create_sandbox(name=sandbox_name)
     return create_deep_agent(
-        model="openai:gpt-5.5",
+        model="openai:gpt-6.1-sol",
         backend=LangSmithSandbox(sandbox=ls_sandbox),
     )
 ```
@@ -794,7 +794,7 @@ ls_sandbox = client.create_sandbox()
 backend = LangSmithSandbox(sandbox=ls_sandbox)
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=backend,
     system_prompt="You are a coding assistant with sandbox access. You can create and run code in the sandbox.",
 )
@@ -825,7 +825,7 @@ ls_sandbox = client.create_sandbox()
 backend = LangSmithSandbox(sandbox=ls_sandbox)
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=backend,
     system_prompt="You are a coding assistant with sandbox access. You can create and run code in the sandbox.",
 )
@@ -1260,13 +1260,13 @@ bash: foobar: command not found
 [Command failed with exit code 127]
 ```
 
-如果命令产生非常大的输出，结果会自动保存到文件中，并指示代理使用 `read_file` 增量访问它。 This prevents context window overflow.
+如果命令产生非常大的输出，结果会自动保存到文件中，并指示代理使用 `read_file` 增量访问它。这可以防止上下文窗口溢出。
 
-### Two planes of file access
+### 文件访问的两个平面
 
 文件移入和移出沙箱有两种不同的方式，了解何时使用每种方式非常重要：
 
-**代理文件系统工具**：`read_file`、`write_file`、`edit_file`、`delete`、`ls`、`glob`、`grep`、`execute`是LLM在执行过程中调用的工具。 These go through `execute()` inside the sandbox.代理使用它们来读取代码、写入文件和运行命令作为其任务的一部分。
+**代理文件系统工具**：`read_file`、`write_file`、`edit_file`、`delete`、`ls`、`glob`、`grep`、`execute`是LLM在执行过程中调用的工具。这些通过沙箱内的`execute()`。代理使用它们来读取代码、写入文件和运行命令作为其任务的一部分。
 
 **文件传输 API**：应用程序代码调用的 `uploadFiles()` 和 `downloadFiles()` 方法。它们使用提供商的本机文件传输 API（不是 shell 命令），旨在在主机环境和沙箱之间移动文件。使用它们可以：* **在代理运行之前使用源代码、配置或数据为沙箱播种**
 * **在代理完成后检索工件**（生成的代码、构建输出、报告）
@@ -1742,7 +1742,7 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 > 即使有这些保障措施，这仍然是一个不安全的解决方法。足够有创意的上下文注入攻击可以绕过输出过滤和 HITL 审查。### 一般最佳实践
 
 * 在应用程序中对沙箱输出进行操作之前先检查它们
-* 在不需要时阻止沙箱网络访问
+* 在不需要时阻止沙盒网络访问
 * 使用[middleware](/oss/python/langchain/middleware)过滤或编辑工具输出中的敏感模式
 * 将沙箱内产生的所有内容视为不可信输入
 

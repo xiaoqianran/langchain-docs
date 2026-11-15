@@ -12,7 +12,7 @@
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt="You are a helpful assistant.",
     tools=[search, fetch_url],
     memory=["./AGENTS.md"],
@@ -24,7 +24,7 @@ agent = create_deep_agent(
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt="You are a helpful assistant.",
     tools=[search, fetch_url],
     memory=["./AGENTS.md"],
@@ -99,7 +99,7 @@ agent = create_deep_agent(
 | [⟦T192⟧](#tools) |代理可以调用​​的领域工具 |
 | [⟦T193⟧](#memory) |启动时加载的 AGENTS.md 文件 |
 | [⟦T194⟧](#skills) |按需知识的技能目录 |
-| [⟦T195⟧](#backends) |文件系统后端（默认为 StateBackend）|
+| [⟦T195⟧](#backends) |文件系统后端（默认为 StateBackend） |
 | [⟦T196⟧](/oss/python/deepagents/permissions) |文件系统的路径级访问控制|
 | [⟦T197⟧](#subagents) |用于委派任务的自定义子代理 |
 | [⟦T198⟧](#middleware) |额外的中间件合并到[Deep Agents stack](#deep-agents-stack)； `.name` 与内置条目匹配的实例会就地替换它，其他任何内容都会在最后一个核心中间件条目之后、配置文件、提示缓存和内存之前落地 |
@@ -138,7 +138,7 @@ agent = create_deep_agent(
 
 > [!提示]
 >
-> 添加工具、子代理和后端时，使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-customization) 跟踪每个部分的共同行为。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
+> 当您添加工具、子代理和后端时，使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-customization) 来跟踪每个部分的行为方式。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
 >
 > 我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 
@@ -148,7 +148,7 @@ agent = create_deep_agent(
 
 > [!提示]
 >
-> 使用`provider:model`格式（例如`openai:gpt-5.5`）在模型之间快速切换。
+> 使用`provider:model`格式（例如`openai:gpt-6.1-sol`）在模型之间快速切换。
 
 > [标签] OpenAI
 >
@@ -168,7 +168,7 @@ agent = create_deep_agent(
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> agent = create_deep_agent(model="openai:gpt-5.5")
+> agent = create_deep_agent(model="openai:gpt-6.1-sol")
 > # this calls init_chat_model for the specified model with default parameters
 > # to use specific model parameters, use init_chat_model directly
 > ```
@@ -180,7 +180,7 @@ agent = create_deep_agent(
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = init_chat_model(model="openai:gpt-5.5")
+> model = init_chat_model(model="openai:gpt-6.1-sol")
 > agent = create_deep_agent(model=model)
 > ```
 >
@@ -191,7 +191,7 @@ agent = create_deep_agent(
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = ChatOpenAI(model="gpt-5.5")
+> model = ChatOpenAI(model="gpt-6.1-sol")
 > agent = create_deep_agent(model=model)
 > ```
 
@@ -260,7 +260,7 @@ agent = create_deep_agent(
 > os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
-> agent = create_deep_agent(model="azure_openai:gpt-5.5")
+> agent = create_deep_agent(model="azure_openai:gpt-6.1-sol")
 > # this calls init_chat_model for the specified model with default parameters
 > # to use specific model parameters, use init_chat_model directly
 > ```
@@ -275,7 +275,7 @@ agent = create_deep_agent(
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = init_chat_model(
->     model="azure_openai:gpt-5.5",
+>     model="azure_openai:gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 > )
 > agent = create_deep_agent(model=model)
@@ -291,7 +291,7 @@ agent = create_deep_agent(
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = AzureChatOpenAI(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 > )
 > agent = create_deep_agent(model=model)
@@ -315,7 +315,7 @@ agent = create_deep_agent(
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> agent = create_deep_agent(model="google_genai:gemini-3.6-flash")
+> agent = create_deep_agent(model="google_genai:gemini-4-hydrogen")
 > # this calls init_chat_model for the specified model with default parameters
 > # to use specific model parameters, use init_chat_model directly
 > ```
@@ -327,7 +327,7 @@ agent = create_deep_agent(
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = init_chat_model(model="google_genai:gemini-3.6-flash")
+> model = init_chat_model(model="google_genai:gemini-4-hydrogen")
 > agent = create_deep_agent(model=model)
 > ```
 >
@@ -338,7 +338,7 @@ agent = create_deep_agent(
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = ChatGoogleGenerativeAI(model="gemini-3.6-flash")
+> model = ChatGoogleGenerativeAI(model="gemini-4-hydrogen")
 > agent = create_deep_agent(model=model)
 > ```> [选项卡] AWS 基岩
 >
@@ -522,7 +522,7 @@ def internet_search(
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[internet_search],
 )
 ```
@@ -552,7 +552,7 @@ def internet_search(
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[internet_search],
 )
 ```
@@ -731,7 +731,7 @@ async def main():
     async with MCPAdapter(config) as adapter:
         tools = await adapter.list_tools()
         agent = create_deep_agent(
-            model="google_genai:gemini-3.6-flash",
+            model="google_genai:gemini-4-hydrogen",
             tools=tools,
         )
         await agent.ainvoke(
@@ -756,7 +756,7 @@ async def main():
     async with MCPAdapter(config) as adapter:
         tools = await adapter.list_tools()
         agent = create_deep_agent(
-            model="openai:gpt-5.5",
+            model="openai:gpt-6.1-sol",
             tools=tools,
         )
         await agent.ainvoke(
@@ -909,7 +909,7 @@ thorough research, and then write a polished report. \
 """
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt=research_instructions,
 )
 ```
@@ -923,7 +923,7 @@ thorough research, and then write a polished report. \
 """
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt=research_instructions,
 )
 ``````python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1038,7 +1038,7 @@ agent = create_deep_agent(
 
 ### Deep Agents 堆栈
 
-`create_deep_agent` 以固定的顺序构建中间件。只需一个模型即可获得 [bare stack](#bare-stack)。 [full stack](#full-stack) 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/python/deepagents/profiles) 提供它们时才出现的槽。
+`create_deep_agent` 以固定的顺序构建中间件。 [bare stack](#bare-stack) 只需一个模型即可获得。 [full stack](#full-stack) 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/python/deepagents/profiles) 提供它们时才出现的槽。
 
 #### 裸栈
 
@@ -1060,7 +1060,7 @@ agent = create_deep_agent(
 
 2. [⟦T238⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware)：仅当至少有一个同步子代理可用时。生成并协调子代理来委派任务。包含在[bare stack](#bare-stack)中，因为默认情况下会自动添加通用子代理；通过禁用该子代理并不传递同步`subagents`来省略它。参见[Running without subagents](/oss/python/deepagents/subagents#running-without-subagents)。
 
-3. [⟦T240⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)：当对话时间较长时，压缩消息历史记录以保持在上下文限制内（通过[create\_summarization\_middleware](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_middleware)）。4. [⟦T241⟧](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware)：当运行在中断后恢复或收到格式错误的工具调用参数时，修复消息历史记录中悬空的工具调用。 **在** Anthropic 提示符缓存和下面的尾堆栈之前运行。
+3. [⟦T240⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)：当对话时间较长时，压缩消息历史记录以保持在上下文限制内（通过[create_summarization_middleware](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_middleware)）。4. [⟦T241⟧](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware)：当运行在中断后恢复或收到格式错误的工具调用参数时，修复消息历史记录中悬空的工具调用。 **在** Anthropic 提示符缓存和下面的尾堆栈之前运行。
 
 5. [⟦T242⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgentMiddleware)：仅当您配置异步子代理时。
 
@@ -1136,7 +1136,7 @@ def log_tool_calls(request, handler):
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[get_weather],
     middleware=[log_tool_calls],
 )
@@ -1176,7 +1176,7 @@ def log_tool_calls(request, handler):
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[get_weather],
     middleware=[log_tool_calls],
 )
@@ -1430,7 +1430,7 @@ from deepagents.backends import StateBackend
 from deepagents.middleware import SummarizationMiddleware
 
 backend = StateBackend()
-model = "openai:gpt-5.5"
+model = "openai:gpt-6.1-sol"
 
 custom_summarization = SummarizationMiddleware(
     model=model,
@@ -1631,7 +1631,7 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
 > ```
 >
 > `create_deep_agent`的`system_prompt`中的技能名称、路径和任何手写提示
-> 当技能发生变化时，呼叫者有责任保持同步。
+> 呼叫者有责任在技能发生变化时保持同步。
 
 ### 口译员
 
@@ -1642,7 +1642,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[CodeInterpreterMiddleware()],
 )
 ```
@@ -1652,7 +1652,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[CodeInterpreterMiddleware()],
 )
 ```
@@ -1743,12 +1743,12 @@ research_subagent = {
     "description": "Used to research more in depth questions",
     "system_prompt": "You are a great researcher",
     "tools": [internet_search],
-    "model": "openai:gpt-5.5",  # Optional override, defaults to main agent model
+    "model": "openai:gpt-6.1-sol",  # Optional override, defaults to main agent model
 }
 subagents = [research_subagent]
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     subagents=subagents,
 )
 ```
@@ -1770,11 +1770,11 @@ agent = create_deep_agent(
 > from deepagents.backends import StateBackend
 >
 > # By default we provide a StateBackend
-> agent = create_deep_agent(model="google_genai:gemini-3.6-flash")
+> agent = create_deep_agent(model="google_genai:gemini-4-hydrogen")
 >
 > # Under the hood, it looks like
 > agent2 = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=StateBackend(),
 > )
 > ```
@@ -1784,11 +1784,11 @@ agent = create_deep_agent(
 > from deepagents.backends import StateBackend
 >
 > # By default we provide a StateBackend
-> agent = create_deep_agent(model="openai:gpt-5.5")
+> agent = create_deep_agent(model="openai:gpt-6.1-sol")
 >
 > # Under the hood, it looks like
 > agent2 = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=StateBackend(),
 > )
 > ```
@@ -1878,7 +1878,7 @@ agent = create_deep_agent(
 > from deepagents.backends import FilesystemBackend
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=FilesystemBackend(root_dir=".", virtual_mode=True),
 > )
 > ```
@@ -1888,7 +1888,7 @@ agent = create_deep_agent(
 > from deepagents.backends import FilesystemBackend
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=FilesystemBackend(root_dir=".", virtual_mode=True),
 > )
 > ```
@@ -1960,7 +1960,7 @@ agent = create_deep_agent(
 > from deepagents.backends import LocalShellBackend
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
 > )
 > ```
@@ -1970,7 +1970,7 @@ agent = create_deep_agent(
 > from deepagents.backends import LocalShellBackend
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
 > )
 > ```
@@ -2035,11 +2035,11 @@ agent = create_deep_agent(
 > from langgraph.store.memory import InMemoryStore
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
@@ -2049,11 +2049,11 @@ agent = create_deep_agent(
 > from langgraph.store.memory import InMemoryStore
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
@@ -2067,7 +2067,7 @@ agent = create_deep_agent(
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
@@ -2081,7 +2081,7 @@ agent = create_deep_agent(
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
@@ -2095,7 +2095,7 @@ agent = create_deep_agent(
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
@@ -2109,7 +2109,7 @@ agent = create_deep_agent(
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
@@ -2123,13 +2123,13 @@ agent = create_deep_agent(
 >     backend=StoreBackend(
 >         namespace=lambda rt: (rt.server_info.user.identity,),
 >     ),
->     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+>     store=InMemoryStore(),  # Good for local dev; omit for LangSmith Agent Server
 > )
 > ```
 >
 >> [!注意]
 >>
->> 部署到[LangSmith Deployment](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
+>> 部署到[LangSmith Agent Server](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
 >
 >> [!提示]
 >>
@@ -2144,7 +2144,7 @@ agent = create_deep_agent(
 > from deepagents.backends import ContextHubBackend
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=ContextHubBackend("my-agent"),
 > )
 > ```
@@ -2154,7 +2154,7 @@ agent = create_deep_agent(
 > from deepagents.backends import ContextHubBackend
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=ContextHubBackend("my-agent"),
 > )
 > ```
@@ -2219,7 +2219,7 @@ agent = create_deep_agent(
 > from langgraph.store.memory import InMemoryStore
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=CompositeBackend(
 >         default=StateBackend(),
 >         routes={
@@ -2236,7 +2236,7 @@ agent = create_deep_agent(
 > from langgraph.store.memory import InMemoryStore
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=CompositeBackend(
 >         default=StateBackend(),
 >         routes={
@@ -2334,7 +2334,7 @@ agent = create_deep_agent(
 
 有关更多信息，请参阅[Backends](/oss/python/deepagents/backends)。
 
-### 沙箱
+### 沙盒
 
 沙箱是专门的 [backends](/oss/python/deepagents/backends)，它在具有自己的文件系统和用于 shell 命令的 `execute` 工具的隔离环境中运行代理代码。
 当您希望深度代理写入文件、安装依赖项并运行命令而不更改本地计算机上的任何内容时，请使用沙箱后端。
@@ -2620,7 +2620,7 @@ def notify_email(to: str, subject: str, body: str) -> str:
 checkpointer = MemorySaver()
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[remove_file, fetch_file, notify_email],
     interrupt_on={
         "remove_file": True,  # Default: approve, edit, reject, respond
@@ -2659,7 +2659,7 @@ def notify_email(to: str, subject: str, body: str) -> str:
 checkpointer = MemorySaver()
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[remove_file, fetch_file, notify_email],
     interrupt_on={
         "remove_file": True,  # Default: approve, edit, reject, respond
@@ -2898,7 +2898,7 @@ agent = create_deep_agent(
 > }
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=backend,
 >     skills=["/skills/"],
 >     checkpointer=checkpointer,
@@ -2933,7 +2933,7 @@ agent = create_deep_agent(
 > }
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=backend,
 >     skills=["/skills/"],
 >     checkpointer=checkpointer,
@@ -3147,7 +3147,7 @@ agent = create_deep_agent(
 > )
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=backend,
 >     store=store,
 >     skills=["/skills/"],
@@ -3180,7 +3180,7 @@ agent = create_deep_agent(
 > )
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=backend,
 >     skills=["/skills/"],
 >     interrupt_on={
@@ -3221,7 +3221,7 @@ agent = create_deep_agent(
 > checkpointer = MemorySaver()
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     memory=[
 >         "/AGENTS.md"
 >     ],
@@ -3257,7 +3257,7 @@ agent = create_deep_agent(
 > checkpointer = MemorySaver()
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     memory=[
 >         "/AGENTS.md"
 >     ],
@@ -3484,7 +3484,7 @@ agent = create_deep_agent(
 > )
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
 >     store=store,
 >     memory=["/AGENTS.md"],
@@ -3527,7 +3527,7 @@ agent = create_deep_agent(
 > )
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
 >     store=store,
 >     memory=["/AGENTS.md"],
@@ -3773,7 +3773,7 @@ agent = create_deep_agent(
 > checkpointer = MemorySaver()
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=FilesystemBackend(root_dir="/Users/user/{project}"),
 >     memory=[
 >         "./AGENTS.md"
@@ -3808,7 +3808,7 @@ agent = create_deep_agent(
 > checkpointer = MemorySaver()
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=FilesystemBackend(root_dir="/Users/user/{project}"),
 >     memory=[
 >         "./AGENTS.md"
@@ -4018,18 +4018,18 @@ agent = create_deep_agent(
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import HarnessProfile, register_harness_profile
 
-# Append a system-prompt suffix whenever gpt-5.5 is selected.
+# Append a system-prompt suffix whenever gpt-6.1-sol is selected.
 register_harness_profile(
-    "openai:gpt-5.5",
+    "openai:gpt-6.1-sol",
     HarnessProfile(system_prompt_suffix="Respond in under 100 words."),
 )
-```请参阅 [Profiles](/oss/python/deepagents/profiles) 了解注册密钥、合并语义和插件打包。一个更窄的配套 API，[provider profiles](/oss/python/deepagents/profiles#provider-profiles)，为提供者打包模型构造参数（API 密钥、超时、重试设置）。
+```请参阅 [Profiles](/oss/python/deepagents/profiles) 了解注册密钥、合并语义和插件打包。更窄的配套 API [provider profiles](/oss/python/deepagents/profiles#provider-profiles) 为提供者打包了模型构造参数（API 密钥、超时、重试设置）。
 
 ## 结构化输出
 
 Deep Agents 支持[structured output](/oss/python/langchain/structured-output)。
 您可以通过将其作为`response_format`参数传递给`create_deep_agent()`调用来设置所需的结构化输出模式。
-当模型生成结构化数据时，它会被捕获、验证并以深度代理状态的“structed\_response”键返回。
+当模型生成结构化数据时，它会被捕获、验证并在深度代理状态的“structural_response”键中返回。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os

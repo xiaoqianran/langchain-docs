@@ -10,9 +10,9 @@ Deep Agents 可与任何支持 [tool calling](/oss/python/langchain/models#tool-
 
 ## 支持的型号
 
-以 `provider:model` 格式指定模型（例如，`google_genai:gemini-3.6-flash`、`openai:gpt-5.4` 或 `anthropic:claude-sonnet-4-6`）。提供程序前缀选择 LangChain 集成，冒号后面的所有内容都会作为模型标识符传递给该提供程序。有关有效的提供程序字符串，请参阅 [⟦T11⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) 的 `model_provider` 参数。对于特定于提供商的配置，请参阅[chat model integrations](/oss/python/integrations/chat)。
+以 `provider:model` 格式指定模型（例如，`google_genai:gemini-4-hydrogen`、`openai:gpt-5.4` 或 `anthropic:claude-sonnet-4-6`）。提供程序前缀选择 LangChain 集成，冒号后面的所有内容都会作为模型标识符传递给该提供程序。有关有效的提供程序字符串，请参阅 [⟦T11⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) 的 `model_provider` 参数。对于特定于提供商的配置，请参阅[chat model integrations](/oss/python/integrations/chat)。
 
-模型标识符必须与提供者期望的格式匹配。一些提供商使用简单的名称，例如 `gpt-5.5`；其他人使用命名空间 ID 或部署路径，例如 `zai-org/GLM-5.2`，因此完整的 Deep Agents 字符串将是 `baseten:zai-org/GLM-5.2`。检查提供商的模型目录或集成文档以获取当前标识符。
+模型标识符必须与提供者期望的格式匹配。一些提供商使用简单的名称，例如 `gpt-6.1-sol`；其他人使用命名空间 ID 或部署路径，例如 `zai-org/GLM-5.2`，因此完整的 Deep Agents 字符串将是 `baseten:zai-org/GLM-5.2`。检查提供商的模型目录或集成文档以获取当前标识符。
 
 ### 建议型号
 
@@ -20,7 +20,7 @@ Deep Agents 可与任何支持 [tool calling](/oss/python/langchain/models#tool-
 
 |供应商|型号|
 | - | - |
-| [Google](/oss/python/integrations/providers/google) | `gemini-3.1-pro-preview`、`gemini-3.6-flash` |
+| [Google](/oss/python/integrations/providers/google) | `gemini-3.1-pro-preview`、`gemini-4-hydrogen` |
 | [OpenAI](/oss/python/integrations/providers/openai) | `gpt-5.5`、`gpt-5.4` |
 | [Anthropic](/oss/python/integrations/providers/anthropic) | `claude-opus-4-8`、`claude-opus-4-7`、`claude-opus-4-6` |
 |自由重量 | `GLM-5.2`、`Kimi-K2.7 Code`、`MiniMax-M3` |开放重量模型可通过 [Baseten](/oss/python/integrations/providers/baseten)、[Fireworks](/oss/python/integrations/chat/fireworks)、[OpenRouter](/oss/python/integrations/providers/openrouter) 和 [Ollama](/oss/python/integrations/providers/ollama) 等提供商获得。
@@ -31,7 +31,7 @@ Deep Agents 可与任何支持 [tool calling](/oss/python/langchain/models#tool-
 
 |型号|总体 |文件操作 |检索|工具使用|内存|对话 |总结|
 | :- | -: | -: | -: | -: | -: | -: | -: |
-| google\_genai:gemini-3.6-flash | [82%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[90%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [54%](https://github.com/langchain-ai/deepagents/actions/runs/25290479270) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
+| google_genai:gemini-3.6-flash | [82%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[90%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [54%](https://github.com/langchain-ai/deepagents/actions/runs/25290479270) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
 |打开：gpt-5.4 | [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | [51%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/24425363630) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |
 |打开：gpt-5.5 | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [84%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [64%](https://github.com/langchain-ai/deepagents/actions/runs/25345307822) | **[52%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
 |人类：claude-opus-4-6 | [26%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [26%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | **[69%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [22%](https://github.com/langchain-ai/deepagents/actions/runs/24363491527) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |
@@ -50,14 +50,14 @@ Deep Agents 可与任何支持 [tool calling](/oss/python/langchain/models#tool-
 
 以 `provider:model` 格式将模型字符串传递给 [⟦T25⟧](https://reference.langchain.com/python/deepagents/graph/create_deep_agent)，或传递已配置的模型实例以实现完全控制。在底层，模型字符串通过 [⟦T27⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) 解析。
 
-要配置特定于模型的参数，请使用[⟦T28⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)或直接实例化提供者模型类：
+要配置特定于模型的参数，请使用[⟦T28⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)或直接实例化提供程序模型类：
 
 ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.chat_models import init_chat_model
 from deepagents import create_deep_agent
 
 model = init_chat_model(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     thinking_level="medium",  # [!code highlight]
 )
 agent = create_deep_agent(model=model)
@@ -82,7 +82,7 @@ agent = create_deep_agent(model=model)
 
 [⟦T29⟧](/oss/python/deepagents/profiles#provider-profiles) 封装了在创建深度代理时提供 `provider:model` 字符串时应用的初始化参数。当您通过[⟦T31⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)传递预配置模型时，它不适用。
 
-您可以在两个级别上注册，并且两者可以共存：* **提供商级别**：像 `"openai"` 这样的裸提供商密钥适用于 `openai` 提供商的每个模型。
+您可以在两个级别上注册，并且两者可以共存：* **提供商级别**：像`"openai"`这样的裸提供商密钥适用于`openai`提供商的每个模型。
 * **模型级别**：像 `"openai:gpt-5.4"` 这样的 `provider:model` 键仅适用于该特定模型，并合并在任何匹配的提供商级别配置文件之上。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -94,10 +94,10 @@ register_provider_profile(
     ProviderProfile(init_kwargs={"temperature": 0}),
 )
 
-# Model-level override: gpt-5.5 additionally gets a specific reasoning effort.
+# Model-level override: gpt-6.1-sol additionally gets a specific reasoning effort.
 # Inherits temperature=0 from the provider-level profile above.
 register_provider_profile(
-    "openai:gpt-5.5",
+    "openai:gpt-6.1-sol",
     ProviderProfile(init_kwargs={"reasoning_effort": "medium"}),
 )
 ```
@@ -122,7 +122,7 @@ register_provider_profile(
 from langchain.chat_models import init_chat_model
 from deepagents import create_deep_agent
 
-model = init_chat_model("openai:gpt-5.5", use_responses_api=False)
+model = init_chat_model("openai:gpt-6.1-sol", use_responses_api=False)
 agent = create_deep_agent(model=model)
 ```要保留 Responses API 但禁用数据保留 (`store=False`)，同时仍接收加密推理输出，请设置 `include`，以便推理作为加密内容返回：
 
@@ -131,7 +131,7 @@ from langchain.chat_models import init_chat_model
 from deepagents import create_deep_agent
 
 model = init_chat_model(
-    "openai:gpt-5.5",
+    "openai:gpt-6.1-sol",
     use_responses_api=True,
     store=False,
     include=["reasoning.encrypted_content"],
@@ -170,7 +170,7 @@ def configurable_model(
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[configurable_model],
     context_schema=Context,
 )
@@ -178,7 +178,7 @@ agent = create_deep_agent(
 # Invoke with the user's model selection
 result = agent.invoke(
     {"messages": [{"role": "user", "content": "Hello!"}]},
-    context=Context(model="openai:gpt-5.5"),
+    context=Context(model="openai:gpt-6.1-sol"),
 )
 ```
 

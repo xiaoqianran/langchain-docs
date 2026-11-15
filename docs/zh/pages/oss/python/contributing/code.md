@@ -4,7 +4,7 @@
 
 # 贡献代码
 
-欢迎贡献代码！无论您是修复错误、添加功能还是提高性能，您的贡献都有助于为成千上万的开发人员提供更好的开发体验。
+Code contributions are welcome!无论您是修复错误、添加功能还是提高性能，您的贡献都有助于为成千上万的开发人员提供更好的开发体验。
 
 ## 开始使用
 
@@ -26,7 +26,7 @@
 >
 > 在提交大型**新功能或重构**之前，请先打开问题或发帖到[the forum](https://forum.langchain.com/)进行讨论。这可确保与项目目标保持一致并防止重复工作。
 
-### 快速修复：提交错误修复
+### Quick fix: submit a bugfix
 
 对于简单的错误修复，您可以立即开始：
 
@@ -62,7 +62,7 @@ uv sync --group test
 
 **4.创建分支**
 
-为您的修复创建一个新分支。这有助于让您的更改井井有条，并使以后提交拉取请求变得更加容易。
+Create a new branch for your fix.这有助于让您的更改井井有条，并使以后提交拉取请求变得更加容易。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 git checkout -b your-username/short-bugfix-name
@@ -70,11 +70,11 @@ git checkout -b your-username/short-bugfix-name
 
 **5.编写失败的测试**
 
-添加 [unit tests](#test-writing-guidelines)，如果不修复，它将会失败。这使我们能够验证错误是否已解决并防止回归
+Add [unit tests](#test-writing-guidelines) that will fail without your fix.这使我们能够验证错误是否已解决并防止回归
 
 **6。进行更改**
 
-按照我们的[code quality standards](#code-quality-standards)修复错误。进行**最少的必要更改**来解决问题。我们强烈鼓励贡献者在开始编码之前对该问题发表评论。例如：> *“我想解决这个问题。我的预期方法是\[...简要描述...]。这符合维护者的期望吗？”*
+Fix the bug while following our [code quality standards](#code-quality-standards).进行**最少的必要更改**来解决问题。我们强烈鼓励贡献者在开始编码之前对该问题发表评论。例如：> *“我想解决这个问题。我的预期方法是\[...简要描述...]。这符合维护者的期望吗？”*
 
 如果您最初的方法是错误的，30 秒的评论通常可以避免浪费精力。
 
@@ -98,14 +98,14 @@ make integration_tests
 
 **9.提交拉取请求**
 
-请遵循提供的 PR 模板。如果适用，请使用 [closing keyword](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)（例如 `Fixes #ISSUE_NUMBER`）引用您正在修复的问题，以便在合并您的 PR 时自动关闭该问题。
+请遵循提供的 PR 模板。 If applicable, reference the issue you're fixing using a [closing keyword](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword) (e.g. `Fixes #ISSUE_NUMBER`) so that the issue is automatically closed when your PR is merged.
 
 ### 完整的开发设置
 
 对于持续开发或更大贡献：
 
 1. 查看我们的 [contribution guidelines](#contribution-guidelines) 的功能、错误修复和集成
-2. 按照下面的[setup guide](#development-environment)设置您的环境
+2. 按照下面的[setup guide](#development-environment) 设置您的环境
 3. 了解[repository structure](#repository-structure)和包组织
 4. 了解我们的[development workflow](#development-workflow)，包括测试和 linting
 
@@ -210,7 +210,7 @@ make integration_tests
 
 ## 开发环境> [!提示]
 >
-> **使用人工智能编码代理？**
+> **Using an AI coding agent?**
 >
 > * 安装 [LangChain Docs MCP servers](/use-these-docs) 以使您的代理能够访问最新的 LangChain 文档和示例。
 >
@@ -220,13 +220,13 @@ make integration_tests
 >
 > 要添加的服务器：
 >
-> * `docs-langchain`: [https://docs.langchain.com/mcp](https://docs.langchain.com/mcp)
+>   * `docs-langchain`: [https://docs.langchain.com/mcp](https://docs.langchain.com/mcp)
 > * `reference-langchain`: [https://reference.langchain.com/mcp](https://reference.langchain.com/mcp)
 >
 > 检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：
 >
 > * Claude 代码：`claude mcp add --transport http` 对于每个服务器（默认情况下项目范围；仅当我要求全局访问时才使用`--scope user`）。
-> * Codex CLI：`codex mcp add` 以及每个服务器 URL。
+>   * Codex CLI: `codex mcp add` with each server URL.
 > * 光标、Deep Agents 代码、VS 代码或反重力：使用我的客户页面上显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
 > * Claude Desktop：在“设置”>“连接器”下添加两个 URL。
 >
@@ -313,7 +313,7 @@ make integration_tests
 >>
 >> * **[⟦T64⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents#readme)**（位于`libs/deepagents/`）：用于构建具有规划、文件系统和子代理功能的深度代理的核心框架
 >> * **[⟦T66⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code#readme)**（位于`libs/code/`）：Deep Agents代码 — 具有对话恢复、网络搜索和沙箱的交互式终端界面
->> * **[⟦T68⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code)**（位于`libs/cli/`）：将运输代理部署工具（`deepagents deploy`、`deepagents init`、`deepagents dev`）部署到LangSmith 部署
+>> * **[⟦T68⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code)**（位于`libs/cli/`）：将运输代理部署工具（`deepagents deploy`、`deepagents init`、`deepagents dev`）到LangSmith代理服务器
 >
 >> [手风琴] 集成包
 >>

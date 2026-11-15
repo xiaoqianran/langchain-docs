@@ -214,7 +214,7 @@ const structuredOutputMiddleware = createMiddleware({
 });
 
 export const agent = createAgent({
-  model: process.env.COPILOTKIT_MODEL ?? "google:gemini-3.6-flash",
+  model: process.env.COPILOTKIT_MODEL ?? "google:gemini-4-hydrogen",
   contextSchema,
   middleware: [structuredOutputMiddleware],
   tools: [searchWebTool, deepSearchTool],
@@ -491,7 +491,7 @@ yarn add -D tsx typescript @types/node
 
 ### 连接您的LangChain代理
 
-为每个对话返回一个新的代理，由线程键入，因此 Slack 线程之间不会发生状态泄漏。 LangGraph 服务器使用 LangGraph API，因此请使用 `@copilotkit/runtime/langgraph` 中的 `LangGraphAgent`，而不是 `HttpAgent`。将其指向[deployment you already run](#extend-the-langgraph-deployment-with-a-custom-endpoint)：
+为每个对话返回一个新的代理，由线程键入，因此 Slack 线程之间不会发生状态泄漏。 LangSmith代理服务器使用LangGraph API，因此请使用`@copilotkit/runtime/langgraph`中的`LangGraphAgent`，而不是`HttpAgent`。将其指向[deployment you already run](#extend-the-langgraph-deployment-with-a-custom-endpoint)：
 
 ```ts icon="robot" title="agent.ts" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { LangGraphAgent } from "@copilotkit/runtime/langgraph";
@@ -615,7 +615,7 @@ node --env-file=.env --import tsx channel.ts
 ## 最佳实践
 
 * **保持自定义端点的精简：** 使用它来使 CopilotKit 适应您的图形部署，而不是重复图形内已有的业务逻辑
-* **显式发送架构：** `useAgentContext` 应在每次页面安装时描述 UI 契约
+* **显式发送模式：** `useAgentContext` 应在每次页面安装时描述 UI 契约
 * **注册受约束的组件集：**仅公开您实际希望模型使用的组件和道具
 * **将渲染视为解析步骤：** 在渲染之前根据您的模式解析助手内容
 * **保持用户消息简单：** 只有辅助消息需要结构化渲染器；用户消息可以保持正常的聊天气泡

@@ -14,7 +14,7 @@ LangChain 通过 `@langchain/google` 软件包提供与 [Google AI Studio](https
 
 ## 聊天模型
 
-[⟦T12⟧](/oss/javascript/integrations/chat/google) 类是访问 Gemini 模型（例如 `gemini-2.5-pro`、`gemini-2.5-flash` 和 `gemini-3.1-pro-preview`）和开放模型（如 Gemma）的推荐方式。它在单一界面中支持 Google AI Studio 和 Gemini Enterprise Agent Platform
+[⟦T12⟧](/oss/javascript/integrations/chat/google) 类是访问 Gemini 模型（例如 `gemini-2.5-pro`、`gemini-4-hydrogen` 和 `gemini-3.1-pro-preview`）和开放模型（如 Gemma）的推荐方式。它在单一界面中支持 Google AI Studio 和 Gemini Enterprise Agent Platform
 
 > [!提示]
 >
@@ -41,7 +41,7 @@ export GOOGLE_API_KEY=your-api-key
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const model = new ChatGoogle("gemini-2.5-flash");
+const model = new ChatGoogle("gemini-4-hydrogen");
 
 const res = await model.invoke([
   ["human", "What would be a good company name for a company that makes colorful socks?"],

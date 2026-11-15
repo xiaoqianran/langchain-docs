@@ -189,11 +189,11 @@ const response = await model.invoke(messages);
 >
 > 消息的原始内容。
 >
-> **内容\_块** `ContentBlock.Standard[]`
+> **内容块** `ContentBlock.Standard[]`
 >
 > 消息的标准化内容块。 （参见[content](#message-content)）
 >
-> **工具\_调用** `ToolCall[] | None`
+> **工具调用** `ToolCall[] | None`
 >
 > 模型调用的工具。
 >
@@ -203,11 +203,11 @@ const response = await model.invoke(messages);
 >
 > 消息的唯一标识符（由 LangChain 自动生成或在提供商响应中返回）
 >
-> **使用\_元数据** `UsageMetadata | None`
+> **使用_元数据** `UsageMetadata | None`
 >
 > 消息的使用元数据，其中可以包含令牌计数（如果可用）。参见[⟦T45⟧](https://reference.langchain.com/javascript/langchain-core/messages/UsageMetadata)。
 >
-> **响应\_元数据** `ResponseMetadata | None`
+> **响应元数据** `ResponseMetadata | None`
 >
 > 消息的响应元数据。
 
@@ -315,7 +315,7 @@ const response = await model.invoke(messages);  // Model processes the result
 >
 > 工具调用的字符串化输出。
 >
-> **工具\_call\_id** `string` *必填*
+> **tool_call_id** `string` *必填*
 >
 > 此消息正在响应的工具调用的 ID。必须与[⟦T55⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage)中工具调用的ID匹配。
 >
@@ -331,7 +331,7 @@ const response = await model.invoke(messages);  // Model processes the result
 >
 >> [accordion] 示例：使用工件检索元数据
 >>
->> 例如，[retrieval](/oss/javascript/deepagents/retrieval) 工具可以从文档中检索一段段落以供模型参考。当消息`content`包含模型将引用的文本时，`artifact`可以包含应用程序可以使用的文档标识符或其他元数据（例如，用于呈现页面）。请参阅下面的示例：
+>> 例如，[retrieval](/oss/javascript/deepagents/retrieval) 工具可以从文档中检索一段段落以供模型参考。当消息`content`包含模型将引用的文本时，`artifact`可以包含应用程序可以使用的文档标识符或其他元数据（例如，用于渲染页面）。请参阅下面的示例：
 >>
 >> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { ToolMessage } from "langchain";
@@ -889,7 +889,7 @@ const message = new HumanMessage({
 >
 >> [手风琴] ContentBlock.Tools.ServerToolCallChunk
 >>
->> **用途：**流式传输服务器端工具调用片段
+>> **用途：**流式传输服务端工具调用片段
 >>
 >> **类型** `string` *必填*
 >>
@@ -918,7 +918,7 @@ const message = new HumanMessage({
 >>
 >> 永远`"server_tool_result"`
 >>
->> **工具\_call\_id** `string` *必填*
+>> **tool_call_id** `string` *必填*
 >>
 >> 相应服务器工具调用的标识符。
 >>
@@ -1002,7 +1002,7 @@ const restored = await load<HumanMessage>(JSON.stringify(serialized));
 
 ## 与聊天模型一起使用
 
-[Chat models](/oss/javascript/langchain/models) 接受一系列消息对象作为输入并返回 [⟦T172⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 作为输出。交互通常是无状态的，因此简单的对话循环涉及调用具有不断增长的消息列表的模型。
+[Chat models](/oss/javascript/langchain/models) 接受一系列消息对象作为输入，并返回 [⟦T172⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 作为输出。交互通常是无状态的，因此简单的对话循环涉及调用具有不断增长的消息列表的模型。
 
 请参阅以下指南以了解更多信息：
 

@@ -12,7 +12,7 @@ LangGraph 公开一个 [⟦T6⟧](https://reference.langchain.com/javascript/lan
 2. **Store**：用于[long-term memory](/oss/javascript/langchain/long-term-memory)的[BaseStore](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore)实例
 3. **Stream writer**：用于通过`"custom"`流模式传输信息的对象
 4. **执行信息**：当前执行的身份和重试信息（线程ID、运行ID、尝试次数）
-5. **服务器信息**：在LangGraph服务器上运行时特定于服务器的元数据（助手ID、图形ID、经过身份验证的用户）
+5. **服务器信息**：在LangSmith代理服务器上运行时特定于服务器的元数据（助手ID、图形ID、经过身份验证的用户）
 
 > [!提示]
 >
@@ -33,7 +33,7 @@ const contextSchema = z.object({ // [!code highlight]
 }); // [!code highlight]
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [
     /* ... */
   ],
@@ -91,7 +91,7 @@ const fetchUserEmailPreferences = tool(
 
 ### 工具内的执行信息和服务器信息
 
-在 LangGraph 服务器上运行时，通过 `runtime.executionInfo` 访问执行身份（线程 ID、运行 ID），并通过 `runtime.serverInfo` 访问服务器特定的元数据（助理 ID、经过身份验证的用户）：
+在 Agent Server 上运行时，通过 `runtime.executionInfo` 访问执行身份（线程 ID、运行 ID），并通过 `runtime.serverInfo` 访问服务器特定的元数据（助理 ID、经过身份验证的用户）：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -103,7 +103,7 @@ const contextAwareTool = tool(
     const info = runtime.executionInfo;
     console.log(`Thread: ${info.threadId}, Run: ${info.runId}`);  // [!code highlight]
 
-    // Access server info (only available on LangGraph Server)
+    // Access server info (only available on Agent Server)
     const server = runtime.serverInfo;
     if (server != null) {
       console.log(`Assistant: ${server.assistantId}`);  // [!code highlight]
@@ -122,7 +122,7 @@ const contextAwareTool = tool(
 );
 ```
 
-当不在 LangGraph 服务器上运行时（例如，在本地开发期间），`serverInfo` 是 `null`。
+当不在代理服务器上运行时（例如，在本地开发期间），`serverInfo` 是`null`。
 
 > [!注意]
 >
@@ -174,7 +174,7 @@ const loggingMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [
     /* ... */
   ],

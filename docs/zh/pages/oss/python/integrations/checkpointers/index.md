@@ -6,7 +6,7 @@
 
 与检查点后端集成以实现 LangGraph 持久性。
 
-检查点在LangGraph中启用[persistence](/oss/python/langgraph/persistence)，允许代理在交互过程中保存和恢复状态。
+检查点在LangGraph中启用[persistence](/oss/python/langgraph/persistence)，允许代理在交互中保存和恢复状态。
 
 要为自定义存储后端实现您自己的检查点，请参阅[Build a custom checkpointer](/oss/python/langgraph/checkpointers#build-a-custom-checkpointer)。
 
@@ -19,7 +19,7 @@
 
 ### 执行和状态
 
-|后端|套餐 |来源 |
+|后端 |套餐 |来源 |
 | - | - | - |
 | [In-memory](https://reference.langchain.com/python/langgraph.checkpoint/memory/InMemorySaver) | [⟦T0⟧](https://pypi.org/project/langgraph-checkpoint/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint) |
 | [SQLite](https://reference.langchain.com/python/langgraph.checkpoint.sqlite/SqliteSaver) | [⟦T1⟧](https://pypi.org/project/langgraph-checkpoint-sqlite/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite) |
@@ -35,9 +35,9 @@
 | [TypeDB](https://typedb.com/docs) | [⟦T11⟧](https://pypi.org/project/langgraph-checkpoint-typedb/) | [typedb/langgraph-checkpoint-typedb](https://github.com/lolski/langgraph-checkpoint-typedb) |
 | [Inspeximus](https://dancenitra.github.io/inspeximus/) | [⟦T12⟧](https://pypi.org/project/langgraph-checkpoint-inspeximus/) | [DanceNitra/inspeximus](https://github.com/DanceNitra/inspeximus) |
 |苏帕巴斯| [⟦T13⟧](https://pypi.org/project/langgraph-checkpoint-supabase/) | [Tghez/langgraph-checkpoint-supabase](https://github.com/Tghez/langgraph-checkpoint-supabase) |
-| [Amazon DynamoDB (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/dynamodb/) | [⟦T14⟧](https://pypi.org/project/langgraph-dynamodb-checkpoint/) | [skamalj/langgraph\_dynamodb\_checkpoint](https://github.com/skamalj/langgraph_dynamodb_checkpoint) |
-| [Azure Cosmos DB NoSQL (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/cosmosdb/) | [⟦T15⟧](https://pypi.org/project/langgraph-checkpoint-cosmosdb/) | [skamalj/langgraph\_checkpoint\_cosmosdb](https://github.com/skamalj/langgraph_checkpoint_cosmosdb) |
-| [Google Firestore (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/firestore/) | [⟦T16⟧](https://pypi.org/project/langgraph-checkpoint-firestore/) | [skamalj/langgraph\_checkpoint\_firestore](https://github.com/skamalj/langgraph_checkpoint_firestore) |
+| [Amazon DynamoDB (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/dynamodb/) | [⟦T14⟧](https://pypi.org/project/langgraph-dynamodb-checkpoint/) | [skamalj/langgraph_dynamodb_checkpoint](https://github.com/skamalj/langgraph_dynamodb_checkpoint) |
+| [Azure Cosmos DB NoSQL (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/cosmosdb/) | [⟦T15⟧](https://pypi.org/project/langgraph-checkpoint-cosmosdb/) | [skamalj/langgraph_checkpoint_cosmosdb](https://github.com/skamalj/langgraph_checkpoint_cosmosdb) |
+| [Google Firestore (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/firestore/) | [⟦T16⟧](https://pypi.org/project/langgraph-checkpoint-firestore/) | [skamalj/langgraph_checkpoint_firestore](https://github.com/skamalj/langgraph_checkpoint_firestore) |
 | [SingleStore](https://www.singlestore.com/docs/) | [⟦T17⟧](https://pypi.org/project/langgraph-singlestore/) | [singlestore-labs/langchain-singlestore](https://github.com/singlestore-labs/langchain-singlestore) |
 
 ***

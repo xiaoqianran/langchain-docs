@@ -16,7 +16,7 @@
 | - | - | - | - |
 |瞬时错误（网络问题、速率限制）|系统（自动）|使用指数退避重试 | [ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)、[ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) |
 | LLM 可恢复错误（工具故障、解析问题）|法学硕士 |转换为误差`ToolMessage`并让模型调整| [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) |
-|模特拒绝|系统或开发者 |回退到另一个模型，然后捕获错误 | [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)、[ModelRefusalMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware) |\|用户可修复的错误（信息缺失、说明不明确）|人类 |按 `interrupt()` 暂停 | [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) |
+|模特拒绝|系统或开发者 |退回到另一个模型，然后捕获错误 | [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)、[ModelRefusalMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware) |\|用户可修复的错误（信息缺失、说明不明确）|人类 |按 `interrupt()` 暂停 | [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) |
 \|供应商中断 |系统（自动）|退回到替代模型 | [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) |
 \|过多的调用（失控循环）|系统（自动）|每次运行的模型和工具调用上限 | [ModelCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware)、[ToolCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware) |
 \|意外错误 |开发商 |让它们冒泡|无中间件；让异常传播 |
@@ -32,7 +32,7 @@
 > from langchain.agents.middleware import ModelRetryMiddleware, ToolRetryMiddleware
 >
 > agent = create_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     tools=[search_tool, fetch_url_tool],
 >     middleware=[
 >         ModelRetryMiddleware(max_retries=3, backoff_factor=2.0, initial_delay=1.0),
@@ -65,7 +65,7 @@
 >
 >
 > agent = create_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     tools=[search_tool],
 >     middleware=[ToolErrorMiddleware(on_error)],
 > )
@@ -79,7 +79,7 @@
 > from deepagents import create_deep_agent
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     tools=[send_email_tool, delete_record_tool],
 >     interrupt_on={
 >         "send_email": True,
@@ -97,10 +97,10 @@
 > from langchain.agents.middleware import ModelFallbackMiddleware
 >
 > agent = create_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     tools=[search_tool],
 >     middleware=[
->         ModelFallbackMiddleware("gpt-5.5"),
+>         ModelFallbackMiddleware("gpt-6.1-sol"),
 >     ],
 > )
 > ```
@@ -114,7 +114,7 @@
 > from langchain.agents.middleware import ModelCallLimitMiddleware, ToolCallLimitMiddleware
 >
 > agent = create_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     tools=[search_tool],
 >     middleware=[
 >         ModelCallLimitMiddleware(run_limit=50),
@@ -154,7 +154,7 @@ rate_limiter = InMemoryRateLimiter(
 )
 
 model = init_chat_model(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     rate_limiter=rate_limiter,  # [!code highlight]
 )
 
@@ -170,7 +170,7 @@ from deepagents import create_deep_agent
 from langchain.agents.middleware import ModelCallLimitMiddleware, ToolCallLimitMiddleware
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[
         ModelCallLimitMiddleware(run_limit=50),
         ToolCallLimitMiddleware(run_limit=200),
@@ -189,7 +189,7 @@ from deepagents import create_deep_agent
 from langchain.agents.middleware import ModelRetryMiddleware, ToolRetryMiddleware
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[
         # Retry model calls on rate limits, timeouts, and 5xx errors
         ModelRetryMiddleware(max_retries=3, backoff_factor=2.0, initial_delay=1.0),
@@ -218,10 +218,10 @@ from deepagents import create_deep_agent
 from langchain.agents.middleware import ModelFallbackMiddleware
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[
         # If the primary model is fully down, fall back to an alternative
-        ModelFallbackMiddleware("gpt-5.5"),
+        ModelFallbackMiddleware("gpt-6.1-sol"),
     ],
 )
 ```
@@ -256,7 +256,7 @@ def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[ToolErrorMiddleware(on_error)],
 )
 ```

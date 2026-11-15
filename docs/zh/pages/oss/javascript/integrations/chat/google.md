@@ -8,7 +8,7 @@
 
 该库支持访问各种 Google 模型，包括 Gemini
 系列模型及其 Nano Banana 图像生成模型。您可以访问这些
-通过 Google 的 [Google AI](https://ai.google.dev/) API（有时也
+通过 Google 的 [Google AI](https://ai.google.dev/) API 进行模型（有时也
 称为 Generative AI API 或 AI Studio API）或通过 Google Cloud Platform
 [Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform)服务。
 
@@ -20,7 +20,7 @@
 >
 > `@langchain/google` 是所有新的 Google Gemini 集成的推荐软件包。
 > 它取代了旧的 [⟦T44⟧](/oss/javascript/integrations/chat/google_generative_ai)
-> 和 [⟦T45⟧](/oss/javascript/integrations/chat/google_vertex_ai) 包。
+> 和 [⟦T45⟧](/oss/javascript/integrations/chat/google_vertex_ai) 封装。
 > 有关迁移详细信息，请参阅[legacy packages](/oss/javascript/integrations/providers/google#legacy-packages)。
 
 ## 概述
@@ -60,7 +60,7 @@ import { ChatGoogle } from "@langchain/google";
 
 const llm = new ChatGoogle({
   apiKey: "your-api-key",
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
 });
 ```
 
@@ -81,7 +81,7 @@ export GOOGLE_API_KEY="your-api-key"
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   platformType: "gcp",
   // apiKey: "...", // Optional if GOOGLE_API_KEY is set
 });
@@ -120,7 +120,7 @@ export GOOGLE_CLOUD_CREDENTIALS='{"type":"service_account","project_id":"your-pr
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   platformType: "gcp",
   credentials: {
     type: "service_account",
@@ -182,7 +182,7 @@ import { ChatGoogle } from "@langchain/google";
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   maxRetries: 2,
   // apiKey: "...", // Optional if GOOGLE_API_KEY is set
 });
@@ -192,7 +192,7 @@ const llm = new ChatGoogle({
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   // credentials: { ... }, // Optional if using ADC or GOOGLE_CLOUD_CREDENTIALS
 });
 ```
@@ -203,7 +203,7 @@ const llm = new ChatGoogle({
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   platformType: "gcp",
   // apiKey: "...", // Optional if GOOGLE_API_KEY is set
 });
@@ -264,7 +264,7 @@ console.log(res.usage_metadata);
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llmWithLogprobs = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   logprobs: 2, // Number of top candidates to return
 });
 
@@ -284,7 +284,7 @@ console.log(resWithLogprobs.response_metadata.logprobs_result);
 import { ChatGoogle } from "@langchain/google";
 
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   safetySettings: [
     {
       category: "HARM_CATEGORY_HARASSMENT",
@@ -302,7 +302,7 @@ const llm = new ChatGoogle({
 import { ChatGoogle } from "@langchain/google";
 import { z } from "zod";
 
-const llm = new ChatGoogle("gemini-3.7-flash");
+const llm = new ChatGoogle("gemini-4-hydrogen");
 
 const schema = z.object({
   people: z.array(z.object({
@@ -350,7 +350,7 @@ const weatherTool = tool((input) => {
   }),
 });
 
-const llm = new ChatGoogle("gemini-3.7-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([weatherTool]);
 
 const res = await llm.invoke("What is the weather in SF?");
@@ -372,7 +372,7 @@ Gemini 提供了多种用于代码执行和基础的内置工具。
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-3.7-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       codeExecution: {},
@@ -395,7 +395,7 @@ console.log(res.contentBlocks);
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-3.7-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       googleSearch: {},
@@ -413,7 +413,7 @@ console.log(res.text);
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-3.7-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       urlContext: {},
@@ -459,7 +459,7 @@ console.log(res.text);
 ## 上下文缓存
 
 默认情况下，Gemini 模型进行隐式上下文缓存。如果开始时
-您发送给双子座的历史记录与双子座所处的背景完全匹配
+您发送给双子座的历史记录与双子座的上下文完全匹配
 它的缓存，它将减少该请求的令牌成本。
 
 您还可以一次显式地将一些内容传递给模型，缓存输入
@@ -489,7 +489,7 @@ import { ChatGoogle } from "@langchain/google";
 import { HumanMessage } from "@langchain/core/messages";
 import * as fs from "fs";
 
-const llm = new ChatGoogle("gemini-3.7-flash");
+const llm = new ChatGoogle("gemini-4-hydrogen");
 
 const image = fs.readFileSync("./hotdog.jpg").toString("base64");
 
@@ -575,7 +575,7 @@ Google 的 Gemini 2.5 和 Gemini 3 型号支持“思考”或“推理”步骤
   * `> 0`：设置具体的代币预算。
 
 * `reasoningEffort`（或`thinkingLevel`）：设置相对努力。
-  * 值：`"minimal"`、`"low"`、`"medium"`、`"high"`。
+  * 值：`"minimal"`、`"low"`、`"medium"`、`"high"`、`"xhigh"`（`gemini-4-hydrogen` 支持）。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
@@ -598,7 +598,7 @@ reasoningBlocks.forEach((block) => {
 console.log("Answer:", res.text);
 ```> [!注意]
 >
-> 思维块还包括一个 `reasoningContentBlock` 字段。这包含基于的`ContentBlock`
+> 思想块还包括一个 `reasoningContentBlock` 字段。这包含基于的`ContentBlock`
 > Gemini 发送的底层部分。虽然这通常是一个文本块，但对于像这样的多模式模型
 > Nano Banana Pro，它可以是图像或其他媒体块。
 
@@ -712,7 +712,7 @@ for (const [index, block] of res.contentBlocks.entries()) {
 
 您还可以为单个请求配置多个扬声器。这很有用
 双子座读剧本。简化的 `speechConfig` 需要您分配
-将 `speaker` 分配给每个代表语音的预定义 `name`，然后使用它
+将 `speaker` 分配给每个预定义的 `name` 代表语音，然后使用它
 脚本中的发言人。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -742,7 +742,7 @@ const res = await multiSpeakerLlm.invoke(`
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   apiHandler: "interactions",
 });
 
@@ -778,4 +778,4 @@ console.log(second.text);
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

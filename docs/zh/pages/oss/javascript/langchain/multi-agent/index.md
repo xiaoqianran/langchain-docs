@@ -8,7 +8,7 @@
 
 > [!提示]
 >
-> 对于内置多代理支持，请使用 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)：基于 LangChain 构建的托管高级工具，附带 [subagents](/oss/javascript/deepagents/subagents)、[skills](/oss/javascript/deepagents/skills)、规划、虚拟文件系统和上下文管理。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents](/oss/javascript/deepagents/overview) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。
+> 对于内置多代理支持，请使用 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)：基于 LangChain 构建的托管高级工具，附带 [subagents](/oss/javascript/deepagents/subagents)、[skills](/oss/javascript/deepagents/skills)、规划、虚拟文件系统和上下文管理。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents](/oss/javascript/deepagents/overview) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。
 
 ## 为什么要使用多代理？
 
@@ -34,7 +34,7 @@
 
 ### 选择模式
 
-使用此表将您的要求与正确的模式相匹配：|图案|分布式开发 |并行化 |多跳|直接用户交互 |
+使用此表将您的要求与正确的模式相匹配：|图案|分布式开发 |并行化 |多跳 |直接用户交互 |
 | - | :-: | :-: | :-: | :-: |
 | [**Subagents**](/oss/javascript/langchain/multi-agent/subagents) | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐ |
 | [**Handoffs**](/oss/javascript/langchain/multi-agent/handoffs) | - | - | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
@@ -169,7 +169,7 @@
 > **再次调用 3 次 → 总共 6 次**
 >
 > * 路由器是**无状态** - 每个请求都需要 LLM 路由调用
-> * 第 2 回合：路由器 LLM 调用 (1) → Milk 代理调用 buy\_coffee (2) → Milk 代理响应 (3)
+> * 第 2 回合：路由器 LLM 调用 (1) → Milk 代理调用 buy_coffee (2) → Milk 代理响应 (3)
 > * 可以通过包装为有状态代理中的工具来优化
 
 **关键见解：** 有状态模式（交接、技能）可节省 40-50% 的重复请求呼叫。子代理保持每个请求的一致成本——这种无状态设计提供了强大的上下文隔离，但代价是重复模型调用。
@@ -199,7 +199,7 @@
 >
 > ![Handoffs multi-domain: 7+ sequential calls](https://mintcdn.com/langchain-5e9cc07a/CRpSg52QqwDx49Bw/oss/langchain/multi-agent/images/multidomain-handoffs.png?fit=max\&auto=format\&n=CRpSg52QqwDx49Bw\&q=85\&s=7ede44260515e49ff1d0217f0030d66d)
 >
-> 切换**顺序**执行——无法并行研究所有三种语言。不断增长的对话历史会增加开销。总计：**\~14K+ 代币**。
+> 切换**按顺序**执行 - 无法并行研究所有三种语言。不断增长的对话历史会增加开销。总计：**\~14K+ 代币**。
 
 > [选项卡] 技能
 >
@@ -221,7 +221,7 @@
 
 以下是所有三种情况下的模式比较：
 
-|图案|一击|重复请求 |多域 |
+|图案|一击|重复请求 |多域|
 | - | :-: | :-: | :-: |
 | [**Subagents**](/oss/javascript/langchain/multi-agent/subagents) | 4 次通话 | 8 次通话 (4+4) | 5 次调用，9K 代币 |
 | [**Handoffs**](/oss/javascript/langchain/multi-agent/handoffs) | 3 次通话 | 5 次通话 (3+2) | 7+ 次调用，14K+ 代币 |
@@ -232,9 +232,9 @@
 
 |优化 | [Subagents](/oss/javascript/langchain/multi-agent/subagents) | [Handoffs](/oss/javascript/langchain/multi-agent/handoffs) | [Skills](/oss/javascript/langchain/multi-agent/skills) | [Router](/oss/javascript/langchain/multi-agent/router) |
 | - | :-: | :-: | :-: | :-: |
-|单个请求 | | ✅ | ✅ | ✅ |
+|单个请求| | ✅ | ✅ | ✅ |
 |重复请求 | | ✅ | ✅ | |
-|并行执行 | ✅ | | | ✅ |
+|并行执行| ✅ | | | ✅ |
 |大上下文域 | ✅ | | | ✅ |
 |简单、专注的任务 | | | ✅ | |
 

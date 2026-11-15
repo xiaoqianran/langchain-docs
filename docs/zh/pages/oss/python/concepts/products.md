@@ -107,20 +107,20 @@ Deep Agents 专为需要规划和分解的复杂、多步骤任务而设计。
 * 您想要使用预定义的工具，例如文件系统操作、bash 执行和自动化上下文工程。
 * 您想要使用预定义的提示和子代理。
 
-从 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 开始，在生产中运行该工具，无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。
+从 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 开始，在生产中运行该工具，无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。
 
 ## 功能比较
 
 虽然您可以使用 LangChain、LangGraph 和 Deep Agents 完成类似的任务，但集成它们的级别有所不同：
 
-|特色 | LangGraph | LangChain | Deep Agents |
+|特色| LangGraph | LangChain | Deep Agents |
 | - | - | - | - |
 |短期记忆 | [Short-term memory](/oss/python/langgraph/add-memory#add-short-term-memory) | [Short-term memory](/oss/python/langchain/short-term-memory) | [⟦T0⟧](/oss/python/deepagents/backends#statebackend) |
 |长期记忆 | [Long-term memory](/oss/python/langgraph/add-memory#add-long-term-memory) | [Long-term memory](/oss/python/langchain/long-term-memory) | [Long-term memory](/oss/python/deepagents/memory) |
 |技能 | - | [Multi-agent skills](/oss/python/langchain/multi-agent/skills) | [Skills](/oss/python/deepagents/skills) |
 |子代理 | [Subgraphs](/oss/python/langgraph/use-subgraphs) | [Multi-agent subagents](/oss/python/langchain/multi-agent/subagents) | [Subagents](/oss/python/deepagents/subagents) |
 |人机交互 | [Interrupts](/oss/python/langgraph/interrupts) | [Human-in-the-loop middleware](/oss/python/langchain/human-in-the-loop) | [⟦T1⟧ parameter](/oss/python/deepagents/harness#human-in-the-loop) |
-|流媒体 | [Streaming](/oss/python/langgraph/streaming) | [Agent Streaming](/oss/python/langchain/event-streaming) | [Streaming](/oss/python/deepagents/event-streaming) |
+|流媒体| [Streaming](/oss/python/langgraph/streaming) | [Agent Streaming](/oss/python/langchain/event-streaming) | [Streaming](/oss/python/deepagents/event-streaming) |
 
 ## 了解更多
 
@@ -131,6 +131,6 @@ Deep Agents 专为需要规划和分解的复杂、多步骤任务而设计。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/products.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -19,7 +19,7 @@
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       googleSearch: {},
@@ -33,7 +33,7 @@ console.log(res.text);
 您可以选择将搜索结果过滤到特定时间范围：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
   {
     googleSearch: {
@@ -48,7 +48,7 @@ const llm = new ChatGoogle("gemini-2.5-flash")
 
 > [!注意]
 >
-> 维护 `googleSearchRetrieval` 工具是为了向后兼容，但`googleSearch` 是首选。
+> 维护`googleSearchRetrieval` 工具是为了向后兼容，但`googleSearch` 是首选。
 
 有关更多信息，请参阅[Google's Grounding with Google Search documentation](https://ai.google.dev/gemini-api/docs/grounding)。
 
@@ -59,7 +59,7 @@ const llm = new ChatGoogle("gemini-2.5-flash")
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       codeExecution: {},
@@ -89,7 +89,7 @@ for (const block of res.contentBlocks) {
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       urlContext: {},
@@ -109,7 +109,7 @@ console.log(res.text);
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       googleMaps: {},
@@ -123,7 +123,7 @@ console.log(res.text);
 您可以启用小部件上下文令牌来呈现 Google 地图小部件：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       googleMaps: {
@@ -148,7 +148,7 @@ console.log(groundingMetadata?.googleMapsWidgetContextToken);
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       fileSearch: {
@@ -176,7 +176,7 @@ console.log(res.text);
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       computerUse: {
@@ -198,7 +198,7 @@ const llm = new ChatGoogle("gemini-2.5-flash")
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-2.5-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       mcpServers: [
@@ -220,7 +220,7 @@ console.log(res.text);
 
 ### Gemini Enterprise Agent Platform 数据存储上的 Agent 搜索
 
-如果您使用 Gemini Enterprise Agent Platform (`platformType: "gcp"`)，您可以使用代理搜索数据存储来处理响应。
+如果您使用的是 Gemini Enterprise Agent Platform (`platformType: "gcp"`)，您可以使用代理搜索数据存储来处理响应。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";

@@ -7,7 +7,7 @@
 使用无头工具实现在客户端上运行浏览器和设备 API
 
 无头工具让您的代理调用工具，其真正执行必须发生在
-用户的应用程序而不是服务器上。代理仍然看到正常的工具模式，
+用户的应用程序而不是服务器上。代理仍然看到正常的工具架构，
 但实现位于前端，可以访问浏览器 API
 例如 IndexedDB、地理位置、剪贴板、画布或文件选择器。
 
@@ -75,7 +75,7 @@ import { MemorySaver } from "@langchain/langgraph";
 import { geolocationGet, memoryGet, memoryPut } from "./tools";
 
 export const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [memoryPut, memoryGet, geolocationGet],
   checkpointer: new MemorySaver(),
 });

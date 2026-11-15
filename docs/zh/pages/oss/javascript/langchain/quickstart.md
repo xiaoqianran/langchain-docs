@@ -8,7 +8,7 @@
 
 本快速入门向您展示如何在短短几分钟内创建功能齐全的 AI 代理。
 
-构建LangChain快速入门代理
+构建LangChain快速启动代理
 
 按照 LangChain 快速入门，在此工作目录中构建基本的 LangChain 代理。
 
@@ -169,7 +169,7 @@ bun add langchain @langchain/core
 > BASETEN_API_KEY=your-api-key
 > ```
 
-> [标签] 奥拉玛
+> [标签] 奥拉马
 >
 > ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > # Local: Ollama must be running (https://ollama.com)
@@ -249,7 +249,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather],
 });
 
@@ -438,7 +438,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "azure_openai:gpt-5.5",
+  model: "azure_openai:gpt-6.1-sol",
   tools: [getWeather],
 });
 
@@ -465,7 +465,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "bedrock:gpt-5.5",
+  model: "bedrock:gpt-6.1-sol",
   tools: [getWeather],
 });
 
@@ -606,7 +606,7 @@ const fetchTextFromUrl = tool(
 ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { initChatModel } from "langchain";
 
-const model = await initChatModel("gpt-5.5", {
+const model = await initChatModel("gpt-6.1-sol", {
   temperature: 0.5,
   timeout: 300,
   maxTokens: 25000,
@@ -676,7 +676,7 @@ const model = await initChatModel("ollama:devstral-2", {
 ```ts Azure theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { initChatModel } from "langchain";
 
-const model = await initChatModel("azure_openai:gpt-5.5", {
+const model = await initChatModel("azure_openai:gpt-6.1-sol", {
   temperature: 0.5,
   timeout: 300,
   maxTokens: 25000,
@@ -686,7 +686,7 @@ const model = await initChatModel("azure_openai:gpt-5.5", {
 ```ts AWS Bedrock theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { initChatModel } from "langchain";
 
-const model = await initChatModel("bedrock:gpt-5.5", {
+const model = await initChatModel("bedrock:gpt-6.1-sol", {
   temperature: 0.5,
   timeout: 300,
   maxTokens: 25000,

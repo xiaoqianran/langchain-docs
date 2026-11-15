@@ -18,7 +18,7 @@
 代理需要两个组件才能使用网络：|组件|选项|
 | - | - |
 |浏览器 | <ul><li>**本地**：您的计算机上或 [sandbox](/oss/python/deepagents/sandboxes) 中的 Chrome 或 Chromium。自行访问应用程序 `localhost`，无需提供商帐户。您自行安装和更新 Chrome。</li><li>**远程**：来自 [Browserbase](https://www.browserbase.com) 等提供商的云浏览器。与您的机器隔离，需要 API 密钥，并且无法在您的机器或沙箱中访问 `localhost`。</li></ul> |
-|浏览器工具 | [Stagehand v4](https://docs.stagehand.dev/v4/integrations/agent-frameworks/deep-agents)（推荐）、[Playwright MCP](https://github.com/microsoft/playwright-mcp) 或 [agent-browser](https://github.com/vercel-labs/agent-browser) CLI。 |
+|浏览器工具| [Stagehand v4](https://docs.stagehand.dev/v4/integrations/agent-frameworks/deep-agents)（推荐）、[Playwright MCP](https://github.com/microsoft/playwright-mcp) 或 [agent-browser](https://github.com/vercel-labs/agent-browser) CLI。 |
 
 ### 通过本地或远程浏览器使用 Stagehand
 
@@ -76,7 +76,7 @@ async def main():
     try:
         stagehand = await Stagehand.create(browser=browser)
         agent = create_deep_agent(
-            model="openai:gpt-5.5-2026-04-23",
+            model="openai:gpt-6.1-sol",
             middleware=[StagehandMiddleware(stagehand=stagehand)],
         )
         result = await agent.ainvoke({
@@ -105,7 +105,7 @@ asyncio.run(main())
 ## 选择浏览器范围
 
 重复使用浏览器会保留 cookie 和网站登录信息，因此客服人员无需每次都登录。选择哪些对话共享该状态：* **线程范围**：每个对话保留一个浏览器。例如，使用测试帐户测试 Web 应用程序更改。当您在同一对话中迭代时，重复使用选项卡并登录。另一个对话将获得一个单独的浏览器，而无需这些 cookie 或登录信息。共享线程中的参与者可以使用其登录帐户。
-* **用户范围**：在同一经过身份验证的用户的对话中重复使用浏览器登录状态。例如，某人登录预订网站一次，然后在新线程中请求另一次预订。
+* **用户范围**：在同一经过身份验证的用户对话中重复使用浏览器登录状态。例如，某人登录预订网站一次，然后在新线程中请求另一次预订。
 
 不要在不相关的用户之间重复使用个人浏览器会话。其代理可以访问该浏览器的任何人都可以充当其登录帐户。使用应用程序身份验证层中经过验证的身份，而不是提示中提供的用户 ID。
 
@@ -176,7 +176,7 @@ try:
             raise RuntimeError(response.output)
 
     agent = create_deep_agent(
-        model="openai:gpt-5.5-2026-04-23",
+        model="openai:gpt-6.1-sol",
         backend=backend,
         system_prompt=(
             "Test the app through its UI using execute and agent-browser. "
@@ -211,7 +211,7 @@ finally:
 
 * 对于Stagehand，使用Browserbase 作为不受信任任务的隔离边界。 `run` 在浏览器内执行模型编写的 JavaScript。请参阅 Stagehand 的 [security boundary](https://docs.stagehand.dev/v4/integrations/agent-frameworks/overview#security-boundary)。
 * 对于[sandbox QA path](#test-an-app-with-chrome-in-a-langsmith-sandbox)，LangSmith沙箱是隔离边界。一次性沙箱将 Chrome 和应用程序与您的计算机隔离。
-* 使用测试帐户并测试付款方式进行结帐和表单流程，并在进行任何购买操作之前使用[require approval](/oss/python/deepagents/human-in-the-loop)。
+* 使用测试帐户并测试付款方式进行结账和表单流程，并在进行任何购买操作之前使用[require approval](/oss/python/deepagents/human-in-the-loop)。
 * 将页面内容视为不受信任的输入。页面可以包含用于重定向代理的文本。
 * 将凭据保存在您的应用程序环境中，而不是提示或浏览器工具输入中。使用 MCP 时，仅向服务器传递其所需的凭据。
 

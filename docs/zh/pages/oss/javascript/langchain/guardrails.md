@@ -42,7 +42,7 @@ PII 中间件支持多种处理检测到的 PII 的策略：
 
 |战略|描述 |示例|
 | - | - | - |
-| `redact` |替换为`[REDACTED_{PII_TYPE}]` | `[REDACTED_EMAIL]` |
+| `redact` |替换为`[REDACTED_{PII_TYPE}]`| `[REDACTED_EMAIL]` |
 | `mask` |部分模糊（例如最后 4 位数字）| `****-****-****-1234` |
 | `hash` |替换为确定性哈希 | `a8f5f167...` |
 | `block` |检测到时引发异常 |抛出错误 |
@@ -51,7 +51,7 @@ PII 中间件支持多种处理检测到的 PII 的策略：
 import { createAgent, piiMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [customerServiceTool, emailTool],
   middleware: [
     // Redact emails in user input before sending to model
@@ -112,7 +112,7 @@ import { createAgent, humanInTheLoopMiddleware } from "langchain";
 import { MemorySaver, Command } from "@langchain/langgraph";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool, sendEmailTool, deleteDatabaseTool],
   middleware: [
     humanInTheLoopMiddleware({
@@ -203,7 +203,7 @@ const contentFilterMiddleware = (bannedKeywords: string[]) => {
 import { createAgent } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool, calculatorTool],
   middleware: [
     contentFilterMiddleware(["hack", "exploit", "malware"]),
@@ -272,7 +272,7 @@ const safetyGuardrailMiddleware = () => {
 import { createAgent } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool, calculatorTool],
   middleware: [safetyGuardrailMiddleware()],
 });
@@ -288,7 +288,7 @@ const result = await agent.invoke({
 import { createAgent, piiMiddleware, humanInTheLoopMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool, sendEmailTool],
   middleware: [
     // Layer 1: Deterministic input filter (before agent)
