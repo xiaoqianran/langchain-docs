@@ -14,9 +14,13 @@
 >
 > OpenAI 聊天模型。
 
-> [卡][Decisions API](/oss/python/integrations/decision_models/openai)
+> [卡][OpenAIClassifier](/oss/python/integrations/decision_models/openai_classifier)
 >
-> 用于路由、分类和代理中间件的键入答案和校准概率。
+> OpenAI 通过与其他提供商共享的标准决策模型接口做出决策。
+
+> [卡][OpenAIDecisions](/oss/python/integrations/decision_models/openai)
+>
+> 原生OpenAI 决策 API 请求和响应格式。
 
 > [卡][AzureChatOpenAI](/oss/python/integrations/chat/azure_chat_openai)
 >

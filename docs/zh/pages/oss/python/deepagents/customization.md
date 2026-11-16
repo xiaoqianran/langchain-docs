@@ -2129,7 +2129,7 @@ agent = create_deep_agent(
 >
 >> [!注意]
 >>
->> 部署到[LangSmith Agent Server](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
+>> 部署到[LangSmith Agent Server](/langsmith/agent-server#persistence)时，省略`store`参数。平台自动为您的代理商提供商店。
 >
 >> [!提示]
 >>

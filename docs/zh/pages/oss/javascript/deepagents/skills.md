@@ -755,7 +755,7 @@ const agent = await createDeepAgent({
 
 > [!注意]
 >
-> 本地运行通常没有检查点，因此技能编辑会立即生效，并且技能似乎会自行重新加载。 [LangSmith Agent Server](/langsmith/deployment) 自动配置持久性检查点，因此同一代理在部署后的线程生命周期内保留其技能。参见[Going to production](/oss/javascript/deepagents/going-to-production)。
+> 本地运行通常没有检查点，因此技能编辑会立即生效，并且技能似乎会自行重新加载。 [LangSmith Agent Server](/langsmith/agent-server#persistence) 自动配置持久性检查点，因此同一代理在部署后的线程生命周期内保留其技能。参见[Going to production](/oss/javascript/deepagents/going-to-production)。
 
 > [!注意]
 >

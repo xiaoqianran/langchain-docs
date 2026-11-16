@@ -33,7 +33,7 @@ Redis Cluster 仅支持数据库`0`，因此部署无法按数据库编号共享
 以下 `resource_spec` 字段取决于侦听器版本：
 
 |领域 |最低监听版本 |
-| :- | :- |
+| :-| :-|
 |小数 `cpu` 和 `queue_cpu` 值（例如，`0.5`）|晚于 0.12.x。 Listener 0.12.x 拒绝小数值。 |
 | `redis_cpu` 和 `redis_cpu_limit` | 0.13.22 或更高版本。早期的听众会忽略这些字段。 |
 | `redis_memory_mb`低于`2048`| 0.13.27 或更高版本。早期听众至少需要`2048`。 |
@@ -43,7 +43,7 @@ Redis Cluster 仅支持数据库`0`，因此部署无法按数据库编号共享
 
 您可以通过部署的 `resource_spec` 为每个自托管部署设置资源，包括其 Redis 和 PostgreSQL 实例。与公开固定无服务器和专用[deployment types](/langsmith/cloud-platform-features#deployment-types)的云不同，自托管部署根据您的基础设施配置调整 CPU、内存、副本和存储的大小。某些领域，例如 Redis CPU，需要最低侦听器版本。参见[Listener version requirements](#listener-version-requirements)。
 
-`db_*` 字段调整控制平面创建的 PostgreSQL 实例的大小，`redis_*` 字段调整 Redis 实例的大小。如果部署使用[custom PostgreSQL](#custom-postgresql)或[custom Redis](#custom-redis)，则匹配字段无效。
+`db_*` 字段调整控制平面创建的 PostgreSQL 实例的大小，`redis_*` 字段调整 Redis 实例的大小。如果部署使用 [custom PostgreSQL](#custom-postgresql) 或 [custom Redis](#custom-redis)，则匹配字段无效。
 
 部署资源没有默认的组织或工作区。您未设置的字段将回退为部署类型的默认值，因此在创建每个部署时发送完整的 `resource_spec`。请参阅[Configure Agent Server for scale](/langsmith/agent-server-scale) 获取调整指南。
 
@@ -52,7 +52,7 @@ Redis Cluster 仅支持数据库`0`，因此部署无法按数据库编号共享
 这些卷是代理运行时的存储。它们与LangSmith平台本身使用的存储分开，例如PostgreSQL、Redis和blob存储。 LangSmith 不配置存储或创建 PersistentVolumeClaim。您可以在集群中创建这两者，并且部署仅挂载它们。
 
 在两个位置之一设置音量：* **一次部署**：通过[control plane API](/langsmith/api-ref-control-plane)在部署的`resource_spec`中设置`volumes`和`volume_mounts`。这些字段需要侦听器 0.11.30 或更高版本。参见[Listener version requirements](#listener-version-requirements)。您无法在 LangSmith UI 中添加 PersistentVolumeClaims 或其他通用卷。在 UI 中保存部署设置会保留您通过 API 设置的卷和安装。
-* **每次部署**：将 `volumes` 和 `volumeMounts` 添加到 Helm 值中操作员的基本部署模板 (`operator.templates.deployment`)。有关编辑该模板的示例，请参阅[Configure authentication for private registries](/langsmith/enable-self-hosted-deployment#configure-authentication-for-private-registries)。
+* **每次部署**：将 `volumes` 和 `volumeMounts` 添加到 Helm 值中操作员的基本部署模板 (`operator.templates.deployment`)。有关编辑该模板的示例，请参阅[Configure authentication for private registries](/langsmith/enable-self-hosted-agent-server#configure-authentication-for-private-registries)。
 
 如果基本模板和部署的 `resource_spec` 都设置了具有相同 `name` 的卷或卷挂载，则部署的 `resource_spec` 优先。
 
@@ -83,7 +83,7 @@ Redis Cluster 仅支持数据库`0`，因此部署无法按数据库编号共享
 
    卷名称必须是唯一的、有效的 DNS 标签：小写字母、数字和连字符，最多 63 个字符。每个`mountPath`必须是绝对路径。 `volume_mounts` 中的两个条目不能使用相同的 `mountPath`。欲了解更多信息，请参阅[Resource spec](/langsmith/api-ref-control-plane#resource-spec)。
 3. 轮询新版本，直到其 `status` 为 `DEPLOYED`。
-4. 确认应用程序容器可以在 API 服务器和队列工作 Pod 中以 `mountPath` 读写。 `Bound` PersistentVolumeClaim 不保证容器的用户对卷具有写入权限。要检查写入访问权限，请对每个 pod 运行以下命令：
+4. 确认应用程序容器可以在 API 服务器和队列工作 Pod 中以 `mountPath` 读写。 `Bound` PersistentVolumeClaim 不保证容器的用户对卷具有写入权限。要检查写入访问权限，请对每个 Pod 运行以下命令：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    kubectl exec <pod-name> -n <namespace> -- sh -c 'touch /mnt/shared/.write-test && rm /mnt/shared/.write-test'

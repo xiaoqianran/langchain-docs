@@ -16,15 +16,27 @@
 openwiki visualize
 ```
 
-这将在 `127.0.0.1:4321` 上服务 `./openwiki` 并打开浏览器查看图表。服务器运行时会自动获取对 wiki 文件的编辑。图表面板可调整大小并可折叠在 Markdown 阅读器旁边。
+这将在 `127.0.0.1:4321` 上提供 `./openwiki` 并打开浏览器查看图表。服务器运行时会自动获取对 wiki 文件的编辑。图表面板可调整大小并可折叠在 Markdown 阅读器旁边。
+
+### 深层链接到页面
+
+> [!注意]
+>
+> `#page=` URL 片段需要 OpenWiki v0.9.0 或更高版本。
+
+将 `#page=<id>` 片段附加到可视化工具 URL，以在首次加载时打开特定的 wiki 页面，而不是默认的入口页面。 `<id>` 是相对于 wiki 根目录的页面路径，不带 `.md` 扩展名：
+
+```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+http://localhost:4321/#page=architecture/overview
+```
+
+该片段永远不会发送到服务器。如果 ID 与加载图表中的页面不匹配，可视化工具会自动回退到默认入口页面。
 
 ## 选项
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki visualize openwiki --port 4400 --no-open
-```
-
-|参数/标志 |描述 |
+```|参数/标志 |描述 |
 | - | - |
 | `[path]` |提供服务的 Wiki 目录。默认为 `./openwiki` |
 | `--port <port>` |首选端口。默认为`4321`。如果端口已在使用中则增加 |
@@ -42,7 +54,9 @@ openwiki visualize ~/.openwiki/wiki
 可视化工具显示：
 
 * wiki 概念的交互式节点图以及它们之间的 Markdown 链接
-* 所选页面的并排实时 Markdown 阅读器该图未显示`INSTRUCTIONS.md`和其他脚手架文件。
+* 所选页面的并排实时 Markdown 阅读器
+
+该图没有显示`INSTRUCTIONS.md`和其他脚手架文件。
 
 ## 导出静态站点
 
@@ -64,8 +78,6 @@ openwiki visualize <PATH> --export docs/openwiki-visualizer
 * [Code mode](/oss/openwiki/code-mode)
 * [CLI reference](/oss/openwiki/cli-reference)
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/visualize.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

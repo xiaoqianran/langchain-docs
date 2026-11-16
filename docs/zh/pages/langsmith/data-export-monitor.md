@@ -98,12 +98,12 @@ LangSmith 批量导出自动处理瞬时故障和基础设施问题，以确保�
 * **最大重试次数**：每次运行 20 次重试（可能会发生变化）。
 * **重试延迟**：两次尝试之间间隔 30 秒（固定，无指数退避）。
 * **运行超时**：每次运行最多 4 小时。
-* **总体工作流程超时**：整个导出为 72 小时。
+* **整体工作流程超时**：整个导出为 72 小时。
 
 ### 失败场景|故障类型|原因 |自动重试？ |需要采取行动|
 | - | - | - | - |
-| **基础设施中断** | [Deployments](/langsmith/deployment)，服务器重启，worker崩溃 |是的，自动重新排队并进行剩余的重试。 |没有，作业会自动恢复。 |
-| **运行超时** |单次运行超过4小时限制|是的，最多重试 20 次（可能会发生变化）。 |如果持续存在，缩小日期范围，请添加过滤器，或[limit the exported fields](/langsmith/data-export#limit-exported-fields)。 |
+| **基础设施中断** | [Deployments](/langsmith/deploy-overview)，服务器重启，worker崩溃 |是的，自动重新排队并进行剩余的重试。 |没有，作业会自动恢复。 |
+| **运行超时** |单次运行超过4小时限制 |是的，最多重试 20 次（可能会发生变化）。 |如果持续存在，缩小日期范围，请添加过滤器，或[limit the exported fields](/langsmith/data-export#limit-exported-fields)。 |
 | **工作流程超时** |全程出口超过72小时 |没有 |缩小导出范围（日期范围、过滤器）或分成较小的导出。 |
 | **存储/目的地错误** | [Invalid credentials](/langsmith/data-export-destinations#credentials-configuration)、[missing bucket](/langsmith/data-export-destinations#configuration-fields)、[permission issues](/langsmith/data-export-destinations#permissions-required) |没有 |修复目标配置并创建新的导出。 |
 | **目的地已删除** |出口过程中铲斗被移除 |没有 |重新创建目标并重新启动导出。 |
@@ -137,7 +137,7 @@ LangSmith 批量导出自动处理瞬时故障和基础设施问题，以确保�
 
 #### 自托管：调整批量导出并发性和负载大小
 
-在 [LangSmith Self-hosted](/langsmith/self-hosted) 上，并发限制是默认值。要在批量导出期间调整 Pod 内存使用情况，请在 `langsmith-backend` 服务上配置以下环境变量：|环境变量 |默认|描述 |
+在 [LangSmith Self-hosted](/langsmith/self-hosted) 上，并发限制是默认值。要在批量导出期间调整 Pod 内存使用情况，请在 `langsmith-backend` 服务上配置以下环境变量：|环境变量|默认 |描述 |
 | - | - | - |
 | `BULK_EXPORT_MAX_CONCURRENT_RUNS` | `5` |每个调度阶段在单个导出中并行排队的分区运行的最大数量。处理大型日期分区时减少内存以限制峰值内存。 |
 | `DATA_EXPORT_RUN_LIMIT` | `500` |在导出窗口中分页时，从每个查询的运行存储中获取的页面大小（最大行数）。 |

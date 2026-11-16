@@ -35,7 +35,7 @@ For a shorter walkthrough, see the [deployment quickstart](/langsmith/deployment
 >
 > 7. Enter the full path to the [LangGraph API configuration file](/langsmith/cli#configuration-file), including the file name. For example, enter `langgraph.json` if the file is in the repository root.
 >
-> 8. For a branch, choose whether to enable **Automatically update Agent Server on push to branch**. This option is unavailable for tags. You can change it later in [Agent Server Settings](/langsmith/manage-deployment#configure-deployment-settings).
+> 8. For a branch, choose whether to enable **Automatically update Agent Server on push to branch**. This option is unavailable for tags. You can change it later in [Agent Server Settings](/langsmith/manage-agent-server#configure-deployment-settings).
 >
 > 9. For [Agent Server type](/langsmith/cloud-platform-features#deployment-types), select **Serverless** or **Dedicated**, depending on whether the workload can tolerate cold starts or needs always-on capacity.
 >
@@ -95,13 +95,13 @@ After you authorize the `hosted-langserve` GitHub app, configure which repositor
 
 The repository list in the **Create Agent Server** pane reflects the updated access.
 
-If you rename or transfer a repository that an Agent Server uses, [change the Agent Server's repository](/langsmith/manage-deployment#change-the-repository).
+If you rename or transfer a repository that an Agent Server uses, [change the Agent Server's repository](/langsmith/manage-agent-server#change-the-repository).
 
 ## See also
 
-* [Revisions](/langsmith/deployment-revisions)
+* [Revisions](/langsmith/agent-server-revisions)
 * [Preview builds](/langsmith/preview-builds)
-* [Manage an Agent Server](/langsmith/manage-deployment)
+* [Manage an Agent Server](/langsmith/manage-agent-server)
 
 ***
 

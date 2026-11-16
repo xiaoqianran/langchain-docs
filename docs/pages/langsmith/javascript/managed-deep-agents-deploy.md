@@ -4,7 +4,7 @@
 
 Test and deploy a Managed Deep Agent with the mda CLI.
 
-Deploying a Managed Deep Agent compiles a code-first project into a managed LangGraph app, syncs deploy-owned context to [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub), uploads the compiled source, and triggers a LangSmith hosted deployment build. The result is an [Agent Server](/langsmith/agent-server-overview) deployment, including the Agent Server API and [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint).
+Deploying a Managed Deep Agent compiles a code-first project into a managed LangGraph app, syncs deploy-owned context to [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub), uploads the compiled source, and triggers a LangSmith hosted deployment build. The result is an [Agent Server](/langsmith/agent-server) deployment, including the Agent Server API and [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint).
 
 > [!NOTE]
 >
@@ -169,7 +169,7 @@ If a deployment reaches `BUILD_FAILED` or `DEPLOY_FAILED`, open the printed depl
 
 ## Next steps
 
-> [card] [Agent Server](/langsmith/agent-server-overview)
+> [card] [Agent Server](/langsmith/agent-server)
 >
 > Explore the runtime that hosts the deployment.
 

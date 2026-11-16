@@ -36,7 +36,7 @@ A2A 端点在 [Agent Server](/langsmith/agent-server) 的 `/a2a/{assistant_id}` 
 
 ## 支持的方法| v1.0 名称 | v0.3 名称 |支持 |
 | - | - | - |
-| `SendMessage` | `message/send` |是的，默认阻止。参见[Return before the run finishes](#return-before-the-run-finishes) |
+| `SendMessage` | `message/send` |是的，默认阻止。参见[Return before the run finishes](#return-before-the-run-finishes)|
 | `SendStreamingMessage` | `message/stream` |是 - 服务器发送的事件 |
 | `GetTask` | `tasks/get` |是的 |
 | `CancelTask` | `tasks/cancel` |是的 |
@@ -146,7 +146,7 @@ LangGraph-A2A-History-Scope: task
 * 范围在 `historyLength` 之前应用，因此您可以获得*该任务*的最后 N 条消息。
 
 无法识别的值会返回 `-32602` 和 `historyScope must be 'context' or 'task'`。一个误判的
-诸如 `historyscope` 这样的键不是一个错误——它会被忽略，并且你会默默地获得完整的上下文
+诸如 `historyscope` 这样的键不是错误 - 它会被忽略，并且您会默默地获得完整的上下文
 历史记录，因此如果过滤似乎不起作用，请检查拼写。
 
 > [!警告]
@@ -270,7 +270,7 @@ A2A-Extensions: https://a2ui.org/a2a-extension/a2ui/v0.9
 
 服务器从`params.message.metadata`读取A2UI客户端功能和客户端数据模型
 （`a2uiClientCapabilities` 和 `a2uiClientDataModel`），A2UI v0.9 架构定义的位置。
-功能使用标记的形状，例如`{"v0.9": {"supportedCatalogIds": [...]}}`。一套公寓
+功能使用标记形状，例如`{"v0.9": {"supportedCatalogIds": [...]}}`。一套公寓
 功能对象被拒绝。
 
 A2UI `DataPart` 保存一个 A2UI 消息对象或一组消息，其中
@@ -311,7 +311,7 @@ A2A_ALLOWED_TOOL_CALL_RESULTS=generative_ui_tool,another_tool
 
 取消设置意味着发布所有工具结果。该过滤器适用于任务历史记录和流式传输。
 
-＃＃ 要求|特色|最低版本 |
+＃＃ 要求|特色 |最低版本 |
 | - | - |
 | A2A 端点 | `langgraph-api >= 0.4.21` |
 |入境`FilePart` | `0.12.0` |
@@ -433,7 +433,7 @@ graph = (
 
 ## 代理到代理的通信
 
-一旦您的代理通过`langgraph dev`或[deployed to production](/langsmith/deployment)在本地运行，您就可以使用A2A协议促进它们之间的通信。
+一旦您的代理通过`langgraph dev`或[deployed to production](/langsmith/deploy-overview)在本地运行，您就可以使用A2A协议促进它们之间的通信。
 
 此示例演示了两个代理如何通过向彼此的 A2A 端点发送 JSON-RPC 消息来进行通信。该脚本模拟多轮对话，其中每个代理处理对方的响应并继续对话。
 

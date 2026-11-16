@@ -6,11 +6,11 @@
 
 在几分钟内构建您的第一个深度代理
 
-本指南将引导您使用 Deep Agents SDK 创建第一个深度代理。使用 SDK 以获得最大的灵活性并自行托管代理或运行自定义 [Agent Server](/langsmith/deployment)。要在生产环境中运行代理而无需管理基础设施，请参阅 [Managed Deep Agents quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。
+本指南将引导您使用 Deep Agents SDK 创建第一个深度代理。使用 SDK 以获得最大的灵活性并自行托管代理或运行自定义 [Agent Server](/langsmith/agent-server)。要在生产环境中运行代理而无需管理基础设施，请参阅 [Managed Deep Agents quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。
 
 您将建立一个可以进行研究和撰写报告的研究代理。
 
-构建 Deep Agents 研究快速入门
+Build the Deep Agents research quickstart
 
 按照 Deep Agents 快速入门，在此工作目录中构建Deep Agents 研究代理。
 
@@ -25,7 +25,7 @@
 
 使用本项目中已使用的包管理器安装 `deepagents`（以及 TypeScript 上的 `langchain` / `@langchain/core`）。仅当用户未使用 Google、OpenAI 或 Anthropic 内置提供商搜索工具时才添加 Tavily。
 
-## 步骤 3：配置模型凭据检查支持的提供商 API 密钥（例如 `GOOGLE_API_KEY`、`OPENAI_API_KEY` 或 `ANTHROPIC_API_KEY`）。如果未设置，请询问用户要使用哪个提供程序，然后停止并等待他们创建密钥并将其设置在 shell 或 `.env` 文件中。请勿发明、硬编码或提交 API 密钥。如果他们需要 Tavilly，请让他们以同样的方式设置 `TAVILY_API_KEY`。
+## 步骤 3：配置模型凭据Check for a supported provider API key (for example `GOOGLE_API_KEY`, `OPENAI_API_KEY`, or `ANTHROPIC_API_KEY`). If none is set, ask the user which provider to use, then stop and wait while they create a key and set it in the shell or a `.env` file.请勿发明、硬编码或提交 API 密钥。 If they need Tavily, ask them to set `TAVILY_API_KEY` the same way.
 
 ## 步骤 4：实施研究代理
 
@@ -33,7 +33,7 @@
 
 1. 创建互联网搜索工具（当所选型号支持时，最好使用提供商内置的搜索工具；否则使用Tavily）。
 2. 使用搜索工具调用`create_deep_agent`，指南中的`provider:model`字符串（或初始化模型），以及页面上显示的研究系统提示。
-3. 对于可选的LangSmith 跟踪，请按照[https://docs.langchain.com/langsmith/create-an-agent](https://docs.langchain.com/langsmith/create-an-agent) 在基于代理的工作区中注册代理。请用户自行设置`LANGSMITH_AGENT_ID`、`LANGSMITH_AGENT_ENVIRONMENT`、`LANGSMITH_TRACING=true`、`LANGSMITH_API_KEY`。
+3. For optional LangSmith tracing, follow [https://docs.langchain.com/langsmith/create-an-agent](https://docs.langchain.com/langsmith/create-an-agent) to register an agent in an agent-based workspace. Ask the user to set `LANGSMITH_AGENT_ID`, `LANGSMITH_AGENT_ENVIRONMENT`, `LANGSMITH_TRACING=true`, and `LANGSMITH_API_KEY` themselves.
 4. 根据指南中的示例研究查询运行代理并打印最终响应。
 
 ## 规则* 请关注此自托管 SDK 快速入门。请勿添加托管 Deep Agents 部署、评估或不相关的框架。如果用户需要托管路径，请将其指向托管 Deep Agents 快速入门。
@@ -48,16 +48,16 @@
 >
 > 连接 LangChain 文档 MCP 服务器
 >
-> 将两个 LangChain 文档 MCP 服务器连接到我的编码代理，以便它可以查找当前的 LangChain、LangGraph 和 LangSmith 文档和 API 参考。
+>   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 > 要添加的服务器：
 >
 > * `docs-langchain`: [https://docs.langchain.com/mcp](https://docs.langchain.com/mcp)
 > * `reference-langchain`: [https://reference.langchain.com/mcp](https://reference.langchain.com/mcp)
 >
-> 检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：
+>   Detect which agent or editor I am using (Claude Code, Cursor, Codex CLI, Claude Desktop, Deep Agents Code, VS Code, Antigravity, or another MCP-compatible client).使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：
 >
-> * Claude 代码：`claude mcp add --transport http` 对于每个服务器（默认情况下是项目范围；仅当我要求全局访问时才使用`--scope user`）。
+> * Claude 代码：`claude mcp add --transport http` 对于每个服务器（默认情况下项目范围；仅当我要求全局访问时才使用`--scope user`）。
 > * Codex CLI：`codex mcp add` 以及每个服务器 URL。> * 光标、Deep Agents 代码、VS 代码或反重力：使用我的客户页面上显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
 > * Claude Desktop：在“设置”>“连接器”下添加两个 URL。
 >

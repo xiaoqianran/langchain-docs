@@ -23,7 +23,7 @@ Deep Agents 通过`ls`、`read_file`、`write_file`、`edit_file`、`delete`、`
 
 > [!提示]
 >
-> 当您在 [LangSmith Agent Server](/langsmith/deployment) 上部署时，会自动配置商店。使用 [LangSmith](/langsmith/observability) 跟踪来调试文件路径、权限拒绝和跨线程存储。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
+> 当您在 [LangSmith Agent Server](/langsmith/agent-server#persistence) 上部署时，会自动配置商店。使用 [LangSmith](/langsmith/observability) 跟踪来调试文件路径、权限拒绝和跨线程存储。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
 >
 > 我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 
@@ -544,7 +544,7 @@ agent = create_deep_agent(
 
 > [!注意]
 >
-> 部署到[LangSmith Agent Server](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
+> 部署到[LangSmith Agent Server](/langsmith/agent-server#persistence)时，省略`store`参数。平台自动为您的代理商提供商店。
 
 > [!提示]
 >
@@ -555,7 +555,7 @@ agent = create_deep_agent(
 **最适合：**
 
 * 当您已经使用配置的 LangGraph 存储运行时（例如，Redis、Postgres 或[⟦T119⟧](https://reference.langchain.com/python/langchain-core/stores/BaseStore) 背后的云实现）。
-* 当您通过 [LangSmith Agent Server](/langsmith/deployment) 部署代理时（会自动为您的代理配置商店）。
+* 当您通过 [LangSmith Agent Server](/langsmith/agent-server#persistence) 部署代理时（会自动为您的代理配置商店）。
 
 #### 命名空间工厂
 

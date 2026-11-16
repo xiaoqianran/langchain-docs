@@ -18,12 +18,12 @@
 
 可以通过四种方式创建代理，这四种方式的不同之处在于标识符的设置方式以及代理启动的环境：|方法|你做什么|标识符 |创作时的环境 |
 | - | - | - | - |
-| [Studio](/langsmith/build-an-agent) |描述一个代理并让LangSmith Chat 在LangSmith 中构建它 |为您生成 |独自生产|
+| [Studio](/langsmith/build-an-agent) |描述一个代理并让LangSmith Chat 在LangSmith 中构建它 |为您生成|独自生产|
 | [UI](#name-an-agent-traced-from-outside-langsmith) |在LangSmith中输入代理名称和ID来创建代理记录 |你设定吧|所有四个 |
 | [SDK or API](#create-an-agent-programmatically) |通过 SDK 调用或 API 请求创建代理记录 |你设定吧|所有四个 |
 | [Deployment](/langsmith/deploy-to-agent-environment) |将您的代理代码部署到 LangSmith |您传递的或从部署名称派生的代理 ID |所有四个 |
 
-并不是每个特工都能拥有[deployment](/langsmith/deployment)。部署代理代码会从一开始就通过部署创建代理。使用 SDK 或 API 或通过 [**Connect an agent**](#name-an-agent-traced-from-outside-langsmith) 对话框创建的代理一开始无需部署，但稍后可以进行 [deploy to it](/langsmith/deploy-to-agent-environment) 部署。 Studio 中构建的代理无法进行部署，因为它在 Studio 运行时上运行。要检查已部署代理的代理服务器和环境，请在其概述标题中选择 **代理服务器**。
+并不是每个特工都能拥有[deployment](/langsmith/deploy-overview)。部署代理代码会从一开始就通过部署创建代理。使用 SDK 或 API 或通过 [**Connect an agent**](#name-an-agent-traced-from-outside-langsmith) 对话框创建的代理一开始无需部署，但稍后您可以进行 [deploy to it](/langsmith/deploy-to-agent-environment) 部署。 Studio 中构建的代理无法进行部署，因为它在 Studio 运行时上运行。要检查已部署代理的代理服务器和环境，请在其概述标题中选择 **代理服务器**。
 
 当第一次将跟踪寻址到某个环境时，Studio 中内置的代理就会获得其其他环境。关于这四个是什么，请参见[Agent environments](/langsmith/agent-environments#environment-names)。当LangSmith通过这些流程构建或部署代理时，它会处理注册。重用该代理进行跟踪。不要为同一部署创建单独的外部代理。
 
@@ -56,7 +56,7 @@
 
 将 [personal access token or service key](/langsmith/create-account-api-key) 与 [⟦T12⟧ permission](/langsmith/organization-workspace-operations#projects) 一起使用。跟踪密钥无法调用代理创建 API。创建代理后，您的代码可以使用跟踪密钥来提交跟踪。
 
-将 `LANGSMITH_API_KEY` 设置为设置凭据。将 `LANGSMITH_WORKSPACE_ID` 设置为目标工作区 ID，将 `LANGSMITH_ENDPOINT` 设置为您的 [region's API URL](/langsmith/create-account-api-key#configure-the-sdk)。
+将 `LANGSMITH_API_KEY` 设置为设置凭据。将 `LANGSMITH_WORKSPACE_ID` 设置为目标工作区 ID，并将 `LANGSMITH_ENDPOINT` 设置为您的 [region's API URL](/langsmith/create-account-api-key#configure-the-sdk)。
 
 > [选项卡] Python
 >
@@ -109,7 +109,7 @@ export LANGSMITH_AGENT_ENVIRONMENT="local"
 
 ## 配置需要项目名称的集成
 
-某些集成仍然需要 `project_name` 或 `LANGSMITH_PROJECT` 设置。对于这些集成，请使用所选代理环境的`tracer_session_name`。这是 LangSmith 返回的兼容性值，而不是要创建的其他资源。
+某些集成仍然需要 `project_name` 或 `LANGSMITH_PROJECT` 设置。对于这些集成，请使用所选代理环境的`tracer_session_name`。这是LangSmith返回的兼容性值，而不是要创建的另一个资源。
 
 使用可以读取其环境的凭据检索代理。使用Python SDK：
 

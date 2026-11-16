@@ -6,7 +6,7 @@
 
 使用 mda CLI 测试和部署托管深度代理。
 
-部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/python/managed-deep-agents-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。结果是[Agent Server](/langsmith/agent-server-overview)部署，包括代理服务器API和[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)。
+部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/python/managed-deep-agents-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。结果是[Agent Server](/langsmith/agent-server)部署，包括代理服务器API和[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)。
 
 > [!注意]
 >
@@ -32,7 +32,7 @@
 
 在首次部署之前，在项目的 `.env` 或 shell 环境中设置 `LANGSMITH_ENDPOINT`：
 
-|地区 |端点|部署支持 |
+|地区 |端点 |部署支持 |
 | - | - | - |
 | GCP 美国 (`smith.langchain.com`) | `https://api.smith.langchain.com` |支持 |
 | GCP 欧盟 (`eu.smith.langchain.com`) | `https://eu.api.smith.langchain.com` |支持 |
@@ -119,7 +119,7 @@ requires-python = ">=3.11"
 python-version = "3.14"
 ```
 
-设置后，`python-version`采用带引号的`major.minor`字符串，没有补丁版本。 MDA 将解析后的版本写入生成的`langgraph.json` 中的`python_version`，并选择匹配的[Agent Server](/langsmith/agent-server-overview) 图像。 `requires-python` 仍然是项目自身的兼容性要求。
+设置后，`python-version`采用带引号的`major.minor`字符串，没有补丁版本。 MDA 将解析后的版本写入生成的`langgraph.json` 中的`python_version`，并选择匹配的[Agent Server](/langsmith/agent-server) 图像。 `requires-python` 仍然是项目自身的兼容性要求。
 
 当 MDA 添加对较新 Python 的支持时，将其固定在相同的次要版本上。要在单个构建中覆盖它，请设置 `MDA_PYTHON_VERSION`：
 
@@ -157,7 +157,7 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 ## 后续步骤
 
-> [卡][Agent Server](/langsmith/agent-server-overview)
+> [卡][Agent Server](/langsmith/agent-server)
 >
 > 探索托管部署的运行时。
 

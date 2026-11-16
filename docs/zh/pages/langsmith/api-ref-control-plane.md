@@ -6,7 +6,7 @@
 
 使用 LangSmith 控制平面 API 以编程方式创建、管理和自动化代理服务器部署。
 
-控制平面 API 管理[Agent Server hosting](/langsmith/deployment)。借助控制平面 API，您可以以编程方式创建、管理和自动化您的 [Agent Server](/langsmith/agent-server) 部署，例如，作为自定义 CI/CD 工作流程的一部分。
+控制平面 API 管理[Agent Server hosting](/langsmith/deploy-overview)。通过控制平面 API，您可以以编程方式创建、管理和自动化您的 [Agent Server](/langsmith/agent-server) 部署，例如，作为自定义 CI/CD 工作流程的一部分。
 
 在侧边栏的 **控制平面 API** 部分中浏览完整的 API 参考，或参阅端点组：
 
@@ -99,9 +99,9 @@ curl --request GET \
 * **CPU 值四舍五入到小数点后 1 位**：舍入使用浮点运算，因此某些值会向下舍入。例如，`0.25` 存储为 `0.2`。
 * **Redis 内存有自己的范围**：`redis_memory_mb` 和 `redis_memory_limit_mb` 接受 512 到 16384（128 的倍数）。API 在验证器中强制执行此范围，因此它不会出现在 OpenAPI 架构中。对于自托管部署，数据平面中的侦听器使用其自己版本的规则再次验证`resource_spec`。返回 `200` 的 `PATCH` 仍然可能在旧侦听器上部署时失败。参见[Listener version requirements](/langsmith/self-hosted-platform-features#listener-version-requirements)。
 
-要将持久存储（例如 Amazon EFS）挂载到自托管部署的 Pod 中，请在 `resource_spec` 中设置 `volumes` 和 `volume_mounts`。有关更多信息，请参阅[Volumes](/langsmith/self-hosted-platform-features#volumes)。
+要将持久存储（例如 Amazon EFS）挂载到自托管部署的 Pod 中，请在 `resource_spec` 中设置 `volumes` 和 `volume_mounts`。 For more information, see [Volumes](/langsmith/self-hosted-platform-features#volumes).
 
-## 示例代码
+## Example Code
 
 下面是示例 Python 代码，演示如何编排控制平面 API 来创建部署、更新部署和删除部署。
 
@@ -320,4 +320,4 @@ if __name__ == "__main__":
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/api-ref-control-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/api-ref-control-plane.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

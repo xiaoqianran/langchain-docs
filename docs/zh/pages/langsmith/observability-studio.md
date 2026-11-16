@@ -143,7 +143,7 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 在运行实验之前，请确保您具备以下条件：* **A LangSmith 数据集**：您的数据集应包含您想要测试的输入，以及可选的用于比较的参考输出。输入架构必须与助手所需的输入架构相匹配。有关模式的更多信息，请参阅[graph API schema documentation](/oss/python/langgraph/graph-api#schema)。有关创建数据集的更多信息，请参阅[How to Manage Datasets](/langsmith/manage-datasets-in-application#create-a-dataset-and-add-examples)。
 * **（可选）评估器**：您可以将评估器（例如，LLM-as-a-Judge、启发式或自定义函数）附加到 LangSmith 中的数据集。这些将在图表处理完所有输入后自动运行。
 * **正在运行的应用程序**：可以针对以下对象运行实验：
-  * 部署在[LangSmith](/langsmith/deployment)上的应用程序。
+  * 申请[deployed on LangSmith](/langsmith/deploy-overview)。
   * 通过[langgraph-cli](/langsmith/local-dev-testing)启动本地运行的应用程序。
 
 > [!注意]
@@ -198,7 +198,7 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 
 ## 将节点添加到数据集
 
-将线程日志中的节点中的 [examples](/langsmith/evaluation-concepts#examples) 添加到 [LangSmith datasets](/langsmith/manage-datasets)。这对于评估代理的各个步骤很有用。1. 选择一个线程。
+从线程日志中的节点将[examples](/langsmith/evaluation-concepts#examples)添加到[LangSmith datasets](/langsmith/manage-datasets)。这对于评估代理的各个步骤很有用。1. 选择一个线程。
 2. 单击“**添加到数据集**”。
 3. 选择要添加到数据集的输入/输出的节点。
 4. 对于每个选定的节点，选择要在其中创建示例的目标数据集。默认情况下，将选择特定助手和节点的数据集。如果此数据集尚不存在，则会创建它。

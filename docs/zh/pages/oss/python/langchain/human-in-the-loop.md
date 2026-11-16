@@ -45,7 +45,7 @@ from langgraph.checkpoint.memory import InMemorySaver # [!code highlight]
 
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[write_file, execute_sql, read_data],
     middleware=[
         HumanInTheLoopMiddleware( # [!code highlight]
@@ -74,24 +74,24 @@ agent = create_agent(
 
 > [手风琴] 配置选项
 >
-> **中断\_on** `dict` *必需*
+> **中断开启** `dict` *必需*
 >
 > 将工具名称映射到批准配置。值可以是`True`（默认配置的中断）、`False`（自动批准）或`InterruptOnConfig`对象。
 >
-> **描述\_前缀** `string`（默认：工具执行需要批准）
+> **description_prefix** `string`（默认：工具执行需要批准）
 >
 > 操作请求描述的前缀
 >
-> **中断\_模式** `string`（默认：批量）
+> **中断模式** `string`（默认：批量）
 >
 > 代理如何暂停以进行审查。 `"batched"` 每个模型回合都会引发一个中断，并以有序列表进行响应。 `"per_call"` 每个门控调用产生一个中断，由中断 ID 应答。 `"per_call"` 需要`langchain>=1.4.6`。参见[Set the interrupt mode](#set-the-interrupt-mode)。
 >
-> **编辑\_通知** `string | None`
+> **编辑通知** `string | None`
 >> 在调用结果之前添加文本，审阅者将其替换为 `edit` 决策，以便模型知道调用已更改。默认为人工审阅者替换了呼叫的注释。通过 `None` 不添加任何内容。
 >
 > **`InterruptOnConfig` 选项：**
 >
-> **允许\_决定** `list[string]`
+> **允许的决定** `list[string]`
 >
 > 允许的决策列表：`'approve'`、`'edit'`、`'reject'` 或 `'respond'`
 >
@@ -130,7 +130,7 @@ def is_write_query(request: ToolCallRequest) -> bool:
 
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[write_file, execute_sql, read_data],
     middleware=[
         HumanInTheLoopMiddleware(
@@ -193,7 +193,7 @@ def read_data(table: str) -> str:
 
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[write_file, execute_sql, read_data],
     middleware=[
         HumanInTheLoopMiddleware(
@@ -235,7 +235,7 @@ def read_data(table: str) -> str:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[write_file, execute_sql, read_data],
     middleware=[
         HumanInTheLoopMiddleware(

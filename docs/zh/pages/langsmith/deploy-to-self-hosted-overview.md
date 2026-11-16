@@ -24,7 +24,7 @@ LangSmith 支持三种自托管拓扑，可在设置复杂性与控制平面功�
 
 > [卡][Standalone server](/langsmith/deploy-standalone-server)
 >
-> 最轻的选项 - 带有您自己的 PostgreSQL 和 Redis 的代理服务器容器（API + 队列工作线程）。没有控制平面，没有托管 UI。最适合将运行时嵌入现有基础设施或气隙运行。
+> 最轻的选项 - 具有您自己的 PostgreSQL 和 Redis 的代理服务器容器（API + 队列工作人员）。没有控制平面，没有托管 UI。最适合将运行时嵌入现有基础设施或气隙运行。
 
 > [卡片] [Platform features](/langsmith/self-hosted-platform-features)
 >
@@ -56,7 +56,7 @@ LangSmith 支持三种自托管拓扑，可在设置复杂性与控制平面功�
 >
 > 比较独立服务器、完整平台和混合服务器以找到合适的选择。
 
-> [卡][Enable Agent Server hosting](/langsmith/enable-self-hosted-deployment)
+> [卡][Enable Agent Server hosting](/langsmith/enable-self-hosted-agent-server)
 >
 > 添加控制平面和数据平面以在自托管LangSmith上部署和管理代理。
 

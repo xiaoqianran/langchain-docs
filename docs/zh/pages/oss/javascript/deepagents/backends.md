@@ -29,7 +29,7 @@ Deep Agents 通过`ls`、`read_file`、`write_file`、`edit_file`、`glob` 和 `
 
 > [!提示]
 >
-> 当您在 [LangSmith Agent Server](/langsmith/deployment) 上部署时，会自动配置商店。使用 [LangSmith](/langsmith/observability) 跟踪来调试文件路径、权限拒绝和跨线程存储。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
+> 当您在 [LangSmith Agent Server](/langsmith/agent-server#persistence) 上部署时，会自动配置商店。使用 [LangSmith](/langsmith/observability) 跟踪来调试文件路径、权限拒绝和跨线程存储。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
 >
 > 我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 
@@ -470,7 +470,7 @@ const agent = createDeepAgent({
 
 > [!注意]
 >
-> 部署到[LangSmith Agent Server](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
+> 部署到[LangSmith Agent Server](/langsmith/agent-server#persistence)时，省略`store`参数。平台自动为您的代理商提供商店。
 
 > [!提示]
 >
@@ -481,7 +481,7 @@ const agent = createDeepAgent({
 **最适合：**
 
 * 当您已经使用配置的 LangGraph 存储运行时（例如，Redis、Postgres 或[⟦T105⟧](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) 背后的云实现）。
-* 当您通过 [LangSmith Agent Server](/langsmith/deployment) 部署代理时（会自动为您的代理配置商店）。
+* 当您通过 [LangSmith Agent Server](/langsmith/agent-server#persistence) 部署代理时（会自动为您的代理配置商店）。
 
 #### 命名空间工厂
 
@@ -952,7 +952,7 @@ V2 后端原生支持二进制文件。当`read()`遇到二进制文件（由文
 |音频| `.mp3`、`.wav`、`.aiff`、`.aac`、`.ogg`、`.flac` | `audio/mpeg`、`audio/wav`、`audio/aiff`、`audio/aac`、`audio/ogg`、`audio/flac` |
 |视频 | `.mp4`、`.webm`、`.mpeg`/`.mpg`、`.mov`、`.avi`、`.flv`、`.wmv`、`.3gpp` | `video/mp4`、`video/webm`、`video/mpeg`、`video/quicktime`、`video/x-msvideo`、`video/x-flv`、`video/x-ms-wmv`、`video/3gpp` |
 |文件 | `.pdf`、`.ppt`、`.pptx` | `application/pdf`、`application/vnd.ms-powerpoint`、`application/vnd.openxmlformats-officedocument.presentationml.presentation` |
-|文字| `.txt`、`.html`、`.json`、`.js`、`.ts`、`.py`等 | `text/plain`、`text/html`、`application/json`等 |
+|文字| `.txt`、`.html`、`.json`、`.js`、`.ts`、`.py`等 | `text/plain`、`text/html`、`application/json`等|
 
 ### 读取二进制文件
 
@@ -1014,7 +1014,7 @@ type FileData =
 |已弃用 |更换|
 | - | - |
 | `BackendFactory`型 |直接传递后端实例 |
-| `BackendRuntime`接口|后端在内部解析上下文 |
+| `BackendRuntime`接口 |后端在内部解析上下文 |
 | `StateBackend(runtime, options?)` 构造函数重载 | `new StateBackend(options?)` |
 | `StoreBackend(stateAndStore, options?)` 构造函数重载 | `new StoreBackend(options?)` |
 | `WriteResult` 和 `EditResult` 上的`filesUpdate` 字段 |状态写入现在由后端在内部处理 |
@@ -1076,7 +1076,7 @@ new StoreBackend({
 ### 必需的方法
 
 * **`ls(path: string) → LsResult`**
-  * 列出指定目录中的文件和目录（非递归）。目录的路径中有一个尾随的 `/` 和 `is_dir=true`。包括 `is_dir`、`size`、`modified_at`（如果有）。* **`read(filePath: string, offset?: number, limit?: number) → ReadResult`**
+  * 列出指定目录中的文件和目录（非递归）。目录的路径中有一个尾随的 `/` 和 `is_dir=true`。如果可用，请包括 `is_dir`、`size`、`modified_at`。* **`read(filePath: string, offset?: number, limit?: number) → ReadResult`**
   * 读取文件内容。对于文本文件，内容按行偏移量/限制（默认偏移量 0，限制 500）分页。对于二进制文件，将返回完整的原始 `Uint8Array` 内容以及 `mimeType` 字段集。如果文件丢失，则返回`{ error: "File '/x' not found" }`。
 
 * **`readRaw(filePath: string) → ReadRawResult`**

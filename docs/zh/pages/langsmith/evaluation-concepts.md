@@ -24,12 +24,12 @@ LangSmith 支持两种类型的评估，它们在开发工作流程中具有不�
 
  使用离线评估进行**部署前测试**：
 
-* **基准测试**：比较多个版本以找到最佳表现者。
+* **基准测试**：比较多个版本以找到最佳执行者。
 * **回归测试**：确保新版本不会降低质量。
 * **单元测试**：验证各个组件的正确性。
 * **回测**：根据历史数据测试新版本。
 
-离线评估目标是[*datasets*](#datasets)的[*examples*](#examples)：精心策划的测试用例，带有定义“好”的参考输出。
+离线评估目标为[*datasets*](#datasets)的[*examples*](#examples)：精心策划的测试用例，其中包含定义“好”外观的参考输出。
 
 ### 在线评价
 
@@ -39,11 +39,11 @@ LangSmith 支持两种类型的评估，它们在开发工作流程中具有不�
 * **异常检测**：标记异常模式或边缘情况。
 * **生产反馈**：确定要添加到离线数据集的问题。
 
-在线评估目标是[tracing](/langsmith/observability-quickstart)的[*runs*](#runs)和[*threads*](#threads)：没有参考输出的真实生产轨迹。目标的这种差异决定了您可以评估的内容：离线评估可以根据预期答案检查正确性，而在线评估则侧重于质量模式、安全性和现实世界的行为。
+在线评估目标为[tracing](/langsmith/observability-quickstart)的[*runs*](#runs)和[*threads*](#threads)：没有参考输出的真实生产轨迹。目标的这种差异决定了您可以评估的内容：离线评估可以根据预期答案检查正确性，而在线评估则侧重于质量模式、安全性和现实世界的行为。
 
 ## 评估生命周期
 
-随着您的开发和[deploy your application](/langsmith/deployment)，您的评估策略从部署前测试演变为生产监控。在开发和测试期间，离线评估会根据策划的数据集验证功能。部署后，在线评估会监控实时流量的生产行为。随着应用程序的成熟，两种评估类型在迭代反馈循环中协同工作，以不断提高质量。
+随着您的开发和[deploy your application](/langsmith/deploy-overview)，您的评估策略从部署前测试演变为生产监控。在开发和测试期间，离线评估会根据策划的数据集验证功能。部署后，在线评估会监控实时流量的生产行为。随着应用程序的成熟，两种评估类型在迭代反馈循环中协同工作，以不断提高质量。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -121,7 +121,7 @@ graph LR
 
 #### 运行
 
-*run* 是来自 [deployed application](/langsmith/deployment) 的单个执行跟踪。每次运行包含：
+*run* 是来自 [deployed application](/langsmith/deploy-overview) 的单个执行跟踪。每次运行包含：
 
 * **输入**：您的应用程序收到的实际用户输入。
 * **输出**：您的应用程序实际返回的内容。
@@ -182,7 +182,7 @@ LangSmith支持多种评估方法：
 
 **注释队列**
 
-[Annotation queues](/langsmith/annotation-queues) 简化人类跑步反馈的结构化收集。它们通过提供有规定的规则、团队协作功能和进度跟踪的有组织的工作流程来补充[inline annotation](/langsmith/annotate-traces-inline)。
+[Annotation queues](/langsmith/annotation-queues) 简化人类跑步反馈的结构化收集。它们通过提供具有规定的规则、团队协作功能和进度跟踪的有组织的工作流程来补充[inline annotation](/langsmith/annotate-traces-inline)。
 
 LangSmith支持两种队列类型：* **单次运行队列**：根据自定义评分标准项目一次检查一次运行。对于分类问题或从生产跟踪构建数据集很有用。单次运行队列还支持[assertions](/langsmith/assertions)，这是一种自由形式的接受标准，离线评估者可以根据该标准对未来的运行进行评分。
 * **成对队列**：并排比较两次运行以确定哪个更好。专为实验之间的快速 A/B 比较而设计。
@@ -273,7 +273,7 @@ LangSmith支持针对不同开发和部署阶段的多种评估方法。了解�
 
 拆分与元数据不同：使用拆分进行高级组织分组以进行评估，使用元数据来获取每个示例的信息，例如标签和出处。
 
-在机器学习中，最佳实践是每个示例恰好属于一个分割。 LangSmith 允许示例属于多个拆分，这在示例适合多个评估类别时非常有用。
+在机器学习中，最佳实践是每个示例恰好属于一个分割。 LangSmith 允许示例属于多个分割，这在示例适合多个评估类别时非常有用。
 
 了解如何[create and manage dataset splits](/langsmith/manage-datasets-in-application#create-and-manage-dataset-splits)。
 
@@ -307,7 +307,7 @@ LangSmith支持针对不同开发和部署阶段的多种评估方法。了解�
 | - | - | - |
 | **运行于** |数据集（示例）|跟踪项目（运行/线程）|
 | **数据访问** |输入、输出、参考输出 |仅输入、输出 |
-| **何时使用** |部署前、开发期间|生产、部署后|
+| **何时使用** |部署前、开发期间 |生产、部署后|
 | **主要用例** |基准测试、单元测试、回归测试、回溯测试 |实时监控、生产反馈、异常检测 |
 | **评估时间** |对策划的测试集进行批处理 |实时或近乎实时的实时交通状况 |
 | **安装位置** |评估选项卡（SDK、UI、Playground）| [Observability tab](/langsmith/online-evaluations-llm-as-judge)（自动规则）|

@@ -8,7 +8,7 @@
 
 > [!提示]
 >
-> 对于内置多代理支持，请使用 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)：基于 LangChain 构建的托管高级工具，附带 [subagents](/oss/javascript/deepagents/subagents)、[skills](/oss/javascript/deepagents/skills)、规划、虚拟文件系统和上下文管理。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents](/oss/javascript/deepagents/overview) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。
+> 对于内置多代理支持，请使用 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)：基于 LangChain 构建的托管高级工具，附带 [subagents](/oss/javascript/deepagents/subagents)、[skills](/oss/javascript/deepagents/skills)、规划、虚拟文件系统和上下文管理。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents](/oss/javascript/deepagents/overview) 和主机代理，或运行自定义 [Agent Server](/langsmith/agent-server)。
 
 ## 为什么要使用多代理？
 

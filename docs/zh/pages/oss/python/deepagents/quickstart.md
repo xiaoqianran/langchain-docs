@@ -6,7 +6,7 @@
 
 在几分钟内构建您的第一个深度代理
 
-本指南将引导您使用 Deep Agents SDK 创建第一个深度代理。使用 SDK 以获得最大的灵活性并自行托管代理或运行自定义 [Agent Server](/langsmith/deployment)。要在生产环境中运行代理而无需管理基础设施，请参阅 [Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart)。
+本指南将引导您使用 Deep Agents SDK 创建第一个深度代理。使用 SDK 以获得最大的灵活性并自行托管代理或运行自定义 [Agent Server](/langsmith/agent-server)。要在生产环境中运行代理而无需管理基础设施，请参阅 [Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart)。
 
 您将建立一个可以进行研究和撰写报告的研究代理。
 

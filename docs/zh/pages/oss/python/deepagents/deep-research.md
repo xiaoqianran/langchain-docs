@@ -35,7 +35,7 @@ API 密钥用于：
 * [Tavily](https://www.tavily.com/) 用于网络搜索（可选；免费套餐就足够了）
 * [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-deep-research) 用于跟踪（如果您使用 SDK，则可选；对于托管 Deep Agents 是必需的）
 
-## 选择你的路径本指南展示了如何使用 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 和 Deep Agnets SDK 构建此agenet。托管Deep Agents让您无需管理基础设施即可部署代理。 Deep Agents SDK 可让您在使用相同的 Deep Agents 工具时获得最大的灵活性，并且您可以自己托管代理，或运行自定义 [Agent Server](/langsmith/deployment)。
+## 选择你的路径本指南展示了如何使用 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 和 Deep Agnets SDK 构建此agenet。托管Deep Agents让您无需管理基础设施即可部署代理。 Deep Agents SDK 可让您在使用相同的 Deep Agents 工具时获得最大的灵活性，并且您可以自己托管代理，或运行自定义 [Agent Server](/langsmith/agent-server)。
 
 > [选项卡] 托管 Deep Agents
 >

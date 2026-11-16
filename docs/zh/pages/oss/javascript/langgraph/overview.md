@@ -81,7 +81,7 @@ LangGraph 可以独立工作。但是，您也可以将其与其他LangChain产�
 >
 > 基于 LangGraph 构建的集成和代理抽象。
 
-> [卡][LangSmith Agent Server](/langsmith/deployment)
+> [卡][LangSmith Agent Server](/langsmith/deploy-overview)
 >
 > 通过 Studio 中的可视化原型来部署和扩展有状态代理。
 

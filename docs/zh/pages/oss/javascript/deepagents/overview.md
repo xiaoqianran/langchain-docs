@@ -8,7 +8,7 @@
 
 Deep Agents 是[agent harness](/oss/javascript/concepts/products#agent-harnesses-like-the-deep-agents-sdk)，适用于复杂、多步骤的工作。它在 LangChain 和 LangGraph 之上添加了规划、用于上下文的虚拟文件系统、子代理生成和长期内存。
 
-从[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。
+从[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/agent-server)。
 
 ## 选择如何运行Deep Agents
 
@@ -31,7 +31,7 @@ Deep Agents 包括以下功能：* **在环境中采取行动**：通过工具�
 
 ## 使用 SDK 自托管
 
-当您在自己的进程或容器中运行代理，需要自定义 [backend](/oss/javascript/deepagents/backends)、存储或检查点，或者想要自己配置的 [Agent Server](/langsmith/deployment) 时，请使用开源 SDK。对于托管部署，请参阅[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)。
+当您在自己的进程或容器中运行代理，需要自定义 [backend](/oss/javascript/deepagents/backends)、存储或检查点，或者想要自己配置的 [Agent Server](/langsmith/agent-server) 时，请使用开源 SDK。 For managed deployment instead, see [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview).
 
 ### 尝试一下
 
@@ -65,11 +65,11 @@ console.log(
 
 > [卡][View example trace](https://smith.langchain.com/public/b0413dd5-cda3-4cfd-945b-4c97acdedfe0/r)
 >
-> 为此示例打开公共 LangSmith 运行。
+> Open a public LangSmith run for this example.
 
 请参阅 [Quickstart](/oss/javascript/deepagents/quickstart/) 和 [Customization guide](/oss/javascript/deepagents/customization/) 使用 SDK 进行构建。> [!提示]
 >
-> 使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview) 跟踪请求、调试代理行为并评估输出。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
+> Trace requests, debug agent behavior, and evaluate outputs with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview).按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
 
 ## 核心能力
 
@@ -95,10 +95,10 @@ Deep Agents 是["agent harness"](/oss/javascript/concepts/products#agent-harness
 
 [⟦T9⟧](https://www.npmjs.com/package/deepagents) 是一个独立的库，构建在 [LangChain](/oss/javascript/langchain/) 代理的核心构建块之上，并使用 [LangGraph](/oss/javascript/langgraph/) 的工具在生产中运行代理。
 
-[LangChain](/oss/javascript/langchain/) 是为您的代理提供核心构建块的框架。
-要了解有关 LangChain、LangGraph 和 Deep Agents 之间差异的更多信息，请参阅 [Frameworks, runtimes, and harnesses](/oss/javascript/concepts/products)。有关与 Anthropic 安全带的并排比较，请参阅 [Deep Agents vs. Claude Agent SDK](/oss/javascript/deepagents/comparison)。
+[LangChain](/oss/javascript/langchain/) is the framework that provides the core building blocks for your agents.
+To learn more about the differences between LangChain, LangGraph, and Deep Agents, see [Frameworks, runtimes, and harnesses](/oss/javascript/concepts/products). For a side-by-side comparison with Anthropic's harness, see [Deep Agents vs. Claude Agent SDK](/oss/javascript/deepagents/comparison).
 
-要构建没有这些内置功能的自定义代理，请考虑使用 LangChain 的 [⟦T10⟧](/oss/javascript/langchain/agents) 或构建自定义 [LangGraph](/oss/javascript/langgraph/overview) 工作流程。
+For building custom agents without these built-in capabilities, consider using LangChain's [⟦T10⟧](/oss/javascript/langchain/agents) or building a custom [LangGraph](/oss/javascript/langgraph/overview) workflow.
 
 ## 执行环境执行环境是代理执行操作的地方。它有四层：
 
@@ -126,7 +126,7 @@ Deep Agents 是["agent harness"](/oss/javascript/concepts/products#agent-harness
 | `write_file` |创建新文件 |
 | `edit_file` |在文件中执行精确的字符串替换（使用全局替换模式）|
 | `glob` |查找匹配模式的文件（例如，`**/*.py`）|
-| `grep` |使用多种输出模式搜索文件内容（仅文件、带上下文的内容或计数）|
+| `grep` |使用多种输出模式搜索文件内容（仅文件、带有上下文的内容或计数）|
 | `execute` |在环境中运行 shell 命令（仅适用于[sandbox backends](/oss/javascript/deepagents/sandboxes)）|
 
 > [accordion] 支持的多模式文件扩展名

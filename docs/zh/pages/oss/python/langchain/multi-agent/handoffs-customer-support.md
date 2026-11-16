@@ -109,7 +109,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = init_chat_model("gpt-5.5")
+> model = init_chat_model("gpt-6.1-sol")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -118,7 +118,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = ChatOpenAI(model="gpt-5.5")
+> model = ChatOpenAI(model="gpt-6.1-sol")
 > ```
 
 > [标签] Anthropic
@@ -172,7 +172,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = init_chat_model(
->     "azure_openai:gpt-5.5",
+>     "azure_openai:gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 > )
 > ```
@@ -186,7 +186,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = AzureChatOpenAI(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
 > )
 > ```
@@ -209,7 +209,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = init_chat_model("google_genai:gemini-3.7-flash")
+> model = init_chat_model("google_genai:gemini-4-hydrogen")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -218,7 +218,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
+> model = ChatGoogleGenerativeAI(model="gemini-4-hydrogen")
 > ```
 
 > [选项卡] AWS 基岩
@@ -522,10 +522,10 @@ def apply_step_config(
     return handler(request)
 ```
 
-这个中间件：1. **读取当前步骤**：从状态获取`current_step`（默认为“warranty\_collector”）。
+这个中间件：1. **读取当前步骤**：从状态获取`current_step`（默认为“warranty_collector”）。
 2. **查找配置**：在`STEP_CONFIG`中查找匹配条目。
 3. **验证依赖关系**：确保所需的状态字段存在。
-4. **格式化提示**：将状态值注入到提示模板中。
+4. **格式化提示**：将状态值插入提示模板中。
 5. **应用配置**：覆盖系统提示和可用工具。
 
 `request.override()` 方法是关键 - 它允许我们根据状态动态更改代理的行为，而无需创建单独的代理实例。
@@ -694,7 +694,7 @@ agent = create_agent(
 
 有关其他内存管理技术，请参阅[short-term memory guide](/oss/python/langchain/short-term-memory)。
 
-## 9. 增加灵活性：返回某些工作流程需要允许用户返回之前的步骤以更正信息（例如，更改保修状态或问题分类）。然而，并非所有转换都有意义，例如，一旦退款处理完成，您通常就无法返回。对于此支持工作流程，我们将添加工具以返回保修验证和问题分类步骤。
+## 9. 增加灵活性：返回某些工作流程需要允许用户返回到之前的步骤以更正信息（例如，更改保修状态或问题分类）。然而，并非所有转换都有意义，例如，一旦退款处理完成，您通常就无法返回。对于此支持工作流程，我们将添加工具以返回保修验证和问题分类步骤。
 
 > [!提示]
 >
@@ -781,7 +781,7 @@ from langchain.chat_models import init_chat_model
 from langchain.messages import HumanMessage, ToolMessage
 from langchain.tools import tool, ToolRuntime
 
-model = init_chat_model("google_genai:gemini-3.6-flash")
+model = init_chat_model("google_genai:gemini-4-hydrogen")
 
 
 # Define the possible workflow steps

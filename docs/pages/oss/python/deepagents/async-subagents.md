@@ -23,7 +23,7 @@ graph TB
 
 > [!NOTE]
 >
-> Async subagents run on any server that implements the [Agent Protocol](https://github.com/langchain-ai/agent-protocol), such as [LangSmith Agent Server](/langsmith/deployment) or a self-hosted Agent Protocol server. Each subagent runs independently of the supervisor. The supervisor starts, checks, updates, and cancels it through the SDK. Notifications and webhooks require [Agent Server](/langsmith/agent-server).
+> Async subagents run on any server that implements the [Agent Protocol](https://github.com/langchain-ai/agent-protocol), such as [LangSmith Agent Server](/langsmith/agent-server) or a self-hosted Agent Protocol server. Each subagent runs independently of the supervisor. The supervisor starts, checks, updates, and cancels it through the SDK. Notifications and webhooks require [Agent Server](/langsmith/agent-server).
 
 ## Compare sync and async subagents
 

@@ -2163,7 +2163,7 @@ Weekly updates to [LangSmith Cloud](/langsmith/observability). For LangSmith Fle
 
 ## Deployment
 
-* Preview [deployments](/langsmith/deployment) now build the image for the preview commit instead of reusing the parent deployment's image.
+* Preview [deployments](/langsmith/deploy-overview) now build the image for the preview commit instead of reusing the parent deployment's image.
 
 ## Sandboxes
 
@@ -2351,7 +2351,7 @@ The experiments table now displays loading progress bars showing the number of r
 
 ## Deployment
 
-* LangGraph Platform is now [LangSmith Deployment](/langsmith/deployment) and LangGraph Studio is now [LangSmith Studio](/langsmith/studio). LangSmith now spans three services: Observability, Evaluation, and Deployment. Existing deployments, APIs, workflows, pricing, and contracts are unchanged, and no action is required.
+* LangGraph Platform is now [LangSmith Deployment](/langsmith/deploy-overview) and LangGraph Studio is now [LangSmith Studio](/langsmith/studio). LangSmith now spans three services: Observability, Evaluation, and Deployment. Existing deployments, APIs, workflows, pricing, and contracts are unchanged, and no action is required.
 
 **October 6-10, 2025**
 
@@ -2381,7 +2381,7 @@ The experiments table now displays loading progress bars showing the number of r
 
 ## Deployment
 
-* [LangSmith Deployment](/langsmith/deployment) now queues revisions automatically, processing each new revision only after the current one finishes to prevent overlapping deployments and conflicts.
+* [LangSmith Deployment](/langsmith/deploy-overview) now queues revisions automatically, processing each new revision only after the current one finishes to prevent overlapping deployments and conflicts.
 
 **August 11-15, 2025**
 
@@ -2399,7 +2399,7 @@ The experiments table now displays loading progress bars showing the number of r
 
 ## Deployment
 
-* LangSmith now links traces to the server logs in [LangSmith Deployment](/langsmith/deployment), so you can open user and system logs directly from a trace.
+* LangSmith now links traces to the server logs in [LangSmith Deployment](/langsmith/deploy-overview), so you can open user and system logs directly from a trace.
 
 **July 21-25, 2025**
 
@@ -2413,7 +2413,7 @@ The experiments table now displays loading progress bars showing the number of r
 
 ## Deployment
 
-* A new Monitoring tab shows [deployment](/langsmith/deployment) metrics, including CPU and memory usage, API request latency, and active run counts, over a customizable time range.
+* A new Monitoring tab shows [deployment](/langsmith/deploy-overview) metrics, including CPU and memory usage, API request latency, and active run counts, over a customizable time range.
 
 **June 30 - July 4, 2025**
 
@@ -2461,7 +2461,7 @@ The experiments table now displays loading progress bars showing the number of r
 
 ## Deployment
 
-* Every agent deployed on [LangSmith](/langsmith/deployment) now exposes its own Model Context Protocol (MCP) endpoint, so the agent can be used as a tool in any client that supports streamable HTTP for MCP, with no custom code or infrastructure.
+* Every agent deployed on [LangSmith](/langsmith/deploy-overview) now exposes its own Model Context Protocol (MCP) endpoint, so the agent can be used as a tool in any client that supports streamable HTTP for MCP, with no custom code or infrastructure.
 
 ## Admin and billing
 
@@ -2479,7 +2479,7 @@ The experiments table now displays loading progress bars showing the number of r
 
 ## Deployment
 
-* LangGraph Platform, now [LangSmith Deployment](/langsmith/deployment), reached general availability for deploying and managing long-running, stateful agents at scale, with one-click GitHub-to-production deployment, integrated memory and persistence, scalable APIs, and an agent registry across cloud, hybrid, self-hosted, and developer deployment options.
+* LangGraph Platform, now [LangSmith Deployment](/langsmith/deploy-overview), reached general availability for deploying and managing long-running, stateful agents at scale, with one-click GitHub-to-production deployment, integrated memory and persistence, scalable APIs, and an agent registry across cloud, hybrid, self-hosted, and developer deployment options.
 * [Studio](/langsmith/studio) v2 runs locally without the desktop app, supports editing prompts and configuration in the UI, integrates with the Playground, and lets you download production traces to debug them locally.
 
 **May 5-9, 2025**

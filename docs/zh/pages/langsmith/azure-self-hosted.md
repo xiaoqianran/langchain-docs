@@ -15,7 +15,7 @@
 
 > [!注意]
 >
-> LangChain publishes production-ready [Terraform modules for Azure](https://github.com/langchain-ai/terraform/tree/main/modules/azure) that provision AKS, Azure Database for PostgreSQL, Azure Managed Redis, Blob Storage, and Key Vault in a single workflow.从 [Deploy with Terraform overview](/langsmith/self-host-terraform) 开始，在 Terraform 和仅 Helm 路径之间进行选择。
+> LangChain 发布生产就绪的 [Terraform modules for Azure](https://github.com/langchain-ai/terraform/tree/main/modules/azure)，可在单个工作流程中预配 AKS、Azure Database for PostgreSQL、Azure 托管 Redis、Blob 存储和 Key Vault。从 [Deploy with Terraform overview](/langsmith/self-host-terraform) 开始，在 Terraform 和仅 Helm 路径之间进行选择。
 
 ## 初始设置
 
@@ -73,7 +73,7 @@
 
 * **客户端界面**：用户通过网络浏览器或LangChain SDK 与LangSmith 交互。所有流量都终止于 [Azure Load Balancer](https://azure.microsoft.com/en-us/products/load-balancer/) 并路由到 [AKS](https://azure.microsoft.com/en-us/products/kubernetes-service/) 集群中的前端 (NGINX)，然后在必要时路由到集群中的另一个服务。
 * **存储服务**：平台需要持久存储痕迹、元数据和缓存。在 Azure 上推荐的服务是：
-  * **[Azure Database for PostgreSQL (Flexible Server)](https://azure.microsoft.com/en-us/products/postgresql/)** 用于事务数据（例如运行、项目）。 Azure 的高可用性选项在另一个区域中配置备用副本；数据同步提交到主服务器和备用服务器。 LangSmith 需要 PostgreSQL 版本 14 或更高版本。* **[Azure Managed Redis](https://azure.microsoft.com/en-us/products/managed-redis/)** 用于队列和缓存。最佳实践包括存储小值并将大对象分解为多个键，使用管道来最大化吞吐量并确保客户端和服务器驻留在同一区域。您还可以使用[Azure Cache for Redis](https://azure.microsoft.com/en-us/products/cache)，以单实例或集群模式运行。 LangSmith 需要 Redis OSS 6.2 或更高版本。
+  * **[Azure Database for PostgreSQL (Flexible Server)](https://azure.microsoft.com/en-us/products/postgresql/)** 用于事务数据（例如运行、项目）。 Azure 的高可用性选项在另一个区域中配置备用副本；数据同步提交到主服务器和备用服务器。 LangSmith 需要 PostgreSQL 版本 14 或更高版本。* **[Azure Managed Redis](https://azure.microsoft.com/en-us/products/managed-redis/)** 用于队列和缓存。最佳实践包括存储小值并将大对象分解为多个键，使用管道来最大化吞吐量并确保客户端和服务器驻留在同一区域。您还可以使用[Azure Cache for Redis](https://azure.microsoft.com/en-us/products/cache)，以单实例或集群模式运行。 LangSmith需要Redis OSS版本6.2或更高版本。
   * **ClickHouse** 用于大量跟踪分析。我们建议使用[externally managed ClickHouse solution](/langsmith/self-host-external-clickhouse)。如果出于安全或合规性原因，这不是一个选项，请使用开源 Operator 在 AKS 上部署 ClickHouse 集群。确保跨[availability zones](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview)进行复制以实现持久性。混合部署不需要 Clickhouse。
   * **[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/)** 适用于大型工件。使用冗余存储配置，例如读取访问地理冗余 (RA-GRS) 或地理区域冗余 (RA-GZRS) 存储，并设计应用程序以在中断期间从次要区域进行读取。
 
@@ -87,7 +87,7 @@
 
 #### 入口和负载平衡
 
-使用第 7 层入口，它通过 URL 路径路由 HTTP/HTTPS 流量，终止 TLS，并且比第 4 层负载均衡器需要更少的公共 IP 地址。 LangSmith 支持标准 Ingress、Gateway API 和 Istio Gateway 路由。有关每个选项所需的 Helm 值，请参阅 [Create an Ingress for installations](/langsmith/self-host-ingress)。
+使用第 7 层入口，它通过 URL 路径路由 HTTP/HTTPS 流量，终止 TLS，并且比第 4 层负载均衡器需要更少的公共 IP 地址。 LangSmith 支持标准 Ingress、网关 API 和 Istio 网关路由。有关每个选项所需的 Helm 值，请参阅 [Create an Ingress for installations](/langsmith/self-host-ingress)。
 
 在 AKS 上，Microsoft 仅在 2026 年 11 月之前支持具有关键安全补丁的 [application routing add-on](https://learn.microsoft.com/en-us/azure/aks/app-routing) 中的托管 NGINX 入口。Microsoft 建议迁移到其 [Gateway API implementation](https://learn.microsoft.com/en-us/azure/aks/app-routing-gateway-api) 或其他受支持的实现。使用 Envoy Gateway，[LangSmith Azure Terraform module](/langsmith/self-host-terraform-azure-architecture#ingress-options) 默认部署。该模块还处理 DNS 和证书。对于 DNS，它分配 Azure DNS 标签，或为自定义域创建 Azure DNS 区域和 A 记录。对于证书，它安装 cert-manager，它通过 HTTP-01 或 DNS-01 颁发 Let's Encrypt 证书。您可以提供自己的证书作为 Kubernetes 密钥，并自行更新。有关哪些控制器支持哪些证书选项，请参阅模块存储库中的[ingress and TLS guide](https://github.com/langchain-ai/terraform/blob/main/modules/azure/INGRESS_CONTROLLERS.md)。
 
@@ -181,7 +181,7 @@ Envoy Gateway 路径不会从 Key Vault 加载证书。如果您的组织需要 
 
 将您的 LangSmith 实例配置为 [export telemetry data](/langsmith/export-backend)，以便您可以使用 Azure 的服务来监控它。
 
-### Azure 监视器使用 [Azure Monitor](https://azure.microsoft.com/en-us/products/monitor/) 进行指标、日志和警报。主动监控涉及配置关键信号的警报，例如节点 CPU/内存利用率、Pod 状态和服务延迟。当超过预定义阈值时，Azure Monitor 警报会通知你。
+### Azure 监视器使用 [Azure Monitor](https://azure.microsoft.com/en-us/products/monitor/) 进行指标、日志和警报。主动监控涉及针对节点 CPU/内存利用率、Pod 状态和服务延迟等关键信号配置警报。当超过预定义阈值时，Azure Monitor 警报会通知你。
 
 ### 管理 Prometheus 和 Grafana
 
@@ -197,7 +197,7 @@ Envoy Gateway 路径不会从 Key Vault 加载证书。如果您的组织需要 
 
 ## 持续集成
 
-* 管理[Agent Servers](/langsmith/deployment)的首选方法是创建一个CI进程来构建[Agent Server](/langsmith/agent-server)图像并将其推送到[Azure Container Registry](https://azure.microsoft.com/en-us/products/container-registry)。在 PR 合并时将新修订部署到暂存或生产之前，为拉取请求创建测试部署。
+* 管理 [Agent Servers](/langsmith/agent-server) 的首选方法是创建一个 CI 进程，该进程构建 Agent Server 映像并将其推送到 [Azure Container Registry](https://azure.microsoft.com/en-us/products/container-registry)。在 PR 合并时将新修订部署到暂存或生产之前，为拉取请求创建测试部署。
 
 ***
 

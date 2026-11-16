@@ -4,7 +4,7 @@
 
 # 管理助手
 
-本页面介绍如何创建、配置和管理[assistants](/langsmith/assistants)。助手允许您通过配置自定义 [deployed](/langsmith/deployment) 图形的行为（例如模型选择、提示和工具可用性），而无需更改底层图形代码。
+本页面介绍如何创建、配置和管理[assistants](/langsmith/assistants)。助手允许您通过配置自定义 [deployed](/langsmith/deploy-overview) 图形的行为（例如模型选择、提示和工具可用性），而无需更改底层图形代码。
 
 您可以使用 [SDK](https://reference.langchain.com/python/langsmith/deployment-sdk) 或在 LangSmith UI 中工作。
 
@@ -51,7 +51,7 @@ function callModel(state: State, runtime: Runtime[ContextSchema]) {
 
 ## 创建助手> [标签] SDK
 >
-> 使用[⟦T22⟧](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.create)方法创建新助手。该方法需要：
+> 使用[⟦T22⟧](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.create)方法创建一个新助手。该方法需要：
 >
 > * **图形 ID**：该助手将使用的已部署图形的名称（例如，`"agent"`）。
 > * **上下文**：与图形的上下文模式匹配的配置值。
@@ -387,7 +387,7 @@ function callModel(state: State, runtime: Runtime[ContextSchema]) {
 
 ## 删除助手
 
-删除助手会永久删除它及其所有版本。您无法删除单个版本。要停止使用某个版本，[set a different version as active](#use-a-previous-assistant-version)。它还删除助手的 cron 作业并中断任何正在进行的运行。部署继续运行。为了阻止它，[delete the deployment](/langsmith/manage-deployment#delete-a-deployment)。
+删除助手会永久删除它及其所有版本。您无法删除单个版本。要停止使用某个版本，[set a different version as active](#use-a-previous-assistant-version)。它还删除助手的 cron 作业并中断任何正在进行的运行。部署继续运行。为了阻止它，[delete the deployment](/langsmith/manage-agent-server#delete-a-deployment)。
 
 > [标签] SDK
 >

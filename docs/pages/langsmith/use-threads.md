@@ -2,7 +2,7 @@
 
 # Use threads
 
-This guide shows you how to create, view, and inspect *threads*. Threads work with [assistants](/langsmith/assistants) to enable [stateful](/oss/python/langgraph/persistence) execution of your [deployed graphs](/langsmith/deployment).
+This guide shows you how to create, view, and inspect *threads*. Threads work with [assistants](/langsmith/assistants) to enable [stateful](/oss/python/langgraph/persistence) execution of your [deployed graphs](/langsmith/deploy-overview).
 
 ## Understand threads
 
@@ -308,7 +308,7 @@ To run your graph with state persistence, you must first create a thread:
 >
 > You can also create threads directly from the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-use-threads):
 >
-> 1. Navigate to your [deployment](/langsmith/deployment).
+> 1. Navigate to your [deployment](/langsmith/deploy-overview).
 > 2. Select the **Threads** tab.
 > 3. Click **+ New thread**.
 > 4. Optionally provide metadata or initial state for the thread.
@@ -471,7 +471,7 @@ To run your graph with state persistence, you must first create a thread:
 >
 > You can also view and manage threads in a deployment via the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-use-threads):
 >
-> 1. Navigate to your [deployment](/langsmith/deployment).
+> 1. Navigate to your [deployment](/langsmith/deploy-overview).
 > 2. Select the **Threads** tab.
 >
 > This will load a table of all threads in your deployment.
@@ -714,7 +714,7 @@ To run your graph with state persistence, you must first create a thread:
 >
 > You can also view and inspect threads in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-use-threads):
 >
-> 1. Navigate to your [deployment](/langsmith/deployment).
+> 1. Navigate to your [deployment](/langsmith/deploy-overview).
 > 2. Select the **Threads** tab to view all threads.
 > 3. Click on a thread to inspect its current state.
 >

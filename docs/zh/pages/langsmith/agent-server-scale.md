@@ -6,7 +6,7 @@
 
 调整代理服务器以实现自托管部署 - 写入负载、读取负载以及针对不同负载模式的示例 Helm 配置。
 
-LangSmith 代理服务器的默认配置旨在处理各种不同工作负载的大量读写负载。通过遵循下面概述的最佳实践，您可以调整代理服务器以针对您的特定工作负载实现最佳性能。本页介绍自承载部署中代理服务器的扩展注意事项并提供示例配置。
+LangSmith 代理服务器的默认配置旨在处理各种不同工作负载的大量读写负载。通过遵循下面列出的最佳实践，您可以调整代理服务器以针对您的特定工作负载实现最佳性能。本页介绍自承载部署中代理服务器的扩展注意事项并提供示例配置。
 
 此页面涵盖代理服务器，它运行您部署的代理。要扩展摄取跟踪并运行评估的自托管 LangSmith 实例，请参阅 [Configure LangSmith for scale](/langsmith/self-host-scale)。
 
@@ -18,7 +18,7 @@ LangSmith 代理服务器的默认配置旨在处理各种不同工作负载的�
 
 ## 请求与运行并发
 
-两种独立的并发决定了代理服务器的扩展方式，并且它们是单独控制的：* **请求并发** 是部署一次服务的 API 请求数（创建运行、读取线程状态、流式处理结果）。 API 服务器异步处理请求，请求并发量随着 API 服务器副本的数量水平扩展。
+两种独立的并发决定了代理服务器的扩展方式，并且它们是单独控制的：* **请求并发** 是指部署一次服务的 API 请求数（创建运行、读取线程状态、流式传输结果）。 API 服务器异步处理请求，请求并发量随着 API 服务器副本的数量水平扩展。
 * **运行并发** 是一次执行的运行数量。单个队列工作线程最多可并发运行 [⟦T13⟧](/langsmith/env-var-self-hosted)（默认 10）。运行并发上限为队列工作线程数乘以`N_JOBS_PER_WORKER`。
 
 创建运行是一个快速写入请求：API 服务器会保留待处理的运行并立即返回，而无需等待运行执行。如果每个运行槽都忙，则额外的运行将在 [queue](/langsmith/agent-server#run-execution-lifecycle) 中等待，直到槽空闲。提高 `N_JOBS_PER_WORKER` 或添加队列工作线程会增加运行吞吐量；它不会改变部署可以同时服务的请求数量。
@@ -177,7 +177,7 @@ stream_memory_bytes = peak_streamed_bytes_per_second * (RESUMABLE_STREAM_TTL_SEC
 > 确切的最佳配置取决于您的应用程序复杂性、请求模式和数据要求。将以下示例与前面部分中的信息以及您的具体用法结合使用，根据需要更新您的部署配置。如果您有任何疑问，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 
 下表提供了针对各种负载模式（每秒读取请求/每秒写入请求）和标准助手特征（平均运行执行时间为 1 秒、中等 CPU 和内存使用率）的不同代理服务器配置的比较概览。请求速率驱动所需的稳态运行吞吐量，该吞吐量通过队列工作线程和 `N_JOBS_PER_WORKER` 调整大小，而 API 服务器副本的大小则根据请求量本身进行调整：| | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | [Medium / medium](#medium-reads-medium-writes) | [High / high](#high-reads-high-writes) |
-| :- | :-| :-| :-| :- | :- |
+| :- | :-| :- | :- | :- | :-|
 |每秒写入请求数（部署每秒处理的写入请求数）| 5 | 5 | 500 | 500 50 | 50 500 | 500
 |每秒读取请求数（部署每秒处理的读取请求数）| 5 | 500 | 500 5 | 50 | 50 500 | 500
 | **API 服务器**（1 个 CPU，每台服务器 2Gi）| 1（默认）| 6 | 10 | 10 3 | 15 | 15
@@ -186,23 +186,23 @@ stream_memory_bytes = peak_streamed_bytes_per_second * (RESUMABLE_STREAM_TTL_SEC
 | **Redis 资源** | 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）|
 | **Postgres 资源** | 2 CPU 8 Gi（默认）| 4 CPU 16 Gi 内存 | 4 个 CPU 16 Gi | 4 CPU 16 Gi 内存 | 8 CPU 32 Gi 内存 |
 
-要为每个部署调整 Redis 大小，请设置 [⟦T55⟧](/langsmith/api-ref-control-plane#resource-spec) 的 `redis_cpu`、`redis_cpu_limit`、`redis_memory_mb` 和 `redis_memory_limit_mb` 字段。 Redis 内存接受 512 到 16384 MB，因此最小值为 512 Mi。 Redis CPU需要listener 0.13.22或更高版本，Redis内存低于2048需要listener 0.13.27或更高版本。参见[Listener version requirements](/langsmith/self-hosted-platform-features#listener-version-requirements)。从 Agent Server v0.19.0rc1 开始，Redis 内存还取决于您的运行流的数量。 To size it, see [Size Redis memory for streaming](#size-redis-memory-for-streaming).
+要为每个部署调整 Redis 大小，请设置 [⟦T55⟧](/langsmith/api-ref-control-plane#resource-spec) 的 `redis_cpu`、`redis_cpu_limit`、`redis_memory_mb` 和 `redis_memory_limit_mb` 字段。 Redis 内存接受 512 到 16384 MB，因此最小值为 512 Mi。 Redis CPU需要listener 0.13.22或更高版本，Redis内存低于2048需要listener 0.13.27或更高版本。参见[Listener version requirements](/langsmith/self-hosted-platform-features#listener-version-requirements)。从 Agent Server v0.19.0rc1 开始，Redis 内存还取决于您的运行流的数量。要确定其尺寸，请参阅[Size Redis memory for streaming](#size-redis-memory-for-streaming)。
 
-Load levels in the examples are defined as:
+示例中的负载级别定义为：
 
-* Low means approximately 5 requests per second
+* 低意味着每秒大约 5 个请求
 * 中意味着每秒大约 50 个请求
 * 高意味着每秒大约 500 个请求
 
-### Low reads, low writes
+### 低读取，低写入
 
-默认的 [LangSmith Agent Server](/langsmith/deployment) 配置将处理此负载。 No custom resource configuration is needed here.
+默认的 [LangSmith Agent Server](/langsmith/agent-server) 配置将处理此负载。这里不需要自定义资源配置。
 
-### Low reads, high writes
+### 低读取，高写入
 
 您的部署正在处理大量写入请求（每秒 500 个），但读取请求相对较少（每秒 5 个）。
 
-For this, we recommend a configuration like this:
+为此，我们推荐这样的配置：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Example configuration for low reads, high writes (5 read/500 write requests per second)
@@ -250,7 +250,7 @@ postgres:
 
 您的读取请求量很大（每秒 500 个），但写入请求相对较少（每秒 5 个）。
 
-For this, we recommend a configuration like this:
+为此，我们推荐这样的配置：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Example configuration for high reads, low writes (500 read/5 write requests per second)
@@ -295,9 +295,9 @@ postgres:
 
 ### 中等读取，中等写入
 
-This is a balanced configuration that should handle moderate read and write loads (50 read/50 write requests per second).
+这是一个平衡配置，应处理中等读取和写入负载（每秒 50 个读取/50 个写入请求）。
 
-For this, we recommend a configuration like this:
+为此，我们推荐这样的配置：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Example configuration for medium reads, medium writes (50 read/50 write requests per second)
@@ -338,7 +338,7 @@ postgres:
       memory: "32Gi"
 ```
 
-### High reads, high writes您有大量的读取和写入请求（每秒 500 个读取/50​​0 个写入请求）。
+### 高读取，高写入您有大量的读取和写入请求（每秒 500 个读取/50​​0 个写入请求）。
 
 为此，我们推荐这样的配置：
 

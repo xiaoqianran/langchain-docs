@@ -6,7 +6,7 @@
 
 将 LangChain 深度代理部署到 LangSmith 代理服务器，并从 Vercel、Netlify 或 Cloudflare 页面上的 Vite React 聊天 UI 进行流式传输。
 
-此示例让您从本地结帐到已部署的具有工作聊天 UI 的 LangChain 深度代理。后端运行在[LangSmith Agent Server](/langsmith/deployment)上，前端是一个从它流式传输的Vite + React应用程序。
+此示例让您从本地结帐到已部署的具有工作聊天 UI 的 LangChain 深度代理。后端运行在[LangSmith Agent Server](/langsmith/agent-server)上，前端是一个从它流式传输的Vite + React应用程序。
 
 当您想要在本地运行代理、将其部署到 LangSmith 并将 UI 指向已部署的代理服务器时，请使用本指南。
 
@@ -282,7 +282,7 @@ pnpm run dev
 ## 另请参阅
 
 * [Frameworks and platforms overview](/langsmith/deploy-frameworks-and-platforms)
-* [LangSmith Agent Server overview](/langsmith/deployment)
+* [Deploy agents](/langsmith/deploy-overview)
 * [LangGraph CLI](/langsmith/cli)
 * [Deep Agents going to production](/oss/python/deepagents/going-to-production)
 

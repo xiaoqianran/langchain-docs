@@ -99,7 +99,7 @@ const agent = await createDeepAgent({
 | `tools` |代理可以调用​​的领域工具 |
 | `memory` |启动时加载的 AGENTS.md 文件 |
 | `skills` |按需知识的技能目录 |
-| `backend` |文件系统后端（默认为 StateBackend）|
+| `backend` |文件系统后端（默认为 StateBackend） |
 | `permissions` |文件系统的路径级访问控制|
 | `subagents` |用于委派任务的自定义子代理 |
 | `middleware` |附加到 [Deep Agents stack](#deep-agents-stack) | 的额外中间件
@@ -2355,7 +2355,7 @@ const agent = createDeepAgent({
 >
 >> [!注意]
 >>
->> 部署到[LangSmith Agent Server](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
+>> 部署到[LangSmith Agent Server](/langsmith/agent-server#persistence)时，省略`store`参数。平台自动为您的代理商提供商店。
 >
 >> [!提示]
 >>
@@ -2527,7 +2527,7 @@ const agent = createDeepAgent({
 
 有关更多信息，请参阅[Backends](/oss/javascript/deepagents/backends)。
 
-### 沙箱
+### 沙盒
 
 沙箱是专门的 [backends](/oss/javascript/deepagents/backends)，它在具有自己的文件系统和用于 shell 命令的 `execute` 工具的隔离环境中运行代理代码。
 当您希望深度代理写入文件、安装依赖项并运行命令而不更改本地计算机上的任何内容时，请使用沙箱后端。在创建深度代理时，您可以通过将沙箱后端传递给 `backend` 来配置沙箱：
@@ -2637,7 +2637,7 @@ const agent = createDeepAgent({
 });
 ```
 
-您可以在工具调用时以及工具调用内为代理和子代理配置中断。
+您可以在工具调用时以及工具调用内部为代理和子代理配置中断。
 有关更多信息，请参阅[Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。
 
 ## 技能

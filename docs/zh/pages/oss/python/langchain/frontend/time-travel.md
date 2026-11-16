@@ -12,7 +12,7 @@ LangGraph 座席状态。时间旅行可以让你检查检查站并继续
 
 > [!注意]
 >
-> 此功能需要[LangGraph Agent Server](/oss/python/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deployment) 在本地运行代理以使用此模式。
+> 此功能需要[LangGraph Agent Server](/oss/python/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deploy-overview) 在本地运行代理以使用此模式。
 
 ## 检查点如何工作
 
@@ -21,8 +21,8 @@ LangGraph 在超步边界保持代理状态。运行的节点
 是一个 [ThreadState](https://reference.langchain.com/javascript/langchain-langgraph-sdk/index/ThreadState) 对象，它捕获：
 
 * **checkpoint**：检查点标识符，包括其ID和命名空间。
-* **created\_at**：快照创建时间。
-* **parent\_checkpoint**：此路径中的上一个检查点。
+* **created_at**：快照创建时间。
+* **parent_checkpoint**：此路径中的上一个检查点。
 * **值**：此时的完整代理状态（消息、自定义键）。
 * **任务**：计划接下来运行的图节点。
 * **next**：执行计划中即将到来的节点的名称。历史记录可以包含多个执行路径，而不是一个线性对话。

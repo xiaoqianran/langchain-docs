@@ -6,7 +6,7 @@ Agent harness for planning, subagents, and file-system context, available as Man
 
 Deep Agents is the [agent harness](/oss/javascript/concepts/products#agent-harnesses-like-the-deep-agents-sdk) for complex, multi-step work. It adds planning, a virtual filesystem for context, subagent spawning, and long-term memory on top of LangChain and LangGraph.
 
-Start with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, use the [Deep Agents SDK](#self-host-with-the-sdk) and host agents yourself, or run a custom [Agent Server](/langsmith/deployment).
+Start with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, use the [Deep Agents SDK](#self-host-with-the-sdk) and host agents yourself, or run a custom [Agent Server](/langsmith/agent-server).
 
 ## Choose how to run Deep Agents
 
@@ -31,7 +31,7 @@ Optional capabilities such as [task planning](#task-planning) and [skills](#skil
 
 ## Self-host with the SDK
 
-Use the open source SDK when you run the agent in your own process or container, need a custom [backend](/oss/javascript/deepagents/backends), store, or checkpointer, or want an [Agent Server](/langsmith/deployment) you configure yourself. For managed deployment instead, see [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview).
+Use the open source SDK when you run the agent in your own process or container, need a custom [backend](/oss/javascript/deepagents/backends), store, or checkpointer, or want an [Agent Server](/langsmith/agent-server) you configure yourself. For managed deployment instead, see [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview).
 
 ### Try it
 

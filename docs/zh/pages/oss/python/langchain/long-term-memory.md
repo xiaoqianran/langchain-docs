@@ -7,7 +7,7 @@
 为LangChain代理添加长期记忆，以跨对话和会话存储和调用数据
 
 长期记忆可让您的客服人员存储和回忆不同对话和会话中的信息。
-与仅限于单个线程的[short-term memory](/oss/python/langchain/short-term-memory)不同，长期记忆跨线程持续存在并且可以随时调用。
+与仅限于单个线程的[short-term memory](/oss/python/langchain/short-term-memory)不同，长期记忆跨线程持续存在，并且可以随时调用。
 
 长期记忆建立在[LangGraph stores](/oss/python/langgraph/stores)之上，它将数据保存为按命名空间和键组织的 JSON 文档。
 
@@ -205,7 +205,7 @@
 >
 >
 > agent: Runnable = create_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     tools=[get_user_info],
 >     # Pass store to agent - enables agent to access store when running tools
 >     store=store,
@@ -261,7 +261,7 @@
 >
 >
 > agent: Runnable = create_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     tools=[get_user_info],
 >     # Pass store to agent - enables agent to access store when running tools
 >     store=store,
@@ -646,7 +646,7 @@
 >
 >
 > agent: Runnable = create_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     tools=[save_user_info],
 >     store=store,
 >     context_schema=Context,
@@ -700,7 +700,7 @@
 >
 >
 > agent: Runnable = create_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     tools=[save_user_info],
 >     store=store,
 >     context_schema=Context,

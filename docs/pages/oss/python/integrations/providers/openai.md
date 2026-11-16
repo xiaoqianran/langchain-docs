@@ -12,9 +12,13 @@ This page covers all LangChain integrations with [OpenAI](https://en.wikipedia.o
 >
 > OpenAI chat models.
 
-> [card] [Decisions API](/oss/python/integrations/decision_models/openai)
+> [card] [OpenAIClassifier](/oss/python/integrations/decision_models/openai_classifier)
 >
-> Typed answers and calibrated probabilities for routing, classification, and agent middleware.
+> OpenAI decisions through the standard decision model interface shared with other providers.
+
+> [card] [OpenAIDecisions](/oss/python/integrations/decision_models/openai)
+>
+> Native OpenAI Decisions API request and response format.
 
 > [card] [AzureChatOpenAI](/oss/python/integrations/chat/azure_chat_openai)
 >

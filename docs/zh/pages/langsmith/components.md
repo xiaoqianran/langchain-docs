@@ -4,9 +4,9 @@
 
 # LangSmith 代理服务器组件
 
-代理服务器、LangGraph CLI、Studio、SDK、RemoteGraph、控制平面和数据平面组件概述。
+代理服务器、LangGraph CLI、Studio、SDK、RemoteGraph、控制平面和数据平面组件的概述。
 
-[LangSmith Agent Server](/langsmith/deployment) 及其托管基础设施包括以下组件。这些工具和服务共同提供了用于构建、部署和管理图形（包括代理应用程序）的完整解决方案，无论是在 [Cloud](/langsmith/cloud) 上还是在您自己的 [self-hosted](/langsmith/self-hosted) 基础设施中：
+[LangSmith Agent Server](/langsmith/agent-server) 及其托管基础设施包括以下组件。这些工具和服务共同提供了用于构建、部署和管理图形（包括代理应用程序）的完整解决方案，无论是在 [Cloud](/langsmith/cloud) 上还是在您自己的 [self-hosted](/langsmith/self-hosted) 基础设施中：
 
 > [!注意]
 >

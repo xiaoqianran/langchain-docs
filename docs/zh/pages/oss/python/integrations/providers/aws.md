@@ -16,9 +16,9 @@
 
 这两个类都通过 `bedrock_api_key` 参数或 `AWS_BEARER_TOKEN_BEDROCK` 环境变量接受 Bedrock API 密钥。当两者都不可用时，两者都会从标准 AWS 凭证派生短期 API 密钥并透明地刷新它们。
 
-`ChatOpenAIMantle`继承自`BaseChatOpenAI`。有关使用示例和功能，请参阅相应的[Responses API docs](/oss/python/integrations/chat/openai#responses-api)。支持的型号请参阅[AWS Mantle OpenAI-compatible API docs](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-responses-api.html#bedrock-mantle-responses)。
+`ChatOpenAIMantle`继承自`BaseChatOpenAI`。有关使用示例和功能，请参阅相应的[Responses API docs](/oss/python/integrations/chat/openai#responses-api)。有关支持的型号，请参阅[AWS Mantle OpenAI-compatible API docs](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-responses-api.html#bedrock-mantle-responses)。
 
-`ChatAnthropicMantle`继承自`ChatAnthropic`，并以Mantle上的Anthropic消息端点为目标。有关使用示例和功能，请参阅 [⟦T42⟧](/oss/python/integrations/chat/anthropic) 文档。支持的型号请参阅[AWS Mantle Anthropic API docs](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html)。
+`ChatAnthropicMantle`继承自`ChatAnthropic`，并以Mantle上的Anthropic消息端点为目标。有关使用示例和功能，请参阅 [⟦T46⟧](/oss/python/integrations/chat/anthropic) 文档。有关支持的型号，请参阅[AWS Mantle Anthropic API docs](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_aws import ChatOpenAIMantle, ChatAnthropicMantle
@@ -101,7 +101,7 @@ from langchain_aws.vectorstores import AmazonS3Vectors
 
 ### 瓦尔基
 
-[Valkey](https://valkey.io/) 是一个开源的高性能键/值数据存储，支持缓存、消息队列等工作负载，并且可以充当主数据库。使用 ValkeyVectorStore 与 [Amazon ElastiCache for Valkey](https://aws.amazon.com/elasticache/) 或 [Amazon MemoryDB for Valkey](https://aws.amazon.com/memorydb/) 连接。
+[Valkey](https://valkey.io/)是一个开源的高性能键/值数据存储，支持缓存、消息队列等工作负载，并且可以充当主数据库。使用ValkeyVectorStore与[Amazon ElastiCache for Valkey](https://aws.amazon.com/elasticache/)或[Amazon MemoryDB for Valkey](https://aws.amazon.com/memorydb/)连接。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_aws.vectorstores import ValkeyVectorStore
@@ -304,9 +304,9 @@ config = {
     }
 }
 result = graph.invoke({"messages": []}, config)
-```
+```主要特点：
 
-主要特点：* 托管基础架构，无需设置数据库
+* 托管基础架构，无需设置数据库
 * 自动缩放和高可用性
 * 通过`actor_id`隔离支持多代理
 * 静态和传输中加密
@@ -366,7 +366,9 @@ from langchain_experimental.comprehend_moderation import AmazonComprehendModerat
 ### Amazon Bedrock AgentCore 运行时
 
 > [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html)提供
-> LangGraph 代理的托管、无服务器执行，具有内置可观察性、自动扩展以及与其他 AgentCore 服务的无缝集成。
+> LangGraph 代理的托管、无服务器执行，具有内置可观察性、自动扩展以及与其他 AgentCore 服务的无缝集成。部署使用两个单独安装的包：`bedrock-agentcore` Python SDK（将已编译的图形包装在运行时入口点中）和 AgentCore CLI（将项目打包并部署）。
+
+安装SDK：
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install bedrock-agentcore
@@ -376,28 +378,83 @@ pip install bedrock-agentcore
 uv add bedrock-agentcore
 ```
 
+将编译后的图表包装在入口点中：
+
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from bedrock_agentcore.runtime import BedrockAgentCoreApp
 
 app = BedrockAgentCoreApp()
 
+
 @app.entrypoint
 def agent_invocation(payload, context):
-    result = graph.invoke({"messages": [{"role": "user", "content": payload["prompt"]}]})
+    prompt = payload["prompt"]
+    if not isinstance(prompt, str):
+        raise ValueError("prompt must be a string")
+
+    # graph is your compiled LangGraph application
+    result = graph.invoke({"messages": [{"role": "user", "content": prompt}]})
     return {"result": result["messages"][-1].content}
 
-app.run()
+
+if __name__ == "__main__":
+    app.run()
 ```
 
-使用 AgentCore CLI 进行部署：
+安装 AgentCore CLI，它作为 npm 包提供：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Configure your agent
-agentcore configure
+npm install -g @aws/agentcore
+```
+
+> [!注意]
+>
+> AgentCore CLI 需要 Node.js 20.12 或更高版本，其 Python 项目需要 [uv](https://docs.astral.sh/uv/)。如果 Python `agentcore` 命令已在您的 `PATH` 上，它会隐藏 npm 命令，因为两者使用相同的命令名称。卸载 Python 命令，然后打开新终端。
+
+从LangChain模板创建一个项目，然后部署并调用代理：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Create a project
+agentcore create --name MyAgent --template agent-python-langchain
+cd MyAgent
+
+# Run the agent locally
+agentcore dev
 
 # Deploy to AgentCore Runtime
-agentcore launch -e your_agent.py
+agentcore deploy
+
+# Invoke the deployed agent
+agentcore invoke --runtime agent --payload '{"prompt": "Hello"}'
 ```
+
+`agent-python-langchain` 模板在 `app/agent/` 中搭建了一个使用 [create_agent](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 构建的图表，以及`pyproject.toml` 和 `agentcore/` 下的 CDK 项目。
+
+要部署您自己编写的入口点，请向项目添加一个空的 Python 运行时：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+agentcore add runtime --name MyAgent --language python
+```
+
+将入口点放在 `app/MyAgent/main.py` 中，旁边有一个 `pyproject.toml`，然后运行 `agentcore deploy`。 CLI 读取您的代码并在每个 `dev`、`build` 和 `deploy` 上更新 `agentcore/agentcore.json`。
+
+欲了解更多信息，请参阅[Get started with the AgentCore CLI](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-get-started-cli.html)。`agent-python-langchain` 模板已经声明了跟踪所需的依赖项。对于您自己的入口点，`pyproject.toml` 必须声明 AWS Distro for OpenTelemetry (ADOT)，因为 AgentCore Runtime 在 `opentelemetry-instrument` 下启动入口点。还添加 LangChain 仪器以在 [CloudWatch generative AI observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability-configure.html) 中渲染迹线：
+
+```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[project]
+dependencies = [
+    "aws-opentelemetry-distro>=0.18.0",
+    "opentelemetry-instrumentation-langchain>=0.55.0",
+]
+```
+
+ADOT 在启动时发现检测器，因此代理不需要检测代码。 CLI 管理的部署已在 `opentelemetry-instrument` 下运行入口点。要在本地重现该内容，请运行：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+opentelemetry-instrument python main.py
+```
+
+欲了解更多信息，请参阅[Set up LangGraph telemetry for AgentCore](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/supported-frameworks-langgraph.html)。
 
 ***
 

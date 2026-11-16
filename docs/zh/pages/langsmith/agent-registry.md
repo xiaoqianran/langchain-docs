@@ -15,7 +15,7 @@ LangSmith 代理注册表是什么，代理是什么，环境如何划分代理�
 
 一旦代理存在，您就可以从它运行的任何地方、从任何可以将跟踪发送到 LangSmith 的框架来[send traces](/langsmith/log-traces-to-agent)。
 
-每个代理都会收到一个唯一的 [identifier](#identifiers-and-display-names)，LangSmith 使用它来处理其踪迹。
+每个代理都会收到一个唯一的 [identifier](#identifiers-and-display-names)，LangSmith 用于寻址其踪迹。
 
 LangSmith 的其余部分依附于这些代理。数据集、评估器、部署、跟踪和警报均附加到代理注册表中的代理：
 
@@ -25,7 +25,7 @@ LangSmith
 
 > [卡][Test](/langsmith/evaluation)
 
-> [卡][Deploy](/langsmith/deployment)
+> [卡][Deploy](/langsmith/deploy-overview)
 
 > [卡片] [Monitor](/langsmith/observability)
 

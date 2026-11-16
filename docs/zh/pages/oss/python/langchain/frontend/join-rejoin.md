@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 此功能需要[LangGraph Agent Server](/oss/python/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deployment) 在本地运行代理以使用此模式。
+> 此功能需要[LangGraph Agent Server](/oss/python/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deploy-overview) 在本地运行代理以使用此模式。
 
 ## 为什么加入和重新加入？
 
@@ -245,7 +245,7 @@ await stream.disconnect();
 
 拨打`disconnect()`后：* `stream.isLoading` 变为 `false`
 * 你自己的`connected`标志也应该变成`false`
-* 消息列表保留直到断开连接点为止收到的所有消息
+* 消息列表保留直到断开点为止收到的所有消息
 * 代理继续在服务器上运行
 * 在您重新加入之前不会收到新消息
 

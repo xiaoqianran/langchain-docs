@@ -10,7 +10,7 @@ execution from that saved state to explore alternative paths.
 
 > [!NOTE]
 >
-> This feature requires the [LangGraph Agent Server](/oss/python/langgraph/local-server). Run your agent locally with `langgraph dev` or [deploy it to LangSmith](/langsmith/deployment) to use this pattern.
+> This feature requires the [LangGraph Agent Server](/oss/python/langgraph/local-server). Run your agent locally with `langgraph dev` or [deploy it to LangSmith](/langsmith/deploy-overview) to use this pattern.
 
 ## How checkpoints work
 

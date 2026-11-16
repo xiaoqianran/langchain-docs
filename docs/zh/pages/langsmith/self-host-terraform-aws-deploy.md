@@ -116,7 +116,7 @@ aws ec2 describe-availability-zones --query 'AvailabilityZones[].ZoneName' --out
 两个独立的设置控制能力：
 
 * **基础设施容量**直接通过基础设施变量`eks_managed_node_groups`、`postgres_instance_type`、`redis_instance_type` 设置实例类型和节点数量。模块默认为 1 个 `m5.4xlarge` 节点组（最少 3 个，最多 10 个）、`db.t3.large`（适用于 RDS）和 `cache.m6g.xlarge`（适用于 ElastiCache）。 `infra/terraform.tfvars.dev`、`terraform.tfvars.minimum` 和 `terraform.tfvars.production` 模板设置更小或更大的值。
-* **`sizing_profile`** 选择 Helm 大小调整覆盖（pod 资源请求和限制）。 `init-values.sh`和`deploy.sh`阅读； Terraform 没有。在部署之前，根据目标层调整基础架构的大小。有关每层建议，请参阅[Scaling guidance](/langsmith/self-host-scale)。
+* **`sizing_profile`** 选择 Helm 大小调整覆盖（pod 资源请求和限制）。 `init-values.sh`和`deploy.sh`阅读； Terraform 没有。在部署之前，根据目标层调整基础设施的规模。有关每层建议，请参阅[Scaling guidance](/langsmith/self-host-scale)。
 
 > [!注意]
 >
@@ -169,7 +169,7 @@ make quickdeploy          # interactive, prompts before terraform apply
 make quickdeploy-auto     # non-interactive, auto-approves terraform
 ```
 
-`make quickdeploy` 首先检查`setup-env.sh` 导出是否已加载并且`infra/terraform.tfvars` 存在，如果其中一个缺失，则停止并运行命令。如果 `infra/.terraform/` 不存在，则运行 `terraform init`，然后运行 ​​`terraform apply`，源 `set-kubeconfig.sh`，并运行 `init-values` 和 `deploy.sh`。如果 `terraform apply` 失败，请修复问题并重新运行 `make quickdeploy`。如果后面的步骤失败，该命令将打印 `make` 目标以重试。
+`make quickdeploy` 首先检查`setup-env.sh` 导出是否已加载并且`infra/terraform.tfvars` 存在，如果其中一个缺失，则停止并运行命令。如果 `infra/.terraform/` 不存在，则运行 `terraform init`，然后运行 ​​`terraform apply`，源 `set-kubeconfig.sh`，并运行 `init-values` 和 `deploy.sh`。如果 `terraform apply` 失败，请修复问题并重新运行 `make quickdeploy`。如果后面的步骤失败，该命令会打印 `make` 目标以重试。
 
 以下部分详细介绍了每个阶段。
 
@@ -257,7 +257,7 @@ langsmith_domain       = "langsmith.example.com"
 source infra/scripts/setup-env.sh
 ```
 
-该脚本读取 `terraform.tfvars`，派生 SSM 路径 `/langsmith/{name_prefix}-{environment}/`，然后对于每个机密，要么重复使用导出的值，要么读取现有的 SSM 参数，自动生成一个，或者提示您。您以交互方式提供三个值：许可证密钥、管理员密码和管理员电子邮件。必须获取脚本（而不是执行），因为 `make` 无法将环境变量导出回父 shell。
+该脚本读取 `terraform.tfvars`，派生 SSM 路径 `/langsmith/{name_prefix}-{environment}/`，然后对于每个机密，要么重复使用导出的值，要么读取现有的 SSM 参数，自动生成一个，或者提示您。您以交互方式提供三个值：许可证密钥、管理员密码和管理员电子邮件。必须获取该脚本（而不是执行），因为 `make` 无法将环境变量导出回父 shell。
 
 该脚本管理以下 SSM 参数：| SSM 密钥 |如何设置 |笔记|
 | - | - | - |
@@ -384,7 +384,7 @@ make deploy
 
 `enable_agent_builder` 在图表 v16 中被删除。将其设置为 `true` 无法在 `terraform plan` 进行验证，因此从现有 `tfvars` 文件中删除它并使用 `enable_fleet`。 `enable_standalone_polly` 和 `enable_standalone_insights` 保留为传统速记形式，支持使用外部存储进行附加（`enable_polly = true` 与 `polly_storage = "external"`，对于 Insights 也是如此）。
 
-Agent部署详情请参见[Agent Server hosting](/langsmith/enable-self-hosted-deployment)。
+Agent部署详情请参见[Agent Server hosting](/langsmith/enable-self-hosted-agent-server)。
 
 ### 舰队
 
@@ -400,7 +400,7 @@ Agent部署详情请参见[Agent Server hosting](/langsmith/enable-self-hosted-d
 
 `enable_polly` 打开 LangSmith Chat（以前称为 Polly），`enable_insights` 打开 Insights。两者都不需要`enable_deployments`。两者都默认为集群内存储。设置`polly_storage = "external"`或`insights_storage = "external"`以在共享RDS和ElastiCache实例上使用专用数据库；这需要`postgres_source = "external"`和`redis_source = "external"`。每个附加组件都需要您的许可证中的权利。
 
-### 沙箱
+### 沙盒
 
 `enable_sandboxes = true` 在带有 KVM 的裸机 x86_64 实例上添加了一个沙箱主机节点组（默认为`m5d.metal`）以及一个用于 JuiceFS 元数据的专用 ElastiCache 实例。沙箱需要 LangSmith Helm Chart v16 或更高版本。`sandbox-host` 安装 JuiceFS 本身，`juicefs-format` 作业格式化卷。 `make init-values`写入`sandboxes.juicefs.existingSecretName`指向`juicefs-csi-config`Secret，将`sandboxes.juicefs.hostMount.cacheDirs`设置为沙箱主机节点上的本地NVMe缓存路径（如果有的话），并将IRSA角色注释放在`sandboxes.sandboxHost.serviceAccount`上。
 
@@ -455,7 +455,7 @@ make tf ARGS="output bastion_ssm_command"
 aws ssm start-session --target <instance-id> --region us-west-2
 ```> [!注意]
 >
-> 堡垒运行在没有公共 IP 的私有子网中，并通过 NAT 网关到达 SSM。设置 `bastion_enable_ssh = true` 将其移动到具有公共 IP 的公共子网。设置 `bastion_existing_security_group_id` 以附加您自己的安全组。该堡垒预装了 `kubectl`、`helm`、`terraform`、`git` 和 `jq`，并且已为 EKS 集群配置了 kubeconfig。在您的工作站上安装 AWS CLI 的 [Session Manager plugin](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)。
+> 堡垒运行在没有公共 IP 的私有子网中，并通过 NAT 网关到达 SSM。设置 `bastion_enable_ssh = true` 将其移动到具有公共 IP 的公共子网。设置 `bastion_existing_security_group_id` 附加您自己的安全组。该堡垒预装了 `kubectl`、`helm`、`terraform`、`git` 和 `jq`，并且已为 EKS 集群配置了 kubeconfig。在您的工作站上安装 AWS CLI 的 [Session Manager plugin](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)。
 
 ## 入口、DNS 和 TLS
 
@@ -472,7 +472,7 @@ Terraform 拒绝打开其中多个选项的配置。在 ALB 入口模式下，AW
 
 > [!警告]
 >
-> 在 Envoy Gateway 成为默认网关之前创建的部署，未设置网关标志，请在下一个 `make apply` 上切换到 Envoy Gateway。要保留 ALB Ingress，请在应用前设置`enable_envoy_gateway = false`。
+> 在 Envoy Gateway 成为默认网关之前创建的部署，未设置网关标志，在下一个 `make apply` 上切换到 Envoy Gateway。要保留 ALB Ingress，请在应用前设置`enable_envoy_gateway = false`。
 
 `tls_certificate_source`选择证书：
 
@@ -501,7 +501,7 @@ kubectl apply -f helm/values/examples/dataplane-rbac.yaml
 * 参考[AWS variables](/langsmith/self-host-terraform-aws-variables)和[quick reference](/langsmith/self-host-terraform-aws-quick-reference)。
 * 查看 [AWS architecture](/langsmith/self-host-terraform-aws-architecture) 的平台层、IRSA 和模块依赖性。
 * 当出现故障时，请检查[AWS troubleshooting guide](/langsmith/self-host-terraform-aws-troubleshooting)。
-* 使用 [Agent Server hosting](/langsmith/enable-self-hosted-deployment) 在 UI 中启用代理部署。***
+* 使用 [Agent Server hosting](/langsmith/enable-self-hosted-agent-server) 在 UI 中启用代理部署。***
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 

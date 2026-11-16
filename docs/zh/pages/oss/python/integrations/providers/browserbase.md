@@ -1,24 +1,24 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Browserbase integrations | https://docs.langchain.com/oss/python/integrations/providers/browserbase -->
 
-# Browserbase integrations
+# 浏览器库集成
 
-Integrate with Browserbase using LangChain Python.
+使用 LangChain Python 与 Browserbase 集成。
 
-[Browserbase](https://www.browserbase.com) runs cloud browsers for agents, with [session recordings](https://docs.browserbase.com/platform/browser/observability/observability) and a [live view](https://docs.browserbase.com/platform/browser/observability/session-live-view) for debugging. The same API key covers [Search](https://docs.browserbase.com/platform/search/overview) and [Fetch](https://docs.browserbase.com/platform/fetch/overview), which find and read pages without starting a browser session.
+[Browserbase](https://www.browserbase.com) 为代理运行云浏览器，并使用 [session recordings](https://docs.browserbase.com/platform/browser/observability/observability) 和 [live view](https://docs.browserbase.com/platform/browser/observability/session-live-view) 进行调试。相同的 API 密钥涵盖 [Search](https://docs.browserbase.com/platform/search/overview) 和 [Fetch](https://docs.browserbase.com/platform/fetch/overview)，它们无需启动浏览器会话即可查找和读取页面。
 
-This page covers using Browserbase with [Deep Agents](/oss/python/deepagents/overview): a Stagehand-driven cloud browser, plus Search and Fetch as agent tools.
+本页介绍如何使用 Browserbase 和 [Deep Agents](/oss/python/deepagents/overview)：Stagehand 驱动的云浏览器，以及作为代理工具的 Search 和 Fetch。
 
-## Installation and setup
+## 安装和设置
 
-Get an API key from [Browserbase](https://www.browserbase.com) and set it as an environment variable:
+从 [Browserbase](https://www.browserbase.com) 获取 API 密钥并将其设置为环境变量：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export BROWSERBASE_API_KEY="your-browserbase-api-key"
 ```
 
-Install the [Browserbase Python SDK](https://github.com/browserbase/sdk-python):
+安装[Browserbase Python SDK](https://github.com/browserbase/sdk-python)：
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install "browserbase>=1.21.0"
@@ -30,19 +30,17 @@ uv add "browserbase>=1.21.0"
 
 ## Deep Agents
 
-A [deep agent](/oss/python/deepagents/overview) can use Browserbase in two ways: a cloud browser that it drives through Stagehand tools, and Search and Fetch tools for pages that do not need a browser. For when to give an agent a browser, see [Browser use](/oss/python/deepagents/browser-use).
+[deep agent](/oss/python/deepagents/overview) 可以通过两种方式使用 Browserbase：通过 Stagehand 工具驱动的云浏览器，以及用于不需要浏览器的页面的搜索和获取工具。有关何时为代理提供浏览器的信息，请参阅[Browser use](/oss/python/deepagents/browser-use)。
 
-### Browser tools with Stagehand
+### 带有 Stagehand 的浏览器工具
 
-The [Stagehand integration](/oss/python/integrations/tools/stagehand) adds `run`, `snapshot`, and `screenshot` through native Python middleware. Pass a configured Stagehand client to `StagehandMiddleware`, then include it in your agent's `middleware` list. No MCP server or custom browser system prompt is needed.
+[Stagehand integration](/oss/python/integrations/tools/stagehand)通过原生Python中间件添加了`run`、`snapshot`和`screenshot`。将配置好的 Stagehand 客户端传递给 `StagehandMiddleware`，然后将其包含在代理的 `middleware` 列表中。不需要 MCP 服务器或自定义浏览器系统提示。
 
-Your application owns the browser and can keep it open across runs to reuse tabs and logins. For installation, a complete agent, and cleanup, see [Use with a deep agent](/oss/python/integrations/tools/stagehand#use-with-a-deep-agent). For session isolation, see [Choose a browser scope](/oss/python/deepagents/browser-use#choose-a-browser-scope).
+您的应用程序拥有浏览器，并且可以在运行期间保持其打开状态以重用选项卡和登录名。有关安装、完整代理和清理的信息，请参阅[Use with a deep agent](/oss/python/integrations/tools/stagehand#use-with-a-deep-agent)。关于会话隔离，请参见[Choose a browser scope](/oss/python/deepagents/browser-use#choose-a-browser-scope)。
 
-### Search and fetch tools
+### 搜索和获取工具将搜索和获取公开为代理工具。这些 API 无需启动浏览器会话即可查找和读取页面。 Fetch 不执行 JavaScript。
 
-Expose Search and Fetch as agent tools. Those APIs find and read pages without starting a browser session. Fetch does not execute JavaScript.
-
-Install the agent packages and set the model-provider credential before running this example:
+在运行此示例之前安装代理包并设置模型提供者凭据：
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install "browserbase>=1.21.0" deepagents langchain-openai
@@ -56,7 +54,7 @@ uv add "browserbase>=1.21.0" deepagents langchain-openai
 export OPENAI_API_KEY="your-openai-api-key"
 ```
 
-The example uses OpenAI's [GPT-5.5 snapshot](https://developers.openai.com/api/docs/models/gpt-5.5). Omit `provider` on `search.web` to use your project's default search provider:
+该示例使用 OpenAI 的 [GPT-6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol) 模型。省略 `search.web` 上的 `provider` 以使用项目的默认搜索提供程序：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
@@ -82,16 +80,16 @@ def fetch_page(url: str) -> str:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5-2026-04-23",
+    model="openai:gpt-6.1-sol",
     tools=[web_search, fetch_page],
     system_prompt="Search to find pages, then fetch the pages you need to read.",
 )
 ```
 
-For a complete example that combines Search, Fetch, and Stagehand, see Browserbase's [Deep Agents guide](https://docs.browserbase.com/integrations/langchain/deepagents).
+有关结合了 Search、Fetch 和 Stagehand 的完整示例，请参阅 Browserbase 的 [Deep Agents guide](https://docs.browserbase.com/integrations/langchain/deepagents)。
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/browserbase.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/browserbase.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

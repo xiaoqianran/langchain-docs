@@ -14,9 +14,9 @@
 
 > [!注意]
 >
-> Assistants are a [LangSmith Agent Server](/langsmith/deployment) concept.它们在开源 LangGraph 库中不可用。
+> Assistants are a [LangSmith Agent Server](/langsmith/agent-server) concept.它们在开源 LangGraph 库中不可用。
 
-## 助手如何处理部署当您将图表部署到[LangSmith Agent Server](/langsmith/agent-server)时，它会自动创建一个与该图表的默认配置绑定的**默认助手**。然后，您可以为同一图表创建其他助手，每个助手都有自己的配置。
+## How assistants work with deployments当您将图表部署到[LangSmith Agent Server](/langsmith/agent-server)时，它会自动创建一个与该图表的默认配置绑定的**默认助手**。然后，您可以为同一图表创建其他助手，每个助手都有自己的配置。
 
 如果您的部署在[⟦T3⟧](/langsmith/application-structure#configuration-file)中定义了多个图，则每个图都有自己的默认助手：
 
@@ -34,9 +34,9 @@
 助手有几个主要功能：
 
 * **[Managed via API and UI](/langsmith/configuration-cloud)**：使用代理服务器/LangGraph SDK 或[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-assistants) 创建、列出、更新、版本和获取助手。
-* **One graph, multiple assistants**: A single deployed graph can support multiple assistants, each with different configurations (e.g., prompts, models, tools).
+* **一个图表，多个助手**：单个部署的图表可以支持多个助手，每个助手具有不同的配置（例如提示、模型、工具）。
 * **[Versioned](#versioning)配置**：每个助手通过版本控制维护自己的配置历史记录。编辑助手会创建一个新版本，您可以升级或回滚到任何版本。
-* **[Configuration](#configuration) updates without graph changes**: Update prompts, model selection, and other settings through assistant configurations, enabling rapid iteration without modifying or redeploying your graph code.> [!注意]
+* **[Configuration](#configuration)更新无需图形更改**：通过助手配置更新提示、模型选择和其他设置，无需修改或重新部署图形代码即可实现快速迭代。> [!注意]
 >
 > 调用助手时，您可以在[⟦T4⟧](/langsmith/application-structure#configuration-file)中指定：
 >
@@ -49,7 +49,7 @@
 
 助手基于 [configuration](/oss/python/langgraph/graph-api#runtime-context) 的 LangGraph 开源概念构建。
 
-虽然开源 LangGraph 库中提供了配置，但助手仅出现在 [LangSmith Agent Server](/langsmith/deployment) 中，因为它们与您部署的图形紧密耦合。部署后，[Agent Server](/langsmith/agent-server)将使用图表的默认配置设置自动为每个图表创建一个默认助手。
+虽然配置可在开源LangGraph库中使用，但助手仅存在于LangSmith代理服务器中，因为它们与您部署的图形紧密耦合。部署后，代理服务器将使用图表的默认配置设置自动为每个图表创建一个默认助手。
 
 实际上，助手只是具有特定配置的图的“实例”。因此，多个助手可以引用相同的图表，但可以包含不同的配置（例如提示、模型、工具）。 LangSmith代理服务器 API 提供了多个用于创建和管理助手的端点。有关如何创建助手的更多详细信息，请参阅[API reference](/langsmith/server-api-ref)和[this how-to](/langsmith/configuration-cloud)。
 
@@ -57,7 +57,7 @@
 
 * **用户级个性化**
   * 自定义每个用户的模型选择、系统提示或工具可用性。
-  * 存储用户偏好并将其自动应用于每次交互。
+  * 存储用户偏好并自动将其应用到每次交互中。
   * 使用户能够在不同的人工智能个性或专业水平之间进行选择。
 
 * **客户或组织特定的配置**

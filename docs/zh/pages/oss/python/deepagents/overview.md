@@ -8,7 +8,7 @@
 
 Deep Agents 是[agent harness](/oss/python/concepts/products#agent-harnesses-like-the-deep-agents-sdk)，适用于复杂、多步骤的工作。它在 LangChain 和 LangGraph 之上添加了规划、用于上下文的虚拟文件系统、子代理生成和长期内存。
 
-从[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。
+从[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/agent-server)。
 
 ## 选择如何运行Deep Agents
 
@@ -31,7 +31,7 @@ Deep Agents 包括以下功能：* **在环境中采取行动**：通过工具�
 
 ## 使用 SDK 自托管
 
-当您在自己的进程或容器中运行代理，需要自定义 [backend](/oss/python/deepagents/backends)、存储或检查点，或者想要自己配置的 [Agent Server](/langsmith/deployment) 时，请使用开源 SDK。对于托管部署，请参阅[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)。
+当您在自己的进程或容器中运行代理，需要自定义 [backend](/oss/python/deepagents/backends)、存储或检查点，或者想要自己配置的 [Agent Server](/langsmith/agent-server) 时，请使用开源 SDK。对于托管部署，请参阅[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)。
 
 ### 尝试一下
 

@@ -64,7 +64,7 @@ Building on that, you can configure the basics directly with the `model=`, `tool
 
 > [!TIP]
 >
-> [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) builds on `create_agent` and comes with commonly useful capabilities already assembled, such as planning, file system tools, subagents, and memory. For maximum flexibility while using the same Deep Agents harness, use [Deep Agents](/oss/javascript/deepagents/overview) and host agents yourself, or run a custom [Agent Server](/langsmith/deployment). Use `create_agent` when you need to configure a smaller harness yourself.
+> [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) builds on `create_agent` and comes with commonly useful capabilities already assembled, such as planning, file system tools, subagents, and memory. For maximum flexibility while using the same Deep Agents harness, use [Deep Agents](/oss/javascript/deepagents/overview) and host agents yourself, or run a custom [Agent Server](/langsmith/agent-server). Use `create_agent` when you need to configure a smaller harness yourself.
 
 ## Core components
 
@@ -767,7 +767,7 @@ result = await agent.invoke(
 
 > [!NOTE]
 >
-> Persisting conversation history with `thread_id` requires the agent to be configured with a [checkpointer](/oss/javascript/langchain/long-term-memory). When deployed on [LangSmith](/langsmith/deployment), a checkpointer is provisioned automatically. Locally, pass one explicitly, for example `create_agent(..., checkpointer=InMemorySaver())`.
+> Persisting conversation history with `thread_id` requires the agent to be configured with a [checkpointer](/oss/javascript/langchain/long-term-memory). When deployed on [LangSmith Agent Server](/langsmith/agent-server#persistence), a checkpointer is provisioned automatically. Locally, pass one explicitly, for example `create_agent(..., checkpointer=InMemorySaver())`.
 
 If you also need to pass per-run configuration (such as a user ID, API keys, or feature flags) to tools and middleware, pass it as `context` alongside the config. Define the shape of that data with `contextSchema` and access it through `runtime.context`:
 

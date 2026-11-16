@@ -4,7 +4,7 @@
 
 # 如何使用 RemoteGraph 与部署交互
 
-[⟦T11⟧](https://reference.langchain.com/python/langgraph/pregel/remote/RemoteGraph) 是一个客户端界面，允许您与 [deployment](/langsmith/deployment) 进行交互，就像它是本地图一样。它提供与[⟦T12⟧](/oss/python/langgraph/graph-api#compiling-your-graph)的API奇偶校验，这意味着您可以在开发和生产环境中使用相同的方法（`invoke()`、`stream()`、`get_state()`等）。本页描述了如何初始化 `RemoteGraph` 并与其交互。
+[⟦T11⟧](https://reference.langchain.com/python/langgraph/pregel/remote/RemoteGraph) 是一个客户端界面，允许您与 [deployment](/langsmith/deploy-overview) 进行交互，就像它是本地图一样。它提供与[⟦T12⟧](/oss/python/langgraph/graph-api#compiling-your-graph)的API奇偶校验，这意味着您可以在开发和生产环境中使用相同的方法（`invoke()`、`stream()`、`get_state()`等）。本页描述了如何初始化 `RemoteGraph` 并与其交互。
 
 `RemoteGraph` 适用于以下情况：
 

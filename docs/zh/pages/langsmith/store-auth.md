@@ -6,7 +6,7 @@
 
 使用身份验证处理程序将长期存储数据范围限定到LangSmith代理服务器中的每个经过身份验证的用户。
 
-每个[Agent Server](/langsmith/deployment)都包含一个Postgres支持的[store](/oss/python/langgraph/stores)，用于长期内存和跨线程数据。默认情况下，存储命名空间在所有调用者之间共享。要为每个用户提供自己的独立存储，请配置 [custom authentication](/langsmith/custom-auth) 并添加一个存储 [authorization handler](/langsmith/auth#authorization) ，该存储重写命名空间以包含经过身份验证的用户身份。
+每个[Agent Server](/langsmith/agent-server#persistence)都包含一个Postgres支持的[store](/oss/python/langgraph/stores)，用于长期内存和跨线程数据。默认情况下，存储命名空间在所有调用者之间共享。要为每个用户提供自己的独立存储，请配置 [custom authentication](/langsmith/custom-auth) 并添加一个存储 [authorization handler](/langsmith/auth#authorization) ，该存储重写命名空间以包含经过身份验证的用户身份。
 
 本指南介绍如何在 LangSmith 代理服务器中配置该隔离。相同的模式适用于启用自定义身份验证的 [self-hosted](/langsmith/self-hosted) 部署。
 

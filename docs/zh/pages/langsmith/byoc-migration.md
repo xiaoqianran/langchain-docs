@@ -130,7 +130,7 @@ langsmith-migrator migrate-all
 * 在数据平面中创建新实例并将重新部署的代理指向它们。从空开始，或从旧实例的备份恢复。
 * 将重新部署的代理指向您现有的数据库实例，并通过 PrivateLink 或 VPC 对等互连从数据平面集群访问它们。
 
-欲了解更多信息，请参阅[LangSmith Agent Server](/langsmith/deployment)。### 见解报告
+欲了解更多信息，请参阅[Deploy agents](/langsmith/deploy-overview)。### 见解报告
 
 [Insights](/langsmith/insights) 报告不会跨实例迁移。要保留报告，请在 LangSmith UI 中打开其详细信息，然后选择 **下载**。
 

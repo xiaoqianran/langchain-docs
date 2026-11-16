@@ -58,7 +58,7 @@ In return, you can integrate with your own [Postgres](/langsmith/self-hosted-pla
 >
 > Compare standalone server, full platform, and hybrid to find the right fit.
 
-> [card] [Enable Agent Server hosting](/langsmith/enable-self-hosted-deployment)
+> [card] [Enable Agent Server hosting](/langsmith/enable-self-hosted-agent-server)
 >
 > Add a control plane and data plane to deploy and manage agents on self-hosted LangSmith.
 

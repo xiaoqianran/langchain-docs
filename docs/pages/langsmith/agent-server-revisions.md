@@ -1,6 +1,6 @@
-<!-- langchain-docs: Revisions | https://docs.langchain.com/langsmith/deployment-revisions -->
+<!-- langchain-docs: Agent Server revisions | https://docs.langchain.com/langsmith/agent-server-revisions -->
 
-# Revisions
+# Agent Server revisions
 
 Create and manage revisions for an Agent Server on LangSmith Cloud.
 
@@ -12,7 +12,7 @@ When you [create an Agent Server](/langsmith/deploy-to-cloud), LangSmith creates
 
 > [tab] LangSmith UI
 >
-> From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-revisions), select **Agent Servers**, then select an Agent Server.
+> From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-agent-server-revisions), select **Agent Servers**, then select an Agent Server.
 >
 > 1. In the top-right corner of the **Agent Server** view, select **+ New Revision**.
 > 2. In the **New Revision** modal, specify the full path to the [API configuration file](/langsmith/cli#configuration-file), including the file name. For example, enter `langgraph.json` if the file is in the repository root.
@@ -61,11 +61,11 @@ To interrupt a revision:
 
 ## See also
 
-* [Monitor an Agent Server](/langsmith/monitor-deployment)
-* [Manage an Agent Server](/langsmith/manage-deployment)
+* [Monitor an Agent Server](/langsmith/monitor-agent-server)
+* [Manage an Agent Server](/langsmith/manage-agent-server)
 
 ***
 
 [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deployment-revisions.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-server-revisions.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

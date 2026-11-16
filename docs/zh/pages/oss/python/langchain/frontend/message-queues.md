@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 此功能需要[LangGraph Agent Server](/oss/python/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deployment) 在本地运行代理以使用此模式。
+> 此功能需要[LangGraph Agent Server](/oss/python/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deploy-overview) 在本地运行代理以使用此模式。
 
 ## 为什么要使用消息队列？
 
@@ -45,7 +45,7 @@
 每个[SubmissionQueueEntry](https://reference.langchain.com/javascript/langchain-react/SubmissionQueueEntry)对象包含：|领域 |类型 |描述 |
 | - | - | - |
 | `id` | `string` |此队列条目的唯一标识符 |
-| `values` | `object` |提交的输入值（包括消息）|
+| `values` | `object` |提交的输入值（包括消息） |
 | `options` | `object` |提交时通过的任何其他选项 |
 | `createdAt` | `string` |创建条目时的 ISO 时间戳 |
 

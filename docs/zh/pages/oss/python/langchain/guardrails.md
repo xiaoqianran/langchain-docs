@@ -42,12 +42,14 @@ PII 中间件支持多种处理检测到的 PII 的策略：
 
 |战略|描述 |示例|
 | - | - | - |
-| `redact` |替换为`[REDACTED_{PII_TYPE}]`| `[REDACTED_EMAIL]` |
+| `redact` |替换为`[REDACTED_{PII_TYPE}]` | `[REDACTED_EMAIL]` |
 | `mask` |部分模糊（例如最后 4 位数字）| `****-****-****-1234` |
 | `hash` |替换为确定性哈希 | `a8f5f167...` |
 | `block` |检测到时引发异常 |抛出错误 |> [!注意]
 >
 > 使用 `apply_to_output=True`，`PIIMiddleware` 还可以通过注册的流转换器编辑流式传输输出（文本增量、工具调用参数、工具输出和状态快照）。需要`langchain>=1.3.2`。参见[Register transformers on middleware](/oss/python/langchain/event-streaming#register-transformers-on-middleware)。
+>
+> 流转换器保留每个文本块、工具调用参数和工具输出的最后 128 个字符，直到更多文本到达或块完成，并在保留的文本和新增量上运行检测器。只要整个匹配包含 128 个字符，在发送其任何部分之前就会检测到跨增量分割的匹配。将自定义检测器匹配保持在 128 个字符或更少：较长匹配的开头可以在其余部分到达之前发送。有关背景，请参阅[OWASP AI Exchange: sensitive output handling](https://owaspai.org/go/sensitiveoutputhandling)和[Split-Boundary Leaks in Streaming Guardrails](https://doi.org/10.5281/zenodo.22909585)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -55,7 +57,7 @@ from langchain.agents.middleware import PIIMiddleware
 
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[customer_service_tool, email_tool],
     middleware=[
         # Redact emails in user input before sending to model
@@ -84,9 +86,7 @@ agent = create_agent(
 result = agent.invoke({
     "messages": [{"role": "user", "content": "My email is john.doe@example.com and card is 5105-1051-0510-5100"}]
 })
-```
-
-> [accordion] 内置 PII 类型和配置
+```> [accordion] 内置 PII 类型和配置
 >
 > **内置 PII 类型：**
 >
@@ -98,16 +98,16 @@ result = agent.invoke({
 >
 > **配置选项：**
 >
-> |参数|描述 |默认|
+> |参数|描述 |默认 |
 > | - | - | - |
-> | `pii_type` |要检测的 PII 类型（内置或自定义）|必填 |
+> | `pii_type` |要检测的 PII 类型（内置或自定义）|必填|
 > | `strategy` |如何处理检测到的 PII（`"block"`、`"redact"`、`"mask"`、`"hash"`）| `"redact"` |
 > | `detector` |自定义检测器函数或正则表达式模式 | `None`（使用内置）|
 > | `apply_to_input` |模型调用前查看用户消息 | `True` |
 > | `apply_to_output` |模型调用后查看AI消息 | `False` |
 > | `apply_to_tool_results` |执行后检查工具结果消息 | `False` |
 
-有关 PII 检测功能的完整详细信息，请参阅[middleware documentation](/oss/python/langchain/middleware#pii-detection)。
+有关 PII 检测功能的完整详细信息，请参阅 [middleware documentation](/oss/python/langchain/middleware#pii-detection)。
 
 ### 人机交互
 
@@ -121,7 +121,7 @@ from langgraph.types import Command
 
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[search_tool, send_email_tool, delete_database_tool],
     middleware=[
         HumanInTheLoopMiddleware(
@@ -208,7 +208,7 @@ class ContentFilterMiddleware(AgentMiddleware):
 from langchain.agents import create_agent
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[search_tool, calculator_tool],
     middleware=[
         ContentFilterMiddleware(
@@ -262,7 +262,7 @@ def content_filter(state: AgentState, runtime: Runtime) -> dict[str, Any] | None
 from langchain.agents import create_agent
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[search_tool, calculator_tool],
     middleware=[content_filter],
 )
@@ -318,7 +318,7 @@ class SafetyGuardrailMiddleware(AgentMiddleware):
 from langchain.agents import create_agent
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[search_tool, calculator_tool],
     middleware=[SafetyGuardrailMiddleware()],
 )
@@ -365,7 +365,7 @@ def safety_guardrail(state: AgentState, runtime: Runtime) -> dict[str, Any] | No
 from langchain.agents import create_agent
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[search_tool, calculator_tool],
     middleware=[safety_guardrail],
 )
@@ -382,7 +382,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import PIIMiddleware, HumanInTheLoopMiddleware
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[search_tool, send_email_tool],
     middleware=[
         # Layer 1: Deterministic input filter (before agent)

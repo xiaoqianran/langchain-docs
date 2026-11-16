@@ -6,13 +6,13 @@
 
 LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、每个标志所采用的值以及哪些 CLI 版本接受它们。
 
-部署到代理环境会将 [deployment](/langsmith/deployment) 绑定到一个 [agent](/langsmith/agent-registry#agent) 以及该代理的其中一个 [environments](/langsmith/agent-environments)。两个标志携带绑定，LangGraph CLI 和`mda` CLI 都接受它们。
+部署到代理环境会将 [deployment](/langsmith/deploy-overview) 绑定到一个 [agent](/langsmith/agent-registry#agent) 以及该代理的其中一个 [environments](/langsmith/agent-environments)。两个标志携带绑定，LangGraph CLI 和`mda` CLI 都接受它们。
 
 使用它可以将同一代理的暂存构建和生产构建分开，以便每个代理都报告到自己的环境中。
 
 > [!注意]
 >
-> [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在 [project-based](/langsmith/observability-concepts#tracing-projects) 工作区中，它显示 LangSmith 徽标。
+> [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
 
 ## 先决条件
 
@@ -20,7 +20,7 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 
 * `.env` 或您的 shell 环境中的 [LangSmith API key](/langsmith/create-account-api-key)。
 * 包含`langgraph.json`的项目文件夹。从该文件夹运行 CLI。
-* 基于代理的工作区，因为标志需要工作区上的代理模式。组织范围的 API 密钥也需要工作区，并且每个 CLI 从不同的变量读取它：`LANGSMITH_TENANT_ID` 对于 LangGraph CLI，`LANGSMITH_WORKSPACE_ID` 对于`mda` CLI。工作区范围的密钥两者都不需要。当键属于组织范围时，LangGraph CLI 会提示输入值。在脚本或 CI 作业中，提前设置 `LANGSMITH_TENANT_ID`，并传递 `--no-input`，以便 LangGraph CLI 失败而不是等待输入。 Python 和 TypeScript LangGraph CLI 都接受 `--no-input`。
+* 基于代理的工作区，因为标志需要工作区上的代理模式。组织范围的 API 密钥也需要工作区，并且每个 CLI 从不同的变量中读取它：`LANGSMITH_TENANT_ID` 对于 LangGraph CLI，`LANGSMITH_WORKSPACE_ID` 对于`mda` CLI。工作区范围的密钥两者都不需要。当键属于组织范围时，LangGraph CLI 会提示输入值。在脚本或 CI 作业中，提前设置 `LANGSMITH_TENANT_ID`，并传递 `--no-input`，以便 LangGraph CLI 失败而不是等待输入。 Python 和 TypeScript LangGraph CLI 都接受 `--no-input`。
 
 ## 寻址标志
 
@@ -93,7 +93,6 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 * [Agent Registry](/langsmith/agent-registry)
 * [Agent environments](/langsmith/agent-environments)
 * [Log traces to an agent](/langsmith/log-traces-to-agent)
-* [Deployment](/langsmith/deployment)
 
 ***
 

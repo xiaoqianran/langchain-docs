@@ -6,7 +6,7 @@
 
 使用 mda CLI 测试和部署托管深度代理。
 
-部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。结果是[Agent Server](/langsmith/agent-server-overview)部署，包括代理服务器API和[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
+部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。结果是[Agent Server](/langsmith/agent-server)部署，包括代理服务器API和[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
 
 > [!注意]
 >
@@ -32,7 +32,7 @@
 
 在首次部署之前，在项目的 `.env` 或 shell 环境中设置 `LANGSMITH_ENDPOINT`：
 
-|地区 |端点|部署支持 |
+|地区 |端点 |部署支持 |
 | - | - | - |
 | GCP 美国 (`smith.langchain.com`) | `https://api.smith.langchain.com` |支持 |
 | GCP 欧盟 (`eu.smith.langchain.com`) | `https://eu.api.smith.langchain.com` |支持 |
@@ -163,7 +163,7 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 ## 后续步骤
 
-> [卡][Agent Server](/langsmith/agent-server-overview)
+> [卡][Agent Server](/langsmith/agent-server)
 >
 > 探索托管部署的运行时。
 

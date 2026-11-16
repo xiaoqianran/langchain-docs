@@ -9,11 +9,11 @@
 **云**托管选项是一个完全托管的模型，其中 LangChain 托管并运营所有 LangSmith 基础设施和服务：
 
 * **完全托管的基础设施**：LangChain 处理所有基础设施、更新、扩展和维护。
-* [**LangSmith UI**](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud)：完全访问[observability](/langsmith/observability)、[evaluation](/langsmith/evaluation)、[agent deployment management](/langsmith/deployment) 和 [Studio](/langsmith/studio)。
-* **从 GitHub 部署代理服务器**：只需单击几下即可连接您的存储库并将 [Agent Servers](/langsmith/deployment) 部署到云。
-* **代理服务器的自动化 CI/CD**：[Agent Servers](/langsmith/deployment) 的构建和部署过程由平台自动处理。
+* [**LangSmith UI**](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud)：完全访问[observability](/langsmith/observability)、[evaluation](/langsmith/evaluation)、[agent deployment management](/langsmith/deploy-overview) 和 [Studio](/langsmith/studio)。
+* **从 GitHub 部署代理服务器**：只需单击几下即可连接您的存储库并将 [Agent Servers](/langsmith/agent-server) 部署到云。
+* **代理服务器的自动化 CI/CD**：代理服务器的构建和部署过程由平台自动处理。
 
-LangChain 管理 LangSmith 平台（UI、API 和数据存储）、代理服务器以及应用程序的 CI/CD。它们全部运行在 AWS、Azure 或 GCP 上的 LangChain 云中，具体取决于您的 [region](#regions)。
+LangChain 管理LangSmith 平台（UI、API 和数据存储）、您的代理服务器以及应用程序的 CI/CD。它们全部运行在 AWS、Azure 或 GCP 上的 LangChain 云中，具体取决于您的 [region](#regions)。
 
 如果您准备好将应用程序部署到LangSmith云，请按照[Cloud deployment quickstart](/langsmith/deployment-quickstart)或[full setup guide](/langsmith/deploy-to-cloud)进行操作。本页介绍了云托管架构以供参考。
 
@@ -21,7 +21,7 @@ LangChain 管理 LangSmith 平台（UI、API 和数据存储）、代理服务�
 >
 > 本节仅与 [regions listed below](#regions) 中的云管理 LangSmith 相关。有关自托管LangSmith解决方案的信息，请参阅[Self-hosted documentation](/langsmith/self-hosted)。
 
-LangSmith 云在 Google Cloud Platform (GCP)、Amazon Web Services (AWS) 和 Microsoft Azure 的五个区域中运行。该平台被设计为具有高度可扩展性。许多客户在 LangSmith 上运行生产工作负载，以实现 LLM 应用程序可观察性、评估和代理部署。
+LangSmith 云在 Google Cloud Platform (GCP)、Amazon Web Services (AWS) 和 Microsoft Azure 上的五个区域运行。该平台被设计为具有高度可扩展性。许多客户在 LangSmith 上运行生产工作负载，以实现 LLM 应用程序可观察性、评估和代理部署。
 
 ### 地区
 
@@ -40,7 +40,7 @@ LangSmith 云在 Google Cloud Platform (GCP)、Amazon Web Services (AWS) 和 Mic
 云托管 LangSmith 将跟踪和应用程序数据存储在注册发生区域的云位置中。每个区域都使用区域跟踪数据存储来进行跟踪摄取和分析。有两种数据存储在其他地方：* **身份验证数据**：[Supabase](https://supabase.com) 在 AWS 上托管身份验证和授权数据，位于 Supabase 列中列出的位置。此位置可能与区域的云位置不同。例如，Azure 美国区域在 Azure `centralus`（爱荷华州）中运行，而其身份验证数据位于 AWS `us-east-1`（弗吉尼亚北部）中。
 * **账单数据**：付款和账单信息存储在美国，如[Region-independent storage](#region-independent-storage)中所述。
 
-|地区 |云定位|苏帕巴斯|跟踪数据存储 | [LangSmith Agent Server](/langsmith/deployment) 域名 |
+|地区 |云定位|苏帕巴斯|跟踪数据存储 | [LangSmith Agent Server](/langsmith/agent-server) 域名 |
 | - | - | - | - | - |
 |基仕伯美国 | GCP us-central1（爱荷华州）| AWS us-east-1（弗吉尼亚北部）| [ClickHouse Cloud](https://clickhouse.com/cloud)，us-central1（爱荷华州）| `*.us.langgraph.app` |
 | GCP 欧盟 | GCP europe-west4（荷兰） | AWS eu-central-1（德国）| ClickHouse Cloud，europe-west4（荷兰） | `*.eu.langgraph.app` |
@@ -72,7 +72,7 @@ LangSmith 由以下服务组成，全部托管在 Google Kubernetes Engine (GKE)
 
 * LangSmith 前端：服务于LangSmith UI。
 * LangSmith 后端：为LangSmith API 提供服务。
-* LangSmith 平台后端：处理身份验证和其他大批量任务。 （内部服务）
+* LangSmith 平台后端：处理身份验证和其他大容量任务。 （内部服务）
 * LangSmith Playground：处理向各种 LLM 提供商转发 Playground 功能的请求。
 * LangSmith 队列：负责异步任务的处理。 （内部服务）
 * LangSmith ACE 后端：在隔离的运行时运行自定义代码评估器。 （内部服务）
@@ -108,7 +108,7 @@ LangSmith 使用以下 AWS 存储和数据服务：
 * Amazon ElastiCache for Redis 用于排队和缓存。
 * `us-east-2` 中基于 AWS PrivateLink 的 ClickHouse Cloud 用于跟踪摄取和分析，与上表[regional storage](#regional-storage) 一致。
 
-我们使用的一些其他 AWS 服务包括：* Elastic Load Balancing（网络负载均衡器）和 Istio 入口，用于将流量路由到 LangSmith 服务。已记录的 API 速率限制在 Istio 入口网关处强制执行。详情请参见[Rate limits](/langsmith/usage-and-billing#rate-limits)。
+我们使用的一些其他 AWS 服务包括：* Elastic Load Balancing（网络负载均衡器）和 Istio 入口，用于将流量路由到 LangSmith 服务。已记录的 API 速率限制在 Istio 入口网关处强制执行。详情请参阅[Rate limits](/langsmith/usage-and-billing#rate-limits)。
 * Amazon CloudFront 用于缓存静态资产（包括 Web UI 主机名 `aws.smith.langchain.com`）。
 * CloudFront 上的 AWS WAF，用于边缘的托管规则组（例如，AWS 托管规则常见保护和机器人控制）。
 
@@ -121,7 +121,7 @@ LangSmith 由以下服务组成，全部托管在 AKS 上：* LangSmith 前端�
 * LangSmith 平台后端：处理身份验证和其他大批量任务。 （内部服务）
 * LangSmith Playground：处理向各种 LLM 提供商转发 Playground 功能的请求。
 * LangSmith 队列：负责异步任务的处理。 （内部服务）
-* LangSmith ACE 后端：在隔离的运行时中运行自定义代码评估器。 （内部服务）
+* LangSmith ACE 后端：在隔离的运行时运行自定义代码评估器。 （内部服务）
 * LangSmith 摄取队列：处理传入的跟踪。 （内部服务）
 
 LangSmith 使用以下 Azure 存储和数据服务：
@@ -139,7 +139,7 @@ LangSmith 还使用 AKS 上的 Istio 入口网关将流量路由到 LangSmith �
 
 > [!注意]
 >
-> [LangSmith Agent Server](/langsmith/deployment) 出口处的特工人员从 [separate IP list](/langsmith/cloud-platform-features#allowlist-ip-addresses) 出口。
+> [LangSmith Agent Server](/langsmith/agent-server) 出口处的特工人员从 [separate IP list](/langsmith/cloud-platform-features#allowlist-ip-addresses) 出口。
 
 |基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |蔚蓝美国 |
 | - | - | - | - | - |
@@ -151,6 +151,9 @@ LangSmith 还使用 AKS 上的 Istio 入口网关将流量路由到 LangSmith �
 | 34.58.194.127 | 34.58.194.127 34.91.238.184 | 35.201.9.237 | | |
 | 34.59.97.173 | 35.204.101.241 | 35.204.101.241 35.189.57.29 | | |
 | 104.198.162.55 | 35.204.48.32 | 34.40.198.11 | | |
+| 34.71.41.140 | | | | |
+| 34.71.43.131 | | | | |
+| 34.72.23.45 | | | | |
 
 如果连接到您自己的 AzureOpenAI 服务或 Playground 或在线评估可能需要的其他端点，将这些 IP 地址列入白名单可能会有所帮助。
 
@@ -182,7 +185,7 @@ LangSmith 还使用 AKS 上的 Istio 入口网关将流量路由到 LangSmith �
 
 LangChain 端点映射到以下静态 IP 地址。流量终止于 **GCP 负载均衡器**（美国/欧盟/亚太地区）、`centralus` 中的 **Azure** 入口，或者对于 **AWS US**，`us-east-2` 中的 **网络负载均衡器**（API 和网关主机名）：|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |天蓝色|
 | - | - | - | - | - |
-| 34.8.121.39 | 34.95.92.214 | 34.149.149.213 | 34.149.149.213 3.129.27.169 | 20.106.1.6 |
+| 34.8.121.39 | 34.95.92.214 | 34.149.149.213 | 34.149.149.213 3.129.27.169 | 3.129.27.169 20.106.1.6 |
 | 34.107.251.234 | 34.107.251.234 34.13.73.122 | | 13.58.107.119 | |
 | | | | 16.59.151.49 | |
 | | | | 16.59.98.147 | |
@@ -190,21 +193,21 @@ LangChain 端点映射到以下静态 IP 地址。流量终止于 **GCP 负载�
 | | | | 3.150.87.246 | |
 | 34.56.47.75（新）| 34.32.254.168（新）| 34.151.160.163（新）| | |
 
-将您所在区域列中的每个地址列入白名单，以便您的专用网络可以访问 LangSmith 云（`api.smith.langchain.com`、`smith.langchain.com`、`beacon.langchain.com`、`eu.api.smith.langchain.com`、`eu.smith.langchain.com`、`eu.beacon.langchain.com`、`apac.api.smith.langchain.com`、`apac.smith.langchain.com`、 `apac.beacon.langchain.com`、`azure.smith.langchain.com`、`azure.api.smith.langchain.com`、`beacon.azure.langchain.com`、`aws.api.smith.langchain.com`、`aws.smith.langchain.com`）。
+Allowlist every address in the column for your region so your private network can reach LangSmith Cloud (`api.smith.langchain.com`, `smith.langchain.com`, `beacon.langchain.com`, `eu.api.smith.langchain.com`, `eu.smith.langchain.com`, `eu.beacon.langchain.com`, `apac.api.smith.langchain.com`, `apac.smith.langchain.com`, `apac.beacon.langchain.com`、`azure.smith.langchain.com`、`azure.api.smith.langchain.com`、`beacon.azure.langchain.com`、`aws.api.smith.langchain.com`、`aws.smith.langchain.com`）。
 
-GCP 美国、欧盟和亚太地区正在移至最后一行中的其他地址（`34.56.47.75`、`34.32.254.168` 和 `34.151.160.163`）。现在添加这些地址。当前的 GCP 地址将继续为这些主机名提供服务，直至 2027 年 2 月 10 日。在此日期之后，主机名仅使用其他地址。仅当主机名不再解析为当前 GCP 地址时，才将其从允许列表中删除。 AWS US 和 Azure 地址没有变化。此列表仅适用于LangSmith云。 BYOC 或自托管部署在您自己的环境中使用负载均衡器。如果您的专用网络通过公共互联网（包括通过 BYOC 控制平面连接）到达云，请将您所在区域的云地址列入白名单。 AWS PrivateLink、GCP Private Service Connect 和 Azure Private Link 不使用这些地址。
+GCP 美国、欧盟和亚太地区正在移至最后一行中的其他地址（`34.56.47.75`、`34.32.254.168` 和 `34.151.160.163`）。现在添加这些地址。 The current GCP addresses keep serving these hostnames until February 10, 2027. After that date, the hostnames use only the additional addresses.仅当主机名不再解析为当前 GCP 地址时，才将其从允许列表中删除。 AWS US 和 Azure 地址没有变化。This list is only for LangSmith Cloud. BYOC 或自托管部署在您自己的环境中使用负载均衡器。 If your private network reaches Cloud over the public internet, including through a BYOC control plane connection, allowlist the Cloud addresses for your region. AWS PrivateLink、GCP Private Service Connect 和 Azure Private Link 不使用这些地址。
 
-## 专用连接（企业）
+## Private connectivity (Enterprise)
 
 [**Enterprise only.**](/langsmith/pricing-plans) 专用连接专供企业客户使用。请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)以启用此功能。
 
-企业客户可以使用 **AWS PrivateLink**、**GCP Private Service Connect (PSC)** 或 **Azure Private Link** 连接到 LangSmith，而无需向公共互联网公开流量。
+Enterprise customers can connect to LangSmith without exposing traffic to the public internet using **AWS PrivateLink**, **GCP Private Service Connect (PSC)**, or **Azure Private Link**.
 
 ### AWS PrivateLink
 
-**AWS** 上的客户可以通过 [AWS PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/) 连接到 LangSmith，从而提供来自任何 VPC 的私有连接。原生支持跨区域连接。
+**AWS** 上的客户可以通过 [AWS PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/) 连接到 LangSmith，从而提供来自任何 VPC 的私有连接。 Cross-region connectivity is supported natively.
 
-#### 端点服务名称
+#### Endpoint service name
 
 |地区 |服务名称 |
 | - | - |
@@ -313,7 +316,7 @@ curl https://aws.api.smith.langchain.com/ok
 
 #### PSC 域
 
-设置后，使用以下域通过 PSC 连接连接到 LangSmith：
+After setup, use the following domains to connect to LangSmith over your PSC connection:
 
 |地区 |域名 |
 | - | - |
@@ -323,13 +326,13 @@ curl https://aws.api.smith.langchain.com/ok
 
 #### 设置
 
-**请求访问权限：** 请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)，并提供您的 GCP 项目 ID。 LangChain 会将您的项目添加到服务附件的允许使用者列表中。
+**Request access:** Contact your account representative or [sales@langchain.dev](mailto:sales@langchain.dev) with your GCP project ID. LangChain will add your project to the service attachment's allowed consumer list.
 
 授予访问权限后，使用 gcloud CLI 或 Terraform 创建 PSC 端点并配置 DNS。
 
 #### 创建 PSC 端点
 
-在您的 VPC 中创建针对服务附件的转发规则：
+Create a forwarding rule in your VPC targeting the service attachment:
 
 ```bash gcloud CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Create the PSC endpoint
@@ -360,7 +363,7 @@ resource "google_compute_forwarding_rule" "langsmith_psc" {
 
 ####配置DNS
 
-在您的 VPC 中创建私有 DNS 区域并添加指向 PSC 终端节点 IP 的 A 记录：
+Create a private DNS zone in your VPC and add an A record pointing to the PSC endpoint IP:
 
 ```bash gcloud CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Create a private DNS zone
@@ -410,15 +413,15 @@ curl https://<REGION>.p.api.smith.langchain.com/ok
 
 ### Azure 专用链接
 
-**Azure** 上的客户可以通过 [Azure Private Link](https://learn.microsoft.com/en-us/azure/private-link/private-link-overview) 连接到 LangSmith Azure SaaS API。虚拟网络 (VNet) 中的专用终结点连接到 LangSmith 专用链接服务。
+**Azure** 上的客户可以通过 [Azure Private Link](https://learn.microsoft.com/en-us/azure/private-link/private-link-overview) 连接到 LangSmith Azure SaaS API。 A private endpoint in your virtual network (VNet) connects to the LangSmith Private Link service.
 
 #### 请求访问权限请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)，并提供您的 Azure 订阅 ID 和所需的终结点区域。 LangChain 将您的订阅添加到专用链接服务自动批准列表中。 LangChain还提供服务资源ID。
 
 在创建专用端点之前，等待LangChain确认已启用订阅访问。来自允许列表订阅的新连接会自动获得批准。来自其他订阅的连接需要手动批准。
 
-#### 创建私有端点
+#### Create a private endpoint
 
-使用 VNet 中的现有子网。将端点位置设置为子网的区域。将占位符替换为您的 Azure 资源详细信息和LangChain 提供的服务资源 ID。
+Use an existing subnet in your VNet.将端点位置设置为子网的区域。将占位符替换为您的 Azure 资源详细信息和LangChain 提供的服务资源 ID。
 
 以下 Terraform 示例使用 [AzureRM provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint)：
 
@@ -483,7 +486,7 @@ nslookup azure.api.smith.langchain.com
 curl --fail --show-error https://azure.api.smith.langchain.com/ok
 ```
 
-继续使用 `https://azure.api.smith.langchain.com` 作为您的 LangSmith API 端点。 API 密钥和工作区权限仍然适用。
+继续使用 `https://azure.api.smith.langchain.com` 作为您的 LangSmith API 端点。 API keys and workspace permissions still apply.
 
 ## API 速率限制
 
@@ -509,9 +512,9 @@ LangSmith 对 API 端点实施速率限制，以确保服务稳定性和公平�
 | `/generate` | `x-user-id` + IP | 30 / 3600 | 30 / 3600 | [Generation](#rate-limit-categories) |
 | `/commits` | `x-api-key` | 10000 / 60 | 2000 / 60 | [Commits](#rate-limit-categories) |
 | `/commits` | `x-user-id` + IP | 10000 / 60 | 2000 / 60 | [Commits](#rate-limit-categories) |
-| `DELETE /sessions` 或 `*/trigger` | `x-api-key` | 10 / 60 | 10 / 60 | [Deletion](#rate-limit-categories) |
-| `DELETE /sessions` 或 `*/trigger` | `x-user-id` + IP | 30 / 60 | 30 / 60 | [Deletion](#rate-limit-categories) |
-| `POST /runs`（单次运行摄取）| `x-api-key` | 2000 / 10 | 2000 / 10 | [Run ingest](#rate-limit-categories) |
+| `DELETE /sessions` or `*/trigger` | `x-api-key` | 10 / 60 | 10 / 60 | [Deletion](#rate-limit-categories) |
+| `DELETE /sessions` or `*/trigger` | `x-user-id` + IP | 30 / 60 | 30 / 60 | [Deletion](#rate-limit-categories) |
+| `POST /runs` (single run ingest) | `x-api-key` | 2000 / 10 | 2000 / 10 | [Run ingest](#rate-limit-categories) |
 | `PATCH` 包含 `/runs` | `x-api-key` | 2000 / 10 | 2000 / 10 | [Run ingest](#rate-limit-categories) |
 | `POST /feedback` | `x-api-key` | 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
 | `GET /runs/{uuid}` 或 `/api/v1/runs/{uuid}` | `x-api-key` | 30 / 60 | 30 / 60 | [Run lookup](#rate-limit-categories) |
@@ -527,7 +530,7 @@ LangSmith 对 API 端点实施速率限制，以确保服务稳定性和公平�
 * **运行摄取**：单独的跟踪/运行摄取端点以实现可观察性。
 * **图表**：图表生成和可视化端点。
 * **分段摄取**：通过分段上传进行批量运行摄取，以进行大容量跟踪。
-* **运行查询 (API)**：基于 API 密钥的运行查询操作，对复杂查询有更严格的限制。
+* **运行查询 (API)**：基于 API 密钥的运行查询操作，对复杂查询具有更严格的限制。
 * **运行查询（用户）**：基于用户的运行查询操作，具有更高的交互使用限制。
 * **生成**：人工智能驱动的代码和内容生成端点（仅限于防止滥用）。
 * **Commits**：提示版本控制和提交操作。

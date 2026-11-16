@@ -13,7 +13,7 @@
 
 ## 从代码中调用
 
-您可以使用 [LangGraph SDK](/langsmith/reference) 或 REST API 从应用程序调用 LangSmith 队列代理。舰队代理在[Agent Server](/langsmith/agent-server)上运行，因此您可以使用与任何其他[Agent Server](/langsmith/deployment)相同的API方法。
+您可以使用 [LangGraph SDK](/langsmith/reference) 或 REST API 从应用程序调用 LangSmith 队列代理。队列代理在 [Agent Server](/langsmith/agent-server) 上运行，因此您可以使用与任何其他代理服务器相同的 API 方法。
 
 REST API 允许您从支持 HTTP 请求的任何语言或平台调用代理。
 
@@ -21,7 +21,7 @@ REST API 允许您从支持 HTTP 请求的任何语言或平台调用代理。
 
 * 舰队代理的LangSmith账户
 * 用于身份验证的[Personal Access Token (PAT)](/langsmith/create-account-api-key)
-*（仅限 SDK）安装的[LangGraph SDK](/langsmith/reference)：
+*（仅限 SDK）已安装的[LangGraph SDK](/langsmith/reference)：
 
 ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install langgraph-sdk python-dotenv
@@ -35,7 +35,7 @@ yarn add @langchain/langgraph-sdk
 
 要对代理的队列部署进行身份验证，请在实例化 LangGraph SDK 客户端时或通过 `X-API-Key` 标头向 `api_key` 参数提供 LangSmith [Personal Access Token (PAT)](/langsmith/create-account-api-key)。如果使用 `X-API-Key`，您还必须将 `X-Auth-Scheme` 标头设置为 `langsmith-api-key`。如果您传递的 PAT 与代理所有者无关，您的请求将被拒绝，并出现 `404 Not Found` 错误。
 
-如果您尝试调用的代理是工作区代理（与LangSmith工作区的所有成员共享的代理。私有代理仅对创建者可见。）并且您不是所有者，则可以执行与在 UI 中执行的所有相同操作（只读）。
+如果您尝试调用的代理是工作区代理（与 LangSmith 工作区的所有成员共享的代理。私有代理仅对创建者可见。）并且您不是所有者，则可以执行与在 UI 中执行的所有相同操作（只读）。
 
 ### 1.获取代理ID和URL
 
@@ -464,7 +464,7 @@ LANGGRAPH_API_KEY=your-personal-access-token
 
 下表总结了关键终点。将 `<API_URL>` 替换为代理的部署 URL。
 
-|运营|方法|端点|
+|运营|方法|端点 |
 | - | - | - |
 | [Get agent info](/langsmith/agent-server-api/assistants/get-assistant) | `GET` | `<API_URL>/assistants/<AGENT_ID>` |
 | [Create a thread](/langsmith/agent-server-api/threads/create-thread) | `POST` | `<API_URL>/threads` |
@@ -519,7 +519,7 @@ curl --request POST \
 
 以下队列 API 端点转发标头。将 `<FLEET_API_URL>` 替换为您的舰队 API 基本 URL。
 
-|运营|方法|端点|
+|运营|方法|端点 |
 | - | - | - |
 |创建一个线程并运行它 | `POST` | `<FLEET_API_URL>/threads/runs` |
 |在现有线程上运行 | `POST` | `<FLEET_API_URL>/threads/<THREAD_ID>/runs` |
@@ -544,7 +544,7 @@ curl --request POST \
 
 * Python 3.11+
 * [⟦T82⟧](https://docs.astral.sh/uv/getting-started/installation/)（推荐）用于依赖管理
-* 代理出口LangSmith车队
+* 一支LangSmith车队代理出口
 
 ### 1.复制起始项目
 
@@ -615,7 +615,7 @@ make run    # terminal REPL via cli.py — text-only chat
 
 ### 5.自定义代理启动器将舰队拥有的文件与您拥有的文件分开，并且可以自由编辑：
 
-|文件/目录 |业主|目的|
+|文件/目录|业主|目的|
 | - | - | - |
 | `fleet/` |舰队|将导出内容拖放到此处。重新解压即可更新；没有其他的东西被触及。 |
 | `agent.py` |你|图形接线。通过替换 `model = components.pop("model")` 行来覆盖模型。 |

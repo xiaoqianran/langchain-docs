@@ -10,7 +10,7 @@
 
 > [!提示]
 >
-> LangSmith 提供云之外的多种部署选项，包括 [hybrid](/langsmith/hybrid)、[standalone servers](/langsmith/deploy-standalone-server) 和 [self-hosted with control plane](/langsmith/deploy-with-control-plane)。欲了解更多信息，请参阅[LangSmith Deployment overview](/langsmith/deployment)。
+> LangSmith 提供云之外的多种部署选项，包括 [hybrid](/langsmith/hybrid)、[standalone servers](/langsmith/deploy-standalone-server) 和 [self-hosted with control plane](/langsmith/deploy-with-control-plane)。欲了解更多信息，请参阅[Deploy agents](/langsmith/deploy-overview)。
 
 ## LangSmith 云
 
@@ -31,11 +31,11 @@
 
 #### 2. 部署到LangSmith
 
-**1.导航至LangSmith部署**登录[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-oss-deploy-py)。在左侧边栏中，选择**部署**。
+**1.导航到代理服务器**登录[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-oss-deploy-py)。在左侧边栏中，选择 **代理服务器**。
 
-**2.创建新部署**
+**2.创建代理服务器**
 
-单击 **+ 新部署** 按钮。将打开一个窗格，您可以在其中填写必填字段。
+单击 **+ 代理服务器** 按钮。将打开一个窗格，您可以在其中填写必填字段。
 
 **3.链接存储库**
 
@@ -43,25 +43,24 @@
 
 **4.部署存储库**
 
-选择您的应用程序的存储库。单击**提交**进行部署。这可能需要大约 15 分钟才能完成。您可以在 **部署详细信息** 视图中检查状态。
+选择您的应用程序的存储库。单击**提交**进行部署。这可能需要大约 15 分钟才能完成。您可以在 **代理服务器详细信息** 视图中检查状态。
 
 #### 3. 在 Studio 中测试您的应用程序
 
 部署您的应用程序后：
 
-1. 选择您刚刚创建的部署以查看更多详细信息。
+1. 选择您刚刚创建的代理服务器以查看更多详细信息。
 2. 单击右上角的 **Studio** 按钮。 Studio 将打开并显示您的图表。
 
-#### 4. 获取您的部署的 API URL
+#### 4. 获取代理服务器的 API URL
 
-1. 在 LangGraph 的 **部署详细信息** 视图中，单击 **API URL** 将其复制到剪贴板。
-2. 点击`URL`将其复制到剪贴板。
+在 LangSmith 的 **代理服务器详细信息** 视图中，找到 **URL** 行。单击 **复制代理服务器 URL** 将地址复制到剪贴板。
 
 #### 5. 测试 API
 
 您现在可以测试 API：> [选项卡] Python
 >
-> 1.安装LangGraphPython：
+> 1. Install LangGraph Python:
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U langgraph-sdk
@@ -94,7 +93,7 @@
 >     print("\n\n")
 > ```
 
-> [选项卡] 休息API
+> [选项卡] 休息 API
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > curl -s --request POST \
@@ -117,7 +116,7 @@
 
 > [!提示]
 >
-> LangSmith 提供额外的托管选项，包括自托管和混合托管。欲了解更多信息，请参阅[Platform setup overview](/langsmith/platform-setup)。
+> LangSmith 提供额外的托管选项，包括自托管和混合托管。 For more information, please see the [Platform setup overview](/langsmith/platform-setup).
 
 ***
 

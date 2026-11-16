@@ -26,7 +26,7 @@
 
 ### Deep Agents
 
-为了在使用与 [Managed Deep Agents](#managed-deep-agents) 相同的 Deep Agents 工具时获得最大灵活性，请自行使用 Deep Agents SDK 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。
+为了在使用与 [Managed Deep Agents](#managed-deep-agents) 相同的 Deep Agents 工具时获得最大灵活性，请自行使用 Deep Agents SDK 和主机代理，或运行自定义 [Agent Server](/langsmith/agent-server)。
 
 > [卡][Deep research](/oss/javascript/deepagents/deep-research)
 >

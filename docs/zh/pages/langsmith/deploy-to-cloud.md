@@ -35,7 +35,7 @@
 >
 > 7. 输入[LangGraph API configuration file](/langsmith/cli#configuration-file)的完整路径，包括文件名。例如，如果文件位于存储库根目录中，请输入 `langgraph.json`。
 >
-> 8. 对于分支，选择是否启用**推送到分支时自动更新代理服务器**。此选项对标签不可用。您可以稍后在[Agent Server Settings](/langsmith/manage-deployment#configure-deployment-settings)中更改它。
+> 8. 对于分支，选择是否启用**推送到分支时自动更新代理服务器**。此选项对标签不可用。您可以稍后在[Agent Server Settings](/langsmith/manage-agent-server#configure-deployment-settings)中更改它。
 >
 > 9. 对于 [Agent Server type](/langsmith/cloud-platform-features#deployment-types)，选择 **Serverless** 或 **Dedicated**，具体取决于工作负载是否可以容忍冷启动或需要始终在线的容量。
 >> 10. 选择是否通过[Studio](/langsmith/studio) 共享代理服务器。
@@ -82,7 +82,7 @@
 
 ## 管理 GitHub 存储库访问
 
-授权`hosted-langserve` GitHub应用程序后，配置它可以访问哪些存储库：
+授权`hosted-langserve` GitHub 应用程序后，配置它可以访问哪些存储库：
 
 1. 在 GitHub 中，转到 **设置** > **应用程序**。
 2. 找到`hosted-langserve`，然后选择**配置**。
@@ -90,13 +90,13 @@
 4. 如果您选择 **仅选择存储库**，请根据需要添加或删除存储库。
 5. 选择**保存**。**创建代理服务器**窗格中的存储库列表反映了更新的访问权限。
 
-如果您重命名或转移代理服务器使用的存储库，[change the Agent Server's repository](/langsmith/manage-deployment#change-the-repository)。
+如果您重命名或转移代理服务器使用的存储库，[change the Agent Server's repository](/langsmith/manage-agent-server#change-the-repository)。
 
 ## 另请参阅
 
-* [Revisions](/langsmith/deployment-revisions)
+* [Revisions](/langsmith/agent-server-revisions)
 * [Preview builds](/langsmith/preview-builds)
-* [Manage an Agent Server](/langsmith/manage-deployment)
+* [Manage an Agent Server](/langsmith/manage-agent-server)
 
 ***
 

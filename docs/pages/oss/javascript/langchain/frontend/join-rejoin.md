@@ -8,7 +8,7 @@ Join and rejoin lets you disconnect from a running agent stream without stopping
 
 > [!NOTE]
 >
-> This feature requires the [LangGraph Agent Server](/oss/javascript/langgraph/local-server). Run your agent locally with `langgraph dev` or [deploy it to LangSmith](/langsmith/deployment) to use this pattern.
+> This feature requires the [LangGraph Agent Server](/oss/javascript/langgraph/local-server). Run your agent locally with `langgraph dev` or [deploy it to LangSmith](/langsmith/deploy-overview) to use this pattern.
 
 ## Why join & rejoin?
 

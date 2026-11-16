@@ -78,7 +78,7 @@ async def load_with_per_server_auth(
 
 ## 每用户身份验证
 
-在部署中，每次运行都应以启动它的用户身份到达 MCP 服务器，而不是使用一个共享凭据。该模式有两半：1. **在 LangGraph 服务器上对调用者进行身份验证。** [custom auth handler](/langsmith/auth) 将传入请求解析为用户身份，每次运行都会读取其运行时。
+在部署中，每次运行都应以启动它的用户身份到达 MCP 服务器，而不是使用一个共享凭据。该模式有两半：1. **在LangSmith代理服务器上对调用者进行身份验证。** [custom auth handler](/langsmith/auth)将传入请求解析为用户身份，每次运行都会读取其运行时。
 2. **为该用户创建或交换凭证。** 在 [graph factory](/oss/python/langchain/mcp/connections#scale-a-deployment) 内，读取用户的身份并使用每用户令牌构建 MCP 客户端，以便连接携带该用户的授权。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -109,7 +109,7 @@ async def make_graph(runtime):
 * [FastMCP client groups](https://gofastmcp.com/clients/client-groups) — 每个服务器身份验证的独立连接
 * [FastMCP server authentication providers](https://gofastmcp.com/servers/auth/authentication)
 * [MCP authorization specification](https://modelcontextprotocol.io/specification/draft/basic/authorization)
-* [Custom authentication for a LangGraph server](/langsmith/auth)
+* [Custom authentication for Agent Server](/langsmith/auth)
 
 ***
 

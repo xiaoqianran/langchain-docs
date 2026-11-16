@@ -452,6 +452,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Exposes 200+ service integrations (Slack, GitHub, Gmail, Linear, Stripe, and more) to LangChain agents as tools with OAuth.
 
+> [card] [CULT+MATH](https://github.com/letsbuild-math/cultmath-agent-tools)
+>
+> LangChain tools that search CULT+MATH decision research and run paid measurements on SEC filings, federal data and AI answers, paid per run over x402.
+
 > [card] [DALL-E](/oss/javascript/integrations/tools/dalle)
 >
 > Generate images using OpenAI's DALL-E models.
@@ -604,6 +608,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Retrieve status and results of a research task using its request ID.
 
+> [card] [VerictoSqlToolkit](https://vericto.com/docs/langchain)
+>
+> Database guardrails for AI agents: checks each SQL statement against deterministic AST rules (such as DELETE without WHERE) before it runs.
+
 > [card] [viaSocket](https://github.com/Walkover-Web-Solution/viasocket-apps#langchain)
 >
 > viaSocket lets LangChain.js agents run actions in 2,300+ connected apps through each user's own connection.
@@ -701,6 +709,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > [card] [Nace](https://github.com/nace-ai/langchain-nace-js#readme)
 >
 > Drex decision models by Nace: typed answers with calibrated probabilities for routing, model selection and tool-call gating, from text and images.
+
+> [card] [newmean-pii](https://github.com/newmean-ai/pii/blob/main/js/README.md#langchainjs)
+>
+> On-device PII masking for agent messages: a small multilingual model (54 languages) in WebAssembly masks what each model call receives.
 
 > [card] [RecallChatMessageHistory](https://recallmem.dev/guides/langchain)
 >

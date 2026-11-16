@@ -7,12 +7,12 @@
 使用无头工具实现在客户端上运行浏览器和设备 API
 
 无头工具让您的代理调用工具，其真正执行必须发生在
-用户的应用程序而不是服务器上。代理仍然看到正常的工具模式，
+用户的应用程序而不是服务器上。代理仍然看到正常的工具架构，
 但实现位于前端，可以访问浏览器 API
 例如 IndexedDB、地理位置、剪贴板、画布或文件选择器。
 
 当数据应保留在设备本地时，此模式特别有用。
-本页上的 Playground 示例使用一个小型浏览器内存工具包支持
+本页上的游乐场示例使用支持的小型浏览器内存工具包
 由 IndexedDB 加上完全在客户端运行的地理定位工具。
 
 ## 无头工具如何工作
@@ -107,7 +107,7 @@ def geolocation_get(runtime: ToolRuntime, save: bool = True) -> Any:
     )
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[memory_put, memory_get, geolocation_get],
     checkpointer=MemorySaver(),
 )
@@ -115,7 +115,7 @@ agent = create_agent(
 
 每个工具都会使用前端可以处理的结构化有效负载进行中断，然后
 返回运行恢复时提供的值。镜像相同的工具名称和
-客户端上的模式，以便前端可以附加实现。
+客户端上的架构，以便前端可以附加实现。
 
 ```ts tools.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as z from "zod";

@@ -122,7 +122,7 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 >
 > 使用数据集、评估和即时工程来评估代理。
 
-> [卡][Deploy](/langsmith/deployment)
+> [卡][Deploy](/langsmith/deploy-overview)
 >
 > 大规模部署和服务代理。
 
@@ -180,7 +180,7 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 
 > [卡][LangSmith status](https://status.smith.langchain.com/)
 >
-> LangSmith服务和API的实时状态。
+> LangSmith 服务和 API 的实时状态。
 
 > [卡][Trust Center](https://trust.langchain.com/)
 >

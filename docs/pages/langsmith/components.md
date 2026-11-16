@@ -4,7 +4,7 @@
 
 Overview of Agent Server, LangGraph CLI, Studio, SDKs, RemoteGraph, control plane, and data plane components.
 
-[LangSmith Agent Server](/langsmith/deployment) and its hosting infrastructure include the following components. Together these tools and services provide a complete solution for building, deploying, and managing graphs (including agentic applications), whether on [Cloud](/langsmith/cloud) or in your own [self-hosted](/langsmith/self-hosted) infrastructure:
+[LangSmith Agent Server](/langsmith/agent-server) and its hosting infrastructure include the following components. Together these tools and services provide a complete solution for building, deploying, and managing graphs (including agentic applications), whether on [Cloud](/langsmith/cloud) or in your own [self-hosted](/langsmith/self-hosted) infrastructure:
 
 > [!NOTE]
 >

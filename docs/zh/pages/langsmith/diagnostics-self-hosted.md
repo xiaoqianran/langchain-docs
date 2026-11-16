@@ -6,7 +6,7 @@
 
 在联系支持之前对自托管 LangSmith 代理服务器问题进行故障排除的诊断步骤。
 
-本页面提供诊断步骤，帮助您在联系支持之前解决自托管 [LangSmith Agent Server](/langsmith/deployment) 的问题。系统地遵循以下步骤来识别和解决常见部署问题。
+本页面提供诊断步骤，帮助您在联系支持之前解决自托管 [LangSmith Agent Server](/langsmith/agent-server) 的问题。系统地遵循以下步骤来识别和解决常见部署问题。
 
 如果您完成这些诊断步骤但仍需要帮助，请参阅本指南末尾的[Support](#support)，了解有关在联系之前应收集哪些内容的信息。
 

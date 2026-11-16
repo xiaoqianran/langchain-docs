@@ -423,7 +423,7 @@ const finalState = await stream.output;
 
 > [!注意]
 >
-> 保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/javascript/langchain/long-term-memory) 配置代理。在 [LangSmith Agent Server](/langsmith/deployment) 上，会自动配置检查点。在本地，显式传递一个，例如 `createAgent({ ..., checkpointer: new MemorySaver() })`。为了简洁起见，此页面上的其余片段省略了 `thread_id`，但您应该在生产中传递它。
+> 保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/javascript/langchain/long-term-memory) 配置代理。在 [LangSmith Agent Server](/langsmith/agent-server#persistence) 上，会自动配置检查点。在本地，显式传递一个，例如 `createAgent({ ..., checkpointer: new MemorySaver() })`。为了简洁起见，此页面上的其余片段省略了 `thread_id`，但您应该在生产中传递它。
 
 ## LLM 代币
 

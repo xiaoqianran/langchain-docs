@@ -4,7 +4,7 @@
 
 Diagnostic steps for troubleshooting self-hosted LangSmith Agent Server issues before contacting support.
 
-This page provides diagnostic steps to help you troubleshoot issues with self-hosted [LangSmith Agent Server](/langsmith/deployment) before reaching out to support. Follow these steps systematically to identify and resolve common deployment issues.
+This page provides diagnostic steps to help you troubleshoot issues with self-hosted [LangSmith Agent Server](/langsmith/agent-server) before reaching out to support. Follow these steps systematically to identify and resolve common deployment issues.
 
 If you complete these diagnostic steps and still need assistance, refer to [Support](#support) at the end of this guide for information on what to gather before reaching out.
 

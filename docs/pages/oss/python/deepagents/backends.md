@@ -21,7 +21,7 @@ This page explains how to:
 
 > [!TIP]
 >
-> When you deploy on [LangSmith Agent Server](/langsmith/deployment), a store is provisioned automatically. Use [LangSmith](/langsmith/observability) tracing to debug file paths, permission denials, and cross-thread storage. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up.
+> When you deploy on [LangSmith Agent Server](/langsmith/agent-server#persistence), a store is provisioned automatically. Use [LangSmith](/langsmith/observability) tracing to debug file paths, permission denials, and cross-thread storage. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up.
 >
 > We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
 
@@ -553,7 +553,7 @@ agent = create_deep_agent(
 
 > [!NOTE]
 >
-> When deploying to [LangSmith Agent Server](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
+> When deploying to [LangSmith Agent Server](/langsmith/agent-server#persistence), omit the `store` parameter. The platform automatically provisions a store for your agent.
 
 > [!TIP]
 >
@@ -566,7 +566,7 @@ agent = create_deep_agent(
 **Best for:**
 
 * When you already run with a configured LangGraph store (for example, Redis, Postgres, or cloud implementations behind [`BaseStore`](https://reference.langchain.com/python/langchain-core/stores/BaseStore)).
-* When you're deploying your agent through [LangSmith Agent Server](/langsmith/deployment) (a store is automatically provisioned for your agent).
+* When you're deploying your agent through [LangSmith Agent Server](/langsmith/agent-server#persistence) (a store is automatically provisioned for your agent).
 
 #### Namespace factories
 

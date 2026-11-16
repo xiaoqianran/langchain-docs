@@ -40,7 +40,7 @@ Python 3.11 或更高版本。
 
 ## 选择你的路径
 
-从[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 工具时获得最大灵活性，请自行使用 Deep Agents SDK 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。> [选项卡] 托管 Deep Agents
+从[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 工具时获得最大灵活性，请自行使用 Deep Agents SDK 和主机代理，或运行自定义 [Agent Server](/langsmith/agent-server)。> [选项卡] 托管 Deep Agents
 >
 >> [!注意]
 >>
@@ -648,7 +648,7 @@ Python 3.11 或更高版本。
 >
 > 参见[Deploy](/langsmith/python/managed-deep-agents-deploy)。> [标签] Deep Agents SDK
 >
-> 当您想要自己托管代理或运行自定义 [Agent Server](/langsmith/deployment) 时，请使用开源 SDK。该示例将行为保存在内存文件、技能和子代理定义中，以及 [FilesystemBackend](/oss/python/deepagents/backends)。
+> 当您想要自己托管代理或运行自定义 [Agent Server](/langsmith/agent-server) 时，请使用开源 SDK。该示例将行为保存在内存文件、技能和子代理定义中，以及 [FilesystemBackend](/oss/python/deepagents/backends)。
 >
 > ### 设置
 >

@@ -18,9 +18,9 @@ Deployments use the newest `stable` version by default and are automatically upd
 
 ## v0.19
 
-Latest version: `0.19.0rc1`
+Latest version: `0.19.0rc3`
 
-This minor line is still a release candidate. The last stable release is `0.18.0`.
+This minor line is still a release candidate. The last stable release is `0.18.1`.
 
 ### Changes
 
@@ -34,12 +34,32 @@ This minor line is still a release candidate. The last stable release is `0.18.0
 * Fixes checkpoint writes from JS graphs continuing to run after the graph's request to the checkpointer timed out.
 * Fixes the per-priority queue metrics to count only runs that can start, and renames them to `lg_api_num_startable_runs` and `lg_api_startable_runs_wait_time_{max,med}`; the `/metrics?format=json` keys under `queue.by_priority` change to match.
 * Fixes store reads over 4 MiB failing with `RESOURCE_EXHAUSTED`.
+* Fixes custom events, node updates and checkpoints missing from runs streamed over the event streaming API.
+* Fixes replayed events from the event streaming API showing the time of the replay instead of when they happened.
+* Fixes usage reporting from self-hosted agent servers behind an egress proxy. The usage reporting client now honours `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY`.
 
 #### General Notes
 
 * The Agent Server OpenAPI spec is now titled "LangSmith Agent Server".
 
 > [accordion] v0.19 releases
+>
+> **2026-11-16**
+>
+> ## v0.19.0rc3
+>
+> ### Fixes
+>
+> * Fixes usage reporting from self-hosted agent servers behind an egress proxy. The usage reporting client now honours `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY`.
+>
+> **2026-11-13**
+>
+> ## v0.19.0rc2
+>
+> ### Fixes
+>
+> * Fixes custom events, node updates and checkpoints missing from runs streamed over the event streaming API.
+> * Fixes replayed events from the event streaming API showing the time of the replay instead of when they happened.
 >
 > **2026-11-12**
 >
@@ -62,7 +82,7 @@ This minor line is still a release candidate. The last stable release is `0.18.0
 
 ## v0.18
 
-Latest version: `0.18.0`
+Latest version: `0.18.1`
 
 ### Changes
 
@@ -141,6 +161,7 @@ Latest version: `0.18.0`
 * Replays a run's stored events in pages instead of inside Redis, so rejoining a long run no longer stalls Redis for other clients
 * Fixes the per-priority queue metrics to count only runs that can start, and renames them to `lg_api_num_startable_runs` and `lg_api_startable_runs_wait_time_{max,med}`; the `/metrics?format=json` keys under `queue.by_priority` change to match.
 * Fixes store reads over 4 MiB failing with `RESOURCE_EXHAUSTED`.
+* Fixes usage reporting from self-hosted agent servers behind an egress proxy. The usage reporting client now honours `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY`.
 
 #### Security
 
@@ -153,6 +174,14 @@ Latest version: `0.18.0`
 * Updates bundled dependencies to address security vulnerabilities.
 
 > [accordion] v0.18 releases
+>
+> **2026-11-16**
+>
+> ## v0.18.1
+>
+> ### Fixes
+>
+> * Fixes usage reporting from self-hosted agent servers behind an egress proxy. The usage reporting client now honours `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY`.
 >
 > **2026-11-12**
 >

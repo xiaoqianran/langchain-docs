@@ -16,20 +16,20 @@
 >
 > **特工=模特+线束**
 >
-> 线束的工作：为给定的任务在正确的时间为模型提供正确的上下文。
+> 线束的工作：为给定任务在正确的时间为模型提供正确的上下文。
 
 [⟦T112⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 是一款高度可配置的安全带。最简单的是，您可以使用以下命令创建一个：
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 
-agent = create_agent(model="google_genai:gemini-3.6-flash", tools=tools)
+agent = create_agent(model="google_genai:gemini-4-hydrogen", tools=tools)
 ```
 
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 
-agent = create_agent(model="openai:gpt-5.5", tools=tools)
+agent = create_agent(model="openai:gpt-6.1-sol", tools=tools)
 ```
 
 ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -66,24 +66,24 @@ agent = create_agent(model="ollama:north-mini-code-1.0", tools=tools)
 
 > [!提示]
 >
-> [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 构建于 `create_agent` 之上，并附带已组装的常用功能，例如规划、文件系统工具、子代理和内存。为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents](/oss/python/deepagents/overview) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。当您需要自己配置较小的线束时，请使用`create_agent`。
+> [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 构建于 `create_agent` 之上，并附带已组装的常用功能，例如规划、文件系统工具、子代理和内存。为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents](/oss/python/deepagents/overview) 和主机代理，或运行自定义 [Agent Server](/langsmith/agent-server)。当您需要自己配置较小的线束时，请使用`create_agent`。
 
 ## 核心组件
 
 ![Agent model and harness components diagram](https://mintcdn.com/langchain-5e9cc07a/jtty0O--UJOKG0nK/oss/images/agent_model_harness.svg?fit=max\&auto=format\&n=jtty0O--UJOKG0nK\&q=85\&s=5ac6a7e0343af7cb5ba3ca632e2224af)
 
-### 型号传递模型标识符字符串 (`"provider:model"`) 或初始化的模型实例来为您的代理选择模型。有关参数、提供程序设置和动态模型选择，请参阅[Models](/oss/python/langchain/models)。
+### 型号传递模型标识符字符串 (`"provider:model"`) 或初始化的模型实例来为代理选择模型。有关参数、提供程序设置和动态模型选择，请参阅[Models](/oss/python/langchain/models)。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 
-agent = create_agent(model="google_genai:gemini-3.6-flash", tools=tools)
+agent = create_agent(model="google_genai:gemini-4-hydrogen", tools=tools)
 ```
 
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 
-agent = create_agent(model="openai:gpt-5.5", tools=tools)
+agent = create_agent(model="openai:gpt-6.1-sol", tools=tools)
 ```
 
 ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -131,7 +131,7 @@ def search(query: str) -> str:
     return f"Results for: {query}"
 
 
-agent = create_agent(model="google_genai:gemini-3.6-flash", tools=[search])
+agent = create_agent(model="google_genai:gemini-4-hydrogen", tools=[search])
 ```
 
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -145,7 +145,7 @@ def search(query: str) -> str:
     return f"Results for: {query}"
 
 
-agent = create_agent(model="openai:gpt-5.5", tools=[search])
+agent = create_agent(model="openai:gpt-6.1-sol", tools=[search])
 ```
 
 ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -224,7 +224,7 @@ agent = create_agent(model="ollama:north-mini-code-1.0", tools=[search])
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=tools,
     system_prompt="You are a helpful assistant. Be concise and accurate.",
 )
@@ -232,7 +232,7 @@ agent = create_agent(
 
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=tools,
     system_prompt="You are a helpful assistant. Be concise and accurate.",
 )
@@ -292,7 +292,7 @@ class Answer(BaseModel):
     confidence: float
 
 
-agent = create_agent(model="google_genai:gemini-3.6-flash", tools=tools, response_format=Answer)
+agent = create_agent(model="google_genai:gemini-4-hydrogen", tools=tools, response_format=Answer)
 result = agent.invoke({"messages": [{"role": "user", "content": "Summarize AI trends"}]})
 result["structured_response"]  # Answer(summary=..., confidence=...)
 ```
@@ -307,7 +307,7 @@ class Answer(BaseModel):
     confidence: float
 
 
-agent = create_agent(model="openai:gpt-5.5", tools=tools, response_format=Answer)
+agent = create_agent(model="openai:gpt-6.1-sol", tools=tools, response_format=Answer)
 result = agent.invoke({"messages": [{"role": "user", "content": "Summarize AI trends"}]})
 result["structured_response"]  # Answer(summary=..., confidence=...)
 ```
@@ -409,7 +409,7 @@ class MyState(AgentState):
 
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[],
     state_schema=MyState,  # [!code highlight]
 )
@@ -425,7 +425,7 @@ class MyState(AgentState):
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     state_schema=MyState,  # [!code highlight]
 )
@@ -517,9 +517,9 @@ agent = create_agent(
 
 > [!提示]
 >
-> 跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
+> 跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
 
-您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T131⟧](/oss/python/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/python/langgraph/graph-api-state#messagesstate)；要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
+您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T131⟧](/oss/python/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/python/langgraph/graph-api-state#messagesstate)；要调用代理，请传递新消息以及`thread_id`，以便代理可以保留并恢复对话历史记录：
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -527,7 +527,7 @@ from langchain_core.utils.uuid import uuid7
 from langgraph.checkpoint.memory import InMemorySaver
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[],
     checkpointer=InMemorySaver(),
 )
@@ -552,7 +552,7 @@ from langchain_core.utils.uuid import uuid7
 from langgraph.checkpoint.memory import InMemorySaver
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     checkpointer=InMemorySaver(),
 )
@@ -700,7 +700,7 @@ result = agent.invoke(
 
 > [!注意]
 >
-> 保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/python/langchain/long-term-memory) 配置代理。当部署在[LangSmith](/langsmith/deployment)上时，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。
+> 保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/python/langchain/long-term-memory) 配置代理。当部署在[LangSmith Agent Server](/langsmith/agent-server#persistence)上时，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。
 
 如果您还需要将每次运行的配置（例如用户 ID、API 密钥或功能标志）传递给工具和中间件，请将其作为 `context` 与 `config` 一起传递。使用 `context_schema` 定义该数据的形状并通过 `runtime.context` 访问它：
 
@@ -718,7 +718,7 @@ class Context:
 
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[],
     context_schema=Context,
     checkpointer=InMemorySaver(),
@@ -745,7 +745,7 @@ class Context:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     context_schema=Context,
     checkpointer=InMemorySaver(),
@@ -975,7 +975,7 @@ from deepagents.backends import StateBackend
 from deepagents.middleware import FilesystemMiddleware
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[search],
     middleware=[FilesystemMiddleware(backend=StateBackend())],
 )
@@ -987,7 +987,7 @@ from deepagents.backends import StateBackend
 from deepagents.middleware import FilesystemMiddleware
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[search],
     middleware=[FilesystemMiddleware(backend=StateBackend())],
 )
@@ -1076,7 +1076,7 @@ from deepagents.backends import StateBackend
 from deepagents.middleware import FilesystemMiddleware, MemoryMiddleware, SkillsMiddleware, SummarizationMiddleware
 
 backend = StateBackend()
-model = "google_genai:gemini-3.6-flash"
+model = "google_genai:gemini-4-hydrogen"
 
 agent = create_agent(
     model=model,
@@ -1095,7 +1095,7 @@ from deepagents.backends import StateBackend
 from deepagents.middleware import FilesystemMiddleware, MemoryMiddleware, SkillsMiddleware, SummarizationMiddleware
 
 backend = StateBackend()
-model = "openai:gpt-5.5"
+model = "openai:gpt-6.1-sol"
 
 agent = create_agent(
     model=model,
@@ -1238,7 +1238,7 @@ def search(query: str) -> str:
 backend = StateBackend()
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[search],
     middleware=[
         FilesystemMiddleware(backend=backend),
@@ -1278,7 +1278,7 @@ def search(query: str) -> str:
 backend = StateBackend()
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[search],
     middleware=[
         FilesystemMiddleware(backend=backend),
@@ -1519,11 +1519,11 @@ agent = create_agent(
 可以选择使用代理的标识符。当将代理作为子图嵌入到 [multi-agent](/oss/python/langchain/multi-agent) 系统中时，这特别有用。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-agent = create_agent(model="google_genai:gemini-3.6-flash", tools=tools, name="research_assistant")
+agent = create_agent(model="google_genai:gemini-4-hydrogen", tools=tools, name="research_assistant")
 ```
 
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-agent = create_agent(model="openai:gpt-5.5", tools=tools, name="research_assistant")
+agent = create_agent(model="openai:gpt-6.1-sol", tools=tools, name="research_assistant")
 ```
 
 ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1563,7 +1563,7 @@ def search(query: str) -> str:
 
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[search],
     middleware=[
         ModelRetryMiddleware(max_retries=3),
@@ -1585,7 +1585,7 @@ def search(query: str) -> str:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[search],
     middleware=[
         ModelRetryMiddleware(max_retries=3),
@@ -1721,7 +1721,7 @@ def search(query: str) -> str:
 
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[search],
     middleware=[PIIMiddleware("email")],
 )
@@ -1740,7 +1740,7 @@ def search(query: str) -> str:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[search],
     middleware=[PIIMiddleware("email")],
 )
@@ -1860,7 +1860,7 @@ def search(query: str) -> str:
 
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[search],
     middleware=[HumanInTheLoopMiddleware(interrupt_on={"write_file": True})],
 )
@@ -1879,7 +1879,7 @@ def search(query: str) -> str:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[search],
     middleware=[HumanInTheLoopMiddleware(interrupt_on={"write_file": True})],
 )

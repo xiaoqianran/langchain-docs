@@ -2384,7 +2384,7 @@ if (import.meta.main) {
 您使用 [⟦T135⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 实现了一种 RAG 模式。将其与其他 Deep Agents 功能相结合，或尝试与 [RAG patterns](#rag-patterns) 不同的模式：* 将 [Skills](/oss/javascript/deepagents/skills) 添加到包检索工作流程和特定领域的搜索指南
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) 与 LangSmith 数据集和评估器
 * 阅读 [Context engineering](/oss/javascript/deepagents/context-engineering) 了解卸载和子代理隔离策略
-* 使用 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 进行部署以运行生产代理，而无需管理基础设施。或者，为了在使用相同的Deep Agents安全带时获得最大的灵活性，您可以自己托管代理或使用自定义的[Agent Server](/langsmith/deployment)
+* 使用 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 进行部署以运行生产代理，而无需管理基础设施。或者，为了在使用相同的Deep Agents安全带时获得最大的灵活性，您可以自己托管代理或使用自定义的[Agent Server](/langsmith/agent-server)
 
 ***
 

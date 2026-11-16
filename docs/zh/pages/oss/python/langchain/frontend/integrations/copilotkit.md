@@ -63,12 +63,12 @@ graph LR
 
 [copilotkit](https://pypi.org/project/copilotkit/) 和相关软件包桥接 LangGraph 部署和 CopilotKit 客户端。|组件|角色 |
 | - | - |
-| `CopilotKitMiddleware` |将 CopilotKit 和 AG-UI 状态和请求合并到您的代理中，包括前端 [tool calls](/oss/python/langchain/agents#tools) 和上下文。将其添加到 [create\_agent](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 或 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 的 `middleware` 列表中。 |
+| `CopilotKitMiddleware` |将 CopilotKit 和 AG-UI 状态和请求合并到您的代理中，包括前端 [tool calls](/oss/python/langchain/agents#tools) 和上下文。将其添加到 [create_agent](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 或 [create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 的 `middleware` 列表中。 |
 | `CopilotKitState`（子类）| [Custom state](/oss/python/langchain/short-term-memory)：扩展`CopilotKitState`，因此 CopilotKit 键是图状态的一部分。 |
 | `LangGraphAGUIAgent` |将已编译的图与运行时的名称和描述捆绑在一起。 |
 | `add_langgraph_fastapi_endpoint`（来自[ag-ui-langgraph](https://pypi.org/project/ag-ui-langgraph/)）|在与您的图表相同的 [LangGraph](/oss/python/langgraph/overview) 进程上连接 **FastAPI** AG-UI 桥。使用 [custom ⟦T33⟧ app in ⟦T34⟧](#extend-the-langgraph-deployment-with-a-custom-endpoint) 安装它。 React 客户端仍然需要一个单独的节点 [CopilotKit runtime](#add-the-copilotkit-runtime) 通过 AG-UI 调用此桥。 |
 
-当您将 `middleware` 列表添加到 `middleware` 列表时，`CopilotKitMiddleware` 与 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 以及来自 [create\_agent](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 的图表是相同的中间件。对于具有 `CopilotKitState` 和 FastAPI 桥的 `create_agent` 图，请遵循下面的 [Python ⟦T39⟧ example](#extend-the-langgraph-deployment-with-a-custom-endpoint)。结构化生成 UI（例如来自客户端的 `useAgentContext` 和 `output_schema`）需要额外的中间件将 Copilot 状态映射到 [structured output](/oss/python/langchain/agents#structured-output) 策略，如同一部分中的可扩展 `src/middleware.py` 示例。
+当您将 `middleware` 列表添加到 `middleware` 列表时，`CopilotKitMiddleware` 与 [create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 以及来自 [create_agent](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 的图表是相同的中间件。对于具有 `CopilotKitState` 和 FastAPI 桥的 `create_agent` 图，请遵循下面的 [Python ⟦T39⟧ example](#extend-the-langgraph-deployment-with-a-custom-endpoint)。结构化生成 UI（例如来自客户端的 `useAgentContext` 和 `output_schema`）需要额外的中间件将 Copilot 状态映射到 [structured output](/oss/python/langchain/agents#structured-output) 策略，如同一部分中的可扩展 `src/middleware.py` 示例。
 
 将`app`安装在`langgraph.json`中的`http`键上遵循通常的[LangGraph or LangSmith deployment](/oss/python/langgraph/deploy)：一个进程服务于图形API和AG-UI FastAPI桥。 CopilotKit React 客户端与调用该桥的 Node 运行时进行通信。
 
@@ -102,7 +102,7 @@ bun add @copilotkit/react-core @copilotkit/react-ui @hashbrownai/core @hashbrown
 
 ## 将 CopilotKit 与深度代理结合使用
 
-将 `CopilotKitMiddleware` 添加到传递给 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 的 `middleware` 列表中。该中间件允许 CopilotKit 路由前端工具调用并将聊天状态与您的图表对齐。将任何其他[middleware you configure](/oss/python/deepagents/customization#middleware)保留在同一列表中。
+将 `CopilotKitMiddleware` 添加到传递给 [create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 的 `middleware` 列表中。该中间件允许 CopilotKit 路由前端工具调用并将聊天状态与您的图表对齐。将任何其他[middleware you configure](/oss/python/deepagents/customization#middleware)保留在同一列表中。
 
 然后，编译后的图表就可以插入 CopilotKit 或 AG-UI 感知进程（例如，[FastAPI pattern below](#extend-the-langgraph-deployment-with-a-custom-endpoint)）或 CopilotKit 文档中的指南（例如 [Deep Agents and CopilotKit](https://docs.copilotkit.ai/langgraph/deep-agents)）。如果您将导出代理列在 `langgraph.json` 的 `graphs` 下，则不要传递该代理上的检查指针。 [FastAPI example below](#extend-the-langgraph-deployment-with-a-custom-endpoint) 仅在 AG-UI 路由副本上附加检查点。
 
@@ -117,7 +117,7 @@ def get_weather(location: str) -> str:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[get_weather],
     middleware=[CopilotKitMiddleware()],  # AG-UI, frontend tools, and context
     system_prompt="You are a helpful research assistant.",
@@ -163,7 +163,7 @@ class AgentContext(TypedDict, total=False):
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[
         normalize_context,
         CopilotKitMiddleware(),
@@ -193,7 +193,7 @@ add_langgraph_fastapi_endpoint(
 
 AG-UI 桥在每次运行时都会读取图的状态，因此 FastAPI 路由后面的图需要一个检查点。保持检查指针关闭 `agent` 本身：`agent` 也列在 `graphs` 下，并且 `langgraph dev` 拒绝加载带有自己检查指针的列出图，因为 LangGraph API 处理列出图的持久性。带有 `MemorySaver` 的副本仅服务于 FastAPI 路由。它的线程存在于进程内存中，因此它们不会在重新启动后继续存在，不会在副本之间共享，并且不会出现在部署的线程 API 中。对于此路线上的生产交通，请改为通过耐用的[checkpointer](/oss/python/langgraph/persistence)。
 
-这个自定义应用程序是重要的扩展点：它安装了 AG-UI FastAPI 桥，而无需替换底层的 LangGraph 部署。 Node CopilotKit 运行时保持独立；参见[Add the CopilotKit runtime](#add-the-copilotkit-runtime)。在 Python 中，等效的工作发生在中间件中：规范化 CopilotKit 上下文并将 `output_schema` 从 `useAgentContext(...)` 转发到模型的结构化输出配置中。 Hashbrown 生成的模式没有顶级`title`，而OpenAI 集成需要命名结构化输出模式，因此中间件会在缺少`title` 和`description` 时填充它们。
+这个自定义应用程序是重要的扩展点：它安装了 AG-UI FastAPI 桥，而无需替换底层LangGraph部署。 Node CopilotKit 运行时保持独立；参见[Add the CopilotKit runtime](#add-the-copilotkit-runtime)。在 Python 中，等效的工作发生在中间件中：规范化 CopilotKit 上下文并将 `output_schema` 从 `useAgentContext(...)` 转发到模型的结构化输出配置中。 Hashbrown 生成的模式没有顶级`title`，而OpenAI 集成需要命名结构化输出模式，因此中间件会在缺少`title` 和`description` 时填充它们。
 
 ```python expandable src/middleware.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import json
@@ -508,7 +508,7 @@ yarn add -D tsx typescript @types/node
 
 ### 连接您的LangChain代理
 
-为每个对话返回一个新的代理，由线程键入，因此 Slack 线程之间不会发生状态泄漏。 LangGraph 服务器使用 LangGraph API，因此请使用 `@copilotkit/runtime/langgraph` 中的 `LangGraphAgent`，而不是 `HttpAgent`。将其指向[deployment you already run](#extend-the-langgraph-deployment-with-a-custom-endpoint)：
+为每个对话返回一个新的代理，由线程键入，因此 Slack 线程之间不会发生状态泄漏。 LangSmith代理服务器使用LangGraph API，因此请使用`@copilotkit/runtime/langgraph`中的`LangGraphAgent`，而不是`HttpAgent`。将其指向[deployment you already run](#extend-the-langgraph-deployment-with-a-custom-endpoint)：
 
 ```ts icon="robot" title="agent.ts" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { LangGraphAgent } from "@copilotkit/runtime/langgraph";

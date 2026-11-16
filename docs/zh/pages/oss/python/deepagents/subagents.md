@@ -75,13 +75,13 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已经提�
 
 ### 子代理（基于字典）
 
-将子代理定义为与 [⟦T109⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgent) 规范匹配的字典，其中包含以下字段：|领域|类型 |描述 |
+将子代理定义为与 [⟦T109⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgent) 规范匹配的字典，其中包含以下字段：|领域 |类型 |描述 |
 | - | - | - |
 | `name` | `str` |必需的。子代理的唯一标识符。主代理在调用`task()`工具时使用此名称。子代理名称成为 `AIMessage` 和流媒体的元数据，这有助于区分代理。 |
 | `description` | `str` |必需的。描述该子代理的作用。具体并以行动为导向。主代理使用它来决定何时进行委托。 |
-| `system_prompt` | `str` | `mode: "isolated"` 必需（默认）。子代理的说明。自定义隔离子代理必须定义自己的。包括工具使用指南和输出格式要求。不从主代理继承。对于 `mode: "fork"`，请忽略此字段，除非您需要仅用于分叉的附录。参见[Forked subagents](#forked-subagents)。 |
+| `system_prompt` | `str` | `mode: "isolated"` 必需（默认）。子代理的说明。自定义隔离子代理必须定义自己的。包括工具使用指南和输出格式要求。不从主代理继承。对于 `mode: "fork"`，请忽略此字段，除非您需要仅分叉附录。参见[Forked subagents](#forked-subagents)。 |
 | `mode` | `"isolated"` \| `"fork"` |选修的。上下文模式。默认为`"isolated"`，子代理只能看到委派的任务。设置为 `"fork"` 来继承父级的对话和系统提示。参见[Forked subagents](#forked-subagents)。 |
-| `tools` | `list[Callable]` |选修的。子代理可以使用的工具。保持最少并且只包含需要的内容。默认继承自主代理。指定后，将完全覆盖继承的工具。 || `model` | `str` \| `BaseChatModel` |选修的。覆盖主要代理的模型。省略使用主代理的模型。默认继承自主代理。您可以传递模型标识符字符串，如 `'openai:gpt-5.5'`（使用 `'provider:model'` 格式）或 LangChain 聊天模型对象（`init_chat_model("gpt-5.5")` 或 `ChatOpenAI(model="gpt-5.5")`）。 |
+| `tools` | `list[Callable]` |选修的。子代理可以使用的工具。保持最少并且只包含需要的内容。默认继承自主代理。指定后，将完全覆盖继承的工具。 || `model` | `str` \| `BaseChatModel` |选修的。覆盖主要代理的模型。省略使用主代理的模型。默认继承自主代理。您可以传递模型标识符字符串，如 `'openai:gpt-6.1-sol'`（使用 `'provider:model'` 格式）或 LangChain 聊天模型对象（`init_chat_model("gpt-6.1-sol")` 或 `ChatOpenAI(model="gpt-6.1-sol")`）。 |
 | `middleware` | `list[Middleware]` |选修的。用于自定义行为、日志记录或速率限制的附加中间件。隔离的子代理不会继承主代理的自定义中间件。对于fork模式下的继承和覆盖，请参见[Configure a forked subagent](#configure-a-forked-subagent)。合并到 [synchronous subagent stack](/oss/python/deepagents/customization#synchronous-subagent-stack)：`.name` 与默认值匹配的实例将其替换到位，其他任何内容都会在最后一个核心中间件条目之后、配置文件、提示缓存和内存之前落地。参见[Override a default middleware instance](/oss/python/deepagents/customization#override-a-default-middleware-instance)。例如，在此处包含带有 `tools` 白名单的 [⟦T137⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 实例，以独立于主代理限制子代理的文件系统工具。有关更多信息，请参阅[Virtual filesystem access](/oss/python/deepagents/overview#virtual-filesystem-access)下的“限制文件系统工具”部分。 |
 | `interrupt_on` | `dict[str, bool \| InterruptOnConfig]` |选修的。为特定工具配置[human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。选项：`True`、`False` 或 `InterruptOnConfig` 与 `allowed_decisions`。需要检查点。默认继承自主代理。子代理值覆盖默认值。 || `skills` | `list[str]` |选修的。 [Skills](/oss/python/deepagents/skills) 源路径。指定后，子代理会从这些目录加载技能（例如，`["/skills/researcher/"]`，其子目录是技能的容器）。这使得子代理可以拥有与主代理不同的技能。不从主代理继承。只有通用子代理才能继承主代理的技能。当子代理拥有技能时，它会运行自己独立的[⟦T148⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware)实例。技能状态是完全隔离的 - 子代理加载的技能对父代理不可见，反之亦然。 |
 | `response_format` | `ResponseFormat` |选修的。 [Structured output](/oss/python/langchain/structured-output) 子代理的架构。设置后，父代理会收到 JSON 格式的子代理结果，而不是自由格式的文本。接受 Pydantic 模型、`ToolStrategy(...)`、`ProviderStrategy(...)` 或原始模式类型。参见[Structured output](#structured-output)。 |
@@ -89,7 +89,7 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已经提�
 
 ### 编译子代理
 
-对于复杂的工作流程，请使用预构建的 LangGraph 图作为 [⟦T155⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent)：|领域|类型 |描述 |
+对于复杂的工作流程，请使用预构建的 LangGraph 图作为 [⟦T155⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent)：|领域 |类型 |描述 |
 | - | - | - |
 | `name` | `str` |必需的。子代理的唯一标识符。子代理名称成为 `AIMessage` 和流媒体的元数据，这有助于区分代理。 |
 | `description` | `str` |必需的。该子代理的作用。 |
@@ -128,12 +128,12 @@ research_subagent = {
     "description": "Used to research more in depth questions",
     "system_prompt": "You are a great researcher",
     "tools": [internet_search],
-    "model": "openai:gpt-5.5",  # Optional override, defaults to main agent model
+    "model": "openai:gpt-6.1-sol",  # Optional override, defaults to main agent model
 }
 subagents = [research_subagent]
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     subagents=subagents,
 )
 ```
@@ -156,7 +156,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -176,7 +176,7 @@ custom_subagent = CompiledSubAgent(
 subagents = [custom_subagent]
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[internet_search],
     system_prompt=research_instructions,
     subagents=subagents,
@@ -194,7 +194,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -214,7 +214,7 @@ custom_subagent = CompiledSubAgent(
 subagents = [custom_subagent]
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[internet_search],
     system_prompt=research_instructions,
     subagents=subagents,
@@ -232,7 +232,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -270,7 +270,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -308,7 +308,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -346,7 +346,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -384,7 +384,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -486,7 +486,7 @@ comment_writer = {
 }
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.7-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[read_diff],
     subagents=[comment_writer],
 )
@@ -533,7 +533,7 @@ result = agent.invoke(
 ]
 ```
 
-分叉可以重用父级的提示缓存来匹配其请求的前缀。更改系统提示、工具或较早的消息会缩短提供商之间的共享前缀。保持分叉的配置不变以最大限度地重用，但不能保证缓存命中。
+分叉可以重用父级的提示缓存来匹配其请求的前缀。更改系统提示、工具或早期消息会缩短提供商之间的共享前缀。保持分叉的配置不变以最大限度地重用，但不能保证缓存命中。
 
 [⟦T197⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent) 也支持 `mode: "fork"`，尽管它保留自己的系统提示，因为图形已经构建。
 
@@ -548,7 +548,7 @@ result = agent.invoke(
 
 ## 动态子代理
 
-默认情况下，主代理通过`task`工具调用委托给子代理（它可以一次性发出多个子代理以并行运行它们）。连接[interpreter](/oss/python/deepagents/interpreters)后，代理可以从代码**分派子代理——使用循环、分支和并行批处理在多个项目上展开计算并以编程方式合成结果。这称为[dynamic subagents](/oss/python/deepagents/dynamic-subagents)。当工作跨越多个独立单元（查看目录中的每个文件、对一批工单进行分类）、需要多个视角或从递归分析中受益时，可以使用动态子代理。
+默认情况下，主代理通过`task`工具调用委托给子代理（它可以一次发出多个子代理以并行运行它们）。连接[interpreter](/oss/python/deepagents/interpreters)后，代理可以从代码**分派子代理——使用循环、分支和并行批处理在多个项目上展开计算并以编程方式合成结果。这称为[dynamic subagents](/oss/python/deepagents/dynamic-subagents)。当工作跨越多个独立单元（查看目录中的每个文件、对一批工单进行分类）、需要多个视角或从递归分析中受益时，可以使用动态子代理。
 
 > [!警告]
 >
@@ -571,7 +571,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     subagents=[{
         "name": "reviewer",
         "description": "Reviews code for security issues, citing lines and severity",
@@ -586,7 +586,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     subagents=[{
         "name": "reviewer",
         "description": "Reviews code for security issues, citing lines and severity",
@@ -729,7 +729,7 @@ from deepagents import (
 )
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt=(
         "You are a project coordinator with no research knowledge. "
         "For every user request, you must call the task() tool with "
@@ -784,7 +784,7 @@ from deepagents import (
 )
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt=(
         "You are a project coordinator with no research knowledge. "
         "For every user request, you must call the task() tool with "
@@ -1131,7 +1131,7 @@ if __name__ == "__main__":
 3. 单击“**添加过滤器**”并选择“**元数据**”。
 4. 将 **Key** 设置为 `lc_agent_name`，将 **Value** 设置为子代理名称，例如 `coordinator`。
 
-![LangSmith Runs view with a metadata filter on lc\_agent\_name set to coordinator](https://mintcdn.com/langchain-5e9cc07a/t_yuR4Fo_XGdcWGH/langsmith/images/deepagents-lc-agent-name-filter.png?fit=max\&auto=format\&n=t_yuR4Fo_XGdcWGH\&q=85\&s=ffc65c0b9b5292fce5f0589b8f2478ce)这仅显示该子代理生成的运行。您可以将过滤器保存为命名视图以供重复使用。有关过滤选项的完整参考，请参阅[Filter traces](/langsmith/filter-traces)。
+![LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator](https://mintcdn.com/langchain-5e9cc07a/t_yuR4Fo_XGdcWGH/langsmith/images/deepagents-lc-agent-name-filter.png?fit=max\&auto=format\&n=t_yuR4Fo_XGdcWGH\&q=85\&s=ffc65c0b9b5292fce5f0589b8f2478ce)这仅显示该子代理生成的运行。您可以将过滤器保存为命名视图以供重复使用。有关过滤选项的完整参考，请参阅[Filter traces](/langsmith/filter-traces)。
 
 ### 使用 SDK 以编程方式过滤
 
@@ -1202,7 +1202,7 @@ research_subagent = {
 }
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     subagents=[research_subagent],
 )
 
@@ -1248,7 +1248,7 @@ research_subagent = {
 }
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     subagents=[research_subagent],
 )
 
@@ -1536,7 +1536,7 @@ def internet_search(query: str) -> str:
 
 # Main agent uses Gemini; general-purpose subagent uses GPT
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[internet_search],
     subagents=[
         {
@@ -1544,7 +1544,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1561,7 +1561,7 @@ def internet_search(query: str) -> str:
 
 # Main agent uses Gemini; general-purpose subagent uses GPT
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[internet_search],
     subagents=[
         {
@@ -1569,7 +1569,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1594,7 +1594,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1619,7 +1619,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1644,7 +1644,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1669,7 +1669,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1694,7 +1694,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1733,7 +1733,7 @@ research_subagent = {
 }
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     skills=["/skills/main/"],  # Main agent and GP subagent get these
     subagents=[research_subagent],  # Researcher gets only its own skills
 )
@@ -1803,14 +1803,14 @@ subagents = [
         "description": "Reviews legal documents and contracts",
         "system_prompt": "You are an expert legal reviewer...",
         "tools": [read_document, analyze_contract],
-        "model": "google_genai:gemini-3.6-flash",  # Large context for long documents
+        "model": "google_genai:gemini-4-hydrogen",  # Large context for long documents
     },
     {
         "name": "financial-analyst",
         "description": "Analyzes financial data and market trends",
         "system_prompt": "You are an expert financial analyst...",
         "tools": [get_stock_price, analyze_fundamentals],
-        "model": "openai:gpt-5.5",  # Better for numerical analysis
+        "model": "openai:gpt-6.1-sol",  # Better for numerical analysis
     },
 ]
 ```
@@ -1866,7 +1866,7 @@ subagents = [
 ]
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt="You coordinate data analysis and reporting. Use subagents for specialized tasks.",
     subagents=subagents,
 )
@@ -1897,7 +1897,7 @@ subagents = [
 ]
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt="You coordinate data analysis and reporting. Use subagents for specialized tasks.",
     subagents=subagents,
 )
@@ -2103,7 +2103,7 @@ research_subagent = {
 }
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     subagents=[research_subagent],
     context_schema=Context,
 )
@@ -2144,7 +2144,7 @@ research_subagent = {
 }
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     subagents=[research_subagent],
     context_schema=Context,
 )
@@ -2388,7 +2388,7 @@ def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     subagents=[
         {
             "name": "fact-checker",
@@ -2435,7 +2435,7 @@ def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     subagents=[
         {
             "name": "fact-checker",
@@ -2772,7 +2772,7 @@ def flexible_search(query: str, runtime: ToolRuntime[Context]) -> str:
    from deepagents import create_deep_agent
 
    agent = create_deep_agent(
-       model="google_genai:gemini-3.6-flash",
+       model="google_genai:gemini-4-hydrogen",
        system_prompt="""...your instructions...
 
        IMPORTANT: For complex tasks, delegate to your subagents using the task() tool.
@@ -2791,7 +2791,7 @@ def flexible_search(query: str, runtime: ToolRuntime[Context]) -> str:
    from deepagents import create_deep_agent
 
    agent = create_deep_agent(
-       model="openai:gpt-5.5",
+       model="openai:gpt-6.1-sol",
        system_prompt="""...your instructions...
 
        IMPORTANT: For complex tasks, delegate to your subagents using the task() tool.

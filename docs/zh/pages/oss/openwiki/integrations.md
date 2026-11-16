@@ -65,9 +65,19 @@ pi install npm:openwiki
 
 使用 `pi install --local npm:openwiki` 进行项目本地安装。 Pi 扩展通过 Node 启动 OpenWiki 的 CLI，因此 `openwiki` 不需要位于 `PATH` 上。 Pi 不是`openwiki integrations install` 的目标。
 
-## 主机驱动的运行如何工作主机驱动的运行遵循与本机`openwiki --init`和`openwiki --update`相同的可恢复页面作业生命周期。编码代理驱动存储库研究和页面创作； OpenWiki 验证每个完成情况，持久化[Grounded Claims](/oss/openwiki/code-mode#grounded-claims)，并通过 MCP 最终确定元数据。
+## 主机驱动的运行如何工作主机驱动的运行遵循与本机`openwiki --init`和`openwiki --update`相同的可恢复页面作业生命周期。编码代理驱动存储库研究和页面创作； OpenWiki 验证每个完成情况，保留[Grounded Claims](/oss/openwiki/code-mode#grounded-claims)，并通过 MCP 最终确定元数据。
 
-在每个页面上，主持人提交稀疏的索赔决策（确认、修改、添加或撤回）。 OpenWiki 保留未受影响的声明，应用明确的决策，并在最终声明状态持久之前拒绝完成。当主机需要当前页面的完整声明集时，可以调用`openwiki_inspect_page_claims`。
+在每个页面上，主持人提交稀疏的声明决策（确认、修改、添加或撤回）。 OpenWiki 保留未受影响的声明，应用明确的决策，并拒绝完成，直到最终的声明状态持久为止。当主机需要当前页面的完整声明集时，可以调用`openwiki_inspect_page_claims`。
+
+### 推迟计划外的索赔问题
+
+> [!注意]
+>
+> `deferUnplannedClaimIssues` 需要 OpenWiki v0.9.0 或更高版本。
+
+默认情况下，`update` 运行上的 `openwiki_submit_plan` 会自动为具有陈旧或未解决声明的每个现有页面添加页面作业，即使主机未将这些页面包含在其计划中也是如此。要运行仅涉及主机明确计划的页面的集中更新，请在 `openwiki_submit_plan` 输入中将 `deferUnplannedClaimIssues` 设置为 `true`：* **`deferUnplannedClaimIssues`**（可选`boolean`，默认`false`）：当`true`时，OpenWiki 会跳过为存在声明问题的计划外页面插入自动作业。这些页面被记录为延迟页面，并且运行以中断状态完成，直到将来的完整更新使它们协调一致。
+  当`true`时，OpenWiki 会跳过为存在声明问题的计划外页面插入自动作业。这些页面保持不变，运行完成，但将其更新元数据记录为中断，直到将来的完整更新协调它们。
+  此选项仅在 `update` 运行中有效。在 `init` 运行中设置它会返回 `invalid_input` 错误。
 
 ## 另请参阅
 

@@ -70,7 +70,7 @@ from langchain.agents import create_agent
 from langgraph.checkpoint.memory import MemorySaver
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[get_weather, search_web],
     checkpointer=MemorySaver(),
 )
@@ -159,7 +159,7 @@ interface AgentState {
 
 > [卡][Generative UI](/oss/python/langchain/frontend/generative-ui-overview)
 >
-> 呈现代理生成的界面，涵盖从受控到声明到开放式的各种范围。
+> 渲染代理生成的界面，涵盖从受控到声明到开放式的各种范围。
 
 ### 显示代理操作
 

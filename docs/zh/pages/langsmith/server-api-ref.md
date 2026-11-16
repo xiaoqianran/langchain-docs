@@ -6,7 +6,7 @@
 
 浏览代理服务器 API 参考，该参考可在每个代理服务器的 /docs 端点处找到。
 
-代理服务器 API 参考可在 `/docs` 端点的每个 [deployment](/langsmith/deployment) 内使用（例如 `http://localhost:8124/docs`）。
+代理服务器 API 参考可在 `/docs` 端点的每个 [deployment](/langsmith/deploy-overview) 内使用（例如 `http://localhost:8124/docs`）。
 
 在侧边栏的 **代理服务器 API** 部分中浏览完整的 API 参考，或查看下面的端点组：
 

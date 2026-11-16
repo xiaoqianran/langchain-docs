@@ -20,7 +20,7 @@ LangChain 中的连接生命周期、多服务器、部署扩展、协议时代�
 
 **服务器形状**
 
-|如果您需要... |使用 |前往 |
+|如果您需要... |使用|前往 |
 | - | - | - |
 |一台服务器 | URL、`Path` 或进程内目标 | [Transports](/oss/python/langchain/mcp#transports) |
 |一个连接背后有多个服务器 | `MCPConfig` 字典 | [MCPConfig](#one-aggregate-connection-with-mcpconfig) |
@@ -28,7 +28,7 @@ LangChain 中的连接生命周期、多服务器、部署扩展、协议时代�
 
 **连接寿命**|情况|图案|前往 |
 | - | - | - |
-|脚本、笔记本或大多数代理|探索`async with`内部，然后退出 | [Connection lifecycle](#connection-lifecycle) |
+|脚本、笔记本或大多数代理|探索`async with`内部，然后退出| [Connection lifecycle](#connection-lifecycle) |
 |在一次运行中跨多个工具调用保持一个会话 |在座席呼叫期间保持适配器打开 | [One session per invocation](#one-session-per-invocation) |
 |部署中的许多并发运行 |每次运行发现；重复使用 [shared pool](#shared-connection-pool) 和 [cache](#caching) | [Scale a deployment](#scale-a-deployment) |
 
@@ -136,7 +136,7 @@ async def make_graph():
 >
 > 在`langgraph dev`图工厂中，带注释的参数类型和返回类型必须在运行时可导入，而不仅仅是在`TYPE_CHECKING`下。 `langgraph-api`将工厂分类为`typing.get_type_hints()`；如果注释无法解析，它会注入配置字典而不是运行时。
 
-在 [Agent Server](/langsmith/agent-server-overview) 上，在 `langgraph.json` 中注册该工厂，而不是导出静态编译图。适配器上下文退出后，`list_tools()` 中的工具仍可调用，因此在发现后返回代理对于大多数 MCP 设置来说就足够了。当您需要围绕运行进行拆卸时，或者当您使用 `execution_runtime` 跳过昂贵的 MCP 模式和状态读取工作时，请使用 [context manager factory](/langsmith/graph-rebuild#context-manager-factory)。
+在 [Agent Server](/langsmith/agent-server) 上，在 `langgraph.json` 中注册该工厂，而不是导出静态编译图。适配器上下文退出后，`list_tools()` 中的工具仍可调用，因此在发现后返回代理对于大多数 MCP 设置来说就足够了。当您需要围绕运行进行拆卸时，或者当您使用 `execution_runtime` 跳过昂贵的 MCP 模式和状态读取工作时，请使用 [context manager factory](/langsmith/graph-rebuild#context-manager-factory)。
 
 有关完整工作的部署示例，包括为每个调用者创建令牌的每用户身份验证，请参阅[Authentication](/oss/python/langchain/mcp/auth#per-user-authentication)。
 
@@ -180,11 +180,11 @@ async def load_over_shared_pool(servers: dict[str, str]) -> list:
         return await adapter.list_tools()
 ```
 
-由于每个客户端都借用 `_POOL`，因此部署会为整个队列打开一组 HTTP 连接，而不是为每个服务器打开一组 HTTP 连接。
+由于每个客户端都借用`_POOL`，因此部署会为整个队列打开一组 HTTP 连接，而不是为每个服务器打开一个。
 
 ## 缓存
 
-FastMCP 可以缓存`list_tools` 的结果，因此重复发现可以避免网络往返。缓存是可选的，并遵循服务器自己的缓存提示，因此它仅对宣传它们的现代服务器有效。
+FastMCP 可以缓存`list_tools` 的结果，因此重复发现可以避免网络往返。缓存是选择性加入的，并遵循服务器自己的缓存提示，因此它仅对宣传它们的现代服务器有效。
 
 `list_tools()` 接受 `cache_mode` 选择发现如何读取配置的缓存：
 
@@ -227,7 +227,7 @@ async def agent_across_eras(legacy_target, modern_target):
 
 ## 另请参阅
 
-* [Authentication](/oss/python/langchain/mcp/auth)：承载、OAuth 和每用户凭据。* [Deploy a LangGraph server](/oss/python/langgraph/local-server)：用于长期部署的图工厂。
+* [Authentication](/oss/python/langchain/mcp/auth)：承载、OAuth 和每用户凭据。* [Run a local Agent Server](/oss/python/langgraph/local-server)：用于长期部署的图工厂。
 
 * [Rebuild a graph at runtime](/langsmith/graph-rebuild)：代理服务器的工厂表单，包括上下文管理器模式。
 

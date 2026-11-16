@@ -147,14 +147,14 @@ Terraform 提供以下 Azure 资源：
 |资源 |类型 |目的|
 | - | - | - |
 |资源组| `azurerm_resource_group` |所有资源的容器 |
-|虚拟网络| `azurerm_virtual_network` |隔离网络（默认10.0.0.0/17） |
+|虚拟网络| `azurerm_virtual_network` |隔离网络（默认10.0.0.0/17）|
 | AKS 集群 | `azurerm_kubernetes_cluster` | Kubernetes，所有工作负载都在这里运行 |
 |入口控制器 |头盔|外部负载均衡器 + TLS 终止（默认为 Envoy Gateway）|
 | PostgreSQL 灵活服务器 | `azurerm_postgresql_flexible_server` |组织配置，运行元数据（外部层）|
 | Azure 托管 Redis | `azapi_resource` (Microsoft.Cache/redisEnterprise) |跟踪摄取队列，发布/订阅（外部层）|
 | Blob 存储 | `azurerm_storage_account` |原始跟踪对象，始终需要 |
 |托管身份 | `azurerm_user_assigned_identity` |用于 Pod 到 Blob 身份验证的工作负载身份 |
-| Azure 密钥保管库 | `azurerm_key_vault` |存储所有LangSmith秘密 |
+| Azure 密钥保管库 | `azurerm_key_vault` |存储所有 LangSmith 秘密 |
 |证书经理 |头盔|自动化 TLS 证书管理 |
 |科达|头盔|为工作人员提供事件驱动的自动缩放功能
 
@@ -441,7 +441,7 @@ make k8s-secrets    # re-create langsmith-config-secret from Key Vault
 
 ### 代理服务器托管
 
-启用 [Agent Server hosting](/langsmith/enable-self-hosted-deployment)，它允许您直接从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-self-host-terraform-azure-deploy) 将代理部署和管理为 API 服务器。这添加了三个新的 Pod。
+启用 [Agent Server hosting](/langsmith/enable-self-hosted-agent-server)，它允许您直接从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-self-host-terraform-azure-deploy) 将代理部署和管理为 API 服务器。这添加了三个新的 Pod。
 
 |吊舱 |角色 |工作负载身份 |
 | - | - | - |
@@ -633,7 +633,7 @@ make deploy
 
 `enable_sso_oidc = true` 通过标准 OIDC 提供商（例如 Microsoft Entra ID、Okta、Auth0 或 Google Workspace）将 LangSmith 登录从基本身份验证切换到 [SSO](/langsmith/self-host-sso)。> [!警告]
 >
-> 仅在初始安装后、使用基本身份验证以组织管理员身份登录后才启用 SSO。该标志会禁用基本身份验证，因此在管理员帐户存在之前启用它会将您锁定在用户界面之外。如果您使用 SCIM，请在 SSO 之后进行设置。
+> 仅在初始安装后，以组织管理员身份使用基本身份验证登录后，才启用 SSO。该标志会禁用基本身份验证，因此在管理员帐户存在之前启用它会将您锁定在用户界面之外。如果您使用 SCIM，请在 SSO 之后进行设置。
 
 要启用单点登录：
 
@@ -747,7 +747,7 @@ kubectl -n langsmith create secret generic <secret-name> --from-file=ca.crt=ca-b
 * 参考[Azure variables](/langsmith/self-host-terraform-azure-variables)和[quick reference](/langsmith/self-host-terraform-azure-quick-reference)。
 * 查看 [Azure architecture](/langsmith/self-host-terraform-azure-architecture) 的模块结构、流量和工作负载身份。
 * 当出现故障时，请检查[Azure troubleshooting guide](/langsmith/self-host-terraform-azure-troubleshooting)。
-* 使用 [Agent Server hosting](/langsmith/enable-self-hosted-deployment) 在 UI 中启用代理部署。
+* 使用 [Agent Server hosting](/langsmith/enable-self-hosted-agent-server) 在 UI 中启用代理部署。
 
 ***
 

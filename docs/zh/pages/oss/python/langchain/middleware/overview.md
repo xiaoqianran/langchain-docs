@@ -4,7 +4,7 @@
 
 # 中间件概述
 
-控制和定制代理执行的每一步
+在每一步控制和自定义代理执行
 
 中间件提供了一种更严格地控制代理内部发生的事情的方法。中间件可用于以下用途：
 
@@ -20,7 +20,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import SummarizationMiddleware, HumanInTheLoopMiddleware
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[...],
     middleware=[
         SummarizationMiddleware(...),

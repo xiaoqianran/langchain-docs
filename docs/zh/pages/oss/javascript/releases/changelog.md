@@ -58,7 +58,7 @@ humanInTheLoopMiddleware({ interruptOn: {...}, interruptMode: "per_call" });
 
 `deepagents` v1.9.0 的 Alpha 版本。
 
-* **[Async subagents](/oss/javascript/deepagents/async-subagents)**：Deep Agents可以启动非阻塞后台任务，因此用户可以在子代理同时工作的同时继续与代理交互。子代理需要[LangSmith Deployment](/langsmith/deployment)。* **[Backend](/oss/javascript/deepagents/backends) 协议 v2**：我们引入了新的 v2 后端协议 (`BackendProtocolV2`)，并对 Deep Agents 后端接口进行了向后兼容的更改。主要变化：
+* **[Async subagents](/oss/javascript/deepagents/async-subagents)**：Deep Agents可以启动非阻塞后台任务，因此用户可以在子代理同时工作的同时继续与代理交互。子代理需要[LangSmith Deployment](/langsmith/deploy-overview)。* **[Backend](/oss/javascript/deepagents/backends) 协议 v2**：我们引入了新的 v2 后端协议 (`BackendProtocolV2`)，并对 Deep Agents 后端接口进行了向后兼容的更改。主要变化：
   * **结构化结果类型**：所有方法现在都返回结构化 `Result` 对象（例如，`ReadResult`、`LsResult`、`GrepResult`、`GlobResult`），并通过 `error` 字段进行一致的错误处理，而不是返回原始值或引发异常。
   * **多模式文件支持**：`read()` 返回带有 `.content` 字段的 `ReadResult`，而不是纯字符串。对于二进制文件（图像、PDF、音频、视频），完整的原始 `Uint8Array` 内容通过 `readRaw()` 返回，使代理能够本地处理多模式文件。
   * **简化方法名称**：`lsInfo` -> `ls`、`grepRaw` -> `grep`、`globInfo` -> `glob`。

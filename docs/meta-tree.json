@@ -455,7 +455,7 @@
       ],
       "agent-server": [
         {
-          "title": "Agent Server",
+          "title": "LangSmith Agent Server",
           "rel": "langsmith/agent-server.md"
         }
       ],
@@ -477,10 +477,10 @@
           "rel": "langsmith/agent-server-feedback.md"
         }
       ],
-      "agent-server-overview": [
+      "agent-server-revisions": [
         {
-          "title": "Agent Server",
-          "rel": "langsmith/agent-server-overview.md"
+          "title": "Agent Server revisions",
+          "rel": "langsmith/agent-server-revisions.md"
         }
       ],
       "agent-server-scale": [
@@ -1131,6 +1131,12 @@
           "rel": "langsmith/deploy-other-frameworks.md"
         }
       ],
+      "deploy-overview": [
+        {
+          "title": "Deploy agents",
+          "rel": "langsmith/deploy-overview.md"
+        }
+      ],
       "deploy-reference-overview": [
         {
           "title": "Reference",
@@ -1185,22 +1191,10 @@
           "rel": "langsmith/deploy-with-control-plane.md"
         }
       ],
-      "deployment": [
-        {
-          "title": "LangSmith Agent Server",
-          "rel": "langsmith/deployment.md"
-        }
-      ],
       "deployment-quickstart": [
         {
           "title": "Deploy your app to cloud",
           "rel": "langsmith/deployment-quickstart.md"
-        }
-      ],
-      "deployment-revisions": [
-        {
-          "title": "Revisions",
-          "rel": "langsmith/deployment-revisions.md"
         }
       ],
       "diagnostics-self-hosted": [
@@ -1221,10 +1215,10 @@
           "rel": "langsmith/double-texting.md"
         }
       ],
-      "enable-self-hosted-deployment": [
+      "enable-self-hosted-agent-server": [
         {
           "title": "Enable Agent Server hosting",
-          "rel": "langsmith/enable-self-hosted-deployment.md"
+          "rel": "langsmith/enable-self-hosted-agent-server.md"
         }
       ],
       "enable-self-hosted-fleet": [
@@ -1839,6 +1833,12 @@
           "rel": "langsmith/ls-metadata-parameters.md"
         }
       ],
+      "manage-agent-server": [
+        {
+          "title": "Manage an Agent Server",
+          "rel": "langsmith/manage-agent-server.md"
+        }
+      ],
       "manage-contexts-sdk": [
         {
           "title": "Manage contexts with the SDK",
@@ -1861,12 +1861,6 @@
         {
           "title": "How to create and manage datasets programmatically",
           "rel": "langsmith/manage-datasets-programmatically.md"
-        }
-      ],
-      "manage-deployment": [
-        {
-          "title": "Manage an Agent Server",
-          "rel": "langsmith/manage-deployment.md"
         }
       ],
       "manage-evaluators-sdk": [
@@ -1935,10 +1929,10 @@
           "rel": "langsmith/model-configurations.md"
         }
       ],
-      "monitor-deployment": [
+      "monitor-agent-server": [
         {
           "title": "Monitor an Agent Server",
-          "rel": "langsmith/monitor-deployment.md"
+          "rel": "langsmith/monitor-agent-server.md"
         }
       ],
       "monorepo-support": [

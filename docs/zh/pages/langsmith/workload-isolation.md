@@ -81,7 +81,7 @@ graph LR
 ```* **优点：** 单个工作区允许属于某个业务部门的所有资源在该业务部门内共享。这使得单元内的协作和迭代变得简单。它还简化了从开发到生产的推广。例如，可以使用标签对相同的[prompt](/langsmith/prompt-context-hub#prompts)进行版本控制并升级到生产，而无需复制或重复。
 * **缺点：** 开发、测试和生产工作共存于一个工作区中，因此工作区范围的 [RBAC](/langsmith/rbac) 本身并不能将它们分开。在基于代理的工作区中，环境划分代理的跟踪，无需维护任何约定。在基于项目的工作空间中，分隔取决于命名约定，例如配对项目`checkout-production`和`checkout-staging`。 [ABAC](/langsmith/organization-workspace-operations#access-policies) 通过根据资源属性限制访问，例如允许用户仅访问开发资源，在工作区中提供更细化的权限。
 
-## 通过代理或应用程序隔离在此模型中，多个业务部门在组织内共享一个工作区。他们使用代理或应用程序以及[ABAC](/langsmith/organization-workspace-operations#access-policies)来分离资源并管理访问。因此，[prompts](/langsmith/prompt-context-hub#prompts)和[deployments](/langsmith/deployment)等共享资源可以跨业务部门重用。对[traces](/langsmith/observability-concepts#traces)和[datasets](/langsmith/evaluation-concepts#datasets)等敏感资源的访问仅限于所属业务部门。
+## 通过代理或应用程序隔离在此模型中，多个业务部门在组织内共享一个工作区。他们使用代理或应用程序以及[ABAC](/langsmith/organization-workspace-operations#access-policies)来分离资源并管理访问。因此，[prompts](/langsmith/prompt-context-hub#prompts)和[deployments](/langsmith/deploy-overview)等共享资源可以跨业务部门重用。对[traces](/langsmith/observability-concepts#traces)和[datasets](/langsmith/evaluation-concepts#datasets)等敏感资源的访问仅限于所属业务部门。
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -127,7 +127,7 @@ graph LR
 ```
 
 * **优点：** 提示和部署等通用资源可以在业务部门之间共享和重用，从而增强协作并减少重复工作。与按工作空间隔离不同，协作可以跨越工作空间内的多个业务部门。
-* **缺点：** 业务部门之间的隔离比多工作空间模型弱，并且取决于 ABAC 的正确使用。配置错误的标签或策略可能会暴露跨业务部门的敏感[traces](/langsmith/observability-concepts#traces)或[datasets](/langsmith/evaluation-concepts#datasets)。跨多个业务部门管理权限可能会增加操作复杂性。
+* **缺点：** 业务部门之间的隔离比多工作空间模型中的隔离弱，并且取决于 ABAC 的正确使用。配置错误的标签或策略可能会暴露跨业务部门的敏感[traces](/langsmith/observability-concepts#traces)或[datasets](/langsmith/evaluation-concepts#datasets)。跨多个业务部门管理权限可能会增加操作复杂性。
 
 ***
 

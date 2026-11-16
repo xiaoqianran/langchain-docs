@@ -14,7 +14,7 @@ LangGraph 检查点作为分叉点：每次编辑或重新生成都会提交一�
 
 > [!注意]
 >
-> 此功能需要[LangGraph Agent Server](/oss/python/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deployment) 在本地运行代理以使用此模式。
+> 此功能需要[LangGraph Agent Server](/oss/python/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deploy-overview) 在本地运行代理以使用此模式。
 
 ## 什么是分支聊天？
 
@@ -278,7 +278,7 @@ User: "Tell me about JSX" (edited from branch A)
 ```每个路径都保留在检查点存储中。使用
 `stream.client.threads.getHistory(threadId)` 当你想建立一个单独的
 跨检查点的时间线视图。历史记录从最新开始，默认为 10
-条目。使用每个状态的`parent_checkpoint`来重建祖先；清单
+条目。使用每个状态的`parent_checkpoint`来重建祖先；列表
 位置本身并不能识别分支。
 
 ## 最佳实践

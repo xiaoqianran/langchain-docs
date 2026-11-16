@@ -6,7 +6,7 @@
 
 使用 LangChain Python 与 Google 集成。
 
-本页面涵盖了 LangChain 与 [Google Gemini](https://ai.google.dev/gemini-api/docs)、[Google Cloud](https://cloud.google.com/) 以及其他 Google 产品（例如 Google 地图、YouTube 和 [more](#other-google-products)）的集成。
+本页面涵盖 LangChain 与 [Google Gemini](https://ai.google.dev/gemini-api/docs)、[Google Cloud](https://cloud.google.com/) 以及其他 Google 产品（例如 Google 地图、YouTube 和 [more](#other-google-products)）的集成。
 
 > [!注意]
 >
@@ -27,7 +27,7 @@
 > * **Gemini Developer API**：使用 API 密钥快速设置，非常适合个人开发人员和快速原型设计
 > * **Gemini Enterprise Agent Platform**：与 Google Cloud 集成的企业功能（需要 GCP 项目）
 >
-> 使用 `langchain-google-genai` 包进行聊天模型、LLM 和嵌入。
+> 将 `langchain-google-genai` 包用于聊天模型、决策模型、LLM 和嵌入。
 >
 > [See integrations.](#google-generative-ai)> [手风琴] Google Cloud（Gemini 企业代理平台服务）
 >
@@ -51,6 +51,12 @@
 >
 > 通过 **Gemini Developer API** 或 **Gemini Enterprise Agent Platform** 建立 Google Gemini 聊天模型。
 
+### 决策模型
+
+> [卡][GoogleGenAIClassifier](/oss/python/integrations/decision_models/google_generative_ai)
+>
+> 从 Gemini Decisions API 输入答案和概率，用于路由、分类和审核。
+
 ### 法学硕士
 
 > [卡][GoogleGenerativeAI](/oss/python/integrations/llms/google_generative_ai)
@@ -65,9 +71,9 @@
 
 ***
 
-## 谷歌云
+## 谷歌云访问 Gemini 企业代理平台特定服务，包括 Model Garden（Llama、Mistral、Anthropic）、矢量搜索、评估服务和专业视觉模型。
 
-访问 Gemini 企业代理平台特定服务，包括 Model Garden（Llama、Mistral、Anthropic）、矢量搜索、评估服务和专业视觉模型。> [!注意]
+> [!注意]
 >
 > **对于 Gemini 型号**，使用 `langchain-google-genai` 中的 [⟦T30⟧](/oss/python/integrations/chat/google_generative_ai)。以下课程重点关注整合 SDK 中不提供的 **Gemini Enterprise Agent Platform 服务**。
 
@@ -75,7 +81,7 @@
 
 > [卡][ChatAnthropicVertex](/oss/python/integrations/chat/google_anthropic_vertex)
 >
-> Anthropic on Gemini 企业代理平台模型园
+> Anthropic 上Gemini企业代理平台模型园
 
 > [手风琴] ChatVertexAI（已弃用）
 >
@@ -131,9 +137,7 @@
 >
 > ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_google_vertexai.vision_models import VertexAIImageCaptioningChat
-> ```
-
-> [手风琴] VertexAIImageEditorChat
+> ```> [手风琴] VertexAIImageEditorChat
 >
 > 根据提示编辑图像。目前仅支持无遮罩编辑。
 >
@@ -147,7 +151,9 @@
 >
 > ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_google_vertexai.vision_models import VertexAIImageGeneratorChat
-> ```> [手风琴] VertexAIVisualQnAChat
+> ```
+
+> [手风琴] VertexAIVisualQnAChat
 >
 > 作为聊天界面的可视化问答模型。
 >
@@ -215,9 +221,7 @@
 
 > [卡][AlloyDB for PostgreSQL](/oss/python/integrations/document_loaders/google_alloydb)
 >
-> Google Cloud 上兼容 PostgreSQL 的数据库。
-
-> [卡][BigQuery](/oss/python/integrations/document_loaders/google_bigquery)
+> Google Cloud 上兼容 PostgreSQL 的数据库。> [卡][BigQuery](/oss/python/integrations/document_loaders/google_bigquery)
 >
 > 无服务器数据仓库。
 
@@ -231,7 +235,9 @@
 
 > [卡][Cloud SQL for SQL Server](/oss/python/integrations/document_loaders/google_cloud_sql_mssql)
 >
-> 托管 SQL Server 数据库。> [卡][Cloud SQL for PostgreSQL](https://cloud.google.com/sql/docs/postgres)
+> 托管 SQL Server 数据库。
+
+> [卡][Cloud SQL for PostgreSQL](https://cloud.google.com/sql/docs/postgres)
 >
 > 托管 PostgreSQL 数据库。
 
@@ -291,9 +297,7 @@
 
 > [卡][AlloyDB for PostgreSQL](/oss/python/integrations/vectorstores/google_alloydb)
 >
-> AlloyDB 上兼容 PostgreSQL 的矢量存储。
-
-> [卡][BigQuery Vector Search](/oss/python/integrations/vectorstores/google_bigquery_vector_search)
+> AlloyDB 上兼容 PostgreSQL 的矢量存储。> [卡][BigQuery Vector Search](/oss/python/integrations/vectorstores/google_bigquery_vector_search)
 >
 > 使用 GoogleSQL 和向量索引进行语义搜索。
 
@@ -307,7 +311,9 @@
 
 > [卡][Bigtable](https://cloud.google.com/bigtable)
 >
-> Cloud Bigtable 上的矢量存储。> [卡][Firestore (Native Mode)](/oss/python/integrations/vectorstores/google_firestore)
+> Cloud Bigtable 上的矢量存储。
+
+> [卡][Firestore (Native Mode)](/oss/python/integrations/vectorstores/google_firestore)
 >
 > Firestore 上的矢量存储。
 
@@ -353,9 +359,7 @@ from langchain_google_community import VertexAISearchSummaryTool
 
 ### 回调
 
-跟踪 LLM/Chat 模型的使用情况。
-
-> [手风琴] Gemini 企业代理平台回调处理程序
+跟踪 LLM/Chat 模型的使用情况。> [手风琴] Gemini 企业代理平台回调处理程序
 >
 > 跟踪`VertexAI`使用信息。
 >
@@ -363,9 +367,9 @@ from langchain_google_community import VertexAISearchSummaryTool
 > from langchain_google_vertexai.callbacks import VertexAICallbackHandler
 > ```
 
-> [手风琴] Google BigQuery
+> [accordion] Google BigQuery
 >
-> 更多详情请参阅[documentation](/oss/python/integrations/callbacks/google_bigquery)。
+> See the [documentation](/oss/python/integrations/callbacks/google_bigquery) for more details.
 >
 > ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_google_community.callbacks.bigquery_callback import BigQueryCallbackHandler
@@ -373,7 +377,9 @@ from langchain_google_community import VertexAISearchSummaryTool
 
 ### 评估者
 
-使用 Gemini Enterprise Agent Platform 评估模型输出。> [手风琴] VertexPairWiseStringEvaluator
+使用 Gemini Enterprise Agent Platform 评估模型输出。
+
+> [accordion] VertexPairWiseStringEvaluator
 >
 > 使用 Gemini Enterprise Agent Platform 模型进行配对评估。
 >
@@ -381,7 +387,7 @@ from langchain_google_community import VertexAISearchSummaryTool
 > from langchain_google_vertexai.evaluators.evaluation import VertexPairWiseStringEvaluator
 > ```
 
-> [手风琴] VertexStringEvaluator
+> [accordion] VertexStringEvaluator
 >
 > 使用 Gemini Enterprise Agent Platform 模型进行单一预测评估。
 >
@@ -435,9 +441,7 @@ from langchain_google_community import VertexAISearchSummaryTool
 
 通过非官方第三方 API 访问 Google 服务。
 
-### 搜索
-
-> [卡][cloro](https://cloro.dev/docs)
+＃＃＃ 搜索> [卡][cloro](https://cloro.dev/docs)
 >
 > 支持 AI 概述的 Google 搜索结果。
 

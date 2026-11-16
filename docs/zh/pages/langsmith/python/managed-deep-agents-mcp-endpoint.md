@@ -6,7 +6,7 @@
 
 将部署的托管深度代理作为工具公开给 MCP 客户端（例如 Claude Code）。
 
-托管 Deep Agents 部署在 [LangSmith Agent Server](/langsmith/agent-server-overview) 上运行，因此每个部署都为位于 `/mcp` 的代理服务器 [Model Context Protocol](https://modelcontextprotocol.io/introduction) (MCP) 端点提供服务。任何支持 Streamable HTTP 传输的 MCP 客户端都可以将部署的代理作为工具来调用，因此另一个助手或代理可以将工作委托给它，而无需直接调用部署 API。
+托管 Deep Agents 部署在 [LangSmith Agent Server](/langsmith/agent-server) 上运行，因此每个部署都为位于 `/mcp` 的代理服务器 [Model Context Protocol](https://modelcontextprotocol.io/introduction) (MCP) 端点提供服务。任何支持 Streamable HTTP 传输的 MCP 客户端都可以将部署的代理作为工具来调用，因此另一个助手或代理可以将工作委托给它，而无需直接调用部署 API。
 
 本页面介绍如何查找托管 Deep Agents URL 并进行身份验证。有关协议行为和通用代理服务器客户端设置，请参阅[MCP endpoint in Agent Server](/langsmith/server-mcp)。
 
@@ -30,7 +30,7 @@
 
 MCP 端点使用部署的 [identity](/langsmith/python/managed-deep-agents-identity) 配置，与部署上的所有其他路由相同。发送与配置模式匹配的凭证：
 
-|身份模式 |标题 |
+|身份模式 |标题|
 | - | - |
 | LangSmith API 密钥（默认）| `x-api-key: <LANGSMITH_API_KEY>` |
 |苏帕巴斯| `Authorization: Bearer <access_token>` |
@@ -136,7 +136,7 @@ async with MCPAdapter(
 
 ## 后续步骤
 
-> [卡][Agent Server](/langsmith/agent-server-overview)
+> [卡][Agent Server](/langsmith/agent-server)
 >
 > 探索托管每个托管 Deep Agents 部署的运行时。
 

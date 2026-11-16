@@ -8,7 +8,7 @@
 
 自定义前端是您编写的任何直接调用部署而不是通过 [channel](/langsmith/python/managed-deep-agents-channels) 或 [LangSmith Studio](/langsmith/python/managed-deep-agents-local-development#start-local-studio) 到达代理的应用程序。当代理属于您控制的产品界面（例如支持控制台、内部仪表板或面向客户的聊天页面）时，请使用其中之一。
 
-托管 Deep Agents 部署在 [LangSmith Agent Server](/langsmith/agent-server-overview) 上运行，因此前端与每个代理服务器客户端使用的相同线程、运行和流端点进行通信。代理方面没有任何改变来支持这一点。
+托管 Deep Agents 部署在 [LangSmith Agent Server](/langsmith/agent-server) 上运行，因此前端与每个代理服务器客户端使用的相同线程、运行和流端点进行通信。代理方面没有任何改变来支持这一点。
 
 > [!注意]
 >
@@ -16,12 +16,12 @@
 
 ## 选择身份模式
 
-前端代码的运行位置决定了它可以使用哪种 [identity](/langsmith/python/managed-deep-agents-identity) 模式。 LangSmith API 密钥授予对整个工作区的访问权限，因此它绝不能到达浏览器。|前端 |凭证存在于 |身份模式|
+前端代码的运行位置决定了它可以使用哪种 [identity](/langsmith/python/managed-deep-agents-identity) 模式。 LangSmith API 密钥授予对整个工作区的访问权限，因此它绝不能到达浏览器。|前端 |凭证存在于 |身份模式 |
 | - | - | - |
 |浏览器应用程序（React、Vue、Svelte、Angular）|用户的浏览器 | [Supabase](/langsmith/python/managed-deep-agents-identity#configure-identity-with-supabase) |
 |转发浏览器请求的服务器路由或代理 |您的服务器 | [LangSmith API key](/langsmith/python/managed-deep-agents-identity#configure-identity-with-a-langsmith-api-key) 或 [your own backend](/langsmith/python/managed-deep-agents-identity#configure-identity-with-your-own-backend) |
 | Python 应用程序（Streamlit、Gradio、Dash）|您的服务器 | LangSmith API 密钥 |
-| `mda dev` 本地开发 |无需任何凭证 |任何|
+| `mda dev` 本地开发 |无需任何凭证 |任何 |
 
 通过后端身份，浏览器永远不会调用部署。您的 API 对用户进行身份验证，然后使用入口密钥调用部署。 Supabase 和后端身份还为每个登录用户提供私有线程。 API 密钥默认情况并非如此：持有密钥的每个调用者共享相同的线程空间。
 
@@ -54,7 +54,7 @@ agent = define_deep_agent(
 | - | - | - |
 |反应 | `@langchain/react` | `useStream` |
 |视图 | `@langchain/vue` | `useStream` |
-|苗条 | `@langchain/svelte` | `useStream` |
+|苗条| `@langchain/svelte` | `useStream` |
 |角度| `@langchain/angular` | `injectStream` |
 
 前端是一个 Web 应用程序，因此无论代理是用 Python 还是 TypeScript 编写的，这些示例都是 TypeScript。
@@ -205,7 +205,7 @@ if prompt := st.chat_input("Message the agent"):
 ## 另请参阅
 
 * [Identity](/langsmith/python/managed-deep-agents-identity)：配置调用者如何对部署进行身份验证。
-* [Frontend overview](/oss/python/langchain/frontend/overview)：消息渲染、工具调用、中断和生成 UI 模式。
+* [Frontend overview](/oss/python/langchain/frontend/overview)：消息渲染、工具调用、中断和生成式 UI 模式。
 * [Connections](/langsmith/python/managed-deep-agents-connections)：处理 UI 中的凭证授权中断。
 * [MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)：将代理暴露给MCP客户端而不是调用API。
 * [Channels](/langsmith/python/managed-deep-agents-channels)：从 Slack 或您自己的 HTTP 服务到达代理。

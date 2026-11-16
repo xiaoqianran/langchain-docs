@@ -4,7 +4,7 @@
 
 # 使用线程
 
-本指南向您展示如何创建、查看和检查*线程*。线程与[assistants](/langsmith/assistants)一起工作，以启用[stateful](/oss/python/langgraph/persistence)执行[deployed graphs](/langsmith/deployment)。
+本指南向您展示如何创建、查看和检查*线程*。线程与[assistants](/langsmith/assistants)一起工作，以启用[stateful](/oss/python/langgraph/persistence)执行[deployed graphs](/langsmith/deploy-overview)。
 
 ## 了解线程
 
@@ -305,7 +305,7 @@ sequenceDiagram
 >
 > 您还可以直接从[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-use-threads)创建线程：
 >
-> 1. 导航至您的[deployment](/langsmith/deployment)。
+> 1. 导航至您的[deployment](/langsmith/deploy-overview)。
 > 2. 选择 **线程** 选项卡。
 > 3. 单击 **+ 新话题**。
 > 4. （可选）提供线程的元数据或初始状态。
@@ -365,7 +365,7 @@ sequenceDiagram
 >
 > ### 按元数据过滤
 >
-> `search` 方法允许您过滤元数据。这对于查找与特定图表、用户或您添加到线程的自定义元数据关联的线程非常有用。
+> `search` 方法允许您过滤元数据。这对于查找与特定图表、用户或添加到线程的自定义元数据关联的线程非常有用。
 >
 > 您可以过滤的常见元数据字段包括：
 >
@@ -467,7 +467,7 @@ sequenceDiagram
 >
 > 您还可以通过 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-use-threads) 查看和管理部署中的线程：
 >
-> 1. 导航至您的[deployment](/langsmith/deployment)。
+> 1. 导航至您的[deployment](/langsmith/deploy-overview)。
 > 2. 选择 **线程** 选项卡。
 >
 > 这将加载部署中所有线程的表。
@@ -707,7 +707,7 @@ sequenceDiagram
 >
 > 您还可以在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-use-threads) 中查看和检查线程：
 >
-> 1. 导航至您的[deployment](/langsmith/deployment)。
+> 1. 导航至您的[deployment](/langsmith/deploy-overview)。
 > 2. 选择“**线程**”选项卡以查看所有线程。
 > 3. 单击线程以检查其当前状态。
 >

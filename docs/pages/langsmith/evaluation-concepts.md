@@ -45,7 +45,7 @@ This difference in targets determines what you can evaluate: offline evaluations
 
 ## Evaluation lifecycle
 
-As you develop and [deploy your application](/langsmith/deployment), your evaluation strategy evolves from pre-deployment testing to production monitoring. During development and testing, offline evaluations validate functionality against curated datasets. After deployment, online evaluations monitor production behavior on live traffic. As applications mature, both evaluation types work together in an iterative feedback loop to improve quality continuously.
+As you develop and [deploy your application](/langsmith/deploy-overview), your evaluation strategy evolves from pre-deployment testing to production monitoring. During development and testing, offline evaluations validate functionality against curated datasets. After deployment, online evaluations monitor production behavior on live traffic. As applications mature, both evaluation types work together in an iterative feedback loop to improve quality continuously.
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -127,7 +127,7 @@ Online evaluations run on runs and threads from production traffic. Without refe
 
 #### Runs
 
-A *run* is a single execution trace from your [deployed application](/langsmith/deployment). Each run contains:
+A *run* is a single execution trace from your [deployed application](/langsmith/deploy-overview). Each run contains:
 
 * **Inputs**: The actual user inputs your application received.
 * **Outputs**: What your application actually returned.

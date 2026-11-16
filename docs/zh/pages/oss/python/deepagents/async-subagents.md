@@ -25,7 +25,7 @@ graph TB
 
 > [!注意]
 >
-> 异步子代理可以在任何实现 [Agent Protocol](https://github.com/langchain-ai/agent-protocol) 的服务器上运行，例如 [LangSmith Agent Server](/langsmith/deployment) 或自托管代理协议服务器。每个子代理独立于主管运行。 Supervisor通过SDK启动、检查、更新、取消。通知和 Webhook 需要 [Agent Server](/langsmith/agent-server)。
+> 异步子代理可以在任何实现 [Agent Protocol](https://github.com/langchain-ai/agent-protocol) 的服务器上运行，例如 [LangSmith Agent Server](/langsmith/agent-server) 或自托管代理协议服务器。每个子代理独立于主管运行。 Supervisor通过SDK启动、检查、更新、取消。通知和 Webhook 需要 [Agent Server](/langsmith/agent-server)。
 
 ## 比较同步和异步子代理|尺寸|同步子代理 |异步子代理 |
 | - | - | - |

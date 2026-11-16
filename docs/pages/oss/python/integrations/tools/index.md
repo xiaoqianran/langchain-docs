@@ -42,7 +42,7 @@ The following table shows tools that execute online searches in some shape or fo
 | [Nia Toolkit](https://github.com/nozomio-labs/nia-langchain) | Free tier available | Code, Docs, Metadata, Sources |
 | [Nimble Search](https://docs.nimbleway.com/integrations/connectors/langchain) | Free trial available | URL, Content, Title |
 | [Nimble Web Search Agents](https://docs.nimbleway.com/integrations/connectors/langchain#agent-api-v2-web-search-agents) | Free trial available | Research answer, Sources |
-| [Olostep Search](https://docs.olostep.com/integrations/langchain) | 500 free requests, then paid plans | URL, Title, Description, Page Content |
+| [Olostep Search](https://docs.olostep.com/integrations/langchain) | 500 free credits, then paid plans | URL, Title, Description, Page Content |
 | [Oxylabs Web API Search](https://github.com/oxylabs/langchain-oxylabs#web-api) | Free trial, then monthly plans | URL, Title, Snippet |
 | [Parallel Search](/oss/python/integrations/tools/parallel_search) | Paid | URL, Title, Excerpts |
 | [Perplexity Search](/oss/python/integrations/tools/perplexity_search) | Paid (with monthly free tier) | URL, Title, Snippet, Date, Last Updated |
@@ -116,7 +116,7 @@ The following table shows tools that can be used to automate tasks in web browse
 | [Nimble Extract Templates](https://docs.nimbleway.com/integrations/connectors/langchain#extract-templates) | Free trial available | ❌ |
 | [Nimble Crawl and Map](https://docs.nimbleway.com/integrations/connectors/langchain#crawl-and-map) | Free trial available | ❌ |
 | [NodeProxy](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations) | \~\$0.002 USDC per parse (x402 on Base) | ❌ |
-| [Olostep](https://docs.olostep.com/integrations/langchain) | 500 free requests, then paid plans | ❌ |
+| [Olostep](https://docs.olostep.com/integrations/langchain) | 500 free credits, then paid plans | ❌ |
 | [Oxylabs Web API Scrape](https://github.com/oxylabs/langchain-oxylabs#web-api) | Free trial, then monthly plans | ❌ |
 | [Oxylabs Web Scraper API](https://github.com/oxylabs/langchain-oxylabs) | Free trial, with flat rate plans and pre-paid credits after | ❌ |
 | [ProxyClaw](https://proxyclaw.ai/docs) | Free tier available | ❌ |
@@ -135,6 +135,7 @@ The following table shows tools that can be used to automate tasks in databases:
 | [Drasi Toolkit](https://github.com/drasi-project/langchain-drasi) | Real-time database change detection |
 | [Sail SQL Toolkit](https://docs.lakesail.com/sail/latest/guide/integrations/langchain.html) | SQL query, schema listing, and query checking against Sail (Spark Connect) |
 | [Stardog](https://github.com/stardog-union/stardog-langchain) | SPARQL SELECT and schema introspection |
+| [Vericto](https://github.com/vericto/langchain-vericto) | Checks each SQL statement against deterministic guardrail rules before it runs; a guarded `SQLDatabase` refuses blocked statements |
 
 ## Finance
 
@@ -520,6 +521,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`WitanToolkit`](https://github.com/witanmarkets/langchain-witan#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-witan/month)](https://pypi.org/project/langchain-witan/) |
 | [`Bodo DataFrames`](https://docs.bodo.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bodo/month)](https://pypi.org/project/langchain-bodo/) |
 | [`CoworkingViewToolkit`](https://coworkingview.com/en/mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-coworkingview/month)](https://pypi.org/project/langchain-coworkingview/) |
+| [`FXMacroData`](https://github.com/fxmacrodata/langchain-fxmacrodata?utm_source=langchain\&utm_medium=integration\&utm_campaign=langchain-fxmacrodata\&utm_content=directory-listing#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fxmacrodata/month)](https://pypi.org/project/langchain-fxmacrodata/) |
 | [`KeiroSearchTool`](https://github.com/Keirolabs-API/langchain-keiro) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-keiro/month)](https://pypi.org/project/langchain-keiro/) |
 | [`FlipCoinToolkit`](https://github.com/flipcoin-fun/flipcoin-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flipcoin/month)](https://pypi.org/project/langchain-flipcoin/) |
 | [`SignatrustGenerateReceiptTool`](https://signatrust.net/docs/api) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-signatrust/month)](https://pypi.org/project/langchain-signatrust/) |
@@ -531,6 +533,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Hugging Bay tools`](https://pypi.org/project/langchain-hugging-bay/0.1.0/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hugging-bay/month)](https://pypi.org/project/langchain-hugging-bay/) |
 | [`AgentLineToolkit`](https://docs.agentline.cloud/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentline/month)](https://pypi.org/project/langchain-agentline/) |
 | [`Delegare`](https://docs.delegare.dev/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-delegare/month)](https://pypi.org/project/langchain-delegare/) |
+| [`NestDaddySearch`](https://nestdaddy.com/blog/langchain-live-web-search-news) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nestdaddy/month)](https://pypi.org/project/langchain-nestdaddy/) |
 | [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-toolstem/month)](https://pypi.org/project/langchain-toolstem/) |
 | [`ScrapelessAIScraperTool`](https://docs.scrapeless.com/en/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
 | [`ScrapelessCrawlerScrapeTool`](https://docs.scrapeless.com/en/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
@@ -539,13 +542,16 @@ The following table shows tools that generate video, image, or audio assets:
 | [`NextmailToolkit`](https://nextmail.sh/docs/python/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nextmail/month)](https://pypi.org/project/langchain-nextmail/) |
 | [`EU Nordic Open Data tools`](https://github.com/itulo/eu-nordic-open-data-mcp/tree/main/packages/langchain-eu-nordic-open-data) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-eu-nordic-open-data/month)](https://pypi.org/project/langchain-eu-nordic-open-data/) |
 | [`SurgemeshToolkit`](https://pypi.org/project/langchain-surgemesh/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-surgemesh/month)](https://pypi.org/project/langchain-surgemesh/) |
+| [`AgentCommerceToolkit`](https://acg.devlab.group/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agent-commerce/month)](https://pypi.org/project/langchain-agent-commerce/) |
 | [`Arche`](https://pypi.org/project/langchain-arche/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-arche/month)](https://pypi.org/project/langchain-arche/) |
 | [`AgentRAMTools`](https://github.com/seanmarkwei/langgraph-agentram) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-agentram/month)](https://pypi.org/project/langgraph-agentram/) |
 | [`ScrapelyActorsTool`](https://scrape.ly/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapely/month)](https://pypi.org/project/langchain-scrapely/) |
 | [`GroundTruthCompanyLookup`](https://pypi.org/project/langchain-groundtruth/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-groundtruth/month)](https://pypi.org/project/langchain-groundtruth/) |
 | [`scoutwyze_rank`](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/scoutwyze-compute/month)](https://pypi.org/project/scoutwyze-compute/) |
 | [`LiquidVisionToolkit`](https://github.com/lv-analytics/liquidvision-mcp/tree/main/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-liquidvision/month)](https://pypi.org/project/langchain-liquidvision/) |
+| [`Reach Dog`](https://github.com/reachdog/langchain-reachdog/tree/main/libs/reachdog) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-reachdog/month)](https://pypi.org/project/langchain-reachdog/) |
 | [`TokenUsageToolkit`](https://tokenusage.dev/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tokenusage-dev/month)](https://pypi.org/project/langchain-tokenusage-dev/) |
+| [`MAQPNA`](https://docs.maqpna.com/sdk/framework-adapters/#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/kosa8-maqpna/month)](https://pypi.org/project/kosa8-maqpna/) |
 | [`AlterLabScrapeTool`](https://pypi.org/project/langchain-alterlab/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alterlab/month)](https://pypi.org/project/langchain-alterlab/) |
 | [`SealKeeperLookupTool`](https://sealkeeper.run/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sealkeeper/month)](https://pypi.org/project/langchain-sealkeeper/) |
 | [`FinzData`](https://pypi.org/project/langchain-finzdata/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-finzdata/month)](https://pypi.org/project/langchain-finzdata/) |
@@ -558,11 +564,13 @@ The following table shows tools that generate video, image, or audio assets:
 | [`SofyaSearch`](https://sofya.co/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sofya/month)](https://pypi.org/project/langchain-sofya/) |
 | [`LaneRouterToolkit`](https://lanerouter.com/docs#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lanerouter/month)](https://pypi.org/project/langchain-lanerouter/) |
 | [`ChainAnalyzerToolkit`](https://github.com/rascal-3/chainanalyzer-mcp/tree/main/packages/langchain-chainanalyzer) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-chainanalyzer/month)](https://pypi.org/project/langchain-chainanalyzer/) |
+| [`VerictoSQLCheck`](https://vericto.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-vericto/month)](https://pypi.org/project/langchain-vericto/) |
 | [`Agent Data Hub`](https://github.com/Jona1245/agentdatahub-python#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/agentdatahub/month)](https://pypi.org/project/agentdatahub/) |
 | [`AlionToolkit`](https://github.com/alion-io/alion-sdk/tree/main/langchain#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alion/month)](https://pypi.org/project/langchain-alion/) |
 | [`EtfiqToolkit`](https://github.com/etfiq/etfiq-connectors/tree/main/langchain-etfiq) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-etfiq/month)](https://pypi.org/project/langchain-etfiq/) |
 | [`Channel3Toolkit`](https://channel3.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-channel3/month)](https://pypi.org/project/langchain-channel3/) |
 | [`StoreRouterToolkit`](https://github.com/octogen-ai/octogen-dev/tree/main/integrations/langchain#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-storerouter/month)](https://pypi.org/project/langchain-storerouter/) |
+| [`TensorustToolkit`](https://github.com/Mattbusel/langchain-tensorust/blob/main/docs/index.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tensorust/month)](https://pypi.org/project/langchain-tensorust/) |
 | [`ArcnmToolkit`](https://github.com/arcnm/langchain-arcnm#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-arcnm/month)](https://pypi.org/project/langchain-arcnm/) |
 | [`OutcrawlSearchTool`](https://github.com/outcrawlai/langchain-outcrawl#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-outcrawl/month)](https://pypi.org/project/langchain-outcrawl/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |

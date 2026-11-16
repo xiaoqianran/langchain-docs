@@ -1,10 +1,10 @@
-<!-- langchain-docs: Enable Agent Server hosting | https://docs.langchain.com/langsmith/enable-self-hosted-deployment -->
+<!-- langchain-docs: Enable Agent Server hosting | https://docs.langchain.com/langsmith/enable-self-hosted-agent-server -->
 
 # Enable Agent Server hosting
 
 Add a control plane and data plane to deploy and manage agents on self-hosted LangSmith.
 
-[LangSmith Agent Server](/langsmith/deployment) hosting adds a [control plane](/langsmith/control-plane) and [data plane](/langsmith/data-plane) to your self-hosted LangSmith installation. It lets you deploy and manage Agent Servers through the LangSmith UI.
+[LangSmith Agent Server hosting](/langsmith/deploy-to-self-hosted-overview) adds a [control plane](/langsmith/control-plane) and [data plane](/langsmith/data-plane) to your self-hosted LangSmith installation. It lets you deploy and manage Agent Servers through the LangSmith UI.
 
 > [!NOTE]
 >
@@ -338,4 +338,4 @@ Once Agent Server hosting is enabled, see [Deploy with control plane](/langsmith
 
 [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/enable-self-hosted-deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/enable-self-hosted-agent-server.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

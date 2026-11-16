@@ -37,7 +37,7 @@
 
 在删除节点、重命名 State 键或以其他方式进行旧线程无法容忍的更改之前，您需要了解当前是否有任何线程停放在您要删除的代码版本上。 LangGraph 本身不维护线程状态的搜索索引，因此答案取决于图的运行位置。
 
-**如果您部署到[LangSmith](/langsmith/deployment)。**使用代理服务器的线程搜索按状态进行过滤。 `status`字段接受`idle`、`busy`、`interrupted`和`error`，因此您可以批量查询`interrupted`或`busy`线程，可以选择使用元数据过滤器缩小范围。参见[Filter by thread status](/langsmith/use-threads#filter-by-thread-status)和[List threads](/langsmith/use-threads#list-threads)。**在任何地方运行 LangGraph。** 使用 [LangSmith tracing](/oss/javascript/langgraph/observability) 监控生产中哪些节点正在进入和退出。这是最可靠的信号，表明节点或状态字段在任何活动代码路径中都不再可达。
+**如果您[deploy to LangSmith](/langsmith/deploy-overview)。** 使用代理服务器的线程搜索按状态进行过滤。 `status` 字段接受 `idle`、`busy`、`interrupted` 和 `error`，因此您可以批量查询 `interrupted` 或 `busy` 线程，可以选择使用元数据过滤器缩小范围。参见[Filter by thread status](/langsmith/use-threads#filter-by-thread-status)和[List threads](/langsmith/use-threads#list-threads)。**在任何地方运行 LangGraph。** 使用 [LangSmith tracing](/oss/javascript/langgraph/observability) 监控生产中哪些节点正在进入和退出。这是最可靠的信号，表明节点或状态字段在任何活动代码路径中都不再可达。
 
 **当您已经拥有 `thread_id` 时。** 直接检查该单线程：
 

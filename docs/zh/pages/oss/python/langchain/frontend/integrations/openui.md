@@ -12,9 +12,9 @@
 
 ## 它是如何工作的
 
-1. **生成系统提示符：**启动时调用一次`openuiLibrary.prompt()`；它生成一个完整的 openui-lang 参考，模型用它来编写有效的组件树
+1. **生成系统提示：**启动时调用一次`openuiLibrary.prompt()`；它生成一个完整的 openui-lang 参考，模型用它来编写有效的组件树
 2. **在第一条消息上注入：** 在新对话开始时发送系统提示作为打开系统消息
-3. **模型编写 openui-lang:** 模型用类似 `root = Stack([header, kpis, chart])` 的程序而不是散文进行响应
+3. **模型编写 openui-lang:** 模型以类似 `root = Stack([header, kpis, chart])` 的程序响应，而不是散文
 4. **使用`Renderer`渲染：**将文本传递给OpenUI的`Renderer`和组件库；它解析并渲染树
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -43,7 +43,7 @@ graph LR
 npm install @langchain/react @openuidev/react-ui @openuidev/react-headless @openuidev/react-lang
 ```> [!提示]
 >
-> OpenUI 需要 React 19+ 和 [⟦T21⟧](https://www.npmjs.com/package/zustand)。前端代码仅限 React； LangGraph代理后端可以用 TypeScript 或 Python 编写。
+> OpenUI 需要 React 19+ 和 [⟦T21⟧](https://www.npmjs.com/package/zustand)。前端代码仅限 React； LangGraph 代理后端可以用 TypeScript 或 Python 编写。
 
 ## 导入组件样式
 
@@ -188,8 +188,8 @@ marketSection = Card([CardHeader("Market Breakdown"), tbl, ch1])
 | **部分字符串文字** | `truncateAtOpenString` / `closeOrTruncateOpenString` — 在解析之前删除或关闭不完整的字符串 |
 | **中期代币流失** | `useStableText` — 门渲染器更新完整语句边界 (`name = Expr(…)`)，而不是每个标记 |
 | **图表空数据崩溃** | `chartDataRefsResolved` — 在将图表包含在快照中之前验证图表的 `Series` 和标签数组是否已定义 |
-| **还没有`root`/后备** | `buildProgressiveRoot` — 当模型尚未编写时，从顶级变量合成 `root = Stack([…])` |
-| **Snake\_case 标识符** | `sanitizeIdentifiers` — 解析器仅接受驼峰命名法；转换模型发出的任何 `snake_case` 名称 |
+| **还没有`root`/后备** | `buildProgressiveRoot` — 当模型尚未编写时，从顶级变量合成一个 `root = Stack([…])` |
+| **Snake_case 标识符** | `sanitizeIdentifiers` — 解析器仅接受驼峰命名法；转换模型发出的任何 `snake_case` 名称 |
 
 将完整块复制到您的项目中并将 `stable` 传递给 `<Renderer>`：
 
@@ -527,7 +527,7 @@ export const promptOptions = openuiChatPromptOptions;
 
 ### 定义协调员和面板代理
 
-[⟦T56⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 构建了一个协调器，其唯一的工作是路由：它选择专家的简要需求，并在一条消息中发出他们所有的 `task()` 调用，以便面板同时运行。每个面板子代理共享一个预生成的 OpenUI 系统提示符，并且仅接收其数据域的工具。
+[⟦T56⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 构建一个协调器，其唯一的工作是路由：它选择专家的简要需求，并在一条消息中发出他们所有的 `task()` 调用，以便面板同时运行。每个面板子代理共享一个预生成的 OpenUI 系统提示符，并且仅接收其数据域的工具。
 
 ```ts expandable agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, type SubAgent } from "deepagents";
@@ -538,7 +538,7 @@ import { calendarTools, githubTools, posthogTools, stripeTools } from "./tools.j
 // The coordinator only routes, so a fast model handles it; panels generate
 // strict openui-lang and stay on the frontier model.
 const COORDINATOR_MODEL = "openai:gpt-5.4-mini";
-const PANEL_MODEL = "openai:gpt-5.5";
+const PANEL_MODEL = "openai:gpt-6.1-sol";
 
 // Generate the shared panel prompt once at module load so the model prefix
 // stays stable for provider prompt caching.

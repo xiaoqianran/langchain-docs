@@ -6,7 +6,7 @@
 
 使用持久内存、沙箱、弹性中间件和部署选项将深度代理投入生产
 
-本指南涵盖了使用 SDK 将深度代理从本地原型转移到生产部署的注意事项。要运行生产代理而无需管理基础设施，请从 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 或 [migrate to Managed Deep Agents](/langsmith/python/managed-deep-agents-migrate) 开始。本页的其余部分将介绍当您自己托管代理或运行自定义 [Agent Server](/langsmith/deployment) 时，确定内存范围、配置执行环境、添加护栏以及连接前端。
+本指南涵盖了使用 SDK 将深度代理从本地原型转移到生产部署的注意事项。要运行生产代理而无需管理基础设施，请从 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 或 [migrate to Managed Deep Agents](/langsmith/python/managed-deep-agents-migrate) 开始。本页的其余部分将介绍当您自己托管代理或运行自定义 [Agent Server](/langsmith/agent-server) 时，确定内存范围、配置执行环境、添加护栏以及连接前端。
 
 ## 概述
 
@@ -28,7 +28,7 @@
 
 ![Managed Deep Agents packages your agent configuration, tools, and runtime settings for LangSmith](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/deepagents-deploy-config.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=5c3f2961994afe5fe67a2f5c9e9ba7ac)
 
-将深度代理投入生产的推荐路径是[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)，这是一个 CLI 优先的托管运行时，用于在 LangSmith 中创建、运行和操作深度代理。托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上公开 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。它运行相同的 Deep Agents 工具，但您将代理编写为文件项目并为托管运行时声明它，而不是自己编译它。参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。对于需要自定义应用代码、自定义路由、高级身份验证的团队，可以直接配置[LangSmith Agent Server](/langsmith/deployment)。任一路径都会提供您的代理所需的基础设施：[threads](/langsmith/use-threads)、[runs](/langsmith/runs)、存储和检查点，因此您不必自己设置这些。自定义代理服务器还为您提供开箱即用的[authentication](/langsmith/auth)、[webhooks](/langsmith/use-webhooks)、[cron jobs](/langsmith/cron-jobs)和[observability](/langsmith/observability)，并且可以通过[MCP](/langsmith/server-mcp)或[A2A](/langsmith/server-a2a)公开您的代理。
+将深度代理投入生产的推荐路径是[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)，这是一个 CLI 优先的托管运行时，用于在 LangSmith 中创建、运行和操作深度代理。托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上公开 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。它运行相同的 Deep Agents 工具，但您将代理编写为文件项目并为托管运行时声明它，而不是自己编译它。参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。对于需要自定义应用代码、自定义路由、高级身份验证的团队，可以直接配置[LangSmith Agent Server](/langsmith/agent-server)。任一路径都会提供您的代理所需的基础设施：[threads](/langsmith/use-threads)、[runs](/langsmith/runs)、存储和检查点，因此您不必自己设置这些。自定义代理服务器还为您提供开箱即用的[authentication](/langsmith/auth)、[webhooks](/langsmith/use-webhooks)、[cron jobs](/langsmith/cron-jobs)和[observability](/langsmith/observability)，并且可以通过[MCP](/langsmith/server-mcp)或[A2A](/langsmith/server-a2a)公开您的代理。
 
 > [!提示]
 >
@@ -328,7 +328,7 @@ async for chunk in client.runs.stream(
 
 #### 用户身份和访问控制
 
-[LangSmith Agent Server](/langsmith/deployment) 支持[custom authentication](/langsmith/custom-auth) 建立用户身份，并支持[authorization handlers](/langsmith/auth) 控制对线程、助手和存储命名空间等资源的访问。授权处理程序在身份验证成功后运行，并且可以：
+[LangSmith Agent Server](/langsmith/agent-server) 支持[custom authentication](/langsmith/custom-auth) 建立用户身份，并支持[authorization handlers](/langsmith/auth) 控制对线程、助手和存储命名空间等资源的访问。授权处理程序在身份验证成功后运行，并且可以：
 
 * 使用所有权元数据标记资源（例如，`owner: user_id`）
 * 返回过滤器，以便用户只能看到自己的资源
@@ -398,7 +398,7 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 
 > [!提示]
 >
-> [LangSmith Agent Server](/langsmith/deployment) 自动配置持久检查点。如果您是自托管，请参阅 [persistence](/oss/python/langgraph/persistence) 了解设置说明。
+> [LangSmith Agent Server](/langsmith/agent-server#persistence) 自动配置持久检查点。如果您是自托管，请参阅 [persistence](/oss/python/langgraph/persistence) 了解设置说明。
 
 ## 内存
 
@@ -863,7 +863,7 @@ agent = create_deep_agent(
 
 Deep Agents 使用 [⟦T98⟧](/oss/python/langchain/frontend/overview) 将您的 UI 连接到代理后端。 [⟦T99⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 是一个前端钩子（适用于 React、Vue、Svelte 和 Angular），可实时传输来自代理的消息、子代理进度和自定义状态。
 
-在本地，`useStream`指向`http://localhost:2024`。在生产中，将其指向您的 [Agent Server](/langsmith/deployment) 并配置重新连接，以便用户在连接断开时不会丢失进度。
+在本地，`useStream`指向`http://localhost:2024`。在生产中，将其指向您的 [Agent Server](/langsmith/agent-server) 并配置重新连接，以便用户在连接断开时不会丢失进度。
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { useStream } from "@langchain/react";

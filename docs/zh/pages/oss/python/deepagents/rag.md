@@ -1450,7 +1450,7 @@ if __name__ == "__main__":
 * 将 [Skills](/oss/python/deepagents/skills) 添加到包检索工作流程和特定领域的搜索指南
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) 与 LangSmith 数据集和评估器
 * 阅读 [Context engineering](/oss/python/deepagents/context-engineering) 了解卸载和子代理隔离策略
-* 使用 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 进行部署以运行生产代理，而无需管理基础设施。或者，为了在使用相同的Deep Agents安全带时获得最大的灵活性，您可以自己托管代理或使用自定义的[Agent Server](/langsmith/deployment)
+* 使用 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 进行部署以运行生产代理，而无需管理基础设施。或者，为了在使用相同的Deep Agents安全带时获得最大的灵活性，您可以自己托管代理或使用自定义的[Agent Server](/langsmith/agent-server)
 * 使用 [Grading rubrics](/oss/python/deepagents/rubric) 验证答案是否基于检索到的源材料
 
 ***

@@ -4,7 +4,7 @@
 
 # 沙箱
 
-为沙盒环境支持的编码代理构建类似 IDE 的 UI
+为沙箱环境支持的编码代理构建类似 IDE 的 UI
 
 编码代理需要的不仅仅是聊天窗口。他们需要一个文件浏览器、一个代码
 查看器、差异面板、IDE 体验。这种模式连接了很深的
@@ -62,7 +62,7 @@ graph LR
   class API orangeHighlight;
 ```## 沙箱生命周期
 
-在连接前端之前，选择沙箱的生存时间以及共享沙箱的人员。
+在连接前端之前选择沙箱的生存时间以及共享沙箱的人员。
 请参阅 [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle) 了解线程范围
 与助手范围的沙箱，异步 [graph factory](/langsmith/graph-rebuild)
 设置、TTL 行为和 SDK 调用示例。
@@ -112,7 +112,7 @@ API 网址。会话 ID 不会在浏览器会话中持续存在。
 需要工具配置。构建此 UI 在生产设置之上添加了一项要求：
 **自定义 API 服务器** 在代理图之外运行，因此代理
 后端和您的文件浏览路由必须解析**相同的沙箱**
-每个线程。将沙箱 ID 存储在线程元数据上并共享一个
+每个线程。将沙箱 ID 存储在线程元数据上并共享单个
 它们之间的查找功能。
 
 ### 从线程元数据解析沙箱
@@ -298,16 +298,16 @@ export async function agent(config: LangGraphRunnableConfig) {
 > 当 LangGraph SDK 是唯一入口点时，改为查找。
 
 ### 种子项目文件在代理运行之前，使用 `uploadFiles` / 上传启动文件
-`upload_files`. See [File transfers](/oss/javascript/deepagents/going-to-production#file-transfers)
+`upload_files`。参见[File transfers](/oss/javascript/deepagents/going-to-production#file-transfers)
 用于播种模式、提供程序示例和同步
 [memories](/oss/javascript/deepagents/memory) 或 [skills](/oss/javascript/deepagents/skills) 进入
-the sandbox.对于LangSmith沙箱，从a传递`templateName`
+沙箱。对于LangSmith沙箱，从a传递`templateName`
 [sandbox snapshot](/langsmith/sandbox-snapshots) 创建容器时。
 
 > [!提示]
 >
 > 上传后运行`sandbox.execute("cd /app && npm install")`
-> `package.json` 因此依赖关系在第一个代理轮流之前就已准备就绪。
+> `package.json` 因此依赖关系在第一个代理轮流之前就已准备好。
 
 ## 添加文件浏览API
 
@@ -320,7 +320,7 @@ the sandbox.对于LangSmith沙箱，从a传递`templateName`
 沙箱 API 端点使用线程 ID 作为 URL 路径参数。这个
 确保前端始终访问当前的正确沙箱
 对话，使用与 相同的 `getOrCreateSandboxForThread` 功能
-agent's backend:
+代理后台：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // src/api/app.ts
@@ -374,12 +374,12 @@ app.get("/sandbox/:threadId/file", async (c) => {
 >
 > 代理后端和API服务器都调用相同的
 >
-> `getOrCreateSandboxForThread` function.这确保他们始终能够解决
+> `getOrCreateSandboxForThread`功能。这确保他们始终能够解决
 >
 > 给定线程的同一沙箱。线程元数据中的沙箱 ID
 > 是唯一的事实来源——不需要内存缓存。
 
-### Configure `langgraph.json`注册代理图和 API 服务器。 `http.app`字段告诉我们
+### 配置`langgraph.json`注册代理图和 API 服务器。 `http.app`字段告诉我们
 代理服务器为您的自定义路由和默认路由提供服务。
 参见 [application structure](/oss/javascript/langgraph/application-structure) 和
 [LangSmith Agent Server](/oss/javascript/deepagents/going-to-production#langsmith-deployments)
@@ -414,7 +414,7 @@ app.get("/sandbox/:threadId/file", async (c) => {
 文件浏览的端点。
 
 对于生产部署，请将 `apiUrl` 指向您的
-[Agent Server URL](/langsmith/deployment)，并通过稳定
+[Agent Server URL](/langsmith/agent-server)，并通过稳定
 每次运行`thread_id`。参见
 [Frontend](/oss/javascript/deepagents/going-to-production#frontend) 在
 [Going to production](/oss/javascript/deepagents/going-to-production) 对于这些设置
@@ -468,7 +468,7 @@ function handleNewThread() {
 }
 ```### 文件状态管理
 
-跟踪沙箱文件系统的两个快照：原始状态（在
+跟踪沙盒文件系统的两个快照：原始状态（在
 代理运行）和当前状态（实时更新）。线程ID是
 包含在 API URL 中，以便请求始终到达正确的沙箱：
 
@@ -749,7 +749,7 @@ function DiffPanel({ original, current, fileName }) {
 
 ### 更改文件摘要
 
-显示所有修改文件的摘要以及行级添加/删除计数。
+显示所有已修改文件的摘要以及行级添加/删除计数。
 这使用户可以快速了解代理的影响，类似于“git”
 状态`：
 
@@ -810,7 +810,7 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
 
 对于后端和沙箱：* **对生产应用程序使用线程范围的沙箱**。参见
   [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle)。
-* **在代理后端和 API 服务器之间共享沙箱解析**
+* **通过代理后端和 API 服务器之间共享沙箱解析**
   线程元数据，因此两者都解析相同的环境，没有内存缓存。
 * **用真实的项目为沙箱播种**。参见
   [File transfers](/oss/javascript/deepagents/going-to-production#file-transfers)。

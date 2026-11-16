@@ -10,7 +10,7 @@
 
 > [卡][Anthropic](/oss/javascript/integrations/providers/anthropic)
 >
-> 与 Anthropic 的 Claude 模型集成以进行高级推理和对话。
+> 与 Anthropic 的 Claude 模型集成，进行高级推理和对话。
 
 > [卡][AWS](/oss/javascript/integrations/providers/aws)
 >
@@ -80,7 +80,7 @@
 
 > [卡][ChatExaone](https://github.com/ykoh42/exaone-integrations/tree/main/packages/langchain-exaone-ts)
 >
-> 社区维护的 EXAONE 聊天模型集成LangChain，具有流媒体、工具调用、结构化输出和推理历史记录。
+> 社区维护的 EXAONE 聊天模型集成，适用于LangChain，具有流媒体、工具调用、结构化输出和推理历史记录。
 
 > [卡][ChatWebLLM](https://github.com/ykoh42/web-llm-adapters/blob/main/packages/langchain-web-llm/README.md)
 >
@@ -432,11 +432,15 @@
 
 > [卡片][Continuity tools](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools)
 >
-> LangChain 具有应用程序定义的权限、稳定的操作身份和仅状态恢复的合作服务工具。
+> LangChain 工具，具有应用程序定义的权限、稳定的操作身份以及针对协作服务的仅状态恢复。
 
 > [卡][Corsair](https://docs.corsair.dev/mcp-adapters/langchain)
 >
 > 将 200 多个服务集成（Slack、GitHub、Gmail、Linear、Stripe 等）作为 OAuth 工具向 LangChain 代理公开。
+
+> [卡][CULT+MATH](https://github.com/letsbuild-math/cultmath-agent-tools)
+>
+> LangChain 搜索 CULT+MATH 决策研究并对 SEC 文件、联邦数据和 AI 答案运行付费测量的工具，每次运行付费超过 x402。
 
 > [卡][DALL-E](/oss/javascript/integrations/tools/dalle)
 >
@@ -452,15 +456,15 @@
 
 > [卡][Exa Search](/oss/javascript/integrations/tools/exa_search)
 >
-> 人工智能驱动的搜索引擎可提供更好的结果。
-
-> [卡][Fizzl](https://fizzl.eu/agents/langchain-js/)
+> 人工智能驱动的搜索引擎可提供更好的结果。> [卡][Fizzl](https://fizzl.eu/agents/langchain-js/)
 >
-> Fizzl 在 AI 代理签名或付款之前检查交易、签名、代币、钱包批准和 x402 付费端点。> [卡][GetYouTubeTranscript](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme)
+> Fizzl 在 AI 代理签名或付款之前检查交易、签名、代币、钱包批准和 x402 付费端点。
+
+> [卡] [GetYouTubeTranscript](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme)
 >
 > GetYouTubeTranscript 是一个用于 YouTube 视频转录（可选地带有每行时间戳）和 YouTube 搜索的 API
 
-> [卡] [HyperresearchAnswerTool](https://hyperresearch.ai/docs/answers/langchain)
+> [卡][HyperresearchAnswerTool](https://hyperresearch.ai/docs/answers/langchain)
 >
 > Hyperresearch Answers 返回事实问题或 not_found 的经过引用检查的答案，以及带有逐字段落的排名网络和结构化资源。
 
@@ -490,11 +494,11 @@
 
 > [卡][MCP Toolbox](/oss/javascript/integrations/tools/mcp_toolbox)
 >
-> 模型上下文协议工具和实用程序。
-
-> [卡][Mercedes-Benz Service Reminder](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme)
+> 模型上下文协议工具和实用程序。> [卡][Mercedes-Benz Service Reminder](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme)
 >
-> SilberArrows 的 MCP 工具，用于 Mercedes-Benz 服务 A/B 提醒、服务说明和警告灯指导。> [卡][OceanAltPayeeCheckTool](https://oceanalt.com/en/developers/langchain)
+> SilberArrows 的 MCP 工具，用于 Mercedes-Benz 服务 A/B 提醒、服务说明和警告灯指导。
+
+> [卡][OceanAltPayeeCheckTool](https://oceanalt.com/en/developers/langchain)
 >
 > 代理预付款检查：允许、审查或拒绝收款人地址或付款 URL，以及失败关闭的付款工具防护。
 
@@ -528,11 +532,11 @@
 
 > [卡][Pushary](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js)
 >
-> LangGraph.js 代理的电话批准：在用户电话上询问并仅在批准时进行路由；没有答案就意味着没有行动。
-
-> [卡][Serpex](https://serpex.dev/docs)
+> LangGraph.js 代理的电话批准：在用户的电话上询问并仅在批准时进行路由；没有答案就意味着没有行动。> [卡][Serpex](https://serpex.dev/docs)
 >
-> 用于人工智能应用和数据聚合的多引擎网络搜索 API。> [卡][SideQuest](https://sidequestpays.com/docs#langchain)
+> 用于人工智能应用和数据聚合的多引擎网络搜索 API。
+
+> [卡][SideQuest](https://sidequestpays.com/docs#langchain)
 >
 > SideQuest 是一个市场，人工智能代理可以在此发布付费的现实世界任务（商店检查、照片、电话、翻译），供经过验证的人员完成。
 
@@ -570,17 +574,21 @@
 
 > [卡][Tavily Map](/oss/javascript/integrations/tools/tavily_map)
 >
-> 绘制和可视化网络爬行结果。
-
-> [卡][Tavily Search](/oss/javascript/integrations/tools/tavily_search)
+> 绘制和可视化网络爬行结果。> [卡][Tavily Search](/oss/javascript/integrations/tools/tavily_search)
 >
 > 针对检索应用程序的人工智能优化搜索。
 
 > [卡][Tavily Research](/oss/javascript/integrations/tools/tavily_research)
 >
-> 与 Tavilly 一起对给定主题进行综合研究。> [卡][Tavily GET Research](/oss/javascript/integrations/tools/tavily_get_research)
+> 与 Tavilly 一起对给定主题进行综合研究。
+
+> [卡][Tavily GET Research](/oss/javascript/integrations/tools/tavily_get_research)
 >
 > 使用其请求 ID 检索研究任务的状态和结果。
+
+> [卡][VerictoSqlToolkit](https://vericto.com/docs/langchain)
+>
+> AI 代理的数据库护栏：在运行之前根据确定性 AST 规则（例如不带 WHERE 的 DELETE）检查每个 SQL 语句。
 
 > [卡][viaSocket](https://github.com/Walkover-Web-Solution/viasocket-apps#langchain)
 >
@@ -610,9 +618,7 @@
 
 > [卡][Exa](/oss/javascript/integrations/retrievers/exa)
 >
-> 人工智能驱动的网络搜索和检索。
-
-> [卡][FoxNose](https://github.com/FoxNoseTech/langchain-foxnose-js#readme)
+> 人工智能驱动的网络搜索和检索。> [卡][FoxNose](https://github.com/FoxNoseTech/langchain-foxnose-js#readme)
 >
 > 用于 FoxNose 集合的检索器、文档加载器和代理工具，通过 Flux 交付 API 提供文本、矢量、混合和矢量增强搜索。
 
@@ -626,7 +632,9 @@
 
 > [卡][Perplexity Search](/oss/javascript/integrations/retrievers/perplexity_search)
 >
-> 从 Perplexity Search API 返回文档的检索器。> [卡][RecallRetriever](https://recallmem.dev/guides/langchain)
+> 从 Perplexity Search API 返回文档的检索器。
+
+> [卡][RecallRetriever](https://recallmem.dev/guides/langchain)
 >
 > 以文档形式检索 Recall 了解的有关用户的事实以及用户的匹配消息。
 
@@ -662,9 +670,7 @@
 
 > [卡][Azure Cosmos DB NoSQL](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql)
 >
-> 在 Azure Cosmos DB 中缓存 LLM 响应。
-
-> [卡][BetterDB Agent Cache](https://www.betterdb.com/ai)
+> 在 Azure Cosmos DB 中缓存 LLM 响应。> [卡][BetterDB Agent Cache](https://www.betterdb.com/ai)
 >
 > 由 Valkey 或 Redis 支持的 AI 代理的多层缓存。
 
@@ -676,7 +682,13 @@
 
 > [卡][Nace](https://github.com/nace-ai/langchain-nace-js#readme)
 >
-> Nace 的 Drex 决策模型：通过文本和图像输入带有校准概率的答案，用于路由、模型选择和工具调用门控。> [卡][RecallChatMessageHistory](https://recallmem.dev/guides/langchain)
+> Nace 的 Drex 决策模型：通过文本和图像输入带有校准概率的答案，用于路由、模型选择和工具调用门控。
+
+> [卡][newmean-pii](https://github.com/newmean-ai/pii/blob/main/js/README.md#langchainjs)
+>
+> 针对代理消息的设备上 PII 屏蔽：WebAssembly 中的小型多语言模型（54 种语言）屏蔽每个模型调用接收的内容。
+
+> [卡][RecallChatMessageHistory](https://recallmem.dev/guides/langchain)
 >
 > 聊天消息历史记录存储在 Recall 会话中，因此 Recall 还可以从中了解用户。
 
@@ -692,9 +704,7 @@
 
 > [卡][OpenInference](https://arize.com/docs/ax/integrations/python-agent-frameworks/langchain/langchain-tracing)
 >
-> OpenTelemetry 工具使用 OpenInference 语义约定记录 LangChain 和 LangGraph 操作。
-
-> [卡][Respan](https://www.respan.ai/docs)
+> OpenTelemetry 工具使用 OpenInference 语义约定记录 LangChain 和 LangGraph 操作。> [卡][Respan](https://www.respan.ai/docs)
 >
 > 跟踪 LangChain.js、LangGraph.js 和 Langflow 风格的回调在 Respan 中运行。
 

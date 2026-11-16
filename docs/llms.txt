@@ -2,7 +2,7 @@
 
 > Documentation for LangSmith, Fleet, and our open source packages.
 
-- [AGENT DEVELOPMENT LIFECYCLE (1507 pages)](https://docs.langchain.com/_llms/agent-development-lifecycle.txt): Home, Build, Test, Deploy, Monitor.
+- [AGENT DEVELOPMENT LIFECYCLE (1506 pages)](https://docs.langchain.com/_llms/agent-development-lifecycle.txt): Home, Build, Test, Deploy, Monitor.
 - [PRODUCTS AND SETUP (227 pages)](https://docs.langchain.com/_llms/products-and-setup.txt): LangSmith setup, LLM Gateway, No-code agents, Engine, Deep Agents Code.
 
 ## OpenAPI Specs
@@ -15,11 +15,11 @@
 
 ## Indexes
 
-- [AGENT DEVELOPMENT LIFECYCLE (1507 pages)](https://docs.langchain.com/_llms/agent-development-lifecycle.txt): Home, Build, Test, Deploy, Monitor.
+- [AGENT DEVELOPMENT LIFECYCLE (1506 pages)](https://docs.langchain.com/_llms/agent-development-lifecycle.txt): Home, Build, Test, Deploy, Monitor.
 - [AGENT DEVELOPMENT LIFECYCLE / Build (470 pages)](https://docs.langchain.com/_llms/agent-development-lifecycle/build.txt): Build agents with open source
 - [AGENT DEVELOPMENT LIFECYCLE / Build / Python (238 pages)](https://docs.langchain.com/_llms/agent-development-lifecycle/build/python.txt): Overview, Managed Deep Agents, Deep Agents, LangChain, LangGraph, OpenWiki, Integrations, Learn, Reference, Contribute.
 - [AGENT DEVELOPMENT LIFECYCLE / Build / TypeScript (245 pages)](https://docs.langchain.com/_llms/agent-development-lifecycle/build/type-script.txt): Overview, Managed Deep Agents, Deep Agents, LangChain, LangGraph, OpenWiki, Integrations, Learn, Reference, Contribute.
-- [AGENT DEVELOPMENT LIFECYCLE / Deploy (254 pages)](https://docs.langchain.com/_llms/agent-development-lifecycle/deploy.txt): Ship agents to production
+- [AGENT DEVELOPMENT LIFECYCLE / Deploy (253 pages)](https://docs.langchain.com/_llms/agent-development-lifecycle/deploy.txt): Ship agents to production
 - [AGENT DEVELOPMENT LIFECYCLE / Deploy / Get started (145 pages)](https://docs.langchain.com/_llms/agent-development-lifecycle/deploy/get-started.txt): Deployment components, Develop & test, Frameworks and platforms, Reference.
 - [AGENT DEVELOPMENT LIFECYCLE / Monitor (705 pages)](https://docs.langchain.com/_llms/agent-development-lifecycle/monitor.txt): Trace, debug, and observe agents
 - [AGENT DEVELOPMENT LIFECYCLE / Monitor / Reference (604 pages)](https://docs.langchain.com/_llms/agent-development-lifecycle/monitor/reference.txt): SmithDB API migration, LangSmith REST API.

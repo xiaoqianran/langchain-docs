@@ -30,7 +30,7 @@
 
 **脚本**
 
-**获取\_docs.py**
+**fetch_docs.py**
 
 **参考文献**
 
@@ -169,7 +169,7 @@ result = agent.invoke(
 >
 > 您还可以要求您的代理为您与代理一起完成的任务编写技能。
 
-Skills are especially helpful for codifying:* **分步工作流程**：跨越多个步骤的工作流程，类似于菜谱。
+技能对于编码特别有帮助：* **分步工作流程**：跨越多个步骤的工作流程，类似于菜谱。
 * **特定领域的知识**：指导代理如何使用工作流程工具。例如，包括有关从何处提取信息的信息，包括该技能可以访问的其他参考信息或脚本。
 * **带有可执行代码的指令**：将程序与代理可以运行的脚本或模块捆绑在一起，因此它遵循经过测试的逻辑，而不是每次都从指令重新生成它。参见[Execute code with skills](#execute-code-with-skills)。
 * **指南**：向代理提供有关要遵守的护栏的支持说明。例如，遵循特定的格式或风格指南，或者指定始终将测试作为工作流程的一部分运行。
@@ -329,7 +329,7 @@ agent = create_deep_agent(
 
 ### 在运行时解析工具
 
-`include_tools` 中的名称不必与工具本身的名称匹配。生成的工具名称（例如`mcp_linear_list_issues_ab12`）很难手写，并且可能不会保持不变。
+`include_tools` 中的名称不必与工具自己的名称匹配。生成的工具名称（例如`mcp_linear_list_issues_ab12`）很难手写，并且可能不会保持不变。
 
 要将技能列表的名称映射到工具，请将解析器函数作为中间件的 `tools` 传递。解析器接收每个 `include_tools` 名称和图表的 `Runtime`，并返回该名称的工具。
 
@@ -463,7 +463,7 @@ agent = create_deep_agent(
 
 代理如何到达工具取决于您将其传递到的位置：
 
-|将工具传递给 |特工读取技能前|特工读取技能后 |
+|将工具传递给 |特工读取技能前|特工读取技能后|
 | - | - | - |
 | `SkillsMiddleware(tools=...)` |隐藏，调用失败|可见|
 |代理的`tools`，延期|可通过提供商工具搜索获得 |无需搜索即可看到 |
@@ -498,7 +498,7 @@ Deep Agents支持不同的后端，具体取决于您想要如何存储和管理
 > }
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=backend,
 >     skills=["/skills/"],
 >     checkpointer=checkpointer,
@@ -533,7 +533,7 @@ Deep Agents支持不同的后端，具体取决于您想要如何存储和管理
 > }
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=backend,
 >     skills=["/skills/"],
 >     checkpointer=checkpointer,
@@ -747,7 +747,7 @@ Deep Agents支持不同的后端，具体取决于您想要如何存储和管理
 > )
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=backend,
 >     store=store,
 >     skills=["/skills/"],
@@ -780,7 +780,7 @@ Deep Agents支持不同的后端，具体取决于您想要如何存储和管理
 > )
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=backend,
 >     skills=["/skills/"],
 >     interrupt_on={
@@ -801,7 +801,7 @@ Deep Agents支持不同的后端，具体取决于您想要如何存储和管理
 
 并非每次跑步都需要所有技能。通过选择传递到`skills`的路径、根据上下文特定的存储解析这些路径或组合多个技能源来控制代理可以看到哪些技能。上下文可以来自请求处理程序、身份验证声明、图工厂、部署配置或任何其他应用程序逻辑。
 
-### 根据上下文选择技能创建代理之前选择`skills`数组。当技能位于公共位置并且您的应用程序决定哪些路径适用于当前角色、租户、用户或请求类型时，请使用此选项：
+### 根据上下文选择技能在创建代理之前选择`skills`数组。当技能位于公共位置并且您的应用程序决定哪些路径适用于当前角色、租户、用户或请求类型时，请使用此选项：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -898,7 +898,7 @@ agent = create_deep_agent(
 
 重置存储的元数据以在下次运行开始时再次加载每个源。> [!注意]
 >
-> 本地运行通常没有检查点，因此技能编辑会立即生效，并且技能似乎会自行重新加载。 [LangSmith Deployments](/langsmith/deployment) 自动配置持久性检查点，因此同一代理在部署后的线程生命周期内保留其技能。参见[Going to production](/oss/python/deepagents/going-to-production)。
+> 本地运行通常没有检查点，因此技能编辑会立即生效，并且技能似乎会自行重新加载。 [LangSmith Agent Server](/langsmith/agent-server#persistence) 自动配置持久性检查点，因此同一代理在部署后的线程生命周期内保留其技能。参见[Going to production](/oss/python/deepagents/going-to-production)。
 
 > [!注意]
 >
@@ -924,7 +924,7 @@ result = agent.invoke(
 agent.update_state(config, {"skills_metadata": None})
 ```
 
-使用`None`，而不是空列表。空列表意味着源已加载且没有技能，因此代理在线程的其余部分看不到任何技能。
+使用`None`，而不是空列表。空列表意味着源已加载且不包含任何技能，因此代理在线程的其余部分看不到任何技能。
 
 > [!注意]
 >
@@ -1029,7 +1029,7 @@ research_subagent = {
 }
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     skills=["/skills/main/"],  # Main agent and GP subagent get these
     subagents=[research_subagent],  # Researcher gets only its own skills
 )
@@ -1050,10 +1050,10 @@ from deepagents import FilesystemPermission, create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
 
-store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Agent Server
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=CompositeBackend(
         default=StateBackend(),
         routes={
@@ -1077,10 +1077,10 @@ from deepagents import FilesystemPermission, create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
 
-store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Agent Server
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=CompositeBackend(
         default=StateBackend(),
         routes={
@@ -1106,7 +1106,7 @@ from deepagents import FilesystemPermission, create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
 
-store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Agent Server
 
 agent = create_deep_agent(
     model="anthropic:claude-sonnet-5",
@@ -1135,7 +1135,7 @@ from deepagents import FilesystemPermission, create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
 
-store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Agent Server
 
 agent = create_deep_agent(
     model="openrouter:z-ai/glm-5.2",
@@ -1164,7 +1164,7 @@ from deepagents import FilesystemPermission, create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
 
-store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Agent Server
 
 agent = create_deep_agent(
     model="fireworks:accounts/fireworks/models/glm-5p2",
@@ -1193,7 +1193,7 @@ from deepagents import FilesystemPermission, create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
 
-store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Agent Server
 
 agent = create_deep_agent(
     model="baseten:zai-org/GLM-5.2",
@@ -1222,7 +1222,7 @@ from deepagents import FilesystemPermission, create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
 
-store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Agent Server
 
 agent = create_deep_agent(
     model="ollama:north-mini-code-1.0",
@@ -1261,7 +1261,7 @@ from deepagents import FilesystemPermission, create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
 
-store = InMemoryStore()  # Use for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Use for local dev; omit for LangSmith Agent Server
 
 agent = create_deep_agent(
     model="anthropic:claude-sonnet-4-6",
@@ -1354,7 +1354,7 @@ Search arXiv for papers matching the user's query.
 3. If the user asks for more detail on a specific paper, fetch the full abstract.
 ```
 
-代理可以从任何后端*读取*脚本，但要*执行*它们，代理需要访问 shell，而只有 [sandbox backends](/oss/python/deepagents/sandboxes) 提供。
+代理可以从任何后端“读取”脚本，但要“执行”它们，代理需要访问 shell，而只有 [sandbox backends](/oss/python/deepagents/sandboxes) 提供。
 
 [Sandbox backends](/oss/python/deepagents/sandboxes) 在隔离的容器中运行。存储在沙箱外部的技能文件在沙箱内部不可用，这意味着代理无法执行技能脚本或访问技能资源，除非先将它们转移进来。使用[custom middleware](/oss/python/langchain/middleware/custom)来处理此传输：
 
@@ -1439,7 +1439,7 @@ async def main() -> None:
 
     try:
         agent = create_deep_agent(
-            model="google_genai:gemini-3.6-flash",
+            model="google_genai:gemini-4-hydrogen",
             backend=backend,
             skills=["/skills/"],
             store=store,
@@ -1532,7 +1532,7 @@ async def main() -> None:
 
     try:
         agent = create_deep_agent(
-            model="openai:gpt-5.5",
+            model="openai:gpt-6.1-sol",
             backend=backend,
             skills=["/skills/"],
             store=store,
@@ -2062,7 +2062,7 @@ if __name__ == "__main__":
 
 **问题**：在您添加、编辑或删除一项技能后，客服人员继续使用该技能的早期版本。
 
-**解决方案**：技能每个线程加载一次，因此已经运行的线程看不到变化。重置存储的元数据。参见[Reload skills](#reload-skills)。
+**解决方案**：技能每个线程加载一次，因此已经运行的线程不会看到变化。重置存储的元数据。参见[Reload skills](#reload-skills)。
 
 ### 未找到支持文件**问题**：代理读取 `SKILL.md` 但无法访问脚本、引用或资产。
 
@@ -2104,15 +2104,15 @@ if __name__ == "__main__":
 | - | - | - | - |
 | **目的** |通过渐进式披露发现的按需功能 |启动时加载持久上下文 |代理可以调用​​的编程操作 |
 | **加载** |仅当代理确定相关性时才读取 |在代理启动时加载 |每个回合都可用 |
-| **格式** | `SKILL.md` 在命名目录中 | `AGENTS.md` 文件 |与代理绑定的功能 |
+| **格式** | `SKILL.md` 在命名目录中 | `AGENTS.md` 文件 |与代理绑定的功能|
 | **分层** |用户，然后项目（最后获胜）|用户，然后项目（合并）|在代理创建时定义 |
 | **何时使用** |指令是特定于任务的并且可能很大 |上下文始终相关（项目惯例、偏好）|代理需要编程操作，或者无权访问文件系统 |
 
-这些是指导方针，而不是硬性界限。在实践中，技能和记忆力是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为一种渐进式公开记忆的形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
+这些是指导方针，而不是硬性界限。在实践中，技能和记忆是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为一种渐进式公开记忆的形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
 
 ### Frontmatter 字段
 
-[Agent Skills specification](https://agentskills.io/specification) 定义了以下 frontmatter 字段：|领域 |必填 |描述 |
+[Agent Skills specification](https://agentskills.io/specification) 定义了以下 frontmatter 字段：|领域 |必填|描述 |
 | - | - | - |
 | `name` |是的 |带连字符的小写字母数字，1-64 个字符。必须与父目录名称匹配。 |
 | `description` |是的 |该技能的作用是什么以及何时使用它。最多 1,024 个字符。 |

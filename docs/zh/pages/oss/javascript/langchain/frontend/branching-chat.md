@@ -14,7 +14,7 @@ LangGraph 检查点作为分叉点：每次编辑或重新生成都会提交一�
 
 > [!注意]
 >
-> 此功能需要[LangGraph Agent Server](/oss/javascript/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deployment) 在本地运行代理以使用此模式。
+> 此功能需要[LangGraph Agent Server](/oss/javascript/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deploy-overview) 在本地运行代理以使用此模式。
 
 ## 什么是分支聊天？
 

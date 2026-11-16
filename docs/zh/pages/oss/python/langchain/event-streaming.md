@@ -4,11 +4,11 @@
 
 # 事件流
 
-从 LangChain 代理运行流式传输实时更新
+Stream real-time updates from LangChain agent runs
 
-LangChain 代理基于 LangGraph 构建，因此它们支持相同的流堆栈以及以代理为中心的消息、工具调用、状态和自定义更新的投影。
+LangChain agents are built on LangGraph, so they support the same streaming stack with agent-focused projections for messages, tool calls, state, and custom updates.
 
-对于大多数应用程序和前端用例，通过 `stream_events(..., version="v3")` 使用**事件流**。事件流返回带有类型化投影的运行对象，因此每个投影都可以独立使用，而不是解析流模式元组。
+For most application and frontend use cases, use **Event Streaming** through `stream_events(..., version="v3")`.事件流返回带有类型化投影的运行对象，因此每个投影都可以独立使用，而不是解析流模式元组。
 
 ```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -37,7 +37,7 @@ final_state = stream.output
 
 ## 您可以流式传输的内容
 
-|投影|使用 |
+|投影|使用|
 | - | - |
 | `for event in stream` |具有完整信封并可访问每个通道的原始协议事件。 |
 | `stream.messages` |模型消息流，每个 LLM 调用一个。 |
@@ -115,7 +115,7 @@ for call in stream.tool_calls:
 
 `message.tool_calls` 中的每个块都是一个 `tool_call_chunk`，其中包含调用的 `id`、其 `name` 以及仅其 `args` 的新部分。调用的块连接成其完整参数，并且 `message.tool_calls.get()` 返回已解析的工具调用。> [!注意]
 >
-> 仅保存参数的新部分的块需要 `langchain-core>=1.6.13`。在早期版本中，每个块都保存到目前为止的所有参数。
+> 仅保存参数的新部分的块需要 `langchain-core>=1.6.13`。在早期版本中，每个块都包含迄今为止的所有参数。
 
 ## 流式子代理
 
@@ -134,7 +134,7 @@ def get_weather(city: str) -> str:
 
 
 weather_agent = create_agent(
-    model=init_chat_model("openai:gpt-5.5"),
+    model=init_chat_model("openai:gpt-6.1-sol"),
     tools=[get_weather],
     name="weather_agent",
 )
@@ -147,7 +147,7 @@ def call_weather(query: str) -> str:
 
 
 supervisor = create_agent(
-    model=init_chat_model("openai:gpt-5.5"),
+    model=init_chat_model("openai:gpt-6.1-sol"),
     tools=[call_weather],
     name="supervisor",
 )
@@ -184,7 +184,7 @@ final_state = stream.output
 
 ## 多重投影
 
-对于异步代码中的并发消耗，请使用 `astream_events` 和 `asyncio.gather`：
+对于异步代码中的并发消费，请使用 `astream_events` 和 `asyncio.gather`：
 
 ```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio

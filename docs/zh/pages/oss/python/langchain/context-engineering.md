@@ -4,18 +4,18 @@
 
 ## 概述
 
-构建代理（或任何法学硕士申请）的困难部分是使它们足够可靠。虽然它们可能适用于原型，但在现实世界的用例中经常会失败。
+构建代理（或任何法学硕士申请）的困难部分是使它们足够可靠。虽然它们可能适用于原型，但在现实用例中经常会失败。
 
 ### 为什么代理会失败？
 
-当代理失败时，通常是因为代理内部的 LLM 调用采取了错误的操作/没有执行我们期望的操作。法学硕士因以下两个原因之一失败：
+当代理失败时，通常是因为代理内部的 LLM 调用采取了错误的操作/没有执行我们预期的操作。法学硕士因以下两个原因之一失败：
 
 1. 底层LLM能力不够
 2.“正确”的背景没有传递给法学硕士
 
 通常情况下，这实际上是导致代理商不可靠的第二个原因。
 
-**情境工程**是以正确的格式提供正确的信息和工具，以便法学硕士能够完成任务。这是人工智能工程师的首要工作。缺乏“正确”上下文是更可靠代理的首要障碍，LangChain 的代理抽象经过独特设计，旨在促进上下文工程。
+**背景工程**是以正确的格式提供正确的信息和工具，以便法学硕士能够完成任务。这是人工智能工程师的首要工作。缺乏“正确”上下文是更可靠代理的首要障碍，LangChain 的代理抽象经过独特设计，旨在促进上下文工程。
 
 > [!提示]
 >
@@ -50,7 +50,7 @@
 
 ### 数据来源在整个过程中，您的代理访问（读取/写入）不同的数据源：
 
-|数据来源|也称为|范围 |示例 |
+|数据来源|也称为 |范围 |示例 |
 | - | - | - | - |
 | **运行时上下文** |静态配置|对话范围 |用户 ID、API 密钥、数据库连接、权限、环境设置 |
 | **状态** |短期记忆 |对话范围 |当前消息、上传的文件、身份验证状态、工具结果 |
@@ -116,7 +116,7 @@ LangChain [middleware](/oss/python/langchain/middleware) 是使上下文工程�
 >     return base
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[state_aware_prompt]
 > )
@@ -153,7 +153,7 @@ LangChain [middleware](/oss/python/langchain/middleware) 是使上下文工程�
 >     return base
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[store_aware_prompt],
 >     context_schema=Context,
@@ -194,7 +194,7 @@ LangChain [middleware](/oss/python/langchain/middleware) 是使上下文工程�
 >     return base
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[context_aware_prompt],
 >     context_schema=Context
@@ -245,7 +245,7 @@ LangChain [middleware](/oss/python/langchain/middleware) 是使上下文工程�
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[inject_file_context]
 > )
@@ -298,7 +298,7 @@ LangChain [middleware](/oss/python/langchain/middleware) 是使上下文工程�
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[inject_writing_style],
 >     context_schema=Context,
@@ -358,7 +358,7 @@ LangChain [middleware](/oss/python/langchain/middleware) 是使上下文工程�
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[inject_compliance_rules],
 >     context_schema=Context
@@ -443,7 +443,7 @@ def search_orders(
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[public_search, private_search, advanced_search],
 >     middleware=[state_based_tools]
 > )
@@ -485,7 +485,7 @@ def search_orders(
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[search_tool, analysis_tool, export_tool],
 >     middleware=[store_based_tools],
 >     context_schema=Context,
@@ -531,7 +531,7 @@ def search_orders(
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[read_data, write_data, delete_data],
 >     middleware=[context_based_tools],
 >     context_schema=Context
@@ -555,7 +555,7 @@ def search_orders(
 >
 > # Initialize models once outside the middleware
 > large_model = init_chat_model("claude-sonnet-4-6")
-> standard_model = init_chat_model("gpt-5.5")
+> standard_model = init_chat_model("gpt-6.1-sol")
 > efficient_model = init_chat_model("gpt-5.4-mini")
 >
 > @wrap_model_call
@@ -606,7 +606,7 @@ def search_orders(
 >
 > # Initialize available models once
 > MODEL_MAP = {
->     "gpt-5.5": init_chat_model("gpt-5.5"),
+>     "gpt-6.1-sol": init_chat_model("gpt-6.1-sol"),
 >     "gpt-5.4-mini": init_chat_model("gpt-5.4-mini"),
 >     "claude-sonnet": init_chat_model("claude-sonnet-4-6"),
 > }
@@ -631,7 +631,7 @@ def search_orders(
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[store_based_model],
 >     context_schema=Context,
@@ -657,7 +657,7 @@ def search_orders(
 >
 > # Initialize models once outside the middleware
 > premium_model = init_chat_model("claude-sonnet-4-6")
-> standard_model = init_chat_model("gpt-5.5")
+> standard_model = init_chat_model("gpt-6.1-sol")
 > budget_model = init_chat_model("gpt-5.4-mini")
 >
 > @wrap_model_call
@@ -685,7 +685,7 @@ def search_orders(
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[context_based_model],
 >     context_schema=Context
@@ -765,7 +765,7 @@ class CustomerSupportTicket(BaseModel):
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[state_based_output]
 > )
@@ -818,7 +818,7 @@ class CustomerSupportTicket(BaseModel):
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[store_based_output],
 >     context_schema=Context,
@@ -872,7 +872,7 @@ class CustomerSupportTicket(BaseModel):
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[context_based_output],
 >     context_schema=Context
@@ -914,7 +914,7 @@ class CustomerSupportTicket(BaseModel):
 >         return "User is not authenticated"
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[check_authentication]
 > )
 > ```> [选项卡] 商店
@@ -950,7 +950,7 @@ class CustomerSupportTicket(BaseModel):
 >         return "No preferences found"
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[get_preference],
 >     context_schema=Context,
 >     store=InMemoryStore()
@@ -989,7 +989,7 @@ class CustomerSupportTicket(BaseModel):
 >     return f"Found {len(results)} results for user {user_id}"
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[fetch_user_data],
 >     context_schema=Context
 > )
@@ -1035,7 +1035,7 @@ class CustomerSupportTicket(BaseModel):
 >         return Command(update={"authenticated": False})
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[authenticate_user]
 > )
 > ```
@@ -1077,7 +1077,7 @@ class CustomerSupportTicket(BaseModel):
 >     return f"Saved preference: {preference_key} = {preference_value}"
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[save_preference],
 >     context_schema=Context,
 >     store=InMemoryStore()
@@ -1106,7 +1106,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import SummarizationMiddleware
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[...],
     middleware=[
         SummarizationMiddleware(

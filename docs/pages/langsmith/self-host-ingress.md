@@ -92,7 +92,7 @@ langsmith-ingress            nginx   <host>   35.227.243.203   80, 443   95d
 >
 > Gateway API support is available as of LangSmith v0.12.0
 
-If your cluster uses the [Kubernetes Gateway API](https://gateway-api.sigs.k8s.io/), you can configure LangSmith to provision HTTPRoute resources. This will create an HTTPRoute for LangSmith and an HTTPRoute for each [agent deployment](/langsmith/deployment).
+If your cluster uses the [Kubernetes Gateway API](https://gateway-api.sigs.k8s.io/), you can configure LangSmith to provision HTTPRoute resources. This will create an HTTPRoute for LangSmith and an HTTPRoute for each [agent deployment](/langsmith/deploy-overview).
 
 #### Parameters
 
@@ -134,7 +134,7 @@ kubectl get httproute
 >
 > Istio Gateway support is available as of LangSmith v0.12.0
 
-If your cluster uses [Istio](https://istio.io/), you can configure LangSmith to provision VirtualService resources. This will create a VirtualService for LangSmith and a VirtualService for each [agent deployment](/langsmith/deployment).
+If your cluster uses [Istio](https://istio.io/), you can configure LangSmith to provision VirtualService resources. This will create a VirtualService for LangSmith and a VirtualService for each [agent deployment](/langsmith/deploy-overview).
 
 #### Parameters
 

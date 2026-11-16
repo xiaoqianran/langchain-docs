@@ -102,13 +102,13 @@ export OLLAMA_API_KEY=...
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 
-agent = create_agent(model="google_genai:gemini-3.6-flash", tools=[])
+agent = create_agent(model="google_genai:gemini-4-hydrogen", tools=[])
 ```
 
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 
-agent = create_agent(model="openai:gpt-5.5", tools=[])
+agent = create_agent(model="openai:gpt-6.1-sol", tools=[])
 ```
 
 ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -166,7 +166,7 @@ sandbox = client.create_sandbox(name="langchain-docs", snapshot_name="docs-test-
 backend = LangSmithSandbox(sandbox=sandbox)
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[],
     middleware=[FilesystemMiddleware(backend=backend)],
 )
@@ -183,7 +183,7 @@ sandbox = client.create_sandbox(name="langchain-docs", snapshot_name="docs-test-
 backend = LangSmithSandbox(sandbox=sandbox)
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     middleware=[FilesystemMiddleware(backend=backend)],
 )
@@ -319,13 +319,13 @@ upload_stream.output
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 python analyze_sales.py
-```第一次运行时，LangSmith 会配置一个沙箱（这可能需要几秒钟）。该脚本上传 `sales.csv`，流式传输代理运行，并在助理消息到达时打印它们。您应该看到示例销售数据的分析：产品级收入、哪些小部件销量最高以及简要的趋势说明。确切的措辞因模型运行而异。
+```第一次运行时，LangSmith 会配置一个沙箱（这可能需要几秒钟）。该脚本上传 `sales.csv`，流式传输代理运行，并在助理消息到达时打印它们。您应该看到示例销售数据的分析：产品级收入、哪些小部件销量最高，以及简要趋势说明。确切的措辞因模型运行而异。
 
 在 [LangSmith](https://smith.langchain.com/?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-deep-agent-from-scratch) 中打开运行，并观察代理在回复之前使用文件系统工具（如果在沙箱中运行 Python，则为 `read_file` 和 `execute`）。
 
 ## 添加上下文管理
 
-步骤 2 之后，每个工具结果都会保留在消息历史记录中。真正的分析会话（多个绘图、失败的脚本、大的`read_file`输出）会快速填充上下文窗口。
+步骤 2 之后，每个工具结果都会保留在消息历史记录中。真正的分析会话（多个绘图、失败的脚本、大量`read_file`输出）会快速填充上下文窗口。
 
 当历史记录变得太大时，[⟦T85⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware) 会压缩较旧的回合，因此代理可以继续工作，而无需您手动修剪消息。这对于第一个 `sales.csv` 问题不太重要，而对于后续问题（例如“现在按产品细分并绘制每月趋势”）更重要。
 
@@ -334,7 +334,7 @@ python analyze_sales.py
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.middleware import FilesystemMiddleware, SummarizationMiddleware
 
-model = "google_genai:gemini-3.6-flash"
+model = "google_genai:gemini-4-hydrogen"
 
 agent = create_agent(
     model=model,
@@ -349,7 +349,7 @@ agent = create_agent(
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.middleware import FilesystemMiddleware, SummarizationMiddleware
 
-model = "openai:gpt-5.5"
+model = "openai:gpt-6.1-sol"
 
 agent = create_agent(
     model=model,
@@ -434,7 +434,7 @@ agent = create_agent(
         SummarizationMiddleware(model=model, backend=backend),
     ],
 )
-```运行多轮会话以查看摘要的实际效果。初步分析后，提出引发更多文件读取或脚本运行的后续问题。在LangSmith中，在后续模型调用之前查找汇总步骤。欲了解更多信息，[Context engineering](/oss/python/langchain/context-engineering)。
+```运行多轮会话以查看摘要的实际效果。初步分析后，提出引发更多文件读取或脚本运行的后续问题。在LangSmith中，在后续模型调用之前查找汇总步骤。 For more information, [Context engineering](/oss/python/langchain/context-engineering).
 
 ## 添加技能
 
@@ -489,7 +489,7 @@ backend.upload_files(skill_files)
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.middleware import FilesystemMiddleware, SkillsMiddleware, SummarizationMiddleware
 
-model = "google_genai:gemini-3.6-flash"
+model = "google_genai:gemini-4-hydrogen"
 
 agent = create_agent(
     model=model,
@@ -505,7 +505,7 @@ agent = create_agent(
 ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.middleware import FilesystemMiddleware, SkillsMiddleware, SummarizationMiddleware
 
-model = "openai:gpt-5.5"
+model = "openai:gpt-6.1-sol"
 
 agent = create_agent(
     model=model,
@@ -600,7 +600,7 @@ agent = create_agent(
 
 ## 添加可视化子代理
 
-某些任务会产生大量中间输出（脚本草稿、失败的运行、文件读取），如果将其保留在一个线程中，这些输出会占用主代理的上下文。 [subagent](/oss/python/deepagents/subagents) 在自己的上下文窗口中运行，因此主管只能看到最终结果，而不是一路上的每个工具调用。这样可以保持主要分析的重点，并为后续问题留出空间。
+某些任务会产生大量中间输出（脚本草稿、失败的运行、文件读取），如果将其保留在一个线程中，这些输出会占用主代理的上下文。 [subagent](/oss/python/deepagents/subagents) 在其自己的上下文窗口中运行，因此主管只能看到最终结果，而不是一路上的每个工具调用。这样可以保持主要分析的重点，并为后续问题留出空间。
 
 使用子代理有意义的一个例子是图表生成。绘图通常意味着在图形准备好之前迭代 Python 脚本、安装包以及读取错误输出。下面的`visualizer`子代理可以独立处理该工作，而主代理则继续规划和分析。通过[⟦T93⟧](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware)，主代理还可以并行委托该图表工作，而不是在每个图上阻塞。
 
@@ -616,7 +616,7 @@ from deepagents.middleware import (
 )
 from langchain.agents.middleware import TodoListMiddleware
 
-model = "google_genai:gemini-3.6-flash"
+model = "google_genai:gemini-4-hydrogen"
 
 visualizer: SubAgent = {
     "name": "visualizer",
@@ -649,7 +649,7 @@ from deepagents.middleware import (
 )
 from langchain.agents.middleware import TodoListMiddleware
 
-model = "openai:gpt-5.5"
+model = "openai:gpt-6.1-sol"
 
 visualizer: SubAgent = {
     "name": "visualizer",
@@ -835,9 +835,9 @@ agent = create_agent(
         SubAgentMiddleware(backend=backend, subagents=[visualizer]),
     ],
 )
-```尝试使用诸如“分析 sales.csv，然后按产品创建收入条形图”之类的提示。主代理处理分析和规划，并通过`task`工具将图表生成委托给`visualizer`子代理。
+```尝试使用诸如“分析 sales.csv，然后按产品创建收入条形图”之类的提示。 The main agent handles analysis and planning and delegates chart generation to the `visualizer` subagent via the `task` tool.
 
-如果您在[Setup](#setup)中启用了跟踪，请在[LangSmith](https://smith.langchain.com/?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-deep-agent-from-scratch)中打开运行。您应该看到对 `visualizer` 的 `task` 调用，一个具有自己的工具循环的单独子运行，以及返回给主管的简短结果。
+If you enabled tracing in [Setup](#setup), open the run in [LangSmith](https://smith.langchain.com/?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-deep-agent-from-scratch). You should see a `task` call to `visualizer`, a separate sub-run with its own tool loop, and a short result returned to the supervisor.
 
 ## 你构建了什么
 
@@ -850,14 +850,14 @@ agent = create_agent(
 | [⟦T104⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) |领域知识按需加载 |
 | [⟦T105⟧](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware) + [⟦T106⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware) |并行可视化子代理 |
 
-这与 [⟦T107⟧](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 具有相同的基础：手动组装，因此您可以准确控制所包含的内容。
+This is the same foundation as [⟦T107⟧](https://reference.langchain.com/python/deepagents/graph/create_deep_agent): assembled manually so you control exactly what's included.
 
 可能性并不止于此：请参阅 [Prebuilt middleware](/oss/python/langchain/middleware/built-in) 了解可组合功能的完整列表，以及 [⟦T108⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 参考了解所有配置选项。
 
-要使用预组装版本，请参阅[Customize Deep Agents](/oss/python/deepagents/customization)。有关使用`create_deep_agent`的完整数据分析示例，请参阅[Data analysis](/oss/python/deepagents/data-analysis)。
+To work with the pre-assembled version, see [Customize Deep Agents](/oss/python/deepagents/customization). For the full data analysis example using `create_deep_agent`, see [Data analysis](/oss/python/deepagents/data-analysis).
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/deep-agent-from-scratch.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

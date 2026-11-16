@@ -192,11 +192,11 @@ response = model.invoke(messages)
 >
 > 消息的原始内容。
 >
-> **内容\_块** `ContentBlock[]`
+> **内容块** `ContentBlock[]`
 >
 > 消息的标准化[content blocks](#message-content)。
 >
-> **工具\_调用** `dict[] | None`
+> **工具调用** `dict[] | None`
 >
 > 模型调用的工具。
 >
@@ -206,11 +206,11 @@ response = model.invoke(messages)
 >
 > 消息的唯一标识符（由 LangChain 自动生成或在提供商响应中返回）
 >
-> **使用\_元数据** `dict | None`
+> **使用_元数据** `dict | None`
 >
 > 消息的使用元数据，其中可以包含令牌计数（如果可用）。
 >
-> **响应\_元数据** `ResponseMetadata | None`
+> **响应元数据** `ResponseMetadata | None`
 >
 > 消息的响应元数据。
 
@@ -324,7 +324,7 @@ response = model.invoke(messages)  # Model processes the result
 >
 > 工具调用的字符串化输出。
 >
-> **工具\_call\_id** `string` *必填*
+> **tool_call_id** `string` *必填*
 >
 > 此消息正在响应的工具调用的 ID。必须与[⟦T55⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage)中工具调用的ID匹配。
 >
@@ -340,7 +340,7 @@ response = model.invoke(messages)  # Model processes the result
 >
 >> [accordion] 示例：使用工件检索元数据
 >>
->> 例如，[retrieval](/oss/python/deepagents/retrieval) 工具可以从文档中检索一段段落以供模型参考。当消息`content`包含模型将引用的文本时，`artifact`可以包含应用程序可以使用的文档标识符或其他元数据（例如，用于呈现页面）。请参阅下面的示例：
+>> 例如，[retrieval](/oss/python/deepagents/retrieval) 工具可以从文档中检索一段段落以供模型参考。当消息`content`包含模型将引用的文本时，`artifact`可以包含应用程序可以使用的文档标识符或其他元数据（例如，用于渲染页面）。请参阅下面的示例：
 >>
 >> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langchain.messages import ToolMessage
@@ -405,7 +405,7 @@ human_message = HumanMessage(content_blocks=[
 
 LangChain 为跨提供商的消息内容提供标准表示。
 
-消息对象实现了一个 `content_blocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从 [⟦T67⟧](/oss/python/integrations/chat/anthropic) 或 [⟦T68⟧](/oss/python/integrations/chat/openai) 生成的消息将包含相应提供者格式的 `thinking` 或 `reasoning` 块，但可以延迟解析为一致的 [⟦T71⟧](#content-block-reference) 表示形式：
+消息对象实现一个 `content_blocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从 [⟦T67⟧](/oss/python/integrations/chat/anthropic) 或 [⟦T68⟧](/oss/python/integrations/chat/openai) 生成的消息将包含相应提供者格式的 `thinking` 或 `reasoning` 块，但可以延迟解析为一致的 [⟦T71⟧](#content-block-reference) 表示形式：
 
 > [标签] Anthropic
 >
@@ -716,7 +716,7 @@ message = {
 >>
 >> 该内容块的唯一标识符（由提供者或LangChain生成）。
 >>
->> **哑剧\_type** `string`
+>> **mime_type** `string`
 >>
 >> 图片[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image)（例如，`image/jpeg`、`image/png`）。对于 Base64 数据是必需的。
 >
@@ -740,7 +740,7 @@ message = {
 >>
 >> 该内容块的唯一标识符（由提供者或LangChain生成）。
 >>
->> **哑剧\_类型** `string`
+>> **mime_type** `string`
 >>>> 音频[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#audio)（例如，`audio/mpeg`、`audio/wav`）。对于 Base64 数据是必需的。
 >
 >> [手风琴] VideoContentBlock
@@ -763,7 +763,7 @@ message = {
 >>
 >> 该内容块的唯一标识符（由提供者或LangChain生成）。
 >>
->> **哑剧\_类型** `string`
+>> **mime_type** `string`
 >>
 >> 视频 [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#video)（例如，`video/mp4`、`video/webm`）。对于 Base64 数据是必需的。
 >
@@ -787,7 +787,7 @@ message = {
 >>
 >> 该内容块的唯一标识符（由提供者或LangChain生成）。
 >>
->> **哑剧\_类型** `string`
+>> **mime_type** `string`
 >>
 >> 文件[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml)（例如，`application/pdf`）。对于 Base64 数据是必需的。
 >
@@ -802,7 +802,7 @@ message = {
 >> **文字** `string`
 >>>> 正文内容
 >>
->> **mime\_type** `string`
+>> **mime_type** `string`
 >>
 >> 文本的[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml)（例如，`text/plain`、`text/markdown`）
 
@@ -936,7 +936,7 @@ message = {
 >>
 >> 永远`"server_tool_result"`
 >>
->> **工具\_call\_id** `string` *必填*
+>> **tool_call_id** `string` *必填*
 >>>> 相应服务器工具调用的标识符。
 >>
 >> **id** `string`
@@ -977,7 +977,7 @@ message = {
 >
 > 内容块作为 LangChain v1 中消息的新属性引入，以标准化跨提供商的内容格式，同时保持与现有代码的向后兼容性。
 >
-> 内容块并不是 [⟦T177⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 属性的替代品，而是一个可用于以标准化格式访问消息内容的新属性。
+> 内容块不是 [⟦T177⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 属性的替代品，而是一个可用于以标准化格式访问消息内容的新属性。
 
 ## 序列化
 

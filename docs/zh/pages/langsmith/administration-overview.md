@@ -49,10 +49,10 @@ flowchart TD
 
 当您第一次登录时，系统会自动为您创建一个个人组织。如果您想与其他人协作，您可以创建一个单独的组织并邀请您的团队成员加入。您的个人组织和共享组织之间存在一些重要区别：
 
-|特色|个人|共享|
+|特色 |个人|共享|
 | - | - | - |
 |最大工作空间 | 1 |可变，取决于计划（参见[pricing page](https://www.langchain.com/pricing)）|
-|合作|无法邀请用户 |可以邀请用户|
+|合作|无法邀请用户 |可以邀请用户 |
 |计费：付费计划|仅限开发者计划 |所有其他可用计划 |
 
 ### 工作区
@@ -79,17 +79,17 @@ LangSmith 通过代理的环境将跟踪链接到代理，并使用保留的 `Ag
 
 ### 资源
 
-资源是用于构建、运行和观察代理的具体实体。示例包括 [prompts](/langsmith/prompt-context-hub)、[datasets](/langsmith/manage-datasets)、[annotation queues](/langsmith/annotation-queues) 和 [deployments](/langsmith/deployment)。资源可以限定在特定代理的范围内。
+资源是用于构建、运行和观察代理的具体实体。示例包括 [prompts](/langsmith/prompt-context-hub)、[datasets](/langsmith/manage-datasets)、[annotation queues](/langsmith/annotation-queues) 和 [deployments](/langsmith/deploy-overview)。资源可以限定在特定代理的范围内。
 
 ### 设置所在位置
 
 有关哪些功能在哪些范围内可用的详细信息，请参阅下表：|资源/设置 |范围 |
 | - | - |
-|追踪项目 |工作空间或代理|
+|追踪项目 |工作空间或代理 |
 |注释队列 |工作空间或代理 |
 |部署|工作空间或代理 |
-|数据集和实验 |工作空间或代理 |
-|提示|工作空间或代理|
+|数据集和实验 |工作空间或代理|
+|提示|工作空间或代理 |
 | [Resource Tags](#resource-tags) |工作空间 |
 | API 密钥 |工作空间 |
 |设置包括秘密、反馈配置、模型、规则和共享 URL |工作空间 |
@@ -97,7 +97,7 @@ LangSmith 通过代理的环境将跟踪链接到代理，并使用保留的 `Ag
 | RBAC：分配工作区角色 |工作空间 |
 |数据保留、使用限制 |工作区\* |
 |计划和账单、积分、发票 |组织|
-|用户管理：邀请用户加入组织 |组织\*\* |
+|用户管理：邀请用户加入组织|组织\*\* |
 |添加工作区 |组织|
 |分配组织角色 |组织|
 | RBAC：创建/编辑/删除自定义角色 |组织|
@@ -176,11 +176,11 @@ PAT 前缀为 `lsv2_pt_`成员可以停用、重新激活或删除自己的 PAT�
 >
 > 避免使用 PAT 来验证来自应用程序的请求。相反，将它们用于与 LangSmith API 交互的个人脚本或工具。如果与 PAT 关联的用户从组织中删除，则 PAT 将不再起作用。
 
-#### 服务键服务密钥与 PAT 类似，但用于代表服务帐户对LangSmith API 的请求进行身份验证。 Organization Admins can create any service key. Organization Operators and Organization Users can create workspace-scoped service keys in workspaces where their role grants `workspaces:manage-keys`, such as Workspace Admin. For the full breakdown, see [API keys operations](/langsmith/organization-workspace-operations#api-keys). We recommend using service keys for applications or services that need to interact with the LangSmith API, such as LangGraph agents or other integrations.
+#### Service keys服务密钥与 PAT 类似，但用于代表服务帐户对LangSmith API 的请求进行身份验证。组织管理员可以创建任何服务密钥。组织操作员和组织用户可以在其角色授予`workspaces:manage-keys`的工作区中创建工作区范围的服务密钥，例如工作区管理员。有关完整细分，请参阅[API keys operations](/langsmith/organization-workspace-operations#api-keys)。我们建议对需要与LangSmith API 交互的应用程序或服务（例如LangGraph 代理或其他集成）使用服务密钥。
 
 服务密钥的范围可以是单个工作区、多个工作区或整个组织。它们可用于验证对 LangSmith API 有权访问的任何工作区的请求。
 
-Service keys are prefixed with `lsv2_sk_`.
+服务密钥以 `lsv2_sk_` 为前缀。
 
 服务密钥只能删除，不能停用。
 
@@ -189,7 +189,7 @@ Service keys are prefixed with `lsv2_sk_`.
 > 使用 `X-Tenant-Id` 标题指定目标工作空间。
 >
 > * **使用 PAT 时**：如果省略此标头，请求将针对与密钥关联的默认工作区运行。
-> * **使用组织范围的服务密钥时**：访问工作区范围的资源时必须包含 `X-Tenant-Id` 标头。如果没有它，请求将失败并出现 `403 Forbidden` 错误。> [!注意]
+> * **使用组织范围的服务密钥时**：访问工作区范围的资源时，必须包含 `X-Tenant-Id` 标头。如果没有它，请求将失败并出现 `403 Forbidden` 错误。> [!注意]
 >
 > 要创建任何类型的 API 密钥，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
 
@@ -223,7 +223,7 @@ Service keys are prefixed with `lsv2_sk_`.
 
 有关设置组织和工作空间的更多信息，请参阅[organization setup guide](/langsmith/set-up-hierarchy#organization-roles)。
 
-按角色划分的组织级权限：| |组织限制 |组织查看器 |组织用户|组织运营商|组织管理|
+按角色划分的组织级权限：| |组织限制|组织查看器 |组织用户|组织运营商|组织管理|
 | - | - | - | - | - | - |
 |查看组织配置 | ✅ | ✅ | ✅ | ✅ | ✅ |
 |查看组织角色 | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -318,7 +318,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 我们采用自动升级跟踪模型有两个原因：
 
 1. 我们认为，符合任何这些条件的痕迹从根本上来说比其他痕迹更有趣，因此用户能够将它们保留更长时间是有好处的。
-2. 从理念上讲，我们希望对可能无法进行有意义交互的痕迹向客户收取较低的费用。我们认为自动升级使我们的定价模型与 LangSmith 带来的价值保持一致，只有具有有意义交互的痕迹才会收取更高的费用。
+2. 从理念上讲，我们希望对可能无法进行有意义交互的痕迹向客户收取较低的费用。我们认为自动升级使我们的定价模型与 LangSmith 带来的价值保持一致，只有具有有意义交互的痕迹才会以更高的费率收费。
 
 如果您对我们的定价模型有疑问或疑虑，请随时通过[support.langchain.com](https://support.langchain.com)联系支持人员，让我们知道您的想法！**数据保留如何影响下游功能？**
 
@@ -428,7 +428,7 @@ LangSmith具有速率限制，旨在确保所有用户的服务稳定性。为�
 
 > [!注意]
 >
-> 值得注意的是，如果端点长时间处于饱和状态，重试可能不会有效，因为您的应用程序最终会运行足够大的积压，耗尽所有重试。
+> 值得注意的是，如果端点长时间处于饱和状态，重试可能不会有效，因为您的应用程序最终将运行足够大的积压以耗尽所有重试。
 >
 > 如果是这种情况，我们愿意更具体地讨论您的需求。请通过 [LangSmith Support](https://support.langchain.com) 联系支持人员，提供有关您的应用程序吞吐量需求和示例代码的详细信息，我们可以与您合作，更好地了解最佳方法是否是修复错误、更改应用程序代码或不同的 LangSmith 计划。
 
@@ -492,4 +492,4 @@ LangSmith 允许您设置两个不同的每月限额，反映了上述数据保�
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/administration-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/administration-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

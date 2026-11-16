@@ -64,7 +64,7 @@ for document in loader.lazy_load():
 | [Unstructured](/oss/python/integrations/document_loaders/unstructured_file) |使用Unstructed 加载和解析网页|套餐 |
 | [Apify Dataset](https://docs.apify.com/integrations/langchain) |从 Apify 数据集加载文档 |应用程序接口 |
 | [Apify Crawl](https://docs.apify.com/integrations/langchain) |按需抓取网站并将每个页面作为文档加载 |应用程序接口 |
-| [Diffbot Crawl Loader](https://github.com/diffbot/langchain-diffbot) |使用 Diffbot Crawl API 抓取网站并将每个页面加载为本体一致的 JSON |应用程序接口 |
+| [Diffbot Crawl Loader](https://github.com/diffbot/langchain-diffbot) |使用 Diffbot Crawl API 爬网网站并将每个页面加载为本体一致的 JSON |应用程序接口 |
 | [Diffbot Extract Loader](https://github.com/diffbot/langchain-diffbot) |使用 Diffbot Extract API 将网页加载为本体一致的 JSON |应用程序接口 |
 | [Docling](/oss/python/integrations/document_loaders/docling) |使用Docling加载和解析网页|套餐 |
 | [DomPruner](https://github.com/dong7812/dompruner-py) | DOM AST 修剪：将网页加载为紧凑的 Markdown，令牌减少 97% 以上，无需 API 密钥 |套餐 |
@@ -112,19 +112,19 @@ PDF 文件的合作伙伴和社区加载程序。首先列出托管合作伙伴�
 
 以下文档加载器允许您从常见数据格式加载数据。
 
-|文档加载器|数据类型 |
+|文档加载器|数据类型|
 | - | - |
 | [⟦T25⟧](/oss/python/integrations/document_loaders/unstructured_file) |许多文件类型（请参阅[https://docs.unstructured.io/platform/supported-file-types](https://docs.unstructured.io/platform/supported-file-types)）|
 | [⟦T26⟧](https://github.com/jaypakdevkr/HWP-Loader) | HWP/HWPX 文件 |
 | [⟦T27⟧](/oss/python/integrations/document_loaders/docling) |各种文件类型（参见[https://docling-project.github.io/docling/](https://docling-project.github.io/docling/)）|
-| [⟦T28⟧](https://datainsight.polarisoffice.com/playground) |各种文件类型（参见[https://datainsight.polarisoffice.com/documentation?docType=doc\_extract](https://datainsight.polarisoffice.com/documentation?docType=doc_extract)）|
+| [⟦T28⟧](https://datainsight.polarisoffice.com/playground) |各种文件类型（参见[https://datainsight.polarisoffice.com/documentation?docType=doc_extract](https://datainsight.polarisoffice.com/documentation?docType=doc_extract)）|
 
 > [!注意]
 >
 > 较旧的教程通常从 `langchain_community` 导入 `TextLoader` 和 `JSONLoader`。这些类仍然在未维护的 [⟦T32⟧](https://pypi.org/project/langchain-community/) 包中提供，但不应再使用。对于新工作，首选上述合作伙伴包之一。请参阅[LangChain Community sunset notice](https://github.com/langchain-ai/langchain-community/issues/674)。
 
-## 所有文档加载器|整合 |下载 |
-| :- | :- |
+## 所有文档加载器|整合|下载 |
+| :-| :-|
 | [⟦T33⟧](/oss/python/integrations/document_loaders/google_bigquery) | [  ⟦T117⟧](https://pypi.org/project/langchain-google-community/) |
 | [⟦T34⟧](/oss/python/integrations/document_loaders/google_cloud_storage_directory) | [  ⟦T118⟧](https://pypi.org/project/langchain-google-community/) |
 | [⟦T35⟧](/oss/python/integrations/document_loaders/google_cloud_storage_file) | [  ⟦T119⟧](https://pypi.org/project/langchain-google-community/) |

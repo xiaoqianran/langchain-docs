@@ -6,7 +6,7 @@
 
 LangSmith代理服务器设置，您可以在基础架构中自行托管代理服务器并将跟踪发送到LangSmith云或自托管LangSmith实例。
 
-混合是[LangSmith Agent Server](/langsmith/deployment)的托管设置，它**在生产中部署和运行代理**。
+混合是[LangSmith Agent Server](/langsmith/agent-server)的托管设置，它**在生产中部署和运行代理**。
 
 在混合平台设置中，您可以在自己的基础设施中自行托管[Agent Servers](/langsmith/agent-server)，并将其跟踪发送到LangSmith，其中LangSmith可以是[self-hosted](/langsmith/self-hosted)实例或[LangSmith Cloud](/langsmith/cloud)。
 

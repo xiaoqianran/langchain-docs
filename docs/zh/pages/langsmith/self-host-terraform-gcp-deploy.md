@@ -191,7 +191,7 @@ cd terraform/modules/gcp
 
 > [!注意]
 >
-> `main` 分支和 `v0.17.x` 发布标签部署 Helm Chart 0.17，本指南对它们进行了介绍。 `v0.16.x`标签部署图表0.16。要留在图表 0.16，请列出标签并查看最新的 `v0.16.x` 标签：
+> `main` 分支和 `v0.17.x` 发布标签部署 Helm Chart 0.17，本指南对它们进行了介绍。 `v0.16.x`标签部署图表0.16。要停留在图表 0.16 上，请列出标签并查看最新的 `v0.16.x` 标签：
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > git tag -l 'v0.16.*' --sort=-v:refname | head -1
@@ -594,7 +594,7 @@ LangSmith 然后分阶段转移到 SmithDB。 ClickHouse 始终保持启用状�
 kubectl get pods -n langsmith | grep smithdb
 ```
 
-### 沙箱
+### 沙盒
 
 `enable_sandboxes` 为LangSmith 沙箱提供基础设施：支持 KVM 的沙箱主机节点池、用于 JuiceFS 元数据的专用 Memorystore 实例以及 JuiceFS 配置 Secret。沙箱主机 Pod 自行挂载 JuiceFS，并且 `juicefs-format` 作业在第一次部署时准备卷。沙箱需要 GKE 标准和`enable_gcp_iam_module = true`，并且该模块需要外部 Redis (`redis_source = "external"`)。
 
@@ -639,7 +639,7 @@ make deploy
 1. 查看`main`或最新的`v0.17.x`标签。2. 在运行`make apply`之前，编辑`infra/terraform.tfvars`：
    * 如果设置了`sandbox_host_image_tag`，请将其删除。 0.17 模块忽略它。
    * 清除`langsmith_helm_chart_version`中的`0.16.x`值，或设置`0.17.x`补丁，并运行`unset CHART_VERSION`（如果您的shell设置了它）。 `deploy.sh` 从 Terraform 输出读取引脚，因此 `terraform.tfvars` 中的更改仅在 `make apply` 之后生效。
-   * 使用 SmithDB，选择大小。现在，`sizing_profile`之后是未设置的`smithdb_sizing`：`production`给出`medium`，`production-large`给出`large`，`minimum`给出`minimal`，它没有SmithDB节点池。对于 `medium` 和 `large`，Terraform 替换了缓存池，对于 `large` 还替换了计算池。 `large` 运行 12 个 SmithDB Pod，请求约 350 个 vCPU。要保持图表 0.16 池，请运行 `make smithdb-configure SIZING=small CACHE=local-ssd`。
+   * 使用 SmithDB，选择大小。现在，未设置的`smithdb_sizing`紧随`sizing_profile`：`production`给出`medium`，`production-large`给出`large`，`minimum`给出`minimal`，它没有SmithDB节点池。对于 `medium` 和 `large`，Terraform 替换了缓存池，对于 `large` 还替换了计算池。 `large` 运行 12 个 SmithDB Pod，请求约 350 个 vCPU。要保持图表 0.16 池，请运行 `make smithdb-configure SIZING=small CACHE=local-ssd`。
    * 使用 SmithDB 和创建的元存储，未设置的 `smithdb_metastore_tier` 现在会跟随大小，并且调整大小会使 Cloud SQL 离线不到 60 秒。要保留当前等级，请设置`smithdb_metastore_tier = "db-custom-2-8192"`。
    * 使用 SmithDB，删除 `smithdb_metastore_use_ssl = true`。 Cloud SQL 身份验证代理现在是已创建元存储的默认设置，并且在设置两者时计划会失败。要在没有代理的情况下保持连接（模式 2，仅用于测试和登台），请设置 `smithdb_metastore_use_auth_proxy = false`。* 使用沙箱，`sizing_profile`设置为`production`或`production-large`，没有`sandbox_host_machine_type`，设置`sandbox_host_machine_type = "n2-standard-8"`。该 pin 会保留当前沙箱主机节点及其安装的卷，直到步骤 7 中的耗尽为止。
 
@@ -656,7 +656,7 @@ make deploy
 
 6. 运行 `make init-values` 重新生成没有图表 0.16 `sandboxes.juicefs.csi` 块的沙箱值。7. 运行`make deploy`。启用沙箱后，部署会停止，而沙箱卷仍通过 JuiceFS CSI 驱动程序挂载，并打印沙箱主机工作负载和 JuiceFS 声明的 `kubectl delete` 命令。运行它们，等到只剩下 `juicefs-csi-*` Pod，然后再次运行 `make deploy`。运行沙箱停止，但它们的数据保留在对象存储和 Redis 中，图 0.17 挂载相同的 JuiceFS 卷。
 
-8. 如果您在步骤 2 中固定了 `sandbox_host_machine_type`，请移除该引脚并再次运行 `make apply`。 GKE 为新机器类型重新创建每个沙箱主机节点，并且正在运行的沙箱停止。
+8. 如果您在步骤 2 中固定了 `sandbox_host_machine_type`，请移除该引脚并再次运行 `make apply`。 GKE 会为新机器类型重新创建每个沙箱主机节点，并且正在运行的沙箱会停止。
 
 如果您在自己的值中启用了 Engine，图表 0.17 还需要 `engine.usageSigningSecret`（至少 32 个字符），或者 `config.existingSecretName` 命名的 Secret 中的 `engine_usage_signing_secret` 键。
 
@@ -675,7 +675,7 @@ make deploy
 * 参考[GCP variables](/langsmith/self-host-terraform-gcp-variables)和[quick reference](/langsmith/self-host-terraform-gcp-quick-reference)。
 * 查看 [GCP architecture](/langsmith/self-host-terraform-gcp-architecture) 的模块结构、流量和工作负载身份。
 * 当出现故障时，请检查[GCP troubleshooting guide](/langsmith/self-host-terraform-gcp-troubleshooting)。
-* 使用 [Agent Server hosting](/langsmith/enable-self-hosted-deployment) 在 UI 中启用代理部署。
+* 使用 [Agent Server hosting](/langsmith/enable-self-hosted-agent-server) 在 UI 中启用代理部署。
 
 ***
 

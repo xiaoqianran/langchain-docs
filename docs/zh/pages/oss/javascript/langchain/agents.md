@@ -66,7 +66,7 @@ var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools });
 
 > [!提示]
 >
-> [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 构建于 `create_agent` 之上，并附带已组装的常用功能，例如规划、文件系统工具、子代理和内存。为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents](/oss/javascript/deepagents/overview) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。当您需要自己配置较小的线束时，请使用`create_agent`。
+> [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 构建于 `create_agent` 之上，并附带已组装的常用功能，例如规划、文件系统工具、子代理和内存。为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents](/oss/javascript/deepagents/overview) 和主机代理，或运行自定义 [Agent Server](/langsmith/agent-server)。当您需要自己配置较小的线束时，请使用`create_agent`。
 
 ## 核心组件
 
@@ -763,7 +763,7 @@ result = await agent.invoke(
 
 > [!注意]
 >
-> 保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/javascript/langchain/long-term-memory) 配置代理。当部署在[LangSmith](/langsmith/deployment)上时，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。
+> 保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/javascript/langchain/long-term-memory) 配置代理。当部署在[LangSmith Agent Server](/langsmith/agent-server#persistence)上时，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。
 
 如果您还需要将每次运行的配置（例如用户 ID、API 密钥或功能标志）传递给工具和中间件，请将其作为 `context` 与配置一起传递。使用 `contextSchema` 定义该数据的形状并通过 `runtime.context` 访问它：
 

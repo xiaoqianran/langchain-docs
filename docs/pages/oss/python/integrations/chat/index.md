@@ -153,6 +153,8 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`ChatKalibr`](https://kalibr.systems/docs) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kalibr/month)](https://pypi.org/project/langchain-kalibr/) |
 | [`ChatRuncrate`](https://www.runcrate.ai/docs/sdks/langchain?utm_source=langchain\&utm_medium=directory\&utm_campaign=integrations) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-runcrate/month)](https://pypi.org/project/langchain-runcrate/) |
 | [`ChatRevana`](https://github.com/Aribk7/langchain-revana#readme) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-revana/month)](https://pypi.org/project/langchain-revana/) |
+| [`ChatGMI`](https://github.com/dhruvil-codes/langchain-gmi#readme) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gmi/month)](https://pypi.org/project/langchain-gmi/) |
+| [`ChatOutrun`](https://github.com/OutrunAIAPI/langchain-outrun#readme) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-outrun/month)](https://pypi.org/project/langchain-outrun/) |
 | [`ChatLinkrra`](https://github.com/weare-linkrra/linkrra-synap/tree/main/langchain-linkrra#readme) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-linkrra/month)](https://pypi.org/project/langchain-linkrra/) |
 | [`1Claw`](https://docs.1claw.xyz) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`API-Route`](https://www.api-route.com/docs/overview) | | | | | N/A |

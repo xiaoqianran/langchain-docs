@@ -346,7 +346,7 @@ def retry_model(
             print(f"Retry {attempt + 1}/3 after error: {e}")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     middleware=[log_before_model, retry_model],
     tools=[...],
 )
@@ -402,7 +402,7 @@ class LoggingMiddleware(AgentMiddleware):
 
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     middleware=[LoggingMiddleware()],
     tools=[...],
 )
@@ -455,7 +455,7 @@ agent = create_agent(
 >
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     middleware=[check_call_limit, increment_counter],
 >     tools=[],
 > )
@@ -497,7 +497,7 @@ agent = create_agent(
 >
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     middleware=[CallCounterMiddleware()],
 >     tools=[],
 > )
@@ -544,7 +544,7 @@ agent = create_agent(
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     middleware=[middleware1, middleware2, middleware3],
     tools=[...],
 )
@@ -641,7 +641,7 @@ agent = create_agent(
 
 > [!注意]
 >
-> 需要`langchain>=1.3.15`。中间件钩子跨度默认跟踪其输入和输出。设置 `trace_policy` 来塑造他们记录的内容。 `TracePolicy`接受诸如`process_inputs`和`process_outputs`之类的可调用函数来转换跟踪值； `omit_payload` 完全放弃它。当完整的消息历史记录对中间件的功能没有提供信息时，这可以作为优化很有用。
+> 需要`langchain>=1.3.15`。中间件钩子跨度默认跟踪其输入和输出。设置 `trace_policy` 来塑造他们记录的内容。 `TracePolicy`接受诸如`process_inputs`和`process_outputs`之类的可调用函数来转换跟踪值； `omit_payload` 完全放弃它。当完整的消息历史记录对中间件的功能没有信息时，这可以作为一种有用的优化。
 
 要从中间件的跟踪中省略输入负载：
 
@@ -667,7 +667,7 @@ configure_trace_policy(TracePolicy(process_inputs=omit_payload))  # pass None to
 1. 集中中间件——每个中间件都应该做好一件事
 2. 优雅地处理错误——不要让中间件错误导致代理崩溃
 3. **使用适当的钩子类型**：
-   * 用于顺序逻辑的节点样式（日志记录、验证）
+   * 顺序逻辑的节点样式（日志记录、验证）
    * 控制流的环绕式（重试、回退、缓存）
 4. 清楚地记录任何自定义状态属性
 5. 集成前独立对中间件进行单元测试
@@ -807,7 +807,7 @@ configure_trace_policy(TracePolicy(process_inputs=omit_payload))  # pass None to
 >     return handler(request.override(tools=relevant_tools))
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=all_tools,  # All available tools need to be registered upfront
 >     middleware=[select_tools],
 > )
@@ -833,7 +833,7 @@ configure_trace_policy(TracePolicy(process_inputs=omit_payload))  # pass None to
 >         return handler(request.override(tools=relevant_tools))
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=all_tools,  # All available tools need to be registered upfront
 >     middleware=[ToolSelectorMiddleware()],
 > )

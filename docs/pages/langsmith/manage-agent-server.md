@@ -1,4 +1,4 @@
-<!-- langchain-docs: Manage an Agent Server | https://docs.langchain.com/langsmith/manage-deployment -->
+<!-- langchain-docs: Manage an Agent Server | https://docs.langchain.com/langsmith/manage-agent-server -->
 
 # Manage an Agent Server
 
@@ -34,7 +34,7 @@ To change the repository through the API, send `source_config.repo_url` in a `PA
 >
 > To delete an Agent Server:
 >
-> 1. From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-manage-deployment), select **Agent Servers**.
+> 1. From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-manage-agent-server), select **Agent Servers**.
 > 2. Select the menu icon for the Agent Server, then select **Delete**.
 > 3. In the confirmation modal, select **Delete**.
 
@@ -71,4 +71,4 @@ To change the repository through the API, send `source_config.repo_url` in a `PA
 
 [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-agent-server.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

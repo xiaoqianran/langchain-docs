@@ -25,13 +25,13 @@ graph TB
 
 > [!注意]
 >
-> 异步子代理可以在任何实现 [Agent Protocol](https://github.com/langchain-ai/agent-protocol) 的服务器上运行，例如 [LangSmith Agent Server](/langsmith/deployment) 或自托管代理协议服务器。每个子代理独立于主管运行。 Supervisor通过SDK启动、检查、更新、取消。通知和 Webhook 需要 [Agent Server](/langsmith/agent-server)。
+> 异步子代理可以在任何实现 [Agent Protocol](https://github.com/langchain-ai/agent-protocol) 的服务器上运行，例如 [LangSmith Agent Server](/langsmith/agent-server) 或自托管代理协议服务器。每个子代理独立于主管运行。 Supervisor通过SDK启动、检查、更新、取消。通知和 Webhook 需要 [Agent Server](/langsmith/agent-server)。
 
 ## 比较同步和异步子代理|尺寸|同步子代理 |异步子代理 |
 | - | - | - |
 | **执行模型** |主管阻塞直到子代理完成 |立即返回任务ID；主管继续|
 | **它在哪里运行** |在主管的运行中|在服务器（代理服务器或另一个代理协议服务器）上的自己的线程上 |
-| **并发** |并行但阻塞 |并行和非阻塞|
+| **并发** |并行但阻塞|并行和非阻塞|
 | **结果** |作为工具结果返回 |在代理服务器上，子代理通知主管；否则主管会致电 `check_async_task` |
 | **任务中期更新** |不可能|通过`update_async_task`发送后续指令 |
 | **取消** |不阻止主管就不可能 |通过`cancel_async_task`取消任务 |
@@ -281,7 +281,7 @@ sequenceDiagram
 >
 > `updateStrategy` 需要 `deepagents>=1.16.0`。位于[**beta**](/oss/javascript/versioning)； API 和行为可能会在版本之间发生变化。
 
-如果子代理暂停输入或批准，**检查**和**列表**将其报告为 `waiting`。更新 `waiting` 任务会删除其待处理请求，取消任务只会将其标记为 `"cancelled"`，因为它没有活动的运行。参见[Handle subagents waiting for input](#handle-subagents-waiting-for-input)。
+如果子代理暂停输入或批准，**检查**和**列表**将其报告为 `waiting`。更新 `waiting` 任务会删除其挂起的请求，取消任务只会将其标记为 `"cancelled"`，因为它没有活动的运行。参见[Handle subagents waiting for input](#handle-subagents-waiting-for-input)。
 
 在[Agent Server](/langsmith/agent-server)，子代理在完成、失败或需要输入时通知主管。当主管忙碌时，它会在下一次模型调用之前收到这些通知。完成或失败的子代理会通过新的运行唤醒空闲的主管（如果两者都在[same deployment](#single-deployment)上）。只有深度代理的子代理才能唤醒空闲的主管。等待输入的子代理不会唤醒主管。主管在下次运行时会收到该通知。> [!注意]
 >
@@ -313,7 +313,7 @@ for (const message of state.messages) {
 >
 > `webhook` 和 `notifyParent` 需要 `deepagents>=1.16.0`。 `notifyParent`在[**beta**](/oss/javascript/versioning)； API 和行为可能会在版本之间发生变化。
 
-设置 `webhook` 以使代理服务器在子代理运行完成时调用您的应用程序。该调用包括运行的线程 ID、运行 ID、状态和元数据，包括 `parent_thread_id` 和 `subagent_name`。要通过您的应用程序提供结果而不是唤醒主管，还要关闭家长通知。 Supervisor 在运行时仍会收到通知。
+设置 `webhook` 以使代理服务器在子代理运行完成时调用您的应用程序。该调用包括运行的线程 ID、运行 ID、状态和元数据，包括 `parent_thread_id` 和 `subagent_name`。要通过应用程序提供结果而不是唤醒主管，还要关闭家长通知。 Supervisor 在运行时仍会收到通知。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import type { AsyncSubAgent } from "deepagents";
@@ -561,7 +561,7 @@ const asyncSubagents: AsyncSubAgent[] = [
 
 启动时，`start_async_task` 发送父级有效对话历史记录的快照，后跟任务描述。如果父级已压缩其历史记录，则快照包含该压缩上下文，而不是每条原始消息。来自父级的后续消息不会转发给子级。
 
-子代理在新的服务器线程上启动。 Fork模式发送对话消息作为运行输入；它不会复制父级的检查点历史记录或所有父级状态。元数据可以将新线程与其主管相关联，但该关联本身并不传输对话上下文。
+子代理在新的服务器线程上启动。 Fork模式发送对话消息作为运行输入；它不会复制父级的检查点历史记录或所有父级状态。元数据可以将新线程与其主管关联起来，但该关联本身并不传输对话上下文。
 
 **提示缓存重用。** 要获得对分叉对话前缀的缓存命中，请使用与父代理相同的模型、系统提示、工具和提示处理中间件来配置远程代理。 Fork模式复制对话历史记录；它不会同步这些设置。匹配配置是必要的，但还不够：呈现的前缀必须匹配，缓存命中取决于提供者。**卸载媒体。** 如果父级使用 `offloadBinaryContent` 卸载媒体，fork 模式会发送对它的引用而不是媒体本身。子代理必须是深度代理，共享父代理的后端以查看媒体；其他深度代理会收到一条不可用的注释，并且其他图形无法使用这些消息。
 
@@ -672,7 +672,7 @@ const agent = createDeepAgent({
 
 ## 参考实现
 
-[async-deep-agents](https://github.com/langchain-ai/async-deep-agents) 存储库包含部署到 LangSmith 代理服务器的 Python 和 TypeScript 工作示例。它演示了一个主管以及作为后台任务运行的研究员和编码器子代理。
+[async-deep-agents](https://github.com/langchain-ai/async-deep-agents) 存储库包含部署到 LangSmith 代理服务器的 Python 和 TypeScript 工作示例。它演示了一个主管以及作为后台任务运行的研究员和编码员子代理。
 
 ***
 

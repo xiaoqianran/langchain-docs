@@ -88,7 +88,7 @@ langsmith-ingress            nginx   <host>   35.227.243.203   80, 443   95d
 
 > [!注意]
 >
-> 从 LangSmith v0.12.0 开始提供网关 API 支持如果您的集群使用[Kubernetes Gateway API](https://gateway-api.sigs.k8s.io/)，您可以配置LangSmith来发放HTTPRoute资源。这将为LangSmith创建一个HTTPRoute，并为每个[agent deployment](/langsmith/deployment)创建一个HTTPRoute。
+> 从 LangSmith v0.12.0 开始提供网关 API 支持如果您的集群使用[Kubernetes Gateway API](https://gateway-api.sigs.k8s.io/)，您可以配置LangSmith来发放HTTPRoute资源。这将为LangSmith创建一个HTTPRoute，并为每个[agent deployment](/langsmith/deploy-overview)创建一个HTTPRoute。
 
 #### 参数
 
@@ -130,7 +130,7 @@ kubectl get httproute
 >
 > Istio 网关支持从 LangSmith v0.12.0 开始提供
 
-如果您的集群使用[Istio](https://istio.io/)，您可以配置LangSmith来配置VirtualService资源。这将为LangSmith创建一个VirtualService，并为每个[agent deployment](/langsmith/deployment)创建一个VirtualService。
+如果您的集群使用[Istio](https://istio.io/)，您可以配置LangSmith来配置VirtualService资源。这将为LangSmith创建一个VirtualService，并为每个[agent deployment](/langsmith/deploy-overview)创建一个VirtualService。
 
 ＃＃＃＃ 参数* *名称（可选）*：要引用的 Istio 网关资源的名称。默认为 `"istio-gateway"`
 * *命名空间（可选）*：Istio 网关资源所在的命名空间。默认为 `"istio-system"`

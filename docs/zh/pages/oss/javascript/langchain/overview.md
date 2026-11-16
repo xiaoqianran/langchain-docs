@@ -10,7 +10,7 @@ LangChain 提供 create_agent：一个最小的、高度可配置的代理工具
 >
 > **LangChain 与 LangGraph 与 Deep Agents**
 >
-> 当您想要运行生产代理而无需管理基础设施时，请从 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 开始使用包含电池的工具（上下文压缩、虚拟文件系统、子代理）。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/javascript/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/deployment)。 Deep Agents 构建于 LangChain [agents](/oss/javascript/langchain/agents/) 之上，您也可以直接使用。
+> 当您想要运行生产代理而无需管理基础设施时，请从 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 开始使用包含电池的工具（上下文压缩、虚拟文件系统、子代理）。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/javascript/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/agent-server)。 Deep Agents 构建于 LangChain [agents](/oss/javascript/langchain/agents/) 之上，您也可以直接使用。
 >
 > 使用 [LangChain](/oss/javascript/langchain/agents) (`create_agent`) 打造高度可定制的线束，轻松根据您的用例和数据进行定制。
 >

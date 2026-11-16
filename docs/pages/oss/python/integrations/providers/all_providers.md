@@ -106,6 +106,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Agent37 provides persistent cloud sandboxes for Deep Agents shell execution, file operations, and Deep Agents Code.
 
+> [card] [AgentCommerceToolkit](https://acg.devlab.group/docs/integrations/langchain)
+>
+> Tools that let agents call and pay for API endpoints behind a self-hosted Agent Commerce Gateway with x402, within set spending limits.
+
 > [card] [agentstate](https://skamalj.github.io/agentstate-reducer/)
 >
 > DynamoDB, Cosmos DB and Firestore checkpointers with bounded history and a long-term memory hook, plus semantic-search stores.
@@ -442,6 +446,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Multilingual audio and localization services supporting 140+ languages.
 
+> [card] [Cala](https://docs.cala.ai)
+>
+> Verified knowledge graph for AI agents that returns source-cited, traceable facts.
+
 > [card] [CallinToolkit](https://github.com/Callin-io/callin-agents/blob/main/python-langchain/README.md)
 >
 > Callin.io places outbound phone calls with an AI voice agent toward a stated objective and returns status, summary, and transcript.
@@ -478,6 +486,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Community-maintained EXAONE chat model integration for LangChain with streaming, tool calling, structured output, and reasoning history.
 
+> [card] [ChatGMI](https://github.com/dhruvil-codes/langchain-gmi#readme)
+>
+> LangChain chat integration for GMI Cloud's OpenAI-compatible Inference Engine.
+
 > [card] [Cheaper Inference](https://cheaperinference.com/docs)
 >
 > OpenAI-compatible LLM gateway that serves models from many labs below list price.
@@ -498,13 +510,17 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Chat model for meraGPT Restyler 1, which rewrites machine-written prose to read the way a person writes and is trained to keep facts and formatting.
 
+> [card] [ChatOutrun](https://github.com/OutrunAIAPI/langchain-outrun#readme)
+>
+> Outrun is a prepaid, OpenAI-compatible API that serves GPT, Claude, Gemini, Grok, DeepSeek, Qwen and other models with one key.
+
 > [card] [ChatRouter](https://github.com/danielpolok/langchain-model-router)
 >
 > A chat model that sends each request to one of several LangChain chat models, chosen by a routing strategy defined in application code.
 
 > [card] [ChopperCompressor](https://github.com/wiiiktor/chopper_demo/tree/main/integrations/chopper-rag)
 >
-> Local document compressor that cuts the exact quotes answering a query out of retrieved documents (fine-tuned mmBERT).
+> Local document compressor and reranker: cuts the exact sentences answering a query out of retrieved documents and ranks the documents, in one pass (fine-tuned mmBERT).
 
 > [card] [Chroma](/oss/python/integrations/providers/chroma)
 >
@@ -601,6 +617,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Cosmergon](https://cosmergon.com)
 >
 > Physics-based 3D agent-economy simulation for benchmarks and training.
+
+> [card] [CostCapMiddleware](https://github.com/Mattbusel/langchain-llm-prices/blob/main/docs/index.md)
+>
+> CostCapMiddleware sets per-run and per-thread USD caps for `create_agent` using dated, source-cited llm-prices tables.
 
 > [card] [Couchbase](https://docs.couchbase.com/server/current/vector-search/vector-search.html)
 >
@@ -906,6 +926,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Future AGI is an open-source observability and evaluation platform for tracing LangChain and LangGraph runs.
 
+> [card] [FXMacroData](https://github.com/fxmacrodata/langchain-fxmacrodata?utm_source=langchain\&utm_medium=integration\&utm_campaign=langchain-fxmacrodata\&utm_content=directory-listing#readme)
+>
+> LangChain tools for official-source macroeconomic data, release calendars, FX rates, positioning, commodities and point-in-time research.
+
 > [card] [GAIP](https://pypi.org/project/langchain-gaip/)
 >
 > Free LangChain tools to check whether an agent, MCP server, or API works, explain failures, follow changes, and verify cited quotes.
@@ -1025,6 +1049,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [HappyHorse by Ace Data Cloud](https://github.com/AceDataCloud/LangChain/tree/main/packages/happyhorse)
 >
 > Video generation submission and same-ID task retrieval tools provided by Ace Data Cloud for HappyHorse.
+
+> [card] [Harny](https://harny.ai/integrations/langchain)
+>
+> Long-term memory for LangChain agents: recall what each person said, and when, with Harny.
 
 > [card] [Hashlock](https://docs.hashlock.markets/)
 >
@@ -1362,6 +1390,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > AI text-to-video, image-to-video, and image generation tools behind one API key.
 
+> [card] [MAQPNA](https://docs.maqpna.com/sdk/framework-adapters/#langchain)
+>
+> MAQPNA is a policy gateway that exposes agent tools as LangChain StructuredTools.
+
 > [card] [MariaDB](https://mariadb.com/docs/connectors/other/langchain-mariadb/api-reference)
 >
 > Open-source relational database management.
@@ -1509,6 +1541,14 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Neo4j](/oss/python/integrations/providers/neo4j)
 >
 > Native graph database and analytics platform.
+
+> [card] [NestDaddySearch](https://nestdaddy.com/blog/langchain-live-web-search-news)
+>
+> Web search, real-time news search and page text extraction from NestDaddy's own search index, as LangChain tools and a news retriever.
+
+> [card] [newmean-pii](https://github.com/newmean-ai/pii/blob/main/python/README.md#integrations)
+>
+> newmean-pii masks PII in agent messages on-device using a multilingual detector for PIIMiddleware, without an external service.
 
 > [card] [NewsCatcher](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain)
 >
@@ -1902,6 +1942,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Scalable model serving framework.
 
+> [card] [Reach Dog](https://github.com/reachdog/langchain-reachdog/tree/main/libs/reachdog)
+>
+> Tools for product title enrichment, catalog grouping and market research through the Reach Dog API.
+
 > [card] [RecallChatMessageHistory](https://recallmem.dev/guides/langchain)
 >
 > Chat message history stored in a Recall session, so Recall also learns about the user from it.
@@ -2142,6 +2186,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > SideQuest is a marketplace where AI agents post paid real-world tasks (store checks, photos, phone calls, translation) for verified people to complete.
 
+> [card] [SignafaideMiddleware](https://signafaide.co.uk/docs/frameworks/langchain)
+>
+> Agent middleware that writes a signed, tamper-evident record of every tool call, verifiable offline by an auditor.
+
 > [card] [Signatrust](https://signatrust.net/docs/api)
 >
 > Cryptographically signed AI Decision Receipts for agent actions.
@@ -2350,6 +2398,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Data infrastructure for ML applications.
 
+> [card] [TensorustToolkit](https://github.com/Mattbusel/langchain-tensorust/blob/main/docs/index.md)
+>
+> Tools for US company and home ownership, BDC private credit loan marks, contractor credit and OFAC and restricted-vendor screens from public records.
+
 > [card] [Teradata](https://github.com/Teradata/langchain-teradata)
 >
 > Autonomous AI platform with integrated vector search.
@@ -2557,6 +2609,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Vequil](https://github.com/nxd914/vequil)
 >
 > Reliability and observability callback handler for AI agent operators.
+
+> [card] [VerictoSQLCheck](https://vericto.com/docs/langchain)
+>
+> Database guardrails for AI agents: checks each SQL statement against deterministic AST rules (such as DELETE without WHERE) before it runs.
 
 > [card] [Verifly](https://verifly.email/docs)
 >
