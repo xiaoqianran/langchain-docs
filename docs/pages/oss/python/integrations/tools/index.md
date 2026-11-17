@@ -556,9 +556,12 @@ The following table shows tools that generate video, image, or audio assets:
 | [`SealKeeperLookupTool`](https://sealkeeper.run/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sealkeeper/month)](https://pypi.org/project/langchain-sealkeeper/) |
 | [`FinzData`](https://pypi.org/project/langchain-finzdata/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-finzdata/month)](https://pypi.org/project/langchain-finzdata/) |
 | [`Hlido`](https://hlido.eu/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/hlido-trust/month)](https://pypi.org/project/hlido-trust/) |
+| [`MobileboxToolkit`](https://github.com/mobilebox-dev/mobilebox/tree/main/packages/python/langchain-mobilebox#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mobilebox/month)](https://pypi.org/project/langchain-mobilebox/) |
 | [`BhivedToolkit`](https://bhived.ai/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bhived/month)](https://pypi.org/project/langchain-bhived/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`viaSocket`](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/viasocket/month)](https://pypi.org/project/viasocket/) |
+| [`PaySafely`](https://github.com/screwtapeai/pay-safely) | [  ![Downloads per month](https://static.pepy.tech/badge/screwtape-pay-safely/month)](https://pypi.org/project/screwtape-pay-safely/) |
+| [`OnlineCompilerToolkit`](https://github.com/onlinecompiler-io/langchain-onlinecompiler/tree/main/python#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-onlinecompiler/month)](https://pypi.org/project/langchain-onlinecompiler/) |
 | [`CyberWareX`](https://github.com/cyberwareX/langchain-cyberwarex#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cyberwarex/month)](https://pypi.org/project/langchain-cyberwarex/) |
 | [`HyperresearchAnswerTool`](https://hyperresearch.ai/docs/answers/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperresearch/month)](https://pypi.org/project/langchain-hyperresearch/) |
 | [`SofyaSearch`](https://sofya.co/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sofya/month)](https://pypi.org/project/langchain-sofya/) |
@@ -573,6 +576,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`TensorustToolkit`](https://github.com/Mattbusel/langchain-tensorust/blob/main/docs/index.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tensorust/month)](https://pypi.org/project/langchain-tensorust/) |
 | [`ArcnmToolkit`](https://github.com/arcnm/langchain-arcnm#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-arcnm/month)](https://pypi.org/project/langchain-arcnm/) |
 | [`OutcrawlSearchTool`](https://github.com/outcrawlai/langchain-outcrawl#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-outcrawl/month)](https://pypi.org/project/langchain-outcrawl/) |
+| [`BrowsaToolkit`](https://github.com/browsa-io/browsa/tree/main/integrations/langchain-browsa#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-browsa/month)](https://pypi.org/project/langchain-browsa/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |
 | [`StophyToolkit`](https://github.com/stophydotdev/stophy/tree/main/sdk/packages/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-stophy/month)](https://pypi.org/project/langchain-stophy/) |
 | [`BoscoToolkit`](https://github.com/Bosco-Labs/bosco-labs-data/tree/main/langchain-bosco) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bosco/month)](https://pypi.org/project/langchain-bosco/) |
@@ -582,15 +586,17 @@ The following table shows tools that generate video, image, or audio assets:
 | [`X402CleanWebTool`](https://github.com/nohosa001-pixel/x402-cleanweb-agent/tree/main/packages/langchain-x402-cleanweb#readme) | N/A |
 | [`x402checkToolkit`](https://x402check.dev) | N/A |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
+| [`AsinAmazonSearch`](https://github.com/asindotdev/langchain-asin#readme) | N/A |
 | [`AutomSearch`](https://github.com/automdev/langchain-autom#readme) | N/A |
 | [`BrewPageToolkit`](https://github.com/kochetkov-ma/langchain-brewpage#readme) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
+| [`CaptureKitPageContent`](https://github.com/capturekitdev/langchain-capturekit#readme) | N/A |
+| [`ChartQueryChart`](https://github.com/chartquery/langchain-chartquery#readme) | N/A |
 | [`CleaveToolkit`](https://cleave.fi/docs/agents/langchain) | N/A |
 | [`FaxForAgentsToolkit`](https://github.com/faxforagents/langchain-faxforagents/blob/main/README.md) | N/A |
 | [`FokalsToolkit`](https://github.com/fokals/langchain-fokals#readme) | N/A |
 | [`FrameScanTool`](https://github.com/Sandeep85Das/langchain-frame) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
-| [`MobileboxToolkit`](https://github.com/fifteenA/mobilebox/tree/main/packages/python/langchain-mobilebox#readme) | N/A |
 | [`PiloterrGoogleSearch`](https://github.com/piloterr/langchain-piloterr#readme) | N/A |
 | [`PopNowToolkit`](https://popnow.ai/docs/langchain) | N/A |
 | [`ScrapeUnblockerToolkit`](https://docs.scrapeunblocker.com/sdks/langchain) | N/A |

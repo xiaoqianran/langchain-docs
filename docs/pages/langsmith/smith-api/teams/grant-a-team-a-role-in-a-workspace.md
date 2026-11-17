@@ -3,6 +3,7 @@
 # Grant a team a role in a workspace
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/platform/orgs/current/teams/{team_id}/workspaces
+Deprecated: use the corresponding /user-groups endpoint.
 Gives an organization-wide team a role in a workspace. Team members who are
 members of the workspace get the role's permissions there, and their workspace
 identities are recorded as the team's members in the workspace. The grant also

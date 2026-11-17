@@ -4,7 +4,7 @@
 
 # 云平台功能
 
-LangSmith代理服务器的纯云平台功能，包括数据区域、静态IP地址、有效负载限制和部署类型。
+LangSmith代理服务器的纯云平台功能，包括数据区域、静态IP地址、负载限制和部署类型。
 
 本页面介绍仅适用于 [Cloud](/langsmith/cloud) 部署的平台功能。对于自托管等效项，请参阅 [Deploy to self-hosted](/langsmith/deploy-to-self-hosted-overview)。
 
@@ -24,9 +24,9 @@ LangSmith代理服务器的纯云平台功能，包括数据区域、静态IP地
 
 > [!注意]
 >
-> 其他 LangSmith 服务从 [separate IP list](/langsmith/cloud#egress-from-langchain-saas) 出口。
+> 其他 LangSmith 服务从 [separate IP list](/langsmith/cloud-ip-allowlist#egress-from-langchain-saas) 出口。
 
-对于自动更新，请使用[egress IP inventory (JSON)](/langsmith/egress-ip-addresses.json)。按 `service: langsmith-deployment`、您的云和您的数据区域进行过滤。将每个匹配的 `cidr` 列入白名单。有关字段定义和更新指南，请参阅[Egress IP inventory](/langsmith/cloud#egress-ip-inventory)。|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
+对于自动更新，请使用[egress IP inventory (JSON)](/langsmith/egress-ip-addresses.json)。按 `service: langsmith-deployment`、您的云和您的数据区域进行过滤。将每个匹配的 `cidr` 列入白名单。有关字段定义和更新指南，请参阅[Egress IP inventory](/langsmith/cloud-ip-allowlist#egress-ip-inventory)。|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
 | - | - | - | - |
 | 35.197.29.146 | 34.90.213.236 | 34.40.236.16 | 3.13.80.97 |
 | 34.145.102.123 | 34.145.102.123 34.13.244.114 | 34.13.244.114 34.40.140.88 | 3.146.216.198 |
@@ -58,7 +58,7 @@ LangSmith代理服务器的纯云平台功能，包括数据区域、静态IP地
 | 34.121.5.92 | | | |
 | 34.182.176.33 | | | |
 
-## 负载大小发送到云部署的所有请求的最大负载大小为 25 MB。负载大于 25 MB 的请求会返回 `413 Payload Too Large` 错误。
+## 负载大小发送到云部署的所有请求的最大负载大小为 25 MB。有效负载大于 25 MB 的请求会返回 `413 Payload Too Large` 错误。
 
 ## 部署类型
 
@@ -84,7 +84,7 @@ LangSmith代理服务器的纯云平台功能，包括数据区域、静态IP地
 
 在创建时或在“缩放”对话框中将“**之后缩小**”设置为 `1 hour`、`1 day` 或 `1 week`（默认值）。较短的窗口可减少闲置计算费用；更长的窗户可以减少冷启动。
 
-该平台会检查计划运行并在 10 分钟内启用 [cron jobs](/langsmith/cron-jobs)，以提前开始缩减部署。这可以减少冷启动延迟，但不能保证准备就绪。默认情况下，启动期间的请求最多等待 60 秒，然后超时。副本不会横向扩展。默认情况下，其队列工作程序最多可处理 10 个并发运行，可通过 [⟦T11⟧](/langsmith/env-var-cloud#n_jobs_per_worker) 进行配置；额外的运行队列。
+该平台会检查计划运行并在 10 分钟内启用 [cron jobs](/langsmith/cron-jobs)，以提前开始缩减部署。这可以减少冷启动延迟，但不能保证准备就绪。默认情况下，启动期间的请求最多等待 60 秒，然后超时。副本不会横向扩展。它的队列工作器默认处理最多 10 个并发运行，可通过 [⟦T11⟧](/langsmith/env-var-cloud#n_jobs_per_worker) 进行配置；额外的运行队列。
 
 > [!注意]
 >
@@ -105,7 +105,7 @@ LangSmith代理服务器的纯云平台功能，包括数据区域、静态IP地
 无服务器部署运行一个包含 API 服务器和队列工作线程的副本，以及一个单独的 Redis 容器：|集装箱|无服务器 S |无服务器 M |无服务器 L |
 | - | - | - | - |
 | API服务器| 0.4 个 vCPU/1 GiB | 2 个 vCPU / 2 GiB | 4 个 vCPU/4 GiB |
-|队列工作者| 0.4 个 vCPU/1 GiB | 2 个 vCPU / 2 GiB | 4 个 vCPU/4 GiB |
+|队列工作者 | 0.4 个 vCPU/1 GiB | 2 个 vCPU / 2 GiB | 4 个 vCPU/4 GiB |
 | **可计费运行时间总计** | **0.8 vCPU / 2 GiB** | **4 个 vCPU/4 GiB** | **8 个 vCPU/8 GiB** |
 |数据库|共享、多租户 |共享、多租户 |共享、多租户 |
 
@@ -119,7 +119,7 @@ LangSmith代理服务器的纯云平台功能，包括数据区域、静态IP地
 |队列工作副本 | 1 到 10 | 1 至 20 | 1 至 40 |
 | **最低计费总运行时间** | **3 个 vCPU/6 GiB** | **6 个 vCPU/12 GiB** | **12 个 vCPU/24 GiB** |
 |数据库实例| 1 个 vCPU / 4 GiB | 2 个 vCPU / 8 GiB | 4 个 vCPU/16 GiB |
-|数据库存储|自动缩放磁盘 |自动缩放磁盘|自动缩放磁盘|最低计费运行时总数包括 2 个 API 服务器副本和 1 个队列工作线程。数据库容量单独计费，不包含在这些总计中。 [Autoscaling](#scaling) 按列出的每个副本大小添加运行时副本。
+|数据库存储 |自动缩放磁盘 |自动缩放磁盘|自动缩放磁盘|最低计费运行时总数包括 2 个 API 服务器副本和 1 个队列工作线程。数据库容量单独计费，不包含在这些总计中。 [Autoscaling](#scaling) 按列出的每个副本大小添加运行时副本。
 
 在专用部署中，计算大小和数据库大小可以独立于**缩放**对话框进行设置。大小更改将作为新修订版推出，并保留部署的线程、检查点和 API URL。
 
@@ -127,7 +127,7 @@ LangSmith代理服务器的纯云平台功能，包括数据区域、静态IP地
 
 ### 在一个部署上运行多个代理
 
-部署是[billed on the resources they consume](/langsmith/billing#langsmith-deployment-billing)，而不是他们服务的代理数量。要在一个部署的资源上运行多个代理，请在一个 `langgraph.json` 中运行[define multiple graphs](/langsmith/application-structure#define-multiple-graphs-in-one-deployment)。这对于专用来说效果很好：一个拥有自己数据库的始终在线实例可以托管多个生产代理。
+部署是[billed on the resources they consume](/langsmith/billing#langsmith-deployment-billing)，而不是他们服务的代理数量。要在一个部署的资源上运行多个代理，请在一个 `langgraph.json` 中运行 [define multiple graphs](/langsmith/application-structure#define-multiple-graphs-in-one-deployment)。这对于专用来说效果很好：一个拥有自己数据库的始终在线实例可以托管多个生产代理。
 
 部署中的所有图表共享其计算、数据库、自动缩放和部署类型。它们也作为一个修订版一起发布。当代理需要不同的大小、延迟配置文件或与其他代理隔离时，为代理提供自己的部署。
 

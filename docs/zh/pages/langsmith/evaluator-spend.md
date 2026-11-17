@@ -6,13 +6,13 @@
 
 每周限制法学硕士在评估员上的支出，并在组织范围内默认或按评估员覆盖，以保持评估员成本可预测。
 
-限制每位评估员每周的 LLM 支出，以防止单个评估员超出您的预算。 LangSmith 跟踪本周迄今为止的评估者支出，并于周一上午 12 点（世界标准时间）重置。它让 [organization admins](/langsmith/rbac#organization-admin) 为每个评估者的 [attached projects and datasets](/langsmith/evaluation-concepts#attaching-an-evaluator-to-a-tracing-project-or-dataset) 设置每周上限。该上限可以是单个组织范围内的默认值，也可以是特定附加项目或数据集上的自定义覆盖。
+限制每位评估员每周的 LLM 支出，以防止单个评估员超出您的预算。 LangSmith 跟踪本周至今的评估者支出，并于周一上午 12 点（世界标准时间）重置。它让 [organization admins](/langsmith/rbac#organization-admin) 为每个评估者的 [attached projects and datasets](/langsmith/evaluation-concepts#attaching-an-evaluator-to-a-tracing-project-or-dataset) 设置每周上限。该上限可以是单个组织范围内的默认值，也可以是特定附加项目或数据集上的自定义覆盖。
 
 本指南向您展示如何查看和配置每周评估者支出上限。
 
 > [!提示]
 >
-> LangSmith还提供[per-trace and per-model cost tracking](/langsmith/cost-tracking)和[tracing usage limits](/langsmith/administration-overview#usage-limits)用于成本控制。
+> LangSmith还提供[per-trace and per-model cost tracking](/langsmith/cost-tracking)和[tracing usage limits](/langsmith/usage-and-billing#usage-limits)用于成本控制。
 
 > [!警告]
 >
@@ -33,7 +33,7 @@
 | [Evaluators page dashboard](#evaluators-page-dashboard) | **左侧边栏中的评估者** |所有工作区成员 |
 | [Evaluators table](#evaluators-table)（消费、消费状态）| **左侧边栏中的评估者** |所有工作区成员 |
 | [Projects & Datasets tab](#projects-%26-datasets-tab-on-an-evaluator) |打开评估器，**项目和数据集**（基于代理的工作区中的**环境和数据集**）|所有工作区成员 |
-| [Organization default spend limit](#set-an-organization-default-spend-limit) |组织 **设置** > **使用配置** |需要`organization:manage`查看和编辑 |
+| [Organization default spend limit](#set-an-organization-default-spend-limit) |组织 **设置** > **使用配置** |需要`organization:manage`查看和编辑|
 | [Per-evaluator override](#override-the-default-for-an-attached-project-or-dataset) |编辑评估器 > **高级** > **支出限额** |所有会员均可查看，需要`organization:manage`编辑|> [卡][Set your first limit](#set-an-organization-default-spend-limit)
 >
 > 打开组织 **设置** 并定义一个每周上限，该上限适用于组织中所有工作区中每个项目和数据集的所有评估器附件。

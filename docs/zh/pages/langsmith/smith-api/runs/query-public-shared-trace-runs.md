@@ -4,7 +4,7 @@
 
 # 查询公共共享跟踪运行
 
-/langsmith/langsmith-platform-openapi.json 发布 /api/v2/public/{share_token}/runs/query
-返回由共享令牌标识的跟踪内的所有运行。共享令牌提供租户、项目和跟踪范围。
+/langsmith/langsmith-platform-openapi.json post /api/v2/public/{share_token}/runs/query
+使用正文有效负载进行 GET — 未创建资源。 Returns all runs within the trace identified by the share token. The share token supplies the tenant, project, and trace scope.
 
-自托管部署需要 LangSmith `v0.16` 或更高版本。
+Self-hosted deployments require LangSmith `v0.16` or later.

@@ -5,4 +5,4 @@
 # 列出组织
 
 /langsmith/langsmith-platform-openapi.json 获取 /api/v1/orgs
-使所有组织对此身份验证可见
+列出成员资格或所有组织，例如选择加入或使用 PAT 的管理员。

@@ -298,6 +298,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Open-access archive for scholarly articles.
 
+> [card] [AsinAmazonSearch](https://github.com/asindotdev/langchain-asin#readme)
+>
+> Amazon product search, price history and live seller offers as tools, through the Asin API.
+
 > [card] [assistant-ui](https://www.assistant-ui.com/docs/runtimes/langgraph)
 >
 > React framework for building AI chat interfaces with streaming support and LangGraph integration.
@@ -430,6 +434,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Sandbox backend for Deep Agents: runs shell commands and file operations in an isolated briq sandbox.
 
+> [card] [BrowsaToolkit](https://github.com/browsa-io/browsa/tree/main/integrations/langchain-browsa#readme)
+>
+> Cloud browsers for AI agents: plain-language browser tasks plus page scrape, extract and screenshot in Browsa's Phantom browser.
+
 > [card] [Browser Use](/oss/python/integrations/providers/browser_use)
 >
 > Browser agents and cloud browsers for AI applications.
@@ -462,6 +470,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Loads timestamped video transcript passages into LangChain Documents with playback citations and optional asynchronous transcription.
 
+> [card] [CaptureKitPageContent](https://github.com/capturekitdev/langchain-capturekit#readme)
+>
+> Web pages as clean Markdown and an AI profile of a website, as tools and a document loader, through the CaptureKit API.
+
 > [card] [CareJobsToolkit](https://github.com/yumaheymans/langchain-carejobs#readme)
 >
 > Open US healthcare jobs, posted pay and employers from CareJobs.Now, a free job board, with no API key.
@@ -481,6 +493,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Channel3Toolkit](https://channel3.ai/docs/langchain)
 >
 > Product search across thousands of retailers, with each retailer's offer and live price.
+
+> [card] [ChartQueryChart](https://github.com/chartquery/langchain-chartquery#readme)
+>
+> Charts from data or a plain-language description, diagrams and QR codes, returned as image links, through the ChartQuery API.
 
 > [card] [ChatEXAONE](https://github.com/ykoh42/exaone-integrations/tree/main/packages/langchain-exaone-py)
 >
@@ -1242,6 +1258,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Korean natural language processing toolkit.
 
+> [card] [Kosa8Sandbox](https://github.com/kosa8ai/langchain-kosa8#readme)
+>
+> Deep Agents sandbox backend that runs commands and files in a kosa8 Cloud microVM that can sleep and wake while keeping its files.
+
 > [card] [KServe](https://gitlab.com/bitkaio/langchain/kserve-provider)
 >
 > Connect LangChain chat models to KServe inference services on Kubernetes.
@@ -1482,9 +1502,9 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Efficient open-source language models.
 
-> [card] [MobileboxToolkit](https://github.com/fifteenA/mobilebox/tree/main/packages/python/langchain-mobilebox#readme)
+> [card] [MobileboxToolkit](https://github.com/mobilebox-dev/mobilebox/tree/main/packages/python/langchain-mobilebox#readme)
 >
-> Tools that let agents create cloud Android phones, read the screen, tap, type and install apps with Mobilebox.
+> Tools that let agents create cloud Android phones, read the screen, tap, type and install apps (Mobilebox).
 
 > [card] [Modal](/oss/python/integrations/providers/modal)
 >
@@ -1654,6 +1674,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Belief-tracking BaseStore for LangGraph with superseding writes and provenance.
 
+> [card] [OnlineCompilerToolkit](https://github.com/onlinecompiler-io/langchain-onlinecompiler/tree/main/python#readme)
+>
+> Runs code in 46 languages and judges it against test cases. Each run gets a fresh gVisor sandbox with no network access.
+
 > [card] [OpenMemory](https://github.com/nullure/langchain-openmemory)
 >
 > Local-first persistent temporal memory retriever for LangChain agents.
@@ -1753,6 +1777,14 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [PaySafe](https://paysafe-agent.com)
 >
 > x402 payment firewall with provenance tagging for prompt-injection detection.
+
+> [card] [PaySafely](https://github.com/screwtapeai/pay-safely)
+>
+> LangChain tools that check whether a seller is safe to pay before an agent pays, and return a signed receipt.
+
+> [card] [PDFluentLoader](https://github.com/pdfluent/pdfluent-sdk/tree/main/integrations/langchain-pdfluent#readme)
+>
+> PDF document loader that returns blocks, tables or markdown pages with page, bounding box and kind in metadata. Runs locally.
 
 > [card] [pdfmuse](https://github.com/casperkwok/pdfmuse)
 >
@@ -2281,6 +2313,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Stardog](https://github.com/stardog-union/stardog-langchain)
 >
 > Enterprise knowledge graph platform.
+
+> [card] [StarRingCallbackHandler](https://github.com/starring-ai-sec/star-ring-agent-sentinel)
+>
+> Runtime callback that blocks malicious agent tool-call chains before tool execution.
 
 > [card] [StophyToolkit](https://github.com/stophydotdev/stophy/tree/main/sdk/packages/langchain)
 >

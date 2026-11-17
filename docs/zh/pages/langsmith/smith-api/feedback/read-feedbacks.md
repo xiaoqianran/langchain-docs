@@ -5,4 +5,6 @@
 # 阅读反馈
 
 /langsmith/langsmith-platform-openapi.json 获取 /api/v1/feedback
-按查询参数列出所有反馈。
+列出反馈，最新的在前。
+
+至少需要运行、密钥或会话之一。

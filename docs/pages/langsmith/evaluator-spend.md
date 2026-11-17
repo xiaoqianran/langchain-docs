@@ -10,7 +10,7 @@ This guide shows you how to view and configure weekly evaluator spend caps.
 
 > [!TIP]
 >
-> LangSmith also offers [per-trace and per-model cost tracking](/langsmith/cost-tracking) and [tracing usage limits](/langsmith/administration-overview#usage-limits) for cost control.
+> LangSmith also offers [per-trace and per-model cost tracking](/langsmith/cost-tracking) and [tracing usage limits](/langsmith/usage-and-billing#usage-limits) for cost control.
 
 > [!WARNING]
 >

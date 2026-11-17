@@ -163,7 +163,7 @@ Now we can run our evaluations and explore the results. We'll just need to wrap 
 
 > [!NOTE]
 >
-> If all of your graph nodes are defined as sync functions then you can use `evaluate` or `aevaluate`. If any of you nodes are defined as async, you'll need to use `aevaluate`
+> If all of your graph nodes are defined as sync functions then you can use `evaluate` or `aevaluate`. If any of your nodes are defined as async, you'll need to use `aevaluate`
 
 Requires `langsmith>=0.2.0`
 
@@ -186,7 +186,7 @@ async def main():
         max_concurrency=4,  # optional
         experiment_prefix="claude-sonnet-4-6-baseline",  # optional
         metadata={  # optional, used to populate model/prompt/tool columns in UI
-            "models": "google_genai:gemini-4-hydrogen",
+            "models": "anthropic:claude-sonnet-4-6",
             "tools": [{"name": "search", "description": "Call to surf the web."}],
         },
     )
@@ -214,7 +214,7 @@ async def main():
         max_concurrency=4,  # optional
         experiment_prefix="claude-sonnet-4-6-baseline",  # optional
         metadata={  # optional, used to populate model/prompt/tool columns in UI
-            "models": "google_genai:gemini-4-hydrogen",
+            "models": "anthropic:claude-sonnet-4-6",
             "tools": [{"name": "search", "description": "Call to surf the web."}],
         },
     )
@@ -225,17 +225,27 @@ If we need access to information about intermediate steps that isn't in state, w
 
 > [!TIP]
 >
-> See more about what arguments you can pass to custom evaluators in this [how-to guide](/langsmith/code-evaluator-ui).
+> See more about what arguments you can pass to custom evaluators in this [how-to guide](/langsmith/code-evaluator-sdk).
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.schemas import Run, Example
 
+def find_run(run: Run, name: str) -> Run | None:
+    # Node runs are nested a few levels below the root run
+    # (target -> RunnableSequence -> LangGraph -> node), so search the whole tree
+    if run.name == name:
+        return run
+    for child in run.child_runs or []:
+        if (found := find_run(child, name)) is not None:
+            return found
+    return None
+
 def right_tool_from_run(run: Run, example: Example) -> dict:
-    # Get documents and answer
-    first_model_run = next(run for run in root_run.child_runs if run.name == "agent")
+    # Get the first run of the "agent" node
+    first_model_run = find_run(run, "agent")
     tool_calls = first_model_run.outputs["messages"][-1].tool_calls
     right_tool = bool(tool_calls and tool_calls[0]["name"] == "search")
-    return {"key": "right_tool", "value": right_tool}
+    return {"key": "right_tool", "score": right_tool}
 
 async def main():
     experiment_results = await aevaluate(
@@ -245,7 +255,7 @@ async def main():
         max_concurrency=4,  # optional
         experiment_prefix="claude-sonnet-4-6-baseline",  # optional
         metadata={  # optional, used to populate model/prompt/tool columns in UI
-            "models": "google_genai:gemini-4-hydrogen",
+            "models": "anthropic:claude-sonnet-4-6",
             "tools": [{"name": "search", "description": "Call to surf the web."}],
         },
     )
@@ -254,20 +264,24 @@ async def main():
 
 ## Running and evaluating individual nodes
 
-Sometimes you want to evaluate a single node directly to save time and costs. `langgraph` makes it easy to do this. In this case we can even continue using the evaluators we've been using.
+Sometimes you want to evaluate a single node directly to save time and costs. `langgraph` makes it easy to do this: the underlying runnable for each node is available on `app.nodes[name].bound`. Since the node's output is the model's first response, we can check the tool call on the outputs directly.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-node_target = example_to_state | app.nodes["agent"]
+def right_tool_from_node(outputs: dict) -> bool:
+    tool_calls = outputs["messages"][-1].tool_calls
+    return bool(tool_calls and tool_calls[0]["name"] == "search")
+
+node_target = example_to_state | app.nodes["agent"].bound
 
 async def main():
     node_experiment_results = await aevaluate(
         node_target,
         data="weather agent",
-        evaluators=[right_tool_from_run],
+        evaluators=[right_tool_from_node],
         max_concurrency=4,  # optional
         experiment_prefix="claude-sonnet-4-6-model-node",  # optional
         metadata={  # optional, used to populate model/prompt/tool columns in UI
-            "models": "google_genai:gemini-4-hydrogen",
+            "models": "anthropic:claude-sonnet-4-6",
             "tools": [{"name": "search", "description": "Call to surf the web."}],
         },
     )
@@ -431,7 +445,7 @@ async def main():
 >         max_concurrency=4,  # optional
 >         experiment_prefix="claude-sonnet-4-6-baseline",  # optional
 >         metadata={  # optional, used to populate model/prompt/tool columns in UI
->             "models": "google_genai:gemini-4-hydrogen",
+>             "models": "anthropic:claude-sonnet-4-6",
 >             "tools": [{"name": "search", "description": "Call to surf the web."}],
 >         },
 >     )

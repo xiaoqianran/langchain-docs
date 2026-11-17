@@ -16,7 +16,7 @@
 
 > [!警告]
 >
-> **需要到 `https://beacon.langchain.com` 的出口。** 如果需要，请参阅 [allowlisting IP section](/langsmith/cloud#allowlisting-ip-addresses) 了解静态 IP 地址。
+> **需要到 `https://beacon.langchain.com` 的出口。** 如果需要，请参阅 [allowlisting IP section](/langsmith/cloud-ip-allowlist#allowlisting-ip-addresses) 了解静态 IP 地址。
 
 > [!注意]
 >
@@ -107,7 +107,7 @@
 
 * 实现主动支持并更快地排除自托管实例的故障
 * 协助性能调整
-* 帮助根据现实世界的使用模式确定改进的优先顺序
+* 帮助根据实际使用模式确定改进的优先顺序
 
 ### 我们收集什么
 
@@ -130,7 +130,7 @@ config:
     traces: false
 ```
 
-您还可以通过仅将特定值设置为 `false` 来禁用各个遥测类型。
+您还可以通过仅将特定值设置为 `false` 来禁用单个遥测类型。
 
 > [!警告]
 >
@@ -458,7 +458,7 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
 >
 > 禁用使用遥测不会影响计费或操作遥测。许可证验证和订阅/使用报告将继续正常运行。
 
-## GitHub for Engine
+## 引擎的 GitHub
 
 当您[connect GitHub to Engine](/langsmith/engine-self-hosted-github)时，允许从LangSmith服务和沙箱主机到您的GitHub实例的出站HTTPS。 GitHub 还必须到达 LangSmith 的 webhook URL，以便在合并后自动 PR 链接和问题完成。
 
@@ -468,7 +468,7 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
 
 [Engine](/langsmith/engine-self-hosted) 向 LangSmith Intelligence (LSI) 报告使用情况，后者也可以运行其模型。如果您使用自己的模型提供程序，LSI 仅接收使用情况元数据。 [Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations) 不连接LSI。
 
-允许出站 HTTPS 到在 `engine.intelligenceBaseUrl` 中为您的 [model-provider choice](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models) 配置的端点：* **LangSmith 智能：** `beacon.aws.langchain.com`。要将此流量保留在专用网络上，[connect with AWS PrivateLink](/langsmith/engine-self-hosted-model-providers#connect-with-aws-privatelink)。
+允许出站 HTTPS 到在 `engine.intelligenceBaseUrl` 中为您的 [model-provider choice](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models) 配置的端点：* **LangSmith 智能：** `beacon.aws.langchain.com`。为了将此流量保留在专用网络上，[connect with AWS PrivateLink](/langsmith/engine-self-hosted-model-providers#connect-with-aws-privatelink)。
 * **您自己的模型提供商：** `beacon.langchain.com`，此页面已经需要的同一主机，用于使用情况报告。还允许到每个提供商的 API 端点的出站 HTTPS。
 
 > [!警告]

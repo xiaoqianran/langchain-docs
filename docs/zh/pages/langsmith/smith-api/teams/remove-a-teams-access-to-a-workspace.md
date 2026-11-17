@@ -5,6 +5,7 @@
 # 删除团队对工作区的访问权限
 
 /langsmith/langsmith-platform-openapi.json 删除 /api/v1/platform/orgs/current/teams/{team_id}/workspaces/{workspace_id}
+已弃用：使用相应的 /user-groups 端点。
 删除组织范围团队在工作区中的授权。这也分离了
 为该工作区附加团队的访问策略并删除团队的工作区
 那里的范围团队。每次工作空间住宿均附有政策。当以下情况时也返回 204

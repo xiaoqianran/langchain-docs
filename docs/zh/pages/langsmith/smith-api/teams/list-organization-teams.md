@@ -5,6 +5,7 @@
 # 列出组织团队
 
 /langsmith/langsmith-platform-openapi.json 获取 /api/v1/platform/orgs/current/teams
+已弃用：使用相应的 /user-groups 端点。
 按名称顺序列出组织的团队。一个页面带有next_cursor，即
 作为下一页的光标发送回的值，最后一页为 null
 已读。该端点未发出的游标，或为不同的端点发出的游标

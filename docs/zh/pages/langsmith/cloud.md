@@ -4,7 +4,7 @@
 
 # 云（SaaS）
 
-了解 LangChain 如何托管和运营 LangSmith 云，包括其区域、数据存储位置、架构、IP 允许列表、专用连接和 API 速率限制。
+了解 LangChain 如何托管和运营 LangSmith 云，包括其区域、数据存储位置和区域架构。
 
 **云**托管选项是一个完全托管的模型，其中 LangChain 托管并运营所有 LangSmith 基础设施和服务：
 
@@ -87,7 +87,7 @@ LangSmith 使用以下 GCP 存储服务：* 用于运行输入和输出的 Googl
 
 * Google Cloud Load Balancer，用于将流量路由到 LangSmith 服务。
 * 用于缓存静态资源的 Google Cloud CDN。
-* Google Cloud Armor 提供安全性和速率限制。有关我们执行的速率限制的更多信息，请参阅[Rate limits](/langsmith/usage-and-billing#rate-limits)。
+* Google Cloud Armor 提供安全性和速率限制。有关我们执行的速率限制的更多信息，请参阅[Rate limits](/langsmith/cloud-rate-limits)。
 
 ### AWS 服务
 
@@ -108,7 +108,7 @@ LangSmith 使用以下 AWS 存储和数据服务：
 * Amazon ElastiCache for Redis 用于排队和缓存。
 * `us-east-2` 中基于 AWS PrivateLink 的 ClickHouse Cloud 用于跟踪摄取和分析，与上表[regional storage](#regional-storage) 一致。
 
-我们使用的一些其他 AWS 服务包括：* Elastic Load Balancing（网络负载均衡器）和 Istio 入口，用于将流量路由到 LangSmith 服务。已记录的 API 速率限制在 Istio 入口网关处强制执行。详情请参阅[Rate limits](/langsmith/usage-and-billing#rate-limits)。
+我们使用的一些其他 AWS 服务包括：* Elastic Load Balancing（网络负载均衡器）和 Istio 入口，用于将流量路由到 LangSmith 服务。已记录的 API 速率限制在 Istio 入口网关处强制执行。详情请参阅[Rate limits](/langsmith/cloud-rate-limits)。
 * Amazon CloudFront 用于缓存静态资产（包括 Web UI 主机名 `aws.smith.langchain.com`）。
 * CloudFront 上的 AWS WAF，用于边缘的托管规则组（例如，AWS 托管规则常见保护和机器人控制）。
 
@@ -193,21 +193,21 @@ LangChain 端点映射到以下静态 IP 地址。流量终止于 **GCP 负载�
 | | | | 3.150.87.246 | |
 | 34.56.47.75（新）| 34.32.254.168（新）| 34.151.160.163（新）| | |
 
-Allowlist every address in the column for your region so your private network can reach LangSmith Cloud (`api.smith.langchain.com`, `smith.langchain.com`, `beacon.langchain.com`, `eu.api.smith.langchain.com`, `eu.smith.langchain.com`, `eu.beacon.langchain.com`, `apac.api.smith.langchain.com`, `apac.smith.langchain.com`, `apac.beacon.langchain.com`、`azure.smith.langchain.com`、`azure.api.smith.langchain.com`、`beacon.azure.langchain.com`、`aws.api.smith.langchain.com`、`aws.smith.langchain.com`）。
+将您所在区域列中的每个地址列入白名单，以便您的专用网络可以访问 LangSmith 云（`api.smith.langchain.com`、`smith.langchain.com`、`beacon.langchain.com`、`eu.api.smith.langchain.com`、`eu.smith.langchain.com`、`eu.beacon.langchain.com`、`apac.api.smith.langchain.com`、`apac.smith.langchain.com`、 `apac.beacon.langchain.com`、`azure.smith.langchain.com`、`azure.api.smith.langchain.com`、`beacon.azure.langchain.com`、`aws.api.smith.langchain.com`、`aws.smith.langchain.com`）。
 
-GCP 美国、欧盟和亚太地区正在移至最后一行中的其他地址（`34.56.47.75`、`34.32.254.168` 和 `34.151.160.163`）。现在添加这些地址。 The current GCP addresses keep serving these hostnames until February 10, 2027. After that date, the hostnames use only the additional addresses.仅当主机名不再解析为当前 GCP 地址时，才将其从允许列表中删除。 AWS US 和 Azure 地址没有变化。This list is only for LangSmith Cloud. BYOC 或自托管部署在您自己的环境中使用负载均衡器。 If your private network reaches Cloud over the public internet, including through a BYOC control plane connection, allowlist the Cloud addresses for your region. AWS PrivateLink、GCP Private Service Connect 和 Azure Private Link 不使用这些地址。
+GCP 美国、欧盟和亚太地区正在移至最后一行中的其他地址（`34.56.47.75`、`34.32.254.168` 和 `34.151.160.163`）。现在添加这些地址。当前的 GCP 地址将继续为这些主机名提供服务，直至 2027 年 2 月 10 日。在此日期之后，主机名仅使用其他地址。仅当主机名不再解析为当前 GCP 地址时，才将其从允许列表中删除。 AWS US 和 Azure 地址没有变化。此列表仅适用于LangSmith云。 BYOC 或自托管部署在您自己的环境中使用负载均衡器。如果您的专用网络通过公共互联网（包括通过 BYOC 控制平面连接）到达云，请将您所在区域的云地址列入白名单。 AWS PrivateLink、GCP Private Service Connect 和 Azure Private Link 不使用这些地址。
 
-## Private connectivity (Enterprise)
+## 专用连接（企业）
 
 [**Enterprise only.**](/langsmith/pricing-plans) 专用连接专供企业客户使用。请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)以启用此功能。
 
-Enterprise customers can connect to LangSmith without exposing traffic to the public internet using **AWS PrivateLink**, **GCP Private Service Connect (PSC)**, or **Azure Private Link**.
+企业客户可以使用 **AWS PrivateLink**、**GCP Private Service Connect (PSC)** 或 **Azure Private Link** 连接到 LangSmith，而无需向公共互联网公开流量。
 
 ### AWS PrivateLink
 
-**AWS** 上的客户可以通过 [AWS PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/) 连接到 LangSmith，从而提供来自任何 VPC 的私有连接。 Cross-region connectivity is supported natively.
+**AWS** 上的客户可以通过 [AWS PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/) 连接到 LangSmith，从而提供来自任何 VPC 的私有连接。原生支持跨区域连接。
 
-#### Endpoint service name
+#### 端点服务名称
 
 |地区 |服务名称 |
 | - | - |
@@ -316,7 +316,7 @@ curl https://aws.api.smith.langchain.com/ok
 
 #### PSC 域
 
-After setup, use the following domains to connect to LangSmith over your PSC connection:
+设置后，使用以下域通过 PSC 连接连接到 LangSmith：
 
 |地区 |域名 |
 | - | - |
@@ -326,13 +326,13 @@ After setup, use the following domains to connect to LangSmith over your PSC con
 
 #### 设置
 
-**Request access:** Contact your account representative or [sales@langchain.dev](mailto:sales@langchain.dev) with your GCP project ID. LangChain will add your project to the service attachment's allowed consumer list.
+**请求访问权限：** 请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)，并提供您的 GCP 项目 ID。 LangChain 会将您的项目添加到服务附件的允许使用者列表中。
 
 授予访问权限后，使用 gcloud CLI 或 Terraform 创建 PSC 端点并配置 DNS。
 
 #### 创建 PSC 端点
 
-Create a forwarding rule in your VPC targeting the service attachment:
+在您的 VPC 中创建针对服务附件的转发规则：
 
 ```bash gcloud CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Create the PSC endpoint
@@ -363,7 +363,7 @@ resource "google_compute_forwarding_rule" "langsmith_psc" {
 
 ####配置DNS
 
-Create a private DNS zone in your VPC and add an A record pointing to the PSC endpoint IP:
+在您的 VPC 中创建私有 DNS 区域并添加指向 PSC 终端节点 IP 的 A 记录：
 
 ```bash gcloud CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Create a private DNS zone
@@ -413,15 +413,15 @@ curl https://<REGION>.p.api.smith.langchain.com/ok
 
 ### Azure 专用链接
 
-**Azure** 上的客户可以通过 [Azure Private Link](https://learn.microsoft.com/en-us/azure/private-link/private-link-overview) 连接到 LangSmith Azure SaaS API。 A private endpoint in your virtual network (VNet) connects to the LangSmith Private Link service.
+**Azure** 上的客户可以通过 [Azure Private Link](https://learn.microsoft.com/en-us/azure/private-link/private-link-overview) 连接到 LangSmith Azure SaaS API。虚拟网络 (VNet) 中的专用终结点连接到 LangSmith 专用链接服务。
 
 #### 请求访问权限请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)，并提供您的 Azure 订阅 ID 和所需的终结点区域。 LangChain 将您的订阅添加到专用链接服务自动批准列表中。 LangChain还提供服务资源ID。
 
-在创建专用端点之前，等待LangChain确认已启用订阅访问。来自允许列表订阅的新连接会自动获得批准。来自其他订阅的连接需要手动批准。
+在创建专用终端节点之前，等待LangChain确认已启用订阅访问。来自允许列表订阅的新连接会自动获得批准。来自其他订阅的连接需要手动批准。
 
-#### Create a private endpoint
+#### 创建私有端点
 
-Use an existing subnet in your VNet.将端点位置设置为子网的区域。将占位符替换为您的 Azure 资源详细信息和LangChain 提供的服务资源 ID。
+使用 VNet 中的现有子网。将端点位置设置为子网的区域。将占位符替换为您的 Azure 资源详细信息和LangChain 提供的服务资源 ID。
 
 以下 Terraform 示例使用 [AzureRM provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint)：
 
@@ -486,7 +486,7 @@ nslookup azure.api.smith.langchain.com
 curl --fail --show-error https://azure.api.smith.langchain.com/ok
 ```
 
-继续使用 `https://azure.api.smith.langchain.com` 作为您的 LangSmith API 端点。 API keys and workspace permissions still apply.
+继续使用 `https://azure.api.smith.langchain.com` 作为您的 LangSmith API 端点。 API 密钥和工作区权限仍然适用。
 
 ## API 速率限制
 
@@ -512,9 +512,9 @@ LangSmith 对 API 端点实施速率限制，以确保服务稳定性和公平�
 | `/generate` | `x-user-id` + IP | 30 / 3600 | 30 / 3600 | [Generation](#rate-limit-categories) |
 | `/commits` | `x-api-key` | 10000 / 60 | 2000 / 60 | [Commits](#rate-limit-categories) |
 | `/commits` | `x-user-id` + IP | 10000 / 60 | 2000 / 60 | [Commits](#rate-limit-categories) |
-| `DELETE /sessions` or `*/trigger` | `x-api-key` | 10 / 60 | 10 / 60 | [Deletion](#rate-limit-categories) |
-| `DELETE /sessions` or `*/trigger` | `x-user-id` + IP | 30 / 60 | 30 / 60 | [Deletion](#rate-limit-categories) |
-| `POST /runs` (single run ingest) | `x-api-key` | 2000 / 10 | 2000 / 10 | [Run ingest](#rate-limit-categories) |
+| `DELETE /sessions` 或 `*/trigger` | `x-api-key` | 10 / 60 | 10 / 60 | [Deletion](#rate-limit-categories) |
+| `DELETE /sessions` 或 `*/trigger` | `x-user-id` + IP | 30 / 60 | 30 / 60 | [Deletion](#rate-limit-categories) |
+| `POST /runs`（单次运行摄取）| `x-api-key` | 2000 / 10 | 2000 / 10 | [Run ingest](#rate-limit-categories) |
 | `PATCH` 包含 `/runs` | `x-api-key` | 2000 / 10 | 2000 / 10 | [Run ingest](#rate-limit-categories) |
 | `POST /feedback` | `x-api-key` | 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
 | `GET /runs/{uuid}` 或 `/api/v1/runs/{uuid}` | `x-api-key` | 30 / 60 | 30 / 60 | [Run lookup](#rate-limit-categories) |

@@ -3,6 +3,7 @@
 # Detach an access policy from a team
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/platform/orgs/current/teams/{team_id}/access-policies/{access_policy_id}
+Deprecated: use the corresponding /user-groups endpoint.
 Detaches an access policy from a team. A workspace scoped team's policy is detached
 from its workspace. An organization-wide team's policy is detached from the
 workspace_id given, or from every workspace the team has access to when it is

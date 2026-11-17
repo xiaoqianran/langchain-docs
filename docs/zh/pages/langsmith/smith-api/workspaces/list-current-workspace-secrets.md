@@ -5,3 +5,4 @@
 # 列出当前工作区秘密
 
 /langsmith/langsmith-platform-openapi.json 获取 /api/v1/workspaces/current/secrets
+列出当前工作区的密钥。值永远不会返回。

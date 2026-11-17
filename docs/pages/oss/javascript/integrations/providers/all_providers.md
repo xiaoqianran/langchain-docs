@@ -544,6 +544,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > People search and contact enrichment (work emails, phone numbers, profiles, and firmographics) across multiple data providers
 
+> [card] [pilotfish](https://pilotfish.gai.ventures/docs/open)
+>
+> Open-source MCP server that drives Chrome on your machine and returns only the parts of the page that changed after each action.
+
 > [card] [Precleared](https://precleared.dev/docs/langchain)
 >
 > Checks whether a cold or marketing email to an address is legal in eight countries, and returns the deciding rule, footer requirements and a signed receipt.
@@ -638,6 +642,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Retrieve from Amazon Bedrock Knowledge Bases.
 
+> [card] [ClawDBRetriever (Axonio)](https://github.com/hackcat29/axonio-sdk/tree/main/adapters/langchain#readme)
+>
+> Axonio provides a LangChain.js retriever for persistent agent memory, with hosted and self-hosted backends.
+
 > [card] [Exa](/oss/javascript/integrations/retrievers/exa)
 >
 > AI-powered web search and retrieval.
@@ -725,6 +733,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > [card] [RuthlessSchemaGuard](https://github.com/moltbot-den/openentity/tree/main/integrations/langchain)
 >
 > Agent middleware that validates tool and HTTP responses against Pydantic or JSON Schema and raises on violations.
+
+> [card] [Sanity Context](https://www.npmjs.com/package/@sanity/context-langchain)
+>
+> Agent middleware for Sanity Context: cited facts from Knowledge Bases built from your content, or a live Sanity dataset.
 
 ## Callbacks
 

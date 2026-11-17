@@ -84,7 +84,7 @@ JIT 配置和 SCIM 可能会相互冲突。我们建议在启用 SCIM 之前禁�
 
 #### *我可以使用自定义组名称吗？*
 
-是的。如果您的身份提供商支持将备用字段同步到 `displayName` 组属性，您可以使用备用属性（如 `description`）作为 LangSmith 中的 `displayName`，并保留身份提供商组名称的完全可自定义性。否则，组必须遵循 [Group Naming Convention](/langsmith/user-management#group-naming-convention) 部分中描述的特定命名约定，才能正确映射到 LangSmith 角色和工作区。组还可以使用任何名称并映射到 [team](/langsmith/teams#sync-team-members-from-your-identity-provider)。输入组名称作为团队的 IdP 组，团队的工作区访问权限将应用于该组的成员。
+是的。如果您的身份提供商支持将备用字段同步到 `displayName` 组属性，您可以使用备用属性（如 `description`）作为 LangSmith 中的 `displayName`，并保留身份提供商组名称的完全可自定义性。否则，组必须遵循 [Group Naming Convention](/langsmith/user-management#group-naming-convention) 部分中描述的特定命名约定，才能正确映射到 LangSmith 角色和工作区。具有任何名称的 IdP 组也可以将其成员同步到 [user group](/langsmith/user-groups#sync-user-group-members-from-your-identity-provider)。在用户组的 **IdP 组** 字段中输入 IdP 组的名称，其成员将获得该用户组的工作区访问权限。
 
 您还可以使用 [configure a custom separator](/langsmith/user-management#configure-custom-separator)（例如，`-`、`_`、`&`）代替默认冒号 (`:`)，以适应对组名称字符有限制的身份提供者。
 
@@ -110,7 +110,7 @@ LangGraph 不会给您的代码增加任何开销，并且是专为流式工作�
 
 ### LangGraph开源吗？免费吗？
 
-是的。 LangGraph 是 MIT 许可的开源库，可以免费使用。
+是的。 LangGraph 是一个 MIT 许可的开源库，可以免费使用。
 
 ### LangGraph 和 LangSmith 有什么不同？
 
@@ -120,13 +120,13 @@ LangGraph 是一个有状态的编排框架，可为代理工作流程带来更�
 | SDK | Python 和 JavaScript | Python 和 JavaScript |
 | HTTP API |无 |是 - 对于检索和更新状态或长期记忆，或创建可配置的助手很有用 |
 |流媒体 |基本 |逐个令牌消息的专用模式 |
-|检查点|社区贡献 |开箱即用的支持 |
+|检查点 |社区贡献 |开箱即用的支持 |
 |持久层|自我管理|具有高效存储的托管 Postgres |
 |部署|自我管理| • 云 • 免费自托管 • 企业（付费自托管） |
 |可扩展性|自我管理|任务队列和服务器的自动扩展|
 |容错 |自我管理|自动重试 |
-|并发控制|简单的线程 |支持双短信|
-|日程安排|无 | Cron 调度 |
+|并发控制|简单的线程 |支持双短信 |
+|日程安排 |无 | Cron 调度 |
 |监控|无 |与 LangSmith 集成以实现可观察性 |
 | IDE集成|工作室 |工作室 |
 

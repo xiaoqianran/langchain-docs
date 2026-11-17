@@ -18,7 +18,7 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
   * 组织用户和组织查看者角色仅在 [Plus and Enterprise plans](https://langchain.com/pricing) 上的组织中可用。在开发人员组织（单个工作区）中，默认情况下为所有用户分配组织管理员角色。
 * 他们所属的每个工作区分配一个 [**workspace role**](#workspace-roles)（需要企业 RBAC 功能）。
 
-用户还可以通过 [teams](/langsmith/teams) 接收其他工作区角色。然后，用户将拥有其分配的角色以及该工作区中每个团队角色的权限。在企业计划中，组织还可以创建具有精细权限组合的[custom workspace roles](#custom-roles)。
+用户还可以通过 [user groups](/langsmith/user-groups) 接收其他工作区角色。然后，用户将拥有其分配的角色以及该工作区中每个用户组角色的权限。在企业计划中，组织还可以创建具有精细权限组合的[custom workspace roles](#custom-roles)。
 
 要了解如何设置 RBAC 并为用户分配角色，请参阅[User Management guide](/langsmith/user-management#set-up-access-control)。您的身份提供商还可以通过 [SCIM groups](/langsmith/user-management#set-up-scim-for-your-organization) 或 [SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) 自动分配角色。
 
@@ -255,7 +255,7 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 2. 在角色表中找到您要限制的角色。
 3. 选择该角色的 **Restricted** 复选框。角色受到限制后，不拥有工作区管理员角色的用户无法在成员邀请、成员编辑或 API 密钥创建流程中查看或分配该角色。 API 还会拒绝不具有工作区管理员角色的调用者的分配尝试。如果不拥有工作区管理员角色的用户创建 API 密钥，他们无法使用自己的受限角色作为密钥的默认角色。
 
-要取消限制角色，请按照相同的步骤操作并清除 **Restricted** 复选框。
+要取消限制角色，请按照相同的步骤操作并清除 **受限** 复选框。
 
 > [!注意]
 >

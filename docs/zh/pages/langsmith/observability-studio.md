@@ -148,12 +148,12 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 
 > [!注意]
 >
-> 工作室实验遵循与其他实验相同的 [data retention](/langsmith/usage-and-billing#data-retention) 规则。默认情况下，跟踪具有基本层保留期（14 天）。但是，如果向跟踪添加反馈，跟踪将自动升级到延长级别保留（截至 2026 年 9 月 14 日为 180 天）。可以通过以下两种方式之一添加反馈：
+> 工作室实验遵循与其他实验相同的 [data retention](/langsmith/usage-and-billing#data-retention) 规则。默认情况下，跟踪具有基础层保留。但是，如果添加反馈，跟踪将自动升级到扩展层保留。可以通过以下两种方式之一添加反馈：
 >
 > * [dataset has evaluators configured](/langsmith/bind-evaluator-to-dataset)。
 > * [Feedback](/langsmith/observability-concepts#feedback) 手动添加到迹线中。
 >
-> 此自动升级会增加跟踪的保留期和成本。更多详情请参考[Data retention auto-upgrades](/langsmith/usage-and-billing#how-it-works)。
+> 此自动升级会增加跟踪的保留期和成本。更多详情请参考[Data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
 ### 实验设置1. 启动实验。单击 Studio 页面右上角的 **运行实验** 按钮。
 2. 选择您的数据集。在出现的模式中，选择要用于实验的数据集（或特定的数据集拆分），然后单击 **开始**。

@@ -82,7 +82,7 @@
 > | `.bodyOfRunsUuidArray(List<String>)` | `.addItem(ItemCreateParams.Item)` 与 `itemType(RUN)`、`runId`、`projectId`、`startTime` |
 > | `.queueId(String)` | `.queueId(String)` |> [选项卡] 前往
 >
-> |之前 (`AnnotationQueueRunNewParams`) |之后(`AnnotationQueueItemNewParams`) |
+> |之前 (`AnnotationQueueRunNewParams`) |之后(`AnnotationQueueItemNewParams`)|
 > | - | - |
 > | `Body: AnnotationQueueRunNewParamsBodyRunsUuidArray` | `Items: []AnnotationQueueItemNewParamsItem` 与 `ItemType`、`RunID`、`ProjectID`、`StartTime` |
 
@@ -641,7 +641,7 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 
 > [选项卡] 前往
 >
-> `ListAutoPaging()` 在循环时获取更多页面。项目开始时间是 RFC3339 字符串，因此在将它们传递到 `GetV2` 之前解析它们。
+> `ListAutoPaging()` 在循环时获取更多页面。项目开始时间是 RFC3339 字符串，因此在将它们传递给 `GetV2` 之前解析它们。
 >
 >> [选项卡] 之前
 >>
@@ -827,7 +827,7 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 > | - | - | - |
 > |分享 | `PUT /api/v1/runs/{run_id}/share` | `POST /api/v2/runs/{run_id}/share` |
 > |取消分享 | `DELETE /api/v1/runs/{run_id}/share` | `DELETE /api/v2/runs/{trace_id}/share` |
-> |查询公开运行| `POST /api/v1/public/{share_token}/runs/query` | `POST /api/v2/public/{share_token}/runs/query` |
+> |查询公开运行 | `POST /api/v1/public/{share_token}/runs/query` | `POST /api/v2/public/{share_token}/runs/query` |
 > |检索公开运行 | `GET /api/v1/public/{share_token}/run/{run_id}` | `GET /api/v2/public/{share_token}/run/{run_id}` |
 > |阅读分享状态 | `GET /api/v1/runs/{run_id}/share` | `GET /api/v2/runs/{run_id}?selects=SHARE_URL` |
 >
@@ -866,7 +866,7 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 | - | - | - |
 |分享 |运行 ID、共享跟踪 ID 和共享令牌 | `share_token` |
 |取消分享 | `{"message": "Run unshared"}` | `204 No Content` |
-|查询公开运行| `runs` 和 `cursors` | `items` |
+|查询公开运行 | `runs` 和 `cursors` | `items` |
 |检索公开运行 |完整的传统运行|选择驱动运行对象|
 |阅读分享状态 |共享状态对象或 `null` |共享时使用 `share_url` 运行对象 |
 
@@ -1085,7 +1085,8 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 >
 > |之前 |之后 |笔记|
 > | - | - | - |
-> | `session_id`（可选）| `session_id`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.read_project()` 解决它 |> [选项卡] TypeScript
+> | `session_id`（可选）| `session_id`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.read_project()` 解决它 |
+> | `start_time`（可选）| `start_time`（可选）|运行的开始时间，时区感知（例如 `run.start_time`）。 v0.18 以下仅限 SmithDB 自托管所需 |> [选项卡] TypeScript
 >
 >> [!警告]
 >>
@@ -1094,6 +1095,7 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 > |之前 |之后 |笔记|
 > | - | - | - |
 > | `sessionId`（可选）| `sessionId`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.readProject()` 解决它 |
+> | `startTime`（可选）| `startTime`（可选）|运行的开始时间。 v0.18 以下仅限 SmithDB 自托管所需 |
 
 > [选项卡] Java
 >
@@ -1104,8 +1106,7 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 > |之前 |之后 |笔记|
 > | - | - | - |
 > | `sessionId()`（可选）| `sessionId()`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.sessions().list()` 解决它 |
-
-> [选项卡] 前往
+> | `startTime()`（可选）| `startTime()`（可选）|运行的开始时间。 v0.18 以下仅限 SmithDB 自托管所需 |> [选项卡] 前往
 >
 >> [!警告]
 >>
@@ -1113,7 +1114,10 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 >
 > |之前 |之后 |笔记|
 > | - | - | - |
-> | `SessionID`（可选）| `SessionID`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.Sessions.List()` 解决它 |> [选项卡] 卷曲
+> | `SessionID`（可选）| `SessionID`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.Sessions.List()` 解决它 |
+> | `StartTime`（可选）| `StartTime`（可选）|运行的开始时间。 v0.18 以下仅限 SmithDB 自托管所需 |
+
+> [选项卡] 卷曲
 >
 >> [!警告]
 >>
@@ -1122,14 +1126,19 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 > |之前 |之后 |笔记|
 > | - | - | - |
 > | `session_id`（可选）| `session_id`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `GET /api/v1/sessions` 解决它 |
+> | `start_time`（可选）| `start_time`（可选）|运行的开始时间 (RFC3339)。 v0.18 以下仅限 SmithDB 自托管所需 |
+
+> [!注意]
+>
+> **SmithDB-only 自托管低于 v0.18：** 也传递运行的开始时间。如果没有它，几个小时前（默认 Helm 图表设置为 6 小时）开始的运行反馈可能会失败或被删除。
 
 ### 示例
 
-#### 创建反馈时提供`session_id`
+#### 创建反馈时提供`session_id`在 v0.18 以下的仅限 SmithDB 自托管的情况下，还要传递运行的开始时间，如前面的注释中所述。
 
 > [选项卡] Python
 >
-> `create_feedback` 现在除了 `run_id` 之外还需要 `session_id`。
+> 除了 `run_id` 之外，`create_feedback` 现在还需要 `session_id`。
 >
 >> [选项卡] 之前
 >>
@@ -1163,7 +1172,7 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 
 > [选项卡] TypeScript
 >
-> `client.createFeedback` 现在除了 `runId` 之外还需要 `sessionId`。
+> 除了 `runId` 之外，`client.createFeedback` 现在还需要 `sessionId`。
 >
 >> [选项卡] 之前
 >>

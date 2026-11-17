@@ -3,6 +3,7 @@
 # List organization teams
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/platform/orgs/current/teams
+Deprecated: use the corresponding /user-groups endpoint.
 Lists the organization's teams in name order. A page carries next_cursor, which is
 the value to send back as cursor for the next page, and null once the last page
 has been read. A cursor this endpoint did not issue, or one issued for different

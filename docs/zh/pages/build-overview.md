@@ -8,7 +8,7 @@
 
 # 构建
 
-LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块。每一层都可以由您配置：模型、工具、代理工作的上下文和内存，以及围绕模型循环的线束。
+LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块。每一层都由您来配置：模型、工具、代理工作的上下文和内存，以及围绕模型循环的线束。
 
 ## 选择你的起点
 
@@ -17,7 +17,7 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 >>【卡牌】[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)
 >>
 >> 使用托管部署基础架构构建深度代理，以执行复杂、长时间运行的任务。完整的代理线束
->> 规划、子代理、虚拟文件系统和内置的长期内存。
+>> 时间表、子代理、虚拟文件系统和内置的长期内存。
 >> 撰写代理的最快方式； LangSmith 运行线束和运行时。
 >
 >>【卡牌】[Deep Agents](/oss/python/deepagents/overview)
@@ -39,7 +39,7 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 >>【卡牌】[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)
 >>
 >> 使用托管部署基础架构构建深度代理，以执行复杂、长时间运行的任务。完整的代理线束
->> 规划、子代理、虚拟文件系统和内置的长期内存。
+>> 时间表、子代理、虚拟文件系统和内置的长期内存。
 >> 撰写代理的最快方式； LangSmith 运行线束和运行时。
 >
 >>【卡牌】[Deep Agents](/oss/javascript/deepagents/overview)

@@ -16,7 +16,7 @@ Fleet 将任何客服人员变成您的团队可以直接在频道或消息中�
 
 > [卡][Self-hosted](#set-up-slack-on-self-hosted)
 >
-> 配置 Slack OAuth 提供商，然后为每个代理创建自定义 Slack 应用程序。
+> 配置 Slack OAuth 提供商，然后为每个代理创建自定义 Slack 应用程序或连接共享 Slack 应用程序。
 
 设置完成后，查看：
 
@@ -40,7 +40,7 @@ Fleet 将任何客服人员变成您的团队可以直接在频道或消息中�
 
 > [!注意]
 >
-> Slack 与 Fleet 的集成没有任何直接定价。但是，代理运行和跟踪是根据您组织的计划通过 [LangSmith platform](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-slack-app) 计费的。
+> Slack 与 Fleet 的集成没有任何直接定价。但是，代理运行和跟踪将根据您组织的计划通过 [LangSmith platform](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-slack-app) 计费。
 >
 > 有关当前定价信息，请参阅[LangSmith pricing page](https://www.langchain.com/pricing)。
 
@@ -88,7 +88,7 @@ Fleet 使用其描述和图标创建一个以您的代理命名的 Slack 应用�
 1. 单击待处理 Slack 行上的 **完成设置**。 Slack 将打开一个窗口，您可以在其中单击“**请求**”将应用程序发送给您的工作区管理员。
 2. 管理员批准后，返回舰队并再次单击“**完成设置**”。 Fleet 安装应用程序并激活频道。## 在自托管上设置 Slack
 
-自托管部署不使用 Fleet Slack 管理器。相反，为实例配置一次 Slack OAuth 提供程序，然后根据 Fleet 生成的清单为每个代理创建自定义 Slack 应用程序。
+自托管部署不使用 Fleet Slack 管理器。相反，为实例配置一次 Slack OAuth 提供程序。然后，从 Fleet 生成的清单中为每个代理创建一个自定义 Slack 应用程序，或者 [connect the shared Slack app](#connect-the-shared-slack-app) 到通道。
 
 ### 允许入站 Slack 请求
 
@@ -103,11 +103,11 @@ Fleet 使用其描述和图标创建一个以您的代理命名的 Slack 应用�
 
 ### 步骤 1. 设置 Slack OAuth 提供商
 
-每个自托管实例都需要进行此一次性设置，然后代理才能使用 Slack。它为您的代理启用 [Slack tools](#add-slack-tools) 并打开 Slack 通道，这使您可以在步骤 2 中添加自定义应用程序。
+每个自托管实例都需要进行此一次性设置，然后代理才能使用 Slack。它为您的代理启用 [Slack tools](#add-slack-tools) 并打开 Slack 通道，这使您可以在第 2 步中添加自定义应用程序。
 
 **1.配置头盔**
 
-选择提供商 ID，例如 `slack-oauth-provider`。将其与拥有 OAuth 提供商的组织一起添加到您的 [⟦T4⟧](/langsmith/kubernetes#configure-your-helm-charts) 中，并部署：
+选择提供商 ID，例如 `slack-oauth-provider`。将其与拥有 OAuth 提供商的组织一起添加到您的 [⟦T5⟧](/langsmith/kubernetes#configure-your-helm-charts) 中，并部署：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 fleet:
@@ -158,7 +158,7 @@ helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --v
 
 **5.将重定向 URI 添加到 Slack**
 
-在 Slack 应用程序中，转到 **OAuth 和权限 > 重定向 URL** 并添加以下内容，将 `<hostname>` 替换为您的 LangSmith 主机名，并将 `<provider-id>` 替换为您的提供商 ID：
+在 Slack 应用程序中，转到 **OAuth 和权限 > 重定向 URL** 并添加以下内容，将 `<hostname>` 替换为您的 LangSmith 主机名，将 `<provider-id>` 替换为您的提供商 ID：
 
 ```
 https://<hostname>/host-oauth-callback/<provider-id>
@@ -191,7 +191,7 @@ https://<hostname>/host-oauth-callback/<provider-id>
 **3.输入您的应用程序凭据**
 
 返回 Fleet，单击 **Continue To Credentials** 并从新的 Slack 应用程序复制以下值：* **应用程序ID**：来自**基本信息**。
-* **客户端ID**：来自**基本信息>应用程序凭证**。
+* **客户端ID**：来自**基本信息>应用凭证**。
 * **客户端密钥**：来自**基本信息 > 应用程序凭证**。单击 Slack 中的 **显示** 并复制整个值。
 * **签名秘密**：来自**基本信息 > 应用凭证**。单击 Slack 中的 **显示** 并复制整个值。
 
@@ -229,6 +229,34 @@ https://<hostname>/host-oauth-callback/<provider-id>
 >
 > 每个客服人员只能拥有一个 Slack 应用程序，并且每个 Slack 应用程序只能链接到一个客服人员。
 
+### 连接共享的 Slack 应用程序
+
+> [!注意]
+>
+> 共享 Slack 应用程序需要 Helm 图表版本 0.17.54 或更高版本 (LangSmith 0.17.77)。共享 Slack 应用程序是您在 [Step 1](#step-1-set-up-the-slack-oauth-provider) 中为 OAuth 提供商注册的 Slack 应用程序。实例上的每个代理都可以使用它，因此用户无需创建自己的 Slack 应用程序即可连接通道。连接通道中的每条消息都会运行代理。
+
+共享应用程序需要在您的 Helm 值中包含 `fleet.oauth.slackSigningSecret`，并将其设置为该 Slack 应用程序的签名密钥。
+
+要通过共享应用程序将代理连接到通道：
+
+1. 选择您的代理并打开其配置侧边栏。
+2. 在 **Channels** 抽屉中，添加 **Slack 频道（共享应用程序）**。
+3. 授权 Slack 并选择渠道。
+
+Fleet 将 Slack 工具添加到代理中。代理通过每个用户自己的 Slack 连接进行回复，因此每个用户都会在代理回复之前看到一次性 **连接 Slack** 提示。
+
+### 关闭自定义 Slack 应用程序
+
+要让用户继续使用共享 Slack 应用程序，请关闭整个实例的自定义 Slack 应用程序创建。将以下内容添加到 Helm 值中的 `commonEnv` 并重新部署：
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+commonEnv:
+  - name: FF_CUSTOM_SLACK_APPS_DISABLED
+    value: "true"
+```
+
+该设置适用于每个工作区和每个用户，包括管理员。 Fleet 隐藏自定义 Slack 应用程序选项并拒绝创建选项的请求。现有的自定义 Slack 应用程序继续运行。
+
 ## 在 Slack 中使用您的代理安装应用程序后，邀请代理加入频道，对其进行标记以开始运行，并在不离开 Slack 的情况下响应批准请求。
 
 ### 邀请代理加入频道
@@ -243,7 +271,7 @@ https://<hostname>/host-oauth-callback/<provider-id>
 
 当代理暂停使用需要批准的工具时，它会直接在 Slack 中提出请求。该消息命名了工具和操作，并带有 **批准** 和 **拒绝** 按钮，因此您可以在不离开 Slack 的情况下做出响应。
 
-欲了解更多信息，请参阅[Human-in-the-loop](/langsmith/fleet/essentials#human-in-the-loop)。
+有关更多信息，请参阅[Human-in-the-loop](/langsmith/fleet/essentials#human-in-the-loop)。
 
 ### Slack 中的错误消息
 
@@ -293,7 +321,7 @@ https://<hostname>/host-oauth-callback/<provider-id>
 
 ### 添加 Slack 应用程序已禁用
 
-在自托管上，**Slack Apps** 部分中的 **添加 Slack App** 按钮将被禁用，直到设置 `fleet.oauth.slackOAuthProvider`。参见[Set up the Slack OAuth provider](#step-1-set-up-the-slack-oauth-provider)。
+在自托管上，**Slack Apps** 部分中的 **添加 Slack App** 按钮处于禁用状态，直到设置 `fleet.oauth.slackOAuthProvider`。参见[Set up the Slack OAuth provider](#step-1-set-up-the-slack-oauth-provider)。
 
 ## 后续步骤> [卡][Add more tools](/langsmith/fleet/tools)
 >

@@ -28,7 +28,7 @@ LangSmith 实现支持任何符合 OIDC 的提供程序。配置完成后，您�
 
 > [!注意]
 >
-> LangSmith 仅在 `https` 上支持 SSO。
+> 仅通过 `https` 支持LangSmith SSO。
 
 ＃＃ 配置* 您需要将 IdP 中的回调 URL 设置为 `https://<host>/api/v1/oauth/custom-oidc/callback`，其中 `host` 是您为 LangSmith 实例配置的域或 IP。您的 IdP 将在用户通过身份验证后重定向用户。
 * 要在注销时终止 IdP 会话（因此用户必须重新进行身份验证），请在 IdP 中将您的 LangSmith URL（例如 `https://<host>`）注册为 **注销后重定向 URI**（有时称为“注销重定向 URI”），然后通过 Helm 中的 `commonEnv` 在您的环境中设置 `OAUTH_IDP_LOGOUT_ENABLED=true`。
@@ -223,10 +223,10 @@ config:
    * 允许组织中的每个人访问。
    * 限制对选定组的访问。
    * 暂时跳过小组作业。
-10. 单击“**保存**”。11. 在 **登录 > OpenID Connect ID 令牌** 下，将 **颁发者** 设置为 **Okta URL**。
-12. （可选）在**常规 > 登录**下，将 **登录发起者** 设置为 `Either Okta or App` 以启用 IdP 发起的登录。
+10. 单击“**保存**”。11. Under **Sign On > OpenID Connect ID Token** set **Issuer** to **Okta URL**.
+12. (Optional) Under **General > Login** set **Login initiated by** to `Either Okta or App` to enable IdP-initiated login.
 13.（推荐）在**常规 > 登录 > 电子邮件验证体验**下，使用 LangSmith URL 填写 **Callback URI**，例如 `https://langsmith.yourdomain.com`。
-14. 配置LangSmith以使用此OAuth应用程序（有关`initialOrgAdminEmail`的详细信息，请参阅[general configuration section](#configuration)）：
+14. Configure LangSmith to use this OAuth application (see [general configuration section](#configuration) for details about `initialOrgAdminEmail`):
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
@@ -243,7 +243,7 @@ config:
 
 #### SP 发起的 SSO
 
-用户可以使用 LangSmith 主页上的 **通过 SSO 登录** 按钮登录。
+Users can sign in using the **Login via SSO** button on the LangSmith homepage.
 
 ## 高级选项
 
@@ -251,7 +251,7 @@ config:
 
 > [!注意]
 >
-> 本节中的所有环境变量均适用于 `platform-backend` 服务，可以使用 Helm 中的 `platformBackend.deployment.extraEnv` 添加。* 默认情况下，会话长度由身份提供者返回的身份令牌的过期时间控制
+> All of the environment variables in this section are for the `platform-backend` service and can be added using `platformBackend.deployment.extraEnv` in Helm.* 默认情况下，会话长度由身份提供者返回的身份令牌的过期时间控制
 * 大多数设置应使用刷新令牌来启用会话长度扩展，超出身份令牌过期时间直至`OAUTH_SESSION_MAX_SEC`，这可能需要通过在 Helm 中添加`oauthScopes` 来包含`offline_access` 范围
 * `OAUTH_SESSION_MAX_SEC`（默认 1 天）最多可覆盖一周 (`604800`)
 * 对于不支持刷新令牌的身份提供商设置，设置 `OAUTH_OVERRIDE_TOKEN_EXPIRY="true"` 将采用 `OAUTH_SESSION_MAX_SEC` 作为会话长度，忽略身份令牌过期时间
@@ -294,7 +294,7 @@ ISSUER_SUB_CLAIM_OVERRIDES='{"https://login.microsoftonline.com/": "oid", "https
 
 > [!注意]
 >
-> 自托管上的 SSO 组同步需要 LangSmith 图表版本 **0.15.0-rc.3**（应用程序版本 **0.15.2rc1**）或更高版本。[SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) 让 LangSmith 从 OIDC 令牌上的组成员身份声明中分配组织和工作区角色，作为 [SCIM](/langsmith/user-management#set-up-scim-for-your-organization) 的更简单替代方案。在自托管上，您必须将 IdP 配置为将组包含在 OIDC ID 令牌中，然后 LangSmith 才能读取它们。令牌中的组还可以在[synced teams](/langsmith/teams#sync-team-members-from-your-identity-provider)中设置成员资格。
+> 自托管上的 SSO 组同步需要 LangSmith 图表版本 **0.15.0-rc.3**（应用程序版本 **0.15.2rc1**）或更高版本。[SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) 让 LangSmith 从 OIDC 令牌上的组成员身份声明中分配组织和工作区角色，作为 [SCIM](/langsmith/user-management#set-up-scim-for-your-organization) 的更简单替代方案。在自托管上，您必须将 IdP 配置为将组包含在 OIDC ID 令牌中，然后 LangSmith 才能读取它们。令牌中的组还可以在[synced user groups](/langsmith/user-groups#sync-user-group-members-from-your-identity-provider)中设置成员资格。
 
 **IdP 端配置（因提供商而异）：**
 
@@ -430,7 +430,7 @@ config:
 
 ### 从 PKCE 迁移到客户端密钥
 
-您可以将使用 PKCE 的安装切换到当前图表版本上带有客户端密钥的 OAuth。只要用户使用相同的电子邮件地址登录，他们就可以保留自己的帐户、组织和工作区成员身份以及 API 密钥。
+您可以在当前图表版本上将使用 PKCE 的安装切换为带有客户端密钥的 OAuth。只要用户使用相同的电子邮件地址登录，他们就可以保留自己的帐户、组织和工作区成员身份以及 API 密钥。
 
 迁移：1. 升级到 Helm Chart 0.17.23 (LangSmith 0.17.51) 或更高版本。早期版本可以锁定 IdP `sub` 声明为其电子邮件地址的用户。
 

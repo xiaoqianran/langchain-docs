@@ -3,6 +3,7 @@
 # Remove a team's access to a workspace
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/platform/orgs/current/teams/{team_id}/workspaces/{workspace_id}
+Deprecated: use the corresponding /user-groups endpoint.
 Removes an organization-wide team's grant in a workspace. This also detaches the
 team's access policies attached for that workspace and deletes the team's workspace
 scoped team there. Policies attached for every workspace stay. Returns 204 also when

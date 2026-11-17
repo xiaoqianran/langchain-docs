@@ -4,13 +4,13 @@
 
 # 概述
 
-了解 LangSmith 如何组织组织、工作区和资源，以及 API 密钥、角色、数据保留、速率限制和使用限制如何发挥作用。
+了解 LangSmith 如何组织组织、工作区和资源，以及用户、API 密钥和角色如何工作。
 
 本概述涵盖与管理 LangSmith 中的用户、组织、工作区和代理相关的主题。
 
 ## 资源层次结构
 
-LangSmith 将访问和数据组织为四个级别。 [organization](#organizations) 包含工作区。每个[workspace](#workspaces)都包含代理。 [Agents](#agents) 按环境组织您的跟踪并对您使用的 [resources](#resources) 进行分组，例如数据集和提示。
+LangSmith 将访问和数据组织为四个级别。 [organization](#organizations) 包含工作区。每个[workspace](#workspaces)都包含特工。 [Agents](#agents) 按环境组织您的跟踪并对您使用的 [resources](#resources) 进行分组，例如数据集和提示。
 
 自托管 LangSmith 按应用程序而不是代理对资源进行分组。详情请参见[Self-hosted workspaces](#self-hosted-workspaces)。
 
@@ -61,7 +61,7 @@ flowchart TD
 >
 > 工作空间以前称为租户。在过渡期间的一段时间内，某些代码和 API 可能仍引用旧名称。
 
-工作空间是组织内用户、代理和 [resources](#resources) 的逻辑分组。工作空间通常用于隔离业务单元，因此每个单元的代理和资源与其他单元保持分离。工作区分隔资源和访问控制的信任边界。用户在工作区级别被授予权限，这决定了他们对该工作区中资源的访问权限，包括数据集、注释队列和提示。要配置其中一个，请参阅[Set up a workspace](/langsmith/set-up-hierarchy#set-up-a-workspace)。权限详情请参见[Workspace roles](#workspace-roles)。
+工作区是组织内用户、代理和 [resources](#resources) 的逻辑分组。工作空间通常用于隔离业务单元，因此每个单元的代理和资源与其他单元保持分离。工作区分隔资源和访问控制的信任边界。用户在工作区级别被授予权限，这决定了他们对该工作区中资源的访问权限，包括数据集、注释队列和提示。要配置其中一个，请参阅[Set up a workspace](/langsmith/set-up-hierarchy#set-up-a-workspace)。权限详情请参见[Workspace roles](#workspace-roles)。
 
 > [!提示]
 >
@@ -71,11 +71,11 @@ flowchart TD
 
 ### 代理
 
-[agent](/langsmith/agent-registry#agent) 是工作区中资源的逻辑分组，位于工作区本身的下一级。分组通过仅显示与当前上下文中的代理关联的资源来保持 UI 的组织。特工的痕迹进一步分为从固定的四个一组中提取的[environments](/langsmith/agent-environments)。
+[agent](/langsmith/agent-registry#agent) 是工作区中资源的逻辑分组，位于工作区本身的下一层。分组通过仅显示与当前上下文中的代理关联的资源来保持 UI 的组织。特工的痕迹进一步分为从固定的四个一组中提取的[environments](/langsmith/agent-environments)。
 
 从顶部栏中的代理切换器中选择一个代理，或选择“**所有代理**”。欲了解更多信息，请参阅[Navigate agents](/langsmith/navigate-agents)。
 
-LangSmith 通过代理的环境将跟踪链接到代理，并使用保留的 `Agent` [resource tag](#resource-tags) 密钥将数据集、提示、注释队列和部署链接到代理。跟踪页面要求您选择代理。数据集、提示、注释队列和部署可以在没有代理的情况下存在。选择**所有代理**会显示这些未链接的资源以及每个代理的资源。选择特定代理仅显示该代理的资源。
+LangSmith 通过代理的环境将跟踪链接到代理，并使用保留的 `Agent` [resource tag](#resource-tags) 键将数据集、提示、注释队列和部署链接到代理。跟踪页面要求您选择代理。数据集、提示、注释队列和部署可以在没有代理的情况下存在。选择**所有代理**会显示这些未链接的资源以及每个代理的资源。选择特定代理仅显示该代理的资源。
 
 ### 资源
 
@@ -88,7 +88,7 @@ LangSmith 通过代理的环境将跟踪链接到代理，并使用保留的 `Ag
 |追踪项目 |工作空间或代理 |
 |注释队列 |工作空间或代理 |
 |部署|工作空间或代理 |
-|数据集和实验 |工作空间或代理|
+|数据集和实验 |工作空间或代理 |
 |提示|工作空间或代理 |
 | [Resource Tags](#resource-tags) |工作空间 |
 | API 密钥 |工作空间 |
@@ -116,7 +116,7 @@ LangSmith 资源标签与[AWS](https://docs.aws.amazon.com/tag-editor/latest/use
 
 ### 单独的环境
 
-环境是发布过程中的一个阶段，例如开发、登台或生产。代理具有内置环境，取自固定的四个环境。 [agent](/langsmith/agent-registry#agent) 将其迹线划分在它们之间，因此不需要标记约定。欲了解更多信息，请参阅[Agent environments](/langsmith/agent-environments)。
+环境是发布过程中的一个阶段，例如开发、登台或生产。代理具有内置环境，取自固定的四个环境。 [agent](/langsmith/agent-registry#agent) 将其轨迹划分在它们之间，因此不需要标记约定。有关更多信息，请参阅[Agent environments](/langsmith/agent-environments)。
 
 自托管 LangSmith 使用资源标签分隔环境。详情请参见[Self-hosted workspaces](#self-hosted-workspaces)。
 
@@ -127,7 +127,7 @@ LangSmith 资源标签与[AWS](https://docs.aws.amazon.com/tag-editor/latest/use
 > 虽然两种类型的标签都可以使用 `dev`、`staging` 和 `prod` 等环境术语，但它们有不同的用途：
 >
 > * **资源标签** (`Environment: prod`)：使用这些标签来*组织*整个工作区的资源。将资源标签应用于跟踪项目、数据集和其他资源（包括提示），以按环境对它们进行分组。
-> * [Commit tags](/langsmith/manage-prompts#commit-tags)（`prod` 标签）：使用这些来管理您的代码引用了哪些 [prompt version](/langsmith/prompt-context-hub#prompts)。提交标签是指向提示历史记录中特定提交的标签。当您的代码通过标签名称（例如，`client.pull_prompt("prompt-name:prod")`）提取提示时，它会检索该标签当前指向的任何提交。要将提示从 `staging` 升级到 `prod`，请将提交标记移动到所需的版本。
+> * [Commit tags](/langsmith/manage-prompts#commit-tags)（`prod` 标签）：使用它们来管理代码引用的 [prompt version](/langsmith/prompt-context-hub#prompts)。提交标签是指向提示历史记录中特定提交的标签。当您的代码通过标签名称（例如，`client.pull_prompt("prompt-name:prod")`）提取提示时，它会检索该标签当前指向的任何提交。要将提示从 `staging` 升级到 `prod`，请将提交标记移动到所需的版本。
 >
 > 资源标签组织**哪些资源**属于某个环境。提交标签使您可以控制代码引用的提示的**哪个版本**，而无需更改代码本身。
 
@@ -135,7 +135,7 @@ LangSmith 资源标签与[AWS](https://docs.aws.amazon.com/tag-editor/latest/use
 
 基于项目的工作区使用 [resource tags](#resource-tags) 分隔环境：默认标签键 `Environment`，每个环境具有不同的值（例如，`dev`、`staging`、`prod`）。
 
-要检查您拥有哪种类型的工作区，请参阅[How agent-based workspaces differ](/langsmith/migrate-to-agent-based-workspaces#check-which-one-you-have)。
+要检查您拥有哪种类型的工作空间，请参阅[How agent-based workspaces differ](/langsmith/migrate-to-agent-based-workspaces#check-which-one-you-have)。
 
 ## 用户和角色
 
@@ -170,13 +170,13 @@ PAT 前缀为 `lsv2_pt_`成员可以停用、重新激活或删除自己的 PAT�
 
 停用令牌会停止身份验证，但会通过 **停用** 徽章保持其记录、所有者和上次使用情况可见。停用是可逆的；删除会永久删除该记录。重新激活会保留原始到期日期，并且一旦过了该日期，将不可用。由于身份验证结果会被缓存，因此这些更改会在一分钟内生效，而不是立即生效。
 
-步骤及认证缓存时序请参考[Deactivate or delete a personal access token](/langsmith/create-account-api-key#deactivate-or-delete-a-personal-access-token)。
+具体步骤和认证缓存时序请参考[Deactivate or delete a personal access token](/langsmith/create-account-api-key#deactivate-or-delete-a-personal-access-token)。
 
 > [!提示]
 >
 > 避免使用 PAT 来验证来自应用程序的请求。相反，将它们用于与 LangSmith API 交互的个人脚本或工具。如果与 PAT 关联的用户从组织中删除，则 PAT 将不再起作用。
 
-#### Service keys服务密钥与 PAT 类似，但用于代表服务帐户对LangSmith API 的请求进行身份验证。组织管理员可以创建任何服务密钥。组织操作员和组织用户可以在其角色授予`workspaces:manage-keys`的工作区中创建工作区范围的服务密钥，例如工作区管理员。有关完整细分，请参阅[API keys operations](/langsmith/organization-workspace-operations#api-keys)。我们建议对需要与LangSmith API 交互的应用程序或服务（例如LangGraph 代理或其他集成）使用服务密钥。
+#### 服务键服务密钥与 PAT 类似，但用于代表服务帐户对LangSmith API 的请求进行身份验证。组织管理员可以创建任何服务密钥。组织操作员和组织用户可以在其角色授予`workspaces:manage-keys`的工作区中创建工作区范围的服务密钥，例如工作区管理员。有关完整细分，请参阅[API keys operations](/langsmith/organization-workspace-operations#api-keys)。我们建议对需要与LangSmith API 交互的应用程序或服务使用服务密钥，例如LangGraph 代理或其他集成。
 
 服务密钥的范围可以是单个工作区、多个工作区或整个组织。它们可用于验证对 LangSmith API 有权访问的任何工作区的请求。
 
@@ -189,9 +189,9 @@ PAT 前缀为 `lsv2_pt_`成员可以停用、重新激活或删除自己的 PAT�
 > 使用 `X-Tenant-Id` 标题指定目标工作空间。
 >
 > * **使用 PAT 时**：如果省略此标头，请求将针对与密钥关联的默认工作区运行。
-> * **使用组织范围的服务密钥时**：访问工作区范围的资源时，必须包含 `X-Tenant-Id` 标头。如果没有它，请求将失败并出现 `403 Forbidden` 错误。> [!注意]
+> * **使用组织范围的服务密钥时**：访问工作区范围的资源时必须包含 `X-Tenant-Id` 标头。如果没有它，请求将失败并出现 `403 Forbidden` 错误。> [!注意]
 >
-> 要创建任何类型的 API 密钥，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
+> 要创建任何类型的 API 密钥，请参阅 [Create an account and API key](/langsmith/create-account-api-key)。
 
 #### 跟踪键
 
@@ -201,11 +201,11 @@ PAT 前缀为 `lsv2_pt_`成员可以停用、重新激活或删除自己的 PAT�
 
 ### 角色
 
-每个用户都有一个组织角色，该角色适用于整个组织。在企业计划中，每个用户在其所属的每个工作区中还拥有一个工作区角色。在 **设置** > **角色** 中管理两者。欲了解更多信息，请参阅[Role-based access control](/langsmith/rbac)。
+每个用户都有一个组织角色，该角色适用于整个组织。在企业计划中，每个用户在其所属的每个工作区中还拥有一个工作区角色。在 **设置** > **角色** 中管理两者。有关更多信息，请参阅[Role-based access control](/langsmith/rbac)。
 
 #### 组织角色
 
-您的组织角色决定了您的 [organization-level permissions](/langsmith/organization-workspace-operations) 和您的工作区成员资格。组织角色与[workspace roles](#workspace-roles)（一项企业功能）不同，并且适用于组织中的所有工作区。
+您的组织角色决定了您的 [organization-level permissions](/langsmith/organization-workspace-operations) 和工作区成员资格。组织角色与[workspace roles](#workspace-roles)（一项企业功能）不同，并且适用于组织中的所有工作区。
 
 每个组织角色都会影响工作区成员身份，如下所示：* [Organization Admin](/langsmith/rbac#organization-admin) 的角色授予用户完全访问权限来管理所有组织配置、用户、计费和工作区。
   * 组织管理员拥有对组织中所有工作区的`Admin` 访问权限。
@@ -213,7 +213,7 @@ PAT 前缀为 `lsv2_pt_`成员可以停用、重新激活或删除自己的 PAT�
   * 组织操作员仅添加到他们创建或受邀加入的工作区。
 * [Organization User](/langsmith/rbac#organization-user)角色授予用户读取组织信息的权限。但是，他们无法在组织级别执行任何写入操作。组织用户可以创建[Personal Access Tokens](#personal-access-tokens-pats)。
   * 可以像往常一样将组织用户添加到工作区子集并分配工作区角色（如果启用 RBAC），这些角色指定工作区级别的权限。
-* [Organization Viewer](/langsmith/rbac#organization-viewer)的角色相当于组织用户，但具有此角色的用户**不能**创建个人访问令牌。自托管安装需要 Helm 图表版本 0.11.25 或更高版本才能发挥此作用。* [Organization Restricted](/langsmith/rbac#organization-restricted) 角色授予用户对其分配的工作区的访问权限，而无需组织范围的读取访问权限，因此用户无法列出组织成员。工作区范围的服务密钥也可以担任此角色。
+* [Organization Viewer](/langsmith/rbac#organization-viewer)的角色相当于组织用户，但具有此角色的用户**不能**创建个人访问令牌。自托管安装需要 Helm 图表版本 0.11.25 或更高版本才能发挥此作用。* [Organization Restricted](/langsmith/rbac#organization-restricted) 的角色授予用户对其分配的工作区的访问权限，而无需组织范围的读取访问权限，因此用户无法列出组织成员。工作区范围的服务密钥也可以担任此角色。
 
 > [!注意]
 >
@@ -221,7 +221,7 @@ PAT 前缀为 `lsv2_pt_`成员可以停用、重新激活或删除自己的 PAT�
 >
 > 有关如何禁用整个组织的 PAT 创建的说明，请参阅 [Security settings](/langsmith/manage-organization-by-api#security-settings)。
 
-有关设置组织和工作空间的更多信息，请参阅[organization setup guide](/langsmith/set-up-hierarchy#organization-roles)。
+有关设置组织和工作区的更多信息，请参阅[organization setup guide](/langsmith/set-up-hierarchy#organization-roles)。
 
 按角色划分的组织级权限：| |组织限制|组织查看器 |组织用户|组织运营商|组织管理|
 | - | - | - | - | - | - |
@@ -260,236 +260,16 @@ PAT 前缀为 `lsv2_pt_`成员可以停用、重新激活或删除自己的 PAT�
 
 > [!提示]
 >
-> 要同时为一组用户授予多个工作区中的角色，请使用 [teams](/langsmith/teams)。
+> 要同时为团队分配多个工作区中的角色，请创建 [user group](/langsmith/user-groups)。
 
 ## 使用和计费
 
-### 数据保留
-
-本节介绍数据保留的工作原理以及它在 LangSmith 中的定价方式。
-
-#### 为什么保留很重要* **隐私**：许多数据隐私法规（例如欧洲的 GDPR 或加利福尼亚州的 CCPA）要求组织在个人数据不再用于收集目的时将其删除。设置保留期限有助于遵守此类法规。
-* **成本**：LangSmith 对于数据保留率较低的跟踪收费较低。如需了解更多信息，请了解如何[enforce spend limits](/langsmith/billing#enforce-spend-limits)。
-
-> [!提示]
->
-> 在开始发送跟踪之前规划您的保留层。更改仅适用于新跟踪 - 现有跟踪保留其原始层。参见[Change project-level default retention](/langsmith/billing#change-project-level-default-retention)。
-
-#### 它是如何工作的
-
-LangSmith 有两层基于数据保留的跟踪，具有以下特征：
-
-| |基地|扩展|
-| - | - | - |
-| **价格** | [See pricing page](https://www.langchain.com/pricing) | [See pricing page](https://www.langchain.com/pricing) |
-| **保留期限** | 14 天 | 180 天 |
-
-> [!警告]
->
-> 从 2026 年 9 月 14 日开始，SaaS 客户的最长长期跟踪保留期将更改为 180 天。企业客户仍然可以自定义每个工作区的延长保留期，直至达到新的最大值。更改仅适用于新跟踪，现有跟踪不受影响。参见[Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy)。
-
-**保留结束后数据删除**在指定的保留期之后，将无法再在跟踪项目 UI 中或通过 API 访问跟踪。与跟踪相关的所有用户数据（例如输入和输出）将在一天内从我们的内部系统中删除。与每个跟踪关联的一些元数据可能会无限期保留以用于分析和计费目的。
-
-#### 数据保留自动升级
-
-> [!警告]
->
-> 自动升级可能会对您的账单产生影响。请仔细阅读本节，以充分了解您预计的LangSmith追踪费用。
-
-大多数迹线都使用碱基保留。某些操作（例如在线评估器和自动化规则）可以以更高的成本将跟踪延长到更长的保留期。您可以控制哪些操作可以延长保留时间。
-
-当您将某些功能与 `base` 层跟踪一起使用时，其数据保留可能会自动升级到 `extended` 层。这会增加跟踪的保留期限和成本。
-
-按操作保留行为：* **通过 API 或 SDK 进行反馈**：通过显式传递 `extend_trace_retention=true`（在 TypeScript 中为`extendTraceRetention: true`）的 API 或 SDK 调用，将反馈添加到跟踪（或线程中的任何跟踪）上的任何运行。欲了解更多信息，请参阅[Attach user feedback](/langsmith/attach-user-feedback)。 LangSmith UI 发送反馈和注释，但不会延长保留时间。
-* **在线评估器**：在线评估器对跟踪进行评分并启用其保留设置。跟踪级和线程级评估器都可以选择退出此升级。
-* **自动化规则**：启用保留扩展的[automation rule](/langsmith/rules#create-a-rule)匹配跟踪中的任何运行。匹配单个运行会升级整个跟踪，而不仅仅是该运行。 [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 为 **Threads** 的规则会升级匹配线程中的每个跟踪，而不仅仅是最近的跟踪。
-* **手动注释队列添加**（不升级）：默认情况下，手动将运行或线程添加到 [annotation queue](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue) 不会升级保留。
-
-此更改仅适用于新操作。已通过先前操作升级的跟踪将保持其长期保留。> [!注意]
->
-> 当您在跟踪项目上创建或编辑在线评估器时，您可以选择不升级评估器评分的跟踪，将其保持在基本保留状态。仅当项目的默认保留为基础层时，此选项才可用。有关分步说明，请参阅[Manage evaluator trace retention](/langsmith/evaluators#manage-evaluator-trace-retention)。
-
-> [!注意]
->
-> 默认情况下，新的在线评估器和自动化规则启用保留扩展。您可以在配置每个评估器或规则时选择退出。
-
-**为什么要自动升级痕迹？**
-
-我们采用自动升级跟踪模型有两个原因：
-
-1. 我们认为，符合任何这些条件的痕迹从根本上来说比其他痕迹更有趣，因此用户能够将它们保留更长时间是有好处的。
-2. 从理念上讲，我们希望对可能无法进行有意义交互的痕迹向客户收取较低的费用。我们认为自动升级使我们的定价模型与 LangSmith 带来的价值保持一致，只有具有有意义交互的痕迹才会以更高的费率收费。
-
-如果您对我们的定价模型有疑问或疑虑，请随时通过[support.langchain.com](https://support.langchain.com)联系支持人员，让我们知道您的想法！**数据保留如何影响下游功能？**
-
-以下功能与保留的交互作用不同：
-
-* **实验**：默认情况下，运行是在延长保留时创建的。
-* **自动化规则和评估器**：启用保留设置后，将匹配跟踪升级为延长保留。线程级规则和评估器升级匹配线程中的每个跟踪。
-* **UI 反馈、注释和注释队列**：保持跟踪的保留层不变。
-
-其他功能的行为独立于跟踪的保留层：
-
-* **监控**：即使基础层跟踪的数据保留期结束，监控选项卡也将继续工作。它由存在超过 30 天的跟踪元数据提供支持，这意味着即使在 `base` 层跟踪上，您的监控图表也将继续保持准确。
-* **数据集**：数据集具有无限的数据保留期。换句话说，如果将跟踪的输入和输出添加到数据集，它们将永远不会被删除。我们建议，如果您使用LangSmith进行数据收集，请利用数据集功能。
-
-#### 计费模型
-
-**计费指标**在您的LangSmith发票上，您将看到我们收取的两个指标：
-
-* LangSmith 迹线（基本电荷）
-* LangSmith 跟踪（扩展数据保留升级）。
-
-第一个指标包括所有跟踪，无论层如何。第二个指标仅计算扩展保留跟踪的数量。
-
-**为什么要测量所有迹线+升级而不是基本迹线和扩展迹线？**
-
-在考虑我们的定价时，一个自然要问的问题是为什么不直接在发票上显示 `base` 层和 `extended` 层跟踪的数量？
-
-虽然我们知道这会更简单，但它不适合跟踪升级。考虑 6 月 30 日记录的 `base` 层跟踪，并于 7 月 3 日升级到 `extended` 层。`base` 层跟踪发生在 6 月计费周期，但升级发生在 7 月计费周期。因此，我们需要能够独立地衡量这两个事件，以便正确地向客户计费。
-
-如果您的跟踪记录为扩展保留跟踪，则 `base` 和 `extended` 指标都将使用相同的时间戳进行记录。
-
-### 速率限制
-
-LangSmith具有速率限制，旨在确保所有用户的服务稳定性。为了保证访问和稳定性，在以下情况下，LangSmith将响应 HTTP 状态代码 429，表明已超出速率或使用限制：
-
-#### 我们的应用程序负载均衡器 1 分钟内的临时吞吐量限制
-
-此 429 是基于每个服务密钥或 PAT 在 1 分钟窗口内超过固定数量的 API 调用的结果。窗口的开始时间会略有不同（不保证在时钟分钟开始时开始），并且可能会根据应用程序部署事件而变化。
-
-收到最大事件数后，我们将响应 429，直到达到评估窗口开始后 60 秒，然后重复该过程。
-
-此 429 由我们的应用程序负载均衡器抛出，是一种为所有LangSmith 用户建立的独立于计划层的机制，以确保所有用户的服务连续性。
-
-|方法|端点 |限制|窗口|
-| - | - | - | - |
-| `DELETE` | `/sessions*` | 30| 1 分钟 |
-| `POST` 或 `PATCH` | `/runs*` | 5000 | 1 分钟 |
-| `GET` | `/runs/:id` | 30| 1 分钟 |
-| `POST` | `/feedbacks*` | 5000 | 1 分钟 |
-| `*` | `*` | 2000 | 2000 1 分钟 |> [!注意]
->
-> LangSmith SDK 采取措施，通过将单个会话 ID 中的最多 100 次运行批处理到单个 API 调用中，最大限度地降低在运行相关端点上达到这些限制的可能性。
-
-#### 计划级每小时跟踪事件限制
-
-此 429 是达到每小时最大摄取事件数的结果，并在 UTC 每个时钟小时开始时的固定窗口中进行评估，并在每个新小时的顶部重置。
-
-此上下文中的事件是运行的创建或更新。如果创建运行并随后在同一小时窗口中更新，则针对此限制计为 2 个事件。
-
-这是由我们的应用程序引发的，并因计划级别而异，我们的 Startup/Plus 和 Enterprise 计划级别的组织的每小时限制高于专为个人使用而设计的免费和开发人员计划级别。
-
-|计划|限制|窗口|
-| - | - | - |
-|开发商（档案中无付款）| 50,000 场活动 | 1小时|
-|开发商（已付款存档）| 250,000 场活动 | 1小时|
-|启动/增强 | 500,000 个事件 | 1小时|
-|企业 |定制|定制|
-
-#### 计划级每小时跟踪数据摄取限制此 429 是在跟踪输入、输出和元数据中获取的最大数据量达到的结果，并在 UTC 每个时钟小时开始时的固定窗口中进行评估，并在每个新小时的顶部重置。
-
-通常，输入、输出和元数据都会在运行创建和更新事件上发送。如果以 2.0MB 创建运行并在同一小时窗口内更新为 3.0MB，则相对于此限制计为 5.0MB 存储。
-
-这是由我们的应用程序引发的，并因计划级别而异，我们的 Startup/Plus 和 Enterprise 计划级别的组织的每小时限制高于专为个人使用而设计的免费和开发人员计划级别。
-
-|计划|限制|窗口|
-| - | - | - |
-|开发商（档案中无付款）| 500MB | 1小时|
-|开发商（已付款存档）| 2.5GB | 2.5GB 1小时|
-|启动/增强 | 5.0GB| 1小时|
-|企业 |定制|定制|
-
-#### 计划级别每月唯一跟踪限制
-
-此 429 是达到每月最大摄取痕迹的结果，并在 UTC 每个日历月月初开始的固定窗口中进行评估，并在每个新月月初重置。这是由我们的应用程序抛出的，并且仅适用于当文件中没有付款方式时的开发者计划层。
-
-|计划|限制|窗口|
-| - | - | - |
-|开发商（档案中无付款）| 5,000 条痕迹 | 1 个月 |
-
-#### 自行配置每月使用限额
-
-此 429 是达到组织管理员配置的使用限制的结果，并在 UTC 每个日历月月初开始的固定窗口中进行评估，并在每个新月月初重置。
-
-这是由我们的应用程序引发的，并且根据组织的配置设置而有所不同。
-
-#### 每条轨迹的最大运行次数
-
-每个跟踪最多运行 25,000 次。一旦跟踪达到此限制，LangSmith 将拒绝您为该跟踪发送的任何其他运行。
-
-#### 运行查询端点
-
-[⟦T47⟧](/langsmith/smith-api/run/query-runs) 端点具有基于查询参数的额外每租户速率限制。详情请参阅[Query traces using the SDK](/langsmith/export-traces#rate-limits)。
-
-#### 处理应用程序中的 429 响应
-
-由于某些 429 响应是临时的，并且可能会在连续调用时成功，因此如果您在应用程序中直接调用 LangSmith API，我们建议实现具有指数退避和抖动的重试逻辑。为了方便起见，使用 LangSmith SDK 构建的 LangChain 应用程序内置了此功能。
-
-> [!注意]
->
-> 值得注意的是，如果端点长时间处于饱和状态，重试可能不会有效，因为您的应用程序最终将运行足够大的积压以耗尽所有重试。
->
-> 如果是这种情况，我们愿意更具体地讨论您的需求。请通过 [LangSmith Support](https://support.langchain.com) 联系支持人员，提供有关您的应用程序吞吐量需求和示例代码的详细信息，我们可以与您合作，更好地了解最佳方法是否是修复错误、更改应用程序代码或不同的 LangSmith 计划。
-
-### 使用限制
-
-LangSmith 允许您配置跟踪的使用限制。请注意，这些是“使用”限制，而不是“支出”限制，这意味着它们可以让您限制某些事件发生的数量，而不是您将花费的总金额。
-
-LangSmith 允许您设置两个不同的每月限额，反映了上述数据保留指南中讨论的计费指标：
-
-* 所有痕迹限制
-* 扩展数据保留痕迹限制
-
-这些可让您分别限制总跟踪数和扩展数据保留跟踪数。> [!注意]
->
-> 有关评估器运行的*花费*具体限制，请参阅[Track and limit evaluator spend](/langsmith/evaluator-spend)。
-
-#### 使用限制的属性
-
-使用限制是近似的，这意味着我们不保证限制的准确性。在极少数情况下，在开始应用使用限制之前，可能会在一小段时间内处理超出限制阈值的额外跟踪。
-
-#### 延长数据保留痕迹限制的副作用
-
-延长数据保留跟踪限制有副作用。如果已达到限制，则任何可能导致跟踪层自动升级的功能都将无法访问。这是因为跟踪的自动升级会导致创建另一个扩展保留跟踪，而这又不应受到限制的允许。因此，您不能再：
-
-1.比赛运行规则
-2. 给轨迹添加反馈
-3. 将运行添加到注释队列
-
-这些功能中的每一个都可能会导致自动升级，因此我们在达到限制时将其关闭。
-
-#### 更新使用限制
-
-使用限制可以从`Usage and Billing`下的`Settings`页面更新。限制值会被缓存，因此可能需要一两分钟才能应用新限制。
-
-#### 每个项目和每个用户的跟踪限制除了 [workspace-wide limits](#usage-limits) 之外，您还可以为单个跟踪项目或单个工作区成员设置每月跟踪上限。这可以防止一个项目或用户消耗过多的工作空间跟踪预算。
-
-要配置这些限制，请打开 **设置**，转到 **使用配置**，然后选择 **项目和用户限制** 选项卡。选择**添加限制**，然后设置：
-
-* **范围**： **项目** 限制单个跟踪项目，或 **用户** 限制单个工作区成员。
-* **工作空间**：包含项目或成员的工作空间。
-* **项目** 或 **用户**：要限制的目标。
-* **每月跟踪限制**：每个日历月允许的最大跟踪数。
-
-在 [agent-based workspace](/langsmith/agent-registry) 中，项目范围的限制限制一个代理的一个 [environment](/langsmith/agent-environments)，而不是整个代理。没有代理范围，因此限制代理的总跟踪数意味着为每个环境添加一个限制。
-
-更新这些限制需要与工作区使用限制 (`Update usage limits`) 相同的权限。与工作区限制一样，每个项目和每个用户的限制按照 UTC 的每个日历月进行评估，并在每个新月开始时重置。一旦项目或用户达到其限制，其新跟踪将被丢弃，并且不会再次被摄取，直到限制重置。强制执行是近似的，因此在限制生效之前，可能会在阈值以上处理少量跟踪。这些限制适用于 [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted)。
-
-> [!注意]
->
-> 每个项目和每个用户的限制是您的工作区范围和计划限制的**附加**。痕迹必须在每个适用的摄入限值内。
->
-> 每用户限制仅计算归因于特定工作区成员的跟踪。使用未与成员绑定的 API 密钥或服务密钥发送的跟踪不计入每用户限制。
->
-> 限制值会被缓存，因此可能需要一两分钟才能应用新的或更改的限制。
+有关跟踪保留期、速率限制和使用限制，请参阅[Usage and billing](/langsmith/usage-and-billing)。要管理发票和支出，请参阅[Manage billing](/langsmith/billing)。
 
 ## 另请参阅
 
 * **[Release policy](/langsmith/release-versions)**：了解自托管发布渠道、节奏和版本编号。
 
-***
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/administration-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/administration-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -5,6 +5,7 @@
 # 添加成员到团队
 
 /langsmith/langsmith-platform-openapi.json 发布 /api/v1/platform/orgs/current/teams/{team_id}/members
+已弃用：使用相应的 /user-groups 端点。
 将组织成员添加到团队并返回每个身份的状态：
 添加时已创建，已是成员时未更改，失败时
 当它不是该组织中的组织身份时。一个工作区

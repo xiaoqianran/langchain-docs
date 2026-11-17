@@ -16,8 +16,8 @@ LangSmith 引擎如何处理您的数据、GitHub、GitLab 和模型子处理器
 
 | **数据来源** | **引擎读取什么** | **存储和持久性** | **启用** |
 | - | - | - | - |
-| LangSmith 工作区内容 |跟踪您存储在 LangSmith 中的数据和其他工作区内容，例如提示和评估器。 |在您的LangSmith租户内。截至 2026 年 9 月 14 日，对于 SaaS 客户，[Trace retention](/langsmith/usage-and-billing#data-retention) 为 14 天（基本）或最长 180 天（扩展），按项目选择。 |问题检测、优先级排序和评估建议。 |
-| GitHub 存储库 |来自您连接的存储库的源代码和存储库上下文（请参阅[GitHub integration](#github-integration)）。 |在每次分析运行期间，在隔离的、LangChain 管理的沙箱内进行处理，然后丢弃。 |使用建议的代码修复来编写拉取请求。 ||亚搏体育appGitLab项目|连接的 GitLab 帐户可以访问的项目的源代码和项目上下文（请参阅[GitLab integration](#gitlab-integration)）。 |在每次分析运行期间在隔离的、LangChain 管理的沙箱内进行处理，然后丢弃。访问令牌加密存储在LangSmith中。 |将请求创作与建议的代码修复合并。 |
+| LangSmith 工作区内容 |跟踪您存储在 LangSmith 中的数据和其他工作区内容，例如提示和评估器。 |在您的LangSmith租户内。 [Trace retention](/langsmith/usage-and-billing#retention-periods) 是基础或扩展，根据项目选择。 |问题检测、优先级排序和评估建议。 |
+| GitHub 存储库 |来自您连接的存储库的源代码和存储库上下文（请参阅[GitHub integration](#github-integration)）。 |在每次分析运行期间，在隔离的、由 LangChain 管理的沙箱内进行处理，然后丢弃。 |使用建议的代码修复来编写拉取请求。 ||亚搏体育appGitLab项目|连接的 GitLab 帐户可以访问的项目的源代码和项目上下文（请参阅[GitLab integration](#gitlab-integration)）。 |在每次分析运行期间在隔离的、LangChain 管理的沙箱内进行处理，然后丢弃。访问令牌加密存储在LangSmith中。 |将请求创作与建议的代码修复合并。 |
 |模型提供者（推理）|仅包含每个分析任务所需的内容。 |配置为每个引擎模型提供商的零数据保留（请参阅[Model subprocessors](#model-subprocessors)）。 |引擎推理和生成。 |
 
 > [!注意]
@@ -48,7 +48,7 @@ Access 使用 GitHub 的标准应用程序模型：每个操作都通过一个�
 
 保存令牌时，LangSmith 负责保管该令牌。它会立即轮换令牌，因此管理员粘贴的值将停止工作，并且 LangSmith 保留唯一的工作副本（静态加密）。 LangSmith 在每个生命周期中更新令牌，一次最多一年，并在管理员断开与 GitLab 的连接时撤销它。删除工作区会删除其连接，但不会撤销令牌，令牌随后会自行过期。对于每次运行，Engine 都会将其跟踪的 GitLab 项目克隆到用于 GitHub 存储库的同一个隔离的、网络受限的沙箱中。沙箱外部的代理仅将令牌添加到这些项目的 Git 请求中，因此沙箱中的代码无法读取令牌或将其用于 GitLab API 调用。红队运行使用只读存储库凭据。由于 GitLab 访问令牌无法限制为读取访问权限，因此 Red Teaming 运行不会收到它，也不使用 GitLab 项目。
 
-每个工作区的合并请求 Webhook 都有自己的 URL 和密钥。 LangSmith 验证每次交付的秘密，并且交付只能更新该工作区的问题。
+每个工作区的合并请求 Webhook 都有自己的 URL 和秘密。 LangSmith 验证每次交付的秘密，并且交付只能更新该工作区的问题。
 
 连接和断开 GitLab 在[audit logs](/langsmith/audit-logs)中记录为`upsert_gitlab_connection`和`delete_gitlab_connection`。
 

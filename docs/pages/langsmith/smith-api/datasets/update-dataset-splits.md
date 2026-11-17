@@ -5,6 +5,10 @@
 /langsmith/langsmith-platform-openapi.json put /api/v1/datasets/{dataset_id}/splits
 Add examples to a split, or remove them from it.
 
+Deprecated: use PATCH /api/v1/platform/datasets/{dataset_id}/examples/metadata
+with an ARRAY_ADD or ARRAY_REMOVE operation on the dataset_split key. Will be
+removed after May 31, 2027.
+
 Returns the IDs of the given examples found in the dataset. Each of them gets
 a new version, even when its splits do not change. An example's other splits
 are kept, and an example without a split counts as being in the base split.

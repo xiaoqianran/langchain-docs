@@ -50,6 +50,30 @@ For example, sign in to a booking site in one conversation, then request another
 
 Shared login state is not account isolation: logging out or switching accounts can affect the person's other threads. Coordinate purchases and bookings across conversations. Finishing a run releases the client, not the login; the idle timeout stops the browser rather than logging out. Website expiry or browser replacement can still invalidate saved state.
 
+## Restrict browser network access
+
+A browser allow list restricts destinations and reduces the risk of sending data to unintended sites.
+
+> [!NOTE]
+>
+> Browser allow lists require `managed-deepagents>=0.10.4`.
+
+Set a non-empty list of hosts in the root browser declaration:
+
+```ts browser.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineBrowser } from "managed-deepagents"
+
+export const browser = defineBrowser({ allowList: ["portal.vendor.com"] })
+```
+
+Include hosts needed for login, redirects, and page resources.
+
+A hostname allows all ports. See [sandbox proxy pattern syntax](/langsmith/sandbox-auth-proxy#pattern-syntax) for ports and wildcards.
+
+![Browser sandbox proxy allows a vendor portal and refuses an unlisted site](https://mintcdn.com/langchain-5e9cc07a/eAhdQQhsRs1hG_qe/images/managed-deep-agents-browser-allow-list-light.png?fit=max\&auto=format\&n=eAhdQQhsRs1hG_qe\&q=85\&s=93abb50332a6b8f98c89210ac5abaf10)
+
+[Organization-level restricted egress](/langsmith/sandbox-auth-proxy#organization-level-restricted-egress) replaces the browser's allow list. Only hosts in the organization policy are allowed.
+
 ## Browser tools
 
 Managed Deep Agents includes these tools automatically when a browser is defined:

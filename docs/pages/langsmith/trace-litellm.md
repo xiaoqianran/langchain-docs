@@ -169,9 +169,9 @@ The LiteLLM proxy runs as a standalone server and exposes an OpenAI-compatible A
 
    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    model_list:
-     - model_name: gpt-4o
+     - model_name: gpt-5.5
        litellm_params:
-         model: openai/gpt-4o
+         model: openai/gpt-5.5
 
    litellm_settings:
      callbacks: ["langsmith"]

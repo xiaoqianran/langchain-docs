@@ -3,6 +3,7 @@
 # Add members to a team
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/platform/orgs/current/teams/{team_id}/members
+Deprecated: use the corresponding /user-groups endpoint.
 Adds organization members to a team and returns a status for each identity:
 CREATED when it was added, UNCHANGED when it was already a member, and FAILED
 when it is not an organization identity in this organization. A workspace

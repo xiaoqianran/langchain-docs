@@ -114,7 +114,7 @@ LangSmith *integrations* provide automatic tracing for popular LLM providers and
 
 ## Data retention
 
-LangSmith (SaaS) retains trace data for 180 days from ingestion. After that, traces are permanently deleted, with limited metadata retained for usage statistics. For details on retention tiers and pricing, refer to [Usage and billing: Data retention](/langsmith/usage-and-billing#data-retention).
+LangSmith keeps each trace only for the retention period of its tier, base or extended. After that, traces are permanently deleted, with limited metadata retained for usage statistics. For retention periods by hosting option, see [Usage and billing: Data retention](/langsmith/usage-and-billing#data-retention).
 
 > [!NOTE]
 >

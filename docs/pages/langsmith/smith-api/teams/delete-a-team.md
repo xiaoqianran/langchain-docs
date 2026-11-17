@@ -3,6 +3,7 @@
 # Delete a team
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/platform/orgs/current/teams/{team_id}
+Deprecated: use the corresponding /user-groups endpoint.
 Deletes an organization-wide team with its members, workspace grants and access
 policies, and the workspace scoped teams under it. A workspace scoped team returns
 400: removing its parent's grant in the workspace deletes it. Returns 204 also when

@@ -5,4 +5,4 @@
 # 获取设置
 
 /langsmith/langsmith-platform-openapi.json 获取 /api/v1/settings
-获取设置。
+获取当前工作空间。

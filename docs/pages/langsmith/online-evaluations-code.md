@@ -71,6 +71,8 @@ In order to track progress of the backfill, you can view logs for your evaluator
 > ```
 >
 > **Network Access**: You cannot access the internet from a code evaluator.
+>
+> To install other packages, make network requests, or authenticate with workspace secrets, use an advanced code evaluator. For more information, see [Use advanced code evaluators](/langsmith/advanced-code-evaluators).
 
 Code evaluators must be written inline. We recommend testing locally before setting up your code evaluator in LangSmith.
 
@@ -79,6 +81,10 @@ In the UI, you will find a panel that lets you write your code inline, with some
 Code evaluators take in one argument:
 
 * A `Run` ([reference](/langsmith/run-data-format)). This represents the sampled run to evaluate.
+
+> [!NOTE]
+>
+> LangSmith passes a dataset example as a second argument when you test the evaluator against a dataset sample and when the evaluator scores an experiment run. Otherwise, it passes only the run. To handle both cases in Python, define the function as `perform_eval(run, example=None)`. In a default code evaluator, a function that accepts only `run` fails with `TypeError: perform_eval() takes 1 positional argument but 2 were given`.
 
 They return a single value:
 

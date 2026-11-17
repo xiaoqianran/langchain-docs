@@ -3,4 +3,4 @@
 # Get tracing project prebuilt dashboard
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/sessions/{session_id}/dashboard
-Get a prebuilt dashboard for a tracing project.
+GET with body payload — no resources created. Returns the prebuilt dashboard for the tracing project matching the query passed as the request payload.

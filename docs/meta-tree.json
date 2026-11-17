@@ -225,6 +225,12 @@
           "rel": "api-reference/deployments-v2/list-deployment-logs.md"
         }
       ],
+      "list-deployment-namespaces": [
+        {
+          "title": "List Deployment Namespaces",
+          "rel": "api-reference/deployments-v2/list-deployment-namespaces.md"
+        }
+      ],
       "list-deployments": [
         {
           "title": "List Deployments",
@@ -429,6 +435,12 @@
           "rel": "langsmith/administration-overview.md"
         }
       ],
+      "advanced-code-evaluators": [
+        {
+          "title": "Use advanced code evaluators",
+          "rel": "langsmith/advanced-code-evaluators.md"
+        }
+      ],
       "aes-encryption": [
         {
           "title": "Configure AES encryption at rest",
@@ -571,6 +583,12 @@
         {
           "title": "Audit logs",
           "rel": "langsmith/audit-logs.md"
+        }
+      ],
+      "audit-logs-siem": [
+        {
+          "title": "Forward audit logs to a SIEM",
+          "rel": "langsmith/audit-logs-siem.md"
         }
       ],
       "auth": [
@@ -789,10 +807,28 @@
           "rel": "langsmith/cloud.md"
         }
       ],
+      "cloud-ip-allowlist": [
+        {
+          "title": "IP allowlisting",
+          "rel": "langsmith/cloud-ip-allowlist.md"
+        }
+      ],
       "cloud-platform-features": [
         {
           "title": "Cloud platform features",
           "rel": "langsmith/cloud-platform-features.md"
+        }
+      ],
+      "cloud-private-connectivity": [
+        {
+          "title": "Private connectivity",
+          "rel": "langsmith/cloud-private-connectivity.md"
+        }
+      ],
+      "cloud-rate-limits": [
+        {
+          "title": "API rate limits",
+          "rel": "langsmith/cloud-rate-limits.md"
         }
       ],
       "code-evaluator-sdk": [
@@ -811,6 +847,12 @@
         {
           "title": "Coding agent metadata contract",
           "rel": "langsmith/coding-agent-metadata-contract.md"
+        }
+      ],
+      "coding-agents": [
+        {
+          "title": "Monitor coding agent cost and pull requests",
+          "rel": "langsmith/coding-agents.md"
         }
       ],
       "compare-experiment-results": [
@@ -2961,12 +3003,6 @@
           "rel": "langsmith/summary.md"
         }
       ],
-      "teams": [
-        {
-          "title": "Teams",
-          "rel": "langsmith/teams.md"
-        }
-      ],
       "test-from-playground": [
         {
           "title": "Test from the Playground",
@@ -3343,6 +3379,12 @@
         {
           "title": "Use webhooks",
           "rel": "langsmith/use-webhooks.md"
+        }
+      ],
+      "user-groups": [
+        {
+          "title": "User Groups",
+          "rel": "langsmith/user-groups.md"
         }
       ],
       "user-management": [
@@ -4773,6 +4815,10 @@
           "rel": "langsmith/smith-api/datasets/get-dataset-versions.md"
         },
         {
+          "title": "List datasets",
+          "rel": "langsmith/smith-api/datasets/list-datasets.md"
+        },
+        {
           "title": "Read dataset",
           "rel": "langsmith/smith-api/datasets/read-dataset.md"
         },
@@ -4917,6 +4963,10 @@
         {
           "title": "Update examples",
           "rel": "langsmith/smith-api/examples/update-examples.md"
+        },
+        {
+          "title": "Update metadata on many examples",
+          "rel": "langsmith/smith-api/examples/update-metadata-on-many-examples.md"
         },
         {
           "title": "Upload examples",
@@ -5263,16 +5313,40 @@
           "rel": "langsmith/smith-api/model-price-map/create-a-model-price.md"
         },
         {
+          "title": "Create an organization model price",
+          "rel": "langsmith/smith-api/model-price-map/create-an-organization-model-price.md"
+        },
+        {
           "title": "Delete a model price",
           "rel": "langsmith/smith-api/model-price-map/delete-a-model-price.md"
+        },
+        {
+          "title": "Delete an organization model price",
+          "rel": "langsmith/smith-api/model-price-map/delete-an-organization-model-price.md"
+        },
+        {
+          "title": "Get a model price",
+          "rel": "langsmith/smith-api/model-price-map/get-a-model-price.md"
+        },
+        {
+          "title": "Get an organization model price",
+          "rel": "langsmith/smith-api/model-price-map/get-an-organization-model-price.md"
         },
         {
           "title": "List model prices",
           "rel": "langsmith/smith-api/model-price-map/list-model-prices.md"
         },
         {
+          "title": "List organization model prices",
+          "rel": "langsmith/smith-api/model-price-map/list-organization-model-prices.md"
+        },
+        {
           "title": "Replace a model price",
           "rel": "langsmith/smith-api/model-price-map/replace-a-model-price.md"
+        },
+        {
+          "title": "Replace an organization model price",
+          "rel": "langsmith/smith-api/model-price-map/replace-an-organization-model-price.md"
         }
       ],
       "oauth": [
@@ -5517,6 +5591,10 @@
         {
           "title": "Get granular usage",
           "rel": "langsmith/smith-api/orgs/get-granular-usage.md"
+        },
+        {
+          "title": "Get org tracing key",
+          "rel": "langsmith/smith-api/orgs/get-org-tracing-key.md"
         },
         {
           "title": "Get org usage",
@@ -5811,6 +5889,12 @@
           "rel": "langsmith/smith-api/repos/update-repo.md"
         }
       ],
+      "rules": [
+        {
+          "title": "List run rules",
+          "rel": "langsmith/smith-api/rules/list-run-rules.md"
+        }
+      ],
       "run": [
         {
           "title": "Create decision model rule",
@@ -5953,6 +6037,10 @@
         {
           "title": "Share a run",
           "rel": "langsmith/smith-api/runs/share-a-run.md"
+        },
+        {
+          "title": "Translate an ai search into query filters",
+          "rel": "langsmith/smith-api/runs/translate-an-ai-search-into-query-filters.md"
         },
         {
           "title": "Unshare a run",
@@ -6211,12 +6299,28 @@
       ],
       "sessions": [
         {
+          "title": "Create a project or experiment",
+          "rel": "langsmith/smith-api/sessions/create-a-project-or-experiment.md"
+        },
+        {
+          "title": "Get a tracing project",
+          "rel": "langsmith/smith-api/sessions/get-a-tracing-project.md"
+        },
+        {
           "title": "List agent versions for a project",
           "rel": "langsmith/smith-api/sessions/list-agent-versions-for-a-project.md"
         },
         {
+          "title": "List tracing projects",
+          "rel": "langsmith/smith-api/sessions/list-tracing-projects.md"
+        },
+        {
           "title": "Resolve an address to its tracing project",
           "rel": "langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project.md"
+        },
+        {
+          "title": "Update a project",
+          "rel": "langsmith/smith-api/sessions/update-a-project.md"
         }
       ],
       "settings": [
@@ -6551,8 +6655,16 @@
       ],
       "usage-limits": [
         {
+          "title": "Delete org default usage limit",
+          "rel": "langsmith/smith-api/usage-limits/delete-org-default-usage-limit.md"
+        },
+        {
           "title": "Delete usage limit",
           "rel": "langsmith/smith-api/usage-limits/delete-usage-limit.md"
+        },
+        {
+          "title": "Get org default usage limit",
+          "rel": "langsmith/smith-api/usage-limits/get-org-default-usage-limit.md"
         },
         {
           "title": "List org usage limits",
@@ -6563,8 +6675,82 @@
           "rel": "langsmith/smith-api/usage-limits/list-usage-limits.md"
         },
         {
+          "title": "Put org default usage limit",
+          "rel": "langsmith/smith-api/usage-limits/put-org-default-usage-limit.md"
+        },
+        {
           "title": "Upsert usage limit",
           "rel": "langsmith/smith-api/usage-limits/upsert-usage-limit.md"
+        }
+      ],
+      "user-groups": [
+        {
+          "title": "Add members to a user group",
+          "rel": "langsmith/smith-api/user-groups/add-members-to-a-user-group.md"
+        },
+        {
+          "title": "Attach an access policy to a user group",
+          "rel": "langsmith/smith-api/user-groups/attach-an-access-policy-to-a-user-group.md"
+        },
+        {
+          "title": "Change a user group's role in a workspace",
+          "rel": "langsmith/smith-api/user-groups/change-a-user-groups-role-in-a-workspace.md"
+        },
+        {
+          "title": "Create a user group",
+          "rel": "langsmith/smith-api/user-groups/create-a-user-group.md"
+        },
+        {
+          "title": "Delete a user group",
+          "rel": "langsmith/smith-api/user-groups/delete-a-user-group.md"
+        },
+        {
+          "title": "Detach an access policy from a user group",
+          "rel": "langsmith/smith-api/user-groups/detach-an-access-policy-from-a-user-group.md"
+        },
+        {
+          "title": "Get a user group",
+          "rel": "langsmith/smith-api/user-groups/get-a-user-group.md"
+        },
+        {
+          "title": "Get a user group's role in a workspace",
+          "rel": "langsmith/smith-api/user-groups/get-a-user-groups-role-in-a-workspace.md"
+        },
+        {
+          "title": "Grant a user group a role in a workspace",
+          "rel": "langsmith/smith-api/user-groups/grant-a-user-group-a-role-in-a-workspace.md"
+        },
+        {
+          "title": "List a user group's access policies",
+          "rel": "langsmith/smith-api/user-groups/list-a-user-groups-access-policies.md"
+        },
+        {
+          "title": "List a user group's workspace grants",
+          "rel": "langsmith/smith-api/user-groups/list-a-user-groups-workspace-grants.md"
+        },
+        {
+          "title": "List organization user groups",
+          "rel": "langsmith/smith-api/user-groups/list-organization-user-groups.md"
+        },
+        {
+          "title": "List user group members",
+          "rel": "langsmith/smith-api/user-groups/list-user-group-members.md"
+        },
+        {
+          "title": "List workspace scoped user group members",
+          "rel": "langsmith/smith-api/user-groups/list-workspace-scoped-user-group-members.md"
+        },
+        {
+          "title": "Remove a member from a user group",
+          "rel": "langsmith/smith-api/user-groups/remove-a-member-from-a-user-group.md"
+        },
+        {
+          "title": "Remove a user group's access to a workspace",
+          "rel": "langsmith/smith-api/user-groups/remove-a-user-groups-access-to-a-workspace.md"
+        },
+        {
+          "title": "Update a user group",
+          "rel": "langsmith/smith-api/user-groups/update-a-user-group.md"
         }
       ],
       "workspaces": [

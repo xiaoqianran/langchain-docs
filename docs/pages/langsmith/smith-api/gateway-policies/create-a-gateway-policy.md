@@ -22,15 +22,18 @@ The shape of `config` depends on policy_type:
 - `model_fallback`:
 `{"strategy": "priority_fallback", "triggers": {"status_codes": [429, 502, 503, 504]}, "chain": {"selector": {"type": "provider_model", "provider": "openai", "model": "gpt-4o"}, "candidates": [{"type": "provider_model", "provider": "openai", "model": "gpt-4o-mini"}, {"type": "model_config", "model_config_id": "<playground-settings-uuid>"}]}}`
 Optional `ejection: {"failure_threshold": <1-1000>, "cooldown_seconds": <1-300>}` skips a candidate for `cooldown_seconds` after it fails the chain's triggers `failure_threshold` times within `cooldown_seconds`. Failures are counted per policy and candidate, only provider failures count, and success does not reset the count. The last candidate is never skipped.
-`chain.candidates` is an ordered list of 1–5 direct provider models or saved workspace model configurations. A non-empty `workspace_id` matcher is required. `provider_model` selectors are workspace-only; `alias` selectors may be narrowed by `user_id` or `api_key_id`. Provider/model selectors are unique within a workspace, while alias names are reserved across the organization and may intentionally shadow a model name.
+`chain.candidates` is an ordered list of 1–5 direct provider models or saved workspace model configurations. A non-empty `workspace_id` matcher is required. `provider_model` selectors are workspace-only; `alias` selectors may be narrowed by `user_id` or `api_key_id`. User Group-scoped model fallbacks are not supported. Provider/model selectors are unique within a workspace, while alias names are reserved across the organization and may intentionally shadow a model name.
+With `"strategy": "weighted"`, each request tries the distinct `chain.candidates` in a random order favoring higher `weight` (required, 1–1000), and trigger failures fall through that order. `chain.candidates` must include the selector's model: the same `provider_model`, or for a `providers/<name>` selector, that saved model configuration. Weighted chains don't support alias selectors. `priority_fallback` rejects `weight`.
 - `rate_limit` / `default_rate_limit`:
 `{"version": 1, "limits": [{"metric": "requests"|"tokens", "window": "minute"|"hour", "value": <integer>}]}`
 `limits` must be non-empty; each `metric`/`window` pair may appear at most once. `value` is 1..1000000000000000.
 
 **subject_matchers** is a list of `{key, value}` pairs. Built-in
-keys are `organization_id`, `workspace_id`, `agent_id`,
+keys are `organization_id`, `user_group_id`, `workspace_id`, `agent_id`,
 `agent_environment`, `user_id`, `api_key_id`, and `run_rule_id`.
 Values under the same key are ORed; distinct keys are ANDed.
+`user_group_id` must be an organization-level User Group UUID, not a workspace child User Group UUID.
+Membership in a workspace child User Group matches its organization parent User Group ID. User Group IDs are not checked for existence.
 `agent_id` and `agent_environment` target requests from Agent
 deployments and must be combined with exactly one `workspace_id`
 matcher: `agent_id` alone targets those Agents, `agent_environment`
@@ -42,6 +45,9 @@ the runtime materializes a child for each subject it sees. A
 `default_spend_cap` and `default_rate_limit` may add one empty custom
 metadata key to bucket each subject by the corresponding
 `X-Gateway-*` request header; the materialized child stores both values.
+With a custom header, the built-in value may name one subject (e.g. one
+`api_key_id`) to bucket only that subject's requests. It replaces the
+organization-wide default of the same kind split by the same header.
 
 **action** is currently always `block`. Spend caps reject the
 request with 402 when the limit is hit; rate limits reject with

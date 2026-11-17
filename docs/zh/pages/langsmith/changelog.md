@@ -8,26 +8,162 @@ LangSmith 云每周更新
 
 每周更新[LangSmith Cloud](/langsmith/observability)。对于LangSmith机队，请参阅[Fleet changelog](/langsmith/fleet/changelog)。
 
-**订阅**：此变更日志包括一个 [RSS feed](https://docs.langchain.com/langsmith/changelog/rss.xml)，可以与 [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack)、[email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email)、Discord 机器人（如 [Readybot](https://readybot.io/) 或 [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot)）以及其他订阅工具集成。
+**订阅**：此变更日志包括一个 [RSS feed](https://docs.langchain.com/langsmith/changelog/rss.xml)，可以与 [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack)、[email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email)、Discord 机器人（如[Readybot](https://readybot.io/) 或 [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot)）以及其他订阅工具集成。
 
 > [!注意]
 >
 > 如果您使用自托管 LangSmith，请参阅 [self-hosted changelog](/langsmith/self-hosted-changelog) 了解更新。
 
-**2026 年 11 月 2 日至 9 日**
+**2026 年 11 月 9 日至 16 日**
 
 ## 亮点
 
-* **编码代理跟踪 GitHub 拉取请求结果**：编码代理现在显示 GitHub 拉取请求结果以及代理概述上的支出。您可以在创建代理时或从代理操作菜单中将代理的类型设置为编码，然后从概述标题中打开 GitHub 连接对话框以连接 GitHub 帐户、添加另一个帐户、选择存储库访问权限或重复使用已链接到工作区中另一个代理的安装。使用情况直接显示在概览上，并显示**尚无痕迹**状态，直到最近 30 天内生产有痕迹为止。 [Learn more](/langsmith/coding-agent-metadata-contract)。* **具有连续分析功能的在线见解**：见解现在可以连续分析您的跟踪并保持其类别最新，因此您不再需要等待预定的批量报告。提出问题来创建见解，在运行之前使用 **配置** 调整其设置，然后查看顶级类别、7、14 或 30 天范围内的类别趋势，以及包含子类别、反馈、延迟和成本指标的可扩展细分。新的见解每周对大约 1,000 条跟踪进行采样，并且返回数组的分类现在可以正确保存。 [Learn more](/langsmith/insights)。
-* **追踪项目的完整人工智能搜索**：您可以在追踪项目中用简单的语言描述您想要查找的内容，人工智能搜索将其转化为结构化过滤器、语义过滤器和时间限制。它选择是否搜索运行、跟踪或线程，将结果应用到您的视图，并显示应用的过滤器。当请求不明确时，AI 搜索会在 **您是指吗？** 下提供两种或三种解释，以便您可以选择一种解释而无需运行另一次搜索。 [Learn more](/langsmith/filter-traces-in-application)。* **带有公关支出的编码代理使用情况仪表板**：“编码代理使用情况”选项卡现在针对每个结果、用户和模型都有一张卡片。每张卡都可以进行分组，一张 **按对话长度计算的成本** 卡和一张 **按成本计算的热门 PR** 卡列出了您最昂贵的拉取请求以及 GitHub 的链接。您可以使用共享日期范围选择器选择时间范围，该选择器接受预设、输入的持续时间和特定日期。拉取请求支出归因于生成它的提交和分支，因此您可以查看每个编码代理更改的成本。 [Learn more](/langsmith/coding-agent-metadata-contract)。
-* **具有调用批准的作用域工具策略**：工具策略现在允许您阻止工具调用或要求调用者首先批准它们，并且当两者匹配同一调用时，阻止策略获胜。您可以将每项策略的范围限定为每个工作区、一个工作区或特定的代理环境，并且还会根据该代理的策略检查使用代理的 API 密钥进行的调用。工作区管理员可以从“策略”选项卡创建、编辑和删除自己工作区的策略，而组织管理员则管理所有策略。* **网关请求显示为一个跟踪**：每个 LLM 网关请求现在显示为单个跟踪，每次尝试运行一次，因此回退到另一个模型的请求会在一个位置显示两次尝试，而不是两个单独的跟踪。运行记录每次尝试的结果、提供程序、模型和上游状态，并在任何提供程序调用仍获得跟踪之前拒绝请求。拒绝或限制请求的策略检查和修改或阻止内容的数据策略扫描在尝试下显示为它们自己的运行。 [Learn more](/langsmith/llm-gateway-traces)。
+* **可通过我的帐户搜索设置模式**：设置现在在您正在处理的页面上的模式中打开，因此您可以将您的位置保留在 LangSmith 中。侧边栏搜索框按名称查找设置并突出显示匹配项，**我的帐户**将您的个人资料、外观和连接的应用程序收集到一处。相关页面被分组，例如**权限**、**登录和配置**和**模型**，并且编辑器在嵌套对话框中打开，这些对话框保留您的草稿并在您关闭它们时返回焦点。 [Learn more](/langsmith/admin)。* **LangSmith 免费计划上的聊天**：免费计划工作区现在可以使用 LangSmith 聊天（附带使用授权），并且自动显示在聊天中，无需存档卡片。使用栏显示您已使用了多少补助金，超过补助金后，它会显示超出您上限的支出。超过补助金后，只有在计费管理员使用存档的卡点击“向我收取超额费用**”后，Chat 才会对超额费用收费，并且每个横幅都会告诉您下一步，包括重新加载后。 [Learn more](/langsmith/chat)。
+* **大量跟踪在页面中加载**：具有数千次运行的跟踪现在可以快速打开，因为跟踪树在页面中加载，而不是一次全部加载。您仍然可以过滤大型跟踪，并在平面列表中显示匹配项，并为每个跟踪提供 **加载更多匹配** 控件。打开子运行的链接，该子运行以其完整的输入和输出运行，并且 Studio 显示完整的跟踪内容。 [Learn more](/langsmith/view-traces)。* **团队现在是用户组**：团队现在在 LangSmith 中称为用户组，包括设置页面、权限、访问策略、LLM 网关和编码代理视图。新的`/api/v1/platform/orgs/current/user-groups`路由和`user-groups`权限（例如`workspaces:user-groups:read`）可用，现有的`/teams`API路由目前仍然有效。您当前的组、成员、角色授予和策略将继续存在，无需任何更改。 [Learn more](/langsmith/teams)。
+* **将快照作为沙箱函数提供**：您可以将快照部署为在稳定 URL 上提供 HTTP 服务的沙箱函数。实例从快照开始，跨请求重用，在`min_instances`和`max_instances`之间缩放，空闲时暂停，并在`idle_timeout_seconds`之后停止。您可以通过部署早期快照进行回滚，将函数的访问权限设置为 public 或 token，并使用支持 `follow=true` 的 `GET /v2/sandboxes/functions/{name}/logs` 流式传输函数的 stdout 和 stderr。
+
+## 追踪* v2 会话 API 现在在 `POST /api/v2/sessions` 创建项目和实验，并在 `PATCH /api/v2/sessions/{session_id}` 更新它们。创建需要 `PROJECT`、`AGENT` 或 `EXPERIMENT` 的 `type`，并且两个端点都返回刷新的会话。
+* 长跟踪和线程运行树现在在右边缘包含一个带有转弯边界和错误标记的小地图，因此您可以通过单击或拖动跳转到已加载树的任何部分。小地图仅涵盖已加载和扩展的运行。
+* 现在，当您按 Enter 键、选择自动完成建议或单击过滤器编辑器时，过滤器栏就会应用您的过滤器，因此当您仍在键入时，运行不再重新加载。
+* 运行 `langsmith setup` 将 LangSmith 技能和 LangSmith MCP 服务器安装到计算机上的 Claude Code、Cursor 和 Codex 中，无需将 API 密钥写入任何代理配置。
+* 您现在可以运行 `langsmith investigate` 来获取一份关于项目失败的基线报告，按步骤和错误进行分组并带有证据跟踪，并运行 `langsmith verify --since <fix time>` 来检查这些故障在修复后是否停止。
+* 您现在可以使用 `langsmith profiles create <name> --keychain` 将 CLI 配置文件的 API 密钥存储在操作系统钥匙串中，因此该密钥不再以明文形式存储在 `config.json` 中。 Go SDK 读取钥匙串配置文件； Python、JavaScript 和 Java SDK 还没有。* 当您的服务器和 Node.js 运行时支持时，JavaScript SDK 现在会使用 zstd 压缩排队运行，从而减少上传大小。 zstd 需要 Node.js 22.15 或更高版本，或者 23.8 或更高版本；否则 SDK 会回退到 gzip。
+* 一旦部署准备就绪，每个工作区现在都可以使用 Online Insights，并且您的在线配置将保持最新，无需您执行任何操作。
+* 编码代理概述现在会在您的顶线上显示合并时间、缓存速率和成本。分组图表在选定范围内每组绘制一个条形图，因此成本条形图加起来等于未分组的总数。
+* 用于列出、检索、创建和更新项目的 v1 会话端点现在的删除日期为 2027 年 7 月 1 日。您对这些端点的请求返回指向 v2 替换的 `Deprecation` 和 `Sunset` 标头，并且 SDK 弃用警告使用相同的日期。
+
+## 沙箱* 每个 Box 上的 **日志** 选项卡现在显示保留的命令历史记录，包括状态、传输、持续时间和退出代码，并且在 Box 停止时保持可读。您可以按状态、传输和时间范围过滤命令，并搜索命令文本和捕获的输出。同一选项卡还显示入站和出站网络活动，包括阻止的请求、连接失败和上游错误。
+* 沙箱访问委托现在需要明确的权限列表。 `INHERIT` 模式已删除，因此 `--delegate-access` 从 CLI 中消失，`--delegate-permission` 是唯一的委托方式。创建将 `mode` 设置为 `EXPLICIT` 以外的任何值或使用空 `permissions` 列表的请求，现在返回 422。* 现在，您可以附加文字归属规则或回调，为沙箱通过代理发送的每个 HTTP(S) 请求提供元数据标头，以便下游服务可以识别沙箱的流量。归因标头被发送到目的地，并且可以回显到沙箱代码，因此切勿在其中放置秘密或个人数据。归因不是出口强制保证：直接 IP 和非标准端口流量、非 HTTP 流量以及现有隧道不被覆盖，并且现有隧道必须重新连接。
+* 标头规则现在可以使用新的 `match_scheme` 和 `match_port` 字段将凭证限制为精确的方案和端口。将 `match_scheme` 设置为 `https` 并将 `match_port` 设置为服务端口，您的沙箱将仅将标头发送到该源，而不会发送到纯 HTTP 或同一主机上的其他端口。
+* 使用 **match_paths** 的标头注入和重写规则现在仅适用于规范请求路径。带有点段、空段、反斜杠或编码斜杠的请求不再接收规则的凭据。* 沙箱现在可以从来宾内部报告它们正忙，因此长时间运行的进程可以防止其沙箱因空闲而停止，并且响应返回空闲 TTL，以便进程知道报告的频率。
+* Go SDK 的沙箱命令 start 现在接受 `CommandID` 参数。从 ID 开始，沙箱已经重新附加到该命令，而不是再次运行它，因此重试开始运行该命令一次。
+* 新的 AWS 数据平面在启动时会关闭沙箱，因此沙箱主机池将保持暂停状态，直到您启用它。要启用沙箱，请在创建数据平面模式中打开 **Sandboxes**，或在通过 API 创建数据平面时将 `is_sandboxes_enabled` 设置为 `true`。
+* 私有 AWS 数据平面可以将沙盒服务 URL 排除在公共 DNS 之外。将 `ingress.privateSandboxDns` 设置为 `true`，沙盒通配符记录将发布在附加到您的数据平面 VPC 和其他 VPC 关联的私有 Route53 区域中。使用 `customerManagedDns`，记录会进入您自己的 DNS 中。新数据平面默认启用此功能，现有数据平面也可以将其启用。
+
+＃＃ 行政* 已弃用的 API 使用情况报告现在显示哪些 SDK 版本和直接 API 密钥调用到达每个已弃用的端点，以便您可以了解谁仍需要迁移。
+* 您现在可以通过关键字搜索LangSmith API，读取任何操作的参数，并从托管的 MCP 服务器调用只读操作。写入和破坏性操作已列出，但尚无法调用。
+* LangSmith MCP 服务器添加了搜索线程和跟踪、解析自然语言 AI ​​搜索以及获取线程和跟踪统计信息和消息的工具。通过 `ai_search` 的语义搜索可在 `query_runs`、`query_traces` 和 `query_threads` 上使用。
+* 您现在可以创建数据集，使用 `create_examples` 添加示例，并在托管 MCP 服务器中使用 `update_examples` 更新每次调用最多 100 个示例。 `run_experiment`工具被移除；使用 SDK 的 `evaluate()` 函数来运行实验。
+* 您现在可以使用托管的 LangSmith MCP 服务器来列出、读取、创建、更新和删除代理。删除是永久性的且无法撤消。
+* 位于 `/mcp` 的 MCP 服务器现在接受已登录的 LangSmith Web 应用程序登录以及 API 密钥和 OAuth 令牌。工具调用以该用户身份运行，并且该用户不属于的 `workspace_id` 会被拒绝。* 服务帐户现在可以创建、读取和撤销其管理的工作区的跟踪密钥。跟踪服务帐户创建的密钥显示没有人类创建者，并且当您读取其元数据时，永远不会返回密钥的秘密。
+* 您现在可以使用 `langsmith_tracing_key` Terraform 资源管理跟踪密钥，该资源会为您列出的工作区创建一个固定范围、仅限摄取的密钥。更改描述、工作空间或过期时间会替换密钥，并且一次性密钥将存储在 Terraform 状态中。
+* 组织管理员现在可以为其组织设置默认的每月跟踪限制，新工作区将从该限制开始。使用**应用于现有工作区**来更新没有自身限制的工作区。
+* 新 Plus 订阅者现在可以选择 2026 年 11 月 Plus 计划，其中包括截至 12 月 31 日每月最多 1,000 个 LSU 的免费引擎使用量。现有 Plus 计划无法切换到该计划。
+* 工作区管理员现在可以从 Python、JavaScript、Go 和 Java SDK 列出、创建或更新以及删除工作区机密。该列表仅返回密钥，并且 `include_configs` 添加每个密钥允许的主机。在更新插入时省略 `value` 会保留当前值，并且删除丢失的键会成功。* 组织管理员现在可以在 **设置** > **安全联系人** 中设置多个安全联系人，每个组织最多 10 个电子邮件地址，并且自托管部署会将这些联系人报告给 LangChain，以便安全通知到达每个地址。
+* 在区域 Slack 应用程序启动之前连接 Slack 应用程序的工作空间现在可以移至新应用程序：**组织设置** > **集成** 为每个工作区显示一个 **可用更新** 徽章和一个 **重新安装** 按钮，重新安装后，LangSmith 要求专用频道`/invite` 新机器人。
+* 代理访问令牌铸币现在作为 `mint_agent_access_token` 条目显示在您组织的审核日志中，因此您可以查看哪些代理收到令牌以及何时收到令牌。通过该操作过滤`GET /api/v1/audit-logs`以找到它们。
+* 访问策略中的根运行元数据条件现已普遍可用。启用 ABAC 的组织可以编写策略，在 SaaS、自托管和 BYOC 部署上按根运行元数据过滤跟踪。* 访问策略现在在“设置”中有自己的页面，与“角色”分开，并且在行滚动时选项卡工具栏保持在原位。资源标签在具有紧凑资源徽章的可搜索表中按键分组，标签模式通过可搜索复选框面板列出资源类型。
+* Terraform 提供程序现在管理托管工具服务器、配置文件、配置文件凭据和套件，并且 OAuth 连接接受 `grant_type = "client_credentials"`，因此 LangSmith 无需浏览器步骤即可从客户端 ID 和密钥获取令牌。现在，更改 OAuth 连接的提供程序设置会将其更新到位，因此现有的用户授权保持不变。
+* 身份验证代理目标白名单现在拒绝格式错误的条目，例如具有方案、端口或路径的条目，而不是允许所有主机。当您将无效条目保存在 **设置** 中时，它们会返回 400 错误，并且通配符模式现在会显示一条警告，表明匹配的主机可能会收到 IdP 令牌。
+* 创建和重命名工作区调用现在会返回完整的工作区，包括您在其中的角色和权限，因此响应与工作区上的 GET 返回的内容相匹配。工作区路由上的请求验证错误现在会返回状态为 422 的问题详细信息。* You can now read a single model price by ID with `GET /api/v1/model-price-map/{id}`, including LangSmith default entries and organization entries your workspace uses.
+* The blank Custom Apps starter now includes tested building blocks in `src/blocks`: paged queries with loading, empty, and error states, run and thread viewers, and a rubric feedback form that types each answer from its queue item's pinned feedback config.
+
+## 提示和游乐场
+
+* LangSmith Slack 中的聊天现在会读取您在其中提到的线程，因此后续问题将基于所发布的内容。 When a question does not name an agent or project, it asks which one before it reads any data, and it sends you a private Confirm message before it creates a dataset.
+* 聊天现在位于右上角标题中，并且浮动的 LangSmith 聊天气泡消失了。选择“聊天”以打开面板并聚焦作曲家。
+* LangSmith Chat，包括 Slack 和 UI 中的 `@LangSmith`，现在运行 Claude Sonnet 5.5，思考和努力设置为 `xhigh`。您的聊天无需更改任何配置即可获得更深入的推理。* Prompt Hub 存储库和提交现在可在 Python 和 TypeScript SDK 中使用，因此您无需 CLI 即可创建、检索和列出它们。使用 `client.repos` 和 `client.commits` 管理 Prompt Hub 存储库、目录和提交。
+* 提交`manifest_sha`字段现在记录为base64编码的字符串，与API返回的内容匹配。创建提交现在需要一个 `manifest` 字段，如果缺少该字段，API 就会拒绝该字段。
+
+## 反馈
+
+* 您现在可以使用 `langsmith feedback create` 和 `langsmith feedback list` 创建并列出来自 CLI 的反馈，以便代理可以对运行、项目和线程进行评分并读取现有反馈。多值过滤器（例如 `--run` 和 `--key`）采用 YAML 列表，例如 `--run '[id1, id2]'`。
+* 现在，您可以将 `include_rubric_keys=true` 传递到注释队列列表端点，以按标题顺序获取每个队列的标题反馈键，而无需断言项。没有符合条件的标题项的队列将返回空数组。
+* 现在可以在 `/feedback` 和 `/api/v1/feedback` 创建和列出反馈（带或不带尾部斜杠），并通过这些路径创建的反馈在审核日志中显示为 `create_feedback`。
+
+## 评估者* 用于列出运行规则的 V1 端点 `GET /api/v1/runs/rules` 已弃用，并于 2027 年 4 月 1 日停止工作。使用 `GET /api/v2/runs/rules`，它返回光标分页结果，并且在具有许多规则的工作区上速度更快。
+* 创建或编辑在线评估器现在只需单击一下即可保存。 **保存评估器？** 成本提醒不再出现，包括当您仅重命名评估器时。
+
+## 部署
+
+* 您现在可以在代理选择器、全局搜索和代理表中按名称或 ID 搜索代理。搜索会忽略大小写、连字符和空格，因此 `open swe`、`open-swe` 和 `openswe` 返回相同的代理。
+* 您可以按所有者过滤代理列表，从 **所有者** 过滤器中选择一名或多名成员。每个过滤器芯片都会显示选定的所有者，成员选择器会按姓名或电子邮件进行搜索。
+* `langgraph dev` 现在默认在带有 SQLite 的 Go 核心上运行，并将您的数据保存到 `.langgraph_api/core.sqlite`。设置 `FF_INMEM_CORE=false` 以保留 Python 运行时。
+* 运行连接和线程流现在默认读取存储的事件，因此可以从最后一个事件 ID 或检查点重新连接运行，无论它是否是使用 `stream_resumable` 创建的。每个流事件都会被存储，并且服务器会相互传送实时事件，因此任何服务器上的读者都可以看到来自所有服务器的事件。* 生命周期模式下的线程流现在也发送中断事件，因此监视线程的客户端可以了解哪个中断了另一个客户端的应答。使用 `Last-Event-ID` 恢复的线程流会重播使用 `stream_resumable` 创建的运行。
+* 线程搜索和计数现在接受 `created_after`、`created_before`、`state_updated_after` 和 `state_updated_before` 过滤器，因此您可以根据线程创建时间或状态上次更改时间来查找线程。通过 ISO 8601 时间戳，其中没有时区的时间戳被视为 UTC。
+* 带有 `A2A-Version: 1.0` 标头的 A2A 端点请求现在接收 v1.0 响应形状：JSON-RPC 结果和流事件省略 `kind`，使用 `statusUpdate` 和 `artifactUpdate` 包装器，发出以 `Z` 结尾的 UTC 时间戳，并使用 `url` 或`raw`、`mediaType`、`filename`。在此模式下，服务器生成的工具结果现在显示在 `toolResults` 下。没有标头或带有`0.3`的请求，保留现有的响应格式，不受支持的版本返回错误`-32009`。
+* JS 图形工厂现在在 Python 代理服务器上接收第二个 `runtime` 参数，与 JS 代理服务器匹配。该参数包括 `accessContext` 和 `executionRuntime`，因此读取它的工厂在部署时不再中断。接受一个参数的工厂不受影响。* 长时间运行的 MCP 工具调用现在通过具有空闲超时的代理保持连接。 `/mcp` 端点将 keepalive ping 发送到发送 `Accept: text/event-stream` 的客户端。如果客户端在调用期间断开连接，则调用的运行将被取消，并且其线程将被删除。
+* 每次部署的 Redis 现在将内存限制为其容器限制的 75%，并在内存满时拒绝新的写入，而不是逐出键。读取、PING、DEL 和 EXPIRE 继续工作，Redis pod 不再被 OOM 杀死并重新启动为空。当操作员第一次协调它时，每个每个部署的 Redis 都会重新启动一次，为空。
+* 按优先级队列指标现在仅对可以启动的运行进行计数，每个线程一个没有任何运行的运行，因此在正在运行的运行后面等待的运行不再增加计数或等待时间。该系列已重命名为 `lg_api_num_startable_runs` 和 `lg_api_startable_runs_wait_time_{max,med}`，`/metrics?format=json` 中的 `queue.by_priority` 键也更改为匹配。
+* 您的服务器现在等待挂起的迁移完成，然后才开始服务请求，因此它不再针对旧架构运行。在繁忙的部署中，使用`CREATE INDEX CONCURRENTLY`构建的索引迁移不会再在一秒钟后失败。设置`STARTUP_TIMEOUT_SECONDS`（默认270）为绑定启动；短于 270 秒的启动探测需要较小的值。* 部署指标现在使用 `summary=true` 返回紧凑的统计信息，包括每个系列的最新值、最小值、最大值和平均值。省略的`start_time`现在默认为结束时间前一小时，并且托管的MCP服务器公开只读的`get_deployment_metrics`工具。
+* 修订和部署日志端点上的日志读取现在限制为每个请求五个云日志页面，因此具有稀疏过滤器的单个请求不再扫描许多空页面。达到上限的请求会返回下一个偏移量，因此您可以按照它进一步阅读。
+* 部署秘密值现在在项目和部署读取中被屏蔽为 `***`，供无法更新部署的调用者使用。将 `***` 作为秘密值发送回来的写入现在会返回 400 来命名受影响的变量，因此屏蔽读取无法再覆盖存储的秘密。
+* 部署设置现在包括“工作负载身份”部分，用于设置从代理部署到 AWS、Azure 或 Google Cloud 的无密钥访问。它显示了云的信任配置和环境变量，并预先填充了此部署的代理主题。* Terraform `langsmith_deployment` 现在可以通过新的 `agent` 参数定位代理和环境。现有的基于名称的部署将继续工作，并且添加匹配的代理目标可以保留它们。
+* 现在，您可以在创建部署时通过设置 `source_config.k8s_namespace` 将 BYOC 部署部署到允许的 Kubernetes 命名空间中。您的数据平面管理员允许每个工作区使用命名空间，并且命名空间在创建后无法更改。
+* 支持扩展到零的 BYOC 数据平面现在为图像和 GitHub 存储库提供无服务器部署。您可以在创建无服务器部署时将缩减期限设置为 1 小时、1 天或 1 周，并稍后在 **设置** > **扩展** 下进行更改。
+* BYOC 数据平面现在可以运行专用部署：通过 v2 API 创建一个，并将 `deployment_type` 设置为 `prod`，并从 `DEDICATED_S` 层开始。您可以使用 `PATCH` 或 `/resource-tiers` 端点更改专用部署的层。
+* BYOC 数据平面现在接受基于 AWS、Azure 和 GCP 构建的 `langgraph deploy`。本地构建 (`internal_docker`) 可在 AWS 和 Azure 上使用，而 GCP 数据平面仅采用远程构建 (`internal_source`)，因此请在那里使用 `langgraph deploy --remote`。* BYOC 数据平面的部署日志和指标现在从您自己的云帐户中读取：修订日志、日志搜索、构建日志以及部署 CPU 和内存图表适用于设置部署可观察性的 AWS、Azure 和 GCP 数据平面。
+* Azure 和 GCP BYOC 部署现在仅接受 TLS 1.2 或更高版本的传入 HTTPS 连接，因此仅支持 TLS 1.0 或 1.1 的客户端无法连接。 Azure PostgreSQL 服务器现在需要 TLS 1.2 或更高版本以及安全连接，并且 Azure 将对 `require_secure_transport` 和 `ssl_min_protocol_version` 的手动更改恢复为这些值。
+* Azure BYOC 群集现在加密主机上的节点磁盘，包括临时和临时操作系统磁盘。您的订阅必须首先注册`Microsoft.Compute/EncryptionAtHost`功能。
+* 您现在可以使用自己的 KMS 密钥加密新的 AWS 数据平面：在创建数据平面时为所有服务设置单个密钥或为每个服务设置单独的密钥（S3、EBS、EKS 密钥、RDS 和 ElastiCache）。您未列出的服务将保留 AWS 托管的加密。密钥必须位于数据平面区域中，并且创建表单的 **加密密钥** 部分现在接受这些密钥。* Playground 和 LLM 网关现在可以在 BYOC AWS 数据平面上承担您的客户 Bedrock IAM 角色。用`LangSmithBedrock=true`标记每个角色并设置一个外部ID来使用它。
+* 您现在可以限制对 AWS 数据平面负载均衡器的入站访问。在 API 中或在数据平面设置中的 **设置** > **入口** 下设置允许的源 CIDR。内部负载均衡器始终保留来自数据平面 VPC CIDR 的访问。
+* Azure 数据平面现在可以使用您自己创建的身份。创建 Azure 数据平面时，将 `byoiam.is_enabled` 设置为 `true`，并且 LangSmith 使用订阅中的 `langsmith-<name>-identity` 身份和角色分配，而不是创建自己的身份和角色分配。
+* 现在，当您删除数据平面时，GCP 数据平面会删除 LangSmith 数据库 StatefulSets 和 SmithDB 缓存留下的 PersistentVolume 磁盘，因此项目中不会保留 `pd-balanced` 磁盘。
+* GCP 数据平面现在在拆除时保留其 Cloud Storage 存储桶和 Postgres 备份。
+* GCP 数据平面现在像 AWS 一样在自己的 Cloud SQL 实例上运行 SmithDB 的元存储。您的数据平面的预配置程序不再需要 Cloud SQL 数据库权限。* GCP 上 BYOC 数据平面的 Postgres 现在在 Postgres 18 上运行，缩放至零单元保留在 Postgres 17 上。在现有的 GCP 数据平面上，从 17 升级到 18 会就地进行，并使 Postgres 实例在运行时脱机，因此请计划好停机时间。
+* 现在，当对等 VPC 导入默认路由或没有路由时，GCP BYOC 数据平面会将 Google API 流量保留在 Google 网络上，因此工作负载身份、图像拉取和日志记录不再因位于客户中心防火墙后面的 `x509: certificate signed by unknown authority` 而失败。
+* 现在，当您设置 BYOC 部署时，您可以在 Northamerica-northeast1（蒙特利尔）创建 GCP 数据平面。
+* 新的 AWS 数据平面现在默认请求更少的 CPU 和内存，因此空闲服务可缩减至最小副本数并适合更少的节点。
+* 新的 AWS BYOC 数据平面现在重新打包未充分利用的有状态节点，因此降低 ClickHouse 和 ZooKeeper 资源请求会缩小它们运行的​​节点。现有数据平面将保留其当前设置，直到更新为止，并且单副本 ClickHouse 和 ZooKeeper 在其节点合并时重新启动。* AWS BYOC 数据平面现在可以通过在数据平面配置中设置 `smithdbSqlEnabled` 来选择对启用了 SmithDB 读取的工作区进行 SQL 查询。选择加入需要支持 SQL 的后端和 SmithDB 映像，并且现有的查询授权仍然适用。
+* AWS 数据平面现在可以扩展 SmithDB 查询、摄取和压缩工作组件。在数据平面配置中为`smithdb`下的每个组件设置`replicas`、`resources`和`autoscaling`，省略的值保留默认值。
+* 统计查询现在可以通过 KEDA 在内存压力和 CPU 上进行扩展。将 `statsQuery.autoscaling.autoscalingType` 设置为 `keda` 并使用 `statsQuery.autoscaling.keda.targetMemoryRatio` 调整目标，默认为 `0.65`。
+* BYOC 数据平面现在在 `byoc_k8s_oom_kills_total` 中对每个工作负载的每个容器 OOM 终止计数一次，因此重复终止会不断增加计数，而不是停留在 1。`byoc_k8s_oom_kills` 仪表已被替换，因此读取旧名称的仪表板和监视器必须切换到 `byoc_k8s_oom_kills_total`。
+
+## 数据集和实验
+
+* 现在，当您滚动时，数据集示例会自动加载，一次加载 50 个，因此您不再需要单击“加载更多”或翻阅结果。现在，示例总数显示在“+ 示例”按钮旁边，并且滚动时列标题保持可见。
+
+## 网关* 组织管理员和计费读者现在可以查询组织中所有工作区的 LLM Gateway 使用情况。结果按用户、API 密钥、模型、模型提供商或工作区进行分组，并按总成本排名。
+* Claude Code 和其他 Claude 构建的客户端现在可以退回到聊天完成模型，因为固定思维预算被映射到 Reasoning_effort，并且预先声明了延迟工具，每个更改都报告为有损警告。
+* 您现在可以通过 Gemini 直通发送 `POST /gemini/v1beta/decisions` 请求，网关将返回上游响应和状态代码不变，并通过您的工作空间 `GOOGLE_API_KEY` 进行身份验证。这些请求不会被跟踪或计入令牌使用情况，并且提示策略和防护编辑不适用于它们。
+* 您现在可以在没有 API 密钥的情况下从网关主页运行请求。运行使用您的登录会话，复制代码显示如何设置 `LANGSMITH_API_KEY` 以在其他地方运行它。* Azure OpenAI 配置现在出现在网关的后备链选择器和配置列表中，因此您可以选择它们作为后备目标。网关编辑器显示 Azure 的部署名称和终结点字段，以及用于自定义命名部署的可选 **模型** 字段。
+* `GET /v1/models` 现在仅列出未启用 LLM Gateway 的组织的 LangChain 模型，而不是列出返回错误的提供商模型。
+* 当跟踪内容捕获关闭时，失败的运行不再在其错误字段中显示提供程序错误文本。这些运行仍然显示为错误，没有提供者的消息。
+* 工具网关现在可在数据平面运行 LangSmith v18 或更高版本的 BYOC 工作区中使用，并且 **工具** 页面显示在这些工作区的侧栏中。旧数据平面上的工作区隐藏**工具**页面。
+* 工作区工具策略现在可以将 `FleetAgent`、`Role` 和 `Team` 命名为 `principals`，因此您可以禁止或要求批准共享或企业队列代理、具有角色的每个人或团队成员对工具调用。队列代理策略仅可通过策略 API 获取，不适用于个人队列代理。* MCP 请求的 URL 引出现在命名它们所需的连接。每个都在`com.langchain.langsmith/credential`下的`_meta`中包含`slug`、`kind`、`display_name`和`auth_id`，因此您的客户端可以对同一连接的提示进行分组，并轮询`auth_id`以查看用户何时完成连接。
+* 现在，您可以在注册秘密 MCP 服务器时存储工作区 API 密钥。在 `POST /v1/managed-tools/servers` 上发送`credential`，并将 `owner_type` 设置为 `workspace`，服务器的每个调用者都使用该密钥。需要`workspaces:credentials:manage`。
+* 托管工具现在拒绝 MCP 路由上的 JSON-RPC 批量请求，并出现 400 `jsonrpc_batch_unsupported` 错误，因此每个请求发送一条 JSON-RPC 消息。批次以前绕过工具拒绝和批准策略，现在在到达上游服务器之前返回错误。
+* 客户端凭据 OAuth 连接现在适用于 MCP 服务器。连接使用客户端凭据授予配置文件、代理身份或工作区凭据的 OAuth 应用程序，并且无需打开浏览器窗口即可存储连接。需要应用程序令牌的工具作为应用程序自己的身份运行，并且用户无法以自己的身份连接客户端凭据服务器。* 代理身份验证现在包括 Arcade 作为 LangSmith 管理的 OAuth 应用程序，因此您可以通过 `langsmith-arcade` 提供商将 Arcade 帐户连接到您的代理，而无需创建自己的 OAuth 应用程序。
+
+## 引擎
+
+* 任务集现在运行等待工作区沙箱配额中的空间，而不是在配额已满时失败。试用沙箱最多需要等待 10 分钟才能获得空闲插槽，运行沙箱最多需要等待 30 分钟才能获得运行者沙箱。
+* 现在，您可以在创建部署时选择一个**图表**，将模拟限制为来自部署的一张图表的跟踪，这样代理就只能从该图表的跟踪中学习。
+* 模拟发布第一组任务后，任务现在会自动启动运行，上限为模拟的试用支出限制，并且运行将显示在任务集的运行列表中，无需手动启动。稍后在同一线程中发布不会开始另一次运行。
+
+## 修复和改进> [手风琴] 显示所有修复
+>
+> * 现在，当运行列表无法返回所选运行时，会加载运行详细信息页面，而不是无限期地显示加载框架。
+> * 摄取后升级的跟踪附件现在会在其短暂副本过期后下载，而不是返回 404 错误。
+> * 现在可以使用 JavaScript SDK 发送的纪元号 `start_time` 创建反馈，而之前它会因 `400 Invalid feedback request` 错误而失败。
+> * SSO 设置页面现在会在另一个页面已加载您组织的角色后打开时保留您保存的 **默认工作区角色**。在此修复之前，角色显示为“选择角色...”，并且保存其他 SSO 更改失败并显示“需要默认角色”，直到管理员重新选择它为止。这适用于 OIDC SSO 表单和使用角色选择的邀请流程。
+> * ACE 评估器上的分组代码规则现在失败，并在规则日志中显示明显错误，而不是重试每个窗口，直到规则报告达到最大尝试次数。该错误说明此代码评估器无法评估线程或轨迹，并且您可以打开评估器的高级功能并将其保存以修复规则。> * 现在，即使您已经位于“监控”页面上，单击“入门”核对表中的“添加警报”也会打开创建警报窗格，并选择您的代理项目，并且每次关闭该窗格后再次单击该窗格时，该窗格都会重新打开。
+> * 修复了打开实验 **列** 窗格然后使用浏览器后退导航离开后，**聊天** 在后续页面中保持隐藏状态的问题。现在，当您离开窗格时，**聊天**会返回。
+> * 聊天在组织设置页面和您无法访问的工作区路线上隐藏，因此它不再使用永远不会加载的模型选择器打开。
+> * 使用限制、保留设置和计划卡现在显示您的计划计费的跟踪费率，因此这些屏幕上的费率与您的发票相符。以前，这些屏幕显示的硬编码费率可能与计费不同。
+> * 当 Slack 工作区断开 LangSmith 应用程序的连接时，Slack 通道选择器现在会显示带有 422 响应的重新连接消息，而不是服务器错误。
+> * 见解运行在完成之前不再丢失线程。 Insights 线程现在会停留 2 小时，因此仍在等待输入的运行不会被删除。> * 对 Anthropic 模型的见解请求现在可以正常工作，而不是因 400 错误而失败。默认的 Claude 模型不再发送 `temperature` 值，Anthropic API 拒绝了该值。
+> * 存档注释队列项目现在会在 **completed_by** 中列出完成它们的审阅者，因此您可以看到完成项目的每个审阅者。
+> * 当线程等待中断时从检查点分叉运行现在从该检查点开始新的运行，而不是在多个中断挂起时应答中断或被拒绝。
+> * 修复了当运行时上下文包含嵌套 Pydantic 模型时 gRPC 检查点写入失败并出现 `TypeError: Type is not JSON serializable` 的问题。使用嵌套 Pydantic 上下文进行检查点写入现在成功。
+> * 当另一个请求短暂持有同一线程上的锁时，线程更新不再失败并出现 500 错误。您对线程的 PATCH 现在会在返回错误之前自动重试一小段时间。
+> * 存储读取大于 4 MiB 的项目（包括 `asearch` 页），不再因 `RESOURCE_EXHAUSTED: Received message larger than max` 而失败。> * 在数据库连接上停止的检查点写入现在会在 `CHECKPOINT_BATCH_TIMEOUT`（默认 2m）之后失败，而不是阻塞副本上的每个后续写入。当先前的尝试已提交时，重试的检查点写入也会成功。
+> * 保存的 Azure OpenAI 模型配置现在可以再次在 `custom/<config>` 上使用。之前的请求在到达您的资源之前因“DNS 解析失败”SSRF 错误而失败，现在已完成。
+> * 当请求来自 Claude Code 时，Azure 部署不再因 `reasoning_effort` 的 400 错误而失败。现在，对已保存的 Azure 配置的请求会删除 `reasoning_effort`、`reasoning` 以及不提供 o 系列或 `gpt-5` 模型的部署的详细信息。将配置的 `model` 设置为部署所服务的 OpenAI 模型以保留这些控件。
+
+**2026 年 11 月 2 日至 9 日**
+
+## 亮点* **编码代理跟踪 GitHub 拉取请求结果**：编码代理现在显示 GitHub 拉取请求结果以及代理概述上的支出。您可以在创建代理时或从代理操作菜单中将代理的类型设置为编码，然后从概述标题中打开 GitHub 连接对话框以连接 GitHub 帐户、添加另一个帐户、选择存储库访问权限或重复使用已链接到工作区中另一个代理的安装。使用情况直接显示在概览上，并显示**尚无痕迹**状态，直到最近 30 天内生产有痕迹为止。 [Learn more](/langsmith/coding-agent-metadata-contract)。
+* **具有连续分析功能的在线见解**：见解现在可以连续分析您的跟踪并保持其类别最新，因此您不再需要等待预定的批量报告。提出问题来创建见解，在运行之前使用 **配置** 调整其设置，然后查看顶级类别、7、14 或 30 天范围内的类别趋势，以及包含子类别、反馈、延迟和成本指标的可扩展细分。新的见解每周对大约 1,000 条跟踪进行采样，并且返回数组的分类现在可以正确保存。 [Learn more](/langsmith/insights)。* **追踪项目的完整人工智能搜索**：您可以在追踪项目中用简单的语言描述您想要查找的内容，人工智能搜索将其转化为结构化过滤器、语义过滤器和时间限制。它选择是否搜索运行、跟踪或线程，将结果应用到您的视图，并显示应用的过滤器。当请求不明确时，AI 搜索会在 **您是指吗？** 下提供两种或三种解释，以便您可以选择一种解释而无需运行另一次搜索。 [Learn more](/langsmith/filter-traces-in-application)。
+* **带有公关支出的编码代理使用情况仪表板**：“编码代理使用情况”选项卡现在针对每个结果、用户和模型都有一张卡片。每张卡都可以进行分组，一张 **按对话长度计算的成本** 卡和一张 **按成本计算的热门 PR** 卡列出了您最昂贵的拉取请求以及 GitHub 的链接。您可以使用共享日期范围选择器选择时间范围，该选择器接受预设、输入的持续时间和特定日期。拉取请求支出归因于生成它的提交和分支，因此您可以查看每个编码代理更改的成本。 [Learn more](/langsmith/coding-agent-metadata-contract)。* **具有调用批准的作用域工具策略**：工具策略现在允许您阻止工具调用或要求调用者首先批准它们，并且当两者匹配同一调用时，阻止策略获胜。您可以将每项策略的范围限定为每个工作区、一个工作区或特定的代理环境，并且还会根据该代理的策略检查使用代理的 API 密钥进行的调用。工作区管理员可以从“策略”选项卡创建、编辑和删除自己工作区的策略，而组织管理员则管理所有策略。
+* **网关请求显示为一个跟踪**：每个 LLM 网关请求现在显示为单个跟踪，每次尝试运行一次，因此回退到另一个模型的请求会在一个位置显示两次尝试，而不是两个单独的跟踪。运行记录每次尝试的结果、提供程序、模型和上游状态，并在任何提供程序调用仍获得跟踪之前拒绝请求。拒绝或限制请求的策略检查和修改或阻止内容的数据策略扫描在尝试下显示为它们自己的运行。 [Learn more](/langsmith/llm-gateway-traces)。
 
 ## 追踪* 您的工作区现在对持久字节、摄取运行的完整大小（包括大字段和附件）有每小时限制。一旦工作区超过其 `max_hourly_persisted_bytes` 值（默认为 100 GB），摄取就会被拒绝。
 * OTEL Ingest 现在强制执行每个项目的每月跟踪限制。包含超出其限制的项目的跨度的请求会收到 429 响应，而来自同一工作区中其他项目的跨度将继续被接受。
 * 会话端点现在包括 `GET /api/v2/sessions`，它列出了带有光标分页的项目和针对 `PROJECT`、`AGENT` 和 `EXPERIMENT` 的 `type` 过滤器，以及 `GET /api/v2/sessions/{session_id}`，它返回一个带有 RFC 7807 错误响应的项目​​。 Python 和 TypeScript SDK 现在包括 `sessions.delete` 和 `sessions.retrieve`。
-* `POST /v1/trajectories/query` 现在返回对话键、消息键、消息类型、点线顺序、锚点 ID、代理类型、插入时间以及您在 `message_select` 中选择的消息的可用工具。将 `Accept: text/event-stream` 作为 JSON 补丁事件发送到来自 `POST /v1/trajectories/query` 或 `GET /v1/trajectory/{scope_id}/stats` 的流结果，统计响应现在包括一个 `tools` 列表，其中包含每个工具的调用计数和延迟。* 每个打印 JSON 的 LangSmith CLI 命令现在都接受 `--jq` 以使用 jq 表达式过滤输出，因此您可以在不安装 `jq` 的情况下修剪结果。字符串、数字和布尔值直接打印，对象和数组则打印为紧凑的 JSON。
-* 您现在可以使用 `--cursor` 翻页 `langsmith runs list`、`traces list`、`prompt list`、`prompt commits` 和 `hub list`，因此您不再需要猜测偏移量。在第一次调用时传递 `--cursor ""` 以在 JSON 输出中获取 `cursors.next`，然后将该值传回以在最后一项之后立即恢复。
-* 您现在可以在 LangSmith 云上的跟踪 ID 上运行 `langsmith traces get`，而无需使用 `--project`。 CLI 在您的工作区中找到跟踪，并在无法运行该查找的部署上请求 `--project` 或 `--project-id`。
+* `POST /v1/trajectories/query` 现在返回对话键、消息键、消息类型、点序、锚点 ID、代理类型、插入时间以及您在 `message_select` 中选择的消息的可用工具。将 `Accept: text/event-stream` 作为 JSON 补丁事件发送到来自 `POST /v1/trajectories/query` 或 `GET /v1/trajectory/{scope_id}/stats` 的流结果，统计响应现在包含一个 `tools` 列表，其中包含每个工具的调用计数和延迟。* 每个打印 JSON 的 LangSmith CLI 命令现在都接受 `--jq` 以使用 jq 表达式过滤输出，因此您可以在不安装 `jq` 的情况下修剪结果。字符串、数字和布尔值直接打印，对象和数组则打印为紧凑的 JSON。
+* 现在，您可以使用 `--cursor` 翻阅 `langsmith runs list`、`traces list`、`prompt list`、`prompt commits` 和 `hub list`，因此您不再需要猜测偏移量。在第一次调用时传递 `--cursor ""` 以在 JSON 输出中获取 `cursors.next`，然后将该值传回以在最后一项之后立即恢复。
+* 您现在可以在跟踪 ID 上运行 `langsmith traces get`，而无需在 LangSmith 云上运行 `--project`。 CLI 在您的工作区中找到跟踪，并在无法运行该查找的部署上请求 `--project` 或 `--project-id`。
 * `langsmith self-update` 现在可以检测 CLI 何时与 pip、pipx 或 uv 一起安装，并打印该安装的升级命令，而不是替换二进制文件。无论如何，使用 `--force` 就地更新。
 * 现在可以在 Go SDK 中调用`instrumentation.WithoutContent(ctx)`来跟踪 LLM 调用，而无需记录提示或完成情况，因此 span 可以保留模型、使用情况、计时和状态，并在高并发下使用更少的内存。* 仪表板图表过滤器现在可以对运行、根运行和任意运行范围使用 v2 过滤器语法。图表保存拒绝运行过滤器和操作数过滤器混合旧语法和 v2 语法或其组合过滤器无效的比率度量。
 * 现在，您可以将最多 2,000 次运行的完整跟踪下载为单个 JSON 文件（以前为 1,000 次）。运行次数超过 2,000 次的跟踪显示错误，必须逐次下载。
@@ -38,22 +174,22 @@ LangSmith 云每周更新
 
 ＃＃ 行政* 现在，您的工作区一旦标记为就绪，就会在统一代理体验中打开。经典体验仍然可以在工作区设置中选择退出。
 * 撤销、删除和过期的 API 密钥会立即停止身份验证，而不是等待缓存的身份验证刷新。每个请求都会根据当前状态检查您的跟踪密钥、服务密钥和个人访问令牌。
-* `GET /api/v1/settings` 现在返回完整的工作空间模型，与 `GET /api/v1/workspaces/{id}` 的响应相同。它添加了 `is_deleted`、`is_personal`、`permissions` 和 `role_name` 等字段，现有客户端继续工作。* 成员设置现在与 API 密钥页面相匹配，具有可搜索列表、角色和状态过滤器、全部/活动/待定/停用切换、可排序列以及遵循当前过滤器的 CSV 导出。选择成员行以编辑其名称或角色，然后打开工作区计数以搜索该成员的工作区。角色详细信息和权限预览现在显示在邀请和编辑对话框中，内置工作区角色标记为“工作区管理员”、“工作区编辑器”和“工作区查看者”。选择“组织管理”将工作区字段设置为“所有工作区”和“工作区管理”，您可以在禁用字段的工具提示中找到原因。
-* 仍然调用已弃用的 `POST /runs/query` 端点的工作区现在会在页面顶部的横幅中看到其将于 2027 年 1 月 31 日删除的倒计时。该横幅为您的编码代理提供了一个“复制迁移提示”按钮，随着截止日期的临近，该按钮会变得更加紧迫，并且在过去 30 天内不能暂停。* 组织模型价格现已适用于所有工作区。管理员和操作员可以为组织设置一个价格，并且组织中的每个工作区都根据该价格定价，除非工作区定义了自己的价格。组织价格仅到达为写入提供服务的数据平面上的工作区。
+* `GET /api/v1/settings` 现在返回完整的工作空间模型，与 `GET /api/v1/workspaces/{id}` 的响应相同。它添加了`is_deleted`、`is_personal`、`permissions`和`role_name`等字段，现有客户端继续工作。* 成员设置现在与 API 密钥页面相匹配，具有可搜索列表、角色和状态过滤器、全部/活动/待定/停用切换、可排序列以及遵循当前过滤器的 CSV 导出。选择成员行以编辑其名称或角色，然后打开工作区计数以搜索该成员的工作区。角色详细信息和权限预览现在显示在邀请和编辑对话框中，内置工作区角色标记为“工作区管理员”、“工作区编辑器”和“工作区查看者”。选择“组织管理”将工作区字段设置为“所有工作区”和“工作区管理”，您可以在禁用字段的工具提示中找到原因。
+* 仍然调用已弃用的 `POST /runs/query` 端点的工作空间现在会在页面顶部的横幅中看到该端点将于 2027 年 1 月 31 日删除的倒计时。该横幅为您的编码代理提供了一个“复制迁移提示”按钮，随着截止日期的临近，该按钮会变得更加紧迫，并且在过去 30 天内不能暂停。* 组织模型价格现已适用于所有工作区。管理员和操作员可以为组织设置一个价格，并且组织中的每个工作区都根据该价格定价，除非工作区定义了自己的价格。组织价格仅到达为写入提供服务的数据平面上的工作区。
 * 工作空间范围的 MCP 工具现在需要一个 `workspace_id`，即 LangSmith 工作空间 UUID，并且没有该 UUID 的调用会返回错误，而不是默默地使用凭证的默认工作空间。组织范围的工具不需要它。
 * `langsmith_agent` 资源和 `data.langsmith_agent` 数据源现在可在 LangSmith Terraform 提供程序中使用。您可以创建、更新、导入和销毁代理作为 Terraform 资源，并读取其环境和跟踪项目 ID。
 * Terraform：langsmith_workspace 资源现在接受可选的 data_plane_id，因此您可以在 BYOC 数据平面上创建、重命名和删除工作区。当数据平面列表被禁止时，导入和刷新使工作区元数据保持可见，并发出警告，并且在数据平面 ID 解析之前，更改和删除将保持阻止状态。* 自定义组织角色现在可与 SCIM 和 SSO 组同步配合使用。将组命名为 `LS:Billing Manager` 以授予 **计费经理** 组织角色。引用不明确角色名称的组将被拒绝，不相关的组仍会同步。分配会在下次同步时更新，并且丢失的组声明现在会删除 SSO 管理的分配，就像空列表一样。
-* SCIM 令牌创建、更新和删除现在需要`organization:scim-tokens:manage` 权限。管理员和操作员角色包括它，仅依赖`organization:authentication:manage`的自定义角色必须添加它以继续管理 SCIM 令牌。
+* SCIM 令牌创建、更新和删除现在需要`organization:scim-tokens:manage` 权限。管理员和操作员角色包括它，仅依赖于`organization:authentication:manage`的自定义角色必须添加它以继续管理 SCIM 令牌。
 * OIDC 登录现在会在信任任何身份声明之前根据提供商发布的密钥验证 ID 令牌签名。令牌和 UserInfo 请求不再遵循重定向，因此无法将凭据发送到重定向目的地；自托管提供商必须直接公开其令牌和 UserInfo 端点，而没有可访问的 JWKS 端点或支持的非对称签名算法的提供商将无法再登录。
 * 现在，当您注册 LangSmith 时以及登录时在“数据区域”菜单中，Microsoft Azure 可作为云选项提供。选择 Azure 将带您进入 Azure 美国中部区域。* 资源标签现在允许您将代理环境分配给标签，因此标记的项目将显示为代理名称和环境，例如 **支持机器人** 和 **生产**。选择代理会列出其环境，每个标记的环境都链接到其跟踪项目。
 * 您现在可以通过代理设置菜单中的 **API 密钥** 项将工作区服务密钥绑定到外部代理的每个环境。使用绑定密钥发出的 LLM 网关请求归因于该代理和环境，管理这些密钥需要 `workspaces:manage-keys` 权限。
 * 访问策略现在在编辑器中的规则旁边显示“添加规则”操作，并且“编辑”操作位于策略表中的“删除”旁边。当您选择“保存更改”时，在策略编辑器中所做的角色更改将一起保存。
-* BYOC 部署现在为代理服务器和数据库标准单元支付 SaaS 费率的 60%，这将 BYOC 资源费用降低了 40%。 SaaS、旧版 LCU 和 LSU 仪表、数据库存储和自托管代理运行定价保持不变。* 基于阈值的模型定价现在可在 BYOC 数据平面上使用。超过模型令牌阈值的运行（例如长上下文输入）将以较高的费率定价。 `0.18.18`及以后的数据平面按此定价；在 **设置** > **数据平面** 下检查您的版本。
+* BYOC 部署现在为代理服务器和数据库标准单元支付 SaaS 费率的 60%，这将 BYOC 资源费用降低了 40%。 SaaS、旧版 LCU 和 LSU 仪表、数据库存储和自托管代理运行定价保持不变。* 基于阈值的模型定价现在可在 BYOC 数据平面上使用。超过模型令牌阈值的运行（例如长上下文输入）将以较高的费率定价。 `0.18.18`及以后数据平面按此定价；在 **设置** > **数据平面** 下检查您的版本。
 * Dynatrace 和 PagerDuty 警报操作现在需要 `workspaces:manage-secrets` 权限才能使用工作区机密。 Dynatrace 操作只能发送到与密钥绑定的确切主机，并且跨主机重定向被阻止。
 
 ## 部署* 现在 Postgres 部署默认启用延迟检查点删除。线程删除和修剪接受`sync_checkpoint_delete=true`以在请求返回之前删除检查点数据。
 * 达到流大小限制的运行现在会发送一个间隙事件来代替丢弃的事件，因此您的客户端知道它错过了更新，而不是默默地保持以前的状态。
-* 运行流现在以报告运行最终状态的 `end` 事件结束：`success`、`error`、`timeout`、`interrupted` 或 `rollback`（对于无状态运行）。如果流在没有 `end` 或 `error` 事件的情况下关闭，请运行运行以查看其如何结束。
+* 运行流现在以 `end` 事件结束，该事件报告运行的最终状态：`success`、`error`、`timeout`、`interrupted` 或`rollback`（对于无状态运行）。如果流在没有 `end` 或 `error` 事件的情况下关闭，请运行以查看其如何结束。
 * 在标准路由接受`lifecycle`上运行流，它在每个子代理启动和结束时发送一个事件，并带有启动它的工具调用的ID。这些路由上的工具事件现在以 v1 React hook 解析的形式到达。
 * 运行流接受可重复的 `namespace` 查询参数，因此您可以流式传输一个对话：主代理的 (`namespace=`) 或一个子代理的 (`namespace=tools:<task_id>`)。流会丢弃对话开始的子代理的事件。如果没有该参数，流将保持不变。* 线程流现在宣布哪个中断运行答案，因此其他打开的选项卡将隐藏它们而无需重新加载。 v1 线程流获取 `interrupts` 事件，协议 v2 客户端在 `input` 通道上获取 `input.answered`。
 * 恢复中断的运行现在在运行创建时以及协议 v2 `input.respond` 和 `run.start` 命令上接受 `strict_resume: true`。响应未等待的中断的恢复会失败并返回`UnknownInterruptError`，并使线程保持不变。 Python 图形需要 langgraph 1.2.20，`/info` 报告为 `strict_resume`； JS 图需要 @langchain/langgraph 1.7.0。
@@ -62,18 +198,18 @@ LangSmith 云每周更新
 * 在自己的集群中构建映像的 BYOC 数据平面现在接受 GitHub 存储库作为部署源。构建在集群中作为作业运行，在 UI 中包含构建日志，并且 GitHub 部署的大小与 Docker 映像部署一样使用 `resource_spec`。
 * 编码代理的 GitHub 结果现在适用于 BYOC 部署。代理通过工作区的引擎 GitHub 应用程序安装链接 GitHub，无需单独的 OAuth 步骤。
 * AWS 现已提供零扩展开发部署。新的开发部署在空闲时扩展到零，并在下一个请求时唤醒。当您的组织启用了缩放至零时，创建页面会显示 AWS 上的无服务器选项和扩展设置。* Azure BYOC 数据平面现在可以在 19 个区域创建，从 4 个增加到 19 个，其中包括加拿大、欧洲、英国、印度、日本、韩国、东南亚和澳大利亚。您还可以向数据平面的 Azure 资源添加最多 14 个客户标签，并且创建数据平面表单现在可以在 Azure 上使用 Entra 租户 ID、资源组 ID 和 VNet CIDR 字段。
-* Azure BYOC 数据平面现在仅通过专用链接子网中的专用终结点到达 Blob 存储和 Key Vault，并且存储帐户不再接受公共网络访问。由 `privateLinkSubnetCidr` 设置的专用链路子网现在必须为 /28 或更大，并且您的客户角色需要 `Microsoft.Storage/storageAccounts/PrivateEndpointConnectionsApproval/action`、`privateEndpointConnections/write` 和 `privateEndpointConnections/delete` 权限。
+* Azure BYOC 数据平面现在仅通过专用链接子网中的专用终结点到达 Blob 存储和 Key Vault，并且存储帐户不再接受公共网络访问。由 `privateLinkSubnetCidr` 设置的私有链路子网现在必须为 /28 或更大，并且您的客户角色需要 `Microsoft.Storage/storageAccounts/PrivateEndpointConnectionsApproval/action`、`privateEndpointConnections/write` 和 `privateEndpointConnections/delete` 权限。
 * 现在可以从“数据平面”页面创建 Google Cloud 上的数据平面，其中包含 Google Cloud 区域、项目 ID、配置程序服务帐户、VPC 网络 CIDR 和负载均衡器访问字段。列表和数据平面选择器中的每个数据平面现在都显示其云徽标。* 您的 GCP BYOC 数据平面现在将每个子网的 VPC 流日志发送到项目中的 Cloud Logging，记录 10 分钟内聚合的所有流。 GKE 集群还在 pod 映像上强制执行项目的二进制授权策略。没有策略的项目允许每个映像，因此现有工作负载不会被阻止。
 * AWS 数据平面现在拒绝通过低于 1.2 的 TLS 版本对其 blob、SmithDB、ClickHouse 备份、沙箱快照和 VPC 流日志存储桶发出的 S3 请求。
 * BYOC 工作区现在在浏览器检查数据平面时显示连接屏幕，而不是半加载的应用程序。如果数据平面无法访问，则在您下次访问时，同一选项卡中会立即出现中断屏幕，并且应用程序每 30 秒自动重新检查一次，直到数据平面恢复。工作区切换器还在每个 BYOC 数据平面旁边显示一个状态点，以便您可以在切换之前发现中断。
-* 部署指标现在拒绝低于 60 秒的 `step`，因此对于低于 60 秒的较小 `step` 和 `step_seconds` 值，`GET /v2/deployments/{id}/metrics` 返回 400 错误，导致验证失败。每 30 到 60 秒对指标进行一次采样，因此较小的步长会返回间隙而不是更精细的数据。* 代理部署分析现在包括 **部署** 部分，其中包含 API 服务器、Workers、Postgres 和 Redis 图表。 **监控**选项卡在绑定到代理环境的部署中隐藏，其警报设置现在显示在 **概述** 的底部。
+* 部署指标现在拒绝低于 60 秒的 `step`，因此对于低于 60 秒的较小 `step` 和 `step_seconds` 值，`GET /v2/deployments/{id}/metrics` 返回 400 错误，验证失败。每 30 到 60 秒对指标进行一次采样，因此较小的步长会返回间隙而不是更精细的数据。* 代理部署分析现在包括 **部署** 部分，其中包含 API 服务器、Workers、Postgres 和 Redis 图表。 **监控**选项卡在绑定到代理环境的部署中隐藏，其警报设置现在显示在 **概述** 的底部。
 * 同时具有许可证密钥和 LangSmith 云 API 密钥的代理服务器现在首先使用 API 密钥进行身份验证，如果检查失败，则回退到许可证密钥。使用组织范围或多工作空间 API 密钥对 LangSmith 云进行身份验证的代理服务器现在在启动时失败，因此将 `LANGSMITH_CONTROL_PLANE_API_KEY` 设置为范围仅限于单个工作空间的密钥。
 * 新的 GCP BYOC 数据平面在 N2 机器类型（默认情况下为`n2-standard-4`）而不是 E2 上运行其系统节点。现有的数据平面保留其当前的系统池。
 * 在多进程模式下，`/metrics`端点现在公开`lg_api_run_failed_terminal_counter_total`，由`error_category`标记，它对失败而无需重试的运行进行计数。它还公开了`lg_api_sweep_failed_counter_total`，它对未能回收废弃运行的清理迭代进行计数。* 托管 Deep Agents 频道现在可以接收 Slack 对频道本身的编辑、删除、反应和更改，例如创建、重命名或存档，就像 `provider_event` 交付的那样。在通道上使用 `forwarded_events` 选择它们，编辑和删除仅到达通道已遵循的线程中。
 * 代理现在可以在 Slack 通道的后台运行，每条消息上都没有状态指示器或停止按钮。将事件上的`show_progress`设置为`false`，以保留回复、错误和中断，同时隐藏思考状态和进度更新。
 * 来自 GitHub 支持的部署的托管深度代理跟踪现在包括作为 `revision_id` 的确切源提交，因此您可以将每个跟踪与运行的代码联系起来。您设置的显式 `LANGSMITH_REVISION_ID` 和 `LANGCHAIN_REVISION_ID` 值仍然优先。
-* 代理部署现在可以使用 LangSmith 工作负载身份在 AWS、Azure 和 Google Cloud 中承担角色，因此您不再需要将云密钥存储为部署机密。为 AWS 设置 `LANGSMITH_AWS_ROLE_ARN`，为 Azure 设置 `LANGSMITH_AZURE_CLIENT_ID` 和 `LANGSMITH_AZURE_TENANT_ID`，或为 Google Cloud 设置 `LANGSMITH_GCP_WORKLOAD_IDENTITY_PROVIDER`，并仅信任该云中的确切代理主体。* 部署现在可以将其 API 密钥交换为代理徽章，这是一个有效期为五分钟的签名令牌，用于命名绑定到部署的代理，地址为 `POST /v1/agent-auth/token`。个人 API 密钥被拒绝。
-* 代理响应现在包括 `agent_uuid`，代理的永久标识符。当您编写工作负载身份信任策略时，请使用它作为主题，因为在删除代理后可以重用`id`。
+* 代理部署现在可以使用 LangSmith 工作负载身份在 AWS、Azure 和 Google Cloud 中承担角色，因此您不再需要将云密钥存储为部署机密。对于 AWS 设置 `LANGSMITH_AWS_ROLE_ARN`，对于 Azure 设置 `LANGSMITH_AZURE_CLIENT_ID` 和 `LANGSMITH_AZURE_TENANT_ID`，或者对于 Google Cloud 设置 `LANGSMITH_GCP_WORKLOAD_IDENTITY_PROVIDER`，并且仅信任该云中的确切代理主体。* 部署现在可以将其 API 密钥交换为代理徽章，这是一个有效期为五分钟的签名令牌，用于命名绑定到部署的代理，地址为 `POST /v1/agent-auth/token`。个人 API 密钥被拒绝。
+* 代理响应现在包括 `agent_uuid`，代理的永久标识符。在编写工作负载身份信任策略时将其用作主题，因为在删除代理后可以重用`id`。
 
 ## 数据集和实验
 
@@ -83,15 +219,15 @@ LangSmith 云每周更新
 * 您现在可以选择实验结果表的行高：**默认**、**高**或**适合**以显示每个单元格的完整内容。您的选择会记录在您的浏览器中并包含在共享链接中。该控件在紧凑模式下不可用。
 
 ## 评估者* 您现在可以与使用您自己的 API 密钥（例如 OpenAI）的提供商一起创建决策模型评估器，而无需 LLM 网关。仅通过 LLM 网关运行的选项（例如 SemIf 和 ScaleDown）将保持隐藏状态，直到启用网关。
-* 决策模型评估器现在可以判断整个线程。在决策模型规则上将 `group_by` 设置为 `thread_id`，以便在每个线程空闲时对其进行评估，而不是每次运行。线程规则需要`session_id`。
+* 决策模型评估器现在可以判断整个线程。在决策模型规则上将 `group_by` 设置为 `thread_id`，以便在每个线程空闲时评估每个线程，而不是每次运行。线程规则需要`session_id`。
 * 使用 OpenAI 模型的评估者现在可以在评估者表单中选择 **Flex** 服务层。 Flex 评估器调用最多等待 10 分钟才能获得分数，并且每个调用都会尝试一次。
-* 评估器现在在创建、获取、列出和更新时接受可选的 `metadata` JSON 对象，并且您可以按 `metadata` 过滤评估器列表以查找具有匹配值的评估器。更新时将 `metadata` 设置为 null 以清除它。
+* 评估器现在在创建、获取、列出和更新时接受可选的 `metadata` JSON 对象，并且您可以通过 `metadata` 过滤评估器列表以查找具有匹配值的评估器。在更新时将 `metadata` 设置为 null 以清除它。
 * 评估器端点现在使用 `application/problem+json` 返回错误作为 RFC 7807 问题详细信息。每条错误消息都会出现在 `detail` 和已弃用的 `error` 字段中，并且状态代码保持不变。
-* 新的 OpenAI LLM 法官评估员现在从 `gpt-6-luna` 开始，而不是 `gpt-6.1-sol`。工作区默认预设未更改。* 列表运行规则现在一次返回一页。传递 `page_size` 和 `cursor` 来逐步浏览结果，并使用每个响应中的 `next_cursor` 来获取下一页。
+* 新的 OpenAI LLM 法官评估员现在从 `gpt-6-luna` 开始，而不是 `gpt-6.1-sol`。工作区默认预设未更改。* 列表运行规则现在一次返回一页。传递 `page_size` 和 `cursor` 来逐步执行结果，并使用每个响应中的 `next_cursor` 来获取下一页。
 * 编码代理概述现在显示一个工作类型卡，该卡根据每个代理要求的工作类型来分解代理的线程：功能、错误修复、重构、问答、审查或偏离主题。该卡显示每种类型的份额、线程数和成本，如果您尚未设置编码工作类型评估器，它会指导您添加它。编码工作类型评估器现在作为预构建模板提供，该模板从第一条消息中标记每个编码代理线程，并且它需要工作区中的 `TYPESAFE_API_KEY` 秘密。
 
 ＃＃ 反馈* 现在，您可以使用 `add_categories` 和 `remove_categories` 在带有 `/feedback-configs` 补丁的分类反馈配置上添加或删除类别，而无需重新发送整个列表。重试编辑是安全的，Python 和 JavaScript SDK 将更改公开为 `add_feedback_categories` 和 `remove_feedback_categories`。
-* 注释队列 CSV 导出中的多选标题标签现在会在一个单元格中列出审阅者为运行选择的每个类别，并用 `; ` 分隔，而不是仅显示最近选择的。多位审稿人的重复选择出现一次。
+* 注释队列 CSV 导出中的多选标题标签现在会在一个单元格中列出审阅者为运行选择的每个类别，并用 `; ` 分隔，而不是仅显示最新选择。多位审稿人的重复选择出现一次。
 * 自定义应用程序现在可以通过 `window.langsmith.setRoute` 将其当前视图保留在 URL 中，因此链接、刷新以及后退和前进将返回到同一视图。应用程序还可以使用`window.langsmith.openUrl`打开外部`https://`链接并使用`window.langsmith.download`保存文件，查看者首先确认每个链接。
 * 注释队列自定义视图现在内嵌显示每个运行的图像附件，因此您可以在不打开运行的情况下标记产品照片。来自其他远程来源的图像仍然无法加载。
 
@@ -107,9 +243,9 @@ LangSmith 云每周更新
 * 代理现在可以持有自己的工具凭证。管理员连接代理环境的凭据，并使用代理绑定的 API 密钥进行的调用使用它们。删除代理环境也会删除其凭据。
 
 ## 沙箱* 使用 `match_hosts` 缩小 AWS 和 GCP 代理规则，因此列表之外的主机不再被拦截或进行身份验证。预签名的 AWS URL 和 GCS 签名的 URL 现在在读取时不会发生变化，因此从第三方签名链接的下载可以再次正常工作。
-* 浏览器沙箱现在可作为测试版供每个 SaaS 工作区使用，无需请求访问。默认情况下，使用 `POST /v2/sandboxes/browsers` 创建的浏览器将在停止 14 天后被删除，您可以设置 `delete_after_stop_seconds` 来更改该延迟，或设置为 `0` 来保留已停止的浏览器。
+* 浏览器沙箱现在可作为测试版供每个 SaaS 工作区使用，无需请求访问。默认情况下，使用 `POST /v2/sandboxes/browsers` 创建的浏览器将在停止后 14 天被删除，您可以设置 `delete_after_stop_seconds` 来更改该延迟，或设置为 `0` 来保留已停止的浏览器。
 * 现在，当您调用 `SandboxClient.createSandbox` 时，您可以在 TypeScript SDK 中设置 `persistent`。通过 `false` 关闭沙箱的文件系统持久性，或者将其保留以保持服务器默认值。
-* AWS 上的 BYOC 操作员在创建数据平面时可以将 `sandboxes.juicefs.redisAuth` 设置为 `iam`，因此沙箱 JuiceFS 元数据通过 IAM 身份验证（而不是密码）连接到 Redis。创建数据平面后，该设置无法更改。
+* AWS 上的 BYOC 操作员在创建数据平面时可以将 `sandboxes.juicefs.redisAuth` 设置为 `iam`，因此沙箱 JuiceFS 元数据通过 IAM 身份验证而不是密码机密连接到 Redis。创建数据平面后，该设置无法更改。
 
 ＃＃ 引擎* 引擎现已在 Azure 和 GCP BYOC 数据平面上可用。使用`spec.langsmith.engine.enabled`将其打开。在 Azure 上，引擎使用工作负载身份调用 Azure AI Foundry，因此不需要 API 密钥。在 GCP 上，Engine 通过 Vertex AI 使用工作负载身份调用 Claude。引擎需要沙箱。
 * 使用让引擎生成拉取请求的选项创建问题现在会在修复运行完成时打开 PR。您需要项目的`issues:update`权限才能使用此选项；引擎代理无法使用它。
@@ -117,15 +253,15 @@ LangSmith 云每周更新
 * 问题图表现在标记导致问题的拉取请求和修复问题的拉取请求，每条标记线上都有一个芯片。将鼠标悬停或单击某个图块即可查看每个 PR 的标题、链接和合并时间。
 * 现在，从引擎问题页面应用建议的上下文修复需要具有目标 Context Hub 存储库写入权限的登录用户。引擎运行仍然可以创建和删除提案，但无法再将它们应用到 Context Hub。
 
-## 提示和游乐场* 现在，您可以将模型的额外标头值设置为 Playground 中的工作区机密，因此`api-key` 等网关凭证保持加密状态，而不是以纯文本形式存储在模型配置中。使用标题行中的钥匙图标将值切换为秘密名称。
+## 提示和游乐场* 您现在可以将模型的额外标头值设置为 Playground 中的工作区机密，因此`api-key` 等网关凭证保持加密状态，而不是以纯文本形式存储在模型配置中。使用标题行中的钥匙图标将值切换为秘密名称。
 * Prompt Hub 存储库和提交现在可在 TypeScript 和 Python SDK 中使用。使用 `client.repos` 管理存储库及其目录，使用 `client.commits` 创建、检索和列出提交。
 
 ## 修复和改进> [手风琴] 显示所有修复
 >
 > * 修复了当请求省略 `ttl` 时，`PUT /store/items` 忽略您商店的 `default_ttl` 的问题。现在，项目在配置的默认值之后过期，并且授权处理程序在写入之前接收该默认值，以便他们可以更改或禁用它。
-> * 运行详细信息现在显示 `priority` 和 `priority_cache_read` 代币以及 OpenAI 优先运行的成本明细，而这些之前是缺失的。
+> * 运行详细信息现在显示 `priority` 和 `priority_cache_read` 代币以及 OpenAI 优先级运行的成本明细，而这些在之前是缺失的。
 > * 将 `on_disconnect` 设置为 `cancel` 创建的运行现在会在客户端在流响应到达之前断开连接时停止，而不是运行到完成。
-> * JS 图不再流式传输旧版 `messages` 模式中标记为 `langsmith:nostream` 的模型调用的标记。这些调用现在不会出现在您的 `messages/partial` 和 `messages/metadata` 事件中，与 `nostream` 匹配。
+> * JS 图不再流式传输旧版 `messages` 模式中标记为 `langsmith:nostream` 的模型调用的标记。这些调用现在不会出现在您的 `messages/partial` 和 `messages/metadata` 事件中，与 `nostream` 相匹配。
 > * 修复了包含文本 `\u0000` 的字符串值（例如生成的 HTML 或 JavaScript）返回时用 `\ufffd` 代替状态、流和存储线程中的该文本的问题。实际的 NUL 字符仍然变为 `\ufffd`，并且文本现在保持不变。
 > * 工作人员作业统计图表现在显示每个时间范围内并发作业的真实峰值。当您扩大时间范围时，最大作业和活动作业不再膨胀。> * 评估完成后到达的反馈现在显示在比较标题平均值、评估进度和网格行中，无需重新加载页面。
 > * 现在删除线程也会删除其缓存的流事件，因此当您使用 `Last-Event-ID` 加入其流时，在同一 ID 下重新创建的线程不再重播已删除线程的事件。
@@ -138,24 +274,24 @@ LangSmith 云每周更新
 > * 上传空 CSV、仅包含标题行的 CSV 或缺少请求的输入或输出列的 CSV 现在会返回带有明确消息的 400 错误，而不是 500 错误。
 > * 当您的组织设置最长服务密钥过期时间时，创建 BYOC 数据平面不再因 500 错误而失败。数据平面的代理密钥现在不受该策略的约束，并且创建成功。> * 具有深层堆栈的覆盖沙箱的快照捕获不再因超过截止日期而失败。捕获请求现在需要 20 分钟，因此大型沙箱可以在单个请求中完成。失败的捕获不再处于待处理状态。
 > * 自定义输出渲染器现在出现在启用了自定义输出渲染的注释队列中。没有保存**经典跟踪视图**设置的队列现在默认在经典视图中打开。
-> * 当优先级回调返回 `fairness_weight` 键时，第一次执行时运行不再失败。服务器忽略该键并记录警告，并且运行使用`priority`和`fairness_group`。
+> * 当您的优先级回调返回 `fairness_weight` 键时，运行在第一次执行时不再失败。服务器忽略该键并记录警告，并且运行使用`priority`和`fairness_group`。
 
 **2026年10月26日至11月2日**
 
 ## 亮点* **精细的工作区管理权限**：您现在可以通过操作委派工作区管理，而不是授予广泛的 `workspaces:manage` 权限。新权限涵盖设置、保留、使用控制、安全策略、资源标签、集成、沙箱代理配置文件、凭据、受限角色分配和工作区删除，并且 UI 根据角色拥有的权限显示控件。具有 `workspaces:manage` 的现有自定义角色会自动接收新权限并保留其当前访问权限，内置的工作区管理员角色包括它们。 [Learn more](/langsmith/rbac)。
 * **用于委派管理的组织自定义角色**：您现在可以创建仅限于您的组织的自定义角色，并将其分配给成员、待处理的邀请和服务帐户密钥。组织角色允许您委派精细管理，而无需授予管理员或操作员权限。自定义组织角色不能包含旧版 `organization:manage`、访问控制管理、身份验证管理或 Teams 管理权限，并且默认情况下它们受到限制。拥有`organization:members:manage`的会员可以邀请或分配不受限制的角色，而受限角色则需要`organization:access-control:manage`。 [Learn more](/langsmith/rbac)。* **使用优先级回调对运行进行优先级**：您可以向 `langgraph.json` 添加一个 `priority` 部分来命名回调，并在第一次运行时将每个线程的优先级从 -5 设置为 5。当每个worker都忙时，低级别的运行先开始，同级别的运行则先老的开始。运行返回`priority`，线程返回`run_priority`和`fairness_group`，指标报告队列深度和每个级别的等待时间。当您的部署使用 Redis 时，排序适用，并且删除 `priority` 部分会关闭级别。回调需要 langgraph-sdk 0.4.9 和 langgraph-cli 0.4.38 或更高版本。 [Learn more](/langsmith/agent-server-scale)。
-* **MCP 上的人机交互提示**：修订版 2026-07-28 支持表单导出的 MCP 客户端现在会在图形暂停时要求输入，并且工具调用将恢复并提供答案。支持文本问题、`response_schema` 中断、从 MCP 工具转发的表单和 URL 问题，以及用于批准、编辑、拒绝或回答的LangChain 人机交互审核。未声明所需诱导功能的客户端会收到缺失功能错误`-32021`，该错误指出了要启用的功能。 [Learn more](/langsmith/server-mcp-elicitation)。* **审查轨迹中的排队运行**：注释队列中的运行项目现在在运行轨迹中打开，滚动到正在评分的回合，因此审阅者可以按照跟踪中显示的方式阅读对话，而不是原始输入和输出。消息使用与跟踪页面相同的解析器，因此提供者本机内容（例如 Anthropic `tool_use` 块）可以正确呈现。孩子跑步，并且没有轨迹地跑步，按对话顺序显示他们的输入和输出，每个工具调用都折叠成一行。新视图是只读的。要在将运行添加到数据集之前编辑运行的输入和输出，请在队列的数据格式设置中打开 **经典跟踪视图**。 [Learn more](/langsmith/annotation-queues#data-formatting)。* **注释队列的自定义视图**：您现在可以将注释队列中间窗格中的默认跟踪视图替换为您向 LangSmith 聊天描述的自定义视图，例如没有工具调用的聊天记录。聊天会预览当前队列项目上的每个草稿，并且在您单击“**保存**”之前不会保存任何内容。一个视图可以服务多个队列，审阅者可以使用 **自定义视图** 切换器在默认视图和自定义视图之间切换。自定义视图仅用于显示，无法调用LangSmith API。自定义视图继承自定义输出渲染，这将被弃用。 [Learn more](/langsmith/annotation-queue-custom-views)。
+* **MCP 上的人机交互提示**：修订版 2026-07-28 支持表单导出的 MCP 客户端现在会在图形暂停时要求输入，并且工具调用将恢复并提供答案。支持文本问题、使用 `response_schema` 中断、从 MCP 工具转发的表单和 URL 问题，以及用于批准、编辑、拒绝或回答的 LangChain 人机交互审核。未声明所需诱导功能的客户端会收到缺失功能错误`-32021`，该错误指出了要启用的功能。 [Learn more](/langsmith/server-mcp-elicitation)。* **审查轨迹中的排队运行**：注释队列中的运行项目现在在运行轨迹中打开，滚动到正在评分的回合，因此审阅者可以按照跟踪中显示的方式阅读对话，而不是原始输入和输出。消息使用与跟踪页面相同的解析器，因此提供者本机内容（例如 Anthropic `tool_use` 块）可以正确呈现。孩子跑步，并且没有轨迹地跑步，按对话顺序显示他们的输入和输出，每个工具调用都折叠成一行。新视图是只读的。要在将运行添加到数据集之前编辑运行的输入和输出，请在队列的数据格式设置中打开 **经典跟踪视图**。 [Learn more](/langsmith/annotation-queues#data-formatting)。* **注释队列的自定义视图**：您现在可以将注释队列中间窗格中的默认跟踪视图替换为您向 LangSmith 聊天描述的自定义视图，例如没有工具调用的聊天记录。聊天会预览当前队列项目上的每个草稿，并且在您单击“**保存**”之前不会保存任何内容。一个视图可以服务多个队列，审阅者可以使用 **自定义视图** 切换器在默认视图和自定义视图之间切换。自定义视图仅用于显示，无法调用LangSmith API。自定义视图继承自定义输出渲染，这将被弃用。 [Learn more](/langsmith/annotation-queue-custom-views)。
 
-## 追踪* 多部分和 OTel 批量摄取现在强制执行所有短期使用限制，因此您对每分钟事件、每小时请求或每小时字节限制的跟踪将获得 429 响应。对 `/runs/batch` 的批量请求现在也计入这些限制。
+## 追踪* 多部分和 OTel 批量摄取现在强制执行所有短期使用限制，因此您对每分钟事件、每小时请求或每小时字节限制的跟踪将获得 429 响应。对 `/runs/batch`​​ 的批量请求现在也计入这些限制。
 * 新租户和现有租户的默认摄取限制现在为每分钟 300,000 个事件、每小时 1,000,000 个跟踪请求以及每小时 15 GB 的跟踪负载。仍使用以前默认值的租户将移至新限制，而自定义值保持原样。
 * 您现在可以从 Python、JavaScript、Go 和 Java SDK 以及 CLI 流式传输 v2 运行、线程和跟踪查询。将新的 `streaming` 方法与 `ai_search` 结合使用以获取服务器发送事件的结果。
 * 运行查询现在返回根运行和中间运行中令牌和成本字段的子树总计。运行表中的父运行显示包括其后代运行的使用情况。即使过滤器或时间范围将这些后代从结果中排除，后代使用也会计数。* 代理服务器和跟踪集成现在接受代理 `address` 代替项目名称，因此您可以将 Claude Agent SDK、Google ADK、OpenAI Agents SDK、OpenAI Realtime 和 Gemini Live 的根运行发送到代理环境。设置 `address` 和项目名称都会被拒绝。
 * 当请求包含 `langsmith-trace` 和 `baggage` 标头时，工具网关现在可以将每个工具调用作为调用运行下的子运行写入到 LangSmith 跟踪中。每次运行都会记录工具、服务器、套件、调用充当的身份、结果和时间，但不会记录工具参数或结果。工作区管理员还可以在“工具”页面上新的“使用情况”选项卡中打开“记录工具调用跟踪”，其中列出了最近的工具调用并打开每个工具的跟踪。
-* OpenAI 托管代理 API 的跟踪现已在测试版中通过 `wrap_openai` 提供：每个已完成的会话轮次显示在 LangSmith 中作为跟踪，每个模型调用、工具调用和子代理运行一次，并且每个会话都是一个线程。轮流在该运行下的 `@traceable` 函数嵌套内开始。
+* OpenAI 的托管代理 API 的跟踪现已在测试版中通过 `wrap_openai` 提供：每个已完成的会话轮次显示在 LangSmith 中作为跟踪，每个模型调用、工具调用和子代理运行一次，并且每个会话都是一个线程。轮流在该运行下的 `@traceable` 函数嵌套内开始。
 * `POST /api/v1/runs/group` 端点现已弃用，并将于 2027 年 1 月 31 日停用。请改用 `POST /api/v2/threads/query` 查询线程。在此之前，端点将继续工作。* 当您从自己的应用代码中调用 `list_runs()`、`read_run()` 和其他方法时，Python SDK 现在会显示弃用警告，这些方法将于 2027 年 1 月 31 日删除。要隐藏它们，请将 `-W ignore::DeprecationWarning` 传递给 Python。
 * 您的 AI 搜索解析请求现在每个源 IP 的速率限制为每分钟 25 个请求，超出的请求会收到 HTTP 429。旋转 `x-api-key` 或 `x-user-id` 标头不再重置此限制。
 * 您的 `POST /api/v1/sessions` 和 `PATCH /api/v1/sessions/{session_id}` 响应现在返回完整的会话，包括 `last_run_start_time`，与默认 GET 相同的字段。 Python SDK 的 `sessions.create()` 和 `sessions.update()` 返回 `TracerSession`，TypeScript SDK 的 `sessions.update()` 返回已弃用的 `TracerSessionWithoutVirtualFields`。
-* 现在，您可以将 API 密钥存储为参考而不是纯文本：`langsmith profiles create` 接受 `--api-key-env` 从环境变量中读取密钥，或接受 `--api-key-cmd` 运行密码管理器查找等命令，并且每次使用配置文件时 CLI 和 Go SDK 都会解析它。 Python SDK 也会读取 `api_key_env` 配置文件，而 JS 和 Java SDK 也会执行相同的操作，但尚未运行 `api_key_cmd`。* 现在，您可以通过 JavaScript 中的新 `profile` 和 `profileConfigPath` 选项以及 Python 中的 `profile` 和 `profile_config_path` 选项来选择 SDK 使用的 `langsmith auth login` 配置文件和配置文件。设置 `preferProfileAuth` 或 `prefer_profile_auth`，即使设置了 `LANGSMITH_API_KEY`，也可以使用该登录名以及配置文件的端点和工作区。未设置这些选项的客户端的行为与以前一样。
+* 现在，您可以将 API 密钥存储为参考而不是纯文本：`langsmith profiles create` 接受 `--api-key-env` 从环境变量中读取密钥，或接受 `--api-key-cmd` 运行命令（例如密码管理器查找），并且每次使用配置文件时 CLI 和 Go SDK 都会解析它。 Python SDK 也会读取 `api_key_env` 配置文件，而 JS 和 Java SDK 也会执行相同的操作，但尚未运行 `api_key_cmd`。* 现在，您可以通过 JavaScript 中的新 `profile` 和 `profileConfigPath` 选项以及 Python 中的 `profile` 和 `profile_config_path` 选项来选择 SDK 使用哪个 `langsmith auth login` 配置文件和配置文件。设置 `preferProfileAuth` 或 `prefer_profile_auth`，即使设置了 `LANGSMITH_API_KEY`，也可以使用该登录名以及配置文件的端点和工作区。未设置这些选项的客户端的行为与以前一样。
 * 另一个实例上的写入副本不再接收您的基础工作区 ID，这修复了每次写入时出现的 403 错误。每个 `LANGSMITH_RUNS_ENDPOINTS` 条目现在可以设置自己的 `workspace_id`，它作为组织范围密钥的副本租户发送。
 * 代理的警报现在显示在其所有环境中，您可以按环境过滤它们。创建警报时，会预先填写代理和环境，并且警报表单会显示警报所属的代理。您还可以从警报表单切换代理。
 * 代理现在会在应用程序中出现的任何位置显示您为他们上传的自定义头像，包括代理切换器、表格、模拟、搜索结果和代理概述标题。* LangSmith CLI 不再在任何生成的命令上提供 `--accept` 标志，包括 `sessions dashboard`、`threads query`、`traces query` 和 `public:runs` 命令。在此更改之前，传递 `--accept text/event-stream` 不打印任何内容并以状态 0 退出。
@@ -163,7 +299,7 @@ LangSmith 云每周更新
 * 现在，在日期时间范围日历中选择的一天涵盖了全天，从午夜到 23:59:59。如果结束日是今天，则范围将在当前时间结束。
 * 批量导出现在在 SmithDB 支持的部署上接受 v2 过滤器语法，例如 `run_type:llm`。创建导出时会检查过滤器，因此无效的过滤器会返回 400 错误及其原因。
 
-## 评估者* 现在，您可以在一次 API 调用中创建决策模型评估器，选择 Jev、SemIf、OpenAI 决策、TypeSafe 兼容端点或保存的模型配置。每个问题都会成为您附加到的项目或数据集的反馈键。
+## 评估者* 现在，您可以在一次 API 调用中创建决策模型评估器，选择 Jev、SemIf、OpenAI 决策、TypeSafe 兼容端点或已保存的模型配置。每个问题都会成为您附加到的项目或数据集的反馈键。
 * 新评估器开始时**跟踪评估器运行**关闭，因此除非您将其打开，否则不会跟踪它们的运行。现有评估器保持当前设置。
 * LLM-as-judge 评估器现在在您使用没有模型或没有输出架构的提示保存它们时返回 400 错误，包括当您重用现有评估器时。每次运行不再因原始 langchain_core 错误而失败，并且该消息会告诉您选择模型或添加输出模式，例如 `score: bool`。
 * 线程评估器现在允许您在轨迹预览上设置从齿轮压缩，这样您的评估器就可以对压缩轨迹进行分级，而无需单独的选择器选项。该变量仍命名为 `trajectory`，并且当压缩开启时，自定义徽章会对其进行标记。* 您现在可以列出评估程序、按 ID 获取单个评估程序以及列出来自 MCP 客户端的运行规则。评估器列出了省略代码，您可以使用 `get_evaluator` 来阅读。运行规则响应会屏蔽 Webhook 标头值和警报路由键，并仅显示每个 Webhook URL 的主机。
@@ -182,19 +318,19 @@ LangSmith 云每周更新
 ## 提示和游乐场* 新的Anthropic和Anthropic兼容模型配置以最大输出标记默认值`8192`而不是`1024`开始，并且重置最大输出标记字段会恢复Anthropic配置的`8192`。现有保存的配置和显式令牌限制保持不变。
 * 已弃用的 LangServe 提供程序不再出现在 Playground、评估器或保存的模型配置中的提供程序选择器中。您现有的 LangServe 配置将继续工作，并且自动默认模型选择不再选择 LangServe。
 * 现在，您可以通过选择 `gpt-6.1-terra`，从 Playground、模型配置和模型访问建议的 OpenAI 模型下拉列表中选择 GPT-6.1 Terra。
-* `langsmith` CLI 的提示集线器错误现在遵循 RFC 7807 问题详细信息，提交端点上有 `application/problem+json` 主体，以及 `errors` 中的每字段消息，用于来自存储库端点的 `422` 响应。删除不存在的存储库现在会返回 `200` 而不是 `404`，因此重试删除是安全的。
+* `langsmith` CLI 的提示集线器错误现在遵循 RFC 7807 问题详细信息，提交端点上有 `application/problem+json` 主体，以及来自存储库端点的 `422` 响应的 `errors` 中的每字段消息。删除不存在的存储库现在会返回 `200` 而不是 `404`，因此重试删除是安全的。
 * 现在，您可以使用每个响应中的 `next_cursor` 值，使用 `page_size` 和 `cursor` 翻阅长提交历史记录和存储库列表，直到它为 `null`。* LangSmith Chat 的文档工具现在直接从 docs.langchain.com 搜索并读取官方 LangChain 和 LangSmith 文档，因此它不再依赖于 Chat LangChain 部署，并返回 LangSmith Chat 的源文本以供回答。
-* LangSmith Chat 现在可以找到您的工具网关套件及其工具的输入架构，因此它可以将自定义应用程序的调用写入 Google、Slack 等服务以及您自己的 API。 LangSmith Chat 列出了您可以使用的套件，对于套件，它列出了每个工具及其输入架构以及您尚未连接的任何服务。
+* LangSmith Chat 现在可以找到您的工具网关套件及其工具的输入模式，因此它可以将自定义应用程序的调用写入 Google、Slack 等服务以及您自己的 API。 LangSmith Chat 列出了您可以使用的套件，对于套件，它列出了每个工具及其输入模式以及您尚未连接的任何服务。
 * LangSmith 聊天现在会在每个新的浏览器选项卡和窗口中打开一个新的聊天，而不是从之前的会话中恢复对话。过去的对话仍然可以在线程历史记录中找到。
 
 ## 部署* 创建 Azure 数据平面现在需要在资源组中为 LangSmith 进行直接角色分配，以使用组织的外部 ID 作为其描述。如果不这样做，则创建会失败并出现 403 错误，`azure_external_id_mismatch`。在创建新数据平面之前，使用您的外部 ID 重新应用 LangSmith BYOC Terraform 模块，并且在没有它的情况下删除现有数据平面仍然有效。
-* 您现在可以通过 `spec.vpc.byoVpcSecurityGroupIds` 为 AWS EKS 集群、Postgres、SmithDB 元存储、Redis 和入口 NLB 提供自己的安全组，每个角色有 1-5 个 ID。然后，Crossplane 不会为这些角色创建安全组或规则，这有助于拒绝 `CreateSecurityGroup` 和 `Revoke*` 的帐户。您还可以设置 `karpenter.amiId` 一次，以应用于每个未设置自己的 `amiId` 的节点类。
-* GCP 数据平面现在采用 `spec.langsmith.images` 下的每个服务映像版本，与 AWS 和 Azure 数据平面的方式相同。现在，将 LangSmith 镜像推出到 GCP 数据平面会将每项服务移至新的发布标签，并且第三方镜像保留自己的标签。* 自带云 (BYOC) Azure 数据平面现在可以通过群集上的专用终结点访问专用 AKS 群集 API，而无需访问 AKS 节点资源组。您的集群不需要 API 服务器 VNet 集成子网，并且您不再需要创建 **专用链接** 子网的委派。 Azure 需要端点的批准，LangSmith 自动请求。
+* 您现在可以通过 `spec.vpc.byoVpcSecurityGroupIds` 为 AWS EKS 集群、Postgres、SmithDB 元存储、Redis 和入口 NLB 提供自己的安全组，每个角色有 1-5 个 ID。然后，Crossplane 不会为这些角色创建安全组或规则，这有助于拒绝 `CreateSecurityGroup` 和 `Revoke*` 的帐户。您还可以设置 `karpenter.amiId` 一次，以应用于未设置自己的 `amiId` 的每个节点类。
+* GCP 数据平面现在采用 `spec.langsmith.images` 下的每服务映像版本，与 AWS 和 Azure 数据平面的方式相同。现在，将 LangSmith 映像推出到 GCP 数据平面会将每个服务移至新的发布标签，并且第三方映像保留自己的标签。* 自带云 (BYOC) Azure 数据平面现在可以通过群集上的专用终结点访问专用 AKS 群集 API，而无需访问 AKS 节点资源组。您的集群不需要 API 服务器 VNet 集成子网，并且您不再需要创建 **专用链接** 子网的委派。 Azure 需要端点的批准，LangSmith 自动请求。
 * Azure BYOC 集群现在在专用节点池上运行数据库 Pod，SmithDB 查询、摄取和压缩工作线程在本地 NVMe 磁盘上缓存数据。新元存储默认为 PostgreSQL 18。默认情况下，您的系统池保留在三个固定节点上。
-* Azure BYOC 拆卸现在保留您的资源组、Key Vault 以及跟踪和 SmithDB Blob 存储。拆卸会删除 AKS 群集、PostgreSQL、Redis、沙箱存储、网络资源和私有 DNS。* Your BYOC Azure data plane creation now checks regional and VM-family vCPU quota for the system node pool before it starts, and it stops with an error if the quota is insufficient. The check also enables PostgreSQL zone-redundant high availability only when the selected region and size support it across two zones, and otherwise creates a single server.
-* New BYOC data planes on Azure now start with three fixed `Standard_D2s_v6` system nodes, each with 2 vCPU and 8 GiB of memory, to match the AWS system node group.现有数据平面保持当前系统节点大小。
+* Azure BYOC 拆卸现在保留您的资源组、Key Vault 以及跟踪和 SmithDB Blob 存储。拆卸会删除 AKS 群集、PostgreSQL、Redis、沙箱存储、网络资源和私有 DNS。* 现在，您的 BYOC Azure 数据平面创建在启动之前会检查系统节点池的区域和 VM 系列 vCPU 配额，如果配额不足，则会停止并显示错误。仅当所选区域和大小支持跨两个区域时，该检查还启用 PostgreSQL 区域冗余高可用性，否则将创建单个服务器。
+* Azure 上的新 BYOC 数据平面现在从三个固定的 `Standard_D2s_v6` 系统节点开始，每个节点都有 2 个 vCPU 和 8 GiB 内存，以匹配 AWS 系统节点组。现有数据平面保持当前系统节点大小。
 * 使用自定义启动模板的自托管和 BYOC 系统节点现在需要 IMDSv2 并始终加密节点卷。使用自定义启动模板的现有节点组将滚动到新模板版本。
-* AWS BYOC 部署中的内部和公共负载均衡器现在仅在端口 `443` 上公开 HTTPS。 Monitoring that calls the load balancer directly on port `15021` must use a different path, because health checks still reach gateway pods on that port.* 新的 GCP 和 Azure 数据平面保留在与其**模块版本**匹配的 Crossplane 组合修订版上，因此应用新的 Crossplane 版本不再移动它们。在 GCP 版本应用于合并之前，现有的 GCP 数据平面需要对同一选择器进行一次性更新。
+* AWS BYOC 部署中的内部和公共负载均衡器现在仅在端口 `443` 上公开 HTTPS。直接在端口 `15021` 上调用负载均衡器的监控必须使用不同的路径，因为运行状况检查仍会到达该端口上的网关 Pod。* 新的 GCP 和 Azure 数据平面保留在与其**模块版本**匹配的 Crossplane 组合修订版上，因此应用新的 Crossplane 版本不再移动它们。在 GCP 版本应用于合并之前，现有的 GCP 数据平面需要对同一选择器进行一次性更新。
 * 与 **REDIS_DATABASE_URI** 连接的 Redis 集群部署现在从 URI 方案中获取 TLS：使用 `rediss://` 启用 TLS，与独立 Redis 相同。现在，仅当集群从 `REDIS_CLUSTER_DATABASE_URIS` 播种时，`REDIS_CLUSTER_USE_SSL_CONNECTION` 设置才适用。设置 `redis.external.cluster.tlsEnabled` 和 `connectionUrl` 的自托管 Helm Chart 用户应切换到 `rediss://`，因为 `nodeUris`、`password` 和 `tlsEnabled` 在 Helm Chart v0.18 中已弃用，并在 v0.19 中受支持。
 * 在 LangSmith Azure 上，`langgraph deploy --remote` 现在上传您的源 tarball 并为您构建它，`langgraph deploy` 现在在本地构建并推送您的映像。较旧的 LangGraph CLI 会收到一条消息，要求您在任一命令生效之前进行升级。
 * 现在加载部署日志和构建日志以在 Azure LSD 上进行部署。以前，“日志”选项卡会返回错误。构建日志还显示 Azure 构建，包括已运行的构建。* Azure 部署创建现在显示 GitHub 连接和存储库选择器，而不是普通的存储库 URL 字段。
@@ -203,10 +339,10 @@ LangSmith 云每周更新
 * 使用 `internal_docker` 推送映像的部署现在将其映像存储库存储在部署的工作负载区域中，因此从 CLI 推送的映像位于部署旁边。下次请求推送令牌或开始构建时，现有部署将移至区域存储库。
 * 当使用 `http.disable_webhooks` 禁用 Webhooks 时，您的运行和 cron 不再解析或存储您发送的 `webhook` URL，并且唯一字段为 `webhook` 的 cron PATCH 将返回 422，表示 Webhook 已禁用。* 运行尝试和消耗现在存储在 Postgres 中，因此当 Redis 重新启动或在重试之间删除计数器时，您的运行不再丢失重试计数。在推出期间，活动运行的运行时间可能会超过分配的失败重试次数。
 * 省略 `step` 的部署的指标请求现在选择一个每个系列返回大约 60 点的步骤，最少需要 60 秒。例如，30 天的查询不再因 502 错误而失败，7 天的查询返回 10080 秒间隔而不是每分钟一个点。
-* 部署现在将 `LANGSMITH_ENDPOINT` 设置为与 `LANGCHAIN_ENDPOINT` 相同的值，因此仅读取 `LANGSMITH_ENDPOINT` 的应用程序代码会将跟踪发送到正确的区域。您现在可以在云 SaaS 部署上设置 `LANGSMITH_ENDPOINT`，并且您自己设置的值仍然优先于默认值。
+* 部署现在将 `LANGSMITH_ENDPOINT` 设置为与 `LANGCHAIN_ENDPOINT` 相同的值，因此仅读取 `LANGSMITH_ENDPOINT` 的应用程序代码会将跟踪发送到正确的区域。您现在可以在云 SaaS 部署上设置`LANGSMITH_ENDPOINT`，并且您自己设置的值仍然优先于默认值。
 * Studio 现在在图表中的每个工具节点上显示扳手图标和工具计数，并用悬停卡列出节点运行的每个工具。当工具运行时，节点旁边的徽章会为 Python 和 JS 代理命名它们。
 * 代理服务器映像和用户图依赖项现在接受 redis-py 8.x，因此您的图可以安装 redis-py 8，而不会出现版本冲突。* 运行现在在其元数据中包含一个 `langgraph_graph_load_ms` 值，显示加载图表所需的时间。您可以在 LangSmith 跟踪中对其进行过滤，以查找缓慢的图形加载。对于不是由工厂创建的预构建图，该值接近 0。
-* 您可以在 BYOC AWS 配置中设置 `systemNodeGroup.releaseVersion`，以将 EKS 选择的系统节点移动到已修补的 AMI 版本。系统节点现在也遵循集群的 Kubernetes 版本，因此它们在 EKS 升级期间在控制平面之后进行升级。
+* 您可以在 BYOC AWS 配置中设置`systemNodeGroup.releaseVersion`，将 EKS 选择的系统节点移动到已修补的 AMI 版本。系统节点现在也遵循集群的 Kubernetes 版本，因此它们在 EKS 升级期间在控制平面之后进行升级。
 * AWS 上的自带 VPC 数据平面现在可以将数据库放置在您的应用程序子网中。如果您的 VPC 没有专用数据库子网，请将 `byovpc.private_db_subnet_ids` 设置为与 `byovpc.private_app_subnet_ids` 相同的 ID。公共子网仍必须与其他层不同。
 * GCP 数据平面现在允许自动配置节点最多使用 512 个 vCPU 和 2048 GB 内存，而之前的上限为 96 个 vCPU 和 384 GB。完整的 LangSmith 安装的滚动更新不再因旧上限导致的 Pending Pod 错误而失败。
 * 新配置的 AWS BYOC 数据平面现在以更大的默认 CPU 和内存分配启动其后端和侦听器服务。现有数据平面保留其配置的资源。* 美国控制平面上的 GCP BYOC 数据平面现在可以在 **us-west1** 中运行。客户在创建数据平面时可以选择该区域。
@@ -222,20 +358,20 @@ LangSmith 云每周更新
 ## 网关* 自定义 **网关** 工作区角色现在仅授予 `gateway:invoke` 和 `workspaces:read`。应用 Terraform 配置时，分配此角色的现有服务密钥将失去已删除的权限，因此请确认您的密钥不依赖于创建运行或项目、管理模型价格、批量导出数据或读取代理身份验证连接。
 * 现在，您可以将 LLM Gateway 策略针对特定代理、一个或多个环境中的每个代理或一个环境中的一个代理。支出上限、速率限制、模型访问和防护适用于您在工作区中选择的代理。使用 **agent_id** 和/或 **agent_environment** 匹配器设置 **workspace_id** 匹配器，使用 `LOCAL`、`DEVELOPMENT`、`STAGING` 或 `PRODUCTION` 作为环境。
 * 模型配置上保存的 max-token 和 Reasoning-effort 默认值现在适用于网关请求，因此省略这些设置的请求将使用您保存的值。请求中的显式值仍然优先于保存的默认值。* 网关使用情况报告现在显示输入、输出和总代币计数以及支出，并在鼠标悬停时提供精确计数，以便您可以使网关使用情况与跟踪项目保持一致。对于模型故障，还会显示缓存的令牌份额。
-* 现在，您可以通过在模型字段中将其名称写入 `<resource>/<deployment>` 来调用工作区中的第二个 Azure 资源，例如 `ai-gateway-uat-eastus2/gpt-5.4`。每个资源都使用自己的 API 密钥，存储为名为 `AZURE_FOUNDRY_API_KEY_<RESOURCE>` 的工作区机密，并且对未知资源的请求返回 400，指定要添加的机密。现有的 `azure/<deployment>` 型号与以前一样工作。
+* 现在，您可以通过在模型字段中将其名称写入 `<resource>/<deployment>` 来调用工作区中的第二个 Azure 资源，例如 `ai-gateway-uat-eastus2/gpt-5.4`。每个资源都使用自己的 API 密钥，存储为名为 `AZURE_FOUNDRY_API_KEY_<RESOURCE>` 的工作区机密，并且对未知资源的请求返回 400，指定要添加的机密。现有 `azure/<deployment>` 型号的工作方式与以前一样。
 * 您现在可以在后备链的 **高级** 部分中打开模型冷却时间。当模型失败次数达到您设置的次数时，您的网关会在您选择的冷却时间内跳过该模型，并且始终会尝试链中的最后一个模型。
 * 网关跟踪现在在新的 `gateway.agent_proven_by` 元数据字段中记录代理是否通过代理徽章或其 API 密钥进行验证。在您设置 `AGENT_AUTH_BADGE_PUBLIC_JWKS` 之前，徽章检查将处于关闭状态，并且网关策略可以在 `agent_proven_by` 字段上进行匹配。
 * 工作区 MCP 服务器列表现在每页显示十个服务器，其下方带有分页控件，因此 **内置工具** 位于页面顶部附近。* BigQuery 工具服务器现在包括 `bigquery_query_read_only`，它运行一个只读 GoogleSQL SELECT 查询。支持嵌套 SELECT、CTE、联接和联合。多语句脚本和写入语句在运行之前会被拒绝。
-* 工具包现在有一个针对具有多种工具的代理的搜索模式。将 `?mode=search` 添加到工具包的 MCP URL，`tools/list` 返回三个工具：`search_tools` 查找匹配的工具，`get_tool` 返回一个工具的定义，`call_tool` 在对照架构检查其参数后运行工具。直接通过名称调用工具仍然有效，并且默认的`full`模式保持不变。
+* 工具包现在有一个针对具有多种工具的代理的搜索模式。将 `?mode=search` 添加到工具包的 MCP URL，`tools/list` 返回三个工具：`search_tools` 查找匹配的工具，`get_tool` 返回一个工具的定义，`call_tool` 在对照架构检查其参数后运行工具。直接通过名称调用工具仍然有效，并且默认的`full`模式不变。
 
 ## 沙箱* 沙箱使用情况现在显示 CPU（vCPU 小时）、内存（GiB 小时）和存储（GiB 小时），而不是美元估算值，每日图表按工作区或资源分组，热门资源按三个指标中的任何一个进行排名，以及单个资源的 CSV 导出。现在，当某些每小时样本丢失时，存储总量会保留记录的测量值，并且没有存储测量值的日子会显示为间隙。
 * 非持久性沙箱现在可供所有租户使用。创建沙箱时将`persistent`设置为`false`，以获得一次性沙箱，其写入在停止时被丢弃。省略 `persistent` 的创建将保持持久性，并且将 `persistent: false` 与 `preserve_memory_on_stop` 组合或快照捕获仍会被拒绝。
-* 沙盒代理规则现在可以使用 `rewrite` 规则将 HTTPS 请求重写到不同的目标。设置 `host` 将匹配的请求发送到 HTTPS 目标，或设置 `sandbox` 和 `port` 通过现有沙箱链接将它们发送到工作区中的另一个沙箱。使用 `credentials` 选择是剥离传入凭证标头（默认）、编辑还是保留。* 代理支持的 AWS 角色规则现在接受 `session_tags`，因此您的角色策略可以使用 `${aws:PrincipalTag/...}` 限定每个沙箱的范围，而在添加挂载时不会达到 2,048 个字符的会话策略限制。标签在创建时固定，并且您的角色的信任策略必须允许 LangSmith 主体使用 `sts:TagSession`。
+* 沙盒代理规则现在可以使用 `rewrite` 规则将 HTTPS 请求重写到不同的目的地。设置 `host` 将匹配的请求发送到 HTTPS 目标，或设置 `sandbox` 和 `port` 通过现有沙箱链接将它们发送到工作区中的另一个沙箱。使用 `credentials` 选择是剥离传入凭证标头（默认）、编辑还是保留。* 代理支持的 AWS 角色规则现在接受 `session_tags`，因此您的角色策略可以使用 `${aws:PrincipalTag/...}` 确定每个沙箱的范围，而不会在您添加挂载时达到 2,048 个字符的会话策略限制。标签在创建时固定，并且您的角色的信任策略必须允许 LangSmith 主体使用 `sts:TagSession`。
 * 批量删除沙箱现在会跳过编辑范围之外的任何沙箱，将其报告为`sandbox not found`，而不是删除它。您可以编辑的沙箱仍会被删除。
 *“指标”选项卡上的沙箱内存历史记录现在会报告来宾 RAM，因此读取其共享基础的覆盖沙箱不再显示高于其配置限制的内存。覆盖沙箱主机升级前记录的内存历史记录将被清除。
 * 沙箱现在可在新的 Azure BYOC 数据平面上使用。沙箱在具有自己的工作负载标识的专用节点上运行，并且您的数据平面将沙箱文件存储在其自己的 Blob 存储中。
 * 命令历史记录现已在欧盟、亚太地区和 AWS 生产区域的沙箱中提供。您的沙箱捕获命令历史记录，经过身份验证的历史记录端点将返回它以进行列表、详细信息和输出读取。* Go SDK 现在通过 `Run` 上的新 `Argv` 字段在没有 shell 的沙箱中运行命令，并且 `Timeout` 字段现在设置您请求的超时，而不是回退到服务器默认值。
-* 当沙箱运行时落后于或领先于控制平面的发布时，或者当沙箱主机停止报告时，自托管 LangSmith 安装现在会向组织管理员和操作员显示一个横幅，并且横幅会指定要更改的设置。
+* 当沙箱运行时落后或领先于控制平面的发布时，或者当沙箱主机停止报告时，自托管 LangSmith 安装现在会向组织管理员和操作员显示一个横幅，并且横幅会指定要更改的设置。
 * 沙盒浏览器已推出测试版。浏览器是一个沙箱，运行一个持久的 Chrome，您可以保持登录到您的网站并将其借给您的代理。每个附加的沙箱都通过 Chrome DevTools 协议驱动自己的窗口，您可以在 LangSmith 中观看每个窗口，接管一个窗口来登录或输入详细信息，然后将其交还。重新启动后登录仍然有效。通过 `/v2/sandboxes/browsers` API 或 Go SDK 管理浏览器，并通过每个附件的 `api_cdp_url` 连接沙箱外部的客户端，例如笔记本电脑上的 Playwright。 [Learn more](/langsmith/sandboxes)。
 
 ＃＃ 行政* 具有自定义角色的组织成员无法再对组织管理员或操作员进行降级、删除、重命名或重置密码。只有组织管理员可以管理组织管理员，管理员和操作员可以管理操作员并重置其他用户的基本身份验证密码。
@@ -248,7 +384,7 @@ LangSmith 云每周更新
 * 模型价格等级现在可以通过上下文长度来定义：您的工作区可以通过 `/api/v1/model-price-map` 设置模型价格的 `prompt_tokens_above` 阈值，并且等级按照标准行旁边的阈值进行定价。
 * 组织管理员现在可以在邀请成员时上传电子邮件地址的 CSV，并且当您的列表超过剩余席位或 500 个邀请限制时，邀请表单会显示清晰的警报，其中包含要删除的号码。
 * 没有存档卡的付费组织现在会在计费页面上看到“无存档付款方式”消息和 **设置计费** 按钮。添加卡会保留您当前的计划，并且当没有可删除的卡时，开发者组织将不再看到“删除付款方式”操作。
-* 通过远程 MCP 服务器连接的代理现在可以创建、更新和删除自定义模型价格，并按 `provider` 过滤模型价格表，以便您可以按照自己的协商价格对模型进行定价。* 现在，您可以使用 `--id` 标志作为工作区 ID，通过 `langsmith workspaces retrieve`、`langsmith workspaces update` 和 `langsmith workspaces delete` 从 LangSmith CLI 检索、重命名和删除工作区。删除在运行之前仍要求确认。
+* 通过远程 MCP 服务器连接的代理现在可以创建、更新和删除自定义模型价格，并按 `provider` 过滤模型价格表，以便您可以按照自己的协商价格为模型定价。* 现在，您可以使用 `--id` 标志作为工作区 ID，通过 `langsmith workspaces retrieve`、`langsmith workspaces update` 和 `langsmith workspaces delete` 从 LangSmith CLI 检索、重命名和删除工作区。删除在运行之前仍要求确认。
 * 自定义应用程序编辑器现在会在您离开编辑模式时放弃未部署的更改：重新打开编辑器会加载应用程序的最新部署版本，并且退出对话框会如此说明。
 
 ## 修复和改进
@@ -260,34 +396,34 @@ LangSmith 云每周更新
 > * 当您从跟踪项目添加评估器时，在线评估器预览现在默认显示完整跟踪。以前，模板卡可以在单个内部步骤上打开预览，评估者测试会对该步骤进行评分。新的评估器现在从 **仅顶级跟踪** 过滤器开始。> * 引擎在放弃之前重试失败的存储库克隆一次。如果重试也失败，您的扫描将在本次运行中报告连接的存储库不可用，而不是将其视为已断开连接，并且运行元数据会列出失败的存储库 URL。
 > * 实验批次在超时、速率限制、服务器错误或连接丢失后不再重新发送请求，因此运行和模型调用不会重复。现在，批处理启动后发生的错误将停止进一步重试并报告为失败。
 > * 修复了 Playwright 的浏览器驱动程序和其他从工作线程启动的子进程无法在 LangSmith 部署上启动的问题。子进程现在从部署的工作线程正常启动。
-> * 在您拒绝或取消工具网关连接后重试的工具调用现在会返回一个错误，指出您未连接的服务器的名称，而不是要求您再次连接同一帐户。> * Creating a sandbox from a snapshot whose layers overflowed Firecracker's pmem window failed with "Cannot create pmem device" and a 500 error. Layered captures now squash the lineage before the window overflows, and creates from snapshots that cannot boot on any host are refused with a 422 error that reports the snapshot's size.
-> * Invitation links that show as expired after SSO sign-in now offer **Switch sign-in method** or **Switch account**, which signs you out and returns you to the invitation so you can sign in with the invited email.
+> * 在您拒绝或取消工具网关连接后重试的工具调用现在会返回一个错误，指出您未连接的服务器的名称，而不是要求您再次连接同一帐户。> * 从层溢出 Firecracker 的 pmem 窗口的快照创建沙箱失败，并出现“无法创建 pmem 设备”和 500 错误。现在，分层捕获会在窗口溢出之前压缩沿袭，并且从无法在任何主机上启动的快照创建的内容会被拒绝，并出现报告快照大小的 422 错误。
+> * SSO 登录后显示为过期的邀请链接现在提供 **切换登录方法** 或 **切换帐户**，这将使您退出并返回到邀请，以便您可以使用受邀电子邮件登录。
 > * 线程中失败的根运行详细信息现在显示其错误状态和错误预览，而不是显示为成功。
 > * 返回 `0` 或 `False` 的代码评估器现在将该分数记录为反馈，而不是丢弃它。返回不可用值的评估器现在会显示错误并解释原因，而不是让运行不得分。
-> * 标签创建和更新的提示 webhook 交付现在将 `created_at` 作为 RFC 3339 UTC 时间戳发送，例如 `2026-10-19T14:35:00Z`。严格解析时间戳的接收者不再拒绝这些交付。> * 当延迟、令牌或成本 p99 查询超时时，大型项目的引擎扫描不再中止。扫描完成后会显示错误和基线跟踪，并且代理会被告知缺少哪个异常层。
+> * 标签创建和更新的提示 webhook 传送现在将 `created_at` 作为 RFC 3339 UTC 时间戳发送，例如 `2026-10-19T14:35:00Z`。严格解析时间戳的接收者不再拒绝这些交付。> * 当延迟、令牌或成本 p99 查询超时时，大型项目的引擎扫描不再中止。扫描完成后会显示错误和基线跟踪，并且代理会被告知缺少哪个异常层。
 > * 当部署停止响应时，部署页面不再无限期地保持在加载状态。 **Assistants** 和 **Threads** 表现在会在 30 秒后超时，显示 **部署未响应**，并继续重试，直到部署应答。
 > * 将免费组织升级为开发人员后，您首次购买 Gateway 积分不再失败，并显示“您的组织未设置为购买 Gateway 积分”。该对话框等待升级应用，显示“完成升级”横幅，并自行完成购买。
-> * 快照现在已就绪并在同一步骤中获得其标签，因此在快照显示就绪后立即由 name:tag 创建的框不再返回 404 `snapshot "<name>:<tag>" not found` 错误。其标签被命名规则拒绝的构建现在会立即失败并且不会重试。
-> * 带有 LangSmith 徽标的入职电子邮件和邀请电子邮件现在再次发送。此前，他们未能发送并导致徽标丢失。> * Files passed as `attachments` on `updateRun` or on a `RunTree` patch are now stored with the run in the JavaScript SDK, instead of being silently dropped.
-> * Evaluator tables now show the spend limit that applies to each LLM rule, including the organization's default weekly limit once the rule has made its first evaluator call. Rules without a limit of their own no longer show N/A under **Weekly Limit** and **Percent of Spend Limit** on the evaluator page and in a project's **Evaluators** tab.从不调用评估器模型的规则（例如代码评估器）仍然显示 N/A。 `effective_spend_limit` 字段在规则响应中返回。
+> * 快照现在已准备就绪并在同一步骤中获得其标签，因此在快照显示就绪后立即由 name:tag 创建的框不再返回 404 `snapshot "<name>:<tag>" not found` 错误。其标签被命名规则拒绝的构建现在会立即失败并且不会重试。
+> * 带有 LangSmith 徽标的入职电子邮件和邀请电子邮件现在再次发送。此前，他们未能发送并导致徽标丢失。> * 在 `updateRun` 或 `RunTree` 补丁上作为 `attachments` 传递的文件现在随运行一起存储在 JavaScript SDK 中，而不是默默地删除。
+> * 评估者表现在显示适用于每个 LLM 规则的支出限制，包括规则首次进行评估者调用后组织的默认每周限制。没有自身限制的规则不再在评估者页面和项目的 **评估者** 选项卡中的 **每周限制** 和 **支出限制百分比** 下显示 N/A。从不调用评估器模型的规则（例如代码评估器）仍然显示 N/A。 `effective_spend_limit` 字段在规则响应中返回。
 > * 连接 GitLab 令牌和计划的令牌轮换现在适用于将令牌生命周期限制在一年以下的实例。轮换周期逐渐减少为 180 天、90 天、60 天、30 天、14 天、7 天和 2 天，并保持实例接受的最长生命周期。之前在上限降低后每 15 分钟就会失败的代币现在会在下一次扫描时轮换。
 
 **2026 年 10 月 19 日至 26 日**
 
-## 亮点* **New sidebar for all workspaces**: The new sidebar now appears in every workspace and replaces the old sidebar. The organization and workspace menu at the top of the sidebar replaces the LangSmith wordmark and product switcher, so you switch organizations and workspaces from one place. The custom wordmark logo no longer appears in the sidebar;上传自定义组织头像以对其进行品牌化。 [Learn more](/langsmith/navigate-agents)。
-* **Create examples with reference_outputs**: The API and the Python, JavaScript, Go, and Java SDKs now use `reference_outputs` to set the expected outputs when you create examples, including in bulk. `outputs` still works as a deprecated alias, but sending both `reference_outputs` and `outputs` in the same request is rejected. Existing code keeps working, and responses, updates, and multipart uploads still use `outputs`. [Learn more](/langsmith/manage-datasets-programmatically)。* **存储拒绝不明确的命名空间标签**：图表中的存储操作现在拒绝空或包含 `.` 的命名空间标签，与 HTTP 存储 API 已应用的规则相同。以前，诸如 `"tenant.bob"` 之类的标签与命名空间 `("tenant", "bob")` 处理相同的项目，因此从不受信任的输入构建命名空间的图形代码可以读取、覆盖或删除另一个命名空间的项目。此类调用现在会返回无效输入错误，代理服务器 0.16.2 和 0.15.5 中也已修复此问题。 [Learn more](/langsmith/agent-server-changelog)。
+## 亮点* **所有工作区的新侧边栏**：新侧边栏现在出现在每个工作区中并取代旧侧边栏。侧边栏顶部的组织和工作区菜单取代了 LangSmith 字标和产品切换器，因此您可以从一个位置切换组织和工作区。自定义字标徽标不再出现在侧边栏中；上传自定义组织头像以对其进行品牌化。 [Learn more](/langsmith/navigate-agents)。
+* **使用 Reference_outputs 创建示例**：API 以及 Python、JavaScript、Go 和 Java SDK 现在使用 `reference_outputs` 在您创建示例（包括批量创建示例）时设置预期输出。 `outputs` 仍可用作已弃用的别名，但在同一请求中同时发送 `reference_outputs` 和 `outputs` 会被拒绝。现有代码继续工作，响应、更新和分段上传仍然使用`outputs`。 [Learn more](/langsmith/manage-datasets-programmatically)。* **存储拒绝不明确的命名空间标签**：图表中的存储操作现在拒绝空或包含 `.` 的命名空间标签，与 HTTP 存储 API 已应用的规则相同。以前，诸如 `"tenant.bob"` 之类的标签与命名空间 `("tenant", "bob")` 处理相同的项目，因此从不受信任的输入构建命名空间的图形代码可以读取、覆盖或删除另一个命名空间的项目。此类调用现在会返回无效输入错误，代理服务器 0.16.2 和 0.15.5 中也已修复此问题。 [Learn more](/langsmith/agent-server-changelog)。
 * **组织范围内的批量导出创建限制**：LangSmith 除了现有的每个工作区限制之外，云现在还限制组织中所有工作区的批量导出创建：默认情况下，每个组织每小时 1,000 个创建和 1,000 个活动计划。当组织超出限制时，`create_bulk_export` 返回 429 响应，并使用 `Retry-After` 标头表示每小时限制。现有计划自动创建的导出不计入每小时总数，因此运行计划永远不会被阻止。 [Learn more](/langsmith/data-export)。
 
-## 追踪* `langsmith` CLI 现在包括 `threads query`、`threads stats`、`threads aggregate-stats`、`threads share`、`traces query`、`runs create`、`runs ingest-batch`、`runs get-url`、 `runs share`、`public runs retrieve` 和 `public runs query`，因此您可以搜索线程和跟踪、编写运行并共享它们，而无需直接调用 API。
-* Filtered run trees now have a **Full tree** or **Matches only** switch below the active filters, so you can keep the full trace hierarchy visible with matching runs highlighted. Matches only remains the default.
-* Your trace tooltips and thread summaries now show a **Cache hit rate** based on cache-read tokens as a share of input tokens, and the thread summary displays it as a percentage.当您的模型报告零缓存读取时，缓存命中率显示为 0%，而当未报告使用情况时，缓存命中率会隐藏。
-* Trajectory now keeps your reading position in the URL: reloading or sharing a thread link opens Messages at the turn and run you were reading, and a Back to trajectory button on Details returns you to that message.
+## 追踪* `langsmith` CLI 现在包括`threads query`、`threads stats`、`threads aggregate-stats`、`threads share`、`traces query`、`runs create`、`runs ingest-batch`、`runs get-url`、 `runs share`、`public runs retrieve` 和 `public runs query`，因此您可以搜索线程和跟踪、编写运行并共享它们，而无需直接调用 API。
+* 过滤运行树现在在活动过滤器下方有一个 **完整树** 或 **仅匹配** 开关，因此您可以保持完整跟踪层次结构可见，并突出显示匹配运行。仅匹配仍为默认值。
+* 您的跟踪工具提示和线程摘要现在显示基于缓存读取令牌作为输入令牌的份额的**缓存命中率**，并且线程摘要将其显示为百分比。当您的模型报告零缓存读取时，缓存命中率显示为 0%，而当未报告使用情况时，缓存命中率会隐藏。
+* 轨迹现在会保留您在 URL 中的阅读位置：重新加载或共享线程链接会在您正在阅读的转弯处打开消息并运行，并且“详细信息”上的“返回轨迹”按钮可让您返回到该消息。
 * 当跟踪存储繁忙时，批量导出分区不再在几分钟内失败。被拒绝的分区现在会等待并再次运行长达 2 小时，而不会耗尽重试次数。* 现在，您可以在运行中打开 **共享** 菜单，然后选择 **复制 URL** 将链接复制到当前视图，而无需公开运行。
-* 现在，您可以通过将 `min_feedback_modified_at` 和 `max_feedback_modified_at` 传递到 `POST /v2/traces/query`（`/v2/runs/query` 已经支持的相同反馈窗口）来根据反馈修改时间来过滤跟踪。该界限适用于`trace_filter`或`tree_filter`中的反馈条件，因此每个请求必须至少包含一个反馈条件，例如`eq(feedback_key, "correctness")`。
+* 现在，您可以通过将 `min_feedback_modified_at` 和 `max_feedback_modified_at` 传递到 `POST /v2/traces/query`（`/v2/runs/query` 已支持的相同反馈窗口）来根据反馈修改时间来过滤跟踪。该界限适用于`trace_filter`或`tree_filter`中的反馈条件，因此每个请求必须至少包含一个反馈条件，例如`eq(feedback_key, "correctness")`。
 * 现在，您可以通过发送 `metrics` 数组而不是 `metric`，在一次调用 `/v2/runs/analytics` 中请求最多 10 个令牌和成本字段的总和、平均值、最小值、最大值或百分位数聚合，因此您不再需要为每个指标运行一次相同的查询。
 * LangSmith MCP `query_runs` 和 `fetch_runs` 工具现在默认返回 `app_path`，因此代理可以直接链接到 LangSmith UI 中的规范运行页面，而不是从运行 ID 构建跟踪 URL。
 * 现在，您可以拖动表格列标题对列重新排序，并且顺序会保存在每个浏览器中的每个表格中。将鼠标悬停或聚焦标题以显示其左侧的夹点，或使用列菜单中的**向左移动**和**向右移动**。* 全局搜索现在允许您使用搜索页脚中新的 **按当前代理过滤** 切换来搜索所有代理，并且在按代理过滤时包含沙箱。
-* 代理注册表 CRUD 现已在 Go、Java、JavaScript 和 Python SDK 中提供，因此您可以使用类型化对象和 `client.agents` 服务创建、检索、列出、更新和删除代理。
+* 代理注册表 CRUD 现在可在 Go、Java、JavaScript 和 Python SDK 中使用，因此您可以使用类型化对象和 `client.agents` 服务创建、检索、列出、更新和删除代理。
 * 使用 Python、JavaScript、Go 或 Java SDK 创建代理不再需要`source_type`；如果省略，它现在默认为`EXTERNAL`，因此您的端点托管代理无需额外配置即可注册。
 * 您可以要求显式创建代理以在工作区中进行跟踪，因此跟踪和跟踪项目不再隐式创建代理；仅将痕迹发送给您在 `POST /api/v1/agents` 注册的代理。工作区管理员可以使用工作区设置 API 中的 `require_explicit_agent_creation_for_tracing` 字段打开此功能，并且从跟踪创建代理的请求将被拒绝并显示 403 错误。* 代理现在记录所有者：新代理将分配给创建它们的用户，并且所有者显示在“所有代理”表的 **所有者** 列和代理概述页面上。工作区管理员可以从代理操作菜单中更改所有者，并且 `PATCH /api/v1/agents/{agent_id}` 上的 `owner_id` 字段可以设置或清除它。
 
@@ -296,30 +432,30 @@ LangSmith 云每周更新
 * LangSmith Chat 的模型选择器现在提供 Sonnet 5.5、Opus 5.5、GPT-6.1 Sol、GPT-6 Luna 和 Gemini 3.8 Flash，Sonnet 5.5 是新聊天的默认版本。 Sonnet 5、Haiku 4.5 和 GPT-5.6 Terra 已从选择器中删除，您保存的模型配置仍然有效。
 
 ＃＃ 反馈* 反馈现在可以通过新的 `feedback_config_id` 字段记录其写入的反馈配置的 ID，并且服务器会拒绝不属于工作区中相同反馈键的 ID。
-* 您现在可以使用 `langsmith feedback retrieve`、`langsmith feedback update`、`langsmith feedback delete`、`langsmith feedback tokens create`、`langsmith feedback tokens update` 和 `langsmith feedback configs delete` 读取、编辑和删除运行反馈、创建和更新反馈令牌以及删除反馈配置。已弃用的 `langsmith feedback "<note>"` 别名已删除，因此请使用 `langsmith report` 提交注释，并使用 `langsmith feedback` 管理现有反馈。
+* 您现在可以使用 `langsmith feedback retrieve`、`langsmith feedback update`、`langsmith feedback delete`、`langsmith feedback tokens create`、`langsmith feedback tokens update` 和 `langsmith feedback configs delete` 读取、编辑和删除运行反馈、创建和更新反馈令牌以及删除`langsmith` CLI 中的反馈配置。已弃用的 `langsmith feedback "<note>"` 别名已删除，因此请使用 `langsmith report` 提交注释，并使用 `langsmith feedback` 管理现有反馈。
 * 创建反馈标签现在会拒绝已在同一位置使用的键，例如队列标题、队列审核视图或运行的反馈，并显示消息“此反馈标签已在此处使用”。队列也不能使用列出相同键两次的标题来保存。
 * 您可以使用 `isEnforced` 或 `is_enforced` 从 JS 和 Python SDK 创建密钥的强制反馈配置，这需要工作区管理员拥有 `feedback-configs:manage-enforced` 权限。创建配置不再改变键的乐谱方向，除非您通过`isLowerScoreBetter`或`is_lower_score_better`。* 通过 JS SDK 使用 `traceId` 创建的反馈现在会与您的运行一起批处理并在后台发送，因此 `createFeedback` 会立即返回。拨打`awaitPendingTraceBatches()`等待送货； `extendTraceRetention: false`的反馈仍然直接发布到`/feedback`。
 
 ## 数据集和实验
 
-* `langsmith` CLI 现在包含用于比较实验、数据集共享、分割、克隆和版本标记的命令。运行 `langsmith datasets retrieve-version` 按时间或标签读取版本，运行 `langsmith datasets versions retrieve-diff` 比较两个版本，运行 `langsmith datasets update-tags` 将标签移动到版本。
+* `langsmith` CLI 现在包括用于比较实验、数据集共享、分割、克隆和版本标记的命令。运行 `langsmith datasets retrieve-version` 按时间或标签读取版本，运行 `langsmith datasets versions retrieve-diff` 比较两个版本，运行 `langsmith datasets update-tags` 将标签移动到版本。
 * 现在，您可以通过将 `exclude_default_fields=true` 传递到 `GET /api/v1/examples` 并结合 `select` 来列出仅包含您选择的字段的示例，以便 `select=id` 仅返回示例 ID，而无需输入或其他默认字段。当省略该标志时，默认响应不变。 Python、JavaScript 和 Go SDK 通过 `list_examples`、`listExamples` 和 `ExampleListParams` 公开了这一点。
 
 ## 评估者* 轨迹评估者现在可以对每个对话的缩短版本进行评分。打开评估器编辑器中轨迹源下的 **Compacted** 开关，评估器在运行和测试时都会收到缩短的消息。
 * 您的 TypeSafe 和 TypeSafe 兼容评估器现在可以从模型配置中的 **Extra Headers** 字段发送额外的请求标头，例如 `TypeSafe-Danger-Zone-Long-Context`。以前达到上下文限制的长线程现在可以在启用 beta 长上下文选项的情况下进行评分。
 * 沙箱评估器**测试**结果现在在可扩展的错误详细信息中显示完整的评估器回溯，因此您可以看到哪个评估器函数和行失败。超过 64 KiB 的回溯在中间被缩短并标记为已截断。
-* 您现在可以使用 `langsmith online-evaluators create`、`update` 和 `spend` 从 `langsmith` CLI 创建、更新和检查在线评估者的支出。通过 `langsmith evaluator list`、`get` 和 `delete` 仍然可以列出、读取和删除求值器。* 代码评估器现在可以对整个线程进行评分。为代码评估器规则选择**线程**，打开**启用高级功能**，并定义`evaluate(ctx)`。将评估器的输入设置为 `thread`、`all_messages`（默认值）、`human_ai_pairs` 或 `first_human_last_ai` 以选择它接收的对话视图。每个线程得到一个分数。 [Learn more](/langsmith/online-evaluations-code)。
+* 您现在可以使用 `langsmith online-evaluators create`、`update` 和 `spend` 从 `langsmith` CLI 创建、更新和检查在线评估者的支出。通过 `langsmith evaluator list`、`get` 和 `delete` 仍然可以列出、读取和删除求值器。* 代码评估器现在可以对整个线程进行评分。为代码评估器规则选择 **线程**，打开 **启用高级功能**，并定义 `evaluate(ctx)`。将评估器的输入设置为 `thread`、`all_messages`（默认）、`human_ai_pairs` 或 `first_human_last_ai` 以选择它接收的对话视图。每个线程得到一个分数。 [Learn more](/langsmith/online-evaluations-code)。
 
 ## 部署
 
 * 您的审核表单现在显示用于人机循环中断的决策选择器，因此您可以选择批准、编辑、拒绝或响应，并仅填写该决策的字段，并且单决策中断不再让您手动键入决策类型。聊天中的每次调用工具批准使用相同的批准、编辑、拒绝和响应卡，一次调用一个工具调用，长的决策描述在“显示更多”按钮后面开始缩短。
-* `GET` 和 `POST /threads/{thread_id}/history` 现在接受 `select` 参数，该参数仅返回每个状态的命名字段，例如 `tasks` 或 `checkpoint`，或状态值的单个键，例如 `values.messages`。未知字段和没有键的 `values.` 会返回 422 错误，因此您可以请求客户端从每个历史记录条目中读取的内容。* Studio 的右侧交互和跟踪面板现在可以通过 **隐藏侧面板** 隐藏，并通过 **显示侧面板** 再次显示，并且当您在图表和聊天之间切换或重新加载页面时，它会保持隐藏状态。显示它会恢复您之前的宽度。
+* `GET`和`POST /threads/{thread_id}/history`现在接受`select`参数，该参数仅返回每个状态的命名字段，例如`tasks`或`checkpoint`，或状态值的单个键，例如`values.messages`。未知字段和没有键的 `values.` 会返回 422 错误，因此您可以请求客户端从每个历史记录条目中读取的内容。* Studio 的右侧交互和跟踪面板现在可以通过 **隐藏侧面板** 隐藏，并通过 **显示侧面板** 再次显示，并且当您在图表和聊天之间切换或重新加载页面时，它会保持隐藏状态。显示它会恢复您之前的宽度。
 * Studio 聊天首先列出您最近更新的线程，因此当运行开始或结束时，线程会移至顶部，而不是停留在列表底部。
 * 不使用 `trace_storage` 值创建的新 AWS 数据平面现在将跟踪存储在 SmithDB 而不是 ClickHouse 中。要保持 ClickHouse 默认值，请在 `POST /orgs/current/data-planes` 请求中将 `trace_storage` 设置为 `CLICKHOUSE`。现有数据平面保留其当前的跟踪存储。
 * 现在，对于每个 MCP 协议修订版中您的 CORS 设置不允许使用 `Origin` 标头的请求，MCP 端点都会返回 HTTP 403，从而阻止 DNS 重新绑定攻击。 `http://localhost` 等环回源仍然允许，因此请在 `CORS_ALLOW_ORIGINS` 或 `CORS_CONFIG` 中列出基于浏览器的 MCP 客户端的源。* 现在，您可以使用新的终止开关立即停止部署上的每个正在进行的运行，默认情况下，工作区管理员和具有 `deployments:cancel-runs` 权限的自定义角色可以使用该开关。按“停止”将返回操作的进度并持续更新，直到所有目标运行都停止，并且在页面重新加载后最新的操作仍然可见。
 * JS 图现在可以通过将 `langgraph_api:url` 上下文变量作为 `apiUrl` 传递，使用 SDK 客户端调用自己的部署，包括在自定义身份验证下，其中调用以开始运行的用户身份运行。
 * 现在，当您使用 **使用现有 IAM 角色** 创建 AWS 数据平面时，您可以输入自定义 IAM 角色名称和自定义 Karpenter 实例配置文件名称，以便数据平面使用 BYOIAM Terraform 模块输出中的名称。在**高级设置**下设置它们，并且仅当`byoiam.is_enabled`为`true`时才接受名称。
-* 托管 Deep Agents 现已在 AWS BYOC 数据平面上启用，并且 `/api/v1/triggers` 和 `/api/v1/channels` 下的触发器和通道端点将路由到触发器服务器，因此您的通道和触发器请求将到达它，并且代理修订可以通过公共数据平面 URL 读取 Context Hub。* Azure 上的生产部署现在拥有自己的私有托管 PostgreSQL 数据库，该数据库会在每次部署时自动配置，并且您可以在更改数据库层时调整其大小。
+* 托管 Deep Agents 现已在 AWS BYOC 数据平面上启用，并且 `/api/v1/triggers` 和 `/api/v1/channels` 下的触发器和通道端点将路由到触发器服务器，因此您的通道和触发器请求可以到达该服务器，并且代理修订可以通过公共数据平面 URL 读取 Context Hub。* Azure 上的生产部署现在拥有自己的私有托管 PostgreSQL 数据库，该数据库会在每次部署时自动配置，并且您可以在更改数据库层时调整其大小。
 * **监控**选项卡中的部署指标图表现在加载到 Azure 部署上，显示部署的 CPU、内存、重新启动、副本、请求、延迟和运行队列。超过 32 天的 Azure 指标请求将缩短至最近 32 天。
 * Azure BYOC 数据平面现在通过 Azure 专用链接到达LangSmith 控制平面，因此您的数据平面将其 API 和检测信号流量发送到 VNet 内的专用终结点，同时您的应用程序保持相同的主机名。 LangSmith 自动批准端点连接，HTTPS 请求可能会失败或超时，直到批准完成。
 * 您的 Azure BYOC Redis 连接现在验证集群分片的证书主机名，因此 Redis 启动不再依赖于跳过该检查。* 具有一个数据库和身份验证以及 BYOC 数据平面的自托管安装现在可以自动将现有跟踪项目和实验迁移到代理平台代理。迁移将保持关闭状态，直到您将 `AGENT_PLATFORM_MIGRATION_ROLLOUT_ENABLED` 设置为 `true`，并且每个 BYOC 工作区在经过验证后会向控制平面报告准备情况。
@@ -334,24 +470,24 @@ LangSmith 云每周更新
 
 ## 网关* 模型后备链现在接受可选的 `ejection` 块以及 `failure_threshold` 和 `cooldown_seconds`。当候选者在窗口内失败链的触发条件达到阈值次数时，您的网关会在冷却期内跳过该候选者并移至下一个候选者，因此重复的提供者失败不再减慢每个请求。
 * 现在，您可以使用工作区 **DEEPINFRA_API_KEY** 通过 LLM 网关将请求路由到 Deep Infra，使用`/deepinfra/v1/chat/completions` 的聊天完成或`/deepinfra/v1/messages` 的Anthropic 消息，并将 Deep Infra 设置为后备提供商。
-* 您的“使用情况”选项卡现在可以通过“细分依据”中的新“自定义维度”选项按任何 `X-Gateway-*` 标头细分支出，默认为 `X-Gateway-Service`，无需支出政策即可使用。更改标题名称会更新图表和 URL，因此共享链接保持相同的分组。
+* 您的“使用情况”选项卡现在可以通过“细分依据”中的新“自定义维度”选项按任何 `X-Gateway-*` 标题细分支出，默认为 `X-Gateway-Service`，无需支出政策即可使用。更改标题名称会更新图表和 URL，因此共享链接保持相同的分组。
 * 使用部署的服务密钥（包括预览部署）进行身份验证的 LLM 网关请求现在包括请求元数据和网关跟踪中部署绑定到的代理和环境，因此您可以按代理过滤网关策略和跟踪。* 单个请求的网关跟踪现在共享一个`gateway.request.id`，并且每次尝试都会记录其在回退链中的位置、提供程序调用之前的网关开销以及失败的回退所花费的时间，因此您可以对请求的尝试进行分组并查看其延迟的去向。
 * 超出每月跟踪限制的网关跟踪现在将不包含其内容而存储，而不是被拒绝，并且跟踪元数据包括 `content_quota_exceeded: true`，以便您可以识别它们。
-* 现在，您可以通过统一的 `/v1/systemone` 端点调用 OpenAI 决策模型，只需将 `model` 设置为 `openai/gpt-6-luna`，即可使用 OpenAI 的原生决策请求和响应格式，无需翻译。
+* 现在，您可以通过统一的 `/v1/systemone` 端点调用 OpenAI 决策模型，方法是将 `model` 设置为 `openai/gpt-6-luna`，使用 OpenAI 的原生决策请求和响应格式，无需翻译。
 * 对 Anthropic 和 OpenAI 的 BYOK 调用的跟踪现在包括一个 `provider_key_hint` 元数据字段，该字段显示密钥的编辑形式，因此您可以将每个跟踪与发出调用的密钥进行匹配，并将其与供应商账单进行协调。对其他提供程序的调用和对自定义端点的调用不会记录提示。
 * 您现在可以注册私有 MCP 服务器并从中构建只有您可以查看和使用的个人工具包。添加 MCP 服务器或创建工具包时选择“**个人**”，并在“**工具**”下的“用户”选项卡上找到它们。* 工作区管理员现在可以通过将 `owned_by=any` 传递到 `GET /v1/managed-tools/servers` 来列出每个成员的个人 MCP 服务器，每个服务器都显示其所有者。调用它的成员会收到 403 响应。
 * 新工具包默认为 **使用连接的工具**，因此包含配置文件中的服务器和您添加的服务器的工具包会从连接的服务器返回工具，而不会在缺少一个凭据时导致发现失败。
 * 托管 MCP 服务器和工具包现在向支持 URL 引发的客户端发送连接所需凭据的链接，而不仅仅是需要重试的 428 响应。没有该支持的客户端将保留现有的 428 响应。
-* 托管工具服务器列表现在显示每台服务器的 `credential_status`（`connected`、`needs_connect`、`needs_reconnect` 或 `unavailable`），因此您可以知道服务器何时需要您连接或重新连接以及代理身份验证何时暂时不可用。无论页面上有多少服务器，列表服务器也会进行固定数量的代理身份验证调用，因此列表加载速度更快。* 托管工具 MCP 服务器在重定向后不再将您的自定义凭证标头发送到不同的主机、端口或方案；跨源重定向现在失败并出现阻塞重定向错误，而同源重定向继续工作。重定向到另一个源的服务器必须在其最终源注册。
+* 托管工具服务器列表现在显示每台服务器的 `credential_status`（`connected`、`needs_connect`、`needs_reconnect` 或 `unavailable`），以便您可以了解服务器何时需要您连接或重新连接以及代理身份验证何时暂时不可用。无论页面上有多少服务器，列表服务器也会进行固定数量的代理身份验证调用，因此列表加载速度更快。* 托管工具 MCP 服务器在重定向后不再将您的自定义凭证标头发送到不同的主机、端口或方案；跨源重定向现在失败并出现阻塞重定向错误，而同源重定向继续工作。重定向到另一个源的服务器必须在其最终源注册。
 
 ## 沙箱
 
 * 现在，当主机耗尽时，沙箱会实时迁移到另一台主机，无需每个租户标志或每个沙箱选择加入。无法移动的沙箱（例如具有角色支持的 S3 安装的沙箱）仍处于暂停状态。沙箱暂停时正在运行的请求可能会失败，并出现 409 `Sandbox closed the connection while the request was in flight.` 错误，并且 `extra_config.experimental.live_migration` 在创建时仍被接受但被忽略。
 * 快照现在可以通过 `POST /api/v2/sandboxes/boxes/{name}/snapshot` 上的新 `include` 参数携带沙箱设置，因此从快照创建的沙箱从其挂载、代理配置、环境变量、资源、生命周期计时器和标签开始，除非创建请求设置它们。捕获持有文字秘密的`mounts`、`proxy_config`或`env_vars`需要`confirm_allow_snapshot_secret_values: true`，并且从不携带访问委托。* 服务 URL 和浏览器窗口链接现在可以嵌入到您用 `embed_origins` 命名的源上的 iframe 中，因此您的应用程序可以在其自己的 UI 旁边显示沙箱的开发服务器或浏览器窗口。使用 LangSmith 登录的查看者通过弹出窗口从框架内部登录，令牌模式链接返回一个 `embed_url`，使令牌远离服务器日志。
 * 沙箱返回的重定向，例如将 `/` 发送到 `/login` 的服务 URL，现在会原封不动地到达浏览器并根据服务 URL 主机进行解析，而不是由平台跟踪。
-* 更新、启动或停止沙箱现在需要运行时访问权限：沙箱的创建者或具有 `sandboxes:exec` 的角色。仅具有 `sandboxes:update` 且未创建沙箱的编辑者会收到 403 错误，并且他们的更改将不再保存或推送到主机。
+* 更新、启动或停止沙箱现在需要运行时访问：沙箱的创建者或具有 `sandboxes:exec` 的角色。仅具有 `sandboxes:update` 且未创建沙箱的编辑者会收到 403 错误，并且他们的更改将不再保存或推送到主机。
 * 沙盒现在允许每个 vCPU 最多 256 个并发 TCP 连接。超出限制的连接将立即关闭，并且新的连接将被拒绝，直到使用量下降。
-* 沙盒注册表列表现在支持在 `GET /api/v2/sandboxes/registries` 上使用 `page_size` 和 `cursor` 进行光标分页，因此当在请求之间添加或删除注册表时，您可以翻阅注册表，而无需跳过或重复结果。* 私有 ECR 注册表现在使用启用了沙箱的 BYOC AWS 数据平面上的 IAM 角色进行身份验证。使用角色 ARN 注册 ECR 注册表，然后浏览其存储库并从该注册表中的映像构建快照。
+* 沙箱注册表列表现在支持在 `GET /api/v2/sandboxes/registries` 上使用 `page_size` 和 `cursor` 进行光标分页，因此当在请求之间添加或删除注册表时，您可以翻阅注册表，而无需跳过或重复结果。* 私有 ECR 注册表现在使用启用了沙箱的 BYOC AWS 数据平面上的 IAM 角色进行身份验证。使用角色 ARN 注册 ECR 注册表，然后浏览其存储库并从该注册表中的映像构建快照。
 * 现在可以成功启用在沙箱配置发布之前创建的 AWS 数据平面上的沙箱。以前，这些数据平面上的启用失败。
 * 您现在可以在 `langsmith sandboxes` 下通过 `langsmith` CLI 管理沙箱注册表、浏览器、服务 URL 共享、快照查找和使用成本，包括 `sandboxes registries update` 与 `--new-name` 和 `sandboxes browsers attachments create` 与 `--window-name`。
 * 在跟随视图中，浏览器窗口现在仅在指针停留在其边缘的箭头区域之一时保持静止并平移，因此页面不再随着指针的每次移动而滑动。
@@ -367,7 +503,7 @@ LangSmith 云每周更新
 ## 修复和改进> [手风琴] 显示所有修复
 >
 > * 根据错误消息进行过滤的百分比错误警报现在报告正确的错误率，而不是 100%，并且警报预览将匹配错误除以同一群体中的所有运行。
-> * 显示单个输出字段的实验比较计算列（例如 `outputs.response`）现在显示带有 **展开** 按钮的预览，而不是在尚未加载完整输出时显示“太大而无法呈现”错误。
+> * 显示单个输出字段的实验比较计算列（例如 `outputs.response`）现在显示带有 **展开** 按钮的预览，而不是在尚未加载完整输出时显示“太大而无法渲染”错误。
 > * 数字形式的分类反馈标签（例如 `1`）现在在您在注释队列标题或运行页面中选取它们后保持选中状态，而不是在保存后显示为未选中状态。再次单击选定的标签仍会将其清除。
 > * 现在，从反馈弹出窗口中单击 **评估器跟踪** 将打开评估器的跟踪，并在首次加载时查看运行情况，因此您的跟踪在出现之前不再短暂显示“出现问题”。没有评估器页面的评估器的评估器跟踪现在在**所有代理**下打开，而不是在代理选择器下打开。> * 超过请求超时的 Playground 实验批次现在会为每次运行返回一个结果，因此完成的运行会保留其输出，评估器会收到它们，而不是批次停滞而没有结果。
 > * Engine GitHub 存储库选择器现在会在每个页面加载时显示存储库，因此具有超过 100 个存储库的大型安装在每个页面到达之前不再停留在加载状态。
@@ -378,7 +514,7 @@ LangSmith 云每周更新
 > * 当跟踪的示例位于结果表的最下方时，现在会在打开时加载实验跟踪的共享链接，而不是显示“出现问题”。
 > * 从 Playground 在代理范围的 URL 上运行两个提示实验、注释队列运行或 Studio 线程运行不再冻结选项卡。两个提示列现已完成。
 > * 引擎现在链接通过合并队列或提交队列提交的提交的拉取请求，而不是在提交消息命名 PR 时显示（无 PR）。
-> * 流事件无法发布的运行现在完成其工作，而不是提前停止并被记录为成功，超时运行以 `TimeoutError` 错误事件结束其流，并且 `messages` 流模式下的可恢复运行在使用 `Last-Event-ID` 重新加入时重放其消息事件。> * 当 MCP 服务器拒绝您存储的凭据时，您的客户端现在会收到 LangSmith 重新连接链接，而不是上游服务器的登录质询，因此您可以从 LangSmith 重新授权连接。
+> * 流事件无法发布的运行现在完成其工作，而不是提前停止并被记录为成功，超时运行以 `TimeoutError` 错误事件结束其流，`messages` 流模式下的可恢复运行在使用 `Last-Event-ID` 重新加入时重放其消息事件。> * 当 MCP 服务器拒绝您存储的凭据时，您的客户端现在会收到 LangSmith 重新连接链接，而不是上游服务器的登录质询，因此您可以从 LangSmith 重新授权连接。
 > * 浏览器窗口链接现在加载其实时视图脚本，因此窗口页面不再显示“此页面的脚本丢失”。错误并在每种流模式下流视频。
 > * 超时的跟踪查询现在显示 **查询超时** 错误，并指导缩小时间范围或简化过滤器，而不是 **未找到运行**。部分结果仍会出现，并提示您缩小时间范围。
 > * 当您在示例之间切换时，数据集示例侧面板中的扩展部分现在会更新为所选示例，因此面板的每个部分都与您选择的示例相匹配。
@@ -387,7 +523,7 @@ LangSmith 云每周更新
 **2026 年 10 月 12 日至 19 日**
 
 ## 亮点* **仅跟踪 API 密钥**：您现在可以创建仅限于一个或多个工作区的仅跟踪 API 密钥，这样应用程序就可以发送跟踪，而无需被授予更广泛的访问权限。从新的 **仅跟踪** 选项创建密钥，然后从组织设置中的 **跟踪** 选项卡或通过 `/orgs/current/tracing-keys` API 列出并撤销它们。跟踪密钥只能写入运行和创建项目，因此泄漏的密钥无法读取数据或更改其他资源。 [Learn more](/langsmith/create-account-api-key#tracing-keys)。
-* **LLM 网关中的 ScaleDown 提供程序**：您现在可以通过 LLM 网关调用 ScaleDown 操作（汇总、提取、分类、压缩）及其决策模型。使用原生`/scaledown`路线、统一`/v1/chat/completions`或`/v1/systemone`，并按ScaleDown跟踪运行并定价。您还可以在模型访问策略中命名 ScaleDown，将其保存为模型配置，并将其用作后备候选。 [Learn more](/langsmith/llm-gateway-direct-model-access)。* **在 GCP 上创建 BYOC 数据平面**：您现在可以使用 `POST /orgs/current/data-planes` 在自己的 GCP 项目中创建和删除 BYOC 数据平面，并将 `cloud` 作为 GCP 以及 `gcp_project_id`、`provisioner_service_account`、`region` 和 `vpc_cidr` 传递。默认情况下，GCP 数据平面以高可用性运行 Cloud SQL Postgres，您可以在数据平面设置中设置每周两小时`maintenance_window`。对于启用了 BYOC 的组织，GCP BYOC 可在美国控制平面上使用。目前创建 GCP 数据平面仅支持 API。 [Learn more](/langsmith/byoc)。
+* **LLM 网关中的 ScaleDown 提供程序**：您现在可以通过 LLM 网关调用 ScaleDown 操作（汇总、提取、分类、压缩）及其决策模型。使用原生`/scaledown`路线、统一`/v1/chat/completions`或`/v1/systemone`，并按ScaleDown跟踪运行并定价。您还可以在模型访问策略中命名 ScaleDown，将其保存为模型配置，并将其用作后备候选。 [Learn more](/langsmith/llm-gateway-direct-model-access)。* **在 GCP 上创建 BYOC 数据平面**：您现在可以使用 `POST /orgs/current/data-planes` 在自己的 GCP 项目中创建和删除 BYOC 数据平面，并将 `cloud` 作为 GCP 以及 `gcp_project_id`、`provisioner_service_account`、`region` 和 `vpc_cidr` 进行传递。 GCP 数据平面默认以高可用性运行 Cloud SQL Postgres，您可以在数据平面设置中设置每周两小时`maintenance_window`。对于启用了 BYOC 的组织，GCP BYOC 可在美国控制平面上使用。目前创建 GCP 数据平面仅支持 API。 [Learn more](/langsmith/byoc)。
 
 ＃＃ 行政* **设置** > **Webhooks** 页面现在可分页浏览所有 Webhooks，按类型和功能进行筛选，并为每个功能提供 **发送测试事件** 操作。目标和配置表现在显示每一行，而不仅仅是前 25 行。
 * 引擎访问现在分为单独的权限：`organization:engine:read` 查看引擎配置和访问请求，`organization:engine:manage` 打开或关闭引擎并管理托管评估同意，以及`organization:usage-controls:manage` 更改支出限制以及暂停或恢复运行。组织管理员和操作员保留其现有访问权限，仅具有支出权限的用户可以查看项目标签和支出控制，而无需完整的项目配置。* 您现在可以从 **设置** > **组织团队** 创建和删除组织范围的团队。创建团队会打开一个包含其名称和描述的对话框，删除团队会要求您先输入团队的名称。这两项操作都需要组织团队管理权限，并且当您缺少该权限时，这些按钮将被禁用并带有工具提示。现在，只能通过授予或撤销组织团队对工作区的访问权限来创建和删除工作区团队，因此每项授予始终只有一个工作区团队，且一开始没有成员或策略。
@@ -408,7 +544,7 @@ LangSmith 云每周更新
 
 ## 网关
 
-* Azure Foundry 模型现在可以与 Entra ID 服务主体（租户 ID、客户端 ID 和客户端机密工作区密钥）一起使用，而不是与 API 密钥一起使用，因此在其 Azure 资源上禁用 API 密钥的组织可以使用网关。设置后，现有的 `AZURE_FOUNDRY_API_KEY` 仍然优先。
+* Azure Foundry 模型现在可以与 Entra ID 服务主体（租户 ID、客户端 ID 和客户端机密工作区密钥）一起使用，而不是与 API 密钥一起使用，因此在其 Azure 资源上禁用 API 密钥的组织可以使用网关。设置后，现有的 `AZURE_FOUNDRY_API_KEY` 仍优先。
 * 在正文中发送会话或提示缓存密钥但没有会话标头的网关请求现在会使用该密钥标记为会话，因此来自 OpenAI、LangChain 和 Vercel AI SDK 客户端的跟踪不再显示空线程。
 * 现在，您可以通过选择卡上的滑块按钮，从 LLM Gateway 游乐场中的卡中编辑自定义模型配置，而无需先选择模型。保存后卡片会立即更新。* 模拟器阻止错误中的网关策略名称现在是打开网关设置中匹配策略行的链接，该行突出显示，因此您可以直接跳转到阻止请求的策略。
 * TypeSafe 兼容配置现在可以使用与输入完全相同的端点 URL，无需 LangSmith 附加 `/v1/systemone`。清除模型配置中的 **Append /v1/systemone** 复选框以使用此模式；身份验证仍然是仅承载者。
@@ -420,13 +556,13 @@ LangSmith 云每周更新
 
 * 可写 S3 装载现在可以通过将 `encryption.kms_key` 设置为装载区域中的 KMS 密钥 ARN，使用客户管理的 KMS 密钥加密上传。上传到默认加密为 SSE-KMS 的存储桶现在也会保留，而不是在写入成功后被删除。
 * 沙盒命令历史记录现已在亚太地区、欧盟和美国 GCP 生产区域启用，因此您可以从沙盒命令查看保留的 stdout 和 stderr，包括在 Box 停止之后。
-* 沙箱现在可以使用短期工作负载身份（而不是静态密钥）向 AWS、GCP 和 Azure 进行身份验证：设置 `aws.role_arn`、`gcp.workload_identity_provider` 或使用 `tenant_id` 和 `client_id` 的 `azure` 代理规则，并且出口代理将云凭证添加到请求中，以便沙箱永远不会保存它们。 Azure Blob 存储也可用作 `azure_blob` 安装类型。* 正在运行的沙箱现在可以从耗尽的主机上实时迁移，暂停时间仅为数十毫秒，而不是在另一台主机上挂起并唤醒。
+* 沙箱现在可以使用短期工作负载身份（而不是静态密钥）向 AWS、GCP 和 Azure 进行身份验证：设置 `aws.role_arn`、`gcp.workload_identity_provider` 或带有 `tenant_id` 和 `client_id` 的 `azure` 代理规则，并且出口代理将云凭证添加到请求中，以便沙箱永远不会保存它们。 Azure Blob 存储也可用作 `azure_blob` 安装类型。* 正在运行的沙箱现在可以从耗尽的主机上实时迁移，暂停时间仅为数十毫秒，而不是在另一台主机上挂起并唤醒。
 * 当主机内存不足时，BYOC 数据平面上的沙箱不再一起停止。沙箱现在可以使用完整节点。现有的 BYOC 数据平面保持其当前限制，直到其配置更新。
 * 沙箱现在可供 Azure 生产组织使用，让您可以创建、运行、停止、恢复和删除沙箱，并在 `*.azure.smithbox.dev` 打开其服务 URL。报告沙箱计算和存储使用情况以进行计费。
 
 ## 追踪* 所有代理页面现在在可排序表中显示代理，其中包含名称、最近运行、创建时间、跟踪计数、总成本、错误率、延迟、令牌和代理 ID 列；现在，跟踪计数、总成本和总令牌在所有环境中求和，并且新的“关于这些指标”工具提示解释了哪些列使用最近活动的环境。
 * 现在，您可以通过设置 `Langsmith-Agent-Id` 和 `Langsmith-Agent-Environment` 标头将 OpenTelemetry 跟踪发送到代理环境而不是项目。诸如 `gen_ai.agent.name` 之类的 Span 属性不会处理跟踪，因此现有导出会继续进入其项目。 Go 跟踪器还读取 `LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 变量，Java 导出器通过其构建器接受地址。
-* 只要查询包含反馈条件，API 中的运行和跟踪查询现在接受 `min_feedback_modified_at` 和 `max_feedback_modified_at` 来按反馈的上次修改时间进行过滤。在无法应用这些边界的部署上使用这些边界的请求将返回 501 错误，而不是忽略这些边界。* 跟踪消息现在在组元数据中包含每个 LLM 调用的提示缓存细分，因此您可以在每次调用时查看提示是从缓存读取还是写入缓存，包括`token_usage.input_token_details` 和 `cost.prompt_cost_details` 下的缓存 TTL。
+* 只要查询包含反馈条件，API 中的运行和跟踪查询现在接受 `min_feedback_modified_at` 和 `max_feedback_modified_at` 来按反馈上次修改时间进行过滤。在无法应用这些边界的部署上使用这些边界的请求将返回 501 错误，而不是忽略这些边界。* 跟踪消息现在在组元数据中包含每个 LLM 调用的提示缓存细分，因此您可以在每次调用时查看提示是从缓存读取还是写入缓存，包括`token_usage.input_token_details` 和 `cost.prompt_cost_details` 下的缓存 TTL。
 * 长过滤器查询现在可以跨多行换行。当查询溢出过滤器栏时，会出现一个新的 **包裹过滤器** 按钮，并且每个项目和运行详细信息视图都会记住您的选择。默认情况下，换行处于关闭状态。
 * 现在，您可以通过将 `rank_groups_by` 设置为 `total_cost`，按总成本对分组指标结果进行排名，因此，当查询返回的组数量多于 `limit` 时，将保留成本最高的组。默认仍然是运行计数。此选项适用于**名称**、**运行类型**、**标记**和**元数据**分组，但不支持**项目**或**反馈**分组。
 * OpenTelemetry GenAI 跨度的缓存输入令牌现在按缓存速率而不是完整输入速率进行计数。现在读取使用点键 `gen_ai.usage.cache_read.input_tokens` 和 `gen_ai.usage.cache_write.input_tokens` 发送的跨度，并且现在记录作为 `gen_ai.usage.reasoning.output_tokens` 发送的推理令牌。* 仪表板比率 KPI 图表现在包含 **显示为百分比** 选项，因此每个反馈 0.16 次运行之类的值可以显示为 16%。小数显示保留默认值，并且在编辑图表时会保存您的选择。
@@ -461,7 +597,7 @@ LangSmith 云每周更新
 * 注释队列和手动反馈表单现在遵循密钥的强制反馈配置，因此在提交之前会标记超出其范围的分数，并且表单会显示强制规则，而不是让您定义冲突的配置。
 
 ## 提示和游乐场* 提示 Webhook 现在可在 Python、TypeScript、Go 和 Java SDK 以及 `langsmith prompt-webhooks` CLI 命令中使用，因此您可以通过编程方式或从终端列出、创建、检索、更新、测试和删除它们。
-* 使用 OpenAI 或 Azure OpenAI 响应 API 以及不受支持的种子或输入架构设置的 Playground 请求现在会返回一个明确的 422 错误，该错误会命名被拒绝的字段，并且运行时间超过 290 秒的 Playground 调用现在会返回 504 超时错误以及重试建议，而不是入口失败。
+* 使用 OpenAI 或 Azure OpenAI 响应 API 以及不受支持的种子或输入架构设置的 Playground 请求现在会返回明确的 422 错误，该错误会命名被拒绝的字段，并且运行时间超过 290 秒的 Playground 调用现在会返回 504 超时错误，并带有重试建议，而不是入口失败。
 * 现在可以读取组织范围的模型配置，并在具有正确权限的情况下使用没有工作区的服务密钥进行管理，因此之前返回工作区所需错误的 API 调用现在可以成功。
 * 标签 webhooks 现在报告与 `created_by` 字段中的提交归属相同的作者姓名，因此当配置文件没有显示名称时，标签创建和更新事件会显示进行更改的用户的名称，而不是空值。
 
@@ -480,7 +616,7 @@ LangSmith 云每周更新
 > * 综合分数选择器现在列出了每个具有数字分数的反馈键，包括来自带有分类规则的注释队列的键和通过反馈链接编写的键。以前，这些钥匙在拾取器中丢失了。
 > * 对于包含没有 `tool_call_id` 的工具消息的线程，线程评估器现在会收到用户和助理提交的 `human_ai_pairs` 和 `first_human_last_ai`，而不是空输入。
 > * 打开已删除的提示或上下文资源 URL 现在会显示“未找到提示”或“未找到资源”页面，其中包含返回列表的链接，而不是无休止的加载框架。
-> * 针对沙箱浏览器运行 `agent-browser` 与 `--cdp`、`connect`、`--auto-connect` 或提供程序不再失败并出现“无法将 --ca-cert 与 --cdp 一起使用”错误，并且附加的浏览器按预期工作。
+> * 针对沙盒浏览器运行 `agent-browser` 与 `--cdp`、`connect`、`--auto-connect` 或提供程序不再失败并出现“无法使用 --ca-cert 与 --cdp”错误，并且附加的浏览器按预期工作。
 > * 将 `typesafe-*` 标头发送到网关的请求现在会将这些标头传递给上游提供商，因此依赖于它们的长上下文请求等功能可以按预期工作。> * 使用较新的 UUIDv7 ID 创建的组织的邀请电子邮件链接现在会打开邀请，而不是显示“找不到页面”。
 > * 现在，当在较窄的浏览器窗口上打开侧面导航时，展开按钮会打开 **快捷方式** 窗格，而不是不执行任何操作。
 > * 当代理加载失败时（例如未部署助手或无法访问服务器时），Studio 会保持其顶部栏和代理选择器可见，以便您可以切换到其他代理。
@@ -488,8 +624,8 @@ LangSmith 云每周更新
 **2026 年 10 月 5 日至 12 日**
 
 ## 亮点* **AI 搜索运行、跟踪和线程**：您现在可以在跟踪项目页面上用简单语言描述您要查找的内容，并使用它搜索运行、跟踪和线程。在过滤器栏中选择 AI 选项，输入查询，然后单击“搜索”或按 Enter 键将其与结构化过滤器、日期范围和所选选项卡一起应用。对于已提交的 AI 搜索，统计数据和过滤器计数不可用。组织管理员在组织设置中启用 AI 搜索，包括个人组织。当服务繁忙时，您会看到“AI搜索繁忙”消息，可以重新提交。 [Learn more](/langsmith/filter-traces)。
-* **在运行详细信息中查找文本**：您现在可以使用“查找”搜索运行的加载内容，并在活动窗格中使用 Cmd/Ctrl+F 打开。查找匹配输入和输出消息、对象字段、标签和元数据，显示匹配计数，并提供下一个和上一个控件。选择结果会展开目标并滚动到突出显示的文本，包括 JSON 和 YAML 视图中的确切行和列。 [Learn more](/langsmith/view-traces)。* **细化组织权限取代管理访问权限**：组织操作现在需要专用权限，而不是单一广泛的组织管理权限，因此您可以分别向成员授予访问权限、访问控制、身份验证、安全策略、计费、使用控制、保留、数据平面、工作区创建、OAuth 应用程序和 GitHub 集成。通过 `PATCH /orgs/current/info` 进行的更新会检查您发送的每个字段的权限，并且对计费、数据平面和集成的读取访问权限与管理访问权限是分开的。组织管理员和操作员保留其现有访问权限，并且 UI 隐藏或禁用您无权使用的控件。 [Learn more](/langsmith/rbac)。
-* **自助服务计划移至 2026 年 10 月**：现有自助服务云客户将移至 2026 年 10 月计划，该计划的使用价格采用 LangChain 标准单位。新套餐于当月 1 日 00:00 UTC 开始，因此整个月的使用量均按该套餐计费。拥有合同、信贷授予或计划价格调整的客户将继续使用当前计划。 [Learn more](/langsmith/pricing-plans)。
+* **在运行详细信息中查找文本**：您现在可以使用“查找”搜索运行的加载内容，并在活动窗格中使用 Cmd/Ctrl+F 打开。查找匹配输入和输出消息、对象字段、标签和元数据，显示匹配计数，并提供下一个和上一个控件。选择结果会展开目标并滚动到突出显示的文本，包括 JSON 和 YAML 视图中的确切行和列。 [Learn more](/langsmith/view-traces)。* **细化组织权限取代管理访问权限**：组织操作现在需要专用权限，而不是单一广泛的组织管理权限，因此您可以分别向成员授予访问权限、访问控制、身份验证、安全策略、计费、使用控制、保留、数据平面、工作区创建、OAuth 应用程序和 GitHub 集成。通过`PATCH /orgs/current/info`检查您发送的每个字段的权限，并且对计费、数据平面和集成的读取访问权限与管理访问权限是分开的。组织管理员和操作员保留其现有访问权限，并且 UI 隐藏或禁用您无权使用的控件。 [Learn more](/langsmith/rbac)。
+* **自助服务计划移至 2026 年 10 月**：现有自助云客户将移至 2026 年 10 月计划，该计划的使用价格以 LangChain 标准单位计算。新套餐于当月 1 日 00:00 UTC 开始，因此整个月的使用量均按该套餐计费。拥有合同、信贷授予或计划价格调整的客户将继续使用当前计划。 [Learn more](/langsmith/pricing-plans)。
 
 ＃＃ 行政* 现在，您可以从“项目”页面为您的组织启用 AI 搜索，并通过解释数据处理和 PHI 限制的同意步骤。组织管理员可以直接启用它，其他成员可以从同一对话框向其管理员发送请求。
 * 现在可以使用组织级别和工作区级别的权限来管理团队，并且团队 API 会返回 403，除非您的组织启用了 `can_use_teams` 设置。组织管理员和工作区管理员等内置角色会自动接收新团队权限。
@@ -525,7 +661,7 @@ LangSmith 云每周更新
 * /v1/managed-tools/openapi.json 中的托管工具 OpenAPI 规范现已在生产中可用，而不仅仅是在开发和预演中。请求仍然需要工作区身份验证、lmt_enabled 权利和 mcp-servers:read 权限。
 
 ## 沙箱* 现在，已运行执行 API 命令的 Box 会保留沙箱命令历史记录，因此您可以列出、过滤和搜索过去的命令，并在 Box 停止后读取其 stdout 和 stderr 输出。此功能默认处于关闭状态，必须由您的部署通过 `SANDBOX_COMMAND_HISTORY_ENABLED` 启用。
-* 沙箱出口现在可以通过您自己的 HTTP 转发代理进行路由：在自托管 Helm 图表中设置 `SANDBOX_EGRESS_UPSTREAM_PROXY_URL` 或 `sandboxes.authProxy.httpProxy`，以通过 CONNECT 隧道发送纯 HTTP 作为绝对格式请求以及 HTTPS 和原始 TCP。 `SANDBOX_EGRESS_UPSTREAM_PROXY_NO_PROXY` 中列出的目的地使用标准 NO_PROXY 匹配并直接拨号。
+* 沙盒出口现在可以通过您自己的 HTTP 转发代理进行路由：在自托管 Helm 图表中设置 `SANDBOX_EGRESS_UPSTREAM_PROXY_URL` 或 `sandboxes.authProxy.httpProxy`，以通过 CONNECT 隧道发送纯 HTTP 作为绝对格式请求以及 HTTPS 和原始 TCP。 `SANDBOX_EGRESS_UPSTREAM_PROXY_NO_PROXY` 中列出的目的地使用标准 NO_PROXY 匹配并直接拨号。
 * Azure 上的自托管客户现在可以禁用 Azure 托管 Redis 上的访问密钥，但仍然可以通过将 `sandboxes.juicefs.redis.iamAuthProvider` 设置为 `azure` 来运行沙箱，因此沙箱文件元数据与 Microsoft Entra ID 而不是密码连接。沙盒主机和格式化程序作业需要 Azure 工作负载标识，并且该标识需要 Redis 实例上的数据访问策略。* 沙箱文件系统容量现在默认上限为 640 GiB，因此创建或调整沙箱大小使其超过该限制会返回验证错误，而不是稍后失败。操作员可以使用`SANDBOX_MAX_FS_CAPACITY_BYTES`更改限制，现有沙箱保持当前大小。
 * 现在，您可以通过将 `spec.sandboxes.host.suspended` 设置为 `true` 来暂停沙箱主机池，这会停止沙箱主机并隐藏沙箱 UI，同时保持托管存储和配置就位。将其设置回 `false` 可恢复沙箱 UI 和主机容量，并且主机自动缩放器恢复对副本的控制。
 
@@ -548,8 +684,8 @@ LangSmith 云每周更新
 * 引擎现在使用 GPT-6.1 Sol 作为其重型 OpenAI 后备，并使用 GPT-6 Luna 进行 Codex 修复审查和实施，两种型号的使用价格均以 LCU 计。* 问题代理现在可以从单个跟踪记录问题，因此一个明确的故障不再需要等待第二个匹配的跟踪才能报告。仍然缺乏证据的模式仍保留在代理概述观察列表中。
 * 板跟踪过滤器现在显示过去 30 天内有多少跟踪与您键入的条件匹配，并且当不匹配任何跟踪时，**添加** 将被禁用，因此子运行上的过滤器不再保存零跟踪。
 * 引擎代理现在可以读取存储库的完整提交历史记录，并通过 GitHub REST API 从其沙箱（包括私有存储库）比较提交，因此它可以跟踪 50 次提交克隆的根之后的问题。访问权限是只读的，令牌永远不会进入沙箱。
-* 拉取请求的已关闭问题现在保留一个仅供查看的 PR 链接，历史记录行会命名解决该问题的合并 PR 或线性同步，并且问题板和LangSmith 聊天中的“观看”现在变为“保存以供稍后使用”。* 问题验证现在会根据其修复预览部署重放每个源运行，因此当原始运行使用非聊天输入、检查点状态或仅跟踪聊天重建无法重现的代理类型配置时，验证不再失败。无法重播的根会报告稳定的失败原因，而不是进行判断。
-* 自托管部署现在可以拉取符合 FIPS 标准的 Insights Engine 映像 `langsmith-insights-engine-fips`，以及现有的 Insights 和 LangSmith Chat FIPS 映像。
+* 拉取请求的已关闭问题现在保留仅供查看的 PR 链接，历史记录行会命名解决该问题的合并 PR 或线性同步，并且问题板和LangSmith 聊天中的“观看”现在变为“保存以供稍后使用”。* 问题验证现在会根据其修复预览部署重放每个源运行，因此当原始运行使用非聊天输入、检查点状态或仅跟踪聊天重建无法重现的代理类型配置时，验证不再失败。无法重播的根会报告稳定的失败原因，而不是进行判断。
+* 自托管部署现在可以拉取符合 FIPS 标准的 Insights Engine 映像 `langsmith-insights-engine-fips`，以及现有的 Insights 和 ⟦T1384​​⟧ Chat FIPS 映像。
 
 ## 评估者
 
@@ -575,12 +711,12 @@ LangSmith 云每周更新
 > * 运行、跟踪和线程会在搜索中途失败时保留已加载的行，并在其上方的横幅中显示错误。失败的后续页面不再无休止地加载或自动进一步获取，并且搜索会重试它们。
 > * 修复了LangChain和LangGraph跟踪内的工具结果和消息可能显示错误的跳转目标和虚假问题横幅的错误；对于子代理内的链接运行，“打开运行”操作现在可以正常工作。> * 在 macOS 上按住 Command 键单击或在 Windows 和 Linux 上按 Ctrl 键单击运行表中的运行现在会在新选项卡中打开该跟踪，而普通单击仍会在侧面板中打开运行。
 > * 运行返回过多数据的查询现在会失败，并显示明显的 400 错误，表明运行超出了响应大小限制，并且过载的查询请求现在返回 429，要求您稍后重试，而不是通用 503。
-> * OpenAI 包含其他工具的响应跟踪现在显示其开发人员消息中的每个工具定义，以及描述、键入的参数和必填字段，而不是退回到“字段”视图。
+> * OpenAI 包含其他工具的响应跟踪现在会在其开发人员消息中显示每个工具定义，以及说明、键入的参数和必填字段，而不是退回到“字段”视图。
 > * 当在代理监控中选择代理时，您在工作区中创建的自定义仪表板现在会显示在 **仪表板** 列表中，而不是被代理过滤器隐藏。
 > * 访问受限的项目中的代理现在在创建后立即打开，而不是在项目列表刷新之前显示“未找到项目”。
 > * 创建或更新插入名为 `evaluators`、`playground` 或其他内部跟踪名称的项目现在会将其保留为普通项目而不是代理，并且将代理重命名为这些名称之一会返回 409 错误并带有明确消息。> * 当父类别生成失败时，不再发布见解报告。相反，作业会以错误结束，如果集群模型拒绝请求，错误消息会告诉您检查模型凭据和设置。
 > * Claude Haiku 5.5 运行现在的成本为每百万个输入代币 0.10 美元的基本费率，而不是高出五倍的长上下文费率，后者导致第一方、Vertex 和 Foundry 运行的成本增加。
-> * 过去的 LangSmith 当聊天使用具有 IAM 角色的 Bedrock 模型时，聊天现在会立即显示其保存的消息，而不是显示空白面板长达几分钟。
+> * 过去的 LangSmith 当聊天使用具有 IAM 角色的 Bedrock 模型时，聊天现在会立即显示其保存的消息，而不是显示长达几分钟的空面板。
 > * LangSmith 当您的连接在中途断开时（例如 Wi-Fi 更改或 VPN 重新连接时），聊天不会再因“网络错误”而失败。运行将在服务器上继续并重新连接到您的聊天而不是被取消。
 > * 修复了 DeltaChannel 读取和修剪问题，这些读取和修剪可能会丢失在没有快照计数器的情况下保存的检查点或在持久性=“退出”的情况下丢失线程状态的问题；这些线程的读取和修剪现在可以保持通道的旧值完好无损。> * 修复了一个错误，即由多个并行任务在一个超级步骤中编写的 DeltaChannel 可能会以与生成的运行不同的顺序读回，因此 **get_state** 和下一次运行返回重新排序的值；这些现在与运行返回的顺序匹配。
 > * 使用已存在的运行 ID 创建运行现在会在 SQLite、Postgres 和内存部署上返回 409 冲突错误，而不是内部服务器错误或被静默忽略。
@@ -598,9 +734,9 @@ LangSmith 云每周更新
 * 消息视图请求较小的页面，因此长线程不再因响应大小错误而失败。* 当跟踪或线程过滤器失败时，LangSmith 在过滤器下方显示错误，并保持所选运行详细信息打开，以便您无需离开页面即可编辑或清除过滤器。
 * 创建公共跟踪或线程共享链接现在需要读取运行的权限，包括其输入和输出。
 * LangSmith 聊天模型选择器现在提供 Claude Sonnet 5.5。 Sonnet 5 保持默认状态。
-* LangSmith 聊天现在可以在一轮中执行大约四倍的步骤，因此大型自定义应用程序构建完成，而不是以“达到 250 的递归限制”错误结束。
+* LangSmith 聊天现在可以在一轮中执行大约四倍的步骤，因此大型自定义应用程序构建完成，而不是以“达到递归限制 250”错误结束。
 * 通过 Vertex AI 在 Gemini 3.x 模型上聊天现在可以完成连续调用多个工具的回合。
-* LangSmith Chat 构建的应用程序现在可以通过注释队列项目等列表进行分页，而不是仅显示第一页。
+* LangSmith Chat 构建的应用程序现在可以逐页浏览注释队列项目等列表，而不是仅显示第一页。
 * 按**最近运行** 对跟踪项目进行排序现在按最新运行对运行引用数据集示例的项目进行排序，而不是将它们与空项目分组。
 
 ### 数据集和实验* 在 Amazon Bedrock 上使用 Claude Opus 5.5 或 Sonnet 5.5 的 LLM 法官评估者不会再因不受支持的强制工具选择而失败。
@@ -638,11 +774,11 @@ LangSmith 云每周更新
 ## 沙箱
 
 * LangSmith MCP 可以读取、写入和搜索沙箱文件，流式传输长时间运行的沙箱命令，在 LangSmith 登录后共享沙箱端口，并报告沙箱使用情况、组织使用情况、审核日志、使用限制、跟踪保留设置和组织成员。
-* 沙箱代理规则接受 `match_headers` 条目，例如 `"authorization: Bearer account-b"`，因此一台主机上的多个规则可以各自将不同的占位符交换为自己的凭据并为多个帐户提供服务。
+* 沙盒代理规则接受 `match_headers` 条目，例如 `"authorization: Bearer account-b"`，因此一台主机上的多个规则可以各自将不同的占位符交换为自己的凭据并为多个帐户提供服务。
 * 在运行时拍摄快照的内存保留沙箱现在可以在下次停止和启动后恢复其所有内存。
 * 短暂的存储后端错误不再使沙箱的文件系统在重新启动之前返回 I/O 错误。
 
-＃＃ 行政* 在 **设置** > **OAuth 应用程序** 下注册的 OAuth 应用程序可以对 LangSmith API 和远程 MCP 服务器使用一个访问令牌，而不是分别授权。
+＃＃ 行政* 在 **设置** > **OAuth 应用程序** 下注册的 OAuth 应用程序可以对 LangSmith API 和远程 MCP 服务器使用一个访问令牌，而不是分别对两者进行授权。
 * 通过 LangSmith 托管工具的调用现在在审核日志中显示为 `invoke_mcp_server` 或 `invoke_mcp_gateway`，并包含所调用的服务器或网关和工具。审核日志条目还包括请求的持续时间和用户代理。
 * 从键盘搜索组织和工作区设置，并在 Mac 上使用 Command + 逗号或在 Windows 和 Linux 上使用 Ctrl + 逗号打开 **设置**。
 * 在角色预览和角色编辑器中按组、名称或标识符搜索权限。
@@ -664,11 +800,11 @@ LangSmith 云每周更新
 * 跟踪现在最多可以包含 100,000 次运行。
 * 只要启用 SmithDB 查询，就可以使用改进的跟踪过滤器，无需单独的功能标志。
 * **Error** 列再次直接在跟踪表中显示错误描述。
-* 跟踪 **工具** 选项卡显示功能工具以及提供商服务器工具，例如 OpenAI `tool_search`。
-* 通过`DELETE /api/v1/bulk-exports/destinations/{destination_id}`删除没有批量导出使用的批量导出目的地。批量导出仍引用的目的地将被拒绝。
+* 跟踪**工具**选项卡显示功能工具以及提供商服务器工具，例如OpenAI`tool_search`。
+* 使用`DELETE /api/v1/bulk-exports/destinations/{destination_id}`删除没有批量导出使用的批量导出目的地。批量导出仍引用的目的地将被拒绝。
 * 自定义模型价格条目现在具有 **克隆** 操作，就像内置条目一样。
 * 超过两分钟的运行延迟值以分钟为单位显示。* LangSmith 聊天模型选择器现在提供 Claude Opus 5.5 和 Gemini 3.8 Flash，Gemini 模型可以完成回合，而不是在收到第一条消息时失败。
-* 将图像拖放到LangSmith 聊天面板中的任何位置。
+* 将图像拖放到LangSmith聊天面板中的任何位置。
 * LangSmith 聊天列出了运行及其输入和输出的预览，并且仅在需要时才打开完整运行，因此大型项目不再使聊天和自定义应用程序构建失败并显示“发生内部错误”。
 * LangSmith 聊天会在长时间的回合中更新其访问权限，因此对队列、数据集和运行的读取将继续工作，而不是以“无效令牌”错误结束回合。
 * LangSmith 在构建自定义应用程序时，聊天将三个或更多连续的探索操作分组。当操作失败或需要注意时，组会自动打开。
@@ -680,7 +816,7 @@ LangSmith 云每周更新
 * 仅当请求将`include.tool_definitions`设置为`true`时，轨迹API才会返回每条消息的工具定义。规则编辑器的**测试**预览现在与发送给法官的实时轨迹评估相匹配。
 * **在实验 CSV 导出中包含注释者姓名和每行注释** 现在对每个工作区都生效。
 * 返回占位符 JSON 字段（例如 `output`）的在线 LLM 作为法官评估器现在将反馈存储在评估器的配置名称下。
-* 当请求包含集线器提示参考但省略 `evaluator_version` 时，通过 API 更新在线评估器规则不再失败。* 线程评估器不再提供 **对齐评估器** 流程或校正数据集，因为对齐需要运行级别示例。
+* 当请求包含中心提示参考但省略 `evaluator_version` 时，通过 API 更新在线评估器规则不再失败。* 线程评估器不再提供 **对齐评估器** 流程或校正数据集，因为对齐需要运行级别示例。
 * 当字段展开时，成对注释队列现在显示 `true` 和 `false` 输出值。
 
 ### 反馈
@@ -713,15 +849,15 @@ LangSmith 云每周更新
 
 ## 部署* **概述** 选项卡在一行中总结了已部署的修订版本及其来源、期限和日志，并在排队、构建或失败时报告较新的部署。替换正在运行的工作负载后失败的部署可以从该行进行回滚。
 * 生产部署页面显示部署现在是否正在响应请求，与修订状态分开。对于通过自定义 URL 提供服务的部署，也会显示该徽章。
-* GitHub 修订版显示提交标题以及带有分支和短 SHA 的徽章。部署 API 在每个修订上返回 `repo_commit_sha` 旁边的 `repo_commit_title`。
+* GitHub 修订版显示提交标题以及带有分支和短 SHA 的徽章。部署 API 在每个修订版上返回 `repo_commit_sha` 旁边的 `repo_commit_title`。
 * 固定到带注释的 Git 标签的部署现在会在 `repo_commit_sha` 中记录标签指向的提交。
 * 服务器日志包括其 pod 名称被 Kubernetes 缩短的 AWS 部署的 API 和工作线程日志。
 * Studio 等待部署详细信息加载，而不是短暂显示连接错误，并在无法加载部署时显示原因。
 
-## 沙箱* 沙箱创建上的`access_delegation` 现在可以使用工作区服务密钥，因此仅持有服务密钥的部署可以为其沙箱提供上限为 LangSmith 的访问权限。缩小密钥的作用会缩小沙箱的范围，而删除密钥则会撤销它。
-* 通过沙箱下载链接共享的每个文件均由其自己的主机提供服务，并且 `csp_sandbox_flags` 接受 `allow-same-origin`，因此 HTML 页面可以使用 `localStorage` 和 IndexedDB，而无需其他文件读取它们。
-* 当没有可用主机时，沙箱调用会返回带有 `Retry-After` 标头的 503，而不是 502，因此重试 503 的客户端会在主机维护期间恢复。
-* 从没有 `linux/amd64` 变体的映像创建快照（例如在 Apple Silicon 上构建的仅限 arm64 的映像）现在会立即失败，并显示一条命名映像平台的消息。
+## 沙箱* 沙箱创建上的`access_delegation`现在可与工作区服务密钥配合使用，因此仅持有服务密钥的部署可以为其沙箱提供上限为LangSmith的访问权限。缩小密钥的作用会缩小沙箱的范围，而删除密钥则会撤销它。
+* 通过沙盒下载链接共享的每个文件都由其自己的主机提供服务，并且`csp_sandbox_flags`接受`allow-same-origin`，因此HTML页面可以使用`localStorage`和IndexedDB，而无需其他文件读取它们。
+* 当没有可用主机时，沙盒调用会返回带有 `Retry-After` 标头的 503，而不是 502，因此重试 503 的客户端会在主机维护期间恢复。
+* 从没有 `linux/amd64` 变体的映像创建快照（例如在 Apple Silicon 上构建的仅限 arm64 的映像）现在会立即失败，并显示一条命名该映像平台的消息。
 * 快照表将标签显示为徽章，并在每个名称下方显示一个简短的快照 ID。快照选择器提供每个系统快照的最新版本。
 * 自定义应用程序的浏览器编辑适用于启用沙箱支持的符合条件的工作区，并且自定义应用程序不再显示 `Beta` 徽章。
 
@@ -782,7 +918,7 @@ LangSmith 云每周更新
 * 问题详细信息标头从问题的上次修改时间读取时间戳，因此例行更新（例如引擎链接新证据和刷新描述）使已关闭的问题看起来刚刚被标记为已完成。标题现在显示为“已更新`<when>`”；谁关闭了该问题以及何时关闭该问题会显示在其下方的历史记录中。
 * 引擎现在扫描名称包含标点符号、Unicode 或其他特殊字符的项目，而不是在分析开始时让其板卡住。
 * 当项目统计请求未返回时，引擎扫描不再彻底失败。它继续处理仍然可以选择的错误跟踪和基线跟踪，告诉代理缺少哪些选择，并记录统计调用失败的原因。
-* LangSmith 聊天编辑器现在在侧窗格（例如“编辑引擎设置”）打开时接受焦点，因此您无需先关闭设置即可提出问题。* LangSmith 当您在浏览器选项卡中导航和重新加载时，聊天会保留您的对话，并在新选项卡中或重新启动浏览器后开始新的对话。对话历史记录中仍然可以找到早期的对话。
+* 现在，当侧窗格（例如编辑引擎设置）打开时，LangSmith 聊天编辑器会接受焦点，因此您无需先关闭设置即可提出问题。* LangSmith 当您在浏览器选项卡中导航和重新加载时，聊天会保留您的对话，并在新选项卡中或重新启动浏览器后开始新的对话。对话历史记录中仍然可以找到早期的对话。
 * 当无法再解析工作区的模型凭据时，打开过去的 LangSmith 聊天对话不再失败并显示“无法连接到 LangGraph 服务器”。读取对话只需要其存储的历史记录；发送新消息仍会报告底层凭据错误。
 * 针对支持的开发目标及其配置的跟踪项目和存储库上下文运行本地生产平价红队检查。
 * LangSmith 聊天图标和建议的问题现在共享一个连续的背景，因此启动器在浅色和深色模式下读取为单个药丸。
@@ -822,7 +958,7 @@ LangSmith 云每周更新
 * 撤销个人访问令牌会保留其原始有效期。仅当到期仍然有效时，恢复令牌才能恢复访问权限。
 * 为 AI 活动添加可重复使用的 ThinkingState 组件，具有三种动画变体、一个可选的经过计时器和简化运动支持。
 * 代理身份验证会自动注册需要客户端秘密身份验证的 MCP OAuth 客户端，将其凭据与现有公共客户端支持一起安全存储。
-* 托管并行工具需要付费工作空间计划。工具调用返回 HTTP 200 记录使用情况，每 LangSmith 单位调用 1,000 次。
+* 托管并行工具需要付费工作区计划。工具调用返回 HTTP 200 记录使用情况，每 LangSmith 单位调用 1,000 次。
 * 代理身份验证主体创建接受提供者和主题，无需发行者。省略或空的发行者使用空的命名空间，而提供的发行者保留其现有的验证。
 * 浏览器返回在返回最初加载的页面时保留导航防护，包括清理空的、未部署的自定义应用程序。* 打开侧边栏通知即可查看平台公告和账户通知，不打扰您的工作。事件警报保留在页面顶部。
 
@@ -889,7 +1025,7 @@ LangSmith 云每周更新
 * GET /v1/models 现在仅返回模型访问策略允许的模型，因此网关不再通告调用时会被拒绝的模型。
 * 新模型访问策略现在包含生成的策略名称，您可以在创建之前保留或编辑该名称。
 * 在选择后备时，LLM Gateway 使用每个已保存模型配置的提供程序和 API 首选项，因此 Bedrock Claude 模型使用消息 API，而不是OpenAI 兼容端点。
-* 数据策略对话框现在在每个组织的数据保护下显示个人身份信息 (PII) 选项。没有 PII 权利的组织会发现它被锁定，并带有请求访问的链接。* LLM 网关在统一请求的 `x-langsmith-gateway-metadata` 响应标头中返回已解析的模型名称和成本跟踪提供商身份，包括配置的模型和后备。客户端跟踪可以使用这些值作为 `ls_model_name` 和 `ls_provider` 来准确定价，同时在回退中保留标准化定价模型名称。
+* 数据策略对话框现在在每个组织的数据保护下显示个人身份信息 (PII) 选项。没有 PII 权利的组织会发现它被锁定，并带有请求访问的链接。* LLM 网关在统一请求的 `x-langsmith-gateway-metadata` 响应标头中返回已解析的模型名称和成本跟踪提供商身份，包括配置的模型和后备。客户端跟踪可以使用这些值作为 `ls_model_name` 和 `ls_provider` 来准确定价，同时在后备中保留标准化定价模型名称。
 * 模型访问策略现在可以通过启用新的“模型配置”提供程序来允许工作区保存的模型配置（全部或选定的几个）。到达配置的请求（包括解析为配置的后备候选者）对于调用凭据的工作区是允许的，而之前任何模型访问策略都会阻止它们。
 
 **2026年8月31日至9月7日**
@@ -902,10 +1038,10 @@ LangSmith 云每周更新
 
 ### 数据集和实验* 线程的“添加到数据集”弹出窗口现在提供“新数据集”，它会创建空数据集并将选定的线程添加到其中。
 * 请求数据集运行限制超过 100 现在会返回 422 命名上限，而不是一般内部错误。
-* 将求值器提示变量映射到单个消息（例如 `output.messages[0]`）现在会呈现该消息而不是空值。
+* 将评估器提示变量映射到单个消息（例如 `output.messages[0]`）现在会呈现该消息而不是空值。
 * 使用不支持的完成输出验证示例现在会报告架构验证错误，而不是因内部错误而失败。
 * 现在，将格式错误的共享令牌传递到共享数据集项目端点会返回命名错误值的验证错误，而不是内部错误。
-* 轨迹批量读取现在在专用的集群内 gRPC 服务上运行，而不是在 `smith-go` 单体应用上运行，因此轨迹评估带来的负载和内存压力不再与 UI 和 API 流量竞争。
+* 轨迹批量读取现在在专用的集群内 gRPC 服务上运行，而不是在`smith-go`整体上运行，因此轨迹评估带来的负载和内存压力不再与 UI 和 API 流量竞争。
 * 数据集 CSV 和 JSONL 导出现在需要数据集读取和下载权限。没有下载权限的直接 API 请求会返回禁止的响应。
 * IssueBench 现在包含一个基准任务，用于比较 Opus 5 之前和之后的代理跟踪成本和轨迹回归。* 从编辑的集线器提示启动的数据集实验可以保存便携式网关模型配置，同时保留用于执行的变量映射。保存的草稿不包括运行时凭据，并与标准 LangChain SDK 保持兼容。
 * 当编辑器卸载而其内容仍在刷新时，编辑界面（例如评估器表单、游乐场提示和数据集示例）不再出错。
@@ -938,13 +1074,13 @@ LangSmith 云每周更新
 
 * 商业私有 ECR 注册表现在可以按需承担 AWS IAM 角色，支持存储库和标签搜索，同时避免保存的授权令牌过期。
 
-＃＃ 行政* 自托管 LangSmith 运营商可以配置许可证到期前多少天，警告横幅会与 `LICENSE_EXPIRATION_WARNING_DAYS` 一起出现。默认保留 7 天。
+＃＃ 行政* 自托管 LangSmith 运营商可以配置在许可证到期前多少天，警告横幅会与 `LICENSE_EXPIRATION_WARNING_DAYS` 一起出现。默认保留 7 天。
 * OAuth 授权会话现在接受 `owner_type` 和 `owner_id`，因此人们可以为用户或代理授权托管凭据。
 * 工作区编辑者现在可以从“设置”>“资源标签”将资源分配给应用程序标签值，而不必遇到权限错误。 [Learn more](/langsmith/set-up-resource-tags)
 * 工作区切换器现在除了工作区名称之外还接受工作区 ID，这样在仅知道工作区 ID 的情况下可以更轻松地找到工作区。
-* OAuth 授权会话现在接受工作区所有者，从而允许在工作区中共享一个托管 OAuth 凭据。
+* OAuth 授权会话现在接受工作区所有者，允许在工作区中共享一个托管 OAuth 凭据。
 
-### 法学硕士网关* 在 OpenAI 兼容模型配置上设置 `ls_provider`，以填充跟踪元数据并通过 LLM 网关将自定义模型与提供商特定的定价进行匹配。 [Learn more](/langsmith/ls-metadata-parameters#ls_provider)
+### 法学硕士网关* 在 OpenAI 兼容模型配置上设置 `ls_provider`，以填充跟踪元数据并通过 LLM 网关将自定义模型与提供商特定的定价相匹配。 [Learn more](/langsmith/ls-metadata-parameters#ls_provider)
 * 当候选者未在配置的超时内返回响应标头时，LLM 网关后备链现在可以前进到下一个模型。标头到达后，活动响应流继续。
 * 使用会话或 OAuth 持有者令牌进行身份验证的网关请求在内部路由中保留其身份验证和工作区上下文，包括模型回退。当请求需要另一个网关跃点时，这可以防止身份验证失败。
 
@@ -1033,7 +1169,7 @@ LangSmith 云每周更新
 * 受控输入不再创建冗余的本地状态更新，从而防止在跟踪过滤器中输入时罕见的页面崩溃。
 
 ＃＃＃ 引擎* 问题的重复图表现在用日和月轴标记其 x 轴，而不是在每个刻度上重复月份，运行其窗口到当前，并说明上次看到该问题的时间。几个月前不再出现的问题看起来不再像今天早上再次出现的问题。
-* 复制修复现在粘贴诊断、链接跟踪和LangSmith CLI 命令，以及静默 PR 标记。当连接的存储库中的 PR 包含该标记时，引擎会附加它并显示打开、关闭或合并状态。
+* 复制修复现在粘贴诊断、链接跟踪和 LangSmith CLI 命令，以及静默 PR 标记。当连接的存储库中的 PR 包含该标记时，引擎会附加它并显示打开、关闭或合并状态。
 * 引擎问题列表中的每一行现在显示列表排序、标记和右对齐的时间戳； “5 天前创建”、“3 小时前更新”、“11 分钟前查看”；代替跟踪计数。将任何问题日期悬停在行或问题标题中，都会一起显示创建时间、更新时间和上次查看时间。
 * 引擎概览不再显示重复的配置按钮。引擎设置仍然可以从问题板工具栏获取。* 现在，引擎问题板的排序完全按照所选字段（严重性、上次查看时间、上次更新时间、创建时间或跟踪数量）进行排序，包括已解决和已驳回的问题。状态和其他过滤器会立即隐藏不匹配的情况，并且每个板都会记住其在浏览器中的排序和过滤器。
 * 修复面板可以将链接的 GitHub 拉取请求与问题分离，而不关闭它，因此可以在之后附加不同的 PR。
@@ -1053,7 +1189,7 @@ LangSmith 云每周更新
 
 ### 监控和警报* 创建和编辑警报操作现在保留在粘性页脚中，因此您无需滚动到表单底部即可提交更改。 [Learn more](/langsmith/alerts)。
 * 随着时间的推移流速率模板现在仅将带有第一个令牌时间的运行除以 LLM 运行，因此新图表与 LangSmith 中其他位置显示的流速率相匹配。
-* 在 LangSmith 设计系统中添加可重复使用的 BarChart 组件，标准化分组和堆叠条形图、水平和垂直布局、多值轴、阈值带、交互和键盘可访问性。
+* 将可重复使用的条形图组件添加到LangSmith设计系统，标准化分组和堆叠条形图、水平和垂直布局、多值轴、阈值带、交互和键盘可访问性。
 * Webhook 测试通知现在显示目标的 HTTP 状态和原因短语，帮助您诊断 URL、可用性和身份验证失败。
 
 ### 自动化
@@ -1090,9 +1226,9 @@ LangSmith 云每周更新
 * 网关主页顶部的三张卡片；支出限制、模型回退和网关使用；现在是静态方向内容，而不是可点击的快捷方式，因此它们读取为 LLM Gateway 功能的快速摘要，而不是导航。* 当工作区机密中缺少所需的提供程序 API 密钥时，LLM 网关现在返回 424 失败依赖项，而不是一般的 400 错误请求。错误响应还标识了丢失的机密并解释了如何解决它。
 * LLM Gateway 浏览器快速入门现在允许您在推荐的位置内嵌创建每月工作空间支出限制，而不是打开单独的对话框。
 * 从 Gateway 主页启动的 API 密钥模式现在默认为个人访问令牌，并隐藏不适用于新网关用户的服务密钥、密钥类型和默认工作区字段。有效期上限为 30 天。
-* Gateway Credits 余额、保单支出和 Gateway Monitoring 的支出统计数据、图表和表格现在显示 `&lt;$0.01` 对于低于 1 美分的正金额，而不是将其四舍五入到 `$0.00`，因此少量支出不再看起来像什么都没有发生。
+* Gateway Credits 余额、保单支出和 Gateway Monitoring 的支出统计数据、图表和表格现在显示 `&lt;$0.01` 对于低于 1 美分的正金额，而不是四舍五入到 `$0.00`，因此少量支出不再看起来像什么都没有发生。
 * LLM Gateway 现在为每个组织转发 Claude Code Max OAuth 凭据，无需工作区 Anthropic API 密钥。* LLM Gateway 支出控制和数据保护策略现在在重点侧窗格中打开，使操作在标题中可见，并在丢弃未保存的更改之前发出警告。
-* 网关跟踪现在带有一个 `gateway.credential_source` 元数据字段，命名为每个上游 LLM 调用付费的凭证（`credits`、`byok`、`subscription_oauth` 或 `platform_managed`），允许您分别过滤和绘制网关积分使用情况与自带密钥使用情况，以及 `gateway.provider`命名为呼叫提供服务的提供商路由的字段。
+* 网关跟踪现在带有一个 `gateway.credential_source` 元数据字段，用于命名为每个上游 LLM 调用付费的凭据（`credits`、`byok`、`subscription_oauth` 或 `platform_managed`），允许您分别过滤和绘制网关积分使用情况与自带密钥使用情况以及 `gateway.provider`命名为呼叫提供服务的提供商路由的字段。
 * 默认网关支出和速率限制可以跟踪并为配置的 X-Gateway 请求标头的每个值强制执行单独的存储桶。
 * LLM Gateway 速率限制创建和策略编辑现在使用带有未保存更改警告的重点侧窗格。新策略接收描述性生成的名称，并且可选的自定义标头条件分组在高级部分下。
 * 网关支出限制表单可以配置自定义标头存储桶，成本策略表显示哪个标头分隔每个默认限制。
@@ -1105,7 +1241,7 @@ LangSmith 云每周更新
 ## 可观察性和评估
 
 ### 数据集和实验* 注释队列表现在将队列内容标记为项目而不是运行，涵盖单运行和成对队列。
-* 输入、输出或元数据键包含冒号的数据集现在可以导出为 CSV。这会解锁从带有反馈的运行构建的数据集，其中反馈存储在`source_run_feedback:<key>`元数据密钥下。
+* 输入、输出或元数据键包含冒号的数据集现在可以导出为 CSV。这会解锁从带有反馈的运行中构建的数据集，其中反馈存储在`source_run_feedback:<key>`元数据密钥下。
 * 托管评估器配置不再显示评估器跟踪控件。
 * 数据集和实验表现在使用数据集列标题标记数据集名称，使数据集和实验之间的关系更加清晰。
 
@@ -1129,7 +1265,7 @@ LangSmith 云每周更新
 * LangSmith Chat 现在除了现有的 OpenAI 型号外，还提供 GPT-5.6 Sol、GPT-5.6 Terra 和 GPT-5.6 Luna。
 * LangSmith 现在可以识别包含时间戳前缀的运行和跟踪 ID 的旧跟踪链接。
 * 跟踪快速入门现在打开时会选择 Deep Agents，并以 Deep Agents、LangGraph 和 LangChain 框架指南开头。
-* 跟踪详细信息现在会在专门的网关部分中显示 LLM 网关结果、策略限制、所选模型和回退尝试。被网关阻止的错误 LLM 运行也会在跟踪树中显示“已阻止”徽章。
+* 跟踪详细信息现在会在专门的网关部分中显示 LLM 网关结果、策略限制、所选模型和后备尝试。被网关阻止的错误 LLM 运行也会在跟踪树中显示“已阻止”徽章。
 
 ## 部署* LangSmith 服务现在接受 IPv4 和 IPv6 连接。
 * 部署现在可以更可靠地解析最新的代理服务器版本，防止由于请求超时而导致修订创建速度缓慢和重复修订，尤其是在亚太地区。
@@ -1153,30 +1289,30 @@ LangSmith 云每周更新
 
 **2026 年 8 月 3 日至 10 日**
 
-## 访问控制* 访问策略端点现在将错误报告为 RFC 7807 问题详细信息。错误消息从 `error` 字段移至 `detail`，语义无效的请求正文返回 HTTP 422。
+## 访问控制* 访问策略端点现在将错误报告为 RFC 7807 问题详细信息。错误消息从 `error` 字段移至 `detail`，并且语义无效的请求正文返回 HTTP 422。
 * 设置资源标签键或值描述为`null`，可通过PATCH API清除。
 * 当客户端请求机密身份验证方法时，与托管 LangSmith MCP 服务器的新连接无法注册。现在，动态客户端注册会在这种情况下发出公共客户端，而不是返回错误，因此从 Claude 和其他 MCP 客户端进行的连接可以再次正常工作。
 * 角色权限和访问策略更改现在可以可靠地使缓存的授权结果失效，包括在较新的更新后提交较旧的事务时。
 * LangSmith 现在一旦权限发生变化就会刷新缓存的角色访问策略，从而防止分割平面部署中出现过时的授权决策。
 * 会员设置页面上的“活动”、“待定”和“停用”选项卡现在在第一次单击时即可切换，同时保持分页和排序同步。
 
-## 数据集和实验* 附件和对象下载现在始终声明浏览器应如何处理响应。类型无法识别的文件或存储时没有类型的文件将作为下载提供，而不是在页面中呈现。
+## Datasets and experiments* 附件和对象下载现在始终声明浏览器应如何处理响应。类型无法识别的文件或存储时没有类型的文件将作为下载提供，而不是在页面中呈现。
 * 现在，从“数据集”或“主页”空状态创建数据集会打开新数据集，而不是短暂显示“未找到页面”屏幕。
 * 数据集 JSON 模式描述现在可以安全地呈现在编辑器工具提示中。
-* 使用不是格式正确的 UUID 的 `dataset_id` 创建或验证示例现在返回 422 命名字段而不是 500。
+* 使用不是格式良好的 UUID 的 `dataset_id` 创建或验证示例现在会返回 422 命名字段而不是 500。
 * 列出或计数包含不支持的 `filter` 表达式、不可过滤的属性或值不是有效 JSON 的 `has(...)` 比较的示例，现在返回 422 命名 `filter` 参数，而不是 500。
 * 创建实验不再转换同名的现有跟踪项目。存在冲突时重命名实验或选择新的项目名称。
 * 滚动浏览大型实验比较结果不再在每次延迟加载时重新获取示例的第一页，从而减少冗余网络流量并减少加载时间。
 
-## 监控和警报* Chart headers on dashboards no longer overflow or wrap when the title or description is long, the description now truncates with a hover tooltip that reveals the full text.展开图表操作还采用了标准图标按钮悬停处理。
+## 监控和警报* 当标题或描述很长时，仪表板上的图表标题不再溢出或换行，描述现在会使用显示全文的悬停工具提示进行截断。展开图表操作还采用了标准图标按钮悬停处理。
 * 警报预览现在处理整数元数据及其字符串表示形式与警报评估一致。
 
 ## 引擎
 
 * 为组织禁用引擎或为项目暂停引擎现在会提供一个简短的提示，询问原因，并带有可选注释。只需轻轻一按，即可直接进入团队建设引擎。
-* Engine spend controls now explain that new runs pause at the monthly limit while runs already in progress may finish and increase billed spend beyond it.
-* The Engine tab is visible again on tracing projects before Engine is turned on, so admins can enable it, members can request access, and personal organizations can upgrade, all from the tab itself.
-* Engine GitHub settings now link to setup instructions for LangSmith Cloud and self-hosted deployments, with clearer guidance when a connection fails.* 非编码代理板上的引擎扫描应用配置的优先级芯片、用户指令和跟踪范围过滤器，而不是检查整个项目。
+* 引擎支出控制现在解释说，新的运行会在每月限额处暂停，而已经进行的运行可能会完成并增加超出该限额的计费支出。
+* 在引擎打开之前，引擎选项卡在跟踪项目时再次可见，因此管理员可以启用它，成员可以请求访问权限，个人组织可以升级，所有这些都可以通过选项卡本身进行。
+* 引擎 GitHub 设置现在链接到 LangSmith 云和自托管部署的设置说明，在连接失败时提供更清晰的指导。* 非编码代理板上的引擎扫描应用配置的优先级芯片、用户指令和跟踪范围过滤器，而不是检查整个项目。
 * 引擎问题描述现在保留 Markdown 段落边界，因此更新、其他症状和更正仍然易于扫描。
 
 ## 反馈与评价
@@ -1191,7 +1327,7 @@ LangSmith 云每周更新
 * 评估者页面上的每日评估者支出、每周总计和支出限制监控现在尊重当前选定的应用程序，而不是显示所有应用程序的数据。
 * 评估者支出图表再次将其评估者和项目/数据集分组控制保留在图表标题中，以便于访问。
 
-## Tracing and observability* 通过网关的统一端点发送的聊天模型运行与提供商/模型段现在匹配模型定价规则，产生准确的跟踪成本。
+## 追踪和可观察性* 通过网关的统一端点发送的聊天模型运行与提供商/模型段现在匹配模型定价规则，产生准确的跟踪成本。
 * 见解报告仅分析跟踪，因此报告过滤器中的“Is Trace”条件现已修复。将其设置为 false 之前会生成一份成功运行但从未发现任何见解的报告。
 * LangSmith 聊天现在尊重工作区OpenAI 模型配置上的提供商 API 设置。为响应 API 配置的模型不再回退到聊天完成，这会导致在设置推理工作时较新的推理模型失败。
 * 消息上的大型 PDF、JSON 和 CSV 预览现在呈现，而不是显示空框架，并且 PDF 和 JSON 预览在扩展控件旁边获得了在新选项卡中打开控件。
@@ -1226,7 +1362,7 @@ LangSmith 云每周更新
 ＃＃ 行政* 现在，当您将鼠标悬停在页脚菜单中的组织行上时，会打开组织子菜单。
 * 自托管部署每 5 分钟而不是每 24 小时刷新一次许可证，因此权利更改会在更改后立即生效。失败的刷新不再重新启动服务，它会继续使用上次验证的许可证，直到该许可证到期。调整旋钮现在为 LICENSE_REFRESH_INTERVAL_SECONDS（默认 300），取代了 LICENSE_REFRESH_INTERVAL_HOURS。
 * 使用 Cmd+K 搜索工作区现在会突出显示组织标题中的查询，从而清楚地表明为什么与组织名称匹配的术语会返回该组织的所有工作区。
-* 帐户菜单现在提供“获取帮助”。企业用户可以在LangSmith提交支持请求，而其他云用户则被定向到支持门户。
+* 帐户菜单现在提供“获取帮助”。企业用户可以在LangSmith提交支持请求，而其他云用户则被引导至支持门户。
 * 计划和定价页面现在保留浏览器后退和前进触控板手势并将计划卡居中。
 
 ## 法学硕士网关* 现在，当以用户跟踪代码发送时，通过 LLM 网关中的网关信用模型向 Moonshotai/kimi-k3 和 Moonshotai/kimi-k2.6 发出的请求将与价格图进行匹配。
@@ -1243,7 +1379,7 @@ LangSmith 云每周更新
 * LangSmith 公开注释队列项端点，用于通过公共 API 和 SDK 生成流程添加、列出、更新、删除、计数、定位和查看运行或线程队列项。
 * 现在，无论浏览器报告的内容类型是什么，都可以上传 .csv 或 .jsonl 数据集。 Windows 浏览器将 .csv 文件标记为 Excel 类型，这此前会导致有效上传失败。也接受大写文件名，例如 DATASET.CSV。
 * 数据集或跟踪项目上的评估器列表现在显示评估器的当前名称，而不是附加时的名称。重命名后反馈键不会发生变化。
-* 实验比较网格中的元数据列（包括`example.metadata.<key>`）现在呈现其值而不是保持为空。* LangSmith 将 SmithDB SDK 迁移指南替换的每个旧端点标记为已弃用：v1 运行查询和检索端点、v1 运行共享和公共运行读取端点、`POST /api/v1/datasets/{dataset_id}/runs` 以及注释队列运行端点。现在，所有这些都使用 `Deprecation: true`、2027 年 1 月 31 日的 `Sunset` 日期以及指向迁移指南的 `Link` 标头以及（如果存在单个替换）后继端点进行响应。 [Learn more](/langsmith/smithdb-sdk-migration)。
+* 实验比较网格中的元数据列（包括`example.metadata.<key>`）现在呈现其值而不是保持为空。* LangSmith 将 SmithDB SDK 迁移指南替换的每个旧端点标记为已弃用：v1 运行查询和检索端点、v1 运行共享和公共运行读取端点、`POST /api/v1/datasets/{dataset_id}/runs` 以及注释队列运行端点。现在，所有这些都以 `Deprecation: true`、2027 年 1 月 31 日的 `Sunset` 日期以及指向迁移指南的 `Link` 标头进行响应，如果存在单个替换，则指向后继端点。 [Learn more](/langsmith/smithdb-sdk-migration)。
 * 当启用 SmithDB 查询并禁用 ClickHouse 查询时，数据集实验表可以按反馈分数排序。
 * 注释队列项 API 使用 project_id 来跟踪项目。请求主体还接受 session_id 作为别名。
 * 数据集示例视图恢复示例详细信息和选项卡导航之间的清晰间距。
@@ -1268,7 +1404,7 @@ LangSmith 云每周更新
 * 确认破坏性操作后，从运行详细信息操作菜单中删除整个跟踪。
 * 当 ClickHouse 使用优化的运行表时，负反馈键过滤器现在可以正确返回匹配跟踪。
 * 当项目配置自定义输出渲染器时，跟踪输出部分现在将其作为自定义选项与 Markdown、Plain、JSON 和 YAML 一起提供，而不是替换它们。自定义保留默认值，并且您的选择会被记住。* 使用 6.2 之前的 Redis 版本跟踪项目活动并排序以保持最新的自托管部署。
-* 现在，当您的工作区中不存在所请求的跟踪项目时，`POST /api/v1/runs/stats` 返回 404，并报告其他客户端错误，例如早于支持的回溯窗口的 `start_time`，以及其真实状态和消息，而不是通用的 500 内部服务器错误。
+* 当您的工作区中不存在所请求的跟踪项目时，`POST /api/v1/runs/stats` 现在会返回 404，并报告其他客户端错误，例如早于支持的回溯窗口的 `start_time`，以及其真实状态和消息，而不是通用的 500 内部服务器错误。
 * 自托管部署现在可以弥补丢失的跟踪项目上次运行时间戳，因此项目排序可以反映最近的历史活动。
 * 运行过滤器现在支持跨路由查询后端一致的总数、提示和完成令牌计数和成本。
 * 令牌计数/成本过滤器现在默认为总令牌/成本，而不是输入令牌。输入和输出令牌/成本细分在选择器中仍然可用。
@@ -1291,7 +1427,7 @@ LangSmith 云每周更新
 * LangGraph 部署的删除确认现在表明，在您确认后将运行底层数据库的清理，并且已删除部署的名称将保持保留状态，直到清理完成。
 
 ## 沙箱* 对于无法持有 WebSocket 的客户端，沙箱接受新的流式执行请求，该请求将 stdout 和 stderr 作为服务器发送的事件返回。传递命令 ID 重用正在运行的命令，并且单独的恢复请求会继续中断的流，而不是再次运行该命令。
-* 沙箱现在在 PATH 上附带 `langsmith` CLI，因此代理可以查询跟踪、运行和数据集，而无需先安装它。
+* 沙盒现在在 PATH 上附带 `langsmith` CLI，因此代理可以查询跟踪、运行和数据集，而无需先安装它。
 * 沙箱和快照行现在使用单列布局，并在上下文菜单中执行操作，快照源在其菜单中仍然可用，并且包装名称保持左对齐。
 * 自托管部署中的引擎沙箱命令现在使用部署服务密钥通过 WebSocket 进行身份验证，从而防止成功创建沙箱后出现 401 失败。
 * 沙盒中的`langsmith` CLI 已更新至 v0.2.44。它的请求现在在为 `/api` 下的 API 提供服务的自托管部署上解析，其中 `trace messages` 等命令和项目问题命令之前失败。
@@ -1327,19 +1463,19 @@ LangSmith 云每周更新
 
 ## 可观察性和评估
 
-### 数据集和实验* `GET /annotation-queues/{id}/items` 现在返回 THREAD 队列项目和 RUN 项目，并带有可选的 item_type 过滤器。 THREAD 列表行公开项目上的身份（thread_id/session_id/start_time）并省略嵌套线程； RUN 列表目前仍然支持嵌套运行（与仅元数据列表计划相同的省略）。查看时，跟踪和消息通过 v2 线程 API 加载。
+### 数据集和实验* `GET /annotation-queues/{id}/items` 现在将 THREAD 队列项目与 RUN 项目一起返回，并带有可选的 item_type 过滤器。 THREAD 列表行公开项目上的身份（thread_id/session_id/start_time）并省略嵌套线程； RUN 列表目前仍然支持嵌套运行（与仅元数据列表计划相同的省略）。查看时，跟踪和消息通过 v2 线程 API 加载。
 * `GET /annotation-queues/{id}/runs` 和相关大小端点排除 THREAD 队列行（run_id 为 null），因此混合队列不再返回 500。使用 GET /items 进行线程列表。
 * 项目设置现在需要至少两分钟的线程空闲时间，以确保线程评估包括所有摄取的运行。
 * 注释队列项目添加请求现在始终对运行和线程强制执行 100 项限制。超限错误清楚地显示配置的限制。
 * `GET /annotation-queues/{id}/items` 返回 RUN 和 THREAD 项的 Postgres 成员资格元数据，而不从 ClickHouse 或 SmithDB 中水合嵌套运行或线程有效负载。孤立队列行仍保持列出状态。 include_stats 查询参数已删除。通过 get-one / review API 注释有效负载负载。
-* 当您从跟踪项目批量添加运行时，其默认数据集现在首先出现在数据集选择器中。* 注释队列审查列表现在将未命名的运行行标记为 `Run <ID>`，匹配线程行并使混合队列更易于扫描。
+* 当您从跟踪项目批量添加运行时，其默认数据集现在首先出现在数据集选择器中。* 注释队列审查列表现在将未命名的运行行标记为`Run <ID>`，匹配线程行并使混合队列更易于扫描。
 * 当两个比较的运行来自同一实验时，从成对注释队列打开成对实验比较不会再导致页面崩溃。
 
 ### 追踪
 
 * 见解报告窗格现在可以折叠，为报告详细信息提供更多空间。
 * 见解集群摘要列现在可以展开以显示每个摘要的更多信息。
-* LangSmith MCP 的 `fetch_runs` 工具现在在为获取的运行记录该值时返回 `first_token_time`，无需单独的 SDK 查询即可进行 TTFT 分析。
+* 当为获取的运行记录该值时，LangSmith MCP 的`fetch_runs` 工具现在会返回 `first_token_time`，无需单独的 SDK 查询即可进行 TTFT 分析。
 * 旧版运行 URL 现在解析运行元数据并重定向到 SmithDB 跟踪视图，而不是显示错误。
 * 跟踪使用限制横幅现在仅针对已超出用户范围限制的工作区成员显示。
 * 跟踪项目页面上的部署按钮现在可在应用程序内打开部署页面，而不是重新加载 UI。
@@ -1363,7 +1499,7 @@ LangSmith 云每周更新
 * 带有存储库自述文件的提示现在将其显示在提示视图的专用自述文件部分中。
 * Gemini 3.6 Flash 和 Gemini 3.5 Flash Lite 现已在 Fleet、Agent Builder 和 Playground 模型选择器中提供，并提供使用定价支持。
 * 将内容粘贴到富文本编辑器中，例如提示游乐场和代理聊天，现在可以再次可靠地工作。
-* 运行完整实验后预览单个数据集行现在可以解析该行的评估器分数，而不是显示无限加载的反馈单元格，并且生成的反馈芯片会以其正确的颜色进行渲染。* LangSmith在切换OpenAI提示到推理模型时不再保留系统添加的top_p值，防止无效的调用参数。仍然需要 top_p 的用户可以将其添加为支持的非推理模型的额外模型参数。
+* 运行完整实验后预览单个数据集行现在可以解析该行的评估器分数，而不是显示无限加载的反馈单元格，并且生成的反馈芯片会以其正确的颜色进行渲染。* LangSmith在切换OpenAI提示推理模型时不再保留系统添加的top_p值，防止无效的调用参数。仍然需要 top_p 的用户可以将其添加为支持的非推理模型的额外模型参数。
 
 ### 引擎
 
@@ -1379,11 +1515,11 @@ LangSmith 云每周更新
 
 ### 监控和警报
 
-* 自托管警报 Webhook 传送现在支持 `SSRF_ALLOW_K8S_INTERNAL`，因此启用该设置后可以使用内部 Kubernetes 服务主机名。元数据端点、本地主机和私有 IP 保护仍然由其现有 SSRF 策略设置控制。
+* 自托管警报 Webhook 传递现在支持 `SSRF_ALLOW_K8S_INTERNAL`，因此启用该设置后可以使用内部 Kubernetes 服务主机名。元数据端点、本地主机和私有 IP 保护仍然由其现有 SSRF 策略设置控制。
 
 ### 自动化* 线程（分组）评估器现在需要 120 秒的最小空闲时间。将项目的线程空闲时间设置为低于 120 秒将被拒绝。
 * 现在，在线程中留下有关运行的反馈可以使线程有资格重新评估，因此当新反馈到达时，线程级评估器会重新运行。
-* 当沙箱验证速度缓慢时，编辑在线评估器（LLM 作为法官或自定义代码）不再间歇性失败。
+* 当沙盒验证速度缓慢时，编辑在线评估器（LLM 作为法官或自定义代码）不再间歇性失败。
 
 ## 部署
 
@@ -1412,7 +1548,7 @@ LangSmith 云每周更新
 * LLM Gateway 监控页面“支出”选项卡中的统计卡和表格标题（例如“总支出”、“每日平均”、“API 密钥”）现在将每个单词大写，与产品中其他地方使用的标题样式相匹配。
 * 当在 LLM Gateway 监控页面的日期范围选择器中选择特定开始/结束日期时，该按钮现在会显示 UTC 格式的日期并附加“(UTC)”，因此很明显该范围不遵循您当地的时区。 “过去 7 天”等相对范围不受影响。
 * LLM Gateway 监控支出仪表板上的“支出份额”列不再截断其标题文本。
-* LLM 网关现在位于专用的顶级侧边栏部分，而不是在“设置”下，并有一个新的“主页”选项卡列出您的自定义模型配置和网关的可立即运行的代码片段。旧设置网关链接自动重定向。* LangSmith 启用 LLM Gateway 的云组织的主页横幅突出显示了 Gateway 如何管理成本并提高运行时可靠性。 [Learn more](/langsmith/llm-gateway)。
+* LLM 网关现在位于专用的顶级侧边栏部分，而不是在“设置”下，并有一个新的“主页”选项卡列出您的自定义模型配置和网关的可立即运行的代码片段。旧设置网关链接自动重定向。* LangSmith 启用 LLM Gateway 的云组织的主页横幅强调了 Gateway 如何管理成本和提高运行时可靠性。 [Learn more](/langsmith/llm-gateway)。
 
 **2026 年 7 月 13 日至 17 日**
 
@@ -1420,13 +1556,13 @@ LangSmith 云每周更新
 
 ### 数据集和实验
 
-* 支持综合分数的旧反馈公式端点（`POST/GET /feedback/formulas` 和 `GET/PUT/DELETE /feedback/formulas/{feedback_formula_id}`）已弃用，取而代之的是[composite evaluators](/langsmith/composite-evaluators-ui)，它将综合分数实现为代码评估器加运行规则，并计划于 2026 年 8 月 20 日删除。将现有反馈公式迁移到新的复合模型。
+* 支持综合分数的旧反馈公式端点（`POST/GET /feedback/formulas` 和 `GET/PUT/DELETE /feedback/formulas/{feedback_formula_id}`）已弃用，取而代之的是 [composite evaluators](/langsmith/composite-evaluators-ui)，它将综合分数实现为代码评估器加运行规则，并计划于 2026 年 8 月 20 日删除。将现有反馈公式迁移到新的复合模型。
 * 现在，当重复根具有项目 ID 但没有会话 ID 时，在 [experiment comparison](/langsmith/compare-experiment-results) 视图中扩展重复运行的运行树可以可靠地工作。
 * POST /v2/datasets//experiment-runs 是支持分页实验比较的公共 API。旧数据集比较助手已从公共 OpenAPI 规范和生成的 SDK 中删除；现有 HTTP 路由继续适用于 LangSmith UI 客户端。
 * 添加`langsmith evaluator create-llm`，以根据提示、模式和模型配置文件定义结构化的 LLM 作为法官评估器规则，针对项目或数据集。* 从 [source runs](/langsmith/manage-datasets) 创建 [dataset examples](/langsmith/manage-datasets) 现在可以正确获取 SmithDB 支持的运行输入和输出，并且如果无法找到多个源运行之一，则整个请求不再失败。
 * 多轮评估器现在包含一个测试操作，可在保存规则之前针对示例线程运行评估器。
-* 使用 POST /annotation-queues//items 将 RUN 项目添加到单个[annotation queue](/langsmith/annotation-queues)。服务器通过 ClickHouse 或 SmithDB 解析运行并返回标准形状的项目信封； THREAD 支持将在后续版本中提供。
-* LangSmith CLI 现在会在使用 `evaluator upload --replace` 时更新现有的代码评估器规则，避免在替换上传失败时出现“创建前删除”窗口。
+* 使用 POST /annotation-queues//items 将 RUN 项目添加到单个 [annotation queue](/langsmith/annotation-queues)。服务器通过 ClickHouse 或 SmithDB 解析运行并返回标准形状的项目信封； THREAD 支持将在后续版本中提供。
+* 现在，当使用 `evaluator upload --replace` 时，LangSmith CLI 会更新现有的代码评估器规则，避免在替换上传失败时出现“创建前删除”窗口。
 * 将读取数据集拆分为新的下载数据集权限。  在应用程序和 API 中强制执行此新权限。  对于没有下载权限的用户，下载按钮将被禁用。 [Learn more](/langsmith/organization-workspace-operations#datasets)。
 * 当实验运行时，公共数据集实验跟踪可以正确打开，通过 v2 响应形状提供其项目标识符。* 采样率为 0 的运行规则不会处理任何运行，但调度程序仍会在每个周期内枚举它。调度程序查询现在会跳过抽样率 0 的规则（与 is_enabled 检查奇偶校验），因此永远不会调度它们。
 * 数据集和实验表现在会截断长输入和参考输出文本，并将检测到的 Base64 图像显示为小缩略图，并带有延迟的较大预览，从而避免出现过大的隐藏 DOM 内容。
@@ -1439,7 +1575,7 @@ LangSmith 云每周更新
 
 ### 追踪* 跟踪和评估入门快速入门现在显示正确的 LANGSMITH_ENDPOINT，用于自带云数据平面工作区，而不是共享多租户端点。
 * 批量导出压缩现在默认为 zstandard (zstd) 以提高性能。自托管环境通过 FF_BULK_EXPORT_DEFAULT_COMPRESSION 环境变量保留 gzip 默认值。
-* [LangSmith MCP tools](/langsmith/langsmith-mcp-server)，获取运行或线程历史记录现在除了项目名称之外还接受项目 UUID，从而使跟踪 URL 调查更快、更不容易出错。
+* [LangSmith MCP tools](/langsmith/langsmith-mcp-server) 除了项目名称之外，提取运行或线程历史记录现在还接受项目 UUID，从而使跟踪 URL 调查更快、更不容易出错。
 * OpenTelemetry 资源属性（通过 OTEL_RESOURCE_ATTRIBUTES 设置）现在作为 otel.resource.\* 下命名空间的元数据显示在跟踪上，因此您可以附加用户 ID 等详细信息，而无需更改跟踪器发出跨度的方式。
 * 跟踪视图中的 LLM 跨度现在显示模型提供商的品牌徽标（OpenAI、Anthropic、Google/Gemini、Azure、Mistral、DeepSeek、xAI 和语音提供商），从运行的 ls_provider 元数据解析。
 * 修复了非原始元数据值未出现在运行详细信息中的错误。* 运行统计数据的范围限定为显式运行 ID 列表（例如 Insights 每个集群的统计数据），现在在 SmithDB 上计算，它将结果限定在这些运行范围内，而不是回退到项目范围的总计。
@@ -1449,7 +1585,7 @@ LangSmith 云每周更新
 * LangSmith MCP 的 `fetch_runs` 工具现在接受 `min_start_time` 和 `max_start_time` 参数，因此代理可以在默认的最近窗口之外搜索跟踪。
 * 添加一个 `GET /v2/runs/{run_id}/url` 端点，该端点返回特定运行的 LangSmith UI URL。
 
-＃＃＃ 引擎* 当[Engine](/langsmith/engine)项目达到每月支出限额时，下次运行状态芯片和项目支出卡现在会显示清晰的“已达到每月支出限额”状态，并带有一个按钮，可直接提高限额。
+＃＃＃ 引擎* 当 [Engine](/langsmith/engine) 项目达到每月支出限额时，下次运行状态芯片和项目支出卡现在会显示清晰的“已达到每月支出限额”状态，并带有一个按钮，可直接提高限额。
 * LangSmith 通过托管 MCP 工具和生成的 SDK 方法公开 [Engine](/langsmith/engine) 问题列表和检索。代理和 API 客户端可以直接按问题 ID 获取问题详细信息，或按项目、状态、严重性、标签和更新时间过滤问题。
 * 新的 [Engine](/langsmith/engine) 板标注将您指向跟踪范围设置，您可以在其中将引擎的审查限制为与运行名称或元数据值匹配的运行。
 * 引擎设置屏幕现在根据项目最近的跟踪量和大小显示估计的每月成本，因此您在开始分析之前大致了解会发生什么。
@@ -1552,13 +1688,13 @@ LangSmith 云每周更新
 * 自托管 Playground 和评估器出站模型调用现在支持代理环境变量，同时保留每个请求的 SSRF 验证。
 * 现在，在 Context Hub 搜索框中键入工作区成员的姓名或电子邮件也会返回他们创建的提示和资源。
 * 现在，使用 IAM 受信任实体对 Amazon Bedrock 的 Playground 和评估程序调用会解析正确的 LangSmith AWS 凭证，然后再在 AWS 托管的 LangSmith 中承担客户角色。这修复了在承担客户角色之前报告“无法承担角色”的故障。
-* 通过转发代理路由的出站模型调用现在在代理 CONNECT 隧道中发送原始主机名，而不是已解析的 IP，因此按域将隧道目标列入白名单的代理不再拒绝它们。这修复了自托管 Playground 和评估器对只能通过此类代理访问的内部OpenAI兼容端点的调用。* 现在查看提示提交会显示模型上设置的每个额外参数（例如详细程度），而不仅仅是固定子集。
+* 通过转发代理路由的出站模型调用现在在代理 CONNECT 隧道中发送原始主机名，而不是已解析的 IP，因此按域将隧道目标列入白名单的代理不再拒绝它们。 This fixes self-hosted Playground and evaluator calls to internal OpenAI-compatible endpoints reachable only through such a proxy.* 现在查看提示提交会显示模型上设置的每个额外参数（例如详细程度），而不仅仅是固定子集。
 
 ### 反馈
 
-* 将运行添加到注释队列的 POST 请求接受可选的 `extend_trace_retention` 查询参数。当设置为 false 时，短期跟踪不会升级为长期保留。为了向后兼容，默认值保持 true。
+* POST requests to add runs to an annotation queue accept an optional `extend_trace_retention` query parameter.当设置为 false 时，短期跟踪不会升级为长期保留。为了向后兼容，默认值保持 true。
 * 当客户端提供会话和开始时间时，反馈创建会解析来自 SmithDB 的运行元数据，因此仅 SmithDB 的部署不再依赖 ClickHouse 来进行急切的反馈写入。
-* `POST /feedback/eager` 端点已弃用，取而代之的是 `POST /feedback`，并计划于 2026 年 8 月 10 日删除。将调用 `/feedback/eager` 的任何直接集成更新为使用 `POST /feedback`。
+* The `POST /feedback/eager` endpoint is deprecated in favor of `POST /feedback` and is scheduled for removal on 2026-08-10. Update any direct integrations calling `/feedback/eager` to use `POST /feedback` instead.
 
 ### 监控和警报
 
@@ -1588,14 +1724,14 @@ LangSmith 云每周更新
 * 工作区邀请批量请求现在对每个工作区进行速率限制，以减少批量邀请滥用。 [Learn more](/langsmith/usage-and-billing#workspace-invite-batch-endpoint)。
 * LangSmith 主页现在显示一条宣传 Interrupt 的横幅，这是我们今年秋天在伦敦和纽约举行的代理会议，并带有获取门票的链接。
 
-### 法学硕士网关* LLM 网关现在支持 `POST /openai/v1/responses/compact`（以及旧版 `/responses/compact`），通过聊天形状响应处理程序进行路由。
+### 法学硕士网关* LLM 网关现在支持`POST /openai/v1/responses/compact`（以及旧版`/responses/compact`），通过聊天形状响应处理程序路由它。
 * 当网关支出上限策略针对多个用户、工作区或 API 密钥时，创建/编辑策略表单现在会解释该限制适用于所选实体而不是每个实体的组合支出。
 * LLM 网关现在将其不直接处理的每个记录的 OpenAI API 路由（模型、文件、批次、图像等）转发给上游提供商，因此客户端可以通过网关到达完整的 OpenAI 表面。兼容 OpenAI 的自定义提供程序继承相同的直通路由。
 * LLM Gateway 策略页面现在允许您按支出限制或使用百分比对每个部分进行排序，并筛选到特定的工作区、用户或 API 密钥。
 * LLM 网关数据保护修订现在在修订的消息文本前面添加了简短的免责声明，以便模型知道 SAFE_TO_USE 占位符可以安全地逐字重用。
 * LLM 网关现在代理 Anthropic 的文件和托管代理端点，因此您可以将它们与网关管理的工作区密钥以及消息和模型一起使用。* 创建 LLM Gateway 支出或数据保护策略现在适用于您登录的组织，将组织下拉列表替换为当前组织的只读显示。
 * 较长的选定值（例如网关策略过滤器中的用户电子邮件）现在用省略号截断，而不是与下拉 V 形图标重叠。
-* LLM 网关现在通过其提供者路由接受工作区范围的 LangSmith OAuth 不记名令牌，因此 OAuth 客户端可以在没有 LangSmith API 密钥的情况下调用配置的模型。
+* LLM 网关现在在其提供者路由上接受工作区范围的 LangSmith OAuth 持有者令牌，因此 OAuth 客户端可以在没有 LangSmith API 密钥的情况下调用配置的模型。
 
 ## 其他
 
@@ -1605,8 +1741,8 @@ LangSmith 云每周更新
 
 ## 可观察性和评估
 
-### 数据集和实验* [Experiments](/langsmith/analyze-an-experiment) 表配置单元中的模型、提示和工具芯片现在根据实际测量进行布局，以实现精确截断，+N 溢出徽章是一个可点击的下拉列表，其条目显示与芯片自己的菜单相同的操作（过滤、分组依据、在游乐场中打开和详细信息）。
-* 当重复根具有 `project ID` 但没有 `session ID` 时，在 [experiment comparison](/langsmith/compare-experiment-results) 视图中扩展重复运行的运行树现在可以可靠地工作。
+### 数据集和实验* [Experiments](/langsmith/analyze-an-experiment) 表配置单元中的模型、提示和工具芯片现在根据实际测量进行布局，以实现精确截断，+N 溢出徽章是一个可点击的下拉列表，其条目公开与芯片自己的菜单相同的操作（过滤、分组依据、在游乐场中打开和详细信息）。
+* 当重复根具有 `project ID` ​​但没有 `session ID` 时，在 [experiment comparison](/langsmith/compare-experiment-results) 视图中扩展重复运行的运行树现在可以可靠地工作。
 * 链接到 Hub 提示的[Evaluators](/langsmith/evaluators) 现在可以正确加载平面和游乐场形状的提示提交，修复编辑现有评估器时的崩溃问题。
 * 代码评估器上传现在接受使用 PEP 604 联合返回类型注释的 Python 入口点（例如 `-> dict | None`）。
 * `POST /v2/datasets/{dataset_id}/experiment-runs` 是支持分页实验比较的公共 API。旧数据集比较助手已从公共 OpenAPI 规范和生成的 SDK 中删除；现有 HTTP 路由继续适用于 LangSmith UI 客户端。
@@ -1625,7 +1761,7 @@ LangSmith 云每周更新
 * 当过滤或范围限定为最近没有运行的时间窗口时，具有现有跟踪的项目不再错误地显示入门屏幕。项目运行计数检查现在会回溯 30 天，而不是之前的一小时窗口。* 批量导出压缩现在默认为 zstandard (zstd) 以提高性能。自托管环境通过 `FF_BULK_EXPORT_DEFAULT_COMPRESSION` 环境变量保留 gzip 默认值。
 * 当提交重复的运行创建或更新有效负载时，LangSmith 现在会返回更清晰的 409 冲突消息。该消息指示重复项是否是运行创建请求或运行更新请求（如果可能）。
 * LangSmith [MCP tools](/langsmith/langsmith-mcp-server)，除了项目名称之外，提取运行或线程历史记录现在还接受 `project UUIDs`，从而使跟踪 URL 调查更快、更不容易出错。
-* OpenTelemetry 资源属性（通过`OTEL_RESOURCE_ATTRIBUTES` 设置）现在作为 otel.resource.\* 下命名空间的元数据显示在跟踪上，因此您可以附加用户 ID 等详细信息，而无需更改跟踪器发出跨度的方式。
+* OpenTelemetry 资源属性（通过 `OTEL_RESOURCE_ATTRIBUTES` 设置）现在作为 otel.resource.\* 下命名空间的元数据显示在跟踪上，因此您可以附加用户 ID 等详细信息，而无需更改跟踪器发出跨度的方式。
 * 通过原始 OpenTelemetry 发送的 Vercel AI SDK 跟踪现在呈现在消息视图中。以前，这些跟踪显示空的“消息”选项卡，因为没有格式适配器声明它们。
 * 选择流式传输的线程统计请求现在首先返回主要统计数据，并在准备就绪时添加反馈统计数据。
 * 当运行查询超时时，运行表现在会显示超时横幅，以获得更好的响应能力。* 当一次运行具有超大输入或输出时，LangSmith 现在会保留多部分摄取批次中的跟踪。过大的输入和输出字段将替换为占位符，而不是拒绝整个批次。
@@ -1659,7 +1795,7 @@ LangSmith 云每周更新
 ## 部署* 自托管部署现在可以请求高于之前 8/16 核和 32/16 GB 云限制的 CPU 和内存，仅受集群容量限制。下限、128 的倍数粒度和 Redis 内存排序仍然强制执行。
 * 自定义 Slack 应用程序触发器现在可以选择让第三方机器人触发代理。在注册上启用允许机器人触发器切换以接受来自外部机器人的事件；来自您自己的和其他 LangSmith 注册的机器人的回声仍会被丢弃以防止循环。
 * 代理现在会立即跳过无法访问或配置错误的非默认 MCP 服务器，而不是重试它们，从而消除了工具加载步骤中的缓慢往返并缩短了首次令牌的时间。
-* 当副本报告跨单独的使用情况报告运行的重叠间隔时，LangGraph 平台部署的待机（正常运行时间）分钟数可能会多次计费。现在，报告会在运行过程中每分钟进行重复数据删除，因此最多计费一次。
+* 当副本报告跨单独的使用情况报告运行的重叠间隔时，LangGraph 的待机（正常运行时间）分钟数可能会多次对平台部署进行计费。现在，报告会在运行过程中每分钟进行重复数据删除，因此最多计费一次。
 
 ## 沙箱* 沙箱命令输出现在重新分块为有界的单个 WebSocket 帧，因此不重新组装连续帧（包括 Go SDK）的客户端可以读取大型流式传输或重播输出，而无需截断 JSON。
 * 当未提供时，S3 沙箱挂载现在默认为 `endpoint_url` 至 [https://s3.amazonaws.com](https://s3.amazonaws.com)，因此挂载标准 AWS S3 存储桶时不再需要该字段。
@@ -1679,18 +1815,18 @@ LangSmith 云每周更新
 * 使用限制页面现在显示每个工作区配置的总计和扩展（长期）跟踪限制，包括以前在支出限制显示为“无限制”时隐藏的上限。* 在邀请已成为待定组织受邀者或活跃组织成员的用户时，批处理工作区邀请端点不再返回 409 错误。这些用户将直接添加到工作区，无需新的组织邀请。
 * 编辑待定成员邀请对话框中的角色选择器现在使用可滚动选择，与邀请流程相匹配。这可确保在定义许多工作区角色时可以访问所有自定义角色。
 * 自托管部署现在可以将 OIDC 授权请求中的空格编码为 %20 而不是 +，因此单点登录可与拒绝范围列表默认 + 编码的身份提供商配合使用。通过设置 OAUTH_URL_ENCODE_SCOPE_SPACES=true 来启用它。
-* 当付款或业务详细信息使表单高于屏幕时，计费升级对话框现在保留在视口内并滚动。
+* Billing upgrade dialogs now stay within the viewport and scroll when payment or business details make the form taller than the screen.
 * 具有管理成员权限的非管理员呼叫者无法再向工作区成员分配受限角色或邀请具有受限角色的用户加入工作区。
 * 在 API 密钥设置页面上按工作区过滤组织的服务密钥和个人访问令牌。* 没有工作区的用户：管理权限无法在 UI 中使用受限角色进行邀请、角色更改或用户删除。
 * 当禁用组织级邀请时，将现有的活动或待定组织成员添加到工作区不再失败。已禁用的组织邀请继续阻止新的组织受邀者。
 * 当组织的角色数量超出屏幕显示范围时，角色设置页面现在可以正确滚动。
 * 组织管理员可以再次在组织成员设置页面中编辑其他组织管理员的角色并删除其他组织管理员。组织操作员共享相同的管理员级别权限，但不应管理其他管理员，现在可以正确阻止编辑、删除成员或将成员提升为组织管理员。
 
-### 法学硕士网关* LLM 网关数据保护策略现在可以配置保护管道超时是允许请求通过还是阻止请求。现有策略默认允许超时请求。
+### 法学硕士网关* LLM 网关数据保护策略现在可以配置保护管道超时是允许请求通过还是阻止请求。 Existing policies default to allowing requests on timeout.
 * LLM 网关现在支持 POST /openai/v1/responses/compact （以及旧版 /responses/compact），通过聊天形状响应处理程序进行路由。
 * Guard 策略现在允许您选择要检测的 PII 规则类别，并具有单独的基于规则的较快检测选项和基于模型的较慢检测选项，而不是单个开/关 PII 切换。
-* 网关防护秘密修订现在可以检测其他令牌格式，包括 SendGrid API 令牌、Google OAuth 访问令牌、JWT、Slack webhook URL 和旧版 LangSmith 密钥。
-* [LLM Gateway](/langsmith/llm-gateway) 策略页面现在允许您按支出限制或使用百分比对每个部分进行排序，并筛选到特定的工作区、用户或 API 密钥。
+* Gateway guard secret redaction now detects additional token formats, including SendGrid API tokens, Google OAuth access tokens, JWTs, Slack webhook URLs, and legacy LangSmith keys.
+* The [LLM Gateway](/langsmith/llm-gateway) policies page now lets you sort each section by spend limit or usage percentage, and filter down to a specific workspace, user, or API key.
 
 **2026 年 6 月 15 日至 19 日**
 
@@ -1698,11 +1834,11 @@ LangSmith 云每周更新
 
 ### 自动化
 
-* [Automations](/langsmith/rules) 现在允许您控制每个操作的跟踪保留，因此与规则匹配的跟踪可以保留基本保留而不是升级。
+* [Automations](/langsmith/rules) now let you control trace retention per action, so traces matched by a rule can stay at base retention instead of being upgraded.
 
 ＃＃＃ 引擎* [Engine](/langsmith/engine) 问题板现在会在未连接 GitHub 时显示“连接 GitHub”操作，因此您无需离开该板即可设置拉取请求创建。
 * [Engine](/langsmith/engine) 现在具有包含访问请求的统一启用屏幕，组织设置将引擎使用和限制整合到一处。
-* 当支出超过每个配置的阈值时，组织管理员现在会收到[Engine](/langsmith/engine)支出电子邮件，并且暂停或禁用引擎现在会要求确认。
+* 当支出超过每个配置的阈值时，组织管理员现在会收到 [Engine](/langsmith/engine) 支出电子邮件，并且暂停或禁用引擎现在会要求确认。
 
 ### 数据集和实验
 
@@ -1712,7 +1848,7 @@ LangSmith 云每周更新
 * 现在，您可以在创建[dataset](/langsmith/manage-datasets)时应用资源标签，包括从头开始、文件上传或克隆。
 * 自动附加断言 [evaluators](/langsmith/evaluators) 现在从参考输出中读取断言，因此实验分数反映了实际的通过和失败结果。
 
-### 提示和游乐场* [OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials) 现在支持模型配置上的每个工作区设置，因此工作区管理员可以在保存的提示和模型上自助提供 OAuth。
+### 提示和游乐场* [OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials) 现在支持模型配置的每个工作空间设置，因此工作空间管理员可以在保存的提示和模型上自助提供 OAuth。
 * [Playground](/langsmith/playground-model-providers) 现在在响应 API 上公开了OpenAI 推理模型的推理摘要选项。
 * 型号下拉列表不再建议 OpenAI 兼容端点的 OpenAI 型号，因此您可以输入自己的 [custom model name](/langsmith/model-configurations)。
 
@@ -1756,7 +1892,7 @@ LangSmith 云每周更新
 ## 可观察性和评估
 
 ### 引擎* [Engine](/langsmith/engine) 现在仅在项目视图中显示项目级别支出，因此组织范围的支出保留在组织设置界面中。
-* [Engine](/langsmith/engine) 现在将 Slack 问题警报面板固定在滚动问题列表上方，以便在您浏览时标注保持可见。
+* [Engine](/langsmith/engine) 现在将 Slack 问题警报平台固定在滚动问题列表上方，以便在您浏览时标注保持可见。
 
 ### 数据集和实验
 
@@ -1781,7 +1917,7 @@ LangSmith 云每周更新
 
 ## 可观察性和评估
 
-### 自动化* [Run rule](/langsmith/rules) webhook 有效负载现在包含每次运行的跟踪深度链接，因此下游系统可以直接跳回跟踪。
+### 自动化* [Run rule](/langsmith/rules) webhook 有效负载现在包含每次运行的跟踪深度链接，因此下游系统可以直接跳回到跟踪。
 
 ### 引擎
 
@@ -1822,7 +1958,7 @@ LangSmith 云每周更新
 ### 使用和计费
 
 * [Granular billable usage](/langsmith/granular-usage) 现在支持按保留层进行过滤和分组，将长期跟踪与短期跟踪分开。
-* 粒度计费使用页面现在显示 LangSmith 部署使用情况，包括执行的节点、代理运行和代理正常运行时间，以及跟踪使用情况。
+* 粒度计费使用页面现在显示 LangSmith 部署使用情况，包括执行的节点、代理运行、代理正常运行时间以及跟踪使用情况。
 
 ## 修复* 改进了加载大迹线的性能。
 * 现在，当您重新打开过滤器下拉列表进行编辑时，会保留元数据的过滤器值。
@@ -1838,7 +1974,7 @@ LangSmith 云每周更新
 
 ### 数据集和实验
 
-* 您现在可以将任何实验固定为基线。固定的实验位于[Experiments](/langsmith/compare-experiment-results)视图的顶部，并作为以后运行的自动比较点，显示每列的性能增量，因此改进和回归立即清晰。
+* 您现在可以将任何实验固定为基线。固定的实验位于 [Experiments](/langsmith/compare-experiment-results) 视图的顶部，并作为以后运行的自动比较点，在每列中显示性能增量，以便立即清楚改进和回归。
 
 **2026 年 2 月 2 日至 6 日**
 
@@ -1878,7 +2014,7 @@ LangSmith 云每周更新
 
 ### 管理
 
-* LangSmith 现已位于 Okta 集成网络上，因此企业团队可以使用 SCIM 来配置和取消配置用户，并通过 Okta 的引导设置来配置 SSO。请参阅[administration overview](/langsmith/administration-overview)了解访问控制选项。
+* LangSmith 现已位于 Okta 集成网络上，因此企业团队可以使用 SCIM 来配置和取消配置用户，并通过 Okta 的引导设置来配置 SSO。有关访问控制选项，请参阅[administration overview](/langsmith/administration-overview)。
 
 **2025 年 10 月 20 日至 24 日**
 
@@ -1900,7 +2036,7 @@ LangSmith 云每周更新
 
 ## 部署
 
-* LangGraph 平台现为 [LangSmith Deployment](/langsmith/deploy-overview)，LangGraph Studio 现为 [LangSmith Studio](/langsmith/studio)。 LangSmith 现在涵盖三个服务：可观察性、评估和部署。现有部署、API、工作流程、定价和合同保持不变，无需采取任何操作。
+* LangGraph 平台现已更名为 [LangSmith Deployment](/langsmith/deploy-overview)，LangGraph Studio 现已更名为 [LangSmith Studio](/langsmith/studio)。 LangSmith 现在涵盖三个服务：可观察性、评估和部署。现有部署、API、工作流程、定价和合同保持不变，无需采取任何操作。
 
 **2025 年 10 月 6 日至 10 日**
 
@@ -1952,7 +2088,7 @@ LangSmith 云每周更新
 
 ### 追踪
 
-* [Data export](/langsmith/data-export) 现在支持跟踪的计划导出，因此数据仓库、监控平台和仪表板等外部系统无需自定义基础设施即可保持同步。
+* [Data export](/langsmith/data-export) 现在支持按计划导出跟踪，因此数据仓库、监控平台和仪表板等外部系统无需自定义基础设施即可保持同步。
 
 **2025 年 7 月 7 日至 11 日**
 
@@ -2020,7 +2156,7 @@ LangSmith 云每周更新
 
 ## 部署
 
-* LangGraph 平台，现为 [LangSmith Deployment](/langsmith/deploy-overview)，已实现大规模部署和管理长期运行、有状态代理的普遍可用性，具有一键式 GitHub 到生产部署、集成内存和持久性、可扩展 API 以及跨云、混合、自托管和开发人员部署选项的代理注册表。
+* LangGraph 平台，现为 [LangSmith Deployment](/langsmith/deploy-overview)，实现了大规模部署和管理长期运行、有状态代理的普遍可用性，具有一键式 GitHub 到生产部署、集成内存和持久性、可扩展 API 以及跨云、混合、自托管和开发人员部署选项的代理注册表。
 * [Studio](/langsmith/studio) v2 在本地运行，无需桌面应用程序，支持在 UI 中编辑提示和配置，与 Playground 集成，并允许您下载生产跟踪以在本地调试它们。
 
 **2025 年 5 月 5 日至 9 日**
@@ -2055,7 +2191,7 @@ LangSmith 云每周更新
 
 ### 数据集和实验
 
-* 您现在可以直接在 UI 中为数据集和跟踪项目定义[evaluators](/langsmith/evaluators)，无需任何代码，包括带有预构建模板、可自定义提示、变量映射、评分和少样本支持的 LLM 法官评估器。
+* 您现在可以直接在 UI 中为数据集和跟踪项目定义[evaluators](/langsmith/evaluators)，无需任何代码，包括具有预构建模板、可自定义提示、变量映射、评分和少样本支持的 LLM 法官评估器。
 
 **2025 年 3 月 17-21 日**
 
@@ -2067,11 +2203,11 @@ LangSmith 云每周更新
 
 ### 追踪
 
-* LangSmith现在支持用两行代码跟踪[OpenAI Agents SDK](/langsmith/trace-with-openai-agents-sdk)应用程序，以便逐步观察代理执行和推理。
+* LangSmith 现在支持使用两行代码跟踪 [OpenAI Agents SDK](/langsmith/trace-with-openai-agents-sdk) 应用程序，以便逐步观察代理执行和推理。
 
 ### 数据集和实验
 
-* 您现在可以在 UI 中重命名 [experiment](/langsmith/analyze-an-experiment)，可以在运行后从 Playground 表标题中重命名，也可以使用实验视图中的铅笔图标重命名。
+* 现在，您可以在 UI 中重命名 [experiment](/langsmith/analyze-an-experiment)，可以在运行后从 Playground 表标题中重命名，也可以使用实验视图中的铅笔图标重命名。
 
 **2025 年 2 月 24 日至 28 日**
 
@@ -2079,7 +2215,7 @@ LangSmith 云每周更新
 
 ### 数据集和实验
 
-* 您现在可以按元数据对[experiment results](/langsmith/analyze-an-experiment)进行分组，以分析用户组或主题领域等细分市场的评估绩效。
+* 您现在可以按元数据对[experiment results](/langsmith/analyze-an-experiment)进行分组，以分析跨用户组或主题领域等细分市场的评估绩效。
 
 ## 修复
 
@@ -2127,4 +2263,4 @@ LangSmith 云每周更新
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/changelog.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/changelog.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

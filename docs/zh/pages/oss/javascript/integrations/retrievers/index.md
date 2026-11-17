@@ -6,7 +6,7 @@
 
 使用 LangChain JavaScript 与检索器集成。
 
-[retriever](/oss/javascript/deepagents/retrieval) 是一个根据非结构化查询返回文档的接口。
+[retriever](/oss/javascript/deepagents/retrieval) 是一个接口，它根据非结构化查询返回文档。
 它比矢量存储更通用。
 检索器不需要能够存储文档，只需返回（或检索）它们即可。
 
@@ -20,18 +20,19 @@
 ## 所有猎犬
 
 |猎犬 |自托管 |云产品|套餐 |下载 |
-| :- | :- | :- | :- | :- |
-| [⟦T1⟧](/oss/javascript/integrations/retrievers/kendra-retriever) | | | [⟦T2⟧](https://www.npmjs.com/package/@langchain/aws) | [  ⟦T20⟧](https://www.npmjs.com/package/@langchain/aws) |
-| [⟦T3⟧](/oss/javascript/integrations/retrievers/bedrock-knowledge-bases) | | | [⟦T4⟧](https://www.npmjs.com/package/@langchain/aws) | [  ⟦T21⟧](https://www.npmjs.com/package/@langchain/aws) |
-| [⟦T5⟧](/oss/javascript/integrations/retrievers/exa) | | | [⟦T6⟧](https://www.npmjs.com/package/@langchain/exa) | [  ⟦T22⟧](https://www.npmjs.com/package/@langchain/exa) |
-| [⟦T7⟧](/oss/javascript/integrations/retrievers/perplexity_search) | | | [⟦T8⟧](https://www.npmjs.com/package/@langchain/perplexity) | [  ⟦T23⟧](https://www.npmjs.com/package/@langchain/perplexity) |
-| [⟦T9⟧](/oss/javascript/integrations/retrievers/sourcey) | | | [⟦T10⟧](https://www.npmjs.com/package/langchain-sourcey) | [  ⟦T24⟧](https://www.npmjs.com/package/langchain-sourcey) |
-| [⟦T11⟧](https://getalchemystai.com/docs) | | | [⟦T12⟧](https://www.npmjs.com/package/@alchemystai/langchain-js) | [  ⟦T25⟧](https://www.npmjs.com/package/@alchemystai/langchain-js) |
-| [⟦T13⟧](https://foxnose.net/docs/integrations/langchain-js) | ❌ | ✅ | [⟦T14⟧](https://www.npmjs.com/package/@foxnose/langchain) | [  ⟦T26⟧](https://www.npmjs.com/package/@foxnose/langchain) |
-| [⟦T15⟧](https://recallmem.dev/guides/langchain) | ✅ | ✅ | [⟦T16⟧](https://www.npmjs.com/package/@recall-memory/langchain) | [  ⟦T27⟧](https://www.npmjs.com/package/@recall-memory/langchain) |
-| [⟦T17⟧](/oss/javascript/integrations/retrievers/hyde) | | | |不适用 |
-| [⟦T18⟧](/oss/javascript/integrations/retrievers/self_query/hanavector_self_query) | | | |不适用 |
-| [⟦T19⟧](/oss/javascript/integrations/retrievers/time-weighted-retriever) | | | |不适用 |
+| :-| :-| :-| :-| :-|
+| [⟦T1⟧](/oss/javascript/integrations/retrievers/kendra-retriever) | | | [⟦T2⟧](https://www.npmjs.com/package/@langchain/aws) | [  ⟦T22⟧](https://www.npmjs.com/package/@langchain/aws) |
+| [⟦T3⟧](/oss/javascript/integrations/retrievers/bedrock-knowledge-bases) | | | [⟦T4⟧](https://www.npmjs.com/package/@langchain/aws) | [  ⟦T23⟧](https://www.npmjs.com/package/@langchain/aws) |
+| [⟦T5⟧](/oss/javascript/integrations/retrievers/exa) | | | [⟦T6⟧](https://www.npmjs.com/package/@langchain/exa) | [  ⟦T24⟧](https://www.npmjs.com/package/@langchain/exa) |
+| [⟦T7⟧](/oss/javascript/integrations/retrievers/perplexity_search) | | | [⟦T8⟧](https://www.npmjs.com/package/@langchain/perplexity) | [  ⟦T25⟧](https://www.npmjs.com/package/@langchain/perplexity) |
+| [⟦T9⟧](/oss/javascript/integrations/retrievers/sourcey) | | | [⟦T10⟧](https://www.npmjs.com/package/langchain-sourcey) | [  ⟦T26⟧](https://www.npmjs.com/package/langchain-sourcey) |
+| [⟦T11⟧](https://github.com/hackcat29/axonio-sdk/tree/main/adapters/langchain#readme) | | | [⟦T12⟧](https://www.npmjs.com/package/axonio-langchain) | [  ⟦T27⟧](https://www.npmjs.com/package/axonio-langchain) |
+| [⟦T13⟧](https://getalchemystai.com/docs) | | | [⟦T14⟧](https://www.npmjs.com/package/@alchemystai/langchain-js) | [  ⟦T28⟧](https://www.npmjs.com/package/@alchemystai/langchain-js) |
+| [⟦T15⟧](https://foxnose.net/docs/integrations/langchain-js) | ❌ | ✅ | [⟦T16⟧](https://www.npmjs.com/package/@foxnose/langchain) | [  ⟦T29⟧](https://www.npmjs.com/package/@foxnose/langchain) |
+| [⟦T17⟧](https://recallmem.dev/guides/langchain) | ✅ | ✅ | [⟦T18⟧](https://www.npmjs.com/package/@recall-memory/langchain) | [  ⟦T30⟧](https://www.npmjs.com/package/@recall-memory/langchain) |
+| [⟦T19⟧](/oss/javascript/integrations/retrievers/hyde) | | | |不适用 |
+| [⟦T20⟧](/oss/javascript/integrations/retrievers/self_query/hanavector_self_query) | | | |不适用 |
+| [⟦T21⟧](/oss/javascript/integrations/retrievers/time-weighted-retriever) | | | |不适用 |
 
 > [!注意]
 >

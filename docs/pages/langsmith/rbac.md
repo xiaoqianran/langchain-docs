@@ -16,7 +16,7 @@ In LangSmith, each user has:
   * The Organization User and Organization Viewer roles are only available in organizations on [Plus and Enterprise plans](https://langchain.com/pricing). In Developer organizations (single workspace), all users are assigned the Organization Admin role by default.
 * One assigned [**workspace role**](#workspace-roles) per workspace they are a member of (requires Enterprise RBAC feature).
 
-A user can also receive additional workspace roles through [teams](/langsmith/teams). The user then holds the permissions of their assigned role and of each team's role in that workspace.
+A user can also receive additional workspace roles through [user groups](/langsmith/user-groups). The user then holds the permissions of their assigned role and of each user group's role in that workspace.
 
 On Enterprise plans, organizations can also create [custom workspace roles](#custom-roles) with granular permission combinations.
 

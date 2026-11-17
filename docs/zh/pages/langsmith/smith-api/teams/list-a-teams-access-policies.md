@@ -5,6 +5,7 @@
 # 列出团队的访问策略
 
 /langsmith/langsmith-platform-openapi.json 获取 /api/v1/platform/orgs/current/teams/{team_id}/access-policies
+已弃用：使用相应的 /user-groups 端点。
 列出附加到团队的访问策略。一个页面带有next_cursor，即
 作为下一页的光标发送回的值，最后一页为 null
 已读。此端点未为该团队发出的光标再次从以下位置开始

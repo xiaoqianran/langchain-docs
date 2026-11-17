@@ -14,7 +14,7 @@ Fleet turns any agent into a Slack teammate your team can tag in a channel or me
 
 > [card] [Self-hosted](#set-up-slack-on-self-hosted)
 >
-> Configure a Slack OAuth provider, then create a custom Slack app per agent.
+> Configure a Slack OAuth provider, then create a custom Slack app per agent or connect the shared Slack app.
 
 After setup, see:
 
@@ -94,7 +94,7 @@ If your Slack workspace requires an admin to approve each app, Fleet saves the n
 
 ## Set up Slack on Self-hosted
 
-Self-hosted deployments do not use the Fleet Slack manager. Instead, configure a Slack OAuth provider once for the instance, then create a custom Slack app for each agent from a manifest that Fleet generates.
+Self-hosted deployments do not use the Fleet Slack manager. Instead, configure a Slack OAuth provider once for the instance. Then either create a custom Slack app for each agent from a manifest that Fleet generates, or [connect the shared Slack app](#connect-the-shared-slack-app) to a channel.
 
 ### Allow inbound Slack requests
 
@@ -244,6 +244,36 @@ After your admin approves the app:
 > [!NOTE]
 >
 > Each agent can have only one Slack app, and each Slack app can be linked to only one agent.
+
+### Connect the shared Slack app
+
+> [!NOTE]
+>
+> The shared Slack app requires Helm chart version 0.17.54 or later (LangSmith 0.17.77).
+
+The shared Slack app is the Slack app you registered for the OAuth provider in [Step 1](#step-1-set-up-the-slack-oauth-provider). Every agent on the instance can use it, so users connect a channel without creating a Slack app of their own. Every message in the connected channel runs the agent.
+
+The shared app requires `fleet.oauth.slackSigningSecret` in your Helm values, set to the signing secret of that Slack app.
+
+To connect an agent to a channel through the shared app:
+
+1. Select your agent and open its configuration sidebar.
+2. In the **Channels** drawer, add **Slack channel (shared app)**.
+3. Authorize Slack and choose the channel.
+
+Fleet adds the Slack tools to the agent. The agent replies through each user's own Slack connection, so each user sees a one-time **Connect Slack** prompt before the agent can reply to them.
+
+### Turn off custom Slack apps
+
+To keep users on the shared Slack app, turn off custom Slack app creation for the whole instance. Add the following to `commonEnv` in your Helm values and redeploy:
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+commonEnv:
+  - name: FF_CUSTOM_SLACK_APPS_DISABLED
+    value: "true"
+```
+
+The setting applies to every workspace and every user, including admins. Fleet hides the custom Slack app options and rejects requests that create one. Existing custom Slack apps keep working.
 
 ## Use your agent in Slack
 

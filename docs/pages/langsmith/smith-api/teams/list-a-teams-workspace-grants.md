@@ -3,6 +3,7 @@
 # List a team's workspace grants
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/platform/orgs/current/teams/{team_id}/workspaces
+Deprecated: use the corresponding /user-groups endpoint.
 Lists the workspaces an organization-wide team has access to and its role in each.
 A workspace scoped team returns 400, since its access to its own workspace is set
 when it is created. A page carries next_cursor, which is the value to send back as

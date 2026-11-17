@@ -5,6 +5,7 @@
 # 组建一个团队
 
 /langsmith/langsmith-platform-openapi.json 获取 /api/v1/platform/orgs/current/teams/{team_id}
+已弃用：使用相应的 /user-groups 端点。
 在组织中获得一支团队。
 组织范围的团队需要组织：团队：读取。
 工作空间范围的团队需要在其工作空间中工作空间:团队:读取。

@@ -8,7 +8,9 @@
 
 > [!提示]
 >
-> 要使用LangChain管理的线程级判断而不配置模型、API密钥或提示，请参阅[LangChain Tuned Evaluators](/langsmith/tuned-evaluators)。
+> 要使用 LangChain 管理的线程级判断而不配置模型、API 密钥或提示，请参阅 [LangChain Tuned Evaluators](/langsmith/tuned-evaluators)。
+
+要使用您自己的 Python 或 JavaScript 代码而不是 LLM 对线程进行评分，请使用高级代码评估器。有关更多信息，请参阅[Evaluate threads](/langsmith/advanced-code-evaluators#evaluate-threads)。
 
 您可以使用多轮评估来衡量：
 
@@ -20,9 +22,9 @@
 >
 > 默认情况下，多轮在线评估器可以延长跟踪保留时间。您可以在配置评估器时选择退出，以便跟踪保留项目的配置保留层。如果另一个操作显式延长保留时间或项目已使用延长保留时间，跟踪仍会升级。有关逐步选择退出的说明，请参阅[Manage evaluator trace retention](/langsmith/evaluators#manage-evaluator-trace-retention)。详情请参见[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
-## 它是如何工作的
+## 它是如何工作的多轮在线评估器遵循以下评估生命周期：
 
-多轮在线评估器遵循以下评估生命周期：1. **跟踪摄取**：对话中的每个轮次都作为单独的运行进行跟踪，并使用共享线程 ID 与线程关联。
+1. **跟踪摄取**：对话中的每个轮次都作为单独的运行进行跟踪，并使用共享线程 ID 与线程关联。
 2. **空闲时间检测**：摄取线程中的最后一个跟踪后，LangSmith 等待配置的空闲时间过去。此空闲期表示对话已完成并准备好进行评估。
 3. **消息组装**：LangSmith从线程中的每个跟踪中收集`messages`并将它们组装成单个对话历史记录。如果每个跟踪仅包含最新消息，则 LangSmith 将各轮消息缝合在一起。如果每个跟踪包含完整的历史记录，LangSmith 会直接使用它。由于线程中的连续跟踪经常重新发送先前的历史记录，因此 LangSmith 会删除重叠消息，因此每个消息仅出现一次。结果是 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的单个消息列表，这就是提示中的 `all_messages` 变量解析的结果。
 4. **LLM 作为法官评估**：组装的对话将传递到您配置的 LLM 作为法官提示。评估者根据您的标准对整个线程进行评分：语义意图、结果或轨迹。5. **反馈记录**：评估者使用您配置的与线程关联的反馈键将反馈写入LangSmith。
@@ -44,7 +46,7 @@
 
 ＃＃ 配置1. 导航到 **跟踪** 页面并选择跟踪项目或代理环境。
 
-2. 单击“**评估器**”选项卡，然后单击“**+ 评估器**”。在“从头开始创建”下选择“LLM-as-a-Judge Evaluator”。在“**源**”下，选择“**线程**”。
+2. 单击“**评估器**”选项卡，然后单击“**+ 评估器**”。在“从头开始创建”下选择“LLM 作为法官评估者”。在“**源**”下，选择“**线程**”。
 
 3. **指定您的评估员**。
 
@@ -88,12 +90,14 @@
 
 > [!注意]
 >
-> 在 [LangSmith Cloud](/langsmith/cloud) 上，`trajectory` 变量在 GCP US、GCP EU、GCP APAC 和 AWS US 区域可用。它不适用于 [BYOC](/langsmith/byoc) 部署。
+> 在 [LangSmith Cloud](/langsmith/cloud) 上，`trajectory` 变量在 GCP US、GCP EU、GCP APAC 和 AWS US 区域可用。
+>
+> 在 [BYOC](/langsmith/byoc) 上，`trajectory` 变量在 SmithDB 中存储和查询跟踪的数据平面上可用。
 >
 > 在 [switch queries to SmithDB](/langsmith/self-host-smithdb-install#step-6-switch-queries-to-smithdb) 之后，[Self-hosted](/langsmith/self-hosted) 安装支持 LangSmith v0.17 或更高版本上的 `trajectory` 变量。参见[SmithDB feature availability](/langsmith/self-host-smithdb-features)。
 
 变量因法官收到的内容而异：* **`all_messages`、`human_ai_pairs` 和 `first_human_last_ai`** 解析为根据线程中每个根运行的输入和输出组装的对话。子运行中发生的工作（例如中间模型调用、工具调用和工具结果）不包括在内，除非根运行自己的输入或输出包含它。 human_ai_pairs 和first_ human_last_ai 进一步缩小到仅用户和助理消息。
-* **`trajectory`** 解析为根据每个轨迹内的模型和工具调用构建的轨迹。其他视图忽略的工具调用和工具结果将被保留。
+* **`trajectory`** 解析为从每个跟踪内的模型和工具调用构建的轨迹。其他视图忽略的工具调用和工具结果将被保留。
 
 对于每个变量解析为的消息形状，请参阅[Thread message variables](/langsmith/prompt-template-format#thread-message-variables)。
 
@@ -108,7 +112,7 @@
 
 仅当您尚未编辑默认提示时，在 **运行 ** 和 **线程 ** 之间切换 **源 ** 才会重新播种默认提示。编辑提示后，您的版本将被保留，并且您可以自己映射变量。
 
-`{{trajectory}}` 不能与 `{{all_messages}}`、`{{human_ai_pairs}}` 或 `{{first_human_last_ai}}` 一起出现。映射轨迹源后，变量源下拉列表中的其他源将被禁用，并且一旦映射其他源之一，轨迹源将被禁用。无论哪种方式，下拉列表都解释了轨迹变量和非轨迹变量不能一起使用。保存混合它们的评估器也会以同样的方式失败。当评估器完成时，LangSmith 在您配置的反馈键下将反馈写入线程中最近的根运行，并将该反馈与线程关联。稍后要找到它，请参阅[View feedback](/langsmith/threads#view-feedback)。
+`{{trajectory}}` 不能与 `{{all_messages}}`、`{{human_ai_pairs}}` 或 `{{first_human_last_ai}}` 一起出现。映射轨迹源后，变量源下拉列表中的其他源将被禁用，并且一旦映射其他源之一，轨迹源将被禁用。无论哪种方式，下拉列表都解释了轨迹变量和非轨迹变量不能一起使用。保存混合它们的评估器也会以同样的方式失败。当评估器完成时，LangSmith 在您配置的反馈键下将反馈写入线程中最近的根运行，并将该反馈与线程关联。稍后要查找它，请参阅[View feedback](/langsmith/threads#view-feedback)。
 
 有关您可以改编的完整提示，请参阅[Example with trajectory context](/langsmith/prompt-template-format#example-with-trajectory-context)。
 

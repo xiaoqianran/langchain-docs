@@ -23,16 +23,19 @@
 `triggers` 是必需的，无默认值：`status_codes` 必须是非空列表（包括上游传输失败的 502 和 504）。 `fallbacks` 包含一个条目，其 `model_configs` 按优先级顺序 (1–5) 进行尝试。 `subject_matchers` 必须是单个 `workspace_id` 条目。
 - `model_fallback`：
 `{"strategy": "priority_fallback", "triggers": {"status_codes": [429, 502, 503, 504]}, "chain": {"selector": {"type": "provider_model", "provider": "openai", "model": "gpt-4o"}, "candidates": [{"type": "provider_model", "provider": "openai", "model": "gpt-4o-mini"}, {"type": "model_config", "model_config_id": "<playground-settings-uuid>"}]}}`
-可选的`ejection: {"failure_threshold": <1-1000>, "cooldown_seconds": <1-300>}`在`cooldown_seconds`内使链的触发器`failure_threshold`次失败后跳过`cooldown_seconds`的候选者。根据策略和候选者对失败进行计数，仅对提供者失败进行计数，成功不会重置计数。最后一个候选者永远不会被跳过。`chain.candidates` 是 1-5 个直接提供者模型或保存的工作区模型配置的有序列表。需要一个非空 `workspace_id` 匹配器。 `provider_model` 选择器仅适用于工作区； `alias` 选择器可能会被 `user_id` 或 `api_key_id` 缩小。提供者/模型选择器在工作区中是唯一的，而别名在整个组织中保留，并且可能故意隐藏模型名称。
+可选的`ejection: {"failure_threshold": <1-1000>, "cooldown_seconds": <1-300>}`在`cooldown_seconds`内使链的触发器`failure_threshold`次失败后跳过`cooldown_seconds`的候选者。根据策略和候选者对失败进行计数，仅对提供者失败进行计数，成功不会重置计数。最后一个候选者永远不会被跳过。`chain.candidates` 是 1-5 个直接提供者模型或保存的工作区模型配置的有序列表。需要一个非空 `workspace_id` 匹配器。 `provider_model` 选择器仅适用于工作区； `alias`选择器可以通过`user_id`或`api_key_id`缩小。不支持用户组范围的模型后备。提供者/模型选择器在工作区中是唯一的，而别名在整个组织中保留，并且可能故意隐藏模型名称。
+对于`"strategy": "weighted"`，每个请求都会以随机顺序尝试不同的`chain.candidates`，优先考虑更高的`weight`（必需，1-1000），并且触发失败按照该顺序排列。 `chain.candidates` 必须包含选择器的模型：与保存模型配置的 `provider_model` 或 `providers/<name>` 选择器相同。加权链不支持别名选择器。 `priority_fallback` 拒绝`weight`。
 - `rate_limit` / `default_rate_limit`：
 `{"version": 1, "limits": [{"metric": "requests"|"tokens", "window": "minute"|"hour", "value": <integer>}]}`
 `limits` 必须非空；每个 `metric`/`window` 对最多只能出现一次。 `value` 是 1..1000000000000000。**subject_matchers** 是 `{key, value}` 对的列表。内置
-键是 `organization_id`、`workspace_id`、`agent_id`、
+键是 `organization_id`、`user_group_id`、`workspace_id`、`agent_id`、
 `agent_environment`、`user_id`、`api_key_id`、`run_rule_id`。
 同一键下的值进行 OR 运算；不同的键进行 AND 运算。
+`user_group_id` 必须是组织级用户组 UUID，而不是工作区子用户组 UUID。
+工作区子用户组中的成员身份与其组织父用户组 ID 匹配。不检查用户组 ID 是否存在。
 `agent_id` 和 `agent_environment` 来自 Agent 的目标请求
 部署，并且必须与一个 `workspace_id` 结合使用
-匹配器：`agent_id`单独针对那些特工，`agent_environment`
+匹配器：`agent_id`单独针对那些代理，`agent_environment`
 （`LOCAL`、`DEVELOPMENT`、`STAGING` 或 `PRODUCTION`）单独目标
 这些环境中的每个代理，并且都共同针对这些环境
 这些环境中的代理。代理密钥是
@@ -41,11 +44,15 @@
 `default_spend_cap` 和 `default_rate_limit` 可以添加一个空自定义
 元数据键将每个主题按相应的
 `X-Gateway-*`请求头；物化的孩子存储这两个值。
+使用自定义标头，内置值可以命名一个主题（例如，一个
+`api_key_id`) 仅存储该主题的请求。它取代了组织范围内的同类默认值由相同标头分割。
 
 **动作**目前始终为`block`。支出上限拒绝
 达到限制时使用 402 请求；速率限制拒绝
 超过限制时为 429（带有 `Retry-After` 提示）；守卫
-策略在转发到上游之前就地编辑匹配的内容。**由匹配器更新插入：** 对于 `spend_cap`、`default_spend_cap`，
+策略在转发到上游之前就地编辑匹配的内容。
+
+**由匹配器更新插入：** 对于 `spend_cap`、`default_spend_cap`，
 `rate_limit`、`default_rate_limit` 和 `guard`，如果保单包含
 该组织中已经存在相同的`subject_matchers`，
 现有政策已就地更新，而不是重复

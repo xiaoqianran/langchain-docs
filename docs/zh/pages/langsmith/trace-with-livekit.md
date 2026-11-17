@@ -18,7 +18,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> 在发送跟踪之前，在 [agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -67,7 +67,7 @@ server = AgentServer()
 async def my_agent(ctx: agents.JobContext):
     session = AgentSession(
         stt="openai/gpt-4o-mini-transcribe",
-        llm="openai/gpt-4o-mini",
+        llm="openai/gpt-6-luna",
         tts="openai/tts-1:alloy",
     )
     await session.start(

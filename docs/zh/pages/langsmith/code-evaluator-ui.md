@@ -15,8 +15,8 @@
 1. 从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-code-evaluator-ui) 中的以下页面之一创建评估器：
    * 在 Playground 中或从数据集中：选择 **+ Evaluator** 按钮。
    * 选择 **添加规则**，配置您的规则并选择 **应用评估程序**。
-2. 为您的评估者提供一个清晰的名称，描述其测量的内容（例如“精确匹配”）。
-3. 从评估器类型选项中选择**创建代码评估器**。
+2. 在**从头开始创建**下，选择**代码评估器**。在 Playground 中，选择 **代码评估器** 下的 **自定义代码**。 **配置评估器** 窗格打开。
+3. 为您的评估者提供一个清晰的名称，描述其测量的内容（例如“精确匹配”）。
 
 ## 步骤 2. 编写评估器代码> [!注意]
 >
@@ -33,14 +33,18 @@
 > ```
 >
 > **网络访问**：您无法从自定义代码评估器访问互联网。
+>
+> 要安装其他软件包、发出网络请求或使用工作区密码进行身份验证，请使用高级代码评估器。欲了解更多信息，请参阅[Use advanced code evaluators](/langsmith/advanced-code-evaluators)。
 
-在 **添加自定义代码评估器** 页面中，使用 Python 或 TypeScript 定义评估逻辑。
+在 **配置评估器** 窗格中，使用 Python 或 TypeScript 定义评估逻辑。
 
 您的评估器函数必须命名为 `perform_eval` 并且应该：
 
 1. 接受`run`和`example`参数。
 2. 通过`run['inputs']`、`run['outputs']`、`example['outputs']` 访问数据。
-3. 返回一个字典，其中每个键是指标名称，每个值是该指标的分数。每个键代表您想要返回的一条反馈。例如，`{"correctness": 1, "silliness": 0}` 会在运行中创建两条反馈。
+3. 返回一个字典，其中每个键是指标名称，每个值是该指标的分数。每个键代表您想要返回的一条反馈。例如，`{"correctness": 1, "silliness": 0}` 会在运行中创建两条反馈。> [!注意]
+>
+> 当您针对数据集样本测试评估器以及评估器对实验运行进行评分时，LangSmith 将数据集示例作为第二个参数传递。否则，它仅通过运行。要在 Python 中处理这两种情况，请将函数定义为 `perform_eval(run, example=None)`。在默认代码求值器中，仅接受 `run` 的函数会失败并返回 `TypeError: perform_eval() takes 1 positional argument but 2 were given`。
 
 ### 函数签名
 
@@ -94,7 +98,9 @@ def perform_eval(run, example):
 * 从[Playground](/langsmith/prompt-engineering-concepts#playground)运行评估时
 * 作为[automatically run evaluations on experiments](/langsmith/bind-evaluator-to-dataset)数据集的一部分
 
-## 相关* [LLM-as-a-judge evaluator (UI)](/langsmith/llm-as-judge)：使用法学硕士来评估输出
+## 相关
+
+* [LLM-as-a-judge evaluator (UI)](/langsmith/llm-as-judge)：使用法学硕士来评估输出
 * [Composite evaluators](/langsmith/composite-evaluators-ui)：合并多个评估者分数
 
 ***

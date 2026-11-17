@@ -8,7 +8,7 @@
 
 * [Set up an organization](#set-up-an-organization)：创建和管理用户协作的组织，包括用户管理和角色分配。
 * [Set up a workspace](#set-up-a-workspace)：配置工作区以组织您的 LangSmith 资源、管理工作区成员并定义协作设置。
-* [Set up agents and applications](#set-up-agents-and-applications)：对工作空间内的资源进行分组以进一步组织它们，并利用 ABAC 许可。
+* [Set up agents and applications](#set-up-agents-and-applications)：对工作区中的资源进行分组以进一步组织它们，并利用 ABAC 许可。
 
 > [!提示]
 >
@@ -36,7 +36,7 @@
 
 在 [organization settings](https://smith.langchain.com/settings) 的 **成员** 页面上管理共享组织中的成员资格。在这里您可以：
 
-* 邀请新用户加入您的组织，选择工作区成员身份和（如果启用 [RBAC](/langsmith/rbac)）工作区角色。
+* 邀请新用户加入您的组织，选择工作区成员资格和（如果启用 [RBAC](/langsmith/rbac)）工作区角色。
 * 编辑用户的组织角色。
 * 从您的组织中删除用户。
 
@@ -66,7 +66,7 @@
 
 > [!注意]
 >
-> 不同的计划对组织中可以使用的工作空间数量有不同的限制。欲了解更多信息，请参阅[pricing page](https://www.langchain.com/pricing-langsmith)。
+> 不同的计划对您可以在组织中使用的工作空间数量有不同的限制。欲了解更多信息，请参阅[pricing page](https://www.langchain.com/pricing-langsmith)。
 
 ### 管理用户> [!注意]
 >
@@ -74,7 +74,7 @@
 
 对于已经是组织成员的用户，工作区管理员可以将其添加到 [**Workspaces settings** page](https://smith.langchain.com/settings/workspaces) 上的 **工作区成员** 选项卡中的工作区。当用户被邀请加入某个组织时，也可能会被直接邀请到一个或多个工作区。
 
-用户还可以通过有权访问工作区的[team](/langsmith/teams)接收工作区角色。
+用户还可以通过有权访问工作区的[user group](/langsmith/user-groups)接收工作区角色。
 
 ### 配置工作区设置
 
@@ -98,7 +98,7 @@
 
 在工作区中，您可以将资源（例如跟踪项目和数据集）进一步分组。工作空间可以有零个或多个这样的组。
 
-该组的名称取决于您的工作区使用的信息架构，左上角的控件会告诉您您所在的组。基于代理的工作区将其称为 [agent](/langsmith/agent-registry#agent) 并从顶部栏中的代理选择器中选择它。基于项目的工作区将其称为应用程序，并从侧边栏中的 **应用程序** 选择器中选择它。
+该组的名称取决于您的工作区使用的信息架构，左上角的控件会告诉您您所在的组。基于代理的工作区将其称为[agent](/langsmith/agent-registry#agent)，并从顶部栏中的代理选择器中选择它。基于项目的工作区将其称为应用程序，并从侧边栏中的 **应用程序** 选择器中选择它。
 
 要查看工作区中的每个资源而不是一组资源，请在代理选择器中选择“**所有代理**”，或在应用程序选择器中选择“**所有应用程序**”。您可以通过将资源添加到 **设置** 页面上 **资源标签** 下的 `Application` 标签来将资源标记到多个应用程序。
 

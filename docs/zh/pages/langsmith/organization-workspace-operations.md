@@ -19,8 +19,8 @@
 ＃＃ 内容|组织层面的运营 |工作区级操作 |
 | - | - |
 | **核心管理：** • [Organization settings](#organization-settings)：组织信息和配置 • [Workspaces](#workspaces)：工作区管理 • [Organization members](#organization-members)：成员管理 • [Roles and permissions](#roles-and-permissions)：自定义角色 | **核心资源：** • [Projects](#projects)：组织跟踪和运行 • [Runs](#runs)：单独执行跟踪 • [Datasets](#datasets)：用于评估的测试数据集 • [Examples](#examples)：单独数据集示例 • [Experiments](#experiments)：比较实验 |
-| **安全和身份验证：** • [SSO and authentication](#sso-and-authentication)：单点登录设置 • [SCIM](#scim)：身份配置 • [Access policies](#access-policies)：基于属性的访问控制 • [Organization teams](#organization-teams)：团队及其工作区访问 | **监控和分析：** • [Rules](#rules)：自动运行规则 • [Alerts](#alerts)​​：监控警报规则 • [Feedback](#feedback)：输出分数和标签 • [Annotation Queues](#annotation-queues)：人工审核队列 • [Charts](#charts)：自定义可视化 |
-| **计费和帐户：** • [Billing and payments](#billing-and-payments)：订阅管理 • [API keys](#api-keys)：组织级别密钥 | **开发和配置：** • [Prompts](#prompts)：提示模板（LangChain 集线器） • [Custom apps](#custom-apps)：用户编写的迷你 Web 应用程序 • [Deployments](#deployments)：部署配置 • [MCP Servers](#mcp-servers)：模型上下文协议服务器 • [Fleet](#fleet)：队列管理操作 || **分析：** • [Charts and dashboards](#organization-charts-and-dashboards)：组织级别可视化 • [Usage and analytics](#usage-and-analytics)：使用情况跟踪和 TTL 设置 | **工作区管理：** • [Model price map](#model-price-map)：每个代币模型价格 • [Workspace settings](#workspace-settings-and-management)：成员、设置 • [Workspace teams](#workspace-teams)：此工作区的团队成员和策略 • [Tags](#tags)：元数据标记系统 • [Bulk Exports](#bulk-exports)：数据导出操作 |
+| **安全和身份验证：** • [SSO and authentication](#sso-and-authentication)：单点登录设置 • [SCIM](#scim)：身份配置 • [Access policies](#access-policies)：基于属性的访问控制 • [Organization user groups](#organization-user-groups)：用户组及其工作区访问 | **监控和分析：** • [Rules](#rules)：自动运行规则 • [Alerts](#alerts)​​：监控警报规则 • [Feedback](#feedback)：输出分数和标签 • [Annotation Queues](#annotation-queues)：人工审核队列 • [Charts](#charts)：自定义可视化 |
+| **计费和帐户：** • [Billing and payments](#billing-and-payments)：订阅管理 • [API keys](#api-keys)：组织级别密钥 | **开发和配置：** • [Prompts](#prompts)：提示模板（LangChain 集线器） • [Custom apps](#custom-apps)：用户编写的迷你 Web 应用程序 • [Deployments](#deployments)：部署配置 • [MCP Servers](#mcp-servers)：模型上下文协议服务器 • [Fleet](#fleet)：队列管理操作 || **分析：** • [Charts and dashboards](#organization-charts-and-dashboards)：组织级别可视化 • [Usage and analytics](#usage-and-analytics)：使用情况跟踪和 TTL 设置 | **工作区管理：** • [Model price map](#model-price-map)：每个代币模型价格 • [Workspace settings](#workspace-settings-and-management)：成员、设置 • [Workspace user groups](#workspace-user-groups)：此工作区的用户组成员和策略 • [Tags](#tags)：元数据标记系统 • [Bulk Exports](#bulk-exports)：数据导出操作 |
 
 **附加信息：**
 
@@ -115,16 +115,16 @@
 |删除访问策略 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 |将访问策略附加到角色 | ✓ | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 
-### 组织团队
+### 组织用户组
 
-[Teams](/langsmith/teams) 及其工作空间访问权限。 `organization:manage`不允许这些操作。|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
+[User Groups](/langsmith/user-groups) 及其工作空间访问权限。 `organization:manage`不允许这些操作。|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
 | - | :-: | :-: | :-: | :-: | - |
-|列出并查看团队、成员和访问策略 | ✓ | ✓ | ✓ | ✓ | `organization:teams:read` |
-|查看团队的工作区访问权限 | ✓ | ✓ | ✓ | ✓ | `organization:teams:read` |
-|创建、更新或删除团队 | ✓ | ✓ | ✗ | ✗ | `organization:teams:manage` |
-|添加或删除团队成员 | ✓ | ✓ | ✗ | ✗ | `organization:teams:manage-members` |
-|附加或分离访问策略 | ✓ | ✓ | ✗ | ✗ | `organization:teams:manage-policies` |
-|授予、更改或删除团队的工作区访问权限 | ✓ | ✓ | ✗ | ✗ | `organization:teams:manage-grants` |
+|列出并查看用户组、成员和访问策略 | ✓ | ✓ | ✓ | ✓ | `organization:user-groups:read` |
+|查看用户组的工作区访问权限 | ✓ | ✓ | ✓ | ✓ | `organization:user-groups:read` |
+|创建、更新或删除用户组 | ✓ | ✓ | ✗ | ✗ | `organization:user-groups:manage` |
+|添加或删除用户组成员 | ✓ | ✓ | ✗ | ✗ | `organization:user-groups:manage-members` |
+|附加或分离访问策略 | ✓ | ✓ | ✗ | ✗ | `organization:user-groups:manage-policies` |
+|授予、更改或删除用户组的工作区访问权限 | ✓ | ✓ | ✗ | ✗ | `organization:user-groups:manage-grants` |
 
 ### 账单和付款
 
@@ -507,13 +507,13 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |查看型号价格 | ✓ | ✓ | ✓ | `model-price-map:read` |
-| Create a model price entry | ✓ | ✓ | ✗ | `model-price-map:create` |
-| Update a model price entry | ✓ | ✓ | ✗ | `model-price-map:update` |
+|创建价格条目模型 | ✓ | ✓ | ✗ | `model-price-map:create` |
+|更新型号价格条目 | ✓ | ✓ | ✗ | `model-price-map:update` |
 |删除型号价格条目 | ✓ | ✓ | ✗ | `model-price-map:delete` |
 
 > [!注意]
 >
-> 这些权限取代了 `runs:read` 和 `runs:create` 检查之前限制的型号价格。 Built-in roles keep the access they had.此更改后创建的自定义角色需要显式授予 `model-price-map` 权限；它们在自定义角色编辑器中显示为自己的复选框。
+> 这些权限取代了 `runs:read` 和 `runs:create` 检查之前限制的型号价格。内置角色保留他们拥有的访问权限。此更改后创建的自定义角色需要显式授予 `model-price-map` 权限；它们在自定义角色编辑器中显示为自己的复选框。
 
 ### 工作区设置和管理|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
@@ -535,14 +535,14 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |查看共享实体 | ✓ | ✓ | ✓ | `workspaces:read` |
 |批量取消共享实体 | ✓ | ✗ | ✗ | `workspaces:manage` |
 
-### 工作空间团队
+### 工作区用户组
 
-团队在此工作区中拥有的[Workspace-only members and access policies](/langsmith/teams#add-workspace-only-members-and-policies)。 `workspaces:manage` 不允许这些操作。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
+用户组在此工作区中拥有的[Workspace-only members and access policies](/langsmith/user-groups#add-workspace-only-members-and-policies)。 `workspaces:manage` 不允许这些操作。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
-|查看有权访问此工作区的团队及其仅限工作区的成员和策略 | ✓ | ✓ | ✓ | `workspaces:teams:read` |
-|查看团队在此工作区中的角色 | ✓ | ✓ | ✓ | `workspaces:teams:read` |
-|添加或删除仅限工作区的成员 | ✓ | ✗ | ✗ | `workspaces:teams:manage-members` |
-|附加或分离仅限工作区的访问策略 | ✓ | ✗ | ✗ | `workspaces:teams:manage-policies` |
+|查看有权访问此工作区的用户组及其仅限工作区的成员和策略 | ✓ | ✓ | ✓ | `workspaces:user-groups:read` |
+|查看用户组在此工作区中的角色 | ✓ | ✓ | ✓ | `workspaces:user-groups:read` |
+|添加或删除仅限工作区的成员 | ✓ | ✗ | ✗ | `workspaces:user-groups:manage-members` |
+|附加或分离仅限工作区的访问策略 | ✓ | ✗ | ✗ | `workspaces:user-groups:manage-policies` |
 
 ### 标签
 
@@ -562,17 +562,17 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |列出资源标签 | ✓ | ✓ | ✓ | `workspaces:read` |
 |列出资源标签（批量）| ✓ | ✓ | ✓ | `workspaces:read` |
 |列表标签 | ✓ | ✓ | ✓ | `workspaces:read` |
-|创建标签 | ✓ | ✗ | ✗ | `workspaces:manage` || Delete tagging | ✓ | ✗ | ✗ | `workspaces:manage` |
+|创建标签 | ✓ | ✗ | ✗ | `workspaces:manage` ||删除标签 | ✓ | ✗ | ✗ | `workspaces:manage` |
 
-### Bulk exports
+### 批量导出
 
 |运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |批量出口清单 | ✓ | ✓ | ✓ | `bulk-exports:read` |
-| Get bulk export | ✓ | ✓ | ✓ | `bulk-exports:read` |
+|获取批量导出 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出运行 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出运行 | ✓ | ✓ | ✓ | `bulk-exports:read` |
-| Create bulk export | ✓ | ✗ | ✗ | `bulk-exports:manage` |
+|创建批量导出 | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 |取消批量导出 | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 |获取批量出口目的地 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量出口目的地 | ✓ | ✓ | ✓ | `bulk-exports:read` |
@@ -582,7 +582,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 
 > [!提示]
 >
-> `bulk-exports:read` and `bulk-exports:manage` are dedicated permissions that allow you to grant export access via a [custom role](/langsmith/rbac#custom-roles) without granting the broader `workspaces:manage` scope.这对于需要导出跟踪但不能管理工作区、成员或机密的安全团队服务密钥非常有用。
+> `bulk-exports:read` 和 `bulk-exports:manage` 是专用权限，允许您通过 [custom role](/langsmith/rbac#custom-roles) 授予导出访问权限，而无需授予更广泛的 `workspaces:manage` 范围。这对于需要导出跟踪但不能管理工作区、成员或机密的安全团队服务密钥非常有用。
 
 ### MCP 服务器
 
@@ -596,11 +596,11 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 
 ### 舰队
 
-[Fleet](/langsmith/fleet/index) workspace administration operations.
+[Fleet](/langsmith/fleet/index) 工作区管理操作。
 
 |运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
-| View Fleet admin section (usage, spend) | ✓ | ✗ | ✗ | `fleet:read-admin-config` |
+|查看车队管理部分（使用情况、支出）| ✓ | ✗ | ✗ | `fleet:read-admin-config` |
 |管理车队支出限额 | ✓ | ✗ | ✗ | `fleet:write-admin-config` |
 
 ## 用户级操作
@@ -608,22 +608,22 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 这些操作可供所有经过身份验证的用户使用，不需要特定的工作区或组织权限：
 
 * 查看自己的用户资料
-* Update own user profile
+* 更新自己的用户资料
 * 列出用户的组织
-* Create new organization
+* 创建新组织
 * 列出待处理的工作空间邀请
 * 删除待处理的工作区邀请
 * 领取待处理的工作空间邀请
-* List pending organization invites
-* Delete pending organization invite
-* Claim pending organization invite
+* 列出待处理的组织邀请
+* 删除待处理的组织邀请
+* 领取待定组织邀请
 
 ## 权限继承
 
-### Organization to workspace* [Organization Admin](/langsmith/rbac#organization-admin) 自动拥有所有工作区的完全权限。
+### 组织到工作区* [Organization Admin](/langsmith/rbac#organization-admin) 自动拥有所有工作区的完全权限。
 * [Organization Operator](/langsmith/rbac#organization-operator) 仅在显式添加到具有工作区级别角色的工作区（或他们创建的工作区）时才获得工作区访问权限。
-* [Organization User](/langsmith/rbac#organization-user) 和 [Organization Viewer](/langsmith/rbac#organization-viewer) 仅在显式添加到具有工作区级别角色的工作区时才获得工作区访问权限。
-* 属于 [team](/langsmith/teams) 并有权访问该工作区的工作区成员也会收到团队的工作区角色。
+* [Organization User](/langsmith/rbac#organization-user) 和 [Organization Viewer](/langsmith/rbac#organization-viewer) 仅当显式添加到具有工作区级别角色的工作区时才获得工作区访问权限。
+* 属于 [user group](/langsmith/user-groups) 并有权访问该工作区的工作区成员也会收到该用户组的工作区角色。
 * [Organization Restricted](/langsmith/rbac#organization-restricted) 用户只有在显式添加到具有工作区级别角色的工作区时才能获得工作区访问权限。具有此角色的工作区范围的服务密钥只能访问为该密钥选择的工作区。
 
 详细的角色定义请参考[Organization roles](/langsmith/rbac#organization-roles)和[Workspace roles](/langsmith/rbac#workspace-roles)。

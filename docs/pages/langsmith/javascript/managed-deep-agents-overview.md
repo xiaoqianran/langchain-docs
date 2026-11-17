@@ -14,6 +14,7 @@ You write the agent's intelligence: its instructions, the tools it can call, the
 
 * **The Deep Agents harness**: The agent loop that plans, calls tools, manages a filesystem, and delegates to subagents. See [Deep Agents](/oss/javascript/deepagents/overview).
 * **A managed runtime**: Every deployment runs on [LangSmith Agent Server](/langsmith/agent-server). You get the Agent Server API, threads, runs, streaming, and the [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint) without operating the server yourself.
+* **Proactive runs**: [Memory](/langsmith/javascript/managed-deep-agents-memory), [channels](/langsmith/javascript/managed-deep-agents-channels), and [schedules](/langsmith/javascript/managed-deep-agents-schedules) keep an agent useful between conversations. Schedules run digests, reminders, and check-ins without a user message.
 
 ![Your agent definition runs inside the Deep Agents harness, surrounded by managed Agent Server, channels, memory, sandboxes, schedules, and connections.](https://mintcdn.com/langchain-5e9cc07a/WPyMZQ4QJL4KarWB/images/managed-deep-agents-overview-light.png?fit=max\&auto=format\&n=WPyMZQ4QJL4KarWB\&q=85\&s=823ce5f1f80a9653308d03cbf5c2e583)
 

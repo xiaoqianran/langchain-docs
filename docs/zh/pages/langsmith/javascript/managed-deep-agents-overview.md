@@ -16,13 +16,14 @@
 
 * **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统以及委托给子代理。参见[Deep Agents](/oss/javascript/deepagents/overview)。
 * **托管运行时**：每个部署都在 [LangSmith Agent Server](/langsmith/agent-server) 上运行。您无需亲自操作服务器即可获得代理服务器 API、线程、运行、流式传输和 [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
+* **主动运行**：[Memory](/langsmith/javascript/managed-deep-agents-memory)、[channels](/langsmith/javascript/managed-deep-agents-channels) 和 [schedules](/langsmith/javascript/managed-deep-agents-schedules) 让代理在对话之间保持有用。计划运行摘要、提醒和签到，无需用户消息。
 
 ![Your agent definition runs inside the Deep Agents harness, surrounded by managed Agent Server, channels, memory, sandboxes, schedules, and connections.](https://mintcdn.com/langchain-5e9cc07a/WPyMZQ4QJL4KarWB/images/managed-deep-agents-overview-light.png?fit=max\&auto=format\&n=WPyMZQ4QJL4KarWB\&q=85\&s=823ce5f1f80a9653308d03cbf5c2e583)
 
 ## 代理示例
 
 托管深度代理由一个项目文件夹组成，其中包含其行为的业务逻辑：当您使用 `mda` CLI 上传此文件夹时，它将自动在托管 LangSmith 基础设施上运行。
-您提供业务逻辑，托管Deep Agents提供代理工具和生产基础设施。
+您提供业务逻辑，托管 Deep Agents 提供代理工具和生产基础设施。
 
 要开始使用，请参阅[Managed Deep Agents quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。
 
@@ -46,11 +47,11 @@
 
 完整布局请参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。指令、技能和可选的持久存储器存储在[Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)中。
 
-## 与Deep Agents的关系
+## 与 Deep Agents 的关系
 
 托管 Deep Agents 运行开源 [Deep Agents](/oss/javascript/deepagents/overview) 工具，而不是第二个框架。代理循环、文件系统工具、子代理和技能是相同的，因此无需学习第二个 API，并且您已经构建的代理可以继续工作。
 
-托管Deep Agents在代理周围添加了一层。上面的沙箱、持久内存、通道和时间表是项目文件中的声明，而不是您构建和操作的服务。 [Connections](/langsmith/javascript/managed-deep-agents-connections) 运行 OAuth，因此最终用户可以授权他们自己的帐户，而不是您为每个帐户配置凭据。 LangSmith 将结果托管在 [Agent Server](/langsmith/agent-server) 上。在代码中，差异较小：谁编译代理。* [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 返回编译后的代理。你运行它，并且拥有它周围的后端、存储、检查点和服务器。
+Managed Deep Agents 在代理周围添加了一层。上面的沙箱、持久内存、通道和时间表是项目文件中的声明，而不是您构建和操作的服务。 [Connections](/langsmith/javascript/managed-deep-agents-connections) 运行 OAuth，因此最终用户可以授权他们自己的帐户，而不是您为每个帐户配置凭据。 LangSmith 将结果托管在 [Agent Server](/langsmith/agent-server) 上。在代码中，差异较小：谁编译代理。* [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 返回编译后的代理。你运行它，并且拥有它周围的后端、存储、检查点和服务器。
 * `defineDeepAgent` 返回一个定义。 `mda` CLI 将其交给托管运行时，后者提供这些片段以及内存、技能和系统提示符，然后使用 [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 编译代理。
 
 因此，`defineDeepAgent`采用相同的选项减去托管选项，再加上所需的静态`name`。每个`define*`函数都是这样工作的：声明代理需要什么，并将生命周期留给运行时。

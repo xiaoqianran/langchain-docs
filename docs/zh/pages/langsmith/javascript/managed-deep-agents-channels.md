@@ -29,7 +29,7 @@ my-agent/
 
 * **入站事件**：验证并标准化提供程序事件，然后启动代理运行。
 * **出站消息传送**：将代理的响应发送回原始对话。
-* **配置**：创建并配置将服务连接到已部署代理的提供程序资源。
+* **配置**：创建并配置将服务连接到已部署代理的提供者资源。
 
 在托管Deep Agents中，通道将已部署的代理连接到消息传递提供程序。
 
@@ -59,7 +59,30 @@ flowchart LR
 >
 > 转向处于测试阶段，需要 `managed-deepagents` 0.10.2 或更高版本。
 
-## 声明项目中的通道
+例如，用户要求代理比较供应商，然后在代理搜索时发送“仅包括 SOC 2 兼容供应商”。搜索完成，模型将读取新消息以及迄今为止的结果。对于更窄的请求，继续进行相同的运行。
+
+![A user asks the agent to compare vendors, then sends Only include SOC 2 compliant vendors during the tool call. The message waits as a queued run, the queued run is cancelled as taken, and the message joins the next model call. After the final answer, the agent checks again for late messages.](https://mintcdn.com/langchain-5e9cc07a/EkGVG8izoFmMhuwL/langsmith/images/managed-deep-agents-steering-light.svg?fit=max\&auto=format\&n=EkGVG8izoFmMhuwL\&q=85\&s=08772aeebc34de34d8f7296c79021143)
+
+#### 消息如何加入运行
+
+运行期间发送的消息首先作为排队运行在线程上等待。在每次模型调用之前，代理会检查线程是否可以进行排队运行。对于每一条消息，代理按照消息发送的顺序：1. 取消排队运行，原因为 `taken`，因此该消息稍后不会启动自己的运行。
+2. 将运行的消息添加到活动运行的对话中。
+
+转向在步骤之间起作用。已经在进行的工具调用或模型调用首先完成。
+
+模型写出最终答案后，代理再次检查线程。如果在最后一次模型调用期间收到消息，则运行将返回到带有该消息的模型，而不是结束。
+
+#### 独立运行的消息
+
+仅当排队运行只包含来自同一用户的用户消息时，它才会加入活动运行。以下排队运行将在活动运行结束后等待并启动：
+
+* 对中断的响应，例如批准。
+* 来自不同用户的消息。
+* 设置 webhook、从较早的检查点分叉或设置消息以外的输入的运行。
+
+只有主代理接收消息。当子代理运行时，新消息会等待主代理的下一次模型调用。
+
+如果代理无法读取或取消排队的运行，消息将按顺序保持排队状态。代理会在下一次模型调用时再次尝试，并且它未获取的任何消息都会在活动运行结束后自行运行。## 声明项目中的通道
 
 将每个通道放在`channels/`下的单独模块中。
 
@@ -77,7 +100,9 @@ flowchart LR
 
 请参阅提供程序指南以了解其声明、应用程序配置和部署过程。
 
-## 区分通道和连接器通道接收启动代理运行并传递响应的消息。 [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors) 为远程 MCP 服务器提供代理工具。项目可以使用其中之一或两者。
+## 区分通道和连接器
+
+通道接收启动代理运行并传递响应的消息。 [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors) 为远程 MCP 服务器提供代理工具。项目可以使用其中之一或两者。
 
 ## 支持的频道
 
@@ -85,15 +110,13 @@ flowchart LR
 >
 > 从 Slack 提及、直接消息和话题回复开始运行。
 
-> [卡片][Custom (HTTP)](/langsmith/javascript/managed-deep-agents-channels-http)
+> [卡][Custom (HTTP)](/langsmith/javascript/managed-deep-agents-channels-http)
 >
 > 从任何可以发送 JSON Webhook 的服务开始运行。
 
-HTTP 适配器也可以存在于社区维护的包中。请参阅 [Share a channel adapter as a package](/langsmith/javascript/managed-deep-agents-channels-http#share-a-channel-adapter-as-a-package) 发布用户导入到其通道声明中的可重用提供者代码。
+HTTP 适配器也可以存在于社区维护的包中。请参阅 [Share a channel adapter as a package](/langsmith/javascript/managed-deep-agents-channels-http#share-a-channel-adapter-as-a-package) 发布用户导入到其通道声明中的可重用提供程序代码。
 
-## 另请参阅
-
-* [Identity](/langsmith/javascript/managed-deep-agents-identity)：对调用者进行身份验证，范围通道运行到已解析的用户。
+## 另请参阅* [Identity](/langsmith/javascript/managed-deep-agents-identity)：对调用者进行身份验证，范围通道运行到已解析的用户。
 * [Schedules](/langsmith/javascript/managed-deep-agents-schedules)：通过配置的通道交付预定的结果。
 * [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)：部署项目更改并配置机密。
 * [CLI reference](/langsmith/javascript/managed-deep-agents-cli)：查看频道项目文件约定。

@@ -5,6 +5,7 @@
 # 更改团队在工作区中的角色
 
 /langsmith/langsmith-platform-openapi.json 补丁 /api/v1/platform/orgs/current/teams/{team_id}/workspaces/{workspace_id}
+已弃用：使用相应的 /user-groups 端点。
 更改组织范围的团队在其有权访问的工作区中的角色。团队
 成员在那里获得新角色的权限来代替旧角色的权限。访问
 附加到团队的工作区策略保持附加状态。需求

@@ -163,7 +163,7 @@ async def correct(outputs: dict, reference_outputs: dict) -> bool:
 
 现在我们可以进行评估并探索结果。我们只需要包装我们的图形函数，以便它可以按照示例中存储的格式接受输入：> [!注意]
 >
-> 如果所有图形节点都定义为同步函数，那么您可以使用 `evaluate` 或 `aevaluate`。如果任何节点被定义为异步，则需要使用 `aevaluate`
+> 如果所有图形节点都定义为同步函数，那么您可以使用 `evaluate` 或 `aevaluate`。如果您的任何节点被定义为异步，您将需要使用 `aevaluate`
 
 需要`langsmith>=0.2.0`
 
@@ -186,7 +186,7 @@ async def main():
         max_concurrency=4,  # optional
         experiment_prefix="claude-sonnet-4-6-baseline",  # optional
         metadata={  # optional, used to populate model/prompt/tool columns in UI
-            "models": "google_genai:gemini-4-hydrogen",
+            "models": "anthropic:claude-sonnet-4-6",
             "tools": [{"name": "search", "description": "Call to surf the web."}],
         },
     )
@@ -214,7 +214,7 @@ async def main():
         max_concurrency=4,  # optional
         experiment_prefix="claude-sonnet-4-6-baseline",  # optional
         metadata={  # optional, used to populate model/prompt/tool columns in UI
-            "models": "google_genai:gemini-4-hydrogen",
+            "models": "anthropic:claude-sonnet-4-6",
             "tools": [{"name": "search", "description": "Call to surf the web."}],
         },
     )
@@ -225,17 +225,27 @@ async def main():
 
 > [!提示]
 >
-> 在此 [how-to guide](/langsmith/code-evaluator-ui) 中了解有关可以传递给自定义评估器的参数的更多信息。
+> 在此 [how-to guide](/langsmith/code-evaluator-sdk) 中了解有关可以传递给自定义评估器的参数的更多信息。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.schemas import Run, Example
 
+def find_run(run: Run, name: str) -> Run | None:
+    # Node runs are nested a few levels below the root run
+    # (target -> RunnableSequence -> LangGraph -> node), so search the whole tree
+    if run.name == name:
+        return run
+    for child in run.child_runs or []:
+        if (found := find_run(child, name)) is not None:
+            return found
+    return None
+
 def right_tool_from_run(run: Run, example: Example) -> dict:
-    # Get documents and answer
-    first_model_run = next(run for run in root_run.child_runs if run.name == "agent")
+    # Get the first run of the "agent" node
+    first_model_run = find_run(run, "agent")
     tool_calls = first_model_run.outputs["messages"][-1].tool_calls
     right_tool = bool(tool_calls and tool_calls[0]["name"] == "search")
-    return {"key": "right_tool", "value": right_tool}
+    return {"key": "right_tool", "score": right_tool}
 
 async def main():
     experiment_results = await aevaluate(
@@ -245,27 +255,31 @@ async def main():
         max_concurrency=4,  # optional
         experiment_prefix="claude-sonnet-4-6-baseline",  # optional
         metadata={  # optional, used to populate model/prompt/tool columns in UI
-            "models": "google_genai:gemini-4-hydrogen",
+            "models": "anthropic:claude-sonnet-4-6",
             "tools": [{"name": "search", "description": "Call to surf the web."}],
         },
     )
     print(experiment_results)
 ```
 
-## 运行并评估各个节点有时您想直接评估单个节点以节省时间和成本。 `langgraph` 可以轻松做到这一点。在这种情况下，我们甚至可以继续使用我们一直在使用的评估器。
+## 运行并评估各个节点有时您想直接评估单个节点以节省时间和成本。 `langgraph` 可以轻松做到这一点：每个节点的底层可运行对象都可以在 `app.nodes[name].bound` 上获得。由于节点的输出是模型的第一个响应，因此我们可以直接检查输出上的工具调用。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-node_target = example_to_state | app.nodes["agent"]
+def right_tool_from_node(outputs: dict) -> bool:
+    tool_calls = outputs["messages"][-1].tool_calls
+    return bool(tool_calls and tool_calls[0]["name"] == "search")
+
+node_target = example_to_state | app.nodes["agent"].bound
 
 async def main():
     node_experiment_results = await aevaluate(
         node_target,
         data="weather agent",
-        evaluators=[right_tool_from_run],
+        evaluators=[right_tool_from_node],
         max_concurrency=4,  # optional
         experiment_prefix="claude-sonnet-4-6-model-node",  # optional
         metadata={  # optional, used to populate model/prompt/tool columns in UI
-            "models": "google_genai:gemini-4-hydrogen",
+            "models": "anthropic:claude-sonnet-4-6",
             "tools": [{"name": "search", "description": "Call to surf the web."}],
         },
     )
@@ -274,7 +288,7 @@ async def main():
 
 ## 相关
 
-* [⟦T20⟧ evaluation docs](/langsmith/evaluation)
+* [⟦T21⟧ evaluation docs](/langsmith/evaluation)
 
 ## 参考代码
 
@@ -429,7 +443,7 @@ async def main():
 >         max_concurrency=4,  # optional
 >         experiment_prefix="claude-sonnet-4-6-baseline",  # optional
 >         metadata={  # optional, used to populate model/prompt/tool columns in UI
->             "models": "google_genai:gemini-4-hydrogen",
+>             "models": "anthropic:claude-sonnet-4-6",
 >             "tools": [{"name": "search", "description": "Call to surf the web."}],
 >         },
 >     )

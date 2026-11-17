@@ -54,7 +54,7 @@
 
 ### 到LangSmith和控制平面的出口在混合部署模型中，自托管数据平面将向控制平面发送网络请求，以轮询需要在数据平面中实施的更改。数据平面部署的跟踪也会发送到与控制平面集成的LangSmith实例。到控制平面的流量是通过 HTTPS 加密的。数据平面使用 LangSmith API 密钥向控制平面进行身份验证。
 
-为了启用此出口，您可能需要将内部防火墙规则或云资源（例如安全组）更新为[allow certain IP addresses](/langsmith/cloud#ingress-into-langchain-saas)。
+为了启用此出口，您可能需要将内部防火墙规则或云资源（例如安全组）更新为[allow certain IP addresses](/langsmith/cloud-ip-allowlist#ingress-into-langchain-saas)。
 
 > [!警告]
 >

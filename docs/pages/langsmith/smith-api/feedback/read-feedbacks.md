@@ -3,4 +3,6 @@
 # Read feedbacks
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/feedback
-List all Feedback by query params.
+List feedback, newest first.
+
+At least one of run, key, or session is required.

@@ -5,6 +5,7 @@
 # 授予团队在工作区中的角色
 
 /langsmith/langsmith-platform-openapi.json 发布 /api/v1/platform/orgs/current/teams/{team_id}/workspaces
+已弃用：使用相应的 /user-groups 端点。
 为组织范围内的团队提供工作空间中的角色。团队成员是
 工作区的成员获得该角色的权限，以及他们的工作区
 身份在工作区中被记录为团队成员。该补助金还

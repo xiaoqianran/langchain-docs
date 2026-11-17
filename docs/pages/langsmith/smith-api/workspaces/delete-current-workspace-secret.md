@@ -3,4 +3,6 @@
 # Delete current workspace secret
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/workspaces/current/secrets/{key}
-Delete a workspace secret and its allowed hosts. Missing keys succeed.
+Delete a workspace secret and its allowed hosts.
+
+Requires workspace admin. Missing keys succeed.

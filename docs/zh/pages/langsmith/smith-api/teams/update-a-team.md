@@ -5,6 +5,7 @@
 # 更新团队
 
 /langsmith/langsmith-platform-openapi.json 补丁 /api/v1/platform/orgs/current/teams/{team_id}
+已弃用：使用相应的 /user-groups 端点。
 重命名组织范围的团队或更改其描述或 IdP 组映射。
 省略的字段保持不变，空描述或 idp_group_name 会被清除
 它。 idp_sync_enabled 需要 IdP 组。工作空间范围内的团队返回 400：其

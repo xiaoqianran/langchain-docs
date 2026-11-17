@@ -24,7 +24,7 @@
 >
 >> [!注意]
 >>
->> `client.runs.query()` 现在是异步的。用`await`来调用它。
+>> `client.runs.query()` 现在是异步的并返回一个分页器。使用 `async for` 进行迭代以获取所有页面上的单独运行，或者使用 `await` 进行迭代以获取第一页。
 >
 > 有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/runs/RunsResource/query_v2)。
 
@@ -34,7 +34,7 @@
 > | - | - |
 > | `client.listRuns()` | `client.runs.query()`（别名为`client.runs.queryV2()`）|
 >
-> 有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Runs/queryV2)。
+> 完整参数和字段列表请参见[reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Runs/queryV2)。
 
 > [选项卡] Java
 >
@@ -68,20 +68,20 @@
 >
 >> [!警告]
 >>
->> `min_start_time` 省略时默认为 **1 天前**。没有 `start_time` 的 `list_runs` 返回所有历史运行；没有 `min_start_time` 的 `runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `min_start_time`。
+>> `min_start_time` 省略时默认为 **1 天前**。 `list_runs` 没有 `start_time` 返回所有历史运行；没有 `min_start_time` 的 `runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `min_start_time`。
 >
-> |之前 (`list_runs`) |之后（`runs.query`）|笔记|
+> |之前 (`list_runs`) |之后(`runs.query`) |笔记|
 > | - | - | - |
 > | `project_name` | *（已删除）* |将 `project_ids` 与 UUID 一起使用 - 请参阅上面的警告 |
 > | `project_id` | `project_ids` |现在拿出一个清单；与 `reference_dataset_id` 互斥 |
 > | `run_type` | `run_type` |值现在必须为大写：`"LLM"`、`"CHAIN"`、`"TOOL"`、`"RETRIEVER"`、`"EMBEDDING"`、`"PROMPT"`、`"PARSER"` |
 > | `trace_id` | `trace_id` |不变 |
 > | `reference_example_id` | `reference_examples` |现在获取 UUID 列表 |
-> | `query` | *（已删除）* |没有同等的 |
+> | `query` | *（已删除）* |没有同等的|
 > | `filter` | `filter` |语法不变 |
 > | `trace_filter` | `trace_filter` |不变 |
 > | `tree_filter` | `tree_filter` |不变 |
-> | `is_root` | `is_root` |不变 |> | `parent_run_id` | *（已删除）* |没有同等的 |
+> | `is_root` | `is_root` |不变 |> | `parent_run_id` | *（已删除）* |没有同等的|
 > | `start_time` | `min_start_time` |更名；默认为 1 天前 - 请参阅上面的警告 |
 > | `error` | `has_error` |更名|
 > | `run_ids` | `ids` |更名|
@@ -100,25 +100,25 @@
 >>
 >> `min_start_time` 省略时默认为 **1 天前**。没有 `startTime` 的 `listRuns` 返回所有历史运行；不带 `min_start_time` 的 `client.runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `min_start_time`。
 >
-> |之前 (`listRuns`) |之后（`client.runs.query`）|笔记|
+> |之前 (`listRuns`) |之后(`client.runs.query`)|笔记|
 > | - | - | - |
 > | `projectName` | *（已删除）* |将 `project_ids` 与 UUID 一起使用 - 请参阅上面的警告 |
 > | `projectId` | `project_ids` |更名为`snake_case`；现在需要一个列表；与 `reference_dataset_id` 互斥 |
 > | `runType` | `run_type` |更名为`snake_case`；值现在必须为大写：`"LLM"`、`"CHAIN"`、`"TOOL"`、`"RETRIEVER"`、`"EMBEDDING"`、`"PROMPT"`、`"PARSER"` |
 > | `traceId` | `trace_id` |更名为`snake_case` |
 > | `referenceExampleId` | `reference_examples` |更名为`snake_case`；现在获取 UUID 列表 |
-> | `query` | *（已删除）* |没有同等的 |
+> | `query` | *（已删除）* |没有同等的|
 > | `filter` | `filter` |语法不变 |
 > | `traceFilter` | `trace_filter` |更名为`snake_case` |
 > | `treeFilter` | `tree_filter` |更名为`snake_case` |
 > | `isRoot` | `is_root` |更名为`snake_case` |
-> | `parentRunId` | *（已删除）* |没有同等的 |> | `startTime` | `min_start_time` |更名为`snake_case`；默认为 1 天前 - 请参阅上面的警告 |
+> | `parentRunId` | *（已删除）* |没有同等的|> | `startTime` | `min_start_time` |更名为`snake_case`；默认为 1 天前 - 请参阅上面的警告 |
 > | `error` | `has_error` |更名|
 > | `id` | `ids` |更名|
 > | `select` | `selects` |字段名称现在为大写（`"NAME"`、`"STATUS"` 等）|
 > | `limit` | *（已删除）* |使用 `page_size` 作为每个请求的批量大小 |
-> | `order` | *（已删除）* |没有同等的 |
-> | `executionOrder` | *（已删除）* |没有同等的 |
+> | `order` | *（已删除）* |没有同等的|
+> | `executionOrder` | *（已删除）* |没有同等的|
 > | *（不可用）* | `max_start_time` | `start_time` 的上限；默认为现在 |
 > | *（不可用）* | `page_size` |每个请求结果计数（默认 100，最大 1000）|
 > | *（不可用）* | `reference_dataset_id` |替代`project_ids`；互斥|
@@ -128,25 +128,25 @@
 >>
 >> `minStartTime()` 省略时默认为 **1 天前**。没有 `startTime()` 的 `query()` 返回所有历史运行；不带 `minStartTime()` 的 `queryV2()` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `minStartTime()`。
 >
-> |之前 (`RunQueryParams`) | (`RunQueryV2Params`)之后|笔记|
+> |之前 (`RunQueryParams`) |之后（`RunQueryV2Params`）|笔记|
 > | - | - | - |
 > | `session()` | `projectIds()` |更名；现在采用显式项目 UUID |
 > | `runType()` | `runType()` |值现在必须为大写 |
 > | `trace()` | `traceId()` |更名|
 > | `referenceExample()` | `referenceExamples()` |重命名为复数 |
-> | `query()` | *（已删除）* |没有同等的 |
+> | `query()` | *（已删除）* |没有同等的|
 > | `filter()` | `filter()` |语法不变 |
 > | `traceFilter()` | `traceFilter()` |不变 |
 > | `treeFilter()` | `treeFilter()` |不变 |
 > | `isRoot()` | `isRoot()` |不变 |
-> | `parentRun()` | *（已删除）* |没有同等的 |
+> | `parentRun()` | *（已删除）* |没有同等的|
 > | `startTime()` | `minStartTime()` |更名；默认为 1 天前 - 请参阅上面的警告 |
 > | `error()` | `hasError()` |更名|
 > | `id()` | `ids()` |更名|
 > | `select()` | `selects()` |字段名称现在为大写 |
 > | `limit()` | *（已删除）* |使用`pageSize()` |
-> | `order()` | *（已删除）* |没有同等的 |
-> | `executionOrder()` | *（已删除）* |没有同等的 |
+> | `order()` | *（已删除）* |没有同等的|
+> | `executionOrder()` | *（已删除）* |没有同等的|
 > | `cursor()` | `cursor()` |不变 |
 > | *（不可用）* | `maxStartTime()` |开始时间的上限；默认为现在 |> | *（不可用）* | `pageSize()` |每个请求结果计数（默认 100，最大 1000）|
 > | *（不可用）* | `referenceDatasetId()` | `projectIds()` 的替代方案 |
@@ -155,7 +155,7 @@
 >
 >> [!警告]
 >>
->> `MinStartTime` 省略时默认为 **1 天前**。没有 `StartTime` 的 `Query()` 返回所有历史运行；没有 `MinStartTime` 的 `QueryV2()` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `MinStartTime`。
+>> `MinStartTime` 省略时默认为 **1 天前**。没有 `StartTime` 的 `Query()` 返回所有历史运行；不带 `MinStartTime` 的 `QueryV2()` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `MinStartTime`。
 >
 > |之前 (`RunQueryParams`) |之后（`RunQueryV2Params`）|笔记|
 > | - | - | - |
@@ -163,18 +163,18 @@
 > | `RunType` | `RunType` |值现在必须为大写：`RunQueryV2ParamsRunTypeLLM`、`RunQueryV2ParamsRunTypeChain` 等 |
 > | `Trace` | `TraceID` |更名|
 > | `ReferenceExample` | `ReferenceExamples` |重命名为复数 |
-> | `Query` | *（已删除）* |没有同等的 |
+> | `Query` | *（已删除）* |没有同等的|
 > | `Filter` | `Filter` |不变 |
 > | `TraceFilter` | `TraceFilter` |不变 |
 > | `TreeFilter` | `TreeFilter` |不变 |
 > | `IsRoot` | `IsRoot` |不变 |
-> | `ParentRun` | *（已删除）* |没有同等的 |
+> | `ParentRun` | *（已删除）* |没有同等的|
 > | `StartTime` | `MinStartTime` |更名；默认为 1 天前 - 请参阅上面的警告 |
 > | `Error` | `HasError` |更名|
 > | `ID` | `IDs` |更名|
 > | `Select` | `Selects` |字段名称常量现在为大写（例如，`RunQueryV2ParamsSelectName`）|
 > | `Limit` | *（已删除）* |使用`PageSize` |
-> | `Order` | *（已删除）* |没有同等的 |> | `ExecutionOrder` | *（已删除）* |没有同等的 |
+> | `Order` | *（已删除）* |没有同等的|> | `ExecutionOrder` | *（已删除）* |没有同等的|
 > | `Cursor` | `Cursor` |不变 |
 > | *（不可用）* | `MaxStartTime` |开始时间的上限；默认为现在 |
 > | *（不可用）* | `PageSize` |每个请求结果计数（默认 100，最大 1000）|
@@ -186,17 +186,17 @@
 >>
 >> `min_start_time` 省略时默认为 **1 天前**。没有 `start_time` 的 `POST /api/v1/runs/query` 返回所有历史运行；不带 `min_start_time` 的 `POST /api/v2/runs/query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `min_start_time`。
 >
-> |之前 (v1 `POST /api/v1/runs/query` 正文字段) |之后 (v2 `POST /api/v2/runs/query` 正文字段) |笔记|
+> |之前（v1 `POST /api/v1/runs/query`正文字段）|之后 (v2 `POST /api/v2/runs/query` 正文字段) |笔记|
 > | - | - | - |
 > | `session` | `project_ids` |更名；两者都采用一系列项目 UUID。 `project_ids` 与 `reference_dataset_id` 互斥 |
 > | `run_type` | `run_type` |值现在必须为大写：`"LLM"`、`"CHAIN"`、`"TOOL"`、`"RETRIEVER"`、`"EMBEDDING"`、`"PROMPT"`、`"PARSER"` |
 > | `trace` | `trace_id` |更名|
 > | `reference_example` | `reference_examples` |重命名为复数；现在采用 UUID 数组 |
-> | `query` | *（已删除）* |没有同等的 |
+> | `query` | *（已删除）* |没有同等的|
 > | `filter` | `filter` |语法不变 |
 > | `trace_filter` | `trace_filter` |不变 |
 > | `tree_filter` | `tree_filter` |不变 |
-> | `is_root` | `is_root` |不变 |> | `parent_run` | *（已删除）* |没有同等的 |
+> | `is_root` | `is_root` |不变 |> | `parent_run` | *（已删除）* |没有同等的|
 > | `start_time` | `min_start_time` |更名；默认为 1 天前 - 请参阅上面的警告 |
 > | `error` | `has_error` |更名|
 > | `id` | `ids` |重命名为复数 |
@@ -215,9 +215,9 @@
 >
 > 要读取跟踪的总代币和成本，请使用 [Traces: query](/langsmith/smithdb-sdk-migration-traces) 并从 `trace_aggregates` 读取 `total_tokens` 和 `total_cost`。 `trace_aggregates` 没有提示或完成分割。> [选项卡] Python
 >
-> 将 SCREAMING_SNAKE_CASE 字符串传递给`selects`（例如`"ID"`、`"NAME"`、`"STATUS"`）来控制每个`Run`上填充哪些字段；只有选定的字段是非`None`。默认 `selects`​​ 仅包含 `"ID"`。
+> 将 SCREAMING_SNAKE_CASE 字符串传递给`selects`（例如`"ID"`、`"NAME"`、`"STATUS"`）来控制每个`Run`上填充哪些字段；只有选定的字段是非`None`​​。默认 `selects` 仅包含 `"ID"`。
 >
-> |之前（v1 `Run` 属性）| (v2 `Run` 属性) | 之后笔记|
+> |之前（v1 `Run` 属性）|之后（v2 `Run` 属性）|笔记|
 > | - | - | - |
 > | `run.id` | `run.id` |不变；省略 `selects` 时默认返回 |
 > | `run.name` | `run.name` |不变 |
@@ -249,8 +249,8 @@
 > | `run.first_token_time` | `run.first_token_time` |不变 |
 > | `run.latency`（属性）| `run.latency_seconds` |更名；是一个计算的 `timedelta` 属性，现在是一个原生的 `float` 字段 |
 > | `run.in_dataset` | `run.is_in_dataset` |更名|
-> | `run.child_run_ids` | *（已删除）* |没有同等的 |
-> | `run.child_runs` | *（已删除）* |没有同等的 |
+> | `run.child_run_ids` | *（已删除）* |没有同等的|
+> | `run.child_runs` | *（已删除）* |没有同等的|
 > | `run.serialized` | *（已删除）* |使用`run.manifest` |
 > | `run.manifest_id` | *（已删除）* |使用`run.manifest`|
 > | *（不可用）* | `run.is_root` |新 |
@@ -260,8 +260,8 @@
 > | *（不可用）* | `run.thread_id` |新：对话线程 UUID |
 > | *（不可用）* | `run.reference_dataset_id` |新：参考示例的数据集 UUID |
 > | *（不可用）* | `run.share_url` |新功能：公共共享 URL（仅在共享运行时设置）|
-> | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
-> | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
+> | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
+> | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
 > | `run.prompt_cost_details` | `run.prompt_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
 > | `run.completion_cost_details` | `run.completion_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|> [选项卡] TypeScript
 >
@@ -299,8 +299,8 @@
 > | `run.firstTokenTime` | `run.first_token_time` |更名为`snake_case` |
 > | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒）|
 > | `run.inDataset` | `run.is_in_dataset` |更名|
-> | `run.childRunIds` | *（已删除）* |没有同等的 |
-> | `run.childRuns` | *（已删除）* |没有同等的 |
+> | `run.childRunIds` | *（已删除）* |没有同等的|
+> | `run.childRuns` | *（已删除）* |没有同等的|
 > | `run.serialized` | *（已删除）* |使用`run.manifest` |
 > | `run.manifestId` | *（已删除）* |使用`run.manifest` |
 > | `run.shareToken` | *（已删除）* |使用`run.share_url`（完整 URL，仅在共享运行时设置）|
@@ -316,7 +316,7 @@
 > | *（不可用）* | `run.prompt_cost_details` |新：按类别提示成本明细 |
 > | *（不可用）* | `run.completion_cost_details` |新：按类别完成成本明细 |> [选项卡] Java
 >
-> 通过`.addSelect(...)`添加`RunQueryV2Params.Select`值（例如`Select.NAME`、`Select.STATUS`）来控制填充哪些字段；未选择的字段返回空 `Optional` 值。 `selects()` 默认为`ID`。
+> 通过`.addSelect(...)`添加`RunQueryV2Params.Select`值（例如`Select.NAME`、`Select.STATUS`）来控制填充哪些字段；未选择的字段返回空 `Optional` 值。 `selects()` 仅默认为 `ID`。
 >
 > |之前（`RunSchema`方法）|之后（`Run`方法）|笔记|
 > | - | - | - |
@@ -357,18 +357,18 @@
 > | `run.referenceDatasetId()` | `run.referenceDatasetId()` |不变 |
 > | `run.threadId()` | `run.threadId()` |不变 |
 > | `run.shareToken()` | *（已删除）* |使用`run.shareUrl()`（完整 URL，仅在共享运行时设置）|
-> | `run.childRunIds()` | *（已删除）* |没有同等的 |
-> | `run.directChildRunIds()` | *（已删除）* |没有同等的 |
+> | `run.childRunIds()` | *（已删除）* |没有同等的|
+> | `run.directChildRunIds()` | *（已删除）* |没有同等的|
 > | `run.serialized()` | *（已删除）* |使用`run.manifest()` |
 > | `run.manifestId()` | *（已删除）* |使用`run.manifest()` |
-> | `run.messages()` | *（已删除）* |没有同等的 |
-> | `run.executionOrder()` | *（已删除）* |没有同等的 |> | `run.lastQueuedAt()` | *（已删除）* |没有同等的 |
-> | `run.traceFirstReceivedAt()` | *（已删除）* |没有同等的 |
-> | `run.traceMaxStartTime()` | *（已删除）* |没有同等的 |
-> | `run.traceMinStartTime()` | *（已删除）* |没有同等的 |
-> | `run.traceTier()` | *（已删除）* |没有同等的 |
-> | `run.traceUpgrade()` | *（已删除）* |没有同等的 |
-> | `run.ttlSeconds()` | *（已删除）* |没有同等的 |
+> | `run.messages()` | *（已删除）* |没有同等的|
+> | `run.executionOrder()` | *（已删除）* |没有同等的|> | `run.lastQueuedAt()` | *（已删除）* |没有同等的|
+> | `run.traceFirstReceivedAt()` | *（已删除）* |没有同等的|
+> | `run.traceMaxStartTime()` | *（已删除）* |没有同等的|
+> | `run.traceMinStartTime()` | *（已删除）* |没有同等的|
+> | `run.traceTier()` | *（已删除）* |没有同等的|
+> | `run.traceUpgrade()` | *（已删除）* |没有同等的|
+> | `run.ttlSeconds()` | *（已删除）* |没有同等的|
 > | *（不可用）* | `run.attachments()` |新功能：附件的预签名下载 URL（替换 S3 URL 字段）|
 > | *（不可用）* | `run.latencySeconds()` |新：挂钟持续时间（以秒为单位）|
 > | *（不可用）* | `run.isRoot()` |新 |
@@ -378,14 +378,14 @@
 > | *（不可用）* | `run.shareUrl()` |新功能：公共共享 URL（仅在共享运行时设置）|
 > | *（不可用）* | `run.threadEvaluationTime()` |新 |> [选项卡] 前往
 >
-> 将`RunQueryV2ParamsSelect`常量（例如`RunQueryV2ParamsSelectName`、`RunQueryV2ParamsSelectStatus`）传递给`Selects`来控制填充哪些字段；未选择的字段在返回的结构上为零值。 `Selects` 默认为`ID`。
+> 将`RunQueryV2ParamsSelect`常量（例如`RunQueryV2ParamsSelectName`、`RunQueryV2ParamsSelectStatus`）传递给`Selects`来控制填充哪些字段；未选择的字段在返回的结构上为零值。 `Selects` defaults to `ID` only.
 >
-> |之前（`RunSchema`字段）|之后（`Run`场）|笔记|
+> | Before (`RunSchema` field) | After (`Run` field) |笔记|
 > | - | - | - |
 > | `run.ID` | `run.ID` |不变 |
 > | `run.Name` | `run.Name` |不变 |
 > | `run.RunType` | `run.RunType` |值更改为大写：`"LLM"`、`"CHAIN"` 等 |
-> | `run.Status` | `run.Status` |值：`"SUCCESS"`、`"ERROR"`、`"PENDING"` |
+> | `run.Status` | `run.Status` | Values: `"SUCCESS"`, `"ERROR"`, `"PENDING"` |
 > | `run.TraceID` | `run.TraceID` |不变 |
 > | `run.DottedOrder` | `run.DottedOrder` |不变 |
 > | `run.AppPath` | `run.AppPath` |不变 |
@@ -393,21 +393,21 @@
 > | `run.EndTime` | `run.EndTime` |不变 |
 > | `run.Error` | `run.Error` |不变 |
 > | `run.Events` | `run.Events` |不变；元素类型现在为 `RunEvent`（原为 `map[string]interface{}`）|
-> | `run.Extra` | `run.Extra` |不变；类型现在为 `interface{}`（原为 `map[string]interface{}`）|
-> | `run.FeedbackStats` | `run.FeedbackStats` |不变；元素类型现在为 `RunFeedbackStat` |
+> | `run.Extra` | `run.Extra` |不变； type is now `interface{}` (was `map[string]interface{}`) |
+> | `run.FeedbackStats` | `run.FeedbackStats` |不变； element type is now `RunFeedbackStat` |
 > | `run.FirstTokenTime` | `run.FirstTokenTime` |不变 |
 > | `run.Inputs` | `run.Inputs` |不变；类型现在为 `interface{}`（原为 `map[string]interface{}`）|
 > | `run.InputsPreview` | `run.InputsPreview` |不变 |
-> | `run.Outputs` | `run.Outputs` |不变；类型现在为`interface{}`（原为`map[string]interface{}`）|
+> | `run.Outputs` | `run.Outputs` |不变； type is now `interface{}` (was `map[string]interface{}`) |
 > | `run.OutputsPreview` | `run.OutputsPreview` |不变 |
 > | `run.ParentRunIDs` | `run.ParentRunIDs` |不变 |
 > | `run.PriceModelID` | `run.PriceModelID` |不变 |> | `run.PromptCost` | `run.PromptCost` |仅供自己使用；不再从子运行中求和|
 > | `run.PromptCostDetails` | `run.PromptCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
-> | `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变）|
+> | `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变） |
 > | `run.PromptTokens` | `run.PromptTokens` |仅供自己使用；不再从子运行中求和|
 > | `run.CompletionCost` | `run.CompletionCost` |仅供自己使用；不再从子运行中求和|
 > | `run.CompletionCostDetails` | `run.CompletionCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
-> | `run.CompletionTokenDetails` | `run.CompletionTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变）|
+> | `run.CompletionTokenDetails` | `run.CompletionTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变） |
 > | `run.CompletionTokens` | `run.CompletionTokens` |仅供自己使用；不再从子运行中求和|
 > | `run.TotalCost` | `run.TotalCost` |仅供自己使用；不再从子运行中求和|
 > | `run.TotalTokens` | `run.TotalTokens` |仅供自己使用；不再从子运行中求和|
@@ -417,24 +417,24 @@
 > | `run.ThreadID` | `run.ThreadID` |不变 |
 > | `run.SessionID` | `run.ProjectID` |更名|
 > | `run.InDataset` | `run.IsInDataset` |更名|
-> | `run.ChildRunIDs` | *（已删除）* |没有同等的 |
-> | `run.DirectChildRunIDs` | *（已删除）* |没有同等的 |
-> | `run.ExecutionOrder` | *（已删除）* |没有同等的 |> | `run.InputsS3URLs` | *（已删除）* |内部存储URL； v2 中未公开 |
-> | `run.LastQueuedAt` | *（已删除）* |没有同等的 |
+> | `run.ChildRunIDs` | *（已删除）* |没有同等的|
+> | `run.DirectChildRunIDs` | *（已删除）* |没有同等的|
+> | `run.ExecutionOrder` | *（已删除）* |没有同等的|> | `run.InputsS3URLs` | *（已删除）* |内部存储URL； v2 中未公开 |
+> | `run.LastQueuedAt` | *（已删除）* |没有同等的|
 > | `run.ManifestID` | *（已删除）* |使用`run.Manifest` |
 > | `run.ManifestS3ID` | *（已删除）* |内部存储URL； v2 中未公开 |
-> | `run.Messages` | *（已删除）* |没有同等的 |
+> | `run.Messages` | *（已删除）* |没有同等的|
 > | `run.OutputsS3URLs` | *（已删除）* |内部存储URL； v2 中未公开 |
 > | `run.ParentRunID` | *（已删除）* |使用`run.ParentRunIDs` |
 > | `run.S3URLs` | *（已删除）* |内部存储URL； v2 中未公开 |
 > | `run.Serialized` | *（已删除）* |使用`run.Manifest` |
 > | `run.ShareToken` | *（已删除）* |使用`run.ShareURL` |
-> | `run.TraceFirstReceivedAt` | *（已删除）* |没有同等的 |
-> | `run.TraceMaxStartTime` | *（已删除）* |没有同等的 |
-> | `run.TraceMinStartTime` | *（已删除）* |没有同等的 |
-> | `run.TraceTier` | *（已删除）* |没有同等的 |
-> | `run.TraceUpgrade` | *（已删除）* |没有同等的 |
-> | `run.TtlSeconds` | *（已删除）* |没有同等的 |
+> | `run.TraceFirstReceivedAt` | *（已删除）* |没有同等的|
+> | `run.TraceMaxStartTime` | *（已删除）* |没有同等的|
+> | `run.TraceMinStartTime` | *（已删除）* |没有同等的|
+> | `run.TraceTier` | *（已删除）* |没有同等的|
+> | `run.TraceUpgrade` | *（已删除）* |没有同等的|
+> | `run.TtlSeconds` | *（已删除）* |没有同等的|
 > | *（不可用）* | `run.Attachments` |新功能：将附件文件名映射到预签名的下载 URL |
 > | *（不可用）* | `run.ErrorPreview` |新：截断的错误片段 |
 > | *（不可用）* | `run.IsRoot` |新 |
@@ -471,8 +471,8 @@
 > | `parent_run_ids` | `parent_run_ids` |不变 |
 > | `price_model_id` | `price_model_id` |不变 |
 > | `prompt_cost` | `prompt_cost` |仅供自己使用；不再从子运行中求和|
-> | `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串） |
-> | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
+> | `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
+> | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
 > | `prompt_tokens` | `prompt_tokens` |仅供自己使用；不再从子运行中求和|
 > | `completion_cost` | `completion_cost` |仅供自己使用；不再从子运行中求和|
 > | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|
@@ -485,25 +485,25 @@
 > | `tags` | `tags` |不变 |
 > | `thread_id` | `thread_id` |不变 |
 > | `session_id` | `project_id` |更名|> | `in_dataset` | `is_in_dataset` |更名|
-> | `child_run_ids` | *（已删除）* |没有同等的 |
-> | `direct_child_run_ids` | *（已删除）* |没有同等的 |
-> | `execution_order` | *（已删除）* |没有同等的 |
+> | `child_run_ids` | *（已删除）* |没有同等的|
+> | `direct_child_run_ids` | *（已删除）* |没有同等的|
+> | `execution_order` | *（已删除）* |没有同等的|
 > | `inputs_s3_urls` | *（已删除）* |内部存储URL； v2 中未公开 |
-> | `last_queued_at` | *（已删除）* |没有同等的 |
-> | `manifest_id` | *（已删除）* |使用`manifest`|
+> | `last_queued_at` | *（已删除）* |没有同等的|
+> | `manifest_id` | *（已删除）* |使用`manifest` |
 > | `manifest_s3_id` | *（已删除）* |内部存储URL； v2 中未公开 |
-> | `messages` | *（已删除）* |没有同等的 |
+> | `messages` | *（已删除）* |没有同等的|
 > | `outputs_s3_urls` | *（已删除）* |内部存储URL； v2 中未公开 |
-> | `parent_run_id` | *（已删除）* |使用`parent_run_ids` |
+> | `parent_run_id` | *（已删除）* |使用`parent_run_ids`|
 > | `s3_urls` | *（已删除）* |内部存储URL； v2 中未公开 |
-> | `serialized` | *（已删除）* |使用`manifest` |
-> | `share_token` | *（已删除）* |使用`share_url`|
-> | `trace_first_received_at` | *（已删除）* |没有同等的 |
-> | `trace_max_start_time` | *（已删除）* |没有同等的 |
-> | `trace_min_start_time` | *（已删除）* |没有同等的 |
-> | `trace_tier` | *（已删除）* |没有同等的 |
-> | `trace_upgrade` | *（已删除）* |没有同等的 |
-> | `ttl_seconds` | *（已删除）* |没有同等的 |
+> | `serialized` | *（已删除）* |使用`manifest`|
+> | `share_token` | *（已删除）* |使用`share_url` |
+> | `trace_first_received_at` | *（已删除）* |没有同等的|
+> | `trace_max_start_time` | *（已删除）* |没有同等的|
+> | `trace_min_start_time` | *（已删除）* |没有同等的|
+> | `trace_tier` | *（已删除）* |没有同等的|
+> | `trace_upgrade` | *（已删除）* |没有同等的|
+> | `ttl_seconds` | *（已删除）* |没有同等的|
 > | *（不可用）* | `attachments` |新功能：将附件文件名映射到预签名的下载 URL |
 > | *（不可用）* | `error_preview` |新：截断的错误片段 |
 > | *（不可用）* | `is_root` |新 |> | *（不可用）* | `latency_seconds` |新：挂钟持续时间（以秒为单位）|
@@ -524,7 +524,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] TypeScript
 >
-> | |之前 (`client.listRuns()`) |之后（`client.runs.query()`）|
+> | |之前 (`client.listRuns()`) |之后 (`client.runs.query()`) |
 > | - | - | - |
 > |限制|每 10 秒 10 个请求 |每 10 秒 300 个请求 |
 
@@ -536,7 +536,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] 前往
 >
-> | |之前 (`client.Runs.Query()`) |之后（`client.Runs.QueryV2()`）|
+> | |之前 (`client.Runs.Query()`) |之后 (`client.Runs.QueryV2()`) |
 > | - | - | - |
 > |限制|每 10 秒 10 个请求 |每 10 秒 300 个请求 |> [选项卡] 卷曲
 >
@@ -729,7 +729,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] Python
 >
-> `list_runs` 返回一组默认字段，无需选择。默认情况下，`runs.query` ​​仅返回 `id` — 通过 `selects=[...]` 请求更多。字段名称现在为大写 (`"name"` → `"NAME"`)。
+> `list_runs` 返回一组默认字段，无需选择。默认情况下，`runs.query` 仅返回 `id` — 通过 `selects=[...]` 请求更多。字段名称现在为大写 (`"name"` → `"NAME"`)。
 >
 >> [选项卡] 之前
 >>
@@ -1417,7 +1417,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] Java
 >
-> `.addId(...)` 未更改 - 每个运行 ID 调用一次。即使按运行 ID 进行过滤，现在也需要 `.addProjectId(...)` — v1 允许省略项目上下文。
+> `.addId(...)` 不变——每个运行 ID 调用一次。即使按运行 ID 进行过滤，现在也需要 `.addProjectId(...)` — v1 允许省略项目上下文。
 >
 >> [选项卡] 之前
 >>
@@ -1525,7 +1525,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] 卷曲
 >
-> `id` 更名为 `ids`。即使按运行 ID 进行过滤，现在请求正文中也需要 `project_ids` — v1 允许省略项目上下文。
+> `id` 更名为 `ids`。现在，即使按运行 ID 进行过滤，请求正文中也需要 `project_ids` — v1 允许省略项目上下文。
 >
 >> [选项卡] 之前
 >>
@@ -1625,7 +1625,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 > > }
 > > ```> [选项卡] Java
 >
-> `.autoPager()` 在 `query()` 和 `queryV2()` 上的使用方式相同——一旦运行足够多，就跳出循环。
+> `.autoPager()` 在 `query()` 和 `queryV2()` 上的使用方式相同 — 一旦运行足够多，就跳出循环。
 >
 >> [选项卡] 之前
 >>
@@ -1994,7 +1994,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] TypeScript
 >
-> `filter` 字符串语法不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 结合以匹配特定值。
+> `filter` 字符串语法保持不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 结合以匹配特定值。
 >
 >> [选项卡] 之前
 >>
@@ -2423,7 +2423,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] Java
 >
-> `.filter()`、`.traceFilter()` 和 `.treeFilter()` 不变。 `filter` 适用于匹配的运行，`traceFilter` 应用于其跟踪的根，`treeFilter` 应用于跟踪树中的其他运行（同级和子级）。
+> `.filter()`、`.traceFilter()` 和 `.treeFilter()` 保持不变。 `filter` 适用于匹配的运行，`traceFilter` 应用于其跟踪的根，`treeFilter` 应用于跟踪树中的其他运行（同级和子级）。
 >
 >> [选项卡] 之前
 >>

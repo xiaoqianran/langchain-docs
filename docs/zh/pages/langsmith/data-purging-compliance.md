@@ -10,24 +10,26 @@
 
 LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。数据保留策略可以在两个级别进行配置：
 
-* **工作区级别**：具有所需权限的企业客户可以将延长保留设置为工作区默认值，并自定义保留期限（截至 2026 年 9 月 14 日最多 180 天）。参见[Customize extended retention policy](#customize-extended-retention-policy)。
-* **项目级别**：具有所需权限的客户可以为每个跟踪项目设置默认保留层，在基本保留（14 天）或延长保留（180 天）之间进行选择。参见[Change project-level default retention](/langsmith/billing#change-project-level-default-retention)。
+* **工作区级别**：具有所需权限的企业客户可以将延长保留设置为工作区默认值并自定义保留期限。参见[Customize extended retention policy](#customize-extended-retention-policy)。
+* **项目级别**：具有所需权限的客户可以为每个跟踪项目设置默认保留层，在基本保留或扩展保留之间进行选择。参见[Change project-level default retention](/langsmith/billing#change-project-level-default-retention)。
 
-有关数据保留配置和管理的详细信息，请参阅[Data Retention concepts](/langsmith/usage-and-billing#data-retention)文档。
+云、BYOC、自托管各层级的保留期限请参见[Retention periods](/langsmith/usage-and-billing#retention-periods)。
 
 ## 自定义延长保留策略
 
 > [!注意]
 >
-> 此功能适用于[Enterprise](/langsmith/pricing-plans)计划客户。对于[self-hosted](/langsmith/self-hosted)企业客户，请参阅[workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted)。[Enterprise](/langsmith/pricing-plans) 客户可以自定义[workspace](/langsmith/administration-overview#workspaces) 级别跟踪的延长数据保留期限，以满足特定的合规性要求。从 2026 年 9 月 14 日开始，SaaS 客户的最长长期跟踪保留期为 180 天。您可以根据组织的需要将保留期调整为低于此最大值。对保留期的更改仅适用于新跟踪。
+> 此功能适用于[Enterprise](/langsmith/pricing-plans)计划客户。对于[self-hosted](/langsmith/self-hosted)企业客户，请参阅[workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted)。
 
-> [!注意]
+[Enterprise](/langsmith/pricing-plans) 客户可以自定义[workspace](/langsmith/administration-overview#workspaces) 级别跟踪的延长数据保留期限，以满足特定的合规性要求。您可以选择的持续时间取决于您的托管选项。参见[Retention periods](/langsmith/usage-and-billing#retention-periods)。> [!注意]
 >
-> 对保留期的更改仅适用于新跟踪。现有痕迹不受影响。
+> 对保留期限的更改仅适用于新跟踪。现有痕迹不受影响。
 
 ### 配置延长保留
 
-组织管理员和操作员 (`organization:manage`) 可以为任何工作区配置保留。工作区管理员可以配置自己的工作区 (`workspaces:manage`)。有关完整权限参考，请参阅[Organization and workspace operations](/langsmith/organization-workspace-operations)。> [选项卡] 用户界面
+组织管理员和操作员 (`organization:manage`) 可以为任何工作区配置保留。工作区管理员可以配置自己的工作区 (`workspaces:manage`)。有关完整权限参考，请参阅[Organization and workspace operations](/langsmith/organization-workspace-operations)。
+
+> [选项卡] 用户界面
 >
 > 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-purging-compliance) 中：
 >
@@ -35,7 +37,7 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 > 2. 从左侧菜单中选择**使用配置**。
 > 3. 在列表中找到您要配置的工作区。
 > 4. 单击该工作区的 **数据保留策略** 列下的值。
-> 5. 在 **工作空间使用配置** 模式中，使用 **扩展 - 保留所有跟踪** 选项的下拉菜单自定义扩展策略。 SaaS 客户的可用持续时间为：30 天、60 天、90 天、120 天、150 天和 180 天（截至 2026 年 9 月 14 日的最长期限）。自托管部署不受此上限限制。
+> 5. 在 **工作空间使用配置** 模式中，使用 **扩展 - 保留所有跟踪** 选项的下拉菜单自定义扩展策略。下拉列表列出了 [durations available for your hosting option](/langsmith/usage-and-billing#retention-periods)。
 > 6. 选择**保存**。
 
 > [选项卡] API
@@ -56,7 +58,7 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 >   -H "x-api-key: YOUR_API_KEY"
 > ```
 >
-> 要更新保留期，请将跟踪的 `resource_type` 设置为 `"run"`，并将 `ttl_days` 设置为所需的持续时间。 SaaS 客户的可用期限为：30、60、90、120、150 和 180 天（最长截至 2026 年 9 月 14 日）。
+> 要更新保留期，请将跟踪的 `resource_type` 设置为 `"run"`，并将 `ttl_days` 设置为 [durations available for your hosting option](/langsmith/usage-and-billing#retention-periods) 之一。
 >
 > **组织级别** (`organization:manage`)
 >
@@ -74,9 +76,9 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 >   -H "x-api-key: YOUR_API_KEY" \
 >   -H "Content-Type: application/json" \
 >   -d '{"resource_type": "run", "ttl_days": 90}'
-> ```
+> ```### 自托管的工作区级延长保留
 
-### 自托管的工作区级别延长保留自托管 [Enterprise](/langsmith/pricing-plans) 客户还可以使用工作区级别的扩展保留配置，而不是系统范围的 TTL 设置。这可以对不同工作区的数据保留进行更精细的控制，而无需更改环境变量。
+自托管 [Enterprise](/langsmith/pricing-plans) 客户还可以使用工作区级别的扩展保留配置，而不是系统范围的 TTL 设置。这可以对不同工作区的数据保留进行更精细的控制，而无需更改环境变量。
 
 > [!警告]
 >
@@ -91,7 +93,7 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 1. **通过跟踪 ID 和会话 ID**：通过提供跟踪 ID 及其相应会话 ID 的列表来删除特定跟踪（每个请求最多 1000 个跟踪）
 2. **按元数据**：删除工作区中与任何指定元数据键值对匹配的跟踪
 
-更多详情请参阅[API spec](/langsmith/smith-api/run/delete-runs)。> [!警告]
+欲了解更多详情，请参阅[API spec](/langsmith/smith-api/run/delete-runs)。> [!警告]
 >
 > 所有跟踪删除都将删除所有数据存储中的反馈、聚合和统计等相关实体。
 

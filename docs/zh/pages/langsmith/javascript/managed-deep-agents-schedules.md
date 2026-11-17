@@ -4,11 +4,19 @@
 
 # 将计划添加到托管Deep Agents
 
-为托管 Deep Agents 部署声明托管 cron 计划，或在运行时创建它们。
+按计划运行托管Deep Agents，因此代理无需用户消息即可使用静态声明或运行时工具进行操作。
 
-托管 Deep Agents 可以按 cron 计划运行代理。当您部署项目时，`mda deploy` 在部署上线后将每个计划配置为 LangSmith cron。
+时间表使托管 Deep Agents 代理变得主动：它可以在没有用户消息的情况下运行。在 `schedules/` 中声明固定计划，或者让代理通过您公开的工具在运行时创建重复性和一次性计划。
 
-> [!注意]
+当您部署项目时，`mda deploy` 在部署上线后将 `schedules/` 中的每个声明设置为 LangSmith cron。
+
+常见模式：
+
+* **内存刷新**：每日或每晚的 cron 回顾 [durable memory](/langsmith/javascript/managed-deep-agents-memory) 并存储浓缩的学习内容。当运行应该共享历史记录时，使用[persistent thread](#choose-thread-behavior)。
+* **主动摘要**：固定的时间表会提示代理显示截止日期、打开线程或实现目标的进度。参见[Add a schedule](#add-a-schedule)。
+* **智能分类**：频繁的 cron 检查 Slack 或电子邮件等流，并仅在重要时发出通知。与[channels](/langsmith/javascript/managed-deep-agents-channels)和[Slack delivery](#deliver-results-to-slack)配对。
+* **跟进和提醒**：运行时工具会在用户请求时创建一次性或重复的计划。参见[Create schedules at runtime](#create-schedules-at-runtime)。
+* **编排签入**：后台作业或子代理完成后，一次性计划会唤醒代理。参见[Create a one-time schedule](#create-a-one-time-schedule)。> [!注意]
 >
 > 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
@@ -59,11 +67,11 @@ export const schedule = defineSchedule({
 });
 ```
 
-`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，则 LangSmith crons 使用 UTC。
+`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，LangSmith crons 将使用 UTC。
 
-## 选择线程行为默认情况下，调度使用临时线程。托管 Deep Agents 为每次运行创建一个新线程，并要求 LangSmith 在运行完成后删除该临时线程。
+## 选择线程行为
 
-当计划运行应共享一个线程历史记录时，请使用持久线程。当您省略 `id` 时，`mda deploy` 会为计划创建一个线程，并键入代理和计划名称。重命名调度文件会启动一个新线程。要使用特定线程，请将 `id` 设置为 UUID。 `mda deploy` 如果线程不存在则创建该线程，并拒绝另一个调用者拥有的线程。
+默认情况下，调度使用临时线程。托管 Deep Agents 为每次运行创建一个新线程，并要求 LangSmith 在运行完成后删除该临时线程。当计划运行应共享一个线程历史记录时，请使用持久线程。当您省略 `id` 时，`mda deploy` 会为计划创建一个线程，并键入代理和计划名称。重命名调度文件会启动一个新线程。要使用特定线程，请将 `id` 设置为 UUID。 `mda deploy` 如果线程不存在则创建该线程，并拒绝另一个调用者拥有的线程。
 
 > [!注意]
 >
@@ -115,9 +123,9 @@ Slack 机器人必须有权访问目的地。
 
 ## 使用静态声明
 
-时间表声明是在编译时提取的。保持调度配置静态可序列化：* 使用文字、数组、对象和对顶级文字常量的引用。
+时间表声明是在编译时提取的。保持调度配置静态可序列化：
 
-* 不要动态读取环境变量、调用函数、传播对象或计算调度值。
+* 使用文字、数组、对象和对顶级文字常量的引用。* 不要动态读取环境变量、调用函数、传播对象或计算调度值。
 
 * 将动态行为改为在代理、工具、中间件或运行时上下文中。
 
@@ -125,11 +133,11 @@ Slack 机器人必须有权访问目的地。
 
 TypeScript 开发服务器不运行 cron 作业。 `mda dev` 在启动时列出每个计划，并警告计划在本地未激活。
 
-要测试计划触发的代理行为，请将计划的 `prompt` 或 `input` 直接发送到本地 Studio 中的代理。要测试计划本身，请将项目部署到开发部署。
+要测试计划触发的代理行为，请将计划的 `prompt` 或 `input` 直接在本地 Studio 中发送到代理。要测试计划本身，请将项目部署到开发部署。
 
 ## 部署计划
 
-使用[⟦T26⟧](/langsmith/javascript/managed-deep-agents-cli#develop-locally)在本地测试项目，然后使用[⟦T27⟧](/langsmith/javascript/managed-deep-agents-deploy)进行部署。在LangSmith中打开部署跟踪以检查模型调用、工具调用、错误和延迟。
+使用[⟦T28⟧](/langsmith/javascript/managed-deep-agents-cli#develop-locally)在本地测试项目，然后使用[⟦T29⟧](/langsmith/javascript/managed-deep-agents-deploy)进行部署。在LangSmith中打开部署跟踪以检查模型调用、工具调用、错误和延迟。
 
 当部署达到 `DEPLOYED` 时，`mda deploy` 会删除早期 `schedules/` 声明创建的 cron 作业，并为当前声明创建 cron 作业。删除本地计划文件并重新部署会删除相应的托管 cron。在运行时创建的计划不受影响。> [!警告]
 >
@@ -180,7 +188,7 @@ export const remindMe = tool(
 );
 ```
 
-当要求 Slack 每个工作日发送站立提醒时，客服人员会致电 `remind_me`。它传递了自己的措辞和 cron `0 9 * * 1-5` 的提示。每个工作日运行都会将其对 Slack 对话的答案作为新消息发布，因为 `cron` 会默认安排到新线程。
+当要求 Slack 每个工作日发送站立提醒时，客服人员会致电 `remind_me`。它传递了自己的措辞和 cron `0 9 * * 1-5` 的提示。每个工作日的运行都会将其对 Slack 对话的答案作为新消息发布，因为 `cron` 会默认安排到新线程。
 
 ### 创建一次性计划
 
@@ -211,7 +219,7 @@ export const followUpLater = tool(
 );
 ```
 
-一次性计划默认为当前线程，因此它的运行会继续创建它的对话并在同一个 Slack 线程中进行回复。
+一次性计划默认为当前线程，因此它的运行将继续创建它的对话并在同一 Slack 线程中进行回复。
 
 ### 创建选项**所有者** `object` *必填*
 

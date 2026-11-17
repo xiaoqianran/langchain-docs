@@ -22,7 +22,7 @@ Query runs from a project with optional filtering and field projection. Returns 
 >
 > > [!NOTE]
 > >
-> > `client.runs.query()` is now async. Call it with `await`.
+> > `client.runs.query()` is now async and returns a paginator. Iterate it with `async for` to get individual runs across all pages, or `await` it to get the first page.
 >
 > See the [reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/runs/RunsResource/query_v2) for the full parameter and field list.
 

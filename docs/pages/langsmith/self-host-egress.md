@@ -14,7 +14,7 @@ Self-hosted LangSmith stores platform data in your environment. Unless you are r
 
 > [!WARNING]
 >
-> **Egress to `https://beacon.langchain.com` is required.** Refer to the [allowlisting IP section](/langsmith/cloud#allowlisting-ip-addresses) for static IP addresses, if needed.
+> **Egress to `https://beacon.langchain.com` is required.** Refer to the [allowlisting IP section](/langsmith/cloud-ip-allowlist#allowlisting-ip-addresses) for static IP addresses, if needed.
 
 > [!NOTE]
 >

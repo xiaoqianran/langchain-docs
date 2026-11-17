@@ -8,7 +8,7 @@
 
 基于属性的访问控制 (ABAC) 允许组织管理员根据资源的属性授予或限制对 LangSmith 资源的访问权限。
 
-它建立在 [role-based access control (RBAC)](/langsmith/rbac) 之上。角色授予整个工作区的权限，例如读取每个项目。访问策略将该权限缩小或扩展到属性匹配的资源，例如标记为`Environment=Development`的项目。
+它建立在 [role-based access control (RBAC)](/langsmith/rbac) 之上。角色授予跨整个工作区的权限，例如读取每个项目。访问策略将该权限缩小或扩展到属性匹配的资源，例如标记为`Environment=Development`的项目。
 
 访问策略可以匹配两种属性：
 
@@ -128,7 +128,7 @@
 | `matches` |与 `*` 和 `?` 通配符匹配的 Glob 模式 |
 | `not_matches` |当值与全局模式不匹配时匹配 |
 
-#### `_if_exists` 变体
+#### `_if_exists` 变种
 
 每个运算符都有一个 `_if_exists` 变体，当标签键不存在时默认匹配，或者当标签存在时正常评估条件：|操作员|描述 |
 | - | - |
@@ -149,9 +149,9 @@
 
 创建策略时，可以将策略附加到 [workspace roles](/langsmith/rbac#workspace-roles)（内置或 [custom](/langsmith/rbac#custom-roles)），或者稍后在 UI 中或使用 API 附加。
 
-保单也可以附加到[teams](/langsmith/teams#access-policies)。团队的策略适用于团队可以访问的工作区中的成员。
+保单也可以附加到[user groups](/langsmith/user-groups#access-policies)。用户组的策略适用于该用户组可以访问的工作区中的成员。要从身份提供商自动将用户配置为角色，请参阅 [SCIM](/langsmith/user-management#set-up-scim-for-your-organization)。
 
-要从身份提供商自动将用户配置为角色，请参阅 [SCIM](/langsmith/user-management#set-up-scim-for-your-organization)。## 管理访问策略
+## 管理访问策略
 
 使用可视化编辑器或[LangSmith API](https://api.smith.langchain.com/docs#/access_policies)管理组织设置中的访问策略。两者都需要`organization:access-control:manage`。
 
@@ -169,7 +169,7 @@
 6. 单击“**添加条件**”，然后选择条件源：
    * **资源标签**：输入 **标签键**、运算符和 **标签值**。在策略中使用它们之前[Create the resource tags](/langsmith/set-up-resource-tags)。* **根运行元数据**：首先选择**项目**作为**资源类型**，并选择`runs:read`作为**权限**。输入**元数据键**和**元数据值**。运算符固定为`equals`，**元数据值**预填充`${user.ls_user_id}`，与当前用户匹配。将其替换为文字值以匹配固定值。有关要求和示例，请参阅[Create a root run metadata policy in the UI](#create-a-root-run-metadata-policy-in-the-ui)。
 7. 单击“**保存条件**”，添加更多条件，然后单击“**添加规则**”返回到策略编辑器。规则中的所有条件都必须匹配，并且多个规则使用 OR 逻辑。
-8. （可选）将策略附加到角色。在将策略附加到角色或 [team](/langsmith/teams#access-policies) 之前，策略无效。在 **角色** 下的对话框中，单击 **添加角色**。选择策略适用的工作区角色，然后单击“**添加角色**”。您可以在添加之前检查每个角色的权限。您还可以稍后将策略附加到角色。
+8. （可选）将策略附加到角色。在将策略附加到角色或 [user group](/langsmith/user-groups#access-policies) 之前，策略无效。在 **角色** 下的对话框中，单击 **添加角色**。选择策略适用的工作区角色，然后单击“**添加角色**”。您可以在添加之前检查每个角色的权限。您还可以稍后将策略附加到角色。
 9. 要完成，请单击 **创建策略**。
 
 > [!提示]
@@ -180,14 +180,14 @@
 
 > [!警告]
 >
-> 删除策略会删除其角色和团队附件。删除拒绝策略可能会授予访问权限。删除允许策略可能会删除访问权限。
+> 删除策略会删除其角色和用户组附件。删除拒绝策略可能会授予访问权限。删除允许策略可能会删除访问权限。
 
-### 将策略附加到团队
+### 将策略附加到用户组
 
-[Teams](/langsmith/teams) 不要制定政策。他们附加现有的：
+[User Groups](/langsmith/user-groups) 不要制定政策。他们附加现有的：
 
-* 将策略附加到团队需要`organization:teams:manage-policies`。
-* 工作区管理员可以将现有策略作为工作区中的 [workspace-only policy](/langsmith/teams#add-workspace-only-members-and-policies) 附加到团队，并使用 `workspaces:teams:manage-policies`。
+* 将策略附加到用户组需要`organization:user-groups:manage-policies`。
+* 工作区管理员可以将现有策略作为工作区中的 [workspace-only policy](/langsmith/user-groups#add-workspace-only-members-and-policies) 附加到用户组，并使用 `workspaces:user-groups:manage-policies`。
 
 ## ABAC 如何与 RBAC 配合使用
 
@@ -195,9 +195,9 @@
 
 * ABAC **拒绝** 策略会覆盖 RBAC 权限。
 * ABAC **允许** 策略即使没有 RBAC 权限也可以授予访问权限。
-* 如果没有 ABAC 策略匹配，系统将回退到 RBAC。
+* 如果没有 ABAC 策略匹配，系统将回退到 RBAC。当用户属于[user groups](/langsmith/user-groups)时，LangSmith会从用户角色和每个用户组一起评估权限和策略。来自任何来源的匹配拒绝策略仍会阻止访问。
 
-当用户属于[teams](/langsmith/teams)时，LangSmith会从用户的角色和每个团队一起评估权限和策略。来自任何来源的匹配拒绝策略仍会阻止访问。访问模型取决于为组织启用的功能：
+访问模型取决于为组织启用的功能：
 
 |启用 RBAC | ABAC 已启用 |行为 |
 | - | - | - |
@@ -256,7 +256,7 @@
 
 元数据条件遵循与其他策略相同的优先级：首先应用拒绝策略，然后应用 RBAC，最后应用允许策略。* **拒绝策略**：带有元数据条件的拒绝策略会隐藏匹配的痕迹，而不是阻止整个项目。用户可以访问项目中的其他跟踪。当应用多个拒绝策略时，与其中任何一个匹配的跟踪都会被隐藏。
 * **允许策略**：具有元数据条件的允许策略仅在匹配的跟踪上授予`runs:read`。当应用多个允许策略时，用户可以读取与其中任何一个匹配的跟踪。
-* **RBAC**：如果用户的角色授予`runs:read`，则用户可以读取拒绝策略未隐藏的每个跟踪，并且允许策略无效。要将角色限制为允许策略匹配的跟踪，请从角色中删除 `runs:read`。
+* **RBAC**：如果用户的角色授予`runs:read`，则用户可以读取拒绝策略未隐藏的每个跟踪，并且允许策略不起作用。要将角色限制为允许策略匹配的跟踪，请从角色中删除 `runs:read`。
 
 使用服务密钥进行身份验证的请求没有关联的`ls_user_id`，因此使用`${user.ls_user_id}`的条件不匹配。使用个人访问令牌 (PAT) 或登录的浏览器会话进行身份验证的请求具有用户的 `ls_user_id`。有关 PAT 和服务密钥的详细信息，请参阅[API keys](/langsmith/create-account-api-key#api-keys)。
 

@@ -4,7 +4,7 @@
 
 # 设置在线代码评估器
 
-[Online evaluations](/langsmith/evaluation-concepts#online-evaluations) 提供有关您的生产的实时反馈[traces](/langsmith/observability-concepts#traces)。这对于持续监控应用程序的性能非常有用：识别问题、衡量改进并确保长期稳定的质量。
+[Online evaluations](/langsmith/evaluation-concepts#online-evaluations) 提供有关您的制作的实时反馈[traces](/langsmith/observability-concepts#traces)。这对于持续监控应用程序的性能非常有用：识别问题、衡量改进并确保长期稳定的质量。
 
 代码评估器允许您直接在 LangSmith 中用 Python 或 JavaScript 编写评估器。通常用于验证数据的结构或统计属性。
 
@@ -32,7 +32,7 @@
 * 调用特定工具的运行。请参阅[filtering for tool calls](/langsmith/filter-traces-in-application#example-filtering-for-tool-calls)了解更多信息。
 * 与特定元数据片段匹配的运行（例如，如果您使用 `plan_type` 记录跟踪并且只想对来自企业客户的跟踪运行评估）。请参阅[adding metadata to your traces](/langsmith/add-metadata-tags)了解更多信息。
 
-评估器使用过滤器构建器，其字段和运算符与[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)中描述的相同。要处理来自早期评估器的反馈，请过滤此评估器的反馈键，然后从 `run["feedback"]` 读取分数，或从 [include extended stats](/langsmith/evaluators#include-extended-stats) 读取`run["feedback_stats"]` 分数。例如，当`answer_usefulness`反馈存在时，使用`eq(feedback_key, "answer_usefulness")`运行。过滤器基于反馈键，而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发代码评估器。欲了解更多信息，请参阅[Chain evaluators](/langsmith/evaluators#chain-evaluators)。
+评估器使用过滤器构建器，其字段和运算符与[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)中描述的相同。要处理来自早期评估器的反馈，请过滤该评估器的反馈键，然后从 `run["feedback"]` 读取分数，或从 [include extended stats](/langsmith/evaluators#include-extended-stats) 读取`run["feedback_stats"]` 分数。例如，当`answer_usefulness`反馈存在时，使用`eq(feedback_key, "answer_usefulness")`运行。过滤器基于反馈键，而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发代码评估器。欲了解更多信息，请参阅[Chain evaluators](/langsmith/evaluators#chain-evaluators)。
 
 > [!提示]
 >
@@ -67,16 +67,22 @@
 > ```
 >
 > **网络访问**：您无法从代码评估器访问互联网。
+>
+> 要安装其他软件包、发出网络请求或使用工作区密码进行身份验证，请使用高级代码评估器。欲了解更多信息，请参阅[Use advanced code evaluators](/langsmith/advanced-code-evaluators)。代码评估器必须内联编写。我们建议在 LangSmith 中设置代码评估器之前在本地进行测试。
 
-代码评估器必须内联编写。我们建议在 LangSmith 中设置代码评估器之前在本地进行测试。
+在 UI 中，您将找到一个面板，可让您内联编写代码以及一些起始代码。
 
-在 UI 中，您将找到一个面板，可让您内联编写代码以及一些起始代码。代码评估器接受一个参数：
+代码评估器接受一个参数：
 
 * A `Run` ([reference](/langsmith/run-data-format))。这代表要评估的采样运行。
 
+> [!注意]
+>
+> 当您针对数据集样本测试评估器以及评估器对实验运行进行评分时，LangSmith 将数据集示例作为第二个参数传递。否则，它仅通过运行。要在 Python 中处理这两种情况，请将函数定义为 `perform_eval(run, example=None)`。在默认代码求值器中，仅接受 `run` 的函数会失败并返回 `TypeError: perform_eval() takes 1 positional argument but 2 were given`。
+
 它们返回一个值：
 
-* 反馈字典：一个字典，其键是您要返回的反馈类型，值是您对该反馈键给出的分数。例如，`{"correctness": 1, "silliness": 0}`会在跑步时创建两种类型的反馈，一种说它是正确的，另一种说它并不愚蠢。
+* 反馈字典：一个字典，其键是您要返回的反馈类型，值是您对该反馈键给出的分数。例如，`{"correctness": 1, "silliness": 0}`会在运行时创建两种类型的反馈，一种说它是正确的，另一种说它并不愚蠢。
 
 以下示例显示了一个函数，该函数验证实验中的每次运行是否具有已知的 JSON 字段：
 
@@ -130,9 +136,7 @@ function perform_eval(run) {
 }
 ```
 
-## 测试并保存您的评估函数
-
-保存之前，您可以通过单击“**测试代码**”在最近的运行中测试评估器函数，以确保您的代码正确执行。
+## 测试并保存您的评估函数保存之前，您可以通过单击“**测试代码**”在最近的运行中测试评估器函数，以确保您的代码正确执行。
 
 一旦您**保存**，您的在线评估器将运行新采样的运行（如果您选择回填选项，则也将运行回填的运行）。
 

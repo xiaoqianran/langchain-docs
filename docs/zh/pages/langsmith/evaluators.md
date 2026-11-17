@@ -4,7 +4,7 @@
 
 # 管理评估者
 
-在 LangSmith 中查看和管理工作区级别的评估器。
+在 LangSmith 的工作区级别查看和管理评估器。
 
 LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[workspace-level](/langsmith/administration-overview#workspaces)资源。您可以将单个评估器附加到多个[trace containers](/langsmith/observability-concepts#trace-containers)和[datasets](/langsmith/evaluation-concepts#datasets)，这样您就可以在整个工作中应用一致的评估逻辑，而无需每次都重新创建它。
 
@@ -123,7 +123,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 | - | - | - |
 | PII 泄露 |输入或输出是否包含可能识别或伤害个人的个人信息。 | `pii_leakage`（布尔值）：当找到 PII 时，`true`。 |
 |立即注射 |输入是否包含针对 AI 系统的嵌入式指令。仅读取输入。 | `prompt_injection`（布尔值）：`true` 当发现注入尝试时。 |
-|代码注入|输入是否包含嵌入数据中的可执行代码。仅读取输入。 | `code_injection`（布尔值）：当发现注入尝试时，`true`。 |
+|代码注入|输入是否包含嵌入在数据中的可执行代码。仅读取输入。 | `code_injection`（布尔值）：当发现注入尝试时，`true`。 |
 
 ### 安全
 
@@ -152,7 +152,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 |模板|得分多少 |分数 |
 | - | - | - |
 |感知错误 |用户信号（例如沮丧或重复纠正）是否表明用户感知到代理犯了错误。 | `perceived_error`（布尔值）：`true` 当用户察觉到导致严重挫败的错误时。 |
-|语言 |对话的主要语言。 | `language`（字符串）：英文语言名称，例如`Spanish`。 |
+|语言 |对话的主要语言。 | `language`（字符串）：英文语言名称，如`Spanish`。 |
 |支持意向 |支持对话的主要目的。 | `intent`（类别）：`Account & Billing`、`Order Management`、`Technical Support`、`Product Inquiry`、`Policy Inquiry`、`Status Check`、`Complaint & Feedback`、`Escalation` 之一，或`Other`。 |
 |用户满意度|用户的语气和满意度指标是否表明用户感到满意。 | `user_satisfaction`（布尔值）：`true` 当用户表现满意时。 ||语气|座席的语气是否适合上下文并且一致。 | `agent_tone`（布尔值）：当语气合适时，`true`。 |
 |任务完成 |代理是否完全完成了对话中的每个用户请求。 | `task_completion`（布尔值）：`true` 当每个请求完成时。 |
@@ -164,16 +164,16 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 |模板|得分多少 |分数 |
 | - | - | - |
-|计划遵守|特工的行动是否遵循其宣布的计划。 | `plan_adherence`（布尔值）：`true` 当代理遵循计划时。 |
+|计划遵守 |特工的行动是否遵循其宣布的计划。 | `plan_adherence`（布尔值）：`true` 当代理遵循计划时。 |
 |工具选择|代理是否以合理的顺序选择了正确的工具，没有不必要的电话。 | `tool_selection`（布尔值）：`true` 当刀具选择准确且高效时。 |
-|轨迹精度|代理的路径是否合乎逻辑、显示出明显的进展并且相当有效。 | `trajectory_accuracy`（布尔值）：`true` 当轨迹准确且高效时。 |
+|轨迹精度|代理的路径是否合乎逻辑、显示出明显的进展并且相当高效。 | `trajectory_accuracy`（布尔值）：`true` 当轨迹准确且高效时。 |
 
 ### 图像评估图像模板评估图像内容的质量和安全性。
 
 |模板|得分多少 |分数 |
 | - | - | - |
 |露骨内容 |图像是否包含裸露、性内容或暴力画面。 | `explicit_content`（布尔值）：当发现显式内容时，`true`。 |
-|敏感图像|图像是否包含有害、冒犯性或不适当的符号或描述。 | `sensitive_imagery`（布尔值）：当发现敏感图像时，`true`。 |
+|敏感图像|图像是否包含有害的、冒犯性的或不适当的符号或描述。 | `sensitive_imagery`（布尔值）：当发现敏感图像时，`true`。 |
 
 ### 语音评估
 
@@ -202,7 +202,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 要打开评估器的跟踪：1. 当您使用 [create](#create-an-evaluator) 或 [edit](#edit-an-evaluator) 评估器时，请展开评估器配置面板中的 **高级** 部分。
 2. 打开**跟踪评估器运行**。
-3. 单击**保存**。
+3. 单击“**保存**”。
 
 该设置适用于您配置评估器的跟踪项目、代理环境或数据集。 [LangChain Tuned Evaluators](/langsmith/tuned-evaluators) 不可用。
 
@@ -210,13 +210,13 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 ### 使用 REST API 打开跟踪
 
-在[LangSmith REST API](/langsmith/smith-api)中，评估器的每个附件都是一条规则，设置是该规则的`is_tracing_disabled`字段。该字段默认为`true`。要打开跟踪，请在 [create a rule](/langsmith/smith-api/run/create-rule) 时将 `is_tracing_disabled` 设置为 `false`。 [create evaluator](/langsmith/smith-api/evaluators/create-evaluator)端点定义了一个评估器但没有附加它，因此它没有跟踪设置。 [create decision model rule](/langsmith/smith-api/run/create-decision-model-rule)端点不接受`is_tracing_disabled`，因此它的规则从跟踪关闭开始。
+在[LangSmith REST API](/langsmith/smith-api)中，评估器的每个附件都是一条规则，设置是该规则的`is_tracing_disabled`字段。该字段默认为`true`。要打开跟踪，请在设置 [create a rule](/langsmith/smith-api/run/create-rule) 时将 `is_tracing_disabled` 设置为 `false`。 [create evaluator](/langsmith/smith-api/evaluators/create-evaluator)端点定义了一个评估器但没有附加它，因此它没有跟踪设置。 [create decision model rule](/langsmith/smith-api/run/create-decision-model-rule)端点不接受`is_tracing_disabled`，因此它的规则从跟踪关闭开始。
 
 要打开对现有规则的跟踪，请使用 [list rules](/langsmith/smith-api/run/list-rules) 获取它，将 `is_tracing_disabled` 设置为 `false`，然后使用 [update rule](/langsmith/smith-api/run/update-rule) 发回完整规则。更新规则会替换您遗漏的字段，例如过滤器和评估器。
 
-## 管理评估者跟踪保留当在线评估器对跟踪进行评分时，它会将反馈附加到跟踪。这可以根据评估器的保留设置将跟踪自动升级到[extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。当您在 [tracing project](/langsmith/observability-concepts#tracing-projects) 或代理环境上设置在线评估器时，您可以选择退出此升级，以便评分跟踪保持基本保留。
+## 管理评估者跟踪保留当在线评估器对跟踪进行评分时，它会将反馈附加到跟踪。这可以将跟踪自动升级到[extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)，具体取决于评估器的保留设置。当您在 [tracing project](/langsmith/observability-concepts#tracing-projects) 或代理环境上设置在线评估器时，您可以选择退出此升级，以便评分跟踪保持基本保留。
 
-仅当项目的[default retention](/langsmith/billing#change-project-level-default-retention)为[base tier](/langsmith/usage-and-billing#how-it-works)时，此控件才可用。如果项目默认为延长保留 ([set at the project or workspace level](/langsmith/data-purging-compliance#data-retention))，则评估者评分的跟踪将遵循该默认值，并且该选项将被锁定。
+仅当项目的[default retention](/langsmith/billing#change-project-level-default-retention)为[base tier](/langsmith/usage-and-billing#retention-periods)时，此控件才可用。如果项目默认为延长保留 ([set at the project or workspace level](/langsmith/data-purging-compliance#data-retention))，则评估者评分的跟踪将遵循该默认值，并且该选项将被锁定。
 
 要选择不延长评分迹线的保留时间：
 
@@ -276,12 +276,12 @@ LangSmith 为启用此选项的评估者获取附加数据。仅当您的评估�
 ## 删除评估器
 
 当评估器附加到跟踪容器或数据集时，您无法删除它。要删除评估器：1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluators)中，选择左侧边栏中的**评估器**。
-2. 选择您要删除的评估者。
+2. Select the evaluator you want to delete.
 3. 打开 **环境和数据集** 选项卡（自托管部署中的**项目和数据集**）。对于其中列出的每个附件，在行右侧的 **操作** 菜单中选择 **分离**。
-4. 返回**评估者**页面，单击页面顶部的**删除**。
+4. Return to the **Evaluators** page and click **Delete** at the top of the page.
 
 ***
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluators.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluators.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

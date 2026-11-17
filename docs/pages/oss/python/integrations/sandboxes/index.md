@@ -42,6 +42,7 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 | [`SuperserveSandbox`](https://docs.superserve.ai/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-superserve/month)](https://pypi.org/project/langchain-superserve/) |
 | [`WBXSandbox`](https://github.com/WBX-Sandbox/langchain-wbxsandbox#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wbxsandbox/month)](https://pypi.org/project/langchain-wbxsandbox/) |
 | [`BoxdSandbox`](https://github.com/boxd-sh/boxd-langchain#readme) | N/A |
+| [`Kosa8Sandbox`](https://github.com/kosa8ai/langchain-kosa8#readme) | N/A |
 | [`LangSmith sandbox`](/oss/python/integrations/sandboxes/langsmith) | N/A |
 | [`NoMacSandbox`](https://github.com/NoMac-app/langchain-nomac#readme) | N/A |
 

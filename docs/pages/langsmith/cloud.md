@@ -2,7 +2,7 @@
 
 # Cloud (SaaS)
 
-Learn how LangChain hosts and operates LangSmith Cloud, including its regions, data storage locations, architecture, IP allowlists, private connectivity, and API rate limits.
+Learn how LangChain hosts and operates LangSmith Cloud, including its regions, data storage locations, and regional architecture.
 
 The **Cloud** hosting option is a fully managed model where LangChain hosts and operates all LangSmith infrastructure and services:
 
@@ -93,7 +93,7 @@ Some additional GCP services we use include:
 
 * Google Cloud Load Balancer for routing traffic to the LangSmith services.
 * Google Cloud CDN for caching static assets.
-* Google Cloud Armor for security and rate limits. For more information on rate limits we enforce, please refer to [Rate limits](/langsmith/usage-and-billing#rate-limits).
+* Google Cloud Armor for security and rate limits. For more information on rate limits we enforce, please refer to [Rate limits](/langsmith/cloud-rate-limits).
 
 ### AWS services
 
@@ -118,7 +118,7 @@ LangSmith uses the following AWS storage and data services:
 
 Some additional AWS services we use include:
 
-* Elastic Load Balancing (Network Load Balancers) and Istio ingress for routing traffic to the LangSmith services. Documented API rate limits are enforced at the Istio ingress gateway. For details, see [Rate limits](/langsmith/usage-and-billing#rate-limits).
+* Elastic Load Balancing (Network Load Balancers) and Istio ingress for routing traffic to the LangSmith services. Documented API rate limits are enforced at the Istio ingress gateway. For details, see [Rate limits](/langsmith/cloud-rate-limits).
 * Amazon CloudFront for caching static assets (including the web UI hostname `aws.smith.langchain.com`).
 * AWS WAF on CloudFront for managed rule groups at the edge (for example, AWS Managed Rules common protections and Bot Control).
 

@@ -3,6 +3,7 @@
 # Change a team's role in a workspace
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/platform/orgs/current/teams/{team_id}/workspaces/{workspace_id}
+Deprecated: use the corresponding /user-groups endpoint.
 Changes an organization-wide team's role in a workspace it has access to. Team
 members get the new role's permissions there in place of the old role's. Access
 policies attached to the team for the workspace stay attached. Needs
