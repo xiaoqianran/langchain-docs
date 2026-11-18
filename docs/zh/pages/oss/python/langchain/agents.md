@@ -389,7 +389,7 @@ result["structured_response"]  # Answer(summary=..., confidence=...)
 
 ### 代理状态
 
-每个代理都通过[⟦T121⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState)管理其执行上下文，这是一个类型化字典，其中保存当前对话历史记录以及您的工具和中间件所需的任何自定义字段。
+每个代理都通过 [⟦T121⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState) 管理其执行上下文，这是一个类型化字典，其中保存当前对话历史记录以及您的工具和中间件所需的任何自定义字段。
 
 内置字段是：|领域 |类型 |描述 |
 | - | - | - |
@@ -517,7 +517,7 @@ agent = create_agent(
 
 > [!提示]
 >
-> 跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
+> 跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
 
 您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T131⟧](/oss/python/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/python/langgraph/graph-api-state#messagesstate)；要调用代理，请传递新消息以及`thread_id`，以便代理可以保留并恢复对话历史记录：
 
@@ -897,7 +897,7 @@ result = agent.invoke(
 >
 > 为此示例打开公共 LangSmith 运行。
 
-`thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅 [tool context](/oss/python/langchain/tools#context) 和 [Runtime](/oss/python/langchain/runtime)。
+`thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅[tool context](/oss/python/langchain/tools#context) 和 [Runtime](/oss/python/langchain/runtime)。
 
 ## 流媒体
 
@@ -933,7 +933,7 @@ for snapshot in stream.values:
 
 `create_agent` 具有高度可扩展性。中间件是定制的基础：每个部分处理一个问题，在适当的时刻挂接到代理循环中，并与任何其他部分自由组合。准确获取您的用例所需的内容并跳过其余部分。
 
-通用模式被预先构建为一流的中间件。您可以构建任何其他东西作为[custom middleware](/oss/python/langchain/middleware/custom)。
+通用模式被预先构建为一流的中间件。您可以构建任何其他东西作为 [custom middleware](/oss/python/langchain/middleware/custom)。
 
 ![Agent harness capabilities by category](https://mintcdn.com/langchain-5e9cc07a/jtty0O--UJOKG0nK/oss/images/agent_harness_capabilities.svg?fit=max\&auto=format\&n=jtty0O--UJOKG0nK\&q=85\&s=0ff671d72badd0844826660dfcb04391)
 
@@ -1204,7 +1204,7 @@ agent = create_agent(
 )
 ```
 
-参见[⟦T146⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)、[⟦T147⟧](https://reference.langchain.com/python/deepagents/middleware/memory/MemoryMiddleware)、[Skills](/oss/python/langchain/multi-agent/skills)、[Context engineering](/oss/python/deepagents/context-engineering)。
+请参阅[⟦T146⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)、[⟦T147⟧](https://reference.langchain.com/python/deepagents/middleware/memory/MemoryMiddleware)、[Skills](/oss/python/langchain/multi-agent/skills)、[Context engineering](/oss/python/deepagents/context-engineering)。
 
 > [!注意]
 >
@@ -1516,7 +1516,7 @@ agent = create_agent(
 
 ### 命名您的代理人
 
-可以选择使用代理的标识符。当将代理作为子图嵌入到 [multi-agent](/oss/python/langchain/multi-agent) 系统中时，这特别有用。
+可以选择使用代理的标识符。当将代理作为子图嵌入到[multi-agent](/oss/python/langchain/multi-agent)系统中时，这特别有用。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_agent(model="google_genai:gemini-4-hydrogen", tools=tools, name="research_assistant")
@@ -1704,9 +1704,11 @@ agent = create_agent(
 )
 ```
 
-请参阅[⟦T150⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)、[⟦T151⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware)、[Prebuilt middleware](/oss/python/langchain/middleware/built-in)。
+参见[⟦T150⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)、[⟦T151⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware)、[Prebuilt middleware](/oss/python/langchain/middleware/built-in)。如果没有其他限制，持续调用工具的代理只会在其递归限制处停止。 `create_agent` 将限制设置为 9,999 步。对于生产代理，请在调用配置中传递较低的 `recursion_limit`，或使用 [⟦T154⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware) 限制模型调用。
 
-### 护栏有些策略不能立即生效——无论模型做什么，它们都需要确定性地执行。 Guardrails 在数据流经代理循环时拦截数据，在工具结果到达模型上下文之前应用合规性规则或内容策略。
+### 护栏
+
+有些策略不能立即生效——无论模型做什么，它们都需要确定性地执行。 Guardrails 在数据流经代理循环时拦截数据，在工具结果到达模型上下文之前应用合规性规则或内容策略。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1841,7 +1843,7 @@ agent = create_agent(
 )
 ```
 
-参见[⟦T152⟧](https://reference.langchain.com/python/langchain/agents/middleware/pii/PIIMiddleware)、[Prebuilt middleware](/oss/python/langchain/middleware/built-in)。
+参见[⟦T155⟧](https://reference.langchain.com/python/langchain/agents/middleware/pii/PIIMiddleware)、[Prebuilt middleware](/oss/python/langchain/middleware/built-in)。
 
 ### 转向
 
@@ -1980,19 +1982,17 @@ agent = create_agent(
 )
 ```
 
-参见[⟦T153⟧](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HumanInTheLoopMiddleware)、[Human-in-the-loop](/oss/python/langchain/human-in-the-loop)。
+参见[⟦T156⟧](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HumanInTheLoopMiddleware)、[Human-in-the-loop](/oss/python/langchain/human-in-the-loop)。
 
 ### 中间件资源
 
-> [卡片][Middleware overview](/oss/python/langchain/middleware/overview)
+> [卡][Middleware overview](/oss/python/langchain/middleware/overview)
 >
 > 中间件堆栈如何工作以及钩子何时触发
 
-> [卡片][Prebuilt middleware](/oss/python/langchain/middleware/built-in)
+> [卡][Prebuilt middleware](/oss/python/langchain/middleware/built-in)
 >
-> 带有配置示例的完整参考
-
-> [卡][Custom middleware](/oss/python/langchain/middleware/custom)
+> 带有配置示例的完整参考> [卡][Custom middleware](/oss/python/langchain/middleware/custom)
 >
 > 编写您自己的业务逻辑、PII 清理等挂钩
 

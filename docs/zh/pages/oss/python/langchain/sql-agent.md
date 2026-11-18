@@ -68,7 +68,7 @@ export LANGSMITH_API_KEY="..."
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = init_chat_model("gpt-5.5")
+> model = init_chat_model("gpt-6.1-sol")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -77,7 +77,7 @@ export LANGSMITH_API_KEY="..."
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = ChatOpenAI(model="gpt-5.5")
+> model = ChatOpenAI(model="gpt-6.1-sol")
 > ```
 
 > [标签] Anthropic
@@ -131,7 +131,7 @@ export LANGSMITH_API_KEY="..."
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = init_chat_model(
->     "azure_openai:gpt-5.5",
+>     "azure_openai:gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 > )
 > ```
@@ -145,7 +145,7 @@ export LANGSMITH_API_KEY="..."
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = AzureChatOpenAI(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
 > )
 > ```
@@ -168,7 +168,7 @@ export LANGSMITH_API_KEY="..."
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = init_chat_model("google_genai:gemini-3.7-flash")
+> model = init_chat_model("google_genai:gemini-4-hydrogen")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -177,7 +177,7 @@ export LANGSMITH_API_KEY="..."
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
+> model = ChatGoogleGenerativeAI(model="gemini-4-hydrogen")
 > ```
 
 > [选项卡] AWS 基岩
@@ -661,7 +661,7 @@ On average, the genre with the longest tracks is "Sci Fi & Fantasy" with an aver
 > from langchain.tools import tool
 >
 > # Initialize an LLM
-> model = init_chat_model("gpt-5.5")
+> model = init_chat_model("openai:gpt-6.1-sol")
 >
 > # Get the database, store it locally
 > url = "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db"
@@ -873,7 +873,7 @@ Tool: sql_db_query
 Args: {'query': 'SELECT g.Name AS Genre, AVG(t.Milliseconds) AS AvgTrackLength FROM Track t JOIN Genre g ON t.GenreId = g.GenreId GROUP BY g.Name ORDER BY AvgTrackLength DESC LIMIT 1;'}
 ```
 
-我们可以恢复执行，在本例中使用 [Command](/oss/python/langgraph/graph-api-send-command#combine-control-flow-and-state-updates-with-command) 接受查询：
+我们可以使用 [Command](/oss/python/langgraph/graph-api-send-command#combine-control-flow-and-state-updates-with-command) 恢复执行，在本例中接受查询：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Command # [!code highlight]

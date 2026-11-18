@@ -47,6 +47,8 @@ Under **Configuration**, the defaults work for most data planes. You can change 
 * **EKS API access**: New data planes reach the EKS API over PrivateLink by default.
 * **Tags**: Up to 40 custom tags applied to the AWS resources LangSmith creates. Keys must be unique, and values can be empty. AWS and LangSmith system tags are reserved.
 
+After the data plane is active, you can change its maintenance window, TTL retention, and ingress allowlist. See [Data plane settings](/langsmith/byoc-operations-aws#data-plane-settings).
+
 **4. Wait for provisioning**
 
 LangChain provisions the infrastructure on your behalf. The data plane moves from `Requested` to `Provisioning` to `Active`.
@@ -70,6 +72,8 @@ If you open a workspace and see the following screen, your machine does not have
 ![LangSmith error screen titled You may not have network access to this workspace. It states that LangSmith cannot reach the data plane for the selected workspace and lists other workspaces grouped by data plane. Reachable data planes show a green header with active Switch buttons. The unreachable data plane shows a red header with disabled Switch buttons.](https://mintcdn.com/langchain-5e9cc07a/a_vO91vE4oZRWYyY/langsmith/images/byoc-data-plane-unreachable.png?fit=max\&auto=format\&n=a_vO91vE4oZRWYyY\&q=85\&s=881f94a84e295064162e8673517245fd)
 
 From this screen, you can switch to a workspace on a data plane that is reachable, which can be a Cloud workspace.
+
+To reach the data plane from applications in a different AWS account, see [Cross-account access](/langsmith/byoc-operations-aws#cross-account-access).
 
 **6. Create workspaces**
 

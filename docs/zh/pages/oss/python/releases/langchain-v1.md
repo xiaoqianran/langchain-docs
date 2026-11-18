@@ -6,7 +6,7 @@
 
 **LangChain v1 是一个专注于、可用于生产的构建代理基础。** 我们围绕三个核心改进简化了框架：
 
-> [卡][create\_agent](#create_agent)
+> [卡][create_agent](#create_agent)
 >
 > LangChain中建筑剂的新标准，取代`langgraph.prebuilt.create_react_agent`。
 
@@ -149,7 +149,7 @@ class ExpertiseBasedToolMiddleware(AgentMiddleware):
 
         if user_level == "expert":
             # More powerful model
-            model = ChatOpenAI(model="gpt-5.5")
+            model = ChatOpenAI(model="gpt-6.1-sol")
             tools = [advanced_search, data_analysis]
         else:
             # Less powerful model
@@ -287,7 +287,7 @@ LangChain v1 简化了 [⟦T40⟧](https://pypi.org/project/langchain/) 包命�
 | [⟦T41⟧](https://reference.langchain.com/python/langchain/agents) | [⟦T42⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)、[⟦T43⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState) |核心代理创建功能 |
 | [⟦T44⟧](https://reference.langchain.com/python/langchain/messages) |消息类型，[content blocks](https://reference.langchain.com/python/langchain-core/messages/content/ContentBlock)，[⟦T45⟧](https://reference.langchain.com/python/langchain-core/messages/utils/trim_messages) |从[⟦T46⟧](https://reference.langchain.com/python/langchain-core/)复出口|
 | [⟦T47⟧](https://reference.langchain.com/python/langchain/tools) | [⟦T48⟧](https://reference.langchain.com/python/langchain-core/tools/convert/tool)、[⟦T49⟧](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool)、注射助手|从[⟦T50⟧](https://reference.langchain.com/python/langchain-core/)转口|
-| [⟦T51⟧](https://reference.langchain.com/python/langchain/models) | [⟦T52⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)、[⟦T53⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) |统一模型初始化|
+| [⟦T51⟧](https://reference.langchain.com/python/langchain/models) | [⟦T52⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)、[⟦T53⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) |统一模型初始化 |
 | [⟦T54⟧](https://reference.langchain.com/python/langchain/embeddings) | [⟦T55⟧](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings)、[⟦T56⟧](https://reference.langchain.com/python/langchain/embeddings/base/init_embeddings) |嵌入模型|
 
 为了方便起见，其中大部分都是从 `langchain-core` 重新导出的，这为您提供了一个用于构建代理的集中 API 界面。

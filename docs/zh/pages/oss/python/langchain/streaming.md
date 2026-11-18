@@ -32,7 +32,7 @@ LangChain 流媒体可以实现什么：
 
 |模式|描述 |
 | - | - |
-| `updates` |每个代理步骤后流状态更新。如果在同一步骤中进行多个更新（例如，运行多个节点），则这些更新将单独进行流式传输。 |
+| `updates` |每个代理步骤后流状态更新。如果在同一步骤中进行多个更新（例如，运行多个节点），则这些更新将单独流式传输。 |
 | `messages` |从调用 LLM 的任何图形节点流式传输 `(token, metadata)` 的元组。 |
 | `custom` |使用流编写器从图形节点内部流式传输自定义数据。 |
 
@@ -46,7 +46,7 @@ LangChain 流媒体可以实现什么：
 * **工具节点**：[⟦T50⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)及执行结果
 * **LLM节点**：最终AI响应
 
-通过 `config` 传递 `thread_id`，因此对话会被检查点，并且后续回合可以恢复相同的历史记录。 `thread_id` 独立于`stream_mode`；您还可以将 `context` 与其一起传递，以获取工具从 `runtime.context` 读取的每次运行数据。
+通过 `config` 传递 `thread_id`，以便对话被检查点并且后续回合可以恢复相同的历史记录。 `thread_id` 独立于`stream_mode`；您还可以将 `context` 与其一起传递，以获取工具从 `runtime.context` 读取的每次运行数据。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -58,7 +58,7 @@ def get_weather(city: str) -> str:
     return f"It's always sunny in {city}!"
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[get_weather],
     checkpointer=InMemorySaver()
 )
@@ -91,7 +91,7 @@ def get_weather(city: str) -> str:
     return f"It's always sunny in {city}!"
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[get_weather],
     checkpointer=InMemorySaver()
 )
@@ -292,7 +292,7 @@ content: [{'type': 'text', 'text': "San Francisco weather: It's always sunny in 
 
 > [!注意]
 >
-> 保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/python/langchain/long-term-memory) 配置代理。在 [LangSmith deployments](/langsmith/deployment) 上，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。为了简洁起见，此页面上的其余片段省略了 `thread_id`，但您应该在生产中传递它。
+> 保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/python/langchain/long-term-memory) 配置代理。在 [LangSmith Agent Server](/langsmith/agent-server#persistence) 上，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。为了简洁起见，此页面上的其余片段省略了 `thread_id`，但您应该在生产中传递它。
 
 ## LLM 代币
 
@@ -609,7 +609,7 @@ def get_weather(city: str) -> str:
     return f"It's always sunny in {city}!"
 
 
-agent = create_agent("openai:gpt-5.5", tools=[get_weather])
+agent = create_agent("openai:gpt-6.1-sol", tools=[get_weather])
 
 
 def _render_message_chunk(token: AIMessageChunk) -> None:
@@ -679,7 +679,7 @@ class ResponseSafety(BaseModel):
     evaluation: Literal["safe", "unsafe"]
 
 
-safety_model = init_chat_model("openai:gpt-5.5")
+safety_model = init_chat_model("openai:gpt-6.1-sol")
 
 @after_agent(can_jump_to=["end"])
 def safety_guardrail(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
@@ -732,7 +732,7 @@ def get_weather(city: str) -> str:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[get_weather],
     middleware=[safety_guardrail],  # [!code highlight]
 )
@@ -840,7 +840,7 @@ def get_weather(city: str) -> str:
 checkpointer = InMemorySaver()
 
 agent = create_agent(
-    "openai:gpt-5.5",
+    "openai:gpt-6.1-sol",
     tools=[get_weather],
     middleware=[  # [!code highlight]
         HumanInTheLoopMiddleware(interrupt_on={"get_weather": True}),  # [!code highlight]
@@ -1027,7 +1027,7 @@ def get_weather(city: str) -> str:
     return f"It's always sunny in {city}!"
 
 
-weather_model = init_chat_model("openai:gpt-5.5")
+weather_model = init_chat_model("openai:gpt-6.1-sol")
 weather_agent = create_agent(
     model=weather_model,
     tools=[get_weather],
@@ -1043,7 +1043,7 @@ def call_weather_agent(query: str) -> str:
     return result["messages"][-1].text
 
 
-supervisor_model = init_chat_model("openai:gpt-5.5")
+supervisor_model = init_chat_model("openai:gpt-6.1-sol")
 agent = create_agent(
     model=supervisor_model,
     tools=[call_weather_agent],
@@ -1137,7 +1137,7 @@ Boston| weather| right| now|:| **|Sunny|**|.
 from langchain_openai import ChatOpenAI
 
 model = ChatOpenAI(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     streaming=False  # [!code highlight]
 )
 ```> [!提示]

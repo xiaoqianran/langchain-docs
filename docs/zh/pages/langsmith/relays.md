@@ -10,13 +10,13 @@
 >
 > 继电器位于[alpha](/langsmith/release-stages)。要为您的组织请求访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
 
-中继通过您自己的网络发送一些 [sandbox's](/langsmith/sandboxes) 出站连接。您在网络内运行 LangSmith 连接器，并将中继规则添加到沙箱的代理配置中。当沙箱连接到规则匹配的主机时，连接将从连接器而不是从LangSmith离开。使用中继来访问只能在网络内部访问的服务，例如内部数据库或 API，或者从网络的 IP 地址发出请求。
+中继通过您自己的网络发送一些 [sandbox's](/langsmith/sandboxes) 出站连接。您在网络内运行 LangSmith 连接器，并将中继规则添加到沙箱的代理配置中。当沙箱连接到规则匹配的主机时，连接将从连接器而不是LangSmith离开。使用中继来访问只能在网络内部访问的服务，例如内部数据库或 API，或者从网络的 IP 地址发出请求。
 
 中继的工作方向与 [tunnel](/langsmith/tunnels) 相反，它可以让 LangSmith 调用专用网络上的服务。两者都使用相同的连接器，其中一个连接器可用于隧道或中继。
 
 每个地区的 [LangSmith Cloud](/langsmith/cloud) 均可使用中继。它们不可用于自托管或混合部署。
 
-## 继电器的工作原理1. 组织管理员在 LangSmith 中创建中继。
+## 继电器的工作原理1. 组织管理员在LangSmith中创建中继。
 2. 您使用中继的 ID 和 API 密钥在网络内运行连接器。连接器通过 HTTPS（端口 443）将出站连接到LangSmith。没有任何东西连接到您的网络，并且连接器不公开任何端口。
 3. 将中继规则添加到沙箱的`proxy_config`。该规则列出要通过中继发送的主机名、IP 地址或 CIDR 块。
 4. 当沙箱打开到匹配目标的连接时，LangSmith 将其传送到连接器，然后连接器打开来自您网络的连接。
@@ -194,11 +194,12 @@ langsmith sandboxes exec my-sandbox -- curl -sS http://<host>:<port>/
 | `description` |可选，最多 1024 个字符。这个规则让沙箱达到什么目的 |
 
 中继规则仅匹配主机，因此它不接受 `match_paths`、`headers`、`env_vars`、`aws`、`gcp` 或 `azure`。* 第一个启用的与目的地匹配的中继规则携带该目的地。同一主机的标头规则仍然适用。
+* 启用的中继规则不能与活动的 [attribution rule or callback](/langsmith/sandbox-auth-proxy#add-public-attribution-headers) 共存。在启用中继之前禁用或删除冲突的配置。
 * [Access control](/langsmith/sandbox-auth-proxy#egress-and-network-access-control) 首先适用，因此不会中继访问控制阻止的目的地。
 * 中继规则可以匹配沙箱否则会拒绝连接的私有地址。连接器的策略决定它是否到达它们。
 * 沙箱只能使用其自己组织中的中继。
 
-## 连接器政策
+## 连接器策略
 
 连接器决定中继可以到达哪些目的地，无论沙箱的规则匹配什么：
 
@@ -206,9 +207,9 @@ langsmith sandboxes exec my-sandbox -- curl -sS http://<host>:<port>/
 * 允许规则添加目的地，拒绝规则删除目的地。拒绝规则胜过允许规则。
 * 它从不连接到云元数据地址。
 
-每条规则都是一个 CIDR 块 (`10.0.0.0/8`)、一个 IP 地址、一个主机名 (`db.corp.internal`) 或一个通配符 (`*.corp.internal`)，后面可以选择跟 `:PORT`。 IPv6 地址或范围仅采用括号中的端口 (`[2001:db8::1]:443`)。
+每条规则都是一个 CIDR 块 (`10.0.0.0/8`)、一个 IP 地址、一个主机名 (`db.corp.internal`) 或一个通配符 (`*.corp.internal`)，后面可以选择跟 `:PORT`。 IPv6 地址或范围仅采用括号中的端口 (`[2001:db8::1]:443`)。连接器使用网络的 DNS 解析主机名。当允许规则命名主机名时，连接器将连接到主机名解析到的地址，除非拒绝规则与这些地址匹配。
 
-连接器使用网络的 DNS 解析主机名。当允许规则命名主机名时，连接器将连接到主机名解析到的地址，除非拒绝规则与这些地址匹配。要更改策略，请更新连接器的配置并重新启动它，例如使用 `helm upgrade`。
+要更改策略，请更新连接器的配置并重新启动它，例如使用 `helm upgrade`。
 
 ## 安全
 
@@ -221,13 +222,13 @@ langsmith sandboxes exec my-sandbox -- curl -sS http://<host>:<port>/
 * **连接器**：连接器使用有权连接隧道和中继的组织 API 密钥进行身份验证。 LangSmith 仅在继电器启用时接受连接器。
 * **每个连接**：在LangSmith将沙箱的连接传送到连接器之前，它会检查中继是否属于沙箱的组织并已启用。
 
-### 你的网络暴露了什么
-
-* 沙箱仅到达其中继规则匹配且连接器策略允许的目的地。连接器的策略是在您的网络内部配置的，LangSmith 无法更改它。
+### 你的网络暴露了什么* 沙箱仅到达其中继规则匹配且连接器策略允许的目的地。连接器的策略是在您的网络内部配置的，LangSmith 无法更改它。
 * 连接器不连接到云元数据地址。
 * 中继连接从连接器的地址到达您的网络，因此您的服务将连接器视为客户端。
 
-### 日志记录连接器不记录中继连接的内容。在默认的`info`级别，它记录每个中继连接的目的地以及其策略拒绝的每个目的地。
+### 日志记录
+
+连接器不记录中继连接的内容。在默认的`info`级别，它记录每个中继连接的目的地以及其策略拒绝的每个目的地。
 
 ### 撤销访问权限
 

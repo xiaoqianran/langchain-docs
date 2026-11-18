@@ -52,7 +52,7 @@ flowchart TD
 * **有效扩展** - 添加数十或数百项技能，而无需压倒上下文
 * **简化对话历史记录** - 单个代理具有一个对话线程
 
-**什么是技能：** 正如克劳德·代码 (Claude Code) 所推广的那样，技能主要是基于提示的：针对特定业务任务的专门指令的独立单元。在 Claude Code 中，技能被公开为文件系统上包含文件的目录，通过文件操作发现。技能通过提示指导行为，并可以提供有关工具使用的信息或包括供编码代理执行的示例代码。
+**什么是技能：** 正如克劳德·代码 (Claude Code) 所推广的那样，技能主要是基于提示的：针对特定业务任务的专门指令的独立单元。在 Claude Code 中，技能被公开为文件系统上包含文件的目录，通过文件操作发现。技能通过提示指导行为，并可以提供有关工具使用情况的信息或包括供编码代理执行的示例代码。
 
 > [!提示]
 >
@@ -131,7 +131,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = init_chat_model("gpt-5.5")
+> model = init_chat_model("gpt-6.1-sol")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -140,7 +140,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = ChatOpenAI(model="gpt-5.5")
+> model = ChatOpenAI(model="gpt-6.1-sol")
 > ```
 
 > [标签] Anthropic
@@ -194,7 +194,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = init_chat_model(
->     "azure_openai:gpt-5.5",
+>     "azure_openai:gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 > )
 > ```
@@ -208,7 +208,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = AzureChatOpenAI(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
 > )
 > ```
@@ -231,7 +231,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = init_chat_model("google_genai:gemini-3.7-flash")
+> model = init_chat_model("google_genai:gemini-4-hydrogen")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -240,7 +240,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
+> model = ChatGoogleGenerativeAI(model="gemini-4-hydrogen")
 > ```
 
 > [选项卡] AWS 基岩
@@ -574,7 +574,7 @@ class SkillMiddleware(AgentMiddleware):  # [!code highlight]
 
 中间件将技能描述附加到系统提示中，使客服人员无需加载完整内容即可了解可用技能。 `load_skill` 工具注册为类变量，使其可供代理使用。> [!注意]
 >
-> **生产考虑**：为了简单起见，本教程加载`__init__`中的技能列表。在生产系统中，您可能希望在 `before_agent` 挂钩中加载技能，从而允许定期刷新它们以反映最新的更改（例如，当添加新技能或修改现有技能时）。详情请参阅[before\_agent hook documentation](/oss/python/langchain/middleware/custom#node-style-hooks)。
+> **生产考虑**：为了简单起见，本教程加载`__init__`中的技能列表。在生产系统中，您可能希望在 `before_agent` 挂钩中加载技能，从而允许定期刷新它们以反映最新的更改（例如，当添加新技能或修改现有技能时）。详情请参阅[before_agent hook documentation](/oss/python/langchain/middleware/custom#node-style-hooks)。
 
 ## 4. 创建具有技能支持的代理
 
@@ -720,7 +720,7 @@ This query:
 >     skills_loaded: NotRequired[list[str]]  # Track which skills have been loaded  # [!code highlight]
 > ```
 >
-> ### 更新 load\_skill 来修改状态
+> ### 更新 load_skill 来修改状态
 >
 > 修改`load_skill`工具，在技能加载时更新状态：
 >
@@ -1053,7 +1053,7 @@ This query:
 > # Example: from langchain_anthropic import ChatAnthropic
 > # model = ChatAnthropic(model="claude-sonnet-4-6")
 > from langchain_openai import ChatOpenAI
-> model = ChatOpenAI(model="gpt-5.5")
+> model = ChatOpenAI(model="gpt-6.1-sol")
 >
 > # Create the agent with skill support
 > agent = create_agent(
@@ -1102,7 +1102,7 @@ This query:
 > * `load_skill` 按需加载工具
 > * `SkillMiddleware` 将技能描述注入系统提示符中
 > * 使用中间件和检查点创建代理
-> * 示例用法显示代理如何加载技能和编写 SQL 查询
+> * 示例用法显示代理如何加载技能并编写 SQL 查询
 >
 > 要运行此程序，您需要：
 >
@@ -1124,7 +1124,7 @@ This query:
 >
 > * **系统提示列表**：系统提示中的技能说明（本教程中使用）
 > * **基于文件**：通过扫描目录发现技能（克劳德代码方法）
-> * **基于注册表**：查询技能注册表服务或 API 以获得可用技能
+> * **基于注册表**：查询技能注册表服务或 API 以获取可用技能
 > * **动态查找**：通过工具调用列出可用技能
 >
 > **渐进式披露策略**（技能内容如何加载）：

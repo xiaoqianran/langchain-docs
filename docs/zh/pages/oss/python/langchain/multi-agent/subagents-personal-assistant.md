@@ -81,7 +81,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = init_chat_model("gpt-5.5")
+> model = init_chat_model("gpt-6.1-sol")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -90,7 +90,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = ChatOpenAI(model="gpt-5.5")
+> model = ChatOpenAI(model="gpt-6.1-sol")
 > ```
 
 > [标签] Anthropic
@@ -144,7 +144,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = init_chat_model(
->     "azure_openai:gpt-5.5",
+>     "azure_openai:gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 > )
 > ```
@@ -158,7 +158,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = AzureChatOpenAI(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
 > )
 > ```
@@ -181,7 +181,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = init_chat_model("google_genai:gemini-3.7-flash")
+> model = init_chat_model("google_genai:gemini-4-hydrogen")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -190,7 +190,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
+> model = ChatGoogleGenerativeAI(model="gemini-4-hydrogen")
 > ```> [选项卡] AWS 基岩
 >
 > 👉 阅读[AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
@@ -486,7 +486,7 @@ I've sent a reminder to the design team asking them to review the new mockups. I
 
 ## 3. 将子代理包装为工具
 
-现在将每个子代理包装为主管可以调用的工具。这是创建分层系统的关键架构步骤。主管将看到“schedule\_event”等高级工具，而不是“create\_calendar\_event”等低级工具。
+现在将每个子代理包装为主管可以调用的工具。这是创建分层系统的关键架构步骤。主管将看到“schedule_event”等高级工具，而不是“create_calendar_event”等低级工具。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 @tool
@@ -704,7 +704,7 @@ def get_available_time_slots(
 # Step 2: Create specialized sub-agents
 # ============================================================================
 
-model = init_chat_model("gpt-5.5")  # for example
+model = init_chat_model("gpt-6.1-sol")  # for example
 
 calendar_agent = create_agent(
     model,
@@ -823,7 +823,7 @@ if __name__ == "__main__":
 让我们为两个子代理添加人机交互审核：
 
 * 我们将`create_calendar_event`和`send_email`工具配置为中断，允许所有[response types](/oss/python/langchain/human-in-the-loop)（`approve`、`edit`、`reject`）
-* 我们添加一个[checkpointer](/oss/python/langchain/short-term-memory) **仅适用于顶级代理**。这是暂停和恢复执行所必需的。
+* 我们添加一个[checkpointer](/oss/python/langchain/short-term-memory) **仅针对顶级代理**。这是暂停和恢复执行所必需的。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1057,7 +1057,7 @@ def schedule_event(request: str) -> str:
 
 **重要提示：** 确保子代理提示强调其最终消息应包含所有相关信息。常见的故障模式是子代理执行工具调用但不将结果包含在其最终响应中。
 
-## 8. 要点主管模式创建了抽象层，其中每一层都有明确的职责。设计主管系统时，从明确的域边界开始，并为每个子代理提供重点工具和提示。为主管编写清晰的工具描述，在集成之前独立测试每一层，并根据您的具体需求控制信息流。
+## 8. 要点主管模式创建了抽象层，其中每一层都有明确的职责。设计主管系统时，从清晰的域边界开始，并为每个子代理提供重点工具和提示。为主管编写清晰的工具描述，在集成之前独立测试每一层，并根据您的具体需求控制信息流。
 
 > [!提示]
 >

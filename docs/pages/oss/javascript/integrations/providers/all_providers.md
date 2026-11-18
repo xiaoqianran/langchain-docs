@@ -536,7 +536,7 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Web search results from the Perplexity Search API.
 
-> [card] [Pexafy](https://docs.pexafy.com/langchain)
+> [card] [Pexafy Stock Photos](https://docs.pexafy.com/langchain)
 >
 > Semantic search over free stock photos from Unsplash, Pexels, Pixabay, and more, returning each photo with license and credit.
 

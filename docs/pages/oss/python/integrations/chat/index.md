@@ -96,7 +96,6 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`ChatTogether`](/oss/python/integrations/chat/together) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-together/month)](https://pypi.org/project/langchain-together/) |
 | [`ChatOCIGenerativeAI`](/oss/python/integrations/chat/oci_generative_ai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-oci/month)](https://pypi.org/project/langchain-oci/) |
 | [`ChatOCIModelDeployment`](/oss/python/integrations/chat/oci_data_science) | ✅ | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-oci/month)](https://pypi.org/project/langchain-oci/) |
-| [`ChatParallel`](/oss/python/integrations/chat/parallel) | ✅ | ❌ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-parallel/month)](https://pypi.org/project/langchain-parallel/) |
 | [`ChatQwen`](/oss/python/integrations/chat/qwen) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-qwq/month)](https://pypi.org/project/langchain-qwq/) |
 | [`ChatQwQ`](/oss/python/integrations/chat/qwq) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-qwq/month)](https://pypi.org/project/langchain-qwq/) |
 | [`ChatUpstage`](/oss/python/integrations/chat/upstage) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-upstage/month)](https://pypi.org/project/langchain-upstage/) |
@@ -163,6 +162,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`ChatKeln`](https://github.com/kris-holy/langchain-keln#readme) | ✅ | ✅ | ✅ | | N/A |
 | [`ChatLlamay`](https://github.com/kosa8ai/langchain-llamay#readme) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`ChatOptiQ`](https://github.com/optiq-bot/langchain-optiq) | ✅ | ✅ | ✅ | ❌ | N/A |
+| [`ChatSovereignEG`](https://sovereigneg.com/docs/langchain) | ✅ | ✅ | ✅ | | N/A |
 | [`Cheaper Inference`](https://cheaperinference.com/docs) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`DaoXE`](https://daoxe.com) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`GPTZZZ`](https://gptzzz.ai/docs/) | ✅ | ✅ | ✅ | ✅ | N/A |

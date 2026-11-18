@@ -4,7 +4,7 @@
 
 # LangGraph 概述
 
-用于长期运行、有状态代理的低级编排框架和运行时
+用于长时间运行、有状态代理的低级编排框架和运行时
 
 LangGraph 是一个低级编排框架和运行时，适用于长时间运行的有状态代理。您将工作流程定义为共享状态、节点和边的图，并且可以在同一图中混合确定性步骤与 LLM 驱动的步骤。
 
@@ -68,7 +68,7 @@ LangGraph 可以独立工作。但是，您也可以将其与其他LangChain产�
 >
 > 基于 LangGraph 构建的集成和代理抽象。
 
-> [卡][LangSmith Deployment](/langsmith/deployment)
+> [卡][LangSmith Agent Server](/langsmith/deploy-overview)
 >
 > 通过 Studio 中的可视化原型来部署和扩展有状态代理。
 
@@ -81,7 +81,7 @@ LangGraph 可以独立工作。但是，您也可以将其与其他LangChain产�
 * [LangGraph quickstart](/oss/python/langgraph/quickstart)
 * [Graph API overview](/oss/python/langgraph/graph-api)
 * [Frameworks, runtimes, and harnesses](/oss/python/concepts/products)
-* [Incorporate existing code and other frameworks](/langsmith/deploy-other-frameworks)（包装非LangGraph代理用于LangSmith部署）
+* [Incorporate existing code and other frameworks](/langsmith/deploy-other-frameworks)（为LangSmith代理服务器包装一个非LangGraph代理）
 
 ***
 

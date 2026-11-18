@@ -14,7 +14,7 @@
 
 在开始之前，请确保您具备以下条件：
 
-* **LangSmith帐户**：注册（免费）或在[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-observability)登录。
+* **LangSmith帐户**：注册（免费）或登录[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-observability)。
 * **A LangSmith API 密钥**：遵循 [Create an API key](/langsmith/create-account-api-key) 指南。
 
 ## 启用跟踪
@@ -49,7 +49,7 @@ def search_web(query: str):
     return f"Search results for: {query}"
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[send_email, search_web],
     system_prompt="You are a helpful assistant that can send emails and search the web."
 )

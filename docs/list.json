@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-11-17T17:58:18.493Z",
+  "fetchedAt": "2026-11-18T17:39:42.477Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 15,
-  "ok": 1772,
+  "ok": 1773,
   "failed": 0,
   "tracks": {
     "api-reference": {
@@ -23,7 +23,7 @@
     },
     "agent-server-api": {
       "name": "Agent Server API",
-      "count": 64
+      "count": 65
     },
     "fleet": {
       "name": "Fleet",
@@ -1072,6 +1072,15 @@
       "bytes": 139
     },
     {
+      "rel": "langsmith/agent-server-api/system/root-health-check.md",
+      "title": "Root Health Check",
+      "url": "https://docs.langchain.com/langsmith/agent-server-api/system/root-health-check",
+      "track": "agent-server-api",
+      "trackName": "Agent Server API",
+      "group": "system",
+      "bytes": 177
+    },
+    {
       "rel": "langsmith/agent-server-api/system/server-information.md",
       "title": "Server Information",
       "url": "https://docs.langchain.com/langsmith/agent-server-api/system/server-information",
@@ -1600,7 +1609,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-architecture-aws",
-      "bytes": 8993
+      "bytes": 10363
     },
     {
       "rel": "langsmith/byoc-architecture-azure.md",
@@ -1645,7 +1654,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-byok-aws",
-      "bytes": 3383
+      "bytes": 5920
     },
     {
       "rel": "langsmith/byoc-byovpc-aws.md",
@@ -1681,7 +1690,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-faq",
-      "bytes": 20799
+      "bytes": 21633
     },
     {
       "rel": "langsmith/byoc-migration.md",
@@ -1699,7 +1708,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-onboarding-aws",
-      "bytes": 6947
+      "bytes": 7288
     },
     {
       "rel": "langsmith/byoc-onboarding-azure.md",
@@ -1726,7 +1735,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-operations-aws",
-      "bytes": 6778
+      "bytes": 17236
     },
     {
       "rel": "langsmith/byoc-operations-azure.md",
@@ -1744,7 +1753,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-shared-responsibility",
-      "bytes": 12434
+      "bytes": 12457
     },
     {
       "rel": "langsmith/byoc-usage.md",
@@ -1843,7 +1852,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "cloud-platform-features",
-      "bytes": 12658
+      "bytes": 12683
     },
     {
       "rel": "langsmith/cloud-private-connectivity.md",
@@ -2932,7 +2941,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "filter-traces",
-      "bytes": 34130
+      "bytes": 35172
     },
     {
       "rel": "langsmith/filter-traces-in-application.md",
@@ -3481,7 +3490,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-overview",
-      "bytes": 7691
+      "bytes": 8129
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-paid-media-agent.md",
@@ -3616,7 +3625,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "langsmith-cli",
-      "bytes": 23869
+      "bytes": 25823
     },
     {
       "rel": "langsmith/langsmith-collector.md",
@@ -4597,7 +4606,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-overview",
-      "bytes": 10256
+      "bytes": 10686
     },
     {
       "rel": "langsmith/python/managed-deep-agents-paid-media-agent.md",
@@ -4777,7 +4786,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "relays",
-      "bytes": 13554
+      "bytes": 13777
     },
     {
       "rel": "langsmith/release-stages.md",
@@ -4921,7 +4930,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "sandbox-auth-proxy",
-      "bytes": 43666
+      "bytes": 55158
     },
     {
       "rel": "langsmith/sandbox-cli.md",
@@ -12535,7 +12544,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 34016
+      "bytes": 34081
     },
     {
       "rel": "oss/javascript/deepagents/backends.md",
@@ -12580,7 +12589,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 40275
+      "bytes": 40515
     },
     {
       "rel": "oss/javascript/deepagents/customization.md",
@@ -12589,7 +12598,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 123858
+      "bytes": 134600
     },
     {
       "rel": "oss/javascript/deepagents/deep-research.md",
@@ -12787,7 +12796,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 92283
+      "bytes": 92393
     },
     {
       "rel": "oss/javascript/deepagents/streaming.md",
@@ -12994,7 +13003,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 29071
+      "bytes": 29084
     },
     {
       "rel": "oss/javascript/integrations/providers/anthropic.md",
@@ -13138,7 +13147,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 74868
+      "bytes": 67342
     },
     {
       "rel": "oss/javascript/langchain/component-architecture.md",
@@ -13462,7 +13471,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 33261
+      "bytes": 35462
     },
     {
       "rel": "oss/javascript/langchain/middleware/built-in.md",
@@ -13498,7 +13507,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 59526
+      "bytes": 57396
     },
     {
       "rel": "oss/javascript/langchain/multi-agent/custom-workflow.md",
@@ -14245,7 +14254,7 @@
       "track": "oss-openwiki",
       "trackName": "OSS · OpenWiki",
       "group": "providers",
-      "bytes": 14453
+      "bytes": 15202
     },
     {
       "rel": "oss/openwiki/quickstart.md",
@@ -14425,7 +14434,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 25227
+      "bytes": 25288
     },
     {
       "rel": "oss/python/deepagents/backends.md",
@@ -14470,7 +14479,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 50613
+      "bytes": 50849
     },
     {
       "rel": "oss/python/deepagents/customization.md",
@@ -14479,7 +14488,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 144140
+      "bytes": 157394
     },
     {
       "rel": "oss/python/deepagents/data-analysis.md",
@@ -14614,7 +14623,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 6452
+      "bytes": 7021
     },
     {
       "rel": "oss/python/deepagents/overview.md",
@@ -14677,7 +14686,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 36781
+      "bytes": 37049
     },
     {
       "rel": "oss/python/deepagents/sandboxes.md",
@@ -14695,7 +14704,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 91578
+      "bytes": 91683
     },
     {
       "rel": "oss/python/deepagents/streaming.md",
@@ -14740,7 +14749,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 28468
+      "bytes": 28341
     },
     {
       "rel": "oss/python/integrations/checkpointers/index.md",
@@ -14785,7 +14794,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 36538
+      "bytes": 37338
     },
     {
       "rel": "oss/python/integrations/providers/all_providers.md",
@@ -14794,7 +14803,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 115059
+      "bytes": 116962
     },
     {
       "rel": "oss/python/integrations/providers/anthropic.md",
@@ -14938,7 +14947,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 98964
+      "bytes": 100123
     },
     {
       "rel": "oss/python/integrations/vectorstores/index.md",
@@ -14956,7 +14965,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 73374
+      "bytes": 65848
     },
     {
       "rel": "oss/python/langchain/component-architecture.md",
@@ -15280,7 +15289,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 33043
+      "bytes": 35579
     },
     {
       "rel": "oss/python/langchain/middleware/built-in.md",
@@ -15316,7 +15325,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 78094
+      "bytes": 76106
     },
     {
       "rel": "oss/python/langchain/multi-agent/custom-workflow.md",

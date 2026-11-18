@@ -3595,6 +3595,10 @@
           "rel": "langsmith/agent-server-api/system/health-check.md"
         },
         {
+          "title": "Root Health Check",
+          "rel": "langsmith/agent-server-api/system/root-health-check.md"
+        },
+        {
           "title": "Server Information",
           "rel": "langsmith/agent-server-api/system/server-information.md"
         },

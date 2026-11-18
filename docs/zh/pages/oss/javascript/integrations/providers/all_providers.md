@@ -10,7 +10,7 @@
 
 > [卡][Anthropic](/oss/javascript/integrations/providers/anthropic)
 >
-> 与 Anthropic 的 Claude 模型集成，进行高级推理和对话。
+> 与 Anthropic 的 Claude 模型集成以进行高级推理和对话。
 
 > [卡][AWS](/oss/javascript/integrations/providers/aws)
 >
@@ -80,7 +80,7 @@
 
 > [卡][ChatExaone](https://github.com/ykoh42/exaone-integrations/tree/main/packages/langchain-exaone-ts)
 >
-> 社区维护的 EXAONE 聊天模型集成，适用于LangChain，具有流媒体、工具调用、结构化输出和推理历史记录。
+> 社区维护的 EXAONE 聊天模型集成LangChain，具有流媒体、工具调用、结构化输出和推理历史记录。
 
 > [卡][ChatWebLLM](https://github.com/ykoh42/web-llm-adapters/blob/main/packages/langchain-web-llm/README.md)
 >
@@ -106,7 +106,7 @@
 
 > [卡][Google Gemini](/oss/javascript/integrations/chat/google)
 >
-> 通过 AI Studio 和 Gemini Enterprise Agent Platform 实现的 Google Gemini 模型。
+> Google 通过 AI Studio 和 Gemini Enterprise Agent Platform 构建的 Gemini 模型。
 
 > [卡][Groq](/oss/javascript/integrations/chat/groq)
 >
@@ -114,7 +114,7 @@
 
 > [卡][Interfaze](https://interfaze.ai/docs)
 >
-> 通过 OpenAI 兼容 API 提供结构化输出的多模式聊天模型。
+> 多模式聊天模型，通过OpenAI兼容的 API 提供结构化输出。
 
 > [卡][Mistral](/oss/javascript/integrations/chat/mistral)
 >
@@ -432,7 +432,7 @@
 
 > [卡片][Continuity tools](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools)
 >
-> LangChain 工具，具有应用程序定义的权限、稳定的操作身份以及针对协作服务的仅状态恢复。
+> LangChain 具有应用程序定义的权限、稳定的操作身份和仅状态恢复的合作服务工具。
 
 > [卡][Corsair](https://docs.corsair.dev/mcp-adapters/langchain)
 >
@@ -494,47 +494,51 @@
 
 > [卡][MCP Toolbox](/oss/javascript/integrations/tools/mcp_toolbox)
 >
-> 模型上下文协议工具和实用程序。> [卡][Mercedes-Benz Service Reminder](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme)
+> 模型上下文协议工具和实用程序。> [card] [Mercedes-Benz Service Reminder](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme)
 >
-> SilberArrows 的 MCP 工具，用于 Mercedes-Benz 服务 A/B 提醒、服务说明和警告灯指导。
+> MCP tools from SilberArrows for Mercedes-Benz Service A/B reminders, service explanations, and warning-light guidance.
 
-> [卡][OceanAltPayeeCheckTool](https://oceanalt.com/en/developers/langchain)
+> [card] [OceanAltPayeeCheckTool](https://oceanalt.com/en/developers/langchain)
 >
-> 代理预付款检查：允许、审查或拒绝收款人地址或付款 URL，以及失败关闭的付款工具防护。
+> Pre-payment checks for agents: allow, review or decline for a payee address or payment URL, plus a fail-closed payment tool guard.
 
-> [卡][OpenAPI](/oss/javascript/integrations/tools/openapi)
+> [card] [OpenAPI](/oss/javascript/integrations/tools/openapi)
 >
-> 根据 OpenAPI 规范生成工具。
+> Generate tools from OpenAPI specifications.
 
-> [卡][Oracle AI Database](/oss/javascript/integrations/tools/oracleai)
+> [card] [Oracle AI Database](/oss/javascript/integrations/tools/oracleai)
 >
-> 使用 Oracle AI Vector Search 工具汇总、分块和提供数据。
+> Summarize, chunk, and serve data with Oracle AI Vector Search tools.
 
-> [卡][SQL](/oss/javascript/integrations/tools/sql)
+> [card] [SQL](/oss/javascript/integrations/tools/sql)
 >
-> 使用自然语言查询数据库。
+> Query databases using natural language.
 
-> [卡][Perplexity Search](/oss/javascript/integrations/tools/perplexity_search)
+> [card] [Perplexity Search](/oss/javascript/integrations/tools/perplexity_search)
 >
-> 来自 Perplexity Search API 的 Web 搜索结果。
+> Web search results from the Perplexity Search API.
 
-> [卡][Pexafy](https://docs.pexafy.com/langchain)
+> [card] [Pexafy Stock Photos](https://docs.pexafy.com/langchain)
 >
-> 对来自 Unsplash、Pexels、Pixabay 等的免费库存照片进行语义搜索，返回每张照片的许可和来源。
+> Semantic search over free stock photos from Unsplash, Pexels, Pixabay, and more, returning each photo with license and credit.
 
-> [卡][pipe0](https://www.pipe0.com/docs/sdks/integrations/langchain)
+> [card] [pipe0](https://www.pipe0.com/docs/sdks/integrations/langchain)
 >
-> 跨多个数据提供商进行人员搜索和联系人丰富（工作电子邮件、电话号码、个人资料和企业结构）
+> People search and contact enrichment (work emails, phone numbers, profiles, and firmographics) across multiple data providers
 
-> [卡][Precleared](https://precleared.dev/docs/langchain)
+> [card] [pilotfish](https://pilotfish.gai.ventures/docs/open)
+>
+> Open-source MCP server that drives Chrome on your machine and returns only the parts of the page that changed after each action.> [卡][Precleared](https://precleared.dev/docs/langchain)
 >
 > 检查发送到某个地址的冷邮件或营销电子邮件在八个国家/地区是否合法，并返回决定规则、页脚要求和签名收据。
 
 > [卡][Pushary](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js)
 >
-> LangGraph.js 代理的电话批准：在用户的电话上询问并仅在批准时进行路由；没有答案就意味着没有行动。> [卡][Serpex](https://serpex.dev/docs)
+> Phone approvals for LangGraph.js agents: ask on the user's phone and route only on Approve;没有答案就意味着没有行动。
+
+> [卡][Serpex](https://serpex.dev/docs)
 >
-> 用于人工智能应用和数据聚合的多引擎网络搜索 API。
+> Multi-engine web search API for AI applications and data aggregation.
 
 > [卡][SideQuest](https://sidequestpays.com/docs#langchain)
 >
@@ -542,25 +546,23 @@
 
 > [卡][SIGNA](https://github.com/codexvritra/signa/tree/main/sdk/langchain)
 >
-> 将钱包签名的消息传递工具添加到LangChain代理。
+> Add wallet-signed messaging tools to LangChain agents.
 
 > [卡][Sato Hub](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme)
 >
-> Sato Hub 链上代理构建块索引上的无密钥工具：搜索列表、预检查找、交换场地和构建计划。
+> Keyless tools over Sato Hub's index of onchain-agent building blocks: search listings, Preflight lookups, swap venues, and build plans.
 
 > [卡][SnapRender](https://github.com/User0856/snaprender-integrations/tree/main/langchain)
 >
-> 通过 SnapRender API 在真实浏览器中将网页捕获为 PNG、JPEG、WebP 或 PDF 屏幕截图的工具。
+> Tools that capture web pages as PNG, JPEG, WebP or PDF screenshots in a real browser via the SnapRender API.
 
 > [卡][SproutsDataTools](https://github.com/sproutsdata-ai/sproutsdata-js/tree/main/packages/langchain#readme)
 >
-> LangChain 工具和 Sprouts Data 搜索检索器，用于搜索 B2B 公司和人员并查找记录。
+> LangChain tools and a search retriever for Sprouts Data to search B2B companies and people and look up records.
 
 > [卡][Steward](https://github.com/brianbooms/plugin-steward)
 >
-> 用于 x402 付款的工具，可在付款前通过 LangChain MCP 适配器验证商家、价格和条款。
-
-> [卡][TalorData](https://www.talordata.com/docs)
+> Tools for x402 payments that verify merchant, price, and terms before payment via LangChain MCP adapters.> [卡][TalorData](https://www.talordata.com/docs)
 >
 > 跨 33 个搜索引擎的统一 SERP API，具有地理定位功能。
 
@@ -574,7 +576,9 @@
 
 > [卡][Tavily Map](/oss/javascript/integrations/tools/tavily_map)
 >
-> 绘制和可视化网络爬行结果。> [卡][Tavily Search](/oss/javascript/integrations/tools/tavily_search)
+> 绘制和可视化网络爬行结果。
+
+> [卡][Tavily Search](/oss/javascript/integrations/tools/tavily_search)
 >
 > 针对检索应用程序的人工智能优化搜索。
 
@@ -598,39 +602,43 @@
 >
 > 网页提取 API 返回干净的 Markdown 以及文章元数据、产品价格和表格的固定架构 JSON。
 
-> [卡][x402checkToolkit](https://x402check.dev)
+> [card] [x402checkToolkit](https://x402check.dev)
 >
 > 在代理付款之前预检 x402 卖家端点（确定|注意|避免加上 payTo 历史记录）。 \$0.01 USDC 基础。
 
-> [卡][You.com](https://you.com/docs/integrations/langchain)
+> [card] [You.com](https://you.com/docs/integrations/langchain)
 >
 > 法学硕士的实时网络搜索和内容提取。
 
 > [卡][Vector Store](/oss/javascript/integrations/tools/vectorstore)
 >
-> 作为工具查询矢量数据库。
+> 作为工具查询矢量数据库。## Retrievers
 
-## 猎犬
-
-> [卡][Bedrock Knowledge Bases](/oss/javascript/integrations/retrievers/bedrock-knowledge-bases)
+> [card] [Bedrock Knowledge Bases](/oss/javascript/integrations/retrievers/bedrock-knowledge-bases)
 >
 > 从 Amazon Bedrock 知识库检索。
 
-> [卡][Exa](/oss/javascript/integrations/retrievers/exa)
+> [card] [ClawDBRetriever (Axonio)](https://github.com/hackcat29/axonio-sdk/tree/main/adapters/langchain#readme)
 >
-> 人工智能驱动的网络搜索和检索。> [卡][FoxNose](https://github.com/FoxNoseTech/langchain-foxnose-js#readme)
+> Axonio 为持久代理内存提供了一个 LangChain.js 检索器，具有托管和自托管后端。
+
+> [card] [Exa](/oss/javascript/integrations/retrievers/exa)
+>
+> 人工智能驱动的网络搜索和检索。
+
+> [card] [FoxNose](https://github.com/FoxNoseTech/langchain-foxnose-js#readme)
 >
 > 用于 FoxNose 集合的检索器、文档加载器和代理工具，通过 Flux 交付 API 提供文本、矢量、混合和矢量增强搜索。
 
-> [卡][HyDE](/oss/javascript/integrations/retrievers/hyde)
+> [card] [HyDE](/oss/javascript/integrations/retrievers/hyde)
 >
 > 假设文档嵌入以实现更好的检索。
 
-> [卡][Kendra](/oss/javascript/integrations/retrievers/kendra-retriever)
+> [card] [Kendra](/oss/javascript/integrations/retrievers/kendra-retriever)
 >
 > 使用 Amazon Kendra 进行企业搜索。
 
-> [卡][Perplexity Search](/oss/javascript/integrations/retrievers/perplexity_search)
+> [card] [Perplexity Search](/oss/javascript/integrations/retrievers/perplexity_search)
 >
 > 从 Perplexity Search API 返回文档的检索器。
 
@@ -638,15 +646,15 @@
 >
 > 以文档形式检索 Recall 了解的有关用户的事实以及用户的匹配消息。
 
-> [卡][SAP HANA Self Query](/oss/javascript/integrations/retrievers/self_query/hanavector_self_query)
+> [card] [SAP HANA Self Query](/oss/javascript/integrations/retrievers/self_query/hanavector_self_query)
 >
 > SAP HANA 云矢量引擎上的自查询检索器。
 
-> [卡][Time-Weighted](/oss/javascript/integrations/retrievers/time-weighted-retriever)
+> [card] [Time-Weighted](/oss/javascript/integrations/retrievers/time-weighted-retriever)
 >
 > 时间感知文档检索和排名。
 
-## 商店
+## Stores
 
 > [卡][AlBuddyMemoryStore](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md)
 >
@@ -656,11 +664,9 @@
 >
 > 用于开发的本地文件系统存储。
 
-> [卡][In-Memory](/oss/javascript/integrations/stores/in_memory)
+> [card] [In-Memory](/oss/javascript/integrations/stores/in_memory)
 >
-> 临时数据的快速内存存储。
-
-## 沙箱
+> 临时数据的快速内存存储。## 沙箱
 
 > [卡][CreateOS Sandbox](https://createos.sh/docs/Sandbox/Overview)
 >
@@ -670,7 +676,9 @@
 
 > [卡][Azure Cosmos DB NoSQL](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql)
 >
-> 在 Azure Cosmos DB 中缓存 LLM 响应。> [卡][BetterDB Agent Cache](https://www.betterdb.com/ai)
+> 在 Azure Cosmos DB 中缓存 LLM 响应。
+
+> [卡][BetterDB Agent Cache](https://www.betterdb.com/ai)
 >
 > 由 Valkey 或 Redis 支持的 AI 代理的多层缓存。
 
@@ -678,11 +686,11 @@
 
 > [卡][BRYDGE](https://github.com/contactkontey-dotcom/langchain-brydge#readme)
 >
-> 监督代理工具与 BRYDGE 的调用，并检查目标系统自己的记录，以报告每个操作是否在允许的情况下发生。
+> Supervises an agent's tool calls with BRYDGE and checks the destination system's own records to report whether each action happened as permitted.
 
 > [卡][Nace](https://github.com/nace-ai/langchain-nace-js#readme)
 >
-> Nace 的 Drex 决策模型：通过文本和图像输入带有校准概率的答案，用于路由、模型选择和工具调用门控。
+> Drex decision models by Nace: typed answers with calibrated probabilities for routing, model selection and tool-call gating, from text and images.
 
 > [卡][newmean-pii](https://github.com/newmean-ai/pii/blob/main/js/README.md#langchainjs)
 >
@@ -698,13 +706,17 @@
 
 > [卡][RuthlessSchemaGuard](https://github.com/moltbot-den/openentity/tree/main/integrations/langchain)
 >
-> 代理中间件，根据 Pydantic 或 JSON 模式验证工具和 HTTP 响应，并在违规时提出警告。
+> 代理中间件，根据 Pydantic 或 JSON 模式验证工具和 HTTP 响应，并在违规时提出警告。> [卡][Sanity Context](https://www.npmjs.com/package/@sanity/context-langchain)
+>
+> Sanity Context 的代理中间件：引用根据您的内容或实时 Sanity 数据集构建的知识库中的事实。
 
 ## 回调
 
 > [卡][OpenInference](https://arize.com/docs/ax/integrations/python-agent-frameworks/langchain/langchain-tracing)
 >
-> OpenTelemetry 工具使用 OpenInference 语义约定记录 LangChain 和 LangGraph 操作。> [卡][Respan](https://www.respan.ai/docs)
+> OpenTelemetry 工具使用 OpenInference 语义约定记录 LangChain 和 LangGraph 操作。
+
+> [卡][Respan](https://www.respan.ai/docs)
 >
 > 跟踪 LangChain.js、LangGraph.js 和 Langflow 风格的回调在 Respan 中运行。
 

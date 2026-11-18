@@ -153,7 +153,7 @@ const result = await agent.invoke(
 技能负载分为三个级别。每个级别仅在任务需要时添加更多细节：|水平|加载什么 |当 |
 | - | - | - |
 | **1.元数据** | `SKILL.md` [frontmatter](#frontmatter-fields) | [⟦T76⟧](#frontmatter-fields) 和 [⟦T77⟧](#frontmatter-fields) |代理启动，针对每个配置的技能 |
-| **2.说明** | `SKILL.md`全身|当技能被调用时|
+| **2.说明** | `SKILL.md`全身|当技能被调用时 |
 | **3.资源** | [Supporting files](#add-supporting-resources) 下`scripts/`、`references/` 和 `assets/` |调用后根据需要，当指令引用它们时 |
 
 下图显示了给定时刻代理上下文中出现的内容。启动时，每个技能的 1 级元数据都在系统提示中。当调用技能时，2 级指令会加入上下文。 3 级文件保留在后端，直到代理在调用后读取它们。
@@ -185,7 +185,7 @@ const result = await agent.invoke(
 
 ## 写出有效的技巧
 
-[Agent Skills specification](https://agentskills.io/specification) 包括有关可靠发现和激活的结构化技能的指导。以下建议建立在该基础上，并提供 Deep Agents 的实用模式。**保持 [frontmatter](#frontmatter-fields) 简洁**，并将 `SKILL.md` 正文保持在 5,000 个令牌以下。每个技能的前文都会在[discovery](#how-skills-work)处添加到系统提示中，而全文只有在激活时才会被读取。保持两个层都较小意味着您可以加载许多技能，而不会拥挤上下文窗口。
+[Agent Skills specification](https://agentskills.io/specification) 包括有关可靠发现和激活的结构化技能的指导。以下建议建立在该基础上，并提供 Deep Agents 的实用模式。**保持[frontmatter](#frontmatter-fields)简洁**和`SKILL.md`正文保持在5,000个令牌以下。每个技能的前文都会在[discovery](#how-skills-work)处添加到系统提示中，而全文只有在激活时才会被读取。保持两个层都较小意味着您可以加载许多技能，而不会拥挤上下文窗口。
 
 **编写具体描述。** 在 [discovery](#how-skills-work) 期间，[⟦T91⟧](#frontmatter-fields) 字段是代理看到的每个技能的唯一信息。良好的描述可以告诉代理该技能的作用以及何时激活它，并使用代理可以匹配的特定关键字：
 
@@ -277,7 +277,7 @@ scripts/extract.py
 
 ## 将工具添加到技能中
 
-技能可以自带工具。代理只有在读取技能后才能看到它们，因此它们的模式不会出现在提示中，直到任务需要它们为止。技能工具是Deep Agents功能，而不是[Agent Skills specification](https://agentskills.io/specification)的一部分。 Deep Agents 从规范的自由格式`metadata` 字段中读取工具名称。它们与规范的 `allowed-tools` 字段无关，该字段预先批准工具而不是添加它们。
+技能可以自带工具。代理只有在读取技能后才能看到它们，因此它们的模式不会出现在提示中，直到任务需要它们为止。技能工具是 Deep Agents 的功能，不是 [Agent Skills specification](https://agentskills.io/specification) 的一部分。 Deep Agents 从规范的自由格式`metadata` 字段中读取工具名称。它们与规范的 `allowed-tools` 字段无关，该字段预先批准工具而不是添加它们。
 
 > [!注意]
 >
@@ -451,15 +451,15 @@ const result = await agent.invoke(
   },
   { context: { userId: "user-123" } },
 );
-```> [卡][View example trace](https://smith.langchain.com/public/8dbc8e55-5f6f-4247-a25e-ca7ff7c323d6/r)
+```> [card] [View example trace](https://smith.langchain.com/public/8dbc8e55-5f6f-4247-a25e-ca7ff7c323d6/r)
 >
-> 为此示例打开公共 LangSmith 运行。
+> Open a public LangSmith run for this example.
 
-当您编写解析器时：
+When you write a resolver:
 
-* 保持快速。它在代理读取技能之后在每次模型调用上运行，并在每次技能工具调用之前再次运行。
+* Keep it fast.它在代理读取技能之后在每次模型调用上运行，并在每次技能工具调用之前再次运行。
 
-* 解析器可以是异步的。它可以返回工具的承诺。
+* The resolver can be async.它可以返回工具的承诺。
 
 ### 保持工具可搜索
 
@@ -492,11 +492,11 @@ const agent = createDeepAgent({
 
 代理如何到达工具取决于您将其传递到的位置：
 
-|将工具传递给 |特工读取技能前|特工读取技能后|
+| Pass the tool to |特工读取技能前|特工读取技能后|
 | - | - | - |
-| `createSkillsMiddleware({ tools })` |隐藏，调用失败|可见|
+| `createSkillsMiddleware({ tools })` | Hidden, and calls fail |可见|
 |代理的`tools`，延期|可通过提供商工具搜索获得 |无需搜索即可看到 |
-|代理的`tools` |可见，所以`include_tools`没有效果 |可见|当技能列出代理已经拥有的工具时，包括内置工具（例如`edit_file`、Deep Agents）使用代理的工具，而不是传递给`createSkillsMiddleware`的同名工具。
+| The agent's `tools` |可见，所以`include_tools`没有效果 |可见|当技能列出代理已经拥有的工具时，包括`edit_file`、Deep Agents等内置工具，使用代理的工具，而不是传递给`createSkillsMiddleware`的同名工具。
 
 ## 后端和远程技能加载
 
@@ -682,9 +682,9 @@ function createAgentForUser(userRole: string) {
 >
 > 对于Deep Agents代码存储约定，请参阅[App data](/oss/deepagents/code/configuration#data-locations)。
 >
->> [手风琴] 模拟SDK中的Deep Agents代码源码顺序
+>> [accordion] 模拟Deep Agents SDK中代码源码顺序
 >>
->> 为了匹配 SDK 代码中的 Deep Agents 代码分层，请按照从低到高的优先顺序显式传递所有所需的源：
+>> 为了匹配 SDK 代码中的 Deep Agents 代码分层，请按照从低到高的优先级顺序显式传递所有所需的源：
 >>
 >> ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > [
@@ -777,7 +777,7 @@ const result = await agent.invoke(
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 await agent.updateState(config, { skillsMetadata: null });
-```使用`null`，而不是空列表。空列表意味着源已加载且不包含任何技能，因此代理在线程的其余部分看不到任何技能。
+```使用`null`，而不是空列表。空列表意味着源已加载且没有技能，因此代理在线程的其余部分看不到任何技能。
 
 > [!注意]
 >
@@ -802,7 +802,7 @@ const reloadEditedSkills = createMiddleware({
 
 ## 引脚技巧
 
-仅当代理确定技能与任务匹配时才会读取该技能。当用户在您的应用中命名一项技能时，例如通过键入 `/langgraph-docs` 或从菜单中选择它，请固定该技能。 Deep Agents 然后将技能的指令添加到对话中，因此代理不必选择它。
+仅当代理确定技能与任务匹配时才会读取该技能。当用户在您的应用中命名一项技能时，例如通过键入 `/langgraph-docs` 或从菜单中选择它，请固定该技能。然后Deep Agents将技能的指令添加到对话中，因此代理不必选择它。
 
 > [!注意]
 >
@@ -831,17 +831,15 @@ const result = await agent.invoke(
 </skill>
 ```
 
-每条消息还将`additional_kwargs.lc_source`设置为`"pinned_skill"`，并将技能的`name`、`path`和`description`放入`additional_kwargs.skill`。聊天 UI 可以使用这些字段将固定技能显示为标签而不是其全文。
+每条消息都携带 [notification metadata](/oss/javascript/langchain/messages#notifications) 以及源 `"pinned_skill"`，`getNotificationMetadata` 返回。该消息还将技能的 `name`、`path` 和 `description` 放入 `additional_kwargs.skill`。前端可以使用这些字段将固定技能显示为标签而不是其全文。
 
 固定技能遵循以下规则：
 
-* 消息按书面形式保留在对话中。稍后编辑 `SKILL.md` 不会更改它，并且再次固定该技能会附加当前文本。较早的消息永远不会改变，因此提示缓存保持有效。
+* 消息按书面形式保留在对话中。稍后编辑`SKILL.md`不会更改它，并且再次固定该技能会附加当前文本。较早的消息永远不会改变，因此提示缓存保持有效。
 * 中间件会跳过与未加载技能匹配的名称，以及无法读取 `SKILL.md` 的技能。
 * 当您固定技能时，其[skill tools](#add-tools-to-skills)可供代理使用，与代理读取其`SKILL.md`时相同。
 
-### 固定消息中命名的技能
-
-Deep Agents 不会在消息中查找技能名称。您的应用程序选择语法，查找名称，并将它们传递到 `pinnedSkills` 中。以下示例将名为 `/skill-name` 的每个技能固定在消息中的任何位置，并发送不更改的文本：
+### 固定消息中命名的技能Deep Agents 不会在消息中查找技能名称。您的应用程序选择语法，查找名称，并将它们传递到 `pinnedSkills` 中。以下示例将名为 `/skill-name` 的每个技能固定在消息中的任何位置，并发送不更改的文本：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const SKILL_REFERENCE = /(?<!\S)\/([a-z0-9-]+)/g;
@@ -856,7 +854,9 @@ const result = await agent.invoke(
   },
   { configurable: { thread_id: "1" } },
 );
-```该模式与位于消息开头或空格后的 `/` 后跟技能名称相匹配。它不会根据您的技能检查名称，因为中间件会跳过未知名称。要支持其他语法，例如 `$skill-name`，请更改模式。
+```
+
+该模式与位于消息开头或空格后的 `/` 后跟技能名称相匹配。它不会根据您的技能检查名称，因为中间件会跳过未知名称。要支持其他语法，例如 `$skill-name`，请更改模式。
 
 ## 下级代理的技能
 
@@ -1151,7 +1151,7 @@ const agent = await createDeepAgent({
 
 ### 写批准
 
-如果客服人员可能会写入技能文件，但您希望首先有人参与循环，请使用 [⟦T202⟧](/oss/javascript/deepagents/human-in-the-loop) 或带有 `mode="interrupt"` 的权限规则。两者都在 `write_file` 或 `edit_file` 运行之前暂停并使用相同的恢复流程。
+如果客服人员可以写入技能文件，但您希望首先有人参与循环，请使用 [⟦T202⟧](/oss/javascript/deepagents/human-in-the-loop) 或带有 `mode="interrupt"` 的权限规则。两者都在 `write_file` 或 `edit_file` 运行之前暂停并使用相同的恢复流程。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
@@ -1175,7 +1175,7 @@ const agent = await createDeepAgent({
 
 ## 有技巧地执行代码如果没有代码执行，技能就是被动的：代理读取指令并使用可用的工具遵循它们。代码执行将技能转化为主动能力。技能可以发送经过测试的脚本，该脚本调用 API、转换数据、验证输出或运行管道，并且代理确定性地执行它，而不是每次都根据指令重新生成逻辑。这对于需要精确行为（数据转换、API 集成、合规性检查）或依赖于代理无法单独通过工具调用使用的库的工作流程尤其有价值。
 
-技能通过[sandbox scripts](#sandbox-scripts)执行代码：代理在需要安装依赖项、运行测试、调用 CLI 或使用操作系统文件系统时运行捆绑脚本。
+技能通过[sandbox scripts](#sandbox-scripts)执行代码：代理在需要安装依赖项、运行测试、调用 CLI 或使用操作系统文件系统时运行捆绑的脚本。
 
 ### 沙盒脚本
 
@@ -1208,7 +1208,7 @@ Search arXiv for papers matching the user's query.
 3. If the user asks for more detail on a specific paper, fetch the full abstract.
 ```
 
-代理可以从任何后端*读取*脚本，但要*执行*它们，代理需要访问 shell，而只有 [sandbox backends](/oss/javascript/deepagents/sandboxes) 提供。[Sandbox backends](/oss/javascript/deepagents/sandboxes) 在隔离的容器中运行。存储在沙箱外部的技能文件在沙箱内部不可用，这意味着代理无法执行技能脚本或访问技能资源，除非先将它们转移进来。使用[custom middleware](/oss/javascript/langchain/middleware/custom)来处理此传输：
+代理可以从任何后端“读取”脚本，但要“执行”它们，代理需要访问 shell，而只有 [sandbox backends](/oss/javascript/deepagents/sandboxes) 提供。[Sandbox backends](/oss/javascript/deepagents/sandboxes) 在隔离的容器中运行。存储在沙箱外部的技能文件在沙箱内部不可用，这意味着代理无法执行技能脚本或访问技能资源，除非先将它们转移进来。使用[custom middleware](/oss/javascript/langchain/middleware/custom)来处理此传输：
 
 * **`before_agent`**：从后端读取技能文件并将其上传到沙箱中，以便代理可以从头开始执行脚本。
 * **`after_agent`**：从沙箱下载任何更新或新创建的技能文件并将它们写回后端，以便更改在运行中持续存在。
@@ -2213,7 +2213,7 @@ main().catch((err) => {
 
 ### 启动时缺少的技能
 
-**问题**：代理未在其系统提示中列出技能，或 `SKILL.md` 上的 `read_file` 失败。
+**问题**：代理未在其系统提示中列出技能，或`SKILL.md`上的`read_file`失败。
 
 **解决方案**：
 
@@ -2227,7 +2227,7 @@ main().catch((err) => {
 
 **问题**：在您添加、编辑或删除一项技能后，客服人员继续使用该技能的早期版本。
 
-**解决方案**：技能每个线程加载一次，因此已经运行的线程不会看到变化。重置存储的元数据。参见[Reload skills](#reload-skills)。
+**解决方案**：技能每个线程加载一次，因此已经运行的线程看不到变化。重置存储的元数据。参见[Reload skills](#reload-skills)。
 
 ### 未找到支持文件
 
@@ -2239,7 +2239,7 @@ main().catch((err) => {
 
 2. **将路径保留在技能目录内。** 文件路径根据后端进行解析。确认支持文件存在于您的说明引用的路径中。
 
-3. **将技能同步到沙箱中。** 如果您使用[sandbox backends](/oss/javascript/deepagents/sandboxes)，容器外的技能文件将不可用，直到您将其复制进去。参见[Sandbox scripts](#sandbox-scripts)和[syncing skills and memories with custom middleware](/oss/javascript/deepagents/going-to-production#example-syncing-skills-and-memories-with-custom-middleware)。
+3. **将技能同步到沙箱中。** 如果您使用[sandbox backends](/oss/javascript/deepagents/sandboxes)，容器外的技能文件将无法使用，直到您将其复制进去。参见[Sandbox scripts](#sandbox-scripts)和[syncing skills and memories with custom middleware](/oss/javascript/deepagents/going-to-production#example-syncing-skills-and-memories-with-custom-middleware)。
 
 ### 技能工具不可用**问题**：代理无法调用`include_tools`中列出的技能工具。
 
@@ -2271,11 +2271,11 @@ main().catch((err) => {
 | - | - | - | - |
 | **目的** |通过渐进式披露发现的按需功能 |启动时加载持久上下文 |代理可以调用​​的编程操作 |
 | **加载** |仅当代理确定相关性时才读取 |在代理启动时加载 |每个回合都可用 |
-| **格式** | `SKILL.md` 在命名目录中 | `AGENTS.md` 文件 |与代理绑定的功能|
+| **格式** | `SKILL.md` 在命名目录中 | `AGENTS.md` 文件 |与代理绑定的功能 |
 | **分层** |用户，然后项目（最后获胜）|用户，然后项目（合并）|在代理创建时定义 |
 | **何时使用** |指令是特定于任务的并且可能很大 |上下文始终相关（项目惯例、偏好）|代理需要编程操作，或者无权访问文件系统 |
 
-这些是指导方针，而不是硬性界限。在实践中，技能和记忆是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为一种渐进式公开记忆的形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
+这些是指导方针，而不是硬性界限。在实践中，技能和记忆是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为渐进式公开记忆的一种形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
 
 ### Frontmatter 字段
 

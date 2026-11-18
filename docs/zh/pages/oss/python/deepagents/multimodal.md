@@ -39,6 +39,8 @@ result = agent.invoke({
 > | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`、`.mp3`、`.aiff`、`.aac`、`.ogg`、`.flac` |
 > | [File](/oss/python/langchain/messages#multimodal) | `.pdf`、`.ppt`、`.pptx` |
 
+使用可选的 `[video]` 额外 (`uv add 'deepagents[video]'`)，`read_file` 从视频中采样帧，而不是返回原始文件。它返回一个描述样本的`ToolMessage`，然后返回一个携带帧的后续`HumanMessage`。该消息具有[notification metadata](/oss/python/langchain/messages#notifications)，其来源为`"read_file_media"`，其`data`包括`path`和`tool_call_id`。前端可以读取它以显示与用户消息不同的帧。对于视频，`offset`和`limit`是采样源的秒数。
+
 ## 自定义工具输出
 
 [Custom tools](/oss/python/deepagents/tools#custom-tools)可以包含多模式文件，例如图像：
@@ -58,16 +60,16 @@ def capture_screenshot() -> list[dict]:
 
 返回值将转换为模型在下一回合读取的`ToolMessage`。使用结果消息上的`content_blocks`访问标准化表示。
 
-有关返回类型选项、序列化行为和 MCP 示例，请参阅 [Multimodal content](/oss/python/langchain/mcp/tools#multimodal-content)。
-
-> [!提示]
+有关返回类型选项、序列化行为和 MCP 示例，请参阅 [Multimodal content](/oss/python/langchain/mcp/tools#multimodal-content)。> [!提示]
 >
 > 当工具生成图像或其他大型二进制数据时，将工件保存到 [backend](/oss/python/deepagents/backends) 并返回简洁的文本描述以及路径或 URL。这可以使消息历史记录更小，并且与 [context compression](/oss/python/deepagents/context-engineering#context-compression) 配合使用效果更好。
 
 ## 上下文压缩和多模式内容
 
-内置卸载和摘要针对文本和消息历史记录进行了优化：* **卸载** 仅测量文本标记。非文本块（包括图像）保留在替换消息中而不是压缩。仅包含图像的消息不会仅根据图像大小进行卸载。
-* **摘要** 将旧消息压缩为纯文本摘要。该范围内的图像、音频、视频和文件块不会被继承——模型只能看到摘要器写的关于它们的内容。最近低于保持阈值的消息保持不变。
+内置卸载和摘要针对文本和消息历史记录进行了优化：
+
+* **卸载** 仅测量文本标记。非文本块（包括图像）保留在替换消息中而不是压缩。仅包含图像的消息不会仅根据图像大小进行卸载。
+* **摘要** 将旧消息压缩为纯文本摘要。该范围内的图像、音频、视频和文件块不会被保留——模型只能看到摘要器写的关于它们的内容。最近低于保持阈值的消息保持不变。
 
   当摘要运行时，旧回合中的媒体块会从活动上下文中删除：
 
@@ -100,12 +102,12 @@ def capture_screenshot() -> list[dict]:
 
   原始对话仍以文本形式写入文件系统。请参阅[Summarization](/oss/python/deepagents/context-engineering#summarization)了解触发器、保持阈值和完整流程。
 
-对于多模式繁重的工作负载：
-
-* 将图像、屏幕截图和图表存储在文件系统后端或外部对象存储中，然后通过消息传递文件路径或 URL。
+对于多模式繁重的工作负载：* 将图像、屏幕截图和图表存储在文件系统后端或外部对象存储中，然后通过消息传递文件路径或 URL。
 * 在长时间运行的对话中，更喜欢引用而不是 base64 编码的图像块。
 * 使用 [subagents](/oss/python/deepagents/subagents) 进行大量图像检查，以便主代理收到紧凑的文本结果。
-* 当您的提供商对图像收取大量令牌时，调整摘要阈值或提供自定义令牌计数器。有关卸载阈值、汇总触发器和自定义选项，请参阅[Context compression](/oss/python/deepagents/context-engineering#context-compression)。
+* 当您的提供商对图像收取大量令牌时，调整摘要阈值或提供自定义令牌计数器。
+
+有关卸载阈值、汇总触发器和自定义选项，请参阅[Context compression](/oss/python/deepagents/context-engineering#context-compression)。
 
 ***
 

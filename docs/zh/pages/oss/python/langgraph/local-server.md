@@ -87,7 +87,7 @@ INFO:langgraph_api.cli:
 - 📚 API Docs: http://127.0.0.1:2024/docs
 
 This in-memory server is designed for development and testing.
-For production use, please use LangSmith Deployment.
+For production use, please use LangSmith Agent Server.
 ```
 
 `langgraph dev` 命令以内存模式启动 Agent Server。该模式适合开发和测试目的。对于生产使用，部署可以访问持久存储后端的代理服务器。有关更多信息，请参阅[Platform setup overview](/langsmith/platform-setup)。
@@ -173,7 +173,7 @@ https://smith.langchain.com/studio/?baseUrl=http://myhost:3000
 >        print("\n\n")
 >    ```
 
-> [选项卡] 休息API
+> [选项卡] 休息 API
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > curl -s --request POST \

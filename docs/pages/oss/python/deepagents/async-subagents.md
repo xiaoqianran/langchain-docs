@@ -152,7 +152,7 @@ On [Agent Server](/langsmith/agent-server), subagents notify the supervisor when
 >
 > Task notifications require `deepagents>=0.7.26`, and notification metadata requires `deepagents>=0.7.33`. They are in [**beta**](/oss/python/versioning); APIs and behavior may change between releases.
 
-The supervisor receives each notification as a `HumanMessage`. Notifications can include images and other multimodal media. Each notification carries metadata: its `source` is `"async_subagent"`, and its `data` is a [`TaskEvent`](https://reference.langchain.com/python/deepagents/middleware/async_subagents/TaskEvent) (`task_id`, `agent_name`, `status`, `run_id`). Read it with `get_notification_metadata` to show notifications differently from user messages:
+The supervisor receives each notification as a `HumanMessage`. Notifications can include images and other multimodal media. Each notification carries [notification metadata](/oss/python/langchain/messages#notifications): its `source` is `"async_subagent"`, and its `data` is a [`TaskEvent`](https://reference.langchain.com/python/deepagents/middleware/async_subagents/TaskEvent) (`task_id`, `agent_name`, `status`, `run_id`). Read it with `get_notification_metadata` to show notifications differently from user messages:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.messages import get_notification_metadata

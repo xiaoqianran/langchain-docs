@@ -39,6 +39,8 @@ The harness `read_file` tool returns [standard content blocks](/oss/python/langc
 > | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac` |
 > | [File](/oss/python/langchain/messages#multimodal) | `.pdf`, `.ppt`, `.pptx` |
 
+With the optional `[video]` extra (`uv add 'deepagents[video]'`), `read_file` samples frames from a video instead of returning the raw file. It returns a `ToolMessage` that describes the sample, then a follow-on `HumanMessage` that carries the frames. That message has [notification metadata](/oss/python/langchain/messages#notifications) whose source is `"read_file_media"` and whose `data` includes `path` and `tool_call_id`. A frontend can read it to show the frames differently from user messages. For videos, `offset` and `limit` are seconds of source to sample.
+
 ## Custom tool outputs
 
 [Custom tools](/oss/python/deepagents/tools#custom-tools) can contain multimodal files, such as images:

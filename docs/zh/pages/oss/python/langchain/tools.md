@@ -6,7 +6,7 @@
 
 定义工具，让LangChain代理获取实时数据、执行代码、查询外部数据库并采取行动。
 
-工具扩展了[agents](/oss/python/langchain/agents)的功能——让它们获取实时数据、执行代码、查询外部数据库以及在世界中采取行动。
+工具扩展了[agents](/oss/python/langchain/agents)的功能——让它们获取实时数据、执行代码、查询外部数据库以及在现实世界中采取行动。
 
 在底层，工具是可调用的函数，具有明确定义的输入和输出，并传递给[chat model](/oss/python/langchain/models)。该模型根据对话上下文决定何时调用工具以及提供哪些输入参数。
 
@@ -72,7 +72,7 @@ def calc(expression: str) -> str:
 
 ### 高级模式定义
 
-使用 Pydantic 模型或 JSON 模式定义复杂的输入：
+使用 Pydantic 模型或 JSON 模式定义复杂输入：
 
 ```python Pydantic model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from pydantic import BaseModel, Field
@@ -136,18 +136,16 @@ def get_weather(location: str, units: str = "celsius", include_forecast: bool = 
 
 当工具可以访问运行时信息（例如对话历史记录、用户数据和持久内存）时，它们是最强大的。本节介绍如何从您的工具中访问和更新此信息。
 
-工具可以通过[⟦T49⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime)参数访问运行时信息，该参数提供：|组件|描述 |使用案例|
+工具可以通过[⟦T49⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime)参数访问运行时信息，该参数提供：|组件|描述 |使用案例 |
 | - | - | - |
 | **状态** |短期记忆 - 当前对话中存在的可变数据（消息、计数器、自定义字段）|访问对话历史记录、跟踪工具调用计数 |
 | **背景** |调用时传递的不可变配置（用户 ID、会话信息）|根据用户身份个性化响应 |
-| **商店** |长期记忆 - 在对话中保存的持久数据 |保存用户偏好，维护知识库 |
+| **商店** |长期记忆 - 在对话中保存的持久数据 |保存用户偏好，维护知识库|
 | **流作家** |在工具执行期间发出实时更新 |显示长时间运行的操作的进度 |
 | **执行信息** |当前执行的标识和重试信息（线程 ID、运行 ID、尝试次数）|访问线程/运行 ID，根据重试状态调整行为 |
-| **服务器信息** |在 LangGraph 服务器上运行时的服务器特定元数据（助手 ID、图形 ID、经过身份验证的用户）|访问助手 ID、图形 ID 或经过身份验证的用户信息 |
+| **服务器信息** |在 LangSmith 代理服务器上运行时的服务器特定元数据（助理 ID、图形 ID、经过身份验证的用户） |访问助手 ID、图形 ID 或经过身份验证的用户信息 |
 | **配置** | [⟦T50⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 执行 |访问回调、标签和元数据 |
-| **工具调用 ID** |当前工具调用的唯一标识符 |将日志和模型调用的工具调用关联起来
-
-```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+| **工具调用 ID** |当前工具调用的唯一标识符 |将日志和模型调用的工具调用关联起来```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
     %% Runtime Context
     subgraph "🔧 Tool Runtime Context"
@@ -194,7 +192,9 @@ graph LR
     class B,C,D,E,F process
     class G,H,I,J,K,L neutral
     class M,N,O,P output
-```### 短期记忆（状态）
+```
+
+### 短期记忆（状态）
 
 状态代表对话期间存在的短期记忆。它包括消息历史记录和您在 [graph state](/oss/python/langgraph/graph-api#state) 中定义的任何自定义字段。
 
@@ -327,7 +327,7 @@ def get_account_info(runtime: ToolRuntime[UserContext]) -> str:
     return "User not found"
 
 
-model = ChatOpenAI(model="gpt-5.5")
+model = ChatOpenAI(model="gpt-6.1-sol")
 agent = create_agent(
     model,
     tools=[get_account_info],
@@ -391,7 +391,7 @@ def save_user_info(user_id: str, name: str, age: int, email: str, runtime: ToolR
     store.put(("users",), user_id, {"name": name, "age": age, "email": email})
     return "Successfully saved user info."
 
-model = ChatOpenAI(model="gpt-5.5")
+model = ChatOpenAI(model="gpt-6.1-sol")
 
 store = InMemoryStore()
 agent = create_agent(
@@ -460,7 +460,7 @@ def log_execution_context(runtime: ToolRuntime) -> str:
 
 ### 服务器信息
 
-当您的工具运行在LangGraph服务器上时，通过`runtime.server_info`访问助手ID、图形ID和经过身份验证的用户：
+当您的工具在 Agent Server 上运行时，通过 `runtime.server_info` 访问助手 ID、图形 ID 和经过身份验证的用户：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool, ToolRuntime
@@ -476,7 +476,7 @@ def get_assistant_scoped_data(runtime: ToolRuntime) -> str:
     return "done"
 ```
 
-当工具未在 LangGraph 服务器上运行时（例如，在本地开发或测试期间），`server_info` 为 `None`。
+当工具未在代理服务器上运行时（例如，在本地开发或测试期间），`server_info` 为`None`。
 
 > [!注意]
 >
@@ -521,7 +521,7 @@ def get_assistant_scoped_data(runtime: ToolRuntime) -> str:
 您可以为您的工具选择不同的返回值：
 
 * 返回 `string` 以获得人类可读的结果。
-* 返回模型应解析的结构化结果的`object`。
+* 返回 `object` 以获得模型应解析的结构化结果。
 * 当您需要写入状态时，返回带有可选消息的`Command`。
 
 #### 返回一个字符串
@@ -690,7 +690,7 @@ result = agent.invoke({
 >
 > **混合并行调用：** 如果模型调用 `return_direct=True` 工具以及没有 `return_direct=True` 的工具，则代理在该步骤后 **不会** 退出。它会将批次中的每个`ToolMessage`路由回模型，因此模型可以对所有结果进行推理。仅当步骤中的每个工具调用都有 `return_direct=True` 时，`return_direct` 才会短路循环。
 
-#### 使用 return\_direct 返回命令
+#### 使用 return_direct 返回命令
 
 具有 `return_direct=True` 的工具还可以返回 [⟦T119⟧](https://reference.langchain.com/python/langgraph/types/Command) 以在代理退出之前更新图形状态。与普通返回值不同，`Command`不会自动转换为`ToolMessage`。当 `Command` 以当前图形为目标时（`graph` 未设置或为 `None`），请在 `Command.update` 中包含与工具调用的 `tool_call_id` 匹配的 `ToolMessage`。省略它会导致`ToolNode`引发`ValueError`，因为每个`AIMessage`工具调用都必须在消息历史记录中具有相应的`ToolMessage`。
 
@@ -749,7 +749,7 @@ def handle_tool_errors(
 
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[],
     middleware=[handle_tool_errors],
 )
@@ -780,7 +780,7 @@ def handle_tool_errors(
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     middleware=[handle_tool_errors],
 )
@@ -995,7 +995,7 @@ def get_message_count(runtime: ToolRuntime) -> str:
 > >     return handler(request)
 > >
 > > agent = create_agent(
-> >     model="gpt-5.5",
+> >     model="gpt-6.1-sol",
 > >     tools=[public_search, private_search, advanced_search],
 > >     middleware=[state_based_tools]
 > > )
@@ -1037,7 +1037,7 @@ def get_message_count(runtime: ToolRuntime) -> str:
 > >     return handler(request)
 > >
 > > agent = create_agent(
-> >     model="gpt-5.5",
+> >     model="gpt-6.1-sol",
 > >     tools=[search_tool, analysis_tool, export_tool],
 > >     middleware=[store_based_tools],
 > >     context_schema=Context,
@@ -1087,7 +1087,7 @@ def get_message_count(runtime: ToolRuntime) -> str:
 > >     return handler(request)
 > >
 > > agent = create_agent(
-> >     model="gpt-5.5",
+> >     model="gpt-6.1-sol",
 > >     tools=[read_data, write_data, delete_data],
 > >     middleware=[context_based_tools],
 > >     context_schema=Context
@@ -1137,7 +1137,7 @@ def get_message_count(runtime: ToolRuntime) -> str:
 >         return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[get_weather],  # Only static tools registered here
 >     middleware=[DynamicToolMiddleware()],
 > )

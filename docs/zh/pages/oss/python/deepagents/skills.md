@@ -144,7 +144,7 @@ result = agent.invoke(
 技能负载分为三个级别。每个级别仅在任务需要时添加更多细节：|水平|加载什么 |当 |
 | - | - | - |
 | **1.元数据** | `SKILL.md` [frontmatter](#frontmatter-fields) | [⟦T81⟧](#frontmatter-fields) 和 [⟦T82⟧](#frontmatter-fields) |代理启动，针对每个配置的技能 |
-| **2.说明** | `SKILL.md`全身|当技能被调用时|
+| **2.说明** | `SKILL.md`全身|当技能被调用时 |
 | **3.资源** | [Supporting files](#add-supporting-resources) 位于 `scripts/`、`references/` 和 `assets/` |调用后根据需要，当指令引用它们时 |
 
 下图显示了给定时刻代理上下文中出现的内容。启动时，每个技能的 1 级元数据都在系统提示中。当调用技能时，2 级指令会加入上下文。 3 级文件保留在后端，直到代理在调用后读取它们。
@@ -268,7 +268,7 @@ scripts/extract.py
 
 ## 将工具添加到技能中
 
-技能可以自带工具。代理只有在读取技能后才能看到它们，因此它们的模式不会出现在提示中，直到任务需要它们为止。技能工具是Deep Agents功能，而不是[Agent Skills specification](https://agentskills.io/specification)的一部分。 Deep Agents 从规范的自由格式`metadata` 字段中读取工具名称。它们与规范的 `allowed-tools` 字段无关，该字段预先批准工具而不是添加它们。
+技能可以自带工具。代理只有在读取技能后才能看到它们，因此它们的模式不会出现在提示中，直到任务需要它们为止。技能工具是 Deep Agents 的功能，而不是 [Agent Skills specification](https://agentskills.io/specification) 的一部分。 Deep Agents 从规范的自由格式`metadata` 字段中读取工具名称。它们与规范的 `allowed-tools` 字段无关，该字段预先批准工具而不是添加它们。
 
 > [!注意]
 >
@@ -828,7 +828,7 @@ def create_agent_for_user(user_role: str):
 >
 > 对于Deep Agents代码存储约定，请参阅[App data](/oss/deepagents/code/configuration#data-locations)。
 >
->> [手风琴] 模拟Deep Agents SDK中的代码源码顺序
+>> [手风琴] 模拟SDK中的Deep Agents代码源码顺序
 >>
 >> 为了匹配 SDK 代码中的 Deep Agents 代码分层，请按照从低到高的优先级顺序显式传递所有所需的源：
 >>
@@ -841,7 +841,7 @@ def create_agent_for_user(user_role: str):
 > > ]
 > > ```
 >>
-> > 然后在创建代理时将有序列表作为 `skills` 传递。
+>> 然后在创建代理时将有序列表作为 `skills` 传递。
 
 ### 隔离技能库当相同的技能路径应解析为不同用户、角色、租户、工作区或环境的不同文件时，请使用隔离库。例如，每个代理都可以接收`skills=["/skills/"]`，而后端则根据当前身份或部署上下文范围内的存储解析`/skills/`。
 
@@ -924,7 +924,7 @@ result = agent.invoke(
 agent.update_state(config, {"skills_metadata": None})
 ```
 
-使用`None`，而不是空列表。空列表意味着源已加载且不包含任何技能，因此代理在线程的其余部分看不到任何技能。
+使用`None`，而不是空列表。空列表意味着源已加载且没有技能，因此代理在线程的其余部分看不到任何技能。
 
 > [!注意]
 >
@@ -952,7 +952,7 @@ class ReloadEditedSkills(AgentMiddleware[SkillsState]):
 
 ## 引脚技巧
 
-仅当代理确定技能与任务匹配时才会读取该技能。当用户在您的应用中命名一项技能时，例如通过键入 `/langgraph-docs` 或从菜单中选择它，请固定该技能。 Deep Agents 然后将技能的指令添加到对话中，因此代理不必选择它。
+仅当代理确定技能与任务匹配时才会读取该技能。当用户在您的应用中命名一项技能时，例如通过键入 `/langgraph-docs` 或从菜单中选择它，请固定该技能。然后Deep Agents将技能的指令添加到对话中，因此代理不必选择它。
 
 > [!注意]
 >
@@ -981,7 +981,7 @@ result = agent.invoke(
 </skill>
 ```
 
-每条消息还将`additional_kwargs["lc_source"]`设置为`"pinned_skill"`，并将技能的`name`、`path`和`description`放入`additional_kwargs["skill"]`。聊天 UI 可以使用这些字段将固定技能显示为标签而不是其全文。
+每条消息都携带 [notification metadata](/oss/python/langchain/messages#notifications) 和源 `"pinned_skill"`，`get_notification_metadata` 返回。该消息还将技能的 `name`、`path` 和 `description` 放入 `additional_kwargs["skill"]`。前端可以使用这些字段将固定技能显示为标签而不是其全文。
 
 固定技能遵循以下规则：* 消息按书面形式保留在对话中。稍后编辑`SKILL.md`不会更改它，并且再次固定技能会附加当前文本。较早的消息永远不会改变，因此提示缓存保持有效。
 * 中间件会跳过与未加载技能匹配的名称，以及无法读取 `SKILL.md` 的技能。它在调试级别记录每次跳过。
@@ -1323,7 +1323,7 @@ agent = create_deep_agent(
 
 如果没有代码执行，技能就是被动的：代理读取指令并使用可用的工具遵循它们。代码执行将技能转化为主动能力。技能可以发送经过测试的脚本，该脚本调用 API、转换数据、验证输出或运行管道，并且代理确定性地执行它，而不是每次都根据指令重新生成逻辑。这对于需要精确行为（数据转换、API 集成、合规性检查）或依赖于代理无法单独通过工具调用使用的库的工作流程尤其有价值。
 
-技能通过[sandbox scripts](#sandbox-scripts)执行代码：代理在需要安装依赖项、运行测试、调用 CLI 或使用操作系统文件系统时运行捆绑的脚本。
+技能通过[sandbox scripts](#sandbox-scripts)执行代码：代理在需要安装依赖项、运行测试、调用 CLI 或使用操作系统文件系统时运行捆绑脚本。
 
 ### 沙盒脚本
 
@@ -2062,7 +2062,7 @@ if __name__ == "__main__":
 
 **问题**：在您添加、编辑或删除一项技能后，客服人员继续使用该技能的早期版本。
 
-**解决方案**：技能每个线程加载一次，因此已经运行的线程不会看到变化。重置存储的元数据。参见[Reload skills](#reload-skills)。
+**解决方案**：技能每个线程加载一次，因此已经运行的线程看不到变化。重置存储的元数据。参见[Reload skills](#reload-skills)。
 
 ### 未找到支持文件**问题**：代理读取 `SKILL.md` 但无法访问脚本、引用或资产。
 
@@ -2072,7 +2072,7 @@ if __name__ == "__main__":
 
 2. **将路径保留在技能目录内。** 文件路径根据后端进行解析。确认支持文件存在于您的说明引用的路径中。
 
-3. **将技能同步到沙箱中。** 如果您使用[sandbox backends](/oss/python/deepagents/sandboxes)，容器外的技能文件将无法使用，直到您将其复制进去。参见[Sandbox scripts](#sandbox-scripts)和[syncing skills and memories with custom middleware](/oss/python/deepagents/going-to-production#example-syncing-skills-and-memories-with-custom-middleware)。
+3. **将技能同步到沙箱中。** 如果您使用[sandbox backends](/oss/python/deepagents/sandboxes)，容器外部的技能文件将不可用，直到您将其复制进去。参见[Sandbox scripts](#sandbox-scripts)和[syncing skills and memories with custom middleware](/oss/python/deepagents/going-to-production#example-syncing-skills-and-memories-with-custom-middleware)。
 
 ### 技能工具不可用
 
@@ -2104,11 +2104,11 @@ if __name__ == "__main__":
 | - | - | - | - |
 | **目的** |通过渐进式披露发现的按需功能 |启动时加载持久上下文 |代理可以调用​​的编程操作 |
 | **加载** |仅当代理确定相关性时才读取 |在代理启动时加载 |每个回合都可用 |
-| **格式** | `SKILL.md` 在命名目录中 | `AGENTS.md` 文件 |与代理绑定的功能|
+| **格式** | `SKILL.md` 在命名目录中 | `AGENTS.md` 文件 |与代理绑定的功能 |
 | **分层** |用户，然后项目（最后获胜）|用户，然后项目（合并）|在代理创建时定义 |
 | **何时使用** |指令是特定于任务的并且可能很大 |上下文始终相关（项目惯例、偏好）|代理需要编程操作，或者无权访问文件系统 |
 
-这些是指导方针，而不是硬性界限。在实践中，技能和记忆是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为一种渐进式公开记忆的形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
+这些是指导方针，而不是硬性界限。在实践中，技能和记忆是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为渐进式公开记忆的一种形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
 
 ### Frontmatter 字段
 

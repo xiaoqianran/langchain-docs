@@ -138,14 +138,14 @@ for part in graph.stream(
 ## 流模式
 
 将以下一种或多种流模式作为列表传递给 [⟦T72⟧](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.stream) 或 [⟦T73⟧](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.astream) 方法：|模式|类型 |描述 |
-| :- | :- | :- |
+| :-| :-| :-|
 | [values](#graph-state) | [⟦T74⟧](https://reference.langchain.com/python/langgraph/types/ValuesStreamPart) |每一步后的完整状态。 |
 | [updates](#graph-state) | [⟦T75⟧](https://reference.langchain.com/python/langgraph/types/UpdatesStreamPart) |每个步骤后状态都会更新。同一步骤中的多个更新分别进行流式传输。 |
 | [messages](#llm-tokens) | [⟦T76⟧](https://reference.langchain.com/python/langgraph/types/MessagesStreamPart) |来自 LLM 调用的 2 元组（LLM 令牌、元数据）。 |
 | [custom](#custom-data) | [⟦T77⟧](https://reference.langchain.com/python/langgraph/types/CustomStreamPart) |通过 [⟦T78⟧](https://reference.langchain.com/python/langgraph/config/get_stream_writer) 从节点发出的自定义数据。 |
 | [checkpoints](#checkpoints) | [⟦T79⟧](https://reference.langchain.com/python/langgraph/types/CheckpointStreamPart) |检查点事件（与`get_state()`格式相同）。需要一个检查点。 |
 | [tasks](#tasks) | [⟦T81⟧](https://reference.langchain.com/python/langgraph/types/TasksStreamPart) |任务开始/结束事件以及结果和错误。需要一个检查点。 |
-| [debug](#debug) | [⟦T82⟧](https://reference.langchain.com/python/langgraph/types/DebugStreamPart) |所有可用信息 — 将 `checkpoints` 和 `tasks` 与额外元数据结合在一起。 |
+| [debug](#debug) | [⟦T82⟧](https://reference.langchain.com/python/langgraph/types/DebugStreamPart) |所有可用信息 — 将 `checkpoints` 和 `tasks` 与额外元数据结合起来。 |
 
 ### 图状态
 
@@ -890,7 +890,7 @@ for chunk in graph.stream(
 
 初始化模型时设置`streaming=False`。
 
-> [选项卡] init\_chat\_model
+> [选项卡] init_chat_model
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.chat_models import init_chat_model
@@ -908,7 +908,7 @@ for chunk in graph.stream(
 > from langchain_openai import ChatOpenAI
 >
 > # Set streaming=False to disable streaming for the chat model
-> model = ChatOpenAI(model="gpt-5.5", streaming=False)
+> model = ChatOpenAI(model="gpt-6.1-sol", streaming=False)
 > ```
 
 > [!注意]
@@ -919,7 +919,7 @@ for chunk in graph.stream(
 
 v2 流格式（本页中使用）提供了统一的输出格式。以下是主要差异以及如何迁移的摘要：|场景 | v1（默认）| v2 (`version="v2"`) |
 | - | - | - |
-|单流模式 |原始数据（字典）| `StreamPart` 字典与 `type`、`ns`、`data` |
+|单流模式|原始数据（字典）| `StreamPart` 字典与 `type`、`ns`、`data` |
 |多种码流模式 | `(mode, data)` 元组 |相同的 `StreamPart` 字典，在 `chunk["type"]` 上过滤 |
 |子图流 | `(namespace, data)` 元组 |相同的 `StreamPart` 字典，检查 `chunk["ns"]` |
 |多种模式+子图| `(namespace, mode, data)` 三倍|相同的 `StreamPart` 字典 |

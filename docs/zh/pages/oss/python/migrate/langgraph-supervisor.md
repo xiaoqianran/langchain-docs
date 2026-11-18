@@ -10,7 +10,7 @@
 
 本指南介绍如何从 `create_supervisor` 迁移到 [⟦T9⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)，包括使用 [⟦T10⟧](https://reference.langchain.com/python/langgraph/types/interrupt) 和外部 API 回调的设置。
 
-从 langgraph-supervisor 迁移到 create\_agent 子代理
+从 langgraph-supervisor 迁移到 create_agent 子代理
 
 将此代码库从 `langgraph-supervisor` 包迁移到带有 `create_agent` 和工具包装工作线程的 LangChain 子代理模式。
 
@@ -33,15 +33,15 @@
 
 ## 步骤 5：明确处理差距
 
-如果代码库需要静态子图发现、每层检查点命名空间、级别之间共享状态键，或者指南所说属于自定义`StateGraph`的确定性和代理步骤的混合，请停止并询问用户如何继续。 Do not invent a custom graph layout unless the guide covers it.
+如果代码库需要静态子图发现、每层检查点命名空间、级别之间共享状态键，或者指南所说属于自定义`StateGraph`的确定性和代理步骤的混合，请停止并询问用户如何继续。不要发明自定义图形布局，除非指南涵盖它。
 
 ## 规则
 
 * 关注此迁移。不要重写不相关的代理代码。
-* Prefer the subagents pattern from the guide over keeping `langgraph-supervisor`.
-* Ask rather than guess when a call site or pattern is not covered by the guide.
+* 更喜欢指南中的子代理模式而不是保留 `langgraph-supervisor`。
+* 当指南未涵盖呼叫站点或模式时，询问而不是猜测。
 
-## 变更摘要| langgraph-supervisor | langgraph-supervisor推荐更换 |
+## 变更摘要| langgraph-supervisor | langgraph-supervisor推荐更换|
 | - | - |
 | `create_supervisor` 以工作代理作为图节点 | [⟦T40⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 与包装为 [⟦T41⟧](https://reference.langchain.com/python/langchain-core/tools/convert/tool) 函数的子代理 |
 | `output_mode` 用于消息历史记录 |在工具包装器中格式化子代理输出（请参阅[subagent outputs](/oss/python/langchain/multi-agent/subagents#subagent-outputs)）|
@@ -249,7 +249,7 @@ top_supervisor = create_agent(
 
 `create_supervisor` 公开 `output_mode` 来控制工作人员消息在对话历史记录中的显示方式：
 
-* `full_history`：包含来自工作代理的所有消息。
+* `full_history`：包括来自工作代理的所有消息。
 * `last_message`：仅包含工作人员的最终响应。
 
 使用子代理模式，可以在工具包装器中控制它。仅返回 `last_message` 行为的最终消息，或返回 `full_history` 行为的完整对话的格式化摘要。有关将附加状态传递回主管的模式，请参阅[Subagent outputs](/oss/python/langchain/multi-agent/subagents#subagent-outputs)。

@@ -219,7 +219,7 @@ const agent = createDeepAgent({
 | `updateStrategy` | `"interrupt" \| "enqueue"` |选修的。 `update_async_task` 如何在跑步活动期间发送后续信息。默认为 `"interrupt"`。参见[Understand the lifecycle](#understand-the-lifecycle)。 |
 | `webhook` | `string` |选修的。每当此子代理运行完成时，代理服务器都会调用 URL。参见[Deliver results through your app](#deliver-results-through-your-app)。 || `notifyParent` | `boolean` |选修的。当子代理完成或在主管空闲时失败时，子代理是否可以唤醒主管。默认为 `true`。 |
 
-对于基于 LangGraph 的部署，请在同一 `langgraph.json` 中注册所有图以进行共同部署设置：
+对于基于 LangGraph 的部署，请在同一 `langgraph.json` 中注册所有图表以进行共同部署设置：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -237,10 +237,10 @@ const agent = createDeepAgent({
 
 |工具|目的|返回|
 | - | - | - |
-| `start_async_task` |启动新的后台任务 |任务 ID（立即）|
+| `start_async_task` |启动新的后台任务 | Task ID (immediately) |
 | `check_async_task` |获取任务的当前状态，及其结果、错误或询问用户的内容 |状态，加上结果、错误或待处理的请求 |
 | `update_async_task` |向任务发送新指令 |确认后续已开始或已排队 |
-| `cancel_async_task` |停止任务 |确认|
+| `cancel_async_task` | Stop a task | Confirmation |
 | `list_async_tasks` |列出跟踪的任务及其实时状态，可以选择按状态过滤 |每个任务的状态（无结果） |
 
 主管的法学硕士将这些工具称为任何其他工具。中间件自动处理线程创建、运行管理和状态持久性。
@@ -287,7 +287,7 @@ sequenceDiagram
 >
 > 任务通知需要`deepagents>=1.16.0`，通知元数据需要`deepagents>=1.16.2`。他们在[**beta**](/oss/javascript/versioning)； API 和行为可能会在版本之间发生变化。
 
-主管以`HumanMessage` 的形式收到每条通知。通知可以包括图像和其他多模式媒体。每个通知都携带元数据：其`source`是`"async_subagent"`，其`data`是`TaskEvent`（`task_id`、`agent_name`、`status`、`run_id`）。使用 `getNotificationMetadata` 读取它，以不同于用户消息的方式显示通知：
+主管以`HumanMessage` 的形式收到每条通知。通知可以包括图像和其他多模式媒体。每个通知都携带[notification metadata](/oss/javascript/langchain/messages#notifications)：其`source`是`"async_subagent"`，其`data`是`TaskEvent`（`task_id`、`agent_name`、`status`、`run_id`）。使用 `getNotificationMetadata` 读取它，以不同于用户消息的方式显示通知：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { getNotificationMetadata } from "@langchain/core/messages";
@@ -561,7 +561,7 @@ const asyncSubagents: AsyncSubAgent[] = [
 
 启动时，`start_async_task` 发送父级有效对话历史记录的快照，后跟任务描述。如果父级已压缩其历史记录，则快照包含该压缩上下文，而不是每条原始消息。来自父级的后续消息不会转发给子级。
 
-子代理在新的服务器线程上启动。 Fork模式发送对话消息作为运行输入；它不会复制父级的检查点历史记录或所有父级状态。元数据可以将新线程与其主管关联起来，但该关联本身并不传输对话上下文。
+子代理在新的服务器线程上启动。 Fork模式发送对话消息作为运行输入；它不会复制父级的检查点历史记录或所有父级状态。元数据可以将新线程与其主管相关联，但该关联本身并不传输对话上下文。
 
 **提示缓存重用。** 要获得对分叉对话前缀的缓存命中，请使用与父代理相同的模型、系统提示、工具和提示处理中间件来配置远程代理。 Fork模式复制对话历史记录；它不会同步这些设置。匹配配置是必要的，但还不够：呈现的前缀必须匹配，缓存命中取决于提供者。**卸载媒体。** 如果父级使用 `offloadBinaryContent` 卸载媒体，fork 模式会发送对它的引用而不是媒体本身。子代理必须是深度代理，共享父代理的后端以查看媒体；其他深度代理会收到一条不可用的注释，并且其他图形无法使用这些消息。
 

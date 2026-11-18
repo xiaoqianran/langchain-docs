@@ -179,7 +179,7 @@ else:
 通过并行化，法学硕士可以同时处理一项任务。这可以通过同时运行多个独立的子任务来完成，或者多次运行同一任务以检查不同的输出。并行化通常用于：
 
 * 拆分子任务并并行运行它们，从而提高速度
-* 多次运行任务以检查不同的输出，从而增加信心
+* 多次运行任务以检查不同的输出，这增加了信心
 
 一些例子包括：
 
@@ -405,7 +405,7 @@ class Sections(BaseModel):
 planner = llm.with_structured_output(Sections)
 ```
 
-### 在LangGraph中创建工人Orchestrator-worker 工作流程很常见，LangGraph 内置了对它们的支持。 `Send` API 允许您动态创建工作节点并向它们发送特定输入。每个工作人员都有自己的状态，所有工作人员输出都写入编排器图可访问的共享状态键。这使协调器可以访问所有工作输出，并允许将它们合成为最终输出。下面的示例迭代部分列表，并使用 `Send` API 将部分发送给每个工作人员。
+### 在LangGraph中创建工人Orchestrator-worker 工作流程很常见，LangGraph 内置了对它们的支持。 `Send` API 允许您动态创建工作节点并向它们发送特定输入。每个工作人员都有自己的状态，所有工作人员输出都写入编排器图可访问的共享状态键。这使协调器可以访问所有工作人员输出，并允许将它们合成为最终输出。下面的示例迭代部分列表，并使用 `Send` API 将部分发送给每个工作人员。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Send
@@ -516,7 +516,7 @@ Markdown(state["final_report"])
 
 当任务有特定的成功标准，但需要迭代才能满足该标准时，通常会使用评估器-优化器工作流程。例如，在两种语言之间翻译文本时并不总是存在完美匹配。可能需要几次迭代才能生成两种语言具有相同含义的翻译。
 
-![evaluator\_optimizer.png](https://mintcdn.com/langchain-5e9cc07a/-_xGPoyjhyiDWTPJ/oss/images/evaluator_optimizer.png?fit=max\&auto=format\&n=-_xGPoyjhyiDWTPJ\&q=85\&s=9bd0474f42b6040b14ed6968a9ab4e3c)```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+![evaluator_optimizer.png](https://mintcdn.com/langchain-5e9cc07a/-_xGPoyjhyiDWTPJ/oss/images/evaluator_optimizer.png?fit=max\&auto=format\&n=-_xGPoyjhyiDWTPJ\&q=85\&s=9bd0474f42b6040b14ed6968a9ab4e3c)```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Graph state
 class State(TypedDict):
     joke: str

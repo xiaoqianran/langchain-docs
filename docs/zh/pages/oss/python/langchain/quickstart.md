@@ -8,7 +8,7 @@
 
 本快速入门向您展示如何在短短几分钟内创建功能齐全的 AI 代理。
 
-构建LangChain快速启动代理
+构建LangChain快速入门代理
 
 按照 LangChain 快速入门，在此工作目录中构建基本的 LangChain 代理。
 
@@ -169,7 +169,7 @@ pip install -U langchain
 > BASETEN_API_KEY=your-api-key
 > ```
 
-> [标签] 奥拉马
+> [标签] 奥拉玛
 >
 > ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > # Local: Ollama must be running (https://ollama.com)
@@ -241,7 +241,7 @@ def get_weather(city: str) -> str:
     return f"It's always sunny in {city}!"
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[get_weather],
     system_prompt="You are a helpful assistant",
 )
@@ -376,7 +376,7 @@ def get_weather(city: str) -> str:
     return f"It's always sunny in {city}!"
 
 model = init_chat_model(
-    "azure_openai:gpt-5.5",
+    "azure_openai:gpt-6.1-sol",
     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 )
 agent = create_agent(
@@ -506,7 +506,7 @@ def fetch_text_from_url(url: str) -> str:
 from langchain.chat_models import init_chat_model
 
 model = init_chat_model(
-    "openai:gpt-5.5",
+    "openai:gpt-6.1-sol",
     temperature=0.5,
     timeout=300,
     max_tokens=25000,
@@ -585,7 +585,7 @@ import os
 from langchain.chat_models import init_chat_model
 
 model = init_chat_model(
-    "azure_openai:gpt-5.5",
+    "azure_openai:gpt-6.1-sol",
     temperature=0.5,
     timeout=300,
     max_tokens=25000,

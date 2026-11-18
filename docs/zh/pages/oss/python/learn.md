@@ -26,7 +26,7 @@
 
 ### Deep Agents
 
-为了在使用与 [Managed Deep Agents](#managed-deep-agents) 相同的 Deep Agents 工具时获得最大灵活性，请自行使用 Deep Agents SDK 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。
+为了在使用与 [Managed Deep Agents](#managed-deep-agents) 相同的 Deep Agents 工具时获得最大灵活性，请自行使用 Deep Agents SDK 和主机代理，或运行自定义 [Agent Server](/langsmith/agent-server)。
 
 > [卡][Deep research](/oss/python/deepagents/deep-research)
 >
@@ -87,7 +87,7 @@ LangChain 的 [agent](/oss/python/langchain/agents) 实现使用 [LangGraph](/os
 
 > [卡][Skills: SQL assistant](/oss/python/langchain/multi-agent/skills-sql-assistant)
 >
-> 构建一个使用按需上下文加载逐步加载专业技能的代理。
+> 构建一个代理，使用按需上下文加载逐步加载专业技能。
 
 ## 概念概述
 
@@ -107,7 +107,7 @@ LangChain 的 [agent](/oss/python/langchain/agents) 实现使用 [LangGraph](/os
 
 > [卡][Functional API](/oss/python/langgraph/functional-api)
 >
-> 从另一个框架包装代理以进行 LangSmith 部署。
+> 将另一个框架的代理包装为 LangSmith 代理服务器。
 
 ## 其他资源
 

@@ -97,7 +97,7 @@ class ContactInfo(BaseModel):
     phone: str = Field(description="The phone number of the person")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     response_format=ContactInfo  # Auto-selects ProviderStrategy
 )
 
@@ -122,7 +122,7 @@ class ContactInfo:
     phone: str # The phone number of the person
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ContactInfo  # Auto-selects ProviderStrategy
 )
@@ -147,7 +147,7 @@ class ContactInfo(TypedDict):
     phone: str # The phone number of the person
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ContactInfo  # Auto-selects ProviderStrategy
 )
@@ -178,7 +178,7 @@ contact_info_schema = {
 }
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ProviderStrategy(contact_info_schema)
 )
@@ -226,12 +226,12 @@ class ToolStrategy(Generic[SchemaT]):
 * **JSON Schema**：具有 JSON 模式规范的字典。必须包含顶级 `title` 和 `description` 键。返回字典。
 * **联合类型**：多个架构选项。模型将根据上下文选择最合适的模式。
 
-**工具\_消息\_内容**
+**工具消息内容**
 
 生成结构化输出时返回的工具消息的自定义内容。
 如果未提供，则默认显示一条显示结构化响应数据的消息。
 
-**处理\_错误**
+**处理错误**
 
 结构化输出验证失败的错误处理策略。默认为`True`。* **`True`**：使用默认错误模板捕获所有错误
 * **`str`**：使用此自定义消息捕获所有错误
@@ -254,7 +254,7 @@ class ProductReview(BaseModel):
     key_points: list[str] = Field(description="The key points of the review. Lowercase, 1-3 words each.")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(ProductReview)
 )
@@ -281,7 +281,7 @@ class ProductReview:
     key_points: list[str]  # The key points of the review
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(ProductReview)
 )
@@ -307,7 +307,7 @@ class ProductReview(TypedDict):
     key_points: list[str]  # The key points of the review
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(ProductReview)
 )
@@ -350,7 +350,7 @@ product_review_schema = {
 }
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(product_review_schema)
 )
@@ -382,7 +382,7 @@ class CustomerComplaint(BaseModel):
     description: str = Field(description="Brief description of the complaint")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(Union[ProductReview, CustomerComplaint])
 )
@@ -412,7 +412,7 @@ class MeetingAction(BaseModel):
     priority: Literal["low", "medium", "high"] = Field(description="Priority level")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(
         schema=MeetingAction,
@@ -476,7 +476,7 @@ class EventDetails(BaseModel):
     date: str = Field(description="Event date")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(Union[ContactInfo, EventDetails])  # Default: handle_errors=True
 )
@@ -541,7 +541,7 @@ class ProductRating(BaseModel):
     comment: str = Field(description="Review comment")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(ProductRating),  # Default: handle_errors=True
     system_prompt="You are a helpful assistant that parses product reviews. Do not make any field or value up."
@@ -582,7 +582,7 @@ Name: ProductRating
 Returning structured response: {'rating': 5, 'comment': 'Amazing product'}
 ```
 
-#### 错误处理策略您可以使用 `handle_errors` 参数自定义错误处理方式：
+#### 错误处理策略您可以使用 `handle_errors` 参数自定义如何处理错误：
 
 **自定义错误消息：**
 
@@ -641,7 +641,7 @@ def custom_error_handler(error: Exception) -> str:
 
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(
                         schema=Union[ContactInfo, EventDetails],

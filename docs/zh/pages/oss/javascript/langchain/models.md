@@ -10,7 +10,7 @@
 
 除了文本生成之外，许多模型还支持：
 
-* [Tool calling](#tool-calling) - 调用外部工具（例如数据库查询或 API 调用）并在其响应中使用结果。
+* [Tool calling](#tool-calling) - 调用外部工具（如数据库查询或 API 调用）并在其响应中使用结果。
 * [Structured output](#structured-output) - 模型的响应被限制为遵循定义的格式。
 * [Multimodality](#multimodal) - 处理并返回文本以外的数据，例如图像、音频和视频。
 * [Reasoning](#reasoning) - 模型执行多步骤推理以得出结论。
@@ -296,7 +296,9 @@ const model = await initChatModel(
 
 ### 连接弹性
 
-LangChain 聊天模型会通过指数退避自动重试失败的 API 请求。默认情况下，模型针对网络错误、速率限制 (429) 和服务器错误 (5xx) 最多重试 **6 次**。不会重试 401（未经授权）或 404 等客户端错误。
+大多数 LangChain 聊天模型集成会通过指数退避自动重试失败的 API 请求。它们重试网络错误、速率限制 (429) 和服务器错误 (5xx)。不会重试 401（未经授权）或 404 等客户端错误。
+
+默认情况下，模型最多重试 **6 次**。
 
 您可以在创建模型时调整`maxRetries`和`timeout`，然后将该实例传递给`createAgent`、`createDeepAgent`，或将其独立调用：
 
@@ -307,11 +309,11 @@ const model = await initChatModel("google:gemini-4-hydrogen", {
   maxRetries: 10, // Increase for unreliable networks (default: 6)
   timeout: 120_000, // Milliseconds; increase for slow connections
 });
-```
-
-> [!提示]
+```> [!提示]
 >
-> 对于不可靠网络上长时间运行的代理图，请考虑更高的 `max_retries`（例如 10–15）和 [checkpointer](/oss/javascript/langgraph/persistence)，以便在发生故障时保留进度。> [!注意]
+> 对于不可靠网络上长时间运行的代理图，请考虑更高的 `max_retries`（例如 10–15）和 [checkpointer](/oss/javascript/langgraph/persistence)，以便在发生故障时保留进度。
+
+> [!注意]
 >
 > 每个聊天模型集成可能具有用于控制特定于提供商的功能的附加参数。
 >
@@ -362,13 +364,13 @@ const conversation = [
 
 const response = await model.invoke(conversation);
 console.log(response);  // AIMessage("J'adore créer des applications.")
-```
-
-> [!注意]
+```> [!注意]
 >
 > 如果您的调用的返回类型是字符串，请确保您使用的是聊天模型而不是 LLM。传统的文本完成法学硕士直接返回字符串。 LangChain 聊天模型以“Chat”为前缀，例如 [⟦T86⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI)(/oss/integrations/chat/openai)。
 
-＃＃＃ 溪流大多数模型可以在生成输出内容时流式传输。通过逐步显示输出，流式传输显着改善了用户体验，特别是对于较长的响应。
+### 流
+
+大多数模型可以在生成输出内容时流式传输。通过逐步显示输出，流式传输显着改善了用户体验，特别是对于较长的响应。
 
 调用 [⟦T87⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/stream) 返回一个迭代器（按顺序逐步提供对集合中每个项目的访问的对象。），该迭代器在生成输出块时生成输出块。您可以使用循环来实时处理每个块：
 
@@ -414,13 +416,13 @@ for await (const chunk of stream) {
 
 console.log(full.contentBlocks);
 // [{"type": "text", "text": "The sky is typically blue..."}]
-```
-
-生成的消息可以被视为与使用[⟦T92⟧](#invoke)生成的消息相同，例如，它可以聚合到消息历史记录中并作为会话上下文传递回模型。
+```生成的消息可以被视为与使用[⟦T92⟧](#invoke)生成的消息相同，例如，它可以聚合到消息历史记录中并作为会话上下文传递回模型。
 
 > [!警告]
 >
-> 仅当程序中的所有步骤都知道如何处理块流时，流式处理才有效。例如，不支持流处理的应用程序需要将整个输出存储在内存中才能进行处理。> [手风琴] 高级流媒体主题
+> 仅当程序中的所有步骤都知道如何处理块流时，流式处理才有效。例如，不支持流处理的应用程序需要将整个输出存储在内存中才能进行处理。
+
+> [手风琴] 高级流媒体主题
 >
 >> [手风琴] 流媒体事件
 >>
@@ -459,13 +461,13 @@ console.log(full.contentBlocks);
 >> 有关事件类型和其他详细信息，请参阅[⟦T94⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/streamEvents) 参考。
 >
 >> [手风琴]“自动直播”聊天模式
->>
->> LangChain 通过在某些情况下自动启用流模式来简化聊天模型的流，即使您没有显式调用流方法也是如此。当您使用非流式调用方法但仍希望流式传输整个应用程序（包括聊天模型的中间结果）时，这特别有用。
+>>>> LangChain 通过在某些情况下自动启用流模式来简化聊天模型的流，即使您没有显式调用流方法也是如此。当您使用非流式调用方法但仍希望流式传输整个应用程序（包括聊天模型的中间结果）时，这特别有用。
 >>
 >> 例如，在[LangGraph agents](/oss/javascript/langchain/agents)中，您可以在节点内调用`model.invoke()`，但如果运行在流模式下，LangChain将自动委托给流。
 >>
 >> #### 它是如何工作的
->>>> 当您使用`invoke()`聊天模式时，如果LangChain检测到您正在尝试流式传输整个应用程序，它会自动切换到内部流式传输模式。就使用 invoke 的代码而言，调用的结果将是相同的；然而，当聊天模型被流式传输时，LangChain将负责在LangChain的回调系统中调用[⟦T97⟧](https://reference.langchain.com/javascript/langchain-core/callbacks/base/BaseCallbackHandler/handleLLMNewToken)事件。
+>>
+>> 当您使用`invoke()`聊天模式时，如果LangChain检测到您正在尝试流式传输整个应用程序，它会自动切换到内部流式传输模式。就使用 invoke 的代码而言，调用的结果将是相同的；然而，当聊天模型被流式传输时，LangChain将负责在LangChain的回调系统中调用[⟦T97⟧](https://reference.langchain.com/javascript/langchain-core/callbacks/base/BaseCallbackHandler/handleLLMNewToken)事件。
 >>
 >> 回调事件允许 LangGraph `stream()` 和 `streamEvents()` 实时显示聊天模型的输出。
 
@@ -485,9 +487,7 @@ const responses = await model.batch([
 for (const response of responses) {
   console.log(response);
 }
-```
-
-> [!提示]
+```> [!提示]
 >
 > 使用`batch()`处理大量输入时，您可能需要控制最大并行调用数。这可以通过在 [⟦T102⟧](https://reference.langchain.com/javascript/langchain-core/runnables/RunnableConfig) 字典中设置 `maxConcurrency` 属性来完成。
 >
@@ -508,7 +508,9 @@ for (const response of responses) {
 
 ## 工具调用
 
-模型可以请求调用执行从数据库获取数据、搜索网络或运行代码等任务的工具。工具是以下各项的配对：1. 模式，包括工具名称、描述和/或参数定义（通常是 JSON 模式）
+模型可以请求调用执行从数据库获取数据、搜索网络或运行代码等任务的工具。工具是以下各项的配对：
+
+1. 模式，包括工具名称、描述和/或参数定义（通常是 JSON 模式）
 2. 执行的函数或协程（可以暂停执行并稍后恢复的方法）。
 
 > [!注意]
@@ -540,9 +542,7 @@ sequenceDiagram
     M->>U: "SF: 72°F sunny, NYC: 68°F cloudy"
 ```
 
-要使您定义的工具可供模型使用，您必须使用 [⟦T104⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/bindTools) 绑定它们。在后续调用中，模型可以根据需要选择调用任何绑定的工具。
-
-一些模型提供程序提供内置工具（在服务器端执行的工具，例如网络搜索和代码解释器），可以通过模型或调用参数（例如[⟦T105⟧](/oss/javascript/integrations/chat/openai)、[⟦T106⟧](/oss/javascript/integrations/chat/anthropic)）启用。详情请查看相应的[provider reference](/oss/javascript/integrations/providers/overview)。
+要使您定义的工具可供模型使用，您必须使用 [⟦T104⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/bindTools) 绑定它们。在后续调用中，模型可以根据需要选择调用任何绑定的工具。一些模型提供程序提供内置工具（在服务器端执行的工具，例如网络搜索和代码解释器），可以通过模型或调用参数（例如[⟦T105⟧](/oss/javascript/integrations/chat/openai)、[⟦T106⟧](/oss/javascript/integrations/chat/anthropic)）启用。详情请查看相应的[provider reference](/oss/javascript/integrations/providers/overview)。
 
 > [!提示]
 >
@@ -574,11 +574,11 @@ for (const tool_call of toolCalls) {
   console.log(`Tool: ${tool_call.name}`);
   console.log(`Args: ${tool_call.args}`);
 }
-```绑定用户定义的工具时，模型的响应包括执行工具的**请求**。当与[agent](/oss/javascript/langchain/agents)分开使用模型时，您可以执行请求的工具并将结果返回给模型以供后续推理使用。使用[agent](/oss/javascript/langchain/agents)时，代理循环将为您处理工具执行循环。
+```
 
-下面，我们展示了一些使用工具调用的常见方法。
+绑定用户定义的工具时，模型的响应包括执行工具的**请求**。当与[agent](/oss/javascript/langchain/agents)分开使用模型时，您可以执行请求的工具并将结果返回给模型以供后续推理使用。使用[agent](/oss/javascript/langchain/agents)时，代理循环将为您处理工具执行循环。
 
-> [accordion] 工具执行循环
+下面，我们展示了一些使用工具调用的常见方法。> [accordion] 工具执行循环
 >
 > 当模型返回工具调用时，您需要执行工具并将结果传递回模型。这会创建一个对话循环，模型可以在其中使用工具结果生成最终响应。 LangChain 包括为您处理此编排的 [agent](/oss/javascript/langchain/agents) 抽象。
 >
@@ -609,7 +609,9 @@ for (const tool_call of toolCalls) {
 > // "The current weather in Boston is 72°F and sunny."
 > ```
 >
-> 该工具返回的每个[⟦T107⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)都包含一个与原始工具调用匹配的`tool_call_id`，帮助模型将结果与请求关联起来。> [手风琴] 强制工具调用
+> 该工具返回的每个[⟦T107⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)都包含一个与原始工具调用匹配的`tool_call_id`，帮助模型将结果与请求关联起来。
+
+> [手风琴] 强制工具调用
 >
 > 默认情况下，模型可以根据用户的输入自由选择要使用的绑定工具。但是，您可能想要强制选择一个工具，确保模型使用特定工具或给定列表中的**任何**工具：
 >
@@ -619,9 +621,7 @@ for (const tool_call of toolCalls) {
 >
 > ```typescript Force use of specific tools theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > const modelWithTools = model.bindTools([tool_1], { toolChoice: "tool_1" })
-> ```
-
-> [accordion] 并行工具调用
+> ```> [accordion] 并行工具调用
 >
 > 许多模型支持在适当的时候并行调用多个工具。这允许模型同时从不同来源收集信息。
 >
@@ -706,13 +706,13 @@ for (const tool_call of toolCalls) {
 
 ***
 
-## 结构化输出可以请求模型以与给定模式匹配的格式提供响应。这对于确保输出可以轻松解析并在后续处理中使用非常有用。 LangChain 支持多种模式类型和方法来强制结构化输出。
+## 结构化输出
+
+可以请求模型以与给定模式匹配的格式提供响应。这对于确保输出可以轻松解析并在后续处理中使用非常有用。 LangChain 支持多种模式类型和方法来强制结构化输出。
 
 > [!提示]
 >
-> 要了解结构化输出，请参阅[Structured output](/oss/javascript/langchain/structured-output)。
-
-> [标签] 佐德
+> 要了解结构化输出，请参阅[Structured output](/oss/javascript/langchain/structured-output)。> [标签] 佐德
 >
 > [zod schema](https://zod.dev/) 是定义输出模式的首选方法。请注意，当提供 zod 架构时，模型输出也将使用 zod 的解析方法针对该架构进行验证。
 >
@@ -804,7 +804,9 @@ for (const tool_call of toolCalls) {
 > //   director: "Christopher Nolan",
 > //   rating: 8.8,
 > // }
-> ```> [!注意]
+> ```
+
+> [!注意]
 >
 > **结构化输出的关键考虑因素：**
 >
@@ -814,9 +816,7 @@ for (const tool_call of toolCalls) {
 > * **标准架构**：支持任何实现 [Standard Schema](https://standardschema.dev/) 规范的架构库，并在运行时进行验证
 > * **拒绝**：如果模型拒绝，结构化输出将抛出 `ModelRefusalError`，除非您设置 `includeRaw: true`。参见[Handle a model refusal](#handle-a-model-refusal)和[Structured output](/oss/javascript/langchain/structured-output#model-refusal)。
 >
-> 请参阅您的 [provider's integration page](/oss/javascript/integrations/providers/overview) 了解支持的方法和配置选项。
-
-> [accordion] 示例：消息输出以及已解析的结构
+> 请参阅您的 [provider's integration page](/oss/javascript/integrations/providers/overview) 了解支持的方法和配置选项。> [accordion] 示例：消息输出以及已解析的结构
 >
 > 返回原始 [⟦T119⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 对象以及解析后的表示以访问响应元数据（例如 [token counts](#token-usage)）可能很有用。为此，请在调用 [⟦T121⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withStructuredOutput) 时设置 [⟦T120⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withStructuredOutput)：
 >
@@ -867,7 +867,9 @@ for (const tool_call of toolCalls) {
 > const modelWithStructure = model.withStructuredOutput(MovieDetails);
 > ```
 
-### 处理模型拒绝提供商将拒绝（例如安全策略拒绝）报告为成功响应而不是错误。普通模型调用返回带有 [⟦T122⟧ content block](/oss/javascript/langchain/messages#content-block-reference) 的消息。 `withStructuredOutput` 从 `@langchain/core/errors` 抛出 [⟦T124⟧](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError) 而不是解析错误。错误的 `rawMessage` 包含拒绝的响应。
+### 处理模型拒绝
+
+提供商将拒绝（例如安全策略拒绝）报告为成功响应而不是错误。普通模型调用返回带有 [⟦T122⟧ content block](/oss/javascript/langchain/messages#content-block-reference) 的消息。 `withStructuredOutput` 从 `@langchain/core/errors` 抛出 [⟦T124⟧](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError) 而不是解析错误。错误的 `rawMessage` 保存拒绝的响应。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ModelRefusalError } from "@langchain/core/errors";
@@ -900,9 +902,7 @@ LangChain 检测来自 OpenAI、Anthropic 和 Gemini (`@langchain/google`) 型�
 
 ***
 
-## 高级主题
-
-### 模型简介
+## 高级主题### 模型简介
 
 > [!注意]
 >
@@ -921,7 +921,9 @@ model.profile;
 // }
 ```
 
-请参阅[API reference](https://reference.langchain.com/javascript/langchain-core/language_models/profile/ModelProfile) 中的完整字段集。大部分模型配置文件数据均由 [models.dev](https://github.com/sst/models.dev) 项目提供支持，这是一个提供模型功能数据的开源计划。该数据通过附加字段进行了扩充，以便与 LangChain 一起使用。随着上游项目的发展，这些增强功能与上游项目保持一致。
+请参阅[API reference](https://reference.langchain.com/javascript/langchain-core/language_models/profile/ModelProfile) 中的完整字段集。
+
+大部分模型配置文件数据均由 [models.dev](https://github.com/sst/models.dev) 项目提供支持，这是一个提供模型功能数据的开源计划。该数据通过附加字段进行了扩充，以便与 LangChain 一起使用。随着上游项目的发展，这些增强功能与上游项目保持一致。
 
 模型配置文件数据允许应用程序动态地处理模型功能。例如：
 

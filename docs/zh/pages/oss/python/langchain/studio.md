@@ -51,7 +51,7 @@ def send_email(to: str, subject: str, body: str):
     return f"Email sent to {to}"
 
 agent = create_agent(
-    "gpt-5.5",
+    "gpt-6.1-sol",
     tools=[send_email],
     system_prompt="You are an email assistant. Always use the send_email tool.",
 )
@@ -93,7 +93,7 @@ LangGraph CLI 使用配置文件来查找代理并管理依赖项。在应用程
 
 > [!注意]
 >
-> 配置文件JSON对象中各个key的详细解释请参考[LangGraph configuration file reference](/langsmith/cli#configuration-file)。
+> 配置文件的JSON对象中各个key的详细解释请参考[LangGraph configuration file reference](/langsmith/cli#configuration-file)。
 
 此时，项目结构将如下所示：
 

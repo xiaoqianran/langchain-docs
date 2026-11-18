@@ -154,6 +154,52 @@ human_msg = HumanMessage(
 >
 > The `name` field behavior varies by provider—some use it for user identification, others ignore it. To check, refer to the model provider's [reference](https://reference.langchain.com/python/integrations/).
 
+#### Notifications
+
+An agent harness sometimes adds a human message that the user did not type, such as a background task update or a conversation summary. Notification metadata marks these messages so that your frontend can show them differently from user input.
+
+> [!NOTE]
+>
+> Notification metadata requires `langchain-core>=1.7.2`.
+
+`add_notification_metadata` returns a copy of a `HumanMessage` with a `source` that names the feature that added it, and optional `data` with that feature's fields:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.messages import HumanMessage
+from langchain_core.messages import add_notification_metadata
+
+notification = add_notification_metadata(
+    HumanMessage("Background task t_42 finished."),
+    source="background_job",
+    data={"task_id": "t_42", "status": "success"},
+)
+```
+
+`get_notification_metadata` returns the `source` and `data` of a notification, or `None` for any other message:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_core.messages import get_notification_metadata
+
+for message in messages:
+    metadata = get_notification_metadata(message)
+    if metadata is None:
+        print(message.text)  # A regular message
+    else:
+        print(f"[{metadata['source']}]", metadata.get("data"))
+```
+
+The metadata does not change the message content: the model reads the content as written. LangChain's chat model integrations do not send the metadata to the model. Anyone who can send input to a thread can set it, so do not use it to decide whether to trust a message.
+
+Deep Agents notification sources include:
+
+| Source | Added when | Details |
+| - | - | - |
+| `async_subagent` | An async subagent task finishes, fails, or waits for input. `data` is the task event. | [Async subagents](/oss/python/deepagents/async-subagents#understand-the-lifecycle) |
+| `summarization` | The agent summarizes the conversation history. | [Summarization](/oss/python/deepagents/context-engineering#summarization) |
+| `pinned_skill` | The agent adds a pinned skill to the conversation. | [Pin skills](/oss/python/deepagents/skills#pin-skills) |
+| `rubric_grader` | The rubric grader asks the agent to revise its output. | [Grading rubrics](/oss/python/deepagents/rubric#rubric-verdicts) |
+| `read_file_media` | `read_file` attaches frames sampled from a video file. `data` has `path` and `tool_call_id`. | [Built-in `read_file` tool](/oss/python/deepagents/multimodal#built-in-read_file-tool) |
+
 ***
 
 ### AI message

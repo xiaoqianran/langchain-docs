@@ -17,15 +17,16 @@
 * **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统以及委托给子代理。参见[Deep Agents](/oss/javascript/deepagents/overview)。
 * **托管运行时**：每个部署都在 [LangSmith Agent Server](/langsmith/agent-server) 上运行。您无需亲自操作服务器即可获得代理服务器 API、线程、运行、流式传输和 [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
 * **主动运行**：[Memory](/langsmith/javascript/managed-deep-agents-memory)、[channels](/langsmith/javascript/managed-deep-agents-channels) 和 [schedules](/langsmith/javascript/managed-deep-agents-schedules) 让代理在对话之间保持有用。计划运行摘要、提醒和签到，无需用户消息。
+* **评估**：选择加入测试代理的 [Harbor](https://www.harborframework.com/docs/tasks) 任务。 `mda evals init` 设置工作空间；结果可以记录到LangSmith。参见[Evals](/langsmith/javascript/managed-deep-agents-evals)。
 
-![Your agent definition runs inside the Deep Agents harness, surrounded by managed Agent Server, channels, memory, sandboxes, schedules, and connections.](https://mintcdn.com/langchain-5e9cc07a/WPyMZQ4QJL4KarWB/images/managed-deep-agents-overview-light.png?fit=max\&auto=format\&n=WPyMZQ4QJL4KarWB\&q=85\&s=823ce5f1f80a9653308d03cbf5c2e583)
+![Your agent definition runs inside the Deep Agents harness, within a managed runtime that includes Agent Server, channels, memory, sandboxes, schedules, and connections. LangSmith adds traces, evals, and Engine.](https://mintcdn.com/langchain-5e9cc07a/0ADI9Sltahk4u7Sd/images/managed-deep-agents-overview-light.png?fit=max\&auto=format\&n=0ADI9Sltahk4u7Sd\&q=85\&s=f5b87545b25599e48d3ff54026fd87ba)## 代理示例
 
-## 代理示例
+托管深度代理由一个项目文件夹组成，其中包含其行为的业务逻辑：
 
-托管深度代理由一个项目文件夹组成，其中包含其行为的业务逻辑：当您使用 `mda` CLI 上传此文件夹时，它将自动在托管 LangSmith 基础设施上运行。
-您提供业务逻辑，托管 Deep Agents 提供代理工具和生产基础设施。
+当您使用 `mda` CLI 上传此文件夹时，它将自动在托管 LangSmith 基础设施上运行。
+您提供业务逻辑，托管Deep Agents提供代理工具和生产基础设施。
 
-要开始使用，请参阅[Managed Deep Agents quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。
+要开始使用，请参阅 [Managed Deep Agents quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。
 
 ## 核心能力
 
@@ -40,8 +41,8 @@
 | [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors) | `tools/mcp.ts` |为代理提供工具的远程 MCP 服务器。 |
 | [Middleware](/langsmith/javascript/managed-deep-agents-middleware) | `middleware/` |围绕模型和工具调用运行的自定义逻辑。 |
 | [Sandbox](/langsmith/javascript/managed-deep-agents-sandboxes) | `sandbox/` |用于运行代理编写的代码的隔离文件系统和 shell。 |
-| [Memory](/langsmith/javascript/managed-deep-agents-memory) | `memory.ts` |跨线程持续存在的偏好和知识。 |
-| [Identity](/langsmith/javascript/managed-deep-agents-identity) | `identity.ts` |用于多用户部署的每个调用者专用线程、内存和凭据。 || [Channels](/langsmith/javascript/managed-deep-agents-channels) | `channels/` |与消息服务（例如 Slack）的连接开始运行并接收响应。 |
+| [Memory](/langsmith/javascript/managed-deep-agents-memory) | `memory.ts` |跨线程持续存在的偏好和知识。 || [Identity](/langsmith/javascript/managed-deep-agents-identity) | `identity.ts` |用于多用户部署的每个调用者专用线程、内存和凭据。 |
+| [Channels](/langsmith/javascript/managed-deep-agents-channels) | `channels/` |与消息服务（例如 Slack）的连接开始运行并接收响应。 |
 | [Schedules](/langsmith/javascript/managed-deep-agents-schedules) | `schedules/` |定期运行代理的托管 cron 计划。 |
 | [Evals](/langsmith/javascript/managed-deep-agents-evals) | `evals/` |港口测试代理的任务。 |
 
@@ -54,7 +55,7 @@
 Managed Deep Agents 在代理周围添加了一层。上面的沙箱、持久内存、通道和时间表是项目文件中的声明，而不是您构建和操作的服务。 [Connections](/langsmith/javascript/managed-deep-agents-connections) 运行 OAuth，因此最终用户可以授权他们自己的帐户，而不是您为每个帐户配置凭据。 LangSmith 将结果托管在 [Agent Server](/langsmith/agent-server) 上。在代码中，差异较小：谁编译代理。* [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 返回编译后的代理。你运行它，并且拥有它周围的后端、存储、检查点和服务器。
 * `defineDeepAgent` 返回一个定义。 `mda` CLI 将其交给托管运行时，后者提供这些片段以及内存、技能和系统提示符，然后使用 [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 编译代理。
 
-因此，`defineDeepAgent`采用相同的选项减去托管选项，再加上所需的静态`name`。每个`define*`函数都是这样工作的：声明代理需要什么，并将生命周期留给运行时。
+因此，`defineDeepAgent`采用相同的选项减去托管选项，再加上所需的静态`name`。每个 `define*` 函数都是这样工作的：声明代理需要什么，并将生命周期留给运行时。
 
 从托管Deep Agents开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/javascript/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/agent-server)。有关并排比较以及转换已构建的代理的步骤，请参阅[Move from Deep Agents](/langsmith/javascript/managed-deep-agents-migrate)。
 
@@ -70,11 +71,15 @@ Managed Deep Agents 在代理周围添加了一层。上面的沙箱、持久内
 
 > [卡][Design agent template](/langsmith/javascript/managed-deep-agents-design-agent)
 >
-> 将 LangChain 的开源设计代理部署到 Slack。
+> 将LangChain的开源设计代理部署到Slack。
 
 > [卡][Paid media agent template](/langsmith/javascript/managed-deep-agents-paid-media-agent)
 >
-> 将LangChain的开源付费媒体代理部署到Slack。> [卡][Agent Server](/langsmith/agent-server)
+> 将LangChain的开源付费媒体代理部署到Slack。> [卡][Evals](/langsmith/javascript/managed-deep-agents-evals)
+>
+> 使用编码代理和评估工程技能开发 Harbor 评估。
+
+> [卡][Agent Server](/langsmith/agent-server)
 >
 > 探索托管托管 Deep Agents 部署的运行时。
 

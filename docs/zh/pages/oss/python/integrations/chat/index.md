@@ -21,7 +21,7 @@
 
 > [!注意]
 >
-> **虽然这些 LangChain 类支持指定的高级功能**，但您可能需要参考特定于提供商的文档来了解哪些托管模型或后端支持该功能。|型号|流 | [Tool calling](/oss/python/langchain/tools) | [Structured output](/oss/python/langchain/structured-output/) | [Multimodal](/oss/python/langchain/messages#multimodal) |下载 |
+> **虽然这些 LangChain 类支持指定的高级功能**，但您可能需要参考特定于提供商的文档以了解哪些托管模型或后端支持该功能。|型号|流 | [Tool calling](/oss/python/langchain/tools) | [Structured output](/oss/python/langchain/structured-output/) | [Multimodal](/oss/python/langchain/messages#multimodal) |下载 |
 | :-| :-| :-| :-| :-| :-|
 | [⟦T0⟧](/oss/python/integrations/chat/azure_chat_openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T131⟧](https://pypi.org/project/langchain-openai/) |
 | [⟦T1⟧](/oss/python/integrations/chat/openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T132⟧](https://pypi.org/project/langchain-openai/) |
@@ -92,71 +92,71 @@
 | [⟦T53⟧](/oss/python/integrations/chat/together) | ✅ | ✅ | ✅ | ✅ | [  ⟦T175⟧](https://pypi.org/project/langchain-together/) |
 | [⟦T54⟧](/oss/python/integrations/chat/oci_generative_ai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T176⟧](https://pypi.org/project/langchain-oci/) |
 | [⟦T55⟧](/oss/python/integrations/chat/oci_data_science) | ✅ | | | | [  ⟦T177⟧](https://pypi.org/project/langchain-oci/) |
-| [⟦T56⟧](/oss/python/integrations/chat/parallel) | ✅ | ❌ | ✅ | ❌ | [  ⟦T178⟧](https://pypi.org/project/langchain-parallel/) |
-| [⟦T57⟧](/oss/python/integrations/chat/qwen) | ✅ | ✅ | ✅ | ✅ | [  ⟦T179⟧](https://pypi.org/project/langchain-qwq/) || [⟦T58⟧](/oss/python/integrations/chat/qwq) | ✅ | ✅ | ✅ | ✅ | [  ⟦T180⟧](https://pypi.org/project/langchain-qwq/) |
-| [⟦T59⟧](/oss/python/integrations/chat/upstage) | | | | | [  ⟦T181⟧](https://pypi.org/project/langchain-upstage/) |
-| [⟦T60⟧](/oss/python/integrations/chat/sambanova) | ✅ | ✅ | ✅ | ✅ | [  ⟦T182⟧](https://pypi.org/project/langchain-sambanova/) |
-| [⟦T61⟧](https://github.com/ArcadiaLin/langchain-moonshot) | ✅ | ✅ | ✅ | ✅ | [  ⟦T183⟧](https://pypi.org/project/langchain-moonshot/) |
-| [⟦T62⟧](https://github.com/cloudflare/langchain-cloudflare) | ❌ | ✅ | ✅ | ❌ | [  ⟦T184⟧](https://pypi.org/project/langchain-cloudflare/) |
-| [⟦T63⟧](https://guide.ncloud-docs.com/docs/clovastudio-dev-langchain) | ✅ | ✅ | ✅ | ✅ | [  ⟦T185⟧](https://pypi.org/project/langchain-naver/) |
-| [⟦T64⟧](https://github.com/domondi1/inferrail/blob/main/docs/recipes/agent-run-budget.md?ref=langchain-docs#langchain) | ✅ | ✅ | ✅ | ❌ | [  ⟦T186⟧](https://pypi.org/project/inferrail/) |
-| [⟦T65⟧](https://github.com/nebius/langchain-nebius) | ✅ | ✅ | ✅ | ✅ | [  ⟦T187⟧](https://pypi.org/project/langchain-nebius/) |
-| [⟦T66⟧](https://docs.digitalocean.com/products/ai-platform/) | | | | | [  ⟦T188⟧](https://pypi.org/project/langchain-gradient/) |
-| [⟦T67⟧](https://docs.donkey-kit.dev/frameworks/langgraph) | ✅ | ✅ | | | [  ⟦T189⟧](https://pypi.org/project/donkey-kit/) |
-| [⟦T68⟧](/oss/python/integrations/chat/amazon_nova) | ✅ | ✅ | ✅ | | [  ⟦T190⟧](https://pypi.org/project/langchain-amazon-nova/) |
-| [⟦T69⟧](https://docs.empiriolabs.ai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T191⟧](https://pypi.org/project/langchain-empiriolabs/) |
-| [⟦T70⟧](https://dev.writer.com/home/introduction) | ✅ | ✅ | ✅ | ❌ | [  ⟦T192⟧](https://pypi.org/project/langchain-writer/) |
-| [⟦T71⟧](https://docs.ai21.com/home) | ✅ | ✅ | ✅ | ❌ | [  ⟦T193⟧](https://pypi.org/project/langchain-ai21/) |
-| [⟦T72⟧](https://github.com/AceDataCloud/LangChain) | ✅ | ✅ | | | [  ⟦T194⟧](https://pypi.org/project/langchain-acedatacloud/) |
-| [⟦T73⟧](/oss/python/integrations/chat/crusoe) | ✅ | ✅ | ✅ | ❌ | [  ⟦T195⟧](https://pypi.org/project/langchain-crusoe/) |
-| [⟦T74⟧](https://docs.flex.ai/inference-api/agents/langchain) | ✅ | ✅ | ✅ | ✅ | [  ⟦T196⟧](https://pypi.org/project/langchain-flexai/) |
-| [⟦T75⟧](https://github.com/danielpolok/langchain-model-router) | ✅ | ✅ | ✅ | | [  ⟦T197⟧](https://pypi.org/project/langchain-model-router/) |
-| [⟦T76⟧](https://github.com/predictionguard/langchain-predictionguard) | | | | | [  ⟦T198⟧](https://pypi.org/project/langchain-predictionguard/) |
-| [⟦T77⟧](https://github.com/diffbot/langchain-diffbot) | ✅ | ❌ | ❌ | ❌ | [  ⟦T199⟧](https://pypi.org/project/langchain-diffbot/) |
-| [⟦T78⟧](https://api.topxai.xyz/docs/use-topxai-with-langchain) | ✅ | ✅ | ✅ | ✅ | [  ⟦T200⟧](https://pypi.org/project/langchain-topxai/) |
-| [⟦T79⟧](https://docs.aimlapi.com/) | ✅ | ✅ | ✅ | ✅ | [  ⟦T201⟧](https://pypi.org/project/langchain-aimlapi/) |
-| [⟦T80⟧](https://recallmem.dev/guides/langchain) | | | | | [  ⟦T202⟧](https://pypi.org/project/langchain-recall/) |
-| [⟦T81⟧](https://github.com/Obscurify-ai/langchain-obscurify) | ✅ | ✅ | ✅ | | [  ⟦T203⟧](https://pypi.org/project/langchain-obscurify/)​​ |
-| [⟦T82⟧](https://docs.contextual.ai/) | ❌ | ❌ | ❌ | ❌ | [  ⟦T204⟧](https://pypi.org/project/langchain-contextual/) |
-| [⟦T83⟧](https://heabsy.com/integrations/langchain) | ✅ | ✅ | ✅ | ✅ | [  ⟦T205⟧](https://pypi.org/project/langchain-heabsy/) |
-| [⟦T84⟧](https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference) | ✅ | ✅ | ✅ | ❌ | [  ⟦T206⟧](https://pypi.org/project/langchain-doubleword/) |
-| [⟦T85⟧](https://github.com/StudioPlatforms/aistupidlevel-sdk/blob/main/langchain-python/README.md) | ✅ | ✅ | ✅ | ❌ | [  ⟦T207⟧](https://pypi.org/project/langchain-aistupidlevel/) |
-| [⟦T86⟧](https://github.com/lunary-ai/langchain-abso) | | | | | [  ⟦T208⟧](https://pypi.org/project/langchain-abso/) |
-| [⟦T87⟧](https://github.com/modelscope/langchain-modelscope) | | | | | [  ⟦T209⟧](https://pypi.org/project/langchain-modelscope-integration/) |
-| [⟦T88⟧](https://app.brainiall.com/docs) | | | | | [  ⟦T210⟧](https://pypi.org/project/langchain-brainiall/) |
-| [⟦T89⟧](https://gitlab.com/bitkaio/langchain/kserve-provider) | ✅ | ✅ | ✅ | ✅ | [  ⟦T211⟧](https://pypi.org/project/langchain-kserve/) |
-| [⟦T90⟧](https://hubris.pw/docs/integrations/langchain) | ✅ | ✅ | ✅ | ✅ | [  ⟦T212⟧](https://pypi.org/project/langchain-hubris/) |
-| [⟦T91⟧](https://docs.sarvam.ai/api/integration/langchain) | ✅ | ✅ | ✅ | ❌ | [  ⟦T213⟧](https://pypi.org/project/langchain-sarvamcloud/) |
-| [⟦T92⟧](https://github.com/featherless-ai-integrations/langchain-featherless-ai) | ✅ | ❌ | ❌ | ❌ | [  ⟦T214⟧](https://pypi.org/project/langchain-featherless-ai/) || [⟦T93⟧](https://github.com/kineticadb/langchain-kinetica) | | | | | [  ⟦T215⟧](https://pypi.org/project/langchain-kinetica/) |
-| [⟦T94⟧](https://docs.yutori.com) | | | | | [  ⟦T216⟧](https://pypi.org/project/langchain-yutori/) |
-| [⟦T95⟧](https://github.com/TheSongg/langchain-xinference) | ✅ | ✅ | ✅ | ❌ | [  ⟦T217⟧](https://pypi.org/project/langchain-xinference/) |
-| [⟦T96⟧](https://docs.runpod.io/overview) | | | | | [  ⟦T218⟧](https://pypi.org/project/langchain-runpod/) |
-| [⟦T97⟧](https://agenticspendguard.dev) | | | | | [  ⟦T219⟧](https://pypi.org/project/spendguard-sdk/) |
-| [⟦T98⟧](https://github.com/staccDOTsol/langchain-openzoo) | ✅ | ✅ | ✅ | ✅ | [  ⟦T220⟧](https://pypi.org/project/langchain-openzoo/) |
-| [⟦T99⟧](https://docs.apertis.ai/api/sdks/langchain/) | ✅ | ✅ | ✅ | ✅ | [  ⟦T221⟧](https://pypi.org/project/langchain-apertis/) |
-| [⟦T100⟧](https://github.com/rajanshxrma/langchain-apple-foundation-models) | ✅ | ✅ | ✅ | ❌ | [  ⟦T222⟧](https://pypi.org/project/langchain-apple-foundation-models/) |
-| [⟦T101⟧](https://github.com/pipeshift-org/langchain-pipeshift) | ✅ | ❌ | ❌ | ✅ | [  ⟦T223⟧](https://pypi.org/project/langchain-pipeshift/) |
-| [⟦T102⟧](https://interfaze.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ⟦T224⟧](https://pypi.org/project/interfaze-langchain/) |
-| [⟦T103⟧](https://developers.telnyx.com/docs/inference/models) | ✅ | ✅ | ✅ | ❌ | [  ⟦T225⟧](https://pypi.org/project/langchain-telnyx/) |
-| [⟦T104⟧](https://github.com/greennode-ai/langchain-greennode) | ✅ | ✅ | ✅ | ✅ | [  ⟦T226⟧](https://pypi.org/project/langchain-greennode/) |
-| [⟦T105⟧](https://github.com/Sandeep85Das/langchain-meragpt) | ✅ | ❌ | ❌ | ❌ | [  ⟦T227⟧](https://pypi.org/project/langchain-meragpt/) |
-| [⟦T106⟧](https://thalam.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ⟦T228⟧](https://pypi.org/project/langchain-thalam/) |
-| [⟦T107⟧](https://github.com/protagolabs/langchain-netmind) | ✅ | ✅ | ✅ | ❌ | [  ⟦T229⟧](https://pypi.org/project/langchain-netmind/) |
-| [⟦T108⟧](https://neuralwatt.com) | ✅ | ✅ | ✅ | ❌ | [  ⟦T230⟧](https://pypi.org/project/langchain-neuralwatt/) |
-| [⟦T109⟧](https://github.com/benfaircloth/langchain-seekrflow) | ✅ | ✅ | ✅ | ❌ | [  ⟦T231⟧](https://pypi.org/project/langchain-seekrflow/) |
-| [⟦T110⟧](https://kalibr.systems/docs) | | | | | [  ⟦T232⟧](https://pypi.org/project/langchain-kalibr/) |
-| [⟦T111⟧](https://www.runcrate.ai/docs/sdks/langchain?utm_source=langchain\&utm_medium=directory\&utm_campaign=integrations) | ✅ | ✅ | ✅ | | [  ⟦T233⟧](https://pypi.org/project/langchain-runcrate/) |
-| [⟦T112⟧](https://github.com/Aribk7/langchain-revana#readme) | ✅ | ✅ | ✅ | | [  ⟦T234⟧](https://pypi.org/project/langchain-revana/) |
-| [⟦T113⟧](https://github.com/dhruvil-codes/langchain-gmi#readme) | ✅ | ✅ | ✅ | | [  ⟦T235⟧](https://pypi.org/project/langchain-gmi/) |
-| [⟦T114⟧](https://github.com/OutrunAIAPI/langchain-outrun#readme) | ✅ | ✅ | ✅ | | [  ⟦T236⟧](https://pypi.org/project/langchain-outrun/) |
-| [⟦T115⟧](https://github.com/weare-linkrra/linkrra-synap/tree/main/langchain-linkrra#readme) | ✅ | ✅ | ✅ | | [  ⟦T237⟧](https://pypi.org/project/langchain-linkrra/) |
-| [⟦T116⟧](https://docs.1claw.xyz) | ✅ | ✅ | ✅ | ❌ |不适用 |
-| [⟦T117⟧](https://www.api-route.com/docs/overview) | | | | |不适用 |
-| [⟦T118⟧](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ |不适用 |
-| [⟦T119⟧](https://github.com/ykoh42/exaone-integrations/tree/main/packages/langchain-exaone-py) | ✅ | ✅ | ✅ | ❌ |不适用 |
-| [⟦T120⟧](https://github.com/kris-holy/langchain-keln#readme) | ✅ | ✅ | ✅ | |不适用 |
-| [⟦T121⟧](https://github.com/kosa8ai/langchain-llamay#readme) | ✅ | ✅ | ✅ | ❌ |不适用 |
-| [⟦T122⟧](https://github.com/optiq-bot/langchain-optiq) | ✅ | ✅ | ✅ | ❌ |不适用 |
+| [⟦T56⟧](/oss/python/integrations/chat/qwen) | ✅ | ✅ | ✅ | ✅ | [  ⟦T178⟧](https://pypi.org/project/langchain-qwq/) |
+| [⟦T57⟧](/oss/python/integrations/chat/qwq) | ✅ | ✅ | ✅ | ✅ | [  ⟦T179⟧](https://pypi.org/project/langchain-qwq/) || [⟦T58⟧](/oss/python/integrations/chat/upstage) | | | | | [  ⟦T180⟧](https://pypi.org/project/langchain-upstage/) |
+| [⟦T59⟧](/oss/python/integrations/chat/sambanova) | ✅ | ✅ | ✅ | ✅ | [  ⟦T181⟧](https://pypi.org/project/langchain-sambanova/) |
+| [⟦T60⟧](https://github.com/ArcadiaLin/langchain-moonshot) | ✅ | ✅ | ✅ | ✅ | [  ⟦T182⟧](https://pypi.org/project/langchain-moonshot/) |
+| [⟦T61⟧](https://github.com/cloudflare/langchain-cloudflare) | ❌ | ✅ | ✅ | ❌ | [  ⟦T183⟧](https://pypi.org/project/langchain-cloudflare/) |
+| [⟦T62⟧](https://guide.ncloud-docs.com/docs/clovastudio-dev-langchain) | ✅ | ✅ | ✅ | ✅ | [  ⟦T184⟧](https://pypi.org/project/langchain-naver/) |
+| [⟦T63⟧](https://github.com/domondi1/inferrail/blob/main/docs/recipes/agent-run-budget.md?ref=langchain-docs#langchain) | ✅ | ✅ | ✅ | ❌ | [  ⟦T185⟧](https://pypi.org/project/inferrail/) |
+| [⟦T64⟧](https://github.com/nebius/langchain-nebius) | ✅ | ✅ | ✅ | ✅ | [  ⟦T186⟧](https://pypi.org/project/langchain-nebius/) |
+| [⟦T65⟧](https://docs.digitalocean.com/products/ai-platform/) | | | | | [  ⟦T187⟧](https://pypi.org/project/langchain-gradient/) |
+| [⟦T66⟧](https://docs.donkey-kit.dev/frameworks/langgraph) | ✅ | ✅ | | | [  ⟦T188⟧](https://pypi.org/project/donkey-kit/) |
+| [⟦T67⟧](/oss/python/integrations/chat/amazon_nova) | ✅ | ✅ | ✅ | | [  ⟦T189⟧](https://pypi.org/project/langchain-amazon-nova/) |
+| [⟦T68⟧](https://docs.empiriolabs.ai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T190⟧](https://pypi.org/project/langchain-empiriolabs/) |
+| [⟦T69⟧](https://dev.writer.com/home/introduction) | ✅ | ✅ | ✅ | ❌ | [  ⟦T191⟧](https://pypi.org/project/langchain-writer/) |
+| [⟦T70⟧](https://docs.ai21.com/home) | ✅ | ✅ | ✅ | ❌ | [  ⟦T192⟧](https://pypi.org/project/langchain-ai21/) |
+| [⟦T71⟧](https://github.com/AceDataCloud/LangChain) | ✅ | ✅ | | | [  ⟦T193⟧](https://pypi.org/project/langchain-acedatacloud/) |
+| [⟦T72⟧](/oss/python/integrations/chat/crusoe) | ✅ | ✅ | ✅ | ❌ | [  ⟦T194⟧](https://pypi.org/project/langchain-crusoe/) |
+| [⟦T73⟧](https://docs.flex.ai/inference-api/agents/langchain) | ✅ | ✅ | ✅ | ✅ | [  ⟦T195⟧](https://pypi.org/project/langchain-flexai/) |
+| [⟦T74⟧](https://github.com/danielpolok/langchain-model-router) | ✅ | ✅ | ✅ | | [  ⟦T196⟧](https://pypi.org/project/langchain-model-router/) |
+| [⟦T75⟧](https://github.com/predictionguard/langchain-predictionguard) | | | | | [  ⟦T197⟧](https://pypi.org/project/langchain-predictionguard/) |
+| [⟦T76⟧](https://github.com/diffbot/langchain-diffbot) | ✅ | ❌ | ❌ | ❌ | [  ⟦T198⟧](https://pypi.org/project/langchain-diffbot/) |
+| [⟦T77⟧](https://api.topxai.xyz/docs/use-topxai-with-langchain) | ✅ | ✅ | ✅ | ✅ | [  ⟦T199⟧](https://pypi.org/project/langchain-topxai/) |
+| [⟦T78⟧](https://docs.aimlapi.com/) | ✅ | ✅ | ✅ | ✅ | [  ⟦T200⟧](https://pypi.org/project/langchain-aimlapi/) |
+| [⟦T79⟧](https://recallmem.dev/guides/langchain) | | | | | [  ⟦T201⟧](https://pypi.org/project/langchain-recall/) |
+| [⟦T80⟧](https://github.com/Obscurify-ai/langchain-obscurify) | ✅ | ✅ | ✅ | | [  ⟦T202⟧](https://pypi.org/project/langchain-obscurify/) |
+| [⟦T81⟧](https://docs.contextual.ai/) | ❌ | ❌ | ❌ | ❌ | [  ⟦T203⟧](https://pypi.org/project/langchain-contextual/) |
+| [⟦T82⟧](https://heabsy.com/integrations/langchain)​​ | ✅ | ✅ | ✅ | ✅ | [  ⟦T204⟧](https://pypi.org/project/langchain-heabsy/) |
+| [⟦T83⟧](https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference) | ✅ | ✅ | ✅ | ❌ | [  ⟦T205⟧](https://pypi.org/project/langchain-doubleword/) |
+| [⟦T84⟧](https://github.com/StudioPlatforms/aistupidlevel-sdk/blob/main/langchain-python/README.md) | ✅ | ✅ | ✅ | ❌ | [  ⟦T206⟧](https://pypi.org/project/langchain-aistupidlevel/) |
+| [⟦T85⟧](https://github.com/lunary-ai/langchain-abso) | | | | | [  ⟦T207⟧](https://pypi.org/project/langchain-abso/) |
+| [⟦T86⟧](https://github.com/modelscope/langchain-modelscope) | | | | | [  ⟦T208⟧](https://pypi.org/project/langchain-modelscope-integration/) |
+| [⟦T87⟧](https://app.brainiall.com/docs) | | | | | [  ⟦T209⟧](https://pypi.org/project/langchain-brainiall/) |
+| [⟦T88⟧](https://gitlab.com/bitkaio/langchain/kserve-provider) | ✅ | ✅ | ✅ | ✅ | [  ⟦T210⟧](https://pypi.org/project/langchain-kserve/) |
+| [⟦T89⟧](https://hubris.pw/docs/integrations/langchain) | ✅ | ✅ | ✅ | ✅ | [  ⟦T211⟧](https://pypi.org/project/langchain-hubris/) |
+| [⟦T90⟧](https://docs.sarvam.ai/api/integration/langchain) | ✅ | ✅ | ✅ | ❌ | [  ⟦T212⟧](https://pypi.org/project/langchain-sarvamcloud/) |
+| [⟦T91⟧](https://github.com/featherless-ai-integrations/langchain-featherless-ai) | ✅ | ❌ | ❌ | ❌ | [  ⟦T213⟧](https://pypi.org/project/langchain-featherless-ai/) |
+| [⟦T92⟧](https://github.com/kineticadb/langchain-kinetica) | | | | | [  ⟦T214⟧](https://pypi.org/project/langchain-kinetica/) || [⟦T93⟧](https://docs.yutori.com) | | | | | [  ⟦T215⟧](https://pypi.org/project/langchain-yutori/) |
+| [⟦T94⟧](https://github.com/TheSongg/langchain-xinference) | ✅ | ✅ | ✅ | ❌ | [  ⟦T216⟧](https://pypi.org/project/langchain-xinference/) |
+| [⟦T95⟧](https://docs.runpod.io/overview) | | | | | [  ⟦T217⟧](https://pypi.org/project/langchain-runpod/) |
+| [⟦T96⟧](https://agenticspendguard.dev) | | | | | [  ⟦T218⟧](https://pypi.org/project/spendguard-sdk/) |
+| [⟦T97⟧](https://github.com/staccDOTsol/langchain-openzoo) | ✅ | ✅ | ✅ | ✅ | [  ⟦T219⟧](https://pypi.org/project/langchain-openzoo/) |
+| [⟦T98⟧](https://docs.apertis.ai/api/sdks/langchain/) | ✅ | ✅ | ✅ | ✅ | [  ⟦T220⟧](https://pypi.org/project/langchain-apertis/) |
+| [⟦T99⟧](https://github.com/rajanshxrma/langchain-apple-foundation-models) | ✅ | ✅ | ✅ | ❌ | [  ⟦T221⟧](https://pypi.org/project/langchain-apple-foundation-models/) |
+| [⟦T100⟧](https://github.com/pipeshift-org/langchain-pipeshift) | ✅ | ❌ | ❌ | ✅ | [  ⟦T222⟧](https://pypi.org/project/langchain-pipeshift/) |
+| [⟦T101⟧](https://interfaze.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ⟦T223⟧](https://pypi.org/project/interfaze-langchain/) |
+| [⟦T102⟧](https://developers.telnyx.com/docs/inference/models) | ✅ | ✅ | ✅ | ❌ | [  ⟦T224⟧](https://pypi.org/project/langchain-telnyx/) |
+| [⟦T103⟧](https://github.com/greennode-ai/langchain-greennode) | ✅ | ✅ | ✅ | ✅ | [  ⟦T225⟧](https://pypi.org/project/langchain-greennode/) |
+| [⟦T104⟧](https://github.com/Sandeep85Das/langchain-meragpt) | ✅ | ❌ | ❌ | ❌ | [  ⟦T226⟧](https://pypi.org/project/langchain-meragpt/) |
+| [⟦T105⟧](https://thalam.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ⟦T227⟧](https://pypi.org/project/langchain-thalam/) |
+| [⟦T106⟧](https://github.com/protagolabs/langchain-netmind) | ✅ | ✅ | ✅ | ❌ | [  ⟦T228⟧](https://pypi.org/project/langchain-netmind/) |
+| [⟦T107⟧](https://neuralwatt.com) | ✅ | ✅ | ✅ | ❌ | [  ⟦T229⟧](https://pypi.org/project/langchain-neuralwatt/) |
+| [⟦T108⟧](https://github.com/benfaircloth/langchain-seekrflow) | ✅ | ✅ | ✅ | ❌ | [  ⟦T230⟧](https://pypi.org/project/langchain-seekrflow/) |
+| [⟦T109⟧](https://kalibr.systems/docs) | | | | | [  ⟦T231⟧](https://pypi.org/project/langchain-kalibr/) |
+| [⟦T110⟧](https://www.runcrate.ai/docs/sdks/langchain?utm_source=langchain\&utm_medium=directory\&utm_campaign=integrations) | ✅ | ✅ | ✅ | | [  ⟦T232⟧](https://pypi.org/project/langchain-runcrate/) |
+| [⟦T111⟧](https://github.com/Aribk7/langchain-revana#readme) | ✅ | ✅ | ✅ | | [  ⟦T233⟧](https://pypi.org/project/langchain-revana/) |
+| [⟦T112⟧](https://github.com/dhruvil-codes/langchain-gmi#readme) | ✅ | ✅ | ✅ | | [  ⟦T234⟧](https://pypi.org/project/langchain-gmi/) |
+| [⟦T113⟧](https://github.com/OutrunAIAPI/langchain-outrun#readme) | ✅ | ✅ | ✅ | | [  ⟦T235⟧](https://pypi.org/project/langchain-outrun/) |
+| [⟦T114⟧](https://github.com/weare-linkrra/linkrra-synap/tree/main/langchain-linkrra#readme) | ✅ | ✅ | ✅ | | [  ⟦T236⟧](https://pypi.org/project/langchain-linkrra/) |
+| [⟦T115⟧](https://docs.1claw.xyz) | ✅ | ✅ | ✅ | ❌ |不适用 |
+| [⟦T116⟧](https://www.api-route.com/docs/overview) | | | | |不适用 |
+| [⟦T117⟧](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ |不适用 |
+| [⟦T118⟧](https://github.com/ykoh42/exaone-integrations/tree/main/packages/langchain-exaone-py) | ✅ | ✅ | ✅ | ❌ |不适用 |
+| [⟦T119⟧](https://github.com/kris-holy/langchain-keln#readme) | ✅ | ✅ | ✅ | |不适用 |
+| [⟦T120⟧](https://github.com/kosa8ai/langchain-llamay#readme) | ✅ | ✅ | ✅ | ❌ |不适用 |
+| [⟦T121⟧](https://github.com/optiq-bot/langchain-optiq) | ✅ | ✅ | ✅ | ❌ |不适用 |
+| [⟦T122⟧](https://sovereigneg.com/docs/langchain) | ✅ | ✅ | ✅ | |不适用 |
 | [⟦T123⟧](https://cheaperinference.com/docs) | ✅ | ✅ | ✅ | ✅ |不适用 |
 | [⟦T124⟧](https://daoxe.com) | ✅ | ✅ | ✅ | ✅ |不适用 |
 | [⟦T125⟧](https://gptzzz.ai/docs/) | ✅ | ✅ | ✅ | ✅ |不适用 |

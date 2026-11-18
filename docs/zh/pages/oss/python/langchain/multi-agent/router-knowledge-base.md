@@ -6,7 +6,7 @@
 
 **路由器模式**是一种[multi-agent](/oss/python/langchain/multi-agent)架构，其中路由步骤对输入进行分类并将其定向到专门的代理，并将结果合成为组合响应。当您的组织的知识分布在不同的**垂直领域**（独立的知识领域，每个知识领域都需要自己的代理以及专门的工具和提示）时，此模式非常有用。
 
-在本教程中，您将构建一个多源知识库路由器，通过实际的企业场景展示这些优势。该系统将协调三名专家：
+在本教程中，您将构建一个多源知识库路由器，通过实际的企业场景演示这些优势。该系统将协调三名专家：
 
 * 一个 **GitHub 代理**，用于搜索代码、问题和拉取请求。
 * 一个 **Notion 代理**，用于搜索内部文档和 wiki。
@@ -109,7 +109,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = init_chat_model("gpt-5.5")
+> model = init_chat_model("gpt-6.1-sol")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -118,7 +118,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["OPENAI_API_KEY"] = "sk-..."
 >
-> model = ChatOpenAI(model="gpt-5.5")
+> model = ChatOpenAI(model="gpt-6.1-sol")
 > ```
 
 > [标签] Anthropic
@@ -172,7 +172,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = init_chat_model(
->     "azure_openai:gpt-5.5",
+>     "azure_openai:gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
 > )
 > ```
@@ -186,7 +186,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 > os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 >
 > model = AzureChatOpenAI(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
 > )
 > ```
@@ -209,7 +209,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = init_chat_model("google_genai:gemini-3.7-flash")
+> model = init_chat_model("google_genai:gemini-4-hydrogen")
 > ```
 >
 > ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -218,7 +218,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 >
 > os.environ["GOOGLE_API_KEY"] = "..."
 >
-> model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
+> model = ChatGoogleGenerativeAI(model="gemini-4-hydrogen")
 > ```
 
 > [选项卡] AWS 基岩
@@ -419,7 +419,7 @@ def get_thread(thread_id: str) -> str:
 from langchain.agents import create_agent
 from langchain.chat_models import init_chat_model
 
-model = init_chat_model("openai:gpt-5.5")
+model = init_chat_model("openai:gpt-6.1-sol")
 
 github_agent = create_agent(
     model,
@@ -587,7 +587,7 @@ workflow = (
 
 `add_conditional_edges` 调用通过 `route_to_agents` 函数将分类节点连接到代理节点。当`route_to_agents`返回多个`Send`对象时，这些节点并行执行。
 
-## 6.使用路由器
+## 6. 使用路由器
 
 使用跨越多个知识领域的查询来测试您的路由器：
 
@@ -784,7 +784,7 @@ def get_thread(thread_id: str) -> str:
 
 
 # Models and agents
-model = init_chat_model("openai:gpt-5.5")
+model = init_chat_model("openai:gpt-6.1-sol")
 router_llm = init_chat_model("openai:gpt-5.4-mini")
 
 github_agent = create_agent(
@@ -1006,7 +1006,7 @@ print(result["messages"][-1].content)
 >
 > 当您有多个独立的知识源、需要低延迟并行查询并希望对路由逻辑进行显式控制时，请使用路由器模式。
 >
-> 对于具有动态刀具选择的更简单的情况，请考虑[subagents pattern](/oss/python/langchain/multi-agent/subagents)。对于代理需要按顺序与用户对话的工作流程，请考虑[handoffs](/oss/python/langchain/multi-agent/handoffs)。
+> 对于具有动态刀具选择的简单情况，请考虑[subagents pattern](/oss/python/langchain/multi-agent/subagents)。对于代理需要按顺序与用户对话的工作流程，请考虑[handoffs](/oss/python/langchain/multi-agent/handoffs)。
 
 ## 后续步骤
 

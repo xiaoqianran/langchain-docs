@@ -12,7 +12,7 @@ LangGraph 公开一个 [⟦T6⟧](https://reference.langchain.com/python/langgra
 2. **Store**：用于[long-term memory](/oss/python/langchain/long-term-memory)的[BaseStore](https://reference.langchain.com/python/langchain-core/stores/BaseStore)实例
 3. **Stream writer**：用于通过`"custom"`流模式传输信息的对象
 4. **执行信息**：当前执行的身份和重试信息（线程ID、运行ID、尝试次数）
-5. **服务器信息**：在LangGraph服务器上运行时特定于服务器的元数据（助手ID、图形ID、经过身份验证的用户）
+5. **服务器信息**：在LangSmith代理服务器上运行时特定于服务器的元数据（助手ID、图形ID、经过身份验证的用户）
 
 > [!提示]
 >
@@ -79,7 +79,7 @@ def fetch_user_email_preferences(runtime: ToolRuntime[Context]) -> str:  # [!cod
 
 ### 工具内的执行信息和服务器信息
 
-在 LangGraph 服务器上运行时，通过 `runtime.execution_info` 访问执行身份（线程 ID、运行 ID），并通过 `runtime.server_info` 访问服务器特定的元数据（助理 ID、经过身份验证的用户）：
+在 Agent Server 上运行时，通过 `runtime.execution_info` 访问执行身份（线程 ID、运行 ID），并通过 `runtime.server_info` 访问服务器特定的元数据（助理 ID、经过身份验证的用户）：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool, ToolRuntime
@@ -91,7 +91,7 @@ def context_aware_tool(runtime: ToolRuntime) -> str:
     info = runtime.execution_info
     print(f"Thread: {info.thread_id}, Run: {info.run_id}")  # [!code highlight]
 
-    # Access server info (only available on LangGraph Server)
+    # Access server info (only available on Agent Server)
     server = runtime.server_info
     if server is not None:
         print(f"Assistant: {server.assistant_id}")  # [!code highlight]
@@ -101,7 +101,7 @@ def context_aware_tool(runtime: ToolRuntime) -> str:
     return "done"
 ```
 
-当不在 LangGraph 服务器上运行时（例如，在本地开发期间），`server_info` 是 `None`。
+当不在代理服务器上运行时（例如，在本地开发期间），`server_info` 是`None`。
 
 > [!注意]
 >
@@ -170,7 +170,7 @@ from langgraph.runtime import Runtime
 
 @before_model
 def auth_gate(state: AgentState, runtime: Runtime) -> dict | None:
-    """Block unauthenticated users when running on LangGraph Server."""
+    """Block unauthenticated users when running on Agent Server."""
     server = runtime.server_info
     if server is not None and server.user is None:  # [!code highlight]
         raise ValueError("Authentication required")

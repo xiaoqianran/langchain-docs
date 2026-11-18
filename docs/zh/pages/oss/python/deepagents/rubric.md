@@ -156,11 +156,11 @@ agent = create_deep_agent(
 )
 ```
 
-|论证|必填|默认 |描述 |
+|论证|必填|默认|描述 |
 | - | - | - | - |
 | `model` |是的 | `None` | LLM 作为评委评分员子代理使用的聊天模型。接受 `"provider:model-id"` 字符串或 `BaseChatModel` 实例。通常是比深度代理的工作模型更小或更便宜的模型。 |
 | `system_prompt` |没有 |内置评分器提示 |自定义分级说明。退回到默认系统提示，向评分者传授判决格式以及可以使用的工具。 |
-| `tools` |没有 | `None` |评分者在做出结论之前可以调用工具来收集证据（运行测试、计数标记、读取文件）。如果没有，评分者仅根据成绩单进行推理。 || `max_iterations` |没有 | `3` |每个评分标准尝试的最大评分者迭代次数；必须是正整数。当达到上限但没有 `satisfied` 判决时，代理将以状态 `max_iterations_reached` 终止。 |
+| `tools` |没有 | `None` |评分者在做出结论之前可以调用工具来收集证据（运行测试、计数标记、读取文件）。如果没有，评分者只能根据成绩单进行推理。 || `max_iterations` |没有 | `3` |每个评分标准尝试的最大评分者迭代次数；必须是正整数。当达到上限但没有 `satisfied` 判决时，代理将以状态 `max_iterations_reached` 终止。 |
 | `on_evaluation` |没有 | `None` |每次评分迭代后，无论您使用 `invoke()`、`stream()` 还是 `stream_events()`，都会调用每个 `RubricEvaluation` 的可选回调。对于日志记录、自定义指标、评估数据集或 UI 更新很有用。 |
 
 ## 在调用时传递标题
@@ -232,6 +232,8 @@ agent = create_deep_agent(
 | `max_iterations_reached` | Grader仍然想要修改，但是`max_iterations`已经被击中了。 |没有 |
 | `failed` |评分者判断标题格式错误或无法根据成绩单进行评估。 |没有 |
 | `grader_error` |法学硕士作为法官评分者子代理本身提出了一个例外（提供者超时、缺少凭据、格式错误的结构化响应等）。 |没有 |
+
+在`needs_revision`上，中间件将评分器反馈添加为`HumanMessage`和[notification metadata](/oss/python/langchain/messages#notifications)，其来源为`"rubric_grader"`。前端可以读取它以显示与用户消息不同的反馈。
 
 ## 观察迭代进度
 
@@ -486,7 +488,7 @@ agent.invoke(
 | - | - | - |
 | `grading_run_id` | `str` |一次评估尝试中的每个评估共享的标识符。当调用者提供不同的`rubric`，或者在最终判决后再次调用相同的`rubric`时，新的运行开始。 |
 | `iteration` | `int` |当前评分者在该运行中通过的从零开始的索引。 |
-| `result` | `str` |本次通过的评分者判定：`satisfied`、`needs_revision`、`failed` 或 `grader_error`。 |
+| `result` | `str` |此关卡的评分者判定：`satisfied`、`needs_revision`、`failed` 或 `grader_error`。 |
 | `explanation` | `str` |评分者的自由形式摘要。对于基础设施故障，这包括异常类型和消息。 |
 | `criteria` | `list` |按标准做出的判决。每个条目都是`{name, passed: true}` 或`{name, passed: false, gap}`，其中`gap` 是失败标准的可操作反馈。 |
 
@@ -504,13 +506,13 @@ agent.invoke(
 
 ## 示例：生成经过审查的 Python 代码
 
-以下示例构建了一个编写 `find_duplicates` 函数的深度代理。它定义一次`RubricMiddleware`，将其附加到代理，然后在调用时传递一个`rubric`字符串。
+以下示例构建了一个编写 `find_duplicates` 函数的深度代理。它定义 `RubricMiddleware` 一次，将其附加到代理，然后在调用时传递 `rubric` 字符串。
 
 该示例没有要求评分者抽象地推理正确性，而是为其提供了一个 `run_test_suite` 工具来直接验证行为。评分者在做出结论之前调用此工具获取更多信息，并在没有提供工具时从成绩单中进行推理。
 
 **1.定义 Rubric 中间件**
 
-该中间件在基本代理之上添加了一个 LLM-as-a-judge 评分器循环。配置评分器模型、可选的自定义提示、证据收集工具和最大迭代上限。
+该中间件在基本代理之上添加了一个 LLM 作为法官评分器循环。配置评分器模型、可选的自定义提示、证据收集工具和最大迭代上限。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware

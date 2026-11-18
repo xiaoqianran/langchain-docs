@@ -22,11 +22,11 @@
 >
 > 每个云提供商都有自己的 LangSmith 实例，具有独立的用户和组织。要在多个云提供商上部署数据平面，请在每个提供商的实例上创建一个 LangSmith 组织。有关实例 URL，请参阅 [Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers)。> [手风琴] 我需要专用的 AWS 账户吗？
 >
-> 否。LangChain 建议使用新帐户以实现更清晰的计费，并且因为某些权限无法限定到特定资源，但这不是必需的。
+> 不。LangChain 建议使用新帐户以实现更清晰的计费，并且因为某些权限无法限定到特定资源，但这不是必需的。
 
 > [accordion] 我可以将 BYOC 安装到现有 VPC 中吗？
 >
-> 是的。使用 [Bring your own VPC (BYOVPC)](/langsmith/byoc-byovpc-aws)，您可以提供 VPC 和子网。您可以使用[reference Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byovpc)创建VPC，也可以使用现有的符合网络要求的VPC。
+> 是的。使用 [Bring your own VPC (BYOVPC)](/langsmith/byoc-byovpc-aws)，您可以提供 VPC 和子网。您可以使用[reference Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byovpc)创建VPC，也可以使用现有的满足网络要求的VPC。
 >
 > 要从客户角色中删除 VPC 创建权限，请在 [⟦T1⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 中设置 `allow_vpc_creation_permissions = false`，并在 `vpc_ids` 中包含您的 VPC ID。
 
@@ -38,7 +38,7 @@
 >
 > 不可以。不支持将现有数据平面移动到不同的 VPC，也不支持在创建后更改其 VPC 和子网配置。> [accordion] 我可以将 BYOC 安装到现有的 EKS 集群中吗？
 >
-> 不，并且没有计划支持它。 LangChain 代表您操作集群，包括升级和修补，专用集群使可靠的管理成为可能。
+> 不，并且没有计划支持它。 LangChain 代表您操作集群，包括升级和修补，专用集群使得可靠管理成为可能。
 
 > [accordion] 我可以在 LangSmith VPC 或集群中运行自己的工作负载吗？
 >
@@ -48,13 +48,13 @@
 >
 > 在 Kubernetes 集群中，不干扰LangSmith的被动工作负载就可以，例如可观察性和安全监控代理。当您部署它们时：
 >
-> * 使用您自己的节点组和容忍度，而不是运行 LangSmith 的节点组和容忍度。
+> * 使用您自己的节点组和容忍度，而不是 LangSmith 运行的节点组和容忍度。
 > * 部署到 LangSmith 使用的命名空间之外的命名空间中。
 > * 请勿编辑资源LangChain条款。
 >
-> LangChain 对干扰工作负载引起的停机或问题不承担任何责任。> [accordion] 我应该为我的角色的外部 ID 设置什么值？
+> LangChain 不对因工作负载干扰而导致的停机或问题负责。> [accordion] 我应该为我的角色的外部 ID 设置什么值？
 >
-> LangChain 提供外部ID。导航到 **设置 > 数据平面**，然后使用 **数据平面** 标题旁边的复制按钮进行复制。应用 `langsmith-byoc-role` Terraform 模块时使用此值。角色的信任策略必须在其 `ExternalId` 条件下使用此值。
+> LangChain 提供外部 ID。导航到 **设置 > 数据平面**，然后使用 **数据平面** 标题旁边的复制按钮进行复制。应用 `langsmith-byoc-role` Terraform 模块时使用此值。角色的信任策略必须在其 `ExternalId` 条件下使用此值。
 
 > [手风琴] 配置需要多长时间？
 >
@@ -62,11 +62,11 @@
 
 > [accordion] 如果配置失败会发生什么？
 >
-> 数据平面转换至`Provisioning Failed`。失败通常是由于缺少跨账户角色的权限造成的，或者是由于服务控制策略 (SCP) 阻止了LangChain 需要执行的操作造成的。
+> 数据平面转换至`Provisioning Failed`。失败通常是由于缺少跨账户角色的权限引起的，或者是由于服务控制策略 (SCP) 阻止了LangChain 需要执行的操作而引起的。
 >
 > 完全按照发布的方式应用 [⟦T6⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role)，无需任何编辑或更改。修改的模块是缺少权限的常见原因。
 >
-> 联系 LangChain 团队。更正权限后，配置会自动协调。> [accordion] 我应该使用什么 VPC CIDR 范围？
+> 联系LangChain团队。更正权限后，配置会自动协调。> [accordion] 我应该使用什么 VPC CIDR 范围？
 >
 > `/18` 和 `/16` 之间的私有 RFC 1918 范围。如果您计划使用 VPC 对等互连，请选择一个与您想要建立对等互连的 VPC 不重叠的范围。 CIDR 范围在配置后无法更改。
 
@@ -97,7 +97,7 @@
 
 > [手风琴] 如何停用数据平面？
 >
-> 将 [⟦T9⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 与 `allow_delete_permissions = true` 重新应用，这将授予删除 LangSmith 托管资源所需的权限。
+> 使用 `allow_delete_permissions = true` 重新应用 [⟦T9⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role)，这将授予删除 LangSmith 托管资源所需的权限。
 >
 > 然后在 LangSmith UI 中选择 **删除数据平面**。 LangChain 取消配置您帐户中的基础设施。
 
@@ -131,7 +131,7 @@
 
 > [手风琴] 如何撤销LangChain的访问权限？
 >
-> 您在自己的账户中创建并拥有跨账户角色，因此您可以撤消访问权限，而无需涉及LangChain。删除角色或其与LangChain帐户的信任关系，会阻止控制平面承担该角色，并停止数据平面资源的协调。
+> 您在自己的账户中创建并拥有跨账户角色，因此您可以撤消访问权限，而无需涉及 LangChain。删除角色或其与LangChain帐户的信任关系，会阻止控制平面承担该角色，并停止数据平面资源的协调。
 
 > [accordion] 我可以撤销配置期间授予的个人权限吗？
 >
@@ -203,35 +203,39 @@
 
 ＃＃ 运营> [手风琴] BYOC 部署中谁负责什么？
 >
-> LangChain 通过委派的最小权限访问运行控制平面并管理数据平面基础设施。您拥有 AWS 账户、网络连接、数据平面中的数据以及账户内的安全监控。
+> LangChain 运行控制平面并通过委派的最小权限访问管理数据平面基础设施。您拥有 AWS 账户、网络连接、数据平面中的数据以及账户内的安全监控。
 >
 > 有关平台和基础设施、数据和安全以及运营和支持的完整划分，请参阅[BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)。
 
 > [手风琴] 谁升级LangSmith，多久升级一次？
 >
-> LangChain 每天都会升级数据平面中的 LangSmith 版本。升级是滚动进行的，因此不会出现整个服务停机的情况。 Istio 和 KEDA 等支持服务定期升级，LangChain 管理所有 EKS 集群升级。
+> LangChain 每天升级数据平面中的 LangSmith 版本。升级是滚动进行的，因此不会出现整个服务停机的情况。 Istio 和 KEDA 等支持服务定期升级，LangChain 管理所有 EKS 集群升级。
 >
-> 对发布渠道的支持即将推出。参见[Operations](/langsmith/byoc-operations-aws)。
-
-> [手风琴] Kubernetes 升级怎么样？
+> 对发布渠道的支持即将推出。参见[Operations](/langsmith/byoc-operations-aws)。> [手风琴] Kubernetes 升级怎么样？
 >
-> LangChain 在 AWS 支持终止日期之前主动拥有并执行 EKS 升级，并与您协调窗口。
+> 在 AWS 上，LangChain 在 AWS 支持终止日期之前在数据平面的 [maintenance window](/langsmith/byoc-operations-aws#maintenance-window) 中主动拥有并执行 EKS 升级。控制平面升级是透明的。节点组升级使用 make-before-break 语义逐个滚动节点，因此您可能会在 Pod 重新启动时看到短暂的连接重置，但不会丢失数据。参见[Kubernetes cluster upgrades on AWS](/langsmith/byoc-operations-aws#kubernetes-cluster-upgrades)。
 >
-> 控制平面升级是透明的。节点组升级使用 make-before-break 语义逐个滚动节点，因此您可能会在 Pod 重新启动时看到短暂的连接重置，但不会丢失数据。参见[Kubernetes cluster upgrades](/langsmith/byoc-operations-aws#kubernetes-cluster-upgrades)。> [手风琴] 升级会导致停机吗？
+> 在 Azure 上，AKS 在维护时段自动应用 Kubernetes 补丁版本和节点映像更新。参见[Kubernetes cluster upgrades on Azure](/langsmith/byoc-operations-azure#kubernetes-cluster-upgrades)。
 >
-> 不会。服务运行由水平 Pod 自动缩放器调整大小的多个副本，并且 Pod 中断预算限制了同时不可用的副本数量，因此滚动更新和节点耗尽都不会导致服务低于其所需的容量。
+> 在GCP上，GKE集群运行在`REGULAR`发布通道，节点自动升级。参见[GKE and compute](/langsmith/byoc-architecture-gcp#gke-and-compute)。> [手风琴] 升级会导致停机吗？
 >
-> 可能导致停机的维护（例如重新启动 RDS 或 ElastiCache）发生在LangChain 提前与您协调的计划维护时段内。
+> 不会。服务运行由水平 Pod 自动缩放器调整大小的多个副本，并且 Pod 中断预算限制了同时不可用的副本数量。因此，滚动更新和节点耗尽都不会占用低于其所需容量的服务。
+>
+> 可能导致停机的维护（例如数据库重新启动）发生在数据平面的每周维护窗口中：
+>
+> * **AWS**：在 LangSmith UI 或 API 中设置窗口。参见[Maintenance window](/langsmith/byoc-operations-aws#maintenance-window)。
+> * **Azure**：通过API设置窗口。参见[Maintenance window on Azure](/langsmith/byoc-operations-azure#maintenance-window)。
+> * **GCP**：通过API设置窗口。参见[Change data plane settings](/langsmith/byoc-onboarding-gcp#change-data-plane-settings)。
 
 > [手风琴] 谁监控数据平面？
 >
-> LangChain 在配置后操作数据平面，包括监控正常运行时间和错误恢复、扩展、升级和安全修补。由于部署在您自己的帐户中运行，因此您已经操作的云控制也适用于它。
+> LangChain 在配置后操作数据平面，包括监控正常运行时间和错误恢复、扩展、升级和安全修补。由于部署在您自己的帐户中运行，因此您已经操作的云控制也适用于它。> [手风琴] 我可以为 LangSmith BYOC 设置自己的可观察性吗？
+>
+> 是的。您可以在EKS集群中安装收集器、代理等可观察性工具，只要不干扰LangSmith的运行即可。
+>
+> LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因此适用相同的配置。参见[Export LangSmith telemetry to your observability backend](/langsmith/export-backend)。
 
-> [accordion] 我可以为 LangSmith BYOC 设置自己的可观察性吗？
->
-> 是的。您可以在EKS集群中安装收集器、代理等可观测性工具，只要不干扰LangSmith的运行即可。
->
-> LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因此适用相同的配置。参见[Export LangSmith telemetry to your observability backend](/langsmith/export-backend)。> [手风琴] 高可用和容灾是如何处理的？
+> [手风琴] 高可用和容灾是如何处理的？
 >
 > 默认情况下，数据平面已配置为实现高可用性，跨单个区域内的多个可用区运行。所有有状态组件均已备份。
 >
@@ -244,7 +248,7 @@
 > * **RDS**：每天进行备份。
 > * **SmithDB**：S3 中的对象存储保存持久跟踪数据。
 > * **ClickHouse**：在仍然运行它的数据平面上，每天进行备份并存储在 S3 存储桶中。
-> * **ElastiCache**：不进行备份，因为数据是短暂的。> [accordion] LangChain 是否为 BYOC 数据平面提供正常运行时间 SLA？
+> * **ElastiCache**：不进行备份，因为数据是短暂的。> [手风琴] LangChain 是否为 BYOC 数据平面提供正常运行时间 SLA？
 >
 > 不会。数据平面在您的 AWS 账户中运行，因此其可用性取决于您控制的资源，包括账户本身、您配置用于访问数据平面的专用连接以及适用于账户的服务配额和策略。 LangChain 不承诺其不单独控制的基础设施的正常运行时间目标。
 >

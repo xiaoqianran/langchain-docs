@@ -40,7 +40,7 @@ graph TB
 
 ## 配置异步子代理
 
-将异步子代理定义为[⟦T19⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent)规范列表，每个都指向一个代理协议服务器：
+将异步子代理定义为 [⟦T19⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent) 规范列表，每个都指向一个代理协议服务器：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import AsyncSubAgent, create_deep_agent
@@ -72,7 +72,7 @@ agent = create_deep_agent(
 | `url` | `str` |选修的。省略时，使用 ASGI 传输（进程中）。设置后，使用 HTTP 传输到远程代理协议服务器。 |
 | `headers` | `dict[str, str]` |选修的。用于向远程服务器发出请求的附加标头。用于使用自托管代理协议服务器进行自定义身份验证。 |
 | `mode` | `"isolated" \| "fork"` |选修的。控制子代理在启动时接收的对话上下文。默认为`"isolated"`。参见[Choose a launch mode](#choose-a-launch-mode)。 |
-| `update_strategy` | `"interrupt" \| "enqueue"` |选修的。 `update_async_task` 如何在运行期间发送后续信息。默认为`"interrupt"`。参见[Understand the lifecycle](#understand-the-lifecycle)。 |
+| `update_strategy` | `"interrupt" \| "enqueue"` |选修的。 `update_async_task` 如何在跑步活动时发送后续信息。默认为`"interrupt"`。参见[Understand the lifecycle](#understand-the-lifecycle)。 |
 | `webhook` | `str` |选修的。每当此子代理运行完成时，代理服务器都会调用 URL。参见[Deliver results through your app](#deliver-results-through-your-app)。 || `notify_parent` | `bool` |选修的。当子代理完成或在主管空闲时失败时，子代理是否可以唤醒主管。默认为`True`。 |
 
 对于基于 LangGraph 的部署，请在同一 `langgraph.json` 中注册所有图表以进行共同部署设置：
@@ -137,13 +137,13 @@ sequenceDiagram
 >
 > `update_strategy` 需要 `deepagents>=0.7.30`。位于[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。
 
-如果子代理因输入或批准而暂停，**检查**和**列表**将其报告为 `waiting`。更新 `waiting` 任务会删除其挂起的请求，而取消一个任务只会将其标记为 `"cancelled"`，因为它没有活动的运行。参见[Handle subagents waiting for input](#handle-subagents-waiting-for-input)。
+如果子代理暂停输入或批准，**检查**和**列表**将其报告为 `waiting`。更新 `waiting` 任务会删除其挂起的请求，而取消一个任务只会将其标记为 `"cancelled"`，因为它没有活动的运行。参见[Handle subagents waiting for input](#handle-subagents-waiting-for-input)。
 
 在[Agent Server](/langsmith/agent-server)，子代理在完成、失败或需要输入时通知主管。当主管忙碌时，它会在下一次模型调用之前收到这些通知。完成或失败的子代理会通过新的运行唤醒空闲的主管（如果两者都在[same deployment](#single-deployment)上）。只有深度代理的子代理才能唤醒空闲的主管。等待输入的子代理不会唤醒主管。主管在下次运行时会收到该通知。> [!注意]
 >
 > 任务通知需要`deepagents>=0.7.26`，通知元数据需要`deepagents>=0.7.33`。他们在[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。
 
-主管以`HumanMessage` 的形式收到每条通知。通知可以包括图像和其他多模式媒体。每个通知都携带元数据：其`source`是`"async_subagent"`，其`data`是[⟦T71⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/TaskEvent)（`task_id`、`agent_name`、`status`、`run_id`）。使用 `get_notification_metadata` 读取它，以不同于用户消息的方式显示通知：
+主管以`HumanMessage` 的形式收到每条通知。通知可以包括图像和其他多模式媒体。每个通知都携带[notification metadata](/oss/python/langchain/messages#notifications)：其`source`是`"async_subagent"`，其`data`是[⟦T71⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/TaskEvent)（`task_id`、`agent_name`、`status`、`run_id`）。使用 `get_notification_metadata` 读取它，以不同于用户消息的方式显示通知：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.messages import get_notification_metadata
@@ -298,7 +298,7 @@ async_subagents=[
 
 启动时，`start_async_task` 发送父级有效对话历史记录的快照，后跟任务描述。如果父级已压缩其历史记录，则快照包含该压缩上下文，而不是每条原始消息。来自父级的后续消息不会转发给子级。
 
-子代理在新的服务器线程上启动。 Fork模式发送对话消息作为运行输入；它不会复制父级的检查点历史记录或所有父级状态。元数据可以将新线程与其主管关联起来，但该关联本身并不传输对话上下文。
+子代理在新的服务器线程上启动。 Fork模式发送对话消息作为运行输入；它不会复制父级的检查点历史记录或所有父级状态。元数据可以将新线程与其主管相关联，但该关联本身并不传输对话上下文。
 
 **提示缓存重用。** 要获得对分叉对话前缀的缓存命中，请使用与父代理相同的模型、系统提示、工具和提示处理中间件来配置远程代理。 Fork模式复制对话历史记录；它不会同步这些设置。匹配配置是必要的，但还不够：呈现的前缀必须匹配，缓存命中取决于提供者。
 

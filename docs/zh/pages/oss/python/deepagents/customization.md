@@ -8,7 +8,7 @@
 
 围绕您的目标构建安全带。 `create_deep_agent` 为您提供生产就绪的基础：将其连接到您的数据，塑造其行为，并添加您的用例所需的功能。
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -20,7 +20,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -32,7 +32,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -44,7 +44,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -56,7 +56,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -68,7 +68,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -80,7 +80,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -110,7 +110,7 @@ agent = create_deep_agent(
 
 > [手风琴] 全功能签名
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > create_deep_agent(
 >     model: str | BaseChatModel | None = None,
 >     tools: Sequence[BaseTool | Callable | dict[str, Any]] | None = None,
@@ -144,7 +144,7 @@ agent = create_deep_agent(
 
 ## 型号
 
-传递 `provider:model` 格式的 `model` 字符串，或初始化的模型实例。请参阅[supported models](/oss/python/deepagents/models#supported-models)了解所有提供商，并参阅[suggested models](/oss/python/deepagents/models#suggested-models)了解经过测试的建议。
+传递 `provider:model` 格式的 `model` 字符串，或初始化的模型实例。请参阅 [supported models](/oss/python/deepagents/models#supported-models) 了解所有提供商，并参阅 [suggested models](/oss/python/deepagents/models#suggested-models) 了解经过测试的建议。
 
 > [!提示]
 >
@@ -154,15 +154,15 @@ agent = create_deep_agent(
 >
 > 👉 阅读[OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[openai]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[openai]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from deepagents import create_deep_agent
 >
@@ -173,7 +173,7 @@ agent = create_deep_agent(
 > # to use specific model parameters, use init_chat_model directly
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 > from deepagents import create_deep_agent
@@ -184,7 +184,7 @@ agent = create_deep_agent(
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_openai import ChatOpenAI
 > from deepagents import create_deep_agent
@@ -199,15 +199,15 @@ agent = create_deep_agent(
 >
 > 👉 阅读[Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[anthropic]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[anthropic]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from deepagents import create_deep_agent
 >
@@ -218,7 +218,7 @@ agent = create_deep_agent(
 > # to use specific model parameters, use init_chat_model directly
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 > from deepagents import create_deep_agent
@@ -229,7 +229,7 @@ agent = create_deep_agent(
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_anthropic import ChatAnthropic
 > from deepagents import create_deep_agent
@@ -244,15 +244,15 @@ agent = create_deep_agent(
 >
 > 👉 阅读[Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[openai]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[openai]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from deepagents import create_deep_agent
 >
@@ -265,7 +265,7 @@ agent = create_deep_agent(
 > # to use specific model parameters, use init_chat_model directly
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 > from deepagents import create_deep_agent
@@ -281,7 +281,7 @@ agent = create_deep_agent(
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_openai import AzureChatOpenAI
 > from deepagents import create_deep_agent
@@ -301,15 +301,15 @@ agent = create_deep_agent(
 >
 > 👉 阅读[Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[google-genai]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[google-genai]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from deepagents import create_deep_agent
 >
@@ -320,7 +320,7 @@ agent = create_deep_agent(
 > # to use specific model parameters, use init_chat_model directly
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 > from deepagents import create_deep_agent
@@ -331,7 +331,7 @@ agent = create_deep_agent(
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_google_genai import ChatGoogleGenerativeAI
 > from deepagents import create_deep_agent
@@ -344,15 +344,15 @@ agent = create_deep_agent(
 >
 > 👉 阅读[AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[aws]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[aws]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 >
 > # Follow the steps here to configure your credentials:
@@ -366,7 +366,7 @@ agent = create_deep_agent(
 > # to use specific model parameters, use init_chat_model directly
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.chat_models import init_chat_model
 > from deepagents import create_deep_agent
 >
@@ -380,7 +380,7 @@ agent = create_deep_agent(
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_aws import ChatBedrock
 > from deepagents import create_deep_agent
 >
@@ -395,15 +395,15 @@ agent = create_deep_agent(
 >
 > 👉 阅读[HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[huggingface]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[huggingface]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from deepagents import create_deep_agent
 >
@@ -419,7 +419,7 @@ agent = create_deep_agent(
 > # to use specific model parameters, use init_chat_model directly
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 > from deepagents import create_deep_agent
@@ -435,7 +435,7 @@ agent = create_deep_agent(
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 > from deepagents import create_deep_agent
@@ -455,21 +455,21 @@ agent = create_deep_agent(
 >
 > 传递任何[supported model string](/oss/python/deepagents/models#supported-models)，或初始化的模型实例。例如：
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[deepseek]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[deepseek]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 >
 > agent = create_deep_agent(model="provider:model-name")
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from langchain.chat_models import init_chat_model
 >
@@ -477,7 +477,7 @@ agent = create_deep_agent(
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_<provider> import Chat<Provider>
 > # from langchain_deepseek import ChatDeepSeek
 >
@@ -497,7 +497,7 @@ agent = create_deep_agent(
 
 除了用于文件管理和子代理生成的[built-in tools](/oss/python/deepagents/overview#execution-environment)之外，您还可以提供自定义工具：
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -527,7 +527,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -557,7 +557,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -587,7 +587,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -617,7 +617,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -647,7 +647,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -677,7 +677,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -719,7 +719,7 @@ agent = create_deep_agent(
 pip install "langchain[mcp]"
 ```
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -744,7 +744,7 @@ async def main():
         )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -769,7 +769,7 @@ async def main():
         )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -794,7 +794,7 @@ async def main():
         )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -819,7 +819,7 @@ async def main():
         )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -844,7 +844,7 @@ async def main():
         )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -869,7 +869,7 @@ async def main():
         )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -894,13 +894,13 @@ async def main():
         )
 ```
 
-有关详细配置选项，包括 stdio 服务器、OAuth 身份验证、工具过滤和有状态会话，请参阅完整的 [MCP guide](/oss/python/langchain/mcp)。
+有关详细的配置选项，包括 stdio 服务器、OAuth 身份验证、工具过滤和有状态会话，请参阅完整的 [MCP guide](/oss/python/langchain/mcp)。
 
 ## 系统提示
 
 通过`system_prompt=`给代理您自己的指示：
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -914,7 +914,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -926,7 +926,7 @@ agent = create_deep_agent(
     model="openai:gpt-6.1-sol",
     system_prompt=research_instructions,
 )
-``````python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+``````python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -940,7 +940,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -954,7 +954,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -968,7 +968,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -982,7 +982,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -1008,7 +1008,7 @@ agent = create_deep_agent(
 >
 > 自动添加的 [general-purpose subagent](/oss/python/deepagents/subagents#the-general-purpose-subagent) 将其基本提示解析为 **`general_purpose_subagent.system_prompt`（如果设置）-> `HarnessProfile.base_system_prompt`（如果设置）-> SDK 通用默认**，配置文件后缀位于顶部。当两个覆盖字段都被设置时，通用特定的字段获胜，因此调整这两个字段的调用者永远不会看到他们的 GP 覆盖被默默地丢弃：
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import (
 >     GeneralPurposeSubagentProfile,
 >     HarnessProfile,
@@ -1038,7 +1038,7 @@ agent = create_deep_agent(
 
 ### Deep Agents 堆栈
 
-`create_deep_agent` 以固定的顺序构建中间件。 [bare stack](#bare-stack) 只需一个模型即可获得。 [full stack](#full-stack) 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/python/deepagents/profiles) 提供它们时才出现的槽。
+`create_deep_agent` 以固定的顺序构建中间件。只需一个模型即可获得 [bare stack](#bare-stack)。 [full stack](#full-stack)​​ 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/python/deepagents/profiles) 贡献它们时才出现的槽。
 
 #### 裸栈
 
@@ -1060,7 +1060,7 @@ agent = create_deep_agent(
 
 2. [⟦T238⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware)：仅当至少有一个同步子代理可用时。生成并协调子代理来委派任务。包含在[bare stack](#bare-stack)中，因为默认情况下会自动添加通用子代理；通过禁用该子代理并不传递同步`subagents`来省略它。参见[Running without subagents](/oss/python/deepagents/subagents#running-without-subagents)。
 
-3. [⟦T240⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)：当对话时间较长时，压缩消息历史记录以保持在上下文限制内（通过[create_summarization_middleware](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_middleware)）。4. [⟦T241⟧](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware)：当运行在中断后恢复或收到格式错误的工具调用参数时，修复消息历史记录中悬空的工具调用。 **在** Anthropic 提示符缓存和下面的尾堆栈之前运行。
+3. [⟦T240⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)：当对话变长时，压缩消息历史记录以保持在上下文限制内（通过[create_summarization_middleware](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_middleware)）。4. [⟦T241⟧](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware)：当运行在中断后恢复或收到格式错误的工具调用参数时，修复消息历史记录中悬空的工具调用。 **在** Anthropic 提示符缓存和下面的尾堆栈之前运行。
 
 5. [⟦T242⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgentMiddleware)：仅当您配置异步子代理时。
 
@@ -1082,17 +1082,19 @@ agent = create_deep_agent(
 
 13. [⟦T258⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware)：当模型拒绝时提高[⟦T259⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)。它在您的中间件之后运行，因此您传递的 [⟦T260⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 首先会在下一个模型上重试请求。请参阅[Handle a refusal](/oss/python/langchain/middleware/built-in#handle-a-refusal)了解应对方法。
 
-14. **排除工具过滤**：当线束配置文件列出排除工具时，中间件将从代理中删除这些工具。
+14. **排除工具过滤**：当线束配置文件列出排除工具时，中间件将从代理中删除这些工具。> [!注意]
+>
+> 内置Deep Agents中间件将`trace_policy`设置为`TracePolicy(process_inputs=omit_payload)`，因此LangSmith记录生命周期挂钩跨度的空输入，而不是完整的代理状态。仍会跟踪挂钩输出、模型调用和工具调用。 `langchain` 中未设置自己策略的中间件（例如人机交互）不受影响。需要`deepagents>=0.7.9`。
 
-### 同步子代理堆栈内置的**通用**子代理和每个声明性同步`SubAgent`图使用`create_deep_agent`在代码中构建的堆栈。它与大体上的主代理匹配（文件系统、摘要、补丁、配置文件附加、技能、Anthropic和基岩缓存、可选权限），除了子代理图中**没有**[⟦T263⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware)（只有父代理公开`task`工具）。
+### 同步子代理堆栈
+
+内置的**通用**子代理和每个声明性同步`SubAgent`图使用`create_deep_agent`在代码中构建的堆栈。它与主要代理在广义上匹配（文件系统、摘要、补丁、配置文件附加、技能、Anthropic和基岩缓存、可选权限），除了子代理图中**没有**[⟦T267⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware)（只有父代理公开`task`工具）。
 
 当声明性子代理设置 `interrupt_on` 时，该值将转发到子代理的 `create_agent`，从而为已配置的工具调用连接人机交互处理。
 
 ### 预构建中间件
 
-LangChain 公开了额外的预构建中间件，让您可以添加各种功能，例如重试、回退或 PII 检测。更多信息请参见[Prebuilt middleware](/oss/python/langchain/middleware/built-in)。
-
-`deepagents`库还公开了[⟦T268⟧](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_tool_middleware)，使代理能够在适当的时间（例如在任务之间）触发汇总，而不是按固定的令牌间隔。欲了解更多详情，请参阅[Summarization](/oss/python/deepagents/context-engineering#summarization)。
+LangChain 公开了额外的预构建中间件，让您可以添加各种功能，例如重试、回退或 PII 检测。更多信息请参见[Prebuilt middleware](/oss/python/langchain/middleware/built-in)。`deepagents` 库还公开了 [⟦T272⟧](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_tool_middleware)，使代理能够在适当的时间（例如在任务之间）触发汇总，而不是按照固定的令牌间隔。 For more detail, see [Summarization](/oss/python/deepagents/context-engineering#summarization).
 
 ### 特定于提供商的中间件
 
@@ -1102,7 +1104,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
 
 您可以提供额外的中间件来扩展功能、添加工具或实现自定义挂钩：
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1142,7 +1144,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1182,7 +1184,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1222,7 +1224,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1260,7 +1262,9 @@ agent = create_deep_agent(
     tools=[get_weather],
     middleware=[log_tool_calls],
 )
-``````python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1300,7 +1304,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1340,7 +1344,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1378,9 +1382,7 @@ agent = create_deep_agent(
     tools=[get_weather],
     middleware=[log_tool_calls],
 )
-```
-
-> [!警告]
+```> [!警告]
 >
 > **初始化后不要改变属性**
 >
@@ -1389,7 +1391,7 @@ agent = create_deep_agent(
 >
 > **这样做：**
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.agents.middleware import AgentMiddleware
 >
 >
@@ -1403,7 +1405,7 @@ agent = create_deep_agent(
 >
 > 不要**这样做：
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > class CustomMiddlewareBad(AgentMiddleware):
 >     def __init__(self):
 >         self.x = 1
@@ -1414,7 +1416,7 @@ agent = create_deep_agent(
 >
 > 适当的修改，例如修改 `before_agent` 中的 `self.x` 或更改钩子中的其他共享值，可能会导致微妙的错误和竞争条件，因为许多操作同时运行（子代理、并行工具和不同线程上的并行调用）。
 >
-> 有关使用自定义属性扩展状态的完整详细信息，请参阅 [Custom middleware - Custom state schema](/oss/python/langchain/middleware/custom#custom-state-schema)。
+> 有关使用自定义属性扩展状态的完整详细信息，请参阅[Custom middleware - Custom state schema](/oss/python/langchain/middleware/custom#custom-state-schema)。
 >
 > 如果必须在自定义中间件中使用突变，请考虑当子代理、并行工具或并发代理调用同时运行时会发生什么情况。
 
@@ -1422,7 +1424,7 @@ agent = create_deep_agent(
 
 > [!注意]
 >
-> 通过匹配 `.name` 覆盖默认中间件需要 `deepagents>=0.7`。传递一个中间件实例，其 `.name` 与 [Deep Agents stack](#deep-agents-stack) 中的条目匹配，例如 [⟦T274⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)，以就地替换该内置实例，而不是附加重复项。您传递的任何中间件，其 `.name` **不** 匹配内置条目，都不会被替换，它位于最后一个核心中间件条目之后、配置文件、提示缓存和内存之前。完整订购请参见[Full stack](#full-stack)。
+> 通过匹配 `.name` 覆盖默认中间件需要 `deepagents>=0.7`。传递一个中间件实例，其 `.name` 与 [Deep Agents stack](#deep-agents-stack) 中的条目匹配，例如 [⟦T278⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)，以就地替换该内置实例，而不是附加重复项。您传递的任何中间件，其 `.name` **不** 匹配内置条目，都不会被替换，它位于最后一个核心中间件条目之后、配置文件、提示缓存和内存之前。完整订购请参见[Full stack](#full-stack)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -1446,15 +1448,15 @@ agent = create_deep_agent(
 
 > [!注意]
 >
-> 覆盖**替换**默认的中间件实例，但不会与其合并。这意味着您的替代品必须完全配置其所需的任何设置。这对于`FilesystemMiddleware`尤其重要：如果您覆盖它，则必须将`backend`（和`permissions`，如果适用）直接传递给您的自定义实例，因为它不会继承传递给`create_deep_agent()`的`backend=`和`permissions=`。要限制可用的文件系统工具，请将 `tools` 允许列表传递给您的自定义 [⟦T283⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 实例；请参阅[Virtual filesystem access](/oss/python/deepagents/overview#virtual-filesystem-access)“限制文件系统工具”示例。
+> 覆盖 **替换** 默认中间件实例，但不会与其合并。这意味着您的替代品必须完全配置其所需的任何设置。这对于`FilesystemMiddleware`尤其重要：如果您覆盖它，则必须将`backend`（和`permissions`，如果适用）直接传递给您的自定义实例，因为它不会继承传递给`create_deep_agent()`的`backend=`和`permissions=`。要限制可用的文件系统工具，请将 `tools` 允许列表传递给您的自定义 [⟦T287⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 实例；请参阅[Virtual filesystem access](/oss/python/deepagents/overview#virtual-filesystem-access)“限制文件系统工具”示例。
 
-Deep Agents 自动添加的通用子代理从主代理继承其默认中间件的覆盖，而不继承特定于主代理的中间件。通过`subagents=`定义的声明性子代理不会继承主代理的中间件定制。直接在该子代理自己的 [⟦T285⟧](/oss/python/deepagents/subagents#subagent-dictionary-based) 字段中传递覆盖以将其应用到那里；该字段与 [synchronous subagent stack](#synchronous-subagent-stack) 匹配，与 `middleware=` 与主代理的匹配方式相同。
+Deep Agents 自动添加的通用子代理从主代理继承其默认中间件的覆盖，而不继承特定于主代理的中间件。Declarative subagents defined via `subagents=` do not inherit the main agent's middleware customization. Pass the override directly in that subagent's own [⟦T289⟧](/oss/python/deepagents/subagents#subagent-dictionary-based) field to apply it there;该字段与 [synchronous subagent stack](#synchronous-subagent-stack) 匹配，与 `middleware=` 与主要代理的匹配方式相同。
 
 #### 示例
 
 > [手风琴] 汇总触发时调整
 >
-> 使用自定义 `trigger` 和 `keep` 阈值覆盖 [⟦T287⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)，以早于或晚于默认值压缩对话历史记录，并控制每次压缩后有多少条最新消息。
+> 使用自定义 `trigger` 和 `keep` 阈值覆盖 [⟦T291⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)，以早于或晚于默认值压缩对话历史记录，并控制每次压缩后有多少条最新消息。
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
@@ -1477,7 +1479,7 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
 > )
 > ```
 >
-> `trigger` 还接受 `("fraction", ...)` 作为模型上下文窗口的百分比，并且阈值列表将它们与 OR 语义组合起来。有关全套选项，请参阅[⟦T292⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)参考。
+> `trigger` also accepts `("fraction", ...)` for a percentage of the model's context window, and a list of thresholds combines them with OR semantics. See the [⟦T296⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware) reference for the full set of options.
 
 > [手风琴] 用更便宜的型号总结一下
 >
@@ -1485,9 +1487,9 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
 >>
 >> `summarizer` 参数需要`deepagents>=0.7.26`。
 >
-> 使用 `summarizer=` 覆盖 [⟦T295⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware) 以生成具有不同模型或自定义可调用的摘要。主`model`仍然提供配置文件和令牌计数。
+> 使用 `summarizer=` 覆盖 [⟦T299⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware) 以生成具有不同模型或自定义可调用的摘要。主`model`仍然提供配置文件和令牌计数。
 >
-> 传递模型名称字符串或 `BaseChatModel` 实例，以使用 `summary_prompt` 对该模型进行汇总。传递一个`Runnable`或者callable直接生成摘要文本；未使用`summary_prompt`。
+> Pass a model name string or `BaseChatModel` instance to summarize with that model using `summary_prompt`. Pass a `Runnable` or callable to generate the summary text directly; `summary_prompt` is not used.
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
@@ -1509,7 +1511,7 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
 > )
 > ```> [手风琴] 更新提示缓存TTL
 >
-> 覆盖 [⟦T302⟧](https://reference.langchain.com/python/langchain-anthropic/middleware/prompt_caching/AnthropicPromptCachingMiddleware) 以将缓存生命周期延长到默认的 `5m` TTL 之外，这对于轮次间隔较长的代理很有用。请参阅 [Prompt caching](/oss/python/deepagents/overview#prompt-caching) 了解默认情况下如何应用缓存。
+> 覆盖[⟦T306⟧](https://reference.langchain.com/python/langchain-anthropic/middleware/prompt_caching/AnthropicPromptCachingMiddleware)以将缓存生命周期延长到默认的`5m` TTL之外，这对于轮次间隔较长的代理很有用。请参阅 [Prompt caching](/oss/python/deepagents/overview#prompt-caching) 了解默认情况下如何应用缓存。
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
@@ -1529,7 +1531,7 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
 >>
 >> `FilesystemMiddleware` 上的 `tools` 允许名单需要 `deepagents>=0.7`。
 >
-> 使用 `tools` 白名单覆盖 [⟦T307⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware)，以仅向模型公开文件系统工具的子集，而不是完整的默认集。
+> 使用 `tools` 白名单覆盖 [⟦T311⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware)，以仅向模型公开文件系统工具的子集，而不是完整的默认集。
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
@@ -1550,13 +1552,13 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
 >
 > 更多详情请参阅[Restricting filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access)。> [手风琴] 自定义技能目录在系统提示中的显示方式
 >
-> 使用自定义 `system_prompt=` 模板覆盖 [⟦T309⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) 来控制如何
+> 使用自定义 `system_prompt=` 模板覆盖 [⟦T313⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) 来控制如何
 > 自动生成的技能目录被框架起来——例如，添加周围的上下文，
 > 重新排序部分，或将路由提示（优先级、类别偏差）放在同一部分中
-> 块作为目录。模板必须包含`{skills_locations}`，
+> block as the catalog.模板必须包含`{skills_locations}`，
 > 中间件替代的`{skills_list}`和`{skills_load_warnings}`插槽
 > 每回合 — 因此添加技能时目录会自动保持同步，
-> 重命名或删除。
+> renamed, or removed.
 >
 > 下面的示例将路由提示放置在目录旁边：
 >
@@ -1594,10 +1596,10 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
 > ```
 >
 > 在这种情况下，不要同时将 `skills=` 传递给 `create_deep_agent`：覆盖实例
-> 已拥有 `backend` 和 `sources`。任何缺失的插槽（`{skills_locations}`，
-> `{skills_list}`、`{skills_load_warnings}`) 在施工时提高 `ValueError`。> [手风琴] 抑制自动生成的技能目录
+> already owns `backend` and `sources`. Any missing slot (`{skills_locations}`,
+> `{skills_list}`、`{skills_load_warnings}`) 在构建时提高 `ValueError`。> [手风琴] 抑制自动生成的技能目录
 >
-> 使用 `system_prompt=None` 覆盖 [⟦T322⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) 来加载技能，无需
+> 使用 `system_prompt=None` 覆盖 [⟦T326⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) 来加载技能，无需
 > 在系统提示中添加技能部分。技能保留在
 > `state["skills_metadata"]` 和技能文件通过文件系统保持可访问
 > 工具，因此喜欢编写自己的描述块的调用者（例如，
@@ -1631,13 +1633,13 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
 > ```
 >
 > `create_deep_agent`的`system_prompt`中的技能名称、路径和任何手写提示
-> 呼叫者有责任在技能发生变化时保持同步。
+> 当技能发生变化时，呼叫者有责任保持同步。
 
 ### 口译员
 
 使用 [interpreters](/oss/python/deepagents/interpreters) 添加在作用域 QuickJS 运行时中运行 JavaScript 的 `eval` 工具。当代理需要以编程方式组合工具、批处理工作、处理代码中的错误或在没有完整 shell 环境的情况下转换结构化数据时，解释器非常有用。
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1647,7 +1649,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1657,7 +1659,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1667,7 +1669,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1677,7 +1679,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1687,7 +1689,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1697,7 +1699,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1713,7 +1715,7 @@ agent = create_deep_agent(
 
 要隔离详细工作并避免上下文膨胀，请使用子代理：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 
@@ -1755,7 +1757,7 @@ agent = create_deep_agent(
 
 有关更多信息，请参阅[Subagents](/oss/python/deepagents/subagents)。
 
-## 后端深度代理工具可以利用虚拟文件系统来存储、访问和编辑文件。默认情况下，深度代理使用[⟦T329⟧](https://reference.langchain.com/python/deepagents/backends/state/StateBackend)。
+## 后端深度代理工具可以利用虚拟文件系统来存储、访问和编辑文件。默认情况下，深度代理使用[⟦T333⟧](https://reference.langchain.com/python/deepagents/backends/state/StateBackend)。
 
 如果您使用[skills](#skills)或[memory](#memory)，则必须在创建代理之前将所需的技能或内存文件添加到后端。
 
@@ -1765,7 +1767,7 @@ agent = create_deep_agent(
 >
 > 文件在线程内持续存在（通过检查点），并且不会跨线程共享。
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1779,7 +1781,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1793,7 +1795,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1807,7 +1809,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1821,7 +1823,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1835,7 +1837,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1849,7 +1851,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1871,9 +1873,9 @@ agent = create_deep_agent(
 >>
 >> 该后端授予代理直接文件系统读/写访问权限。
 >> 请谨慎使用，并且仅在适当的环境中使用。
->> 更多信息，请参阅[⟦T331⟧](/oss/python/deepagents/backends#filesystembackend-local-disk)。
+>> 更多信息，请参阅[⟦T335⟧](/oss/python/deepagents/backends#filesystembackend-local-disk)。
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1883,7 +1885,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1893,7 +1895,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1903,7 +1905,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1913,7 +1915,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1923,7 +1925,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1933,7 +1935,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1945,7 +1947,7 @@ agent = create_deep_agent(
 >
 >> [!提示]
 >>
->> 将 `FilesystemBackend` 封装在 `CompositeBackend` 中，以防止内部代理数据（卸载的工具结果、对话历史记录）与项目文件一起写入磁盘。请参阅[recommended pattern](/oss/python/deepagents/backends#filesystembackend-local-disk)。> [选项卡] LocalShellBackend
+>> 将 `FilesystemBackend` 包装在 `CompositeBackend` 中，以防止内部代理数据（卸载的工具结果、对话历史记录）与项目文件一起写入磁盘。请参阅[recommended pattern](/oss/python/deepagents/backends#filesystembackend-local-disk)。> [选项卡] LocalShellBackend
 >
 > 直接在主机上执行 shell 的文件系统。提供文件系统工具以及用于运行命令的`execute`工具。
 >
@@ -1953,9 +1955,9 @@ agent = create_deep_agent(
 >>
 >> 该后端授予代理直接文件系统读/写访问权限**和**在您的主机上不受限制的 shell 执行。
 >> 请极其谨慎地使用，并且仅在适当的环境中使用。
->> 更多信息，请参阅[⟦T335⟧](/oss/python/deepagents/backends#localshellbackend-local-shell)。
+>> 更多信息，请参阅[⟦T339⟧](/oss/python/deepagents/backends#localshellbackend-local-shell)。
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -1965,7 +1967,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -1975,7 +1977,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -1985,7 +1987,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -1995,7 +1997,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -2005,7 +2007,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -2015,7 +2017,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -2029,7 +2031,7 @@ agent = create_deep_agent(
 >
 > 提供“跨线程持久化”长期存储的文件系统。
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2043,7 +2045,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2057,7 +2059,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2071,7 +2073,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2085,7 +2087,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2099,7 +2101,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2113,7 +2115,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2139,7 +2141,7 @@ agent = create_deep_agent(
 >
 > LangSmith Hub 存储库中的持久文件系统存储。
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2149,7 +2151,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2159,7 +2161,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2169,7 +2171,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2179,7 +2181,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2189,7 +2191,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2199,7 +2201,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2209,11 +2211,11 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> 欲了解更多详情，请参阅[⟦T338⟧](/oss/python/deepagents/backends#contexthubbackend)。> [选项卡] 复合后端
+> 欲了解更多详情，请参阅[⟦T342⟧](/oss/python/deepagents/backends#contexthubbackend)。> [选项卡] 复合后端
 >
 > 灵活的后端，您可以在文件系统中指定不同的路由以指向不同的后端。
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2230,7 +2232,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2247,7 +2249,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2264,7 +2266,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2281,7 +2283,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2298,7 +2300,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2315,7 +2317,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2334,7 +2336,7 @@ agent = create_deep_agent(
 
 有关更多信息，请参阅[Backends](/oss/python/deepagents/backends)。
 
-### 沙盒
+### 沙箱
 
 沙箱是专门的 [backends](/oss/python/deepagents/backends)，它在具有自己的文件系统和用于 shell 命令的 `execute` 工具的隔离环境中运行代理代码。
 当您希望深度代理写入文件、安装依赖项并运行命令而不更改本地计算机上的任何内容时，请使用沙箱后端。
@@ -2343,15 +2345,15 @@ agent = create_deep_agent(
 
 > [标签] LangSmith
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langsmith
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add langsmith
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LangSmithSandbox
 > from langchain_anthropic import ChatAnthropic
@@ -2383,15 +2385,15 @@ agent = create_deep_agent(
 
 > [标签] 代托纳
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langchain-daytona
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add langchain-daytona
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from daytona import Daytona
 > from deepagents import create_deep_agent
 > from langchain_anthropic import ChatAnthropic
@@ -2423,15 +2425,15 @@ agent = create_deep_agent(
 
 > [选项卡] E2B
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langchain-e2b
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add langchain-e2b
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from e2b import Sandbox
 > from deepagents import create_deep_agent
 > from langchain_anthropic import ChatAnthropic
@@ -2463,15 +2465,15 @@ agent = create_deep_agent(
 
 > [选项卡] 模态
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langchain-modal
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add langchain-modal
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import modal
 > from deepagents import create_deep_agent
 > from langchain_anthropic import ChatAnthropic
@@ -2503,15 +2505,15 @@ agent = create_deep_agent(
 
 > [选项卡] 运行循环
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langchain-runloop
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add langchain-runloop
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 >
 > from deepagents import create_deep_agent
@@ -2547,15 +2549,15 @@ agent = create_deep_agent(
 
 > [标签] 维塞尔
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langchain-vercel-sandbox
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add langchain-vercel-sandbox
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from langchain_anthropic import ChatAnthropic
 > from langchain_vercel_sandbox import VercelSandbox
@@ -2592,7 +2594,7 @@ agent = create_deep_agent(
 某些工具操作可能很敏感，需要人工批准才能执行。
 您可以为每个工具配置批准：
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2631,7 +2633,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2670,7 +2672,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2709,7 +2711,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2748,7 +2750,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2787,7 +2789,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2824,7 +2826,7 @@ agent = create_deep_agent(
     },
     checkpointer=checkpointer,  # Required!
 )
-``````python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+``````python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2864,7 +2866,7 @@ agent = create_deep_agent(
 ```
 
 您可以在工具调用时以及工具调用内部为代理和子代理配置中断。
-欲了解更多信息，请参阅[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。
+有关更多信息，请参阅[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。
 
 ## 技能
 
@@ -2879,7 +2881,7 @@ agent = create_deep_agent(
 
 > [选项卡] 状态后端
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -2914,7 +2916,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -2949,7 +2951,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -2984,7 +2986,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -3019,7 +3021,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -3054,7 +3056,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -3089,7 +3091,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -3126,7 +3128,7 @@ agent = create_deep_agent(
 
 > [选项卡] 商店后端
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
@@ -3161,7 +3163,7 @@ agent = create_deep_agent(
 
 > [选项卡] 文件系统后端
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends.filesystem import FilesystemBackend
@@ -3199,7 +3201,7 @@ agent = create_deep_agent(
 
 ## 内存
 
-使用 [⟦T342⟧ files](https://agents.md/) 为您的深度代理提供额外的上下文。
+使用 [⟦T346⟧ files](https://agents.md/) 为您的深度代理提供额外的上下文。
 
 > [!提示]
 >
@@ -3207,7 +3209,7 @@ agent = create_deep_agent(
 
 > [选项卡] 状态后端
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3243,7 +3245,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3279,7 +3281,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3315,7 +3317,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3351,7 +3353,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3387,7 +3389,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3423,7 +3425,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3461,7 +3463,7 @@ agent = create_deep_agent(
 
 > [选项卡] 商店后端
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3504,7 +3506,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3547,7 +3549,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3590,7 +3592,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3633,7 +3635,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3676,7 +3678,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3719,7 +3721,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3764,7 +3766,7 @@ agent = create_deep_agent(
 
 > [选项卡] 文件系统后端
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -3799,7 +3801,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -3834,7 +3836,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -3869,7 +3871,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -3904,7 +3906,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -3939,7 +3941,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -3974,7 +3976,7 @@ agent = create_deep_agent(
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -4015,7 +4017,7 @@ agent = create_deep_agent(
 
 单个配置文件可以包含：自定义基本系统提示符 (`base_system_prompt`)、附加后缀 (`system_prompt_suffix`)、工具描述覆盖、要排除的工具或中间件、要注入的其他中间件以及对自动添加的通用子代理的编辑。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import HarnessProfile, register_harness_profile
 
 # Append a system-prompt suffix whenever gpt-6.1-sol is selected.
@@ -4023,15 +4025,15 @@ register_harness_profile(
     "openai:gpt-6.1-sol",
     HarnessProfile(system_prompt_suffix="Respond in under 100 words."),
 )
-```请参阅 [Profiles](/oss/python/deepagents/profiles) 了解注册密钥、合并语义和插件打包。更窄的配套 API [provider profiles](/oss/python/deepagents/profiles#provider-profiles) 为提供者打包了模型构造参数（API 密钥、超时、重试设置）。
+```请参阅 [Profiles](/oss/python/deepagents/profiles) 了解注册密钥、合并语义和插件打包。一个更窄的配套 API，[provider profiles](/oss/python/deepagents/profiles#provider-profiles)，为提供者打包模型构造参数（API 密钥、超时、重试设置）。
 
 ## 结构化输出
 
-Deep Agents 支持[structured output](/oss/python/langchain/structured-output)。
+Deep Agents支持[structured output](/oss/python/langchain/structured-output)。
 您可以通过将其作为`response_format`参数传递给`create_deep_agent()`调用来设置所需的结构化输出模式。
 当模型生成结构化数据时，它会被捕获、验证并在深度代理状态的“structural_response”键中返回。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 
@@ -4091,7 +4093,7 @@ print(result["structured_response"])
 # location='San Francisco, California' temperature=18.3 condition='Sunny' humidity=48 wind_speed=7.6 forecast='Pleasant sunny conditions expected to continue with temperatures around 64°F (18°C) during the day, dropping to around 52°F (11°C) at night. Clear skies with minimal precipitation expected.'
 ```
 
-> [卡][View example trace](https://smith.langchain.com/public/16a3e30d-ebfc-49f4-93f4-d1a9a676403d/r)
+> [卡] [View example trace](https://smith.langchain.com/public/16a3e30d-ebfc-49f4-93f4-d1a9a676403d/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -4099,7 +4101,7 @@ print(result["structured_response"])
 
 ## 高级
 
-`create_deep_agent` 在[⟦T351⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 之上预组装中间件堆栈。要构建完全自定义的代理（准确选择要包含的功能），请参阅[Configure the harness](/oss/python/langchain/agents#configure-the-harness)。
+`create_deep_agent` 在[⟦T355⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 之上预组装中间件堆栈。要构建完全自定义的代理（准确选择要包含的功能），请参阅[Configure the harness](/oss/python/langchain/agents#configure-the-harness)。
 
 ***
 

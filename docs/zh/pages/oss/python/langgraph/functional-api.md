@@ -4,7 +4,7 @@
 
 # 功能 API 概述
 
-使用LangSmith部署的入口点和任务包装其他框架。涵盖检查点、恢复规则和常见陷阱。
+使用 LangSmith 代理服务器的入口点和任务包装其他框架。涵盖检查点、恢复规则和常见陷阱。
 
 **函数式 API** 使用 LangGraph 运行时功能（[persistence](/oss/python/langgraph/persistence)、[memory](/oss/python/langgraph/add-memory)、[human-in-the-loop](/oss/python/langgraph/interrupts) 和 [streaming](/oss/python/langgraph/streaming)）包装普通函数。当您已经拥有现有代码或正在使用不同的框架并且想要 [deploy it on LangSmith](/langsmith/deploy-other-frameworks) 而不将该代理重写为图形时，请使用它。首选[Graph API](/oss/python/langgraph/graph-api)来构建新代理。
 
@@ -17,10 +17,10 @@
 
 ## 何时使用函数式 API
 
-|构建|使用|
+|构建 |使用 |
 | - | - |
 |新的LangGraph代理和工作流程| [Graph API](/oss/python/langgraph/graph-api) |
-|您想要在 LangSmith 部署 | 的另一个框架（Claude Agent SDK、Strands、CrewAI、AutoGen 等）中的现有代理通过 [Deploy other frameworks](/langsmith/deploy-other-frameworks) 的功能 API |与 Graph API 相比，Functional API 使用普通语言控制流（`if` / `else`、循环和调用），将值范围保持在入口点和任务范围内，而不是共享的 [state](/oss/python/langgraph/graph-api#state) 模式，将任务结果保存在入口点检查点上而不是在每个 [super-step](/oss/python/langgraph/graph-api#super-steps) 之后，并且没有静态图形可视化。
+|您想要在 LangSmith 代理服务器上使用的另一个框架（Claude Agent SDK、Strands、CrewAI、AutoGen 等）中的现有代理 |通过 [Deploy other frameworks](/langsmith/deploy-other-frameworks) 的功能 API |与 Graph API 相比，Functional API 使用普通语言控制流（`if` / `else`、循环和调用），将值范围保持在入口点和任务范围内，而不是共享的 [state](/oss/python/langgraph/graph-api#state) 模式，将任务结果保存在入口点检查点上而不是在每个 [super-step](/oss/python/langgraph/graph-api#super-steps) 之后，并且没有静态图形可视化。
 
 ## 入口点
 
@@ -28,7 +28,7 @@
 
 ### 定义
 
-当您需要坚持或人参与时，请通过[checkpointer](/oss/python/langgraph/persistence)。在配置中使用 `thread_id` 标识每次运行。线程是一次对话或工作流程运行的持久标识。
+当您需要坚持或人在循环中时，请通过[checkpointer](/oss/python/langgraph/persistence)。在配置中使用 `thread_id` 标识每次运行。线程是一次对话或工作流程运行的持久标识。
 
 **入口点**是一个用 `@entrypoint` 修饰的函数。
 

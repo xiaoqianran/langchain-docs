@@ -43,7 +43,7 @@ def get_user_info() -> str:
 
 
 agent = create_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[get_user_info],
     checkpointer=InMemorySaver(),  # [!code highlight]
 )
@@ -75,7 +75,7 @@ def get_user_info() -> str:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[get_user_info],
     checkpointer=InMemorySaver(),  # [!code highlight]
 )
@@ -288,7 +288,7 @@ DB_URI = "postgresql://postgres:postgres@localhost:5432/postgres?sslmode=disable
 with PostgresSaver.from_conn_string(DB_URI) as checkpointer:
     checkpointer.setup() # auto create tables in PostgreSQL
     agent = create_agent(
-        "gpt-5.5",
+        "gpt-6.1-sol",
         tools=[get_user_info],
         checkpointer=checkpointer,  # [!code highlight]
     )
@@ -312,7 +312,7 @@ class CustomAgentState(AgentState):  # [!code highlight]
     preferences: dict  # [!code highlight]
 
 agent = create_agent(
-    "gpt-5.5",
+    "gpt-6.1-sol",
     tools=[get_user_info],
     state_schema=CustomAgentState,  # [!code highlight]
     checkpointer=InMemorySaver(),
@@ -389,7 +389,7 @@ def trim_messages(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
     }
 
 agent = create_agent(
-    "gpt-5.5",
+    "gpt-6.1-sol",
     tools=[...],
     middleware=[trim_messages],
     checkpointer=InMemorySaver(),
@@ -417,7 +417,7 @@ If you'd like me to call you a nickname or use a different name, just say the wo
 
 要从图形状态中删除消息，您可以使用`RemoveMessage`。
 
-要使 `RemoveMessage` 工作，您需要将状态密钥与 [⟦T39⟧](https://reference.langchain.com/python/langgraph/graph/message/add_messages) [reducer](/oss/python/langgraph/graph-api#reducers) 一起使用。
+为了使 `RemoveMessage` 工作，您需要将状态密钥与 [⟦T39⟧](https://reference.langchain.com/python/langgraph/graph/message/add_messages) [reducer](/oss/python/langgraph/graph-api#reducers) 一起使用。
 
 默认的 [⟦T40⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState) 提供了这一点。
 
@@ -533,7 +533,7 @@ from langchain_core.runnables import RunnableConfig
 checkpointer = InMemorySaver()
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[...],
     middleware=[
         SummarizationMiddleware(
