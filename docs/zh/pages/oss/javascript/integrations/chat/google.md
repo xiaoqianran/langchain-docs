@@ -8,7 +8,7 @@
 
 该库支持访问各种 Google 模型，包括 Gemini
 系列模型及其 Nano Banana 图像生成模型。您可以访问这些
-通过 Google 的 [Google AI](https://ai.google.dev/) API 进行模型（有时也
+通过 Google 的 [Google AI](https://ai.google.dev/) API（有时也
 称为 Generative AI API 或 AI Studio API）或通过 Google Cloud Platform
 [Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform)服务。
 
@@ -28,7 +28,7 @@
 ### 集成细节
 
 |班级 |套餐 |可串行化| PY支持|下载 |版本 |
-| :- | :- | :-: | :-: | :-: | :-: |
+| :-| :-| :-: | :-: | :-: | :-: |
 | [⟦T46⟧](https://reference.langchain.com/javascript/langchain-google/index/ChatGoogle) | [⟦T47⟧](https://www.npmjs.com/package/@langchain/google) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/google?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/google?style=flat-square\&label=%20&) |
 
 ### 模型特点
@@ -575,7 +575,7 @@ Google 的 Gemini 2.5 和 Gemini 3 型号支持“思考”或“推理”步骤
   * `> 0`：设置具体的代币预算。
 
 * `reasoningEffort`（或`thinkingLevel`）：设置相对努力。
-  * 值：`"minimal"`、`"low"`、`"medium"`、`"high"`、`"xhigh"`（`gemini-4-hydrogen` 支持）。
+  * 值：`"minimal"`、`"low"`、`"medium"`、`"high"`、`"xhigh"`（`gemini-4-hydrogen` 和 `gemini-4-neon` 支持；`gemini-4-neon` 需要 `@langchain/google` 0.2.16 或更高版本）。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
@@ -711,7 +711,7 @@ for (const [index, block] of res.contentBlocks.entries()) {
 ### 多扬声器 TTS
 
 您还可以为单个请求配置多个扬声器。这很有用
-双子座读剧本。简化的 `speechConfig` 需要您分配
+双子座读剧本。为此，简化的`speechConfig`需要您分配
 将 `speaker` 分配给每个预定义的 `name` 代表语音，然后使用它
 脚本中的发言人。
 
@@ -733,7 +733,7 @@ const res = await multiSpeakerLlm.invoke(`
 
 ## 交互API> [!注意]
 >
-> 交互 API 支持是实验性的，需要 `@langchain/google>=0.2.13`。
+> 交互 API 支持处于实验阶段，需要 `@langchain/google>=0.2.13`。
 
 默认情况下，`ChatGoogle`通过`generateContent` API调用Gemini。要使用
 [Interactions API](https://ai.google.dev/api/interactions-api) 相反，设置

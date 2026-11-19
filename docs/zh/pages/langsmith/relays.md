@@ -8,7 +8,7 @@
 
 > [!注意]
 >
-> 继电器位于[alpha](/langsmith/release-stages)。要为您的组织请求访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
+> 继电器位于[beta](/langsmith/release-stages)。要为您的组织请求访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
 
 中继通过您自己的网络发送一些 [sandbox's](/langsmith/sandboxes) 出站连接。您在网络内运行 LangSmith 连接器，并将中继规则添加到沙箱的代理配置中。当沙箱连接到规则匹配的主机时，连接将从连接器而不是LangSmith离开。使用中继来访问只能在网络内部访问的服务，例如内部数据库或 API，或者从网络的 IP 地址发出请求。
 

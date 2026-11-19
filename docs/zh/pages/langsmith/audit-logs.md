@@ -21,7 +21,7 @@ LangSmith 审核日志提供组织内所采取的管理和配置操作的防篡�
 
 ## 先决条件
 
-* 您的组织必须使用[**Enterprise** plan](/langsmith/pricing-plans)。
+* 您的组织必须使用 [**Enterprise** plan](/langsmith/pricing-plans)。
 * 您必须具有 **组织管理员** 或 **组织操作员** 角色 ([⟦T3⟧ permission](/langsmith/rbac#organization-admin)) 才能查看审核日志。
 
 ## 记录什么审核日志记录对组织设置、成员资格、凭据、工作区和其他资源的更改。每个事件包括时间戳、参与者、操作名称、受影响的资源以及是否成功。有关操作名称的完整列表，请参阅[Tracked operations reference](#tracked-operations-reference)。
@@ -32,7 +32,7 @@ LangSmith 审核日志提供组织内所采取的管理和配置操作的防篡�
 
 该表显示每个事件的时间、参与者、工作区、操作、状态和受影响的资源。单击一行可查看 JSON 格式的完整原始事件。使用表格上方的过滤器来缩小结果范围。
 
-还可以通过[API](#query-audit-logs-via-api)获取审核日志。
+审核日志也可通过 [API](#query-audit-logs-via-api) 获得。
 
 ## 保留
 
@@ -58,7 +58,7 @@ LangSmith 审核日志提供组织内所采取的管理和配置操作的防篡�
   >
   > 此环境变量对个人组织没有影响。
 
-有关自托管版本的更多详细信息，请参阅[self-hosted changelog](/langsmith/self-hosted-changelog)。
+有关自托管版本的更多详细信息，请参阅 [self-hosted changelog](/langsmith/self-hosted-changelog)。
 
 ## 通过API查询审计日志
 
@@ -92,50 +92,11 @@ curl -G \
 | `unmapped.original_audit_log` |完整的LangSmith本机审计日志记录，包括`organization_id`和`workspace_id`。 |
 | `unmapped.original_audit_log.enrichments.resource_owner_ls_user_id` |拥有操作所操作资源的成员的 UUID，用于记录该资源的操作，例如停用或删除个人访问令牌。与`actor.user.uid`不同的值表示管理员对另一个成员的资源进行了操作。 |
 
-## 转发到外部系统要将审核日志事件转发到外部 SIEM 或日志记录平台，请运行一个计划函数来提取每个新的事件窗口。在当前时间前 2 分钟结束每个窗口，因为事件可能会在请求后大约一分钟出现。有关完整方法和使用 Splunk 的有效示例，请参阅 [Forward audit logs to a SIEM](/langsmith/audit-logs-siem)。
+## 转发到外部系统要将审核日志事件转发到外部 SIEM 或日志记录平台，请运行一个计划函数来提取每个新的事件窗口。在当前时间前 2 分钟结束每个窗口，因为事件可能会在请求后大约一分钟出现。有关完整方法和 Splunk 的有效示例，请参阅 [Forward audit logs to a SIEM](/langsmith/audit-logs-siem)。
 
 ## 跟踪操作参考
 
-|类别 |运营（`api.operation`）|
-| - | - |
-| **API 密钥和凭证** | `create_api_key`、`delete_api_key`、`create_personal_access_token`、`delete_personal_access_token`、`create_service_key`、`delete_service_key`、`update_service_key`、`create_service_account`、`delete_service_account`、`revoke_personal_access_token`、 `list_org_personal_access_tokens`、`list_all_org_personal_access_tokens`、`list_org_service_keys` |
-| **角色** | `create_role`、`update_role`、`delete_role` |
-| **组织** | `create_organization`、`create_provisioned_saas_org`、`create_tenant`、`invite_provisioned_org_member`、`claim_pending_organization_invite`、`delete_pending_organization_invite` |
-| **组织成员** | `invite_user_to_org`、`invite_users_to_org_batch`、`update_org_member`、`delete_org_member`、`delete_org_pending_member`、`add_basic_auth_users_to_org`、`update_basic_auth_user` |
-| **SSO 和身份验证** | `create_sso_settings`、`update_sso_settings`、`delete_sso_settings`、`update_login_methods`、`update_default_sso_provision_organization`、`get_sso_settings`、`get_sso_settings_current`、`get_login_methods`、`send_sso_email_confirmation`、`confirm_sso_user_email`、 `login` |
-| **SCIM 配置** | `create_scim_token`、`update_scim_token`、`delete_scim_token`、`create_scim_user`、`update_scim_user`、`delete_scim_user`、`create_scim_group`、`update_scim_group`、`delete_scim_group` |
-| **账单和业务信息** | `update_organization_info`、`update_business_info`、`update_payment_plan`、`update_payment_method`、`create_payment_setup_intent`、`create_payment_checkout_session`、`create_payment_account_link` |
-| **工作空间** | `create_workspace`、`update_workspace`、`delete_workspace`、`add_member_to_workspace`、`add_members_to_workspace_batch`、`delete_workspace_member`、`update_workspace_member`、`delete_workspace_pending_member`、`claim_pending_workspace_invite`、`delete_pending_workspace_invite`、 `update_workspace_secrets`、`unshare_entities`、`set_tenant_handle` |
-| **数据保留和使用限制** | `update_ttl_settings`、`update_usage_limit`、`delete_usage_limit` |
-| **追踪项目** | `update_tracer_session`、`delete_tracer_session`、`delete_tracer_sessions` || **代理** | `create_agent`、`create_agent_environment`、`update_agent`、`delete_agent`、`create_agent_runtime_binding`、`mint_agent_access_token` |
-| **运行和跟踪** | `query_run`、`query_runs`、`query_trace`、`query_trace_messages`、`batch_query_trace_messages`、`query_threads`、`query_thread_traces`、`read_run`、`read_runs`、 `delete_runs`、`get_run_cluster`、`generate_runs_query` |
-| **数据集** | `create_dataset`、`create_csv_dataset`、`update_dataset`、`delete_dataset`、`delete_datasets`、`update_dataset_version`、`update_dataset_splits`、`share_dataset`、`unshare_dataset`、 `clone_dataset`、`download_dataset`、`generate_dataset`、`generate_shared_dataset_query`、`get_dataset_comparison_view`、`stream_dataset_comparison_view`、`read_dataset_delta`、`read_shared_delta`、`read_shared_delta_stream`、 `create_experiment_via_upload`、`create_playground_experiment`、`create_comparative_experiment`、`delete_comparative_experiment` |
-| **示例** | `create_example`、`create_examples`、`update_example`、`update_examples`、`delete_example`、`delete_examples`、`read_example`、`read_examples`、`get_example`、 `list_examples`、`sync_examples`、`validate_example`、`validate_examples` |
-| **实验** | `create_experiment_view_override`、`update_experiment_view_override`、`delete_experiment_view_override`、`get_experiment_view_override`、`get_experiment_view_overrides`、`evaluate_experiment` |
-| **评估者** | `create_evaluator`、`update_evaluator`、`delete_evaluator`、`bulk_delete_evaluators`、`execute_custom_code` |
-| **反馈** | `create_feedback_config`、`update_feedback_config`、`delete_feedback_config`、`create_feedback_formula`、`update_feedback_formula`、`delete_feedback_formula`、`read_feedback`、`read_feedbacks`、`stream_feedback_delta` |
-| **注释队列** | `create_annotation_queue`、`update_annotation_queue`、`delete_annotation_queue`、`delete_annotation_queues`、`populate_annotation_queue`、`export_annotation_queue`、`add_annotation_queue_reviewer`、`remove_annotation_queue_reviewer`、`add_runs_to_annotation_queue`、 `create_annotation_queue_run_status`、`update_annotation_queue_run`、`get_annotation_queue_run`、`get_annotation_queue_runs`、`delete_annotation_queue_run`、`delete_annotation_queue_runs`、`resolve_annotation_queue_run`、`get_pairwise_queue`、`list_pairwise_queues`、 `list_pairwise_entries` |
-| **警报** | `create_alert_rule`、`update_alert_rule`、`delete_alert_rule`、`test_alert_rule` |
-| **过滤视图** | `create_filter_view`、`update_filter_view`、`delete_filter_view`、`rename_filter_view` |
-| **提示提交和中心** | `create_commit`、`create_directory_commit`、`delete_directory`、`create_hub_environment`、`update_hub_environment`、`delete_hub_environment` |
-| **提示画布快速操作** | `create_prompt_canvas_quick_action`、`update_prompt_canvas_quick_action`、`delete_prompt_canvas_quick_action` |
-| **提示 webhook** | `create_prompt_webhook`、`update_prompt_webhook`、`delete_prompt_webhook`、`test_prompt_webhook` || **部署** | `create_deployment`、`update_deployment`、`delete_deployment` |
-| **批量出口** | `create_bulk_export`, `cancel_bulk_export`, `get_bulk_export`, `get_bulk_export_run`, `get_bulk_export_runs`, `get_bulk_export_runs_filtered`, `list_bulk_exports`, `create_bulk_export_destination`, `update_bulk_export_destination`, `read_bulk_export_destination`、`list_bulk_export_destinations` |
-| **资源标签** | `create_tag_key`, `update_tag_key`, `delete_tag_key`, `create_tag_value`, `update_tag_value`, `delete_tag_value`, `create_tagging`, `delete_tagging` |
-| **访问政策** | `create_access_policy`, `delete_access_policy`, `list_access_policies`, `read_access_policy`, `attach_access_policies`, `read_role_access_policies`, `read_user_group_access_policies` |
-| **用户组** | `create_user_group`、`update_user_group`、`delete_user_group`、`add_user_group_members`、`remove_user_group_member`、`attach_user_group_access_policy`、`detach_user_group_access_policy`、`create_user_group_workspace_grant`、`update_user_group_workspace_grant`、 `delete_user_group_workspace_grant` |
-| **自定义图表** | `create_chart`、`update_chart`、`delete_chart`、`read_chart`、`read_charts`、`read_chart_preview`、`create_chart_section`、`update_chart_section`、`delete_chart_section`、 `clone_chart_section`、`read_chart_section`、`create_org_chart`、`update_org_chart`、`delete_org_chart`、`create_org_chart_section`、`update_org_chart_section`、`delete_org_chart_section`、`read_tracing_dashboard` |
-| **型号定价** | `create_model_price_map`、`update_model_price_map`、`delete_model_price_map` |
-| **MCP 服务器和工具** | `create_mcp_server`、`update_mcp_server`、`delete_mcp_server`、`register_mcp_server_oauth`、`mcp_proxy`、`create_mcp_vendor_settings`、`update_mcp_vendor_settings`、`delete_mcp_vendor_settings`、`invalidate_mcp_tools_cache`、 `create_tool`、`update_tool`、`delete_tool` |
-| **网关政策** | `create_gateway_policy`、`update_gateway_policy`、`delete_gateway_policy` |
-| **锻造配置** | `create_forge_configuration`、`update_forge_configuration`、`delete_forge_configuration`、`trigger_forge_configuration` |
-| **洞察工作** | `create_insights_job`、`update_insights_job`、`delete_insights_job`、`create_insights_job_config`、`update_insights_job_config`、`delete_insights_job_config`、`generate_insights_job_config`、`get_insights_job_runs` |
-| **队列使用限制和 webhook** | `create_fleet_usage_limit`、`update_fleet_usage_limit`、`delete_fleet_usage_limit`、`create_fleet_webhook`、`update_fleet_webhook`、`delete_fleet_webhook`、`test_fleet_webhook` |
-| **沙盒代理配置文件** | `create_sandbox_proxy_profile`、`update_sandbox_proxy_profile`、`delete_sandbox_proxy_profile` |
-| **游乐场设置** | `create_playground_settings`、`update_playground_settings`、`delete_playground_settings` || **自托管许可** | `create_self_hosted_customer`、`update_self_hosted_customer`、`mint_self_hosted_license`、`update_self_hosted_license` |
-| **功能模型默认值** | `upsert_feature_default_model`、`delete_feature_default_model`、`upsert_feature_disabled_model`、`delete_feature_disabled_model` |
-| **入职** | `create_onboarding_state`、`update_onboarding_state` |
-| **NPS** | `submit_nps_response` |
+有关当前支持的 `api.operation` 值列表，请参阅 [Get Audit Logs Swagger reference](https://api.smith.langchain.com/docs#/audit-logs/get_audit_logs_api_v1_audit_logs_get) 中的 `operations` 参数。
 
 ## 自托管版本可用性
 
@@ -143,13 +104,13 @@ curl -G \
 
 > [!注意]
 >
-> `0.15.0-rc.*` 候选版本中引入的操作可在 `0.15.0` 稳定版本及更高版本中使用。频道详情请参阅[Release policy](/langsmith/release-versions)。
+> `0.15.0-rc.*` 候选版本中引入的操作可在 `0.15.0` 稳定版本及更高版本中使用。通道详情请参考[Release policy](/langsmith/release-versions)​​。
 
 > [手风琴] 0.12.33
 >
-> `add_member_to_workspace`、`add_members_to_workspace_batch`、`cancel_bulk_export`、`create_api_key`、`create_bulk_export`、`create_bulk_export_destination`、`create_personal_access_token`、`create_service_key`、`create_tag_key`、 `create_tag_value`、`create_tagging`、`create_workspace`、`delete_api_key`、`delete_personal_access_token`、`delete_service_key`、`delete_tag_key`、`delete_tag_value`、`delete_tagging`、 `delete_usage_limit`、`delete_workspace`、`delete_workspace_member`、`delete_workspace_pending_member`、`set_tenant_handle`、`unshare_entities`、`update_organization_info`、`update_tag_key`、`update_tag_value`、 `update_ttl_settings`、`update_usage_limit`、`update_workspace`、`update_workspace_member`、`update_workspace_secrets`> [手风琴] 0.12.34
+> `add_member_to_workspace`、`add_members_to_workspace_batch`、`cancel_bulk_export`、`create_api_key`、`create_bulk_export`、`create_bulk_export_destination`、`create_personal_access_token`、`create_service_key`、`create_tag_key`、`create_tag_value`、 `create_tagging`、`create_workspace`、`delete_api_key`、`delete_personal_access_token`、`delete_service_key`、`delete_tag_key`、`delete_tag_value`、`delete_tagging`、`delete_usage_limit`、`delete_workspace`、 `delete_workspace_member`、`delete_workspace_pending_member`、`set_tenant_handle`、`unshare_entities`、`update_organization_info`、`update_tag_key`、`update_tag_value`、`update_ttl_settings`、`update_usage_limit`、`update_workspace`、 `update_workspace_member`、`update_workspace_secrets`> [手风琴] 0.12.34
 >
-> `add_basic_auth_users_to_org`、`clone_chart_section`、`confirm_payment_checkout_session`、`create_chart`、`create_chart_section`、`create_deployment`、`create_model_price_map`、`create_org_chart`、`create_org_chart_section`、 `create_payment_account_link`、`create_payment_checkout_session`、`create_payment_setup_intent`、`create_role`、`create_sso_settings`、`delete_chart`、`delete_chart_section`、`delete_deployment`、`delete_model_price_map`、 `delete_org_chart`、`delete_org_chart_section`、`delete_org_member`、`delete_org_pending_member`、`delete_role`、`delete_sso_settings`、`invite_user_to_org`、`invite_users_to_org_batch`、`update_basic_auth_user`、 `update_business_info`、`update_chart`、`update_chart_section`、`update_default_sso_provision_organization`、`update_deployment`、`update_login_methods`、`update_model_price_map`、`update_org_chart`、`update_org_chart_section`、 `update_org_member`、`update_payment_method`、`update_payment_plan`、`update_role`、`update_sso_settings`
+> `add_basic_auth_users_to_org`、`clone_chart_section`、`confirm_payment_checkout_session`、`create_chart`、`create_chart_section`、`create_deployment`、`create_model_price_map`、`create_org_chart`、`create_org_chart_section`、`create_payment_account_link`、 `create_payment_checkout_session`、`create_payment_setup_intent`、`create_role`、`create_sso_settings`、`delete_chart`、`delete_chart_section`、`delete_deployment`、`delete_model_price_map`、`delete_org_chart`、`delete_org_chart_section`、 `delete_org_member`、`delete_org_pending_member`、`delete_role`、`delete_sso_settings`、`invite_user_to_org`、`invite_users_to_org_batch`、`update_basic_auth_user`、`update_business_info`、`update_chart`、`update_chart_section`、 `update_default_sso_provision_organization`、`update_deployment`、`update_login_methods`、`update_model_price_map`、`update_org_chart`、`update_org_chart_section`、`update_org_member`、`update_payment_method`、`update_payment_plan`、`update_role`、 `update_sso_settings`
 
 > [手风琴] 0.13.3
 >

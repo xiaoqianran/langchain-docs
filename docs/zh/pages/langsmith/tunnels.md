@@ -8,7 +8,7 @@
 
 > [!注意]
 >
-> 隧道位于[alpha](/langsmith/release-stages)。要为您的组织请求访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
+> 隧道位于[beta](/langsmith/release-stages)。要为您的组织请求访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
 
 隧道可让 LangSmith 到达在您的专用网络上运行的服务，例如模型端点或 MCP 服务器，而无需向 Internet 开放该服务。您在网络内运行一个小型连接器。连接器打开到 LangSmith 的出站连接，LangSmith 通过该连接发送服务请求。要通过网络发送沙箱的出站连接，请使用 [relay](/langsmith/relays)。
 

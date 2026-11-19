@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 本概述涵盖**基于文本的嵌入模型**。 LangChain 目前不支持多模态嵌入。
+> 本概述涵盖**基于文本的嵌入模型**。 LangChain 目前不支持多模式嵌入。
 >
 > 参见[top embedding models](#top-integrations)。
 
@@ -38,7 +38,7 @@
 * **欧氏距离**：测量点之间的直线距离。
 * **点积**：测量一个向量投射到另一个向量上的程度。
 
-这是计算两个向量之间的余弦相似度的示例：
+下面是计算两个向量之间的余弦相似度的示例：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import numpy as np
@@ -65,24 +65,24 @@ LangChain通过[Embeddings](https://reference.langchain.com/python/langchain-cor
 > 该界面允许使用不同的策略嵌入查询和文档，尽管大多数提供商在实践中以相同的方式处理它们。
 
 ## 顶级集成|整合 |下载 |
-| :- | :- |
-| [⟦T5⟧](/oss/python/integrations/embeddings/azure_openai) | [  ⟦T132⟧](https://pypi.org/project/langchain-openai/) |
-| [⟦T6⟧](/oss/python/integrations/embeddings/openai) | [  ⟦T133⟧](https://pypi.org/project/langchain-openai/) |
-| [⟦T7⟧](/oss/python/integrations/embeddings/google_generative_ai) | [  ⟦T134⟧](https://pypi.org/project/langchain-google-genai/) |
-| [⟦T8⟧](/oss/python/integrations/embeddings/ollama) | [  ⟦T135⟧](https://pypi.org/project/langchain-ollama/) |
-| [⟦T9⟧](/oss/python/integrations/embeddings/sentence_transformers) | [  ⟦T136⟧](https://pypi.org/project/langchain-huggingface/) |
-| [⟦T10⟧](/oss/python/integrations/embeddings/mistralai) | [  ⟦T137⟧](https://pypi.org/project/langchain-mistralai/) |
-| [⟦T11⟧](/oss/python/integrations/embeddings/cohere) | [  ⟦T138⟧](https://pypi.org/project/langchain-cohere/) |
-| [⟦T12⟧](/oss/python/integrations/embeddings/nvidia_ai_endpoints) | [  ⟦T139⟧](https://pypi.org/project/langchain-nvidia-ai-endpoints/) |
-| [⟦T13⟧](/oss/python/integrations/embeddings/databricks) | [  ⟦T140⟧](https://pypi.org/project/databricks-langchain/) |
-| [⟦T14⟧](/oss/python/integrations/embeddings/perplexity) | [  ⟦T141⟧](https://pypi.org/project/langchain-perplexity/) |
-| [⟦T15⟧](/oss/python/integrations/embeddings/together) | [  ⟦T142⟧](https://pypi.org/project/langchain-together/) |
+| :-| :-|
+| [⟦T5⟧](/oss/python/integrations/embeddings/azure_openai) | [  ⟦T133⟧](https://pypi.org/project/langchain-openai/) |
+| [⟦T6⟧](/oss/python/integrations/embeddings/openai) | [  ⟦T134⟧](https://pypi.org/project/langchain-openai/) |
+| [⟦T7⟧](/oss/python/integrations/embeddings/google_generative_ai) | [  ⟦T135⟧](https://pypi.org/project/langchain-google-genai/) |
+| [⟦T8⟧](/oss/python/integrations/embeddings/ollama) | [  ⟦T136⟧](https://pypi.org/project/langchain-ollama/) |
+| [⟦T9⟧](/oss/python/integrations/embeddings/sentence_transformers) | [  ⟦T137⟧](https://pypi.org/project/langchain-huggingface/) |
+| [⟦T10⟧](/oss/python/integrations/embeddings/mistralai) | [  ⟦T138⟧](https://pypi.org/project/langchain-mistralai/) |
+| [⟦T11⟧](/oss/python/integrations/embeddings/cohere) | [  ⟦T139⟧](https://pypi.org/project/langchain-cohere/) |
+| [⟦T12⟧](/oss/python/integrations/embeddings/nvidia_ai_endpoints) | [  ⟦T140⟧](https://pypi.org/project/langchain-nvidia-ai-endpoints/) |
+| [⟦T13⟧](/oss/python/integrations/embeddings/databricks) | [  ⟦T141⟧](https://pypi.org/project/databricks-langchain/) |
+| [⟦T14⟧](/oss/python/integrations/embeddings/perplexity) | [  ⟦T142⟧](https://pypi.org/project/langchain-perplexity/) |
+| [⟦T15⟧](/oss/python/integrations/embeddings/together) | [  ⟦T143⟧](https://pypi.org/project/langchain-together/) |
 
 ### 常见部署模式
 
 在实践中，大多数团队都集中在以下四种模式之一：
 
-1. 托管、旗舰：OpenAI`text-embedding-3-large`、Cohere`embed-english-v3`、Google `gemini-embedding-001`、Voyage `voyage-3`。一次 API 调用，开箱即用，一流的质量，无需本地基础设施。每次调用成本和数据输出依赖性。
+1. 托管、旗舰：OpenAI`text-embedding-3-large`、Cohere `embed-english-v3`、Google `gemini-embedding-001`、Voyage `voyage-3`。一次 API 调用，开箱即用，一流的质量，无需本地基础设施。每次调用成本和数据输出依赖性。
 2.本地、开源：`BAAI/bge-*`、`mixedbread-ai/mxbai-embed-*`、`Qwen/Qwen3-Embedding-*`、`nomic-ai/modernbert-embed-*`、`sentence-transformers/all-*`。下载一次，随处运行。无每次调用成本，数据永远不会离开您的环境。在 CPU 上可能比小规模的托管 API 慢；使用 GPU 具有竞争力或更快。
 3. 本地、开源、专家：针对您的特定领域、语言或任务的微调模型。从强大的开放基础（例如`BAAI/bge-m3`）开始，甚至对数千个域内查询/文档对进行微调，通常会在该域的检索准确性方面击败托管旗舰。4. 生产规模的自托管：通过 [Text Embeddings Inference (TEI)](https://github.com/huggingface/text-embeddings-inference) 或 Ollama 提供相同的开放模型（基础或微调）。通过托管提供商的水平扩展和 API 人体工程学设计，为您提供本地推理的经济性。
 
@@ -94,7 +94,7 @@ LangChain 对所有四个相同：您实例化一个 `Embeddings` 子类并将�
 
 从[MTEB leaderboard](https://huggingface.co/spaces/mteb/leaderboard)开始。 MTEB 对检索、聚类、分类和重新排序任务中的嵌入模型进行基准测试，是事实上的行业参考。按您的语言和任务进行过滤（对于 RAG 最常见的是检索）。
 
-排行榜数字并不总是会转移，因此在提交之前对您自己的数据进行一次小型评估。 LangSmith 有用于此目的的工具；参见[evaluation guides](/langsmith/evaluation-concepts)。
+排行榜数字并不总是会转移，因此在提交之前对您自己的数据进行一次小型评估。 LangSmith 有用于此目的的工具；请参阅[evaluation guides](/langsmith/evaluation-concepts)。
 
 #### 成本
 
@@ -160,7 +160,7 @@ embeddings = HuggingFaceEmbeddings(
 
 密集嵌入不处理完全匹配查询（产品代码、命名实体、代码标识符）以及基于关键字的索引。混合检索将密集索引与 BM25 或稀疏神经索引（SPLADE，`BAAI/bge-m3` 的稀疏输出）相结合以覆盖这两种情况。
 
-#### 后期交互和多向量ColBERT 风格的模型为每个标记而不是每个块生成一个向量，然后通过后期交互对文档的查询进行评分。这通常比复杂查询上的单向量密集检索更准确，但代价是更高的存储和更复杂的索引。该领域当前的开放模型包括`jinaai/jina-colbert-v2`、`answerdotai/answerai-colbert-small-v1`，以及较新的后期交互变体，例如`lightonai/LateOn`。 LangChain的内置检索器针对单向量嵌入；后期交互通常需要专业索引（Vespa、Qdrant 的多向量支持或 PyLate）。
+#### 后期交互和多向量ColBERT 风格的模型为每个标记而不是每个块生成一个向量，然后通过后期交互对文档的查询进行评分。这通常比复杂查询上的单向量密集检索更准确，但代价是更高的存储和更复杂的索引。该领域当前的开放模型包括`jinaai/jina-colbert-v2`、`answerdotai/answerai-colbert-small-v1`，以及较新的后期交互变体，例如`lightonai/LateOn`。 LangChain 的内置检索器针对单向量嵌入；后期交互通常需要专业索引（Vespa、Qdrant 的多向量支持或 PyLate）。
 
 ### 起点
 
@@ -224,57 +224,58 @@ print(f"Second call took: {time.time() - tic:.2f} seconds")
 在生产中，您通常会使用更强大的持久存储，例如数据库或云存储。请参阅[stores integrations](/oss/python/integrations/stores/)了解选项。
 
 ## 所有嵌入模型|整合 |下载 |
-| :- | :- |
-| [⟦T82⟧](/oss/python/integrations/embeddings/azure_openai) | [  ⟦T143⟧](https://pypi.org/project/langchain-openai/) |
-| [⟦T83⟧](/oss/python/integrations/embeddings/openai) | [  ⟦T144⟧](https://pypi.org/project/langchain-openai/) |
-| [⟦T84⟧](/oss/python/integrations/embeddings/google_vertex_ai) | [  ⟦T145⟧](https://pypi.org/project/langchain-google-vertexai/) |
-| [⟦T85⟧](/oss/python/integrations/embeddings/google_generative_ai) | [  ⟦T146⟧](https://pypi.org/project/langchain-google-genai/) |
-| [⟦T86⟧](/oss/python/integrations/embeddings/bedrock) | [  ⟦T147⟧](https://pypi.org/project/langchain-aws/) |
-| [⟦T87⟧](/oss/python/integrations/embeddings/ollama) | [  ⟦T148⟧](https://pypi.org/project/langchain-ollama/) |
-| [⟦T88⟧](/oss/python/integrations/embeddings/bge_huggingface) | [  ⟦T149⟧](https://pypi.org/project/langchain-huggingface/) |
-| [⟦T89⟧](/oss/python/integrations/embeddings/huggingfacehub) | [  ⟦T150⟧](https://pypi.org/project/langchain-huggingface/) |
-| [⟦T90⟧](/oss/python/integrations/embeddings/sentence_transformers) | [  ⟦T151⟧](https://pypi.org/project/langchain-huggingface/) |
-| [⟦T91⟧](/oss/python/integrations/embeddings/instruct_embeddings) | [  ⟦T152⟧](https://pypi.org/project/langchain-huggingface/) |
-| [⟦T92⟧](/oss/python/integrations/embeddings/mistralai) | [  ⟦T153⟧](https://pypi.org/project/langchain-mistralai/) |
-| [⟦T93⟧](/oss/python/integrations/embeddings/text_embeddings_inference) | [  ⟦T154⟧](https://pypi.org/project/langchain-huggingface/) |
-| [⟦T94⟧](/oss/python/integrations/embeddings/fireworks) | [  ⟦T155⟧](https://pypi.org/project/langchain-fireworks/) |
-| [⟦T95⟧](/oss/python/integrations/embeddings/cohere) | [  ⟦T156⟧](https://pypi.org/project/langchain-cohere/) |
-| [⟦T96⟧](/oss/python/integrations/embeddings/nvidia_ai_endpoints) | [  ⟦T157⟧](https://pypi.org/project/langchain-nvidia-ai-endpoints/) |
-| [⟦T97⟧](/oss/python/integrations/embeddings/databricks) | [  ⟦T158⟧](https://pypi.org/project/databricks-langchain/) |
-| [⟦T98⟧](/oss/python/integrations/embeddings/pinecone) | [  ⟦T159⟧](https://pypi.org/project/langchain-pinecone/) |
-| [⟦T99⟧](/oss/python/integrations/embeddings/ibm_watsonx) | [  ⟦T160⟧](https://pypi.org/project/langchain-ibm/) |
-| [⟦T100⟧](/oss/python/integrations/embeddings/perplexity) | [  ⟦T161⟧](https://pypi.org/project/langchain-perplexity/) |
-| [⟦T101⟧](/oss/python/integrations/embeddings/oracleai) | [  ⟦T162⟧](https://pypi.org/project/langchain-oracledb/) |
-| [⟦T102⟧](/oss/python/integrations/embeddings/elasticsearch) | [  ⟦T163⟧](https://pypi.org/project/langchain-elasticsearch/) |
-| [⟦T103⟧](/oss/python/integrations/embeddings/voyageai) | [  ⟦T164⟧](https://pypi.org/project/langchain-voyageai/) |
-| [⟦T104⟧](/oss/python/integrations/embeddings/baseten) | [  ⟦T165⟧](https://pypi.org/project/langchain-baseten/) |
-| [⟦T105⟧](/oss/python/integrations/embeddings/together) | [  ⟦T166⟧](https://pypi.org/project/langchain-together/) |
-| [⟦T106⟧](/oss/python/integrations/embeddings/oci_generative_ai) | [  ⟦T167⟧](https://pypi.org/project/langchain-oci/) |
-| [⟦T107⟧](/oss/python/integrations/embeddings/upstage) | [  ⟦T168⟧](https://pypi.org/project/langchain-upstage/) |
-| [⟦T108⟧](/oss/python/integrations/embeddings/sambanova) | [  ⟦T169⟧](https://pypi.org/project/langchain-sambanova/) |
-| [⟦T109⟧](https://developers.cloudflare.com/ai/models/#text-embeddings) | [  ⟦T170⟧](https://pypi.org/project/langchain-cloudflare/) |
-| [⟦T110⟧](https://guide.ncloud-docs.com/docs/clovastudio-dev-langchain) | [  ⟦T171⟧](https://pypi.org/project/langchain-naver/) |
-| [⟦T111⟧](https://atlas.nomic.ai/) | [  ⟦T172⟧](https://pypi.org/project/langchain-nomic/) |
-| [⟦T112⟧](https://docs.tokenfactory.nebius.com/quickstart) | [  ⟦T173⟧](https://pypi.org/project/langchain-nebius/) |
-| [⟦T113⟧](https://opensolr.com/langchain) | [  ⟦T174⟧](https://pypi.org/project/langchain-opensolr/) |
-| [⟦T114⟧](https://docs.empiriolabs.ai) | [  ⟦T175⟧](https://pypi.org/project/langchain-empiriolabs/) |
-| [⟦T115⟧](https://docs.singlestore.com/cloud/ai/ai-ml-functions/ai-functions/#embed-text) | [  ⟦T176⟧](https://pypi.org/project/langchain-singlestore/) |
-| [⟦T116⟧](https://localai.io/features/embeddings/index.html) | [  ⟦T177⟧](https://pypi.org/project/langchain-localai/) |
-| [⟦T117⟧](https://docs.predictionguard.com/api-reference/api-reference/embeddings) | [  ⟦T178⟧](https://pypi.org/project/langchain-predictionguard/) |
-| [⟦T118⟧](https://docs.aimlapi.com/) | [  ⟦T179⟧](https://pypi.org/project/langchain-aimlapi/) |
-| [⟦T119⟧](https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference) | [  ⟦T180⟧](https://pypi.org/project/langchain-doubleword/) |
-| [⟦T120⟧](https://www.modelscope.cn/docs/sdk/pipelines) | [  ⟦T181⟧](https://pypi.org/project/langchain-modelscope-integration/) |
-| [⟦T121⟧](https://app.brainiall.com/docs) | [  ⟦T182⟧](https://pypi.org/project/langchain-brainiall/) |
-| [⟦T122⟧](https://github.com/polardb/langchain-polardb-pg) | [  ⟦T183⟧](https://pypi.org/project/langchain-polardb-pg/) |
-| [⟦T123⟧](https://voxell.ai/forge) | [  ⟦T184⟧](https://pypi.org/project/langchain-voxell/) |
-| [⟦T124⟧](https://developers.telnyx.com/docs/inference/models) | [  ⟦T185⟧](https://pypi.org/project/langchain-telnyx/) |
-| [⟦T125⟧](https://greennode.ai/) | [  ⟦T186⟧](https://pypi.org/project/langchain-greennode/) |
-| [⟦T126⟧](https://github.com/sbryngelson/langchain-aneforge) | [  ⟦T187⟧](https://pypi.org/project/langchain-aneforge/) |
-| [⟦T127⟧](https://github.com/Keirolabs-API/langchain-keiro) | [  ⟦T188⟧](https://pypi.org/project/langchain-keiro/) |
-| [⟦T128⟧](https://help.aliyun.com/en/lindorm/product-overview/product-introduction-overview) | [  ⟦T189⟧](https://pypi.org/project/langchain-lindorm-integration/) |
-| [⟦T129⟧](https://github.com/protagolabs/langchain-netmind) | [  ⟦T190⟧](https://pypi.org/project/langchain-netmind/) |
-| [⟦T130⟧](https://isaacus.com/docs) | [  ⟦T191⟧](https://pypi.org/project/langchain-isaacus/) |
-| [⟦T131⟧](https://github.com/kosa8ai/langchain-llamay#readme) |不适用 |
+| :-| :-|
+| [⟦T82⟧](/oss/python/integrations/embeddings/azure_openai) | [  ⟦T144⟧](https://pypi.org/project/langchain-openai/) |
+| [⟦T83⟧](/oss/python/integrations/embeddings/openai) | [  ⟦T145⟧](https://pypi.org/project/langchain-openai/) |
+| [⟦T84⟧](/oss/python/integrations/embeddings/google_vertex_ai) | [  ⟦T146⟧](https://pypi.org/project/langchain-google-vertexai/) |
+| [⟦T85⟧](/oss/python/integrations/embeddings/google_generative_ai) | [  ⟦T147⟧](https://pypi.org/project/langchain-google-genai/) |
+| [⟦T86⟧](/oss/python/integrations/embeddings/bedrock) | [  ⟦T148⟧](https://pypi.org/project/langchain-aws/) |
+| [⟦T87⟧](/oss/python/integrations/embeddings/ollama) | [  ⟦T149⟧](https://pypi.org/project/langchain-ollama/) |
+| [⟦T88⟧](/oss/python/integrations/embeddings/bge_huggingface) | [  ⟦T150⟧](https://pypi.org/project/langchain-huggingface/) |
+| [⟦T89⟧](/oss/python/integrations/embeddings/huggingfacehub) | [  ⟦T151⟧](https://pypi.org/project/langchain-huggingface/) |
+| [⟦T90⟧](/oss/python/integrations/embeddings/sentence_transformers) | [  ⟦T152⟧](https://pypi.org/project/langchain-huggingface/) |
+| [⟦T91⟧](/oss/python/integrations/embeddings/instruct_embeddings) | [  ⟦T153⟧](https://pypi.org/project/langchain-huggingface/) |
+| [⟦T92⟧](/oss/python/integrations/embeddings/mistralai) | [  ⟦T154⟧](https://pypi.org/project/langchain-mistralai/) |
+| [⟦T93⟧](/oss/python/integrations/embeddings/text_embeddings_inference) | [  ⟦T155⟧](https://pypi.org/project/langchain-huggingface/) |
+| [⟦T94⟧](/oss/python/integrations/embeddings/fireworks) | [  ⟦T156⟧](https://pypi.org/project/langchain-fireworks/) |
+| [⟦T95⟧](/oss/python/integrations/embeddings/cohere) | [  ⟦T157⟧](https://pypi.org/project/langchain-cohere/) |
+| [⟦T96⟧](/oss/python/integrations/embeddings/nvidia_ai_endpoints) | [  ⟦T158⟧](https://pypi.org/project/langchain-nvidia-ai-endpoints/) |
+| [⟦T97⟧](/oss/python/integrations/embeddings/databricks) | [  ⟦T159⟧](https://pypi.org/project/databricks-langchain/) |
+| [⟦T98⟧](/oss/python/integrations/embeddings/pinecone) | [  ⟦T160⟧](https://pypi.org/project/langchain-pinecone/) |
+| [⟦T99⟧](/oss/python/integrations/embeddings/ibm_watsonx) | [  ⟦T161⟧](https://pypi.org/project/langchain-ibm/) |
+| [⟦T100⟧](/oss/python/integrations/embeddings/perplexity) | [  ⟦T162⟧](https://pypi.org/project/langchain-perplexity/) |
+| [⟦T101⟧](/oss/python/integrations/embeddings/oracleai) | [  ⟦T163⟧](https://pypi.org/project/langchain-oracledb/) |
+| [⟦T102⟧](/oss/python/integrations/embeddings/elasticsearch) | [  ⟦T164⟧](https://pypi.org/project/langchain-elasticsearch/) |
+| [⟦T103⟧](/oss/python/integrations/embeddings/voyageai) | [  ⟦T165⟧](https://pypi.org/project/langchain-voyageai/) |
+| [⟦T104⟧](/oss/python/integrations/embeddings/baseten) | [  ⟦T166⟧](https://pypi.org/project/langchain-baseten/) |
+| [⟦T105⟧](/oss/python/integrations/embeddings/together) | [  ⟦T167⟧](https://pypi.org/project/langchain-together/) |
+| [⟦T106⟧](/oss/python/integrations/embeddings/oci_generative_ai) | [  ⟦T168⟧](https://pypi.org/project/langchain-oci/) |
+| [⟦T107⟧](/oss/python/integrations/embeddings/upstage) | [  ⟦T169⟧](https://pypi.org/project/langchain-upstage/) |
+| [⟦T108⟧](/oss/python/integrations/embeddings/sambanova) | [  ⟦T170⟧](https://pypi.org/project/langchain-sambanova/) |
+| [⟦T109⟧](https://developers.cloudflare.com/ai/models/#text-embeddings) | [  ⟦T171⟧](https://pypi.org/project/langchain-cloudflare/) |
+| [⟦T110⟧](https://guide.ncloud-docs.com/docs/clovastudio-dev-langchain) | [  ⟦T172⟧](https://pypi.org/project/langchain-naver/) |
+| [⟦T111⟧](https://atlas.nomic.ai/) | [  ⟦T173⟧](https://pypi.org/project/langchain-nomic/) |
+| [⟦T112⟧](https://docs.tokenfactory.nebius.com/quickstart) | [  ⟦T174⟧](https://pypi.org/project/langchain-nebius/) |
+| [⟦T113⟧](https://opensolr.com/langchain) | [  ⟦T175⟧](https://pypi.org/project/langchain-opensolr/) |
+| [⟦T114⟧](https://docs.empiriolabs.ai) | [  ⟦T176⟧](https://pypi.org/project/langchain-empiriolabs/) |
+| [⟦T115⟧](https://docs.singlestore.com/cloud/ai/ai-ml-functions/ai-functions/#embed-text) | [  ⟦T177⟧](https://pypi.org/project/langchain-singlestore/) |
+| [⟦T116⟧](https://localai.io/features/embeddings/index.html) | [  ⟦T178⟧](https://pypi.org/project/langchain-localai/) |
+| [⟦T117⟧](https://docs.predictionguard.com/api-reference/api-reference/embeddings) | [  ⟦T179⟧](https://pypi.org/project/langchain-predictionguard/) |
+| [⟦T118⟧](https://docs.aimlapi.com/) | [  ⟦T180⟧](https://pypi.org/project/langchain-aimlapi/) |
+| [⟦T119⟧](https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference) | [  ⟦T181⟧](https://pypi.org/project/langchain-doubleword/) |
+| [⟦T120⟧](https://www.modelscope.cn/docs/sdk/pipelines) | [  ⟦T182⟧](https://pypi.org/project/langchain-modelscope-integration/) |
+| [⟦T121⟧](https://app.brainiall.com/docs) | [  ⟦T183⟧](https://pypi.org/project/langchain-brainiall/) |
+| [⟦T122⟧](https://github.com/polardb/langchain-polardb-pg) | [  ⟦T184⟧](https://pypi.org/project/langchain-polardb-pg/) |
+| [⟦T123⟧](https://voxell.ai/forge) | [  ⟦T185⟧](https://pypi.org/project/langchain-voxell/) |
+| [⟦T124⟧](https://developers.telnyx.com/docs/inference/models) | [  ⟦T186⟧](https://pypi.org/project/langchain-telnyx/) |
+| [⟦T125⟧](https://greennode.ai/) | [  ⟦T187⟧](https://pypi.org/project/langchain-greennode/) |
+| [⟦T126⟧](https://github.com/sbryngelson/langchain-aneforge) | [  ⟦T188⟧](https://pypi.org/project/langchain-aneforge/) |
+| [⟦T127⟧](https://github.com/Keirolabs-API/langchain-keiro) | [  ⟦T189⟧](https://pypi.org/project/langchain-keiro/) |
+| [⟦T128⟧](https://help.aliyun.com/en/lindorm/product-overview/product-introduction-overview) | [  ⟦T190⟧](https://pypi.org/project/langchain-lindorm-integration/) |
+| [⟦T129⟧](https://github.com/protagolabs/langchain-netmind) | [  ⟦T191⟧](https://pypi.org/project/langchain-netmind/) |
+| [⟦T130⟧](https://isaacus.com/docs) | [  ⟦T192⟧](https://pypi.org/project/langchain-isaacus/) |
+| [⟦T131⟧](https://sovereigneg.com/docs/langchain) | [  ⟦T193⟧](https://pypi.org/project/langchain-sovereigneg/) |
+| [⟦T132⟧](https://github.com/kosa8ai/langchain-llamay#readme) |不适用 |
 
 ***
 

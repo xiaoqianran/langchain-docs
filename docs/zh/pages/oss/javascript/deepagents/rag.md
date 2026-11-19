@@ -30,9 +30,9 @@ Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引
 
 > 如何从子代理流式传输中间工具结果？
 
-将该问题传递给没有自定义工具且无法访问文档语料库的[Deep Agent](/oss/javascript/deepagents/overview)，以查看模型得出的结果：
+将该问题传递给没有自定义工具且无法访问文档语料库的 [Deep Agent](/oss/javascript/deepagents/overview)，以查看模型得出的结果：
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 
 import { createDeepAgent } from "deepagents";
@@ -55,7 +55,7 @@ const result = await baselineAgent.invoke({
 console.log(result.messages.at(-1)?.text);
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 
 import { createDeepAgent } from "deepagents";
@@ -78,7 +78,7 @@ const result = await baselineAgent.invoke({
 console.log(result.messages.at(-1)?.text);
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 
 import { createDeepAgent } from "deepagents";
@@ -101,7 +101,7 @@ const result = await baselineAgent.invoke({
 console.log(result.messages.at(-1)?.text);
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 
 import { createDeepAgent } from "deepagents";
@@ -124,7 +124,7 @@ const result = await baselineAgent.invoke({
 console.log(result.messages.at(-1)?.text);
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 
 import { createDeepAgent } from "deepagents";
@@ -147,7 +147,7 @@ const result = await baselineAgent.invoke({
 console.log(result.messages.at(-1)?.text);
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 
 import { createDeepAgent } from "deepagents";
@@ -170,7 +170,7 @@ const result = await baselineAgent.invoke({
 console.log(result.messages.at(-1)?.text);
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 
 import { createDeepAgent } from "deepagents";
@@ -280,13 +280,13 @@ export LANGSMITH_API_KEY="..."
 3. **[Embed](#select-an-embeddings-model)**：[Embeddings](/oss/javascript/integrations/embeddings)模型将每个块转换为捕获其含义的数字向量，从而实现对内容的相似性搜索。
 4. **[Store](#store-chunks-and-embeddings-in-vectorstore)**：使用[VectorStore](/oss/javascript/integrations/vectorstores)来索引块及其嵌入以进行检索。
 
-![index_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_indexing.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=21403ce0d0c772da84dcc5b75cff4451)在索引步骤中，获取文档页面，将它们分成块，嵌入块，并将它们存储在`VectorStore`中。代理在运行时搜索该索引；它不会重新获取每个问题的完整网站。
+![index_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_indexing.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=21403ce0d0c772da84dcc5b75cff4451)在索引步骤中，获取文档页面，将它们分成块，嵌入块，并将它们存储在`VectorStore`中。代理在运行时搜索该索引；它不会重新获取每个问题的完整站点。
 
 LangChain 在 `https://docs.langchain.com/{path}.md` 发布降价。本教程对开源文档路径的精选列表进行索引。您可以扩展 `DOC_PATHS` 或解析 [llms.txt](https://docs.langchain.com/llms.txt) 中的 URL 以覆盖更多页面。
 
 创建`agent.ts`：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 
 import { Document } from "@langchain/core/documents";
@@ -324,7 +324,7 @@ const DOC_PATHS = [
 
 使用`fetch`从`https://docs.langchain.com/{path}.md`检索`DOC_PATHS`中每个路径的markdown。
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 async function loadLangchainDocs(
   docPaths: string[] = DOC_PATHS,
 ): Promise<Document[]> {
@@ -360,7 +360,7 @@ Loaded 14 documentation pages.
 
 您还可以查看页面内容本身：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const totalChars = docs.reduce((sum, doc) => sum + doc.pageContent.length, 0);
 console.log(`Total characters: ${totalChars}`);
 console.log(docs[0].pageContent.slice(0, 500));
@@ -381,12 +381,12 @@ This might be private data, recent data, or data that is not part of the trainin
 ### 分割文档
 
 加载的文档很长，总共超过 100k 个标记，这使得它太大而无法适应许多模型的上下文窗口。
-即使对于那些可以在其上下文窗口中容纳完整语料库的模型，模型也可能很难在很长的输入中找到信息。对大量内容使用上下文窗口也不是令牌有效的。为了便于使用，将 [⟦T110⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 对象分割成块。这些块将在接下来的步骤中用于嵌入和向量存储。
+即使对于那些可以在其上下文窗口中容纳完整语料库的模型，模型也可能很难在很长的输入中找到信息。对大量内容使用上下文窗口也不是令牌有效的。为了便于使用，将 [⟦T110⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 对象分成块。这些块将在接下来的步骤中用于嵌入和向量存储。
 
 使用 `RecursiveCharacterTextSplitter` 使用常见分隔符（例如换行符）递归拆分文档，直到每个块的大小合适。
 对于通用文本用例，推荐使用 `RecursiveCharacterTextSplitter` `TextSplitter`。
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const textSplitter = new RecursiveCharacterTextSplitter({
   chunkSize: 1000,
   chunkOverlap: 200,
@@ -399,6 +399,8 @@ console.log(`Split documentation into ${allSplits.length} chunks.`);
 Split documentation into 722 chunks.
 ```
 
+如果您想了解有关文本分割器的更多信息，请参阅[text splitter integrations](/oss/javascript/integrations/splitters/)。有关选择块大小和拆分策略的指南，请参阅[Chunk documents for retrieval](/oss/javascript/langchain/chunking)。
+
 ### 选择嵌入模型
 
 [embedding](/oss/javascript/integrations/embeddings) 是一个数字向量，用于捕获每个文档块的含义。 [Embeddings](https://reference.langchain.com/javascript/langchain-core/embeddings/Embeddings) 模型将这些块转换为向量，以便相似的含义在向量空间中紧密结合在一起，从而使您能够在用户提出问题时检索相关部分。
@@ -407,19 +409,19 @@ Split documentation into 722 chunks.
 
 > [标签] OpenAI
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i @langchain/openai
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/openai
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm add @langchain/openai
 > ```
 >
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { OpenAIEmbeddings } from "@langchain/openai";
 >
 > const embeddings = new OpenAIEmbeddings({
@@ -429,25 +431,25 @@ Split documentation into 722 chunks.
 
 > [选项卡] 天蓝色
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i @langchain/openai
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/openai
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm add @langchain/openai
 > ```
 >
-> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > AZURE_OPENAI_API_INSTANCE_NAME=<YOUR_INSTANCE_NAME>
 > AZURE_OPENAI_API_KEY=<YOUR_KEY>
 > AZURE_OPENAI_API_VERSION="2024-02-01"
 > ```
 >
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { AzureOpenAIEmbeddings } from "@langchain/openai";
 >
 > const embeddings = new AzureOpenAIEmbeddings({
@@ -457,23 +459,23 @@ Split documentation into 722 chunks.
 
 > [选项卡] AWS
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i @langchain/aws
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/aws
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm add @langchain/aws
 > ```
 >
-> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > BEDROCK_AWS_REGION=your-region
 > ```
 >
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { BedrockEmbeddings } from "@langchain/aws";
 >
 > const embeddings = new BedrockEmbeddings({
@@ -483,49 +485,47 @@ Split documentation into 722 chunks.
 
 > [选项卡] Gemini 企业代理平台
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i @langchain/google-vertexai
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/google-vertexai
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm add @langchain/google-vertexai
 > ```
 >
-> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > GOOGLE_APPLICATION_CREDENTIALS=credentials.json
 > ```
 >
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { VertexAIEmbeddings } from "@langchain/google-vertexai";
 >
 > const embeddings = new VertexAIEmbeddings({
 >   model: "gemini-embedding-001"
 > });
-> ```
-
-> [标签] MistralAI
+> ```> [标签] MistralAI
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i @langchain/mistralai
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/mistralai
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm add @langchain/mistralai
 > ```
 >
-> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > MISTRAL_API_KEY=your-api-key
 > ```
 >
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { MistralAIEmbeddings } from "@langchain/mistralai";
 >
 > const embeddings = new MistralAIEmbeddings({
@@ -535,23 +535,23 @@ Split documentation into 722 chunks.
 
 > [标签] 连贯
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i @langchain/cohere
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/cohere
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm add @langchain/cohere
 > ```
 >
-> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > COHERE_API_KEY=your-api-key
 > ```
 >
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { CohereEmbeddings } from "@langchain/cohere";
 >
 > const embeddings = new CohereEmbeddings({
@@ -559,25 +559,31 @@ Split documentation into 722 chunks.
 > });
 > ```
 
-### 在 VectorStore 中存储块和嵌入[⟦T114⟧](/oss/javascript/integrations/vectorstores) 保留文档块及其嵌入，使相似性搜索能够在用户提出问题时检索相关部分。
+> [!警告]
+>
+> 在索引文档和查询文档时，使用具有兼容向量维度的相同嵌入模型。如果您更改嵌入模型，请重新嵌入文档并重新索引。
+
+### 在 VectorStore 中存储块和嵌入
+
+[⟦T114⟧](/oss/javascript/integrations/vectorstores) 保留文档块及其嵌入，使得相似性搜索能够在用户提出问题时检索相关部分。
 您可以从许多不同的[vector store integrations](/oss/javascript/integrations/vectorstores/)中进行选择，它们都使用相同的[Interface](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore)。
 使用您在上一步中选择的嵌入模型来配置您的 `VectorStore`：
 
 > [选项卡] 内存
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i @langchain/classic
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/classic
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm add @langchain/classic
 > ```
 >
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
 >
 > const vectorStore = new MemoryVectorStore(embeddings);
@@ -585,19 +591,19 @@ Split documentation into 722 chunks.
 
 > [选项卡] MongoDB
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i @langchain/mongodb
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/mongodb
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm add @langchain/mongodb
 > ```
 >
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { MongoDBAtlasVectorSearch } from "@langchain/mongodb"
 > import { MongoClient } from "mongodb";
 >
@@ -616,19 +622,19 @@ Split documentation into 722 chunks.
 
 > [标签] 松果
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i @langchain/pinecone
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/pinecone
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm add @langchain/pinecone
 > ```
 >
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { PineconeStore } from "@langchain/pinecone";
 > import { Pinecone as PineconeClient } from "@pinecone-database/pinecone";
 >
@@ -645,19 +651,19 @@ Split documentation into 722 chunks.
 
 > [选项卡] Qdrant
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i @langchain/qdrant
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/qdrant
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm add @langchain/qdrant
 > ```
 >
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { QdrantVectorStore } from "@langchain/qdrant";
 >
 > const vectorStore = await QdrantVectorStore.fromExistingCollection(embeddings, {
@@ -668,19 +674,19 @@ Split documentation into 722 chunks.
 
 > [选项卡] Redis
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm i @langchain/redis
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/redis
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm add @langchain/redis
 > ```
 >
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { RedisVectorStore } from "@langchain/redis";
 >
 > const vectorStore = new RedisVectorStore(embeddings, {
@@ -691,7 +697,7 @@ Split documentation into 722 chunks.
 
 然后，使用上面初始化的 `vector_store` 嵌入并存储所有文档拆分：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 await vectorStore.addDocuments(allSplits);
 console.log(`Indexed ${allSplits.length} chunks.`);
 ```
@@ -700,13 +706,13 @@ console.log(`Indexed ${allSplits.length} chunks.`);
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 Indexed 722 chunks.
-```
-
-> [!提示]
+```> [!提示]
 >
 > 在本教程中，索引在启动时运行一次。在生产中，将矢量存储保存到磁盘或托管矢量数据库，并在文档更改时按计划刷新。
 
-本教程的 **索引** 部分就完成了。您现在拥有一个可查询的向量存储，其中包含分块的 LangChain 文档。下一步是构建一个深度代理，在运行时搜索该索引，将检索到的块卸载到文件系统，并将分析委托给子代理。参见[Build the agent](#build-the-agent)。用 RAG 术语来思考：
+本教程的 **索引** 部分就完成了。您现在拥有一个可查询的向量存储，其中包含分块的 LangChain 文档。
+
+下一步是构建一个深度代理，在运行时搜索该索引，将检索到的块卸载到文件系统，并将分析委托给子代理。参见[Build the agent](#build-the-agent)。用 RAG 术语来思考：
 
 1. **检索**：给定用户输入，使用[Retriever](/oss/javascript/integrations/retrievers)从存储中检索相关分割。
 2. **生成**：[model](/oss/javascript/langchain/models) 使用提示生成答案，其中包括问题和检索到的数据。
@@ -719,11 +725,9 @@ Indexed 722 chunks.
 
 **1.添加搜索工具**
 
-`search_documentation` 工具针对索引语料库运行相似性搜索，然后将每个检索到的块写入`/retrieved/{batch_id}/` 下的代理文件系统。它返回文件路径，以便编排器可以委托分析，而无需将完整的块文本加载到其上下文中。
+`search_documentation` 工具针对索引语料库运行相似性搜索，然后将每个检索到的块写入`/retrieved/{batch_id}/` 下的代理文件系统。它返回文件路径，以便编排器可以委托分析，而无需将完整的块文本加载到其上下文中。该工具使用 `backend.uploadFiles()` 将检索到的块写入代理后端。将相同的后端实例传递给`createDeepAgent`，以便内置文件系统工具（例如`read_file`和`grep`）可以读取保存的路径。
 
-该工具使用 `backend.uploadFiles()` 将检索到的块写入代理后端。将相同的后端实例传递给`createDeepAgent`，以便内置文件系统工具（例如`read_file`和`grep`）可以读取保存的路径。
-
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateBackend } from "deepagents";
 import { tool } from "langchain";
 import * as z from "zod";
@@ -815,7 +819,7 @@ Your role is to coordinate chunk analysis by delegating to the chunk-analyst sub
 
 在`agent.ts`中添加模型初始化和代理创建：
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const maxConcurrentAnalysts = 3;
@@ -846,7 +850,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const maxConcurrentAnalysts = 3;
@@ -877,7 +881,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const maxConcurrentAnalysts = 3;
@@ -908,7 +912,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const maxConcurrentAnalysts = 3;
@@ -939,7 +943,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const maxConcurrentAnalysts = 3;
@@ -970,7 +974,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const maxConcurrentAnalysts = 3;
@@ -1001,7 +1005,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const maxConcurrentAnalysts = 3;
@@ -1030,7 +1034,9 @@ const agent = createDeepAgent({
   systemPrompt: instructions,
   subagents: [chunkAnalystSubagent],
 });
-```主代理保留`search_documentation`工具。 `chunk-analyst`子代理使用内置文件系统工具来读取块文件，但不直接搜索向量存储。
+```
+
+主代理保留`search_documentation`工具。 `chunk-analyst`子代理使用内置文件系统工具来读取块文件，但不直接搜索向量存储。
 
 ## 运行代理
 
@@ -1040,7 +1046,7 @@ const agent = createDeepAgent({
 npx tsx agent.ts
 ```
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { HumanMessage } from "@langchain/core/messages";
 
 const EXAMPLE_QUERY =
@@ -1068,11 +1074,11 @@ if (import.meta.main) {
 
 如果您在 [Setup](#setup) 中启用了 LangSmith，请打开 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-rag) 并检查跟踪以查看搜索调用、文件系统写入、子代理委派和最终响应。
 
-## 安全考虑
-
-> [!警告]
+## 安全考虑> [!警告]
 >
-> RAG 应用程序容易受到**间接提示注入**的影响。检索到的文档可能包含类似于说明的文本。由于检索到的块与系统提示共享上下文窗口，因此模型可能遵循文档中嵌入的说明，而不是您预期的提示。没有提示或分隔符策略可以完全防止间接提示注入。本教程中的协调器和子代理提示要求模型仅将检索到的内容视为数据，并且搜索工具使用 `# Source:` 标头为块添加前缀，以便分析人员可以区分元数据和正文内容。这些模式在某些情况下可以提供帮助，但它们不能提供可靠的保护。
+> RAG 应用程序容易受到**间接提示注入**的影响。检索到的文档可能包含类似于说明的文本。由于检索到的块与系统提示共享上下文窗口，因此模型可能遵循文档中嵌入的说明，而不是您预期的提示。
+
+没有提示或分隔符策略可以完全防止间接提示注入。本教程中的协调器和子代理提示要求模型仅将检索到的内容视为数据，并且搜索工具使用 `# Source:` 标头为块添加前缀，以便分析人员可以区分元数据和正文内容。这些模式在某些情况下可以提供帮助，但它们不能提供可靠的保护。
 
 在将代理输出呈现给用户之前验证它们。检查答案是否引用了预期的文档路径以及声明是否与检索到的源材料相匹配。
 
@@ -1084,7 +1090,7 @@ if (import.meta.main) {
 
 另存为 `agent.ts` 并使用 `npx tsx agent.ts` 运行：
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 import { uuid7 } from "langsmith";
 
@@ -1269,7 +1275,7 @@ if (import.meta.main) {
 }
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 import { uuid7 } from "langsmith";
 
@@ -1454,7 +1460,7 @@ if (import.meta.main) {
 }
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 import { uuid7 } from "langsmith";
 
@@ -1639,7 +1645,7 @@ if (import.meta.main) {
 }
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 import { uuid7 } from "langsmith";
 
@@ -1824,7 +1830,7 @@ if (import.meta.main) {
 }
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 import { uuid7 } from "langsmith";
 
@@ -2009,7 +2015,7 @@ if (import.meta.main) {
 }
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 import { uuid7 } from "langsmith";
 
@@ -2194,7 +2200,7 @@ if (import.meta.main) {
 }
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 import { uuid7 } from "langsmith";
 
@@ -2379,12 +2385,13 @@ if (import.meta.main) {
 }
 ```
 
-## 后续步骤
+## 后续步骤您使用 [⟦T135⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 实现了一种 RAG 模式。将其与其他 Deep Agents 功能相结合，或尝试与 [RAG patterns](#rag-patterns) 不同的模式：
 
-您使用 [⟦T135⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 实现了一种 RAG 模式。将其与其他 Deep Agents 功能相结合，或尝试与 [RAG patterns](#rag-patterns) 不同的模式：* 将 [Skills](/oss/javascript/deepagents/skills) 添加到包检索工作流程和特定领域的搜索指南
+* 将 [Skills](/oss/javascript/deepagents/skills) 添加到包检索工作流程和特定领域的搜索指南
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) 与 LangSmith 数据集和评估器
+* [Chunk documents for retrieval](/oss/javascript/langchain/chunking) 提高检索质量
 * 阅读 [Context engineering](/oss/javascript/deepagents/context-engineering) 了解卸载和子代理隔离策略
-* 使用 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 进行部署以运行生产代理，而无需管理基础设施。或者，为了在使用相同的Deep Agents安全带时获得最大的灵活性，您可以自己托管代理或使用自定义的[Agent Server](/langsmith/agent-server)
+* 使用 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 进行部署以运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 安全带时获得最大灵活性，您可以自行托管代理或使用自定义 [Agent Server](/langsmith/agent-server)
 
 ***
 

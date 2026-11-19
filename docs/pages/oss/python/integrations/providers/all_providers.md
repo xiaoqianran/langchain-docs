@@ -1606,10 +1606,6 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > CatchAll web search for real-world business events as LangChain tools.
 
-> [card] [NetNest Design Fundamentals](https://api.netnestdesign.com/docs)
->
-> Fundamentals and filing events for companies that file with the SEC, as MCP tools, each value linked to its filing.
-
 > [card] [Nextmail](https://nextmail.sh/docs/python/langchain)
 >
 > Email on your own domains, with agent tools to read and search mail, wait for verification codes, use disposable inboxes, save drafts, reply and send.
@@ -1673,6 +1669,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Novita](https://github.com/novitalabs/langchain-novita)
 >
 > Code interpreter sandboxes for running agent-generated code.
+
+> [card] [ObscateMiddleware](https://obscate.com/docs/langchain)
+>
+> ObscateMiddleware provides reversible PII redaction for LangChain text and JSON through the hosted Obscate API.
 
 > [card] [OceanBase](https://pypi.org/project/langchain-oceanbase/)
 >
@@ -1801,6 +1801,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Oxylabs](https://github.com/oxylabs/langchain-oxylabs)
 >
 > Web search, page reading, and scraping tools for agents and RAG, built on the Oxylabs Web API and Web Scraper API.
+
+> [card] [PandaStackSandbox](https://docs.pandastack.ai/docs/agents/deep-agents)
+>
+> Sandbox backend for Deep Agents that runs commands and file operations in PandaStack Firecracker microVMs.
 
 > [card] [Parallel](/oss/python/integrations/providers/parallel)
 >
@@ -2030,6 +2034,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Search posts, subreddit feeds, and comment-tree retrievers for Reddit.
 
+> [card] [ReDefiNERPIIMiddleware](https://github.com/Jungroo-AI/langchain-redefiner#readme)
+>
+> Agent middleware that redacts personal data, as defined by a plain-English rulebook, with a local 0.8B model before messages reach the LLM.
+
 > [card] [Redis](/oss/python/integrations/providers/redis)
 >
 > In-memory data structure store and cache.
@@ -2069,6 +2077,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Revana](https://github.com/Aribk7/langchain-revana#readme)
 >
 > Revana serves Claude, Gemini, DeepSeek and other chat models from several labs behind one OpenAI-compatible API key, routed to the cheapest working provider.
+
+> [card] [RiskShield](https://github.com/kynto2001-ctrl/apexrunner-tools#riskshield-block-dangerous-trades-before-they-execute)
+>
+> RiskShield provides pre-trade crypto risk, timing, and slippage checks for agents and blocks orders scored DANGER.
 
 > [card] [Robocorp](https://github.com/robocorp/robocorp)
 >
@@ -2252,7 +2264,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > [card] [SignafaideMiddleware](https://signafaide.co.uk/docs/frameworks/langchain)
 >
-> Agent middleware that writes a signed, tamper-evident record of every tool call, verifiable offline by an auditor.
+> Agent middleware that checks each risky tool call against your rules before it runs and signs a record of every call, verifiable offline.
 
 > [card] [Signatrust](https://signatrust.net/docs/api)
 >
@@ -2309,6 +2321,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Sourcey](https://sourcey.com/docs/guides/guide-langchain-retriever)
 >
 > Static documentation generator with retrieval-ready artefacts for LLM applications.
+
+> [card] [SovereignEGEmbeddings](https://sovereigneg.com/docs/langchain)
+>
+> Text embedding models from SovereignEG, an Egyptian sovereign AI platform with an OpenAI-compatible API.
 
 > [card] [Spanlens](https://www.spanlens.io/docs/sdk)
 >
@@ -2561,6 +2577,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [TranscriptFetch](https://transcriptfetch.com/docs/langchain)
 >
 > TranscriptFetch loads YouTube, TikTok, and Instagram transcripts from videos, channels, playlists, and searches with timestamped chunks for RAG.
+
+> [card] [Trimwise](https://trimwise.readthedocs.io/en/latest/integrations/langchain/)
+>
+> Post-retrieval Runnable that trims documents to a shared evidence budget and preserves source spans.
 
 > [card] [TrueFoundry](/oss/python/integrations/providers/truefoundry)
 >

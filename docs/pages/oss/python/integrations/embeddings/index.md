@@ -289,6 +289,7 @@ In production, you would typically use a more robust persistent store, such as a
 | [`Lindorm`](https://help.aliyun.com/en/lindorm/product-overview/product-introduction-overview) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lindorm-integration/month)](https://pypi.org/project/langchain-lindorm-integration/) |
 | [`Netmind`](https://github.com/protagolabs/langchain-netmind) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-netmind/month)](https://pypi.org/project/langchain-netmind/) |
 | [`Isaacus`](https://isaacus.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-isaacus/month)](https://pypi.org/project/langchain-isaacus/) |
+| [`SovereignEGEmbeddings`](https://sovereigneg.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sovereigneg/month)](https://pypi.org/project/langchain-sovereigneg/) |
 | [`LlamayEmbeddings`](https://github.com/kosa8ai/langchain-llamay#readme) | N/A |
 
 ***

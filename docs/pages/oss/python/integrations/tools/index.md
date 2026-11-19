@@ -479,7 +479,6 @@ The following table shows tools that generate video, image, or audio assets:
 | [`RustChainToolkit`](https://github.com/Scottcjn/langchain-rustchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-rustchain-tools/month)](https://pypi.org/project/langchain-rustchain-tools/) |
 | [`SidClawToolkit`](https://docs.sidclaw.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sidclaw/month)](https://pypi.org/project/langchain-sidclaw/) |
 | [`TendemTools`](https://github.com/Toloka/tendem-mcp/tree/main/integrations/langchain-tendem#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tendem/month)](https://pypi.org/project/langchain-tendem/) |
-| [`NetNestToolkit`](https://api.netnestdesign.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-netnest/month)](https://pypi.org/project/langchain-netnest/) |
 | [`PinchworkDelegateTaskTool`](https://pinchwork.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/pinchwork/month)](https://pypi.org/project/pinchwork/) |
 | [`AgentMail Toolkit`](https://docs.agentmail.to/welcome) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentmail/month)](https://pypi.org/project/langchain-agentmail/) |
 | [`DeweyResearchTool`](https://github.com/meetdewey/langchain-dewey) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dewey/month)](https://pypi.org/project/langchain-dewey/) |
@@ -529,6 +528,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`SignatrustGenerateReceiptTool`](https://signatrust.net/docs/api) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-signatrust/month)](https://pypi.org/project/langchain-signatrust/) |
 | [`Synap DocuAnalyzer`](https://github.com/synapsoft-DA/langchain-synapsoft) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synapsoft/month)](https://pypi.org/project/langchain-synapsoft/) |
 | [`GoodSender Toolkit`](https://goodsender.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-goodsender/month)](https://pypi.org/project/langchain-goodsender/) |
+| [`RiskShield`](https://github.com/kynto2001-ctrl/apexrunner-tools#riskshield-block-dangerous-trades-before-they-execute) | [  ![Downloads per month](https://static.pepy.tech/badge/apexrunner-tools/month)](https://pypi.org/project/apexrunner-tools/) |
 | [`Drasi`](https://github.com/drasi-project/langchain-drasi) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-drasi/month)](https://pypi.org/project/langchain-drasi/) |
 | [`UniRate`](https://unirateapi.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-unirate/month)](https://pypi.org/project/langchain-unirate/) |
 | [`Blindfold`](https://docs.blindfold.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-blindfold/month)](https://pypi.org/project/langchain-blindfold/) |

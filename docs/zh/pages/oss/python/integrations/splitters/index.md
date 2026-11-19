@@ -16,7 +16,7 @@ uv add langchain-text-splitters
 
 **文本拆分器** 将大型文档分解为较小的块，这些块可单独检索并适合模型上下文窗口限制。
 
-有多种分割文档的策略，每种策略都有自己的优点。
+分割文档的策略有多种，每种策略都有自己的优点。
 
 集成组件
 箭头显示了典型的检索流程。突出显示的组件是本页所涵盖的组件。
@@ -29,11 +29,11 @@ uv add langchain-text-splitters
 
 > [!提示]
 >
-> 对于大多数用例，从 [⟦T4⟧](/oss/python/integrations/splitters/recursive_text_splitter) 开始。它在保持上下文完整和管理块大小之间提供了坚实的平衡。此默认策略开箱即用，效果很好，只有在需要针对特定​​应用程序微调性能时才应考虑调整它。
+> 对于大多数用例，从 [⟦T4⟧](/oss/python/integrations/splitters/recursive_text_splitter) 开始。它在保持上下文完整和管理块大小之间提供了坚实的平衡。此默认策略开箱即用，效果很好，只有在需要针对特定​​应用程序微调性能时才应考虑调整它。有关选择块大小和拆分策略的指南，请参阅[Chunk documents for retrieval](/oss/python/langchain/chunking)。
 
-## 基于文本结构
+## 基于文本结构文本自然地组织成层次单元，例如段落、句子和单词。我们可以利用这种固有的结构来告知我们的分割策略，创建保持自然语言流的分割，保持分割内的语义连贯性，并适应不同级别的文本粒度。 LangChain的`RecursiveCharacterTextSplitter`实现了这个概念：
 
-文本自然地组织成层次单元，例如段落、句子和单词。我们可以利用这种固有的结构来告知我们的分割策略，创建保持自然语言流的分割，保持分割内的语义连贯性，并适应不同级别的文本粒度。 LangChain的`RecursiveCharacterTextSplitter`实现了这个概念：* [⟦T6⟧](/oss/python/integrations/splitters/recursive_text_splitter) 试图保持较大的单元（例如段落）完整。
+* [⟦T6⟧](/oss/python/integrations/splitters/recursive_text_splitter) 试图保持较大的单元（例如段落）完整。
 * 如果一个单元超过了块大小，它就会移动到下一个级别（例如，句子）。
 * 如有必要，此过程会继续到单词级别。
 
@@ -58,9 +58,7 @@ texts = text_splitter.split_text(document)
 * 一致的块大小
 * 轻松适应不同型号需求
 
-基于长度的分割类型：
-
-* 基于标记：根据标记数量分割文本，这在使用语言模型时非常有用。
+基于长度的分割类型：* 基于标记：根据标记数量分割文本，这在使用语言模型时非常有用。
 * 基于字符：根据字符数分割文本，这样在不同类型的文本之间可以更加一致。
 
 使用 LangChain 的 `CharacterTextSplitter` 进行基于令牌的拆分的示例实现：
@@ -79,7 +77,9 @@ texts = text_splitter.split_text(document)
 * [Split by tokens](/oss/python/integrations/splitters/split_by_token)
 * [Split by characters](/oss/python/integrations/splitters/character_text_splitter)
 
-## 基于文档结构有些文档具有固有的结构，例如 HTML、Markdown 或 JSON 文件。在这些情况下，根据文档结构拆分文档是有益的，因为它通常会自然地对语义相关的文本进行分组。基于结构的拆分的主要优点：
+## 基于文档结构
+
+有些文档具有固有的结构，例如 HTML、Markdown 或 JSON 文件。在这些情况下，根据文档结构拆分文档是有益的，因为它通常会自然地对语义相关的文本进行分组。基于结构的拆分的主要优点：
 
 * 保留文档的逻辑组织
 * 维护每个块内的上下文

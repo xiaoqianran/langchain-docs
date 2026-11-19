@@ -8,7 +8,7 @@
 
 管理您的 LangSmith 组织：管理用户和访问控制、组织工作区和应用程序以及配置策略和合规性。
 
-治理还扩展到代理在运行时执行的操作：模型调用时的[spend and data protection policies](/langsmith/llm-gateway-spend-policies)、代理代码的[sandboxed execution](/langsmith/sandboxes)以及敏感操作之前的[human approval](/langsmith/add-human-in-the-loop)。
+治理还扩展到代理在运行时执行的操作：模型调用时的[spend and data protection policies](/langsmith/llm-gateway-spend-policies)、工具调用时的[block and approval policies](/langsmith/tool-gateway-policies)、代理代码的[sandboxed execution](/langsmith/sandboxes)以及敏感操作之前的[human approval](/langsmith/add-human-in-the-loop)。
 
 ## 探索
 
@@ -38,8 +38,10 @@
 >
 > 代理 LLM 调用以强制执行支出限制、编辑敏感数据并集中管理提供者凭证。
 
+> [卡][Tool Gateway](/langsmith/tool-gateway)
+>
+> 将 MCP 服务器的凭据存储在LangSmith 中，并设置阻止工具调用或需要批准的策略。
+
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/govern-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/govern-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

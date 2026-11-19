@@ -8,7 +8,7 @@
 
 # 构建
 
-LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块。每一层都由您来配置：模型、工具、代理工作的上下文和内存，以及围绕模型循环的线束。
+LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块。每一层都可以由您配置：模型、工具、代理工作的上下文和内存，以及围绕模型循环的线束。
 
 ## 选择你的起点
 
@@ -62,7 +62,7 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 
 > [卡][Deep Agents Code](/oss/deepagents/code/overview)
 >
-> 基于Deep Agents SDK 构建的开源终端编码代理（`dcode`）。在会话中切换模型、自定义技能和内存，并从 CLI 批准 shell 执行。
+> 基于Deep Agents SDK 构建的开源终端编码代理 (`dcode`)。在会话中切换模型、自定义技能和内存，并批准从 CLI 执行 shell。
 
 ＃＃ 探索> [选项卡] Python
 >
@@ -140,19 +140,23 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 >
 > 路由、控制和观察提供商之间的 LLM 流量。
 
-> [卡][No-code agents](/langsmith/fleet)
+> [卡][Tool Gateway](/langsmith/tool-gateway)
+>
+> 使用托管凭证、策略和跟踪来管理代理工具调用。
+
+> [卡片][No-code agents](/langsmith/fleet)
 >
 > 使用 LangSmith Fleet 无需代码即可构建和运行代理。
 
-> [卡片][Engine](/langsmith/engine)
+> [卡][Engine](/langsmith/engine)
 >
 > 使用 LangSmith 引擎自动查找并修复重复出现的代理问题。
 
 > [卡][Deep Agents Code](/oss/deepagents/code/overview)
 >
-> 使用开源 `dcode` CLI 在终端中使用 AI 代理进行编码。
+> 使用开源 `dcode` CLI 在终端中使用 AI 代理进行编码。## 设置和治理
 
-## 设置和治理> [卡][LangSmith setup](/langsmith/langsmith-setup-overview)
+> [卡][LangSmith setup](/langsmith/langsmith-setup-overview)
 >
 > 云托管、BYOC 或自托管、帐户设置和管理。
 
@@ -182,6 +186,6 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 >
 > LangSmith 服务和 API 的实时状态。
 
-> [卡][Trust Center](https://trust.langchain.com/)
+> [卡片][Trust Center](https://trust.langchain.com/)
 >
 > HIPAA、SOC 2 Type 2 和 GDPR 合规性详细信息。

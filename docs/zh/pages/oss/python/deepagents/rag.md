@@ -4,7 +4,7 @@
 
 # 带有 Deep Agents 的检索增强生成 (RAG)
 
-Deep Agents 的 RAG 模式，包括技能引导检索、评分标准以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
+Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
 
 最强大的基于 LLM 的应用程序之一是复杂的问答 (Q\&A) 聊天机器人，它通过为 LLM 提供对一组数据的推理时访问来增强 LLM。
 这可能是私有数据、最新数据或不属于 LLM 训练数据的数据。
@@ -36,7 +36,7 @@ Deep Agents 的 RAG 模式，包括技能引导检索、评分标准以及索引
 
 将该问题传递给没有自定义工具且无法访问文档语料库的[Deep Agent](/oss/python/deepagents/overview)，以查看模型得出的结果：
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.messages import HumanMessage
 
@@ -58,7 +58,7 @@ result = baseline_agent.invoke(
 print(result["messages"][-1].text)
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.messages import HumanMessage
 
@@ -80,7 +80,7 @@ result = baseline_agent.invoke(
 print(result["messages"][-1].text)
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.messages import HumanMessage
 
@@ -102,7 +102,7 @@ result = baseline_agent.invoke(
 print(result["messages"][-1].text)
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.messages import HumanMessage
 
@@ -124,7 +124,7 @@ result = baseline_agent.invoke(
 print(result["messages"][-1].text)
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.messages import HumanMessage
 
@@ -146,7 +146,7 @@ result = baseline_agent.invoke(
 print(result["messages"][-1].text)
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.messages import HumanMessage
 
@@ -168,7 +168,7 @@ result = baseline_agent.invoke(
 print(result["messages"][-1].text)
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.messages import HumanMessage
 
@@ -274,13 +274,13 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 3. **[Embed](#select-an-embeddings-model)**：[Embeddings](/oss/python/integrations/embeddings)模型将每个块转换为捕获其含义的数字向量，从而实现对内容的相似性搜索。
 4. **[Store](#store-chunks-and-embeddings-in-vectorstore)**：使用[VectorStore](/oss/python/integrations/vectorstores)来索引块及其嵌入以进行检索。
 
-![index_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_indexing.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=21403ce0d0c772da84dcc5b75cff4451)在索引步骤中，获取文档页面，将它们分成块，嵌入块，并将它们存储在`VectorStore`中。代理在运行时搜索该索引；它不会重新获取每个问题的完整网站。
+![index_diagram](https://mintcdn.com/langchain-5e9cc07a/I6RpA28iE233vhYX/images/rag_indexing.png?fit=max\&auto=format\&n=I6RpA28iE233vhYX\&q=85\&s=21403ce0d0c772da84dcc5b75cff4451)在索引步骤中，获取文档页面，将它们分成块，嵌入块，并将它们存储在`VectorStore`中。代理在运行时搜索该索引；它不会重新获取每个问题的完整站点。
 
 LangChain 在 `https://docs.langchain.com/{path}.md` 发布降价。本教程对开源文档路径的精选列表进行索引。您可以扩展 `DOC_PATHS` 或解析 [llms.txt](https://docs.langchain.com/llms.txt) 中的 URL 以覆盖更多页面。
 
 创建`agent.py`：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import requests
 from langchain_core.documents import Document
 from langchain_core.vectorstores import InMemoryVectorStore
@@ -318,7 +318,7 @@ DOC_PATHS = [
 
 使用 `requests` 从 `https://docs.langchain.com/{path}.md` 获取每个页面作为降价。精心策划的 `DOC_PATHS` 列表选择要索引的页面。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def load_langchain_docs(doc_paths: list[str] | None = None) -> list[Document]:
     """Fetch LangChain documentation pages as Documents."""
     paths = doc_paths or DOC_PATHS
@@ -349,7 +349,7 @@ Loaded 14 documentation pages.
 
 您还可以查看页面内容本身：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 total_chars = sum(len(doc.page_content) for doc in docs)
 print(f"Total characters: {total_chars}")
 print(docs[0].page_content[:500])
@@ -372,7 +372,7 @@ Total characters: 589579
 使用 `RecursiveCharacterTextSplitter` 使用常见分隔符（例如换行符）递归拆分文档，直到每个块的大小合适。
 对于通用文本用例，推荐使用 `RecursiveCharacterTextSplitter` `TextSplitter`。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 all_splits = text_splitter.split_documents(docs)
 print(f"Split documentation into {len(all_splits)} chunks.")
@@ -382,21 +382,19 @@ print(f"Split documentation into {len(all_splits)} chunks.")
 Split documentation into 782 chunks.
 ```
 
-如果您想了解有关文本拆分器的更多信息，请查看 [⟦T101⟧ interface](https://reference.langchain.com/python/langchain-text-splitters/base/TextSplitter) 和 [text splitter integrations](/oss/python/integrations/splitters/)。
+如果您想了解有关文本拆分器的更多信息，请查看 [⟦T101⟧ interface](https://reference.langchain.com/python/langchain-text-splitters/base/TextSplitter) 和 [text splitter integrations](/oss/python/integrations/splitters/)。有关选择块大小和拆分策略的指南，请参阅[Chunk documents for retrieval](/oss/python/langchain/chunking)。
 
 ### 选择嵌入模型
 
-[embedding](/oss/python/integrations/embeddings) 是一个数字向量，用于捕获每个文档块的含义。 [Embeddings](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings) 模型将这些块转换为向量，以便相似的含义在向量空间中紧密结合在一起，从而使您能够在用户提出问题时检索相关部分。
-
-您可以从许多不同的[embedding integrations](/oss/python/integrations/embeddings/)中进行选择，它们都使用相同的[Interface](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings)：
+[embedding](/oss/python/integrations/embeddings) 是一个数字向量，用于捕获每个文档块的含义。 [Embeddings](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings) 模型将这些块转换为向量，以便相似的含义在向量空间中紧密结合在一起，从而使您能够在用户提出问题时检索相关部分。您可以从许多不同的[embedding integrations](/oss/python/integrations/embeddings/)中进行选择，它们都使用相同的[Interface](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings)：
 
 > [标签] OpenAI
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain-openai"
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import getpass
 > import os
 >
@@ -406,13 +404,15 @@ Split documentation into 782 chunks.
 > from langchain_openai import OpenAIEmbeddings
 >
 > embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
-> ```> [选项卡] 天蓝色
+> ```
+
+> [选项卡] 天蓝色
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain-openai"
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import getpass
 > import os
 >
@@ -430,11 +430,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] 谷歌双子座
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-google-genai
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import getpass
 > import os
 >
@@ -448,11 +448,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] Gemini 企业代理平台
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-google-vertexai
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_google_vertexai import VertexAIEmbeddings
 >
 > embeddings = VertexAIEmbeddings(model="text-embedding-005")
@@ -460,11 +460,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] AWS
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-aws
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_aws import BedrockEmbeddings
 >
 > embeddings = BedrockEmbeddings(model_id="amazon.titan-embed-text-v2:0")
@@ -472,11 +472,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] 拥抱脸
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-huggingface
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_huggingface import HuggingFaceEmbeddings
 >
 > embeddings = HuggingFaceEmbeddings(
@@ -485,13 +485,13 @@ Split documentation into 782 chunks.
 > )
 > ```
 
-> [标签] 奥拉马
+> [标签] 奥拉玛
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-ollama
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_ollama import OllamaEmbeddings
 >
 > embeddings = OllamaEmbeddings(model="llama3")
@@ -499,11 +499,11 @@ Split documentation into 782 chunks.
 
 > [标签] 连贯
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-cohere
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import getpass
 > import os
 >
@@ -517,11 +517,11 @@ Split documentation into 782 chunks.
 
 > [标签] MistralAI
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-mistralai
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import getpass
 > import os
 >
@@ -535,11 +535,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] 诺米克
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-nomic
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import getpass
 > import os
 >
@@ -553,11 +553,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] NVIDIA
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-nvidia-ai-endpoints
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import getpass
 > import os
 >
@@ -571,11 +571,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] Voyage AI
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-voyageai
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import getpass
 > import os
 >
@@ -589,11 +589,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] IBM watsonx
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-ibm
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import getpass
 > import os
 >
@@ -611,11 +611,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] 假的
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-core
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_core.embeddings import DeterministicFakeEmbedding
 >
 > embeddings = DeterministicFakeEmbedding(size=4096)
@@ -623,11 +623,11 @@ Split documentation into 782 chunks.
 
 > [标签] 以撒
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-isaacus
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import getpass
 > import os
 >
@@ -639,19 +639,21 @@ Split documentation into 782 chunks.
 > embeddings = IsaacusEmbeddings(model="kanon-2-embedder")
 > ```
 
-### 在 VectorStore 中存储块和嵌入
+> [!警告]
+>
+> 在索引文档和查询文档时，使用具有兼容向量维度的相同嵌入模型。如果您更改嵌入模型，请重新嵌入文档并重新索引。
 
-[⟦T102⟧](/oss/python/integrations/vectorstores) 保留文档块及其嵌入，使相似性搜索能够在用户提出问题时检索相关部分。
+### 在 VectorStore 中存储块和嵌入[⟦T102⟧](/oss/python/integrations/vectorstores) 保留文档块及其嵌入，使相似性搜索能够在用户提出问题时检索相关部分。
 您可以从许多不同的[vector store integrations](/oss/python/integrations/vectorstores/)中进行选择，它们都使用相同的[Interface](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore)。
 使用您在上一步中选择的嵌入模型来配置您的 `VectorStore`：
 
 > [选项卡] 内存中
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain-core"
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_core.vectorstores import InMemoryVectorStore
 >
 > vector_store = InMemoryVectorStore(embeddings)
@@ -659,11 +661,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] 亚马逊 OpenSearch
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU  boto3
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from opensearchpy import RequestsHttpConnection
 >
 > service = "es"  # must set the service as 'es'
@@ -688,11 +690,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] AstraDB
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain-astradb"
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_astradb import AstraDBVectorStore
 >
 > vector_store = AstraDBVectorStore(
@@ -706,11 +708,11 @@ Split documentation into 782 chunks.
 
 > [标签] 色度
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-chroma
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_chroma import Chroma
 >
 > vector_store = Chroma(
@@ -722,11 +724,11 @@ Split documentation into 782 chunks.
 
 > [标签] Milvus
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-milvus
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_milvus import Milvus
 >
 > URI = "./milvus_example.db"
@@ -740,11 +742,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] MongoDB
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-mongodb
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_mongodb import MongoDBAtlasVectorSearch
 >
 > vector_store = MongoDBAtlasVectorSearch(
@@ -757,11 +759,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] PGVector
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-postgres
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_postgres import PGVector
 >
 > vector_store = PGVector(
@@ -769,13 +771,15 @@ Split documentation into 782 chunks.
 >     collection_name="my_docs",
 >     connection="postgresql+psycopg://...",
 > )
-> ```> [选项卡] PGVectorStore
+> ```
+
+> [选项卡] PGVectorStore
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-postgres
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_postgres import PGEngine, PGVectorStore
 >
 > pg_engine = PGEngine.from_connection_string(
@@ -791,11 +795,11 @@ Split documentation into 782 chunks.
 
 > [标签] 松果
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-pinecone
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_pinecone import PineconeVectorStore
 > from pinecone import Pinecone
 >
@@ -807,11 +811,11 @@ Split documentation into 782 chunks.
 
 > [选项卡] Qdrant
 >
-> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-qdrant
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from qdrant_client.models import Distance, VectorParams
 > from langchain_qdrant import QdrantVectorStore
 > from qdrant_client import QdrantClient
@@ -834,7 +838,7 @@ Split documentation into 782 chunks.
 
 然后，使用上面初始化的 `vector_store` 嵌入并存储所有文档拆分：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 vector_store.add_documents(documents=all_splits)
 print(f"Indexed {len(all_splits)} chunks.")
 ```
@@ -849,9 +853,7 @@ Indexed 782 chunks.
 >
 > 在本教程中，索引在启动时运行一次。在生产中，将矢量存储保存到磁盘或托管矢量数据库，并在文档更改时按计划刷新。
 
-本教程的 **索引** 部分就完成了。您现在拥有一个可查询的向量存储，其中包含分块的 LangChain 文档。
-
-下一步是构建一个深度代理，在运行时搜索该索引，将检索到的块卸载到文件系统，并将分析委托给子代理。参见[Build the agent](#build-the-agent)。用 RAG 术语来思考：
+本教程的 **索引** 部分就完成了。您现在拥有一个可查询的向量存储，其中包含分块的 LangChain 文档。下一步是构建一个深度代理，在运行时搜索该索引，将检索到的块卸载到文件系统，并将分析委托给子代理。参见[Build the agent](#build-the-agent)。用 RAG 术语来思考：
 
 1. **检索**：给定用户输入，使用[Retriever](/oss/python/integrations/retrievers)从存储中检索相关分割。
 2. **生成**：[model](/oss/python/langchain/models) 使用提示生成答案，其中包括问题和检索到的数据。
@@ -862,11 +864,13 @@ Indexed 782 chunks.
 
 将此代码添加到`agent.py`：
 
-**1.添加搜索工具**`search_documentation` 工具针对索引语料库运行相似性搜索，然后将每个检索到的块写入`/retrieved/{batch_id}/` 下的代理文件系统。它返回文件路径，以便编排器可以委托分析，而无需将完整的块文本加载到其上下文中。
+**1.添加搜索工具**
+
+`search_documentation` 工具针对索引语料库运行相似性搜索，然后将每个检索到的块写入`/retrieved/{batch_id}/` 下的代理文件系统。它返回文件路径，以便编排器可以委托分析，而无需将完整的块文本加载到其上下文中。
 
 该工具使用 `backend.upload_files()` 将检索到的块写入代理后端。将相同的后端实例传递给`create_deep_agent`，以便内置文件系统工具（例如`read_file`和`grep`）可以读取保存的路径。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.utils.uuid import uuid7
 from deepagents.backends import StateBackend
 from langchain.tools import tool
@@ -961,7 +965,7 @@ Your role is to coordinate chunk analysis by delegating to the chunk-analyst sub
 
 在`agent.py`中添加模型初始化和代理创建：
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.chat_models import init_chat_model
 
@@ -997,7 +1001,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.chat_models import init_chat_model
 
@@ -1033,7 +1037,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.chat_models import init_chat_model
 
@@ -1069,7 +1073,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.chat_models import init_chat_model
 
@@ -1105,7 +1109,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.chat_models import init_chat_model
 
@@ -1141,7 +1145,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.chat_models import init_chat_model
 
@@ -1177,7 +1181,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.chat_models import init_chat_model
 
@@ -1211,15 +1215,13 @@ agent = create_deep_agent(
     system_prompt=INSTRUCTIONS,
     subagents=[chunk_analyst_subagent],
 )
-```
-
-主代理保留`search_documentation`工具。 `chunk-analyst`子代理使用内置文件系统工具来读取块文件，但不直接搜索向量存储。
+```主代理保留`search_documentation`工具。 `chunk-analyst`子代理使用内置文件系统工具来读取块文件，但不直接搜索向量存储。
 
 ## 运行代理
 
 使用示例查询运行 RAG 代理：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import HumanMessage
 
 EXAMPLE_QUERY = "How do I stream intermediate tool results from a subagent?"
@@ -1234,7 +1236,9 @@ if __name__ == "__main__":
             print(msg.text)
 ```
 
-当代理运行时，它：1. 调用 `search_documentation` 查询子代理流。
+当代理运行时，它：
+
+1. 调用 `search_documentation` 查询子代理流。
 2. 接收`/retrieved/a1b2c3d4/chunk_1.md`等文件路径。
 3. 启动对 `chunk-analyst` 的一个或多个 `task()` 调用，每个调用的作用域为单个块文件。
 4. 综合最终答案以及相关文档页面的链接。
@@ -1245,9 +1249,9 @@ if __name__ == "__main__":
 
 > [!警告]
 >
-> RAG 应用程序容易受到**间接提示注入**的影响。检索到的文档可能包含类似于说明的文本。由于检索到的块与系统提示共享上下文窗口，因此模型可能遵循文档中嵌入的说明，而不是您预期的提示。
+> RAG 应用程序容易受到**间接提示注入**的影响。检索到的文档可能包含类似于说明的文本。由于检索到的块与系统提示共享上下文窗口，因此模型可能遵循文档中嵌入的说明，而不是您预期的提示。没有提示或分隔符策略可以完全防止间接提示注入。本教程中的协调器和子代理提示要求模型仅将检索到的内容视为数据，并且搜索工具使用 `# Source:` 标头为块添加前缀，以便分析人员可以区分元数据和正文内容。这些模式在某些情况下可以提供帮助，但它们不能提供可靠的保护。
 
-没有提示或分隔符策略可以完全防止间接提示注入。本教程中的协调器和子代理提示要求模型仅将检索到的内容视为数据，并且搜索工具使用 `# Source:` 标头为块添加前缀，以便分析人员可以区分元数据和正文内容。这些模式在某些情况下可以提供帮助，但它们不能提供可靠的保护。在将代理输出呈现给用户之前验证它们。检查答案是否引用了预期的文档路径以及声明是否与检索到的源材料相匹配。
+在将代理输出呈现给用户之前验证它们。检查答案是否引用了预期的文档路径以及声明是否与检索到的源材料相匹配。
 
 有关此主题的更多信息，请参阅 [prompt injection](https://simonwillison.net/series/prompt-injection/) 的研究。
 
@@ -1257,7 +1261,7 @@ if __name__ == "__main__":
 
 另存为 `agent.py` 并使用 `python agent.py` 运行：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.utils.uuid import uuid7
 import requests
 from deepagents import create_deep_agent
@@ -1445,10 +1449,9 @@ if __name__ == "__main__":
 
 ## 后续步骤
 
-您使用 [⟦T123⟧](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 实现了一种 RAG 模式。将其与其他 Deep Agents 功能相结合，或尝试与 [RAG patterns](#rag-patterns) 不同的模式：
-
-* 将 [Skills](/oss/python/deepagents/skills) 添加到包检索工作流程和特定领域的搜索指南
+您使用 [⟦T123⟧](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 实现了一种 RAG 模式。将其与其他 Deep Agents 功能相结合，或尝试与 [RAG patterns](#rag-patterns) 不同的模式：* 将 [Skills](/oss/python/deepagents/skills) 添加到包检索工作流程和特定领域的搜索指南
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) 与 LangSmith 数据集和评估器
+* [Chunk documents for retrieval](/oss/python/langchain/chunking) 提高检索质量
 * 阅读 [Context engineering](/oss/python/deepagents/context-engineering) 了解卸载和子代理隔离策略
 * 使用 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 进行部署以运行生产代理，而无需管理基础设施。或者，为了在使用相同的Deep Agents安全带时获得最大的灵活性，您可以自己托管代理或使用自定义的[Agent Server](/langsmith/agent-server)
 * 使用 [Grading rubrics](/oss/python/deepagents/rubric) 验证答案是否基于检索到的源材料

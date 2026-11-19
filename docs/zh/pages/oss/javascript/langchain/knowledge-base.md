@@ -21,7 +21,7 @@
 本教程重点关注文本检索并涵盖以下概念：
 
 * [⟦T70⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document)
-* [Text splitters](/oss/javascript/integrations/splitters)
+* [Text splitters](/oss/javascript/integrations/splitters) 和 [chunking strategy](/oss/javascript/langchain/chunking)
 * [Embeddings](/oss/javascript/integrations/embeddings)
 * [Vector stores](/oss/javascript/integrations/vectorstores) 和 [retrievers](/oss/javascript/integrations/retrievers)
 
@@ -51,16 +51,16 @@ pnpm add pdf-parse
 随着这些应用程序变得越来越复杂，能够检查链或代理内部到底发生了什么变得至关重要。
 最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-knowledge-base)。
 
-在上面的链接注册后，请确保设置环境变量以开始记录跟踪：
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+在上面的链接注册后，请确保设置环境变量以开始记录跟踪：```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING="true"
 export LANGSMITH_API_KEY="..."
-```## 创建文档
+```
+
+## 创建文档
 
 LangChain 实现了文本单元和相关元数据的 [⟦T72⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 抽象。它具有三个属性：
 
-* `pageContent`：代表内容的字符串。
+* `pageContent`：表示内容的字符串。
 * `metadata`：包含任意元数据的字典。
 * `id`：（可选）文档的字符串标识符。
 
@@ -428,7 +428,7 @@ console.log(docs.length);
 107
 ```
 
-页面通常过于粗糙而无法检索。进一步拆分页面，以便相关段落不会被周围的文本冲淡。 [⟦T82⟧](https://reference.langchain.com/javascript/langchain-textsplitters/RecursiveCharacterTextSplitter) 在公共分隔符（例如换行符）上递归分割，直到每个块达到目标大小。这是针对一般文本用例推荐的文本分割器。
+页面通常过于粗糙而无法检索。进一步拆分页面，以便相关段落不会被周围的文本冲淡。 [⟦T82⟧](https://reference.langchain.com/javascript/langchain-textsplitters/RecursiveCharacterTextSplitter) 在公共分隔符（例如换行符）上递归分割，直到每个块达到目标大小。这是针对一般文本用例推荐的文本分割器。有关选择块大小、重叠和其他策略的指导，请参阅[Chunk documents for retrieval](/oss/javascript/langchain/chunking)。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
@@ -485,7 +485,7 @@ Document {
 }
 ```
 
-### Return scores
+### 返回分数
 
 您可以返回文档的相似度分数。分数的含义因提供商而异。在这种情况下，分数是一个与相似度成反比变化的距离度量：
 
@@ -506,7 +506,7 @@ Document {
 }
 ```
 
-### Search by vector
+### 按向量搜索
 
 自己嵌入查询，然后使用结果向量进行搜索：
 
@@ -541,7 +541,7 @@ Document {
 
 ## 使用检索器
 
-LangChain [⟦T85⟧](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore) 对象不会子类 [⟦T86⟧](https://reference.langchain.com/javascript/langchain-core/runnables/Runnable)。 [Retrievers](https://reference.langchain.com/javascript/langchain-core/retrievers/BaseRetriever)是Runnables，因此它们支持同步和异步`invoke`和`batch`等标准方法。
+LangChain [⟦T85⟧](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore) 对象不会子类化 [⟦T86⟧](https://reference.langchain.com/javascript/langchain-core/runnables/Runnable)。 [Retrievers](https://reference.langchain.com/javascript/langchain-core/retrievers/BaseRetriever)是Runnables，因此它们支持同步和异步`invoke`和`batch`等标准方法。
 
 您还可以从向量存储构建检索器，并且检索器还可以包装非向量源（例如外部 API）。
 
@@ -572,11 +572,11 @@ await retriever.batch([
         pageContent: 'Table of Contents...',
     }],
 ]
-```您可以在更复杂的应用程序中使用检索器，例如 [retrieval-augmented generation (RAG)](/oss/javascript/deepagents/retrieval)，它在 LLM 提示中将问题与检索到的上下文结合起来。要了解有关构建此类应用程序的更多信息，请查看 [RAG tutorial](/oss/javascript/deepagents/rag) 教程。
+```您可以在更复杂的应用程序中使用检索器，例如 [retrieval-augmented generation (RAG)](/oss/javascript/deepagents/retrieval)，它将问题与检索到的上下文结合到 LLM 提示中。 To learn more about building such an application, check out the [RAG tutorial](/oss/javascript/deepagents/rag) tutorial.
 
 ## 后续步骤
 
-您现在已经了解了如何在 PDF 文档上构建语义搜索引擎。
+You've now seen how to build a semantic search engine over a PDF document.
 
 欲了解更多信息，请参阅：
 
@@ -587,10 +587,12 @@ await retriever.batch([
 
 * [Retrieval overview](/oss/javascript/deepagents/retrieval)
 * [RAG with Deep Agents](/oss/javascript/deepagents/rag)
+* [Chunk documents for retrieval](/oss/javascript/langchain/chunking)
+* [Improve retrieval quality](/oss/javascript/langchain/retrieval-optimization)
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial)
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/knowledge-base.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

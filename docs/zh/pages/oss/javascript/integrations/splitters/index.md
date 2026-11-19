@@ -32,7 +32,7 @@ bun add @langchain/textsplitters @langchain/core
 
 > [!提示]
 >
-> 对于大多数用例，从 [⟦T6⟧](/oss/javascript/integrations/splitters/recursive_text_splitter) 开始。它在保持上下文完整和管理块大小之间提供了坚实的平衡。此默认策略开箱即用，效果很好，只有在需要针对特定​​应用程序微调性能时才应考虑调整它。
+> 对于大多数用例，从 [⟦T6⟧](/oss/javascript/integrations/splitters/recursive_text_splitter) 开始。它在保持上下文完整和管理块大小之间提供了坚实的平衡。此默认策略开箱即用，效果很好，只有在需要针对特定​​应用程序微调性能时才应考虑调整它。有关选择块大小和拆分策略的指南，请参阅[Chunk documents for retrieval](/oss/javascript/langchain/chunking)。
 
 ## 基于文本结构
 

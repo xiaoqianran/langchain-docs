@@ -27,7 +27,7 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 
 > [!TIP]
 >
-> For most use cases, start with the [`RecursiveCharacterTextSplitter`](/oss/python/integrations/splitters/recursive_text_splitter). It provides a solid balance between keeping context intact and managing chunk size. This default strategy works well out of the box, and you should only consider adjusting it if you need to fine-tune performance for your specific application.
+> For most use cases, start with the [`RecursiveCharacterTextSplitter`](/oss/python/integrations/splitters/recursive_text_splitter). It provides a solid balance between keeping context intact and managing chunk size. This default strategy works well out of the box, and you should only consider adjusting it if you need to fine-tune performance for your specific application. For guidance on choosing chunk size and a splitting strategy, see [Chunk documents for retrieval](/oss/python/langchain/chunking).
 
 ## Text structure-based
 

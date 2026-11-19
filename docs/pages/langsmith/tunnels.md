@@ -6,7 +6,7 @@ Reach services on your private network from LangSmith through an outbound-only c
 
 > [!NOTE]
 >
-> Tunnels are in [alpha](/langsmith/release-stages). To request access for your organization, [contact our sales team](https://www.langchain.com/contact-sales).
+> Tunnels are in [beta](/langsmith/release-stages). To request access for your organization, [contact our sales team](https://www.langchain.com/contact-sales).
 
 A tunnel lets LangSmith reach a service that runs on your private network, such as a model endpoint or an MCP server, without opening that service to the internet. You run a small connector inside your network. The connector opens an outbound connection to LangSmith, and LangSmith sends requests for your service over that connection. To send a sandbox's outbound connections through your network instead, use a [relay](/langsmith/relays).
 

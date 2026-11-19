@@ -21,7 +21,7 @@
 本教程重点关注文本检索并涵盖以下概念：
 
 * [⟦T76⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document)
-* [Text splitters](/oss/python/integrations/splitters)
+* [Text splitters](/oss/python/integrations/splitters) 和 [chunking strategy](/oss/python/langchain/chunking)
 * [Embeddings](/oss/python/integrations/embeddings)
 * [Vector stores](/oss/python/integrations/vectorstores) 和 [retrievers](/oss/python/integrations/retrievers)
 
@@ -47,16 +47,16 @@ uv add pypdf
 
 ### 配置LangSmith
 
-您使用LangChain构建的许多应用程序将包含多个步骤以及多次调用LLM调用。
+您使用 LangChain 构建的许多应用程序将包含多个步骤，并多次调用 LLM 调用。
 随着这些应用程序变得越来越复杂，能够检查链或代理内部到底发生了什么变得至关重要。
-最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-knowledge-base)。
-
-在上面的链接注册后，请确保设置环境变量以开始记录跟踪：
+最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-knowledge-base)。在上面的链接注册后，请确保设置环境变量以开始记录跟踪：
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING="true"
 export LANGSMITH_API_KEY="..."
-```在笔记本中，您可以使用以下方式设置它们：
+```
+
+在笔记本中，您可以使用以下方式设置它们：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import getpass
@@ -70,7 +70,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 
 LangChain 实现了文本单元和相关元数据的 [⟦T78⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 抽象。它具有三个属性：
 
-* `page_content`：表示内容的字符串。
+* `page_content`：代表内容的字符串。
 * `metadata`：包含任意元数据的字典。
 * `id`：（可选）文档的字符串标识符。
 
@@ -179,9 +179,7 @@ LangChain 支持[many providers](/oss/python/integrations/embeddings/) 的嵌入
 > from langchain_aws import BedrockEmbeddings
 >
 > embeddings = BedrockEmbeddings(model_id="amazon.titan-embed-text-v2:0")
-> ```
-
-> [选项卡] 拥抱脸
+> ```> [选项卡] 拥抱脸
 >
 > ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-huggingface
@@ -224,7 +222,9 @@ LangChain 支持[many providers](/oss/python/integrations/embeddings/) 的嵌入
 > from langchain_cohere import CohereEmbeddings
 >
 > embeddings = CohereEmbeddings(model="embed-english-v3.0")
-> ```> [标签] MistralAI
+> ```
+
+> [标签] MistralAI
 >
 > ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-mistralai
@@ -495,9 +495,7 @@ LangChain 包括[integrations](/oss/python/integrations/vectorstores) 以及许�
 >     collection_name="my_docs",
 >     connection="postgresql+psycopg://...",
 > )
-> ```
-
-> [选项卡] PGVectorStore
+> ```> [选项卡] PGVectorStore
 >
 > ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -qU langchain-postgres
@@ -558,7 +556,9 @@ LangChain 包括[integrations](/oss/python/integrations/vectorstores) 以及许�
 >     collection_name="test",
 >     embedding=embeddings,
 > )
-> ```## 加载并分割 PDF
+> ```
+
+## 加载并分割 PDF
 
 从 PDF 加载内容，然后在建立索引之前将其分割成更小的块。此示例使用[a sample Nike 10-K filing from 2023](https://github.com/langchain-ai/langchain/blob/v0.3/docs/docs/example_data/nke-10k-2023.pdf)。
 
@@ -592,7 +592,7 @@ print(len(docs))
 107
 ```
 
-页面通常过于粗糙而无法检索。进一步拆分页面，以便相关段落不会被周围的文本冲淡。 [⟦T89⟧](https://reference.langchain.com/python/langchain-text-splitters/character/RecursiveCharacterTextSplitter) 在公共分隔符（例如换行符）上递归分割，直到每个块达到目标大小。这是针对一般文本用例推荐的文本分割器。
+页面通常过于粗糙而无法检索。进一步拆分页面，以便相关段落不会被周围的文本冲淡。 [⟦T89⟧](https://reference.langchain.com/python/langchain-text-splitters/character/RecursiveCharacterTextSplitter) 在公共分隔符（例如换行符）上递归分割，直到每个块达到目标大小。这是针对一般文本用例推荐的文本分割器。有关选择块大小、重叠和其他策略的指导，请参阅[Chunk documents for retrieval](/oss/python/langchain/chunking)。
 
 设置 `add_start_index=True` ，以便每个拆分都为其在原始文档中的字符偏移量保留一个 `start_index` 元数据字段。
 
@@ -617,13 +617,13 @@ print(len(all_splits))
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ids = vector_store.add_documents(documents=all_splits)
-```
-
-大多数矢量存储集成还支持连接到现有存储（例如使用客户端或索引名称）。有关详细信息，请参阅特定 [integration](/oss/python/integrations/vectorstores) 的文档。
+```大多数矢量存储集成还支持连接到现有存储（例如使用客户端或索引名称）。有关详细信息，请参阅特定 [integration](/oss/python/integrations/vectorstores) 的文档。
 
 ## 查询向量存储
 
-将文档添加到[⟦T92⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore)后，即可查询：* 同步和异步
+将文档添加到[⟦T92⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore)后，即可查询：
+
+* 同步和异步
 * 按字符串查询和按向量查询
 * 有和没有相似度分数
 * 通过相似性和[maximum marginal relevance](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore/max_marginal_relevance_search)（平衡相似性和多样性）
@@ -735,9 +735,7 @@ This was partially offset by:' metadata={'page': 36, 'source': '../example_data/
 * [API Reference](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore)
 * [Integration-specific docs](/oss/python/integrations/vectorstores)
 
-## 使用检索器
-
-LangChain [⟦T94⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore) 对象不会子类 [⟦T95⟧](https://reference.langchain.com/python/langchain-core/runnables/base/Runnable)。 [Retrievers](https://reference.langchain.com/python/langchain-core/retrievers/BaseRetriever) 是 Runnables，因此它们支持同步和异步 `invoke` 和 `batch` 等标准方法。
+## 使用检索器LangChain [⟦T94⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore) 对象不会子类 [⟦T95⟧](https://reference.langchain.com/python/langchain-core/runnables/base/Runnable)。 [Retrievers](https://reference.langchain.com/python/langchain-core/retrievers/BaseRetriever)是Runnables，因此它们支持同步和异步`invoke`和`batch`等标准方法。
 
 您还可以从向量存储构建检索器，并且检索器还可以包装非向量源（例如外部 API）。
 
@@ -766,7 +764,9 @@ retriever.batch(
 ```text wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [[Document(metadata={'page': 4, 'source': '../example_data/nke-10k-2023.pdf', 'start_index': 3125}, page_content='direct to consumer operations sell products through the following number of retail stores in the United States:\nU.S. RETAIL STORES NUMBER\nNIKE Brand factory stores 213 \nNIKE Brand in-line stores (including employee-only stores) 74 \nConverse stores (including factory stores) 82 \nTOTAL 369 \nIn the United States, NIKE has eight significant distribution centers. Refer to Item 2. Properties for further information.\n2023 FORM 10-K 2')],
  [Document(metadata={'page': 3, 'source': '../example_data/nke-10k-2023.pdf', 'start_index': 0}, page_content='Table of Contents\nPART I\nITEM 1. BUSINESS\nGENERAL\nNIKE, Inc. was incorporated in 1967 under the laws of the State of Oregon. As used in this Annual Report on Form 10-K (this "Annual Report"), the terms "we," "us," "our,"\n"NIKE" and the "Company" refer to NIKE, Inc. and its predecessors, subsidiaries and affiliates, collectively, unless the context indicates otherwise.\nOur principal business activity is the design, development and worldwide marketing and selling of athletic footwear, apparel, equipment, accessories and services. NIKE is\nthe largest seller of athletic footwear and apparel in the world. We sell our products through NIKE Direct operations, which are comprised of both NIKE-owned retail stores\nand sales through our digital platforms (also referred to as "NIKE Brand Digital"), to retail accounts and to a mix of independent distributors, licensees and sales')]]
-```向量存储实现了返回 [⟦T101⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStoreRetriever) 的 `as_retriever` 方法。这些检索器公开 `search_type` 和 `search_kwargs` 来选择和参数化底层存储方法。复制上面的例子：
+```
+
+向量存储实现了返回 [⟦T101⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStoreRetriever) 的 `as_retriever` 方法。这些检索器公开 `search_type` 和 `search_kwargs` 来选择和参数化底层存储方法。复制上面的例子：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 retriever = vector_store.as_retriever(
@@ -804,10 +804,10 @@ retriever.batch(
 
 * [Retrieval overview](/oss/python/deepagents/retrieval)
 * [RAG with Deep Agents](/oss/python/deepagents/rag)
+* [Chunk documents for retrieval](/oss/python/langchain/chunking)
+* [Improve retrieval quality](/oss/python/langchain/retrieval-optimization)
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial)
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/knowledge-base.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

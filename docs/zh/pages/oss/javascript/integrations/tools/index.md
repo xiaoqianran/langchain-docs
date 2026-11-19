@@ -37,7 +37,7 @@
 | - | - | - |
 | [Magic Hour](https://docs.magichour.ai) |免费套餐（400 积分 + 100/天）|使用 Sora 2、Veo 3.1、Kling 3.0、WAN 2.2、GPT-image、Nano Banana Pro 进行文本到视频、图像到视频和图像生成。同步和异步，返回 URL 或本地下载。 |
 
-## 所有工具和工具包|整合|下载 |
+## 所有工具和工具包|整合 |下载 |
 | :-| :-|
 | [⟦T1⟧](/oss/javascript/integrations/tools/dalle) | [  ⟦T80⟧](https://www.npmjs.com/package/@langchain/openai) |
 | [⟦T2⟧](/oss/javascript/integrations/tools/openai) | [  ⟦T81⟧](https://www.npmjs.com/package/@langchain/openai) |
@@ -53,7 +53,7 @@
 | [⟦T12⟧](/oss/javascript/integrations/tools/oracleai) | [  ⟦T91⟧](https://www.npmjs.com/package/@oracle/langchain-oracledb) |
 | [⟦T13⟧](/oss/javascript/integrations/tools/exa_search) | [  ⟦T92⟧](https://www.npmjs.com/package/@langchain/exa) |
 | [⟦T14⟧](/oss/javascript/integrations/tools/composio) | [  ⟦T93⟧](https://www.npmjs.com/package/@composio/langchain) |
-| [⟦T15⟧](https://pilotfish.gai.ventures/docs/open) | [  ⟦T94⟧](https://www.npmjs.com/package/@gaiventures/pilotfish-mcp) |
+| [⟦T15⟧](https://pilotfish.gai.ventures/docs/langchain) | [  ⟦T94⟧](https://www.npmjs.com/package/@gaiventures/pilotfish-mcp) |
 | [⟦T16⟧](/oss/javascript/integrations/tools/mcp_toolbox) | [  ⟦T95⟧](https://www.npmjs.com/package/@toolbox-sdk/core) |
 | [⟦T17⟧](/oss/javascript/integrations/tools/ibm) | [  ⟦T96⟧](https://www.npmjs.com/package/@langchain/ibm) |
 | [⟦T18⟧](https://fizzl.eu/agents/langchain-js/) | [  ⟦T97⟧](https://www.npmjs.com/package/fizzl-langchain) |

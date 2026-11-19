@@ -6,7 +6,7 @@ Learn how to customize Deep Agents with system prompts, tools, subagents, and mo
 
 Build the harness around your goal. `create_deep_agent` gives you a production-ready foundation: connect it to your data, shape its behavior, and add the capabilities your use case needs.
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -18,7 +18,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -30,7 +30,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -42,7 +42,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -54,7 +54,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -66,7 +66,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -78,7 +78,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -109,7 +109,7 @@ agent = create_deep_agent(
 
 > [accordion] Full function signature
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > create_deep_agent(
 >     model: str | BaseChatModel | None = None,
 >     tools: Sequence[BaseTool | Callable | dict[str, Any]] | None = None,
@@ -153,15 +153,15 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > 👉 Read the [OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[openai]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[openai]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from deepagents import create_deep_agent
 >
@@ -172,7 +172,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > # to use specific model parameters, use init_chat_model directly
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 > from deepagents import create_deep_agent
@@ -183,7 +183,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_openai import ChatOpenAI
 > from deepagents import create_deep_agent
@@ -198,15 +198,15 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > 👉 Read the [Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[anthropic]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[anthropic]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from deepagents import create_deep_agent
 >
@@ -217,7 +217,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > # to use specific model parameters, use init_chat_model directly
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 > from deepagents import create_deep_agent
@@ -228,7 +228,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_anthropic import ChatAnthropic
 > from deepagents import create_deep_agent
@@ -243,15 +243,15 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > 👉 Read the [Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[openai]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[openai]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from deepagents import create_deep_agent
 >
@@ -264,7 +264,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > # to use specific model parameters, use init_chat_model directly
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 > from deepagents import create_deep_agent
@@ -280,7 +280,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_openai import AzureChatOpenAI
 > from deepagents import create_deep_agent
@@ -300,15 +300,15 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > 👉 Read the [Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[google-genai]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[google-genai]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from deepagents import create_deep_agent
 >
@@ -319,7 +319,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > # to use specific model parameters, use init_chat_model directly
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 > from deepagents import create_deep_agent
@@ -330,7 +330,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_google_genai import ChatGoogleGenerativeAI
 > from deepagents import create_deep_agent
@@ -345,15 +345,15 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > 👉 Read the [AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[aws]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[aws]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 >
 > # Follow the steps here to configure your credentials:
@@ -367,7 +367,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > # to use specific model parameters, use init_chat_model directly
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.chat_models import init_chat_model
 > from deepagents import create_deep_agent
 >
@@ -381,7 +381,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_aws import ChatBedrock
 > from deepagents import create_deep_agent
 >
@@ -396,15 +396,15 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > 👉 Read the [HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[huggingface]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[huggingface]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from deepagents import create_deep_agent
 >
@@ -420,7 +420,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > # to use specific model parameters, use init_chat_model directly
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 > from deepagents import create_deep_agent
@@ -436,7 +436,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 > from deepagents import create_deep_agent
@@ -456,21 +456,21 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 >
 > Pass any [supported model string](/oss/python/deepagents/models#supported-models), or an initialized model instance. For example:
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[deepseek]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[deepseek]"
 > ```
 >
-> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 >
 > agent = create_deep_agent(model="provider:model-name")
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from langchain.chat_models import init_chat_model
 >
@@ -478,7 +478,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 > agent = create_deep_agent(model=model)
 > ```
 >
-> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_<provider> import Chat<Provider>
 > # from langchain_deepseek import ChatDeepSeek
 >
@@ -498,7 +498,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 
 In addition to [built-in tools](/oss/python/deepagents/overview#execution-environment) for file management and subagent spawning, you can provide custom tools:
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -528,7 +528,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -558,7 +558,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -588,7 +588,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -618,7 +618,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -648,7 +648,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -678,7 +678,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 from tavily import TavilyClient
@@ -720,7 +720,7 @@ Install LangChain with the `mcp` extra to connect to MCP servers:
 pip install "langchain[mcp]"
 ```
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -745,7 +745,7 @@ async def main():
         )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -770,7 +770,7 @@ async def main():
         )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -795,7 +795,7 @@ async def main():
         )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -820,7 +820,7 @@ async def main():
         )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -845,7 +845,7 @@ async def main():
         )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -870,7 +870,7 @@ async def main():
         )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from deepagents import create_deep_agent
@@ -901,7 +901,7 @@ For detailed configuration options including stdio servers, OAuth authentication
 
 Pass `system_prompt=` to give the agent your own instructions:
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -915,7 +915,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -929,7 +929,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -943,7 +943,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -957,7 +957,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -971,7 +971,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -985,7 +985,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 research_instructions = """\
@@ -1011,7 +1011,7 @@ agent = create_deep_agent(
 >
 > The auto-added [general-purpose subagent](/oss/python/deepagents/subagents#the-general-purpose-subagent) resolves its base prompt as **`general_purpose_subagent.system_prompt` (if set) -> `HarnessProfile.base_system_prompt` (if set) -> SDK general-purpose default**, with the profile suffix layered on top. When both override fields are set, the general-purpose-specific one wins so a caller tuning both fields never sees their GP override silently dropped:
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import (
 >     GeneralPurposeSubagentProfile,
 >     HarnessProfile,
@@ -1119,7 +1119,7 @@ For provider-specific middleware that is optimized for specific LLM providers, s
 
 You can provide additional middleware to extend functionality, add tools, or implement custom hooks:
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1159,7 +1159,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1199,7 +1199,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1239,7 +1239,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1279,7 +1279,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1319,7 +1319,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1359,7 +1359,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_tool_call
 from langchain.tools import tool
 from deepagents import create_deep_agent
@@ -1408,7 +1408,7 @@ agent = create_deep_agent(
 >
 > **Do this:**
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.agents.middleware import AgentMiddleware
 >
 >
@@ -1422,7 +1422,7 @@ agent = create_deep_agent(
 >
 > Do **not** do this:
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > class CustomMiddlewareBad(AgentMiddleware):
 >     def __init__(self):
 >         self.x = 1
@@ -1666,7 +1666,7 @@ Declarative subagents defined via `subagents=` do not inherit the main agent's m
 
 Use [interpreters](/oss/python/deepagents/interpreters) to add an `eval` tool that runs JavaScript in a scoped QuickJS runtime. Interpreters are useful when the agent needs to compose tools programmatically, batch work, handle errors in code, or transform structured data without a full shell environment.
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1676,7 +1676,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1686,7 +1686,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1696,7 +1696,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1706,7 +1706,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1716,7 +1716,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1726,7 +1726,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -1742,7 +1742,7 @@ For setup, programmatic tool calling, subagent orchestration, and limits, see [I
 
 To isolate detailed work and avoid context bloat, use subagents:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 
@@ -1796,7 +1796,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 >
 > Files persist across turns within a thread (via your checkpointer) and are not shared across threads.
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1810,7 +1810,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1824,7 +1824,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1838,7 +1838,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1852,7 +1852,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1866,7 +1866,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1880,7 +1880,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
 >
@@ -1904,7 +1904,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > > Use with caution and only in appropriate environments.
 > > For more information, see [`FilesystemBackend`](/oss/python/deepagents/backends#filesystembackend-local-disk).
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1914,7 +1914,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1924,7 +1924,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1934,7 +1934,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1944,7 +1944,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1954,7 +1954,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1964,7 +1964,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 >
@@ -1988,7 +1988,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > > Use with extreme caution and only in appropriate environments.
 > > For more information, see [`LocalShellBackend`](/oss/python/deepagents/backends#localshellbackend-local-shell).
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -1998,7 +1998,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -2008,7 +2008,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -2018,7 +2018,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -2028,7 +2028,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -2038,7 +2038,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -2048,7 +2048,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LocalShellBackend
 >
@@ -2062,7 +2062,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 >
 > A filesystem that provides long-term storage that is *persisted across threads*.
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2076,7 +2076,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2090,7 +2090,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2104,7 +2104,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2118,7 +2118,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2132,7 +2132,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2146,7 +2146,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2172,7 +2172,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 >
 > Durable filesystem storage in a LangSmith Hub repo.
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2182,7 +2182,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2192,7 +2192,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2202,7 +2202,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2212,7 +2212,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2222,7 +2222,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2232,7 +2232,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import ContextHubBackend
 >
@@ -2248,7 +2248,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 >
 > A flexible backend where you can specify different routes in the filesystem to point towards different backends.
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2265,7 +2265,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2282,7 +2282,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2299,7 +2299,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2316,7 +2316,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2333,7 +2333,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2350,7 +2350,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 > from langgraph.store.memory import InMemoryStore
@@ -2378,15 +2378,15 @@ You configure sandboxes by passing a sandbox backend to `backend` when creating 
 
 > [tab] LangSmith
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langsmith
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add langsmith
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import LangSmithSandbox
 > from langchain_anthropic import ChatAnthropic
@@ -2418,15 +2418,15 @@ You configure sandboxes by passing a sandbox backend to `backend` when creating 
 
 > [tab] Daytona
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langchain-daytona
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add langchain-daytona
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from daytona import Daytona
 > from deepagents import create_deep_agent
 > from langchain_anthropic import ChatAnthropic
@@ -2458,15 +2458,15 @@ You configure sandboxes by passing a sandbox backend to `backend` when creating 
 
 > [tab] E2B
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langchain-e2b
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add langchain-e2b
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from e2b import Sandbox
 > from deepagents import create_deep_agent
 > from langchain_anthropic import ChatAnthropic
@@ -2498,15 +2498,15 @@ You configure sandboxes by passing a sandbox backend to `backend` when creating 
 
 > [tab] Modal
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langchain-modal
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add langchain-modal
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import modal
 > from deepagents import create_deep_agent
 > from langchain_anthropic import ChatAnthropic
@@ -2538,15 +2538,15 @@ You configure sandboxes by passing a sandbox backend to `backend` when creating 
 
 > [tab] Runloop
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langchain-runloop
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add langchain-runloop
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 >
 > from deepagents import create_deep_agent
@@ -2582,15 +2582,15 @@ You configure sandboxes by passing a sandbox backend to `backend` when creating 
 
 > [tab] Vercel
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langchain-vercel-sandbox
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add langchain-vercel-sandbox
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from langchain_anthropic import ChatAnthropic
 > from langchain_vercel_sandbox import VercelSandbox
@@ -2627,7 +2627,7 @@ For more information, see [Sandboxes](/oss/python/deepagents/sandboxes).
 Some tool operations may be sensitive and require human approval before execution.
 You can configure the approval for each tool:
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2666,7 +2666,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2705,7 +2705,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2744,7 +2744,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2783,7 +2783,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2822,7 +2822,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2861,7 +2861,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -2916,7 +2916,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
 
 > [tab] StateBackend
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -2951,7 +2951,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -2986,7 +2986,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -3021,7 +3021,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -3056,7 +3056,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -3091,7 +3091,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -3126,7 +3126,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StateBackend
@@ -3163,7 +3163,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
 
 > [tab] StoreBackend
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends import StoreBackend
@@ -3198,7 +3198,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
 
 > [tab] FilesystemBackend
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 > from deepagents import create_deep_agent
 > from deepagents.backends.filesystem import FilesystemBackend
@@ -3246,7 +3246,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 
 > [tab] StateBackend
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3282,7 +3282,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3318,7 +3318,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3354,7 +3354,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3390,7 +3390,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3426,7 +3426,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3462,7 +3462,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3500,7 +3500,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 
 > [tab] StoreBackend
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3543,7 +3543,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3586,7 +3586,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3629,7 +3629,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3672,7 +3672,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3715,7 +3715,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3758,7 +3758,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from urllib.request import urlopen
 >
 > from deepagents import create_deep_agent
@@ -3803,7 +3803,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 
 > [tab] FilesystemBackend
 >
-> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -3838,7 +3838,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -3873,7 +3873,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -3908,7 +3908,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -3943,7 +3943,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -3978,7 +3978,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -4013,7 +4013,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > )
 > ```
 >
-> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import FilesystemBackend
 > from langgraph.checkpoint.memory import MemorySaver
@@ -4054,7 +4054,7 @@ A [harness profile](/oss/python/deepagents/profiles#harness-profiles) is a reusa
 
 A single profile can carry: a custom base system prompt (`base_system_prompt`), an appended suffix (`system_prompt_suffix`), tool description overrides, tools or middleware to exclude, additional middleware to inject, and edits to the auto-added general-purpose subagent.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import HarnessProfile, register_harness_profile
 
 # Append a system-prompt suffix whenever gpt-6.1-sol is selected.
@@ -4072,7 +4072,7 @@ Deep Agents support [structured output](/oss/python/langchain/structured-output)
 You can set a desired structured output schema by passing it as the `response_format` argument to the call to `create_deep_agent()`.
 When the model generates the structured data, it's captured, validated, and returned in the 'structured_response' key of the deep agent's state.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 

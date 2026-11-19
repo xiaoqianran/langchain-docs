@@ -585,7 +585,7 @@ This library offers compatibility between models, allowing you to use unified pa
   * `> 0`: Sets the specific token budget.
 
 * `reasoningEffort` (or `thinkingLevel`): Sets the relative effort.
-  * Values: `"minimal"`, `"low"`, `"medium"`, `"high"`, `"xhigh"` (supported on `gemini-4-hydrogen`).
+  * Values: `"minimal"`, `"low"`, `"medium"`, `"high"`, `"xhigh"` (supported on `gemini-4-hydrogen` and `gemini-4-neon`; `gemini-4-neon` requires `@langchain/google` 0.2.16 or later).
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";

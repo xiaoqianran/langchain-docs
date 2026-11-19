@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-11-18T17:39:42.477Z",
+  "fetchedAt": "2026-11-19T17:48:46.327Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 15,
-  "ok": 1773,
+  "ok": 1820,
   "failed": 0,
   "tracks": {
     "api-reference": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 506
+      "count": 548
     },
     "agent-server-api": {
       "name": "Agent Server API",
@@ -47,7 +47,7 @@
     },
     "oss-js": {
       "name": "OSS · JavaScript",
-      "count": 199
+      "count": 202
     },
     "oss-openwiki": {
       "name": "OSS · OpenWiki",
@@ -55,7 +55,7 @@
     },
     "oss-python": {
       "name": "OSS · Python",
-      "count": 192
+      "count": 194
     },
     "use-these-docs": {
       "name": "use-these-docs",
@@ -628,7 +628,7 @@
       "track": "build-overview",
       "trackName": "build-overview",
       "group": "pages",
-      "bytes": 7063
+      "bytes": 7189
     },
     {
       "rel": "langsmith/abac.md",
@@ -1501,7 +1501,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "audit-logs",
-      "bytes": 26087
+      "bytes": 17771
     },
     {
       "rel": "langsmith/audit-logs-siem.md",
@@ -3130,7 +3130,7 @@
       "track": "fleet",
       "trackName": "Fleet",
       "group": "teams-app",
-      "bytes": 7991
+      "bytes": 11439
     },
     {
       "rel": "langsmith/fleet/templates.md",
@@ -3193,7 +3193,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "govern-overview",
-      "bytes": 1657
+      "bytes": 1898
     },
     {
       "rel": "langsmith/granular-usage.md",
@@ -3706,7 +3706,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway",
-      "bytes": 3409
+      "bytes": 3533
     },
     {
       "rel": "langsmith/llm-gateway-admin-setup.md",
@@ -4786,7 +4786,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "relays",
-      "bytes": 13777
+      "bytes": 13776
     },
     {
       "rel": "langsmith/release-stages.md",
@@ -5101,7 +5101,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-blob-storage",
-      "bytes": 24600
+      "bytes": 29195
     },
     {
       "rel": "langsmith/self-host-custom-tls-certificates.md",
@@ -5128,7 +5128,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-disaster-recovery",
-      "bytes": 23396
+      "bytes": 23577
     },
     {
       "rel": "langsmith/self-host-egress.md",
@@ -5308,7 +5308,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-scale",
-      "bytes": 22997
+      "bytes": 25646
     },
     {
       "rel": "langsmith/self-host-slack.md",
@@ -11638,6 +11638,384 @@
       "bytes": 21886
     },
     {
+      "rel": "langsmith/tool-gateway.md",
+      "title": "Tool Gateway",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "tool-gateway",
+      "bytes": 5401
+    },
+    {
+      "rel": "langsmith/tool-gateway-api-ref.md",
+      "title": "Tool Gateway API reference",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api-ref",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "tool-gateway-api-ref",
+      "bytes": 2449
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/adding-tools/add-an-mcp-server.md",
+      "title": "Add an MCP server",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/adding-tools/add-an-mcp-server",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "adding-tools",
+      "bytes": 679
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/adding-tools/list-mcp-servers.md",
+      "title": "List MCP servers",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/adding-tools/list-mcp-servers",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "adding-tools",
+      "bytes": 613
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/adding-tools/remove-an-mcp-server.md",
+      "title": "Remove an MCP server",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/adding-tools/remove-an-mcp-server",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "adding-tools",
+      "bytes": 313
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/adding-tools/turn-an-mcp-server-on-or-off.md",
+      "title": "Turn an MCP server on or off",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/adding-tools/turn-an-mcp-server-on-or-off",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "adding-tools",
+      "bytes": 377
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/calling-tools/end-an-mcp-session-with-a-server.md",
+      "title": "End an MCP session with a server",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/calling-tools/end-an-mcp-session-with-a-server",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "calling-tools",
+      "bytes": 351
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/calling-tools/get-the-linked-identity-provider.md",
+      "title": "Get the linked identity provider",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/calling-tools/get-the-linked-identity-provider",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "calling-tools",
+      "bytes": 263
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/calling-tools/link-your-identity-provider.md",
+      "title": "Link your identity provider",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/calling-tools/link-your-identity-provider",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "calling-tools",
+      "bytes": 294
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/calling-tools/open-an-mcp-event-stream-from-a-server.md",
+      "title": "Open an MCP event stream from a server",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/calling-tools/open-an-mcp-event-stream-from-a-server",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "calling-tools",
+      "bytes": 354
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/calling-tools/send-an-mcp-message-to-a-server.md",
+      "title": "Send an MCP message to a server",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/calling-tools/send-an-mcp-message-to-a-server",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "calling-tools",
+      "bytes": 348
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/calling-tools/send-an-mcp-message-to-a-tool-kit.md",
+      "title": "Send an MCP message to a tool kit",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/calling-tools/send-an-mcp-message-to-a-tool-kit",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "calling-tools",
+      "bytes": 643
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/calling-tools/unlink-your-identity-provider.md",
+      "title": "Unlink your identity provider",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/calling-tools/unlink-your-identity-provider",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "calling-tools",
+      "bytes": 317
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/connecting-tools/connect-a-server.md",
+      "title": "Connect a server",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/connecting-tools/connect-a-server",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "connecting-tools",
+      "bytes": 656
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/connecting-tools/create-a-profile.md",
+      "title": "Create a profile",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/connecting-tools/create-a-profile",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "connecting-tools",
+      "bytes": 254
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/connecting-tools/delete-a-profile.md",
+      "title": "Delete a profile",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/connecting-tools/delete-a-profile",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "connecting-tools",
+      "bytes": 345
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/connecting-tools/delete-a-profile-credential.md",
+      "title": "Delete a profile credential",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/connecting-tools/delete-a-profile-credential",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "connecting-tools",
+      "bytes": 424
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/connecting-tools/disconnect-a-server.md",
+      "title": "Disconnect a server",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/connecting-tools/disconnect-a-server",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "connecting-tools",
+      "bytes": 682
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/connecting-tools/get-a-profile.md",
+      "title": "Get a profile",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/connecting-tools/get-a-profile",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "connecting-tools",
+      "bytes": 181
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/connecting-tools/list-profiles.md",
+      "title": "List profiles",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/connecting-tools/list-profiles",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "connecting-tools",
+      "bytes": 199
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/connecting-tools/list-the-callers-connections-for-a-tool-kit.md",
+      "title": "List the caller's connections for a tool kit",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/connecting-tools/list-the-callers-connections-for-a-tool-kit",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "connecting-tools",
+      "bytes": 437
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/connecting-tools/rename-a-profile.md",
+      "title": "Rename a profile",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/connecting-tools/rename-a-profile",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "connecting-tools",
+      "bytes": 194
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/connecting-tools/start-connecting-a-server-for-a-profile.md",
+      "title": "Start connecting a server for a profile",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/connecting-tools/start-connecting-a-server-for-a-profile",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "connecting-tools",
+      "bytes": 597
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/connecting-tools/start-connecting-a-server-in-a-tool-kit.md",
+      "title": "Start connecting a server in a tool kit",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/connecting-tools/start-connecting-a-server-in-a-tool-kit",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "connecting-tools",
+      "bytes": 426
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/connecting-tools/start-entering-the-callers-credential-for-a-secret-mcp-server.md",
+      "title": "Start entering the caller's credential for a secret MCP server",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/connecting-tools/start-entering-the-callers-credential-for-a-secret-mcp-server",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "connecting-tools",
+      "bytes": 720
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/connecting-tools/store-a-profile-credential.md",
+      "title": "Store a profile credential",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/connecting-tools/store-a-profile-credential",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "connecting-tools",
+      "bytes": 332
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/exposing-tools/create-a-tool-kit.md",
+      "title": "Create a tool kit",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/exposing-tools/create-a-tool-kit",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "exposing-tools",
+      "bytes": 653
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/exposing-tools/delete-a-tool-kit.md",
+      "title": "Delete a tool kit",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/exposing-tools/delete-a-tool-kit",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "exposing-tools",
+      "bytes": 350
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/exposing-tools/get-a-tool-kit.md",
+      "title": "Get a tool kit",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/exposing-tools/get-a-tool-kit",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "exposing-tools",
+      "bytes": 215
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/exposing-tools/list-tool-kits.md",
+      "title": "List tool kits",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/exposing-tools/list-tool-kits",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "exposing-tools",
+      "bytes": 251
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/exposing-tools/refresh-a-tool-kits-tools.md",
+      "title": "Refresh a tool kit's tools",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/exposing-tools/refresh-a-tool-kits-tools",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "exposing-tools",
+      "bytes": 643
+    },
+    {
+      "rel": "langsmith/tool-gateway-api/exposing-tools/update-a-tool-kit.md",
+      "title": "Update a tool kit",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-api/exposing-tools/update-a-tool-kit",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "exposing-tools",
+      "bytes": 546
+    },
+    {
+      "rel": "langsmith/tool-gateway-call-tools.md",
+      "title": "Call tools through Tool Gateway",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-call-tools",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "tool-gateway-call-tools",
+      "bytes": 12553
+    },
+    {
+      "rel": "langsmith/tool-gateway-clients.md",
+      "title": "Connect an MCP client to a tool kit",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-clients",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "tool-gateway-clients",
+      "bytes": 10590
+    },
+    {
+      "rel": "langsmith/tool-gateway-connect-accounts.md",
+      "title": "Connect accounts to Tool Gateway",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-connect-accounts",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "tool-gateway-connect-accounts",
+      "bytes": 12015
+    },
+    {
+      "rel": "langsmith/tool-gateway-how-it-works.md",
+      "title": "How Tool Gateway works",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-how-it-works",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "tool-gateway-how-it-works",
+      "bytes": 8100
+    },
+    {
+      "rel": "langsmith/tool-gateway-identity.md",
+      "title": "Act as users and agents",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-identity",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "tool-gateway-identity",
+      "bytes": 13388
+    },
+    {
+      "rel": "langsmith/tool-gateway-policies.md",
+      "title": "Set Tool Gateway policies",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-policies",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "tool-gateway-policies",
+      "bytes": 12117
+    },
+    {
+      "rel": "langsmith/tool-gateway-quickstart.md",
+      "title": "Tool Gateway quickstart",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-quickstart",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "tool-gateway-quickstart",
+      "bytes": 12133
+    },
+    {
+      "rel": "langsmith/tool-gateway-servers.md",
+      "title": "Add MCP servers to Tool Gateway",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-servers",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "tool-gateway-servers",
+      "bytes": 5458
+    },
+    {
+      "rel": "langsmith/tool-gateway-tool-kits.md",
+      "title": "Create tool kits",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-tool-kits",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "tool-gateway-tool-kits",
+      "bytes": 10049
+    },
+    {
+      "rel": "langsmith/tool-gateway-traces.md",
+      "title": "Tool Gateway traces and audit log",
+      "url": "https://docs.langchain.com/langsmith/tool-gateway-traces",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "tool-gateway-traces",
+      "bytes": 11215
+    },
+    {
       "rel": "langsmith/trace-anthropic.md",
       "title": "Trace with Anthropic",
       "url": "https://docs.langchain.com/langsmith/trace-anthropic",
@@ -12058,7 +12436,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "troubleshooting",
-      "bytes": 10650
+      "bytes": 11594
     },
     {
       "rel": "langsmith/troubleshooting-studio.md",
@@ -12094,7 +12472,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "tunnels",
-      "bytes": 14129
+      "bytes": 14128
     },
     {
       "rel": "langsmith/upload-existing-experiments.md",
@@ -12598,7 +12976,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 134600
+      "bytes": 124376
     },
     {
       "rel": "oss/javascript/deepagents/deep-research.md",
@@ -12769,7 +13147,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 89644
+      "bytes": 101137
     },
     {
       "rel": "oss/javascript/deepagents/retrieval.md",
@@ -12778,7 +13156,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 13994
+      "bytes": 14280
     },
     {
       "rel": "oss/javascript/deepagents/sandboxes.md",
@@ -12814,7 +13192,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 110235
+      "bytes": 110290
     },
     {
       "rel": "oss/javascript/deepagents/tools.md",
@@ -12868,7 +13246,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 26978
+      "bytes": 27060
     },
     {
       "rel": "oss/javascript/integrations/chat/google_generative_ai.md",
@@ -12905,6 +13283,15 @@
       "trackName": "OSS · JavaScript",
       "group": "integrations",
       "bytes": 52254
+    },
+    {
+      "rel": "oss/javascript/integrations/decision_models/google_generative_ai.md",
+      "title": "Google Gemini Decisions integration",
+      "url": "https://docs.langchain.com/oss/javascript/integrations/decision_models/google_generative_ai",
+      "track": "oss-js",
+      "trackName": "OSS · JavaScript",
+      "group": "integrations",
+      "bytes": 13260
     },
     {
       "rel": "oss/javascript/integrations/document_loaders/index.md",
@@ -13003,7 +13390,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 29084
+      "bytes": 29082
     },
     {
       "rel": "oss/javascript/integrations/providers/anthropic.md",
@@ -13030,7 +13417,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 8733
+      "bytes": 8956
     },
     {
       "rel": "oss/javascript/integrations/providers/microsoft.md",
@@ -13084,7 +13471,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 4520
+      "bytes": 4655
     },
     {
       "rel": "oss/javascript/integrations/stores/index.md",
@@ -13120,7 +13507,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 20445
+      "bytes": 20450
     },
     {
       "rel": "oss/javascript/integrations/tools/openai.md",
@@ -13148,6 +13535,15 @@
       "trackName": "OSS · JavaScript",
       "group": "langchain",
       "bytes": 67342
+    },
+    {
+      "rel": "oss/javascript/langchain/chunking.md",
+      "title": "Chunk documents for retrieval",
+      "url": "https://docs.langchain.com/oss/javascript/langchain/chunking",
+      "track": "oss-js",
+      "trackName": "OSS · JavaScript",
+      "group": "langchain",
+      "bytes": 9253
     },
     {
       "rel": "oss/javascript/langchain/component-architecture.md",
@@ -13417,7 +13813,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 21946
+      "bytes": 22297
     },
     {
       "rel": "oss/javascript/langchain/long-term-memory.md",
@@ -13636,6 +14032,15 @@
       "bytes": 38280
     },
     {
+      "rel": "oss/javascript/langchain/retrieval-optimization.md",
+      "title": "Improve retrieval quality",
+      "url": "https://docs.langchain.com/oss/javascript/langchain/retrieval-optimization",
+      "track": "oss-js",
+      "trackName": "OSS · JavaScript",
+      "group": "langchain",
+      "bytes": 14004
+    },
+    {
       "rel": "oss/javascript/langchain/runtime.md",
       "title": "Runtime",
       "url": "https://docs.langchain.com/oss/javascript/langchain/runtime",
@@ -13768,7 +14173,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 20364
+      "bytes": 20570
     },
     {
       "rel": "oss/javascript/langgraph/application-structure.md",
@@ -14488,7 +14893,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 157394
+      "bytes": 144543
     },
     {
       "rel": "oss/python/deepagents/data-analysis.md",
@@ -14668,7 +15073,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 55040
+      "bytes": 65687
     },
     {
       "rel": "oss/python/deepagents/retrieval.md",
@@ -14677,7 +15082,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 14442
+      "bytes": 14720
     },
     {
       "rel": "oss/python/deepagents/rubric.md",
@@ -14722,7 +15127,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 106102
+      "bytes": 106331
     },
     {
       "rel": "oss/python/deepagents/tools.md",
@@ -14776,7 +15181,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 25727
+      "bytes": 25935
     },
     {
       "rel": "oss/python/integrations/long-term-memory/index.md",
@@ -14794,7 +15199,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 37338
+      "bytes": 37933
     },
     {
       "rel": "oss/python/integrations/providers/all_providers.md",
@@ -14803,7 +15208,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 116962
+      "bytes": 118025
     },
     {
       "rel": "oss/python/integrations/providers/anthropic.md",
@@ -14929,7 +15334,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 6110
+      "bytes": 6194
     },
     {
       "rel": "oss/python/integrations/splitters/index.md",
@@ -14938,7 +15343,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 4750
+      "bytes": 4881
     },
     {
       "rel": "oss/python/integrations/tools/index.md",
@@ -14947,7 +15352,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 100123
+      "bytes": 100187
     },
     {
       "rel": "oss/python/integrations/vectorstores/index.md",
@@ -14956,7 +15361,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 52243
+      "bytes": 52290
     },
     {
       "rel": "oss/python/langchain/agents.md",
@@ -14966,6 +15371,15 @@
       "trackName": "OSS · Python",
       "group": "langchain",
       "bytes": 65848
+    },
+    {
+      "rel": "oss/python/langchain/chunking.md",
+      "title": "Chunk documents for retrieval",
+      "url": "https://docs.langchain.com/oss/python/langchain/chunking",
+      "track": "oss-python",
+      "trackName": "OSS · Python",
+      "group": "langchain",
+      "bytes": 10721
     },
     {
       "rel": "oss/python/langchain/component-architecture.md",
@@ -15235,7 +15649,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 33600
+      "bytes": 33935
     },
     {
       "rel": "oss/python/langchain/long-term-memory.md",
@@ -15454,6 +15868,15 @@
       "bytes": 35321
     },
     {
+      "rel": "oss/python/langchain/retrieval-optimization.md",
+      "title": "Improve retrieval quality",
+      "url": "https://docs.langchain.com/oss/python/langchain/retrieval-optimization",
+      "track": "oss-python",
+      "trackName": "OSS · Python",
+      "group": "langchain",
+      "bytes": 12561
+    },
+    {
       "rel": "oss/python/langchain/runtime.md",
       "title": "Runtime",
       "url": "https://docs.langchain.com/oss/python/langchain/runtime",
@@ -15586,7 +16009,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 22152
+      "bytes": 22350
     },
     {
       "rel": "oss/python/langgraph/application-structure.md",

@@ -87,6 +87,10 @@ Each component is modular: you can swap loaders, splitters, embeddings, or vecto
 >
 > A retriever is an interface that returns documents given an unstructured query.
 
+> [!TIP]
+>
+> For guidance on choosing chunk size and a splitting strategy, see [Chunk documents for retrieval](/oss/javascript/langchain/chunking). To improve what the retriever returns after indexing, see [Improve retrieval quality](/oss/javascript/langchain/retrieval-optimization).
+
 ## RAG architectures
 
 RAG can be implemented in multiple ways, depending on your system's needs. We outline each type in the sections below.

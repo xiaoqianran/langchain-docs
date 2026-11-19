@@ -1,0 +1,84 @@
+<!-- langchain-docs: Tool Gateway API reference | https://docs.langchain.com/langsmith/tool-gateway-api-ref -->
+
+# Tool Gateway API reference
+
+Browse the Tool Gateway API for MCP servers, credentials, tool kits, profiles, and MCP calls.
+
+> [!NOTE]
+>
+> Tool Gateway is in [beta](/langsmith/release-stages).
+
+The Tool Gateway API configures [Tool Gateway](/langsmith/tool-gateway) and sends MCP calls through it. Every path starts with `/v1/managed-tools`.
+
+## Base URL
+
+Send requests to the API host for your LangSmith region:
+
+<table>
+  <thead>
+    <tr>
+      <th>Region</th>
+
+      <th>
+        URL
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>GCP US</td>
+
+      <td>
+        `https://api.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>GCP EU</td>
+
+      <td>
+        `https://eu.api.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>GCP APAC</td>
+
+      <td>
+        `https://apac.api.smith.langchain.com`
+      </td>
+    </tr>
+
+    <tr>
+      <td>AWS US</td>
+
+      <td>
+        `https://aws.api.smith.langchain.com`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+Tool Gateway is not available in the Azure US region.
+
+Choose your region in the server menu of each endpoint's playground.
+
+Browse the full API reference in the **Tool Gateway API** section in the sidebar. It has two kinds of endpoints:
+
+* **Management endpoints** configure Tool Gateway: `/servers` adds and lists MCP servers, `/servers/{id}/credential` manages your credential for a server, `/kits` manages tool kits, `/profiles` manages profiles, and `/oidc-connection` links your identity provider.
+* **MCP endpoints** list and call tools with standard MCP methods such as `tools/list` and `tools/call`: `/servers/{id}/mcp` exposes one server and `/kits/{kit_id}/mcp` exposes a tool kit.
+
+## Authentication
+
+Send a LangSmith API key in the `X-Api-Key` header, or a token in the `Authorization: Bearer` header. Send the workspace ID in the `X-Tenant-Id` header. `X-Tenant-Id` selects a workspace; it does not authenticate you.
+
+To call tools as an end user, an agent, or a profile, see [Act as users and agents](/langsmith/tool-gateway-identity).
+
+Tool Gateway must be enabled for your organization. Each endpoint lists the workspace permissions it requires.
+
+***
+
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/tool-gateway-api-ref.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

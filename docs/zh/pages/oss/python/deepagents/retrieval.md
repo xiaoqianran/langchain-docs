@@ -15,7 +15,7 @@
 
 **知识库**是检索过程中使用的文档或结构化数据的存储库。
 
-如果您需要自定义知识库，您可以使用 LangChain 的文档加载器和矢量存储从您自己的数据构建一个知识库。
+如果您需要自定义知识库，您可以使用 LangChain 的文档加载器和向量存储根据您自己的数据构建一个知识库。
 
 > [!注意]
 >
@@ -31,7 +31,7 @@
 
 ### 从检索到 RAG
 
-检索允许法学硕士在运行时访问相关上下文。但大多数现实世界的应用程序更进一步：它们**将检索与生成集成**以生成接地的、上下文感知的答案。
+检索允许法学硕士在运行时访问相关上下文。但大多数现实世界的应用程序更进一步：它们**将检索与生成集成**以生成接地气的、上下文感知的答案。
 
 这是**检索增强生成（RAG）**背后的核心思想。检索管道成为将搜索与生成相结合的更广泛系统的基础。
 
@@ -73,7 +73,7 @@ flowchart TB
 
 > [卡][Document loaders](/oss/python/integrations/document_loaders)
 >
-> 从外部源（Google Drive、Slack、Notion 等）获取数据，返回标准化的 [⟦T6⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象。> [卡][Text splitters](/oss/python/integrations/splitters)
+> 从外部源（Google Drive、Slack、Notion 等）提取数据，返回标准化的 [⟦T6⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象。> [卡][Text splitters](/oss/python/integrations/splitters)
 >
 > 将大文档分成更小的块，这些块可以单独检索并适合模型的上下文窗口。
 
@@ -89,9 +89,13 @@ flowchart TB
 >
 > 检索器是一个接口，它根据非结构化查询返回文档。
 
+> [!提示]
+>
+> 有关选择块大小和分割策略的指导，请参阅[Chunk documents for retrieval](/oss/python/langchain/chunking)。要改进检索器在索引后返回的内容，请参阅[Improve retrieval quality](/oss/python/langchain/retrieval-optimization)。
+
 ## RAG 架构
 
-RAG 可以通过多种方式实施，具体取决于您的系统需求。我们在下面的部分中概述了每种类型。|建筑|描述 |控制|灵活性 |延迟|示例用例 |
+RAG 可以通过多种方式实施，具体取决于系统的需求。我们在下面的部分中概述了每种类型。|建筑|描述 |控制|灵活性 |延迟|示例用例 |
 | - | - | - | - | - | - |
 | **2 步 RAG** |检索总是发生在生成之前。简单且可预测 | ✅ 高 | ❌低| ⚡ 快|常见问题解答、文档机器人 |
 | **代理RAG** |由 LLM 支持的代理决定在推理过程中“何时”和“如何”检索 | ❌低| ✅ 高 | ⏳ 变量 |可以使用多种工具的研究助理 |

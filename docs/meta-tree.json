@@ -3021,6 +3021,206 @@
           "rel": "langsmith/threads.md"
         }
       ],
+      "tool-gateway": [
+        {
+          "title": "Tool Gateway",
+          "rel": "langsmith/tool-gateway.md"
+        }
+      ],
+      "tool-gateway-api-ref": [
+        {
+          "title": "Tool Gateway API reference",
+          "rel": "langsmith/tool-gateway-api-ref.md"
+        }
+      ],
+      "adding-tools": [
+        {
+          "title": "Add an MCP server",
+          "rel": "langsmith/tool-gateway-api/adding-tools/add-an-mcp-server.md"
+        },
+        {
+          "title": "List MCP servers",
+          "rel": "langsmith/tool-gateway-api/adding-tools/list-mcp-servers.md"
+        },
+        {
+          "title": "Remove an MCP server",
+          "rel": "langsmith/tool-gateway-api/adding-tools/remove-an-mcp-server.md"
+        },
+        {
+          "title": "Turn an MCP server on or off",
+          "rel": "langsmith/tool-gateway-api/adding-tools/turn-an-mcp-server-on-or-off.md"
+        }
+      ],
+      "calling-tools": [
+        {
+          "title": "End an MCP session with a server",
+          "rel": "langsmith/tool-gateway-api/calling-tools/end-an-mcp-session-with-a-server.md"
+        },
+        {
+          "title": "Get the linked identity provider",
+          "rel": "langsmith/tool-gateway-api/calling-tools/get-the-linked-identity-provider.md"
+        },
+        {
+          "title": "Link your identity provider",
+          "rel": "langsmith/tool-gateway-api/calling-tools/link-your-identity-provider.md"
+        },
+        {
+          "title": "Open an MCP event stream from a server",
+          "rel": "langsmith/tool-gateway-api/calling-tools/open-an-mcp-event-stream-from-a-server.md"
+        },
+        {
+          "title": "Send an MCP message to a server",
+          "rel": "langsmith/tool-gateway-api/calling-tools/send-an-mcp-message-to-a-server.md"
+        },
+        {
+          "title": "Send an MCP message to a tool kit",
+          "rel": "langsmith/tool-gateway-api/calling-tools/send-an-mcp-message-to-a-tool-kit.md"
+        },
+        {
+          "title": "Unlink your identity provider",
+          "rel": "langsmith/tool-gateway-api/calling-tools/unlink-your-identity-provider.md"
+        }
+      ],
+      "connecting-tools": [
+        {
+          "title": "Connect a server",
+          "rel": "langsmith/tool-gateway-api/connecting-tools/connect-a-server.md"
+        },
+        {
+          "title": "Create a profile",
+          "rel": "langsmith/tool-gateway-api/connecting-tools/create-a-profile.md"
+        },
+        {
+          "title": "Delete a profile",
+          "rel": "langsmith/tool-gateway-api/connecting-tools/delete-a-profile.md"
+        },
+        {
+          "title": "Delete a profile credential",
+          "rel": "langsmith/tool-gateway-api/connecting-tools/delete-a-profile-credential.md"
+        },
+        {
+          "title": "Disconnect a server",
+          "rel": "langsmith/tool-gateway-api/connecting-tools/disconnect-a-server.md"
+        },
+        {
+          "title": "Get a profile",
+          "rel": "langsmith/tool-gateway-api/connecting-tools/get-a-profile.md"
+        },
+        {
+          "title": "List profiles",
+          "rel": "langsmith/tool-gateway-api/connecting-tools/list-profiles.md"
+        },
+        {
+          "title": "List the caller's connections for a tool kit",
+          "rel": "langsmith/tool-gateway-api/connecting-tools/list-the-callers-connections-for-a-tool-kit.md"
+        },
+        {
+          "title": "Rename a profile",
+          "rel": "langsmith/tool-gateway-api/connecting-tools/rename-a-profile.md"
+        },
+        {
+          "title": "Start connecting a server for a profile",
+          "rel": "langsmith/tool-gateway-api/connecting-tools/start-connecting-a-server-for-a-profile.md"
+        },
+        {
+          "title": "Start connecting a server in a tool kit",
+          "rel": "langsmith/tool-gateway-api/connecting-tools/start-connecting-a-server-in-a-tool-kit.md"
+        },
+        {
+          "title": "Start entering the caller's credential for a secret MCP server",
+          "rel": "langsmith/tool-gateway-api/connecting-tools/start-entering-the-callers-credential-for-a-secret-mcp-server.md"
+        },
+        {
+          "title": "Store a profile credential",
+          "rel": "langsmith/tool-gateway-api/connecting-tools/store-a-profile-credential.md"
+        }
+      ],
+      "exposing-tools": [
+        {
+          "title": "Create a tool kit",
+          "rel": "langsmith/tool-gateway-api/exposing-tools/create-a-tool-kit.md"
+        },
+        {
+          "title": "Delete a tool kit",
+          "rel": "langsmith/tool-gateway-api/exposing-tools/delete-a-tool-kit.md"
+        },
+        {
+          "title": "Get a tool kit",
+          "rel": "langsmith/tool-gateway-api/exposing-tools/get-a-tool-kit.md"
+        },
+        {
+          "title": "List tool kits",
+          "rel": "langsmith/tool-gateway-api/exposing-tools/list-tool-kits.md"
+        },
+        {
+          "title": "Refresh a tool kit's tools",
+          "rel": "langsmith/tool-gateway-api/exposing-tools/refresh-a-tool-kits-tools.md"
+        },
+        {
+          "title": "Update a tool kit",
+          "rel": "langsmith/tool-gateway-api/exposing-tools/update-a-tool-kit.md"
+        }
+      ],
+      "tool-gateway-call-tools": [
+        {
+          "title": "Call tools through Tool Gateway",
+          "rel": "langsmith/tool-gateway-call-tools.md"
+        }
+      ],
+      "tool-gateway-clients": [
+        {
+          "title": "Connect an MCP client to a tool kit",
+          "rel": "langsmith/tool-gateway-clients.md"
+        }
+      ],
+      "tool-gateway-connect-accounts": [
+        {
+          "title": "Connect accounts to Tool Gateway",
+          "rel": "langsmith/tool-gateway-connect-accounts.md"
+        }
+      ],
+      "tool-gateway-how-it-works": [
+        {
+          "title": "How Tool Gateway works",
+          "rel": "langsmith/tool-gateway-how-it-works.md"
+        }
+      ],
+      "tool-gateway-identity": [
+        {
+          "title": "Act as users and agents",
+          "rel": "langsmith/tool-gateway-identity.md"
+        }
+      ],
+      "tool-gateway-policies": [
+        {
+          "title": "Set Tool Gateway policies",
+          "rel": "langsmith/tool-gateway-policies.md"
+        }
+      ],
+      "tool-gateway-quickstart": [
+        {
+          "title": "Tool Gateway quickstart",
+          "rel": "langsmith/tool-gateway-quickstart.md"
+        }
+      ],
+      "tool-gateway-servers": [
+        {
+          "title": "Add MCP servers to Tool Gateway",
+          "rel": "langsmith/tool-gateway-servers.md"
+        }
+      ],
+      "tool-gateway-tool-kits": [
+        {
+          "title": "Create tool kits",
+          "rel": "langsmith/tool-gateway-tool-kits.md"
+        }
+      ],
+      "tool-gateway-traces": [
+        {
+          "title": "Tool Gateway traces and audit log",
+          "rel": "langsmith/tool-gateway-traces.md"
+        }
+      ],
       "trace-anthropic": [
         {
           "title": "Trace with Anthropic",
@@ -7243,6 +7443,10 @@
           "rel": "oss/javascript/integrations/chat/openai.md"
         },
         {
+          "title": "Google Gemini Decisions integration",
+          "rel": "oss/javascript/integrations/decision_models/google_generative_ai.md"
+        },
+        {
           "title": "Document loader integrations",
           "rel": "oss/javascript/integrations/document_loaders/index.md"
         },
@@ -7351,6 +7555,10 @@
         {
           "title": "Agents",
           "rel": "oss/javascript/langchain/agents.md"
+        },
+        {
+          "title": "Chunk documents for retrieval",
+          "rel": "oss/javascript/langchain/chunking.md"
         },
         {
           "title": "Component architecture",
@@ -7567,6 +7775,10 @@
         {
           "title": "Quickstart",
           "rel": "oss/javascript/langchain/quickstart.md"
+        },
+        {
+          "title": "Improve retrieval quality",
+          "rel": "oss/javascript/langchain/retrieval-optimization.md"
         },
         {
           "title": "Runtime",
@@ -8223,6 +8435,10 @@
           "rel": "oss/python/langchain/agents.md"
         },
         {
+          "title": "Chunk documents for retrieval",
+          "rel": "oss/python/langchain/chunking.md"
+        },
+        {
           "title": "Component architecture",
           "rel": "oss/python/langchain/component-architecture.md"
         },
@@ -8437,6 +8653,10 @@
         {
           "title": "Quickstart",
           "rel": "oss/python/langchain/quickstart.md"
+        },
+        {
+          "title": "Improve retrieval quality",
+          "rel": "oss/python/langchain/retrieval-optimization.md"
         },
         {
           "title": "Runtime",

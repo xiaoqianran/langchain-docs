@@ -73,6 +73,12 @@ vector embeddings.
 npm install @langchain/google-cloud-sql-pg @langchain/core
 ```
 
+## Decision models
+
+> [card] [GoogleClassifier](/oss/javascript/integrations/decision_models/google_generative_ai)
+>
+> Typed answers and probabilities from the Gemini Decisions API for routing, classification, and review.
+
 ## Legacy packages
 
 The following packages are maintained under long-term support for existing users. New projects should use `@langchain/google` instead.

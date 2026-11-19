@@ -6,7 +6,7 @@
 
 本指南将引导您解决运行 LangSmith 自托管实例时可能遇到的常见问题。
 
-运行LangSmith时，您可能会遇到意外的 500 错误、性能缓慢或其他问题。本指南将帮助您诊断和解决这些问题。
+运行 LangSmith 时，您可能会遇到意外的 500 错误、性能缓慢或其他问题。本指南将帮助您诊断和解决这些问题。
 
 ## 获取有用的信息
 
@@ -100,22 +100,30 @@ docker compose exec langchain-backend migrate -source "file://clickhouse/migrati
 
 1. 重新运行升级/迁移。
 
-### *413 - 请求实体太大*
-
-当请求大小超过允许的最大大小时，会发生此错误。您需要增加 Nginx 配置中的最大请求大小。
+### *413 - 请求实体太大*当请求大小超过允许的最大大小时，会发生此错误。 LangSmith 前端限制请求大小（默认`25M`）。如果流量通过入口控制器，则该控制器也有限制（ingress-nginx 上默认为`1m`），两者中较低者获胜。将路径中的每个限制增加到至少最大请求的大小。
 
 #### 库伯内特斯
 
-1.编辑您的`langsmith_config.yaml`并增加`frontend.maxBodySize`[value](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L519)。这可能看起来像这样：
+1.编辑您的`langsmith_config.yaml`并增加`frontend.maxBodySize`[value](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml)。这可能看起来像这样：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 frontend:
   maxBodySize: "100M"
-```2. 将更改应用到集群。
+```
 
-### *详细信息：代码：497，消息：默认：权限不足。要执行此查询，需要授予 CREATE ROW POLICY ON default.feedbacks_rmt*
+2. 如果您使用 ingress-nginx，请将 LangSmith ingress 上的 `nginx.ingress.kubernetes.io/proxy-body-size` 注释设置为相同或更高的值。如果LangSmith图表管理您的入口（`ingress.enabled: true`），请在`ingress.annotations`下添加注释。如果您自己创建了入口，请将注释添加到该资源。
 
-当您的用户没有在 Clickhouse 中创建行策略的必要权限时，会出现此错误。在部署 Docker 部署时，还需要从 github 存储库复制 `users.xml` 文件。这会将 `<access_management>` 标签添加到 `users.xml` 文件中，从而允许用户创建行策略。下面是我们期望使用的默认 `users.xml` 文件。
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+```
+
+LangSmith图表没有设置此注释，因此ingress-nginx应用其自己的默认值`1m`。其他入口控制器、网关 API 和 Istio 有自己的主体大小设置。检查控制器的文档。
+
+3. 将更改应用到集群。
+
+### *详细信息：代码：497，消息：默认：权限不足。要执行此查询，需要授予 CREATE ROW POLICY ON default.feedbacks_rmt*当您的用户没有在 Clickhouse 中创建行策略的必要权限时，会出现此错误。在部署 Docker 部署时，还需要从 github 存储库复制 `users.xml` 文件。这会将 `<access_management>` 标签添加到 `users.xml` 文件中，从而允许用户创建行策略。以下是我们期望使用的默认 `users.xml` 文件。
 
 ```xml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 <clickhouse>
@@ -172,10 +180,10 @@ docker compose down --volumes
 docker compose up
 ```
 
-### *使用 AquaSec 运行集群时 ClickHouse 无法启动*在某些环境中，AquaSec 可能会阻止 ClickHouse 正确启动。这可能表现为 ClickHouse Pod 不发出任何日志并且无法标记为就绪。
-一般来说，这是由于 AquaSec 设置了`LD_PRELOAD`，从而干扰了 ClickHouse。要解决此问题，您可以将以下环境变量添加到 ClickHouse 部署中：
+### *使用 AquaSec 运行集群时 ClickHouse 无法启动*
 
-#### 库伯内特斯
+在某些环境中，AquaSec 可能会阻止 ClickHouse 正确启动。这可能表现为 ClickHouse Pod 不发出任何日志并且无法标记为就绪。
+一般来说，这是由于 AquaSec 设置了`LD_PRELOAD`，从而干扰了 ClickHouse。要解决此问题，您可以将以下环境变量添加到 ClickHouse 部署中：#### 库伯内特斯
 
 编辑 `langsmith_config.yaml` （或相应的配置文件）并设置 `AQUA_SKIP_LD_PRELOAD` 环境变量：
 

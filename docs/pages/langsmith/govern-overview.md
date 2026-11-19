@@ -6,7 +6,7 @@ Administer users, access control, organizational structure, and compliance polic
 
 Administer your LangSmith organization: manage users and access control, organize workspaces and applications, and configure policies and compliance.
 
-Governance also extends to what agents do at runtime: [spend and data protection policies](/langsmith/llm-gateway-spend-policies) on model calls, [sandboxed execution](/langsmith/sandboxes) for agent code, and [human approval](/langsmith/add-human-in-the-loop) before sensitive actions.
+Governance also extends to what agents do at runtime: [spend and data protection policies](/langsmith/llm-gateway-spend-policies) on model calls, [block and approval policies](/langsmith/tool-gateway-policies) on tool calls, [sandboxed execution](/langsmith/sandboxes) for agent code, and [human approval](/langsmith/add-human-in-the-loop) before sensitive actions.
 
 ## Explore
 
@@ -35,6 +35,10 @@ Governance also extends to what agents do at runtime: [spend and data protection
 > [card] [LLM Gateway](/langsmith/llm-gateway)
 >
 > Proxy LLM calls to enforce spend limits, redact sensitive data, and centrally manage provider credentials.
+
+> [card] [Tool Gateway](/langsmith/tool-gateway)
+>
+> Store credentials for MCP servers in LangSmith, and set policies that block tool calls or require approval.
 
 ***
 

@@ -10,7 +10,7 @@
 
 `createDeepAgent` 附带预组装的工具：默认情况下文件系统、摘要、子代理和提示缓存。下面的参数可让您定义代理的角色，将其连接到您的数据和工具，并使用附加中间件扩展 [Deep Agents stack](#deep-agents-stack)。
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
@@ -22,7 +22,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
@@ -34,7 +34,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
@@ -46,7 +46,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
@@ -58,7 +58,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
@@ -70,7 +70,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
@@ -82,7 +82,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
@@ -125,23 +125,23 @@ const agent = await createDeepAgent({
 >
 > 👉 阅读[OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install @langchain/openai deepagents
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm install @langchain/openai deepagents
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/openai deepagents
 > ```
 >
-> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > bun add @langchain/openai deepagents
 > ```
 >
-> ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent } from "deepagents";
 >
 > process.env.OPENAI_API_KEY = "your-api-key";
@@ -151,7 +151,7 @@ const agent = await createDeepAgent({
 > // to use specific model parameters, use initChatModel directly
 > ```
 >
-> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { initChatModel } from "langchain";
 > import { createDeepAgent } from "deepagents";
 >
@@ -164,7 +164,7 @@ const agent = await createDeepAgent({
 > });
 > ```
 >
-> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatOpenAI } from "@langchain/openai";
 > import { createDeepAgent } from "deepagents";
 >
@@ -181,23 +181,23 @@ const agent = await createDeepAgent({
 >
 > 👉 阅读[Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install @langchain/anthropic deepagents
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm install @langchain/anthropic deepagents
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/anthropic deepagents
 > ```
 >
-> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > bun add @langchain/anthropic deepagents
 > ```
 >
-> ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent } from "deepagents";
 >
 > process.env.ANTHROPIC_API_KEY = "your-api-key";
@@ -207,7 +207,7 @@ const agent = await createDeepAgent({
 > // to use specific model parameters, use initChatModel directly
 > ```
 >
-> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { initChatModel } from "langchain";
 > import { createDeepAgent } from "deepagents";
 >
@@ -220,7 +220,7 @@ const agent = await createDeepAgent({
 > });
 > ```
 >
-> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatAnthropic } from "@langchain/anthropic";
 > import { createDeepAgent } from "deepagents";
 >
@@ -237,23 +237,23 @@ const agent = await createDeepAgent({
 >
 > 👉 阅读[Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install @langchain/azure deepagents
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm install @langchain/azure deepagents
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/azure deepagents
 > ```
 >
-> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > bun add @langchain/azure deepagents
 > ```
 >
-> ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent } from "deepagents";
 >
 > process.env.AZURE_OPENAI_API_KEY = "your-api-key";
@@ -265,7 +265,7 @@ const agent = await createDeepAgent({
 > // to use specific model parameters, use initChatModel directly
 > ```
 >
-> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { initChatModel } from "langchain";
 > import { createDeepAgent } from "deepagents";
 >
@@ -280,7 +280,7 @@ const agent = await createDeepAgent({
 > });
 > ```
 >
-> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { AzureChatOpenAI } from "@langchain/openai";
 > import { createDeepAgent } from "deepagents";
 >
@@ -299,23 +299,23 @@ const agent = await createDeepAgent({
 >
 > 👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install @langchain/google deepagents
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm install @langchain/google deepagents
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/google deepagents
 > ```
 >
-> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > bun add @langchain/google deepagents
 > ```
 >
-> ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent } from "deepagents";
 >
 > process.env.GOOGLE_API_KEY = "your-api-key";
@@ -325,7 +325,7 @@ const agent = await createDeepAgent({
 > // to use specific model parameters, use initChatModel directly
 > ```
 >
-> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { initChatModel } from "langchain";
 > import { createDeepAgent } from "deepagents";
 >
@@ -338,7 +338,7 @@ const agent = await createDeepAgent({
 > });
 > ```
 >
-> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatGoogle } from "@langchain/google/node";
 > import { createDeepAgent } from "deepagents";
 >
@@ -355,23 +355,23 @@ const agent = await createDeepAgent({
 >
 > 👉 阅读[AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
 >
-> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > npm install @langchain/aws deepagents
 > ```
 >
-> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pnpm install @langchain/aws deepagents
 > ```
 >
-> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > yarn add @langchain/aws deepagents
 > ```
 >
-> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > bun add @langchain/aws deepagents
 > ```
 >
-> ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent } from "deepagents";
 >
 > // Follow the steps here to configure your credentials:
@@ -382,7 +382,7 @@ const agent = await createDeepAgent({
 > // to use specific model parameters, use initChatModel directly
 > ```
 >
-> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { initChatModel } from "langchain";
 > import { createDeepAgent } from "deepagents";
 >
@@ -396,7 +396,7 @@ const agent = await createDeepAgent({
 > });
 > ```
 >
-> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatBedrockConverse } from "@langchain/aws";
 > import { createDeepAgent } from "deepagents";
 >
@@ -416,7 +416,7 @@ const agent = await createDeepAgent({
 >
 > 传递任何[supported model string](/oss/javascript/deepagents/models#supported-models)，或初始化的模型实例：
 >
-> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { initChatModel } from "langchain";
 > import { createDeepAgent } from "deepagents";
 >
@@ -432,7 +432,7 @@ const agent = await createDeepAgent({
 
 除了用于文件管理和子代理生成的[built-in tools](/oss/javascript/deepagents/overview#execution-environment)之外，您还可以提供自定义工具：
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent } from "deepagents";
@@ -479,7 +479,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent } from "deepagents";
@@ -526,7 +526,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent } from "deepagents";
@@ -573,7 +573,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent } from "deepagents";
@@ -618,7 +618,7 @@ const agent = createDeepAgent({
   model: "openrouter:z-ai/glm-5.2",
   tools: [internetSearch],
 });
-``````ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+``````ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent } from "deepagents";
@@ -665,7 +665,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent } from "deepagents";
@@ -712,7 +712,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent } from "deepagents";
@@ -771,7 +771,7 @@ const agent = createDeepAgent({
 npm install @langchain/mcp-adapters
 ```
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
@@ -795,7 +795,7 @@ const result = await agent.invoke({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
@@ -819,7 +819,7 @@ const result = await agent.invoke({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
@@ -843,7 +843,7 @@ const result = await agent.invoke({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
@@ -867,7 +867,7 @@ const result = await agent.invoke({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
@@ -891,7 +891,7 @@ const result = await agent.invoke({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
@@ -915,7 +915,7 @@ const result = await agent.invoke({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
@@ -945,7 +945,7 @@ const result = await agent.invoke({
 
 通过`system_prompt=`向代理人提供您自己的指示：
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const researchInstructions =
@@ -959,7 +959,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const researchInstructions =
@@ -973,7 +973,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const researchInstructions =
@@ -987,7 +987,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const researchInstructions =
@@ -1001,7 +1001,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const researchInstructions =
@@ -1015,7 +1015,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const researchInstructions =
@@ -1029,7 +1029,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const researchInstructions =
@@ -1053,7 +1053,7 @@ const agent = createDeepAgent({
 >
 > 自动添加的 [general-purpose subagent](/oss/javascript/deepagents/subagents#the-general-purpose-subagent) 将其基本提示解析为 **`general_purpose_subagent.system_prompt`（如果设置）-> `HarnessProfile.base_system_prompt`（如果设置）-> SDK 通用默认**，配置文件后缀位于顶部。当两个覆盖字段都被设置时，通用特定的字段获胜，因此调整这两个字段的调用者永远不会看到他们的 GP 覆盖被默默地丢弃：
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import (
 >     GeneralPurposeSubagentProfile,
 >     HarnessProfile,
@@ -1153,7 +1153,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
 
 您可以提供额外的中间件来扩展功能、添加工具或实现自定义挂钩：
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createMiddleware } from "langchain";
 import { createDeepAgent } from "deepagents";
 import * as z from "zod";
@@ -1202,7 +1202,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createMiddleware } from "langchain";
 import { createDeepAgent } from "deepagents";
 import * as z from "zod";
@@ -1251,7 +1251,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createMiddleware } from "langchain";
 import { createDeepAgent } from "deepagents";
 import * as z from "zod";
@@ -1300,7 +1300,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createMiddleware } from "langchain";
 import { createDeepAgent } from "deepagents";
 import * as z from "zod";
@@ -1349,7 +1349,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createMiddleware } from "langchain";
 import { createDeepAgent } from "deepagents";
 import * as z from "zod";
@@ -1398,7 +1398,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createMiddleware } from "langchain";
 import { createDeepAgent } from "deepagents";
 import * as z from "zod";
@@ -1447,7 +1447,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createMiddleware } from "langchain";
 import { createDeepAgent } from "deepagents";
 import * as z from "zod";
@@ -1503,7 +1503,7 @@ const agent = await createDeepAgent({
 >
 > **这样做：**
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > const customMiddleware = createMiddleware({
 >   name: "CustomMiddleware",
 >   beforeAgent: async (state) => {
@@ -1514,7 +1514,7 @@ const agent = await createDeepAgent({
 >
 > 不要**这样做：
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > let x = 1;
 >
 > const customMiddlewareBad = createMiddleware({
@@ -1594,7 +1594,7 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
 
 ### 口译员使用 [interpreters](/oss/javascript/deepagents/interpreters) 添加在作用域 QuickJS 运行时中运行 JavaScript 的 `eval` 工具。当代理需要以编程方式组合工具、批处理工作、处理代码中的错误或在没有完整 shell 环境的情况下转换结构化数据时，解释器非常有用。
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
@@ -1604,7 +1604,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
@@ -1614,7 +1614,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
@@ -1624,7 +1624,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
@@ -1634,7 +1634,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
@@ -1644,7 +1644,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
@@ -1654,7 +1654,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
@@ -1670,7 +1670,7 @@ const agent = createDeepAgent({
 
 要隔离详细工作并避免上下文膨胀，请使用子代理：
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent, type SubAgent } from "deepagents";
@@ -1726,7 +1726,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent, type SubAgent } from "deepagents";
@@ -1782,7 +1782,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent, type SubAgent } from "deepagents";
@@ -1838,7 +1838,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent, type SubAgent } from "deepagents";
@@ -1894,7 +1894,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent, type SubAgent } from "deepagents";
@@ -1950,7 +1950,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent, type SubAgent } from "deepagents";
@@ -2006,7 +2006,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent, type SubAgent } from "deepagents";
@@ -2076,7 +2076,7 @@ const agent = createDeepAgent({
 >
 > 文件在线程内持续存在（通过检查点），并且不会跨线程共享。
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StateBackend } from "deepagents";
 >
 > // By default we provide a StateBackend
@@ -2096,7 +2096,7 @@ const agent = createDeepAgent({
 >> 请谨慎使用，并且仅在适当的环境中使用。
 >> 更多信息请参见[⟦T264⟧](/oss/javascript/deepagents/backends#filesystembackend-local-disk)。
 >
-> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 >
 > const agent = createDeepAgent({
@@ -2105,7 +2105,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 >
 > const agent = createDeepAgent({
@@ -2114,7 +2114,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 >
 > const agent = createDeepAgent({
@@ -2123,7 +2123,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 >
 > const agent = createDeepAgent({
@@ -2132,7 +2132,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 >
 > const agent = createDeepAgent({
@@ -2141,7 +2141,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 >
 > const agent = createDeepAgent({
@@ -2150,7 +2150,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 >
 > const agent = createDeepAgent({
@@ -2173,7 +2173,7 @@ const agent = createDeepAgent({
 >> 请极其谨慎地使用，并且仅在适当的环境中使用。
 >> 更多信息请参见[⟦T268⟧](/oss/javascript/deepagents/backends#localshellbackend-local-shell)。
 >
-> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, LocalShellBackend } from "deepagents";
 >
 > const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -2184,7 +2184,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, LocalShellBackend } from "deepagents";
 >
 > const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -2195,7 +2195,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, LocalShellBackend } from "deepagents";
 >
 > const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -2206,7 +2206,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, LocalShellBackend } from "deepagents";
 >
 > const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -2217,7 +2217,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, LocalShellBackend } from "deepagents";
 >
 > const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -2228,7 +2228,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, LocalShellBackend } from "deepagents";
 >
 > const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -2239,7 +2239,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, LocalShellBackend } from "deepagents";
 >
 > const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -2252,7 +2252,7 @@ const agent = createDeepAgent({
 >
 > 提供“跨线程持久化”长期存储的文件系统。
 >
-> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
@@ -2267,7 +2267,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
@@ -2282,7 +2282,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
@@ -2297,7 +2297,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
@@ -2312,7 +2312,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
@@ -2327,7 +2327,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
@@ -2342,7 +2342,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore } from "@langchain/langgraph";
 >
@@ -2375,7 +2375,7 @@ const agent = createDeepAgent({
 >
 > 灵活的后端，您可以在文件系统中指定不同的路由以指向不同的后端。
 >
-> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import {
 >   createDeepAgent,
 >   CompositeBackend,
@@ -2397,7 +2397,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import {
 >   createDeepAgent,
 >   CompositeBackend,
@@ -2419,7 +2419,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import {
 >   createDeepAgent,
 >   CompositeBackend,
@@ -2441,7 +2441,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import {
 >   createDeepAgent,
 >   CompositeBackend,
@@ -2463,7 +2463,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import {
 >   createDeepAgent,
 >   CompositeBackend,
@@ -2485,7 +2485,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import {
 >   createDeepAgent,
 >   CompositeBackend,
@@ -2507,7 +2507,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import {
 >   createDeepAgent,
 >   CompositeBackend,
@@ -2536,7 +2536,7 @@ const agent = createDeepAgent({
 沙箱是专门的 [backends](/oss/javascript/deepagents/backends)，它在具有自己的文件系统和用于 shell 命令的 `execute` 工具的隔离环境中运行代理代码。
 当您希望深度代理写入文件、安装依赖项并运行命令而不更改本地计算机上的任何内容时，请使用沙箱后端。在创建深度代理时，您可以通过将沙箱后端传递给 `backend` 来配置沙箱：
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LangSmithSandbox } from "deepagents";
 import { ChatAnthropic } from "@langchain/anthropic";
 import { SandboxClient } from "langsmith/sandbox";
@@ -2571,7 +2571,7 @@ try {
 某些工具操作可能很敏感，需要人工批准才能执行。
 您可以为每个工具配置批准：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createDeepAgent } from "deepagents";
 import { MemorySaver } from "@langchain/langgraph";
@@ -2657,7 +2657,7 @@ const agent = createDeepAgent({
 
 > [选项卡] 状态后端
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StateBackend, type FileData } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -2703,7 +2703,7 @@ const agent = createDeepAgent({
 >>
 >> 为此示例打开公共 LangSmith 运行。> [选项卡] 商店后端
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend } from "deepagents";
 > import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
 >
@@ -2749,7 +2749,7 @@ const agent = createDeepAgent({
 
 > [选项卡] 文件系统后端
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -2804,7 +2804,7 @@ const agent = createDeepAgent({
 
 > [选项卡] 状态后端
 >
-> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, type FileData } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -2853,7 +2853,7 @@ const agent = createDeepAgent({
 > );
 > ```
 >
-> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, type FileData } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -2902,7 +2902,7 @@ const agent = createDeepAgent({
 > );
 > ```
 >
-> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, type FileData } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -2951,7 +2951,7 @@ const agent = createDeepAgent({
 > );
 > ```
 >
-> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, type FileData } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -3000,7 +3000,7 @@ const agent = createDeepAgent({
 > );
 > ```
 >
-> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, type FileData } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -3049,7 +3049,7 @@ const agent = createDeepAgent({
 > );
 > ```
 >
-> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, type FileData } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -3098,7 +3098,7 @@ const agent = createDeepAgent({
 > );
 > ```
 >
-> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, type FileData } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -3153,7 +3153,7 @@ const agent = createDeepAgent({
 
 > [选项卡] 商店后端
 >
-> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
 > import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
 >
@@ -3209,7 +3209,7 @@ const agent = createDeepAgent({
 > );
 > ```
 >
-> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
 > import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
 >
@@ -3265,7 +3265,7 @@ const agent = createDeepAgent({
 > );
 > ```
 >
-> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
 > import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
 >
@@ -3321,7 +3321,7 @@ const agent = createDeepAgent({
 > );
 > ```
 >
-> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
 > import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
 >
@@ -3377,7 +3377,7 @@ const agent = createDeepAgent({
 > );
 > ```
 >
-> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
 > import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
 >
@@ -3433,7 +3433,7 @@ const agent = createDeepAgent({
 > );
 > ```
 >
-> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
 > import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
 >
@@ -3489,7 +3489,7 @@ const agent = createDeepAgent({
 > );
 > ```
 >
-> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
 > import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
 >
@@ -3551,7 +3551,7 @@ const agent = createDeepAgent({
 
 > [选项卡] 文件系统
 >
-> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -3571,7 +3571,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -3591,7 +3591,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -3611,7 +3611,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -3631,7 +3631,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -3651,7 +3651,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -3671,7 +3671,7 @@ const agent = createDeepAgent({
 > });
 > ```
 >
-> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 > import { MemorySaver } from "@langchain/langgraph";
 >
@@ -3697,7 +3697,7 @@ Deep Agents支持[structured output](/oss/javascript/langchain/structured-output
 将模式包装在策略中，例如来自 `langchain` 的 `toolStrategy()` 或 `providerStrategy()`。
 当模型生成结构化数据时，它会被捕获、验证并在代理状态的“structuralResponse”键中返回。
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, toolStrategy } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent } from "deepagents";

@@ -8,7 +8,7 @@
 
 > [!注意]
 >
-> **共同责任。** 对于自托管部署，您负责每个组件的备份、复制、恢复测试和恢复过程，包括 LangSmith Pod 和所有后备数据存储。 LangChain 仅对LangSmith 软件本身负责。有关等效的 SaaS 职责，请参阅[Shared responsibility model](/langsmith/shared-responsibility-model)。
+> **分担责任。** 对于自托管部署，您负责每个组件的备份、复制、恢复测试和恢复过程，包括 LangSmith Pod 和所有后备数据存储。 LangChain仅对LangSmith软件本身负责。有关等效的 SaaS 职责，请参阅[Shared responsibility model](/langsmith/shared-responsibility-model)。
 
 > [!提示]
 >
@@ -55,7 +55,7 @@ LangSmith 使用 PostgreSQL 作为操作和事务数据的主要存储。 **与 
 > * **备份：** 启用 [automated backups](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html)，并设置与您的合规状况相匹配的保留窗口（通常为 7 到 35 天）。
 > * **PITR：** 自动备份在保留窗口内包括 PITR。
 > * **HA：** 多可用区部署通过自动故障转移在第二个可用区中保持同步备用。
-> * **跨区域容灾：** 对于 Aurora，配置[Aurora Global Database](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html)。对于 RDS，使用 [cross-region read replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.XRgn.html) 或将自动快照复制到辅助区域。
+> * **跨区域容灾：** Aurora 配置[Aurora Global Database](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html)。对于 RDS，使用 [cross-region read replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.XRgn.html) 或将自动快照复制到辅助区域。
 > * **加密：** 使用客户管理的 [KMS](https://aws.amazon.com/kms/) 密钥启用存储加密。
 
 > [选项卡] GCP
@@ -79,7 +79,7 @@ LangSmith 使用 PostgreSQL 作为操作和事务数据的主要存储。 **与 
 
 ## ClickHouse
 
-ClickHouse 保存大量跟踪和反馈数据，通常是 LangSmith 部署中最大的数据存储。需要针对成本和恢复时间的影响来规划备份和复制。
+ClickHouse 保存大量跟踪和反馈数据，通常是 LangSmith 部署中最大的数据存储。需要针对成本和恢复时间影响来规划备份和复制。
 
 ### 托管 ClickHouse
 
@@ -125,7 +125,7 @@ ClickHouse 保存大量跟踪和反馈数据，通常是 LangSmith 部署中最�
 > * 启用[soft delete and blob versioning](https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-blob-overview)。
 > * 使用 [customer-managed key in Key Vault](https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview) 加密。> [!警告]
 >
-> **将 TTL 生命周期规则保留在 DR 存储桶中。** 如果将数据复制到 DR 存储桶，请复制 `ttl_s/`、`ttl_l/` 以及任何自定义 `ttl_XXd/` 前缀的生命周期规则。 DR 存储桶中缺少规则将导致故障转移后数据无限期保留。参见[TTL configuration](/langsmith/self-host-blob-storage#ttl-configuration)。
+> **将 TTL 生命周期规则保留在 DR 存储桶中。** 如果将数据复制到 DR 存储桶，请复制 `ttl_s/`、`ttl_l/` 以及任何自定义 `ttl_XXd/` 前缀的生命周期规则。如果您使用自动化规则，还需复制 `run_rules/outcomes/` 的 30 天规则。 DR 存储桶中缺少规则会导致数据在故障转移后无限期保留。参见[TTL configuration](/langsmith/self-host-blob-storage#ttl-configuration)和[automation outcome retention](/langsmith/self-host-blob-storage#automation-outcome-retention)。
 
 ## Redis
 
@@ -133,26 +133,24 @@ Redis 存储临时元数据、队列状态和跨实例发布/订阅。 **Redis �
 
 * 使用适用于您的云的托管服务：[Amazon ElastiCache](https://aws.amazon.com/elasticache/redis/)、[Google Cloud Memorystore](https://cloud.google.com/memorystore) 或 [Azure Cache for Redis](https://azure.microsoft.com/en-us/products/cache)。
 * 启用多可用区故障转移。
-* 对于跨区域灾难恢复，在故障转移期间在灾难恢复区域中配置一个新的Redis实例； **不要**在新集群中重用活动区域的 Redis URI。
-
-> [!警告]
+* 对于跨区域灾难恢复，在故障转移期间在灾难恢复区域中配置一个新的Redis实例； **不要**在新集群中重用活动区域的 Redis URI。> [!警告]
 >
-> 每个LangSmith安装必须使用自己专用的Redis实例。 **不要在两个安装之间共享 Redis 实例**，包括可能在任何时候都处于活动状态的主实例和 DR 副本。共享 Redis 会导致部署任务路由到错误的集群。参见[Connect external Redis](/langsmith/self-host-external-redis)。## Kubernetes 配置和秘密
+> 每个LangSmith安装必须使用自己专用的Redis实例。 **不要在两个安装之间共享 Redis 实例**，包括可能在任何时候都处于活动状态的主实例和 DR 副本。共享 Redis 会导致部署任务路由到错误的集群。参见[Connect external Redis](/langsmith/self-host-external-redis)。
 
-Helm 图表值、Kubernetes `Secret`s 和身份绑定与数据备份一样重要。完整的恢复需要两者。
+## Kubernetes 配置和秘密
 
-* **Helm 值：** 将 `values.yaml` 存储在源代码管理中。单独跟踪每个环境的覆盖。
+Helm 图表值、Kubernetes `Secret` 和身份绑定与数据备份一样重要。完整的恢复需要两者。* **Helm 值：** 将 `values.yaml` 存储在源代码管理中。单独跟踪每个环境的覆盖。
 * **图像版本：** 固定 LangSmith 图表版本和图像标签，以便恢复安装相同的软件版本。参见[Self-host upgrades](/langsmith/self-host-upgrades)和[Dependency versions](/langsmith/self-host-dependency-versions)。
-* **秘密：** LangSmith 从 Kubernetes `Secret` 读取数据库、blob 和许可凭证。将这些镜像到 DR 集群的机密管理器（[AWS Secrets Manager](https://aws.amazon.com/secrets-manager/)、[GCP Secret Manager](https://cloud.google.com/secret-manager) 或 [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault/)）。参见[Use an existing secret](/langsmith/self-host-using-an-existing-secret)。
+* **秘密：** LangSmith 从 Kubernetes `Secret` 读取数据库、blob 和许可凭证。将这些镜像到 DR 集群的秘密管理器（[AWS Secrets Manager](https://aws.amazon.com/secrets-manager/)、[GCP Secret Manager](https://cloud.google.com/secret-manager) 或 [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault/)）。参见[Use an existing secret](/langsmith/self-host-using-an-existing-secret)。
 * **TLS 材料：** 如果您在 LangSmith 入口处终止 TLS，请备份证书和密钥，或从 DR 区域中的私有 CA 重新颁发。参见[Custom TLS certificates](/langsmith/self-host-custom-tls-certificates)。
 * **IRSA / 工作负载身份绑定：** 在 DR 区域中重新创建 IAM 角色和服务帐户绑定；服务帐户 ARN 和注释是区域范围的。
 * **许可证密钥：** 将 LangSmith 许可证密钥与其他恢复密钥一起保存。
 
 ## 参考部署模式
 
-### 具有多可用区 HA 的单区域（推荐基线）这是最低的生产状态，可以防止区域故障。它不能防止区域性停电。
+### 具有多可用区 HA 的单区域（推荐基线）
 
-* 跨至少两个可用区的 Kubernetes 节点池。
+这是最低的生产状态，可以防止区域故障。它不能防止区域性停电。* 跨至少两个可用区的 Kubernetes 节点池。
 * 多可用区 HA 模式下的 Postgres（RDS 多可用区、云 SQL HA 或灵活服务器区域冗余）。
 * ClickHouse 作为托管服务，或分布在可用区的 3 节点复制集群。
 * 启用了多可用区故障转移的 Redis。
@@ -163,7 +161,7 @@ Helm 图表值、Kubernetes `Secret`s 和身份绑定与数据备份一样重要
 
 这可以防止区域性停电。它的成本要高得多，但对于一级部署来说是正确的模式。* 灾难恢复区域中的第二个 Kubernetes 集群安装了 LangSmith Helm 图表，但扩展到低副本数（热）或零（冷）。
 * Postgres 跨区域副本（RDS 或 Aurora 跨区域副本、Cloud SQL 跨区域副本、Azure 灵活服务器跨区域副本）。促进故障转移。
-* ClickHouse Cloud 或 LangSmith 具有区域故障转移计划的托管 ClickHouse，**或** ClickHouse 备份复制到 DR 区域并在故障转移时恢复到新的自我管理集群。通常不支持跨区域 ClickHouse 复制（ClickHouse Cloud 也不提供），因此请规划备份/恢复而不是热灾难恢复副本。
+* ClickHouse Cloud 或 LangSmith 具有区域故障转移计划的托管 ClickHouse，**或** ClickHouse 备份复制到 DR 区域并在故障转移时恢复到新的自管理集群。通常不支持跨区域 ClickHouse 复制（ClickHouse Cloud 也不提供），因此请规划备份/恢复而不是热灾难恢复副本。
 * Blob 存储复制到具有版本控制和匹配生命周期规则的 DR 存储桶。
 * 在故障转移期间，Redis 在 DR 区域中进行了全新配置。
 * DNS 由 [Route 53](https://aws.amazon.com/route53/)、[Cloud DNS](https://cloud.google.com/dns) 或 [Azure DNS](https://azure.microsoft.com/en-us/products/dns/) 管理，健康检查和故障转移策略指向每个区域的 LangSmith 前端入口。
@@ -211,7 +209,7 @@ Helm 图表值、Kubernetes `Secret`s 和身份绑定与数据备份一样重要
 
 更新 DNS 以将流量路由到 DR 入口。向利益相关者传达切换情况。
 
-**8.计划故障回复**
+**8.计划故障恢复**
 
 一旦主要区域正常，就计划受控故障恢复。这通常被安排在维护窗口中，并涉及在再次交换之前将主数据库重建为新的 DR 副本。
 
@@ -229,7 +227,7 @@ Helm 图表值、Kubernetes `Secret`s 和身份绑定与数据备份一样重要
 
 恢复与 Postgres 恢复点时间一致的最新 ClickHouse 备份。恢复时间尺度与数据大小。
 
-**4.恢复 Blob 存储**
+**4.恢复 blob 存储**
 
 如果丢失 Blob 数据（罕见），请从 S3/GCS/Azure 还原版本化对象或从复制的 DR 存储桶进行复制。
 
