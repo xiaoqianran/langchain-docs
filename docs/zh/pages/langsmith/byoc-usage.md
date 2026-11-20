@@ -8,7 +8,7 @@
 
 一旦数据平面处于活动状态，其工作区的所有 API 流量都会进入数据平面端点，而不是LangSmith 云后端。本页说明如何将请求路由到正确的服务。
 
-LangSmith UI 会自动处理此问题：它根据您选择的工作空间路由到正确的数据平面。以下指南适用于您自己的客户端代码和直接 API 调用。
+LangSmith UI 根据您选择的工作空间路由到正确的数据平面。 Chrome 和 Edge 用户可能需要先[allow local network access](#allow-local-network-access-in-chrome-and-edge)。本页的其余部分适用于您自己的客户端代码和直接 API 调用。
 
 ## 组织、数据平面和工作空间
 
@@ -32,6 +32,35 @@ BYOC 部署为标准 LangSmith [resource hierarchy](/langsmith/administration-ov
 >
 > 默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能到达基本 URL，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。
 
+## 允许 Chrome 和 Edge 中的本地网络访问
+
+当您在私有数据平面上打开工作区时，LangSmith UI 会将请求从 LangSmith 站点发送到数据平面的私有地址。 Chrome 和 Edge 将这些请求视为本地网络请求，并要求每个用户允许它们。如果用户阻止或忽略提示，则 UI 无法访问数据平面并显示网络访问错误，即使用户位于您的专用网络上也是如此。
+
+允许一个用户访问：
+
+1. 打开LangSmith界面，如`https://aws.smith.langchain.com`。
+2. 单击地址栏左侧的图标。
+3. 如果列表中存在**本地网络访问**，请将其设置为**允许**。否则，请单击 Chrome 中的“**站点设置**”或 Edge 中的“**此站点的权限**”，并将“本地网络访问”设置为“允许”。
+4. 重新加载页面。要允许组织中的每个用户进行访问，请推送托管浏览器策略。 Chrome 和 Edge 使用相同的策略名称：
+
+* `LocalNetworkAllowedForUrls`：最新 Chrome 版本以及 Edge 146 及更高版本中的当前政策。
+* `LocalNetworkAccessAllowedForUrls`：较早的策略，适用于较旧的浏览器版本。
+
+如果您的机群运行混合版本，请同时设置：
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "LocalNetworkAllowedForUrls": ["https://aws.smith.langchain.com"],
+  "LocalNetworkAccessAllowedForUrls": ["https://aws.smith.langchain.com"]
+}
+```
+
+每个策略都会列出发出请求的站点，即 LangSmith UI URL，而不是数据平面 URL。因此，它还涵盖您稍后添加的数据平面。要确认该策略是否适用，请打开`chrome://policy`或`edge://policy`。
+
+> [!注意]
+>
+> 此设置不会取代专用连接。用户仍然需要通往数据平面的网络路径，例如 VPN。
+
 ## 跟踪数据平面
 
 要在基于代理的工作区中进行跟踪，请在运行示例之前[create an agent and configure agent addressing](/langsmith/create-an-agent#configure-tracing-for-the-agent)。
@@ -46,9 +75,7 @@ export LANGSMITH_ENDPOINT="https://<data_plane_host>"
 
 > [!警告]
 >
-> 从目标数据平面内的工作空间创建`LANGSMITH_API_KEY`。跟踪是租户范围的，因此来自不同数据平面上的工作区（包括云工作区）的 API 密钥会被拒绝。
-
-对于完整的、可运行的示例，请遵循 [Observability quickstart](/langsmith/observability-quickstart) 并替换上面的环境变量。
+> 从目标数据平面内的工作空间创建`LANGSMITH_API_KEY`。跟踪是租户范围的，因此来自不同数据平面上的工作区（包括云工作区）的 API 密钥会被拒绝。对于完整的、可运行的示例，请遵循 [Observability quickstart](/langsmith/observability-quickstart) 并替换上面的环境变量。
 
 ## 路由 API 请求
 
@@ -59,7 +86,9 @@ export LANGSMITH_ENDPOINT="https://<data_plane_host>"
 | LangSmith |无 | `https://<data_plane_host>/v1/sessions` |
 | OTLP 摄取 | `/otel` | `https://<data_plane_host>/otel/v1/traces` |
 | LangSmith 代理服务器 | `/api-host` | `https://<data_plane_host>/api-host/v2/deployments` |
-|法学硕士网关| `/gateway` | `https://<data_plane_host>/gateway/v1/chat/completions` |LangSmith API 还接受 `/api` 前缀，因此 `https://<data_plane_host>/api/v1/sessions` 到达相同的端点。 SDK使用裸数据面主机，如[Trace to a data plane](#trace-to-a-data-plane)所示。
+|法学硕士网关| `/gateway` | `https://<data_plane_host>/gateway/v1/chat/completions` |
+
+LangSmith API 还接受 `/api` 前缀，因此 `https://<data_plane_host>/api/v1/sessions` 到达相同的端点。 SDK使用裸数据面主机，如[Trace to a data plane](#trace-to-a-data-plane)所示。
 
 ## 跟踪多个端点
 
@@ -67,7 +96,7 @@ export LANGSMITH_ENDPOINT="https://<data_plane_host>"
 
 ### 双写入两个端点
 
-设置 `LANGSMITH_RUNS_ENDPOINTS` 以写入多个端点。这些副本设置使用每个代理环境的 [⟦T18⟧](/langsmith/create-an-agent#use-an-environment-project) 作为 `project_name`：
+设置 `LANGSMITH_RUNS_ENDPOINTS` 写入多个端点。这些副本设置使用每个代理环境的 [⟦T24⟧](/langsmith/create-an-agent#use-an-environment-project) 作为 `project_name`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_RUNS_ENDPOINTS='[

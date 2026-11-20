@@ -21,7 +21,7 @@ GCP 上的 BYOC 在 GCP 项目中运行 LangSmith 数据平面，在 LangSmith U
 * **数据平面的 GCP 项目**：使用仅包含 LangSmith 资源的项目。大多数配置者的权限仅适用于名称以`langsmith-`开头的资源，但有些权限涵盖整个项目。如果项目还拥有其他资源，则在[Step 2](#step-2-run-the-terraform-module)中设置`byo_iam = true`。该项目不得已有 `managed_by` 标签密钥，并且必须仅包含 Terraform 模块的一份副本。详情请参见[What LangChain can and cannot access](/langsmith/byoc-architecture-gcp#what-langchain-can-and-cannot-access)。
 * **该项目中的权限**：创建服务帐户、授予项目 IAM 角色、启用 API 和创建标签的权限。标签需要项目上的标签管理员（`roles/resourcemanager.tagAdmin`）。
 * **Terraform**：Terraform 1.11.0 或更高版本，使用 Google 提供商 6.0 或更高版本，9.0 之前。
-* **GCP 区域**：GCP 上的 BYOC 可以在任何 GCP 区域中运行。如果您需要的区域尚未启用，请联系LangChain团队添加。* **资源位置策略**：如果您的 GCP 组织限制资源位置，请允许数据平面区域和 `us-central1`。数据平面在`us-central1`中创建其到LangSmith的私有服务连接端点。
+* **GCP 区域**：GCP 上的 BYOC 可以在任何 GCP 区域中运行。如果您需要的区域尚未启用，请联系LangChain团队添加。* **资源位置策略**：如果您的 GCP 组织限制资源位置，请允许数据平面区域和 `us-central1`。数据平面在 `us-central1` 中创建其到 LangSmith 的 Private Service Connect 端点。
 
 ## 设置数据平面
 
@@ -53,7 +53,7 @@ provider "google" {
 }
 
 module "langsmith_byoc_service_account" {
-  source = "github.com/langchain-ai/terraform//modules/byoc/gcp/langsmith-byoc-service-account?ref=v0.17.80"
+  source = "github.com/langchain-ai/terraform//modules/byoc/gcp/langsmith-byoc-service-account?ref=v0.17.103"
 
   project_id                 = "<project-id>"
   crossplane_service_account = "byoc-crossplane@langchain-prod.iam.gserviceaccount.com"
@@ -65,7 +65,7 @@ output "provisioner_service_account" {
 }
 ```
 
-LangSmith 需要模块版本 v0.17.80 或更高版本。如果您应用了早期版本，请重新应用 v0.17.80 或更高版本的模块。要自行创建数据平面服务帐户及其项目角色，请在项目中创建数据平面之前设置 `byo_iam = true`。然后，配置者无法创建服务账户或更改项目 IAM 策略。如果项目拥有非 LangSmith 的资源，请设置它。创建数据平面，并将 `byoiam_enabled` 设置为 `true`。有关更多信息，请参阅[Bring your own IAM](/langsmith/byoc-architecture-gcp#bring-your-own-iam)。
+LangSmith 需要模块的版本 v0.17.90 或更高版本，这使得配置者可以创建 [Private Google Access](/langsmith/byoc-networking-gcp#private-google-access) 路由。在早期版本中，数据平面仍处于就绪状态，但没有专用 Google 访问权限：Google API 流量解析为公共地址并遵循您的 VPC 路由。如果您应用了早期版本，请重新应用 v0.17.90 或更高版本的模块。要自行创建数据平面服务帐户及其项目角色，请在项目中创建数据平面之前设置 `byo_iam = true`。然后，配置者无法创建服务账户或更改项目 IAM 策略。如果项目拥有非 LangSmith 的资源，请设置它。创建数据平面，并将 `byoiam_enabled` 设置为 `true`。欲了解更多信息，请参阅[Bring your own IAM](/langsmith/byoc-architecture-gcp#bring-your-own-iam)。
 
 ### 步骤 3. 创建数据平面
 
@@ -94,12 +94,13 @@ curl -X POST https://api.smith.langchain.com/orgs/current/data-planes \
 | `region` |数据平面的 GCP 区域。 GCP 上的 BYOC 可以在任何 GCP 区域中运行。如果您需要的区域尚未启用，请联系LangChain团队添加。 |
 | `gcp_project_id` |来自[Step 2](#step-2-run-the-terraform-module)的项目。 |
 | `provisioner_service_account` | `provisioner_service_account` Terraform 输出。一定是在项目里的。 |
-| `vpc_cidr` | LangSmith创建的VPC范围。私有 RFC 1918 范围从 `/16` 到 `/18`。它不得与 GKE Pod 和服务使用的 `192.168.0.0/17` 重叠。 |
+| `vpc_cidr` | LangSmith创建的VPC范围。私有 RFC 1918 范围从 `/16` 到 `/18`。 `/16` 或 `/17` 可容纳所有范围，包括 GKE Pod。 `/18` 不得与其 GKE Pod 所在的`192.168.0.0/18` 重叠。参见[Network](/langsmith/byoc-networking-gcp#address-ranges)。 |
 | `public_load_balancer` | `true` 用于公共端点。 `false`（默认）用于内部端点。参见[Choose a public or internal endpoint](#choose-a-public-or-internal-endpoint)。 |
 | `byoiam_enabled` |选修的。 `true` 如果您使用`byo_iam = true`应用模块。 |
-| `sandboxes_enabled` |选修的。 `true` 在数据平面中部署[LangSmith sandboxes](/langsmith/sandboxes)。默认为 `false`。 |
+| `sandboxes_enabled` |选修的。 `true` 在数据平面中部署[LangSmith sandboxes](/langsmith/sandboxes)。默认为`false`。 |
+| `mtu_bytes` |选修的。 VPC MTU，从 1300 到 8896。将其设置为匹配对等集线器或与较小的 MTU 互连，例如 1440。默认为 GCP 默认值 1460。请参阅[MTU](/langsmith/byoc-networking-gcp#mtu)。 |API 返回 `202` 以及数据平面的 `id`、`api_url` 和 `status`。在接受请求之前，LangSmith 检查它是否可以模拟配置程序，并且配置程序位于项目中并带有您的外部 ID。如果检查失败，响应会指出问题所在。参见[Troubleshoot create errors](#troubleshoot-create-errors)。
 
-API 返回 `202` 以及数据平面的 `id`、`api_url` 和 `status`。在接受请求之前，LangSmith 检查它是否可以模拟配置程序，并且配置程序位于项目中并带有您的外部 ID。如果检查失败，响应会指出问题所在。参见[Troubleshoot create errors](#troubleshoot-create-errors)。### 步骤 4. 等待激活
+### 步骤 4. 等待激活
 
 LangSmith 配置项目中的基础设施。数据平面状态从`requested`移动到`provisioning`再到`active`。在 **设置 > 数据平面** 中或使用 `GET /orgs/current/data-planes/<id>` 进行跟踪。
 
@@ -119,10 +120,10 @@ LangSmith 配置项目中的基础设施。数据平面状态从`requested`移�
 
 ### 选择公共或内部端点
 
-您在创建数据平面时选择端点类型：
+您在创建数据平面时选择端点类型：* **公共**：用户从互联网到达数据平面。
+* **内部**（默认）：入口位于内部负载均衡器上，主机名仅在数据平面 VPC 内部解析。将您的网络连接到该 VPC（例如使用 VPC 对等互连或 Cloud VPN），并从您的网络解析主机名。参见[Connect your network](/langsmith/byoc-networking-gcp#connect-your-network)。
 
-* **公共**：用户从互联网到达数据平面。
-* **内部**（默认）：入口位于内部负载均衡器上，主机名仅在数据平面 VPC 内部解析。将您的网络连接到该 VPC（例如使用 VPC 对等互连或 Cloud VPN），并从您的网络解析主机名。来自数据平面的出站流量通过具有静态 IP 地址的 Cloud NAT 离开，因此您可以将数据平面列入白名单。
+来自数据平面的出站流量通过具有静态 IP 地址的 Cloud NAT 离开，因此您可以将数据平面列入白名单。对于数据平面所需的目的地，请参阅[Outbound traffic](/langsmith/byoc-networking-gcp#outbound-traffic)。
 
 ### 更改数据平面设置
 
@@ -142,22 +143,22 @@ GKE 节点在 GKE `REGULAR` 发布通道上自动升级。
 
 ## 解决创建错误
 
-创建请求返回以下错误代码：|代码| HTTP |原因 |修复|
+创建请求返回以下错误代码：|代码| HTTP |原因 |修复 |
 | - | - | - | - |
-| `gcp_permissions` | 403 | 403 LangSmith 无法冒充配置者，或者配置者缺乏权限。 |应用 Terraform 模块，并选中`crossplane_service_account`。 |
+| `gcp_permissions` | 403 | 403 LangSmith 无法冒充配置者，或者配置者缺乏权限。 |应用 Terraform 模块，并选中 `crossplane_service_account`。 |
 | `gcp_api_disabled` | 400 |项目中禁用了所需的 API。 |启用消息中指定的 API，或保留`enable_apis = true`。 |
 | `gcp_project_not_found` | 400 |该项目不存在，或者配置者看不到它。 |检查`gcp_project_id`。 |
 | `gcp_service_account_not_found` | 400 |项目中不存在配置者服务帐户。 |检查`provisioner_service_account`和`gcp_project_id`。 |
 | `gcp_provisioner_project_mismatch` | 400 |配置者位于不同的项目中。 |使用在数据平面项目中创建的模块的配置程序。 |
 | `gcp_provisioner_not_owned` | 403 | 403配置者的描述不是您的外部 ID。 |使用 **设置 > 数据平面** 中的外部 ID 重新应用模块。 |
-| `byoiam_validation` | 400 | `byoiam_enabled` 是 `true`，但项目缺少 LangSmith 服务帐户。 |使用`byo_iam = true`应用模块。 |
+| `byoiam_validation` | 400 | `byoiam_enabled` 是`true`，但项目缺少LangSmith 服务帐户。 |使用`byo_iam = true`应用模块。 |
 | `gcp_policy_denied` | 403 | 403组织策略拒绝了请求，例如资源位置限制。 |在策略中允许数据平面区域和`us-central1`。 |
 | `gcp_throttled` | 429 | 429 GCP 速率限制了请求。 |一分钟后重试。 || `gcp_unavailable` | 502 | 502 GCP 返回错误。 |一分钟后重试。 |
 | `organization_admin_required` | 403 | 403 API 密钥的用户不是组织管理员。 |使用组织管理员的 API 密钥。 |
 | `organization_external_id_missing` | 409 | 409未为您的组织设置 BYOC。 |联系LangChain团队。 |
 | `data_plane_name_taken` | 409 | 409您的组织已有一个具有此名称的数据平面。 |选择另一个`name`。 |
 
-字段验证失败的请求（例如未启用的区域或与 GKE 范围重叠的 `vpc_cidr`）将返回 `400` 以及字段和原因。
+字段验证失败的请求（例如未启用的区域、与 GKE Pod 范围重叠的 `/18` `vpc_cidr` 或`mtu_bytes` 超出范围）会返回 `400` 以及字段和原因。
 
 ## 删除数据平面
 
@@ -167,7 +168,7 @@ GKE 节点在 GKE `REGULAR` 发布通道上自动升级。
 
 删除数据平面：
 
-1. 删除`DELETE /orgs/current/data-planes/<id>`数据平面。您可以在`active`、`provisioning`或`provisioning_failed`时将其删除。 LangSmith 删除它在项目中创建的资源（数据除外）：Cloud Storage 存储桶与其对象一起保留，并且 Cloud SQL 备份比实例的寿命更长。参见[What teardown keeps](#what-teardown-keeps)。
+1. 删除`DELETE /orgs/current/data-planes/<id>`数据平面。您可以在`active`、`provisioning`、`provisioning_failed` 时将其删除。 LangSmith 删除它在项目中创建的资源（数据除外）：Cloud Storage 存储桶与其对象一起保留，并且 Cloud SQL 备份比实例的寿命更长。参见[What teardown keeps](#what-teardown-keeps)。
 2. 等待数据平面从 **设置 > 数据平面** 消失。
 3. 如果没有其他数据平面使用该项目，则运行`terraform destroy`。
 
@@ -191,11 +192,12 @@ LangSmith 以后不会删除它们，`terraform destroy` 也不会。当您不�
 ## 另请参阅
 
 * [BYOC architecture on GCP](/langsmith/byoc-architecture-gcp)
+* [BYOC networking on GCP](/langsmith/byoc-networking-gcp)
 * [BYOC overview](/langsmith/byoc)
 * [BYOC usage](/langsmith/byoc-usage)
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-onboarding-gcp.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -219,6 +219,10 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 >
 > The default limit is five data planes per organization. To deploy more than that, contact the LangChain team.
 
+> [accordion] Why does the UI say I may not have network access to a workspace?
+>
+> The LangSmith UI cannot reach the workspace's data plane. Check that you are on the private network that reaches the data plane. In Chrome or Edge, also check that you allowed local network access for the LangSmith site. See [Allow local network access in Chrome and Edge](/langsmith/byoc-usage#allow-local-network-access-in-chrome-and-edge).
+
 > [accordion] Can one organization hold both Cloud and BYOC workspaces?
 >
 > Yes. A workspace on LangSmith Cloud routes to the LangChain-managed backend rather than to a data plane, so both can coexist in the same organization. This also means you can move from an AWS Cloud trial to BYOC while reusing the same organization, users, roles, and SSO configuration.

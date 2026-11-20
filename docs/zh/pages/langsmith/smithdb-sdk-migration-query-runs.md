@@ -26,7 +26,7 @@
 >>
 >> `client.runs.query()` 现在是异步的并返回一个分页器。使用 `async for` 进行迭代以获取所有页面上的单独运行，或者使用 `await` 进行迭代以获取第一页。
 >
-> 有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/runs/RunsResource/query_v2)。
+> 完整参数和字段列表请参见[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/runs/RunsResource/query_v2)。
 
 > [选项卡] TypeScript
 >
@@ -68,7 +68,7 @@
 >
 >> [!警告]
 >>
->> `min_start_time` 省略时默认为 **1 天前**。 `list_runs` 没有 `start_time` 返回所有历史运行；没有 `min_start_time` 的 `runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `min_start_time`。
+>> `min_start_time` 省略时默认为 **1 天前**。没有 `start_time` 的 `list_runs` 返回所有历史运行；没有 `min_start_time` 的 `runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `min_start_time`。
 >
 > |之前 (`list_runs`) |之后(`runs.query`) |笔记|
 > | - | - | - |
@@ -126,7 +126,7 @@
 >
 >> [!警告]
 >>
->> `minStartTime()` 省略时默认为 **1 天前**。没有 `startTime()` 的 `query()` 返回所有历史运行；不带 `minStartTime()` 的 `queryV2()` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `minStartTime()`。
+>> `minStartTime()` 省略时默认为 **1 天前**。没有 `startTime()` 的 `query()` 返回所有历史运行；没有 `minStartTime()` 的 `queryV2()` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `minStartTime()`。
 >
 > |之前 (`RunQueryParams`) |之后（`RunQueryV2Params`）|笔记|
 > | - | - | - |
@@ -260,7 +260,7 @@
 > | *（不可用）* | `run.thread_id` |新：对话线程 UUID |
 > | *（不可用）* | `run.reference_dataset_id` |新：参考示例的数据集 UUID |
 > | *（不可用）* | `run.share_url` |新功能：公共共享 URL（仅在共享运行时设置）|
-> | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
+> | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
 > | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
 > | `run.prompt_cost_details` | `run.prompt_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
 > | `run.completion_cost_details` | `run.completion_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|> [选项卡] TypeScript
@@ -378,14 +378,14 @@
 > | *（不可用）* | `run.shareUrl()` |新功能：公共共享 URL（仅在共享运行时设置）|
 > | *（不可用）* | `run.threadEvaluationTime()` |新 |> [选项卡] 前往
 >
-> 将`RunQueryV2ParamsSelect`常量（例如`RunQueryV2ParamsSelectName`、`RunQueryV2ParamsSelectStatus`）传递给`Selects`来控制填充哪些字段；未选择的字段在返回的结构上为零值。 `Selects` defaults to `ID` only.
+> 将`RunQueryV2ParamsSelect`常量（例如`RunQueryV2ParamsSelectName`、`RunQueryV2ParamsSelectStatus`）传递给`Selects`来控制填充哪些字段；未选择的字段在返回的结构上为零值。 `Selects` 默认为`ID`。
 >
-> | Before (`RunSchema` field) | After (`Run` field) |笔记|
+> |之前（`RunSchema`字段）|之后（`Run`场）|笔记|
 > | - | - | - |
 > | `run.ID` | `run.ID` |不变 |
 > | `run.Name` | `run.Name` |不变 |
 > | `run.RunType` | `run.RunType` |值更改为大写：`"LLM"`、`"CHAIN"` 等 |
-> | `run.Status` | `run.Status` | Values: `"SUCCESS"`, `"ERROR"`, `"PENDING"` |
+> | `run.Status` | `run.Status` |值：`"SUCCESS"`、`"ERROR"`、`"PENDING"` |
 > | `run.TraceID` | `run.TraceID` |不变 |
 > | `run.DottedOrder` | `run.DottedOrder` |不变 |
 > | `run.AppPath` | `run.AppPath` |不变 |
@@ -393,12 +393,12 @@
 > | `run.EndTime` | `run.EndTime` |不变 |
 > | `run.Error` | `run.Error` |不变 |
 > | `run.Events` | `run.Events` |不变；元素类型现在为 `RunEvent`（原为 `map[string]interface{}`）|
-> | `run.Extra` | `run.Extra` |不变； type is now `interface{}` (was `map[string]interface{}`) |
-> | `run.FeedbackStats` | `run.FeedbackStats` |不变； element type is now `RunFeedbackStat` |
+> | `run.Extra` | `run.Extra` |不变；类型现在为 `interface{}`（原为 `map[string]interface{}`）|
+> | `run.FeedbackStats` | `run.FeedbackStats` |不变；元素类型现在为 `RunFeedbackStat` |
 > | `run.FirstTokenTime` | `run.FirstTokenTime` |不变 |
 > | `run.Inputs` | `run.Inputs` |不变；类型现在为 `interface{}`（原为 `map[string]interface{}`）|
 > | `run.InputsPreview` | `run.InputsPreview` |不变 |
-> | `run.Outputs` | `run.Outputs` |不变； type is now `interface{}` (was `map[string]interface{}`) |
+> | `run.Outputs` | `run.Outputs` |不变；类型现在为`interface{}`（原为`map[string]interface{}`）|
 > | `run.OutputsPreview` | `run.OutputsPreview` |不变 |
 > | `run.ParentRunIDs` | `run.ParentRunIDs` |不变 |
 > | `run.PriceModelID` | `run.PriceModelID` |不变 |> | `run.PromptCost` | `run.PromptCost` |仅供自己使用；不再从子运行中求和|
@@ -472,10 +472,10 @@
 > | `price_model_id` | `price_model_id` |不变 |
 > | `prompt_cost` | `prompt_cost` |仅供自己使用；不再从子运行中求和|
 > | `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
-> | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
+> | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
 > | `prompt_tokens` | `prompt_tokens` |仅供自己使用；不再从子运行中求和|
 > | `completion_cost` | `completion_cost` |仅供自己使用；不再从子运行中求和|
-> | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|
+> | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
 > | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
 > | `completion_tokens` | `completion_tokens` |仅供自己使用；不再从子运行中求和|
 > | `total_cost` | `total_cost` |仅供自己使用；不再从子运行中求和|
@@ -1352,7 +1352,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 > >   -d "$(jq -n --arg pid "$PROJECT_ID" '{"project_ids": [$pid], "is_root": true}')"
 > > ```> [!警告]
 >
-> 要列出跟踪，请使用 `traces.query` 而不是 `is_root=True`。从 `runs.query` 开始的根运行不携带跟踪范围的令牌或成本总计：它们的令牌和成本字段仅涵盖根运行自己的使用情况，并且当根未进行模型调用时为空。 `traces.query` 返回 `trace_aggregates` 下的跟踪范围 `total_tokens` 和 `total_cost`。参见[Traces: query](/langsmith/smithdb-sdk-migration-traces)。
+> 要列出跟踪，请使用 `traces.query` 而不是 `is_root=True`。从 `runs.query` 开始的根运行不携带跟踪范围的令牌或成本总计：它们的令牌和成本字段仅涵盖根运行自己的使用情况，并且当根未进行模型调用时为空。 `traces.query` 返回 `trace_aggregates` 下的跟踪范围 `total_tokens` 和 `total_cost`。请参阅[Traces: query](/langsmith/smithdb-sdk-migration-traces)。
 
 #### 通过 ID 列表获取运行
 
@@ -1741,7 +1741,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] 卷曲
 >
-> v1 API 在一个响应中返回所有匹配的运行，不带光标。 v2 API 分页 — 从响应的 `next_cursor` 字段传递 `cursor` 以获取下一页。
+> v1 API 也是游标分页的：将响应中的 `cursors.next` 值作为下一个请求正文中的 `cursor` 传递，并从 `runs` 数组中读取运行。 v2 API 的分页方式相同，但存在以下差异：运行位于 `items` 中，下一页标记是顶级 `next_cursor` 字段。
 >
 >> [选项卡] 之前
 >>
@@ -1874,9 +1874,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 > > val runs = client.runs().queryV2(
 > >     RunQueryV2Params.builder().addProjectId(project.id()).hasError(true).build()
 > > ).items()
-> > ```
-
-> [选项卡] 前往
+> > ```> [选项卡] 前往
 >
 > `Error` 更名为 `HasError`。
 >
@@ -1930,7 +1928,9 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 > > 	ProjectIDs: langsmith.F([]string{project.ID}),
 > > 	HasError:   langsmith.F(true),
 > > })
-> > ```> [选项卡] 卷曲
+> > ```
+
+> [选项卡] 卷曲
 >
 > `error` 更名为 `has_error`。
 >
@@ -1962,7 +1962,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] Python
 >
-> `filter` 字符串语法不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 结合以匹配特定值。
+> `filter` 字符串语法保持不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 结合以匹配特定值。
 >
 >> [选项卡] 之前
 >>
@@ -1994,7 +1994,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 > [选项卡] TypeScript
 >
-> `filter` 字符串语法保持不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 结合以匹配特定值。
+> `filter` 字符串语法不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 结合以匹配特定值。
 >
 >> [选项卡] 之前
 >>
@@ -2118,9 +2118,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 > > 	ProjectIDs: langsmith.F([]string{project.ID}),
 > > 	Filter:     langsmith.F(filterStr),
 > > })
-> > ```
-
-> [选项卡] 卷曲
+> > ```> [选项卡] 卷曲
 >
 > `filter` 字符串语法不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 结合以匹配特定值。
 >
@@ -2152,7 +2150,9 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 > >   -d "$(jq -n --arg pid "$PROJECT_ID" --arg f "$FILTER" '{"project_ids": [$pid], "filter": $f}')"
 > > ```
 
-#### 复杂布尔过滤器嵌套 `and()` / `or()` 过滤表达式仍然有效。将 `or()` 操作数保留在同一字段类型上：SmithDB 拒绝在一个表达式中跨运行字段和反馈字段进行 OR 运算（例如将 `status` 与 `feedback_key` 混合）。
+#### 复杂布尔过滤器
+
+嵌套 `and()` / `or()` 过滤表达式仍然有效。将 `or()` 操作数保留在同一字段类型上：SmithDB 拒绝在一个表达式中跨运行字段和反馈字段进行 OR 运算（例如将 `status` 与 `feedback_key` 混合）。
 
 > [选项卡] Python
 >

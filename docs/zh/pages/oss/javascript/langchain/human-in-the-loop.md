@@ -26,6 +26,14 @@
 
 在默认批处理模式下，按照与中断请求中出现的操作相同的顺序提供决策。在[per-call mode](#pause-once-per-tool-call)中，每个工具调用都有自己的中断并做出一个决定。当人类拒绝请求的操作时使用`reject`。仅当人类充当工具时才使用`respond`，例如回答`ask_user`提示。不要使用`respond`来拒绝副作用工具，因为它的消息被视为成功的工具结果。
 
+对于`reject`和`respond`，中间件自己创建工具消息，因为该工具不运行。它用[notification metadata](/oss/javascript/langchain/messages#notifications)标记该消息：`source`是`hitl_interrupt_decision`，`data`保存`decision`。 `approve`或`edit`之后的刀具输出未标记。
+
+要区分这些消息与前端中的真实工具输出，请使用 `getNotificationMetadata` 读取元数据。
+
+> [!注意]
+>
+> 标记这些工具消息需要`langchain>=1.6.7`。
+
 > [!提示]
 >
 > **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
@@ -34,9 +42,7 @@
 
 要使用 HITL，请在创建代理时将 [middleware](/oss/javascript/langchain/middleware/built-in#human-in-the-loop) 添加到代理的 `middleware` 列表中。
 
-您可以使用工具操作到每个操作允许的决策类型的映射来配置它。当工具调用与映射中的操作匹配时，中间件将中断执行。
-
-本示例使用默认的批处理模式。要每次工具调用暂停一次，请参阅[Set the interrupt mode](#set-the-interrupt-mode)。
+您可以使用工具操作到每个操作允许的决策类型的映射来配置它。当工具调用与映射中的操作匹配时，中间件将中断执行。本示例使用默认的批处理模式。要每次工具调用暂停一次，请参阅[Set the interrupt mode](#set-the-interrupt-mode)。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
@@ -67,13 +73,15 @@ const agent = createAgent({
     // In production, use a persistent checkpointer like AsyncPostgresSaver or MongoDBSaver.
     checkpointer: new MemorySaver(), // [!code highlight]
 });
-```> [!注意]
+```
+
+> [!注意]
 >
 > 您必须配置一个检查指针以跨中断保持图形状态。
 >
-> 在生产中，使用持久检查指针，例如 [⟦T47⟧](https://reference.langchain.com/javascript/langchain-langgraph-checkpoint-postgres/index/PostgresSaver) 或 [⟦T48⟧](https://reference.langchain.com/javascript/langchain-langgraph-checkpoint-mongodb/MongoDBSaver)。对于测试或原型设计，请使用[⟦T49⟧](https://reference.langchain.com/javascript/langchain-langgraph-checkpoint/index/MemorySaver)。
+> 在生产中，使用持久检查指针，例如 [⟦T57⟧](https://reference.langchain.com/javascript/langchain-langgraph-checkpoint-postgres/index/PostgresSaver) 或 [⟦T58⟧](https://reference.langchain.com/javascript/langchain-langgraph-checkpoint-mongodb/MongoDBSaver)。对于测试或原型设计，请使用[⟦T59⟧](https://reference.langchain.com/javascript/langchain-langgraph-checkpoint/index/MemorySaver)。
 >
-> 调用代理时，传递包含 **线程 ID** 的 `config`，以将执行与对话线程关联起来。
+> 调用代理时，传递包含 **线程 ID** 的 `config` 将执行与会话线程关联起来。
 > 详情请参阅[LangGraph interrupts documentation](/oss/javascript/langgraph/interrupts)。
 
 > [手风琴] 配置选项
@@ -150,7 +158,7 @@ const agent = createAgent({
   ],
   checkpointer: new MemorySaver(),
 });
-```当 `when` 谓词返回 `false` 时，调用将不间断地运行。当它返回 `true` 时，或者当您省略 `when` 时，呼叫将照常暂停。评估为 `false` 的调用永远不会暂停，因此审阅者只能看到需要决策的操作。
+```当 `when` 谓词返回 `false` 时，调用将不间断地运行。当它返回 `true` 时，或者当您省略 `when` 时，呼叫将照常暂停。评估为 `false` 的调用永远不会暂停，因此审阅者只能看到需要做出决定的操作。
 
 当代理恢复时，谓词再次运行，因此它必须为同一调用返回相同的结果。如果它在简历中返回`false`，则该工具将运行并且审阅者的答案将被忽略，即使是`reject`。在批处理模式下，如果仅部分调用的结果发生变化，中间件会抛出错误。
 
@@ -158,7 +166,7 @@ const agent = createAgent({
 
 中间件以两种模式之一暂停，使用 `interruptMode` 设置：
 
-* **`"per_call"`**：每个需要审查的工具调用在启动时都会引发自己的中断。每个中断都携带它接受的答案的[⟦T91⟧](/oss/javascript/langgraph/interrupts#define-an-interrupt-response-schema)。您可以通过一个决定来回答它，并以中断 ID 为关键。
+* **`"per_call"`**：每个需要审查的工具调用在启动时都会引发自己的中断。每个中断都携带它接受的答案的[⟦T101⟧](/oss/javascript/langgraph/interrupts#define-an-interrupt-response-schema)。您可以通过一个决定来回答它，并以中断 ID 为关键。
 * **`"batched"`**（默认）：每个模型回合一个中断会列出每个需要审核的调用。您以相同顺序列出一系列决定来回答。
 
 对新代理使用每次呼叫模式。 LangChain 计划在下一个主要版本中将其设为默认值。有关并排比较和每次调用模式解决的问题，请参阅[human-in-the-loop overview](/oss/javascript/concepts/human-in-the-loop)。
@@ -167,7 +175,7 @@ const agent = createAgent({
 >
 > 每次调用中断需要 `langchain>=1.5.18` 和 `createAgent` 版本 `"v2"`，默认值。
 
-设置 `interruptMode: "per_call"` 来单独查看每个工具调用。该代理控制`write_file`和`execute_sql`，并让`read_data`无需审查即可运行：
+设置 `interruptMode: "per_call"` 来单独查看每个工具调用。该代理对 `write_file` 和 `execute_sql` 进行门控，并让 `read_data` 无需审核即可运行：
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
@@ -512,7 +520,7 @@ for (const interrupt of approvals) {
 
 ### 读取响应模式
 
-每个中断还携带一个 `response_schema`：一种 JSON 模式，工具允许的每个决策有一个分支，与决策的 `type` 相匹配。 `execute_sql` 模式有 `approve` 和 `reject` 分支。 `write_file` 模式具有全部四个。对于允许一个决策的工具，`response_schema` 是该决策的单独模式，没有 `oneOf`。
+每个中断还携带一个 `response_schema`：一种 JSON 模式，工具允许的每个决策有一个分支，与决策的 `type` 相匹配。 `execute_sql` 模式有 `approve` 和 `reject` 分支。 `write_file` 模式拥有全部四个。对于允许一个决策的工具，`response_schema` 是该决策的单独模式，没有 `oneOf`。
 
 每个选项卡都会显示一个 `write_file` 分支、与其匹配的答案以及模型收到的 [ToolMessage](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)。为了便于阅读，下面的分支省略了 `additionalProperties` 字段。
 
@@ -532,7 +540,7 @@ for (const interrupt of approvals) {
 > Wrote 14 characters to orders_archive.csv
 > ```> [选项卡] 编辑
 >
-> 使用新参数运行调用。 `edited_action.name` 必须保持 `write_file`，并且 `edited_action.args` 必须匹配 `write_file` 的参数模式。工具未声明的参数的处理方式与模型发送它们时相同：`z.object` 模式会删除它们，`z.looseObject` 模式会保留它们。
+> 使用新参数运行调用。 `edited_action.name` 必须保留 `write_file`，并且 `edited_action.args` 必须匹配 `write_file` 的参数模式。工具未声明的参数的处理方式与模型发送参数时的处理方式相同：`z.object` 模式会删除它们，`z.looseObject` 模式会保留它们。
 >
 > ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > {
@@ -631,7 +639,7 @@ result = await agent.invoke(new Command({ resume: decisions }), config);
 
 您还可以一次应答一个中断。您未应答的中断将保持待处理状态，一旦获得应答，其工具就会运行。> [!警告]
 >
-> 如果一起发送的多个答案之一无效，其他工具可以运行，而它们的中断仍显示为待处理。再次回答他们会运行这些工具两次。在将答案一起发送之前，请根据 `response_schema` 检查答案，或者一次发送一个。
+> 如果一起发送的多个答案之一无效，其他工具可以运行，而它们的中断仍显示为待处理。再次回答他们会运行这些工具两次。在将答案一起发送之前，请检查`response_schema`，或者一次发送一个。
 
 ### 更正无效答案
 
@@ -674,7 +682,7 @@ result = await agent.invoke(
 
 在每次调用模式下，审查在工具调用开始时在工具调用中间件链内进行：* 在工具重试或错误处理中间件之前列出`humanInTheLoopMiddleware`，例如[toolRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware)和[toolErrorMiddleware](https://reference.langchain.com/javascript/langchain/index/toolErrorMiddleware)，因此它将它们包装起来。否则，重试的调用会再次询问审阅者，并且会重试无效的答案或将其作为工具错误返回给模型。
 * 当代理恢复时，`humanInTheLoopMiddleware`之前列出的中间件将再次运行直到暂停，因此在调用其处理程序之前它不能有副作用。该工具仅在回答后运行。
-* 每次调用开始时都会运行 [⟦T136⟧ predicate](#conditional-interrupts)，因此它收到的 [ToolCallRequest](https://reference.langchain.com/javascript/langchain/index/ToolCallRequest) 包含该工具。
+* 每次调用开始时都会运行 [⟦T146⟧ predicate](#conditional-interrupts)，因此它收到的 [ToolCallRequest](https://reference.langchain.com/javascript/langchain/index/ToolCallRequest) 包含该工具。
 
 ## 响应中断
 
@@ -812,7 +820,7 @@ await agent.invoke(
 > );
 > ```
 >
-> `message` 作为反馈添加到对话中，以帮助代理了解操作被拒绝的原因以及应该做什么。当您省略 `message` 时，中间件将使用默认拒绝消息，告诉模型该工具未执行，并且除非用户要求，否则不要重试相同的工具调用。对于副作用工具，提供特定于域的消息，明确说明代理是否应该放弃操作、提出后续问题或尝试更安全的替代方案。> [选项卡] 回复
+> `message` 作为反馈添加到对话中，以帮助代理了解操作被拒绝的原因以及应该做什么。当您省略 `message` 时，中间件将使用默认拒绝消息，告诉模型该工具尚未执行，并且除非用户要求，否则不要重试相同的工具调用。对于副作用工具，提供特定于域的消息，明确说明代理是否应该放弃操作、提出后续问题或尝试更安全的替代方案。> [选项卡] 回复
 >
 > 使用 `respond` 作为“询问用户”风格的工具，该工具的真正实现是人类的回复。 `message`内容直接作为工具结果返回；该工具本身不被执行。
 >
@@ -840,7 +848,7 @@ await agent.invoke(
 
 ***
 
-### 多项决定
+### 多项决策
 
 当审查多个操作时，请按照中断中出现的顺序为每个操作提供决策：
 
@@ -928,7 +936,7 @@ for await (const message of stream.messages) {
 2. 中间件检查工具调用的响应。
 3. 如果任何调用需要人工输入，中间件将使用 `actionRequests` 和 `reviewConfigs` 构建 [HITLRequest](https://reference.langchain.com/javascript/langchain/index/HITLRequest) 并调用 [interrupt](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt)。
 4. 代理等待人类的决定。
-5. 根据`HITLResponse`决策，中间件执行批准或编辑的调用，合成被拒绝的调用的[ToolMessage](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)，直接返回人工回复作为`respond`决策的[ToolMessage](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)，并恢复执行。
+5. 根据`HITLResponse`决策，中间件执行批准或编辑的调用，针对拒绝的调用合成[ToolMessage](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)，直接将人工回复作为`respond`决策的[ToolMessage](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)返回，然后恢复执行。
 
 在 [per-call mode](#pause-once-per-tool-call) 中，`afterModel` 钩子不执行任何操作。相反，中间件会在每个门控调用运行时暂停它，每次调用一个[interrupt](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt)，并在调用决策到达后运行该工具。
 

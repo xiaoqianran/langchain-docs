@@ -662,6 +662,14 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Enterprise search with Amazon Kendra.
 
+> [card] [LoomKnowledgeRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
+>
+> Search documents in a self-hosted Loom deployment from LangChain.
+
+> [card] [LoomMemoryRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
+>
+> Search agent memories in a self-hosted Loom deployment from LangChain.
+
 > [card] [Perplexity Search](/oss/javascript/integrations/retrievers/perplexity_search)
 >
 > Retriever returning Documents from the Perplexity Search API.

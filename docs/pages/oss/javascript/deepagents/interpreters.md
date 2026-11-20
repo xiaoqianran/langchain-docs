@@ -162,12 +162,14 @@ totals;
 
 Code runs against [**QuickJS**](https://github.com/quickjs-ng/quickjs), a lightweight JavaScript runtime. By default, interpreter code has no access to the host filesystem, network, shell, package manager, or clock. It can compute, hold state, and write to `console.log`, `console.warn`, or `console.error`, and nothing more.
 
-Two explicit bridges extend that reach:
+Explicit bridges extend that reach:
 
 * **Tools**, through [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc). Provide an allowlist of tools as async functions under the `tools` namespace. These can be the agent's own tools or standalone tools you define and pass in.
 * **Subagents**, through [dynamic subagents](/oss/javascript/deepagents/dynamic-subagents). When the agent has subagents configured, the interpreter exposes a `task()` global for dispatching them from code.
 
-Programmatic tool calling is off until you [enable it](#enable-ptc). Subagent dispatch through `task()` is on by default whenever the agent has subagents, and you can turn it off. Nothing else crosses the QuickJS boundary.
+Programmatic tool calling is off until you [enable it](#enable-ptc). Subagent dispatch through `task()` is on by default whenever the agent has subagents, and you can turn it off.
+
+Nothing else crosses the QuickJS boundary.
 
 ## Programmatic tool calling (PTC)
 

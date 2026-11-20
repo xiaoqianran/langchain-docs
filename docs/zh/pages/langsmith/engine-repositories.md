@@ -14,7 +14,7 @@
 
 * **LangSmith 云**：使用 GitHub.com 上的 LangChain 管理的 GitHub 应用程序。从[Connect GitHub repositories](#connect-repositories)开始。
 * **自托管 LangSmith**：操作员首先为您的 GitHub 实例完成 [GitHub configuration for self-hosted](/langsmith/engine-self-hosted-github)。然后，工作区用户遵循以下相同的存储库连接步骤。
-* **BYOC**：组织管理员首先注册 GitHub 应用程序并将其保存在 LangSmith UI 中。参见[Configure the App on BYOC](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc)。然后，工作区用户遵循以下相同的存储库连接步骤。对于 GitLab，工作区管理员在工作区设置中连接 GitLab 帐户的访问令牌。 GitLab 仅在 LangSmith 云上可用。从[Connect GitLab](#connect-gitlab)开始。
+* **BYOC**：组织管理员首先注册 GitHub 应用程序并将其保存在 LangSmith UI 中。参见[Configure the App on BYOC](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc)。然后，工作区用户遵循以下相同的存储库连接步骤。对于 GitLab，工作区管理员在工作区设置中连接 GitLab 帐户的访问令牌。 GitLab 可在 LangSmith 云、自托管 LangSmith 和 BYOC 上使用，每个云上的连接步骤相同。从[Connect GitLab](#connect-gitlab)开始。
 
 ## GitHub
 
@@ -28,25 +28,25 @@
 
 > [!注意]
 >
-> 对于企业托管用户，连接组织拥有的存储库。 GitHub 不允许将此应用程序安装在托管用户的个人帐户上。请参阅 [Enterprise Managed Users](/langsmith/engine-self-hosted-github#enterprise-managed-users) 了解 GitHub.com 和 `ghe.com` 的要求。
+> 对于企业托管用户，连接组织拥有的存储库。 GitHub 不允许将此应用程序安装在托管用户的个人帐户上。请参阅 [Enterprise Managed Users](/langsmith/engine-self-hosted-github#enterprise-managed-users) 了解 GitHub.com 和 `ghe.com` 的要求。对于修复，存储库必须允许引擎的分支和 PR。在测试修复之前查看[Repository policies](#repository-policies)。
 
-对于修复，存储库必须允许引擎的分支和 PR。在测试修复之前查看[Repository policies](#repository-policies)。
+连接 GitHub 存储库：
 
-连接 GitHub 存储库：1. 打开跟踪项目或代理环境。在其**引擎**页面上，选择**配置引擎**。
+1. 打开跟踪项目或代理环境。在其**引擎**页面上，选择**配置引擎**。
 2. 在**代码存储库**下，选择**连接 GitHub**。如果您的工作区已经有连接，则会出现存储库选择器。
 3. 在 GitHub 中，授权为您的 LangSmith 部署配置的应用程序。将其安装在拥有您的代码的组织或帐户上，并选择它可以访问的存储库。如果该应用程序已安装，LangSmith可能会要求您选择现有安装。
 4. 完成所有 GitHub 批准提示并返回LangSmith。授权应用程序和安装应用程序是分开的步骤：授权识别您的 GitHub 帐户；安装授予应用程序对存储库的访问权限。
 5. 在存储库选择器中，按帐户或存储库名称搜索，选择存储库，然后单击 **连接存储库**。
 6. 对其他存储库重复此操作。每个存储库都可以有自己的分支和子文件夹。
 
-您还可以在首次设置引擎时在**连接代理的代码存储库**下连接存储库。
+您还可以在首次设置引擎时在**连接代理的代码存储库**下连接存储库。#### 选择分支和子文件夹
 
-#### 选择分支和子文件夹
+对于每个连接的存储库：
 
-对于每个连接的存储库：* **分支**：选择引擎应读取并用作修复基础的分支。将其留空以使用存储库的默认分支。
+* **分支**：选择引擎应读取并用作修复基础的分支。将其留空以使用存储库的默认分支。
 * **子文件夹**：可以选择将引擎集中在包含代理的存储库部分。此设置不限制 GitHub 应用程序的存储库访问。
 
-引擎在连接的存储库中创建修复分支，并针对选定的基本分支打开拉取请求。在 LangSmith v0.17 中，拉取请求作为草稿打开。通过通常的 GitHub 流程查看并合并这些拉取请求。引擎不会为您合并它们。
+引擎在连接的存储库中创建修复分支，并针对选定的基础分支打开拉取请求。在 LangSmith v0.17 中，拉取请求作为草稿打开。通过通常的 GitHub 流程查看并合并这些拉取请求。引擎不会为您合并它们。
 
 #### 连接另一个组织或帐户
 
@@ -78,24 +78,24 @@
 
 引擎不会获取 Git LFS 文件内容或初始化 Git 子模块。
 
-#### 存储库选择故障排除
+#### 存储库选择疑难解答
 
 |症状|检查什么 |
 | - | - |
 | GitHub 未配置，或 GitHub 打开前连接失败 |在自托管 LangSmith 上，请让您的运营商检查 [deployment configuration](/langsmith/engine-self-hosted-github#configure-langsmith)。 |
 |您的组织不是安装目标 |确认您的 GitHub 角色、组织审批政策和应用程序的可见性。私人应用程序只能安装在其所属的帐户上。 |
 |您的管理用户帐户不是安装目标 |使用组织拥有的存储库。个人托管用户存储库无法使用此集成。 |
-| App已安装，但LangSmith无连接 |在 LangSmith 中启动 **连接 GitHub**，包括在管理员批准安装之后或您直接从 GitHub 安装之后。在自托管 LangSmith 上，如果授权未完成，请让您的运营商[check setup](/langsmith/engine-self-hosted-github#troubleshoot-setup)。 ||缺少安装或存储库 |检查您授权的 GitHub 帐户、应用程序选择的存储库以及安装是否连接到此 LangSmith 工作区。出现提示时完成组织的 SSO 授权。 |
+| App已安装，但LangSmith无连接 |在LangSmith中启动**连接 GitHub**，包括在管理员批准安装之后或您直接从 GitHub 安装之后。在自托管 LangSmith 上，如果授权未完成，请让您的运营商[check setup](/langsmith/engine-self-hosted-github#troubleshoot-setup)。 ||缺少安装或存储库 |检查您授权的 GitHub 帐户、应用程序选择的存储库以及安装是否连接到此 LangSmith 工作区。出现提示时完成组织的 SSO 授权。 |
 |授权成功，但无法读取仓库 |检查应用程序的存储库访问权限。在自托管 LangSmith 上，还请您的运营商检查 [GitHub API and sandbox network access](/langsmith/engine-self-hosted-github#allow-network-access)。浏览器登录不会测试这些连接。 |
 |无法推送修复 |检查适用于新修复分支的规则，包括签名提交要求、分支限制和预接收挂钩。参见[Repository policies](#repository-policies)。 |
 
 ＃＃ GitLab
 
-引擎通过每个工作区一个访问令牌连接到 GitLab。该令牌属于 GitLab 帐户（通常是服务帐户），该帐户的组和项目成员身份决定引擎可以读取哪些项目、将修复分支推送到以及打开合并请求。与 GitHub 不同，GitLab 无需安装应用程序：您在 GitLab 中准备帐户，然后将其令牌保存在 LangSmith 中。
+引擎通过每个工作区一个访问令牌连接到 GitLab。该令牌属于 GitLab 帐户（通常是服务帐户），该帐户的组和项目成员资格决定了引擎可以读取哪些项目、将修复分支推送到以及打开合并请求。与 GitHub 不同，GitLab 无需安装应用程序：您在 GitLab 中准备帐户，然后将其令牌保存在 LangSmith 中。
 
 > [!注意]
 >
-> GitLab 仅在 [LangSmith Cloud](/langsmith/cloud) 上可用。 [self-hosted LangSmith](/langsmith/self-hosted) 或 [BYOC](/langsmith/byoc) 尚不可用。
+> GitLab 可在 [LangSmith Cloud](/langsmith/cloud)、[self-hosted LangSmith](/langsmith/self-hosted) 和 [BYOC](/langsmith/byoc) 上使用。在自托管 LangSmith 上，GitLab 需要 LangSmith Helm 图表版本 0.18.0-rc.45 或更高版本。
 
 ### 连接 GitLab连接GitLab需要[Workspace Admin](/langsmith/rbac#workspace-admin)角色，或者具有`workspaces:manage`权限的自定义角色。其他工作区成员可以查看连接并将其到达的项目添加到引擎。
 
@@ -103,11 +103,21 @@
 
 * **版本**：GitLab.com，或运行 GitLab 16.10 或更高版本的自我管理实例。 LangSmith 使用 GitLab 的 token 自旋转 API 更新 token，这是早期版本所没有的。
 * **URL**：端口 443 上的 HTTPS，无路径。不支持安装在相对 URL 根目录下的 GitLab，例如 `https://example.com/gitlab`。
-* **网络访问**：LangSmith 通过互联网到达 GitLab，并拒绝解析为私有 IP 地址的 GitLab URL。该实例还必须能够将 Webhooks 传递到 LangSmith。
+* **网络访问**：LangSmith 通过互联网到达 GitLab，并拒绝解析为私有 IP 地址的 GitLab URL。该实例还必须能够将 Webhook 传递到 LangSmith。在 BYOC 上，这些请求从您的数据平面发出，并且 Webhook 转到数据平面的 LangSmith URL。在自托管 LangSmith 上，请参阅 [Self-hosted network access](#self-hosted-network-access)。
+
+#### 自托管网络访问
+
+在自托管 LangSmith 上，操作员允许以下 HTTPS 连接：|来源 |目的地 |目的|
+| - | - | - |
+| LangSmith 服务和发动机工人 |亚搏体育appGitLab实例|令牌轮换、项目信息、分支和差异操作以及合并请求创建和状态。 |
+|沙盒主机 |亚搏体育appGitLab实例|克隆项目并推送修复分支。 |
+|亚搏体育appGitLab实例| LangSmith 主机名 |交付合并请求 Webhook。 |
+
+自我管理的 GitLab 实例拒绝对私有 IP 地址的 Webhook，除非 GitLab 管理员允许对本地网络的请求。如果您的 GitLab 主机名解析为私有 IP 地址，还请设置 [GHES on a private network](/langsmith/engine-self-hosted-github#ghes-on-a-private-network) 中列出的环境变量。它们适用于任何私有 Git 主机，而不仅仅是 GitHub。
 
 #### 准备一个服务帐户
 
-要准备引擎充当的帐户：1. 为LangSmith 创建一个[GitLab service account](https://docs.gitlab.com/user/profile/service_accounts/)。在 GitLab.com 上，顶级组所有者在组的 **设置** > **服务帐户** 下创建它。在 GitLab Self-Managed 上，管理员默认创建它。服务帐户可在 GitLab 18.11 或更高版本中的所有 GitLab 层上使用。在早期的免费套餐实例上，请改用专用用户帐户。
+要准备引擎充当的帐户：1. 为LangSmith创建一个[GitLab service account](https://docs.gitlab.com/user/profile/service_accounts/)。在 GitLab.com 上，顶级组所有者在组的 **设置** > **服务帐户** 下创建它。在 GitLab Self-Managed 上，管理员默认创建它。服务帐户可在 GitLab 18.11 或更高版本中的所有 GitLab 层上使用。在早期的免费套餐实例上，请改用专用用户帐户。
 2. 将帐户添加到引擎应在其中工作的组或项目，并具有 **Maintainer** 角色。 **开发人员**是最低角色，但LangSmith无法注册[merge request webhook](#complete-issues-on-merge)，因此合并修复并不能完成其问题。在选择角色之前，请先查看[Project policies](#project-policies)。
 3. 为具有 `api` 范围的帐户创建个人访问令牌。对于服务帐户，组所有者或管理员从 **服务帐户** 页面创建令牌。
 
@@ -127,15 +137,15 @@
 * **范围**：令牌的范围。
 * **过期**：当前令牌过期时。
 * **Webhook URL**：GitLab 将合并请求 Webhook 传递到的 URL。
-* **最后一次 webhook 交付**：当 LangSmith 最后一次从 GitLab 收到 webhook 时。
+* **上次 webhook 交付**：当 LangSmith 最后一次从 GitLab 收到 webhook 时。
 
 每个工作区都有一个与一个 GitLab 实例的 GitLab 连接。
 
 #### 管理访问令牌
 
-LangSmith 存储加密的令牌并管理其生命周期：* **续订**：LangSmith 在其生命周期中轮换令牌。每次轮换都需要一个一年期的代币。如果实例设置的最大生命周期较短，LangSmith 使用实例接受的 180、90、60、30、14、7 或 2 天中最长的一个。令牌限制为一天的实例无法连接。
-* **编辑连接**：要替换令牌或切换实例，请单击 **编辑连接**，输入新值，然后单击 **保存连接**。 LangSmith 撤销替换的令牌。 After a switch, the GitLab project paths Engine tracks refer to projects on the new instance, and fixes opened on the previous instance are hidden until you switch back.
-* **断开连接**：点击**断开连接**即可撤销令牌。引擎立即失去对 GitLab 项目的访问权限，包括正在进行的运行。 LangSmith 的 webhooks 保留在您的项目上，并在您重新连接时再次工作，但是在两者之间合并的合并请求不会完成其问题。
+LangSmith 存储加密的令牌并管理其生命周期：* **续订**：LangSmith 在其生命周期中轮换令牌。每次轮换都需要一个一年期的令牌。如果实例设置的最大生命周期较短，LangSmith 使用实例接受的 180、90、60、30、14、7 或 2 天中最长的一个。令牌限制为一天的实例无法连接。
+* **编辑连接**：要替换令牌或切换实例，请单击 **编辑连接**，输入新值，然后单击 **保存连接**。 LangSmith 撤销替换的令牌。切换后，GitLab 项目路径引擎跟踪引用新实例上的项目，并且在前一个实例上打开的修复程序将被隐藏，直到您切换回来。
+* **断开连接**：点击**断开连接**即可撤销令牌。引擎立即失去对 GitLab 项目的访问权限，包括正在进行的运行。 LangSmith 的 webhooks 保留在您的项目上，并在您重新连接时再次工作，但是在其间合并的合并请求不会完成其问题。
 
 删除工作区会删除其 GitLab 连接，而不撤销令牌。令牌会自行过期，或者您可以在 GitLab 中撤销它。
 
@@ -164,7 +174,7 @@ LangSmith 存储加密的令牌并管理其生命周期：* **续订**：LangSmi
 
 通过常用的 GitLab 流程查看并合并 Engine 的合并请求。引擎不会为您合并它们。
 
-#### 完成合并问题LangSmith 在每个 GitLab 项目引擎轨道上注册一个合并请求 Webhook。当合并请求与引擎修复合并时，Webhook 会完成修复的问题。当一个关闭而不合并时，引擎会记录关闭。注册 Webhook 需要项目的 **Maintainer** 角色。
+#### 完成合并问题LangSmith 在每个 GitLab 项目引擎跟踪上注册一个合并请求 Webhook。当合并请求与引擎修复合并时，Webhook 会完成修复的问题。当一个关闭而不合并时，引擎会记录关闭。注册 Webhook 需要项目的 **Maintainer** 角色。
 
 LangSmith 在连接 GitLab 后、添加项目时以及每次引擎打开合并请求时创建或修复 Webhook。
 

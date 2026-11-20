@@ -160,12 +160,14 @@ By default (`mode="thread"`), interpreter state persists across turns in the sam
 
 Code runs against [**QuickJS**](https://github.com/quickjs-ng/quickjs), a lightweight JavaScript runtime. By default, interpreter code has no access to the host filesystem, network, shell, package manager, or clock. It can compute, hold state, and write to `console.log`, `console.warn`, or `console.error`, and nothing more.
 
-Two explicit bridges extend that reach:
+Explicit bridges extend that reach:
 
 * **Tools**, through [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc). Provide an allowlist of tools as async functions under the `tools` namespace. These can be the agent's own tools or standalone tools you define and pass in.
 * **Subagents**, through [dynamic subagents](/oss/python/deepagents/dynamic-subagents). When the agent has subagents configured, the interpreter exposes a `task()` global for dispatching them from code.
 
-Programmatic tool calling is off until you [enable it](#enable-ptc). Subagent dispatch through `task()` is on by default whenever the agent has subagents, and you can turn it off. Nothing else crosses the QuickJS boundary.
+Programmatic tool calling is off until you [enable it](#enable-ptc). Subagent dispatch through `task()` is on by default whenever the agent has subagents, and you can turn it off.
+
+A third bridge, [files](#files-fs), gives interpreter code an opt-in `fs` global over the agent's backend. Nothing else crosses the QuickJS boundary.
 
 ## Programmatic tool calling (PTC)
 
@@ -272,6 +274,115 @@ results.join("\n\n");
 > [!WARNING]
 >
 > PTC calls currently execute through the interpreter bridge and do not go through the normal tool calling path. As a result, `interrupt_on` approval workflows are not enforced per PTC-invoked tool call.
+
+## Files (`fs`)
+
+The `fs` option gives interpreter code a Node-style `fs` global over the agent's [backend](/oss/python/deepagents/backends), the same files the built-in filesystem tools see. Code can read many files, process them, and write the results without a tool call per file.
+
+> [!NOTE]
+>
+> `fs` requires `langchain-quickjs>=0.4.0`.
+
+Set `fs=True` to use the backend that `create_deep_agent` gives its file tools:
+
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="google_genai:gemini-4-hydrogen",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="openai:gpt-6.1-sol",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+With another agent factory, such as `create_agent`, pass the backend itself: `CodeInterpreterMiddleware(fs=backend)`. One middleware instance with `fs=True` cannot serve agents with different backends, so create a separate middleware for each such agent.
+
+`fs` functions are async and return promises, as Node's `fs/promises` does. `fs.promises` exposes the same functions:
+
+* **`fs.readFile(path)`**: Return the whole file as a string.
+* **`fs.writeFile(path, text)`**: Create or replace a file, creating parent directories.
+* **`fs.readdir(dir)`**: List the entry names in one directory.
+* **`fs.access(path)`**: Resolve if the path exists, and reject with `ENOENT` otherwise.
+* **`fs.rm(path, { recursive, force })`**: Delete a path. A directory requires `recursive: true`, and `force: true` ignores a missing path.
+
+This example totals every report in a directory and writes the summary back to the backend:
+
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const names = await fs.readdir("/reports");
+const totals = {};
+for (const name of names) {
+  const { region, revenue } = JSON.parse(await fs.readFile(`/reports/${name}`));
+  totals[region] = (totals[region] ?? 0) + revenue;
+}
+await fs.writeFile("/summary/totals.json", JSON.stringify(totals));
+totals;
+```
+
+`fs` reads and writes UTF-8 text only. Failed calls throw Node errors with a `code` such as `ENOENT`, `EISDIR`, or `EACCES`. Sync functions such as `readFileSync`, along with `stat`, `glob`, `mkdir`, and `appendFile`, throw `ERR_METHOD_NOT_IMPLEMENTED`, and `require` is not available. A file too large for the interpreter's `memory_limit` ends the `eval` call with a `MarshalError`.
+
+> [!WARNING]
+>
+> `fs` calls the backend directly, not the filesystem tools, so [permissions](/oss/python/deepagents/permissions) and `interrupt_on` approvals do not apply to it. Interpreter code can read, write, and delete anything the backend can reach. On a `FilesystemBackend` with `virtual_mode=False`, or a local shell backend, that is the host filesystem. Leave `fs` unset for agents that rely on filesystem permissions or approvals, and enable it only for trusted use or with a backend scoped to files the agent may change.
 
 ## Dynamic subagents
 
@@ -521,7 +632,7 @@ Every tool you expose through PTC is an outside capability that interpreter code
 | Top-level `await` | Yes | Use promises in interpreter code |
 | `console.log`, `warn`, `error` capture | Yes | Disable with `capture_console=False` |
 | Agent tools | No | Add a PTC allowlist |
-| Filesystem access | No | Add the [built-in filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) via the PTC allowlist |
+| Filesystem access | No | Set [`fs`](#files-fs), or add the [built-in filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) via the PTC allowlist |
 | Network access | No | Expose a specific network tool through PTC |
 | Wall-clock or datetime access | No | Expose an explicit time tool if needed |
 | Shell commands, package installs, tests, OS-level execution | No | Use a [sandbox backend](/oss/python/deepagents/sandboxes) |
@@ -534,7 +645,7 @@ Every tool you expose through PTC is an outside capability that interpreter code
 >
 > The sandbox runs inside the host process on [wasmtime](https://wasmtime.dev/), so a wasmtime vulnerability is the remaining path out of the sandbox. Keep `wasmtime` updated. For hostile multi-tenant workloads, also run agents in isolated worker processes or containers. For details, see the `quickjs-rs` [Security guide](https://github.com/langchain-ai/quickjs-rs#security).
 >
-> The sandbox contains the engine, not the capabilities you give it. Interpreter code can call every tool bridged into it, so keep the PTC allowlist narrow.
+> The sandbox contains the engine, not the capabilities you give it. Interpreter code can call every tool bridged into it and, with `fs`, reach every file the backend can, so keep the PTC allowlist narrow and set `fs` only when code needs files.
 
 ## Configuration
 
@@ -550,6 +661,7 @@ Every tool you expose through PTC is an outside capability that interpreter code
 | `ptc` | `None` | Allowlist of tool names or `BaseTool` instances exposed as `tools.*` inside the interpreter. Omit to disable. See [Enable PTC](#enable-ptc). |
 | `max_ptc_calls` | `256` | Maximum `tools.*` calls allowed per `eval`. Set to `None` only in trusted environments. See [Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) and [Security](#security). |
 | `subagents` | `True` | Expose the built-in `task()` global when the agent has subagents. Set to `False` to require dispatch through the normal `task` tool. See [Dynamic subagents](#dynamic-subagents). |
+| `fs` | `None` | Give interpreter code a Node-style `fs` global over a backend. `True` uses the backend from `create_deep_agent`. See [Files (`fs`)](#files-fs). |
 | `mode` | `"thread"` | Control interpreter persistence: `"thread"` (across turns), `"turn"` (within one turn), or `"call"` (fresh REPL per `eval`). See [Persistence](#persistence). |
 | `max_snapshot_bytes` | `None` | Drop snapshots larger than this byte limit. Defaults to `memory_limit`. See [Persistence](#persistence). |
 

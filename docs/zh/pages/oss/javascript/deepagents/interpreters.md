@@ -44,7 +44,7 @@
 
 |需要|使用|
 | - | - |
-|一两个简单的外部通话 |正常工具调用 |
+|一两个简单的外部通话 |正常工具调用|
 |纯内存 JavaScript：循环、分支、重试或数据转换（无外部工具）|口译 |
 |许多从代码编排的外部工具调用（需要[PTC](#programmatic-tool-calling-ptc)）| [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) 口译员 |
 |许多独立的工作单元、多个视角或对大量输入的递归分析 | [dynamic subagents](/oss/javascript/deepagents/dynamic-subagents) 口译员 |
@@ -158,16 +158,20 @@ totals;
 
 代码运行于[**QuickJS**](https://github.com/quickjs-ng/quickjs)，一个轻量级的 JavaScript 运行时。默认情况下，解释器代码无法访问主机文件系统、网络、shell、包管理器或时钟。它可以计算、保存状态以及写入 `console.log`、`console.warn` 或 `console.error`，仅此而已。
 
-两个明确的桥梁扩展了这一范围：
+显式桥接扩展了该范围：
 
 * **工具**，通过 [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)。在 `tools` 命名空间下提供一个工具允许列表作为异步函数。这些可以是代理自己的工具或您定义并传入的独立工具。
-* **子代理**，通过 [dynamic subagents](/oss/javascript/deepagents/dynamic-subagents)。当代理配置了子代理时，解释器会公开一个 `task()` 全局变量，用于从代码中分派它们。编程工具调用将关闭，直到您[enable it](#enable-ptc)。当代理有子代理时，通过 `task()` 进行子代理调度默认处于打开状态，您可以将其关闭。没有其他东西跨越 QuickJS 的边界。
+* **子代理**，通过 [dynamic subagents](/oss/javascript/deepagents/dynamic-subagents)。当代理配置了子代理时，解释器会公开一个 `task()` 全局变量，用于从代码中分派它们。
+
+编程工具调用将关闭，直到您[enable it](#enable-ptc)。当代理有子代理时，通过 `task()` 进行子代理调度默认处于打开状态，您可以将其关闭。没有其他东西跨越 QuickJS 的边界。
 
 ## 编程工具调用 (PTC)
 
 编程工具调用 (PTC) 在全局 `tools` 命名空间下公开解释器内选定的代理工具。代理可以编写在循环、分支、重试或并行批次中调用工具的代码，而不是要求模型发出一个工具调用、等待结果，然后决定下一次调用。
 
-当中间结果仅作为下一步的输入时，这会有所帮助：解释器在任何内容返回到模型之前过滤或聚合它们，从而保持多步骤工作流的令牌效率。它与模型无关，由中间件而不是特定于提供商的工具调用 API 实现。中间件将每个列入白名单的工具公开为 `tools` 下的异步函数。代理使用 `await` 调用它，在代码中处理结果，模型只能看到最终的解释器输出，而不是每个中间值。工具名称将转换为驼峰式命名法，而输入对象仍遵循工具的架构，因此名为 `web_search` 的工具将变为 `tools.webSearch(...)`：
+当中间结果仅作为下一步的输入时，这会有所帮助：解释器在任何内容返回到模型之前过滤或聚合它们，从而保持多步骤工作流的令牌效率。它与模型无关，由中间件而不是特定于提供商的工具调用 API 实现。
+
+中间件将每个列入白名单的工具公开为 `tools` 下的异步函数。代理使用 `await` 调用它，在代码中处理结果，模型只能看到最终的解释器输出，而不是每个中间值。工具名称将转换为驼峰式命名法，而输入对象仍遵循工具的架构，因此名为 `web_search` 的工具将变为 `tools.webSearch(...)`：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const result: string = await tools.webSearch({
@@ -247,9 +251,7 @@ const agent = createDeepAgent({
   model: "ollama:north-mini-code-1.0",
   middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
 });
-```
-
-启用 PTC 后，代理可以从解释器代码调用列入许可名单的工具。此示例并行搜索多个主题并在返回模型之前合并结果：
+```启用 PTC 后，代理可以从解释器代码调用列入许可名单的工具。此示例并行搜索多个主题并在返回模型之前合并结果：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const topics = ["retrieval", "memory", "evaluation"];
@@ -269,11 +271,11 @@ results.join("\n\n");
 
 ## 动态子代理
 
-以下概述涵盖了何时使用动态子代理和最小 `task()` 模式。有关配置、编排示例、工作流触发器和安全注意事项，请参阅[Dynamic subagents](/oss/javascript/deepagents/dynamic-subagents)。动态子代理允许解释器使用内置的 `task()` 全局从代码中分派配置的 [subagents](/oss/javascript/deepagents/subagents)。跨越许多独立单元的任务（例如检查目录中的每个文件或对一批票进行分类）会成为一个循环，将工作展开并综合结果。
+以下概述涵盖了何时使用动态子代理和最小 `task()` 模式。有关配置、编排示例、工作流触发器和安全注意事项，请参阅[Dynamic subagents](/oss/javascript/deepagents/dynamic-subagents)。
 
-使用动态子代理：
+动态子代理允许解释器使用内置的 `task()` 全局从代码中分派配置的 [subagents](/oss/javascript/deepagents/subagents)。跨越许多独立单元的任务（例如检查目录中的每个文件或对一批票进行分类）会成为一个循环，将工作展开并综合结果。
 
-* **扇出和综合**：在多个项目上并行运行相同类型的工作，然后合并结果。
+使用动态子代理：* **扇出和综合**：在多个项目上并行运行相同类型的工作，然后合并结果。
 * **验证**：将调查结果发送给独立验证者子代理并仅保留已确认的结果。
 * **递归工作流程**：在解释器变量中保留工作集，选择切片，调用子代理并优化结果。
 

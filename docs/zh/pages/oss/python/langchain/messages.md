@@ -12,7 +12,7 @@
 * [**Content**](#message-content) - 表示消息的实际内容（如文本、图像、音频、文档等）
 * [**Metadata**](#message-metadata) - 可选字段，例如响应信息、消息 ID 和令牌使用情况
 
-LangChain 提供了适用于所有模型提供程序的标准消息类型，确保无论调用哪个模型，行为都保持一致。
+LangChain 提供了适用于所有模型提供者的标准消息类型，确保无论调用哪个模型，行为都保持一致。
 
 ## 基本用法
 
@@ -125,6 +125,8 @@ response = model.invoke(messages)
 
 [⟦T37⟧](https://reference.langchain.com/python/langchain-core/messages/human/HumanMessage) 代表用户输入和交互。它们可以包含文本、图像、音频、文件和任何其他数量的多模式[content](#message-content)。
 
+当代理添加用户未键入的人工消息（例如对话摘要）时，它可以使用 [notification metadata](#notifications) 标记该消息。
+
 ####文字内容
 
 ```python Message object theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -152,62 +154,18 @@ human_msg = HumanMessage(
 >
 > `name` 字段行为因提供商而异 — 有些将其用于用户识别，有些则忽略它。要检查，请参阅模型提供商的[reference](https://reference.langchain.com/python/integrations/)。
 
-#### 通知
-
-代理工具有时会添加用户未键入的人工消息，例如后台任务更新或对话摘要。通知元数据标记这些消息，以便您的前端可以以不同于用户输入的方式显示它们。
-
-> [!注意]
->
-> 通知元数据需要`langchain-core>=1.7.2`。
-
-`add_notification_metadata` 返回 `HumanMessage` 的副本，其中 `source` 命名添加它的功能，以及带有该功能字段的可选 `data`：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.messages import HumanMessage
-from langchain_core.messages import add_notification_metadata
-
-notification = add_notification_metadata(
-    HumanMessage("Background task t_42 finished."),
-    source="background_job",
-    data={"task_id": "t_42", "status": "success"},
-)
-```
-
-`get_notification_metadata` 返回通知的 `source` 和 `data`，或任何其他消息的 `None`：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_core.messages import get_notification_metadata
-
-for message in messages:
-    metadata = get_notification_metadata(message)
-    if metadata is None:
-        print(message.text)  # A regular message
-    else:
-        print(f"[{metadata['source']}]", metadata.get("data"))
-```元数据不会更改消息内容：模型读取写入的内容。 LangChain 的聊天模型集成不会将元数据发送到模型。任何可以向线程发送输入的人都可以设置它，因此不要用它来决定是否信任消息。
-
-Deep Agents通知来源包括：
-
-|来源 |添加时间 |详情 |
-| - | - | - |
-| `async_subagent` |异步子代理任务完成、失败或等待输入。 `data`是任务事件。 | [Async subagents](/oss/python/deepagents/async-subagents#understand-the-lifecycle) |
-| `summarization` |代理总结对话历史记录。 | [Summarization](/oss/python/deepagents/context-engineering#summarization) |
-| `pinned_skill` |代理在对话中添加了一项固定技能。 | [Pin skills](/oss/python/deepagents/skills#pin-skills) |
-| `rubric_grader` |评分细则要求代理修改其输出。 | [Grading rubrics](/oss/python/deepagents/rubric#rubric-verdicts) |
-| `read_file_media` | `read_file` 附加从视频文件采样的帧。 `data`有`path`和`tool_call_id`。 | [Built-in ⟦T58⟧ tool](/oss/python/deepagents/multimodal#built-in-read_file-tool) |
-
 ***
 
 ###人工智能消息
 
-[⟦T59⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 表示模型调用的输出。它们可以包括多模式数据、工具调用以及您稍后可以访问的特定于提供商的元数据。
+[⟦T39⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 表示模型调用的输出。它们可以包括多模式数据、工具调用以及您稍后可以访问的特定于提供商的元数据。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 response = model.invoke("Explain AI")
 print(type(response))  # <class 'langchain.messages.AIMessage'>
 ```
 
-模型在调用时返回[⟦T60⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage)对象，其中包含响应中的所有关联元数据。提供者以不同的方式权衡/上下文化消息类型，这意味着手动创建新的 [⟦T61⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 对象并将其插入消息历史记录中有时会很有帮助，就像它来自模型一样。
+模型在调用时返回[⟦T40⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage)对象，其中包含响应中的所有关联元数据。提供者以不同的方式权衡/上下文化消息类型，这意味着手动创建新的 [⟦T41⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 对象并将其插入消息历史记录中有时会很有帮助，就像它来自模型一样。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import AIMessage, SystemMessage, HumanMessage
@@ -228,7 +186,7 @@ response = model.invoke(messages)
 
 > [手风琴] 属性
 >
-> **文字** `string`
+> **文本** `string`
 >
 > 消息的文本内容。
 >
@@ -250,7 +208,7 @@ response = model.invoke(messages)
 >
 > 消息的唯一标识符（由 LangChain 自动生成或在提供商响应中返回）
 >
-> **使用_元数据** `dict | None`
+> **使用元数据** `dict | None`
 >
 > 消息的使用元数据，其中可以包含令牌计数（如果可用）。
 >
@@ -260,7 +218,7 @@ response = model.invoke(messages)
 
 #### 工具调用
 
-当模型制作[tool calls](/oss/python/langchain/models#tool-calling)时，它们包含在[⟦T69⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage)中：
+当模型制作[tool calls](/oss/python/langchain/models#tool-calling)时，它们包含在[⟦T49⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage)中：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.chat_models import init_chat_model
@@ -284,7 +242,7 @@ for tool_call in response.tool_calls:
 
 #### 代币使用
 
-[⟦T70⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 可以在其 [⟦T71⟧](https://reference.langchain.com/python/langchain-core/messages/ai/UsageMetadata) 字段中保存令牌计数和其他使用元数据：
+[⟦T50⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 可以在其 [⟦T51⟧](https://reference.langchain.com/python/langchain-core/messages/ai/UsageMetadata) 字段中保存令牌计数和其他使用元数据：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.chat_models import init_chat_model
@@ -303,9 +261,9 @@ response.usage_metadata
  'output_token_details': {'audio': 0, 'reasoning': 256}}
 ```
 
-详情请参阅[⟦T72⟧](https://reference.langchain.com/python/langchain-core/messages/ai/UsageMetadata)。
+详情请参阅[⟦T52⟧](https://reference.langchain.com/python/langchain-core/messages/ai/UsageMetadata)。
 
-#### 流和块在流式传输期间，您将收到 [⟦T73⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessageChunk) 对象，这些对象可以组合成完整的消息对象：
+#### 流和块在流式传输期间，您将收到 [⟦T53⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessageChunk) 对象，这些对象可以组合成完整的消息对象：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 chunks = []
@@ -329,7 +287,9 @@ for chunk in model.stream("Hi"):
 
 对于支持[tool calling](/oss/python/langchain/models#tool-calling)的模型，AI消息可以包含工具调用。工具消息用于将单个工具执行的结果传递回模型。
 
-[Tools](/oss/python/langchain/tools)可以直接生成[⟦T74⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)对象。下面，我们展示一个简单的例子。阅读[tools guide](/oss/python/langchain/tools)了解更多信息。
+[Tools](/oss/python/langchain/tools)可以直接生成[⟦T54⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)对象。下面，我们展示一个简单的例子。阅读[tools guide](/oss/python/langchain/tools)了解更多信息。
+
+当中间件创建工具消息而不是运行该工具时，它可以用[notification metadata](#notifications)标记该消息。例如，[human-in-the-loop middleware](/oss/python/langchain/human-in-the-loop#interrupt-decision-types) 标记`reject` 或`respond` 决策的工具消息。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import AIMessage
@@ -370,7 +330,7 @@ response = model.invoke(messages)  # Model processes the result
 >
 > **tool_call_id** `string` *必填*
 >
-> 此消息正在响应的工具调用的 ID。必须与 [⟦T77⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 中工具调用的 ID 匹配。
+> 此消息正在响应的工具调用的 ID。必须与 [⟦T59⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 中工具调用的 ID 匹配。
 >
 > **姓名** `string` *必填*
 >
@@ -419,7 +379,7 @@ LangChain 聊天模型接受 `content` 属性中的消息内容。
 2. 提供者原生格式的内容块列表
 3. [LangChain's standard content blocks](#standard-content-blocks)列表
 
-请参阅下面的使用 [multimodal](#multimodal) 输入的示例：
+请参阅下面使用 [multimodal](#multimodal) 输入的示例：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import HumanMessage
@@ -447,9 +407,9 @@ human_message = HumanMessage(content_blocks=[
 
 ### 标准内容块
 
-LangChain 为跨提供商的消息内容提供标准表示。
+LangChain 提供跨提供商工作的消息内容的标准表示形式。
 
-消息对象实现一个 `content_blocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从[⟦T89⟧](/oss/python/integrations/chat/anthropic)或[⟦T90⟧](/oss/python/integrations/chat/openai)生成的消息将包含相应提供者格式的`thinking`或`reasoning`块，但可以延迟解析为一致的[⟦T93⟧](#content-block-reference)表示：
+消息对象实现一个 `content_blocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从[⟦T71⟧](/oss/python/integrations/chat/anthropic)或[⟦T72⟧](/oss/python/integrations/chat/openai)生成的消息将包含相应提供者格式的`thinking`或`reasoning`块，但可以延迟解析为一致的[⟦T75⟧](#content-block-reference)表示：
 
 > [标签] Anthropic
 >
@@ -531,7 +491,7 @@ LangChain 为跨提供商的消息内容提供标准表示。
 >
 > 额外的键可以包含在内容块的顶层或嵌套在 `"extras": {"key": value}` 中。
 >
->[OpenAI](/oss/python/integrations/chat/openai)，
+> [OpenAI](/oss/python/integrations/chat/openai),
 > 例如，需要 PDF 的文件名。参见[provider page](/oss/python/integrations/providers/overview)
 > 针对您选择的型号了解具体信息。
 
@@ -653,7 +613,7 @@ message = {
 >
 > 并非所有型号都支持所有文件类型。检查模型提供商的[reference](https://reference.langchain.com/python/integrations/)以了解支持的格式和大小限制。
 
-### 内容块引用内容块（在创建消息或访问`content_blocks`属性时）表示为类型化字典列表。列表中的每个项目必须遵守以下块类型之一：
+### 内容块引用内容块（在创建消息或访问 `content_blocks` 属性时）表示为类型化字典列表。列表中的每个项目必须遵守以下块类型之一：
 
 > [手风琴] 核心
 >
@@ -716,8 +676,8 @@ message = {
 >> [手风琴] RefusalContentBlock
 >>
 >> **目的：** 模型提供者报告的明确拒绝，例如 OpenAI `refusal` 内容部分、Anthropic `stop_reason="refusal"` 或 Gemini 安全块。 LangChain 不会检测模型以普通文本形式写入的拒绝。需要`langchain-core>=1.7.5`。
->>>> **类型** `string` *必填*
 >>
+>> **类型** `string` *必填*>>
 >> 永远`"refusal"`
 >>
 >> **拒绝** `string` *必填*
@@ -781,11 +741,11 @@ message = {
 >> Base64 编码的音频数据。
 >>
 >> **id** `string`
->>>> 该内容块的唯一标识符（由提供者或LangChain生成）。
+>>
+>> 该内容块的唯一标识符（由提供者或LangChain生成）。
 >>
 >> **mime_type** `string`
->>
->> 音频[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#audio)（例如，`audio/mpeg`、`audio/wav`）。对于 Base64 数据是必需的。
+>>>> 音频[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#audio)（例如，`audio/mpeg`、`audio/wav`）。对于 Base64 数据是必需的。
 >
 >> [手风琴] VideoContentBlock
 >>
@@ -836,15 +796,15 @@ message = {
 >> 文件[MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml)（例如，`application/pdf`）。对于 Base64 数据是必需的。
 >
 >> [手风琴] PlainTextContentBlock
->>>> **用途：** 文档文本（`.txt`、`.md`）
+>>
+>> **用途：** 文档文本（`.txt`、`.md`）
 >>
 >> **类型** `string` *必填*
 >>
 >> 永远`"text-plain"`
 >>
->> **文本** `string`
->>
->> 正文内容
+>> **文字** `string`
+>>>> 正文内容
 >>
 >> **mime_type** `string`
 >>
@@ -858,7 +818,7 @@ message = {
 >>
 >> **类型** `string` *必填*
 >>
->> 永远`"tool_call"`
+>> 始终`"tool_call"`
 >>
 >> **姓名** `string` *必填*
 >>
@@ -912,15 +872,15 @@ message = {
 >> **目的：** 格式错误的调用，旨在捕获 JSON 解析错误。
 >>
 >> **类型** `string` *必填*
->>>> 永远`"invalid_tool_call"`
+>>
+>> 永远`"invalid_tool_call"`
 >>
 >> **姓名** `string`
 >>
 >> 调用失败的工具名称
 >>
 >> **参数** `object`
->>
->> 传递给工具的参数
+>>>> 传递给工具的参数
 >>
 >> **错误** `string`
 >>
@@ -950,7 +910,7 @@ message = {
 >
 >> [手风琴] ServerToolCallChunk
 >>
->> **用途：**流式传输服务端工具调用片段
+>> **用途：**流式传输服务器端工具调用片段
 >>
 >> **类型** `string` *必填*
 >>
@@ -975,13 +935,13 @@ message = {
 >> [手风琴] ServerToolResult
 >>
 >> **用途：** 搜索结果
->>>> **类型** `string` *必填*
+>>
+>> **类型** `string` *必填*
 >>
 >> 永远`"server_tool_result"`
 >>
 >> **tool_call_id** `string` *必填*
->>
->> 相应服务器工具调用的标识符。
+>>>> 相应服务器工具调用的标识符。
 >>
 >> **id** `string`
 >>
@@ -989,7 +949,7 @@ message = {
 >>
 >> **状态** `string` *必填*
 >>
->> 服务器端工具的执行状态。 `"success"` 或`"error"`。
+>> 服务器端工具的执行状态。 `"success"` 或 `"error"`。
 >>
 >> **输出**
 >>
@@ -1011,7 +971,7 @@ message = {
 >>
 >> **用途：** 用于实验性或提供商独有的功能
 >>
->> 当`langchain-core`添加标准块类型时，与其匹配的有效负载会从`non_standard`移出并移入新类型。在`type`上分支，而不是依赖于`non_standard`的有效负载，并与`langchain-core`一起升级提供程序包。
+>> 当`langchain-core`添加标准块类型时，与其匹配的有效负载会从`non_standard`移出并移入新类型。在`type`上分支，而不是依赖于`non_standard`上的有效负载，并与`langchain-core`一起升级提供程序包。
 >
 > 其他特定于提供商的内容类型可以在每个模型提供商的 [reference documentation](/oss/python/integrations/providers/overview) 中找到。
 
@@ -1021,9 +981,58 @@ message = {
 >
 > 内容块作为 LangChain v1 中消息的新属性引入，以标准化跨提供商的内容格式，同时保持与现有代码的向后兼容性。
 >
-> 内容块并不是 [⟦T199⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 属性的替代品，而是一个可用于以标准化格式访问消息内容的新属性。
+> 内容块不是 [⟦T181⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 属性的替代品，而是一个可用于以标准化格式访问消息内容的新属性。
 
-## 序列化
+## 通知
+
+代理工具有时会添加用户未键入的人工消息，例如后台任务更新或对话摘要。通知元数据标记这些消息，以便您的前端可以以不同于用户输入的方式显示它们。中间件还可以标记它创建的工具消息，而不是运行该工具。
+
+> [!注意]
+>
+> 通知元数据需要`langchain-core>=1.7.2`。
+
+`add_notification_metadata` 返回 `HumanMessage` 或 `ToolMessage` 的副本，其中 `source` 命名添加它的功能，以及带有该功能字段的可选 `data`：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.messages import HumanMessage
+from langchain_core.messages import add_notification_metadata
+
+notification = add_notification_metadata(
+    HumanMessage("Background task t_42 finished."),
+    source="background_job",
+    data={"task_id": "t_42", "status": "success"},
+)
+```
+
+`get_notification_metadata` 返回通知的 `source` 和 `data`，或任何其他消息的 `None`：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_core.messages import get_notification_metadata
+
+for message in messages:
+    metadata = get_notification_metadata(message)
+    if metadata is None:
+        print(message.text)  # A regular message
+    else:
+        print(f"[{metadata['source']}]", metadata.get("data"))
+```元数据不会更改消息内容：模型读取写入的内容。 LangChain 的聊天模型集成不会将元数据发送到模型。任何可以向线程发送输入的人都可以设置它，因此不要用它来决定是否信任消息。通知可以是工具消息，因此在将通知显示为用户输入之前请检查消息类型。
+
+LangChain通知来源包括：
+
+|来源 |添加时间 |详情 |
+| - | - | - |
+| `hitl_interrupt_decision` |人机循环中间件为 `reject` 或 `respond` 决策创建工具消息。 `data` 有 `decision`。 | [Interrupt decision types](/oss/python/langchain/human-in-the-loop#interrupt-decision-types) |
+| `summarization` |摘要中间件汇总对话历史记录。 | [Summarization](/oss/python/langchain/middleware/built-in#summarization) |
+
+Deep Agents通知来源包括：
+
+|来源 |添加时间 |详情 |
+| - | - | - |
+| `async_subagent` |异步子代理任务完成、失败或等待输入。 `data`是任务事件。 | [Async subagents](/oss/python/deepagents/async-subagents#understand-the-lifecycle) |
+| `summarization` |代理总结对话历史记录。 | [Summarization](/oss/python/deepagents/context-engineering#summarization) |
+| `pinned_skill` |代理在对话中添加了一项固定技能。 | [Pin skills](/oss/python/deepagents/skills#pin-skills) |
+| `rubric_grader` |评分细则要求代理修改其输出。 | [Grading rubrics](/oss/python/deepagents/rubric#rubric-verdicts) |
+| `read_file_media` | `read_file` 附加从视频文件采样的帧。 `data`有`path`和`tool_call_id`。 | [Built-in ⟦T208⟧ tool](/oss/python/deepagents/multimodal#built-in-read_file-tool) |## 序列化
 
 您可以将消息序列化为普通对象进行存储，然后反序列化回消息实例。这对于保留对话历史记录和恢复会话非常有用。
 
@@ -1046,7 +1055,7 @@ restored = load(serialized)
 
 ## 与聊天模型一起使用
 
-[Chat models](/oss/python/langchain/models) 接受一系列消息对象作为输入并返回 [⟦T202⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 作为输出。交互通常是无状态的，因此简单的对话循环涉及调用具有不断增长的消息列表的模型。
+[Chat models](/oss/python/langchain/models) 接受一系列消息对象作为输入，并返回 [⟦T211⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 作为输出。交互通常是无状态的，因此简单的对话循环涉及调用具有不断增长的消息列表的模型。
 
 请参阅以下指南以了解更多信息：
 
@@ -1055,4 +1064,6 @@ restored = load(serialized)
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/messages.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/messages.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

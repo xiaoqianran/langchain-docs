@@ -698,9 +698,9 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Tools for live web search and reading web pages as Markdown, paid per call in USDC via x402 with no account or API key. Small free trial.
 
-> [card] [CyborgVectorStore](https://docs.cyborg.co/versions/latest/integrations/langchain/introduction)
+> [card] [CyborgDB](https://docs.cyborg.co/versions/latest/integrations/langchain/introduction)
 >
-> Vector store for CyborgDB, an encrypted vector database with metadata filtering and hybrid (BM25) search.
+> CyborgDB is a self-hosted encrypted vector store for confidential RAG with similarity search and metadata filtering on encrypted vectors.
 
 > [card] [DaoXE](https://daoxe.com)
 >
@@ -721,6 +721,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Databricks](/oss/python/integrations/providers/databricks)
 >
 > Unified analytics platform for big data and ML.
+
+> [card] [DatacircleToolkit](https://github.com/waynehamadi/langchain-datacircle)
+>
+> Four tools that read Datacircle's open, keyless GTM API benchmarks: list APIs, best plans, search plans, provider ranks. [https://datacircle.dev](https://datacircle.dev)
 
 > [card] [Datadog](/oss/python/integrations/providers/datadog)
 >
@@ -1218,6 +1222,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Bi-temporal ledger memory with LangGraph checkpointer and store integrations.
 
+> [card] [InstaboxSandbox](https://github.com/InsForge/instabox-integrations/tree/main/langchain#readme)
+>
+> Deep Agents sandbox backend that runs commands and files in an instabox cloud Linux VM that pauses when idle and resumes on use.
+
 > [card] [Instanode](https://instanode.dev/docs)
 >
 > Zero-setup Postgres and webhook provisioning for AI agents.
@@ -1405,6 +1413,14 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [LongProbe](https://endevsols.github.io/LongProbe)
 >
 > Sub-second RAG retrieval regression testing and stability monitoring.
+
+> [card] [LoomKnowledgeRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
+>
+> Search documents in a self-hosted Loom deployment from LangChain.
+
+> [card] [LoomMemoryRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
+>
+> Search agent memories in a self-hosted Loom deployment from LangChain.
 
 > [card] [LoomStore](https://github.com/ClickHouse/loom/blob/main/docs/features/integrations/frameworks.md#langgraph)
 >
@@ -2578,6 +2594,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > TranscriptFetch loads YouTube, TikTok, and Instagram transcripts from videos, channels, playlists, and searches with timestamped chunks for RAG.
 
+> [card] [TrezaToolkit](https://www.trezalabs.com/integrations/langchain)
+>
+> Tools that generate AI images and video and run saved Treza pipelines, with a per-render price cap.
+
 > [card] [Trimwise](https://trimwise.readthedocs.io/en/latest/integrations/langchain/)
 >
 > Post-retrieval Runnable that trims documents to a shared evidence budget and preserves source spans.
@@ -2621,6 +2641,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [TypesenseVectorStore](https://github.com/typesense/langchain-typesense#readme)
 >
 > Vector store integration for Typesense with vector and hybrid search, metadata filtering, scoring, MMR, and sync & async APIs.
+
+> [card] [UncoilCallbackHandler](https://www.uncoil.dev/integrations/langchain)
+>
+> Agent tracing callback handler for LangChain and LangGraph: chains, model calls, tool calls, tokens and cost in one trace.
 
 > [card] [UnDatasIO](https://undatas.io)
 >

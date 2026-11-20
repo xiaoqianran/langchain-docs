@@ -5,4 +5,4 @@
 # 获取组织默认使用限制
 
 /langsmith/langsmith-platform-openapi.json 获取 /api/v1/usage-limits/org/default
-获取组织的工作区默认每月跟踪限制。
+获取组织的默认每月跟踪限制和工作区警报阈值。

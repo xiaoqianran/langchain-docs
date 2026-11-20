@@ -55,7 +55,7 @@ graph LR
 >
 > **如果您正在寻找 LangSmith 沙箱：** LangSmith 提供第一方托管沙箱，您可以直接从 LangSmith UI 或 SDK 使用，无需第三方帐户。有关托管沙箱资源、快照、服务 URL 和身份验证代理，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
 
-## 基本用法这些示例假设您已经使用提供商的 SDK 创建了沙箱/开发箱并设置了凭据。有关注册、身份验证和特定于提供商的生命周期详细信息，请参阅 [Available providers](#available-providers)。
+## 基本用法这些示例假设您已经使用提供商的 SDK 创建了沙箱/开发箱并设置了凭据。有关注册、身份验证和特定于提供商的生命周期详细信息，请参阅[Available providers](#available-providers)。
 
 > [标签] LangSmith
 >
@@ -309,9 +309,13 @@ graph LR
 >     sandbox.stop()
 > ```
 
+> [选项卡] 其他
+>
+> 对于其他沙箱提供商，请参阅[sandbox integrations](/oss/python/integrations/sandboxes)。
+
 > [!提示]
 >
-> [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-sandboxes) 跟踪显示哪些 shell 命令在沙箱内运行以及代理如何使用文件系统工具。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。对于托管沙箱托管，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
+> [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-sandboxes) 跟踪显示哪些 shell 命令在沙箱内运行以及代理如何使用文件系统工具。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。对于托管沙盒托管，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
 >
 > 我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 
@@ -319,9 +323,9 @@ graph LR
 
 有关特定于提供商的设置、身份验证和生命周期详细信息，请参阅 [sandbox integrations](/oss/python/integrations/sandboxes)。
 
-## 生命周期和范围
+## 生命周期和范围大多数应用程序为每个[thread](/langsmith/use-threads)（线程范围）选择一个沙箱，或者为同一[assistant](/langsmith/assistants)（助理范围）上的每个线程选择一个共享沙箱。
 
-大多数应用程序为每个[thread](/langsmith/use-threads)（线程范围）选择一个沙箱，或者为同一[assistant](/langsmith/assistants)（助理范围）上的每个线程选择一个共享沙箱。沙箱会消耗资源并耗费金钱，直到它们被关闭为止。确保在不再使用沙箱后将其关闭。
+沙箱会消耗资源并耗费金钱，直到它们被关闭为止。确保在不再使用沙箱后将其关闭。
 
 有关完整生命周期表、异步 [graph factory](/langsmith/graph-rebuild) 注释、TTL 行为、代理服务器接线和客户端示例，请参阅投入生产中的 [Sandbox lifecycle](/oss/python/deepagents/going-to-production#lifecycle)。
 
@@ -1248,6 +1252,10 @@ graph TB
 >     sandbox.stop()
 > ```
 
+> [选项卡] 其他
+>
+> 对于其他沙箱提供商，请参阅[sandbox integrations](/oss/python/integrations/sandboxes)。
+
 例如：
 
 ```
@@ -1507,6 +1515,10 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 > )
 > ```
 
+> [选项卡] 其他
+>
+> 对于其他沙箱提供商，请参阅[sandbox integrations](/oss/python/integrations/sandboxes)。
+
 ### 检索工件
 
 代理完成后，使用 `download_files()` 从沙箱中检索文件：
@@ -1610,9 +1622,7 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 >         print(f"{result.path}: {result.content.decode()}")
 >     else:
 >         print(f"Failed to download {result.path}: {result.error}")
-> ```
-
-> [选项卡] E2B
+> ```> [选项卡] E2B
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langchain-e2b
@@ -1657,7 +1667,9 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 >         print(f"{result.path}: {result.content.decode()}")
 >     else:
 >         print(f"Failed to download {result.path}: {result.error}")
-> ```> [选项卡] 运行循环
+> ```
+
+> [选项卡] 运行循环
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install langchain-runloop
@@ -1712,6 +1724,10 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 >         print(f"Failed to download {result.path}: {result.error}")
 > ```
 
+> [选项卡] 其他
+>
+> 对于其他沙箱提供商，请参阅[sandbox integrations](/oss/python/integrations/sandboxes)。
+
 > [!注意]
 >
 > 在沙箱内，代理使用文件系统工具（`read_file`、`write_file`）。 `upload_files` 和 `download_files` 方法供您的应用程序代码跨主机和沙箱之间的边界移动文件。
@@ -1724,13 +1740,11 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 >
 > **永远不要将机密放入沙箱中。** API 密钥、令牌、数据库凭证和其他注入沙箱的机密（通过环境变量、挂载文件或 `secrets` 选项）可以被上下文注入代理读取和窃取。这甚至适用于短期或有范围的凭证——如果代理可以访问它们，那么攻击者也可以。
 
-### 安全处理秘密
+### 安全处理秘密如果您的代理需要调用经过身份验证的 API 或访问受保护的资源，您有两种选择：
 
-如果您的代理需要调用经过身份验证的 API 或访问受保护的资源，您有两种选择：1. **在沙箱外部的工具中保守秘密。** 定义在主机环境（而不是沙箱内部）中运行的工具并在那里处理身份验证。代理通过名称调用这些工具，但从未看到凭据。这是推荐的方法。
+1. **在沙箱外部的工具中保守秘密。** 定义在主机环境（而不是沙箱内部）中运行的工具并在那里处理身份验证。代理通过名称调用这些工具，但从未看到凭据。这是推荐的方法。
 
-2. **使用注入凭据的网络代理。** 某些沙箱提供程序支持代理拦截来自沙箱的传出 HTTP 请求并在转发之前附加凭据（例如，`Authorization` 标头）。代理永远不会看到秘密——它只是向 URL 发出简单的请求。这种方法尚未在提供商之间广泛使用。
-
-> [!警告]
+2. **使用注入凭据的网络代理。** 某些沙箱提供程序支持代理拦截来自沙箱的传出 HTTP 请求并在转发之前附加凭据（例如，`Authorization` 标头）。代理永远不会看到秘密——它只是向 URL 发出简单的请求。这种方法尚未在提供商之间广泛使用。> [!警告]
 >
 > 如果必须将机密注入沙箱（不推荐），请采取以下预防措施：
 >
@@ -1739,10 +1753,12 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 > * 使用尽可能窄的凭证范围和尽可能短的生命周期
 > * 监控沙箱网络流量以发现意外的出站请求
 >
-> 即使有这些保障措施，这仍然是一个不安全的解决方法。足够有创意的上下文注入攻击可以绕过输出过滤和 HITL 审查。### 一般最佳实践
+> 即使有这些保障措施，这仍然是一个不安全的解决方法。足够有创意的上下文注入攻击可以绕过输出过滤和 HITL 审查。
+
+### 一般最佳实践
 
 * 在应用程序中对沙箱输出进行操作之前先检查它们
-* 在不需要时阻止沙盒网络访问
+* 在不需要时阻止沙箱网络访问
 * 使用[middleware](/oss/python/langchain/middleware)过滤或编辑工具输出中的敏感模式
 * 将沙箱内产生的所有内容视为不可信输入
 

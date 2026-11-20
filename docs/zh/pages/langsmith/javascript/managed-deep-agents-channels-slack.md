@@ -75,7 +75,7 @@ export const channel = channels.slack();
 
 **图标** `string`
 
-Slack 中显示的代理图标的路径，相对于 `channels/` 目录。图标必须是 512 x 512 像素的 PNG 文件，大小不超过 1 MB。如果省略此参数，托管Deep Agents将为您生成一个图标。
+Slack 中显示的代理图标的路径，相对于 `channels/` 目录。图标必须是 512 x 512 像素的 PNG 文件，大小不超过 1 MB。如果省略此参数，Managed Deep Agents 将为您生成一个图标。
 
 **背景颜色** `string`
 
@@ -104,15 +104,21 @@ export const channel = channels.slack({
 
 ### 配置哪些消息开始运行
 
-**triggerOnAllMessages** `boolean`（默认值：false）
+**triggerMode** `string`（默认：提及）
 
-是否每个新的通道消息都可以启动代理运行。当`false`时，通道消息仅在提及代理时才开始运行；直接消息仍然开始运行。
+哪些通道消息启动代理运行。直接消息总是开始运行。
+
+* **`"mention"`**：仅提及代理的消息。
+* **`"thread"`**：一次提及，然后在该线程中随后每次回复。
+* **`"all"`**：代理所在通道中的每条消息。
 
 **allowBotTriggers** `boolean`（默认值：false）
 
-来自其他 Slack 机器人的消息是否可以启动代理运行。
+来自其他 Slack 机器人的消息是否可以启动代理运行。在`thread`和`all`模式下，代理也会收到不属于它的消息。如果代理准确回答`[quiet]`，则运行不会发布任何内容。告诉代理在其说明中没有任何可添加的内容时回答`[quiet]`。
 
-## 对开始运行的消息做出反应当运行收到入站消息时，代理会使用表情符号对其做出反应，因此
+## 对开始运行的消息做出反应
+
+当运行收到入站消息时，代理会使用表情符号对其做出反应，因此
 发件人知道在代理有任何话要说之前就已经看到它。反应
 从不阻止或延迟回复。
 
@@ -135,13 +141,11 @@ export const channel = channels.slack({
 ```
 
 返回一个不带冒号的 Slack 短名称。 Slack 没有这个名字
-recognize 被选择但从未出现，因此反应完全缺失。一个
+识别已被选择但从未出现，因此反应完全缺失。一个
 抛出、花费超过五秒或返回的选择器
-其他任何内容都会回退到默认表情符号，并且运行将以任何方式继续。
+其他任何内容都会回到默认表情符号，并且运行会继续。
 
-### 选择具有决策模型的表情符号
-
-[decision model](/langsmith/llm-gateway-decision-models) 得分为一组固定值
+### 选择具有决策模型的表情符号[decision model](/langsmith/llm-gateway-decision-models) 获得一组固定的分数
 选项和答案用其中一个键，所以反应反映了
 消息说，没有回复可供解析。答案总是其中之一
 您提供的选项。 `TypeSafeClassifier`
@@ -194,7 +198,9 @@ export const channel = channels.slack({
     return emoji.confidence >= 0.25 ? emoji.choice : "eyes";
   },
 });
-```两者都在首次使用时而不是在导入时构建分类器，因为
+```
+
+两者都在首次使用时而不是在导入时构建分类器，因为
 部署导入此模块来读取通道声明和
 分类器需要一个键来构造。
 
@@ -205,7 +211,7 @@ export const channel = channels.slack({
 
 ## 部署代理
 
-在部署期间，托管 Deep Agents 通过通道声明在 Slack 中配置您的代理。
+在部署期间，托管Deep Agents通过通道声明在 Slack 中配置您的代理。
 
 **1.部署您的代理**
 
@@ -227,11 +233,11 @@ Managed Deep Agents 部署代理并设置它需要出现在 Slack 中的资源�
 
 **2.如果出现提示，请授权 Slack**
 
-如果您之前未授权 LangSmith，CLI 将显示 HTTPS 授权链接。打开链接，选择 Slack 工作区，然后批准请求的访问权限。
+如果您之前未授权 LangSmith，CLI 将显示 HTTPS 授权链接。打开链接，选择 Slack 工作区，然后批准请求的访问权限。返回终端并按 Enter。 CLI 再次检查授权并继续配置。如果 Slack 工作区需要管理员批准，请在继续之前完成该批准。
 
-返回终端并按 Enter。 CLI 再次检查授权并继续配置。如果 Slack 工作区需要管理员批准，请在继续之前完成该批准。
+**3.在 Slack 中使用代理**
 
-**3.在 Slack 中使用代理**首次部署后，您的代理会在 Slack 中向您发送一条直接消息。回复消息以启动代理运行。最终响应出现在 Slack 对话中。
+首次部署后，您的代理会在 Slack 中向您发送一条直接消息。回复消息以启动代理运行。最终响应出现在 Slack 对话中。
 
 > [!注意]
 >
@@ -270,9 +276,9 @@ then call `attach_file` with that path so the file arrives in Slack.
 * [Design agent template](/langsmith/javascript/managed-deep-agents-design-agent)：部署完整的 Slack 设计代理项目。
 * [Paid media agent template](/langsmith/javascript/managed-deep-agents-paid-media-agent)：部署完整的 Slack 付费媒体代理项目。
 * [Decision models](/langsmith/llm-gateway-decision-models)：配置反应表情评分模型。
-* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：添加反应所需的提供者密钥。
+* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：添加反应所需的provider key。
 * [Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts)：从工具发布 Slack 表单并在提交时恢复运行。
-* [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)：给代理文件传输读写的文件系统。
+* [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)：给代理提供文件传输读写的文件系统。
 * [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)：配置和部署托管深度代理。
 * [CLI reference](/langsmith/javascript/managed-deep-agents-cli)：查看托管 Deep Agents 命令和标志。
 

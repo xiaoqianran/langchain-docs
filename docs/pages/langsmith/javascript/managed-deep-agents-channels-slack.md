@@ -104,13 +104,19 @@ export const channel = channels.slack({
 
 ### Configure which messages start runs
 
-**triggerOnAllMessages** `boolean` (default: false)
+**triggerMode** `string` (default: mention)
 
-Whether every new channel message can start an agent run. When `false`, channel messages start runs only when they mention the agent; direct messages still start runs.
+Which channel messages start agent runs. Direct messages always start runs.
+
+* **`"mention"`**: Only messages that mention the agent.
+* **`"thread"`**: One mention, then every later reply in that thread.
+* **`"all"`**: Every message in the channels the agent is in.
 
 **allowBotTriggers** `boolean` (default: false)
 
 Whether messages from other Slack bots can start agent runs.
+
+In `thread` and `all` mode, the agent also gets messages that are not for it. If the agent answers exactly `[quiet]`, the run posts nothing. Tell the agent in its instructions to answer `[quiet]` when it has nothing to add.
 
 ## React to the message that starts a run
 

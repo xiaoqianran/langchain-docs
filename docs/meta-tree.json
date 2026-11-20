@@ -705,6 +705,12 @@
           "rel": "langsmith/byoc-data-plane-cost-azure.md"
         }
       ],
+      "byoc-data-plane-cost-gcp": [
+        {
+          "title": "GCP data plane cost estimate",
+          "rel": "langsmith/byoc-data-plane-cost-gcp.md"
+        }
+      ],
       "byoc-faq": [
         {
           "title": "BYOC FAQ",
@@ -715,6 +721,12 @@
         {
           "title": "Migrate to BYOC",
           "rel": "langsmith/byoc-migration.md"
+        }
+      ],
+      "byoc-networking-gcp": [
+        {
+          "title": "BYOC networking on GCP",
+          "rel": "langsmith/byoc-networking-gcp.md"
         }
       ],
       "byoc-onboarding-aws": [
@@ -6255,6 +6267,12 @@
           "rel": "langsmith/smith-api/runs/update-a-run.md"
         }
       ],
+      "runsanalytics": [
+        {
+          "title": "Query users in a tracing project",
+          "rel": "langsmith/smith-api/runsanalytics/query-users-in-a-tracing-project.md"
+        }
+      ],
       "sandboxes": [
         {
           "title": "Attach a sandbox to a browser (Beta)",
@@ -6563,76 +6581,6 @@
         {
           "title": "Update tag",
           "rel": "langsmith/smith-api/tags/update-tag.md"
-        }
-      ],
-      "teams": [
-        {
-          "title": "Add members to a team",
-          "rel": "langsmith/smith-api/teams/add-members-to-a-team.md"
-        },
-        {
-          "title": "Attach an access policy to a team",
-          "rel": "langsmith/smith-api/teams/attach-an-access-policy-to-a-team.md"
-        },
-        {
-          "title": "Change a team's role in a workspace",
-          "rel": "langsmith/smith-api/teams/change-a-teams-role-in-a-workspace.md"
-        },
-        {
-          "title": "Create a team",
-          "rel": "langsmith/smith-api/teams/create-a-team.md"
-        },
-        {
-          "title": "Delete a team",
-          "rel": "langsmith/smith-api/teams/delete-a-team.md"
-        },
-        {
-          "title": "Detach an access policy from a team",
-          "rel": "langsmith/smith-api/teams/detach-an-access-policy-from-a-team.md"
-        },
-        {
-          "title": "Get a team",
-          "rel": "langsmith/smith-api/teams/get-a-team.md"
-        },
-        {
-          "title": "Get a team's role in a workspace",
-          "rel": "langsmith/smith-api/teams/get-a-teams-role-in-a-workspace.md"
-        },
-        {
-          "title": "Grant a team a role in a workspace",
-          "rel": "langsmith/smith-api/teams/grant-a-team-a-role-in-a-workspace.md"
-        },
-        {
-          "title": "List a team's access policies",
-          "rel": "langsmith/smith-api/teams/list-a-teams-access-policies.md"
-        },
-        {
-          "title": "List a team's workspace grants",
-          "rel": "langsmith/smith-api/teams/list-a-teams-workspace-grants.md"
-        },
-        {
-          "title": "List organization teams",
-          "rel": "langsmith/smith-api/teams/list-organization-teams.md"
-        },
-        {
-          "title": "List team members",
-          "rel": "langsmith/smith-api/teams/list-team-members.md"
-        },
-        {
-          "title": "List workspace scoped team members",
-          "rel": "langsmith/smith-api/teams/list-workspace-scoped-team-members.md"
-        },
-        {
-          "title": "Remove a member from a team",
-          "rel": "langsmith/smith-api/teams/remove-a-member-from-a-team.md"
-        },
-        {
-          "title": "Remove a team's access to a workspace",
-          "rel": "langsmith/smith-api/teams/remove-a-teams-access-to-a-workspace.md"
-        },
-        {
-          "title": "Update a team",
-          "rel": "langsmith/smith-api/teams/update-a-team.md"
         }
       ],
       "tenant": [
@@ -6955,6 +6903,24 @@
         {
           "title": "Update a user group",
           "rel": "langsmith/smith-api/user-groups/update-a-user-group.md"
+        }
+      ],
+      "users": [
+        {
+          "title": "Create a user",
+          "rel": "langsmith/smith-api/users/create-a-user.md"
+        },
+        {
+          "title": "Get a user",
+          "rel": "langsmith/smith-api/users/get-a-user.md"
+        },
+        {
+          "title": "List users",
+          "rel": "langsmith/smith-api/users/list-users.md"
+        },
+        {
+          "title": "Update a user's traits",
+          "rel": "langsmith/smith-api/users/update-a-users-traits.md"
         }
       ],
       "workspaces": [

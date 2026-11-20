@@ -69,6 +69,8 @@ Find the API URL under **Settings > Data Planes**.
 
 If you open a workspace and see the following screen, your machine does not have network access to that workspace's data plane. The LangSmith frontend runs in your browser and calls the data plane directly, so your machine must be on a network that can reach the data plane's private endpoint. Connect through your private connectivity option, then refresh the page.
 
+If you are connected and still see this screen in Chrome or Edge, the browser may be blocking the request. See [Allow local network access in Chrome and Edge](/langsmith/byoc-usage#allow-local-network-access-in-chrome-and-edge).
+
 ![LangSmith error screen titled You may not have network access to this workspace. It states that LangSmith cannot reach the data plane for the selected workspace and lists other workspaces grouped by data plane. Reachable data planes show a green header with active Switch buttons. The unreachable data plane shows a red header with disabled Switch buttons.](https://mintcdn.com/langchain-5e9cc07a/a_vO91vE4oZRWYyY/langsmith/images/byoc-data-plane-unreachable.png?fit=max\&auto=format\&n=a_vO91vE4oZRWYyY\&q=85\&s=881f94a84e295064162e8673517245fd)
 
 From this screen, you can switch to a workspace on a data plane that is reachable, which can be a Cloud workspace.

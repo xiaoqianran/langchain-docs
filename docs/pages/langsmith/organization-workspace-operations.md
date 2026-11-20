@@ -625,6 +625,7 @@ Per-token model prices used to compute run costs. See [Cost tracking](/langsmith
 | Get bulk export destination | ✓ | ✓ | ✓ | `bulk-exports:read` |
 | Create bulk export destination | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 | Update bulk export destination | ✓ | ✗ | ✗ | `bulk-exports:manage` |
+| Delete bulk export destination | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 | Get filtered export runs | ✓ | ✓ | ✓ | `bulk-exports:read` |
 
 > [!TIP]

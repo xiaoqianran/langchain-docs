@@ -33,6 +33,7 @@
 | [PostgreSQL / pgvector (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [⟦T9⟧](https://pypi.org/project/langgraph-store-postgres/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/postgres) |
 | [Azure Cosmos DB NoSQL (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [⟦T10⟧](https://pypi.org/project/langgraph-store-cosmosdb/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/cosmosdb) |
 | [Google Firestore (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [⟦T11⟧](https://pypi.org/project/langgraph-store-firestore/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/firestore) |
+| [CockroachDB](/oss/python/integrations/providers/cockroachdb#langgraph-store) | [⟦T12⟧](https://pypi.org/project/langchain-cockroachdb/) | [cockroachdb/langchain-cockroachdb](https://github.com/cockroachdb/langchain-cockroachdb) |
 
 ***
 

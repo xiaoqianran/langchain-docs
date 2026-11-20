@@ -28,6 +28,14 @@ In the default batched mode, provide decisions in the same order as the actions 
 
 Use `reject` when the human is denying the requested action. Use `respond` only when the human is acting as the tool, such as answering an `ask_user` prompt. Do not use `respond` to deny side-effecting tools, because its message is treated as a successful tool result.
 
+For `reject` and `respond`, the middleware creates the tool message itself, because the tool does not run. It marks that message with [notification metadata](/oss/javascript/langchain/messages#notifications): the `source` is `hitl_interrupt_decision` and `data` holds the `decision`. Tool output after `approve` or `edit` is not marked.
+
+To tell these messages apart from real tool output in your frontend, read the metadata with `getNotificationMetadata`.
+
+> [!NOTE]
+>
+> Marking these tool messages requires `langchain>=1.6.7`.
+
 > [!TIP]
 >
 > When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.

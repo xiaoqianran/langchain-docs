@@ -311,6 +311,10 @@ These examples assume you have already created a sandbox/devbox using the provid
 >     sandbox.stop()
 > ```
 
+> [tab] Other
+>
+> For other sandbox providers, see [sandbox integrations](/oss/python/integrations/sandboxes).
+
 > [!TIP]
 >
 > [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-sandboxes) traces show which shell commands ran inside a sandbox and how the agent used filesystem tools. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up. For managed sandbox hosting, see [LangSmith Sandboxes](/langsmith/sandboxes).
@@ -1262,6 +1266,10 @@ You can also call the backend `execute()` method directly in your application co
 >     sandbox.stop()
 > ```
 
+> [tab] Other
+>
+> For other sandbox providers, see [sandbox integrations](/oss/python/integrations/sandboxes).
+
 For example:
 
 ```
@@ -1523,6 +1531,10 @@ Use `upload_files()` to populate the sandbox before the agent runs. Paths must b
 > )
 > ```
 
+> [tab] Other
+>
+> For other sandbox providers, see [sandbox integrations](/oss/python/integrations/sandboxes).
+
 ### Retrieving artifacts
 
 Use `download_files()` to retrieve files from the sandbox after the agent finishes:
@@ -1729,6 +1741,10 @@ Use `download_files()` to retrieve files from the sandbox after the agent finish
 >     else:
 >         print(f"Failed to download {result.path}: {result.error}")
 > ```
+
+> [tab] Other
+>
+> For other sandbox providers, see [sandbox integrations](/oss/python/integrations/sandboxes).
 
 > [!NOTE]
 >

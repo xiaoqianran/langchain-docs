@@ -8,7 +8,7 @@
 
 解释器在代理循环内为代理提供了一个可编程的**内存中**工作空间。代理编写代码来完成任务，运行时执行它并仅返回相关结果。中间结果不会成为模型上下文的一部分。
 
-其中 [sandboxes](/oss/python/deepagents/sandboxes) 是对环境进行操作的代码优先方式（例如运行命令、安装依赖项和编辑文件），而解释器是用于编写工具、保留状态以及决定应返回模型的信息的代码优先方式。
+[sandboxes](/oss/python/deepagents/sandboxes) 是一种对环境进行操作的代码优先方式（例如运行命令、安装依赖项和编辑文件），而解释器是一种代码优先方式，用于编写工具、保留状态以及决定应返回模型的信息。
 
 > [!警告]
 >
@@ -44,7 +44,7 @@
 
 |需要|使用|
 | - | - |
-|一两个简单的外部通话|正常工具调用 |
+|一两个简单的外部通话 |正常工具调用|
 |纯内存 JavaScript：循环、分支、重试或数据转换（无外部工具）|口译 |
 |许多从代码编排的外部工具调用（需要[PTC](#programmatic-tool-calling-ptc)）| [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) 口译员 |
 |许多独立的工作单元、多个视角或对大量输入的递归分析 | [dynamic subagents](/oss/python/deepagents/dynamic-subagents) 口译员 |
@@ -132,7 +132,7 @@ agent = create_deep_agent(
 )
 ```
 
-## 口译员如何工作中间件向代理添加了`eval`工具。当有用时，代理编写 JavaScript 并调用 `eval`；您不直接致电口译员。该工具在 QuickJS 上下文中运行代码，其变量可以在 `eval` 调用之间持续存在，具体取决于持久性 `mode`。它捕获 `console.log`、`console.warn` 和 `console.error`，并返回最后一个表达式的结果。
+## 口译员如何工作中间件向代理添加了`eval`工具。有用时，代理编写 JavaScript 并调用 `eval`；您不直接致电口译员。该工具在 QuickJS 上下文中运行代码，其变量可以在 `eval` 调用之间持续存在，具体取决于持久性 `mode`。它捕获 `console.log`、`console.warn` 和 `console.error`，并返​​回最后一个表达式的结果。
 
 代理可以编写如下代码：
 
@@ -156,10 +156,12 @@ totals;
 
 代码运行于[**QuickJS**](https://github.com/quickjs-ng/quickjs)，一个轻量级的 JavaScript 运行时。默认情况下，解释器代码无法访问主机文件系统、网络、shell、包管理器或时钟。它可以计算、保存状态以及写入 `console.log`、`console.warn` 或 `console.error`，仅此而已。
 
-两个明确的桥梁扩展了这一范围：
+显式桥接扩展了该范围：
 
 * **工具**，通过 [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)。在 `tools` 命名空间下提供一个工具允许列表作为异步函数。这些可以是代理自己的工具或您定义并传入的独立工具。
-* **子代理**，通过 [dynamic subagents](/oss/python/deepagents/dynamic-subagents)。当代理配置了子代理时，解释器会公开一个 `task()` 全局变量，用于从代码中分派它们。编程工具调用将关闭，直到您[enable it](#enable-ptc)。当代理有子代理时，通过 `task()` 进行子代理调度默认处于打开状态，您可以将其关闭。没有其他东西跨越 QuickJS 的边界。
+* **子代理**，通过 [dynamic subagents](/oss/python/deepagents/dynamic-subagents)。当代理配置了子代理时，解释器会公开一个 `task()` 全局变量，用于从代码中分派它们。编程工具调用将关闭，直到您[enable it](#enable-ptc)。当代理有子代理时，通过 `task()` 进行子代理调度默认处于打开状态，您可以将其关闭。
+
+第三个桥，[files](#files-fs)，为解释器代码提供了代理后端的全局选择加入`fs`。没有其他东西跨越 QuickJS 的边界。
 
 ## 编程工具调用 (PTC)
 
@@ -265,13 +267,118 @@ results.join("\n\n");
 >
 > PTC 调用当前通过解释器桥执行，不经过正常的工具调用路径。因此，每次 PTC 调用的工具调用都不会强制执行`interrupt_on` 批准工作流程。
 
+## 文件 (`fs`)
+
+`fs` 选项为解释器代码提供了节点样式的 `fs` 全局代理的 [backend](/oss/python/deepagents/backends)，与内置文件系统工具看到的文件相同。代码可以读取多个文件、处理它们并写入结果，而无需为每个文件调用工具。
+
+> [!注意]
+>
+> `fs` 需要 `langchain-quickjs>=0.4.0`。设置 `fs=True` 使用 `create_deep_agent` 为其文件工具提供的后端：
+
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="google_genai:gemini-4-hydrogen",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="openai:gpt-6.1-sol",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+对于另一个代理工厂，例如`create_agent`，传递后端本身：`CodeInterpreterMiddleware(fs=backend)`。具有 `fs=True` 的一个中间件实例无法为具有不同后端的代理提供服务，因此为每个此类代理创建一个单独的中间件。
+
+`fs` 函数是异步的并返回 Promise，就像 Node 的 `fs/promises` 一样。 `fs.promises` 公开相同的功能：
+
+* **`fs.readFile(path)`**：以字符串形式返回整个文件。
+* **`fs.writeFile(path, text)`**：创建或替换文件，创建父目录。
+* **`fs.readdir(dir)`**：列出一个目录下的条目名称。
+* **`fs.access(path)`**：如果路径存在则解析，否则使用`ENOENT`拒绝。
+* **`fs.rm(path, { recursive, force })`**：删除路径。目录需要 `recursive: true`，而 `force: true` 会忽略缺失的路径。
+
+此示例对目录中的每个报告进行总计，并将摘要写回后端：
+
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const names = await fs.readdir("/reports");
+const totals = {};
+for (const name of names) {
+  const { region, revenue } = JSON.parse(await fs.readFile(`/reports/${name}`));
+  totals[region] = (totals[region] ?? 0) + revenue;
+}
+await fs.writeFile("/summary/totals.json", JSON.stringify(totals));
+totals;
+```
+
+`fs` 仅读取和写入 UTF-8 文本。失败的调用会抛出带有 `code` 的节点错误，例如 `ENOENT`、`EISDIR` 或 `EACCES`。 `readFileSync`、`stat`、`glob`、`mkdir`、`appendFile`、投掷`ERR_METHOD_NOT_IMPLEMENTED`、`require`等同步功能不可用。对于解释器的 `memory_limit` 来说太大的文件会以 `MarshalError` 结束 `eval` 调用。> [!警告]
+>
+> `fs` 直接调用后端，而不是文件系统工具，因此 [permissions](/oss/python/deepagents/permissions) 和 `interrupt_on` 批准不适用于它。解释器代码可以读取、写入和删除后端可以访问的任何内容。在带有 `virtual_mode=False` 的 `FilesystemBackend` 或本地 shell 后端上，这是主机文件系统。对于依赖文件系统权限或批准的代理，请保留 `fs` 未设置，并且仅将其启用以供可信使用或后端范围仅限于代理可能更改的文件。
+
 ## 动态子代理
 
-以下概述涵盖了何时使用动态子代理和最小 `task()` 模式。有关配置、编排示例、工作流触发器和安全注意事项，请参阅[Dynamic subagents](/oss/python/deepagents/dynamic-subagents)。动态子代理允许解释器使用内置的 `task()` 全局从代码中分派配置的 [subagents](/oss/python/deepagents/subagents)。跨越许多独立单元的任务（例如检查目录中的每个文件或对一批票进行分类）会成为一个循环，将工作展开并综合结果。
+以下概述涵盖了何时使用动态子代理和最小 `task()` 模式。有关配置、编排示例、工作流触发器和安全注意事项，请参阅[Dynamic subagents](/oss/python/deepagents/dynamic-subagents)。
 
-使用动态子代理：
+动态子代理允许解释器使用内置的 `task()` 全局从代码中分派配置的 [subagents](/oss/python/deepagents/subagents)。跨越许多独立单元的任务（例如检查目录中的每个文件或对一批票进行分类）会成为一个循环，将工作展开并综合结果。
 
-* **扇出和综合**：在多个项目上并行运行相同类型的工作，然后合并结果。
+使用动态子代理：* **扇出和综合**：在多个项目上并行运行相同类型的工作，然后合并结果。
 * **验证**：将调查结果发送给独立验证者子代理并仅保留已确认的结果。
 * **递归工作流程**：在解释器变量中保留工作集，选择切片，调用子代理并优化结果。
 
@@ -294,11 +401,11 @@ reviews.join("\n\n");
 
 通过`CodeInterpreterMiddleware`上的`mode`参数控制交叉转弯状态：
 
-* **`"thread"`**（默认）：状态在 `eval` 呼叫和代理轮流中持续存在。中间件在每个代理轮次后对解释器状态进行快照，并在下一次轮次之前恢复它。
+* **`"thread"`**（默认）：状态在 `eval` 呼叫和座席轮流中持续存在。中间件在每个代理轮次后对解释器状态进行快照，并在下一次轮次之前恢复它。
 * **`"turn"`**：状态在一个代理回合内的多个 `eval` 调用中持续存在，然后在下一回合重置。
-* **`"call"`**：每个 `eval` 调用都在新的 REPL 中运行，不会继承之前的调用。对于 `mode="thread"`，快照是解释器内存中 JavaScript 状态的序列化副本，包括代理完成运行代码时存在的全局变量、变量、函数和导入模块。在对话轮次中，生命周期是：
+* **`"call"`**：每个 `eval` 调用都在新的 REPL 中运行，不会继承之前的调用。
 
-1、一轮开始，中间件恢复该线程最新的解释器快照。
+对于 `mode="thread"`，快照是解释器内存中 JavaScript 状态的序列化副本，包括代理完成运行代码时存在的全局变量、变量、函数和导入模块。在对话轮次中，生命周期是：1. 一轮开始，中间件恢复该线程最新的解释器快照。
 2. 座席拨打`eval`一次或多次。这些调用共享一个实时上下文；中间件不会在它们之间创建快照。
 3. 回合结束，中间件将更新的快照写入图状态。
 4. 下一轮从该快照恢复，而不是空运行时间。
@@ -365,7 +472,9 @@ agent = create_deep_agent(
         )
     ],
 )
-``````python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
@@ -491,9 +600,7 @@ agent = create_deep_agent(
     checkpointer=MemorySaver(),
     middleware=[CodeInterpreterMiddleware(mode="thread")],
 )
-```
-
-设置 `mode="turn"` 仅在一个回合内保留解释器状态，或设置 `mode="call"` 在每个 `eval` 上进行新的 REPL。
+```设置 `mode="turn"` 仅在一个回合内保留解释器状态，或设置 `mode="call"` 在每个 `eval` 上进行新的 REPL。
 
 ## 安全
 
@@ -502,25 +609,25 @@ agent = create_deep_agent(
 您通过 PTC 公开的每个工具都是解释器代码可以使用的外部功能。将 PTC 许可名单视为权限边界：仅公开代理所需的工具，并避免桥接可以访问敏感系统、花钱、改变数据或调用不受限制网络的广泛工具，除非该行为是故意的。|能力|默认可用 |如何曝光 |
 | - | - | - |
 | JavaScript 执行 |是的 |添加解释器中间件 |
-|顶级`await` |是的 |在解释器代码中使用 Promise |
+|顶级`await`|是的 |在解释器代码中使用 Promise |
 | `console.log`、`warn`、`error` 捕捉 |是的 |使用 `capture_console=False` 禁用 |
 |代理工具|没有 |添加 PTC 许可名单 |
-|文件系统访问 |没有 |通过 PTC 许可名单添加 [built-in filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) |
+|文件系统访问 |没有 |设置 [⟦T129⟧](#files-fs)，或通过 PTC 允许列表添加 [built-in filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) |
 |网络接入|没有 |通过PTC公开特定的网络工具|
 |挂钟或日期时间访问 |没有 |如果需要，公开显式时间工具 |
 | Shell 命令、软件包安装、测试、操作系统级执行 |没有 |使用 [sandbox backend](/oss/python/deepagents/sandboxes) |> [!注意]
 >
 > **代码执行如何工作**
 >
-> 解释器代码在编译为 WebAssembly 的 QuickJS 中运行，由 [⟦T79⟧](https://github.com/langchain-ai/quickjs-rs) 提供。 WebAssembly 沙箱是隔离边界：JavaScript 在来宾的线性内存中执行，无法读取或写入主机进程的内存。每个 LangGraph 线程都有自己的 WebAssembly 实例，因此一个线程上的解释器状态无法到达另一个线程。
+> 解释器代码在编译为 WebAssembly 的 QuickJS 中运行，由 [⟦T130⟧](https://github.com/langchain-ai/quickjs-rs) 提供。 WebAssembly 沙箱是隔离边界：JavaScript 在来宾的线性内存中执行，无法读取或写入主机进程的内存。每个 LangGraph 线程都有自己的 WebAssembly 实例，因此一个线程上的解释器状态无法到达另一个线程。
 >
 > 沙箱在 [wasmtime](https://wasmtime.dev/) 上的主机进程内运行，因此 wasmtime 漏洞是沙箱之外的剩余路径。保持`wasmtime`更新。对于敌对的多租户工作负载，还可以在隔离的工作进程或容器中运行代理。详情请参见`quickjs-rs`[Security guide](https://github.com/langchain-ai/quickjs-rs#security)。
 >
-> 沙箱包含引擎，而不是您赋予它的功能。解释器代码可以调用桥接到其中的每个工具，因此请缩小 PTC 许可名单的范围。
+> 沙箱包含引擎，而不是您赋予它的功能。解释器代码可以调用桥接到其中的每个工具，并通过 `fs` 到达后端可以访问的每个文件，因此请缩小 PTC 允许列表的范围，并仅在代码需要文件时设置 `fs`。
 
 ## 配置
 
-`CodeInterpreterMiddleware`接受以下选项：|夸格 |默认 |目的|
+`CodeInterpreterMiddleware` 接受以下选项：|夸格 |默认 |目的|
 | - | - | - |
 | `memory_limit` | `64 * 1024 * 1024` (64 MB) |每个线程的 QuickJS 堆内存上限。 |
 | `timeout` | `5.0` |每个 `eval` 调用的超时限制（以秒为单位）。 |
@@ -530,9 +637,11 @@ agent = create_deep_agent(
 | `ptc` | `None` |在解释器内公开为 `tools.*` 的工具名称或 `BaseTool` 实例的白名单。省略禁用。参见[Enable PTC](#enable-ptc)。 |
 | `max_ptc_calls` | `256` |每个 `eval` 允许最多 `tools.*` 调用。仅在受信任的环境中设置为 `None`。参见[Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)和[Security](#security)。 |
 | `subagents` | `True` |当代理有子代理时，公开内置的`task()`全局。设置为 `False` 要求通过普通 `task` 工具调度。参见[Dynamic subagents](#dynamic-subagents)。 |
-| `mode` | `"thread"` |控制解释器持久性：`"thread"`（跨回合）、`"turn"`（一回合内）或`"call"`（每个`eval`的新鲜 REPL）。参见[Persistence](#persistence)。 |
-| `max_snapshot_bytes` | `None` |删除大于此字节限制的快照。默认为 `memory_limit`。参见[Persistence](#persistence)。 |
+| `fs` | `None` |通过后端为解释器代码提供 Node-style `fs` 全局。 `True` 使用`create_deep_agent` 的后端。参见[Files (⟦T170⟧)](#files-fs)。 || `mode` | `"thread"` |控制解释器持久性：`"thread"`（跨回合）、`"turn"`（一回合内）或`"call"`（每个`eval`的新鲜REPL）。参见[Persistence](#persistence)。 |
+| `max_snapshot_bytes` | `None` |删除大于此字节限制的快照。默认为`memory_limit`。参见[Persistence](#persistence)。 |
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/interpreters.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -10,7 +10,7 @@
 
 > [卡][Anthropic](/oss/javascript/integrations/providers/anthropic)
 >
-> 与 Anthropic 的 Claude 模型集成以进行高级推理和对话。
+> 与 Anthropic 的 Claude 模型集成，进行高级推理和对话。
 
 > [卡][AWS](/oss/javascript/integrations/providers/aws)
 >
@@ -106,7 +106,7 @@
 
 > [卡][Google Gemini](/oss/javascript/integrations/chat/google)
 >
-> Google 通过 AI Studio 和 Gemini Enterprise Agent Platform 构建的 Gemini 模型。
+> 通过 AI Studio 和 Gemini Enterprise Agent Platform 实现的 Google Gemini 模型。
 
 > [卡][Groq](/oss/javascript/integrations/chat/groq)
 >
@@ -114,7 +114,7 @@
 
 > [卡][Interfaze](https://interfaze.ai/docs)
 >
-> 多模式聊天模型，通过OpenAI兼容的 API 提供结构化输出。
+> 通过 OpenAI 兼容 API 提供结构化输出的多模式聊天模型。
 
 > [卡][Mistral](/oss/javascript/integrations/chat/mistral)
 >
@@ -258,11 +258,11 @@
 
 > [卡][SAP HANA Internal Embeddings](/oss/javascript/integrations/vectorstores/sap_hanavector)
 >
-> SAP HANA Cloud 的内置嵌入模型用于数据库内向量生成。
+> SAP HANA Cloud 用于数据库内向量生成的内置嵌入模型。
 
 > [卡][SCX](https://scx.ai/)
 >
-> 基于 SCX 的 OpenAI 兼容 API 的 4096 维 E5-Mistral 嵌入。
+> 通过 SCX 的 OpenAI 兼容 API 进行 4096 维 E5-Mistral 嵌入。
 
 ## 向量存储
 
@@ -414,7 +414,7 @@
 
 > [卡][Arcmira](https://github.com/arcmira/integrations/tree/master/packages/langchain)
 >
-> 使用 Arcmira 的 LangChain 工具搜索索引的 YouTube 转录本以获取带时间戳的引述并解析人员、公司和频道。
+> 使用 Arcmira 的 LangChain 工具搜索索引的 YouTube 文字记录以获取带时间戳的引用并解析人员、公司和频道。
 
 > [卡][Atomic Mail](https://docs.atomicmail.ai/langchain)
 >
@@ -424,7 +424,7 @@
 
 > [卡片][Channel3Toolkit](https://channel3.ai/docs/langchain)
 >
-> 在数千家零售商中搜索产品，以及每个零售商的报价和实时价格。
+> 在数千家零售商中搜索产品，包括每个零售商的报价和实时价格。
 
 > [卡片][ClawFetch](https://github.com/clawfetch/integrations#readme)
 >
@@ -432,7 +432,7 @@
 
 > [卡片][Continuity tools](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools)
 >
-> LangChain 具有应用程序定义的权限、稳定的操作身份和仅状态恢复的合作服务工具。
+> LangChain 工具，具有应用程序定义的权限、稳定的操作身份以及针对协作服务的仅状态恢复。
 
 > [卡][Corsair](https://docs.corsair.dev/mcp-adapters/langchain)
 >
@@ -490,7 +490,7 @@
 
 > [卡][M91](https://github.com/MSG91/m91-sdk#langchain)
 >
-> 暂停代理直到有人在手机上批准的工具；警报会通过静音模式响起并升级为语音呼叫。
+> 暂停代理的工具，直到有人在手机上批准为止；警报会通过静音模式响起并升级为语音呼叫。
 
 > [卡][MCP Toolbox](/oss/javascript/integrations/tools/mcp_toolbox)
 >
@@ -500,7 +500,7 @@
 
 > [卡][OceanAltPayeeCheckTool](https://oceanalt.com/en/developers/langchain)
 >
-> 代理商的预付款检查：允许、审查或拒绝收款人地址或付款 URL，以及失败关闭的付款工具防护。
+> 代理预付款检查：允许、审查或拒绝收款人地址或付款 URL，以及失败关闭的付款工具防护。
 
 > [卡][OpenAPI](/oss/javascript/integrations/tools/openapi)
 >
@@ -638,6 +638,14 @@
 >
 > 使用 Amazon Kendra 进行企业搜索。
 
+> [卡][LoomKnowledgeRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
+>
+> 从 LangChain 搜索自托管 Loom 部署中的文档。
+
+> [卡][LoomMemoryRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
+>
+> 从 LangChain 搜索自托管 Loom 部署中的代理内存。
+
 > [卡][Perplexity Search](/oss/javascript/integrations/retrievers/perplexity_search)
 >
 > 从 Perplexity Search API 返回文档的检索器。
@@ -658,9 +666,7 @@
 
 > [卡][AlBuddyMemoryStore](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md)
 >
-> LangGraph 本地 SQLite 上的 BaseStore：记录作者、版本而不是覆盖，并保留信念历史。
-
-> [卡][File System](/oss/javascript/integrations/stores/file_system)
+> LangGraph 本地 SQLite 上的 BaseStore：记录作者、版本而不是覆盖，并保留信念历史。> [卡][File System](/oss/javascript/integrations/stores/file_system)
 >
 > 用于开发的本地文件系统存储。
 
@@ -668,7 +674,9 @@
 >
 > 临时数据的快速内存存储。
 
-## 沙箱> [卡][CreateOS Sandbox](https://createos.sh/docs/Sandbox/Overview)
+## 沙箱
+
+> [卡][CreateOS Sandbox](https://createos.sh/docs/Sandbox/Overview)
 >
 > CreateOS Sandbox 在 Firecracker 微虚拟机中运行代理代码，具有暂停/恢复和专用网络功能。
 
@@ -702,11 +710,11 @@
 
 > [卡][RecallMiddleware](https://recallmem.dev/guides/langchain)
 >
-> create_agent 代理的长期记忆：将 Recall 了解到的用户信息添加到系统提示中并记录每次交换。
-
-> [卡][RuthlessSchemaGuard](https://github.com/moltbot-den/openentity/tree/main/integrations/langchain)
+> create_agent 代理的长期记忆：将 Recall 了解到的用户信息添加到系统提示中并记录每次交换。> [卡][RuthlessSchemaGuard](https://github.com/moltbot-den/openentity/tree/main/integrations/langchain)
 >
-> 代理中间件，根据 Pydantic 或 JSON 模式验证工具和 HTTP 响应，并在违规时提出警告。> [卡][Sanity Context](https://www.npmjs.com/package/@sanity/context-langchain)
+> 代理中间件，根据 Pydantic 或 JSON 模式验证工具和 HTTP 响应，并在违规时提出警告。
+
+> [卡][Sanity Context](https://www.npmjs.com/package/@sanity/context-langchain)
 >
 > Sanity Context 的代理中间件：引用根据您的内容或实时 Sanity 数据集构建的知识库中的事实。
 

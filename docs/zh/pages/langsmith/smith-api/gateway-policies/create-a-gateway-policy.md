@@ -28,17 +28,18 @@
 - `rate_limit` / `default_rate_limit`：
 `{"version": 1, "limits": [{"metric": "requests"|"tokens", "window": "minute"|"hour", "value": <integer>}]}`
 `limits` 必须非空；每个 `metric`/`window` 对最多只能出现一次。 `value` 是 1..1000000000000000。**subject_matchers** 是 `{key, value}` 对的列表。内置
-键是 `organization_id`、`user_group_id`、`workspace_id`、`agent_id`、
+键是 `organization_id`、`user_group_id`、`workspace_id`、`agent_uuid`、
 `agent_environment`、`user_id`、`api_key_id`、`run_rule_id`。
 同一键下的值进行 OR 运算；不同的键进行 AND 运算。
 `user_group_id` 必须是组织级用户组 UUID，而不是工作区子用户组 UUID。
 工作区子用户组中的成员身份与其组织父用户组 ID 匹配。不检查用户组 ID 是否存在。
-`agent_id` 和 `agent_environment` 来自 Agent 的目标请求
-部署，并且必须与一个 `workspace_id` 结合使用
-匹配器：`agent_id`单独针对那些代理，`agent_environment`
+`agent_uuid` 和 `agent_environment` 来自 Agent 的目标请求
+部署：`agent_uuid`单独针对这些代理，`agent_environment`
 （`LOCAL`、`DEVELOPMENT`、`STAGING` 或 `PRODUCTION`）单独目标
 这些环境中的每个代理，并且都共同针对这些环境
-这些环境中的代理。代理密钥是
+这些环境中的代理。 `agent_uuid` 不能与
+`workspace_id`； `agent_environment`单独可加1个`workspace_id`。
+代理密钥是
 默认策略不支持。默认策略使用空的内置匹配器值，因此
 运行时为其看到的每个主题具体化一个子对象。一个
 `default_spend_cap` 和 `default_rate_limit` 可以添加一个空自定义

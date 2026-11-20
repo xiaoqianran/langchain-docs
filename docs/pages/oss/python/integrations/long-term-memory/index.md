@@ -31,6 +31,7 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 | [PostgreSQL / pgvector (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [`langgraph-store-postgres`](https://pypi.org/project/langgraph-store-postgres/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/postgres) |
 | [Azure Cosmos DB NoSQL (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [`langgraph-store-cosmosdb`](https://pypi.org/project/langgraph-store-cosmosdb/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/cosmosdb) |
 | [Google Firestore (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [`langgraph-store-firestore`](https://pypi.org/project/langgraph-store-firestore/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/firestore) |
+| [CockroachDB](/oss/python/integrations/providers/cockroachdb#langgraph-store) | [`langchain-cockroachdb`](https://pypi.org/project/langchain-cockroachdb/) | [cockroachdb/langchain-cockroachdb](https://github.com/cockroachdb/langchain-cockroachdb) |
 
 ***
 

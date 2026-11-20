@@ -22,7 +22,7 @@
 >
 > 每个云提供商都有自己的 LangSmith 实例，具有独立的用户和组织。要在多个云提供商上部署数据平面，请在每个提供商的实例上创建一个 LangSmith 组织。有关实例 URL，请参阅 [Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers)。> [手风琴] 我需要专用的 AWS 账户吗？
 >
-> 不。LangChain 建议使用新帐户以实现更清晰的计费，并且因为某些权限无法限定到特定资源，但这不是必需的。
+> 否。LangChain 建议使用新帐户以实现更清晰的计费，并且因为某些权限无法限定到特定资源，但这不是必需的。
 
 > [accordion] 我可以将 BYOC 安装到现有 VPC 中吗？
 >
@@ -38,7 +38,7 @@
 >
 > 不可以。不支持将现有数据平面移动到不同的 VPC，也不支持在创建后更改其 VPC 和子网配置。> [accordion] 我可以将 BYOC 安装到现有的 EKS 集群中吗？
 >
-> 不，并且没有计划支持它。 LangChain 代表您操作集群，包括升级和修补，专用集群使得可靠管理成为可能。
+> 不，并且没有计划支持它。 LangChain 代表您操作集群，包括升级和修补，专用集群使可靠的管理成为可能。
 
 > [accordion] 我可以在 LangSmith VPC 或集群中运行自己的工作负载吗？
 >
@@ -48,13 +48,13 @@
 >
 > 在 Kubernetes 集群中，不干扰LangSmith的被动工作负载就可以，例如可观察性和安全监控代理。当您部署它们时：
 >
-> * 使用您自己的节点组和容忍度，而不是 LangSmith 运行的节点组和容忍度。
+> * 使用您自己的节点组和容忍度，而不是运行 LangSmith 的节点组和容忍度。
 > * 部署到 LangSmith 使用的命名空间之外的命名空间中。
-> * 请勿编辑资源LangChain条款。
+> * 请勿编辑资源LangChain 规定。
 >
 > LangChain 不对因工作负载干扰而导致的停机或问题负责。> [accordion] 我应该为我的角色的外部 ID 设置什么值？
 >
-> LangChain 提供外部 ID。导航到 **设置 > 数据平面**，然后使用 **数据平面** 标题旁边的复制按钮进行复制。应用 `langsmith-byoc-role` Terraform 模块时使用此值。角色的信任策略必须在其 `ExternalId` 条件下使用此值。
+> LangChain 提供外部ID。导航到 **设置 > 数据平面**，然后使用 **数据平面** 标题旁边的复制按钮进行复制。应用 `langsmith-byoc-role` Terraform 模块时使用此值。角色的信任策略必须在其 `ExternalId` 条件下使用此值。
 
 > [手风琴] 配置需要多长时间？
 >
@@ -62,11 +62,11 @@
 
 > [accordion] 如果配置失败会发生什么？
 >
-> 数据平面转换至`Provisioning Failed`。失败通常是由于缺少跨账户角色的权限引起的，或者是由于服务控制策略 (SCP) 阻止了LangChain 需要执行的操作而引起的。
+> 数据平面转换至`Provisioning Failed`。失败通常是由于缺少跨账户角色的权限造成的，或者是由于服务控制策略 (SCP) 阻止了 LangChain 需要执行的操作造成的。
 >
 > 完全按照发布的方式应用 [⟦T6⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role)，无需任何编辑或更改。修改的模块是缺少权限的常见原因。
 >
-> 联系LangChain团队。更正权限后，配置会自动协调。> [accordion] 我应该使用什么 VPC CIDR 范围？
+> 联系LangChain团队。更正权限后，配置会自动协调。> [手风琴] 我应该使用什么 VPC CIDR 范围？
 >
 > `/18` 和 `/16` 之间的私有 RFC 1918 范围。如果您计划使用 VPC 对等互连，请选择一个与您想要建立对等互连的 VPC 不重叠的范围。 CIDR 范围在配置后无法更改。
 
@@ -113,7 +113,7 @@
 >
 > LangChain 可以管理LangSmith 创建的资源的基础设施，仅此而已。权限的范围由 `managed_by=langsmith` 标签确定，因此该角色无法对您帐户中不相关的资源执行操作。
 >
-> 该角色不拥有授予数据访问权限。参见[How least privilege is enforced](/langsmith/byoc-architecture-aws#how-least-privilege-is-enforced)。> [手风琴] LangChain 可以读取我的痕迹或数据库内容吗？
+> 该角色不拥有授予数据访问的权限。参见[How least privilege is enforced](/langsmith/byoc-architecture-aws#how-least-privilege-is-enforced)。> [手风琴] LangChain 可以读取我的痕迹或数据库内容吗？
 >
 > 不。跨账户角色是基础设施范围而不是数据范围。它可以管理保存数据的资源，但跟踪存储桶上不保存 `s3:GetObject`，PostgreSQL 不保存 `rds-db:connect`，Redis 也不保存 `elasticache:Connect`。
 >
@@ -131,7 +131,7 @@
 
 > [手风琴] 如何撤销LangChain的访问权限？
 >
-> 您在自己的账户中创建并拥有跨账户角色，因此您可以撤消访问权限，而无需涉及 LangChain。删除角色或其与LangChain帐户的信任关系，会阻止控制平面承担该角色，并停止数据平面资源的协调。
+> 您在自己的账户中创建并拥有跨账户角色，因此您可以撤消访问权限，而无需涉及LangChain。删除角色或其与LangChain帐户的信任关系，会阻止控制平面承担该角色，并停止数据平面资源的协调。
 
 > [accordion] 我可以撤销配置期间授予的个人权限吗？
 >
@@ -197,19 +197,23 @@
 >
 > 默认限制为每个组织五个数据平面。要部署更多内容，请联系 LangChain 团队。
 
-> [手风琴] 一个组织可以同时拥有云和 BYOC 工作区吗？
+> [accordion] 为什么 UI 说我可能无法通过网络访问工作区？
+>
+> LangSmith UI 无法到达工作区的数据平面。检查您是否位于到达数据平面的专用网络上。在 Chrome 或 Edge 中，还要检查您是否允许 LangSmith 网站访问本地网络。参见[Allow local network access in Chrome and Edge](/langsmith/byoc-usage#allow-local-network-access-in-chrome-and-edge)。> [手风琴] 一个组织可以同时拥有云和 BYOC 工作区吗？
 >
 > 是的。 LangSmith 云上的工作区路由到 LangChain 管理的后端而不是数据平面，因此两者可以在同一组织中共存。这也意味着您可以从 AWS 云试用迁移到 BYOC，同时重复使用相同的组织、用户、角色和 SSO 配置。
 
-＃＃ 运营> [手风琴] BYOC 部署中谁负责什么？
+## 操作
+
+> [手风琴] BYOC 部署中谁负责什么？
 >
-> LangChain 运行控制平面并通过委派的最小权限访问管理数据平面基础设施。您拥有 AWS 账户、网络连接、数据平面中的数据以及账户内的安全监控。
+> LangChain 通过委派的最小权限访问运行控制平面并管理数据平面基础设施。您拥有 AWS 账户、网络连接、数据平面中的数据以及账户内的安全监控。
 >
 > 有关平台和基础设施、数据和安全以及运营和支持的完整划分，请参阅[BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)。
 
 > [手风琴] 谁升级LangSmith，多久升级一次？
 >
-> LangChain 每天升级数据平面中的 LangSmith 版本。升级是滚动进行的，因此不会出现整个服务停机的情况。 Istio 和 KEDA 等支持服务定期升级，LangChain 管理所有 EKS 集群升级。
+> LangChain 每天都会升级数据平面中的 LangSmith 版本。升级是滚动进行的，因此不会出现整个服务停机的情况。 Istio 和 KEDA 等支持服务定期升级，LangChain 管理所有 EKS 集群升级。
 >
 > 对发布渠道的支持即将推出。参见[Operations](/langsmith/byoc-operations-aws)。> [手风琴] Kubernetes 升级怎么样？
 >
@@ -229,7 +233,7 @@
 
 > [手风琴] 谁监控数据平面？
 >
-> LangChain 在配置后操作数据平面，包括监控正常运行时间和错误恢复、扩展、升级和安全修补。由于部署在您自己的帐户中运行，因此您已经操作的云控制也适用于它。> [手风琴] 我可以为 LangSmith BYOC 设置自己的可观察性吗？
+> LangChain 在配置后操作数据平面，包括监控正常运行时间和错误恢复、扩展、升级和安全修补。由于部署在您自己的帐户中运行，因此您已经操作的云控制也适用于它。> [accordion] 我可以为 LangSmith BYOC 设置自己的可观测性吗？
 >
 > 是的。您可以在EKS集群中安装收集器、代理等可观察性工具，只要不干扰LangSmith的运行即可。
 >
@@ -248,7 +252,7 @@
 > * **RDS**：每天进行备份。
 > * **SmithDB**：S3 中的对象存储保存持久跟踪数据。
 > * **ClickHouse**：在仍然运行它的数据平面上，每天进行备份并存储在 S3 存储桶中。
-> * **ElastiCache**：不进行备份，因为数据是短暂的。> [手风琴] LangChain 是否为 BYOC 数据平面提供正常运行时间 SLA？
+> * **ElastiCache**：不进行备份，因为数据是短暂的。> [accordion] LangChain 是否为 BYOC 数据平面提供正常运行时间 SLA？
 >
 > 不会。数据平面在您的 AWS 账户中运行，因此其可用性取决于您控制的资源，包括账户本身、您配置用于访问数据平面的专用连接以及适用于账户的服务配额和策略。 LangChain 不承诺其不单独控制的基础设施的正常运行时间目标。
 >

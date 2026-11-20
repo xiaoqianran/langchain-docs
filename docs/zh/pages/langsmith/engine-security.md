@@ -8,7 +8,7 @@ LangSmith 引擎如何处理您的数据、GitHub、GitLab 和模型子处理器
 
 [LangSmith Engine](/langsmith/engine) 审查 LangSmith 中已有的跟踪数据，显示问题并确定问题的优先级，并打开拉取请求并提供修复建议、建议的即时更改和评估。
 
-引擎是选择加入、建议性的，并且从不训练您的数据，并且它在 LangSmith 的 SOC 2 Type II 和 ISO 27001 控制下运行。本页面介绍了 Engine 如何处理您的数据、管理其 GitHub、GitLab 和模型访问的控件，以及 LangSmith 云中 Engine 的合规性状况。有关引擎如何在自托管部署中运行的信息，请参阅[Engine on self-hosted](/langsmith/engine-self-hosted)。
+引擎是选择加入、建议性的，并且从不训练您的数据，并且它在 LangSmith 的 SOC 2 Type II 和 ISO 27001 控制下运行。本页面介绍 Engine 如何处理您的数据、管理其 GitHub、GitLab 和模型访问的控件，以及 LangSmith 云中 Engine 的合规状况。有关引擎如何在自托管部署中运行的信息，请参阅[Engine on self-hosted](/langsmith/engine-self-hosted)。
 
 引擎作为 LangSmith 的一部分交付，并继承了 LangSmith 的安全性和合规性态势，并具有涵盖以下部分中描述的 AI 推理层的附加控制。默认情况下，引擎永远不会开启，只能由[Organization Admin](/langsmith/rbac#organization-admin)启用，适用于任何计划的组织。对于LangSmith的平台级控制，包括数据加密和区域处理，请参见[Regions FAQ](/langsmith/regions-faq)和[LangChain Trust Center](https://trust.langchain.com/)。
 
@@ -16,15 +16,15 @@ LangSmith 引擎如何处理您的数据、GitHub、GitLab 和模型子处理器
 
 | **数据来源** | **引擎读取什么** | **存储和持久性** | **启用** |
 | - | - | - | - |
-| LangSmith 工作区内容 |跟踪您存储在 LangSmith 中的数据和其他工作区内容，例如提示和评估器。 |在您的LangSmith租户内。 [Trace retention](/langsmith/usage-and-billing#retention-periods) 是基础或扩展，根据项目选择。 |问题检测、优先级排序和评估建议。 |
-| GitHub 存储库 |来自您连接的存储库的源代码和存储库上下文（请参阅[GitHub integration](#github-integration)）。 |在每次分析运行期间，在隔离的、由 LangChain 管理的沙箱内进行处理，然后丢弃。 |使用建议的代码修复来编写拉取请求。 ||亚搏体育appGitLab项目|连接的 GitLab 帐户可以访问的项目的源代码和项目上下文（请参阅[GitLab integration](#gitlab-integration)）。 |在每次分析运行期间在隔离的、LangChain 管理的沙箱内进行处理，然后丢弃。访问令牌加密存储在LangSmith中。 |将请求创作与建议的代码修复合并。 |
+| LangSmith 工作区内容 |跟踪您存储在 LangSmith 中的数据和其他工作区内容，例如提示和评估器。 |在您的 LangSmith 租户内。 [Trace retention](/langsmith/usage-and-billing#retention-periods) 是基础或扩展，根据项目选择。 |问题检测、优先级排序和评估建议。 |
+| GitHub 存储库 |来自您连接的存储库的源代码和存储库上下文（请参阅[GitHub integration](#github-integration)）。 |在每次分析运行期间在隔离的、LangChain 管理的沙箱内进行处理，然后丢弃。 |使用建议的代码修复来编写拉取请求。 ||亚搏体育appGitLab项目|连接的 GitLab 帐户可以访问的项目的源代码和项目上下文（请参阅[GitLab integration](#gitlab-integration)）。 |在每次分析运行期间在隔离的、LangChain 管理的沙箱内进行处理，然后丢弃。访问令牌加密存储在LangSmith中。 |将请求创作与建议的代码修复合并。 |
 |模型提供者（推理）|仅包含每个分析任务所需的内容。 |配置为每个引擎模型提供商的零数据保留（请参阅[Model subprocessors](#model-subprocessors)）。 |引擎推理和生成。 |
 
 > [!注意]
 >
 > 引擎的读取范围可能会随着时间的推移而扩大。此页面已更新以反映重大变化。上次审核日期为 2026 年 9 月 16 日。
 
-发送到引擎的跟踪内容可以包括用户消息、工具输出和 PII，并且该内容会在每个分析任务的零数据保留下发送到模型子处理器。要在迹线到达LangSmith之前删除敏感字段，请使用[client-side masking](/langsmith/mask-inputs-outputs)。
+发送到引擎的跟踪内容可以包括用户消息、工具输出和 PII，并且该内容会在每个分析任务的零数据保留下发送到模型子处理器。要在跟踪达到 LangSmith 之前删除敏感字段，请使用 [client-side masking](/langsmith/mask-inputs-outputs)。
 
 发动机输出是建议性的。它显示并跟踪问题，提出拉取请求，并推荐用于离线评估的数据集示例。您的工程师和您的分支机构保护和审查政策决定运送什么。
 
@@ -41,14 +41,14 @@ Access 使用 GitHub 的标准应用程序模型：每个操作都通过一个�
 
 ## GitLab 集成
 
-在LangSmith云中，引擎使用工作区管理员保存在LangSmith中的个人访问令牌连接到GitLab.com或自我管理的GitLab实例，通常用于专用的[service account](/langsmith/engine-repositories#prepare-a-service-account)。令牌需要`api`范围。只有拥有`workspaces:manage`权限的用户才能连接或断开GitLab。
+在LangSmith云中，引擎使用工作区管理员保存在LangSmith中的个人访问令牌连接到GitLab.com或自我管理的GitLab实例，通常用于专用的[service account](/langsmith/engine-repositories#prepare-a-service-account)。令牌需要`api`范围。只有拥有`workspaces:manage`权限的用户才能连接或断开GitLab。在 [self-hosted LangSmith](/langsmith/self-hosted) 和 [BYOC](/langsmith/byoc) 上，连接及其令牌存储在您的部署中。
 
 该令牌充当其 GitLab 帐户：* **到达**：引擎只能访问该帐户所属的组和项目。引擎至少需要开发人员角色来读取代码、推送修复分支和打开合并请求。 LangSmith 需要维护者角色来注册合并请求 webhook。
 * **写入范围**：与 GitHub 应用程序安装令牌不同，GitLab 访问令牌无法缩小到选定项目或只读访问权限。引擎仅推送自己的修复分支，但帐户的角色和分支保护规则决定令牌可以更改的内容。仅将帐户添加到引擎需要的项目中，并保护引擎不应推送到的分支。
 
 保存令牌时，LangSmith 负责保管该令牌。它会立即轮换令牌，因此管理员粘贴的值将停止工作，并且 LangSmith 保留唯一的工作副本（静态加密）。 LangSmith 在每个生命周期中更新令牌，一次最多一年，并在管理员断开与 GitLab 的连接时撤销它。删除工作区会删除其连接，但不会撤销令牌，令牌随后会自行过期。对于每次运行，Engine 都会将其跟踪的 GitLab 项目克隆到用于 GitHub 存储库的同一个隔离的、网络受限的沙箱中。沙箱外部的代理仅将令牌添加到这些项目的 Git 请求中，因此沙箱中的代码无法读取令牌或将其用于 GitLab API 调用。红队运行使用只读存储库凭据。由于 GitLab 访问令牌无法限制为读取访问权限，因此 Red Teaming 运行不会收到它，也不使用 GitLab 项目。
 
-每个工作区的合并请求 Webhook 都有自己的 URL 和秘密。 LangSmith 验证每次交付的秘密，并且交付只能更新该工作区的问题。
+每个工作区的合并请求 Webhook 都有自己的 URL 和密钥。 LangSmith 验证每次交付的秘密，并且交付只能更新该工作区的问题。
 
 连接和断开 GitLab 在[audit logs](/langsmith/audit-logs)中记录为`upsert_gitlab_connection`和`delete_gitlab_connection`。
 

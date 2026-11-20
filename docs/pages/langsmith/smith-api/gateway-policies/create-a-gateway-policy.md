@@ -29,17 +29,18 @@ With `"strategy": "weighted"`, each request tries the distinct `chain.candidates
 `limits` must be non-empty; each `metric`/`window` pair may appear at most once. `value` is 1..1000000000000000.
 
 **subject_matchers** is a list of `{key, value}` pairs. Built-in
-keys are `organization_id`, `user_group_id`, `workspace_id`, `agent_id`,
+keys are `organization_id`, `user_group_id`, `workspace_id`, `agent_uuid`,
 `agent_environment`, `user_id`, `api_key_id`, and `run_rule_id`.
 Values under the same key are ORed; distinct keys are ANDed.
 `user_group_id` must be an organization-level User Group UUID, not a workspace child User Group UUID.
 Membership in a workspace child User Group matches its organization parent User Group ID. User Group IDs are not checked for existence.
-`agent_id` and `agent_environment` target requests from Agent
-deployments and must be combined with exactly one `workspace_id`
-matcher: `agent_id` alone targets those Agents, `agent_environment`
+`agent_uuid` and `agent_environment` target requests from Agent
+deployments: `agent_uuid` alone targets those Agents, `agent_environment`
 (`LOCAL`, `DEVELOPMENT`, `STAGING`, or `PRODUCTION`) alone targets
 every Agent in those environments, and both together target those
-Agents in those environments. Agent keys are
+Agents in those environments. `agent_uuid` can't be combined with
+`workspace_id`; `agent_environment` alone may add one `workspace_id`.
+Agent keys are
 not supported in default policies. A default policy uses an empty built-in matcher value so
 the runtime materializes a child for each subject it sees. A
 `default_spend_cap` and `default_rate_limit` may add one empty custom

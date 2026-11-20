@@ -142,7 +142,6 @@
 
 * **运行时间必须少于一周**：当线程空闲时，只有过去 7 天内的运行才有资格进行评估。
 * **一次最多处理 500 个线程**：单个执行最多处理 500 个匹配线程，按最近的活动排序。
-* **每个工作区最多 10 个多轮在线评估器**
 
 ## 故障排除
 
@@ -150,9 +149,9 @@
 
 您可以通过前往跟踪项目或代理环境中的 **Evaluators** 选项卡并单击您创建的评估器的 **Logs** 按钮来查看其运行历史记录，从而检查评估器上次运行的时间。
 
-**检查发送给评估者的数据**检查发送到评估器的数据，方法是前往跟踪项目或代理环境中的 **Evaluators** 选项卡，单击您创建的评估器，然后单击 **Traces** 选项卡。仅当您 [turned on tracing for the evaluator](/langsmith/evaluators#trace-evaluator-runs) 时，该选项卡才会显示痕迹。新的评估者从关闭跟踪开始。
+**检查发送给评估者的数据**
 
-在此选项卡中，您可以看到传递到 LLM-as-a-judge 评估器的输入。如果您的消息未正确传递，您将在输入中看到空白值。如果您的邮件未采用 [the expected formats](/langsmith/online-evaluations-multi-turn#prerequisites) 之一的格式，则可能会发生这种情况。
+检查发送到评估器的数据，方法是前往跟踪项目或代理环境中的 **Evaluators** 选项卡，单击您创建的评估器，然后单击 **Traces** 选项卡。仅当您 [turned on tracing for the evaluator](/langsmith/evaluators#trace-evaluator-runs) 时，该选项卡才会显示痕迹。新的评估者从关闭跟踪开始。在此选项卡中，您可以看到传递到 LLM-as-a-judge 评估器的输入。如果您的消息未正确传递，您将在输入中看到空白值。如果您的消息未采用 [the expected formats](/langsmith/online-evaluations-multi-turn#prerequisites) 之一的格式，则可能会发生这种情况。
 
 ***
 
