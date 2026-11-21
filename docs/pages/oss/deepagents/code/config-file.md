@@ -550,13 +550,18 @@ Refer to your provider's reference documentation for compatibility information a
 
 ## Compatible APIs
 
-For providers that expose APIs that are wire-compatible with OpenAI or Anthropic, you can use the existing `langchain-openai` or `langchain-anthropic` packages by pointing `base_url` at the provider's endpoint:
+For providers that expose APIs that are wire-compatible with OpenAI or Anthropic, you can use the existing `langchain-openai` or `langchain-anthropic` packages by pointing `base_url` at the provider's endpoint.
+
+Most OpenAI-compatible gateways only implement Chat Completions. Set `use_responses_api = false` so Deep Agents Code does not call the [Responses API](https://platform.openai.com/docs/api-reference/responses):
 
 ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [models.providers.openai]
 base_url = "https://api.example.com/v1"
 api_key_env = "EXAMPLE_API_KEY"
 models = ["my-model"]
+
+[models.providers.openai.params]
+use_responses_api = false
 ```
 
 ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -572,12 +577,7 @@ models = ["my-model"]
 
 > [!WARNING]
 >
-> The OpenAI provider defaults to the [Responses API](https://platform.openai.com/docs/api-reference/responses), which most OpenAI-compatible gateways do not implement. If your provider only supports the Chat Completions API, invocation will likely fail. Disable the Responses API explicitly:
->
-> ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> [models.providers.openai.params]
-> use_responses_api = false
-> ```
+> Omit `use_responses_api = false` only when the gateway implements the Responses API. Without that flag, Chat Completions-only endpoints fail because the OpenAI provider defaults to Responses.
 
 ## Arbitrary providers
 

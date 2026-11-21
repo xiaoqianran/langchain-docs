@@ -16,9 +16,9 @@
 
 * **LangSmith UI 和 API**：可观察性、跟踪、评估、见解和聊天。
 * **后端服务**：队列、游乐场和 ACE。
-* **数据存储**：PostgreSQL、Redis、ClickHouse 和可选的 blob 存储。
+* **数据存储**：PostgreSQL、Redis、ClickHouse 和 Blob 存储。
 
-LangSmith 可在任何符合要求的 Kubernetes 集群上运行。它已经在以下发行版上进行了测试：
+LangSmith 可以在任何符合要求的 Kubernetes 集群上运行。它已经在以下发行版上进行了测试：
 
 * 谷歌 Kubernetes 引擎 (GKE)
 * 亚马逊弹性 Kubernetes 服务 (EKS)
@@ -98,13 +98,14 @@ LangSmith 可在任何符合要求的 Kubernetes 集群上运行。它已经在�
 
 ### 数据存储
 
-LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来存储跟踪。默认情况下，这些服务安装在 Kubernetes 集群内。对于生产，请改用外部数据存储。对于 PostgreSQL 和 Redis，最好的选择是云提供商的托管服务。
+LangSmith 使用 PostgreSQL 数据库、Redis 缓存、ClickHouse 数据库和 Blob 存储来存储跟踪。默认情况下，这些服务安装在 Kubernetes 集群内，并使用 RustFS 进行 Blob 存储。对于生产，请改用外部数据存储。对于 PostgreSQL 和 Redis，最好的选择是云提供商的托管服务。
 
 有关更多信息，请参阅以下外部服务设置指南：
 
 * [PostgreSQL](/langsmith/self-host-external-postgres)
 * [Redis](/langsmith/self-host-external-redis)
 * [ClickHouse](/langsmith/self-host-external-clickhouse)
+* [Blob storage](/langsmith/self-host-blob-storage)
 
 有关每个数据存储支持的最低版本，请参阅[Minimum versions for self-hosting dependencies](/langsmith/self-host-dependency-versions)。 [SmithDB](/langsmith/self-host-smithdb) 是一个可选数据存储，您可以在基本安装后启用。本指南不需要它。
 
@@ -151,7 +152,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
 ### 配置签名 JWKS
 
-自托管 LangSmith 使用 Ed25519 JSON Web 密钥集 (JWKS) 为其 OAuth 授权服务器和 LLM 身份验证代理签署令牌。配置此密钥可启用自托管 OAuth 登录，包括 `langsmith auth login` 和远程 MCP 身份验证，并允许 LangSmith 签署通过 LLM 身份验证代理发送的请求。
+自托管 LangSmith 使用 Ed25519 JSON Web 密钥集 (JWKS) 为其 OAuth 授权服务器和 LLM 身份验证代理签署令牌。配置此密钥可启用自托管 OAuth 登录，包括 `langsmith auth login` 和远程 MCP 身份验证，并允许 LangSmith 对通过 LLM 身份验证代理发送的请求进行签名。
 
 JWKS 包含私钥。将其存储在 Kubernetes Secret 中并在升级过程中保持稳定。 LangSmith 派生公钥并从 `/.well-known/jwks.json` 提供公钥，因此 LLM 身份验证代理等客户端可以在不接收私钥的情况下验证令牌。
 
@@ -324,7 +325,7 @@ curl https://<your-langsmith-host>/.well-known/jwks.json
 
 3. 将您的代理指向实例并开始跟踪。参见[Interact with your self-hosted instance](/langsmith/self-host-usage)。
 
-4. 与基础设施管理员合作：
+4. 与您的基础设施管理员合作：
 
    * 为您的 LangSmith 实例设置 DNS 以方便访问。
    * 配置 SSL 以确保提交到LangSmith 的跟踪数据在传输过程中加密。

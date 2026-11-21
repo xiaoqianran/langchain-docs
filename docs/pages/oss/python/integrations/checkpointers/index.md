@@ -17,26 +17,29 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 
 ### Execution and state
 
-| Backend | Package | Source |
-| - | - | - |
-| [In-memory](https://reference.langchain.com/python/langgraph.checkpoint/memory/InMemorySaver) | [`langgraph-checkpoint`](https://pypi.org/project/langgraph-checkpoint/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint) |
-| [SQLite](https://reference.langchain.com/python/langgraph.checkpoint.sqlite/SqliteSaver) | [`langgraph-checkpoint-sqlite`](https://pypi.org/project/langgraph-checkpoint-sqlite/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite) |
-| [PostgreSQL](https://reference.langchain.com/python/langgraph.checkpoint.postgres/PostgresSaver) | [`langgraph-checkpoint-postgres`](https://pypi.org/project/langgraph-checkpoint-postgres/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres) |
-| AWS (DynamoDB, Bedrock, Valkey) | [`langgraph-checkpoint-aws`](https://pypi.org/project/langgraph-checkpoint-aws/) | [langchain-ai/langchain-aws](https://github.com/langchain-ai/langchain-aws/tree/main/libs/langgraph-checkpoint-aws) |
-| [MongoDB](/oss/python/integrations/memory/mongodb-short-term-memory) | [`langgraph-checkpoint-mongodb`](https://pypi.org/project/langgraph-checkpoint-mongodb/) | [langchain-ai/langchain-mongodb](https://github.com/langchain-ai/langchain-mongodb/tree/main/libs/langgraph-checkpoint-mongodb) |
-| Azure Cosmos DB NoSQL | [`langchain-azure-cosmosdb`](https://pypi.org/project/langchain-azure-cosmosdb/) | [langchain-ai/langchain-azure](https://github.com/langchain-ai/langchain-azure/tree/main/libs/azure-cosmosdb) |
-| Redis | [`langgraph-checkpoint-redis`](https://pypi.org/project/langgraph-checkpoint-redis/) | [redis-developer/langgraph-redis](https://github.com/redis-developer/langgraph-redis) |
-| [CockroachDB](/oss/python/integrations/providers/cockroachdb#langgraph-checkpointer) | [`langchain-cockroachdb`](https://pypi.org/project/langchain-cockroachdb/) | [cockroachdb/langchain-cockroachdb](https://github.com/cockroachdb/langchain-cockroachdb) |
-| [Aerospike](/oss/python/integrations/providers/aerospike#langgraph-checkpointer) | [`langgraph-checkpoint-aerospike`](https://pypi.org/project/langgraph-checkpoint-aerospike/) | [aerospike-community/aerospike-langgraph](https://github.com/aerospike-community/aerospike-langgraph) |
-| [ScyllaDB](https://docs.scylladb.com) | [`langgraph-checkpoint-scylladb`](https://pypi.org/project/langgraph-checkpoint-scylladb/) | [scylladb/langchain-scylladb](https://github.com/scylladb/langchain-scylladb/tree/main/libs/langgraph-checkpoint-scylladb) |
-| [Tigris](https://www.tigrisdata.com/docs/) | [`langgraph-checkpoint-tigris`](https://pypi.org/project/langgraph-checkpoint-tigris/) | [tigrisdata/tigris-langgraph](https://github.com/tigrisdata/tigris-langgraph/tree/main/libs/checkpoint-tigris) |
-| [TypeDB](https://typedb.com/docs) | [`langgraph-checkpoint-typedb`](https://pypi.org/project/langgraph-checkpoint-typedb/) | [typedb/langgraph-checkpoint-typedb](https://github.com/lolski/langgraph-checkpoint-typedb) |
-| [Inspeximus](https://dancenitra.github.io/inspeximus/) | [`langgraph-checkpoint-inspeximus`](https://pypi.org/project/langgraph-checkpoint-inspeximus/) | [DanceNitra/inspeximus](https://github.com/DanceNitra/inspeximus) |
-| Supabase | [`langgraph-checkpoint-supabase`](https://pypi.org/project/langgraph-checkpoint-supabase/) | [Tghez/langgraph-checkpoint-supabase](https://github.com/Tghez/langgraph-checkpoint-supabase) |
-| [Amazon DynamoDB (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/dynamodb/) | [`langgraph-dynamodb-checkpoint`](https://pypi.org/project/langgraph-dynamodb-checkpoint/) | [skamalj/langgraph_dynamodb_checkpoint](https://github.com/skamalj/langgraph_dynamodb_checkpoint) |
-| [Azure Cosmos DB NoSQL (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/cosmosdb/) | [`langgraph-checkpoint-cosmosdb`](https://pypi.org/project/langgraph-checkpoint-cosmosdb/) | [skamalj/langgraph_checkpoint_cosmosdb](https://github.com/skamalj/langgraph_checkpoint_cosmosdb) |
-| [Google Firestore (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/firestore/) | [`langgraph-checkpoint-firestore`](https://pypi.org/project/langgraph-checkpoint-firestore/) | [skamalj/langgraph_checkpoint_firestore](https://github.com/skamalj/langgraph_checkpoint_firestore) |
-| [SingleStore](https://www.singlestore.com/docs/) | [`langgraph-singlestore`](https://pypi.org/project/langgraph-singlestore/) | [singlestore-labs/langchain-singlestore](https://github.com/singlestore-labs/langchain-singlestore) |
+| Integration | Downloads |
+| :- | :- |
+| [`InMemorySaver`](https://reference.langchain.com/python/langgraph.checkpoint/memory/InMemorySaver) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint/month)](https://pypi.org/project/langgraph-checkpoint/) |
+| [`PostgresSaver`](https://reference.langchain.com/python/langgraph.checkpoint.postgres/PostgresSaver) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-postgres/month)](https://pypi.org/project/langgraph-checkpoint-postgres/) |
+| [`SqliteSaver`](https://reference.langchain.com/python/langgraph.checkpoint.sqlite/SqliteSaver) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-sqlite/month)](https://pypi.org/project/langgraph-checkpoint-sqlite/) |
+| [`RedisSaver`](https://github.com/redis-developer/langgraph-redis) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-redis/month)](https://pypi.org/project/langgraph-checkpoint-redis/) |
+| [`BedrockSessionSaver`](https://github.com/langchain-ai/langchain-aws/tree/main/libs/langgraph-checkpoint-aws) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-aws/month)](https://pypi.org/project/langgraph-checkpoint-aws/) |
+| [`DynamoDBSaver`](https://github.com/langchain-ai/langchain-aws/tree/main/libs/langgraph-checkpoint-aws) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-aws/month)](https://pypi.org/project/langgraph-checkpoint-aws/) |
+| [`ValkeySaver`](https://github.com/langchain-ai/langchain-aws/tree/main/libs/langgraph-checkpoint-aws) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-aws/month)](https://pypi.org/project/langgraph-checkpoint-aws/) |
+| [`MongoDBSaver`](/oss/python/integrations/memory/mongodb-short-term-memory) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-mongodb/month)](https://pypi.org/project/langgraph-checkpoint-mongodb/) |
+| [`FirestoreSaver (agentstate)`](https://skamalj.github.io/agentstate-reducer/langgraph/firestore/) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-firestore/month)](https://pypi.org/project/langgraph-checkpoint-firestore/) |
+| [`CosmosDBSaverSync`](https://github.com/langchain-ai/langchain-azure/tree/main/libs/azure-cosmosdb) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-azure-cosmosdb/month)](https://pypi.org/project/langchain-azure-cosmosdb/) |
+| [`CosmosDBSaver (agentstate)`](https://skamalj.github.io/agentstate-reducer/langgraph/cosmosdb/) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-cosmosdb/month)](https://pypi.org/project/langgraph-checkpoint-cosmosdb/) |
+| [`DynamoDBSaver (agentstate)`](https://skamalj.github.io/agentstate-reducer/langgraph/dynamodb/) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-dynamodb-checkpoint/month)](https://pypi.org/project/langgraph-dynamodb-checkpoint/) |
+| [`CockroachDBSaver`](/oss/python/integrations/providers/cockroachdb#langgraph-checkpointer) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cockroachdb/month)](https://pypi.org/project/langchain-cockroachdb/) |
+| [`GridGainCheckpointSaver`](https://pypi.org/project/langgraph-checkpoint-gridgain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-gridgain/month)](https://pypi.org/project/langgraph-checkpoint-gridgain/) |
+| [`AerospikeSaver`](/oss/python/integrations/providers/aerospike#langgraph-checkpointer) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-aerospike/month)](https://pypi.org/project/langgraph-checkpoint-aerospike/) |
+| [`SupabaseSaver`](https://github.com/Tghez/langgraph-checkpoint-supabase) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-supabase/month)](https://pypi.org/project/langgraph-checkpoint-supabase/) |
+| [`SingleStoreSaver`](https://www.singlestore.com/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-singlestore/month)](https://pypi.org/project/langgraph-singlestore/) |
+| [`TigrisSaver`](https://www.tigrisdata.com/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-tigris/month)](https://pypi.org/project/langgraph-checkpoint-tigris/) |
+| [`InspeximusSaver`](https://dancenitra.github.io/inspeximus/) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-inspeximus/month)](https://pypi.org/project/langgraph-checkpoint-inspeximus/) |
+| [`ScyllaDBSaver`](https://docs.scylladb.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-scylladb/month)](https://pypi.org/project/langgraph-checkpoint-scylladb/) |
+| [`TypeDBSaver`](https://typedb.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-checkpoint-typedb/month)](https://pypi.org/project/langgraph-checkpoint-typedb/) |
 
 ***
 

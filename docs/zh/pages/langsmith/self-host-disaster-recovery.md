@@ -21,7 +21,7 @@
 | LangSmith服务 | `langsmith-frontend`、`langsmith-backend`、`langsmith-platform-backend`、`langsmith-queue`、`langsmith-ingest-queue`、`langsmith-playground`、`langsmith-ace-backend` |无国籍|重新安装 Helm 图表 |
 | PostgreSQL |操作数据：组织、工作区、用户、API 密钥、数据集、提示、项目、部署元数据 | **耐用** |从备份或副本恢复 |
 |点击屋 |跟踪和反馈（大量分析数据）| **耐用** |从备份或副本恢复 |
-| Blob 存储（S3/GCS/Azure Blob）|运行输入、输出、错误、清单、额外内容、事件、附件（启用时）| **耐用** |从版本化存储桶或副本恢复 |
+| Blob 存储（S3/GCS/Azure Blob 或集群内 RustFS）|运行输入、输出、错误、清单、额外内容、事件、附件 | **耐用** |从版本控制的存储桶或副本恢复；像其他集群内数据存储一样备份 RustFS 卷 |
 | Redis（或 Valkey）|临时队列状态、发布/订阅、缓存、运行心跳 |短暂的|重新配置；无需恢复 |
 | Kubernetes 对象 | Helm 值、`Secret`s、TLS 材料、IRSA / 工作负载身份绑定 |配置|从源代码管理重新应用或备份集群状态 |> [!警告]
 >

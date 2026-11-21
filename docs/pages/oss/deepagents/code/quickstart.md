@@ -22,7 +22,7 @@ Use the `/auth` command to connect with a provider. See [Providers](/oss/deepage
 
 > [!NOTE]
 >
-> Web search uses [Tavily](https://tavily.com). Add a key with `/auth`. See [Enable web search](/oss/deepagents/code/credentials#enable-web-search-with-tavily).
+> Built-in web search uses [Tavily](https://tavily.com). Add a key with `/auth`. See [Enable web search](/oss/deepagents/code/credentials#enable-web-search). For other search providers, add a remote [MCP server](/oss/deepagents/code/mcp-tools).
 
 **3. Give the agent a task**
 

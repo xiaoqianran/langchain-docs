@@ -1,44 +1,48 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Set up a build machine on a restricted network | https://docs.langchain.com/langsmith/self-host-restricted-network-build -->
 
-# Set up a build machine on a restricted network
+# 在受限网络上设置构建机器
 
-Configure pip, uv, Python, and the LangGraph CLI to pull every package, interpreter, and image from an internal registry, then build a Python or JavaScript Agent Server image with no public internet access.
+配置 pip、uv、Python 和 LangGraph CLI 以从内部注册表中提取每个包、解释器和映像，然后构建一个无需公共 Internet 访问的 Python 或 JavaScript 代理服务器映像。
 
-A build machine on a restricted network has no route to pypi.org, npmjs.org, GitHub, or Docker Hub. Every package, tool, interpreter, and container image comes from an internal registry, such as Artifactory or Nexus. Configure each tool on that machine to use the internal registry, then build an [Agent Server](/langsmith/agent-server) image with the [LangGraph CLI](/langsmith/cli).
+受限网络上的构建机器没有通往 pypi.org、npmjs.org、GitHub 或 Docker Hub 的路由。每个包、工具、解释器和容器映像都来自内部注册表，例如 Artifactory 或 Nexus。配置该计算机上的每个工具以使用内部注册表，然后使用 [LangGraph CLI](/langsmith/cli) 构建 [Agent Server](/langsmith/agent-server) 映像。
 
-pip, uv, uv's Python downloads, and the image build each read their own setting. Configuring one leaves the others pointed at the public internet. Work through the sections in order, then run the checks in [Verify the setup](#verify-the-setup). The LangGraph CLI is a Python package, so a JavaScript project needs the pip and uv setup too.
+pip、uv、uv 的 Python 下载和图像构建各自读取自己的设置。配置其中一个后，其他的将指向公共互联网。按顺序完成各个部分，然后运行[Verify the setup](#verify-the-setup) 中的检查。 LangGraph CLI 是一个 Python 包，因此 JavaScript 项目也需要 pip 和 uv 设置。
 
-> [!TIP]
+> [!提示]
 >
-> This page covers the build machine. To run the image you build, see [Deploy with control plane](/langsmith/deploy-with-control-plane) or [Self-host standalone servers](/langsmith/deploy-standalone-server). For the egress a running deployment needs, see [Egress for billing and operational telemetry](/langsmith/self-host-egress).
+> 本页介绍了构建机器。要运行您构建的映像，请参阅[Deploy with control plane](/langsmith/deploy-with-control-plane)或[Self-host standalone servers](/langsmith/deploy-standalone-server)。有关正在运行的部署所需的出口，请参阅[Egress for billing and operational telemetry](/langsmith/self-host-egress)。
 
-## Prerequisites
+## 先决条件
 
-Collect the following from your platform team before you start:
+在开始之前，请从您的平台团队收集以下信息：* **PyPI 存储库 URL**：代理或托管 Python 包的内部索引，在此页面上写为 `<PYPI_INDEX_URL>`。例如，`https://pypi.example.internal/simple`。
+* **容器注册中心**：注册中心主机，如果有的话加上端口，写为`<DOCKER_REGISTRY>`。它必须包含代理服务器基础映像的镜像。参见[Additional images for Agent Server builds](/langsmith/self-host-mirroring-images#additional-images-for-agent-server-builds)。
+* **npm 注册表 URL（仅限 JavaScript）**：代理或托管 npm 包的内部注册表，写作 `<NPM_REGISTRY_URL>`。例如，`https://npm.example.internal`。省略尾部斜杠，因为 Corepack 会向其附加路径。
+* **CA 捆绑包**：内部证书颁发机构 (CA) 的 PEM 文件的路径，写作 `<CA_BUNDLE_PATH>`。内部注册表通常提供由组织自己的 CA 签名的证书，操作系统和工具默认情况下不信任这些证书。
+* **根访问权限**：您在构建机器上是否有 `sudo`。如果没有 sudo，请使用此页面上的每用户文件位置。要求平台团队安装操作系统包和 CA。
+* **Python 版本**：操作系统包存储库提供哪些版本。
 
-* **PyPI repository URL**: The internal index that proxies or hosts Python packages, written as `<PYPI_INDEX_URL>` on this page. For example, `https://pypi.example.internal/simple`.
-* **Container registry**: The registry host, plus the port if it has one, written as `<DOCKER_REGISTRY>`. It must hold a mirror of the Agent Server base image. See [Additional images for Agent Server builds](/langsmith/self-host-mirroring-images#additional-images-for-agent-server-builds).
-* **npm registry URL (JavaScript only)**: The internal registry that proxies or hosts npm packages, written as `<NPM_REGISTRY_URL>`. For example, `https://npm.example.internal`. Leave off the trailing slash, because Corepack appends paths to it.
-* **CA bundle**: The path to the PEM file for your internal certificate authority (CA), written as `<CA_BUNDLE_PATH>`. Internal registries usually serve certificates signed by your organization's own CA, which operating systems and tools do not trust by default.
-* **Root access**: Whether you have `sudo` on the build machine. Without sudo, use the per-user file locations on this page. Ask the platform team to install OS packages and the CA.
-* **Python versions**: Which versions the OS package repositories provide.
+## 信任内部 CA后面的每个步骤都通过 HTTPS 连接到内部注册表。在计算机信任内部 CA 之前，这些连接会因证书错误而失败，因此请先安装 CA：
 
-## Trust the internal CA
+1. 将 `<CA_BUNDLE_PATH>` 添加到操作系统信任存储区。该命令取决于操作系统。例如，在 Debian 和 Ubuntu 上，将文件复制到扩展名为 `.crt` 的 `/usr/local/share/ca-certificates/`。然后运行`sudo update-ca-certificates`。
+2. 在 Linux 上，将 CA 复制到`/etc/docker/certs.d/<DOCKER_REGISTRY>/ca.crt`，以便 Docker 信任内部注册表。详细信息请参见 Docker 的[Verify repository client with certificates](https://docs.docker.com/engine/security/certificates/)。
 
-Every later step connects to the internal registry over HTTPS. Until the machine trusts the internal CA, those connections fail with certificate errors, so install the CA first:
+pip 和 uv 各自需要自己的 CA 设置，在[Configure pip](#configure-pip) 和 [Configure uv](#configure-uv) 中有介绍。
 
-1. Add `<CA_BUNDLE_PATH>` to the operating system trust store. The command depends on the OS. For example, on Debian and Ubuntu, copy the file to `/usr/local/share/ca-certificates/` with a `.crt` extension. Then run `sudo update-ca-certificates`.
-2. On Linux, copy the CA to `/etc/docker/certs.d/<DOCKER_REGISTRY>/ca.crt` so Docker trusts the internal registry. For details, see Docker's [Verify repository client with certificates](https://docs.docker.com/engine/security/certificates/).
+## 提供Python解释器
 
-pip and uv each need their own CA setting, covered in [Configure pip](#configure-pip) and [Configure uv](#configure-uv).
+代理服务器映像包含其自己的 Python 解释器。构建机器需要 Python 3.10 或更高版本才能运行 pip、uv 和 LangGraph CLI。从操作系统存储库安装它，例如在 RHEL 系列发行版上：
 
-## Configure pip
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+sudo dnf install python3.12
+```
 
-Set the index once in a pip configuration file. A long URL passed as `--index-url` on each command is easy to get wrong, and a missing space between two flags produces a misleading `404`.
+在某些发行版上，`venv` 作为单独的操作系统软件包提供，例如 Debian 和 Ubuntu 上的 `python3-venv`。也安装它，因为uv安装使用它。如果操作系统存储库不提供支持的 Python 版本，请参阅 uv 的 [Installing Python](https://docs.astral.sh/uv/guides/install-python/) 指南。
 
-Create `~/.config/pip/pip.conf`. To apply the setting to every user on the machine, create `/etc/pip.conf` instead:
+## 配置点子在 pip 配置文件中设置一次索引。在每个命令上作为 `--index-url` 传递的长 URL 很容易出错，并且两个标志之间缺少空格会产生误导性的 `404`。
+
+创建`~/.config/pip/pip.conf`。要将设置应用于计算机上的每个用户，请创建 `/etc/pip.conf`：
 
 ```ini theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [global]
@@ -46,18 +50,16 @@ index-url = <PYPI_INDEX_URL>
 cert = <CA_BUNDLE_PATH>
 ```
 
-* **`index-url`**: Replaces pypi.org as the package index.
-* **`cert`**: The CA bundle pip uses to verify the index. Older pip releases do not read the OS trust store, so set it explicitly.
+* **`index-url`**：替换 pypi.org 作为包索引。
+* **`cert`**：CA 包 pip 用于验证索引。较旧的 pip 版本不会读取操作系统信任存储，因此请明确设置它。
 
-If the index uses plain HTTP, add `trusted-host = <host>` with the index host name. For the full list of file locations and keys, see pip's [Configuration](https://pip.pypa.io/en/stable/topics/configuration/) docs.
+如果索引使用纯 HTTP，请添加 `trusted-host = <host>` 和索引主机名。有关文件位置和密钥的完整列表，请参阅 pip 的 [Configuration](https://pip.pypa.io/en/stable/topics/configuration/) 文档。
 
-## Install uv from the internal index
+## 从内部索引安装 uv
 
-Install uv as a Python package from the internal index. The uv install script (`curl ... | sh`) does not work on a restricted network, because it downloads the uv binary from `releases.astral.sh` or GitHub.
+从内部索引将 uv 作为 Python 包安装。 uv 安装脚本 (`curl ... | sh`) 无法在受限网络上运行，因为它从 `releases.astral.sh` 或 GitHub 下载 uv 二进制文件。
 
-PyPI hosts uv as a wheel that contains the binary. On some distributions, `venv` ships as a separate OS package, such as `python3-venv` on Debian and Ubuntu.
-
-Install uv into its own virtual environment so it does not touch the system Python. Then link the binaries onto your `PATH`:
+PyPI 将 uv 作为包含二进制文件的轮子进行托管。将 uv 安装到它自己的虚拟环境中，这样它就不会接触系统 Python。然后将二进制文件链接到您的`PATH`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 python3 -m venv ~/.local/share/uv-bootstrap
@@ -67,15 +69,13 @@ ln -s ~/.local/share/uv-bootstrap/bin/uv ~/.local/bin/uv
 ln -s ~/.local/share/uv-bootstrap/bin/uvx ~/.local/bin/uvx
 ```
 
-The `pip install` reads the `pip.conf` from the previous section, so it resolves against `<PYPI_INDEX_URL>`.
+`pip install` 读取上一节中的 `pip.conf`，因此它会针对 `<PYPI_INDEX_URL>` 进行解析。
 
-`uv self update` works only for a uv installed by the install script. To upgrade this uv, run `~/.local/share/uv-bootstrap/bin/pip install --upgrade uv`.
+`uv self update` 仅适用于由安装脚本安装的 uv。要升级此 uv，请运行 `~/.local/share/uv-bootstrap/bin/pip install --upgrade uv`。
 
-## Configure uv
+## 配置紫外线uv 不读取 `pip.conf` 或 `PIP_INDEX_URL`。如果没有自己的设置，uv 会针对 pypi.org 进行解析。
 
-uv does not read `pip.conf` or `PIP_INDEX_URL`. Without its own setting, uv resolves against pypi.org.
-
-Set the following once in your shell profile, such as `~/.bashrc`:
+在 shell 配置文件中设置以下内容一次，例如 `~/.bashrc`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export UV_DEFAULT_INDEX="<PYPI_INDEX_URL>"
@@ -83,61 +83,49 @@ export UV_SYSTEM_CERTS=true
 export UV_PYTHON_DOWNLOADS=never
 ```
 
-* **`UV_DEFAULT_INDEX`**: Replaces pypi.org as the default index.
-* **`UV_SYSTEM_CERTS`**: Loads certificates from the OS trust store, which holds the internal CA. By default, uv trusts only its bundled roots.
-* **`UV_PYTHON_DOWNLOADS`**: Stops uv from downloading Python. [Provide the Python interpreter](#provide-the-python-interpreter) explains why.
+* **`UV_DEFAULT_INDEX`**：替换 pypi.org 作为默认索引。
+* **`UV_SYSTEM_CERTS`**：从操作系统信任存储加载证书，该存储保存内部 CA。默认情况下，uv 仅信任其捆绑的根。
+* **`UV_PYTHON_DOWNLOADS`**：阻止 uv 下载 Python，因此它使用 `PATH` 上的解释器。如果没有它，uv 会尝试从 GitHub 下载缺少的解释器，并且在受限网络上，请求在重试 3 次后会失败。
 
-> [!NOTE]
+> [!注意]
 >
-> `UV_SYSTEM_CERTS` requires uv 0.11.0 or later. Earlier versions use `UV_NATIVE_TLS=true`, which later versions still accept with a deprecation warning.
+> `UV_SYSTEM_CERTS` 需要 uv 0.11.0 或更高版本。早期版本使用`UV_NATIVE_TLS=true`，后来的版本仍然接受它并带有弃用警告。
 
-To trust only the internal CA, set `SSL_CERT_FILE=<CA_BUNDLE_PATH>` in place of `UV_SYSTEM_CERTS`. `SSL_CERT_FILE` replaces both uv's bundled roots and the OS trust store. For every setting, see uv's [environment variable reference](https://docs.astral.sh/uv/reference/environment/).
+要仅信任内部 CA，请设置 `SSL_CERT_FILE=<CA_BUNDLE_PATH>` 代替 `UV_SYSTEM_CERTS`。 `SSL_CERT_FILE` 取代了 uv 的捆绑根和操作系统信任存储。对于每个设置，请参阅 uv 的 [environment variable reference](https://docs.astral.sh/uv/reference/environment/)。
 
-## Provide the Python interpreter
+## 构建代理服务器镜像
 
-The Agent Server image ships its own Python. The build machine needs Python 3.10 or later only to run pip, uv, and the LangGraph CLI. Install it from the OS repositories, for example on RHEL-family distributions:
+映像构建在 Docker 内部运行，因此构建计算机上的 pip 和 uv 设置以及操作系统信任存储不适用于它。而是在 `langgraph.json` 中设置基础镜像、包注册表和内部 CA。
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-sudo dnf install python3.12
-```
+准备构建：
 
-uv finds the interpreter on `PATH`. Keep `UV_PYTHON_DOWNLOADS=never`: without it, uv tries to download a missing interpreter from GitHub and retries with no clear error. If the OS repositories do not provide a supported version, see uv's [Installing Python](https://docs.astral.sh/uv/guides/install-python/) guide.
-
-## Build the Agent Server image
-
-The image build runs inside Docker, so the pip and uv settings and the OS trust store on the build machine do not apply to it. Set the base image, the package registry, and the internal CA in `langgraph.json` instead.
-
-To prepare the build:
-
-1. Install the LangGraph CLI. It resolves against `UV_DEFAULT_INDEX`:
+1. 安装LangGraph CLI。它针对 `UV_DEFAULT_INDEX` 进行解析：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    uv tool install langgraph-cli
-   ```
-
-2. Log in to the internal registry:
+   ```2.登录内部注册表：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    docker login <DOCKER_REGISTRY>
    ```
 
-3. Copy the CA bundle into the project directory, next to `langgraph.json`. The build can copy files only from the project directory:
+3. 将 CA 包复制到项目目录中`langgraph.json` 旁边。构建只能从项目目录复制文件：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    cp <CA_BUNDLE_PATH> internal-ca.pem
    ```
 
-Then follow the steps for your project language.
+然后按照适合您的项目语言的步骤进行操作。
 
-### Build a Python project
+### 构建一个Python项目
 
-> [!WARNING]
+> [!警告]
 >
-> Do not rely on `pip_config_file` alone. The CLI installs dependencies with `uv pip install` by default (`pip_installer` set to `auto`), and uv does not read the pip configuration file. The build then resolves against pypi.org and fails. Setting `pip_installer` to `pip` does not fix it either: the step that installs the server package still reads the default index. Set the `UV_DEFAULT_INDEX` build argument in `dockerfile_lines` instead.
+> 不要单独依赖`pip_config_file`。 CLI默认安装`uv pip install`的依赖项（`pip_installer`设置为`auto`），uv不读取pip配置文件。然后构建针对 pypi.org 进行解析并失败。将 `pip_installer` 设置为 `pip` 也无法解决此问题：安装服务器包的步骤仍然读取默认索引。改为在 `dockerfile_lines` 中设置 `UV_DEFAULT_INDEX` 构建参数。
 
-To build the image:
+构建图像：
 
-1. Set `base_image` and `dockerfile_lines` in `langgraph.json`:
+1. 在`langgraph.json`中设置`base_image`和`dockerfile_lines`：
 
    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    {
@@ -154,26 +142,24 @@ To build the image:
        "ARG UV_DEFAULT_INDEX=<PYPI_INDEX_URL>"
      ]
    }
-   ```
+   ```* **`base_image`**：代理服务器镜像，不带标签。当您设置它们时，CLI 会附加一个由 `python_version` 构建的标签，加上 `api_version` 或 `image_distro`。通过上述配置，构建会拉取`<DOCKER_REGISTRY>/langchain/langgraph-api:3.12`，因此该标签必须存在于注册表中。
+   * **`dockerfile_lines`**：在 `FROM` 之后插入 CLI 行。 `COPY` 和 `RUN` 行将内部 CA 附加到映像的系统 CA 捆绑包中，从而保留公共根。这两行 `ARG` 行适用于构建中的每个安装步骤，包括从 `uv.lock` 文件安装。 `SSL_CERT_FILE` 将 uv 指向系统包，否则 uv 会忽略该包，`UV_DEFAULT_INDEX` 将 uv 指向内部索引。 `ARG` 值在 `docker history` 中可见，因此请勿将凭据放入 `<PYPI_INDEX_URL>` 中。
 
-   * **`base_image`**: The mirrored Agent Server image, without a tag. The CLI appends a tag built from `python_version`, plus `api_version` or `image_distro` when you set them. With the configuration above, the build pulls `<DOCKER_REGISTRY>/langchain/langgraph-api:3.12`, so that tag must exist in the registry.
-   * **`dockerfile_lines`**: Lines the CLI inserts after `FROM`. The `COPY` and `RUN` lines append the internal CA to the image's system CA bundle, which keeps the public roots. The two `ARG` lines apply to every install step in the build, including installs from a `uv.lock` file. `SSL_CERT_FILE` points uv at the system bundle, which uv otherwise ignores, and `UV_DEFAULT_INDEX` points uv at the internal index. `ARG` values are visible in `docker history`, so do not put credentials in `<PYPI_INDEX_URL>`.
+   如果索引使用来自公共 CA 的证书，请省略 `COPY`、`RUN` 和 `SSL_CERT_FILE` 行。如果代理在运行时调用内部 HTTPS 服务，请参阅[Trust the internal CA at runtime](#trust-the-internal-ca-at-runtime)。
 
-   If the index uses a certificate from a public CA, leave out the `COPY`, `RUN`, and `SSL_CERT_FILE` lines.
-
-2. Build the image:
+2. 构建镜像：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    langgraph build -t my-agent
    ```
 
-### Build a JavaScript project
+### 构建一个 JavaScript 项目
 
-The build installs packages with the package manager that matches the project's lockfile. Node.js does not read the system CA bundle, so the build trusts the internal CA through `NODE_EXTRA_CA_CERTS` instead.
+构建使用与项目的锁定文件匹配的包管理器来安装包。 Node.js 不会读取系统 CA 包，因此构建通过 `NODE_EXTRA_CA_CERTS` 信任内部 CA。
 
-To build the image:
+构建图像：
 
-1. Set `base_image` and `dockerfile_lines` in `langgraph.json`:
+1. 在`langgraph.json`中设置`base_image`和`dockerfile_lines`：
 
    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    {
@@ -189,35 +175,38 @@ To build the image:
        "ARG NPM_CONFIG_REGISTRY=<NPM_REGISTRY_URL>"
      ]
    }
-   ```
+   ```* **`base_image`**：镜像的 JavaScript Agent Server 映像，不带标签。通过上述配置，构建会拉取`<DOCKER_REGISTRY>/langchain/langgraphjs-api:20`，因此该标签必须存在于注册表中。
+   * **`dockerfile_lines`**：`COPY` 行将内部 CA 放入镜像中，`NODE_EXTRA_CA_CERTS` 将其添加到 Node.js 信任的根中。 `NPM_CONFIG_REGISTRY` 将 npm 和 pnpm 指向内部注册表。 `ARG` 值在 `docker history` 中可见，因此请勿将凭据放入 `<NPM_REGISTRY_URL>` 中。
 
-   * **`base_image`**: The mirrored JavaScript Agent Server image, without a tag. With the configuration above, the build pulls `<DOCKER_REGISTRY>/langchain/langgraphjs-api:20`, so that tag must exist in the registry.
-   * **`dockerfile_lines`**: The `COPY` line puts the internal CA in the image, and `NODE_EXTRA_CA_CERTS` adds it to the roots Node.js trusts. `NPM_CONFIG_REGISTRY` points npm and pnpm at the internal registry. `ARG` values are visible in `docker history`, so do not put credentials in `<NPM_REGISTRY_URL>`.
+   如果注册表使用来自公共 CA 的证书，请省略 `COPY` 和 `NODE_EXTRA_CA_CERTS` 行。
 
-   If the registry uses a certificate from a public CA, leave out the `COPY` and `NODE_EXTRA_CA_CERTS` lines.
+2. 添加包管理器的设置。该镜像通过 Corepack 运行 pnpm 和 Yarn，Corepack 会从 npm 注册表下载包管理器本身：
 
-2. Add the settings for your package manager. The image runs pnpm and Yarn through Corepack, which downloads the package manager itself from the npm registry:
+   * **npm** （`package-lock.json`，或无锁定文件）：无其他设置。即使 `package-lock.json` 记录公共 URL，npm 也会从 `NPM_CONFIG_REGISTRY` 获取。
+   * **pnpm** (`pnpm-lock.yaml`)：将`"ARG COREPACK_NPM_REGISTRY=<NPM_REGISTRY_URL>"`添加到`dockerfile_lines`。将 pnpm 固定在`package.json`，例如`"packageManager": "pnpm@9.15.9"`。
+   * **纱线 1** (`yarn.lock`)：添加相同的`COREPACK_NPM_REGISTRY`线，并固定纱线，例如`"packageManager": "yarn@1.22.22"`。 Yarn 1 从 `yarn.lock` 中记录的 URL 下载，因此针对 `<NPM_REGISTRY_URL>` 重新生成锁定文件。
+   * **Yarn 2 或更高版本** (`yarn.lock`)：将 `NPM_CONFIG_REGISTRY` 行替换为 `"ARG YARN_NPM_REGISTRY_SERVER=<NPM_REGISTRY_URL>"`，添加 `COREPACK_NPM_REGISTRY` 行，并固定 Yarn，例如 `"packageManager": "yarn@4.9.2"`。构建将整个项目目录复制到映像中，包括任何 `.npmrc` 文件。不要将注册表令牌存储​​在项目`.npmrc`中。
 
-   * **npm** (`package-lock.json`, or no lockfile): No other settings. npm fetches from `NPM_CONFIG_REGISTRY` even when `package-lock.json` records public URLs.
-   * **pnpm** (`pnpm-lock.yaml`): Add `"ARG COREPACK_NPM_REGISTRY=<NPM_REGISTRY_URL>"` to `dockerfile_lines`. Pin pnpm in `package.json`, for example `"packageManager": "pnpm@9.15.9"`.
-   * **Yarn 1** (`yarn.lock`): Add the same `COREPACK_NPM_REGISTRY` line, and pin Yarn, for example `"packageManager": "yarn@1.22.22"`. Yarn 1 downloads from the URLs recorded in `yarn.lock`, so regenerate the lockfile against `<NPM_REGISTRY_URL>`.
-   * **Yarn 2 or later** (`yarn.lock`): Replace the `NPM_CONFIG_REGISTRY` line with `"ARG YARN_NPM_REGISTRY_SERVER=<NPM_REGISTRY_URL>"`, add the `COREPACK_NPM_REGISTRY` line, and pin Yarn, for example `"packageManager": "yarn@4.9.2"`.
-
-   The build copies the whole project directory into the image, including any `.npmrc` file. Do not store registry tokens in a project `.npmrc`.
-
-3. Build the image:
+3. 构建镜像：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    langgraph build -t my-agent
    ```
 
-For every `langgraph.json` key, see the [LangGraph CLI configuration file](/langsmith/cli#configuration-file) reference.
+### 在运行时信任内部 CA
 
-## Verify the setup
+`ARG` 值仅在构建映像时应用，并且正在运行的容器不会继承它们。如果您的代理在运行时调用内部 HTTPS 服务，请使用 `ENV` 声明 CA 设置，以便运行的代理信任内部 CA：
 
-Run these checks after setup and at the start of each working session. Each check confirms one section and shows the expected output.
+* **Python**：将 `SSL_CERT_FILE` 行从 `ARG` 更改为 `ENV`。基于 `httpx` 构建的客户端会阅读它。如果您的代理使用`requests`，还要添加`"ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt"`，因为`requests`会忽略`SSL_CERT_FILE`。
+* **JavaScript**：将 `NODE_EXTRA_CA_CERTS` 行从 `ARG` 更改为 `ENV`。
 
-### Check CA trust
+对于每个 `langgraph.json` 键，请参阅 [LangGraph CLI configuration file](/langsmith/cli#configuration-file) 参考。
+
+## 验证设置
+
+设置后和每个工作会话开始时运行这些检查。每一项检查都会确认一个部分并显示预期的输出。
+
+### 检查 CA 信任
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -sS -o /dev/null -w '%{http_code}\n' <PYPI_INDEX_URL>/
@@ -227,9 +216,9 @@ curl -sS -o /dev/null -w '%{http_code}\n' <PYPI_INDEX_URL>/
 200
 ```
 
-A certificate error here means the CA is not in the OS trust store.
+此处的证书错误意味着 CA 不在操作系统信任存储中。
 
-### Check pip
+### 检查点
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 python3 -m pip download --no-deps -d /tmp/pip-check idna
@@ -242,9 +231,9 @@ Collecting idna
 Successfully downloaded idna
 ```
 
-The first line must show `<PYPI_INDEX_URL>`. If it is missing, pip is using pypi.org.
+第一行必须显示`<PYPI_INDEX_URL>`。如果缺少，则 pip 使用的是 pypi.org。
 
-### Check the uv installation
+### 检查 uv 安装
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv --version
@@ -252,11 +241,9 @@ uv --version
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv 0.13.0
-```
+```输出显示已安装的版本。 `command not found` 错误意味着 `~/.local/bin` 不在您的 `PATH` 上。
 
-The output shows the installed version. A `command not found` error means `~/.local/bin` is not on your `PATH`.
-
-### Check the uv configuration
+### 检查 uv 配置
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 echo idna | uv pip compile - --emit-index-url
@@ -270,15 +257,15 @@ echo idna | uv pip compile - --emit-index-url
 idna==3.20
 ```
 
-The `--index-url` line must show `<PYPI_INDEX_URL>`, and a resolved version confirms TLS works.
+`--index-url` 行必须显示 `<PYPI_INDEX_URL>`，并且已解析的版本确认 TLS 有效。
 
-### Check the Python interpreter
+### 检查Python解释器
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv python find 3.12
 ```
 
-The output is the path to the interpreter, such as `/usr/bin/python3.12`. To confirm that a missing version fails immediately:
+输出是解释器的路径，例如`/usr/bin/python3.12`。要确认缺少的版本会立即失败：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv venv --python 3.99 /tmp/uv-check
@@ -288,14 +275,14 @@ uv venv --python 3.99 /tmp/uv-check
 error: No interpreter found for Python 3.99 in managed installations or search path
 ```
 
-### Check the image build
+### 检查镜像构建
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langgraph dockerfile Dockerfile
-grep -E '^(FROM|COPY|RUN cat|ARG)' Dockerfile
+grep -E '^(FROM|COPY|RUN cat|ARG|ENV (SSL_CERT_FILE|REQUESTS_CA_BUNDLE|NODE_EXTRA_CA_CERTS))' Dockerfile
 ```
 
-For a Python project:
+对于 Python 项目：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 FROM <DOCKER_REGISTRY>/langchain/langgraph-api:3.12
@@ -305,7 +292,7 @@ ARG SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 ARG UV_DEFAULT_INDEX=<PYPI_INDEX_URL>
 ```
 
-For a JavaScript project that uses npm:
+对于使用 npm 的 JavaScript 项目：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 FROM <DOCKER_REGISTRY>/langchain/langgraphjs-api:20
@@ -314,20 +301,18 @@ ARG NODE_EXTRA_CA_CERTS=/etc/ssl/certs/internal-ca.pem
 ARG NPM_CONFIG_REGISTRY=<NPM_REGISTRY_URL>
 ```
 
-`FROM` must name the internal registry, and every line from `dockerfile_lines` must be present.
+`FROM` 必须命名内部注册表，并且 `dockerfile_lines` 中的每一行都必须存在。如果您将 [runtime trust](#trust-the-internal-ca-at-runtime) 的 CA 行更改为 `ENV`，它们会显示 `ENV` 代替 `ARG`。
 
-## Next steps
+## 后续步骤
 
-`langgraph build` leaves the image on the build machine. To run it:
+`langgraph build` 将镜像保留在构建机器上。运行它：
 
-* **[Push the image](/langsmith/deploy-with-control-plane#step-3-push-to-container-registry)**: Push the image to a registry your cluster or host can pull from.
-* **[Deploy with control plane](/langsmith/deploy-with-control-plane#step-4-deploy-with-the-control-plane-ui)**: Create a deployment from the pushed image in the LangSmith UI.
-* **[Self-host standalone servers](/langsmith/deploy-standalone-server)**: Run the image without a control plane, on Kubernetes, Docker, or Docker Compose.
-* **[Egress for billing and operational telemetry](/langsmith/self-host-egress)**: Allow the egress a running deployment needs, or ask about an offline (air-gapped) license.
-* **[Custom TLS certificates](/langsmith/self-host-custom-tls-certificates)**: Mount the internal CA in your LangSmith installation.
+* **[Push the image](/langsmith/deploy-with-control-plane#step-3-push-to-container-registry)**：将映像推送到集群或主机可以从中提取的注册表。
+* **[Deploy with control plane](/langsmith/deploy-with-control-plane#step-4-deploy-with-the-control-plane-ui)**：在LangSmith UI 中从推送的镜像创建部署。
+* **[Self-host standalone servers](/langsmith/deploy-standalone-server)**：在 Kubernetes、Docker 或 Docker Compose 上运行没有控制平面的映像。
+* **[Egress for billing and operational telemetry](/langsmith/self-host-egress)**：允许正在运行的部署需要的出口，或询问离线（气隙）许可证。
+* **[Custom TLS certificates](/langsmith/self-host-custom-tls-certificates)**：在您的 LangSmith 安装中安装内部 CA。
 
-***
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-restricted-network-build.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-restricted-network-build.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

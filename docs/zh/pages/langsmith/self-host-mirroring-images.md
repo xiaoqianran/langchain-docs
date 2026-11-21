@@ -4,7 +4,7 @@
 
 # LangSmith 安装的镜像
 
-默认情况下，LangSmith将从我们的公共 Docker 注册表中提取镜像。但是，如果您在无法访问 Internet 的环境中运行 LangSmith，或者您想使用私有 Docker 注册表，则可以将映像镜像到您自己的注册表，然后配置您的 LangSmith 安装以使用这些映像。
+默认情况下，LangSmith将从我们的公共 Docker 注册表中提取镜像。但是，如果您在无法访问 Internet 的环境中运行 LangSmith，或者您想使用私有 Docker 注册表，则可以将映像镜像到您自己的注册表，然后配置 LangSmith 安装以使用这些映像。
 
 > [!提示]
 >
@@ -281,9 +281,9 @@ operator:
 
 将 `(your-registry)` 替换为您的注册表 URL。模板变量（`${service_name}`、`${namespace}`、`${max_connections}`、`${storage_gi}`）在运行时由运算符替换，必须保持原样。
 
-配置完成后，您将需要更新 LangSmith 安装。您可以在这里关注我们的升级指南：[Upgrading LangSmith](/langsmith/self-host-upgrades)。如果升级成功，您的 LangSmith 实例现在应该使用 Docker 注册表中的镜像。## 用于代理服务器构建的附加映像
+配置完成后，您将需要更新您的 LangSmith 安装。您可以在这里遵循我们的升级指南：[Upgrading LangSmith](/langsmith/self-host-upgrades)。如果升级成功，您的 LangSmith 实例现在应该使用 Docker 注册表中的镜像。## 用于代理服务器构建的附加映像
 
-[LangGraph CLI](/langsmith/cli) 在公共基础映像之上构建每个代理服务器映像。当您的构建机器无法到达 Docker Hub 时，镜像基础镜像并将 `langgraph.json` 指向镜像。有关构建设置的其余部分，请参阅[Build Agent Server images on a restricted network](/langsmith/self-host-restricted-network-build)。
+[LangGraph CLI](/langsmith/cli) 在公共基础映像之上构建每个代理服务器映像。当您的构建机器无法到达 Docker Hub 时，镜像基础镜像并将 `langgraph.json` 指向镜像。有关构建设置的其余部分，请参阅[Set up a build machine on a restricted network](/langsmith/self-host-restricted-network-build)。
 
 基础镜像存储库取决于项目语言：
 
@@ -315,13 +315,13 @@ docker push <your-registry>/langchain/langgraph-api:3.12
 ```
 
 * CLI 附加标签本身，因此包含标签的 `base_image` 值会产生无效的图像引用。
-* 将 `api_version` 设置为精确版本，例如 `0.8.1`。版本范围使 CLI 在构建时查询 pypi.org 来解决它。
+* 将 `api_version` 设置为精确版本，例如 `0.8.1`。版本范围使 CLI 在构建时查询 pypi.org 来解决它。当 `base_image` 中的注册表包含端口时，范围也会失败并显示 `Compatible api_version ranges cannot be used with a tagged base_image`，因为 CLI 将该端口的冒号读取为标签。
 
 ## 验证图像签名> [!注意]
 >
-> 图像签名可用 **从 v15** 开始（LangSmith 应用程序版本 `0.15.x` 及更高版本）。 `v14-stable` 和旧频道上的早期版本未签名，无法通过以下步骤进行验证。
+> 图像签名可用 **从 v15 开始**（LangSmith 应用程序版本 `0.15.x` 及更高版本）。 `v14-stable` 和旧频道上的早期版本未签名，无法通过以下步骤进行验证。
 
-`docker.io/langchain/*` 上的稳定通道LangSmith 图像在发布时使用发布工作流程中的无密钥 [Sigstore/Cosign](https://docs.sigstore.dev/cosign/overview/) 进行签名。签名身份绑定到特定的 GitHub Actions 工作流程、运行和提交，因此签名证明图像是真实的，并且稳定分支发布管道使其在 `langchain-ai/langchainplus` 中运行。您可以在拉取或镜像镜像之前验证签名，并在镜像之后再次验证签名，以确认镜像的摘要与签名的摘要匹配。
+`docker.io/langchain/*` 上的稳定通道LangSmith 镜像在发布时使用发布工作流程中的无密钥 [Sigstore/Cosign](https://docs.sigstore.dev/cosign/overview/) 进行签名。签名身份绑定到特定的 GitHub Actions 工作流程、运行和提交，因此签名证明图像是真实的，并且稳定分支发布管道使其在 `langchain-ai/langchainplus` 中运行。您可以在拉取或镜像镜像之前验证签名，并在镜像之后再次验证签名，以确认镜像的摘要与签名的摘要匹配。
 
 安装`cosign` ([installation guide](https://docs.sigstore.dev/cosign/system_config/installation/))，然后验证任何标签：
 
@@ -367,7 +367,7 @@ cosign verify-attestation \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
   --certificate-identity-regexp 'https://github\.com/langchain-ai/langchainplus/\.github/workflows/release_self_hosted_on_version_bump\.yaml@refs/heads/v[0-9]+-stable' \
   docker.io/langchain/langsmith-backend:<tag>
-```该命令为每个架构返回一个经过验证的语句。成功的验证提供了与图像签名相同的保证：证明是由稳定分支发布工作流程生成的，其声明记录在[Rekor](https://docs.sigstore.dev/rekor/overview/)透明度日志中。
+```该命令为每个架构返回一个经过验证的语句。成功的验证提供与图像签名相同的保证：证明是由稳定分支发布工作流程生成的，其声明记录在[Rekor](https://docs.sigstore.dev/rekor/overview/)透明度日志中。
 
 ### 获取 SBOM
 

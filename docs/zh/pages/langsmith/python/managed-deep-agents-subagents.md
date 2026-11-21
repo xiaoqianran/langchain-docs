@@ -10,22 +10,28 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公共 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 子代理有两种类型：
 
 |类型 |代理如何使用 |用它来 |
 | - | - | - |
-|子代理 |用 `task` 调用它并等待它的答案 |重点工作，座席在继续之前需要其结果 |
-|异步子代理 |以 `start_async_task` 启动并继续工作；子代理完成后会报告 |代理无需等待的长时间运行或并行工作 |
+|子代理 |用`task`调用它并等待它的答案 |重点工作，座席在继续之前需要其结果 |
+|异步子代理 |用 `start_async_task` 启动并继续工作；子代理完成后会报告 |代理无需等待的长时间运行或并行工作 |子代理在代理的图表内运行。托管 Deep Agents 在同一部署中将每个异步子代理构建为其自己的图。两种类型都在代理的[sandbox](/langsmith/python/managed-deep-agents-sandboxes) 中工作。有关子代理如何在开源 Deep Agents SDK 中工作的信息，请参阅 [Subagents](/oss/python/deepagents/subagents) 和 [Async subagents](/oss/python/deepagents/async-subagents)。
 
-子代理在代理的图表内运行。托管Deep Agents在同一部署中将每个异步子代理构建为其自己的图。两种类型都在代理的[sandbox](/langsmith/python/managed-deep-agents-sandboxes)中工作。有关子代理如何在开源Deep Agents SDK 中工作，请参阅[Subagents](/oss/python/deepagents/subagents) 和[Async subagents](/oss/python/deepagents/async-subagents)。> [!注意]
+> [!注意]
 >
 > 异步子代理需要`managed-deepagents>=0.10.0`。
 
-## 声明一个子代理
+## 通用子代理
 
-将子代理定义添加到[agent definition](/langsmith/python/managed-deep-agents-agent-definition)中的`subagents`。每人需要一个`name`和一个`description`；代理使用描述来决定何时进行委派。要使子代理异步，请将 `async` 添加到其定义中：
+每个代理都会获得一个内置的 `general-purpose` 子代理，即使您从 [agent definition](/langsmith/python/managed-deep-agents-agent-definition) 中省略 `subagents` 也是如此。代理可以在运行时将独立任务委托给它，包括[fanning out tasks in parallel](#fan-out-tasks-in-parallel)，而无需预先声明专门的子代理。
+
+与自定义子代理不同，`general-purpose` 自动继承代理的技能及其模型和工具。与其他子代理一样，它使用自己的提示和上下文窗口运行，而不是代理的对话或[instructions](/langsmith/python/managed-deep-agents-instructions)。在每个任务的 `description` 中包含所有需要的上下文、约束和预期输出。
+
+当任务需要不同的模型、受限工具集或可重用的系统提示时，声明自定义子代理。有关自定义选项，请参阅[The general-purpose subagent](/oss/python/deepagents/subagents#the-general-purpose-subagent)。
+
+## 声明一个自定义子代理将子代理定义添加到代理定义中的`subagents`。每人需要一个`name`和一个`description`；代理使用描述来决定何时进行委派。要使子代理异步，请将 `async` 添加到其定义中：
 
 > [选项卡] 子代理
 >
@@ -68,8 +74,6 @@
 
 代理使用 `task` 工具运行子代理并等待其答复。子代理在代理的图表内运行并在代理的[sandbox](/langsmith/python/managed-deep-agents-sandboxes)中工作。
 
-每个代理还会获得一个 `general-purpose` 子代理来完成与声明的子代理不匹配的委派工作。参见[The general-purpose subagent](/oss/python/deepagents/subagents#the-general-purpose-subagent)。
-
 ### 子代理继承了什么
 
 子代理从代理的配置开始，并替换其定义设置的内容：
@@ -80,7 +84,36 @@
 | `system_prompt` |仅使用子代理的提示，而不使用代理的 [instructions](/langsmith/python/managed-deep-agents-instructions) |
 | `skills` |仅加载子代理列出的技能；列表 `"/skills/"` 加载代理的 |
 | `middleware`、`response_format` |仅使用子代理自己的 |
-|内存|未加载|分叉模式下的子代理从代理对话的副本开始，并且还使用代理的指令、中间件、技能和内存。参见[Choose a launch mode](/oss/python/deepagents/async-subagents#choose-a-launch-mode)。
+|内存|未加载|
+
+分叉模式下的子代理从代理对话的副本开始，并且还使用代理的指令、中间件、技能和内存。参见[Choose a launch mode](/oss/python/deepagents/async-subagents#choose-a-launch-mode)。
+
+### 并行扇出任务为了并行地分散工作，代理会一轮发出多个 `task` 调用。这适用于内置 `general-purpose` 子代理或任何声明的自定义子代理。每个调用都会设置 `subagent_type` 和不同的 `description`，并在其自己的上下文窗口中运行。代理在下一回合之前接收所有结果并将它们组合成一个答案。为了在任务在后台运行时继续工作，代理会发出多个 `start_async_task` 调用。参见[Async subagents](#async-subagents)。
+
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+flowchart LR
+    A["Agent (one turn)"] -->|"task: project-a"| S1["general-purpose"]
+    A -->|"task: project-b"| S2["general-purpose"]
+    S1 -->|"findings"| R["Agent combines results"]
+    S2 -->|"findings"| R
+
+    classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900
+    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
+    classDef output fill:#EBD0F0,stroke:#885270,stroke-width:2px,color:#441E33
+
+    class A trigger
+    class S1,S2 process
+    class R output
+```
+
+例如，要并行调查多个项目的日志，请向 `instructions.md` 添加指导：
+
+```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+When investigating multiple independent projects, delegate one task per project
+to the general-purpose subagent in the same turn. Include the project, time
+range, symptoms to look for, and expected output in each task description.
+Wait for all results, then compare the findings and cite sources.
+```
 
 ### 选择 MCP 服务器
 
@@ -98,9 +131,7 @@
 
 异步子代理仅连接到它选择的服务器，并且仅询问其凭据。
 
-只有[graph factory](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run)可以在代理上设置`mcp`。
-
-```python agent.py expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+只有[graph factory](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run)可以在代理上设置`mcp`。```python agent.py expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import ManagedServerRuntime, connections, define_deep_agent, define_mcp
 
 knowledge = define_mcp(
@@ -150,13 +181,13 @@ def agent(runtime: ManagedServerRuntime):
 
 代理使用 `start_async_task` 启动异步子代理，并在子代理在其自己的线程上运行时继续工作。子代理在完成时会报告。
 
-### 异步子代理如何运行每个异步子代理在部署中显示为其自己的图，以代理和子代理命名，例如 `research-assistant--researcher`。托管 Deep Agents 通过在构建时读取代理文件（而不是运行它）来查找异步子代理。将每个值直接写入 `subagents` 或变量中，并使用固定的 `name` 和 `async` 值。由函数或循环构建的异步子代理没有得到图形，并且代理无法启动。 [graph factory](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run)也可以声明异步子代理，只要它直接返回代理定义即可。
+### 异步子代理如何运行
+
+每个异步子代理在部署中显示为其自己的图，以代理和子代理命名，例如 `research-assistant--researcher`。托管 Deep Agents 通过在构建时读取代理文件（而不是运行它）来查找异步子代理。将每个值直接写入 `subagents` 或变量中，并使用固定的 `name` 和 `async` 值。由函数或循环构建的异步子代理没有得到图形，并且代理无法启动。 [graph factory](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run)也可以声明异步子代理，只要它直接返回代理定义即可。
 
 由 `mda dev` 或部署提供服务的代理还会获得 `general-purpose` 子代理的异步版本，因此代理可以在前台或后台运行委派的工作。
 
-代理使用以下工具管理异步子代理：
-
-|工具|它有什么作用 |
+代理使用以下工具管理异步子代理：|工具|它有什么作用 |
 | - | - |
 | `start_async_task` |在自己的线程上启动异步子代理并立即返回任务 ID |
 | `check_async_task` |获取任务的状态以及任务完成后的结果 |
@@ -164,48 +195,50 @@ def agent(runtime: ManagedServerRuntime):
 | `cancel_async_task` |停止正在运行的任务 |
 | `list_async_tasks` |列出代理的任务及其状态 |
 
-这些工具附带异步 `general-purpose` 子代理，因此 `mda dev` 或部署提供服务的每个代理都有它们。使用 `mda eval` 运行的代理则不然。### 当子代理完成时收到通知
+这些工具附带异步 `general-purpose` 子代理，因此 `mda dev` 或部署提供服务的每个代理都有它们。使用 `mda eval` 运行的代理则不然。
+
+### 当子代理完成时收到通知
 
 异步子代理会自行报告，无论代理是忙碌、空闲还是等待批准。代理不需要使用 `check_async_task` 进行轮询：
 
 |当子代理完成时，代理为 |会发生什么 |
 | - | - |
-|忙碌 |代理在每次模型调用之前检查其未完成的任务，以便在运行中获取结果 |
+|忙碌 |代理在每次模型调用之前检查其未完成的任务，因此它会在运行中获取结果 |
 |闲置|子代理通过新的运行唤醒代理 |
 |批准后暂停 |批准不予处理；一旦用户回答，代理就会得到结果 |
 
-每个结果报告一次。在每次模型调用之前，代理会对每个未完成的任务进行一次状态检查，检查时间上限为 5 秒。
-
-如果子代理暂停等待批准，则代理会将其任务视为`waiting`，直到有人在子代理的线程上做出答复。参见[Answer approvals in channels](#answer-approvals-in-channels)。
+每个结果报告一次。在每次模型调用之前，代理会对每个未完成的任务进行一次状态检查，检查时间上限为 5 秒。如果子代理暂停等待批准，则代理会将其任务视为`waiting`，直到有人在子代理的线程上做出答复。参见[Answer approvals in channels](#answer-approvals-in-channels)。
 
 ### 配置异步子代理
 
-不要在异步子代理上设置 `graph_id`、`url`、`headers` 或 `runnable`：托管 Deep Agents 自行构建并启动其图。这些选项传递到Deep Agents：|选项 |默认|描述 |
+不要在异步子代理上设置 `graph_id`、`url`、`headers` 或 `runnable`：托管 Deep Agents 自行构建并启动其图表。这些选项传递到Deep Agents：
+
+|选项 |默认|描述 |
 | - | - | - |
 | `update_strategy` | `"interrupt"` | `"enqueue"` 将后续操作排队到当前运行之后，而不是中断它 |
 | `notify_parent` | `True` |当子代理完成且代理空闲时唤醒代理。设置为 `False` 自己处理结果，例如使用 `webhook` |
-| `webhook` |未设置|每当子代理运行完成时，代理服务器都会调用 URL，其中包含运行的线程 ID、运行 ID 和状态。参见[Deliver results through your app](/oss/python/deepagents/async-subagents#deliver-results-through-your-app)|
+| `webhook` |未设置|每当子代理运行完成时，代理服务器都会调用 URL，其中包含运行的线程 ID、运行 ID 和状态。参见[Deliver results through your app](/oss/python/deepagents/async-subagents#deliver-results-through-your-app) |
 | `mode` | `"isolated"` | `"fork"` 使用代理对话的副本启动子代理 |
 
 有关每个选项的行为方式，请参阅[Async subagents](/oss/python/deepagents/async-subagents)。
 
 要将另一个部署上的代理用作异步子代理，请使用其图形 ID 和 `url` 来声明它，并且不使用 `async`，并且托管 Deep Agents 将其原封不动地传递给 Deep Agents。对于托管深度代理，图 ID 是其 `name`。参见[remote subagents](/oss/python/deepagents/async-subagents#http-transport-remote)。
 
-### 异步子代理继承了什么
+### 异步子代理继承了什么异步子代理从代理继承的方式与 [subagent](#what-a-subagent-inherits) 相同。在 fork 模式下，它以代理对话的副本开始，但保留自己的提示、工具和中间件，因此它通常不会重用代理的[prompt cache](/oss/python/deepagents/async-subagents#fork-mode)。
 
-异步子代理从代理继承，就像 [subagent](#what-a-subagent-inherits) 一样。在 fork 模式下，它以代理对话的副本开始，但保留自己的提示、工具和中间件，因此它通常不会重用代理的[prompt cache](/oss/python/deepagents/async-subagents#fork-mode)。
+### 共享沙箱和跟踪
 
-### 共享沙箱和跟踪异步子代理在新线程上启动，与代理的线程分开。由于代理以同一用户身份启动它，因此它共享代理的沙箱。使用 [private threads](/langsmith/python/managed-deep-agents-identity)，来自不同用户的子代理运行将获得自己的沙箱。当它共享沙箱时，它会按原样使用代理的文件，并且仅刷新连接器凭据。如果代理尚未使用其沙箱，则子代理会创建它，并且代理稍后会使用相同的沙箱。
+异步子代理在新线程上启动，与代理的线程分开。由于代理以同一用户身份启动它，因此它共享代理的沙箱。使用 [private threads](/langsmith/python/managed-deep-agents-identity)，来自不同用户的子代理运行将获得自己的沙箱。当它共享沙箱时，它会按原样使用代理的文件，并且仅刷新连接器凭据。如果代理尚未使用其沙箱，则子代理会创建它，并且代理稍后会使用相同的沙箱。
 
 当跟踪打开时，异步子代理的运行将显示在 LangSmith 中的代理运行下方。
 
 ### 在渠道中回复批准
 
-当代理在 [channel](/langsmith/python/managed-deep-agents-channels) 中运行时，其异步子代理向同一通道线程报告：
+当代理在 [channel](/langsmith/python/managed-deep-agents-channels) 中运行时，其异步子代理向同一通道线程报告：1. 用户请求代理在通道线程中工作，代理启动异步子代理。
+2. 如果子代理暂停[approval](/langsmith/python/managed-deep-agents-tools#human-in-the-loop)，Slack 会在线程中显示请求，并在线程中应答该请求以恢复子代理。其他渠道不发布请求；像在 Studio 中或通过 API 恢复任何 [interrupt](/langsmith/python/managed-deep-agents-tools#respond-to-an-interrupt) 一样恢复子代理的线程。
+3. 当子代理完成时，代理会获取其结果并在线程中进行回复：如果仍在工作，则在当前运行中进行回复；如果空闲，则在新的运行中进行回复。关闭父级通知会停止新的运行。
 
-1. 用户请求代理在通道线程中工作，代理启动异步子代理。
-2. 如果子代理暂停[approval](/langsmith/python/managed-deep-agents-tools#human-in-the-loop)，Slack 会在线程中显示该请求，并在那里应答该请求以恢复子代理。其他渠道不发布请求；像在 Studio 中或通过 API 恢复任何 [interrupt](/langsmith/python/managed-deep-agents-tools#respond-to-an-interrupt) 一样恢复子代理的线程。
-3. 当子代理完成时，代理会获取其结果并在线程中进行回复：如果仍在工作，则在当前运行中进行回复；如果空闲，则在新的运行中进行回复。关闭父级通知会停止新的运行。托管 Deep Agents 不会将子代理的答复发布到频道；代理决定告诉用户什么。
+托管 Deep Agents 不会将子代理的答复发布到频道；代理决定告诉用户什么。
 
 ### 评估代理
 

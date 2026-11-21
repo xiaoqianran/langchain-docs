@@ -4,7 +4,7 @@
 
 # 提供者凭据
 
-添加和管理模型提供者、Tavily 网络搜索和 LangSmith 跟踪的 API 密钥
+添加和管理模型提供者、Tavily Web 搜索和 LangSmith 跟踪的 API 密钥
 
 Deep Agents 代码需要为您使用的每个模型提供程序提供一个 API 密钥。推荐的添加方法是[⟦T7⟧](#use-%2Fauth-recommended)凭证管理器。对于非交互式运行，请使用 [⟦T8⟧](#manage-credentials-from-the-shell-dcode-auth) 或设置 [environment variables](#environment-variables-ci-and-headless) 从 shell 管理相同的存储密钥。
 
@@ -28,9 +28,9 @@ Deep Agents 代码需要为您使用的每个模型提供程序提供一个 API 
 > | - | - |
 > | `[stored]` |通过 `/auth` 保存在此管理器中的密钥 |
 > | `[env: VARNAME]` |密钥来自环境变量`VARNAME`（已解析的名称，例如`DEEPAGENTS_CODE_OPENAI_API_KEY`或`OPENAI_API_KEY`）|
-> | `[missing]` |未存储密钥且未设置环境变量；选择要粘贴的行 |
+> | `[missing]` |未存储密钥且未设置环境变量；选择要粘贴的行|
 
-`/auth` 提示还有一个可选的 **基本 URL** 字段。将其留空以使用提供程序的默认端点，或设置一个自定义端点以与此密钥一起使用。基本 URL 与密钥一起保存。请参阅[Endpoints, keys, and gateways](/oss/deepagents/code/config-file#endpoints-keys-and-gateways)了解端点如何解析，包括网关。
+`/auth` 提示还有一个可选的 **基本 URL** 字段。将其留空以使用提供程序的默认端点，或设置一个自定义端点以与此密钥一起使用。基本 URL 与密钥一起保存。有关端点如何解析（包括网关）的信息，请参阅[Endpoints, keys, and gateways](/oss/deepagents/code/config-file#endpoints-keys-and-gateways)。
 
 > [!警告]
 >
@@ -42,7 +42,7 @@ Deep Agents 代码需要为您使用的每个模型提供程序提供一个 API 
 
 ### 使用 ChatGPT 登录
 
-在 `/auth` 中选择 `openai_codex` 提供程序会启动浏览器登录，而不是提示输入 API 密钥，从而让您可以通过 ChatGPT 订阅使用 OpenAI 模型。要重新验证或注销，请再次选择`openai_codex`。完整流程请参见[Sign in with ChatGPT (Codex models)](/oss/deepagents/code/providers)。`/auth` 管理 LLM 提供商凭证、Tavily 网络搜索密钥和 LangSmith 跟踪。在下次启动时输入 [activate web search](#enable-web-search-with-tavily) 的 Tavilly 密钥。输入 LangSmith 键以启用跟踪。密钥也从环境中读取。你可以[set them in ⟦T24⟧ or your shell](/oss/deepagents/code/configuration#environment-variables)。
+在 `/auth` 中选择 `openai_codex` 提供程序会启动浏览器登录，而不是提示输入 API 密钥，从而让您可以通过 ChatGPT 订阅使用 OpenAI 模型。要重新验证或注销，请再次选择`openai_codex`。完整流程请参见[Sign in with ChatGPT (Codex models)](/oss/deepagents/code/providers)。`/auth` 管理 LLM 提供商凭证、Tavily 网络搜索密钥和 LangSmith 跟踪。在下次启动时输入 [activate web search](#enable-web-search) 的 Tavilly 密钥。输入 LangSmith 键以启用跟踪。密钥也从环境中读取。你可以[set them in ⟦T24⟧ or your shell](/oss/deepagents/code/configuration#environment-variables)。
 
 ## 从 shell 管理凭证 (`dcode auth`)
 
@@ -115,11 +115,13 @@ DEEPAGENTS_CODE_OPENAI_API_KEY=sk-xxxx dcode -n "..."
 
 每个提供商的 API 密钥及其端点 (`base_url`) 解析为来自同一源的一对。参见[Endpoints, keys, and gateways](/oss/deepagents/code/config-file#endpoints-keys-and-gateways)。
 
-## 使用 Tavily 启用网络搜索
+## 启用网络搜索
 
-内置`web_search`工具使用[Tavily](https://tavily.com)。 Deep Agents 代码在启动时显示“Web 搜索已禁用”通知，直到您提供密钥为止。您可以将密钥存储在 [⟦T61⟧](#use-%2Fauth-recommended) 凭证管理器中（Tavily 在其中显示为非模型服务），或者设置 `TAVILY_API_KEY` 环境变量。> [tab] 使用 /auth （推荐）
+内置`web_search`工具使用[Tavily](https://tavily.com)。 Deep Agents 代码在启动时显示“Web 搜索已禁用”通知，直到您提供密钥为止。您可以将密钥存储在 [⟦T61⟧](#use-%2Fauth-recommended) 凭证管理器中（Tavily 在其中显示为非模型服务），或者设置 `TAVILY_API_KEY` 环境变量。Tavily 并不是唯一的搜索选项。您还可以使用公开搜索工具的远程[MCP server](/oss/deepagents/code/mcp-tools)；这些工具与内置工具一起出现。如果配置了 Tavilly，`web_search` 也保持可用。
+
+> [tab] 使用 /auth （推荐）
 >
-> 从[tavily.com](https://tavily.com)获取密钥（以`tvly-`开头；免费套餐足以满足大多数Deep Agents代码使用），然后将其存储在凭证管理器中：
+> 从 [tavily.com](https://tavily.com) 获取密钥（以 `tvly-` 开头；免费套餐足以满足大多数 Deep Agents 代码使用），然后将其存储在凭证管理器中：
 >
 > ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > /auth
@@ -135,19 +137,17 @@ DEEPAGENTS_CODE_OPENAI_API_KEY=sk-xxxx dcode -n "..."
 >
 > **2。将其添加到您的环境**
 >
-> 将密钥添加到 `~/.deepagents/.env`，以便每个会话都能获取它：
+> 将密钥添加到`~/.deepagents/.env`，以便每个会话都会获取它：
 >
 > ```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > TAVILY_API_KEY=tvly-...
 > ```
 >
-> Shell 导出优先于 `.env` 值（请参阅[Loading order and precedence](/oss/deepagents/code/configuration#loading-order-and-precedence)）。要仅将密钥范围限定为 Deep Agents 代码而不影响读取 `TAVILY_API_KEY` 的其他工具，请使用 [⟦T68⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix): `DEEPAGENTS_CODE_TAVILY_API_KEY=tvly-...`。
+> Shell 导出优先于 `.env` 值（请参阅[Loading order and precedence](/oss/deepagents/code/configuration#loading-order-and-precedence)）。要仅将密钥范围限定为 Deep Agents 代码而不影响读取 `TAVILY_API_KEY` 的其他工具，请使用 [⟦T69⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix): `DEEPAGENTS_CODE_TAVILY_API_KEY=tvly-...`。
 >
 > **3。重新加载或重新启动**
 >
-> 在现有会话中，运行 `/reload` 重新读取 `.env` 文件。下次启动时，“Web 搜索已禁用”通知将消失，客服人员可以致电 `web_search`。
-
-## 另请参阅
+> 在现有会话中，运行 `/reload` 重新读取 `.env` 文件。下次启动时，“Web 搜索已禁用”通知消失，客服人员可以致电 `web_search`。## 另请参阅
 
 * [Configuration](/oss/deepagents/code/configuration)
 * [Config file](/oss/deepagents/code/config-file)

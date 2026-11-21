@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 本指南使用 LangSmith UI。您还可以使用 SDK 以编程方式创建一个 LLM 作为法官评估器，它出现在 LangSmith UI 中，与此处创建的评估器相同。参考[Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk)。
+> 本指南使用 LangSmith UI。您还可以使用 SDK 以编程方式创建一个 LLM 作为法官评估器，它显示在 LangSmith UI 中，与按照本指南创建的评估器相同。参考[Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk)。
 >
 > 要对生产轨迹进行实时评估，请参阅[setting up online evaluations](/langsmith/online-evaluations-llm-as-judge)。
 
@@ -47,9 +47,22 @@
 
 使用决策模型作为判断，参见[How to define a decision model evaluator](/langsmith/decision-model-evaluator)。
 
+#### 使用 OpenAI 弹性服务层
+
+[OpenAI's flex service tier](https://developers.openai.com/api/docs/guides/flex-processing) 以较低的成本运行模型调用，以换取较慢的响应。将其用于分数可以在几分钟后到达的评估器，例如在线评估器和绑定到数据集的评估器。弹性层适用于 OpenAI GPT-5 和 GPT-6 型号、`o3` 和 `o4-mini`。要使用它，请单击 **Prompt & Model** 下的模型名称以打开 **Model Configuration** 对话框，然后将 **Service Tier** 设置为 **Flex**。新的 OpenAI 评估器从 **auto** 层开始，该层使用您的 API 密钥所属的 OpenAI 项目的默认层。 **Flex** 选项仅针对支持 Flex 的型号出现。
+
+Flex 呼叫的工作方式与标准呼叫不同：
+
+* **等待时间更长**：LangSmith 每次 Flex 调用最多等待 10 分钟才能返回分数。
+* **一次尝试**：LangSmith 不会重试超时的 Flex 调用，因此您不必为缓慢的响应付出两次代价。超时调用中的每次运行都会收到错误而不是分数。
+* **时间限制**：每次LangSmith将评估器应用于一批运行时，都有固定的时间限制。当时间快用完时，LangSmith 会跳过剩余的 Flex 调用并保留其已有的分数。跳过的调用会返回错误 `Skipped: this rule run used up its time on slower OpenAI flex calls`。
+* **测试运行**：当您单击 **测试** 时，LangSmith 会等待最多 4 分钟。缓慢的 Flex 调用可能会在测试中超时，但在保存评估器后仍然会成功。当 [Model pricing](/langsmith/cost-tracking#create-a-new-or-modify-an-existing-model-price-entry) 中的模型条目包含弹性费率时，[Evaluator spend limits](/langsmith/evaluator-spend) 按弹性费率计算弹性呼叫。没有弹性费率的自定义价格条目会按标准费率计算弹性呼叫。
+
 ### 映射变量
 
-使用变量映射来指示从运行或示例传递到评估器提示符的变量。为了帮助进行变量映射，提供了一个示例（或运行）以供参考。单击提示中的变量，然后使用下拉列表将它们映射到输入、输出或参考输出的相关部分。要添加提示变量，如果使用小胡子格式（默认），请键入带有双大括号 `{{prompt_var}}` 的变量；如果使用 f 字符串格式，请键入带有单大括号 `{prompt_var}` 的变量。
+使用变量映射来指示从运行或示例传递到评估器提示符的变量。为了帮助进行变量映射，提供了一个示例（或运行）以供参考。单击提示中的变量，然后使用下拉列表将它们映射到输入、输出或参考输出的相关部分。
+
+要添加提示变量，如果使用小胡子格式（默认），请键入带有双大括号 `{{prompt_var}}` 的变量；如果使用 f 字符串格式，请键入带有单大括号 `{prompt_var}` 的变量。
 
 您可以根据需要删除变量。例如，如果您正在评估简洁性等指标，通常不需要参考输出，因此您可以删除该变量。
 
@@ -57,15 +70,15 @@
 
 预览提示将使用右侧显示的参考运行和数据集示例向您展示格式化提示的外观。
 
-### 通过少量示例改进您的评估器
-
-为了更好地将 LLM 作为法官的评估者与人类偏好保持一致，LangSmith 允许您收集评估者分数的 [human corrections](/langsmith/create-few-shot-evaluators#make-corrections)。启用此选择后，更正将作为少数示例自动插入到提示中。
+### 通过少量示例改进您的评估器为了更好地将 LLM 作为法官的评估者与人类偏好保持一致，LangSmith 允许您收集评估者分数的 [human corrections](/langsmith/create-few-shot-evaluators#make-corrections)。启用此选择后，更正将作为少数示例自动插入到提示中。
 
 学习[how to set up few-shot examples and make corrections](/langsmith/create-few-shot-evaluators)。
 
 ### 反馈配置
 
-反馈配置是您的法学硕士评审评估员将使用的评分标准。将此视为评估员评分的标准。分数将作为 [feedback](/langsmith/observability-concepts#feedback) 添加到运行或示例中。为评估者定义反馈：1. **命名反馈键**：这是查看评估结果时将出现的名称。实验中的名称应该是唯一的。
+反馈配置是您的法学硕士评审评估员将使用的评分标准。将此视为评估员评分的标准。分数将作为 [feedback](/langsmith/observability-concepts#feedback) 添加到运行或示例中。为评估者定义反馈：
+
+1. **命名反馈键**：这是查看评估结果时将出现的名称。实验中的名称应该是唯一的。
 
 2. **添加描述**：描述反馈代表什么。
 
@@ -81,8 +94,6 @@
 
 完成配置后，保存更改。
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-as-judge.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

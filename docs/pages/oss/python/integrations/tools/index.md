@@ -111,6 +111,7 @@ The following table shows tools that can be used to automate tasks in web browse
 | [Hyperbrowser Web Scraping Tools](https://docs.hyperbrowser.ai/) | Free trial, with flat rate plans and pre-paid credits after | ❌ |
 | [Manifest](https://omfang.io/manifest-docs) | Free tier available | ❌ |
 | [MrScraper](https://docs.mrscraper.com) | Paid | ❌ |
+| [Oya Browser](https://oyabrowser.com/docs/sdk) | Free desktop app & 1 cloud browser hour; paid cloud & self-hosted | ✅ |
 | [W2A](https://w2a-protocol.org/docs) | Free (public endpoints) | ❌ |
 | [Nimble Extract](https://docs.nimbleway.com/integrations/connectors/langchain) | Free trial available | ❌ |
 | [Nimble Extract Templates](https://docs.nimbleway.com/integrations/connectors/langchain#extract-templates) | Free trial available | ❌ |
@@ -561,6 +562,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`MobileboxToolkit`](https://github.com/mobilebox-dev/mobilebox/tree/main/packages/python/langchain-mobilebox#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mobilebox/month)](https://pypi.org/project/langchain-mobilebox/) |
 | [`BhivedToolkit`](https://bhived.ai/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bhived/month)](https://pypi.org/project/langchain-bhived/) |
 | [`OnlineCompilerToolkit`](https://onlinecompiler.io/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-onlinecompiler/month)](https://pypi.org/project/langchain-onlinecompiler/) |
+| [`EasyTranscriber YouTube transcript tools`](https://www.easytranscriber.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-easytranscriber/month)](https://pypi.org/project/langchain-easytranscriber/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`viaSocket`](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/viasocket/month)](https://pypi.org/project/viasocket/) |
 | [`AdsCrawlReadTool`](https://github.com/AdsCrawl/langchain-adscrawl) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-adscrawl/month)](https://pypi.org/project/langchain-adscrawl/) |
@@ -604,6 +606,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`FokalsToolkit`](https://github.com/fokals/langchain-fokals#readme) | N/A |
 | [`FrameScanTool`](https://github.com/Sandeep85Das/langchain-frame) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
+| [`KaerSearch`](https://api.kaer.ai/docs/langchain) | N/A |
 | [`MovoaVideoGenerator`](https://movoa.readthedocs.io/en/latest/integrations/langchain/) | N/A |
 | [`PiloterrGoogleSearch`](https://github.com/piloterr/langchain-piloterr#readme) | N/A |
 | [`PopNowToolkit`](https://popnow.ai/docs/langchain) | N/A |

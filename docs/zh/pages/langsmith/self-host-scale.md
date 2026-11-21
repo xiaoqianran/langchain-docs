@@ -23,7 +23,7 @@
 ## 总结
 
 下表概述了不同负载模式（读/写）的不同LangSmith配置的比较：| | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | [Medium / medium](#medium-reads-medium-writes) | [High / high](#high-reads-high-writes) |
-| :- | :- | :- | :- | :- | :-|
+| :-| :-| :-| :-| :-| :-|
 |并发前端用户（在前端主动查看跟踪的用户数量）| 5 | 5 | 50 | 50 20 | 50 | 50
 |每秒提交的跟踪数（通过 SDK 或 API 端点摄取的跟踪数）| 10 | 10 1000 | 1000 10 | 10 100 | 100 1000 | 1000
 | **前端副本**（500m CPU，每个副本请求 1Gi）| 1（默认）| 4 | 2 | 2 | 4 |
@@ -33,7 +33,7 @@
 | **Redis 资源** | 8 Gi（默认）| 26 Gi 外部 | 8 Gi（默认）| 13Gi 外部 | 26 Gi 外部 |
 | **ClickHouse 资源** | 4 CPU 16 Gi（默认）| 10个CPU 32Gi内存|每个副本 8 个 CPU 16 Gi | 16 CPU 24Gi 内存 |每个副本 14 个 CPU 24 Gi || **ClickHouse 设置** |单实例 |单实例 | 3 节点复制集群（建议用于高读取负载，以防止性能下降。另一个选择是[managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse)。）单实例 | 3 节点复制集群（建议用于高读取负载，以防止性能下降。另一个选择是 [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse)。） |
 | Postgres 资源（我们建议使用外部实例并启用磁盘自动扩展来处理不断增长的数据需求。） 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）|
-| **Blob 存储** |已禁用 |已启用 |已启用 |已启用 |已启用 |
+| **Blob 存储** |集群内 RustFS（默认）|外部|外部|外部|外部|
 
 > [!注意]
 >

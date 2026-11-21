@@ -822,6 +822,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Cloud sandboxes for running AI-generated code.
 
+> [card] [EasyTranscriber](https://www.easytranscriber.com/docs/langchain)
+>
+> YouTube transcripts, AI summaries and YouTube video search through the EasyTranscriber API, as LangChain tools and a document loader.
+
 > [card] [EconDashToolkit](https://github.com/econdash/econdash-python/blob/main/packages/langchain-econdash/README.md)
 >
 > EconDash tools provide time series data for macroeconomics, markets, labor, demographics, real estate, energy, and other domains.
@@ -1257,6 +1261,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [John Snow Labs](/oss/python/integrations/providers/johnsnowlabs)
 >
 > Enterprise NLP and healthcare AI platform.
+
+> [card] [KaerSearch](https://api.kaer.ai/docs/langchain)
+>
+> Web search API with its own index, live web and deep lanes that return page text.
 
 > [card] [Kalibr](https://kalibr.systems/docs)
 >
@@ -1818,6 +1826,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Web search, page reading, and scraping tools for agents and RAG, built on the Oxylabs Web API and Web Scraper API.
 
+> [card] [Oya Browser](https://oyabrowser.com/docs)
+>
+> Real browsers for AI agents (desktop MCP, cloud, and self-hosted) with sealed credentials, human takeover, and Playwright playbooks that replay without a model.
+
 > [card] [PandaStackSandbox](https://docs.pandastack.ai/docs/agents/deep-agents)
 >
 > Sandbox backend for Deep Agents that runs commands and file operations in PandaStack Firecracker microVMs.
@@ -2093,6 +2105,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Revana](https://github.com/Aribk7/langchain-revana#readme)
 >
 > Revana serves Claude, Gemini, DeepSeek and other chat models from several labs behind one OpenAI-compatible API key, routed to the cheapest working provider.
+
+> [card] [RevSecMiddleware](https://pypi.org/project/langchain-revsec/)
+>
+> Checks a LangChain agent's tool calls, prompts and tool results with RevSec before they run or reach the model, and registers the agent in RevSec.
 
 > [card] [RiskShield](https://github.com/kynto2001-ctrl/apexrunner-tools#riskshield-block-dangerous-trades-before-they-execute)
 >

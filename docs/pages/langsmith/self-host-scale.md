@@ -34,7 +34,7 @@ The table below provides an overview comparing different LangSmith configuration
 | **ClickHouse resources** | 4 CPU 16 Gi (default) | 10 CPU 32Gi memory | 8 CPU 16 Gi per replica | 16 CPU 24Gi memory | 14 CPU 24 Gi per replica |
 | **ClickHouse setup** | Single instance | Single instance | 3-node replicated cluster (Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).) | Single instance | 3-node replicated cluster (Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).) |
 | Postgres resources (We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) |
-| **Blob storage** | Disabled | Enabled | Enabled | Enabled | Enabled |
+| **Blob storage** | In-cluster RustFS (default) | External | External | External | External |
 
 > [!NOTE]
 >

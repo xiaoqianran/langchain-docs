@@ -19,26 +19,29 @@
 
 ### 执行和状态
 
-|后端 |套餐 |来源 |
-| - | - | - |
-| [In-memory](https://reference.langchain.com/python/langgraph.checkpoint/memory/InMemorySaver) | [⟦T0⟧](https://pypi.org/project/langgraph-checkpoint/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint) |
-| [SQLite](https://reference.langchain.com/python/langgraph.checkpoint.sqlite/SqliteSaver) | [⟦T1⟧](https://pypi.org/project/langgraph-checkpoint-sqlite/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite) |
-| [PostgreSQL](https://reference.langchain.com/python/langgraph.checkpoint.postgres/PostgresSaver) | [⟦T2⟧](https://pypi.org/project/langgraph-checkpoint-postgres/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres) |
-| AWS（DynamoDB、Bedrock、Valkey）| [⟦T3⟧](https://pypi.org/project/langgraph-checkpoint-aws/) | [langchain-ai/langchain-aws](https://github.com/langchain-ai/langchain-aws/tree/main/libs/langgraph-checkpoint-aws) |
-| [MongoDB](/oss/python/integrations/memory/mongodb-short-term-memory) | [⟦T4⟧](https://pypi.org/project/langgraph-checkpoint-mongodb/) | [langchain-ai/langchain-mongodb](https://github.com/langchain-ai/langchain-mongodb/tree/main/libs/langgraph-checkpoint-mongodb) |
-| Azure Cosmos DB NoSQL | Azure Cosmos DB [⟦T5⟧](https://pypi.org/project/langchain-azure-cosmosdb/) | [langchain-ai/langchain-azure](https://github.com/langchain-ai/langchain-azure/tree/main/libs/azure-cosmosdb) |
-| Redis | [⟦T6⟧](https://pypi.org/project/langgraph-checkpoint-redis/) | [redis-developer/langgraph-redis](https://github.com/redis-developer/langgraph-redis) |
-| [CockroachDB](/oss/python/integrations/providers/cockroachdb#langgraph-checkpointer) | [⟦T7⟧](https://pypi.org/project/langchain-cockroachdb/) | [cockroachdb/langchain-cockroachdb](https://github.com/cockroachdb/langchain-cockroachdb) |
-| [Aerospike](/oss/python/integrations/providers/aerospike#langgraph-checkpointer) | [⟦T8⟧](https://pypi.org/project/langgraph-checkpoint-aerospike/) | [aerospike-community/aerospike-langgraph](https://github.com/aerospike-community/aerospike-langgraph) |
-| [ScyllaDB](https://docs.scylladb.com) | [⟦T9⟧](https://pypi.org/project/langgraph-checkpoint-scylladb/) | [scylladb/langchain-scylladb](https://github.com/scylladb/langchain-scylladb/tree/main/libs/langgraph-checkpoint-scylladb) |
-| [Tigris](https://www.tigrisdata.com/docs/) | [⟦T10⟧](https://pypi.org/project/langgraph-checkpoint-tigris/) | [tigrisdata/tigris-langgraph](https://github.com/tigrisdata/tigris-langgraph/tree/main/libs/checkpoint-tigris) |
-| [TypeDB](https://typedb.com/docs) | [⟦T11⟧](https://pypi.org/project/langgraph-checkpoint-typedb/) | [typedb/langgraph-checkpoint-typedb](https://github.com/lolski/langgraph-checkpoint-typedb) |
-| [Inspeximus](https://dancenitra.github.io/inspeximus/) | [⟦T12⟧](https://pypi.org/project/langgraph-checkpoint-inspeximus/) | [DanceNitra/inspeximus](https://github.com/DanceNitra/inspeximus) |
-|苏帕巴斯| [⟦T13⟧](https://pypi.org/project/langgraph-checkpoint-supabase/) | [Tghez/langgraph-checkpoint-supabase](https://github.com/Tghez/langgraph-checkpoint-supabase) |
-| [Amazon DynamoDB (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/dynamodb/) | [⟦T14⟧](https://pypi.org/project/langgraph-dynamodb-checkpoint/) | [skamalj/langgraph_dynamodb_checkpoint](https://github.com/skamalj/langgraph_dynamodb_checkpoint) |
-| [Azure Cosmos DB NoSQL (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/cosmosdb/) | [⟦T15⟧](https://pypi.org/project/langgraph-checkpoint-cosmosdb/) | [skamalj/langgraph_checkpoint_cosmosdb](https://github.com/skamalj/langgraph_checkpoint_cosmosdb) |
-| [Google Firestore (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/firestore/) | [⟦T16⟧](https://pypi.org/project/langgraph-checkpoint-firestore/) | [skamalj/langgraph_checkpoint_firestore](https://github.com/skamalj/langgraph_checkpoint_firestore) |
-| [SingleStore](https://www.singlestore.com/docs/) | [⟦T17⟧](https://pypi.org/project/langgraph-singlestore/) | [singlestore-labs/langchain-singlestore](https://github.com/singlestore-labs/langchain-singlestore) |
+|整合|下载 |
+| :-| :-|
+| [⟦T0⟧](https://reference.langchain.com/python/langgraph.checkpoint/memory/InMemorySaver) | [  ⟦T21⟧](https://pypi.org/project/langgraph-checkpoint/) |
+| [⟦T1⟧](https://reference.langchain.com/python/langgraph.checkpoint.postgres/PostgresSaver) | [  ⟦T22⟧](https://pypi.org/project/langgraph-checkpoint-postgres/) |
+| [⟦T2⟧](https://reference.langchain.com/python/langgraph.checkpoint.sqlite/SqliteSaver) | [  ⟦T23⟧](https://pypi.org/project/langgraph-checkpoint-sqlite/) |
+| [⟦T3⟧](https://github.com/redis-developer/langgraph-redis) | [  ⟦T24⟧](https://pypi.org/project/langgraph-checkpoint-redis/) |
+| [⟦T4⟧](https://github.com/langchain-ai/langchain-aws/tree/main/libs/langgraph-checkpoint-aws) | [  ⟦T25⟧](https://pypi.org/project/langgraph-checkpoint-aws/) |
+| [⟦T5⟧](https://github.com/langchain-ai/langchain-aws/tree/main/libs/langgraph-checkpoint-aws) | [  ⟦T26⟧](https://pypi.org/project/langgraph-checkpoint-aws/) |
+| [⟦T6⟧](https://github.com/langchain-ai/langchain-aws/tree/main/libs/langgraph-checkpoint-aws) | [  ⟦T27⟧](https://pypi.org/project/langgraph-checkpoint-aws/) |
+| [⟦T7⟧](/oss/python/integrations/memory/mongodb-short-term-memory) | [  ⟦T28⟧](https://pypi.org/project/langgraph-checkpoint-mongodb/) |
+| [⟦T8⟧](https://skamalj.github.io/agentstate-reducer/langgraph/firestore/) | [  ⟦T29⟧](https://pypi.org/project/langgraph-checkpoint-firestore/) |
+| [⟦T9⟧](https://github.com/langchain-ai/langchain-azure/tree/main/libs/azure-cosmosdb) | [  ⟦T30⟧](https://pypi.org/project/langchain-azure-cosmosdb/) |
+| [⟦T10⟧](https://skamalj.github.io/agentstate-reducer/langgraph/cosmosdb/) | [  ⟦T31⟧](https://pypi.org/project/langgraph-checkpoint-cosmosdb/) |
+| [⟦T11⟧](https://skamalj.github.io/agentstate-reducer/langgraph/dynamodb/) | [  ⟦T32⟧](https://pypi.org/project/langgraph-dynamodb-checkpoint/) |
+| [⟦T12⟧](/oss/python/integrations/providers/cockroachdb#langgraph-checkpointer) | [  ⟦T33⟧](https://pypi.org/project/langchain-cockroachdb/) |
+| [⟦T13⟧](https://pypi.org/project/langgraph-checkpoint-gridgain/) | [  ⟦T34⟧](https://pypi.org/project/langgraph-checkpoint-gridgain/) |
+| [⟦T14⟧](/oss/python/integrations/providers/aerospike#langgraph-checkpointer) | [  ⟦T35⟧](https://pypi.org/project/langgraph-checkpoint-aerospike/) |
+| [⟦T15⟧](https://github.com/Tghez/langgraph-checkpoint-supabase) | [  ⟦T36⟧](https://pypi.org/project/langgraph-checkpoint-supabase/) |
+| [⟦T16⟧](https://www.singlestore.com/docs/) | [  ⟦T37⟧](https://pypi.org/project/langgraph-singlestore/) |
+| [⟦T17⟧](https://www.tigrisdata.com/docs/) | [  ⟦T38⟧](https://pypi.org/project/langgraph-checkpoint-tigris/) |
+| [⟦T18⟧](https://dancenitra.github.io/inspeximus/) | [  ⟦T39⟧](https://pypi.org/project/langgraph-checkpoint-inspeximus/) |
+| [⟦T19⟧](https://docs.scylladb.com) | [  ⟦T40⟧](https://pypi.org/project/langgraph-checkpoint-scylladb/) |
+| [⟦T20⟧](https://typedb.com/docs) | [  ⟦T41⟧](https://pypi.org/project/langgraph-checkpoint-typedb/) |
 
 ***
 

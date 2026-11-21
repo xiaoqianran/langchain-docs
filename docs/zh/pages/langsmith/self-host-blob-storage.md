@@ -1,13 +1,12 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Enable blob storage | https://docs.langchain.com/langsmith/self-host-blob-storage -->
+<!-- langchain-docs: Configure blob storage | https://docs.langchain.com/langsmith/self-host-blob-storage -->
 
-# 启用 blob 存储
+# 配置 blob 存储
 
-默认情况下，LangSmith 在 ClickHouse 中存储运行输入、输出、错误、清单、额外内容和事件。如果您选择这样做，则可以将此信息存储在 Blob 存储中，这有几个显着的好处。为了在生产部署中获得最佳结果，我们**强烈**建议使用 blob 存储，它具有以下优点：
+LangSmith 将运行输入、输出、错误、清单、额外内容、事件和附件存储在 Blob 存储中。从 LangSmith v0.18 开始，需要 Blob 存储：没有它，自托管 API 和队列工作程序将无法启动。
 
-1. 在高跟踪环境中，输入、输出、错误、清单、额外内容和事件可能会使数据库的大小膨胀。
-2. 如果使用 LangSmith Managed ClickHouse，您可能需要驻留在您环境中的 Blob 存储中的敏感信息。为了缓解这种情况，LangSmith 支持在外部 Blob 存储系统中存储运行输入、输出、错误、清单、额外内容、事件和附件。
+当您不配置自己的存储时，LangSmith Helm 图表会在集群中部署[RustFS](https://rustfs.com)（与 S3 兼容的对象存储）并使用它。 RustFS 作为具有一个持久卷的单个 Pod 运行，因此它没有复制，其容量就是该卷的大小。对于生产，请使用您自己的 Blob 存储，例如 Amazon S3、Google Cloud Storage 或 Azure Blob 存储。当您使用 [LangSmith Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) 时，它还会将敏感的运行数据保存在您控制的存储中。
 
 > [!提示]
 >
@@ -18,9 +17,42 @@
 > * [Azure Blob Storage](#azure-blob-storage)
 > * [Neon Object Storage](#neon-object-storage)
 >
-> 有关完整的云特定设置和架构指南，请参阅 [AWS](/langsmith/aws-self-hosted)、[GCP](/langsmith/gcp-self-hosted) 或 [Azure](/langsmith/azure-self-hosted)。
+> 有关完整的特定于云的设置和架构指南，请参阅 [AWS](/langsmith/aws-self-hosted)、[GCP](/langsmith/gcp-self-hosted) 或 [Azure](/langsmith/azure-self-hosted)。
 
-＃＃ 要求> [!注意]
+## 升级到 v0.18
+
+升级到 LangSmith v0.18 的行为方式取决于您当前的 Blob 存储配置：* **配置了存储桶或容器**：如果设置了 `config.blobStorage.bucketName`（S3 或 GCS）或 `config.blobStorage.azureStorageContainerName`（Azure），LangSmith 将继续使用该存储。不需要改变任何值。
+* **未配置 blob 存储**：图表部署 RustFS 并 LangSmith 在那里存储 blob。要使用您自己的存储，请在升级之前对其进行配置。参见[Configuration](#configuration)。
+* **`config.blobStorage.enabled`已设置**：图表不再有此设置。将其从你的价值观中删除。该图表失败并显示 `enabled: false`。
+* **`engine` 是 `GCS` 或 `Azure`，没有存储桶或容器**：图表失败，而不是部署 RustFS。设置桶或容器。
+
+如果您在没有 Helm 图表的情况下部署 LangSmith，请在升级之前配置 Blob 存储。这些服务读取与图表设置相同的 `BLOB_STORAGE_ENGINE`、`S3_BUCKET_NAME` 和 `AZURE_STORAGE_CONTAINER_NAME` 设置。
+
+## 使用捆绑的 RustFS
+
+当 `config.blobStorage.external.enabled` 为 `false` 并且 `bucketName` 和 `azureStorageContainerName` 均未设置时，图表会部署 RustFS。它创建一个 `langsmith` 存储桶并将 LangSmith 服务指向它。使用捆绑的 RustFS 进行开发和评估，而不是生产。
+
+在 Helm 值中的 `rustfs` 下配置它：* **卷大小**：`rustfs.statefulSet.persistence.size`设置持久卷，默认为`50Gi`。设置`storageClassName`选择其存储类别。如果没有持久性，当 RustFS Pod 重新启动时，存储的跟踪信息就会丢失。
+* **凭证**：访问密钥是`langsmith`。当 `rustfs.secretKey` 为空时，图表会保留早期安装的密钥，或从 `config.apiKeySalt` 派生密钥，因此图表的每次渲染都会生成相同的密钥。要选择密钥，请设置 `rustfs.secretKey`，或将 `rustfs.existingSecretName` 设置为具有 `access_key` 和 `secret_key` 条目的 Kubernetes 密钥。
+* **安全上下文**：RustFS 作为用户和组 `10001` 运行，使用 `fsGroup: 10001` 以便可以写入其卷。在分配用户 ID 的平台上，例如具有 `restricted-v2` 安全上下文约束的 OpenShift，请将 `rustfs.statefulSet.podSecurityContext` 下的 `runAsUser`、`runAsGroup` 和 `fsGroup` 设置为 `null`。
+
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+rustfs:
+  statefulSet:
+    persistence:
+      size: 100Gi
+      storageClassName: "your-storage-class"
+```
+
+> [!注意]
+>
+> 如果您使用 `config.existingSecretName` 并在没有集群访问的情况下渲染图表（如 Argo CD 那样），则 `config.apiKeySalt` 不在您的值中。在这种情况下，请设置 `rustfs.secretKey` 或 `rustfs.existingSecretName`。否则，每次渲染都会生成一个新的随机密钥。
+
+RustFS 支持只读根文件系统。将`readOnlyRootFilesystem: true`设置为`rustfs.statefulSet.securityContext`和`rustfs.bucketJob.securityContext`。
+
+## 要求
+
+要使用您自己的 blob 存储而不是捆绑的 RustFS，您需要以下内容。> [!注意]
 >
 > Helm 图表版本 0.8.9 及更高版本中提供了 Azure Blob 存储。从 Helm 图表版本 0.10.43 开始，Azure 支持[Deleting trace projects](/langsmith/observability-concepts#data-retention)。
 >
@@ -31,17 +63,17 @@
   * [Amazon S3](https://aws.amazon.com/s3/)
   * [Google Cloud Storage (GCS)](https://cloud.google.com/storage?hl=en)
   * [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs)
-  * [Neon Object Storage](https://neon.com/docs/storage/get-started)（S3兼容）
+  * [Neon Object Storage](https://neon.com/docs/storage/get-started)（兼容S3）
 
 * Blob 存储中用于存储数据的存储桶/目录。我们强烈建议为 LangSmith 数据创建单独的存储桶/目录。
-  * **如果您使用 TTL**，您将需要设置生命周期策略来删除旧数据。欲了解更多信息，请参阅[configuring TTLs](/langsmith/self-host-ttl)。这些策略应反映您在 LangSmith 配置中设置的 TTL，否则您可能会遇到数据丢失的情况。如何设置生命周期规则请参见[TTL configuration for blob storage](#ttl-configuration)。
+  * **如果您使用 TTL**，您将需要设置生命周期策略来删除旧数据。有关更多信息，请参阅[configuring TTLs](/langsmith/self-host-ttl)。这些策略应反映您在 LangSmith 配置中设置的 TTL，否则您可能会遇到数据丢失。如何设置生命周期规则请参见[TTL configuration for blob storage](#ttl-configuration)。
   * 如果您使用自动化规则，请单独配置[automation outcome retention](#automation-outcome-retention)，即使跟踪 TTL 已禁用。* 允许LangSmith服务访问存储桶/目录的凭证
   * 您需要为您的 LangSmith 实例提供访问存储桶/目录所需的凭据。请阅读下面的身份验证[section](#authentication)以了解更多信息。
 
 * 如果使用 S3 或 GCS，则为 Blob 存储服务的 API URL
 
   * 这将是 LangSmith 用于访问您的 Blob 存储系统的 URL
-  * 对于 Amazon S3，这将是 S3 终端节点的 URL。类似：`https://s3.amazonaws.com` 或 `https://s3.us-west-1.amazonaws.com`（如果使用区域端点）。
+  * 对于 Amazon S3，这将是 S3 终端节点的 URL。类似于：`https://s3.amazonaws.com` 或 `https://s3.us-west-1.amazonaws.com`（如果使用区域端点）。
   * 对于 Google Cloud Storage，这将是 GCS 端点的 URL。类似于：`https://storage.googleapis.com`
   * 对于 Neon 对象存储，这是 Neon 分支的存储端点。类似于：`https://br-cool-darkness-a1b2c3d4.storage.c-1.us-east-2.aws.neon.tech`
 
@@ -49,7 +81,7 @@
 >
 > ### 亚马逊 S3
 >
-> 要对 [Amazon S3](https://aws.amazon.com/s3/) 进行身份验证，您需要创建一个 IAM 策略，授予对您的存储桶的以下权限。
+> 要对 [Amazon S3](https://aws.amazon.com/s3/) 进行身份验证，您需要创建一个 IAM 策略，授予您的存储桶以下权限。
 >
 > ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > {
@@ -99,11 +131,11 @@
 >
 > ### 谷歌云存储
 >
-> 要使用 [Google Cloud Storage](https://cloud.google.com/storage?hl=en) 进行身份验证，您需要创建一个具有访问存储桶所需权限的 [⟦T31⟧](https://cloud.google.com/iam/docs/service-account-overview)。
+> 要使用 [Google Cloud Storage](https://cloud.google.com/storage?hl=en) 进行身份验证，您需要创建一个具有访问存储桶所需权限的 [⟦T73⟧](https://cloud.google.com/iam/docs/service-account-overview)。
 >
 > 您的服务帐户将需要 `Storage Admin` 角色或具有同等权限的自定义角色。这可以限定为 LangSmith 将使用的存储桶。
 >
-> 一旦您拥有配置的服务帐户，您将需要为该服务帐户生成 [⟦T33⟧](https://cloud.google.com/storage/docs/authentication/hmackeys)。此密钥和秘密将用于通过 Google Cloud Storage 进行身份验证。
+> 一旦您拥有了配置的服务帐户，您将需要为该服务帐户生成 [⟦T75⟧](https://cloud.google.com/storage/docs/authentication/hmackeys)。此密钥和秘密将用于通过 Google Cloud Storage 进行身份验证。
 >
 >> [!注意]
 >>
@@ -122,7 +154,7 @@
 >
 > 1. [Storage account and access key](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage)
 > 2.[Connection string](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string)
-> 3. [Workload identity](https://azure.github.io/azure-workload-identity/docs/introduction.html)（推荐）、托管身份或[⟦T47⟧](https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication?tabs=bash#2-authenticate-with-azure) 支持的环境变量。当上述任一选项的配置不存在时，这是默认身份验证方法。
+> 3. [Workload identity](https://azure.github.io/azure-workload-identity/docs/introduction.html)（推荐）、托管身份或[⟦T89⟧](https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication?tabs=bash#2-authenticate-with-azure) 支持的环境变量。当上述任一选项的配置不存在时，这是默认身份验证方法。
 > 1. 要使用工作负载身份，请将标签 `azure.workload.identity/use: true` 添加到 `queue`、`backend`、`platform-backend` 和 `ingest-queue` 部署。此外，将 `azure.workload.identity/client-id` 注释添加到相应的服务帐户，该帐户应该是现有 Azure AD 应用程序的客户端 ID 或用户分配的托管标识的客户端 ID。有关更多详细信息，请参阅[Azure's documentation](https://azure.github.io/azure-workload-identity/docs/topics/service-account-labels-and-annotations.html)。
 >
 >> [!注意]
@@ -131,11 +163,11 @@
 >
 > ### Neon 对象存储
 >
-> [Neon Object Storage](https://neon.com/docs/storage/get-started) 是附加到 Neon 分支的 S3 兼容对象存储。 LangSmith 使用`S3` 引擎以及访问密钥和秘密密钥连接到它。
+> [Neon Object Storage](https://neon.com/docs/storage/get-started) 是附加到 Neon 分支的 S3 兼容对象存储。 LangSmith 使用 `S3` 引擎以及访问密钥和秘密密钥连接到它。
 >
 > 要为 LangSmith 设置 Neon 对象存储：
 >
-> 1. 在您的 Neon 分支上创建一个私有存储桶，例如 `langsmith`。有关更多信息，请参阅[Neon buckets](https://neon.com/docs/storage/buckets)。
+> 1. 在您的 Neon 分支上创建一个私有存储桶，例如 `langsmith`。欲了解更多信息，请参阅[Neon buckets](https://neon.com/docs/storage/buckets)。
 >
 > 2. 创建具有 `storage:read` 和 `storage:write` 范围的凭证。 LangSmith 读取、写入和删除对象，因此它需要两个作用域：
 >
@@ -143,16 +175,17 @@
 >    neon credentials create --scope storage:read --scope storage:write --name langsmith-blob-storage
 >    ```
 >
-> 3. 将凭证的`token_id`（以`nak_live_`开头）用作`accessKey`，将其`s3_secret_access_key`（以`nsk_live_`开头）用作`accessKeySecret`。欲了解更多信息，请参阅[Neon Object Storage authentication](https://neon.com/docs/storage/authentication)。
+> 3. 将凭证的`token_id`（以`nak_live_`开头）用作`accessKey`，将其`s3_secret_access_key`（以`nsk_live_`开头）用作`accessKeySecret`。有关更多信息，请参阅[Neon Object Storage authentication](https://neon.com/docs/storage/authentication)。
 >
 > 4. 使用分支的存储端点作为`apiURL`。在 Neon 控制台中，单击 **连接** 并打开 **存储** 选项卡，找到它为 `AWS_ENDPOINT_URL_S3`。
 >
-> 5. 在您的[configuration](#configuration)中设置`s3UsePathStyle: true`：
+> 5. 将`s3UsePathStyle: true`设置为[configuration](#configuration)：
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 >    config:
 >      blobStorage:
->        enabled: true
+>        external:
+>          enabled: true
 >        engine: "S3"
 >        bucketName: "langsmith"
 >        apiURL: "https://br-cool-darkness-a1b2c3d4.storage.c-1.us-east-2.aws.neon.tech"
@@ -172,12 +205,13 @@
 
 ## 配置
 
-创建存储桶并获取必要的凭据后，您可以配置 LangSmith 以使用您的 Blob 存储系统。
+创建存储桶并获取必要的凭据后，配置 LangSmith 以使用您的 Blob 存储系统。设置`external.enabled: true`，以便图表不部署 RustFS。
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
   blobStorage:
-    enabled: true
+    external:
+      enabled: true # Use your own storage instead of the bundled RustFS
     engine: "S3" # Or "GCS" or "Azure". This is case-sensitive.
     chSearchEnabled: true # Set to false if you want to disable CH search (Recommended for LangSmith Managed Clickhouse)
     bucketName: "your-bucket-name"
@@ -231,7 +265,7 @@ config:
 
 > [!注意]
 >
-> 如果使用访问密钥和机密，您还可以提供包含身份验证信息的现有 Kubernetes 机密。建议这样做，而不是直接在配置中提供访问密钥和秘密密钥。有关预期的密钥，请参阅[generated secret template](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/templates/secrets.yaml)。
+> 如果使用访问密钥和机密，您还可以提供包含身份验证信息的现有 Kubernetes 机密。建议这样做，而不是直接在配置中提供访问密钥和秘密密钥。请参阅 [generated secret template](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/templates/secrets.yaml) 了解预期的密钥。
 
 ## TTL 配置如果将 [TTL](/langsmith/self-host-ttl) 功能与 LangSmith 一起使用，您还必须为 Blob 存储配置 TTL 规则。存储在 Blob 存储上的跟踪信息存储在特定的前缀路径上，该路径决定数据的 TTL。当跟踪的保留期延长时，其相应的 blob 存储路径会发生变化，以确保它与新的延长保留期相匹配。
 
@@ -242,7 +276,7 @@ config:
 
 ### 自定义工作区级别保留前缀
 
-如果您使用 [workspace-level extended retention](/langsmith/data-purging-compliance#customize-extended-retention-policy)，LangSmith 会将 blob 数据写入到 `ttl_XXd/` 形式的前缀，其中 `XX` 是为该工作区配置的天数。例如，如果工作区配置了 90 天的延长保留期，则该工作区的 Blob 数据将写入 `ttl_90d/` 前缀。
+如果使用 [workspace-level extended retention](/langsmith/data-purging-compliance#customize-extended-retention-policy)，LangSmith 会将 blob 数据写入到 `ttl_XXd/` 形式的前缀，其中 `XX` 是为该工作区配置的天数。例如，如果工作区配置了 90 天的延长保留期，则该工作区的 Blob 数据将写入 `ttl_90d/` 前缀。
 
 您必须为工作区中配置的**每个**自定义保留期创建生命周期规则。常见示例：
 
@@ -252,7 +286,7 @@ config:
 >
 > 如果在配置的保留期内缺少生命周期规则，则该前缀下的 Blob 数据永远不会被自动删除。确保每当配置新的工作区保留期时都添加匹配的生命周期规则。
 
-例如，如果您的工作区配置了 90 天和 180 天的延长保留期，则除了 ** [default ⟦T80⟧ and ⟦T81⟧ rules](#ttl-configuration) 之外，您还可以添加以下生命周期规则：
+例如，如果您的工作区配置了 90 天和 180 天的延长保留期，则除了 ** [default ⟦T123⟧ and ⟦T124⟧ rules](#ttl-configuration) 之外，您还可以添加以下生命周期规则：
 
 > [选项卡] AWS
 >
@@ -378,7 +412,7 @@ config:
 >
 > ### Google Cloud Storage 生命周期规则
 >
-> 您将需要为您正在使用的 GCS 存储桶设置生命周期条件。您可以找到有关此[in the Google Documentation](https://cloud.google.com/storage/docs/lifecycle#conditions)的信息，特别是使用matchesPrefix。
+> 您将需要为您正在使用的 GCS 存储桶设置生命周期条件。您可以找到有关此 [in the Google Documentation](https://cloud.google.com/storage/docs/lifecycle#conditions) 的信息，特别是使用 matchesPrefix。
 >
 > 举个例子，如果您使用 Terraform 来管理您的 GCS 存储桶，您将进行如下设置：
 >
@@ -553,7 +587,7 @@ config:
 
 > [标签] 霓虹灯
 >
-> Neon 不运行生命周期过期规则。扩展您的 [scheduled cleanup job](#neon-object-storage-lifecycle-rules) 以删除 `run_rules/outcomes/` 下超过 30 天的对象。对象锁定、合法保留和存储保留策略可以防止删除。在依赖生命周期规则进行永久删除之前，请先检查这些设置以及版本控制、快照和软删除。
+> Neon 不运行生命周期过期规则。延长 [scheduled cleanup job](#neon-object-storage-lifecycle-rules) 以删除 `run_rules/outcomes/` 下超过 30 天的对象。对象锁定、合法保留和存储保留策略可以防止删除。在依赖生命周期规则进行永久删除之前，请先检查这些设置以及版本控制、快照和软删除。
 
 ***
 
