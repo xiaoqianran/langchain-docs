@@ -31,7 +31,7 @@ SmithDB 是必要的，但并不总是足够的。功能还可能取决于您的
 | [Trajectory view](/langsmith/view-traces#trajectory-view) |跨回合、模型调用、工具和子代理的重复数据删除对话。还支持实验运行详细信息中线程和解析消息的 Markdown 导出。 |单次运行的跟踪检查和消息呈现。 |
 | [Trajectory evaluators](/langsmith/online-evaluations-multi-turn#evaluate-trajectories) |使用 `trajectory` 变量对完整代理路径（包括子模型和工具调用）进行评分的在线评估器。 |读取根运行消息的运行评估器和线程评估器。 |
 | [Threads in annotation queues](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue) |从线程视图将线程添加到注释队列，并查看线程项，显示其轨迹。 |运行级注释队列。 |
-| [Trajectory review in annotation queues](/langsmith/annotation-queues#review-a-single-run-queue) |在分级转弯的轨迹视图中打开排队运行。 |检查运行的输入和输出，并折叠工具调用。 || [Threads in datasets](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project) |将选定的线程（包括注释队列中的线程项）添加到数据集作为对话示例。 |将运行添加到数据集。 |
+| [Trajectory review in annotation queues](/langsmith/annotation-queues#review-a-single-run-queue) |在分级转弯的轨迹视图中打开排队运行。 |检查运行的输入和输出，并折叠工具调用。 || [Threads in datasets](/langsmith/manage-datasets-in-application#manually-from-an-agent-environment) |将选定的线程（包括注释队列中的线程项）添加到数据集作为对话示例。 |将运行添加到数据集。 |
 | [Thread automation rules](/langsmith/rules#set-the-item-type-to-runs-or-threads) |创建线程规则，将线程添加到注释队列或数据集，或发送[webhooks](/langsmith/webhooks#read-a-thread-rule-payload)。回填历史数据的线程规则。 |运行自动化规则。 |
 |公共线程共享 |通过公共链接共享整个线程。 |与公共链接共享单个跟踪。 |
 |大痕迹行动 |用于大型跟踪的分页跟踪树，将整个跟踪下载为 JSON，并从跟踪详细信息页面删除整个跟踪。 |查看跟踪、下载各个运行以及现有的删除工作流程。 |

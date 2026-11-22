@@ -12,7 +12,7 @@ OpenAI Agents SDK 可让您构建由 OpenAI 模型支持的代理。
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 > [选项卡] Python
 >
@@ -22,7 +22,7 @@ OpenAI Agents SDK 可让您构建由 OpenAI 模型支持的代理。
 >>
 >> 需要 Python SDK 版本`langsmith>=0.3.15`。
 >
-> 安装 LangSmith 并支持 OpenAI 代理：
+> 安装 LangSmith 和 OpenAI 代理支持：
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install "langsmith[openai-agents]"

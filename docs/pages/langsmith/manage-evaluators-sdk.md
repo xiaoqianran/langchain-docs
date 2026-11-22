@@ -506,7 +506,7 @@ for (const group of spendByRunRule.groups ?? []) {
 
 ## Delete an evaluator
 
-You cannot delete an evaluator while it is attached to a tracing project, an agent environment, or a dataset. Set `delete_run_rules` to `true` to delete the run rules that reference the evaluator before deleting the evaluator.
+You cannot delete an evaluator while it is attached to an agent environment or a dataset. Set `delete_run_rules` to `true` to delete the run rules that reference the evaluator before deleting the evaluator.
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio

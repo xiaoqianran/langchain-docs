@@ -150,7 +150,7 @@ OpenAI
 >
 > 您可以在[LangSmith workspace settings](https://smith.langchain.com/settings)中找到您的工作区ID。
 
-3. 在 LangSmith Playground 中，通过单击 **Key** 图标打开 Bedrock 提供程序的机密配置（模型配置下拉列表本身不提供 IAM 受信任实体选项）。然后展开 **IAM Trusted Entity** 部分并输入您创建的角色的 ARN。
+3. 在 LangSmith Playground 中，通过单击 **Key** 图标打开 Bedrock 提供程序的机密配置（模型配置下拉列表本身不提供 IAM 受信任实体选项）。然后展开 **IAM 受信任实体** 部分并输入您创建的角色的 ARN。
 
    ![Bedrock secrets and API keys configuration with the IAM Trusted Entity section](https://mintcdn.com/langchain-5e9cc07a/5xyMbImu-yvQUeiG/images/langsmith/bedrock-secrets-config.png?fit=max\&auto=format\&n=5xyMbImu-yvQUeiG\&q=85\&s=5ba03ea30f7bba78bc51d0fa8e273878)
 
@@ -264,7 +264,7 @@ Anthropic 提供 Claude 一代的三层型号：
 
 ### 配置参数
 
-|参数|范围 |默认 |描述 |
+|参数|范围 |默认|描述 |
 | - | - | - | - |
 | **温度** | 0.0 - 1.0 |可选|随机性控制（取消选中以使用模型默认值）|
 | **最大输出代币** | 1+ | 1024 | 1024最大响应长度|
@@ -306,7 +306,7 @@ Anthropic 提供 Claude 一代的三层型号：
 
 在 Azure OpenAI 提供程序配置中，输入端点、部署名称、API 版本和 API 密钥。
 
-#### 自托管 LangSmith 的工作负载标识
+#### 自托管 LangSmith 的 AKS 工作负载身份
 
 > [!注意]
 >
@@ -359,7 +359,7 @@ Azure OpenAI 支持与 OpenAI 相同的参数：
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数|对于可重复的输出 |
+| **种子** |整数 |对于可重复的输出 |
 
 #### 高级参数
 
@@ -400,7 +400,7 @@ Databricks 提供的基础模型包括 Claude、GPT、Gemini 和 Llama。
 | **最大输出代币** | 1+ |令牌中的最大响应长度。 |
 | **停止序列** |字符串列表 |模型停止生成的序列。 |
 | **超时** |秒|请求超时。 |
-| **最大重试次数** |整数|失败请求的最大重试次数。 |
+| **最大重试次数** |整数 |失败请求的最大重试次数。 |
 
 选择与您的端点匹配的API路由：
 
@@ -521,13 +521,13 @@ Fireworks 为流行的开源模型和微调变体提供高速推理，包括：
 >
 > 将您的服务帐户 JSON 密钥视为密码。不要共享它或将其提交给源代码管理。如果密钥被泄露，请立即从 [Google Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts) 撤销它并创建一个新密钥。
 
-#### 自托管 LangSmith 的工作负载身份
+#### 自托管 LangSmith 的 GKE 工作负载身份
 
-GKE 上的自托管 LangSmith 可以使用工作负载联合身份验证和应用程序默认凭证 (ADC)，而不是 JSON 密钥。这种无钥匙替代方案支持 Playground、Chat（Helm 中的`polly`）和 Insights。请参阅[Authenticate Vertex AI with GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity)来配置每个工作负载身份。
+GKE 上的自托管 LangSmith 可以使用工作负载联合身份验证和应用程序默认凭证 (ADC)，而不是 JSON 密钥。这种无钥匙替代方案支持 Playground、Chat（Helm 中的`polly`）、Insights 和 Fleet。请参阅[Authenticate Vertex AI with GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity)来配置每个工作负载身份。
 
-### 可用型号
+### 可用型号Google 提供针对不同用例进行优化的多层 Gemini 模型（Ultra、Pro、Flash），以及通过 Gemini Enterprise Agent Platform 提供的其他模型。
 
-Google 提供针对不同用例进行优化的多层 Gemini 模型（Ultra、Pro、Flash），以及通过 Gemini Enterprise Agent Platform 提供的其他模型。有关当前可用型号的列表，请参阅[Gemini Enterprise Agent Platform documentation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/google-models)。
+有关当前可用型号的列表，请参阅[Gemini Enterprise Agent Platform documentation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/google-models)。
 
 ### 配置参数
 
@@ -558,9 +558,7 @@ Groq 为流行的开源模型（包括 Llama、Mixtral 和 Gemma 变体）提供
 
 有关当前可用型号的列表，请参阅[Groq's model documentation](https://console.groq.com/docs/models)。
 
-### 配置参数
-
-|参数|范围 |描述 |
+### 配置参数|参数|范围 |描述 |
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
@@ -570,7 +568,9 @@ Groq 为流行的开源模型（包括 Llama、Mixtral 和 Gemma 变体）提供
 * **支持的工具选择：** `auto`、`required`、`none`。
 * **并行执行：** 是的。
 
-## 米斯特拉尔人工智能在使用此型号之前，请确保您拥有[Mistral AI API key](https://console.mistral.ai/api-keys/)。
+## 米斯特拉尔人工智能
+
+在使用此型号之前，请确保您拥有[Mistral AI API key](https://console.mistral.ai/api-keys/)。
 
 ### 可用型号
 
@@ -597,9 +597,7 @@ Mistral 提供针对不同性能和成本要求进行优化的多层（大、中
 
 ### 可用型号
 
-OpenAI 提供多种具有不同功能和价位的型号系列：
-
-* **GPT 系列：** 具有各种大小/功能级别的通用聊天模型。
+OpenAI 提供多种具有不同功能和价位的型号系列：* **GPT 系列：** 具有各种大小/功能级别的通用聊天模型。
 * **o 系列：** 针对复杂问题解决而优化的以推理为中心的模型。
 * **旧型号：** 较旧的 GPT-3.5 和 GPT-4 变体。
 
@@ -607,22 +605,22 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 
 ### 配置参数
 
-标准：|参数|范围 |描述 |
+标准：
+
+|参数|范围 |描述 |
 | - | - | - |
 | **温度** | 0.0 - 2.0 |控制随机性。较低=更专注，较高=更具创造力。 |
 | **最大输出代币** | 1+ |响应的最大长度 |
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数|对于可重复的输出 |
+| **种子** |整数 |对于可重复的输出 |
 
 高级：
 
 **推理工作**：适用于推理优化模型（o 系列和较新的 GPT 模型）。
 
-在回应之前控制推理深度。更高的努力=复杂任务的更好质量，更长的延迟。
-
-|价值|描述 |
+在回应之前控制推理深度。更高的努力=复杂任务的更好质量，更长的延迟。|价值|描述 |
 | - | - |
 | `none` |禁用推理（标准聊天行为）|
 | `minimal` |最小推理 |
@@ -633,7 +631,9 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 
 > [!注意]
 >
-> 当 Reasoning_effort 处于活动状态时（不是`none`），温度、top_p 和惩罚会自动禁用。**服务等级**：适用于较新的型号。
+> 当 Reasoning_effort 处于活动状态时（不是`none`），温度、top_p 和惩罚会自动禁用。
+
+**服务等级**：适用于较新的型号。
 
 控制请求优先级和处理分配。
 
@@ -657,9 +657,7 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 
 ## OpenAI 兼容端点
 
-身份验证因端点而异。常用选项：
-
-* **API 密钥**：存储为 [workspace secret](/langsmith/administration-overview#workspaces) 并转发为 `Authorization: Bearer <key>`。
+身份验证因端点而异。常用选项：* **API 密钥**：存储为 [workspace secret](/langsmith/administration-overview#workspaces) 并转发为 `Authorization: Bearer <key>`。
 * **无**：适用于未经身份验证的本地端点（例如，`localhost` 上的 Ollama）。
 * **OAuth2 `client_credentials`**：存储在模型配置上。 LangSmith 在请求时铸造一个短期持有者，并在到期前刷新它。参见[OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)。
 
@@ -668,7 +666,9 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 **必填：**
 
 * **基本 URL：** 您的端点 URL（例如，`https://your-endpoint.com/v1`）。
-* **型号名称：** 您的型号标识符。可与实现 OpenAI 兼容 API 格式的任何框架或服务配合使用，包括：
+* **型号名称：** 您的型号标识符。
+
+可与实现 OpenAI 兼容 API 格式的任何框架或服务配合使用，包括：
 
 * 自托管开源推理服务器
 * 路由代理模型
@@ -692,9 +692,7 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 * **流式传输：** 如果端点支持。
 * **函数调用：** 如果端点实现OpenAI格式。
 
-### 工具调用
-
-* **支持的工具选择：** `auto`、`required`、`none`（如果端点支持）。
+### 工具调用* **支持的工具选择：** `auto`、`required`、`none`（如果端点支持）。
 * **并行执行：** 是（如果端点支持）。
 
 ### 端点示例
@@ -728,7 +726,9 @@ Model: gpt-4 (routes to configured backend)
 
 xAI 为不同的用例提供多种尺寸的 Grok 模型。
 
-有关当前可用型号的列表，请参阅[xAI's documentation](https://docs.x.ai/docs)。### 配置参数
+有关当前可用型号的列表，请参阅[xAI's documentation](https://docs.x.ai/docs)。
+
+### 配置参数
 
 标准OpenAI兼容参数：
 
@@ -759,9 +759,7 @@ xAI 为不同的用例提供多种尺寸的 Grok 模型。
 }
 ```
 
-**使用案例：**
-
-* 特定于提供商的测试版功能
+**使用案例：*** 特定于提供商的测试版功能
 * UI 中尚未包含高级参数
 * 用于跟踪的自定义元数据
 
@@ -773,7 +771,9 @@ xAI 为不同的用例提供多种尺寸的 Grok 模型。
 
 * **范围：** 0 - 500 RPS
 * **目的：** 尊重 API 速率限制，控制成本
-* **默认值：** 因提供商而异在运行实验或评估时设置此项以避免达到速率限制。
+* **默认值：** 因提供商而异
+
+在运行实验或评估时设置此项以避免达到速率限制。
 
 ## 后续步骤
 

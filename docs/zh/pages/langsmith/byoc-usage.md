@@ -63,7 +63,7 @@ BYOC 部署为标准 LangSmith [resource hierarchy](/langsmith/administration-ov
 
 ## 跟踪数据平面
 
-要在基于代理的工作区中进行跟踪，请在运行示例之前[create an agent and configure agent addressing](/langsmith/create-an-agent#configure-tracing-for-the-agent)。
+在运行示例之前，[create an agent and configure agent addressing](/langsmith/create-an-agent#configure-tracing-for-the-agent)。
 
 要将跟踪发送到位于数据平面中的工作区，请将 LangSmith SDK 指向数据平面端点，并使用作用域为该数据平面中的工作区的 API 密钥进行身份验证：
 

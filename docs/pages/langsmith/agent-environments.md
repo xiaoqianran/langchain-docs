@@ -8,10 +8,6 @@ An *environment* records where an agent was running when it produced a trace. Ev
 
 Because the environment travels with the trace, where the agent was running is a property of the trace itself.
 
-> [!NOTE]
->
-> Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
-
 ## Environment names
 
 The four environments are fixed, and custom names are not supported. The environment switcher lists them most production-like first:

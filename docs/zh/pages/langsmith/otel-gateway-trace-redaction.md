@@ -4,7 +4,7 @@
 
 # 使用 OpenTelemetry Gateway 架构编辑敏感数据
 
-使用 OpenTelemetry 收集器在痕迹中的敏感数据到达 LangSmith 之前对其进行编辑。
+使用 OpenTelemetry 收集器在痕迹中的敏感数据进入 LangSmith 之前对其进行编辑。
 
 使用 [LangChain](/langsmith/trace-with-langchain)、[LangGraph](/langsmith/trace-with-langgraph) 或 [Deep Agents](/langsmith/trace-deep-agents) 构建的代理支持 [OpenTelemetry-based tracing](/langsmith/trace-with-opentelemetry)。您可以通过您控制的 OpenTelemetry 收集器路由它们，应用编辑规则来剥离敏感字段，并将清理后的跟踪转发到 LangSmith，而不是直接将跟踪发送到 LangSmith。
 
@@ -31,7 +31,7 @@ flowchart TD
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 先决条件
 
@@ -46,9 +46,9 @@ LANGSMITH_AGENT_ENVIRONMENT="production"
 OTEL_EXPORTER_OTLP_ENDPOINT="http://<my-otel-collector-endpoint>:4318"
 ```
 
-`LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 命名跟踪所属的代理和环境。欲了解更多信息，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。## 配置收集器
+`LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 命名跟踪所属的代理和环境。有关更多信息，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
 
-这两种方法还需要一个 OpenTelemetry 收集器作为代理和 LangSmith 之间的中介运行。以下配置在端口 `4318` 上设置一个 OTLP 接收器、一个编辑 `gen_ai.prompt` 和 `gen_ai.completion` span 属性的转换处理器，以及一个将清理后的跟踪转发到 LangSmith API 的导出器：
+## 配置收集器这两种方法还需要一个 OpenTelemetry 收集器作为代理和 LangSmith 之间的中介运行。以下配置在端口 `4318` 上设置一个 OTLP 接收器、一个编辑 `gen_ai.prompt` 和 `gen_ai.completion` span 属性的转换处理器，以及一个将清理后的跟踪转发到 LangSmith API 的导出器：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 receivers:
@@ -96,7 +96,7 @@ service:
 
 标头适用于导出器发送的每个范围。要将跟踪发送到多个代理或环境，请为每个代理或环境定义一个导出器，并将每个代理的跨度路由到其导出器。 Span 属性（包括 `gen_ai.agent.name`）不会将跟踪发送到代理。要了解有关向代理发送跟踪的更多信息，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
 
-## 使用 LangChain、LangGraph 或 Deep Agents 进行追踪
+## 使用 LangChain、LangGraph 或 Deep Agents 进行跟踪
 
 如果您的代理已使用 [LangChain](/langsmith/trace-with-langchain)、[LangGraph](/langsmith/trace-with-langgraph) 或 [Deep Agents](/langsmith/trace-deep-agents)，请使用此方法。跟踪集成会根据您的环境变量自动处理跨度创建，因此不需要额外的检测代码：
 

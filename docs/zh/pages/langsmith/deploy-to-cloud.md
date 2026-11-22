@@ -42,7 +42,7 @@
 >
 > 11.添加环境变量和机密。有关更多信息，请参阅[Environment variables](/langsmith/env-var-cloud)。
 >
-> 12. 选择**提交**。 LangSmith 将代理服务器排队以进行配置。在基于项目的工作区中，LangSmith 还会创建一个与代理服务器同名的跟踪项目。在基于代理的工作区中，LangSmith 将代理服务器绑定到 [agent](/langsmith/agent-registry#agent)，并且代理服务器向代理的 [environments](/langsmith/agent-environments) 之一报告。
+> 12. 选择**提交**。 LangSmith 将代理服务器排队以进行配置。 LangSmith 还将代理服务器绑定到[agent](/langsmith/agent-registry#agent)，并且代理服务器向其中一个代理的[environments](/langsmith/agent-environments) 报告。
 >
 >> [!注意]
 >>

@@ -10,7 +10,7 @@
 
 ## 先决条件
 
-舰队需要 [Enterprise](https://langchain.com/pricing) 计划和 [LangSmith Self-Hosted v0.13](https://changelog.langchain.com/announcements/langsmith-self-hosted-v0-13) 或更高版本。此独立部署配置需要 v0.15 或更高版本。首先安装[base LangSmith platform](/langsmith/kubernetes)。
+在自托管 LangSmith 上运行 Fleet 需要 [Enterprise](https://langchain.com/pricing) 计划和 [LangSmith Self-Hosted v0.13](https://changelog.langchain.com/announcements/langsmith-self-hosted-v0-13) 或更高版本。此页面上的独立部署配置需要 v0.15 或更高版本。首先安装[base LangSmith platform](/langsmith/kubernetes)。
 
 Fleet 提供 API 服务器、任务队列、PostgreSQL、Redis、工具服务器和触发器服务器。它不需要代理服务器托管。
 
@@ -22,7 +22,7 @@ Fleet 提供 API 服务器、任务队列、PostgreSQL、Redis、工具服务器
 python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
 ```
 
-将其作为 `agent_builder_encryption_key` 存储在您的 [existing LangSmith app Secret](/langsmith/self-host-using-an-existing-secret#parameters) 中。将以下内容添加到您的[⟦T30⟧](/langsmith/kubernetes#configure-your-helm-charts)：
+将其作为 `agent_builder_encryption_key` 存储在您的 [existing LangSmith app secret](/langsmith/self-host-using-an-existing-secret#parameters) 中。将以下内容添加到您的[⟦T30⟧](/langsmith/kubernetes#configure-your-helm-charts)：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
@@ -42,7 +42,7 @@ fleetTriggerServer:
 
 > [!警告]
 >
-> 如果您要从旧版`agentBootstrap` 部署模型迁移，请在升级前通过[Support Portal](https://support.langchain.com) 联系技术支持。当前图表拒绝`backend.agentBootstrap`、`config.insights`和`config.polly`；删除这些旧设置而不是将它们设置为 `false`。禁用旧的 `config.agentBuilder.enabled` 标志。在删除旧部署之前保留现有队列数据。默认情况下，Fleet 使用专用的 PostgreSQL 和 Redis 实例。要使用外部数据库，请配置`fleet.postgres.external`和`fleet.redis.external`：
+> 如果您要从旧版`agentBootstrap` 部署模型迁移，请在升级前通过[Support Portal](https://support.langchain.com) 联系技术支持。当前图表拒绝 `backend.agentBootstrap`、`config.insights` 和 `config.polly`。删除这些旧设置而不是将它们设置为 `false`。禁用旧的 `config.agentBuilder.enabled` 标志。在删除旧部署之前保留现有队列数据。默认情况下，Fleet 使用专用的 PostgreSQL 和 Redis 实例。要使用外部数据库，请配置`fleet.postgres.external`和`fleet.redis.external`：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 fleet:
@@ -97,7 +97,11 @@ fleet:
 
 如何发送转发头，请参见[Forward caller headers to MCP servers](/langsmith/fleet/code#forward-caller-headers-to-mcp-servers)。
 
-### （可选）为队列启用 OAuth 工具和触发器要在 Fleet 中启用基于 OAuth 的工具（例如 Gmail、Slack 或 Linear），请配置 `providerOrgId` 并为您要使用的每个集成添加提供商 ID。您可以启用提供商的任意组合。
+### （可选）使用 GKE 工作负载身份对 Vertex AI 进行身份验证在 GKE 上，Fleet 可以通过工作负载身份联合和应用程序默认凭证 (ADC)（而不是存储的服务帐户 JSON 密钥）调用 Vertex AI 模型。无密钥身份验证需要 Helm Chart 0.18.0 或更高版本。它还需要在平台后端和两个 Fleet 组件上使用`FLEET_VERTEX_AI_ADC_ENABLED`。有关完整设置，请参阅[Authenticate Vertex AI with GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity)。
+
+### （可选）为队列启用 OAuth 工具和触发器
+
+要在 Fleet 中启用基于 OAuth 的工具（例如 Gmail、Slack 或 Linear），请配置 `providerOrgId` 并为要使用的每个集成添加提供商 ID。您可以启用提供商的任意组合。
 
 #### 可用的提供商
 
@@ -112,7 +116,7 @@ fleet:
 
 #### 通用配置
 
-将以下内容添加到您的[⟦T51⟧](/langsmith/kubernetes#configure-your-helm-charts)。仅包含您需要的提供商。
+将以下内容添加到您的[⟦T52⟧](/langsmith/kubernetes#configure-your-helm-charts)。仅包含您需要的提供商。
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 fleet:
@@ -159,7 +163,7 @@ fleet:
 >
 > **4。在 LangSmith** 中配置 OAuth 提供程序
 >
-> 在 LangSmith 中，转到 **设置 > OAuth 提供商** 并添加新的提供商：
+> 在 LangSmith 中，转到 **设置 > OAuth 提供商** 并添加新提供商：
 >
 > * **客户端 ID**：来自 GCP
 > * **客户端秘密**：来自 GCP
@@ -169,7 +173,7 @@ fleet:
 >
 > **5。应用更改**
 >
-> 将 LangSmith OAuth 提供商 ID 添加到您的 [⟦T63⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
+> 将 LangSmith OAuth 提供商 ID 添加到您的 [⟦T64⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > fleet:
@@ -180,7 +184,7 @@ fleet:
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-> ```> [手风琴] Microsoft OAuth 提供程序
+> ```> [手风琴] Microsoft OAuth 提供商
 >
 > 要为 Fleet 启用 Microsoft OAuth，请创建 Azure 应用程序注册，添加所需的 Microsoft Graph 委派权限，并在 LangSmith 中配置 Microsoft OAuth 提供程序。
 >
@@ -202,7 +206,7 @@ fleet:
 >
 > **4。创建客户端密码**
 >
-> 在 **证书和机密** 中，创建新的客户端机密。复制 **应用程序（客户端）ID** 和生成的客户端密钥值。
+> 在**证书和机密**中，创建新的客户端机密。复制 **应用程序（客户端）ID** 和生成的客户端密钥值。
 >
 > **5。添加 Microsoft Graph 委派权限**
 >
@@ -267,7 +271,7 @@ fleet:
 >
 > **8。应用更改**
 >
-> 将以下内容添加到您的 [⟦T87⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
+> 将以下内容添加到您的 [⟦T88⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > fleet:
@@ -310,7 +314,7 @@ fleet:
 >
 > **5。应用更改**
 >
-> 将以下内容添加到您的 [⟦T93⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
+> 将以下内容添加到您的 [⟦T94⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > fleet:
@@ -353,7 +357,7 @@ fleet:
 >
 > **5。应用更改**
 >
-> 将以下内容添加到您的 [⟦T99⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
+> 将以下内容添加到您的 [⟦T100⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > fleet:
@@ -434,11 +438,11 @@ fleet:
 >
 >> [!注意]
 >>
-> > 将 `<MyDomain>` 替换为您组织的 My Domain，可在 **设置 > My Domain** 下找到。对于沙箱，请使用 `https://<MyDomain>--<SandboxName>.sandbox.my.salesforce.com/services/oauth2/authorize` 和匹配的令牌 URL。
+> > 将 `<MyDomain>` 替换为您组织的 My Domain（位于 **设置 > My Domain** 下）。对于沙箱，请使用 `https://<MyDomain>--<SandboxName>.sandbox.my.salesforce.com/services/oauth2/authorize` 和匹配的令牌 URL。
 >
 > **6。应用更改**
 >
-> 将以下内容添加到您的 [⟦T110⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
+> 将以下内容添加到您的 [⟦T111⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
 >> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > fleet:
 >   oauth:
@@ -454,7 +458,7 @@ fleet:
 >>
 >> 如果登录失败：确认 Salesforce 中的 **回调 URL** 与 `https://<hostname>/host-oauth-callback/<provider-id>` 完全匹配（HTTPS，无尾部斜杠）；如果您选择**管理员批准的用户已预先授权**，请通过权限集分配应用程序；如果您的组织强制执行登录 IP 范围，请在用户的个人资料中将您的队列服务器的出口 IP 列入白名单，或在应用程序的策略中将 **IP 放宽** 设置为 **放宽 IP 限制**。
 
-> [手风琴] Slack OAuth 提供者
+> [手风琴] Slack OAuth 提供程序
 >
 > 一个 Slack OAuth 提供商为您添加到各个代理的 Slack 工具和 Slack 应用程序提供支持，因此 Slack 设置可以与 Slack 集成的其余部分一起使用。
 >
@@ -462,7 +466,7 @@ fleet:
 
 ### （可选）为队列启用 GitHub 应用程序
 
-Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 GitHub 集成。 GitHub 应用程序为 Fleet 的 GitHub 工具提供存储库访问，并支持私有存储库访问所需的用户授权流程。设置过程包括创建 GitHub 应用程序、收集其凭据、将其存储为 Kubernetes 机密，以及从您的 [⟦T112⟧](/langsmith/kubernetes#configure-your-helm-charts) 引用它们。
+Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 GitHub 集成。 GitHub 应用程序为 Fleet 的 GitHub 工具提供存储库访问，并支持私有存储库访问所需的用户授权流程。设置过程包括创建 GitHub 应用程序、收集其凭据、将其存储为 Kubernetes 机密，以及从您的 [⟦T113⟧](/langsmith/kubernetes#configure-your-helm-charts) 引用它们。
 
 **1.创建 GitHub 应用程序**
 
@@ -538,7 +542,7 @@ python3 -c "import secrets; print(secrets.token_urlsafe(48))"
 单击“**创建 GitHub 应用程序**”。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量 |
 | - | - | - |
 | **应用程序ID** |数字，位于页面顶部 | `FLEET_GITHUB_APP_ID` |
-| **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet`| `FLEET_GITHUB_APP_PUBLIC_LINK` |
+| **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet` | `FLEET_GITHUB_APP_PUBLIC_LINK` |
 |应用程序块 |公共链接的最后一个路径段 | `FLEET_GITHUB_APP_SLUG` |
 | **客户端ID** |在 **关于** |下`FLEET_GITHUB_APP_CLIENT_ID` |
 
@@ -548,7 +552,7 @@ python3 -c "import secrets; print(secrets.token_urlsafe(48))"
 
 **9.生成私钥**
 
-滚动到 **私钥** 并单击 **生成私钥**。 GitHub 下载一个 `.pem` 文件。确保此文件的安全，因为它授予对 GitHub 应用程序的完全访问权限。 PEM 内容为`FLEET_GITHUB_APP_PRIVATE_KEY`。
+滚动到 **私钥** 并单击 **生成私钥**。 GitHub 下载一个 `.pem` 文件。确保此文件的安全，因为它授予对 GitHub 应用程序的完全访问权限。 PEM内容为`FLEET_GITHUB_APP_PRIVATE_KEY`。
 
 **10.生成状态 JWT 机密**
 

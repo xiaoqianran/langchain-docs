@@ -4,20 +4,22 @@
 
 # 使用模型提供者的环境变量
 
+将模型提供者凭证和选项设置为自托管 LangSmith 中 Playground 服务的环境变量，包括 Gemini Enterprise Agent Platform 和 AWS IRSA。
+
 > [!注意]
 >
 > 此功能仅适用于 Helm 图表版本 0.10.27（应用程序版本 0.10.74）及更高版本。
 
-许多模型提供程序支持通过环境变量设置凭据和其他配置选项。这对于您希望避免在代码或配置文件中硬编码敏感信息的自托管部署非常有用。在 LangSmith 中，大多数模型交互都是通过 `playground` 服务完成的，该服务允许您直接在 pod 本身上配置许多环境变量。这对于避免在 UI 中设置凭据很有用。
+许多模型提供程序支持通过环境变量设置凭据和其他配置选项。这对于您希望避免在代码或配置文件中硬编码敏感信息的自托管部署非常有用。在 LangSmith 中，大多数模型交互都是通过 `playground` 服务完成的，该服务允许您直接在 pod 本身上配置许多环境变量。这对于避免在 [Playground](/langsmith/playground-model-providers) UI 中设置凭据很有用。
 
-## 要求
-
-* 运行 `playground` 服务的自托管 LangSmith 实例。
-* 您要配置的provider必须支持配置环境变量。检查提供商的聊天模型[documentation](https://docs.langchain.com/oss/python/integrations/providers/overview)以获取更多信息。
+＃＃ 要求* 运行 `playground` 服务的自托管 LangSmith 实例。
+* 您要配置的provider必须支持配置环境变量。要进行检查，请参阅[LangChain integrations docs](/oss/python/integrations/providers/overview)中提供商的聊天模型页面。
 * 您可能想要附加到 `playground` 服务的秘密/角色。
-  * 请注意，对于 [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)，您可能需要向 `langsmith-playground` 服务帐户授予必要的权限来访问云提供商中的机密或角色。
+  * 对于 IRSA，授予 `langsmith-playground` 服务帐户权限以访问云提供商中的这些机密或角色。有关说明，请参阅[AWS IRSA (EKS)](#aws-irsa-eks)。
 
-＃＃ 配置使用上面的参数，您可以配置 LangSmith 实例以使用模型提供程序的环境变量。您可以通过修改 LangSmith Helm Chart 安装的 `langsmith_config.yaml` 文件来完成此操作。
+## 配置
+
+使用上面的参数，您可以配置 LangSmith 实例以使用模型提供程序的环境变量。您可以通过修改 LangSmith Helm Chart 安装的 `langsmith_config.yaml` 文件来完成此操作。
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 playground:
@@ -74,13 +76,11 @@ playground:
           defaultMode: 0444
 ```
 
-### 使用工作负载身份
-
-在 GKE 上运行的自托管 LangSmith 上，Playground 可以使用工作负载联合身份验证和 ADC，而不是服务帐户 JSON 密钥。请参阅 [Authenticate Vertex AI with GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity) 配置 Playground 以及 Chat 和 Insights。
+### 使用工作负载身份在 GKE 上运行的自托管 LangSmith 上，Playground 可以使用工作负载联合身份验证和 ADC，而不是服务帐户 JSON 密钥。请参阅 [Authenticate Vertex AI with GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity) 配置 Playground 以及 Chat、Insights 和 Fleet。
 
 ## AWS IRSA (EKS)
 
-对于 EKS 集群，您可以使用 AWS IRSA（服务账户的 IAM 角色）授予 `playground` 服务账户对 AWS 资源的访问权限，而无需存储凭证。使用您的 IAM 角色 ARN 注释服务账户：
+对于 EKS 集群，您可以使用 [AWS IRSA (IAM Roles for Service Accounts)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) 授予 `playground` 服务账户对 AWS 资源的访问权限，而无需存储凭证。使用您的 IAM 角色 ARN 注释服务账户：
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 playground:
@@ -94,6 +94,8 @@ playground:
 >
 > 确保您的 AWS IAM 角色拥有游乐场服务需要访问的 AWS 资源的必要权限。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-playground-environment-settings.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

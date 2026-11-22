@@ -8,7 +8,7 @@
 
 跟踪项目可以跨[threads](/langsmith/observability-concepts#threads)、[traces](/langsmith/observability-concepts#traces)和[runs](/langsmith/observability-concepts#runs)积累大量数据。 LangSmith 的过滤工具可让您精确导航和分析数据。
 
-在 [agent-based workspace](/langsmith/agent-registry) 中，跟踪项目是一个代理的 [environment](/langsmith/agent-environments) 之一，因此过滤器适用于您打开的环境，而不是整个代理。要过滤代理的环境，请依次过滤每个环境。
+过滤器适用于您打开的[environment](/langsmith/agent-environments)，而不是整个代理。要过滤代理的环境，请依次过滤每个环境。
 
 > [!注意]
 >
@@ -25,7 +25,7 @@
 * [Filtering within the Details view](#filter-runs-in-the-details-view)
 * [Advanced filters](#advanced-filters) 用于过滤根或子运行属性
 
-如果您通过 [API](/langsmith/smith-api/run/query-runs) 或 [SDK](https://reference.langchain.com/python/langsmith/client/Client/list_runs) 以编程方式导出数据进行分析，请参阅 [exporting traces guide](/langsmith/export-traces)。
+如果您通过 [API](/langsmith/smith-api/run/query-runs) 或 [SDK](https://reference.langchain.com/python/langsmith/client/Client/list_runs) 以编程方式导出数据进行分析，请改为参考 [exporting traces guide](/langsmith/export-traces)。
 
 ## 创建并应用过滤器
 
@@ -33,7 +33,7 @@
 
 有两种方法可以过滤跟踪项目中的数据：1. **过滤器**：位于**追踪**项目页面的左上角。您可以在此处构建和管理过滤条件。
    * 第一个下拉菜单过滤默认值和[saved views](#save-a-filter)。
-   * 按**线程**、**跟踪**或**运行**进行快速过滤。
+   * 按 **线程**、**跟踪** 或 **运行** 快速过滤。
    * **在属性或全文搜索上向 [configure a filter based](#specific-filtering-techniques) 添加过滤器**。
 
 2. **过滤器快捷方式**：位于**跟踪**项目页面的右侧边栏。过滤器快捷方式栏提供对基于项目运行中最常出现的属性的过滤器的快速访问。
@@ -65,7 +65,7 @@
 
 > [!注意]
 >
-> 为了提高性能，LangSmith 为全文搜索索引最多 250 个字符的数据。如果您的搜索查询超出此限制，我们建议改用[Input/Output key-value search](/langsmith/filter-traces-in-application#filter-based-on-input-%2F-output-key-value-pairs)。
+> 为了提高性能，LangSmith 为最多 250 个字符的数据建立索引以进行全文搜索。如果您的搜索查询超出此限制，我们建议改用[Input/Output key-value search](/langsmith/filter-traces-in-application#filter-based-on-input-%2F-output-key-value-pairs)。
 
 您还可以指定多个以匹配提供的所有术语，方法是：* 通过 **全文搜索** 包括由空格分隔的多个术语。
 * 添加第一个过滤器后，使用 按钮添加多个过滤器。
@@ -208,7 +208,7 @@ LangSmith 会将其分解为以下一组可搜索的键值对：
 
 ## 保存过滤器
 
-保存过滤器允许您存储和重复使用常用的过滤器配置。保存的过滤器特定于跟踪项目，在基于代理的工作区中意味着一个代理的一个[environment](/langsmith/agent-environments)。 **生产**中保存的过滤器在**暂存**中不提供。
+保存过滤器允许您存储和重复使用常用的过滤器配置。保存的过滤器特定于一名代理的一个[environment](/langsmith/agent-environments)。 **生产**中保存的过滤器在**暂存**中不提供。
 
 构建过滤器后，单击 **另存为** 按钮进行保存。这将弹出一个对话框来指定过滤器的名称和描述。
 
@@ -218,11 +218,11 @@ LangSmith 会将其分解为以下一组可搜索的键值对：
 
 在下拉列表中选择过滤器后，您可以对过滤器参数进行任何更改。然后，单击 **保存** 以更新过滤器。
 
-### 删除已保存的过滤器单击下拉列表中已保存过滤器旁边的图标，然后使用垃圾桶图标删除过滤器。
+### 删除已保存的过滤器
 
-## 复制过滤器
+单击下拉列表中已保存过滤器旁边的图标，然后使用垃圾桶图标删除过滤器。
 
-您可以复制构建的过滤器以与同事共享，稍后重复使用，或者在 [API](/langsmith/smith-api/run/query-runs) 或 [SDK](https://reference.langchain.com/python/langsmith/client/Client/list_runs) 中以编程方式运行查询。
+## 复制过滤器您可以复制构造的过滤器以与同事共享，稍后重复使用，或者在 [API](/langsmith/smith-api/run/query-runs) 或 [SDK](https://reference.langchain.com/python/langsmith/client/Client/list_runs) 中以编程方式运行查询。
 
 复制过滤器：
 

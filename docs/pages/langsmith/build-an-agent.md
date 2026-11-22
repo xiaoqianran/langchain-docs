@@ -8,10 +8,6 @@ LangSmith Studio builds a no-code agent from a description. You describe what th
 
 Use it when you want a working agent without a local project or a deployment. To build an agent from files on your own machine instead, see [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview). The result is a regular [agent](/langsmith/agent-registry#agent), so its traces, dashboards, and evaluators behave the same as one you instrumented yourself. Studio builds the same kind of no-code agent as [Fleet](/langsmith/fleet), so the Fleet pages on tools, channels, schedules, and skills apply to it.
 
-> [!NOTE]
->
-> Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
-
 Creating an agent requires the `fleet-agents:create` [permission](/langsmith/fleet/access-and-oversight), which covers all no-code agents, including those built in Studio. Without it, Studio shows "Ask a workspace admin for permission to create agents."
 
 ## Start a new agent

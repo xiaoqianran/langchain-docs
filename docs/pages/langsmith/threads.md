@@ -187,7 +187,7 @@ const messages: Message[] = [{ role: "user", content: "Hi! My name is Sally" }];
 await chatPipeline({ messages, get_chat_history: false });
 ```
 
-```java Java expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```java Java expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import com.langchain.smith.client.LangsmithClient;
 import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
 import com.langchain.smith.tracing.TraceConfig;
@@ -318,7 +318,7 @@ class ThreadsChatPipeline {
 }
 ```
 
-```kotlin Kotlin expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```kotlin Kotlin expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 import com.langchain.smith.tracing.TraceConfig
 import com.langchain.smith.tracing.traceable
@@ -435,7 +435,7 @@ const messages: Message[] = [{ role: "user", content: "What is my name" }];
 await chatPipeline({ messages, get_chat_history: true });
 ```
 
-```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 List<ChatCompletionMessageParam> messages =
     Collections.singletonList(
         ChatCompletionMessageParam.ofUser(
@@ -446,7 +446,7 @@ List<ChatCompletionMessageParam> messages =
 ThreadsChatPipeline.chatPipeline().apply(new ThreadsChatPipeline.ChatRequest(messages, true));
 ```
 
-```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 val messages =
     listOf(
         ChatCompletionMessageParam.ofUser(
@@ -480,7 +480,7 @@ const messages: Message[] = [{ role: "user", content: "What was the first messag
 await chatPipeline({ messages, get_chat_history: true });
 ```
 
-```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 List<ChatCompletionMessageParam> messages =
     Collections.singletonList(
         ChatCompletionMessageParam.ofUser(
@@ -491,7 +491,7 @@ List<ChatCompletionMessageParam> messages =
 ThreadsChatPipeline.chatPipeline().apply(new ThreadsChatPipeline.ChatRequest(messages, true));
 ```
 
-```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 val messages =
     listOf(
         ChatCompletionMessageParam.ofUser(
@@ -541,7 +541,7 @@ On the **Threads** tab of a project, you can [save commonly used filters](/langs
 * [Filter traces](/langsmith/filter-traces): filter by thread metadata in the tracing UI.
 * [Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn): evaluate threads rather than individual runs.
 * [Log user feedback using the SDK](/langsmith/attach-user-feedback): attach feedback to runs within a thread.
-* [Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project): add threads to a dataset.
+* [Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-an-agent-environment): add threads to a dataset.
 
 ***
 

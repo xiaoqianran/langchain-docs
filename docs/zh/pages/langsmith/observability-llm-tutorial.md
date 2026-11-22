@@ -6,7 +6,7 @@
 
 在原型设计、Beta 测试和生产过程中为代理添加 LangSmith 可观察性。
 
-在本教程中，您将使用检索增强生成 (RAG) 构建客户支持聊天机器人，并在从早期原型设计到生产的每个开发阶段添加 LangSmith 可观察性。
+在本教程中，您将使用检索增强生成 (RAG) 构建一个客户支持聊天机器人，并在从早期原型设计到生产的每个开发阶段添加 LangSmith 可观察性。
 
 到最后，您将知道如何：
 
@@ -21,9 +21,9 @@
 
 在开始之前，请确保您拥有：
 
-* **LangSmith帐户**：在[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-llm-tutorial)注册或登录。
+* **LangSmith账户**：在[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-llm-tutorial)注册或登录。
 * **A LangSmith API 密钥**：遵循 [Create an API key](/langsmith/create-account-api-key) 指南。
-* **OpenAI API 密钥**：从 [OpenAI dashboard](https://platform.openai.com/account/api-keys) 生成此密钥。
+* **OpenAI API 密钥**：从 [OpenAI dashboard](https://platform.openai.com/account/api-keys) 生成。
 * **LangSmith CLI**（可选）：安装以检查来自终端的跟踪。有关说明，请参阅[LangSmith CLI](/langsmith/langsmith-cli)。
 
 安装所需的软件包：
@@ -49,30 +49,28 @@ export LANGSMITH_API_KEY="<your-api-key>"
 export OPENAI_API_KEY="<your-openai-api-key>"
 ```
 
-在发送跟踪之前，请在LangSmith中创建代理：
+在发送跟踪之前，[create the agent](/langsmith/create-an-agent#name-an-agent-traced-from-outside-langsmith) in LangSmith。创建代理需要`projects:create`权限。
 
-1. 在 [agent-based workspace](/langsmith/agent-registry) 中，打开 **+ Agent**，选择 **Observability**，并使用 **Agent name** 和 **Agent ID** 创建一个 Agent。这需要`projects:create`许可。如果代理已存在，请重用它。
-2. 复制 **代理 ID** 并选择环境：`local`、`development`、`staging` 或 `production`。
-3. 在运行代理之前配置[agent addressing](/langsmith/log-traces-to-agent)：
+1. 打开新的代理菜单，可以从**+代理**并选择**所有代理**，或者从[agent switcher](/langsmith/navigate-agents)搜索框旁边的**+**按钮。
+2. 选择 **连接** > **连接现有代理**。
+3. 在 **连接代理** 对话框中，输入 **代理名称** 和 **代理 ID**。
+4. 复制 **代理 ID** 并选择环境：`local`、`development`、`staging` 或 `production`。
+5. 在运行代理之前配置[agent addressing](/langsmith/log-traces-to-agent)：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_AGENT_ID="<your-agent-id>"
    export LANGSMITH_AGENT_ENVIRONMENT="local"
    ```
 
-注册代理一次，而不是每次跟踪。从代码运行的环境中删除 `LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT` 和 `LANGCHAIN_SESSION`。请勿将旧目标设置与代理寻址结合起来。要使用 SDK 调用或 API 请求创建代理，请参阅 [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically)。> [手风琴] 基于项目的工作区和自托管 LangSmith
->
-> 代理寻址可在 LangSmith 云上基于代理的工作区中使用。在基于项目的工作区（包括自托管 LangSmith）中，将 `LANGSMITH_PROJECT` 设置为跟踪项目名称，而不是设置两个代理变量。
+创建代理一次，而不是为每个跟踪创建代理。然后从代码运行的环境中删除`LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT`和`LANGCHAIN_SESSION`，因为它们与代理寻址冲突。要使用 SDK 或 API 创建代理，请参阅 [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically)。
 
 > [!注意]
 >
-> 您可能会在其他地方看到这些变量被引用为 `LANGCHAIN_*`。两者都可以，但推荐名称为 `LANGSMITH_TRACING` 和 `LANGSMITH_API_KEY`。
-
-### 跟踪 LLM 通话
+> 您可能会在其他地方看到这些变量被引用为 `LANGCHAIN_*`。两者都可以，但推荐名称为 `LANGSMITH_TRACING` 和 `LANGSMITH_API_KEY`。### 跟踪 LLM 通话
 
 首先跟踪实际调用模型的 OpenAI 调用。这使您可以立即查看应用程序发送的提示和模型返回的响应。
 
-使用 [⟦T26⟧](https://reference.langchain.com/python/langsmith/wrappers/_openai/wrap_openai) (Python) 或 [⟦T27⟧](https://reference.langchain.com/javascript/langsmith/wrappers/wrapOpenAI) (TypeScript) 包装 OpenAI 客户端。使用以下代码创建一个名为 `app.py` （或 `app.ts`）的文件：
+使用 [⟦T25⟧](https://reference.langchain.com/python/langsmith/wrappers/_openai/wrap_openai) (Python) 或 [⟦T26⟧](https://reference.langchain.com/javascript/langsmith/wrappers/wrapOpenAI) (TypeScript) 包装 OpenAI 客户端。使用以下代码创建一个名为 `app.py` （或 `app.ts`）的文件：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from openai import OpenAI
@@ -150,7 +148,7 @@ async function supportBot(question: string): Promise<string> {
 
 ### 跟踪整个管道
 
-跟踪 LLM 调用很有用，但跟踪完整的管道（包括检索）可以让您全面了解代理的行为。将 [⟦T31⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python) 或 [⟦T32⟧](https://reference.langchain.com/javascript/langsmith/traceable) (TypeScript) 添加到 main 函数中：
+跟踪 LLM 调用很有用，但跟踪完整的管道（包括检索）可以让您全面了解代理的行为。将 [⟦T30⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python) 或 [⟦T31⟧](https://reference.langchain.com/javascript/langsmith/traceable) (TypeScript) 添加到 main 函数中：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from openai import OpenAI
@@ -231,7 +229,9 @@ const supportBot = traceable(async function supportBot(question: string): Promis
 
 ![LangSmith UI showing a trace with an outer agent span and a nested LLM call span.](https://mintcdn.com/langchain-5e9cc07a/EKYgNtnIIDPnseTv/langsmith/images/trace-whole-pipeline.png?fit=max\&auto=format\&n=EKYgNtnIIDPnseTv\&q=85\&s=158b82743e86bc48be7ccbd2ddf79e4a)
 
-### 从终端检查您的痕迹如果您安装了 [LangSmith CLI](/langsmith/langsmith-cli)，请列出代理环境的最新跟踪记录，而无需打开 UI。 CLI 的 `--project` 选项采用环境的 [⟦T35⟧](/langsmith/create-an-agent#use-an-environment-project)：
+### 从终端检查您的痕迹
+
+如果您安装了 [LangSmith CLI](/langsmith/langsmith-cli)，请列出代理环境的最新跟踪记录，而无需打开 UI。 CLI 的 `--project` 选项采用环境的 [⟦T34⟧](/langsmith/create-an-agent#use-an-environment-project)：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith trace list --project "<environment-tracer-session-name>" --limit 5
@@ -243,13 +243,11 @@ langsmith trace list --project "<environment-tracer-session-name>" --limit 5
 langsmith trace get <trace-id> --full
 ```
 
-## Beta 测试
-
-一旦您的应用程序在原型设计中运行良好，您就可以将其发布给一小群真实用户。在这个阶段，您通常不知道用户将如何与您的应用程序交互，因此您需要更丰富的可观察性。您不仅想了解应用程序做了什么，还想了解用户对其的反应。
+## Beta 测试一旦您的应用程序在原型设计中运行良好，您就可以将其发布给一小群真实用户。在这个阶段，您通常不知道用户将如何与您的应用程序交互，因此您需要更丰富的可观察性。您不仅想了解应用程序做了什么，还想了解用户对其的反应。
 
 ### 收集反馈
 
-将 [user feedback](/langsmith/attach-user-feedback) 链接到特定跟踪可以让您确定哪些响应有帮助或无帮助。更新上一步中的 `app.py` （或 `app.ts`），为每个调用添加运行 ID，然后附加分数：
+将 [user feedback](/langsmith/attach-user-feedback) 链接到特定跟踪可以让您确定哪些响应有帮助或无帮助。更新上一步中的 `app.py` （或 `app.ts`），为每个调用添加运行 ID，并在之后附加分数：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio  # [!code highlight]
@@ -359,17 +357,15 @@ const supportBot = traceable(async function supportBot(question: string): Promis
     }); // [!code highlight]
     await lsClient.flush(); // [!code highlight]
 })();
-```> [!注意]
+```
+
+> [!注意]
 >
 > 在生产中，这两部分将位于不同的位置：`support_bot` 与 `run_id` 的调用保留在您的代理代码中，`create_feedback` 移动到接收用户反馈的端点（例如，`/feedback` API 路由）。 `run_id` 从一个传递到另一个，以便反馈可以链接到正确的迹线。由于反馈还需要环境的跟踪存储 UUID，因此将 `session_id` 与 `run_id` 一起传递。
 
-在基于项目的工作区中，使用 `read_project` / `readProject` 查找项目 UUID，而不是解析代理地址。有关地址解析要求，请参阅[Resolve an agent environment](/langsmith/resolve-an-agent)。
-
 当您在 UI 中检查运行时，反馈将显示在 **反馈** 选项卡中。然后，您可以使用 **运行** 表中的过滤控件按反馈分数过滤运行。
 
-### 记录元数据
-
-[Metadata](/langsmith/add-metadata-tags) 允许您使用对过滤和比较有用的属性来标记运行。例如，使用了哪个型号版本或哪个用户提出了请求。
+### 记录元数据[Metadata](/langsmith/add-metadata-tags) 允许您使用对过滤和比较有用的属性来标记运行。例如，使用了哪个型号版本或哪个用户提出了请求。
 
 以下示例跟踪检索器（使用 `run_type="retriever"`）和主函数（使用模型名称的 `metadata` 属性）：
 
@@ -453,7 +449,9 @@ const supportBot = traceable(
 (async () => {
     await supportBot("How many users can I have on the Starter plan?");
 })();
-```两个元数据值都出现在跟踪上。您可以使用 **运行** 表中的过滤控件按元数据过滤运行。
+```
+
+两个元数据值都出现在跟踪上。您可以使用 **运行** 表中的过滤控件按元数据过滤运行。
 
 ## 生产
 
@@ -469,7 +467,7 @@ const supportBot = traceable(
 
 > [!注意]
 >
-> 分组依据功能需要给定元数据键至少有两个不同的值。由于您一直在记录 `llm` 元数据属性，因此您可以按该属性对监控图表进行分组，以比较模型随时间的变化情况。从 UI 侧栏中的 **监控**，单击左上角的 **分组依据**，从下拉列表中选择 **元数据**，然后选择 `llm`。图表会更新以显示按该属性分组的结果。有关分组和自定义图表的更多信息，请参阅[Dashboards](/langsmith/dashboards)。
+> 分组依据功能需要给定元数据键至少有两个不同的值。由于您一直在记录 `llm` 元数据属性，因此您可以按该属性对监控图表进行分组，以比较模型随时间的变化情况。在 UI 侧边栏中的 **监控** 中，单击左上角的 **分组依据**，从下拉列表中选择 **元数据**，然后选择 `llm`。图表会更新以显示按该属性分组的结果。有关分组和自定义图表的更多信息，请参阅[Dashboards](/langsmith/dashboards)。
 
 ### 深入分析
 

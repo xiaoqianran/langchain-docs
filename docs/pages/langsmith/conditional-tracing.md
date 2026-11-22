@@ -24,7 +24,7 @@ The [`tracing_context`](https://reference.langchain.com/python/langsmith/run_hel
 
 > [!NOTE]
 >
-> In an [agent-based workspace](/langsmith/agent-registry), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
+> [Create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project).
 
 Register each agent before enabling dynamic routing. Replica configurations require each destination environment's `tracer_session_name`. Retrieve those values before enabling replication.
 

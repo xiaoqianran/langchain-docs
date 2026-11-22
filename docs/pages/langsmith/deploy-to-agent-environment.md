@@ -8,17 +8,12 @@ Deploying to an agent environment binds a [deployment](/langsmith/deploy-overvie
 
 Use it to keep a staging build and a production build of the same agent apart, so each one reports into its own environment.
 
-> [!NOTE]
->
-> Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
-
 ## Prerequisites
 
 Both CLIs need the following:
 
 * A [LangSmith API key](/langsmith/create-account-api-key) in `.env` or your shell environment.
 * A project folder holding `langgraph.json`. Run the CLI from that folder.
-* An agent-based workspace, because the flags require agent mode on the workspace.
 
 An org-scoped API key also needs the workspace, and each CLI reads it from a different variable: `LANGSMITH_TENANT_ID` for the LangGraph CLI, and `LANGSMITH_WORKSPACE_ID` for the `mda` CLI. A workspace-scoped key needs neither. The LangGraph CLI prompts for the value when the key is org-scoped. In a script or CI job, set `LANGSMITH_TENANT_ID` ahead of time, and pass `--no-input` so the LangGraph CLI fails instead of waiting for input. Both the Python and the TypeScript LangGraph CLI accept `--no-input`.
 

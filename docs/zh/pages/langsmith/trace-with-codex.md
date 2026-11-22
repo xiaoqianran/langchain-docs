@@ -23,7 +23,7 @@ codex plugin marketplace add langchain-ai/langsmith-codex-plugins
 codex plugin add tracing@langsmith-codex-plugins
 ```
 
-然后信任 Codex 中带有 `/hooks` 的插件钩子，因为在您执行之前不会有任何跟踪。 Codex 仅在交互界面中询问，因此 `codex exec` 会跳过挂钩，直到您信任它们一次。信任 Codex 后重新启动它们。要为所有人安装插件，请参阅[Deploy to your organization](#deploy-to-your-organization)。有关安装插件的更多信息，请参阅 Codex 文档中的 [Plugins](https://developers.openai.com/codex/plugins)。
+然后信任插件与 Codex 内的 `/hooks` 的挂钩，因为在您这样做之前不会有任何跟踪。 Codex 仅在交互界面中询问，因此 `codex exec` 会跳过挂钩，直到您信任它们一次。信任 Codex 后重新启动它们。要为所有人安装插件，请参阅[Deploy to your organization](#deploy-to-your-organization)。有关安装插件的更多信息，请参阅 Codex 文档中的 [Plugins](https://developers.openai.com/codex/plugins)。
 
 ## 登录
 
@@ -42,30 +42,24 @@ langsmith auth login
 如果设置了多个凭据，插件将使用它找到的第一个凭据：
 
 1. 插件自带的密钥来自`api_key`或`LANGSMITH_CODEX_API_KEY`。
-2.您的`langsmith auth login`登录。
+2. 您的 `langsmith auth login` 登录。
 3. 来自您环境的通用`LANGSMITH_API_KEY`。
 
-CLI 登录充当您的角色，因此您的工作区角色需要写入跟踪的权限。如果您从跟踪 API 密钥 (`lsv2_tr_...`) 切换到 CLI 登录，您可能会收到 403，因为无论您的角色是什么，跟踪密钥始终可以写入跟踪。如果发生这种情况，请您的管理员为您提供一个可以写入跟踪的角色，例如工作区用户，并检查项目上是否没有 [ABAC deny policy](/langsmith/abac) 阻止它。
+CLI 登录充当您的角色，因此您的工作区角色需要写入跟踪的权限。如果您从跟踪 API 密钥 (`lsv2_tr_...`) 切换到 CLI 登录，您可能会收到 403，因为无论您的角色是什么，跟踪密钥始终可以写入跟踪。如果发生这种情况，请您的管理员为您提供一个可以写入跟踪的角色，例如工作区用户，并检查代理环境上是否没有 [ABAC deny policy](/langsmith/abac) 阻止它。
 
-当您的登录过期或您的密钥被拒绝时，跟踪就会停止，并且永远不会上传该间隙的轮次。 Codex 在聊天中显示一条通知，直到您修复它。管理员还可以针对每个提示[require a working sign-in](#require-a-working-sign-in)。
+当您的登录过期或您的密钥被拒绝时，跟踪就会停止，并且永远不会上传该间隙的轮次。 Codex 在聊天中显示一条通知，直到您修复它。管理员还可以对每个提示进行[require a working sign-in](#require-a-working-sign-in)。
 
-## 开启追踪跟踪将关闭，直到您在 `~/.codex/langsmith.json` 将其打开，除非您的管理员已使用 [managed file](#lock-settings) 将其打开。在 [agent-based workspace](/langsmith/migrate-to-agent-based-workspaces) 中，使用 `agent_id` 将跟踪发送到 [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent)：
+## 开启追踪跟踪将关闭，直到您在 `~/.codex/langsmith.json` 将其打开，除非您的管理员已使用 [managed file](#lock-settings) 将其打开。使用 `agent_id` 将跟踪发送到 [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent)。该插件始终将它们发送到代理的 **生产** 环境：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "agent_id": "shared-codex" }
 ```
 
-在基于项目的工作区中，请改用旧版 `project` 设置：
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{ "enabled": true, "project": "shared-codex" }
-```
-
 > [!警告]
 >
-> 项目可以使用 `<project>/.codex/langsmith.json` 或 `<project>/langsmith-plugins.json` 覆盖这些设置。克隆存储库可以使用它们来打开跟踪并将您的对话和文件发送到其他人的服务器。在信任存储库之前，请检查其 LangSmith 配置文件以及 `.codex/config.toml` 和 `.codex/hooks.json`。
+> 项目可以使用 `<project>/.codex/langsmith.json` 或 `<project>/langsmith-plugins.json` 覆盖这些设置。克隆存储库可以使用它们来打开跟踪并将您的对话和文件发送到其他人的服务器。在信任存储库之前，请查看其 LangSmith 配置文件以及 `.codex/config.toml` 和 `.codex/hooks.json`。
 
-完成一回合并在[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-codex)中打开您的代理或项目。
+完成一个回合，然后在[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-codex)中选择您的代理，转到**跟踪**，然后选择**生产**环境。
 
 ## 部署到您的组织
 
@@ -75,9 +69,7 @@ CLI 登录充当您的角色，因此您的工作区角色需要写入跟踪的�
 
 ChatGPT 工作区管理员可以将存储库导入为市场，以便每个人都可以安装该插件。每个用户仍然必须信任插件的钩子。设置请参见[Plugin management](https://developers.openai.com/codex/enterprise/plugin-management)。
 
-### 锁定设置
-
-管理员可以使用每个用户主文件夹中`~/.langsmith-plugins/managed.json` 的托管文件锁定每个用户的跟踪设置。 Claude Code、Cursor 和 Codex 插件都会读取此文件，其设置会覆盖用户自己的配置文件和环境变量。
+### 锁定设置管理员可以使用每个用户主文件夹中`~/.langsmith-plugins/managed.json` 的托管文件锁定每个用户的跟踪设置。 Claude Code、Cursor 和 Codex 插件都会读取此文件，其设置会覆盖用户自己的配置文件和环境变量。
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -86,7 +78,9 @@ ChatGPT 工作区管理员可以将存储库导入为市场，以便每个人都
   "strict_auth": true,
   "workspace_id": "<your-workspace-id>"
 }
-```当您的用户使用 LangSmith CLI 登录时，也要设置 `workspace_id`。每个用户的登录可能默认到不同的工作区，因此在此处进行设置可以将每个人的痕迹保留在一个位置。 API 密钥会忽略此设置，因此请使用范围仅限于工作区的设置。
+```
+
+当您的用户使用 LangSmith CLI 登录时，也要设置 `workspace_id`。每个用户的登录可能默认到不同的工作区，因此在此处进行设置可以将每个人的痕迹保留在一个位置。 API 密钥会忽略此设置，因此请使用范围仅限于工作区的设置。
 
 托管文件适用于 macOS 和 Linux。该插件仅在以下情况下信任它：
 
@@ -94,11 +88,9 @@ ChatGPT 工作区管理员可以将存储库导入为市场，以便每个人都
 * 其他用户都不能写入其中任何一个。
 * 两者都不是符号链接。
 
-如果文件存在但未通过这些检查，跟踪将停止，用户会看到一条联系管理员的消息。锁定设置也会锁定与其关联的设置，因此用户无法在锁周围路由跟踪。例如，锁定 `agent_id` 还会阻止用户向具有 `project` 的项目发送跟踪。
+如果文件存在但未通过这些检查，跟踪将停止，并且用户会看到一条消息以联系其管理员。锁定设置也会锁定与其关联的设置，因此用户无法在锁周围路由跟踪。例如，锁定 `agent_id` 还会阻止用户向具有 `project` 的项目发送跟踪。
 
-管理员通常使用 Jamf 或 Microsoft Intune 等移动设备管理 (MDM) 工具在每台计算机上安装该文件。对于每个可以锁定的设置，请参阅[plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md)。
-
-> [手风琴] 设置脚本示例
+管理员通常使用 Jamf 或 Microsoft Intune 等移动设备管理 (MDM) 工具在每台计算机上安装该文件。对于每个可以锁定的设置，请参阅[plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md)。> [手风琴] 设置脚本示例
 >
 > 以 root 身份为每个用户运行此命令，并将 `USER_HOME` 设置为该用户的主文件夹：
 >
@@ -113,7 +105,9 @@ ChatGPT 工作区管理员可以将存储库导入为市场，以便每个人都
 >
 > 在 Linux 上，使用 `root:root` 而不是 `root:wheel`。完整脚本请参见[Set it up on macOS](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md#set-it-up-on-macos)。
 
-### 需要有效登录严格身份验证会阻止每个提示，直到用户登录或密钥起作用，因此所有会话都不会被跟踪。它默认处于关闭状态，并且在跟踪关闭时没有任何作用。要为所有人打开它，请在托管文件中将 `strict_auth` 设置为 `true`。
+### 需要有效登录
+
+严格身份验证会阻止每个提示，直到用户登录或密钥起作用，因此所有会话都不会被跟踪。它默认处于关闭状态，并且在跟踪关闭时没有任何作用。要为所有人打开它，请在托管文件中将 `strict_auth` 设置为 `true`。
 
 > [!警告]
 >
@@ -125,36 +119,34 @@ ChatGPT 工作区管理员可以将存储库导入为市场，以便每个人都
 
 ## 秘密编辑
 
-该插件会在上传任何内容之前剥离您计算机上的秘密，因此它们永远不会到达 LangSmith 或副本。默认情况下，密文处于启用状态。
+该插件会在上传任何内容之前剥离您计算机上的秘密，因此它们永远不会到达 LangSmith 或副本。默认情况下，密文处于启用状态。它捕获提供商 API 密钥、JSON Web 令牌和 PEM 私钥，以及常见模式，例如 `API_KEY=<value>` 或 URL 中的密码。每场比赛都替换为`[SECRET_DETECTED]`。有关完整规则列表，请参阅[Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset)。
 
-它捕获提供商 API 密钥、JSON Web 令牌和 PEM 私钥，以及常见模式，例如 `API_KEY=<value>` 或 URL 中的密码。每场比赛都替换为`[SECRET_DETECTED]`。完整的规则列表，请参见[Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset)。密文仅匹配已知的凭证形状，因此将其视为安全网而不是保证。运行名称、标签和附件会跳过它，并且经过编辑的跟踪仍然保留您的提示和文件内容。限制谁可以读取跟踪项目。
+密文仅匹配已知的凭证形状，因此将其视为安全网而不是保证。运行名称、标签和附件会跳过它，并且经过编辑的跟踪仍然保留您的提示和文件内容。限制谁可以读取跟踪项目。
 
 要关闭密文或添加您自己的模式，请参阅 [plugin settings](https://github.com/langchain-ai/langsmith-codex-plugins#settings)。
 
 ## 设置
 
-每个设置都有一个配置文件密钥和一个环境变量。当两者都设置时，环境变量获胜。
-
-|配置键 |环境变量 |默认 |描述 |
+每个设置都有一个配置文件密钥和一个环境变量。当两者都设置时，环境变量获胜。|配置键|环境变量 |默认|描述 |
 | - | - | - | - |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` |打开追踪。 |
 | `api_key` | `LANGSMITH_CODEX_API_KEY` |无 | LangSmith API 密钥。如果您使用 CLI 登录，则不需要。 |
 | `agent_id` | `LANGSMITH_AGENT_ID` |无 |代理痕迹去。如果两者均已设置，则胜出`project`。 |
-| `project`（已弃用）| `LANGSMITH_CODEX_PROJECT` | `codex` |项目的痕迹去。使用`agent_id`，除非您的工作空间是[project-based](/langsmith/migrate-to-agent-based-workspaces#check-which-one-you-have)。 |
+| `project`（已弃用）| `LANGSMITH_CODEX_PROJECT` | `codex` |项目的痕迹去。请使用 `agent_id` 代替。 |
 | `api_url` | `LANGSMITH_CODEX_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith 要发送到的服务器。 |
 | `workspace_id` | `LANGSMITH_WORKSPACE_ID` |无 |当您使用 CLI 登录时，跟踪将转到工作区。 API 密钥会忽略它，并且您的配置文件会胜过该变量。 |
 
 对于每个设置，请参阅[plugin settings](https://github.com/langchain-ai/langsmith-codex-plugins#settings)。要将跟踪发送到多个位置，请参阅[Send a trace to more than one place](https://github.com/langchain-ai/langsmith-codex-plugins#send-a-trace-to-more-than-one-place)。
 
-## 故障排除* **无痕迹**：检查插件是否已安装，其挂钩是否受 `/hooks` 信任，并且跟踪已打开。
+## 故障排除
+
+* **无痕迹**：检查插件是否已安装，其挂钩是否受 `/hooks` 信任，并且跟踪已打开。
 * **更新后停止**：只要版本更改了某个钩子，Codex 就会要求您再次信任该钩子。运行`/hooks`并批准它。
 * **跟踪暂停**：再次运行 `langsmith auth login` 或替换被拒绝的 API 密钥。
 * **跟踪在 403 后暂停**：您的登录或 API 密钥可能无权访问代理、项目或工作区。详情请参阅`~/.codex/langsmith_engine/worker.log`。
 
 有关更多修复，请参阅[When nothing shows up](https://github.com/langchain-ai/langsmith-codex-plugins#when-nothing-shows-up)。
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-codex.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

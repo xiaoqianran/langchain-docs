@@ -30,7 +30,7 @@ LangSmith与Harbor在三个点上集成：
 pip install "harbor[langsmith]"
 ```
 
-### 验证Harbor 使用您的 LangSmith 凭据进行身份验证。设置 API 密钥以及该密钥所属的端点：
+### 验证Harbor 使用您的 LangSmith 凭据进行身份验证。设置API密钥和该密钥所属的端点：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="<LANGSMITH_API_KEY>"
@@ -98,7 +98,7 @@ harbor run ... --plugin harbor_langsmith:LangSmithPlugin
 
 或者在命令行上使用 `--pk` 或在作业配置文件中的 `kwargs:` 下设置与插件 kwargs 相同的输入。 kwargs 镜像构造函数选项：`dataset_name`、`experiment_name`、`endpoint`、`api_key`、`workspace_id`、`sync_dataset` 和 `fail_fast`。## Deep Agents
 
-对于基于代理的工作区中的独立代理跟踪，[register the agent](/langsmith/create-an-agent) 并将集成的 `LANGSMITH_PROJECT` 设置设置为所选环境的 `tracer_session_name`。数据集关联实验使用上述评估流程。
+对于独立代理跟踪，[register the agent](/langsmith/create-an-agent) 并将集成的 `LANGSMITH_PROJECT` 设置设置为所选环境的 `tracer_session_name`。数据集关联实验使用上述评估流程。
 
 `langgraph` 集成在 Harbor 中运行您的 LangGraph 或 Deep Agents 代码。使用 `--agent langgraph` 选择它。 Harbor 将您的项目暂存到沙箱中，安装其依赖项，并在每次试验的容器内运行图形。
 

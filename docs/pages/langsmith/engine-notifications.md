@@ -8,7 +8,7 @@ Send LangSmith Engine notifications to Slack, Jira Automation, and webhook endpo
 
 ## Add a destination
 
-Notification destinations are configured per tracing project or agent environment. On the **Engine** page, click **Configure Engine**, then under **Notifications** click **Add**. If no destination exists, the editor opens automatically. For each destination, choose:
+Notification destinations are configured per agent environment. On the agent's **Engine** page, select the environment from the environment switcher at the top of the page, then click **Configure Engine**. Under **Notifications**, click **Add**. If no destination exists, the editor opens automatically. For each destination, choose:
 
 * **Destination type**: Select the **Slack**, **Jira**, or **Webhook** tab. See [Notify a Slack channel](#notify-a-slack-channel), [Create Jira work items](#create-jira-work-items), and [Send to a webhook](#send-to-a-webhook).
 * **Notify when**: The [event types](#event-types) that trigger a notification.
@@ -55,7 +55,7 @@ Connecting a Slack workspace is an organization-level action you perform once, n
 
 **2. Add a Slack destination**
 
-On the **Engine** page, click **Configure Engine**. Under **Notifications**, click **Add** if the editor is not already open. Select the **Slack** tab, then use the channel selector to choose a workspace and channel. If no workspace is connected, click **Connect Slack** in the channel selector and complete authorization.
+On the agent's **Engine** page, select the environment from the environment switcher at the top of the page, then click **Configure Engine**. Under **Notifications**, click **Add** if the editor is not already open. Select the **Slack** tab, then use the channel selector to choose a workspace and channel. If no workspace is connected, click **Connect Slack** in the channel selector and complete authorization.
 
 **3. Choose events and severity**
 
@@ -117,7 +117,7 @@ Jira Cloud exposes the envelope's `data` member as `webhookData`. Use `webhookDa
 
 **3. Add the Jira destination in LangSmith**
 
-On the **Engine** page, click **Configure Engine**. Under **Notifications**, click **Add** and select **Jira**. Enter the **Jira Webhook URL** and **Jira webhook token** from the trigger.
+On the agent's **Engine** page, select the environment from the environment switcher at the top of the page, then click **Configure Engine**. Under **Notifications**, click **Add** and select **Jira**. Enter the **Jira Webhook URL** and **Jira webhook token** from the trigger.
 
 Under **Notify when**, select only **Issue created** for this creation rule. Choose the **Minimum issue severity**, then click **Add**. Enable the rule in Jira.
 
@@ -175,7 +175,7 @@ sha256=<hex-encoded HMAC-SHA256 digest>
 
 Verify the signature before parsing or acting on the payload. The HMAC input is the exact raw request body bytes, and the HMAC key is the destination's signing secret. Do not parse and reserialize the JSON body before verification.
 
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import hashlib
 import hmac
 from typing import Optional
@@ -199,7 +199,7 @@ def verify_langsmith_signature(
     return hmac.compare_digest(expected, signature_header)
 ```
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createHmac, timingSafeEqual } from "node:crypto";
 
 export function verifyLangSmithSignature({

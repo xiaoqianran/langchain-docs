@@ -10,7 +10,7 @@ This guide shows you how to trace [Google Agent Development Kit (ADK)](https://g
 
 > [!NOTE]
 >
-> In an [agent-based workspace](/langsmith/agent-registry), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
+> [Create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project).
 
 ## Installation
 
@@ -65,7 +65,7 @@ configure_google_adk()
 The function accepts the following optional parameters:
 
 * `address`: An agent address to send traces to instead of the one `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT` name, for example `ls.agent_address("my-agent", "production")`. Cannot be combined with `project_name`. Requires `langsmith>=0.14.14`.
-* `project_name`: Compatibility override for project-based tracing. Leave it unset to use the configured agent and environment.
+* `project_name`: Compatibility override that sends traces to a named tracing project. Leave it unset to use the configured agent and environment.
 * `name`: Name for the root trace. Defaults to `"google_adk.session"`.
 * `metadata`: Dictionary of key-value pairs for additional context.
 * `tags`: List of strings to categorize traces.

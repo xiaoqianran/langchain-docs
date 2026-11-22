@@ -8,6 +8,8 @@
 >
 > 官方不支持降级。 LangSmith 升级可能包括数据库迁移和其他不向后兼容的更改。如果您需要回滚到之前的版本，请通过[Support Portal](https://support.langchain.com)联系技术支持以获取指导。
 
+升级到 v0.18 会将您现有的跟踪项目移至代理和环境。升级之前，请阅读[What changes in LangSmith v0.18](/langsmith/self-host-agent-migration)。
+
 如果您没有添加存储库，请运行以下命令来添加它：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -43,9 +45,9 @@ langchain/langsmith              	0.17.1       	0.17.30    	Helm chart to deploy
 langchain/langsmith              	0.17.0       	0.17.29    	Helm chart to deploy the langsmith application ...
 langchain/langsmith              	0.16.41      	0.16.70    	Helm chart to deploy the langsmith application ...
 langchain/langsmith              	0.16.40      	0.16.70    	Helm chart to deploy the langsmith application ...
-```
+```选择您要升级到的版本（一般建议使用最新版本）并记下版本号：
 
-选择您要升级到的版本（一般建议使用最新版本）并记下版本号：> [!注意]
+> [!注意]
 >
 > 如果您的安装有多个主要版本落后于最新图表，请一次升级一个主要版本。不要跳过主要版本。在升级到最新支持的版本之前，对每个中间主要版本重复此升级过程。
 >
@@ -107,9 +109,9 @@ langsmith-queue-d58cb64f7-87d68          1/1     Running     0          15h
 
    ![LangSmith UI](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/langsmith-ui.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=5310f686e7b9eebaaee4fe2a152a8675)
 
-## 升级单独的沙箱集群
+## 升级单独的沙箱集群当沙箱在 [separate cluster](/langsmith/self-host-sandbox-separate-cluster) 中运行时，每次升级都会涉及两个 Helm 版本：LangSmith 集群中的 `langsmith` 和沙箱集群中的 `langsmith-sandbox`。将两者保持在同一 LangSmith 版本上：
 
-当沙箱在 [separate cluster](/langsmith/self-host-sandbox-separate-cluster) 中运行时，每次升级都会涉及两个 Helm 版本：LangSmith 集群中的 `langsmith` 和沙箱集群中的 `langsmith-sandbox`。将两者保留在同一 LangSmith 版本上：* **订单**：先升级`langsmith`，然后在几天内升级`langsmith-sandbox`。不要在比控制平面更新的版本上运行沙箱主机，除非运行时升级推出。如果版本的发行说明给出了不同的顺序，请遵循它们。 LangSmith [warns in the UI](/langsmith/self-host-sandbox-separate-cluster#watch-for-a-release-mismatch) 当运行时间落后超过 72 小时或超前运行超过 30 分钟时。
+* **订单**：先升级`langsmith`，然后在几天内升级`langsmith-sandbox`。不要在比控制平面更新的版本上运行沙箱主机，除非运行时升级推出。如果版本的发行说明给出了不同的顺序，请遵循它们。 LangSmith [warns in the UI](/langsmith/self-host-sandbox-separate-cluster#watch-for-a-release-mismatch) 当运行时间落后超过 72 小时或超前运行超过 30 分钟时。
 * **版本**：使用最新的 `langsmith-sandbox` 图表，其 appVersion 等于您的 `langsmith` 图表的 appVersion。这两个图表按应用程序版本配对，而不是按图表版本配对。参见[Release policy](/langsmith/release-versions#pair-the-sandbox-runtime-chart)。
 * **固定**：将两个版本固定到确切的图表版本。切勿使用版本范围。
 
@@ -210,7 +212,7 @@ Chart v17 更改了 SmithDB、沙箱和引擎的值。在运行 `helm upgrade` �
   kubectl delete -n langsmith persistentvolumeclaim/smithbox-juicefs-csi-host
   kubectl get pods -n langsmith | grep juicefs   # wait until only juicefs-csi-* pods remain
   ```正在运行的沙箱停止。它们的数据保留在对象存储和 Redis 中，因为两个 Chart v16 PersistentVolume 都使用 `Retain` 回收策略。
-* **引擎**：启用引擎后，将 `engine.usageSigningSecret` 设置为至少 32 个字符的值（使用 `openssl rand -hex 32` 生成一个值），或者，当您使用 `config.existingSecretName` 时，向该 Secret 添加一个 `engine_usage_signing_secret` 密钥。默认的`engine.intelligenceBaseUrl`更改为`https://beacon.langchain.com/intelligence`，仅记录使用情况。要继续在 LangSmith Intelligence 模型上运行引擎，如图表 v16 所示，请保留 `https://beacon.aws.langchain.com/intelligence` 并在 **设置** > **引擎** > **模型提供商**下选择 LangSmith Intelligence。详情请参见[LangSmith Engine on Self-hosted](/langsmith/engine-self-hosted)。
+* **引擎**：启用引擎后，将 `engine.usageSigningSecret` 设置为至少 32 个字符的值（使用 `openssl rand -hex 32` 生成一个值），或者，当您使用 `config.existingSecretName` 时，向该 Secret 添加一个 `engine_usage_signing_secret` 密钥。默认的`engine.intelligenceBaseUrl`更改为`https://beacon.langchain.com/intelligence`，仅记录使用情况。要继续在 LangSmith Intelligence 模型上运行引擎，如图表 v16 所示，请保留 `https://beacon.aws.langchain.com/intelligence` 并在 **设置** > **引擎** > **模型提供程序**下选择 LangSmith Intelligence。详情请参见[LangSmith Engine on Self-hosted](/langsmith/engine-self-hosted)。
 
 ***
 

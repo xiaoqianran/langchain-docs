@@ -10,20 +10,16 @@
 
 如果您的代理在 LangSmith 之外运行，请首先使用 UI、SDK 或 API 在 LangSmith 中创建其记录。这个记录组织了它的痕迹。您的代码仍然在您托管的地方运行。 LangChain `create_agent` 等框架函数构建在代码中运行的代理。他们不创建其 LangSmith 记录。
 
-> [!注意]
->
-> [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
-
 ## 比较四种路线
 
 可以通过四种方式创建代理，这四种方式的不同之处在于标识符的设置方式以及代理启动的环境：|方法|你做什么|标识符 |创作时的环境 |
 | - | - | - | - |
 | [Studio](/langsmith/build-an-agent) |描述一个代理并让LangSmith Chat 在LangSmith 中构建它 |为您生成|独自生产|
-| [UI](#name-an-agent-traced-from-outside-langsmith) |在LangSmith中输入代理名称和ID来创建代理记录 |你设定吧|所有四个 |
+| [UI](#name-an-agent-traced-from-outside-langsmith) |在LangSmith中输入代理名称和ID创建一条代理记录 |你设定吧|所有四个 |
 | [SDK or API](#create-an-agent-programmatically) |通过 SDK 调用或 API 请求创建代理记录 |你设定吧|所有四个 |
-| [Deployment](/langsmith/deploy-to-agent-environment) |将您的代理代码部署到 LangSmith |您传递的或从部署名称派生的代理 ID |所有四个 |
+| [Deployment](/langsmith/deploy-to-agent-environment) |将您的代理代码部署到LangSmith |您传递的或从部署名称派生的代理 ID |所有四个 |
 
-并不是每个特工都能拥有[deployment](/langsmith/deploy-overview)。部署代理代码会从一开始就通过部署创建代理。使用 SDK 或 API 或通过 [**Connect an agent**](#name-an-agent-traced-from-outside-langsmith) 对话框创建的代理一开始无需部署，但稍后您可以进行 [deploy to it](/langsmith/deploy-to-agent-environment) 部署。 Studio 中构建的代理无法进行部署，因为它在 Studio 运行时上运行。要检查已部署代理的代理服务器和环境，请在其概述标题中选择 **代理服务器**。
+并非每个特工都可以拥有[deployment](/langsmith/deploy-overview)。部署代理代码会从一开始就通过部署创建代理。使用 SDK 或 API 或通过 [**Connect an agent**](#name-an-agent-traced-from-outside-langsmith) 对话框创建的代理最初无需部署，但稍后您可以进行 [deploy to it](/langsmith/deploy-to-agent-environment) 部署。 Studio 中构建的代理无法进行部署，因为它在 Studio 运行时上运行。要检查已部署代理的代理服务器和环境，请在其概述标题中选择 **代理服务器**。
 
 当第一次将跟踪寻址到某个环境时，Studio 中内置的代理就会获得其其他环境。关于这四个是什么，请参见[Agent environments](/langsmith/agent-environments#environment-names)。当LangSmith通过这些流程构建或部署代理时，它会处理注册。重用该代理进行跟踪。不要为同一部署创建单独的外部代理。
 
@@ -38,7 +34,7 @@
 ## 从新的代理菜单开始两个控件可打开新代理菜单：代理列表上的 **+ 代理**，以及代理切换器中搜索框旁边的 **+** 按钮，该按钮悬停时会显示 **新代理** 工具提示。切换器按钮仅对具有 `projects:create` 权限的用户显示。菜单分为三个流程：
 
 * **构建** > **无代码**：打开 Studio，您可以在其中描述代理，然后 LangSmith Chat 起草它。参见[Build an agent with LangSmith Studio](/langsmith/build-an-agent)。
-* **构建** > **使用代码**：打开 **使用代码构建** 窗格。 **由 LangSmith** 托管，涵盖 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)，它会在您部署时创建代理并需要付费计划。 **自行托管**涵盖使用 [open source frameworks](/oss/python/langchain/overview) 进行构建，然后使用下面的 UI 或 API 创建代理的 LangSmith 记录。
+* **构建** > **使用代码**：打开 **使用代码构建** 窗格。 **由LangSmith托管**涵盖[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)，它会在您部署时创建代理并需要付费计划。 **自行托管**涵盖使用 [open source frameworks](/oss/python/langchain/overview) 进行构建，然后使用下面的 UI 或 API 创建代理的 LangSmith 记录。
 * **连接** > **连接现有代理**：打开 **连接代理** 对话框，您可以在其中命名从外部跟踪的代理 LangSmith。请参阅下一节。
 
 ## 指定从外部追踪到的特工 LangSmith
@@ -56,7 +52,7 @@
 
 将 [personal access token or service key](/langsmith/create-account-api-key) 与 [⟦T12⟧ permission](/langsmith/organization-workspace-operations#projects) 一起使用。跟踪密钥无法调用代理创建 API。创建代理后，您的代码可以使用跟踪密钥来提交跟踪。
 
-将 `LANGSMITH_API_KEY` 设置为设置凭据。将 `LANGSMITH_WORKSPACE_ID` 设置为目标工作区 ID，并将 `LANGSMITH_ENDPOINT` 设置为您的 [region's API URL](/langsmith/create-account-api-key#configure-the-sdk)。
+将 `LANGSMITH_API_KEY` 设置为设置凭据。将 `LANGSMITH_WORKSPACE_ID` 设置为目标工作区 ID，将 `LANGSMITH_ENDPOINT` 设置为您的 [region's API URL](/langsmith/create-account-api-key#configure-the-sdk)。
 
 > [选项卡] Python
 >

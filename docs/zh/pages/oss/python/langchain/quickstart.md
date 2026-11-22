@@ -8,7 +8,7 @@
 
 本快速入门向您展示如何在短短几分钟内创建功能齐全的 AI 代理。
 
-构建LangChain快速入门代理
+构建LangChain快速启动代理
 
 按照 LangChain 快速入门，在此工作目录中构建基本的 LangChain 代理。
 
@@ -31,7 +31,7 @@
 
 ## 步骤 5：可选 LangSmith 追踪
 
-询问用户是否想要跟踪。如果是，请按照[https://docs.langchain.com/langsmith/create-an-agent](https://docs.langchain.com/langsmith/create-an-agent)在基于代理的工作区中注册代理。让他们设置 `LANGSMITH_AGENT_ID`、`LANGSMITH_AGENT_ENVIRONMENT`、`LANGSMITH_TRACING=true` 和 `LANGSMITH_API_KEY`，然后重新运行。不要发明 LangSmith 钥匙。
+询问用户是否想要跟踪。如果是，请按照[https://docs.langchain.com/langsmith/create-an-agent](https://docs.langchain.com/langsmith/create-an-agent)注册代理。让他们设置 `LANGSMITH_AGENT_ID`、`LANGSMITH_AGENT_ENVIRONMENT`、`LANGSMITH_TRACING=true` 和 `LANGSMITH_API_KEY`，然后重新运行。不要发明 LangSmith 钥匙。
 
 ## 规则
 
@@ -56,7 +56,7 @@
 >
 > * Claude 代码：`claude mcp add --transport http` 对于每个服务器（默认情况下项目范围；仅当我要求全局访问时才使用`--scope user`）。
 > * Codex CLI：`codex mcp add` 以及每个服务器 URL。
-> * 光标、Deep Agents 代码、VS 代码或反重力：使用我的客户页面上显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
+> * 光标、Deep Agents 代码、VS 代码或反重力：使用该页面上为我的客户显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
 > * Claude Desktop：在“设置”>“连接器”下添加两个 URL。
 >
 > 不要发明备用 MCP URL。配置后，确认两台服务器均已列出并且可访问。
@@ -109,7 +109,7 @@ pip install -U langchain
 
 在 shell 或 `.env` 文件中设置 API 密钥，例如：
 
-> [标签] OpenAI
+> [选项卡] OpenAI
 >
 > ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > export OPENAI_API_KEY="your-api-key"
@@ -621,7 +621,7 @@ model = init_chat_model(
 
 **4.添加内存**
 
-将 [memory](/oss/python/langchain/short-term-memory) 添加到您的代理以在交互中维护状态。这允许
+将 [memory](/oss/python/langchain/short-term-memory) 添加到您的代理以维护交互中的状态。这允许
 代理记住之前的对话和上下文。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -851,11 +851,11 @@ print(deep_agent_result["messages"][-1].content_blocks)
 
 ## 跟踪代理调用> [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T96⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T96⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 您使用LangChain构建的最有趣的代理会多次调用LLM。随着这些代理变得越来越复杂，能够检查代理内部到底发生了什么变得很重要。最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart)。
 
-注册 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 帐户并设置这些以开始记录跟踪：
+注册一个 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 帐户并设置这些以开始记录跟踪：
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_AGENT_ID="<your-agent-id>"

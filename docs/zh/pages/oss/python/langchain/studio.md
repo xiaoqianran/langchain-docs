@@ -61,7 +61,7 @@ agent = create_agent(
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T12⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T12⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 Studio 需要 LangSmith API 密钥来连接您的本地代理。在项目的根目录中创建一个 `.env` 文件，并从 [LangSmith](https://smith.langchain.com/settings) 添加 API 密钥。
 
@@ -89,11 +89,11 @@ LangGraph CLI 使用配置文件来查找代理并管理依赖项。在应用程
 }
 ```
 
-[⟦T16⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 函数自动返回编译后的 LangGraph 图，这正是配置文件中 `graphs` 键所期望的。
+[⟦T16⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)函数自动返回编译后的LangGraph图，这正是配置文件中`graphs`键所期望的。
 
 > [!注意]
 >
-> 配置文件的JSON对象中各个key的详细解释请参考[LangGraph configuration file reference](/langsmith/cli#configuration-file)。
+> 配置文件JSON对象中各个key的详细解释，请参考[LangGraph configuration file reference](/langsmith/cli#configuration-file)。
 
 此时，项目结构将如下所示：
 
@@ -115,9 +115,9 @@ pip install langchain langchain-openai
 
 ```shell uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv add langchain langchain-openai
-```### 6. 在 Studio 中查看您的代理
+```
 
-启动开发服务器以将代理连接到 Studio：
+### 6. 在 Studio 中查看您的代理启动开发服务器以将代理连接到 Studio：
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langgraph dev
@@ -127,7 +127,7 @@ langgraph dev
 >
 > Safari 阻止 `localhost` 与 Studio 的连接。要解决此问题，请使用 `--tunnel` 运行上述命令，以通过安全隧道访问 Studio。
 
-服务器运行后，您的代理可以通过 `http://127.0.0.1:2024` 的 API 和`https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024` 的 Studio UI 访问：
+服务器运行后，您的代理即可通过 `http://127.0.0.1:2024` 的 API 和`https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024` 的 Studio UI 访问：
 
 ![Agent view in the Studio UI](https://mintcdn.com/langchain-5e9cc07a/TCDks4pdsHdxWmuJ/oss/images/studio_create-agent.png?fit=max\&auto=format\&n=TCDks4pdsHdxWmuJ\&q=85\&s=ebd259e9fa24af7d011dfcc568f74be2)
 

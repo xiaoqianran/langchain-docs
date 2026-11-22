@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 安装
 
@@ -42,7 +42,9 @@ export GOOGLE_API_KEY=<your_google_api_key>
 
 要创建 Google API 密钥，请参阅[Google AI Studio](https://aistudio.google.com/apikey)。
 
-## 配置跟踪要跟踪 Gemini API 调用，请使用 LangSmith 的 [⟦T11⟧](https://reference.langchain.com/python/langsmith/wrappers/_gemini/wrap_gemini) (Python) 或 [⟦T12⟧](https://reference.langchain.com/javascript/langsmith/wrappers/gemini/wrapGemini) (JavaScript) 包装函数。该包装器拦截对 Gemini 客户端的调用，并自动将它们记录为 LangSmith 中的跟踪。包装器保留了原始客户端的所有功能，同时添加了可观察性：
+## 配置跟踪
+
+要跟踪 Gemini API 调用，请使用 LangSmith 的 [⟦T11⟧](https://reference.langchain.com/python/langsmith/wrappers/_gemini/wrap_gemini) (Python) 或 [⟦T12⟧](https://reference.langchain.com/javascript/langsmith/wrappers/gemini/wrapGemini) (JavaScript) 包装函数。该包装器拦截对 Gemini 客户端的调用，并自动将它们记录为 LangSmith 中的跟踪。包装器保留了原始客户端的所有功能，同时添加了可观察性：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from google import genai
@@ -101,11 +103,9 @@ const response = await client.models.generateContent({
 });
 
 console.log(response.text);
-```
-
-> [选项卡] Python
+```> [选项卡] Python
 >
-> 您可以在调用`wrap_gemini()`时通过传递[⟦T13⟧](https://reference.langchain.com/python/langsmith/wrappers/_gemini/wrap_gemini)来自定义跟踪。此参数适用于您使用该包装的客户端发出的所有后续请求，这允许您附加标签和元数据以过滤和组织 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-google-gemini) 中的跟踪。 `tracing_extra` 参数接受：
+> 您可以在调用`wrap_gemini()`时通过传递[⟦T13⟧](https://reference.langchain.com/python/langsmith/wrappers/_gemini/wrap_gemini)来自定义跟踪。此参数适用于您使用该包装的客户端发出的所有后续请求，它允许您附加标签和元数据以过滤和组织 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-google-gemini) 中的跟踪。 `tracing_extra` 参数接受：
 >
 > * `tags`：用于对跟踪进行分类的字符串列表（例如，`["production", "gemini"]`）。
 > * `metadata`：用于附加上下文的键值对字典（例如，`{"team": "ml-research", "integration": "google-genai"}`）。

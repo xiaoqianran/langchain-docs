@@ -4,17 +4,17 @@
 
 # 使用 Strands 代理进行跟踪
 
-使用 LangSmith 使用 Strands Agent 进行追踪。
+使用带有 LangSmith 的 Strands Agent 进行追踪。
 
 [Strands Agents](https://strandsagents.com/)是一个用于构建模型驱动代理的SDK。 LangSmith 提供 Strands Agents 集成，以 LangSmith 兼容格式导出 Strands OpenTelemetry 跨度，包括代理运行、模型调用、工具调用、提示、完成和令牌使用。
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 安装
 
-安装带有 Strands Agent 支持的 LangSmith：
+安装 LangSmith 并支持 Strands Agent：
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install "langsmith[strands-agents]"

@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T25⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T25⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 安装
 
@@ -273,7 +273,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
 
 > [标签] AI SDK v7
 >
-> 将LangSmith [⟦T35⟧](https://reference.langchain.com/javascript/langsmith/client/Client)实例传递给`LangSmithTelemetry`，然后调用`await client.awaitPendingTraceBatches()`。确保还将其传递到您创建的任何 `traceable` 包装器中：
+> 将 LangSmith [⟦T35⟧](https://reference.langchain.com/javascript/langsmith/client/Client) 实例传递给 `LangSmithTelemetry`，然后调用 `await client.awaitPendingTraceBatches()`。确保还将其传递到您创建的任何 `traceable` 包装器中：
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { openai } from "@ai-sdk/openai";
@@ -491,7 +491,7 @@ export async function POST(request: Request) {
 
 ## 编辑数据
 
-您可以通过指定自定义输入/输出处理函数来自定义AI SDK发送给LangSmith的输入和输出。如果您正在处理不想发送到 LangSmith 的敏感数据，这非常有用。由于输出格式根据您使用的 AI SDK 方法而有所不同，因此我们建议单独定义遥测配置并将其传递到 AI SDK 调用中。您还需要为 AI SDK 调用中运行的子 LLM 提供单独的函数，因为在顶层调用 `generateText` 会在内部调用 LLM，并且可以多次执行。
+您可以通过指定自定义输入/输出处理函数来自定义AI SDK发送给LangSmith的输入和输出。如果您正在处理希望避免发送到 LangSmith 的敏感数据，这非常有用。由于输出格式根据您使用的 AI SDK 方法而有所不同，因此我们建议单独定义遥测配置并将其传递到 AI SDK 调用中。您还需要为 AI SDK 调用中运行的子 LLM 提供单独的函数，因为在顶层调用 `generateText` 会在内部调用 LLM，并且可以多次执行。
 
 这是 `generateText` 的示例：
 

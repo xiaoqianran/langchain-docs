@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 编码代理类型位于[beta](/langsmith/release-stages)。它需要 [agent-based workspace](/langsmith/agent-registry)，可在 LangSmith 云上使用，而不是在自托管 LangSmith 上使用。
+> 编码代理类型位于[beta](/langsmith/release-stages)。
 
 ## 设置
 
@@ -36,7 +36,7 @@
 | GitHub 副驾驶 | [Configure tracing](/langsmith/trace-with-vscode-copilot#configure-tracing) |
 | Deep Agents 代码 | [Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith) |
 
-要跟踪每个工程师的会话，管理员可以使用移动设备管理 (MDM) 工具安装 Claude Code、Codex 和 Cursor 插件，并锁定跟踪所在的代理和工作区。有关托管文件和可以锁定的设置，请参阅 [Claude Code](/langsmith/trace-claude-code#lock-settings)、[Codex](/langsmith/trace-with-codex#lock-settings) 和 [Cursor](/langsmith/trace-with-cursor#lock-settings) 的锁定设置。
+要跟踪每个工程师的会话，管理员可以使用移动设备管理 (MDM) 工具安装 Claude Code、Codex 和 Cursor 插件，并锁定跟踪所在的代理和工作区。有关托管文件和您可以锁定的设置，请参阅 [Claude Code](/langsmith/trace-claude-code#lock-settings)、[Codex](/langsmith/trace-with-codex#lock-settings) 和 [Cursor](/langsmith/trace-with-cursor#lock-settings) 的锁定设置。
 
 ### 连接 GitHub 或 GitLab拉取请求跟踪使用与 [LangSmith Engine](/langsmith/engine) 相同的 GitHub 和 GitLab 连接。要连接帐户，您需要更新所有代理环境的权限。每个提供商都会添加自己的要求：
 

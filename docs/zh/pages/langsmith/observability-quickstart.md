@@ -4,13 +4,13 @@
 
 # 跟踪快速入门
 
-只需几分钟即可将 LangSmith 跟踪添加到代理。
+在几分钟内将 LangSmith 跟踪添加到代理。
 
 LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为您提供对代理的端到端可见性；请求期间运行的每个步骤的完整记录，从传入的输入到返回的最终输出。
 
 在本快速入门中，您将向 AI 助手添加跟踪并在 LangSmith 中查看结果。
 
-跟踪属于工作空间内的[agent and one of its environments](/langsmith/agent-registry)。本快速入门在 LangSmith 中创建代理，然后配置代码以将跟踪发送到其标识符和环境。兼容性说明涵盖旧工作区和自托管 LangSmith。
+跟踪属于工作空间内的[agent and one of its environments](/langsmith/agent-registry)。本快速入门在 LangSmith 中创建代理，然后配置代码以将跟踪发送到其标识符和环境。
 
 > [!提示]
 >
@@ -103,22 +103,20 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
    > export GEMINI_API_KEY="<your-gemini-api-key>"
    > ```
 
-   在发送跟踪之前，请在LangSmith中创建代理：
+   在发送跟踪之前，[create the agent](/langsmith/create-an-agent#name-an-agent-traced-from-outside-langsmith)位于LangSmith中。创建代理需要`projects:create`权限。
 
-   1. 在 [agent-based workspace](/langsmith/agent-registry) 中，打开 **+ Agent**，选择 **Observability**，并使用 **Agent name** 和 **Agent ID** 创建一个 Agent。这需要`projects:create`许可。如果代理已存在，请重用它。
-   2. 复制 **代理 ID** 并选择环境：`local`、`development`、`staging` 或 `production`。
-   3. 在运行代理之前配置[agent addressing](/langsmith/log-traces-to-agent)：
+   1. 打开新的代理菜单，可以从**+代理**并选择**所有代理**，或者从[agent switcher](/langsmith/navigate-agents)搜索框旁边的**+**按钮。
+   2. 选择 **连接** > **连接现有代理**。
+   3. 在 **连接代理** 对话框中，输入 **代理名称** 和 **代理 ID**。
+   4. 复制 **代理 ID** 并选择环境：`local`、`development`、`staging` 或 `production`。
+   5. 在运行代理之前配置[agent addressing](/langsmith/log-traces-to-agent)：
 
       ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       export LANGSMITH_AGENT_ID="<your-agent-id>"
       export LANGSMITH_AGENT_ENVIRONMENT="local"
       ```
 
-   注册代理一次，而不是每次跟踪。从代码运行环境中删除 `LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT` 和 `LANGCHAIN_SESSION`。请勿将旧目标设置与代理寻址结合起来。要使用 SDK 调用或 API 请求创建代理，请参阅 [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically)。> [手风琴] 基于项目的工作区和自托管 LangSmith
-   >
-   > 代理寻址可在 LangSmith 云上基于代理的工作区中使用。在基于项目的工作区（包括自托管 LangSmith）中，将 `LANGSMITH_PROJECT` 设置为跟踪项目名称，而不是设置两个代理变量。
-
-   > [!注意]
+   创建代理一次，而不是为每个跟踪创建代理。然后从代码运行的环境中删除`LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT`和`LANGCHAIN_SESSION`，因为它们与代理寻址冲突。要使用 SDK 或 API 创建代理，请参阅 [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically)。> [!注意]
    >
    > 如果您的帐户位于美国以外的区域（默认），还需将 `LANGSMITH_ENDPOINT` 设置为您所在区域的 API URL。如果没有这个，您的 API 密钥将不会被识别，并且请求将无法通过身份验证。
    >
@@ -165,20 +163,19 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
    > `https://aws.api.smith.langchain.com`
    > </td>
    > </tr>
-   >> <tr><td>Azure US</td>
+   >
+   > <tr><td>Azure US</td>
    > <td>`https://azure.api.smith.langchain.com`</td></tr>
    > </tbody>
    > </table>
    >
    > 例如欧盟账户：`export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`。
 
-   对于其他提供商，请使用 [⟦T38⟧ decorator](/langsmith/annotate-code#use-%40traceable-%2F-traceable) 手动跟踪呼叫。
+   对于其他提供商，请使用 [⟦T37⟧ decorator](/langsmith/annotate-code#use-%40traceable-%2F-traceable) 手动跟踪呼叫。
 
 ## 2. 构建应用程序
 
-以下应用程序使用两个LangSmith工具来添加跟踪：
-
-* **提供程序包装器**：包装 [OpenAI](/langsmith/trace-openai)、[Anthropic](/langsmith/trace-anthropic) 或 [Gemini](/langsmith/trace-with-google-gemini) 客户端，以便每个 LLM 调用都会自动记录为嵌套范围。 Gemini 包装位于[beta](/langsmith/release-stages)。
+以下应用程序使用两个LangSmith工具来添加跟踪：* **提供程序包装器**：包装 [OpenAI](/langsmith/trace-openai)、[Anthropic](/langsmith/trace-anthropic) 或 [Gemini](/langsmith/trace-with-google-gemini) 客户端，以便每个 LLM 调用都会自动记录为嵌套范围。 Gemini 包装位于[beta](/langsmith/release-stages)。
 * **可跟踪包装器**：包装函数，使其输入、输出和任何嵌套跨度在 LangSmith 中显示为单个跟踪。在 Python 中使用 `@traceable`，在 TypeScript 和 Kotlin 中使用 `traceable`，在 Java 中使用 `Tracing.traceFunction`。
 
 `assistant` 函数调用工具 (`get_context`) 来检索相关上下文，然后将该上下文传递给模型。在这两个函数上使用可跟踪包装器可以在一次跟踪中捕获完整的管道，并将工具调用和 LLM 调用作为嵌套跨度。
@@ -501,9 +498,9 @@ npx tsx index.ts
 ./gradlew run
 ```
 
-## 4. 查看您的踪迹在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-quickstart)中，选择您的代理，转到**跟踪**，然后选择设置期间配置的环境。在基于项目的工作区中，打开名为 `LANGSMITH_PROJECT` 的项目。有关更多信息，请参阅[Navigate agents](/langsmith/navigate-agents)。
+## 4. 查看您的踪迹
 
-单击 `assistant` 行打开跟踪。 **轨迹**选项卡显示发送到模型的对话。选择 **详细信息** 选项卡可查看完整的运行树，包括带有 `get_context` 工具调用的 `assistant` 函数以及嵌套在其中的模型调用。
+在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-quickstart)中，选择您的代理，转到**跟踪**，然后选择在设置过程中配置的环境。欲了解更多信息，请参阅[Navigate agents](/langsmith/navigate-agents)。单击 `assistant` 行打开跟踪。 **轨迹**选项卡显示发送到模型的对话。选择 **详细信息** 选项卡可查看完整的运行树，包括带有 `get_context` 工具调用的 `assistant` 函数以及嵌套在其中的模型调用。
 
 ![LangSmith UI showing a trace with an outer agent span and a nested LLM call span.](https://mintcdn.com/langchain-5e9cc07a/EKYgNtnIIDPnseTv/langsmith/images/trace-quickstart-app.png?fit=max\&auto=format\&n=EKYgNtnIIDPnseTv\&q=85\&s=35b19b5e1e978d13cdbb61058334eeb4)
 
@@ -519,7 +516,9 @@ npx tsx index.ts
 * [Trace an agent](/langsmith/observability-llm-tutorial)：完整的生命周期教程，从原型设计到生产。
 * [Filter traces](/langsmith/filter-traces)：在代理环境中搜索痕迹。
 * [Log traces to an agent](/langsmith/log-traces-to-agent)：通过代码或环境变量配置代理和环境。
-* [Agent Registry](/langsmith/agent-registry)：工作空间如何组织代理及其环境。记录跟踪后，使用 **[Chat](/langsmith/chat)** 对其进行分析，并获得人工智能支持的代理性能洞察。
+* [Agent Registry](/langsmith/agent-registry)：工作空间如何组织代理及其环境。
+
+记录跟踪后，使用 **[Chat](/langsmith/chat)** 对其进行分析，并获得人工智能支持的代理性能洞察。
 
 ***
 

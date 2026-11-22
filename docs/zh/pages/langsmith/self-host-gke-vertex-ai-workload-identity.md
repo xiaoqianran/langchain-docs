@@ -4,19 +4,20 @@
 
 # 使用 GKE 工作负载身份验证 Vertex AI
 
-在 GKE 上运行的自托管 LangSmith 上为 Playground、Chat 和 Insights 配置无密钥 Vertex AI 身份验证。
+在 GKE 上运行的自托管 LangSmith 上为 Playground、Chat、Insights 和 Fleet 配置无密钥 Vertex AI 身份验证。
 
 GKE 工作负载身份联合允许这些自托管 LangSmith 服务调用 Vertex AI，而无需长期服务帐户密钥：
 
-* 游乐场
-* 聊天（Helm 中的`polly`）
-* 见解
+* [Playground](/langsmith/prompt-engineering-concepts#playground)
+* [Chat](/langsmith/chat)（头盔中的`polly`）
+* [Insights](/langsmith/insights)
+* [Fleet](/langsmith/fleet/index)
 
 每个工作负载都使用其 Kubernetes 服务帐户 (KSA) 通过应用程序默认凭证 (ADC) 模拟 Google 服务帐户 (GSA)。
 
 > [!注意]
 >
-> Chat 和 Insights 的无密钥身份验证需要 Helm 图表版本 0.17.0 或更高版本以及 LangSmith 应用程序版本 0.17.29 或更高版本。
+> Chat 和 Insights 的无密钥身份验证需要 Helm 图表版本 0.17.0 或更高版本以及 LangSmith 应用程序版本 0.17.29 或更高版本。对于 Fleet，它需要 Helm 图表版本 0.18.0 或更高版本以及 LangSmith 应用程序版本 0.18.2026112100 或更高版本。
 
 配置无密钥身份验证：
 
@@ -28,9 +29,7 @@ GKE 工作负载身份联合允许这些自托管 LangSmith 服务调用 Vertex 
    gcloud projects add-iam-policy-binding "<vertex-project-id>" \
      --member="serviceAccount:<gsa-name>@<gsa-project-id>.iam.gserviceaccount.com" \
      --role="roles/aiplatform.user"
-   ```
-
-3. **允许每个 KSA 模拟 GSA。** 在 GSA 上授予每个调用 KSA `roles/iam.workloadIdentityUser`。将五个 KSA 占位符替换为您的 Helm 版本呈现的名称：
+   ```3. **Allow each KSA to impersonate the GSA.** Grant each calling KSA `roles/iam.workloadIdentityUser` on the GSA.将七个 KSA 占位符替换为您的 Helm 版本呈现的名称：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    for ksa in \
@@ -38,15 +37,19 @@ GKE 工作负载身份联合允许这些自托管 LangSmith 服务调用 Vertex 
      "<polly-api-ksa>" \
      "<polly-queue-ksa>" \
      "<insights-api-ksa>" \
-     "<insights-queue-ksa>"; do
+     "<insights-queue-ksa>" \
+     "<fleet-api-ksa>" \
+     "<fleet-queue-ksa>"; do
      gcloud iam service-accounts add-iam-policy-binding \
        "<gsa-name>@<gsa-project-id>.iam.gserviceaccount.com" \
        --role="roles/iam.workloadIdentityUser" \
        --member="serviceAccount:<cluster-project-id>.svc.id.goog[<namespace>/${ksa}]"
    done
-   ```仅绑定这些特定的 KSA 主题。如果工作负载使用不同的命名空间，请针对每个 KSA 的命名空间单独运行该命令。
+   ```
 
-4. **注释每个 KSA。** 通过您的 Helm 值添加 GSA 注释。 Chat 和 Insights API 以及队列身份是单独的调用者。每个 API 和队列身份都需要注释和 IAM 绑定：
+   仅绑定这些特定的 KSA 主题。如果工作负载使用不同的命名空间，请针对每个 KSA 的命名空间单独运行该命令。
+
+4. **Annotate every KSA.** Add the GSA annotation through your Helm values. Chat、Insights 和 Fleet 各自在单独的 KSA 下运行一个 API 服务器和一个队列。为每个服务注释两个 KSA，并在上一步中绑定每个 KSA：
 
    ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    # Playground
@@ -92,9 +95,56 @@ GKE 工作负载身份联合允许这些自托管 LangSmith 服务调用 Vertex 
              value: "true"
            - name: GOOGLE_CLOUD_PROJECT
              value: "<vertex-project-id>"
+
+   # Fleet
+   fleet:
+     apiServer:
+       serviceAccount:
+         annotations:
+           iam.gke.io/gcp-service-account: "<gsa-name>@<gsa-project-id>.iam.gserviceaccount.com"
+       deployment:
+         extraEnv:
+           - name: FLEET_VERTEX_AI_ADC_ENABLED
+             value: "true"
+           - name: GOOGLE_CLOUD_PROJECT
+             value: "<vertex-project-id>"
+     queue:
+       serviceAccount:
+         annotations:
+           iam.gke.io/gcp-service-account: "<gsa-name>@<gsa-project-id>.iam.gserviceaccount.com"
+       deployment:
+         extraEnv:
+           - name: FLEET_VERTEX_AI_ADC_ENABLED
+             value: "true"
+           - name: GOOGLE_CLOUD_PROJECT
+             value: "<vertex-project-id>"
+
+   # Lets the Fleet model picker list Vertex AI models without a stored key
+   platformBackend:
+     deployment:
+       extraEnv:
+         - name: FLEET_VERTEX_AI_ADC_ENABLED
+           value: "true"
    ```
 
+   Set `FLEET_VERTEX_AI_ADC_ENABLED` on the Fleet API server, the Fleet queue, and the platform backend.有关舰队模型的限制，请参阅[Fleet model restrictions](#fleet-model-restrictions)。
+
 5. **使用 ADC 而不是显式凭据。** 在每个 Vertex AI 或 Gemini 提供程序配置中，将 **服务帐户 JSON** 留空。保持 `GOOGLE_VERTEX_AI_WEB_CREDENTIALS` 和 `GOOGLE_APPLICATION_CREDENTIALS` 未设置。当两者都存在时，LangSmith 使用显式 JSON 凭据而不是 ADC。
+
+## 机队型号限制
+
+设置 `FLEET_VERTEX_AI_ADC_ENABLED` 后，每个没有存储密钥的 Fleet Vertex AI 模型都会在安装的每个工作区中调用具有相同 GSA 的 Vertex AI。为了防止该身份的访问令牌到达其他服务器，这样的模型：* 只能通过 HTTPS 调用 Google Vertex AI 端点。
+* 必须使用普通位置，例如 `us-central1` 或 `global`。
+* 无法设置`client_args`。
+
+使用存储服务帐户密钥的模型没有这些限制。
+
+## 另请参阅
+
+* [Model providers](/langsmith/playground-model-providers#gemini-enterprise-agent-platform)：在 Playground 中选择 Vertex AI 模型。
+* [Enable Fleet on self-hosted LangSmith](/langsmith/enable-self-hosted-fleet)：安装Fleet，这是本页面Fleet设置所需要的。
+* [Provider authentication](/langsmith/llm-gateway-provider-authentication#configure-gemini-enterprise-agent-platform)：向 Vertex AI 验证 LLM 网关，这仍然需要服务帐户密钥。
+* [Configure model providers for Engine](/langsmith/engine-self-hosted-model-providers#use-cloud-identity-for-your-model-providers)：为Engine设置工作负载身份，它使用自己的Helm设置。
 
 ***
 

@@ -14,7 +14,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 安装
 
@@ -104,12 +104,12 @@ for await (const event of stream) {
 > 接入单独的事件流，尚不支持。仅限顶级
 > 跟踪会话事件。
 
-## 后续步骤* [Trace Anthropic models](/langsmith/trace-anthropic)：追踪标准Anthropic API调用和工具使用
+## 后续步骤
+
+* [Trace Anthropic models](/langsmith/trace-anthropic)：跟踪标准Anthropic API 调用和工具使用
 * [Trace Claude Agent SDK agents](/langsmith/trace-claude-agent-sdk)：使用 Claude Agent SDK 在本地运行的跟踪代理
 * [Monitor your agent](/langsmith/dashboards)：为生产代理设置仪表板和警报
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-claude-managed-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

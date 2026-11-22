@@ -57,7 +57,7 @@
 > |关键|描述 |
 > | - | - |
 > | `dependencies` | **必需**，除非设置了 [⟦T61⟧](#configuration-file)。代理服务器的依赖项数组。依赖项可以是以下之一： <ul><li>单个句点（`"."`），它将查找本地Python包。</li><li>`pyproject.toml`、`setup.py`或`requirements.txt`所在的目录路径。例如，如果`requirements.txt`位于项目目录的根目录中，则指定`"./"`。如果它位于名为 `local_package` 的子目录中，请指定 `"./local_package"`。请勿指定字符串 `"requirements.txt"` 本身。</li><li>Python 包名称。</li></ul> |
-> | `graphs` | **必需的**。从图形 ID 映射到定义已编译图形或生成图形的函数的路径。示例：<ul><li>`./your_package/your_file.py:variable`，其中`variable`是`langgraph.graph.state.CompiledStateGraph`</li><li>`./your_package/your_file.py:make_graph`的实例，其中`make_graph`是采用配置字典的函数(`langchain_core.runnables.RunnableConfig`) 并返回`langgraph.graph.state.StateGraph`或`langgraph.graph.state.CompiledStateGraph`的实例。详情请参阅[how to rebuild a graph at runtime](/langsmith/graph-rebuild)。</li></ul> |> | `auth` | *（v0.0.11中添加）* 身份验证和授权配置。包含： <ul><li>`path`（必需）：身份验证处理程序的路径（例如，`./your_package/auth.py:auth`），其中`auth`是`langgraph_sdk.Auth`的实例。请参阅 [authentication guide](/langsmith/auth)。</li><li>`disable_studio_auth`（可选）：如果 `true`，Studio 无法使用 LangSmith 身份验证作为后备。默认为 `false`.</li><li>`allow_langsmith_api_keys`（可选，代理服务器 v0.14.0rc2+）：如果 `true`，请与自定义身份验证一起运行 LangSmith API 密钥身份验证。带有 `Authorization` 标头的请求将进入自定义身份验证；所有其他人都前往LangSmith（`x-api-key`）。自定义 `@auth.on` 处理程序仍在运行。默认为`false`。</li><li>`openapi`（可选）：在 OpenAPI 中记录的安全方案。参见[OpenAPI security](/langsmith/openapi-security)。</li></ul> |
+> | `graphs` | **必需的**。从图形 ID 映射到定义已编译图形或生成图形的函数的路径。示例：<ul><li>`./your_package/your_file.py:variable`，其中`variable`是`langgraph.graph.state.CompiledStateGraph`</li><li>`./your_package/your_file.py:make_graph`的实例，其中`make_graph`是采用配置字典的函数(`langchain_core.runnables.RunnableConfig`) 并返回 `langgraph.graph.state.StateGraph` 或 `langgraph.graph.state.CompiledStateGraph` 的实例。详情请参阅[how to rebuild a graph at runtime](/langsmith/graph-rebuild)。</li></ul> |> | `auth` | *（v0.0.11中添加）* 身份验证和授权配置。包含： <ul><li>`path`（必需）：身份验证处理程序的路径（例如，`./your_package/auth.py:auth`），其中`auth`是`langgraph_sdk.Auth`的实例。请参阅 [authentication guide](/langsmith/auth)。</li><li>`disable_studio_auth`（可选）：如果 `true`，Studio 无法使用 LangSmith 身份验证作为后备。默认为 `false`.</li><li>`allow_langsmith_api_keys`（可选，代理服务器 v0.14.0rc2+）：如果 `true`，请与自定义身份验证一起运行 LangSmith API 密钥身份验证。带有 `Authorization` 标头的请求将进入自定义身份验证；所有其他人都前往LangSmith（`x-api-key`）。自定义 `@auth.on` 处理程序仍在运行。默认为`false`。</li><li>`openapi`（可选）：在 OpenAPI 中记录的安全方案。参见[OpenAPI security](/langsmith/openapi-security)。</li></ul> |
 > | `priority` | *(v0.18.0 中新增)* 运行优先级配置。包含： <ul><li>`path`（必需）：`Priority` 实例的路径（例如，`./priority.py:priority`），其中 `priority` 是 `langgraph_sdk.Priority` 的实例。需要`langgraph-cli>=0.4.38`。</li></ul> 请参阅[Prioritize runs](/langsmith/run-priority)。 |
 > | `base_image` |选修的。用于代理服务器的基础映像。默认为 `langchain/langgraph-api` 或 `langchain/langgraphjs-api`。使用它可以将您的构建固定到 langgraph API 的特定版本，例如 `"langchain/langgraph-server:0.2"`。更多详情请参见[https://hub.docker.com/r/langchain/langgraph-server/tags](https://hub.docker.com/r/langchain/langgraph-server/tags)。 （在`langgraph-cli==0.2.8`中添加）|> | `image_distro` |选修的。基础镜像的 Linux 发行版。必须是 `"debian"`、`"wolfi"`、`"bookworm"` 或 `"bullseye"` 之一。如果省略，则默认为`"debian"`。适用于`langgraph-cli>=0.2.11`。 |
 > | `env` | `.env` 文件的路径或从环境变量到其值的映射。 |
@@ -305,7 +305,7 @@
 > `checkpointer.serde` 对象形状反序列化：
 >
 > * `allowed_json_modules` 定义自定义 Python 对象的允许列表，您希望服务器能够从以“json”模式保存的有效负载进行反序列化。这是`[path, to, module, file, symbol]`序列的列表。如果省略，则仅允许使用LangChain安全默认值。您可以不安全地设置为 `true` 以允许任何模块被反序列化。
-> * `pickle_fallback`：当 JSON 解码失败时是否回退到 pickle 反序列化。
+> * `pickle_fallback`: 当 JSON 解码失败时是否回退到 pickle 反序列化。
 >
 > ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > {
@@ -530,7 +530,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `-c, --config FILE` | `langgraph.json` |声明依赖项、图形和环境变量的配置文件路径 |
 > | `--host TEXT` | `127.0.0.1` |将服务器绑定到的主机 |
@@ -556,7 +556,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `-c, --config FILE` | `langgraph.json` |声明依赖项、图形和环境变量的配置文件路径 |
 > | `--host TEXT` | `127.0.0.1` |将服务器绑定到的主机 |
@@ -582,7 +582,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `--platform TEXT` | |要为其构建 Docker 映像的目标平台。示例：`langgraph build --platform linux/amd64,linux/arm64` |
 > | `-t, --tag TEXT` | | **必需的**。 Docker 镜像的标签。示例：`langgraph build -t my-image` |
@@ -604,7 +604,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `--platform TEXT` | |要为其构建 Docker 映像的目标平台。示例：`langgraph build --platform linux/amd64,linux/arm64` |
 > | `-t, --tag TEXT` | | **必需的**。 Docker 镜像的标签。示例：`langgraph build -t my-image` |
@@ -640,11 +640,11 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |> | `--api-key TEXT` | | API 密钥。也可以通过 `LANGGRAPH_HOST_API_KEY`、`LANGSMITH_API_KEY` 或 `LANGCHAIN_API_KEY` 环境变量或 `.env` 文件进行设置。 |
 > | `--name TEXT` |当前目录名称 |代理服务器名称。也可以通过 `LANGSMITH_DEPLOYMENT_NAME` 环境变量或 `.env` 文件设置。 |
 > | `--agent-server-id TEXT` | |要更新的现有代理服务器的 ID。如果省略，`--name` 用于查找或创建代理服务器。 |
-> | `--agent-id TEXT` | |通过标识符部署到基于代理的工作区中的代理。需要`--agent-environment`，且不能与`--name`或`--agent-server-id`组合使用。也可以通过`LANGSMITH_AGENT_ID`设置。参见[Deploy to an agent environment](/langsmith/deploy-to-agent-environment)。提供`langgraph-cli>=0.4.32`。 |
+> | `--agent-id TEXT` | |按标识符部署到的代理。需要`--agent-environment`，且不能与`--name`或`--agent-server-id`组合使用。也可以通过`LANGSMITH_AGENT_ID`设置。参见[Deploy to an agent environment](/langsmith/deploy-to-agent-environment)。提供`langgraph-cli>=0.4.32`。 |
 > | `--agent-environment TEXT` | | Agent 服务器报告的环境：`development`、`staging` 或 `production`。需要`--agent-id`。也可以通过`LANGSMITH_AGENT_ENVIRONMENT`设置。提供`langgraph-cli>=0.4.32`。 |
 > | `--agent-server-type TEXT` | `serverless` |在云上创建新代理服务器时的代理服务器类型。通过 `dedicated` 以获得始终在线的容量。旧版 `dev` 和 `prod` 也被接受。 |
 > | `--remote / --no-remote` | |强制远程或本地构建。默认情况下，如果 Docker 本地不可用，则远程构建。 |> | `--push-to TEXT` | |将映像推送到您管理的注册表中的此存储库（例如`123456789.dkr.ecr.us-east-1.amazonaws.com/agents/my-agent`），然后从中进行部署。自托管 LangSmith 和通过侦听器部署的工作区是必需的，除非您使用 `--image-uri` 代替。使用您现有的 Docker 凭据。在值中给出标签或使用`-t`。不能与`--remote`或`--image-uri`组合使用。 |
@@ -654,7 +654,7 @@
 > | `--k8s-namespace TEXT` | |侦听器部署到的 Kubernetes 命名空间。仅在使用 `--push-to` 或 `--image-uri` 创建代理服务器时使用。默认为侦听器的唯一命名空间。 |
 > | `--image-pull-secret TEXT` | |代理服务器命名空间中的 Kubernetes 密钥名称（类型 `kubernetes.io/dockerconfigjson`），用于从私有注册表中提取映像。重复给予多个。仅在使用 `--push-to` 或 `--image-uri` 创建代理服务器时使用。 |
 > | `--no-wait` | `False` |推送后跳过等待部署状态。 |
-> | `--verbose` | `False` |显示详细输出，包括 Docker 构建和推送日志。 |
+> | `--verbose` | `False` |显示详细的输出，包括 Docker 构建和推送日志。 |
 > | `--help` | |显示命令文档。 |
 >
 >> [!注意]
@@ -686,7 +686,7 @@
 >
 >> [!注意]
 >>
->> CLI 更新取决于代理服务器的源和所选的构建模式。推送到托管注册表的本地构建需要 `internal_docker` 源。要从您管理的注册表更新代理服务器，请使用 `--push-to` 或 `--image-uri`。不要假设通过 UI 或 GitHub 集成创建的每个代理服务器都支持每个 CLI 构建模式。
+>> CLI 更新取决于代理服务器的源和所选的构建模式。推送到托管注册表的本地构建需要 `internal_docker` 源。要从您管理的注册表更新代理服务器，请使用 `--push-to` 或 `--image-uri`。不要假设通过 UI 或 GitHub 集成创建的每个代理服务器都支持每种 CLI 构建模式。
 >
 > #### 从您管理的注册表进行部署
 >
@@ -745,9 +745,9 @@
 > ```
 >
 > 侦听器和命名空间在创建 Agent Server 时是固定的，之后无法更改，因此在现有 Agent Server 上这两个选项都会被拒绝。后期修改只需`--push-to`。
->> 使用`--push-to` 创建的代理服务器使用`external_docker` 源。没有`--push-to`创建的代理服务器无法切换​​到它； use a new `--name` instead.
+>> 使用`--push-to` 创建的代理服务器使用`external_docker` 源。没有`--push-to`创建的代理服务器无法切换​​到它；请改用新的`--name`。
 >
-> #### Authenticate to a private registry
+> #### 向私有注册表进行身份验证
 >
 > 如果使用 `--push-to` 推送到的注册表或使用 `--image-uri` 部署的注册表需要身份验证才能拉取映像，则集群需要代理服务器命名空间中类型为 `kubernetes.io/dockerconfigjson` 的 Kubernetes 密钥。提前创建它（例如使用 `kubectl create secret docker-registry`），然后使用 `--image-pull-secret` 传递其名称：
 >
@@ -770,11 +770,11 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `--name-contains TEXT` | |仅显示名称包含此值的代理服务器。 |
 > | `--api-key TEXT` | | API 密钥。也可以通过 `LANGGRAPH_HOST_API_KEY`、`LANGSMITH_API_KEY` 或 `LANGCHAIN_API_KEY` 环境变量或 `.env` 文件进行设置。 |
-> | `--help` | | Show this message and exit. |
+> | `--help` | |显示此消息并退出。 |
 >
 > #### `deploy listeners`
 >> \[Beta] 检查此工作区可用的侦听器。
@@ -787,7 +787,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `--help` | |显示此消息并退出。 |
 >
@@ -813,7 +813,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `--json` | |将侦听器作为 JSON 数组而不是表发出。 |
 > | `--api-key TEXT` | | API 密钥。也可以通过 `LANGGRAPH_HOST_API_KEY`、`LANGSMITH_API_KEY` 或 `LANGCHAIN_API_KEY` 环境变量或 `.env` 文件进行设置。 |
@@ -831,7 +831,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `--help` | |显示此消息并退出。 |
 >
@@ -854,7 +854,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `--limit INTEGER` | `10` |返回的最大修订数。 |
 > | `--api-key TEXT` | | API 密钥。也可以通过 `LANGGRAPH_HOST_API_KEY`、`LANGSMITH_API_KEY` 或 `LANGCHAIN_API_KEY` 环境变量或 `.env` 文件进行设置。 |
@@ -874,7 +874,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `--force` | |删除而不提示确认。 |
 > | `--api-key TEXT` | | API 密钥。也可以通过 `LANGGRAPH_HOST_API_KEY`、`LANGSMITH_API_KEY` 或 `LANGCHAIN_API_KEY` 环境变量或 `.env` 文件进行设置。 |
@@ -892,7 +892,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `-f, --follow` | `False` |不断轮询新日志。 |> | `--end-time TEXT` | | ISO8601 结束时间。示例：`2026-03-08T00:00:00Z`。 |
 > | `--start-time TEXT` | | ISO8601 开始时间。示例：`2026-03-08T00:00:00Z`。 |
@@ -922,7 +922,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `--wait` | |返回之前等待服务启动。意味着--分离|
 > | `--base-image TEXT` | `langchain/langgraph-api` |用于代理服务器的基础映像。使用版本标签固定到特定版本。 |
@@ -954,7 +954,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `--wait` | |返回之前等待服务启动。意味着--分离|
 > | `--base-image TEXT` | `langchain/langgraph-api` |用于 LangGraph API 服务器的基础镜像。使用版本标签固定到特定版本。 |
@@ -979,7 +979,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `-c, --config FILE` | `langgraph.json` |声明依赖项、图表和环境变量的[configuration file](#configuration-file)的路径。 |
 > | `--help` | |显示此消息并退出。 |
@@ -1028,7 +1028,7 @@
 >
 > **选项**
 >
-> |选项 |默认 |描述 |
+> |选项|默认|描述 |
 > | - | - | - |
 > | `-c, --config FILE` | `langgraph.json` |声明依赖项、图表和环境变量的[configuration file](#configuration-file)的路径。 |
 > | `--help` | |显示此消息并退出。 |

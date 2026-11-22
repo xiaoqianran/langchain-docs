@@ -28,7 +28,7 @@
    * 对于 TypeSafe，选择 **TypeSafe** 并粘贴您的 TypeSafe 帐户中的密钥。 LangSmith 将其存储为工作空间秘密`TYPESAFE_API_KEY`。
 
    要将密钥存储在不同的名称下，请选择 **自定义** 并输入您自己的秘密名称。有关更多信息，请参阅[Add a provider key](/langsmith/llm-gateway-provider-authentication#add-a-provider-key)。
-2. 在 LangSmith UI 中，打开数据集或跟踪项目的 **Evaluators** 选项卡，然后单击 **+ Evaluator**。
+2. 在 LangSmith UI 中，打开 **数据集和实验** 中数据集的 **Evaluators** 选项卡或 **Tracing** 页面上代理环境的 **Online Evaluators** 选项卡，然后单击 **+ Evaluator**。
 3. 在 **配置评估器** 面板中，选择 **从头开始创建** 下的 **决策模型评估器**。
 4. 指定您的评估员。
 
@@ -38,7 +38,7 @@
 
 在 **提示和模型** 下，打开 **模型配置** 并选择提供商和模型：
 
-* 对于OpenAI，选择 **OpenAI** 作为提供者，然后选择决策模型。如果您将密钥存储在`OPENAI_API_KEY`以外的名称下，请在 **API 密钥名称** 中输入该名称。单击**应用**。
+* 对于OpenAI，选择**OpenAI**作为提供者，然后选择决策模型。如果您将密钥存储在 `OPENAI_API_KEY` 以外的名称下，请在 **API 密钥名称** 中输入该名称。单击**应用**。
 * 对于 TypeSafe，选择 **TypeSafe** 作为提供程序，然后选择 Jev 模型。如果您将密钥存储在`TYPESAFE_API_KEY`以外的名称下，请在 **API 密钥名称** 中输入该名称。单击**应用**。
 * 对于 OpenAI-Decisions 兼容端点或 TypeSafe 兼容端点，选择其保存的配置。参见[Use a compatible endpoint](#use-a-compatible-endpoint)。> [!提示]
 >
@@ -55,7 +55,7 @@
 **状态**是决策模型评估的上下文。将运行或示例中的变量映射到其中：
 
 * 在数据集上映射输入、输出或参考输出。
-* 在跟踪项目中，映射运行或线程变量，例如运行的输入和输出。
+* 在跟踪项目上，映射运行或线程变量，例如运行的输入和输出。
 
 与 LLM 法官的提示不同，该州不应包含评分说明。相反，请将评分标准放入问题中。
 
@@ -131,7 +131,7 @@ curl -X POST 'https://api.smith.langchain.com/api/v1/runs/rules/decision-models'
 * **`timeout_seconds`**：每次模型调用等待的秒数。仅适用于`openai_decisions`。
 * **`max_retries`**：失败的模型调用重试多少次。仅适用于`openai_decisions`。
 
-有关完整架构，包括采样率、过滤器和保存的模型配置，请参阅 API 参考中的 [Create decision model rule](/langsmith/smith-api/run/create-decision-model-rule)。
+有关完整架构，包括采样率、过滤器和保存的模型配置，请参阅 API 参考中的[Create decision model rule](/langsmith/smith-api/run/create-decision-model-rule)。
 
 ## 另请参阅
 

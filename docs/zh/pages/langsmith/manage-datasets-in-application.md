@@ -12,27 +12,27 @@
 
 以下部分介绍了在 LangSmith 中创建数据集并向其添加示例的不同方法。根据您的工作流程，您可以手动整理示例、自动从跟踪中捕获示例、导入文件，甚至生成合成数据：
 
-* [Manually from a tracing project](#manually-from-a-tracing-project)
-* [Automatically from a tracing project](#automatically-from-a-tracing-project)
+* [Manually from an agent environment](#manually-from-an-agent-environment)
+* [Automatically from an agent environment](#automatically-from-an-agent-environment)
 * [From examples in an annotation queue](#from-examples-in-an-annotation-queue)
 * [From the Playground](#from-the-playground)
 * [Import a dataset from a CSV or JSONL file](#import-a-dataset-from-a-csv-or-jsonl-file)
 * [Create a new dataset from the dataset page](#create-a-new-dataset-from-the-datasets-%26-experiments-page)
 * [Add synthetic examples created by an LLM via the Datasets UI](#add-synthetic-examples-created-by-an-llm)
 
-### 从跟踪项目手动
+### 从代理环境手动
 
-构建数据集的常见模式是将应用程序中的显着跟踪转换为数据集示例。这种方法要求你有[configured tracing to LangSmith](/langsmith/observability-concepts)。
+构建数据集的常见模式是将代理中的显着跟踪转换为数据集示例。这种方法要求你有[configured tracing to LangSmith](/langsmith/observability-concepts)。
 
 > [!提示]
 >
-> 构建数据集的技术是过滤最有趣的跟踪，例如标记有不良用户反馈的跟踪，并将它们添加到数据集。有关如何过滤跟踪的提示，请参阅 [Filter traces](/langsmith/filter-traces) 指南。可通过三种方式将数据从跟踪项目手动添加到数据集。导航到 **跟踪** 并选择跟踪项目或代理环境。
+> 构建数据集的技术是过滤最有趣的跟踪，例如标记有不良用户反馈的跟踪，并将它们添加到数据集。有关如何过滤跟踪的提示，请参阅 [Filter traces](/langsmith/filter-traces) 指南。您可以通过三种方式手动将数据从代理环境添加到数据集。首先，选择您的代理，转到**跟踪**，然后选择环境。然后：
 
 1. 从运行表中选择多项运行。在 **运行** 选项卡上，多选运行。在页面底部，单击“**添加到数据集**”。
 
-2. 在 **运行** 选项卡上，从表中选择运行。在单个运行详细信息页面上，选择右上角的 **添加到** -> **数据集**。
+2. 在 **运行** 选项卡上，从表中选择运行。在单个运行详细信息页面上，选择右上角的 **+ 添加到** > **添加到数据集**。
 
-   当您从运行详细信息页面选择数据集时，将会弹出一个模式，让您知道是否应用了任何 [transformations](/langsmith/dataset-transformations) 或架构验证是否失败。
+   当您从运行详细信息页面选择数据集时，模式会显示是否应用了任何 [transformations](/langsmith/dataset-transformations) 或架构验证是否失败。
 
    然后，您可以选择编辑运行，然后再将其添加到数据集。
 
@@ -43,7 +43,7 @@
 向数据集添加线程与添加运行不同：* **每个线程一个示例**：每个线程的完整对话都保存为一个示例。当您从线程添加运行时，每次运行都会成为一个单独的示例。
 * **无参考输出**：线程示例仅包含作为输入的对话。它们不包括参考输出。
 
-### 自动从跟踪项目
+### 从代理环境自动
 
 当满足指定条件时，使用[automation rules](/langsmith/rules)自动将轨迹添加到数据集中。例如，添加针对特定用例的 [tagged](/langsmith/observability-concepts#tags) 或具有 [low feedback score](/langsmith/observability-concepts#feedback) 的跟踪。
 
@@ -53,7 +53,7 @@
 
 > [!提示]
 >
-> 如果您依靠主题专家来构建有意义的数据集，请使用 [annotation queues](/langsmith/annotation-queues) 为审阅者提供简化的视图。在将跟踪添加到数据集之前，人工审阅者可以选择修改跟踪的输入/输出/参考输出。您可以为注释队列中的运行项目设置默认数据集。线程项不支持默认数据集。要将运行或线程添加到不同的数据集，请使用数据集切换器。选择数据集后，单击“**添加到数据集**”或按`D`。作为示例，运行项添加运行，线程项添加完整对话。
+> 如果您依靠主题专家来构建有意义的数据集，请使用 [annotation queues](/langsmith/annotation-queues) 为审阅者提供简化的视图。在将跟踪添加到数据集之前，人工审阅者可以选择修改跟踪的输入/输出/参考输出。您可以为注释队列中的运行项目设置默认数据集。线程项不支持默认数据集。要将运行或线程添加到不同的数据集，请使用数据集切换器。选择数据集后，单击“**添加到数据集**”或按`D`。作为一个示例，运行项添加运行，线程项添加完整对话。
 
 您对注释队列中的运行所做的更改（包括其元数据）将复制到数据集。您无法编辑主题项目。它们是在追踪时添加的。
 
@@ -112,7 +112,7 @@
 
 5. 示例将出现在**选择生成的示例**页面上。选择要添加到数据集中的示例，并可以选择在最终确定之前对其进行编辑。单击**保存示例**。
 
-6. 每个示例都将根据您指定的数据集模式进行验证，并在源元数据中标记为**合成**。
+6. 每个示例都将根据您指定的数据集架构进行验证，并在源元数据中标记为**合成**。
 
    ![Select generated examples page with generated examples selected and Save examples button.](https://mintcdn.com/langchain-5e9cc07a/mw9POU1xwbwaPxuQ/langsmith/images/select-generated-examples-light.png?fit=max\&auto=format\&n=mw9POU1xwbwaPxuQ\&q=85\&s=146c5f6238415bb8d77da15a8a17c839)
 

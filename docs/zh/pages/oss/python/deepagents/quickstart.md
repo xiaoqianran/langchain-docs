@@ -6,7 +6,7 @@
 
 在几分钟内构建您的第一个深度代理
 
-本指南将引导您使用 Deep Agents SDK 创建第一个深度代理。使用 SDK 以获得最大的灵活性并自行托管代理或运行自定义 [Agent Server](/langsmith/agent-server)。要在生产环境中运行代理而无需管理基础设施，请参阅 [Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart)。
+本指南将引导您使用 Deep Agents SDK 创建您的第一个深度代理。使用 SDK 以获得最大的灵活性并自行托管代理或运行自定义 [Agent Server](/langsmith/agent-server)。要在生产环境中运行代理而无需管理基础设施，请参阅 [Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart)。
 
 您将建立一个可以进行研究和撰写报告的研究代理。
 
@@ -33,7 +33,7 @@
 
 1. 创建互联网搜索工具（当所选型号支持时，最好使用提供商内置的搜索工具；否则使用Tavily）。
 2. 使用搜索工具调用`create_deep_agent`，指南中的`provider:model`字符串（或初始化模型），以及页面上显示的研究系统提示。
-3. 对于可选的LangSmith 跟踪，请按照[https://docs.langchain.com/langsmith/create-an-agent](https://docs.langchain.com/langsmith/create-an-agent) 在基于代理的工作区中注册代理。请用户自行设置`LANGSMITH_AGENT_ID`、`LANGSMITH_AGENT_ENVIRONMENT`、`LANGSMITH_TRACING=true`、`LANGSMITH_API_KEY`。
+3. 对于可选的LangSmith追踪，请按照[https://docs.langchain.com/langsmith/create-an-agent](https://docs.langchain.com/langsmith/create-an-agent)注册代理。请用户自行设置`LANGSMITH_AGENT_ID`、`LANGSMITH_AGENT_ENVIRONMENT`、`LANGSMITH_TRACING=true`、`LANGSMITH_API_KEY`。
 4. 根据指南中的示例研究查询运行代理并打印最终响应。
 
 ## 规则* 请关注此自托管 SDK 快速入门。请勿添加托管 Deep Agents 部署、评估或不相关的框架。如果用户需要托管路径，请将其指向托管 Deep Agents 快速入门。
@@ -149,7 +149,7 @@ uv sync
 > export TAVILY_API_KEY="your-tavily-api-key"
 > ```
 
-> [标签] 奥拉马
+> [标签] 奥拉玛
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > # Local: Ollama must be running on your machine
@@ -226,7 +226,7 @@ Google、OpenAI 和 Anthropic 提供在服务器端运行的内置网络搜索�
 >     )
 > ```
 
-## 步骤 4：创建深度代理将您的搜索工具和型号传递给`create_deep_agent`。传递 `provider:model` 格式的 `model` 字符串，或 [initialized model instance](/oss/python/deepagents/models#configure-model-parameters)。有关所有提供商，请参阅 [supported models](/oss/python/deepagents/models#supported-models)；有关经过测试的建议，请参阅 [suggested models](/oss/python/deepagents/models#suggested-models)。
+## 步骤 4：创建深度代理将您的搜索工具和型号传递给`create_deep_agent`。传递 `provider:model` 格式的 `model` 字符串，或 [initialized model instance](/oss/python/deepagents/models#configure-model-parameters)。请参阅[supported models](/oss/python/deepagents/models#supported-models)了解所有提供商，并参阅[suggested models](/oss/python/deepagents/models#suggested-models)了解经过测试的建议。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # System prompt to steer the agent to be an expert researcher
@@ -358,7 +358,7 @@ agent = create_deep_agent(
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T52⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T52⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-quickstart) 为您提供代理执行的可见性，允许您查看工具调用、子代理委托和 LLM 响应。
 
@@ -404,7 +404,7 @@ Deep Agents 内置 [streaming](/oss/python/langchain/event-streaming)，用于�
 
 * **自定义您的代理**：了解[customization options](/oss/python/deepagents/customization)，包括自定义系统提示、工具和子代理。
 * **添加长期记忆**：跨对话启用[persistent memory](/oss/python/deepagents/memory)。
-* **部署到生产**：使用[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)在LangSmith中创建、运行和操作深度代理。
+* **部署到生产环境**：使用[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)在LangSmith中创建、运行和操作深度代理。
 * **测试和评估**：使用 [LangSmith evaluation](/langsmith/evaluation-quickstart) 运行自动化测试并根据数据集衡量代理的性能。
 
 ***

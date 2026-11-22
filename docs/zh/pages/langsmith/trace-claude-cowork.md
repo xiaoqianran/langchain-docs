@@ -6,7 +6,7 @@
 
 使用 Claude 的 LangSmith 跟踪插件将 Claude Cowork 任务、工具调用和技能使用情况发送到 LangSmith。
 
-[Claude Cowork](https://claude.com/docs/cowork/guide/plugins) 运行与 Claude Code 相同的插件，因此 [LangSmith tracing plugin for Claude Code](/langsmith/trace-claude-code) 也可以跟踪 Cowork 任务。每个轮次都成为一个跟踪，任务的轮次被分组为一个线程。
+[Claude Cowork](https://claude.com/docs/cowork/guide/plugins) 运行与 Claude Code 相同的插件，因此 [LangSmith tracing plugin for Claude Code](/langsmith/trace-claude-code) 也跟踪 Cowork 任务。每个轮次都成为一个跟踪，任务的轮次被分组为一个线程。
 
 ## 先决条件
 
@@ -21,7 +21,7 @@ Cowork 从您的 claude.ai 帐户安装插件。要自己安装插件：
 2. 添加`langchain-ai/langsmith-claude-code-plugins`或`https://github.com/langchain-ai/langsmith-claude-code-plugins`作为市场。
 3. 从该市场安装 `langsmith-tracing` 插件。
 
-该插件会加载到您启动的下一个 Cowork 任务中。要为大家安装它，请参阅[Deploy to your organization](#deploy-to-your-organization)。有关安装插件的更多信息，请参阅 Claude 文档中的 [Cowork plugins](https://claude.com/docs/cowork/guide/plugins)。
+该插件会加载到您启动的下一个 Cowork 任务中。为大家安装请参见[Deploy to your organization](#deploy-to-your-organization)。有关安装插件的更多信息，请参阅 Claude 文档中的 [Cowork plugins](https://claude.com/docs/cowork/guide/plugins)。
 
 ## 登录
 
@@ -40,28 +40,22 @@ langsmith auth login
 ```如果设置了多个凭据，插件将使用它找到的第一个凭据：
 
 1. 插件自带的密钥来自`api_key`或`CC_LANGSMITH_API_KEY`。
-2.您的`langsmith auth login`登录。
+2. 您的 `langsmith auth login` 登录。
 3. 来自您环境的通用`LANGSMITH_API_KEY`。
 
-CLI 登录充当您的角色，因此您的工作区角色需要写入跟踪的权限。如果您从跟踪 API 密钥 (`lsv2_tr_...`) 切换到 CLI 登录，您可能会收到 403，因为无论您的角色是什么，跟踪密钥始终可以写入跟踪。如果发生这种情况，请您的管理员为您提供一个可以写入跟踪的角色，例如工作区用户，并检查项目上是否没有 [ABAC deny policy](/langsmith/abac) 阻止它。
+CLI 登录充当您的角色，因此您的工作区角色需要写入跟踪的权限。如果您从跟踪 API 密钥 (`lsv2_tr_...`) 切换到 CLI 登录，您可能会收到 403，因为无论您的角色是什么，跟踪密钥始终可以写入跟踪。如果发生这种情况，请您的管理员为您提供一个可以写入跟踪的角色，例如工作区用户，并检查代理环境上是否没有 [ABAC deny policy](/langsmith/abac) 阻止它。
 
 当您的登录过期或您的密钥被拒绝时，跟踪就会停止，并且永远不会上传该间隙的轮次。管理员还可以对每个提示进行[require a working sign-in](#require-a-working-sign-in)。
 
 ## 开启追踪
 
-跟踪将关闭，直到您在 `~/.claude/langsmith.json` 将其打开，除非您的管理员已使用 [managed file](#lock-settings) 将其打开。在 [agent-based workspace](/langsmith/migrate-to-agent-based-workspaces) 中，使用 `agent_id` 将跟踪发送到 [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent)：
+跟踪将关闭，直到您在 `~/.claude/langsmith.json` 将其打开，除非您的管理员已使用 [managed file](#lock-settings) 将其打开。使用 `agent_id` 将跟踪发送到 [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent)。该插件始终将它们发送到代理的 **生产** 环境：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "agent_id": "shared-claude" }
 ```
 
-在基于项目的工作区中，请改用旧版 `project` 设置：
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{ "enabled": true, "project": "shared-claude" }
-```
-
-启动 Cowork 任务并在 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-claude-cowork) 中打开您的代理或项目。技能调用会记录运行的技能，以便您可以按技能过滤跟踪。
+启动 Cowork 任务，然后在 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-claude-cowork) 中选择您的代理，转到 **跟踪**，然后选择 **生产** 环境。技能调用会记录运行的技能，以便您可以按技能过滤跟踪。
 
 ## 部署到您的组织管理员可以为每个人安装该插件并控制它如何从一个地方进行跟踪。
 
@@ -115,7 +109,7 @@ CLI 登录充当您的角色，因此您的工作区角色需要写入跟踪的�
 
 在 Cowork 任务中运行 `/langsmith-tracing:mute` 以将其内容排除在 LangSmith 之外，并运行 `/langsmith-tracing:unmute` 将其重新打开。要默认静音每个任务，请将 `defaultMuted` 设置为 `true`。
 
-## 秘密编辑该插件会在上传任何内容之前剥离您计算机上的秘密，因此它们永远不会到达 LangSmith 或副本。默认情况下，密文处于启用状态。
+## 秘密编辑该插件会在上传任何内容之前剥离您计算机上的秘密，因此它们永远不会到达 LangSmith 或副​​本。默认情况下，密文处于启用状态。
 
 它捕获提供商 API 密钥、JSON Web 令牌和 PEM 私钥，以及常见模式，例如 `API_KEY=<value>` 或 URL 中的密码。每场比赛都替换为`[SECRET_DETECTED]`。完整规则列表请参见[Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset)。
 

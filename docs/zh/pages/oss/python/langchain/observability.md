@@ -4,7 +4,7 @@
 
 # LangSmith 可观测性
 
-当您使用 LangChain 构建和运行代理时，您需要了解它们的行为方式：它们调用哪个 [tools](/oss/python/langchain/tools)、它们生成什么提示以及它们如何做出决策。使用[⟦T5⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)构建的LangChain代理自动支持通过[LangSmith](/langsmith/observability)进行跟踪，[LangSmith](/langsmith/observability)是一个用于捕获、调试、评估和监控代理行为的平台。
+当您使用 LangChain 构建和运行代理时，您需要了解它们的行为方式：它们调用哪些 [tools](/oss/python/langchain/tools)、它们生成什么提示以及它们如何做出决策。使用[⟦T5⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)构建的LangChain代理自动支持通过[LangSmith](/langsmith/observability)进行跟踪，[LangSmith](/langsmith/observability)是一个用于捕获、调试、评估和监控代理行为的平台。
 
 [*Traces*](/langsmith/observability-concepts#traces) 记录代理执行的每一步，从初始用户输入到最终响应，包括所有工具调用、模型交互和决策点。此执行数据可帮助您调试问题、评估不同输入的性能以及监控生产中的使用模式。
 
@@ -14,14 +14,14 @@
 
 在开始之前，请确保您具备以下条件：
 
-* **LangSmith帐户**：注册（免费）或登录[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-observability)。
+* **LangSmith帐户**：注册（免费）或在[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-observability)登录。
 * **A LangSmith API 密钥**：遵循 [Create an API key](/langsmith/create-account-api-key) 指南。
 
 ## 启用跟踪
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T7⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。所有LangChain代理自动支持LangSmith跟踪。要启用它，请设置以下环境变量：
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T7⟧](/langsmith/create-an-agent#use-an-environment-project)。所有LangChain代理自动支持LangSmith跟踪。要启用它，请设置以下环境变量：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_AGENT_ID="<your-agent-id>"
@@ -64,7 +64,7 @@ response = agent.invoke({
 
 ## 有选择地跟踪
 
-您可以选择使用 LangSmith 的 `tracing_context` 上下文管理器来跟踪特定调用或代理的部分：
+您可以选择使用 LangSmith 的 `tracing_context` 上下文管理器来跟踪代理的特定调用或部分：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import langsmith as ls
@@ -81,9 +81,7 @@ agent.invoke({"messages": [{"role": "user", "content": "Send another email"}]})
 
 使用`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`选择注册的代理和环境。对于每个请求路由，请在代码中传递代理地址。参见[Log traces to an agent](/langsmith/log-traces-to-agent)。
 
-> [手风琴] 基于项目的工作区和自托管 LangSmith
->
-> 将 `LANGSMITH_PROJECT` 设置为跟踪项目名称，而不是设置代理变量。对于在基于代理的工作区中需要 `project_name` 的集成，请使用环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+对于需要 `project_name` 的集成，请使用环境的 [⟦T12⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 将元数据添加到跟踪中
 
@@ -115,7 +113,9 @@ with ls.tracing_context(
     )
 ```
 
-此自定义元数据和标签将附加到 LangSmith 中的跟踪。> [!提示]
+此自定义元数据和标签将附加到 LangSmith 中的跟踪。
+
+> [!提示]
 >
 > 要了解有关如何使用跟踪来调试、评估和监控代理的更多信息，请参阅 [LangSmith documentation](/langsmith/observability)。
 

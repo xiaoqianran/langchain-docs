@@ -4,7 +4,7 @@
 
 # 如何定义LLM法官评估员
 
-评估法学硕士申请可能具有挑战性，因为它们通常会生成没有单一正确答案的对话文本。
+评估法学硕士申请可能具有挑战性，因为它们经常生成没有单一正确答案的对话文本。
 
 本指南向您展示如何使用 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-as-judge) 为 [offline evaluation](/langsmith/evaluation-concepts#offline-evaluations) 定义 [LLM-as-a-judge evaluator](/langsmith/evaluation-concepts#llm-as-judge)。
 
@@ -20,7 +20,7 @@
 
 ## 步骤 1. 创建评估器
 
-1. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-as-judge) 中，从 [Evaluators](/langsmith/evaluators) 页面或数据集或跟踪项目中的 **Evaluators** 选项卡单击 **+ Evaluator**。
+1. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-as-judge) 中，从 [Evaluators](/langsmith/evaluators) 页面单击 **+ 评估器**，或者从 **数据集和实验** 中数据集的 **评估器** 选项卡或 **跟踪** 页面上代理环境的 **在线评估器** 选项卡。
 2. 在 **添加评估者** 面板中，选择 **从头开始创建** 下的 **LLM-as-a-Judge Evaluator**。或者，选择 **从模板创建** 以从现成的评估器开始并对其进行编辑。
 
 ### 评估器模板评估器模板是设置评估时的有用起点。在“添加评估程序”面板中选择“从模板创建”，以浏览按类别（例如安全性、安全性和质量）组织的模板。
@@ -68,7 +68,7 @@ Flex 呼叫的工作方式与标准呼叫不同：
 
 ### 预览
 
-预览提示将使用右侧显示的参考运行和数据集示例向您展示格式化提示的外观。
+预览提示将向您展示使用右侧显示的参考运行和数据集示例的格式化提示的外观。
 
 ### 通过少量示例改进您的评估器为了更好地将 LLM 作为法官的评估者与人类偏好保持一致，LangSmith 允许您收集评估者分数的 [human corrections](/langsmith/create-few-shot-evaluators#make-corrections)。启用此选择后，更正将作为少数示例自动插入到提示中。
 

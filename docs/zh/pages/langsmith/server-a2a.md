@@ -36,7 +36,7 @@ A2A 端点在 [Agent Server](/langsmith/agent-server) 的 `/a2a/{assistant_id}` 
 
 ## 支持的方法| v1.0 名称 | v0.3 名称 |支持 |
 | - | - | - |
-| `SendMessage` | `message/send` |是的，默认阻止。参见[Return before the run finishes](#return-before-the-run-finishes)|
+| `SendMessage` | `message/send` |是的，默认阻止。参见[Return before the run finishes](#return-before-the-run-finishes) |
 | `SendStreamingMessage` | `message/stream` |是 - 服务器发送的事件 |
 | `GetTask` | `tasks/get` |是的 |
 | `CancelTask` | `tasks/cancel` |是的 |
@@ -270,7 +270,7 @@ A2A-Extensions: https://a2ui.org/a2a-extension/a2ui/v0.9
 
 服务器从`params.message.metadata`读取A2UI客户端功能和客户端数据模型
 （`a2uiClientCapabilities` 和 `a2uiClientDataModel`），A2UI v0.9 架构定义的位置。
-功能使用标记形状，例如`{"v0.9": {"supportedCatalogIds": [...]}}`。一套公寓
+功能使用标记的形状，例如`{"v0.9": {"supportedCatalogIds": [...]}}`。一套公寓
 功能对象被拒绝。
 
 A2UI `DataPart` 保存一个 A2UI 消息对象或一组消息，其中
@@ -532,7 +532,7 @@ if __name__ == "__main__":
 * [Two LangGraph agents communicating](https://github.com/langchain-samples/A2A-langgraph) - 使用 A2A 协议的两个 LangGraph 代理示例
 * [Google ADK agent with LangChain agent](https://github.com/langchain-samples/A2A-google-adk) - Google ADK 代理使用 A2A 协议与 LangChain 代理交互的示例
 
-## 分布式追踪对于基于代理的工作区中的非LangGraph代理，在跟踪之前先[register the agent and configure agent addressing](/langsmith/create-an-agent#configure-tracing-for-the-agent)。 LangSmith 部署已配置其代理。
+## 分布式追踪对于非LangGraph代理，在追踪之前先[register the agent and configure agent addressing](/langsmith/create-an-agent#configure-tracing-for-the-agent)。 LangSmith 部署已配置其代理。
 
 当多个座席通过 A2A 进行通信时，LangSmith 可以将所有[traces](/langsmith/observability-concepts#traces) 分组为一个 [thread](/langsmith/observability-concepts#threads)，从而为您提供整个多座席对话的统一视图。
 
@@ -550,9 +550,9 @@ if __name__ == "__main__":
 >
 > `contextId` 直接用作LangGraph `thread_id`，因此它必须是 UUID。回显
 > 服务器返回的一个标识符，而不是创建您自己的标识符。 A `contextId` 例如
-> `session-42` 被拒绝，并显示 `-32602` 和消息 `Failed to create run: Invalid thread ID`。### 跨多个代理进行跟踪
+> `session-42` 被拒绝，并显示 `-32602` 和消息 `Failed to create run: Invalid thread ID`。
 
-当来自不同框架的代理通过 A2A 进行通信时，`contextId` 可以统一它们的踪迹。将第一个代理在以后的每个请求中返回的`contextId`重复使用给该代理和其他代理。
+### 跨多个代理进行跟踪当来自不同框架的代理通过 A2A 进行通信时，`contextId` 可以统一它们的踪迹。将第一个代理在以后的每个请求中返回的`contextId`重复使用给该代理和其他代理。
 
 > [!警告]
 >
@@ -742,7 +742,7 @@ RFC 2119 级别，适用于任何 A2A 端点，包括您的端点。
 ### 代理服务器当前失败的原因
 
 Agent Server 在每个 CI 构建上运行 TCK 作为必需的检查，根据签入列表进行门控
-已知的故障。如果出现新的故障，并且列出的要求开始通过，则 CI 会失败，
+已知的故障。如果出现新的故障，并且列出的要求开始通过，那么 CI 就会失败，
 因此该列表不会偏离服务器实际执行的操作。
 
 在构建功能之前请阅读以下内容：|差距|你观察到什么|

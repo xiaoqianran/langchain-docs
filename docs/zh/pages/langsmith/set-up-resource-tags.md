@@ -27,17 +27,17 @@
 > 创建标签：
 >
 > 1. 导航到工作区**设置**页面，然后单击左侧边栏中的**资源标签**。
-> 2. 在这里，您将找到按键分组的现有标签值。 LangSmith 默认创建 **Application** 和 **Environment** 键。
+> 2. 在这里，您可以找到按键分组的现有标签值。 LangSmith 默认创建 **Application** 和 **Environment** 键。当您在工作区中创建第一个 [agent](/langsmith/agent-registry#agent) 时，它会添加 **Agent** 键，每个代理有一个值，以代理的标识符命名。
 > 3. 选择页面顶部的**新标签**。系统将提示您输入标签的键和值。请注意，您可以使用现有密钥或创建新密钥。
 >
 > ![Create resource tag modal accessed from the Settings menu in the LangSmith UI.](https://mintcdn.com/langchain-5e9cc07a/86CKyoiUyLIrfcjr/langsmith/images/create-tag-light.png?fit=max\&auto=format\&n=86CKyoiUyLIrfcjr\&q=85\&s=3b409ea215cfd522d6c31c5231b26bd3)
 >
 > ## 为资源分配标签
->
-> 在创建新标签的同一侧面板中，您还可以将资源分配给标签。在**分配资源**部分中搜索相应的资源，然后选择要标记的资源。
+>> 在创建新标签的同一侧面板中，您还可以将资源分配给标签。在**分配资源**部分中搜索相应的资源，然后选择要标记的资源。
 >
 >> [!注意]
->>>> 您只能使用资源标签来标记工作区范围的资源。这包括跟踪项目、注释队列、部署、实验、数据集和提示。在 [agent-based workspace](/langsmith/agent-registry) 中，跟踪项目是代理的 [environment](/langsmith/agent-environments) 之一，因此标记一个标记是单个环境而不是代理。
+>>
+>> 您只能使用资源标签来标记工作区范围的资源。这包括代理环境、注释队列、部署、数据集、提示、沙盒、MCP 服务器、集成、自定义应用程序、评估器、对话和警报。标记[agent environment](/langsmith/agent-environments) 仅标记该环境，而不是整个代理。
 >
 > 要从资源取消分配标签，请在标签面板和资源标签面板中单击标签旁边的垃圾桶图标。
 >
@@ -116,7 +116,7 @@
 >
 >> [!注意]
 >>
->> **权限**：分配**Application**标签仅需要对目标资源的更新访问权限，
+>> **权限**：分配**代理**或**应用程序**标签仅需要对目标资源的更新访问权限，
 >> 因此编辑者可以在没有 `workspaces:manage` 的情况下完成此操作。分配任何其他标签键需要`workspaces:manage`。
 >
 > **应用现有标签**：如果键和值已经存在（例如默认的 **Application** 键），请先检索它们的 ID，然后直接进入分配步骤：
@@ -130,7 +130,7 @@
 > ```
 >
 > ### 在创建时标记资源
->> 您可以在创建项目、数据集或提示（包括分叉和克隆操作）时提供`tag_value_ids`。标签在与资源创建相同的事务中以原子方式应用，因此资源永远不会短暂地取消标记——这在强制执行 [ABAC policies](/langsmith/abac) 时很重要。
+>> 您可以在创建项目、数据集或提示（包括 fork 和克隆操作）时提供 `tag_value_ids`。标签在与资源创建相同的事务中以原子方式应用，因此资源永远不会短暂地取消标记——这在强制执行 [ABAC policies](/langsmith/abac) 时很重要。
 >
 > 标签值必须已存在。将其 UUID 作为列表传递（最多 100 个）：
 >
@@ -162,7 +162,7 @@
 >
 > 相同的 `tag_value_ids` 字段被接受：
 >
-> |端点 |描述 |
+> |端点|描述 |
 > | - | - |
 > | `POST /api/v1/sessions` |创建跟踪项目 |
 > | `POST /api/v1/datasets` |创建数据集（也接受 CSV 上传和实验上传变体）|
@@ -172,13 +172,12 @@
 >
 >> [!注意]
 >>
->> **权限**：在创建时应用**应用程序**标记仅需要更新对资源类型的访问权限。应用任何其他标签密钥需要 [⟦T35⟧](/langsmith/organization-workspace-operations) 权限。
+>> **权限**：在创建时应用**代理**或**应用程序**标记仅需要更新对资源类型的访问权限。应用任何其他标签密钥需要[⟦T35⟧](/langsmith/organization-workspace-operations)权限。
 >
 >> [!提示]
 >>
 >> 如果您使用 LangSmith SDK 跟踪，并且项目是在跟踪提取期间自动创建的，则 `tag_value_ids` 参数在该自动创建路径上不可用。为了确保从一开始就执行 ABAC 策略，请在开始跟踪会话之前通过 `POST /api/v1/sessions` 使用所需的 `tag_value_ids` 预先创建项目。
->
-> ### 查询标签
+>> ### 查询标签
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > # All tag keys and values in the workspace
@@ -200,7 +199,8 @@
 >     headers=headers,
 >     params={"tag_value_id": tag_value_id},
 > ).json()
-> ```>
+> ```
+>
 > ### 从资源中删除标签
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

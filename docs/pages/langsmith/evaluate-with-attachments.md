@@ -23,7 +23,7 @@ This guide covers how to create examples with attachments, build multimodal prom
 >
 > #### From existing runs
 >
-> When adding runs to a LangSmith dataset, attachments can be selectively propagated from the source run to the destination example. To learn more, please see [Manage datasets in application](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project).
+> When adding runs to a LangSmith dataset, attachments can be selectively propagated from the source run to the destination example. To learn more, please see [Manage datasets in application](/langsmith/manage-datasets-in-application#manually-from-an-agent-environment).
 >
 > ![Add trace with attachments to dataset](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/add-trace-with-attachments-to-dataset.png?fit=max\&auto=format\&n=E8FdemkcQxROovD9\&q=85\&s=b8fa62cb39c4f1fc67d9b24fa78d1653)
 >

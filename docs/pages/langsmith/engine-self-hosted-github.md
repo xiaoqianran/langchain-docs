@@ -23,9 +23,9 @@ To configure the App:
 
 **1. Open the GitHub App settings**
 
-Open a tracing project or agent environment. In its **Engine** tab, select **Configure Engine**. Under **Code repository**, the **GitHub is not configured** notice appears. Click **Configure GitHub App**.
+Select your agent and go to **Engine**. Select the environment from the environment switcher at the top of the page, then click the **Configure Engine**  icon. Under **Code repository**, the **GitHub is not configured** notice appears. Click **Configure GitHub App**.
 
-You can also configure the App while first setting up Engine for a project.
+You can also configure the App while first setting up Engine for an agent environment.
 
 **2. Register the App on GitHub**
 

@@ -8,7 +8,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T9⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T9⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 安装
 
@@ -171,13 +171,13 @@ for await (const chunk of query) {
 }
 ```
 
-配置完成后，所有Claude Agent SDK操作都会自动追踪到LangSmith，包括：* 代理查询和回复
+配置完成后，所有Claude Agent SDK操作都会自动追踪到LangSmith，包括：
+
+* 代理查询和回复
 * 工具调用和结果
 * 克劳德模型交互
 * MCP服务器操作
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-claude-agent-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

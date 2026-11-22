@@ -315,7 +315,7 @@ console.log(link.download_url);
 
 ## 安装 Context Hub 存储库
 
-安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙箱代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。> [!警告]
+安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙盒代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。> [!警告]
 >
 > Context Hub 安装是**只读**。同步是单向的，从存储库到沙箱：代理在挂载路径下写入的文件永远不会被推回到存储库，并且下一次同步会覆盖它们。将沙箱输出写入挂载外部的路径，如果它属于存储库，则将其写入[push it with the SDK](/langsmith/manage-contexts-sdk)。
 
@@ -397,7 +397,7 @@ const sb = await client.createSandbox({
   memBytes: 17_179_869_184,        // 16 GiB
   fsCapacityBytes: 34_359_738_368, // 32 GiB
 });
-```|资源 |默认 |范围 |
+```|资源 |默认|范围 |
 | - | - | - |
 |中央处理器 | 0.5 个 vCPU | 0.05 至 16 个 vCPU。使用`cpu_millicores`进行子核请求（`500`为0.5 vCPU）；它优先于`vcpus`。 |
 |内存|每个 vCPU 4 GiB |高达 64 GiB。必须保持在每个 vCPU 目标的 50% 以内，因此 1 个 vCPU 沙箱可接受 2 到 6 GiB。设定内存不带CPU与CPU是相同比例得出的。 |
@@ -723,7 +723,7 @@ async def main():
 
 ## 跟踪沙箱活动
 
-要在基于代理的工作区中进行跟踪，请在运行示例之前[create an agent and configure agent addressing](/langsmith/create-an-agent#configure-tracing-for-the-agent)。
+在运行示例之前，[create an agent and configure agent addressing](/langsmith/create-an-agent#configure-tracing-for-the-agent)。
 
 沙箱内的代码需要 Python 中的 `langsmith>=0.14.9` 或 TypeScript 中的 `langsmith@>=0.11.0` 来将跟踪发送到代理。
 

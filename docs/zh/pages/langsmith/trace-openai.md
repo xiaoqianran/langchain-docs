@@ -8,7 +8,7 @@ Python/TypeScript 中的 [⟦T2⟧](https://reference.langchain.com/python/langs
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T7⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T7⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 > [!注意]
 >
@@ -18,7 +18,9 @@ Python/TypeScript 中的 [⟦T2⟧](https://reference.langchain.com/python/langs
 >
 > 如果您的 LangSmith API 密钥链接到多个工作区，请设置 `LANGSMITH_WORKSPACE_ID` 环境变量以指定要使用的工作区。
 >
-> 将`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`设置为注册的代理和环境。参见[Configure tracing for the agent](/langsmith/create-an-agent#configure-tracing-for-the-agent)。```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> 将`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`设置为注册的代理和环境。参见[Configure tracing for the agent](/langsmith/create-an-agent#configure-tracing-for-the-agent)。
+
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import openai
 from langsmith import traceable
 from langsmith.wrappers import wrap_openai
@@ -73,9 +75,7 @@ const chatPipeline = traceable(async (question: string) => {
 }, { name: "Chat Pipeline" });
 
 await chatPipeline("Can you summarize this morning's meetings?");
-```
-
-要跟踪具有 OpenAI 兼容 API 的提供商，请参阅 [Trace OpenAI-compatible providers](/langsmith/trace-with-openai-compatible)。
+```要跟踪具有OpenAI兼容 API 的提供商，请参阅[Trace OpenAI-compatible providers](/langsmith/trace-with-openai-compatible)。
 
 ***
 

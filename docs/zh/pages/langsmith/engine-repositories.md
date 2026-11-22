@@ -22,26 +22,26 @@
 
 这些步骤适用于 [LangSmith Cloud](/langsmith/cloud)、以及使用已配置的 GitHub 应用程序的 [self-hosted](/langsmith/self-hosted) 和 [BYOC](/langsmith/byoc) 部署。
 
-为您的跟踪项目或代理环境启用 [Engine](/langsmith/engine)。您需要获得在该项目中配置 Engine 以及连接 LangSmith 工作区中的 GitHub 集成的权限。如果这些操作不可用，请询问工作区管理员。
+为您的代理环境启用 [Engine](/langsmith/engine)。您需要获得在该环境中配置 Engine 以及连接 LangSmith 工作区中的 GitHub 集成的权限。如果这些操作不可用，请询问工作区管理员。
 
 在 GitHub 上，您需要获得在要连接的存储库上安装应用程序或访问现有安装的权限。您的 GitHub 组织或企业可能需要管理员批准安装。当出现提示时，完成组织的 SSO 登录。
 
 > [!注意]
 >
-> 对于企业托管用户，连接组织拥有的存储库。 GitHub 不允许将此应用程序安装在托管用户的个人帐户上。请参阅 [Enterprise Managed Users](/langsmith/engine-self-hosted-github#enterprise-managed-users) 了解 GitHub.com 和 `ghe.com` 的要求。对于修复，存储库必须允许引擎的分支和 PR。在测试修复之前查看[Repository policies](#repository-policies)。
+> 对于企业托管用户，连接组织拥有的存储库。 GitHub 不允许将此应用程序安装在托管用户的个人帐户上。请参阅 [Enterprise Managed Users](/langsmith/engine-self-hosted-github#enterprise-managed-users) 了解 GitHub.com 和 `ghe.com` 的要求。
 
-连接 GitHub 存储库：
+对于修复，存储库必须允许引擎的分支和 PR。在测试修复之前查看[Repository policies](#repository-policies)。连接 GitHub 存储库：
 
-1. 打开跟踪项目或代理环境。在其**引擎**页面上，选择**配置引擎**。
+1. 选择您的代理并转到 **引擎**。从页面顶部的环境切换器中选择环境，然后单击 **配置引擎** 图标。
 2. 在**代码存储库**下，选择**连接 GitHub**。如果您的工作区已经有连接，则会出现存储库选择器。
 3. 在 GitHub 中，授权为您的 LangSmith 部署配置的应用程序。将其安装在拥有您的代码的组织或帐户上，并选择它可以访问的存储库。如果该应用程序已安装，LangSmith可能会要求您选择现有安装。
 4. 完成所有 GitHub 批准提示并返回LangSmith。授权应用程序和安装应用程序是分开的步骤：授权识别您的 GitHub 帐户；安装授予应用程序对存储库的访问权限。
 5. 在存储库选择器中，按帐户或存储库名称搜索，选择存储库，然后单击 **连接存储库**。
 6. 对其他存储库重复此操作。每个存储库都可以有自己的分支和子文件夹。
 
-您还可以在首次设置引擎时在**连接代理的代码存储库**下连接存储库。#### 选择分支和子文件夹
+您还可以在首次设置引擎时在**连接代理的代码存储库**下连接存储库。
 
-对于每个连接的存储库：
+#### 选择分支和子文件夹对于每个连接的存储库：
 
 * **分支**：选择引擎应读取并用作修复基础的分支。将其留空以使用存储库的默认分支。
 * **子文件夹**：可以选择将引擎集中在包含代理的存储库部分。此设置不限制 GitHub 应用程序的存储库访问。
@@ -153,7 +153,7 @@ LangSmith 存储加密的令牌并管理其生命周期：* **续订**：LangSmi
 
 添加 GitLab 项目：
 
-1. 打开代理环境。在其**引擎**页面上，选择**配置引擎**。
+1. 选择您的代理并转到 **引擎**。从页面顶部的环境切换器中选择环境，然后单击 **配置引擎** 图标。
 2. 在**代码存储库**下，按项目名称或路径搜索存储库选择器。结果按主机分组，首先是 GitHub 存储库，然后是 **GitLab** 标题下的 GitLab 项目。选择器显示前 20 个匹配的 GitLab 项目，因此请优化搜索以查找其他项目。
 3. 选择一个项目进行添加。
 4. （可选）设置项目的**分支**和**子文件夹**。参见[Choose the branch and subfolder](#choose-the-branch-and-subfolder)。

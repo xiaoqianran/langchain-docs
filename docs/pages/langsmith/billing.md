@@ -115,7 +115,7 @@ LangSmith measures usage per [workspace](/langsmith/administration-overview#work
 
 LangSmith has two trace tiers: base and extended. For the retention period of each tier on your hosting option, see [Retention periods](/langsmith/usage-and-billing#retention-periods).
 
-Set the workspace's default trace tier by selecting an option below the **Default data retention** label. New projects in the workspace use this tier. To also set it on every existing project in the workspace, select the checkbox. In both cases, the change applies only to traces ingested after you save it. Traces already ingested keep their tier.
+Set the workspace's default trace tier by selecting an option below the **Default data retention** label. New agent environments in the workspace use this tier. To also set it on every existing environment in the workspace, select the checkbox. In both cases, the change applies only to traces ingested after you save it. Traces already ingested keep their tier.
 
 If the default data retention is set to **Base**, you can optionally use the slider to distribute trace limits across base and extended traces. LangSmith automatically provides a suggestion for this distribution, but you can tailor this to your needs.
 
@@ -133,15 +133,17 @@ Besides spend limits, the following settings control how long traces are kept an
 
 [Enterprise](/langsmith/pricing-plans) customers can customize the extended data retention period at the workspace level to meet compliance requirements. For the durations available on your hosting option, see [Retention periods](/langsmith/usage-and-billing#retention-periods). To change the period, see [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
 
-#### Change project-level default retention
+#### Change default retention for an environment
 
-Data retention settings are adjustable per tracing project. At the project level, you choose between two tiers: base or extended. To customize the extended duration, use [workspace-level configuration](/langsmith/data-purging-compliance#customize-extended-retention-policy) (Enterprise only).
+You set the default retention tier for each [agent environment](/langsmith/agent-environments) separately, choosing base or extended. To set the tier for a whole agent, set it on each environment. To customize the extended duration, use [workspace-level configuration](/langsmith/data-purging-compliance#customize-extended-retention-policy) (Enterprise only).
 
-In an [agent-based workspace](/langsmith/agent-registry), each of an agent's [environments](/langsmith/agent-environments) is its own tracing project, so retention is set per environment rather than per agent, and you reach the setting through the agent rather than a **Projects** list.
+To change an environment's default retention:
 
-Navigate to **Projects** > ***Your project name*** > Select **Retention** and select the desired default retention. This will only affect retention (and pricing) for **traces going forward**.
+1. In the [agent switcher](/langsmith/navigate-agents), select your agent, go to **Tracing**, and select the environment.
+2. Click **Retention** in the top bar.
+3. Select **Base** or **Extended**.
 
-![P1projectretention](https://mintcdn.com/langchain-5e9cc07a/H9jA2WRyA-MV4-H0/langsmith/images/p1projectretention.png?fit=max\&auto=format\&n=H9jA2WRyA-MV4-H0\&q=85\&s=394b513df5ef31d0309f5f3c78bd315a)
+The change applies only to new traces. Existing traces keep their original tier and pricing.
 
 #### Apply extended data retention to a percentage of traces
 
@@ -153,7 +155,7 @@ You may not want all traces to expire at the end of the base retention period. Y
 
 To configure this:
 
-1. Navigate to **Projects** > ***Your project name*** > Select **+ New** > Select **New Automation**. In an agent-based workspace, start from the agent's environment.
+1. Select your agent, go to **Tracing**, and select the environment. Then select **+ New** > **New Automation**.
 2. Name your rule and optionally apply filters or a sample rate. For more information on configuring filters, refer to [filtering techniques](/langsmith/filter-traces-in-application#filter-operators).
 
 > [!NOTE]

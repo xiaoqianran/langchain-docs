@@ -8,7 +8,7 @@ LangSmith gives you end-to-end visibility into your agent by capturing [*traces*
 
 In this quickstart, you will add tracing to an AI assistant and view the results in LangSmith.
 
-Traces belong to an [agent and one of its environments](/langsmith/agent-registry) within a workspace. This quickstart creates the agent in LangSmith, then configures your code to send traces to its identifier and environment. Compatibility instructions cover older workspaces and self-hosted LangSmith.
+Traces belong to an [agent and one of its environments](/langsmith/agent-registry) within a workspace. This quickstart creates the agent in LangSmith, then configures your code to send traces to its identifier and environment.
 
 > [!TIP]
 >
@@ -103,22 +103,20 @@ Select your provider in the tabs on each step. The Anthropic and Gemini examples
    > export GEMINI_API_KEY="<your-gemini-api-key>"
    > ```
 
-   Before sending traces, create the agent in LangSmith:
+   Before sending traces, [create the agent](/langsmith/create-an-agent#name-an-agent-traced-from-outside-langsmith) in LangSmith. Creating an agent requires the `projects:create` permission.
 
-   1. In an [agent-based workspace](/langsmith/agent-registry), open **+ Agent**, choose **Observability**, and create an agent with an **Agent name** and **Agent ID**. This requires the `projects:create` permission. If the agent already exists, reuse it.
-   2. Copy the **Agent ID** and choose an environment: `local`, `development`, `staging`, or `production`.
-   3. Configure [agent addressing](/langsmith/log-traces-to-agent) before running the agent:
+   1. Open the new agent menu, either from **+ Agent** with **All agents** selected, or from the **+** button beside the search box in the [agent switcher](/langsmith/navigate-agents).
+   2. Select **Connect** > **Connect an existing agent**.
+   3. In the **Connect an agent** dialog, enter an **Agent name** and **Agent ID**.
+   4. Copy the **Agent ID** and choose an environment: `local`, `development`, `staging`, or `production`.
+   5. Configure [agent addressing](/langsmith/log-traces-to-agent) before running the agent:
 
       ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       export LANGSMITH_AGENT_ID="<your-agent-id>"
       export LANGSMITH_AGENT_ENVIRONMENT="local"
       ```
 
-   Register the agent once, not for every trace. Remove `LANGSMITH_PROJECT`, `LANGCHAIN_PROJECT`, and `LANGCHAIN_SESSION` from the environment where your code runs. Do not combine legacy destination settings with agent addressing. To create the agent with an SDK call or API request, see [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically).
-
-   > [accordion] Project-based workspaces and self-hosted LangSmith
-   >
-   > Agent addressing is available in agent-based workspaces on LangSmith Cloud. In a project-based workspace, including self-hosted LangSmith, set `LANGSMITH_PROJECT` to your tracing project name instead of setting the two agent variables.
+   Create the agent once, not for every trace. Then remove `LANGSMITH_PROJECT`, `LANGCHAIN_PROJECT`, and `LANGCHAIN_SESSION` from the environment where your code runs, because they conflict with agent addressing. To create the agent with the SDK or API instead, see [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically).
 
    > [!NOTE]
    >
@@ -506,7 +504,7 @@ npx tsx index.ts
 
 ## 4. View your trace
 
-In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-quickstart), select your agent, go to **Tracing**, and select the environment configured during setup. In a project-based workspace, open the project named by `LANGSMITH_PROJECT`. For more information, see [Navigate agents](/langsmith/navigate-agents).
+In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-quickstart), select your agent, go to **Tracing**, and select the environment configured during setup. For more information, see [Navigate agents](/langsmith/navigate-agents).
 
 Click the `assistant` row to open the trace. The **Trajectory** tab shows the conversation as it was sent to the model. Select the **Details** tab to see the full run tree, including the `assistant` function with the `get_context` tool call and the model call nested inside it.
 

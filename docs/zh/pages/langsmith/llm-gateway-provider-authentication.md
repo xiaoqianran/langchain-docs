@@ -153,7 +153,7 @@ Azure Foundry 支持 API 密钥或 Microsoft Entra ID 服务主体。服务主�
 
 ### 验证设置
 
-在[grant gateway access](/langsmith/llm-gateway-authentication#grant-permission-to-call-the-gateway)之后，使用您的LangSmith API密钥通过网关发送测试请求：
+在您[grant gateway access](/langsmith/llm-gateway-authentication#grant-permission-to-call-the-gateway)之后，使用您的LangSmith API密钥通过网关发送测试请求：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl https://gateway.smith.langchain.com/azure/v1/chat/completions \
@@ -182,7 +182,7 @@ curl https://gateway.smith.langchain.com/azure/v1/chat/completions \
 网关读取两个可选的自定义机密：
 
 * **`VERTEX_PROJECT`**：要调用的 Google Cloud 项目。默认为密钥中的`project_id`。
-* **`VERTEX_LOCATION`**：`global` 或 Google Cloud 区域，例如 `us-central1`。默认为`global`。在自托管 LangSmith 上，[GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity) 涵盖 Playground、Chat 和 Insights，而不是网关。网关仍然需要服务帐户密钥。
+* **`VERTEX_LOCATION`**：`global` 或 Google Cloud 区域，例如 `us-central1`。默认为`global`。在自托管 LangSmith 上，[GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity) 不覆盖网关。网关仍然需要服务帐户密钥。
 
 ## 修复提供商凭证错误
 

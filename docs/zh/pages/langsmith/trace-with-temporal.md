@@ -12,7 +12,7 @@ LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 O
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T28⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T28⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 先决条件
 
@@ -22,7 +22,7 @@ LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 O
 
 ## 环境变量
 
-为所有实现设置以下环境变量：|变量|必填|描述 |
+为所有实现设置以下环境变量：|变量|必填 |描述 |
 | - | - | - |
 | `LANGSMITH_API_KEY` |是的 |您在“设置”中的 LangSmith API 密钥。 |
 | `LANGSMITH_AGENT_ID` |是的，适用于 Python 和 TypeScript |注册代理标识符。 |
@@ -36,7 +36,7 @@ LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 O
 
 > [选项卡] 前往
 >
-> 此 Go 示例使用 `langsmith-go` SDK 和 Temporal 的 OpenTelemetry 拦截器来跟踪工作流程和活动。它使用基于项目的配置：将 `LANGSMITH_PROJECT` 设置为 [environment's ⟦T36⟧](/langsmith/create-an-agent#use-an-environment-project)，没有两个代理变量。 Python 和 TypeScript 导出器使用代理寻址标头。
+> 此 Go 示例使用 `langsmith-go` SDK 和 Temporal 的 OpenTelemetry 拦截器来跟踪工作流程和活动。它将 `LANGSMITH_PROJECT` 设置为 [environment's ⟦T36⟧](/langsmith/create-an-agent#use-an-environment-project) 而不是两个代理变量。 Python 和 TypeScript 导出器使用代理寻址标头。
 >
 > **1。安装**
 >
@@ -223,7 +223,7 @@ LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 O
 >
 > **1。安装**
 >
-> 安装 Temporal SDK、LangSmith SDK 和 OpenTelemetry 软件包：
+> 安装 Temporal SDK、LangSmith SDK 和 OpenTelemetry 包：
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install temporalio

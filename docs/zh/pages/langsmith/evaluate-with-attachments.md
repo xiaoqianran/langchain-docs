@@ -23,7 +23,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
 >
 > #### 来自现有运行
 >
-> 将运行添加到 LangSmith 数据集时，可以有选择地将附件从源运行传播到目标示例。要了解更多信息，请参阅[Manage datasets in application](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)。
+> 将运行添加到 LangSmith 数据集时，可以有选择地将附件从源运行传播到目标示例。要了解更多信息，请参阅[Manage datasets in application](/langsmith/manage-datasets-in-application#manually-from-an-agent-environment)。
 >
 > ![Add trace with attachments to dataset](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/add-trace-with-attachments-to-dataset.png?fit=max\&auto=format\&n=E8FdemkcQxROovD9\&q=85\&s=b8fa62cb39c4f1fc67d9b24fa78d1653)
 >
@@ -40,7 +40,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
 > LangSmith UI 允许您在评估多模式模型时在提示中包含附件：
 >
 > 首先，单击消息中要添加多模式内容的文件图标。接下来，为每个示例要包含的附件​​添加模板变量。
->> * 如果要包含特定附件，可以使用建议的变量名称，例如`{{attachment.file_name}}`，这将在附件列表中映射带有`file_name`的文件，将其传递给评估器
+>> * 如果要包含特定附件，可以使用建议的变量名称，例如`{{attachment.file_name}}`，这会将附件列表中带有`file_name`的文件映射到评估器
 > * 如果要包含所有附件，请使用 `{{attachments}}` 变量。
 >
 > ![Adding multimodal variable](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/adding-multimodal-variable.gif?s=07a15c9fc5e6fc743f92b6b41ab8c9e0)

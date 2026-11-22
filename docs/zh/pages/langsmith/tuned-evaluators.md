@@ -8,7 +8,7 @@
 
 > [!注意]
 >
-> LangChain 调整评估器位于 **[beta](/langsmith/release-stages)**。它们的界面和行为在全面上市之前可能会发生变化。
+> LangChain 调整评估器位于 **[beta](/langsmith/release-stages)**。在全面上市之前，它们的界面和行为可能会发生变化。
 
 LangChain 调整的评估器将反馈附加到您的痕迹中。每个评估员都会使用一位针对特定评估任务接受过培训的专业法官。 LangChain 编写、测试、版本和维护提示和判断模型，以便您可以专注于使用反馈来查找和修复代理中的问题。
 
@@ -24,11 +24,11 @@ LangChain 调整的评估器将反馈附加到您的痕迹中。每个评估员�
 
 **1.添加评估员**
 
-将 LangChain Tuned Evaluator 添加到兼容的跟踪项目。
+将 LangChain Tuned Evaluator 添加到兼容的代理环境中。
 
 **2.识别符合条件的线程**
 
-LangSmith 标识满足评估者要求以及项目的过滤器和采样配置的线程。
+LangSmith 标识满足评估器要求、过滤器和采样配置的线程。
 
 **3.评估线程**
 
@@ -40,34 +40,34 @@ LangSmith 将结果及其解释附加到线程作为反馈。
 
 ## 开始之前
 
-在添加感知错误（已调整）之前：* [organization admin](/langsmith/rbac#organization-admin) 必须为组织启用 LangChain Tuned Evaluator。
-* 来源必须是使用[threads](/langsmith/threads)的追踪项目。感知错误（已调整）评估器无法在单独的运行中运行。
+在添加感知错误（已调整）之前：* [organization admin](/langsmith/rbac#organization-admin) 必须为组织启用 LangChain 调整评估器。
+* 来源必须是使用[threads](/langsmith/threads)的代理环境。感知错误（已调整）评估器无法在单独的运行中运行。
 * 线程跟踪必须包含受支持的[message lists](/langsmith/online-evaluations-multi-turn#prerequisites)。至少一条非空用户消息必须后跟一条非空助理消息。
 * 在评估器运行之前，每个线程必须至少包含两个跟踪。
 
 ## 启用 LangChain 调整评估器
 
-启用 LangChain Tuned Evaluators 允许成员将其附加到整个组织中的跟踪项目。评估数据使用LangChain管理的API密钥进行处理。
+启用 LangChain Tuned Evaluators 使它们可用于组织中的每个工作区，其中工作区管理员和工作区编辑器可以将它们附加到代理环境。评估数据使用LangChain管理的API密钥进行处理。
 
 要以组织管理员身份启用 LangChain Tuned Evaluators：
 
 1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-tuned-evaluators)中，打开**设置**。
 2. 选择**调整评估器**。
-3. 打开 **启用 LangChain Tuned evaluators** 并接受条款。
+3. 打开**启用LangChain调谐评估器**并接受条款。
 
-组织管理员在首次从评估器库中保存评估器时还可以接受并启用 LangChain 调整的评估器。
+当第一次从评估器库中保存评估器时，组织管理员还可以接受并启用 LangChain 调整的评估器。
 
-## 将 LangChain Tuned Evaluator 添加到项目中
+## 将 LangChain Tuned Evaluator 添加到代理环境
 
-要将感知错误（已调整）添加到跟踪项目：1. 打开跟踪项目并选择 **Evaluators** 选项卡。
+要将感知错误（已调整）添加到代理环境：1. 在 **跟踪** 页面上打开代理环境的 **在线评估程序** 选项卡。
 2. 选择**+ 评估器**。
 3. 在 **LangChain 已调整**下，选择 **感知错误（已调整）**。
 4. （可选）配置过滤器和采样率。
 5. 单击**保存**。
 
-在创建评估器之前，LangSmith 检查项目中最近的线程以获取支持的消息列表，并进行完整的用户与助手交换。
+在创建评估器之前，LangSmith 检查代理环境中最近的线程是否支持完整的用户与助手交换的消息列表。
 
-当项目为空或最近的线程都不具有兼容的消息结构时，LangSmith 会阻止创建。
+当环境没有线程或最近的线程都不具有兼容的消息结构时，LangSmith 会阻止创建。
 
 ## 禁用 LangChain 调整评估器
 
@@ -84,13 +84,13 @@ LangSmith 将结果及其解释附加到线程作为反馈。
 
 ## 对 LangChain 调整评估器进行故障排除
 
-### 该项目是空的
+###代理环境没有线程
 
-将线程添加到跟踪项目，然后尝试再次保存评估器。该线程必须包含受支持的消息列表和至少一次完整的用户与助理交换。
+将线程添加到代理环境，然后尝试再次保存评估器。该线程必须包含受支持的消息列表和至少一次完整的用户与助理交换。
 
-### 该项目不包含有效的消息列表
+### 线程不包含有效的消息列表
 
-检查项目最新线程的输入和输出。它们的顶级`messages`字段必须包含[supported format](/langsmith/online-evaluations-multi-turn#prerequisites)中的消息列表，并且至少一条用户消息必须后跟一条助理消息。
+检查环境最新线程的输入和输出。它们的顶级`messages`字段必须包含[supported format](/langsmith/online-evaluations-multi-turn#prerequisites)中的消息列表，并且至少一条用户消息必须后跟一条助理消息。
 
 ### 评估者不提供反馈
 
@@ -98,9 +98,9 @@ LangSmith 将结果及其解释附加到线程作为反馈。
 
 * 该组织仍然启用 LangChain Tuned Evaluators。
 * 线程至少包含两条踪迹。
-* 项目的线程空闲时间已过。
+* 代理环境的[thread idle time](/langsmith/online-evaluations-multi-turn#check-the-idle-time)已过。
 * 线程与评估器的过滤器和采样配置相匹配。
-* 该线程包含采用受支持的消息格式的完整用户与助手交换。要检查评估器活动，请打开跟踪项目的 **Evaluators** 选项卡，然后为评估器选择 **Logs**。
+* 该线程包含采用受支持的消息格式的完整用户与助手交换。要检查评估器活动，请在 **跟踪** 页面上打开代理环境的 **在线评估器** 选项卡，然后单击评估器行中的 **日志**。
 
 ### 启用该功能不会立即生效
 

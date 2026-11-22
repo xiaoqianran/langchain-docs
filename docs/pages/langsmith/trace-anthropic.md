@@ -17,7 +17,7 @@ You can send Anthropic traces to LangSmith from Anthropic's servers or from your
 
 > [!NOTE]
 >
-> In an [agent-based workspace](/langsmith/agent-registry), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
+> [Create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project).
 
 ## Trace from the Claude Platform
 
@@ -27,7 +27,7 @@ Before you begin, you need:
 
 * The admin role, or an equivalent permission, in your Claude Console organization. Without it, you cannot view or manage destinations.
 * A LangSmith API key. You can use a [personal access token](/langsmith/administration-overview#personal-access-tokens-pats), or a [service key](/langsmith/administration-overview#service-keys) when you want tracing to be independent of your user account. To create a key, see [Create an account and API key](/langsmith/create-account-api-key).
-* In an agent-based workspace, the selected agent environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project), which goes in the destination's **Project** field.
+* The selected agent environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project), which goes in the destination's **Project** field.
 * For self-hosted LangSmith, an endpoint that the Claude Platform can reach: HTTPS on port 443, at a hostname that resolves to a public IP address.
 
 ### Step 1. Add LangSmith as a destination
@@ -40,7 +40,7 @@ To add a destination:
    * **Name**: (Optional) A label for the destination, such as `LangSmith`.
    * **Region**: The region of your LangSmith deployment: **US**, **EU**, **APAC**, or **US on AWS**. For self-hosted LangSmith, select **Self-hosted**. In **LangSmith URL**, enter your LangSmith API URL (`LANGSMITH_ENDPOINT`) plus `/otel`. For the URL on each deployment type, see [Find your OTLP endpoint](/langsmith/trace-with-opentelemetry#find-your-otlp-endpoint).
    * **API key**: Your LangSmith API key.
-   * **Project**: The [environment's `tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) to send traces to. Set it explicitly in an agent-based workspace. If omitted, the integration uses `default`.
+   * **Project**: The [environment's `tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) to send traces to. Set it explicitly. If omitted, the integration uses `default`.
    * **LangSmith workspace ID**: (Optional) The ID of the LangSmith workspace to send traces to. If you leave it empty, traces go to the workspace that the API key belongs to. Organization-scoped service keys require it. To find the ID, see [Create an account and API key](/langsmith/create-account-api-key).
    * **Content mode**: Select **Full content** to include prompts and responses in the spans. With **Metadata only**, spans omit the input and output content.
    * **Workspaces**: The Claude workspaces that send traces to this destination: **All**, **Selected**, or **All except**. For details on each option, see [Choose workspaces for a destination](https://platform.claude.com/docs/en/manage-claude/opentelemetry/api#choose-workspaces-for-a-destination) in the Anthropic docs.

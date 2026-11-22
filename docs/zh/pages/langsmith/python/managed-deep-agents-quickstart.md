@@ -8,7 +8,7 @@
 
 创建并部署您的第一个托管深度代理：构建项目、配置模型和指令、添加搜索、在 [LangSmith Studio](/langsmith/studio) 中测试，并使用 [⟦T18⟧ CLI](/langsmith/python/managed-deep-agents-cli) 进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/python/deepagents/overview) 和托管运行时。
 
-在本快速入门之后，[tutorial](/langsmith/python/managed-deep-agents-tutorial) 在同一项目上添加了持久内存和每日计划。
+在本快速入门之后，[tutorial](/langsmith/python/managed-deep-agents-tutorial) 在同一项目上添加了耐用内存和每日计划。
 
 > [!注意]
 >
@@ -54,7 +54,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
 ## 步骤 4：搭建、配置、测试和部署
 
-按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。停下来询问仪表板操作或凭证何时只能由用户在 LangSmith UI 中完成。
+按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。停止并询问何时仪表板操作或凭证只能由用户在 LangSmith UI 中完成。
 
 ## 规则* 关注快速入门。除非指南要求，否则请勿添加不相关的产品或重写生成的项目布局。
 * 优先使用 `mda` CLI 和 `managed-deep-agents` 技能，而不是发明自定义部署路径。
@@ -194,7 +194,7 @@ agent = define_deep_agent(
 > uv add tavily-python
 > ```
 >
-> 创建自定义 `internet_search` 工具。 `connections.get(...)` 在运行时解析密钥，因此工具代码在本地和部署上是相同的：
+> 创建自定义 `internet_search` 工具。 `connections.get(...)` 在运行时解析密钥，因此本地和部署上的工具代码是相同的：
 >
 > ```python tools/search.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from typing import Literal
@@ -259,7 +259,7 @@ uv run mda dev
 What were the main announcements from the latest LangChain release?
 ```您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
 
-在 [agent-based workspace](/langsmith/agent-registry) 中，在您注册代理之前，跟踪将导致错误。详情请参见[Trace local runs](/langsmith/python/managed-deep-agents-local-development#trace-local-runs)。
+在您注册代理之前，跟踪会导致错误。详情请参见[Trace local runs](/langsmith/python/managed-deep-agents-local-development#trace-local-runs)。
 
 **7.部署代理**
 

@@ -8,10 +8,6 @@ Creating an [agent](/langsmith/agent-registry#agent) in LangSmith gives it an id
 
 If your agent runs outside LangSmith, first create its record in LangSmith using the UI, SDK, or API. This record organizes its traces. Your code still runs where you host it. Framework functions such as LangChain `create_agent` build the agent that runs in your code. They do not create its LangSmith record.
 
-> [!NOTE]
->
-> Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
-
 ## Compare the four routes
 
 An agent can be created in four ways, which differ in how the identifier is set and which environments the agent starts with:

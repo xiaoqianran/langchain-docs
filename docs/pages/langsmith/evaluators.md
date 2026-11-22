@@ -6,23 +6,11 @@ View and manage evaluators at the workspace level in LangSmith.
 
 [Evaluators](/langsmith/evaluation-concepts#evaluators) in LangSmith are [workspace-level](/langsmith/administration-overview#workspaces) resources. You can attach a single evaluator to multiple [trace containers](/langsmith/observability-concepts#trace-containers) and [datasets](/langsmith/evaluation-concepts#datasets), so you can apply consistent evaluation logic across your work without recreating it each time.
 
-What an evaluator attaches to depends on how your workspace is organized.
-
-> [!NOTE]
->
-> **Agent-based workspaces.** This section applies if your workspace organizes traces by [agent and environment](/langsmith/agent-registry). To check, look at the control at the top left: it names your workspace. If it shows the LangSmith logo instead, and the sidebar has an **Application** section with an application picker, your workspace is project-based. Skip this section and read [Tracing projects](/langsmith/observability-concepts#tracing-projects).
-
 An evaluator attaches to an [environment](/langsmith/agent-environments#environment-names) of an [agent](/langsmith/agent-registry#agent). Attach it to **Production** alone to score production traffic without also scoring local runs.
-
-> [!NOTE]
->
-> **Project-based workspaces.** This section applies if your workspace organizes traces by [tracing project](/langsmith/observability-concepts#tracing-projects). To check, look at the control at the top left. In a project-based workspace, it shows the LangSmith logo, and the sidebar has an **Application** section with an application picker. If the control shows your workspace name instead, your workspace is agent-based. Skip this section and read [Agent Registry](/langsmith/agent-registry).
-
-An evaluator attaches to a [tracing project](/langsmith/observability-concepts#tracing-projects).
 
 > [!TIP]
 >
-> Evaluator scores are a high-priority signal for the [LangSmith Engine](/langsmith/engine): it pulls low-scoring traces when choosing what to analyze, so attaching an evaluator to a project sharpens the issues Engine finds there.
+> Evaluator scores are a high-priority signal for the [LangSmith Engine](/langsmith/engine): it pulls low-scoring traces when choosing what to analyze, so attaching an evaluator to an environment sharpens the issues Engine finds there.
 
 ## View evaluators
 
@@ -35,7 +23,7 @@ The evaluators table shows the following columns:
 | Name | The evaluator name |
 | Type | **LLM as a judge** or **Code**. Composite score evaluators are scoped to individual tracing projects and datasets and do not appear here. |
 | Feedback Key | The feedback key the evaluator produces |
-| Environments & Datasets | Agent environments and datasets this evaluator is attached to. In [self-hosted](/langsmith/self-hosted) deployments, this column is **Projects & Datasets** and lists tracing projects and datasets. |
+| Environments & Datasets | Agent environments and datasets this evaluator is attached to. |
 | Evaluator Trace Count (this week) | Number of traces this evaluator ran on in the past week. Only shown when spend tracking is enabled; **–** for Code evaluators or evaluators with no attached rules. |
 | Spend (this week) | Estimated USD spend for this evaluator in the past week. Only shown when spend tracking is enabled; **–** for Code evaluators or evaluators with no attached rules. |
 | Spend Status | Whether the evaluator is **Under limits**, **Unlimited**, or has hit one or more configured spend limits. Only shown when spend tracking is enabled; **–** for Code evaluators. |
@@ -56,7 +44,7 @@ You can create an evaluator in the [LangSmith UI](https://smith.langchain.com?ut
    * **Add a LangChain Tuned Evaluator**: Attach a [specialized judge managed by LangChain](/langsmith/tuned-evaluators) to a compatible tracing project without configuring a prompt, model, or API key.
    * **Create from a template**: Start from a ready-made evaluator (also known as a prebuilt evaluator) for common evaluation patterns. A **Recommended** section lists popular templates first. The rest are grouped by category: Security, Safety, Quality, Conversation, Trajectory, Image Evaluations, and Voice Evaluation. For what each template scores, see [Prebuilt evaluator templates](#prebuilt-evaluator-templates).
 
-You can also add an evaluator directly from a [tracing project](/langsmith/observability-concepts#tracing-projects), an agent environment, or a [dataset](/langsmith/evaluation-concepts#datasets). In that flow, you can additionally **attach an existing evaluator** from your workspace, or create a [Composite](/langsmith/composite-evaluators-ui) evaluator. Refer to [Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge) and [Automatically run evaluators on experiments](/langsmith/bind-evaluator-to-dataset).
+You can also add an evaluator directly from an agent environment or a [dataset](/langsmith/evaluation-concepts#datasets). In that flow, you can additionally **attach an existing evaluator** from your workspace, or create a [Composite](/langsmith/composite-evaluators-ui) evaluator. Refer to [Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge) and [Automatically run evaluators on experiments](/langsmith/bind-evaluator-to-dataset).
 
 ### Create an evaluator with the SDK
 
@@ -209,7 +197,7 @@ Click any evaluator in the table to open its detail view. The detail view has th
 
 * **Overview**: The evaluator's feedback configuration and prompt or code definition.
 * **Traces**: The evaluator's own runs across all attached resources, recorded when [tracing is turned on](#trace-evaluator-runs). This tab does not appear for [LangChain Tuned Evaluators](/langsmith/tuned-evaluators).
-* **Environments & Datasets** (**Projects & Datasets** in self-hosted deployments): The agent environments, tracing projects, and datasets this evaluator is attached to, with each attachment's [weekly spend and limit](/langsmith/evaluator-spend). Click **Logs** on a row to view the evaluator's execution logs for that attachment.
+* **Environments & Datasets**: The agent environments and datasets this evaluator is attached to, with each attachment's [weekly spend and limit](/langsmith/evaluator-spend). Click **Logs** on a row to view the evaluator's execution logs for that attachment.
 
 ## Edit an evaluator
 
@@ -227,9 +215,9 @@ To turn on tracing for an evaluator:
 2. Turn on **Trace Evaluator Runs**.
 3. Click **Save**.
 
-The setting applies to the tracing project, agent environment, or dataset you configure the evaluator on. It is not available for [LangChain Tuned Evaluators](/langsmith/tuned-evaluators).
+The setting applies to the agent environment or dataset you configure the evaluator on. It is not available for [LangChain Tuned Evaluators](/langsmith/tuned-evaluators).
 
-To open an evaluator's traces on a tracing project, go to the **Evaluators** tab, click the evaluator, and click the **Traces** tab. In an experiment, hover over a score and click **Evaluator trace**.
+To open an evaluator's traces in an agent environment, go to the **Online Evaluators** tab, click the evaluator, and click the **Traces** tab. In an experiment, hover over a score and click **Evaluator trace**.
 
 ### Turn on tracing with the REST API
 
@@ -239,13 +227,13 @@ To turn on tracing for an existing rule, get it with [list rules](/langsmith/smi
 
 ## Manage evaluator trace retention
 
-When an online evaluator scores a trace, it attaches feedback to the trace. This can auto-upgrade the trace to [extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades), depending on the evaluator's retention setting. When you set up an online evaluator on a [tracing project](/langsmith/observability-concepts#tracing-projects), or on an agent environment, you can opt out of this upgrade so that scored traces stay at the base retention.
+When an online evaluator scores a trace, it attaches feedback to the trace. This can auto-upgrade the trace to [extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades), depending on the evaluator's retention setting. When you set up an online evaluator on an [agent environment](/langsmith/agent-environments), you can opt out of this upgrade so that scored traces stay at the base retention.
 
-This control is available only when the project's [default retention](/langsmith/billing#change-project-level-default-retention) is the [base tier](/langsmith/usage-and-billing#retention-periods). If the project defaults to extended retention ([set at the project or workspace level](/langsmith/data-purging-compliance#data-retention)), traces scored by the evaluator follow that default and the option is locked.
+This control is available only when the environment's [default retention](/langsmith/billing#change-default-retention-for-an-environment) is the [base tier](/langsmith/usage-and-billing#retention-periods). If the environment defaults to extended retention ([set at the environment or workspace level](/langsmith/data-purging-compliance#data-retention)), traces scored by the evaluator follow that default and the option is locked.
 
 To opt out of extending retention for scored traces:
 
-1. When you [create](#create-an-evaluator) or [edit](#edit-an-evaluator) an online evaluator, set the source to a [tracing project](/langsmith/observability-concepts#tracing-projects) or an agent environment, rather than a [dataset](/langsmith/evaluation-concepts#datasets).
+1. When you [create](#create-an-evaluator) or [edit](#edit-an-evaluator) an online evaluator, set the source to an agent environment, rather than a [dataset](/langsmith/evaluation-concepts#datasets).
 2. Expand the **Advanced** section in the evaluator configuration panel.
 3. Clear **Extend trace retention**.
 
@@ -312,7 +300,7 @@ You cannot delete an evaluator while it is attached to a trace container or data
 
 1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluators), select **Evaluators** in the left sidebar.
 2. Select the evaluator you want to delete.
-3. Open the **Environments & Datasets** tab (**Projects & Datasets** in self-hosted deployments). For each attachment listed there, select **Detach** in the **Actions** menu at the right of the row.
+3. Open the **Environments & Datasets** tab. For each attachment listed there, select **Detach** in the **Actions** menu at the right of the row.
 4. Return to the **Evaluators** page and click **Delete** at the top of the page.
 
 ***

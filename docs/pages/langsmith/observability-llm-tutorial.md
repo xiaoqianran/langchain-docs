@@ -49,22 +49,20 @@ export LANGSMITH_API_KEY="<your-api-key>"
 export OPENAI_API_KEY="<your-openai-api-key>"
 ```
 
-Before sending traces, create the agent in LangSmith:
+Before sending traces, [create the agent](/langsmith/create-an-agent#name-an-agent-traced-from-outside-langsmith) in LangSmith. Creating an agent requires the `projects:create` permission.
 
-1. In an [agent-based workspace](/langsmith/agent-registry), open **+ Agent**, choose **Observability**, and create an agent with an **Agent name** and **Agent ID**. This requires the `projects:create` permission. If the agent already exists, reuse it.
-2. Copy the **Agent ID** and choose an environment: `local`, `development`, `staging`, or `production`.
-3. Configure [agent addressing](/langsmith/log-traces-to-agent) before running the agent:
+1. Open the new agent menu, either from **+ Agent** with **All agents** selected, or from the **+** button beside the search box in the [agent switcher](/langsmith/navigate-agents).
+2. Select **Connect** > **Connect an existing agent**.
+3. In the **Connect an agent** dialog, enter an **Agent name** and **Agent ID**.
+4. Copy the **Agent ID** and choose an environment: `local`, `development`, `staging`, or `production`.
+5. Configure [agent addressing](/langsmith/log-traces-to-agent) before running the agent:
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_AGENT_ID="<your-agent-id>"
    export LANGSMITH_AGENT_ENVIRONMENT="local"
    ```
 
-Register the agent once, not for every trace. Remove `LANGSMITH_PROJECT`, `LANGCHAIN_PROJECT`, and `LANGCHAIN_SESSION` from the environment where your code runs. Do not combine legacy destination settings with agent addressing. To create the agent with an SDK call or API request, see [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically).
-
-> [accordion] Project-based workspaces and self-hosted LangSmith
->
-> Agent addressing is available in agent-based workspaces on LangSmith Cloud. In a project-based workspace, including self-hosted LangSmith, set `LANGSMITH_PROJECT` to your tracing project name instead of setting the two agent variables.
+Create the agent once, not for every trace. Then remove `LANGSMITH_PROJECT`, `LANGCHAIN_PROJECT`, and `LANGCHAIN_SESSION` from the environment where your code runs, because they conflict with agent addressing. To create the agent with the SDK or API instead, see [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically).
 
 > [!NOTE]
 >
@@ -368,8 +366,6 @@ const supportBot = traceable(async function supportBot(question: string): Promis
 > [!NOTE]
 >
 > In production, these two pieces would live in separate locations: the `support_bot` call with `run_id` stays in your agent code, and `create_feedback` moves to whichever endpoint receives user feedback (for example, a `/feedback` API route). The `run_id` is passed from one to the other so the feedback can be linked to the correct trace. Because feedback also requires the environment's trace-storage UUID, pass `session_id` alongside the `run_id`.
-
-In a project-based workspace, look up the project UUID with `read_project` / `readProject` instead of resolving an agent address. See [Resolve an agent environment](/langsmith/resolve-an-agent) for address resolution requirements.
 
 The feedback appears in the **Feedback** tab when you inspect the run in the UI. You can then filter runs by feedback score using the filtering controls in the **Runs** table.
 

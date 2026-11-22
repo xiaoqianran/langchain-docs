@@ -31,7 +31,7 @@
 
 ## 步骤 5：可选 LangSmith 追踪
 
-询问用户是否想要跟踪。如果是，请按照[https://docs.langchain.com/langsmith/create-an-agent](https://docs.langchain.com/langsmith/create-an-agent)在基于代理的工作区中注册代理。让他们设置 `LANGSMITH_AGENT_ID`、`LANGSMITH_AGENT_ENVIRONMENT`、`LANGSMITH_TRACING=true` 和 `LANGSMITH_API_KEY`，然后重新运行。不要发明 LangSmith 钥匙。
+询问用户是否想要跟踪。如果是，请按照[https://docs.langchain.com/langsmith/create-an-agent](https://docs.langchain.com/langsmith/create-an-agent)注册代理。让他们设置 `LANGSMITH_AGENT_ID`、`LANGSMITH_AGENT_ENVIRONMENT`、`LANGSMITH_TRACING=true` 和 `LANGSMITH_API_KEY`，然后重新运行。不要发明 LangSmith 钥匙。
 
 ## 规则
 
@@ -169,7 +169,7 @@ bun add langchain @langchain/core
 > BASETEN_API_KEY=your-api-key
 > ```
 
-> [标签] 奥拉马
+> [标签] 奥拉玛
 >
 > ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > # Local: Ollama must be running (https://ollama.com)
@@ -958,7 +958,7 @@ main().catch((err) => {
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T97⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T97⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 您使用LangChain构建的最有趣的代理会多次调用LLM。随着这些代理变得越来越复杂，能够检查代理内部到底发生了什么变得很重要。最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart)。注册 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 帐户并设置这些以开始记录跟踪：
 

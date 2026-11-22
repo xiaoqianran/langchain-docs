@@ -28,7 +28,7 @@ LangSmith 支持三种不同权限和生命周期的 API 密钥：
 
 **3.设置过期**
 
-设置密钥的过期时间。密钥在选择的天数后将变得不可用，或者永远不可用（如果选择了该天数）。
+设置密钥的过期时间。密钥在选择的天数后将变得不可用，或者永远不可用（如果选择了）。
 
 **4.创建密钥**
 
@@ -36,7 +36,7 @@ LangSmith 支持三种不同权限和生命周期的 API 密钥：
 
 > [!提示]
 >
-> [Enterprise](/langsmith/pricing-plans) 组织管理员可以在现有服务密钥上编辑 [role](/langsmith/administration-overview#workspace-roles)，而无需轮换密钥。在 [**Settings** page](https://smith.langchain.com/settings) **API 密钥** 部分，切换到 **服务** 选项卡，然后单击任意服务密钥行以打开编辑对话框。更新工作区角色或组织角色，然后单击 **保存**。工作区范围的密钥支持 **组织查看器** 或 **组织受限**。现有工作区范围的密钥将保留其当前的组织角色，直到您更改它为止。密钥字符串本身没有改变。
+> [Enterprise](/langsmith/pricing-plans) 组织管理员可以在现有服务密钥上编辑 [role](/langsmith/administration-overview#workspace-roles)，而无需轮换密钥。在 [**Settings** page](https://smith.langchain.com/settings) **API 密钥** 部分，切换到 **服务** 选项卡，然后单击任意服务密钥行以打开编辑对话框。更新工作区角色或组织角色，然后单击 **保存**。工作区范围的密钥支持 **组织查看器** 或 **组织受限**。现有工作区范围的密钥将保留其当前的组织角色，直到您对其进行更改。密钥字符串本身没有改变。
 
 ## 管理 PAT 和服务密钥
 
@@ -72,9 +72,9 @@ LangSmith 支持三种不同权限和生命周期的 API 密钥：
 
 跟踪密钥是组织拥有的凭据，用于在选定的工作区中提交跟踪。它们限制代理对 `runs:create` 和 `projects:create` 的访问。
 
-跟踪密钥通过跟踪摄取 API 提交运行更新。在基于代理的工作区中进行跟踪之前，请在 UI 中使用 [register the agent](/langsmith/create-an-agent) 或使用具有 `projects:create` 的 PAT 或服务密钥。跟踪密钥无法调用代理创建 API。
+跟踪密钥通过跟踪摄取 API 提交运行更新。在跟踪之前，请在 UI 中输入 [register the agent](/langsmith/create-an-agent) 或使用具有 `projects:create` 的 PAT 或服务密钥。跟踪密钥无法调用代理创建 API。
 
-跟踪密钥无法读取存储的跟踪、更新代理环境设置、创建保存的视图、运行实验或管理密钥。旧项目更新插入请求也被拒绝。对需要这些权限的操作使用单独的凭据。
+跟踪密钥无法读取存储的跟踪、更新代理环境设置、创建保存的视图、运行实验或管理密钥。对需要这些权限的操作使用单独的凭据。
 
 ### 创建跟踪密钥跟踪密钥创建需要活跃的组织成员身份以及每个选定工作区中的活跃成员身份。每个工作区都需要`workspaces:tracing-keys:create`，包括通过用户组授予的权限。内置工作区管理员和工作区编辑者角色接收此权限；工作区查看器则不然。管理员必须将其明确授予自定义角色。您自己不需要`runs:create`。
 
@@ -95,11 +95,11 @@ LangSmith 支持三种不同权限和生命周期的 API 密钥：
 
 响应返回`201 Created`、`Location`标头以及`key`中的秘密。创建秘密时复制它；列表响应不会返回它。跟踪键具有 `lsv2_tr_` 前缀。
 
-使用密钥作为 `LANGSMITH_API_KEY` 和下面的 [SDK configuration](#configure-the-sdk)。对于作用域为多个工作区的键，请将 `LANGSMITH_WORKSPACE_ID` 设置为选定的工作区。直接 API 请求使用`X-Tenant-Id`。
+使用密钥作为 `LANGSMITH_API_KEY` 和下面的 [SDK configuration](#configure-the-sdk)。对于作用于多个工作区的键，请将 `LANGSMITH_WORKSPACE_ID` 设置为选定的工作区。直接 API 请求使用`X-Tenant-Id`。
 
 ### 范围和生命周期
 
-跟踪密钥在其选定的工作区中具有固定的权限。它不会继承创建者的角色或项目标签访问策略。其工作区范围和权限无法编辑。创建替换密钥以更改范围。
+跟踪密钥在其选定的工作区中具有固定的权限。它不继承创建者的角色或[attribute-based access control (ABAC) policies](/langsmith/abac)。其工作区范围和权限无法编辑。创建替换密钥以更改范围。
 
 删除或禁用创建者不会禁用密钥跟踪。删除选定的工作区会删除对该工作区的访问权限；它不会添加对其他工作区的访问。过期和密钥删除会停止身份验证，具体取决于身份验证缓存。
 
@@ -137,7 +137,7 @@ LangSmith 支持三种不同权限和生命周期的 API 密钥：
 
 有关完整详细信息，请参阅 [Python SDK](/langsmith/smith-python-sdk) 或 [JS/TS SDK](/langsmith/smith-js-ts-sdk) 参考。
 
-在基于代理的工作区中进行跟踪之前，[register an agent](/langsmith/create-an-agent)。然后，设置您的 API 密钥、启用跟踪并选择其标识符和环境：
+在追踪之前，[register an agent](/langsmith/create-an-agent)。然后，设置您的 API 密钥、启用跟踪并选择其标识符和环境：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your-api-key>
@@ -145,8 +145,6 @@ export LANGSMITH_TRACING=true
 export LANGSMITH_AGENT_ID="<your-agent-id>"
 export LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
-
-使用代理寻址时删除旧目标变量。在基于项目的工作区（包括自托管 LangSmith）中，使用 `LANGSMITH_PROJECT` 而不是两个代理变量。
 
 您可能还需要以下附加环境变量：
 
@@ -186,7 +184,9 @@ export LANGSMITH_AGENT_ENVIRONMENT="local"
         <td>
           `https://apac.api.smith.langchain.com`
         </td>
-      </tr><tr>
+      </tr>
+
+      <tr>
         <td>AWS 美国</td>
 
         <td>
@@ -197,9 +197,7 @@ export LANGSMITH_AGENT_ENVIRONMENT="local"
       <tr><td>Azure US</td>
       <td>`https://azure.api.smith.langchain.com`</td></tr>
     </tbody>
-  </table>
-
-* 仅当您的 API 密钥范围为多个 [workspace](/langsmith/administration-overview#workspaces) 时，才需要 `LANGSMITH_WORKSPACE_ID`。在 **常规** 下的 [**Settings** page](https://smith.langchain.com/settings) 上找到您的工作区 ID：
+  </table>* 仅当您的 API 密钥范围为多个 [workspace](/langsmith/administration-overview#workspaces) 时，才需要 `LANGSMITH_WORKSPACE_ID`。在 **常规** 下的 [**Settings** page](https://smith.langchain.com/settings) 上找到您的工作区 ID：
 
   `LANGSMITH_WORKSPACE_ID=<Workspace ID>`
 

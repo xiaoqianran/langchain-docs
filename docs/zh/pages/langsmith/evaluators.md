@@ -8,21 +8,11 @@
 
 LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[workspace-level](/langsmith/administration-overview#workspaces)资源。您可以将单个评估器附加到多个[trace containers](/langsmith/observability-concepts#trace-containers)和[datasets](/langsmith/evaluation-concepts#datasets)，这样您就可以在整个工作中应用一致的评估逻辑，而无需每次都重新创建它。
 
-评估者所关注的内容取决于您的工作空间的组织方式。
-
-> [!注意]
->
-> **基于代理的工作区。** 如果您的工作区按 [agent and environment](/langsmith/agent-registry) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，则您的工作区是基于项目的。跳过本节并阅读[Tracing projects](/langsmith/observability-concepts#tracing-projects)。
-
-评估器附加到 [agent](/langsmith/agent-registry#agent) 的 [environment](/langsmith/agent-environments#environment-names)。将其单独附加到 **生产** 以对生产流量进行评分，而无需对本地运行进行评分。> [!注意]
->
-> **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，侧边栏有一个带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的。跳过本节并阅读[Agent Registry](/langsmith/agent-registry)。
-
-评估器附加到[tracing project](/langsmith/observability-concepts#tracing-projects)。
+评估器附加到 [agent](/langsmith/agent-registry#agent) 的 [environment](/langsmith/agent-environments#environment-names)。将其单独附加到 **生产** 以对生产流量进行评分，而无需对本地运行进行评分。
 
 > [!提示]
 >
-> 评估器分数是 [LangSmith Engine](/langsmith/engine) 的高优先级信号：在选择要分析的内容时，它会拉出低分跟踪，因此将评估器附加到项目会加剧引擎在那里发现的问题。
+> 评估器分数是 [LangSmith Engine](/langsmith/engine) 的高优先级信号：在选择要分析的内容时，它会拉低分数跟踪，因此将评估器附加到环境会加剧引擎在那里发现的问题。
 
 ## 查看评估者
 
@@ -33,16 +23,15 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
 |名称 |评估人姓名|
 |类型 | **法学硕士作为法官**或**代码**。综合分数评估器的范围仅限于单个跟踪项目和数据集，因此不会出现在此处。 |
 |反馈键|评估者产生的反馈键 |
-|环境和数据集 |此评估器附加到的代理环境和数据集。在 [self-hosted](/langsmith/self-hosted) 部署中，此列是 **项目和数据集**，并列出跟踪项目和数据集。 |
+|环境和数据集 |此评估器附加到的代理环境和数据集。 |
 |评估器跟踪计数（本周）|该评估器在过去一周运行的跟踪数。仅在启用支出跟踪时显示； **–** 适用于代码评估者或没有附加规则的评估者。 |
 |花费（本周）|该评估员过去一周的预计美元支出。仅在启用支出跟踪时显示； **–** 适用于代码评估者或没有附加规则的评估者。 |
 |消费状态 |评估者是否**低于限制**、**无限制**，或者已达到一个或多个配置的支出限制。仅在启用支出跟踪时显示； **–** 适用于代码评估者。 |
 |创建者 |创建评估器的工作区成员 |
-|更新于 |上次修改评估器的时间 ||创建于 |评估器何时创建 |
+|更新于 |上次修改评估器的时间 |
+|创建于 |评估器何时创建 |
 
-## 创建一个评估器
-
-您可以在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluators) 中创建评估器，也可以使用 [SDK](#create-an-evaluator-with-the-sdk) 以编程方式创建评估器。无论哪种方式创建的评估器都是工作区级别的资源，显示在 **评估器** 表中。
+## 创建一个评估器您可以在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluators) 中创建评估器，也可以使用 [SDK](#create-an-evaluator-with-the-sdk) 以编程方式创建评估器。无论哪种方式创建的评估器都是工作区级别的资源，显示在 **评估器** 表中。
 
 ### 在 UI 中创建评估器
 
@@ -51,9 +40,9 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
 3. 该面板可让您：
    * **从头开始创建**：构建新的 [LLM-as-a-Judge](/langsmith/llm-as-judge)、[Decision Model](/langsmith/decision-model-evaluator) 或 [Code](/langsmith/online-evaluations-code) 评估器。
    * **添加 LangChain 调谐评估器**：将 [specialized judge managed by LangChain](/langsmith/tuned-evaluators) 附加到兼容的跟踪项目，无需配置提示、模型或 API 密钥。
-   * **从模板创建**：从现成的评估器（也称为预构建评估器）开始，以实现常见的评估模式。 **推荐**部分首先列出了流行的模板。其余的按类别分组：安保、安全、质量、对话、轨迹、图像评估和语音评估。有关每个模板的得分，请参阅[Prebuilt evaluator templates](#prebuilt-evaluator-templates)。您还可以直接从 [tracing project](/langsmith/observability-concepts#tracing-projects)、代理环境或 [dataset](/langsmith/evaluation-concepts#datasets) 添加评估器。在此流程中，您还可以从工作区**附加现有评估器**，或创建一个 [Composite](/langsmith/composite-evaluators-ui) 评估器。请参阅[Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge)和[Automatically run evaluators on experiments](/langsmith/bind-evaluator-to-dataset)。
+   * **从模板创建**：从现成的评估器（也称为预构建评估器）开始，以实现常见的评估模式。 **推荐**部分首先列出了流行的模板。其余的按类别分组：安保、安全、质量、对话、轨迹、图像评估和语音评估。有关每个模板的得分，请参阅[Prebuilt evaluator templates](#prebuilt-evaluator-templates)。
 
-### 使用 SDK 创建评估器
+您还可以直接从代理环境或[dataset](/langsmith/evaluation-concepts#datasets)添加评估器。在此流程中，您还可以从工作区**附加现有评估器**，或创建一个 [Composite](/langsmith/composite-evaluators-ui) 评估器。请参阅[Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge)和[Automatically run evaluators on experiments](/langsmith/bind-evaluator-to-dataset)。### 使用 SDK 创建评估器
 
 使用 LangSmith SDK 以编程方式创建评估器。该 SDK 适用于 [Python](/langsmith/smith-python-sdk) 和 [TypeScript](/langsmith/smith-js-ts-sdk)。通过 SDK 创建的评估器与在 UI 中创建的评估器一起显示在 **评估器** 表中。
 
@@ -106,16 +95,18 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 ## 预构建的评估器模板
 
-预构建的评估器模板是用于常见检查的现成评估器，例如幻觉、提示注入和任务完成。每个模板都是一个起点。您可以在将其保存到工作区之前编辑其提示和评分架构。大多数模板是[LLM-as-a-judge](/langsmith/llm-as-judge)评估器，其提示来自开源[openevals](https://github.com/langchain-ai/openevals)包。有两个例外：断言使用LangSmith中定义的提示，而精确匹配是[code evaluator](/langsmith/online-evaluations-code)。
+预构建的评估器模板是用于常见检查的现成评估器，例如幻觉、提示注入和任务完成。每个模板都是一个起点。您可以在将其保存到工作区之前编辑其提示和评分架构。
 
-每个 LLM-as-a-judge 模板都会在其反馈键下写下一个分数，并在 `comment` 上写下法官的推理。语言和支持意图返回不带 `comment` 的标签。
+大多数模板是[LLM-as-a-judge](/langsmith/llm-as-judge)评估器，其提示来自开源[openevals](https://github.com/langchain-ai/openevals)包。有两个例外：断言使用LangSmith中定义的提示，而精确匹配是[code evaluator](/langsmith/online-evaluations-code)。
 
-`true` 分数并不总是意味着通过。检测到问题的模板在发现问题时返回 `true`：安全模板、幻觉、感知错误、图像模板和音频质量。其余的在输出通过时返回`true`。每个表中的 **Score** 列说明了 `true` 的含义。
+每个 LLM-as-a-judge 模板都会在其反馈键下写下一个分数，并在 `comment` 上写下法官的推理。语言和支持意图返回不带 `comment` 的标签。`true` 分数并不总是意味着通过。检测到问题的模板在发现问题时返回 `true`：安全模板、幻觉、感知错误、图像模板和音频质量。其余的在输出通过时返回`true`。每个表中的 **Score** 列说明了 `true` 的含义。
 
-模板在读取数据方面有所不同：* **整个线程**：对话和轨迹模板读取线程中的每条消息。当您向跟踪项目添加一个时，LangSmith 将其配置为线程级评估器。有关更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。
+模板在读取数据方面有所不同：
+
+* **整个线程**：对话和轨迹模板读取线程中的每条消息。当您将其添加到跟踪项目时，LangSmith 将其配置为线程级评估器。欲了解更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。
 * **参考输出**：正确性、断言和精确匹配将输出与参考输出进行比较，参考输出来自 [dataset](/langsmith/evaluation-concepts#datasets) 示例。
 * **计划**：除了线程消息之外，计划遵守还会读取 `plan` 变量。
-* **附件**：图像和语音模板读取运行的附件。有关更多信息，请参阅[Evaluate with attachments](/langsmith/evaluate-with-attachments)。
+* **附件**：图像和语音模板读取运行的附件。欲了解更多信息，请参阅[Evaluate with attachments](/langsmith/evaluate-with-attachments)。
 
 ### 安全
 
@@ -166,14 +157,14 @@ console.log("Created evaluator:", created.evaluator?.id);
 | - | - | - |
 |计划遵守 |特工的行动是否遵循其宣布的计划。 | `plan_adherence`（布尔值）：`true` 当代理遵循计划时。 |
 |工具选择|代理是否以合理的顺序选择了正确的工具，没有不必要的电话。 | `tool_selection`（布尔值）：`true` 当刀具选择准确且高效时。 |
-|轨迹精度|代理的路径是否合乎逻辑、显示出明显的进展并且相当高效。 | `trajectory_accuracy`（布尔值）：`true` 当轨迹准确且高效时。 |
+|轨迹精度 |代理的路径是否合乎逻辑、显示出明显的进展并且相当高效。 | `trajectory_accuracy`（布尔值）：`true` 当轨迹准确且高效时。 |
 
 ### 图像评估图像模板评估图像内容的质量和安全性。
 
 |模板|得分多少 |分数 |
 | - | - | - |
 |露骨内容 |图像是否包含裸露、性内容或暴力画面。 | `explicit_content`（布尔值）：当发现显式内容时，`true`。 |
-|敏感图像|图像是否包含有害的、冒犯性的或不适当的符号或描述。 | `sensitive_imagery`（布尔值）：当发现敏感图像时，`true`。 |
+|敏感图像|图像是否包含有害、冒犯性或不适当的符号或描述。 | `sensitive_imagery`（布尔值）：当发现敏感图像时，`true`。 |
 
 ### 语音评估
 
@@ -188,7 +179,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 单击表中的任何评估器以打开其详细信息视图。详细信息视图具有三个选项卡：* **概述**：评估者的反馈配置和提示或代码定义。
 * **痕迹**：评估者自己在所有附加资源上运行，在[tracing is turned on](#trace-evaluator-runs)时记录。 [LangChain Tuned Evaluators](/langsmith/tuned-evaluators) 不会出现此选项卡。
-* **环境和数据集**（自托管部署中的**项目和数据集**）：此评估器附加到的代理环境、跟踪项目和数据集，以及每个附件的 [weekly spend and limit](/langsmith/evaluator-spend)。单击行上的“**日志**”可查看该附件的评估程序的执行日志。
+* **环境和数据集**：此评估器附加到的代理环境和数据集，每个附件的[weekly spend and limit](/langsmith/evaluator-spend)。单击行上的“**日志**”可查看该附件的评估程序的执行日志。
 
 ## 编辑评估器
 
@@ -204,27 +195,27 @@ console.log("Created evaluator:", created.evaluator?.id);
 2. 打开**跟踪评估器运行**。
 3. 单击“**保存**”。
 
-该设置适用于您配置评估器的跟踪项目、代理环境或数据集。 [LangChain Tuned Evaluators](/langsmith/tuned-evaluators) 不可用。
+该设置适用于您配置评估器的代理环境或数据集。 [LangChain Tuned Evaluators](/langsmith/tuned-evaluators) 不可用。
 
-要在跟踪项目上打开评估器的跟踪，请转到 **Evaluators** 选项卡，单击评估器，然后单击 **Traces** 选项卡。在实验中，将鼠标悬停在分数上并单击 **评估器跟踪**。
+要在代理环境中打开评估器的跟踪，请转至 **在线评估器** 选项卡，单击评估器，然后单击 **跟踪** 选项卡。在实验中，将鼠标悬停在分数上并单击 **评估器跟踪**。
 
 ### 使用 REST API 打开跟踪
 
-在[LangSmith REST API](/langsmith/smith-api)中，评估器的每个附件都是一条规则，设置是该规则的`is_tracing_disabled`字段。该字段默认为`true`。要打开跟踪，请在设置 [create a rule](/langsmith/smith-api/run/create-rule) 时将 `is_tracing_disabled` 设置为 `false`。 [create evaluator](/langsmith/smith-api/evaluators/create-evaluator)端点定义了一个评估器但没有附加它，因此它没有跟踪设置。 [create decision model rule](/langsmith/smith-api/run/create-decision-model-rule)端点不接受`is_tracing_disabled`，因此它的规则从跟踪关闭开始。
+在[LangSmith REST API](/langsmith/smith-api)中，评估器的每个附件都是一个规则，设置是规则的`is_tracing_disabled`字段。该字段默认为`true`。要打开跟踪，请在设置 [create a rule](/langsmith/smith-api/run/create-rule) 时将 `is_tracing_disabled` 设置为 `false`。 [create evaluator](/langsmith/smith-api/evaluators/create-evaluator)端点定义了一个评估器但没有附加它，因此它没有跟踪设置。 [create decision model rule](/langsmith/smith-api/run/create-decision-model-rule)端点不接受`is_tracing_disabled`，因此它的规则从跟踪关闭开始。
 
 要打开对现有规则的跟踪，请使用 [list rules](/langsmith/smith-api/run/list-rules) 获取它，将 `is_tracing_disabled` 设置为 `false`，然后使用 [update rule](/langsmith/smith-api/run/update-rule) 发回完整规则。更新规则会替换您遗漏的字段，例如过滤器和评估器。
 
-## 管理评估者跟踪保留当在线评估器对跟踪进行评分时，它会将反馈附加到跟踪。这可以将跟踪自动升级到[extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)，具体取决于评估器的保留设置。当您在 [tracing project](/langsmith/observability-concepts#tracing-projects) 或代理环境上设置在线评估器时，您可以选择退出此升级，以便评分跟踪保持基本保留。
+## 管理评估者跟踪保留当在线评估器对跟踪进行评分时，它会将反馈附加到跟踪。这可以将跟踪自动升级到[extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)，具体取决于评估器的保留设置。当您在 [agent environment](/langsmith/agent-environments) 上设置在线评估器时，您可以选择退出此升级，以便评分痕迹保持基本保留。
 
-仅当项目的[default retention](/langsmith/billing#change-project-level-default-retention)为[base tier](/langsmith/usage-and-billing#retention-periods)时，此控件才可用。如果项目默认为延长保留 ([set at the project or workspace level](/langsmith/data-purging-compliance#data-retention))，则评估者评分的跟踪将遵循该默认值，并且该选项将被锁定。
+仅当环境的 [default retention](/langsmith/billing#change-default-retention-for-an-environment) 为 [base tier](/langsmith/usage-and-billing#retention-periods) 时，此控件才可用。如果环境默认为延长保留 ([set at the environment or workspace level](/langsmith/data-purging-compliance#data-retention))，则评估者评分的跟踪将遵循该默认值，并且该选项将被锁定。
 
 要选择不延长评分迹线的保留时间：
 
-1. 当您使用[create](#create-an-evaluator)或[edit](#edit-an-evaluator)在线评估器时，请将源设置为[tracing project](/langsmith/observability-concepts#tracing-projects)或代理环境，而不是[dataset](/langsmith/evaluation-concepts#datasets)。
+1. 当您[create](#create-an-evaluator)或[edit](#edit-an-evaluator)在线评估器时，请将源设置为代理环境，而不是[dataset](/langsmith/evaluation-concepts#datasets)。
 2. 展开评估器配置面板中的**高级**部分。
 3. 清除**延长迹线保留**。
 
-该更改适用于保存评估器后评分的轨迹。现有评分跟踪保留其当前保留级别。
+该更改适用于保存评估器后评分的轨迹。现有的评分跟踪保留其当前的保留级别。
 
 上述的 **扩展跟踪保留** 切换适用于跟踪级和线程级（多轮）在线评估器。有关多轮评估器的更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。
 
@@ -247,7 +238,7 @@ LangSmith 为启用此选项的评估者获取附加数据。仅当您的评估�
 
 将第二个评估器链接到第一个评估器上：
 
-1. 创建或打开第二个求值器并展开其过滤器。有关更多信息，请参阅 [Apply a filter to runs that trigger the evaluator](/langsmith/online-evaluations-llm-as-judge#apply-a-filter-to-runs-that-trigger-the-evaluator)（对于 LLM 作为法官评估者）或 [Create a filter](/langsmith/online-evaluations-code#3-create-a-filter)（对于代码评估者）。
+1. 创建或打开第二个求值器并展开其过滤器。有关更多信息，请参阅 [Apply a filter to runs that trigger the evaluator](/langsmith/online-evaluations-llm-as-judge#apply-a-filter-to-runs-that-trigger-the-evaluator)（LLM 法官评估者）或 [Create a filter](/langsmith/online-evaluations-code#3-create-a-filter)（代码评估者）。
 
 2. 过滤第一个评估者的反馈键。过滤器匹配键而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发第二个评估器，包括[user feedback](/langsmith/attach-user-feedback)。使用只有第一个评估者生成的密钥。
    * 要在每次运行时触发第一个评估者评分，请仅对键进行过滤：
@@ -260,7 +251,7 @@ LangSmith 为启用此选项的评估者获取附加数据。仅当您的评估�
      and(eq(feedback_key, "correctness"), lt(feedback_score, 0.5))
      ```
 
-3. 如果第二个评估者读取第一个分数，[include extended stats](#include-extended-stats)。 LLM 作为法官评估者需要它，代码评估者使用它来可靠地读取分数。有关更多信息，请参阅[Read the first score](#read-the-first-score)。
+3. 如果第二个评估者读取第一个分数，[include extended stats](#include-extended-stats)。 LLM 作为法官评估者需要它，代码评估者使用它来可靠地读取分数。欲了解更多信息，请参阅[Read the first score](#read-the-first-score)。
 
 4. 保存评估器。
 
@@ -276,12 +267,12 @@ LangSmith 为启用此选项的评估者获取附加数据。仅当您的评估�
 ## 删除评估器
 
 当评估器附加到跟踪容器或数据集时，您无法删除它。要删除评估器：1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluators)中，选择左侧边栏中的**评估器**。
-2. Select the evaluator you want to delete.
-3. 打开 **环境和数据集** 选项卡（自托管部署中的**项目和数据集**）。对于其中列出的每个附件，在行右侧的 **操作** 菜单中选择 **分离**。
-4. Return to the **Evaluators** page and click **Delete** at the top of the page.
+2. 选择您要删除的评估者。
+3. 打开 **环境和数据集** 选项卡。对于其中列出的每个附件，在行右侧的 **操作** 菜单中选择 **分离**。
+4. 返回**评估者**页面，单击页面顶部的**删除**。
 
 ***
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluators.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluators.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

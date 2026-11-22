@@ -20,7 +20,7 @@ Studio 连接到本地运行的代理，向您显示代理执行的每个步骤�
 
 ## 设置本地Agent服务器
 
-### 1.安装LangGraph CLI
+### 1.安装LangGraphCLI
 
 [LangGraph CLI](/langsmith/cli) 提供本地开发服务器（也称为 [Agent Server](/langsmith/agent-server)），将您的代理连接到 Studio。
 
@@ -55,7 +55,7 @@ const agent = createAgent({
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 Studio 需要 LangSmith API 密钥来连接您的本地代理。在项目的根目录中创建一个 `.env` 文件，并从 [LangSmith](https://smith.langchain.com/settings) 添加 API 密钥。
 
@@ -87,7 +87,7 @@ LangGraph CLI 使用配置文件来查找代理并管理依赖项。在应用程
 
 > [!注意]
 >
-> 配置文件的JSON对象中各个key的详细解释请参考[LangGraph configuration file reference](/langsmith/cli#configuration-file)。
+> 配置文件JSON对象中各个key的详细解释请参考[LangGraph configuration file reference](/langsmith/cli#configuration-file)。
 
 此时，项目结构将如下所示：
 
@@ -105,13 +105,13 @@ my-app/
 yarn install
 ```
 
-### 6. 在 Studio 中查看您的代理启动开发服务器以将代理连接到 Studio：
+### 6. 在 Studio 中查看您的代理
+
+启动开发服务器以将代理连接到 Studio：
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx @langchain/langgraph-cli dev
-```
-
-> [!警告]
+```> [!警告]
 >
 > Safari 阻止 `localhost` 与 Studio 的连接。要解决此问题，请使用 `--tunnel` 运行上述命令，以通过安全隧道访问 Studio。
 
@@ -134,12 +134,12 @@ npx @langchain/langgraph-cli dev
 
 ## 视频指南
 
-[Studio](https://www.youtube.com/embed/Mi1gSlHwZLM?si=zA47TNuTC5aH0ahd)> [!提示]
+[Studio](https://www.youtube.com/embed/Mi1gSlHwZLM?si=zA47TNuTC5aH0ahd)
+
+> [!提示]
 >
 > 有关已部署代理的更多信息，请参阅[Deployment](/oss/javascript/langchain/deploy)。
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

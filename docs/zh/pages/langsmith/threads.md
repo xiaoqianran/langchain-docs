@@ -187,7 +187,7 @@ const messages: Message[] = [{ role: "user", content: "Hi! My name is Sally" }];
 await chatPipeline({ messages, get_chat_history: false });
 ```
 
-```java Java expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```java Java expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import com.langchain.smith.client.LangsmithClient;
 import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
 import com.langchain.smith.tracing.TraceConfig;
@@ -318,7 +318,7 @@ class ThreadsChatPipeline {
 }
 ```
 
-```kotlin Kotlin expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```kotlin Kotlin expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 import com.langchain.smith.tracing.TraceConfig
 import com.langchain.smith.tracing.traceable
@@ -433,7 +433,7 @@ const messages: Message[] = [{ role: "user", content: "What is my name" }];
 await chatPipeline({ messages, get_chat_history: true });
 ```
 
-```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 List<ChatCompletionMessageParam> messages =
     Collections.singletonList(
         ChatCompletionMessageParam.ofUser(
@@ -444,7 +444,7 @@ List<ChatCompletionMessageParam> messages =
 ThreadsChatPipeline.chatPipeline().apply(new ThreadsChatPipeline.ChatRequest(messages, true));
 ```
 
-```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 val messages =
     listOf(
         ChatCompletionMessageParam.ofUser(
@@ -478,7 +478,7 @@ const messages: Message[] = [{ role: "user", content: "What was the first messag
 await chatPipeline({ messages, get_chat_history: true });
 ```
 
-```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 List<ChatCompletionMessageParam> messages =
     Collections.singletonList(
         ChatCompletionMessageParam.ofUser(
@@ -489,7 +489,7 @@ List<ChatCompletionMessageParam> messages =
 ThreadsChatPipeline.chatPipeline().apply(new ThreadsChatPipeline.ChatRequest(messages, true));
 ```
 
-```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 val messages =
     listOf(
         ChatCompletionMessageParam.ofUser(
@@ -504,7 +504,7 @@ chatPipeline(ChatRequest(messages, getChatHistory = true))
 
 ## 查看主题
 
-您可以通过单击任意 [project details](https://smith.langchain.com/tracing) 页面中的 **线程** 选项卡来查看 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-threads) 中的线程。该表显示每个线程的第一个输入、最后一个输出、启动时间、轮数、延迟 (P50/P99)、令牌使用情况、成本和反馈分数。
+您可以通过单击任何 [project details](https://smith.langchain.com/tracing) 页面中的 **线程** 选项卡来查看 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-threads) 中的线程。该表显示每个线程的第一个输入、最后一个输出、启动时间、回合数、延迟 (P50/P99)、令牌使用情况、成本和反馈分数。
 
 右侧面板显示项目的汇总统计信息，包括线程和跟踪计数、令牌使用总数和中位数、错误率和 P50/P99 延迟。
 
@@ -518,7 +518,7 @@ chatPipeline(ChatRequest(messages, getChatHistory = true))
 
 ### 查看反馈
 
-反馈分数在项目的 **Threads** 选项卡上的线程表的 **Feedback** 列中可见。在线程中，打开“轨迹”视图，然后单击回合元数据行中的 **LLM 调用** 链接，转至该运行的“详细信息”视图，您可以在其中查看该运行的反馈。您还可以在那里看到[thread-level feedback](/langsmith/online-evaluations-multi-turn)。
+反馈分数在项目的 **Threads** 选项卡上的线程表的 **Feedback** 列中可见。在线程中，打开“轨迹”视图，然后单击回合元数据行中的 **LLM 调用** 链接，转至该运行的“详细信息”视图，您可以在其中查看该运行的反馈。 You can also see [thread-level feedback](/langsmith/online-evaluations-multi-turn) there.
 
 ### 保存线程级过滤器
 
@@ -535,7 +535,7 @@ chatPipeline(ChatRequest(messages, getChatHistory = true))
 * [Filter traces](/langsmith/filter-traces)：在跟踪 UI 中按线程元数据过滤。
 * [Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)：评估线程而不是单独的运行。
 * [Log user feedback using the SDK](/langsmith/attach-user-feedback)：将反馈附加到线程内的运行。
-* [Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)：将线程添加到数据集。
+* [Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-an-agent-environment): add threads to a dataset.
 
 ***
 

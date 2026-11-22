@@ -6,6 +6,8 @@
 >
 > Downgrades are not officially supported. LangSmith upgrades may include database migrations and other changes that are not backward-compatible. If you need to roll back to a previous version, contact technical support via the [Support Portal](https://support.langchain.com) for guidance.
 
+Upgrading to v0.18 moves your existing tracing projects to agents and environments. Before you upgrade, read [What changes in LangSmith v0.18](/langsmith/self-host-agent-migration).
+
 If you don't have the repo added, run the following command to add it:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

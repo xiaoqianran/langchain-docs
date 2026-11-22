@@ -10,28 +10,25 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 
 使用它可以将同一代理的暂存构建和生产构建分开，以便每个代理都报告到自己的环境中。
 
-> [!注意]
->
-> [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
-
 ## 先决条件
 
 两个 CLI 都需要以下内容：
 
 * `.env` 或您的 shell 环境中的 [LangSmith API key](/langsmith/create-account-api-key)。
 * 包含`langgraph.json`的项目文件夹。从该文件夹运行 CLI。
-* 基于代理的工作区，因为标志需要工作区上的代理模式。组织范围的 API 密钥也需要工作区，并且每个 CLI 从不同的变量中读取它：`LANGSMITH_TENANT_ID` 对于 LangGraph CLI，`LANGSMITH_WORKSPACE_ID` 对于`mda` CLI。工作区范围的密钥两者都不需要。当键属于组织范围时，LangGraph CLI 会提示输入值。在脚本或 CI 作业中，提前设置 `LANGSMITH_TENANT_ID`，并传递 `--no-input`，以便 LangGraph CLI 失败而不是等待输入。 Python 和 TypeScript LangGraph CLI 都接受 `--no-input`。
+
+组织范围的 API 密钥也需要工作区，并且每个 CLI 从不同的变量读取它：`LANGSMITH_TENANT_ID` 对于 LangGraph CLI，`LANGSMITH_WORKSPACE_ID` 对于`mda` CLI。工作区范围的密钥两者都不需要。当键属于组织范围时，LangGraph CLI 会提示输入值。在脚本或 CI 作业中，提前设置 `LANGSMITH_TENANT_ID`，并传递 `--no-input`，以便 LangGraph CLI 失败而不是等待输入。 Python 和 TypeScript LangGraph CLI 都接受 `--no-input`。
 
 ## 寻址标志
 
-两个 CLI 都采用相同的两个标志：
-
-* **`--agent-id`**：要部署到的代理。该值是代理的标识符，而不是其显示名称。对于哪个值是哪个，请参阅[Identifiers and display names](/langsmith/agent-registry#identifiers-and-display-names)。
+两个 CLI 都采用相同的两个标志：* **`--agent-id`**：要部署到的代理。该值是代理的标识符，而不是其显示名称。对于哪个值是哪个，请参阅[Identifiers and display names](/langsmith/agent-registry#identifiers-and-display-names)。
 * **`--agent-environment`**：部署报告到的环境，以及`development`、`staging` 或`production` 之一。部署不能占用`local`。该环境根本就是[does not display on deployments](/langsmith/agent-environments#select-an-environment)，这是该集合与[agent variables](/langsmith/log-traces-to-agent#using-environment-variables)接受的四个值不同的一种方式。
 
 这些标志与跟踪端的代理寻址名称相同。 LangGraph CLI 还从相同的两个变量`LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 读取标志。 `mda` CLI 不会读取这些变量，因此直接将标志传递给它。
 
-## 使用 LangGraph CLI 进行部署这些标志在 Python 中需要 `langgraph-cli` v0.4.32 或更高版本，在 TypeScript 中需要 `@langchain/langgraph-cli` 1.5.2-dev.0。 TypeScript 版本是预发行版本。准确安装它，因为当前的稳定版本 1.5.1 不接受这些标志。部署：
+## 使用 LangGraph CLI 进行部署
+
+这些标志在 Python 中需要 `langgraph-cli` v0.4.32 或更高版本，在 TypeScript 中需要 `@langchain/langgraph-cli` 1.5.2-dev.0。 TypeScript 版本是预发行版本。准确安装它，因为当前的稳定版本 1.5.1 不接受这些标志。部署：
 
 1. 安装 CLI：
 
@@ -51,9 +48,7 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 
    ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    langgraphjs deploy --agent-id my-agent --agent-environment staging --remote
-   ```
-
-传递两个标志或都不传递，因为 CLI 会自行拒绝其中任一标志。请勿将它们与 `--name` 或代理服务器 ID 标志结合使用。 Python CLI 使用 `--agent-server-id`，并接受 `--deployment-id` 作为兼容性别名；较旧的 Python 版本可能需要旧的拼写。上面的 TypeScript 预发行版使用 `--deployment-id`。这些标志名称与代理绑定的版本要求是分开的。
+   ```传递两个标志或都不传递，因为 CLI 会自行拒绝其中任一标志。请勿将它们与 `--name` 或代理服务器 ID 标志结合使用。 Python CLI 使用 `--agent-server-id`，并接受 `--deployment-id` 作为兼容性别名；较旧的 Python 版本可能需要旧的拼写。上面的 TypeScript 预发行版使用 `--deployment-id`。这些标志名称与代理绑定的版本要求是分开的。
 
 `--remote` 强制远程构建。如果没有它，只要 Docker 可用，CLI 就会在本地构建。对于其余标志，请参阅[⟦T33⟧](/langsmith/cli#deploy)。
 
@@ -70,7 +65,9 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 
    ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    npm install "managed-deepagents@0.7.5-dev.4"
-   ```2. 在当前文件夹中部署项目：
+   ```
+
+2. 在当前文件夹中部署项目：
 
    ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    mda deploy . --agent-id my-agent --agent-environment staging
@@ -82,9 +79,7 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 
 在 Python 中，将 CLI 作为工具安装并将相同版本固定为项目依赖项，可以使全局 `mda` 二进制文件和项目自身的依赖项保持在一个版本上。对于其余标志，请参阅 [Deploy projects](/langsmith/python/managed-deep-agents-cli#deploy-projects)，对于不使用代理标志的部署，请参阅 [Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
 
-## 确认绑定
-
-打开代理的[Overview](/langsmith/navigate-agents#read-the-agent-overview)，然后在标题中选择**代理服务器**。检查代理服务器是否出现在预期环境中。当活动修订版可用时，标题还会按环境显示修订版信息。
+## 确认绑定打开代理的[Overview](/langsmith/navigate-agents#read-the-agent-overview)，然后在标题中选择**代理服务器**。检查代理服务器是否出现在预期环境中。当活动修订版可用时，标题还会按环境显示修订版信息。
 
 如果目标环境中缺少代理服务器，请检查传递给 CLI 的代理 ID 和环境。上述固定的 `mda` 版本需要显式 `--agent-id` 和 `--agent-environment` 标志；他们忽略`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`。
 

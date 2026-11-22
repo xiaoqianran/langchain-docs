@@ -82,7 +82,7 @@ flowchart LR
 引擎的 GitHub 访问权限已修复。通过 GitHub App，Engine 可以：
 
 * **阅读**您在安装应用程序时选择的存储库。
-* **从它创建的修复分支打开拉取请求**。
+* **从它创建的修复分支中打开拉取请求**。
 
 在 GitLab 上，引擎充当工作区管理员连接其访问令牌的帐户，通常是专用服务帐户。引擎在帐户角色的权限内读取帐户所属的项目，推送修复分支并打开合并请求。引擎永远不会合并拉取或合并请求。它提出的每项更改都会经过您的审查和分支保护规则。您可以随时通过卸载 GitHub 应用程序或断开 GitLab 来撤销访问权限。有关令牌生命周期、沙箱和保留，请参阅引擎安全性的 [GitHub](/langsmith/engine-security#github-integration) 和 [GitLab](/langsmith/engine-security#gitlab-integration) 部分。要连接存储库，请参阅[Connect Engine to your repository](/langsmith/engine-repositories)。
 
@@ -109,16 +109,16 @@ flowchart LR
 ### 设置支出限额并监控使用情况
 
 组织管理员可以在两个级别设置支出限制：* **组织范围限制**：打开**设置**并选择**引擎**下的**引擎**。在本月至今的支出卡上，单击限制芯片并在弹出窗口中设置限制。
-* **项目或环境限制**：在跟踪项目或代理环境中打开 **引擎** 选项卡，然后单击 **配置引擎** 图标。在“**支出限制**”下，单击限制筹码（未设置限制时，筹码显示“**无**”）并在弹出窗口中设置限制。
+* **代理环境限制**：选择您的代理并转到**引擎**。从页面顶部的环境切换器中选择环境，然后单击 **配置引擎** 图标。在“**支出限制**”下，单击限制筹码（未设置限制时，筹码显示“**无**”）并在弹出窗口中设置限制。
 
 您可以输入 LSU 或 USD 的限额。当达到限制时，LangSmith 暂停新的引擎运行，直到限制提高或下一个每月计费周期开始。
 
 这两个级别的默认值不同：
 
 * **组织范围限制**：选择**默认**、**无限制**或自定义上限。在管理员选择之前，默认情况下适用（每月 750 LSU，750 美元），因此即使没有人设置限制，引擎支出也是有上限的。 **引擎**设置页面命名强制限制及其来源。
-* **项目或环境限制**：将弹出框的字段留空表示没有限制。使用 **删除限制** 清除您之前设置的上限。
+* **代理环境限制**：将弹出框的字段留空表示没有限制。使用 **删除限制** 清除您之前设置的上限。
 
-要停止项目或整个组织的 Engine，请参阅 [Pause Engine or delete its issues](/langsmith/engine-setup#pause-engine-or-delete-its-issues)。要监控使用情况，您可以在 **设置** 中的 **引擎** 页面上查看组织的每月 LSU 支出，或在其 [**Engine settings**](/langsmith/engine-setup#configure-engine) 面板中查看跟踪项目或代理环境的支出。
+要停止项目或整个组织的 Engine，请参阅 [Pause Engine or delete its issues](/langsmith/engine-setup#pause-engine-or-delete-its-issues)。要监控使用情况，您可以在 **设置** 中的 **引擎** 页面上查看组织的每月 LSU 支出，或在其 [**Engine settings**](/langsmith/engine-setup#configure-engine) 面板中查看代理环境的支出。
 
 对于离线自托管部署，支出报告和限制执行有所不同。参见[Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations)。
 
@@ -126,7 +126,7 @@ flowchart LR
 
 > [卡][Set up Engine](/langsmith/engine-setup)
 >
-> 为您的组织启用引擎并为跟踪项目或代理环境打开它。
+> 为您的组织启用引擎并为代理环境打开它。
 
 > [卡][Find and fix issues](/langsmith/engine-issues)
 >
@@ -147,6 +147,8 @@ flowchart LR
 * [Engine security](/langsmith/engine-security)：引擎如何处理您的数据，及其 GitHub 和模型子处理器控件。
 * [Engine on self-hosted and BYOC](/langsmith/engine-self-hosted)：在自托管LangSmith实例或BYOC数据平面上安装并运行引擎。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

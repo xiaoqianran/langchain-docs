@@ -12,12 +12,12 @@
 
 ## View online evaluators
 
-In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-llm-as-judge), head to the **Tracing** tab and select a tracing project, or an agent environment. To view existing online evaluators for that project, click on the **Evaluators** tab.
+In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-llm-as-judge), select your agent, go to **Tracing**, and select the environment. To view existing online evaluators for that environment, click the **Online Evaluators** tab.
 
 ## Add an online evaluator
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-llm-as-judge), navigate to the **Tracing** page and select a tracing project, or an agent environment.
-2. Click the **Evaluators** tab.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-llm-as-judge), select your agent, go to **Tracing**, and select the environment.
+2. Click the **Online Evaluators** tab.
 3. Click **+ Evaluator** to open the **Add Evaluator** panel.
 4. Choose one of the following:
    * **Create from scratch**: Select **LLM-as-a-Judge Evaluator**.
@@ -52,7 +52,7 @@ Configure a sampling rate to control the percentage of filtered runs that trigge
 
 To apply the rule to past runs or threads, in the **Configure Evaluator** panel:
 
-1. In **Source**, select **Runs** or **Threads**.
+1. Under **Trigger On**, select **Runs** or **Threads**.
 2. Expand **Advanced**.
 3. Toggle on **Apply to past runs from date** or **Apply to past threads from date**, then enter a date.
 
@@ -64,7 +64,7 @@ When you backfill a [thread-level evaluation rule](/langsmith/online-evaluations
 >
 > The backfill is processed as a background job, so you will not see the results immediately.
 
-In order to track progress of the backfill, you can view logs for your evaluator by heading to the **Evaluators** tab within a tracing project or agent environment and clicking the Logs button for the evaluator you created. Online evaluator logs are similar to [automation rule logs](/langsmith/rules#view-logs-for-your-automations).
+To track the backfill's progress, open the agent environment's **Online Evaluators** tab on the **Tracing** page and click **Logs** in your evaluator's row. Online evaluator logs are similar to [automation rule logs](/langsmith/rules#view-logs-for-your-automations).
 
 1. Add an evaluator name.
 2. Optionally filter runs that you would like to apply your evaluator on or configure a sampling rate.

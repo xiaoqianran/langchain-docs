@@ -12,9 +12,9 @@
 * `LANGSMITH_AGENT_ID`
 * `LANGSMITH_AGENT_ENVIRONMENT`
 
-在设置过程中的[agent-based workspace](/langsmith/agent-registry)、[create the agent](/langsmith/create-an-agent) 中。下面的示例使用其 [agent address](/langsmith/log-traces-to-agent) 在没有环境变量的情况下配置跟踪。
+设置期间[Create the agent](/langsmith/create-an-agent)。下面的示例使用其 [agent address](/langsmith/log-traces-to-agent) 在没有环境变量的情况下配置跟踪。
 
-如果您需要使用自定义配置跟踪运行，在不支持典型环境变量（例如 Cloudflare Workers）的环境中工作，或者不想依赖环境变量，LangSmith 允许您以编程方式配置跟踪。
+如果您需要使用自定义配置跟踪运行，在不支持典型环境变量（例如 Cloudflare Workers）的环境中工作，或者不希望依赖环境变量，LangSmith 允许您以编程方式配置跟踪。
 
 > [!警告]
 >

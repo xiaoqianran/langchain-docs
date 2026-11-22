@@ -4,11 +4,11 @@
 
 # 使用 Microsoft Agent Framework 进行跟踪
 
-LangSmith 可以使用其内置的 OpenTelemetry 仪器捕获 [Microsoft Agent Framework](https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview) 生成的轨迹。本指南向您展示如何自动捕获来自 Microsoft Agent Framework 代理的跟踪并将其发送到 LangSmith 进行监控和分析。
+LangSmith 可以使用其内置的 OpenTelemetry 仪器捕获 [Microsoft Agent Framework](https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview) 生成的轨迹。本指南向您展示如何自动从 Microsoft Agent Framework 代理捕获跟踪并将其发送到 LangSmith 进行监控和分析。
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 安装
 

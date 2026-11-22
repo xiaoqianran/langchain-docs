@@ -8,7 +8,7 @@
 
 > [!注意]
 >
-> 此页面涵盖 **LangSmith 自动化 Webhooks**，自动化规则匹配运行或线程时触发的 POST 通知。如果您正在寻找 **LangGraph API Webhooks**（创建或流式传输运行时传递的回调参数），请参阅 [Use webhooks](/langsmith/use-webhooks)。
+> 此页面涵盖 **LangSmith 自动化 webhook**，自动化规则匹配运行或线程时触发的 POST 通知。如果您正在寻找 **LangGraph API Webhooks**（创建或流式传输运行时传递的回调参数），请参阅 [Use webhooks](/langsmith/use-webhooks)。
 
 当您在自动化操作上添加 Webhook URL 时，每当您定义的规则与任何新的运行或线程匹配时，LangSmith 都会向您的 Webhook 端点发出 POST 请求。
 
@@ -118,7 +118,7 @@
 [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 为 **Threads** 的规则将顶级 `"runs"` 数组替换为 `"threads"` 数组。该数组中的每个条目包含：
 
 * `"thread_id"`：空闲且符合规则的线程ID。
-* `"session_id"`：线程所属跟踪项目的ID。
+* `"session_id"`：线程所属的[agent environment](/langsmith/agent-environments)的`tracer_session_id`，而不是环境自己的`id`。
 * `"runs"`：线程根运行的数组，每个跟踪一个，每个跟踪的输入和输出。不包括工具和模型调用等子运行。这些运行字典还省略了`"feedback_stats"`，它仅出现在`"runs"`有效负载中的运行中。
 
 此示例经过简化，显示了一个具有单根运行的线程：
@@ -154,9 +154,9 @@
 }
 ```
 
-## 安全
+## 安全将秘密查询字符串参数添加到 Webhook URL 并在每个传入请求上验证它。这可确保如果有人发现您的 Webhook URL，您可以将这些调用与真实的 Webhook 通知区分开来。
 
-将秘密查询字符串参数添加到 Webhook URL 并在每个传入请求上验证它。这可确保如果有人发现您的 Webhook URL，您可以将这些调用与真实的 Webhook 通知区分开来。一个例子是
+一个例子是
 
 ```
 https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87d
@@ -180,15 +180,15 @@ https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87
 * 如果您的终端回复时间超过5秒，LangSmith则声明发送失败，不再重试。
 * 如果您的端点在 5 秒内返回 5xx 状态代码，LangSmith 会以指数退避方式重试最多 2 次。
 * 如果您的终端返回4xx状态码，则LangSmith声明投递失败，不再重试。
-* 您的端点在正文中返回的任何内容都将被忽略。
+* 您的端点在正文中返回的任何内容都将被忽略。## 确保评估在 webhook 触发之前完成
 
-## 确保评估在 webhook 触发之前完成默认情况下，自动化规则按独立的计划运行。扫描同一项目的 Webhook 规则和在线评估器规则可以在不同时间获取相同的运行，因此 Webhook 可能会在评估器有机会对运行进行评分之前触发。
+默认情况下，自动化规则按独立的计划运行。同一代理环境上的 Webhook 规则和在线评估器规则可以在不同时间获取相同的运行，因此 Webhook 可能会在评估器有机会对运行进行评分之前触发。
 
 推荐的解决方案是向您的 Webhook 规则添加*反馈过滤器*。这告诉 LangSmith 仅当它已经达到预期分数时才将运行发送到您的 webhook，无论何时评估。
 
-例如，您有一个生成 `answer_usefulness` 分数的在线评估器，以及一个仅在该分数出现后才触发的 Webhook 规则。
+例如，假设您有一个生成 `answer_usefulness` 分数的在线评估器，以及一个仅在该分数出现后才触发的 Webhook 规则。
 
-1. 在跟踪项目或代理环境的 **自动化** 选项卡中打开 Webhook 自动化规则。
+1. 选择您的代理，转到**跟踪**，然后选择环境。在 **自动化** 选项卡上，打开 Webhook 规则。
 
 2. 编辑规则的过滤器以需要反馈密钥。在过滤器构建器中，添加条件：
 
@@ -241,7 +241,7 @@ modal setup
 首先，LangSmith 需要通过传递秘密来向 Modal 进行身份验证。
 最简单的方法是在查询参数中传递一个秘密。
 要验证此机密，请在 *Modal* 中添加一个机密来验证它。
-通过 [creating a Modal secret](https://modal.com/docs/guide/secrets) 执行此操作。
+按 [creating a Modal secret](https://modal.com/docs/guide/secrets) 执行此操作。
 将密钥命名为 `ls-webhook` 并设置一个名为 `LS_WEBHOOK` 的环境变量。
 
 您还可以设置一个 LangSmith 秘密 - 幸运的是已经有一个集成模板！

@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 当在线评估器在跟踪内的任何运行上运行时，LangSmith 会将跟踪升级到 [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
+> 当在线评估器在跟踪内的任何运行上运行时，LangSmith 会将跟踪升级为 [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
 ## 决策模型
 
@@ -56,8 +56,8 @@ LangSmith 对决策模型问题强制执行以下限制：
 
 决策模型评估器需要 LangSmith Plus 或 Enterprise [plan](/langsmith/pricing-plans)。它们在 [BYOC](/langsmith/byoc) 部署中不可用。
 
-要添加决策模型在线评估器：1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-decision-models)中，导航至**追踪**页面，选择追踪项目。
-2. 单击**评估者**选项卡。
+要添加决策模型在线评估器：1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-decision-models)中，选择您的代理，转到**跟踪**，然后选择环境。
+2. 单击**在线评估器**选项卡。
 3. 单击**+ 评估器** 打开**配置评估器** 面板。
 4. 在 **从头开始创建** 下，选择 **决策模型评估器**，然后命名您的评估器。
 5. 选择决策模型，将运行或线程变量映射到 **状态**，然后添加问题。对于每个设置，请参阅[How to define a decision model evaluator](/langsmith/decision-model-evaluator)。

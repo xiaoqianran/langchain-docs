@@ -19,7 +19,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T5⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T5⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 来自 Claude 平台的追踪Claude 平台导出您的 [Claude Managed Agents](https://platform.claude.com/docs/en/managed-agents/overview) 会话和 [Messages API](https://platform.claude.com/docs/en/api/messages) 请求的 OTel 跟踪记录。它将它们发送到*目的地*，即您在 Claude 控制台中注册的 OTel 端点。您可以添加 LangSmith 作为目标并查看这些跟踪，而无需更改代理代码。有关目的地和交付的详细信息，请参阅Anthropic文档中的[Use OpenTelemetry with the Claude API](https://platform.claude.com/docs/en/manage-claude/opentelemetry/api)。
 
@@ -27,20 +27,20 @@
 
 * 您的 Claude Console 组织中的管理员角色或同等权限。如果没有它，您将无法查看或管理目的地。
 * LangSmith API 密钥。当您希望跟踪独立于您的用户帐户时，您可以使用 [personal access token](/langsmith/administration-overview#personal-access-tokens-pats) 或 [service key](/langsmith/administration-overview#service-keys)。要创建密钥，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
-* 在基于代理的工作区中，所选代理环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project) 位于目标的 **项目** 字段中。
+* 所选代理环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project)，位于目标的 **项目** 字段中。
 * 对于自托管 LangSmith，Claude 平台可以访问的端点：端口 443 上的 HTTPS，主机名解析为公共 IP 地址。
 
 ### 步骤 1. 添加 LangSmith 作为目的地
 
 添加目的地：1. 在 Claude Console 中，打开您组织的 [OpenTelemetry settings page](https://platform.claude.com/settings/telemetry-destinations)，然后单击 **添加目的地**。
-2. 在 **提供商** 下拉列表中，选择 **LangSmith**。表单更改为显示 LangSmith 字段。
+2. 在 **提供商** 下拉列表中，选择 **LangSmith**。 The form changes to show the LangSmith fields.
 3. 填写字段：
    * **名称**：（可选）目的地的标签，例如`LangSmith`。
-   * **区域**：LangSmith 部署的区域：**美国**、**欧盟**、**亚太地区**或**美国 AWS 上**。对于自托管 LangSmith，选择 **自托管**。在 **LangSmith URL** 中，输入您的 LangSmith API URL (`LANGSMITH_ENDPOINT`) 加上 `/otel`。有关每种部署类型的 URL，请参阅 [Find your OTLP endpoint](/langsmith/trace-with-opentelemetry#find-your-otlp-endpoint)。
-   * **API 密钥**：您的 LangSmith API 密钥。
-   * **项目**：要将跟踪发送到的 [environment's ⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project)。在基于代理的工作区中显式设置它。如果省略，则积分使用`default`。
-   * **LangSmith 工作区 ID**：（可选）要将跟踪发送到的 LangSmith 工作区的 ID。如果将其留空，跟踪将转到 API 密钥所属的工作区。组织范围的服务密钥需要它。要查找 ID，请参阅 [Create an account and API key](/langsmith/create-account-api-key)。
-   * **内容模式**：选择**完整内容**以在跨度中包含提示和响应。对于**仅元数据**，跨度会省略输入和输出内容。* **工作空间**：将跟踪发送到此目标的 Claude 工作空间：**全部**、**选定**或**除**之外的所有**。有关每个选项的详细信息，请参阅 Anthropic 文档中的 [Choose workspaces for a destination](https://platform.claude.com/docs/en/manage-claude/opentelemetry/api#choose-workspaces-for-a-destination)。
+   * **区域**：LangSmith 部署的区域：**美国**、**欧盟**、**亚太地区**或**美国 AWS 上**。对于自托管 LangSmith，选择 **自托管**。 In **LangSmith URL**, enter your LangSmith API URL (`LANGSMITH_ENDPOINT`) plus `/otel`.有关每种部署类型的 URL，请参阅 [Find your OTLP endpoint](/langsmith/trace-with-opentelemetry#find-your-otlp-endpoint)。
+   * **API key**: Your LangSmith API key.
+   * **项目**：要将跟踪发送到的 [environment's ⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project)。明确地设置它。 If omitted, the integration uses `default`.
+   * **LangSmith 工作区 ID**：（可选）要将跟踪发送到的 LangSmith 工作区的 ID。如果将其留空，跟踪将转到 API 密钥所属的工作区。 Organization-scoped service keys require it. To find the ID, see [Create an account and API key](/langsmith/create-account-api-key).
+   * **内容模式**：选择**完整内容**以在跨度中包含提示和响应。 With **Metadata only**, spans omit the input and output content.* **工作空间**：将跟踪发送到此目标的 Claude 工作空间：**全部**、**选定**或**除**之外的所有**。有关每个选项的详细信息，请参阅 Anthropic 文档中的 [Choose workspaces for a destination](https://platform.claude.com/docs/en/manage-claude/opentelemetry/api#choose-workspaces-for-a-destination)。
 4. 单击“**添加目的地**”。
 
 当您稍后编辑目标时，表单将显示通用 **OTLP 端点 URL** 和 **请求标头** 字段，而不是 LangSmith 字段。 **OTLP 端点 URL** 保存您所在区域的 URL，并且 LangSmith 字段将成为以下请求标头：
@@ -88,7 +88,7 @@ Claude SDK 在您的代理中针对其发送的每个请求以及工具运行程
    * `x-api-key`：您的 LangSmith API 密钥。
    * `Langsmith-Agent-Id`：注册代理标识符。
    * `Langsmith-Agent-Environment`：环境，如`local`。
-   * `X-Tenant-Id`：（可选）要将跟踪发送到的LangSmith工作区的 ID。如果没有此标头，跟踪将转到 API 密钥所属的工作区。组织范围的服务密钥需要它。
+   * `X-Tenant-Id`：（可选）要将跟踪发送到的 LangSmith 工作区的 ID。如果没有此标头，跟踪将转到 API 密钥所属的工作区。组织范围的服务密钥需要它。
 
    例如，使用标准 OTel 环境变量：
 

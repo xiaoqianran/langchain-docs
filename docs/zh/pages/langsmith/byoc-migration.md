@@ -8,7 +8,7 @@
 
 [LangSmith data migration tool](https://github.com/langchain-ai/langsmith-data-migration-tool) 将数据从现有 LangSmith 云组织或 [self-hosted](/langsmith/self-hosted) 实例复制到 BYOC 数据平面。该工具复制数据（而不是移动数据），因此源实例在移动过程中保持不变并保持可用。
 
-在数据平面为 [active and reachable](/langsmith/byoc-onboarding-aws) 后运行迁移。 AWS 支持跟踪迁移。联系LangChain团队安排，并在工具旁边规划[manual steps](#move-data-the-tool-does-not-migrate)。
+在数据平面为 [active and reachable](/langsmith/byoc-onboarding-aws) 后运行迁移。 AWS 支持跟踪迁移。联系LangChain团队安排，并与工具一起规划[manual steps](#move-data-the-tool-does-not-migrate)。
 
 ## 支持的资源
 
@@ -22,13 +22,13 @@
 |提示|提示完整的提交历史记录。 |
 |图表|监控图表和仪表板。 |
 |定制型号定价|工作区-自定义模型价格条目。 |
-|发动机问题 |每个项目的引擎配置和检测到的问题。问题作为元数据迁移，包括建议的修复，没有链接的跟踪或拉取请求。 |
+|发动机问题 |每个代理环境的引擎配置和检测到的问题。问题作为元数据迁移，包括建议的修复，没有链接的跟踪或拉取请求。 |
 |舰队|代理、共享技能、MCP 服务器、集成、身份验证提供程序、计划、触发器、Webhooks、使用限制、沙箱策略和工作区机密。 |
 |上下文中心 | Context Hub 代理和技能，包括文件、存储库元数据、提交历史记录和提交标签。 |
 
-每种资源类型都有自己的命令、标志和警告。命令参考参见[tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md)。
+每种资源类型都有自己的命令、标志和警告。命令参考参见[tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md)。## 使用工具迁移
 
-## 使用工具迁移**1.安装工具**
+**1.安装工具**
 
 使用 `uv`、`uvx` 或 `pip` 安装最新版本。有关当前安装命令，请参阅[Installation](https://github.com/langchain-ai/langsmith-data-migration-tool#installation)。
 

@@ -6,7 +6,7 @@
 
 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-integrations) 为越来越多的流行 [LLM providers](#llm-providers) 和 [agent frameworks](#agent-frameworks) 以及 [Deep Agents](/oss/python/deepagents/overview)、[LangChain](/oss/python/langchain/overview) 和 [LangGraph](/oss/python/langgraph/overview) 提供集成。有关设置和使用的信息，请参阅本页列出的指南。
 
-在基于代理的工作区中发送跟踪之前，请[create an agent](/langsmith/create-an-agent) 并选择其环境。完成此设置一次，然后按照跟踪指南进行集成。
+在发送跟踪之前，[create an agent](/langsmith/create-an-agent) 并选择其环境。完成此设置一次，然后按照跟踪指南进行集成。
 
 ## 法学硕士提供者
 
@@ -130,7 +130,7 @@ OpenAI 代理
 
 ![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/opentelemetry.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=84b763868676d132f14cc4055525c34d)
 
-开放遥测
+开放式遥测
 
 [Open](/langsmith/trace-with-opentelemetry)
 
@@ -146,13 +146,13 @@ OpenAI 代理
 
 [Open](/langsmith/trace-with-semantic-kernel)
 
-![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/bedrock.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d6fc326f6c429075add5a742c87d12b1)股线代理
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/bedrock.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d6fc326f6c429075add5a742c87d12b1)
+
+股线代理
 
 [Open](/langsmith/trace-with-strands-agents)
 
-![](https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/light/vercel.svg?fit=max\&auto=format\&n=z7oQGiHwXv52HwOy\&q=85\&s=76a0a441ec1730cb68635a19a2a29032)
-
-Vercel人工智能SDK
+![](https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/light/vercel.svg?fit=max\&auto=format\&n=z7oQGiHwXv52HwOy\&q=85\&s=76a0a441ec1730cb68635a19a2a29032)Vercel人工智能SDK
 
 [Open](/langsmith/trace-with-vercel-ai-sdk)
 

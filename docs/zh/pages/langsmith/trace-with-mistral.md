@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 安装
 
@@ -118,7 +118,7 @@ export LANGSMITH_AGENT_ENVIRONMENT="local"
 
    在此示例中，您使用 [Mistral SDK](https://docs.mistral.ai/getting-started/clients) 发送聊天完成请求（带有用户提示）并检索模型的答案。
 
-   [⟦T18⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) 装饰器（来自 [LangSmith Python SDK](https://reference.langchain.com/python/langsmith/observability/sdk/)）包装了 `query_mistral` 函数，以便将每个调用记录为类型 `"llm"` 的跟踪运行。 `metadata={"ls_provider": "mistral", "ls_model_name": "mistral-medium-latest"}` 使用提供者 (Mistral) 和模型名称标记跟踪。
+   [⟦T18⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) 装饰器（来自 [LangSmith Python SDK](https://reference.langchain.com/python/langsmith/observability/sdk/)）包装了 `query_mistral` 函数，以便将每次调用记录为类型 `"llm"` 的跟踪运行。 `metadata={"ls_provider": "mistral", "ls_model_name": "mistral-medium-latest"}` 使用提供者 (Mistral) 和模型名称标记跟踪。
 
    您也可以参考[LangSmith JavaScript SDK](https://reference.langchain.com/javascript/langsmith)。
 

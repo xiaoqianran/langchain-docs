@@ -299,7 +299,7 @@ What were the main announcements from the latest LangChain release?
 
 您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
 
-在 [agent-based workspace](/langsmith/agent-registry) 中，在您注册代理之前，跟踪将导致错误。详情请参见[Trace local runs](/langsmith/javascript/managed-deep-agents-local-development#trace-local-runs)。
+在您注册代理之前，跟踪会导致错误。详情请参见[Trace local runs](/langsmith/javascript/managed-deep-agents-local-development#trace-local-runs)。
 
 **7.部署代理**
 
@@ -337,7 +337,7 @@ bunx mda deploy
 
 > [卡][Custom tools](/langsmith/javascript/managed-deep-agents-tools)
 >
-> 从您的项目添加创作的 LangChain 工具。
+> 从您的项目中添加创作的 LangChain 工具。
 
 > [卡][Connections](/langsmith/javascript/managed-deep-agents-connections)
 >

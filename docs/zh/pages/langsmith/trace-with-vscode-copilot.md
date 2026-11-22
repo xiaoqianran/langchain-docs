@@ -12,14 +12,14 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T3⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T3⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 先决条件
 
 在设置跟踪之前，请确保您拥有：
 
 * 安装并登录了 GitHub Copilot Chat 的最新版本 [Visual Studio Code](https://code.visualstudio.com/)。
-* A [LangSmith API key](/langsmith/create-account-api-key)。
+* [LangSmith API key](/langsmith/create-account-api-key)。
 
 ## 选择你的安全带
 
@@ -45,7 +45,7 @@ export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-
 | `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` |副驾驶安全带上捕获的内容相同。默认关闭。 |
 | `OTEL_EXPORTER_OTLP_HEADERS` | OTLP 导出器的身份验证标头。使用 `x-api-key=<your_langsmith_api_key>` 和 `Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=local` 将跟踪路由到已注册的 [agent and environment](/langsmith/log-traces-to-agent)。 |
 
-此端点用于 Copilot 线束，它完全按照写入的方式发送到 URL。本地线束自行添加 `/v1/traces`，因此请改用 `https://api.smith.langchain.com/otel`。VS Code 必须继承这些环境变量，因此在启动编辑器之前，请在启动 VS Code 的 shell 会话中导出它们（例如，通过将它们添加到 `~/.zshrc`、`~/.bashrc` 或 shell 配置文件）。
+该端点用于 Copilot 线束，它完全按照写入的方式发送到 URL。本地线束自行添加 `/v1/traces`，因此请改用 `https://api.smith.langchain.com/otel`。VS Code 必须继承这些环境变量，因此在启动编辑器之前，请在启动 VS Code 的 shell 会话中导出它们（例如，通过将它们添加到 `~/.zshrc`、`~/.bashrc` 或 shell 配置文件）。
 
 将端点设置为您的 LangSmith API URL (`LANGSMITH_ENDPOINT`) 加上 Local 线束上的 `/otel`，或加上 Copilot 线束上的 `/otel/v1/traces`。有关每种部署类型的 URL，请参阅 [Find your OTLP endpoint](/langsmith/trace-with-opentelemetry#find-your-otlp-endpoint)。
 

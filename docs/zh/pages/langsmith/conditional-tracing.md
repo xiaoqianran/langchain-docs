@@ -8,7 +8,7 @@
 
 当您需要执行以下操作时，请使用条件跟踪：
 
-* **遵守数据保留政策**：出于合规性或隐私原因，某些客户可能要求零数据保留。
+* **遵守数据保留政策**：出于合规或隐私原因，某些客户可能要求零数据保留。
 * **处理敏感操作**：禁用对涉及 PII、凭据或机密数据的操作的跟踪。
 * **实施每租户配置**：将跟踪路由到不同的代理环境或根据客户应用不同的设置。
 * **控制成本**：禁用对低价值请求的跟踪，同时保持对关键操作的可见性。
@@ -24,7 +24,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T16⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T16⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 在启用动态路由之前注册每个代理。副本配置需要每个目标环境的 `tracer_session_name`。在启用复制之前检索这些值。> [选项卡] Python
 >
@@ -191,7 +191,7 @@
 >         outer_function("data")  # is traced
 > ```
 >
-> 当您想要临时启用跟踪以在通常非跟踪的部分中进行调试时，这会很有用。
+> 当您想要临时启用跟踪以在通常非跟踪的部分中进行调试时，这可能很有用。
 >
 > ## 有条件地编辑输入和输出
 >> 有时您希望记录跟踪，以便保留运行时间、结构、错误和元数据，但应针对特定请求隐藏输入和输出（例如，来自具有严格隐私要求的租户的跟踪）。这与 [disabling tracing](#disable-tracing-for-specific-invocations) 和 [⟦T28⟧](/langsmith/mask-inputs-outputs#hide-inputs-and-outputs) 完全不同，后者对客户端发送的每个跟踪应用相同的修订。
@@ -228,7 +228,7 @@
 > > 使用 `updates` 编辑输入或输出时，始终在副本上设置 `project_name`。如果副本的 `project_name` 与活动跟踪的目标匹配，则可能会删除 `updates` 并发送未编辑的输入/输出。
 >> ## 在已部署的代理中自定义跟踪
 >
-> [Agent Server](/langsmith/agent-server) 内默认启用跟踪。当使用[factory function](/langsmith/graph-rebuild)时，您可以用`tracing_context`包装生成的图来控制每次执行的跟踪。这对于添加自定义元数据、完全禁用跟踪或基于经过身份验证的用户自定义跟踪非常有用。
+> [Agent Server](/langsmith/agent-server) 内默认启用跟踪。当使用[factory function](/langsmith/graph-rebuild)时，您可以用`tracing_context`包装生成的图来控制每次执行的跟踪。这对于添加自定义元数据、完全禁用跟踪或根据经过身份验证的用户自定义跟踪非常有用。
 >
 > ### 禁用图表跟踪
 >

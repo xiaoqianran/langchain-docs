@@ -8,7 +8,7 @@ LangSmith 可以使用 OpenTelemetry 仪器捕获 [AutoGen](https://microsoft.gi
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 安装
 
@@ -24,7 +24,7 @@ uv add langsmith autogen-agentchat autogen-ext opentelemetry-instrumentation-ope
 
 ## 设置
 
-### 1. Configure environment variables
+### 1.配置环境变量
 
 向代理发送痕迹需要 `langsmith>=0.14.9`。
 
@@ -37,7 +37,7 @@ export LANGSMITH_AGENT_ENVIRONMENT="local"
 export OPENAI_API_KEY=<your_openai_api_key>
 ```
 
-### 2. Configure OpenTelemetry integration
+### 2. 配置 OpenTelemetry 集成
 
 在您的 AutoGen 代理中，配置 LangSmith OpenTelemetry 集成以及 OpenAI 仪器：
 
@@ -137,7 +137,7 @@ if __name__ == "__main__":
 
 ## 高级用法
 
-### Custom metadata and tags
+### 自定义元数据和标签
 
 您可以通过设置 span 属性将自定义元数据添加到跟踪中：
 
@@ -154,9 +154,9 @@ async def run_with_metadata():
 
         # Your AutoGen code here
         await Console(team.run_stream(task=task))
-```### 与其他乐器结合
+```
 
-您可以将 AutoGen 跟踪与其他 OpenTelemetry 仪器结合起来：
+### 与其他乐器结合您可以将 AutoGen 跟踪与其他 OpenTelemetry 仪器结合起来：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from opentelemetry.instrumentation.openai import OpenAIInstrumentor

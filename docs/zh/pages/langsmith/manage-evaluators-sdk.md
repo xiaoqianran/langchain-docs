@@ -25,7 +25,7 @@
 
 ## 创建一个评估器
 
-### 代码评估器A code evaluator scores each run or example with a function that you define.
+### 代码评估器代码评估器使用您定义的函数对每次运行或示例进行评分。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -70,11 +70,11 @@ console.log("Created evaluator:", evaluatorId);
 
 ### 法学硕士法官评估员
 
-An LLM-as-a-judge evaluator references a prompt from the [prompt hub](/langsmith/prompt-engineering-quickstart) and maps your run or example fields to the prompt variables.
+LLM 作为法官评估器引用来自 [prompt hub](/langsmith/prompt-engineering-quickstart) 的提示，并将您的运行或示例字段映射到提示变量。
 
 > [!注意]
 >
-> The prompt must be a structured prompt (type `StructuredPrompt`). A `StructuredPrompt` combines a prompt template with an output schema, ensuring the model returns data in a defined structure.
+> 提示必须是结构化提示（类型`StructuredPrompt`）。 `StructuredPrompt` 将提示模板与输出模式相结合，确保模型以定义的结构返回数据。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -121,10 +121,10 @@ const created = await client.evaluators.create({
 const evaluatorId = created.evaluator?.id;
 ```
 
-The `prompt_repo_handle` is the prompt's internal repository name, not its display title or URL. To find it, list your workspace prompts and read the `repo_handle` field, or retrieve a specific prompt by its identifier in LangSmith.提示的标识符可以采用以下格式：
+`prompt_repo_handle` 是提示的内部存储库名称，而不是其显示标题或 URL。要找到它，请列出您的工作区提示并阅读 `repo_handle` 字段，或通过 LangSmith 中的标识符检索特定提示。提示的标识符可以采用以下格式：
 
-* `promptName` (for private prompts), for example `my-prompt`.
-* `owner/promptName` (for public prompts), for example `langchain-ai/correctness`.
+* `promptName`（用于私人提示），例如`my-prompt`。
+* `owner/promptName`（用于公共提示），例如`langchain-ai/correctness`。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # List workspace prompts and read each repo handle
@@ -157,9 +157,9 @@ const prompt = await client.getPrompt("<prompt-identifier>");
 console.log("prompt-repo-handle:", prompt.repo_handle);
 ```
 
-## Retrieve an evaluator
+## 检索评估器
 
-Fetch a single evaluator by its ID to read its configuration, including its name, type, feedback keys, and run rules.
+通过 ID 获取单个评估器以读取其配置，包括其名称、类型、反馈键和运行规则。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -189,9 +189,9 @@ console.log(evaluator.feedback_keys);
 console.log(evaluator.run_rules);
 ```
 
-## Update an evaluator
+## 更新评估器
 
-Pass the field that matches the evaluator type: `code_evaluator` for a code evaluator or `llm_evaluator` for an LLM-as-a-judge evaluator. `update` 仅更改您传递的字段。
+传递与评估器类型匹配的字段：`code_evaluator`（对于代码评估器）或`llm_evaluator`（对于 LLM-as-a-judge 评估器）。 `update` 仅更改您传递的字段。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -310,7 +310,7 @@ await client.evaluators.update(llmEvaluatorId, {
 });
 ```
 
-## List evaluators
+## 列出评估者
 
 按名称、类型、反馈键、附加资源或标签值进行过滤，并对结果进行排序或分页。当您直接迭代返回的对象时，`list()` 会自动对每个匹配项进行分页。 `limit` 设置每个请求的页面大小（1 到 100），而不是结果总数。 `sort_by` 是可选的，接受 `created_at` 或 `updated_at`，默认为 `created_at`。
 
@@ -389,7 +389,7 @@ await client.evaluators.list({
 });
 ```
 
-## Track evaluator spend
+## 跟踪评估者支出
 
 为您的评估者检索估计的美元支出和跟踪计数：* **`period_start`**：仅日期 ISO 字符串，例如 `2026-06-29`。传递日期时间会返回 400 错误。
   * **窗口**：`period_start` 启动一个固定的 7 天窗口，其中包括 `period_start` 及其后的六天。窗口半开，`[period_start, period_start + 7 days)`，因此排除`period_end`（`period_start` 加 7 天）。例如，`2026-06-29` 的`period_start` 涵盖`2026-06-29` 到`2026-07-05`，并且排除`2026-07-06`。
@@ -502,7 +502,7 @@ for (const group of spendByRunRule.groups ?? []) {
 
 ## 删除评估器
 
-当评估器附加到跟踪项目、代理环境或数据集时，您无法将其删除。将 `delete_run_rules` 设置为 `true` 以在删除评估器之前删除引用评估器的运行规则。
+当评估器附加到代理环境或数据集时，您无法删除它。将 `delete_run_rules` 设置为 `true` 以在删除评估器之前删除引用评估器的运行规则。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio

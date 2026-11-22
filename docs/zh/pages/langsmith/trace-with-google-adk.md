@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 安装
 
@@ -65,7 +65,7 @@ configure_google_adk()
 ```
 
 该函数接受以下可选参数：* `address`：用于发送跟踪的代理地址，而不是 `LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 名称，例如 `ls.agent_address("my-agent", "production")`。不能与`project_name`组合使用。需要`langsmith>=0.14.14`。
-* `project_name`：基于项目的跟踪的兼容性覆盖。保留其未设置以使用配置的代理和环境。
+* `project_name`：将跟踪发送到指定跟踪项目的兼容性覆盖。保留其未设置以使用配置的代理和环境。
 * `name`：根跟踪的名称。默认为`"google_adk.session"`。
 * `metadata`：附加上下文的键值对字典。
 * `tags`：用于对痕迹进行分类的字符串列表。

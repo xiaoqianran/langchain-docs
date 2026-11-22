@@ -64,8 +64,8 @@ Decision model evaluators require a LangSmith Plus or Enterprise [plan](/langsmi
 
 To add a decision model online evaluator:
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-decision-models), navigate to the **Tracing** page and select a tracing project.
-2. Click the **Evaluators** tab.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-decision-models), select your agent, go to **Tracing**, and select the environment.
+2. Click the **Online Evaluators** tab.
 3. Click **+ Evaluator** to open the **Configure Evaluator** panel.
 4. Under **Create from scratch**, select **Decision Model Evaluator**, then name your evaluator.
 5. Select a decision model, map run or thread variables into the **State**, and add questions. For each setting, see [How to define a decision model evaluator](/langsmith/decision-model-evaluator).

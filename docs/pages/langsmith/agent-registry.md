@@ -4,10 +4,10 @@
 
 What LangSmith Agent Registry is, what an agent is, how environments divide an agent's traces, and how an identifier differs from a display name.
 
-As an organization builds more agents, it gets harder to know which ones exist and where they run. LangSmith Agent Registry offers a centralized location for registering an agent, providing one place to govern every agent your organization runs, wherever it is hosted. Agent Registry is available on [LangSmith Cloud](/langsmith/cloud). Creating an agent registers it, and you can create one in four ways:
+As an organization builds more agents, it gets harder to know which ones exist and where they run. LangSmith Agent Registry offers a centralized location for registering an agent, providing one place to govern every agent your organization runs, wherever it is hosted. Creating an agent registers it, and you can create one in four ways:
 
 * [Build it in LangSmith Studio](/langsmith/build-an-agent).
-* [Create it](/langsmith/create-an-agent#name-an-agent-traced-from-outside-langsmith) from the **Connect an agent** dialog, for an agent that runs outside LangSmith.
+* [Create it from the **Connect an agent** dialog](/langsmith/create-an-agent#name-an-agent-traced-from-outside-langsmith), for an agent that runs outside LangSmith.
 * [Create it with an SDK call or API request](/langsmith/create-an-agent#create-an-agent-programmatically).
 * [Deploy it](/langsmith/deploy-to-agent-environment) through LangSmith.
 
@@ -28,10 +28,6 @@ LangSmith
 > [card] [Monitor](/langsmith/observability)
 
 > [card] [Agent Registry](#agent)
-
-> [!NOTE]
->
-> Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
 
 ## Agent
 

@@ -14,10 +14,10 @@
 
 ## 查看在线评估器
 
-在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-llm-as-judge) 中，前往 **Tracing** 选项卡并选择一个跟踪项目或代理环境。要查看该项目的现有在线评估程序，请单击“**评估程序**”选项卡。
+在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-llm-as-judge)中，选择您的代理，转到**跟踪**，然后选择环境。要查看该环境的现有在线评估程序，请单击 **在线评估程序** 选项卡。
 
-## 添加在线评估器1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-llm-as-judge)中，导航至**跟踪**页面并选择跟踪项目或代理环境。
-2. 单击**评估者**选项卡。
+## 添加在线评估器1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-llm-as-judge)中，选择您的代理，转到**跟踪**，然后选择环境。
+2. 单击**在线评估器**选项卡。
 3. 单击**+ 评估器** 打开**添加评估器** 面板。
 4. 选择以下选项之一：
    * **从头开始创建**：选择**LLM-as-a-Judge Evaluator**。
@@ -48,7 +48,7 @@
 
 ## 将规则应用于过去的运行或线程
 
-要将规则应用于过去的运行或线程，请在 **配置评估器** 面板中：1. 在**源**中，选择**运行**或**线程**。
+要将规则应用于过去的运行或线程，请在 **配置评估器** 面板中：1. 在**触发**下，选择**运行**或**线程**。
 2. 展开**高级**。
 3. 切换到 **应用到从日期开始的过去运行** 或 **应用到从日期开始的过去线程**，然后输入日期。
 
@@ -60,13 +60,13 @@
 >
 > 回填作为后台作业进行处理，因此您不会立即看到结果。
 
-为了跟踪回填的进度，您可以通过前往跟踪项目或代理环境中的 **Evaluators** 选项卡并单击您创建的评估器的日志按钮来查看评估器的日志。在线评估器日志类似于[automation rule logs](/langsmith/rules#view-logs-for-your-automations)。1. 添加评估者姓名。
+要跟踪回填进度，请打开代理环境的 **跟踪** 页面上的 **在线评估程序** 选项卡，然后单击评估程序行中的 **日志**。在线评估器日志类似于[automation rule logs](/langsmith/rules#view-logs-for-your-automations)。
+
+1. 添加评估者姓名。
 2. （可选）过滤您想要应用评估器的运行或配置采样率。
 3. 选择**应用评估程序**。
 
-## 设置支出限额
-
-您可以限制该评估者每周附加项目和数据集的 LLM 成本。默认情况下，适用组织范围的评估者限制。组织管理员可以通过在**高级**下的**支出限制**字段中设置自定义值来覆盖特定评估者的此设置。要删除覆盖并再次继承组织默认值，请单击“**重置为组织默认值**”。当每周支出达到有效限制时，LangSmith 会暂停该项目或数据集的评估程序，直到在世界标准时间星期一上午 12 点重置限制或手动增加限制。
+## 设置支出限额您可以限制该评估者每周附加项目和数据集的 LLM 成本。默认情况下，适用组织范围的评估者限制。组织管理员可以通过在**高级**下的**支出限制**字段中设置自定义值来覆盖特定评估者的此设置。要删除覆盖并再次继承组织默认值，请单击“**重置为组织默认值**”。当每周支出达到有效限制时，LangSmith 会暂停该项目或数据集的评估程序，直到在世界标准时间星期一上午 12 点重置限制或手动增加限制。
 
 详情请参阅[Track and limit evaluator spend](/langsmith/evaluator-spend)。
 
@@ -74,9 +74,9 @@
 
 查看[LLM-as-a-judge evaluators](/langsmith/llm-as-judge#evaluator-templates)了解更多信息。
 
-为了降低使用 OpenAI 模型的在线评估器的成本，您可以在 OpenAI 较慢的 [flex service tier](/langsmith/llm-as-judge#use-the-openai-flex-service-tier) 上运行它。当您在 UI 中保存自定义 LLM 作为法官评估器时，LangSmith 会自动将其提示保存到提示中心。您无需单独保存提示。要找到它，请打开 **提示** 并从过滤器下拉列表中选择 **在评估器中使用**。 **所有提示** 过滤器排除评估器链接的提示。
+为了降低使用 OpenAI 模型的在线评估器的成本，您可以在 OpenAI 较慢的 [flex service tier](/langsmith/llm-as-judge#use-the-openai-flex-service-tier) 上运行它。
 
-新的评估器提示使用名称 `eval_<evaluator_name>_<8-character suffix>`。 LangSmith 将评估者名称小写，并将字母、数字和下划线以外的字符替换为下划线。后缀包含八个随机小写字母或数字。
+当您在 UI 中保存自定义 LLM 作为法官评估器时，LangSmith 会自动将其提示保存到提示中心。您无需单独保存提示。要找到它，请打开 **提示** 并从过滤器下拉列表中选择 **在评估器中使用**。 **所有提示** 过滤器排除评估器链接的提示。新的评估器提示使用名称 `eval_<evaluator_name>_<8-character suffix>`。 LangSmith 将评估者名称小写，并将字母、数字和下划线以外的字符替换为下划线。后缀包含八个随机小写字母或数字。
 
 ## 使用决策模型作为判断
 

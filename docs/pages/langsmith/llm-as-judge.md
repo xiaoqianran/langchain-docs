@@ -18,7 +18,7 @@ This guide shows you how to define an [LLM-as-a-judge evaluator](/langsmith/eval
 
 ## Step 1. Create the evaluator
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-as-judge), click **+ Evaluator** from the [Evaluators](/langsmith/evaluators) page, or from the **Evaluators** tab within a dataset or tracing project.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-as-judge), click **+ Evaluator** from the [Evaluators](/langsmith/evaluators) page, or from a dataset's **Evaluators** tab in **Datasets & Experiments** or an agent environment's **Online Evaluators** tab on the **Tracing** page.
 2. In the **Add Evaluator** panel, select **LLM-as-a-Judge Evaluator** under **Create from scratch**. Alternatively, select **Create from a template** to start from a ready-made evaluator and edit it.
 
 ### Evaluator templates

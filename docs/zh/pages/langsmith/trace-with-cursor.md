@@ -45,27 +45,21 @@ langsmith auth login
 2. 您的 `langsmith auth login` 登录。
 3. 来自您环境的通用`LANGSMITH_API_KEY`。
 
-CLI 登录充当您的角色，因此您的工作区角色需要写入跟踪的权限。如果您从跟踪 API 密钥 (`lsv2_tr_...`) 切换到 CLI 登录，您可能会收到 403，因为无论您的角色是什么，跟踪密钥始终可以写入跟踪。如果发生这种情况，请您的管理员为您提供一个可以写入跟踪的角色，例如工作区用户，并检查项目上是否没有 [ABAC deny policy](/langsmith/abac) 阻止它。
+CLI 登录充当您的角色，因此您的工作区角色需要写入跟踪的权限。如果您从跟踪 API 密钥 (`lsv2_tr_...`) 切换到 CLI 登录，您可能会收到 403，因为无论您的角色是什么，跟踪密钥始终可以写入跟踪。如果发生这种情况，请您的管理员为您提供一个可以写入跟踪的角色，例如工作区用户，并检查代理环境上是否没有 [ABAC deny policy](/langsmith/abac) 阻止它。
 
 当您的登录过期或您的密钥被拒绝时，跟踪就会停止，并且永远不会上传该间隙的轮次。如果不停止提示，光标将无法显示消息，因此插件将原因写入`~/.cursor/langsmith_hook.log`。管理员还可以对每个提示进行[require a working sign-in](#require-a-working-sign-in)。
 
-## 开启追踪跟踪将关闭，直到您在 `~/.cursor/langsmith.json` 将其打开，除非您的管理员已使用 [managed file](#lock-settings) 将其打开。在 [agent-based workspace](/langsmith/migrate-to-agent-based-workspaces) 中，使用 `agent_id` 将跟踪发送到 [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent)：
+## 开启追踪跟踪将关闭，直到您在 `~/.cursor/langsmith.json` 将其打开，除非您的管理员已使用 [managed file](#lock-settings) 将其打开。使用 `agent_id` 将跟踪发送到 [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent)。该插件始终将它们发送到代理的 **生产** 环境：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "agent_id": "shared-cursor" }
-```
-
-在基于项目的工作区中，请改用旧版 `project` 设置：
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{ "enabled": true, "project": "shared-cursor" }
 ```
 
 > [!警告]
 >
 > 项目可以使用 `<project>/.cursor/langsmith.json` 或 `<project>/langsmith-plugins.json` 覆盖这些设置。克隆存储库可以使用它们来打开跟踪并将提示和文件发送到其他人的服务器。在信任存储库之前，请查看这些文件。 Cursor 自己的 `.cursor/hooks.json` 可以运行命令，所以也回顾一下它。
 
-发送提示并在 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-cursor) 中打开您的代理或项目。在自动模式下，模型显示为 `default` 并且子代理不显示任何令牌计数，因为 Cursor 不报告任何一个。
+发送提示，然后在 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-cursor) 中选择您的代理，转到 **跟踪**，然后选择 **生产** 环境。在自动模式下，模型显示为 `default` 并且子代理不显示任何令牌计数，因为 Cursor 不报告任何一个。
 
 ## 部署到您的组织
 
@@ -94,7 +88,7 @@ CLI 登录充当您的角色，因此您的工作区角色需要写入跟踪的�
 * 其他用户都不能写入其中任何一个。
 * 两者都不是符号链接。
 
-如果文件存在但未通过这些检查，跟踪将停止，用户会看到一条联系管理员的消息。锁定设置也会锁定与其关联的设置，因此用户无法在锁周围路由跟踪。例如，锁定 `agent_id` 还会阻止用户向具有 `project` 的项目发送跟踪。
+如果文件存在但未通过这些检查，跟踪将停止，并且用户会看到一条消息以联系其管理员。锁定设置也会锁定与其关联的设置，因此用户无法在锁周围路由跟踪。例如，锁定 `agent_id` 还会阻止用户向具有 `project` 的项目发送跟踪。
 
 管理员通常使用 Jamf 或 Microsoft Intune 等移动设备管理 (MDM) 工具在每台计算机上安装该文件。对于每个可以锁定的设置，请参阅[plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md)。> [手风琴] 设置脚本示例
 >
@@ -133,12 +127,12 @@ CLI 登录充当您的角色，因此您的工作区角色需要写入跟踪的�
 
 ## 设置
 
-每个设置都有一个配置文件密钥和一个环境变量。当两者都设置时，环境变量获胜。|配置键 |环境变量 |默认 |描述 |
+每个设置都有一个配置文件密钥和一个环境变量。当两者都设置时，环境变量获胜。|配置键|环境变量 |默认|描述 |
 | - | - | - | - |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` |打开追踪。 |
 | `api_key` | `LANGSMITH_CURSOR_API_KEY` |无 | LangSmith API 密钥。如果您使用 CLI 登录，则不需要。 |
-| `agent_id` | `LANGSMITH_AGENT_ID` |无 |代理痕迹去。如果两者都设置，则胜过`project`。 |
-| `project`（已弃用）| `LANGSMITH_CURSOR_PROJECT` | `cursor` |项目的痕迹去。使用`agent_id`，除非您的工作空间是[project-based](/langsmith/migrate-to-agent-based-workspaces#check-which-one-you-have)。 |
+| `agent_id` | `LANGSMITH_AGENT_ID` |无 |代理痕迹去。如果两者都设置，则赢得`project`。 |
+| `project`（已弃用）| `LANGSMITH_CURSOR_PROJECT` | `cursor` |项目的痕迹去。请使用 `agent_id` 代替。 |
 | `api_url` | `LANGSMITH_CURSOR_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith 要发送到的服务器。 |
 | `workspace_id` | `LANGSMITH_WORKSPACE_ID` |无 |当您使用 CLI 登录时，跟踪将转到工作区。 API 密钥会忽略它，并且您的配置文件会胜过该变量。 |
 

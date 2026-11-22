@@ -316,7 +316,7 @@ Before you use this model, create an [Azure OpenAI resource and model deployment
 
 In the Azure OpenAI provider configuration, enter your endpoint, deployment name, API version, and API key.
 
-#### Workload identity for self-hosted LangSmith
+#### AKS workload identity for self-hosted LangSmith
 
 > [!NOTE]
 >
@@ -545,9 +545,9 @@ In the LangSmith Playground, open the Gemini Enterprise Agent Platform provider 
 >
 > Treat your service account JSON key like a password. Do not share it or commit it to source control. If a key is compromised, revoke it immediately from the [Google Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts) and create a new one.
 
-#### Workload identity for self-hosted LangSmith
+#### GKE workload identity for self-hosted LangSmith
 
-Self-hosted LangSmith on GKE can use Workload Identity Federation and Application Default Credentials (ADC) instead of a JSON key. This keyless alternative supports Playground, Chat (`polly` in Helm), and Insights. See [Authenticate Vertex AI with GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity) to configure each workload identity.
+Self-hosted LangSmith on GKE can use Workload Identity Federation and Application Default Credentials (ADC) instead of a JSON key. This keyless alternative supports Playground, Chat (`polly` in Helm), Insights, and Fleet. See [Authenticate Vertex AI with GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity) to configure each workload identity.
 
 ### Available models
 

@@ -43,7 +43,7 @@ For a shorter walkthrough, see the [deployment quickstart](/langsmith/deployment
 >
 > 11. Add environment variables and secrets. For more information, see [Environment variables](/langsmith/env-var-cloud).
 >
-> 12. Select **Submit**. LangSmith queues the Agent Server for provisioning. In a project-based workspace, LangSmith also creates a tracing project with the same name as the Agent Server. In an agent-based workspace, LangSmith instead binds the Agent Server to an [agent](/langsmith/agent-registry#agent), and the Agent Server reports into one of the agent's [environments](/langsmith/agent-environments).
+> 12. Select **Submit**. LangSmith queues the Agent Server for provisioning. LangSmith also binds the Agent Server to an [agent](/langsmith/agent-registry#agent), and the Agent Server reports into one of the agent's [environments](/langsmith/agent-environments).
 >
 > > [!NOTE]
 > >

@@ -4,13 +4,13 @@
 
 # 设置LangSmith引擎
 
-为您的组织启用 LangSmith 引擎，为跟踪项目打开它，并配置它分析的内容。
+为您的组织启用 LangSmith 引擎，为代理环境打开它，并配置它分析的内容。
 
-设置 [LangSmith Engine](/langsmith/engine) 需要两个步骤。 [Organization Admin](/langsmith/rbac#organization-admin) 首先为组织启用引擎。然后，任何 [role](/langsmith/rbac) 可以更新跟踪项目的用户都会为每个跟踪项目或代理环境打开引擎。引擎运行后，[configure it](#configure-engine) 专注于对您重要的问题和跟踪。
+设置 [LangSmith Engine](/langsmith/engine) 需要两个步骤。 [Organization Admin](/langsmith/rbac#organization-admin) 首先为组织启用引擎。然后，[Workspace Admin or Workspace Editor](/langsmith/rbac#workspace-roles) 或具有包含 `issues:create` 的自定义角色的用户为每个代理环境打开引擎。引擎运行后，工作区管理员、工作区编辑者和包含 `issues:update` 的自定义角色可以 [configure it](#configure-engine) 专注于特定问题和跟踪。
 
 > [!注意]
 >
-> 在自托管 LangSmith 上，操作员必须在 LangSmith Helm 图表中启用引擎，然后任一步骤可用。在 [BYOC](/langsmith/byoc) 上，组织管理员还必须在引擎运行之前添加模型提供者凭据。参见[Engine on self-hosted and BYOC](/langsmith/engine-self-hosted)。
+> 在自托管 LangSmith 上，操作员必须在 LangSmith Helm 图表中启用引擎，然后任一步骤可用。在 [BYOC](/langsmith/byoc) 上，组织管理员还必须在引擎运行之前添加模型提供程序凭据。参见[Engine on self-hosted and BYOC](/langsmith/engine-self-hosted)。
 
 ## 为您的组织启用引擎
 
@@ -22,19 +22,19 @@
 
 在[LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine-setup)中，点击左下角的**设置**，然后选择**引擎**下的**引擎**。
 
-**2.切换启用引擎**
+**2.切换启用引擎**打开 **启用引擎** 并确认 AI 功能使用条款。该对话框逐字显示以下产品内通知：
 
-打开 **启用引擎** 并确认 AI 功能使用条款。该对话框逐字显示以下产品内通知：> LangSmith AI 功能由 LangChain 托管推理提供支持，为您的可观察性工作流程带来智能。启用 LangSmith AI 后，您的团队可以更快地发现问题、运行更智能的评估并构建更可靠的 LLM 申请。通过启用此功能，您组织的跟踪数据将使用 LangChain 管理的 LLM 密钥进行处理。遵守我们的服务条款。
+> LangSmith AI 功能由 LangChain 托管推理提供支持，为您的可观察性工作流程带来智能。启用 LangSmith AI 后，您的团队可以更快地发现问题、运行更智能的评估并构建更可靠的 LLM 申请。通过启用此功能，您组织的跟踪数据将使用 LangChain 管理的 LLM 密钥进行处理。遵守我们的服务条款。
 
-启用引擎后，其角色可以更新跟踪项目的任何用户都可以针对跟踪项目或代理环境进行设置。对项目具有只读访问权限的角色则不能。
+启用引擎后，工作区管理员或工作区编辑者或具有包含 `issues:create` 的自定义角色的用户可以将其设置为代理环境。之后更改其设置需要`issues:update`，工作区管理员和工作区编辑器也有。工作区查看器两者都不能做。
 
 ## 为跟踪项目打开引擎
 
 **1.打开引擎并选择一个项目**
 
-在 [LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine-setup) 中，选择 UI 侧栏中的 **Engine**。项目选择器列出了已配置的项目。要设置未列出的项目，请单击 **+ 设置另一个项目**，然后在 **选择要分析的项目** 下选择它。跟踪项目中的 **Engine** 选项卡也可用。
+在 [LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine-setup) 中，选择 UI 侧栏中的 **Engine**。项目选择器列出了已配置的项目。要设置未列出的项目，请单击 **+ 设置另一个项目**，然后在 **选择要分析的项目** 下选择它。跟踪项目中的 **Engine** 选项卡也可用。**2.连接代码存储库（可选）**
 
-**2.连接代码存储库（可选）**连接存储库是可选的，但建议这样做，因为引擎在读取源代码时会发现更好的问题。参见[Why connect a repository](/langsmith/engine#why-connect-a-repository)。在 **连接代理的代码存储库** 下，选择引擎应使用的存储库。仅显示 GitHub 应用程序可以访问的存储库。单击 **管理应用程序访问 →** 以更新权限。一旦成为工作区管理员[connects GitLab](/langsmith/engine-repositories#connect-gitlab)，GitLab 项目就会出现。有关 GitHub 应用程序设置和组织批准，请参阅[Connect Engine to your repository](/langsmith/engine-repositories)。要为引擎提供额外的项目上下文，请在 **Context Hub 存储库** 字段中选择一个存储库。
+连接存储库是可选的，但建议这样做，因为引擎在读取源代码时会发现更好的问题。参见[Why connect a repository](/langsmith/engine#why-connect-a-repository)。在 **连接代理的代码存储库** 下，选择引擎应使用的存储库。仅显示 GitHub 应用程序可以访问的存储库。单击 **管理应用程序访问 →** 以更新权限。一旦成为工作区管理员[connects GitLab](/langsmith/engine-repositories#connect-gitlab)，GitLab 项目就会出现。有关 GitHub 应用程序设置和组织批准，请参阅[Connect Engine to your repository](/langsmith/engine-repositories)。要为引擎提供额外的项目上下文，请在 **Context Hub 存储库** 字段中选择一个存储库。
 
 还要在跟踪上设置`revision_id`，以便引擎可以将每个跟踪与生成它的提交相匹配。然后，引擎从运行的代码中进行推理，例如，当指标回归时，通过比较两个版本之间传送的提交。参见[Record the code version on traces](/langsmith/add-metadata-tags#record-the-code-version-on-traces)。
 
@@ -58,16 +58,14 @@
 
 ## 配置引擎
 
-在**引擎**页面上，单击问题列表顶部的**配置引擎**（齿轮）图标以打开**引擎设置**面板。使用它为引擎提供代理的上下文，告诉它要关注什么，然后连接 Linear。该面板还包含其他地方介绍的设置：
-
-* **代码存储库**和**上下文存储库**：连接或更新诊断问题时引擎读取的 GitHub 存储库和 GitLab 项目。每个存储库或项目都可以有自己的**子文件夹**和**分支**（默认为存储库默认值）。 Context Hub 存储库可让引擎针对说明、文档和链接技能提出修复建议。参见[Connect Engine to your repository](/langsmith/engine-repositories)。
+在代理的 **引擎** 页面上，从页面顶部的环境切换器中选择环境，然后单击 **配置引擎**（齿轮）图标以打开 **引擎设置** 面板。使用它为引擎提供代理的上下文，告诉它要关注什么，然后连接 Linear。该面板还包含其他地方介绍的设置：* **代码存储库**和**上下文存储库**：连接或更新诊断问题时引擎读取的 GitHub 存储库和 GitLab 项目。每个存储库或项目都可以有自己的**子文件夹**和**分支**（默认为存储库默认值）。 Context Hub 存储库可让引擎针对说明、文档和链接技能提出修复建议。参见[Connect Engine to your repository](/langsmith/engine-repositories)。
 * **通知**：请参阅[Engine notifications](/langsmith/engine-notifications)。
 * **代理服务器**：设置代理服务器引擎重播问题跟踪的基线。要自动验证引擎建议的修复，请选择**使用预览代理服务器验证修复**。参见[Validate fixes automatically](/langsmith/engine-fix-validation)。
 * **分析级别**：参见[Set the analysis level](/langsmith/engine#set-the-analysis-level)。
-* **支出限额**：参见[Set spend limits and monitor usage](/langsmith/engine#set-spend-limits-and-monitor-usage)。
-* **暂停**和**删除所有问题**：请参阅[Pause Engine or delete its issues](#pause-engine-or-delete-its-issues)。### 提供有关您的代理的背景信息
+* **支出限制**：更改环境的支出限制需要[Organization Admin](/langsmith/rbac#organization-admin)。参见[Set spend limits and monitor usage](/langsmith/engine#set-spend-limits-and-monitor-usage)。
+* **暂停**和**删除所有问题**：请参阅[Pause Engine or delete its issues](#pause-engine-or-delete-its-issues)。
 
-在设置过程中，引擎会生成一个代理概述文档，描述项目的目的、架构和关键指标。引擎将其用作所有分析的上下文，因此其准确性会影响检测到的问题的质量。在 **代理概述** 下，编辑文档以添加引擎无法从您的跟踪中推断出的任何相关上下文，并确保其准确。该文档的 **用户首选项** 部分还收集了引擎具有 [learned from your actions on issues](/langsmith/engine#how-engine-learns-from-your-actions-on-issues) 的内容，因此您可以在此处查看并更正这些校准。
+### 提供有关您的代理的背景信息在设置过程中，引擎会生成一个代理概述文档，描述项目的目的、架构和关键指标。引擎将其用作所有分析的上下文，因此其准确性会影响检测到的问题的质量。在 **代理概述** 下，编辑文档以添加引擎无法从您的跟踪中推断出的任何相关上下文，并确保其准确。该文档的 **用户首选项** 部分还收集了引擎具有 [learned from your actions on issues](/langsmith/engine#how-engine-learns-from-your-actions-on-issues) 的内容，因此您可以在此处查看并更正这些校准。
 
 ### 告诉引擎要关注哪些类型的问题
 

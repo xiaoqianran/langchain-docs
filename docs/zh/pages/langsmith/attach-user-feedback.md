@@ -6,11 +6,11 @@
 
 LangSmith 可以轻松地将 [feedback](/langsmith/observability-concepts#feedback) 连接到 [traces](/langsmith/observability-concepts#traces)。这种反馈可以来自用户、注释者、自动评估者等，这对于监控和评估代理至关重要。
 
-本页详细介绍了如何使用 [SDK](/langsmith/reference) 记录反馈。反馈对象的结构参见[Feedback data format](/langsmith/feedback-data-format)。
+本页详细介绍了如何使用 [SDK](/langsmith/reference) 记录反馈。反馈对象的结构请参见[Feedback data format](/langsmith/feedback-data-format)。
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T3⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T3⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 使用 `create_feedback()` / `createFeedback`
 
@@ -98,9 +98,9 @@ await client.createFeedback({
 });
 ```
 
-对于基于项目的跟踪，请使用 `readProject` 和现有项目名称来获取其 ID，而不是解析代理地址。分辨率要求请参见[Resolve an agent environment](/langsmith/resolve-an-agent)。
+从代理地址查找 `session_id` 需要自托管 LangSmith v0.18 或更高版本以及 `langsmith>=0.14.9` (Python) 或 `langsmith@>=0.11.0` (TypeScript)。 BYOC 数据平面尚不支持它。详情请参见[Resolve an agent environment](/langsmith/resolve-an-agent)。
 
-您甚至可以使用 [⟦T11⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback) / [⟦T12⟧](https://reference.langchain.com/javascript/langsmith/client/Client) 记录正在进行的运行的反馈。请参阅 [Access the current run (span) within a traced function](/langsmith/access-current-span) 了解如何获取正在进行的运行的运行 ID。
+您甚至可以使用 [⟦T13⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback) / [⟦T14⟧](https://reference.langchain.com/javascript/langsmith/client/Client) 记录正在进行的运行的反馈。请参阅 [Access the current run (span) within a traced function](/langsmith/access-current-span) 了解如何获取正在进行的运行的运行 ID。
 
 ## 从用户界面收集反馈
 

@@ -16,7 +16,7 @@ LangSmith是用于测试、部署、监控和改进代理的平台。此选项�
 >
 > 云、自带云 (BYOC) 和自托管，以及如何选择与您的数据所在位置相匹配的云。
 
-> [卡][Agent-based workspaces](/langsmith/agent-registry)
+> [卡][Agent Registry](/langsmith/agent-registry)
 >
 > 代理、保存每个代理痕迹的环境、如何在代理之间切换以及如何在 UI 中构建代理。
 

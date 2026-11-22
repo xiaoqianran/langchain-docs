@@ -31,7 +31,7 @@
 
 * `LANGSMITH_API_KEY`：您的[LangSmith API key](/langsmith/create-account-api-key)。
 
-* 在 [agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行追踪之前。使用[agent addressing](/langsmith/log-traces-to-agent)：设置`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`。使用代理寻址时删除旧的目标变量和覆盖。
+* 追踪之前，[create an agent](/langsmith/create-an-agent) 和 [set ⟦T28⟧ and ⟦T29⟧](/langsmith/log-traces-to-agent)。
 
 ## 使用 `@traceable` / `traceable`
 
@@ -39,7 +39,7 @@
 
 以下示例跟踪一个简单的管道：`run_pipeline` 调用 `format_prompt` 构建消息，`invoke_llm` 调用模型，以及 `parse_output` 提取结果。
 
-每个函数都被单独跟踪，并且因为它们是从 `run_pipeline` 内部调用的（也被跟踪），所以 LangSmith 在子运行时自动嵌套它们。 `invoke_llm`使用`run_type="llm"`将其标记为LLM调用，因此LangSmith可以正确呈现令牌计数和延迟：
+每个函数都被单独跟踪，并且因为它们是从 `run_pipeline` 内部调用的（也被跟踪），所以LangSmith 在子运行时自动嵌套它们。 `invoke_llm`使用`run_type="llm"`将其标记为LLM调用，因此LangSmith可以正确呈现令牌计数和延迟：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import traceable
@@ -257,9 +257,9 @@ val runPipeline =
     )
 
 println(runPipeline("colorful socks"))
-```在 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotate-code) 中，您将找到 `run_pipeline` 跟踪，其中 `format_prompt`、`invoke_llm` 和 `parse_output` 作为嵌套子运行。
+```
 
-> [!注意]
+在 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotate-code) 中，您将找到 `run_pipeline` 跟踪，其中 `format_prompt`、`invoke_llm` 和 `parse_output` 作为嵌套子运行。> [!注意]
 >
 > 当您使用 `traceable` 包装同步函数时（例如上例中的 `formatPrompt`），请在调用它时使用 `await` 关键字以确保正确记录跟踪。
 

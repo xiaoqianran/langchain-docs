@@ -18,7 +18,7 @@ You can use multi-turn evaluations to measure:
 
 > [!NOTE]
 >
-> Multi-turn online evaluators can extend trace retention by default. You can opt out when configuring the evaluator so that traces keep the project's configured retention tier. Traces are still upgraded if another action explicitly extends retention or the project already uses extended retention. For step-by-step opt-out instructions, see [Manage evaluator trace retention](/langsmith/evaluators#manage-evaluator-trace-retention). For details, see [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).
+> Multi-turn online evaluators can extend trace retention by default. You can opt out when configuring the evaluator so that traces keep the agent environment's default retention tier. Traces are still upgraded if another action explicitly extends retention or the environment already uses extended retention. For step-by-step opt-out instructions, see [Manage evaluator trace retention](/langsmith/evaluators#manage-evaluator-trace-retention). For details, see [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).
 
 ## How it works
 
@@ -34,7 +34,7 @@ This lifecycle means that multi-turn evaluators run once per completed thread, n
 
 ## Prerequisites
 
-* Your tracing project, or agent environment, must be using [threads](/langsmith/threads).
+* Your agent environment must be using [threads](/langsmith/threads).
 * The top-level inputs and outputs of each trace in a thread must have a `messages` key that contains a list of messages. We support messages in [LangChain](/langsmith/log-llm-trace#messages-format), [OpenAI Chat Completions](https://platform.openai.com/docs/api-reference/chat/create), and [Anthropic Messages](https://platform.claude.com/docs/en/api/messages) formats.
   * If the top-level inputs and outputs of each trace only contain the latest message in the conversation, LangSmith will automatically combine messages across turns into a thread.
   * If the top-level inputs and outputs of each trace contain the full conversation history, LangSmith will use that directly.
@@ -47,51 +47,51 @@ This lifecycle means that multi-turn evaluators run once per completed thread, n
 
 ## Configuration
 
-1. Navigate to the **Tracing** page and select a tracing project, or an agent environment.
+To create a multi-turn online evaluator:
 
-2. Click the **Evaluators** tab, then click **+ Evaluator**. Select **LLM-as-a-Judge Evaluator** under **Create from scratch**. Under **Source**, select **Threads**.
+1. Select your agent, go to **Tracing**, and select the environment.
+2. Click the **Online Evaluators** tab, then click **+ Evaluator**, and select **LLM-as-a-Judge Evaluator** under **Create from scratch**.
+3. Name your evaluator.
+4. Under **Trigger On**, select **Threads**.
+5. Apply **Filters** or a **Sampling Rate**. Use filters or sampling to control evaluator cost. For example, evaluate only threads under *N* turns or sample 10% of all threads.
+6. Configure the remaining settings:
+   * [Check the idle time](#check-the-idle-time)
+   * [Choose a model](#configure-your-model)
+   * [Write the LLM-as-a-judge prompt](#configure-your-llm-as-a-judge-prompt)
+   * [Set up feedback](#set-up-your-feedback-configuration)
+7. Click **Create**. Your evaluator appears in the **Online Evaluators** tab. You can test it once the idle time has passed for any new threads created after that.
 
-3. **Name your evaluator**.
+### Check the idle time
 
-4. Apply **Filters** or a **Sampling Rate**.
+Under **Advanced**, **Thread Idle Time** shows the environment's idle time: the amount of time after the last trace in a thread before it is considered complete and ready for evaluation. This value should reflect the expected length of user interactions in your app. The idle time defaults to 10 minutes and cannot be set below 2 minutes.
 
-   Use filters or sampling to control evaluator cost. For example, evaluate only threads under *N* turns or sample 10% of all threads.
+> [!NOTE]
+>
+> The idle time is set on the agent environment. It applies to every thread-level evaluator on that environment and to every [automation rule](/langsmith/rules#set-the-thread-idle-time) whose item type is **Threads**. To change it, click the **Edit tracing settings**  icon next to the value or on the environment's **Tracing** page.
 
-5. **Configure an idle time**.
+> [!TIP]
+>
+> When first testing your evaluator, use a short idle time so you can see results quickly, subject to the 2-minute minimum. Once validated, increase it to match the expected length of user interactions.
 
-   The first time you configure a thread-level evaluator, you can define the idle time, the amount of time after the last trace in a thread before it is considered complete and ready for evaluation. This value should reflect the expected length of user interactions in your app. The idle time defaults to 10 minutes and cannot be set below 2 minutes.
+### Configure your model
 
-   > [!NOTE]
-   >
-   > The idle time is a project-level setting. It applies to every thread-level evaluator in the project and to every [automation rule](/langsmith/rules#set-the-thread-idle-time) whose item type is **Threads**.
+Select the provider and model for your evaluator. Threads tend to get long, so use a model with a large context window to avoid running into limits. For example, OpenAI's GPT-5.4 mini and Gemini 2.5 Flash both have 1M+ token context windows.
 
-   > [!TIP]
-   >
-   > When first testing your evaluator, use a short idle time so you can see results quickly, subject to the 2-minute minimum. Once validated, increase it to match the expected length of user interactions.
+### Configure your LLM-as-a-judge prompt
 
-6. **Configure your model.**
+Define what you want to evaluate. The evaluator applies this prompt to the thread. You can also configure which parts of the assembled conversation the `all_messages` variable passes to the evaluator:
 
-   Select the provider and model you want to use for your evaluator. Threads tend to get long, so you should use a model with a higher context window in order to avoid running into limits. For example, OpenAI's GPT-5.4 mini or Gemini 2.5 Flash are good options as they both have 1M+ token context windows.
+* All messages: Send the full conversation as a list of JSON message objects in OpenAI chat format (`{"role": ..., "content": ...}`), with each message rendered as indented JSON and separated by a blank line.
+* Human and AI pairs: Send only user and assistant messages, formatted as `<user>...</user>` and `<assistant>...</assistant>` and excluding system messages, tool calls, and other roles.
+* First human and last AI: Send only the first user message and the last assistant reply.
 
-7. **Configure your LLM-as-a-judge prompt.**
+### Set up your feedback configuration
 
-   Define what you want to evaluate. This prompt will be used to evaluate the thread. You can also configure which parts of the assembled conversation are passed to the evaluator through the `all_messages` variable to control the content it receives:
+Configure a name for the feedback key, the format for the feedback you want to collect and optionally enable reasoning on the feedback.
 
-   * All messages: Send the full conversation as a list of JSON message objects in OpenAI chat format (`{"role": ..., "content": ...}`), with each message rendered as indented JSON and separated by a blank line.
-   * Human and AI pairs: Send only user and assistant messages, formatted as `<user>...</user>` and `<assistant>...</assistant>` and excluding system messages, tool calls, and other roles.
-   * First human and last AI: Send only the first user message and the last assistant reply.
-
-8. **Set up your feedback configuration**.
-
-   Configure a name for the feedback key, the format for the feedback you want to collect and optionally enable reasoning on the feedback.
-
-   > [!WARNING]
-   >
-   > Using the same feedback key for a thread-level evaluator and a run-level evaluator is **not recommended** as it can be hard to distinguish between the two.
-
-9. **Save your evaluator.**
-
-   After saving, your evaluator will appear in the **Evaluators** tab. You can test it once the idle time has passed for any new threads created after saving.
+> [!WARNING]
+>
+> Using the same feedback key for a thread-level evaluator and a run-level evaluator is **not recommended** as it can be hard to distinguish between the two.
 
 ## Evaluate trajectories
 
@@ -114,16 +114,16 @@ For the message shape each variable resolves to, see [Thread message variables](
 
 > [!WARNING]
 >
-> A trajectory is typically larger than any of the other views, because it encompasses both root and child runs. Choose a model with a high context window, as described in step 6 of [Configuration](#configuration), and expect higher token usage per evaluation.
+> A trajectory is typically larger than any of the other views, because it encompasses both root and child runs. Choose a model with a high context window, as described in [Configure your model](#configure-your-model), and expect higher token usage per evaluation.
 
 ### Use the trajectory variable
 
 Follow the [configuration](#configuration) steps above. Two things change:
 
-1. Under **Source**, select **Threads**. The variable is available only on an evaluator that runs against a tracing project, not against a dataset.
+1. Under **Trigger On**, select **Threads**. The variable is available only on an evaluator that runs on an agent environment, not on a dataset.
 2. Reference `{{trajectory}}` in your prompt and map that variable to the `trajectory` source. The variable must be named `trajectory`: a differently named variable pointed at that source is rejected. The seeded default prompt and mapping already do this, so a new evaluator needs no changes here.
 
-Switching **Source** between **Runs** and **Threads** reseeds the default prompt only while you have not edited it. Once you edit the prompt, your version is kept, and you map the variables yourself.
+Switching **Trigger On** between **Runs** and **Threads** reseeds the default prompt only while you have not edited it. Once you edit the prompt, your version is kept, and you map the variables yourself.
 
 `{{trajectory}}` cannot appear alongside `{{all_messages}}`, `{{human_ai_pairs}}`, or `{{first_human_last_ai}}`. Once you map the trajectory source, the other sources are disabled in the variable source dropdown, and once you map one of the others, the trajectory source is disabled. Either way, the dropdown explains that trajectory variables and non-trajectory variables cannot be used together. Saving an evaluator that mixes them fails the same way.
 
@@ -141,7 +141,7 @@ An evaluator that uses `trajectory` supports the following settings:
 
 * **Filters**: Limit which threads the evaluator runs on.
 * **Sampling rate**: Evaluate a percentage of the threads that match your filters.
-* **Idle time**: The project-level thread idle time, which applies to every thread-level evaluator in the project.
+* **Idle time**: The agent environment's thread idle time, which applies to every thread-level evaluator on that environment.
 
 The following options are not available, and a configuration that includes one is rejected:
 
@@ -164,11 +164,11 @@ These are the current limits for thread-level processing (subject to change). Th
 
 **Checking the status of your evaluator**
 
-You can check when your evaluator was last run by heading to the **Evaluators** tab within a tracing project or agent environment and clicking the **Logs** button for the evaluator you created to view its run history.
+To check when your evaluator last ran, open the agent environment's **Online Evaluators** tab on the **Tracing** page and click **Logs** in your evaluator's row to view its run history.
 
 **Inspect the data sent to the evaluator**
 
-Inspect the data sent to the evaluator by heading to the **Evaluators** tab within a tracing project or agent environment, clicking on the evaluator you created and clicking the **Traces** tab. The tab shows traces only if you [turned on tracing for the evaluator](/langsmith/evaluators#trace-evaluator-runs). New evaluators start with tracing turned off.
+To inspect the data sent to your evaluator, open the agent environment's **Online Evaluators** tab on the **Tracing** page, click your evaluator, and click the **Traces** tab. The tab shows traces only if you [turned on tracing for the evaluator](/langsmith/evaluators#trace-evaluator-runs). New evaluators start with tracing turned off.
 
 In this tab, you can see the inputs passed into the LLM-as-a-judge evaluator. If your messages are not being passed in correctly, you will see blank values in the inputs. This can happen if your messages are not formatted in one of [the expected formats](/langsmith/online-evaluations-multi-turn#prerequisites).
 

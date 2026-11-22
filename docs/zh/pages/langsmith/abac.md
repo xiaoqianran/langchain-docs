@@ -8,7 +8,7 @@
 
 基于属性的访问控制 (ABAC) 允许组织管理员根据资源的属性授予或限制对 LangSmith 资源的访问权限。
 
-它建立在 [role-based access control (RBAC)](/langsmith/rbac) 之上。角色授予跨整个工作区的权限，例如读取每个项目。访问策略将该权限缩小或扩展到属性匹配的资源，例如标记为`Environment=Development`的项目。
+它建立在 [role-based access control (RBAC)](/langsmith/rbac) 之上。角色授予整个工作区的权限，例如读取每个项目。访问策略将该权限缩小或扩展到属性匹配的资源，例如标记为`Environment=Development`的项目。
 
 访问策略可以匹配两种属性：
 
@@ -105,7 +105,7 @@
 某些资源类型的评估方式不同：
 
 * **运行**：运行没有自己的标签。运行权限（`runs:read`、`runs:read-inputs`、`runs:read-outputs`、`runs:create`、`runs:share`、`runs:delete`）根据父项目的标签进行评估。输入输出权限对响应的影响请参见[Control access to run inputs and outputs](#control-access-to-run-inputs-and-outputs)。
-* **代理环境**：在 [agent-based workspace](/langsmith/agent-registry) 中，跟踪项目是代理的 [environment](/langsmith/agent-environments) 之一。 `project` 条件组分别适用于每个环境，而不是整个代理。
+* **代理环境**：`project` 资源类型涵盖代理环境。其策略分别适用于每个[environment](/langsmith/agent-environments)，而不适用于整个代理。
 * **数据集克隆**：克隆将示例从源数据集复制到目标数据集。 LangSmith 检查 `datasets:clone` 两次，一次针对每个数据集的标签。策略必须在两个数据集上授予`datasets:clone`。
 
 #### 条件
@@ -128,7 +128,7 @@
 | `matches` |与 `*` 和 `?` 通配符匹配的 Glob 模式 |
 | `not_matches` |当值与全局模式不匹配时匹配 |
 
-#### `_if_exists` 变种
+#### `_if_exists` 变体
 
 每个运算符都有一个 `_if_exists` 变体，当标签键不存在时默认匹配，或者当标签存在时正常评估条件：|操作员|描述 |
 | - | - |
@@ -141,7 +141,7 @@
 
 > [!提示]
 >
-> 在 **允许** 策略中，`_if_exists` 变体授予对匹配条件或不具有指定标签键的资源的访问权限。在“拒绝”策略中，它们会阻止匹配条件或不具有标记键的资源。
+> 在 **允许** 策略中，`_if_exists` 变体授予对匹配条件或不具有指定标签键的资源的访问权限。在“拒绝”策略中，它们会阻止匹配条件或不具有标签键的资源。
 
 ### 角色
 
@@ -153,7 +153,7 @@
 
 ## 管理访问策略
 
-使用可视化编辑器或[LangSmith API](https://api.smith.langchain.com/docs#/access_policies)管理组织设置中的访问策略。两者都需要`organization:access-control:manage`。
+使用可视化编辑器或[LangSmith API](/langsmith/smith-api/access_policies/list-access-policies)管理组织设置中的访问策略。两者都需要`organization:access-control:manage`。
 
 ### 在 UI 中创建访问策略
 
@@ -161,7 +161,7 @@
 
 创建访问策略：
 
-1. 转至 **设置**，然后选择 **组织**。然后转到 **权限** > **访问策略**。在某些版本的设置页面中，此页面在**访问和安全**下列为 **ABAC**。
+1. 转至 **设置**，然后选择 **组织**。然后转到 **权限** > **访问策略**。在某些版本的设置页面中，此页面在 **访问和安全** 下列为 **ABAC**。
 2. 在 **ABAC** 下，选择 **策略** 选项卡，然后单击 **创建策略**。
 3. 输入 **名称** 和可选的 **说明**。
 4. 将**效果**设置为**允许**或**拒绝**。
@@ -250,7 +250,7 @@
 5. 单击“**保存条件**”，然后单击“**添加规则**”。
 6. 在 **角色** 下，添加不应看到这些跟踪的工作区角色。单击**创建策略**。这会生成 [Hide traces by root run metadata](#7-hide-traces-by-root-run-metadata) 示例策略。在同一规则中添加资源标签条件，将其限制为特定项目。
 
-对于 [show users only the traces labeled for them](#8-show-users-only-the-traces-labeled-for-them)，请改用 **允许**。将**元数据键**设置为`allowed_ls_user_id`，并保留预填充的`${user.ls_user_id}`作为**元数据值**。将策略附加到没有 `runs:read` 的角色。如果角色具有`runs:read`，则其 RBAC 权限仍授予对其他跟踪的访问权限。
+对于[show users only the traces labeled for them](#8-show-users-only-the-traces-labeled-for-them)，请改用**允许**。将**元数据键**设置为`allowed_ls_user_id`，并保留预填充的`${user.ls_user_id}`作为**元数据值**。将策略附加到没有 `runs:read` 的角色。如果角色具有`runs:read`，则其 RBAC 权限仍授予对其他跟踪的访问权限。
 
 ### 元数据条件如何与 RBAC 结合
 
@@ -491,7 +491,7 @@
 
 > [!注意]
 >
-> 如果您依赖 LangSmith SDK 在跟踪摄取期间自动创建跟踪项目，则 `tag_value_ids` 参数在该自动创建路径上不可用。为了确保 ABAC 策略从一开始就适用，请在开始跟踪会话之前通过 `POST /api/v1/sessions` 使用所需的 `tag_value_ids` 预先创建项目。
+> 如果您依赖 LangSmith SDK 在跟踪提取期间自动创建跟踪项目，则 `tag_value_ids` 参数在该自动创建路径上不可用。为了确保 ABAC 策略从一开始就适用，请在开始跟踪会话之前通过 `POST /api/v1/sessions` 使用所需的 `tag_value_ids` 预先创建项目。
 
 ## 故障排除
 
@@ -532,4 +532,4 @@
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/abac.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/abac.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

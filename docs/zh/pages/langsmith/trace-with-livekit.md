@@ -18,7 +18,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在 [agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 安装
 
@@ -77,7 +77,7 @@ async def my_agent(ctx: agents.JobContext):
     )
 ```
 
-`configure_livekit()` 默认使用 LiveKit 会话录音。 `record={"audio": True}` 选项告诉 LiveKit 创建录音。此设置适用于 STT/LLM/TTS 级联和语音到语音（实时）模型。实时模型需要一次额外的调用来捕获用户的记录。欲了解更多信息，请参阅[Use a realtime model](#use-a-realtime-model)。
+`configure_livekit()` 默认使用 LiveKit 会话录音。 `record={"audio": True}` 选项告诉 LiveKit 创建录音。此设置适用于 STT/LLM/TTS 级联和语音到语音（实时）模型。实时模型需要一次额外的调用来捕获用户的记录。有关更多信息，请参阅[Use a realtime model](#use-a-realtime-model)。
 
 ### 使用您自己的跟踪器提供程序
 

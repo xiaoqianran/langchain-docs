@@ -27,7 +27,7 @@ You can manage resource tags through the [LangSmith UI](https://smith.langchain.
 > To create a tag:
 >
 > 1. Navigate to the workspace **Settings** page and click on **Resource tags** in the left-hand sidebar.
-> 2. Here, you'll find the existing tag values, grouped by key. LangSmith creates the **Application** and **Environment** keys by default.
+> 2. Here, you can find the existing tag values, grouped by key. LangSmith creates the **Application** and **Environment** keys by default. It adds the **Agent** key when you create the first [agent](/langsmith/agent-registry#agent) in the workspace, with one value per agent, named after the agent's identifier.
 > 3. Select  **New Tag** at the top of the page. You'll be prompted to enter a key and a value for the tag. Note that you can use an existing key or create a new one.
 >
 >    ![Create resource tag modal accessed from the Settings menu in the LangSmith UI.](https://mintcdn.com/langchain-5e9cc07a/86CKyoiUyLIrfcjr/langsmith/images/create-tag-light.png?fit=max\&auto=format\&n=86CKyoiUyLIrfcjr\&q=85\&s=3b409ea215cfd522d6c31c5231b26bd3)
@@ -38,7 +38,7 @@ You can manage resource tags through the [LangSmith UI](https://smith.langchain.
 >
 > > [!NOTE]
 > >
-> > You can only tag workspace-scoped resources with resource tags. This includes Tracing Projects, Annotation Queues, Deployments, Experiments, Datasets, and Prompts. In an [agent-based workspace](/langsmith/agent-registry), a tracing project is one [environment](/langsmith/agent-environments) of an agent, so tagging one tags a single environment rather than the agent.
+> > You can only tag workspace-scoped resources with resource tags. This includes Agent Environments, Annotation Queues, Deployments, Datasets, Prompts, Sandboxes, MCP Servers, Integrations, Custom Apps, Evaluators, Conversations, and Alerts. Tagging an [agent environment](/langsmith/agent-environments) tags that environment only, not the whole agent.
 >
 > To un-assign a tag from a resource, click the  trash icon next to the tag, both in the tag panel and the resource tag panel.
 >
@@ -119,7 +119,7 @@ You can manage resource tags through the [LangSmith UI](https://smith.langchain.
 >
 > > [!NOTE]
 > >
-> > **Permissions**: Assigning the **Application** tag only requires update access to the target resource,
+> > **Permissions**: Assigning the **Agent** or **Application** tag only requires update access to the target resource,
 > > so editors can do this without `workspaces:manage`. Assigning any other tag key requires `workspaces:manage`.
 >
 > **Applying existing tags**: If the key and value already exist (for example, the default **Application** key), retrieve their IDs first and go straight to the assign step:
@@ -176,7 +176,7 @@ You can manage resource tags through the [LangSmith UI](https://smith.langchain.
 >
 > > [!NOTE]
 > >
-> > **Permissions**: Applying the **Application** tag at creation time requires only update access to the resource type. Applying any other tag key requires the [`workspaces:manage`](/langsmith/organization-workspace-operations) permission.
+> > **Permissions**: Applying the **Agent** or **Application** tag at creation time requires only update access to the resource type. Applying any other tag key requires the [`workspaces:manage`](/langsmith/organization-workspace-operations) permission.
 >
 > > [!TIP]
 > >

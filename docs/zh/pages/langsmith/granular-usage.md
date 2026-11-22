@@ -47,14 +47,14 @@ LangSmith 提供精细的计费使用 API，可让您检索按工作区、项目
    * 选择时间范围（最近 7 天、30 天、3 个月、6 个月、1 年或自定义）
    * 按工作区、项目、用户或 API 密钥分组
    * 过滤到特定工作区
-   * 在 **LangSmith 跟踪** 选项卡上，可选择按保留层 (`All Retention` / `Long-lived only` / `Short-lived only`) 进行筛选
-5. 单击 **导出 CSV** 下载活动选项卡的数据。
+   * 在 **LangSmith 跟踪** 选项卡上，可以选择按保留层筛选 (`All Retention` / `Long-lived only` / `Short-lived only`)
+5. 单击 **导出 CSV** 以下载活动选项卡的数据。
 
 时间范围和工作区过滤器在两个子选项卡之间共享，切换选项卡会保留您选择的内容。 **代理服务器** 选项卡显示三张统计数据卡（执行的节点总数/代理运行总数/代理运行时间总计（秒））以及垂直堆叠的每个指标一张图表，因为这三个指标使用不同的单位。
 
 ## 查询参数
 
-粒度使用端点接受以下查询参数：|参数|类型 |必填|描述 |
+粒度使用端点接受以下查询参数：|参数|类型 |必填 |描述 |
 | - | - | - | - |
 | `start_time` |日期时间 |是的 |时间范围的开始（ISO 8601 格式）。 |
 | `end_time` |日期时间 |是的 |时间范围结束。必须在`start_time`之后。 |
@@ -234,7 +234,7 @@ for record in data["usage"]:
 }
 ```
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `nodes_executed` |该时间段内总共执行了LangGraph个节点。 |
 | `agent_runs` |时间段内代理运行总数（图形调用）。 |
@@ -311,7 +311,7 @@ GET /api/v1/orgs/current/billing/granular-usage/export
 对于`kind=traces`，值列是`Traces`。对于 `kind=langsmith_deployments`，值列为 `Nodes Executed`、`Agent Runs` 和 `Agent Uptime (seconds)`。|专栏 |出现时间 |
 | - | - |
 |时间桶开始|永远 |
-|时间桶结束 |永远 |
+|时间桶结束|永远 |
 |工作区 ID/名称 |始终（在 `group_by=workspace` 时填充）|
 |项目 ID / 名称 |始终（在 `group_by=project` 时填充）|
 |用户 ID / 电子邮件 |始终（在 `group_by=user` 时填充）|
@@ -354,12 +354,12 @@ group_by=workspace" \
 
 |价值|描述 |返回尺寸 |适用于 |
 | - | - | - | - |
-| `workspace` |按工作区分组 | `workspace_id`、`workspace_name` |两种 |
+| `workspace` |按工作区分组| `workspace_id`、`workspace_name` |两种 |
 | `project` |按项目分组 | `project_id`、`project_name` |两种 |
 | `user` |按用户分组| `user_id`、`user_email` |两种 |
 | `api_key` |按 API 密钥分组 | `api_key_short_key` |两种 |
 
-对于跟踪使用，“项目”指的是[LangSmith tracer session](/langsmith/observability-concepts)。对于代理服务器用法，“项目”是指代理服务器（已部署的代理）。在 [agent-based workspace](/langsmith/agent-registry) 中，按项目分组是导出最接近代理的方式，因为没有代理或环境维度。每个跟踪使用情况行覆盖一个代理的一个 [environment](/langsmith/agent-environments)，因此合计代理的使用情况意味着对其环境行进行求和。 LangSmith 将其为环境创建的跟踪项目命名为 `<agent>-<environment>`，例如 `support-triage-production`，而早于代理的项目则保留其已有的名称。
+对于跟踪使用，“项目”指的是[LangSmith tracer session](/langsmith/observability-concepts)。对于代理服务器用法，“项目”是指代理服务器（已部署的代理）。按项目分组是导出最接近代理的分组，因为没有代理或环境维度。每个跟踪使用情况行覆盖一个代理的一个 [environment](/langsmith/agent-environments)，因此合计代理的使用情况意味着对其环境行进行求和。 LangSmith 将其为环境创建的跟踪项目命名为 `<agent>-<environment>`，例如 `support-triage-production`，而早于代理的项目则保留其已有的名称。
 
 ## 相关资源
 

@@ -6,10 +6,6 @@ How the agent switcher moves between the agent list and a single agent, which se
 
 To move between the [agents](/langsmith/agent-registry#agent) in your workspace, use the agent switcher in the top bar. Select an agent to see counts, charts, and trace lists for that agent only.
 
-> [!NOTE]
->
-> Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
-
 ![An agent's Overview, with the agent switcher in the top bar naming the agent, the ID field below it, and the metrics row for the last 7 days across all environments.](https://mintcdn.com/langchain-5e9cc07a/J7ZKUnuaUY3KEDGH/langsmith/images/agent-switcher-closed-light.png?fit=max\&auto=format\&n=J7ZKUnuaUY3KEDGH\&q=85\&s=d706de1809cf475248ca264d2f68d943)
 
 ## Switch between agents

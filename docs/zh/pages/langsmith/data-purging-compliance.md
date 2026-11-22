@@ -11,7 +11,7 @@
 LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。数据保留策略可以在两个级别进行配置：
 
 * **工作区级别**：具有所需权限的企业客户可以将延长保留设置为工作区默认值并自定义保留期限。参见[Customize extended retention policy](#customize-extended-retention-policy)。
-* **项目级别**：具有所需权限的客户可以为每个跟踪项目设置默认保留层，在基本保留或扩展保留之间进行选择。参见[Change project-level default retention](/langsmith/billing#change-project-level-default-retention)。
+* **环境级别**：具有所需权限的客户可以为每个[agent environment](/langsmith/agent-environments)设置默认保留层，在基本保留或扩展保留之间进行选择。参见[Change default retention for an environment](/langsmith/billing#change-default-retention-for-an-environment)。
 
 云、BYOC、自托管各层级的保留期限请参见[Retention periods](/langsmith/usage-and-billing#retention-periods)。
 
@@ -19,7 +19,7 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 
 > [!注意]
 >
-> 此功能适用于[Enterprise](/langsmith/pricing-plans)计划客户。对于[self-hosted](/langsmith/self-hosted)企业客户，请参阅[workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted)。
+> 此功能适用于 [Enterprise](/langsmith/pricing-plans) 计划客户。对于[self-hosted](/langsmith/self-hosted)企业客户，请参阅[workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted)。
 
 [Enterprise](/langsmith/pricing-plans) 客户可以自定义[workspace](/langsmith/administration-overview#workspaces) 级别跟踪的延长数据保留期限，以满足特定的合规性要求。您可以选择的持续时间取决于您的托管选项。参见[Retention periods](/langsmith/usage-and-billing#retention-periods)。> [!注意]
 >
@@ -76,9 +76,9 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 >   -H "x-api-key: YOUR_API_KEY" \
 >   -H "Content-Type: application/json" \
 >   -d '{"resource_type": "run", "ttl_days": 90}'
-> ```### 自托管的工作区级延长保留
+> ```### 自托管的工作区级别延长保留
 
-自托管 [Enterprise](/langsmith/pricing-plans) 客户还可以使用工作区级别的扩展保留配置，而不是系统范围的 TTL 设置。这可以对不同工作区的数据保留进行更精细的控制，而无需更改环境变量。
+自托管 [Enterprise](/langsmith/pricing-plans) 客户还可以使用工作区级别的扩展保留配置，而不是系统范围的 TTL 设置。这可以更精细地控制不同工作区的数据保留，而无需更改环境变量。
 
 > [!警告]
 >
@@ -93,7 +93,7 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 1. **通过跟踪 ID 和会话 ID**：通过提供跟踪 ID 及其相应会话 ID 的列表来删除特定跟踪（每个请求最多 1000 个跟踪）
 2. **按元数据**：删除工作区中与任何指定元数据键值对匹配的跟踪
 
-欲了解更多详情，请参阅[API spec](/langsmith/smith-api/run/delete-runs)。> [!警告]
+更多详情请参阅[API spec](/langsmith/smith-api/run/delete-runs)。> [!警告]
 >
 > 所有跟踪删除都将删除所有数据存储中的反馈、聚合和统计等相关实体。
 
@@ -107,7 +107,7 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 
 > [!注意]
 >
-> `session_id` 是您尝试删除的跟踪的项目 ID。您可以在LangSmith UI 的追踪项目页面找到它。
+> `session_id` 是您尝试删除的跟踪的项目 ID。您可以在LangSmith UI 的跟踪项目页面上找到它。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \

@@ -28,7 +28,7 @@ LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每
 
 ### 话题
 
-*线程* 是表示单个多轮会话的跟踪序列。轮次是该会话中的一次交换：用户的消息以及代理响应时所做的一切。每个转弯都被记录为自己的轨迹。要将跟踪分组到线程中，请传递具有唯一值的 `thread_id` 元数据键。
+*线程*是表示单个多轮会话的跟踪序列。轮次是该会话中的一次交换：用户的消息以及代理响应时所做的一切。每个转弯都被记录为自己的轨迹。要将跟踪分组到线程中，请传递具有唯一值的 `thread_id` 元数据键。
 
 [Learn how to configure threads](/langsmith/threads)。
 
@@ -40,7 +40,7 @@ LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每
 
 [Learn how trajectories render in the Trajectory view](/langsmith/trajectory-view-integrations)。
 
-### 比较迹线、线程和轨迹| |追踪 |主题 |轨迹 |
+### 比较迹线、线程和轨迹| |追踪 |主题 |轨迹|
 | - | - | - | - |
 |形状|运行树 |痕迹序列 |扁平化、有序的消息列表 |
 |包含 |每次运行，都有完整的输入和输出|每个链接跟踪中的每次运行 |每个链接跟踪中的每条消息均经过重复数据删除 |
@@ -52,29 +52,23 @@ LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每
 
 组织包含工作区。每个工作区都包含代理，每个代理都有分隔其踪迹的环境。
 
-#### 代理和环境> [!注意]
->
-> **基于代理的工作区。** 如果您的工作区按 [agent and environment](/langsmith/agent-registry) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，则您的工作区是基于项目的。跳过本节并阅读[Tracing projects](/langsmith/observability-concepts#tracing-projects)。
+#### 代理和环境*代理*在其工作空间内有一个稳定的标识符。使用该标识符将跟踪与生成它们的代理关联起来。代理的踪迹分为从固定的四个环境中提取的“环境”：生产、登台、开发和本地。跟踪落在一个代理的一个环境中，因此有关生产行为的查询永远不必手动排除测试流量。
 
-*代理*在其工作空间内有一个稳定的标识符。使用该标识符将跟踪与生成它们的代理关联起来。代理的踪迹划分为四个固定的“环境”：生产、登台、开发和本地。跟踪落在一个代理的一个环境中，因此有关生产行为的查询永远不必手动排除测试流量。
+[Log traces to an agent](/langsmith/log-traces-to-agent)。
 
-[Log traces to an agent](/langsmith/log-traces-to-agent)。> [accordion] 与旧工作区和 API 的兼容性
+> [accordion] 与旧 API 的兼容性
 >
->> [!注意]
->>
->> **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的。跳过本节并阅读[Agent Registry](/langsmith/agent-registry)。
->
-> 较旧的工作区和自托管 LangSmith 将跟踪分组到跟踪项目中。在基于代理的工作区中，每个代理环境都有自己的跟踪存储：一个后备跟踪项目。一些 API 和集成仍然通过 `project_name` 和 `session_id` 等字段使用其名称或 UUID。这些字段指的是环境的跟踪存储，而不是您需要创建的其他代理。参见[Resolve an agent environment](/langsmith/resolve-an-agent)。
+> 每个代理环境都有自己的跟踪存储：一个后备跟踪项目。一些 API 和集成仍然通过 `project_name` 和 `session_id` 等字段使用其名称或 UUID。这些字段指的是环境的跟踪存储，而不是您需要创建的其他代理。参见[Resolve an agent environment](/langsmith/resolve-an-agent)。
 
 ## 痕量富集
 
 ### 反馈
 
-*反馈*允许您根据特定标准对个人跑步进行评分。每个反馈条目由标签和分数组成，并通过唯一的运行 ID 与运行绑定。反馈可以是连续的或离散的（分类的），标签可以在组织内的运行中重复使用。有关如何存储反馈的更多信息，请参阅[Feedback data format guide](/langsmith/feedback-data-format)。
+*反馈*允许您根据特定标准对个人跑步进行评分。每个反馈条目由标签和分数组成，并通过唯一的运行 ID 与运行绑定。反馈可以是连续的或离散的（分类的），标签可以在组织内的运行中重复使用。
 
-### 标签
+有关如何存储反馈的更多信息，请参阅[Feedback data format guide](/langsmith/feedback-data-format)。
 
-*标签* 是您可以附加到运行的字符串，以便在 LangSmith UI 中对它们进行分类、过滤和分组。
+### 标签*标签* 是您可以附加到运行的字符串，以便在 LangSmith UI 中对它们进行分类、过滤和分组。
 
 [Learn how to attach tags to your traces](/langsmith/add-metadata-tags)。
 
@@ -96,11 +90,11 @@ LangSmith *集成*为流行的LLM提供商和代理框架提供自动跟踪（�
 
 ### 手动仪器
 
-*手动检测*允许您向任何代码添加跟踪，无论框架如何。当您未使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：* `@traceable` / `traceable`：用于跟踪任何函数的装饰器
-* `trace` 上下文管理器（Python）：包装特定的代码块
-* `RunTree` API：低级、显式跟踪构建
+*手动检测*允许您向任何代码添加跟踪，无论框架如何。当您不使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：
 
-[Learn how to add manual instrumentation](/langsmith/annotate-code)。
+* `@traceable` / `traceable`：用于跟踪任何函数的装饰器
+* `trace` 上下文管理器（Python）：包装特定的代码块
+* `RunTree` API：低级、显式跟踪构建[Learn how to add manual instrumentation](/langsmith/annotate-code)。
 
 ## 数据保留
 
@@ -108,7 +102,7 @@ LangSmith 仅在其层、基础层或扩展层的保留期内保留每个跟踪�
 
 > [!注意]
 >
-> 要保留数据超出保留期限，请将其添加到 [dataset](/langsmith/manage-datasets)。即使源跟踪被删除，数据集也会无限期地保留。
+> 要使数据超出保留期限，请将其添加到 [dataset](/langsmith/manage-datasets)。即使源跟踪被删除，数据集也会无限期地保留。
 
 要在过期日期之前删除跟踪，请参阅[Manage a trace](/langsmith/manage-trace#delete-a-trace)。
 

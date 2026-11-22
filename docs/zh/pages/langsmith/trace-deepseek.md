@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 安装
 
@@ -43,7 +43,7 @@ export LANGSMITH_AGENT_ID="<your-agent-id>"
 export LANGSMITH_AGENT_ENVIRONMENT="local"
 export DEEPSEEK_API_KEY="your-deepseek-api-key"
 ```* 确保您拥有来自 [DeepSeek account](https://platform.deepseek.com/) 的 DeepSeek API 密钥。
-* 设置 `LANGSMITH_TRACING=true` 并提供您的 LangSmith API 密钥 (`LANGSMITH_API_KEY`) 激活跟踪的自动记录。
+* 设置 `LANGSMITH_TRACING=true` 并提供您的 LangSmith API 密钥 (`LANGSMITH_API_KEY`) 可激活自动跟踪记录。
 * 将`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`设置为注册的代理和环境。
 * 对于要记录的任何跟踪，`LANGSMITH_TRACING` 标志必须为 true。
 
@@ -159,7 +159,7 @@ export DEEPSEEK_API_KEY="your-deepseek-api-key"
    node deepseek_trace.js
    ```
 
-   该函数调用将访问 DeepSeek 的 API，并且由于 `@traceable`/`traceable` 包装器，LangSmith 会将此调用的输入和输出记录为新跟踪。您会发现模型的响应打印到控制台，并且相应的运行出现在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deepseek) 中。
+   该函数调用将访问 DeepSeek 的 API，并且由于 `@traceable`/`traceable` 包装器，LangSmith 会将此调用的输入和输出记录为新跟踪。您会发现模型的响应打印到控制台，并且相应的运行出现在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deepseek)中。
 
 ## 查看LangSmith中的踪迹
 
@@ -168,17 +168,17 @@ export DEEPSEEK_API_KEY="your-deepseek-api-key"
 1. 打开LangSmith UI并登录您的帐户。
 2. 选择在设置过程中配置的代理和环境。
 3. 找到与您的 DeepSeek API 调用相对应的跟踪。它将通过函数名称（`DeepSeek Chat Completion`）进行识别。
-4. 单击轨迹将其打开。您将能够检查模型输入和输出，包括您发送的提示消息和 DeepSeek 的响应，以及计时信息（延迟）和令牌使用情况。通过 LangSmith 的跟踪，您可以全面了解 DeepSeek 调用，从而可以调试 DeepSeek 模型的行为、监控性能（响应时间和令牌使用情况）以及比较不同参数的运行。
+4. 单击轨迹将其打开。您将能够检查模型输入和输出，包括您发送的提示消息和 DeepSeek 的响应，以及计时信息（延迟）和令牌使用情况。通过 LangSmith 的跟踪，您可以全面了解 DeepSeek 调用，从而可以调试 DeepSeek 模型的行为、监控性能（响应时间和令牌使用情况）并比较不同参数的运行。
 
 ## 成本跟踪
 
 尽管 DeepSeek 模型是开放式的，但使用托管的 DeepSeek API 可能会产生基于使用的费用，具体取决于您的计划。
 
-LangSmith 可以通过估计代币使用情况并应用特定于模型的定价，自动将成本与跟踪的 LLM 调用关联起来。在跟踪 DeepSeek API 调用时，LangSmith 使用记录的提示和响应消息来计算令牌计数并将成本信息附加到每次运行。
+LangSmith 可以通过估计代币使用情况并应用特定于模型的定价来自动将成本与跟踪的 LLM 调用关联起来。在跟踪 DeepSeek API 调用时，LangSmith 使用记录的提示和响应消息来计算令牌计数并将成本信息附加到每次运行。
 
-要启用 LLM 呼叫的自动成本跟踪，请参阅[Automatically track costs based on token counts](/langsmith/cost-tracking#llm-calls:-automatically-track-costs-based-on-token-counts)。
+要启用 LLM 调用的自动成本跟踪，请参阅[Automatically track costs based on token counts](/langsmith/cost-tracking#llm-calls:-automatically-track-costs-based-on-token-counts)。
 
-启用后，成本会与每次跟踪的 DeepSeek 运行一起直接显示在 LangSmith UI 中，让您可以监控使用情况并随时间比较实验。
+启用后，成本会与每次跟踪的 DeepSeek 运行一起直接显示在 LangSmith UI 中，使您可以监控使用情况并随时间比较实验。
 
 ***
 

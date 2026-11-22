@@ -153,7 +153,7 @@ client.delete_feedback_config("accuracy")
 await client.deleteFeedbackConfig("accuracy");
 ```
 
-## 注释队列标题项目
+## 注释队列标题项
 
 Rubric 项目将反馈配置分配给特定的注释队列。它们控制注释者在审阅该队列中的[runs](/langsmith/observability-concepts#runs)时看到哪些反馈表单，以及每个表单是必需的还是可选的。
 
@@ -278,13 +278,13 @@ await client.updateAnnotationQueue(queue.id, {
 * **`run_id`**：查询使用 `client.runs.query()` 运行。每次运行都会公开 `id`、`project_id` 和 `start_time`，这是 RUN 项所需的字段。
 * **`thread_id`**：使用`client.threads.query()`查询线程。每个结果都会暴露其`thread_id`。
 
-您还可以在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotation-queues-sdk) 中找到这些 ID：
-
-* **`project_id`**：在[tracing project](/langsmith/observability-concepts#tracing-projects)中，单击项目名称旁边的**ID**徽章以复制项目UUID。
+您还可以在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotation-queues-sdk) 中找到这些 ID：* **`project_id`**：代理环境的`tracer_session_id`。选择您的代理，转到**跟踪**，然后选择环境。单击环境名称旁边的 **ID** 徽章并复制 **跟踪项目 ID**。要了解为什么这些 API 采用项目 ID，请参阅 [Compatibility with older APIs](/langsmith/observability-concepts#tracing-projects)。
 * **`run_id`**：在 [Details view](/langsmith/view-traces#details-view) 中打开运行，然后单击运行名称旁边的 **ID** 徽章以复制运行 ID。
-* **`thread_id`**：在跟踪项目的 **Threads** 视图中，复制 **Thread ID** 列中的值。
+* **`thread_id`**：选择您的代理，转到**跟踪**，选择环境，然后打开**线程**选项卡。复制 **线程 ID** 列中的值。
 
-要延长添加的运行项目的跟踪保留时间，请传递 `extend_trace_retention=True`。响应是一个带有 `items` 数组的信封，每个添加的项目一个条目。> [!注意]
+要延长添加的运行项目的跟踪保留时间，请传递 `extend_trace_retention=True`。响应是一个带有 `items` 数组的信封，每个添加的项目一个条目。
+
+> [!注意]
 >
 > 在 Python 中，`annotation_queues.items.create` 是异步的，因此 `await` 它位于事件循环内。
 
@@ -382,13 +382,11 @@ for (const item of response.items ?? []) {
 
 > [!注意]
 >
-> 对于仅运行添加，[⟦T76⟧](https://reference.langchain.com/python/langsmith/client/Client/add_runs_to_annotation_queue) 仍然有效，并且在不添加线程时仍然是最简单的选项。添加线程或混合运行和线程批次的新代码应使用 `items` 资源。
+> 对于仅运行添加，[⟦T77⟧](https://reference.langchain.com/python/langsmith/client/Client/add_runs_to_annotation_queue) 仍然有效，并且在不添加线程时仍然是最简单的选项。添加线程或混合运行和线程批处理的新代码应使用 `items` 资源。
 
 ## 反馈配置类型（详细）
 
-### 连续
-
-连续配置定义具有最小值和最大值的数字评级范围。注释者可以选择该范围内的任何值，这使得它非常适合在数字尺度上对准确性、质量或相关性等维度进行评分：
+### 连续连续配置定义具有最小值和最大值的数字评级范围。注释者可以选择该范围内的任何值，这使得它非常适合在数字尺度上对准确性、质量或相关性等维度进行评分：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Simple continuous score
@@ -440,7 +438,9 @@ await client.createFeedbackConfig({
 
 第一个示例显示没有标签的 0-1 等级。第二个示例演示了在量表上添加带有标记锚点的`categories`（如“差”、“平均”、“优秀”），以帮助注释者理解不同值代表什么。这些标签是可选的，但可以提高注释者解释比例的一致性。
 
-### 分类分类配置提供了一组离散的预定义选项供注释者选择。每个类别必须有一个`value`（用于评分和分析的数字标识符）和`label`（向注释者显示的文本）。您必须定义至少 2 个类别。
+### 分类
+
+分类配置提供了一组离散的预定义选项供注释者选择。每个类别必须有一个`value`（用于评分和分析的数字标识符）和`label`（向注释者显示的文本）。您必须定义至少 2 个类别。
 
 使用分类配置进行二元决策（通过/失败、正确/不正确）、多类分类（情绪、主题类别）或使用一组固定的离散选项进行任何评估。不要为分类配置设置 `min` 或 `max`：
 
@@ -494,9 +494,7 @@ await client.createFeedbackConfig({
     ],
   },
 });
-```
-
-第一个示例显示了二进制通过/失败配置。第二个示例演示了具有三个选项的情感多类配置。即使对于分类反馈，数值也允许您计算汇总分数。
+```第一个示例显示了二进制通过/失败配置。第二个示例演示了具有三个选项的情感多类配置。即使对于分类反馈，数值也允许您计算汇总分数。
 
 ### 自由形式
 
@@ -518,9 +516,11 @@ await client.createFeedbackConfig({
 });
 ```
 
-## 验证规则|类型 |最小/最大 |类别 |限制条件|
+## 验证规则
+
+|类型 |最小/最大 |类别 |限制条件|
 | - | - | - | - |
-| `continuous` |可选|可选（标记刻度点）| `min < max`; \[`min`, `max`] | 内的类别值
+| `continuous` |可选|可选（标记刻度点）| `min < max`； \[`min`, `max`] | 内的类别值
 | `categorical` |不得设置 |必需，最少 2 |独特的价值观和标签|
 | `freeform` |不得设置 |不得设置 |不适用 |
 
@@ -534,9 +534,7 @@ await client.createFeedbackConfig({
 | `categorical` |类别（`{value, label}`列表）|从预定义选项中进行选择 |
 | `freeform` |无 |自由文本输入 |
 
-### 评分项字段
-
-|领域|类型 |描述 |
+### 评分项字段|领域|类型 |描述 |
 | - | - | - |
 | `feedback_key` | `string` |必需的。必须与现有反馈配置键匹配。 |
 | `description` | `string` |显示此项目的注释者指南。 |

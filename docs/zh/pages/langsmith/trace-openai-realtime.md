@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Trace OpenAI Realtime agents | https://docs.langchain.com/langsmith/trace-openai-realtime -->
 
-# 追踪OpenAI 实时代理
+# 追踪 OpenAI 实时代理
 
 使用 LangSmith SDK 跟踪 OpenAI LangSmith 中的实时语音代理。
 
@@ -12,11 +12,11 @@
 
 OpenAI Realtime 是一种语音到语音模型，可通过 WebSocket 流式传输键入的事件。无论您是使用原始连接还是OpenAI Agents SDK 构建它，集成都会将每个对话捕获为单个LangSmith 跟踪，并按顺序分组每个有意义的事件（脚本、模型响应和工具调用）的跨度。
 
-将您的 [OpenAI Realtime API](https://platform.openai.com/docs/guides/realtime) 语音代理追踪到 LangSmith。有关高级约定，请参阅[Voice tracing fundamentals](/langsmith/trace-voice-fundamentals)。
+追踪您的 [OpenAI Realtime API](https://platform.openai.com/docs/guides/realtime) 语音代理至 LangSmith。有关高级约定，请参阅[Voice tracing fundamentals](/langsmith/trace-voice-fundamentals)。
 
 > [!注意]
 >
-> 在发送跟踪之前，在[agent-based workspace](/langsmith/agent-registry)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+> [Create an agent](/langsmith/create-an-agent) 在发送跟踪之前一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 选择一种方法
 
@@ -37,7 +37,9 @@ pip install "langsmith[openai-realtime]"
 uv add "langsmith[openai-realtime]"
 ```
 
-## 设置环境变量向代理发送痕迹需要 `langsmith>=0.14.9`。
+## 设置环境变量
+
+向代理发送痕迹需要 `langsmith>=0.14.9`。
 
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<your-langsmith-api-key>
@@ -45,9 +47,7 @@ LANGSMITH_TRACING=true
 LANGSMITH_AGENT_ID="<your-agent-id>"
 LANGSMITH_AGENT_ENVIRONMENT="local"
 OPENAI_API_KEY=<your-openai-api-key>
-```
-
-## 使用实时客户端
+```## 使用实时客户端
 
 当您使用 `client.realtime.connect()` 自行打开 WebSocket 并驱动事件循环时，请使用此选项。
 
@@ -72,13 +72,13 @@ async with client.realtime.connect(model="gpt-realtime-2") as raw, wrap_realtime
 
 > [!注意]
 >
-> 每个对话都会被捕获为自己的踪迹。要将其与 LangSmith [thread](/langsmith/threads) 中的相关交互分组（例如继续之前的会话或从文本聊天中接听），请传递 `thread_id`。跨跟踪重复使用相同的 ID 将它们的事件链接在一起。
+> 每个对话都会被捕获为自己的踪迹。要将其与 LangSmith [thread](/langsmith/threads) 中的相关交互分组（例如，继续之前的会话或从文本聊天中接听），请传递 `thread_id`。跨跟踪重复使用相同的 ID 将它们的事件链接在一起。
 
 自动处理嵌套在该事件下的事件时运行的任何 [⟦T18⟧](/langsmith/annotate-code) 工具。
 
 > [!注意]
 >
-> 启用 `input_audio_transcription` 以及 `session.update` 中的代理记录，以便将记录作为跟踪的一部分进行查看。
+> 启用 `input_audio_transcription` 和 `session.update` 中的代理记录，以便将记录作为跟踪的一部分进行查看。
 
 ### 录制对话音频
 

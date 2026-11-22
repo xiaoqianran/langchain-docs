@@ -6,7 +6,7 @@ Use LangSmith Insights to automatically analyze traces, detect usage patterns, i
 
 Insights automatically analyzes your traces to detect usage patterns, common agent behaviors, and failure modes, so you do not need to review thousands of traces manually.
 
-In an agent-based workspace, running a report against a single [environment](/langsmith/agent-environments) is how to analyze production traffic without also analyzing local runs.
+Running a report against a single [environment](/langsmith/agent-environments) is how to analyze production traffic without also analyzing local runs.
 
 Insights uses hierarchical categorization to make sense of your data and highlight actionable trends.
 
@@ -24,13 +24,13 @@ Insights uses hierarchical categorization to make sense of your data and highlig
 
 > [tab] UI
 >
-> 1. Navigate to **Tracing** in the left-hand menu and select a tracing project or an agent and environment. In an agent-based workspace, a report runs against one environment rather than the whole agent.
+> 1. Select your agent, go to **Tracing**, and select the environment. A report runs against one environment rather than the whole agent.
 >
-> 2. Click **+New** in the top right corner then **New Insights Report** to generate new insights over it.
+> 2. Click **+ New** in the top right corner, then **New Insights Report**.
 >
 > 3. Enter a name for your job.
 >
-> 4. If you haven't already, [configure a model](/langsmith/model-configurations) for Insights in your workspace settings.
+> 4. If you have not already, [configure a model](/langsmith/model-configurations) for Insights in your workspace settings.
 >
 > 5. Answer the guided questions to focus your Insights Report on what you want to learn about your agent, then click **Run job**.
 >

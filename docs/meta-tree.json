@@ -1073,7 +1073,7 @@
       ],
       "dashboards": [
         {
-          "title": "Monitor projects with dashboards",
+          "title": "Monitor agents with dashboards",
           "rel": "langsmith/dashboards.md"
         }
       ],
@@ -1971,12 +1971,6 @@
           "rel": "langsmith/metric-type.md"
         }
       ],
-      "migrate-to-agent-based-workspaces": [
-        {
-          "title": "How agent-based workspaces differ",
-          "rel": "langsmith/migrate-to-agent-based-workspaces.md"
-        }
-      ],
       "model-configurations": [
         {
           "title": "Manage model configurations",
@@ -2443,6 +2437,12 @@
         {
           "title": "Configure additional self-hosted features",
           "rel": "langsmith/self-host-additional-features.md"
+        }
+      ],
+      "self-host-agent-migration": [
+        {
+          "title": "What changes in LangSmith v0.18",
+          "rel": "langsmith/self-host-agent-migration.md"
         }
       ],
       "self-host-basic-auth": [

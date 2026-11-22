@@ -8,7 +8,7 @@ Send traces from your team's coding agents, such as Claude Code, Codex, and Curs
 
 > [!NOTE]
 >
-> The Coding agent type is in [beta](/langsmith/release-stages). It requires an [agent-based workspace](/langsmith/agent-registry), which is available on LangSmith Cloud and not on self-hosted LangSmith.
+> The Coding agent type is in [beta](/langsmith/release-stages).
 
 ## Set up
 

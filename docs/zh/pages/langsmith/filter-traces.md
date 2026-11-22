@@ -78,11 +78,11 @@ status:error
 
 ![The scope dropdown open on the Threads selection, offering Any run, Root run, and Thread with a one-line description of each. Beside the options is a preview of a sample thread showing three agent turns with the LLM and tool runs nested inside the second turn](https://mintcdn.com/langchain-5e9cc07a/Y2pGSOoQY1-mM7bz/langsmith/images/filter-scope-selector-light.png?fit=max\&auto=format\&n=Y2pGSOoQY1-mM7bz\&q=85\&s=d1b578063b0147c56a9c2adb325ac7d7)提供的范围以及默认选择的范围取决于表选择：
 
-|餐桌选择|默认范围|可用范围 |
+|餐桌选择|默认范围 |可用范围 |
 | - | - | - |
 | **话题** |任意运行 |线程、根运行、任意运行 |
 | **痕迹** |根运行|根运行，任意运行 |
-| **运行** |单跑 |单次运行、根运行、任意运行|
+| **运行** |单跑 |单次运行、根运行、任意运行 |
 
 要以简单的语言描述您想要的内容而不是编写查询语法，请使用 [AI search](#search-with-ai)。
 
@@ -112,7 +112,7 @@ status:error
 |操作员|语法 |比赛|
 | - | - | - |
 |是 | `field:value` |值的精确匹配。 |
-|不是 | `-field:value` |除了完全匹配之外的一切。 |
+|不是| `-field:value` |除了完全匹配之外的一切。 |
 |比赛| `field:~value` |该领域的全文搜索。引用该值以搜索短语。 |
 |不匹配| `-field:~value` |全文搜索不匹配的所有内容。 |
 |通配符 | `field:value*` |一种模式，其中 `*` 代表任意字符序列。 |
@@ -149,7 +149,7 @@ name:"docs agent"
 tags:"env:prod"
 ```
 
-引用还会关闭通配符匹配，因此 `name:"docs*"` 匹配文字字符串 `docs*`。作为引用的替代方法，可以使用反斜杠转义字符，如 `name:docs\ agent` 中所示。
+引用还会关闭通配符匹配，因此 `name:"docs*"` 匹配文字字符串 `docs*`。作为引用的替代方法，可以使用反斜杠转义字符，如 `name:docs\ agent` 所示。
 
 在运行范围中，包含空格的不带引号的值分为两个子句，因此 `name:docs agent` 匹配名称为 `docs` 且索引内容包含 `agent` 的运行。
 
@@ -173,14 +173,14 @@ tags:"env:prod"
 
 **运行属性**
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `name` |运行名称。支持通配符。 |
 | `status` |运行状态：`pending`、`success`、`error`或`interrupted`。 |
 | `run_type` | [type of run](/langsmith/run-data-format#run-types)，例如 `llm`、`chain`、`tool` 或 `retriever`。 |
 | `tags` |运行标签。如果运行中的任何标记匹配，则子句匹配。 |
 
-**内容**|领域 |描述 |
+**内容**|领域|描述 |
 | - | - |
 | `input` |运行输入。使用 `~` 搜索文本，或使用 `input.<key>` 匹配 JSON 键。 |
 | `output` |运行输出。使用 `~` 搜索文本，或使用 `output.<key>` 匹配 JSON 键。 |
@@ -190,14 +190,14 @@ tags:"env:prod"
 
 **身份**
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `id`、`trace_id`、`thread_id`、`parent_run_id` |按 ID 匹配特定运行、跟踪、线程或父运行。 |
 | `ls_user_id` |运行所属的 LangSmith 用户。 |
 
 **性能**
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `latency` |运行持续时间（以秒为单位）。 |
 | `first_token_time` |当第一个代币产生时。 |
@@ -208,7 +208,7 @@ tags:"env:prod"
 
 **反馈**
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `feedback` |跑步反馈。请参阅[Filter on feedback](#filter-on-feedback)。 |元数据和标签通常是最高效的过滤字段，因为您可以控制其中的内容。参见[Add metadata and tags to traces](/langsmith/add-metadata-tags)。
 
@@ -216,7 +216,7 @@ tags:"env:prod"
 
 **Thread** 范围对整个线程的属性进行过滤，因此它支持一组不同的字段。建议列表标记组**线程属性**。
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `thread_id` |线程 ID。 |
 | `turn_count` |旋入螺纹。 |
@@ -316,7 +316,7 @@ total_cost:>0.5
 
 要为表格提供更多空间，请单击“**隐藏快捷方式**”，然后单击“**显示快捷方式**”以恢复面板。右侧的**统计**面板以同样的方式折叠，带有**隐藏统计信息**和**显示统计信息**。
 
-## 保存过滤器保存的视图存储一个过滤器以供重复使用。视图属于跟踪项目而不是创建它的人，因此有权访问该项目的任何人都可以选择它。在基于代理的工作区中，这意味着视图属于一个[environment](/langsmith/agent-environments)：在**生产**中保存的视图在**暂存**中不提供，并且必须在每个环境中保存您想要在每个环境中使用的过滤器。
+## 保存过滤器保存的视图存储一个过滤器以供重复使用。视图属于一个[environment](/langsmith/agent-environments)，而不是创建它的人，因此任何有权访问该环境的人都可以选择它。 **暂存**中不提供**生产**中保存的视图，并且必须在每个环境中保存您想要在每个环境中使用的过滤器。
 
 保存当前过滤器：
 
@@ -334,7 +334,7 @@ total_cost:>0.5
 
 在此过滤体验发布之前保存的视图将继续有效。选择一个会将其过滤器转换为本页上的语法，并且LangSmith会提示您保存翻译后的视图。
 
-## 过滤跟踪中的运行在打开的跟踪内进行过滤会突出显示匹配的运行，这就是您如何在大型跟踪中找到重要的运行。打开线程或跟踪以到达[Details view](/langsmith/view-traces#details-view)，然后使用运行列表上方的**过滤运行**。
+## 过滤跟踪中的运行在开放跟踪内进行过滤会突出显示匹配的运行，这就是您在大型跟踪中找到重要运行的方法。打开线程或跟踪以到达[Details view](/langsmith/view-traces#details-view)，然后使用运行列表上方的**过滤运行**。
 
 匹配的运行会在适当的位置突出显示，并且跟踪的其余部分在它们周围保持可见，因此匹配会保留解释它的上下文。在 **任何运行** 范围中应用的过滤器会自动延续，因此从表中打开线程或跟踪会突出显示与其匹配的运行。
 

@@ -8,7 +8,7 @@ This page details how to log feedback using the [SDK](/langsmith/reference). For
 
 > [!NOTE]
 >
-> In an [agent-based workspace](/langsmith/agent-registry), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
+> [Create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project).
 
 ## Use `create_feedback()` / `createFeedback`
 
@@ -98,7 +98,7 @@ await client.createFeedback({
 });
 ```
 
-For project-based traces, use `readProject` with the existing project name to get its ID instead of resolving an agent address. For resolution requirements, see [Resolve an agent environment](/langsmith/resolve-an-agent).
+Looking up the `session_id` from an agent address requires self-hosted LangSmith v0.18 or later and `langsmith>=0.14.9` (Python) or `langsmith@>=0.11.0` (TypeScript). It is not yet supported on BYOC data planes. For details, see [Resolve an agent environment](/langsmith/resolve-an-agent).
 
 You can even log feedback for in-progress runs using [`create_feedback()`](https://reference.langchain.com/python/langsmith/client/Client/create_feedback) / [`createFeedback`](https://reference.langchain.com/javascript/langsmith/client/Client). See [Access the current run (span) within a traced function](/langsmith/access-current-span) for how to get the run ID of an in-progress run.
 

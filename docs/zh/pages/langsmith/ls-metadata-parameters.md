@@ -202,7 +202,7 @@ val myConfiguredLlm =
 | [⟦T33⟧](#ls_temperature) | `number` |没有 |使用的温度参数|
 | [⟦T35⟧](#ls_max_tokens) | `number` |没有 |使用的最大令牌参数 |
 | [⟦T37⟧](#ls_stop) | `string[]` |没有 |使用的停止序列 |
-| [⟦T39⟧](#ls_invocation_params) | `object` |没有 |附加调用参数|
+| [⟦T39⟧](#ls_invocation_params) | `object` |没有 |附加调用参数 |
 | [⟦T41⟧](#ls_agent_type) | `string` |没有 |控制代理运行在轨迹视图中的显示方式：`"root"`、`"subagent"` 或 `"middleware"` |
 | [⟦T46⟧](#ls_message_view_exclude) | `boolean` |没有 |从轨迹视图中隐藏运行 |
 | [⟦T48⟧](#ls_is_error_interrupt) | `boolean` |没有 |当设置为 `true` 时，将错误运行标记为中断 |
@@ -500,7 +500,7 @@ metadata={
 * 等
 
 **使用时：**
-在跟踪摄取期间自动计算。 Used for filtering (e.g., "show only root runs") and UI visualization.
+在跟踪摄取期间自动计算。用于过滤（例如，“仅显示根运行”）和 UI 可视化。
 
 **查询示例：**
 
@@ -519,7 +519,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 * **设置者：** SDK（自动）
 
 **它的作用：**
-Indicates which SDK method created the trace (commonly `"traceable"` for `@traceable` decorator).
+指示哪个 SDK 方法创建了跟踪（通常为 `@traceable` 装饰器使用 `"traceable"`）。
 
 **使用时：**
 由跟踪SDK自动设置。用于调试和分析。
@@ -533,7 +533,7 @@ Indicates which SDK method created the trace (commonly `"traceable"` for `@trace
 
 * **类型：** 任何（取决于示例元数据）
 * **图案：** `ls_example_{original_key}`
-* **Set by:** LangSmith experiments system (automatic)**它的作用：**
+* **设置方式：** LangSmith实验系统（自动）**它的作用：**
 运行 [experiments on datasets](/langsmith/evaluation-quickstart) 时，示例中的元数据会自动添加 `ls_example_` 前缀并添加到跟踪中。
 
 **特殊参数：**
@@ -633,7 +633,7 @@ Indicates which SDK method created the trace (commonly `"traceable"` for `@trace
 
 ### 使用 API
 
-在基于代理的工作区中，将下面的 `my-app` 替换为 [environment's ⟦T160⟧](/langsmith/create-an-agent#use-an-environment-project)。
+将下面的 `my-app` 替换为 [environment's ⟦T160⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 使用 [⟦T161⟧](https://reference.langchain.com/python/langsmith/client/Client) 类和 `client.runs.query()` 方法根据元数据值查询跟踪。它需要一个项目 ID 并回顾 1 天，除非您通过 `min_start_time`。 [filter syntax](/langsmith/trace-query-syntax) 支持相等检查、比较和逻辑运算符。有关更多示例，请参阅[Query traces using the SDK](/langsmith/export-traces)。
 
@@ -703,9 +703,9 @@ const rootRuns = await query('and(eq(metadata_key, "ls_run_depth"), eq(metadata_
 
 // Filter by temperature threshold
 const highTempRuns = await query('and(eq(metadata_key, "ls_temperature"), gt(metadata_value, 0.5))');
-```这些示例显示了常见的过滤模式：
+```
 
-* **按提供商或型号过滤**以分析特定型号的使用模式或成本
+这些示例显示了常见的过滤模式：* **按提供商或型号过滤**以分析特定型号的使用模式或成本
 * **按运行深度过滤**，仅获取根跟踪（深度 0）或特定嵌套级别的子运行
 * **按配置过滤**以比较不同温度、最大令牌或其他设置的实验
 
