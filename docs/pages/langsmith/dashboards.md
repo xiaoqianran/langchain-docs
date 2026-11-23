@@ -32,7 +32,7 @@ Prebuilt dashboards are broken down into the following sections:
 
 ### Group by
 
-Use group by to split data by a [run tag or metadata](/langsmith/add-metadata-tags) key that matters to your agent. The global group by setting is in the top right of the dashboard and applies to every chart except **Tool** and **Run Type**, which already have a group by applied.
+Use group by to split data by [user](/langsmith/users#group-charts-by-user), or by a [run tag or metadata](/langsmith/add-metadata-tags) key that matters to your agent. The global group by setting is in the top right of the dashboard and applies to every chart except **Tool** and **Run Type**, which already have a group by applied.
 
 > [!NOTE]
 >
@@ -117,7 +117,7 @@ Dataset sources do not expose run/trace/tree filters. Data is scoped by the sele
 
 **Grouping** creates multiple series on the same chart in one of two ways:
 
-1. **Group by**: Automatically splits data into series based on one attribute. Available attributes: Run Name, Run Type, Tag, Environment, [Metadata](/langsmith/add-metadata-tags) (with a path such as `metadata.ls_model_name`), and Feedback Key (available only with the **Count** metric). Groups are ranked by frequency and capped at the top 20.
+1. **Group by**: Automatically splits data into series based on one attribute. Available attributes: Run Name, Run Type, Tag, Environment, [Metadata](/langsmith/add-metadata-tags) (with a path such as `metadata.ls_model_name`), [User](/langsmith/users#group-charts-by-user) (the `user_id` metadata key), and Feedback Key (available only with the **Count** metric). Groups are ranked by frequency and capped at the top 20.
 2. **Data series**: Manually add metrics with the **Add another metric** button. Each series can carry its own filter, so you can compare, for example, "count where status is error" against "count where status is success" on the same chart.
 
 > [!NOTE]

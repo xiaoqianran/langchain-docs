@@ -570,6 +570,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > ClawFetch provides web intelligence tools for agents, including fetch, JavaScript rendering, extraction, document parsing, and company research.
 
+> [card] [CleanedWebToolkit](https://github.com/cleanedweb/langchain-cleanedweb#readme)
+>
+> Tools to find, inspect and run maintained REST APIs that return structured records from public websites, through the CleanedWeb API.
+
 > [card] [Clearsigned](https://clearsigned.com/integrations#langchain)
 >
 > Verifies a factual claim against live web evidence and returns a stance, confidence, and an offline-verifiable signed receipt.
@@ -729,6 +733,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Datadog](/oss/python/integrations/providers/datadog)
 >
 > Monitoring and analytics platform for applications.
+
+> [card] [DataXAPIToolkit](https://github.com/data-x-api/langchain-dataxapi#readme)
+>
+> Public social media and market data API: Douyin, Xiaohongshu, WeChat, Weibo, Bilibili, Zhihu, Kuaishou, TikTok, YouTube, X and Reddit.
 
 > [card] [Daytona](/oss/python/integrations/providers/daytona)
 >
@@ -1257,6 +1265,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Job Opportunities API](https://github.com/lucagiftzek/langchain-job-opportunities-api)
 >
 > Job postings API with employer-direct listings, full-text search and incremental change feeds.
+
+> [card] [Jobo](https://jobo.world/docs/connectors/langchain)
+>
+> Live job listings from employer career sites and 200+ ATS platforms, as agent tools, a retriever and a document loader.
 
 > [card] [John Snow Labs](/oss/python/integrations/providers/johnsnowlabs)
 >
@@ -1930,6 +1942,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Document-loaders for various file formats.
 
+> [card] [PoliasSearch](https://github.com/Polias-Team/langchain-polias)
+>
+> Search tools and a retriever for Polias, a search engine with its own EU-hosted index: web, news, official sources and law.
+
 > [card] [Polign](https://github.com/Polign/polign/tree/main/python/langchain-polign)
 >
 > Vector store for Polign, object-store-native vector database, with metadata filtering, MMR, and BM25 hybrid search.
@@ -2033,6 +2049,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [QVeris](https://qveris.ai/docs/python-sdk#framework-integrations)
 >
 > QVeris exposes professional data discovery, parameter inspection, and capability execution as async LangChain tools.
+
+> [card] [RAGDefenderCompressor](https://github.com/SecAI-Lab/RAGDefender/blob/main/docs/integrations.md#langchain)
+>
+> Post-retrieval document compressor that drops poisoned passages from RAG retrieval results (ACSAC 2025 paper, no LLM calls)
 
 > [card] [Ray Serve](/oss/python/integrations/providers/ray_serve)
 >
@@ -2269,6 +2289,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Serpex](https://serpex.dev/docs)
 >
 > Multi-engine web search API for AI applications and data aggregation.
+
+> [card] [Setrya](https://github.com/davidahma/setrya/blob/v1.2.0/docs/langgraph-integration.md)
+>
+> Setrya reads LangGraph Postgres memory and checkpoints to test whether deleted data can reappear when a worker resumes or a user reopens a thread.
 
 > [card] [Shale Protocol](/oss/python/integrations/providers/shaleprotocol)
 >

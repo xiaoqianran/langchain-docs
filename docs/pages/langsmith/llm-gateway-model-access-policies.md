@@ -2,7 +2,7 @@
 
 # Model access policies
 
-Control which model providers and models are accessible through the LLM Gateway for your organization, workspaces, users, or API keys.
+Control which model providers and models are accessible through the LLM Gateway.
 
 > [!NOTE]
 >
@@ -23,6 +23,7 @@ A model access policy is scoped to one subject tier:
 | Scope | Applies to |
 | - | - |
 | **Organization** | All users and workspaces in the organization |
+| **User group** | Members of a user group |
 | **Workspace** | All users in a workspace |
 | **User** | A single user |
 | **API key** | A single API key |
@@ -31,9 +32,9 @@ A model access policy is scoped to one subject tier:
 
 Policy overrides let you grant a more specific subject different access than the broader default. A common case is giving one API key access to a premium model that is not available to the rest of the organization.
 
-When a request matches policies at multiple tiers, only the most specific tier applies, in the order API key, user, workspace, then organization. The more specific policy replaces the broader one entirely. For example, if the organization policy permits OpenAI and Anthropic, and an API key policy permits only OpenAI and Gemini, requests using that key can access OpenAI and Gemini only.
+When a request matches policies at multiple tiers, only the most specific tier applies, in the order API key, user, workspace, user group, then organization. The more specific policy replaces the broader one entirely. For example, if the organization policy permits OpenAI and Anthropic, and an API key policy permits only OpenAI and Gemini, requests using that key can access OpenAI and Gemini only.
 
-If multiple policies match at the same tier, a model must be permitted by all of them to be accessible. The error names only the policy that rejected the model.
+If multiple policies match at the same tier, a model must be permitted by all of them to be accessible. For a caller in multiple user groups, the matching group allowlists intersect unless a matching workspace, user, or API key policy replaces the group tier. The error names only the policy that rejected the model.
 
 ## Allowed providers and models
 
@@ -52,11 +53,11 @@ Requests that call a saved [model configuration](/langsmith/llm-gateway-model-co
 
 > [!WARNING]
 >
-> Creating and managing policies requires `organization:gateway:manage` permission. Organization Admins and Organization Operators have it by default. For what each organization role can do, see [Organization roles](/langsmith/rbac#organization-roles).
+> Creating and managing policies requires `organization:gateway:manage` permission. Organization Admins and Organization Operators have it by default. For what each organization role can do, see [Organization roles](/langsmith/rbac#organization-roles). Selecting a user group also requires `organization:user-groups:read`; see [User Groups](/langsmith/user-groups) for availability and setup.
 
 1. Go to **LLM Gateway** and select the **Model Access** tab.
-2. Click **Create model access**.
-3. Under **Applies to**, select the scope (organization, workspace, user, or API key).
+2. Click **+ Model Access**.
+3. Under **Applies to**, select the scope (organization, user group, workspace, user, or API key).
 4. Under **Allowed providers and models**, turn on each provider to permit and choose its access mode. Providers are off by default, so any provider you leave off is blocked.
 5. Click **Create model access**.
 

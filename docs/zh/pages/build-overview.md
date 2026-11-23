@@ -60,9 +60,9 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 
 ## 使用现成的代理
 
-> [卡][Deep Agents Code](/oss/deepagents/code/overview)
+> [卡片] [Deep Agents Code](/oss/deepagents/code/overview)
 >
-> 基于Deep Agents SDK 构建的开源终端编码代理 (`dcode`)。在会话中切换模型、自定义技能和内存，并批准从 CLI 执行 shell。
+> 基于Deep Agents SDK 构建的开源终端编码代理 (`dcode`)。在会话中切换模型、自定义技能和内存，并从 CLI 批准 shell 执行。
 
 ＃＃ 探索> [选项卡] Python
 >
@@ -96,7 +96,7 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 >>
 >> API 参考、错误代码、发行说明和迁移指南。
 >
->>【卡片】[Contribute](/oss/javascript/contributing/overview)
+>>【卡牌】[Contribute](/oss/javascript/contributing/overview)
 >>
 >> 为 LangChain 生态系统贡献文档、代码和集成。
 
@@ -105,87 +105,3 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/build-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-
-
-# 
-来源：https://docs.langchain.com/index
-
-# 开放代理工程生态系统LangChain 为构建代理提供开源、模型无关的工具。 LangSmith 是一个与框架无关的平台，用于在整个代理开发生命周期中测试、部署、监控和改进代理。您可以控制代理系统的每一层，并利用您在生产中学到的知识不断改进它。
-
-## 代理开发生命周期
-
-> [卡][Build](/build-overview)
->
-> 使用托管 Deep Agents、Deep Agents、LangChain 和 LangGraph 构建代理。
-
-> [卡][Test](/langsmith/evaluation)
->
-> 使用数据集、评估和即时工程来评估代理。
-
-> [卡][Deploy](/langsmith/deploy-overview)
->
-> 大规模部署和服务代理。
-
-> [卡][Monitor](/langsmith/observability)
->
-> 跟踪、调试和观察生产中的代理。
-
-> [卡][Agent Registry](/langsmith/agent-registry)
->
-> 在一个地方注册、组织和管理每个代理，无论其托管在何处。
-
-## 产品
-
-> [卡][LLM Gateway](/langsmith/llm-gateway)
->
-> 路由、控制和观察提供商之间的 LLM 流量。
-
-> [卡][Tool Gateway](/langsmith/tool-gateway)
->
-> 使用托管凭证、策略和跟踪来管理代理工具调用。
-
-> [卡片][No-code agents](/langsmith/fleet)
->
-> 使用 LangSmith Fleet 无需代码即可构建和运行代理。
-
-> [卡][Engine](/langsmith/engine)
->
-> 使用 LangSmith 引擎自动查找并修复重复出现的代理问题。
-
-> [卡][Deep Agents Code](/oss/deepagents/code/overview)
->
-> 使用开源 `dcode` CLI 在终端中使用 AI 代理进行编码。## 设置和治理
-
-> [卡][LangSmith setup](/langsmith/langsmith-setup-overview)
->
-> 云托管、BYOC 或自托管、帐户设置和管理。
-
-> [卡][Govern](/langsmith/govern-overview)
->
-> 管理整个组织的用户、访问控制、策略和合规性。
-
-## 资源
-
-> [卡][LangChain Academy](https://academy.langchain.com/)
->
-> 参加有关使用 LangSmith 和我们的开源框架构建和改进代理的免费课程。
-
-> [卡][Community forum](https://forum.langchain.com/)
->
-> 提出问题、分享解决方案并讨论最佳实践。
-
-> [卡][Support portal](https://support.langchain.com/)
->
-> 提交票证并跟踪支持请求。
-
-> [卡][Sign up for LangSmith](https://smith.langchain.com/)
->
-> 免费开始使用LangSmith。
-
-> [卡][LangSmith status](https://status.smith.langchain.com/)
->
-> LangSmith 服务和 API 的实时状态。
-
-> [卡片][Trust Center](https://trust.langchain.com/)
->
-> HIPAA、SOC 2 Type 2 和 GDPR 合规性详细信息。

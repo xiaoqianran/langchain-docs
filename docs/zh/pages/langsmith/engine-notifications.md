@@ -72,7 +72,7 @@ Slack 目标可以在引擎通知的线程中提及编码代理的 Slack 机器�
 
 每个 **Issue Created** 消息的线程中都会提到该代理。如果目的地通知 **修复 PR 就绪**，则该提及会出现在 **修复 PR 就绪** 消息下方，每个问题一次。
 
-该提及包括一个问题标记，`<!-- langsmith-issue {"id":"<issue-id>"} -->`。如果代理在 GitHub 存储库[connected to Engine](/langsmith/engine-repositories)中打开的拉取请求正文中包含标记，引擎会将拉取请求链接到问题。引擎仅在拉取请求打开时检查标记，因此稍后添加它没有任何效果。引擎不会以这种方式链接 GitLab 合并请求。
+该提及包括一个问题标记，`<!-- langsmith-issue {"id":"<issue-id>"} -->`。如果代理在 GitHub 存储库[connected to Engine](/langsmith/engine-repositories)中打开的拉取请求正文中包含标记，引擎会将拉取请求链接到问题。引擎仅在打开拉取请求时检查标记，因此稍后添加它没有任何效果。引擎不会以这种方式链接 GitLab 合并请求。
 
 ## 创建 Jira 工作项**Jira** 目标将引擎事件发送到 Jira Automation 传入 Webhook。配置 Jira 规则以将新的引擎问题转化为 Jira 工作项。 LangSmith 发送带有 `X-Automation-Webhook-Token` 标头的 [webhook payload](#webhook-payload-reference)。 Jira 目标使用此令牌进行身份验证，并且没有 HMAC 签名密钥。
 
@@ -107,15 +107,15 @@ Jira Cloud 将信封的 `data` 成员公开为 `webhookData`。使用 `webhookDa
 
 在**通知时间**下，仅为此创建规则选择**创建的问题**。选择 **最低问题严重性**，然后单击 **添加**。在 Jira 中启用规则。
 
-**4.验证 Jira 创建了工作项**
+**4. Verify Jira created the work item**
 
-在引擎创建与您的严重性过滤器匹配的问题后，检查 Jira 的自动化审核日志。确认规则成功并创建一个包含预期摘要、描述、严重性和 LangSmith 问题链接的工作项。
+在引擎创建与您的严重性过滤器匹配的问题后，检查 Jira 的自动化审核日志。确认规则成功并创建一个具有预期摘要、描述、严重性和 LangSmith 问题链接的工作项。
 
 HTTP 成功意味着 Jira 接受了 Webhook，而不是它创建了工作项。规则条件、必填字段、参与者权限和自动化使用限制可能会阻止创建。
 
-LangSmith 存储 Jira 令牌而不再次显示。要替换它，请输入新令牌。更改 Webhook URL 还需要输入替换 URL 的令牌。如果您丢失了令牌，请在 Jira 中轮换它并更新 LangSmith 目的地。
+LangSmith 存储 Jira 令牌而不再次显示。 To replace it, enter a new token.更改 Webhook URL 还需要输入替换 URL 的令牌。如果您丢失了令牌，请在 Jira 中轮换它并更新 LangSmith 目的地。
 
-### 到达私有 Jira 端点私有 Jira 端点需要从您的 LangSmith 部署进行网络访问。在自托管和混合部署中，Webhook 交付在客户数据平面中运行。添加目标之前配置以下内容：
+### Reach a private Jira endpoint私有 Jira 端点需要从您的 LangSmith 部署进行网络访问。在自托管和混合部署中，Webhook 交付在客户数据平面中运行。添加目标之前配置以下内容：
 
 * **网络访问**：允许从 LangSmith API 和 Webhook 交付流程进行 DNS 解析和到 Jira 的出站连接。允许他们的源地址通过 Jira 的防火墙。
 * **私有地址**：如果端点解析为私有IP，请为两个进程设置`SSRF_ALLOW_PRIVATE_IPS_WEBHOOKS=true`。 Kubernetes 内部主机名也需要 `SSRF_ALLOW_K8S_INTERNAL=true`。其他 Webhook URL 保护保持活动状态。配置请参见[Set self-hosted environment variables](/langsmith/self-host-environment-variables)。
@@ -133,7 +133,7 @@ LangSmith 存储 Jira 令牌而不再次显示。要替换它，请输入新令�
 |身体| JSON，下面[common envelope](#event-envelope) |
 |方案|接受`http://` 和`https://`。 `https://`强烈推荐|
 |签名| `X-LangSmith-Signature` 标头，使用目的地的签名密钥进行签名 |
-|超时|每次尝试 20 秒 |
+|超时 |每次尝试 20 秒 |
 |尝试|对于传输错误、HTTP `408`、`425`、`429` 和任何 HTTP `5xx`，最多进行 4 次尝试（1 次初始加 3 次指数退避重试）。其他 `4xx` 响应被视为永久响应，不会重试 |
 |回应 |成功仅根据状态代码确定。响应主体被忽略。 |
 
@@ -155,7 +155,7 @@ sha256=<hex-encoded HMAC-SHA256 digest>
 
 在解析或作用于有效负载之前验证签名。 HMAC 输入是确切的原始请求正文字节，HMAC 密钥是目标的签名秘密。在验证之前不要解析和重新序列化 JSON 主体。
 
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import hashlib
 import hmac
 from typing import Optional
@@ -179,7 +179,7 @@ def verify_langsmith_signature(
     return hmac.compare_digest(expected, signature_header)
 ```
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createHmac, timingSafeEqual } from "node:crypto";
 
 export function verifyLangSmithSignature({
@@ -211,7 +211,7 @@ export function verifyLangSmithSignature({
 
 ### 滚动签名秘密
 
-当签名密钥可能已暴露时，或者当您的组织的凭据轮换策略需要新密钥时，滚动签名密钥。
+当签名密钥可能已暴露时，或者当您的组织的凭据轮换策略需要新密钥时，请滚动签名密钥。
 
 要滚动密钥，请在 **引擎设置** 面板中打开目标行，单击 **滚动签名密钥**，然后确认。 LangSmith 生成新的签名密钥并立即将其用于未来的 Webhook 交付。一旦滚动完成，先前的秘密就会停止签署交付。
 
@@ -251,7 +251,7 @@ Webhook 和 Jira 目标接收以下 JSON 有效负载。 Slack 目的地则不�
 
 传递到端点的每个事件都使用相同的外部 JSON 形状。
 
-|领域|类型 |描述 |
+|领域 |类型 |描述 |
 | - | - | - |
 | `id` | UUID |本次交付的唯一标识符。重试后保持稳定。用它来删除重复数据。 |
 | `type` |字符串|事件类型。 [⟦T73⟧](#issue-created)、[⟦T74⟧](#issue-trace-added) 或 [⟦T75⟧](#issue-agent_run-failed) 之一。 |
@@ -261,7 +261,7 @@ Webhook 和 Jira 目标接收以下 JSON 有效负载。 Slack 目的地则不�
 
 ### 问题`data.object`对于 [⟦T83⟧](#issue-created) 和 [⟦T84⟧](#issue-trace-added)，`data.object` 是问题的快照。将其视为事件生成时问题的权威状态。
 
-|领域|类型 |描述 |
+|领域 |类型 |描述 |
 | - | - | - |
 | `id` | UUID |问题 ID。 |
 | `name` |字符串|问题的简短标题。 |
@@ -275,7 +275,7 @@ Webhook 和 Jira 目标接收以下 JSON 有效负载。 Slack 目的地则不�
 
 ### 运行失败`data.object`
 
-对于 [⟦T98⟧](#issue-agent_run-failed)，`data.object` 描述失败的引擎运行。|领域|类型 |描述 |
+对于 [⟦T98⟧](#issue-agent_run-failed)，`data.object` 描述失败的引擎运行。|领域 |类型 |描述 |
 | - | - | - |
 | `tenant_id` | UUID |运行所属的工作空间。 |
 | `tenant_name` |字符串|工作区显示名称。 |
@@ -292,7 +292,7 @@ Webhook 和 Jira 目标接收以下 JSON 有效负载。 Slack 目的地则不�
 
 `data.trace` 仅包含在 [⟦T112⟧](#issue-trace-added) 活动中。
 
-|领域|类型 |描述 |
+|领域 |类型 |描述 |
 | - | - | - |
 | `run_id` | UUID |与问题关联的运行的 ID。 |
 | `trace_id` | UUID |包含运行的跟踪的 ID。 |

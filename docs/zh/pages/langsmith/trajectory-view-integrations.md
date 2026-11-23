@@ -6,7 +6,7 @@
 
 在 LangSmith 轨迹视图中呈现的框架和 SDK 以及各自设置的元数据。
 
-[Trajectory view](/langsmith/view-traces#trajectory-view) 将 [thread](/langsmith/observability-concepts#threads) 的 [traces](/langsmith/observability-concepts#traces) 呈现为 [trajectory](/langsmith/observability-concepts#trajectories)：按顺序显示用户提示、模型响应、工具调用和工具结果。轨迹视图需要两条运行元数据来呈现轨迹：
+[Trajectory view](/langsmith/view-traces#trajectory-view) 将 [thread](/langsmith/observability-concepts#threads) 的 [traces](/langsmith/observability-concepts#traces) 渲染为 [trajectory](/langsmith/observability-concepts#trajectories)：按顺序显示用户提示、模型响应、工具调用和工具结果。轨迹视图需要两条运行元数据来呈现轨迹：
 
 * **线程分组**：每次运行时的 `thread_id` 告诉 LangSmith 一组运行属于同一会话。
 * **运行分类**：`ls_agent_type: "root"` 在作为主要对话的一部分运行的转弯标记的顶级运行上。标记为子代理的运行在线程中显示为子代理操作，而标记为中间件或压缩的运行当前已被过滤掉。
@@ -28,7 +28,7 @@
 * [LangChain](/langsmith/trace-with-langchain)
 * [LangGraph](/langsmith/trace-with-langgraph)
 * OpenAI 聊天完成 (`wrap_openai`)
-* OpenAI 响应 API，单次调用 (`wrap_openai`)链接模式下的 **OpenAI Responses API** (`previous_response_id`) 自动设置 `ls_agent_type`，但您可以自行设置 `thread_id`。更多详情请参考[OpenAI Responses API with chaining](#openai-responses-api-with-chaining)示例。
+* OpenAI 响应 API，单次调用 (`wrap_openai`)链接模式下的 **OpenAI Responses API** (`previous_response_id`) 自动设置 `ls_agent_type`，但您可以自行设置 `thread_id`。欲了解更多详情，请参阅[OpenAI Responses API with chaining](#openai-responses-api-with-chaining)示例。
 
 有关完整的 `ls_agent_type` 架构以及官方集成在非 root 运行时设置的其他值（`subagent`、`middleware`、`compaction`），请参阅 [Coding agent metadata contract](/langsmith/coding-agent-metadata-contract)。对于底层的线程分组机制，请参见[Configure threads](/langsmith/threads)。
 
@@ -340,7 +340,7 @@ const entryGuardrail = traceable(
 
 ## 手动仪器如果您在没有 [Supported integrations](#supported-integrations) 中的包装器之一的情况下进行跟踪（例如，通过 `RunTree`、REST API 或提供商 SDK 周围的自定义包装器发出运行），请在每个 LLM 运行的元数据上设置 `ls_message_format` 以将跟踪路由到正确的提取器：
 
-|痕迹形状 |设置元数据 |
+|痕迹形状|设置元数据 |
 | - | - |
 | LangChain 消息（构造函数信封）| `ls_message_format: "langchain"` |
 | OpenAI 聊天完成 | `ls_message_format: "completions"` |
@@ -349,7 +349,8 @@ const entryGuardrail = traceable(
 
 ## 相关
 
-* [Configure threads](/langsmith/threads)：`thread_id` 群体如何跨越LangSmith。
+* [Configure threads](/langsmith/threads)：`thread_id` 组如何跨越LangSmith。
+* [Track users](/langsmith/users)：将鼠标悬停在`user_id` 上时，向最终用户显示每条用户消息下方。
 * [Coding agent metadata contract](/langsmith/coding-agent-metadata-contract)：完整的`ls_agent_type`模式。
 * [View traces](/langsmith/view-traces#trajectory-view)：轨迹视图显示的内容以及如何自定义它。
 

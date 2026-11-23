@@ -6,11 +6,7 @@
 
 从深度代理运行和子代理执行中传输实时更新
 
-> [!提示]
->
-> 对于新应用程序，我们推荐[event streaming](/oss/python/deepagents/event-streaming)——Deep Agents v0.6 中引入的类型化投影 API。事件流为每个投影提供单独的迭代器（子代理、消息、工具调用、值），因此您可以独立使用它们，而不是在 `stream_mode` 块上分支。
-
-Deep Agents 构建在 LangGraph 的流基础架构上，为子代理流提供一流的支持。当深度代理将工作委托给子代理时，您可以独立地传输来自每个子代理的更新 - 实时跟踪进度、LLM 令牌和工具调用。
+Deep Agents 构建于 LangGraph 的流基础架构之上，为子代理流提供一流的支持。当深度代理将工作委托给子代理时，您可以独立地传输来自每个子代理的更新 - 实时跟踪进度、LLM 令牌和工具调用。
 
 深度代理流可以实现什么：
 
@@ -240,9 +236,9 @@ for chunk in agent.stream(
         print(chunk["data"])
 ```
 
-## 命名空间当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。
+## 命名空间
 
-|命名空间 |来源 |
+当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。|命名空间 |来源 |
 | - | - |
 | `()`（空）|主代理|
 | `("tools:abc123",)` |由主代理的 `task` 工具调用 `abc123` 生成的子代理 |
@@ -708,7 +704,7 @@ print()
 
 ## 自定义更新
 
-在子代理工具中使用 [⟦T41⟧](https://reference.langchain.com/python/langgraph/config/get_stream_writer) 来发出自定义进度事件：
+在子代理工具中使用 [⟦T40⟧](https://reference.langchain.com/python/langgraph/config/get_stream_writer) 来发出自定义进度事件：
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
@@ -1185,7 +1181,9 @@ for chunk in agent.stream(
 [tools:call_abc123] {'status': 'complete', 'progress': 100}
 ```
 
-## 多种流模式结合多种流模式来全面了解代理执行情况：
+## 多种流模式
+
+结合多种流模式来全面了解代理执行情况：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Skip internal middleware steps - only show meaningful node names
@@ -1304,11 +1302,9 @@ for chunk in agent.stream(
 print("\n--- Final subagent states ---")
 for sub_id, sub in active_subagents.items():
     print(f"  {sub['type']}: {sub['status']}")
-```
+```### 处理人机交互中断
 
-### 处理人机交互中断
-
-配置 [⟦T42⟧](/oss/python/deepagents/human-in-the-loop) 时，`updates` 流可能包含暂停执行以供人工批准的 `__interrupt__` 条目。通过检查更新块中的 `__interrupt__` 键来检测它们。使用与 `.invoke()` 使用的相同平面 `{"decisions": [...]}` 有效负载继续：
+配置 [⟦T41⟧](/oss/python/deepagents/human-in-the-loop) 时，`updates` 流可能包含暂停执行以供人工批准的 `__interrupt__` 条目。通过检查更新块中的 `__interrupt__` 键来检测它们。使用与 `.invoke()` 使用的相同平面 `{"decisions": [...]}` 有效负载继续：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.utils.uuid import uuid7
@@ -1332,7 +1328,7 @@ for mode, data in agent.stream(
 
 对于 `subgraphs=True`，块形状取决于您是否传递一种或多种流模式：
 
-| `stream_mode` |块状 |
+| `stream_mode` |块状|
 | - | - |
 |单模式（例如`"updates"`）| `(namespace, data)` |
 |多种模式（例如`["messages", "updates"]`）| `(namespace, mode, data)` |
@@ -1360,11 +1356,13 @@ for namespace, mode, data in agent.stream(
     print(data)
 ```
 
-LangGraph 1.1 及更高版本还支持统一的 `version="v2"` `StreamPart` dict 格式。参见[Stream output format (v2)](/oss/python/langgraph/streaming#stream-output-format-v2)。本页的Deep Agents示例使用元组格式，与LangGraph当前依赖的Deep Agents版本相匹配。
+LangGraph 1.1 及更高版本还支持统一的 `version="v2"` `StreamPart` dict 格式。参见[Stream output format (v2)](/oss/python/langgraph/streaming#stream-output-format-v2)。本页的Deep Agents示例使用元组格式，与LangGraph当前依赖的LangGraph版本相匹配。
 
-＃＃ 有关的* [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)—为敏感工具操作配置审批工作流程
+## 相关
+
+* [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)—为敏感工具操作配置审批工作流程
 * [Subagents](/oss/python/deepagents/subagents)—通过 Deep Agents 配置和使用子代理
-* [Frontend streaming](/oss/python/deepagents/frontend/overview)—使用 [⟦T59⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 为 Deep Agents 构建 React UI
+* [Frontend streaming](/oss/python/deepagents/frontend/overview)—使用 [⟦T58⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 为 Deep Agents 构建 React UI
 * [LangChain Event Streaming](/oss/python/langchain/event-streaming)—使用 LangChain 代理的一般流概念
 
 ***

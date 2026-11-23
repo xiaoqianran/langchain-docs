@@ -2,28 +2,31 @@
 
 <!-- langchain-docs: Disaster recovery for self-hosted LangSmith | https://docs.langchain.com/langsmith/self-host-disaster-recovery -->
 
-# 自托管LangSmith的灾难恢复
+# 自托管灾难恢复LangSmith
+
+规划、配置和测试自托管LangSmith的灾难恢复，包括每个数据存储的备份、复制和恢复过程。
 
 本页面介绍如何规划、配置和操作自托管 LangSmith 可观察性和评估的灾难恢复 (DR)。它涵盖了必须保护哪些数据、数据存放在哪里、如何备份以及如何在区域或分区故障后恢复平台。
 
 > [!注意]
 >
-> **分担责任。** 对于自托管部署，您负责每个组件的备份、复制、恢复测试和恢复过程，包括 LangSmith Pod 和所有后备数据存储。 LangChain仅对LangSmith软件本身负责。有关等效的 SaaS 职责，请参阅[Shared responsibility model](/langsmith/shared-responsibility-model)。
+> **分担责任。** 对于自托管部署，您负责每个组件的备份、复制、恢复测试和恢复过程，包括 LangSmith Pod 和所有后备数据存储。 LangChain 仅对LangSmith 软件本身负责。有关等效的 SaaS 职责，请参阅[Shared responsibility model](/langsmith/shared-responsibility-model)。
 
 > [!提示]
 >
 > 有关本页假定的架构原语（无状态服务、队列心跳、一次性语义）的详细信息，请参阅[Scalability and resilience](/langsmith/scalability-and-resilience)。
 
-## 您正在恢复什么
+## 您正在恢复什么自托管 LangSmith 由四个状态存储支持的无状态服务组成。恢复计划几乎完全是关于国有商店的。您可以随时通过重新应用 Helm 图表来重新创建无状态服务。
 
-自托管 LangSmith 由四个状态存储支持的无状态服务组成。恢复计划几乎完全是关于国有商店的。您可以随时通过重新应用 Helm 图表来重新创建无状态服务。|层 |组件|状态|恢复行动|
+|层 |组件|状态|恢复行动|
 | - | - | - | - |
 | LangSmith服务 | `langsmith-frontend`、`langsmith-backend`、`langsmith-platform-backend`、`langsmith-queue`、`langsmith-ingest-queue`、`langsmith-playground`、`langsmith-ace-backend` |无国籍|重新安装 Helm 图表 |
 | PostgreSQL |操作数据：组织、工作区、用户、API 密钥、数据集、提示、项目、部署元数据 | **耐用** |从备份或副本恢复 |
-|点击屋 |跟踪和反馈（大量分析数据）| **耐用** |从备份或副本恢复 |
+|点击屋|跟踪和反馈（大量分析数据）| **耐用** |从备份或副本恢复 |
 | Blob 存储（S3/GCS/Azure Blob 或集群内 RustFS）|运行输入、输出、错误、清单、额外内容、事件、附件 | **耐用** |从版本控制的存储桶或副本恢复；像其他集群内数据存储一样备份 RustFS 卷 |
-| Redis（或 Valkey）|临时队列状态、发布/订阅、缓存、运行心跳 |短暂的|重新配置；无需恢复 |
-| Kubernetes 对象 | Helm 值、`Secret`s、TLS 材料、IRSA / 工作负载身份绑定 |配置|从源代码管理重新应用或备份集群状态 |> [!警告]
+| Redis（或 Valkey）|临时队列状态、发布/订阅、缓存、运行心跳 |短暂的|重新配置；无需恢复|| Kubernetes 对象 | Helm 值、`Secret`s、TLS 材料、IRSA / 工作负载身份绑定 |配置|从源代码管理重新应用或备份集群状态 |
+
+> [!警告]
 >
 > 所有持久数据存储必须一起受到保护。 Postgres、ClickHouse 和 Blob 存储是保存持久数据的三种存储； Redis 是短暂的，不需要备份。在没有 ClickHouse 和 blob 存储的情况下恢复 Postgres（反之亦然）会产生不一致的安装。从 Postgres 到 ClickHouse 中的运行以及 Blob 存储中的对象的引用突破了分歧点。始终采取协调备份，或使用跨存储区靠近的时间点恢复 (PITR) 目标。
 
@@ -135,7 +138,7 @@ Redis 存储临时元数据、队列状态和跨实例发布/订阅。 **Redis �
 * 启用多可用区故障转移。
 * 对于跨区域灾难恢复，在故障转移期间在灾难恢复区域中配置一个新的Redis实例； **不要**在新集群中重用活动区域的 Redis URI。> [!警告]
 >
-> 每个LangSmith安装必须使用自己专用的Redis实例。 **不要在两个安装之间共享 Redis 实例**，包括可能在任何时候都处于活动状态的主实例和 DR 副本。共享 Redis 会导致部署任务路由到错误的集群。参见[Connect external Redis](/langsmith/self-host-external-redis)。
+> 每个 LangSmith 安装必须使用自己专用的 Redis 实例。 **不要在两个安装之间共享 Redis 实例**，包括可能在任何时候都处于活动状态的主实例和 DR 副本。共享 Redis 会导致部署任务路由到错误的集群。参见[Connect external Redis](/langsmith/self-host-external-redis)。
 
 ## Kubernetes 配置和秘密
 
@@ -151,30 +154,30 @@ Helm 图表值、Kubernetes `Secret` 和身份绑定与数据备份一样重要�
 ### 具有多可用区 HA 的单区域（推荐基线）
 
 这是最低的生产状态，可以防止区域故障。它不能防止区域性停电。* 跨至少两个可用区的 Kubernetes 节点池。
-* 多可用区 HA 模式下的 Postgres（RDS 多可用区、云 SQL HA 或灵活服务器区域冗余）。
+* Postgres in Multi-AZ HA mode (RDS Multi-AZ, Cloud SQL HA, or Flexible Server zone-redundant).
 * ClickHouse 作为托管服务，或分布在可用区的 3 节点复制集群。
 * 启用了多可用区故障转移的 Redis。
-* 启用版本控制且至少具有区域冗余的冗余层的 Blob 存储。
-* 每个数据存储的每日快照保留至少 7 天。
+* Blob storage with versioning enabled and a redundancy tier of at least zone-redundant.
+* Daily snapshots of every data store retained for at least 7 days.
 
 ### 跨区域主动/被动容灾
 
-这可以防止区域性停电。它的成本要高得多，但对于一级部署来说是正确的模式。* 灾难恢复区域中的第二个 Kubernetes 集群安装了 LangSmith Helm 图表，但扩展到低副本数（热）或零（冷）。
+这可以防止区域性停电。它的成本要高得多，但对于一级部署来说是正确的模式。* A second Kubernetes cluster in the DR region with the LangSmith Helm chart installed but scaled to a low replica count (warm) or zero (cold).
 * Postgres 跨区域副本（RDS 或 Aurora 跨区域副本、Cloud SQL 跨区域副本、Azure 灵活服务器跨区域副本）。促进故障转移。
-* ClickHouse Cloud 或 LangSmith 具有区域故障转移计划的托管 ClickHouse，**或** ClickHouse 备份复制到 DR 区域并在故障转移时恢复到新的自管理集群。通常不支持跨区域 ClickHouse 复制（ClickHouse Cloud 也不提供），因此请规划备份/恢复而不是热灾难恢复副本。
+* ClickHouse Cloud 或 LangSmith 具有区域故障转移计划的托管 ClickHouse，**或** ClickHouse 备份复制到 DR 区域并在故障转移时恢复到新的自我管理集群。通常不支持跨区域 ClickHouse 复制（ClickHouse Cloud 也不提供），因此请规划备份/恢复而不是热灾难恢复副本。
 * Blob 存储复制到具有版本控制和匹配生命周期规则的 DR 存储桶。
 * 在故障转移期间，Redis 在 DR 区域中进行了全新配置。
 * DNS 由 [Route 53](https://aws.amazon.com/route53/)、[Cloud DNS](https://cloud.google.com/dns) 或 [Azure DNS](https://azure.microsoft.com/en-us/products/dns/) 管理，健康检查和故障转移策略指向每个区域的 LangSmith 前端入口。
 
 > [!注意]
 >
-> LangSmith是单写平台。跨区域部署应该是**主动/被动**，而不是主动/主动。不支持针对同一逻辑安装同时写入两个区域，这会产生数据不一致。## 恢复程序
+> LangSmith is a single-write platform.跨区域部署应该是**主动/被动**，而不是主动/主动。不支持针对同一逻辑安装同时写入两个区域，这会产生数据不一致。## 恢复过程
 
 ### 区域故障后恢复
 
 在单区域多可用区部署中，区域故障由您的云提供商自动处理：
 
-1. 托管 Postgres 故障转移到另一个可用区中的备用数据库。重试后，LangSmith Pod 通过集群端点重新连接。
+1. 托管 Postgres 故障转移到另一个可用区中的备用数据库。 LangSmith Pod 在重试后通过集群端点重新连接。
 2.托管Redis的故障转移类似。 LangSmith 自动重试重新连接。
 3. Kubernetes 在剩余可用区的健康节点上重新调度 LangSmith Pod。验证节点池和 Horizo​​ntal Pod Autoscaler 限制是否允许此余量。
 4. 通过从 SDK 提交测试跟踪并确认其显示在 UI 中来验证摄取。
@@ -209,7 +212,7 @@ Helm 图表值、Kubernetes `Secret` 和身份绑定与数据备份一样重要�
 
 更新 DNS 以将流量路由到 DR 入口。向利益相关者传达切换情况。
 
-**8.计划故障恢复**
+**8.计划故障回复**
 
 一旦主要区域正常，就计划受控故障恢复。这通常被安排在维护窗口中，并涉及在再次交换之前将主数据库重建为新的 DR 副本。
 
@@ -247,6 +250,7 @@ Helm 图表值、Kubernetes `Secret` 和身份绑定与数据备份一样重要�
 
 ## 相关页面
 
+* [Recovery admin login for self-hosted SSO](/langsmith/self-host-sso-recovery)
 * [Scalability and resilience](/langsmith/scalability-and-resilience)
 * [Shared responsibility model](/langsmith/shared-responsibility-model)
 * [Connect external Postgres](/langsmith/self-host-external-postgres)

@@ -10,16 +10,14 @@
 
 ## 错误处理策略
 
-不同的错误需要不同的处理策略：
-
-|错误类型 |谁修的|战略|中间件或功能 |
+不同的错误需要不同的处理策略：|错误类型 |谁修的|战略|中间件或功能 |
 | - | - | - | - |
-|瞬时错误（网络问题、速率限制）|系统（自动）|使用指数退避重试 | [ModelRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)、[ToolRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware) |
-
-\|模特拒绝|系统或开发者|退回到另一个模型，然后捕获错误 | [modelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware)、[modelRefusalMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRefusalMiddleware) |\|用户可修复的错误（信息缺失、说明不明确）|人类 |按 `interrupt()` 暂停 | [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) |
-\|供应商中断 |系统（自动）|退回到替代模型 | [ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) |
-\|过多的调用（失控循环）|系统（自动）|每次运行的模型和工具调用上限 | [ModelCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/modelCallLimitMiddleware)、[ToolCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/toolCallLimitMiddleware) |
-\|意外错误 |开发商 |让它们冒泡|无中间件；让异常传播 |
+|瞬时错误（网络问题、速率限制）|系统（自动）|使用指数退避重试 | [modelRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)、[toolRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware) |
+|模特拒绝|系统或开发者|退回到另一个模型，然后捕获错误 | [modelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware)、[modelRefusalMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRefusalMiddleware) |
+|用户可修复的错误（信息缺失、说明不明确）|人类 |按 `interrupt()` 暂停 | [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) |
+|供应商中断 |系统（自动）|退回到替代模型 | [modelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) |
+|过多的调用（失控循环）|系统（自动）|每次运行的模型和工具调用上限 | [ModelCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/modelCallLimitMiddleware)、[ToolCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/toolCallLimitMiddleware) |
+|意外错误 |开发商|让它们冒泡|无中间件；让异常传播 |
 
 以下部分通过代码示例介绍了每种策略。
 
@@ -42,9 +40,7 @@
 >     }),
 >   ],
 > });
-> ```
-
-> [选项卡] 用户可修复
+> ```> [选项卡] 用户可修复
 >
 > 在需要时暂停并收集用户信息（例如帐户 ID、订单号或说明）。使用 `interrupt_on` 在特定工具调用之前暂停代理：
 >
@@ -77,7 +73,9 @@
 >     modelFallbackMiddleware("gpt-6.1-sol"),
 >   ],
 > });
-> ```> [tab] 过多的通话
+> ```
+
+> [tab] 过多的通话
 >
 > 如果没有限制，困惑的代理可以通过循环同一工具调用或进行数百个模型调用，在几分钟内耗尽您的 LLM API 预算。设置每次运行的模型调用和工具执行上限：
 >
@@ -104,9 +102,7 @@
 
 ### 提供商速率限制
 
-聊天模型提供程序对给定时间段内可以进行的调用数量施加限制。要控制发出请求的速率，请使用 `rate_limiter` 初始化模型：
-
-### 通话限制
+聊天模型提供程序对给定时间段内可以进行的调用数量施加限制。要控制发出请求的速率，请使用 `rate_limiter` 初始化模型：### 通话限制
 
 如果没有限制，困惑的代理可以通过循环同一工具调用或进行数百个模型调用，在几分钟内耗尽您的 LLM API 预算。设置每次运行的模型调用和工具执行上限：
 
@@ -120,7 +116,9 @@ const agent = createAgent({
     toolCallLimitMiddleware({ runLimit: 200 }),
   ],
 });
-```使用 `run_limit` 限制单次调用内的调用（每轮重置）。使用 `thread_limit` 限制整个对话中的呼叫（需要检查点）。完整配置请参见[ModelCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/modelCallLimitMiddleware)和[ToolCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/toolCallLimitMiddleware)。
+```
+
+使用 `run_limit` 限制单次调用内的调用（每轮重置）。使用 `thread_limit` 限制整个对话中的呼叫（需要检查点）。完整配置请参见[ModelCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/modelCallLimitMiddleware)和[ToolCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/toolCallLimitMiddleware)。
 
 ## 重试
 
@@ -150,7 +148,7 @@ const agent = createAgent({
 
 将 [ToolRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware) 范围扩展到特定工具，而不是重试所有内容。失败的文件系统`read_file`不会从重试中受益，但超时的网络搜索可能会受益。完整配置请参见[ModelRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)。
 
-## Fallbacks
+## 后备方案
 
 如果您的主要模型提供程序完全崩溃，后备中间件将切换到替代模型：
 
@@ -171,7 +169,7 @@ const agent = createAgent({
 
 完整配置请参见[ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware)。
 
-### Model refusals提供者可以拒绝请求（例如根据安全策略），但仍然返回成功的响应。当模型拒绝时，Deep Agents抛出[⟦T13⟧](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError)，因此即使是拒绝，运行看起来也不像成功的运行。 [⟦T14⟧](https://reference.langchain.com/javascript/langchain/index/modelRefusalMiddleware) 在您的中间件之后运行。因此，您通过的 [⟦T15⟧](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) 首先在下一个模型上重试被拒绝的请求。仅当没有后备措施时，运行才会抛出。后备模型可以来自同一提供商或不同的提供商，并且它仍然可以拒绝相同的请求。
+### 模型拒绝提供者可以拒绝请求（例如根据安全策略），但仍然返回成功的响应。当模型拒绝时，Deep Agents抛出[⟦T13⟧](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError)，因此即使是拒绝，运行看起来也不像成功的运行。 [⟦T14⟧](https://reference.langchain.com/javascript/langchain/index/modelRefusalMiddleware) 在您的中间件之后运行。因此，您通过的 [⟦T15⟧](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) 首先在下一个模型上重试被拒绝的请求。仅当没有后备措施时，运行才会抛出。后备模型可以来自同一提供商或不同的提供商，并且它仍然可以拒绝相同的请求。
 
 模型级`withFallbacks`不会捕获拒绝，因为中间件在模型调用返回后检测到它们。请使用 [⟦T17⟧](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) 代替。
 
@@ -187,4 +185,4 @@ const agent = createAgent({
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/fault-tolerance.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/fault-tolerance.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

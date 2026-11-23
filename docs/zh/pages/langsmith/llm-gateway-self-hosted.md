@@ -10,7 +10,7 @@
 >
 > LLM 网关位于[beta](/langsmith/release-stages)。
 
-LLM 网关（`agent-gateway` 服务）代理从代理和编码代理到上游 LLM 提供商的模型调用。网关在细粒度范围内应用策略，以实现可靠性、支出限制以及 PII 和机密的编辑。您还可以通过网关路由 LangSmith 部署的模型调用。
+LLM 网关（`agent-gateway` 服务）代理从代理和编码代理到上游 LLM 提供商的模型调用。网关在精细范围内应用策略，以确保可靠性、支出限制以及 PII 和机密的编辑。您还可以通过网关路由 LangSmith 部署的模型调用。
 
 本指南使用 Helm 图表在自托管 Kubernetes 安装上启用它。对于 SaaS 等效项，请参阅 [LLM Gateway](/langsmith/llm-gateway)。
 
@@ -108,7 +108,7 @@ agentGateway:
 
 ## 拨打你的第一个电话
 
-这镜像了 [Cloud first request guide](/langsmith/llm-gateway-first-request)，并将基本 URL 调整为自托管。在继续之前，请完成上述步骤（部署网关、启动 Ingress）。> [!注意]
+这镜像了 [Cloud first request guide](/langsmith/llm-gateway-first-request)，并将基本 URL 调整为自托管。在继续之前完成上述步骤（部署网关、启动 Ingress）。> [!注意]
 >
 > 在第一次调用之前，将 [add a provider key](/langsmith/llm-gateway-provider-authentication#add-a-provider-key) 作为调用该提供程序的每个工作区中的秘密，向用户授予具有 `gateway:invoke` 和 `workspaces:read` [permissions](/langsmith/organization-workspace-operations) 和 [distribute a workspace-scoped API key](/langsmith/llm-gateway-authentication#use-a-workspace-scoped-key) 的角色。参见[Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)。
 
@@ -191,9 +191,7 @@ print(result["messages"][-1].content)
 
 在 LangSmith UI 中，转到与 API 密钥绑定的工作区中名为 `gateway` 的跟踪项目。如果启用了跟踪内容，则通过网关路由的每个调用都会显示输入、输出、延迟和令牌使用情况。
 
-**4.设置支出政策（可选）**
-
-转到 **LLM Gateway** 并选择 **Cost Controls** 以限制每个工作区或每个 API 密钥的支出。一旦请求超出上限，网关就会返回一个`402`，其中包含一条消息，其中指定了阻止该请求的策略：
+**4.设置支出政策（可选）**转到 **LLM Gateway**，选择 **Policies** 选项卡，然后单击 **+ Policy** 以创建支出限制，以限制所选范围内的支出。在早于 0.18.0 的自托管 Helm 图表版本上，请选择 **成本控制** 选项卡。一旦请求超出上限，网关就会返回一个`402`，其中包含一条消息，其中指定了阻止该请求的策略：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {"type": "error", "error": {"message": "request blocked by gateway policies: R&D Spend Cap"}}
@@ -201,16 +199,18 @@ print(result["messages"][-1].content)
 
 有关完整指南，请参阅[Spend policies](/langsmith/llm-gateway-spend-policies)。
 
-## 故障排除* **升级后立即网关 Pod `CrashLoopBackOff`**：检查`kubectl logs deploy/langsmith-agent-gateway`。
+## 故障排除
+
+* **升级后立即网关 Pod `CrashLoopBackOff`**：检查`kubectl logs deploy/langsmith-agent-gateway`。
 * **模型调用因连接被拒绝或超时而失败 `agent-gateway`**：验证网关 Pod 为 `Running`，并且集群中没有 NetworkPolicy 阻止 LangSmith 命名空间中 Pod 之间的端口 `8083`。
 
-## 安全说明
-
-* 网关对提供商 LLM 端点进行出站 HTTP 调用。您配置的任何自定义提供商 URL 都必须根据您的出口策略进行验证；该服务使用 LangSmith 的 SSRF 保护库来自定义和配置提供商 URL。内置提供程序解析为固定的、提供程序拥有的主机名，而不是用户控制的 URL 路径。
+## 安全说明* 网关对提供商 LLM 端点进行出站 HTTP 调用。您配置的任何自定义提供商 URL 都必须根据您的出口策略进行验证；该服务使用 LangSmith 的 SSRF 保护库来自定义和配置提供商 URL。内置提供程序解析为固定的、提供程序拥有的主机名，而不是用户控制的 URL 路径。
 * 外部客户端应通过前端的 `/gateway/` 路径到达网关，以便请求继承与 LangSmith API 的其余部分相同的 TLS 终止、身份验证和速率限制。直接在端口 `8083` 创建第二个 Ingress 或 LoadBalancer 会绕过这些控制。
 * `AGENT_GATEWAY_URL` 源自 Helm 版本全名以及图表的 `agentGateway.name`、`agentGateway.service.port`、`namespace` 和 `clusterDomain` 值。覆盖现有安装中的任何一个都需要滚动重新启动读取该值的每个 Pod。
 
-## 后续步骤* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：连接提供商、授予用户网关访问权限并为您的组织配置策略。
+## 后续步骤
+
+* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：连接提供商、授予用户网关访问权限并为您的组织配置策略。
 * [How the LLM Gateway works](/langsmith/llm-gateway-how-it-works)：通过网关跟踪请求，包括自托管基本 URL。
 * [Authenticate to the LLM Gateway](/langsmith/llm-gateway-authentication)：选择并发送调用者使用的API密钥。
 

@@ -6,7 +6,7 @@
 
 流 LangGraph 使用消息、状态、子图、输出和扩展的类型化投影运行。
 
-对于大多数 LangGraph 应用程序代码，事件流是推荐的进程内流模型。它返回一个运行流对象，可以同时以多种方式使用。
+事件流是LangGraph应用程序代码的进程内流模型。它返回一个运行流对象，可以同时以多种方式使用。
 
 ## 快速入门
 
@@ -150,7 +150,7 @@ for name, item in stream.interleave("values", "messages", "subgraphs"):
         print(f"[subgraph] path={item.path}")
 ```
 
-## 中断后继续
+## 中断后恢复
 
 当图表因人工输入而暂停时，检查 `stream.interrupted` 和 `stream.interrupts`，然后通过使用 `Command` 再次调用 `stream_events(..., version="v3")` 来恢复。
 
@@ -341,7 +341,7 @@ class MyTransformer(StreamTransformer):
 
 ### 声明所需的流模式
 
-`required_stream_modes` 控制底层图在流期间发出的 Pregel 流模式。运行时获取每个已注册变压器的 `required_stream_modes` 的并集，并将该并集作为 `stream_mode` 参数传递给图的 `.stream()` 调用。 **永远不会发出任何变压器请求的模式** - 声明 `("custom",)` 是导致 `custom` 事件在运行中流动的原因。
+`required_stream_modes` 控制底层图在流期间发出的 Pregel 流模式。 The runtime takes the union of every registered transformer's `required_stream_modes` and passes that union as the `stream_mode` argument to the graph's `.stream()` call. **Modes that no transformer requests are never emitted** — declaring `("custom",)` is what causes `custom` events to flow through the run at all.
 
 ```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 class CustomTransformer(StreamTransformer):
@@ -351,18 +351,18 @@ class CustomTransformer(StreamTransformer):
         if event["method"] == "custom":
             ...
         return True
-````process()`接收图表发出的每个事件，并负责通过`event["method"]`进行过滤。该声明开启上游排放；它并没有缩小`process()`的视野。有效值为 Pregel 流模式：`"messages"`、`"tools"`、`"custom"`、`"values"`、`"updates"`、`"checkpoints"`、`"tasks"`、`"debug"`。每个变压器必须声明它作用的每个模式 - 省略的模式不会由图发出，并且永远不会达到 `process()`。
+````process()` receives every event the graph emits and is responsible for filtering by `event["method"]`.该声明开启上游排放；它并没有缩小`process()`的视野。 Valid values are the Pregel stream modes: `"messages"`, `"tools"`, `"custom"`, `"values"`, `"updates"`, `"checkpoints"`, `"tasks"`, `"debug"`. Each transformer must declare every mode it acts on — an omitted mode is not emitted by the graph and never reaches `process()`.
 
 ### 流频道
 
-`StreamChannel` 是转换器用于流式传输值的投影基元。它总是在 `stream.extensions.<name>` 上公开一个可迭代流。构造函数参数决定每个 `push()` 是否也作为 `custom:<name>` 事件流入运行的主事件流，即在迭代原始协议事件时是否显示投影的值。
+`StreamChannel` is the projection primitive a transformer uses for streaming values. It always exposes an iterable stream on `stream.extensions.<name>`.构造函数参数决定每个 `push()` 是否也作为 `custom:<name>` 事件流入运行的主事件流，即在迭代原始协议事件时是否显示投影的值。
 
 |需要|使用 |
 | - | - |
 |仅侧通道投影 | `StreamChannel()` |
 |还将每次推送流入主事件流 | `StreamChannel(name)` |
 
-命名通道有效负载必须是可序列化的，因为每个推送的值也会成为主流中的`custom:<name>`协议事件。将承诺、异步迭代、类实例和其他进程内句柄保留在未命名通道中。流处理程序拥有通道生命周期。一旦 `init()` 返回一个通道，处理程序就会在运行结束时关闭该通道或使其失败。变压器只推动价值。
+Named channel payloads must be serializable, because each pushed value also becomes a `custom:<name>` protocol event in the main stream.将承诺、异步迭代、类实例和其他进程内句柄保留在未命名通道中。流处理程序拥有通道生命周期。一旦 `init()` 返回一个通道，处理程序就会在运行结束时关闭该通道或使其失败。变压器只推动价值。
 
 ### 示例：命名通道
 
@@ -472,7 +472,7 @@ class StatsTransformer(StreamTransformer):
 
 ### 在调用时或编译时注册
 
-在调用时传递变压器进行本地实验：
+在通话时通过变压器进行本地实验：
 
 ```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream = graph.stream_events(

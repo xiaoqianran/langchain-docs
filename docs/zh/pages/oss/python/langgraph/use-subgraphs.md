@@ -29,7 +29,7 @@ uv add langgraph
 
 ## 定义子图通信
 
-添加子图时，需要定义父图和子图如何通信：|图案|何时使用 |状态模式 |
+添加子图时，需要定义父图和子图如何通信：|图案|何时使用 |状态模式|
 | - | - | - |
 | [Call a subgraph inside a node](#call-a-subgraph-inside-a-node) |父图和子图具有**不同的状态模式**（没有共享密钥），或者您需要在它们之间转换状态 |您编写一个包装函数，将父状态映射到子图输入，并将子图输出映射回父状态 |
 | [Add a subgraph as a node](#add-a-subgraph-as-a-node) |父图和子图 **共享状态键** - 子图与父图读取和写入相同的通道 |您将编译后的子图直接传递给`add_node`——无需包装函数 |
@@ -227,7 +227,7 @@ graph = builder.compile()
 如果您的子图与父图共享状态键，您可以按照以下步骤将其添加到您的图中：
 
 1.定义子图工作流程（下例中的`subgraph_builder`）并编译
-2.定义父图工作流程时将编译后的子图传递给[⟦T31⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/add_node)方法
+2.定义父图工作流程时，将编译后的子图传递给[⟦T31⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/add_node)方法
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing_extensions import TypedDict
@@ -324,7 +324,7 @@ graph = builder.compile()
 
 > [!注意]
 >
-> 下面的例子使用LangChain的[⟦T38⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)，这是构建代理的常用方法。 `create_agent` 在底层生成[LangGraph graph](/oss/python/langgraph/graph-api)，因此所有子图持久性概念都直接适用。如果您使用原始 LangGraph `StateGraph` 进行构建，则适用相同的模式和配置选项 - 有关详细信息，请参阅 [Graph API](/oss/python/langgraph/graph-api)。
+> 下面的例子使用LangChain的[⟦T38⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)，这是构建代理的常用方法。 `create_agent` 在底层生成 [LangGraph graph](/oss/python/langgraph/graph-api)，因此所有子图持久性概念都直接适用。如果您使用原始 LangGraph `StateGraph` 进行构建，则适用相同的模式和配置选项 - 有关详细信息，请参阅 [Graph API](/oss/python/langgraph/graph-api)。
 
 ### 有状态有状态子图继承父图的检查指针，从而启用 [interrupts](/oss/python/langgraph/interrupts)、[persistence](/oss/python/langgraph/persistence) 和状态检查。这两种有状态模式的不同之处在于状态保留的时间。
 
@@ -455,7 +455,7 @@ agent = create_agent(
 
 > [tab] 多个子图调用
 >
-> 对同一子图的多次调用不会发生冲突，因为每次调用都有自己的检查点命名空间：
+> 对同一子图的多次调用不会发生冲突，因为每次调用都有自己的检查点名称空间：
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > config = {"configurable": {"thread_id": "1"}}
@@ -555,7 +555,7 @@ agent = create_agent(
 > final = resumed.output
 > ```
 >
->>【卡牌】[View example trace](https://smith.langchain.com/public/17bf6cab-dbeb-4977-8c29-bb855291903e/r)
+>>【卡】[View example trace](https://smith.langchain.com/public/17bf6cab-dbeb-4977-8c29-bb855291903e/r)
 >>
 >> 为此示例打开公共 LangSmith 运行。
 
@@ -630,7 +630,7 @@ agent = create_agent(
 
 ### 无状态
 
-当您想要像普通函数调用一样运行子代理而没有检查点开销时，请使用此选项。子图无法暂停/恢复，并且不会从 [durable execution](/oss/python/langgraph/persistence) 中受益。使用`checkpointer=False`编译。
+当您想要像普通函数调用一样运行子代理而没有检查点开销时，请使用此选项。子图无法暂停/恢复，并且无法从 [durable execution](/oss/python/langgraph/persistence) 中受益。使用`checkpointer=False`编译。
 
 > [!警告]
 >
@@ -740,28 +740,34 @@ subgraph = builder.compile(checkpointer=False)  # or True / None
 
 ## 流子图输出
 
-要观察嵌套图执行，我们建议使用 [event streaming](/oss/python/langgraph/event-streaming)：`stream.subgraphs` 投影会发现每个嵌套运行并公开其 `path`、`messages` 和 `values`，而无需解析命名空间字符串。
+要在流式输出中包含子图的输出，请在父图的 `stream` 方法中设置 `subgraphs` 选项。这会流式传输来自父图和任何子图的输出。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-stream = graph.stream_events({"foo": "foo"}, version="v3")  # [!code highlight]
+> [选项卡] v2 (LangGraph 1.1 或更高版本)
+>
+> 对于`version="v2"`，子图事件使用相同的`StreamPart` 格式。 `ns` 字段标识源图：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> for chunk in graph.stream(
+>     {"foo": "foo"},
+>     subgraphs=True, # [!code highlight]
+>     stream_mode="updates",
+>     version="v2", # [!code highlight]
+> ):
+>     print(chunk["type"])  # "updates"
+>     print(chunk["ns"])    # () for root, ("node_2:<task_id>",) for subgraph
+>     print(chunk["data"])  # {"node_name": {"key": "value"}}
+> ```
 
-for subgraph in stream.subgraphs:
-    print(subgraph.graph_name, subgraph.path)
-
-    for snapshot in subgraph.values:
-        print(subgraph.path, snapshot)
-```
-
-如果您需要原始协议事件，请直接迭代流并过滤`event["method"]`和`event["params"]["namespace"]`：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langgraph.stream import UpdatesTransformer
-
-stream = graph.stream_events({"foo": "foo"}, version="v3", transformers=[UpdatesTransformer])
-for event in stream:
-    if event["method"] == "updates":
-        print(event["params"]["namespace"], event["params"]["data"])
-```
+> [选项卡] v1（默认）
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> for chunk in graph.stream(
+>     {"foo": "foo"},
+>     subgraphs=True, # [!code highlight]
+>     stream_mode="updates",
+> ):
+>     print(chunk)
+> ```
 
 > [手风琴] 来自子图的流
 >

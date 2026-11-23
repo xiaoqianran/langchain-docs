@@ -79,7 +79,7 @@ Fallback chains apply to Chat Completions, Responses, and Messages requests, on 
 To create a fallback chain:
 
 1. Go to **LLM Gateway**, and select the **Model Fallbacks** tab.
-2. Click **Create fallback chain**.
+2. Click **+ Fallback Chain**.
 3. Select the **Workspace** where the chain applies.
 4. Select the primary provider and model. Requests to this provider-prefixed model ID use the chain when the primary attempt fails.
 5. Under **Fallbacks**, add one to five backup models in the order the gateway should try them. Choose a provider and model directly, select an existing model configuration, or create a custom model configuration.

@@ -2,6 +2,8 @@
 
 # Disaster recovery for self-hosted LangSmith
 
+Plan, configure, and test disaster recovery for self-hosted LangSmith, including backups, replication, and restore procedures for each data store.
+
 This page describes how to plan, configure, and operate disaster recovery (DR) for self-hosted LangSmith Observability and Evaluation. It covers what data must be protected, where it lives, how to back it up, and how to recover the platform after a regional or zonal failure.
 
 > [!NOTE]
@@ -279,6 +281,7 @@ A backup is only as good as the last successful restore. Schedule the following 
 
 ## Related pages
 
+* [Recovery admin login for self-hosted SSO](/langsmith/self-host-sso-recovery)
 * [Scalability and resilience](/langsmith/scalability-and-resilience)
 * [Shared responsibility model](/langsmith/shared-responsibility-model)
 * [Connect external Postgres](/langsmith/self-host-external-postgres)

@@ -10,7 +10,7 @@
 
 除了文本生成之外，许多模型还支持：
 
-* [Tool calling](#tool-calling) - 调用外部工具（如数据库查询或 API 调用）并在其响应中使用结果。
+* [Tool calling](#tool-calling) - 调用外部工具（例如数据库查询或 API 调用）并在其响应中使用结果。
 * [Structured output](#structured-output) - 模型的响应被限制为遵循定义的格式。
 * [Multimodality](#multimodal) - 处理并返回文本以外的数据，例如图像、音频和视频。
 * [Reasoning](#reasoning) - 模型执行多步骤推理以得出结论。
@@ -432,7 +432,7 @@ console.log(full.contentBlocks);
 >> 这简化了基于事件类型和其他元数据的过滤，并将在后台聚合完整消息。请参阅下面的示例。
 >>
 >> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> > const stream = await model.streamEvents("Hello");
+> > const stream = await model.streamEvents("Hello", { version: "v2" });
 > > for await (const event of stream) {
 > >     if (event.event === "on_chat_model_start") {
 > >         console.log(`Input: ${event.data.input}`);
@@ -489,7 +489,7 @@ for (const response of responses) {
 }
 ```> [!提示]
 >
-> 使用`batch()`处理大量输入时，您可能需要控制最大并行调用数。这可以通过在 [⟦T102⟧](https://reference.langchain.com/javascript/langchain-core/runnables/RunnableConfig) 字典中设置 `maxConcurrency` 属性来完成。
+> 使用`batch()`处理大量输入时，您可能需要控制最大并行调用数。这可以通过设置 [⟦T102⟧](https://reference.langchain.com/javascript/langchain-core/runnables/RunnableConfig) 字典中的 `maxConcurrency` 属性来完成。
 >
 > ```typescript Batch with max concurrency theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > model.batch(
@@ -580,7 +580,7 @@ for (const tool_call of toolCalls) {
 
 下面，我们展示了一些使用工具调用的常见方法。> [accordion] 工具执行循环
 >
-> 当模型返回工具调用时，您需要执行工具并将结果传递回模型。这会创建一个对话循环，模型可以在其中使用工具结果生成最终响应。 LangChain 包括为您处理此编排的 [agent](/oss/javascript/langchain/agents) 抽象。
+> 当模型返回工具调用时，您需要执行工具并将结果传递回模型。这会创建一个对话循环，模型可以在其中使用工具结果生成最终响应。 LangChain 包括 [agent](/oss/javascript/langchain/agents) 为您处理此编排的抽象。
 >
 > 以下是如何执行此操作的简单示例：
 >
@@ -869,7 +869,7 @@ for (const tool_call of toolCalls) {
 
 ### 处理模型拒绝
 
-提供商将拒绝（例如安全策略拒绝）报告为成功响应而不是错误。普通模型调用返回带有 [⟦T122⟧ content block](/oss/javascript/langchain/messages#content-block-reference) 的消息。 `withStructuredOutput` 从 `@langchain/core/errors` 抛出 [⟦T124⟧](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError) 而不是解析错误。错误的 `rawMessage` 保存拒绝的响应。
+提供商将拒绝（例如安全策略拒绝）报告为成功响应而不是错误。普通模型调用返回带有 [⟦T122⟧ content block](/oss/javascript/langchain/messages#content-block-reference) 的消息。 `withStructuredOutput` 从 `@langchain/core/errors` 抛出 [⟦T124⟧](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError) 而不是解析错误。错误的 `rawMessage` 包含拒绝的响应。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ModelRefusalError } from "@langchain/core/errors";
@@ -1097,7 +1097,7 @@ responseMessage.response_metadata.logprobs.content.slice(0, 5);
 
 ### 调用配置
 
-调用模型时，您可以使用 [⟦T167⟧](https://reference.langchain.com/javascript/langchain-core/runnables/RunnableConfig) 对象通过 `config` 参数传递附加配置。这提供了对执行行为、回调和元数据跟踪的运行时控制。
+调用模型时，您可以使用 [⟦T167⟧](https://reference.langchain.com/javascript/langchain-core/runnables/RunnableConfig) 对象通过 `config` 参数传递其他配置。这提供了对执行行为、回调和元数据跟踪的运行时控制。
 
 常见的配置选项包括：
 

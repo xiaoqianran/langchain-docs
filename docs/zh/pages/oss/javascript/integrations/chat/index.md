@@ -199,25 +199,25 @@
 
 |型号|流 | [Tool Calling](/oss/javascript/langchain/tools/) | [⟦T30⟧](/oss/javascript/langchain/models#structured-output) | [⟦T31⟧](/oss/javascript/langchain/messages#multimodal) |下载 |
 | :- | :- | :- | :- | :- | :- |
-| [⟦T32⟧](/oss/javascript/integrations/chat/openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T84⟧](https://www.npmjs.com/package/@langchain/openai) |
-| [⟦T33⟧](/oss/javascript/integrations/chat/anthropic) | ✅ | ✅ | ✅ | ✅ | [  ⟦T85⟧](https://www.npmjs.com/package/@langchain/anthropic) |
-| [⟦T34⟧](/oss/javascript/integrations/chat/bedrock_converse) | ✅ | ✅ | ✅ | ✅ | [  ⟦T86⟧](https://www.npmjs.com/package/@langchain/aws) |
-| [⟦T35⟧](/oss/javascript/integrations/chat/groq) | ✅ | ✅ | ✅ | ❌ | [  ⟦T87⟧](https://www.npmjs.com/package/@langchain/groq) |
-| [⟦T36⟧](/oss/javascript/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ⟦T88⟧](https://www.npmjs.com/package/@langchain/ollama) |
-| [⟦T37⟧](/oss/javascript/integrations/chat/mistral) | ✅ | ✅ | ✅ | ✅ | [  ⟦T89⟧](https://www.npmjs.com/package/@langchain/mistralai) |
-| [⟦T38⟧](/oss/javascript/integrations/chat/google) | ✅ | ✅ | ✅ | ✅ | [  ⟦T90⟧](https://www.npmjs.com/package/@langchain/google) |
-| [⟦T39⟧](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ⟦T91⟧](https://www.npmjs.com/package/@langchain/cohere) |
-| [⟦T40⟧](/oss/javascript/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ⟦T92⟧](https://www.npmjs.com/package/@langchain/xai) |
-| [⟦T41⟧](/oss/javascript/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ❌ | [  ⟦T93⟧](https://www.npmjs.com/package/@langchain/fireworks) |
-| [⟦T42⟧](/oss/javascript/integrations/chat/cloudflare_workersai) | ✅ | ❌ | ❌ | ✅ | [  ⟦T94⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
-| [⟦T43⟧](/oss/javascript/integrations/chat/togetherai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T95⟧](https://www.npmjs.com/package/@langchain/together-ai) |
-| [⟦T44⟧](/oss/javascript/integrations/chat/perplexity) | ✅ | ❌ | ✅ | ❌ | [  ⟦T96⟧](https://www.npmjs.com/package/@langchain/perplexity) |
+| [⟦T32⟧](/oss/javascript/integrations/chat/openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T85⟧](https://www.npmjs.com/package/@langchain/openai) |
+| [⟦T33⟧](/oss/javascript/integrations/chat/anthropic) | ✅ | ✅ | ✅ | ✅ | [  ⟦T86⟧](https://www.npmjs.com/package/@langchain/anthropic) |
+| [⟦T34⟧](/oss/javascript/integrations/chat/bedrock_converse) | ✅ | ✅ | ✅ | ✅ | [  ⟦T87⟧](https://www.npmjs.com/package/@langchain/aws) |
+| [⟦T35⟧](/oss/javascript/integrations/chat/groq) | ✅ | ✅ | ✅ | ❌ | [  ⟦T88⟧](https://www.npmjs.com/package/@langchain/groq) |
+| [⟦T36⟧](/oss/javascript/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ⟦T89⟧](https://www.npmjs.com/package/@langchain/ollama) |
+| [⟦T37⟧](/oss/javascript/integrations/chat/mistral) | ✅ | ✅ | ✅ | ✅ | [  ⟦T90⟧](https://www.npmjs.com/package/@langchain/mistralai) |
+| [⟦T38⟧](/oss/javascript/integrations/chat/google) | ✅ | ✅ | ✅ | ✅ | [  ⟦T91⟧](https://www.npmjs.com/package/@langchain/google) |
+| [⟦T39⟧](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ⟦T92⟧](https://www.npmjs.com/package/@langchain/cohere) |
+| [⟦T40⟧](/oss/javascript/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ⟦T93⟧](https://www.npmjs.com/package/@langchain/xai) |
+| [⟦T41⟧](/oss/javascript/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ❌ | [  ⟦T94⟧](https://www.npmjs.com/package/@langchain/fireworks) |
+| [⟦T42⟧](/oss/javascript/integrations/chat/cloudflare_workersai) | ✅ | ❌ | ❌ | ✅ | [  ⟦T95⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
+| [⟦T43⟧](/oss/javascript/integrations/chat/togetherai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T96⟧](https://www.npmjs.com/package/@langchain/together-ai) |
+| [⟦T44⟧](/oss/javascript/integrations/chat/perplexity) | ✅ | ❌ | ✅ | ❌ | [  ⟦T97⟧](https://www.npmjs.com/package/@langchain/perplexity) |
 
 有关更多选项，请参阅下面的[full list of chat model integrations](#all-chat-models)。
 
-## 路由器和代理路由器和代理使您可以通过单个 API 和凭证访问来自多个提供商的模型。它们可以简化计费，让您在不改变集成的情况下在模型之间切换，并提供自动回退等功能。
+## 路由器和代理路由器和代理使您可以通过单个 API 和凭证访问多个提供商的模型。它们可以简化计费，让您在不改变集成的情况下在模型之间切换，并提供自动回退等功能。
 
-|供应商|整合 |描述 |
+|供应商|整合|描述 |
 | - | - | - |
 | [OpenRouter](https://openrouter.ai/) | [⟦T45⟧](/oss/javascript/integrations/chat/openrouter) |统一访问来自OpenAI、Anthropic、Google、Meta 等的模型 |
 
@@ -227,38 +227,39 @@
 
 ## 所有聊天模型|型号|流 | [Tool Calling](/oss/javascript/langchain/tools/) | [⟦T49⟧](/oss/javascript/langchain/models#structured-output) | [⟦T50⟧](/oss/javascript/langchain/messages#multimodal) |下载 |
 | :- | :- | :- | :- | :- | :- |
-| [⟦T51⟧](/oss/javascript/integrations/chat/azure) | ✅ | ✅ | ✅ | ✅ | [  ⟦T97⟧](https://www.npmjs.com/package/@langchain/openai) |
-| [⟦T52⟧](/oss/javascript/integrations/chat/openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T98⟧](https://www.npmjs.com/package/@langchain/openai) |
-| [⟦T53⟧](/oss/javascript/integrations/chat/anthropic) | ✅ | ✅ | ✅ | ✅ | [  ⟦T99⟧](https://www.npmjs.com/package/@langchain/anthropic) |
-| [⟦T54⟧](/oss/javascript/integrations/chat/google_generative_ai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T100⟧](https://www.npmjs.com/package/@langchain/google-genai) |
-| [⟦T55⟧](/oss/javascript/integrations/chat/bedrock_converse) | ✅ | ✅ | ✅ | ✅ | [  ⟦T101⟧](https://www.npmjs.com/package/@langchain/aws) |
-| [⟦T56⟧](/oss/javascript/integrations/chat/google_vertex_ai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T102⟧](https://www.npmjs.com/package/@langchain/google-vertexai) |
-| [⟦T57⟧](/oss/javascript/integrations/chat/groq) | ✅ | ✅ | ✅ | ❌ | [  ⟦T103⟧](https://www.npmjs.com/package/@langchain/groq) |
-| [⟦T58⟧](/oss/javascript/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ⟦T104⟧](https://www.npmjs.com/package/@langchain/ollama) |
-| [⟦T59⟧](/oss/javascript/integrations/chat/mistral) | ✅ | ✅ | ✅ | ✅ | [  ⟦T105⟧](https://www.npmjs.com/package/@langchain/mistralai) |
-| [⟦T60⟧](/oss/javascript/integrations/chat/google) | ✅ | ✅ | ✅ | ✅ | [  ⟦T106⟧](https://www.npmjs.com/package/@langchain/google) |
-| [⟦T61⟧](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ⟦T107⟧](https://www.npmjs.com/package/@langchain/cohere) |
-| [⟦T62⟧](/oss/javascript/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ⟦T108⟧](https://www.npmjs.com/package/@langchain/xai) |
-| [⟦T63⟧](/oss/javascript/integrations/chat/openrouter) | ✅ | ✅ | ✅ | ✅ | [  ⟦T109⟧](https://www.npmjs.com/package/@langchain/openrouter) |
-| [⟦T64⟧](/oss/javascript/integrations/chat/deepseek) | ✅ | ✅ | ✅ | ❌ | [  ⟦T110⟧](https://www.npmjs.com/package/@langchain/deepseek) |
-| [⟦T65⟧](/oss/javascript/integrations/chat/cerebras) | ✅ | ✅ | ✅ | ❌ | [  ⟦T111⟧](https://www.npmjs.com/package/@langchain/cerebras) |
-| [⟦T66⟧](/oss/javascript/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ❌ | [  ⟦T112⟧](https://www.npmjs.com/package/@langchain/fireworks) |
-| [⟦T67⟧](/oss/javascript/integrations/chat/baidu_qianfan) | | | | | [  ⟦T113⟧](https://www.npmjs.com/package/@langchain/baidu-qianfan) |
-| [⟦T68⟧](/oss/javascript/integrations/chat/cloudflare_workersai) | ✅ | ❌ | ❌ | ✅ | [  ⟦T114⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
-| [⟦T69⟧](/oss/javascript/integrations/chat/togetherai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T115⟧](https://www.npmjs.com/package/@langchain/together-ai) |
-| [⟦T70⟧](/oss/javascript/integrations/chat/ibm) | ✅ | ✅ | ✅ | ✅ | [  ⟦T116⟧](https://www.npmjs.com/package/@langchain/ibm) |
-| [⟦T71⟧](/oss/javascript/integrations/chat/perplexity) | ✅ | ❌ | ✅ | ❌ | [  ⟦T117⟧](https://www.npmjs.com/package/@langchain/perplexity) |
-| [⟦T72⟧](/oss/javascript/integrations/chat/yandex) | | | | | [  ⟦T118⟧](https://www.npmjs.com/package/@langchain/yandex) |
-| [⟦T73⟧](https://github.com/ykoh42/web-llm-adapters/blob/main/packages/langchain-web-llm/README.md) | ✅ | ✅ | ✅ | | [  ⟦T119⟧](https://www.npmjs.com/package/langchain-web-llm) |
-| [⟦T74⟧](https://docs.empiriolabs.ai/integrations#langchain) | ✅ | ✅ | ✅ | ✅ | [  ⟦T120⟧](https://www.npmjs.com/package/@empiriolabs/langchain) |
-| [⟦T75⟧](https://github.com/ykoh42/exaone-integrations/tree/main/packages/langchain-exaone-ts) | ✅ | ✅ | ✅ | ❌ | [  ⟦T121⟧](https://www.npmjs.com/package/langchain-exaone) |
-| [⟦T76⟧](https://interfaze.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ⟦T122⟧](https://www.npmjs.com/package/@interfaze-ai/langchain) |
-| [⟦T77⟧](https://gitlab.com/bitkaio/langchain/kserve-provider) | ✅ | ✅ | ✅ | ✅ | [  ⟦T123⟧](https://www.npmjs.com/package/@bitkaio/langchain-kserve) |
-| [⟦T78⟧](https://recallmem.dev/guides/langchain) | | | | | [  ⟦T124⟧](https://www.npmjs.com/package/@recall-memory/langchain) |
-| [⟦T79⟧](https://scx.ai/) | ✅ | ✅ | ✅ | ✅ | [  ⟦T125⟧](https://www.npmjs.com/package/@scx-ai/langchain) |
-| [⟦T80⟧](https://github.com/Obscurify-ai/langchain-obscurify) | ✅ | ✅ | ✅ | | [  ⟦T126⟧](https://www.npmjs.com/package/@obscurify/langchain) |
-| [⟦T81⟧](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ |不适用 || [⟦T82⟧](/oss/javascript/integrations/chat/fake) | | | | |不适用 |
-| [⟦T83⟧](https://www.tuningengines.com/) | ✅ | ✅ | ✅ | ❌ |不适用 |
+| [⟦T51⟧](/oss/javascript/integrations/chat/azure) | ✅ | ✅ | ✅ | ✅ | [  ⟦T98⟧](https://www.npmjs.com/package/@langchain/openai) |
+| [⟦T52⟧](/oss/javascript/integrations/chat/openai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T99⟧](https://www.npmjs.com/package/@langchain/openai) |
+| [⟦T53⟧](/oss/javascript/integrations/chat/anthropic) | ✅ | ✅ | ✅ | ✅ | [  ⟦T100⟧](https://www.npmjs.com/package/@langchain/anthropic) |
+| [⟦T54⟧](/oss/javascript/integrations/chat/google_generative_ai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T101⟧](https://www.npmjs.com/package/@langchain/google-genai) |
+| [⟦T55⟧](/oss/javascript/integrations/chat/bedrock_converse) | ✅ | ✅ | ✅ | ✅ | [  ⟦T102⟧](https://www.npmjs.com/package/@langchain/aws) |
+| [⟦T56⟧](/oss/javascript/integrations/chat/google_vertex_ai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T103⟧](https://www.npmjs.com/package/@langchain/google-vertexai) |
+| [⟦T57⟧](/oss/javascript/integrations/chat/groq) | ✅ | ✅ | ✅ | ❌ | [  ⟦T104⟧](https://www.npmjs.com/package/@langchain/groq) |
+| [⟦T58⟧](/oss/javascript/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ⟦T105⟧](https://www.npmjs.com/package/@langchain/ollama) |
+| [⟦T59⟧](/oss/javascript/integrations/chat/mistral) | ✅ | ✅ | ✅ | ✅ | [  ⟦T106⟧](https://www.npmjs.com/package/@langchain/mistralai) |
+| [⟦T60⟧](/oss/javascript/integrations/chat/google) | ✅ | ✅ | ✅ | ✅ | [  ⟦T107⟧](https://www.npmjs.com/package/@langchain/google) |
+| [⟦T61⟧](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ⟦T108⟧](https://www.npmjs.com/package/@langchain/cohere) |
+| [⟦T62⟧](/oss/javascript/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ⟦T109⟧](https://www.npmjs.com/package/@langchain/xai) |
+| [⟦T63⟧](/oss/javascript/integrations/chat/openrouter) | ✅ | ✅ | ✅ | ✅ | [  ⟦T110⟧](https://www.npmjs.com/package/@langchain/openrouter) |
+| [⟦T64⟧](/oss/javascript/integrations/chat/deepseek) | ✅ | ✅ | ✅ | ❌ | [  ⟦T111⟧](https://www.npmjs.com/package/@langchain/deepseek) |
+| [⟦T65⟧](/oss/javascript/integrations/chat/cerebras) | ✅ | ✅ | ✅ | ❌ | [  ⟦T112⟧](https://www.npmjs.com/package/@langchain/cerebras) |
+| [⟦T66⟧](/oss/javascript/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ❌ | [  ⟦T113⟧](https://www.npmjs.com/package/@langchain/fireworks) |
+| [⟦T67⟧](/oss/javascript/integrations/chat/baidu_qianfan) | | | | | [  ⟦T114⟧](https://www.npmjs.com/package/@langchain/baidu-qianfan) |
+| [⟦T68⟧](/oss/javascript/integrations/chat/cloudflare_workersai) | ✅ | ❌ | ❌ | ✅ | [  ⟦T115⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
+| [⟦T69⟧](/oss/javascript/integrations/chat/togetherai) | ✅ | ✅ | ✅ | ✅ | [  ⟦T116⟧](https://www.npmjs.com/package/@langchain/together-ai) |
+| [⟦T70⟧](/oss/javascript/integrations/chat/ibm) | ✅ | ✅ | ✅ | ✅ | [  ⟦T117⟧](https://www.npmjs.com/package/@langchain/ibm) |
+| [⟦T71⟧](/oss/javascript/integrations/chat/perplexity) | ✅ | ❌ | ✅ | ❌ | [  ⟦T118⟧](https://www.npmjs.com/package/@langchain/perplexity) |
+| [⟦T72⟧](/oss/javascript/integrations/chat/yandex) | | | | | [  ⟦T119⟧](https://www.npmjs.com/package/@langchain/yandex) |
+| [⟦T73⟧](https://github.com/ykoh42/web-llm-adapters/blob/main/packages/langchain-web-llm/README.md) | ✅ | ✅ | ✅ | | [  ⟦T120⟧](https://www.npmjs.com/package/langchain-web-llm) |
+| [⟦T74⟧](https://github.com/profullstack/langchain-c0mpute#readme) | ✅ | ✅ | ❌ | ❌ | [  ⟦T121⟧](https://www.npmjs.com/package/@profullstack/langchain-c0mpute) |
+| [⟦T75⟧](https://docs.empiriolabs.ai/integrations#langchain) | ✅ | ✅ | ✅ | ✅ | [  ⟦T122⟧](https://www.npmjs.com/package/@empiriolabs/langchain) |
+| [⟦T76⟧](https://github.com/ykoh42/exaone-integrations/tree/main/packages/langchain-exaone-ts) | ✅ | ✅ | ✅ | ❌ | [  ⟦T123⟧](https://www.npmjs.com/package/langchain-exaone) |
+| [⟦T77⟧](https://interfaze.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ⟦T124⟧](https://www.npmjs.com/package/@interfaze-ai/langchain) |
+| [⟦T78⟧](https://gitlab.com/bitkaio/langchain/kserve-provider) | ✅ | ✅ | ✅ | ✅ | [  ⟦T125⟧](https://www.npmjs.com/package/@bitkaio/langchain-kserve) |
+| [⟦T79⟧](https://recallmem.dev/guides/langchain) | | | | | [  ⟦T126⟧](https://www.npmjs.com/package/@recall-memory/langchain) |
+| [⟦T80⟧](https://scx.ai/) | ✅ | ✅ | ✅ | ✅ | [  ⟦T127⟧](https://www.npmjs.com/package/@scx-ai/langchain) |
+| [⟦T81⟧](https://github.com/Obscurify-ai/langchain-obscurify) | ✅ | ✅ | ✅ | | [  ⟦T128⟧](https://www.npmjs.com/package/@obscurify/langchain) || [⟦T82⟧](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ |不适用 |
+| [⟦T83⟧](/oss/javascript/integrations/chat/fake) | | | | |不适用 |
+| [⟦T84⟧](https://www.tuningengines.com/) | ✅ | ✅ | ✅ | ❌ |不适用 |
 
 > [!注意]
 >

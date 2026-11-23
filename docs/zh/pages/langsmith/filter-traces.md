@@ -4,7 +4,7 @@
 
 # 过滤痕迹
 
-通过在搜索栏中编写过滤器查询来查找 LangSmith 跟踪项目中的特定线程、跟踪和运行。
+通过在搜索栏中编写过滤器查询，查找 LangSmith 跟踪项目中的特定线程、跟踪和运行。
 
 过滤将 [trace container](/langsmith/observability-concepts#trace-containers) 中的 [runs](/langsmith/observability-concepts#runs) 缩小到需要注意的范围，例如出错的对话、缓慢的工具调用或以低反馈分数运行的对话。在搜索栏中编写查询，然后选择与查询匹配的 [trace](/langsmith/observability-concepts#traces) 或 [thread](/langsmith/observability-concepts#threads) 层次结构中运行的查询。
 
@@ -44,7 +44,7 @@ status:error
 
 输入字段名称或从建议列表中选择一个。建议按类别分组，**最近**列出之前运行的查询。使用箭头键在列表中移动，然后按 `Enter` 进行选择。
 
-如果您的组织可以使用 AI 搜索，**AI 搜索** 将显示在建议列表的顶部。参见[Search with AI](#search-with-ai)。
+如果您的组织可以使用 AI 搜索，**AI 搜索** 将显示在建议列表的顶部。请参阅[Search with AI](#search-with-ai)。
 
 **2.选择运营商**
 
@@ -78,11 +78,11 @@ status:error
 
 ![The scope dropdown open on the Threads selection, offering Any run, Root run, and Thread with a one-line description of each. Beside the options is a preview of a sample thread showing three agent turns with the LLM and tool runs nested inside the second turn](https://mintcdn.com/langchain-5e9cc07a/Y2pGSOoQY1-mM7bz/langsmith/images/filter-scope-selector-light.png?fit=max\&auto=format\&n=Y2pGSOoQY1-mM7bz\&q=85\&s=d1b578063b0147c56a9c2adb325ac7d7)提供的范围以及默认选择的范围取决于表选择：
 
-|餐桌选择|默认范围 |可用范围 |
+|餐桌选择|默认范围|可用范围 |
 | - | - | - |
 | **话题** |任意运行 |线程、根运行、任意运行 |
 | **痕迹** |根运行|根运行，任意运行 |
-| **运行** |单跑 |单次运行、根运行、任意运行 |
+| **运行** |单跑 |单次运行、根运行、任意运行|
 
 要以简单的语言描述您想要的内容而不是编写查询语法，请使用 [AI search](#search-with-ai)。
 
@@ -97,7 +97,7 @@ status:error
 |范围 |查询 |
 | - | - |
 |主题 | `turn_count:>20` |
-|任意运行 | `run_type:tool AND status:error` |
+|任意运行| `run_type:tool AND status:error` |
 
 ![Two filter rows in the search bar. The first is scoped to 'in thread' with a turn_count greater than 20 clause, and ends with the AI search icon. The second, labeled AND, is scoped to 'in any run' with run_type tool AND status error, and ends with the Add filter scope icon. Below the bar, the Threads selection is active](https://mintcdn.com/langchain-5e9cc07a/Y2pGSOoQY1-mM7bz/langsmith/images/filter-multiple-scopes-light.png?fit=max\&auto=format\&n=Y2pGSOoQY1-mM7bz\&q=85\&s=88e8c40858fe0476193550eb93c343be)
 
@@ -112,10 +112,10 @@ status:error
 |操作员|语法 |比赛|
 | - | - | - |
 |是 | `field:value` |值的精确匹配。 |
-|不是| `-field:value` |除了完全匹配之外的一切。 |
+|不是 | `-field:value` |除了完全匹配之外的一切。 |
 |比赛| `field:~value` |该领域的全文搜索。引用该值以搜索短语。 |
-|不匹配| `-field:~value` |全文搜索不匹配的所有内容。 |
-|通配符 | `field:value*` |一种模式，其中 `*` 代表任意字符序列。 |
+|不匹配 | `-field:~value` |全文搜索不匹配的所有内容。 |
+|通配符| `field:value*` |一种模式，其中 `*` 代表任意字符序列。 |
 |存在 | `field:*` |记录设置字段的位置。 |
 |不存在 | `-field:*` |记录未设置该字段的情况。 |
 |比较| `field:>value` |高于给定值的值。还接受 `>=`、`<` 和 `<=`。 |
@@ -149,7 +149,7 @@ name:"docs agent"
 tags:"env:prod"
 ```
 
-引用还会关闭通配符匹配，因此 `name:"docs*"` 匹配文字字符串 `docs*`。作为引用的替代方法，可以使用反斜杠转义字符，如 `name:docs\ agent` 所示。
+引用还会关闭通配符匹配，因此 `name:"docs*"` 匹配文字字符串 `docs*`。作为引用的替代方法，可以使用反斜杠转义字符，如 `name:docs\ agent` 中所示。
 
 在运行范围中，包含空格的不带引号的值分为两个子句，因此 `name:docs agent` 匹配名称为 `docs` 且索引内容包含 `agent` 的运行。
 
@@ -173,14 +173,14 @@ tags:"env:prod"
 
 **运行属性**
 
-|领域|描述 |
+|领域 |描述 |
 | - | - |
 | `name` |运行名称。支持通配符。 |
 | `status` |运行状态：`pending`、`success`、`error`或`interrupted`。 |
 | `run_type` | [type of run](/langsmith/run-data-format#run-types)，例如 `llm`、`chain`、`tool` 或 `retriever`。 |
 | `tags` |运行标签。如果运行中的任何标记匹配，则子句匹配。 |
 
-**内容**|领域|描述 |
+**内容**|领域 |描述 |
 | - | - |
 | `input` |运行输入。使用 `~` 搜索文本，或使用 `input.<key>` 匹配 JSON 键。 |
 | `output` |运行输出。使用 `~` 搜索文本，或使用 `output.<key>` 匹配 JSON 键。 |
@@ -190,14 +190,15 @@ tags:"env:prod"
 
 **身份**
 
-|领域|描述 |
+|领域 |描述 |
 | - | - |
 | `id`、`trace_id`、`thread_id`、`parent_run_id` |按 ID 匹配特定运行、跟踪、线程或父运行。 |
-| `ls_user_id` |运行所属的 LangSmith 用户。 |
+| `user_id` |应用程序的最终用户，`metadata.user_id` 的简写。参见[Track users](/langsmith/users)。 |
+| `ls_user_id` |运行归属于 LangSmith 用户。 |
 
 **性能**
 
-|领域|描述 |
+|领域 |描述 |
 | - | - |
 | `latency` |运行持续时间（以秒为单位）。 |
 | `first_token_time` |当第一个代币产生时。 |
@@ -208,7 +209,7 @@ tags:"env:prod"
 
 **反馈**
 
-|领域|描述 |
+|领域 |描述 |
 | - | - |
 | `feedback` |跑步反馈。请参阅[Filter on feedback](#filter-on-feedback)。 |元数据和标签通常是最高效的过滤字段，因为您可以控制其中的内容。参见[Add metadata and tags to traces](/langsmith/add-metadata-tags)。
 
@@ -216,7 +217,7 @@ tags:"env:prod"
 
 **Thread** 范围对整个线程的属性进行过滤，因此它支持一组不同的字段。建议列表标记组**线程属性**。
 
-|领域|描述 |
+|领域 |描述 |
 | - | - |
 | `thread_id` |线程 ID。 |
 | `turn_count` |旋入螺纹。 |
@@ -230,7 +231,7 @@ tags:"env:prod"
 
 > [!注意]
 >
-> `name`、`status` 和 `input` 等运行字段在 **Thread** 范围内不可用。要按线程包含的运行的属性过滤线程，请在 **任何运行** 范围中添加第二个过滤器行。参见[Combine scopes](#combine-scopes)。
+> `name`、`status` 和 `input` 等运行字段在 **Thread** 范围内不可用。要按线程包含的运行的属性过滤线程，请在 **任何运行** 范围中添加第二个过滤器行。请参阅[Combine scopes](#combine-scopes)。
 
 ### 匹配 JSON 键
 
@@ -332,9 +333,9 @@ total_cost:>0.5
 
 ### 使用先前语法保存的视图
 
-在此过滤体验发布之前保存的视图将继续有效。选择一个会将其过滤器转换为本页上的语法，并且LangSmith会提示您保存翻译后的视图。
+在此过滤体验发布之前保存的视图将继续有效。选择一个会将其过滤器转换为本页面上的语法，并且LangSmith会提示您保存翻译后的视图。
 
-## 过滤跟踪中的运行在开放跟踪内进行过滤会突出显示匹配的运行，这就是您在大型跟踪中找到重要运行的方法。打开线程或跟踪以到达[Details view](/langsmith/view-traces#details-view)，然后使用运行列表上方的**过滤运行**。
+## 过滤跟踪中的运行在打开的跟踪内进行过滤会突出显示匹配的运行，这就是您如何在大型跟踪中找到重要的运行。打开线程或跟踪以到达[Details view](/langsmith/view-traces#details-view)，然后使用运行列表上方的**过滤运行**。
 
 匹配的运行会在适当的位置突出显示，并且跟踪的其余部分在它们周围保持可见，因此匹配会保留解释它的上下文。在 **任何运行** 范围中应用的过滤器会自动延续，因此从表中打开线程或跟踪会突出显示与其匹配的运行。
 
@@ -350,7 +351,7 @@ total_cost:>0.5
 
 * `threads with more than 5 turns where the user got confused`
 * `llm calls that errored in the last 2 days`
-* `threads where agent didn't complete the task and spent more than $1`描述可以将 [query syntax](#query-syntax) 表达的条件（例如状态、成本、延迟或回合数）与取决于消息含义的条件（例如用户是否感到沮丧或代理是否完成了任务）结合起来。
+* `threads where agent didn't complete the task and spent more than $1`描述可以将 [query syntax](#query-syntax) 表达的条件（例如状态、成本、延迟或回合计数）与取决于消息含义的条件（例如用户是否感到沮丧或代理是否完成了任务）结合起来。
 
 > [!注意]
 >
@@ -365,13 +366,13 @@ total_cost:>0.5
 
    如果已应用过滤器，LangSmith 将在字段中填充过滤器的描述，以便您可以对其进行优化。
 2. 描述您正在寻找什么。虽然该字段为空，但其下方的提示提供了示例。选择示例即可填充字段而无需搜索，因此您可以先对其进行编辑。
-3. 按`Enter`，或单击**搜索**按钮。
+3. 按`Enter`，或点击**搜索**按钮。
 
 当您搜索时，LangSmith 会解释描述并应用结果：* **过滤器**：结构化条件成为匹配[scopes](#choose-what-a-filter-matches)中的过滤器。关于对话含义的条件，例如`the user got confused`，成为与每个[trajectory](#what-ai-search-matches)匹配的AI条件。
 * **表选择**：LangSmith 切换到符合描述的 **线程**、**跟踪** 或 **运行** 选择。
 * **时间范围**：描述中的时间段，如`in the last 2 days`，更新时间范围控制。
 
-在搜索栏下方，**显示结果：**列出了 LangSmith 在每个范围中应用的内容，因此您可以检查它如何读取描述。如果描述不明确，LangSmith 显示 **您是说吗？** 并提供可供选择的选项，而不是搜索。
+在搜索栏下方，**显示结果：**列出了 LangSmith 在每个范围中应用的内容，因此您可以检查它如何读取描述。如果描述不明确，LangSmith 会显示 **您是说吗？** 并提供可供选择而不是搜索的选项。
 
 输入新的描述不会清除表格，因此当前结果保持可见，直到您再次搜索。要编写新描述，请单击 **清除 AI 搜索**。
 
@@ -446,7 +447,7 @@ AI搜索需要`Accept: text/event-stream`，这是流媒体方法自动设置的
 
 使用工具栏中的向上和向下箭头在匹配项之间移动，并使用 图标离开证据模式。
 
-### 人工智能搜索限制* **保存的视图**：包含 AI 搜索的过滤器无法保存为 [view](#save-a-filter)。退出 AI 搜索并删除 AI 条件以保存剩余的筛选器。选择已保存的视图会清除 AI 搜索。
+### 人工智能搜索限制* **保存的视图**：包含AI搜索的过滤器无法保存为[view](#save-a-filter)。退出 AI 搜索并删除 AI 条件以保存剩余的筛选器。选择已保存的视图会清除 AI 搜索。
 * **链接**：AI 搜索描述不存储在页面 URL 中，因此复制的链接不包含它。
 * **最近**：包含 AI 搜索的过滤器不会出现在搜索栏建议列表中的 **最近** 下。
 * **统计**： **统计** 面板显示 **不可用于 AI 搜索的统计**，而 **快捷方式** 面板隐藏值计数。要删除 AI 条件并恢复统计信息，请单击 **统计** 面板中的 **清除 AI 过滤器**。
@@ -482,7 +483,7 @@ AI 条件读取主要代理的对话。它不读取子代理、中间件或压�
 
 ## 全文搜索索引
 
-`~` 运算符和 [bare-term searches](#search-without-naming-a-field) 与派生搜索索引匹配，而不是与存储的运行数据匹配。 LangSmith 通过从运行输入、输出和错误中的字符串值递归地提取搜索标记来构建该索引。对象键没有索引，并且值既不会因其长度而被拒绝或截断。
+`~` 运算符和 [bare-term searches](#search-without-naming-a-field) 与派生搜索索引匹配，而不是与存储的运行数据匹配。 LangSmith 通过从运行输入、输出和错误中的字符串值递归提取搜索标记来构建该索引。对象键没有索引，并且值既不会因其长度而被拒绝或截断。
 
 以下限制适用于该索引：* **每个字段的标记**：LangSmith 为每个索引字段保留最多 2,000 个不同的搜索标记，从最多 200,000 个不同的候选者中选择。
 * **嵌套深度**：LangSmith 处理嵌套数据的最大深度为 30。
@@ -491,21 +492,22 @@ AI 条件读取主要代理的对话。它不读取子代理、中间件或压�
 
 这些限制仅管理搜索索引。运行数据被完整存储，因此索引遗漏的值在跟踪本身中仍然可见。
 
-元数据和关键路径单独索引。键路径过滤不受全文令牌限制的约束，并且 LangSmith 目前未发布单独的限制。诸如 `input.<key>` 或 `metadata.<key>` 之类的过滤器会在特定路径中查找值，因此它仍然可以匹配全文索引省略的值。参考[Match a JSON key](#match-a-json-key)。
+元数据和关键路径单独索引。键路径过滤不受全文令牌限制的约束，并且 LangSmith 目前未发布单独的限制。诸如 `input.<key>` 或 `metadata.<key>` 之类的过滤器会在特定路径中查找值，因此它仍然可以匹配全文索引省略的值。请参阅[Match a JSON key](#match-a-json-key)。
 
 ## 查询故障排除**搜索栏将查询标记为无效。** 搜索栏会在您键入时进行验证，并内联命名问题，包括未知的字段名称、不平衡的引号或括号以及用空格与其冒号分隔的运算符。修正它指向的子句。
 
 **查询有效，但没有匹配任何内容。** 按顺序完成这些操作：
 
 1. **检查时间范围。** 它与查询一起应用，因此如果匹配运行落在窗口之外，正确的过滤器仍然不会返回任何内容。
-2. **检查范围。** 针对错误的层次结构级别进行测试的子句是最常见的原因。在 **Root run** 范围内过滤 `run_type:llm` 上的跟踪仅匹配其条目运行是 LLM 调用的跟踪，这很少是您想要的。将该行切换到 **任意运行**。
+2. **检查范围。** 针对错误的层次结构级别测试的子句是最常见的原因。在 **Root run** 范围内过滤 `run_type:llm` 上的跟踪仅匹配其条目运行是 LLM 调用的跟踪，这很少是您想要的。将该行切换到 **任意运行**。
 3. **检查“未应用”标志。** 当前表选择不支持的范围内的行将被保留，但不会应用。
 4. **检查该值是否已编入索引。** 全文搜索会跳过 URL、停用词、纯数字标记以及非常短或非常长的标记。相反，过滤[JSON key](#match-a-json-key)，不受这些限制。
 
 ## 另请参阅
 
 * [View traces](/langsmith/view-traces)
-* [Threads](/langsmith/threads)
+* [Configure threads](/langsmith/threads)
+* [Track users](/langsmith/users)
 * [Add metadata and tags to traces](/langsmith/add-metadata-tags)
 * [Trace query syntax](/langsmith/trace-query-syntax) 用于 SDK 和 REST API 查询语言
 * [Query traces using the SDK](/langsmith/export-traces)

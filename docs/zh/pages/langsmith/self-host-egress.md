@@ -8,7 +8,7 @@
 >
 > 此页面仅适用于未在离线（气隙）模式下运行的客户，并假设您使用的是服务版本 0.9.0 或更高版本的自托管 LangSmith 实例。
 
-自托管 LangSmith 将平台数据存储在您的环境中。除非您在离线模式下运行，否则LangSmith需要出口到`https://beacon.langchain.com`以实现以下目的：
+自托管 LangSmith 将平台数据存储在您的环境中。除非您在离线模式下运行，否则 LangSmith 需要出口到 `https://beacon.langchain.com` 才能执行以下操作：
 
 * **计费遥测**：许可证验证和订阅/使用报告（必需）
 * **操作遥测**：用于支持诊断的日志、指标和跟踪（可选，可以禁用）
@@ -99,7 +99,7 @@
 
 ## 操作遥测
 
-从版本 **0.11** 开始，LangSmith 部署默认发送操作遥测数据。此遥测可帮助LangChain团队为自托管实例提供主动支持和更快的故障排除。> [!注意]
+从版本 **0.11** 开始，LangSmith 部署默认发送操作遥测数据。此遥测有助于 LangChain 团队为自托管实例提供主动支持和更快的故障排除。> [!注意]
 >
 > 操作遥测与计费遥测**分开。您可以在计费遥测保持活动状态时禁用操作遥测。
 
@@ -120,7 +120,9 @@
 >
 > 我们不会收集实际的有效负载内容、数据库记录或任何可以识别您的最终用户或客户的数据。所有遥测数据都与组织和部署相关联，但从未与个人用户标识。我们**不以任何形式收集 PII**（个人身份信息）。
 
-### 如何禁用您可以通过在 `langsmith_config.yaml` 文件中设置以下值来禁用操作遥测：
+对于LangChain保留的每个度量以及与其一起保留的属性，请参阅[operational telemetry metrics reference](/langsmith/self-host-telemetry-metrics)。### 如何禁用
+
+您可以通过在 `langsmith_config.yaml` 文件中设置以下值来禁用操作遥测：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
@@ -136,11 +138,32 @@ config:
 >
 > 禁用操作遥测会停止导出本节中描述的日志、指标和跟踪。它**不会**禁用计费遥测（许可证验证和订阅/使用报告）。
 
+### 禁用一个数据存储的指标
+
+`queue` 部署收集 PostgreSQL、Redis、ClickHouse 和 SmithDB 指标。要停止发送一个数据存储的指标并保留其余指标，请将其环境变量设置为 `queue.deployment.extraEnv` 中的 `false`。例如，要停止发送 SmithDB 指标：
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+queue:
+  deployment:
+    extraEnv:
+      - name: ENABLE_SMITHDB_METRICS_CRON
+        value: "false"
+```
+
+|数据存储 |环境变量|
+| - | - |
+| PostgreSQL | `ENABLE_POSTGRES_METRICS_CRON` |
+| Redis | `ENABLE_REDIS_METRICS_CRON` |
+|点击屋| `ENABLE_CLICKHOUSE_METRICS_CRON` |
+|史密斯数据库 | `ENABLE_SMITHDB_METRICS_CRON`（LangSmith v0.18 或更高版本）|
+
+LangSmith 服务不断发送自己的指标。要停止所有指标，请将 `config.telemetry.metrics` 设置为 `false`。
+
 ### 负载示例
 
 #### 运营指标
 
-**端点：** `POST beacon.langchain.com/v1/beacon/v1/metrics`
+**端点：** `POST beacon.langchain.com/v1/beacon/v1/metrics`以下简短的请求显示了两个指标。值是说明性的，默认的 OpenTelemetry SDK 资源属性被省略。 LangChain 的收集器会删除[operational telemetry metrics reference](/langsmith/self-host-telemetry-metrics) 中不存在的所有指标和属性，例如下面的 `path` 属性。
 
 **要求：**
 
@@ -150,71 +173,52 @@ config:
     {
       "resource": {
         "attributes": [
-          {
-            "key": "resource.name",
-            "value": { "stringValue": "langsmith-metrics" }
-          },
-          {
-            "key": "env",
-            "value": { "stringValue": "ls_self_hosted" }
-          }
+          { "key": "env", "value": { "stringValue": "ls_self_hosted" } },
+          { "key": "customer.id", "value": { "stringValue": "<CUSTOMER_ID_FROM_LICENSE>" } },
+          { "key": "customer.name", "value": { "stringValue": "<CUSTOMER_NAME_FROM_LICENSE>" } }
         ]
       },
       "scopeMetrics": [
         {
-          "scope": {
-            "name": "langsmith.metrics",
-            "version": "0.1.0"
-          },
+          "scope": { "name": "langsmith.self_hosted" },
           "metrics": [
             {
-              "name": "langsmith_http_requests_latency",
-              "unit": "seconds",
-              "description": "Request latency of LangSmith services",
-              "gauge": {
-                "dataPoints": [
-                  {
-                    "asDouble": 12.34,
-                    "startTimeUnixNano": 1678886400000000000,
-                    "timeUnixNano": 1678886400000000000,
-                    "attributes": [
-                      {
-                        "key": "endpoint",
-                        "value": { "stringValue": "/sessions" }
-                      },
-                      { "key": "method", "value": { "stringValue": "GET" } },
-                      {
-                        "key": "service_name",
-                        "value": { "stringValue": "langsmith_backend" }
-                      }
-                    ]
-                  }
-                ]
-              }
-            },
-            {
-              "name": "langsmith_http_requests_failed",
-              "unit": "1",
-              "description": "Counter of failed requests for LangSmith services",
+              "name": "self_hosted_langsmith_http_responses_total",
+              "description": "Total count of responses by method, path and status codes.",
               "sum": {
                 "dataPoints": [
                   {
-                    "asInt": 456,
-                    "startTimeUnixNano": 1678886400000000000,
-                    "timeUnixNano": 1678886400000000000,
+                    "asInt": "456",
+                    "startTimeUnixNano": "1678886400000000000",
+                    "timeUnixNano": "1678886460000000000",
                     "attributes": [
-                      {
-                        "key": "endpoint",
-                        "value": { "stringValue": "/info" }
-                      },
-                      { "key": "method", "value": { "stringValue": "POST" } },
-                      {
-                        "key": "service_name",
-                        "value": { "stringValue": "langsmith_platform_backend" }
-                      }
-                    ],
-                    "aggregationTemporality": 2,
-                    "isMonotonic": true
+                      { "key": "method", "value": { "stringValue": "GET" } },
+                      { "key": "path", "value": { "stringValue": "/sessions" } },
+                      { "key": "status_code", "value": { "stringValue": "200" } },
+                      { "key": "app_name", "value": { "stringValue": "backend" } }
+                    ]
+                  }
+                ],
+                "aggregationTemporality": 1,
+                "isMonotonic": true
+              }
+            }
+          ]
+        },
+        {
+          "scope": { "name": "self_hosted.postgres" },
+          "metrics": [
+            {
+              "name": "self_hosted_pg_stat_activity_count",
+              "description": "Number of connections in this state",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "asDouble": 12,
+                    "timeUnixNano": "1678886460000000000",
+                    "attributes": [
+                      { "key": "state", "value": { "stringValue": "active" } }
+                    ]
                   }
                 ]
               }
@@ -312,7 +316,7 @@ config:
 
 #### 操作日志消息
 
-我们仅从自托管 LangSmith 实例导出错误日志消息。这使得LangChain团队能够排除应用程序错误，而无需与您的团队来回沟通。
+我们仅从自托管 LangSmith 实例导出错误日志消息。这使得 LangChain 团队能够排除应用程序错误，而无需与您的团队来回沟通。
 
 **端点：** `POST beacon.langchain.com/v1/beacon/v1/logs`
 
@@ -396,15 +400,15 @@ config:
 
 ## 使用遥测
 
-使用情况遥测收集 LangSmith 实例使用指标的匿名快照。这些数据有助于 LangChain 了解平台采用模式并为产品开发决策提供信息。> [!注意]
+使用情况遥测收集 LangSmith 实例使用指标的匿名快照。这些数据有助于 LangChain 了解平台采用模式并为产品开发决策提供信息。
+
+> [!注意]
 >
 > 使用情况遥测**默认启用**并且可以禁用。与计费遥测不同，您可以完全控制这些快照是否发送到LangChain。
 
-### 它的作用
-
-* 定期捕获聚合使用指标
+### 它的作用* 定期捕获聚合使用指标
 * 提供对功能采用和平台增长的深入了解
-* 帮助LangChain根据实际使用情况确定改进和新功能的优先顺序
+* 帮助LangChain根据实际使用情况确定改进和新功能的优先级
 
 ### 我们收集什么
 
@@ -446,15 +450,15 @@ config:
 }
 ```
 
-### 如何禁用您可以通过在部署配置中设置以下环境变量来禁用使用情况遥测：
+### 如何禁用
+
+您可以通过在部署配置中设置以下环境变量来禁用使用情况遥测：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 PHONE_HOME_USAGE_REPORTING_ENABLED: false
 ```
 
-将此添加到 Helm 配置的 `commonEnv` 部分，以永久禁用使用情况遥测报告。
-
-> [!警告]
+将此添加到 Helm 配置的 `commonEnv` 部分，以永久禁用使用情况遥测报告。> [!警告]
 >
 > 禁用使用遥测不会影响计费或操作遥测。许可证验证和订阅/使用报告将继续正常运行。
 
@@ -468,10 +472,10 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
 
 [Engine](/langsmith/engine-self-hosted) 向 LangSmith Intelligence (LSI) 报告使用情况，后者也可以运行其模型。如果您使用自己的模型提供程序，LSI 仅接收使用情况元数据。 [Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations) 不连接LSI。
 
-允许出站 HTTPS 到在 `engine.intelligenceBaseUrl` 中为您的 [model-provider choice](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models) 配置的端点：* **LangSmith 智能：** `beacon.aws.langchain.com`。为了将此流量保留在专用网络上，[connect with AWS PrivateLink](/langsmith/engine-self-hosted-model-providers#connect-with-aws-privatelink)。
-* **您自己的模型提供商：** `beacon.langchain.com`，此页面已经需要的同一主机，用于使用情况报告。还允许到每个提供商的 API 端点的出站 HTTPS。
+允许出站 HTTPS 到在 `engine.intelligenceBaseUrl` 中为您的 [model-provider choice](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models) 配置的端点：
 
-> [!警告]
+* **LangSmith 智力：** `beacon.aws.langchain.com`。为了将此流量保留在专用网络上，[connect with AWS PrivateLink](/langsmith/engine-self-hosted-model-providers#connect-with-aws-privatelink)。
+* **您自己的模型提供商：** `beacon.langchain.com`，此页面已经需要的同一主机，用于使用情况报告。还允许到每个提供商的 API 端点的出站 HTTPS。> [!警告]
 >
 > 将每个目的地添加为特定的允许列表条目，而不是打开常规出站访问。对 LangSmith Intelligence 的请求使用在 LangSmith 许可证验证期间获得的短期许可证 JWT 进行身份验证。
 
@@ -482,20 +486,20 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
 
 ### 我们收集什么
 
-当Engine运行在LangSmithIntelligence上时，每个请求都可能携带Engine完成其工作所需的跟踪内容、源代码和中间输出。 LangSmith 智能不会保留提示体或完成体。当引擎在您自己的模型提供程序上运行时，LangSmith Intelligence 仅接收使用元数据。
+当Engine运行在LangSmithIntelligence上时，每个请求都可能携带Engine完成其工作所需的跟踪内容、源代码和中间输出。 LangSmith 智能不会保留提示或完成体。当引擎在您自己的模型提供程序上运行时，LangSmith Intelligence 仅接收使用元数据。
 
 LangSmith Intelligence 保留以下元数据用于使用归因和计费：
 
 * 用于归因使用情况的帐户、工作区和项目标识符。
-* 用于计费的模型和令牌使用元数据。有关完整的数据流和模型提供商承诺，请参阅[Engine on Self-hosted](/langsmith/engine-self-hosted)。
+* 用于计费的模型和令牌使用元数据。
+
+有关完整的数据流和模型提供商承诺，请参阅[Engine on Self-hosted](/langsmith/engine-self-hosted)。
 
 > [!注意]
 >
 > 离线（气隙）自托管可以在您自己的模型提供商上运行引擎。参见[Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations)。
 
-## 我们的承诺
-
-以下承诺适用于本页所述的计费、操作和使用遥测。 LangChain 不会在遥测中存储敏感信息或与第三方共享。日志消息被过滤为仅包含错误严重性级别，并且我们不会捕获可能包含敏感应用程序数据的日志消息。引擎对LangSmith智能的使用是[Engine on Self-hosted](/langsmith/engine-self-hosted)中描述的单独数据流。如果您对发送的数据有任何疑问，请禁用可选遥测或[contact our sales team](https://www.langchain.com/contact-sales)。
+## 我们的承诺以下承诺适用于本页所述的计费、操作和使用遥测。 LangChain 不会在遥测中存储敏感信息或与第三方共享。日志消息被过滤为仅包含错误严重性级别，并且我们不会捕获可能包含敏感应用程序数据的日志消息。引擎对LangSmith智能的使用是[Engine on Self-hosted](/langsmith/engine-self-hosted)中描述的单独数据流。如果您对发送的数据有任何疑问，请禁用可选遥测或[contact our sales team](https://www.langchain.com/contact-sales)。
 
 ***
 

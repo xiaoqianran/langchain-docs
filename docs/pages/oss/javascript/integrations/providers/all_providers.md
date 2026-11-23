@@ -78,6 +78,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Marketplace of real residential Chrome sessions for AI agents.
 
+> [card] [ChatC0mpute](https://github.com/profullstack/langchain-c0mpute#readme)
+>
+> Chat model for c0mpute, a peer-to-peer compute network serving open-weight models with sealed-bid auction pricing.
+
 > [card] [ChatExaone](https://github.com/ykoh42/exaone-integrations/tree/main/packages/langchain-exaone-ts)
 >
 > Community-maintained EXAONE chat model integration for LangChain with streaming, tool calling, structured output, and reasoning history.

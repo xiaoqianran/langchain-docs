@@ -36,7 +36,7 @@
 
 此示例演示如何使用结构化消息格式记录和检索对话历史记录以维护长时间运行的聊天。
 
-该示例设置一个 `THREAD_ID` 并通过 `metadata` 将其传递到跟踪包装器，从而将该会话中的每次运行链接到 LangSmith 中的同一线程中。对话历史记录在轮次之间保留在本地 - 将基于文件的或内存中的存储替换为生产中的数据库或缓存。 `get_chat_history` 标志控制管道是继续现有线程还是启动新线程：
+该示例设置一个 `THREAD_ID` 并通过 `metadata` 将其传递到跟踪包装器，从而将该会话中的每个运行链接到 LangSmith 中的同一线程中。对话历史记录在轮次之间保留在本地 - 将基于文件的或内存中的存储替换为生产中的数据库或缓存。 `get_chat_history` 标志控制管道是继续现有线程还是启动新线程：
 
 ```python Python expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
@@ -502,9 +502,9 @@ val messages =
 chatPipeline(ChatRequest(messages, getChatHistory = true))
 ```
 
-## 查看主题
+## View threads
 
-您可以通过单击任何 [project details](https://smith.langchain.com/tracing) 页面中的 **线程** 选项卡来查看 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-threads) 中的线程。该表显示每个线程的第一个输入、最后一个输出、启动时间、回合数、延迟 (P50/P99)、令牌使用情况、成本和反馈分数。
+您可以通过单击任意 [project details](https://smith.langchain.com/tracing) 页面中的 **线程** 选项卡来查看 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-threads) 中的线程。该表显示每个线程的第一个输入、最后一个输出、启动时间、回合数、延迟 (P50/P99)、令牌使用情况、成本和反馈分数。
 
 右侧面板显示项目的汇总统计信息，包括线程和跟踪计数、令牌使用总数和中位数、错误率和 P50/P99 延迟。
 
@@ -518,7 +518,7 @@ chatPipeline(ChatRequest(messages, getChatHistory = true))
 
 ### 查看反馈
 
-反馈分数在项目的 **Threads** 选项卡上的线程表的 **Feedback** 列中可见。在线程中，打开“轨迹”视图，然后单击回合元数据行中的 **LLM 调用** 链接，转至该运行的“详细信息”视图，您可以在其中查看该运行的反馈。 You can also see [thread-level feedback](/langsmith/online-evaluations-multi-turn) there.
+反馈分数在项目的 **Threads** 选项卡上的线程表的 **Feedback** 列中可见。在线程中，打开“轨迹”视图，然后单击回合元数据行中的 **LLM 调用** 链接，转至该运行的“详细信息”视图，您可以在其中查看该运行的反馈。您还可以在那里看到[thread-level feedback](/langsmith/online-evaluations-multi-turn)。
 
 ### 保存线程级过滤器
 
@@ -533,9 +533,10 @@ chatPipeline(ChatRequest(messages, getChatHistory = true))
 * [Observability concepts](/langsmith/observability-concepts#threads)：线程背景以及它们与运行和跟踪的关系。
 * [Add metadata and tags to traces](/langsmith/add-metadata-tags)：如何传递`thread_id`和其他元数据键。
 * [Filter traces](/langsmith/filter-traces)：在跟踪 UI 中按线程元数据过滤。
+* [Track users](/langsmith/users)：用`user_id`记录每条轨迹的最终用户。
 * [Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)：评估线程而不是单独的运行。
 * [Log user feedback using the SDK](/langsmith/attach-user-feedback)：将反馈附加到线程内的运行。
-* [Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-an-agent-environment): add threads to a dataset.
+* [Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-an-agent-environment)：将线程添加到数据集。
 
 ***
 

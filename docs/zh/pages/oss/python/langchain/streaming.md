@@ -6,11 +6,7 @@
 
 从代理运行流式传输实时更新
 
-> [!提示]
->
-> 对于新应用程序，我们推荐[event streaming](/oss/python/langchain/event-streaming)——LangChain v1.3 中引入的类型化投影 API。事件流为每个投影（消息、值、工具调用、子图）提供单独的迭代器，因此您可以独立使用它们，而不是在 `stream_mode` 块上分支。
-
-LangChain 实现了流系统来显示实时更新。
+LangChain 实现了一个流系统来显示实时更新。
 
 流媒体对于增强基于 LLM 构建的应用程序的响应能力至关重要。通过逐步显示输出，甚至在完整响应准备好之前，流式传输可以显着改善用户体验 (UX)，特别是在处理 LLM 的延迟时。
 
@@ -24,29 +20,29 @@ LangChain 流媒体可以实现什么：
 * [**Stream LLM tokens**](#llm-tokens)—生成时流式传输语言模型标记。
 * [**Stream thinking / reasoning tokens**](#streaming-thinking-/-reasoning-tokens)—生成时的表面模型推理。
 * [**Stream custom updates**](#custom-updates)—发出用户定义的信号（例如，`"Fetched 10/100 records"`）。
-* [**Stream multiple modes**](#stream-multiple-modes)—从`updates`（代理进度）、`messages`（LLM 代币+元数据）或`custom`（任意用户数据）中进行选择。有关其他端到端示例，请参阅下面的[common patterns](#common-patterns)部分。
+* [**Stream multiple modes**](#stream-multiple-modes)—从`updates`（代理进度）、`messages`（LLM 代币+元数据）或`custom`（任意用户数据）中进行选择。
+
+有关其他端到端示例，请参阅下面的[common patterns](#common-patterns)部分。
 
 ## 支持的流模式
 
-将以下一种或多种流模式作为列表传递给 [⟦T40⟧](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.stream) 或 [⟦T41⟧](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.astream) 方法：
-
-|模式|描述 |
+将以下一种或多种流模式作为列表传递给 [⟦T39⟧](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.stream) 或 [⟦T40⟧](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.astream) 方法：|模式|描述 |
 | - | - |
-| `updates` |每个代理步骤后流状态更新。如果在同一步骤中进行多个更新（例如，运行多个节点），则这些更新将单独流式传输。 |
+| `updates` |每个代理步骤后流状态更新。如果在同一步骤中进行多个更新（例如，运行多个节点），则这些更新将单独进行流式传输。 |
 | `messages` |从调用 LLM 的任何图形节点流式传输 `(token, metadata)` 的元组。 |
 | `custom` |使用流编写器从图形节点内部流式传输自定义数据。 |
 
 ## 代理进度
 
-要流式传输代理进度，请使用 [⟦T46⟧](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.stream) 或 [⟦T47⟧](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.astream) 方法与 `stream_mode="updates"`。这会在每个代理步骤之后发出一个事件。
+要流式传输代理进度，请使用 [⟦T45⟧](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.stream) 或 [⟦T46⟧](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.astream) 方法与 `stream_mode="updates"`。这会在每个代理步骤之后发出一个事件。
 
 例如，如果您有一个代理调用一次工具，您应该会看到以下更新：
 
-* **LLM 节点**：[⟦T49⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 带有工具调用请求
-* **工具节点**：[⟦T50⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)及执行结果
+* **LLM 节点**：[⟦T48⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 带有工具调用请求
+* **工具节点**：[⟦T49⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)及执行结果
 * **LLM节点**：最终AI响应
 
-通过 `config` 传递 `thread_id`，以便对话被检查点并且后续回合可以恢复相同的历史记录。 `thread_id` 独立于`stream_mode`；您还可以将 `context` 与其一起传递，以获取工具从 `runtime.context` 读取的每次运行数据。
+通过 `config` 传递 `thread_id`，因此对话会被检查点，并且后续回合可以恢复相同的历史记录。 `thread_id` 独立于`stream_mode`；您还可以将 `context` 与其一起传递，以获取工具从 `runtime.context` 读取的每次运行数据。
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -277,7 +273,9 @@ for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlig
         print(f"\nTool result: {item.output}")
 
 final_state = stream.output  # [!code highlight]
-```> [卡][View example trace](https://smith.langchain.com/public/16eb839b-dd05-461e-9f4f-563852f198e0/r)
+```
+
+> [卡][View example trace](https://smith.langchain.com/public/16eb839b-dd05-461e-9f4f-563852f198e0/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
@@ -288,9 +286,7 @@ step: tools
 content: [{'type': 'text', 'text': "It's always sunny in San Francisco!"}]
 step: model
 content: [{'type': 'text', 'text': "San Francisco weather: It's always sunny in San Francisco!\n\nIf you’d like the exact current conditions (temperature, humidity, wind) and a short forecast, I can fetch that next. Would you like me to pull live details for San Francisco?"}]
-```
-
-> [!注意]
+```> [!注意]
 >
 > 保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/python/langchain/long-term-memory) 配置代理。在 [LangSmith Agent Server](/langsmith/agent-server#persistence) 上，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。为了简洁起见，此页面上的其余片段省略了 `thread_id`，但您应该在生产中传递它。
 
@@ -422,11 +418,11 @@ content: [{'type': 'text', 'text': '!"\n\n'}]
 
 > [!注意]
 >
-> **将代理包装为父级 `StateGraph` 中的节点？** [⟦T62⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 返回已编译的图，因此将其用作节点使其成为子图。父图上的 `stream_mode="messages"` 不会从内部代理的 LLM 调用中发出令牌块，除非您传递 `subgraphs=True`。参见[Subgraph outputs](/oss/python/langgraph/streaming#subgraph-outputs)。
+> **将代理包装为父级 `StateGraph` 中的节点？** [⟦T61⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 返回已编译的图，因此将其用作节点使其成为子图。父图上的 `stream_mode="messages"` 不会从内部代理的 LLM 调用中发出令牌块，除非您传递 `subgraphs=True`。参见[Subgraph outputs](/oss/python/langgraph/streaming#subgraph-outputs)。
 
 ## 自定义更新
 
-要在工具执行时流式传输更新，您可以使用 [⟦T65⟧](https://reference.langchain.com/python/langgraph/config/get_stream_writer)。
+要在工具执行时流式传输更新，您可以使用 [⟦T64⟧](https://reference.langchain.com/python/langgraph/config/get_stream_writer)。
 
 ```python title="Streaming custom updates" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -462,7 +458,7 @@ Acquired data for city: San Francisco
 
 > [!注意]
 >
-> 如果您在工具中添加 [⟦T66⟧](https://reference.langchain.com/python/langgraph/config/get_stream_writer)，您将无法在 LangGraph 执行上下文之外调用该工具。
+> 如果您在工具中添加 [⟦T65⟧](https://reference.langchain.com/python/langgraph/config/get_stream_writer)，您将无法在 LangGraph 执行上下文之外调用该工具。
 
 ## 多种流模式
 
@@ -578,18 +574,18 @@ for message in stream.messages:
 The weather in San Francisco is: It's always sunny in San Francisco!
 ```
 
-无论模型提供者如何，这都以相同的方式工作 - LangChain 通过 [⟦T80⟧](/oss/python/langchain/messages#standard-content-blocks) 属性将特定于提供者的格式（Anthropic `thinking` 块、OpenAI `reasoning` 摘要等）标准化为标准 `"reasoning"` 内容块类型。
+无论模型提供者如何，这都以相同的方式工作 - LangChain 通过 [⟦T79⟧](/oss/python/langchain/messages#standard-content-blocks) 属性将特定于提供者的格式（Anthropic `thinking` 块、OpenAI `reasoning` 摘要等）标准化为标准 `"reasoning"` 内容块类型。
 
 要直接从聊天模型流式传输推理令牌（无需代理），请参阅[streaming with chat models](/oss/python/langchain/models#reasoning)。
 
 ### 流工具调用
 
-您可能想要同时传输：1.生成部分JSON为[tool calls](/oss/python/langchain/models#tool-calling)
+您可能想要同时传输：1. 生成部分JSON为[tool calls](/oss/python/langchain/models#tool-calling)
 2. 执行的已完成、已解析的工具调用
 
-指定 [⟦T81⟧](#llm-tokens) 将流式传输代理中所有 LLM 调用生成的增量 [message chunks](/oss/python/langchain/messages#streaming-and-chunks)。要使用已解析的工具调用访问已完成的消息：
+指定 [⟦T80⟧](#llm-tokens) 将流式传输代理中所有 LLM 调用生成的增量 [message chunks](/oss/python/langchain/messages#streaming-and-chunks)。要使用已解析的工具调用访问已完成的消息：
 
-1. 如果这些消息在 [state](/oss/python/langchain/short-term-memory) 中跟踪（如在 [⟦T82⟧](/oss/python/langchain/agents) 的模型节点中），则使用 `stream_mode=["messages", "updates"]` 通过 [state updates](#agent-progress) 访问已完成的消息（如下所示）。
+1. 如果这些消息在 [state](/oss/python/langchain/short-term-memory) 中跟踪（如在 [⟦T81⟧](/oss/python/langchain/agents) 的模型节点中），则使用 `stream_mode=["messages", "updates"]` 通过 [state updates](#agent-progress) 访问已完成的消息（如下所示）。
 2. 如果状态中未跟踪这些消息，请使用 [custom updates](#custom-updates) 或在流循环期间聚合块 ([next section](#accessing-completed-messages))。
 
 > [!注意]
@@ -998,13 +994,13 @@ Tool response: [{'type': 'text', 'text': "It's always sunny in San Francisco!"}]
 
 ### 来自子代理的流式传输
 
-当代理中的任何点存在多个 LLM 时，通常需要在生成消息时消除消息来源的歧义。为此，请在创建每个代理时将 [⟦T86⟧](https://reference.langchain.com/python/langchain/agents/create_agent) 传递给它。当在 `"messages"` 模式下进行流式传输时，可以通过 `lc_agent_name` 键在元数据中使用该名称。
+当代理中的任何点存在多个 LLM 时，通常需要在生成消息时消除消息来源的歧义。为此，请在创建每个代理时将 [⟦T85⟧](https://reference.langchain.com/python/langchain/agents/create_agent) 传递给它。当在 `"messages"` 模式下进行流式传输时，可以通过 `lc_agent_name` 键在元数据中使用该名称。
 
 下面，我们更新[streaming tool calls](#streaming-tool-calls)示例：
 
 1. 我们用内部调用代理的`call_weather_agent`工具替换我们的工具
 2. 我们为每个代理添加一个`name`
-3.我们在创建流时指定[⟦T91⟧](/oss/python/langgraph/use-subgraphs#stream-subgraph-outputs)
+3.我们在创建流时指定[⟦T90⟧](/oss/python/langgraph/use-subgraphs#stream-subgraph-outputs)
 4. 我们的流处理与之前相同，但我们添加了逻辑来使用 `create_agent` 的 `name` 参数来跟踪哪个代理处于活动状态
 
 > [!提示]
@@ -1192,7 +1188,7 @@ print(result.interrupts)  # tuple of Interrupt objects (empty if none)
 
 有关 v2 格式的更多详细信息，请参阅 [LangGraph streaming docs](/oss/python/langgraph/streaming#stream-output-format-v2)，包括类型缩小、Pydantic/数据类强制和子图流。
 
-＃＃ 有关的* [Frontend streaming](/oss/python/langchain/frontend/overview)—使用 [⟦T111⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 构建 React UI 以实现实时代理交互
+＃＃ 有关的* [Frontend streaming](/oss/python/langchain/frontend/overview)—使用 [⟦T110⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 构建 React UI 以实现实时代理交互
 * [Streaming with chat models](/oss/python/langchain/models#stream)—直接从聊天模型流式传输令牌，无需使用代理或图
 * [Reasoning with chat models](/oss/python/langchain/models#reasoning)—配置和访问聊天模型的推理输出
 * [Standard content blocks](/oss/python/langchain/messages#standard-content-blocks)—了解用于推理、文本和其他内容类型的标准化内容块格式

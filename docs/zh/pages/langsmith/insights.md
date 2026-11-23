@@ -1,54 +1,57 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Discover errors and usage patterns with Insights | https://docs.langchain.com/langsmith/insights -->
+<!-- langchain-docs: Discover usage patterns and failure modes with Insights | https://docs.langchain.com/langsmith/insights -->
 
-# 通过 Insights 发现错误和使用模式
+# 通过 Insights 发现使用模式和故障模式
 
-使用 LangSmith Insights 自动分析跟踪、检测使用模式、识别常见代理行为以及表面故障模式，而无需手动跟踪检查。
+使用 LangSmith 见解不断对代理的跟踪进行分类，跟踪使用模式和故障模式如何随时间变化，并共享结果。
 
-Insights 会自动分析您的跟踪，以检测使用模式、常见代理行为和故障模式，因此您无需手动查看数千条跟踪。
+Insights 不断将代理的跟踪分为类别和子类别，以便您可以了解用户的请求、代理的行为方式以及失败的位置，而无需一一查看跟踪。您可以通过询问有关流量的问题来开始洞察。 Insights 根据最近的跟踪构建类别，然后在新对话到达时为其分配新对话，因此其图表和指标保持最新状态。
 
-针对单个[environment](/langsmith/agent-environments)运行报告是如何在不分析本地运行的情况下分析生产流量的方法。
-
-Insights 使用分层分类来理解您的数据并突出显示可操作的趋势。
+代理的见解页面列出了代理拥有的每个见解，并标有其所属的 [environment](/langsmith/agent-environments)。您在 UI 中创建的见解将转到 **生产**。
 
 > [!注意]
 >
-> Insights 适用于 LangSmith Plus 和 Enterprise [plans](/langsmith/pricing-plans)。
+> Insights 适用于 LangSmith Plus 和 Enterprise [plans](/langsmith/pricing-plans)。在自托管 LangSmith 上，连续 Insights 需要 v0.18 或更高版本以及 [SmithDB](/langsmith/self-host-smithdb)。其他自托管安装会生成 [batch reports](/langsmith/insights-batch-reports)。要检查您的安装使用哪种模式，请参阅[Check whether Insights runs continuously](/langsmith/self-host-insights-chat#check-whether-insights-runs-continuously)。
 
-## 先决条件
+## 洞察如何运作
 
-* 在您的工作区中为 Insights 设置的 [model configuration](/langsmith/model-configurations)。
-* [Permissions](/langsmith/organization-workspace-operations#projects) 在 LangSmith 中创建规则（生成新的见解报告所需）。
-* [Permissions](/langsmith/organization-workspace-operations#projects) 查看 LangSmith 中的跟踪项目（需要查看现有的见解报告）。
+每个见解分两个阶段进行：1. **构建类别**：Insights 总结最近跟踪的样本，默认情况下最多 7 天的 500 条跟踪，并将摘要分组为顶级类别和子类别。第一次构建在您创建洞察时开始，最多可能需要 30 分钟。
+2. **对新对话进行分类**：Insights 在对话到达时对其进行采样。对于每个采样的对话，它都会编写一个摘要，提取任何[attributes](#add-attributes)，并分配最适合的类别和子类别。对话是[thread](/langsmith/threads)，或者不属于线程的跟踪。 Insights 在线程空闲了环境的[thread idle time](/langsmith/rules#set-the-thread-idle-time)（默认情况下为 10 分钟）后对其进行分析。
 
-## 生成您的第一份见解报告> [选项卡] 用户界面
+类别不会自行改变。当您[refresh categories](#refresh-categories)时，已有类别的跟踪将保留它，新的对话将使用刷新的类别。
+
+每个洞察都运行在 Insights 创建和管理的三个[automation rules](/langsmith/rules)上。这些规则不会出现在环境的 **在线评估程序** 选项卡上。在 LangSmith 云上，它们计入工作区可以打开的自动化规则的最大数量，以及其规则超出限制 [pauses](#check-the-status-of-an-insight) 的洞察。
+
+## 先决条件* Insights 的模型访问：Insights 使用的每个模型提供商的 API 密钥，保存在您的工作区中。要检查或添加密钥，请在创建见解时单击“**配置**”，或在现有见解上单击“**编辑**”，然后单击 [Select models](#select-models) 部分中的 **API 密钥**。有关工作区范围的模型设置，请参阅[model configurations](/langsmith/model-configurations)。
+* [Permissions](/langsmith/organization-workspace-operations#projects) 查看代理环境。如果访问策略限制您可以在环境中看到哪些跟踪，则 Insights 不会显示该环境的见解。
+* `rules:create` 创建见解和刷新其类别的权限，`rules:update` 编辑它们的权限，`rules:delete` 删除它们的权限。
+
+## 创建洞察> [选项卡] 用户界面
 >
-> 1. 选择您的代理，转到**跟踪**，然后选择环境。报告针对一个环境而不是整个代理运行。
+> 创建见解：
 >
-> 2. 单击右上角的**+新建**，然后单击**新建见解报告**。
+> 1. 在[agent switcher](/langsmith/navigate-agents)中选择您的代理，然后单击左侧菜单中的**见解**。
+> 2. 如果见解已列出见解，请单击 **新见解**。
+> 3. 在**您想了解用户的哪些信息？**下，输入一个问题，例如“用户最常询问什么？”
+> 4. （可选）单击 **配置** 以更改第一次构建之前的设置。参见[Configure an insight](#configure-an-insight)。
+> 5. 单击**运行分析**。
 >
-> 3. 输入您的作业名称。
+> 见解为见解命名并根据您的问题编写其摘要说明，然后开始构建类别。构建运行时，Insights 会显示其步骤：收集跟踪、汇总跟踪、将跟踪分组到类别以及保存类别。构建完成后，洞察力开始对新对话进行分类。> [标签] SDK
 >
-> 4. 如果您尚未在工作区设置中选择“洞察”[configure a model](/langsmith/model-configurations)。
+> 您可以使用 [Python SDK](/langsmith/smith-python-sdk) 创建对存储在 LangSmith 外部的聊天历史记录的洞察，例如生产日志。
 >
-> 5. 回答引导性问题，将见解报告重点关注您想要了解的有关代理的信息，然后单击 **运行作业**。
+> 当您调用`generate_insights()`时，SDK：
 >
->> [!提示]
+> 1. 将您的聊天记录上传到LangSmith作为痕迹。
+>
+> 2. 深入了解这些痕迹并开始构建其类别。
+>
+> 3. 返回一个对象，其`link`在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights)中打开洞察。在构建完成之前，该链接会显示其进度。
+>
+>> [!注意]
 >>
-> > 切换至手动模式[configure the job manually](#configure-a-job)。
->
-> 这将启动后台洞察报告。报告最多可能需要 30 分钟才能完成。
-
-> [标签] SDK
->
-> 您可以使用 [Python SDK](/langsmith/smith-python-sdk) 对存储在 LangSmith 外部的数据生成见解报告。这使您可以分析来自生产系统、日志或其他来源的聊天历史记录。
->
-> 当您调用`generate_insights()`时，SDK会：
->
-> 1. 将您的聊天记录作为痕迹上传到新的LangSmith项目。
-> 2. 针对这些上传的跟踪生成洞察报告。
-> 3. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights) 中返回结果的链接。
+>> 如果工作区没有提供者的密钥，`generate_insights()` 会将您传递的密钥保存为工作区机密。 SDK 每次调用最多上传 1,000 条聊天记录。
 >
 > ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
@@ -75,164 +78,135 @@ Insights 使用分层分类来理解您的数据并突出显示可操作的趋�
 > )
 >
 > # client.poll_insights(report=report)
-> ```> [选项卡] CLI
->
-> [LangSmith CLI](/langsmith/langsmith-cli) 使用 [manual configuration](#manual-configuration) 的字段从 JSON 文件创建报告：
->
-> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> langsmith insights create --project my-app --config insights.json --wait
 > ```
 >
-> 有关文件格式以及运行、列出和更新已保存配置的命令，请参阅[Manage insights](/langsmith/langsmith-cli#manage-insights)。
+> 要等待构建完成，请将报告传递给`poll_insights()`。
 
-> [!注意]
+> [选项卡] CLI
 >
-> 对于 OpenAI 模型，生成超过 1,000 个线程的见解通常需要花费 1.00-\$2.00 美元，对于当前 Anthropic 模型，生成 3.00-\$4.00 美元。成本随着采样线程的数量和每个线程的大小而变化。
+> [LangSmith CLI](/langsmith/langsmith-cli) 从 JSON 配置文件创建洞察并开始构建其类别：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langsmith insights create --project "<environment-tracer-session-name>" --config insights.json --wait
+> ```
+>
+> 将 `<environment-tracer-session-name>` 替换为洞察分析的代理环境的 [⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project)。
+>
+> 有关文件格式以及刷新、列出和更新见解的命令，请参阅 [Manage insights](/langsmith/langsmith-cli#manage-insights)。
 
-## 理解结果
+## 阅读见解
 
-工作完成后，您可以导航到 **见解** 选项卡，您将在其中看到见解报告表。每个报告都包含对跟踪项目的特定跟踪样本生成的见解。
+见解为每个见解显示一张卡片，其中包含过去 14 天内的顶级类别。单击卡片以打开见解。开放式洞察显示其上次对跟踪进行分类时的[status](#check-the-status-of-an-insight)，以及所选时间范围的这些视图：
 
-![](https://mintcdn.com/langchain-5e9cc07a/lC4dVnXBXgUXGkP0/langsmith/images/insights-job-results.png?fit=max\&auto=format\&n=lC4dVnXBXgUXGkP0\&q=85\&s=1a95e426b2984bcf417f92d1c4d739b6)
+* **顶级类别**：每个类别中已分类的跟踪数。单击某个类别可将图表和表格聚焦在该类别上。
+* **随时间变化的类别**：每个类别的每日计数（UTC）。 **趋势**为每个类别画一条线，而**数量**将类别堆叠到分类总数中。 **类别已更新**标记显示洞察类别上次更改的时间。
+* **细分表**：每个类别的描述、跟踪计数、数字和布尔[attribute](#add-attributes)值、反馈分数、错误率、P50 和 P99 延迟、P50 代币和 P50 成本。布尔属性显示该属性为 true 的迹线的百分比。字符串属性不会出现在表中。展开类别以查看其子类别。单击子类别或没有子类别的类别，以在新选项卡中打开其跟踪。
 
-单个跟踪项目的见解报告
+要更改时间范围，请使用**共享**旁边的范围菜单。它显示最近 7 天、14 天或 30 天，默认为 14 天。计数仅包括见解分类的跟踪。例如，在 10% 的采样率下，它们大约覆盖了十分之一的流量。使用它们来比较类别并跟踪趋势，而不是衡量总量。
 
-单击进入您的作业即可查看组织为一组自动生成的类别的跟踪。
+### 检查见解的状态
 
-您可以深入查看类别和子类别以查看底层跟踪、反馈和运行统计信息。
+见解名称下的状态行说明它是否对新对话进行分类，以及如果不分类该怎么办：
 
-![](https://mintcdn.com/langchain-5e9cc07a/4-kFQm9_42J5OnwH/langsmith/images/insights-nav.gif?s=6a22bfd0d94262b7aa78468a8379ea0f)
+* **构建类别**：第一个构建正在运行。状态命名其当前步骤。
+* **持续分析**：洞察力是实时的。状态显示其采样率。
+* **暂停**：[sampling rate](#choose-runs) 为 0%，或者缺少某些洞察的自动化规则。如果比率为 0%，请设置更高的比率。如果缺少规则，则工作区已达到其规则限制：关闭或删除未使用的规则，然后单击“**刷新类别**”以重新创建它们。
+* **关闭**：洞察力不分析新对话，例如一次性批量报告中保存的配置。设置启动采样率。
+* **未上线**：洞察需要构建才能开始。单击“**构建类别**”或“**刷新类别**”。如果上次构建没有发现可分类的痕迹，请检查洞察的[filters](#choose-runs)。如果第一次构建失败，Insights 会在见解位置显示错误，例如模型 API 密钥丢失或无效。单击 **Review** 修复设置，或点击 **Dismiss** 删除失败的构建。
 
-与 [https://chat.langchain.com](https://chat.langchain.com) 聊天机器人对话的常见主题
+### 早期批次报告的见解
 
-### 执行摘要
+在连续分析之前创建的批量报告中保存的配置显示为见解。那些按计划运行的对话会对新对话进行分类。在您设置采样率之前，其他选项都是**关闭**。时间表不再启动报告。
 
-在每个报告的顶部，您都会找到一个执行摘要，其中显示了在跟踪中发现的最重要的模式。这包括：* 主要调查结果以百分比显示每种模式出现的频率。
-* 可点击的参考文献（例如#1、#2、#3）来追踪被识别为与您的问题特别相关的代理。
+过去的报告不再作为报告页面打开。每个报告分类的对话显示在该报告涵盖的日期的匹配见解的图表中。要阅读过去报告的执行摘要和类别统计数据，请使用[⟦T11⟧](/langsmith/langsmith-cli#manage-insights)。
 
-### 顶级类别
+## 配置洞察
 
-您的跟踪会自动分组为代表数据中最广泛模式的顶级类别。
+要更改现有见解，请打开它并单击“**编辑**”。要在第一次构建之前设置这些选项，请在 [create the insight](#create-an-insight) 时单击 **配置**。
 
-分布条显示每种模式发生的频率，从而可以轻松发现发生多于或少于预期的行为。
+编辑会应用于保存后分析的对话，并且已有类别的跟踪会保留该类别。更改见解的类别会保存见解并开始构建，因此按钮显示**保存并运行**。
 
-每个类别都有一个简短的描述，并显示其包含的跟踪的聚合指标，包括：
+### 选择运行* **添加过滤器（可选）**：选择条件以仅包含某些运行。 Insights 始终分析根运行。在过滤器下方，见解显示上周有多少对话与它们匹配。
+* **选择采样率**：Insights 分析的传入对话的百分比。速率越高，结果越具有代表性，但成本也越高。 0% 暂停洞察力。
 
-* 典型的跟踪统计数据（如错误率、延迟、成本）
-* 评估者的反馈分数
-* [Attributes](#attributes) 提取为作业的一部分
-
-### 子类别
-
-单击任何类别都会显示子类别的细分，这使您可以更详细地了解该跟踪类别中的交互模式。
-
-在 [Chat Langchain](https://chat.langchain.com) 示例中，**数据和检索** 下有诸如 **矢量存储** 和 **数据摄取** 之类的子类别。
-
-### 单独的痕迹您可以通过单击查看跟踪表来查看分配给每个类别或子类别的跟踪。从那里，您可以单击任何跟踪以查看完整的对话详细信息。
-
-## 配置作业
-
-您可以使用自动生成的流程或手动配置来创建见解报告。
-
-### 自动生成配置
-
-1. 打开 **New Insights** 并确保 **自动** 开关处于活动状态。
-2. 回答有关代理的目的、您想要了解的内容以及跟踪的结构的自然语言问题。 Insights 会将您的答案转换为配置草案（作业名称、摘要提示、属性和采样默认值）。
-3. 选择一个提供商，然后单击“**生成配置**”进行预览或“**运行作业**”立即启动。
-
-**提供有用的背景**
-
-为了获得最佳结果，请为每个提示写一两句话，为 Insights 提供所需的上下文 - 您要学习的内容、哪些信号或字段最重要以及您已经知道的任何内容都是无用的。您对代理的作用及其跟踪的结构越清楚，Insights 就越能以具体、可操作且与您对数据的推理方式一致的方式对示例进行分组。**描述你的踪迹**
-
-解释一下您的数据是如何组织的：这些是单轮对话还是多轮对话？哪些输入和输出包含关键信息？这有助于 Insights 生成专注于重要事项的摘要提示和属性。如果需要，您还可以直接从 [summary prompt](#summary-prompt) 部分指定变量。
+如果您未设置费率，Insights 会从上周的匹配对话中选择一个，目标是每周约 1,000 个对话。如果匹配的对话少于 1,000 个，则匹配率为 100%。 Insights 设置此速率一次，并且不会随着流量变化而调整。
 
 ### 选择型号
 
 Insights 使用两种模型：
 
-* **思维模型**：执行聚类步骤（能力更强，成本更高）。
-* **摘要模型**：生成每个跟踪摘要（更快，成本更低）。
+* **汇总模型**：汇总每条轨迹并提取属性。具有大上下文窗口的快速模型效果很好。
+* **分类模型**：将跟踪分组并为其分配新跟踪。具有强大推理能力的模型效果很好。
 
-这两个模型都是从您在工作区中配置的提供程序中选择的。当您的 [model configurations](/langsmith/model-configurations) 中的 Insights 启用了特定模型时，您可以单独选择它们。如果未配置单独的模型，您可以选择一个提供程序（OpenAI 或 Anthropic），Insights 会使用该提供程序的默认模型。
+选择“**推荐**”以使用工作区的默认 Insights 模型，或选择“**自定义**”以选择每个模型。要查看默认值，请转到 **设置** > **工作区** > **模型** > **功能访问** 并找到 **见解（摘要）** 和 **见解（思考）** 行。如果某行没有默认模型，Insights 将使用该行可用的第一个模型。如果没有可用模型，Insights 将使用 OpenAI 模型，该模型需要工作区中的 OpenAI API 密钥。欲了解更多信息，请参阅[Feature Access](/langsmith/model-configurations#feature-access)。
 
-为了获得最佳结果，请为这两个角色使用来自同一提供商的模型。
+单击 **API 密钥** 以检查工作区是否具有每个模型提供程序的密钥。
 
-### 手动配置
+### 创建类别
 
-手动配置为您提供了更多控制权，例如，预定义您希望数据分组的类别或定位与特定反馈分数和过滤器匹配的跟踪。
+默认情况下，**AI Suggested** 在第一个构建中具有 Insights 查找类别和子类别。要自行设置顶级类别，请选择**自定义**并添加最多 10 个类别，每个类别都有名称和描述。 Insights 仍然会在每个版本中找到其中的子类别。
 
-#### 选择轨迹* **样本大小**：要分析的最大迹线数（限制为 1,000）。
-* **时间范围**：从该时间范围采样迹线。
-* **过滤器**：附加跟踪过滤器。当您调整过滤器时，您将看到有多少跟踪符合您的条件。
+编辑见解时，您可以添加、删除或重命名其类别。保存开始使用新类别进行构建。
 
-#### 类别
+### 添加属性
 
-默认情况下，顶级类别是从底层跟踪自下而上自动生成的。
+属性捕获细目表为每个类别报告的每个跟踪的属性，例如情绪或用户满意度。要添加属性，请单击“**添加属性**”并设置：* **名称**：属性的名称。对于数字和布尔属性，这是细分表中的列名称。
+* **类型**：**布尔值**、**数字**或**字符串**。
+* **Insights 应该寻找什么？**：属性的描述，汇总模型使用该描述来提取它。
+* **过滤器**：仅适用于布尔属性。选择此选项后，“见解”仅对属性正确的跟踪进行分类和计数，例如，将见解集中于客服人员犯错误的对话。
 
-在某些情况下，您预先知道您感兴趣的特定类别，并希望作业将跟踪存储到这些预定义的类别中。
+### 删除见解
 
-配置的 **Categories** 部分允许您通过枚举要使用的顶级类别的名称和描述来执行此操作。
+要删除见解，请打开它，单击“**编辑**”，然后单击其设置底部的“**删除**”。删除洞察会阻止它对新跟踪进行分类。已分类的痕迹保留其类别。
 
-子类别仍然由预定义顶级类别中的算法自动生成。
+## 刷新类别
 
-当作业完成时，发现的顶级类别会自动保存回配置中，但前提是配置没有预先定义类别。这意味着后续计划的运行将重用这些类别以保持一致性。
+类别不会自动刷新。要从最近跟踪的新样本重建洞察的类别，请打开洞察并单击 **刷新类别**。新对话将继续使用当前类别，直到构建完成。当它运行时，洞察会显示**刷新类别**。如果构建失败，洞察将显示**刷新失败**并保留其当前类别。如果构建找不到可用的类别，则会显示**类别未更新**。
 
-#### 摘要提示
+## 分享见解
 
-该工作的第一步是创建每个跟踪的简短摘要。然后对这些摘要进行分类。在摘要中提取正确的信息对于获得有用的类别至关重要。
+要分享见解，请打开它并单击 **分享**：
 
-您可以编辑用于生成这些摘要的提示。编辑提示时要考虑的两件事是：
+* **复制链接**：复制您所看到的见解的链接，包括时间范围和任何选定的类别。
+* **下载 CSV**：下载每个类别和子类别及其所有统计数据，无论表格显示什么。
+* **下载 PDF**：下载图表和完整细分。图表数据加载完成后，此选项可用。
 
-* 摘要说明：跟踪摘要中未包含的任何信息都不会影响生成的类别，因此请确保提供明确的说明，说明从每个跟踪中提取哪些信息很重要。
-* 跟踪内容：使用小胡子格式来指定将每个跟踪的哪些部分传递给摘要器。具有大量输入和输出的大型走线可能既昂贵又嘈杂。减少提示以仅包含跟踪中最相关的部分可以改善结果。
+## 将更新发送到 Slack
 
-您必须至少使用以下模板变量之一指定每个跟踪的哪些部分发送到摘要生成器：|变量|描述 |示例|
-| - | - | - |
-| `run.inputs` |最近一次 root 运行的输入 | `{{run.inputs}}` |
-| `run.outputs` |最近一次 root 运行的输出 | `{{run.outputs}}` |
-| `run.error` |错误字符串，如果运行失败 | `{{run.error}}` |
-| `run.feedback` |所有反馈分数均以 JSON blob 形式 | `{{run.feedback}}` |
-| `run.feedback.<key>` |按键的具体反馈分数 | `{{run.feedback.correctness}}` |
-| `all_thread_messages` |线程的完整消息历史记录（仅适用于具有 [threads](/langsmith/threads) 的项目）| `{{all_thread_messages}}` |
+Insights 可以将有关见解的更新发布到 Slack 频道。这需要一个连接到您的 LangSmith 组织的 Slack 工作区。如果未连接，洞察设置的 **Slack 通知** 部分将显示 **连接 Slack** 按钮。在自托管 LangSmith 上，操作员必须首先[configure a Slack app](/langsmith/self-host-slack)。
 
-您可以使用点表示法访问嵌套字段。例如，`{{run.inputs.foo.bar}}` 仅包含上次运行输入中 `foo` 内的 `bar` 字段。
+要将更新发送到 Slack：1. 在见解的设置中，转到 **Slack 通知** 并选择一个渠道。
+2. 打开您想要的更新：
+   * **类别就绪**：首次构建见解的类别以及每次刷新它们时发布。
+   * **摘要**：按计划发布最重要的类别及其变化方式。选择**每日**或**每周**，然后选择日期和时间。该时间表使用您首次设置的浏览器的时区。
+3. 单击“**保存**”。
 
-> [!注意]
->
-> 对于具有 [threads](/langsmith/threads) 的项目，Insights 会分析完整的对话。仅每个线程最近运行的根用于 `run.*` 变量。使用`all_thread_messages`访问完整的对话历史记录。
+每次更新都会显示见解的名称、涵盖的时间段、见解分类的跟踪数以及采样率。它列出了前五个类别及其跟踪计数，以及最多三个关键变化：出现的类别，或其跟踪份额自上一时期以来变化了 5 个百分点或更多。 **在 LangSmith** 中打开** 打开更新涵盖的日期的见解。
 
-#### 属性
+要停止更新，请关闭这两个选项并保存。
 
-除了摘要之外，您还可以定义要从每个跟踪中提取的其他字符串、数字和布尔属性。
-这些属性将影响分类步骤——具有相似属性值的迹线往往会被分类在一起。
-您还可以查看每个类别的这些属性的聚合。例如，您可能希望从每个跟踪中提取属性`user_satisfied: boolean`，以将算法引导至区分正面和负面用户体验的类别，并查看每个类别的平均用户满意度。
+## 管理成本
 
-#### 过滤属性
+Insights 会为其分析的每个对话调用您的模型，因此其成本取决于：* **采样率和流量**：每个采样的对话都会对摘要模型进行一次调用，对分类模型进行一次调用。由于采样率不会根据流量进行调整，因此流量峰值会增加成本。
+* **对话大小**：较长的对话会向摘要模型发送更多令牌。
+* **类别构建**：每个构建都会汇总最多 500 个跟踪，并将它们与分类模型进行分组。
 
-您可以在布尔属性上使用 `filter_by` 参数来在生成见解之前预过滤跟踪。启用后，分析中仅包含属性计算结果为 `true` 的跟踪。
+为了降低成本，请降低[sampling rate](#choose-runs)、添加过滤器或[select](#select-models)更小的型号。
 
-当您希望将见解报告集中在特定的跟踪子集上时，这非常有用。例如，仅分析错误、仅检查英语对话或仅包含满足特定质量标准的跟踪。
+## 限制
 
-**它是如何工作的：**
+* Insights 为每条轨迹分配一个最适合的类别，即使没有类别与其完全匹配。
+* Insights 读取跟踪的输入、输出、错误、反馈和线程消息。它不读取跟踪元数据。
+* 代理环境最多可容纳 100 个见解。
+* 工作区一次最多可以为三个见解构建类别。
 
-* 在为 Insights 创建配置时将 `"filter_by": true` 添加到任何布尔属性。
-* LLM 在汇总期间根据属性描述评估每条迹线。
-* 在生成见解之前，排除属性为 `false` 或缺失的跟踪。
+## 另请参阅
 
-## 安排洞察报告
-
-安排 Insights 报告定期自动运行。创建或编辑配置时，使用 **Schedule** 部分选择：* **每日**：每天 8:00 UTC 运行。
-* **每周一**：每周一 8:00 UTC 运行。
-* **自定义**：输入您自己的 cron 表达式（采用 UTC）。
-
-每次计划运行都会使用您保存的配置生成一份新报告。时间范围是动态计算的。例如，“最近 24 小时”始终分析执行时的最近 24 小时窗口。
-
-## 保存你的配置
-
-您可以选择使用 **另存为** 按钮保存配置以供将来重复使用。
-如果您想要比较一段时间内的见解报告以识别用户和代理行为的变化，这尤其有用。
-
-创建新的见解报告时，从窗格左上角的下拉列表中以前保存的配置中进行选择。
+* [Generate batch Insights reports on self-hosted LangSmith](/langsmith/insights-batch-reports)
+* [Manage insights with the LangSmith CLI](/langsmith/langsmith-cli#manage-insights)
+* [How Engine differs from Insights](/langsmith/engine#how-engine-differs-from-insights)
+* [Configure model access](/langsmith/model-configurations)
+* [Set up thread-level online evaluators](/langsmith/online-evaluations-multi-turn)
 
 ***
 

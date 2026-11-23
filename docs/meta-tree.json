@@ -1631,8 +1631,14 @@
       ],
       "insights": [
         {
-          "title": "Discover errors and usage patterns with Insights",
+          "title": "Discover usage patterns and failure modes with Insights",
           "rel": "langsmith/insights.md"
+        }
+      ],
+      "insights-batch-reports": [
+        {
+          "title": "Generate batch Insights reports on self-hosted LangSmith",
+          "rel": "langsmith/insights-batch-reports.md"
         }
       ],
       "integrations": [
@@ -2679,6 +2685,18 @@
           "rel": "langsmith/self-host-sso.md"
         }
       ],
+      "self-host-sso-recovery": [
+        {
+          "title": "Recovery admin login for self-hosted SSO",
+          "rel": "langsmith/self-host-sso-recovery.md"
+        }
+      ],
+      "self-host-telemetry-metrics": [
+        {
+          "title": "Operational telemetry metrics reference",
+          "rel": "langsmith/self-host-telemetry-metrics.md"
+        }
+      ],
       "self-host-terraform": [
         {
           "title": "Deploy LangSmith with Terraform",
@@ -3215,6 +3233,12 @@
           "rel": "langsmith/tool-gateway-quickstart.md"
         }
       ],
+      "tool-gateway-self-hosted": [
+        {
+          "title": "Enable the Tool Gateway",
+          "rel": "langsmith/tool-gateway-self-hosted.md"
+        }
+      ],
       "tool-gateway-servers": [
         {
           "title": "Add MCP servers to Tool Gateway",
@@ -3603,6 +3627,12 @@
         {
           "title": "User management",
           "rel": "langsmith/user-management.md"
+        }
+      ],
+      "users": [
+        {
+          "title": "Track users",
+          "rel": "langsmith/users.md"
         }
       ],
       "view-traces": [
@@ -7091,78 +7121,6 @@
         {
           "title": "Upsert current workspace secrets",
           "rel": "langsmith/smith-api/workspaces/upsert-current-workspace-secrets.md"
-        }
-      ]
-    }
-  },
-  "oss-deepagents": {
-    "id": "oss-deepagents",
-    "name": "OSS · DeepAgents",
-    "groups": {
-      "code": [
-        {
-          "title": "Approval modes",
-          "rel": "oss/deepagents/code/approval-modes.md"
-        },
-        {
-          "title": "Command reference",
-          "rel": "oss/deepagents/code/cli-reference.md"
-        },
-        {
-          "title": "Config file",
-          "rel": "oss/deepagents/code/config-file.md"
-        },
-        {
-          "title": "Configuration",
-          "rel": "oss/deepagents/code/configuration.md"
-        },
-        {
-          "title": "Provider credentials",
-          "rel": "oss/deepagents/code/credentials.md"
-        },
-        {
-          "title": "Python extensions",
-          "rel": "oss/deepagents/code/extensions.md"
-        },
-        {
-          "title": "Goals and rubrics",
-          "rel": "oss/deepagents/code/goals-and-rubrics.md"
-        },
-        {
-          "title": "Hooks",
-          "rel": "oss/deepagents/code/hooks.md"
-        },
-        {
-          "title": "MCP tools",
-          "rel": "oss/deepagents/code/mcp-tools.md"
-        },
-        {
-          "title": "Memory and Skills",
-          "rel": "oss/deepagents/code/memory-and-skills.md"
-        },
-        {
-          "title": "Deep Agents Code",
-          "rel": "oss/deepagents/code/overview.md"
-        },
-        {
-          "title": "Plugins and marketplaces",
-          "rel": "oss/deepagents/code/plugins.md"
-        },
-        {
-          "title": "Model providers",
-          "rel": "oss/deepagents/code/providers.md"
-        },
-        {
-          "title": "Quickstart",
-          "rel": "oss/deepagents/code/quickstart.md"
-        },
-        {
-          "title": "Use remote sandboxes",
-          "rel": "oss/deepagents/code/remote-sandboxes.md"
-        },
-        {
-          "title": "Use subagents in Deep Agents Code",
-          "rel": "oss/deepagents/code/subagents.md"
         }
       ]
     }

@@ -1,0 +1,232 @@
+<!-- langchain-docs: machine-translated zh-CN from English source -->
+
+<!-- langchain-docs: Generate batch Insights reports on self-hosted LangSmith | https://docs.langchain.com/langsmith/insights-batch-reports -->
+
+# 在自托管 LangSmith 上生成批量 Insights 报告
+
+针对不运行连续 Insights 的自托管 LangSmith 安装上的跟踪示例生成一次性和计划的 Insights 报告。
+
+批处理见解报告分析某个时间范围内的跟踪样本，并将其分组为显示使用模式、常见代理行为和故障模式的类别和子类别。您可以运行一次报告或按计划运行报告。
+
+批量报告是 Insights 在查询 ClickHouse 而不是 [SmithDB](/langsmith/self-host-smithdb) 的自托管 LangSmith 安装上的工作方式。 LangSmith SmithDB 上的云和自托管安装运行 [continuous Insights](/langsmith/insights)，它会在新跟踪到达时对其进行分类。
+
+针对单个 [agent environment](/langsmith/agent-environments) 运行报告是如何在不分析本地运行的情况下分析生产流量的方法。
+
+> [!注意]
+>
+> Insights 适用于 LangSmith Plus 和 Enterprise [plans](/langsmith/pricing-plans)。
+
+## 先决条件
+
+* 在您的工作区中为 Insights 设置的 [model configuration](/langsmith/model-configurations)。
+* [Permissions](/langsmith/organization-workspace-operations#projects) 创建规则，您需要生成报告，并查看代理环境，您需要查看现有报告。
+
+## 生成您的第一份见解报告> [选项卡] 用户界面
+>
+> 1. 在[agent switcher](/langsmith/navigate-agents)中选择您的代理，进入**跟踪**，然后选择环境。报告针对一个环境而不是整个代理运行。
+>
+> 2. 单击右上角的**+新建**，然后单击**新建见解报告**。
+>
+> 3. 输入您的作业名称。
+>
+> 4. 如果您还没有，请在工作区设置中为 Insights [configure a model](/langsmith/model-configurations) 进行设置。
+>
+> 5. 回答引导性问题，将见解报告重点放在您想要了解的有关代理的信息上，然后单击 **运行作业**。
+>
+>> [!提示]
+>>
+> > 切换到手动模式[configure the job manually](#configure-a-job)。
+>
+> 这将启动后台 Insights 报告。报告最多可能需要 30 分钟才能完成。
+
+> [标签] SDK
+>
+> 您可以使用 [Python SDK](/langsmith/smith-python-sdk) 对存储在 LangSmith 外部的数据生成 Insights 报告。这使您可以分析来自生产系统、日志或其他来源的聊天历史记录。
+>
+> 当您调用`generate_insights()`时，SDK：
+>
+> 1. 将您的聊天记录上传到LangSmith作为痕迹。
+> 2. 针对这些上传的跟踪生成 Insights 报告。
+> 3. 返回[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights-batch-reports) 中结果的链接。
+>
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from langsmith import Client
+>
+> client = Client()
+>
+> chat_histories = [
+>     [
+>         {"role": "user", "content": "how are you"},
+>         {"role": "assistant", "content": "good!"},
+>     ],
+>     [
+>         {"role": "user", "content": "do you like art"},
+>         {"role": "assistant", "content": "only Tarkovsky"},
+>     ],
+> ]
+>
+> report = client.generate_insights(
+>     chat_histories=chat_histories,
+>     name="Customer Support Topics - March 2024",
+>     instructions="What are the main topics and questions users are asking about?",
+>     openai_api_key=os.environ["OPENAI_API_KEY"],  # optional if already set as workspace secret
+> )
+>
+> # client.poll_insights(report=report)
+> ```> [选项卡] CLI
+>
+> [LangSmith CLI](/langsmith/langsmith-cli) 使用 [manual configuration](#manual-configuration) 的字段从 JSON 文件创建报告：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> langsmith insights create --project "<environment-tracer-session-name>" --config insights.json --wait
+> ```
+>
+> 将 `<environment-tracer-session-name>` 替换为报告分析的代理环境的 [⟦T4⟧](/langsmith/create-an-agent#use-an-environment-project)。
+>
+> 有关文件格式以及运行、列出和更新已保存配置的命令，请参阅[Manage insights](/langsmith/langsmith-cli#manage-insights)。
+
+> [!注意]
+>
+> 对于 OpenAI 模型，生成超过 1,000 个线程的见解通常需要花费 1.00-\$2.00 美元，对于当前 Anthropic 模型，生成 3.00-\$4.00 美元。成本随着采样线程的数量和每个线程的大小而变化。
+
+## 理解结果
+
+作业完成后，您可以导航到 **见解** 选项卡，其中显示见解报告表。每个报告都包含对环境中的特定跟踪样本生成的见解。
+
+单击进入您的作业即可查看组织为一组自动生成的类别的跟踪。
+
+您可以深入查看类别和子类别以查看底层跟踪、反馈和运行统计信息。
+
+### 执行摘要
+
+每个报告都以在跟踪中发现的最重要模式的执行摘要开头。它包括：* 主要调查结果以百分比显示每种模式出现的频率。
+* 可点击的参考（例如，#1、#2、#3）来追踪被识别为与您的问题特别相关的代理。
+
+### 顶级类别
+
+您的跟踪会自动分组为代表数据中最广泛模式的顶级类别。
+
+分布条显示每种模式发生的频率，从而可以轻松发现发生多于或少于预期的行为。
+
+每个类别都有一个简短的描述，并显示其包含的跟踪的聚合指标，包括：
+
+* 典型的跟踪统计数据（如错误率、延迟、成本）
+* 评估者的反馈分数
+* [Attributes](#attributes) 提取为作业的一部分
+
+### 子类别
+
+单击任何类别都会显示子类别的细分，这使您可以更详细地了解该跟踪类别中的交互模式。
+
+### 单独的痕迹
+
+您可以通过单击查看跟踪表来查看分配给每个类别或子类别的跟踪。从那里，您可以单击任何跟踪来查看完整的对话详细信息。
+
+## 配置作业您可以使用自动生成的流程或手动配置来创建 Insights 报告。
+
+### 自动生成配置
+
+1. 打开 **New Insights** 并确保 **自动** 开关处于活动状态。
+2. 回答有关代理的目的、您想要了解的内容以及跟踪的结构的自然语言问题。 Insights 将您的答案转换为配置草案（作业名称、摘要提示、属性和采样默认值）。
+3. 选择一个提供商，然后单击“**生成配置**”进行预览或“**运行作业**”立即启动。
+
+#### 提供有用的上下文
+
+为了获得最佳结果，请为每个提示写一两句话，为 Insights 提供所需的上下文：您要学习的内容、哪些信号或字段最重要，以及您已经知道的任何内容都是无用的。您对代理的作用及其跟踪的结构越清楚，Insights 就越能以符合您对数据的看法的方式对示例进行分组。
+
+####描述你的踪迹解释一下您的数据是如何组织的：这些是​​单轮对话还是多轮对话？哪些输入和输出包含关键信息？这有助于 Insights 生成专注于重要事项的摘要提示和属性。如果需要，您还可以直接从 [summary prompt](#summary-prompt) 部分指定变量。
+
+### 选择型号
+
+Insights 使用两种模型：
+
+* **思维模型**：执行聚类步骤（能力更强，成本更高）。
+* **摘要模型**：生成每个跟踪摘要（更快、成本更低）。
+
+这两个模型都是从您在工作区中配置的提供程序中选择的。当您的 [model configurations](/langsmith/model-configurations) 中的 Insights 启用了特定模型时，您可以单独选择它们。如果未配置单独的模型，您可以选择一个提供程序（OpenAI 或 Anthropic），Insights 会使用该提供程序的默认模型。
+
+为了获得最佳结果，请为这两个角色使用来自同一提供商的模型。
+
+### 手动配置
+
+手动配置为您提供了更多控制权，例如通过预定义您希望数据分组的类别或通过定位与特定反馈分数和过滤器匹配的跟踪。
+
+#### 选择轨迹* **样本大小**：要分析的最大迹线数（限制为 1,000）。
+* **时间范围**：从该时间范围采样迹线。
+* **过滤器**：附加跟踪过滤器。当您调整过滤器时，窗格会显示有多少跟踪符合您的条件。
+
+#### 类别
+
+默认情况下，顶级类别是从底层跟踪自下而上自动生成的。
+
+在某些情况下，您预先知道您感兴趣的特定类别，并希望作业将跟踪存储到这些预定义的类别中。
+
+配置的 **Categories** 部分允许您通过枚举要使用的顶级类别的名称和描述来执行此操作。
+
+子类别仍然由预定义顶级类别内的算法自动生成。
+
+当作业完成时，发现的顶级类别会自动保存回配置，但前提是配置没有预先定义类别。这意味着后续计划的运行将重用这些类别以保持一致性。
+
+#### 摘要提示
+
+该工作的第一步是创建每个跟踪的简短摘要。然后对这些摘要进行分类。在摘要中提取正确的信息对于获得有用的类别至关重要。
+
+您可以编辑用于生成这些摘要的提示。编辑提示时要考虑的两件事是：
+
+* 摘要说明：跟踪摘要中未包含的任何信息都不会影响生成的类别，因此请确保提供明确的说明，说明从每个跟踪中提取哪些信息很重要。
+* 跟踪内容：使用小胡子格式来指定将每个跟踪的哪些部分传递给摘要器。具有大量输入和输出的大型走线可能既昂贵又嘈杂。减少提示以仅包含跟踪中最相关的部分可以改善结果。
+
+您必须至少使用以下模板变量之一指定每个跟踪的哪些部分发送到摘要生成器：|变量|描述 |示例|
+| - | - | - |
+| `run.inputs` |最近一次 root 运行的输入 | `{{run.inputs}}` |
+| `run.outputs` |最近一次 root 运行的输出 | `{{run.outputs}}` |
+| `run.error` |错误字符串，如果运行失败 | `{{run.error}}` |
+| `run.feedback` |所有反馈分数均以 JSON blob 形式 | `{{run.feedback}}` |
+| `run.feedback.<key>` |按键的具体反馈分数 | `{{run.feedback.correctness}}` |
+| `all_thread_messages` |线程的完整消息历史记录（仅适用于具有 [threads](/langsmith/threads) 的环境）| `{{all_thread_messages}}` |
+
+您可以使用点表示法访问嵌套字段。例如，`{{run.inputs.foo.bar}}` 仅包含上次运行输入中 `foo` 内的 `bar` 字段。
+
+> [!注意]
+>
+> 对于具有 [threads](/langsmith/threads) 的环境，Insights 会分析完整的对话。仅每个线程最近运行的根用于 `run.*` 变量。使用`all_thread_messages`访问完整的对话历史记录。
+
+#### 属性
+
+除了摘要之外，您还可以定义要从每个跟踪中提取的其他字符串、数字和布尔属性。
+这些属性影响分类步骤：具有相似属性值的跟踪往往会被分类在一起。
+您还可以查看每个类别的这些属性的聚合。例如，您可能希望从每个跟踪中提取属性`user_satisfied: boolean`，以将算法引导至区分正面和负面用户体验的类别，并查看每个类别的平均用户满意度。
+
+#### 过滤属性
+
+您可以在布尔属性上使用 `filter_by` 参数来在生成见解之前预过滤跟踪。启用后，分析中仅包含属性计算结果为 `true` 的跟踪。
+
+当您希望将 Insights 报告的重点放在跟踪的特定子集上时，这非常有用。例如，仅分析错误、仅检查英语对话或仅包含满足特定质量标准的跟踪。
+
+**它是如何工作的：**
+
+* 在为 Insights 创建配置时将 `"filter_by": true` 添加到任何布尔属性。
+* LLM 在汇总期间根据属性描述评估每条迹线。
+* 在生成见解之前，排除属性为 `false` 或缺失的跟踪。
+
+## 安排洞察报告
+
+安排 Insights 报告定期自动运行。创建或编辑配置时，使用 **Schedule** 部分选择：* **每日**：每天 8:00 UTC 运行。
+* **每周一**：每周一 8:00 UTC 运行。
+* **自定义**：输入您自己的 cron 表达式（采用 UTC）。
+
+每次计划的运行都会使用您保存的配置生成一份新报告。时间范围是动态计算的。例如，“最近 24 小时”始终分析执行时的最近 24 小时窗口。
+
+## 保存你的配置
+
+您可以选择使用 **另存为** 按钮保存配置以供将来重复使用。
+通过保存的配置，您可以比较一段时间内的 Insights 报告，以确定用户和代理行为的变化。
+
+创建新的 Insights 报告时，从窗格左上角的下拉列表中以前保存的配置中进行选择。
+
+***
+
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/insights-batch-reports.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

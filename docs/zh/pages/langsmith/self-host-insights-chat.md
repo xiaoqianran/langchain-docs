@@ -14,13 +14,20 @@
 
 每个功能都需要自己的 Fernet 加密密钥和模型访问权限。如果您遵循[Kubernetes installation guide](/langsmith/kubernetes)，则您已经在`langsmith_config.yaml`中设置了密钥。继续[Configure model access](#configure-model-access)。
 
+## 检查 Insights 是否持续运行
+
+Insights 如何分析跟踪取决于您的 LangSmith 版本和数据存储：* **v0.18 或更高版本，为每个工作区启用 SmithDB 查询和摄取**：[Continuous Insights](/langsmith/insights) 在新跟踪到达时对其进行分类。 LangSmith [queries SmithDB](/langsmith/self-host-smithdb-install#step-6-switch-queries-to-smithdb) 一次自动开启，完成现有批量报告的一次性迁移。无需配置。
+* **否则**：Insights 一次或按计划在跟踪样本上生成 [batch reports](/langsmith/insights-batch-reports)。
+
+ClickHouse 支持于 LangSmith v0.19 结束。有关 SmithDB 还支持哪些功能，请参阅 [SmithDB feature availability](/langsmith/self-host-smithdb-features)。
+
 ## 设置加密密钥
 
 要为每个功能生成一个密钥，请参阅[Keys and secrets](/langsmith/kubernetes#keys-and-secrets)。不要将加密密钥提交给版本控制。
 
 通过以下两种方式之一提供密钥：
 
-* **内联**：在`langsmith_config.yaml`中设置`insights.encryptionKey`和`polly.encryptionKey`，如在[minimum configuration](/langsmith/kubernetes#configure-your-helm-charts)中。
+* **内联**：在 `langsmith_config.yaml` 中设置 `insights.encryptionKey` 和 `polly.encryptionKey`，如在 [minimum configuration](/langsmith/kubernetes#configure-your-helm-charts) 中。
 * **现有秘密**：将`insights_encryption_key`和`polly_encryption_key`添加到您的[existing LangSmith app Secret](/langsmith/self-host-using-an-existing-secret#parameters)。通过`config.existingSecretName`参考。
 
 应用您的 Helm 配置：
@@ -29,7 +36,9 @@
 helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
 ```
 
-## 配置模型访问通过您的 [provider credentials and model configurations](/langsmith/model-configurations) 进行见解和聊天呼叫模型。有关 GKE 上的无密钥 Vertex AI，请参阅 [Configure GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity)。
+## 配置模型访问
+
+通过您的 [provider credentials and model configurations](/langsmith/model-configurations) 进行见解和聊天呼叫模型。有关 GKE 上的无密钥 Vertex AI，请参阅 [Configure GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity)。
 
 ## 禁用见解或聊天
 
@@ -47,9 +56,7 @@ polly:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-```
-
-当 `engine.enabled` 为 `true` 时，禁用 Insights 不会禁用引擎或删除其共享部署。
+```当 `engine.enabled` 为 `true` 时，禁用 Insights 不会禁用引擎或删除其共享部署。
 
 ## 升级现有配置
 
@@ -63,7 +70,9 @@ helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --v
 
 一般升级流程请参见[Upgrade an installation](/langsmith/self-host-upgrades)。
 
-## 另请参阅* [Self-host LangSmith on Kubernetes](/langsmith/kubernetes)
+## 另请参阅
+
+* [Self-host LangSmith on Kubernetes](/langsmith/kubernetes)
 * [Configure model access](/langsmith/model-configurations)
 * [Configure additional self-hosted features](/langsmith/self-host-additional-features)
 

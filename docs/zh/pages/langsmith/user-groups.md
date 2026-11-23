@@ -61,7 +61,7 @@
 2. 在**成员**、**工作区**或**访问策略**中进行更改。
 3. 单击**更新用户组**。
 
-LangSmith 将更改一起保存。如果失败，LangSmith 会保留未保存的更改，以便您可以重试。
+LangSmith 一起保存更改。如果失败，LangSmith 会保留未保存的更改，以便您可以重试。
 
 ### 成员
 
@@ -117,12 +117,12 @@ LangSmith 将更改一起保存。如果失败，LangSmith 会保留未保存的
 
 * **时间**：SSO 组同步会在每次登录时更新用户的成员资格，并且需要 **同步工作区/角色分配**。当用户的 SCIM 组更改时，SCIM 会更新它们。
 
-* **成员身份**：同步用户组的成员是 IdP 组中的用户。您在 LangSmith 中所做的更改将持续到该用户下次同步为止。
+* **成员身份**：同步用户组的成员是 IdP 组中的用户。您在 LangSmith 中所做的更改将持续到该用户下次同步。
 
 * **组织角色**：当没有`LS:`组设置用户的组织角色时，用户组匹配设置它：* 通过 SSO 组同步，新用户作为 [Organization Viewer](/langsmith/rbac#organization-viewer) 加入组织。 SSO Groups Sync 管理其成员资格的用户被设置为组织查看者。其他成员资格（例如来自邀请的成员资格）保留其角色。
   * 通过 SCIM，将 SCIM 不管理成员资格的用户设置为[Organization User](/langsmith/rbac#organization-user)，之后由 SCIM 管理成员资格。这包括具有更高角色的用户，例如组织管理员。
 
-* **工作区成员资格**：同步将用户添加到用户组可以访问的每个工作区。该成员资格本身没有任何作用。用户的访问权限来自于用户组的角色。在用户下次同步时，如果没有用户组有权访问该工作区，LangSmith 将删除成员身份。
+* **工作区成员资格**：同步将用户添加到用户组可以访问的每个工作区。该成员资格本身没有任何作用。用户的访问权限来自于用户组的角色。在用户下次同步时，如果没有用户组有权访问该工作区，LangSmith 将删除成员资格。
 
 * **登录门**：当启用**需要匹配组登录**时，与同步用户组匹配的组将被视为匹配组。对于 SSO 组同步，这还需要 **同步工作区/角色分配**。
 
@@ -148,6 +148,7 @@ LangSmith 将更改一起保存。如果失败，LangSmith 会保留未保存的
 
 ## 另请参阅
 
+* LLM网关策略：设置共享[spend](/langsmith/llm-gateway-spend-policies)和[rate limits](/langsmith/llm-gateway-rate-limit-policies)，控制[model access](/langsmith/llm-gateway-model-access-policies)，并将[data policies](/langsmith/llm-gateway-data-policy)应用于组成员。
 * [Role-based access control](/langsmith/rbac)
 * [Attribute-based access control](/langsmith/abac)
 * [User management](/langsmith/user-management)

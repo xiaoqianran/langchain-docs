@@ -18,7 +18,13 @@
 * **控制**：设置阻止工具调用或在运行之前需要批准的策略。
 * **可见性**：记录每个工具调用的跟踪，显示哪个工具运行以及由谁运行。> [!注意]
 >
-> 工具网关已在 LangSmith [Plus and Enterprise plans](https://www.langchain.com/pricing) 上可用。它在 GCP 美国、GCP 欧盟、GCP 亚太地区和 AWS 美国区域的LangSmith 云上运行。它在 Azure 美国区域不可用。
+> 工具网关已在 LangSmith [Plus and Enterprise plans](https://www.langchain.com/pricing) 上可用。
+>
+> 它运行于：
+>
+> * **[Cloud](/langsmith/cloud)**：GCP 美国、GCP 欧盟、GCP 亚太地区和 AWS 美国区域。它在 Azure 美国区域不可用。
+> * **[BYOC](/langsmith/byoc)**：在 AWS、GCP 和 Azure 上运行 LangSmith v0.18 或更高版本的数据平面。
+> * **[Self-hosted](/langsmith/self-hosted)**：LangSmith v0.18 或更高版本。参见[Enable the Tool Gateway](/langsmith/tool-gateway-self-hosted)。
 
 ## 工具调用的流程
 
@@ -28,7 +34,7 @@
 2. 如果拒绝策略匹配，则阻止呼叫。
 3. 附加调用者存储的服务器凭据，或要求调用者连接。
 4. 如果批准策略匹配，则请求呼叫者批准呼叫。
-5. 将呼叫转发到 MCP 服务器，并在[tracing](/langsmith/tool-gateway-traces) 打开时记录跟踪。
+5. 将呼叫转发至 MCP 服务器，并在[tracing](/langsmith/tool-gateway-traces) 打开时记录跟踪。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 flowchart LR
@@ -79,7 +85,7 @@ flowchart LR
 >
 > 添加两个 MCP 服务器、连接您的帐户、创建工具包并从 MCP 客户端调用其工具。
 
-> [卡片][Learn how it works](/langsmith/tool-gateway-how-it-works)
+> [卡][Learn how it works](/langsmith/tool-gateway-how-it-works)
 >
 > 了解工具网关如何对调用者进行身份验证、选择凭据、应用策略以及适用的限制。
 

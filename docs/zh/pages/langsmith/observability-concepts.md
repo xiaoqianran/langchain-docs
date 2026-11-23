@@ -6,7 +6,7 @@
 
 LangSmith 如何将可观测性数据构建为运行、轨迹、线程和轨迹，以及如何发送轨迹。
 
-LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每一步。本页解释了如何在 LangSmith 中构建和可视化数据，以及如何开始发送​​跟踪。
+LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每一步。本页介绍如何在 LangSmith 中构建和可视化数据，以及如何开始发送​​跟踪。
 
 ## LangSmith 如何构建和可视化数据
 
@@ -40,7 +40,7 @@ LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每
 
 [Learn how trajectories render in the Trajectory view](/langsmith/trajectory-view-integrations)。
 
-### 比较迹线、线程和轨迹| |追踪 |主题 |轨迹|
+### 比较迹线、线程和轨迹| |追踪 |主题 |轨迹 |
 | - | - | - | - |
 |形状|运行树 |痕迹序列 |扁平化、有序的消息列表 |
 |包含 |每次运行，都有完整的输入和输出|每个链接跟踪中的每次运行 |每个链接跟踪中的每条消息均经过重复数据删除 |
@@ -78,6 +78,12 @@ LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每
 
 [Learn how to add metadata to your traces](/langsmith/add-metadata-tags)。
 
+### 用户
+
+*用户* 是您的应用程序在跟踪中服务的人员。要记录用户，请在跟踪的根运行上传递 `user_id` 元数据键。 LangSmith 显示跟踪上的用户 ID，您可以按用户过滤跟踪、按用户对图表进行分组，并在 **监控** 的 **用户** 选项卡中查看每个用户的活动。 `user_id` 标识您的应用程序的最终用户，而不是 LangSmith 帐户。
+
+[Learn how to track users](/langsmith/users)。
+
 ## 发送痕迹
 
 有两种方法可以将跟踪数据发送到LangSmith。
@@ -88,13 +94,13 @@ LangSmith *集成*为流行的LLM提供商和代理框架提供自动跟踪（�
 
 [Browse all integrations](/langsmith/integrations)。
 
-### 手动仪器
-
-*手动检测*允许您向任何代码添加跟踪，无论框架如何。当您不使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：
+### 手动仪器*手动检测*允许您向任何代码添加跟踪，无论框架如何。当您未使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：
 
 * `@traceable` / `traceable`：用于跟踪任何函数的装饰器
-* `trace` 上下文管理器（Python）：包装特定的代码块
-* `RunTree` API：低级、显式跟踪构建[Learn how to add manual instrumentation](/langsmith/annotate-code)。
+* `trace` 上下文管理器 (Python): 包装特定的代码块
+* `RunTree` API：低级、显式跟踪构建
+
+[Learn how to add manual instrumentation](/langsmith/annotate-code)。
 
 ## 数据保留
 

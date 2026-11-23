@@ -4,7 +4,7 @@
 
 # 模型访问策略
 
-控制您的组织、工作区、用户或 API 密钥可通过 LLM 网关访问哪些模型提供程序和模型。
+控制可通过 LLM 网关访问哪些模型提供者和模型。
 
 > [!注意]
 >
@@ -25,15 +25,16 @@
 |范围 |适用于 |
 | - | - |
 | **组织** |组织中的所有用户和工作区 |
+| **用户组** |用户组成员 |
 | **工作区** |工作区中的所有用户|
 | **用户** |单个用户|
 | **API 密钥** |单个 API 密钥 |
 
 ### 策略覆盖
 
-策略覆盖允许您向更具体的主题授予与更广泛的默认权限不同的访问权限。一种常见的情况是向组织其他部门无法使用的高级模型提供一个 API 密钥访问权限。当请求与多个层的策略匹配时，只有最具体的层适用，按照 API 密钥、用户、工作区、组织的顺序。更具体的政策完全取代了更广泛的政策。例如，如果组织策略允许 OpenAI 和 Anthropic，并且 API 密钥策略仅允许 OpenAI 和 Gemini，则使用该密钥的请求只能访问 OpenAI 和 Gemini。
+策略覆盖允许您向更具体的主题授予与更广泛的默认权限不同的访问权限。一种常见的情况是向组织其他部门无法使用的高级模型提供一个 API 密钥访问权限。当请求与多个层的策略匹配时，仅适用最具体的层，按照 API 密钥、用户、工作区、用户组、组织的顺序。更具体的政策完全取代了更广泛的政策。例如，如果组织策略允许 OpenAI 和 Anthropic，并且 API 密钥策略仅允许 OpenAI 和 Gemini，则使用该密钥的请求只能访问 OpenAI 和 Gemini。
 
-如果多个策略在同一层匹配，则模型必须获得所有策略的允许才能访问。该错误仅指定拒绝模型的策略。
+如果多个策略在同一层匹配，则模型必须获得所有策略的允许才能访问。对于多个用户组中的调用者，除非匹配的工作区、用户或 API 密钥策略替换组层，否则匹配的组允许列表会交叉。该错误仅指定拒绝模型的策略。
 
 ## 允许的提供商和型号
 
@@ -42,25 +43,25 @@
 * **所有型号**：允许提供商提供的每种型号。
 * **选定的型号**：仅允许您指定的型号。至少需要一种型号。
 
-在**选定型号**下，网关还会阻止无法读取型号的请求，例如没有 `model` 字段的请求、`model` 不是字符串或`model` 字段发送两次。
+在**选定型号**下，网关还会阻止无法读取型号的请求，例如没有 `model` 字段的请求、`model` 不是字符串或`model` 字段发送两次。### 允许保存模型配置
 
-### 允许保存模型配置通过 `custom/<name>` 模型 ID 或后备链调用已保存 [model configuration](/langsmith/llm-gateway-model-configurations) 的请求将被阻止，除非策略列出 **模型配置** 提供程序。该提供程序使用相同的两种访问模式，但 **Selected** 采用完全匹配的配置名称，而不是模型 ID。名称在调用 API 密钥的工作区中解析，因此组织级策略上的一个条目适用于每个工作区自己的配置。
+通过 `custom/<name>` 模型 ID 或后备链调用已保存 [model configuration](/langsmith/llm-gateway-model-configurations) 的请求将被阻止，除非策略列出 **模型配置** 提供程序。该提供程序使用相同的两种访问模式，但 **Selected** 采用完全匹配的配置名称，而不是模型 ID。名称在调用 API 密钥的工作区中解析，因此组织级策略上的一个条目适用于每个工作区自己的配置。
 
 ## 创建模型访问策略
 
 > [!警告]
 >
-> 创建和管理策略需要 `organization:gateway:manage` 权限。组织管理员和组织操作员默认拥有它。有关每个组织角色可以执行的操作，请参阅[Organization roles](/langsmith/rbac#organization-roles)。
+> 创建和管理策略需要 `organization:gateway:manage` 权限。组织管理员和组织操作员默认拥有它。有关每个组织角色可以执行的操作，请参阅[Organization roles](/langsmith/rbac#organization-roles)。选择用户组也需要`organization:user-groups:read`；有关可用性和设置，请参阅[User Groups](/langsmith/user-groups)。
 
-1. 转到 **LLM Gateway** 并选择 **模型访问** 选项卡。
-2. 单击**创建模型访问**。
-3. 在**适用于**下，选择范围（组织、工作区、用户或 API 密钥）。
+1. 转至 **LLM Gateway** 并选择 **模型访问** 选项卡。
+2. 单击 **+ 模型访问**。
+3. 在**适用于**下，选择范围（组织、用户组、工作区、用户或 API 密钥）。
 4. 在**允许的提供商和模式**下，打开每个提供商以允许并选择其访问模式。默认情况下，提供商处于关闭状态，因此您离开的任何提供商都会被阻止。
-5. 单击**创建模型访问**。
+5. 单击**创建模型访问**。政策立即生效。
 
-政策立即生效。
+## 另请参阅
 
-## 另请参阅* [Run a request in the Simulator](/langsmith/llm-gateway-first-request#run-a-request-in-the-simulator)：通过请求策略阻止的模型来测试策略。
+* [Run a request in the Simulator](/langsmith/llm-gateway-first-request#run-a-request-in-the-simulator)：通过请求策略阻止的模型来测试策略。
 * [Spend policies](/langsmith/llm-gateway-spend-policies)：设置 LLM 使用的成本上限。
 * [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies)：限制请求或令牌吞吐量。
 * [Header-based policies](/langsmith/llm-gateway-header-policies)：将策略范围缩小到携带特定自定义请求标头值的请求。

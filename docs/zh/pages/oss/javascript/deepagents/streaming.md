@@ -6,16 +6,12 @@
 
 从深度代理运行和子代理执行中传输实时更新
 
-> [!提示]
->
-> 对于新应用程序，我们推荐[event streaming](/oss/javascript/deepagents/event-streaming)——Deep Agents v0.6 中引入的类型化投影 API。事件流为每个投影提供单独的迭代器（子代理、消息、工具调用、值），因此您可以独立使用它们，而不是在 `stream_mode` 块上分支。
-
 Deep Agents 构建于 LangGraph 的流基础架构之上，为子代理流提供一流的支持。当深度代理将工作委托给子代理时，您可以独立地传输来自每个子代理的更新 - 实时跟踪进度、LLM 令牌和工具调用。
 
 深度代理流可以实现什么：
 
 * [**Stream subagent progress**](#subagent-progress)—跟踪每个子代理并行运行时的执行情况。
-* [**Stream LLM tokens**](#llm-tokens)—来自主代理和每个子代理的流令牌。
+* [**Stream LLM tokens**](#llm-tokens)——来自主代理和每个子代理的流令牌。
 * [**Stream tool calls**](#tool-calls)—查看子代理执行中的工具调用和结果。
 * [**Stream custom updates**](#custom-updates)—从内部子代理节点发出用户定义的信号。
 
@@ -280,15 +276,15 @@ for await (const [namespace, chunk] of await agent.stream(
   }
   console.log(chunk);
 }
-```> [卡][View example trace](https://smith.langchain.com/public/610119d4-75ef-46d7-b271-3572bb9a3a10/r)
+```
+
+> [卡][View example trace](https://smith.langchain.com/public/610119d4-75ef-46d7-b271-3572bb9a3a10/r)
 >
 > 为此示例打开公共 LangSmith 运行。
 
 ## 命名空间
 
-当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。
-
-|命名空间 |来源 |
+当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。|命名空间 |来源 |
 | - | - |
 | `()`（空）|主代理|
 | `("tools:abc123",)` |由主代理的 `task` 工具调用 `abc123` 生成的子代理 |
@@ -775,7 +771,9 @@ process.stdout.write("\n");
 >
 > 为此示例打开公共 LangSmith 运行。
 
-## 工具调用当子代理使用工具时，您可以流式传输工具调用事件以显示每个子代理正在执行的操作。工具调用块以`messages`流模式出现。
+## 工具调用
+
+当子代理使用工具时，您可以流式传输工具调用事件以显示每个子代理正在执行的操作。工具调用块以`messages`流模式出现。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessageChunk, ToolMessage } from "langchain";
@@ -1208,9 +1206,7 @@ for await (const [namespace, chunk] of await agent.stream(
     console.log("[main]", chunk);
   }
 }
-```
-
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+``````ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -1559,7 +1555,7 @@ for (const [id, sub] of activeSubagents) {
 
 ### 处理人机交互中断
 
-配置 [⟦T42⟧](/oss/javascript/deepagents/human-in-the-loop) 时，`updates` 流可能包含暂停执行以供人工批准的 `__interrupt__` 条目。通过检查更新块中的 `__interrupt__` 键来检测它们。使用与 `.invoke()` 使用的相同平面 `{"decisions": [...]}` 有效负载继续：
+配置 [⟦T41⟧](/oss/javascript/deepagents/human-in-the-loop) 时，`updates` 流可能包含暂停执行以供人工批准的 `__interrupt__` 条目。通过检查更新块中的 `__interrupt__` 键来检测它们。使用与 `.invoke()` 使用的相同平面 `{"decisions": [...]}` 有效负载继续：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { v7 as uuid7 } from "uuid";
@@ -1580,9 +1576,11 @@ for await (const [mode, data] of await agent.stream(
 
 有关完整的流恢复循环模式，请参阅[Human-in-the-loop: Handle interrupts with streaming](/oss/javascript/deepagents/human-in-the-loop#handle-interrupts-with-streaming)。
 
-## 流块形状对于 `subgraphs=True`，块形状取决于您是否传递一种或多种流模式：
+## 流块形状
 
-| `stream_mode` |块状 |
+对于 `subgraphs=True`，块形状取决于您是否传递一种或多种流模式：
+
+| `stream_mode` |块状|
 | - | - |
 |单模式（例如`"updates"`）| `(namespace, data)` |
 |多种模式（例如`["messages", "updates"]`）| `(namespace, mode, data)` |
@@ -1610,11 +1608,9 @@ for namespace, mode, data in agent.stream(
     print(data)
 ```
 
-## 相关
-
-* [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)—为敏感工具操作配置审批工作流程
+## 相关* [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)—为敏感工具操作配置审批工作流程
 * [Subagents](/oss/javascript/deepagents/subagents)—通过 Deep Agents 配置和使用子代理
-* [Frontend streaming](/oss/javascript/deepagents/frontend/overview)—使用 [⟦T57⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 为 Deep Agents 构建 React UI
+* [Frontend streaming](/oss/javascript/deepagents/frontend/overview)—使用 [⟦T56⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 为 Deep Agents 构建 React UI
 * [LangChain Event Streaming](/oss/javascript/langchain/event-streaming)—使用 LangChain 代理的一般流概念
 
 ***

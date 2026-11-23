@@ -4,10 +4,6 @@
 
 Stream real-time updates from agent runs
 
-> [!TIP]
->
-> For new applications, we recommend [event streaming](/oss/javascript/langchain/event-streaming)—the typed-projection API introduced in LangChain v1.3. Event streaming gives you separate iterators per projection (messages, values, tool calls, subgraphs) so you can consume them independently instead of branching on `stream_mode` chunks.
-
 LangChain implements a streaming system to surface real-time updates.
 
 Streaming is crucial for enhancing the responsiveness of applications built on LLMs. By displaying output progressively, even before a complete response is ready, streaming significantly improves user experience (UX), particularly when dealing with the latency of LLMs.

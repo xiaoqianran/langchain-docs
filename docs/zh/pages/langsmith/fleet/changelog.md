@@ -10,19 +10,34 @@ LangSmith 机队每周更新
 
 **订阅**：此变更日志包括一个 [RSS feed](https://docs.langchain.com/langsmith/fleet/changelog/rss.xml)，可以与 [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack)、[email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email)、Discord 机器人（如 [Readybot](https://readybot.io/) 或 [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot)）以及其他订阅工具集成。
 
-**2026 年 11 月 9 日至 16 日**
+**2026 年 11 月 16 日至 23 日**
 
 ## 亮点
 
-* **车队用户、构建者和管理员角色**：您现在可以分配内置的 **车队用户**、**车队构建者** 和 **车队管理员** 工作区角色，以授予人员无需跟踪访问权限的车队访问权限，因此您不再需要构建自定义角色。每个角色都包含其下级角色的权限，并且访问策略可以针对这些角色。现在始终强制执行队列权限，无法创建代理的用户将不再看到欢迎模式或 **新代理** 按钮。 [Learn more](/langsmith/rbac)。
+* **将舰队代理导出到托管 Deep Agents**：运行 `mda init <name> --from <fleet-agent-id>` 将舰队代理转变为托管 Deep Agents 项目，您可以使用 `mda dev` 运行并使用 `mda deploy` 发布。导出会继承指令、模型、MCP 工具及其连接和批准规则、沙箱及其访问配置文件、子代理、技能以及自定义 Slack 应用程序的设置。首次使用`mda memory upload`部署后，代理内存会上传，任何无法保留的内容都会列在控制台中的“未导出”下和`FLEET_EXPORT.md`中。 [Learn more](/langsmith/python/managed-deep-agents-migrate)。
+
+## 舰队* Teams 机器人现在可以通过托管工具进行回复，并且机器人的代理可以读取@提到的通道线程中的早期消息。来自机器人触发的运行的回复不再等待代理收件箱中的批准，并且当机器人的代理无法运行时，Teams 发件人会收到回复。
+* 舰队聊天现在允许您在代理仍在运行时发送后续信息。后续操作出现在 **Queued** 标题下，在当前运行完成时发送，并且可以取消。
+* Agent Builder 在三次运行失败后暂停计划的代理，因为它自己的模型 API 密钥丢失或无效，并且计划和通道面板现在显示一条消息，解释在恢复之前要修复的内容。
+
+## 修复和改进> [手风琴] 显示所有修复
+>
+> * 代理在启动之前拒绝的消息（例如代理被锁定时）现在显示“失败”并带有解释错误的信息图标，而不是移动到下一个回复下方作为“已排队”。选择消息下方的重试，以便在没有运行时再次将其发送到位。
+> * 当Anthropic拒绝请求时，特工不再停止默默回复。现在，运行失败，并显示一条消息，指出拒绝类别并建议如何恢复，例如删除触发它的内容或切换模型。
+> * 同步子代理现在获得需要每个调用者自己的凭据的 MCP 工具，包括 deepagents 的内置通用子代理。当子代理需要您尚未建立的连接时，它会要求您从子代理内部进行连接，并在您连接后继续。
+> * 当实时工具不可用时，断开连接的个人 OAuth 服务器现在显示 **连接** 而不是 **已连接**，因此您可以在代理使用服务器之前授权自己的帐户。
+
+**2026 年 11 月 9 日至 16 日**
+
+## 亮点* **车队用户、构建者和管理员角色**：您现在可以分配内置的 **车队用户**、**车队构建者** 和 **车队管理员** 工作区角色，以授予人员无需跟踪访问权限的车队访问权限，因此您不再需要构建自定义角色。每个角色都包含其下级角色的权限，并且访问策略可以针对这些角色。现在始终强制执行队列权限，无法创建代理的用户将不再看到欢迎模式或 **新代理** 按钮。 [Learn more](/langsmith/rbac)。
 
 ## 舰队* 工作区管理员现在可以锁定和解锁其工作区中的任何代理，包括其他成员的私人代理。锁定代理也会停止其沙箱，并且在代理解锁之前它们无法启动。
 * 拥有自己的 Slack 机器人的舰队代理现在会在托管工具中发布该机器人的令牌，并且当机器人重新连接或断开连接时，每个代理存储的机器人令牌副本都会保持同步。
 * 代理现在只能使用您创建的沙箱或已打开 `sandboxes:exec` 的沙箱，并且使用任何其他 `sandbox_id` 保存代理会返回 403 错误。沙箱名称将保存为其 ID，因此后续具有相同名称的沙箱无法替换您选择的沙箱。
 * 现在，在您取消付费计划后，舰队会保持开启状态，一旦付费期结束且没有新计划到位，舰队就会关闭。取消或重新订阅会重新启用 Fleet。
 * 由于无法自行修复的原因（例如删除的代理存储库、拒绝的沙箱凭据或丢失的模型配置）每次运行失败的计划现在会在三次失败后自动暂停。您的日程安排会显示暂停的原因，您可以随时恢复。* 您现在可以创建 Gmail 和 Outlook 触发器，通过连接的代理身份验证帐户读取邮件。如果您将触发器创建为共享代理的编辑器，则触发器会读取该代理自己的连接帐户。仅当旧连接作为触发器监视的邮箱登录时，读取代理身份验证的触发器才会回退到旧连接。
-* 自托管工作区现在可以通过共享 Slack 应用程序连接 Slack 通道。在 **配置** > **渠道** > **添加** 中选择 **Slack 渠道（共享应用程序）**，代理会回复该渠道中的每条消息。
-* 您现在可以通过将 `FF_CUSTOM_SLACK_APPS_DISABLED` 设置为 `true` 来关闭整个 LangSmith 实例的自定义 Slack 应用程序创建。设置标志后，任何人都无法创建新的自定义 Slack 应用程序，并且现有应用程序将继续运行。自托管运营商可以让用户继续使用共享的 Slack 应用程序。
+* 自托管工作区现在可以通过共享 Slack 应用程序连接 Slack 通道。在 **配置** > **渠道** > **添加** 中选择 **Slack 渠道（共享应用程序）**，客服人员会回复该渠道中的每条消息。
+* 现在，您可以通过将 `FF_CUSTOM_SLACK_APPS_DISABLED` 设置为 `true` 来关闭整个 LangSmith 实例的自定义 Slack 应用程序创建。设置标志后，任何人都无法创建新的自定义 Slack 应用程序，并且现有应用程序将继续运行。自托管运营商可以让用户继续使用共享的 Slack 应用程序。
 * 自托管 Fleet 现在可以使用 Pod 的应用程序默认凭据（例如 GKE Workload Identity）来运行 Vertex AI 模型，而无需存储服务帐户密钥。在Fleet和平台后端将`FLEET_VERTEX_AI_ADC_ENABLED`设置为`true`即可开启；无钥匙模型只能到达 Google 的 Vertex AI 端点。* Chat 现在可以在自托管的 Agent Builder 编辑器中为您构建代理。描述代理，Chat 在草稿中填写其名称、说明和连接。
 
 ## 修复和改进
@@ -31,7 +46,7 @@ LangSmith 机队每周更新
 >
 > * 来自其他成员计算机的舰队 GitHub 请求现在无需凭据即可发出，而不是失败。 GitHub 应用程序规则不再阻止这些计算机上的公共存储库请求。
 > * 内存写入批准现在会在记录之前验证您的决定。格式错误或不完整的批准响应将被拒绝，并显示一条错误，指出未应用更新，并且您可以在刷新对话后再次批准或拒绝相同的待处理更新。
-> * 具有调用权限的查看者可以连接并管理自己的个人帐户以再次集成。代理配置对他们来说保持只读状态，工作区密钥集成显示状态，无需连接或管理。> * 电子邮件触发器在短暂的身份验证中断期间不再暂停。当身份验证服务不可用时，您的触发端点现在会返回 `503` 并显示“身份验证服务不可用。请稍后重试。”而不是`401`。被拒绝的请求仍会返回 `401`，并且该消息现在会说明原因，例如非活动计划。
+> * 具有调用权限的查看者可以连接并管理自己的个人帐户以再次集成。代理配置对他们来说保持只读状态，工作区密钥集成显示状态，无需连接或管理。> * 电子邮件触发器在短暂的身份验证中断期间不再暂停。当身份验证服务不可用时，您的触发端点现在会返回`503`，并显示“身份验证服务不可用。请稍后重试。”而不是`401`。被拒绝的请求仍会返回 `401`，并且该消息现在会说明原因，例如非活动计划。
 > * **代理设置**中的更改所有者**现在适用于 Studio 无代码代理，之前该操作显示为已禁用。
 > * 通过聊天克隆在计算机环境上运行的代理不再创建没有计算机的副本；聊天现在返回一个错误，引导您进行 **Clone in Fleet**，这将复制代理及其环境。
 
@@ -40,33 +55,33 @@ LangSmith 机队每周更新
 ## 舰队* 组织管理员可以锁定舰队代理，这会停止其新的运行、线程和 cron，并结束调用工具的任何运行。锁定的代理无法删除或克隆，其代理响应显示 `locked`、`locked_at` 和 `locked_by`。
 * 当没有为子代理设置模型时，子代理现在会显示根代理的模型。您可以为子代理选择不同的模型或清除覆盖以再次继承根模型。没有根模型的子代理会显示“根模型不可用”而不是模型。
 * 从模板创建代理时选择连接格式。模板现在默认为每用户，您可以在创建代理之前选择共享。创建代理后，格式无法更改。
-* 可以再次加载、重命名和编辑具有最多 50 MiB 文件的代理。将代理文件增长到超过 25 MiB 的保存返回 422 `agent_files_too_large`，但删除或缩小文件始终有效。
-* 队列代理现在发送一个代理访问令牌，该令牌指定每个请求后面的代理和用户到自定义 MCP 服务器、模型提供程序和沙箱，以便您的出口网关可以对这些调用进行归因。* 当 Slack 拒绝发布或反应时，通道操作现在会返回 Slack 自己的错误代码和消息，例如当机器人不在通道中时的 `not_in_channel` 或具有 Slack 所需范围的 `missing_scope`。该错误也会出现在通过部署通道操作路由进行的计划交付中，该路由保留其 `detail` 字段并添加 `provider_error`。
+* 可以再次加载、重命名和编辑具有最多 50 MiB 文件的代理。将代理文件增长到超过 25 MiB 时，保存会返回 422 `agent_files_too_large`，但删除或缩小文件始终有效。
+* 队列代理现在发送一个代理访问令牌，该令牌指定每个请求后面的代理和用户到自定义 MCP 服务器、模型提供程序和沙箱，以便您的出口网关可以对这些调用进行归因。* 当 Slack 拒绝帖子或反应时，通道操作现在会返回 Slack 自己的错误代码和消息，例如当机器人不在通道中时的 `not_in_channel` 或具有 Slack 所需范围的 `missing_scope`。该错误也会出现在通过部署通道操作路由进行的计划交付中，该路由保留其 `detail` 字段并添加 `provider_error`。
 * 现在可以使用服务密钥重新部署和删除具有 Slack 通道的部署，因此 CI 部署作业不再需要用户范围的密钥。设置或更改 LangSmith 管理的 Slack 应用程序仍然需要个人密钥，并且设置会返回 403 来说明这一点。
 
 ## 修复和改进> [手风琴] 显示所有修复
 >
 > * 舰队代理现在会显示他们对较新的 Claude 型号（Opus 5.5、Sonnet 5.5）的完整答案，而不仅仅是建议药丸，因此您要求的电子邮件或回复会出现在聊天中。
-> * Approving a Managed Tools tool call in Fleet now works when the tool asks for approval by default. Previously, approving failed with "Unknown or already-consumed interrupt" because the thread state did not show the pending approval.
-> * Scheduled and triggered agent runs now honor the memory auto-approve setting. Your agent writes to memory without asking for approval when auto-approve is on.
-> * Agent runs no longer fail when a sandbox is missing a file that the agent reads, such as `/memories/AGENTS.md`. The agent now continues without that file instead of stopping before the model is called.
+> * 现在，当工具默认请求批准时，可以批准 Fleet 中的托管工具工具调用。以前，批准失败并显示“未知或已消耗的中断”，因为线程状态未显示待批准。
+> * 计划和触发的代理运行现在遵循内存自动批准设置。当自动批准开启时，您的代理会写入内存而不请求批准。
+> * 当沙箱缺少代理读取的文件（例如`/memories/AGENTS.md`）时，代理运行不再失败。现在，代理在没有该文件的情况下继续运行，而不是在调用模型之前停止。
 > * Google Workspace 工具（包括 Gmail、日历、云端硬盘、文档、表格、幻灯片和 Meet）现在通过您配置的 `HTTPS_PROXY` 发送请求，因此呼叫不再绕过您的转发代理。
-> * 在工作区中以其应用程序限制创建 Slack 应用程序现在会返回明显的 422 错误，告诉您删除未使用的应用程序或要求 Slack 管理员提高限制，而不是 502 服务器错误。> * Slack file tools, such as **slack_send_file**, now work through Managed Tools.以前，它们失败是因为 Slack 连接未请求 `files:write` 范围。 If you connected Slack before this fix, reconnect it to grant the new scope.
+> * 在工作区中以其应用程序限制创建 Slack 应用程序现在会返回明显的 422 错误，告诉您删除未使用的应用程序或要求 Slack 管理员提高限制，而不是 502 服务器错误。> * Slack 文件工具，例如 **slack_send_file**，现在通过托管工具工作。以前，它们失败是因为 Slack 连接未请求 `files:write` 范围。如果您在此修复之前连接了 Slack，请重新连接以授予新范围。
 > * 搜索模式下工具服务器的 Slack 批准卡现在命名您正在批准的工具，例如 **gmail_send_email**，而不是代理工具 `call_tool`。
 > * 当您的代理描述包含表情符号或弯引号时，创建 Slack 应用程序不再失败。描述现在上限为 139 字节，当 Slack 拒绝清单时，会显示 Slack 的验证消息。
-> * 修复了从配置打开的访问配置文件编辑器中的下拉列表和文本输入没有响应的问题。 The editor now opens in a centered dialog, and you can use its dropdowns, search, and text inputs.
-> * Sandbox requests that use a Slack connection no longer fail with a 500 error when Slack returns nested user details during authentication.
+> * 修复了从配置打开的访问配置文件编辑器中的下拉列表和文本输入没有响应的问题。编辑器现在在居中的对话框中打开，您可以使用其下拉菜单、搜索和文本输入。
+> * 当 Slack 在身份验证期间返回嵌套用户详细信息时，使用 Slack 连接的沙箱请求不再失败并出现 500 错误。
 
 **2026年10月26日至11月2日**
 
 ## 舰队* Agent Builder 中的工作区技能删除现在仅限于具有 `fleet-skills:delete` 权限的技能所有者，并且如果删除该权限，打开的删除确认将关闭。
-* 当启用队列 RBAC 时，工作区 Webhook 现在可以由具有队列代理创建权限的用户运行，而不仅仅是工作区管理员。仅创建用户可以从“配置”面板和“设置”菜单运行 Webhook，而没有权限的用户会看到一条消息，指出他们无法运行这些 Webhook。
+* 启用队列 RBAC 时，工作区 Webhook 现在可以由具有队列代理创建权限的用户运行，而不仅仅是工作区管理员。仅创建用户可以从“配置”面板和“设置”菜单运行 Webhook，而没有权限的用户会看到一条消息，指出他们无法运行这些 Webhook。
 * 您现在可以通过 `/v1/fleet/access-profiles` 创建、编辑和删除访问配置文件，每个配置文件上都有一个可选的 `description` 以及记录每次更改的人的 `created_by` 和 `updated_by` 字段。删除实时计算机环境使用的配置文件会返回列出这些环境的 409，并且只有以用户身份登录的工作区管理员才能进行这些更改。
 * 计算机环境现在拒绝将允许网络与拒绝或阻止所有网络混合的访问配置文件，并且当访问配置文件网络更改与使用它们的实时环境混合时会被拒绝，因此在混合网络上运行不再失败。* v2 企业代理的沙箱现在从代理自己的连接注入 OAuth 令牌，而不是创建者的个人令牌。如果代理未连接到提供程序，则其沙箱请求会收到该提供程序的 403。
 * 当您的组织禁用 Fleet 时，Cron 会保持暂停状态。当限制重置时，它们不再自动恢复​​，您可以从队列 API 或代理的触发器设置恢复它们。
 * Executive Assistant 模板现在创建一个每用户代理，除了 Slack 之外，它还可以连接您自己的 Gmail 和 Outlook 收件箱。代理处理的电子邮件会像您一样使用您自己的 Google 帐户运行。团队仍然仅适用于共享代理。
 * 现在只能通过**集成**从工作区中删除 MCP 服务器。从代理删除 MCP 连接不再将服务器从工作区删除，因此它会保持安装状态并可以添加到其他代理。
-* 集成卡和详细信息对话框现在显示 MCP 服务器公布的图标，直接从其 HTTPS URL 加载。捆绑的提供商徽标仍然优先，并且当没有有效图标可用时会显示默认图标。* 预定帖子现在可以启动您的客服人员关注的线程：当您在帖子操作上将 `follow_thread` 设置为 `true` 时，新线程中的回复将不经提及地到达您的客服人员，从预定消息之后发布的输入开始。
+* 集成卡和详细信息对话框现在显示 MCP 服务器公布的图标，直接从其 HTTPS URL 加载。捆绑的提供商徽标仍然优先，并且当没有有效图标可用时会显示默认图标。* 预定帖子现在可以启动您的客服人员关注的线程：当您在帖子操作上将 `follow_thread` 设置为 `true` 时，新线程中的回复无需提及即可到达您的客服人员，从预定消息之后发布的输入开始。
 
 ## 修复和改进
 
@@ -112,8 +127,8 @@ LangSmith 机队每周更新
 
 **2026 年 10 月 12 日至 19 日**
 
-## 亮点* **将 MCP 客户端连接到 Fleet 代理**：每个 Fleet 代理现在都是 MCP 服务器，因此 Claude Code 和 Cursor 等客户端可以使用您的 API 密钥和工作区标头在 `/v1/fleet/agents/{agent_id}/mcp` 向其交付任务。端点公开 `send_message`、`respond_to_interrupt`、`get_thread` 和 `cancel_run`，因此客户端可以开始对话、应答中断、检查长时间运行和停止运行。队列 API 参考现在记录了端点及其请求正文。 [Learn more](/langsmith/fleet/code)。
-* **通过 A2A 呼叫车队代理**：每个车队代理现在都可以在 `POST /v1/fleet/agents/{agent_id}/a2a` 作为 A2A 服务器，并在 `GET /v1/fleet/agents/{agent_id}/.well-known/agent-card.json` 拥有代理卡。将任何 A2A 客户端指向 `/v1/fleet/agents/{agent_id}` 作为其基本 URL，并将 `SendStreamingMessage` 用于长时间运行的代理。没有 `contextId` 的消息会启动一个新的 Fleet 线程，共享代理会看到调用它们的人的身份。 [Learn more](/langsmith/fleet/code)。
+## 亮点* **将 MCP 客户端连接到 Fleet 代理**：每个 Fleet 代理现在都是 MCP 服务器，因此 Claude Code 和 Cursor 等客户端可以使用您的 API 密钥和工作区标头在 `/v1/fleet/agents/{agent_id}/mcp` 向其交付任务。端点公开`send_message`、`respond_to_interrupt`、`get_thread`和`cancel_run`，因此客户端可以开始对话、应答中断、检查长时间运行和停止运行。队列 API 参考现在记录了端点及其请求正文。 [Learn more](/langsmith/fleet/code)。
+* **通过 A2A 呼叫车队代理**：每个车队代理现在都可用作 `POST /v1/fleet/agents/{agent_id}/a2a` 的 A2A 服务器，并在 `GET /v1/fleet/agents/{agent_id}/.well-known/agent-card.json` 提供代理卡。将任何 A2A 客户端指向 `/v1/fleet/agents/{agent_id}` 作为其基本 URL，并将 `SendStreamingMessage` 用于长时间运行的代理。没有 `contextId` 的消息会启动一个新的 Fleet 线程，共享代理会看到调用它们的人的身份。 [Learn more](/langsmith/fleet/code)。
 
 ## 舰队* Slack 代理现在可以在没有 @-mention 的情况下回答线程中的后续回复：在创建频道时将 `triggerMode` 设置为 `thread`，或者就地更改现有 Slack 频道的模式，并且应用程序会更新其事件订阅而无需重新安装。新 Slack 通道的默认设置保持为 `mention`，现有通道保持其当前模式，直到您更改它。
 * 需要 API 密钥的聊天模型现在会显示该密钥是否已配置，保持可见但在丢失时禁用，并从模型菜单中打开 **配置 API 密钥** 对话框，以便您可以添加密钥而不会丢失聊天选择。
@@ -127,7 +142,7 @@ LangSmith 机队每周更新
 * 工具包替换了“工具”页面、API 路由和审核事件中的 MCP 网关，并且现有的 `/gateways` URL 和 `?view=gateways` 链接继续工作。您现在可以根据请求使用 `POST /v1/managed-tools/kits/{kit_id}/tool-refresh` 刷新工具包的工具。
 * 工作区管理员现在可以在 **工作区工具** > **配置文件** 中创建工具凭证配置文件，为配置文件连接一次 OAuth 和 API 密钥服务器，并让代理通过发送 `X-LangSmith-Profile` 标头而不是充当用户来调用这些工具。* 代理构建器现在始终将您的原始请求传递给新代理：当您单击“**创建代理**”时，该请求将被预先填充为新代理的第一条消息，因此您不再需要重述它。
 * 线程读取超时现在返回 504 网关超时而不是通用 500，已知太大的线程立即返回 422，而不是再次超时。
-* Pylon 集成现在包含一个 `pylon_get_issue_messages` 工具，因此客服人员可以阅读有关问题的完整消息线程，包括客户回复和内部注释，而不仅仅是开头消息。
+* Pylon 集成现在包括一个 `pylon_get_issue_messages` 工具，因此客服人员可以阅读有关问题的完整消息线程，包括客户回复和内部注释，而不仅仅是开头消息。
 * Slack 中失败的代理运行现在在错误消息下包含一个脚注，链接到该运行的 LangSmith 跟踪。该链接适用于有权访问工作区的人员，并且线程中的其他人仍然会像以前一样看到错误。
 * 在 OIDC SSO 组织中运行的队列现在会收到您的身份提供商访问令牌，包括在没有用户在场的情况下计划和触发的运行，并且令牌到期时会自动续订。
 
@@ -140,8 +155,8 @@ LangSmith 机队每周更新
 > * 现在，您在聊天中创建的技能在您重新打开对话后仍会保留在对话中，只有在保存工作区副本后，将技能共享到工作区才会报告成功，失败时会出现明显的错误。
 > * AI 设置现在允许自助工作区生成包含默认、快速、专业和最大等舰队模型的配置，因此模型选择器不再为空。> * 在 URL 中使用尾部斜杠注册的自定义 MCP 服务器现在加载其工具并发送其配置的标头，而不是显示“无法加载工具”或将每个工具视为无效。
 > * 连接帐户现在会禁用“连接新帐户”按钮和“添加”按钮，直到连接完成，因此重复点击不再创建重复帐户；在取消、失败或完成连接后，这两个按钮都会重新启用，并且失败的连接现在会显示“无法连接帐户”错误消息。
-> * AWS 上代理的 Slack 通道设置现已完成，而不是在代理部署后返回 404 错误。
-> * 重新授权在登录 ID 更改之前创建的 OAuth 连接不再因禁止错误而失败；保留现有令牌和代理连接，并为原始用户完成重新授权。
+> * Slack channel setup for agents on AWS now completes instead of returning a 404 error after the agent deploys.
+> * Reauthorizing an OAuth connection that was created before login IDs changed no longer fails with a forbidden error; the existing token and agent connection are kept and reauthorization completes for the original user.
 > * 使用 HTTP 基本客户端身份验证的 OAuth 提供程序现在接受包含保留字符（例如冒号、百分号和加号）的客户端 ID 和机密，因此令牌请求不再因无效客户端错误而失败。> * Parallel 和 Exa 等内置工具现在可与使用 2026-07-28 协议修订版的 MCP 客户端配合使用，包括默认自动模式下的托管 Deep Agents，该模式之前在 `tools/list` 上失败，并出现缺少 `resultType` 错误。
 
 **2026 年 10 月 5 日至 12 日**
@@ -151,7 +166,7 @@ LangSmith 机队每周更新
 * 现在可以从 MCP 客户端（例如 Claude Code 和 Cursor）调用队列代理：每个代理公开其自己的 MCP 服务器，因此客户端可以向其发送任务、继续对话、批准或应答其中断、检查线程或取消运行。
 * Fleet 现在提供 Claude Sonnet 5.5 和 Opus 5.5、GPT-6.1 Sol 和 Gemini 3.8 Flash 作为内置型号，您可以为您的代理选择。
 * 当接收通道启用机器人触发器并且消息提及其机器人用户时，来自其他注册代理的 Slack 机器人现在可以触发您的代理，并且打开或关闭机器人触发器现在会在您重新部署 Slack 通道时生效。
-* SharePoint 下载和上传工具现在可以处理 PDF：`sharepoint_download_file` 将 SharePoint 文件保存到工作区中的 `/downloads/<filename>`，而 `sharepoint_upload_file` 接受最大 25 MiB 的工作区文件以及文本内容。* 使用计算机创建代理或使用计算机启动线程现在会返回明确的 403 错误，说明当设置关闭时，您的组织不会启用计算机访问。没有电脑的代理继续正常保存。
+* SharePoint 下载和上传工具现在可以处理 PDF：`sharepoint_download_file` 将 SharePoint 文件保存到位于 `/downloads/<filename>` 的工作区中，而 `sharepoint_upload_file` 接受最大 25 MiB 的工作区文件以及文本内容。* 使用计算机创建代理或使用计算机启动线程现在会返回明确的 403 错误，说明当设置关闭时，您的组织不会启用计算机访问。没有电脑的代理继续正常保存。
 * 由于超出每月配额或每周支出限制而被拒绝的计划代理运行现在会自动禁用其 cron 计划，因此它们会停止重试，直到您重新启用它们。
 * Slack 应用程序设置现在可以在自带云 (BYOC) 工作区中运行：您可以使用手动 Slack 应用程序向导使用新的 Slack 应用程序创建代理，并且触发服务器的公共 URL 设置为您的数据平面 URL，并使用 `/v1` 进行设置流程。
 
@@ -190,7 +205,7 @@ LangSmith 机队每周更新
 ## 舰队* Fleet 现在以浏览器的本地时间显示支持的时间表，同时以 UTC 格式存储和评估它们。自定义 cron 表达式和不受支持的每月计划明确标记为 UTC。
 * 在截断的工具调用或仅包含思考的响应保存到对话中后，Amazon Bedrock 上的舰队代理不再每次都会失败。受影响的对话将继续发送下一条消息。
 * 车队使用图表现在根据可用图表宽度显示日期标签，保持更长的时间范围可读，而不会重叠标签。
-* 队列线程更新现在跨类型化、批量和 LangGraph 代理请求保留系统管理的所有权元数据。
+* 队列线程更新现在跨类型、批量和 LangGraph 代理请求保留系统管理的所有权元数据。
 * 新的通用聊天和新代理更喜欢可用的管理员配置的默认模型，而不是上次使用的模型。用户仍然可以选择不同的聊天模型，并且当没有可用的管理员默认值时，最后使用的模型仍然是后备模型。
 * 代理更新拒绝对后端类型或沙箱范围的更改，以匹配现有的 UI 行为。创建一个新代理以使用不同的后端；其他沙箱设置仍然可编辑。
 
@@ -199,7 +214,7 @@ LangSmith 机队每周更新
 ## 舰队* 当您省略delete_after_stop_seconds 时，新的托管队列沙箱将继承平台保留策略。显式零值和正值保持不变。
 * 因批准或问题而停止的线程现在会在等待时收到标题，因此计划的运行不再位于收件箱中，直到有人打开它们为止。仅当标题实际上正在发送时，收件箱才会显示标题加载指示器。
 * 在保存代理之前，打开刚刚添加到舰队中代理的工作区技能不再显示空模式。现在将打开技能详细信息及其完整文件树，“添加到代理”按钮等待技能文件加载，并且可以重试失败的加载。
-* 代理所有者可以从“配置”面板的“高级”设置中再次触发针对代理的工作区 Webhook。由于“配置”面板取代了独立代理编辑器，并且每次运行都会打包代理的已保存文件而不是未保存的编辑，因此行丢失。
+* 代理所有者可以从配置面板的高级设置中再次触发针对代理的工作区 Webhook。由于“配置”面板取代了独立代理编辑器，并且每次运行都会打包代理的已保存文件而不是未保存的编辑，因此行丢失。
 * 当您开始新对话或重试中断的沙箱创建时，舰队会正确配置沙箱。* 舰队后台运行时使用其保存的名称重新连接到代理的现有沙箱。较旧的以 UUID 命名的沙箱继续工作，并且文件在聊天和沙箱重新启动后仍然存在。
 * Fleet 现在在配置沙箱时会创建一个空的 /workspace，因此文件 API 和文件浏览器会立即列出它，而不是在代理首次运行之前返回 404。
 * 当您放弃待处理的中断时，Fleet 会保留 Amazon Bedrock 推理元数据，从而防止下一回合出现不受支持的内容块错误。
@@ -211,7 +226,7 @@ LangSmith 机队每周更新
 * 队列代理响应现在包括服务器生成的 slug，用于通过沙箱 API 寻址代理范围的沙箱。
 * 队列客户端可以激活线程引用的沙箱并在响应中接收其就绪状态。
 * 队列代理现在支持使用您配置的工作区 URL、服务端点和工作区凭据保存的 Databricks 模型配置。您可以通过 Databricks Model Serving 或 AI Gateway 路由进行连接。
-* 自托管部署现在可以将 REST 调用者的 `X-Fleet-Forward-*` 标头转发到代理调用的自定义 MCP 服务器，因此这些服务器前面的策略网关可以查看每次调用上下文，例如最终用户身份。默认关闭；通过`FLEET_MCP_FORWARD_CALLER_HEADERS=true`启用。值由调用者断言，不由 LangSmith 验证。* Streaming or awaiting a thread run through the Fleet API no longer closes the connection at a fixed deadline;请求保持打开状态，直到运行完成或客户端断开连接。
+* 自托管部署现在可以将 REST 调用者的 `X-Fleet-Forward-*` 标头转发到代理调用的自定义 MCP 服务器，因此这些服务器前面的策略网关可以查看每次调用上下文，例如最终用户身份。默认关闭；通过`FLEET_MCP_FORWARD_CALLER_HEADERS=true`启用。值由调用者断言，不由 LangSmith 验证。* 流式传输或等待通过 Fleet API 运行的线程不再在固定期限内关闭连接；请求保持打开状态，直到运行完成或客户端断开连接。
 
 **2026 年 8 月 24 日至 31 日**
 
@@ -225,17 +240,17 @@ LangSmith 机队每周更新
 
 ## 舰队
 
-* Files shared with a Fleet agent in Slack are no longer turned away by type.电子表格、文档、演示文稿、档案和其他二进制文件现在可以像在舰队聊天 UI 中一样到达代理。
-* Fleet computer access now follows the deployment's existing sandbox enablement setting. Self-hosted deployments without sandbox support remain disabled by default.
-* Outlook tools can send emails or create drafts with files from the agent workspace, including StateBackend and sandbox-backed agents.
-* Saved schedules now display a text Active or Paused badge alongside the icon, making a schedule's state clearer and more accessible.
-* Claude Sonnet 5 is now available as a directly selectable Anthropic model in Fleet and Agent Builder, with adaptive thinking enabled.* GET /v1/fleet/users 按电子邮件或姓名列出并搜索工作区的成员，返回代理共享所采用的用户 ID。仅 API 队列客户端在共享代理之前不再需要来自其他地方的用户 ID。
+* 在 Slack 中与 Fleet 代理共享的文件不再按类型拒绝。电子表格、文档、演示文稿、档案和其他二进制文件现在可以像在舰队聊天 UI 中一样到达代理。
+* 舰队计算机访问现在遵循部署的现有沙箱启用设置。默认情况下，不带沙箱支持的自托管部署保持禁用状态。
+* Outlook 工具可以发送电子邮件或使用代理工作区中的文件创建草稿，包括 StateBackend 和沙箱支持的代理。
+* 保存的计划现在会在图标旁边显示文本“活动”或“暂停”徽章，使计划的状态更加清晰且更易于访问。
+* Claude Sonnet 5 现在可作为 Fleet 和 Agent Builder 中直接选择的 Anthropic 模型使用，并启用自适应思维。* GET /v1/fleet/users 按电子邮件或姓名列出并搜索工作区的成员，返回代理共享所采用的用户 ID。仅 API 队列客户端在共享代理之前不再需要来自其他地方的用户 ID。
 * 托管深度代理通道设置现在接受 LangSmith API 密钥和不记名令牌，同时在配置之前强制执行工作区机密和部署权限。
 * 部署现在可以让通用代理直接在聊天中构建新代理，写入其名称、描述、工具、触发器和说明，而不是显示将设置交给新代理的“创建代理”按钮。在 Fleet API 服务器、Fleet 队列和平台后端上设置 FLEET_INLINE_AGENT_GENERATION 以将其打开。默认关闭。
 * POST /v1/fleet/sandboxes 从快照创建沙箱并将其返回以供使用，因此外部 OIDC 上的无头客户端可以配置沙箱，而无需访问平台沙箱 API。选择带有 snapshot_id 或 name:tag 引用的启动映像，或者在工作区默认值中忽略两者。* DELETE /v1/fleet/sandboxes/ 删除一个沙箱，因此外部 OIDC 上的无头客户端可以清理沙箱，而无需访问平台沙箱 API。它是幂等的；删除已经消失的沙箱仍然返回 204；并且沙箱在后台被拆除，因此随后进行的读取显示它处于删除状态而不是不存在。
 * GET /v1/fleet/sandboxes//files/content 返回沙箱中文件的原始字节。字节范围通过 Range 标头支持，HEAD 报告文件的大小而不传输它。
 * POST /v1/fleet/sandboxes//files 将文件从 multipart/form-data 主体写入沙箱，与现有列表和读取端点一起完成 Fleet 文件 API。路径查询参数自行命名目的地，因此上传不再依赖于直接到达沙箱的数据平面 URL。文件采用流式传输而非缓冲方式，大于 100 MB 的文件将被拒绝并返回 413。* GET /v1/fleet/sandboxes//files 返回沙箱中某个路径下的文件，由 glob 模式匹配，并使用 page_size 和不透明光标进行分页。分页取代了沙箱 glob 所应用的静默结果上限，因此可以完整读取大目录，而不是中途停止。
-* DELETE /v1/fleet/sandbox-snapshots/ 删除沙箱快照，该快照与快照创建配对，以便在构建失败后重试删除然后重新创建。它是幂等的，当任何沙箱仍从快照启动时（包括停止的沙箱），它会返回 409。
+* DELETE /v1/fleet/sandbox-snapshots/ 删除沙箱快照，该快照与快照创建配对，以便在构建失败后重试删除然后重新创建。它是幂等的，当任何沙箱仍从快照启动时（包括已停止的沙箱），它会返回 409。
 * GET /v1/fleet/sandbox-snapshots/ 返回一个沙箱快照，因此客户端可以查看快照的构建状态，而无需重新读取整个列表。路径参数接受快照 ID 或 Docker 风格的引用，其中裸名称表示 name:latest。
 * 车队使用图表现在显示支出、工具和模型数据，而不是显示为空白。
 * GET /v1/fleet/users 现在适用于通过外部 OIDC 提供商进行身份验证的队列部署，而不仅仅是 API 密钥调用者。 OIDC 上的无头客户端可以解析同事的用户 ID 以进行代理共享。* 当部署启用内部 Kubernetes 目标时，自托管队列可以附加其回调 URL 使用 Kubernetes 内部服务名称的访问配置文件。
@@ -253,12 +268,12 @@ LangSmith 机队每周更新
 * 队列代理可以列出邮箱的文件夹（包括嵌套文件夹），并将电子邮件搜索范围限定为单个文件夹而不是整个邮箱。
 * 删除代理干净地完成，并删除代理的文件。以前，当代理已从代理列表中消失后，删除操作可能会返回权限错误。
 * Fleet 现在可以加载高达 25 MiB 的代理提示集线器目录，从而允许具有更大内存和文件树的代理保持可访问性。
-* 自托管部署可以设置`FLEET_SCHEDULES_ENABLED=false`禁用重复运行、解除调度工具的绑定以及从代理中删除调度提示。
+* 自托管部署可以设置`FLEET_SCHEDULES_ENABLED=false`以禁用重复运行、取消绑定调度工具以及从代理中删除调度提示。
 * 通过 Fleet API 启动的运行归因于其凭据调用它们的用户，而不是在使用情况细分中分组到空白用户下。
 * OneDrive 工具现在可返回准确的驱动器相关项目路径，并重复使用它们进行下载和更新。这减少了由不透明项目引用引起的文件未找到错误。* Fleet 在将 Word、PowerPoint 和 Excel 文件上传到 OneDrive 或 SharePoint 之前对其进行验证，并自动修复有效的 base64 编码的 Office 文件，以便上传时不会出现损坏。
 * 舰队技能获取、创建和更新操作现在可以正确解析外部 OIDC 用户，同时保留工作区权限。
 
-**2026 年 8 月 3 日至 10 日**
+**August 3-10, 2026**
 
 ## 舰队
 
@@ -309,7 +324,7 @@ LangSmith 机队每周更新
 
 * 您现在可以一键将任何代理添加到[Slack](/langsmith/fleet/slack-app)。使用 Slack 进行一次身份验证后，Fleet 会自动创建一个配置有代理名称、描述和图标的 Slack 应用程序，并将每个代理映射到单个 Slack 应用程序。
 * 当代理首次添加到 Slack 工作区时，它会向创建者发送一条直接消息，其中包含邀请其加入频道并提及的提示。
-* 客服人员现在可以直接在[Slack](/langsmith/fleet/slack-app)中提出工具批准，并在线程中使用“批准”和“拒绝”按钮，因此您不再需要切换到 Fleet UI 来响应。
+* 客服人员现在可以直接在[Slack](/langsmith/fleet/slack-app)中提出工具批准，并在线程中使用“批准”和“拒绝”按钮，因此您不再需要切换到 Fleet UI 进行响应。
 * 当代理在运行期间遇到错误时，它现在会在 Slack 线程中进行回复，而不是保持沉默。身份验证错误和其他一些错误类型包含更多详细信息。
 * 客服人员现在可以读取 [Slack](/langsmith/fleet/slack-app) 消息中的文件附件。* 代理编辑器现在是代理聊天页面中内置的侧边栏，它将配置组织到频道、连接、知识、计划和高级设置抽屉中。
 * 代理创建体验现在从一个空白的代理开始，该代理会自行配置并在关键点暂停以带您进入该过程。
@@ -317,7 +332,7 @@ LangSmith 机队每周更新
 * 当聊天流返回字符串消息内容时，创建新代理不再因 contentBlocks.push 错误而失败。
 * 重新加载代理聊天页面不再通过加载和加载状态多次闪烁线程列表。现在，侧边栏在获取线程之前等待代理作用域完成加载，因此列表会稳定一次。
 * 舰队代理现在在打开工具的参考文档之前使用 find_tools 或 /tools 列表发现工具，因此他们不再浪费时间读取不存在的猜测工具文件名。
-* Fleet Fast 模型层 (`gpt-5.4-mini`) 现在以中等推理速度（而不是低推理速度）运行，从而提高了较难任务的响应质量。* [templates](/langsmith/fleet/templates) 库现在以带有英雄插图的大卡片形式呈现行政助理和软件工程师模板，每个模板都显示代理自己的图标。
+* Fleet Fast 模型层 (`gpt-5.4-mini`) 现在以中等推理速度（而不是低推理速度）运行，从而提高了较难任务的响应质量。* [templates](/langsmith/fleet/templates) 库现在以带有英雄插图的大卡片形式提供执行助理和软件工程师模板，每个模板都显示代理自己的图标。
 * 代理配置面板中连接内的每个工具现在都有删除操作（悬停时显示垃圾按钮，与连接删除相匹配），而不是开/关开关。该开关意味着可逆切换，但关闭工具实际上会将其从代理中删除，因此控件现在反映了它的作用。
 * 在澄清悬而未决的问题时发送聊天消息可能会导致运行失败并导致线程卡住。现在，自由文本会在继续之前正确地驳回待处理的请求。
 * 在 Agent Builder 聊天中，技能块的“添加技能”菜单现在可打开浏览工作区、创建技能和从 URL 导入对话框。之前选择的选项更改了 URL，但没有出现任何内容。
@@ -336,7 +351,7 @@ LangSmith 机队每周更新
 * 现在，从队列模板创建代理会跳过设置向导，并使用模板加入卡打开代理编辑器。
 * 舰队现在发送服务器在握手期间协商的 MCP 协议版本，无论是在加载工具还是代理调用工具时，因此需要较新版本的 MCP 服务器不再返回零工具或使工具调用失败。
 * 舰队代理现在可以读取在 Slack 中与他们共享的文件。在提及或 DM 中附加图像、PDF、音频、视频或文本文件，然后代理将其引入对话中。* 在 Agent Builder 集成页面上，搜索现在会选择“全部”选项卡，因此结果涵盖每个类别，并且切换类别选项卡会清除搜索。
-* 为无头连接注册集成 OAuth 提供程序时，现在仅接受环回 IP 文字 `127.0.0.1` 或 `[::1]` 的 `http://` 重定向 URI。 `http` 不再接受 localhost 主机名；使用环回 IP 文字或`https`。
+* 为无头连接注册集成 OAuth 提供程序时，现在仅接受环回 IP 文本 `127.0.0.1` 或 `[::1]` 的 `http://` 重定向 URI。 `http` 不再接受 localhost 主机名；使用环回 IP 文字或`https`。
 * 当指针位于服务器列表上方时，[MCP servers settings page](/langsmith/fleet/remote-mcp-servers) 现在会滚动。
 * 连接 Slack 工作区后，行政助理模板现在可以在 Slack 中提供每日简报和回答@提及，并且行政助理和软件工程师模板都收到了配置修复。
 * 现在，当人机交互提示处于待处理状态时，您可以在代理聊天中键入并发送消息。发送新消息会驳回待处理的请求并继续对话，而不是让撰写者处于锁定状态。
@@ -361,7 +376,7 @@ LangSmith 机队每周更新
 
 ## 修复
 
-* 在 Agent Builder [Integrations](/langsmith/fleet/tools) 页面上，搜索现在会选择“全部”选项卡，因此结果涵盖每个类别，并且切换类别选项卡会清除搜索。
+* 在 Agent Builder [Integrations](/langsmith/fleet/tools) 页面上，搜索现在选择“全部”选项卡，因此结果涵盖每个类别，并且切换类别选项卡会清除搜索。
 * 当舰队代理的子代理调用需要人工批准的工具时，批准提示现在会出现在聊天中，而不是在没有它的情况下完成运行。
 
 **2026 年 6 月 15 日至 19 日**
@@ -382,7 +397,7 @@ LangSmith 机队每周更新
 
 ## 新功能
 
-* [Templates](/langsmith/fleet/templates) 现在显示带有 Fleet 徽标的“by Fleet”，因此精心策划的模板与 Fleet 品牌相匹配。
+* [Templates](/langsmith/fleet/templates) 现在显示带有 Fleet 徽标的“by Fleet”，因此策划的模板与 Fleet 品牌相匹配。
 
 ## 修复* 队列列表线程端点现在返回 `items` 而不是 `threads`，因此响应形状与 API 的其余部分相匹配。
 * 当大量响应触发 5xx 时，队列线程请求现在会返回更清晰的错误，因此长列表会正常失败。
@@ -405,7 +420,7 @@ LangSmith 机队每周更新
 
 **2026 年 3 月 16 日至 20 日**
 
-## 新功能* Agent Builder 现在为[LangSmith Fleet](/langsmith/fleet)。新名称反映了 Fleet 专注于为整个团队构建和管理代理：创建它们、共享它们、管理它们的任务以及控制代理访问和身份。所有现有代理、配置、集成、计划和合同将继续保持不变，无需您采取任何操作。
+## 新功能* Agent Builder 现在是[LangSmith Fleet](/langsmith/fleet)。新名称反映了 Fleet 专注于为整个团队构建和管理代理：创建它们、共享它们、管理它们的任务以及控制代理访问和身份。所有现有代理、配置、集成、计划和合同将继续保持不变，无需您采取任何操作。
 
 **2026 年 2 月 16 日至 20 日**
 

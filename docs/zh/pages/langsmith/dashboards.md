@@ -31,7 +31,7 @@ LangSmith 提供两种仪表板类型：
 
 ### 分组依据
 
-使用 group by 按对代理重要的 [run tag or metadata](/langsmith/add-metadata-tags) 键拆分数据。全局分组依据设置位于仪表板的右上角，适用于除 **工具** 和 **运行类型** 之外的每个图表，它们已经应用了分组依据。
+使用 group by 按 [user](/langsmith/users#group-charts-by-user) 或对您的代理重要的 [run tag or metadata](/langsmith/add-metadata-tags) 键拆分数据。全局分组依据设置位于仪表板的右上角，适用于除 **工具** 和 **运行类型** 之外的每个图表，它们已经应用了分组依据。
 
 > [!注意]
 >
@@ -88,7 +88,7 @@ LangSmith 提供两种仪表板类型：
 |反馈评分 |选择反馈键。 |平均值、最小值、最大值 |
 |比率|定义分子和分母，每个分子和分母都有自己的过滤器。对于错误率、LLM 运行份额等有用。 — |
 
-要使用多个指标进行过滤，请阅读以下[Filter and group](#filter-and-group)部分。
+要使用多个指标进行过滤，请阅读以下 [Filter and group](#filter-and-group) 部分。
 
 #### 过滤和分组
 
@@ -106,7 +106,7 @@ LangSmith 提供两种仪表板类型：
 
 数据集源不公开运行/跟踪/树过滤器。数据的范围由选定的数据集决定。过滤语法请参考[filtering traces (ClickHouse)](/langsmith/filter-traces-in-application)。
 
-**分组**通过以下两种方式之一在同一图表上创建多个系列：1. **分组依据**：根据一个属性自动将数据分成系列。可用属性：运行名称、运行类型、标签、环境、[Metadata](/langsmith/add-metadata-tags)（具有`metadata.ls_model_name`等路径）和反馈键（仅适用于 **Count** 指标）。小组按频率排名，上限为前 20 名。
+**分组**通过以下两种方式之一在同一图表上创建多个系列：1. **分组依据**：根据一个属性自动将数据分成系列。可用属性：运行名称、运行类型、标签、环境、[Metadata](/langsmith/add-metadata-tags)（具有 `metadata.ls_model_name` 等路径）、[User](/langsmith/users#group-charts-by-user)（`user_id` 元数据键）和反馈键（仅适用于 **Count** 指标）。小组按频率排名，上限为前 20 名。
 2. **数据系列**：使用**添加另一个指标**按钮手动添加指标。每个系列都可以带有自己的过滤器，因此您可以在同一图表上将“状态为错误的计数”与“状态为成功的计数”进行比较。
 
 > [!注意]
@@ -185,7 +185,7 @@ LangSmith 提供两种仪表板类型：
 您可以直接从代理环境链接到任何仪表板。默认情况下，选择该环境的预构建仪表板。如果您有想要链接的自定义仪表板：
 
 1. 在您的代理环境中，单击 **仪表板** 按钮旁边的三个点。
-2. 选择要设置为新默认值的仪表板。## 示例：用户旅程监控
+2. Choose a dashboard to set as the new default.## 示例：用户旅程监控
 
 使用监控图表来映射代理在特定节点做出的决策。
 
@@ -205,7 +205,7 @@ LangSmith 提供两种仪表板类型：
 
    ![Decision at node](https://mintcdn.com/langchain-5e9cc07a/aKRoUGXX6ygp4DlC/langsmith/images/decision-at-node.png?fit=max\&auto=format\&n=aKRoUGXX6ygp4DlC\&q=85\&s=eb98a2c2c7988b5b6c5c3db9740ed172)
 
-现在，您可以可视化随着时间的推移在 `triage_input` 节点做出的决策。
+现在，您可以可视化随着时间的推移在 `triage_input` 节点所做的决策。
 
 ***
 

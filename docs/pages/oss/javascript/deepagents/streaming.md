@@ -4,10 +4,6 @@
 
 Stream real-time updates from deep agent runs and subagent execution
 
-> [!TIP]
->
-> For new applications, we recommend [event streaming](/oss/javascript/deepagents/event-streaming)—the typed-projection API introduced in Deep Agents v0.6. Event streaming gives you separate iterators per projection (subagents, messages, tool calls, values) so you can consume them independently instead of branching on `stream_mode` chunks.
-
 Deep Agents build on LangGraph's streaming infrastructure with first-class support for subagent streams. When a deep agent delegates work to subagents, you can stream updates from each subagent independently—tracking progress, LLM tokens, and tool calls in real time.
 
 What's possible with deep agent streaming:

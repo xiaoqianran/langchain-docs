@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Set up the LLM Gateway | https://docs.langchain.com/langsmith/llm-gateway-admin-setup -->
 
-# 设置LLM网关
+# Set up the LLM Gateway
 
 通过添加提供商密钥、授予调用网关的权限、颁发 API 密钥以及设置治理策略，为您的组织设置 LLM 网关。
 
@@ -20,7 +20,7 @@
 
 在其他步骤之前，在自托管 LangSmith、[enable the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted) 上。对于其他部署，请跳过此部分。
 
-## 添加提供商密钥
+## Add provider keys
 
 添加提供程序密钥需要该工作区中的 [permission to manage secrets](/langsmith/rbac#workspace-roles)。网关使用作为秘密存储在调用方 API 密钥所属工作区中的密钥来调用每个提供程序。在其 API 密钥发送这些请求的每个工作区中，为您将请求路由到的每个提供商添加一个密钥。对于这些调用，网关不会回退到组织机密。
 
@@ -46,11 +46,11 @@ API密钥需要`gateway:invoke`和`workspaces:read`权限才能调用网关。�
 
 创建策略需要 `organization:gateway:manage` 权限，组织管理员和组织操作员默认拥有该权限。在早于应用程序版本 0.18.9 的自托管 LangSmith（0.18.0-rc.22 之前的 Helm 图表版本）上，它需要 `organization:manage`。
 
-使用 **LLM Gateway** 页面上的选项卡创建以下任何策略类型：* **[Spend limits](/langsmith/llm-gateway-spend-policies)**：组织、工作区、API 密钥或用户级​​别的硬上限。您的组织可能已在 **成本控制** 选项卡上设置了默认限制。
+可用政策包括：* **[Spend limits](/langsmith/llm-gateway-spend-policies)**：组织、用户组、工作区、API 密钥或用户级​​别的硬上限。您的组织可能已在 **策略** 选项卡上设置了默认限制。
 * **[Rate limits](/langsmith/llm-gateway-rate-limit-policies)**：时间窗口内的请求或令牌限制。
 * **[Model access](/langsmith/llm-gateway-model-access-policies)**：用户可以调用哪些型号。
 * **[Header-based policies](/langsmith/llm-gateway-header-policies)**：由自定义请求标头（例如客户、租户或成本中心标识符）限定的支出上限、速率限制和模型访问范围。
-* **[Data policies](/langsmith/llm-gateway-data-policy)**：在 PII 和机密到达模型之前检测并编辑它们，并控制是否跟踪请求和响应主体。
+* **[Data policies](/langsmith/llm-gateway-data-policy)**：在 PII 和机密到达模型之前检测并编辑它们，并控制是否跟踪请求和响应正文。
 
 在企业计划中，创建、更新和删除策略记录在[audit logs](/langsmith/audit-logs)中。
 

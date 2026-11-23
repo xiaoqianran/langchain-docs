@@ -2,9 +2,13 @@
 
 # Upgrade an installation
 
+Upgrade a self-hosted LangSmith installation to a newer Helm chart version.
+
 > [!WARNING]
 >
-> Downgrades are not officially supported. LangSmith upgrades may include database migrations and other changes that are not backward-compatible. If you need to roll back to a previous version, contact technical support via the [Support Portal](https://support.langchain.com) for guidance.
+> Upgrades can run database migrations and restart LangSmith services. During this time, the UI and API may be unavailable, and traces that applications send while the API is unreachable can be dropped. Before you upgrade, schedule a maintenance window and announce it to users of your LangSmith instance. Size the window to cover the migrations and restarts.
+>
+> Downgrades are not officially supported, because upgrade migrations and other changes may not be backward-compatible. If you need to roll back to a previous version, contact technical support through the [Support Portal](https://support.langchain.com).
 
 Upgrading to v0.18 moves your existing tracing projects to agents and environments. Before you upgrade, read [What changes in LangSmith v0.18](/langsmith/self-host-agent-migration).
 
@@ -26,7 +30,7 @@ Run the following command to upgrade the chart (replace `version` with the versi
 
 > [!NOTE]
 >
-> If you are using a namespace other than the default namespace, you will need to specify the namespace in the `helm` and `kubectl` commands by using the `-n <namespace` flag.
+> If you use a namespace other than the default, specify it in the `helm` and `kubectl` commands with the `-n <namespace>` flag.
 
 Find the latest version of the chart. You can find this in the [LangSmith Helm Chart GitHub repository](https://github.com/langchain-ai/helm/releases) or by running the following command:
 
