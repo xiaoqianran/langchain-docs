@@ -37,13 +37,13 @@ LiteLLM supports two ways to send traces to LangSmith, which operate at differen
 
 > [!NOTE]
 >
-> Avoid enabling LiteLLM's `langsmith` callback and LangSmith tracing for the same LiteLLM calls, as this can result in duplicate traces.
+> Avoid enabling LiteLLM's `langsmith` callback and LangSmith tracing for the same LiteLLM calls, as this can result in duplicate traces. Also keep the callback's `LANGSMITH_PROJECT` out of a shell that has the agent variables from the `@traceable` setup. With both set, the SDK does not trace the `@traceable` calls. See [Remove conflicting destination settings](/langsmith/log-traces-to-agent#remove-conflicting-destination-settings).
 
 ### Use `LANGSMITH_TRACING` and `traceable`
 
 You can use `LANGSMITH_TRACING=true` together with `@traceable` for predictable traces in LangSmith. This approach ensures that the **Input** and **Output** columns reflect your function arguments and return values, allowing you to preserve the full message structure (including `role` and `content`). It also works reliably in simple synchronous scripts, without requiring an asyncio event loop or additional callback configuration.
 
-1. Sending traces to an agent requires `langsmith>=0.14.9`. Set the following environment variables to enable LangSmith tracing for LiteLLM Python SDK usage:
+1. [Sending traces to an agent](/langsmith/log-traces-to-agent) requires `langsmith>=0.14.9`. Set the following environment variables to enable LangSmith tracing for LiteLLM Python SDK usage:
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_API_KEY="your_api_key"
@@ -113,7 +113,7 @@ LiteLLM callbacks run in an asynchronous environment. When making asynchronous c
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_API_KEY="your_api_key"
-   export LANGSMITH_PROJECT="litellm-integration"
+   export LANGSMITH_PROJECT="<environment-tracer-session-name>"
    ```
 
    Create LangSmith [API keys](/langsmith/create-account-api-key) in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-litellm).
@@ -177,11 +177,11 @@ The LiteLLM proxy runs as a standalone server and exposes an OpenAI-compatible A
      callbacks: ["langsmith"]
    ```
 
-2. Set environment variables in your proxy environment:
+2. Set environment variables in your proxy environment. Set `LANGSMITH_PROJECT` to the agent environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project):
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_API_KEY="your_api_key"
-   export LANGSMITH_PROJECT="litellm-proxy"
+   export LANGSMITH_PROJECT="<environment-tracer-session-name>"
    export OPENAI_API_KEY="your_openai_key"
    ```
 

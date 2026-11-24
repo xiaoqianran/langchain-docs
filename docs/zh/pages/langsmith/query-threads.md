@@ -4,7 +4,7 @@
 
 # 使用SDK查询线程
 
-以编程方式从您的 LangSmith 项目中获取和检查多轮对话线程。
+以编程方式从您的 LangSmith 代理环境中获取和检查多轮对话线程。
 
 如果您正在构建会话代理或任何多轮应用程序，LangSmith会自动将您的[runs](/langsmith/run-data-format)分组为[*threads*](/langsmith/observability-concepts#threads)。通过查询线程，您可以重播完整对话、审核代理跨会话的行为、构建对话长度和延迟分析，并为下游工作流程（例如 [fine-tuning](/langsmith/smithtune) 和评估）提供数据。
 
@@ -12,20 +12,20 @@ SDK 公开了两种处理线程的方法：
 
 |方法|使用时 |
 | - | - |
-| `client.threads.query()` ([Python](https://reference.langchain.com/python/langsmith/resources/threads/threads/AsyncThreadsResource/query), [TypeScript](https://reference.langchain.com/javascript/langsmith/client/Langsmith/Threads/query)) |您想要浏览项目中的线程 |
+| `client.threads.query()` ([Python](https://reference.langchain.com/python/langsmith/resources/threads/threads/AsyncThreadsResource/query), [TypeScript](https://reference.langchain.com/javascript/langsmith/client/Langsmith/Threads/query)) |您想在代理环境中浏览线程 |
 | `client.threads.list_traces()` / `client.threads.listTraces()` ([Python](https://reference.langchain.com/python/langsmith/resources/threads/threads/AsyncThreadsResource/list_traces), [TypeScript](https://reference.langchain.com/javascript/langsmith/client/Langsmith/Threads/listTraces)) |您已经知道线程 ID 并且需要它的踪迹 |
 
-两种方法都需要一个项目 ID。如果您只有项目名称，请先使用 `aread_project()` / `readProject()` 查找，如下例所示。在 Python 中，这两种方法都是异步的。
+两种方法都采用`project_id`。下面的例子[resolve the agent environment](/langsmith/resolve-an-agent)就可以得到它。在 Python 中，这两种方法都是异步的。
 
 > [!注意]
 >
-> 查询代理、实验或评估者的线程，[find its project ID](/langsmith/resolve-an-agent) 并将其作为项目 ID 传递。> [!注意]
+> 查询代理环境、实验或评估器的线程[resolve it](/langsmith/resolve-an-agent)，并将返回的`session_id`作为`project_id`传递。解决需要最新的 SDK 和LangSmith 版本，并且在 BYOC 数据平面上不可用。有关要求和 BYOC 替代方案，请参阅[Resolve an agent environment](/langsmith/resolve-an-agent)。> [!注意]
 >
 > 这些方法替换了已弃用的`list_threads` / `listThreads` 和 `read_thread` / `readThread`。 LangSmith Cloud 于 2027 年 1 月 31 日删除它们，自托管 LangSmith 在 v0.19 中删除它们。新方法需要 `langsmith>=0.10.15` (Python) 或 `langsmith>=0.8.9` (TypeScript)，以及自托管的 LangSmith v0.16 或更高版本。有关更改的完整列表，请参阅[migration guide](/langsmith/smithdb-sdk-migration-threads)。
 
 ## 线程如何工作
 
-您创建的每个运行都可以在其元数据中携带`thread_id`。 LangSmith 使用它来将运行分组为线程。后端在`metadata`中查找`thread_id`（回落到`session_id`）。
+您创建的每次运行都可以在其元数据中携带`thread_id`。 LangSmith 使用它来将运行分组为线程。后端在`metadata`中查找`thread_id`（回落到`session_id`）。
 
 > [!注意]
 >
@@ -60,21 +60,22 @@ const myAgent = traceable(
 );
 ```
 
-## 列出项目中的线程
+## 列出代理环境中的线程
 
-`threads.query` 返回项目中的线程，每个线程一行及其聚合。结果用光标分页； SDK 会为您迭代每个页面。
+`threads.query` 返回代理环境中的线程，每个线程一行及其聚合。结果用光标分页； SDK 会为您迭代每个页面。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 
 async def main():
     client = Client()
-    project = await client.aread_project(project_name="my-project")
+    # Replace with your agent ID and environment
+    project = await client.sessions.resolve(**agent_address("support-agent", "production"))
 
-    async for thread in client.threads.query(project_id=str(project.id)):
+    async for thread in client.threads.query(project_id=project.session_id):
         print(thread.thread_id)
         print(f"  {thread.count} traces")
         print(f"  last active: {thread.max_start_time}")
@@ -84,12 +85,13 @@ asyncio.run(main())
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "langsmith";
+import { AgentAddress, Client } from "langsmith";
 
 const client = new Client();
-const project = await client.readProject({ projectName: "my-project" });
+// Replace with your agent ID and environment
+const project = await client.sessions.resolve(new AgentAddress("support-agent", "production"));
 
-for await (const thread of client.threads.query({ project_id: project.id })) {
+for await (const thread of client.threads.query({ project_id: project.session_id })) {
   console.log(thread.thread_id);
   console.log(`  ${thread.count} traces`);
   console.log(`  last active: ${thread.max_start_time}`);
@@ -126,28 +128,29 @@ conv-def456
 | `first_inputs`、`last_outputs` | `string` |第一个输入和最后一个输出的预览被截断。 |
 | `last_error`、`num_errored_turns` | `string`、`int` |最后的错误消息和出错的跟踪数。 |
 | `total_tokens`、`total_cost` | `int`、`number` |整个线程的令牌和成本总计。 |
-| `latency_p50`、`latency_p99` | `number` |线程轨迹上的延迟百分位。 |
+| `latency_p50`、`latency_p99` | `number` |线程轨迹上的延迟百分位数。 |
 | `feedback_stats` | `object` |线程上的汇总反馈。 |
 
 `Thread` 不嵌入其运行。要获取它们，请使用 `thread_id` 拨打 `threads.list_traces`。
 
 ## 读取单个线程的痕迹
 
-当您已经知道`thread_id`时，请使用`threads.list_traces` / `threads.listTraces`。它按升序 `start_time` 顺序返回线程的跟踪（根运行）。
+当您已经知道 `thread_id` 时，请使用 `threads.list_traces` / `threads.listTraces`。它按升序 `start_time` 顺序返回线程的跟踪（根运行）。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 
 async def main():
     client = Client()
-    project = await client.aread_project(project_name="my-project")
+    # Replace with your agent ID and environment
+    project = await client.sessions.resolve(**agent_address("support-agent", "production"))
 
     async for trace in client.threads.list_traces(
         "conv-abc123",
-        project_id=str(project.id),
+        project_id=project.session_id,
         selects=["TRACE_ID", "NAME", "START_TIME"],
     ):
         print(trace.trace_id, trace.name, trace.start_time)
@@ -157,18 +160,19 @@ asyncio.run(main())
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "langsmith";
+import { AgentAddress, Client } from "langsmith";
 
 const client = new Client();
-const project = await client.readProject({ projectName: "my-project" });
+// Replace with your agent ID and environment
+const project = await client.sessions.resolve(new AgentAddress("support-agent", "production"));
 
 for await (const trace of client.threads.listTraces("conv-abc123", {
-  project_id: project.id,
+  project_id: project.session_id,
   selects: ["TRACE_ID", "NAME", "START_TIME"],
 })) {
   console.log(trace.trace_id, trace.name, trace.start_time);
 }
-```每个项目都是轻量级的`ThreadTrace`，而不是完整的运行。仅填充`selects`中列出的字段；没有 `selects`，您只能获得 `trace_id`。使用 [⟦T87⟧](/langsmith/smithdb-sdk-migration-traces) 获取跟踪的子运行（工具调用、子链）。
+```每个项目都是轻量级的`ThreadTrace`，而不是完整的运行。仅填充`selects`中列出的字段；没有 `selects`，您只能获得 `trace_id`。使用 [⟦T88⟧](/langsmith/smithdb-sdk-migration-traces) 获取跟踪的子运行（工具调用、子链）。
 
 ### 参数
 
@@ -193,7 +197,7 @@ for await (const trace of client.threads.listTraces("conv-abc123", {
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 async for thread in client.threads.query(
-    project_id=str(project.id),
+    project_id=project.session_id,
     filter='eq(status, "error")',
 ):
     print(thread.thread_id, thread.last_error)
@@ -201,7 +205,7 @@ async for thread in client.threads.query(
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for await (const thread of client.threads.query({
-  project_id: project.id,
+  project_id: project.session_id,
   filter: 'eq(status, "error")',
 })) {
   console.log(thread.thread_id, thread.last_error);
@@ -216,7 +220,7 @@ for await (const thread of client.threads.query({
 from datetime import datetime, timedelta, timezone
 
 async for thread in client.threads.query(
-    project_id=str(project.id),
+    project_id=project.session_id,
     min_start_time=datetime.now(timezone.utc) - timedelta(days=2),
 ):
     print(thread.thread_id)
@@ -224,7 +228,7 @@ async for thread in client.threads.query(
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for await (const thread of client.threads.query({
-  project_id: project.id,
+  project_id: project.session_id,
   min_start_time: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
 })) {
   console.log(thread.thread_id);
@@ -238,7 +242,7 @@ for await (const thread of client.threads.query({
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 async for trace in client.threads.list_traces(
     "conv-abc123",
-    project_id=str(project.id),
+    project_id=project.session_id,
     selects=["INPUTS", "OUTPUTS"],
 ):
     user_msg = (trace.inputs or {}).get("messages", [{}])[-1].get("content", "")
@@ -250,7 +254,7 @@ async for trace in client.threads.list_traces(
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for await (const trace of client.threads.listTraces("conv-abc123", {
-  project_id: project.id,
+  project_id: project.session_id,
   selects: ["INPUTS", "OUTPUTS"],
 })) {
   const inputs = trace.inputs as { messages?: Array<Record<string, string>> } | undefined;

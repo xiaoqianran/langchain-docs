@@ -4,7 +4,7 @@
 
 # 模型访问策略
 
-控制可通过 LLM 网关访问哪些模型提供者和模型。
+控制哪些模型提供者和模型可通过 LLM 网关访问。
 
 > [!注意]
 >
@@ -25,7 +25,7 @@
 |范围 |适用于 |
 | - | - |
 | **组织** |组织中的所有用户和工作区 |
-| **用户组** |用户组成员 |
+| **用户组** |用户组成员|
 | **工作区** |工作区中的所有用户|
 | **用户** |单个用户|
 | **API 密钥** |单个 API 密钥 |
@@ -53,13 +53,13 @@
 >
 > 创建和管理策略需要 `organization:gateway:manage` 权限。组织管理员和组织操作员默认拥有它。有关每个组织角色可以执行的操作，请参阅[Organization roles](/langsmith/rbac#organization-roles)。选择用户组也需要`organization:user-groups:read`；有关可用性和设置，请参阅[User Groups](/langsmith/user-groups)。
 
-1. 转至 **LLM Gateway** 并选择 **模型访问** 选项卡。
+1. 转到 **LLM Gateway** 并选择 **模型访问** 选项卡。
 2. 单击 **+ 模型访问**。
-3. 在**适用于**下，选择范围（组织、用户组、工作区、用户或 API 密钥）。
+3. 在**适用于**下，选择政策适用的范围和主题。
 4. 在**允许的提供商和模式**下，打开每个提供商以允许并选择其访问模式。默认情况下，提供商处于关闭状态，因此您离开的任何提供商都会被阻止。
-5. 单击**创建模型访问**。政策立即生效。
+5. 单击**创建模型访问**。
 
-## 另请参阅
+政策立即生效。## 另请参阅
 
 * [Run a request in the Simulator](/langsmith/llm-gateway-first-request#run-a-request-in-the-simulator)：通过请求策略阻止的模型来测试策略。
 * [Spend policies](/langsmith/llm-gateway-spend-policies)：设置 LLM 使用的成本上限。

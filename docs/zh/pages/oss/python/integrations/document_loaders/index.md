@@ -64,7 +64,7 @@ for document in loader.lazy_load():
 | [Unstructured](/oss/python/integrations/document_loaders/unstructured_file) |使用Unstructed 加载和解析网页|套餐 |
 | [Apify Dataset](https://docs.apify.com/integrations/langchain) |从 Apify 数据集加载文档 |应用程序接口 |
 | [Apify Crawl](https://docs.apify.com/integrations/langchain) |按需抓取网站并将每个页面作为文档加载 |应用程序接口 |
-| [Diffbot Crawl Loader](https://github.com/diffbot/langchain-diffbot) |使用 Diffbot Crawl API 抓取网站并将每个页面加载为本体一致的 JSON |应用程序接口 |
+| [Diffbot Crawl Loader](https://github.com/diffbot/langchain-diffbot) |使用 Diffbot Crawl API 爬网网站并将每个页面加载为本体一致的 JSON |应用程序接口 |
 | [Diffbot Extract Loader](https://github.com/diffbot/langchain-diffbot) |使用 Diffbot Extract API 将网页加载为本体一致的 JSON |应用程序接口 |
 | [Docling](/oss/python/integrations/document_loaders/docling) |使用Docling加载和解析网页|套餐 |
 | [DomPruner](https://github.com/dong7812/dompruner-py) | DOM AST 修剪：将网页加载为紧凑的 Markdown，令牌减少 97% 以上，无需 API 密钥 |套餐 |
@@ -72,7 +72,7 @@ for document in loader.lazy_load():
 | [Hyperbrowser](https://docs.hyperbrowser.ai) |用于运行和扩展无头浏览器的平台，可用于抓取/爬行任何网站 |应用程序接口 |
 | [OpeddFeedLoader](https://opedd.com/for-ai-agents) |将获得许可的 Opedd 内容目录加载为具有许可来源的文档 |应用程序接口 |
 | [ProxyHatLoader](https://docs.proxyhat.com) |通过 ProxyHat 住宅代理加载网页作为文档 |应用程序接口 || [AgentQL](https://docs.agentql.com/) |使用 AgentQL 查询或自然语言提示从任何网页进行 Web 交互和结构化数据提取 |应用程序接口 |
-| [CRW](https://fastcrw.com) |通过本地二进制文件或 fastcrw\.com 云实现与 Firecrawl 兼容的开源网络爬虫 |套餐 |
+| [CRW](https://fastcrw.com) |通过本地二进制文件或 fastcrw.com 云实现与 Firecrawl 兼容的开源网络抓取工具 |套餐 |
 | [Plasmate](https://docs.plasmate.app/integration-langchain) |具有标记集 (SOM) 结构化 UI 提取功能的代理原生无头浏览器 |套餐 |
 | [Spidra](https://docs.spidra.io) |具有真实浏览器、验证码解决和结构化数据提取的人工智能网络抓取工具 |应用程序接口 |
 
@@ -123,93 +123,95 @@ PDF 文件的合作伙伴和社区加载程序。首先列出托管合作伙伴�
 >
 > 较旧的教程通常从 `langchain_community` 导入 `TextLoader` 和 `JSONLoader`。这些类仍然在未维护的 [⟦T32⟧](https://pypi.org/project/langchain-community/) 包中提供，但不应再使用。对于新工作，首选上述合作伙伴包之一。请参阅[LangChain Community sunset notice](https://github.com/langchain-ai/langchain-community/issues/674)。
 
-## 所有文档加载器|整合|下载 |
-| :- | :- |
-| [⟦T33⟧](/oss/python/integrations/document_loaders/google_bigquery) | [  ⟦T119⟧](https://pypi.org/project/langchain-google-community/) |
-| [⟦T34⟧](/oss/python/integrations/document_loaders/google_cloud_storage_directory) | [  ⟦T120⟧](https://pypi.org/project/langchain-google-community/) |
-| [⟦T35⟧](/oss/python/integrations/document_loaders/google_cloud_storage_file) | [  ⟦T121⟧](https://pypi.org/project/langchain-google-community/) |
-| [⟦T36⟧](/oss/python/integrations/document_loaders/google_drive) | [  ⟦T122⟧](https://pypi.org/project/langchain-google-community/) |
-| [⟦T37⟧](/oss/python/integrations/document_loaders/google_speech_to_text) | [  ⟦T123⟧](https://pypi.org/project/langchain-google-community/) |
-| [⟦T38⟧](/oss/python/integrations/document_loaders/oracleai) | [  ⟦T124⟧](https://pypi.org/project/langchain-oracledb/) |
-| [⟦T39⟧](/oss/python/integrations/document_loaders/oracleadb_loader) | [  ⟦T125⟧](https://pypi.org/project/langchain-oracledb/) |
-| [⟦T40⟧](/oss/python/integrations/document_loaders/unstructured_file) | [  ⟦T126⟧](https://pypi.org/project/langchain-unstructured/) |
-| [⟦T41⟧](/oss/python/integrations/document_loaders/astradb) | [  ⟦T127⟧](https://pypi.org/project/langchain-astradb/) |
-| [⟦T42⟧](/oss/python/integrations/document_loaders/docling) | [  ⟦T128⟧](https://pypi.org/project/langchain-docling/) |
-| [⟦T43⟧](/oss/python/integrations/document_loaders/google_alloydb) | [  ⟦T129⟧](https://pypi.org/project/langchain-google-alloydb-pg/) |
-| [⟦T44⟧](https://github.com/pymupdf/langchain-pymupdf4llm) | [  ⟦T130⟧](https://pypi.org/project/langchain-pymupdf4llm/) |
-| [⟦T45⟧](https://docs.apify.com/integrations/langchain) | [  ⟦T131⟧](https://pypi.org/project/langchain-apify/) |
-| [⟦T46⟧](https://docs.apify.com/integrations/langchain) | [  ⟦T132⟧](https://pypi.org/project/langchain-apify/) |
-| [⟦T47⟧](/oss/python/integrations/document_loaders/upstage) | [  ⟦T133⟧](https://pypi.org/project/langchain-upstage/) |
-| [⟦T48⟧](https://docs.cloud.google.com/sql/docs/postgres) | [  ⟦T134⟧](https://pypi.org/project/langchain-google-cloud-sql-pg/) |
-| [⟦T49⟧](/oss/python/integrations/document_loaders/google_firestore) | [  ⟦T135⟧](https://pypi.org/project/langchain-google-firestore/) |
-| [⟦T50⟧](/oss/python/integrations/document_loaders/google_spanner) | [  ⟦T136⟧](https://pypi.org/project/langchain-google-spanner/) |
-| [⟦T51⟧](https://github.com/docling-project/docling.rs/blob/master/crates/docling-py/README.md#langchain) | [  ⟦T137⟧](https://pypi.org/project/langchain-docling-rs/) |
-| [⟦T52⟧](/oss/python/integrations/document_loaders/azure_blob_storage) | [  ⟦T138⟧](https://pypi.org/project/langchain-azure-storage/) |
-| [⟦T53⟧](https://github.com/flatmark-dev/flatmark-integrations/blob/main/langchain/README.md) | [  ⟦T139⟧](https://pypi.org/project/langchain-flatmark/) |
-| [⟦T54⟧](https://docs.firecrawl.dev) | [  ⟦T140⟧](https://pypi.org/project/langchain-firecrawl/) |
-| [⟦T55⟧](https://github.com/opendataloader-project/langchain-opendataloader-pdf) | [  ⟦T141⟧](https://pypi.org/project/langchain-opendataloader-pdf/) |
-| [⟦T56⟧](https://anakin.io/docs/documentation) | [  ⟦T142⟧](https://pypi.org/project/langchain-anakin/) |
-| [⟦T57⟧](/oss/python/integrations/document_loaders/docugami) | [  ⟦T143⟧](https://pypi.org/project/docugami-langchain/) |
-| [⟦T58⟧](https://github.com/jaypakdevkr/HWP-Loader) | [  ⟦T144⟧](https://pypi.org/project/langchain-hwp-hwpx-loader/) |
-| [⟦T59⟧](https://dev.writer.com/api-reference/tool-api/pdf-parser#parse-pdf) | [  ⟦T145⟧](https://pypi.org/project/langchain-writer/) |
-| [⟦T60⟧](https://github.com/singlestore-labs/langchain-singlestore/) | [  ⟦T146⟧](https://pypi.org/project/langchain-singlestore/) |
-| [⟦T61⟧](https://github.com/aqib0770/langchain-yt-dlp) | [  ⟦T147⟧](https://pypi.org/project/langchain-yt-dlp/) |
-| [⟦T62⟧](https://superpdf.ai/docs/python/langchain-llamaindex#langchain) | [  ⟦T148⟧](https://pypi.org/project/langchain-superpdf/) |
-| [⟦T63⟧](https://mesharc.dev/docs/langchain) | [  ⟦T149⟧](https://pypi.org/project/langchain-mesharc/) |
-| [⟦T64⟧](https://www.hyperbrowser.ai/docs/home) | [  ⟦T150⟧](https://pypi.org/project/langchain-hyperbrowser/) |
-| [⟦T65⟧](https://github.com/fastocr-org/langchain-fastocr#readme) | [  ⟦T151⟧](https://pypi.org/project/langchain-fastocr/) |
-| [⟦T66⟧](https://replylayer.ai/docs/guides/langchain) | [  ⟦T152⟧](https://pypi.org/project/langchain-replylayer/) |
-| [⟦T67⟧](https://docs.hydrafetch.com) | [  ⟦T153⟧](https://pypi.org/project/langchain-hydrafetch/) |
-| [⟦T68⟧](https://github.com/arsbr/Veritensor) | [  ⟦T154⟧](https://pypi.org/project/veritensor/) |
-| [⟦T69⟧](https://docs.spidra.io) | [  ⟦T155⟧](https://pypi.org/project/langchain-spidra/) |
-| [⟦T70⟧](https://github.com/undacmic/langchain-pdf-inspector) | [  ⟦T156⟧](https://pypi.org/project/langchain-pdf-inspector/) |
-| [⟦T71⟧](https://webcrawlerapi.com/docs/sdk/langchain) | [  ⟦T157⟧](https://pypi.org/project/webcrawlerapi-langchain/) |
-| [⟦T72⟧](https://fastcrw.com) | [  ⟦T158⟧](https://pypi.org/project/langchain-crw/) |
-| [⟦T73⟧](/oss/python/integrations/document_loaders/google_bigtable) | [  ⟦T159⟧](https://pypi.org/project/langchain-google-bigtable/) |
-| [⟦T74⟧](https://github.com/10Pines/langchain-outline) | [  ⟦T160⟧](https://pypi.org/project/langchain-outline/) |
-| [⟦T75⟧](https://mineru.net) | [  ⟦T161⟧](https://pypi.org/project/langchain-mineru/) |
-| [⟦T76⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T162⟧](https://pypi.org/project/langchain-diffbot/) |
-| [⟦T77⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T163⟧](https://pypi.org/project/langchain-diffbot/) |
-| [⟦T78⟧](https://github.com/dong7812/dompruner-py) | [  ⟦T164⟧](https://pypi.org/project/dompruner/) |
-| [⟦T79⟧](https://datainsight.polarisoffice.com/playground) | [  ⟦T165⟧](https://pypi.org/project/langchain-polaris-ai-datainsight/) |
-| [⟦T80⟧](https://proxmint.com/docs/langchain) | [  ⟦T166⟧](https://pypi.org/project/langchain-proxmint/) |
-| [⟦T81⟧](/oss/python/integrations/document_loaders/google_memorystore_redis) | [  ⟦T167⟧](https://pypi.org/project/langchain-google-memorystore-redis/) |
-| [⟦T82⟧](https://opedd.com/for-ai-agents) | [  ⟦T168⟧](https://pypi.org/project/langchain-opedd/) |
-| [⟦T83⟧](https://developer.box.com/) | [  ⟦T169⟧](https://pypi.org/project/langchain-box/) |
-| [⟦T84⟧](https://pypi.org/project/langchain-anytomarkdown/) | [  ⟦T170⟧](https://pypi.org/project/langchain-anytomarkdown/) |
-| [⟦T85⟧](https://github.com/kanavsingla28/web2md-clients/tree/main/python#readme) | [  ⟦T171⟧](https://pypi.org/project/web2md-client/) |
-| [⟦T86⟧](https://www.paddleocr.com) | [  ⟦T172⟧](https://pypi.org/project/langchain-paddleocr/) |
-| [⟦T87⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Loader.md#alfrescoloader) | [  ⟦T173⟧](https://pypi.org/project/langchain-opendma/) |
-| [⟦T88⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Loader.md) | [  ⟦T174⟧](https://pypi.org/project/langchain-opendma/) |
-| [⟦T89⟧](https://comment-scraper.com/langchain) | [  ⟦T175⟧](https://pypi.org/project/langchain-comment-scraper/) || [⟦T90⟧](/oss/python/integrations/document_loaders/google_classroom) | [  ⟦T176⟧](https://pypi.org/project/langchain-google-classroom/) |
-| [⟦T91⟧](/oss/python/integrations/document_loaders/google_cloud_sql_mysql) | [  ⟦T177⟧](https://pypi.org/project/langchain-google-cloud-sql-mysql/) |
-| [⟦T92⟧](https://github.com/kineticadb/langchain-kinetica) | [  ⟦T178⟧](https://pypi.org/project/langchain-kinetica/) |
-| [⟦T93⟧](/oss/python/integrations/document_loaders/google_datastore) | [  ⟦T179⟧](https://pypi.org/project/langchain-google-datastore/) |
-| [⟦T94⟧](https://docs.agentql.com/home) | [  ⟦T180⟧](https://pypi.org/project/langchain-agentql/) |
-| [⟦T95⟧](https://cvfile.org) | [  ⟦T181⟧](https://pypi.org/project/langchain-cvfile/) |
-| [⟦T96⟧](https://docs.proxyhat.com) | [  ⟦T182⟧](https://pypi.org/project/langchain-proxyhat/) |
-| [⟦T97⟧](https://docs.airbyte.com/integrations/) | [  ⟦T183⟧](https://pypi.org/project/langchain-airbyte/) |
-| [⟦T98⟧](https://capslane.com/integrations/langchain) | [  ⟦T184⟧](https://pypi.org/project/capslane/) |
-| [⟦T99⟧](https://github.com/casperkwok/pdfmuse) | [  ⟦T185⟧](https://pypi.org/project/langchain-pdfmuse/) |
-| [⟦T100⟧](https://lyrenth.com/docs/integrations) | [  ⟦T186⟧](https://pypi.org/project/langchain-lyrenth/) |
-| [⟦T101⟧](https://docs.plasmate.app/integration-langchain) | [  ⟦T187⟧](https://pypi.org/project/langchain-plasmate/) |
-| [⟦T102⟧](https://undatas.io) | [  ⟦T188⟧](https://pypi.org/project/langchain-undatasio/) |
-| [⟦T103⟧](https://github.com/enconvert/langchain-enconvert) | [  ⟦T189⟧](https://pypi.org/project/langchain-enconvert/) |
-| [⟦T104⟧](https://soniox.com/docs/stt/concepts/supported-languages) | [  ⟦T190⟧](https://pypi.org/project/langchain-soniox/) |
-| [⟦T105⟧](https://github.com/agentmail-to/langchain-agentmail) | [  ⟦T191⟧](https://pypi.org/project/langchain-agentmail/) |
-| [⟦T106⟧](https://quanticdata.io/docs/)​​ | [  ⟦T192⟧](https://pypi.org/project/langchain-quanticdata/) |
-| [⟦T107⟧](/oss/python/integrations/document_loaders/google_cloud_sql_mssql) | [  ⟦T193⟧](https://pypi.org/project/langchain-google-cloud-sql-mssql/) |
-| [⟦T108⟧](https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain) | [  ⟦T194⟧](https://pypi.org/project/langchain-oxidize-pdf/) |
-| [⟦T109⟧](https://github.com/pdfluent/pdfluent-sdk/tree/main/integrations/langchain-pdfluent#readme) | [  ⟦T195⟧](https://pypi.org/project/langchain-pdfluent/) |
-| [⟦T110⟧](https://docs.xns.tech) | [  ⟦T196⟧](https://pypi.org/project/langchain-xns/) |
-| [⟦T111⟧](https://docs.xns.tech) | [  ⟦T197⟧](https://pypi.org/project/langchain-xns/) |
-| [⟦T112⟧](https://github.com/googleapis/langchain-google-el-carro-python/) | [  ⟦T198⟧](https://pypi.org/project/langchain-google-el-carro/) |
-| [⟦T113⟧](/oss/python/integrations/document_loaders/powerscale) | [  ⟦T199⟧](https://pypi.org/project/powerscale-rag-connector/) |
-| [⟦T114⟧](https://www.easytranscriber.com/docs/langchain) | [  ⟦T200⟧](https://pypi.org/project/langchain-easytranscriber/) |
-| [⟦T115⟧](https://github.com/Omniwot/section-anything/tree/main/packages/langchain-section-anything) | [  ⟦T201⟧](https://pypi.org/project/langchain-section-anything/) |
-| [⟦T116⟧](https://github.com/agentreader-xyz/agentreader-python/tree/main/langchain-agentreader) |不适用 |
-| [⟦T117⟧](/oss/python/integrations/document_loaders/langsmith) |不适用 |
-| [⟦T118⟧](https://transcriptfetch.com/docs/langchain) |不适用 |
+## 所有文档加载器|整合 |下载 |
+| :-| :-|
+| [⟦T33⟧](/oss/python/integrations/document_loaders/google_bigquery) | [  ⟦T121⟧](https://pypi.org/project/langchain-google-community/) |
+| [⟦T34⟧](/oss/python/integrations/document_loaders/google_cloud_storage_directory) | [  ⟦T122⟧](https://pypi.org/project/langchain-google-community/) |
+| [⟦T35⟧](/oss/python/integrations/document_loaders/google_cloud_storage_file) | [  ⟦T123⟧](https://pypi.org/project/langchain-google-community/) |
+| [⟦T36⟧](/oss/python/integrations/document_loaders/google_drive) | [  ⟦T124⟧](https://pypi.org/project/langchain-google-community/) |
+| [⟦T37⟧](/oss/python/integrations/document_loaders/google_speech_to_text) | [  ⟦T125⟧](https://pypi.org/project/langchain-google-community/) |
+| [⟦T38⟧](/oss/python/integrations/document_loaders/oracleai) | [  ⟦T126⟧](https://pypi.org/project/langchain-oracledb/) |
+| [⟦T39⟧](/oss/python/integrations/document_loaders/oracleadb_loader) | [  ⟦T127⟧](https://pypi.org/project/langchain-oracledb/) |
+| [⟦T40⟧](/oss/python/integrations/document_loaders/unstructured_file) | [  ⟦T128⟧](https://pypi.org/project/langchain-unstructured/) |
+| [⟦T41⟧](/oss/python/integrations/document_loaders/astradb) | [  ⟦T129⟧](https://pypi.org/project/langchain-astradb/) |
+| [⟦T42⟧](/oss/python/integrations/document_loaders/docling) | [  ⟦T130⟧](https://pypi.org/project/langchain-docling/) |
+| [⟦T43⟧](/oss/python/integrations/document_loaders/google_alloydb) | [  ⟦T131⟧](https://pypi.org/project/langchain-google-alloydb-pg/) |
+| [⟦T44⟧](https://github.com/pymupdf/langchain-pymupdf4llm) | [  ⟦T132⟧](https://pypi.org/project/langchain-pymupdf4llm/) |
+| [⟦T45⟧](https://docs.apify.com/integrations/langchain) | [  ⟦T133⟧](https://pypi.org/project/langchain-apify/) |
+| [⟦T46⟧](https://docs.apify.com/integrations/langchain) | [  ⟦T134⟧](https://pypi.org/project/langchain-apify/) |
+| [⟦T47⟧](/oss/python/integrations/document_loaders/upstage) | [  ⟦T135⟧](https://pypi.org/project/langchain-upstage/) |
+| [⟦T48⟧](https://docs.cloud.google.com/sql/docs/postgres) | [  ⟦T136⟧](https://pypi.org/project/langchain-google-cloud-sql-pg/) |
+| [⟦T49⟧](/oss/python/integrations/document_loaders/google_firestore) | [  ⟦T137⟧](https://pypi.org/project/langchain-google-firestore/) |
+| [⟦T50⟧](/oss/python/integrations/document_loaders/google_spanner) | [  ⟦T138⟧](https://pypi.org/project/langchain-google-spanner/) |
+| [⟦T51⟧](https://github.com/docling-project/docling.rs/blob/master/crates/docling-py/README.md#langchain) | [  ⟦T139⟧](https://pypi.org/project/langchain-docling-rs/) |
+| [⟦T52⟧](/oss/python/integrations/document_loaders/azure_blob_storage) | [  ⟦T140⟧](https://pypi.org/project/langchain-azure-storage/) |
+| [⟦T53⟧](https://github.com/flatmark-dev/flatmark-integrations/blob/main/langchain/README.md) | [  ⟦T141⟧](https://pypi.org/project/langchain-flatmark/) |
+| [⟦T54⟧](https://docs.firecrawl.dev) | [  ⟦T142⟧](https://pypi.org/project/langchain-firecrawl/) |
+| [⟦T55⟧](https://github.com/hyeonsang010716/OpenDocKit/blob/main/docs/integrations.md#langchain) | [  ⟦T143⟧](https://pypi.org/project/opendockit/) |
+| [⟦T56⟧](https://github.com/opendataloader-project/langchain-opendataloader-pdf) | [  ⟦T144⟧](https://pypi.org/project/langchain-opendataloader-pdf/) |
+| [⟦T57⟧](https://anakin.io/docs/documentation) | [  ⟦T145⟧](https://pypi.org/project/langchain-anakin/) |
+| [⟦T58⟧](/oss/python/integrations/document_loaders/docugami) | [  ⟦T146⟧](https://pypi.org/project/docugami-langchain/) |
+| [⟦T59⟧](https://github.com/jaypakdevkr/HWP-Loader) | [  ⟦T147⟧](https://pypi.org/project/langchain-hwp-hwpx-loader/) |
+| [⟦T60⟧](https://dev.writer.com/api-reference/tool-api/pdf-parser#parse-pdf) | [  ⟦T148⟧](https://pypi.org/project/langchain-writer/) |
+| [⟦T61⟧](https://github.com/singlestore-labs/langchain-singlestore/) | [  ⟦T149⟧](https://pypi.org/project/langchain-singlestore/) |
+| [⟦T62⟧](https://github.com/aqib0770/langchain-yt-dlp) | [  ⟦T150⟧](https://pypi.org/project/langchain-yt-dlp/) |
+| [⟦T63⟧](https://superpdf.ai/docs/python/langchain-llamaindex#langchain) | [  ⟦T151⟧](https://pypi.org/project/langchain-superpdf/) |
+| [⟦T64⟧](https://mesharc.dev/docs/langchain) | [  ⟦T152⟧](https://pypi.org/project/langchain-mesharc/) |
+| [⟦T65⟧](https://www.hyperbrowser.ai/docs/home) | [  ⟦T153⟧](https://pypi.org/project/langchain-hyperbrowser/) |
+| [⟦T66⟧](https://github.com/fastocr-org/langchain-fastocr#readme) | [  ⟦T154⟧](https://pypi.org/project/langchain-fastocr/) |
+| [⟦T67⟧](https://replylayer.ai/docs/guides/langchain) | [  ⟦T155⟧](https://pypi.org/project/langchain-replylayer/) |
+| [⟦T68⟧](https://docs.hydrafetch.com) | [  ⟦T156⟧](https://pypi.org/project/langchain-hydrafetch/) |
+| [⟦T69⟧](https://github.com/arsbr/Veritensor) | [  ⟦T157⟧](https://pypi.org/project/veritensor/) |
+| [⟦T70⟧](https://docs.spidra.io) | [  ⟦T158⟧](https://pypi.org/project/langchain-spidra/) |
+| [⟦T71⟧](https://github.com/undacmic/langchain-pdf-inspector) | [  ⟦T159⟧](https://pypi.org/project/langchain-pdf-inspector/) |
+| [⟦T72⟧](https://webcrawlerapi.com/docs/sdk/langchain) | [  ⟦T160⟧](https://pypi.org/project/webcrawlerapi-langchain/) |
+| [⟦T73⟧](https://fastcrw.com) | [  ⟦T161⟧](https://pypi.org/project/langchain-crw/) |
+| [⟦T74⟧](/oss/python/integrations/document_loaders/google_bigtable) | [  ⟦T162⟧](https://pypi.org/project/langchain-google-bigtable/) |
+| [⟦T75⟧](https://github.com/10Pines/langchain-outline) | [  ⟦T163⟧](https://pypi.org/project/langchain-outline/) |
+| [⟦T76⟧](https://mineru.net) | [  ⟦T164⟧](https://pypi.org/project/langchain-mineru/) |
+| [⟦T77⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T165⟧](https://pypi.org/project/langchain-diffbot/) |
+| [⟦T78⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T166⟧](https://pypi.org/project/langchain-diffbot/) |
+| [⟦T79⟧](https://github.com/dong7812/dompruner-py) | [  ⟦T167⟧](https://pypi.org/project/dompruner/) |
+| [⟦T80⟧](https://datainsight.polarisoffice.com/playground) | [  ⟦T168⟧](https://pypi.org/project/langchain-polaris-ai-datainsight/) |
+| [⟦T81⟧](https://proxmint.com/docs/langchain) | [  ⟦T169⟧](https://pypi.org/project/langchain-proxmint/) |
+| [⟦T82⟧](/oss/python/integrations/document_loaders/google_memorystore_redis) | [  ⟦T170⟧](https://pypi.org/project/langchain-google-memorystore-redis/) |
+| [⟦T83⟧](https://pymupdf.readthedocs.io/en/latest/langchain) | [  ⟦T171⟧](https://pypi.org/project/langchain-pymupdf-layout/) |
+| [⟦T84⟧](https://opedd.com/for-ai-agents) | [  ⟦T172⟧](https://pypi.org/project/langchain-opedd/) |
+| [⟦T85⟧](https://developer.box.com/) | [  ⟦T173⟧](https://pypi.org/project/langchain-box/) |
+| [⟦T86⟧](https://pypi.org/project/langchain-anytomarkdown/) | [  ⟦T174⟧](https://pypi.org/project/langchain-anytomarkdown/) |
+| [⟦T87⟧](https://github.com/kanavsingla28/web2md-clients/tree/main/python#readme) | [  ⟦T175⟧](https://pypi.org/project/web2md-client/) |
+| [⟦T88⟧](https://www.paddleocr.com) | [  ⟦T176⟧](https://pypi.org/project/langchain-paddleocr/) |
+| [⟦T89⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Loader.md#alfrescoloader) | [  ⟦T177⟧](https://pypi.org/project/langchain-opendma/) || [⟦T90⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Loader.md) | [  ⟦T178⟧](https://pypi.org/project/langchain-opendma/) |
+| [⟦T91⟧](https://comment-scraper.com/langchain) | [  ⟦T179⟧](https://pypi.org/project/langchain-comment-scraper/) |
+| [⟦T92⟧](/oss/python/integrations/document_loaders/google_classroom) | [  ⟦T180⟧](https://pypi.org/project/langchain-google-classroom/) |
+| [⟦T93⟧](/oss/python/integrations/document_loaders/google_cloud_sql_mysql) | [  ⟦T181⟧](https://pypi.org/project/langchain-google-cloud-sql-mysql/) |
+| [⟦T94⟧](https://github.com/kineticadb/langchain-kinetica) | [  ⟦T182⟧](https://pypi.org/project/langchain-kinetica/) |
+| [⟦T95⟧](/oss/python/integrations/document_loaders/google_datastore) | [  ⟦T183⟧](https://pypi.org/project/langchain-google-datastore/) |
+| [⟦T96⟧](https://docs.agentql.com/home) | [  ⟦T184⟧](https://pypi.org/project/langchain-agentql/) |
+| [⟦T97⟧](https://cvfile.org) | [  ⟦T185⟧](https://pypi.org/project/langchain-cvfile/) |
+| [⟦T98⟧](https://docs.proxyhat.com) | [  ⟦T186⟧](https://pypi.org/project/langchain-proxyhat/) |
+| [⟦T99⟧](https://docs.airbyte.com/integrations/) | [  ⟦T187⟧](https://pypi.org/project/langchain-airbyte/) |
+| [⟦T100⟧](https://capslane.com/integrations/langchain) | [  ⟦T188⟧](https://pypi.org/project/capslane/) |
+| [⟦T101⟧](https://github.com/casperkwok/pdfmuse) | [  ⟦T189⟧](https://pypi.org/project/langchain-pdfmuse/) |
+| [⟦T102⟧](https://lyrenth.com/docs/integrations) | [  ⟦T190⟧](https://pypi.org/project/langchain-lyrenth/) |
+| [⟦T103⟧](https://docs.plasmate.app/integration-langchain) | [  ⟦T191⟧](https://pypi.org/project/langchain-plasmate/) |
+| [⟦T104⟧](https://undatas.io)​​ | [  ⟦T192⟧](https://pypi.org/project/langchain-undatasio/) |
+| [⟦T105⟧](https://github.com/enconvert/langchain-enconvert) | [  ⟦T193⟧](https://pypi.org/project/langchain-enconvert/) |
+| [⟦T106⟧](https://soniox.com/docs/stt/concepts/supported-languages) | [  ⟦T194⟧](https://pypi.org/project/langchain-soniox/) |
+| [⟦T107⟧](https://github.com/agentmail-to/langchain-agentmail) | [  ⟦T195⟧](https://pypi.org/project/langchain-agentmail/) |
+| [⟦T108⟧](https://quanticdata.io/docs/) | [  ⟦T196⟧](https://pypi.org/project/langchain-quanticdata/) |
+| [⟦T109⟧](/oss/python/integrations/document_loaders/google_cloud_sql_mssql) | [  ⟦T197⟧](https://pypi.org/project/langchain-google-cloud-sql-mssql/) |
+| [⟦T110⟧](https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain) | [  ⟦T198⟧](https://pypi.org/project/langchain-oxidize-pdf/) |
+| [⟦T111⟧](https://github.com/pdfluent/pdfluent-sdk/tree/main/integrations/langchain-pdfluent#readme) | [  ⟦T199⟧](https://pypi.org/project/langchain-pdfluent/) |
+| [⟦T112⟧](https://docs.xns.tech) | [  ⟦T200⟧](https://pypi.org/project/langchain-xns/) |
+| [⟦T113⟧](https://docs.xns.tech) | [  ⟦T201⟧](https://pypi.org/project/langchain-xns/) |
+| [⟦T114⟧](https://github.com/googleapis/langchain-google-el-carro-python/) | [  ⟦T202⟧](https://pypi.org/project/langchain-google-el-carro/) |
+| [⟦T115⟧](/oss/python/integrations/document_loaders/powerscale) | [  ⟦T203⟧](https://pypi.org/project/powerscale-rag-connector/) |
+| [⟦T116⟧](https://www.easytranscriber.com/docs/langchain) | [  ⟦T204⟧](https://pypi.org/project/langchain-easytranscriber/) |
+| [⟦T117⟧](https://github.com/Omniwot/section-anything/tree/main/packages/langchain-section-anything) | [  ⟦T205⟧](https://pypi.org/project/langchain-section-anything/) |
+| [⟦T118⟧](https://github.com/agentreader-xyz/agentreader-python/tree/main/langchain-agentreader) |不适用 |
+| [⟦T119⟧](/oss/python/integrations/document_loaders/langsmith) |不适用 |
+| [⟦T120⟧](https://transcriptfetch.com/docs/langchain) |不适用 |
 
 ***
 

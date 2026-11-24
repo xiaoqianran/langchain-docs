@@ -65,9 +65,9 @@ Managed Deep Agents 在代理周围添加了一层。上面的沙箱、持久内
 >
 > 使用 `mda` CLI 创建并部署您的第一个托管深度代理。
 
-> [卡][Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)
+> [卡][Daily digest](/langsmith/javascript/managed-deep-agents-tutorial)
 >
-> 添加自定义搜索工具、持久内存和每日日程安排。
+> 将持久内存和每日计划添加到快速启动代理中。
 
 > [卡][Design agent template](/langsmith/javascript/managed-deep-agents-design-agent)
 >

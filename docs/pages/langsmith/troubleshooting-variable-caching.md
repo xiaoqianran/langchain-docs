@@ -2,7 +2,7 @@
 
 # Troubleshoot variable caching
 
-If you're not seeing traces in your tracing project or notice traces logged to the wrong project/workspace, the issue might be due to LangSmith's default environment variable caching. This is especially common when running LangSmith within a Jupyter notebook. Follow these steps to diagnose and resolve the issue:
+If you're not seeing traces in your agent environment or notice traces logged to the wrong agent, environment, or workspace, the issue might be due to LangSmith's default environment variable caching. This is especially common when running LangSmith within a Jupyter notebook. Follow these steps to diagnose and resolve the issue:
 
 ## 1. Verify your environment variables
 
@@ -10,7 +10,9 @@ First, check that the environment variables are set correctly by running:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
-print(os.getenv("LANGSMITH_PROJECT"))
+print(os.getenv("LANGSMITH_AGENT_ID"))
+print(os.getenv("LANGSMITH_AGENT_ENVIRONMENT"))
+print(os.getenv("LANGSMITH_PROJECT"))  # Should be unset when you use agent addressing
 print(os.getenv("LANGSMITH_TRACING"))
 print(os.getenv("LANGSMITH_ENDPOINT"))
 print(os.getenv("LANGSMITH_API_KEY"))

@@ -57,7 +57,7 @@ Requests that call a saved [model configuration](/langsmith/llm-gateway-model-co
 
 1. Go to **LLM Gateway** and select the **Model Access** tab.
 2. Click **+ Model Access**.
-3. Under **Applies to**, select the scope (organization, user group, workspace, user, or API key).
+3. Under **Applies to**, select the scope and the subjects the policy applies to.
 4. Under **Allowed providers and models**, turn on each provider to permit and choose its access mode. Providers are off by default, so any provider you leave off is blocked.
 5. Click **Create model access**.
 

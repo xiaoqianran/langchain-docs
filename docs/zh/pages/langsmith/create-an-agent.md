@@ -19,7 +19,7 @@
 | [SDK or API](#create-an-agent-programmatically) |通过 SDK 调用或 API 请求创建代理记录 |你设定吧|所有四个 |
 | [Deployment](/langsmith/deploy-to-agent-environment) |将您的代理代码部署到LangSmith |您传递的或从部署名称派生的代理 ID |所有四个 |
 
-并非每个特工都可以拥有[deployment](/langsmith/deploy-overview)。部署代理代码会从一开始就通过部署创建代理。使用 SDK 或 API 或通过 [**Connect an agent**](#name-an-agent-traced-from-outside-langsmith) 对话框创建的代理最初无需部署，但稍后您可以进行 [deploy to it](/langsmith/deploy-to-agent-environment) 部署。 Studio 中构建的代理无法进行部署，因为它在 Studio 运行时上运行。要检查已部署代理的代理服务器和环境，请在其概述标题中选择 **代理服务器**。
+并非每个特工都可以拥有[deployment](/langsmith/deploy-overview)。部署代理代码会从一开始就通过部署创建代理。使用 SDK 或 API 或通过 [**Connect an agent**](#name-an-agent-traced-from-outside-langsmith) 对话框创建的代理一开始无需部署，但稍后您可以进行 [deploy to it](/langsmith/deploy-to-agent-environment) 部署。 Studio 中构建的代理无法进行部署，因为它在 Studio 运行时上运行。要检查已部署代理的代理服务器和环境，请在其概述标题中选择 **代理服务器**。
 
 当第一次将跟踪寻址到某个环境时，Studio 中内置的代理就会获得其其他环境。关于这四个是什么，请参见[Agent environments](/langsmith/agent-environments#environment-names)。当LangSmith通过这些流程构建或部署代理时，它会处理注册。重用该代理进行跟踪。不要为同一部署创建单独的外部代理。
 
@@ -34,7 +34,7 @@
 ## 从新的代理菜单开始两个控件可打开新代理菜单：代理列表上的 **+ 代理**，以及代理切换器中搜索框旁边的 **+** 按钮，该按钮悬停时会显示 **新代理** 工具提示。切换器按钮仅对具有 `projects:create` 权限的用户显示。菜单分为三个流程：
 
 * **构建** > **无代码**：打开 Studio，您可以在其中描述代理，然后 LangSmith Chat 起草它。参见[Build an agent with LangSmith Studio](/langsmith/build-an-agent)。
-* **构建** > **使用代码**：打开 **使用代码构建** 窗格。 **由LangSmith托管**涵盖[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)，它会在您部署时创建代理并需要付费计划。 **自行托管**涵盖使用 [open source frameworks](/oss/python/langchain/overview) 进行构建，然后使用下面的 UI 或 API 创建代理的 LangSmith 记录。
+* **构建** > **使用代码**：打开 **使用代码构建** 窗格。 **由 LangSmith** 托管，涵盖 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)，它会在您部署时创建代理并需要付费计划。 **自行托管**涵盖使用 [open source frameworks](/oss/python/langchain/overview) 进行构建，然后使用下面的 UI 或 API 创建代理的 LangSmith 记录。
 * **连接** > **连接现有代理**：打开 **连接代理** 对话框，您可以在其中命名从外部跟踪的代理 LangSmith。请参阅下一节。
 
 ## 指定从外部追踪到的特工 LangSmith
@@ -52,7 +52,7 @@
 
 将 [personal access token or service key](/langsmith/create-account-api-key) 与 [⟦T12⟧ permission](/langsmith/organization-workspace-operations#projects) 一起使用。跟踪密钥无法调用代理创建 API。创建代理后，您的代码可以使用跟踪密钥来提交跟踪。
 
-将 `LANGSMITH_API_KEY` 设置为设置凭据。将 `LANGSMITH_WORKSPACE_ID` 设置为目标工作区 ID，将 `LANGSMITH_ENDPOINT` 设置为您的 [region's API URL](/langsmith/create-account-api-key#configure-the-sdk)。
+将 `LANGSMITH_API_KEY` 设置为设置凭据。将 `LANGSMITH_WORKSPACE_ID` 设置为目标工作区 ID，并将 `LANGSMITH_ENDPOINT` 设置为您的 [region's API URL](/langsmith/create-account-api-key#configure-the-sdk)。
 
 > [选项卡] Python
 >
@@ -116,8 +116,7 @@ client = Client()
 agent = client.agents.retrieve("support-agent")
 production = next(env for env in agent.environments if env.environment == "PRODUCTION")
 print(production.tracer_session_name)  # Use as LANGSMITH_PROJECT
-print(production.tracer_session_id)  # Use with APIs that take a project ID
-```使用 REST，使用与创建请求相同的身份验证标头来调用 `GET /api/v1/agents/support-agent`。在`environments`中，选择`PRODUCTION`、`STAGING`、`DEVELOPMENT`或`LOCAL`，然后读取其`tracer_session_name`或`tracer_session_id`。
+```使用 REST，使用与创建请求相同的身份验证标头来调用 `GET /api/v1/agents/support-agent`。在`environments`中，选择`PRODUCTION`、`STAGING`、`DEVELOPMENT`或`LOCAL`并读取其`tracer_session_name`。对于采用项目 ID 的 API，请参阅 [Resolve an agent environment](/langsmith/resolve-an-agent)。
 
 将所选环境的 `tracer_session_name` 复制到集成的目标设置中：
 
@@ -129,7 +128,7 @@ export LANGSMITH_PROJECT="<environment-tracer-session-name>"
 
 如果集成支持 [agent addressing](/langsmith/log-traces-to-agent)，请改为设置代理 ID 和环境，例如 `LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT`。不要将这些变量与旧目标变量组合。
 
-## 设置疑难解答* **创建返回`403`**：在目标工作空间中使用具有`projects:create`权限的PAT或服务密钥。跟踪密钥无法调用代理创建 API。
+## 设置疑难解答* **创建返回`403`**：在目标工作空间中使用具有`projects:create`权限​​的PAT或服务密钥。跟踪密钥无法调用代理创建 API。
 * **跟踪报告丢失的代理**：首先创建代理，然后使用其确切的标识符和环境重试跟踪。
 * **创建返回`409`**：标识符已被使用。存档的代理还保留其标识符。
 * **跟踪出现在错误的位置**：检查工作区、区域、环境以及代码中的任何目标覆盖。使用代理标识符，而不是其显示名称。

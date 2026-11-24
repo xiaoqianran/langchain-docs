@@ -356,9 +356,113 @@ List available agents directly in the main agent's system prompt. The main agent
 
 **Example:**
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+
 main_agent = create_agent(
-    model="...",
+    model="google_genai:gemini-4-hydrogen",
+    tools=[task],
+    system_prompt=(
+        "You coordinate specialized sub-agents. "
+        "Available agents:\n"
+        "- research: Research and fact-finding\n"
+        "- writer: Content creation and editing\n"
+        "- reviewer: Code and document review\n"
+        "Use the task tool to delegate work."
+    ),
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+
+main_agent = create_agent(
+    model="openai:gpt-6.1-sol",
+    tools=[task],
+    system_prompt=(
+        "You coordinate specialized sub-agents. "
+        "Available agents:\n"
+        "- research: Research and fact-finding\n"
+        "- writer: Content creation and editing\n"
+        "- reviewer: Code and document review\n"
+        "Use the task tool to delegate work."
+    ),
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+
+main_agent = create_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[task],
+    system_prompt=(
+        "You coordinate specialized sub-agents. "
+        "Available agents:\n"
+        "- research: Research and fact-finding\n"
+        "- writer: Content creation and editing\n"
+        "- reviewer: Code and document review\n"
+        "Use the task tool to delegate work."
+    ),
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+
+main_agent = create_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[task],
+    system_prompt=(
+        "You coordinate specialized sub-agents. "
+        "Available agents:\n"
+        "- research: Research and fact-finding\n"
+        "- writer: Content creation and editing\n"
+        "- reviewer: Code and document review\n"
+        "Use the task tool to delegate work."
+    ),
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+
+main_agent = create_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[task],
+    system_prompt=(
+        "You coordinate specialized sub-agents. "
+        "Available agents:\n"
+        "- research: Research and fact-finding\n"
+        "- writer: Content creation and editing\n"
+        "- reviewer: Code and document review\n"
+        "Use the task tool to delegate work."
+    ),
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+
+main_agent = create_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[task],
+    system_prompt=(
+        "You coordinate specialized sub-agents. "
+        "Available agents:\n"
+        "- research: Research and fact-finding\n"
+        "- writer: Content creation and editing\n"
+        "- reviewer: Code and document review\n"
+        "Use the task tool to delegate work."
+    ),
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+
+main_agent = create_agent(
+    model="ollama:north-mini-code-1.0",
     tools=[task],
     system_prompt=(
         "You coordinate specialized sub-agents. "
@@ -386,18 +490,22 @@ Add an enum constraint to the `agent_name` parameter in your dispatch tool. This
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from enum import Enum
 
+from langchain.tools import tool
+
+
 class AgentName(str, Enum):
     RESEARCH = "research"
     WRITER = "writer"
     REVIEWER = "reviewer"
 
+
 @tool
 def task(
     agent_name: AgentName,  # Enum constraint
-    description: str
+    description: str,
 ) -> str:
     """Launch an ephemeral subagent for a task."""
-    # ...
+    return f'Delegated "{description}" to {agent_name}'
 ```
 
 #### Tool-based discovery
@@ -413,22 +521,178 @@ Provide a separate tool (e.g., `list_agents` or `search_agents`) that the main a
 
 **Example:**
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
 @tool
 def list_agents(query: str = "") -> str:
     """List available subagents, optionally filtered by query."""
     agents = search_agent_registry(query)
     return format_agent_list(agents)
 
+
 @tool
 def task(agent_name: str, description: str) -> str:
     """Launch an ephemeral subagent for a task."""
-    # ...
+    return f'Delegated "{description}" to {agent_name}'
+
 
 main_agent = create_agent(
-    model="...",
+    model="google_genai:gemini-4-hydrogen",
     tools=[task, list_agents],
-    system_prompt="Use list_agents to discover available subagents, then use task to invoke them."
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def list_agents(query: str = "") -> str:
+    """List available subagents, optionally filtered by query."""
+    agents = search_agent_registry(query)
+    return format_agent_list(agents)
+
+
+@tool
+def task(agent_name: str, description: str) -> str:
+    """Launch an ephemeral subagent for a task."""
+    return f'Delegated "{description}" to {agent_name}'
+
+
+main_agent = create_agent(
+    model="openai:gpt-6.1-sol",
+    tools=[task, list_agents],
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def list_agents(query: str = "") -> str:
+    """List available subagents, optionally filtered by query."""
+    agents = search_agent_registry(query)
+    return format_agent_list(agents)
+
+
+@tool
+def task(agent_name: str, description: str) -> str:
+    """Launch an ephemeral subagent for a task."""
+    return f'Delegated "{description}" to {agent_name}'
+
+
+main_agent = create_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[task, list_agents],
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def list_agents(query: str = "") -> str:
+    """List available subagents, optionally filtered by query."""
+    agents = search_agent_registry(query)
+    return format_agent_list(agents)
+
+
+@tool
+def task(agent_name: str, description: str) -> str:
+    """Launch an ephemeral subagent for a task."""
+    return f'Delegated "{description}" to {agent_name}'
+
+
+main_agent = create_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[task, list_agents],
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def list_agents(query: str = "") -> str:
+    """List available subagents, optionally filtered by query."""
+    agents = search_agent_registry(query)
+    return format_agent_list(agents)
+
+
+@tool
+def task(agent_name: str, description: str) -> str:
+    """Launch an ephemeral subagent for a task."""
+    return f'Delegated "{description}" to {agent_name}'
+
+
+main_agent = create_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[task, list_agents],
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def list_agents(query: str = "") -> str:
+    """List available subagents, optionally filtered by query."""
+    agents = search_agent_registry(query)
+    return format_agent_list(agents)
+
+
+@tool
+def task(agent_name: str, description: str) -> str:
+    """Launch an ephemeral subagent for a task."""
+    return f'Delegated "{description}" to {agent_name}'
+
+
+main_agent = create_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[task, list_agents],
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def list_agents(query: str = "") -> str:
+    """List available subagents, optionally filtered by query."""
+    agents = search_agent_registry(query)
+    return format_agent_list(agents)
+
+
+@tool
+def task(agent_name: str, description: str) -> str:
+    """Launch an ephemeral subagent for a task."""
+    return f'Delegated "{description}" to {agent_name}'
+
+
+main_agent = create_agent(
+    model="ollama:north-mini-code-1.0",
+    tools=[task, list_agents],
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
 )
 ```
 

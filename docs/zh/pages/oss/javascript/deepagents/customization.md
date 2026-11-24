@@ -99,7 +99,7 @@ const agent = await createDeepAgent({
 | `tools` |代理可以调用​​的领域工具 |
 | `memory` |启动时加载的 AGENTS.md 文件 |
 | `skills` |按需知识的技能目录 |
-| `backend` |文件系统后端（默认为 StateBackend） |
+| `backend` |文件系统后端（默认为 StateBackend）|
 | `permissions` |文件系统的路径级访问控制|
 | `subagents` |用于委派任务的自定义子代理 |
 | `middleware` |附加到 [Deep Agents stack](#deep-agents-stack) | 的额外中间件
@@ -111,7 +111,7 @@ const agent = await createDeepAgent({
 
 > [!提示]
 >
-> 当您添加工具、子代理和后端时，使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-customization) 来跟踪每个部分的行为方式。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
+> 添加工具、子代理和后端时，使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-customization) 跟踪每个部分的行为方式。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
 >
 > 我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 
@@ -1555,7 +1555,7 @@ const agent = createDeepAgent({
 
 > [!注意]
 >
-> 覆盖 **替换** 默认中间件实例，但不会与其合并。这意味着您的替代品必须完全配置其所需的任何设置。这对于`FilesystemMiddleware`尤其重要：如果您覆盖它，则必须将`backend`（和`permissions`，如果适用）直接传递给`createFilesystemMiddleware`，因为它不会继承传递给`createDeepAgent`的`backend`和`permissions`。要限制可用的文件系统工具，请将 `tools` 允许列表传递给您的自定义 [⟦T245⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) 实例；参见[Virtual filesystem access](/oss/javascript/deepagents/overview#virtual-filesystem-access)。
+> 覆盖**替换**默认的中间件实例，但不会与其合并。这意味着您的替代品必须完全配置其所需的任何设置。这对于`FilesystemMiddleware`尤其重要：如果您覆盖它，则必须将`backend`（和`permissions`，如果适用）直接传递给`createFilesystemMiddleware`，因为它不会继承传递给`createDeepAgent`的`backend`和`permissions`。要限制可用的文件系统工具，请将 `tools` 允许列表传递给您的自定义 [⟦T245⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) 实例；参见[Virtual filesystem access](/oss/javascript/deepagents/overview#virtual-filesystem-access)。
 
 Deep Agents 自动添加的通用子代理从主代理继承其默认中间件的覆盖，而不继承特定于主代理的中间件。通过`subagents`定义的声明性子代理不会继承主代理的中间件定制。直接在该子代理自己的 [⟦T247⟧](/oss/javascript/deepagents/subagents#subagent-dictionary-based) 字段中传递覆盖以将其应用到那里；该字段与 [synchronous subagent stack](#synchronous-subagent-stack) 匹配，与 `middleware` 与主代理的匹配方式相同。
 
@@ -2261,7 +2261,9 @@ const agent = createDeepAgent({
 > const agent = createDeepAgent({
 >   model: "google:gemini-4-hydrogen",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });
@@ -2276,7 +2278,9 @@ const agent = createDeepAgent({
 > const agent = createDeepAgent({
 >   model: "openai:gpt-6.1-sol",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });
@@ -2291,7 +2295,9 @@ const agent = createDeepAgent({
 > const agent = createDeepAgent({
 >   model: "anthropic:claude-sonnet-5",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });
@@ -2306,7 +2312,9 @@ const agent = createDeepAgent({
 > const agent = createDeepAgent({
 >   model: "openrouter:z-ai/glm-5.2",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });
@@ -2321,7 +2329,9 @@ const agent = createDeepAgent({
 > const agent = createDeepAgent({
 >   model: "fireworks:accounts/fireworks/models/glm-5p2",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });
@@ -2336,7 +2346,9 @@ const agent = createDeepAgent({
 > const agent = createDeepAgent({
 >   model: "baseten:zai-org/GLM-5.2",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });
@@ -2351,7 +2363,9 @@ const agent = createDeepAgent({
 > const agent = createDeepAgent({
 >   model: "ollama:north-mini-code-1.0",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });
@@ -2531,7 +2545,7 @@ const agent = createDeepAgent({
 
 有关更多信息，请参阅[Backends](/oss/javascript/deepagents/backends)。
 
-### 沙箱
+### 沙盒
 
 沙箱是专门的 [backends](/oss/javascript/deepagents/backends)，它在具有自己的文件系统和用于 shell 命令的 `execute` 工具的隔离环境中运行代理代码。
 当您希望深度代理写入文件、安装依赖项并运行命令而不更改本地计算机上的任何内容时，请使用沙箱后端。在创建深度代理时，您可以通过将沙箱后端传递给 `backend` 来配置沙箱：
@@ -2641,7 +2655,7 @@ const agent = createDeepAgent({
 });
 ```
 
-您可以在工具调用时以及工具调用内部为代理和子代理配置中断。
+您可以在工具调用时以及工具调用内为代理和子代理配置中断。
 有关更多信息，请参阅[Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。
 
 ## 技能

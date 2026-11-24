@@ -1,121 +1,24 @@
-<!-- langchain-docs: Add a custom search tool, memory, and a schedule | https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tutorial -->
+<!-- langchain-docs: Build a daily digest agent | https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tutorial -->
 
-# Add a custom search tool, memory, and a schedule
+# Build a daily digest agent
 
-Replace provider search with a Tavily tool, then add durable memory and a daily schedule to the research assistant from the quickstart.
+Build an agent that remembers the topics you follow and sends a digest every weekday.
 
-This tutorial continues from the [quickstart](/langsmith/javascript/managed-deep-agents-quickstart). Use the `research-assistant` project you created there, with your model, instructions, and a working `mda dev` setup.
-
-`mda init` may also scaffold files such as `identity` and `sandbox/`. Leave those as they are; this tutorial does not change them.
-
-This guide replaces the quickstart's built-in provider search with an authored [Tavily](https://tavily.com) search tool, enables durable memory, adds a daily schedule, then deploys.
+A daily digest agent combines durable memory and a schedule. Tell it which topics you follow, and each weekday morning it searches for recent news and writes a short digest.
 
 > [!NOTE]
 >
 > Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
 
-## Extend the agent
-
-**1. Add a custom search tool**
-
-Built-in provider search is convenient for a first run. Authored tools give you more control: choose the search API, tune parameters, and keep the tool code in your project.
-
 > [!NOTE]
 >
-> If you already added the Tavily tool with a [connection](/langsmith/javascript/managed-deep-agents-connections) in the [quickstart](/langsmith/javascript/managed-deep-agents-quickstart), skip to the next step.
+> This TypeScript example requires `managed-deepagents` version 0.10.4 or later and the matching `mda` CLI.
 
-This tutorial uses the connection slug `research-tavily`. For `mda dev`, an agent-owned connection reads its value from `MDA_DEV_<SLUG>`. Add a [Tavily API key](https://app.tavily.com) to `.env` as `MDA_DEV_RESEARCH_TAVILY`:
+![Mock chat interface showing two threads: a Monday thread saving topics to /memories/agent/topics.md and a Tuesday 8:00 AM scheduled thread delivering a cited daily digest.](https://mintcdn.com/langchain-5e9cc07a/bdTAbHGS6Uo5z-4d/langsmith/images/managed-deep-agents-daily-digest-light.png?fit=max\&auto=format\&n=bdTAbHGS6Uo5z-4d\&q=85\&s=f4f4c9f8504f6b6a1d3b2031e6e9bf2d)
 
-```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-MDA_DEV_RESEARCH_TAVILY=<TAVILY_API_KEY>
-```
+## Configure the agent
 
-Install the Tavily client:
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npm install @langchain/tavily
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm add @langchain/tavily
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bun add @langchain/tavily
-```
-
-Create a custom `internet_search` tool. `connections.get(...)` resolves the key at runtime, so the tool code is the same locally and on the deployment:
-
-```ts tools/search.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { TavilySearch } from "@langchain/tavily";
-import { tool } from "langchain";
-import { connections } from "managed-deepagents";
-import { z } from "zod";
-
-export const internetSearch = tool(
-  async ({ query, maxResults = 5, topic = "general" }) => {
-    const tavilyApiKey = await connections.get("research-tavily", { type: "agent" });
-    const tavilySearch = new TavilySearch({
-      maxResults,
-      tavilyApiKey,
-      topic,
-    });
-    return tavilySearch._call({ query });
-  },
-  {
-    name: "internet_search",
-    description: "Search the internet for relevant sources.",
-    schema: z.object({
-      query: z.string().describe("The search query."),
-      maxResults: z.number().optional().default(5),
-      topic: z.enum(["general", "news", "finance"]).optional().default("general"),
-    }),
-  },
-);
-```
-
-Replace the provider search tool dict with your authored tool. Keep the `model` value from the quickstart:
-
-```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { defineDeepAgent } from "managed-deepagents";
-
-import { internetSearch } from "./tools/search";
-
-export const agent = defineDeepAgent({
-  name: "research-assistant",
-  model: "openai:gpt-6.1-sol",
-  tools: [internetSearch],
-});
-```
-
-Restart `mda dev` if it is already running. In Studio, ask:
-
-```txt wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-What were the main announcements from the latest LangChain release?
-```
-
-Confirm the agent calls `internet_search` and returns an answer with citations. For more authored tools, see [Custom tools](/langsmith/javascript/managed-deep-agents-tools).
-
-**2. Update the instructions for memory**
-
-Extend `instructions.md` so the agent knows what shared knowledge to keep. Keep the research behavior and add a memory policy:
-
-```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Research assistant
-
-You are a careful research assistant. Use internet search to find sources,
-keep notes, and return concise answers with citations.
-
-## Memory
-
-- Record reusable research procedures and project knowledge that can improve future work.
-- For release research, check the project's official changelog before secondary sources.
-- Never store personal data or secrets in memory.
-```
-
-**3. Enable and use durable memory**
-
-Durable memory is opt-in. Before asking the agent to remember anything, add a memory declaration at the project root:
+Start with the research assistant from the [quickstart](/langsmith/javascript/managed-deep-agents-quickstart), which already has web search. Enable shared [memory](/langsmith/javascript/managed-deep-agents-memory):
 
 ```ts memory.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineMemory, memoryLayer } from "managed-deepagents";
@@ -123,15 +26,21 @@ import { defineMemory, memoryLayer } from "managed-deepagents";
 export const memory = defineMemory({ agent: memoryLayer() });
 ```
 
-Memory is shared across the deployment and visible to all callers, so do not store personal data or secrets.
+Replace `instructions.md`:
 
-Restart `mda dev` so it discovers the new file. In one thread, ask the agent to research a release and to record a reusable project rule, such as "For release research, check the official changelog before secondary sources." Then create a **new thread** in Studio and ask how it will research the next release. Confirm that it applies the shared rule even though the new thread has no conversation history.
+```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Digest agent
 
-See [Memory](/langsmith/javascript/managed-deep-agents-memory) for details.
+You are a research assistant. When someone asks you to follow or stop
+following a topic, update /memories/agent/topics.md and confirm the change.
 
-**4. Schedule a daily digest**
+When asked for a digest, read that file, search for news from the last day on
+each topic, and write a short digest with one or two cited items per topic.
+```
 
-Add a `schedules/` module so the agent runs on a cron cadence without a user message. This schedule runs every weekday at 8am Pacific:
+## Add a schedule
+
+Add a [schedule](/langsmith/javascript/managed-deep-agents-schedules) that runs every weekday at 8:00 AM Pacific:
 
 ```ts schedules/daily-digest.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineSchedule } from "managed-deepagents";
@@ -139,77 +48,27 @@ import { defineSchedule } from "managed-deepagents";
 export const schedule = defineSchedule({
   cron: "0 8 * * 1-5",
   timezone: "America/Los_Angeles",
-  prompt:
-    "Review durable memory for reusable research rules. " +
-    "Summarize anything useful, then list open questions for today.",
+  prompt: "Write today's digest.",
 });
 ```
 
-If memory is empty on the first fire, the agent still returns open questions.
+## Try it
 
-`mda deploy` reconciles this schedule into a LangSmith cron job after the deployment is live. After you deploy in the next step, you should see:
+Run the agent with `mda dev` and tell it to follow a topic, such as "Follow LangChain releases." Start a new thread and ask for today's digest. The agent reads your saved topics from memory even though the new thread has no history.
 
-* `mda deploy` finish without schedule errors (do not pass `--no-wait`, or schedules are not reconciled).
-* A managed cron for this file on the deployment. The schedule name matches the module stem: `daily_digest` (Python) or `daily-digest` (TypeScript).
-* No immediate digest run from this cron. The first fire waits until 8:00 America/Los_Angeles on a weekday.
+[Deploy the agent](/langsmith/javascript/managed-deep-agents-deploy) to run the schedule automatically. Each scheduled run starts a new thread on the deployment.
 
-For thread behavior and constraints, see [Schedules](/langsmith/javascript/managed-deep-agents-schedules).
+## Extend the pattern
 
-**5. Deploy and inspect**
+* Post the digest to Slack with [schedule delivery](/langsmith/javascript/managed-deep-agents-schedules#deliver-results-to-slack).
+* Let people set their own digest time with [runtime schedules](/langsmith/javascript/managed-deep-agents-schedules#create-schedules-at-runtime).
+* Switch to built-in [web search](/langsmith/javascript/managed-deep-agents-search) so search requires no separate API key.
 
-Deploy the project to LangSmith:
+## See also
 
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npx mda deploy
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm exec mda deploy
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bunx mda deploy
-```
-
-On success, the CLI prints the deployment dashboard URL. The deploy syncs the instructions to Context Hub, uploads the compiled project, and reconciles the daily schedule.
-
-Create the Tavily connection for this deployment. Agent-owned credentials belong to the deployment. Run this command after the first successful deploy:
-
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npx mda connections create research-tavily --secret-from-env MDA_DEV_RESEARCH_TAVILY
-```
-
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm exec mda connections create research-tavily --secret-from-env MDA_DEV_RESEARCH_TAVILY
-```
-
-```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bunx mda connections create research-tavily --secret-from-env MDA_DEV_RESEARCH_TAVILY
-```
-
-Rotating this value later takes effect on the next run, with no redeploy. For other create modes and per-caller credentials, see [Manage connections](/langsmith/javascript/managed-deep-agents-connections).
-
-Open that URL and confirm:
-
-* The deployment is ready.
-* The `daily_digest` or `daily-digest` cron exists.
-* A test chat run shows model calls, `internet_search` tool calls, and memory reads or writes in the traces.
-
-For deploy flags and troubleshooting, see [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy) and the [CLI reference](/langsmith/javascript/managed-deep-agents-cli#deploy-projects).
-
-## Next steps
-
-> [card] [Custom middleware](/langsmith/javascript/managed-deep-agents-middleware)
->
-> Add logging, retries, limits, and guardrails around model and tool calls.
-
-> [card] [Identity](/langsmith/javascript/managed-deep-agents-identity)
->
-> Authenticate callers and use verified identity in tools and middleware.
-
-> [card] [Evals](/langsmith/javascript/managed-deep-agents-evals)
->
-> Develop Harbor evals with a coding agent and the eval-engineering skill.
+* [Memory](/langsmith/javascript/managed-deep-agents-memory): choose and control durable memory layers.
+* [Schedules](/langsmith/javascript/managed-deep-agents-schedules): configure and manage scheduled runs.
+* [Web search](/langsmith/javascript/managed-deep-agents-search): add built-in search without a separate API key.
 
 ***
 

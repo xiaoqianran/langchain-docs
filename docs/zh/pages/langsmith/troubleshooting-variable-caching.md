@@ -4,7 +4,7 @@
 
 # 解决变量缓存问题
 
-如果您在跟踪项目中没有看到跟踪或注意到记录到错误的项目/工作空间的跟踪，则问题可能是由于 LangSmith 的默认环境变量缓存造成的。在 Jupyter 笔记本中运行 LangSmith 时，这种情况尤其常见。请按照以下步骤诊断并解决问题：
+如果您在代理环境中没有看到跟踪，或者注意到记录到错误的代理、环境或工作区的跟踪，则问题可能是由于 LangSmith 的默认环境变量缓存造成的。在 Jupyter 笔记本中运行 LangSmith 时，这种情况尤其常见。请按照以下步骤诊断并解决问题：
 
 ## 1. 验证您的环境变量
 
@@ -12,7 +12,9 @@
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
-print(os.getenv("LANGSMITH_PROJECT"))
+print(os.getenv("LANGSMITH_AGENT_ID"))
+print(os.getenv("LANGSMITH_AGENT_ENVIRONMENT"))
+print(os.getenv("LANGSMITH_PROJECT"))  # Should be unset when you use agent addressing
 print(os.getenv("LANGSMITH_TRACING"))
 print(os.getenv("LANGSMITH_ENDPOINT"))
 print(os.getenv("LANGSMITH_API_KEY"))

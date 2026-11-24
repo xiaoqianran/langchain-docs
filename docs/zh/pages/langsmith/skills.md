@@ -2,88 +2,103 @@
 
 <!-- langchain-docs: LangSmith skills | https://docs.langchain.com/langsmith/skills -->
 
-# LangSmith技能
+#LangSmith技能
 
-使用代理技能来处理来自编码代理的 LangSmith 跟踪、数据集和评估器。
+安装 LangChain 技能，以便您的编码代理可以跟踪、评估和监控 LangSmith 中的代理。
 
-代理技能是可重复使用的按需功能，捆绑指令和可选的帮助程序脚本。本页总结了面向 LangSmith 的技能，您可以添加到兼容的编码代理中以查询跟踪、生成数据集和定义评估器。要直接从终端使用相同的LangSmith数据，请使用[LangSmith CLI](/langsmith/langsmith-cli)。
+代理技能是可重用的按需功能，可为编码代理捆绑指令。 [⟦T9⟧](https://github.com/langchain-ai/langchain-skills) 插件包含使用 LangSmith 的技能：添加跟踪、构建数据集和评估器、运行实验以及监控生产中的代理。同一插件还涵盖具有 LangChain、LangGraph 和 Deep Agents 的构建代理。要直接从终端处理LangSmith数据，请使用[LangSmith CLI](/langsmith/langsmith-cli)。
+
+技能集在版本之间会发生变化。对于当前列表，请浏览 [⟦T10⟧ directory](https://github.com/langchain-ai/langchain-skills/tree/main/skills) 或列出您代理中的技能。
 
 > [!注意]
 >
-> 这些技能遵循代理技能规范并在[⟦T5⟧ GitHub repository](https://github.com/langchain-ai/langsmith-skills) 中维护。您可以将 `SKILL.md` 和任何引用的 `scripts/` 复制到代理的技能目录中。下面的安装程序仅安装LangSmith技能（跟踪、数据集、评估器）。
+> LangSmith 技能已从已弃用的 `langsmith-skills` 存储库移至 `langchain-skills`，该存储库不再接收更新。要切换，请参阅[Migrate from ⟦T13⟧](#migrate-from-langsmith-skills)。
 
-## 快速安装
+## 安装插件
 
-使用 `npx skills` 仅安装 LangSmith 技能（跟踪、数据集、评估器）：
+该插件将 MCP 连接的技能与 LangChain 文档和 API 参考捆绑在一起。安装插件是推荐的路径。
+
+```text Claude Code theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/plugin marketplace add langchain-ai/langchain-skills
+/plugin install langchain-skills@langchain-skills
+```
+
+```bash Codex theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+codex plugin marketplace add langchain-ai/langchain-skills
+codex plugin add langchain-skills@langchain-skills
+```
+
+```bash Deep Agents Code theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode plugin marketplace add langchain-ai/langchain-skills
+dcode plugin install langchain-skills@langchain-skills
+```
+
+在 Claude Code 会话中运行 Claude Code 命令。使用 Claude Code v2.1.292 或更高版本，您可以通过一个命令从 shell 进行安装：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+claude plugin install langchain-skills --marketplace langchain-ai/langchain-skills
+```
+
+## 开启自动更新技能经常变化。打开自动更新，以便您的代理加载当前指南而不是过时的副本：
+
+* **Claude Code**：Claude Code 为第三方市场关闭了自动更新。运行`/plugin`，转到**市场**，选择`langchain-skills`，然后选择**启用自动更新**。要立即更新，请运行`/plugin marketplace update langchain-skills`。
+* **Deep Agents代码**：插件选择后台更新。更新后，运行`/reload`或开始新会话。
+* **Codex**：本地 Git 市场安装没有记录的自动更新设置。运行`codex plugin marketplace upgrade langchain-skills`进行更新。
+
+更新后，启动新的代理会话以加载更新的技能。有关脚本化设置和托管工作区，请参阅存储库自述文件中的[Updates](https://github.com/langchain-ai/langchain-skills#updates)。
+
+## 仅安装技能
+
+要安装不带插件的技能，请使用`npx skills`。此路径不注册文档 MCP 服务器。
 
 ```bash Local (current project) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npx skills add langchain-ai/langsmith-skills --skill '*' --yes
+npx skills add langchain-ai/langchain-skills --skill '*' --yes
 ```
 
 ```bash Global (all projects) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npx skills add langchain-ai/langsmith-skills --skill '*' --yes --global
+npx skills add langchain-ai/langchain-skills --skill '*' --yes --global
 ```
 
-```bash Link to a specific agent (e.g., Claude Code) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npx skills add langchain-ai/langsmith-skills --agent claude-code --skill '*' --yes --global
+```bash Link to a specific agent (for example, Claude Code) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx skills add langchain-ai/langchain-skills --agent claude-code --skill '*' --yes --global
 ```
 
 > [!提示]
 >
-> 要更新，请重新运行命令。如果目标技能文件夹已存在，请先将其删除（例如`rm -rf ~/.claude/skills/langsmith-*`）。
+> `npx skills` 不会自动更新。要更新，请运行 `npx skills update`，然后启动新的代理会话。
 
-## 配置环境
+对于其他代理以及从克隆签出安装，请参阅存储库自述文件中的[Installation](https://github.com/langchain-ai/langchain-skills#installation)。
 
-这些助手使用 `LANGSMITH_PROJECT` 来选择轨迹。 [Retrieve the selected agent environment's ⟦T11⟧](/langsmith/create-an-agent#use-an-environment-project) 并使用该返回值。
-
-安装技能后，设置所有LangSmith技能、帮助程序脚本和[LangSmith CLI](/langsmith/langsmith-cli)使用的环境变量：
+## 连接到LangSmith安装插件或技能不需要 LangSmith API 密钥。要让您的编码代理查询或管理 LangSmith 工作区，请在同一台计算机上安装 [LangSmith CLI](/langsmith/langsmith-cli#install) 并进行身份验证：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_API_KEY=<your-key>
-# Optional defaults
-export LANGSMITH_PROJECT="<environment-tracer-session-name>"
-# Advanced: multi-workspace or certain self-hosted setups only
-# export LANGSMITH_WORKSPACE_ID=<workspace-id>
+langsmith auth login
 ```
 
-## 这些技能涵盖哪些内容* [Traces](/langsmith/observability-concepts#traces)：添加对代理的跟踪；列出、过滤、检查和导出跟踪以进行调试和分析。
-* [Datasets](/langsmith/evaluation-concepts#datasets)：将轨迹转换为评估数据集（final_response、single_step、轨迹、RAG）并可选择上传到LangSmith。
-* [Evaluators](/langsmith/evaluation-concepts#evaluators)：定义代码或LLM作为法官评估器并将它们附加到数据集（离线）或代理环境（在线）。
+在身份验证期间选择所需的工作区。对于自托管实例和配置文件，请参阅[Authenticate](/langsmith/langsmith-cli#authenticate)。
 
-每个技能目录都附带一个 `SKILL.md` 以及您可以运行或调整的可选 `scripts/` 帮助程序。这些技能旨在插入兼容的编码代理（例如 Claude Code 或 Deep Agents Code），但如果您不想连接完整的代理，也可以直接重用帮助程序脚本。对于更繁重的查询、导出或自动化，您可以将这些技能与 [LangSmith CLI](/langsmith/langsmith-cli) 配对，以便从终端针对相同的代理环境、数据集和评估器编写脚本。
+要跟踪或评估您构建的应用程序，请使用 [LangSmith API key](/langsmith/create-account-api-key) 配置 LangSmith SDK。将密钥设置为 `LANGSMITH_API_KEY` 环境变量，并将其置于源代码控制之外。
 
-## 手动安装
+## 从 `langsmith-skills` 迁移
 
-克隆存储库并运行安装脚本以获得更多选项：
+在安装 `langchain-skills` 之前删除 `langsmith-skills` 技能，这样您的代理就不会加载两组重叠的指导：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-git clone https://github.com/langchain-ai/langsmith-skills.git
-cd langsmith-skills
+* **Claude Code 插件**：运行 `claude plugin marketplace remove langsmith-skills`，这也会卸载该插件。
 
-# Install for Claude Code in current directory (default)
-./install.sh
+* **`npx skills`**：运行一次以下命令，然后在安装技能的每个项目中再次运行（不带`--global`）：
 
-# Install for Claude Code globally
-./install.sh --global
+  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npx skills remove langsmith-trace langsmith-dataset langsmith-evaluator \
+    langsmith-custom-apps langsmith-experiment-diagnosis \
+    langsmith-graph-evaluator langsmith-online-eval-engineering --global --yes
+  ```
 
-# Install for Deep Agents Code in current directory
-./install.sh --deepagents
+* **`install.sh`或复制的文件夹**：从您安装的每个技能目录中删除`langsmith-*`文件夹，例如`~/.claude/skills/`、`.claude/skills/`、`~/.agents/skills/`或`.agents/skills/`。
 
-# Install for Deep Agents Code globally (includes agent persona)
-./install.sh --deepagents --global
+有关每种安装方法的确切命令，请参阅存储库自述文件中的[Migrate from the standalone skills](https://github.com/langchain-ai/langchain-skills#migrate-from-the-standalone-skills)。然后是[install the plugin](#install-the-plugin)和[turn on auto-update](#turn-on-auto-update)。
 
-# Install only LangSmith skills (any target)
-./install.sh --langsmith
-```
+***
 
-如果您只想复制特定技能，请将所需目录从 `config/skills/` 复制到代理的技能文件夹中。
-
-包含LangSmith技能：
-
-* langsmith-trace — 跟踪（查询/导出）
-* langsmith-dataset — 数据集（生成/上传）
-* langsmith-evaluator — 评估器（创建/附加）
-
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

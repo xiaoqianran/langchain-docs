@@ -69,7 +69,7 @@ my-agent/
 
 * **依赖关系和秘密**：在`pyproject.toml`中声明依赖关系，这也设置了[deployment Python version](/langsmith/python/managed-deep-agents-deploy#set-the-python-version)。 MDA 在本地加载 `.env` 并将非保留值作为部署机密转发。保留的平台变量和`.env`文件不包含在构建存档中。欲了解更多信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
 
-* **评估**：托管 Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理构建中。
+* **评估**：托管 Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理版本中。
 
 ## 共享项目外部的代码
 
@@ -101,7 +101,7 @@ MDA 将包复制到构建中。 `mda dev` 会在您编辑时重新加载，并�
 >
 > 使用 `mda` CLI 创建并部署您的第一个托管深度代理。
 
-> [卡][Tutorial](/langsmith/python/managed-deep-agents-tutorial)
+> [卡][Daily digest](/langsmith/python/managed-deep-agents-tutorial)
 >
 > 将持久记忆和每日日程添加到快速入门研究助手中。
 

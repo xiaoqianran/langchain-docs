@@ -71,7 +71,7 @@ Rules:
 1. Go to **LLM Gateway** and select the **Policies** tab.
 2. Click **+ Policy**.
 3. Under **Policy type**, select **Rate limit**.
-4. Define a **Scope** (organization, user group, workspace, user, or API key).
+4. Define a **Scope** and the subjects the policy applies to.
 5. Add one or more limits, each with a value, metric, and window.
 6. Click **Create policy**.
 

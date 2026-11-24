@@ -1,103 +1,93 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Authenticate to the LLM Gateway | https://docs.langchain.com/langsmith/llm-gateway-authentication -->
 
-# Authenticate to the LLM Gateway
+# 向 LLM 网关进行身份验证
 
-Choose a LangSmith API key for LLM Gateway requests, grant it permission to call the gateway, send it from your client, and fix authentication errors.
+为 LLM 网关请求选择一个 LangSmith API 密钥，授予其调用网关的权限，从客户端发送它，并修复身份验证错误。
 
-> [!NOTE]
+> [!注意]
 >
-> The LLM Gateway is in [beta](/langsmith/release-stages).
+> LLM 网关位于[beta](/langsmith/release-stages)。
 
-Every request to the [LLM Gateway](/langsmith/llm-gateway) authenticates with a LangSmith API key, never with a model provider's key. This page covers which key to use, the permission it needs, and how each client sends it.
+对 [LLM Gateway](/langsmith/llm-gateway) 的每个请求都使用 LangSmith API 密钥进行身份验证，而不是使用模型提供者的密钥进行身份验证。本页介绍了使用哪个密钥、它需要的权限以及每个客户端如何发送它。
 
-## Understand the two layers
+## 理解两层
 
-A gateway request passes two separate authentication checks:
+网关请求通过两个单独的身份验证检查：
 
-* **Your client to the gateway**: your code sends a LangSmith API key, which starts with `lsv2_`. The gateway checks the key's permissions, then applies your organization's policies.
-* **The gateway to the provider**: the gateway calls the model provider with a credential stored in LangSmith, usually a provider API key saved as a workspace secret. Your code never holds this credential. For the credential types each provider accepts, see [Provider authentication](/langsmith/llm-gateway-provider-authentication).
+* **您的客户端到网关**：您的代码发送一个以 `lsv2_` 开头的 LangSmith API 密钥。网关检查密钥的权限，然后应用您组织的策略。
+* **提供者的网关**：网关使用存储在 LangSmith 中的凭证调用模型提供者，通常是保存为工作区机密的提供者 API 密钥。您的代码永远不会持有此凭据。有关每个提供商接受的凭证类型，请参阅[Provider authentication](/langsmith/llm-gateway-provider-authentication)。
 
-## Choose a key type
+## 选择密钥类型
 
-Two kinds of [LangSmith API key](/langsmith/create-account-api-key) can call the gateway:
+两种[LangSmith API key](/langsmith/create-account-api-key)可以调用网关：* **[Personal access token (PAT)](/langsmith/administration-overview#personal-access-tokens-pats)**：前缀`lsv2_pt_`。 PAT 携带创建它的用户的权限。模拟器的 **创建网关密钥** 按钮创建 PAT。
+* **[Service key](/langsmith/administration-overview#service-keys)**：前缀`lsv2_sk_`。服务密钥属于组织而不是用户。在 [Enterprise plan](/langsmith/pricing-plans) 上，您可以为服务密钥分配其自己的工作区角色。
 
-* **[Personal access token (PAT)](/langsmith/administration-overview#personal-access-tokens-pats)**: prefixed `lsv2_pt_`. A PAT carries the permissions of the user who created it. The Simulator's **Create Gateway Key** button creates a PAT.
-* **[Service key](/langsmith/administration-overview#service-keys)**: prefixed `lsv2_sk_`. A service key belongs to the organization rather than a user. On the [Enterprise plan](/langsmith/pricing-plans), you can assign a service key its own workspace role.
-
-> [!TIP]
+> [!提示]
 >
-> The key type changes how [spend limits](/langsmith/llm-gateway-spend-policies) apply. A user-scoped spend limit applies to requests made with that user's PATs. It does not apply to requests made with a service key, even one the same user created. To cap a service key, create a spend limit scoped to that API key.
+> 密钥类型改变[spend limits](/langsmith/llm-gateway-spend-policies)的应用方式。用户范围的支出限制适用于使用该用户的 PAT 发出的请求。它不适用于使用服务密钥发出的请求，即使是同一用户创建的请求。要限制服务密钥，请创建仅限于该 API 密钥的支出限制。
 
-## Grant permission to call the gateway
+## 授予调用网关的权限
 
-To call the gateway, an API key needs both `gateway:invoke` and `workspaces:read` in the workspace it belongs to. A PAT has these permissions when its user's role does.
+要调用网关，API 密钥需要其所属工作区中的 `gateway:invoke` 和 `workspaces:read`。当 PAT 的用户角色拥有这些权限时，PAT 就拥有这些权限。
 
-Which roles include them depends on your plan:
+哪些角色包括它们取决于您的计划：* **没有 [workspace roles](/langsmith/rbac#workspace-roles)** 的计划：每个用户都具有工作区管理员角色，其中包括这两种权限。无需设置。
+* **企业计划**：工作区管理员角色包括这两种权限。内置工作区编辑者和工作区查看者角色两者都不包含，并且内置角色无法编辑。要在没有完全管理权限的情况下授予网关访问权限，请使用 `gateway:invoke` 和 `workspaces:read` 创建[custom role](/langsmith/rbac#custom-roles)，并将其分配给调用网关的用户。
 
-* **Plans without [workspace roles](/langsmith/rbac#workspace-roles)**: every user has the Workspace Admin role, which includes both permissions. No setup is needed.
-* **Enterprise plan**: the Workspace Admin role includes both permissions. The built-in Workspace Editor and Workspace Viewer roles include neither, and built-in roles cannot be edited. To grant gateway access without full admin rights, create a [custom role](/langsmith/rbac#custom-roles) with `gateway:invoke` and `workspaces:read`, and assign it to the users who call the gateway.
+对于具有自己角色的服务密钥，请分配内置 [Gateway Invoker](/langsmith/rbac#roles-for-keys-that-langsmith-creates) 角色（该角色恰好具有这两个权限），或者分配包含这两个权限的自定义角色。角色缺少 `gateway:invoke` 的服务密钥将获得带有 `missing permission gateway:invoke` 的 `403`。
 
-For a service key with its own role, grant the same two permissions to that role. A service key whose role lacks `gateway:invoke` gets a `403` with `missing permission gateway:invoke`.
+## 使用工作区范围的键
 
-## Use a workspace-scoped key
+使用范围仅限于一个工作区的 LangSmith API 密钥。该工作区确定网关读取哪些提供商机密、应用哪些策略以及跟踪的位置。对于 PAT，这是密钥的默认工作区。在模拟器中创建的密钥属于您创建它时打开的工作区。网关请求不支持组织范围的密钥。
 
-Use a LangSmith API key scoped to one workspace. That workspace determines which provider secrets the gateway reads, which policies apply, and where traces land. For a PAT, this is the key's default workspace. A key created in the Simulator belongs to the workspace that was open when you created it. Organization-scoped keys are not supported for gateway requests.
+## 发送密钥
 
-## Send the key
-
-The gateway accepts the key in any of these headers:
+网关接受以下任何标头中的密钥：
 
 * `Authorization: Bearer <key>`
 * `X-Api-Key: <key>`
-* `X-Goog-Api-Key: <key>`
+* `X-Goog-Api-Key: <key>`每个客户端都会在这些标头之一中发送其 API 密钥，因此您可以在客户端期望其提供者密钥的位置设置该密钥：
 
-Each client sends its API key in one of these headers, so you set the key where the client expects its provider key:
-
-| Client | Where to set the LangSmith API key | Header the client sends |
+|客户|在哪里设置 LangSmith API 密钥 |客户端发送的标头 |
 | - | - | - |
-| cURL or any HTTP client | The header itself | `Authorization: Bearer` |
-| OpenAI SDK, Codex | `api_key` or `OPENAI_API_KEY` | `Authorization: Bearer` |
-| Anthropic SDK, Claude Code | `api_key` or `ANTHROPIC_API_KEY` | `X-Api-Key` |
-| Google Gen AI SDK, Gemini CLI | `api_key` or `GEMINI_API_KEY` | `X-Goog-Api-Key` |
+| cURL 或任何 HTTP 客户端 |标题本身 | `Authorization: Bearer` |
+| OpenAI SDK、代码 | `api_key` 或 `OPENAI_API_KEY` | `Authorization: Bearer` |
+| Anthropic SDK，克劳德代码 | `api_key` 或 `ANTHROPIC_API_KEY` | `X-Api-Key` |
+| Google Gen AI SDK、Gemini CLI | `api_key` 或 `GEMINI_API_KEY` | `X-Goog-Api-Key` |
 
-Claude Code with a [Claude subscription](/langsmith/llm-gateway-coding-agents#use-claude-subscription-oauth) is the exception: its `Authorization` header carries the Anthropic OAuth token, so it sends the LangSmith API key in `X-Api-Key` through `ANTHROPIC_CUSTOM_HEADERS`.
+具有 [Claude subscription](/langsmith/llm-gateway-coding-agents#use-claude-subscription-oauth) 的 Claude Code 是例外：其 `Authorization` 标头携带 Anthropic OAuth 令牌，因此它通过 `ANTHROPIC_CUSTOM_HEADERS` 发送 `X-Api-Key` 中的 LangSmith API 密钥。
 
-For base URLs and request examples, see [API formats](/langsmith/llm-gateway-api-formats) and [Direct model access](/langsmith/llm-gateway-direct-model-access).
+有关基本 URL 和请求示例，请参阅 [API formats](/langsmith/llm-gateway-api-formats) 和 [Direct model access](/langsmith/llm-gateway-direct-model-access)。
 
-## Set environment variables
+## 设置环境变量
 
-[LangChain](/oss/python/langchain/overview) chat models and [Deep Agents](/oss/python/deepagents/overview) read the key from the environment:
+[LangChain](/oss/python/langchain/overview)聊天模型和[Deep Agents](/oss/python/deepagents/overview)从环境中读取密钥：
 
-* `LANGSMITH_API_KEY`: the LangSmith API key, also used for tracing.
-* `LANGSMITH_GATEWAY`: set to `true` to send supported chat models through the gateway. For details, see [Direct model access](/langsmith/llm-gateway-direct-model-access#configure-langchain-and-deep-agents).
-* `LANGSMITH_GATEWAY_API_KEY`: an override for gateway requests when they need a different key from `LANGSMITH_API_KEY`. It must meet the same requirements: workspace-scoped, with `gateway:invoke`.
+* `LANGSMITH_API_KEY`：LangSmith API 密钥，也用于跟踪。
+* `LANGSMITH_GATEWAY`：设置为`true`，通过网关发送支持的聊天模型。详情请参见[Direct model access](/langsmith/llm-gateway-direct-model-access#configure-langchain-and-deep-agents)。
+* `LANGSMITH_GATEWAY_API_KEY`：当网关请求需要与 `LANGSMITH_API_KEY` 不同的密钥时，可以覆盖网关请求。它必须满足相同的要求：工作空间范围，具有 `gateway:invoke`。
 
-[Deep Agents Code](/oss/deepagents/code/overview) requires `LANGSMITH_GATEWAY_API_KEY`, even when it holds the same key as `LANGSMITH_API_KEY`. With only `LANGSMITH_API_KEY` set, it stops at startup with `No credentials found for provider`.
+[Deep Agents Code](/oss/deepagents/code/overview) 需要 `LANGSMITH_GATEWAY_API_KEY`，即使它拥有与 `LANGSMITH_API_KEY` 相同的密钥。仅设置 `LANGSMITH_API_KEY` 时，它会在启动时以 `No credentials found for provider` 停止。
 
-## Fix authentication errors
-
-| Status and response | Cause | Fix |
+## 修复身份验证错误|现状和回应|原因 |修复|
 | - | - | - |
-| `401` with `{"error":"Unauthorized"}` | The request reached the gateway without a LangSmith API key, for example with a provider key (`sk-...`) in its place. | Send your LangSmith API key in place of the provider key. |
-| `401` from the provider, such as OpenAI's `Incorrect API key provided: lsv2_pt_***` or Anthropic's `invalid x-api-key` | The client sent your LangSmith API key straight to the provider, because it is not using the gateway base URL. | Set the client's base URL to the gateway. |
-| `403` with `{"error":"Forbidden"}` | The LangSmith API key is invalid. | Check that you copied the whole key, or create a new one. |
-| `403` with `{"error":"API key has expired"}` | The LangSmith API key has passed its expiry date. | Create a new key. |
-| `403` with `missing permission gateway:invoke` | The key's role lacks `gateway:invoke`. | Ask an admin to [grant the permission](#grant-permission-to-call-the-gateway). |
+| `401` 与 `{"error":"Unauthorized"}` |请求到达网关时没有 LangSmith API 密钥，例如使用提供商密钥 (`sk-...`) 代替。 |发送您的 LangSmith API 密钥来代替提供商密钥。 |
+|来自提供商的`401`，例如OpenAI的`Incorrect API key provided: lsv2_pt_***`或Anthropic的`invalid x-api-key` |客户端将您的 LangSmith API 密钥直接发送给提供商，因为它没有使用网关基本 URL。 |将客户端的基本 URL 设置为网关。 |
+| `403` 与 `{"error":"Forbidden"}` | LangSmith API 密钥无效。 |检查您是否复制了整个密钥，或创建一个新密钥。 |
+| `403` 与 `{"error":"API key has expired"}` | LangSmith API 密钥已过期。 |创建一个新密钥。 |
+| `403` 与 `missing permission gateway:invoke` |钥匙的角色缺少`gateway:invoke`。 |向管理员询问[grant the permission](#grant-permission-to-call-the-gateway)。 |
 
-For a `424`, an error that shows a masked provider key, or an Anthropic `invalid x-api-key` when your base URL already points at the gateway, the problem is the provider key stored in LangSmith, not your API key. See [Fix provider credential errors](/langsmith/llm-gateway-provider-authentication#fix-provider-credential-errors).
+对于 `424`（显示屏蔽的提供程序密钥的错误），或当您的基本 URL 已指向网关时的 Anthropic `invalid x-api-key`，问题在于存储在 LangSmith 中的提供程序密钥，而不是您的 API 密钥。参见[Fix provider credential errors](/langsmith/llm-gateway-provider-authentication#fix-provider-credential-errors)。
 
-Requests that a policy blocks return `402` for a [spend limit](/langsmith/llm-gateway-spend-policies) and `429` for a [rate limit](/langsmith/llm-gateway-rate-limit-policies). The response body names the policy, for example `{"type":"error","error":{"message":"request blocked by gateway policies: <POLICY_NAME>"}}`.
+请求策略阻止针对 [spend limit](/langsmith/llm-gateway-spend-policies) 返回 `402`，针对 [rate limit](/langsmith/llm-gateway-rate-limit-policies) 返回 `429`。响应正文为策略命名，例如 `{"type":"error","error":{"message":"request blocked by gateway policies: <POLICY_NAME>"}}`。
 
-## See also
-
-* [Provider authentication](/langsmith/llm-gateway-provider-authentication): store the credentials the gateway uses to call each provider.
-* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup): set up provider keys, permissions, and policies for your organization.
-* [Create a LangSmith API key](/langsmith/create-account-api-key): create a PAT or service key.
+## 另请参阅* [Provider authentication](/langsmith/llm-gateway-provider-authentication)：存储网关用于调用每个提供商的凭据。
+* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：为您的组织设置提供商密钥、权限和策略。
+* [Create a LangSmith API key](/langsmith/create-account-api-key)：创建 PAT 或服务密钥。
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-authentication.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-authentication.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

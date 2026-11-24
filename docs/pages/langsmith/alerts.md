@@ -255,7 +255,7 @@ You can preview alert behavior over a historical time window to understand how m
 >   * If no headers, use `{}`
 > * **Request Body Template**: Customize the JSON payload sent to your endpoint
 >   * Default: LangSmith sends the payload defined and the following additional key-value pairs appended to the payload:
->     * `project_name`: Name of the LangSmith project the alert is scoped to.
+>     * `project_name`: The [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) of the agent environment the alert is scoped to.
 >
 >     * `workspace_name`: Name of the LangSmith workspace.
 >

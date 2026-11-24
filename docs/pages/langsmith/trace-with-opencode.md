@@ -8,7 +8,7 @@ The `@langchain/langsmith-opencode` plugin sends [OpenCode](https://opencode.ai/
 
 > [!NOTE]
 >
-> This integration uses a legacy destination setting such as `project_name` or `LANGSMITH_PROJECT`. [Create an agent](/langsmith/create-an-agent), choose its environment, and [retrieve that environment's `tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project). Use that returned value in the destination setting and any overrides. For integrations that support agent addressing, use the [agent identifier and environment](/langsmith/log-traces-to-agent) directly.
+> This integration does not support [agent addressing](/langsmith/log-traces-to-agent). It traces to an agent environment by its `tracer_session_name`.
 
 ## Prerequisites
 
@@ -16,6 +16,7 @@ Before setting up tracing, ensure you have:
 
 * [OpenCode](https://opencode.ai/) installed and configured.
 * A [LangSmith API key](/langsmith/create-account-api-key).
+* An [agent](/langsmith/create-an-agent) in LangSmith. The plugin does not support agent addressing, so it traces to one of the agent's environments by name.
 * Access to configure the OpenCode `plugin` key in `opencode.json` or `~/.config/opencode/opencode.json`.
 
 ## Install and enable the plugin
@@ -29,7 +30,7 @@ Add the plugin to your OpenCode configuration file. You can configure it locally
 }
 ```
 
-Enable tracing and provide your LangSmith API key before starting OpenCode:
+Enable tracing, provide your LangSmith API key, and set `LANGSMITH_PROJECT` to the agent environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) before starting OpenCode. If you leave it unset, traces go to an agent named `opencode`.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export TRACE_TO_LANGSMITH="true"

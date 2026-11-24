@@ -12,7 +12,7 @@ OpenWiki 是一个 CLI，可以为您的代码库或个人知识编写和维护 
 
 **1.安装 CLI**
 
-OpenWiki 需要[Node.js 22.22.0 or later](https://nodejs.org)。
+OpenWiki 需要 [Node.js 22.22.0 or later](https://nodejs.org)。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install -g openwiki
@@ -69,7 +69,7 @@ openwiki --update
 openwiki personal --init
 ```
 
-个人模式写入 `~/.openwiki/wiki` 并可以摄取已配置的连接器，例如本地 git 存储库、自定义 MCP、Gmail、Notion、网络搜索、黑客新闻和 X/Twitter。参见[Personal mode](/oss/openwiki/personal-mode)。
+个人模式写入 `~/.openwiki/wiki` 并可以摄取配置的连接器，例如本地 git 存储库、自定义 MCP、Gmail、Notion、网络搜索、黑客新闻和 X/Twitter。参见[Personal mode](/oss/openwiki/personal-mode)。
 
 ## 交互式和一次性运行
 
@@ -89,17 +89,19 @@ openwiki -p "Summarize what you can do"
 
 ## 使用 LangSmith 进行追踪
 
-在入职期间，提供 LangSmith API 密钥来跟踪 OpenWiki 运行到名为 `openwiki` 的项目。您还可以在 `~/.openwiki/.env` 或进程环境中设置这些值：
+在入职期间，提供 LangSmith API 密钥来跟踪 OpenWiki 运行。默认情况下，跟踪会转到名为 `openwiki` 的项目。 OpenWiki 不支持 [agent addressing](/langsmith/log-traces-to-agent)，因此要将其跟踪发送到 [agent](/langsmith/create-an-agent)，请将 `LANGCHAIN_PROJECT` 设置为代理环境的 [⟦T33⟧](/langsmith/create-an-agent#use-an-environment-project)。导出 shell 中的变量而不是编辑 `~/.openwiki/.env`。载入并将该文件中的 `LANGCHAIN_PROJECT` 重置为 `openwiki`，但 shell 导出优先：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-LANGSMITH_API_KEY=your-key
-LANGCHAIN_TRACING_V2=true
-LANGCHAIN_PROJECT=openwiki
+export LANGSMITH_API_KEY=<your-langsmith-api-key>
+export LANGCHAIN_TRACING_V2=true
+export LANGCHAIN_PROJECT=<environment-tracer-session-name>
 ```
 
 要从 LangSmith 跟踪（与跟踪 OpenWiki 本身分开）丰富存储库 wiki，请参阅 [LangSmith connector](/oss/openwiki/code-mode#langsmith-connector)。
 
-## 后续步骤* [Code mode](/oss/openwiki/code-mode)：存储库 wiki、声明、OKF 输出和代理指令文件
+## 后续步骤
+
+* [Code mode](/oss/openwiki/code-mode)：存储库 wiki、声明、OKF 输出和代理指令文件
 * [Coding-agent integrations](/oss/openwiki/integrations)：在 Codex、Claude Code、OpenCode、Cursor、IBM Bob、Kiro、Oh My Pi、Antigravity 或 Pi 中运行 OpenWiki
 * [Search and link wikis](/oss/openwiki/search-and-link)：MCP 搜索和读取，以及多存储库工作区
 * [Personal mode](/oss/openwiki/personal-mode)：本地大脑和连接器

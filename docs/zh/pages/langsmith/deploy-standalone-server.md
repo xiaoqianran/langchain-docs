@@ -17,11 +17,11 @@
 | **控制平面** |不适用 |不适用 |不适用 |
 | **数据平面** | <ul><li>代理服务器</li><li>Postgres、Redis等</li></ul> |您的基础设施|你|
 
-此选项使您可以完全控制扩展、部署和 CI/CD 管道，同时仍然允许与 LangSmith 集成以进行跟踪和评估。
-
-> [!警告]
+此选项使您可以完全控制扩展、部署和 CI/CD 管道，同时仍然允许与 LangSmith 集成以进行跟踪和评估。> [!警告]
 >
-> 不要在无服务器环境中运行独立服务器。缩放到零可能会导致任务丢失，并且向上扩展将无法可靠地工作。![Standalone server architecture](https://mintcdn.com/langchain-5e9cc07a/Mwtbhvs2R50foe4Y/langsmith/images/standalone-server-light.png?fit=max\&auto=format\&n=Mwtbhvs2R50foe4Y\&q=85\&s=db67e2add4cf039b1ce2324fa1c1f244)
+> 不要在无服务器环境中运行独立服务器。缩放到零可能会导致任务丢失，并且向上扩展将无法可靠地工作。
+
+![Standalone server architecture](https://mintcdn.com/langchain-5e9cc07a/Mwtbhvs2R50foe4Y/langsmith/images/standalone-server-light.png?fit=max\&auto=format\&n=Mwtbhvs2R50foe4Y\&q=85\&s=db67e2add4cf039b1ce2324fa1c1f244)
 
 ### 工作流程
 
@@ -160,7 +160,7 @@ services:
 
 > [手风琴] 使用 MongoDB 检查点
 >
-> 要在 MongoDB 而不是 PostgreSQL 中存储检查点，请添加 MongoDB 服务并配置检查点后端。将 `langgraph.json` 中的后端设置为 `"mongo"` 或使用 `LS_DEFAULT_CHECKPOINTER_BACKEND` 环境变量。所有其他服务器数据仍然需要 PostgreSQL。
+> 要在 MongoDB 而不是 PostgreSQL 中存储检查点，请添加 MongoDB 服务并配置检查点后端。在 `langgraph.json` 中将后端设置为 `"mongo"` 或使用 `LS_DEFAULT_CHECKPOINTER_BACKEND` 环境变量。所有其他服务器数据仍然需要 PostgreSQL。
 >
 > ```yml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > volumes:
@@ -228,7 +228,7 @@ services:
 >
 > 有关 MongoDB 配置选项的更多详细信息，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
 
-这将在端口`8123`上启动代理服务器（如果需要，请更改`langgraph-api`中的端口映射）。测试应用程序是否健康：
+这将在端口 `8123` 上启动代理服务器（如果需要，请更改 `langgraph-api` 中的端口映射）。测试应用程序是否健康：
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request GET --url 0.0.0.0:8123/ok
@@ -240,8 +240,34 @@ curl --request GET --url 0.0.0.0:8123/ok
 {"ok":true}
 ```
 
-***
+## 使用 LangSmith API 密钥验证请求
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+默认情况下，独立代理服务器不对传入请求进行身份验证。您可以将其配置为每个请求都需要 LangSmith API 密钥。> [!注意]
+>
+> 如果 `langgraph.json` 在 `auth` 中定义了 [custom authentication](/langsmith/custom-auth) 处理程序，则该处理程序将验证请求而不是此配置。然后，服务器仅检查 Studio 请求的 LangSmith API 密钥，或者当 `auth.allow_langsmith_api_keys` 为 `true` 时检查没有 `Authorization` 标头的请求。有关更多信息，请参阅[Set up custom auth](/langsmith/set-up-custom-auth)。
+
+使用[Helm chart](#kubernetes)，设置这些值：
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  auth:
+    enabled: true
+    langSmithAuthEndpoint: "https://api.smith.langchain.com"
+    langSmithTenantId: "<workspace-id>"
+```
+
+对于其他平台，在服务器上设置等效的环境变量：
+
+* **`LANGGRAPH_AUTH_TYPE`**：`langsmith`。当 `auth.enabled` 为 `true` 时，Helm 图表会设置此值。
+* **`LANGSMITH_AUTH_ENDPOINT`** (`auth.langSmithAuthEndpoint`)：用于验证您所在区域或实例的密钥的 LangSmith API URL。例如，`https://api.smith.langchain.com` 或 `https://eu.api.smith.langchain.com`。对于 [self-hosted LangSmith](/langsmith/self-hosted)，请使用实例的 API URL，以 `/api/v1` 结尾。
+* **`LANGSMITH_TENANT_ID`** (`auth.langSmithTenantId`)：服务器接受其API密钥的[workspace](/langsmith/administration-overview#workspaces)的ID。
+
+调用者在 `X-Api-Key` 标头中发送其 LangSmith API 密钥。对于每个请求，服务器都会要求 LangSmith 验证密钥，然后检查该密钥是否属于 `LANGSMITH_TENANT_ID` 中的工作空间：* **工作区的任何密钥都可以**：调用者的密钥不需要是服务器自己的`LANGSMITH_API_KEY`。接受同一工作区的个人访问令牌或服务密钥。
+* **未检查密钥的角色**：服务器接受工作区的有效密钥，无论其 [workspace role](/langsmith/rbac#workspace-roles) 是什么，包括工作区查看器。服务器不会接收角色，因此无法限制调用者的行为：使用 LangSmith 密钥进行身份验证的调用者仅携带其 LangSmith 用户 ID 和 `authenticated` 权限。要控制每个调用者的访问，请将 LangSmith 密钥身份验证替换为颁发您自己的凭据的自定义身份验证。
+* **其他工作区的密钥被拒绝**：服务器拒绝具有 `Invalid tenant ID` 的不同工作区的有效密钥。有权访问多个工作区的密钥将解析为其默认工作区。要将其与另一个工作区中的服务器一起使用，请在 `X-Tenant-Id` 标头中发送该工作区的 ID。
+* **跟踪密钥被拒绝**：[tracing key](/langsmith/create-account-api-key#tracing-keys)只能发送跟踪，因此服务器用`Forbidden`拒绝它。
+* **验证结果被缓存**：服务器将每个成功的验证缓存最多 60 秒，因此已撤销的密钥最多可以继续工作一分钟。
+
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-standalone-server.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

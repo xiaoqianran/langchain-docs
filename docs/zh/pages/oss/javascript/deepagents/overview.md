@@ -31,7 +31,7 @@ Deep Agents 包括以下功能：* **在环境中采取行动**：通过工具�
 
 ## 使用 SDK 自托管
 
-当您在自己的进程或容器中运行代理，需要自定义 [backend](/oss/javascript/deepagents/backends)、存储或检查点，或者想要自己配置的 [Agent Server](/langsmith/agent-server) 时，请使用开源 SDK。 For managed deployment instead, see [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview).
+当您在自己的进程或容器中运行代理，需要自定义 [backend](/oss/javascript/deepagents/backends)、存储或检查点，或者想要自己配置的 [Agent Server](/langsmith/agent-server) 时，请使用开源 SDK。对于托管部署，请参阅[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)。
 
 ### 尝试一下
 
@@ -65,11 +65,11 @@ console.log(
 
 > [卡][View example trace](https://smith.langchain.com/public/b0413dd5-cda3-4cfd-945b-4c97acdedfe0/r)
 >
-> Open a public LangSmith run for this example.
+> 为此示例打开公共 LangSmith 运行。
 
 请参阅 [Quickstart](/oss/javascript/deepagents/quickstart/) 和 [Customization guide](/oss/javascript/deepagents/customization/) 使用 SDK 进行构建。> [!提示]
 >
-> Trace requests, debug agent behavior, and evaluate outputs with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview).按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
+> 使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview) 跟踪请求、调试代理行为并评估输出。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
 
 ## 核心能力
 
@@ -95,10 +95,10 @@ Deep Agents 是["agent harness"](/oss/javascript/concepts/products#agent-harness
 
 [⟦T9⟧](https://www.npmjs.com/package/deepagents) 是一个独立的库，构建在 [LangChain](/oss/javascript/langchain/) 代理的核心构建块之上，并使用 [LangGraph](/oss/javascript/langgraph/) 的工具在生产中运行代理。
 
-[LangChain](/oss/javascript/langchain/) is the framework that provides the core building blocks for your agents.
-To learn more about the differences between LangChain, LangGraph, and Deep Agents, see [Frameworks, runtimes, and harnesses](/oss/javascript/concepts/products). For a side-by-side comparison with Anthropic's harness, see [Deep Agents vs. Claude Agent SDK](/oss/javascript/deepagents/comparison).
+[LangChain](/oss/javascript/langchain/) 是为您的代理提供核心构建块的框架。
+要了解有关 LangChain、LangGraph 和 Deep Agents 之间差异的更多信息，请参阅 [Frameworks, runtimes, and harnesses](/oss/javascript/concepts/products)。有关与 Anthropic 安全带的并排比较，请参阅 [Deep Agents vs. Claude Agent SDK](/oss/javascript/deepagents/comparison)。
 
-For building custom agents without these built-in capabilities, consider using LangChain's [⟦T10⟧](/oss/javascript/langchain/agents) or building a custom [LangGraph](/oss/javascript/langgraph/overview) workflow.
+要构建没有这些内置功能的自定义代理，请考虑使用 LangChain 的 [⟦T10⟧](/oss/javascript/langchain/agents) 或构建自定义 [LangGraph](/oss/javascript/langgraph/overview) 工作流程。
 
 ## 执行环境执行环境是代理执行操作的地方。它有四层：
 
@@ -121,39 +121,41 @@ For building custom agents without these built-in capabilities, consider using L
 
 后端支持以下文件系统操作：|工具|描述 |
 | - | - |
-| `ls` |列出目录中的文件以及元数据（大小、修改时间）|
-| `read_file` |使用行号读取文件内容，支持大文件的偏移/限制。还支持返回非文本文件（图像、视频、音频和文档）的多模式内容块。请参阅下面支持的扩展。 |
+| `ls` | List files in a directory with metadata (size, modified time) |
+| `read_file` | Read file contents with line numbers, supports offset/limit for large files. Also supports returning multimodal content blocks for non-text files (images, video, audio, and documents).请参阅下面支持的扩展。 |
 | `write_file` |创建新文件 |
-| `edit_file` |在文件中执行精确的字符串替换（使用全局替换模式）|
+| `edit_file` | Perform exact string replacements in files (with global replace mode) |
 | `glob` |查找匹配模式的文件（例如，`**/*.py`）|
-| `grep` |使用多种输出模式搜索文件内容（仅文件、带有上下文的内容或计数）|
-| `execute` |在环境中运行 shell 命令（仅适用于[sandbox backends](/oss/javascript/deepagents/sandboxes)）|
+| `grep` | Search file contents with multiple output modes (files only, content with context, or counts) |
+| `execute` | Run shell commands in the environment (available with [sandbox backends](/oss/javascript/deepagents/sandboxes) only) |
 
-> [accordion] 支持的多模式文件扩展名
+> [accordion] Supported multimodal file extensions
 >
 > |类型 |扩展 |
 > | - | - |
-> | [Image](/oss/javascript/langchain/messages#multimodal) | `.png`、`.jpg`、`.jpeg`、`.gif`、`.webp`、`.heic`、`.heif` |
-> | [Video](/oss/javascript/langchain/messages#multimodal) | `.mp4`、`.mpeg`、`.mov`、`.avi`、`.flv`、`.mpg`、`.webm`、`.wmv`、`.3gpp` |
-> | [Audio](/oss/javascript/langchain/messages#multimodal) | `.wav`、`.mp3`、`.aiff`、`.aac`、`.ogg`、`.flac` |
+> | [Image](/oss/javascript/langchain/messages#multimodal) | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.heic`, `.heif` |
+> | [Video](/oss/javascript/langchain/messages#multimodal) | `.mp4`, `.mpeg`, `.mov`, `.avi`, `.flv`, `.mpg`, `.webm`, `.wmv`, `.3gpp` |
+> | [Audio](/oss/javascript/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac` |
 > | [File](/oss/javascript/langchain/messages#multimodal) | `.pdf`、`.ppt`、`.pptx` |> [accordion] 不使用默认文件系统工具运行
 >
-> 要从模型中隐藏上面列出的文件系统工具，请使用 `excluded_tools` 注册 [harness profile](/oss/javascript/deepagents/profiles#harness-profiles)：
+> 要从模型中隐藏上面列出的文件系统工具，请使用 `excludedTools` 注册 [harness profile](/oss/javascript/deepagents/profiles#harness-profiles)：
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> from deepagents import HarnessProfile, register_harness_profile
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { registerHarnessProfile } from "deepagents";
 >
-> register_harness_profile(
->     "anthropic:claude-sonnet-4-6",
->     HarnessProfile(
->         excluded_tools=frozenset(
->             {"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}
->         ),
->     ),
-> )
+> registerHarnessProfile("anthropic:claude-sonnet-4-6", {
+>   excludedTools: [
+>     "ls",
+>     "read_file",
+>     "write_file",
+>     "edit_file",
+>     "glob",
+>     "grep",
+>   ],
+> });
 > ```
 >
-> 通过 `excluded_middleware` 移除 [⟦T46⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) 本身被故意拒绝——它需要在 [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack) 中搭建脚手架。使用 `excluded_tools` 仅隐藏模型可见的工具表面并将中间件保留在适当的位置。要删除 `task` 工具，请参阅[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
+> 通过 `excludedMiddleware` 移除 [⟦T46⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) 本身被故意拒绝——它需要在 [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack) 中搭建脚手架。使用 `excludedTools` 仅隐藏模型可见的工具表面并将中间件保留在适当的位置。要删除 `task` 工具，请参阅[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
 
 虚拟文件系统由其他几个工具功能使用，例如技能、内存、代码执行和上下文管理。
 您还可以在为 Deep Agents 构建自定义工具和中间件时使用文件系统。
@@ -339,7 +341,7 @@ const agent = await createDeepAgent({
 * **自主执行**：子代理独立运行直到完成。
 * **单次切换**：它将一份最终报告返回给主代理。
 * **可配置策略**：使用[default ⟦T85⟧ subagent](/oss/javascript/deepagents/subagents#default-subagent)（默认启用）或定义[custom subagents](/oss/javascript/deepagents/subagents#custom-subagents)。
-* **无状态消息传递**：子代理是无状态的，不能发回多条消息。
+* **无状态消息传送**：子代理是无状态的，不能发回多条消息。
 * **上下文和令牌效率**：繁重的子任务工作保持隔离并被压缩为紧凑的结果。
 
 有关更多信息，请参阅[Subagents](/oss/javascript/deepagents/subagents)。要删除 `task` 工具，请参阅[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。

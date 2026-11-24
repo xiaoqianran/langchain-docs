@@ -19,11 +19,11 @@
 
 > [!注意]
 >
-> `runs.query` 替换已弃用的 `list_runs` / `listRuns` 和 `read_run` / `readRun`。 LangSmith Cloud 于 2027 年 1 月 31 日删除它们，自托管 LangSmith 在 v0.19 中删除它们。新方法需要 `langsmith>=0.10.15` (Python) 或 `langsmith>=0.8.9` (TypeScript)，以及自托管的 LangSmith v0.16 或更高版本。有关更改的完整列表，请参阅[migration guide](/langsmith/smithdb-sdk-migration-query-runs)。
-
-> [!注意]
+> `runs.query` 替换已弃用的 `list_runs` / `listRuns` 和 `read_run` / `readRun`。 LangSmith Cloud 于 2027 年 1 月 31 日删除它们，自托管 LangSmith 在 v0.19 中删除它们。新方法需要 `langsmith>=0.10.15` (Python) 或 `langsmith>=0.8.9` (TypeScript)，以及自托管的 LangSmith v0.16 或更高版本。有关更改的完整列表，请参阅[migration guide](/langsmith/smithdb-sdk-migration-query-runs)。> [!注意]
 >
-> 查询代理、实验或评估者的踪迹，[find its project ID](/langsmith/resolve-an-agent) 并将其作为项目 ID 传递。## 使用过滤器参数
+> 要查询代理环境、实验或评估器的踪迹，[resolve it](/langsmith/resolve-an-agent) 并将返回的`session_id` 作为`project_ids` 中的项目传递。解决需要最新的 SDK 和LangSmith 版本，并且在 BYOC 数据平面上不可用。有关要求和 BYOC 替代方案，请参阅[Resolve an agent environment](/langsmith/resolve-an-agent)。
+
+## 使用过滤器参数
 
 对于简单的查询，您不必依赖我们的查询语法。您可以使用[filter arguments reference](/langsmith/trace-query-syntax#filter-arguments)中指定的过滤器参数。
 
@@ -31,9 +31,9 @@
 >
 > **先决条件**
 >
-> 在运行以下代码片段之前初始化客户端、查找项目 ID 并设置时间窗口：
+> 初始化客户端[resolve the agent environment](/langsmith/resolve-an-agent)以获取其`session_id`，并在运行以下代码片段之前设置时间窗口：
 >
-> * `runs.query` 采用项目 ID，而不是项目名称。
+> * `runs.query` 采用 `project_ids` 中已解析的 `session_id` 值，而不是代理 ID 或名称。
 > * 除非您通过`min_start_time`，否则只会回顾**1天**。下面的片段使用 7 天的窗口。一个查询最多可以跨越 401 天。
 > * 它仅返回运行 `ID`，除非您传递 `selects`（大写字段名称，例如 `NAME`、`INPUTS`、`OUTPUTS`）。
 > * 在 Python 中，`client.runs` 是异步的：在 `async` 函数内运行代码片段，例如使用 `asyncio.run()`。每个查询都会返回一个异步迭代器，为您分页结果。
@@ -41,40 +41,43 @@
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from datetime import datetime, timedelta, timezone
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 client = Client()
-project_id = str(client.read_project(project_name="<your_project>").id)
+# Replace with your agent ID and environment
+project_id = (await client.sessions.resolve(**agent_address("support-agent", "production"))).session_id
 since = datetime.now(timezone.utc) - timedelta(days=7)
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "langsmith";
+import { AgentAddress, Client } from "langsmith";
 
 const client = new Client();
-const projectId = (await client.readProject({ projectName: "<your_project>" })).id;
+// Replace with your agent ID and environment
+const projectId = (await client.sessions.resolve(new AgentAddress("support-agent", "production"))).session_id;
 const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 ```
 
 ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.address.AgentAddress;
 import com.langchain.smith.client.LangsmithClient;
 import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
 import com.langchain.smith.models.runs.RunQueryV2Params;
 import java.time.OffsetDateTime;
 
 LangsmithClient client = LangsmithOkHttpClient.fromEnv();
-String projectId = "<your_project_id>";
+// Replace with your agent ID and environment
+AgentAddress agent = new AgentAddress("support-agent", "production");
+String projectId = client.sessions().resolve(agent.toApiAddress()).sessionId();
 OffsetDateTime since = OffsetDateTime.now().minusDays(7);
 
 // Run any of the queries below with: client.runs().queryV2(params)
 ```
 
-以下是使用关键字参数列出运行的一些方法示例：
-
-### 列出项目中的所有运行
+以下是使用关键字参数列出运行的一些方法示例：### 列出代理环境中的所有运行
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-project_runs = [
+all_runs = [
     run
     async for run in client.runs.query(
         project_ids=[project_id],
@@ -85,20 +88,20 @@ project_runs = [
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const projectRuns = [];
+const allRuns = [];
 for await (const run of client.runs.query({
   project_ids: [projectId],
   min_start_time: since,
   selects: ["ID", "NAME", "RUN_TYPE", "START_TIME"],
 })) {
-  projectRuns.push(run);
+  allRuns.push(run);
 }
 ```
 
 ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import com.langchain.smith.models.runs.RunSelectField;
 
-RunQueryV2Params projectRuns = RunQueryV2Params.builder()
+RunQueryV2Params allRuns = RunQueryV2Params.builder()
     .addProjectId(projectId)
     .minStartTime(since)
     .addSelect(RunSelectField.ID)
@@ -140,9 +143,9 @@ RunQueryV2Params todaysLlmRuns = RunQueryV2Params.builder()
     .build();
 ```
 
-### 列出项目中的根运行
+### 列出代理环境中的根运行
 
-根运行是没有父运行的运行。这些被分配给 `is_root` 的值 `True`。您可以使用它来过滤根运行。
+根运行是没有父运行的运行。这些为 `is_root` 分配了值 `True`。您可以使用它来过滤根运行。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 root_runs = client.runs.query(
@@ -184,7 +187,9 @@ const correctRuns = client.runs.query({
   min_start_time: since,
   has_error: false,
 });
-``````java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 RunQueryV2Params noErrorRuns = RunQueryV2Params.builder()
     .addProjectId(projectId)
     .minStartTime(since)
@@ -194,7 +199,7 @@ RunQueryV2Params noErrorRuns = RunQueryV2Params.builder()
 
 ### 按运行 ID 列出运行
 
-如果您有运行 ID 列表，则可以直接列出它们。也传递项目 ID；您可以将`ids`与其他过滤器结合使用。
+如果您有运行 ID 列表，则可以直接列出它们。也通过`project_ids`。您可以将`ids`与其他过滤器结合使用。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 run_ids = ["a36092d2-4ad5-4fb4-9c0d-0dba9a2ed836", "9398e6be-964f-4aa4-8ae9-ad78cd4b7074"]
@@ -227,7 +232,7 @@ RunQueryV2Params runIdsRuns = RunQueryV2Params.builder()
 
 ### 通过 ID 获取单次运行
 
-要按 ID 获取单个运行，请使用 `runs.retrieve` 方法。它需要运行所属项目的 ID。对于从公共共享链接运行，请改用 [public runs methods](/langsmith/smithdb-sdk-migration-feedback)。
+要按 ID 获取单个运行，请使用 `runs.retrieve` 方法。它需要运行所属的代理环境的`project_id`。对于从公共共享链接运行，请改用 [public runs methods](/langsmith/smithdb-sdk-migration-feedback)。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 run_id = "a36092d2-4ad5-4fb4-9c0d-0dba9a2ed836"
@@ -268,16 +273,16 @@ Run run = client.runs().retrieveV2(
 
 > [!提示]
 >
-> **使用 LangGraph** 在本地重播跟踪记录
+> **使用 LangGraph** 在本地重放跟踪
 >
 > 如果您将 LangGraph 与检查点结合使用，则可以从 LangSmith 获取跟踪并在本地重播以进行调试。有关从检查点恢复执行的详细信息，请参阅[LangGraph's time travel and replay documentation](/oss/python/langgraph/use-time-travel)。
 
-## 使用过滤查询语言
+## 使用过滤查询语言对于更复杂的查询，您可以使用过滤查询语言。以下示例涵盖了最常见的模式。有关完整的运算符和字段参考，包括所有比较器、可过滤字段、值格式化规则和快速参考示例表，请参阅[Trace query syntax: filter query language](/langsmith/trace-query-syntax#filter-query-language)。
 
-对于更复杂的查询，您可以使用过滤查询语言。以下示例涵盖了最常见的模式。有关完整的运算符和字段参考，包括所有比较器、可过滤字段、值格式化规则和快速参考示例表，请参阅[Trace query syntax: filter query language](/langsmith/trace-query-syntax#filter-query-language)。
+### 列出对话线程中的所有 root 运行
 
-### 列出对话线程中的所有 root 运行这是在会话线程中获取运行的方法。有关设置线程的更多信息，请参阅我们的[how-to guide on setting up threads](/langsmith/threads)。要直接列出线程及其跟踪，请参阅[Query threads](/langsmith/query-threads)。
-通过设置共享线程 ID 对线程进行分组。 LangSmith UI 允许您使用以下元数据键之一：`session_id` 或 `thread_id`。会话 ID 也称为跟踪项目 ID。以下查询与其中任何一个匹配。
+这是在会话线程中获取运行的方法。有关设置线程的更多信息，请参阅我们的[how-to guide on setting up threads](/langsmith/threads)。要直接列出线程及其跟踪，请参阅[Query threads](/langsmith/query-threads)。
+通过设置共享线程 ID 对线程进行分组。 LangSmith UI 允许您使用以下元数据键之一：`session_id` 或 `thread_id`。以下查询与其中任何一个匹配。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 group_key = "<your_thread_id>"
@@ -408,9 +413,7 @@ RunQueryV2Params runs = RunQueryV2Params.builder()
     .minStartTime(since)
     .filter("neq(status, \"error\")")
     .build();
-```
-
-### 列出 start_time 大于特定时间戳的所有运行
+```### 列出 start_time 大于特定时间戳的所有运行
 
 要限制时间窗口本身，首选 `min_start_time` 和 `max_start_time` 参数； `start_time` 过滤器仅缩小该窗口内的结果范围。
 
@@ -454,7 +457,9 @@ RunQueryV2Params runs = RunQueryV2Params.builder()
     .minStartTime(since)
     .filter("search(\"substring\")")
     .build();
-```### 列出所有用 git 哈希“2aa1cf4”标记的运行
+```
+
+### 列出所有用 git 哈希“2aa1cf4”标记的运行
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 client.runs.query(project_ids=[project_id], min_start_time=since, filter='has(tags, "2aa1cf4")')
@@ -554,9 +559,7 @@ RunQueryV2Params runs = RunQueryV2Params.builder()
     .build();
 ```
 
-### 检查元数据是否存在
-
-如果要检查元数据是否存在，可以使用 `eq` 运算符，也可以选择使用 `and` 语句来按值进行匹配。如果您想记录有关跑步的更多结构化信息，这非常有用。
+### 检查元数据是否存在如果要检查元数据是否存在，可以使用 `eq` 运算符，也可以选择使用 `and` 语句来按值进行匹配。如果您想记录有关跑步的更多结构化信息，这非常有用。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Check for any run with the "user_id" metadata key
@@ -602,7 +605,9 @@ RunQueryV2Params runsForUser = RunQueryV2Params.builder()
     .build();
 ```
 
-### 检查元数据中的环境详细信息一种常见的模式是通过元数据将环境信息添加到跟踪中。如果要过滤包含环境元数据的运行，可以使用与上面相同的模式：
+### 检查元数据中的环境详细信息
+
+一种常见的模式是通过元数据将环境信息添加到跟踪中。如果要过滤包含环境元数据的运行，可以使用与上面相同的模式：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 client.runs.query(
@@ -750,9 +755,7 @@ RunQueryV2Params runsWithValueNotThreadId = RunQueryV2Params.builder()
     .build();
 ```
 
-### 组合多个过滤器
-
-如果您想组合多个条件来优化搜索，可以使用 `and` 运算符以及其他过滤功能。以下是您如何搜索名为“ChatOpenAI”的运行，这些运行在其元数据中也具有特定的`thread_id`：
+### 组合多个过滤器如果您想组合多个条件来优化搜索，可以使用 `and` 运算符以及其他过滤功能。以下是您如何搜索名为“ChatOpenAI”的运行，这些运行在其元数据中也具有特定的`thread_id`：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 client.runs.query(
@@ -778,7 +781,9 @@ RunQueryV2Params runs = RunQueryV2Params.builder()
     .build();
 ```
 
-### 树过滤器列出名为“RetrieveDocs”的所有运行，其根运行的“user_score”反馈为 1，并且完整跟踪中的任何运行都名为“ExpandQuery”。
+### 树过滤器
+
+列出名为“RetrieveDocs”的所有运行，其根运行的“user_score”反馈为 1，并且完整跟踪中的任何运行都名为“ExpandQuery”。
 
 如果您想要提取跟踪中达到的各种状态或步骤的特定运行条件，则这种类型的查询非常有用。
 
@@ -816,22 +821,21 @@ RunQueryV2Params runs = RunQueryV2Params.builder()
 
 使用 `trace_filter` 匹配根运行上的字段，使用 `tree_filter` 匹配跟踪树中任何运行上支持的可搜索字段。对于任意返回的子运行字段（例如嵌套 `inputs`、`outputs` 或 `extra` 负载）的谓词，请使用以下步骤：
 
-1. 使用 `filter`、`trace_filter`、`tree_filter`、`run_type`、元数据过滤器和 `ls_run_depth` [system metadata key](/langsmith/ls-metadata-parameters#ls_run_depth) 缩小候选根跟踪服务器端。
+1. 窄候选根跟踪服务器端，包括 `filter`、`trace_filter`、`tree_filter`、`run_type`、元数据过滤器和 `ls_run_depth` [system metadata key](/langsmith/ls-metadata-parameters#ls_run_depth)。
 2. 使用 `traces.list_runs` / `traces.listRuns` 获取每个候选轨迹的运行。
-3. 将谓词本地应用到不可用作服务器端筛选字段的字段。
-
-以下示例返回根跟踪，其中包含工具运行，其输出包含特定值。服务器端`tree_filter`将候选范围缩小到包含相关工具运行的跟踪，并且本地谓词检查`outputs`有效负载。
+3. 将谓词本地应用到不可用作服务器端筛选字段的字段。以下示例返回根跟踪，其中包含工具运行，其输出包含特定值。服务器端`tree_filter`将候选范围缩小到包含相关工具运行的跟踪，并且本地谓词检查`outputs`有效负载。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 from datetime import datetime, timedelta, timezone
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 
 async def main():
     client = Client()
-    project_id = str(client.read_project(project_name="<your_project>").id)
+    # Replace with your agent ID and environment
+    project_id = (await client.sessions.resolve(**agent_address("support-agent", "production"))).session_id
 
     matching_trace_ids = []
     async for candidate in client.runs.query(
@@ -859,10 +863,11 @@ asyncio.run(main())
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "langsmith";
+import { AgentAddress, Client } from "langsmith";
 
 const client = new Client();
-const projectId = (await client.readProject({ projectName: "<your_project>" })).id;
+// Replace with your agent ID and environment
+const projectId = (await client.sessions.resolve(new AgentAddress("support-agent", "production"))).session_id;
 
 const matchingTraceIds: string[] = [];
 for await (const candidate of client.runs.query({
@@ -886,7 +891,9 @@ for await (const candidate of client.runs.query({
     matchingTraceIds.push(candidate.trace_id!);
   }
 }
-```### 高级：导出带有子工具使用情况的扁平化跟踪视图
+```
+
+### 高级：导出带有子工具使用情况的扁平化跟踪视图
 
 以下 Python 示例演示如何导出跟踪的扁平视图，包括有关代理在每个跟踪中使用的工具（来自嵌套运行）的信息。
 这可用于分析代理在多个跟踪中的行为。
@@ -895,7 +902,7 @@ for await (const candidate of client.runs.query({
 
 为了优化查询，示例：
 
-1. 查询工具运行时只选择必要的字段，以减少查询时间。
+1、查询工具运行时只选择必要的字段，以减少查询时间。
 2. 批量获取根运行 ID。根运行的 ID 是其跟踪 ID。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -903,12 +910,13 @@ import asyncio
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 
 async def main():
     client = Client()
-    project_id = str(client.read_project(project_name="my-project").id)
+    # Replace with your agent ID and environment
+    project_id = (await client.sessions.resolve(**agent_address("support-agent", "production"))).session_id
     num_days = 30
     since = datetime.now(timezone.utc) - timedelta(days=num_days)
 
@@ -956,9 +964,7 @@ df = pd.DataFrame(data)
 df.head()
 ```
 
-### 高级：导出检索器 IO 以获取带有反馈的跟踪
-
-如果您想根据检索器行为微调嵌入或诊断端到端系统性能问题，则此查询非常有用。
+### 高级：导出检索器 IO 以获取带有反馈的跟踪如果您想根据检索器行为微调嵌入或诊断端到端系统性能问题，则此查询非常有用。
 以下 Python 示例演示了如何在具有特定反馈分数的跟踪中导出检索器输入和输出。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -966,12 +972,13 @@ import asyncio
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 
 async def main():
     client = Client()
-    project_id = str(client.read_project(project_name="your-project-name").id)
+    # Replace with your agent ID and environment
+    project_id = (await client.sessions.resolve(**agent_address("support-agent", "production"))).session_id
     num_days = 1
     since = datetime.now(timezone.utc) - timedelta(days=num_days)
 
@@ -1030,7 +1037,9 @@ df = pd.DataFrame(data)
 df.head()
 ```
 
-## 速率限制`runs.query` (`POST /api/v2/runs/query`) 具有比已弃用的 `POST /runs/query` 端点更高的专用速率限制：LangSmith 云中每个 API 密钥每 10 秒 300 个请求。超过它的请求返回`429 Too Many Requests`。它不受已弃用端点的每租户限制的约束。有关一般最佳实践，请参阅[Run query endpoint rate limits](/langsmith/usage-and-billing#run-query-endpoint)。
+## 速率限制
+
+`runs.query` (`POST /api/v2/runs/query`) 具有比已弃用的 `POST /runs/query` 端点更高的专用速率限制：LangSmith 云中每个 API 密钥每 10 秒 300 个请求。超过它的请求返回`429 Too Many Requests`。它不受已弃用端点的每租户限制的约束。有关一般最佳实践，请参阅[Run query endpoint rate limits](/langsmith/usage-and-billing#run-query-endpoint)。
 
 ***
 

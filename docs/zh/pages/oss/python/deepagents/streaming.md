@@ -1328,7 +1328,7 @@ for mode, data in agent.stream(
 
 对于 `subgraphs=True`，块形状取决于您是否传递一种或多种流模式：
 
-| `stream_mode` |块状|
+| `stream_mode` |块状 |
 | - | - |
 |单模式（例如`"updates"`）| `(namespace, data)` |
 |多种模式（例如`["messages", "updates"]`）| `(namespace, mode, data)` |
@@ -1351,7 +1351,7 @@ for namespace, mode, data in agent.stream(
     stream_mode=["updates", "messages", "custom"],
     subgraphs=True,
 ):
-    print(mode)       # "updates", "messages", or "custom"
+    print(mode)  # "updates", "messages", or "custom"
     print(namespace)  # () for main agent, ("tools:<id>",) for subagent
     print(data)
 ```

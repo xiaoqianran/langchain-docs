@@ -2439,6 +2439,12 @@
           "rel": "langsmith/script-running-pg-support-queries.md"
         }
       ],
+      "security-overview": [
+        {
+          "title": "LangSmith security overview",
+          "rel": "langsmith/security-overview.md"
+        }
+      ],
       "self-host-additional-features": [
         {
           "title": "Configure additional self-hosted features",
@@ -4185,10 +4191,22 @@
           "rel": "langsmith/javascript/managed-deep-agents-design-agent.md"
         }
       ],
+      "managed-deep-agents-dreaming": [
+        {
+          "title": "Dream over traces",
+          "rel": "langsmith/javascript/managed-deep-agents-dreaming.md"
+        }
+      ],
       "managed-deep-agents-evals": [
         {
           "title": "Evaluate Managed Deep Agents",
           "rel": "langsmith/javascript/managed-deep-agents-evals.md"
+        }
+      ],
+      "managed-deep-agents-goal-oriented": [
+        {
+          "title": "Work toward a goal over time",
+          "rel": "langsmith/javascript/managed-deep-agents-goal-oriented.md"
         }
       ],
       "managed-deep-agents-identity": [
@@ -4251,6 +4269,12 @@
           "rel": "langsmith/javascript/managed-deep-agents-paid-media-agent.md"
         }
       ],
+      "managed-deep-agents-patterns": [
+        {
+          "title": "Managed Deep Agents patterns",
+          "rel": "langsmith/javascript/managed-deep-agents-patterns.md"
+        }
+      ],
       "managed-deep-agents-project-structure": [
         {
           "title": "Managed Deep Agents project structure",
@@ -4299,6 +4323,12 @@
           "rel": "langsmith/javascript/managed-deep-agents-subagents.md"
         }
       ],
+      "managed-deep-agents-swarm": [
+        {
+          "title": "Investigate an incident with a swarm",
+          "rel": "langsmith/javascript/managed-deep-agents-swarm.md"
+        }
+      ],
       "managed-deep-agents-tools": [
         {
           "title": "Add custom tools to Managed Deep Agents",
@@ -4307,8 +4337,14 @@
       ],
       "managed-deep-agents-tutorial": [
         {
-          "title": "Add a custom search tool, memory, and a schedule",
+          "title": "Build a daily digest agent",
           "rel": "langsmith/javascript/managed-deep-agents-tutorial.md"
+        }
+      ],
+      "managed-deep-agents-watch-mode": [
+        {
+          "title": "Build a Slack watch agent",
+          "rel": "langsmith/javascript/managed-deep-agents-watch-mode.md"
         }
       ]
     }
@@ -4389,10 +4425,22 @@
           "rel": "langsmith/python/managed-deep-agents-design-agent.md"
         }
       ],
+      "managed-deep-agents-dreaming": [
+        {
+          "title": "Dream over traces",
+          "rel": "langsmith/python/managed-deep-agents-dreaming.md"
+        }
+      ],
       "managed-deep-agents-evals": [
         {
           "title": "Evaluate Managed Deep Agents",
           "rel": "langsmith/python/managed-deep-agents-evals.md"
+        }
+      ],
+      "managed-deep-agents-goal-oriented": [
+        {
+          "title": "Work toward a goal over time",
+          "rel": "langsmith/python/managed-deep-agents-goal-oriented.md"
         }
       ],
       "managed-deep-agents-identity": [
@@ -4455,6 +4503,12 @@
           "rel": "langsmith/python/managed-deep-agents-paid-media-agent.md"
         }
       ],
+      "managed-deep-agents-patterns": [
+        {
+          "title": "Managed Deep Agents patterns",
+          "rel": "langsmith/python/managed-deep-agents-patterns.md"
+        }
+      ],
       "managed-deep-agents-project-structure": [
         {
           "title": "Managed Deep Agents project structure",
@@ -4503,6 +4557,12 @@
           "rel": "langsmith/python/managed-deep-agents-subagents.md"
         }
       ],
+      "managed-deep-agents-swarm": [
+        {
+          "title": "Investigate an incident with a swarm",
+          "rel": "langsmith/python/managed-deep-agents-swarm.md"
+        }
+      ],
       "managed-deep-agents-tools": [
         {
           "title": "Add custom tools to Managed Deep Agents",
@@ -4511,8 +4571,14 @@
       ],
       "managed-deep-agents-tutorial": [
         {
-          "title": "Add a custom search tool, memory, and a schedule",
+          "title": "Build a daily digest agent",
           "rel": "langsmith/python/managed-deep-agents-tutorial.md"
+        }
+      ],
+      "managed-deep-agents-watch-mode": [
+        {
+          "title": "Build a Slack watch agent",
+          "rel": "langsmith/python/managed-deep-agents-watch-mode.md"
         }
       ]
     }

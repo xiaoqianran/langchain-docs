@@ -12,11 +12,7 @@ Use replicas to:
 * Write to multiple workspaces for multi-tenant isolation without changing any agent code.
 * Send traces to the same server for different agent environments, with per-replica metadata overrides.
 
-> [!NOTE]
->
-> This integration uses a legacy destination setting such as `project_name` or `LANGSMITH_PROJECT`. [Create an agent](/langsmith/create-an-agent), choose its environment, and [retrieve that environment's `tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project). Use that returned value in the destination setting and any overrides. For integrations that support agent addressing, use the [agent identifier and environment](/langsmith/log-traces-to-agent) directly.
-
-Provision every destination before enabling routing, including each replica and tenant workspace. Set each replica's `project_name` or `projectName` to its destination environment's `tracer_session_name`.
+Provision every destination before enabling routing, including each replica and tenant workspace. Set each replica's `project_name` or `projectName` to its destination agent environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project).
 
 ## Configure replicas via environment variable
 
@@ -39,6 +35,8 @@ Set the `LANGSMITH_RUNS_ENDPOINTS` environment variable to a JSON value. Two for
   {"api_url": "https://api.smith.langchain.com", "api_key": "ls__key2", "project_name": "<staging-tracer-session-name>"}
   ]'
   ```
+
+Each replica takes a `project_name`. `LANGSMITH_RUNS_ENDPOINTS` does not accept an agent address.
 
 > [!WARNING]
 >
@@ -105,6 +103,8 @@ const myPipeline = traceable(
 
 await myPipeline("What is LangSmith?");
 ```
+
+Instead of `project_name`, you can set a replica's `address` to the destination's [agent address](/langsmith/log-traces-to-agent).
 
 You can also use the `updates` field to merge additional fields (such as [metadata or tags](/langsmith/ls-metadata-parameters)) into a run for a specific replica only, leaving the primary trace unchanged. Replica errors are non-fatal: if a replica endpoint is unavailable, LangSmith logs the error without affecting the primary trace.
 

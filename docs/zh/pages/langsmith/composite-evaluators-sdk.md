@@ -8,13 +8,14 @@
 
 本指南介绍了如何设置使用多个评估器的评估，并使用 [LangSmith SDK](https://reference.langchain.com/python/langsmith) 将其分数与自定义聚合函数相结合。
 
-> [!注意]
->
-> 需要朗史密斯>=0.4.29 
-
 > [!提示]
 >
 > 要在LangSmith UI 中创建复合赋值器，请参阅[How to create a composite evaluator (UI)](/langsmith/composite-evaluators-ui)。
+
+## 先决条件
+
+* 安装了`langsmith>=0.4.29`、`openai`和`python-dotenv`。
+* `LANGSMITH_API_KEY` 和 `OPENAI_API_KEY` 在您的环境或 `.env` 文件中设置。这些示例调用 `load_dotenv()` 来加载文件。详情请参见[Set up environment variables](/langsmith/evaluation-quickstart)。
 
 ## 1. 在数据集上配置评估器
 
@@ -23,7 +24,6 @@
 如果您已经拥有自己的数据集并配置了评估器，则可以跳过此步骤。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
 from dotenv import load_dotenv
 from openai import OpenAI
 from langsmith import Client
@@ -32,12 +32,6 @@ import json
 
 # Load environment variables from .env file
 load_dotenv()
-
-# Access environment variables
-openai_api_key = os.getenv('OPENAI_API_KEY')
-langsmith_api_key = os.getenv('LANGSMITH_API_KEY')
-langsmith_project = os.getenv('LANGSMITH_PROJECT', 'default')
-
 
 # Create a dataset. Only need to do this once.
 client = Client()
@@ -136,9 +130,7 @@ results = client.evaluate(
 experiment_name = results.experiment_name
 ```
 
-## 2. 创建复合反馈
-
-创建综合反馈，使用您的自定义函数汇总各个评估者的分数。此示例使用各个评估者分数的加权平均值。
+## 2. 创建复合反馈创建综合反馈，使用您的自定义函数汇总各个评估者的分数。此示例使用各个评估者分数的加权平均值。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -188,7 +180,7 @@ def calculate_weighted_score(feedback_stats: dict) -> float:
 
 async def main():
     client = Client()
-    # The experiment is a tracing project; its root runs carry the evaluator scores
+    # Look up the experiment by name. Its root runs carry the evaluator scores.
     experiment = client.read_project(project_name=YOUR_EXPERIMENT_NAME)
 
     # Process each run and write feedback

@@ -122,6 +122,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Tools that let agents call and pay for API endpoints behind a self-hosted Agent Commerce Gateway with x402, within set spending limits.
 
+> [card] [AgentFox](https://useagentfox.com/integrations/langchain)
+>
+> Open source control plane for AI agents: checks LangChain chat model calls and tool calls in-process, bounds tool calls by grants, and keeps an audit trail.
+
 > [card] [agentstate](https://skamalj.github.io/agentstate-reducer/)
 >
 > DynamoDB, Cosmos DB and Firestore checkpointers with bounded history and a long-term memory hook, plus semantic-search stores.
@@ -658,6 +662,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > React stack and Python middleware for Deep Agents, LangGraph agents, FastAPI, and generative UI.
 
+> [card] [CortexDB](https://cortexdb.ai/docs/integrations/langchain?utm_source=langchain\&utm_medium=organic\&utm_campaign=G07)
+>
+> CortexDB gives AI agents long-term memory so they can store and retrieve context across conversations and workflows.
+
 > [card] [Cosmergon](https://cosmergon.com)
 >
 > Physics-based 3D agent-economy simulation for benchmarks and training.
@@ -693,6 +701,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Crawleo](https://crawleo.dev/integrations/langchain)
 >
 > Privacy-first web search and crawling tools for LangChain agents.
+
+> [card] [CrowdWisdomToolkit](https://github.com/CrowdWisdomTradingx402/crowdwisdomtrading-python/tree/main/integrations/langchain#readme)
+>
+> CrowdWisdomToolkit provides daily and weekly crowd sentiment scores from pro traders for US stocks, ETFs, crypto, futures, and FX.
 
 > [card] [CrustAPI](https://crustapi.com/docs)
 >
@@ -870,6 +882,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Cognitive memory infrastructure for AI agents: confidence scoring, contradiction detection, and memory lifecycle.
 
+> [card] [EquiblesToolkit](https://equibles.com/docs/api/langchain)
+>
+> Tools for SEC filings, earnings call transcripts, financial statements, prices, insider trades and 13F holders from Equibles.
+
 > [card] [ERC20](https://github.com/Conrad-sudo/langchain-erc20)
 >
 > ERC20 token balances, allowances, transfers, approvals, and native wrap/unwrap, as execution plans an EOA can sign or a smart contract wallet can batch.
@@ -889,6 +905,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Exa Search](/oss/python/integrations/providers/exa_search)
 >
 > AI-powered search engine for developers.
+
+> [card] [Findcheap](https://github.com/llmbender/findcheap-sdks/tree/main/langchain#readme)
+>
+> AI-powered product search and content extraction for agents.
 
 > [card] [FinancialEvidenceToolkit](https://github.com/beepboop2025/langchain-financial-evidence#readme)
 >
@@ -1770,6 +1790,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > ECM toolkits, loaders, and retrievers for Alfresco, Documentum, FileNet, and OnBase.
 
+> [card] [OpenDocKitLoader](https://github.com/hyeonsang010716/OpenDocKit/blob/main/docs/integrations.md#langchain)
+>
+> Document loader that converts PDF, Office, HWP/HWPX, ODF, RTF, EPUB, HTML and email files to Markdown locally, with no ML models or network calls.
+
 > [card] [OpenGradient](https://docs.opengradient.ai/)
 >
 > AI model training and fine-tuning platform.
@@ -1841,6 +1865,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Oya Browser](https://oyabrowser.com/docs)
 >
 > Real browsers for AI agents (desktop MCP, cloud, and self-hosted) with sealed credentials, human takeover, and Playwright playbooks that replay without a model.
+
+> [card] [PalaceStore](https://github.com/palacememory/langgraph-store-palace#readme)
+>
+> Local LangGraph store on Palace: verbatim SQLite, hybrid BM25 + vector search. Not associated with mempalace python.
 
 > [card] [PandaStackSandbox](https://docs.pandastack.ai/docs/agents/deep-agents)
 >
@@ -2025,6 +2053,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Pushary](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-py)
 >
 > Phone approvals for LangGraph and LangChain agents: ask on the user's phone and resume on Approve or Deny; no answer means no action.
+
+> [card] [PyMuPDF](https://pymupdf.readthedocs.io/en/latest/langchain)
+>
+> Load PDF files using PyMuPDF
 
 > [card] [PyMuPDF4LLM](https://github.com/lakinduboteju/langchain-pymupdf4llm)
 >
@@ -2569,6 +2601,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [ThorData](https://github.com/Thordata/langchain-thordata)
 >
 > Search tool that queries Google, Bing, Yandex, and DuckDuckGo through the ThorData SERP API.
+
+> [card] [TickerLayerToolkit](https://tickerlayer.com/docs/agent-frameworks#langchain)
+>
+> Market data tools for stocks, ETFs, indices, forex, crypto, commodities, perpetual futures, bond yields and market hours.
 
 > [card] [Tigris](https://www.tigrisdata.com/docs/)
 >

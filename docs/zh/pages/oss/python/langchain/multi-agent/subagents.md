@@ -64,7 +64,7 @@ def call_research_agent(query: str):
 
 # Main agent with subagent as a tool
 main_agent = create_agent(model="google_genai:gemini-4-hydrogen", tools=[call_research_agent])
-```> [卡片][Tutorial: Build a personal assistant with subagents](/oss/python/langchain/multi-agent/subagents-personal-assistant)
+```> [卡][Tutorial: Build a personal assistant with subagents](/oss/python/langchain/multi-agent/subagents-personal-assistant)
 >
 > 了解如何使用子代理模式构建个人助理，其中中央主代理（主管）协调专门的工作代理。
 
@@ -82,9 +82,9 @@ main_agent = create_agent(model="google_genai:gemini-4-hydrogen", tools=[call_re
 
 ## 同步与异步
 
-子代理执行可以是**同步**（阻塞）或**异步**（后台）。你的选择取决于主代理是否需要结果才能继续。
+子代理执行可以是**同步**（阻塞）或**异步**（后台）。您的选择取决于主代理是否需要结果才能继续。
 
-|模式|主要代理行为|最适合 |权衡|
+|模式|主要代理行为|最适合 |权衡 |
 | - | - | - | - |
 | **同步** |等待子代理完成 |主代理需要结果才能继续 |简单，但阻碍对话 |
 | **异步** |子代理在后台运行时继续 |独立任务，用户无需等待 |反应灵敏，但更复杂 |> [!提示]
@@ -212,7 +212,7 @@ def call_subagent(query: str):  # [!code highlight]
 
 # Main agent with subagent as a tool  # [!code highlight]
 main_agent = create_agent(model="...", tools=[call_subagent])  # [!code highlight]
-```当主代理确定任务与子代理的描述匹配、接收结果并继续编排时，它会调用子代理工具。有关细粒度控制，请参阅[Context engineering](#context-engineering)。
+```当主代理确定任务与子代理的描述匹配、接收结果并继续编排时，它会调用子代理工具。细粒度控制请参见[Context engineering](#context-engineering)。
 
 ### 单一调度工具
 
@@ -324,7 +324,7 @@ graph LR
 * **描述**：主代理对子代理功能的了解。具体说明它处理什么任务以及何时使用它。
 
 对于 [single dispatch tool](#single-dispatch-tool) 设计，您还必须向主代理提供有关它可以调用的子代理的信息。
-您可以根据代理的数量以及您的注册表是静态还是动态，以不同的方式提供此信息：|方法|最适合 |权衡|
+您可以根据代理的数量以及您的注册表是静态还是动态，以不同的方式提供此信息：|方法|最适合 |权衡 |
 | - | - | - |
 | **系统提示枚举** |小型静态代理列表 (\< 10 agents) | Simple, but requires prompt updates when agents change |
 | **Enum constraint** | Small, static agent lists (\< 10 agents) | Type-safe and explicit, but requires code changes when agents change |
@@ -344,9 +344,21 @@ List available agents directly in the main agent's system prompt. The main agent
 
 ⟦T8⟧
 
+⟦T9⟧
+
+⟦T10⟧
+
+⟦T11⟧
+
+⟦T12⟧
+
+⟦T13⟧
+
+⟦T14⟧
+
 #### Enum constraint on dispatch tool
 
-Add an enum constraint to the ⟦T19⟧ parameter in your dispatch tool. This provides type safety and makes available agents explicit in the tool schema.
+Add an enum constraint to the ⟦T31⟧ parameter in your dispatch tool. This provides type safety and makes available agents explicit in the tool schema.
 
 **When to use:**
 
@@ -356,11 +368,11 @@ Add an enum constraint to the ⟦T19⟧ parameter in your dispatch tool. This pr
 
 **Example:**
 
-⟦T9⟧
+⟦T15⟧
 
 #### Tool-based discovery
 
-Provide a separate tool (e.g., ⟦T20⟧ or ⟦T21⟧) that the main agent can call to discover available agents on-demand. This enables progressive disclosure and supports dynamic registries.
+Provide a separate tool (e.g., ⟦T32⟧ or ⟦T33⟧) that the main agent can call to discover available agents on-demand. This enables progressive disclosure and supports dynamic registries.
 
 **When to use:**
 
@@ -371,22 +383,178 @@ Provide a separate tool (e.g., ⟦T20⟧ or ⟦T21⟧) that the main agent can c
 
 **示例：**
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
 @tool
 def list_agents(query: str = "") -> str:
     """List available subagents, optionally filtered by query."""
     agents = search_agent_registry(query)
     return format_agent_list(agents)
 
+
 @tool
 def task(agent_name: str, description: str) -> str:
     """Launch an ephemeral subagent for a task."""
-    # ...
+    return f'Delegated "{description}" to {agent_name}'
+
 
 main_agent = create_agent(
-    model="...",
+    model="google_genai:gemini-4-hydrogen",
     tools=[task, list_agents],
-    system_prompt="Use list_agents to discover available subagents, then use task to invoke them."
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def list_agents(query: str = "") -> str:
+    """List available subagents, optionally filtered by query."""
+    agents = search_agent_registry(query)
+    return format_agent_list(agents)
+
+
+@tool
+def task(agent_name: str, description: str) -> str:
+    """Launch an ephemeral subagent for a task."""
+    return f'Delegated "{description}" to {agent_name}'
+
+
+main_agent = create_agent(
+    model="openai:gpt-6.1-sol",
+    tools=[task, list_agents],
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def list_agents(query: str = "") -> str:
+    """List available subagents, optionally filtered by query."""
+    agents = search_agent_registry(query)
+    return format_agent_list(agents)
+
+
+@tool
+def task(agent_name: str, description: str) -> str:
+    """Launch an ephemeral subagent for a task."""
+    return f'Delegated "{description}" to {agent_name}'
+
+
+main_agent = create_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[task, list_agents],
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def list_agents(query: str = "") -> str:
+    """List available subagents, optionally filtered by query."""
+    agents = search_agent_registry(query)
+    return format_agent_list(agents)
+
+
+@tool
+def task(agent_name: str, description: str) -> str:
+    """Launch an ephemeral subagent for a task."""
+    return f'Delegated "{description}" to {agent_name}'
+
+
+main_agent = create_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[task, list_agents],
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def list_agents(query: str = "") -> str:
+    """List available subagents, optionally filtered by query."""
+    agents = search_agent_registry(query)
+    return format_agent_list(agents)
+
+
+@tool
+def task(agent_name: str, description: str) -> str:
+    """Launch an ephemeral subagent for a task."""
+    return f'Delegated "{description}" to {agent_name}'
+
+
+main_agent = create_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[task, list_agents],
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def list_agents(query: str = "") -> str:
+    """List available subagents, optionally filtered by query."""
+    agents = search_agent_registry(query)
+    return format_agent_list(agents)
+
+
+@tool
+def task(agent_name: str, description: str) -> str:
+    """Launch an ephemeral subagent for a task."""
+    return f'Delegated "{description}" to {agent_name}'
+
+
+main_agent = create_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[task, list_agents],
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+
+
+@tool
+def list_agents(query: str = "") -> str:
+    """List available subagents, optionally filtered by query."""
+    agents = search_agent_registry(query)
+    return format_agent_list(agents)
+
+
+@tool
+def task(agent_name: str, description: str) -> str:
+    """Launch an ephemeral subagent for a task."""
+    return f'Delegated "{description}" to {agent_name}'
+
+
+main_agent = create_agent(
+    model="ollama:north-mini-code-1.0",
+    tools=[task, list_agents],
+    system_prompt="Use list_agents to discover available subagents, then use task to invoke them.",
 )
 ```
 
@@ -418,9 +586,9 @@ def call_subagent1(query: str, runtime: ToolRuntime[None, CustomState]):
     return result["messages"][-1].content
 ```
 
-`some_logic` 控制子代理接收多少上下文。仅传递任务描述 (`query`) 可使子代理保持隔离。相反，传递父级的消息历史记录 (`runtime.state["messages"]`) 会为子代理播种之前的工作，这在需要继续父级已开始的操作时很有帮助，例如恢复 PR 审查或修复错误。
+`some_logic` 控制子代理接收多少上下文。仅传递任务描述 (`query`) 可使子代理保持隔离。相反，传递父级的消息历史记录 (`runtime.state["messages"]`) 会为子代理播种之前的工作，这在需要继续父级已开始的操作（例如恢复 PR 审核或修复错误）时很有帮助。
 
-[Deep Agents](/oss/python/deepagents/subagents#forked-subagents) 将这些模式命名为 `mode: "isolated"`（默认）和 `mode: "fork"`，并为您实现分叉：分叉的子代理接收父代理的完整消息历史记录（包括工具调用）和系统提示。|模式|子代理接收 |最适合 |权衡|
+[Deep Agents](/oss/python/deepagents/subagents#forked-subagents) 将这些模式命名为`mode: "isolated"`（默认）和`mode: "fork"`，并为您实现分叉：分叉的子代理接收父代理的完整消息历史记录（包括工具调用）和系统提示。|模式|子代理接收 |最适合 |权衡 |
 | - | - | - | - |
 | **隔离**（默认）|仅任务描述 |无需事先背景的重点工作 |上下文隔离，但重新派生父级已经执行的所有操作 |
 | **分叉** |家长的对话历史（以及Deep Agents中的系统提示）|继续父母已经开始的任务 |播种先前的上下文，但代价是更大的提示和更少的隔离 |
@@ -430,7 +598,7 @@ def call_subagent1(query: str, runtime: ToolRuntime[None, CustomState]):
 自定义主代理收到的返回内容，以便它可以做出正确的决策。两种策略：
 
 1. **提示子代理**：准确指定应返回的内容。一种常见的失败模式是子代理执行工具调用或推理，但在其最终消息中不包含结果 - 提醒它主管只能看到最终输出。
-2. **代码格式**：在返回响应之前调整或丰富响应。例如，除了使用 [⟦T27⟧](/oss/python/langgraph/graph-api#command) 传递最终文本之外，还传递特定的状态键。
+2. **代码格式**：在返回响应之前调整或丰富响应。例如，使用 [⟦T39⟧](/oss/python/langgraph/graph-api#command) 除了最终文本之外还传递回特定状态键。
 
 ```python Subagent outputs example expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Annotated
@@ -462,9 +630,9 @@ def call_subagent1(
     })
 ```
 
-## 检查点和状态检查默认情况下，子代理使用 **继承的检查点** 模式 - 每次调用都以新鲜状态开始，支持[interrupts](/oss/python/langgraph/interrupts#pause-using-interrupt)，并安全地并行运行。如果您需要子代理在调用之间维护其自己的持久对话历史记录，请使用`checkpointer=True`（连续模式）进行编译。有关模式的完整比较，请参阅[subgraph persistence](/oss/python/langgraph/use-subgraphs#subgraph-persistence)。
+## 检查点和状态检查默认情况下，子代理使用 **继承的检查点** 模式 - 每个调用都以新鲜状态开始，支持[interrupts](/oss/python/langgraph/interrupts#pause-using-interrupt)，并安全地并行运行。如果您需要子代理在调用之间维护其自己的持久对话历史记录，请使用`checkpointer=True`（连续模式）进行编译。有关模式的完整比较，请参阅[subgraph persistence](/oss/python/langgraph/use-subgraphs#subgraph-persistence)。
 
-因为子代理是在工具函数内部调用的，所以LangGraph不能[statically discover](/oss/python/langgraph/use-subgraphs#view-subgraph-state)它们。这意味着[⟦T29⟧ with ⟦T30⟧](/oss/python/langgraph/use-subgraphs#view-subgraph-state)不会返回子代理状态。如果您需要读取嵌套图状态（例如，在 [interrupt](/oss/python/langgraph/interrupts#pause-using-interrupt) 期间），请从自定义图中的 [node function](/oss/python/langgraph/use-subgraphs#call-a-subgraph-inside-a-node) 调用子代理。有关每种模式如何影响状态可见性的详细信息，请参阅[subgraph persistence](/oss/python/langgraph/use-subgraphs#subgraph-persistence)。
+因为子代理是在工具函数内部调用的，所以LangGraph不能[statically discover](/oss/python/langgraph/use-subgraphs#view-subgraph-state)它们。这意味着[⟦T41⟧ with ⟦T42⟧](/oss/python/langgraph/use-subgraphs#view-subgraph-state)不会返回子代理状态。如果您需要读取嵌套图状态（例如，在[interrupt](/oss/python/langgraph/interrupts#pause-using-interrupt)期间），请从自定义图中的[node function](/oss/python/langgraph/use-subgraphs#call-a-subgraph-inside-a-node)调用子代理。有关每种模式如何影响状态可见性的详细信息，请参阅[subgraph persistence](/oss/python/langgraph/use-subgraphs#subgraph-persistence)。
 
 > [卡][Migrate from langgraph-supervisor](/oss/python/migrate/langgraph-supervisor)
 >

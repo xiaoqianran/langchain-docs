@@ -6,7 +6,7 @@ Create and deploy your first Managed Deep Agent with the mda CLI.
 
 Create and deploy your first Managed Deep Agent: scaffold a project, configure the model and instructions, add search, test in [LangSmith Studio](/langsmith/studio), and deploy with the [`mda` CLI](/langsmith/javascript/managed-deep-agents-cli). Managed Deep Agents supplies the [Deep Agents harness](/oss/javascript/deepagents/overview) and hosted runtime.
 
-After this quickstart, the [tutorial](/langsmith/javascript/managed-deep-agents-tutorial) adds durable memory and a daily schedule on the same project.
+After this quickstart, the [daily digest](/langsmith/javascript/managed-deep-agents-tutorial) pattern adds durable memory and a daily schedule on the same project.
 
 > [!NOTE]
 >
@@ -333,9 +333,9 @@ Open that URL. You should see the deployment in a ready state. Send the same res
 
 ## Next steps
 
-> [card] [Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)
+> [card] [Daily digest](/langsmith/javascript/managed-deep-agents-tutorial)
 >
-> Add a custom Tavily search tool, durable memory, and a daily schedule.
+> Add durable memory and a daily schedule to the research assistant.
 
 > [card] [Design agent template](/langsmith/javascript/managed-deep-agents-design-agent)
 >

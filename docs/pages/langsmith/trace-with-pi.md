@@ -10,7 +10,7 @@ Once configured, each Pi session sends traces to LangSmith. Each trace includes 
 
 > [!NOTE]
 >
-> This integration uses a legacy destination setting such as `project_name` or `LANGSMITH_PROJECT`. [Create an agent](/langsmith/create-an-agent), choose its environment, and [retrieve that environment's `tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project). Use that returned value in the destination setting and any overrides. For integrations that support agent addressing, use the [agent identifier and environment](/langsmith/log-traces-to-agent) directly.
+> This integration does not support [agent addressing](/langsmith/log-traces-to-agent). It traces to an agent environment by its `tracer_session_name`.
 
 ## Prerequisites
 
@@ -18,6 +18,7 @@ Before setting up tracing, ensure you have:
 
 * [**Pi**](https://pi.dev) installed.
 * A [**LangSmith API key**](/langsmith/create-account-api-key).
+* An [agent](/langsmith/create-an-agent) in LangSmith. The extension does not support agent addressing, so it traces to one of the agent's environments by name.
 
 ## Installation
 
@@ -42,7 +43,7 @@ export LANGSMITH_PI_API_KEY="<your-langsmith-api-key>"
 /langsmith-tracing
 ```
 
-Set `LANGSMITH_PI_PROJECT` to the selected agent environment's `tracer_session_name` before sending traces.
+Set `LANGSMITH_PI_PROJECT` to the agent environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) before sending traces.
 
 ## Configuration
 

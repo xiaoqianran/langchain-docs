@@ -10,7 +10,7 @@ Azure 上的 BYOC 在 Azure 订阅的资源组中运行 LangSmith 数据平面�
 
 > [!注意]
 >
-> Azure 上的 BYOC 位于 [beta](/langsmith/release-stages)。资源和权限可能会在版本之间发生变化。此页面上的值是当前默认值。
+> Azure 上的 BYOC 位于 [beta](/langsmith/release-stages)。资源和权限可能会在版本之间发生变化。此页面上的值是当前的默认值。
 
 要设置数据平面，请遵循[BYOC onboarding on Azure](/langsmith/byoc-onboarding-azure)。
 
@@ -19,37 +19,37 @@ Azure 上的 BYOC 在 Azure 订阅的资源组中运行 LangSmith 数据平面�
 | **控制平面** | LangChain 的 Azure 环境，`centralus`，位于 [azure.smith.langchain.com](https://azure.smith.langchain.com) |身份验证、组织和工作区配置、计费和使用元数据、LangSmith API 密钥以及静态前端资产 |
 | **数据平面** |您选择的区域中的 Azure 订阅中的一个资源组 |跟踪、提示、数据集、评估器、实验、注释队列、代理部署、工作区机密和其他应用程序数据 |
 
-![BYOC architecture diagram for Azure. The LangSmith UI and the client apps in your application VNet reach the data plane over VNet peering or a VPN gateway, which terminates at an internal load balancer. The load balancer feeds an Istio ingress in an AKS cluster in your Azure subscription, which routes to the LangSmith services that run the backend and SmithDB, and those services read and write Blob Storage, Azure PostgreSQL, and Azure Managed Redis. The LangChain cloud control plane in centralus holds Crossplane, on-call engineers, alerting, and the LangSmith control plane services. Crossplane reaches the AKS API with Entra ID for scaling and upgrades, the data plane sends auth and telemetry back over Private Link, and the control plane uses Entra ID workload identity to provision resources in your subscription.](https://mintcdn.com/langchain-5e9cc07a/HiBWiLuTxHfhLZqh/langsmith/images/byoc-architecture-azure.png?fit=max\&auto=format\&n=HiBWiLuTxHfhLZqh\&q=85\&s=54272d117dfa6d190ee105d21bcf3452)
+![BYOC architecture diagram for Azure. The LangSmith UI and the client apps in your application VNet reach the data plane over VNet peering, a VPN gateway, or an optional Private Link endpoint, which terminates at an internal load balancer. The load balancer feeds an Istio ingress in an AKS cluster in your Azure subscription, which routes to the LangSmith services that run the backend and SmithDB, and those services read and write Blob Storage, Azure PostgreSQL, and Azure Managed Redis. The LangChain cloud control plane in centralus holds Crossplane, on-call engineers, alerting, and the LangSmith control plane services. Crossplane reaches the AKS API with Entra ID for scaling and upgrades, the data plane sends auth and telemetry back over Private Link, and the control plane uses Entra ID workload identity to provision resources in your subscription.](https://mintcdn.com/langchain-5e9cc07a/lUwADgR8i_u7rC1f/langsmith/images/byoc-architecture-azure.png?fit=max\&auto=format\&n=lUwADgR8i_u7rC1f\&q=85\&s=12b4e222331bd8f4d8bcb47f7cd92c4d)
 
 数据平面的生命周期为：
 
 1. 应用 LangSmith Terraform 模块，该模块创建资源组和 Key Vault，并为 LangSmith BYOC 应用程序提供资源组上的两个角色。
 2. 使用 LangSmith API 创建数据平面。控制平面检查其访问权限，并将数据平面的引导密钥写入您的 Key Vault。
 3. 控制平面在资源组中创建网络、AKS 集群、数据库和存储，然后在集群上安装 LangSmith。
-4. 数据面向控制面汇报，状态变为`active`。
+4. 数据平面向控制平面汇报，状态变为`active`。
 5. LangChain 升级、扩展和修复数据平面，直到将其删除。
 
 ## 部署什么LangSmith 创建资源组中的所有数据平面资源。 AKS 还创建节点资源组 `<name>-smith-aks-nodes` 并对其进行管理。
 
 ### 网络
 
-LangSmith creates a VNet from the `vpc_cidr` range in the create request, and divides it into subnets.对于 `/16` VNet：
+LangSmith 从创建请求中的 `vpc_cidr` 范围创建 VNet，并将其划分为子网。对于 `/16` VNet：
 
-|子网|尺寸|使用 |
+|子网|尺寸|使用|
 | - | - | - |
-| AKS | `/20` | AKS 节点和 Pod。 Outbound traffic goes through a NAT gateway with one static public IP address. |
+| AKS | `/20` | AKS 节点和 Pod。出站流量通过具有一个静态公共 IP 地址的 NAT 网关。 |
 |专用端点 | `/24` | PostgreSQL、Redis、Blob 存储、Key Vault 和 LangSmith 控制平面的共享专用端点。 |
 
 专用终结点子网上的一个网络安全组使用三个应用程序安全组，仅允许来自 AKS 子网的流量：到 PostgreSQL 终结点的 TCP 5432、到 Redis 终结点的 TCP 10000 和 8500 到 8599，以及到 Blob 存储、Key Vault 和控制平面终结点的 TCP 443。
 
-The AKS subnet takes one sixteenth of the VNet, and the private endpoint subnet takes 1/256 of it. A `/18` VNet gives a `/22` AKS subnet and a `/26` private endpoint subnet. Kubernetes 服务范围来自 VNet 外部：`10.240.0.0/16`，或 `192.168.0.0/16`（如果您的 VNet 与 `10.240.0.0/16` 重叠）。链接到 VNet 的私有 DNS 区域将 PostgreSQL、Redis、Key Vault 和 Blob 存储解析到其私有终结点。
+AKS 子网占用 VNet 的十六分之一，专用终结点子网占用 VNet 的 1/256。 `/18` VNet 提供`/22` AKS 子网和`/26` 专用端点子网。 Kubernetes 服务范围来自 VNet 外部：`10.240.0.0/16`，或 `192.168.0.0/16`（如果您的 VNet 与 `10.240.0.0/16` 重叠）。链接到 VNet 的私有 DNS 区域将 PostgreSQL、Redis、Key Vault 和 Blob 存储解析到其私有终结点。
 
 ### 计算
 
 * **AKS**：标准层上的 Kubernetes 1.35。没有公共 API 端点的私有集群。本地帐户和运行命令被禁用。身份验证使用 Microsoft Entra ID 和 Azure RBAC 进行 Kubernetes 授权。 OIDC 颁发者和工作负载身份已启用。
 * **网络插件**：Azure CNI 和 Cilium 用于数据路径和网络策略。
 * **系统节点池**：Azure Linux 上的三个 `Standard_D2s_v6` 节点，分布在该区域的可用区中，为关键附加组件保留。
-* **应用程序节点**：[Node auto-provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) 根据 Pod 需要添加和删除节点。它使用版本 5 或更高版本的按需 D、E 和 F 系列 VM。每个节点池都有 CPU 和内存限制。通用池仅限于 100 个 vCPU 和 400 GiB 内存。 SmithDB 在自己的池上运行，包括具有本地 NVMe 磁盘作为缓存的虚拟机池。
+* **应用程序节点**：[Node auto-provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) 根据 Pod 需要添加和删除节点。它使用版本 5 或更高版本的按需 D、E 和 F 系列 VM。每个节点池都有 CPU 和内存限制。通用池限制为 100 个 vCPU 和 400 GiB 内存。 SmithDB 在自己的池上运行，包括具有本地 NVMe 磁盘作为缓存的虚拟机池。
 * **升级**：AKS 在数据平面的 [maintenance window](/langsmith/byoc-operations-azure#maintenance-window) 中自动应用 Kubernetes 补丁版本和节点映像更新。
 
 ### 数据存储|商店 |配置|
@@ -62,7 +62,7 @@ The AKS subnet takes one sixteenth of the VNet, and the private endpoint subnet 
 
 ### DNS 和入口
 
-* **主机名**：`<data_plane_id>.azure.langchain-byoc.com`。 LangSmith 为资源组中的主机名创建一个公共 DNS 区域，并将其从 LangChain 拥有的父区域委托。
+* **主机名**：`<data_plane_id>.azure.langchain-byoc.com`。 LangSmith 为资源组中的主机名创建公共 DNS 区域，并将其从 LangChain 拥有的父区域委托。
 * **负载均衡器**：Azure 标准负载均衡器，公共或内部，由创建请求中的 `public_load_balancer` 设置。
 * **私有 DNS**：对于内部负载均衡器，主机名通过链接到数据平面 VNet 的私有 DNS 区域进行解析。公共区域保存证书验证记录，而不是内部端点地址。您的用户和应用程序需要通过私有区域进行 DNS 解析。
 * **Ingress**：Istio 入口网关。 HTTP重定向到HTTPS，网关拒绝`TRACE`、`TRACK`和`CONNECT`方法。
@@ -76,7 +76,7 @@ The AKS subnet takes one sixteenth of the VNet, and the private endpoint subnet 
 | - | - | - |
 | Azure 资源管理器的控制平面 | HTTPS 到公共 Azure 资源管理器端点 |租户中LangSmith BYOC 应用程序的 Microsoft Entra 令牌 |
 | AKS API 的控制平面 |私人链接。 LangChain 控制平面网络中的专用端点连接到集群的 API 服务器。 AKS API 没有公共端点。 | Microsoft Entra 令牌和 Azure RBAC |
-|数据平面到控制平面|私人链接。数据平面的共享专用端点子网中的专用端点连接到 LangSmith 控制平面。资源组中的私有 DNS 区域将 LangSmith API 和遥测主机名解析到它。 |数据平面令牌 ||您的用户和应用程序到数据平面|公共或内部负载均衡器 | LangSmith API 密钥和通过控制平面登录 |
+|数据平面到控制平面|私人链接。数据平面的共享专用端点子网中的专用端点连接到 LangSmith 控制平面。资源组中的私有 DNS 区域将 LangSmith API 和遥测主机名解析到它。 |数据平面令牌 ||您的用户和应用程序到数据平面|公共或内部负载均衡器。通过专用链接，VNet 中的专用终结点可连接到内部负载均衡器。 | LangSmith API 密钥和通过控制平面登录 |
 
 数据平面通过 NAT 网关从 LangChain 的容器注册表中提取 LangSmith 容器镜像。
 
@@ -86,12 +86,12 @@ The AKS subnet takes one sixteenth of the VNet, and the private endpoint subnet 
 
 LangChain 通过一个多租户 Microsoft Entra 应用程序 **LangSmith BYOC** 管理您的数据平面。您将其服务主体添加到您的租户，并为其赋予每个数据平面资源组上的角色。应用程序不请求任何 Microsoft Graph 权限。
 
-控制平面不保存您的租户的存储凭据。它在 AKS 上运行，工作负载身份联合将 pod 令牌交换为租户中的 LangSmith BYOC 应用程序的令牌。只有提供和管理数据平面的控制平面服务才能获得该令牌。
+控制平面不保存您的租户的存储凭据。它在 AKS 上运行，工作负载身份联合将 pod 令牌交换为租户中 LangSmith BYOC 应用程序的令牌。只有提供和管理数据平面的控制平面服务才能获得该令牌。
 
 ### 角色分配|角色 |范围 |为什么LangSmith需要它 |
 | - | - | - |
 | `langsmith-byoc-<key>-<suffix>`（定制）|数据平面资源组|创建、更新和删除数据平面资源，将引导密钥写入 Key Vault，并批准 AKS API 和数据存储的专用终结点。该角色为其允许的每个操作命名。 |
-|与 `reduced_access = true` 相同的自定义角色 |数据平面资源组|一旦数据平面处于活动状态，就会减少角色操作。升级、扩展和修复数据平面，但无法删除它、其数据存储或其网络，也无法创建角色分配。 |
+|与 `reduced_access = true` 相同的自定义角色 |数据平面资源组|数据平面处于活动状态后，减少角色操作。升级、扩展和修复数据平面，但无法删除它、其数据存储或其网络，也无法创建角色分配。 |
 | `User Access Administrator` |数据平面资源组|为数据平面的托管标识分配角色，并创建自定义 Blob 数据角色。当您设置 `reduced_access = true` 时，Terraform 会删除此分配。 |
 | `Azure Kubernetes Service RBAC Cluster Admin` |数据平面的 AKS 集群 |在集群上安装并升级LangSmith。 LangSmith 自行创建此角色分配。 |[Terraform module](https://github.com/langchain-ai/terraform/blob/main/modules/byoc/azure/langsmith-byoc-access/main.tf)为每个数据平面创建一个自定义角色，并将资源组作为其唯一的可分配范围。这两个角色分配都将您组织的外部 ID 作为其描述。当它们不匹配时，LangSmith 拒绝创建数据平面，这会将资源组绑定到您的 LangSmith 组织。
 
@@ -131,7 +131,7 @@ LangChain 通过一个多租户 Microsoft Entra 应用程序 **LangSmith BYOC** 
 
 ## 扩展和操作
 
-LangChain 在配置后操作您的 Azure 数据平面。有关自动扩展、默认实例大小、升级和维护时段的信息，请参阅 [BYOC operations on Azure](/langsmith/byoc-operations-azure)。有关估计的基础设施成本，请参阅[Azure data plane cost estimate](/langsmith/byoc-data-plane-cost-azure)。
+LangChain 在配置后操作您的 Azure 数据平面。请参阅 [BYOC operations on Azure](/langsmith/byoc-operations-azure) 了解自动扩展、默认实例大小、升级和维护时段。有关估计的基础设施成本，请参阅[Azure data plane cost estimate](/langsmith/byoc-data-plane-cost-azure)。
 
 ### 日志
 

@@ -163,9 +163,9 @@ Start with Managed Deep Agents to run production agents without having to manage
 >
 > Create and deploy your first Managed Deep Agent with the `mda` CLI.
 
-> [card] [Tutorial](/langsmith/python/managed-deep-agents-tutorial)
+> [card] [Daily digest](/langsmith/python/managed-deep-agents-tutorial)
 >
-> Add a custom search tool, durable memory, and a daily schedule.
+> Add durable memory and a daily schedule to the quickstart agent.
 
 > [card] [Design agent template](/langsmith/python/managed-deep-agents-design-agent)
 >

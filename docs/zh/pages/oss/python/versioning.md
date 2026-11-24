@@ -44,7 +44,7 @@
 
 * 一些文档引用了内部结构并这样提及它们。如果文档表明某些内容是内部的，则它可能会发生变化。
 * 函数、方法和其他对象以前导下划线为前缀 (**`_`**)。这是 Python 的标准约定，表示某些内容是私有的；如果任何方法以单个 **`_`** 开头，则它是内部 API。
-  * **例外：** 某些方法以 `_` 为前缀，但不包含实现。这些方法*意味着*会被提供实现的子类覆盖。这些方法通常是LangChain的**公共API**的一部分。
+  * **例外：** 某些方法以 `_` 为前缀，但不包含实现。这些方法*意味着*会被提供实现的子类覆盖。此类方法通常是 LangChain 的 **公共 API** 的一部分。
 
 ## 发布周期> [手风琴] 主要版本
 >
@@ -107,8 +107,8 @@ print(langchain_core.__version__)
 ```
 
 ```python LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import langgraph
-print(langgraph.__version__)
+from importlib.metadata import version
+print(version("langgraph"))
 ```
 
 ## 升级

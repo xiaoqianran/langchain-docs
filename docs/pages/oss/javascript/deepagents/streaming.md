@@ -1580,34 +1580,34 @@ See [Human-in-the-loop: Handle interrupts with streaming](/oss/javascript/deepag
 
 ## Stream chunk shapes
 
-With `subgraphs=True`, chunk shape depends on whether you pass one stream mode or several:
+With `subgraphs: true`, chunk shape depends on whether you pass one stream mode or several:
 
-| `stream_mode` | Chunk shape |
+| `streamMode` | Chunk shape |
 | - | - |
-| Single mode (for example `"updates"`) | `(namespace, data)` |
-| Multiple modes (for example `["messages", "updates"]`) | `(namespace, mode, data)` |
+| Single mode (for example `"updates"`) | `[namespace, data]` |
+| Multiple modes (for example `["messages", "updates"]`) | `[namespace, mode, data]` |
 
-Without `subgraphs`, a single mode yields `data` directly, and multiple modes yield `(mode, data)`.
+Without `subgraphs`, a single mode yields `data` directly, and multiple modes yield `[mode, data]`.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Single mode + subgraphs
-for namespace, data in agent.stream(
-    {"messages": [{"role": "user", "content": "Research quantum computing"}]},
-    stream_mode="updates",
-    subgraphs=True,
-):
-    print(namespace)  # () for main agent, ("tools:<id>",) for subagent
-    print(data)
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Single mode + subgraphs
+for await (const [namespace, data] of await agent.stream(
+  { messages: [{ role: "user", content: "Research quantum computing" }] },
+  { streamMode: "updates", subgraphs: true },
+)) {
+  console.log(namespace); // [] for main agent, ["tools:<id>"] for subagent
+  console.log(data);
+}
 
-# Multiple modes + subgraphs
-for namespace, mode, data in agent.stream(
-    {"messages": [{"role": "user", "content": "Research quantum computing"}]},
-    stream_mode=["updates", "messages", "custom"],
-    subgraphs=True,
-):
-    print(mode)       # "updates", "messages", or "custom"
-    print(namespace)  # () for main agent, ("tools:<id>",) for subagent
-    print(data)
+// Multiple modes + subgraphs
+for await (const [namespace, mode, data] of await agent.stream(
+  { messages: [{ role: "user", content: "Research quantum computing" }] },
+  { streamMode: ["updates", "messages", "custom"], subgraphs: true },
+)) {
+  console.log(mode); // "updates", "messages", or "custom"
+  console.log(namespace); // [] for main agent, ["tools:<id>"] for subagent
+  console.log(data);
+}
 ```
 
 ## Related

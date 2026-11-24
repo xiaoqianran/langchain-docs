@@ -96,8 +96,8 @@ resource "langsmith_workspace_membership" "alice_demo" {
 You can also define a custom workspace role, for example by cloning an existing role's permissions:
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-resource "langsmith_workspace_role" "issues_agent" {
-  display_name = "Issues Agent"
+resource "langsmith_workspace_role" "admin_copy" {
+  display_name = "Admin Copy"
   description  = data.langsmith_workspace_role.admin.description
   permissions  = data.langsmith_workspace_role.admin.permissions
 }

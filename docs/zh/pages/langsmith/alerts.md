@@ -31,7 +31,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
 |公制类型 |描述 |使用案例|
 | - | - | - |
-| **运行计数** |跟踪一个时间窗口内 [runs](/langsmith/observability-concepts#runs) 的总数。 |监控管道是否按预期产量运行，并在产量意外下降时发出警报。 |
+| **运行计数** |跟踪一个时间窗口内[runs](/langsmith/observability-concepts#runs)的总数。 |监控管道是否按预期产量运行，并在产量意外下降时发出警报。 |
 | **成本** |跟踪一个时间窗口内运行的总成本。 |监控 LLM 支出，以便在成本超过预期阈值时发出警报。需要配置[cost tracking](/langsmith/cost-tracking)。 |
 | **错误** |跟踪有错误状态的运行。关于总错误计数或错误百分比（所有运行中错误运行的比率）的警报。 |监视应用程序中的故障，或在错误率超过可接受的阈值时发出警报。 |
 | **反馈分数** |衡量平均反馈分数。 |跟踪 [feedback from end users](/langsmith/attach-user-feedback) 或 [online evaluation results](/langsmith/online-evaluations-llm-as-judge) 以警告回归。 || **延迟** |测量平均运行执行时间。 |跟踪应用程序的延迟，以针对峰值和性能瓶颈发出警报。 |
@@ -76,7 +76,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 > 3. 从下拉列表中选择工作区和通道。如果频道没有立即出现，请单击刷新图标。
 > 4. 单击“**保存**”保存通知配置。
 >
-> 如果需要，LangSmith 在首次传递消息时加入所选公共频道。要发布到私人频道，请先邀请已配置的 Slack 应用程序到 Slack 中的该频道。
+> 如果需要，LangSmith 在首次传递消息时加入选定的公共频道。要发布到私人频道，请先邀请已配置的 Slack 应用程序到 Slack 中的该频道。
 >
 > ### 2. 测试集成
 >
@@ -88,7 +88,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 >
 > * **标题**：警报名称和您的 LangSmith 工作区名称。
 > * **详细行**：指标属性、触发值、比较运算符、配置的阈值、聚合方法和时间窗口 - 例如：`Total Cost: $12.50 ≥ $5.00 · avg · 30 min`。
-> * **操作按钮**：**查看警报**（链接到LangSmith中的警报预览）和**查看运行**（链接到触发警报的过滤运行）。> [选项卡] PagerDuty
+> * **操作按钮**：**查看警报**（链接到 LangSmith 中的警报预览）和 **查看运行**（链接到触发警报的过滤运行）。> [选项卡] PagerDuty
 >
 > 使用 PagerDuty 的 [Events API v2](https://developer.pagerduty.com/docs/events-api-v2-overview) 将 PagerDuty 配置为通知通道。这种集成允许关键的 LLM 应用程序问题触发 PagerDuty 事件，从而通过您建立的事件管理工作流程实现快速响应。
 >
@@ -134,7 +134,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 > 3. 配置附加通知选项：
 > * **严重性**：映射到 PagerDuty 事件优先级
 > 4. 单击 **发送测试警报** 发送测试警报
-> 5. 验证事件是否由 PagerDuty 触发并包含相关LangSmith警报信息
+> 5. 验证事件是否由 PagerDuty 触发并包含相关LangSmith 警报信息
 >
 > ### 故障排除
 >
@@ -203,7 +203,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 > * [Dynatrace Events API v2 Documentation](https://docs.dynatrace.com/docs/dynatrace-api/environment-api/events-v2/post-event)
 > * [Dynatrace Access Tokens](https://docs.dynatrace.com/docs/manage/access-control/access-tokens)> [选项卡] Webhook
 >
-> Webhooks 通过在触发警报条件时发送 HTTP POST 请求来实现与自定义服务和第三方平台的集成。使用 Webhooks 将警报数据转发到票务系统、聊天应用程序或自定义监控解决方案。
+> Webhooks 通过在触发警报条件时发送 HTTP POST 请求来实现与自定义服务和第三方平台的集成。使用 Webhook 将警报数据转发到票务系统、聊天应用程序或自定义监控解决方案。
 >
 > **先决条件**
 >
@@ -240,8 +240,8 @@ LangSmith 针对以下指标提供基于阈值的警报：
 > * `X-Source`：将来源标识为LangSmith
 > * 如果没有标题，则使用 `{}`
 > * **请求正文模板**：自定义发送到端点的 JSON 有效负载
-> * 默认值：LangSmith 发送定义的有效负载以及附加到有效负载的以下附加键值对：
-> * `project_name`：警报范围内的 LangSmith 项目的名称。
+> * 默认：LangSmith 发送定义的有效负载以及附加到有效负载的以下附加键值对：
+> * `project_name`：警报范围内的代理环境的 [⟦T38⟧](/langsmith/create-an-agent#use-an-environment-project)。
 >
 > * `workspace_name`：LangSmith 工作区的名称。
 >
@@ -300,7 +300,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 >
 >> [accordion] 通过 webhook 配置 Slack 通知
 >>
->> 以下是配置 LangSmith 警报以使用 [⟦T55⟧](https://api.slack.com/methods/chat.postMessage) API 向 Slack 通道发送通知的示例。
+>> 以下是配置 LangSmith 警报以使用 [⟦T56⟧](https://api.slack.com/methods/chat.postMessage) API 向 Slack 通道发送通知的示例。
 >>
 >> **先决条件**
 >>
@@ -575,7 +575,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 >>
 >> 1. 在LangSmith警报配置中，点击**发送测试警报**。
 >> 2. 检查收件人收件箱中是否有测试通知。
->> 3. 验证电子邮件是否包含预期的警报信息。
+>> 3. 验证电子邮件包含预期的警报信息。
 >>
 >> **使用其他电子邮件提供商**
 >>
@@ -589,17 +589,17 @@ LangSmith 针对以下指标提供基于阈值的警报：
 >
 >> [accordion] 通过 webhook 配置 Google Chat 通知（需要中间件）
 >>
->> Google Chat 的传入 webhook API (`spaces.messages.create`) 仅接受顶层的 `text` 字段。由于 LangSmith 将所有 12 个警报元数据键作为顶级字段合并到请求正文中，因此 Google Chat 会拒绝每个请求，并显示 400 错误：
+>> Google Chat 的传入 webhook API (`spaces.messages.create`) 仅接受顶层的 `text` 字段。由于 LangSmith 将所有 12 个警报元数据键作为顶级字段合并到请求正文中，因此 Google Chat 会拒绝每个请求并显示 400 错误：
 >>
 >> ```
 > > Invalid JSON payload received. Unknown name "project_name" at 'message': Cannot find field.
 > > ```
 >>
->> 没有任何请求正文模板可以避免这种情况，即使是像 `{"text": "hello", "project_name": "x"}` 这样的最小正文也会失败。 **需要翻译层（中间件）**，类似于 [email recipe](#configure-email-notifications-via-webhook) 中的 Amazon SES 注释。
+>> 没有任何请求正文模板可以避免这种情况，即使是像 `{"text": "hello", "project_name": "x"}` 这样的最小正文也会失败。 **需要翻译层（中间件）**，类似于[email recipe](#configure-email-notifications-via-webhook)中的Amazon SES注释。
 >>
 >> **选项 A：Cloud Run 或 Cloud Functions 中间件（推荐）**
 >>
->> 此方法使用一个小型 HTTP 处理程序，该处理程序接收 LangSmith webhook，提取相关字段，并将干净的 `{"text": "..."}` 负载转发到 Google Chat 空间 webhook URL。
+>> 此方法使用一个小型 HTTP 处理程序，该处理程序接收 LangSmith webhook，提取相关字段，并将干净的 `{"text": "..."}` 有效负载转发到 Google Chat 空间 webhook URL。
 >>
 >> **先决条件**
 >>>> * 配置了传入 webhook 的 Google Chat 空间。在 Google Chat 中，打开空间，然后转到 **应用和集成** > **添加 Webhooks**，创建 Webhook，然后复制 URL。
@@ -652,7 +652,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 >>
 >> 为部署的函数设置以下环境变量：
 >>
->> * `GCHAT_WEBHOOK_URL`：Google 聊天空间 webhook URL。
+>> * `GCHAT_WEBHOOK_URL`：Google 聊天空间 Webhook URL。
 >> * `LANGSMITH_SHARED_SECRET`：您选择的秘密字符串（用于验证来自 LangSmith 的传入请求）。
 >>
 >> **步骤2：在LangSmith**中配置webhook警报
@@ -680,7 +680,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 > > {}
 > > ```
 >>
->> 元数据字段（`alert_rule_name`、`project_name`、`runs_url` 等）无论您在此处放置什么，都会通过 LangSmith 合并到正文中，因此空正文就足够了。
+>> 元数据字段（`alert_rule_name`、`project_name`、`runs_url` 等）无论您在此处放置什么内容，都会通过 LangSmith 合并到正文中，因此空正文就足够了。
 >>
 > > > [！注意]
 >>>> > > 不要从处理程序中的警报字段值中删除 `*` 或 `_`。这些字符也用于 Google Chat 的基本文本格式，但它们出现在 LangSmith 标识符中（例如 `run_count`）。剥离它们会损坏消息中的字段名称。
@@ -715,7 +715,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 > > }
 > > ```
 >>
-> > 在**项目设置>脚本属性**中设置`GCHAT_WEBHOOK_URL`和`LANGSMITH_SHARED_SECRET`。
+>> 在 **项目设置 > 脚本属性** 中设置 `GCHAT_WEBHOOK_URL` 和 `LANGSMITH_SHARED_SECRET`。
 >>
 > > > [!警告]
 >>>> > > Apps 脚本 Web 应用程序无法读取自定义 HTTP 请求标头，因此共享密钥必须作为 **查询字符串参数** (`?secret=...`) 而不是标头传递。将其包含在 LangSmith webhook URL 中而不是 headers 字段中。

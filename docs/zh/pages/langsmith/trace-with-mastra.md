@@ -4,13 +4,9 @@
 
 # 追踪 Mastra 特工
 
-[Mastra](https://mastra.ai/docs) 是一个用于构建 AI 代理的 TypeScript 框架。使用 Mastra 的 [LangSmith exporter](https://mastra.ai/reference/observability/tracing/exporters/langsmith)，您可以将来自 Mastra 代理和工作流程的跟踪发送到 LangSmith 以进行调试、评估和可观察性。
+[Mastra](https://mastra.ai/docs) 是一个用于构建 AI 代理的 TypeScript 框架。使用 Mastra 的 [LangSmith exporter](https://mastra.ai/reference/observability/tracing/exporters/langsmith)，您可以将来自 Mastra 代理和工作流程的跟踪发送到 LangSmith 以进行调试、评估和可观察。
 
 本指南向您展示如何使用 Mastra 的 AI 跟踪系统将 Mastra 与 LangSmith 集成。
-
-> [!注意]
->
-> 此集成使用旧目标设置，例如 `project_name` 或 `LANGSMITH_PROJECT`。 [Create an agent](/langsmith/create-an-agent)，选择其环境，然后[retrieve that environment's ⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project)。在目标设置和任何覆盖中使用该返回值。对于支持代理寻址的集成，请直接使用 [agent identifier and environment](/langsmith/log-traces-to-agent)。
 
 ## 安装
 
@@ -26,12 +22,12 @@ npm install @mastra/core @mastra/langsmith @mastra/observability @mastra/libsql
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_API_KEY=<your_langsmith_api_key>
-   export LANGCHAIN_PROJECT=<your_project_name> # optional
+   export LANGCHAIN_PROJECT=<environment-tracer-session-name>
    ```
 
    > [!提示]
    >
-   > 将 [⟦T12⟧](/langsmith/create-an-agent#use-an-environment-project) 明确设置为所选环境的 `tracer_session_name`。
+   > 设置 [agent addressing](/langsmith/log-traces-to-agent) 变量时，导出器将运行发送给代理，但它会按项目名称附加来自 Mastra 评分器的分数。将 `LANGCHAIN_PROJECT` 设置为代理环境的 [⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project)，以便跑步和得分均到达代理。不要同时设置`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`：当它们与项目名称一起设置时，LangSmith不会跟踪调用。如果您未设置 `LANGCHAIN_PROJECT`，则跟踪将发送至名为 `default` 的代理。
 
 2. 如果您计划使用 OpenAI 模型，还请确保您在运行时有可用的 OpenAI API 密钥：
 
@@ -48,9 +44,7 @@ npm install @mastra/core @mastra/langsmith @mastra/observability @mastra/libsql
        index.ts
    ```
 
-## 使用 LangSmith 导出器配置 Mastra
-
-Mastra 跟踪直接在 `Mastra` 构造函数上配置。将以下内容添加到 `mastra.ts` 文件中：
+## 使用 LangSmith 导出器配置 MastraMastra 跟踪直接在 `Mastra` 构造函数上配置。将以下内容添加到 `mastra.ts` 文件中：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Mastra } from "@mastra/core";
@@ -84,7 +78,9 @@ export const mastra = new Mastra({
     enabled: false,
   },
 });
-```* [Storage is required for tracing](https://mastra.ai/docs/observability/integrations/exporters/mastra-storage)（即使在外部导出轨迹时）。
+```
+
+* [Storage is required for tracing](https://mastra.ai/docs/observability/integrations/exporters/mastra-storage)（即使在外部导出轨迹时）。
 * LangSmith 导出器从环境变量中读取凭据。
 * [deprecated telemetry system](https://mastra.ai/docs/observability/overview#otel-tracing-deprecated) 被禁用以避免警告。
 * 在 Mastra 服务器外部运行 Mastra 时，不需要单独的检测文件。
@@ -133,7 +129,7 @@ Mastra 将使用您配置的 API 密钥自动路由模型调用并捕获每次�
 运行代理后：
 
 1. 打开[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-mastra)。
-2. 选择通过`LANGCHAIN_PROJECT`配置的代理和环境。
+2. 选择您的代理，进入**跟踪**，然后选择您在`LANGCHAIN_PROJECT`中设置的`tracer_session_name`的环境。
 3. 找到`echoAgent.generate`对应的迹线。
 
 您将能够检查：

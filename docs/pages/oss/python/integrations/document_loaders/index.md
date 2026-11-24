@@ -73,7 +73,7 @@ The below document loaders allow you to load webpages.
 | [OpeddFeedLoader](https://opedd.com/for-ai-agents) | Load a licensed Opedd content catalog as Documents with licensing provenance | API |
 | [ProxyHatLoader](https://docs.proxyhat.com) | Load web pages through ProxyHat residential proxies as Documents | API |
 | [AgentQL](https://docs.agentql.com/) | Web interaction and structured data extraction from any web page using an AgentQL query or a Natural Language prompt | API |
-| [CRW](https://fastcrw.com) | Open-source Firecrawl-compatible web scraper via local binary or fastcrw\.com cloud | Package |
+| [CRW](https://fastcrw.com) | Open-source Firecrawl-compatible web scraper via local binary or fastcrw.com cloud | Package |
 | [Plasmate](https://docs.plasmate.app/integration-langchain) | Agent-native headless browser with Set of Mark (SOM) structured UI extraction | Package |
 | [Spidra](https://docs.spidra.io) | AI-powered web scraper with real browsers, CAPTCHA solving, and structured data extraction | API |
 
@@ -154,6 +154,7 @@ The below document loaders allow you to load data from common data formats.
 | [`Azure blob storage loader`](/oss/python/integrations/document_loaders/azure_blob_storage) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-azure-storage/month)](https://pypi.org/project/langchain-azure-storage/) |
 | [`FlatmarkLoader`](https://github.com/flatmark-dev/flatmark-integrations/blob/main/langchain/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flatmark/month)](https://pypi.org/project/langchain-flatmark/) |
 | [`FirecrawlLoader`](https://docs.firecrawl.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-firecrawl/month)](https://pypi.org/project/langchain-firecrawl/) |
+| [`OpenDocKitLoader`](https://github.com/hyeonsang010716/OpenDocKit/blob/main/docs/integrations.md#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/opendockit/month)](https://pypi.org/project/opendockit/) |
 | [`OpenDataLoader PDF`](https://github.com/opendataloader-project/langchain-opendataloader-pdf) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendataloader-pdf/month)](https://pypi.org/project/langchain-opendataloader-pdf/) |
 | [`AnakinLoader`](https://anakin.io/docs/documentation) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anakin/month)](https://pypi.org/project/langchain-anakin/) |
 | [`Docugami`](/oss/python/integrations/document_loaders/docugami) | [  ![Downloads per month](https://static.pepy.tech/badge/docugami-langchain/month)](https://pypi.org/project/docugami-langchain/) |
@@ -181,6 +182,7 @@ The below document loaders allow you to load data from common data formats.
 | [`PolarisAIDataInsightLoader`](https://datainsight.polarisoffice.com/playground) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-polaris-ai-datainsight/month)](https://pypi.org/project/langchain-polaris-ai-datainsight/) |
 | [`ProxmintLoader`](https://proxmint.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxmint/month)](https://pypi.org/project/langchain-proxmint/) |
 | [`Google memorystore for Redis`](/oss/python/integrations/document_loaders/google_memorystore_redis) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-google-memorystore-redis/month)](https://pypi.org/project/langchain-google-memorystore-redis/) |
+| [`PyMuPDFLayoutLoader`](https://pymupdf.readthedocs.io/en/latest/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pymupdf-layout/month)](https://pypi.org/project/langchain-pymupdf-layout/) |
 | [`OpeddFeedLoader`](https://opedd.com/for-ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opedd/month)](https://pypi.org/project/langchain-opedd/) |
 | [`langchain_box`](https://developer.box.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-box/month)](https://pypi.org/project/langchain-box/) |
 | [`AnyToMarkdownLoader`](https://pypi.org/project/langchain-anytomarkdown/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anytomarkdown/month)](https://pypi.org/project/langchain-anytomarkdown/) |

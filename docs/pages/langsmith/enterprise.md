@@ -104,9 +104,13 @@ Track and limit spending across your organization.
 
 Review LangSmith's security posture and compliance certifications.
 
+> [card] [Security overview](/langsmith/security-overview)
+>
+> Review certifications, deployment models, and the security controls for access, API keys, auditing, and data protection.
+
 > [card] [Shared responsibility model](/langsmith/shared-responsibility-model)
 >
-> Review the security responsibilities shared between LangChain and your organization. LangSmith holds SOC 2 Type II, HIPAA, and GDPR certifications.
+> Review the security responsibilities shared between LangChain and your organization.
 
 > [card] [Scalability & resilience](/langsmith/scalability-and-resilience)
 >

@@ -146,22 +146,24 @@ The backends support the following file system operations:
 
 > [accordion] Running without the default filesystem tools
 >
-> To hide the filesystem tools listed above from the model, register a [harness profile](/oss/javascript/deepagents/profiles#harness-profiles) with `excluded_tools`:
+> To hide the filesystem tools listed above from the model, register a [harness profile](/oss/javascript/deepagents/profiles#harness-profiles) with `excludedTools`:
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> from deepagents import HarnessProfile, register_harness_profile
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { registerHarnessProfile } from "deepagents";
 >
-> register_harness_profile(
->     "anthropic:claude-sonnet-4-6",
->     HarnessProfile(
->         excluded_tools=frozenset(
->             {"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}
->         ),
->     ),
-> )
+> registerHarnessProfile("anthropic:claude-sonnet-4-6", {
+>   excludedTools: [
+>     "ls",
+>     "read_file",
+>     "write_file",
+>     "edit_file",
+>     "glob",
+>     "grep",
+>   ],
+> });
 > ```
 >
-> Removing [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) itself via `excluded_middleware` is intentionally rejected—it is required scaffolding in the [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack). Use `excluded_tools` to hide only the model-visible tool surface and leave the middleware in place. To remove the `task` tool, see [Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents).
+> Removing [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) itself via `excludedMiddleware` is intentionally rejected—it is required scaffolding in the [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack). Use `excludedTools` to hide only the model-visible tool surface and leave the middleware in place. To remove the `task` tool, see [Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents).
 
 The virtual filesystem is used by several other harness capabilities such as skills, memory, code execution, and context management.
 You can also use the file system when building custom tools and middleware for Deep Agents.

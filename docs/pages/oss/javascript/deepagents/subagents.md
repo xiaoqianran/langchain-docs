@@ -1567,8 +1567,8 @@ Because each subagent's `name` is written to the `lc_agent_name` metadata key on
 
 ### Filter in the LangSmith UI
 
-1. Open your tracing project in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-subagents).
-2. Switch the view to **Runs** on the Tracing project page to see individual spans.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-subagents), select your agent, go to **Tracing**, and select the environment.
+2. Switch the view to **Runs** to see individual spans.
 3. Click **Add filter** and select **Metadata**.
 4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name, for example `coordinator`.
 
@@ -1578,29 +1578,28 @@ This shows only the runs produced by that subagent. You can save the filter as a
 
 ### Filter programmatically with the SDK
 
-Use the `has` comparator in the LangSmith filter query language to match runs by metadata key-value pair:
+Use the `has` comparator in the LangSmith filter query language to match runs by metadata key-value pair. Replace `<environment-tracer-session-name>` with the agent environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langsmith import Client
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-client = Client()
+const client = new Client();
 
-runs = client.list_runs(
-    project_name="<your-project>",
-    filter='has(metadata, \'{"lc_agent_name": "research-agent"}\')',
-)
-
-for run in runs:
-    print(run.name, run.start_time, run.status)
+const runs = client.listRuns({
+  projectName: "<environment-tracer-session-name>",
+  filter: 'has(metadata, \'{"lc_agent_name": "research-agent"}\')',
+});
 ```
+
+Iterate the results to print each run's name, start time, and status.
 
 To fetch runs from *any* named subagent (excluding the main agent), filter for runs that have the `lc_agent_name` key at all:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-runs = client.list_runs(
-    project_name="<your-project>",
-    filter="has(metadata, 'lc_agent_name')",
-)
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const runs = client.listRuns({
+  projectName: "<environment-tracer-session-name>",
+  filter: "has(metadata, 'lc_agent_name')",
+});
 ```
 
 For the full filter query language reference, see [Trace query syntax](/langsmith/trace-query-syntax).

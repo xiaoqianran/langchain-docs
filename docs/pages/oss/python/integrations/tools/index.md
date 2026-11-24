@@ -565,6 +565,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`OnlineCompilerToolkit`](https://onlinecompiler.io/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-onlinecompiler/month)](https://pypi.org/project/langchain-onlinecompiler/) |
 | [`EasyTranscriber YouTube transcript tools`](https://www.easytranscriber.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-easytranscriber/month)](https://pypi.org/project/langchain-easytranscriber/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
+| [`TickerLayerToolkit`](https://tickerlayer.com/docs/agent-frameworks#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tickerlayer/month)](https://pypi.org/project/langchain-tickerlayer/) |
 | [`viaSocket`](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/viasocket/month)](https://pypi.org/project/viasocket/) |
 | [`AdsCrawlReadTool`](https://github.com/AdsCrawl/langchain-adscrawl) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-adscrawl/month)](https://pypi.org/project/langchain-adscrawl/) |
 | [`PaySafely`](https://github.com/screwtapeai/pay-safely) | [  ![Downloads per month](https://static.pepy.tech/badge/screwtape-pay-safely/month)](https://pypi.org/project/screwtape-pay-safely/) |
@@ -606,7 +607,10 @@ The following table shows tools that generate video, image, or audio assets:
 | [`CaptureKitPageContent`](https://github.com/capturekitdev/langchain-capturekit#readme) | N/A |
 | [`ChartQueryChart`](https://github.com/chartquery/langchain-chartquery#readme) | N/A |
 | [`CleaveToolkit`](https://cleave.fi/docs/agents/langchain) | N/A |
+| [`CrowdWisdomToolkit`](https://github.com/CrowdWisdomTradingx402/crowdwisdomtrading-python/tree/main/integrations/langchain#readme) | N/A |
+| [`EquiblesToolkit`](https://equibles.com/docs/api/langchain) | N/A |
 | [`FaxForAgentsToolkit`](https://github.com/faxforagents/langchain-faxforagents/blob/main/README.md) | N/A |
+| [`FindcheapToolkit`](https://github.com/llmbender/findcheap-sdks/tree/main/langchain#readme) | N/A |
 | [`FokalsToolkit`](https://github.com/fokals/langchain-fokals#readme) | N/A |
 | [`FrameScanTool`](https://github.com/Sandeep85Das/langchain-frame) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |

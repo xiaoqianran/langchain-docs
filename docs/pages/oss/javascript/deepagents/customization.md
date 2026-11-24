@@ -2287,7 +2287,9 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > const agent = createDeepAgent({
 >   model: "google:gemini-4-hydrogen",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });
@@ -2302,7 +2304,9 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > const agent = createDeepAgent({
 >   model: "openai:gpt-6.1-sol",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });
@@ -2317,7 +2321,9 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > const agent = createDeepAgent({
 >   model: "anthropic:claude-sonnet-5",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });
@@ -2332,7 +2338,9 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > const agent = createDeepAgent({
 >   model: "openrouter:z-ai/glm-5.2",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });
@@ -2347,7 +2355,9 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > const agent = createDeepAgent({
 >   model: "fireworks:accounts/fireworks/models/glm-5p2",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });
@@ -2362,7 +2372,9 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > const agent = createDeepAgent({
 >   model: "baseten:zai-org/GLM-5.2",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });
@@ -2377,7 +2389,9 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > const agent = createDeepAgent({
 >   model: "ollama:north-mini-code-1.0",
 >   backend: new StoreBackend({
->     namespace: (rt) => [rt.serverInfo.user.identity],
+>     namespace: ({ config }) => [
+>       String(config?.configurable?.langgraph_auth_user_id),
+>     ],
 >   }),
 >   store,
 > });

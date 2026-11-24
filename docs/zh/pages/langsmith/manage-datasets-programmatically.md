@@ -184,19 +184,22 @@ public class CreateDatasetExample {
 
 ### 从轨迹创建数据集
 
-要根据轨迹的运行（跨度）创建数据集，您可以使用相同的方法。有关如何获取和过滤运行的**许多**更多示例，请参阅 [export traces](/langsmith/export-traces) 指南。下面是一个例子：
+要根据轨迹的运行（跨度）创建数据集，您可以使用相同的方法。有关如何获取和过滤运行的**许多**更多示例，请参阅 [export traces](/langsmith/export-traces) 指南。下面是一个例子：> [!注意]
+>
+> 解析代理环境需要最新的 SDK 和LangSmith 版本，并且在 BYOC 数据平面上不可用。有关要求和 BYOC 替代方案，请参阅 [Resolve an agent environment](/langsmith/resolve-an-agent)。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 from datetime import datetime, timedelta, timezone
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 
 async def main():
     client = Client()
     dataset_name = "Example Dataset"
-    project_id = str(client.read_project(project_name="my_project").id)
+    # Replace with your agent ID and environment
+    project_id = (await client.sessions.resolve(**agent_address("support-agent", "production"))).session_id
 
     # Filter runs to add to the dataset
     runs = [
@@ -223,11 +226,12 @@ asyncio.run(main())
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "langsmith";
+import { AgentAddress, Client } from "langsmith";
 
 const client = new Client();
 const datasetName = "Example Dataset";
-const projectId = (await client.readProject({ projectName: "my_project" })).id;
+// Replace with your agent ID and environment
+const projectId = (await client.sessions.resolve(new AgentAddress("support-agent", "production"))).session_id;
 
 // Filter runs to add to the dataset
 const runs = [];
@@ -331,7 +335,9 @@ public class CreateDatasetExample {
 
 ### 从 CSV 文件创建数据集
 
-在本部分中，我们将演示如何通过上传 CSV 文件来创建数据集。首先，确保您的 CSV 文件格式正确，其中包含代表输入和输出键的列。这些密钥将用于在上传过程中正确映射您的数据。您可以为数据集指定可选名称和描述。否则，文件名将用作数据集名称，并且不会提供任何描述。
+在本部分中，我们将演示如何通过上传 CSV 文件来创建数据集。
+
+首先，确保您的 CSV 文件格式正确，其中包含代表输入和输出键的列。这些密钥将用于在上传过程中正确映射您的数据。您可以为数据集指定可选名称和描述。否则，文件名将用作数据集名称，并且不会提供任何描述。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
@@ -465,9 +471,7 @@ DatasetListParams listParams = DatasetListParams.builder().build();
 var datasets = client.datasets().list(listParams);
 ```
 
-### 按名称列出数据集
-
-如果您想按确切名称进行搜索，可以执行以下操作：
+### 按名称列出数据集如果您想按确切名称进行搜索，可以执行以下操作：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 datasets = client.list_datasets(dataset_name="My Test Dataset 1")
@@ -532,7 +536,9 @@ DatasetListParams listParams = DatasetListParams.builder()
 var datasets = client.datasets().list(listParams);
 ```
 
-## 获取示例您可以使用 Python 和 TypeScript SDK 中的 `list_examples`/`listExamples` 方法以编程方式从 LangSmith 获取示例。以下是一些常见的调用。
+## 获取示例
+
+您可以使用 Python 和 TypeScript SDK 中的 `list_examples`/`listExamples` 方法以编程方式从 LangSmith 获取示例。以下是一些常见的调用。
 
 > [!注意]
 >
@@ -642,9 +648,7 @@ var examples = client.examples().list(listParams);
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 examples = client.list_examples(dataset_name=dataset_name, metadata={"foo": "bar"})
-```
-
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+``````typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const examples = await client.listExamples({
   datasetName: datasetName,
   metadata: {foo: "bar"}
@@ -663,7 +667,9 @@ var examples = client.examples().list(listParams);
 
 ### 按结构化过滤器列出示例
 
-与如何使用结构化过滤器查询语言[fetch runs](/langsmith/export-traces#use-filter-query-language)类似，您可以使用它来获取示例。> [!注意]
+与如何使用结构化过滤查询语言[fetch runs](/langsmith/export-traces#use-filter-query-language)类似，您可以使用它来获取示例。
+
+> [!注意]
 >
 > 目前仅在 Python SDK v0.1.83 及更高版本和 TypeScript SDK v0.1.35 及更高版本中可用。
 >
@@ -826,8 +832,6 @@ bulkParamsBuilder.addBody(
 client.examples().bulk().patchAll(bulkParamsBuilder.build());
 ```
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-datasets-programmatically.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

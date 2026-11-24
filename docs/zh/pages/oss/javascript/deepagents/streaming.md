@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Streaming | https://docs.langchain.com/oss/javascript/deepagents/streaming -->
 
-# 流媒体
+# Streaming
 
 从深度代理运行和子代理执行中传输实时更新
 
@@ -17,7 +17,7 @@ Deep Agents 构建于 LangGraph 的流基础架构之上，为子代理流提供
 
 ## 启用子图流
 
-Deep Agents 使用 LangGraph 的子图流来处理来自子代理执行的表面事件。要接收子代理事件，请在流式传输时启用 `stream_subgraphs`。
+Deep Agents 使用LangGraph 的子图流来处理子代理执行中的表面事件。要接收子代理事件，请在流式传输时启用 `stream_subgraphs`。
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
@@ -282,7 +282,7 @@ for await (const [namespace, chunk] of await agent.stream(
 >
 > 为此示例打开公共 LangSmith 运行。
 
-## 命名空间
+## Namespaces
 
 当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。|命名空间 |来源 |
 | - | - |
@@ -1578,34 +1578,34 @@ for await (const [mode, data] of await agent.stream(
 
 ## 流块形状
 
-对于 `subgraphs=True`，块形状取决于您是否传递一种或多种流模式：
+对于 `subgraphs: true`，块形状取决于您是否传递一种或多种流模式：
 
-| `stream_mode` |块状|
+| `streamMode` |块状 |
 | - | - |
-|单模式（例如`"updates"`）| `(namespace, data)` |
-|多种模式（例如`["messages", "updates"]`）| `(namespace, mode, data)` |
+|单模式（例如`"updates"`）| `[namespace, data]` |
+|多种模式（例如`["messages", "updates"]`）| `[namespace, mode, data]` |
 
-如果没有`subgraphs`，单模直接产生`data`，多模产生`(mode, data)`。
+如果没有`subgraphs`，单模直接产生`data`，多模产生`[mode, data]`。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Single mode + subgraphs
-for namespace, data in agent.stream(
-    {"messages": [{"role": "user", "content": "Research quantum computing"}]},
-    stream_mode="updates",
-    subgraphs=True,
-):
-    print(namespace)  # () for main agent, ("tools:<id>",) for subagent
-    print(data)
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Single mode + subgraphs
+for await (const [namespace, data] of await agent.stream(
+  { messages: [{ role: "user", content: "Research quantum computing" }] },
+  { streamMode: "updates", subgraphs: true },
+)) {
+  console.log(namespace); // [] for main agent, ["tools:<id>"] for subagent
+  console.log(data);
+}
 
-# Multiple modes + subgraphs
-for namespace, mode, data in agent.stream(
-    {"messages": [{"role": "user", "content": "Research quantum computing"}]},
-    stream_mode=["updates", "messages", "custom"],
-    subgraphs=True,
-):
-    print(mode)       # "updates", "messages", or "custom"
-    print(namespace)  # () for main agent, ("tools:<id>",) for subagent
-    print(data)
+// Multiple modes + subgraphs
+for await (const [namespace, mode, data] of await agent.stream(
+  { messages: [{ role: "user", content: "Research quantum computing" }] },
+  { streamMode: ["updates", "messages", "custom"], subgraphs: true },
+)) {
+  console.log(mode); // "updates", "messages", or "custom"
+  console.log(namespace); // [] for main agent, ["tools:<id>"] for subagent
+  console.log(data);
+}
 ```
 
 ## 相关* [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)—为敏感工具操作配置审批工作流程

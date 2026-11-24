@@ -2,7 +2,7 @@
 
 # Use annotation queues
 
-*Annotation queues* give human reviewers a focused workflow for attaching feedback to specific [runs](/langsmith/observability-concepts#runs) or [threads](/langsmith/observability-concepts#threads). While you can always annotate [traces](/langsmith/observability-concepts#traces) inline, annotation queues let you group runs and threads together, prescribe rubrics, and track reviewer progress. Reviewing an entire thread lets you evaluate a full multi-turn conversation, capturing quality signals that a single run cannot.
+*Annotation queues* give human reviewers a focused workflow for attaching feedback to specific [runs](/langsmith/observability-concepts#runs) or [threads](/langsmith/observability-concepts#threads). While you can always [annotate traces inline](/langsmith/annotate-traces-inline), annotation queues let you group runs and threads together, prescribe rubrics, and track reviewer progress. Reviewing an entire thread lets you evaluate a full multi-turn conversation, capturing quality signals that a single run cannot.
 
 > [!NOTE]
 >
@@ -10,7 +10,7 @@
 
 LangSmith supports two queue styles:
 
-* [**Single-run annotation queues**](#single-run-annotation-queues) present one queue item at a time, either a run or a thread, and let reviewers submit any rubric feedback you configure. For **run** items, single-run queues also support [assertions](/langsmith/assertions) to capture acceptance criteria for offline evaluation.
+* [**Single-run annotation queues**](#single-run-annotation-queues) present one queue item at a time, either a run or a thread, and let reviewers submit any rubric feedback you configure. For **run** items that [LangSmith Engine proposed as offline examples](/langsmith/engine-issues#add-offline-examples), single-run queues also show [assertions](/langsmith/assertions) to review before you save them for offline evaluation.
 * [**Pairwise annotation queues (PAQs)**](#pairwise-annotation-queues) present two runs side-by-side so reviewers can quickly decide which output is better (or if they are equivalent) against the rubric items you define.
 
 > [!TIP]
@@ -19,7 +19,7 @@ LangSmith supports two queue styles:
 
 ## Single-run annotation queues
 
-Single-run queues present one item at a time and let reviewers submit any rubric feedback you configure. They can be created directly from the **Annotation queues** section in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotation-queues). A queue can contain a mix of run items and thread items. A *thread item* represents an entire conversation and is reviewed against the same rubric as a run item.
+Single-run queues present one item at a time and let reviewers submit any rubric feedback you configure. They can be created directly from the **Annotation Queues** page in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotation-queues). A queue can contain a mix of run items and thread items. A *thread item* represents an entire conversation and is reviewed against the same rubric as a run item.
 
 Run items and thread items support different capabilities:
 
@@ -27,14 +27,14 @@ Run items and thread items support different capabilities:
 | - | - | - |
 | Rubric feedback | Yes | Yes |
 | Reviewer notes | Yes | No |
-| Assertions | Yes | No |
+| Assertions | Engine-proposed runs only | No |
 | Add to Dataset | Yes | Yes |
 | Default dataset | Yes | No |
 | Automation rules | Yes | Yes |
 
 ### Create a single-run queue
 
-1. Navigate to **Annotation Queues** in the left navigation.
+1. In the left sidebar, click **Annotation Queues**.
 2. Click **+ Annotation Queue** in the top-left corner to open the **Create Annotation Queue** panel.
 
 #### Basic details
@@ -45,11 +45,35 @@ Run items and thread items support different capabilities:
 
 #### Annotation rubric
 
-1. Draft some high-level **Instructions** for your annotators, which will be shown in the sidebar on every item.
-2. Click **+ Add a feedback rubric** to add feedback keys to your annotation queue. Annotators will be presented with these feedback keys on each item.
-3. Add a description for each, as well as a short description of each category, if the feedback type is categorical.
+The feedback rubric is the ordered list of items reviewers fill in for each queue item. Each rubric item uses a [feedback tag](/langsmith/set-up-feedback-criteria) and adds queue-specific instructions, whether the item is required, and optional conditions on earlier answers. The rubric is where you define what a good response looks like for your application, so every reviewer scores items against the same criteria.
 
-   Reviewers see the **Instructions** and **Feedback** details in the right-hand pane of the UI.
+> [!NOTE]
+>
+> Rubric conditions, rubric copying, multi-select feedback tags, and shared reviewer notes are available on LangSmith Cloud and on self-hosted LangSmith v0.18 or later. Earlier self-hosted versions do not include these features.
+
+You build the rubric in the **Feedback Rubric** section of the **Create Annotation Queue** panel. To change the rubric of an existing single-run queue, open the queue and click **Rubric** in the top-right corner. This button appears only if you can edit the queue.
+
+To build a rubric:
+
+1. Draft some high-level **Instructions** for your annotators, which will be shown in the sidebar on every item.
+
+2. Click **Add rubric item** and select a feedback tag. The menu lists tags **Used in other queues** first, then **All tags**. Type in the search box to filter the workspace's tags, or click **+ Create new** to create a tag. To start from a rubric you already built, see [Copy a rubric from another queue](#copy-a-rubric-from-another-queue).
+
+   Each rubric item shows its tag's type, such as **Categorical · 2 options**. Items that use a [multi-select](/langsmith/set-up-feedback-criteria#allow-multiple-selections) tag also show a **Multi-select** badge.
+
+3. Add a description for each item. If the item uses a categorical tag, also add a short description of each category.
+
+4. (Optional) For a freeform item, enter a **Regex validator**, such as `CASE-\d+`. Each answer must match it before it saves.
+
+5. (Optional) Select **Required** to make reviewers fill in the item before they can mark the queue item as completed.
+
+6. (Optional) Click **Add logic** to show or require the item based on an earlier answer. For details, see [Add conditions to rubric items](#add-conditions-to-rubric-items).
+
+7. If you opened the rubric with the **Rubric** button, click **Save**.
+
+Reviewers see the **Instructions** and rubric items in the right-hand pane of the UI.
+
+For free-text feedback, add a rubric item that uses a freeform feedback tag. Each answer is visible only to the reviewer who wrote it. The item gets its own column in CSV exports and can trigger a [condition](#add-conditions-to-rubric-items). To let reviewers write notes that other reviewers can read, turn on [shared reviewer notes](#collaborator-settings).
 
 #### Data formatting
 
@@ -70,22 +94,18 @@ Each queue uses one of two layouts:
 
 #### Collaborator settings
 
-Set a number of reviewers or the maximum time you want to reserve the item to a collaborator. When there are multiple annotators for an item, you can choose to have the item stay in the queue until all reviewers have marked it as **Done**. In these settings, "run" refers to any queue item, including thread items. The settings are as follows:
+Set a number of reviewers or the maximum time you want to reserve the item to a collaborator. When there are multiple annotators for an item, you can choose to have the item stay in the queue until all reviewers have marked it as completed. In these settings, "run" refers to any queue item, including thread items. The settings are as follows:
 
-* **All workspace members review each run**: When enabled, an item remains in the queue until every [workspace](/langsmith/administration-overview#workspaces) member has marked their review as **Done**.
+* **All workspace members review each run**: When enabled, an item remains in the queue until every [workspace](/langsmith/administration-overview#workspaces) member has marked their review as completed.
 
 * **Enable reservations on runs**: Reserving an item locks it for your review for a set amount of time. While an item is reserved, other reviewers can view it but cannot add feedback or notes. Reservations are disabled if all workspace members review each run.
 
-  If a reviewer has viewed an item and then leaves without marking it **Done**, the reservation will expire after the specified **Reservation length**. The item is then released back into the queue and can be reserved by another reviewer.
+  If a reviewer has viewed an item and then leaves without marking it as completed, the reservation will expire after the specified **Reservation length**. The item is then released back into the queue and can be reserved by another reviewer.
 
-  > [!NOTE]
-  >
-  > Clicking **Requeue** for an item's annotation will only move the current item to the end of the current user's queue; it won't affect the queue order of any other user. It will also release the reservation that the current user has on that item.
+* **Number of reviewers per run**: This determines the number of reviewers that must mark an item as completed for it to be removed from the queue.
 
-* **Number of reviewers per run**: This determines the number of reviewers that must mark an item as **Done** for it to be removed from the queue.
-
-  * Reviewers cannot view the feedback left by other reviewers.
-  * Comments on items are visible to all reviewers.
+  * Reviewers cannot view the rubric feedback left by other reviewers.
+  * Reviewers can read each other's notes only if [**Let reviewers leave notes for each other**](#collaborator-settings) is on.
 
   > [!NOTE]
   >
@@ -102,6 +122,10 @@ Set a number of reviewers or the maximum time you want to reserve the item to a 
   >
   > When you add a new assigned reviewer to a queue that already has completed items, those items do not revert to pending. If you remove an assigned reviewer, any items they had not yet reviewed recalculate their completion status.
 
+* **Let reviewers leave notes for each other**: Off by default. Reviewer notes are messages between reviewers, such as questions or context about an item, not feedback on the item. When enabled, each run item gets a **Reviewer Note** button in the review pane. Reviewers use it to write their own note and to read other reviewers' notes, each with its author and time. For feedback, use a freeform [rubric item](#annotation-rubric) instead.
+
+  When sharing is off, new queues have no notes box. In older queues with sharing off, each reviewer's private note appears as a `note` rubric item at the end of the rubric, marked "Only you can see your note." When you export a queue to CSV, notes appear in their own column, which lists each reviewer's note.
+
 Because of these settings, the number of items visible to each reviewer can differ from the total queue size.
 
 ### Edit a queue's settings
@@ -112,6 +136,64 @@ Because of these settings, the number of items visible to each reviewer can diff
    * In the annotation queue view, click the **Settings** icon  in the top-right corner.
 
 2. In the **Edit Annotation Queue** panel, modify any of the settings you configured during queue creation and click **Save**.
+
+### Copy a rubric from another queue
+
+Copy a rubric to reuse its items in another queue instead of rebuilding them. Copying is available for single-run queues whose rubric is empty.
+
+To copy a rubric:
+
+1. In the empty **Feedback Rubric** section, click **Copy existing rubric**. The picker lists the workspace's other single-run queues, most recently updated first. Use **Search Queues...** to filter the list.
+2. Select a source queue. A preview lists each item's key, type, requirement, and condition.
+3. Click **Copy *N* items**, where *N* is the number of items to copy.
+
+Each copied item keeps its instructions, category descriptions, requirement, conditions, regex validator, and feedback tag. Copying links the existing tag rather than creating a new one. The source queue does not change.
+
+Most rubrics copy in full. If the source rubric has items that LangSmith cannot copy, such as in an older rubric or one created through the API, the preview dims those items and shows the reason in the **Condition** column:
+
+* **Duplicate key**: Another item in the source rubric has the same key, ignoring case and spacing.
+* **No feedback tag**: The item has no feedback tag.
+* **Assertion item**: The item is an assertion.
+* **Reserved for notes**: The item uses the `note` key, which is reserved for reviewer notes.
+
+If a copied item has a condition on an item that was not copied, LangSmith drops that condition and lists it in the preview. An item left with no conditions becomes optional.
+
+### Add conditions to rubric items
+
+Conditions show or require a rubric item based on answers to earlier items, so reviewers see follow-up questions only when they apply. For example, show a `failure_reason` item only when a reviewer marks `correctness` as failing. Conditions are available for single-run queues.
+
+A condition can reference only items above it in the rubric. The first rubric item cannot have conditions.
+
+To add a condition:
+
+1. On the rubric item, click **Add logic**.
+
+2. In the **When** row, choose an earlier item, an operator, and, if the operator needs one, a value:
+
+   * **is**: The earlier answer is the value you choose.
+   * **is one of**: The earlier answer is any of the values you choose.
+   * **is empty**: The earlier item has no answer.
+   * **is not empty**: The earlier item has an answer.
+
+   Items without categories, such as freeform items, support only **is empty** and **is not empty**. For a multi-select item, **is** and **is one of** hold if any pick matches.
+
+3. (Optional) Click **+ Add condition** to add more conditions. To join conditions, select **and** to require every condition. Select **or** to require any one.
+
+4. In the **Then** row, choose what happens to the item:
+
+   * **Require**: Always shown, required once the conditions hold.
+   * **Show**: Hidden until the conditions hold, then optional.
+   * **Show and require**: Hidden until the conditions hold, then required.
+
+The collapsed rubric item summarizes its logic in plain English, such as "Shown when accuracy is one of 2 values". Items that other items depend on list them under **Affects**.
+
+While a reviewer works through an item, LangSmith checks conditions against saved answers. When a change to an earlier answer hides an item, LangSmith deletes the hidden item's answer, so feedback never includes answers to questions the reviewer could not see.
+
+If you delete an item that other items depend on, LangSmith asks you to confirm and removes the conditions that reference it. A dependent item with no remaining conditions becomes optional.
+
+> [!NOTE]
+>
+> LangSmith stores conditions on the queue and applies them in the review pane. Feedback written directly through the API or SDK is not checked against conditions. To manage conditions programmatically, see [Add conditions to rubric items](/langsmith/annotation-queues-sdk#add-conditions-to-rubric-items) in the SDK guide.
 
 ### Assign runs and threads to a single-run queue
 
@@ -156,11 +238,11 @@ There are several ways to populate a single-run queue with items:
 
 ### Review a single-run queue
 
-1. Navigate to the **Annotation Queues** section through the left-hand navigation bar.
+1. In the left sidebar, click **Annotation Queues**.
 
    The queue list includes an **Assigned Reviewers** column showing which reviewers are assigned to each queue. To see only queues assigned to you, click the **Assigned to me** filter at the top of the list.
 
-2. Click on the queue you want to review. This will take you to a focused, cyclical view of the items in the queue that require review. A left side panel lists queue items (runs and threads) and shows the status of each (**Needs Review**, **Needs Others' Review**, **Completed**). Use **View all items** to open the full queue list.
+2. Click on the queue you want to review. This will take you to a focused, cyclical view of the items in the queue that require review. A left side panel lists queue items (runs and threads) and shows the status of each (**Needs Review**, **Needs Others' Review**, **Completed**). Click **Overview** to open the full queue list.
 
 3. Review the current item:
 
@@ -168,18 +250,24 @@ There are several ways to populate a single-run queue with items:
 
      Child runs show inputs and outputs instead of a trajectory. Runs whose trajectory is unavailable do the same, such as on a self-hosted installation that does not [query SmithDB](/langsmith/self-host-smithdb-features). This view collapses each intermediate tool call into one row, and lists reference outputs and attachments below the outputs.
 
-     Add **Reviewer Notes**, score [**Feedback**](/langsmith/observability-concepts#feedback) criteria, or mark the item as reviewed. To build a dataset, click **Add to Dataset** to save the run as an example. Instead of crafting a corrected reference output by hand, you can [write **Assertions**](/langsmith/assertions) directly in the review side panel and save them as the example's expected output. Once you add assertions, the center pane shows the run's inputs, with the assertions as its reference outputs.
+     Fill in the rubric's [**Feedback**](/langsmith/observability-concepts#feedback) items, or mark the item as reviewed. If the queue has [shared reviewer notes](#collaborator-settings) turned on, click **Reviewer Note** to add your note and read other reviewers' notes. To build a dataset, click **Add to Dataset** to save the run as an example. For runs that [LangSmith Engine proposed as offline examples](/langsmith/engine-issues#add-offline-examples), the review side panel also shows the proposed [**Assertions**](/langsmith/assertions). Review and edit them before you save them as the example's expected output. Once the run has assertions, the center pane shows the run's inputs, with the assertions as its reference outputs.
 
      Both views are read-only. To edit a run's inputs and outputs before adding it to a dataset, enable [**Classic Trace View**](#data-formatting) for the queue.
    * **Thread items**: The center pane displays the thread's conversation transcript. Read the transcript and score its rubric **Feedback** criteria. Click **View item** to open the thread in the conversation peek. To add the full conversation to a dataset as one example, click **Add to Dataset**, then select a dataset. To create a dataset from the picker, click **New Dataset**. To learn what a thread example includes, see [Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-an-agent-environment).
 
-   Click **Delete** to remove the item from the queue for all users, regardless of any current reservations or queue settings.
+   When you fill in rubric items:
+
+   * For a [multi-select](/langsmith/set-up-feedback-criteria#allow-multiple-selections) item, pick every category that applies. Clearing a pick deletes that feedback.
+   * For an item with more than 10 categories, type in the search box to find a category.
+   * Items with [conditions](#add-conditions-to-rubric-items) appear or become required as you answer earlier items. If a change to an earlier answer hides an item, LangSmith deletes your answer to it.
+   * Answered items show a check mark. Required items show a red asterisk.
+   * To finish the item, click **Next (mark as completed)**. On your last item in **Needs Review**, the button reads **Done**. If you click it before you fill in every required item that is shown, LangSmith lists the items still missing.
+
+   To remove the current item from the queue for all workspace members, click **Remove from queue** (the  icon on the item in the left panel, or <kbd>⌘ ⌫</kbd>), then confirm. You cannot remove an item while other reviewers have it fully reserved.
 
    > [!NOTE]
    >
    > For thread items, you can submit rubric feedback and use **Add to Dataset**. Reviewer notes and assertions are not available. See the [capability table](#single-run-annotation-queues) to compare run and thread item capabilities.
-
-   ![Annotation queue reviewing a thread item with the conversation transcript and rubric feedback pane.](https://mintcdn.com/langchain-5e9cc07a/XAjVplP-0MXBU4mY/langsmith/images/annotation-queue-thread-review-light.png?fit=max\&auto=format\&n=XAjVplP-0MXBU4mY\&q=85\&s=635f04e056d3092c5174dc54c54559b3)
 
    Feedback and notes submitted while reviewing an annotation queue do not change the trace's [retention tier](/langsmith/usage-and-billing#data-retention-auto-upgrades).
 
@@ -197,7 +285,7 @@ Pairwise annotation queues (PAQs) present two runs side-by-side so reviewers can
 
 ### Create a pairwise queue
 
-1. Navigate to **Datasets & Experiments**, open a dataset, and select **exactly two experiments** you want to compare.
+1. Go to **Datasets & Experiments**, open a dataset, and select **exactly two experiments** you want to compare.
 
 2. Click **Annotate**. In the popover, choose **Add to Pairwise Annotation Queue**. (The button is disabled until exactly two experiments are selected.)
 

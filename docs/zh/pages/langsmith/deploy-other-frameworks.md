@@ -8,13 +8,13 @@
 
 本指南介绍了如何将在LangGraph（Claude Agent SDK、Strands、CrewAI、AutoGen 等）之外构建的代理部署到[LangSmith Agent Server](/langsmith/agent-server)，包括跟踪[LangSmith Observability](/langsmith/observability)。它逐步使用[Functional API](/oss/python/langgraph/functional-api)包装这些代理，以便代理服务器可以运行它们。有关功能 API 概念（入口点、任务、检查点和恢复规则），请参阅 [Functional API overview](/oss/python/langgraph/functional-api)。
 
-LangSmith Agent Server 运行任何框架。对于不是基于 Deep Agents、LangChain 或 LangGraph 构建的代理，请使用 [⟦T38⟧](https://pypi.org/project/deployments-wrap-sdk/) 包 (Google ADK) 或 LangGraph 功能 API（Claude Agent SDK、Strands、CrewAI、AutoGen 和其他库）进行部署。
+LangSmith Agent Server 运行任何框架。对于不是基于 Deep Agents、LangChain 或 LangGraph 构建的代理，请使用 [⟦T39⟧](https://pypi.org/project/deployments-wrap-sdk/) 包 (Google ADK) 或 LangGraph 功能 API（Claude Agent SDK、Strands、CrewAI、AutoGen 和其他库）进行部署。
 
 > [!提示]
 >
 > 对于新构建，请考虑[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)：一种托管开源工具，用于规划、使用工具、委托给子代理并长期工作。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [Agent Server](/langsmith/agent-server)。
 
-## 支持的框架本指南中的以下框架包含端到端示例。每个示例从 `agent.py` 导出一个 LangGraph 兼容图，[Agent Server](/langsmith/agent-server) 可以提供服务：
+## 支持的框架本指南中的以下框架包含端到端示例。每个示例从 `agent.py` 导出LangGraph 兼容图，[Agent Server](/langsmith/agent-server) 可以提供服务：
 
 ![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/claude.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d3cae2da0f353a45594f57b7f2382aba)
 
@@ -50,7 +50,7 @@ LangSmith Agent Server 运行任何框架。对于不是基于 Deep Agents、Lan
 
 1. 平台使用运行输入和同一线程上先前回合中保存的任何状态（作为 `previous` 参数传递）来调用 `@entrypoint` 修饰的 `agent` 函数。
 2. 入口点调用 `@task` 修饰的函数，该函数委托给框架代理（Claude Agent SDK、Strands、CrewAI、AutoGen 或其他库）。
-3. 入口点返回`entrypoint.final(value=..., save=...)`。 `value` 是本回合的响应； `save` 是在下一回合用作 `previous` 的检查点状态。
+3. 入口点返回`entrypoint.final(value=..., save=...)`。 `value` 是本回合的响应； `save` 是下一回合用作 `previous` 的检查点状态。
 4. 代理服务器保留检查点，在支持时流式传输部分输出，并在配置跟踪时记录跟踪。此模式保留框架的执行语义，同时为您提供标准代理服务器功能：持久运行、多线程持久性、流端点和LangSmith可观察性。
 
 ## 先决条件
@@ -70,7 +70,7 @@ LangSmith Agent Server 运行任何框架。对于不是基于 Deep Agents、Lan
 
 > [选项卡] Claude Agent SDK
 >
-> 对于[Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview)：
+> 对于 [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview)：
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install "langsmith[claude-agent-sdk]" langgraph "langgraph-cli[inmem]"
@@ -80,7 +80,7 @@ LangSmith Agent Server 运行任何框架。对于不是基于 Deep Agents、Lan
 
 > [选项卡] 股线代理
 >
-> 对于[Strands Agents](https://strandsagents.com/docs/)：
+> 对于 [Strands Agents](https://strandsagents.com/docs/)：
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install strands-agents strands-agents-tools langgraph "langsmith[strands-agents]" "langgraph-cli[inmem]"
@@ -104,7 +104,7 @@ LangSmith Agent Server 运行任何框架。对于不是基于 Deep Agents、Lan
 > pip install autogen-agentchat autogen-ext langgraph langsmith opentelemetry-instrumentation-openai "langgraph-cli[inmem]"
 > ```
 >
-> 在您的环境中设置 `OPENAI_API_KEY`（或您的模型提供商凭据）。
+> 在您的环境中设置`OPENAI_API_KEY`（或您的模型提供商凭据）。
 
 **2.定义您的代理**
 
@@ -276,9 +276,9 @@ LangSmith Agent Server 运行任何框架。对于不是基于 Deep Agents、Lan
 >
 >> [!注意]
 >>
->> Strands 的 OTel 跟踪包含同步代码。部署到代理服务器时，您可能需要设置`BG_JOB_ISOLATED_LOOPS=true`。参见[⟦T61⟧](/langsmith/env-var#bg_job_isolated_loops)。
+>> Strands 的 OTel 跟踪包含同步代码。部署到代理服务器时，您可能需要设置`BG_JOB_ISOLATED_LOOPS=true`。参见[⟦T62⟧](/langsmith/env-var#bg_job_isolated_loops)。
 >
-> 有关完整设置详细信息，请参阅[Trace Strands Agents applications](/langsmith/trace-with-strands-agents)。
+> 有关完整设置的详细信息，请参阅[Trace Strands Agents applications](/langsmith/trace-with-strands-agents)。
 
 > [选项卡] CrewAI
 >
@@ -321,7 +321,7 @@ LangSmith Agent Server 运行任何框架。对于不是基于 Deep Agents、Lan
 > OpenAIInstrumentor().instrument()
 > ```
 >
-> 有关完整设置的详细信息，请参阅[Trace AutoGen applications](/langsmith/trace-with-autogen)。
+> 有关完整设置详细信息，请参阅[Trace AutoGen applications](/langsmith/trace-with-autogen)。
 
 ## 端到端示例
 
@@ -486,7 +486,7 @@ my-agent/
 └── .env                  # Provider credentials and LangSmith variables
 ```
 
-[⟦T68⟧](/langsmith/application-structure#configuration-file-concepts) 将 Agent Server 指向导出的符号：
+[⟦T69⟧](/langsmith/application-structure#configuration-file-concepts) 将代理服务器指向导出的符号：
 
 > [选项卡] Claude Agent SDK
 >
@@ -515,7 +515,6 @@ my-agent/
 > ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > LANGSMITH_API_KEY=your-langsmith-api-key
 > LANGSMITH_TRACING=true
-> LANGSMITH_PROJECT=my-claude-agent
 > ANTHROPIC_API_KEY=your-anthropic-api-key
 > ```
 
@@ -548,12 +547,13 @@ my-agent/
 > ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > LANGSMITH_API_KEY=your-langsmith-api-key
 > LANGSMITH_TRACING=true
-> LANGSMITH_PROJECT=my-strands-agent
 > OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=https://api.smith.langchain.com/otel/v1/traces
-> OTEL_EXPORTER_OTLP_HEADERS=x-api-key=your-langsmith-api-key,Langsmith-Project=my-strands-agent
+> OTEL_EXPORTER_OTLP_HEADERS=x-api-key=your-langsmith-api-key,Langsmith-Project=<environment-tracer-session-name>
 > AWS_REGION=your-aws-region
 > AWS_PROFILE=your-aws-profile
 > ```
+>
+> 在 `OTEL_EXPORTER_OTLP_HEADERS` 中，将 `Langsmith-Project` 标头中的 `<environment-tracer-session-name>` 替换为代理环境的 [⟦T73⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 > [选项卡] CrewAI
 >
@@ -584,7 +584,6 @@ my-agent/
 >
 > ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > LANGSMITH_API_KEY=your-langsmith-api-key
-> LANGSMITH_PROJECT=my-crewai-agent
 > OPENAI_API_KEY=your-openai-api-key
 > ```
 
@@ -617,7 +616,6 @@ my-agent/
 >
 > ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > LANGSMITH_API_KEY=your-langsmith-api-key
-> LANGSMITH_PROJECT=my-autogen-agent
 > OPENAI_API_KEY=your-openai-api-key
 > ```
 
@@ -633,11 +631,22 @@ pip install -e .
 
 使用 [Project layout](#project-layout) 中特定于框架的 `.env` 模板。当在`langgraph.json`中设置`"env": ".env"`时，代理服务器加载此文件。
 
-在该文件中设置 `LANGSMITH_PROJECT` 和您的框架提供商凭据。对于 Claude Agent SDK 和 Strands Agent，还设置 `LANGSMITH_TRACING=true`。对于 CrewAI 和 AutoGen，在 `agent.py` 到 `OtelSpanProcessor()` 以及框架仪器中启用了跟踪，因此仅设置 `LANGSMITH_API_KEY` 和 `LANGSMITH_PROJECT`。
+在该文件中设置您的 LangSmith API 密钥和框架提供商凭据。对于 Claude Agent SDK 和 Strands Agent，还设置 `LANGSMITH_TRACING=true`。对于 CrewAI 和 AutoGen，在 `agent.py` 到 `OtelSpanProcessor()` 以及框架仪器中启用了跟踪，因此仅设置 `LANGSMITH_API_KEY`。LangSmith 跟踪到 [agent environment it is bound to](/langsmith/deploy-to-agent-environment) 的每个部署，因此您无需自己设置跟踪目标。 Strands Agents 通过 OTLP 导出器发送跟踪，因此将 `OTEL_EXPORTER_OTLP_HEADERS` 中的 `Langsmith-Project` 设置为该环境的 `tracer_session_name`。要查找它，请参阅[Configure integrations that require a project name](/langsmith/create-an-agent#use-an-environment-project)。
 
 [Traces](/langsmith/observability) 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deploy-other-frameworks) 中显示代理调用、工具调用和 LLM 交互。有关特定于框架的跟踪选项，请参阅[Configure tracing](#configure-tracing)中的链接。
 
-## 本地运行使用[LangGraph CLI](/langsmith/cli)启动本地代理服务器：
+## 本地运行
+
+`langgraph dev` 加载相同的 `.env` 文件，但本地运行并不像部署那样绑定到代理环境。在 shell 中导出 [agent addressing](/langsmith/log-traces-to-agent)，以便本地跟踪进入代理的本地环境。将 `LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 保留在 `.env` 之外，因为 `langgraph deploy` 上传该文件以及部署代理环境的变量 [conflict with](/langsmith/log-traces-to-agent#remove-conflicting-destination-settings)：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_AGENT_ID=<your-agent-id>
+export LANGSMITH_AGENT_ENVIRONMENT=local
+```
+
+如果没有代理变量，Claude Agent SDK、CrewAI 和 AutoGen 的本地跟踪将不会到达代理。 Strands Agents 通过 `.env` 中的 OTLP 标头发送跟踪，因此本地跟踪遵循该 `Langsmith-Project` 值。对于本地 Strands 测试，请将 `Langsmith-Project` 设置为本地环境的 [⟦T93⟧](/langsmith/create-an-agent#use-an-environment-project)。
+
+使用[LangGraph CLI](/langsmith/cli)启动本地代理服务器：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langgraph dev
@@ -645,9 +654,7 @@ langgraph dev
 
 > [!注意]
 >
-> 如果`langgraph dev`报告缺少`langgraph-api`，请在同一环境中安装`langgraph-cli[inmem]`。
-
-该服务位于 `http://127.0.0.1:2024` 并在 [LangSmith Studio](/langsmith/studio) 开放。使用`curl`发送请求：
+> 如果`langgraph dev`报告缺少`langgraph-api`，请在同一环境中安装`langgraph-cli[inmem]`。这为`http://127.0.0.1:2024`的代理提供服务，并在[LangSmith Studio](/langsmith/studio)开放。使用`curl`发送请求：
 
 > [!注意]
 >
@@ -694,7 +701,7 @@ langgraph dev
 >
 >> [!注意]
 >>
->> 如果此请求因 `NoCredentialsError` 失败，请为您的模型提供商配置 AWS 凭证（例如 `AWS_PROFILE` 或 `AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY`）并重新启动 `langgraph dev`。
+>> 如果此请求失败并显示 `NoCredentialsError`，请为您的模型提供商配置 AWS 凭证（例如 `AWS_PROFILE` 或 `AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY`）并重新启动 `langgraph dev`。
 
 将 `ASSISTANT_ID` 替换为 `langgraph.json` `graphs` 对象中的图形键。例如，如果您的配置是`"graphs": {"claude_agent": "./agent.py:agent"}`，请使用`claude_agent`；如果您的配置是`"graphs": {"strands_agent": "./agent.py:agent"}`，请使用`strands_agent`。
 
@@ -714,4 +721,6 @@ langgraph deploy --name my-agent
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-other-frameworks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-other-frameworks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

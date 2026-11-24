@@ -35,7 +35,7 @@ graph LR
 * Subagents via tools：子代理通过工具调用
 * 并行执行：主代理可以单轮调用多个子代理> [!注意]
 >
-> **Supervisor 与 Router**：Supervisor 代理（此模式）与 [router](/oss/javascript/langchain/multi-agent/router) 不同。主管是一个完整的代理，它维护对话上下文并动态决定在多个回合中调用哪些子代理。路由器通常是一个单一的分类步骤，它向代理进行分派，而不维护正在进行的对话状态。
+> **Supervisor 与 Router**：Supervisor 代理（此模式）与 [router](/oss/javascript/langchain/multi-agent/router) 不同。主管是一个完整的代理，它维护对话上下文并动态决定在多个回合中调用哪些子代理。路由器通常是一个单一的分类步骤，它在不维护正在进行的对话状态的情况下分派给代理。
 
 ## 何时使用
 
@@ -73,7 +73,7 @@ const callResearchAgent = tool(
 
 // Main agent with subagent as a tool
 const mainAgent = createAgent({ model: "google:gemini-4-hydrogen", tools: [callResearchAgent] });
-```> [卡片][Tutorial: Build a personal assistant with subagents](/oss/javascript/langchain/multi-agent/subagents-personal-assistant)
+```> [卡][Tutorial: Build a personal assistant with subagents](/oss/javascript/langchain/multi-agent/subagents-personal-assistant)
 >
 > 了解如何使用子代理模式构建个人助理，其中中央主代理（主管）协调专门的工作代理。
 
@@ -232,7 +232,7 @@ const callSubagent = tool(  // [!code highlight]
 
 // Main agent with subagent as a tool  // [!code highlight]
 const mainAgent = createAgent({ model, tools: [callSubagent] });  // [!code highlight]
-```当主代理确定任务与子代理的描述匹配、接收结果并继续编排时，它会调用子代理工具。有关细粒度控制，请参阅[Context engineering](#context-engineering)。
+```当主代理确定任务与子代理的描述匹配、接收结果并继续编排时，它会调用子代理工具。细粒度控制请参见[Context engineering](#context-engineering)。
 
 ### 单一调度工具
 
@@ -373,9 +373,21 @@ List available agents directly in the main agent's system prompt. The main agent
 
 ⟦T8⟧
 
+⟦T9⟧
+
+⟦T10⟧
+
+⟦T11⟧
+
+⟦T12⟧
+
+⟦T13⟧
+
+⟦T14⟧
+
 #### Enum constraint on dispatch tool
 
-Add an enum constraint to the ⟦T19⟧ parameter in your dispatch tool. This provides type safety and makes available agents explicit in the tool schema.
+Add an enum constraint to the ⟦T31⟧ parameter in your dispatch tool. This provides type safety and makes available agents explicit in the tool schema.
 
 **When to use:**
 
@@ -385,11 +397,11 @@ Add an enum constraint to the ⟦T19⟧ parameter in your dispatch tool. This pr
 
 **Example:**
 
-⟦T9⟧
+⟦T15⟧
 
 #### Tool-based discovery
 
-Provide a separate tool (e.g., ⟦T20⟧ or ⟦T21⟧) that the main agent can call to discover available agents on-demand. This enables progressive disclosure and supports dynamic registries.
+Provide a separate tool (e.g., ⟦T32⟧ or ⟦T33⟧) that the main agent can call to discover available agents on-demand. This enables progressive disclosure and supports dynamic registries.
 
 **When to use:**
 
@@ -400,23 +412,270 @@ Provide a separate tool (e.g., ⟦T20⟧ or ⟦T21⟧) that the main agent can c
 
 **示例：**
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-@tool
-def list_agents(query: str = "") -> str:
-    """List available subagents, optionally filtered by query."""
-    agents = search_agent_registry(query)
-    return format_agent_list(agents)
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
 
-@tool
-def task(agent_name: str, description: str) -> str:
-    """Launch an ephemeral subagent for a task."""
-    # ...
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
 
-main_agent = create_agent(
-    model="...",
-    tools=[task, list_agents],
-    system_prompt="Use list_agents to discover available subagents, then use task to invoke them."
-)
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "google:gemini-4-hydrogen",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
+
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
+
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "openai:gpt-6.1-sol",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
+
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
+
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
+
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
+
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
+
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
+
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
+
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
+
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
+
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
+
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
 ```
 
 ### 子代理输入
@@ -450,11 +709,11 @@ const callSubagent1 = tool(
 );
 ```
 
-`some_logic` 控制子代理接收多少上下文。仅传递任务描述 (`query`) 可使子代理保持隔离。相反，传递父级的消息历史记录 (`runtime.state["messages"]`) 会为子代理播种之前的工作，这在需要继续父级已开始的操作时很有帮助，例如恢复 PR 审查或修复错误。
+`some_logic` 控制子代理接收多少上下文。仅传递任务描述 (`query`) 可使子代理保持隔离。相反，传递父级的消息历史记录 (`runtime.state["messages"]`) 会为子代理播种之前的工作，这在需要继续父级已开始的操作（例如恢复 PR 审核或修复错误）时很有帮助。
 
-[Deep Agents](/oss/javascript/deepagents/subagents#forked-subagents) 将这些模式命名为 `mode: "isolated"`（默认）和 `mode: "fork"`，并为您实现分叉：分叉的子代理接收父代理的完整消息历史记录（包括工具调用）和系统提示。|模式|子代理接收 |最适合 |权衡 |
+[Deep Agents](/oss/javascript/deepagents/subagents#forked-subagents) 将这些模式命名为`mode: "isolated"`（默认）和`mode: "fork"`，并为您实现分叉：分叉的子代理接收父代理的完整消息历史记录（包括工具调用）和系统提示。|模式|子代理接收 |最适合 |权衡 |
 | - | - | - | - |
-| **隔离**（默认）|仅任务描述|无需事先背景的重点工作 |上下文隔离，但重新派生父级已经执行的所有操作 |
+| **隔离**（默认）|仅任务描述 |无需事先背景的重点工作 |上下文隔离，但重新派生父级已经执行的所有操作 |
 | **分叉** |家长的对话历史（以及Deep Agents中的系统提示）|继续父母已经开始的任务 |播种先前的上下文，但代价是更大的提示和更少的隔离 |
 
 ### 子代理输出
@@ -462,7 +721,7 @@ const callSubagent1 = tool(
 自定义主代理收到的返回内容，以便它可以做出正确的决策。两种策略：
 
 1. **提示子代理**：准确指定应返回的内容。一种常见的失败模式是子代理执行工具调用或推理，但在其最终消息中不包含结果 - 提醒它主管只能看到最终输出。
-2. **代码格式**：在返回响应之前调整或丰富响应。例如，除了使用 [⟦T27⟧](/oss/javascript/langgraph/graph-api#command) 传递最终文本之外，还传递特定的状态键。
+2. **代码格式**：在返回响应之前调整或丰富响应。例如，使用 [⟦T39⟧](/oss/javascript/langgraph/graph-api#command) 除了最终文本之外还传递回特定状态键。
 
 ```typescript Subagent outputs example expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, ToolMessage } from "langchain";
@@ -499,9 +758,9 @@ const callSubagent1 = tool(
 );
 ```
 
-## 检查点和状态检查默认情况下，子代理使用 **继承的检查点** 模式 - 每次调用都以新鲜状态开始，支持[interrupts](/oss/javascript/langgraph/interrupts#pause-using-interrupt)，并安全地并行运行。如果您需要子代理在调用之间维护其自己的持久对话历史记录，请使用`checkpointer=True`（连续模式）进行编译。有关模式的完整比较，请参阅[subgraph persistence](/oss/javascript/langgraph/use-subgraphs#subgraph-persistence)。
+## 检查点和状态检查默认情况下，子代理使用 **继承的检查点** 模式 - 每个调用都以新鲜状态开始，支持[interrupts](/oss/javascript/langgraph/interrupts#pause-using-interrupt)，并安全地并行运行。如果您需要子代理在调用之间维护其自己的持久对话历史记录，请使用`checkpointer=True`（连续模式）进行编译。有关模式的完整比较，请参阅[subgraph persistence](/oss/javascript/langgraph/use-subgraphs#subgraph-persistence)。
 
-因为子代理是在工具函数内部调用的，所以LangGraph不能[statically discover](/oss/javascript/langgraph/use-subgraphs#view-subgraph-state)它们。这意味着[⟦T29⟧ with ⟦T30⟧](/oss/javascript/langgraph/use-subgraphs#view-subgraph-state)不会返回子代理状态。如果您需要读取嵌套图状态（例如，在 [interrupt](/oss/javascript/langgraph/interrupts#pause-using-interrupt) 期间），请从自定义图中的 [node function](/oss/javascript/langgraph/use-subgraphs#call-a-subgraph-inside-a-node) 调用子代理。有关每种模式如何影响状态可见性的详细信息，请参阅[subgraph persistence](/oss/javascript/langgraph/use-subgraphs#subgraph-persistence)。
+因为子代理是在工具函数内部调用的，所以LangGraph不能[statically discover](/oss/javascript/langgraph/use-subgraphs#view-subgraph-state)它们。这意味着[⟦T41⟧ with ⟦T42⟧](/oss/javascript/langgraph/use-subgraphs#view-subgraph-state)不会返回子代理状态。如果您需要读取嵌套图状态（例如，在[interrupt](/oss/javascript/langgraph/interrupts#pause-using-interrupt)期间），请从自定义图中的[node function](/oss/javascript/langgraph/use-subgraphs#call-a-subgraph-inside-a-node)调用子代理。有关每种模式如何影响状态可见性的详细信息，请参阅[subgraph persistence](/oss/javascript/langgraph/use-subgraphs#subgraph-persistence)。
 
 ***
 

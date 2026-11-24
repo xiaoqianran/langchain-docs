@@ -8,7 +8,7 @@
 
 [Temporal](https://temporal.io/)是一个持久的执行平台，使开发人员能够构建弹性分布式工作流程。本指南向您展示如何使用 OpenTelemetry 跟踪 LangSmith 中的临时工作流程和活动。
 
-LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 OpenTelemetry 拦截器无缝集成。这可以实现跨工作流程执行、活动以及其中的任何 LLM 调用的完整分布式跟踪。
+LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 OpenTelemetry 拦截器无缝集成。这可以实现跨工作流执行、活动以及其中的任何 LLM 调用的完整分布式跟踪。
 
 > [!注意]
 >
@@ -22,13 +22,13 @@ LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 O
 
 ## 环境变量
 
-为所有实现设置以下环境变量：|变量|必填 |描述 |
+为所有实现设置以下环境变量：
+
+|变量|必填 |描述 |
 | - | - | - |
 | `LANGSMITH_API_KEY` |是的 |您在“设置”中的 LangSmith API 密钥。 |
-| `LANGSMITH_AGENT_ID` |是的，适用于 Python 和 TypeScript |注册代理标识符。 |
-| `LANGSMITH_AGENT_ENVIRONMENT` |是的，适用于 Python 和 TypeScript |代理环境，例如`local`。 |
-
-> [!注意]
+| `LANGSMITH_AGENT_ID` |是的 |注册代理标识符。 |
+| `LANGSMITH_AGENT_ENVIRONMENT` |是的 |代理环境，例如`local`。 |> [!注意]
 >
 > 对于区域 SaaS 或自托管 LangSmith 安装，还将 `LANGCHAIN_BASE_URL` 设置为您的 LangSmith 实例 URL。
 
@@ -36,14 +36,14 @@ LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 O
 
 > [选项卡] 前往
 >
-> 此 Go 示例使用 `langsmith-go` SDK 和 Temporal 的 OpenTelemetry 拦截器来跟踪工作流程和活动。它将 `LANGSMITH_PROJECT` 设置为 [environment's ⟦T36⟧](/langsmith/create-an-agent#use-an-environment-project) 而不是两个代理变量。 Python 和 TypeScript 导出器使用代理寻址标头。
+> 此 Go 示例使用 `langsmith-go` SDK 和 Temporal 的 OpenTelemetry 拦截器来跟踪工作流程和活动。跟踪器读取 `LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 将跟踪发送到您的代理，这需要 `langsmith-go` v0.28.2 或更高版本。
 >
 > **1。安装**
 >
 > 安装 LangSmith Go SDK、Temporal SDK 和 OpenTelemetry 拦截器：
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> go get github.com/langchain-ai/langsmith-go@v0.1.0-alpha.7
+> go get github.com/langchain-ai/langsmith-go@v0.32.0
 > go get go.temporal.io/sdk
 > go get go.temporal.io/sdk/contrib/opentelemetry
 > ```
@@ -69,7 +69,7 @@ LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 O
 > func main() {
 > 	ctx := context.Background()
 >
-> 	// Initialize LangSmith tracer (reads LANGSMITH_API_KEY and LANGSMITH_PROJECT)
+> 	// Initialize LangSmith tracer (reads LANGSMITH_API_KEY, LANGSMITH_AGENT_ID, and LANGSMITH_AGENT_ENVIRONMENT)
 > 	ls, err := langsmith.NewTracer(
 > 		langsmith.WithServiceName("temporal-worker"),
 > 	)
@@ -164,7 +164,8 @@ LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 O
 > ```
 >
 > **4。执行工作流程**
->> 在单独的客户端进程中，初始化跟踪器并执行工作流程：
+>
+> 在单独的客户端进程中，初始化跟踪器并执行工作流程：
 >
 > ```go client.go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > // In a separate function or client code
@@ -215,15 +216,13 @@ LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 O
 >
 > 	log.Printf("Workflow result: %s", result)
 > }
-> ```
-
-> [选项卡] Python
+> ```> [选项卡] Python
 >
 > Python 使用带有 OpenTelemetry 拦截器的 `temporalio` SDK，通过 OTLP 将跟踪导出到 LangSmith。
 >
 > **1。安装**
 >
-> 安装 Temporal SDK、LangSmith SDK 和 OpenTelemetry 包：
+> 安装 Temporal SDK、LangSmith SDK 和 OpenTelemetry 软件包：
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install temporalio
@@ -457,7 +456,7 @@ LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 O
 >
 > **4。定义活动**
 >
-> 定义一个活动，演示如何为 LangSmith 可见性添加自定义跨度属性：
+> 定义一个活动，演示如何添加自定义跨度属性以实现 LangSmith 可见性：
 >
 > ```typescript activities.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { log } from '@temporalio/activity';

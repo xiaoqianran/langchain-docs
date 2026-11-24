@@ -16,7 +16,7 @@
 
 > [卡][Cloud](/langsmith/cloud)
 >
-> 在 LangSmith 的托管云中托管 LangSmith，并具有美国或欧盟数据驻留。
+> 在 LangSmith 的托管云中托管 LangSmith，并驻留美国或欧盟数据。
 
 > [卡][Hybrid](/langsmith/hybrid)
 >
@@ -102,9 +102,13 @@
 
 查看 LangSmith 的安全状况和合规性认证。
 
+> [卡][Security overview](/langsmith/security-overview)
+>
+> 审查认证、部署模型以及访问、API 密钥、审核和数据保护的安全控制。
+
 > [卡][Shared responsibility model](/langsmith/shared-responsibility-model)
 >
-> 检查 LangChain 和您的组织之间共同承担的安全责任。 LangSmith 拥有 SOC 2 Type II、HIPAA 和 GDPR 认证。
+> 检查 LangChain 和您的组织之间共同承担的安全责任。
 
 > [卡][Scalability & resilience](/langsmith/scalability-and-resilience)
 >

@@ -679,10 +679,14 @@ Below, we show some common ways you can use tool calling.
 >
 > > [!TIP]
 > >
-> > Most models supporting tool calling enable parallel tool calls by default. Some (including [OpenAI](/oss/javascript/integrations/chat/openai) and [Anthropic](/oss/javascript/integrations/chat/anthropic)) allow you to disable this feature. To do this, set `parallel_tool_calls=False`:
+> > Most models supporting tool calling enable parallel tool calls by default.
 > >
-> > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> > model.bind_tools([get_weather], parallel_tool_calls=False)
+> > [OpenAI](/oss/javascript/integrations/chat/openai) allows you to disable this feature. Pass `parallel_tool_calls: false` when invoking (this call option is OpenAI-specific in TypeScript; Anthropic does not accept it):
+> >
+> > ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > await model.bindTools([getWeather]).invoke(messages, {
+> >   parallel_tool_calls: false,
+> > });
 > > ```
 
 > [accordion] Streaming tool calls
@@ -1100,17 +1104,14 @@ You can configure a custom base URL for providers that implement the OpenAI Chat
 
 > [accordion] Custom base URL
 >
-> Many model providers offer OpenAI-compatible APIs (e.g., [Together AI](https://www.together.ai/), [vLLM](https://github.com/vllm-project/vllm)). You can use `initChatModel` with these providers by specifying the appropriate `base_url` parameter:
+> Many model providers offer OpenAI-compatible APIs (e.g., [Together AI](https://www.together.ai/), [vLLM](https://github.com/vllm-project/vllm)). You can use `initChatModel` with these providers by specifying the appropriate `baseUrl` parameter:
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> model = initChatModel(
->     "MODEL_NAME",
->     {
->         modelProvider: "openai",
->         baseUrl: "BASE_URL",
->         apiKey: "YOUR_API_KEY",
->     }
-> )
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const model = await initChatModel("MODEL_NAME", {
+>   modelProvider: "openai",
+>   baseUrl: "BASE_URL",
+>   apiKey: "YOUR_API_KEY",
+> });
 > ```
 >
 > > [!NOTE]

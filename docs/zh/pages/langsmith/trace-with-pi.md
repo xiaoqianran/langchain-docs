@@ -12,14 +12,15 @@
 
 > [!注意]
 >
-> 此集成使用旧目标设置，例如 `project_name` 或 `LANGSMITH_PROJECT`。 [Create an agent](/langsmith/create-an-agent)，选择其环境，然后[retrieve that environment's ⟦T9⟧](/langsmith/create-an-agent#use-an-environment-project)。在目标设置和任何覆盖中使用该返回值。对于支持代理寻址的集成，请直接使用[agent identifier and environment](/langsmith/log-traces-to-agent)。
+> 此集成不支持[agent addressing](/langsmith/log-traces-to-agent)。它通过 `tracer_session_name` 追踪代理环境。
 
 ## 先决条件
 
 在设置跟踪之前，请确保您拥有：
 
 * 已安装[**Pi**](https://pi.dev)。
-* A [**LangSmith API key**](/langsmith/create-account-api-key)。
+* [**LangSmith API key**](/langsmith/create-account-api-key)。
+* LangSmith 中的[agent](/langsmith/create-an-agent)。该扩展不支持代理寻址，因此它通过名称跟踪代理的环境之一。
 
 ## 安装
 
@@ -36,13 +37,13 @@ pi install npm:@langchain/langsmith-pi-extension
 ```sh theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export TRACE_TO_LANGSMITH=true
 export LANGSMITH_PI_API_KEY="<your-langsmith-api-key>"
-```[Run Pi](https://pi.dev/docs/latest/quickstart) 和往常一样。当会话启动时，扩展会报告是否启用了 LangSmith 跟踪。您还可以随时从 Pi 中检查当前的跟踪状态：
+```
+
+[Run Pi](https://pi.dev/docs/latest/quickstart) 和往常一样。当会话启动时，扩展会报告是否启用了 LangSmith 跟踪。您还可以随时从 Pi 中检查当前的跟踪状态：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 /langsmith-tracing
-```
-
-在发送跟踪之前，将 `LANGSMITH_PI_PROJECT` 设置为所选代理环境的 `tracer_session_name`。
+```在发送跟踪之前，将 `LANGSMITH_PI_PROJECT` 设置为代理环境的 [⟦T9⟧](/langsmith/create-an-agent#use-an-environment-project)。
 
 ## 配置
 
@@ -60,8 +61,8 @@ export LANGSMITH_PI_API_KEY="<your-langsmith-api-key>"
 | `TRACE_TO_LANGSMITH` |设置为 `true`、`1`、`yes` 或 `on` 时启用跟踪。设置为 `false`、`0`、`no` 或 `off` 时禁用跟踪。 |
 | `LANGSMITH_PI_API_KEY` | LangSmith API 密钥。回落到`LANGSMITH_API_KEY`。 |
 | `LANGSMITH_PI_ENDPOINT` | LangSmith 用于自托管或自定义部署的 API URL。回落到`LANGSMITH_ENDPOINT`。 |
-| `LANGSMITH_PI_PROJECT` |所选代理环境的`tracer_session_name`。回落到`LANGSMITH_PROJECT`。默认为 `pi-coding-agent`。 |
-| `LANGSMITH_PI_METADATA` |添加到根运行元数据的 JSON 对象。回落到`LANGSMITH_METADATA`。 |
+| `LANGSMITH_PI_PROJECT` |所选代理环境的`tracer_session_name`。回落到`LANGSMITH_PROJECT`。默认为`pi-coding-agent`。 |
+| `LANGSMITH_PI_METADATA` |添加到根运行元数据的 JSON 对象。回落至`LANGSMITH_METADATA`。 |
 | `LANGSMITH_PI_RUNS_ENDPOINTS` |副本运行目标的 JSON 数组。回落到`LANGSMITH_RUNS_ENDPOINTS`。 |
 
 示例：
@@ -75,7 +76,9 @@ export LANGSMITH_PI_METADATA='{"team":"infra","environment":"local"}'
 
 ### 配置文件
 
-创建 `~/.pi/langsmith.json` 用于全局设置或在项目目录中创建 `.pi/langsmith.json` 用于本地覆盖：```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+创建 `~/.pi/langsmith.json` 用于全局设置或在项目目录中创建 `.pi/langsmith.json` 用于本地覆盖：
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "enabled": true,
   "api_key": "<your-langsmith-api-key>",
@@ -85,9 +88,7 @@ export LANGSMITH_PI_METADATA='{"team":"infra","environment":"local"}'
 }
 ```
 
-配置文件字段：
-
-|领域|必填|默认 |描述 |
+配置文件字段：|领域|必填 |默认 |描述 |
 | - | - | - | - |
 | `enabled` |是的 | `false` |设置为 `true` 以启用从配置文件进行跟踪。 |
 | `api_key` |否\* | — | LangSmith API 密钥。除非环境变量或副本提供，否则是必需的。 |

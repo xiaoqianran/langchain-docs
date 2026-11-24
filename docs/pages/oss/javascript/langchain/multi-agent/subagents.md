@@ -385,19 +385,123 @@ List available agents directly in the main agent's system prompt. The main agent
 
 **Example:**
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-main_agent = create_agent(
-    model="...",
-    tools=[task],
-    system_prompt=(
-        "You coordinate specialized sub-agents. "
-        "Available agents:\n"
-        "- research: Research and fact-finding\n"
-        "- writer: Content creation and editing\n"
-        "- reviewer: Code and document review\n"
-        "Use the task tool to delegate work."
-    ),
-)
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+const mainAgent = createAgent({
+  model: "google:gemini-4-hydrogen",
+  tools: [task],
+  systemPrompt: [
+    "You coordinate specialized sub-agents.",
+    "Available agents:",
+    "- research: Research and fact-finding",
+    "- writer: Content creation and editing",
+    "- reviewer: Code and document review",
+    "Use the task tool to delegate work.",
+  ].join("\n"),
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+const mainAgent = createAgent({
+  model: "openai:gpt-6.1-sol",
+  tools: [task],
+  systemPrompt: [
+    "You coordinate specialized sub-agents.",
+    "Available agents:",
+    "- research: Research and fact-finding",
+    "- writer: Content creation and editing",
+    "- reviewer: Code and document review",
+    "Use the task tool to delegate work.",
+  ].join("\n"),
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+const mainAgent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [task],
+  systemPrompt: [
+    "You coordinate specialized sub-agents.",
+    "Available agents:",
+    "- research: Research and fact-finding",
+    "- writer: Content creation and editing",
+    "- reviewer: Code and document review",
+    "Use the task tool to delegate work.",
+  ].join("\n"),
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+const mainAgent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [task],
+  systemPrompt: [
+    "You coordinate specialized sub-agents.",
+    "Available agents:",
+    "- research: Research and fact-finding",
+    "- writer: Content creation and editing",
+    "- reviewer: Code and document review",
+    "Use the task tool to delegate work.",
+  ].join("\n"),
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+const mainAgent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [task],
+  systemPrompt: [
+    "You coordinate specialized sub-agents.",
+    "Available agents:",
+    "- research: Research and fact-finding",
+    "- writer: Content creation and editing",
+    "- reviewer: Code and document review",
+    "Use the task tool to delegate work.",
+  ].join("\n"),
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+const mainAgent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [task],
+  systemPrompt: [
+    "You coordinate specialized sub-agents.",
+    "Available agents:",
+    "- research: Research and fact-finding",
+    "- writer: Content creation and editing",
+    "- reviewer: Code and document review",
+    "Use the task tool to delegate work.",
+  ].join("\n"),
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+const mainAgent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [task],
+  systemPrompt: [
+    "You coordinate specialized sub-agents.",
+    "Available agents:",
+    "- research: Research and fact-finding",
+    "- writer: Content creation and editing",
+    "- reviewer: Code and document review",
+    "Use the task tool to delegate work.",
+  ].join("\n"),
+});
 ```
 
 #### Enum constraint on dispatch tool
@@ -412,21 +516,23 @@ Add an enum constraint to the `agent_name` parameter in your dispatch tool. This
 
 **Example:**
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from enum import Enum
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { z } from "zod";
 
-class AgentName(str, Enum):
-    RESEARCH = "research"
-    WRITER = "writer"
-    REVIEWER = "reviewer"
-
-@tool
-def task(
-    agent_name: AgentName,  # Enum constraint
-    description: str
-) -> str:
-    """Launch an ephemeral subagent for a task."""
-    # ...
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.enum(["research", "writer", "reviewer"]),
+      description: z.string(),
+    }),
+  }
+);
 ```
 
 #### Tool-based discovery
@@ -442,23 +548,270 @@ Provide a separate tool (e.g., `list_agents` or `search_agents`) that the main a
 
 **Example:**
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-@tool
-def list_agents(query: str = "") -> str:
-    """List available subagents, optionally filtered by query."""
-    agents = search_agent_registry(query)
-    return format_agent_list(agents)
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
 
-@tool
-def task(agent_name: str, description: str) -> str:
-    """Launch an ephemeral subagent for a task."""
-    # ...
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
 
-main_agent = create_agent(
-    model="...",
-    tools=[task, list_agents],
-    system_prompt="Use list_agents to discover available subagents, then use task to invoke them."
-)
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "google:gemini-4-hydrogen",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
+
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
+
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "openai:gpt-6.1-sol",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
+
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
+
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
+
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
+
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
+
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
+
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
+
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
+
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { z } from "zod";
+
+const listAgents = tool(
+  async ({ query = "" }) => {
+    const agents = searchAgentRegistry(query);
+    return formatAgentList(agents);
+  },
+  {
+    name: "list_agents",
+    description: "List available subagents, optionally filtered by query.",
+    schema: z.object({ query: z.string().optional() }),
+  }
+);
+
+const task = tool(
+  async ({ agentName, description }) => {
+    return `Delegated "${description}" to ${agentName}`;
+  },
+  {
+    name: "task",
+    description: "Launch an ephemeral subagent for a task.",
+    schema: z.object({
+      agentName: z.string(),
+      description: z.string(),
+    }),
+  }
+);
+
+const mainAgent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [task, listAgents],
+  systemPrompt:
+    "Use list_agents to discover available subagents, then use task to invoke them.",
+});
 ```
 
 ### Subagent inputs

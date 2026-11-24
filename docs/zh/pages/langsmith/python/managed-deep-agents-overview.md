@@ -157,9 +157,9 @@
 >
 > 使用 `mda` CLI 创建并部署您的第一个托管深度代理。
 
-> [卡][Tutorial](/langsmith/python/managed-deep-agents-tutorial)
+> [卡][Daily digest](/langsmith/python/managed-deep-agents-tutorial)
 >
-> 添加自定义搜索工具、持久内存和每日日程安排。
+> 将持久内存和每日计划添加到快速启动代理中。
 
 > [卡][Design agent template](/langsmith/python/managed-deep-agents-design-agent)
 >

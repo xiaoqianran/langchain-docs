@@ -2,7 +2,7 @@
 
 # Query threads using the SDK
 
-Programmatically fetch and inspect multi-turn conversation threads from your LangSmith projects.
+Programmatically fetch and inspect multi-turn conversation threads from your LangSmith agent environments.
 
 If you're building a conversational agent or any multi-turn application, LangSmith automatically groups your [runs](/langsmith/run-data-format) into [*threads*](/langsmith/observability-concepts#threads). Querying threads lets you replay full conversations, audit agent behavior across sessions, build analytics on conversation length and latency, and feed downstream workflows like [fine-tuning](/langsmith/smithtune) and evaluation.
 
@@ -10,14 +10,14 @@ The SDK exposes two methods for working with threads:
 
 | Method | Use when |
 | - | - |
-| `client.threads.query()` ([Python](https://reference.langchain.com/python/langsmith/resources/threads/threads/AsyncThreadsResource/query), [TypeScript](https://reference.langchain.com/javascript/langsmith/client/Langsmith/Threads/query)) | You want to browse the threads in a project |
+| `client.threads.query()` ([Python](https://reference.langchain.com/python/langsmith/resources/threads/threads/AsyncThreadsResource/query), [TypeScript](https://reference.langchain.com/javascript/langsmith/client/Langsmith/Threads/query)) | You want to browse the threads in an agent environment |
 | `client.threads.list_traces()` / `client.threads.listTraces()` ([Python](https://reference.langchain.com/python/langsmith/resources/threads/threads/AsyncThreadsResource/list_traces), [TypeScript](https://reference.langchain.com/javascript/langsmith/client/Langsmith/Threads/listTraces)) | You already know the thread ID and need its traces |
 
-Both methods take a project ID. If you only have the project name, look it up with `aread_project()` / `readProject()` first, as the examples below do. In Python, both methods are async.
+Both methods take a `project_id`. The examples below [resolve the agent environment](/langsmith/resolve-an-agent) to get it. In Python, both methods are async.
 
 > [!NOTE]
 >
-> To query the threads of an agent, an experiment, or the evaluators, [find its project ID](/langsmith/resolve-an-agent) and pass it as the project ID.
+> To query the threads of an agent environment, an experiment, or the evaluators, [resolve it](/langsmith/resolve-an-agent) and pass the returned `session_id` as `project_id`. Resolving needs recent SDK and LangSmith versions, and is not available on BYOC data planes. For the requirements and a BYOC alternative, see [Resolve an agent environment](/langsmith/resolve-an-agent).
 
 > [!NOTE]
 >
@@ -60,21 +60,22 @@ const myAgent = traceable(
 );
 ```
 
-## List threads in a project
+## List threads in an agent environment
 
-`threads.query` returns the threads in a project, one row per thread with its aggregates. Results are paginated with a cursor; the SDK iterates through every page for you.
+`threads.query` returns the threads in an agent environment, one row per thread with its aggregates. Results are paginated with a cursor; the SDK iterates through every page for you.
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 
 async def main():
     client = Client()
-    project = await client.aread_project(project_name="my-project")
+    # Replace with your agent ID and environment
+    project = await client.sessions.resolve(**agent_address("support-agent", "production"))
 
-    async for thread in client.threads.query(project_id=str(project.id)):
+    async for thread in client.threads.query(project_id=project.session_id):
         print(thread.thread_id)
         print(f"  {thread.count} traces")
         print(f"  last active: {thread.max_start_time}")
@@ -84,12 +85,13 @@ asyncio.run(main())
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "langsmith";
+import { AgentAddress, Client } from "langsmith";
 
 const client = new Client();
-const project = await client.readProject({ projectName: "my-project" });
+// Replace with your agent ID and environment
+const project = await client.sessions.resolve(new AgentAddress("support-agent", "production"));
 
-for await (const thread of client.threads.query({ project_id: project.id })) {
+for await (const thread of client.threads.query({ project_id: project.session_id })) {
   console.log(thread.thread_id);
   console.log(`  ${thread.count} traces`);
   console.log(`  last active: ${thread.max_start_time}`);
@@ -142,16 +144,17 @@ When you already know the `thread_id`, use `threads.list_traces` / `threads.list
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 
 async def main():
     client = Client()
-    project = await client.aread_project(project_name="my-project")
+    # Replace with your agent ID and environment
+    project = await client.sessions.resolve(**agent_address("support-agent", "production"))
 
     async for trace in client.threads.list_traces(
         "conv-abc123",
-        project_id=str(project.id),
+        project_id=project.session_id,
         selects=["TRACE_ID", "NAME", "START_TIME"],
     ):
         print(trace.trace_id, trace.name, trace.start_time)
@@ -161,13 +164,14 @@ asyncio.run(main())
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "langsmith";
+import { AgentAddress, Client } from "langsmith";
 
 const client = new Client();
-const project = await client.readProject({ projectName: "my-project" });
+// Replace with your agent ID and environment
+const project = await client.sessions.resolve(new AgentAddress("support-agent", "production"));
 
 for await (const trace of client.threads.listTraces("conv-abc123", {
-  project_id: project.id,
+  project_id: project.session_id,
   selects: ["TRACE_ID", "NAME", "START_TIME"],
 })) {
   console.log(trace.trace_id, trace.name, trace.start_time);
@@ -201,7 +205,7 @@ Pass a filter expression to narrow results using [LangSmith trace query syntax](
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 async for thread in client.threads.query(
-    project_id=str(project.id),
+    project_id=project.session_id,
     filter='eq(status, "error")',
 ):
     print(thread.thread_id, thread.last_error)
@@ -209,7 +213,7 @@ async for thread in client.threads.query(
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for await (const thread of client.threads.query({
-  project_id: project.id,
+  project_id: project.session_id,
   filter: 'eq(status, "error")',
 })) {
   console.log(thread.thread_id, thread.last_error);
@@ -224,7 +228,7 @@ By default, `threads.query` only surfaces threads with traces from the last day.
 from datetime import datetime, timedelta, timezone
 
 async for thread in client.threads.query(
-    project_id=str(project.id),
+    project_id=project.session_id,
     min_start_time=datetime.now(timezone.utc) - timedelta(days=2),
 ):
     print(thread.thread_id)
@@ -232,7 +236,7 @@ async for thread in client.threads.query(
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for await (const thread of client.threads.query({
-  project_id: project.id,
+  project_id: project.session_id,
   min_start_time: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
 })) {
   console.log(thread.thread_id);
@@ -246,7 +250,7 @@ for await (const thread of client.threads.query({
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 async for trace in client.threads.list_traces(
     "conv-abc123",
-    project_id=str(project.id),
+    project_id=project.session_id,
     selects=["INPUTS", "OUTPUTS"],
 ):
     user_msg = (trace.inputs or {}).get("messages", [{}])[-1].get("content", "")
@@ -258,7 +262,7 @@ async for trace in client.threads.list_traces(
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for await (const trace of client.threads.listTraces("conv-abc123", {
-  project_id: project.id,
+  project_id: project.session_id,
   selects: ["INPUTS", "OUTPUTS"],
 })) {
   const inputs = trace.inputs as { messages?: Array<Record<string, string>> } | undefined;

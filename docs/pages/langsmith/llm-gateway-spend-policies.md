@@ -69,7 +69,7 @@ The time window sets the period over which spend accumulates against the cap. At
 1. Go to **LLM Gateway** and select the **Policies** tab.
 2. Click **+ Policy**.
 3. Under **Policy type**, select **Spend limit**.
-4. Define a **Scope** (organization, user group, workspace, user, or API key).
+4. Define a **Scope** and the subjects the policy applies to.
 5. (Optional) To separate a default limit by header, select **User Group**, **Workspace**, **User**, or **API Key**. Apply the limit to every subject of that type by default. Alternatively, select exactly one subject to pin the limit to it. Select **Separate limits by custom header**, and enter the header name, such as `Customer-Id`. Send the full `X-Gateway-Customer-Id` header on requests. Each subject and header-value pair receives an independent limit.
 6. Set the **Spend limit** in USD and the **Period** (monthly, weekly, daily, or hourly).
 7. Click **Create policy**.

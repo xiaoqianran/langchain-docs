@@ -111,8 +111,8 @@ print(langchain_core.__version__)
 ```
 
 ```python LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import langgraph
-print(langgraph.__version__)
+from importlib.metadata import version
+print(version("langgraph"))
 ```
 
 ## Upgrade

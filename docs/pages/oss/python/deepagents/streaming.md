@@ -1353,7 +1353,7 @@ for namespace, mode, data in agent.stream(
     stream_mode=["updates", "messages", "custom"],
     subgraphs=True,
 ):
-    print(mode)       # "updates", "messages", or "custom"
+    print(mode)  # "updates", "messages", or "custom"
     print(namespace)  # () for main agent, ("tools:<id>",) for subagent
     print(data)
 ```

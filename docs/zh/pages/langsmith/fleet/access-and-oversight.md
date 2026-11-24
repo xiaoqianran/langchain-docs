@@ -14,23 +14,33 @@ Fleet 将工作区角色权限与代理共享相结合。您的角色决定了�
 
 > [!注意]
 >
-> 自定义角色是一项企业功能。当为您的工作区启用队列 RBAC 时，以下权限适用。对于自托管 v0.17，Fleet RBAC 需要 LangSmith 0.17.44 或更高版本的 v0.17 补丁以及 [deployment flag](#enable-fleet-rbac-on-self-hosted)。
+> 队列角色和自定义角色是企业功能。自托管 LangSmith 包括 v0.18 或更高版本中的舰队角色。当为您的工作区启用队列 RBAC 时，以下权限适用。对于自托管 v0.17，Fleet RBAC 需要 LangSmith 0.17.44 或更高版本的 v0.17 补丁以及 [deployment flag](#enable-fleet-rbac-on-self-hosted)。
+
+### 分配内置舰队角色
+
+LangSmith 包括三个内置舰队角色。每个角色都包含其之前的角色中的所有内容。* **舰队用户**：与共享代理聊天。无法创建代理或查看跟踪。
+* **舰队生成器**：还创建、编辑、共享和删除代理和技能。看不到痕迹。
+* **队列管理员**：还管理使用限制、集成、MCP 服务器、OAuth 提供程序和工作区机密。可以读取每条轨迹并更改工作区设置。
+
+要查看每个角色的确切权限，请转至 **设置 > 角色** 或查看 [Fleet roles](/langsmith/rbac#fleet-roles)。要构建您自己的角色，请参阅[Configure a Fleet role](#configure-a-fleet-role)。
 
 ### 配置舰队角色
 
-要让用户使用和管理 Fleet，请创建具有以下权限的 [custom workspace role](/langsmith/rbac#custom-roles)：|面积 |权限|需要 |
+要使用不同的权限组合授予队列访问权限，请创建具有以下权限的 [custom workspace role](/langsmith/rbac#custom-roles)：
+
+|面积 |权限 |需要 |
 | - | - | - |
 |工作空间 | `workspaces:read` |访问工作区。 |
 |代理| `fleet-agents:read` `fleet-agents:invoke` `fleet-agents:create` `fleet-agents:update` `fleet-agents:delete` |查看、运行、创建、编辑、克隆和删除代理。管理代理连接。 |
 |技能 | `fleet-skills:read` `fleet-skills:create` `fleet-skills:update` `fleet-skills:delete` |浏览、创建、编辑和删除工作区技能。 |
 | MCP 服务器 | `mcp-servers:read` `mcp-servers:invoke` `mcp-servers:create` `mcp-servers:update` `mcp-servers:delete` |使用工具并安装、更新或删除工作区集成。 |
-|部署| `deployments:read` `deployments:create` `deployments:update` `deployments:delete` |通过当前的舰队 UI 配置 OAuth 提供商并管理连接的帐户。 |
-
-明确授予每项权限。创建、更新、删除和调用权限不包括读取权限。现有的代理和技能所有权以及共享检查仍然适用。
+|部署| `deployments:read` `deployments:create` `deployments:update` `deployments:delete` |通过当前的舰队 UI 配置 OAuth 提供商并管理连接的帐户。 |明确授予每项权限。创建、更新、删除和调用权限不包括读取权限。现有的代理和技能所有权以及共享检查仍然适用。
 
 `deployments:*` 权限还授予对舰队外部部署资源的访问权限。
 
-### 可选的管理权限* **查看队列使用情况和限制**：添加`fleet:read-admin-config`以查看使用报告和使用限制。
+### 可选的管理权限
+
+* **查看队列使用情况和限制**：添加`fleet:read-admin-config`以查看使用报告和使用限制。
 * **管理车队限制**：添加`fleet:write-admin-config`以创建、更新和删除使用限制。授予两个队列管理员查看和管理限制的权限。
 * **管理工作区设置**：在 **设置** 中添加用于工作区设置、集成访问控制和 OAuth 提供程序管理的 `workspaces:manage`。
 
@@ -44,15 +54,17 @@ Fleet 在两个维度上对每个代理提供精细控制：**谁可以访问**�
 * **什么**：三个权限级别：
   * **克隆**：复制并自定义代理
   * **运行**：无需修改即可使用
-  * **编辑**：完全访问更改说明、工具和设置
-
-您可以对这些权限进行分层。授予核心团队编辑权限，与更广泛的组织共享仅运行权限，并随时撤销。
+  * **编辑**：完全访问更改说明、工具和设置您可以对这些权限进行分层。授予核心团队编辑权限，与更广泛的组织共享仅运行权限，并随时撤销。
 
 有关设置说明，请参阅[Change access to the agent](/langsmith/fleet/manage-agent-settings#change-access-to-the-agent)。
 
 ### 在自托管上启用队列 RBAC
 
-完全自托管的 LangSmith 安装可通过部署标志启用基于角色的队列访问控制 (RBAC)。云和混合 (BYOC) 部署不需要此步骤。> [!注意]
+完全自托管的 LangSmith v0.17 安装可通过部署标志启用基于角色的队列访问控制 (RBAC)。云和混合 (BYOC) 部署不需要此步骤。
+
+在 v0.18 或更高版本中，Fleet RBAC 始终开启，不需要这些步骤。当您升级到 v0.18 时，自定义角色将获得舰队代理和技能权限，以匹配他们已有的提示权限。检查您的舰队用户持有的自定义角色是否也具有 [Configure a Fleet role](#configure-a-fleet-role) 中的其他权限。
+
+> [!注意]
 >
 > 自托管上的队列 RBAC 需要 LangSmith 0.17.44 或更高版本的 v0.17 补丁。
 
@@ -68,24 +80,22 @@ Fleet 在两个维度上对每个代理提供精细控制：**谁可以访问**�
        extraEnv:
          - name: FLEET_RBAC_PERMISSIONS_ENABLED
            value: "true"
-   ```
-
-   该标志默认为`false`。将其设置为 `true` 可以在部署中的所有工作区中启用队列 RBAC。
+   ```该标志默认为`false`。将其设置为 `true` 可以在部署中的所有工作区中启用队列 RBAC。
 4. 通过正常的 Helm 升级过程应用这些值。
 5. 使用您的 API 密钥和工作区 ID 调用 `GET /v1/fleet/config`。确认响应包含`"rbac_permissions_enabled": true`。
 
 ## 代理身份和凭证
 
-Fleet 提供两种凭证模型来控制代理如何使用外部工具进行身份验证：* **固定凭证（“爪子”）**：代理使用一组凭证，无论谁运行它。用于共享资源代理，例如团队 Slack 机器人，其中每个人都通过同一帐户进行交互。
+Fleet 提供两种凭证模型来控制代理如何使用外部工具进行身份验证：
+
+* **固定凭证（“爪子”）**：代理使用一组凭证，无论谁运行它。用于共享资源代理，例如团队 Slack 机器人，其中每个人都通过同一帐户进行交互。
 * **用户凭据（“助手”）**：代理代表调用它的单个用户进行操作。每个用户通过 OAuth 使用自己的帐户进行身份验证。用于用户具有不同访问级别的工具，例如个人电子邮件助理。
 
 这是每个代理都可以配置的，因此您可以为每个用例选择正确的模型。
 
 有关设置说明，请参阅[Agent identity](/langsmith/fleet/agent-identity)。
 
-## 工具访问控制
-
-Fleet 为工具提供分层访问控制，涵盖**自定义 MCP 服务器**（用户添加、工作区范围）和**内置集成**（平台提供，例如 Gmail、Slack 和 GitHub）：
+## 工具访问控制Fleet 为工具提供分层访问控制，涵盖**自定义 MCP 服务器**（用户添加、工作区范围）和**内置集成**（平台提供，例如 Gmail、Slack 和 GitHub）：
 
 * **[Role-based access control (RBAC)](#role-based-permissions)**：控制角色级别的访问。
 * **[Attribute-based access control (ABAC)](#attribute-based-access-control)**：在 RBAC 之上添加每个资源的粒度。
@@ -95,7 +105,9 @@ Fleet 为工具提供分层访问控制，涵盖**自定义 MCP 服务器**（�
 >
 > 工具访问控制是一项企业功能。如果您对此功能感兴趣，[contact our sales team](https://www.langchain.com/contact-sales)。
 
-### 基于角色的权限基于角色的访问控制 (RBAC) 根据用户的角色授予或拒绝对工作区中所有 MCP 服务器和集成的访问权限。在 **设置 > 角色** 中配置角色。
+### 基于角色的权限
+
+基于角色的访问控制 (RBAC) 根据用户的角色授予或拒绝对工作区中所有 MCP 服务器和集成的访问权限。在 **设置 > 角色** 中配置角色。
 
 以下权限可用于 MCP 服务器和集成：
 
@@ -109,9 +121,7 @@ Fleet 为工具提供分层访问控制，涵盖**自定义 MCP 服务器**（�
 
 > [!注意]
 >
-> 具有 `mcp-servers:read` 和 `mcp-servers:invoke` 的角色可以查看和使用工作区中的所有 MCP 服务器和集成。
-
-有关 RBAC 的更多信息，请参阅[Role-based access control](/langsmith/rbac)。
+> 具有 `mcp-servers:read` 和 `mcp-servers:invoke` 的角色可以查看和使用工作区中的所有 MCP 服务器和集成。有关 RBAC 的更多信息，请参阅[Role-based access control](/langsmith/rbac)。
 
 #### 创建具有工具权限的角色
 
@@ -127,16 +137,16 @@ Fleet 为工具提供分层访问控制，涵盖**自定义 MCP 服务器**（�
 
 在 **设置 > 成员** 中将角色分配给工作区中的用户。
 
-### 基于属性的访问控制基于属性的访问控制 (ABAC) 在 RBAC 之上添加了资源级粒度。管理员可以标记单个 MCP 服务器或集成，并创建基于这些标记授予或限制访问权限的策略。
+### 基于属性的访问控制
+
+基于属性的访问控制 (ABAC) 在 RBAC 之上添加了资源级粒度。管理员可以标记单个 MCP 服务器或集成，并创建基于这些标记授予或限制访问权限的策略。
 
 ABAC 使用两种工具资源类型：
 
 |资源类型|适用于 |
 | - | - |
 | `mcp_server` |添加到工作区的自定义 MCP 服务器 |
-| `fleet_integration` |内置集成（Gmail、Slack、GitHub 等）|
-
-> [!注意]
+| `fleet_integration` |内置集成（Gmail、Slack、GitHub 等）|> [!注意]
 >
 > 没有 `mcp-servers:*` RBAC 权限的角色仍然可以通过 ABAC 允许策略被授予对特定标记资源（例如仅 Notion 和 Gmail）的访问权限。相反，可以通过 ABAC 拒绝策略限制具有广泛 RBAC 访问权限的角色使用特定资源。
 
@@ -146,7 +156,9 @@ ABAC 使用两种工具资源类型：
 
 内置集成有一个额外的控制层：从 **设置 > 集成 > 访问控制** 管理的工作区级别启用/禁用切换。这充当管理员控制的基线，在每用户 RBAC 和 ABAC 之前运行。
 
-如果在工作区级别禁用集成，则任何用户都无法访问它，无论其角色或 ABAC 策略如何。> [!注意]
+如果在工作区级别禁用集成，则任何用户都无法访问它，无论其角色或 ABAC 策略如何。
+
+> [!注意]
 >
 > 访问控制页面仅对管理员用户可见（需要 `workspaces:manage` 权限）。
 
@@ -166,9 +178,7 @@ ABAC deny → RBAC → ABAC allow
 Workspace policy gate → ABAC deny → RBAC → ABAC allow
 ```
 
-每一步：
-
-1. **工作区策略门**（仅限集成）：如果禁用集成，则访问将被拒绝。没有进一步评价。
+每一步：1. **工作区策略门**（仅限集成）：如果禁用集成，则访问将被拒绝。没有进一步评价。
 2. **ABAC拒绝**：如果拒绝策略匹配，则拒绝访问。否认总是胜利。
 3. **RBAC**：如果用户的角色授予所需的权限，则允许访问（除非需要步骤 4）。
 4. **ABAC 允许**：如果 RBAC 不授予访问权限，则允许策略仍然可以授予特定标记资源的访问权限。
@@ -179,7 +189,9 @@ Fleet 中的代理操作以结构化[LangSmith trace](/langsmith/observability) 
 
 结合代理身份和权限，跟踪可以告诉您哪个代理进行了操作、代表谁、使用什么凭据以及在每个步骤中执行了哪些操作。
 
-## 人在回路监督Fleet 提供 [central inbox](https://smith.langchain.com/agents/inbox) 用于审查所有代理的代理操作。您可以将代理配置为在采取特定操作之前暂停并请求批准，然后从一处进行审核、批准、编辑或拒绝。
+## 人在回路监督
+
+Fleet 提供 [central inbox](https://smith.langchain.com/agents/inbox) 用于审查所有代理的代理操作。您可以将代理配置为在采取特定操作之前暂停并请求批准，然后从一处进行审核、批准、编辑或拒绝。
 
 有关设置说明，请参阅[Human-in-the-loop](/langsmith/fleet/essentials#human-in-the-loop)。
 

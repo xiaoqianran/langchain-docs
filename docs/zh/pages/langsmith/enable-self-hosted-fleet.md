@@ -19,7 +19,7 @@ Fleet 提供 API 服务器、任务队列、PostgreSQL、Redis、工具服务器
 为 Fleet 生成 Fernet 加密密钥：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+openssl rand -base64 32 | tr '+/' '-_'
 ```
 
 将其作为 `agent_builder_encryption_key` 存储在您的 [existing LangSmith app secret](/langsmith/self-host-using-an-existing-secret#parameters) 中。将以下内容添加到您的[⟦T30⟧](/langsmith/kubernetes#configure-your-helm-charts)：
@@ -103,16 +103,16 @@ fleet:
 
 要在 Fleet 中启用基于 OAuth 的工具（例如 Gmail、Slack 或 Linear），请配置 `providerOrgId` 并为要使用的每个集成添加提供商 ID。您可以启用提供商的任意组合。
 
-#### 可用的提供商
+#### Available providers
 
-|供应商|启用工具 |触发器已启用 |
+|供应商| Tools enabled | Trigger enabled |
 | - | - | - |
-| `googleOAuthProvider` [setup guide](#google-oauth-provider) | Gmail、Google 日历、Google 表格、BigQuery |邮箱 |
-| `linearOAuthProvider` [setup guide](#linear-oauth-provider) |线性| - |
+| `googleOAuthProvider` [setup guide](#google-oauth-provider) | Gmail、Google 日历、Google 表格、BigQuery | Gmail |
+| `linearOAuthProvider` [setup guide](#linear-oauth-provider) | Linear | - |
 | `linkedinOAuthProvider` [setup guide](#linkedin-oauth-provider) |领英 | - |
 | `microsoftOAuthProvider` [setup guide](#microsoft-oauth-provider) | Outlook、日历、团队、SharePoint、Word、Excel、PowerPoint |展望 |
-| `salesforceOAuthProvider` [setup guide](#salesforce-oauth-provider) |销售人员 | - |
-| `slackOAuthProvider` [setup guide](#slack-oauth-provider) |松弛|松弛|
+| `salesforceOAuthProvider` [setup guide](#salesforce-oauth-provider) | Salesforce | - |
+| `slackOAuthProvider` [setup guide](#slack-oauth-provider) | Slack |松弛|
 
 #### 通用配置
 
@@ -184,7 +184,7 @@ fleet:
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-> ```> [手风琴] Microsoft OAuth 提供商
+> ```> [手风琴] Microsoft OAuth 提供程序
 >
 > 要为 Fleet 启用 Microsoft OAuth，请创建 Azure 应用程序注册，添加所需的 Microsoft Graph 委派权限，并在 LangSmith 中配置 Microsoft OAuth 提供程序。
 >
@@ -206,7 +206,7 @@ fleet:
 >
 > **4。创建客户端密码**
 >
-> 在**证书和机密**中，创建新的客户端机密。复制 **应用程序（客户端）ID** 和生成的客户端密钥值。
+> 在 **证书和机密** 中，创建新的客户端机密。复制 **应用程序（客户端）ID** 和生成的客户端密钥值。
 >
 > **5。添加 Microsoft Graph 委派权限**
 >
@@ -416,7 +416,7 @@ fleet:
 >>
 >> 外部客户端应用程序在两个位置进行配置：**设置**（上一步中的 OAuth 定义）和 **策略**（此步骤）。两者都必须得救。
 >
-> **4。复制凭证**
+> **4。复制凭据**
 >> 在 **设置** 选项卡上的 **OAuth 设置** 下，选择 **消费者密钥和秘密**。 **消费者密钥**是您的客户端 ID，**消费者秘密**是您的客户端秘密。
 >
 >> [!注意]
@@ -542,7 +542,7 @@ python3 -c "import secrets; print(secrets.token_urlsafe(48))"
 单击“**创建 GitHub 应用程序**”。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量 |
 | - | - | - |
 | **应用程序ID** |数字，位于页面顶部 | `FLEET_GITHUB_APP_ID` |
-| **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet` | `FLEET_GITHUB_APP_PUBLIC_LINK` |
+| **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet`| `FLEET_GITHUB_APP_PUBLIC_LINK` |
 |应用程序块 |公共链接的最后一个路径段 | `FLEET_GITHUB_APP_SLUG` |
 | **客户端ID** |在 **关于** |下`FLEET_GITHUB_APP_CLIENT_ID` |
 

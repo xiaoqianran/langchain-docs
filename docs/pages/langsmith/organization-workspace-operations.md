@@ -20,7 +20,7 @@ The list includes API operations in LangSmith along with:
 | - | - |
 | **Core management:** • [Organization settings](#organization-settings): Org info and configuration • [Workspaces](#workspaces): Workspace management • [Organization members](#organization-members): Member management • [Roles and permissions](#roles-and-permissions): Custom roles | **Core resources:** • [Projects](#projects): Organize traces and runs • [Runs](#runs): Individual execution traces • [Datasets](#datasets): Test datasets for evaluation • [Examples](#examples): Individual dataset examples • [Experiments](#experiments): Comparative experiments |
 | **Security and authentication:** • [SSO and authentication](#sso-and-authentication): Single sign-on setup • [SCIM](#scim): Identity provisioning • [Access policies](#access-policies): Attribute-based access control • [Organization user groups](#organization-user-groups): User Groups and their workspace access | **Monitoring and analysis:** • [Rules](#rules): Automated run rules • [Alerts](#alerts): Alert rules for monitoring • [Feedback](#feedback): Scores and labels on outputs • [Annotation Queues](#annotation-queues): Human review queues • [Charts](#charts): Custom visualizations |
-| **Billing and accounts:** • [Billing and payments](#billing-and-payments): Subscription management • [API keys](#api-keys): Org-level keys | **Development and configuration:** • [Prompts](#prompts): Prompt templates (LangChain Hub) • [Custom apps](#custom-apps): User-authored mini web apps • [Deployments](#deployments): Deployment configurations • [MCP Servers](#mcp-servers): Model Context Protocol servers • [Fleet](#fleet): Fleet admin operations |
+| **Billing and accounts:** • [Billing and payments](#billing-and-payments): Subscription management • [API keys](#api-keys): Org-level keys | **Development and configuration:** • [Prompts](#prompts): Prompt templates (LangChain Hub) • [Custom apps](#custom-apps): User-authored mini web apps • [Deployments](#deployments): Deployment configurations • [MCP Servers](#mcp-servers): Model Context Protocol servers • [Fleet](#fleet): Fleet admin operations • [LLM Gateway](#llm-gateway): Gateway requests |
 | **Analytics:** • [Charts and dashboards](#organization-charts-and-dashboards): Org-level visualizations • [Usage and analytics](#usage-and-analytics): Usage tracking and TTL settings | **Workspace management:** • [Model price map](#model-price-map): Per-token model prices • [Workspace settings](#workspace-settings-and-management): Members, settings • [Workspace user groups](#workspace-user-groups): User group members and policies for this workspace • [Tags](#tags): Metadata tagging system • [Bulk Exports](#bulk-exports): Data export operations |
 
 **Additional information:**
@@ -652,6 +652,18 @@ Model Context Protocol servers for extended functionality.
 | - | :-: | :-: | :-: | - |
 | View Fleet admin section (usage, spend) | ✓ | ✗ | ✗ | `fleet:read-admin-config` |
 | Manage Fleet spend limits | ✓ | ✗ | ✗ | `fleet:write-admin-config` |
+
+The built-in [Fleet roles](/langsmith/rbac#fleet-roles) also grant Fleet access. Fleet Admin includes both permissions in this table.
+
+### LLM Gateway
+
+Requests to the [LLM Gateway](/langsmith/llm-gateway).
+
+| Operation | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission |
+| - | :-: | :-: | :-: | - |
+| Call the LLM Gateway | ✓ | ✗ | ✗ | `gateway:invoke` + `workspaces:read` |
+
+The built-in [Gateway Invoker](/langsmith/rbac#roles-for-keys-that-langsmith-creates) role includes both permissions. For how to grant them, see [LLM Gateway authentication](/langsmith/llm-gateway-authentication#grant-permission-to-call-the-gateway).
 
 ## User-level operations
 

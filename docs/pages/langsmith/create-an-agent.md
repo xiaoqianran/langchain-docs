@@ -124,10 +124,9 @@ client = Client()
 agent = client.agents.retrieve("support-agent")
 production = next(env for env in agent.environments if env.environment == "PRODUCTION")
 print(production.tracer_session_name)  # Use as LANGSMITH_PROJECT
-print(production.tracer_session_id)  # Use with APIs that take a project ID
 ```
 
-With REST, call `GET /api/v1/agents/support-agent` using the same authentication headers as the creation request. In `environments`, select `PRODUCTION`, `STAGING`, `DEVELOPMENT`, or `LOCAL` and read its `tracer_session_name` or `tracer_session_id`.
+With REST, call `GET /api/v1/agents/support-agent` using the same authentication headers as the creation request. In `environments`, select `PRODUCTION`, `STAGING`, `DEVELOPMENT`, or `LOCAL` and read its `tracer_session_name`. For APIs that take a project ID instead, see [Resolve an agent environment](/langsmith/resolve-an-agent).
 
 Copy the selected environment's `tracer_session_name` into your integration's destination setting:
 

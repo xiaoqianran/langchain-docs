@@ -44,7 +44,7 @@ BYOC 上的引擎与自托管 LangSmith 的不同之处如下：* **模型提供
 | **谁运行模型** | LangChain，及其选择的提供商 |您的提供商帐户 |
 | **凭证** |没有任何。引擎使用您的 LangSmith 许可证进行身份验证。 |您提供的 API 密钥或云身份，或者您自己的 [model gateway](/langsmith/engine-self-hosted-model-providers#use-a-model-gateway) |
 | **型号选择** |由LangChain管理和调整|由 LangChain 管理，在您的提供商提供的型号系列内 |
-| **数据处理协议** | LangChain，每个提供商都有 ZDR |您的，与您使用的每个提供商一起|
+| **数据处理协议** | LangChain，每个提供商都有 ZDR |您的，与您使用的每个提供商一起 |
 | **计费** | LangChain 对 LSU 中引擎的使用情况进行计费。 |您的提供商会向您收取模型调用费用。 LangChain 对 LSU 中的 Engine 使用情况进行计费，费率低于LangSmith Intelligence。 |
 | **可用性** | AWS 美国 |任何云，以及您的集群可以访问的受支持模型和端点 |
 
@@ -112,7 +112,7 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
 
 引擎的沙箱与一个工作区相关联。带有引擎的安装必须有[shared organization](/langsmith/administration-overview#organizations)。当安装有一个共享组织时，LangSmith 默认使用其最旧的活动工作区，即使该组织有多个工作区也是如此。要使用专用工作区，请创建工作区并将 `engine.sandboxTenantId` 设置为其 ID。如果安装有多个共享组织，则必须设置 `engine.sandboxTenantId`，因为 LangSmith 不会自动在组织之间进行选择。> [!警告]
 >
-> 使用为引擎保留的工作空间：
+> 使用为引擎保留的工作区：
 >
 > * Engine 的沙箱不在 Sandboxes 产品中计费，因为 Engine 会计量自己在 LSU 中的使用情况。
 > * 引擎的沙箱使用与工作区中其他沙箱相同的并发沙箱、CPU 和内存配额。如果工作区接近其限制，引擎运行可能会失败或为交互式沙箱留下的容量较少。
@@ -153,7 +153,7 @@ AWS URL 还记录使用情况，因此它适用于采用任一选项的组织。
 引擎需要自己的两个密钥：* **加密密钥** (`engine_encryption_key`)：一个 Fernet 密钥，用于加密传递给引擎的运行负载LangSmith，该引擎携带短期凭证。
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+  openssl rand -base64 32 | tr '+/' '-_'
   ```
 
 * **使用签名秘密** (`engine_usage_signing_secret`)：对引擎发送到LangSmith的使用报告进行签名。使用至少 32 个随机字符。
@@ -170,7 +170,7 @@ AWS URL 还记录使用情况，因此它适用于采用任一选项的组织。
 
 ### 使用 Helm 启用
 
-将以下内容添加到您的 [⟦T49⟧](/langsmith/kubernetes#configure-your-helm-charts) 中，以及 [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes) 中的完整沙盒值。这些示例仅显示特定于引擎的值和 `sandboxes.enabled` 标志。
+将以下内容添加到您的 [⟦T49⟧](/langsmith/kubernetes#configure-your-helm-charts) 中，以及 [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes) 中的完整沙箱值。这些示例仅显示特定于引擎的值和 `sandboxes.enabled` 标志。
 
 > [tab] 使用 Kubernetes 机密（推荐）
 >
@@ -254,7 +254,7 @@ helm upgrade -i langsmith langchain/langsmith \
 kubectl get pods -n <namespace> | grep standalone-insights
 ```
 
-API 服务器和队列 Pod 都应该是`Running`。然后，确认`platform-backend`是健康的，因为它调度引擎运行：
+API 服务器和队列 Pod 都应该是`Running`。然后，确认 `platform-backend` 是健康的，因为它调度引擎运行：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl rollout status deployment/langsmith-platform-backend -n <namespace>
@@ -290,7 +290,7 @@ engine:
 具有离线许可证且未连接到 LangSmith Intelligence 的安装可以在其自己的模型提供商上运行引擎：
 
 * 将`engine.intelligenceBaseUrl`设置为`""`。
-* [Choose your own model providers](/langsmith/engine-self-hosted-model-providers#choose-model-providers) 在**设置 > 引擎 > 模型提供程序**下。 LangSmith 情报不可用。
+* [Choose your own model providers](/langsmith/engine-self-hosted-model-providers#choose-model-providers) **设置 > 引擎 > 模型提供程序**。 LangSmith 情报不可用。
 * 允许从 `standalone-insights` pod 到您的模型提供程序的出站 HTTPS，或通过您自己的网络路径将其路由到它们。引擎记录其在您的安装中的使用情况。组织管理员从 **设置 > 使用情况导出** 下载它以及您的剩余使用情况，并按照您协议中的时间表将其发送给您的 LangChain 帐户团队。
 
 气隙安装不显示引擎支出，并且不强制执行`0`以外的支出限制。设置 `0` 的限制来暂停组织或项目的引擎。

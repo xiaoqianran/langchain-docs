@@ -8,7 +8,7 @@
 
 创建并部署您的第一个托管深度代理：构建项目、配置模型和指令、添加搜索、在 [LangSmith Studio](/langsmith/studio) 中测试，并使用 [⟦T18⟧ CLI](/langsmith/python/managed-deep-agents-cli) 进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/python/deepagents/overview) 和托管运行时。
 
-在本快速入门之后，[tutorial](/langsmith/python/managed-deep-agents-tutorial) 在同一项目上添加了耐用内存和每日计划。
+在本快速入门之后，[daily digest](/langsmith/python/managed-deep-agents-tutorial) 模式在同一项目上添加了持久内存和每日计划。
 
 > [!注意]
 >
@@ -277,9 +277,9 @@ uv run mda deploy
 
 ## 后续步骤
 
-> [卡][Tutorial](/langsmith/python/managed-deep-agents-tutorial)
+> [卡][Daily digest](/langsmith/python/managed-deep-agents-tutorial)
 >
-> 添加自定义 Tavilly 搜索工具、持久内存和每日日程安排。
+> 为研究助理添加持久记忆和日程安排。
 
 > [卡][Design agent template](/langsmith/python/managed-deep-agents-design-agent)
 >

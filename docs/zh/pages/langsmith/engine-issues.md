@@ -15,7 +15,7 @@
 ## 审查证据
 
 **证据**部分包含支持诊断的跟踪，包括每个跟踪的片段。从本节中，您可以：* **查看跟踪**：单击 **打开跟踪** 以打开证据跟踪。当引擎识别出导致问题的子运行时，它会打开该确切的运行。跟踪视图包含返回引擎问题的 **查看问题** 链接。
-* **创建离线示例**：单击 [**Add offline examples**](#add-offline-examples) 从生产跟踪输入生成自定义地面实况 [dataset examples](/langsmith/manage-datasets) 以进行离线评估。
+* **创建离线示例**：单击 [**Engine proposed N examples**](#add-offline-examples) 从生产跟踪输入生成自定义地面实况 [dataset examples](/langsmith/manage-datasets) 以进行离线评估。
 * **查看项目证据**：点击**查看项目中的全部**，可以查看追踪项目中的证据。
 
 欲了解更多信息，请参阅[Manage a trace](/langsmith/manage-trace)。
@@ -47,16 +47,16 @@
 
 ## 添加离线示例
 
-此步骤捕获出现问题的痕迹作为真实情况[dataset examples](/langsmith/manage-datasets)，因此您可以在修复进入生产之前离线评估修复。1. 单击“证据”列表右上角的“添加离线示例”，打开“添加为离线示例”对话框。
+此步骤捕获出现问题的痕迹作为真实情况[dataset examples](/langsmith/manage-datasets)，因此您可以在修复进入生产之前离线评估修复。1. 单击 **证据** 列表右上角的 **引擎建议的 N 个示例**，打开 **添加为离线示例** 对话框。 N 是引擎针对该问题提出的示例数量。仅当引擎提出示例时才会出现该按钮。
 2. 检查每条迹线。该对话框显示输入、代理生成的错误输出以及作为自定义地面实况示例的建议预期输出。
 3. 单击“**添加到数据集**”直接添加它们，或单击“**在注释队列中编辑**”先查看它们。
-4. 在注释队列中，每个示例显示运行输入以及引擎建议的参考输出，其结构为从跟踪分析生成的名为[assertions](/langsmith/assertions)。每个断言都是一个简短的断言，描述正确答案应该或不应该包含的内容。根据需要编辑断言，使用 **+ 添加断言** 添加新断言，然后单击 **添加到数据集并继续** 以完成每个示例。
+4. 在注释队列中，每个示例显示运行输入以及引擎建议的参考输出，其结构为从跟踪分析生成的名为[assertions](/langsmith/assertions)。每个断言都是一个简短的断言，描述了正确答案应该或不应该包括的内容。根据需要编辑断言，使用 **+ Add** 添加新断言，然后单击 **Add to Dataset & Next** 以完成每个示例。
 
 欲了解更多信息，请参阅[Manage datasets](/langsmith/manage-datasets)、[Use annotation queues](/langsmith/annotation-queues)和[Use assertions](/langsmith/assertions)。
 
 ## 观看一个问题
 
-观看会使问题保持开放状态以供监控，而不解决问题或将其标记为错误标记。当您尚未准备好解决问题但仍想知道问题是否持续发生时，请单击“观看”。要在关注的问题再次出现时收到提醒，请单击 **通过 Slack 提醒我**，这会打开 [Engine settings](/langsmith/engine-setup#configure-engine) 面板的 **通知** 部分。参见[Engine notifications](/langsmith/engine-notifications)。
+观看使问题保持开放状态以供监控，而不解决问题或将其标记为错误标记。当您尚未准备好解决问题但仍想知道问题是否持续发生时，请单击“观看”。要在关注的问题再次出现时收到提醒，请单击 **通过 Slack 提醒我**，这会打开 [Engine settings](/langsmith/engine-setup#configure-engine) 面板的 **通知** 部分。参见[Engine notifications](/langsmith/engine-notifications)。
 
 当新跟踪链接到关注的问题时，引擎会将其移至列表顶部并显示到达的新跟踪数，以便您可以选择修复或继续关注。
 
@@ -108,6 +108,6 @@ langsmith project issues list --project <project-name> --status open --priority 
 * [Manage datasets](/langsmith/manage-datasets)、[Use annotation queues](/langsmith/annotation-queues) 和 [Use assertions](/langsmith/assertions)：使用引擎生成的离线示例。
 * [LangSmith CLI](/langsmith/cli)：以编程方式列出和管理问题。
 
-***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-issues.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

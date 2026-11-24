@@ -4,7 +4,7 @@
 
 # 将跟踪记录记录到代理
 
-配置代理标识符和环境以将代码中的跟踪发送到 LangSmith。
+配置代理标识符和环境以将代码中的跟踪发送到LangSmith。
 
 每个跟踪都属于工作空间内的一个 [agent](/langsmith/agent-registry#agent) 及其其中一个 [environments](/langsmith/agent-environments)。在代码或环境变量中配置代理标识符和环境。 LangSmith 使用它们将每个跟踪路由到选定的环境。
 
@@ -184,11 +184,11 @@ export LANGSMITH_AGENT_ENVIRONMENT=local
 > }
 > ```
 
-### 使用 OpenTelemetry
+### 使用 OpenTelemetry要将 OTLP 跟踪发送到代理，请设置 `Langsmith-Agent-Id` 和 `Langsmith-Agent-Environment` 标头而不是 `Langsmith-Project`。使用 `langsmith>=0.14.9`，Python SDK 的 OpenTelemetry 导出器会在未设置 `OTEL_EXPORTER_OTLP_HEADERS` 时设置代理变量中的两个标头。在 Go 中，OpenTelemetry 跟踪器读取 `langsmith-go` v0.28.2 或更高版本中的代理变量。尽管 Go SDK 的其余部分支持 v0.28.0 的代理，但早期版本的跟踪器会忽略它们。对于标头规则和LangSmith返回的错误，请参阅[Trace with OpenTelemetry](/langsmith/trace-with-opentelemetry#trace-a-non-langchain-application)。
 
-要将 OTLP 跟踪发送到代理，请设置 `Langsmith-Agent-Id` 和 `Langsmith-Agent-Environment` 标头而不是 `Langsmith-Project`。使用 `langsmith>=0.14.9`，Python SDK 的 OpenTelemetry 导出器会在未设置 `OTEL_EXPORTER_OTLP_HEADERS` 时设置代理变量中的两个标头。对于标头规则和LangSmith返回的错误，请参阅[Trace with OpenTelemetry](/langsmith/trace-with-opentelemetry#trace-a-non-langchain-application)。
+## 发送你的第一条轨迹
 
-## 发送你的第一条轨迹运行您的代理，以便它至少发送一条跟踪。在LangSmith中，选择顶部栏中的代理，转到**跟踪**，并将环境控制设置为您将跟踪发送到的环境控制。痕迹出现在那里。
+运行您的代理，以便它至少发送一条跟踪。在LangSmith中，选择顶部栏中的代理，转到**跟踪**，并将环境控制设置为您将跟踪发送到的环境控制。痕迹出现在那里。
 
 ## 查询代理环境
 
@@ -197,7 +197,7 @@ export LANGSMITH_AGENT_ENVIRONMENT=local
 ## 删除冲突的目标设置
 
 请勿将代理寻址与旧目标设置结合起来。 SDK 按如下方式处理冲突的设置：* **代理变量和遗留变量一起**：不允许。如果您设置代理变量以及 `LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT` 或 `LANGCHAIN_SESSION`，则跟踪有两个目的地，并且 SDK 不会选择其中之一。它会在客户端启动时记录警告，并且不会跟踪调用，除非代码指定了目的地。如果您在一次调用中同时传递 `address` 和 `project_name`，SDK 会引发错误并且不发送任何内容：Python 中来自 `@traceable` 或 `tracing_context()` 的 `LangSmithUserError`，或者 TypeScript 中来自 `traceable` 的 `Error`。 LangSmith 还拒绝提供两种地址类型的摄取请求。
-* **代码中的`project_name`覆盖**：覆盖代理变量。在 Python 中将 `project_name` 传递到 `@traceable` 或 `tracing_context()`，或者在 TypeScript 中的 `traceable` 配置中，将运行跟踪到覆盖目标并忽略代理变量，不会出现错误。这就是让 [evaluation](/langsmith/evaluation) 使用自己的实验目的地，同时代理变量在过程的其余部分保持设置状态的原因。
+* **代码中的`project_name`覆盖**：覆盖代理变量。在 Python 中将 `project_name` 传递给 `@traceable` 或 `tracing_context()`，或在 TypeScript 中的 `traceable` 配置中传递，可将运行跟踪到覆盖目标并忽略代理变量，不会出现错误。这就是让 [evaluation](/langsmith/evaluation) 使用自己的实验目的地，同时代理变量在过程的其余部分保持设置状态的原因。
 
 ## 故障排除
 

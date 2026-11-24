@@ -355,38 +355,334 @@ The recommended pattern is to deploy a **consolidation agent** alongside your ma
 
 The consolidation agent reads recent conversation history and merges key facts into the memory store. Register it alongside your main agent in `langgraph.json`:
 
-```typescript src/consolidation-agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { Client } from "@langchain/langgraph-sdk";
 import { tool } from "@langchain/core/tools";
+import * as z from "zod";
 
 const sdkClient = new Client({ apiUrl: "<DEPLOYMENT_URL>" });
 
 const searchRecentConversations = tool(
   async ({ query }, runtime) => {
-    const userId = runtime.serverInfo.user.identity;  // [!code highlight]
+    const userId = runtime.serverInfo.user.identity; // [!code highlight]
 
-    const since = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
+    const since = new Date(Date.now() - 6 * 60 * 60 * 1000);
     const threads = await sdkClient.threads.search({
-      metadata: { userId },
-      updatedAfter: since,
+      metadata: { user_id: userId },
+      sortBy: "updated_at",
+      sortOrder: "desc",
       limit: 20,
     });
     const conversations = [];
     for (const thread of threads) {
-      const history = await sdkClient.threads.getHistory(thread.threadId);
-      conversations.push(history.values.messages);
+      if (new Date(thread.updated_at) < since) {
+        break;
+      }
+      const state = await sdkClient.threads.getState(thread.thread_id);
+      conversations.push(state.values.messages);
     }
     return JSON.stringify(conversations);
   },
   {
     name: "search_recent_conversations",
     description: "Search this user's conversations updated in the last 6 hours.",
+    schema: z.object({
+      query: z.string().describe("Search query for recent conversations"),
+    }),
   }
 );
 
 const agent = createDeepAgent({
   model: "google:gemini-4-hydrogen",
+  systemPrompt: `Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.`,
+  tools: [searchRecentConversations],
+});
+
+export { agent };
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { Client } from "@langchain/langgraph-sdk";
+import { tool } from "@langchain/core/tools";
+import * as z from "zod";
+
+const sdkClient = new Client({ apiUrl: "<DEPLOYMENT_URL>" });
+
+const searchRecentConversations = tool(
+  async ({ query }, runtime) => {
+    const userId = runtime.serverInfo.user.identity; // [!code highlight]
+
+    const since = new Date(Date.now() - 6 * 60 * 60 * 1000);
+    const threads = await sdkClient.threads.search({
+      metadata: { user_id: userId },
+      sortBy: "updated_at",
+      sortOrder: "desc",
+      limit: 20,
+    });
+    const conversations = [];
+    for (const thread of threads) {
+      if (new Date(thread.updated_at) < since) {
+        break;
+      }
+      const state = await sdkClient.threads.getState(thread.thread_id);
+      conversations.push(state.values.messages);
+    }
+    return JSON.stringify(conversations);
+  },
+  {
+    name: "search_recent_conversations",
+    description: "Search this user's conversations updated in the last 6 hours.",
+    schema: z.object({
+      query: z.string().describe("Search query for recent conversations"),
+    }),
+  }
+);
+
+const agent = createDeepAgent({
+  model: "openai:gpt-6.1-sol",
+  systemPrompt: `Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.`,
+  tools: [searchRecentConversations],
+});
+
+export { agent };
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { Client } from "@langchain/langgraph-sdk";
+import { tool } from "@langchain/core/tools";
+import * as z from "zod";
+
+const sdkClient = new Client({ apiUrl: "<DEPLOYMENT_URL>" });
+
+const searchRecentConversations = tool(
+  async ({ query }, runtime) => {
+    const userId = runtime.serverInfo.user.identity; // [!code highlight]
+
+    const since = new Date(Date.now() - 6 * 60 * 60 * 1000);
+    const threads = await sdkClient.threads.search({
+      metadata: { user_id: userId },
+      sortBy: "updated_at",
+      sortOrder: "desc",
+      limit: 20,
+    });
+    const conversations = [];
+    for (const thread of threads) {
+      if (new Date(thread.updated_at) < since) {
+        break;
+      }
+      const state = await sdkClient.threads.getState(thread.thread_id);
+      conversations.push(state.values.messages);
+    }
+    return JSON.stringify(conversations);
+  },
+  {
+    name: "search_recent_conversations",
+    description: "Search this user's conversations updated in the last 6 hours.",
+    schema: z.object({
+      query: z.string().describe("Search query for recent conversations"),
+    }),
+  }
+);
+
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  systemPrompt: `Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.`,
+  tools: [searchRecentConversations],
+});
+
+export { agent };
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { Client } from "@langchain/langgraph-sdk";
+import { tool } from "@langchain/core/tools";
+import * as z from "zod";
+
+const sdkClient = new Client({ apiUrl: "<DEPLOYMENT_URL>" });
+
+const searchRecentConversations = tool(
+  async ({ query }, runtime) => {
+    const userId = runtime.serverInfo.user.identity; // [!code highlight]
+
+    const since = new Date(Date.now() - 6 * 60 * 60 * 1000);
+    const threads = await sdkClient.threads.search({
+      metadata: { user_id: userId },
+      sortBy: "updated_at",
+      sortOrder: "desc",
+      limit: 20,
+    });
+    const conversations = [];
+    for (const thread of threads) {
+      if (new Date(thread.updated_at) < since) {
+        break;
+      }
+      const state = await sdkClient.threads.getState(thread.thread_id);
+      conversations.push(state.values.messages);
+    }
+    return JSON.stringify(conversations);
+  },
+  {
+    name: "search_recent_conversations",
+    description: "Search this user's conversations updated in the last 6 hours.",
+    schema: z.object({
+      query: z.string().describe("Search query for recent conversations"),
+    }),
+  }
+);
+
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  systemPrompt: `Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.`,
+  tools: [searchRecentConversations],
+});
+
+export { agent };
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { Client } from "@langchain/langgraph-sdk";
+import { tool } from "@langchain/core/tools";
+import * as z from "zod";
+
+const sdkClient = new Client({ apiUrl: "<DEPLOYMENT_URL>" });
+
+const searchRecentConversations = tool(
+  async ({ query }, runtime) => {
+    const userId = runtime.serverInfo.user.identity; // [!code highlight]
+
+    const since = new Date(Date.now() - 6 * 60 * 60 * 1000);
+    const threads = await sdkClient.threads.search({
+      metadata: { user_id: userId },
+      sortBy: "updated_at",
+      sortOrder: "desc",
+      limit: 20,
+    });
+    const conversations = [];
+    for (const thread of threads) {
+      if (new Date(thread.updated_at) < since) {
+        break;
+      }
+      const state = await sdkClient.threads.getState(thread.thread_id);
+      conversations.push(state.values.messages);
+    }
+    return JSON.stringify(conversations);
+  },
+  {
+    name: "search_recent_conversations",
+    description: "Search this user's conversations updated in the last 6 hours.",
+    schema: z.object({
+      query: z.string().describe("Search query for recent conversations"),
+    }),
+  }
+);
+
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  systemPrompt: `Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.`,
+  tools: [searchRecentConversations],
+});
+
+export { agent };
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { Client } from "@langchain/langgraph-sdk";
+import { tool } from "@langchain/core/tools";
+import * as z from "zod";
+
+const sdkClient = new Client({ apiUrl: "<DEPLOYMENT_URL>" });
+
+const searchRecentConversations = tool(
+  async ({ query }, runtime) => {
+    const userId = runtime.serverInfo.user.identity; // [!code highlight]
+
+    const since = new Date(Date.now() - 6 * 60 * 60 * 1000);
+    const threads = await sdkClient.threads.search({
+      metadata: { user_id: userId },
+      sortBy: "updated_at",
+      sortOrder: "desc",
+      limit: 20,
+    });
+    const conversations = [];
+    for (const thread of threads) {
+      if (new Date(thread.updated_at) < since) {
+        break;
+      }
+      const state = await sdkClient.threads.getState(thread.thread_id);
+      conversations.push(state.values.messages);
+    }
+    return JSON.stringify(conversations);
+  },
+  {
+    name: "search_recent_conversations",
+    description: "Search this user's conversations updated in the last 6 hours.",
+    schema: z.object({
+      query: z.string().describe("Search query for recent conversations"),
+    }),
+  }
+);
+
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  systemPrompt: `Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.`,
+  tools: [searchRecentConversations],
+});
+
+export { agent };
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { Client } from "@langchain/langgraph-sdk";
+import { tool } from "@langchain/core/tools";
+import * as z from "zod";
+
+const sdkClient = new Client({ apiUrl: "<DEPLOYMENT_URL>" });
+
+const searchRecentConversations = tool(
+  async ({ query }, runtime) => {
+    const userId = runtime.serverInfo.user.identity; // [!code highlight]
+
+    const since = new Date(Date.now() - 6 * 60 * 60 * 1000);
+    const threads = await sdkClient.threads.search({
+      metadata: { user_id: userId },
+      sortBy: "updated_at",
+      sortOrder: "desc",
+      limit: 20,
+    });
+    const conversations = [];
+    for (const thread of threads) {
+      if (new Date(thread.updated_at) < since) {
+        break;
+      }
+      const state = await sdkClient.threads.getState(thread.thread_id);
+      conversations.push(state.values.messages);
+    }
+    return JSON.stringify(conversations);
+  },
+  {
+    name: "search_recent_conversations",
+    description: "Search this user's conversations updated in the last 6 hours.",
+    schema: z.object({
+      query: z.string().describe("Search query for recent conversations"),
+    }),
+  }
+);
+
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
   systemPrompt: `Review recent conversations and update the user's memory file.
 Merge new facts, remove outdated information, and keep it concise.`,
   tools: [searchRecentConversations],

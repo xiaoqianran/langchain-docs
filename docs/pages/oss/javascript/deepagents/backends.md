@@ -43,7 +43,7 @@ Here are a few prebuilt filesystem backends that you can quickly use with your d
 | - | - |
 | [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen")`  Thread-scoped. The default filesystem backend for an agent is stored in `langgraph` state. Files persist across turns within a thread (via your checkpointer) and are not shared across threads. |
 | [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` This gives the deep agent access to your local machine's filesystem. You can specify the root directory that the agent has access to. Note that any provided `root_dir` must be an absolute path. Typically, wrap in a [CompositeBackend](#compositebackend-router) to keep internal agent data (offloaded tool results, conversation history) separate from your project files. |
-| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=StoreBackend())` This gives the agent access to long-term storage that is *persisted across threads*. This is great for storing longer term memories or instructions that are applicable to the agent over multiple executions. |
+| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)), store=InMemoryStore())` This gives the agent access to long-term storage that is *persisted across threads*. This is great for storing longer term memories or instructions that are applicable to the agent over multiple executions. |
 | [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=ContextHubBackend("my-agent"))` Stores files durably in a LangSmith Hub repo, without provisioning a separate LangGraph store. |
 | [Sandbox](/oss/javascript/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=sandbox)` Execute code in isolated environments. Sandboxes provide filesystem tools plus the `execute` tool for running shell commands. Choose from LangSmith, AgentCore, Daytona, or other [sandbox integrations](/oss/javascript/integrations/sandboxes). |
 | [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` Filesystem and shell execution directly on the host. No isolation—use only in controlled development environments. See [security considerations](#localshellbackend-local-shell) below. |
@@ -86,7 +86,7 @@ graph TB
 
 ### StateBackend
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StateBackend } from "deepagents";
 
 // By default we provide a StateBackend
@@ -148,7 +148,7 @@ even after that subagent's execution is complete. Those files will continue to b
 >
 >    Note that the default (`virtual_mode=False`) provides no security even with `root_dir` set.
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -157,7 +157,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -166,7 +166,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -175,7 +175,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -184,7 +184,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -193,7 +193,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -202,7 +202,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -281,7 +281,7 @@ For a durable repository wiki that agents can read with these filesystem tools (
 >
 > **Note:** `virtual_mode=True` provides no security with shell access enabled, since commands can access any path on the system.
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -292,7 +292,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -303,7 +303,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -314,7 +314,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -325,7 +325,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -336,7 +336,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -347,7 +347,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -372,7 +372,7 @@ const agent = createDeepAgent({
 
 ### StoreBackend (LangGraph store)
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -381,13 +381,15 @@ const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Age
 const agent = createDeepAgent({
   model: "google:gemini-4-hydrogen",
   backend: new StoreBackend({
-    namespace: (rt) => [rt.serverInfo.user.identity],
+    namespace: ({ config }) => [
+      String(config?.configurable?.langgraph_auth_user_id),
+    ],
   }),
   store,
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -396,13 +398,15 @@ const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Age
 const agent = createDeepAgent({
   model: "openai:gpt-6.1-sol",
   backend: new StoreBackend({
-    namespace: (rt) => [rt.serverInfo.user.identity],
+    namespace: ({ config }) => [
+      String(config?.configurable?.langgraph_auth_user_id),
+    ],
   }),
   store,
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -411,13 +415,15 @@ const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Age
 const agent = createDeepAgent({
   model: "anthropic:claude-sonnet-5",
   backend: new StoreBackend({
-    namespace: (rt) => [rt.serverInfo.user.identity],
+    namespace: ({ config }) => [
+      String(config?.configurable?.langgraph_auth_user_id),
+    ],
   }),
   store,
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -426,13 +432,15 @@ const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Age
 const agent = createDeepAgent({
   model: "openrouter:z-ai/glm-5.2",
   backend: new StoreBackend({
-    namespace: (rt) => [rt.serverInfo.user.identity],
+    namespace: ({ config }) => [
+      String(config?.configurable?.langgraph_auth_user_id),
+    ],
   }),
   store,
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -441,13 +449,15 @@ const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Age
 const agent = createDeepAgent({
   model: "fireworks:accounts/fireworks/models/glm-5p2",
   backend: new StoreBackend({
-    namespace: (rt) => [rt.serverInfo.user.identity],
+    namespace: ({ config }) => [
+      String(config?.configurable?.langgraph_auth_user_id),
+    ],
   }),
   store,
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -456,13 +466,15 @@ const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Age
 const agent = createDeepAgent({
   model: "baseten:zai-org/GLM-5.2",
   backend: new StoreBackend({
-    namespace: (rt) => [rt.serverInfo.user.identity],
+    namespace: ({ config }) => [
+      String(config?.configurable?.langgraph_auth_user_id),
+    ],
   }),
   store,
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -471,7 +483,9 @@ const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Age
 const agent = createDeepAgent({
   model: "ollama:north-mini-code-1.0",
   backend: new StoreBackend({
-    namespace: (rt) => [rt.serverInfo.user.identity],
+    namespace: ({ config }) => [
+      String(config?.configurable?.langgraph_auth_user_id),
+    ],
   }),
   store,
 });
@@ -496,44 +510,47 @@ const agent = createDeepAgent({
 
 #### Namespace factories
 
-A namespace factory controls where `StoreBackend` reads and writes data. It receives a LangGraph [`Runtime`](https://reference.langchain.com/javascript/langchain/index/Runtime) and returns a tuple of strings used as the store namespace. Use namespace factories to isolate data between users, tenants, or assistants.
+A namespace factory controls where `StoreBackend` reads and writes data. It receives a `StoreBackendContext` and returns an array of strings used as the store namespace. Use namespace factories to isolate data between users, tenants, or assistants.
 
 Pass the namespace factory to the `namespace` parameter when constructing a `StoreBackend`:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-NamespaceFactory = Callable[[Runtime], tuple[str, ...]]
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+type StoreBackendNamespaceFactory = (context: {
+  state: unknown;
+  config?: {
+    metadata?: Record<string, unknown>;
+    configurable?: Record<string, unknown>;
+  };
+  assistantId?: string;
+}) => string[];
 ```
 
-The `Runtime` provides:
+The context provides:
 
-* `rt.context`—User-supplied context passed via LangGraph's [context schema](/oss/javascript/langgraph/graph-api#runtime-context) (for example, `user_id`)
-
-* `rt.serverInfo`—Server-specific metadata when running on Agent Server (assistant ID, graph ID, authenticated user)
-
-* `rt.executionInfo`—Execution identity information (thread ID, run ID, checkpoint ID)
-
-> [!NOTE]
->
-> The `Runtime` argument is available in `deepagents>=1.9.1`. Earlier 1.9.x releases passed a `BackendContext` instead—see [migrating from `BackendContext`](#migrating-from-backendcontext) below. `rt.serverInfo` and `rt.executionInfo` require `deepagents>=1.9.0`.
+* `state`—Current graph state, when available
+* `config`—Runnable config metadata and `configurable` values, when available
+* `assistantId`—Assistant identifier resolved from config metadata or the injected runtime
 
 **Common namespace patterns:**
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StoreBackend } from "deepagents";
 
-// Per-user: each user gets their own isolated storage
-const backend = new StoreBackend({
-  namespace: (rt) => [rt.serverInfo.user.identity],  // [!code highlight]
+// Per-user: derive from the authenticated Agent Server user
+const perUserBackend = new StoreBackend({
+  namespace: ({ config }) => [String(config?.configurable?.langgraph_auth_user_id)],  // [!code highlight]
 });
 
-// Per-assistant: all users of the same assistant share storage
-const backend = new StoreBackend({
-  namespace: (rt) => [rt.serverInfo.assistantId],  // [!code highlight]
+// Per-assistant: use the resolved assistant id
+const perAssistantBackend = new StoreBackend({
+  namespace: ({ assistantId }) => [assistantId ?? "default"],  // [!code highlight]
 });
 
-// Per-thread: storage scoped to a single conversation
-const backend = new StoreBackend({
-  namespace: (rt) => [rt.executionInfo.threadId],  // [!code highlight]
+// Static namespace when the scope is known at construction time
+const orgId = "acme";
+const userId = "user-1";
+const staticBackend = new StoreBackend({
+  namespace: ["memories", orgId, userId, "filesystem"],  // [!code highlight]
 });
 ```
 
@@ -586,7 +603,7 @@ Construct it with a repo identifier in `owner/name` or `name` format.
 
 ### CompositeBackend (router)
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -608,7 +625,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -630,7 +647,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -652,7 +669,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -674,7 +691,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -696,7 +713,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -718,7 +735,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -1035,7 +1052,7 @@ Previously, backends like `StateBackend` and `StoreBackend` required a factory f
 | Before (deprecated) | After |
 | - | - |
 | `backend=lambda rt: StateBackend(rt)` | `backend=StateBackend()` |
-| `backend=lambda rt: StoreBackend(rt)` | `backend=StoreBackend()` |
+| `backend=lambda rt: StoreBackend(rt)` | `backend=StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,))` |
 | `backend=lambda rt: CompositeBackend(default=StateBackend(rt), ...)` | `backend=CompositeBackend(default=StateBackend(), ...)` |
 | `backend: (config) => new StateBackend(config)` | `backend: new StateBackend()` |
 | `backend: (config) => new StoreBackend(config)` | `backend: new StoreBackend()` |
@@ -1056,49 +1073,37 @@ Previously, backends like `StateBackend` and `StoreBackend` required a factory f
 
 ### Migration example
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// Before (deprecated)
+Before (deprecated):
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
 
 const agent = createDeepAgent({
   backend: (config) => new CompositeBackend(
     new StateBackend(config),
     { "/memories/": new StoreBackend(config, {
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }) },
-  ),
-});
-
-// After
-const agent = createDeepAgent({
-  backend: new CompositeBackend(
-    new StateBackend(),
-    { "/memories/": new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
+      namespace: ({ config: cfg }) => [
+        String(cfg?.configurable?.langgraph_auth_user_id),
+      ],
     }) },
   ),
 });
 ```
 
-### Migrating from `BackendContext`
+After:
 
-In `deepagents>=0.5.2` (Python) and `deepagents>=1.9.1` (TypeScript), namespace factories receive a LangGraph [`Runtime`](https://reference.langchain.com/javascript/langchain/index/Runtime) directly instead of a `BackendContext` wrapper. The old `BackendContext` form still works via backwards-compatible `.runtime` and `.state` accessors, but those accessors emit a deprecation warning and will be removed in `deepagents>=0.7`.
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
 
-**What changed:**
-
-* The factory argument is now a `Runtime`, not a `BackendContext`.
-* Drop the `.runtime` accessor—for example, `ctx.runtime.context.user_id` becomes `rt.server_info.user.identity`.
-* There is no direct replacement for `ctx.state`. Namespace info should be read-only and stable for the lifetime of a run, whereas state is mutable and changes step-to-step—deriving a namespace from it risks data ending up under inconsistent keys. If you have a use case that requires reading agent state, please [open an issue](https://github.com/langchain-ai/deepagents/issues).
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// Before (deprecated, removed in v0.7)
-new StoreBackend({
-  namespace: (ctx) => [ctx.runtime.context.userId],  // [!code --]
-});
-
-// After
-new StoreBackend({
-  namespace: (rt) => [rt.serverInfo.user.identity],  // [!code ++]
+const agent = createDeepAgent({
+  backend: new CompositeBackend(
+    new StateBackend(),
+    { "/memories/": new StoreBackend({
+      namespace: ({ config }) => [
+        String(config?.configurable?.langgraph_auth_user_id),
+      ],
+    }) },
+  ),
 });
 ```
 

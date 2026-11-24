@@ -10,7 +10,7 @@
 
 > [!提示]
 >
-> 要生成编码代理通过[⟦T13⟧](https://agents.md/)发现的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
+> 要生成编码代理通过[⟦T19⟧](https://agents.md/)发现的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 
 > [!注意]
 >
@@ -22,11 +22,11 @@
 2. **Agent读取内存。** Agent可以在启动时将内存文件加载到系统提示符中，或者在会话过程中按需读取它们。例如，[skills](/oss/python/deepagents/skills)使用按需加载：代理在启动时仅读取技能描述，然后仅在与任务匹配时读取完整的技能文件。这可以保持上下文精简，直到需要某种功能为止。
 3. **Agent更新内存（可选）。** 当Agent学习到新信息时，它可以使用其内置的`edit_file`工具来更新内存文件。更新可以在对话期间（默认）进行，也可以通过 [background consolidation](#background-consolidation) 在对话之间的后台进行。更改将保留并在下一次对话中可用。并非所有内存都是可写的：开发人员定义的 [skills](/oss/python/deepagents/skills) 和 [organization policies](#organization-level-memory) 通常是只读的。详情请参阅[read-only vs writable memory](#read-only-vs-writable-memory)。
 
-两种最常见的模式是[agent-scoped memory](#agent-scoped-memory)（所有用户共享）和[user-scoped memory](#user-scoped-memory)（每个用户隔离）。对于编码代理通过[⟦T17⟧](https://agents.md/)发现的生成的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
+两种最常见的模式是[agent-scoped memory](#agent-scoped-memory)（所有用户共享）和[user-scoped memory](#user-scoped-memory)（每个用户隔离）。对于编码代理通过[⟦T23⟧](https://agents.md/)发现的生成的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 
 ## 作用域内存
 
-代理内存可以划分范围，以便使用代理的每个人都可以访问相同的内存文件，或者每个用户都可以单独使用内存文件。
+代理内存可以划分范围，以便使用代理的每个人都可以访问相同的内存文件，或者每个用户都可以使用单独的内存文件。
 
 ### 代理范围内存
 
@@ -36,7 +36,7 @@
 
 > [!注意]
 >
-> 访问`rt.server_info`需要`deepagents>=0.5.0`。在旧版本上，请从 `get_config()["metadata"]["assistant_id"]` 读取助手 ID。
+> 访问`rt.server_info`需要`deepagents>=0.5.0`。在旧版本上，请改为从 `get_config()["metadata"]["assistant_id"]` 读取助手 ID。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -252,7 +252,7 @@ agent = create_deep_agent(
 
 ### 情景记忆
 
-情景记忆存储过去经历的记录：发生了什么、发生的顺序以及结果是什么。与语义记忆（存储在`AGENTS.md`等文件中的事实和偏好）不同，情景记忆保留了完整的对话上下文，因此代理可以回忆“如何”解决问题，而不仅仅是从中“学到什么”。要为编码代理生成和维护存储库级 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。Deep Agents已经使用了[checkpointers](/oss/python/langgraph/checkpointers#checkpoints)，这是支持情景记忆的机制：每个对话都作为检查点线程保存。
+情景记忆存储过去经历的记录：发生了什么、发生的顺序以及结果是什么。与语义记忆（存储在`AGENTS.md`等文件中的事实和偏好）不同，情景记忆保留了完整的对话上下文，因此代理可以回忆“如何”解决问题，而不仅仅是从中“学到什么”。要为编码代理生成和维护存储库级 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。Deep Agents已经使用了[checkpointers](/oss/python/langgraph/checkpointers#checkpoints)，这是支持情景记忆的机制：每个对话都作为检查点线程持久化。
 
 要使过去的对话可搜索，请将线程搜索包装在工具中。 `user_id`是从运行时上下文中提取的，而不是作为参数传递：
 
@@ -353,13 +353,13 @@ await client.store.put_item(
 | **热路径**（对话期间）|记忆立即可用，对用户透明 |增加延迟，代理必须执行多任务 |
 | **背景**（对话之间）|无面向用户的延迟，可以跨多个对话进行综合 |记忆在下次对话之前不可用，需要第二个特工 |
 
-对于大多数应用程序，热路径就足够了。当您需要减少多个对话的延迟或提高内存质量时，请添加后台整合。推荐的模式是在主代理旁边部署一个**整合代理**——一个深度代理，读取最近的对话历史记录，提取关键事实，并将它们合并到内存存储中——并在[cron schedule](#cron)上触发它。选择反映用户实际与代理交互频率的节奏：每日流量稳定的聊天产品可能每隔几个小时就会整合一次，而每周使用几次的工具只需要每晚或每周运行一次。比用户交谈更频繁的整合只会在无操作运行时烧毁代币。
+对于大多数应用程序，热路径就足够了。当您需要减少多个对话的延迟或提高内存质量时，请添加后台整合。推荐的模式是在主代理旁边部署一个**整合代理** - 一个深度代理，读取最近的对话历史记录，提取关键事实，并将它们合并到内存存储中 - 并在[cron schedule](#cron)上触发它。选择反映用户实际与代理交互频率的节奏：每日流量稳定的聊天产品可能每隔几个小时就会整合一次，而每周使用几次的工具只需要每晚或每周运行一次。比用户交谈更频繁的整合只会在无操作运行时烧毁代币。
 
 #### 集运代理
 
 整合代理读取最近的对话历史并将关键事实合并到内存存储中。在 `langgraph.json` 中与您的主要代理一起注册：
 
-```python consolidation_agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from datetime import datetime, timedelta, timezone
 
 from deepagents import create_deep_agent
@@ -377,20 +377,255 @@ async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
     since = datetime.now(timezone.utc) - timedelta(hours=6)
     threads = await sdk_client.threads.search(
         metadata={"user_id": user_id},
-        updated_after=since.isoformat(),
+        sort_by="updated_at",
+        sort_order="desc",
         limit=20,
     )
     conversations = []
     for thread in threads:
-        history = await sdk_client.threads.get_history(
-            thread_id=thread["thread_id"]
-        )
-        conversations.append(history["values"]["messages"])
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
     return str(conversations)
 
 
 agent = create_deep_agent(
     model="google_genai:gemini-4-hydrogen",
+    system_prompt="""Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.""",
+    tools=[search_recent_conversations],
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from deepagents import create_deep_agent
+from langchain.tools import tool, ToolRuntime
+from langgraph_sdk import get_client
+
+sdk_client = get_client(url="<DEPLOYMENT_URL>")
+
+
+@tool
+async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
+    """Search this user's conversations updated in the last 6 hours."""
+    user_id = runtime.server_info.user.identity  # [!code highlight]
+
+    since = datetime.now(timezone.utc) - timedelta(hours=6)
+    threads = await sdk_client.threads.search(
+        metadata={"user_id": user_id},
+        sort_by="updated_at",
+        sort_order="desc",
+        limit=20,
+    )
+    conversations = []
+    for thread in threads:
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
+    return str(conversations)
+
+
+agent = create_deep_agent(
+    model="openai:gpt-6.1-sol",
+    system_prompt="""Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.""",
+    tools=[search_recent_conversations],
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from deepagents import create_deep_agent
+from langchain.tools import tool, ToolRuntime
+from langgraph_sdk import get_client
+
+sdk_client = get_client(url="<DEPLOYMENT_URL>")
+
+
+@tool
+async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
+    """Search this user's conversations updated in the last 6 hours."""
+    user_id = runtime.server_info.user.identity  # [!code highlight]
+
+    since = datetime.now(timezone.utc) - timedelta(hours=6)
+    threads = await sdk_client.threads.search(
+        metadata={"user_id": user_id},
+        sort_by="updated_at",
+        sort_order="desc",
+        limit=20,
+    )
+    conversations = []
+    for thread in threads:
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
+    return str(conversations)
+
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    system_prompt="""Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.""",
+    tools=[search_recent_conversations],
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from deepagents import create_deep_agent
+from langchain.tools import tool, ToolRuntime
+from langgraph_sdk import get_client
+
+sdk_client = get_client(url="<DEPLOYMENT_URL>")
+
+
+@tool
+async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
+    """Search this user's conversations updated in the last 6 hours."""
+    user_id = runtime.server_info.user.identity  # [!code highlight]
+
+    since = datetime.now(timezone.utc) - timedelta(hours=6)
+    threads = await sdk_client.threads.search(
+        metadata={"user_id": user_id},
+        sort_by="updated_at",
+        sort_order="desc",
+        limit=20,
+    )
+    conversations = []
+    for thread in threads:
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
+    return str(conversations)
+
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    system_prompt="""Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.""",
+    tools=[search_recent_conversations],
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from deepagents import create_deep_agent
+from langchain.tools import tool, ToolRuntime
+from langgraph_sdk import get_client
+
+sdk_client = get_client(url="<DEPLOYMENT_URL>")
+
+
+@tool
+async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
+    """Search this user's conversations updated in the last 6 hours."""
+    user_id = runtime.server_info.user.identity  # [!code highlight]
+
+    since = datetime.now(timezone.utc) - timedelta(hours=6)
+    threads = await sdk_client.threads.search(
+        metadata={"user_id": user_id},
+        sort_by="updated_at",
+        sort_order="desc",
+        limit=20,
+    )
+    conversations = []
+    for thread in threads:
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
+    return str(conversations)
+
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    system_prompt="""Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.""",
+    tools=[search_recent_conversations],
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from deepagents import create_deep_agent
+from langchain.tools import tool, ToolRuntime
+from langgraph_sdk import get_client
+
+sdk_client = get_client(url="<DEPLOYMENT_URL>")
+
+
+@tool
+async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
+    """Search this user's conversations updated in the last 6 hours."""
+    user_id = runtime.server_info.user.identity  # [!code highlight]
+
+    since = datetime.now(timezone.utc) - timedelta(hours=6)
+    threads = await sdk_client.threads.search(
+        metadata={"user_id": user_id},
+        sort_by="updated_at",
+        sort_order="desc",
+        limit=20,
+    )
+    conversations = []
+    for thread in threads:
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
+    return str(conversations)
+
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    system_prompt="""Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.""",
+    tools=[search_recent_conversations],
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from deepagents import create_deep_agent
+from langchain.tools import tool, ToolRuntime
+from langgraph_sdk import get_client
+
+sdk_client = get_client(url="<DEPLOYMENT_URL>")
+
+
+@tool
+async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
+    """Search this user's conversations updated in the last 6 hours."""
+    user_id = runtime.server_info.user.identity  # [!code highlight]
+
+    since = datetime.now(timezone.utc) - timedelta(hours=6)
+    threads = await sdk_client.threads.search(
+        metadata={"user_id": user_id},
+        sort_by="updated_at",
+        sort_order="desc",
+        limit=20,
+    )
+    conversations = []
+    for thread in threads:
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
+    return str(conversations)
+
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
     system_prompt="""Review recent conversations and update the user's memory file.
 Merge new facts, remove outdated information, and keep it concise.""",
     tools=[search_recent_conversations],
@@ -442,11 +677,11 @@ cron_job = await client.crons.create(
     schedule="0 */6 * * *",
     input={"messages": [{"role": "user", "content": "Consolidate recent memories."}]},
 )
-```
-
-> [!注意]
+```> [!注意]
 >
-> 所有 cron 计划均以 **UTC** 解释。有关管理和删除 cron 作业的详细信息，请参阅[cron jobs](/langsmith/cron-jobs)。> [!警告]
+> 所有 cron 计划均以 **UTC** 解释。有关管理和删除 cron 作业的详细信息，请参阅[cron jobs](/langsmith/cron-jobs)。
+
+> [!警告]
 >
 > cron 间隔必须与整合代理内的回顾窗口相匹配。上面的示例每 6 小时运行一次 (`0 */6 * * *`)，代理的 `search_recent_conversations` 工具会回顾 `timedelta(hours=6)` — 保持这些同步。如果 cron 运行的次数比回溯的次数多，您将重新处理相同的对话；如果它运行得较少，你就会丢弃那些落在窗外的记忆。
 
@@ -456,12 +691,12 @@ cron_job = await client.crons.create(
 
 默认情况下，代理可以读取和写入内存文件。对于组织策略或合规性规则等共享状态，您可能希望将内存设为**只读**，以便代理可以引用它但不能修改它。这可以防止通过共享内存进行提示注入，并确保只有您的应用程序代码控制文件中的内容。|许可 |使用案例 |它是如何运作的 |
 | - | - | - |
-| **读写**（默认）|用户喜好，座席自我提升，学到了[skills](/oss/python/deepagents/skills) |代理通过`edit_file`工具更新文件|
+| **读写**（默认）|用户喜好，座席自我提升，学习了[skills](/oss/python/deepagents/skills) |代理通过`edit_file`工具更新文件 |
 | **只读** |组织政策、合规规则、共享知识库、开发人员定义[skills](/oss/python/deepagents/skills) |通过应用程序代码或[Store API](/langsmith/custom-store)填充。使用 [permissions](/oss/python/deepagents/permissions) 拒绝写入特定路径，或使用 [policy hooks](/oss/python/deepagents/backends#add-policy-hooks) 自定义验证逻辑。 |
 
 **安全注意事项：** 如果一个用户可以写入另一用户读取的内存，则恶意用户可以将指令注入共享状态。为了缓解这种情况：
 
-* **默认为用户范围** `(user_id)` 除非您有特定的理由要分享
+* **默认为用户范围** `(user_id)` 除非您有特定的共享原因
 * 将**只读内存**用于共享策略（通过应用程序代码填充，而不是代理）
 * 在代理写入共享内存之前添加**人机交互**验证。使用 [interrupt](/oss/python/langgraph/interrupts) 要求人工批准才能写入敏感路径。
 

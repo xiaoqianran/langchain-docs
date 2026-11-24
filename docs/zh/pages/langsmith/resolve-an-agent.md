@@ -8,19 +8,19 @@
 
 某些 API 通过其支持跟踪存储 UUID 来识别 [agent environment](/langsmith/agent-environments)，返回为 `session_id`。解析代理标识符和环境以获取此 UUID。在名为 `session_id`、`project_id` 或 `project_ids` 的 API 字段中使用它。这些是相同标识符的现有 API 名称。分辨率还支持 [experiments](/langsmith/evaluation-concepts) 和工作区 [evaluator](/langsmith/evaluators) 跟踪。使用返回的 ID 进行以下操作：
 
-* 使用`project_ids`查询运行、线程和跟踪
+* Querying runs, threads, and traces with `project_ids`
 * 读取或更新环境的跟踪存储设置、保存的视图、见解和警报
 
 > [!注意]
 >
-> 解析代理需要LangSmith 0.18.7rc1 或更高版本，并且 BYOC 数据平面尚不支持。示例需要以下 SDK 版本：
+> 解析代理需要 LangSmith 0.18.7rc1 或更高版本。示例需要以下 SDK 版本：
 >
 > * **Python**：`langsmith>=0.14.9`
 > * **TypeScript**：`langsmith@>=0.11.0`
 > * **Java**：`com.langchain.smith:langsmith-java` 0.1.0-beta.26 或更高版本
 > * **Go**：`github.com/langchain-ai/langsmith-go` v0.28.0 或更高版本
-
-对于需要 `project_name`、[retrieve the agent environment](/langsmith/create-an-agent#use-an-environment-project) 并使用其 `tracer_session_name` 的集成。
+>
+> BYOC 数据平面不支持解析。在 BYOC 上，请从 UI 获取代理环境的 ID：选择您的代理，转到 **跟踪**，然后选择环境。单击环境名称旁边的 **ID** 徽章并复制 **跟踪项目 ID**。对于需要 `project_name`、[retrieve the agent environment](/langsmith/create-an-agent#use-an-environment-project) 并使用其 `tracer_session_name` 的集成。
 
 ## 你可以解决什么问题
 
@@ -67,7 +67,9 @@
 > experiment, err := langsmith.NewExperimentAddress("<experiment-id>")
 > // The workspace's evaluators
 > evaluators := langsmith.NewEvaluatorAddress()
-> ```## 解析代理并查询其运行
+> ```
+
+## 解析代理并查询其运行
 
 > [选项卡] Python
 >
@@ -407,8 +409,6 @@
 * [Agent Registry](/langsmith/agent-registry)
 * [Agent environments](/langsmith/agent-environments)
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/resolve-an-agent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

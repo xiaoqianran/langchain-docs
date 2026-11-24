@@ -175,7 +175,7 @@ Engine needs two keys of its own:
 * **Encryption key** (`engine_encryption_key`): a Fernet key that encrypts the run payloads LangSmith passes to Engine, which carry short-lived credentials.
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+  openssl rand -base64 32 | tr '+/' '-_'
   ```
 
 * **Usage signing secret** (`engine_usage_signing_secret`): signs the usage reports Engine sends to LangSmith. Use at least 32 random characters.

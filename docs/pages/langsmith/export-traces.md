@@ -21,7 +21,7 @@ This page covers:
 
 > [!NOTE]
 >
-> To query the traces of an agent, an experiment, or the evaluators, [find its project ID](/langsmith/resolve-an-agent) and pass it as the project ID.
+> To query the traces of an agent environment, an experiment, or the evaluators, [resolve it](/langsmith/resolve-an-agent) and pass the returned `session_id` as an item in `project_ids`. Resolving needs recent SDK and LangSmith versions, and is not available on BYOC data planes. For the requirements and a BYOC alternative, see [Resolve an agent environment](/langsmith/resolve-an-agent).
 
 ## Use filter arguments
 
@@ -31,9 +31,9 @@ For simple queries, you don't have to rely on our query syntax. You can use the 
 >
 > **Prerequisites**
 >
-> Initialize the client, look up the project ID, and set a time window before running the below code snippets:
+> Initialize the client, [resolve the agent environment](/langsmith/resolve-an-agent) to get its `session_id`, and set a time window before running the below code snippets:
 >
-> * `runs.query` takes project IDs, not a project name.
+> * `runs.query` takes resolved `session_id` values in `project_ids`, not an agent ID or name.
 > * It only looks back **1 day** unless you pass `min_start_time`. The snippets below use a 7-day window. One query can span at most 401 days.
 > * It returns only the run `ID` unless you pass `selects` (uppercase field names such as `NAME`, `INPUTS`, `OUTPUTS`).
 > * In Python, `client.runs` is async: run the snippets inside an `async` function, for example with `asyncio.run()`. Each query returns an async iterator that pages through the results for you.
@@ -41,29 +41,34 @@ For simple queries, you don't have to rely on our query syntax. You can use the 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from datetime import datetime, timedelta, timezone
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 client = Client()
-project_id = str(client.read_project(project_name="<your_project>").id)
+# Replace with your agent ID and environment
+project_id = (await client.sessions.resolve(**agent_address("support-agent", "production"))).session_id
 since = datetime.now(timezone.utc) - timedelta(days=7)
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "langsmith";
+import { AgentAddress, Client } from "langsmith";
 
 const client = new Client();
-const projectId = (await client.readProject({ projectName: "<your_project>" })).id;
+// Replace with your agent ID and environment
+const projectId = (await client.sessions.resolve(new AgentAddress("support-agent", "production"))).session_id;
 const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 ```
 
 ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.address.AgentAddress;
 import com.langchain.smith.client.LangsmithClient;
 import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
 import com.langchain.smith.models.runs.RunQueryV2Params;
 import java.time.OffsetDateTime;
 
 LangsmithClient client = LangsmithOkHttpClient.fromEnv();
-String projectId = "<your_project_id>";
+// Replace with your agent ID and environment
+AgentAddress agent = new AgentAddress("support-agent", "production");
+String projectId = client.sessions().resolve(agent.toApiAddress()).sessionId();
 OffsetDateTime since = OffsetDateTime.now().minusDays(7);
 
 // Run any of the queries below with: client.runs().queryV2(params)
@@ -71,10 +76,10 @@ OffsetDateTime since = OffsetDateTime.now().minusDays(7);
 
 Below are some examples of ways to list runs using keyword arguments:
 
-### List all runs in a project
+### List all runs in an agent environment
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-project_runs = [
+all_runs = [
     run
     async for run in client.runs.query(
         project_ids=[project_id],
@@ -85,20 +90,20 @@ project_runs = [
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const projectRuns = [];
+const allRuns = [];
 for await (const run of client.runs.query({
   project_ids: [projectId],
   min_start_time: since,
   selects: ["ID", "NAME", "RUN_TYPE", "START_TIME"],
 })) {
-  projectRuns.push(run);
+  allRuns.push(run);
 }
 ```
 
 ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import com.langchain.smith.models.runs.RunSelectField;
 
-RunQueryV2Params projectRuns = RunQueryV2Params.builder()
+RunQueryV2Params allRuns = RunQueryV2Params.builder()
     .addProjectId(projectId)
     .minStartTime(since)
     .addSelect(RunSelectField.ID)
@@ -140,7 +145,7 @@ RunQueryV2Params todaysLlmRuns = RunQueryV2Params.builder()
     .build();
 ```
 
-### List root runs in a project
+### List root runs in an agent environment
 
 Root runs are runs that have no parents. These are assigned a value of `True` for `is_root`. You can use this to filter for root runs.
 
@@ -196,7 +201,7 @@ RunQueryV2Params noErrorRuns = RunQueryV2Params.builder()
 
 ### List runs by run ID
 
-If you have a list of run IDs, you can list them directly. Pass the project ID too; you can combine `ids` with the other filters.
+If you have a list of run IDs, you can list them directly. Pass `project_ids` too. You can combine `ids` with the other filters.
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 run_ids = ["a36092d2-4ad5-4fb4-9c0d-0dba9a2ed836", "9398e6be-964f-4aa4-8ae9-ad78cd4b7074"]
@@ -229,7 +234,7 @@ RunQueryV2Params runIdsRuns = RunQueryV2Params.builder()
 
 ### Fetch a single run by ID
 
-To fetch a single run by its ID, use the `runs.retrieve` method. It needs the ID of the project the run belongs to. For a run from a public share link, use the [public runs methods](/langsmith/smithdb-sdk-migration-feedback) instead.
+To fetch a single run by its ID, use the `runs.retrieve` method. It needs the `project_id` of the agent environment the run belongs to. For a run from a public share link, use the [public runs methods](/langsmith/smithdb-sdk-migration-feedback) instead.
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 run_id = "a36092d2-4ad5-4fb4-9c0d-0dba9a2ed836"
@@ -281,7 +286,7 @@ For more complex queries, you can use the filter query language. The following e
 ### List all root runs in a conversational thread
 
 This is the way to fetch runs in a conversational thread. For more information on setting up threads, refer to our [how-to guide on setting up threads](/langsmith/threads). To list threads and their traces directly, see [Query threads](/langsmith/query-threads).
-Threads are grouped by setting a shared thread ID. The LangSmith UI lets you use either of the following metadata keys: `session_id` or `thread_id`. The session ID is also known as the tracing project ID. The following query matches on either of them.
+Threads are grouped by setting a shared thread ID. The LangSmith UI lets you use either of the following metadata keys: `session_id` or `thread_id`. The following query matches on either of them.
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 group_key = "<your_thread_id>"
@@ -836,12 +841,13 @@ The following example returns root traces that contain a tool run whose output c
 import asyncio
 from datetime import datetime, timedelta, timezone
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 
 async def main():
     client = Client()
-    project_id = str(client.read_project(project_name="<your_project>").id)
+    # Replace with your agent ID and environment
+    project_id = (await client.sessions.resolve(**agent_address("support-agent", "production"))).session_id
 
     matching_trace_ids = []
     async for candidate in client.runs.query(
@@ -869,10 +875,11 @@ asyncio.run(main())
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "langsmith";
+import { AgentAddress, Client } from "langsmith";
 
 const client = new Client();
-const projectId = (await client.readProject({ projectName: "<your_project>" })).id;
+// Replace with your agent ID and environment
+const projectId = (await client.sessions.resolve(new AgentAddress("support-agent", "production"))).session_id;
 
 const matchingTraceIds: string[] = [];
 for await (const candidate of client.runs.query({
@@ -915,12 +922,13 @@ import asyncio
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 
 async def main():
     client = Client()
-    project_id = str(client.read_project(project_name="my-project").id)
+    # Replace with your agent ID and environment
+    project_id = (await client.sessions.resolve(**agent_address("support-agent", "production"))).session_id
     num_days = 30
     since = datetime.now(timezone.utc) - timedelta(days=num_days)
 
@@ -978,12 +986,13 @@ import asyncio
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 
 async def main():
     client = Client()
-    project_id = str(client.read_project(project_name="your-project-name").id)
+    # Replace with your agent ID and environment
+    project_id = (await client.sessions.resolve(**agent_address("support-agent", "production"))).session_id
     num_days = 1
     since = datetime.now(timezone.utc) - timedelta(days=num_days)
 

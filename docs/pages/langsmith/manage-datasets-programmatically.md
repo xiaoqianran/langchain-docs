@@ -182,19 +182,24 @@ public class CreateDatasetExample {
 
 ### Create a dataset from traces
 
-To create datasets from the runs (spans) of your traces, you can use the same approach. For **many** more examples of how to fetch and filter runs, see the [export traces](/langsmith/export-traces) guide. Below is an example:
+To create datasets from the runs (spans) of your traces, you can use the same approach. For **many** more examples of how to fetch and filter runs, see the [export traces](/langsmith/export-traces) guide. The following is an example:
+
+> [!NOTE]
+>
+> Resolving an agent environment needs recent SDK and LangSmith versions, and is not available on BYOC data planes. For the requirements and a BYOC alternative, see [Resolve an agent environment](/langsmith/resolve-an-agent).
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 from datetime import datetime, timedelta, timezone
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 
 async def main():
     client = Client()
     dataset_name = "Example Dataset"
-    project_id = str(client.read_project(project_name="my_project").id)
+    # Replace with your agent ID and environment
+    project_id = (await client.sessions.resolve(**agent_address("support-agent", "production"))).session_id
 
     # Filter runs to add to the dataset
     runs = [
@@ -221,11 +226,12 @@ asyncio.run(main())
 ```
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { Client } from "langsmith";
+import { AgentAddress, Client } from "langsmith";
 
 const client = new Client();
 const datasetName = "Example Dataset";
-const projectId = (await client.readProject({ projectName: "my_project" })).id;
+// Replace with your agent ID and environment
+const projectId = (await client.sessions.resolve(new AgentAddress("support-agent", "production"))).session_id;
 
 // Filter runs to add to the dataset
 const runs = [];

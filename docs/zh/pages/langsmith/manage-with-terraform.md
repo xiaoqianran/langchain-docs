@@ -2,11 +2,11 @@
 
 <!-- langchain-docs: Manage LangSmith with Terraform | https://docs.langchain.com/langsmith/manage-with-terraform -->
 
-# 使用 Terraform 管理 LangSmith
+# Manage LangSmith with Terraform
 
 使用官方 LangSmith Terraform 提供程序以代码形式管理工作区、访问控制、资源标签、评估器、运行规则和警报规则。
 
-官方的[LangSmith Terraform provider](https://registry.terraform.io/providers/langchain-ai/langsmith/latest)允许您以代码形式管理LangSmith组织和工作区资源：工作区、自定义角色、组织和工作区成员、资源标签、访问策略、评估器、运行规则和警报规则。它是 [managing your organization using the API](/langsmith/manage-organization-by-api) 的基础设施即代码对应。
+官方的[LangSmith Terraform provider](https://registry.terraform.io/providers/langchain-ai/langsmith/latest)允许您以代码形式管理LangSmith组织和工作区资源：工作区、自定义角色、组织和工作区成员、资源标签、访问策略、评估器、运行规则和警报规则。它是 [managing your organization using the API](/langsmith/manage-organization-by-api) 的基础设施即代码对应物。
 
 > [!注意]
 >
@@ -14,7 +14,7 @@
 
 > [!提示]
 >
-> 在深入研究之前，阅读以下内容可能会有所帮助：
+> Before diving in, it might be helpful to read:
 >
 > * [Conceptual guide on organizations and workspaces](/langsmith/administration-overview)
 > * [Organization setup how-to](/langsmith/set-up-hierarchy#set-up-an-organization)
@@ -43,7 +43,7 @@ provider "langsmith" {
 }
 ```
 
-然后运行 `terraform init` 下载提供程序。
+Then run `terraform init` to download the provider.
 
 ## 身份验证
 
@@ -96,8 +96,8 @@ resource "langsmith_workspace_membership" "alice_demo" {
 您还可以定义自定义工作区角色，例如通过克隆现有角色的权限：
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-resource "langsmith_workspace_role" "issues_agent" {
-  display_name = "Issues Agent"
+resource "langsmith_workspace_role" "admin_copy" {
+  display_name = "Admin Copy"
   description  = data.langsmith_workspace_role.admin.description
   permissions  = data.langsmith_workspace_role.admin.permissions
 }

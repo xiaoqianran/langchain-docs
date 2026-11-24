@@ -4,25 +4,29 @@
 
 # 用于计费和操作遥测的出口
 
+了解自托管 LangSmith 实例向 LangChain 发送哪些计费、操作和使用遥测数据，以及如何禁用可选遥测数据。
+
 > [!注意]
 >
 > 此页面仅适用于未在离线（气隙）模式下运行的客户，并假设您使用的是服务版本 0.9.0 或更高版本的自托管 LangSmith 实例。
 
-自托管 LangSmith 将平台数据存储在您的环境中。除非您在离线模式下运行，否则 LangSmith 需要出口到 `https://beacon.langchain.com` 才能执行以下操作：
+自托管 LangSmith 将平台数据存储在您的环境中。除非您在离线模式下运行，否则 LangSmith 需要出口到 `https://beacon.langchain.com` 才能进行以下遥测：
 
-* **计费遥测**：许可证验证和订阅/使用报告（必需）
-* **操作遥测**：用于支持诊断的日志、指标和跟踪（可选，可以禁用）
-* **使用情况遥测**：用于产品洞察的匿名使用情况快照（可选，可以禁用）
+|遥测|它发送什么 |必填 |
+| - | - | - |
+| [Billing](#billing-telemetry) |许可证验证和订阅/使用报告 |是的 |
+| [Operational](#operational-telemetry) |用于支持诊断的日志、指标和跟踪不，可以禁用 |
+| [Usage](#usage-telemetry) |匿名使用指标以及组织安全联系人电子邮件地址 |不，可以禁用 |
 
 > [!警告]
 >
-> **需要到 `https://beacon.langchain.com` 的出口。** 如果需要，请参阅 [allowlisting IP section](/langsmith/cloud-ip-allowlist#allowlisting-ip-addresses) 了解静态 IP 地址。
-
-> [!注意]
+> **需要到 `https://beacon.langchain.com` 的出口。** 如果需要，请参阅 [allowlisting IP section](/langsmith/cloud-ip-allowlist#allowlisting-ip-addresses) 了解静态 IP 地址。> [!注意]
 >
 > 如果您启用 [Engine](/langsmith/engine-self-hosted)，内容将转到 LangSmith Intelligence 或您自己的模型提供商。对于您自己的提供商，LangChain 仅通过配置的报告端点接收使用情况元数据。请参阅[LangSmith Intelligence for Engine](#langsmith-intelligence-for-engine)了解所需目的地。
 
-## 计费遥测对于未在离线模式下运行的自托管 LangSmith 实例，**需要**计费遥测。这包括许可证验证和订阅/使用报告。
+## 计费遥测
+
+对于未在离线模式下运行的自托管 LangSmith 实例，**需要**计费遥测。这包括许可证验证和订阅/使用报告。
 
 > [!注意]
 >
@@ -87,9 +91,7 @@
     }
   ]
 }
-```
-
-**回应：**
+```**回应：**
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -99,7 +101,9 @@
 
 ## 操作遥测
 
-从版本 **0.11** 开始，LangSmith 部署默认发送操作遥测数据。此遥测有助于 LangChain 团队为自托管实例提供主动支持和更快的故障排除。> [!注意]
+从版本 **0.11** 开始，LangSmith 部署默认发送操作遥测数据。此遥测有助于 LangChain 团队为自托管实例提供主动支持和更快的故障排除。
+
+> [!注意]
 >
 > 操作遥测与计费遥测**分开。您可以在计费遥测保持活动状态时禁用操作遥测。
 
@@ -114,13 +118,13 @@
 * **请求元数据**：匿名请求计数、大小和持续时间
 * **数据库指标**：查询持续时间、错误率和性能计数器
 * **操作跟踪**：高延迟或失败请求的计时和错误信息（这些**不是**客户跟踪 - 它们是有关 LangSmith 实例本身功能的跟踪）
-* **日志消息**：仅警告和错误日志消息
-
-> [!注意]
+* **日志消息**：仅警告和错误日志消息> [!注意]
 >
 > 我们不会收集实际的有效负载内容、数据库记录或任何可以识别您的最终用户或客户的数据。所有遥测数据都与组织和部署相关联，但从未与个人用户标识。我们**不以任何形式收集 PII**（个人身份信息）。
 
-对于LangChain保留的每个度量以及与其一起保留的属性，请参阅[operational telemetry metrics reference](/langsmith/self-host-telemetry-metrics)。### 如何禁用
+对于 LangChain 保留的每个度量以及与其一起保留的属性，请参阅 [operational telemetry metrics reference](/langsmith/self-host-telemetry-metrics)。
+
+### 如何禁用
 
 您可以通过在 `langsmith_config.yaml` 文件中设置以下值来禁用操作遥测：
 
@@ -148,13 +152,11 @@ queue:
     extraEnv:
       - name: ENABLE_SMITHDB_METRICS_CRON
         value: "false"
-```
-
-|数据存储 |环境变量|
+```|数据存储|环境变量 |
 | - | - |
 | PostgreSQL | `ENABLE_POSTGRES_METRICS_CRON` |
 | Redis | `ENABLE_REDIS_METRICS_CRON` |
-|点击屋| `ENABLE_CLICKHOUSE_METRICS_CRON` |
+|点击屋 | `ENABLE_CLICKHOUSE_METRICS_CRON` |
 |史密斯数据库 | `ENABLE_SMITHDB_METRICS_CRON`（LangSmith v0.18 或更高版本）|
 
 LangSmith 服务不断发送自己的指标。要停止所有指标，请将 `config.telemetry.metrics` 设置为 `false`。
@@ -163,7 +165,9 @@ LangSmith 服务不断发送自己的指标。要停止所有指标，请将 `co
 
 #### 运营指标
 
-**端点：** `POST beacon.langchain.com/v1/beacon/v1/metrics`以下简短的请求显示了两个指标。值是说明性的，默认的 OpenTelemetry SDK 资源属性被省略。 LangChain 的收集器会删除[operational telemetry metrics reference](/langsmith/self-host-telemetry-metrics) 中不存在的所有指标和属性，例如下面的 `path` 属性。
+**端点：** `POST beacon.langchain.com/v1/beacon/v1/metrics`
+
+以下简短的请求显示了两个指标。值是说明性的，默认的 OpenTelemetry SDK 资源属性被省略。 LangChain 的收集器会删除[operational telemetry metrics reference](/langsmith/self-host-telemetry-metrics) 中不存在的所有指标和属性，例如下面的 `path` 属性。
 
 **要求：**
 
@@ -400,13 +404,13 @@ LangSmith 服务不断发送自己的指标。要停止所有指标，请将 `co
 
 ## 使用遥测
 
-使用情况遥测收集 LangSmith 实例使用指标的匿名快照。这些数据有助于 LangChain 了解平台采用模式并为产品开发决策提供信息。
-
-> [!注意]
+使用情况遥测收集 LangSmith 实例的匿名使用指标的快照。这些数据有助于 LangChain 了解平台采用模式并为产品开发决策提供信息。快照还可以包括来自 LangChain 的通知的安全联系人。> [!注意]
 >
 > 使用情况遥测**默认启用**并且可以禁用。与计费遥测不同，您可以完全控制这些快照是否发送到LangChain。
 
-### 它的作用* 定期捕获聚合使用指标
+### 它的作用
+
+* 定期捕获聚合使用指标
 * 提供对功能采用和平台增长的深入了解
 * 帮助LangChain根据实际使用情况确定改进和新功能的优先级
 
@@ -416,12 +420,15 @@ LangSmith 服务不断发送自己的指标。要停止所有指标，请将 `co
 * **功能使用**：运行规则、注释队列、提示和提示相关活动的计数
 * **用户**：过去 30 天内的注册用户总数和活跃 PAT（个人访问令牌）数量
 * **时间戳**：快照的时间范围（从/到 UTC 时间戳）
+* **安全联系人**：为每个组织配置的电子邮件地址，以及组织和安装标识符
 
 > [!注意]
 >
-> 所有指标均为 **仅聚合计数**。不会收集任何单独的资源数据、标识符或使用模式。我们不会收集任何可以识别您的最终用户或客户的信息。
+> 所有指标均为 **仅聚合计数**。指标中不包含任何单独的资源数据或标识符。安全联系人电子邮件地址及其关联标识符不是匿名的。当启用回拨和使用情况报告时，默认情况下会启用联系人报告。离线实例不会发送这些快照。请参阅[Manage security contacts](/langsmith/set-up-hierarchy#manage-security-contacts)更新地址。
 
 ### 负载示例
+
+此示例显示没有可选安全联系人报告的使用情况指标。
 
 **端点：** `POST /v1/beacon/usage-snapshot`
 
@@ -450,6 +457,18 @@ LangSmith 服务不断发送自己的指标。要停止所有指标，请将 `co
 }
 ```
 
+### 禁用安全联系人报告
+
+要在保持启用使用情况遥测的同时停止发送安全联系人，请将以下内容添加到 Helm 值中的 `commonEnv` 并重新部署：
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+commonEnv:
+  - name: PHONE_HOME_SECURITY_CONTACTS_REPORTING_ENABLED
+    value: "false"
+```
+
+包含联系人报告的下一个使用情况快照会发送一个空列表，以清除该安装之前报告的联系人。没有安装标识符的快照无法清除联系人。如果禁用回拨或使用情况报告，则此设置不会发送任何快照，并且之前报告的联系人也不会被清除。此设置不会从本地组织设置中删除联系人。
+
 ### 如何禁用
 
 您可以通过在部署配置中设置以下环境变量来禁用使用情况遥测：
@@ -458,7 +477,13 @@ LangSmith 服务不断发送自己的指标。要停止所有指标，请将 `co
 PHONE_HOME_USAGE_REPORTING_ENABLED: false
 ```
 
-将此添加到 Helm 配置的 `commonEnv` 部分，以永久禁用使用情况遥测报告。> [!警告]
+将此添加到 Helm 配置的 `commonEnv` 部分，以永久禁用使用情况遥测报告。禁用使用情况遥测会停止所有使用情况快照，因此 LangChain 会保留您的安装已报告的所有安全联系人。要同时清除这些联系人：
+
+1. [Disable security contact reporting](#disable-security-contact-reporting)。
+2. 等待下一个每日使用情况快照（默认为 02:00 UTC），该快照会发送一个空的联系人列表。
+3. 将`PHONE_HOME_USAGE_REPORTING_ENABLED`设置为`false`。
+
+> [!警告]
 >
 > 禁用使用遥测不会影响计费或操作遥测。许可证验证和订阅/使用报告将继续正常运行。
 
@@ -472,10 +497,10 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
 
 [Engine](/langsmith/engine-self-hosted) 向 LangSmith Intelligence (LSI) 报告使用情况，后者也可以运行其模型。如果您使用自己的模型提供程序，LSI 仅接收使用情况元数据。 [Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations) 不连接LSI。
 
-允许出站 HTTPS 到在 `engine.intelligenceBaseUrl` 中为您的 [model-provider choice](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models) 配置的端点：
+允许出站 HTTPS 到在 `engine.intelligenceBaseUrl` 中为您的 [model-provider choice](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models) 配置的端点：* **LangSmith 智力：** `beacon.aws.langchain.com`。为了将此流量保留在专用网络上，[connect with AWS PrivateLink](/langsmith/engine-self-hosted-model-providers#connect-with-aws-privatelink)。
+* **您自己的模型提供商：** `beacon.langchain.com`，此页面已经需要的同一主机，用于使用情况报告。还允许到每个提供商的 API 端点的出站 HTTPS。
 
-* **LangSmith 智力：** `beacon.aws.langchain.com`。为了将此流量保留在专用网络上，[connect with AWS PrivateLink](/langsmith/engine-self-hosted-model-providers#connect-with-aws-privatelink)。
-* **您自己的模型提供商：** `beacon.langchain.com`，此页面已经需要的同一主机，用于使用情况报告。还允许到每个提供商的 API 端点的出站 HTTPS。> [!警告]
+> [!警告]
 >
 > 将每个目的地添加为特定的允许列表条目，而不是打开常规出站访问。对 LangSmith Intelligence 的请求使用在 LangSmith 许可证验证期间获得的短期许可证 JWT 进行身份验证。
 
@@ -486,20 +511,20 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
 
 ### 我们收集什么
 
-当Engine运行在LangSmithIntelligence上时，每个请求都可能携带Engine完成其工作所需的跟踪内容、源代码和中间输出。 LangSmith 智能不会保留提示或完成体。当引擎在您自己的模型提供程序上运行时，LangSmith Intelligence 仅接收使用元数据。
+当Engine运行在LangSmithIntelligence上时，每个请求都可能携带Engine完成其工作所需的跟踪内容、源代码和中间输出。 LangSmith 智能不会保留提示体或完成体。当引擎在您自己的模型提供程序上运行时，LangSmith Intelligence 仅接收使用元数据。
 
 LangSmith Intelligence 保留以下元数据用于使用归因和计费：
 
 * 用于归因使用情况的帐户、工作区和项目标识符。
-* 用于计费的模型和令牌使用元数据。
-
-有关完整的数据流和模型提供商承诺，请参阅[Engine on Self-hosted](/langsmith/engine-self-hosted)。
+* 用于计费的模型和令牌使用元数据。有关完整的数据流和模型提供商承诺，请参阅[Engine on Self-hosted](/langsmith/engine-self-hosted)。
 
 > [!注意]
 >
 > 离线（气隙）自托管可以在您自己的模型提供商上运行引擎。参见[Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations)。
 
-## 我们的承诺以下承诺适用于本页所述的计费、操作和使用遥测。 LangChain 不会在遥测中存储敏感信息或与第三方共享。日志消息被过滤为仅包含错误严重性级别，并且我们不会捕获可能包含敏感应用程序数据的日志消息。引擎对LangSmith智能的使用是[Engine on Self-hosted](/langsmith/engine-self-hosted)中描述的单独数据流。如果您对发送的数据有任何疑问，请禁用可选遥测或[contact our sales team](https://www.langchain.com/contact-sales)。
+## 我们的承诺
+
+以下承诺适用于本页所述的计费、操作和使用遥测。 LangChain 不会在该遥测数据中存储除上述安全联系人电子邮件地址之外的敏感信息，也不会与第三方共享遥测数据。日志消息被过滤为仅包含错误严重性级别，并且我们不会捕获可能包含敏感应用程序数据的日志消息。引擎对LangSmith智能的使用是[Engine on Self-hosted](/langsmith/engine-self-hosted)中描述的单独数据流。如果您对发送的数据有任何疑问，请禁用可选遥测或[contact our sales team](https://www.langchain.com/contact-sales)。
 
 ***
 

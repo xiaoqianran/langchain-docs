@@ -37,7 +37,7 @@ Deep Agents 通过`ls`、`read_file`、`write_file`、`edit_file`、`delete`、`
 | - | - |
 | [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen")` 线程范围。代理的默认文件系统后端存储在`langgraph`状态。文件在线程内持续存在（通过检查点），并且不会跨线程共享。 |
 | [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` 这使深度代理可以访问本地计算机的文件系统。您可以指定代理有权访问的根目录。请注意，任何提供的 `root_dir` 必须是绝对路径。通常，包装在 [CompositeBackend](#compositebackend-router) 中，以将内部代理数据（卸载的工具结果、对话历史记录）与项目文件分开。 |
-| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=StoreBackend())` 这使代理可以访问*跨线程持久存储*的长期存储。这对于存储适用于代理多次执行的长期记忆或指令非常有用。 |
+| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)), store=InMemoryStore())` 这使代理可以访问*跨线程持久存储*的长期存储。这对于存储适用于代理多次执行的长期记忆或指令非常有用。 |
 | [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=ContextHubBackend("my-agent"))` 将文件持久存储在 LangSmith Hub 存储库中，无需配置单独的 LangGraph 存储。 |
 | [Sandbox](/oss/python/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=sandbox)` 在隔离环境中执行代码。沙箱提供文件系统工具以及用于运行 shell 命令的`execute`工具。从 LangSmith、AgentCore、Daytona 或其他 [sandbox integrations](/oss/python/integrations/sandboxes) 中进行选择。 || [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-4-hydrogen", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` 文件系统和 shell 直接在主机上执行。无隔离——仅在受控开发环境中使用。请参阅下面的[security considerations](#localshellbackend-local-shell)。 |
 | [Composite](#compositebackend-router) |默认情况下是线程范围的，`/memories/`跨线程持久化。复合后端具有最大程度的灵活性。您可以在文件系统中指定不同的路由以指向不同的后端。有关准备粘贴的示例，请参阅下面的复合路由。 |
@@ -79,7 +79,7 @@ graph TB
 
 ### 状态后端
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -93,7 +93,7 @@ agent2 = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -107,7 +107,7 @@ agent2 = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -121,7 +121,7 @@ agent2 = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -135,7 +135,7 @@ agent2 = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -149,7 +149,7 @@ agent2 = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -163,7 +163,7 @@ agent2 = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -179,7 +179,7 @@ agent2 = create_deep_agent(
 
 **它是如何工作的：**
 
-* 通过[⟦T78⟧](https://reference.langchain.com/python/deepagents/backends/state/StateBackend)将文件存储在当前线程的LangGraph代理状态中。
+* 通过[⟦T78⟧](https://reference.langchain.com/python/deepagents/backends/state/StateBackend)为当前线程以LangGraph代理状态存储文件。
 * 通过检查点在同一线程上的多个代理之间持续存在。文件不在线程之间共享。
 
 > [!警告]
@@ -219,12 +219,12 @@ agent2 = create_deep_agent(
 > **建议的保障措施：**
 >
 > 1. 开启[Human-in-the-Loop (HITL) middleware](/oss/python/deepagents/human-in-the-loop)审核敏感操作。> 2. 从可访问的文件系统路径中排除机密（尤其是在 CI/CD 中）。
-> 3. 对于需要文件系统交互的生产环境使用[sandbox backend](/oss/python/deepagents/sandboxes)。
+> 3. 对于需要文件系统交互的生产环境，使用[sandbox backend](/oss/python/deepagents/sandboxes)。
 > 4. **始终** 将 `virtual_mode=True` 与 `root_dir` 一起使用以启用基于路径的访问限制（阻止 `..`、`~` 和根目录之外的绝对路径）。
 >
 > 请注意，即使设置了 `root_dir`，默认值 (`virtual_mode=False`) 也不提供安全性。
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -234,7 +234,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -244,7 +244,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -254,7 +254,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -264,7 +264,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -274,7 +274,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -284,7 +284,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -360,7 +360,7 @@ agent = create_deep_agent(
 >
 > **注意：** `virtual_mode=True` 启用 shell 访问时不提供安全性，因为命令可以访问系统上的任何路径。
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -370,7 +370,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -380,7 +380,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -390,7 +390,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -400,7 +400,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -410,7 +410,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -420,7 +420,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -444,7 +444,7 @@ agent = create_deep_agent(
 
 ### StoreBackend（LangGraph商店）
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -458,7 +458,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -472,7 +472,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -486,7 +486,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -500,7 +500,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -514,7 +514,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -528,7 +528,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -563,7 +563,11 @@ agent = create_deep_agent(
 
 构造 `StoreBackend` 时将命名空间工厂传递给 `namespace` 参数：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langgraph.runtime import Runtime
+
 NamespaceFactory = Callable[[Runtime], tuple[str, ...]]
 ```
 
@@ -577,7 +581,7 @@ NamespaceFactory = Callable[[Runtime], tuple[str, ...]]
 >
 > `Runtime` 参数在 `deepagents>=0.5.2` 中可用。早期的 0.5.x 版本通过了`BackendContext`，请参阅下面的[migrating from ⟦T132⟧](#migrating-from-backendcontext)。 `rt.server_info` 和 `rt.execution_info` 需要 `deepagents>=0.5.0`。
 
-**常见的命名空间模式：**```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+**常见的命名空间模式：**```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StoreBackend
 
 # Per-user: each user gets their own isolated storage
@@ -620,9 +624,9 @@ backend = StoreBackend(
 
 `ContextHubBackend` 将代理的文件系统存储在 LangSmith Context Hub 存储库中。它可以使用独立存储库或链接到技能存储库的代理存储库。**存储库结构：** 在 Context Hub 中，*代理存储库* 保存代理的顶级指令和配置（例如，`AGENTS.md`、`tools.json`）。它可以链接到一个或多个“技能库”，每个库都打包为可重用功能（例如，带有电子邮件格式或代码审查说明的`SKILL.md`）。当您通过`ContextHubBackend("my-agent")`时，后端将代理存储库挂载到文件系统根目录；链接的技能存储库显示为`/skills/`下的子目录。
 
-这意味着您的代理的上下文有意分布在存储库中：每个代理一个存储库，每个技能单独的存储库。这种分离使得技能可以在多个代理之间独立地进行版本控制、共享和重用。如果感觉这很支离破碎，请参阅 [Linked repos](/langsmith/context-engineering-concepts#linked-repos) 了解其基本原理。
+这意味着您的代理的上下文有意分布在存储库中：每个代理一个存储库，每个技能单独的存储库。这种分离使得技能可以在多个代理之间独立地进行版本控制、共享和重用。如果感觉这很支离破碎，请参阅[Linked repos](/langsmith/context-engineering-concepts#linked-repos)了解其原理。
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -632,7 +636,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -642,7 +646,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -652,7 +656,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -662,7 +666,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -672,7 +676,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -682,7 +686,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -715,7 +719,7 @@ agent = create_deep_agent(
 
 ### CompositeBackend（路由器）
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -732,7 +736,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -749,7 +753,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -766,7 +770,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -783,7 +787,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -800,7 +804,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -817,7 +821,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -846,7 +850,7 @@ agent = create_deep_agent(
   * 例如您在一个商店的`/memories/`下存储了长期记忆，并且您还有一个自定义后端，可以在/docs/访问文档。
 
 ## 指定后端* 将后端实例传递给`create_deep_agent(model=..., backend=...)`。文件系统中间件将其用于所有工具。
-* 后端必须实现`BackendProtocol`（例如`StateBackend()`、`FilesystemBackend(root_dir=".")`、`StoreBackend()`、`ContextHubBackend("my-agent")`）。
+* 后端必须实现`BackendProtocol`（例如`StateBackend()`、`FilesystemBackend(root_dir=".")`、`StoreBackend(namespace=...)`、`ContextHubBackend("my-agent")`）。
 * 如果省略，则默认为`StateBackend()`。
 
 ## 路由到不同的后端
@@ -912,7 +916,7 @@ agent = create_deep_agent(
 | `edit` | `(file_path: str, old_string: str, new_string: str, replace_all: bool) -> EditResult` |在现有文件中查找并替换。 |
 | `glob` | \`(pattern: str, path: str | None) -> GlobResult\` |返回与全局模式匹配的路径。 |
 | `grep` | \`(pattern: str, path: str | None, glob: str | None) -> GrepResult\` |在文件内容中搜索文字字符串。 |
-| `delete` | `(file_path: str) -> DeleteResult` |选修的。删除一个文件，或者递归地删除一个目录。如果后端不支持删除，则该工具会在请求时自动从模型中隐藏。 |要同时支持 `execute` 工具（运行 shell 命令），请实现 [⟦T211⟧](https://reference.langchain.com/python/deepagents/backends/protocol/SandboxBackendProtocol)，它使用 `execute` 方法扩展 `BackendProtocol`。
+| `delete` | `(file_path: str) -> DeleteResult` |选修的。删除一个文件，或者递归地删除一个目录。如果后端不支持删除，则该工具会在请求时自动从模型中隐藏。 |要还支持 `execute` 工具（运行 shell 命令），请改为实现 [⟦T211⟧](https://reference.langchain.com/python/deepagents/backends/protocol/SandboxBackendProtocol)，它使用 `execute` 方法扩展 `BackendProtocol`。
 
 对于失败情况，始终返回带有 `error` 字段的结构化结果类型。不要提出异常。
 
@@ -992,7 +996,7 @@ agent = create_deep_agent(
 
 ## 添加策略挂钩
 
-对于超出基于路径的允许/拒绝规则（速率限制、审核日志记录、内容检查）的自定义验证逻辑，通过子类化或包装后端来强制执行企业规则。
+对于超出基于路径的允许/拒绝规则（速率限制、审核日志记录、内容检查）的自定义验证逻辑，通过子类化或包装后端来强制实施企业规则。
 
 阻止在选定前缀（子类）下写入/编辑：
 
@@ -1061,7 +1065,7 @@ class PolicyWrapper(BackendProtocol):
 |之前（已弃用）|之后 |
 | - | - |
 | `backend=lambda rt: StateBackend(rt)` | `backend=StateBackend()` |
-| `backend=lambda rt: StoreBackend(rt)` | `backend=StoreBackend()` |
+| `backend=lambda rt: StoreBackend(rt)` | `backend=StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,))` |
 | `backend=lambda rt: CompositeBackend(default=StateBackend(rt), ...)` | `backend=CompositeBackend(default=StateBackend(), ...)` |
 | `backend: (config) => new StateBackend(config)` | `backend: new StateBackend()` |
 | `backend: (config) => new StoreBackend(config)` | `backend: new StoreBackend()` |
@@ -1072,7 +1076,7 @@ class PolicyWrapper(BackendProtocol):
 | - | - |
 |将可调用对象传递给 `create_deep_agent` 中的 `backend=` |直接传递后端实例 |
 | `StateBackend(runtime)` 上的`runtime` 构造函数参数 | `StateBackend()`（无需参数）|
-| `runtime` `StoreBackend(runtime)` 的构造函数参数 | `StoreBackend()` 或 `StoreBackend(namespace=..., store=...)` |
+| `runtime` `StoreBackend(runtime)` 的构造函数参数 | `StoreBackend(namespace=...)` 或 `StoreBackend(namespace=..., store=...)` |
 | `WriteResult` 和 `EditResult` 上的`files_update` 字段 |状态写入现在由后端在内部处理 |
 | `Command` 封装在中间件编写/编辑工具中 |工具返回纯字符串；无需`Command(update=...)` |> [!注意]
 >
@@ -1105,12 +1109,12 @@ agent = create_deep_agent(
 
 ### 从 `BackendContext` 迁移
 
-在 `deepagents>=0.5.2` (Python) 和 `deepagents>=1.9.1` (TypeScript) 中，命名空间工厂直接接收 LangGraph [⟦T248⟧](https://reference.langchain.com/python/langgraph/runtime/Runtime) 而不是 `BackendContext` 包装器。旧的 `BackendContext` 形式仍然可以通过向后兼容的 `.runtime` 和 `.state` 访问器工作，但这些访问器会发出弃用警告，并将在 `deepagents>=0.7` 中删除。
+在`deepagents>=0.5.2`中，命名空间工厂直接接收LangGraph[⟦T247⟧](https://reference.langchain.com/python/langgraph/runtime/Runtime)而不是`BackendContext`包装器。旧的 `BackendContext` 形式仍然可以通过向后兼容的 `.runtime` 和 `.state` 访问器工作，但这些访问器会发出弃用警告，并将在 `deepagents>=0.7` 中删除。
 
 **改变了什么：**
 
 * 工厂参数现在是`Runtime`，而不是`BackendContext`。
-* 删除 `.runtime` 访问器 - 例如，`ctx.runtime.context.user_id` 变为 `rt.server_info.user.identity`。
+* 删除 `.runtime` 访问器，例如，`ctx.runtime.context.user_id` 变为 `rt.server_info.user.identity`。
 * `ctx.state` 没有直接替代品。命名空间信息应该是只读的，并且在运行的生命周期内保持稳定，而状态是可变的，并且会逐步更改——从中派生命名空间可能会导致数据最终处于不一致的键下。如果您有需要读取代理状态的用例，请[open an issue](https://github.com/langchain-ai/deepagents/issues)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1127,18 +1131,18 @@ StoreBackend(
 
 ## 协议参考
 
-后端必须实现[⟦T260⟧](https://reference.langchain.com/python/deepagents/backends/protocol/BackendProtocol)。
+后端必须实现[⟦T259⟧](https://reference.langchain.com/python/deepagents/backends/protocol/BackendProtocol)。
 
 所需方法：* `ls(path: str) -> LsResult`
-  * 返回至少包含 `path` 的条目。如果可用，请包括 `is_dir`、`size`、`modified_at`。按 `path` 排序以获得确定性输出。
+  * 返回至少包含 `path` 的条目。包括 `is_dir`、`size`、`modified_at`（如果有）。按 `path` 排序以获得确定性输出。
 * `read(file_path: str, offset: int = 0, limit: int = 2000) -> ReadResult`
-  * 成功时返回文件数据。如果文件丢失，则返回`ReadResult(error="Error: File '/x' not found")`。
+  * 成功时返回文件数据。如果文件丢失，请返回`ReadResult(error="Error: File '/x' not found")`。
 * `grep(pattern: str, path: Optional[str] = None, glob: Optional[str] = None) -> GrepResult`
   * 返回结构化匹配。出错时，返回`GrepResult(error="...")`（不引发）。
 * `glob(pattern: str, path: Optional[str] = None) -> GlobResult`
   * 将匹配的文件作为 `FileInfo` 条目返回（如果没有则为空列表）。
 * `write(file_path: str, content: str) -> WriteResult`
-  * 仅限创建。如果发生冲突，则返回`WriteResult(error=...)`。成功后，设置`path`，对于状态后端设置`files_update={...}`；外部后端应使用`files_update=None`。
+  * 仅限创建。发生冲突时，返回`WriteResult(error=...)`。成功后，设置`path`，对于状态后端设置`files_update={...}`；外部后端应使用`files_update=None`。
 * `edit(file_path: str, old_string: str, new_string: str, replace_all: bool = False) -> EditResult`
   * 强制`old_string`的唯一性，除非`replace_all=True`。如果没有找到，则返回错误。成功时包含`occurrences`。
 
@@ -1155,7 +1159,7 @@ StoreBackend(
 * `FileData` 包含字段：`content` (str)、`encoding`（`"utf-8"` 或 `"base64"`）、`created_at`、`modified_at`。
 
 ## 另请参阅* [OpenWiki](/oss/openwiki/overview)：生成持久存储库 Markdown，代理通过文件系统工具读取
-* [Memory](/oss/python/deepagents/memory)：文件系统支持的长期存储器
+* [Memory](/oss/python/deepagents/memory)：文件系统支持的长期内存
 * [Sandboxes](/oss/python/deepagents/sandboxes)：隔离文件系统和 shell 执行
 
 ***

@@ -8,17 +8,17 @@
 
 > [!注意]
 >
-> 自托管 LangSmith 是企业计划的附加组件，专为 LangChain 最大、最具安全意识的客户而设计。更多详情请参阅[Pricing](https://www.langchain.com/pricing)。 [Contact our sales team](https://www.langchain.com/contact-sales) 如果您想要许可证密钥在您的环境中试用LangSmith。
+> 自托管 LangSmith 是企业计划的附加组件，专为 LangChain 规模最大、最具安全意识的客户而设计。更多详情请参阅[Pricing](https://www.langchain.com/pricing)。 [Contact our sales team](https://www.langchain.com/contact-sales) 如果您想要在您的环境中试用 LangSmith 的许可证密钥。
 
 本指南介绍如何在 Kubernetes 集群中设置 LangSmith。您使用 Helm 安装 LangSmith 及其依赖项。
 
 完成本指南后，您将拥有：
 
-* **LangSmith UI 和 API**：可观察性、跟踪、评估、见解和聊天。
+* **LangSmith UI 和 API**：可观测性、跟踪、评估、见解和聊天。
 * **后端服务**：队列、游乐场和 ACE。
 * **数据存储**：PostgreSQL、Redis、ClickHouse 和 Blob 存储。
 
-LangSmith 可以在任何符合要求的 Kubernetes 集群上运行。它已经在以下发行版上进行了测试：
+LangSmith 可在任何符合要求的 Kubernetes 集群上运行。它已经在以下发行版上进行了测试：
 
 * 谷歌 Kubernetes 引擎 (GKE)
 * 亚马逊弹性 Kubernetes 服务 (EKS)
@@ -36,8 +36,7 @@ LangSmith 可以在任何符合要求的 Kubernetes 集群上运行。它已经�
 
 * **kubectl**：访问您的 Kubernetes 集群。
 * **Helm**：安装 LangSmith 图表的包管理器。安装请参考[Helm documentation](https://helm.sh/docs/intro/install/)。
-* **OpenSSL**：生成 API 密钥盐和 JWT 密钥。
-* **带有 `cryptography` 包的 Python：生成 Insights 和 Chat 加密密钥。
+* **OpenSSL**：生成所有必需的密钥和秘密。
 
 ### 密钥和秘密
 
@@ -47,11 +46,24 @@ LangSmith 可以在任何符合要求的 Kubernetes 集群上运行。它已经�
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   openssl rand -base64 32
-  ```* **Insights 和 Chat 加密密钥**：Insights 和 Chat（以前称为 Polly）在 Helm Chart 0.15.1 或更高版本中默认启用。每个在安装时都需要 Fernet 加密密钥。为每个功能生成单独的密钥：
+  ```
+
+* **Insights 和 Chat 加密密钥**：Insights 和 Chat（以前称为 Polly）在 Helm Chart 0.15.1 或更高版本中默认启用。每个在安装时都需要 Fernet 加密密钥。 Fernet 密钥是采用 URL 安全的 base64 编码的 32 个随机字节。为每个功能生成单独的密钥：
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
-  ```
+  openssl rand -base64 32 | tr '+/' '-_'
+  ```> [!提示]
+>
+> 您可以一次生成所有四个值，而不是一次运行上述命令。以下命令以 Helm 值格式打印它们。当您[configure your Helm charts](#configure-your-helm-charts)时，将每个值复制到匹配的键中：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> printf \
+>   "config:\n  apiKeySalt: \"%s\"\n  basicAuth:\n    jwtSecret: \"%s\"\ninsights:\n  encryptionKey: \"%s\"\npolly:\n  encryptionKey: \"%s\"\n" \
+>   "$(openssl rand -base64 32)" \
+>   "$(openssl rand -base64 32)" \
+>   "$(openssl rand -base64 32 | tr '+/' '-_')" \
+>   "$(openssl rand -base64 32 | tr '+/' '-_')"
+> ```
 
 ### Kubernetes 集群
 

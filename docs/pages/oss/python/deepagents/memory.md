@@ -371,7 +371,7 @@ The recommended pattern is to deploy a **consolidation agent** alongside your ma
 
 The consolidation agent reads recent conversation history and merges key facts into the memory store. Register it alongside your main agent in `langgraph.json`:
 
-```python consolidation_agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from datetime import datetime, timedelta, timezone
 
 from deepagents import create_deep_agent
@@ -389,20 +389,255 @@ async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
     since = datetime.now(timezone.utc) - timedelta(hours=6)
     threads = await sdk_client.threads.search(
         metadata={"user_id": user_id},
-        updated_after=since.isoformat(),
+        sort_by="updated_at",
+        sort_order="desc",
         limit=20,
     )
     conversations = []
     for thread in threads:
-        history = await sdk_client.threads.get_history(
-            thread_id=thread["thread_id"]
-        )
-        conversations.append(history["values"]["messages"])
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
     return str(conversations)
 
 
 agent = create_deep_agent(
     model="google_genai:gemini-4-hydrogen",
+    system_prompt="""Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.""",
+    tools=[search_recent_conversations],
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from deepagents import create_deep_agent
+from langchain.tools import tool, ToolRuntime
+from langgraph_sdk import get_client
+
+sdk_client = get_client(url="<DEPLOYMENT_URL>")
+
+
+@tool
+async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
+    """Search this user's conversations updated in the last 6 hours."""
+    user_id = runtime.server_info.user.identity  # [!code highlight]
+
+    since = datetime.now(timezone.utc) - timedelta(hours=6)
+    threads = await sdk_client.threads.search(
+        metadata={"user_id": user_id},
+        sort_by="updated_at",
+        sort_order="desc",
+        limit=20,
+    )
+    conversations = []
+    for thread in threads:
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
+    return str(conversations)
+
+
+agent = create_deep_agent(
+    model="openai:gpt-6.1-sol",
+    system_prompt="""Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.""",
+    tools=[search_recent_conversations],
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from deepagents import create_deep_agent
+from langchain.tools import tool, ToolRuntime
+from langgraph_sdk import get_client
+
+sdk_client = get_client(url="<DEPLOYMENT_URL>")
+
+
+@tool
+async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
+    """Search this user's conversations updated in the last 6 hours."""
+    user_id = runtime.server_info.user.identity  # [!code highlight]
+
+    since = datetime.now(timezone.utc) - timedelta(hours=6)
+    threads = await sdk_client.threads.search(
+        metadata={"user_id": user_id},
+        sort_by="updated_at",
+        sort_order="desc",
+        limit=20,
+    )
+    conversations = []
+    for thread in threads:
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
+    return str(conversations)
+
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    system_prompt="""Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.""",
+    tools=[search_recent_conversations],
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from deepagents import create_deep_agent
+from langchain.tools import tool, ToolRuntime
+from langgraph_sdk import get_client
+
+sdk_client = get_client(url="<DEPLOYMENT_URL>")
+
+
+@tool
+async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
+    """Search this user's conversations updated in the last 6 hours."""
+    user_id = runtime.server_info.user.identity  # [!code highlight]
+
+    since = datetime.now(timezone.utc) - timedelta(hours=6)
+    threads = await sdk_client.threads.search(
+        metadata={"user_id": user_id},
+        sort_by="updated_at",
+        sort_order="desc",
+        limit=20,
+    )
+    conversations = []
+    for thread in threads:
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
+    return str(conversations)
+
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    system_prompt="""Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.""",
+    tools=[search_recent_conversations],
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from deepagents import create_deep_agent
+from langchain.tools import tool, ToolRuntime
+from langgraph_sdk import get_client
+
+sdk_client = get_client(url="<DEPLOYMENT_URL>")
+
+
+@tool
+async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
+    """Search this user's conversations updated in the last 6 hours."""
+    user_id = runtime.server_info.user.identity  # [!code highlight]
+
+    since = datetime.now(timezone.utc) - timedelta(hours=6)
+    threads = await sdk_client.threads.search(
+        metadata={"user_id": user_id},
+        sort_by="updated_at",
+        sort_order="desc",
+        limit=20,
+    )
+    conversations = []
+    for thread in threads:
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
+    return str(conversations)
+
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    system_prompt="""Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.""",
+    tools=[search_recent_conversations],
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from deepagents import create_deep_agent
+from langchain.tools import tool, ToolRuntime
+from langgraph_sdk import get_client
+
+sdk_client = get_client(url="<DEPLOYMENT_URL>")
+
+
+@tool
+async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
+    """Search this user's conversations updated in the last 6 hours."""
+    user_id = runtime.server_info.user.identity  # [!code highlight]
+
+    since = datetime.now(timezone.utc) - timedelta(hours=6)
+    threads = await sdk_client.threads.search(
+        metadata={"user_id": user_id},
+        sort_by="updated_at",
+        sort_order="desc",
+        limit=20,
+    )
+    conversations = []
+    for thread in threads:
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
+    return str(conversations)
+
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    system_prompt="""Review recent conversations and update the user's memory file.
+Merge new facts, remove outdated information, and keep it concise.""",
+    tools=[search_recent_conversations],
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from deepagents import create_deep_agent
+from langchain.tools import tool, ToolRuntime
+from langgraph_sdk import get_client
+
+sdk_client = get_client(url="<DEPLOYMENT_URL>")
+
+
+@tool
+async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
+    """Search this user's conversations updated in the last 6 hours."""
+    user_id = runtime.server_info.user.identity  # [!code highlight]
+
+    since = datetime.now(timezone.utc) - timedelta(hours=6)
+    threads = await sdk_client.threads.search(
+        metadata={"user_id": user_id},
+        sort_by="updated_at",
+        sort_order="desc",
+        limit=20,
+    )
+    conversations = []
+    for thread in threads:
+        if datetime.fromisoformat(thread["updated_at"]) < since:
+            break
+        state = await sdk_client.threads.get_state(thread_id=thread["thread_id"])
+        conversations.append(state["values"]["messages"])
+    return str(conversations)
+
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
     system_prompt="""Review recent conversations and update the user's memory file.
 Merge new facts, remove outdated information, and keep it concise.""",
     tools=[search_recent_conversations],

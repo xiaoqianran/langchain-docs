@@ -4,7 +4,7 @@
 
 # 追踪Deep Agents
 
-[⟦T8⟧](/oss/python/deepagents/overview) 是一个构建在LangGraph 之上的开源代理框架，专为需要规划、工具使用和子代理委托的复杂、多步骤任务而设计。 Deep Agents 支持原生 LangSmith 跟踪。
+[⟦T8⟧](/oss/python/deepagents/overview)是一个构建在LangGraph之上的开源代理框架，专为需要规划、工具使用和子代理委托的复杂、多步骤任务而设计。 Deep Agents 支持原生 LangSmith 跟踪。
 
 本指南向您展示如何为 Deep Agents 启用 LangSmith 跟踪、在 LangSmith UI 中查看跟踪，以及（可选）为更高级的用例自定义跟踪配置。
 
@@ -160,7 +160,7 @@ LangSmith UI 中的 **Trajectory** 视图显示用户和代理之间的简化对
 
 **在LangSmith UI 中过滤：**
 
-1. 选择您的代理和环境，然后在 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents) 中打开 **Tracing**。
+1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents)中，选择您的代理，转到**跟踪**，然后选择环境。
 2. 将视图切换到 **Runs** 以查看各个跨度。
 3. 单击“**添加过滤器**”并选择“**元数据**”。
 4. 将 **Key** 设置为 `lc_agent_name`，将 **Value** 设置为子代理名称，例如 `coordinator`。
@@ -169,22 +169,27 @@ LangSmith UI 中的 **Trajectory** 视图显示用户和代理之间的简化对
 
 将过滤器保存为命名视图以便快速重用。有关过滤器选项的完整参考，请参阅[Filter traces](/langsmith/filter-traces)。
 
-**使用 SDK 以编程方式过滤：**[Retrieve the environment's ⟦T25⟧](/langsmith/create-an-agent#use-an-environment-project)，查找其项目ID，并将其传递给`client.runs.query()`。除非您通过 `min_start_time`，否则查询会回溯 1 天。
+**使用 SDK 以编程方式过滤：**[Resolve the agent environment](/langsmith/resolve-an-agent)获取其项目ID，并将其传递给`client.runs.query()`。除非您通过 `min_start_time`，否则查询会回溯 1 天。
+
+> [!注意]
+>
+> 解析代理环境需要最新的 SDK 和LangSmith 版本，并且在 BYOC 数据平面上不可用。有关要求和 BYOC 替代方案，请参阅 [Resolve an agent environment](/langsmith/resolve-an-agent)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 from datetime import datetime, timedelta, timezone
 
-from langsmith import Client
+from langsmith import Client, agent_address
 
 
 async def main():
     client = Client()
-    project_id = str(client.read_project(project_name="<environment-tracer-session-name>").id)
+    # Replace with your agent ID and environment
+    project = await client.sessions.resolve(**agent_address("support-agent", "production"))
 
     # Fetch all runs produced by a specific subagent
     async for run in client.runs.query(
-        project_ids=[project_id],
+        project_ids=[project.session_id],
         min_start_time=datetime.now(timezone.utc) - timedelta(days=7),
         filter='and(eq(metadata_key, "lc_agent_name"), eq(metadata_value, "research-agent"))',
         selects=["NAME", "START_TIME", "STATUS"],
@@ -220,7 +225,7 @@ uv add langsmith
 * 第一次调用是未被跟踪的，因为它在 `tracing_context` 之外运行。
 * 第二次调用被跟踪，因为它在`tracing_context(enabled=True, ...)`内运行。
 
-您可以有选择地仅跟踪工作流程的一部分，而无需使用 `LANGSMITH_TRACING=true` 启用对整个流程的全局跟踪：
+您可以有选择地仅跟踪工作流程的一部分，而无需使用 `LANGSMITH_TRACING=true` 对整个流程启用全局跟踪：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Dict, Any, List
@@ -327,14 +332,14 @@ with ls.tracing_context(
             ]
         }
     )
-```
+````tracing_context` 块启用跟踪，并配置如何在 LangSmith 中记录和组织跟踪：
 
-`tracing_context` 块启用跟踪，并配置如何在 LangSmith 中记录和组织跟踪：* `enabled=True` 明确启用块持续时间内的跟踪，即使 `LANGSMITH_TRACING` 未设置或设置为 `false`。
+* `enabled=True` 明确启用块持续时间内的跟踪，即使 `LANGSMITH_TRACING` 未设置或设置为 `false`。
 * 如果没有目标覆盖，该块将使用在设置期间配置的代理标识符和环境。
 * `tags=[...]` 将标签附加到跟踪的运行。 [Tags](/langsmith/add-metadata-tags)出现在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents)中，您可以使用它来过滤和分组轨迹。
 * `metadata={...}` 附加任意结构化元数据（例如，环境、实验名称或功能标志）。
 
-在这个例子中，代理被调用了两次，但只记录了`tracing_context`内的调用。这演示了如何有选择地跟踪 Deep Agents 工作流的特定部分，而无需启用整个流程的全局跟踪。
+在这个例子中，代理被调用了两次，但只记录了`tracing_context`内的调用。这演示了如何有选择地跟踪 Deep Agents 工作流程的特定部分，而无需启用整个流程的全局跟踪。
 
 ***
 

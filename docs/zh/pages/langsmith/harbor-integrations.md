@@ -6,7 +6,7 @@
 
 使用 Harbor 在 LangSmith 上运行评估、Deep Agents 和沙箱。
 
-使用 LangSmith 从一个地方运行、跟踪、比较和成本代理评估，并以 [Harbor](https://harborframework.com/docs) 作为执行层。 Harbor 是一个用于在沙盒环境中评估和优化代理和语言模型的框架，由 [Terminal-Bench](https://www.tbench.ai) 的创建者开发。它在独立的容器中运行每个试验，因此您可以同时跨多个环境并行评估和部署。
+使用 LangSmith 从一个地方运行、跟踪、比较和成本代理评估，并以 [Harbor](https://harborframework.com/docs) 作为执行层。 Harbor 是一个用于在沙盒环境中评估和优化代理和语言模型的框架，来自[Terminal-Bench](https://www.tbench.ai) 的创建者。它在独立的容器中运行每个试验，因此您可以同时跨多个环境并行评估和部署。
 
 LangSmith与Harbor在三个点上集成：
 
@@ -14,7 +14,7 @@ LangSmith与Harbor在三个点上集成：
 * **Deep Agents**：使用`--agent langgraph`在Harbor中运行使用LangGraph或Deep Agents构建的代理。
 * **沙箱**：在具有 `--env langsmith` 的 LangSmith 沙箱上运行每个 Harbor 试验。
 
-本页涵盖了 LangSmith 特定的港口标志。要获得完整的 CLI，请运行 `harbor run --help` 或参阅 [Harbor documentation](https://harborframework.com/docs)。
+本页涵盖 LangSmith 特定的港口旗帜。要获得完整的 CLI，请运行 `harbor run --help` 或参阅 [Harbor documentation](https://harborframework.com/docs)。
 
 ## 先决条件
 
@@ -30,7 +30,7 @@ LangSmith与Harbor在三个点上集成：
 pip install "harbor[langsmith]"
 ```
 
-### 验证Harbor 使用您的 LangSmith 凭据进行身份验证。设置API密钥和该密钥所属的端点：
+### 验证Harbor 使用您的 LangSmith 凭据进行身份验证。设置 API 密钥以及该密钥所属的端点：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="<LANGSMITH_API_KEY>"
@@ -62,7 +62,7 @@ harbor run -d "terminal-bench@2.0" \
 
 ## LangSmith 评价
 
-LangSmith插件将每个Harbor作业记录到LangSmith，因此您可以在数据集和实验下查看和比较结果。该插件适用于任何 Harbor 代理，而不仅仅是 Deep Agents。使用`--plugin langsmith`启用它。 [Quickstart](#quickstart)展示了基本的调用，本节介绍了插件记录的内容以及如何配置它。选择一个可追踪到 LangSmith 的代理，以在实验过程中捕获完整的代理跟踪。如果代理未跟踪到LangSmith，插件仍会创建数据集和带有结果和反馈的实验，而无需代理跟踪。
+LangSmith插件将每个Harbor作业记录到LangSmith，因此您可以在数据集和实验下查看和比较结果。该插件适用于任何 Harbor 代理，而不仅仅是 Deep Agents。使用`--plugin langsmith`启用它。 [Quickstart](#quickstart)展示了基本的调用，本节介绍了插件记录的内容以及如何配置它。选择一个可追踪到 LangSmith 的代理，以在实验过程中捕获完整的代理追踪。如果代理没有跟踪到LangSmith，插件仍然会创建数据集和带有结果和反馈的实验，而无需代理跟踪。
 
 当您需要消除歧义时，传递完整的导入路径而不是简短的插件名称：
 
@@ -81,7 +81,7 @@ harbor run ... --plugin harbor_langsmith:LangSmithPlugin
 * **运行**：为每个试验创建一个根运行，其中包含任务名称、指令、代理和模型的输入，以及环境、代理和验证阶段的子运行。
 * **反馈**：为每个验证者奖励密钥附加一个反馈分数，例如`reward`，以及当试验引发异常时的`harbor_error`反馈。* **输出**：记录每次试运行的`tokens`（`input`、`cache`、`output`）下的令牌计数和`cost_usd`下的运行成本。
 
-### 查看LangSmith的结果
+### 在LangSmith查看结果
 
 在LangSmith中打开[Datasets & Experiments](/langsmith/manage-datasets)，选择插件同步的数据集，例如`terminal-bench@2.0`，然后打开实验选项卡。每个 Harbor 作业都显示为一个实验，您可以通过 `reward` 和 `harbor_error` 反馈、每次运行记录的令牌计数和成本以及延迟来[compare experiments](/langsmith/analyze-an-experiment)。
 
@@ -98,7 +98,7 @@ harbor run ... --plugin harbor_langsmith:LangSmithPlugin
 
 或者在命令行上使用 `--pk` 或在作业配置文件中的 `kwargs:` 下设置与插件 kwargs 相同的输入。 kwargs 镜像构造函数选项：`dataset_name`、`experiment_name`、`endpoint`、`api_key`、`workspace_id`、`sync_dataset` 和 `fail_fast`。## Deep Agents
 
-对于独立代理跟踪，[register the agent](/langsmith/create-an-agent) 并将集成的 `LANGSMITH_PROJECT` 设置设置为所选环境的 `tracer_session_name`。数据集关联实验使用上述评估流程。
+Harbor 将 `LANGSMITH_PROJECT` 转发到沙箱中，但不转发 [agent addressing](/langsmith/log-traces-to-agent) 变量。要将独立跟踪发送到 [agent](/langsmith/create-an-agent)，请将 `LANGSMITH_PROJECT` 设置为代理环境的 [⟦T65⟧](/langsmith/create-an-agent#use-an-environment-project)。数据集关联实验使用上述评估流程。
 
 `langgraph` 集成在 Harbor 中运行您的 LangGraph 或 Deep Agents 代码。使用 `--agent langgraph` 选择它。 Harbor 将您的项目暂存到沙箱中，安装其依赖项，并在每次试验的容器内运行图形。
 
@@ -107,7 +107,7 @@ harbor run ... --plugin harbor_langsmith:LangSmithPlugin
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_PROFILE=prod
 export LANGSMITH_TRACING=true
-export LANGSMITH_PROJECT=harbor-deepagents
+export LANGSMITH_PROJECT=<environment-tracer-session-name>
 export FIREWORKS_API_KEY="<FIREWORKS_API_KEY>"
 
 harbor run \
@@ -162,7 +162,7 @@ terminal-bench/
 * **`--ak config=<file>`**：`project_path`内声明图形的配置文件名。默认为`langgraph.json`。
 * **`--ak configurable='{...}'`**：LangGraph 每次运行配置传递给 `config["configurable"]` 并由图形在调用时读取。常用键有`model`、`model_kwargs`、`cwd`。
 * **`--ak model_kwargs='{...}'`**：`configurable`中嵌套的`model_kwargs`键的简写，例如`{"temperature": 0, "max_tokens": 8000}`。
-* **`--ak dependency_overrides='[...]'`**：代理虚拟环境的 Pip 包。此列表替换了`langgraph.json`中声明的依赖项，这使您可以固定或交换版本而无需编辑项目，例如`'["deepagents==0.6.10"]'`。
+* **`--ak dependency_overrides='[...]'`**：代理虚拟环境的 Pip 包。此列表替换了`langgraph.json`中声明的依赖项，它允许您固定或交换版本而无需编辑项目，例如`'["deepagents==0.6.10"]'`。
 
 ### 将 langgraph.json 指向代理和依赖项代理从 `project_path` 中的 `langgraph.json` 文件加载图表。该文件声明了图形入口点以及 Harbor 在沙箱虚拟环境中安装的 pip 依赖项：
 
@@ -183,9 +183,9 @@ terminal-bench/
 该项目公开了两个图表，使用 `--ak graph` 选择。两者都使用 [create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 构建深度代理，仅输入不同：
 
 * **`deep_agent`** 解析为 `make_graph`，一个仅使用模型创建的深度代理。
-* **`research_agent`** 解析为 `make_research_graph`，具有研究系统提示的相同深度代理。
+* **`research_agent`** 解析为 `make_research_graph`，同样具有研究系统提示的深度代理。
 
-每个图将模型从`--model`（从`configurable.model`读取）传递到`create_deep_agent`，从而用`init_chat_model()`进行解析：
+每个图将模型从`--model`（从`configurable.model`读取）传递到`create_deep_agent`，从而用`init_chat_model()`解析它：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -202,7 +202,7 @@ def make_research_graph(config):
     )
 ```
 
-读取 `configurable.model` 的工厂函数使图模型保持无关，但当模型应始终运行相同的模型时，您也可以对图中的模型进行硬编码。对于固定模型，将 `langgraph.json` 指向已编译的图而不是工厂：
+读取 `configurable.model` 的工厂函数使图模型保持不可知，但当模型应始终运行相同的模型时，您也可以对图中的模型进行硬编码。对于固定模型，将 `langgraph.json` 指向已编译的图而不是工厂：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent

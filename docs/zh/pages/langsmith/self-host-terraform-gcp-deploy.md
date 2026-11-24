@@ -169,13 +169,13 @@ kubectl get gateway -n envoy-gateway-system \
 
 ## 提供基础设施
 
-Terraform 提供以下 GCP 资源：|资源 |目的|
+Terraform 提供以下 GCP 资源：|资源|目的|
 | - | - |
 | VPC+子网+云NAT |集群和托管服务的专用网络|
 |私人服务连接| Cloud SQL 和 Memorystore 私有 IP 的 VPC 对等互连 |
 | GKE 集群（标准或 Autopilot）| Kubernetes 计算、启用 Workload Identity |
 |云 SQL PostgreSQL | LangSmith 运营数据、HA备用、私有IP |
-|内存存储Redis |队列和缓存、STANDARD_HA 层、私有 IP |
+| Redis | 内存存储队列和缓存、STANDARD_HA 层、私有 IP |
 | GCS铲斗|跟踪有效负载 blob 存储、生命周期规则 |
 | Workload Identity 服务帐户 |无需静态密钥的每个 Pod GCP 访问 |
 |证书管理器、KEDA、Envoy Gateway |与基础设施一起安装的 Bootstrap 工作负载 |
@@ -191,7 +191,7 @@ cd terraform/modules/gcp
 
 > [!注意]
 >
-> `main` 分支和 `v0.17.x` 发布标签部署 Helm Chart 0.17，本指南对它们进行了介绍。 `v0.16.x`标签部署图表0.16。要停留在图表 0.16 上，请列出标签并查看最新的 `v0.16.x` 标签：
+> `main` 分支和 `v0.17.x` 发布标签部署 Helm Chart 0.17，本指南对它们进行了介绍。 `v0.16.x`标签部署图表0.16。要留在图表 0.16，请列出标签并查看最新的 `v0.16.x` 标签：
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > git tag -l 'v0.16.*' --sort=-v:refname | head -1
@@ -302,7 +302,7 @@ cert-manager、KEDA 和 LangSmith 命名空间机密都应该就位。
 
 使用两个受支持的部署路径之一：
 
-|路径|命令 |何时使用 |
+|路径|命令|何时使用 |
 | - | - | - |
 | [Script-driven Helm deploy *(recommended)*](#script-driven-helm-deploy-recommended) | `make init-values && make deploy` |交互式输出、kubeconfig 刷新、预检检查。最适合首次部署和第二天重新部署。 |
 | [Manual Helm install](#manual-helm-install) | `helm upgrade --install langsmith langchain/langsmith ...` |直接使用`helm`，无需包装脚本。最适合拥有现有 Helm 工具的团队。 |
@@ -335,10 +335,8 @@ make deploy
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export API_KEY_SALT=$(openssl rand -base64 32)
 export JWT_SECRET=$(openssl rand -base64 32)
-export AGENT_BUILDER_ENCRYPTION_KEY=$(python3 -c \
-  "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())")
-export INSIGHTS_ENCRYPTION_KEY=$(python3 -c \
-  "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())")
+export AGENT_BUILDER_ENCRYPTION_KEY=$(openssl rand -base64 32 | tr '+/' '-_')
+export INSIGHTS_ENCRYPTION_KEY=$(openssl rand -base64 32 | tr '+/' '-_')
 export ADMIN_EMAIL="admin@example.com"
 export ADMIN_PASSWORD="<strong-password>"
 ```

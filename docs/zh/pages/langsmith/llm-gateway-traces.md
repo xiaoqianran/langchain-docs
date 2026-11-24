@@ -14,7 +14,7 @@
 
 ## 查找网关痕迹
 
-每个网关请求都会跟踪到与调用方 API 密钥关联的 [workspace](/langsmith/administration-overview#workspaces) 中名为 `gateway` 的项目。要查看网关请求，请转至 **LLM Gateway** 并选择 **Traces** 选项卡。模拟器的 **查看跟踪** 按钮在此选项卡中打开其请求。要查看某个用户或 API 密钥支出背后的请求，请在 [**Usage** tab](/langsmith/llm-gateway-monitoring#analyze-the-chart-and-table) 中选择该用户或密钥，然后单击 **查看跟踪**。在开发人员计划中，请在工作区中打开 `gateway` 跟踪项目。默认情况下，所有组织的跟踪内容（请求和响应正文）都是关闭的，因此网关跟踪仅记录元数据，例如令牌计数、策略结果和调用者身份。这些迹线将 `ls_metadata_only` 设置为 `true`。没有内容的跟踪不会根据您的 LangSmith 跟踪配额进行计费。要存储内容，请在 [data policy](/langsmith/llm-gateway-data-policy#data-retention) 中打开 **跟踪内容**。内容记录的请求将计入​​您的计划的跟踪量一次，无论它进行了多少次提供商尝试。
+每个网关请求都会跟踪到与调用方 API 密钥关联的 [workspace](/langsmith/administration-overview#workspaces) 中名为 `gateway` 的项目。要查看网关请求，请转至 **LLM Gateway** 并选择 **Traces** 选项卡。模拟器的 **查看跟踪** 按钮在此选项卡中打开其请求。要查看某个用户或 API 密钥支出背后的请求，请在 [**Usage** tab](/langsmith/llm-gateway-monitoring#analyze-the-chart-and-table) 中选择该用户或密钥，然后单击 **查看跟踪**。在开发人员计划中，请在工作区中打开 `gateway` 跟踪项目。默认情况下，所有组织的跟踪内容（请求和响应正文）都是关闭的，因此网关跟踪仅记录元数据，例如令牌计数、策略结果和调用者身份。这些迹线将 `ls_metadata_only` 设置为 `true`。没有内容的跟踪不会根据您的 LangSmith 跟踪配额进行计费。要存储内容，请在 [data policy](/langsmith/llm-gateway-data-policy#store-trace-content) 中选择 **存储跟踪内容**。内容记录的请求将计入​​您的计划的跟踪量一次，无论它进行了多少次提供商尝试。
 
 > [!注意]
 >
@@ -65,7 +65,7 @@ gateway.request
 
 ## 限制跟踪可见性
 
-网关跟踪在工作区项目中运行，因此与工作区中的其他运行相同的权限管理它们。工作区上具有 `runs:read`（和 `projects:read` 查看项目本身）的任何用户都可以查看该工作区的网关项目中的跟踪。内置的工作区管理员、工作区编辑器和工作区查看器[roles](/langsmith/rbac#workspace-roles) 默认情况下都包含这两种权限。
+网关跟踪在工作区项目中运行，因此与工作区中的其他运行相同的权限管理它们。工作区上具有 `runs:read`（以及 `projects:read` 查看项目本身）的任何用户都可以查看该工作区的网关项目中的跟踪。内置的工作区管理器、工作区编辑器和工作区查看器[roles](/langsmith/rbac#workspace-roles)默认都包含这两种权限。
 
 您有两个选项来限制对网关跟踪的访问：
 

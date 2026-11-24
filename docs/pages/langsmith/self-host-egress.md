@@ -2,15 +2,19 @@
 
 # Egress for billing and operational telemetry
 
+Learn what billing, operational, and usage telemetry a self-hosted LangSmith instance sends to LangChain, and how to disable the optional telemetry.
+
 > [!NOTE]
 >
 > This page only applies to customers who are not running in offline (air-gapped) mode and assumes you are using a self-hosted LangSmith instance serving version 0.9.0 or later.
 
-Self-hosted LangSmith stores platform data in your environment. Unless you are running in offline mode, LangSmith requires egress to `https://beacon.langchain.com` for the following:
+Self-hosted LangSmith stores platform data in your environment. Unless you are running in offline mode, LangSmith requires egress to `https://beacon.langchain.com` for the following telemetry:
 
-* **Billing telemetry**: License verification and subscription/usage reporting (required)
-* **Operational telemetry**: Logs, metrics, and traces for support diagnostics (optional, can be disabled)
-* **Usage telemetry**: Anonymized usage snapshots for product insights (optional, can be disabled)
+| Telemetry | What it sends | Required |
+| - | - | - |
+| [Billing](#billing-telemetry) | License verification and subscription/usage reporting | Yes |
+| [Operational](#operational-telemetry) | Logs, metrics, and traces for support diagnostics | No, can be disabled |
+| [Usage](#usage-telemetry) | Anonymized usage metrics, plus organization security contact email addresses | No, can be disabled |
 
 > [!WARNING]
 >
@@ -406,7 +410,7 @@ We only export error log messages from self-hosted LangSmith instances. This all
 
 ## Usage telemetry
 
-Usage telemetry collects anonymized snapshots of your LangSmith instance's usage metrics. This data helps LangChain understand platform adoption patterns and inform product development decisions.
+Usage telemetry collects snapshots of your LangSmith instance's anonymized usage metrics. This data helps LangChain understand platform adoption patterns and inform product development decisions. Snapshots can also include security contacts for notices from LangChain.
 
 > [!NOTE]
 >
@@ -424,12 +428,17 @@ Usage telemetry collects anonymized snapshots of your LangSmith instance's usage
 * **Feature usage**: Counts of run rules, annotation queues, prompts, and prompt-related activity
 * **Users**: Total number of registered users and count of active PATs (Personal Access Tokens) in the last 30 days
 * **Timestamps**: Time range for the snapshot (from/to timestamps in UTC)
+* **Security contacts**: Email addresses configured for each organization, with organization and installation identifiers
 
 > [!NOTE]
 >
-> All metrics are **aggregated counts only**. No individual resource data, identifiers, or usage patterns are collected. We do not collect any information that could identify your end users or customers.
+> All metrics are **aggregated counts only**. No individual resource data or identifiers are included in the metrics. Security contact email addresses and their associated identifiers are not anonymous.
+
+Contact reporting is enabled by default when phone-home and usage reporting are enabled. Offline instances do not send these snapshots. See [Manage security contacts](/langsmith/set-up-hierarchy#manage-security-contacts) to update the addresses.
 
 ### Example payloads
+
+This example shows usage metrics without the optional security contacts report.
 
 **Endpoint:** `POST /v1/beacon/usage-snapshot`
 
@@ -458,6 +467,18 @@ Usage telemetry collects anonymized snapshots of your LangSmith instance's usage
 }
 ```
 
+### Disable security contact reporting
+
+To stop sending security contacts while keeping usage telemetry enabled, add the following to `commonEnv` in your Helm values and redeploy:
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+commonEnv:
+  - name: PHONE_HOME_SECURITY_CONTACTS_REPORTING_ENABLED
+    value: "false"
+```
+
+The next usage snapshot that includes a contact report sends an empty list to clear the previously reported contacts for that installation. A snapshot without an installation identifier cannot clear the contacts. If phone-home or usage reporting is disabled, no snapshot is sent and the previously reported contacts are not cleared by this setting. This setting does not remove contacts from your local organization settings.
+
 ### How to disable
 
 You can disable usage telemetry by setting the following environment variable in your deployment configuration:
@@ -467,6 +488,12 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
 ```
 
 Add this to the `commonEnv` section of your Helm configuration to permanently disable usage telemetry reporting.
+
+Disabling usage telemetry stops all usage snapshots, so LangChain keeps any security contacts your installation already reported. To also clear those contacts:
+
+1. [Disable security contact reporting](#disable-security-contact-reporting).
+2. Wait for the next daily usage snapshot (02:00 UTC by default), which sends an empty contact list.
+3. Set `PHONE_HOME_USAGE_REPORTING_ENABLED` to `false`.
 
 > [!WARNING]
 >
@@ -513,7 +540,7 @@ For the complete data flow and model-provider commitments, see [Engine on Self-h
 
 ## Our commitment
 
-The following commitments apply to the billing, operational, and usage telemetry described on this page. LangChain will not store sensitive information in that telemetry or share it with a third party. Log messages are filtered to only include error severity levels, and we do not capture log messages that could contain sensitive application data. Engine's use of LangSmith Intelligence is a separate data flow described in [Engine on Self-hosted](/langsmith/engine-self-hosted). If you have any concerns about the data being sent, disable optional telemetry or [contact our sales team](https://www.langchain.com/contact-sales).
+The following commitments apply to the billing, operational, and usage telemetry described on this page. LangChain will not store sensitive information other than the security contact email addresses described above in that telemetry or share the telemetry with a third party. Log messages are filtered to only include error severity levels, and we do not capture log messages that could contain sensitive application data. Engine's use of LangSmith Intelligence is a separate data flow described in [Engine on Self-hosted](/langsmith/engine-self-hosted). If you have any concerns about the data being sent, disable optional telemetry or [contact our sales team](https://www.langchain.com/contact-sales).
 
 ***
 

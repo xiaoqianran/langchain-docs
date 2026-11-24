@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 此集成使用旧目标设置，例如 `project_name` 或 `LANGSMITH_PROJECT`。 [Create an agent](/langsmith/create-an-agent)，选择其环境，然后[retrieve that environment's ⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project)。在目标设置和任何覆盖中使用该返回值。对于支持代理寻址的集成，请直接使用 [agent identifier and environment](/langsmith/log-traces-to-agent)。
+> 此集成不支持[agent addressing](/langsmith/log-traces-to-agent)。它通过 `tracer_session_name` 追踪到代理环境。
 
 ## 先决条件
 
@@ -18,6 +18,7 @@
 
 * [OpenCode](https://opencode.ai/)已安装并配置。
 * [LangSmith API key](/langsmith/create-account-api-key)。
+* LangSmith 中的[agent](/langsmith/create-an-agent)。该插件不支持代理寻址，因此它通过名称跟踪代理的环境之一。
 * 可以在 `opencode.json` 或 `~/.config/opencode/opencode.json` 中配置 OpenCode `plugin` 密钥。
 
 ## 安装并启用插件
@@ -31,7 +32,7 @@
 }
 ```
 
-在启动 OpenCode 之前启用跟踪并提供您的 LangSmith API 密钥：
+在启动 OpenCode 之前，启用跟踪，提供您的 LangSmith API 密钥，并将 `LANGSMITH_PROJECT` 设置为代理环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project)。如果您未设置它，跟踪将发送至名为 `opencode` 的代理。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export TRACE_TO_LANGSMITH="true"
@@ -39,7 +40,7 @@ export LANGSMITH_API_KEY="<your-langsmith-api-key>"
 export LANGSMITH_PROJECT="<environment-tracer-session-name>"
 ```
 
-像往常一样运行 OpenCode。该插件将完成的用户轮次发送到配置的代理环境。
+像往常一样运行 OpenCode。该插件将完成的用户轮流发送到配置的代理环境。
 
 ## 配置跟踪默认情况下禁用跟踪。设置 `TRACE_TO_LANGSMITH=true` 后，插件会将跟踪发送到 LangSmith。您还可以使用 LangSmith 配置文件启用跟踪。
 
@@ -47,11 +48,11 @@ export LANGSMITH_PROJECT="<environment-tracer-session-name>"
 
 该插件首先读取特定于 OpenCode 的变量，然后在可用时回退到通用 LangSmith SDK 变量。
 
-|变量|必填|默认 |描述 |
+|变量|必填 |默认 |描述 |
 | - | - | - | - |
 | `TRACE_TO_LANGSMITH` |是的 | `false` |设置为 `"true"` 以启用跟踪。 |
-| `LANGSMITH_OPENCODE_API_KEY` |有条件| - | LangSmith API 密钥。回落到`LANGSMITH_API_KEY`。除非每个副本都提供自己的 API 密钥，否则是必需的。 |
-| `LANGSMITH_OPENCODE_ENDPOINT` |没有 | LangSmith SDK默认 | LangSmith API URL。回落到`LANGSMITH_ENDPOINT`。 |
+| `LANGSMITH_OPENCODE_API_KEY` |有条件| - | LangSmith API 密钥。回落至`LANGSMITH_API_KEY`。除非每个副本都提供自己的 API 密钥，否则是必需的。 |
+| `LANGSMITH_OPENCODE_ENDPOINT` |没有 | LangSmith SDK 默认 | LangSmith API URL。回落到`LANGSMITH_ENDPOINT`。 |
 | `LANGSMITH_OPENCODE_PROJECT` |没有 | `opencode` |所选代理环境的`tracer_session_name`。回落到`LANGSMITH_PROJECT`。 |
 | `LANGSMITH_OPENCODE_METADATA` |没有 | - | JSON 对象合并到根跟踪元数据中。 |
 | `LANGSMITH_OPENCODE_RUNS_ENDPOINTS` |没有 | - |副本目标的 JSON 数组。 |
@@ -80,11 +81,11 @@ export LANGSMITH_OPENCODE_METADATA='{"team":"agents","environment":"dev"}'
     "environment": "dev"
   }
 }
-```|领域 |必填|默认 |描述 |
+```|领域|必填 |默认 |描述 |
 | - | - | - | - |
 | `enabled` |是的 | `false` |设置为 `true` 以启用从配置文件进行跟踪。 |
 | `api_key` |有条件| - | LangSmith API 密钥。除非环境变量或副本提供，否则是必需的。 |
-| `api_url` |没有 | LangSmith SDK 默认 | LangSmith API URL，通常为`https://api.smith.langchain.com`。 |
+| `api_url` |没有 | LangSmith SDK默认| LangSmith API URL，通常为`https://api.smith.langchain.com`。 |
 | `project` |没有 | `opencode` |所选代理环境的`tracer_session_name`。 |
 | `metadata` |没有 | - |对象合并到根跟踪元数据中。 |
 | `replicas` |没有 | - |将跟踪复制到的其他 LangSmith 目的地。 |
@@ -117,7 +118,7 @@ export LANGSMITH_OPENCODE_METADATA='{"team":"agents","environment":"dev"}'
 
 副本对象支持 Snake_case 和 LangSmith SDK 风格的驼峰命名法字段名称。建议在配置文件中使用snake_case。
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `api_url` / `apiUrl` | LangSmith 副本目标的 API URL。 |
 | `api_key` / `apiKey` |目标工作区的 API 密钥。 |
@@ -137,7 +138,7 @@ export LANGSMITH_OPENCODE_METADATA='{"team":"agents","environment":"dev"}'
 
 ## 查看LangSmith中的踪迹
 
-选择LangSmith中配置的代理和环境，打开**跟踪**，并查找名为`opencode.session`的根运行。每个跟踪包含用户轮流作为根输入和助理响应、工具调用以及子代理跟踪作为子运行。该插件将 OpenCode 会话 ID 存储为 `thread_id` 元数据，因此您可以在 LangSmith 中过滤或分组相关的 OpenCode 轮次。
+在LangSmith中选择配置的代理和环境，打开**跟踪**，并查找名为`opencode.session`的根运行。每个跟踪包含用户轮流作为根输入和助理响应、工具调用以及子代理跟踪作为子运行。该插件将 OpenCode 会话 ID 存储为 `thread_id` 元数据，因此您可以在 LangSmith 中过滤或分组相关的 OpenCode 轮次。
 
 ## 故障排除
 

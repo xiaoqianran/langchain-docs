@@ -8,7 +8,7 @@
 
 本指南向您展示如何使用 LangSmith 跟踪 LiteLLM 调用：
 
-* 用于代理级跟踪的 [LangSmith SDK](#use-langsmith_tracing-and-traceable) (`@traceable`)。
+* 用于代理级别跟踪的 [LangSmith SDK](#use-langsmith_tracing-and-traceable) (`@traceable`)。
 * [LiteLLM’s built-in langsmith callback](#log-litellm-call-with-the-langsmith-callback) 用于模型级日志记录。
 * 用于网关级跟踪的[LiteLLM Proxy](#use-the-litellm-proxy)。
 
@@ -37,28 +37,28 @@ LiteLLM 支持两种将跟踪发送到LangSmith的方法，它们在不同的层
 
 > [!注意]
 >
-> 避免对相同的 LiteLLM 调用启用 LiteLLM 的 `langsmith` 回调和 LangSmith 跟踪，因为这可能会导致重复跟踪。
+> 避免对相同的 LiteLLM 调用启用 LiteLLM 的 `langsmith` 回调和 LangSmith 跟踪，因为这可能会导致重复跟踪。还要将回调的 `LANGSMITH_PROJECT` 保留在具有 `@traceable` 设置中的代理变量的 shell 之外。两者设置后，SDK 不会跟踪 `@traceable` 调用。参见[Remove conflicting destination settings](/langsmith/log-traces-to-agent#remove-conflicting-destination-settings)。
 
 ### 使用`LANGSMITH_TRACING`和`traceable`
 
-您可以将 `LANGSMITH_TRACING=true` 与 `@traceable` 一起使用，以在 LangSmith 中实现可预测的轨迹。此方法可确保 **Input** 和 **Output** 列反映您的函数参数和返回值，从而允许您保留完整的消息结构（包括 `role` 和 `content`）。它还可以在简单的同步脚本中可靠地工作，无需异步事件循环或额外的回调配置。
+您可以将 `LANGSMITH_TRACING=true` 与 `@traceable` 一起使用，以在 LangSmith 中实现可预测的迹线。此方法可确保 **Input** 和 **Output** 列反映您的函数参数和返回值，从而允许您保留完整的消息结构（包括 `role` 和 `content`）。它还可以在简单的同步脚本中可靠地工作，无需异步事件循环或额外的回调配置。
 
-1. 向代理发送痕迹需要`langsmith>=0.14.9`。设置以下环境变量以启用 LiteLLM Python SDK 使用的 LangSmith 跟踪：
+1. [Sending traces to an agent](/langsmith/log-traces-to-agent) 需要`langsmith>=0.14.9`。设置以下环境变量以启用 LiteLLM Python SDK 使用的 LangSmith 跟踪：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_API_KEY="your_api_key"
    export LANGSMITH_AGENT_ID="<your-agent-id>"
    export LANGSMITH_AGENT_ENVIRONMENT="local"
    export LANGSMITH_TRACING="true"
-   ```
-
-   在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-litellm)中创建LangSmith[API keys](/langsmith/create-account-api-key)。
+   ```在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-litellm)中创建LangSmith[API keys](/langsmith/create-account-api-key)。
 
    根据您使用的提供商，您还需要设置 API 密钥：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export OPENAI_API_KEY="your_openai_key"
-   ```2. 将以下代码添加到脚本文件中：
+   ```
+
+2. 将以下代码添加到脚本文件中：
 
    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    from langsmith import traceable
@@ -81,7 +81,7 @@ LiteLLM 支持两种将跟踪发送到LangSmith的方法，它们在不同的层
    print(result["content"])
    ```
 
-   `@traceable` 将您的功能设置为 LangSmith 运行。当`LANGSMITH_TRACING=true`设置时，LangSmith自动：
+   `@traceable` 将您的功能设置为 LangSmith 运行。当设置`LANGSMITH_TRACING=true`时，自动设置LangSmith：
 
    * 调用函数时创建运行。
    * 将函数参数记录为运行输入。
@@ -97,7 +97,7 @@ LiteLLM 支持两种将跟踪发送到LangSmith的方法，它们在不同的层
 
 ### 使用 `langsmith` 回调记录 LiteLLM 调用
 
-此回调使用旧目标设置。将其设置为代理环境的[⟦T33⟧](/langsmith/create-an-agent#use-an-environment-project)。使用上面的 SDK 跟踪方法进行代理寻址。LiteLLM 可以使用其内置的 [callback system](https://docs.litellm.ai/docs/observability/callbacks) 将跟踪直接发送到 LangSmith。当在异步 Python 服务中运行 LiteLLM 并且您希望 LiteLLM 本身发出模型级日志时，这非常有用。
+此回调使用旧目标设置。将其设置为代理环境的[⟦T36⟧](/langsmith/create-an-agent#use-an-environment-project)。使用上面的 SDK 跟踪方法进行代理寻址。LiteLLM 可以使用其内置的 [callback system](https://docs.litellm.ai/docs/observability/callbacks) 将跟踪直接发送到 LangSmith。当在异步 Python 服务中运行 LiteLLM 并且您希望 LiteLLM 本身发出模型级日志时，这非常有用。
 
 LiteLLM 回调在异步环境中运行。当使用`litellm.acompletion()`进行异步调用时，您可以启用`langsmith`回调来记录成功的模型调用。
 
@@ -109,7 +109,7 @@ LiteLLM 回调在异步环境中运行。当使用`litellm.acompletion()`进行�
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_API_KEY="your_api_key"
-   export LANGSMITH_PROJECT="litellm-integration"
+   export LANGSMITH_PROJECT="<environment-tracer-session-name>"
    ```
 
    在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-litellm)中创建LangSmith[API keys](/langsmith/create-account-api-key)。
@@ -123,8 +123,8 @@ LiteLLM 回调在异步环境中运行。当使用`litellm.acompletion()`进行�
 2. 要在最小脚本中运行它：
 
    * 使用`acompletion()`（异步API）。
-   * 使用 `asyncio.run(...)` 运行以创建事件循环。
-   * 设置`langsmith_batch_size = 1`立即冲洗。
+   * 使用`asyncio.run(...)`运行来创建事件循环。
+   * 将`langsmith_batch_size = 1`设置为立即冲洗。
 
    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    import asyncio
@@ -171,11 +171,11 @@ LiteLLM 代理作为独立服务器运行并公开OpenAI兼容的 API。1. 要�
      callbacks: ["langsmith"]
    ```
 
-2. 在代理环境中设置环境变量：
+2. 在代理环境中设置环境变量。将 `LANGSMITH_PROJECT` 设置为代理环境的 [⟦T46⟧](/langsmith/create-an-agent#use-an-environment-project)：
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_API_KEY="your_api_key"
-   export LANGSMITH_PROJECT="litellm-proxy"
+   export LANGSMITH_PROJECT="<environment-tracer-session-name>"
    export OPENAI_API_KEY="your_openai_key"
    ```
 

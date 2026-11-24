@@ -19,7 +19,7 @@
 > 1. 在 **代理服务器** 视图的右上角，选择 **+ 新修订**。
 > 2. 在 **New Revision** 模式中，指定 [API configuration file](/langsmith/cli#configuration-file) 的完整路径，包括文件名。例如，如果文件位于存储库根目录中，请输入 `langgraph.json`。
 > 3. 选择是否通过[Studio](/langsmith/studio) 共享代理服务器。
-> 4. 添加、删除或更新环境变量和机密。现有值已预先填充。有关更多信息，请参阅[Environment variables](/langsmith/env-var-cloud)。
+> 4. 添加、删除或更新环境变量和机密。该表格不显示存储的值。将值保留为**未更改**以保留它，或输入新值以替换它。有关更多信息，请参阅[Environment variables](/langsmith/env-var-cloud)。
 > 5. 选择**提交**。 LangSmith 将修订排队以进行部署。> [选项卡] LangGraph CLI
 >
 > 从项目目录再次运行 `langgraph deploy`。该命令按名称查找现有代理服务器，并使用最新的代码更改创建修订版：
@@ -50,7 +50,7 @@
 
 > [!警告]
 >
-> 中断的修订具有未定义的行为。 LangChain将来可能会删除此功能。
+> 中断的修订具有未定义的行为。 LangChain 将来可能会删除此功能。
 
 要中断修订：
 
