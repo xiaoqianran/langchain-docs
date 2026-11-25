@@ -14,7 +14,9 @@ LangSmith 自托管支持自动 TTL 和跟踪数据保留。使用它来遵守�
 
 LangSmith 通过两个步骤确定保留跟踪的时间：跟踪属于哪个保留层，以及该层适用的时间段。
 
-LangSmith 按以下顺序分配层，优先级最高的优先：1. **跟踪升级**：运行规则或其他限定操作将单个跟踪提升到`longlived`，覆盖否则适用的任何层。
+[workspace retention restriction](/langsmith/data-purging-compliance#disable-extended-trace-retention) 会覆盖新跟踪的层分配并阻止新升级。处于活动状态时，即使项目保存的默认值是 `longlived`，新迹线也会使用 `shortlived`。它不会更改保留期或现有跟踪到期日期。
+
+当工作区允许延长保留时间时，LangSmith 按此顺序分配层，优先级最高的首先：1. **跟踪升级**：运行规则或其他限定操作将单个跟踪提升到`longlived`，覆盖否则适用的任何层。
 2. **项目层**：为跟踪项目配置的层。
 3. **工作区默认**：新项目继承此层。更改它只会影响新项目，除非将其应用到所有现有项目。
 4. **组织默认值**：适用于没有自己默认值的工作区。
@@ -170,7 +172,7 @@ queue:
 >
 > 这适用于 LangSmith 0.18 上的 [SmithDB](/langsmith/self-host-smithdb) 安装（Helm 图表 `0.18.0` 或更高版本）。
 
-要使运行统计数据保持更长时间，请将 `SMITHDB_COMPACTION__EXPIRY_CYCLE__RETENTION_CLEANUP_BUFFER` 设置为持续时间，例如 `30d` 或 `720h`。 LangSmith 等待了这么长时间，过了 `longlived` 时间段后才删除数据。默认为`0s`。例如，使用默认的 400 天 `longlived` 周期和 `30d` 缓冲区，运行统计信息在 LangSmith 收到跟踪后至少 430 天内保持可用。
+要保持运行统计数据更长时间可用，请将 `SMITHDB_COMPACTION__EXPIRY_CYCLE__RETENTION_CLEANUP_BUFFER` 设置为持续时间，例如 `30d` 或 `720h`。 LangSmith 等待了这么长时间，过了 `longlived` 时间段后才删除数据。默认为`0s`。例如，使用默认的 400 天 `longlived` 周期和 `30d` 缓冲区，运行统计信息在 LangSmith 收到跟踪后至少可保留 430 天。
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:

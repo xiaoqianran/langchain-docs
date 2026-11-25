@@ -4,7 +4,7 @@
 
 What LangSmith BYOC deploys in your Azure subscription, how the data plane connects to the LangChain control plane, the access LangSmith gets, and how your data is protected.
 
-BYOC on Azure runs the LangSmith data plane in a resource group in your Azure subscription, while LangChain runs the control plane in its own Azure environment in `centralus`. Your trace data stays in your subscription. This page describes what LangSmith deploys, how traffic flows, the access LangSmith gets, and how your data is protected. For BYOC on AWS, see [BYOC architecture](/langsmith/byoc-architecture-aws).
+BYOC on Azure runs the LangSmith data plane in a resource group in your Azure subscription, while LangChain runs the control plane in its own Azure environment in `centralus`. Your trace data stays in your subscription. This page describes what LangSmith deploys, how traffic flows, the access LangSmith gets, and how your data is protected. For BYOC on AWS, see [BYOC architecture on AWS](/langsmith/byoc-architecture-aws).
 
 > [!NOTE]
 >

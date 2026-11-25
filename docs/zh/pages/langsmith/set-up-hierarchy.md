@@ -46,7 +46,7 @@
 
 ### 管理和导航工作区
 
-一旦您订阅了允许每个组织使用多个用户的[plan](/langsmith/pricing-plans)，您就可以设置[workspaces](/langsmith/administration-overview#workspaces)以更有效地协作并隔离不同用户组之间的LangSmith资源。要在工作区之间导航并访问每个工作区中的资源（跟踪项目、注释队列等），请从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-set-up-hierarchy) 左下角的选择器中选择所需的工作区。### 管理用户
+一旦您订阅了允许每个组织使用多个用户的 [plan](/langsmith/pricing-plans)，您就可以设置 [workspaces](/langsmith/administration-overview#workspaces) 以更有效地协作并隔离不同用户组之间的 LangSmith 资源。要在工作区之间导航并访问每个工作区中的资源（跟踪项目、注释队列等），请从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-set-up-hierarchy) 左下角的选择器中选择所需的工作区。### 管理用户
 
 在 [organization settings](https://smith.langchain.com/settings) 的 **成员** 页面上管理共享组织中的成员资格。在这里您可以：
 
@@ -63,7 +63,7 @@
 * **组织管理员** 授予管理所有组织配置、用户、计费和工作区的完全访问权限。任何组织管理员都拥有对组织中所有工作区的`Admin` 访问权限。
 * **组织用户**可以读取组织信息，但无法在组织级别执行任何写入操作。您可以像往常一样将组织用户添加到工作区子集并分配工作区角色（如果启用了[RBAC](/langsmith/rbac)），这指定了工作区级别的权限。> [!注意]
 >
-> [Organization User](/langsmith/rbac#organization-user) 和 [Organization Viewer](/langsmith/rbac#organization-viewer) 角色仅在 [Plus and Enterprise plans](https://langchain.com/pricing) 上的组织中可用。在开发者组织（单个工作区）中，默认情况下为所有用户分配 [Organization Admin](/langsmith/rbac#organization-admin) 角色。自定义组织范围的角色不可用。
+> [Organization User](/langsmith/rbac#organization-user) 和 [Organization Viewer](/langsmith/rbac#organization-viewer) 角色仅在[Plus and Enterprise plans](https://langchain.com/pricing) 上的组织中可用。在开发者组织（单个工作区）中，默认情况下为所有用户分配 [Organization Admin](/langsmith/rbac#organization-admin) 角色。自定义组织范围的角色不可用。
 
 有关与每个角色关联的权限的完整列表，请参阅 [Administration overview](/langsmith/administration-overview#organization-roles) 页面。
 
@@ -95,7 +95,7 @@
 
 工作空间设置位于所选工作空间的[**Settings** page](https://smith.langchain.com/settings/workspaces) 上。选项包括配置成员、[model configurations](/langsmith/model-configurations)、[shared URLs](/langsmith/manage-trace)以及[grouping resources](#set-up-agents)的资源标签的能力。
 
-工作区机密存储 LangSmith 用于调用模型提供程序和工具的 API 密钥。将它们添加到 **设置** > **集成** > **提供商机密** 下。
+工作区机密存储 LangSmith 用于调用模型提供程序和工具的 API 密钥。要添加一个，请参阅[Workspace secrets](/langsmith/workspace-secrets)。
 
 ### 删除工作区> [!警告]
 >

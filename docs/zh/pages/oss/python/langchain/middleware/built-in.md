@@ -169,7 +169,7 @@ agent = create_agent(
 >
 > **retry_on** `tuple[type[Exception], ...] | callable`（默认：default_retry_on）
 >
-> 要重试的异常类型的元组，或者是接受异常并在应该重试时返回 `True` 的可调用对象。使用`langchain>=1.3.16`，默认重试可重试的[model errors](/oss/python/langchain/models#model-exceptions)以及所有未分类的异常，并且不再重试标记为不可重试的模型错误。
+> 要重试的异常类型的元组，或者是接受异常并在应该重试时返回 `True` 的可调用对象。使用`langchain>=1.3.16`，默认重试可重试的[model errors](/oss/python/langchain/models#model-exceptions)和所有未分类的异常，并且不再重试标记为不可重试的模型错误。
 >
 > **on_failure** `string | callable`（默认：继续）
 >
@@ -375,7 +375,7 @@ agent = create_agent(
 
 * 构建处理模型中断的弹性代理。
 * 通过使用更便宜的型号来优化成本。
-* OpenAI、Anthropic 等提供冗余。
+* OpenAI、Anthropic 等提供者冗余。
 
 **API参考：** [⟦T125⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)
 
@@ -416,7 +416,7 @@ agent = create_agent(
 * 当模型拒绝时，运行明显失败。
 * 使用 [Model fallback](#model-fallback) 在另一个模型上重试被拒绝的请求。
 
-中间件检查[⟦T133⟧ content block](/oss/python/langchain/messages#content-block-reference)​​的每个模型响应，其中OpenAI、Anthropic和Gemini模型产生。它还捕获在结构化`response_format`下无法解析的拒绝。它不会检测模型以普通文本形式写入的拒绝。
+中间件检查 [⟦T133⟧ content block](/oss/python/langchain/messages#content-block-reference) 的每个模型响应，其中 OpenAI、Anthropic 和 Gemini 模型生成。它还捕获在结构化`response_format`下无法解析的拒绝。它不会检测模型以普通文本形式写入的拒绝。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -513,7 +513,7 @@ agent = create_agent(
 
 > [手风琴] 编写自定义处理
 >
-> 对于其他处理，例如记录状态中的拒绝或调用 `interrupt()` 询问人员如何继续，请跳过 `ModelRefusalMiddleware` 并在您自己的中间件中检查每个响应是否有 [⟦T147⟧ content block](/oss/python/langchain/messages#content-block-reference)。参见[Custom middleware](/oss/python/langchain/middleware/custom)。
+> 对于其他处理，例如在状态中记录拒绝或调用 `interrupt()` 询问人员如何继续，请跳过 `ModelRefusalMiddleware` 并在您自己的中间件中检查每个响应是否有 [⟦T147⟧ content block](/oss/python/langchain/messages#content-block-reference)。参见[Custom middleware](/oss/python/langchain/middleware/custom)。
 
 ### 总结当接近令牌限制时自动总结对话历史记录，保留最近的消息，同时压缩旧的上下文。总结对于以下方面很有用：
 
@@ -546,7 +546,7 @@ agent = create_agent(
 >
 >> [!提示]
 >>
->> 如果使用 `langchain>=1.1`，`trigger` 和 `keep` 的`fraction` 条件（如下所示）依赖于聊天模型的 [profile data](/oss/python/langchain/models#model-profiles)。如果数据不可用，请使用其他条件或手动指定：
+>> 如果使用 `langchain>=1.1`，`trigger` 和 `keep`（如下所示）的 `fraction` 条件依赖于聊天模型的 [profile data](/oss/python/langchain/models#model-profiles)。如果数据不可用，请使用其他条件或手动指定：
 >>
 >> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langchain.chat_models import init_chat_model
@@ -603,18 +603,13 @@ agent = create_agent(
 >
 > 生成摘要时要包含的最大标记数。在汇总之前，消息将被修剪以适应此限制。
 >
-> **summary_prefix** `string` *已弃用*
->
-> **已弃用：** 使用 `summary_prompt` 来提供完整提示。
->
 > **max_tokens_before_summary** `number` *已弃用*
 >
 > **已弃用：** 使用 `trigger: ("tokens", value)` 代替。触发汇总的令牌阈值。
->> **messages_to_keep** `number` *已弃用*
 >
-> **已弃用：** 使用 `keep: ("messages", value)` 代替。要保留的最近消息。
-
-> [手风琴] 完整示例
+> **messages_to_keep** `number` *已弃用*
+>
+> **已弃用：** 使用 `keep: ("messages", value)` 代替。要保留的最近消息。> [手风琴] 完整示例
 >
 > 汇总中间件监视消息令牌计数，并在达到阈值时自动汇总旧消息。
 >
@@ -625,7 +620,7 @@ agent = create_agent(
 > * 触发条件列表，任意一项满足时触发（OR逻辑）
 > * 每个阈值可以使用`fraction`（模型上下文大小）、`tokens`（绝对计数）或`messages`（消息计数）
 >
-> **保留条件** 控制要保留多少上下文（准确指定一个）：
+> **保留条件** 控制要保留的上下文量（准确指定一个）：
 >
 > * `fraction` - 要保留的模型上下文大小的分数
 > * `tokens` - 要保留的绝对令牌计数
@@ -711,11 +706,11 @@ agent = create_agent(
 
 ### 人机交互
 
-在执行之前暂停代理执行，以便人工批准、编辑或拒绝工具调用。 [Human-in-the-loop](/oss/python/langchain/human-in-the-loop) 适用于以下情况：* 需要人工批准的高风险操作（例如数据库写入、金融交易）。
-* 强制进行人工监督的合规工作流程。
-* 长时间运行的对话，人工反馈指导代理。
+在执行之前暂停代理执行，以便人工批准、编辑或拒绝工具调用。 [Human-in-the-loop](/oss/python/langchain/human-in-the-loop) 适用于以下情况：
 
-**API参考：** [⟦T192⟧](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HumanInTheLoopMiddleware)
+* 需要人工批准的高风险操作（例如数据库写入、金融交易）。
+* 强制进行人工监督的合规工作流程。
+* 长时间运行的对话，人工反馈指导代理。**API参考：** [⟦T190⟧](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HumanInTheLoopMiddleware)
 
 默认情况下，中间件每个模型轮暂停一次。将 `interrupt_mode="per_call"` 设置为每次工具调用暂停一次，每个中断均由其 ID 应答。参见[Set the interrupt mode](/oss/python/langchain/human-in-the-loop#set-the-interrupt-mode)。
 
@@ -768,7 +763,7 @@ agent = create_agent(
 * 对生产部署实施成本控制。
 * 测试座席在特定呼叫预算内的行为。
 
-**API参考：** [⟦T194⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware)
+**API参考：** [⟦T192⟧](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -812,7 +807,7 @@ agent = create_agent(
 * 对特定工具的使用实施速率限制。
 * 防止代理失控循环。
 
-**API参考：** [⟦T200⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware)
+**API参考：** [⟦T198⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -846,7 +841,7 @@ agent = create_agent(
 >
 > **运行限制** `number`
 >
-> 每次调用的最大工具调用数（一条用户消息 → 响应周期）。每条新用户消息都会重置。 `None` 表示无运行限制。
+> 每次调用的最大工具调用数（一条用户消息 → 响应周期）。每条新用户消息都会重置。 `None`表示无运行限制。
 >
 > **注意：** 必须至少指定`thread_limit` 或`run_limit` 之一。
 >
@@ -896,9 +891,9 @@ agent = create_agent(
 >
 > 借助 `apply_to_output=True`，`PIIMiddleware` 还可以通过注册的流转换器编辑流式传输输出（文本增量、工具调用参数、工具输出和状态快照）。需要`langchain>=1.3.2`。参见[Register transformers on middleware](/oss/python/langchain/event-streaming#register-transformers-on-middleware)。
 >
-> 流转换器保留每个文本块、工具调用参数和工具输出的最后 128 个字符，直到更多文本到达或块完成，并在保留的文本和新增量上运行检测器。只要整个匹配包含 128 个字符，在发送其任何部分之前就会检测到跨增量分割的匹配。将自定义检测器匹配保持在 128 个字符或更少：较长匹配的开头可以在其余部分到达之前发送。有关背景信息，请参阅 [OWASP AI Exchange: sensitive output handling](https://owaspai.org/go/sensitiveoutputhandling) 和 [Split-Boundary Leaks in Streaming Guardrails](https://doi.org/10.5281/zenodo.22909585)。
+> 流转换器保留每个文本块、工具调用参数和工具输出的最后 128 个字符，直到更多文本到达或块完成，并在保留的文本和新增量上运行检测器。只要整个匹配包含 128 个字符，在发送其任何部分之前就会检测到跨增量分割的匹配。将自定义检测器匹配保持在 128 个字符或更少：较长匹配的开头可以在其余部分到达之前发送。有关背景信息，请参阅[OWASP AI Exchange: sensitive output handling](https://owaspai.org/go/sensitiveoutputhandling)和[Split-Boundary Leaks in Streaming Guardrails](https://doi.org/10.5281/zenodo.22909585)。
 
-**API参考：** [⟦T221⟧](https://reference.langchain.com/python/langchain/agents/middleware/pii/PIIMiddleware)
+**API参考：** [⟦T219⟧](https://reference.langchain.com/python/langchain/agents/middleware/pii/PIIMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -920,7 +915,7 @@ agent = create_agent(
 
 **创建自定义检测器的三种方法：**
 
-1. **Regex模式字符串** - 简单模式匹配
+1. **正则表达式模式字符串** - 简单模式匹配
 
 2. **自定义函数** - 带验证的复杂检测逻辑
 
@@ -1036,11 +1031,11 @@ def detector(content: str) -> list[PIIMatch]:
 >
 > 自定义检测器函数或正则表达式模式。如果未提供，则使用 PII 类型的内置检测器。
 >
-> **apply_to_input** `boolean`（默认值：True）
+> **apply_to_input** `boolean` （默认值：True）
 >
 > 模型调用前查看用户留言
 >
-> **apply_to_output** `boolean` （默认值：False）
+> **apply_to_output** `boolean`（默认值：False）
 >> 模型调用后查看AI消息。使用`langchain>=1.3.2`，还可以通过注册的流转换器编辑流式传输输出（文本增量、工具调用参数、工具输出、状态快照）。参见[event streaming](/oss/python/langchain/event-streaming#register-transformers-on-middleware)。
 >
 > **apply_to_tool_results** `boolean`（默认值：False）
@@ -1056,9 +1051,9 @@ def detector(content: str) -> list[PIIMatch]:
 
 > [!注意]
 >
-> 该中间件自动为座席提供`write_todos`工具和系统提示来指导有效的任务规划。
+> 该中间件自动为座席提供`write_todos`工具和系统提示，以指导有效的任务规划。
 
-**API参考：** [⟦T243⟧](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware)
+**API参考：** [⟦T241⟧](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1091,7 +1086,7 @@ agent = create_agent(
 
 该中间件使用结构化输出来询问法学硕士哪些工具与当前查询最相关。结构化输出模式定义了可用的工具名称和描述。模型提供者通常会将此结构化输出信息添加到幕后的系统提示中。
 
-**API参考：** [⟦T247⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_selection/LLMToolSelectorMiddleware)
+**API参考：** [⟦T245⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_selection/LLMToolSelectorMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1112,7 +1107,7 @@ agent = create_agent(
 >
 > **型号** `string | BaseChatModel`
 >
-> 工具选择模型。可以是模型标识符字符串（例如，`'openai:gpt-5.4-mini'`）或`BaseChatModel`实例。请参阅[⟦T251⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
+> 工具选择模型。可以是模型标识符字符串（例如，`'openai:gpt-5.4-mini'`）或`BaseChatModel`实例。请参阅[⟦T249⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
 >
 > 默认为代理的主要模型。
 >
@@ -1127,6 +1122,21 @@ agent = create_agent(
 > **始终包含** `list[string]`
 >
 > 无论选择如何，始终包含工具名称。这些不计入 max_tools 限制。
+>
+> **最大重试次数** `number`（默认值：1）
+>
+> 如果选择模型返回格式错误的响应（不是带有 `tools` 列表的字典），则初始调用后的最大重试尝试次数。必须是`>= 0`。
+>
+> **on_parsing_failure** `'error' | 'none' | 'all' | list[string] | callable` （默认：错误）
+>
+> 一旦 `max_retries` 耗尽并且响应仍然格式错误时的行为：
+>
+> * `'error'`：提高`ValueError`。
+> * `'none'`：不选择任何工具。
+> * `'all'`：选择每个可用的工具。
+> * 要回退的工具名称列表。
+> * 一个可调用函数，它接受最后一个（格式错误的）响应并返回要使用的工具名称。
+>> 后备工具不受 `max_tools` 的限制。
 
 ### 路由器型号
 
@@ -1134,7 +1144,7 @@ agent = create_agent(
 >
 > `ModelRouterMiddleware` 处于测试阶段，需要 `langchain>=1.5.0`。其 API 可能会更改，恕不另行通知。
 
-为使用决策模型运行的每个代理选择模型。在运行开始之前，中间件会要求决策模型根据最新的人工消息选择一个命名的 `ModelChoice` 条目，然后将该模型用于运行中的每个模型调用。答案在代理状态中存储为`model_route`。
+为使用决策模型运行的每个代理选择模型。在运行开始之前，中间件会要求决策模型根据最新的人工消息选择一个命名的 `ModelChoice` 条目，然后将该模型用于运行中的每个模型调用。答案以`model_route`的形式存储在代理状态中。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1157,13 +1167,15 @@ router = ModelRouterMiddleware(
 )
 
 agent = create_agent("openai:gpt-6-luna", middleware=[router])
-```> [手风琴] 配置选项
+```
+
+> [手风琴] 配置选项
 >
 > **选择** `Mapping[str, ModelChoice]` *必填*
 >
 > 命名模型选择。每个键是决策模型选择的路线标签，每个值是一个包含两个字段的`ModelChoice`：
 >
-> * `model` (`str | BaseChatModel`)：[⟦T263⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) 或`BaseChatModel` 实例接受的模型标识符字符串。实例按原样使用。
+> * `model` (`str | BaseChatModel`)：[⟦T271⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) 或`BaseChatModel` 实例接受的模型标识符字符串。实例按原样使用。
 > * `criteria`：模型适合的任务的描述。可以是字符串或任何其他 JSON 兼容的值。
 >
 > 必须包含至少一个选择。
@@ -1173,8 +1185,7 @@ agent = create_agent("openai:gpt-6-luna", middleware=[router])
 > 选择路线时决策模型遵循的说明。
 >
 > **分类器** `BaseDecisionModel` *必填*
->
-> 选择路线的决策模型。如果它引发错误，错误将传播并且运行结束，而不是回退到另一个模型。
+>> 选择路线的决策模型。如果它引发错误，错误将传播并且运行结束，而不是回退到另一个模型。
 
 路由器路由最新的人工消息，如果代理状态没有，则引发`ValueError`。
 
@@ -1182,7 +1193,9 @@ agent = create_agent("openai:gpt-6-luna", middleware=[router])
 
 > [!注意]
 >
-> `AutoModeMiddleware` 处于测试阶段，需要 `langchain>=1.5.0`。其 API 可能会更改，恕不另行通知。使用决策模型阻止有风险的工具调用。在每次调用您列出的工具之前，中间件都会向决策模型询问该调用有风险或未经用户授权的概率。概率为 `0.5` 或更高的调用返回错误 `ToolMessage` 而不是运行。您未列出的工具在不分类的情况下运行。自动模式阻止呼叫；要让人批准它们，请使用 [Human-in-the-loop](#human-in-the-loop)。
+> `AutoModeMiddleware` 处于测试阶段，需要 `langchain>=1.5.0`。其 API 可能会更改，恕不另行通知。
+
+使用决策模型阻止有风险的工具调用。在每次调用您列出的工具之前，中间件都会向决策模型询问该调用有风险或未经用户授权的概率。概率为 `0.5` 或更高的调用返回错误 `ToolMessage` 而不是运行。您未列出的工具在不分类的情况下运行。自动模式阻止呼叫；要让人批准它们，请使用 [Human-in-the-loop](#human-in-the-loop)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1207,13 +1220,11 @@ agent = create_agent(
         )
     ],
 )
-```
-
-> [手风琴] 配置选项
+```> [手风琴] 配置选项
 >
 > **工具** `list[str | BaseTool]` *必需*
 >
-> 在运行之前进行分类的工具名称或 `BaseTool` 实例。未列出的工具无需分类即可运行。必须包含至少一种工具。
+> 在运行之前进行分类的工具名称或`BaseTool`实例。未列出的工具无需分类即可运行。必须包含至少一种工具。
 >
 > **分类器** `BaseDecisionModel` *必填*
 >
@@ -1222,22 +1233,21 @@ agent = create_agent(
 > **说明** `str`
 >
 > 分类指令发送至决策模型。如果未指定，则使用内置指令。内置指令将破坏性操作、凭据访问、外部共享以及用户未明确授权的操作视为有风险。
->> **标准** `NoulCriteria | None`（默认值：无）
+>
+> **标准** `NoulCriteria | None`（默认值：无）
 >
 > 阻止的结果 (`true`) 和允许的结果 (`false`) 的描述。如果未指定，则不发送任何条件，并且决策模型依赖于`instructions`。
 
 ### 提供商工具搜索
 
-将选定的工具推迟到模型提供者的服务器端工具搜索之后，以便模型按需发现它们，而不是预先接收每个工具模式。提供商工具搜索可用于：
-
-* 减少使用许多工具时的上下文膨胀。
+将选定的工具推迟到模型提供者的服务器端工具搜索之后，以便模型按需发现它们，而不是预先接收每个工具模式。提供商工具搜索可用于：* 减少使用许多工具时的上下文膨胀。
 * 通过仅显示相关工具来提高工具选择的准确性。
 
 > [!注意]
 >
 > 需要具有服务器端工具搜索支持的模型：Anthropic (Claude Sonnet 4+/Opus 4+/Haiku 4.5+) 或 OpenAI (gpt-5.5+)。其他提供商提出`ValueError`。
 
-**API参考：** [⟦T285⟧](https://reference.langchain.com/python/langchain/agents/middleware/provider_tool_search/ProviderToolSearchMiddleware)
+**API参考：** [⟦T293⟧](https://reference.langchain.com/python/langchain/agents/middleware/provider_tool_search/ProviderToolSearchMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1256,7 +1266,9 @@ agent = create_agent(
 >
 > **可搜索工具** `list[str | BaseTool]`
 >
-> 推迟提供者工具搜索的工具，按名称或实例给出。延迟工具将从模型中保留，直到搜索显示它们为止。无论此选项如何，使用 `extras={"defer_loading": True}` 构建的工具都会被推迟；如果省略`searchable_tools`，则仅推迟那些预先标记的工具。> [手风琴] 完整示例
+> 推迟提供者工具搜索的工具，按名称或实例给出。延迟工具将从模型中保留，直到搜索显示它们为止。无论此选项如何，使用 `extras={"defer_loading": True}` 构建的工具都会被推迟；如果省略`searchable_tools`，则仅推迟那些预先标记的工具。
+
+> [手风琴] 完整示例
 >
 > 中间件选择使用 `searchable_tools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras={"defer_loading": True}` 选择在构建时延迟。
 >
@@ -1288,9 +1300,7 @@ agent = create_agent(
 * 需要执行系统命令的代理
 * 开发和部署自动化任务
 * 测试和验证工作流程
-* 文件系统操作和脚本执行
-
-> [!警告]
+* 文件系统操作和脚本执行> [!警告]
 >
 > **安全注意事项**：使用适当的执行策略（`HostExecutionPolicy`、`DockerExecutionPolicy` 或 `CodexSandboxExecutionPolicy`）来匹配您的部署的安全要求。
 
@@ -1298,7 +1308,7 @@ agent = create_agent(
 >
 > **限制**：持久 shell 会话当前不支持中断（人机交互）。我们预计将来会增加对此的支持。
 
-**API参考：** [⟦T294⟧](https://reference.langchain.com/python/langchain/agents/middleware/shell_tool/ShellToolMiddleware)
+**API参考：** [⟦T302⟧](https://reference.langchain.com/python/langchain/agents/middleware/shell_tool/ShellToolMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1317,7 +1327,9 @@ agent = create_agent(
         ),
     ],
 )
-```> [手风琴] 配置选项
+```
+
+> [手风琴] 配置选项
 >
 > **工作空间根目录** `str | Path | None`
 >
@@ -1337,9 +1349,8 @@ agent = create_agent(
 >
 > * `HostExecutionPolicy` - 完全主机访问（默认）；最适合代理已在容器或虚拟机内运行的受信任环境
 > * `DockerExecutionPolicy` - 为每个代理运行启动一个单独的 Docker 容器，提供更严格的隔离
-> * `CodexSandboxExecutionPolicy` - 重用 Codex CLI 沙箱以实现额外的系统调用/文件系统限制
->
-> **编辑_规则** `tuple[RedactionRule, ...] | list[RedactionRule] | None`
+> * `CodexSandboxExecutionPolicy` - 重用 Codex CLI 沙箱以实现额外的系统调用/文件系统限制>
+> **编辑规则** `tuple[RedactionRule, ...] | list[RedactionRule] | None`
 >
 > 可选的编辑规则，用于在将命令输出返回到模型之前对其进行清理。
 >
@@ -1347,8 +1358,13 @@ agent = create_agent(
 >>
 >> 编辑规则在执行后应用，并且在使用 `HostExecutionPolicy` 时不会防止机密或敏感数据的泄露。
 >
-> **工具_描述** `str | None`
->> 已注册 shell 工具描述的可选覆盖
+> **工具描述** `str | None`
+>
+> 已注册 shell 工具描述的可选覆盖
+>
+> **工具名称** `str`（默认：shell）
+>
+> 已注册 shell 工具的名称。
 >
 > **shell_命令** `Sequence[str] | str | None`
 >
@@ -1421,11 +1437,11 @@ agent = create_agent(
 > )
 > ```
 
-### 文件系统中间件
+### 文件系统中间件上下文工程是构建有效代理的主要挑战。当使用返回可变长度结果的工具（例如，`web_search`和RAG）时，这尤其困难，因为长工具结果可以快速填充您的上下文窗口。
 
-上下文工程是构建有效代理的主要挑战。 This is particularly difficult when using tools that return variable-length results (for example, `web_search` and RAG), as long tool results can quickly fill your context window.
+[Deep Agents](/oss/python/deepagents/overview) 的 `FilesystemMiddleware` 提供了四种与短期和长期记忆交互的工具：
 
-[Deep Agents](/oss/python/deepagents/overview) 中的`FilesystemMiddleware` 提供了四种与短期和长期记忆交互的工具：* `ls`：列出文件系统中的文件
+* `ls`：列出文件系统中的文件
 * `read_file`：读取整个文件或文件中的特定行数
 * `write_file`：将新文件写入文件系统
 * `edit_file`：编辑文件系统中的现有文件
@@ -1486,11 +1502,9 @@ agent = create_agent(
 
 ### 子代理
 
-将任务交给子代理可以隔离上下文，保持主（主管）代理的上下文窗口干净，同时仍然深入执行任务。
+将任务交给子代理可以隔离上下文，保持主（主管）代理的上下文窗口干净，同时仍然深入执行任务。[Deep Agents](/oss/python/deepagents/overview) 的子代理中间件允许您通过 `task` 工具提供子代理。
 
-[Deep Agents](/oss/python/deepagents/overview) 的子代理中间件允许您通过 `task` 工具提供子代理。
-
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1525,7 +1539,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1560,7 +1574,7 @@ agent = create_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1595,7 +1609,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1630,7 +1644,7 @@ agent = create_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1665,7 +1679,7 @@ agent = create_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1700,7 +1714,7 @@ agent = create_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1733,11 +1747,13 @@ agent = create_agent(
         )
     ],
 )
-```声明性子代理需要**名称**、**描述**、**模型**和**工具**。您还可以设置**系统提示**和附加**中间件**。当您想要为子代理提供额外的状态密钥以与主代理共享时，这尤其有用。
+```
+
+声明性子代理需要**名称**、**描述**、**模型**和**工具**。您还可以设置**系统提示**和附加**中间件**。当您想要为子代理提供额外的状态密钥以与主代理共享时，这尤其有用。
 
 对于更复杂的用例，您还可以提供自己的预构建 LangGraph 图作为子代理。
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1779,7 +1795,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1821,7 +1837,7 @@ agent = create_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1863,7 +1879,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1905,7 +1921,7 @@ agent = create_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1947,7 +1963,7 @@ agent = create_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1989,7 +2005,7 @@ agent = create_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -2041,9 +2057,9 @@ agent = create_agent(
 
 有些任务有明确的“完成”定义，代理无法在第一次尝试时可靠地完成任务。 `RubricMiddleware` 允许您将“完成的内容”声明为一个评分标准，并让代理进行自我评估和迭代，直到满足评分标准或达到最大迭代上限。
 
-**API参考：** [⟦T330⟧](https://reference.langchain.com/python/deepagents/middleware/rubric/RubricMiddleware)
+**API参考：** [⟦T339⟧](https://reference.langchain.com/python/deepagents/middleware/rubric/RubricMiddleware)
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2059,7 +2075,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2075,7 +2091,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2091,7 +2107,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2107,7 +2123,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2123,7 +2139,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2139,7 +2155,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2153,18 +2169,18 @@ agent = create_deep_agent(
     ],
     checkpointer=InMemorySaver(),
 )
-```
+```有关完整的配置选项、流事件和完整的代码生成示例，请参阅[Grading rubrics](/oss/python/deepagents/rubric)。
 
-有关完整的配置选项、流事件和完整的代码生成示例，请参阅[Grading rubrics](/oss/python/deepagents/rubric)。
+### 文件搜索
 
-### 文件搜索在文件系统上提供 Glob 和 Grep 搜索工具。文件搜索中间件可用于以下用途：
+在文件系统上提供 Glob 和 Grep 搜索工具。文件搜索中间件可用于以下用途：
 
 * 代码探索与分析
 * 按名称模式查找文件
 * 使用正则表达式搜索代码内容
 * 需要文件发现的大型代码库
 
-**API参考：** [⟦T331⟧](https://reference.langchain.com/python/langchain/agents/middleware/file_search/FilesystemFileSearchMiddleware)
+**API参考：** [⟦T340⟧](https://reference.langchain.com/python/langchain/agents/middleware/file_search/FilesystemFileSearchMiddleware)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -2194,9 +2210,7 @@ agent = create_agent(
 >
 > **最大文件大小_mb** `int`（默认值：10）
 >
-> 搜索的最大文件大小（以 MB 为单位）。大于此大小的文件将被跳过。
-
-> [手风琴] 完整示例
+> 搜索的最大文件大小（以 MB 为单位）。大于此大小的文件将被跳过。> [手风琴] 完整示例
 >
 > 中间件为代理添加了两个搜索工具：
 >
@@ -2239,13 +2253,15 @@ agent = create_agent(
 > # 2. grep_search(pattern="async def", include="*.py") to find async functions
 > ```
 
-### 上下文编辑通过在达到令牌限制时清除旧工具调用输出来管理对话上下文，同时保留最近的结果。这有助于在与许多工具调用的长时间对话中保持上下文窗口的可管理性。上下文编辑对于以下用途很有用：
+### 上下文编辑
+
+通过在达到令牌限制时清除旧工具调用输出来管理对话上下文，同时保留最近的结果。这有助于在与许多工具调用的长时间对话中保持上下文窗口的可管理性。上下文编辑对于以下用途很有用：
 
 * 与许多超出令牌限制的工具调用进行长时间对话
 * 通过删除不再相关的旧工具输出来降低代币成本
 * 仅维护上下文中最新的 N 个工具结果
 
-**API参考：** [⟦T341⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ContextEditingMiddleware)、[⟦T342⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ClearToolUsesEdit)
+**API参考：** [⟦T350⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ContextEditingMiddleware)、[⟦T351⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ClearToolUsesEdit)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -2269,13 +2285,13 @@ agent = create_agent(
 >
 > **编辑** `list[ContextEdit]` （默认值：\[ClearToolUsesEdit()]）
 >
-> [⟦T344⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ContextEdit) 应用策略列表
+> [⟦T353⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ContextEdit) 应用策略列表
 >
 > **token_count_method** `string`（默认值：近似值）
 >
 > 令牌计数方法。选项：`'approximate'` 或 `'model'`
 >
-> **[⟦T348⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ClearToolUsesEdit) 选项：**
+> **[⟦T357⟧](https://reference.langchain.com/python/langchain/agents/middleware/context_editing/ClearToolUsesEdit) 选项：**
 >
 > **触发** `number`（默认：100000）
 >
@@ -2293,11 +2309,11 @@ agent = create_agent(
 >
 > 是否清除AI消息上的原始工具调用参数。当`True`时，工具调用参数被替换为空对象。
 >
-> **exclude_tools** `list[string]`（默认值：()）
+> **exclude_tools** `list[string]`（默认：()）
 >
 > 要从清除中排除的工具名称列表。这些工具的输出永远不会被清除。
 >
-> **占位符** `string` （默认值：\[清除]）
+> **占位符** `string`（默认值：\[清除]）
 >
 > 为清除的工具输出插入占位符文本。这替换了原始工具消息内容。> [手风琴] 完整示例
 >
@@ -2342,7 +2358,7 @@ agent = create_agent(
 * 当外部工具不可用或昂贵时开发代理。
 * 在实施实际工具之前对代理工作流程进行原型设计。
 
-**API参考：** [⟦T357⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_emulator/LLMToolEmulator)
+**API参考：** [⟦T366⟧](https://reference.langchain.com/python/langchain/agents/middleware/tool_emulator/LLMToolEmulator)
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -2357,13 +2373,13 @@ agent = create_agent(
 )
 ```> [手风琴] 配置选项
 >
-> **tools** `list[str | BaseTool]`
+> **工具** `list[str | BaseTool]`
 >
-> 要模拟的工具名称 (str) 或 BaseTool 实例的列表。如果`None`（默认），将模拟所有工具。如果列表为空`[]`，则不会模拟任何工具。如果数组包含工具名称/实例，则仅模拟这些工具。
+> 要模拟的工具名称 (str) 或 BaseTool 实例的列表。如果`None`（默认），将模拟所有工具。如果列表`[]`为空，则不会模拟任何工具。如果数组包含工具名称/实例，则仅模拟这些工具。
 >
-> **model** `string | BaseChatModel`
+> **型号** `string | BaseChatModel`
 >
-> 用于生成模拟工具响应的模型。可以是模型标识符字符串（例如，`'google_genai:gemini-4-hydrogen'`）或`BaseChatModel`实例。如果未指定，则默认为代理的型号。请参阅[⟦T364⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
+> 用于生成模拟工具响应的模型。可以是模型标识符字符串（例如，`'google_genai:gemini-4-hydrogen'`）或`BaseChatModel`实例。如果未指定，则默认为代理的型号。请参阅[⟦T373⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)了解更多信息。
 
 > [手风琴] 完整示例
 >

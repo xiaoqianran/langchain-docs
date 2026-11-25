@@ -8,7 +8,7 @@ Evaluate production traces in LangSmith with a decision model as the judge and r
 
 > [!NOTE]
 >
-> When an online evaluator runs on any run within a trace, LangSmith upgrades the trace to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades).
+> Online evaluators extend trace retention by default. You can [opt out for an individual evaluator](/langsmith/evaluators#manage-evaluator-trace-retention) when the agent environment uses base retention. Other actions can still extend those traces. If [extended retention is disabled for the workspace](/langsmith/data-purging-compliance#disable-extended-trace-retention), evaluations continue without new retention upgrades, regardless of saved environment defaults.
 
 ## Decision models
 

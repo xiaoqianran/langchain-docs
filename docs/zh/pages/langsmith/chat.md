@@ -16,7 +16,7 @@
 \
 **可观察性和调试：**
 
-* [Projects](#projects)：浏览和过滤整个项目的运行。
+* [Projects](#projects)：浏览和过滤项目中的运行。
 * [Trace pages](#trace-pages)：分析各个运行和执行跟踪。
 * [Thread views](#thread-views)：了解对话线程和用户交互。
 * [Engine](#engine)：调查检测到的问题及其链接的痕迹。
@@ -29,7 +29,7 @@
 **评估与测试：**
 
 * [Dataset Experiments](#dataset-experiments)：分析实验结果并比较运行。
-* [Dataset Examples](#dataset-examples)：浏览并了解数据集结构。
+* [Dataset Examples](#dataset-examples)：浏览并理解数据集结构。
 * [Annotation Queues](#annotation-queues)：审查运行并做出明智的注释决策。
 * [Evaluators](#evaluators)：在人工智能辅助下构建和完善评估器。
 
@@ -37,24 +37,16 @@
 
 在开始使用 Chat 之前，您需要为您使用的模型添加 API 密钥：
 
-在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-set-workspace-secrets) 中，确保您的 API 密钥设置为 [workspace secret](/langsmith/set-up-hierarchy#configure-workspace-settings)。
+在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-set-workspace-secrets) 中，添加模型提供者的 API 密钥作为工作区密钥：
 
-添加工作区机密需要管理工作区中机密的权限。如果您没有，请要求工作区管理员为您添加密钥或授予您访问权限。
+1. 打开**设置**。如果您的组织有工作区，请选择侧边栏顶部的“**工作区**”，然后选择需要密钥的工作区。在“**配置**”下，选择“**机密**”。
+2. 单击**+ 秘密**。在 **Provider** 下，选择您的模型提供商，输入您的 API 密钥，然后单击 **Save**。
 
-要添加工作区机密：
-
-1. 导航到 **设置** > **集成** > **提供商机密**。
-2. 选择 **+ 秘密**。
-3. 在**提供商**下，选择您的模型提供商。 LangSmith 使用提供者期望的环境变量命名机密，例如 `OPENAI_API_KEY`。在该字段中输入您的秘密。
-
-   如果您的提供商未列出，请将**自定义**保留为提供商。输入您的提供商期望的环境变量名称作为 **Key**，并输入您的 API 密钥作为 **Value**。
-4. 选择**保存**。
+如果您使用自托管 LangSmith，您的提供商未列出，或者您无法添加机密，请参阅 [Workspace secrets](/langsmith/workspace-secrets)。
 
 > [!注意]
 >
-> 如果您的提供商使用 OAuth2 `client_credentials` 进行身份验证，请改为在模型配置上配置凭据。在这种情况下，不需要工作空间机密。参见[OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)。> [!注意]
->
-> 从 LangSmith 的出口 IP 地址聊天调用模型提供者。如果您的模型提供商（或其前面的代理）通过 IP 限制流量，请将 [Allowlist IP addresses](/langsmith/cloud-platform-features#allowlist-ip-addresses) 中列出的 LangSmith 出口 IP 列入白名单。
+> 聊天从 LangSmith 的出口 IP 地址调用模型提供者。如果您的模型提供商（或其前面的代理）通过 IP 限制流量，请将 [Allowlist IP addresses](/langsmith/cloud-platform-features#allowlist-ip-addresses) 中列出的 LangSmith 出口 IP 列入白名单。
 
 ### 支持的型号
 
@@ -72,9 +64,7 @@ Chat 支持以下开箱即用的模型提供程序：
 
 您还可以通过启用该配置上的 **在聊天中可用** 切换来使用您在 [Playground Settings](/langsmith/prompt-engineering-concepts#playground) 中配置的任何自定义模型。工作区管理员管理哪些自定义模型可用。
 
-### 键盘快捷键
-
-|行动|苹果电脑| Windows/Linux |
+### 键盘快捷键|行动|苹果电脑| Windows/Linux |
 | - | - | - |
 |切换聊天打开/关闭 | `Cmd+I` | `Ctrl+I` |
 |清除当前线程 | `Cmd+Shift+O` | `Ctrl+Shift+O` |
@@ -92,7 +82,9 @@ Chat 支持以下开箱即用的模型提供程序：
 *“将失败的运行添加到我的测试数据集中”
 *“本周有多少次运行出错？”
 
-### 跟踪页面在单个[trace](/langsmith/observability-concepts#traces)上，Chat分析[run](/langsmith/observability-concepts#runs)数据和执行轨迹。 Chat 检查完整的跟踪上下文，包括 [run metadata](/langsmith/observability-concepts#metadata)、输入、输出、中间步骤和配置，以帮助您了解发生的情况并确定需要改进的领域。
+### 跟踪页面
+
+在单个[trace](/langsmith/observability-concepts#traces)上，Chat分析[run](/langsmith/observability-concepts#runs)数据和执行轨迹。 Chat 检查完整的跟踪上下文，包括 [run metadata](/langsmith/observability-concepts#metadata)、输入、输出、中间步骤和配置，以帮助您了解发生的情况并确定需要改进的领域。
 
 **问题示例：**
 
@@ -101,9 +93,7 @@ Chat 支持以下开箱即用的模型提供程序：
 *“在这个跟踪中什么花费了最多的时间？”
 *“总结一下这段跟踪中发生了什么”
 
-### 线程视图
-
-在 **Threads** 选项卡下，Chat 会分析对话 [threads](/langsmith/observability-concepts#threads)，以帮助您了解用户情绪、对话结果和交互模式。使用聊天来识别用户痛点并了解问题是否得到解决。
+### 线程视图在 **Threads** 选项卡下，Chat 会分析对话 [threads](/langsmith/observability-concepts#threads)，以帮助您了解用户情绪、对话结果和交互模式。使用聊天来识别用户痛点并了解问题是否得到解决。
 
 **问题示例：**
 
@@ -116,7 +106,9 @@ Chat 支持以下开箱即用的模型提供程序：
 
 在 [Engine](/langsmith/engine-issues) 页面上，打开聊天以调查检测到的问题及其链接的跟踪。聊天可以帮助您了解所选问题，或回答多个引擎问题的问题。例如：
 
-**问题示例：***“出了什么问题？”
+**问题示例：**
+
+*“出了什么问题？”
 *“为什么会被标记？”
 *“解释建议的修复”
 *“我最紧迫的问题是什么？”
@@ -124,9 +116,7 @@ Chat 支持以下开箱即用的模型提供程序：
 
 ## 快速工程
 
-### 游乐场
-
-在[Playground](/langsmith/prompt-engineering-concepts#playground)中，Chat可以帮助您编辑和优化您的[prompts](/langsmith/prompt-engineering-concepts#prompts-in-langsmith)。使用**优化提示**、**生成工具**或**生成输出架构**等自动化选项，或为 Chat 提供编辑提示的自定义说明。聊天可以直接修改 Playground 状态——更新消息、工具、输出模式和示例——这样您就可以通过对话方式迭代提示。
+### 游乐场在[Playground](/langsmith/prompt-engineering-concepts#playground)中，Chat可以帮助您编辑和优化您的[prompts](/langsmith/prompt-engineering-concepts#prompts-in-langsmith)。使用**优化提示**、**生成工具**或**生成输出架构**等自动化选项，或为 Chat 提供编辑提示的自定义说明。聊天可以直接修改 Playground 状态——更新消息、工具、输出模式和示例——这样您就可以通过对话方式迭代提示。
 
 **问题示例：**
 
@@ -137,7 +127,7 @@ Chat 支持以下开箱即用的模型提供程序：
 
 ### 提示中心页面
 
-在 [LangSmith Hub](/langsmith/prompt-engineering-concepts#prompts-in-langsmith) 中查看提示时，聊天可帮助您了解提示的结构、消息、工具和配置。这对于探索和学习共享提示非常有用。
+在[LangSmith Hub](/langsmith/prompt-engineering-concepts#prompts-in-langsmith)中查看提示时，聊天可帮助您了解提示的结构、消息、工具和配置。这对于探索和学习共享提示非常有用。
 
 **问题示例：**
 
@@ -196,9 +186,9 @@ Chat 支持以下开箱即用的模型提供程序：
 >
 > 了解有关跟踪和监控您的 LLM 申请的更多信息
 
-> [卡][Threads](/langsmith/threads)
+> [卡片][Threads](/langsmith/threads)
 >
-> 了解LangSmith中线程的工作原理
+> 了解线程在LangSmith中的工作原理
 
 > [卡][Prompt Engineering](/langsmith/prompt-context-hub#prompts)
 >

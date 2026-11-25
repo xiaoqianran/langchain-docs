@@ -6,9 +6,9 @@
 
 将用户、数据集、提示、实验、队列资源和其他数据从现有 LangSmith 实例复制到 BYOC 数据平面。
 
-[LangSmith data migration tool](https://github.com/langchain-ai/langsmith-data-migration-tool) 将数据从现有 LangSmith 云组织或 [self-hosted](/langsmith/self-hosted) 实例复制到 BYOC 数据平面。该工具复制数据（而不是移动数据），因此源实例在移动过程中保持不变并保持可用。
+[LangSmith data migration tool](https://github.com/langchain-ai/langsmith-data-migration-tool) 将数据从现有LangSmith 云组织或[self-hosted](/langsmith/self-hosted) 实例复制到 BYOC 数据平面。该工具复制数据（而不是移动数据），因此源实例在移动过程中保持不变并保持可用。
 
-在数据平面为 [active and reachable](/langsmith/byoc-onboarding-aws) 后运行迁移。 AWS 支持跟踪迁移。联系LangChain团队安排，并与工具一起规划[manual steps](#move-data-the-tool-does-not-migrate)。
+在数据平面处于活动状态且可访问后运行迁移。要创建一个，请按照 [Get started](/langsmith/byoc#get-started) 中的云入门指南进行操作。跟踪迁移仅在 AWS 上可用。联系LangChain团队安排，并在工具旁边规划[manual steps](#move-data-the-tool-does-not-migrate)。
 
 ## 支持的资源
 
@@ -18,7 +18,7 @@
 |数据集 |数据集及其示例和文件附件。 |
 |实验|实验、实验运行和反馈随数据集一起迁移。 |
 |注释队列 |队列配置和设置。迁移的队列开始为空。 |
-|自动化规则 |映射到目标项目的项目自动化规则。 |
+|自动化规则|映射到目标项目的项目自动化规则。 |
 |提示|提示完整的提交历史记录。 |
 |图表|监控图表和仪表板。 |
 |定制型号定价|工作区-自定义模型价格条目。 |
@@ -26,11 +26,11 @@
 |舰队|代理、共享技能、MCP 服务器、集成、身份验证提供程序、计划、触发器、Webhooks、使用限制、沙箱策略和工作区机密。 |
 |上下文中心 | Context Hub 代理和技能，包括文件、存储库元数据、提交历史记录和提交标签。 |
 
-每种资源类型都有自己的命令、标志和警告。命令参考参见[tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md)。## 使用工具迁移
+每种资源类型都有自己的命令、标志和警告。命令参考请参见[tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md)。## 使用工具迁移
 
 **1.安装工具**
 
-使用 `uv`、`uvx` 或 `pip` 安装最新版本。有关当前安装命令，请参阅[Installation](https://github.com/langchain-ai/langsmith-data-migration-tool#installation)。
+使用 `uv`、`uvx` 或 `pip` 安装最新版本。对于当前的安装命令，请参阅[Installation](https://github.com/langchain-ai/langsmith-data-migration-tool#installation)。
 
 验证安装：
 
@@ -40,7 +40,7 @@ langsmith-migrator --help
 
 **2.创建目标工作区**
 
-实例之间的工作空间 ID 不同，因此首先在数据平面中创建目标工作空间。请参阅 [BYOC onboarding docs](/langsmith/byoc-onboarding-aws) 的 `Create workspaces` 部分。
+实例之间的工作空间 ID 不同，因此首先在数据平面中创建目标工作空间。创建每个工作区时选择数据平面。工作空间创建后无法移动到另一个数据平面。参见[Organizations, data planes, and workspaces](/langsmith/byoc-usage#organizations-data-planes-and-workspaces)。
 
 迁移命令针对每个工作区对运行。对每一对重复这些操作。
 
@@ -63,11 +63,9 @@ export LANGSMITH_VERIFY_SSL=true
 > `OLD` 指您当前的 LangSmith 部署，`NEW` 指目标 BYOC 数据平面：
 >
 > * **`LANGSMITH_OLD_API_KEY`**：当前部署中的 API 密钥，有权读取要迁移的所有资源。对于位于 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-migration) 的 LangSmith 云，请在 **设置 > API 密钥** 下创建它。对于另一个云区域或自托管实例，请使用该部署的 UI。
-> * **`LANGSMITH_NEW_API_KEY`**：在 **设置 > API 密钥** 下于 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建的 API 密钥。将其范围限定为目标 BYOC 数据平面中的工作区。参见[Create an API key](/langsmith/create-account-api-key#api-keys)。
+> * **`LANGSMITH_NEW_API_KEY`**：在托管您的 BYOC 组织的 LangSmith UI 中的 **设置 > API 密钥** 下创建的 API 密钥。请参阅[Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers)了解每个云上的 URL。将其范围限定为目标 BYOC 数据平面中的工作区。参见[Create an API key](/langsmith/create-account-api-key#api-keys)。
 > * **`LANGSMITH_OLD_BASE_URL`**：您当前部署的 API URL。对于 GCP US 中的 LangSmith 云，请使用 `https://api.smith.langchain.com`。对于另一个云区域，使用其 [regional API URL](/langsmith/create-account-api-key#configure-the-sdk)。对于自托管 LangSmith，请使用您实例的 API URL。
-> * **`LANGSMITH_NEW_BASE_URL`**：您的目标 BYOC 数据平面的 API URL，包括 `https://`。在 **设置 > 数据平面** 下找到它。参见[BYOC onboarding](/langsmith/byoc-onboarding-aws)。
-
-> [!警告]
+> * **`LANGSMITH_NEW_BASE_URL`**：您的目标 BYOC 数据平面的 API URL，包括 `https://`。在 **设置 > 数据平面** 下找到它。参见[Find your data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint)。> [!警告]
 >
 > 目标键的范围必须位于目标数据平面中的工作区。组织范围的密钥不起作用。
 >
@@ -77,7 +75,9 @@ export LANGSMITH_VERIFY_SSL=true
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith-migrator test
-```**6。运行迁移**
+```
+
+**6。运行迁移**
 
 使用交互式向导浏览每种资源类型：
 
@@ -85,7 +85,7 @@ langsmith-migrator test
 langsmith-migrator migrate-all
 ```
 
-要一次迁移一种资源类型，请改为运行其命令，例如 `datasets`、`prompts` 或 `fleet`。添加 `--dry-run` 以预览步骤而无需编写，并添加 `-v` 以进行详细输出。使用 `langsmith-migrator resume` 重试上一个会话中待处理或失败的项目。
+要一次迁移一种资源类型，请运行其命令，例如 `datasets`、`prompts` 或 `fleet`。添加 `--dry-run` 以预览步骤而无需编写，并添加 `-v` 以进行详细输出。使用 `langsmith-migrator resume` 重试上一个会话中待处理或失败的项目。
 
 有关每个命令标志、工作区映射和项目映射，请参阅 [tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md)。
 
@@ -97,7 +97,7 @@ langsmith-migrator migrate-all
 * **检查代理模型**：当目标目录不提供源模型时，该工具会替换模型。它记录每次替换。
 * **配置基础设施级别设置**：OAuth 提供程序、GitHub 应用程序和 Slack 应用程序可以在 `Settings > Oauth Providers` 和 `Fleet > Integrations` UI 中重新创建。
 
-队列迁移器绝不会覆盖目的地上已存在的资源，因此重新运行 `fleet` 是安全的。
+队列迁移器永远不会覆盖目的地上已存在的资源，因此重新运行 `fleet` 是安全的。
 
 ## 完成引擎手动步骤
 
@@ -112,7 +112,7 @@ langsmith-migrator migrate-all
 
 ## 移动工具不迁移的数据
 
-### 痕迹AWS 支持跟踪迁移。请联系 LangChain 团队安排跟踪迁移到您的 BYOC 数据平面。数据迁移工具不迁移痕迹。
+### 痕迹跟踪迁移仅在 AWS 上可用。在 AWS 上，联系 LangChain 团队安排跟踪迁移到您的 BYOC 数据平面。数据迁移工具不迁移痕迹。
 
 要保留历史跟踪的单独副本，请将 [bulk export](/langsmith/data-export) 保存到与 S3 兼容的存储桶中。
 
@@ -125,18 +125,18 @@ langsmith-migrator migrate-all
 
 将在现有实例上运行的代理重新部署到数据平面中的工作区中。使用 LangSmith UI 或 API。您可能还需要在数据平面集群中重新创建服务帐户、映像拉取机密和其他资源。
 
-对于代理数据库和缓存，选择以下选项之一：
+对于代理数据库和缓存，选择以下选项之一：* 在数据平面中创建新实例并将重新部署的代理指向它们。从空开始，或从旧实例的备份恢复。
+* 将重新部署的代理指向您的现有数据库实例，并通过专用连接（例如网络对等互连或云的专用端点服务（AWS PrivateLink、GCP Private Service Connect 或 Azure Private Link））从数据平面集群访问它们。
 
-* 在数据平面中创建新实例并将重新部署的代理指向它们。从空开始，或从旧实例的备份恢复。
-* 将重新部署的代理指向您现有的数据库实例，并通过 PrivateLink 或 VPC 对等互连从数据平面集群访问它们。
+有关更多信息，请参阅[Deploy agents](/langsmith/deploy-overview)。
 
-欲了解更多信息，请参阅[Deploy agents](/langsmith/deploy-overview)。### 见解报告
+### 见解报告
 
 [Insights](/langsmith/insights) 报告不会跨实例迁移。要保留报告，请在 LangSmith UI 中打开其详细信息，然后选择 **下载**。
 
 ## 另请参阅
 
-* [BYOC onboarding](/langsmith/byoc-onboarding-aws)
+* [BYOC overview](/langsmith/byoc)
 * [BYOC usage](/langsmith/byoc-usage)
 * [Bulk export trace data](/langsmith/data-export)
 

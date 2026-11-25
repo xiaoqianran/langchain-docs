@@ -12,7 +12,7 @@
 
 ## 开始之前
 
-完成 [BYOC prerequisites](/langsmith/byoc#prerequisites) 以拥有 LangSmith 组织，并启用 BYOC。
+完成 [BYOC prerequisites](/langsmith/byoc-onboarding-aws#before-you-start) 以拥有 LangSmith 组织，并启用 BYOC。
 
 ## 创建 IAM 资源
 

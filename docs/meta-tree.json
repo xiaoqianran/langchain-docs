@@ -653,7 +653,7 @@
       ],
       "byoc-architecture-aws": [
         {
-          "title": "BYOC architecture",
+          "title": "BYOC architecture on AWS",
           "rel": "langsmith/byoc-architecture-aws.md"
         }
       ],
@@ -671,7 +671,7 @@
       ],
       "byoc-billing-aws": [
         {
-          "title": "BYOC billing",
+          "title": "BYOC billing on AWS",
           "rel": "langsmith/byoc-billing-aws.md"
         }
       ],
@@ -731,7 +731,7 @@
       ],
       "byoc-onboarding-aws": [
         {
-          "title": "BYOC onboarding",
+          "title": "BYOC onboarding on AWS",
           "rel": "langsmith/byoc-onboarding-aws.md"
         }
       ],
@@ -749,7 +749,7 @@
       ],
       "byoc-operations-aws": [
         {
-          "title": "BYOC operations",
+          "title": "BYOC operations on AWS",
           "rel": "langsmith/byoc-operations-aws.md"
         }
       ],
@@ -3669,6 +3669,12 @@
         {
           "title": "Workload isolation",
           "rel": "langsmith/workload-isolation.md"
+        }
+      ],
+      "workspace-secrets": [
+        {
+          "title": "Workspace secrets",
+          "rel": "langsmith/workspace-secrets.md"
         }
       ],
       "write-prompt-with-ai": [

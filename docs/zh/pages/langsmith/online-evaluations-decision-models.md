@@ -10,15 +10,15 @@
 
 > [!注意]
 >
-> 当在线评估器在跟踪内的任何运行上运行时，LangSmith 会将跟踪升级为 [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
+> 在线评估器默认延长跟踪保留时间。当代理环境使用基本保留时，您可以[opt out for an individual evaluator](/langsmith/evaluators#manage-evaluator-trace-retention)。其他行动仍然可以延伸这些痕迹。如果[extended retention is disabled for the workspace](/langsmith/data-purging-compliance#disable-extended-trace-retention)，则无论保存的环境默认值如何，评估都会继续，无需新的保留升级。
 
 ## 决策模型
 
 决策模型回答有关文本的结构化问题并返回键入的答案，例如概率、所选选项或分数，而不是自由格式的文本。有关它们的工作原理，请参阅[Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models)。当您使用决策模型作为判断时，LangSmith会在其自己的反馈键下记录您定义的每个问题的答案。您不需要编写输出模式或解析自由文本推理。
 
-### 支持的型号
+### 支持的型号LangSmith 在跟踪项目和数据集上支持评估者的 OpenAI 和 TypeSafe 决策模型。要通过其他提供程序或在您自己的服务器上调用决策模型，请使用 OpenAI-Decisions 兼容或 TypeSafe 兼容端点。参见[Connect to a compatible decision model provider](/langsmith/compatible-decision-model-provider)。
 
-LangSmith 在跟踪项目和数据集上支持评估者的 OpenAI 和 TypeSafe 决策模型。要通过其他提供程序或在您自己的服务器上调用决策模型，请使用 OpenAI-Decisions 兼容或 TypeSafe 兼容端点。参见[Connect to a compatible decision model provider](/langsmith/compatible-decision-model-provider)。|型号|供应商|设置 |
+|型号|供应商|设置 |
 | - | - | - |
 | [⟦T0⟧](/langsmith/llm-gateway-decision-models#use-openai-decision-models) | **OpenAI** |需要存储为工作区机密的 OpenAI API 密钥。默认为`OPENAI_API_KEY`。 |
 | [Jev](/langsmith/llm-gateway-decision-models#use-typesafe-jev) | **类型安全** |需要存储为工作区机密的 TypeSafe API 密钥。默认为`TYPESAFE_API_KEY`。 |
@@ -48,7 +48,7 @@ LangSmith 对决策模型问题强制执行以下限制：
 | - | - | - |
 |谓词或Noul | `score` | 0 到 1 之间的数字 |
 |选择| `value` |所选选项的名称 |
-|分数 | `score` |从 0 到最高级别索引的数字。例如，具有四个级别的问题返回从 0 到 3 的分数。反馈仅存储分数或值。模型的完整答案（包括用于选择和评分问题的 `probabilities` 和 `confidence`）出现在评估者的轨迹中。仅当您打开评估器的跟踪时，LangSmith 才会记录此跟踪。新的评估者从关闭跟踪开始。要打开跟踪并打开跟踪，请参阅[Trace evaluator runs](/langsmith/evaluators#trace-evaluator-runs)。因为每个答案都是标准反馈，所以您可以对其进行过滤、绘制图表和警报，并从中触发 [automations](/langsmith/rules)，就像处理任何其他评估者的反馈一样。
+|分数 | `score` |从 0 到最高级别索引的数字。例如，具有四个级别的问题返回从 0 到 3 的分数。反馈仅存储分数或值。模型的完整答案（包括用于选择和评分问题的 `probabilities` 和 `confidence`）出现在评估者的轨迹中。仅当您打开评估器的跟踪时，LangSmith 才会记录此跟踪。新的评估者从关闭跟踪开始。要打开跟踪并打开跟踪，请参阅[Trace evaluator runs](/langsmith/evaluators#trace-evaluator-runs)。由于每个答案都是标准反馈，因此您可以对其进行筛选、绘制图表和发出警报，并从中触发 [automations](/langsmith/rules)，就像处理任何其他评估者的反馈一样。
 
 问题名称遵循与其他反馈键相同的限制，并且在评估器中必须是唯一的。
 
@@ -70,7 +70,7 @@ LangSmith 对决策模型问题强制执行以下限制：
 
 * [How to define a decision model evaluator](/langsmith/decision-model-evaluator)：配置模型、状态和问题。
 * [Connect to a compatible decision model provider](/langsmith/compatible-decision-model-provider)：基本 URL 格式和示例端点。
-* [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models)：从您自己的应用程序通过 LLM 网关调用决策模型。
+* [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models)：从您自己的应用程序通过LLM网关调用决策模型。
 
 ***
 

@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。这可确保保留符合您的评估标准的迹线（通常是对分析最有价值的迹线）以供调查。 
+> 在线评估器默认延长跟踪保留时间。当代理环境使用基本保留时，您可以[opt out for an individual evaluator](/langsmith/evaluators#manage-evaluator-trace-retention)。其他行动仍然可以延伸这些痕迹。如果[extended retention is disabled for the workspace](/langsmith/data-purging-compliance#disable-extended-trace-retention)，则无论保存的环境默认值如何，评估都会继续，无需新的保留升级。
 
 ## 查看在线评估器
 
@@ -90,7 +90,7 @@
   1. 从数据集页面选择 **+ Evaluator**。
   2. 在 **模板变量** 编辑器中，为附件添加一个变量以包括：
      * 如果要包含特定附件，可以使用建议的变量名称，例如`{{attachment.file_name}}`，这会将附件列表中带有`file_name`的文件映射到将其传递给评估器。
-     * 如果您想包含所有附件，请使用 `{{attachments}`}\` 变量。
+     * 如果要包含所有附件，请使用 `{{attachments}`}\` 变量。
 
   ![Edit evaluator modal with an image attachment selected for the input.](https://mintcdn.com/langchain-5e9cc07a/PCte2XqN2om94BaK/langsmith/images/variable-multimodal-content-light.png?fit=max\&auto=format\&n=PCte2XqN2om94BaK\&q=85\&s=4f96e959ec461208c43add7c5c02b8b0)
 

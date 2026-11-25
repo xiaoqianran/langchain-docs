@@ -6,11 +6,11 @@
 
 LangSmith BYOC 在您的 Azure 订阅中部署什么、数据平面如何连接到 LangChain 控制平面、LangSmith 获得的访问权限以及如何保护数据。
 
-Azure 上的 BYOC 在 Azure 订阅的资源组中运行 LangSmith 数据平面，而 LangChain 在 `centralus` 中其自己的 Azure 环境中运行控制平面。您的跟踪数据保留在您的订阅中。本页面介绍了 LangSmith 部署的内容、流量如何流动、LangSmith 获得的访问权限以及如何保护您的数据。对于 AWS 上的 BYOC，请参阅 [BYOC architecture](/langsmith/byoc-architecture-aws)。
+Azure 上的 BYOC 在 Azure 订阅的资源组中运行 LangSmith 数据平面，而 LangChain 在 `centralus` 中其自己的 Azure 环境中运行控制平面。您的跟踪数据保留在您的订阅中。本页面介绍了 LangSmith 部署的内容、流量如何流动、LangSmith 获得的访问权限以及如何保护您的数据。对于 AWS 上的 BYOC，请参阅 [BYOC architecture on AWS](/langsmith/byoc-architecture-aws)。
 
 > [!注意]
 >
-> Azure 上的 BYOC 位于 [beta](/langsmith/release-stages)。资源和权限可能会在版本之间发生变化。此页面上的值是当前的默认值。
+> Azure 上的 BYOC 位于 [beta](/langsmith/release-stages)。资源和权限可能会在版本之间发生变化。此页面上的值是当前默认值。
 
 要设置数据平面，请遵循[BYOC onboarding on Azure](/langsmith/byoc-onboarding-azure)。
 
@@ -26,7 +26,7 @@ Azure 上的 BYOC 在 Azure 订阅的资源组中运行 LangSmith 数据平面�
 1. 应用 LangSmith Terraform 模块，该模块创建资源组和 Key Vault，并为 LangSmith BYOC 应用程序提供资源组上的两个角色。
 2. 使用 LangSmith API 创建数据平面。控制平面检查其访问权限，并将数据平面的引导密钥写入您的 Key Vault。
 3. 控制平面在资源组中创建网络、AKS 集群、数据库和存储，然后在集群上安装 LangSmith。
-4. 数据平面向控制平面汇报，状态变为`active`。
+4. 数据面向控制面汇报，状态变为`active`。
 5. LangChain 升级、扩展和修复数据平面，直到将其删除。
 
 ## 部署什么LangSmith 创建资源组中的所有数据平面资源。 AKS 还创建节点资源组 `<name>-smith-aks-nodes` 并对其进行管理。
@@ -35,7 +35,7 @@ Azure 上的 BYOC 在 Azure 订阅的资源组中运行 LangSmith 数据平面�
 
 LangSmith 从创建请求中的 `vpc_cidr` 范围创建 VNet，并将其划分为子网。对于 `/16` VNet：
 
-|子网|尺寸|使用|
+|子网|尺寸|使用 |
 | - | - | - |
 | AKS | `/20` | AKS 节点和 Pod。出站流量通过具有一个静态公共 IP 地址的 NAT 网关。 |
 |专用端点 | `/24` | PostgreSQL、Redis、Blob 存储、Key Vault 和 LangSmith 控制平面的共享专用端点。 |
@@ -62,7 +62,7 @@ AKS 子网占用 VNet 的十六分之一，专用终结点子网占用 VNet 的 
 
 ### DNS 和入口
 
-* **主机名**：`<data_plane_id>.azure.langchain-byoc.com`。 LangSmith 为资源组中的主机名创建公共 DNS 区域，并将其从 LangChain 拥有的父区域委托。
+* **主机名**：`<data_plane_id>.azure.langchain-byoc.com`。 LangSmith 为资源组中的主机名创建一个公共 DNS 区域，并将其从 LangChain 拥有的父区域委托。
 * **负载均衡器**：Azure 标准负载均衡器，公共或内部，由创建请求中的 `public_load_balancer` 设置。
 * **私有 DNS**：对于内部负载均衡器，主机名通过链接到数据平面 VNet 的私有 DNS 区域进行解析。公共区域保存证书验证记录，而不是内部端点地址。您的用户和应用程序需要通过私有区域进行 DNS 解析。
 * **Ingress**：Istio 入口网关。 HTTP重定向到HTTPS，网关拒绝`TRACE`、`TRACK`和`CONNECT`方法。
@@ -86,7 +86,7 @@ AKS 子网占用 VNet 的十六分之一，专用终结点子网占用 VNet 的 
 
 LangChain 通过一个多租户 Microsoft Entra 应用程序 **LangSmith BYOC** 管理您的数据平面。您将其服务主体添加到您的租户，并为其赋予每个数据平面资源组上的角色。应用程序不请求任何 Microsoft Graph 权限。
 
-控制平面不保存您的租户的存储凭据。它在 AKS 上运行，工作负载身份联合将 pod 令牌交换为租户中 LangSmith BYOC 应用程序的令牌。只有提供和管理数据平面的控制平面服务才能获得该令牌。
+控制平面不保存您的租户的存储凭据。它在 AKS 上运行，工作负载身份联合将 pod 令牌交换为租户中的 LangSmith BYOC 应用程序的令牌。只有提供和管理数据平面的控制平面服务才能获得该令牌。
 
 ### 角色分配|角色 |范围 |为什么LangSmith需要它 |
 | - | - | - |
@@ -131,7 +131,7 @@ LangChain 通过一个多租户 Microsoft Entra 应用程序 **LangSmith BYOC** 
 
 ## 扩展和操作
 
-LangChain 在配置后操作您的 Azure 数据平面。请参阅 [BYOC operations on Azure](/langsmith/byoc-operations-azure) 了解自动扩展、默认实例大小、升级和维护时段。有关估计的基础设施成本，请参阅[Azure data plane cost estimate](/langsmith/byoc-data-plane-cost-azure)。
+LangChain 在配置后操作您的 Azure 数据平面。有关自动扩展、默认实例大小、升级和维护时段的信息，请参阅 [BYOC operations on Azure](/langsmith/byoc-operations-azure)。有关估计的基础设施成本，请参阅[Azure data plane cost estimate](/langsmith/byoc-data-plane-cost-azure)。
 
 ### 日志
 

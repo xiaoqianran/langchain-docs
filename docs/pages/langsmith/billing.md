@@ -137,6 +137,8 @@ Besides spend limits, the following settings control how long traces are kept an
 
 You set the default retention tier for each [agent environment](/langsmith/agent-environments) separately, choosing base or extended. To set the tier for a whole agent, set it on each environment. To customize the extended duration, use [workspace-level configuration](/langsmith/data-purging-compliance#customize-extended-retention-policy) (Enterprise only).
 
+If [extended retention is disabled for the workspace](/langsmith/data-purging-compliance#disable-extended-trace-retention), new traces use base retention regardless of saved environment defaults. You cannot change an environment's default from base to extended while the restriction is active.
+
 To change an environment's default retention:
 
 1. In the [agent switcher](/langsmith/navigate-agents), select your agent, go to **Tracing**, and select the environment.
@@ -160,7 +162,7 @@ To configure this:
 
 > [!NOTE]
 >
-> When an automation rule matches any [run](/langsmith/observability-concepts#runs) within a [trace](/langsmith/observability-concepts#traces), then all runs within the trace are upgraded to [extended data retention](/langsmith/usage-and-billing#retention-periods).
+> When an automation rule with retention extension enabled matches a [run](/langsmith/observability-concepts#runs), it upgrades the entire [trace](/langsmith/observability-concepts#traces) to [extended data retention](/langsmith/usage-and-billing#retention-periods). These upgrades require the workspace to allow extended retention.
 
 For example, this is the expected configuration to keep 10% of all traces for extended data retention:
 

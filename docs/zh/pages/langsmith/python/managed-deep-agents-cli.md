@@ -31,24 +31,26 @@ uv run mda --version
 
 ## 身份验证
 
-`mda deploy` 按以下顺序读取 API 密钥：
+`mda deploy` 使用 `LANGSMITH_API_KEY` 进行身份验证。它按以下顺序查找密钥：
 
-1.`LANGGRAPH_HOST_API_KEY`
-2.`LANGSMITH_API_KEY`
-3.`LANGCHAIN_API_KEY`
+1. Shell环境
+2. 项目`.env`
+3. 缓存浏览器登录
 
-CLI 首先从项目 `.env` 文件中读取这些值，然后从流程环境中读取这些值。如果在交互式终端中找不到密钥，`mda deploy` 会提示输入 LangSmith API 密钥并将其保存到项目 `.env` 文件中。
+如果未设置，交互式终端会提示您粘贴密钥（CLI 将其保存到`.env`），或者按 Enter 并通过浏览器登录。
 
-```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+对于 CLI 读取的每个设置，Shell 变量都优于 `.env`，包括 `LANGSMITH_ENDPOINT` 和 `LANGSMITH_WORKSPACE_ID`。如果两者不同，CLI 将使用 shell 值并打印警告。```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 OPENAI_API_KEY=<OPENAI_API_KEY>
 ```
 
-要使用组织范围的密钥进行部署，请设置 `LANGSMITH_WORKSPACE_ID` 或将 `--workspace-id` 传递给 `mda deploy`。LangSmith API 密钥对部署进行身份验证。代理的模型提供者在运行时也需要凭据。在 `.env` 中设置提供程序密钥，将其导出到 shell 中，或将其配置为 LangSmith 工作区密钥。例如，`openai:gpt-6.1-sol`需要`OPENAI_API_KEY`。
+要使用组织范围的密钥进行部署，请设置 `LANGSMITH_WORKSPACE_ID` 或将 `--workspace-id` 传递给 `mda deploy`。
+
+LangSmith API 密钥对部署进行身份验证。代理的模型提供者在运行时也需要凭据。在 `.env` 中设置提供程序密钥，将其导出到 shell 中，或将其配置为 LangSmith 工作区密钥。例如，`openai:gpt-6.1-sol`需要`OPENAI_API_KEY`。
 
 `mda deploy` 转发非保留的 `.env` 条目，例如 `OPENAI_API_KEY`、MCP 令牌和自定义工具凭证，作为托管部署机密。保留的平台变量（包括 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY` 和 `LANGSMITH_WORKSPACE_ID`）用于 CLI 身份验证和部署路由，但不会作为用户管理的部署机密上传。
 
-## 命令概述|命令 |使用|
+## 命令概述|命令 |使用 |
 | - | - |
 | `mda --help` |显示 CLI 帮助。 |
 | `mda --version` |显示已安装的 CLI 版本。 |
@@ -61,7 +63,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 | `mda deploy [path]` |编译、同步 Context Hub 上下文、上传并部署到 LangSmith。 |
 | `mda pull [path]` |将说明和技能从 Context Hub 提取到本地项目中。 |
 | `mda channels init slack` |将 Slack 通道声明添加到当前项目。 |
-| `mda channels setup [channel]` |为已部署的代理设置项目通道，而无需进行部署。 |
+| `mda channels setup [channel]` |为已部署的代理设置项目通道，而无需部署。 |
 | `mda logs [path]` |已部署代理的尾部代理服务器日志。 |
 | `mda delete [path]` / `mda destroy [path]` |删除已部署的代理及其创建的 LangSmith 资源。 |
 
@@ -71,7 +73,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uvx --from managed-deepagents mda init my-agent
-```|参数或标志 |使用|
+```|参数或标志 |使用 |
 | - | - |
 | `name` |所需的项目目录名称。如果目标已存在，则该命令失败。 |
 | `--instructions TEXT` |系统提示写入`instructions.md`。 |
@@ -99,11 +101,11 @@ uvx --from managed-deepagents mda init my-agent --channel slack
 | `.env` |部署身份验证和运行时机密。不要泄露真正的秘密。 |
 | `.gitignore` |忽略 `.env`、`.env.*`、`.mda/` 和依赖项缓存。 |
 
-Eval 任务是选择性加入的，不是由 `mda init` 创建的。从项目根运行`mda evals init -i`来初始化Harbor工作区，并继续使用`eval-engineering`技能在编码代理中。
+Eval 任务是选择性加入的，不是由 `mda init` 创建的。从项目根运行`mda evals init -i`来初始化Harbor工作区，并使用`eval-engineering`技能继续在编码代理中。
 
 ## 初始化 Slack 通道
 
-从现有托管深度代理项目的根目录运行以下命令：
+从现有托管深度代理项目的根运行以下命令：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda channels init slack
@@ -117,7 +119,7 @@ uv run mda channels init slack
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda build
-```|参数或标志 |使用|
+```|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--out OUT` |已编译应用程序的输出目录。默认为 `<path>/.mda/build`。该目录在构建之前被清空，因此它必须丢失、为空或者是先前构建写入的目录。 |
@@ -130,7 +132,7 @@ uv run mda build
 uv run mda evals init -i
 ```
 
-|命令或标志|使用|
+|命令或标志|使用 |
 | - | - |
 | `mda evals init` |缺失时创建`evals/harbor-job.json`，并在`.mda/evals/`下生成Harbor适配器和运行时设置。从项目根运行此命令。 |
 | `-i`、`--interactive` |使用 eval-engineering 提示启动检测到的编码代理，或复制另一个代理的提示。 |
@@ -147,7 +149,7 @@ uv run mda evals init -i
 uv run mda dev
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--port PORT` |将端口转发到 LangGraph 开发服务器。 |
@@ -166,7 +168,7 @@ uv run mda dev
 
 配置沙箱后，`mda dev` 会尝试配置的提供程序。如果提供程序凭据不可用或提供程序创建失败，它将回退到本地临时目录沙箱并打印所选路径。
 
-对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭证。## 从终端聊天
+对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭据。## 从终端聊天
 
 使用`mda chat`从终端与客服人员交谈。它重用已运行的本地开发服务器，或为会话启动一个服务器：
 
@@ -174,7 +176,7 @@ uv run mda dev
 uv run mda chat
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--url URL` |要使用的代理服务器 URL，而不是本地 URL。必须是本地开发服务器或到其中之一的隧道，因为 `mda chat` 不发送凭据。 |
@@ -186,7 +188,7 @@ uv run mda chat
 
 连接将托管深度代理链接到外部服务。该凭证位于 LangSmith 工作区中，因此无需重新部署即可轮换，并且用户拥有的连接可解析调用代理的人员的凭证。工具和 MCP 连接器在运行时使用 `connections.get(...)` 解析连接。以三种模式之一创建连接：不透明机密（固定 API 密钥）、常规 OAuth（来自目录或自定义端点的 BYOT 应用程序）或 MCP OAuth（从 MCP 服务器 URL 发现并注册）。使用 `mda connections` 管理当前工作区中的这些凭据。
 
-|命令 |使用|
+|命令 |使用 |
 | - | - |
 | `mda connections catalog` |列出具有预配置 OAuth 设置的服务。 |
 | `mda connections create <slug>` |创建不透明机密、常规 OAuth 或 MCP OAuth 连接。 |
@@ -206,7 +208,7 @@ uv run mda connections catalog
 uv run mda connections create organization-tavily --secret-from-env TAVILY_API_KEY
 ```
 
-以下标志控制连接创建：|旗帜|使用|
+以下标志控制连接创建：|旗帜|使用 |
 | - | - |
 | `--project PATH` |设置项目目录。默认为当前目录。 |
 | `--workspace-id WORKSPACE_ID` |覆盖`LANGSMITH_WORKSPACE_ID`。 |
@@ -239,7 +241,7 @@ uv run mda connections create organization-tavily --secret-from-env TAVILY_API_K
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda deploy
-```|参数或标志 |使用|
+```|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |代理服务器名称。默认为`define_deep_agent`的代理`name`。 |
@@ -258,7 +260,7 @@ Python 和 JavaScript 包使用相同的 `mda` CLI。它接受 `--deployment-typ
 6. 将项目编译为`.mda/build`并提取可选的`schedules/`和`channels/`声明。
 7. 按名称创建或查找 LangSmith 托管部署。
 8. 归档构建、上传并触发远程构建。
-9. 轮询修订版，直到达到 `DEPLOYED`，除非设置了 `--no-wait`。
+9. 轮询修订版本，直到达到 `DEPLOYED`，除非设置了 `--no-wait`。
 10. 协调计划的托管 LangSmith cron 作业，除非设置了 `--no-wait`。
 11. 配置已声明的 Slack 通道。如果需要 Slack 授权或工作区批准，请显示操作并在完成后继续。
 
@@ -278,7 +280,7 @@ uv run mda pull --dry-run
 
 `mda pull` 列出它添加、覆盖或删除的每个文件，然后在更改文件之前进行询问。它不会更改代理代码或内存，并且不会进行远程写入。
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `-n`、`--name NAME` |部署名称。默认为代理`name`。 |
@@ -302,7 +304,7 @@ uv run mda channels setup
 
 在终端中，该命令询问要设置哪些通道。没有终端，或者有`--json`，它只报告每个通道的状态。除非每个通道都已设置，否则它会以非零值退出。
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `channel` |要设置的通道，如`slack`。默认为项目中的每个通道。 |
 | `-n`、`--name NAME` |部署名称。默认为代理`name`。 |
@@ -319,7 +321,7 @@ uv run mda channels setup
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda logs
-```|参数或标志 |使用|
+```|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |代理服务器名称。默认为项目中的代理`name`。 |
@@ -337,7 +339,7 @@ uv run mda logs
 uv run mda delete
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |代理服务器名称。默认为`define_deep_agent`的代理`name`。 |
@@ -354,7 +356,7 @@ uv run mda delete
 |部署报告缺少模型提供程序 API 密钥 |将提供程序密钥（例如 `OPENAI_API_KEY`）添加到 `.env`，将其导出到 shell 中，或将其配置为 LangSmith 工作区密钥。 |
 |部署报告 Context Hub 冲突 |自上次同步以来，Context Hub 中的 `instructions.md` 或 `skills/` 发生了更改，或者存储库在同步期间发生了更改。在交互式终端中，回答覆盖提示。在非交互式 shell 中，使用 `--context-strategy overwrite` 或 `--context-strategy keep-hub` 重新运行。参见[Context Hub](/langsmith/python/managed-deep-agents-context-hub#source-of-truth)。 |
 |构建超过 200 MB |在部署之前从项目中删除生成的工件或大文件。 |
-|部署达到`BUILD_FAILED`或`DEPLOY_FAILED` |打开 LangSmith 中打印的部署 URL 并检查修订日志。 |
+|部署达到`BUILD_FAILED`或`DEPLOY_FAILED` |在 LangSmith 中打开打印的部署 URL 并检查修订日志。 |
 
 ***
 

@@ -100,7 +100,7 @@
 
 在**生成示例**中，执行以下操作：
 
-1. 单击窗格右上角的 **API Key**，将您的 OpenAI API 密钥设置为 [workspace secret](/langsmith/administration-overview#workspaces)。如果您的工作区已有OpenAI API 密钥集，则可以跳过此步骤。
+1. 单击窗格右上角的 **API Key**，将您的 OpenAI API 密钥设置为 [workspace secret](/langsmith/workspace-secrets)。如果您的工作区已有OpenAI API 密钥集，则可以跳过此步骤。
 
 2. 选择少量示例（指导模型如何执行任务的一些示例输入输出对。）：切换 **自动** 或 **手动** 参考示例。您可以从数据集中手动选择这些示例，也可以使用自动选择选项。
 

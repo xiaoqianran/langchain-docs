@@ -10,15 +10,15 @@
 
 > [!注意]
 >
-> 无论检查点后端如何，LangSmith 始终需要 PostgreSQL 用于线程、运行、助手、cron 和 [memory store](/oss/python/langgraph/stores)。检查点后端仅控制检查点数据的存储位置。
+> 无论检查点后端如何，LangSmith 始终需要 PostgreSQL 来实现线程、运行、助手、cron 和 [memory store](/oss/python/langgraph/stores)。检查点后端仅控制检查点数据的存储位置。
 
 ## 可用的后端
 
 |后端 |存储|配置|使用案例 |
 | - | - | - | - |
-| `default` | PostgreSQL |无（内置）|标准部署|
+| `default` | PostgreSQL |无（内置）|标准部署 |
 | `mongo` | MongoDB | `langgraph.json` 或 `LS_DEFAULT_CHECKPOINTER_BACKEND` 环境变量 |与现有 MongoDB 基础设施的团队 |
-| `custom` |用户提供| `langgraph.json` |自定义存储后端（请参阅[custom checkpointer](/langsmith/custom-checkpointer)）|
+| `custom` |用户提供| `langgraph.json` |自定义存储后端（参见[custom checkpointer](/langsmith/custom-checkpointer)）|
 
 ## 默认（PostgreSQL）
 
@@ -28,9 +28,13 @@ PostgreSQL 是默认的检查点后端。无需配置。要使用自定义 Postg
 
 > [!注意]
 >
-> 需要代理服务器 v0.7.64 或更高版本。
+> 需要代理服务器 v0.7.64 或更高版本。> [!警告]
+>
+> LangSmith 云上的[Serverless](/langsmith/cloud-platform-features#serverless) 部署不支持 MongoDB 检查点。在无服务器部署中，代理服务器会忽略 `"backend": "mongo"` 并将检查点存储在共享 PostgreSQL 数据库中。使用 [Dedicated](/langsmith/cloud-platform-features#dedicated) 部署进行 MongoDB 检查点。
 
-### 先决条件* MongoDB **副本集**（不支持独立 `mongod`）。这可以是自我管理的副本集、`mongos`路由器或托管服务（例如 MongoDB Atlas）。
+### 先决条件
+
+* MongoDB **副本集**（不支持独立 `mongod`）。这可以是自我管理的副本集、`mongos`路由器或托管服务（例如 MongoDB Atlas）。
 * 路径中包含数据库名称的连接 URI（例如，`/langgraph`）。
 
 ### 选择后端
@@ -130,7 +134,7 @@ mongodb+srv://user:password@cluster.example.net/langgraph
 
 > [选项卡] 独立 (Docker)
 >
-> 如果您的 `langgraph.json` 已将 `backend` 设置为 `"mongo"`，则只需提供 URI。否则，设置两个环境变量：
+> 如果您的`langgraph.json`已将`backend`设置为`"mongo"`，则只需提供URI。否则，设置两个环境变量：
 >
 > ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > docker run \
@@ -148,18 +152,20 @@ mongodb+srv://user:password@cluster.example.net/langgraph
 
 > [选项卡] 云
 >
+> 云上的 MongoDB 检查点需要专用部署。无服务器部署不支持它。
+>
 > 在 `langgraph.json` 中将 `backend` 设置为 `"mongo"`，然后将 `LS_MONGODB_URI` 添加为 LangSmith UI 的部署设置中的环境变量。
 >
 > 您的 MongoDB 实例必须可从云数据平面访问。像 [MongoDB Atlas](https://www.mongodb.com/atlas) 这样的托管服务非常适合此目的。
 >
 > PostgreSQL 仍然自动配置非检查点数据。
 
-## 自定义检查点
+## 自定义检查点要使用 PostgreSQL 或 MongoDB 以外的存储后端，请实现自定义 [BaseCheckpointSaver](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.base.BaseCheckpointSaver)。详情请参阅[Add custom checkpointer](/langsmith/custom-checkpointer)。
 
-要使用 PostgreSQL 或 MongoDB 以外的存储后端，请实现自定义 [BaseCheckpointSaver](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.base.BaseCheckpointSaver)。详情请参阅[Add custom checkpointer](/langsmith/custom-checkpointer)。
+## 相关
 
-＃＃ 有关的* [Configure TTLs](/langsmith/configure-ttl) 用于检查点和商店物品过期
-* [Persistence concepts](/oss/python/langgraph/persistence) 位于 LangGraph
+* [Configure TTLs](/langsmith/configure-ttl) 用于检查点和商店物品过期
+* [Persistence concepts](/oss/python/langgraph/persistence) 于 LangGraph
 * [Data plane](/langsmith/data-plane)架构
 * [Environment variables](/langsmith/env-var-cloud)参考
 

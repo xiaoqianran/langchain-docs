@@ -20,36 +20,24 @@
 
 * **LangSmith帐户**：在[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluation-quickstart)注册或登录。
 * **A LangSmith API 密钥**：遵循 [Create an API key](/langsmith/create-account-api-key) 指南。
-* **OpenAI API 密钥**：从 [OpenAI dashboard](https://platform.openai.com/account/api-keys) 生成此密钥。
+* **OpenAI API 密钥**：从 [OpenAI dashboard](https://platform.openai.com/account/api-keys) 生成。
 
 **选择 UI 或 SDK 过滤器以获取说明：**> [选项卡] 用户界面
 >
 > ## 1. 设置工作区机密
 >
-> 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-set-workspace-secrets) 中，确保您的 API 密钥设置为 [workspace secret](/langsmith/set-up-hierarchy#configure-workspace-settings)。
+> 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-set-workspace-secrets) 中，添加模型提供者的 API 密钥作为工作区密钥：
 >
-> 添加工作区机密需要管理工作区中机密的权限。如果您没有，请要求工作区管理员为您添加密钥或授予您访问权限。
+> 1. 打开**设置**。如果您的组织有工作区，请选择侧边栏顶部的“**工作区**”，然后选择需要密钥的工作区。在“**配置**”下，选择“**机密**”。
+> 2. 单击**+ 秘密**。在 **Provider** 下，选择您的模型提供商，输入您的 API 密钥，然后单击 **Save**。
 >
-> 添加工作区密码：
->
-> 1. 导航到 **设置** > **集成** > **提供商机密**。
->
-> 2. 选择 **+ 秘密**。
->
-> 3. 在**提供商**下，选择您的模型提供商。 LangSmith 使用提供者期望的环境变量命名机密，例如 `OPENAI_API_KEY`。在该字段中输入您的秘密。
->
-> 如果您的提供商未列出，请保留 **自定义** 作为提供商。输入您的提供商期望的环境变量名称作为 **Key**，并输入您的 API 密钥作为 **Value**。
->
-> 4. 选择**保存**。
->
->> [!注意]
->>
->> 如果您的提供商使用 OAuth2 `client_credentials` 进行身份验证，请改为在模型配置上配置凭据。在这种情况下，不需要工作空间机密。参见[OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)。
+> 如果您使用自托管 LangSmith，您的提供商未列出，或者您无法添加机密，请参阅 [Workspace secrets](/langsmith/workspace-secrets)。
 >
 > ## 2. 创建提示
 >
 > [Playground](/langsmith/prompt-engineering-concepts#playground) 可以对不同的提示、新模型进行评估，或测试不同的模型配置。
->> 1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluation-quickstart)中，点击侧边栏的**Playground**。
+>
+> 1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluation-quickstart)中，点击侧边栏的**Playground**。
 > 2. 在 **Prompts** 面板下，将 **system** 提示符修改为：
 >
 > ```
@@ -67,8 +55,7 @@
 > ![Playground with the edited system prompt and new experiment with the dropdown for creating a new dataset.](https://mintcdn.com/langchain-5e9cc07a/hVPHwyb3hetqtQnG/langsmith/images/playground-system-prompt-light.png?fit=max\&auto=format\&n=hVPHwyb3hetqtQnG\&q=85\&s=b068f4407a83e31403da9a5473960fee)
 >
 > 3. 将以下示例添加到数据集中：
->
-> |输入 |参考输出|
+>> |输入 |参考输出|
 > | - | - |
 > |问：乞力马扎罗山位于哪个国家？ |输出：乞力马扎罗山位于坦桑尼亚。 |
 > |问题：地球的最低点是哪里？ |输出：地球的最低点是死海。 |
@@ -81,7 +68,8 @@
 > 2. 在 **正确性** 面板中，单击 **保存**。
 >
 > ## 5. 运行您的评估
->> 1. 选择右上角的 **开始** 来运行评估。这将创建一个 [*experiment*](/langsmith/evaluation-concepts#experiment)，并在 **新实验** 表中进行预览。您可以通过单击实验名称来查看完整内容。
+>
+> 1. 选择右上角的 **开始** 来运行评估。这将创建一个 [*experiment*](/langsmith/evaluation-concepts#experiment)，并在 **新实验** 表中进行预览。您可以通过单击实验名称来查看完整内容。
 >
 > ![Full experiment view of the results that used the example dataset.](https://mintcdn.com/langchain-5e9cc07a/3SZlGm2zGXjJWzA5/langsmith/images/full-experiment-view-light.png?fit=max\&auto=format\&n=3SZlGm2zGXjJWzA5\&q=85\&s=efa004b4032d0e439a58d08567b75478)
 >
@@ -93,13 +81,11 @@
 >
 > * 有关评估的更多详细信息，请参阅[Evaluation documentation](/langsmith/evaluation)。
 > * 了解如何[create and manage datasets in the UI](/langsmith/manage-datasets-in-application#create-a-dataset-and-add-examples)。
-> * 了解如何[run an evaluation from the Playground](/langsmith/run-evaluation-from-playground)。
-
-> [标签] SDK
+> * 了解如何[run an evaluation from the Playground](/langsmith/run-evaluation-from-playground)。> [标签] SDK
 >
 >> [!提示]
 >>
->> 本指南使用开源 [⟦T21⟧](https://github.com/langchain-ai/openevals) 包中预构建的 LLM 作为法官评估器。 OpenEvals 包含一组常用的评估器，如果您是评估新手，那么这是一个很好的起点。如果您希望更灵活地评估应用程序，您也可以[define completely custom evaluators](/langsmith/code-evaluator-ui)。
+>> 本指南使用开源 [⟦T19⟧](https://github.com/langchain-ai/openevals) 包中预构建的 LLM 作为法官评估器。 OpenEvals 包含一组常用的评估器，如果您是评估新手，那么这是一个很好的起点。如果您希望更灵活地评估应用程序，您也可以[define completely custom evaluators](/langsmith/code-evaluator-ui)。
 >
 > ## 1.安装依赖
 >
@@ -124,7 +110,8 @@
 >> 如果您使用 `yarn` 作为包管理器，您还需要手动安装 `@langchain/core` 作为 `openevals` 的对等依赖项。一般来说，这对于 LangSmith 评估不是必需的，您可以定义评估器 [using arbitrary custom code](/langsmith/code-evaluator-ui)。
 >
 > ## 2.设置环境变量
->> 设置以下环境变量：
+>
+> 设置以下环境变量：
 >
 > * `LANGSMITH_TRACING`
 > * `LANGSMITH_API_KEY`
@@ -145,8 +132,7 @@
 > ## 3. 创建数据集
 >
 > 1. 创建一个文件并添加以下代码，该代码将：
->
-> * 导入`Client`连接LangSmith。
+>> * 导入`Client`以连接到LangSmith。
 > * 创建数据集。
 > * 定义示例[*inputs* and *outputs*](/langsmith/evaluation-concepts#examples)。
 > * 将输入和输出对与 LangSmith 中的数据集关联起来，以便它们可以用于评估。
@@ -286,9 +272,10 @@
 > ```
 >
 > ## 5. 定义评估器
->> 在此步骤中，您将告诉 LangSmith 如何对您的应用程序生成的答案进行评分。
 >
-> 从 [⟦T33⟧](https://github.com/langchain-ai/openevals) 导入预构建的评估提示 (`CORRECTNESS_PROMPT`) 以及将其包装到 [*LLM-as-judge evaluator*](/langsmith/evaluation-concepts#llm-as-judge) 中的帮助程序，这将对应用程序的输出进行评分。
+> 在此步骤中，您将告诉 LangSmith 如何对您的应用程序生成的答案进行评分。
+>
+> 从 [⟦T31⟧](https://github.com/langchain-ai/openevals) 导入预构建的评估提示 (`CORRECTNESS_PROMPT`) 以及将其包装到 [*LLM-as-judge evaluator*](/langsmith/evaluation-concepts#llm-as-judge) 中的帮助程序，这将对应用程序的输出进行评分。
 >
 >> [!注意]
 >>
@@ -296,8 +283,7 @@
 >
 > 评估者比较：
 >
-> * `inputs`：传递到目标函数中的内容（例如问题文本）。
-> * `outputs`：目标函数返回的内容（例如模型的答案）。
+> * `inputs`：传递到目标函数的内容（例如问题文本）。> * `outputs`：目标函数返回的内容（例如模型的答案）。
 > * `reference_outputs`：您附加到[Step 3](#3-create-a-dataset)中每个数据集示例的基本事实答案。
 >
 > 将以下突出显示的代码添加到您的 `eval` 文件中：
@@ -443,7 +429,8 @@
 >    if __name__ == "__main__":
 >        main()
 >    ```
->> ```ts TypeScript highlight={39-55} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>
+> ```ts TypeScript highlight={39-55} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 >    import { evaluate } from "langsmith/evaluation";
 >    import { wrapOpenAI } from "langsmith/wrappers/openai";   // helper to wrap OpenAI client
 >    import OpenAI from "openai";                              // model provider
@@ -518,8 +505,7 @@
 >
 >    <ExperimentResults first-eval-in-langsmith-00000000>
 >    ```
->
-> 4. 按照评估运行输出中的链接访问 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluation-quickstart) 中的 **数据集和实验** 页面，并探索实验结果。这将引导您进入创建的实验，其中有一个表格显示**输入**、**参考输出**和**输出**。您可以选择一个数据集来打开结果的扩展视图。
+>> 4. 按照评估运行输出中的链接访问 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluation-quickstart) 中的 **数据集和实验** 页面，并探索实验结果。这将引导您进入创建的实验，其中有一个表格显示**输入**、**参考输出**和**输出**。您可以选择一个数据集来打开结果的扩展视图。
 >
 > ![Experiment results in the UI after following the link.](https://mintcdn.com/langchain-5e9cc07a/DDMvkseOvrCjx9sx/langsmith/images/experiment-results-link-light.png?fit=max\&auto=format\&n=DDMvkseOvrCjx9sx\&q=85\&s=94341c15219e46866589140d87efb8f6)
 >
@@ -527,7 +513,7 @@
 >
 > 以下是您接下来可能想要探索的一些主题：
 >
-> * [Evaluation concepts](/langsmith/evaluation-concepts) 提供了LangSmith 中评估的关键术语的描述。
+> * [Evaluation concepts](/langsmith/evaluation-concepts) 提供了LangSmith 中评估关键术语的描述。
 > * [OpenEvals README](https://github.com/langchain-ai/openevals) 查看所有可用的预构建评估器以及如何自定义它们。
 > * [Define custom evaluators](/langsmith/code-evaluator-ui)。
 > * [Python](https://reference.langchain.com/python/langsmith) 或 [TypeScript](https://reference.langchain.com/javascript/langsmith) SDK 参考，提供每个类和函数的全面描述。

@@ -30,6 +30,7 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 | [`LizardSandbox`](https://github.com/lizard-build/langchain-lizard#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lizard/month)](https://pypi.org/project/langchain-lizard/) |
 | [`KubernetesSandbox`](https://gitlab.com/bitkaio/langchain/kubernetes-sandbox) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kubernetes/month)](https://pypi.org/project/langchain-kubernetes/) |
 | [`Agent37Sandbox`](https://www.agent37.com/docs/agents-api/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agent37/month)](https://pypi.org/project/langchain-agent37/) |
+| [`PlatinumSandbox`](https://www.platinum.dev/docs/sdk/deepagents) | [  ![Downloads per month](https://static.pepy.tech/badge/platinum-sdk/month)](https://pypi.org/project/platinum-sdk/) |
 | [`NonoSandbox`](https://github.com/always-further/langchain-nono) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nono/month)](https://pypi.org/project/langchain-nono/) |
 | [`IsloSandbox`](https://docs.islo.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-islo/month)](https://pypi.org/project/langchain-islo/) |
 | [`PrizedSandbox`](https://prized.dev/docs/sandboxes-langchain?utm_source=langchain\&utm_medium=listing\&utm_campaign=lw-sdk) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-prized/month)](https://pypi.org/project/langchain-prized/) |

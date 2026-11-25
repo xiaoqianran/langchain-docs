@@ -6,7 +6,7 @@
 
 在您的 GCP 项目中设置 LangSmith BYOC 数据平面，从配置者服务帐户到使用 API 创建、更改和删除数据平面。
 
-GCP 上的 BYOC 在 GCP 项目中运行 LangSmith 数据平面，在 LangSmith US 控制平面上的 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-onboarding-gcp) 上。您创建服务帐户 LangSmith 规定，然后使用 LangSmith API 创建数据平面。对于 AWS 上的 BYOC，请参阅 [BYOC onboarding](/langsmith/byoc-onboarding-aws)。
+GCP 上的 BYOC 在 GCP 项目中运行 LangSmith 数据平面，在 LangSmith US 控制平面上的 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-onboarding-gcp) 上。您创建服务帐户 LangSmith 规定，然后使用 LangSmith API 创建数据平面。对于 AWS 上的 BYOC，请参阅 [BYOC onboarding on AWS](/langsmith/byoc-onboarding-aws)。
 
 > [!注意]
 >
@@ -108,13 +108,13 @@ LangSmith 配置项目中的基础设施。数据平面状态从`requested`移�
 >
 > 配置最多可能需要 3 小时。 3小时后，状态变为`provisioning_failed`。如果发生这种情况，请联系 LangChain 团队。
 
-数据平面激活后，其中会出现一个名为`dp-<data_plane_name>`的工作空间，您可以创建更多工作空间。请参阅[BYOC onboarding](/langsmith/byoc-onboarding-aws)中的**创建工作区**步骤。
+数据平面激活后，其中会出现一个名为`dp-<data_plane_name>`的工作空间，您可以创建更多工作空间。参见[Organizations, data planes, and workspaces](/langsmith/byoc-usage#organizations-data-planes-and-workspaces)。
 
 ## 使用您的数据平面
 
 ### 查找数据平面 URL
 
-数据平面URL是数据平面的`api_url`：`https://<first 8 characters of the data plane ID>.gcp.langchain-byoc.com`。您还可以在 **设置 > 数据平面** 中找到它。
+数据平面 URL 为数据平面的`api_url`：`https://<first 8 characters of the data plane ID>.gcp.langchain-byoc.com`。您还可以在 **设置 > 数据平面** 中找到它。
 
 要将应用程序和 API 客户端指向数据平面，请参阅[BYOC usage](/langsmith/byoc-usage)。
 
@@ -143,7 +143,7 @@ GKE 节点在 GKE `REGULAR` 发布通道上自动升级。
 
 ## 解决创建错误
 
-创建请求返回以下错误代码：|代码| HTTP |原因 |修复 |
+创建请求返回以下错误代码：|代码| HTTP |原因 |修复|
 | - | - | - | - |
 | `gcp_permissions` | 403 | 403 LangSmith 无法冒充配置者，或者配置者缺乏权限。 |应用 Terraform 模块，并选中 `crossplane_service_account`。 |
 | `gcp_api_disabled` | 400 |项目中禁用了所需的 API。 |启用消息中指定的 API，或保留`enable_apis = true`。 |

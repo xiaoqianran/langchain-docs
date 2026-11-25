@@ -126,7 +126,7 @@ langsmith profile create eu \
 
 常用配置文件命令：
 
-|命令|描述 |
+|命令 |描述 |
 | - | - |
 | `langsmith profile list` |列出已保存的配置文件。别名：`langsmith profile ls`。 |
 | `langsmith profile show <name>` |显示已保存的配置文件。秘密值在输出中被编辑。 |
@@ -144,7 +144,7 @@ langsmith --format json profile list
 
 运行 `langsmith auth login` 使用 OAuth 进行身份验证，而不是手动创建 API 密钥配置文件。该命令启动基于浏览器的设备授权流程，将 OAuth 令牌存储在所选配置文件中，并将该配置文件设置为当前配置文件。> [!注意]
 >
-> `langsmith auth login` also works against self-hosted instances from LangSmith CLI `v0.2.46` and later, provided the deployment is on LangSmith `0.16` or later with the OAuth authorization server enabled. The OAuth authorization server is enabled automatically when `config.hostname` is set in your Helm chart **and** a signing JWKS is configured (`config.signingJwks` or key `langsmith_signing_jwks` in `config.existingSecretName`).在早期部署中，或者如果未配置签名 JWKS，请改为创建 API 密钥配置文件。
+> `langsmith auth login` 也适用于来自 LangSmith CLI `v0.2.46` 及更高版本的自托管实例，前提是部署位于 LangSmith `0.16` 或更高版本并启用了 OAuth 授权服务器。当在 Helm 图表中设置 `config.hostname` 并配置签名 JWKS（`config.signingJwks` 或`config.existingSecretName` 中的密钥 `langsmith_signing_jwks`）时，OAuth 授权服务器会自动启用。在早期部署中，或者如果未配置签名 JWKS，请改为创建 API 密钥配置文件。
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith auth login
@@ -191,9 +191,9 @@ langsmith auth login \
 
 显式客户端构造函数参数和环境变量优先于配置文件值。
 
-|设置|优先级|
+|设置|优先级 |
 | - | - |
-|端点 |构造函数 `api_url` 或 `apiUrl`，然后是 `LANGSMITH_ENDPOINT`，然后是配置文件 `api_url`，然后是默认的 LangSmith 云端点。 |
+|端点|构造函数 `api_url` 或 `apiUrl`，然后是 `LANGSMITH_ENDPOINT`，然后是配置文件 `api_url`，然后是默认的 LangSmith 云端点。 |
 |认证|构造函数 API 密钥，然后是 `LANGSMITH_API_KEY`，然后是配置文件 OAuth 访问令牌，然后是配置文件 `api_key`。 |
 |工作空间 |构造函数`workspace_id`或`workspaceId`，然后是`LANGSMITH_WORKSPACE_ID`，然后是概要文件`workspace_id`。 |
 
@@ -308,7 +308,7 @@ export LANGSMITH_CONFIG_FILE="$RUNNER_TEMP/langsmith/config.json"
 export LANGSMITH_PROFILE=prod
 ```
 
-对于托管的[LangSmith Cloud](/langsmith/cloud)，请将这些值配置为环境变量或[workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings)，除非平台明确支持挂载机密文件。
+对于托管的[LangSmith Cloud](/langsmith/cloud)，请将这些值配置为环境变量或[workspace secrets](/langsmith/workspace-secrets)，除非平台明确支持挂载机密文件。
 
 ***
 

@@ -18,7 +18,7 @@ You can use multi-turn evaluations to measure:
 
 > [!NOTE]
 >
-> Multi-turn online evaluators can extend trace retention by default. You can opt out when configuring the evaluator so that traces keep the agent environment's default retention tier. Traces are still upgraded if another action explicitly extends retention or the environment already uses extended retention. For step-by-step opt-out instructions, see [Manage evaluator trace retention](/langsmith/evaluators#manage-evaluator-trace-retention). For details, see [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).
+> Online evaluators extend trace retention by default. You can [opt out for an individual evaluator](/langsmith/evaluators#manage-evaluator-trace-retention) when the agent environment uses base retention. Other actions can still extend those traces. If [extended retention is disabled for the workspace](/langsmith/data-purging-compliance#disable-extended-trace-retention), evaluations continue without new retention upgrades, regardless of saved environment defaults.
 
 ## How it works
 

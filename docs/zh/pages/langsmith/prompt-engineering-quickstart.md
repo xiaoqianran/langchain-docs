@@ -4,9 +4,9 @@
 
 # 提示工程快速入门
 
-提示指导大型语言模型 (LLM) 的行为。 [*Prompt engineering*](/langsmith/prompt-engineering-concepts) 是精心设计、测试和完善您向法学硕士提供的说明的过程，以便产生可靠且有用的答复。
+提示指导大型语言模型 (LLM) 的行为。 [*Prompt engineering*](/langsmith/prompt-engineering-concepts) 是精心设计、测试和完善您向 LLM 提供的说明的过程，以便产生可靠且有用的答复。
 
-LangSmith 提供用于创建、版本化、测试和协作提示的工具。您还会遇到常见概念，例如 [*prompt templates*](/langsmith/prompt-engineering-concepts#prompts-vs-prompt-templates)（它允许您重用结构化提示）和 [*variables*](/langsmith/prompt-engineering-concepts#f-string-vs-mustache)（它允许您动态地将值（例如用户的问题）插入到提示中）。
+LangSmith 提供了用于创建、版本化、测试和协作提示的工具。您还会遇到常见概念，例如 [*prompt templates*](/langsmith/prompt-engineering-concepts#prompts-vs-prompt-templates)（它允许您重用结构化提示）和 [*variables*](/langsmith/prompt-engineering-concepts#f-string-vs-mustache)（它允许您动态地将值（例如用户的问题）插入到提示中）。
 
 在本快速入门中，您将使用 UI 或 SDK 创建、测试和改进提示。本快速入门将使用 OpenAI 作为示例 LLM 提供商，但相同的工作流程适用于其他提供商。
 
@@ -22,30 +22,18 @@ LangSmith 提供用于创建、版本化、测试和协作提示的工具。您�
 >
 > ## 1. 设置工作区密码
 >
-> 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-set-workspace-secrets) 中，确保您的 API 密钥设置为 [workspace secret](/langsmith/set-up-hierarchy#configure-workspace-settings)。
+> 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-set-workspace-secrets) 中，添加模型提供者的 API 密钥作为工作区密钥：
 >
-> 添加工作区机密需要管理工作区中机密的权限。如果您没有，请要求工作区管理员为您添加密钥或授予您访问权限。
+> 1. 打开**设置**。如果您的组织有工作区，请选择侧边栏顶部的“**工作区**”，然后选择需要密钥的工作区。在“**配置**”下，选择“**机密**”。
+> 2. 单击**+ 秘密**。在 **Provider** 下，选择您的模型提供商，输入您的 API 密钥，然后单击 **Save**。
 >
-> 添加工作区密码：
->
-> 1. 导航到 **设置** > **集成** > **提供商机密**。
->
-> 2. 选择 **+ 秘密**。
->
-> 3. 在**提供商**下，选择您的模型提供商。 LangSmith 使用提供者期望的环境变量命名机密，例如 `OPENAI_API_KEY`。在该字段中输入您的秘密。
->
-> 如果您的提供商未列出，请保留 **自定义** 作为提供商。输入您的提供商期望的环境变量名称作为 **Key**，并输入您的 API 密钥作为 **Value**。
->
-> 4. 选择**保存**。
->
->> [!注意]
->>
->> 如果您的提供商使用 OAuth2 `client_credentials` 进行身份验证，请改为在模型配置上配置凭据。在这种情况下，不需要工作空间机密。参见[OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)。
+> 如果您使用自托管 LangSmith，您的提供商未列出，或者您无法添加机密，请参阅 [Workspace secrets](/langsmith/workspace-secrets)。
 >
 > ## 2. 创建提示
 >
 > 1. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-prompt-engineering-quickstart) 中，导航至左侧菜单中的 **提示** 部分。
-> 2. 单击 **+ 提示** 创建提示。> 3. 通过根据需要编辑或添加提示和输入变量来修改提示。
+> 2. 单击 **+ 提示** 创建提示。
+> 3. 通过根据需要编辑或添加提示和输入变量来修改提示。
 >
 > ![Playground with the system prompt ready for editing.](https://mintcdn.com/langchain-5e9cc07a/t6ucb6rQa27Wd6Te/langsmith/images/create-a-prompt-light.png?fit=max\&auto=format\&n=t6ucb6rQa27Wd6Te\&q=85\&s=0cafd7b1330fd88caa7403772068a50d)
 >
@@ -56,8 +44,7 @@ LangSmith 提供用于创建、版本化、测试和协作提示的工具。您�
 > 2. 设置您要使用的[model configuration](/langsmith/managing-model-configurations)。您选择的 **Provider** 和 **Model** 将决定在此配置页面上可配置的参数。设置完成后，单击“**另存为**”。
 >
 > ![Model Configuration window in the LangSmith UI, settings for Provider, Model, Temperature, Max Output Tokens, Top P, Presence Penalty, Frequency Penalty, Reasoning Effort, etc.](https://mintcdn.com/langchain-5e9cc07a/6r3GRtwWCl4ozaHW/langsmith/images/model-config-light.png?fit=max\&auto=format\&n=6r3GRtwWCl4ozaHW\&q=85\&s=6c0f7d7012b1e5295fe545149f955e6b)
->
-> 3. 在 **输入** 框中指定您想要测试的输入变量，然后单击 **开始**。
+>> 3. 在 **输入** 框中指定您想要测试的输入变量，然后单击 **开始**。
 >
 > ![The input box with a question entered. The output box contains the response to the prompt.](https://mintcdn.com/langchain-5e9cc07a/8DPu7MR3QecByOI5/langsmith/images/set-input-start-light.png?fit=max\&auto=format\&n=8DPu7MR3QecByOI5\&q=85\&s=bd86e76180c022a110ca0f0d9d19a198)
 >
@@ -73,12 +60,11 @@ LangSmith 提供用于创建、版本化、测试和协作提示的工具。您�
 >
 > * 请参考模型提供商提供的文档，了解提示创建的最佳实践，例如：
 > * [Best practices for prompt engineering with the OpenAI API](https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api)
-> * [Gemini's Introduction to prompt design](https://ai.google.dev/gemini-api/docs/prompting-intro)> * 使用提示画布（LangSmith 中的交互式工具）构建和完善您的提示。在[Prompt Canvas guide](/langsmith/write-prompt-with-ai)了解更多信息。
+> * [Gemini's Introduction to prompt design](https://ai.google.dev/gemini-api/docs/prompting-intro)
+> * 使用提示画布（LangSmith 中的交互式工具）构建和完善您的提示。了解更多信息[Prompt Canvas guide](/langsmith/write-prompt-with-ai)。
 > * 标记特定提交以标记提交历史记录中的重要时刻。
 > 1. 要创建提交，请导航至 **Playground** 并选择 **Commit**。选择要提交更改的提示，然后**提交**。
-> 2. 导航至左侧菜单中的 **提示**。选择提示。在提示详情页面，选择右上角的**标签**，添加一个[commit tag](/langsmith/manage-prompts#commit-tags)。
-
-> [标签] SDK
+> 2. 导航至左侧菜单中的 **提示**。选择提示。在提示详情页面，选择右上角的**标签**，添加一个[commit tag](/langsmith/manage-prompts#commit-tags)。> [标签] SDK
 >
 > ## 1. 设置您的环境
 >
@@ -111,11 +97,11 @@ LangSmith 提供用于创建、版本化、测试和协作提示的工具。您�
 >
 > 使用特定于语言的构造函数和push方法：
 >
-> * Python: [⟦T17⟧](https://reference.langchain.com/python/langchain-core/prompts/chat/ChatPromptTemplate) → [⟦T18⟧](https://reference.langchain.com/python/langsmith/client/Client/push_prompt)
+> * Python: [⟦T15⟧](https://reference.langchain.com/python/langchain-core/prompts/chat/ChatPromptTemplate) → [⟦T16⟧](https://reference.langchain.com/python/langsmith/client/Client/push_prompt)
 >
-> * 打字稿：[⟦T19⟧](https://reference.langchain.com/javascript/langchain-core/prompts/ChatPromptTemplate) → [⟦T20⟧](https://reference.langchain.com/javascript/langsmith/client/Client/pushPrompt)
+> * 打字稿：[⟦T17⟧](https://reference.langchain.com/javascript/langchain-core/prompts/ChatPromptTemplate) → [⟦T18⟧](https://reference.langchain.com/javascript/langsmith/client/Client/pushPrompt)
 >
-> 1. 将以下代码添加到`create_prompt`文件中：
+> 1. 在`create_prompt`文件中添加以下代码：
 >
 > ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 >    from langsmith import Client
@@ -158,13 +144,13 @@ LangSmith 提供用于创建、版本化、测试和协作提示的工具。您�
 > ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 >    npx tsx create_prompt.ts
 >    ```
->> 按照生成的链接在 LangSmith UI 中查看新创建的提示中心提示。
+>
+> 按照生成的链接在 LangSmith UI 中查看新创建的提示中心提示。
 >
 > ## 3. 测试提示
 >
 > 在此步骤中，您将按名称 (`"prompt-quickstart"`) 提取在 [step 2](#2-create-a-prompt) 中创建的提示，使用测试输入对其进行格式化，将其转换为 OpenAI 的聊天格式，然后调用 OpenAI 聊天完成 API。
->
-> 然后，您将通过创建新版本来迭代提示。工作区的成员可以打开现有提示，尝试[UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-prompt-engineering-quickstart)中的更改，并将这些更改保存为同一提示上的新提交，这会保留整个团队的历史记录。
+>> 然后，您将通过创建新版本来迭代提示。工作区的成员可以打开现有提示符，试验[UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-prompt-engineering-quickstart)中的更改，并将这些更改保存为同一提示符上的新提交，这会保留整个团队的历史记录。
 >
 > 1. 将以下内容添加到`test_prompt`文件中：
 >
@@ -261,14 +247,14 @@ LangSmith 提供用于创建、版本化、测试和协作提示的工具。您�
 > ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 >    npx tsx iterate_prompt.ts
 >    ```
->> 现在您的提示将包含两个提交。
+>
+> 现在您的提示将包含两个提交。
 >
 > 改进您的提示：
 >
 > * 请参考模型提供商提供的文档，了解提示创建的最佳实践，例如：
 > * [Best practices for prompt engineering with the OpenAI API](https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api)
-> * [Gemini's Introduction to prompt design](https://ai.google.dev/gemini-api/docs/prompting-intro)
-> * 使用提示画布（LangSmith 中的交互式工具）构建和完善您的提示。了解更多信息[Prompt Canvas guide](/langsmith/write-prompt-with-ai)。
+> * [Gemini's Introduction to prompt design](https://ai.google.dev/gemini-api/docs/prompting-intro)> * 使用提示画布（LangSmith 中的交互式工具）构建和完善您的提示。了解更多信息[Prompt Canvas guide](/langsmith/write-prompt-with-ai)。
 
 ## 后续步骤
 

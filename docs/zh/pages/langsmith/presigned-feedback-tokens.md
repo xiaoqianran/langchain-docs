@@ -142,7 +142,7 @@ for token in tokens:
 
 一旦您拥有预签名的 URL，您的前端代码或电子邮件客户端就会通过向其发送 `POST` 或 `GET` 请求来提交反馈。 URL 不需要 API 密钥或身份验证，因为令牌提供授权。
 
-默认情况下，预签名 URL 反馈将基本保留跟踪扩展到扩展保留。预签名 URL 没有选择退出参数。对于完全保留模型，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
+默认情况下，预签名 URL 反馈将基本保留跟踪扩展到扩展保留。预签名 URL 没有每个请求的退出参数。如果[extended retention is disabled for the workspace](/langsmith/data-purging-compliance#disable-extended-trace-retention)，反馈仍然有效，但不会延长保留时间。对于完全保留模型，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
 ### POST 请求
 
@@ -156,9 +156,9 @@ curl --request POST \
     "score": 1,
     "comment": "This response was helpful!"
   }'
-```
+```### 获取请求
 
-### 获取请求在电子邮件或 Slack 消息中嵌入反馈链接时使用 `GET`。用户的点击触发请求。 `GET` 支持`score`、`value`、`comment`、`correction` 作为查询参数。 `GET` 不支持`metadata`。
+在电子邮件或 Slack 消息中嵌入反馈链接时使用 `GET`。用户的点击触发请求。 `GET` 支持`score`、`value`、`comment`、`correction` 作为查询参数。 `GET` 不支持`metadata`。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request GET \

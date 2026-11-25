@@ -61,7 +61,7 @@ The request takes a list of items (up to 100 per call) instead of a list of run 
 | `project_id` | The run's project UUID (`project_id` on a run from `runs.query`; `session_id` is also accepted as an alias) |
 | `start_time` | The run's start time (RFC3339) |
 
-`extend_trace_retention` is unchanged. It stays an optional query parameter and defaults to `false`. When omitted, adding runs does not change their retention. Set it to `true` to upgrade the traces of added runs from base to extended retention, as described in [Data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades). Thread items are not upgraded.
+`extend_trace_retention` is unchanged. It stays an optional query parameter and defaults to `false`. When omitted, adding runs does not change their retention. Set it to `true` to upgrade the traces of added runs from base to extended retention, as described in [Data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades). Thread items are not upgraded. If the workspace [disables extended trace retention](/langsmith/data-purging-compliance#disable-extended-trace-retention), runs are added without upgrading their traces.
 
 > [tab] Python
 >
@@ -1104,6 +1104,7 @@ The method name and endpoint are unchanged. Only the session (project) ID requir
 > | Before | After | Notes |
 > | - | - | - |
 > | `session_id` (optional) | `session_id` (**required**) | UUID of the project that owns the run; resolve it with `client.read_project()` if you do not already have it |
+> | `project_id` (optional) | `project_id` (optional) | For feedback on a whole project or experiment only. Raises `ValueError` if combined with `run_id`; for run feedback, pass the project as `session_id` |
 > | `start_time` (optional) | `start_time` (optional) | Run's start time, timezone-aware (for example `run.start_time`). Required for SmithDB-only self-hosted below v0.18 |
 
 > [tab] TypeScript

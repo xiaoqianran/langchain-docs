@@ -138,7 +138,7 @@ azd provision
 azd deploy
 ```
 
-For project configuration and deployment steps, see [Microsoft Foundry hosted agents](/oss/python/integrations/providers/azure_ai#microsoft-foundry-hosted-agents).
+To learn why to host LangGraph on Microsoft Foundry, read the [hosting blog post](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/hosting-your-langgraph-application-on-microsoft-foundry-agents/4573342). To migrate an existing graph, follow the [LangGraph-to-Foundry migration guide](https://github.com/langchain-ai/langchain-azure/blob/main/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md). For new or migrated agents, see [Microsoft Foundry hosted agents](/oss/python/integrations/providers/azure_ai#microsoft-foundry-hosted-agents) and the [hosted-agent samples](https://github.com/langchain-ai/langchain-azure/blob/main/samples/hosting/langgraph-hosted-agents/README.md#start-here).
 
 ### Tools
 
@@ -164,6 +164,10 @@ For project configuration and deployment steps, see [Microsoft Foundry hosted ag
 >
 > Apply Content Safety checks to agent inputs and outputs.
 
+> [card] [Microsoft Foundry memory](/oss/python/integrations/middleware/azure_ai#microsoft-foundry-memory)
+>
+> Persist and retrieve long-term agent memories in Microsoft Foundry Memory.
+
 ### Sandboxes
 
 > [card] [Azure Container Apps dynamic sessions](/oss/python/integrations/tools/azure_dynamic_sessions)
@@ -185,6 +189,10 @@ For project configuration and deployment steps, see [Microsoft Foundry hosted ag
 > [card] [Azure AI Search](/oss/python/integrations/retrievers/azure_ai_search)
 >
 > Retrieve documents from an existing Azure AI Search index.
+
+> [card] [Microsoft Foundry memory](/oss/python/integrations/providers/azure_ai#microsoft-foundry-memory)
+>
+> Query long-term user and conversation memories with `AzureAIMemoryRetriever`.
 
 ### Embedding models
 

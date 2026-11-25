@@ -155,16 +155,16 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 |模板|得分多少 |分数 |
 | - | - | - |
-|计划遵守 |特工的行动是否遵循其宣布的计划。 | `plan_adherence`（布尔值）：`true` 当代理遵循计划时。 |
+|计划遵守|特工的行动是否遵循其宣布的计划。 | `plan_adherence`（布尔值）：`true` 当代理遵循计划时。 |
 |工具选择|代理是否以合理的顺序选择了正确的工具，没有不必要的电话。 | `tool_selection`（布尔值）：`true` 当刀具选择准确且高效时。 |
-|轨迹精度 |代理的路径是否合乎逻辑、显示出明显的进展并且相当高效。 | `trajectory_accuracy`（布尔值）：`true` 当轨迹准确且高效时。 |
+|轨迹精度|代理的路径是否合乎逻辑、显示出明显的进展并且相当有效。 | `trajectory_accuracy`（布尔值）：`true` 当轨迹准确且高效时。 |
 
 ### 图像评估图像模板评估图像内容的质量和安全性。
 
 |模板|得分多少 |分数 |
 | - | - | - |
 |露骨内容 |图像是否包含裸露、性内容或暴力画面。 | `explicit_content`（布尔值）：当发现显式内容时，`true`。 |
-|敏感图像|图像是否包含有害、冒犯性或不适当的符号或描述。 | `sensitive_imagery`（布尔值）：当发现敏感图像时，`true`。 |
+|敏感图像|图像是否包含有害的、冒犯性的或不适当的符号或描述。 | `sensitive_imagery`（布尔值）：当发现敏感图像时，`true`。 |
 
 ### 语音评估
 
@@ -193,7 +193,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 要打开评估器的跟踪：1. 当您使用 [create](#create-an-evaluator) 或 [edit](#edit-an-evaluator) 评估器时，请展开评估器配置面板中的 **高级** 部分。
 2. 打开**跟踪评估器运行**。
-3. 单击“**保存**”。
+3. 单击**保存**。
 
 该设置适用于您配置评估器的代理环境或数据集。 [LangChain Tuned Evaluators](/langsmith/tuned-evaluators) 不可用。
 
@@ -207,51 +207,53 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 ## 管理评估者跟踪保留当在线评估器对跟踪进行评分时，它会将反馈附加到跟踪。这可以将跟踪自动升级到[extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)，具体取决于评估器的保留设置。当您在 [agent environment](/langsmith/agent-environments) 上设置在线评估器时，您可以选择退出此升级，以便评分痕迹保持基本保留。
 
-仅当环境的 [default retention](/langsmith/billing#change-default-retention-for-an-environment) 为 [base tier](/langsmith/usage-and-billing#retention-periods) 时，此控件才可用。如果环境默认为延长保留 ([set at the environment or workspace level](/langsmith/data-purging-compliance#data-retention))，则评估者评分的跟踪将遵循该默认值，并且该选项将被锁定。
+如果[extended retention is disabled for the workspace](/langsmith/data-purging-compliance#disable-extended-trace-retention)，评估仍会运行，而不延长跟踪保留。该限制会覆盖保存的扩展环境默认值，而不更改评估器首选项。
+
+否则，仅当环境的 [default retention](/langsmith/billing#change-default-retention-for-an-environment) 为 [base tier](/langsmith/usage-and-billing#retention-periods) 时，此控件才可用。如果环境默认为延长保留 ([set at the environment or workspace level](/langsmith/data-purging-compliance#data-retention))，则评估者评分的跟踪将遵循该默认值，并且该选项将被锁定。
 
 要选择不延长评分迹线的保留时间：
 
-1. 当您[create](#create-an-evaluator)或[edit](#edit-an-evaluator)在线评估器时，请将源设置为代理环境，而不是[dataset](/langsmith/evaluation-concepts#datasets)。
+1. 当您使用[create](#create-an-evaluator)或[edit](#edit-an-evaluator)在线评估器时，请将源设置为代理环境，而不是[dataset](/langsmith/evaluation-concepts#datasets)。
 2. 展开评估器配置面板中的**高级**部分。
 3. 清除**延长迹线保留**。
 
-该更改适用于保存评估器后评分的轨迹。现有的评分跟踪保留其当前的保留级别。
+该更改适用于保存评估器后评分的轨迹。现有的评分跟踪保留其当前的保留级别。上面描述的 **扩展跟踪保留** 切换适用于跟踪级别和线程级别（多轮）在线评估器。有关多轮评估器的更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。
 
-上述的 **扩展跟踪保留** 切换适用于跟踪级和线程级（多轮）在线评估器。有关多轮评估器的更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。
+## 包括扩展统计数据
 
-## 包括扩展统计数据使用 **在 [run-level evaluator](/langsmith/online-evaluations-llm-as-judge) 中包含扩展统计数据（反馈、成本、令牌）** 来评估运行中的反馈统计数据、令牌使用情况或成本数据。 `feedback_stats`字段包含反馈统计信息，包括每个反馈键的数量和平均值。此选项不适用于[multi-turn (thread-level) evaluators](/langsmith/online-evaluations-multi-turn)。
+使用 **在 [run-level evaluator](/langsmith/online-evaluations-llm-as-judge) 中包含扩展统计信息（反馈、成本、令牌）** 来评估运行中的反馈统计信息、令牌使用情况或成本数据。 `feedback_stats`字段包含反馈统计信息，包括每个反馈键的数量和平均值。此选项不适用于[multi-turn (thread-level) evaluators](/langsmith/online-evaluations-multi-turn)。
 
-LangSmith 为启用此选项的评估者获取附加数据。仅当您的评估逻辑或提示需要这些字段时才启用它。
+LangSmith 启用此选项后为评估者获取附加数据。仅当您的评估逻辑或提示需要这些字段时才启用它。
 
 要包含扩展统计数据：
 
 1. 当您使用 [create](#create-an-evaluator) 或 [edit](#edit-an-evaluator) 运行级别评估器时，请展开评估器配置面板中的 **高级** 部分。
 2. 选择**包括扩展统计数据（反馈、成本、代币）**。
 
-### 访问扩展统计数据
+### 访问扩展统计数据[Code evaluators](/langsmith/online-evaluations-code)接收`run`对象中的这些字段，包括`feedback_stats`、`total_tokens`、`total_cost`。无论您是否启用扩展统计数据，他们还会在 `run["feedback"]` 中收到 [individual feedback records](/langsmith/feedback-data-format)。对于 [LLM-as-a-judge evaluators](/langsmith/online-evaluations-llm-as-judge)，将相应的 `run.*` 字段映射到提示变量。例如，将 `{{correctness_average}}` 映射到 `run.feedback_stats.correctness.avg` 以在提示中包含 `correctness` 反馈平均值。可用的 `run.*` 字段还包括提示和完成令牌、成本和详细信息字段。有关完整运行数据架构，请参阅[Run data format](/langsmith/run-data-format)。
 
-[Code evaluators](/langsmith/online-evaluations-code)接收`run`对象中的这些字段，包括`feedback_stats`、`total_tokens`、`total_cost`。无论您是否启用扩展统计数据，他们还会在 `run["feedback"]` 中收到 [individual feedback records](/langsmith/feedback-data-format)。对于 [LLM-as-a-judge evaluators](/langsmith/online-evaluations-llm-as-judge)，将相应的 `run.*` 字段映射到提示变量。例如，将 `{{correctness_average}}` 映射到 `run.feedback_stats.correctness.avg` 以在提示中包含 `correctness` 反馈平均值。可用的 `run.*` 字段还包括提示和完成令牌、成本和详细信息字段。有关完整运行数据架构，请参阅[Run data format](/langsmith/run-data-format)。
+## 链评估器
 
-## 链评估器链式评估器是一种在线评估器，仅在另一个评估器已经评分的运行时触发。链接允许您使用更具体的评估器或为需要它的运行保留更昂贵的评估器。例如，仅当较早的 `correctness` 分数低于阈值时，您才可以运行 [LLM-as-a-judge evaluator](/langsmith/online-evaluations-llm-as-judge)。
+链式评估器是一种在线评估器，仅在另一个评估器已经评分的运行时触发。链接允许您使用更具体的评估器或为需要它的运行保留更昂贵的评估器。例如，仅当较早的 `correctness` 分数低于阈值时，您才可以运行 [LLM-as-a-judge evaluator](/langsmith/online-evaluations-llm-as-judge)。
 
 第二个评估器必须是运行级别评估器，因为 [multi-turn (thread-level) evaluators](/langsmith/online-evaluations-multi-turn) 无法过滤反馈。第一个求值器可以是任一类型。多轮评估器将其反馈附加到线程中的最后一次运行，因此链接到它的第二个评估器评估该运行，而不是整个线程。
 
-将第二个评估器链接到第一个评估器上：
-
-1. 创建或打开第二个求值器并展开其过滤器。有关更多信息，请参阅 [Apply a filter to runs that trigger the evaluator](/langsmith/online-evaluations-llm-as-judge#apply-a-filter-to-runs-that-trigger-the-evaluator)（LLM 法官评估者）或 [Create a filter](/langsmith/online-evaluations-code#3-create-a-filter)（代码评估者）。
+将第二个评估器链接到第一个评估器上：1. 创建或打开第二个求值器并展开其过滤器。有关更多信息，请参阅 [Apply a filter to runs that trigger the evaluator](/langsmith/online-evaluations-llm-as-judge#apply-a-filter-to-runs-that-trigger-the-evaluator)（对于 LLM 作为法官评估者）或 [Create a filter](/langsmith/online-evaluations-code#3-create-a-filter)（对于代码评估者）。
 
 2. 过滤第一个评估者的反馈键。过滤器匹配键而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发第二个评估器，包括[user feedback](/langsmith/attach-user-feedback)。使用只有第一个评估者生成的密钥。
    * 要在每次运行时触发第一个评估者评分，请仅对键进行过滤：
 
      ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
      eq(feedback_key, "correctness")
-     ```* 要仅在分数满足条件时触发，请将键与 `feedback_score` 比较结合起来。例如，仅当 `correctness` 低于 `0.5` 时触发：
+     ```
+
+   * 要仅在分数满足条件时触发，请将键与 `feedback_score` 比较结合起来。例如，仅当 `correctness` 低于 `0.5` 时触发：
 
      ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
      and(eq(feedback_key, "correctness"), lt(feedback_score, 0.5))
      ```
 
-3. 如果第二个评估者读取第一个分数，[include extended stats](#include-extended-stats)。 LLM 作为法官评估者需要它，代码评估者使用它来可靠地读取分数。欲了解更多信息，请参阅[Read the first score](#read-the-first-score)。
+3. 如果第二个评估者读取第一个分数，[include extended stats](#include-extended-stats)。 LLM 法官评估者需要它，代码评估者使用它来可靠地读取分数。欲了解更多信息，请参阅[Read the first score](#read-the-first-score)。
 
 4. 保存评估器。
 

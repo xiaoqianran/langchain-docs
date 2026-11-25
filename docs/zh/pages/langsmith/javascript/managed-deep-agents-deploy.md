@@ -10,17 +10,17 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公共 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 本页介绍秘密路由和部署选项。要在部署之前测试代理，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。有关命令标志、部署步骤列表和故障排除，请参阅 [CLI reference](/langsmith/javascript/managed-deep-agents-cli)。要部署已完成的开源项目，请参阅 [design agent](/langsmith/javascript/managed-deep-agents-design-agent) 和 [paid media agent](/langsmith/javascript/managed-deep-agents-paid-media-agent) 模板。
 
 ## 先决条件
 
-在部署之前，请确保您拥有：
+对于 CLI 部署，请确保您拥有：
 
 * LangSmith 云工作空间或[BYOC data plane](/langsmith/byoc-onboarding-aws) 中的工作空间。
 
-* 该工作区的 [LangSmith API key](/langsmith/create-account-api-key)，位于 `.env` 或您的 shell 环境中。在交互式终端上，`mda deploy` 会提示您输入密钥或通过浏览器登录。
+* [LangSmith API key](/langsmith/create-account-api-key) 用于该工作区，位于 `.env` 或您的 shell 环境中。在交互式终端上，`mda deploy` 会提示您输入密钥或通过浏览器登录。
 
 * 从 `managed-deepagents` 安装`mda` CLI。
 
@@ -32,7 +32,7 @@
 
 在首次部署之前，在项目的 `.env` 或 shell 环境中设置 `LANGSMITH_ENDPOINT`：
 
-|地区 |端点 |部署支持 |
+|地区 |端点|部署支持 |
 | - | - | - |
 | GCP 美国 (`smith.langchain.com`) | `https://api.smith.langchain.com` |支持 |
 | GCP 欧盟 (`eu.smith.langchain.com`) | `https://eu.api.smith.langchain.com` |支持 |
@@ -137,7 +137,7 @@ bunx mda deploy --no-wait
 
 ## 秘密和环境文件
 
-`mda deploy` 在 shell 环境变量之前读取项目 `.env` 值。使用 `.env` 作为验证部署的 LangSmith API 密钥以及托管部署所需的运行时机密：
+对于每个设置 `mda deploy` 读取，Shell 变量都胜过项目 `.env`，例如 `LANGSMITH_API_KEY` 和 `LANGSMITH_ENDPOINT`。使用 `.env` 作为验证部署的 LangSmith API 密钥以及托管部署所需的运行时机密：
 
 ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
@@ -149,11 +149,23 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 仅当项目声明[backend identity](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-your-own-backend)时才需要`MDA_INGRESS_SECRET`。当存在该声明且缺少该值时，部署将在预检中失败。
 
-`LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY`等平台变量被保留。他们可以对部署进行身份验证，但不会作为用户管理的部署机密上传。当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的秘密转发。
+`LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY`等平台变量被保留。 `LANGSMITH_API_KEY` 对部署进行身份验证。它们都不会作为用户管理的部署机密上传。当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的秘密转发。
 
 保留的平台变量、空值、`.env`和`.env.*`文件不会复制到已编译的构建存档中。
 
-认证密钥顺序和保留变量请参见[CLI reference](/langsmith/javascript/managed-deep-agents-cli#authentication)。
+有关身份验证密钥顺序和保留变量，请参阅[CLI reference](/langsmith/javascript/managed-deep-agents-cli#authentication)。
+
+## 从 GitHub 部署
+
+从LangSmith云中的 GitHub 存储库构建和部署代理，并可选择在分支推送时自动重建。首先为您的存储库授权 GitHub 应用程序。参见[Manage GitHub repository access](/langsmith/deploy-to-cloud#manage-github-repository-access)。
+
+从 GitHub 部署：1. 将您的 [Managed Deep Agent project](/langsmith/javascript/managed-deep-agents-project-structure) 推送到 GitHub。不要提交 `.env` 或 `.mda/build/`。
+2. 在[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-deploy)中，打开**代理服务器**并选择**+代理服务器**。选择您的存储库，命名部署，然后设置分支或标签。
+3. 选择 **这是一个托管 Deep Agent 项目**，并将 **项目目录** 设置为包含 `agent.py` 或 `agent.ts` 的路径（`.` 表示存储库根目录）。
+4. 为 [Agent Server type](/langsmith/cloud-platform-features#deployment-types) 选择 **无服务器** 或 **专用**，并可选择启用推送自动更新。
+5. 在 **环境变量** 下添加模型提供程序密钥和其他机密，然后选择 **提交**。
+
+LangSmith 在构建期间编译项目，将 `instructions.md` 和 `skills/` 从存储库同步到 Context Hub，并设置声明的时间表和通道。
 
 ## 部署故障排除
 
@@ -163,7 +175,7 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 ## 后续步骤
 
-> [卡][Agent Server](/langsmith/agent-server)
+> [卡片][Agent Server](/langsmith/agent-server)
 >
 > 探索托管部署的运行时。
 
@@ -177,11 +189,11 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 > [卡][Schedules](/langsmith/javascript/managed-deep-agents-schedules)
 >
-> 根据托管 cron 计划运行代理。
-
-> [卡][Custom tools](/langsmith/javascript/managed-deep-agents-tools)
+> 根据托管 cron 计划运行代理。> [卡][Custom tools](/langsmith/javascript/managed-deep-agents-tools)
 >
-> 将创作的 LangChain 工具添加到代理定义中。> [卡][CLI reference](/langsmith/javascript/managed-deep-agents-cli)
+> 将创作的 LangChain 工具添加到代理定义中。
+
+> [卡][CLI reference](/langsmith/javascript/managed-deep-agents-cli)
 >
 > 查找每个 `mda` 命令和标志。
 

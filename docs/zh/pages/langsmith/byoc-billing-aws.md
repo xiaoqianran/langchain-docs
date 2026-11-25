@@ -1,8 +1,8 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: BYOC billing | https://docs.langchain.com/langsmith/byoc-billing-aws -->
+<!-- langchain-docs: BYOC billing on AWS | https://docs.langchain.com/langsmith/byoc-billing-aws -->
 
-# 自带设备计费
+# AWS 上的 BYOC 计费
 
 如何在您的 AWS 账户和 LangSmith 合同中对 LangSmith BYOC 进行计费、哪些 AWS 服务承担费用，以及在部署之前要检查的账户配额。
 
@@ -25,7 +25,7 @@ LangSmith BYOC 可以与 AWS Marketplace 集成。
 | **亚马逊ElastiCache** |用于缓存和排队工作负载的 Redis 实例 |每节点小时 |
 | **亚马逊S3** |用于 LangSmith 工作负载、SmithDB 对象存储和 VPC 流日志的存储桶。仍然运行 ClickHouse 的数据平面也将其备份存储在这里。 |存储、请求和数据传输 |
 | **亚马逊EBS** |节点根磁盘，包括 SmithDB 节点启动卷以及仍然运行它的数据平面上的 ClickHouse 卷 |每月每 GB，加上高于 gp3 基准的预配置 IOPS 和吞吐量 |
-| **区域 NAT 网关** |私有子网的出站出站流量 |每小时，加上处理的数据|| **弹性负载平衡** |两个网络负载均衡器：一个位于 Istio 入口前面，另一个用于 EKS API PrivateLink 端点 |每 NLB 小时，加上 NLCU |
+| **区域 NAT 网关** |私有子网的出站出站流量 |每小时，加上处理的数据|| **弹性负载平衡** |两个网络负载均衡器：一个位于 Istio 入口前面，另一个用于 EKS API PrivateLink 端点。在 ALB 数据平面上，应用程序负载均衡器取代了入口 NLB。 |每 NLB 小时，加上 NLCU。 ALB 按 ALB 小时计费，另加 LCU。 |
 | **AWS PrivateLink** |数据平面使用的接口 VPC 端点 |每个可用区小时的每个接口端点，以及处理的数据 |
 | **AWS Lambda 和 Amazon EventBridge** | PrivateLink 端点的协调 |每次调用和每个发布的事件 |
 | **亚马逊 CloudWatch 日志** | EKS 控制平面日志 |摄入和储存|
@@ -44,7 +44,7 @@ BYOC 中有一些数据传输成本驱动因素：* 跨可用区流量，因为�
 AWS 强制执行每个区域和每个账户的默认配额。对于新帐户或很少使用的帐户的生产来说，默认值通常太低，因此在部署之前检查以下内容，并在需要时请求增加：* **EC2 vCPU 配额**：至少 64 个 vCPU 按需容量，涵盖 3 个系统节点和 Karpenter 工作负载。
 * **子网 IP 容量**：用于 Pod、节点、EKS ENI、负载均衡器以及每个应用程序子网至少 12 个接口端点的空间。
 * **VPC 端点**：12 个接口端点和 1 个 S3 网关端点的容量。
-* **负载均衡器**：2 个网络负载均衡器及其目标组的容量。
+* **负载均衡器**：2 个网络负载均衡器及其目标组的容量。 ALB 数据平面需要 1 个网络负载均衡器和 1 个应用程序负载均衡器。
 * **EKS**：1 个 EKS 集群的容量。
 * **存储**：节点磁盘和其他持久工作负载的 EBS 卷和存储容量，以及仍在运行它们的数据平面上的 ClickHouse 和 ZooKeeper。
 * **数据库**：2 个 RDS 实例的容量、1 个用于 SmithDB 元存储（写入器和读取器）的 Aurora 集群以及 3 个 ElastiCache 副本。

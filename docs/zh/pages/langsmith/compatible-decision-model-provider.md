@@ -30,14 +30,14 @@
 
 仅当您将端点保存为模型配置后，评估器才能使用兼容端点。
 
-要在评估器中使用兼容端点：1. 添加服务器的 API 密钥作为工作区密钥。转至 **设置 > 集成 > 提供者密钥**，单击 **+ 密钥**，然后选择 **自定义** 以输入您自己的密钥名称。要使用默认名称，请选择 **OpenAI** 或 **TypeSafe**。
+要在评估器中使用兼容端点：
+
+1. 添加服务器的 API 密钥作为工作区密钥。 [Open the workspace secrets page](/langsmith/workspace-secrets#open-the-secrets-page)，点击**+ Secret**，选择**自定义**，输入自己的Secret名称。要使用默认名称，请选择 **OpenAI** 或 **TypeSafe**。
 2. 在评估器中的 **提示和模型** 下，打开 **模型配置**。
 3. 对于 **Provider**，选择 **OpenAI Decisions Compatible Endpoint** 或 **TypeSafe Compatible Endpoint**。两者都出现在**其他**下。
 4. 输入**型号**、**API 密钥名称**和**基本 URL**。
-5. 单击 **另存为预设** 并命名配置。
-6. 选择保存的配置作为评估器的模型。
-
-当评估器运行时，它会使用存储在您在 **API 密钥名称** 中输入的密钥中的 API 密钥来调用端点。接下来，添加问题并保存评估器，如[How to define a decision model evaluator](/langsmith/decision-model-evaluator)中所述。
+5. 单击**另存为预设**并命名配置。
+6. 选择保存的配置作为评估器的模型。当评估器运行时，它会使用存储在 **API 密钥名称** 中输入的密钥中的 API 密钥来调用端点。接下来，添加问题并保存评估器，如[How to define a decision model evaluator](/langsmith/decision-model-evaluator)中所述。
 
 ## 基本 URL 格式
 
@@ -50,7 +50,9 @@ LangSmith 将 `/v1/decisions` 附加到基本 URL，因此请勿包含它。
 |供应商|型号|示例基本 URL |
 | - | - | - |
 | [OpenAI](https://developers.openai.com/api/docs/guides/decisions) | `gpt-6-luna` | `https://api.openai.com` |
-|自托管（远程）|您的型号 ID | `https://decisions.example.com` |### TypeSafe 兼容端点
+|自托管（远程）|您的型号 ID | `https://decisions.example.com` |
+
+### TypeSafe 兼容端点
 
 LangSmith 将 `/v1/systemone` 附加到基本 URL，因此请勿包含它。要完全按照输入的内容调用 URL（包括其路径），请清除 **Append /v1/systemone**。
 

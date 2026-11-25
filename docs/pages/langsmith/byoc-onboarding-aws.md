@@ -1,12 +1,21 @@
-<!-- langchain-docs: BYOC onboarding | https://docs.langchain.com/langsmith/byoc-onboarding-aws -->
+<!-- langchain-docs: BYOC onboarding on AWS | https://docs.langchain.com/langsmith/byoc-onboarding-aws -->
 
-# BYOC onboarding
+# BYOC onboarding on AWS
 
-Set up a LangSmith BYOC data plane, from enabling BYOC on your organization to creating workspaces and connecting privately.
+Set up a LangSmith BYOC data plane in your AWS account, from enabling BYOC on your organization to creating workspaces and connecting privately.
 
-This page covers BYOC on AWS. For BYOC on GCP, see [BYOC onboarding on GCP](/langsmith/byoc-onboarding-gcp) or [BYOC onboarding on Azure](/langsmith/byoc-onboarding-azure).
+This page covers BYOC on AWS. For other clouds, see [BYOC onboarding on GCP](/langsmith/byoc-onboarding-gcp) or [BYOC onboarding on Azure](/langsmith/byoc-onboarding-azure).
 
-Before you start, review the [prerequisites](/langsmith/byoc#prerequisites).
+## Before you start
+
+Before LangChain can provision a data plane on AWS, you need the following:
+
+* **A LangSmith organization on AWS**: Create one at [aws.smith.langchain.com](https://aws.smith.langchain.com), then send your organization ID to the LangChain team to enable BYOC.
+* **An AWS account**: LangChain recommends a fresh account dedicated to LangSmith BYOC, but it is not required.
+* **A supported region**: Pick one of the [supported AWS regions](/langsmith/byoc#aws).
+* **An IAM role and external ID**: LangChain provides the external ID. You use it to apply the [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role), which creates the role LangChain assumes to provision and manage your data plane. You must use this module. See [Create the IAM role](#create-the-iam-role).
+
+## Set up a data plane
 
 By default, LangChain creates a VPC for your data plane. To create and manage the network yourself, follow [Bring your own VPC on AWS](/langsmith/byoc-byovpc-aws) before creating the IAM role and data plane below.
 
@@ -40,7 +49,7 @@ Navigate to **Settings > Data Planes** and create a data plane with the followin
 
 Under **Configuration**, the defaults work for most data planes. You can change these settings:
 
-* **Network**: By default, LangSmith creates a VPC from a private RFC 1918 CIDR range from `/16` to `/18`, such as `10.20.0.0/16`. To use your own VPC, select **Use existing VPC** and supply the [VPC and subnet IDs](/langsmith/byoc-byovpc-aws#supply-the-vpc-and-subnet-ids). The load balancer is **Private** by default, reachable only from inside your VPC. Select **Internet-facing** to give your applications a public endpoint. With your own VPC, an internet-facing load balancer requires public subnet IDs.
+* **Network**: By default, LangSmith creates a VPC from a private RFC 1918 CIDR range from `/16` to `/18`, such as `10.20.0.0/16`. To use your own VPC, select **Use existing VPC** and supply the [VPC and subnet IDs](/langsmith/byoc-byovpc-aws#supply-the-vpc-and-subnet-ids). The load balancer is **Private** by default, reachable only from inside your VPC. Select **Internet-facing** to give your applications a public endpoint. With your own VPC, an internet-facing load balancer requires public subnet IDs. The load balancer type is **Network Load Balancer** by default. Select **Application Load Balancer** to attach your own AWS WAF web ACL. An ALB does not support [AWS PrivateLink](/langsmith/byoc-operations-aws#connect-with-aws-privatelink). The type cannot change after creation.
 * **IAM roles**: By default, LangSmith creates the data plane IAM roles. To use roles you create, select **Use existing IAM roles** and follow [Bring your own IAM roles](/langsmith/byoc-byoiam-aws).
 * **Encryption keys**: By default, AWS-managed keys encrypt data at rest. To use your own KMS keys, choose one key for all services or a key per service. See [Bring your own keys](/langsmith/byoc-byok-aws).
 * **Sandboxes**: Off by default. Turn them on to run [sandboxes](/langsmith/sandboxes), which Engine and some evaluators require.
@@ -96,7 +105,7 @@ For more information, see [Migrate to BYOC](/langsmith/byoc-migration).
 ## Next steps
 
 * [Use your data plane](/langsmith/byoc-usage) to point applications and API clients at the right endpoint.
-* [BYOC architecture](/langsmith/byoc-architecture-aws) covers what LangChain provisions and how the planes communicate.
+* [BYOC architecture on AWS](/langsmith/byoc-architecture-aws) covers what LangChain provisions and how the planes communicate.
 
 ***
 

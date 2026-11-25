@@ -10,11 +10,13 @@ Deploy Content Studio, an open-source design agent, to Slack as a Managed Deep A
 >
 > Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
 
+[We Open Sourced Our Design Brain](https://www.youtube.com/embed/emId9_O2sU8)
+
 ## Deploy the agent
 
 Before you start, make sure you have:
 
-* A [LangSmith Cloud](/langsmith/cloud) account and an [API key](/langsmith/create-account-api-key) that can deploy.
+* A [LangSmith Cloud](/langsmith/cloud) account and a [personal access token](/langsmith/create-account-api-key) (`lsv2_pt_…`) that can deploy. A service key cannot set up the Slack app.
 * A key for your model provider. On the [LLM Gateway](/langsmith/llm-gateway), the agent uses your LangSmith key instead.
 * Permission to install apps in your Slack workspace, or a workspace admin who can approve the agent's Slack app.
 
@@ -28,7 +30,7 @@ Deploy the open-source design agent to my Slack workspace with Managed Deep Agen
 2. Read `AGENTS.md` and follow the `design-agent-deploy` skill.
 3. Tell me which keys you need. I will type them myself with `uv run design-agent config set <KEY>` in my terminal; never ask me to paste a key in chat.
 4. Run `uv run design-agent doctor` and fix what it flags. Its `mda-deploy` line lists what a deploy still needs.
-5. Ask me before `uv run design-agent sandbox publish`, which bills. Then have me run the first deploy, `uv run mda deploy`, in my own terminal, since it sets up the Slack app.
+5. Have me run the first deploy, `uv run mda deploy --agent-server-type dedicated`, in my own terminal: it builds the agent's computer and sets up the Slack app (hosting is billed). Ask me before later deploys.
 6. When it is live, walk me through messaging the agent in Slack and sending a first request.
 
 To deploy it yourself:
@@ -50,27 +52,19 @@ uv run design-agent config set LANGSMITH_API_KEY ANTHROPIC_API_KEY
 
 The command asks for each key and keeps it hidden. On the [LLM Gateway](/langsmith/llm-gateway), skip the provider key and run `uv run design-agent config set DESIGN_AGENT_MODEL=langsmith:anthropic/claude-opus-5-5` instead.
 
-`mda deploy` forwards every key in `.env` as a deployment secret, except `LANGSMITH_API_KEY`, which signs the deploy.
+`mda deploy` forwards every key in `.env` as a deployment secret, except `LANGSMITH_API_KEY`, which signs the deploy. `LANGSMITH_*` variables set in your shell win over `.env` for the deploy itself: if your shell sets any of them, such as `LANGSMITH_ENDPOINT`, set `LANGSMITH_API_KEY` there too.
 
-**3. Publish the sandbox**
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv run design-agent sandbox publish
-```
-
-`mda deploy` builds `sandbox/setup.sh` into a snapshot on its own. That build uses a Docker image base, which gets a 1 GiB filesystem. The design agent's machine, with Chrome, FFmpeg, and HyperFrames, is about 1.3 GiB. This command builds a larger snapshot in your [workspace](/langsmith/administration-overview#workspaces) instead and points `sandbox/__init__.py` at it.
-
-It takes 10 to 15 minutes and runs once per workspace. Publish again only when `sandbox/setup.sh` changes.
-
-**4. Deploy**
+**3. Deploy**
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv run mda deploy
+uv run mda deploy --agent-server-type dedicated
 ```
 
-The first deploy provisions the agent's Slack app. If the command prints a Slack link, open it, approve the app for your workspace, and press Enter. A workspace admin may need to approve the app first.
+The first deploy builds the agent's computer, with Chrome, FFmpeg, and HyperFrames, from `sandbox/setup.sh`, which takes 10 to 15 minutes. Later deploys rebuild it only when that file changes. A dedicated [Agent Server](/langsmith/agent-server) keeps running between messages, which the agent's background work and check-ins need.
 
-**5. Send a first request**
+The first deploy also provisions the agent's Slack app. When the command prints a Slack link, open it in a browser signed in to Slack and approve the app; the command waits for you. A workspace admin may need to approve the app first.
+
+**4. Send a first request**
 
 After the first deploy, the agent sends you a direct message. Reply there, or invite it to a channel and mention it with a request, such as a launch graphic for a product. Progress updates and finished files appear in the same thread.
 
@@ -86,14 +80,14 @@ Most changes are edits to files in the repository. Common ones:
 * **Skills**: Each workflow is a folder in `skills/`. Add one for a request your team makes often, such as a weekly newsletter header.
 * **Instructions**: The always-on prompt is `instructions.md`. Keep it short, and put workflows in skills.
 * **MCP servers**: Copy `config/mcp.example.toml` to `config/mcp.toml` and turn on servers such as Notion or GitHub. Each person signs in as themselves through a [workspace connection](/langsmith/javascript/managed-deep-agents-connections).
-* **Model**: Set `DESIGN_AGENT_MODEL` with `uv run design-agent config set`. Any chat model with tool calling and vision works.
+* **Models**: Set `DESIGN_AGENT_MODEL` with `uv run design-agent config set`. Any LangChain chat model with tool calling works, and the main agent picks the model and effort of each background helper per task. `DESIGN_AGENT_IMAGE_MODEL` picks the image model, from OpenAI, Google, or any OpenAI-compatible images endpoint.
 
 To try a change and ship it, use these [`mda` commands](/langsmith/javascript/managed-deep-agents-cli):
 
 | Command | What it does |
 | - | - |
 | `uv run mda dev` | Runs the agent locally and opens it in [LangSmith Studio](/langsmith/studio) |
-| `uv run mda deploy --name design-agent-test` | Deploys a separate copy to test changes without touching the one your team uses |
+| `uv run mda deploy --name design-agent-test --agent-server-type dedicated` | Deploys a separate copy to test changes without touching the one your team uses |
 | `uv run mda deploy` | Ships your changes to the deployment your team uses |
 | `uv run mda logs` | Tails the logs of the deployed agent |
 | `uv run mda build` | Compiles what would ship into `.mda/build/` without deploying |
@@ -125,7 +119,7 @@ Managed Deep Agents provides the Slack app, identity, schedules, and a sandbox p
 
 Request path from Slack through the agent and sandbox back to the thread.
 
-Long jobs like video generation run in the background. The main agent hands parts to [subagents](/langsmith/javascript/managed-deep-agents-subagents) on the same sandbox and stays free to talk. A one-time [schedule](/langsmith/javascript/managed-deep-agents-schedules) wakes the main agent when a background job finishes or stalls.
+Long jobs like video generation run in the background. The main agent hands each part to an async [subagent](/langsmith/javascript/managed-deep-agents-subagents) on the same sandbox, picks that job's model and effort, and stays free to talk. When a helper finishes, a new run wakes the main agent. A one-time [schedule](/langsmith/javascript/managed-deep-agents-schedules) wakes the main agent for check-ins and when a watched render fails or stalls.
 
 The brand pack in `workspace/brand/` is the source of colors, fonts, logos, and voice. The agent checks each render against that pack before posting.
 

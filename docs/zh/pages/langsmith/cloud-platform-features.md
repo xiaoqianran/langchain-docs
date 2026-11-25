@@ -84,11 +84,13 @@ LangSmith代理服务器的纯云平台功能，包括数据区域、静态IP地
 
 在创建时或在“缩放”对话框中将“**之后缩小**”设置为 `1 hour`、`1 day` 或 `1 week`（默认值）。较短的窗口可减少闲置计算费用；更长的窗户可以减少冷启动。
 
-该平台会检查计划运行并在 10 分钟内启用 [cron jobs](/langsmith/cron-jobs)，以提前开始缩减部署。这可以减少冷启动延迟，但不能保证准备就绪。默认情况下，启动期间的请求最多等待 60 秒，然后超时。副本不会横向扩展。它的队列工作器默认处理最多 10 个并发运行，可通过 [⟦T11⟧](/langsmith/env-var-cloud#n_jobs_per_worker) 进行配置；额外的运行队列。
+该平台会检查计划运行并在 10 分钟内启用 [cron jobs](/langsmith/cron-jobs)，以提前开始缩减部署。这可以减少冷启动延迟，但不能保证准备就绪。默认情况下，启动期间的请求最多等待 60 秒，然后超时。副本不会横向扩展。默认情况下，其队列工作程序最多可处理 10 个并发运行，可通过 [⟦T11⟧](/langsmith/env-var-cloud#n_jobs_per_worker) 进行配置；额外的运行队列。
+
+无服务器部署将检查点存储在共享 PostgreSQL 数据库中，并且不支持 [MongoDB checkpointer](/langsmith/configure-checkpointer#set-up-mongodb-checkpointing)。
 
 > [!注意]
 >
-> 缩放至零位于 [beta](/langsmith/release-stages) 中，最初仅适用于基于使用情况定价的部署。有关定价和过渡时间表，请参阅[Manage billing](/langsmith/billing#langsmith-deployment-billing)。
+> 缩放至零处于[beta](/langsmith/release-stages) 中，最初仅适用于基于使用情况定价的部署。有关定价和过渡时间表，请参阅[Manage billing](/langsmith/billing#langsmith-deployment-billing)。
 
 ### 专注
 
@@ -100,42 +102,40 @@ LangSmith代理服务器的纯云平台功能，包括数据区域、静态IP地
 
 ## 尺寸
 
-这些表显示了 GCP 中LangSmith 云上的计费计算请求的 vCPU 和内存。 Redis 被排除在外，因为它不按任何部署类型或规模计费；参见[Compute billing](/langsmith/billing#langsmith-deployment-billing)。
+这些表显示了 GCP 中LangSmith 云上的计费计算所请求的 vCPU 和内存。 Redis 被排除在外，因为它不按任何部署类型或规模计费；参见[Compute billing](/langsmith/billing#langsmith-deployment-billing)。无服务器部署运行一个包含 API 服务器和队列工作线程的副本，以及一个单独的 Redis 容器：
 
-无服务器部署运行一个包含 API 服务器和队列工作线程的副本，以及一个单独的 Redis 容器：|集装箱|无服务器 S |无服务器 M |无服务器 L |
+|集装箱|无服务器 S |无服务器 M |无服务器 L |
 | - | - | - | - |
 | API服务器| 0.4 个 vCPU/1 GiB | 2 个 vCPU / 2 GiB | 4 个 vCPU/4 GiB |
 |队列工作者| 0.4 个 vCPU/1 GiB | 2 个 vCPU / 2 GiB | 4 个 vCPU/4 GiB |
 | **可计费运行时间总计** | **0.8 vCPU / 2 GiB** | **4 个 vCPU/4 GiB** | **8 个 vCPU/8 GiB** |
 |数据库|共享、多租户 |共享、多租户 |共享、多租户 |
 
-专用部署运行单独的 API 服务器池和队列工作副本、单个 Redis 容器及其自己的数据库实例：
-
-|集装箱|专用S|专用M|专用L|
+专用部署运行单独的 API 服务器池和队列工作副本、单个 Redis 容器及其自己的数据库实例：|集装箱|专用S|专用M|专用L|
 | - | - | - | - |
 | API 服务器，每个副本 | 1 个 vCPU / 2 GiB | 2 个 vCPU / 4 GiB | 4 个 vCPU / 8 GiB |
 | API 服务器副本 | 2 至 10 | 2 至 20 | 2 至 40 |
 |每个副本的队列工作线程 | 1 个 vCPU / 2 GiB | 2 个 vCPU / 4 GiB | 4 个 vCPU / 8 GiB |
 |队列工作副本 | 1 到 10 | 1 至 20 | 1 至 40 |
 | **最低计费总运行时间** | **3 个 vCPU/6 GiB** | **6 个 vCPU/12 GiB** | **12 个 vCPU/24 GiB** |
-|数据库实例| 1 个 vCPU / 4 GiB | 2 个 vCPU / 8 GiB | 4 个 vCPU/16 GiB |
-|数据库存储 |自动缩放磁盘|自动缩放磁盘|自动缩放磁盘|最低计费运行时总数包括 2 个 API 服务器副本和 1 个队列工作线程。数据库容量单独计费，不包含在这些总计中。 [Autoscaling](#scaling) 按列出的每个副本大小添加运行时副本。
+|数据库实例 | 1 个 vCPU / 4 GiB | 2 个 vCPU / 8 GiB | 4 个 vCPU/16 GiB |
+|数据库存储 |自动缩放磁盘 |自动缩放磁盘 |自动缩放磁盘 |
 
-在专用部署中，计算大小和数据库大小可以独立于**缩放**对话框进行设置。大小更改将作为新修订版推出，并保留部署的线程、检查点和 API URL。
+最低计费运行时总数包括 2 个 API 服务器副本和 1 个队列工作线程。数据库容量单独计费，不包含在这些总计中。 [Autoscaling](#scaling) 按列出的每个副本大小添加运行时副本。
 
-有关每种尺寸的价格，请参阅[pricing page](https://www.langchain.com/pricing)，其中包含部署成本计算器。有关无服务器和专用部署的计费方式，请参阅[Manage billing](/langsmith/billing#langsmith-deployment-billing)。
+在专用部署中，计算大小和数据库大小可以独立于**缩放**对话框进行设置。大小更改将作为新修订版推出，并保留部署的线程、检查点和 API URL。有关每种尺寸的价格，请参阅[pricing page](https://www.langchain.com/pricing)，其中包含部署成本计算器。有关无服务器和专用部署的计费方式，请参阅[Manage billing](/langsmith/billing#langsmith-deployment-billing)。
 
 ### 在一个部署上运行多个代理
 
-部署是[billed on the resources they consume](/langsmith/billing#langsmith-deployment-billing)，而不是他们服务的代理数量。要在一个部署的资源上运行多个代理，请在一个 `langgraph.json` 中运行 [define multiple graphs](/langsmith/application-structure#define-multiple-graphs-in-one-deployment)。这对于专用来说效果很好：一个拥有自己数据库的始终在线实例可以托管多个生产代理。
+部署是[billed on the resources they consume](/langsmith/billing#langsmith-deployment-billing)，而不是他们服务的代理数量。要在一个部署的资源上运行多个代理，[define multiple graphs](/langsmith/application-structure#define-multiple-graphs-in-one-deployment) 在一个 `langgraph.json` 中。这对于专用来说效果很好：一个拥有自己数据库的始终在线实例可以托管多个生产代理。
 
 部署中的所有图表共享其计算、数据库、自动缩放和部署类型。它们也作为一个修订版一起发布。当代理需要不同的大小、延迟配置文件或与其他代理隔离时，为代理提供自己的部署。
 
-## 数据库配置控制平面和 [data plane](/langsmith/data-plane) 侦听器应用程序协调起来，为每个云部署自动创建一个 Postgres 数据库。该数据库充当部署的[persistence layer](/oss/python/langgraph/persistence#memory-store)。
+## 数据库配置
 
-实现LangGraph应用时，无需配置[checkpointer](/oss/python/langgraph/persistence#checkpointer-libraries)。会自动为图表配置检查点。为图表配置的任何检查点都将替换为自动配置的检查点。
+控制平面和 [data plane](/langsmith/data-plane) 侦听器应用程序协调起来，为每个云部署自动创建一个 Postgres 数据库。该数据库充当部署的[persistence layer](/oss/python/langgraph/persistence#memory-store)。
 
-无法直接访问数据库。对数据库的所有访问都通过[Agent Server](/langsmith/agent-server) 进行。
+实现LangGraph应用时，无需配置[checkpointer](/oss/python/langgraph/persistence#checkpointer-libraries)。会自动为图表配置检查点。为图表配置的任何检查点都将替换为自动配置的检查点。无法直接访问数据库。对数据库的所有访问都通过[Agent Server](/langsmith/agent-server) 进行。
 
 在删除部署本身之前，数据库永远不会被删除。
 
@@ -147,12 +147,14 @@ LangSmith代理服务器的纯云平台功能，包括数据区域、静态IP地
 
 [Serverless](#serverless) 在零到一个副本之间缩放。
 
-专用部署添加和删除最多[maximum for its size](#sizes)的副本。 [API servers](/langsmith/agent-server#runtime-architecture) 和 [queue workers](/langsmith/agent-server#runtime-architecture) 是独立扩展的独立池，因此读取流量不会减慢运行提交速度，反之亦然：* **API 服务器** 在 CPU 上扩展。目标是 CPU 限制的 50%，这是 [sizes table](#sizes) 中请求的 vCPU 的两倍。最少有 2 个副本。
-* **队列工作线程** 根据 CPU 或运行积压进行扩展，以需要更多副本的为准。 CPU 目标是相同的。待办事项目标按 [⟦T13⟧](/langsmith/env-var-cloud#n_jobs_per_worker) 的 75% 计算待处理和正在运行的运行（向下舍入）。默认值为 10，目标是每个副本 7 次运行； 30 次运行需要 5 名工人。最小值为 1 个副本。
+专用部署添加和删除最多[maximum for its size](#sizes)的副本。 [API servers](/langsmith/agent-server#runtime-architecture) 和 [queue workers](/langsmith/agent-server#runtime-architecture) 是独立扩展的独立池，因此读取流量不会减慢运行提交速度，反之亦然：
 
-内存不会触发缩放。 Redis 和数据库计算不会自动缩放。为了避免快速的扩展变化，缩减会等待 15 分钟，然后每 2 分钟删除最多 10% 的副本（至少一个）。它在修订版推出期间暂停。副本保持[billable](/langsmith/billing#langsmith-deployment-billing)，直到缩小规模。
+* **API 服务器** 在 CPU 上扩展。目标是 CPU 限制的 50%，这是 [sizes table](#sizes) 中请求的 vCPU 的两倍。最少有 2 个副本。
+* **队列工作线程** 根据 CPU 或运行积压进行扩展，以需要更多副本的为准。 CPU 目标是相同的。待办事项目标按 [⟦T13⟧](/langsmith/env-var-cloud#n_jobs_per_worker) 的 75% 计算待处理和正在运行的运行（向下舍入）。默认值为 10，目标是每个副本 7 次运行； 30 次运行需要 5 名工人。最小值为 1 个副本。内存不会触发缩放。 Redis 和数据库计算不会自动缩放。为了避免快速的扩展变化，缩减会等待 15 分钟，然后每 2 分钟删除最多 10% 的副本（至少一个）。它在修订版推出期间暂停。副本保持[billable](/langsmith/billing#langsmith-deployment-billing)，直到缩小规模。
 
-自动缩放会更改副本数量，但每个副本可用的 CPU 和内存由部署的 [size](#sizes) 固定。如果部署面临持续的 CPU 压力，或其容器内存不足，请将其升级到更大的大小。尺寸更改会作为新版本推出，无需停机；部署类型无法更改。应用程序级扩展杠杆（持久性模式、异步模式、避免同步阻塞、使用`/join`而不是轮询）适用于云，与自托管相同。基本概念参见[Scaling on self-hosted](/langsmith/agent-server-scale)；其中的 Helm 和资源配置不适用于 Cloud。
+自动缩放会更改副本数量，但每个副本可用的 CPU 和内存由部署的 [size](#sizes) 固定。如果部署面临持续的 CPU 压力，或其容器内存不足，请将其升级到更大的大小。尺寸更改会作为新版本推出，无需停机；部署类型无法更改。
+
+应用程序级扩展杠杆（持久性模式、异步模式、避免同步阻塞、使用`/join`而不是轮询）适用于云，与自托管相同。基本概念参见[Scaling on self-hosted](/langsmith/agent-server-scale)；其中的 Helm 和资源配置不适用于 Cloud。
 
 ## 后续步骤
 

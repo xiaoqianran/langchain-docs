@@ -505,6 +505,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`AIIdentityToolkit`](https://ai-identity.co/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ai-identity/month)](https://pypi.org/project/langchain-ai-identity/) |
 | [`Synoppy`](https://synoppy.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synoppy/month)](https://pypi.org/project/langchain-synoppy/) |
 | [`BiddaComplianceTool`](https://bidda.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bidda/month)](https://pypi.org/project/langchain-bidda/) |
+| [`Protogrid`](https://docs.protogrid.dev/sdk/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-protogrid/month)](https://pypi.org/project/langchain-protogrid/) |
 | [`MagicHourToolkit`](https://docs.magichour.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-magic-hour/month)](https://pypi.org/project/langchain-magic-hour/) |
 | [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
 | [`Instanode`](https://instanode.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-instanode/month)](https://pypi.org/project/langchain-instanode/) |

@@ -80,7 +80,7 @@ graph TB
 
 ### StateBackend
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -94,7 +94,7 @@ agent2 = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -108,7 +108,7 @@ agent2 = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -122,7 +122,7 @@ agent2 = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -136,7 +136,7 @@ agent2 = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -150,7 +150,7 @@ agent2 = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -164,7 +164,7 @@ agent2 = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
@@ -228,7 +228,7 @@ even after that subagent's execution is complete. Those files will continue to b
 >
 >    Note that the default (`virtual_mode=False`) provides no security even with `root_dir` set.
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -238,7 +238,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -248,7 +248,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -258,7 +258,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -268,7 +268,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -278,7 +278,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -288,7 +288,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
@@ -369,7 +369,7 @@ For a durable repository wiki that agents can read with these filesystem tools (
 >
 > **Note:** `virtual_mode=True` provides no security with shell access enabled, since commands can access any path on the system.
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -379,7 +379,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -389,7 +389,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -399,7 +399,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -409,7 +409,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -419,7 +419,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -429,7 +429,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
@@ -453,7 +453,7 @@ agent = create_deep_agent(
 
 ### StoreBackend (LangGraph store)
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -467,7 +467,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -481,7 +481,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -495,7 +495,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -509,7 +509,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -523,7 +523,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -537,7 +537,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -574,7 +574,7 @@ A namespace factory controls where `StoreBackend` reads and writes data. It rece
 
 Pass the namespace factory to the `namespace` parameter when constructing a `StoreBackend`:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from collections.abc import Callable
 
 from langgraph.runtime import Runtime
@@ -594,7 +594,7 @@ The `Runtime` provides:
 
 **Common namespace patterns:**
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StoreBackend
 
 # Per-user: each user gets their own isolated storage
@@ -641,7 +641,7 @@ Namespace components must contain only alphanumeric characters, hyphens, undersc
 
 This means your agent's context is intentionally spread across repos: one repo per agent, separate repos per skill. That separation lets skills be versioned, shared, and reused across multiple agents independently. If this feels fragmented, see [Linked repos](/langsmith/context-engineering-concepts#linked-repos) for the rationale.
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -651,7 +651,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -661,7 +661,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -671,7 +671,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -681,7 +681,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -691,7 +691,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -701,7 +701,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
@@ -736,7 +736,7 @@ Construct it with a repo identifier in `owner/name` or `name` format.
 
 ### CompositeBackend (router)
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -753,7 +753,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -770,7 +770,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -787,7 +787,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -804,7 +804,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -821,7 +821,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
@@ -838,7 +838,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore

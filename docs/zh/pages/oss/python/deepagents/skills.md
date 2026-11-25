@@ -463,7 +463,7 @@ agent = create_deep_agent(
 
 代理如何到达工具取决于您将其传递到的位置：
 
-|将工具传递给 |特工读取技能前|特工读取技能后|
+|将工具传递给 |特工读取技能前|特工读取技能后 |
 | - | - | - |
 | `SkillsMiddleware(tools=...)` |隐藏，调用失败|可见|
 |代理的`tools`，延期|可通过提供商工具搜索获得 |无需搜索即可看到 |
@@ -924,7 +924,7 @@ result = agent.invoke(
 agent.update_state(config, {"skills_metadata": None})
 ```
 
-使用`None`，而不是空列表。空列表意味着源已加载且没有技能，因此代理在线程的其余部分看不到任何技能。
+使用`None`，而不是空列表。空列表意味着源已加载且不包含任何技能，因此代理在线程的其余部分看不到任何技能。
 
 > [!注意]
 >
@@ -1325,7 +1325,7 @@ agent = create_deep_agent(
 
 技能通过[sandbox scripts](#sandbox-scripts)执行代码：代理在需要安装依赖项、运行测试、调用 CLI 或使用操作系统文件系统时运行捆绑脚本。
 
-### 沙盒脚本
+### 沙箱脚本
 
 技能可以包含脚本以及 `SKILL.md` 文件。参考`SKILL.md`中的脚本，以便代理知道它们存在以及何时运行它们：
 
@@ -1383,9 +1383,12 @@ SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
 class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
     """Copy shared skill files from the store into the sandbox before each agent run."""
 
-    def __init__(self, backend: CompositeBackend) -> None:
+    def __init__(self, sandbox: LangSmithSandbox) -> None:
         super().__init__()
-        self.backend = backend
+        # Call the sandbox directly. CompositeBackend routes /skills/ to
+        # StoreBackend, so aupload_files on the composite would write back to
+        # the store instead of seeding the container for script execution.
+        self.sandbox = sandbox
 
     async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
         store = runtime.store
@@ -1397,11 +1400,10 @@ class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
                 msg = f"Invalid key: {key}"
                 raise ValueError(msg)
             normalized = key if key.startswith("/") else f"/{key}"
-            # CompositeBackend routes paths and batches uploads to the right backend.
             files.append((f"/skills{normalized}", item.value["content"].encode()))
 
         if files:
-            await self.backend.aupload_files(files)
+            await self.sandbox.aupload_files(files)
 
 
 async def seed_skill_store(store: InMemoryStore) -> None:
@@ -1443,7 +1445,7 @@ async def main() -> None:
             backend=backend,
             skills=["/skills/"],
             store=store,
-            middleware=[SkillSandboxSyncMiddleware(backend)],
+            middleware=[SkillSandboxSyncMiddleware(sandbox_backend)],
         )
 
     finally:
@@ -1476,9 +1478,12 @@ SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
 class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
     """Copy shared skill files from the store into the sandbox before each agent run."""
 
-    def __init__(self, backend: CompositeBackend) -> None:
+    def __init__(self, sandbox: LangSmithSandbox) -> None:
         super().__init__()
-        self.backend = backend
+        # Call the sandbox directly. CompositeBackend routes /skills/ to
+        # StoreBackend, so aupload_files on the composite would write back to
+        # the store instead of seeding the container for script execution.
+        self.sandbox = sandbox
 
     async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
         store = runtime.store
@@ -1490,11 +1495,10 @@ class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
                 msg = f"Invalid key: {key}"
                 raise ValueError(msg)
             normalized = key if key.startswith("/") else f"/{key}"
-            # CompositeBackend routes paths and batches uploads to the right backend.
             files.append((f"/skills{normalized}", item.value["content"].encode()))
 
         if files:
-            await self.backend.aupload_files(files)
+            await self.sandbox.aupload_files(files)
 
 
 async def seed_skill_store(store: InMemoryStore) -> None:
@@ -1536,7 +1540,7 @@ async def main() -> None:
             backend=backend,
             skills=["/skills/"],
             store=store,
-            middleware=[SkillSandboxSyncMiddleware(backend)],
+            middleware=[SkillSandboxSyncMiddleware(sandbox_backend)],
         )
 
     finally:
@@ -1569,9 +1573,12 @@ SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
 class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
     """Copy shared skill files from the store into the sandbox before each agent run."""
 
-    def __init__(self, backend: CompositeBackend) -> None:
+    def __init__(self, sandbox: LangSmithSandbox) -> None:
         super().__init__()
-        self.backend = backend
+        # Call the sandbox directly. CompositeBackend routes /skills/ to
+        # StoreBackend, so aupload_files on the composite would write back to
+        # the store instead of seeding the container for script execution.
+        self.sandbox = sandbox
 
     async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
         store = runtime.store
@@ -1583,11 +1590,10 @@ class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
                 msg = f"Invalid key: {key}"
                 raise ValueError(msg)
             normalized = key if key.startswith("/") else f"/{key}"
-            # CompositeBackend routes paths and batches uploads to the right backend.
             files.append((f"/skills{normalized}", item.value["content"].encode()))
 
         if files:
-            await self.backend.aupload_files(files)
+            await self.sandbox.aupload_files(files)
 
 
 async def seed_skill_store(store: InMemoryStore) -> None:
@@ -1629,7 +1635,7 @@ async def main() -> None:
             backend=backend,
             skills=["/skills/"],
             store=store,
-            middleware=[SkillSandboxSyncMiddleware(backend)],
+            middleware=[SkillSandboxSyncMiddleware(sandbox_backend)],
         )
 
     finally:
@@ -1662,9 +1668,12 @@ SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
 class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
     """Copy shared skill files from the store into the sandbox before each agent run."""
 
-    def __init__(self, backend: CompositeBackend) -> None:
+    def __init__(self, sandbox: LangSmithSandbox) -> None:
         super().__init__()
-        self.backend = backend
+        # Call the sandbox directly. CompositeBackend routes /skills/ to
+        # StoreBackend, so aupload_files on the composite would write back to
+        # the store instead of seeding the container for script execution.
+        self.sandbox = sandbox
 
     async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
         store = runtime.store
@@ -1676,11 +1685,10 @@ class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
                 msg = f"Invalid key: {key}"
                 raise ValueError(msg)
             normalized = key if key.startswith("/") else f"/{key}"
-            # CompositeBackend routes paths and batches uploads to the right backend.
             files.append((f"/skills{normalized}", item.value["content"].encode()))
 
         if files:
-            await self.backend.aupload_files(files)
+            await self.sandbox.aupload_files(files)
 
 
 async def seed_skill_store(store: InMemoryStore) -> None:
@@ -1722,7 +1730,7 @@ async def main() -> None:
             backend=backend,
             skills=["/skills/"],
             store=store,
-            middleware=[SkillSandboxSyncMiddleware(backend)],
+            middleware=[SkillSandboxSyncMiddleware(sandbox_backend)],
         )
 
     finally:
@@ -1755,9 +1763,12 @@ SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
 class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
     """Copy shared skill files from the store into the sandbox before each agent run."""
 
-    def __init__(self, backend: CompositeBackend) -> None:
+    def __init__(self, sandbox: LangSmithSandbox) -> None:
         super().__init__()
-        self.backend = backend
+        # Call the sandbox directly. CompositeBackend routes /skills/ to
+        # StoreBackend, so aupload_files on the composite would write back to
+        # the store instead of seeding the container for script execution.
+        self.sandbox = sandbox
 
     async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
         store = runtime.store
@@ -1769,11 +1780,10 @@ class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
                 msg = f"Invalid key: {key}"
                 raise ValueError(msg)
             normalized = key if key.startswith("/") else f"/{key}"
-            # CompositeBackend routes paths and batches uploads to the right backend.
             files.append((f"/skills{normalized}", item.value["content"].encode()))
 
         if files:
-            await self.backend.aupload_files(files)
+            await self.sandbox.aupload_files(files)
 
 
 async def seed_skill_store(store: InMemoryStore) -> None:
@@ -1815,7 +1825,7 @@ async def main() -> None:
             backend=backend,
             skills=["/skills/"],
             store=store,
-            middleware=[SkillSandboxSyncMiddleware(backend)],
+            middleware=[SkillSandboxSyncMiddleware(sandbox_backend)],
         )
 
     finally:
@@ -1848,9 +1858,12 @@ SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
 class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
     """Copy shared skill files from the store into the sandbox before each agent run."""
 
-    def __init__(self, backend: CompositeBackend) -> None:
+    def __init__(self, sandbox: LangSmithSandbox) -> None:
         super().__init__()
-        self.backend = backend
+        # Call the sandbox directly. CompositeBackend routes /skills/ to
+        # StoreBackend, so aupload_files on the composite would write back to
+        # the store instead of seeding the container for script execution.
+        self.sandbox = sandbox
 
     async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
         store = runtime.store
@@ -1862,11 +1875,10 @@ class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
                 msg = f"Invalid key: {key}"
                 raise ValueError(msg)
             normalized = key if key.startswith("/") else f"/{key}"
-            # CompositeBackend routes paths and batches uploads to the right backend.
             files.append((f"/skills{normalized}", item.value["content"].encode()))
 
         if files:
-            await self.backend.aupload_files(files)
+            await self.sandbox.aupload_files(files)
 
 
 async def seed_skill_store(store: InMemoryStore) -> None:
@@ -1908,7 +1920,7 @@ async def main() -> None:
             backend=backend,
             skills=["/skills/"],
             store=store,
-            middleware=[SkillSandboxSyncMiddleware(backend)],
+            middleware=[SkillSandboxSyncMiddleware(sandbox_backend)],
         )
 
     finally:
@@ -1941,9 +1953,12 @@ SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
 class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
     """Copy shared skill files from the store into the sandbox before each agent run."""
 
-    def __init__(self, backend: CompositeBackend) -> None:
+    def __init__(self, sandbox: LangSmithSandbox) -> None:
         super().__init__()
-        self.backend = backend
+        # Call the sandbox directly. CompositeBackend routes /skills/ to
+        # StoreBackend, so aupload_files on the composite would write back to
+        # the store instead of seeding the container for script execution.
+        self.sandbox = sandbox
 
     async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
         store = runtime.store
@@ -1955,11 +1970,10 @@ class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
                 msg = f"Invalid key: {key}"
                 raise ValueError(msg)
             normalized = key if key.startswith("/") else f"/{key}"
-            # CompositeBackend routes paths and batches uploads to the right backend.
             files.append((f"/skills{normalized}", item.value["content"].encode()))
 
         if files:
-            await self.backend.aupload_files(files)
+            await self.sandbox.aupload_files(files)
 
 
 async def seed_skill_store(store: InMemoryStore) -> None:
@@ -2001,7 +2015,7 @@ async def main() -> None:
             backend=backend,
             skills=["/skills/"],
             store=store,
-            middleware=[SkillSandboxSyncMiddleware(backend)],
+            middleware=[SkillSandboxSyncMiddleware(sandbox_backend)],
         )
 
     finally:
@@ -2062,7 +2076,7 @@ if __name__ == "__main__":
 
 **问题**：在您添加、编辑或删除一项技能后，客服人员继续使用该技能的早期版本。
 
-**解决方案**：技能每个线程加载一次，因此已经运行的线程看不到变化。重置存储的元数据。参见[Reload skills](#reload-skills)。
+**解决方案**：技能每个线程加载一次，因此已经运行的线程不会看到变化。重置存储的元数据。参见[Reload skills](#reload-skills)。
 
 ### 未找到支持文件**问题**：代理读取 `SKILL.md` 但无法访问脚本、引用或资产。
 

@@ -1,6 +1,6 @@
-<!-- langchain-docs: BYOC operations | https://docs.langchain.com/langsmith/byoc-operations-aws -->
+<!-- langchain-docs: BYOC operations on AWS | https://docs.langchain.com/langsmith/byoc-operations-aws -->
 
-# BYOC operations
+# BYOC operations on AWS
 
 How LangChain operates a LangSmith BYOC data plane, which operations you manage in your own AWS account, and how break-glass access works.
 
@@ -101,7 +101,7 @@ On the **Ingress** tab, you can restrict which source IP ranges the load balance
 > [!WARNING]
 >
 > * An API update replaces the whole list. Include every range you want to keep, or the load balancer stops accepting traffic from the ranges you leave out.
-> * Do not edit the Network Load Balancer security group directly in AWS. LangSmith reconciles the data plane on a regular cadence and reverts any manual changes to managed resources.
+> * Do not edit the load balancer security group directly in AWS. LangSmith reconciles the data plane on a regular cadence and reverts any manual changes to managed resources.
 
 ### Observability
 
@@ -131,6 +131,8 @@ The steps below apply whether LangChain creates the VPC or you supply your own. 
 If you [restrict the load balancer's source IP ranges](#ingress-allowlist), add the CIDR range of each consumer network to that list. A private load balancer always allows the data plane VPC CIDR, but not consumer ranges. Without them, the load balancer drops consumer traffic.
 
 #### Connect with AWS PrivateLink
+
+PrivateLink requires the default NLB ingress. A data plane with an [Application Load Balancer](/langsmith/byoc-shared-responsibility#platform-and-infrastructure) cannot back a VPC endpoint service.
 
 To create the endpoint service in the data plane account:
 

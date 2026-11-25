@@ -4,7 +4,7 @@
 
 # 法学硕士网关
 
-通过一个 LangSmith 端点路由来自代理的模型调用，每个调用都在 LangSmith 中跟踪并受组织策略的管理。
+通过一个 LangSmith 端点路由来自代理的模型调用，每个调用都在 LangSmith 中跟踪并受您组织的策略管理。
 
 > [!注意]
 >
@@ -18,21 +18,23 @@ LLM Gateway 是您运行的代理和应用程序以及您的工作区已配置�
 
 LangChain 聊天模型和 Deep Agents 通过 `LANGSMITH_GATEWAY` 环境变量到达网关，该变量在每个提供商的本机格式中使用 [direct model access](/langsmith/llm-gateway-direct-model-access)，因此不适用任何翻译。
 
+对于 OpenAI、Azure Foundry 和 Gemini Enterprise Agent Platform (Vertex AI) 嵌入，请使用特定于提供商的 [embeddings endpoints](/langsmith/llm-gateway-direct-model-access#create-embeddings)。这些路由保留每个提供者的本机嵌入格式。
+
 ## 选择凭证的管理方式
 
 网关使用 LangSmith 持有的凭证调用每个提供商：您自己的提供商密钥，存储为工作区秘密，或 [Gateway Credits](/langsmith/llm-gateway-credits)，LangChain 向您的 LangSmith 帐户计费。对于每个凭证来源以及计费者，请参阅 [Provider authentication](/langsmith/llm-gateway-provider-authentication#choose-a-credential-source)。
 
 ## 后续步骤
 
-从适合您的角色的指南开始：
-
-> [卡][Set up the gateway for your organization](/langsmith/llm-gateway-admin-setup)
+从适合您的角色的指南开始：> [卡][Set up the gateway for your organization](/langsmith/llm-gateway-admin-setup)
 >
 > 完成初始设置以通过网关路由请求。
 
 > [卡][Send your first request](/langsmith/llm-gateway-first-request)
 >
-> 从模拟器发送请求，从代码调用网关，然后查看跟踪。如有更多问题，请联系[LangChain support](https://support.langchain.com)。
+> 从模拟器发送请求，从代码调用网关，然后查看跟踪。
+
+如有其他问题，请联系[LangChain support](https://support.langchain.com)。
 
 ***
 

@@ -15,6 +15,8 @@ On this page, you send a request from the Simulator in the LangSmith UI and from
 > [!TIP]
 >
 > This page is for developers sending requests through the gateway. If you are setting up the gateway for your organization, start with [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup).
+>
+> To send your first request with a guided flow instead of the Simulator steps below, go to **LLM Gateway** and select the **Getting Started** tab.
 
 ## Before you begin
 

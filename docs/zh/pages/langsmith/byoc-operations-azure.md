@@ -6,7 +6,7 @@
 
 LangChain 如何在 Azure 上扩展、升级和维护 LangSmith BYOC 数据平面，包括实例大小、维护时段和审核。
 
-LangChain 在配置后操作您的 Azure 数据平面，包括升级、扩展、监控和安全修补。您无需调整或调整每项服务。对于 AWS 上的 BYOC，请参阅 [BYOC operations](/langsmith/byoc-operations-aws)。
+LangChain 在配置后操作您的 Azure 数据平面，包括升级、扩展、监控和安全修补。您无需调整或调整每项服务。对于 AWS 上的 BYOC，请参阅 [BYOC operations on AWS](/langsmith/byoc-operations-aws)。
 
 操作分为三组：
 
@@ -19,7 +19,7 @@ LangChain 在配置后操作您的 Azure 数据平面，包括升级、扩展、
 ### 自动缩放
 
 LangChain 随着负载变化扩展数据平面：* **无状态LangSmith服务**：KEDA 在其最小和最大副本数量之间缩放每个服务。大多数服务的目标是其请求资源的 70% CPU 和 80% 内存。
-* **集群节点**：AKS [node auto-provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) 为无法调度的 Pod 添加容量，并删除未使用的容量。每个节点池都有 CPU 和内存限制。通用池仅限于 100 个 vCPU 和 400 GiB 内存。系统节点池为三个节点。
+* **集群节点**：AKS [node auto-provisioning](https://learn.microsoft.com/azure/aks/node-autoprovision) 为无法调度的 Pod 添加容量，并删除未使用的容量。每个节点池都有 CPU 和内存限制。通用池限制为 100 个 vCPU 和 400 GiB 内存。系统节点池为三个节点。
 * **存储**：启用 PostgreSQL 存储自动增长。 Blob 存储随着使用量的增加而增长，生命周期规则根据跟踪负载的保留层使跟踪负载过期。
 * **数据库**：LangChain 监视使用情况，并可以更改 PostgreSQL 和 Redis 大小、服务副本计数和节点池限制。
 
@@ -41,9 +41,9 @@ SmithDB 使用专用节点池进行计算和本地 NVMe 缓存存储。有关存
 
 LangSmith 服务从以下资源请求和自动缩放范围开始：
 
-|服务 |最小副本 |最大副本数 | CPU 请求 |内存请求 |
+|服务 |最小副本 |最大副本数 | CPU 请求 |内存请求|
 | - | - | - | - | - |
-|后端| 2 | 20 | 1 | 4GiB |
+|后端 | 2 | 20 | 1 | 4GiB |
 |平台后台| 2 | 20 | 500m | 1 GiB |
 |摄取队列 | 2 | 20 | 2 | 4GiB |
 |队列| 1 | 10 | 10 1 | 4GiB |

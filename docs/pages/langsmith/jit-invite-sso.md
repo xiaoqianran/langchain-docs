@@ -30,7 +30,7 @@ You can update these settings in the LangSmith UI or with the LangSmith API:
 >
 > 1. Navigate to **Settings** > **Organization** > **Access and Security** > **General**.
 > 2. Toggle **Enable JIT provisioning** and **Allow invites** as needed.
-> 3. [Configure SSO default workspaces and roles](#configure-default-sso-settings) in **Settings** > **SSO configuration**.
+> 3. [Configure SSO default workspaces and roles](#configure-default-sso-settings) in **Settings** > **Login & Provisioning** > **SSO**.
 
 > [tab] API
 >
@@ -190,7 +190,7 @@ When [JIT provisioning](#jit-provisioning) is enabled, configure default setting
 
 2. Default workspaces. Select one or more workspaces that users are automatically added to. Users receive the same role in all selected workspaces. To configure:
 
-   1. Go to **Settings** > **SSO configuration**.
+   1. Go to **Settings** > **Login & Provisioning** > **SSO**.
    2. Set **Default workspace role**.
    3. Select **Default workspaces**.
    4. Save your configuration.
@@ -219,6 +219,7 @@ We recommend choosing one of SCIM or SSO Groups Sync per organization, not both,
 
 * [Set up SSO with OAuth2.0 and OIDC](/langsmith/self-host-sso) (Self-hosted)
 * [Set up SAML SSO](/langsmith/user-management#set-up-saml-sso-for-your-organization) (Cloud)
+* [Set up OIDC SSO](/langsmith/user-management#set-up-oidc-sso-for-your-organization) (Cloud)
 * [Set up SCIM](/langsmith/user-management#set-up-scim-for-your-organization)
 * [User management](/langsmith/user-management)
 * [Role-based access control](/langsmith/rbac)

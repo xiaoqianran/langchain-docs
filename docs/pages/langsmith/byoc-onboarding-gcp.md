@@ -4,7 +4,7 @@
 
 Set up a LangSmith BYOC data plane in your GCP project, from the provisioner service account to creating, changing, and deleting the data plane with the API.
 
-BYOC on GCP runs the LangSmith data plane in your GCP project, on the LangSmith US control plane at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-onboarding-gcp). You create the service account LangSmith provisions as, then create the data plane with the LangSmith API. For BYOC on AWS, see [BYOC onboarding](/langsmith/byoc-onboarding-aws).
+BYOC on GCP runs the LangSmith data plane in your GCP project, on the LangSmith US control plane at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-onboarding-gcp). You create the service account LangSmith provisions as, then create the data plane with the LangSmith API. For BYOC on AWS, see [BYOC onboarding on AWS](/langsmith/byoc-onboarding-aws).
 
 > [!NOTE]
 >
@@ -117,7 +117,7 @@ LangSmith provisions the infrastructure in your project. The data plane status m
 >
 > Provisioning can take up to 3 hours. After 3 hours, the status changes to `provisioning_failed`. If that happens, contact the LangChain team.
 
-After the data plane is active, a workspace named `dp-<data_plane_name>` is available in it, and you can create more workspaces. See the **Create workspaces** step in [BYOC onboarding](/langsmith/byoc-onboarding-aws).
+After the data plane is active, a workspace named `dp-<data_plane_name>` is available in it, and you can create more workspaces. See [Organizations, data planes, and workspaces](/langsmith/byoc-usage#organizations-data-planes-and-workspaces).
 
 ## Use your data plane
 

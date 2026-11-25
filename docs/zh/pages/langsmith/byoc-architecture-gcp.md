@@ -6,7 +6,7 @@
 
 LangSmith BYOC 在您的 GCP 项目中部署什么、数据平面如何连接到 LangChain 控制平面以及 LangSmith 在您的项目中获得的访问权限。
 
-GCP 上的 BYOC 在 GCP 项目中运行 LangSmith 数据平面，而 LangChain 在 `us-central1` 中自己的 GCP 环境中运行控制平面。您的跟踪数据保留在您的项目中。本页面介绍了 LangSmith 部署的内容、流量如何流动以及 LangSmith 在您的项目中获得的访问权限。对于 AWS 上的 BYOC，请参阅 [BYOC architecture](/langsmith/byoc-architecture-aws)。
+GCP 上的 BYOC 在 GCP 项目中运行 LangSmith 数据平面，而 LangChain 在 `us-central1` 中自己的 GCP 环境中运行控制平面。您的跟踪数据保留在您的项目中。本页面介绍了 LangSmith 部署的内容、流量如何流动以及 LangSmith 在您的项目中获得的访问权限。对于 AWS 上的 BYOC，请参阅 [BYOC architecture on AWS](/langsmith/byoc-architecture-aws)。
 
 > [!注意]
 >
@@ -32,7 +32,7 @@ LangSmith 在您的 GCP 项目中创建以下内容：* **网络**：具有 GKE 
 
 ## 流量如何流动1. **用户到数据平面**：用户到达`https://<first 8 characters of the data plane ID>.gcp.langchain-byoc.com`。主机名指向公共或内部负载均衡器上的 Istio 入口网关，您在创建数据平面时选择该网关。
 2. **数据平面到控制平面**：数据平面通过其 VPC 中的 Private Service Connect 终端节点到达位于 `us-central1.p.api.smith.langchain.com` 的 LangSmith API。该路径承载心跳、登录和身份验证调用以及遥测。它不使用互联网。
-3. **GCP API 的控制平面**：控制平面充当一个LangChain 身份、`byoc-crossplane@langchain-prod.iam.gserviceaccount.com`。它会模拟您的配置者服务帐户，因此项目中的每个 GCP API 调用都是作为配置者进行的。 LangSmith API 将数据平面机密写入 Secret Manager，Crossplane 创建、更新和删除其他资源。4. **控制平面到 GKE**：Crossplane 通过集群基于 DNS 的控制平面端点安装和更新集群内资源。每个请求都需要一个 Google 令牌来作为有权访问集群的身份。 Crossplane 的 Helm 和 Kubernetes 提供者无法模拟配置者，因此控制平面服务帐户本身持有`roles/container.admin`。您的 Terraform 模块仅在标记为 `managed_by: langsmith` 的 GKE 集群上授予该权限，并且 LangSmith 在创建每个数据平面集群时对其进行标记。
+3. **GCP API 的控制平面**：控制平面充当一个 LangChain 身份，`byoc-crossplane@langchain-prod.iam.gserviceaccount.com`。它会模拟您的配置者服务帐户，因此项目中的每个 GCP API 调用都是作为配置者进行的。 LangSmith API 将数据平面机密写入 Secret Manager，Crossplane 创建、更新和删除其他资源。4. **控制平面到 GKE**：Crossplane 通过集群基于 DNS 的控制平面端点安装和更新集群内资源。每个请求都需要一个 Google 令牌来作为有权访问集群的身份。 Crossplane 的 Helm 和 Kubernetes 提供者无法模拟配置者，因此控制平面服务帐户本身持有`roles/container.admin`。您的 Terraform 模块仅在标记为 `managed_by: langsmith` 的 GKE 集群上授予该权限，并且 LangSmith 在创建每个数据平面集群时对其进行标记。
 5. **DNS 委托**：控制平面在LangChain 的父区域`gcp.langchain-byoc.com` 中写入数据平面主机名的 NS 委托。这张唱片是LangChain的项目，不是你的。
 
 ## 创建和删除生命周期1.您的 Terraform 创建配置程序服务帐户及其角色，创建 `managed_by: langsmith` 标签，并让控制平面服务帐户模拟配置程序。
@@ -51,7 +51,7 @@ LangSmith 在您的 GCP 项目中创建以下内容：* **网络**：具有 GKE 
 |商店 |配置|
 | - | - |
 | PostgreSQL 的云 SQL |企业版，区域性，在另一个区域具有备用，具有自动存储增长。仅限私有IP。需要 TLS。 IAM数据库登录，因此不存在应用程序密码。自动备份（保留 7 个）和时间点恢复（7 天）。删除保护开启。拆卸时，Cloud SQL 会进行最终备份，保存 365 天，并保留自动备份。两个实例：一个包含 LangSmith 数据库，另一个包含 SmithDB 元存储。 |
-| Redis 集群的内存存储 |一个分片和一个副本。 IAM 身份验证和 TLS。通过 Private Service Connect 端点到达。删除保护开启。 ||云存储|用于存储 LangSmith blob 和 SmithDB 数据的一个区域存储桶。统一的存储桶级访问，并强制实施公共访问预防。生命周期规则删除 TTL 前缀下的对象。拆解保留桶及其对象。 |
+| Redis 集群的内存存储 |一个分片和一个副本。 IAM 身份验证和 TLS。通过 Private Service Connect 端点到达。删除保护开启。 ||云存储|用于存储 LangSmith blob 和 SmithDB 数据的一个区域存储桶。统一的存储桶级访问，并强制执行公共访问预防。生命周期规则删除 TTL 前缀下的对象。拆解保留桶及其对象。 |
 |秘密经理|数据平面配置和 Postgres 的区域秘密，以及启用沙箱时的区域秘密。标有数据平面 ID。控制平面在创建时写入它们并在拆卸时删除它们。 |
 
 ## GKE 和计算* **集群**：`REGULAR` 发布通道上的区域 GKE 标准集群。节点自动修复和升级。

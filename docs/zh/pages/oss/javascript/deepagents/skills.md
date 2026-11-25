@@ -185,7 +185,7 @@ const result = await agent.invoke(
 
 ## 写出有效的技巧
 
-[Agent Skills specification](https://agentskills.io/specification) 包括有关可靠发现和激活的结构化技能的指导。以下建议建立在该基础上，并提供 Deep Agents 的实用模式。**保持[frontmatter](#frontmatter-fields)简洁**和`SKILL.md`正文保持在5,000个令牌以下。每个技能的前文都会在[discovery](#how-skills-work)处添加到系统提示中，而全文只有在激活时才会被读取。保持两个层都较小意味着您可以加载许多技能，而不会拥挤上下文窗口。
+[Agent Skills specification](https://agentskills.io/specification) 包括有关可靠发现和激活的结构化技能的指导。以下建议建立在该基础上，并提供 Deep Agents 的实用模式。**保持 [frontmatter](#frontmatter-fields) 简洁**，并将 `SKILL.md` 正文保持在 5,000 个令牌以下。每个技能的前文都会在[discovery](#how-skills-work)处添加到系统提示中，而全文只有在激活时才会被读取。保持两个层都较小意味着您可以加载许多技能，而不会拥挤上下文窗口。
 
 **编写具体描述。** 在 [discovery](#how-skills-work) 期间，[⟦T91⟧](#frontmatter-fields) 字段是代理看到的每个技能的唯一信息。良好的描述可以告诉代理该技能的作用以及何时激活它，并使用代理可以匹配的特定关键字：
 
@@ -339,14 +339,14 @@ const agent = createDeepAgent({
 技能工具遵循以下规则：
 
 * 技能工具是有门控的。在代理读取技能的 `SKILL.md` 之前，即使模型猜测其名称和参数，对技能的调用也会作为未知工具而失败。
-* 当[summarization](/oss/javascript/deepagents/context-engineering#summarization)删除从对话中读取的内容时，该工具将不可用，直到代理再次读取该技能。
+* 当[summarization](/oss/javascript/deepagents/context-engineering#summarization)删除从对话中读取的内容时，该工具将不可用，直到客服人员再次读取该技能。
 * [Pinning a skill](#pin-skills) 使其工具可用，就像阅读其 `SKILL.md` 一样。它们将保持可用状态，直到摘要删除固定技能的消息为止。> [!注意]
 >
 > 在对话中接受新工具的模型上，Deep Agents在读取后添加了技能工具，这使提示缓存保持有效。在其他模型上，它会将该工具添加到请求的 `tools` 中，这会使缓存失效。请参阅 [Anthropic](/oss/javascript/integrations/chat/anthropic#change-tools-mid-conversation) 和 [OpenAI](/oss/javascript/integrations/chat/openai#add-tools-mid-conversation) 集成页面。
 
 ### 在运行时解析工具
 
-`include_tools` 中的名称不必与工具自己的名称匹配。生成的工具名称（例如`mcp_linear_list_issues_ab12`）很难手写，并且可能不会保持不变。
+`include_tools` 中的名称不必与工具本身的名称匹配。生成的工具名称（例如`mcp_linear_list_issues_ab12`）很难手写，并且可能不会保持不变。
 
 要将技能列表的名称映射到工具，请将解析器函数作为中间件的 `tools` 传递。解析器接收每个 `include_tools` 名称和图表的 `Runtime`，并返回该名称的工具。
 
@@ -451,15 +451,15 @@ const result = await agent.invoke(
   },
   { context: { userId: "user-123" } },
 );
-```> [card] [View example trace](https://smith.langchain.com/public/8dbc8e55-5f6f-4247-a25e-ca7ff7c323d6/r)
+```> [卡][View example trace](https://smith.langchain.com/public/8dbc8e55-5f6f-4247-a25e-ca7ff7c323d6/r)
 >
-> Open a public LangSmith run for this example.
+> 为此示例打开公共 LangSmith 运行。
 
-When you write a resolver:
+当您编写解析器时：
 
-* Keep it fast.它在代理读取技能之后在每次模型调用上运行，并在每次技能工具调用之前再次运行。
+* 保持快速。它在代理读取技能之后在每次模型调用上运行，并在每次技能工具调用之前再次运行。
 
-* The resolver can be async.它可以返回工具的承诺。
+* 解析器可以是异步的。它可以返回工具的承诺。
 
 ### 保持工具可搜索
 
@@ -492,11 +492,11 @@ const agent = createDeepAgent({
 
 代理如何到达工具取决于您将其传递到的位置：
 
-| Pass the tool to |特工读取技能前|特工读取技能后|
+|将工具传递给 |特工读取技能前|特工读取技能后 |
 | - | - | - |
-| `createSkillsMiddleware({ tools })` | Hidden, and calls fail |可见|
+| `createSkillsMiddleware({ tools })` |隐藏，调用失败|可见|
 |代理的`tools`，延期|可通过提供商工具搜索获得 |无需搜索即可看到 |
-| The agent's `tools` |可见，所以`include_tools`没有效果 |可见|当技能列出代理已经拥有的工具时，包括`edit_file`、Deep Agents等内置工具，使用代理的工具，而不是传递给`createSkillsMiddleware`的同名工具。
+|代理的`tools` |可见，所以`include_tools`没有效果 |可见|当技能列出代理已经拥有的工具时，包括`edit_file`、Deep Agents等内置工具，使用代理的工具，而不是传递给`createSkillsMiddleware`的同名工具。
 
 ## 后端和远程技能加载
 
@@ -682,9 +682,9 @@ function createAgentForUser(userRole: string) {
 >
 > 对于Deep Agents代码存储约定，请参阅[App data](/oss/deepagents/code/configuration#data-locations)。
 >
->> [accordion] 模拟Deep Agents SDK中代码源码顺序
+>> [手风琴] 模拟Deep Agents SDK中的代码源码顺序
 >>
->> 为了匹配 SDK 代码中的 Deep Agents 代码分层，请按照从低到高的优先级顺序显式传递所有所需的源：
+>> 为了匹配 SDK 代码中的 Deep Agents 代码分层，请按照从低到高的优先顺序显式传递所有所需的源：
 >>
 >> ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > [
@@ -777,7 +777,7 @@ const result = await agent.invoke(
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 await agent.updateState(config, { skillsMetadata: null });
-```使用`null`，而不是空列表。空列表意味着源已加载且没有技能，因此代理在线程的其余部分看不到任何技能。
+```使用`null`，而不是空列表。空列表意味着源已加载且不包含任何技能，因此代理在线程的其余部分看不到任何技能。
 
 > [!注意]
 >
@@ -1177,7 +1177,7 @@ const agent = await createDeepAgent({
 
 技能通过[sandbox scripts](#sandbox-scripts)执行代码：代理在需要安装依赖项、运行测试、调用 CLI 或使用操作系统文件系统时运行捆绑的脚本。
 
-### 沙盒脚本
+### 沙箱脚本
 
 技能可以包含脚本以及 `SKILL.md` 文件。参考`SKILL.md`中的脚本，以便代理知道它们存在以及何时运行它们：
 
@@ -1208,7 +1208,7 @@ Search arXiv for papers matching the user's query.
 3. If the user asks for more detail on a specific paper, fetch the full abstract.
 ```
 
-代理可以从任何后端“读取”脚本，但要“执行”它们，代理需要访问 shell，而只有 [sandbox backends](/oss/javascript/deepagents/sandboxes) 提供。[Sandbox backends](/oss/javascript/deepagents/sandboxes) 在隔离的容器中运行。存储在沙箱外部的技能文件在沙箱内部不可用，这意味着代理无法执行技能脚本或访问技能资源，除非先将它们转移进来。使用[custom middleware](/oss/javascript/langchain/middleware/custom)来处理此传输：
+代理可以从任何后端*读取*脚本，但要*执行*它们，代理需要访问 shell，而只有 [sandbox backends](/oss/javascript/deepagents/sandboxes) 提供。[Sandbox backends](/oss/javascript/deepagents/sandboxes) 在隔离的容器中运行。存储在沙箱外部的技能文件在沙箱内部不可用，这意味着代理无法执行技能脚本或访问技能资源，除非先将它们转移进来。使用[custom middleware](/oss/javascript/langchain/middleware/custom)来处理此传输：
 
 * **`before_agent`**：从后端读取技能文件并将其上传到沙箱中，以便代理可以从头开始执行脚本。
 * **`after_agent`**：从沙箱下载任何更新或新创建的技能文件并将它们写回后端，以便更改在运行中持续存在。
@@ -1282,7 +1282,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -1300,14 +1303,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -1321,8 +1323,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -1337,7 +1340,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {
@@ -1420,7 +1423,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -1438,14 +1444,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -1459,8 +1464,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -1475,7 +1481,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {
@@ -1558,7 +1564,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -1576,14 +1585,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -1597,8 +1605,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -1613,7 +1622,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {
@@ -1696,7 +1705,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -1714,14 +1726,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -1735,8 +1746,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -1751,7 +1763,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {
@@ -1834,7 +1846,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -1852,14 +1867,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -1873,8 +1887,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -1889,7 +1904,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {
@@ -1972,7 +1987,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -1990,14 +2008,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -2011,8 +2028,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -2027,7 +2045,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {
@@ -2110,7 +2128,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -2128,14 +2149,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -2149,8 +2169,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -2165,7 +2186,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {
@@ -2219,7 +2240,7 @@ main().catch((err) => {
 
 1. **检查技能路径。** 路径必须使用正斜杠且相对于后端根目录。对于`FilesystemBackend`，路径是相对于`root_dir`的。通过`StateBackend`，使用`create_file_data()`传递`invoke(files={...})`中的技能文件。
 
-2. **验证`SKILL.md` [frontmatter](#frontmatter-fields)。** [⟦T225⟧](#frontmatter-fields) 必须与父目录名称匹配并遵循[Agent Skills specification](https://agentskills.io/specification)。使用[⟦T226⟧ validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref)检查格式。3. **检查文件大小。** Deep Agents 在发现过程中跳过 `SKILL.md` 文件超过 10 MB。
+2. **验证`SKILL.md` [frontmatter](#frontmatter-fields)。** [⟦T225⟧](#frontmatter-fields) 必须与父目录名称匹配并遵循[Agent Skills specification](https://agentskills.io/specification)。使用[⟦T226⟧ validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref)检查格式。3. **检查文件大小。** Deep Agents 在发现过程中跳过超过 10 MB 的 `SKILL.md` 文件。
 
 4. **分层查看来源。** 当多个来源中出现相同的技能名称时，[last source wins](#usage)。较晚的路径中的旧技能或空技能可能会覆盖您期望的技能。
 
@@ -2227,7 +2248,7 @@ main().catch((err) => {
 
 **问题**：在您添加、编辑或删除一项技能后，客服人员继续使用该技能的早期版本。
 
-**解决方案**：技能每个线程加载一次，因此已经运行的线程看不到变化。重置存储的元数据。参见[Reload skills](#reload-skills)。
+**解决方案**：技能每个线程加载一次，因此已经运行的线程不会看到变化。重置存储的元数据。参见[Reload skills](#reload-skills)。
 
 ### 未找到支持文件
 

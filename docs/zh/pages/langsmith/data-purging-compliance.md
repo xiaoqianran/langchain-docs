@@ -4,7 +4,7 @@
 
 # 数据清除以确保合规性
 
-本指南涵盖了数据到达LangSmith云服务器后可用的各种功能，以帮助您实现隐私目标。
+本指南涵盖了LangSmith中存储的数据的保留和删除控制。
 
 ## 数据保留
 
@@ -21,11 +21,11 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 >
 > 此功能适用于 [Enterprise](/langsmith/pricing-plans) 计划客户。对于[self-hosted](/langsmith/self-hosted)企业客户，请参阅[workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted)。
 
-[Enterprise](/langsmith/pricing-plans) 客户可以自定义[workspace](/langsmith/administration-overview#workspaces) 级别跟踪的延长数据保留期限，以满足特定的合规性要求。您可以选择的持续时间取决于您的托管选项。参见[Retention periods](/langsmith/usage-and-billing#retention-periods)。> [!注意]
->
-> 对保留期限的更改仅适用于新跟踪。现有痕迹不受影响。
+[Enterprise](/langsmith/pricing-plans) 客户可以为[workspace](/langsmith/administration-overview#workspaces) 级别的跟踪自定义延长数据保留期限，以满足特定的合规性要求。您可以选择的持续时间取决于您的托管选项。参见[Retention periods](/langsmith/usage-and-billing#retention-periods)。
 
-### 配置延长保留
+> [!注意]
+>
+> 对保留期限的更改仅适用于新跟踪。现有痕迹不受影响。### 配置延长保留
 
 组织管理员和操作员 (`organization:manage`) 可以为任何工作区配置保留。工作区管理员可以配置自己的工作区 (`workspaces:manage`)。有关完整权限参考，请参阅[Organization and workspace operations](/langsmith/organization-workspace-operations)。
 
@@ -76,15 +76,42 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 >   -H "x-api-key: YOUR_API_KEY" \
 >   -H "Content-Type: application/json" \
 >   -d '{"resource_type": "run", "ttl_days": 90}'
-> ```### 自托管的工作区级别延长保留
+> ```
 
-自托管 [Enterprise](/langsmith/pricing-plans) 客户还可以使用工作区级别的扩展保留配置，而不是系统范围的 TTL 设置。这可以更精细地控制不同工作区的数据保留，而无需更改环境变量。
+### 自托管的工作区级别延长保留自托管 [Enterprise](/langsmith/pricing-plans) 客户还可以使用工作区级别的扩展保留配置，而不是系统范围的 TTL 设置。这可以更精细地控制不同工作区的数据保留，而无需更改环境变量。
 
 > [!警告]
 >
 > 如果您使用 Blob 存储，则**必须**为您配置的每个自定义保留期添加生命周期规则。例如，将工作区设置为 90 天保留意味着 Blob 数据将写入 `ttl_90d/` 前缀，这需要自动清理匹配的生命周期规则。有关详细信息和示例，请参阅[blob storage TTL configuration](/langsmith/self-host-blob-storage#custom-workspace-level-retention-prefixes)。
 
 要为自托管部署配置此功能，请参阅[self-hosted TTL documentation](/langsmith/self-host-ttl)了解旧系统范围的方法或联系[support](https://support.langchain.com)。
+
+## 禁用扩展跟踪保留
+
+工作区保留限制会阻止新跟踪和新升级请求的延长保留。使用它可以在基础保留中保留新的痕迹，而无需禁用反馈或评估。默认情况下该开关处于关闭状态。> [!注意]
+>
+> 此功能适用于 [Enterprise](/langsmith/pricing-plans) 计划客户。对于自托管部署，此功能在 LangSmith 0.18.29rc1 候选版本中可用，与 [Helm chart version 0.18.0-rc.78](https://github.com/langchain-ai/helm/releases/tag/langsmith-0.18.0-rc.78) 打包在一起。较旧的数据平面可能不会显示交换机。
+
+更改此设置需要`organization:retention:manage`，已授予[Organization Admins and Operators](/langsmith/rbac#organization-roles)。仅工作区管理员角色不会授予此权限。
+
+要禁用工作区的延长保留：
+
+1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-purging-compliance)中，进入**设置** > **使用配置**。
+2. 选择工作区的**数据保留策略**。
+3. 打开**禁用扩展跟踪保留**。
+4. 选择**保存**。
+
+当限制有效时：* **新跟踪**：使用基本保留，即使环境保存的默认值已扩展。
+* **保留升级**：新请求不会扩展跟踪，包括现有的基本保留跟踪。反馈、评估和其他自动化操作将继续进行，但不会延长保留时间。
+* **环境默认值**：您无法将新环境默认值设置为扩展或将基本默认值更改为扩展。现有的扩展默认值仍然保存，但不适用于新轨迹。
+* **现有扩展痕迹**：保留其到期日期。该限制不会缩短它们的保留时间或删除它们。
+* **保存的首选项**：规则和评估器的环境默认值和保留首选项保持不变。再次关闭开关即可应用这些设置。
+
+> [!警告]
+>
+> 更改需要一些时间才能通过缓存的设置传播。之前接受的升级（包括排队或重试的工作）在保存后仍然可以完成。此设置不是立即或追溯删除控制。
+
+此限制独立于 [retention durations](#customize-extended-retention-policy)、[environment defaults](/langsmith/billing#change-default-retention-for-an-environment) 以及个人规则或评估者选择退出。与[extended-retention usage limit](/langsmith/usage-and-billing#side-effects-of-extended-data-retention-traces-limit)不同，它可以让反馈和评估继续进行，而不会延长保留时间。版本 0.16.0 及更高版本中的自托管部署 [do not track long-lived trace usage](/langsmith/granular-usage)。 **仅长期存在**过滤器始终显示零结果，因此它不验证此限制。
 
 ## 跟踪删除
 
@@ -93,7 +120,9 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 1. **通过跟踪 ID 和会话 ID**：通过提供跟踪 ID 及其相应会话 ID 的列表来删除特定跟踪（每个请求最多 1000 个跟踪）
 2. **按元数据**：删除工作区中与任何指定元数据键值对匹配的跟踪
 
-更多详情请参阅[API spec](/langsmith/smith-api/run/delete-runs)。> [!警告]
+更多详情请参阅[API spec](/langsmith/smith-api/run/delete-runs)。
+
+> [!警告]
 >
 > 所有跟踪删除都将删除所有数据存储中的反馈、聚合和统计等相关实体。
 
@@ -103,9 +132,7 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 
 ### 删除特定痕迹
 
-要根据跟踪 ID 从单个会话中删除特定跟踪：
-
-> [!注意]
+要根据跟踪 ID 从单个会话中删除特定跟踪：> [!注意]
 >
 > `session_id` 是您尝试删除的跟踪的项目 ID。您可以在LangSmith UI 的跟踪项目页面上找到它。
 
@@ -131,7 +158,9 @@ curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
 
 对于批量操作，示例删除遵循两步过程：
 
-#### 1. 通过元数据搜索示例查找工作区中所有数据集具有匹配元数据的所有示例。
+#### 1. 通过元数据搜索示例
+
+查找工作区中所有数据集具有匹配元数据的所有示例。
 
 [GET /examples](/langsmith/smith-api/examples/read-examples)
 
@@ -155,9 +184,7 @@ curl -X GET "https://api.smith.langchain.com/api/v1/examples?as_of=2024-01-01T00
 
 获得示例 ID 后，发送删除请求。这将使该示例的所有版本的数据集的输入、输出和元数据清零。
 
-[POST /v1/platform/datasets/examples/delete/](/langsmith/smith-api/examples/hard-delete-examples)
-
-* 在请求正文中指定 `example_ids`（示例 ID 列表）和 `hard_delete`（布尔值）
+[POST /v1/platform/datasets/examples/delete/](/langsmith/smith-api/examples/hard-delete-examples)* 在请求正文中指定 `example_ids`（示例 ID 列表）和 `hard_delete`（布尔值）
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "https://api.smith.langchain.com/v1/platform/datasets/examples/delete/" \

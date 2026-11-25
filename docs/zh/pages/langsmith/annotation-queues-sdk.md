@@ -184,11 +184,11 @@ client.delete_feedback_config("accuracy")
 await client.deleteFeedbackConfig("accuracy");
 ```
 
-## 注释队列标题项
+## 注释队列标题项目
 
 Rubric 项目将反馈配置分配给特定的注释队列。它们控制注释者在审阅该队列中的[runs](/langsmith/observability-concepts#runs)时看到哪些反馈表单，以及每个表单是必需的还是可选的。
 
-### 创建一个包含标题项的队列
+### 创建一个包含标题项目的队列
 
 使用 [⟦T49⟧](https://reference.langchain.com/python/langsmith/client/Client/create_annotation_queue) 创建注释队列，并通过 rubric 项目为其分配反馈配置。每个标题项都通过其键引用反馈配置，并自定义它在此特定队列中的注释者面前的显示方式。
 
@@ -399,11 +399,11 @@ await client.updateAnnotationQueue(targetQueueId, {
 >
 > 解析代理环境需要最新的 SDK 和LangSmith 版本，并且在 BYOC 数据平面上不可用。有关要求和 BYOC 替代方案，请参阅[Resolve an agent environment](/langsmith/resolve-an-agent)。
 
-您还可以在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotation-queues-sdk) 中找到这些 ID：* **`project_id`**：代理环境的`tracer_session_id`。选择您的代理，转到**跟踪**，然后选择环境。单击环境名称旁边的 **ID** 徽章并复制 **跟踪项目 ID**。要了解为什么这些 API 采用项目 ID，请参阅 [Resolve an agent environment](/langsmith/resolve-an-agent)。
+您还可以在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotation-queues-sdk) 中找到这些 ID：* **`project_id`**：代理环境的`tracer_session_id`。选择您的代理，转到**跟踪**，然后选择环境。单击环境名称旁边的 **ID** 徽章，然后复制 **跟踪项目 ID**。要了解为什么这些 API 采用项目 ID，请参阅 [Resolve an agent environment](/langsmith/resolve-an-agent)。
 * **`run_id`**：在 [Details view](/langsmith/view-traces#details-view) 中打开运行，然后单击运行名称旁边的 **ID** 徽章以复制运行 ID。
 * **`thread_id`**：选择您的代理，转到**跟踪**，选择环境，然后打开**线程**选项卡。复制 **线程 ID** 列中的值。
 
-要延长添加的运行项目的跟踪保留时间，请传递 `extend_trace_retention=True`。响应是一个带有 `items` 数组的信封，每个添加的项目一个条目。
+要延长添加的运行项目的跟踪保留时间，请传递 `extend_trace_retention=True`。如果工作区[disables extended trace retention](/langsmith/data-purging-compliance#disable-extended-trace-retention)，则添加项目而不延长保留时间。响应是一个带有 `items` 数组的信封，每个添加的项目一个条目。
 
 > [!注意]
 >
@@ -707,7 +707,7 @@ await client.createFeedbackConfig({
 
 ### 反馈配置字段
 
-|领域|类型 |描述 |
+|领域 |类型 |描述 |
 | - | - | - |
 | `allows_multiple_categories` | `boolean` |仅分类。审阅者是否可以选择多个类别。默认为 false。 |
 

@@ -140,7 +140,7 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 
 ### 先决条件
 
-在运行实验之前，请确保您具备以下条件：* **A LangSmith 数据集**：您的数据集应包含您想要测试的输入，以及可选的用于比较的参考输出。输入架构必须与助手所需的输入架构相匹配。有关模式的更多信息，请参阅[graph API schema documentation](/oss/python/langgraph/graph-api#schema)。有关创建数据集的更多信息，请参阅[How to Manage Datasets](/langsmith/manage-datasets-in-application#create-a-dataset-and-add-examples)。
+在运行实验之前，请确保您具备以下条件：* **LangSmith 数据集**：您的数据集应包含您想要测试的输入，以及可选的用于比较的参考输出。输入架构必须与助手所需的输入架构相匹配。有关模式的更多信息，请参阅[graph API schema documentation](/oss/python/langgraph/graph-api#schema)。有关创建数据集的更多信息，请参阅[How to Manage Datasets](/langsmith/manage-datasets-in-application#create-a-dataset-and-add-examples)。
 * **（可选）评估器**：您可以将评估器（例如，LLM-as-a-Judge、启发式或自定义函数）附加到 LangSmith 中的数据集。这些将在图表处理完所有输入后自动运行。
 * **正在运行的应用程序**：可以针对以下对象运行实验：
   * 申请[deployed on LangSmith](/langsmith/deploy-overview)。
@@ -148,12 +148,7 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 
 > [!注意]
 >
-> 工作室实验遵循与其他实验相同的 [data retention](/langsmith/usage-and-billing#data-retention) 规则。默认情况下，跟踪具有基础层保留。但是，如果添加反馈，跟踪将自动升级到扩展层保留。可以通过以下两种方式之一添加反馈：
->
-> * [dataset has evaluators configured](/langsmith/bind-evaluator-to-dataset)。
-> * [Feedback](/langsmith/observability-concepts#feedback) 手动添加到迹线中。
->
-> 此自动升级会增加跟踪的保留期和成本。更多详情请参考[Data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
+> Studio 实验遵循与其他实验相同的 [data retention](/langsmith/usage-and-billing#data-retention) 规则：默认情况下以延长保留时间创建运行。如果工作区[disables extended trace retention](/langsmith/data-purging-compliance#disable-extended-trace-retention)，实验运行将使用基本保留。更多详情请参考[How retention affects downstream features](/langsmith/usage-and-billing#how-retention-affects-downstream-features)。
 
 ### 实验设置1. 启动实验。单击 Studio 页面右上角的 **运行实验** 按钮。
 2. 选择您的数据集。在出现的模式中，选择要用于实验的数据集（或特定的数据集拆分），然后单击 **开始**。
@@ -205,7 +200,7 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 5. 在将示例添加到数据集之前，根据需要编辑示例的输入/输出。
 6. 选择页面底部的**添加到数据集**，将所有选定的节点添加到各自的数据集。
 
-更多详情请参考[How to evaluate an application's intermediate steps](/langsmith/evaluate-on-intermediate-steps)。
+更多详情请参阅[How to evaluate an application's intermediate steps](/langsmith/evaluate-on-intermediate-steps)。
 
 ***
 

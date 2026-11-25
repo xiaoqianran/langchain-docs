@@ -28,6 +28,10 @@ PostgreSQL is the default checkpointer backend. No configuration is needed. To u
 >
 > Requires Agent Server v0.7.64 or later.
 
+> [!WARNING]
+>
+> [Serverless](/langsmith/cloud-platform-features#serverless) deployments on LangSmith Cloud do not support the MongoDB checkpointer. On a Serverless deployment, Agent Server ignores `"backend": "mongo"` and stores checkpoints in the shared PostgreSQL database. Use a [Dedicated](/langsmith/cloud-platform-features#dedicated) deployment for MongoDB checkpointing.
+
 ### Prerequisites
 
 * A MongoDB **replica set** (standalone `mongod` is not supported). This can be a self-managed replica set, a `mongos` router, or a managed service like MongoDB Atlas.
@@ -149,6 +153,8 @@ mongodb+srv://user:password@cluster.example.net/langgraph
 > See the [standalone server guide](/langsmith/deploy-standalone-server) for a full Docker Compose example with MongoDB.
 
 > [tab] Cloud
+>
+> MongoDB checkpointing on Cloud requires a Dedicated deployment. Serverless deployments do not support it.
 >
 > Set `backend` to `"mongo"` in your `langgraph.json`, then add `LS_MONGODB_URI` as an environment variable in your deployment settings in the LangSmith UI.
 >

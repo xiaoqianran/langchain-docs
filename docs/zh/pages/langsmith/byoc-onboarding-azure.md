@@ -10,7 +10,7 @@
 >
 > Azure 上的 BYOC 位于 **[beta](/langsmith/release-stages)**。首先，[contact our sales team](https://www.langchain.com/contact-sales)。
 
-本页面介绍如何在 Azure 订阅中创建 LangSmith BYOC 数据平面。每个数据平面都在其自己的资源组中运行。 Terraform 模块仅向 LangSmith 提供对该资源组的访问权限，然后 LangChain 在其中创建并操作数据平面。设计参见[BYOC architecture on Azure](/langsmith/byoc-architecture-azure)。对于 AWS，请参阅 [BYOC onboarding](/langsmith/byoc-onboarding-aws)。
+本页面介绍如何在 Azure 订阅中创建 LangSmith BYOC 数据平面。每个数据平面都在其自己的资源组中运行。 Terraform 模块仅向 LangSmith 提供对该资源组的访问权限，然后 LangChain 在其中创建并操作数据平面。设计参见[BYOC architecture on Azure](/langsmith/byoc-architecture-azure)。对于 AWS，请参阅 [BYOC onboarding on AWS](/langsmith/byoc-onboarding-aws)。
 
 ## 开始之前
 
@@ -32,7 +32,7 @@
 
 * **LangSmith 服务主体**，每个租户一次：Entra 租户中LangSmith 应用程序的身份（客户端 ID `5b0a74cb-9f37-4797-b557-c15d7be80d3b`）。 LangSmith 控制平面在您的租户外部运行并以其身份登录。它没有 Microsoft Graph 权限。资源组中的托管身份适用于数据平面内的工作负载。
 * **资源组** `langsmith-byoc-<key>` 对于 `data_planes` 中的每个条目。不要将其他工作负载放入其中。
-* **每个资源组中都有一个 Key Vault**，具有 Azure RBAC，但没有公共网络访问权限。 LangSmith 将数据平面的引导密钥写入其中。
+* **每个资源组中都有一个 Key Vault**，具有 Azure RBAC 并且没有公共网络访问权限。 LangSmith 将数据平面的引导密钥写入其中。
 * **每个资源组上有两个角色分配**：`langsmith-byoc-<key>-<suffix>` 自定义角色和 `User Access Administrator`。两者都带有您的外部 ID 作为其描述。
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -115,7 +115,7 @@ output "langsmith_byoc_access" {
 
 1. 在 [LangSmith on Azure](https://azure.smith.langchain.com) 中，转到 **设置 > 数据平面**，然后单击 **+ 数据平面**。
 
-2. 使用上一步中的 Terraform 输出填写 **创建数据平面** 表单：|领域|描述 |
+2. 使用上一步中的 Terraform 输出填写 **创建数据平面** 表单：|领域 |描述 |
    | - | - |
    | **姓名** |最多 24 个小写字母、数字和连字符。以字母或数字开头和结尾，且不以 `internal` 开头。例如，`prod`。 |
    | **蔚蓝区域** |选择资源组的区域。 |

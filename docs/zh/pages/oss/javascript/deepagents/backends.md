@@ -85,7 +85,7 @@ graph TB
 
 ### 状态后端
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StateBackend } from "deepagents";
 
 // By default we provide a StateBackend
@@ -144,7 +144,7 @@ const agent2 = createDeepAgent({
 >
 > 请注意，即使设置了 `root_dir`，默认值 (`virtual_mode=False`) 也不提供安全性。
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -153,7 +153,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -162,7 +162,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -171,7 +171,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -180,7 +180,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -189,7 +189,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -198,7 +198,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -272,7 +272,7 @@ const agent = createDeepAgent({
 >
 > **注意：** `virtual_mode=True` 在启用 shell 访问的情况下不提供安全性，因为命令可以访问系统上的任何路径。
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -283,7 +283,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -294,7 +294,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -305,7 +305,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -316,7 +316,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -327,7 +327,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -338,7 +338,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, LocalShellBackend } from "deepagents";
 
 const backend = new LocalShellBackend({ workingDirectory: "." });
@@ -363,7 +363,7 @@ const agent = createDeepAgent({
 
 ### StoreBackend（LangGraph商店）
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -380,7 +380,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -397,7 +397,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -414,7 +414,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -431,7 +431,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -448,7 +448,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -465,7 +465,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, StoreBackend } from "deepagents";
 import { InMemoryStore } from "@langchain/langgraph";
 
@@ -499,11 +499,11 @@ const agent = createDeepAgent({
 
 #### 命名空间工厂
 
-命名空间工厂控制 `StoreBackend` 读取和写入数据的位置。它接收一个 `StoreBackendContext` 并返回用作商店命名空间的字符串数组。使用命名空间工厂来隔离用户、租户或助理之间的数据。
+命名空间工厂控制 `StoreBackend` 读取和写入数据的位置。它接收一个 `StoreBackendContext` 并返回用作存储命名空间的字符串数组。使用命名空间工厂来隔离用户、租户或助理之间的数据。
 
 构造 `StoreBackend` 时将命名空间工厂传递给 `namespace` 参数：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 type StoreBackendNamespaceFactory = (context: {
   state: unknown;
   config?: {
@@ -517,12 +517,12 @@ type StoreBackendNamespaceFactory = (context: {
 上下文规定：
 
 * `state`—当前图形状态（如果可用）
-* `config`—可运行的配置元数据和 `configurable` 值（如果可用）
+* `config`—可运行的配置元数据和`configurable`值（如果可用）
 * `assistantId`—从配置元数据或注入的运行时解析的助手标识符
 
 **常见的命名空间模式：**
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StoreBackend } from "deepagents";
 
 // Per-user: derive from the authenticated Agent Server user
@@ -586,7 +586,7 @@ const staticBackend = new StoreBackend({
 
 ### CompositeBackend（路由器）
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -608,7 +608,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -630,7 +630,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -652,7 +652,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -674,7 +674,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -696,7 +696,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -718,7 +718,7 @@ const agent = createDeepAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -794,7 +794,7 @@ const agent = createDeepAgent({
 
 有效负载存储在`/blobs/<sha256>`下。
 
-消息历史记录保留内容寻址引用。在每次模型调用之前，中间件都会从其缓存或后端恢复原始媒体。重新读取未更改的内容会重用相同的 blob；更改的内容会创建一个新的 blob。使用在图状态之外存储 blob 的后端，例如沙箱或 `FilesystemBackend`。当 blob 路径路由到`StateBackend`（包括通过`CompositeBackend`）时，卸载不起作用。如果保留 `StateBackend` 作为默认后端，请将 blob 目录路由到外部存储。
+消息历史记录保留内容寻址引用。在每次模型调用之前，中间件都会从其缓存或后端恢复原始媒体。重新读取未更改的内容会重用相同的 blob；更改的内容会创建一个新的 blob。使用在图状态之外存储 blob 的后端，例如沙箱或`FilesystemBackend`。当 blob 路径路由到`StateBackend`（包括通过`CompositeBackend`）时，卸载不起作用。如果保留 `StateBackend` 作为默认后端，请将 blob 目录路由到外部存储。
 
 > [!注意]
 >
@@ -881,7 +881,7 @@ const agent = createDeepAgent({
 
 ## 添加策略挂钩
 
-对于超出基于路径的允许/拒绝规则（速率限制、审核日志记录、内容检查）的自定义验证逻辑，通过子类化或包装后端来强制实施企业规则。
+对于超出基于路径的允许/拒绝规则（速率限制、审核日志记录、内容检查）的自定义验证逻辑，通过子类化或包装后端来强制执行企业规则。
 
 阻止在选定前缀（子类）下写入/编辑：
 
@@ -969,7 +969,7 @@ V2 后端原生支持二进制文件。当`read()`遇到二进制文件（由文
 |音频| `.mp3`、`.wav`、`.aiff`、`.aac`、`.ogg`、`.flac` | `audio/mpeg`、`audio/wav`、`audio/aiff`、`audio/aac`、`audio/ogg`、`audio/flac` |
 |视频 | `.mp4`、`.webm`、`.mpeg`/`.mpg`、`.mov`、`.avi`、`.flv`、`.wmv`、`.3gpp` | `video/mp4`、`video/webm`、`video/mpeg`、`video/quicktime`、`video/x-msvideo`、`video/x-flv`、`video/x-ms-wmv`、`video/3gpp` |
 |文件 | `.pdf`、`.ppt`、`.pptx` | `application/pdf`、`application/vnd.ms-powerpoint`、`application/vnd.openxmlformats-officedocument.presentationml.presentation` |
-|文字| `.txt`、`.html`、`.json`、`.js`、`.ts`、`.py`等 | `text/plain`、`text/html`、`application/json`等|
+|文字| `.txt`、`.html`、`.json`、`.js`、`.ts`、`.py`等 | `text/plain`、`text/html`、`application/json`等 |
 
 ### 读取二进制文件
 
@@ -1018,7 +1018,7 @@ type FileData =
 
 ### 发生了什么变化
 
-|之前（已弃用）|之后 |
+|之前（已弃用）|之后|
 | - | - |
 | `backend=lambda rt: StateBackend(rt)` | `backend=StateBackend()` |
 | `backend=lambda rt: StoreBackend(rt)` | `backend=StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,))` |
@@ -1031,7 +1031,7 @@ type FileData =
 |已弃用 |更换|
 | - | - |
 | `BackendFactory`型 |直接传递后端实例 |
-| `BackendRuntime`接口|后端在内部解析上下文 |
+| `BackendRuntime`接口 |后端在内部解析上下文 |
 | `StateBackend(runtime, options?)` 构造函数重载 | `new StateBackend(options?)` |
 | `StoreBackend(stateAndStore, options?)` 构造函数重载 | `new StoreBackend(options?)` |
 | `WriteResult` 和 `EditResult` 上的`filesUpdate` 字段 |状态写入现在由后端在内部处理 |
@@ -1044,7 +1044,7 @@ type FileData =
 
 之前（已弃用）：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -1061,7 +1061,7 @@ const agent = createDeepAgent({
 
 之后：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
 
 const agent = createDeepAgent({
@@ -1081,7 +1081,7 @@ const agent = createDeepAgent({
 ### 必需的方法
 
 * **`ls(path: string) → LsResult`**
-  * 列出指定目录中的文件和目录（非递归）。 Directories have a trailing `/` in their path and `is_dir=true`.如果可用，请包括 `is_dir`、`size`、`modified_at`。
+  * 列出指定目录中的文件和目录（非递归）。目录的路径中有一个尾随的 `/` 和 `is_dir=true`。如果可用，请包括 `is_dir`、`size`、`modified_at`。
 
 * **`read(filePath: string, offset?: number, limit?: number) → ReadResult`**
   * 读取文件内容。对于文本文件，内容按行偏移量/限制（默认偏移量 0，限制 500）分页。对于二进制文件，将返回完整的原始 `Uint8Array` 内容以及 `mimeType` 字段集。如果文件丢失，请返回`{ error: "File '/x' not found" }`。
@@ -1104,25 +1104,25 @@ const agent = createDeepAgent({
 ### 可选方法* **`uploadFiles(files: Array<[string, Uint8Array]>) → FileUploadResponse[]`** - 上传多个文件（用于沙箱后端）。
 * **`downloadFiles(paths: string[]) → FileDownloadResponse[]`** - 下载多个文件（用于沙箱后端）。
 
-### Result types
+### 结果类型
 
-|类型 | Success fields | Error field |
+|类型 |成功领域 |错误字段 |
 | - | - | - |
-| `ReadResult` | `content?: string \| Uint8Array`, `mimeType?: string` | `error` |
+| `ReadResult` | `content?: string \| Uint8Array`、`mimeType?: string` | `error` |
 | `ReadRawResult` | `data?: FileData` | `error` |
 | `LsResult` | `files?: FileInfo[]` | `error` |
 | `GlobResult` | `files?: FileInfo[]` | `error` |
 | `GrepResult` | `matches?: GrepMatch[]` | `error` |
 | `WriteResult` | `path?: string` | `error` |
-| `EditResult` | `path?: string`, `occurrences?: number` | `error` |
+| `EditResult` | `path?: string`、`occurrences?: number` | `error` |
 
-### Supporting types
+### 支持类型
 
 * **`FileInfo`**—`path`（必填），可选 `is_dir`、`size`、`modified_at`。
 * **`GrepMatch`**—`path`、`line`（1 索引）、`text`。
-* **`FileData`**—带时间戳的文件内容。 See [FileData format](#filedata-format).
+* **`FileData`**—带时间戳的文件内容。参见[FileData format](#filedata-format)。
 
-### Sandbox extension
+### 沙箱扩展
 
 `SandboxBackendProtocolV2` 扩展 `BackendProtocolV2`：
 

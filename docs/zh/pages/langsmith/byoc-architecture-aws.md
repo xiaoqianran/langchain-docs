@@ -1,8 +1,8 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: BYOC architecture | https://docs.langchain.com/langsmith/byoc-architecture-aws -->
+<!-- langchain-docs: BYOC architecture on AWS | https://docs.langchain.com/langsmith/byoc-architecture-aws -->
 
-# BYOC 架构
+# AWS 上的 BYOC 架构
 
 如何跨 AWS 账户中的 LangChain 控制平面和数据平面构建 LangSmith BYOC 部署。
 
@@ -40,27 +40,27 @@ LangChain 在您的帐户中提供以下内容：* **VPC**：默认情况下，�
 ## 支持集群内组件除了 LangSmith Helm 图表外，LangChain 还在 EKS 集群中安装和升级以下开源组件。每个都作为自己的 Helm 版本运行：
 
 * **Istio**：`istio/base`、`istiod` 和 `istio/gateway` 版本。 Istio 入口网关接收所有数据平面流量并将其路由到 LangSmith 服务。
-* **AWS 负载均衡器控制器**：在 Istio 入口网关前面创建网络负载均衡器。它的名字以`-sm-istio`结尾。
-* **外部 Secrets Operator**：通过 ClusterSecretStore 将数据平面密钥从 AWS Secrets Manager 同步到 Kubernetes 密钥。
+* **AWS 负载均衡器控制器**：在 Istio 入口网关前面创建负载均衡器。默认情况下，这是一个名称以 `-sm-istio` 结尾的网络负载均衡器。 [ALB data plane](/langsmith/byoc-shared-responsibility#platform-and-infrastructure) 使用名称以 `-sm-alb` 结尾的应用程序负载均衡器。
+* **外部 Secrets Operator**：通过 ClusterSecretStore 将 AWS Secrets Manager 中的数据平面密钥同步到 Kubernetes 密钥中。
 * **Karpenter**：随着 pod 需求的变化配置和删除应用程序工作节点。
-* **cert-manager**：颁发和续订集群内 TLS 证书。其他组件依赖于其自定义资源和 Webhook。
+* **cert-manager**：颁发和续订集群内 TLS 证书。其他组件取决于其自定义资源和 Webhook。
 * **KEDA**：自动扩展 LangSmith 服务。
 
 每个调用 AWS API 的组件都使用自己的 IAM 角色。使用[BYOIAM](/langsmith/byoc-byoiam-aws)，您可以自己创建这些角色。这些组件的升级节奏请参见[Operations](/langsmith/byoc-operations-aws)。
 
-## 跨账户 IAM 权限
+## 跨账户 IAM 权限LangChain 需要跨账户 IAM 权限来预置和管理您的 AWS 账户内的资源。这些权限让LangChain：
 
-LangChain 需要跨账户 IAM 权限来预置和管理您的 AWS 账户内的资源。这些权限让LangChain：* **配置基础设施**：创建和配置 VPC、子网、安全组和其他网络组件。通过 BYOVPC，该角色可以在您管理基础网络时保留工作负载网络权限。
+* **配置基础设施**：创建和配置 VPC、子网、安全组和其他网络组件。通过 BYOVPC，该角色可以在您管理基础网络时保留工作负载网络权限。
 * **管理 Kubernetes 集群**：部署和维护 EKS 集群、其节点组和集群附加组件。
 * **创建存储资源**：配置用于应用程序数据和备份的 RDS、ElastiCache 和 S3 存储桶。
 * **创建 IAM 角色**：创建并配置 Kubernetes 服务帐户和支持服务使用的角色。
 * **运营支持服务**：部署和管理入口和自动扩展，以及扩展和升级LangSmith工作负载。
 
-权限是通过您在入职期间应用 [⟦T6⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 创建的单个跨账户 IAM 角色授予的。
+权限是通过您在入职期间应用 [⟦T7⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 创建的单个跨账户 IAM 角色授予的。
 
-对于 BYOVPC，请对您提供的 VPC ID 禁用基本 VPC 创建权限和范围安全组创建。参见[Create the reduced-permission IAM role](/langsmith/byoc-byovpc-aws#create-the-reduced-permission-iam-role)。
+对于 BYOVPC，请对您提供的 VPC ID 禁用基本 VPC 创建权限和范围安全组创建。参见[Create the reduced-permission IAM role](/langsmith/byoc-byovpc-aws#create-the-reduced-permission-iam-role)。LangChain 提供角色信任策略中使用的外部 ID。使用 **设置 > 数据平面** 中 **数据平面** 标题旁边的按钮复制它，并在应用模块时使用它。角色的 `ExternalId` 条件必须与该值匹配。
 
-LangChain 提供角色信任策略中使用的外部 ID。使用 **设置 > 数据平面** 中 **数据平面** 标题旁边的按钮复制它，并在应用模块时使用它。角色的 `ExternalId` 条件必须与该值匹配。### 如何强制执行最小权限
+### 如何强制执行最小权限
 
 该角色的范围仅限于 BYOC 操作所需的范围：
 
@@ -71,27 +71,27 @@ LangChain 提供角色信任策略中使用的外部 ID。使用 **设置 > 数�
 
 ### 数据流量
 
-敏感数据不会离开您的VPC，也不会经过LangChain的VPC。
-
-1. 当用户打开 `aws.smith.langchain.com` 时，浏览器会从 LangChain 的云端获取由 HTML、JavaScript、CSS 和图像组成的 LangSmith UI 包。这些资产与每个 BYOC 和云租户运行的代码相同，并且不包含客户数据。
+敏感数据不会离开您的VPC，也不会经过LangChain的VPC。1. 当用户打开 `aws.smith.langchain.com` 时，浏览器会从 LangChain 的云端获取由 HTML、JavaScript、CSS 和图像组成的 LangSmith UI 包。这些资产与每个 BYOC 和云租户运行的代码相同，并且不包含客户数据。
 2. 加载后，应用程序将解析所选工作区的数据平面终端节点，并将敏感数据的每个请求路由到您的 VPC。
 
 要以编程方式摄取或查询数据，请将您的客户端直接指向您的数据平面。数据流始终为`browser or client → data plane → back to client`。
 
 ![Data traffic diagram. A user on their own machine, VPC, or network opens aws.smith.langchain.com in a browser. The browser makes two requests: first it fetches the UI bundle of HTML, CSS, and JavaScript from the static assets in LangChain's cloud, which hold no customer data; second it sends data plane API requests to the network load balancer in your BYOC VPC, which routes to the EKS cluster running LangSmith and on to S3, RDS, and the cache.](https://mintcdn.com/langchain-5e9cc07a/sRMLsyZ-6iriBvN5/langsmith/images/byoc-data-flow.png?fit=max\&auto=format\&n=sRMLsyZ-6iriBvN5\&q=85\&s=3f85cc69ca981f5ba14ad68a7bae5e7b)
 
-### 连接性控制平面和数据平面之间的所有通信都通过 AWS PrivateLink 双向传输。 LangChain 无法通过公共互联网到达您的环境。 BYOC 建立两个 PrivateLink 连接：
+### 连接性
+
+控制平面和数据平面之间的所有通信都通过 AWS PrivateLink 双向传输。 LangChain 无法通过公共互联网到达您的环境。 BYOC 建立两个 PrivateLink 连接：
 
 * **控制平面到数据平面（管理路径）**：仅公开集群的 Kubernetes API 服务器，LangChain 用于安装和协调 LangSmith 组件。无法通过此连接访问您的数据。
-* **数据平面到控制平面（运行时路径）**：数据平面调用控制平面来验证请求、验证 API 密钥、解析角色和权限以及加载组织和工作区配置。
-
-容器镜像通过 VPC 端点从 LangChain 的控制平面 ECR 存储库中以只读方式拉取。
+* **数据平面到控制平面（运行时路径）**：数据平面调用控制平面来验证请求、验证 API 密钥、解析角色和权限以及加载组织和工作区配置。容器镜像通过 VPC 端点从 LangChain 的控制平面 ECR 存储库中以只读方式拉取。
 
 使用 BYOVPC，您可以配置客户端 AWS 服务终端节点和数据平面到控制平面 PrivateLink 终端节点。 LangChain 管理集群管理路径的端点服务。参见[Configure connectivity](/langsmith/byoc-byovpc-aws#configure-connectivity)。
 
 ### DNS 和入口
 
-流量通过 AWS NLB 前面的 Istio 入口到达LangSmith，使用 Route 53 进行 DNS 解析。创建数据平面后，其 API URL 将列在 LangSmith UI 中的 **设置 > 数据平面** 下。## 另请参阅
+流量通过 AWS NLB 或 [ALB data plane](/langsmith/byoc-shared-responsibility#platform-and-infrastructure) 上的 ALB 前面的 Istio 入口到达 LangSmith。 Route 53 解析数据平面主机名。创建数据平面后，其 API URL 将列在 LangSmith UI 中的 **设置 > 数据平面** 下。
+
+## 另请参阅
 
 * [BYOC overview](/langsmith/byoc)
 * [Operations](/langsmith/byoc-operations-aws)
@@ -99,6 +99,6 @@ LangChain 提供角色信任策略中使用的外部 ID。使用 **设置 > 数�
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-architecture-aws.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

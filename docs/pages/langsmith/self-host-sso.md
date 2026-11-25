@@ -348,7 +348,7 @@ Per-provider SSO Groups Sync settings are stored on the SSO provider record and 
 
 > [tab] UI
 >
-> Once your IdP emits the groups claim, configure SSO Groups Sync from the UI: go to **Settings** > **SSO configuration** and scroll to the **SSO Groups Sync** section. The claim name configured in the **Groups claim field** must match the claim emitted by your IdP.
+> Once your IdP emits the groups claim, configure SSO Groups Sync from the UI: go to **Settings** > **Login & Provisioning** > **SSO** and scroll to the **SSO Groups Sync** section. The claim name configured in the **Groups claim field** must match the claim emitted by your IdP.
 
 > [tab] API
 >

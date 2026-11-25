@@ -623,10 +623,6 @@ agent = create_agent(
 >
 > Maximum number of tokens to include when generating the summary. Messages will be trimmed to fit this limit before summarization.
 >
-> **summary_prefix** `string` *deprecated*
->
-> **Deprecated:** Use `summary_prompt` to provide the full prompt instead.
->
 > **max_tokens_before_summary** `number` *deprecated*
 >
 > **Deprecated:** Use `trigger: ("tokens", value)` instead. Token threshold for triggering summarization.
@@ -1165,6 +1161,22 @@ agent = create_agent(
 > **always_include** `list[string]`
 >
 > Tool names to always include regardless of selection. These do not count against the max_tools limit.
+>
+> **max_retries** `number` (default: 1)
+>
+> Maximum number of retry attempts after the initial call if the selection model returns a malformed response (not a dict with a `tools` list). Must be `>= 0`.
+>
+> **on_parsing_failure** `'error' | 'none' | 'all' | list[string] | callable` (default: error)
+>
+> Behavior once `max_retries` is exhausted and the response is still malformed:
+>
+> * `'error'`: Raise a `ValueError`.
+> * `'none'`: Select no tools.
+> * `'all'`: Select every available tool.
+> * A list of tool names to fall back to.
+> * A callable that takes the last (malformed) response and returns the tool names to use.
+>
+> Fallback tools are not capped by `max_tools`.
 
 ### Model router
 
@@ -1398,6 +1410,10 @@ agent = create_agent(
 >
 > Optional override for the registered shell tool description
 >
+> **tool_name** `str` (default: shell)
+>
+> Name for the registered shell tool.
+>
 > **shell_command** `Sequence[str] | str | None`
 >
 > Optional shell executable (string) or argument sequence used to launch the persistent session. Defaults to `/bin/bash`.
@@ -1540,7 +1556,7 @@ Handing off tasks to subagents isolates context, keeping the main (supervisor) a
 
 The subagents middleware from [Deep Agents](/oss/python/deepagents/overview) allows you to supply subagents through a `task` tool.
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1575,7 +1591,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1610,7 +1626,7 @@ agent = create_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1645,7 +1661,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1680,7 +1696,7 @@ agent = create_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1715,7 +1731,7 @@ agent = create_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1750,7 +1766,7 @@ agent = create_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1789,7 +1805,7 @@ A declarative subagent requires a **name**, **description**, **model**, and **to
 
 For more complex use cases, you can also provide your own prebuilt LangGraph graph as a subagent.
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1831,7 +1847,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1873,7 +1889,7 @@ agent = create_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1915,7 +1931,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1957,7 +1973,7 @@ agent = create_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1999,7 +2015,7 @@ agent = create_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -2041,7 +2057,7 @@ agent = create_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -2095,7 +2111,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
 
 **API reference:** [`RubricMiddleware`](https://reference.langchain.com/python/deepagents/middleware/rubric/RubricMiddleware)
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2111,7 +2127,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2127,7 +2143,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2143,7 +2159,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2159,7 +2175,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2175,7 +2191,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2191,7 +2207,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 

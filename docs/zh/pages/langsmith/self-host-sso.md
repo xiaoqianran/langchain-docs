@@ -296,7 +296,7 @@ ISSUER_SUB_CLAIM_OVERRIDES='{"https://login.microsoftonline.com/": "oid", "https
 >
 > 自托管上的 SSO 组同步需要 LangSmith 图表版本 **0.15.0-rc.3**（应用程序版本 **0.15.2rc1**）或更高版本。
 
-[SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) 让 LangSmith 从 OIDC 令牌上的组成员身份声明中分配组织和工作区角色，作为 [SCIM](/langsmith/user-management#set-up-scim-for-your-organization) 的更简单替代方案。在自托管上，您必须将 IdP 配置为将组包含在 OIDC ID 令牌中，然后 LangSmith 才能读取它们。令牌中的组还可以在[synced user groups](/langsmith/user-groups#sync-user-group-members-from-your-identity-provider)中设置成员身份。
+[SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) 让 LangSmith 从 OIDC 令牌上的组成员身份声明中分配组织和工作区角色，作为 [SCIM](/langsmith/user-management#set-up-scim-for-your-organization) 的更简单替代方案。在自托管上，您必须将 IdP 配置为将组包含在 OIDC ID 令牌中，然后 LangSmith 才能读取它们。令牌中的组还可以在[synced user groups](/langsmith/user-groups#sync-user-group-members-from-your-identity-provider)中设置成员资格。
 
 **IdP 端配置（因提供商而异）：**1. 配置您的 IdP 应用程序以在 OIDC ID 令牌中发出组成员身份声明。源属性和生成的声明名称因 IdP 而异。常见示例包括 `groups`、`roles` 或自定义声明名称。 LangSmith 不规定源属性。
 2. 根据您的 IdP，您可能需要向 `oauthScopes` 添加额外范围（通常为 `groups`）才能接收声明。检查 IdP 的文档，了解所需的范围以及在令牌中包含组成员身份所需的任何其他配置。
@@ -324,7 +324,7 @@ config:
 
 每个提供商的 SSO 组同步设置存储在 SSO 提供商记录中，并通过 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-self-host-sso) 或 [API](/langsmith/reference)（而不是通过 Helm 值）进行切换。> [选项卡] 用户界面
 >
-> 您的 IdP 发出组声明后，从 UI 配置 SSO 组同步：转至 **设置** > **SSO 配置**，然后滚动到 **SSO 组同步** 部分。 **组声明字段**中配置的声明名称必须与您的 IdP 发出的声明匹配。
+> 您的 IdP 发出组声明后，从 UI 配置 SSO 组同步：转至 **设置** > **登录和配置** > **SSO** 并滚动到 **SSO 组同步** 部分。 **组声明字段**中配置的声明名称必须与您的 IdP 发出的声明匹配。
 
 > [选项卡] API
 >
@@ -430,7 +430,7 @@ config:
 
 ### 从 PKCE 迁移到客户端密钥
 
-您可以将使用 PKCE 的安装切换到当前图表版本上带有客户端密钥的 OAuth。只要用户使用相同的电子邮件地址登录，他们就可以保留自己的帐户、组织和工作区成员身份以及 API 密钥。
+您可以在当前图表版本上将使用 PKCE 的安装切换为带有客户端密钥的 OAuth。只要用户使用相同的电子邮件地址登录，他们就可以保留自己的帐户、组织和工作区成员身份以及 API 密钥。
 
 迁移：
 

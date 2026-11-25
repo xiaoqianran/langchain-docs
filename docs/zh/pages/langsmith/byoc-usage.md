@@ -4,58 +4,60 @@
 
 # 自带设备使用
 
-将跟踪和 API 流量路由到LangSmith BYOC 数据平面，包括跟踪到多个端点和每个服务的路径前缀。
+将跟踪和 API 流量路由到 LangSmith BYOC 数据平面，包括跟踪到多个端点和每个服务的路径前缀。
 
 一旦数据平面处于活动状态，其工作区的所有 API 流量都会进入数据平面端点，而不是LangSmith 云后端。本页说明如何将请求路由到正确的服务。
 
-LangSmith UI 根据您选择的工作空间路由到正确的数据平面。 Chrome 和 Edge 用户可能需要先[allow local network access](#allow-local-network-access-in-chrome-and-edge)。本页的其余部分适用于您自己的客户端代码和直接 API 调用。
+LangSmith UI 根据您选择的工作区路由到正确的数据平面。 Chrome 和 Edge 用户可能需要先[allow local network access](#allow-local-network-access-in-chrome-and-edge)。本页的其余部分适用于您自己的客户端代码和直接 API 调用。
 
 ## 组织、数据平面和工作空间
 
 BYOC 部署为标准 LangSmith [resource hierarchy](/langsmith/administration-overview#resource-hierarchy) 添加了一个级别：数据平面，位于组织和工作区之间。* **组织**：顶层。用户、角色、计费、SSO 配置和 API 密钥属于组织并位于控制平面中。
-* **数据平面**：属于一个组织，代表数据的物理分离。一个组织可以拥有多个数据平面，每个数据平面都位于自己的 AWS 账户和区域中。
-* **工作空间**：仅属于一个数据平面，您在创建工作空间时选择该数据平面。跟踪、数据集、实验和其他代理数据位于工作区中。
+* **数据平面**：属于一个组织，代表数据的物理分离。一个组织可以拥有多个数据平面，跨一个或多个云帐户以及与该组织位于同一云提供商上的区域。这里的云帐户是指AWS帐户、GCP项目或Azure订阅。
+* **工作空间**：仅属于一个数据平面，您在创建工作空间时选择该数据平面。工作空间创建后无法移动到另一个数据平面。跟踪、数据集、实验和其他代理数据位于工作区中。
 
 ![Nesting diagram of a BYOC deployment. An organization contains two data planes, each labeled as physical separation. The first is in us-east-1 and the second is in eu-west-1. Each data plane holds one workspace per team, and every workspace is labeled as logical separation within its data plane.](https://mintcdn.com/langchain-5e9cc07a/5dqOg-xwCbWrjM9p/langsmith/images/byoc-org-structure.png?fit=max\&auto=format\&n=5dqOg-xwCbWrjM9p\&q=85\&s=7cf4860e09578a0aad32f16c1eef9ee0)
 
-使用数据平面进行数据的物理分离，使用工作空间进行数据平面内的逻辑分离。划分数据平面的常用方法有：
-
-* **每个区域**，例如`us-east-1`和`us-west-2`，将敏感代理数据保留在特定区域。
-* **每个环境和区域**，例如 prod `us-east-1` 和 dev `us-east-1`，将生产和开发数据保存在单独的 AWS 账户中。
-* **每个业务部门**，当每个部门拥有自己的 AWS 账户时。
+使用数据平面进行数据的物理分离，使用工作空间进行数据平面内的逻辑分离。划分数据平面的常用方法有：* **每个区域**，例如美国的一个数据平面和欧盟的一个数据平面，用于将敏感代理数据保留在特定区域。
+* **每个环境和区域**，例如同一区域中的生产和开发数据平面，将生产和开发数据保存在单独的云帐户中。
+* **每个业务部门**，当每个部门拥有自己的云帐户时。
 
 在数据平面下方，工作区隔离的工作方式与在云或自托管上相同。有关更多信息，请参阅 [Administration overview](/langsmith/administration-overview) 和 [Workload isolation](/langsmith/workload-isolation)。
 
-## 找到您的数据平面端点每个数据平面都有一个基本 URL。导航到 **设置 > 数据平面** 以查看每个数据平面、其状态及其 API URL。
+## 找到您的数据平面端点
+
+每个数据平面都有一个基本 URL。导航到 **设置 > 数据平面** 以查看每个数据平面、其状态及其 API URL。
 
 > [!警告]
 >
-> 默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能到达基本 URL，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。
+> 默认情况下，数据平面配备有专用端点。要访问专用端点，您需要专用连接，例如网络对等互连、VPN 或 Tailscale。
 
-## 允许 Chrome 和 Edge 中的本地网络访问
+有关每个云上的连接选项，请参阅 [Cross-account access on AWS](/langsmith/byoc-operations-aws#cross-account-access)、[Connect your network on GCP](/langsmith/byoc-networking-gcp#connect-your-network) 和 [BYOC onboarding on Azure](/langsmith/byoc-onboarding-azure#create-a-data-plane)。
 
-当您在私有数据平面上打开工作区时，LangSmith UI 会将请求从 LangSmith 站点发送到数据平面的私有地址。 Chrome 和 Edge 将这些请求视为本地网络请求，并要求每个用户允许它们。如果用户阻止或忽略提示，则 UI 无法访问数据平面并显示网络访问错误，即使用户位于您的专用网络上也是如此。
+## 允许 Chrome 和 Edge 中的本地网络访问当您在私有数据平面上打开工作区时，LangSmith UI 会将请求从 LangSmith 站点发送到数据平面的私有地址。 Chrome 和 Edge 将这些请求视为本地网络请求，并要求每个用户允许它们。如果用户阻止或忽略提示，则 UI 无法访问数据平面并显示网络访问错误，即使用户位于您的专用网络上也是如此。
+
+LangSmith UI URL 取决于托管您的组织的云。参见[Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers)。
 
 允许一个用户访问：
 
-1. 打开LangSmith界面，如`https://aws.smith.langchain.com`。
+1. 打开云的LangSmith UI。
 2. 单击地址栏左侧的图标。
 3. 如果列表中存在**本地网络访问**，请将其设置为**允许**。否则，请单击 Chrome 中的“**站点设置**”或 Edge 中的“**此站点的权限**”，并将“本地网络访问”设置为“允许”。
-4. 重新加载页面。要允许组织中的每个用户进行访问，请推送托管浏览器策略。 Chrome 和 Edge 使用相同的策略名称：
+4. 重新加载页面。
 
-* `LocalNetworkAllowedForUrls`：最新 Chrome 版本以及 Edge 146 及更高版本中的当前政策。
+要允许组织中的每个用户进行访问，请推送托管浏览器策略。 Chrome 和 Edge 使用相同的策略名称：
+
+* `LocalNetworkAllowedForUrls`：最新 Chrome 版本以及 Edge 146 及更高版本中的当前策略。
 * `LocalNetworkAccessAllowedForUrls`：较早的策略，适用于较旧的浏览器版本。
 
-如果您的机群运行混合版本，请同时设置：
+如果您的机群运行混合版本，请同时设置。此示例使用 AWS UI URL。将其替换为您的云的 URL：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "LocalNetworkAllowedForUrls": ["https://aws.smith.langchain.com"],
   "LocalNetworkAccessAllowedForUrls": ["https://aws.smith.langchain.com"]
 }
-```
-
-每个策略都会列出发出请求的站点，即 LangSmith UI URL，而不是数据平面 URL。因此，它还涵盖您稍后添加的数据平面。要确认该策略是否适用，请打开`chrome://policy`或`edge://policy`。
+```每个策略都会列出发出请求的站点，即 LangSmith UI URL，而不是数据平面 URL。因此，它还涵盖您稍后添加的数据平面。要确认该策略是否适用，请打开`chrome://policy`或`edge://policy`。
 
 > [!注意]
 >
@@ -75,7 +77,9 @@ export LANGSMITH_ENDPOINT="https://<data_plane_host>"
 
 > [!警告]
 >
-> 从目标数据平面内的工作空间创建`LANGSMITH_API_KEY`。跟踪是租户范围的，因此来自不同数据平面上的工作区（包括云工作区）的 API 密钥会被拒绝。对于完整的、可运行的示例，请遵循 [Observability quickstart](/langsmith/observability-quickstart) 并替换上面的环境变量。
+> 从目标数据平面内的工作空间创建`LANGSMITH_API_KEY`。跟踪是租户范围的，因此来自不同数据平面上的工作区（包括云工作区）的 API 密钥会被拒绝。
+
+对于完整的、可运行的示例，请遵循 [Observability quickstart](/langsmith/observability-quickstart) 并替换上面的环境变量。
 
 ## 路由 API 请求
 
@@ -86,17 +90,15 @@ export LANGSMITH_ENDPOINT="https://<data_plane_host>"
 | LangSmith |无 | `https://<data_plane_host>/v1/sessions` |
 | OTLP 摄取 | `/otel` | `https://<data_plane_host>/otel/v1/traces` |
 | LangSmith 代理服务器 | `/api-host` | `https://<data_plane_host>/api-host/v2/deployments` |
-|法学硕士网关| `/gateway` | `https://<data_plane_host>/gateway/v1/chat/completions` |
-
-LangSmith API 还接受 `/api` 前缀，因此 `https://<data_plane_host>/api/v1/sessions` 到达相同的端点。 SDK使用裸数据面主机，如[Trace to a data plane](#trace-to-a-data-plane)所示。
+|法学硕士网关| `/gateway` | `https://<data_plane_host>/gateway/v1/chat/completions` |LangSmith API 还接受 `/api` 前缀，因此 `https://<data_plane_host>/api/v1/sessions` 到达相同的端点。 SDK使用裸数据面主机，如[Trace to a data plane](#trace-to-a-data-plane)所示。
 
 ## 跟踪多个端点
 
-使用这些模式可以跟踪云和数据平面，或多个数据平面。
+使用这些模式可以跟踪云和数据平面，或多个数据平面。这些示例使用 AWS 云 API URL `https://aws.api.smith.langchain.com`。将其替换为托管您的组织的 LangSmith 实例的 API URL。
 
 ### 双写入两个端点
 
-设置 `LANGSMITH_RUNS_ENDPOINTS` 写入多个端点。这些副本设置使用每个代理环境的 [⟦T24⟧](/langsmith/create-an-agent#use-an-environment-project) 作为 `project_name`：
+设置 `LANGSMITH_RUNS_ENDPOINTS` 以写入多个端点。这些副本设置使用每个代理环境的 [⟦T20⟧](/langsmith/create-an-agent#use-an-environment-project) 作为 `project_name`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_RUNS_ENDPOINTS='[
@@ -159,8 +161,9 @@ def handle_request(tenant_id: str, query: str):
 
 ## 另请参阅
 
-* [BYOC onboarding](/langsmith/byoc-onboarding-aws)
-* [BYOC architecture](/langsmith/byoc-architecture-aws)
+* [BYOC overview](/langsmith/byoc)
+* [AWS](/langsmith/byoc-onboarding-aws)、[GCP](/langsmith/byoc-onboarding-gcp) 和 [Azure](/langsmith/byoc-onboarding-azure) 上的 BYOC 入职
+* [AWS](/langsmith/byoc-architecture-aws)、[GCP](/langsmith/byoc-architecture-gcp) 和 [Azure](/langsmith/byoc-architecture-azure) 上的 BYOC 架构
 
 ***
 

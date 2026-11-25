@@ -28,11 +28,11 @@
 
 ![Managed Deep Agents packages your agent configuration, tools, and runtime settings for LangSmith](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/deepagents-deploy-config.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=5c3f2961994afe5fe67a2f5c9e9ba7ac)
 
-将深度代理投入生产的推荐路径是[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)，这是一个 CLI 优先的托管运行时，用于在 LangSmith 中创建、运行和操作深度代理。托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上公开 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。它运行相同的 Deep Agents 工具，但您将代理编写为文件项目并为托管运行时声明它，而不是自己编译它。参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。对于需要自定义应用代码、自定义路由、高级身份验证的团队，可以直接配置[LangSmith Agent Server](/langsmith/agent-server)。任一路径都会提供您的代理所需的基础设施：[threads](/langsmith/use-threads)、[runs](/langsmith/runs)、存储和检查点，因此您不必自己设置这些。自定义代理服务器还为您提供开箱即用的[authentication](/langsmith/auth)、[webhooks](/langsmith/use-webhooks)、[cron jobs](/langsmith/cron-jobs)和[observability](/langsmith/observability)，并且可以通过[MCP](/langsmith/server-mcp)或[A2A](/langsmith/server-a2a)公开您的代理。
+将深度代理投入生产的推荐路径是[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)，这是一个 CLI 优先的托管运行时，用于在 LangSmith 中创建、运行和操作深度代理。托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上公开 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。它运行相同的 Deep Agents 工具，但您将代理编写为文件项目并为托管运行时声明它，而不是自己编译它。参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。对于需要自定义应用代码、自定义路由、高级身份验证的团队，可以直接配置[LangSmith Agent Server](/langsmith/agent-server)。任一路径都提供您的代理所需的基础设施：[threads](/langsmith/use-threads)、[runs](/langsmith/runs)、存储和检查点，因此您不必自己设置这些。自定义代理服务器还为您提供开箱即用的[authentication](/langsmith/auth)、[webhooks](/langsmith/use-webhooks)、[cron jobs](/langsmith/cron-jobs)和[observability](/langsmith/observability)，并且可以通过[MCP](/langsmith/server-mcp)或[A2A](/langsmith/server-a2a)公开您的代理。
 
 > [!提示]
 >
-> LangSmith 云部署会自动将跟踪发送到以您的部署命名的项目。打开 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-going-to-production) 调试运行并监控使用情况。对于混合或自托管设置，请参阅[LangSmith tracing](/langsmith/data-plane#langsmith-tracing)。我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
+> LangSmith 云部署会自动将跟踪发送到以您的部署命名的项目。打开 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-going-to-production) 调试运行并监控使用情况。对于混合或自托管设置，请参阅[LangSmith tracing](/langsmith/data-plane#langsmith-tracing)。我们建议您还设置 [LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 
 除非另有说明，本页面上的所有代码片段均使用以下`langgraph.json`：
 
@@ -48,7 +48,7 @@
 
 `langgraph.json` 是告诉 LangGraph CLI 和代理服务器如何构建和运行应用程序的配置文件。它位于项目的根部，是本地开发（使用`langgraph dev`）和生产部署所必需的。关键字段是：|领域 |描述 |
 | - | - |
-| `dependencies` |要安装的软件包。 `["."]` 将当前目录安装为包（从 `requirements.txt`、`pyproject.toml` 或 `package.json` 读取）。 |
+| `dependencies` |要安装的软件包。 `["."]` 将当前目录作为包安装（从 `requirements.txt`、`pyproject.toml` 或 `package.json` 读取）。 |
 | `graphs` |将图形 ID 映射到其代码位置。每个条目都是 `"<id>": "./<file>:<variable>"`，其中 `<id>` 是用于通过 API 调用图形的名称，`<variable>` 是从 `<file>` 导出的已编译图形或构造函数。 |
 | `env` |带有环境变量（API 密钥、秘密）的 `.env` 文件的路径。这些在构建时设置并在运行时可用。 |
 
@@ -350,7 +350,7 @@ LangSmith 的 [role-based access control (RBAC)](/langsmith/rbac) 控制工作�
 
 #### 最终用户凭证
 
-当您的代理需要代表用户调用外部 API（例如，读取其 GitHub 存储库、发送 Slack 消息、查询其数据仓库）时，您需要一种方法将用户的凭据传递给代理而不对其进行硬编码。**通过代理身份验证进行 OAuth。** [Agent Auth](/langsmith/agent-auth) 提供托管 OAuth 2.0 流程。配置 OAuth 提供程序，代理可以请求范围为每个用户的令牌。首次使用时，代理[interrupts](/oss/python/langgraph/interrupts)执行并显示 OAuth 同意 URL。用户进行身份验证后，代理将使用有效令牌恢复。令牌会自动存储和刷新。
+当您的代理需要代表用户调用外部 API（例如，读取其 GitHub 存储库、发送 Slack 消息、查询其数据仓库）时，您需要一种方法将用户的凭据传递给代理而不对其进行硬编码。**通过代理身份验证进行 OAuth。** [Agent Auth](/langsmith/agent-auth) 提供托管 OAuth 2.0 流程。配置 OAuth 提供程序，代理可以请求范围为每个用户的令牌。首次使用时，代理[interrupts](/oss/python/langgraph/interrupts)执行并呈现 OAuth 同意 URL。用户进行身份验证后，代理将使用有效令牌恢复。令牌会自动存储和刷新。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_auth import Client
@@ -372,7 +372,7 @@ async def github_action(runtime: ToolRuntime):
 
 **沙箱的凭据注入。** 如果您的代理在调用外部 API 的 [sandbox](#sandboxes) 内运行代码，则 [sandbox auth proxy](/langsmith/sandbox-auth-proxy) 可以自动将凭据注入出站请求中，因此沙箱代码永远不会接收原始 API 密钥。有关设置详细信息，请参阅[Managing secrets](#managing-secrets)。
 
-**工作区机密。** 对于所有用户共享的 API 密钥（例如您组织的 LLM 提供商密钥、搜索 API 密钥），请将它们存储为 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的 LangSmith。详情请参阅[Managing secrets](#managing-secrets)。
+**工作区机密。** 对于所有用户共享的 API 密钥（例如您组织的 LLM 提供商密钥、搜索 API 密钥），请将它们存储为 [workspace secrets](/langsmith/workspace-secrets) 中的 LangSmith。详情请参阅[Managing secrets](#managing-secrets)。
 
 ### 异步
 
@@ -384,7 +384,7 @@ async def github_action(runtime: ToolRuntime):
 
 * **创建异步工具。** LangChain 在单独的线程中运行同步工具以避免阻塞，但本机异步完全避免了线程开销。
 * **使用异步中间件方法。** 自定义 [middleware](/oss/python/langchain/middleware/custom) 应实现异步挂钩（例如，`abefore_agent` 而不是 `before_agent`）。
-* **对外部资源生命周期使用异步。** 创建 [sandboxes](#sandboxes) 或连接到 [MCP servers](/oss/python/langchain/mcp) 涉及网络调用，应等待。这就是为什么[graph factories](/langsmith/graph-rebuild)提供这些资源是异步的。
+* **对外部资源生命周期使用异步。** 创建[sandboxes](#sandboxes)或连接到[MCP servers](/oss/python/langchain/mcp)涉及网络调用，应等待。这就是为什么[graph factories](/langsmith/graph-rebuild)提供这些资源是异步的。
 
 ### 耐用性
 
@@ -392,7 +392,7 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 
 ![Durable execution: when a worker crashes mid-run, another worker picks the run up from the latest checkpoint](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/durable-execution.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=d3bfd69460769dba142c68c7a20ae43b)
 
-检查点还可以：* **无限期 [interrupts](/oss/python/langgraph/interrupts)。** 人机循环工作流程可以暂停几分钟或几天，然后准确地从中断的地方恢复。
+检查点还可以：* **无限期 [interrupts](/oss/python/langgraph/interrupts)。** 人机交互工作流程可以暂停几分钟或几天，然后准确地从中断的地方恢复。
 * **[Time travel](/oss/python/langgraph/use-time-travel).** 每个检查点步骤都是一个可以倒回的快照，以便在出现问题时从较早的状态重播。
 * **安全处理敏感操作。** 对于涉及付款或其他不可逆转操作的工作流程，检查点提供审计跟踪和恢复点来检查导致操作的确切状态。
 
@@ -402,16 +402,16 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 
 ## 内存
 
-没有记忆，每一次谈话都从头开始。记忆可以让您的代理保留对话中的信息（用户偏好、学到的指令、过去的经验），以便随着时间的推移，它可以个性化其行为。有关内存类型的概述，请参阅[memory concepts guide](/oss/python/concepts/memory)。
+没有记忆，每一次对话都从头开始。记忆可以让您的代理保留对话中的信息（用户偏好、学到的指令、过去的经验），以便随着时间的推移，它可以个性化其行为。有关内存类型的概述，请参阅[memory concepts guide](/oss/python/concepts/memory)。
 
 ![Short-term memory is scoped to a single thread via checkpoints; long-term memory persists across threads via the store](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/memory.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=3ec585271dcd8d62e0207d79d68c296b)
 
 ### 范围界定
 
-记忆在对话中总是持久的。主要问题是它如何跨越用户和助手的界限。正确的范围取决于谁应该查看和修改数据：|范围 |命名空间 |使用案例 |示例|
+记忆在对话中总是持久的。主要问题是它如何跨越用户和助手的界限。正确的范围取决于谁应该查看和修改数据：|范围 |命名空间|使用案例 |示例|
 | - | - | - | - |
 | **用户**（推荐默认）| `(user_id)` |每个用户的偏好和上下文| “我更喜欢简洁的回答” |
-| **助理** | `(assistant_id)` |一名助理的共享说明 | “帖子上限为 280 个字符” |
+| **助理** | `(assistant_id)` |一名助理的共享说明 | “帖子上限为 280 个字符”|
 | **全球** | `(org_id)` |所有用户和助理的只读策略 | “永远不要透露内部定价”|
 
 > [!警告]
@@ -498,7 +498,7 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 > )
 > ```> [选项卡] 组织
 >
-> `org_id` 的命名空间。内存在所有用户和所有助手之间共享。通常用于组织范围内的策略（合规性规则、品牌指南），这些策略对于代理来说应该是只读的。写访问权限应仅限于应用程序代码，以防止提示注入。
+> `org_id` 的命名空间。内存在所有用户和所有助手之间共享。通常用于组织范围内的策略（合规性规则、品牌指南），这些策略对于代理来说应该是只读的。写访问应仅限于应用程序代码，以防止提示注入。
 >
 > ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
@@ -517,7 +517,7 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 > )
 > ```
 
-您还可以使用 [Store API](/langsmith/custom-store) 从应用程序代码中读取和写入商店。示例请参见[Advanced usage](/oss/python/deepagents/memory#advanced-usage)。
+您还可以使用 [Store API](/langsmith/custom-store) 从应用程序代码中读取和写入商店。有关示例，请参阅[Advanced usage](/oss/python/deepagents/memory#advanced-usage)。
 
 有关完整的命名空间工厂 API，请参阅[namespace factories](/oss/python/deepagents/backends#namespace-factories)。对于自我改进指令和知识库等记忆模式，请参阅[long-term memory](/oss/python/deepagents/memory)。
 
@@ -536,7 +536,7 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 
 * [CompositeBackend](https://reference.langchain.com/python/deepagents/backends/composite/CompositeBackend)：将两者混合。默认情况下，线程范围的暂存空间具有针对特定路径（如`/memories/`）的跨线程路由。
 
-* [⟦T68⟧](/oss/python/deepagents/backends#contexthubbackend)：LangSmith Hub 存储库中的持久文件（`owner/name` 或 `name`）。当您需要 LangSmith 原生持久性而不需要配置单独的 LangGraph 存储时，请使用此选项。
+* [⟦T74⟧](/oss/python/deepagents/backends#contexthubbackend)：LangSmith Hub 存储库中的持久文件（`owner/name` 或 `name`）。当您想要 LangSmith 原生持久性而不需要配置单独的 LangGraph 存储时，请使用此选项。
 
 有关后端的完整列表以及如何构建自定义后端，请参阅[backends](/oss/python/deepagents/backends)。
 
@@ -544,7 +544,7 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 >
 > `FilesystemBackend`和`LocalShellBackend`直接访问主机。不要在已部署的代理中使用它们。
 
-### 沙盒
+### 沙箱
 
 如果您的代理需要运行代码（而不仅仅是读写文件），请使用[sandbox](/oss/python/deepagents/sandboxes)。沙箱提供文件系统和用于运行 shell 命令的`execute`工具，所有这些都在一个隔离的容器内。这种隔离还可以保护您的主机：如果代理的代码耗尽内存或崩溃，则只有沙箱受到影响。您的服务器继续运行。
 
@@ -706,15 +706,16 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 
 > [手风琴] 示例：使用自定义中间件同步技能和记忆
 >
-> [Skill](/oss/python/deepagents/skills) Agent 需要执行的脚本必须在 Agent 运行之前上传到沙箱中。您可能还想同步[memories](/oss/python/deepagents/memory)，以便代理可以在容器内读取和更新它们。使用 [custom middleware](/oss/python/langchain/middleware/custom) 与 `before_agent` 和 `after_agent` 钩子跨沙箱边界移动文件：
+> [Skill](/oss/python/deepagents/skills) Agent 需要执行的脚本必须在 Agent 运行之前上传到沙箱中。您可能还想同步 [memories](/oss/python/deepagents/memory)，以便代理可以在容器内读取和更新它们。将 [custom middleware](/oss/python/langchain/middleware/custom) 与 `before_agent` 和 `after_agent` 挂钩一起使用，跨沙箱边界移动文件：
 >
-> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StoreBackend
 > from deepagents.backends.langsmith import LangSmithSandbox
 > from langchain.agents.middleware import AgentMiddleware, AgentState
 > from langgraph.runtime import Runtime
 > from langsmith.sandbox import SandboxClient
+>
 >
 >
 > def _safe_filename(key: str) -> str:
@@ -728,9 +729,12 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 > class SandboxSyncMiddleware(AgentMiddleware):
 >     """Sync skills and memories between the store and the sandbox."""
 >
->     def __init__(self, backend: CompositeBackend):
+>     def __init__(self, sandbox: LangSmithSandbox):
 >         super().__init__()
->         self.backend = backend
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
 >
 >     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
 >         """Upload skill scripts and memories into the sandbox."""
@@ -744,14 +748,14 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 >             name = _safe_filename(item.key)
 >             files.append((f"/memories/{name}", item.value["content"].encode()))
 >         if files:
->             await self.backend.upload_files(files)
+>             await self.sandbox.aupload_files(files)
 >
 >     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
 >         """Sync updated memories back to the store."""
 >         user_id = runtime.server_info.user.identity  # [!code highlight]
 >         store = runtime.store
 >         items = await store.asearch(("memories", user_id))
->         results = await self.backend.download_files(
+>         results = await self.sandbox.adownload_files(
 >             [f"/memories/{item.key}" for item in items]
 >         )
 >         for result in results:
@@ -765,17 +769,15 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 >
 > client = SandboxClient()
 > ls_sandbox = client.create_sandbox()
->
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
 >
 > backend = CompositeBackend(
->     default=LangSmithSandbox(sandbox=ls_sandbox),
+>     default=sandbox_backend,
 >     routes={
 >         "/skills/": StoreBackend(
->             rt,
 >             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
 >         ),
 >         "/memories/": StoreBackend(
->             rt,
 >             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
 >         ),
 >     },
@@ -784,7 +786,499 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 > agent = create_deep_agent(
 >     model="google_genai:gemini-4-hydrogen",
 >     backend=backend,
->     middleware=[SandboxSyncMiddleware(backend)],
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
+> )
+> ```
+>
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StoreBackend
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain.agents.middleware import AgentMiddleware, AgentState
+> from langgraph.runtime import Runtime
+> from langsmith.sandbox import SandboxClient
+>
+>
+>
+> def _safe_filename(key: str) -> str:
+>     """Reject keys that contain path traversal or glob characters."""
+>     name = key.split("/")[-1]
+>     if ".." in name or any(c in name for c in ("*", "?")):
+>         raise ValueError(f"Invalid key: {key}")
+>     return name
+>
+>
+> class SandboxSyncMiddleware(AgentMiddleware):
+>     """Sync skills and memories between the store and the sandbox."""
+>
+>     def __init__(self, sandbox: LangSmithSandbox):
+>         super().__init__()
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
+>
+>     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Upload skill scripts and memories into the sandbox."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         files = []
+>         for item in await store.asearch(("skills", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/skills/{name}", item.value["content"].encode()))
+>         for item in await store.asearch(("memories", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/memories/{name}", item.value["content"].encode()))
+>         if files:
+>             await self.sandbox.aupload_files(files)
+>
+>     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Sync updated memories back to the store."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         items = await store.asearch(("memories", user_id))
+>         results = await self.sandbox.adownload_files(
+>             [f"/memories/{item.key}" for item in items]
+>         )
+>         for result in results:
+>             if result.content is not None:
+>                 await store.aput(
+>                     ("memories", user_id),
+>                     result.path.split("/")[-1],
+>                     {"content": result.content.decode()},
+>                 )
+>
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> backend = CompositeBackend(
+>     default=sandbox_backend,
+>     routes={
+>         "/skills/": StoreBackend(
+>             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>         "/memories/": StoreBackend(
+>             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>     },
+> )
+>
+> agent = create_deep_agent(
+>     model="openai:gpt-6.1-sol",
+>     backend=backend,
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
+> )
+> ```
+>
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StoreBackend
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain.agents.middleware import AgentMiddleware, AgentState
+> from langgraph.runtime import Runtime
+> from langsmith.sandbox import SandboxClient
+>
+>
+>
+> def _safe_filename(key: str) -> str:
+>     """Reject keys that contain path traversal or glob characters."""
+>     name = key.split("/")[-1]
+>     if ".." in name or any(c in name for c in ("*", "?")):
+>         raise ValueError(f"Invalid key: {key}")
+>     return name
+>
+>
+> class SandboxSyncMiddleware(AgentMiddleware):
+>     """Sync skills and memories between the store and the sandbox."""
+>
+>     def __init__(self, sandbox: LangSmithSandbox):
+>         super().__init__()
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
+>
+>     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Upload skill scripts and memories into the sandbox."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         files = []
+>         for item in await store.asearch(("skills", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/skills/{name}", item.value["content"].encode()))
+>         for item in await store.asearch(("memories", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/memories/{name}", item.value["content"].encode()))
+>         if files:
+>             await self.sandbox.aupload_files(files)
+>
+>     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Sync updated memories back to the store."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         items = await store.asearch(("memories", user_id))
+>         results = await self.sandbox.adownload_files(
+>             [f"/memories/{item.key}" for item in items]
+>         )
+>         for result in results:
+>             if result.content is not None:
+>                 await store.aput(
+>                     ("memories", user_id),
+>                     result.path.split("/")[-1],
+>                     {"content": result.content.decode()},
+>                 )
+>
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> backend = CompositeBackend(
+>     default=sandbox_backend,
+>     routes={
+>         "/skills/": StoreBackend(
+>             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>         "/memories/": StoreBackend(
+>             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>     },
+> )
+>
+> agent = create_deep_agent(
+>     model="anthropic:claude-sonnet-5",
+>     backend=backend,
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
+> )
+> ```
+>
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StoreBackend
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain.agents.middleware import AgentMiddleware, AgentState
+> from langgraph.runtime import Runtime
+> from langsmith.sandbox import SandboxClient
+>
+>
+>
+> def _safe_filename(key: str) -> str:
+>     """Reject keys that contain path traversal or glob characters."""
+>     name = key.split("/")[-1]
+>     if ".." in name or any(c in name for c in ("*", "?")):
+>         raise ValueError(f"Invalid key: {key}")
+>     return name
+>
+>
+> class SandboxSyncMiddleware(AgentMiddleware):
+>     """Sync skills and memories between the store and the sandbox."""
+>
+>     def __init__(self, sandbox: LangSmithSandbox):
+>         super().__init__()
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
+>
+>     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Upload skill scripts and memories into the sandbox."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         files = []
+>         for item in await store.asearch(("skills", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/skills/{name}", item.value["content"].encode()))
+>         for item in await store.asearch(("memories", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/memories/{name}", item.value["content"].encode()))
+>         if files:
+>             await self.sandbox.aupload_files(files)
+>
+>     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Sync updated memories back to the store."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         items = await store.asearch(("memories", user_id))
+>         results = await self.sandbox.adownload_files(
+>             [f"/memories/{item.key}" for item in items]
+>         )
+>         for result in results:
+>             if result.content is not None:
+>                 await store.aput(
+>                     ("memories", user_id),
+>                     result.path.split("/")[-1],
+>                     {"content": result.content.decode()},
+>                 )
+>
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> backend = CompositeBackend(
+>     default=sandbox_backend,
+>     routes={
+>         "/skills/": StoreBackend(
+>             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>         "/memories/": StoreBackend(
+>             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>     },
+> )
+>
+> agent = create_deep_agent(
+>     model="openrouter:z-ai/glm-5.2",
+>     backend=backend,
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
+> )
+> ```
+>
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StoreBackend
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain.agents.middleware import AgentMiddleware, AgentState
+> from langgraph.runtime import Runtime
+> from langsmith.sandbox import SandboxClient
+>
+>
+>
+> def _safe_filename(key: str) -> str:
+>     """Reject keys that contain path traversal or glob characters."""
+>     name = key.split("/")[-1]
+>     if ".." in name or any(c in name for c in ("*", "?")):
+>         raise ValueError(f"Invalid key: {key}")
+>     return name
+>
+>
+> class SandboxSyncMiddleware(AgentMiddleware):
+>     """Sync skills and memories between the store and the sandbox."""
+>
+>     def __init__(self, sandbox: LangSmithSandbox):
+>         super().__init__()
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
+>
+>     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Upload skill scripts and memories into the sandbox."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         files = []
+>         for item in await store.asearch(("skills", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/skills/{name}", item.value["content"].encode()))
+>         for item in await store.asearch(("memories", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/memories/{name}", item.value["content"].encode()))
+>         if files:
+>             await self.sandbox.aupload_files(files)
+>
+>     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Sync updated memories back to the store."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         items = await store.asearch(("memories", user_id))
+>         results = await self.sandbox.adownload_files(
+>             [f"/memories/{item.key}" for item in items]
+>         )
+>         for result in results:
+>             if result.content is not None:
+>                 await store.aput(
+>                     ("memories", user_id),
+>                     result.path.split("/")[-1],
+>                     {"content": result.content.decode()},
+>                 )
+>
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> backend = CompositeBackend(
+>     default=sandbox_backend,
+>     routes={
+>         "/skills/": StoreBackend(
+>             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>         "/memories/": StoreBackend(
+>             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>     },
+> )
+>
+> agent = create_deep_agent(
+>     model="fireworks:accounts/fireworks/models/glm-5p2",
+>     backend=backend,
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
+> )
+> ```
+>
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StoreBackend
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain.agents.middleware import AgentMiddleware, AgentState
+> from langgraph.runtime import Runtime
+> from langsmith.sandbox import SandboxClient
+>
+>
+>
+> def _safe_filename(key: str) -> str:
+>     """Reject keys that contain path traversal or glob characters."""
+>     name = key.split("/")[-1]
+>     if ".." in name or any(c in name for c in ("*", "?")):
+>         raise ValueError(f"Invalid key: {key}")
+>     return name
+>
+>
+> class SandboxSyncMiddleware(AgentMiddleware):
+>     """Sync skills and memories between the store and the sandbox."""
+>
+>     def __init__(self, sandbox: LangSmithSandbox):
+>         super().__init__()
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
+>
+>     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Upload skill scripts and memories into the sandbox."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         files = []
+>         for item in await store.asearch(("skills", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/skills/{name}", item.value["content"].encode()))
+>         for item in await store.asearch(("memories", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/memories/{name}", item.value["content"].encode()))
+>         if files:
+>             await self.sandbox.aupload_files(files)
+>
+>     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Sync updated memories back to the store."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         items = await store.asearch(("memories", user_id))
+>         results = await self.sandbox.adownload_files(
+>             [f"/memories/{item.key}" for item in items]
+>         )
+>         for result in results:
+>             if result.content is not None:
+>                 await store.aput(
+>                     ("memories", user_id),
+>                     result.path.split("/")[-1],
+>                     {"content": result.content.decode()},
+>                 )
+>
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> backend = CompositeBackend(
+>     default=sandbox_backend,
+>     routes={
+>         "/skills/": StoreBackend(
+>             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>         "/memories/": StoreBackend(
+>             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>     },
+> )
+>
+> agent = create_deep_agent(
+>     model="baseten:zai-org/GLM-5.2",
+>     backend=backend,
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
+> )
+> ```
+>
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StoreBackend
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain.agents.middleware import AgentMiddleware, AgentState
+> from langgraph.runtime import Runtime
+> from langsmith.sandbox import SandboxClient
+>
+>
+>
+> def _safe_filename(key: str) -> str:
+>     """Reject keys that contain path traversal or glob characters."""
+>     name = key.split("/")[-1]
+>     if ".." in name or any(c in name for c in ("*", "?")):
+>         raise ValueError(f"Invalid key: {key}")
+>     return name
+>
+>
+> class SandboxSyncMiddleware(AgentMiddleware):
+>     """Sync skills and memories between the store and the sandbox."""
+>
+>     def __init__(self, sandbox: LangSmithSandbox):
+>         super().__init__()
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
+>
+>     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Upload skill scripts and memories into the sandbox."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         files = []
+>         for item in await store.asearch(("skills", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/skills/{name}", item.value["content"].encode()))
+>         for item in await store.asearch(("memories", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/memories/{name}", item.value["content"].encode()))
+>         if files:
+>             await self.sandbox.aupload_files(files)
+>
+>     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Sync updated memories back to the store."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         items = await store.asearch(("memories", user_id))
+>         results = await self.sandbox.adownload_files(
+>             [f"/memories/{item.key}" for item in items]
+>         )
+>         for result in results:
+>             if result.content is not None:
+>                 await store.aput(
+>                     ("memories", user_id),
+>                     result.path.split("/")[-1],
+>                     {"content": result.content.decode()},
+>                 )
+>
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> backend = CompositeBackend(
+>     default=sandbox_backend,
+>     routes={
+>         "/skills/": StoreBackend(
+>             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>         "/memories/": StoreBackend(
+>             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>     },
+> )
+>
+> agent = create_deep_agent(
+>     model="ollama:north-mini-code-1.0",
+>     backend=backend,
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
 > )
 > ```
 
@@ -817,15 +1311,15 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 }
 ```
 
-`${SECRET_KEY}` 引用解析存储在 LangSmith [workspace settings](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的机密。在创建引用它们的模板之前，先在那里配置机密。
+`${SECRET_KEY}` 参考解析针对您的 LangSmith [workspace secrets](/langsmith/workspace-secrets)。在创建引用秘密的模板之前添加秘密。
 
-**工作区机密。** 对于不需要基于代理的注入的 API 密钥（例如，代理服务器本身使用的密钥，而不是沙箱代码），将它们存储为 LangSmith 中的 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings)。这些在运行时可用作工作区中所有代理的环境变量。
+**工作空间机密。** 对于不需要基于代理注入的 API 密钥（例如，代理服务器本身使用的密钥，而不是沙箱代码），将它们存储为 LangSmith 中的 [workspace secrets](/langsmith/workspace-secrets)。这些在运行时可用作工作区中所有代理的环境变量。
 
 > [!警告]
 >
 > 避免通过环境变量或文件上传将机密传递到沙箱中。代理可以读取沙箱内的任何可访问文件或环境变量，包括凭据。身份验证代理将秘密完全排除在沙箱之外。
 
-## 护栏生产中的代理自主运行，这意味着它们可以无限循环、达到速率限制或处理包含敏感信息的用户数据。 Deep Agents提供两层保护：
+## 护栏生产中的代理自主运行，这意味着它们可以无限循环、达到速率限制或处理包含敏感信息的用户数据。 Deep Agents 提供两层保护：
 
 * **[Permissions](#permissions)**：声明性允许/拒绝规则，控制代理可以读取或写入哪些文件和目录。
 * **[Fault tolerance](#fault-tolerance)**：速率限制、重试、回退和错误处理。
@@ -833,7 +1327,7 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 
 ### 权限
 
-[Permissions](/oss/python/deepagents/permissions) 是声明性允许/拒绝规则，用于控制代理可以读取或写入哪些文件和目录。使用权限将代理隔离到工作目录、保护敏感文件或强制使用只读内存。规则按声明顺序进行评估，第一个匹配的规则获胜。
+[Permissions](/oss/python/deepagents/permissions) 是声明性允许/拒绝规则，用于控制代理可以读取或写入哪些文件和目录。使用权限将代理隔离到工作目录、保护敏感文件或强制执行只读内存。规则按声明顺序进行评估，第一个匹配的规则获胜。
 
 ### 容错
 
@@ -861,7 +1355,7 @@ agent = create_deep_agent(
 
 ## 前端
 
-Deep Agents 使用 [⟦T98⟧](/oss/python/langchain/frontend/overview) 将您的 UI 连接到代理后端。 [⟦T99⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 是一个前端钩子（适用于 React、Vue、Svelte 和 Angular），可实时传输来自代理的消息、子代理进度和自定义状态。
+Deep Agents 使用 [⟦T104⟧](/oss/python/langchain/frontend/overview) 将您的 UI 连接到代理后端。 [⟦T105⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 是一个前端钩子（适用于 React、Vue、Svelte 和 Angular），可实时传输来自代理的消息、子代理进度和自定义状态。
 
 在本地，`useStream`指向`http://localhost:2024`。在生产中，将其指向您的 [Agent Server](/langsmith/agent-server) 并配置重新连接，以便用户在连接断开时不会丢失进度。
 

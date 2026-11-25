@@ -900,7 +900,7 @@ Models can be requested to provide their response in a format matching a given s
 
 ### Handle a model refusal
 
-Providers report a refusal, such as a safety-policy refusal, as a successful response rather than an error. A plain model call returns the message with a [`refusal` content block](/oss/javascript/langchain/messages#content-block-reference). `withStructuredOutput` throws [`ModelRefusalError`](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError) from `@langchain/core/errors` instead of a parsing error. The error's `rawMessage` holds the refused response.
+Providers report a refusal, such as a safety-policy refusal, as a successful response rather than an error. A plain model call returns the message with a [`refusal` content block](/oss/javascript/langchain/messages#content-block-reference). `withStructuredOutput` throws [`ModelRefusalError`](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError) from `@langchain/core/errors` instead of a parsing error. The error's `rawMessage` holds the refused response. The message's `response_metadata.normalized_finish_reason` is `"refusal"`; see [Finish reason](/oss/javascript/langchain/messages#finish-reason).
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ModelRefusalError } from "@langchain/core/errors";

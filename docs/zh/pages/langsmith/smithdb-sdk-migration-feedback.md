@@ -22,23 +22,23 @@
 
 > [选项卡] Python
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.add_runs_to_annotation_queue()` | `client.annotation_queues.items.create()`（异步）|
 
 > [选项卡] TypeScript
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.addRunsToAnnotationQueue()` | `client.annotationQueues.items.create()` |
 
 > [选项卡] Java
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.annotationQueues().runs().create()` | `client.annotationQueues().items().create()` |> [选项卡] 前往
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.AnnotationQueues.Runs.New()` | `client.AnnotationQueues.Items.New()` |
 >
@@ -46,7 +46,7 @@
 
 > [选项卡] 卷曲
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `POST /api/v1/annotation-queues/{queue_id}/runs` | `POST /api/v1/platform/annotation-queues/{queue_id}/items` |
 
@@ -61,17 +61,17 @@
 | `project_id` |运行的项目 UUID（从 `runs.query` 运行时的`project_id`；`session_id` 也可以作为别名接受）|
 | `start_time` |运行的开始时间 (RFC3339) |
 
-`extend_trace_retention` 不变。它仍然是一个可选的查询参数，默认为`false`。如果省略，添加运行不会改变它们的保留。将其设置为`true`，将添加运行的跟踪从基本保留升级到扩展保留，如[Data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)中所述。线程项目不会升级。
+`extend_trace_retention` 不变。它仍然是一个可选的查询参数，默认为`false`。如果省略，添加运行不会改变它们的保留。将其设置为`true`，将添加运行的跟踪从基本保留升级到扩展保留，如[Data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)中所述。线程项目不会升级。如果工作区[disables extended trace retention](/langsmith/data-purging-compliance#disable-extended-trace-retention)，则添加运行而不升级其跟踪。
 
 > [选项卡] Python
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `run_ids=[...]` 或 `runs=[RunKey, ...]` | `items=[{"item_type": "RUN", "run_id", "project_id", "start_time"}, ...]` |
 
 > [选项卡] TypeScript
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `string[]` 或 `RunKey[]`（第二个参数）| `{ items: [{ item_type: "RUN", run_id, project_id, start_time }] }` |
 
@@ -82,7 +82,7 @@
 > | `.bodyOfRunsUuidArray(List<String>)` | `.addItem(ItemCreateParams.Item)` 与 `itemType(RUN)`、`runId`、`projectId`、`startTime` |
 > | `.queueId(String)` | `.queueId(String)` |> [选项卡] 前往
 >
-> |之前 (`AnnotationQueueRunNewParams`) |之后(`AnnotationQueueItemNewParams`)|
+> |之前 (`AnnotationQueueRunNewParams`) |之后(`AnnotationQueueItemNewParams`) |
 > | - | - |
 > | `Body: AnnotationQueueRunNewParamsBodyRunsUuidArray` | `Items: []AnnotationQueueItemNewParamsItem` 与 `ItemType`、`RunID`、`ProjectID`、`StartTime` |
 
@@ -387,7 +387,7 @@ items API 返回 `{"items": [...]}`，每个输入创建一个队列项目（`id
 
 > [选项卡] Python
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.list_runs_from_annotation_queue()` | `client.annotation_queues.items.list()`（异步迭代器）|
 > | `client.get_run_from_annotation_queue()` | `client.annotation_queues.items.list()` |
@@ -395,7 +395,7 @@ items API 返回 `{"items": [...]}`，每个输入创建一个队列项目（`id
 
 > [选项卡] TypeScript
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.listRunsFromAnnotationQueue()` | `client.annotationQueues.items.list()` |
 > | `client.getRunFromAnnotationQueue()` | `client.annotationQueues.items.list()` |
@@ -403,7 +403,7 @@ items API 返回 `{"items": [...]}`，每个输入创建一个队列项目（`id
 
 > [选项卡] Java
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.annotationQueues().runs().list()` | `client.annotationQueues().items().list()` |
 > | `client.annotationQueues().retrieveRun()` | `client.annotationQueues().items().list()` |
@@ -411,13 +411,13 @@ items API 返回 `{"items": [...]}`，每个输入创建一个队列项目（`id
 
 > [选项卡] 前往
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.AnnotationQueues.Runs.List()` | `client.AnnotationQueues.Items.List()` 或 `ListAutoPaging()` |
 > | `client.AnnotationQueues.GetRun()` | `client.AnnotationQueues.Items.List()` |
 > | `client.AnnotationQueues.GetSize()`、`GetTotalSize()`、`GetTotalArchived()` | `client.AnnotationQueues.Items.GetCount()` |> [选项卡] 卷曲
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `GET /api/v1/annotation-queues/{queue_id}/runs` | `GET /api/v1/platform/annotation-queues/{queue_id}/items` |
 > | `GET /api/v1/annotation-queues/{queue_id}/run/{index}` | `GET /api/v1/platform/annotation-queues/{queue_id}/items` |
@@ -429,7 +429,7 @@ items API 返回 `{"items": [...]}`，每个输入创建一个队列项目（`id
 
 项目 API 需要 `status`。当您省略旧端点时，它默认为 `needs_my_review`。
 
-|之前 |之后 |包含 |
+|之前 |之后|包含 |
 | - | - | - |
 | `needs_my_review`（或省略）| `needs_my_review` |您尚未评论的项目 |
 | `needs_others_review` | `needs_others_review` |您已审阅但仍需要其他审阅者的项目 |
@@ -789,7 +789,7 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 
 > [选项卡] Python
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.share_run()` | `client.runs.share.create()` |
 > | `client.unshare_run()` | `client.runs.share.delete()` |
@@ -803,7 +803,7 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 
 > [选项卡] TypeScript
 >
-> |之前 |之后 |
+> |之前 |之后|
 > | - | - |
 > | `client.shareRun()` | `client.runs.share.create()` |
 > | `client.unshareRun()` | `client.runs.share.delete()` |
@@ -823,7 +823,7 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 
 > [选项卡] 卷曲
 >
-> |运营|之前 |之后 |
+> |运营|之前 |之后|
 > | - | - | - |
 > |分享 | `PUT /api/v1/runs/{run_id}/share` | `POST /api/v2/runs/{run_id}/share` |
 > |取消分享 | `DELETE /api/v1/runs/{run_id}/share` | `DELETE /api/v2/runs/{trace_id}/share` |
@@ -862,7 +862,7 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 
 #### 回应
 
-|运营|之前 |之后 |
+|运营|之前 |之后|
 | - | - | - |
 |分享 |运行 ID、共享跟踪 ID 和共享令牌 | `share_token` |
 |取消分享 | `{"message": "Run unshared"}` | `204 No Content` |
@@ -1075,70 +1075,71 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 
 #### 必需参数
 
-方法名称和端点不变。仅会话（项目）ID 要求发生变化。
-
-> [选项卡] Python
+方法名称和端点不变。仅会话（项目）ID 要求发生变化。> [选项卡] Python
 >
 >> [!警告]
 >>
 >> `create_feedback` 现在需要 `session_id`，即拥有运行的项目（会话）的 UUID。以前它是可选的。
 >
-> |之前 |之后 |笔记|
+> |之前 |之后|笔记|
 > | - | - | - |
 > | `session_id`（可选）| `session_id`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.read_project()` 解决它 |
-> | `start_time`（可选）| `start_time`（可选）|运行的开始时间，时区感知（例如 `run.start_time`）。 v0.18 以下仅限 SmithDB 自托管所需 |> [选项卡] TypeScript
+> | `project_id`（可选）| `project_id`（可选）|仅用于对整个项目或实验的反馈。如果与 `run_id` 组合，则提高 `ValueError`；对于运行反馈，请将项目作为 `session_id` | 传递
+> | `start_time`（可选）| `start_time`（可选）|运行的开始时间，时区感知（例如`run.start_time`）。 v0.18 以下仅限 SmithDB 自托管所需 |
+
+> [选项卡] TypeScript
 >
 >> [!警告]
 >>
 >> `client.createFeedback` 现在需要 `sessionId`，即拥有运行的项目（会话）的 UUID。以前它是可选的。
 >
-> |之前 |之后 |笔记|
+> |之前 |之后|笔记|
 > | - | - | - |
 > | `sessionId`（可选）| `sessionId`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.readProject()` 解决它 |
-> | `startTime`（可选）| `startTime`（可选）|运行的开始时间。 v0.18 以下仅限 SmithDB 自托管所需 |
-
-> [选项卡] Java
+> | `startTime`（可选）| `startTime`（可选）|运行的开始时间。 v0.18 以下仅限 SmithDB 自托管所需 |> [选项卡] Java
 >
 >> [!警告]
 >>
 >> 现在需要`FeedbackCreateSchema.sessionId()`。以前它是可选的。
 >
-> |之前 |之后 |笔记|
+> |之前 |之后|笔记|
 > | - | - | - |
 > | `sessionId()`（可选）| `sessionId()`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.sessions().list()` 解决它 |
-> | `startTime()`（可选）| `startTime()`（可选）|运行的开始时间。 v0.18 以下仅限 SmithDB 自托管所需 |> [选项卡] 前往
+> | `startTime()`（可选）| `startTime()`（可选）|运行的开始时间。 v0.18 以下仅限 SmithDB 自托管所需 |
+
+> [选项卡] 前往
 >
 >> [!警告]
 >>
 >> 现在需要`FeedbackCreateSchemaParam.SessionID`。以前它是可选的。
 >
-> |之前 |之后 |笔记|
+> |之前 |之后|笔记|
 > | - | - | - |
 > | `SessionID`（可选）| `SessionID`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.Sessions.List()` 解决它 |
-> | `StartTime`（可选）| `StartTime`（可选）|运行的开始时间。 v0.18 以下仅限 SmithDB 自托管所需 |
-
-> [选项卡] 卷曲
+> | `StartTime`（可选）| `StartTime`（可选）|运行的开始时间。 v0.18 以下仅限 SmithDB 自托管所需 |> [选项卡] 卷曲
 >
 >> [!警告]
 >>
 >> `POST /api/v1/feedback` 现在要求请求正文中包含 `session_id` 字段。以前它是可选的。
 >
-> |之前 |之后 |笔记|
+> |之前 |之后|笔记|
 > | - | - | - |
 > | `session_id`（可选）| `session_id`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `GET /api/v1/sessions` 解决它 |
 > | `start_time`（可选）| `start_time`（可选）|运行的开始时间 (RFC3339)。 v0.18 以下仅限 SmithDB 自托管所需 |
 
 > [!注意]
 >
-> **SmithDB-only 自托管低于 v0.18：** 也传递运行的开始时间。如果没有它，几个小时前（默认 Helm 图表设置为 6 小时）开始的运行反馈可能会失败或被删除。
+> **SmithDB-only 自托管低于 v0.18：** 也传递运行的开始时间。如果没有它，几个小时前（默认 Helm 图表设置为 6 小时）开始的运行的反馈可能会失败或被删除。
 
 ### 示例
 
-#### 创建反馈时提供`session_id`在 v0.18 以下的仅限 SmithDB 自托管的情况下，还要传递运行的开始时间，如前面的注释中所述。
+#### 创建反馈时提供`session_id`
+
+在 v0.18 以下的仅限 SmithDB 自托管的情况下，还要传递运行的开始时间，如前面的注释中所述。
 
 > [选项卡] Python
 >
-> 除了 `run_id` 之外，`create_feedback` 现在还需要 `session_id`。
+> `create_feedback` 现在除了 `run_id` 之外还需要 `session_id`。
 >
 >> [选项卡] 之前
 >>
@@ -1198,11 +1199,9 @@ items API 返回运行和线程。将 `item_type` 作为 `RUN` 传递以仅列�
 > >   score: 1,
 > >   sessionId,
 > > });
-> > ```
-
-> [选项卡] Java
+> > ```> [选项卡] Java
 >
-> `.create()` 现在除了 `.runId()` 之外还需要 `.sessionId()`。
+> 除了 `.runId()` 之外，`.create()` 现在还需要 `.sessionId()`。
 >
 >> [选项卡] 之前
 >>

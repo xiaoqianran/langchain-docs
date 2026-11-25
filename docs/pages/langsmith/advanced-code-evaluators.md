@@ -4,7 +4,7 @@
 
 Install packages, make network requests, and authenticate with workspace secrets from an advanced code evaluator that runs in a LangSmith sandbox.
 
-Advanced code evaluators allow installing public packages, calling external services, authenticating with encrypted [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings), and longer run times on each evaluation. Advanced code evaluators run in an isolated [LangSmith sandbox](/langsmith/sandboxes) instead of the default [code evaluator](/langsmith/code-evaluator-ui) environment. Advanced features are available for Python and JavaScript code evaluators, whether you create them from a dataset, from the Playground, or as an [online evaluator](/langsmith/online-evaluations-code) that scores your traces.
+Advanced code evaluators allow installing public packages, calling external services, authenticating with encrypted [workspace secrets](/langsmith/workspace-secrets), and longer run times on each evaluation. Advanced code evaluators run in an isolated [LangSmith sandbox](/langsmith/sandboxes) instead of the default [code evaluator](/langsmith/code-evaluator-ui) environment. Advanced features are available for Python and JavaScript code evaluators, whether you create them from a dataset, from the Playground, or as an [online evaluator](/langsmith/online-evaluations-code) that scores your traces.
 
 > [!NOTE]
 >
@@ -101,20 +101,20 @@ def perform_eval(run, example=None):
 
 ### Configure allowed hosts for a secret
 
-Each workspace secret defines which hosts it can be sent to and in which header. Configuring allowed hosts requires the `workspaces:manage-secrets` permission, which workspace admins have by default.
+Each workspace secret defines which hosts it can be sent to and in which header. Configuring allowed hosts requires the [`workspaces:manage-secrets` permission](/langsmith/workspace-secrets#required-permission), which workspace admins have by default.
 
 Known provider secrets, such as `OPENAI_API_KEY` and `ANTHROPIC_API_KEY`, come with default hosts and headers, so evaluators can use them without further setup. A custom secret has no allowed hosts until an admin adds one, so evaluators cannot select it.
 
 To add a custom secret with allowed hosts:
 
-1. Go to  **Settings** > **Integrations** > **Provider secrets**. The **Allowed hosts** column shows each existing secret's hosts.
+1. [Open the workspace secrets page](/langsmith/workspace-secrets#open-the-secrets-page). The **Allowed hosts** column shows each existing secret's hosts.
 2. Click **+ Secret** and select **Custom**.
 3. Enter the secret's key and value.
 4. Add one or more allowed hosts. Enter an exact host, such as `eval-api.example.com`, or a leading wildcard, such as `*.example.com`.
 5. Set the header name and the header value template. The template must contain `{value}`, which LangSmith replaces with the secret. For example, use `Bearer {value}` for a bearer token, or `{value}` to send the raw secret.
 6. Save the secret.
 
-To change the hosts or header of an existing secret, click the edit icon next to the secret, then follow the same steps. Changes to a secret's value, hosts, or header apply the next time the evaluator runs.
+To change the hosts or header of an existing secret, click the (Edit secret) edit icon next to the secret, then follow the same steps. Changes to a secret's value, hosts, or header apply the next time the evaluator runs.
 
 > [!WARNING]
 >

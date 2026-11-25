@@ -102,7 +102,7 @@ OpenAI
 >
 > **不适用于 GCP 或 Azure 上的 [self-hosted LangSmith](/langsmith/self-hosted) 或 [BYOC](/langsmith/byoc)。** 请改用访问密钥或 Bedrock API 密钥。在 BYOC AWS 数据平面上，请遵循 [IAM trusted entity on BYOC](#iam-trusted-entity-on-byoc) 而不是以下步骤。
 
-通过 IAM 可信实体身份验证，您可以在 AWS 账户中创建 IAM 角色并允许 LangSmith 代入该角色。 LangSmith 中不存储访问密钥。相反，LangSmith 使用 [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) 承担每个请求的角色。
+通过 IAM 可信实体身份验证，您可以在 AWS 账户中创建 IAM 角色并允许 LangSmith 代入该角色。 LangSmith 中不存储访问密钥。相反，LangSmith 使用 [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) 来承担每个请求的角色。
 
 这里设置的`AWS_IAM_ROLE_ARN`秘密也被[LLM Gateway](/langsmith/llm-gateway-provider-authentication#use-an-iam-role)读取。其中一个角色包括 Playground、LLM 法官评估员和网关请求。如果您还将该角色与网关一起使用，请将 [gateway's permissions](/langsmith/llm-gateway-provider-authentication#use-an-iam-role) 添加到该角色。
 
@@ -202,12 +202,12 @@ OpenAI
 #### 基岩 API 密钥
 
 Bedrock API 密钥使用不记名令牌而不是 AWS 凭证对请求进行身份验证。配置 Bedrock API 密钥：1. Amazon Bedrock 控制台中的[Generate an API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html)。
-2. 在 LangSmith 中，导航至 **设置** > **集成** > **提供商机密**，然后选择 **+ 机密**。
+2. 在LangSmith、[open the workspace secrets page](/langsmith/workspace-secrets#open-the-secrets-page)中点击**+秘密**。
 3. 在 **提供商** 下，选择 **Amazon Bedrock**。
 4. 在 **身份验证** 下，选择 **不记名令牌**。
 5. 输入 API 密钥`AWS_BEARER_TOKEN_BEDROCK`。
 6. （可选）设置`AWS_BEDROCK_REGION`。默认为`us-east-1`。
-7. 选择**保存**。
+7. 单击“**保存**”。
 
 ### 可用型号
 
@@ -235,7 +235,7 @@ AWS Bedrock 提供对来自多个提供商的基础模型的访问：
 | - | - | - |
 | **温度** | 0.0 - 1.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样 |
+| **顶P** | 0.0 - 1.0 |细胞核取样|
 
 #### AWS 特定设置
 
@@ -243,10 +243,10 @@ AWS Bedrock 提供对来自多个提供商的基础模型的访问：
 
 ### 工具调用
 
-取决于底层模型：* **Anthropic 型号：** `auto`、`any`。
-* **Cohere 型号：** `auto`。
+取决于底层模型：
 
-## Anthropic
+* **Anthropic 型号：** `auto`、`any`。
+* **Cohere 型号：** `auto`。## Anthropic
 
 在使用此型号之前，请确保您拥有[Anthropic API key](https://console.anthropic.com/settings/keys)。
 
@@ -264,7 +264,7 @@ Anthropic 提供 Claude 一代的三层型号：
 
 ### 配置参数
 
-|参数|范围 |默认|描述 |
+|参数|范围 |默认 |描述 |
 | - | - | - | - |
 | **温度** | 0.0 - 1.0 |可选|随机性控制（取消选中以使用模型默认值）|
 | **最大输出代币** | 1+ | 1024 | 1024最大响应长度|
@@ -359,7 +359,7 @@ Azure OpenAI 支持与 OpenAI 相同的参数：
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数 |对于可重复的输出 |
+| **种子** |整数|对于可重复的输出 |
 
 #### 高级参数
 
@@ -400,7 +400,7 @@ Databricks 提供的基础模型包括 Claude、GPT、Gemini 和 Llama。
 | **最大输出代币** | 1+ |令牌中的最大响应长度。 |
 | **停止序列** |字符串列表 |模型停止生成的序列。 |
 | **超时** |秒|请求超时。 |
-| **最大重试次数** |整数 |失败请求的最大重试次数。 |
+| **最大重试次数** |整数|失败请求的最大重试次数。 |
 
 选择与您的端点匹配的API路由：
 
@@ -422,7 +422,7 @@ DeepSeek 提供通用模型、推理优化模型（R 系列）和编码专用模
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样 |
+| **顶P** | 0.0 - 1.0 |细胞核取样|
 | **在场处罚** | -2.0 - 2.0 | |
 | **频率惩罚** | -2.0 - 2.0 | |
 
@@ -434,7 +434,7 @@ DeepSeek 提供通用模型、推理优化模型（R 系列）和编码专用模
 
 Fireworks 为流行的开源模型和微调变体提供高速推理，包括：
 
-* **Llama：** Meta 的 Llama 模型有多种尺寸。
+* **Llama：** Meta 的 Llama 模型有各种尺寸。
 * **Mixtral：** Mistral 的专家混合模型。
 * **Qwen:** 阿里巴巴的多语言模型。
 * **DeepSeek：** DeepSeek 模型。
@@ -448,7 +448,7 @@ Fireworks 为流行的开源模型和微调变体提供高速推理，包括：
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样 |
+| **顶P** | 0.0 - 1.0 |细胞核取样|
 
 ### 工具调用
 
@@ -469,7 +469,7 @@ Fireworks 为流行的开源模型和微调变体提供高速推理，包括：
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大输出代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样 |
+| **顶P** | 0.0 - 1.0 |细胞核取样|
 | **前 K** | 1+ | Top-k 采样 |
 
 ### 工具调用
@@ -513,7 +513,7 @@ Fireworks 为流行的开源模型和微调变体提供高速推理，包括：
 }
 ```
 
-**步骤3：在LangSmith Playground中配置**
+**第三步：在LangSmith Playground中配置**
 
 在 LangSmith Playground 中，打开 Gemini Enterprise Agent Platform 提供程序配置，并将下载的 JSON 密钥文件的 **全部内容** 粘贴到 **服务帐户 JSON** 字段中。
 
@@ -535,7 +535,7 @@ GKE 上的自托管 LangSmith 可以使用工作负载联合身份验证和应�
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大输出代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样 |
+| **顶P** | 0.0 - 1.0 |细胞核取样|
 | **前 K** | 1+ | Top-k 采样 |
 
 #### 高级选项
@@ -584,7 +584,7 @@ Mistral 提供针对不同性能和成本要求进行优化的多层（大、中
 | - | - | - |
 | **温度** | 0.0 - 1.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样 |
+| **顶P** | 0.0 - 1.0 |细胞核取样|
 
 ### 工具调用
 
@@ -614,7 +614,7 @@ OpenAI 提供多种具有不同功能和价位的型号系列：* **GPT 系列�
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数 |对于可重复的输出 |
+| **种子** |整数|对于可重复的输出 |
 
 高级：
 
@@ -657,7 +657,7 @@ OpenAI 提供多种具有不同功能和价位的型号系列：* **GPT 系列�
 
 ## OpenAI 兼容端点
 
-身份验证因端点而异。常用选项：* **API 密钥**：存储为 [workspace secret](/langsmith/administration-overview#workspaces) 并转发为 `Authorization: Bearer <key>`。
+身份验证因端点而异。常用选项：* **API 密钥**：存储为 [workspace secret](/langsmith/workspace-secrets) 并转发为 `Authorization: Bearer <key>`。
 * **无**：适用于未经身份验证的本地端点（例如，`localhost` 上的 Ollama）。
 * **OAuth2 `client_credentials`**：存储在模型配置上。 LangSmith 在请求时铸造一个短期持有者，并在到期前刷新它。参见[OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)。
 
@@ -682,7 +682,7 @@ OpenAI 提供多种具有不同功能和价位的型号系列：* **GPT 系列�
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样 |
+| **顶P** | 0.0 - 1.0 |细胞核取样|
 | **频率惩罚** | -2.0 - 2.0 |减少重复 |
 | **在场处罚** | -2.0 - 2.0 |鼓励新话题|
 
@@ -736,7 +736,7 @@ xAI 为不同的用例提供多种尺寸的 Grok 模型。
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样 |
+| **顶P** | 0.0 - 1.0 |细胞核取样|
 | **在场处罚** | 0 - 2.0 |隐藏在推理模型中 |
 | **频率惩罚** | 0 - 2.0 |隐藏在推理模型中 |
 

@@ -4,7 +4,7 @@
 
 What LangSmith BYOC deploys in your GCP project, how the data plane connects to the LangChain control plane, and the access LangSmith gets in your project.
 
-BYOC on GCP runs the LangSmith data plane in your GCP project, while LangChain runs the control plane in its own GCP environment in `us-central1`. Your trace data stays in your project. This page describes what LangSmith deploys, how traffic flows, and the access LangSmith gets in your project. For BYOC on AWS, see [BYOC architecture](/langsmith/byoc-architecture-aws).
+BYOC on GCP runs the LangSmith data plane in your GCP project, while LangChain runs the control plane in its own GCP environment in `us-central1`. Your trace data stays in your project. This page describes what LangSmith deploys, how traffic flows, and the access LangSmith gets in your project. For BYOC on AWS, see [BYOC architecture on AWS](/langsmith/byoc-architecture-aws).
 
 > [!NOTE]
 >

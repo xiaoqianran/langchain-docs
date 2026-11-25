@@ -16,7 +16,7 @@ BYOC 使用责任分离模型：控制平面在 LangChain 的云中运行，数�
 
 ## 开始吧
 
-部署LangSmith BYOC、[contact our sales team](https://www.langchain.com/contact-sales)。 LangChain 团队为您的组织启用 BYOC 后，请按照 [AWS](/langsmith/byoc-onboarding-aws)、[GCP](/langsmith/byoc-onboarding-gcp) 或 [Azure](/langsmith/byoc-onboarding-azure) 的入门指南创建您的第一个数据平面。
+部署LangSmith BYOC、[contact our sales team](https://www.langchain.com/contact-sales)。 LangChain 团队为您的组织启用 BYOC 后，请按照 [AWS](/langsmith/byoc-onboarding-aws)、[GCP](/langsmith/byoc-onboarding-gcp) 或 [Azure](/langsmith/byoc-onboarding-azure) 的入门指南创建您的第一个数据平面。每个指南都列出了其云的先决条件。
 
 ## 区域和云提供商
 
@@ -58,7 +58,7 @@ AWS 支持以下功能。对于 GCP 和 Azure beta 功能的可用性，请在�
 * **[Prompt engineering](/langsmith/prompt-context-hub#prompts)**：提示并提示提交。
 * **[LangSmith Agent Server](/langsmith/agent-server)**：LangSmith代理服务器控制平面在您的数据平面集群内部运行，因此代理管理层和您的代理都在您的专用网络中运行。
 * **[Sandboxes](/langsmith/sandboxes)**：通过 CLI 和 SDK 的使用与云相同，只是您指向数据平面的端点。
-* **[LLM Gateway](/langsmith/llm-gateway)**：使用一个 LangSmith API 密钥跨提供商调用模型，并集中实施支出、速率限制和数据保护策略。* **[LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted)**：对模型调用强制执行您自己的身份验证流程，以便提供程序凭据永远不会暴露给最终用户。
+* **[LLM Gateway](/langsmith/llm-gateway)**：使用一个 LangSmith API 密钥跨提供商调用模型，并集中实施支出、速率限制和数据保护策略。* **[LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted)**：为模型调用强制执行您自己的身份验证流程，以便提供程序凭据永远不会暴露给最终用户。
 * **[LangSmith MCP](/langsmith/langsmith-remote-mcp)**：将MCP兼容的客户端连接到LangSmith查询数据。
 * **[Fleet](/langsmith/fleet/index)**：从模板、连接器和通道构建并运行无代码代理。
 * **[SmithDB](/langsmith/smithdb-sdk-migration)**：专门构建的跟踪数据可观测性后端，在云环境中持久保存到 AWS 上的 S3、GCP 上的云存储或 Azure 上的 Blob 存储。 2026 年 10 月 21 日或之后创建的数据平面仅运行 SmithDB。 ClickHouse 已弃用，支持在 LangSmith v0.19 结束。
@@ -68,17 +68,6 @@ AWS 支持以下功能。对于 GCP 和 Azure beta 功能的可用性，请在�
 > [!注意]
 >
 > 使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。要开始，请按照 [Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart) 操作。
-
-## 先决条件
-
-在 LangChain 可以在 AWS 上配置数据平面之前，您需要满足以下条件：* **AWS 上的 LangSmith 组织**：在 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建一个组织，然后将您的组织 ID 发送到 LangChain 团队以启用 BYOC。
-* **AWS 账户**：LangChain 建议使用专用于 LangSmith BYOC 的新账户，但这不是必需的。
-* **受支持的区域**：选择上面列出的 AWS 区域之一。
-* **IAM 角色和外部 ID**：LangChain 提供外部 ID。使用 **设置 > 数据平面** 中 **数据平面** 标题旁边的按钮复制它，然后将 [⟦T19⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 与此值一起应用以创建角色 LangChain 假定配置和管理您的数据平面。您必须使用此模块。
-
-对于 GCP，请参阅 [prerequisites in BYOC onboarding on GCP](/langsmith/byoc-onboarding-gcp#before-you-start)。
-
-对于 Azure，请参阅 [prerequisites in BYOC onboarding on Azure](/langsmith/byoc-onboarding-azure#before-you-start)。
 
 ***
 

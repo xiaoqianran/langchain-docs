@@ -12,11 +12,13 @@
 
 标准LLM网关API支持三种请求和响应格式。选择您的应用程序已使用的格式。然后通过同一端点使用您自己的提供商密钥或网关积分调用模型。
 
+嵌入使用特定于提供商的 [direct model access paths](/langsmith/llm-gateway-direct-model-access#create-embeddings) 用于 OpenAI、Azure Foundry 和 Gemini Enterprise Agent Platform (Vertex AI)。
+
 ## 比较API格式
 
 在美国地区的LangSmith云上，每种格式都使用以下基本 URL 和端点。对于其他区域、BYOC 数据平面和自托管安装，请参阅[Check availability](/langsmith/llm-gateway-how-it-works#check-availability)。
 
-| API格式 |基本网址 |提示端点 |常见客户 |
+| API格式 |基本网址 |提示端点|常见客户 |
 | - | - | - | - |
 | OpenAI 聊天完成 | `https://gateway.smith.langchain.com/v1` | `POST /chat/completions` | OpenAI SDK 和大多数 OpenAI 兼容工具 |
 | Anthropic 留言 | `https://gateway.smith.langchain.com` | `POST /v1/messages` | Anthropic SDK、[Claude Code](/langsmith/llm-gateway-coding-agents) |
@@ -26,11 +28,11 @@
 >
 > 所有格式均使用工作区范围的 LangSmith API 密钥进行身份验证。有关密钥类型、权限和每个客户端发送的标头，请参阅[Authenticate to the LLM Gateway](/langsmith/llm-gateway-authentication)。
 
-## 了解翻译行为
+## 了解翻译行为端点决定您的应用程序发送和接收的格式。型号 ID 确定上游提供商。
 
-端点决定您的应用程序发送和接收的格式。型号 ID 确定上游提供商。* 当提供商本身支持所选格式时，网关将保留该格式。
+* 当提供商本身支持所选格式时，网关将保留该格式。
 * 否则，网关将请求转换为提供商支持的格式，并将响应转换回来，包括流式响应。
-* 翻译可以拒绝无法以目标提供者格式表示的字段。当需要提供者本机行为时使用[direct model access](/langsmith/llm-gateway-direct-model-access)。
+* 翻译可以拒绝无法以目标提供者格式表示的字段。当需要提供者本机行为时，使用[direct model access](/langsmith/llm-gateway-direct-model-access)。
 
 无论格式如何，每个请求都会解析相同的提供者机密、策略和跟踪配置。
 
@@ -68,13 +70,13 @@ curl https://gateway.smith.langchain.com/v1/responses \
 
 有关完整的请求和响应架构，请参阅 [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat)、[Anthropic Messages API](https://docs.anthropic.com/en/api/messages) 和 [OpenAI Responses API](https://platform.openai.com/docs/api-reference/responses)。> [!提示]
 >
-> 对于 Python 或 TypeScript 中的相同请求，打开 **LLM Gateway** 中的 **Simulator** 选项卡，选择格式和语言，然后单击复制图标。复制的代码已使用您的部署的网关 URL。详情请参阅[Send your first LLM Gateway request](/langsmith/llm-gateway-first-request)。
+> 对于 Python 或 TypeScript 中的相同请求，打开 **LLM Gateway** 中的 **Simulator** 选项卡，选择格式和语言，然后单击复制图标。复制的代码已使用您的部署的网关 URL。详情请参见[Send your first LLM Gateway request](/langsmith/llm-gateway-first-request)。
 
 ## 选择型号 ID
 
 模型 ID 选择提供者和支付呼叫费用的凭证。模型 ID 在每种格式中的工作方式都相同：
 
-* **您自己的提供商密钥**：`<provider>/<model>`，例如`openai/gpt-5.4-mini`或`azure/<deployment-name>`。网关使用存储在工作区中的[provider key](/langsmith/llm-gateway-provider-authentication)来调用提供商。
+* **您自己的提供商密钥**：`<provider>/<model>`，例如`openai/gpt-5.4-mini`或`azure/<deployment-name>`。网关使用存储在工作区中的 [provider key](/langsmith/llm-gateway-provider-authentication) 来调用提供商。
 * **Gateway Credits**：托管模型 slug，例如 `moonshotai/kimi-k3`。 [Gateway Credits](/langsmith/llm-gateway-credits) 将 LangChain 托管模型记入您的 LangSmith 帐户，无需提供商密钥。
 * **保存的模型配置**：`custom/<name>`。网关使用保存的 [model configuration](/langsmith/llm-gateway-model-configurations) 中的提供程序、模型和凭据。
 

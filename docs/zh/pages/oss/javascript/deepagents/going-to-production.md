@@ -90,7 +90,7 @@ Next.js
 
 |领域 |描述 |
 | - | - |
-| `dependencies` |要安装的软件包。 `["."]` 将当前目录安装为包（从 `requirements.txt`、`pyproject.toml` 或 `package.json` 读取）。 |
+| `dependencies` |要安装的软件包。 `["."]` 将当前目录作为包安装（从 `requirements.txt`、`pyproject.toml` 或 `package.json` 读取）。 |
 | `graphs` |将图形 ID 映射到其代码位置。每个条目都是 `"<id>": "./<file>:<variable>"`，其中 `<id>` 是用于通过 API 调用图形的名称，`<variable>` 是从 `<file>` 导出的已编译图形或构造函数。 |
 | `env` |带有环境变量（API 密钥、秘密）的 `.env` 文件的路径。这些在构建时设置并在运行时可用。 |
 
@@ -346,7 +346,7 @@ LangSmith 的 [role-based access control (RBAC)](/langsmith/rbac) 控制工作�
 
 #### 最终用户凭证当您的代理需要代表用户调用外部 API（例如，读取其 GitHub 存储库、发送 Slack 消息、查询其数据仓库）时，您需要一种方法将用户的凭据传递给代理而不对其进行硬编码。
 
-**通过代理身份验证进行 OAuth。** [Agent Auth](/langsmith/agent-auth) 提供托管 OAuth 2.0 流程。配置 OAuth 提供程序，代理可以请求范围为每个用户的令牌。首次使用时，代理[interrupts](/oss/javascript/langgraph/interrupts)执行并显示 OAuth 同意 URL。用户进行身份验证后，代理将使用有效令牌恢复。令牌会自动存储和刷新。
+**通过代理身份验证进行 OAuth。** [Agent Auth](/langsmith/agent-auth) 提供托管 OAuth 2.0 流程。配置 OAuth 提供程序，代理可以请求范围为每个用户的令牌。首次使用时，代理[interrupts](/oss/javascript/langgraph/interrupts)执行并呈现 OAuth 同意 URL。用户进行身份验证后，代理将使用有效令牌恢复。令牌会自动存储和刷新。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Client } from "@langchain/auth";
@@ -365,7 +365,7 @@ const authResult = await authClient.authenticate({
 
 **沙箱的凭据注入。** 如果您的代理在调用外部 API 的 [sandbox](#sandboxes) 内运行代码，则 [sandbox auth proxy](/langsmith/sandbox-auth-proxy) 可以自动将凭据注入出站请求中，因此沙箱代码永远不会接收原始 API 密钥。有关设置详细信息，请参阅[Managing secrets](#managing-secrets)。
 
-**工作区机密。** 对于所有用户共享的 API 密钥（例如您组织的 LLM 提供商密钥、搜索 API 密钥），请将它们存储为 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的 LangSmith。详情请参阅[Managing secrets](#managing-secrets)。
+**工作区机密。** 对于所有用户共享的 API 密钥（例如您组织的 LLM 提供商密钥、搜索 API 密钥），请将它们存储为 [workspace secrets](/langsmith/workspace-secrets) 中的 LangSmith。详情请参阅[Managing secrets](#managing-secrets)。
 
 ### 异步基于 LLM 的应用程序严重依赖 I/O：调用语言模型、数据库和外部服务。异步编程允许这些操作并发运行而不是阻塞，从而提高吞吐量和响应能力。
 
@@ -385,7 +385,7 @@ const authResult = await authClient.authenticate({
 
 检查点还可以：
 
-* **无限期 [interrupts](/oss/javascript/langgraph/interrupts)。** 人机循环工作流程可以暂停几分钟或几天，然后准确地从中断的地方恢复。
+* **无限期 [interrupts](/oss/javascript/langgraph/interrupts)。** 人机交互工作流程可以暂停几分钟或几天，然后从中断处准确恢复。
 * **[Time travel](/oss/javascript/langgraph/use-time-travel).** 每个检查点步骤都是一个可以倒回的快照，以便在出现问题时从较早的状态重播。
 * **安全处理敏感操作。** 对于涉及付款或其他不可逆转操作的工作流程，检查点提供审计跟踪和恢复点来检查导致操作的确切状态。
 
@@ -393,7 +393,7 @@ const authResult = await authClient.authenticate({
 >
 > [LangSmith Agent Server](/langsmith/agent-server#persistence) 自动配置持久检查点。如果您是自托管，请参阅 [persistence](/oss/javascript/langgraph/persistence) 了解设置说明。
 
-＃＃ 记忆没有记忆，每一次谈话都从头开始。记忆可以让您的代理保留对话中的信息（用户偏好、学到的指令、过去的经验），以便随着时间的推移，它可以个性化其行为。有关内存类型的概述，请参阅[memory concepts guide](/oss/javascript/concepts/memory)。
+＃＃ 记忆没有记忆，每一次对话都从头开始。记忆可以让您的代理保留对话中的信息（用户偏好、学到的指令、过去的经验），以便随着时间的推移，它可以个性化其行为。有关内存类型的概述，请参阅[memory concepts guide](/oss/javascript/concepts/memory)。
 
 ![Short-term memory is scoped to a single thread via checkpoints; long-term memory persists across threads via the store](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/memory.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=3ec585271dcd8d62e0207d79d68c296b)
 
@@ -401,10 +401,10 @@ const authResult = await authClient.authenticate({
 
 记忆在对话中总是持久的。主要问题是它如何跨越用户和助手的界限。正确的范围取决于谁应该查看和修改数据：
 
-|范围 |命名空间 |使用案例 |示例|
+|范围 |命名空间|使用案例 |示例|
 | - | - | - | - |
 | **用户**（推荐默认）| `(user_id)` |每个用户的偏好和上下文| “我更喜欢简洁的回答” |
-| **助理** | `(assistant_id)` |一名助理的共享说明 | “帖子上限为 280 个字符” |
+| **助理** | `(assistant_id)` |一名助理的共享说明 | “帖子上限为 280 个字符”|
 | **全球** | `(org_id)` |所有用户和助理的只读策略 | “永远不要透露内部定价”|> [!警告]
 >
 > 共享内存（助理、用户或组织范围）是提示注入的载体。如果一个用户可以写入另一用户的对话读取的内存，则恶意用户可以将指令注入该共享状态。在适当的情况下强制执行只读访问。例如，使组织范围的策略只能通过应用程序代码写入，而不能由代理本身写入。使用 [permissions](/oss/javascript/deepagents/permissions) 以声明方式拒绝写入共享路径，或使用 [backend policy hooks](/oss/javascript/deepagents/backends#add-policy-hooks) 进行自定义验证逻辑。
@@ -483,7 +483,7 @@ const authResult = await authClient.authenticate({
 
 > [选项卡] 组织
 >
-> `org_id` 的命名空间。内存在所有用户和所有助手之间共享。通常用于组织范围内的策略（合规性规则、品牌指南），这些策略对于代理来说应该是只读的。写访问权限应仅限于应用程序代码，以防止提示注入。
+> `org_id` 的命名空间。内存在所有用户和所有助手之间共享。通常用于组织范围内的策略（合规性规则、品牌指南），这些策略对于代理来说应该是只读的。写访问应仅限于应用程序代码，以防止提示注入。
 >
 > ```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
@@ -500,7 +500,7 @@ const authResult = await authClient.authenticate({
 > });
 > ```
 
-您还可以使用 [Store API](/langsmith/custom-store) 从应用程序代码中读取和写入商店。示例请参见[Advanced usage](/oss/javascript/deepagents/memory#advanced-usage)。
+您还可以使用 [Store API](/langsmith/custom-store) 从应用程序代码中读取和写入商店。有关示例，请参阅[Advanced usage](/oss/javascript/deepagents/memory#advanced-usage)。
 
 有关完整的命名空间工厂 API，请参阅[namespace factories](/oss/javascript/deepagents/backends#namespace-factories)。对于自我改进指令和知识库等记忆模式，请参阅[long-term memory](/oss/javascript/deepagents/memory)。
 
@@ -521,9 +521,9 @@ const authResult = await authClient.authenticate({
 >
 > `FilesystemBackend`和`LocalShellBackend`直接访问主机。不要在已部署的代理中使用它们。
 
-### 沙盒
+### 沙箱
 
-如果您的代理需要运行代码（不仅仅是读写文件），请使用[sandbox](/oss/javascript/deepagents/sandboxes)。沙箱提供文件系统和用于运行 shell 命令的`execute`工具，所有这些都在一个隔离的容器内。这种隔离还可以保护您的主机：如果代理的代码耗尽内存或崩溃，则只有沙箱受到影响。您的服务器继续运行。
+如果您的代理需要运行代码（而不仅仅是读写文件），请使用[sandbox](/oss/javascript/deepagents/sandboxes)。沙箱提供文件系统和用于运行 shell 命令的`execute`工具，所有这些都在一个隔离的容器内。这种隔离还可以保护您的主机：如果代理的代码耗尽内存或崩溃，则只有沙箱受到影响。您的服务器继续运行。
 
 #### 生命周期
 
@@ -538,7 +538,7 @@ const authResult = await authClient.authenticate({
 
 > [选项卡] 线程范围（最常见）
 >
-> 每个对话都有自己的沙箱。 [graph factory](/langsmith/graph-rebuild) 从运行配置中读取`thread_id`，因此每个[thread](/langsmith/use-threads) 自动获得自己的隔离环境。命名沙箱查找处理跨运行的重复数据删除。沙箱[TTL](/langsmith/configure-ttl)过期时清理。
+> 每个对话都有自己的沙箱。 [graph factory](/langsmith/graph-rebuild)从运行配置中读取`thread_id`，因此每个[thread](/langsmith/use-threads)自动获得自己的隔离环境。命名沙箱查找处理跨运行的重复数据删除。沙箱[TTL](/langsmith/configure-ttl)过期时清理。
 >
 > ```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createDeepAgent, LangSmithSandbox } from "deepagents";
@@ -677,9 +677,9 @@ const authResult = await authClient.authenticate({
 
 有关特定于提供商的文件传输示例，请参阅[working with files](/oss/javascript/deepagents/sandboxes#working-with-files)。有关提供程序设置、安全性和生命周期模式，请参阅完整的 [sandboxes guide](/oss/javascript/deepagents/sandboxes)。> [手风琴] 示例：使用自定义中间件同步技能和记忆
 >
-> [Skill](/oss/javascript/deepagents/skills) Agent 需要执行的脚本必须在 Agent 运行之前上传到沙箱中。您可能还想同步[memories](/oss/javascript/deepagents/memory)，以便代理可以在容器内读取和更新它们。使用 [custom middleware](/oss/javascript/langchain/middleware/custom) 与 `before_agent` 和 `after_agent` 钩子跨沙箱边界移动文件：
+> [Skill](/oss/javascript/deepagents/skills) Agent 需要执行的脚本必须在 Agent 运行之前上传到沙箱中。您可能还想同步 [memories](/oss/javascript/deepagents/memory) ，以便代理可以在容器内读取和更新它们。将 [custom middleware](/oss/javascript/langchain/middleware/custom) 与 `before_agent` 和 `after_agent` 挂钩一起使用，跨沙箱边界移动文件：
 >
-> ```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { createMiddleware } from "langchain";
 > import {
 >   createDeepAgent,
@@ -697,12 +697,15 @@ const authResult = await authClient.authenticate({
 >   return name;
 > }
 >
-> const createSandboxSyncMiddleware = (backend: CompositeBackend) => {
+> // Call the sandbox directly. CompositeBackend routes /skills/ and /memories/
+> // to StoreBackend, so uploadFiles on the composite would write back to the
+> // store instead of seeding the container.
+> const createSandboxSyncMiddleware = (sandbox: LangSmithSandbox) => {
 >   return createMiddleware({
 >     name: "SandboxSyncMiddleware",
 >     beforeAgent: async (state, runtime) => {
 >       // Upload skill scripts and memories into the sandbox
->       const userId = runtime.serverInfo.user.identity;  // [!code highlight]
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
 >       const store = runtime.store;
 >       const encoder = new TextEncoder();
 >       const files: [string, Uint8Array][] = [];
@@ -715,15 +718,15 @@ const authResult = await authClient.authenticate({
 >         files.push([`/memories/${name}`, encoder.encode(item.value.content)]);
 >       }
 >       if (files.length > 0) {
->         await backend.uploadFiles(files);
+>         await sandbox.uploadFiles(files);
 >       }
 >     },
 >     afterAgent: async (state, runtime) => {
 >       // Sync updated memories back to the store
->       const userId = runtime.serverInfo.user.identity;  // [!code highlight]
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
 >       const store = runtime.store;
 >       const items = await store.search(["memories", userId]);
->       const results = await backend.downloadFiles(
+>       const results = await sandbox.downloadFiles(
 >         items.map((item) => `/memories/${item.key}`),
 >       );
 >       const decoder = new TextDecoder();
@@ -742,22 +745,525 @@ const authResult = await authClient.authenticate({
 >
 > const client = new SandboxClient();
 > const lsSandbox = await client.createSandbox();
+> const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
 >
-> const backend = new CompositeBackend(
->   new LangSmithSandbox({ sandbox: lsSandbox }),
->   {
->     "/skills/": new StoreBackend({
->       namespace: (rt) => ["skills", rt.serverInfo.user.identity],  // [!code highlight]
->     }),
->     "/memories/": new StoreBackend({
->       namespace: (rt) => ["memories", rt.serverInfo.user.identity],  // [!code highlight]
->     }),
->   },
-> );
+> const backend = new CompositeBackend(sandboxBackend, {
+>   "/skills/": new StoreBackend({
+>     namespace: (rt) => ["skills", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+>   "/memories/": new StoreBackend({
+>     namespace: (rt) => ["memories", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+> });
 >
-> export const agent = createDeepAgent({
+> export const agent = await createDeepAgent({
+>   model: "google:gemini-4-hydrogen",
 >   backend,
->   middleware: [createSandboxSyncMiddleware(backend)],
+>   middleware: [createSandboxSyncMiddleware(sandboxBackend)],
+> });
+> ```
+>
+> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createMiddleware } from "langchain";
+> import {
+>   createDeepAgent,
+>   CompositeBackend,
+>   LangSmithSandbox,
+>   StoreBackend,
+> } from "deepagents";
+> import { SandboxClient } from "langsmith/sandbox";
+>
+> function safeFilename(key: string): string {
+>   const name = key.split("/").pop()!;
+>   if (name.includes("..") || /[*?]/.test(name)) {
+>     throw new Error(`Invalid key: ${key}`);
+>   }
+>   return name;
+> }
+>
+> // Call the sandbox directly. CompositeBackend routes /skills/ and /memories/
+> // to StoreBackend, so uploadFiles on the composite would write back to the
+> // store instead of seeding the container.
+> const createSandboxSyncMiddleware = (sandbox: LangSmithSandbox) => {
+>   return createMiddleware({
+>     name: "SandboxSyncMiddleware",
+>     beforeAgent: async (state, runtime) => {
+>       // Upload skill scripts and memories into the sandbox
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
+>       const store = runtime.store;
+>       const encoder = new TextEncoder();
+>       const files: [string, Uint8Array][] = [];
+>       for (const item of await store.search(["skills", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/skills/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       for (const item of await store.search(["memories", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/memories/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       if (files.length > 0) {
+>         await sandbox.uploadFiles(files);
+>       }
+>     },
+>     afterAgent: async (state, runtime) => {
+>       // Sync updated memories back to the store
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
+>       const store = runtime.store;
+>       const items = await store.search(["memories", userId]);
+>       const results = await sandbox.downloadFiles(
+>         items.map((item) => `/memories/${item.key}`),
+>       );
+>       const decoder = new TextDecoder();
+>       for (const result of results) {
+>         if (result.content) {
+>           await store.put(
+>             ["memories", userId],
+>             result.path.split("/").pop()!,
+>             { content: decoder.decode(result.content) },
+>           );
+>         }
+>       }
+>     },
+>   });
+> };
+>
+> const client = new SandboxClient();
+> const lsSandbox = await client.createSandbox();
+> const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
+>
+> const backend = new CompositeBackend(sandboxBackend, {
+>   "/skills/": new StoreBackend({
+>     namespace: (rt) => ["skills", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+>   "/memories/": new StoreBackend({
+>     namespace: (rt) => ["memories", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+> });
+>
+> export const agent = await createDeepAgent({
+>   model: "openai:gpt-6.1-sol",
+>   backend,
+>   middleware: [createSandboxSyncMiddleware(sandboxBackend)],
+> });
+> ```
+>
+> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createMiddleware } from "langchain";
+> import {
+>   createDeepAgent,
+>   CompositeBackend,
+>   LangSmithSandbox,
+>   StoreBackend,
+> } from "deepagents";
+> import { SandboxClient } from "langsmith/sandbox";
+>
+> function safeFilename(key: string): string {
+>   const name = key.split("/").pop()!;
+>   if (name.includes("..") || /[*?]/.test(name)) {
+>     throw new Error(`Invalid key: ${key}`);
+>   }
+>   return name;
+> }
+>
+> // Call the sandbox directly. CompositeBackend routes /skills/ and /memories/
+> // to StoreBackend, so uploadFiles on the composite would write back to the
+> // store instead of seeding the container.
+> const createSandboxSyncMiddleware = (sandbox: LangSmithSandbox) => {
+>   return createMiddleware({
+>     name: "SandboxSyncMiddleware",
+>     beforeAgent: async (state, runtime) => {
+>       // Upload skill scripts and memories into the sandbox
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
+>       const store = runtime.store;
+>       const encoder = new TextEncoder();
+>       const files: [string, Uint8Array][] = [];
+>       for (const item of await store.search(["skills", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/skills/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       for (const item of await store.search(["memories", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/memories/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       if (files.length > 0) {
+>         await sandbox.uploadFiles(files);
+>       }
+>     },
+>     afterAgent: async (state, runtime) => {
+>       // Sync updated memories back to the store
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
+>       const store = runtime.store;
+>       const items = await store.search(["memories", userId]);
+>       const results = await sandbox.downloadFiles(
+>         items.map((item) => `/memories/${item.key}`),
+>       );
+>       const decoder = new TextDecoder();
+>       for (const result of results) {
+>         if (result.content) {
+>           await store.put(
+>             ["memories", userId],
+>             result.path.split("/").pop()!,
+>             { content: decoder.decode(result.content) },
+>           );
+>         }
+>       }
+>     },
+>   });
+> };
+>
+> const client = new SandboxClient();
+> const lsSandbox = await client.createSandbox();
+> const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
+>
+> const backend = new CompositeBackend(sandboxBackend, {
+>   "/skills/": new StoreBackend({
+>     namespace: (rt) => ["skills", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+>   "/memories/": new StoreBackend({
+>     namespace: (rt) => ["memories", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+> });
+>
+> export const agent = await createDeepAgent({
+>   model: "anthropic:claude-sonnet-5",
+>   backend,
+>   middleware: [createSandboxSyncMiddleware(sandboxBackend)],
+> });
+> ```
+>
+> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createMiddleware } from "langchain";
+> import {
+>   createDeepAgent,
+>   CompositeBackend,
+>   LangSmithSandbox,
+>   StoreBackend,
+> } from "deepagents";
+> import { SandboxClient } from "langsmith/sandbox";
+>
+> function safeFilename(key: string): string {
+>   const name = key.split("/").pop()!;
+>   if (name.includes("..") || /[*?]/.test(name)) {
+>     throw new Error(`Invalid key: ${key}`);
+>   }
+>   return name;
+> }
+>
+> // Call the sandbox directly. CompositeBackend routes /skills/ and /memories/
+> // to StoreBackend, so uploadFiles on the composite would write back to the
+> // store instead of seeding the container.
+> const createSandboxSyncMiddleware = (sandbox: LangSmithSandbox) => {
+>   return createMiddleware({
+>     name: "SandboxSyncMiddleware",
+>     beforeAgent: async (state, runtime) => {
+>       // Upload skill scripts and memories into the sandbox
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
+>       const store = runtime.store;
+>       const encoder = new TextEncoder();
+>       const files: [string, Uint8Array][] = [];
+>       for (const item of await store.search(["skills", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/skills/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       for (const item of await store.search(["memories", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/memories/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       if (files.length > 0) {
+>         await sandbox.uploadFiles(files);
+>       }
+>     },
+>     afterAgent: async (state, runtime) => {
+>       // Sync updated memories back to the store
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
+>       const store = runtime.store;
+>       const items = await store.search(["memories", userId]);
+>       const results = await sandbox.downloadFiles(
+>         items.map((item) => `/memories/${item.key}`),
+>       );
+>       const decoder = new TextDecoder();
+>       for (const result of results) {
+>         if (result.content) {
+>           await store.put(
+>             ["memories", userId],
+>             result.path.split("/").pop()!,
+>             { content: decoder.decode(result.content) },
+>           );
+>         }
+>       }
+>     },
+>   });
+> };
+>
+> const client = new SandboxClient();
+> const lsSandbox = await client.createSandbox();
+> const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
+>
+> const backend = new CompositeBackend(sandboxBackend, {
+>   "/skills/": new StoreBackend({
+>     namespace: (rt) => ["skills", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+>   "/memories/": new StoreBackend({
+>     namespace: (rt) => ["memories", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+> });
+>
+> export const agent = await createDeepAgent({
+>   model: "openrouter:z-ai/glm-5.2",
+>   backend,
+>   middleware: [createSandboxSyncMiddleware(sandboxBackend)],
+> });
+> ```
+>
+> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createMiddleware } from "langchain";
+> import {
+>   createDeepAgent,
+>   CompositeBackend,
+>   LangSmithSandbox,
+>   StoreBackend,
+> } from "deepagents";
+> import { SandboxClient } from "langsmith/sandbox";
+>
+> function safeFilename(key: string): string {
+>   const name = key.split("/").pop()!;
+>   if (name.includes("..") || /[*?]/.test(name)) {
+>     throw new Error(`Invalid key: ${key}`);
+>   }
+>   return name;
+> }
+>
+> // Call the sandbox directly. CompositeBackend routes /skills/ and /memories/
+> // to StoreBackend, so uploadFiles on the composite would write back to the
+> // store instead of seeding the container.
+> const createSandboxSyncMiddleware = (sandbox: LangSmithSandbox) => {
+>   return createMiddleware({
+>     name: "SandboxSyncMiddleware",
+>     beforeAgent: async (state, runtime) => {
+>       // Upload skill scripts and memories into the sandbox
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
+>       const store = runtime.store;
+>       const encoder = new TextEncoder();
+>       const files: [string, Uint8Array][] = [];
+>       for (const item of await store.search(["skills", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/skills/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       for (const item of await store.search(["memories", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/memories/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       if (files.length > 0) {
+>         await sandbox.uploadFiles(files);
+>       }
+>     },
+>     afterAgent: async (state, runtime) => {
+>       // Sync updated memories back to the store
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
+>       const store = runtime.store;
+>       const items = await store.search(["memories", userId]);
+>       const results = await sandbox.downloadFiles(
+>         items.map((item) => `/memories/${item.key}`),
+>       );
+>       const decoder = new TextDecoder();
+>       for (const result of results) {
+>         if (result.content) {
+>           await store.put(
+>             ["memories", userId],
+>             result.path.split("/").pop()!,
+>             { content: decoder.decode(result.content) },
+>           );
+>         }
+>       }
+>     },
+>   });
+> };
+>
+> const client = new SandboxClient();
+> const lsSandbox = await client.createSandbox();
+> const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
+>
+> const backend = new CompositeBackend(sandboxBackend, {
+>   "/skills/": new StoreBackend({
+>     namespace: (rt) => ["skills", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+>   "/memories/": new StoreBackend({
+>     namespace: (rt) => ["memories", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+> });
+>
+> export const agent = await createDeepAgent({
+>   model: "fireworks:accounts/fireworks/models/glm-5p2",
+>   backend,
+>   middleware: [createSandboxSyncMiddleware(sandboxBackend)],
+> });
+> ```
+>
+> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createMiddleware } from "langchain";
+> import {
+>   createDeepAgent,
+>   CompositeBackend,
+>   LangSmithSandbox,
+>   StoreBackend,
+> } from "deepagents";
+> import { SandboxClient } from "langsmith/sandbox";
+>
+> function safeFilename(key: string): string {
+>   const name = key.split("/").pop()!;
+>   if (name.includes("..") || /[*?]/.test(name)) {
+>     throw new Error(`Invalid key: ${key}`);
+>   }
+>   return name;
+> }
+>
+> // Call the sandbox directly. CompositeBackend routes /skills/ and /memories/
+> // to StoreBackend, so uploadFiles on the composite would write back to the
+> // store instead of seeding the container.
+> const createSandboxSyncMiddleware = (sandbox: LangSmithSandbox) => {
+>   return createMiddleware({
+>     name: "SandboxSyncMiddleware",
+>     beforeAgent: async (state, runtime) => {
+>       // Upload skill scripts and memories into the sandbox
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
+>       const store = runtime.store;
+>       const encoder = new TextEncoder();
+>       const files: [string, Uint8Array][] = [];
+>       for (const item of await store.search(["skills", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/skills/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       for (const item of await store.search(["memories", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/memories/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       if (files.length > 0) {
+>         await sandbox.uploadFiles(files);
+>       }
+>     },
+>     afterAgent: async (state, runtime) => {
+>       // Sync updated memories back to the store
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
+>       const store = runtime.store;
+>       const items = await store.search(["memories", userId]);
+>       const results = await sandbox.downloadFiles(
+>         items.map((item) => `/memories/${item.key}`),
+>       );
+>       const decoder = new TextDecoder();
+>       for (const result of results) {
+>         if (result.content) {
+>           await store.put(
+>             ["memories", userId],
+>             result.path.split("/").pop()!,
+>             { content: decoder.decode(result.content) },
+>           );
+>         }
+>       }
+>     },
+>   });
+> };
+>
+> const client = new SandboxClient();
+> const lsSandbox = await client.createSandbox();
+> const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
+>
+> const backend = new CompositeBackend(sandboxBackend, {
+>   "/skills/": new StoreBackend({
+>     namespace: (rt) => ["skills", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+>   "/memories/": new StoreBackend({
+>     namespace: (rt) => ["memories", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+> });
+>
+> export const agent = await createDeepAgent({
+>   model: "baseten:zai-org/GLM-5.2",
+>   backend,
+>   middleware: [createSandboxSyncMiddleware(sandboxBackend)],
+> });
+> ```
+>
+> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createMiddleware } from "langchain";
+> import {
+>   createDeepAgent,
+>   CompositeBackend,
+>   LangSmithSandbox,
+>   StoreBackend,
+> } from "deepagents";
+> import { SandboxClient } from "langsmith/sandbox";
+>
+> function safeFilename(key: string): string {
+>   const name = key.split("/").pop()!;
+>   if (name.includes("..") || /[*?]/.test(name)) {
+>     throw new Error(`Invalid key: ${key}`);
+>   }
+>   return name;
+> }
+>
+> // Call the sandbox directly. CompositeBackend routes /skills/ and /memories/
+> // to StoreBackend, so uploadFiles on the composite would write back to the
+> // store instead of seeding the container.
+> const createSandboxSyncMiddleware = (sandbox: LangSmithSandbox) => {
+>   return createMiddleware({
+>     name: "SandboxSyncMiddleware",
+>     beforeAgent: async (state, runtime) => {
+>       // Upload skill scripts and memories into the sandbox
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
+>       const store = runtime.store;
+>       const encoder = new TextEncoder();
+>       const files: [string, Uint8Array][] = [];
+>       for (const item of await store.search(["skills", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/skills/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       for (const item of await store.search(["memories", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/memories/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       if (files.length > 0) {
+>         await sandbox.uploadFiles(files);
+>       }
+>     },
+>     afterAgent: async (state, runtime) => {
+>       // Sync updated memories back to the store
+>       const userId = runtime.serverInfo.user.identity; // [!code highlight]
+>       const store = runtime.store;
+>       const items = await store.search(["memories", userId]);
+>       const results = await sandbox.downloadFiles(
+>         items.map((item) => `/memories/${item.key}`),
+>       );
+>       const decoder = new TextDecoder();
+>       for (const result of results) {
+>         if (result.content) {
+>           await store.put(
+>             ["memories", userId],
+>             result.path.split("/").pop()!,
+>             { content: decoder.decode(result.content) },
+>           );
+>         }
+>       }
+>     },
+>   });
+> };
+>
+> const client = new SandboxClient();
+> const lsSandbox = await client.createSandbox();
+> const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
+>
+> const backend = new CompositeBackend(sandboxBackend, {
+>   "/skills/": new StoreBackend({
+>     namespace: (rt) => ["skills", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+>   "/memories/": new StoreBackend({
+>     namespace: (rt) => ["memories", rt.serverInfo.user.identity], // [!code highlight]
+>   }),
+> });
+>
+> export const agent = await createDeepAgent({
+>   model: "ollama:north-mini-code-1.0",
+>   backend,
+>   middleware: [createSandboxSyncMiddleware(sandboxBackend)],
 > });
 > ```
 
@@ -792,7 +1298,7 @@ const authResult = await authClient.authenticate({
 }
 ```
 
-`${SECRET_KEY}` 引用解析存储在 LangSmith [workspace settings](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的机密。在创建引用它们的模板之前，先在那里配置机密。**工作空间秘密。** 对于不需要基于代理的注入的 API 密钥（例如，代理服务器本身使用的密钥，而不是沙箱代码），将它们存储为 LangSmith 中的 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings)。这些在运行时可用作工作区中所有代理的环境变量。
+`${SECRET_KEY}` 引用将针对您的 LangSmith [workspace secrets](/langsmith/workspace-secrets) 进行解析。在创建引用秘密的模板之前添加秘密。**工作空间机密。** 对于不需要基于代理注入的 API 密钥（例如，代理服务器本身使用的密钥，而不是沙箱代码），将它们存储为 LangSmith 中的 [workspace secrets](/langsmith/workspace-secrets)。这些在运行时可用作工作区中所有代理的环境变量。
 
 > [!警告]
 >
@@ -800,13 +1306,13 @@ const authResult = await authClient.authenticate({
 
 ## 护栏
 
-生产中的代理自主运行，这意味着它们可以无限循环、达到速率限制或处理包含敏感信息的用户数据。 Deep Agents 提供两层保护：
+生产中的代理自主运行，这意味着它们可以无限循环、达到速率限制或处理包含敏感信息的用户数据。 Deep Agents提供两层保护：
 
 * **[Permissions](#permissions)**：声明性允许/拒绝规则，控制代理可以读取或写入哪些文件和目录。
 * **[Fault tolerance](#fault-tolerance)**：速率限制、重试、回退和错误处理。
 * **[Data privacy](#data-privacy)**：在 PII 到达模型或存储在日志中之前检测和处理 PII 的中间件。
 
-### 权限[Permissions](/oss/javascript/deepagents/permissions) 是声明性允许/拒绝规则，用于控制代理可以读取或写入哪些文件和目录。使用权限将代理隔离到工作目录、保护敏感文件或强制使用只读内存。规则按声明顺序进行评估，第一个匹配的规则获胜。
+### 权限[Permissions](/oss/javascript/deepagents/permissions) 是声明性允许/拒绝规则，用于控制代理可以读取或写入哪些文件和目录。使用权限将代理隔离到工作目录、保护敏感文件或强制执行只读内存。规则按声明顺序进行评估，第一个匹配的规则获胜。
 
 ### 容错
 
@@ -834,9 +1340,9 @@ const agent = createAgent({
 
 对于默认的 Deep Agents 中间件堆栈，请参阅 [Customization](/oss/javascript/deepagents/customization#middleware)。有关其他 LangChain 预构建中间件（重试、回退、PII 检测等），请参阅 [Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
 
-＃＃ 前端Deep Agents 使用 [⟦T95⟧](/oss/javascript/langchain/frontend/overview) 将您的 UI 连接到代理后端。 [⟦T96⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 是一个前端钩子（适用于 React、Vue、Svelte 和 Angular），可实时传输来自代理的消息、子代理进度和自定义状态。
+＃＃ 前端Deep Agents 使用 [⟦T101⟧](/oss/javascript/langchain/frontend/overview) 将您的 UI 连接到代理后端。 [⟦T102⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 是一个前端钩子（适用于 React、Vue、Svelte 和 Angular），可实时传输来自代理的消息、子代理进度和自定义状态。
 
-在本地，`useStream` 指向`http://localhost:2024`。在生产中，将其指向您的 [Agent Server](/langsmith/agent-server) 并配置重新连接，以便用户在连接断开时不会丢失进度。
+在本地，`useStream`指向`http://localhost:2024`。在生产中，将其指向您的 [Agent Server](/langsmith/agent-server) 并配置重新连接，以便用户在连接断开时不会丢失进度。
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { useStream } from "@langchain/react";
@@ -849,7 +1355,7 @@ function App() {
 }
 ```
 
-对于产生许多子代理的深层代理工作流程，请在提交时设置较高的 `recursionLimit` 以避免切断长时间运行的执行：
+对于产生许多子代理的深度代理工作流程，请在提交时设置较高的 `recursionLimit` 以避免切断长时间运行的执行：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream.submit(
@@ -865,6 +1371,6 @@ stream.submit(
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答复。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/going-to-production.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -34,7 +34,7 @@
 | [Exa Search](/oss/python/integrations/tools/exa_search) |每月 1000 次免费搜索 |网址、作者、标题、发布日期 |
 | [Firecrawl Search](https://docs.firecrawl.dev/integrations/langchain) |每月 1,000 个免费积分 | URL、标题、描述、日期、新闻、图像 |
 | [Google Search](/oss/python/integrations/tools/google_search) |付费| URL、片段、标题 |
-| [iFlow Search](https://platform.iflow.cn/) |付费| URL、标题、摘要、日期 || [Keenable](https://docs.keenable.ai/integrations/langchain) |提供免费无钥匙套餐 |标题、URL、摘要（页面文本）、发布日期、索引日期；用于获取的页面降价 |
+| [iFlow Search](https://platform.iflow.cn/) |付费| URL、标题、摘要、日期 || [Keenable](https://docs.keenable.ai/integrations/langchain) |提供免费无钥匙套餐 |标题、URL、摘要（页面文本）、发布日期、索引日期；用于获取的页面降价|
 | [Linkup Search](https://github.com/LinkupPlatform/langchain-linkup) |每月 2000 次免费搜索 |网址、内容、来源 |
 | [Octen](https://docs.octen.ai) |付费|标题、URL、突出显示、作者、发布时间 |
 | [Mixpeek](https://docs.mixpeek.com/agent-integrations/langchain) |免费套餐可用 |多模态搜索结果（视频、图像、音频、文档）|
@@ -69,7 +69,7 @@
 
 下表显示了可用于在生产力工具中自动执行任务的工具：|工具/工具包 |定价|
 | - | - |
-| [Gmail Toolkit](/oss/python/integrations/tools/google_gmail) |免费，每个用户每秒的配额单位限制为 250 |
+| [Gmail Toolkit](/oss/python/integrations/tools/google_gmail) |免费，每个用户每秒的配额单位限制为 250 个 |
 | [GoodSender Toolkit](https://goodsender.com/docs) |免费套餐（100,000 封电子邮件/月），无需信用卡 |
 | [AgentLine Toolkit](https://docs.agentline.cloud) |一次性 2 美元/号码，每分钟通话 0.10 美元，即用即付 |
 | [AgentMail Toolkit](https://docs.agentmail.to/) |免费套餐可用，之后有 [pay-as-you-go pricing](https://agentmail.to) |
@@ -124,7 +124,7 @@
 
 |工具/工具包 |允许的操作 |
 | - | - |
-| [MCP Toolbox](/oss/python/integrations/tools/mcp_toolbox) |任何SQL操作 |
+| [MCP Toolbox](/oss/python/integrations/tools/mcp_toolbox) |任何SQL操作|
 | [Drasi Toolkit](https://github.com/drasi-project/langchain-drasi) |实时数据库变更检测|
 | [Sail SQL Toolkit](https://docs.lakesail.com/sail/latest/guide/integrations/langchain.html) |针对 Sail (Spark Connect) 的 SQL 查询、架构列表和查询检查 |
 | [Stardog](https://github.com/stardog-union/stardog-langchain) | SPARQL SELECT 和模式自省 |
@@ -138,7 +138,7 @@
 | [Ausca](https://github.com/auscahq/ausca/tree/main/python/langchain-ausca) | 0.10 美元至 1.35 美元 USDC/看涨期权 (x402) |按每次调用支付文档 OCR、文档分析、媒体转录、浏览器会话和代理收件箱的费用，每次调用美元上限严格且没有 API 密钥；该工具工厂适用于任何 x402 v2 资源。 |
 | [FlipCoin](https://github.com/flipcoin-fun/flipcoin-langchain) |免费|通过 LMSR AMM 或 CLOB 订单簿在预测市场上交易 YES/NO 股票。 |
 | [LatAm Synth](https://github.com/jmendozapuche/langchain-latam-synth) | Apify 免费套餐，然后按使用付费 |为拉丁美洲金融科技应用程序生成隐私安全的综合金融用户、储蓄目标和交易。 |
-| [Axiora](https://axiora.dev/docs) |免费 API 密钥 |来自 EDINET 文件、健康评分、筛查和英文文件翻译的日本上市公司财务信息。 |
+| [Axiora](https://axiora.dev/docs) |免费 API 密钥 |来自 EDINET 文件、健康评分、筛查和英文文件翻译的日本上市公司财务数据。 |
 | [Delegare](https://docs.delegare.dev) |付费|通过具有内置预算护栏的 AP2 指令授权和执行多轨支付。 || [DexPaprika](https://docs.dexpaprika.com) |免费（无钥匙）|搜索代币、矿池和 DEX；读取链上 DEX 上的代币市场数据、资金池流动性和 OHLCV 价格历史记录。 |
 | [PaySafe](https://paysafe-agent.com) |前 100 次 API 调用免费 |基于 x402 的防火墙，具有用于提示注入检测的自动来源标记。 |
 | [Privy](/oss/python/integrations/tools/privy) |免费|创建具有可配置权限的钱包并快速执行交易。 |
@@ -183,417 +183,418 @@
 | [PopNow](https://popnow.ai/docs/langchain) |以美元即用即付，每次通话首先报价 |使用 Nano Banana、GPT Image、Seedream、Kling、MiniMax H3、Seedance、Wan、Suno 和 Gemini TTS 进行图像生成和编辑、文本到视频、图像到视频、音乐和文本到语音。同步和异步，返回 URL。 |
 
 ## 所有工具和工具包|整合 |下载 |
-| :-| :-|
-| [⟦T1⟧](/oss/python/integrations/tools/google_imagen) | [  ⟦T418⟧](https://pypi.org/project/langchain-google-vertexai/) |
-| [⟦T2⟧](/oss/python/integrations/tools/google_gmail) | [  ⟦T419⟧](https://pypi.org/project/langchain-google-community/) |
-| [⟦T3⟧](/oss/python/integrations/tools/google_calendar) | [  ⟦T420⟧](https://pypi.org/project/langchain-google-community/) |
-| [⟦T4⟧](/oss/python/integrations/tools/google_cloud_texttospeech) | [  ⟦T421⟧](https://pypi.org/project/langchain-google-community/) |
-| [⟦T5⟧](/oss/python/integrations/tools/google_search) | [  ⟦T422⟧](https://pypi.org/project/langchain-google-community/) |
-| [⟦T6⟧](/oss/python/integrations/tools/bedrock_agentcore_browser) | [  ⟦T423⟧](https://pypi.org/project/langchain-aws/) |
-| [⟦T7⟧](/oss/python/integrations/tools/bedrock_agentcore_code_interpreter) | [  ⟦T424⟧](https://pypi.org/project/langchain-aws/) |
-| [⟦T8⟧](/oss/python/integrations/tools/bedrock_agentcore_web_search) | [  ⟦T425⟧](https://pypi.org/project/langchain-aws/) |
-| [⟦T9⟧](/oss/python/integrations/tools/tavily_crawl) | [  ⟦T426⟧](https://pypi.org/project/langchain-tavily/) |
-| [⟦T10⟧](/oss/python/integrations/tools/tavily_extract) | [  ⟦T427⟧](https://pypi.org/project/langchain-tavily/) |
-| [⟦T11⟧](/oss/python/integrations/tools/tavily_map) | [  ⟦T428⟧](https://pypi.org/project/langchain-tavily/) |
-| [⟦T12⟧](/oss/python/integrations/tools/tavily_search) | [  ⟦T429⟧](https://pypi.org/project/langchain-tavily/) |
-| [⟦T13⟧](/oss/python/integrations/tools/azure_logic_apps) | [  ⟦T430⟧](https://pypi.org/project/langchain-azure-ai/) |
-| [⟦T14⟧](/oss/python/integrations/tools/azure_ai) | [  ⟦T431⟧](https://pypi.org/project/langchain-azure-ai/) |
-| [⟦T15⟧](/oss/python/integrations/tools/azure_ai_services) | [  ⟦T432⟧](https://pypi.org/project/langchain-azure-ai/) |
-| [⟦T16⟧](/oss/python/integrations/tools/databricks) | [  ⟦T433⟧](https://pypi.org/project/databricks-langchain/) |
-| [⟦T17⟧](/oss/python/integrations/tools/composio) | [  ⟦T434⟧](https://pypi.org/project/composio-langchain/) |
-| [⟦T18⟧](/oss/python/integrations/tools/ibm_watsonx_sql) | [  ⟦T435⟧](https://pypi.org/project/langchain-ibm/) |
-| [⟦T19⟧](/oss/python/integrations/tools/ibm_watsonx) | [  ⟦T436⟧](https://pypi.org/project/langchain-ibm/) |
-| [⟦T20⟧](/oss/python/integrations/tools/perplexity_search) | [  ⟦T437⟧](https://pypi.org/project/langchain-perplexity/) |
-| [⟦T21⟧](/oss/python/integrations/tools/oracleai) | [  ⟦T438⟧](https://pypi.org/project/langchain-oracledb/) |
-| [⟦T22⟧](/oss/python/integrations/tools/exa_search) | [  ⟦T439⟧](https://pypi.org/project/langchain-exa/) |
-| [⟦T23⟧](/oss/python/integrations/tools/parallel_extract) | [  ⟦T440⟧](https://pypi.org/project/langchain-parallel/) |
-| [⟦T24⟧](/oss/python/integrations/tools/parallel_findall) | [  ⟦T441⟧](https://pypi.org/project/langchain-parallel/) |
-| [⟦T25⟧](/oss/python/integrations/tools/parallel_monitor) | [  ⟦T442⟧](https://pypi.org/project/langchain-parallel/) |
-| [⟦T26⟧](/oss/python/integrations/tools/parallel_search) | [  ⟦T443⟧](https://pypi.org/project/langchain-parallel/) |
-| [⟦T27⟧](/oss/python/integrations/tools/parallel_task) | [  ⟦T444⟧](https://pypi.org/project/langchain-parallel/) |
-| [⟦T28⟧](/oss/python/integrations/tools/azure_dynamic_sessions) | [  ⟦T445⟧](https://pypi.org/project/langchain-azure-dynamic-sessions/) |
-| [⟦T29⟧](https://docs.scalekit.com/agentkit/quickstart/) | [  ⟦T446⟧](https://pypi.org/project/scalekit-sdk-python/) |
-| [⟦T30⟧](/oss/python/integrations/tools/upstage_groundedness_check) | [  ⟦T447⟧](https://pypi.org/project/langchain-upstage/) |
-| [⟦T31⟧](https://docs.apify.com/integrations/langchain) | [  ⟦T448⟧](https://pypi.org/project/langchain-apify/) |
-| [⟦T32⟧](https://github.com/skynetcmd/m3-memory/blob/main/docs/integrations/LANGCHAIN.md) | [  ⟦T449⟧](https://pypi.org/project/m3-memory/) |
-| [⟦T33⟧](https://docs.getsemantica.ai/integrations/langchain) | [  ⟦T450⟧](https://pypi.org/project/semantica/) |
-| [⟦T34⟧](https://docs.getsemantica.ai/integrations/langchain) | [  ⟦T451⟧](https://pypi.org/project/semantica/) |
-| [⟦T35⟧](https://github.com/emmanuelorta/crawlcheck-core/tree/main/sdk-python#langchain-and-llamaindex-1100) | [  ⟦T452⟧](https://pypi.org/project/crawlcheck/) |
-| [⟦T36⟧](/oss/python/integrations/tools/stripe) | [  ⟦T453⟧](https://pypi.org/project/stripe-agent-toolkit/) |
-| [⟦T37⟧](https://github.com/memgraph/langchain-memgraph) | [  ⟦T454⟧](https://pypi.org/project/langchain-memgraph/) |
-| [⟦T38⟧](/oss/python/integrations/tools/stripe) | [  ⟦T455⟧](https://pypi.org/project/stripe-agent-toolkit/) |
-| [⟦T39⟧](https://github.com/gazoy/langchain-foliant#readme) | [  ⟦T456⟧](https://pypi.org/project/langchain-foliant/) |
-| [⟦T40⟧](/oss/python/integrations/tools/google_drive) | [  ⟦T457⟧](https://pypi.org/project/langchain-googledrive/) |
-| [⟦T41⟧](https://bowmark.ai/docs/langchain) | [  ⟦T458⟧](https://pypi.org/project/langchain-bowmark/) |
-| [⟦T42⟧](https://pypi.org/project/langchain-compass/) | [  ⟦T459⟧](https://pypi.org/project/langchain-compass/) |
-| [⟦T43⟧](https://fizzl.eu/agents/python/) | [  ⟦T460⟧](https://pypi.org/project/fizzl/) |
-| [⟦T44⟧](/oss/python/integrations/tools/mcp_toolbox) | [  ⟦T461⟧](https://pypi.org/project/toolbox-langchain/) |
-| [⟦T45⟧](https://adeu.ai) | [  ⟦T462⟧](https://pypi.org/project/langchain-adeu/) |
-| [⟦T46⟧](https://github.com/arcmira/integrations/tree/master/packages/langchain-python) | [  ⟦T463⟧](https://pypi.org/project/langchain-arcmira/) |
-| [⟦T47⟧](/oss/python/integrations/tools/cdp_agentkit) | [  ⟦T464⟧](https://pypi.org/project/coinbase-agentkit-langchain/) |
-| [⟦T48⟧](https://docs.firecrawl.dev) | [  ⟦T465⟧](https://pypi.org/project/langchain-firecrawl/) |
-| [⟦T49⟧](https://github.com/LinkupPlatform/langchain-linkup) | [  ⟦T466⟧](https://pypi.org/project/langchain-linkup/) |
-| [⟦T50⟧](https://docs.pexafy.com/langchain) | [  ⟦T467⟧](https://pypi.org/project/langchain-pexafy/) |
-| [⟦T51⟧](https://pidgeon.ai/docs/langchain) | [  ⟦T468⟧](https://pypi.org/project/langchain-pidgeon/) |
-| [⟦T52⟧](https://scavio.dev/docs/langchain) | [  ⟦T469⟧](https://pypi.org/project/langchain-scavio/) |
-| [⟦T53⟧](https://github.com/ScrapeGraphAI/langchain-scrapegraph) | [  ⟦T470⟧](https://pypi.org/project/langchain-scrapegraph/) |
-| [⟦T54⟧](https://github.com/Shikenso-Analytics/langchain-taiga) | [  ⟦T471⟧](https://pypi.org/project/langchain-taiga/) |
-| [⟦T55⟧](https://pypi.org/project/langchain-alex/) ​​| [  ⟦T472⟧](https://pypi.org/project/langchain-alex/) || [⟦T56⟧](https://github.com/botsrated/botsrated/tree/main/integrations/langchain) | [  ⟦T473⟧](https://pypi.org/project/langchain-botsrated/) |
-| [⟦T57⟧](https://docs.brightdata.com/scraping-automation/serp-api/introduction) | [  ⟦T474⟧](https://pypi.org/project/langchain-brightdata/) |
-| [⟦T58⟧](https://docs.brightdata.com/scraping-automation/web-unlocker/introduction) | [  ⟦T475⟧](https://pypi.org/project/langchain-brightdata/) |
-| [⟦T59⟧](https://docs.brightdata.com/datasets/scrapers/overview) | [  ⟦T476⟧](https://pypi.org/project/langchain-brightdata/) |
-| [⟦T60⟧](https://github.com/Decodo/langchain/tree/master/libs/partners/decodo) | [  ⟦T477⟧](https://pypi.org/project/langchain-decodo/) |
-| [⟦T61⟧](https://github.com/Decodo/langchain/tree/master/libs/partners/decodo) | [  ⟦T478⟧](https://pypi.org/project/langchain-decodo/) |
-| [⟦T62⟧](https://docs.dexpaprika.com) | [  ⟦T479⟧](https://pypi.org/project/langchain-dexpaprika/) |
-| [⟦T63⟧](https://github.com/rocosen/langchain-flashdata) | [  ⟦T480⟧](https://pypi.org/project/langchain-flashdata/) |
-| [⟦T64⟧](https://docs.hindsight.vectorize.io/sdks/integrations/langgraph) | [  ⟦T481⟧](https://pypi.org/project/hindsight-langgraph/) |
-| [⟦T65⟧](https://github.com/agentbeacon-hq/clients) | [  ⟦T482⟧](https://pypi.org/project/langchain-openpath/) |
-| [⟦T66⟧](https://replylayer.ai/docs/guides/langchain) | [  ⟦T483⟧](https://pypi.org/project/langchain-replylayer/) |
-| [⟦T67⟧](https://pypi.org/project/langchain-send21/) | [  ⟦T484⟧](https://pypi.org/project/langchain-send21/) |
-| [⟦T68⟧](https://serpex.dev/docs) | [  ⟦T485⟧](https://pypi.org/project/langchain-serpex-python/) |
-| [⟦T69⟧](https://synmerco.com/docs) | [  ⟦T486⟧](https://pypi.org/project/synmerco-langchain/) |
-| [⟦T70⟧](https://urlpipe.dev/integrations/langchain) | [  ⟦T487⟧](https://pypi.org/project/langchain-urlpipe/) |
-| [⟦T71⟧](https://github.com/ADS4GPTs/ads4gpts) | [  ⟦T488⟧](https://pypi.org/project/ads4gpts-langchain/) |
-| [⟦T72⟧](https://github.com/thyn-ai/algenta-integrations/tree/main/python/langchain-algenta#readme) | [  ⟦T489⟧](https://pypi.org/project/langchain-algenta/) |
-| [⟦T73⟧](https://anakin.io/docs/documentation) | [  ⟦T490⟧](https://pypi.org/project/langchain-anakin/) |
-| [⟦T74⟧](https://docs.atomicmail.ai/langchain) | [  ⟦T491⟧](https://pypi.org/project/langchain-atomicmail/) |
-| [⟦T75⟧](https://cloro.dev/docs/) | [  ⟦T492⟧](https://pypi.org/project/langchain-cloro/) |
-| [⟦T76⟧](https://docs.dexpaprika.com) | [  ⟦T493⟧](https://pypi.org/project/langchain-dexpaprika/) |
-| [⟦T77⟧](https://e2a.dev) | [  ⟦T494⟧](https://pypi.org/project/e2a/) |
-| [⟦T78⟧](https://github.com/MehdiZare/langchain-fmp-data) | [  ⟦T495⟧](https://pypi.org/project/langchain-fmp-data/) |
-| [⟦T79⟧](https://docs.goodmem.ai) | [  ⟦T496⟧](https://pypi.org/project/langchain-goodmem/) |
-| [⟦T80⟧](https://dev.writer.com/home/introduction) | [  ⟦T497⟧](https://pypi.org/project/langchain-writer/) |
-| [⟦T81⟧](https://github.com/edtool79-collab/hirepulse-open-source#langchain-and-crewai-gateway-tools-030) | [  ⟦T498⟧](https://pypi.org/project/hirepulse-tools/) |
-| [⟦T82⟧](https://docs.nimbleway.com/integrations/connectors/langchain) | [  ⟦T499⟧](https://pypi.org/project/langchain-nimble/) |
-| [⟦T83⟧](https://docs.nimbleway.com/integrations/connectors/langchain) | [  ⟦T500⟧](https://pypi.org/project/langchain-nimble/) |
-| [⟦T84⟧](https://10ml.com/perfume-mcp-server) | [  ⟦T501⟧](https://pypi.org/project/langchain-10ml-perfume/) |
-| [⟦T85⟧](https://langchain-prolog.readthedocs.io/en/stable/) | [  ⟦T502⟧](https://pypi.org/project/langchain-prolog/) |
-| [⟦T86⟧](https://pypi.org/project/langchain-swarmmemo/) | [  ⟦T503⟧](https://pypi.org/project/langchain-swarmmemo/) |
-| [⟦T87⟧](https://www.maximem.ai/) | [  ⟦T504⟧](https://pypi.org/project/maximem-synap-langchain/) |
-| [⟦T88⟧](https://github.com/tanod-labs/integrations/tree/main/langchain) | [  ⟦T505⟧](https://pypi.org/project/langchain-tanod/) |
-| [⟦T89⟧](https://github.com/sriram7737/pramagent) | [  ⟦T506⟧](https://pypi.org/project/pramagent/) |
-| [⟦T90⟧](https://github.com/econdash/econdash-python/blob/main/packages/langchain-econdash/README.md) | [  ⟦T507⟧](https://pypi.org/project/langchain-econdash/) |
-| [⟦T91⟧](https://github.com/verdixapi/langchain-verdix#readme) | [  ⟦T508⟧](https://pypi.org/project/langchain-verdix/) |
-| [⟦T92⟧](https://docs.apiverve.com/integrations/langchain) | [  ⟦T509⟧](https://pypi.org/project/langchain-apiverve/) |
-| [⟦T93⟧](https://specstream.ai/docs/langchain) | [  ⟦T510⟧](https://pypi.org/project/langchain-specstream/) |
-| [⟦T94⟧](https://github.com/datumline/datumline-agent-guard#langchain) | [  ⟦T511⟧](https://pypi.org/project/datumline-agent-guard/) |
-| [⟦T95⟧](https://you.com/docs/integrations/langchain) | [  ⟦T512⟧](https://pypi.org/project/langchain-youdotcom/) |
-| [⟦T96⟧](https://gatecoreai.com/docs/) | [  ⟦T513⟧](https://pypi.org/project/gatecore-langchain/) |
-| [⟦T97⟧](https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary) | [  ⟦T514⟧](https://pypi.org/project/langchain-machinelibrary/) |
-| [⟦T98⟧](https://github.com/beepboop2025/langchain-financial-evidence#readme) | [  ⟦T515⟧](https://pypi.org/project/langchain-financial-evidence/) |
-| [⟦T99⟧](https://github.com/colesmcintosh/langchain-salesforce) | [  ⟦T516⟧](https://pypi.org/project/langchain-salesforce/) |
-| [⟦T100⟧](https://reefapi.com/docs/langchain) | [  ⟦T517⟧](https://pypi.org/project/langchain-reefapi/) |
-| [⟦T101⟧](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain) | [  ⟦T518⟧](https://pypi.org/project/langchain-catchall/) |
-| [⟦T102⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T519⟧](https://pypi.org/project/langchain-diffbot/) |
-| [⟦T103⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T520⟧](https://pypi.org/project/langchain-diffbot/) |
-| [⟦T104⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T521⟧](https://pypi.org/project/langchain-diffbot/) |
-| [⟦T105⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T522⟧](https://pypi.org/project/langchain-diffbot/) |
-| [⟦T106⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T523⟧](https://pypi.org/project/langchain-diffbot/) |
-| [⟦T107⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T524⟧](https://pypi.org/project/langchain-diffbot/) |
-| [⟦T108⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T525⟧](https://pypi.org/project/langchain-diffbot/) |
-| [⟦T109⟧](https://github.com/olostep-api/langchain-olostep#readme) | [  ⟦T526⟧](https://pypi.org/project/langchain-olostep/) || [⟦T110⟧](https://mesharc.dev/docs/langchain) | [  ⟦T527⟧](https://pypi.org/project/langchain-mesharc/) |
-| [⟦T111⟧](https://mesharc.dev/docs/langchain) | [  ⟦T528⟧](https://pypi.org/project/langchain-mesharc/) |
-| [⟦T112⟧](https://agentsearchhq.com/blog/langchain-agent-search-then-read-page) | [  ⟦T529⟧](https://pypi.org/project/langchain-agentsearch/) |
-| [⟦T113⟧](https://www.hyperbrowser.ai/docs/home) | [  ⟦T530⟧](https://pypi.org/project/langchain-hyperbrowser/) |
-| [⟦T114⟧](https://www.hyperbrowser.ai/docs/home) | [  ⟦T531⟧](https://pypi.org/project/langchain-hyperbrowser/) |
-| [⟦T115⟧](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ⟦T532⟧](https://pypi.org/project/langchain-wavespeed/) |
-| [⟦T116⟧](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ⟦T533⟧](https://pypi.org/project/langchain-wavespeed/) |
-| [⟦T117⟧](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ⟦T534⟧](https://pypi.org/project/langchain-wavespeed/) |
-| [⟦T118⟧](https://github.com/Minns-ai/langgraph-minnsdb#readme) | [  ⟦T535⟧](https://pypi.org/project/langgraph-minnsdb/) |
-| [⟦T119⟧](https://docs.mrscraper.com) | [  ⟦T536⟧](https://pypi.org/project/langchain-mrscraper/) |
-| [⟦T120⟧](https://github.com/Thordata/langchain-thordata) | [  ⟦T537⟧](https://pypi.org/project/langchain-thordata/) |
-| [⟦T121⟧](https://github.com/robocorp/robocorp) | [  ⟦T538⟧](https://pypi.org/project/langchain-robocorp/) |
-| [⟦T122⟧](https://docs.ampersend.ai) | [  ⟦T539⟧](https://pypi.org/project/langchain-ampersend/) |
-| [⟦T123⟧](https://github.com/lachy3433/langchain-contextfetch#readme) | [  ⟦T540⟧](https://pypi.org/project/langchain-contextfetch/) |
-| [⟦T124⟧](https://github.com/clawfetch/integrations#readme) | [  ⟦T541⟧](https://pypi.org/project/langchain-clawfetch/) |
-| [⟦T125⟧](https://omfang.io/manifest-docs) | [  ⟦T542⟧](https://pypi.org/project/manifest-api/) |
-| [⟦T126⟧](https://github.com/User0856/snaprender-integrations/tree/main/langchain) | [  ⟦T543⟧](https://pypi.org/project/langchain-snaprender/) |
-| [⟦T127⟧](https://webextract.dev/docs/langchain) | [  ⟦T544⟧](https://pypi.org/project/langchain-webextract/) |
-| [⟦T128⟧](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image) | [  ⟦T545⟧](https://pypi.org/project/langchain-gpt-image-acedatacloud/) |
-| [⟦T129⟧](https://www.lians.ai) | [  ⟦T546⟧](https://pypi.org/project/lians-sdk/) |
-| [⟦T130⟧](https://github.com/hanshs474/langchain-freeimagetovideo) | [  ⟦T547⟧](https://pypi.org/project/langchain-freeimagetovideo/) |
-| [⟦T131⟧](https://github.com/AceDataCloud/LangChain/tree/main/packages/happyhorse) | [  ⟦T548⟧](https://pypi.org/project/langchain-happyhorse-acedatacloud/) |
-| [⟦T132⟧](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana) | [  ⟦T549⟧](https://pypi.org/project/langchain-nano-banana-acedatacloud/) |
-| [⟦T133⟧](https://specstream.ai/docs/langchain) | [  ⟦T550⟧](https://pypi.org/project/langchain-specstream/) |
-| [⟦T134⟧](https://docs.zerogpu.ai) | [  ⟦T551⟧](https://pypi.org/project/langchain-zerogpu/) |
-| [⟦T135⟧](https://docs.hydrafetch.com) | [  ⟦T552⟧](https://pypi.org/project/langchain-hydrafetch/) |
-| [⟦T136⟧](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | [  ⟦T553⟧](https://pypi.org/project/langchain-getyoutubetranscript/) |
-| [⟦T137⟧](https://github.com/ourresearch/langchain-openalex#readme) | [  ⟦T554⟧](https://pypi.org/project/langchain-openalex/) |
-| [⟦T138⟧](https://www.search1api.com/docs/integrations/langchain) | [  ⟦T555⟧](https://pypi.org/project/search1api-langchain/) |
-| [⟦T139⟧](https://github.com/wayza-protocol/wayza-js/tree/main/packages/langchain-wayza) | [  ⟦T556⟧](https://pypi.org/project/langchain-wayza/) |
-| [⟦T140⟧](https://docs.upload-post.com/guides/langchain) | [  ⟦T557⟧](https://pypi.org/project/langchain-upload-post/) |
-| [⟦T141⟧](https://mixpeek.com/docs/agent-integrations/langchain) | [  ⟦T558⟧](https://pypi.org/project/langchain-mixpeek/) |
-| [⟦T142⟧](https://kavel.readthedocs.io/en/latest/integrations/langchain/) | [  ⟦T559⟧](https://pypi.org/project/langchain-kavel/) |
-| [⟦T143⟧](https://aigifmaker.readthedocs.io/en/latest/integrations/langchain/) | [  ⟦T560⟧](https://pypi.org/project/langchain-aigifmaker/) |
-| [⟦T144⟧](https://pinkwallet.com/agentic/connect/langchain/) | [  ⟦T561⟧](https://pypi.org/project/langchain-pink/) |
-| [⟦T145⟧](https://github.com/Mart-API/langchain-mart#readme) | [  ⟦T562⟧](https://pypi.org/project/langchain-mart/) |
-| [⟦T146⟧](https://optionsahoy.com/for-agents) | [  ⟦T563⟧](https://pypi.org/project/optionsahoy-langchain/) |
-| [⟦T147⟧](/oss/python/integrations/tools/discord) | [  ⟦T564⟧](https://pypi.org/project/langchain-discord/) |
-| [⟦T148⟧](https://blopus.ai/docs/) | [  ⟦T565⟧](https://pypi.org/project/langchain-blopus/) |
-| [⟦T149⟧](https://blopus.ai/docs/) | [  ⟦T566⟧](https://pypi.org/project/langchain-blopus/) |
-| [⟦T150⟧](https://linkdigest.dev/docs#frameworks) | [  ⟦T567⟧](https://pypi.org/project/linkdigest-mcp/) |
-| [⟦T151⟧](https://docs.valyu.ai/home) | [  ⟦T568⟧](https://pypi.org/project/langchain-valyu/) |
-| [⟦T152⟧](https://veida.readthedocs.io/en/latest/integrations/langchain/) | [  ⟦T569⟧](https://pypi.org/project/langchain-veida/) |
-| [⟦T153⟧](https://github.com/fodda-ai/langchain-fodda#readme) | [  ⟦T570⟧](https://pypi.org/project/langchain-fodda/) |
-| [⟦T154⟧](https://flowspeech.io/docs) | [  ⟦T571⟧](https://pypi.org/project/langchain-flowspeech/) |
-| [⟦T155⟧](https://mnki.com/docs/integrations#frameworks) | [  ⟦T572⟧](https://pypi.org/project/langchain-mnki/) |
-| [⟦T156⟧](https://github.com/tanvoai/langchain-tanvo#readme) | [  ⟦T573⟧](https://pypi.org/project/langchain-tanvo/) |
-| [⟦T157⟧](https://github.com/EXboys/langchain-skilllite) | [  ⟦T574⟧](https://pypi.org/project/langchain-skilllite/) |
-| [⟦T158⟧](https://github.com/Conrad-sudo/langchain-uniswap-v2) | [  ⟦T575⟧](https://pypi.org/project/langchain-uniswap-v2/) |
-| [⟦T159⟧](https://skim402.com/docs) | [  ⟦T576⟧](https://pypi.org/project/langchain-skim/) |
-| [⟦T160⟧](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-py) | [  ⟦T577⟧](https://pypi.org/project/pushary-langgraph/) |
-| [⟦T161⟧](https://github.com/dong7812/dompruner-py) | [  ⟦T578⟧](https://pypi.org/project/dompruner/) |
-| [⟦T162⟧](https://pypi.org/project/ddg-langchain/) | [  ⟦T579⟧](https://pypi.org/project/ddg-langchain/) |
-| [⟦T163⟧](https://docs.gnews.io/langchain) | [  ⟦T580⟧](https://pypi.org/project/langchain-gnews/) || [⟦T164⟧](https://docs.gnews.io/langchain) | [  ⟦T581⟧](https://pypi.org/project/langchain-gnews/) |
-| [⟦T165⟧](https://pypi.org/project/langchain-gaip/) | [  ⟦T582⟧](https://pypi.org/project/langchain-gaip/) |
-| [⟦T166⟧](https://graciousquotes.com/developers/langchain/) | [  ⟦T583⟧](https://pypi.org/project/langchain-graciousquotes/) |
-| [⟦T167⟧](https://opedd.com/for-ai-agents) | [  ⟦T584⟧](https://pypi.org/project/langchain-opedd/) |
-| [⟦T168⟧](https://agentsvc.io/docs/langchain) | [  ⟦T585⟧](https://pypi.org/project/agentsvc/) |
-| [⟦T169⟧](https://precleared.dev/docs/langchain) | [  ⟦T586⟧](https://pypi.org/project/precleared/) |
-| [⟦T170⟧](https://emaki.readthedocs.io/en/latest/integrations/langchain/) | [  ⟦T587⟧](https://pypi.org/project/langchain-emaki/) |
-| [⟦T171⟧](https://docs.anchorbrowser.io/introduction) | [  ⟦T588⟧](https://pypi.org/project/langchain-anchorbrowser/) |
-| [⟦T172⟧](https://github.com/oxylabs/langchain-oxylabs) | [  ⟦T589⟧](https://pypi.org/project/langchain-oxylabs/) |
-| [⟦T173⟧](https://proxmint.com/docs/langchain) | [  ⟦T590⟧](https://pypi.org/project/langchain-proxmint/) |
-| [⟦T174⟧](https://aidress.ai) | [  ⟦T591⟧](https://pypi.org/project/langchain-aidress/) |
-| [⟦T175⟧](https://github.com/printfriendly/langchain-printfriendly#readme) | [  ⟦T592⟧](https://pypi.org/project/langchain-printfriendly/) |
-| [⟦T176⟧](https://reserp.ai/docs) | [  ⟦T593⟧](https://pypi.org/project/langchain-reserp/) |
-| [⟦T177⟧](https://github.com/daytonaio/daytona) | [  ⟦T594⟧](https://pypi.org/project/langchain-daytona-data-analysis/) |
-| [⟦T178⟧](https://docs.1claw.xyz/docs/integrations/langchain) | [  ⟦T595⟧](https://pypi.org/project/langchain-1claw/) |
-| [⟦T179⟧](https://github.com/TheSuperColony/langchain-supercolony) | [  ⟦T596⟧](https://pypi.org/project/langchain-supercolony/) |
-| [⟦T180⟧](https://github.com/AceDataCloud/LangChain/tree/main/packages/seedance) | [  ⟦T597⟧](https://pypi.org/project/langchain-seedance-acedatacloud/) |
-| [⟦T181⟧](https://github.com/Conrad-sudo/langchain-erc20) | [  ⟦T598⟧](https://pypi.org/project/langchain-erc20/) |
-| [⟦T182⟧](https://docs.dappier.com/) | [  ⟦T599⟧](https://pypi.org/project/langchain-dappier/) |
-| [⟦T183⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#alfrescotoolkit) | [  ⟦T600⟧](https://pypi.org/project/langchain-opendma/) |
-| [⟦T184⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#documentumtoolkit) | [  ⟦T601⟧](https://pypi.org/project/langchain-opendma/) |
-| [⟦T185⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#filenetp8toolkit) | [  ⟦T602⟧](https://pypi.org/project/langchain-opendma/) |
-| [⟦T186⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#onbasetoolkit) | [  ⟦T603⟧](https://pypi.org/project/langchain-opendma/) |
-| [⟦T187⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md) | [  ⟦T604⟧](https://pypi.org/project/langchain-opendma/) |
-| [⟦T188⟧](https://github.com/mavdol/langchain-capsule) | [  ⟦T605⟧](https://pypi.org/project/langchain-capsule/) |
-| [⟦T189⟧](https://github.com/agent-help-network/agent-help-network/blob/main/clients/langchain-ahn/README.md) | [  ⟦T606⟧](https://pypi.org/project/langchain-ahn/) |
-| [⟦T190⟧](https://github.com/tokportal/langchain-tokportal) | [  ⟦T607⟧](https://pypi.org/project/langchain-tokportal/) |
-| [⟦T191⟧](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | [  ⟦T608⟧](https://pypi.org/project/langchain-talordata/) |
-| [⟦T192⟧](https://github.com/jmendozapuche/langchain-latam-synth) | [  ⟦T609⟧](https://pypi.org/project/langchain-latam-synth/) |
-| [⟦T193⟧](/oss/python/integrations/tools/tableau) | [  ⟦T610⟧](https://pypi.org/project/langchain-tableau/) |
-| [⟦T194⟧](https://cosmergon.com) | [  ⟦T611⟧](https://pypi.org/project/langchain-cosmergon/) |
-| [⟦T195⟧](https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris) | [  ⟦T612⟧](https://pypi.org/project/langchain-polaris/) |
-| [⟦T196⟧](https://docs.memoryrouter.ai/langchain) | [  ⟦T613⟧](https://pypi.org/project/langchain-memoryrouter/) |
-| [⟦T197⟧](https://paysafe-agent.com) | [  ⟦T614⟧](https://pypi.org/project/langchain-paysafe/) |
-| [⟦T198⟧](https://axiora.dev/docs) | [  ⟦T615⟧](https://pypi.org/project/langchain-axiora/) |
-| [⟦T199⟧](https://serpapi.github.io/serpapi-search-tools-python/docs/sdk-examples/langchain.html) | [  ⟦T616⟧](https://pypi.org/project/serpapi-search-tools/) |
-| [⟦T200⟧](https://alphai.io/developers) | [  ⟦T617⟧](https://pypi.org/project/langchain-alphai/) |
-| [⟦T201⟧](https://alphai.io/developers) | [  ⟦T618⟧](https://pypi.org/project/langchain-alphai/) |
-| [⟦T202⟧](https://alphai.io/developers) | [  ⟦T619⟧](https://pypi.org/project/langchain-alphai/) |
-| [⟦T203⟧](https://alphai.io/developers) | [  ⟦T620⟧](https://pypi.org/project/langchain-alphai/) |
-| [⟦T204⟧](https://greencalculus.com/guides/emission-factors-langchain/) | [  ⟦T621⟧](https://pypi.org/project/langchain-greencalculus/) |
-| [⟦T205⟧](https://api.relayshield.net/developers) | [  ⟦T622⟧](https://pypi.org/project/langchain-relayshield/) |
-| [⟦T206⟧](https://strale.dev/docs) | [  ⟦T623⟧](https://pypi.org/project/langchain-strale/) |
-| [⟦T207⟧](https://www.ictinnovations.com/) | [  ⟦T624⟧](https://pypi.org/project/langchain-ictfax/) |
-| [⟦T208⟧](https://github.com/getanyapi-com/integrations/tree/main/langchain-anyapi) | [  ⟦T625⟧](https://pypi.org/project/langchain-anyapi/) |
-| [⟦T209⟧](https://docs.keenable.ai) | [  ⟦T626⟧](https://pypi.org/project/langchain-keenable/) |
-| [⟦T210⟧](https://github.com/lfg-gm/langchain-lfg#readme) | [  ⟦T627⟧](https://pypi.org/project/langchain-lfg/) |
-| [⟦T211⟧](https://www.agentrails.io/docs) | [  ⟦T628⟧](https://pypi.org/project/langchain-x402/) |
-| [⟦T212⟧](https://github.com/authzed/langchain-spicedb) | [  ⟦T629⟧](https://pypi.org/project/langchain-spicedb/) |
-| [⟦T213⟧](https://github.com/Layrcake-dev/langchain-layrcake#readme) | [  ⟦T630⟧](https://pypi.org/project/langchain-layrcake/) |
-| [⟦T214⟧](https://gandr.ai/docs) | [  ⟦T631⟧](https://pypi.org/project/gandr-langchain/) |
-| [⟦T215⟧](https://clearsigned.com/integrations#langchain) | [  ⟦T632⟧](https://pypi.org/project/langchain-clearsigned/) |
-| [⟦T216⟧](https://github.com/valthera/langchain-valthera) | [  ⟦T633⟧](https://pypi.org/project/langchain-valthera/) |
-| [⟦T217⟧](https://docs.spidra.io) | [  ⟦T634⟧](https://pypi.org/project/langchain-spidra/) || [⟦T218⟧](https://tablejourney.com/agents/#langchain) | [  ⟦T635⟧](https://pypi.org/project/langchain-tablejourney/) |
-| [⟦T219⟧](https://github.com/yumaheymans/langchain-carejobs#readme) | [  ⟦T636⟧](https://pypi.org/project/langchain-carejobs/) |
-| [⟦T220⟧](https://github.com/e7217/langchain-naver-community) | [  ⟦T637⟧](https://pypi.org/project/langchain-naver-community/) |
-| [⟦T221⟧](https://docs.scraperapi.com/) | [  ⟦T638⟧](https://pypi.org/project/langchain-scraperapi/) |
-| [⟦T222⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T639⟧](https://pypi.org/project/langchain-scrapingbee/) |
-| [⟦T223⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T640⟧](https://pypi.org/project/langchain-scrapingbee/) |
-| [⟦T224⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T641⟧](https://pypi.org/project/langchain-scrapingbee/) |
-| [⟦T225⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T642⟧](https://pypi.org/project/langchain-scrapingbee/) |
-| [⟦T226⟧](https://github.com/Conrad-sudo/langchain-erc8004) | [  ⟦T643⟧](https://pypi.org/project/langchain-erc8004/) |
-| ⟦T1384​​⟧ | [  ⟦T644⟧](https://pypi.org/project/langchain-scrapingbee/) |
-| [⟦T228⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T645⟧](https://pypi.org/project/langchain-scrapingbee/) |
-| [⟦T229⟧](https://preclick.ai/) | [  ⟦T646⟧](https://pypi.org/project/langchain-urlcheck/) |
-| [⟦T230⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T647⟧](https://pypi.org/project/langchain-scrapingbee/) |
-| [⟦T231⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T648⟧](https://pypi.org/project/langchain-scrapingbee/) |
-| [⟦T232⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T649⟧](https://pypi.org/project/langchain-scrapingbee/) |
-| [⟦T233⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T650⟧](https://pypi.org/project/langchain-scrapingbee/) |
-| [⟦T234⟧](https://querit.com/docs) | [  ⟦T651⟧](https://pypi.org/project/langchain-querit/) |
-| [⟦T235⟧](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain) | [  ⟦T652⟧](https://pypi.org/project/langchain-feedmyagent/) |
-| [⟦T236⟧](https://github.com/plivo-dev/langchain-plivo-tools) | [  ⟦T653⟧](https://pypi.org/project/langchain-plivo-tools/) |
-| [⟦T237⟧](https://github.com/vectara/langchain-vectara) | [  ⟦T654⟧](https://pypi.org/project/langchain-vectara/) |
-| [⟦T238⟧](https://www.xpoz.ai/docs) | [  ⟦T655⟧](https://pypi.org/project/langchain-xpoz/) |
-| [⟦T239⟧](https://docs.lakesail.com/sail/latest/guide/integrations/langchain.html) | [  ⟦T656⟧](https://pypi.org/project/langchain-sail/) |
-| [⟦T240⟧](https://github.com/AceDataCloud/LangChain/tree/main/packages/suno) | [  ⟦T657⟧](https://pypi.org/project/langchain-suno-acedatacloud/) |
-| [⟦T241⟧](https://docs.agentql.com/home) | [  ⟦T658⟧](https://pypi.org/project/langchain-agentql/) |
-| [⟦T242⟧](https://docs.yutori.com) | [  ⟦T659⟧](https://pypi.org/project/langchain-yutori/) |
-| [⟦T243⟧](https://github.com/Conrad-sudo/langchain-erc8004) | [  ⟦T660⟧](https://pypi.org/project/langchain-erc8004/) |
-| [⟦T244⟧](https://github.com/permitio/langchain-permit) | [  ⟦T661⟧](https://pypi.org/project/langchain-permit/) |
-| [⟦T245⟧](https://docs.agentql.com/home) | [  ⟦T662⟧](https://pypi.org/project/langchain-agentql/) |
-| [⟦T246⟧](https://clearsigned.com/integrations#langchain) | [  ⟦T663⟧](https://pypi.org/project/langchain-clearsigned/) |
-| [⟦T247⟧](https://pypi.org/project/langchain-hugging-bay/0.1.0/) | [  ⟦T664⟧](https://pypi.org/project/langchain-hugging-bay/) |
-| [⟦T248⟧](https://github.com/Mart-API/langchain-mart#readme) | [  ⟦T665⟧](https://pypi.org/project/langchain-mart/) |
-| [⟦T249⟧](https://github.com/Amitgb14/langchain_jenkins) | [  ⟦T666⟧](https://pypi.org/project/langchain-jenkins/) |
-| [⟦T250⟧](https://docs.lakesail.com/sail/main/guide/integrations/langchain/) | [  ⟦T667⟧](https://pypi.org/project/langchain-sail/) |
-| [⟦T251⟧](https://github.com/gridpin/gridpin/tree/main/integrations/langchain) | [  ⟦T668⟧](https://pypi.org/project/langchain-gridpin/) |
-| [⟦T252⟧](https://www.xpoz.ai/docs) | [  ⟦T669⟧](https://pypi.org/project/langchain-xpoz/) |
-| [⟦T253⟧](https://www.agentfetch.dev) | [  ⟦T670⟧](https://pypi.org/project/langchain-agentfetch/) |
-| [⟦T254⟧](https://github.com/fastaf-co/fastaf-integrations/tree/main/langchain-fastaf) | [  ⟦T671⟧](https://pypi.org/project/langchain-fastaf/) |
-| [⟦T255⟧](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain) | [  ⟦T672⟧](https://pypi.org/project/langchain-feedmyagent/) |
-| [⟦T256⟧](https://docs.proxyhat.com) | [  ⟦T673⟧](https://pypi.org/project/langchain-proxyhat/) |
-| [⟦T257⟧](https://platform.iflow.cn/) | [  ⟦T674⟧](https://pypi.org/project/iflow-search-langchain/) |
-| [⟦T258⟧](https://docs.livetennisapi.com) | [  ⟦T675⟧](https://pypi.org/project/langchain-livetennis/) |
-| [⟦T259⟧](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations) | [  ⟦T676⟧](https://pypi.org/project/nodeproxy-tools/) |
-| [⟦T260⟧](https://docs.webz.io/docs/webz/news-search-api-mcp) | [  ⟦T677⟧](https://pypi.org/project/langchain-webz/) |
-| [⟦T261⟧](https://lumify.ai/docs/ai) | [  ⟦T678⟧](https://pypi.org/project/langchain-lumify/) |
-| [⟦T262⟧](https://docs.ipay.sh) | [  ⟦T679⟧](https://pypi.org/project/langchain-pr402/) |
-| [⟦T263⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ⟦T680⟧](https://pypi.org/project/langchain-truthbear/) |
-| [⟦T264⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ⟦T681⟧](https://pypi.org/project/langchain-truthbear/) |
-| [⟦T265⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ⟦T682⟧](https://pypi.org/project/langchain-truthbear/) |
-| [⟦T266⟧](https://docs.opengradient.ai/) | [  ⟦T683⟧](https://pypi.org/project/langchain-opengradient/) |
-| [⟦T267⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ⟦T684⟧](https://pypi.org/project/langchain-truthbear/) |
-| [⟦T268⟧](https://asyntai.com/documentation/integrations/langchain/) | [  ⟦T685⟧](https://pypi.org/project/langchain-asyntai/) |
-| [⟦T269⟧](https://lyrenth.com/docs/integrations) | [  ⟦T686⟧](https://pypi.org/project/langchain-lyrenth/) |
-| [⟦T270⟧](https://crustapi.com/docs) | [  ⟦T687⟧](https://pypi.org/project/langchain-crustapi/) |
-| [⟦T271⟧](https://useagentgate.com/docs) | [  ⟦T688⟧](https://pypi.org/project/langchain-agentgate/) || [⟦T272⟧](https://github.com/stardog-union/stardog-langchain) | [  ⟦T689⟧](https://pypi.org/project/langchain-stardog/) |
-| [⟦T273⟧](https://github.com/auscahq/ausca/tree/main/python/langchain-ausca) | [  ⟦T690⟧](https://pypi.org/project/langchain-ausca/) |
-| [⟦T274⟧](https://github.com/Scottcjn/langchain-rustchain) | [  ⟦T691⟧](https://pypi.org/project/langchain-rustchain-tools/) |
-| [⟦T275⟧](https://docs.sidclaw.com/docs/integrations/langchain) | [  ⟦T692⟧](https://pypi.org/project/langchain-sidclaw/) |
-| [⟦T276⟧](https://github.com/Toloka/tendem-mcp/tree/main/integrations/langchain-tendem#readme) | [  ⟦T693⟧](https://pypi.org/project/langchain-tendem/) |
-| [⟦T277⟧](https://pinchwork.dev) | [  ⟦T694⟧](https://pypi.org/project/pinchwork/) |
-| [⟦T278⟧](https://docs.agentmail.to/welcome) | [  ⟦T695⟧](https://pypi.org/project/langchain-agentmail/) |
-| [⟦T279⟧](https://github.com/meetdewey/langchain-dewey) | [  ⟦T696⟧](https://pypi.org/project/langchain-dewey/) |
-| [⟦T280⟧](https://kerq.dev/docs) | [  ⟦T697⟧](https://pypi.org/project/langchain-kerq/) |
-| [⟦T281⟧](https://w2a-protocol.org/) | [  ⟦T698⟧](https://pypi.org/project/langchain-w2a/) |
-| [⟦T282⟧](https://www.football-charts.com/developers) | [  ⟦T699⟧](https://pypi.org/project/langchain-footballcharts/) |
-| [⟦T283⟧](https://modexia.software/docs) | [  ⟦T700⟧](https://pypi.org/project/langchain-modexia/) |
-| [⟦T284⟧](https://agenticemail.dev/docs) | [  ⟦T701⟧](https://pypi.org/project/langchain-agenticemail/) |
-| [⟦T285⟧](https://www.clawmessenger.com/blog/langchain-imessage-integration) | [  ⟦T702⟧](https://pypi.org/project/langchain-claw-messenger/) |
-| [⟦T286⟧](https://ictpbx.com) | [  ⟦T703⟧](https://pypi.org/project/langchain-ictpbx/) |
-| [⟦T287⟧](https://docs.igpt.ai/docs/sdks/langchain#igpt-ask) | [  ⟦T704⟧](https://pypi.org/project/langchain-igpt/) |
-| [⟦T288⟧](https://docs.igpt.ai/docs/sdks/langchain#igpt-search) | [  ⟦T705⟧](https://pypi.org/project/langchain-igpt/) |
-| [⟦T289⟧](https://github.com/oddsrelay/langchain-oddsrelay) | [  ⟦T706⟧](https://pypi.org/project/langchain-oddsrelay/) |
-| [⟦T290⟧](https://docs.context.dev) | [  ⟦T707⟧](https://pypi.org/project/langchain-context/) |
-| [⟦T291⟧](https://www.searchapi.io/docs/google) | [  ⟦T708⟧](https://pypi.org/project/langchain-searchapi/) |
-| [⟦T292⟧](https://crawleo.dev/integrations/langchain) | [  ⟦T709⟧](https://pypi.org/project/langchain-crawleo/) |
-| [⟦T293⟧](https://crawleo.dev/integrations/langchain) | [  ⟦T710⟧](https://pypi.org/project/langchain-crawleo/) |
-| [⟦T294⟧](https://proxyclaw.ai/docs) | [  ⟦T711⟧](https://pypi.org/project/langchain-proxyclaw/) |
-| [⟦T295⟧](https://quanticdata.io/docs/) | [  ⟦T712⟧](https://pypi.org/project/langchain-quanticdata/) |
-| [⟦T296⟧](https://docs.octen.ai) | [  ⟦T713⟧](https://pypi.org/project/langchain-octen/) |
-| [⟦T297⟧](https://docs.hashlock.markets/) | [  ⟦T714⟧](https://pypi.org/project/langchain-hashlock/) |
-| [⟦T298⟧](/oss/python/integrations/tools/privy) | [  ⟦T715⟧](https://pypi.org/project/langchain-privy/) |
-| [⟦T299⟧](https://ai-identity.co/docs) | [  ⟦T716⟧](https://pypi.org/project/langchain-ai-identity/) |
-| [⟦T300⟧](https://synoppy.com/docs) | [  ⟦T717⟧](https://pypi.org/project/langchain-synoppy/) |
-| [⟦T301⟧](https://bidda.com/developers) | [  ⟦T718⟧](https://pypi.org/project/langchain-bidda/) |
-| [⟦T302⟧](https://docs.magichour.ai) | [  ⟦T719⟧](https://pypi.org/project/langchain-magic-hour/) |
-| [⟦T303⟧](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ⟦T720⟧](https://pypi.org/project/langchain-twittrapi/) |
-| [⟦T304⟧](https://instanode.dev/docs) | [  ⟦T721⟧](https://pypi.org/project/langchain-instanode/) |
-| [⟦T305⟧](https://github.com/aproxpay/langchain-aproxpay) | [  ⟦T722⟧](https://pypi.org/project/langchain-aproxpay/) |
-| [⟦T306⟧](https://simplepages.ai/mcp) | [  ⟦T723⟧](https://pypi.org/project/langchain-simplepages/) |
-| [⟦T307⟧](https://github.com/tilotech/tilores-langchain) | [  ⟦T724⟧](https://pypi.org/project/tilores-langchain/) |
-| [⟦T308⟧](https://docs.agentphone.ai/welcome) | [  ⟦T725⟧](https://pypi.org/project/langchain-agentphone/) |
-| [⟦T309⟧](https://ceki.me) | [  ⟦T726⟧](https://pypi.org/project/langchain-ceki/) |
-| [⟦T310⟧](https://www.ictlms.net) | [  ⟦T727⟧](https://pypi.org/project/langchain-ictexam/) |
-| [⟦T311⟧](https://github.com/nozomio-labs/nia-langchain) | [  ⟦T728⟧](https://pypi.org/project/langchain-nia/) |
-| [⟦T312⟧](https://verifly.email/docs) | [  ⟦T729⟧](https://pypi.org/project/langchain-verifly/) |
-| [⟦T313⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ⟦T730⟧](https://pypi.org/project/langchain-webmetadata-extractor/) |
-| [⟦T314⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ⟦T731⟧](https://pypi.org/project/langchain-webmetadata-extractor/) |
-| [⟦T315⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ⟦T732⟧](https://pypi.org/project/langchain-webmetadata-extractor/) |
-| [⟦T316⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ⟦T733⟧](https://pypi.org/project/langchain-webmetadata-extractor/) |
-| [⟦T317⟧](https://github.com/witanmarkets/langchain-witan#readme) | [  ⟦T734⟧](https://pypi.org/project/langchain-witan/) |
-| [⟦T318⟧](https://docs.bodo.ai/) | [  ⟦T735⟧](https://pypi.org/project/langchain-bodo/) |
-| [⟦T319⟧](https://coworkingview.com/en/mcp) | [  ⟦T736⟧](https://pypi.org/project/langchain-coworkingview/) |
-| [⟦T320⟧](https://github.com/fxmacrodata/langchain-fxmacrodata?utm_source=langchain\&utm_medium=integration\&utm_campaign=langchain-fxmacrodata\&utm_content=directory-listing#readme) | [  ⟦T737⟧](https://pypi.org/project/langchain-fxmacrodata/) |
-| [⟦T321⟧](https://github.com/Keirolabs-API/langchain-keiro) | [  ⟦T738⟧](https://pypi.org/project/langchain-keiro/) |
-| [⟦T322⟧](https://github.com/flipcoin-fun/flipcoin-langchain) | [  ⟦T739⟧](https://pypi.org/project/langchain-flipcoin/) |
-| [⟦T323⟧](https://signatrust.net/docs/api) | [  ⟦T740⟧](https://pypi.org/project/langchain-signatrust/) |
-| [⟦T324⟧](https://github.com/synapsoft-DA/langchain-synapsoft) | [  ⟦T741⟧](https://pypi.org/project/langchain-synapsoft/) |
-| [⟦T325⟧](https://goodsender.com/docs) | [  ⟦T742⟧](https://pypi.org/project/langchain-goodsender/) || [⟦T326⟧](https://github.com/kynto2001-ctrl/apexrunner-tools#riskshield-block-dangerous-trades-before-they-execute) | [  ⟦T743⟧](https://pypi.org/project/apexrunner-tools/) |
-| [⟦T327⟧](https://github.com/drasi-project/langchain-drasi) | [  ⟦T744⟧](https://pypi.org/project/langchain-drasi/) |
-| [⟦T328⟧](https://unirateapi.com) | [  ⟦T745⟧](https://pypi.org/project/langchain-unirate/) |
-| [⟦T329⟧](https://docs.blindfold.dev) | [  ⟦T746⟧](https://pypi.org/project/langchain-blindfold/) |
-| [⟦T330⟧](https://pypi.org/project/langchain-hugging-bay/0.1.0/) | [  ⟦T747⟧](https://pypi.org/project/langchain-hugging-bay/) |
-| [⟦T331⟧](https://docs.agentline.cloud/introduction) | [  ⟦T748⟧](https://pypi.org/project/langchain-agentline/) |
-| [⟦T332⟧](https://docs.delegare.dev/introduction) | [  ⟦T749⟧](https://pypi.org/project/langchain-delegare/) |
-| [⟦T333⟧](https://nestdaddy.com/blog/langchain-live-web-search-news) | [  ⟦T750⟧](https://pypi.org/project/langchain-nestdaddy/) |
-| [⟦T334⟧](https://toolstem.com) | [  ⟦T751⟧](https://pypi.org/project/langchain-toolstem/) |
-| [⟦T335⟧](https://docs.scrapeless.com/en/integrations/langchain/) | [  ⟦T752⟧](https://pypi.org/project/langchain-scrapeless/) |
-| [⟦T336⟧](https://docs.scrapeless.com/en/integrations/langchain/) | [  ⟦T753⟧](https://pypi.org/project/langchain-scrapeless/) |
-| [⟦T337⟧](https://docs.scrapeless.com/en/integrations/langchain/) | [  ⟦T754⟧](https://pypi.org/project/langchain-scrapeless/) |
-| [⟦T338⟧](https://docs.scrapeless.com/en/integrations/langchain/) | [  ⟦T755⟧](https://pypi.org/project/langchain-scrapeless/) |
-| [⟦T339⟧](https://nextmail.sh/docs/python/langchain) | [  ⟦T756⟧](https://pypi.org/project/langchain-nextmail/) |
-| [⟦T340⟧](https://github.com/itulo/eu-nordic-open-data-mcp/tree/main/packages/langchain-eu-nordic-open-data) | [  ⟦T757⟧](https://pypi.org/project/langchain-eu-nordic-open-data/) |
-| [⟦T341⟧](https://pypi.org/project/langchain-surgemesh/) | [  ⟦T758⟧](https://pypi.org/project/langchain-surgemesh/) |
-| [⟦T342⟧](https://acg.devlab.group/docs/integrations/langchain) | [  ⟦T759⟧](https://pypi.org/project/langchain-agent-commerce/) |
-| [⟦T343⟧](https://pypi.org/project/langchain-arche/) | [  ⟦T760⟧](https://pypi.org/project/langchain-arche/) |
-| [⟦T344⟧](https://github.com/seanmarkwei/langgraph-agentram) | [  ⟦T761⟧](https://pypi.org/project/langgraph-agentram/) |
-| [⟦T345⟧](https://scrape.ly/docs/langchain) | [  ⟦T762⟧](https://pypi.org/project/langchain-scrapely/) |
-| [⟦T346⟧](https://pypi.org/project/langchain-groundtruth/) | [  ⟦T763⟧](https://pypi.org/project/langchain-groundtruth/) |
-| [⟦T347⟧](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | [  ⟦T764⟧](https://pypi.org/project/scoutwyze-compute/) |
-| [⟦T348⟧](https://github.com/lv-analytics/liquidvision-mcp/tree/main/integrations/langchain) | [  ⟦T765⟧](https://pypi.org/project/langchain-liquidvision/) |
-| [⟦T349⟧](https://github.com/reachdog/langchain-reachdog/tree/main/libs/reachdog) | [  ⟦T766⟧](https://pypi.org/project/langchain-reachdog/) |
-| [⟦T350⟧](https://github.com/Polias-Team/langchain-polias) | [  ⟦T767⟧](https://pypi.org/project/langchain-polias/) |
-| [⟦T351⟧](https://tokenusage.dev/langchain) | [  ⟦T768⟧](https://pypi.org/project/langchain-tokenusage-dev/) |
-| [⟦T352⟧](https://docs.maqpna.com/sdk/framework-adapters/#langchain) | [  ⟦T769⟧](https://pypi.org/project/kosa8-maqpna/) |
-| [⟦T353⟧](https://pypi.org/project/langchain-alterlab/) | [  ⟦T770⟧](https://pypi.org/project/langchain-alterlab/) |
-| [⟦T354⟧](https://sealkeeper.run/docs/langchain) | [  ⟦T771⟧](https://pypi.org/project/langchain-sealkeeper/) |
-| [⟦T355⟧](https://pypi.org/project/langchain-finzdata/) | [  ⟦T772⟧](https://pypi.org/project/langchain-finzdata/) |
-| [⟦T356⟧](https://hlido.eu/docs/) | [  ⟦T773⟧](https://pypi.org/project/hlido-trust/) |
-| [⟦T357⟧](https://github.com/mobilebox-dev/mobilebox/tree/main/packages/python/langchain-mobilebox#readme) | [  ⟦T774⟧](https://pypi.org/project/langchain-mobilebox/) |
-| [⟦T358⟧](https://bhived.ai/docs/integrations/langchain) | [  ⟦T775⟧](https://pypi.org/project/langchain-bhived/) |
-| [⟦T359⟧](https://onlinecompiler.io/docs/langchain) | [  ⟦T776⟧](https://pypi.org/project/langchain-onlinecompiler/) |
-| [⟦T360⟧](https://www.easytranscriber.com/docs/langchain) | [  ⟦T777⟧](https://pypi.org/project/langchain-easytranscriber/) |
-| [⟦T361⟧](https://tempguru.co/ai-agents) | [  ⟦T778⟧](https://pypi.org/project/tempguru/) |
-| [⟦T362⟧](https://tickerlayer.com/docs/agent-frameworks#langchain) | [  ⟦T779⟧](https://pypi.org/project/langchain-tickerlayer/) |
-| [⟦T363⟧](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain) | [  ⟦T780⟧](https://pypi.org/project/viasocket/) |
-| [⟦T364⟧](https://github.com/AdsCrawl/langchain-adscrawl) | [  ⟦T781⟧](https://pypi.org/project/langchain-adscrawl/) |
-| [⟦T365⟧](https://github.com/screwtapeai/pay-safely) | [  ⟦T782⟧](https://pypi.org/project/screwtape-pay-safely/) |
-| [⟦T366⟧](https://github.com/data-x-api/langchain-dataxapi#readme) | [  ⟦T783⟧](https://pypi.org/project/langchain-dataxapi/) |
-| [⟦T367⟧](https://github.com/cyberwareX/langchain-cyberwarex#readme) | [  ⟦T784⟧](https://pypi.org/project/langchain-cyberwarex/) |
-| [⟦T368⟧](https://hyperresearch.ai/docs/answers/langchain) | [  ⟦T785⟧](https://pypi.org/project/langchain-hyperresearch/) |
-| [⟦T369⟧](https://github.com/cleanedweb/langchain-cleanedweb#readme) | [  ⟦T786⟧](https://pypi.org/project/langchain-cleanedweb/) |
-| [⟦T370⟧](https://sofya.co/docs/langchain) | [  ⟦T787⟧](https://pypi.org/project/langchain-sofya/) |
-| [⟦T371⟧](https://jobo.world/docs/connectors/langchain) | [  ⟦T788⟧](https://pypi.org/project/langchain-jobo/) |
-| [⟦T372⟧](https://adapterspot.com/en/api/langchain/) | [  ⟦T789⟧](https://pypi.org/project/langchain-adapterspot/) |
-| [⟦T373⟧](https://lanerouter.com/docs#langchain) | [  ⟦T790⟧](https://pypi.org/project/langchain-lanerouter/) |
-| [⟦T374⟧](https://github.com/rascal-3/chainanalyzer-mcp/tree/main/packages/langchain-chainanalyzer) | [  ⟦T791⟧](https://pypi.org/project/langchain-chainanalyzer/) |
-| [⟦T375⟧](https://github.com/ihouse-corp/langchain-askjapan#readme) | [  ⟦T792⟧](https://pypi.org/project/langchain-askjapan/) |
-| [⟦T376⟧](https://vericto.com/docs/langchain) | [  ⟦T793⟧](https://pypi.org/project/langchain-vericto/) |
-| [⟦T377⟧](https://github.com/Jona1245/agentdatahub-python#readme) | [  ⟦T794⟧](https://pypi.org/project/agentdatahub/) |
-| [⟦T378⟧](https://github.com/alion-io/alion-sdk/tree/main/langchain#readme) | [  ⟦T795⟧](https://pypi.org/project/langchain-alion/) |
-| [⟦T379⟧](https://github.com/etfiq/etfiq-connectors/tree/main/langchain-etfiq) | [  ⟦T796⟧](https://pypi.org/project/langchain-etfiq/) || [⟦T380⟧](https://channel3.ai/docs/langchain) | [  ⟦T797⟧](https://pypi.org/project/langchain-channel3/) |
-| [⟦T381⟧](https://github.com/octogen-ai/octogen-dev/tree/main/integrations/langchain#readme) | [  ⟦T798⟧](https://pypi.org/project/langchain-storerouter/) |
-| [⟦T382⟧](https://www.trezalabs.com/integrations/langchain) | [  ⟦T799⟧](https://pypi.org/project/langchain-treza/) |
-| [⟦T383⟧](https://github.com/Mattbusel/langchain-tensorust/blob/main/docs/index.md) | [  ⟦T800⟧](https://pypi.org/project/langchain-tensorust/) |
-| [⟦T384⟧](https://github.com/arcnm/langchain-arcnm#readme) | [  ⟦T801⟧](https://pypi.org/project/langchain-arcnm/) |
-| [⟦T385⟧](https://github.com/outcrawlai/langchain-outcrawl#readme) | [  ⟦T802⟧](https://pypi.org/project/langchain-outcrawl/) |
-| [⟦T386⟧](https://github.com/browsa-io/browsa/tree/main/integrations/langchain-browsa#readme) | [  ⟦T803⟧](https://pypi.org/project/langchain-browsa/) |
-| [⟦T387⟧](https://github.com/waynehamadi/langchain-datacircle) | [  ⟦T804⟧](https://pypi.org/project/langchain-datacircle/) |
-| [⟦T388⟧](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ⟦T805⟧](https://pypi.org/project/solvecha/) |
-| [⟦T389⟧](https://github.com/stophydotdev/stophy/tree/main/sdk/packages/langchain) | [  ⟦T806⟧](https://pypi.org/project/langchain-stophy/) |
-| [⟦T390⟧](https://github.com/Bosco-Labs/bosco-labs-data/tree/main/langchain-bosco) | [  ⟦T807⟧](https://pypi.org/project/langchain-bosco/) |
-| [⟦T391⟧](https://github.com/video-gen/langchain-videogen#readme) | [  ⟦T808⟧](https://pypi.org/project/langchain-videogen/) |
-| [⟦T392⟧](https://github.com/Vovala14/CAEL/tree/codex/agent-provenance/examples/agent_provenance) | [  ⟦T809⟧](https://pypi.org/project/cael-provenance-bridge/) |
-| [⟦T393⟧](https://socialscrape.dev/docs/langchain) | [  ⟦T810⟧](https://pypi.org/project/langchain-socialscrape/) |
-| [⟦T394⟧](https://github.com/nohosa001-pixel/x402-cleanweb-agent/tree/main/packages/langchain-x402-cleanweb#readme) |不适用 |
-| [⟦T395⟧](https://x402check.dev) |不适用 |
-| [⟦T396⟧](https://agentlair.dev/docs) |不适用 |
-| [⟦T397⟧](https://github.com/asindotdev/langchain-asin#readme) |不适用 |
-| [⟦T398⟧](https://github.com/automdev/langchain-autom#readme) |不适用 |
-| [⟦T399⟧](https://github.com/kochetkov-ma/langchain-brewpage#readme) |不适用 |
-| [⟦T400⟧](https://browserless.io) |不适用 |
-| [⟦T401⟧](https://github.com/capturekitdev/langchain-capturekit#readme) |不适用 |
-| [⟦T402⟧](https://github.com/chartquery/langchain-chartquery#readme) |不适用 |
-| [⟦T403⟧](https://cleave.fi/docs/agents/langchain) |不适用 |
-| [⟦T404⟧](https://github.com/CrowdWisdomTradingx402/crowdwisdomtrading-python/tree/main/integrations/langchain#readme) |不适用 |
-| [⟦T405⟧](https://equibles.com/docs/api/langchain) |不适用 |
-| [⟦T406⟧](https://github.com/faxforagents/langchain-faxforagents/blob/main/README.md) |不适用 |
-| [⟦T407⟧](https://github.com/llmbender/findcheap-sdks/tree/main/langchain#readme) |不适用 |
-| [⟦T408⟧](https://github.com/fokals/langchain-fokals#readme) |不适用 |
-| [⟦T409⟧](https://github.com/Sandeep85Das/langchain-frame) |不适用 |
-| [⟦T410⟧](https://huangtingflux.com/integrations/langchain) |不适用 |
-| [⟦T411⟧](https://api.kaer.ai/docs/langchain) |不适用 |
-| [⟦T412⟧](https://movoa.readthedocs.io/en/latest/integrations/langchain/) |不适用 |
-| [⟦T413⟧](https://github.com/piloterr/langchain-piloterr#readme) |不适用 |
-| [⟦T414⟧](https://popnow.ai/docs/langchain) |不适用 |
-| [⟦T415⟧](https://docs.scrapeunblocker.com/sdks/langchain) |不适用 |
-| [⟦T416⟧](https://sidequestpays.com/docs#langchain) |不适用 |
-| [⟦T417⟧](/oss/python/integrations/tools/stagehand) |不适用 |
+| :- | :- |
+| [⟦T1⟧](/oss/python/integrations/tools/google_imagen) | [  ⟦T419⟧](https://pypi.org/project/langchain-google-vertexai/) |
+| [⟦T2⟧](/oss/python/integrations/tools/google_gmail) | [  ⟦T420⟧](https://pypi.org/project/langchain-google-community/) |
+| [⟦T3⟧](/oss/python/integrations/tools/google_calendar) | [  ⟦T421⟧](https://pypi.org/project/langchain-google-community/) |
+| [⟦T4⟧](/oss/python/integrations/tools/google_cloud_texttospeech) | [  ⟦T422⟧](https://pypi.org/project/langchain-google-community/) |
+| [⟦T5⟧](/oss/python/integrations/tools/google_search) | [  ⟦T423⟧](https://pypi.org/project/langchain-google-community/) |
+| [⟦T6⟧](/oss/python/integrations/tools/bedrock_agentcore_browser) | [  ⟦T424⟧](https://pypi.org/project/langchain-aws/) |
+| [⟦T7⟧](/oss/python/integrations/tools/bedrock_agentcore_code_interpreter) | [  ⟦T425⟧](https://pypi.org/project/langchain-aws/) |
+| [⟦T8⟧](/oss/python/integrations/tools/bedrock_agentcore_web_search) | [  ⟦T426⟧](https://pypi.org/project/langchain-aws/) |
+| [⟦T9⟧](/oss/python/integrations/tools/tavily_crawl) | [  ⟦T427⟧](https://pypi.org/project/langchain-tavily/) |
+| [⟦T10⟧](/oss/python/integrations/tools/tavily_extract) | [  ⟦T428⟧](https://pypi.org/project/langchain-tavily/) |
+| [⟦T11⟧](/oss/python/integrations/tools/tavily_map) | [  ⟦T429⟧](https://pypi.org/project/langchain-tavily/) |
+| [⟦T12⟧](/oss/python/integrations/tools/tavily_search) | [  ⟦T430⟧](https://pypi.org/project/langchain-tavily/) |
+| [⟦T13⟧](/oss/python/integrations/tools/azure_logic_apps) | [  ⟦T431⟧](https://pypi.org/project/langchain-azure-ai/) |
+| [⟦T14⟧](/oss/python/integrations/tools/azure_ai) | [  ⟦T432⟧](https://pypi.org/project/langchain-azure-ai/) |
+| [⟦T15⟧](/oss/python/integrations/tools/azure_ai_services) | [  ⟦T433⟧](https://pypi.org/project/langchain-azure-ai/) |
+| [⟦T16⟧](/oss/python/integrations/tools/databricks) | [  ⟦T434⟧](https://pypi.org/project/databricks-langchain/) |
+| [⟦T17⟧](/oss/python/integrations/tools/composio) | [  ⟦T435⟧](https://pypi.org/project/composio-langchain/) |
+| [⟦T18⟧](/oss/python/integrations/tools/ibm_watsonx_sql) | [  ⟦T436⟧](https://pypi.org/project/langchain-ibm/) |
+| [⟦T19⟧](/oss/python/integrations/tools/ibm_watsonx) | [  ⟦T437⟧](https://pypi.org/project/langchain-ibm/) |
+| [⟦T20⟧](/oss/python/integrations/tools/perplexity_search) | [  ⟦T438⟧](https://pypi.org/project/langchain-perplexity/) |
+| [⟦T21⟧](/oss/python/integrations/tools/oracleai) | [  ⟦T439⟧](https://pypi.org/project/langchain-oracledb/) |
+| [⟦T22⟧](/oss/python/integrations/tools/exa_search) | [  ⟦T440⟧](https://pypi.org/project/langchain-exa/) |
+| [⟦T23⟧](/oss/python/integrations/tools/parallel_extract) | [  ⟦T441⟧](https://pypi.org/project/langchain-parallel/) |
+| [⟦T24⟧](/oss/python/integrations/tools/parallel_findall) | [  ⟦T442⟧](https://pypi.org/project/langchain-parallel/) |
+| [⟦T25⟧](/oss/python/integrations/tools/parallel_monitor) | [  ⟦T443⟧](https://pypi.org/project/langchain-parallel/) |
+| [⟦T26⟧](/oss/python/integrations/tools/parallel_search) | [  ⟦T444⟧](https://pypi.org/project/langchain-parallel/) |
+| [⟦T27⟧](/oss/python/integrations/tools/parallel_task) | [  ⟦T445⟧](https://pypi.org/project/langchain-parallel/) |
+| [⟦T28⟧](/oss/python/integrations/tools/azure_dynamic_sessions) | [  ⟦T446⟧](https://pypi.org/project/langchain-azure-dynamic-sessions/) |
+| [⟦T29⟧](https://docs.scalekit.com/agentkit/quickstart/) | [  ⟦T447⟧](https://pypi.org/project/scalekit-sdk-python/) |
+| [⟦T30⟧](/oss/python/integrations/tools/upstage_groundedness_check) | [  ⟦T448⟧](https://pypi.org/project/langchain-upstage/) |
+| [⟦T31⟧](https://docs.apify.com/integrations/langchain) | [  ⟦T449⟧](https://pypi.org/project/langchain-apify/) |
+| [⟦T32⟧](https://github.com/skynetcmd/m3-memory/blob/main/docs/integrations/LANGCHAIN.md) | [  ⟦T450⟧](https://pypi.org/project/m3-memory/) |
+| [⟦T33⟧](https://docs.getsemantica.ai/integrations/langchain) | [  ⟦T451⟧](https://pypi.org/project/semantica/) |
+| [⟦T34⟧](https://docs.getsemantica.ai/integrations/langchain) | [  ⟦T452⟧](https://pypi.org/project/semantica/) |
+| [⟦T35⟧](https://github.com/emmanuelorta/crawlcheck-core/tree/main/sdk-python#langchain-and-llamaindex-1100) | [  ⟦T453⟧](https://pypi.org/project/crawlcheck/) |
+| [⟦T36⟧](/oss/python/integrations/tools/stripe) | [  ⟦T454⟧](https://pypi.org/project/stripe-agent-toolkit/) |
+| [⟦T37⟧](https://github.com/memgraph/langchain-memgraph) | [  ⟦T455⟧](https://pypi.org/project/langchain-memgraph/) |
+| [⟦T38⟧](/oss/python/integrations/tools/stripe) | [  ⟦T456⟧](https://pypi.org/project/stripe-agent-toolkit/) |
+| [⟦T39⟧](https://github.com/gazoy/langchain-foliant#readme) | [  ⟦T457⟧](https://pypi.org/project/langchain-foliant/) |
+| [⟦T40⟧](/oss/python/integrations/tools/google_drive) | [  ⟦T458⟧](https://pypi.org/project/langchain-googledrive/) |
+| [⟦T41⟧](https://bowmark.ai/docs/langchain) | [  ⟦T459⟧](https://pypi.org/project/langchain-bowmark/) |
+| [⟦T42⟧](https://pypi.org/project/langchain-compass/) | [  ⟦T460⟧](https://pypi.org/project/langchain-compass/) |
+| [⟦T43⟧](https://fizzl.eu/agents/python/) | [  ⟦T461⟧](https://pypi.org/project/fizzl/) |
+| [⟦T44⟧](/oss/python/integrations/tools/mcp_toolbox) | [  ⟦T462⟧](https://pypi.org/project/toolbox-langchain/) |
+| [⟦T45⟧](https://adeu.ai) | [  ⟦T463⟧](https://pypi.org/project/langchain-adeu/) |
+| [⟦T46⟧](https://github.com/arcmira/integrations/tree/master/packages/langchain-python) | [  ⟦T464⟧](https://pypi.org/project/langchain-arcmira/) |
+| [⟦T47⟧](/oss/python/integrations/tools/cdp_agentkit) | [  ⟦T465⟧](https://pypi.org/project/coinbase-agentkit-langchain/) |
+| [⟦T48⟧](https://docs.firecrawl.dev) | [  ⟦T466⟧](https://pypi.org/project/langchain-firecrawl/) |
+| [⟦T49⟧](https://github.com/LinkupPlatform/langchain-linkup) | [  ⟦T467⟧](https://pypi.org/project/langchain-linkup/) |
+| [⟦T50⟧](https://docs.pexafy.com/langchain) | [  ⟦T468⟧](https://pypi.org/project/langchain-pexafy/) |
+| [⟦T51⟧](https://pidgeon.ai/docs/langchain) | [  ⟦T469⟧](https://pypi.org/project/langchain-pidgeon/) |
+| [⟦T52⟧](https://scavio.dev/docs/langchain) | [  ⟦T470⟧](https://pypi.org/project/langchain-scavio/) |
+| [⟦T53⟧](https://github.com/ScrapeGraphAI/langchain-scrapegraph) | [  ⟦T471⟧](https://pypi.org/project/langchain-scrapegraph/) |
+| [⟦T54⟧](https://github.com/Shikenso-Analytics/langchain-taiga) ​​| [  ⟦T472⟧](https://pypi.org/project/langchain-taiga/) |
+| [⟦T55⟧](https://pypi.org/project/langchain-alex/) | [  ⟦T473⟧](https://pypi.org/project/langchain-alex/) || [⟦T56⟧](https://github.com/botsrated/botsrated/tree/main/integrations/langchain) | [  ⟦T474⟧](https://pypi.org/project/langchain-botsrated/) |
+| [⟦T57⟧](https://docs.brightdata.com/scraping-automation/serp-api/introduction) | [  ⟦T475⟧](https://pypi.org/project/langchain-brightdata/) |
+| [⟦T58⟧](https://docs.brightdata.com/scraping-automation/web-unlocker/introduction) | [  ⟦T476⟧](https://pypi.org/project/langchain-brightdata/) |
+| [⟦T59⟧](https://docs.brightdata.com/datasets/scrapers/overview) | [  ⟦T477⟧](https://pypi.org/project/langchain-brightdata/) |
+| [⟦T60⟧](https://github.com/Decodo/langchain/tree/master/libs/partners/decodo) | [  ⟦T478⟧](https://pypi.org/project/langchain-decodo/) |
+| [⟦T61⟧](https://github.com/Decodo/langchain/tree/master/libs/partners/decodo) | [  ⟦T479⟧](https://pypi.org/project/langchain-decodo/) |
+| [⟦T62⟧](https://docs.dexpaprika.com) | [  ⟦T480⟧](https://pypi.org/project/langchain-dexpaprika/) |
+| [⟦T63⟧](https://github.com/rocosen/langchain-flashdata) | [  ⟦T481⟧](https://pypi.org/project/langchain-flashdata/) |
+| [⟦T64⟧](https://docs.hindsight.vectorize.io/sdks/integrations/langgraph) | [  ⟦T482⟧](https://pypi.org/project/hindsight-langgraph/) |
+| [⟦T65⟧](https://github.com/agentbeacon-hq/clients) | [  ⟦T483⟧](https://pypi.org/project/langchain-openpath/) |
+| [⟦T66⟧](https://replylayer.ai/docs/guides/langchain) | [  ⟦T484⟧](https://pypi.org/project/langchain-replylayer/) |
+| [⟦T67⟧](https://pypi.org/project/langchain-send21/) | [  ⟦T485⟧](https://pypi.org/project/langchain-send21/) |
+| [⟦T68⟧](https://serpex.dev/docs) | [  ⟦T486⟧](https://pypi.org/project/langchain-serpex-python/) |
+| [⟦T69⟧](https://synmerco.com/docs) | [  ⟦T487⟧](https://pypi.org/project/synmerco-langchain/) |
+| [⟦T70⟧](https://urlpipe.dev/integrations/langchain) | [  ⟦T488⟧](https://pypi.org/project/langchain-urlpipe/) |
+| [⟦T71⟧](https://github.com/ADS4GPTs/ads4gpts) | [  ⟦T489⟧](https://pypi.org/project/ads4gpts-langchain/) |
+| [⟦T72⟧](https://github.com/thyn-ai/algenta-integrations/tree/main/python/langchain-algenta#readme) | [  ⟦T490⟧](https://pypi.org/project/langchain-algenta/) |
+| [⟦T73⟧](https://anakin.io/docs/documentation) | [  ⟦T491⟧](https://pypi.org/project/langchain-anakin/) |
+| [⟦T74⟧](https://docs.atomicmail.ai/langchain) | [  ⟦T492⟧](https://pypi.org/project/langchain-atomicmail/) |
+| [⟦T75⟧](https://cloro.dev/docs/) | [  ⟦T493⟧](https://pypi.org/project/langchain-cloro/) |
+| [⟦T76⟧](https://docs.dexpaprika.com) | [  ⟦T494⟧](https://pypi.org/project/langchain-dexpaprika/) |
+| [⟦T77⟧](https://e2a.dev) | [  ⟦T495⟧](https://pypi.org/project/e2a/) |
+| [⟦T78⟧](https://github.com/MehdiZare/langchain-fmp-data) | [  ⟦T496⟧](https://pypi.org/project/langchain-fmp-data/) |
+| [⟦T79⟧](https://docs.goodmem.ai) | [  ⟦T497⟧](https://pypi.org/project/langchain-goodmem/) |
+| [⟦T80⟧](https://dev.writer.com/home/introduction) | [  ⟦T498⟧](https://pypi.org/project/langchain-writer/) |
+| [⟦T81⟧](https://github.com/edtool79-collab/hirepulse-open-source#langchain-and-crewai-gateway-tools-030) | [  ⟦T499⟧](https://pypi.org/project/hirepulse-tools/) |
+| [⟦T82⟧](https://docs.nimbleway.com/integrations/connectors/langchain) | [  ⟦T500⟧](https://pypi.org/project/langchain-nimble/) |
+| [⟦T83⟧](https://docs.nimbleway.com/integrations/connectors/langchain) | [  ⟦T501⟧](https://pypi.org/project/langchain-nimble/) |
+| [⟦T84⟧](https://10ml.com/perfume-mcp-server) | [  ⟦T502⟧](https://pypi.org/project/langchain-10ml-perfume/) |
+| [⟦T85⟧](https://langchain-prolog.readthedocs.io/en/stable/) | [  ⟦T503⟧](https://pypi.org/project/langchain-prolog/) |
+| [⟦T86⟧](https://pypi.org/project/langchain-swarmmemo/) | [  ⟦T504⟧](https://pypi.org/project/langchain-swarmmemo/) |
+| [⟦T87⟧](https://www.maximem.ai/) | [  ⟦T505⟧](https://pypi.org/project/maximem-synap-langchain/) |
+| [⟦T88⟧](https://github.com/tanod-labs/integrations/tree/main/langchain) | [  ⟦T506⟧](https://pypi.org/project/langchain-tanod/) |
+| [⟦T89⟧](https://github.com/sriram7737/pramagent) | [  ⟦T507⟧](https://pypi.org/project/pramagent/) |
+| [⟦T90⟧](https://github.com/econdash/econdash-python/blob/main/packages/langchain-econdash/README.md) | [  ⟦T508⟧](https://pypi.org/project/langchain-econdash/) |
+| [⟦T91⟧](https://github.com/verdixapi/langchain-verdix#readme) | [  ⟦T509⟧](https://pypi.org/project/langchain-verdix/) |
+| [⟦T92⟧](https://docs.apiverve.com/integrations/langchain) | [  ⟦T510⟧](https://pypi.org/project/langchain-apiverve/) |
+| [⟦T93⟧](https://specstream.ai/docs/langchain) | [  ⟦T511⟧](https://pypi.org/project/langchain-specstream/) |
+| [⟦T94⟧](https://github.com/datumline/datumline-agent-guard#langchain) | [  ⟦T512⟧](https://pypi.org/project/datumline-agent-guard/) |
+| [⟦T95⟧](https://you.com/docs/integrations/langchain) | [  ⟦T513⟧](https://pypi.org/project/langchain-youdotcom/) |
+| [⟦T96⟧](https://gatecoreai.com/docs/) | [  ⟦T514⟧](https://pypi.org/project/gatecore-langchain/) |
+| [⟦T97⟧](https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary) | [  ⟦T515⟧](https://pypi.org/project/langchain-machinelibrary/) |
+| [⟦T98⟧](https://github.com/beepboop2025/langchain-financial-evidence#readme) | [  ⟦T516⟧](https://pypi.org/project/langchain-financial-evidence/) |
+| [⟦T99⟧](https://github.com/colesmcintosh/langchain-salesforce) | [  ⟦T517⟧](https://pypi.org/project/langchain-salesforce/) |
+| [⟦T100⟧](https://reefapi.com/docs/langchain) | [  ⟦T518⟧](https://pypi.org/project/langchain-reefapi/) |
+| [⟦T101⟧](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain) | [  ⟦T519⟧](https://pypi.org/project/langchain-catchall/) |
+| [⟦T102⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T520⟧](https://pypi.org/project/langchain-diffbot/) |
+| [⟦T103⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T521⟧](https://pypi.org/project/langchain-diffbot/) |
+| [⟦T104⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T522⟧](https://pypi.org/project/langchain-diffbot/) |
+| [⟦T105⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T523⟧](https://pypi.org/project/langchain-diffbot/) |
+| [⟦T106⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T524⟧](https://pypi.org/project/langchain-diffbot/) |
+| [⟦T107⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T525⟧](https://pypi.org/project/langchain-diffbot/) |
+| [⟦T108⟧](https://github.com/diffbot/langchain-diffbot) | [  ⟦T526⟧](https://pypi.org/project/langchain-diffbot/) |
+| [⟦T109⟧](https://github.com/olostep-api/langchain-olostep#readme) | [  ⟦T527⟧](https://pypi.org/project/langchain-olostep/) || [⟦T110⟧](https://mesharc.dev/docs/langchain) | [  ⟦T528⟧](https://pypi.org/project/langchain-mesharc/) |
+| [⟦T111⟧](https://mesharc.dev/docs/langchain) | [  ⟦T529⟧](https://pypi.org/project/langchain-mesharc/) |
+| [⟦T112⟧](https://agentsearchhq.com/blog/langchain-agent-search-then-read-page) | [  ⟦T530⟧](https://pypi.org/project/langchain-agentsearch/) |
+| [⟦T113⟧](https://www.hyperbrowser.ai/docs/home) | [  ⟦T531⟧](https://pypi.org/project/langchain-hyperbrowser/) |
+| [⟦T114⟧](https://www.hyperbrowser.ai/docs/home) | [  ⟦T532⟧](https://pypi.org/project/langchain-hyperbrowser/) |
+| [⟦T115⟧](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ⟦T533⟧](https://pypi.org/project/langchain-wavespeed/) |
+| [⟦T116⟧](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ⟦T534⟧](https://pypi.org/project/langchain-wavespeed/) |
+| [⟦T117⟧](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ⟦T535⟧](https://pypi.org/project/langchain-wavespeed/) |
+| [⟦T118⟧](https://github.com/Minns-ai/langgraph-minnsdb#readme) | [  ⟦T536⟧](https://pypi.org/project/langgraph-minnsdb/) |
+| [⟦T119⟧](https://docs.mrscraper.com) | [  ⟦T537⟧](https://pypi.org/project/langchain-mrscraper/) |
+| [⟦T120⟧](https://github.com/Thordata/langchain-thordata) | [  ⟦T538⟧](https://pypi.org/project/langchain-thordata/) |
+| [⟦T121⟧](https://github.com/robocorp/robocorp) | [  ⟦T539⟧](https://pypi.org/project/langchain-robocorp/) |
+| [⟦T122⟧](https://docs.ampersend.ai) | [  ⟦T540⟧](https://pypi.org/project/langchain-ampersend/) |
+| [⟦T123⟧](https://github.com/lachy3433/langchain-contextfetch#readme) | [  ⟦T541⟧](https://pypi.org/project/langchain-contextfetch/) |
+| [⟦T124⟧](https://github.com/clawfetch/integrations#readme) | [  ⟦T542⟧](https://pypi.org/project/langchain-clawfetch/) |
+| [⟦T125⟧](https://omfang.io/manifest-docs) | [  ⟦T543⟧](https://pypi.org/project/manifest-api/) |
+| [⟦T126⟧](https://github.com/User0856/snaprender-integrations/tree/main/langchain) | [  ⟦T544⟧](https://pypi.org/project/langchain-snaprender/) |
+| [⟦T127⟧](https://webextract.dev/docs/langchain) | [  ⟦T545⟧](https://pypi.org/project/langchain-webextract/) |
+| [⟦T128⟧](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image) | [  ⟦T546⟧](https://pypi.org/project/langchain-gpt-image-acedatacloud/) |
+| [⟦T129⟧](https://www.lians.ai) | [  ⟦T547⟧](https://pypi.org/project/lians-sdk/) |
+| [⟦T130⟧](https://github.com/hanshs474/langchain-freeimagetovideo) | [  ⟦T548⟧](https://pypi.org/project/langchain-freeimagetovideo/) |
+| [⟦T131⟧](https://github.com/AceDataCloud/LangChain/tree/main/packages/happyhorse) | [  ⟦T549⟧](https://pypi.org/project/langchain-happyhorse-acedatacloud/) |
+| [⟦T132⟧](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana) | [  ⟦T550⟧](https://pypi.org/project/langchain-nano-banana-acedatacloud/) |
+| [⟦T133⟧](https://specstream.ai/docs/langchain) | [  ⟦T551⟧](https://pypi.org/project/langchain-specstream/) |
+| [⟦T134⟧](https://docs.zerogpu.ai) | [  ⟦T552⟧](https://pypi.org/project/langchain-zerogpu/) |
+| [⟦T135⟧](https://docs.hydrafetch.com) | [  ⟦T553⟧](https://pypi.org/project/langchain-hydrafetch/) |
+| [⟦T136⟧](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | [  ⟦T554⟧](https://pypi.org/project/langchain-getyoutubetranscript/) |
+| [⟦T137⟧](https://github.com/ourresearch/langchain-openalex#readme) | [  ⟦T555⟧](https://pypi.org/project/langchain-openalex/) |
+| [⟦T138⟧](https://www.search1api.com/docs/integrations/langchain) | [  ⟦T556⟧](https://pypi.org/project/search1api-langchain/) |
+| [⟦T139⟧](https://github.com/wayza-protocol/wayza-js/tree/main/packages/langchain-wayza) | [  ⟦T557⟧](https://pypi.org/project/langchain-wayza/) |
+| [⟦T140⟧](https://docs.upload-post.com/guides/langchain) | [  ⟦T558⟧](https://pypi.org/project/langchain-upload-post/) |
+| [⟦T141⟧](https://mixpeek.com/docs/agent-integrations/langchain) | [  ⟦T559⟧](https://pypi.org/project/langchain-mixpeek/) |
+| [⟦T142⟧](https://kavel.readthedocs.io/en/latest/integrations/langchain/) | [  ⟦T560⟧](https://pypi.org/project/langchain-kavel/) |
+| [⟦T143⟧](https://aigifmaker.readthedocs.io/en/latest/integrations/langchain/) | [  ⟦T561⟧](https://pypi.org/project/langchain-aigifmaker/) |
+| [⟦T144⟧](https://pinkwallet.com/agentic/connect/langchain/) | [  ⟦T562⟧](https://pypi.org/project/langchain-pink/) |
+| [⟦T145⟧](https://github.com/Mart-API/langchain-mart#readme) | [  ⟦T563⟧](https://pypi.org/project/langchain-mart/) |
+| [⟦T146⟧](https://optionsahoy.com/for-agents) | [  ⟦T564⟧](https://pypi.org/project/optionsahoy-langchain/) |
+| [⟦T147⟧](/oss/python/integrations/tools/discord) | [  ⟦T565⟧](https://pypi.org/project/langchain-discord/) |
+| [⟦T148⟧](https://blopus.ai/docs/) | [  ⟦T566⟧](https://pypi.org/project/langchain-blopus/) |
+| [⟦T149⟧](https://blopus.ai/docs/) | [  ⟦T567⟧](https://pypi.org/project/langchain-blopus/) |
+| [⟦T150⟧](https://linkdigest.dev/docs#frameworks) | [  ⟦T568⟧](https://pypi.org/project/linkdigest-mcp/) |
+| [⟦T151⟧](https://docs.valyu.ai/home) | [  ⟦T569⟧](https://pypi.org/project/langchain-valyu/) |
+| [⟦T152⟧](https://veida.readthedocs.io/en/latest/integrations/langchain/) | [  ⟦T570⟧](https://pypi.org/project/langchain-veida/) |
+| [⟦T153⟧](https://github.com/fodda-ai/langchain-fodda#readme) | [  ⟦T571⟧](https://pypi.org/project/langchain-fodda/) |
+| [⟦T154⟧](https://flowspeech.io/docs) | [  ⟦T572⟧](https://pypi.org/project/langchain-flowspeech/) |
+| [⟦T155⟧](https://mnki.com/docs/integrations#frameworks) | [  ⟦T573⟧](https://pypi.org/project/langchain-mnki/) |
+| [⟦T156⟧](https://github.com/tanvoai/langchain-tanvo#readme) | [  ⟦T574⟧](https://pypi.org/project/langchain-tanvo/) |
+| [⟦T157⟧](https://github.com/EXboys/langchain-skilllite) | [  ⟦T575⟧](https://pypi.org/project/langchain-skilllite/) |
+| [⟦T158⟧](https://github.com/Conrad-sudo/langchain-uniswap-v2) | [  ⟦T576⟧](https://pypi.org/project/langchain-uniswap-v2/) |
+| [⟦T159⟧](https://skim402.com/docs) | [  ⟦T577⟧](https://pypi.org/project/langchain-skim/) |
+| [⟦T160⟧](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-py) | [  ⟦T578⟧](https://pypi.org/project/pushary-langgraph/) |
+| [⟦T161⟧](https://github.com/dong7812/dompruner-py) | [  ⟦T579⟧](https://pypi.org/project/dompruner/) |
+| [⟦T162⟧](https://pypi.org/project/ddg-langchain/) | [  ⟦T580⟧](https://pypi.org/project/ddg-langchain/) |
+| [⟦T163⟧](https://docs.gnews.io/langchain) | [  ⟦T581⟧](https://pypi.org/project/langchain-gnews/) || [⟦T164⟧](https://docs.gnews.io/langchain) | [  ⟦T582⟧](https://pypi.org/project/langchain-gnews/) |
+| [⟦T165⟧](https://pypi.org/project/langchain-gaip/) | [  ⟦T583⟧](https://pypi.org/project/langchain-gaip/) |
+| [⟦T166⟧](https://graciousquotes.com/developers/langchain/) | [  ⟦T584⟧](https://pypi.org/project/langchain-graciousquotes/) |
+| [⟦T167⟧](https://opedd.com/for-ai-agents) | [  ⟦T585⟧](https://pypi.org/project/langchain-opedd/) |
+| [⟦T168⟧](https://agentsvc.io/docs/langchain) | [  ⟦T586⟧](https://pypi.org/project/agentsvc/) |
+| [⟦T169⟧](https://precleared.dev/docs/langchain) | [  ⟦T587⟧](https://pypi.org/project/precleared/) |
+| [⟦T170⟧](https://emaki.readthedocs.io/en/latest/integrations/langchain/) | [  ⟦T588⟧](https://pypi.org/project/langchain-emaki/) |
+| [⟦T171⟧](https://docs.anchorbrowser.io/introduction) | [  ⟦T589⟧](https://pypi.org/project/langchain-anchorbrowser/) |
+| [⟦T172⟧](https://github.com/oxylabs/langchain-oxylabs) | [  ⟦T590⟧](https://pypi.org/project/langchain-oxylabs/) |
+| [⟦T173⟧](https://proxmint.com/docs/langchain) | [  ⟦T591⟧](https://pypi.org/project/langchain-proxmint/) |
+| [⟦T174⟧](https://aidress.ai) | [  ⟦T592⟧](https://pypi.org/project/langchain-aidress/) |
+| [⟦T175⟧](https://github.com/printfriendly/langchain-printfriendly#readme) | [  ⟦T593⟧](https://pypi.org/project/langchain-printfriendly/) |
+| [⟦T176⟧](https://reserp.ai/docs) | [  ⟦T594⟧](https://pypi.org/project/langchain-reserp/) |
+| [⟦T177⟧](https://github.com/daytonaio/daytona) | [  ⟦T595⟧](https://pypi.org/project/langchain-daytona-data-analysis/) |
+| [⟦T178⟧](https://docs.1claw.xyz/docs/integrations/langchain) | [  ⟦T596⟧](https://pypi.org/project/langchain-1claw/) |
+| [⟦T179⟧](https://github.com/TheSuperColony/langchain-supercolony) | [  ⟦T597⟧](https://pypi.org/project/langchain-supercolony/) |
+| [⟦T180⟧](https://github.com/AceDataCloud/LangChain/tree/main/packages/seedance) | [  ⟦T598⟧](https://pypi.org/project/langchain-seedance-acedatacloud/) |
+| [⟦T181⟧](https://github.com/Conrad-sudo/langchain-erc20) | [  ⟦T599⟧](https://pypi.org/project/langchain-erc20/) |
+| [⟦T182⟧](https://docs.dappier.com/) | [  ⟦T600⟧](https://pypi.org/project/langchain-dappier/) |
+| [⟦T183⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#alfrescotoolkit) | [  ⟦T601⟧](https://pypi.org/project/langchain-opendma/) |
+| [⟦T184⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#documentumtoolkit) | [  ⟦T602⟧](https://pypi.org/project/langchain-opendma/) |
+| [⟦T185⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#filenetp8toolkit) | [  ⟦T603⟧](https://pypi.org/project/langchain-opendma/) |
+| [⟦T186⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#onbasetoolkit) | [  ⟦T604⟧](https://pypi.org/project/langchain-opendma/) |
+| [⟦T187⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md) | [  ⟦T605⟧](https://pypi.org/project/langchain-opendma/) |
+| [⟦T188⟧](https://github.com/mavdol/langchain-capsule) | [  ⟦T606⟧](https://pypi.org/project/langchain-capsule/) |
+| [⟦T189⟧](https://github.com/agent-help-network/agent-help-network/blob/main/clients/langchain-ahn/README.md) | [  ⟦T607⟧](https://pypi.org/project/langchain-ahn/) |
+| [⟦T190⟧](https://github.com/tokportal/langchain-tokportal) | [  ⟦T608⟧](https://pypi.org/project/langchain-tokportal/) |
+| [⟦T191⟧](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | [  ⟦T609⟧](https://pypi.org/project/langchain-talordata/) |
+| [⟦T192⟧](https://github.com/jmendozapuche/langchain-latam-synth) | [  ⟦T610⟧](https://pypi.org/project/langchain-latam-synth/) |
+| [⟦T193⟧](/oss/python/integrations/tools/tableau) | [  ⟦T611⟧](https://pypi.org/project/langchain-tableau/) |
+| [⟦T194⟧](https://cosmergon.com) | [  ⟦T612⟧](https://pypi.org/project/langchain-cosmergon/) |
+| [⟦T195⟧](https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris) | [  ⟦T613⟧](https://pypi.org/project/langchain-polaris/) |
+| [⟦T196⟧](https://docs.memoryrouter.ai/langchain) | [  ⟦T614⟧](https://pypi.org/project/langchain-memoryrouter/) |
+| [⟦T197⟧](https://paysafe-agent.com) | [  ⟦T615⟧](https://pypi.org/project/langchain-paysafe/) |
+| [⟦T198⟧](https://axiora.dev/docs) | [  ⟦T616⟧](https://pypi.org/project/langchain-axiora/) |
+| [⟦T199⟧](https://serpapi.github.io/serpapi-search-tools-python/docs/sdk-examples/langchain.html) | [  ⟦T617⟧](https://pypi.org/project/serpapi-search-tools/) |
+| [⟦T200⟧](https://alphai.io/developers) | [  ⟦T618⟧](https://pypi.org/project/langchain-alphai/) |
+| [⟦T201⟧](https://alphai.io/developers) | [  ⟦T619⟧](https://pypi.org/project/langchain-alphai/) |
+| [⟦T202⟧](https://alphai.io/developers) | [  ⟦T620⟧](https://pypi.org/project/langchain-alphai/) |
+| [⟦T203⟧](https://alphai.io/developers) | [  ⟦T621⟧](https://pypi.org/project/langchain-alphai/) |
+| [⟦T204⟧](https://greencalculus.com/guides/emission-factors-langchain/) | [  ⟦T622⟧](https://pypi.org/project/langchain-greencalculus/) |
+| [⟦T205⟧](https://api.relayshield.net/developers) | [  ⟦T623⟧](https://pypi.org/project/langchain-relayshield/) |
+| [⟦T206⟧](https://strale.dev/docs) | [  ⟦T624⟧](https://pypi.org/project/langchain-strale/) |
+| [⟦T207⟧](https://www.ictinnovations.com/) | [  ⟦T625⟧](https://pypi.org/project/langchain-ictfax/) |
+| [⟦T208⟧](https://github.com/getanyapi-com/integrations/tree/main/langchain-anyapi) | [  ⟦T626⟧](https://pypi.org/project/langchain-anyapi/) |
+| [⟦T209⟧](https://docs.keenable.ai) | [  ⟦T627⟧](https://pypi.org/project/langchain-keenable/) |
+| [⟦T210⟧](https://github.com/lfg-gm/langchain-lfg#readme) | [  ⟦T628⟧](https://pypi.org/project/langchain-lfg/) |
+| [⟦T211⟧](https://www.agentrails.io/docs) | [  ⟦T629⟧](https://pypi.org/project/langchain-x402/) |
+| [⟦T212⟧](https://github.com/authzed/langchain-spicedb) | [  ⟦T630⟧](https://pypi.org/project/langchain-spicedb/) |
+| [⟦T213⟧](https://github.com/Layrcake-dev/langchain-layrcake#readme) | [  ⟦T631⟧](https://pypi.org/project/langchain-layrcake/) |
+| [⟦T214⟧](https://gandr.ai/docs) | [  ⟦T632⟧](https://pypi.org/project/gandr-langchain/) |
+| [⟦T215⟧](https://clearsigned.com/integrations#langchain) | [  ⟦T633⟧](https://pypi.org/project/langchain-clearsigned/) |
+| [⟦T216⟧](https://github.com/valthera/langchain-valthera) | [  ⟦T634⟧](https://pypi.org/project/langchain-valthera/) |
+| [⟦T217⟧](https://docs.spidra.io) | [  ⟦T635⟧](https://pypi.org/project/langchain-spidra/) || [⟦T218⟧](https://tablejourney.com/agents/#langchain) | [  ⟦T636⟧](https://pypi.org/project/langchain-tablejourney/) |
+| [⟦T219⟧](https://github.com/yumaheymans/langchain-carejobs#readme) | [  ⟦T637⟧](https://pypi.org/project/langchain-carejobs/) |
+| [⟦T220⟧](https://github.com/e7217/langchain-naver-community) | [  ⟦T638⟧](https://pypi.org/project/langchain-naver-community/) |
+| [⟦T221⟧](https://docs.scraperapi.com/) | [  ⟦T639⟧](https://pypi.org/project/langchain-scraperapi/) |
+| [⟦T222⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T640⟧](https://pypi.org/project/langchain-scrapingbee/) |
+| [⟦T223⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T641⟧](https://pypi.org/project/langchain-scrapingbee/) |
+| [⟦T224⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T642⟧](https://pypi.org/project/langchain-scrapingbee/) |
+| [⟦T225⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T643⟧](https://pypi.org/project/langchain-scrapingbee/) |
+| ⟦T1384​​⟧ | [  ⟦T644⟧](https://pypi.org/project/langchain-erc8004/) |
+| [⟦T227⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T645⟧](https://pypi.org/project/langchain-scrapingbee/) |
+| [⟦T228⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T646⟧](https://pypi.org/project/langchain-scrapingbee/) |
+| [⟦T229⟧](https://preclick.ai/) | [  ⟦T647⟧](https://pypi.org/project/langchain-urlcheck/) |
+| [⟦T230⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T648⟧](https://pypi.org/project/langchain-scrapingbee/) |
+| [⟦T231⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T649⟧](https://pypi.org/project/langchain-scrapingbee/) |
+| [⟦T232⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T650⟧](https://pypi.org/project/langchain-scrapingbee/) |
+| [⟦T233⟧](https://www.scrapingbee.com/documentation/langchain/) | [  ⟦T651⟧](https://pypi.org/project/langchain-scrapingbee/) |
+| [⟦T234⟧](https://querit.com/docs) | [  ⟦T652⟧](https://pypi.org/project/langchain-querit/) |
+| [⟦T235⟧](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain) | [  ⟦T653⟧](https://pypi.org/project/langchain-feedmyagent/) |
+| [⟦T236⟧](https://github.com/plivo-dev/langchain-plivo-tools) | [  ⟦T654⟧](https://pypi.org/project/langchain-plivo-tools/) |
+| [⟦T237⟧](https://github.com/vectara/langchain-vectara) | [  ⟦T655⟧](https://pypi.org/project/langchain-vectara/) |
+| [⟦T238⟧](https://www.xpoz.ai/docs) | [  ⟦T656⟧](https://pypi.org/project/langchain-xpoz/) |
+| [⟦T239⟧](https://docs.lakesail.com/sail/latest/guide/integrations/langchain.html) | [  ⟦T657⟧](https://pypi.org/project/langchain-sail/) |
+| [⟦T240⟧](https://github.com/AceDataCloud/LangChain/tree/main/packages/suno) | [  ⟦T658⟧](https://pypi.org/project/langchain-suno-acedatacloud/) |
+| [⟦T241⟧](https://docs.agentql.com/home) | [  ⟦T659⟧](https://pypi.org/project/langchain-agentql/) |
+| [⟦T242⟧](https://docs.yutori.com) | [  ⟦T660⟧](https://pypi.org/project/langchain-yutori/) |
+| [⟦T243⟧](https://github.com/Conrad-sudo/langchain-erc8004) | [  ⟦T661⟧](https://pypi.org/project/langchain-erc8004/) |
+| [⟦T244⟧](https://github.com/permitio/langchain-permit) | [  ⟦T662⟧](https://pypi.org/project/langchain-permit/) |
+| [⟦T245⟧](https://docs.agentql.com/home) | [  ⟦T663⟧](https://pypi.org/project/langchain-agentql/) |
+| [⟦T246⟧](https://clearsigned.com/integrations#langchain) | [  ⟦T664⟧](https://pypi.org/project/langchain-clearsigned/) |
+| [⟦T247⟧](https://pypi.org/project/langchain-hugging-bay/0.1.0/) | [  ⟦T665⟧](https://pypi.org/project/langchain-hugging-bay/) |
+| [⟦T248⟧](https://github.com/Mart-API/langchain-mart#readme) | [  ⟦T666⟧](https://pypi.org/project/langchain-mart/) |
+| [⟦T249⟧](https://github.com/Amitgb14/langchain_jenkins) | [  ⟦T667⟧](https://pypi.org/project/langchain-jenkins/) |
+| [⟦T250⟧](https://docs.lakesail.com/sail/main/guide/integrations/langchain/) | [  ⟦T668⟧](https://pypi.org/project/langchain-sail/) |
+| [⟦T251⟧](https://github.com/gridpin/gridpin/tree/main/integrations/langchain) | [  ⟦T669⟧](https://pypi.org/project/langchain-gridpin/) |
+| [⟦T252⟧](https://www.xpoz.ai/docs) | [  ⟦T670⟧](https://pypi.org/project/langchain-xpoz/) |
+| [⟦T253⟧](https://www.agentfetch.dev) | [  ⟦T671⟧](https://pypi.org/project/langchain-agentfetch/) |
+| [⟦T254⟧](https://github.com/fastaf-co/fastaf-integrations/tree/main/langchain-fastaf) | [  ⟦T672⟧](https://pypi.org/project/langchain-fastaf/) |
+| [⟦T255⟧](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain) | [  ⟦T673⟧](https://pypi.org/project/langchain-feedmyagent/) |
+| [⟦T256⟧](https://docs.proxyhat.com) | [  ⟦T674⟧](https://pypi.org/project/langchain-proxyhat/) |
+| [⟦T257⟧](https://platform.iflow.cn/) | [  ⟦T675⟧](https://pypi.org/project/iflow-search-langchain/) |
+| [⟦T258⟧](https://docs.livetennisapi.com) | [  ⟦T676⟧](https://pypi.org/project/langchain-livetennis/) |
+| [⟦T259⟧](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations) | [  ⟦T677⟧](https://pypi.org/project/nodeproxy-tools/) |
+| [⟦T260⟧](https://docs.webz.io/docs/webz/news-search-api-mcp) | [  ⟦T678⟧](https://pypi.org/project/langchain-webz/) |
+| [⟦T261⟧](https://lumify.ai/docs/ai) | [  ⟦T679⟧](https://pypi.org/project/langchain-lumify/) |
+| [⟦T262⟧](https://docs.ipay.sh) | [  ⟦T680⟧](https://pypi.org/project/langchain-pr402/) |
+| [⟦T263⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ⟦T681⟧](https://pypi.org/project/langchain-truthbear/) |
+| [⟦T264⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ⟦T682⟧](https://pypi.org/project/langchain-truthbear/) |
+| [⟦T265⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ⟦T683⟧](https://pypi.org/project/langchain-truthbear/) |
+| [⟦T266⟧](https://docs.opengradient.ai/) | [  ⟦T684⟧](https://pypi.org/project/langchain-opengradient/) |
+| [⟦T267⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ⟦T685⟧](https://pypi.org/project/langchain-truthbear/) |
+| [⟦T268⟧](https://asyntai.com/documentation/integrations/langchain/) | [  ⟦T686⟧](https://pypi.org/project/langchain-asyntai/) |
+| [⟦T269⟧](https://lyrenth.com/docs/integrations) | [  ⟦T687⟧](https://pypi.org/project/langchain-lyrenth/) |
+| [⟦T270⟧](https://crustapi.com/docs) | [  ⟦T688⟧](https://pypi.org/project/langchain-crustapi/) |
+| [⟦T271⟧](https://useagentgate.com/docs) | [  ⟦T689⟧](https://pypi.org/project/langchain-agentgate/) || [⟦T272⟧](https://github.com/stardog-union/stardog-langchain) | [  ⟦T690⟧](https://pypi.org/project/langchain-stardog/) |
+| [⟦T273⟧](https://github.com/auscahq/ausca/tree/main/python/langchain-ausca) | [  ⟦T691⟧](https://pypi.org/project/langchain-ausca/) |
+| [⟦T274⟧](https://github.com/Scottcjn/langchain-rustchain) | [  ⟦T692⟧](https://pypi.org/project/langchain-rustchain-tools/) |
+| [⟦T275⟧](https://docs.sidclaw.com/docs/integrations/langchain) | [  ⟦T693⟧](https://pypi.org/project/langchain-sidclaw/) |
+| [⟦T276⟧](https://github.com/Toloka/tendem-mcp/tree/main/integrations/langchain-tendem#readme) | [  ⟦T694⟧](https://pypi.org/project/langchain-tendem/) |
+| [⟦T277⟧](https://pinchwork.dev) | [  ⟦T695⟧](https://pypi.org/project/pinchwork/) |
+| [⟦T278⟧](https://docs.agentmail.to/welcome) | [  ⟦T696⟧](https://pypi.org/project/langchain-agentmail/) |
+| [⟦T279⟧](https://github.com/meetdewey/langchain-dewey) | [  ⟦T697⟧](https://pypi.org/project/langchain-dewey/) |
+| [⟦T280⟧](https://kerq.dev/docs) | [  ⟦T698⟧](https://pypi.org/project/langchain-kerq/) |
+| [⟦T281⟧](https://w2a-protocol.org/) | [  ⟦T699⟧](https://pypi.org/project/langchain-w2a/) |
+| [⟦T282⟧](https://www.football-charts.com/developers) | [  ⟦T700⟧](https://pypi.org/project/langchain-footballcharts/) |
+| [⟦T283⟧](https://modexia.software/docs) | [  ⟦T701⟧](https://pypi.org/project/langchain-modexia/) |
+| [⟦T284⟧](https://agenticemail.dev/docs) | [  ⟦T702⟧](https://pypi.org/project/langchain-agenticemail/) |
+| [⟦T285⟧](https://www.clawmessenger.com/blog/langchain-imessage-integration) | [  ⟦T703⟧](https://pypi.org/project/langchain-claw-messenger/) |
+| [⟦T286⟧](https://ictpbx.com) | [  ⟦T704⟧](https://pypi.org/project/langchain-ictpbx/) |
+| [⟦T287⟧](https://docs.igpt.ai/docs/sdks/langchain#igpt-ask) | [  ⟦T705⟧](https://pypi.org/project/langchain-igpt/) |
+| [⟦T288⟧](https://docs.igpt.ai/docs/sdks/langchain#igpt-search) | [  ⟦T706⟧](https://pypi.org/project/langchain-igpt/) |
+| [⟦T289⟧](https://github.com/oddsrelay/langchain-oddsrelay) | [  ⟦T707⟧](https://pypi.org/project/langchain-oddsrelay/) |
+| [⟦T290⟧](https://docs.context.dev) | [  ⟦T708⟧](https://pypi.org/project/langchain-context/) |
+| [⟦T291⟧](https://www.searchapi.io/docs/google) | [  ⟦T709⟧](https://pypi.org/project/langchain-searchapi/) |
+| [⟦T292⟧](https://crawleo.dev/integrations/langchain) | [  ⟦T710⟧](https://pypi.org/project/langchain-crawleo/) |
+| [⟦T293⟧](https://crawleo.dev/integrations/langchain) | [  ⟦T711⟧](https://pypi.org/project/langchain-crawleo/) |
+| [⟦T294⟧](https://proxyclaw.ai/docs) | [  ⟦T712⟧](https://pypi.org/project/langchain-proxyclaw/) |
+| [⟦T295⟧](https://quanticdata.io/docs/) | [  ⟦T713⟧](https://pypi.org/project/langchain-quanticdata/) |
+| [⟦T296⟧](https://docs.octen.ai) | [  ⟦T714⟧](https://pypi.org/project/langchain-octen/) |
+| [⟦T297⟧](https://docs.hashlock.markets/) | [  ⟦T715⟧](https://pypi.org/project/langchain-hashlock/) |
+| [⟦T298⟧](/oss/python/integrations/tools/privy) | [  ⟦T716⟧](https://pypi.org/project/langchain-privy/) |
+| [⟦T299⟧](https://ai-identity.co/docs) | [  ⟦T717⟧](https://pypi.org/project/langchain-ai-identity/) |
+| [⟦T300⟧](https://synoppy.com/docs) | [  ⟦T718⟧](https://pypi.org/project/langchain-synoppy/) |
+| [⟦T301⟧](https://bidda.com/developers) | [  ⟦T719⟧](https://pypi.org/project/langchain-bidda/) |
+| [⟦T302⟧](https://docs.protogrid.dev/sdk/langchain/) | [  ⟦T720⟧](https://pypi.org/project/langchain-protogrid/) |
+| [⟦T303⟧](https://docs.magichour.ai) | [  ⟦T721⟧](https://pypi.org/project/langchain-magic-hour/) |
+| [⟦T304⟧](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ⟦T722⟧](https://pypi.org/project/langchain-twittrapi/) |
+| [⟦T305⟧](https://instanode.dev/docs) | [  ⟦T723⟧](https://pypi.org/project/langchain-instanode/) |
+| [⟦T306⟧](https://github.com/aproxpay/langchain-aproxpay) | [  ⟦T724⟧](https://pypi.org/project/langchain-aproxpay/) |
+| [⟦T307⟧](https://simplepages.ai/mcp) | [  ⟦T725⟧](https://pypi.org/project/langchain-simplepages/) |
+| [⟦T308⟧](https://github.com/tilotech/tilores-langchain) | [  ⟦T726⟧](https://pypi.org/project/tilores-langchain/) |
+| [⟦T309⟧](https://docs.agentphone.ai/welcome) | [  ⟦T727⟧](https://pypi.org/project/langchain-agentphone/) |
+| [⟦T310⟧](https://ceki.me) | [  ⟦T728⟧](https://pypi.org/project/langchain-ceki/) |
+| [⟦T311⟧](https://www.ictlms.net) | [  ⟦T729⟧](https://pypi.org/project/langchain-ictexam/) |
+| [⟦T312⟧](https://github.com/nozomio-labs/nia-langchain) | [  ⟦T730⟧](https://pypi.org/project/langchain-nia/) |
+| [⟦T313⟧](https://verifly.email/docs) | [  ⟦T731⟧](https://pypi.org/project/langchain-verifly/) |
+| [⟦T314⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ⟦T732⟧](https://pypi.org/project/langchain-webmetadata-extractor/) |
+| [⟦T315⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ⟦T733⟧](https://pypi.org/project/langchain-webmetadata-extractor/) |
+| [⟦T316⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ⟦T734⟧](https://pypi.org/project/langchain-webmetadata-extractor/) |
+| [⟦T317⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ⟦T735⟧](https://pypi.org/project/langchain-webmetadata-extractor/) |
+| [⟦T318⟧](https://github.com/witanmarkets/langchain-witan#readme) | [  ⟦T736⟧](https://pypi.org/project/langchain-witan/) |
+| [⟦T319⟧](https://docs.bodo.ai/) | [  ⟦T737⟧](https://pypi.org/project/langchain-bodo/) |
+| [⟦T320⟧](https://coworkingview.com/en/mcp) | [  ⟦T738⟧](https://pypi.org/project/langchain-coworkingview/) |
+| [⟦T321⟧](https://github.com/fxmacrodata/langchain-fxmacrodata?utm_source=langchain\&utm_medium=integration\&utm_campaign=langchain-fxmacrodata\&utm_content=directory-listing#readme) | [  ⟦T739⟧](https://pypi.org/project/langchain-fxmacrodata/) |
+| [⟦T322⟧](https://github.com/Keirolabs-API/langchain-keiro) | [  ⟦T740⟧](https://pypi.org/project/langchain-keiro/) |
+| [⟦T323⟧](https://github.com/flipcoin-fun/flipcoin-langchain) | [  ⟦T741⟧](https://pypi.org/project/langchain-flipcoin/) |
+| [⟦T324⟧](https://signatrust.net/docs/api) | [  ⟦T742⟧](https://pypi.org/project/langchain-signatrust/) |
+| [⟦T325⟧](https://github.com/synapsoft-DA/langchain-synapsoft) | [  ⟦T743⟧](https://pypi.org/project/langchain-synapsoft/) || [⟦T326⟧](https://goodsender.com/docs) | [  ⟦T744⟧](https://pypi.org/project/langchain-goodsender/) |
+| [⟦T327⟧](https://github.com/kynto2001-ctrl/apexrunner-tools#riskshield-block-dangerous-trades-before-they-execute) | [  ⟦T745⟧](https://pypi.org/project/apexrunner-tools/) |
+| [⟦T328⟧](https://github.com/drasi-project/langchain-drasi) | [  ⟦T746⟧](https://pypi.org/project/langchain-drasi/) |
+| [⟦T329⟧](https://unirateapi.com) | [  ⟦T747⟧](https://pypi.org/project/langchain-unirate/) |
+| [⟦T330⟧](https://docs.blindfold.dev) | [  ⟦T748⟧](https://pypi.org/project/langchain-blindfold/) |
+| [⟦T331⟧](https://pypi.org/project/langchain-hugging-bay/0.1.0/) | [  ⟦T749⟧](https://pypi.org/project/langchain-hugging-bay/) |
+| [⟦T332⟧](https://docs.agentline.cloud/introduction) | [  ⟦T750⟧](https://pypi.org/project/langchain-agentline/) |
+| [⟦T333⟧](https://docs.delegare.dev/introduction) | [  ⟦T751⟧](https://pypi.org/project/langchain-delegare/) |
+| [⟦T334⟧](https://nestdaddy.com/blog/langchain-live-web-search-news) | [  ⟦T752⟧](https://pypi.org/project/langchain-nestdaddy/) |
+| [⟦T335⟧](https://toolstem.com) | [  ⟦T753⟧](https://pypi.org/project/langchain-toolstem/) |
+| [⟦T336⟧](https://docs.scrapeless.com/en/integrations/langchain/) | [  ⟦T754⟧](https://pypi.org/project/langchain-scrapeless/) |
+| [⟦T337⟧](https://docs.scrapeless.com/en/integrations/langchain/) | [  ⟦T755⟧](https://pypi.org/project/langchain-scrapeless/) |
+| [⟦T338⟧](https://docs.scrapeless.com/en/integrations/langchain/) | [  ⟦T756⟧](https://pypi.org/project/langchain-scrapeless/) |
+| [⟦T339⟧](https://docs.scrapeless.com/en/integrations/langchain/) | [  ⟦T757⟧](https://pypi.org/project/langchain-scrapeless/) |
+| [⟦T340⟧](https://nextmail.sh/docs/python/langchain) | [  ⟦T758⟧](https://pypi.org/project/langchain-nextmail/) |
+| [⟦T341⟧](https://github.com/itulo/eu-nordic-open-data-mcp/tree/main/packages/langchain-eu-nordic-open-data) | [  ⟦T759⟧](https://pypi.org/project/langchain-eu-nordic-open-data/) |
+| [⟦T342⟧](https://pypi.org/project/langchain-surgemesh/) | [  ⟦T760⟧](https://pypi.org/project/langchain-surgemesh/) |
+| [⟦T343⟧](https://acg.devlab.group/docs/integrations/langchain) | [  ⟦T761⟧](https://pypi.org/project/langchain-agent-commerce/) |
+| [⟦T344⟧](https://pypi.org/project/langchain-arche/) | [  ⟦T762⟧](https://pypi.org/project/langchain-arche/) |
+| [⟦T345⟧](https://github.com/seanmarkwei/langgraph-agentram) | [  ⟦T763⟧](https://pypi.org/project/langgraph-agentram/) |
+| [⟦T346⟧](https://scrape.ly/docs/langchain) | [  ⟦T764⟧](https://pypi.org/project/langchain-scrapely/) |
+| [⟦T347⟧](https://pypi.org/project/langchain-groundtruth/) | [  ⟦T765⟧](https://pypi.org/project/langchain-groundtruth/) |
+| [⟦T348⟧](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | [  ⟦T766⟧](https://pypi.org/project/scoutwyze-compute/) |
+| [⟦T349⟧](https://github.com/lv-analytics/liquidvision-mcp/tree/main/integrations/langchain) | [  ⟦T767⟧](https://pypi.org/project/langchain-liquidvision/) |
+| [⟦T350⟧](https://github.com/reachdog/langchain-reachdog/tree/main/libs/reachdog) | [  ⟦T768⟧](https://pypi.org/project/langchain-reachdog/) |
+| [⟦T351⟧](https://github.com/Polias-Team/langchain-polias) | [  ⟦T769⟧](https://pypi.org/project/langchain-polias/) |
+| [⟦T352⟧](https://tokenusage.dev/langchain) | [  ⟦T770⟧](https://pypi.org/project/langchain-tokenusage-dev/) |
+| [⟦T353⟧](https://docs.maqpna.com/sdk/framework-adapters/#langchain) | [  ⟦T771⟧](https://pypi.org/project/kosa8-maqpna/) |
+| [⟦T354⟧](https://pypi.org/project/langchain-alterlab/) | [  ⟦T772⟧](https://pypi.org/project/langchain-alterlab/) |
+| [⟦T355⟧](https://sealkeeper.run/docs/langchain) | [  ⟦T773⟧](https://pypi.org/project/langchain-sealkeeper/) |
+| [⟦T356⟧](https://pypi.org/project/langchain-finzdata/) | [  ⟦T774⟧](https://pypi.org/project/langchain-finzdata/) |
+| [⟦T357⟧](https://hlido.eu/docs/) | [  ⟦T775⟧](https://pypi.org/project/hlido-trust/) |
+| [⟦T358⟧](https://github.com/mobilebox-dev/mobilebox/tree/main/packages/python/langchain-mobilebox#readme) | [  ⟦T776⟧](https://pypi.org/project/langchain-mobilebox/) |
+| [⟦T359⟧](https://bhived.ai/docs/integrations/langchain) | [  ⟦T777⟧](https://pypi.org/project/langchain-bhived/) |
+| [⟦T360⟧](https://onlinecompiler.io/docs/langchain) | [  ⟦T778⟧](https://pypi.org/project/langchain-onlinecompiler/) |
+| [⟦T361⟧](https://www.easytranscriber.com/docs/langchain) | [  ⟦T779⟧](https://pypi.org/project/langchain-easytranscriber/) |
+| [⟦T362⟧](https://tempguru.co/ai-agents) | [  ⟦T780⟧](https://pypi.org/project/tempguru/) |
+| [⟦T363⟧](https://tickerlayer.com/docs/agent-frameworks#langchain) | [  ⟦T781⟧](https://pypi.org/project/langchain-tickerlayer/) |
+| [⟦T364⟧](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain) | [  ⟦T782⟧](https://pypi.org/project/viasocket/) |
+| [⟦T365⟧](https://github.com/AdsCrawl/langchain-adscrawl) | [  ⟦T783⟧](https://pypi.org/project/langchain-adscrawl/) |
+| [⟦T366⟧](https://github.com/screwtapeai/pay-safely) | [  ⟦T784⟧](https://pypi.org/project/screwtape-pay-safely/) |
+| [⟦T367⟧](https://github.com/data-x-api/langchain-dataxapi#readme) | [  ⟦T785⟧](https://pypi.org/project/langchain-dataxapi/) |
+| [⟦T368⟧](https://github.com/cyberwareX/langchain-cyberwarex#readme) | [  ⟦T786⟧](https://pypi.org/project/langchain-cyberwarex/) |
+| [⟦T369⟧](https://hyperresearch.ai/docs/answers/langchain) | [  ⟦T787⟧](https://pypi.org/project/langchain-hyperresearch/) |
+| [⟦T370⟧](https://github.com/cleanedweb/langchain-cleanedweb#readme) | [  ⟦T788⟧](https://pypi.org/project/langchain-cleanedweb/) |
+| [⟦T371⟧](https://sofya.co/docs/langchain) | [  ⟦T789⟧](https://pypi.org/project/langchain-sofya/) |
+| [⟦T372⟧](https://jobo.world/docs/connectors/langchain) | [  ⟦T790⟧](https://pypi.org/project/langchain-jobo/) |
+| [⟦T373⟧](https://adapterspot.com/en/api/langchain/) | [  ⟦T791⟧](https://pypi.org/project/langchain-adapterspot/) |
+| [⟦T374⟧](https://lanerouter.com/docs#langchain) | [  ⟦T792⟧](https://pypi.org/project/langchain-lanerouter/) |
+| [⟦T375⟧](https://github.com/rascal-3/chainanalyzer-mcp/tree/main/packages/langchain-chainanalyzer) | [  ⟦T793⟧](https://pypi.org/project/langchain-chainanalyzer/) |
+| [⟦T376⟧](https://github.com/ihouse-corp/langchain-askjapan#readme) | [  ⟦T794⟧](https://pypi.org/project/langchain-askjapan/) |
+| [⟦T377⟧](https://vericto.com/docs/langchain) | [  ⟦T795⟧](https://pypi.org/project/langchain-vericto/) |
+| [⟦T378⟧](https://github.com/Jona1245/agentdatahub-python#readme) | [  ⟦T796⟧](https://pypi.org/project/agentdatahub/) |
+| [⟦T379⟧](https://github.com/alion-io/alion-sdk/tree/main/langchain#readme) | [  ⟦T797⟧](https://pypi.org/project/langchain-alion/) || [⟦T380⟧](https://github.com/etfiq/etfiq-connectors/tree/main/langchain-etfiq) | [  ⟦T798⟧](https://pypi.org/project/langchain-etfiq/) |
+| [⟦T381⟧](https://channel3.ai/docs/langchain) | [  ⟦T799⟧](https://pypi.org/project/langchain-channel3/) |
+| [⟦T382⟧](https://github.com/octogen-ai/octogen-dev/tree/main/integrations/langchain#readme) | [  ⟦T800⟧](https://pypi.org/project/langchain-storerouter/) |
+| [⟦T383⟧](https://www.trezalabs.com/integrations/langchain) | [  ⟦T801⟧](https://pypi.org/project/langchain-treza/) |
+| [⟦T384⟧](https://github.com/Mattbusel/langchain-tensorust/blob/main/docs/index.md) | [  ⟦T802⟧](https://pypi.org/project/langchain-tensorust/) |
+| [⟦T385⟧](https://github.com/arcnm/langchain-arcnm#readme) | [  ⟦T803⟧](https://pypi.org/project/langchain-arcnm/) |
+| [⟦T386⟧](https://github.com/outcrawlai/langchain-outcrawl#readme) | [  ⟦T804⟧](https://pypi.org/project/langchain-outcrawl/) |
+| [⟦T387⟧](https://github.com/browsa-io/browsa/tree/main/integrations/langchain-browsa#readme) | [  ⟦T805⟧](https://pypi.org/project/langchain-browsa/) |
+| [⟦T388⟧](https://github.com/waynehamadi/langchain-datacircle) | [  ⟦T806⟧](https://pypi.org/project/langchain-datacircle/) |
+| [⟦T389⟧](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ⟦T807⟧](https://pypi.org/project/solvecha/) |
+| [⟦T390⟧](https://github.com/stophydotdev/stophy/tree/main/sdk/packages/langchain) | [  ⟦T808⟧](https://pypi.org/project/langchain-stophy/) |
+| [⟦T391⟧](https://github.com/Bosco-Labs/bosco-labs-data/tree/main/langchain-bosco) | [  ⟦T809⟧](https://pypi.org/project/langchain-bosco/) |
+| [⟦T392⟧](https://github.com/video-gen/langchain-videogen#readme) | [  ⟦T810⟧](https://pypi.org/project/langchain-videogen/) |
+| [⟦T393⟧](https://github.com/Vovala14/CAEL/tree/codex/agent-provenance/examples/agent_provenance) | [  ⟦T811⟧](https://pypi.org/project/cael-provenance-bridge/) |
+| [⟦T394⟧](https://socialscrape.dev/docs/langchain) | [  ⟦T812⟧](https://pypi.org/project/langchain-socialscrape/) |
+| [⟦T395⟧](https://github.com/nohosa001-pixel/x402-cleanweb-agent/tree/main/packages/langchain-x402-cleanweb#readme) |不适用 |
+| [⟦T396⟧](https://x402check.dev) |不适用 |
+| [⟦T397⟧](https://agentlair.dev/docs) |不适用 |
+| [⟦T398⟧](https://github.com/asindotdev/langchain-asin#readme) |不适用 |
+| [⟦T399⟧](https://github.com/automdev/langchain-autom#readme) |不适用 |
+| [⟦T400⟧](https://github.com/kochetkov-ma/langchain-brewpage#readme) |不适用 |
+| [⟦T401⟧](https://browserless.io) |不适用 |
+| [⟦T402⟧](https://github.com/capturekitdev/langchain-capturekit#readme) |不适用 |
+| [⟦T403⟧](https://github.com/chartquery/langchain-chartquery#readme) |不适用 |
+| [⟦T404⟧](https://cleave.fi/docs/agents/langchain) |不适用 |
+| [⟦T405⟧](https://github.com/CrowdWisdomTradingx402/crowdwisdomtrading-python/tree/main/integrations/langchain#readme) |不适用 |
+| [⟦T406⟧](https://equibles.com/docs/api/langchain) |不适用 |
+| [⟦T407⟧](https://github.com/faxforagents/langchain-faxforagents/blob/main/README.md) |不适用 |
+| [⟦T408⟧](https://github.com/llmbender/findcheap-sdks/tree/main/langchain#readme) |不适用 |
+| [⟦T409⟧](https://github.com/fokals/langchain-fokals#readme) |不适用 |
+| [⟦T410⟧](https://github.com/Sandeep85Das/langchain-frame) |不适用 |
+| [⟦T411⟧](https://huangtingflux.com/integrations/langchain) |不适用 |
+| [⟦T412⟧](https://api.kaer.ai/docs/langchain) |不适用 |
+| [⟦T413⟧](https://movoa.readthedocs.io/en/latest/integrations/langchain/) |不适用 |
+| [⟦T414⟧](https://github.com/piloterr/langchain-piloterr#readme) |不适用 |
+| [⟦T415⟧](https://popnow.ai/docs/langchain) |不适用 |
+| [⟦T416⟧](https://docs.scrapeunblocker.com/sdks/langchain) |不适用 |
+| [⟦T417⟧](https://sidequestpays.com/docs#langchain) |不适用 |
+| [⟦T418⟧](/oss/python/integrations/tools/stagehand) |不适用 |
 
 > [!注意]
 >

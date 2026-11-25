@@ -41,7 +41,7 @@ my-app/
 下面的依赖项将包含在映像中，您也可以在代码中使用它们，只要具有兼容的版本范围即可：
 
 ```
-langgraph>=0.4.10,<2
+langgraph>=1.2.6,<2
 langgraph-sdk>=0.4.4
 langgraph-checkpoint>=3.0.1,<5
 langchain-core>=0.3.66

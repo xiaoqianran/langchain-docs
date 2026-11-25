@@ -20,11 +20,11 @@
 
 > [!注意]
 >
-> 默认情况下，多轮在线评估器可以延长跟踪保留时间。您可以在配置评估器时选择退出，以便跟踪保留代理环境的默认保留层。如果另一个操作显式延长保留时间或环境已使用延长保留时间，跟踪仍会升级。有关逐步选择退出的说明，请参阅[Manage evaluator trace retention](/langsmith/evaluators#manage-evaluator-trace-retention)。详情请参见[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
+> 在线评估器默认延长跟踪保留时间。当代理环境使用基本保留时，您可以[opt out for an individual evaluator](/langsmith/evaluators#manage-evaluator-trace-retention)。其他行动仍然可以延伸这些痕迹。如果[extended retention is disabled for the workspace](/langsmith/data-purging-compliance#disable-extended-trace-retention)，则无论保存的环境默认值如何，评估都会继续，无需新的保留升级。
 
-## 它是如何工作的多轮在线评估器遵循以下评估生命周期：
+## 它是如何工作的
 
-1. **跟踪摄取**：对话中的每个轮次都作为单独的运行进行跟踪，并使用共享线程 ID 与线程关联。
+多轮在线评估器遵循以下评估生命周期：1. **跟踪摄取**：对话中的每个轮次都作为单独的运行进行跟踪，并使用共享线程 ID 与线程关联。
 2. **空闲时间检测**：摄取线程中的最后一个跟踪后，LangSmith 等待配置的空闲时间过去。此空闲期表示对话已完成并准备好进行评估。
 3. **消息组装**：LangSmith从线程中的每个跟踪中收集`messages`并将它们组装成单个对话历史记录。如果每个跟踪仅包含最新消息，则 LangSmith 将各轮消息缝合在一起。如果每个跟踪包含完整的历史记录，LangSmith 会直接使用它。由于线程中的连续跟踪经常重新发送先前的历史记录，因此 LangSmith 会删除重叠消息，因此每个消息仅出现一次。结果是 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的单个消息列表，这就是提示中的 `all_messages` 变量解析的内容。
 4. **LLM 作为法官评估**：组装的对话将传递到您配置的 LLM 作为法官提示。评估者根据您的标准对整个线程进行评分：语义意图、结果或轨迹。5. **反馈记录**：评估者使用您配置的与线程关联的反馈键将反馈写入LangSmith。

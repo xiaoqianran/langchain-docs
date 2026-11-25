@@ -1330,7 +1330,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -1348,14 +1351,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -1369,8 +1371,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -1385,7 +1388,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {
@@ -1468,7 +1471,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -1486,14 +1492,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -1507,8 +1512,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -1523,7 +1529,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {
@@ -1606,7 +1612,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -1624,14 +1633,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -1645,8 +1653,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -1661,7 +1670,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {
@@ -1744,7 +1753,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -1762,14 +1774,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -1783,8 +1794,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -1799,7 +1811,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {
@@ -1882,7 +1894,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -1900,14 +1915,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -1921,8 +1935,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -1937,7 +1952,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {
@@ -2020,7 +2035,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -2038,14 +2056,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -2059,8 +2076,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -2075,7 +2093,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {
@@ -2158,7 +2176,10 @@ async function seedSkillStore(store: InMemoryStore) {
 }
 
 /** Copy shared skill files from the store into the sandbox before each agent run. */
-function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+// Call the sandbox directly. CompositeBackend routes /skills/ to StoreBackend,
+// so uploadFiles on the composite would write back to the store instead of
+// seeding the container for script execution.
+function createSkillSandboxSyncMiddleware(sandbox: LangSmithSandbox) {
   return createMiddleware({
     name: "SkillSandboxSyncMiddleware",
     beforeAgent: async (state, runtime) => {
@@ -2176,14 +2197,13 @@ function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
       for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
         const normalized = normalizeSkillsStoreKey(String(item.key));
         const data = item.value as FileData;
-        // CompositeBackend routes paths and batches uploads to the right backend.
         files.push([
           `/skills${normalized}`,
           encoder.encode(data.content.join("\n")),
         ]);
       }
 
-      if (files.length > 0) await backend.uploadFiles(files);
+      if (files.length > 0) await sandbox.uploadFiles(files);
 
       return state;
     },
@@ -2197,8 +2217,9 @@ async function main() {
   const client = new SandboxClient();
   const lsSandbox = await client.createSandbox();
 
+  const sandboxBackend = new LangSmithSandbox({ sandbox: lsSandbox });
   const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
+    sandboxBackend,
     {
       "/skills/": new StoreBackend({
         store,
@@ -2213,7 +2234,7 @@ async function main() {
       backend,
       skills: ["/skills/"],
       store,
-      middleware: [createSkillSandboxSyncMiddleware(backend)],
+      middleware: [createSkillSandboxSyncMiddleware(sandboxBackend)],
     });
 
   } finally {

@@ -6,11 +6,11 @@
 
 安装软件包、发出网络请求，并使用在 LangSmith 沙箱中运行的高级代码评估器的工作区机密进行身份验证。
 
-高级代码评估器允许安装公共包、调用外部服务、使用加密的[workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings)进行身份验证，以及每次评估的运行时间更长。高级代码评估器在隔离的 [LangSmith sandbox](/langsmith/sandboxes) 而不是默认的 [code evaluator](/langsmith/code-evaluator-ui) 环境中运行。 Python 和 JavaScript 代码评估器都可以使用高级功能，无论您是从数据集、Playground 创建它们，还是作为对跟踪进行评分的 [online evaluator](/langsmith/online-evaluations-code) 来创建它们。
+高级代码评估器允许安装公共包、调用外部服务、使用加密的[workspace secrets](/langsmith/workspace-secrets)进行身份验证，以及每次评估的运行时间更长。高级代码评估器在隔离的 [LangSmith sandbox](/langsmith/sandboxes) 而不是默认的 [code evaluator](/langsmith/code-evaluator-ui) 环境中运行。 Python 和 JavaScript 代码评估器都可以使用高级功能，无论您是从数据集、Playground 创建它们，还是作为对跟踪进行评分的 [online evaluator](/langsmith/online-evaluations-code) 来创建它们。
 
 > [!注意]
 >
-> 高级代码评估器位于[beta](/langsmith/release-stages#beta)。它们在测试期间无需额外付费即可使用。
+> 高级代码评估器位于[beta](/langsmith/release-stages#beta)。测试期间无需额外付费即可使用它们。
 
 ## 比较高级和默认代码评估器| |默认代码评估器 |高级代码评估器 |
 | - | - | - |
@@ -45,13 +45,13 @@ LangSmith 仅安装公共软件包，每个评估者最多安装 30 个。不支
 
 ## 发出网络请求
 
-出站网络请求遵循您组织的沙箱出口策略。在限制出站情况下，LangSmith 会阻止对托管允许列表之外的目的地的请求。欲了解更多信息，请参阅[Organization-level restricted egress](/langsmith/sandbox-auth-proxy#organization-level-restricted-egress)。
+出站网络请求遵循您组织的沙箱出口策略。在受限制的出口下，LangSmith 会阻止对托管允许列表之外的目的地的请求。欲了解更多信息，请参阅[Organization-level restricted egress](/langsmith/sandbox-auth-proxy#organization-level-restricted-egress)。
 
 ## 使用工作区机密进行身份验证工作区机密允许高级代码评估器调用需要身份验证的服务，而无需将凭据放入评估器代码中。当您选择一个密钥时，沙盒代理会将其作为 HTTP 标头添加到发送到该密钥允许的主机的 HTTPS 请求上。秘密值永远不会进入沙箱，因此您的代码无法从环境变量或其他任何地方读取它。
 
 > [!警告]
 >
-> 请勿将 API 密钥或其他凭据粘贴到评估程序代码中。 LangSmith 使用评估器存储代码，当 **Trace Evaluator Runs** 打开时，代码会出现在评估器跟踪中。请改用工作区机密。
+> 请勿将 API 密钥或其他凭据粘贴到评估器代码中。 LangSmith 使用评估器存储代码，当 **Trace Evaluator Runs** 打开时，代码会出现在评估器跟踪中。请改用工作区机密。
 
 要在评估器中使用工作区机密：
 
@@ -95,24 +95,24 @@ def perform_eval(run, example=None):
 
 ### 配置允许的主机的秘密
 
-每个工作区秘密定义了它可以发送到哪些主机以及在哪个标头中。配置允许的主机需要`workspaces:manage-secrets`权限，工作区管理员默认拥有该权限。
+每个工作区秘密定义了它可以发送到哪些主机以及在哪个标头中。配置允许的主机需要[⟦T33⟧ permission](/langsmith/workspace-secrets#required-permission)，工作区管理员默认拥有该[⟦T33⟧ permission](/langsmith/workspace-secrets#required-permission)。
 
 已知的提供者机密（例如 `OPENAI_API_KEY` 和 `ANTHROPIC_API_KEY`）带有默认主机和标头，因此评估者无需进一步设置即可使用它们。在管理员添加主机之前，自定义密钥没有允许的主机，因此评估者无法选择它。
 
-要添加具有允许的主机的自定义密钥：1. 转至 **设置** > **集成** > **提供商机密**。 **允许的主机** 列显示每个现有密钥的主机。
+要添加具有允许的主机的自定义密钥：1. [Open the workspace secrets page](/langsmith/workspace-secrets#open-the-secrets-page)。 **允许的主机** 列显示每个现有密钥的主机。
 2. 单击“**+ 秘密**”并选择“**自定义**”。
 3. 输入密钥的密钥和值。
 4. 添加一台或多台允许的主机。输入确切的主机，例如 `eval-api.example.com`，或前导通配符，例如 `*.example.com`。
 5. 设置标头名称和标头值模板。模板必须包含 `{value}`，LangSmith 将其替换为密钥。例如，使用 `Bearer {value}` 作为不记名令牌，或使用 `{value}` 发送原始秘密。
 6. 保守秘密。
 
-要更改现有密钥的主机或标头，请单击密钥旁边的编辑图标，然后执行相同的步骤。对密钥值、主机或标头的更改将在评估器下次运行时应用。
+要更改现有密钥的主机或标头，请单击密钥旁边的（编辑密钥）编辑图标，然后执行相同的步骤。对密钥值、主机或标头的更改将在评估程序下次运行时应用。
 
 > [!警告]
 >
 > 通配符主机允许域下的每个主机。在共享提供商域上，任何可以在该域下创建资源的人都可以接收该机密。更喜欢确切的主机。
 
-### 解决秘密错误LangSmith 在保存评估器时检查评估器的机密，并在每次运行时再次检查，因为管理员可以在您选择机密后编辑或删除它。当检查失败时，LangSmith拒绝保存，或者评估失败，而不是在没有身份验证的情况下运行它。
+### 解决秘密错误LangSmith 在保存评估器时检查评估器的机密，并在每次运行时再次检查，因为管理员可以在您选择机密后对其进行编辑或删除。当检查失败时，LangSmith拒绝保存，或者评估失败，而不是在没有身份验证的情况下运行它。
 
 |问题 |保存失败 |运行失败 |
 | - | - | - |
@@ -149,7 +149,7 @@ curl -X PATCH "https://api.smith.langchain.com/api/v1/platform/evaluators/$EVALU
 ### 处理密钥和权限更改|活动 |效果|建议行动 |
 | - | - | - |
 |有人在 UI 中编辑代码 |评估员现在充当该人 |使用服务密钥再次保存代码，或限制谁可以编辑评估器 |
-|服务钥匙轮换|删除旧密钥将停止评估者的 LangSmith 访问 |先用新密钥保存代码，然后删除旧密钥 |
+|服务钥匙轮换 |删除旧密钥将阻止评估者的 LangSmith 访问 |先用新密钥保存代码，然后删除旧密钥 |
 |服务密钥过期 | LangSmith 调用失败并出现 `403` 错误 |在密钥过期之前轮换密钥 |
 |服务帐户或密钥已删除 | LangSmith 调用失败并出现 `403` 错误 |使用另一个服务键保存代码 |
 |服务帐户的角色发生变化 |评估者的权限在下次调用时发生变化 |将角色限制在评估者需要的范围内 |
@@ -158,7 +158,7 @@ curl -X PATCH "https://api.smith.langchain.com/api/v1/platform/evaluators/$EVALU
 
 高级代码评估器接受与默认代码评估器相同的功能。 Python 中的 `perform_eval(run, example)` 函数或 JavaScript 中的 `performEval` 函数工作原理不变。完整合同请参见[Write your evaluator code](/langsmith/code-evaluator-ui#step-2-write-your-evaluator-code)。
 
-您还可以定义`evaluate(ctx)`，当`perform_eval`或`performEval`都存在时，LangSmith优先于`perform_eval`或`performEval`调用。 `ctx` 对象将运行公开为 `ctx.run`，并将数据集示例（如果有）公开为 `ctx.example`。返回相同的反馈键和分数字典：```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+您还可以定义 `evaluate(ctx)`，当`perform_eval` 或 `performEval` 都存在时，LangSmith 优先调用它。 `ctx` 对象将运行公开为 `ctx.run`，并将数据集示例（如果有）公开为 `ctx.example`。返回相同的反馈键和分数字典：```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def evaluate(ctx):
     actual = ctx.run["outputs"]["answer"]
     expected = ctx.example["outputs"]["answer"]
@@ -235,28 +235,28 @@ def perform_eval(run, example=None):
 
 ### 在重建期间保持得分
 
-一旦高级代码评估器成功构建，LangSmith会在新构建运行时以及新构建失败后继续对该构建的运行进行评分。新版本会在成功后接管，因此反馈会不间断地持续进行。立即停止以前的版本，例如因为它产生错误的分数：
+一旦高级代码评估器成功构建，LangSmith会在新构建运行时以及新构建失败后继续对该构建的运行进行评分。新版本会在成功后接管，因此反馈会不间断地持续进行。To stop the previous version immediately, for example because it produces wrong scores:
 
-1. 打开评估器的 **配置评估器** 窗格。
-2. 在**来源**下，选择一个来源并关闭**启用**。
-3. 对评估器连接到的每个源重复此操作。
+1. Open the evaluator's **Configure Evaluator** pane.
+2. Under **Source**, select a source and turn off **Enabled**.
+3. Repeat for each source the evaluator is attached to.
 4. 单击“**保存**”。
 
-新版本准备就绪后，重新打开**启用**。
+Turn **Enabled** back on after the new build is ready.
 
-在第一次构建成功之前：
+Before the first build succeeds:
 
-* 在线评估程序在构建完成后等待并评估运行。
-* 实验评估，如Playground实验，写错误反馈如`Code evaluator is not ready yet (build status: BUILDING)`。
-* 如果第一次构建失败并且没有正在进行的构建，则每次运行都会收到错误反馈，因此失败是可见的。
+* Online evaluators wait and evaluate the runs after the build completes.
+* Experiment evaluations, such as Playground experiments, write error feedback such as `Code evaluator is not ready yet (build status: BUILDING)`.
+* If the first build fails and no build is in progress, every run gets error feedback so the failure is visible.
 
 如果您在重建过程中重命名反馈键，则重建期间写入的反馈将包含新键以及先前构建的分数。
 
 ## 评估线程
 
-线程评估器对整个对话[thread](/langsmith/threads)而不是单次运行进行评分，并将其反馈写入线程中的最新根运行。线程评估器作为在线评估器在您的跟踪上运行，并且必须是高级代码评估器。有关LangSmith如何决定线程何时完成，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn#how-it-works)。
+A thread evaluator scores a whole conversation [thread](/langsmith/threads) instead of a single run, and writes its feedback to the latest root run in the thread. Thread evaluators run as online evaluators on your traces and must be advanced code evaluators. For how LangSmith decides when a thread is complete, see [Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn#how-it-works).
 
-要创建线程评估器：1. 在在线评估器的 **配置评估器** 窗格中，选择 **启用高级功能**。在您执行此操作之前，**线程**选项不可用。
+To create a thread evaluator:1. 在在线评估器的 **配置评估器** 窗格中，选择 **启用高级功能**。在您执行此操作之前，**线程**选项不可用。
 2. 在 **运行** / **线程** 切换中，选择 **线程**。
 3. 在**评估者输入**下，选择评估者收到的输入。
 4. 定义一个 `evaluate(ctx)` 函数，用于从 `ctx` 读取所选输入。线程计算器不支持 `perform_eval` 或 `performEval`。

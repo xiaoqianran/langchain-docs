@@ -10,7 +10,7 @@
 
 ## 工作区秘密
 
-Fleet 使用 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) 存储模型和工具的 API 密钥。可以使用以下秘密类型：
+Fleet 使用 [workspace secrets](/langsmith/workspace-secrets) 存储模型和工具的 API 密钥。可以使用以下秘密类型：
 
 * **模型提供者密钥**：默认情况下，Fleet 使用LangChain 管理的模型，不需要模型提供者 API 密钥。仅当您使用 [custom models](/langsmith/fleet/essentials#custom-models) 时，才需要 OpenAI 或 Anthropic API 密钥。设置后，代理图会从工作区机密加载此密钥以进行推理。
 * **特定于队列的机密**：以 `FLEET_` 为前缀的机密优先于队列内的工作区机密。这样，您可以更好地跟踪 Fleet 与 LangSmith 使用相同秘密的其他部分的使用情况。如果您同时拥有 `OPENAI_API_KEY` 和 `FLEET_OPENAI_API_KEY`，则将使用 `FLEET_OPENAI_API_KEY` 秘密。
@@ -25,24 +25,15 @@ Fleet 使用 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace
 
 ### 添加一个秘密
 
-添加工作区机密需要管理工作区中机密的权限。如果您没有，请要求工作区管理员为您添加密钥或授予您访问权限。
+沿[steps for adding a workspace secret](/langsmith/workspace-secrets#add-a-secret)行驶。对于模型提供程序密钥，请在 **Provider** 下选择提供程序，该提供程序将密钥命名为 `OPENAI_API_KEY` 或 `ANTHROPIC_API_KEY`。对于工具密钥和以 `FLEET_` 为前缀的密钥，请保留 **自定义** 作为提供程序，并输入密钥名称，例如 `TAVILY_API_KEY` 或 `FLEET_OPENAI_API_KEY` 作为 **密钥**。
 
-添加秘密：
+## 使用和支出限制
 
-1. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-workspace-admin) 中，导航到 **设置** > **集成** > **提供商机密**。
-2. 选择 **+ 秘密**。
-3. 在**提供商**下，选择您的模型提供商。 LangSmith 使用提供者期望的环境变量命名机密，例如 `OPENAI_API_KEY` 或 `ANTHROPIC_API_KEY`。在该字段中输入您的秘密。
-
-   对于工具密钥、以 `FLEET_` 为前缀的机密或未列出的提供程序，请将 **自定义** 保留为提供程序。输入密钥名称作为 **Key**（例如，`TAVILY_API_KEY` 或 `FLEET_OPENAI_API_KEY`），输入您的密钥作为 **Value**。
-4. 选择**保存**。
-
-## 使用和支出限制**使用情况**页面使工作区管理员可以了解队列支出以及为代理和用户设置支出限制的能力。此页面仅对具有 `fleet:read-admin-config` 权限的用户可见。
+**使用情况**页面使工作区管理员可以了解队列支出以及为代理和用户设置支出限制的能力。此页面仅对具有 `fleet:read-admin-config` 权限的用户可见。
 
 ### 查看当前支出
 
-**使用情况**页面显示您的工作区在选定时间段（**过去 7 天**或 **过去 14 天**）的总支出，以及总线程数和总运行数。
-
-每日支出图表提供了选定时间段内成本的直观明细。 **细分**部分可让您通过两种方式查看支出详细信息：
+**使用情况**页面显示您的工作区在选定时间段（**过去 7 天**或 **过去 14 天**）的总支出，以及总线程数和总运行数。每日支出图表提供了选定时间段内成本的直观明细。 **细分**部分可让您通过两种方式查看支出详细信息：
 
 * **按代理**：查看每个代理的总成本、运行次数、首次和最后使用日期、所有者和每周限制。
 * **按用户**：查看每个用户的支出和活动。
@@ -56,15 +47,15 @@ Fleet 使用 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace
 在 **默认每周支出限额** 部分，您可以配置：
 
 * **每个客服人员默认限额（美元）**：设置适用于工作区中所有客服人员的默认每周支出限额。
-* **每用户默认限额（美元）**：设置适用于工作区中所有用户的默认每周支出限额。限制是每周至今的，并在周一重置。
+* **每用户默认限额（美元）**：设置适用于工作区中所有用户的默认每周支出限额。
+
+限制是每周至今的，并在周一重置。
 
 #### 覆盖单个代理和用户的限制
 
 您可以覆盖单个代理或用户的默认支出限额，以设置自定义每周限额。
 
-#### 支出限制行为
-
-* 支出限额的更改可能需要几分钟时间才能在所有正在运行的代理中传播。
+#### 支出限制行为* 支出限额的更改可能需要几分钟时间才能在所有正在运行的代理中传播。
 * 每次运行开始时都会检查支出限额。如果运行在使用量低于限制时开始，则即使最终成本超出限制，也将允许运行完成。
 * 支出计算基于痕迹。删除痕迹将影响报告的使用情况和支出执行。
 

@@ -14,7 +14,7 @@ This page covers secrets routing and deploy options. To test the agent before de
 
 ## Prerequisites
 
-Before you deploy, make sure you have:
+For CLI deployments, make sure you have:
 
 * A LangSmith Cloud workspace or a workspace in a [BYOC data plane](/langsmith/byoc-onboarding-aws).
 
@@ -137,7 +137,7 @@ A target that `requires-python` excludes fails the build. One that depends on th
 
 ## Secrets and environment files
 
-`mda deploy` reads project `.env` values before shell environment variables. Use `.env` for the LangSmith API key that authenticates the deploy and for runtime secrets the hosted deployment needs:
+Shell variables win over the project `.env` for every setting `mda deploy` reads, such as `LANGSMITH_API_KEY` and `LANGSMITH_ENDPOINT`. Use `.env` for the LangSmith API key that authenticates the deploy and for runtime secrets the hosted deployment needs:
 
 ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
@@ -149,13 +149,27 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 `MDA_INGRESS_SECRET` is required only when the project declares [backend identity](/langsmith/python/managed-deep-agents-identity#configure-identity-with-your-own-backend). Deploy fails preflight when that declaration is present and the value is missing.
 
-`LANGSMITH_API_KEY`, `LANGGRAPH_HOST_API_KEY`, `LANGCHAIN_API_KEY`, and other platform variables are reserved. They can authenticate the deploy, but they are not uploaded as user-managed deployment secrets.
+`LANGSMITH_API_KEY`, `LANGGRAPH_HOST_API_KEY`, `LANGCHAIN_API_KEY`, and other platform variables are reserved. `LANGSMITH_API_KEY` authenticates the deploy. None of them are uploaded as user-managed deployment secrets.
 
 Non-reserved `.env` entries, such as model provider keys, MCP tokens, and custom tool credentials, are forwarded as hosted deployment secrets when `mda deploy` creates or updates the deployment. If the configured model requires a provider key, deploy fails before upload unless that key is available from `.env`, the shell environment, or LangSmith workspace secrets. When the provider key is only in the shell environment, `mda deploy` forwards it as a secret for that deploy.
 
 Reserved platform variables, empty values, `.env`, and `.env.*` files are not copied into the compiled build archive.
 
 For authentication key order and reserved variables, see the [CLI reference](/langsmith/python/managed-deep-agents-cli#authentication).
+
+## Deploy from GitHub
+
+Build and deploy your agent from a GitHub repository in LangSmith Cloud, with optional automatic rebuilds on branch pushes. Authorize the GitHub app for your repository first. See [Manage GitHub repository access](/langsmith/deploy-to-cloud#manage-github-repository-access).
+
+To deploy from GitHub:
+
+1. Push your [Managed Deep Agent project](/langsmith/python/managed-deep-agents-project-structure) to GitHub. Do not commit `.env` or `.mda/build/`.
+2. In [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-deploy), open **Agent Servers** and select **+ Agent Server**. Select your repository, name the deployment, and set a branch or tag.
+3. Select **This is a Managed Deep Agent project** and set **Project directory** to the path containing `agent.py` or `agent.ts` (`.` for the repository root).
+4. Choose **Serverless** or **Dedicated** for the [Agent Server type](/langsmith/cloud-platform-features#deployment-types), and optionally enable automatic updates on push.
+5. Add model provider keys and other secrets under **Environment Variables**, then select **Submit**.
+
+LangSmith compiles the project during the build, syncs `instructions.md` and `skills/` from the repository to Context Hub, and sets up declared schedules and channels.
 
 ## Troubleshoot a deploy
 

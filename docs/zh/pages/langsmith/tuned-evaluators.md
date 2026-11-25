@@ -8,7 +8,7 @@
 
 > [!注意]
 >
-> LangChain 调整评估器位于 **[beta](/langsmith/release-stages)**。在全面上市之前，它们的界面和行为可能会发生变化。
+> LangChain 调整评估器位于 **[beta](/langsmith/release-stages)**。它们的界面和行为在全面上市之前可能会发生变化。
 
 LangChain 调整的评估器将反馈附加到您的痕迹中。每个评估员都会使用一位针对特定评估任务接受过培训的专业法官。 LangChain 编写、测试、版本和维护提示和判断模型，以便您可以专注于使用反馈来查找和修复代理中的问题。
 
@@ -20,7 +20,7 @@ LangChain 调整的评估器将反馈附加到您的痕迹中。每个评估员�
 * 将有用的线索添加到评估数据集或发送不明确的案例以供人工审核。
 * 根据从跟踪的故障中提取的示例来测试代理的更改。
 
-## 了解 LangChain Tuned Evaluator 的工作原理
+## 了解 LangChain Tuned Evaluators 的工作原理
 
 **1.添加评估员**
 
@@ -28,7 +28,7 @@ LangChain 调整的评估器将反馈附加到您的痕迹中。每个评估员�
 
 **2.识别符合条件的线程**
 
-LangSmith 标识满足评估器要求、过滤器和采样配置的线程。
+LangSmith 标识满足评估者要求、过滤器和采样配置的线程。
 
 **3.评估线程**
 
@@ -36,7 +36,7 @@ LangSmith 标识满足评估器要求、过滤器和采样配置的线程。
 
 **4.附上反馈**
 
-LangSmith 将结果及其解释附加到线程作为反馈。
+LangSmith 将结果及其解释附加到线程中作为反馈。
 
 ## 开始之前
 
@@ -53,7 +53,7 @@ LangSmith 将结果及其解释附加到线程作为反馈。
 
 1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-tuned-evaluators)中，打开**设置**。
 2. 选择**调整评估器**。
-3. 打开**启用LangChain调谐评估器**并接受条款。
+3. 打开 **启用 LangChain Tuned evaluators** 并接受条款。
 
 当第一次从评估器库中保存评估器时，组织管理员还可以接受并启用 LangChain 调整的评估器。
 
@@ -80,7 +80,7 @@ LangSmith 将结果及其解释附加到线程作为反馈。
 
 ## 查看使用费用
 
-可用性和定价因 LangChain Tuned Evaluator 而异。 LangSmith 仅针对附有反馈的评估运行向 LSU 收费。未附加反馈的跳过和失败的评估尝试不会被计费。与其他在线评估器一样，LangChain Tuned Evaluators 将评估的跟踪升级为延长保留时间。这可能会增加跟踪存储费用。有关当前费率，请参阅[LangSmith pricing](/langsmith/pricing-plans)。有关保留升级和跟踪费用的详细信息，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
+可用性和定价因 LangChain Tuned Evaluator 而异。 LangSmith 仅针对附有反馈的评估运行向 LSU 收费。未附加反馈的跳过和失败的评估尝试不会被计费。与其他在线评估器一样，LangChain Tuned Evaluators 将评估的跟踪升级为延长保留时间。这可能会增加跟踪存储费用。 [workspace retention restriction](/langsmith/data-purging-compliance#disable-extended-trace-retention) 在不停止评估的情况下阻止新的升级。有关当前费率，请参阅[LangSmith pricing](/langsmith/pricing-plans)。有关保留升级和跟踪费用的详细信息，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
 ## 对 LangChain 调整评估器进行故障排除
 
@@ -94,13 +94,13 @@ LangSmith 将结果及其解释附加到线程作为反馈。
 
 ### 评估者不提供反馈
 
-检查以下条件：
-
-* 该组织仍然启用 LangChain Tuned Evaluators。
+检查以下条件：* 该组织仍然启用 LangChain Tuned Evaluators。
 * 线程至少包含两条踪迹。
 * 代理环境的[thread idle time](/langsmith/online-evaluations-multi-turn#check-the-idle-time)已过。
 * 线程与评估器的过滤器和采样配置相匹配。
-* 该线程包含采用受支持的消息格式的完整用户与助手交换。要检查评估器活动，请在 **跟踪** 页面上打开代理环境的 **在线评估器** 选项卡，然后单击评估器行中的 **日志**。
+* 该线程包含受支持的消息格式的完整用户与助手交换。
+
+要检查评估器活动，请在 **跟踪** 页面上打开代理环境的 **在线评估器** 选项卡，然后单击评估器行中的 **日志**。
 
 ### 启用该功能不会立即生效
 

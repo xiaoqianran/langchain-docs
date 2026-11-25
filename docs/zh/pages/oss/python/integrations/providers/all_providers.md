@@ -4,7 +4,7 @@
 
 # 所有 LangChain Python 集成提供商
 
-浏览可用于 Python 的完整集成集合。 LangChain Python 提供了最广泛的生态系统，具有 1000 多个跨法学硕士、聊天模型、检索器、向量存储、文档加载器等的集成。
+浏览可用于 Python 的完整集成集合。 LangChain Python 提供了最广泛的生态系统，在法学硕士、聊天模型、检索器、向量存储、文档加载器等方面有 1000 多个集成。
 
 ## 提供商
 
@@ -108,7 +108,7 @@
 >
 > 官方统计、央行汇率、汇率、能源和天气数据的工具，每个答案都有来源和许可。> [卡][Agent Pulse](https://www.agentspulse.ai/docs/langchain)
 >
-> Agent Pulse 对 LangChain 和 LangGraph 中的模型、工具和失败呼叫按用户、请求和代理运行进行定价，并且预算可以在发送呼叫之前停止呼叫。
+> Agent Pulse 对每个用户、请求和代理运行的LangChain 和LangGraph 中的模型、工具和失败呼叫进行定价，并且预算可以在发送呼叫之前停止呼叫。
 
 > [卡片][Agent37](https://www.agent37.com/docs/agents-api/langchain)
 >
@@ -150,11 +150,11 @@
 
 > [卡片][AgentLine](https://docs.agentline.cloud)
 >
-> AI 代理的真实电话号码：出站呼叫、入站短信、Webhooks 和配置。
+> AI 代理的真实电话号码：出站呼叫、入站短信、Webhook 和配置。
 
 > [卡][AgentMail](https://docs.agentmail.to/)
 >
-> 适用于 AI 代理的 Inbox-as-API 平台 — 发送、回复、草稿、附件和入站 Webhooks。
+> 适用于 AI 代理的 Inbox-as-API 平台 — 发送、回复、草稿、附件和入站 Webhook。
 
 > [卡][AgentOps Cockpit](https://agent-cockpit.web.app)
 >
@@ -230,7 +230,7 @@
 >
 > 浏览器自动化和网页抓取工具。> [卡][Anakin](https://anakin.io/docs/documentation)
 >
-> 通过人工智能驱动的搜索和研究，将网站大规模转化为干净的结构化数据。
+> 通过人工智能驱动的搜索和研究，将网站大规模转换为干净的结构化数据。
 
 > [卡][ANEForge](https://github.com/sbryngelson/langchain-aneforge)
 >
@@ -242,7 +242,7 @@
 
 > [卡][Anthropic](/oss/python/integrations/providers/anthropic)
 >
-> Claude 模型用于高级推理和对话。
+> Claude 为高级推理和对话建模。
 
 > [卡][any-llm](/oss/python/integrations/providers/anyllm)
 >
@@ -292,7 +292,7 @@
 
 > [卡][ArcnmToolkit](https://github.com/arcnm/langchain-arcnm#readme)
 >
-> 根据 CAD 文件计算机加工零件和钣金零件的制造成本，每次计算均附有详细的成本表。
+> 根据 CAD 文件计算机加工零件和钣金零件的制造成本，每次计算都有详细的成本表。
 
 > [卡][ARO](https://github.com/joy7758/langchain-aro)
 >
@@ -338,7 +338,7 @@
 
 > [卡][Ausca](https://github.com/auscahq/ausca/tree/main/python/langchain-ausca)
 >
-> 按次付费 LangChain 超过 x402 的工具，用于 OCR、分析、转录、浏览器和代理收件箱。
+> 按次付费 LangChain 超过 x402 的 OCR、分析、转录、浏览器和代理收件箱工具。
 
 > [卡][AutomSearch](https://github.com/automdev/langchain-autom#readme)
 >
@@ -346,7 +346,7 @@
 
 > [卡][Auxen](https://auxen.ai)
 >
-> 具有OpenAI兼容 API 的专用每客户 LLM 端点。
+> 专用于每个客户的 LLM 端点，具有 OpenAI 兼容 API。
 
 > [卡][AWS](/oss/python/integrations/providers/aws)
 >
@@ -476,6 +476,10 @@
 >
 > 从 CareJobs.Now 开放美国医疗保健职位，发布薪资和雇主，这是一个免费的职位委员会，无需 API 密钥。
 
+> [卡][CellproseLoader](https://cellprose.com/guide/)
+>
+> 文档加载器将 .xlsx 和 .xlsm 工作簿读取为 Cellprose 文本，将公式、单元格地址和每张工作表保留在有效的 Markdown 中。
+
 > [卡][Cerebras](/oss/python/integrations/providers/cerebras)
 >
 > 配备专用处理器的人工智能计算平台。
@@ -490,11 +494,11 @@
 
 > [卡][Channel3Toolkit](https://channel3.ai/docs/langchain)
 >
-> 在数千家零售商中搜索产品，以及每个零售商的报价和实时价格。
+> 在数千家零售商中搜索产品，包括每个零售商的报价和实时价格。
 
 > [卡][ChartQueryChart](https://github.com/chartquery/langchain-chartquery#readme)
 >
-> 来自数据或简单语言描述、图表和 QR 代码的图表，通过 ChartQuery API 以图像链接的形式返回。
+> 来自数据或简单语言描述、图表和 QR 代码的图表，通过 ChartQuery API 以图像链接形式返回。
 
 > [卡][ChatEXAONE](https://github.com/ykoh42/exaone-integrations/tree/main/packages/langchain-exaone-py)
 >
@@ -502,21 +506,21 @@
 
 > [卡][ChatGMI](https://github.com/dhruvil-codes/langchain-gmi#readme)
 >
-> LangChain 聊天集成，适用于 GMI Cloud 的OpenAI 兼容推理引擎。
-
-> [卡][Cheaper Inference](https://cheaperinference.com/docs)
+> LangChain 聊天集成，适用于 GMI Cloud 的 OpenAI 兼容推理引擎。> [卡][Cheaper Inference](https://cheaperinference.com/docs)
 >
 > OpenAI 兼容的 LLM 网关，为许多实验室的模型提供低于标价的服务。
 
 > [卡][ChatLinkrra](https://github.com/weare-linkrra/linkrra-synap/tree/main/langchain-linkrra#readme)
 >
-> Linkrra Synap 的聊天模型，这是一个与 OpenAI 兼容的 API，为 Qwen3 Coder、gpt-oss-20b 和 Gemma 4 等开放权重模型提供服务。> [卡][ChatLlamay](https://github.com/kosa8ai/langchain-llamay#readme)
+> Linkrra Synap 的聊天模型，这是一个与 OpenAI 兼容的 API，为 Qwen3 Coder、gpt-oss-20b 和 Gemma 4 等开放权重模型提供服务。
+
+> [卡][ChatLlamay](https://github.com/kosa8ai/langchain-llamay#readme)
 >
 > 由 llamay（适用于 macOS、Windows 和 Linux 的运行时）通过其与 Ollama 兼容的 API 在本地提供聊天模型。
 
 > [卡][ChatOptiQ](https://github.com/optiq-bot/langchain-optiq)
 >
-> OptiQ Cloud 的聊天模型，这是一个与 OpenAI 兼容的 API，服务于 GLM 5.3、DeepSeek V4.1 Flash 和 MiniMax M3.1 Flash，具有 Reasoning_effort 控制。
+> OptiQ Cloud 的聊天模型，一个与 OpenAI 兼容的 API，服务于 GLM 5.3、DeepSeek V4.1 Flash 和 MiniMax M3.1 Flash，具有 Reasoning_effort 控制。
 
 > [卡][ChatMeragpt](https://github.com/Sandeep85Das/langchain-meragpt)
 >
@@ -532,17 +536,17 @@
 
 > [卡][ChatSovereignEG](https://sovereigneg.com/docs/langchain)
 >
-> 埃及主权人工智能平台，具有适用于本地和国际模型的OpenAI兼容 API，以 EGP 计费。
-
-> [卡][ChopperCompressor](https://github.com/wiiiktor/chopper_demo/tree/main/integrations/chopper-rag)
+> 埃及主权人工智能平台，具有适用于本地和国际模型的OpenAI兼容 API，以 EGP 计费。> [卡][ChopperCompressor](https://github.com/wiiiktor/chopper_demo/tree/main/integrations/chopper-rag)
 >
 > 本地文档压缩器和重新排序器：从检索到的文档中剪切出回答查询的确切句子，并对文档进行排序，一次性完成（微调 mmBERT）。
 
 > [卡][Chroma](/oss/python/integrations/providers/chroma)
 >
-> 用于人工智能应用程序的开源嵌入数据库。> [卡][ChronoVec](https://mchl-labs.github.io/chronovec/integrations/langchain)
+> 用于人工智能应用程序的开源嵌入数据库。
+
+> [卡][ChronoVec](https://mchl-labs.github.io/chronovec/integrations/langchain)
 >
-> 带有快照查询和分支/合并推测内存的版本化矢量存储，适用于 LangChain 代理。
+> 带有快照查询和分支/合并推测内存的版本化向量存储，适用于 LangChain 代理。
 
 > [卡][ClawFetch](https://github.com/clawfetch/integrations#readme)
 >
@@ -566,9 +570,7 @@
 
 > [卡][CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit)
 >
-> React 框架，带有用于 AI 副驾驶的预构建 UI 组件。
-
-> [卡][CTRLRun](https://docs.ctrlrun.dev/guides/langchain-middleware)
+> React 框架，带有用于 AI 副驾驶的预构建 UI 组件。> [卡][CTRLRun](https://docs.ctrlrun.dev/guides/langchain-middleware)
 >
 > 执行安全中间件，根据策略检查每个工具调用，为人类保留相应的调用，并留下收据。
 
@@ -578,7 +580,9 @@
 
 > [卡][chDB](https://github.com/chdb-io/langchain-chdb)
 >
-> 由 ClickHouse 提供支持的进程内 OLAP SQL 引擎，具有 LangChain 向量存储。> [卡][Coalent](https://coalent.ai/docs)
+> 由 ClickHouse 提供支持的进程内 OLAP SQL 引擎，具有 LangChain 向量存储。
+
+> [卡][Coalent](https://coalent.ai/docs)
 >
 > 来源无效的语义缓存位于任何向量存储之上，为属性声明有效负载提供服务。
 
@@ -604,9 +608,7 @@
 
 > [卡][Cohere](/oss/python/integrations/providers/cohere)
 >
-> 面向企业应用的语言人工智能平台。
-
-> [卡][Confident AI](https://www.confident-ai.com/docs/integrations/third-party/langchain)
+> 面向企业应用的语言人工智能平台。> [卡][Confident AI](https://www.confident-ai.com/docs/integrations/third-party/langchain)
 >
 > Confident AI 是一个法学硕士可观察性平台。 `confident-trace` 跟踪 LangChain 通过回调系统运行并通过 OpenTelemetry 导出它们。
 
@@ -620,7 +622,9 @@
 
 > [卡][Context.dev](https://docs.context.dev)
 >
-> 为代理商提供实时网络搜索、抓取、提取、文档解析和品牌情报工具。> [卡][ContextFetchSearch](https://github.com/lachy3433/langchain-contextfetch#readme)
+> 为代理商提供实时网络搜索、抓取、提取、文档解析和品牌情报工具。
+
+> [卡][ContextFetchSearch](https://github.com/lachy3433/langchain-contextfetch#readme)
 >
 > 以 Markdown 形式返回结果页面的 Web 搜索 API；该包提供了一个搜索工具（ContextFetchSearch）和一个检索器（ContextFetchRetriever）。
 
@@ -642,9 +646,7 @@
 
 > [卡][CostCapMiddleware](https://github.com/Mattbusel/langchain-llm-prices/blob/main/docs/index.md)
 >
-> CostCapMiddleware 使用过时的、引用来源的 llm-prices 表为 `create_agent` 设置每次运行和每个线程的美元上限。
-
-> [卡][Couchbase](https://docs.couchbase.com/server/current/vector-search/vector-search.html)
+> CostCapMiddleware 使用过时的、引用来源的 llm-prices 表为 `create_agent` 设置每次运行和每个线程的美元上限。> [卡][Couchbase](https://docs.couchbase.com/server/current/vector-search/vector-search.html)
 >
 > NoSQL云数据库平台。
 
@@ -658,7 +660,9 @@
 
 > [卡][CRW](https://fastcrw.com)
 >
-> 与 Firecrawl 兼容的开源网络抓取工具，适用于 LLM 就绪的 Markdown、HTML 或 JSON。> [卡][CVFile](https://cvfile.org)
+> 与 Firecrawl 兼容的开源网络抓取工具，适用于 LLM 就绪的 Markdown、HTML 或 JSON。
+
+> [卡][CVFile](https://cvfile.org)
 >
 > 打开 .cv PDF/A-3u 格式，并嵌入 Markdown、HTML 和 JSON 简历有效负载。
 
@@ -680,9 +684,7 @@
 
 > [卡][CyberWareX](https://github.com/cyberwareX/langchain-cyberwarex#readme)
 >
-> 用于实时网络搜索和以 Markdown 形式阅读网页的工具，通过 x402 以 USDC 按调用付费，无需帐户或 API 密钥。小额免费试用。
-
-> [卡][CyborgDB](https://docs.cyborg.co/versions/latest/integrations/langchain/introduction)
+> 用于实时网络搜索和以 Markdown 形式阅读网页的工具，通过 x402 以 USDC 按调用付费，无需帐户或 API 密钥。小额免费试用。> [卡][CyborgDB](https://docs.cyborg.co/versions/latest/integrations/langchain/introduction)
 >
 > CyborgDB 是一个用于机密 RAG 的自托管加密向量存储，可对加密向量进行相似性搜索和元数据过滤。
 
@@ -692,7 +694,9 @@
 
 > [卡][Dappier](https://docs.dappier.com/)
 >
-> 实时AI数据平台和API。> [卡][Decodo](https://github.com/Decodo/langchain/tree/master/libs/partners/decodo)
+> 实时AI数据平台和API。
+
+> [卡][Decodo](https://github.com/Decodo/langchain/tree/master/libs/partners/decodo)
 >
 > 网页抓取和 Google 搜索工具以及文档加载器，由 Decodo Web Data API 支持。
 
@@ -718,9 +722,7 @@
 
 > [卡][Daytona](/oss/python/integrations/providers/daytona)
 >
-> 用于运行人工智能生成的代码的安全且弹性的基础设施。
-
-> [卡][Deep Agents Graph Memory](https://github.com/TahaK29/deepagents-graph-memory)
+> 用于运行人工智能生成的代码的安全且弹性的基础设施。> [卡][Deep Agents Graph Memory](https://github.com/TahaK29/deepagents-graph-memory)
 >
 > Deep Agents 的图形上下文中间件和工具，使用嵌入式 LadybugDB 记录和调用工作流程结果。
 
@@ -734,7 +736,9 @@
 
 > [卡][DeepSeek](/oss/python/integrations/providers/deepseek)
 >
-> 高级推理和编码人工智能模型。> [卡][Delegare](https://docs.delegare.dev)
+> 高级推理和编码人工智能模型。
+
+> [卡][Delegare](https://docs.delegare.dev)
 >
 > 具有 AP2 授权和 x402 处理功能的代理支付授权基础设施。
 
@@ -750,7 +754,7 @@
 >
 > 来自 CoinPaprika 的 Keyless DEX 市场数据 API：代币搜索、市场数据、矿池发现和 OHLCV 价格历史记录。
 
-> [卡][Diffbot](https://github.com/diffbot/langchain-diffbot)
+> [卡片][Diffbot](https://github.com/diffbot/langchain-diffbot)
 >
 > 为开发人员和法学硕士应用程序提供结构化网络知识。
 
@@ -764,9 +768,7 @@
 
 > [卡片][Docling](/oss/python/integrations/providers/docling)
 >
-> 文档处理和人工智能集成。
-
-> [卡片][DoclingLoader](https://github.com/docling-project/docling.rs/blob/master/crates/docling-py/README.md#langchain)
+> 文档处理和人工智能集成。> [卡片][DoclingLoader](https://github.com/docling-project/docling.rs/blob/master/crates/docling-py/README.md#langchain)
 >
 > 由 docling.rs 支持的文档加载器，可将 PDF、Office 文件、HTML、EPUB、电子邮件、扫描件等转换为 LangChain 文档。
 
@@ -776,15 +778,17 @@
 
 > [卡片][Donkey Kit](https://docs.donkey-kit.dev/frameworks/langgraph)
 >
-> 返回连接到 MuleSoft Agent Fabric LLM 代理（OpenAI 兼容，受管理）的本机 ChatOpenAI，带有类型化策略拒绝和相关标头。> [卡片][Doubleword](https://docs.doubleword.ai)
+> 返回连接到 MuleSoft Agent Fabric LLM 代理（OpenAI 兼容，受管理）的本机 ChatOpenAI，带有类型化策略拒绝和相关标头。
+
+> [卡][Doubleword](https://docs.doubleword.ai)
 >
 > OpenAI兼容的推理平台，具有一流的批量推理支持。
 
-> [卡][Discord Shikenso](/oss/python/integrations/providers/discord-shikenso)
+> [卡片][Discord Shikenso](/oss/python/integrations/providers/discord-shikenso)
 >
 > Discord 分析和审核工具。
 
-> [卡片][Distil](https://github.com/dshakes/distil)
+> [卡][Distil](https://github.com/dshakes/distil)
 >
 > 适用于 LangChain 和 LangGraph 的可逆、经过认证的上下文压缩中间件。
 
@@ -800,11 +804,9 @@
 >
 > 代理中间件，用于通过 zvec 进行 100 毫秒以下的混合密集和稀疏矢量工具检索，从而减少工具列表中的提示标记开销。
 
-> [卡][E2B](https://e2b.dev/docs)
+> [卡] [E2B](https://e2b.dev/docs)
 >
-> 用于运行人工智能生成的代码的云沙箱。
-
-> [卡] [EasyTranscriber](https://www.easytranscriber.com/docs/langchain)
+> 用于运行人工智能生成的代码的云沙箱。> [卡][EasyTranscriber](https://www.easytranscriber.com/docs/langchain)
 >
 > 通过 EasyTranscriber API 作为 LangChain 工具和文档加载器进行 YouTube 转录、AI 摘要和 YouTube 视频搜索。
 
@@ -814,7 +816,9 @@
 
 > [卡][EcoTraceLangChainCallback](https://ecotrace.readthedocs.io/en/latest/)
 >
-> 用于 LLM 呼叫和代理的硬件能量（焦耳/千瓦时）、执行持续时间和碳足迹分析器。> [卡][Emaki](https://emaki.readthedocs.io/en/latest/integrations/langchain/)
+> 用于 LLM 呼叫和代理的硬件能量（焦耳/千瓦时）、执行持续时间和碳足迹分析器。
+
+> [卡][Emaki](https://emaki.readthedocs.io/en/latest/integrations/langchain/)
 >
 > 用于 emaki API 的文本转视频、图像转视频和图像生成工具（Seedance 2.5 和 Seedance 2.0）；需要 emaki API 密钥。
 
@@ -836,9 +840,7 @@
 
 > [卡][EnConvert](https://github.com/enconvert/langchain-enconvert)
 >
-> 文档加载器将 URL 或整个站点转换为文档，并在每次读取时提供 render_quality 分数。
-
-> [卡][Engram](https://docs.engram.ai/integrations/langchain)
+> 文档加载器将 URL 或整个站点转换为文档，并在每次读取时提供 render_quality 分数。> [卡][Engram](https://docs.engram.ai/integrations/langchain)
 >
 > AI 代理的认知记忆基础设施：置信度评分、矛盾检测和记忆生命周期。
 
@@ -848,11 +850,13 @@
 
 > [卡][ERC20](https://github.com/Conrad-sudo/langchain-erc20)
 >
-> ERC20 代币余额、配额、转账、批准和本机包装/解开，作为 EOA 可以签署或智能合约钱包可以批处理的执行计划。> [卡][ERC-8004](https://github.com/Conrad-sudo/langchain-erc8004)
+> ERC20 代币余额、配额、转账、批准和本机包装/解开，作为 EOA 可以签署或智能合约钱包可以批处理的执行计划。
+
+> [卡] [ERC-8004](https://github.com/Conrad-sudo/langchain-erc8004)
 >
 > 验证ERC-8004代理的链上身份和声誉反馈，并准备注册表写入作为执行计划。
 
-> [卡] [EtfiqToolkit](https://github.com/etfiq/etfiq-connectors/tree/main/langchain-etfiq)
+> [卡][EtfiqToolkit](https://github.com/etfiq/etfiq-connectors/tree/main/langchain-etfiq)
 >
 > 免费、无密钥、有日期的美国 ETF 数据工具：来自 ETFIQ 的概况、持有量、流量、比较和基准。
 
@@ -870,15 +874,13 @@
 
 > [卡][FinancialEvidenceToolkit](https://github.com/beepboop2025/langchain-financial-evidence#readme)
 >
-> 来自 Seiche、LiquiLens 和 Undertow 的只读工具，用于引用来源的公共资金、涵盖银行和市场流动性研究。
-
-> [卡][Firecrawl](https://docs.firecrawl.dev)
+> 来自 Seiche、LiquiLens 和 Undertow 的只读工具，用于引用来源的公共资金、涵盖银行和市场流动性研究。> [卡][Firecrawl](https://docs.firecrawl.dev)
 >
 > 将网站转化为干净的、可供法学硕士使用的数据，用于抓取、爬行和搜索。
 
 > [卡][Firebolt](https://docs.firebolt.io/guides/integrations/langchain)
 >
-> 云数据仓库，具有用于相似性和 RAG 的本机向量搜索。
+> 具有用于相似性和 RAG 的本机向量搜索的云数据仓库。
 
 > [卡][FalkorDB](https://docs.falkordb.com/genai-tools/langchain.html)
 >
@@ -886,13 +888,15 @@
 
 > [卡][FastAF](https://github.com/fastaf-co/fastaf-integrations/tree/main/langchain-fastaf)
 >
-> 用于 AI 代理的 Google SERP、新闻、乔布斯、亚马逊、eBay 和页面到 Markdown 工具。免费套餐，通过 x402 按次付费 0.003 美元起。> [卡][FastOCRLoader](https://github.com/fastocr-org/langchain-fastocr#readme)
+> 用于 AI 代理的 Google SERP、新闻、乔布斯、亚马逊、eBay 和页面到 Markdown 工具。免费套餐，通过 x402 按次付费 0.003 美元起。
+
+> [卡] [FastOCRLoader](https://github.com/fastocr-org/langchain-fastocr#readme)
 >
 > 文档加载器可使用 FastOCR 读取 100 多种语言的扫描 PDF 和图像，并返回文本或可搜索的 PDF。
 
-> [卡] [FaxForAgentsToolkit](https://github.com/faxforagents/langchain-faxforagents/blob/main/README.md)
+> [卡][FaxForAgentsToolkit](https://github.com/faxforagents/langchain-faxforagents/blob/main/README.md)
 >
-> 坐席传真为LangChain和LangGraph坐席提供传真工具。
+> 代理传真为LangChain和LangGraph代理提供传真工具。
 
 > [卡][Featherless AI](https://github.com/featherlessai/langchain-featherless-ai)
 >
@@ -908,9 +912,7 @@
 
 > [卡][FinzData](https://pypi.org/project/langchain-finzdata/)
 >
-> 用于时间点、无幸存者美国市场数据、期货、期权伽玛、COT、宏观年份和通过 MCP 进行服务器端回测的工具。
-
-> [卡][Fizzl](https://fizzl.eu/agents/python/)
+> 用于时间点、无幸存者美国市场数据、期货、期权伽玛、COT、宏观年份和通过 MCP 进行服务器端回测的工具。> [卡][Fizzl](https://fizzl.eu/agents/python/)
 >
 > 对付款代理进行安全检查：在签名或购买之前审查交易、代币、钱包批准和付费 API。
 
@@ -924,27 +926,27 @@
 
 > [卡][FlexAI](https://docs.flex.ai/inference-api/agents/langchain)
 >
-> FlexAI 在 OpenAI 兼容 API 背后提供开放权重模型。> [卡][FMP Data](https://github.com/MehdiZare/langchain-fmp-data)
+> FlexAI 在OpenAI兼容的 API 背后提供开放权重模型。
+
+> [卡][FMP Data](https://github.com/MehdiZare/langchain-fmp-data)
 >
-> 金融市场数据和分析 API。
+> 金融市场数据和分析API。
 
 > [卡][FoddaContextRetriever](https://github.com/fodda-ai/langchain-fodda#readme)
 >
 > 自定义工具集成，用于从 Fodda 上下文层检索经过验证的知识图谱、市场情报和专家档案。
 
-> [卡][FokalsToolkit](https://github.com/fokals/langchain-fokals#readme)
+> [卡] [FokalsToolkit](https://github.com/fokals/langchain-fokals#readme)
 >
 > Fokals 提供公司情报工具，用于根据技术、招聘、资金、意图和健康状况来查找、丰富和分析公司。
 
-> [卡] [Foliant](https://github.com/gazoy/langchain-foliant#readme)
+> [卡][Foliant](https://github.com/gazoy/langchain-foliant#readme)
 >
 > 用于通过 Foliant 渠道向 x402 端点支付费用的代理的支付工具和预算中间件，以及每个代理的支出预算。
 
 > [卡][Football Charts](https://www.football-charts.com/developers)
 >
-> 90 多个联赛的足球统计数据、模型概率和蒙特卡洛赛季预测。
-
-> [卡][FoxNose](https://langchain-foxnose.readthedocs.io/)
+> 90 多个联赛的足球统计数据、模型概率和蒙特卡洛赛季预测。> [卡][FoxNose](https://langchain-foxnose.readthedocs.io/)
 >
 > 用于 FoxNose 集合的检索器、文档加载器和代理工具，通过 Flux 交付 API 提供文本、矢量、混合和矢量增强搜索。
 
@@ -954,11 +956,13 @@
 
 > [卡][FreeImageToVideoGenerator](https://github.com/hanshs474/langchain-freeimagetovideo)
 >
-> 用于免费图像到视频 API (MiniMax H3) 的带有声音工具的文本到视频和图像到视频。
+> 带有声音工具的文本转视频和图像转视频，适用于免费图像转视频 API (MiniMax H3)。
 
 > [卡][Future AGI](https://docs.futureagi.com/docs/integrations/traceai/langchain/)
 >
-> Future AGI 是一个开源可观测性和评估平台，用于跟踪 LangChain 和 LangGraph 运行。> [卡][FXMacroData](https://github.com/fxmacrodata/langchain-fxmacrodata?utm_source=langchain\&utm_medium=integration\&utm_campaign=langchain-fxmacrodata\&utm_content=directory-listing#readme)
+> Future AGI 是一个开源可观测性和评估平台，用于跟踪 LangChain 和 LangGraph 运行。
+
+> [卡][FXMacroData](https://github.com/fxmacrodata/langchain-fxmacrodata?utm_source=langchain\&utm_medium=integration\&utm_campaign=langchain-fxmacrodata\&utm_content=directory-listing#readme)
 >
 > LangChain 用于官方来源宏观经济数据、发布日历、汇率、定位、商品和时间点研究的工具。
 
@@ -980,9 +984,7 @@
 
 > [卡][Gel](https://github.com/geldata/langchain-gel)
 >
-> 知识提取和NLP平台。
-
-> [卡][Geekflare](https://docs.geekflare.com/integrations/langchain)
+> 知识提取和NLP平台。> [卡][Geekflare](https://docs.geekflare.com/integrations/langchain)
 >
 > 使用 Google SERP 结果进行网络搜索、页面抓取、屏幕截图、URL 转 PDF、品牌数据以及通过 Geekflare API 进行网站诊断。
 
@@ -996,7 +998,9 @@
 
 > [卡][GoodMem](https://docs.goodmem.ai)
 >
-> 人工智能代理的长期记忆层，具有语义存储和检索功能。> [卡][GoodSender](https://goodsender.com/docs)
+> 人工智能代理的长期记忆层，具有语义存储和检索功能。
+
+> [卡][GoodSender](https://goodsender.com/docs)
 >
 > 免费电子邮件 API，带有交易模板和同意门控的自定义电子邮件。
 
@@ -1008,19 +1012,17 @@
 >
 > 将候选人计划、分数和拒绝原因记录为LangGraph 代理计划，然后用通俗易懂的语言解释该决定。
 
-> [卡][GPT Image by Ace Data Cloud](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image)
+> [卡] [GPT Image by Ace Data Cloud](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image)
 >
 > Ace Data Cloud 为 GPT Image 提供的图像生成提交和同 ID 任务检索工具。
 
-> [卡] [GPTZZZ](https://gptzzz.ai/docs/)
+> [卡][GPTZZZ](https://gptzzz.ai/docs/)
 >
-> OpenAI兼容API网关，适用于来自多个提供商的模型，并带有中文文档。
+> OpenAI 兼容 API 网关，适用于来自多个提供商的模型，并带有中文文档。
 
-> [卡][DigitalOcean Gradient AI Platform](https://docs.digitalocean.com/products/gradientai-platform/)
+> [卡] [DigitalOcean Gradient AI Platform](https://docs.digitalocean.com/products/gradientai-platform/)
 >
-> 通过无服务器推理实现多个 LLM 的单一端点。
-
-> [卡] [GraciousQuotes](https://graciousquotes.com/developers/langchain/)
+> 通过无服务器推理实现多个 LLM 的单一端点。> [卡][GraciousQuotes](https://graciousquotes.com/developers/langchain/)
 >
 > 经过事实核查的引用归属：对引用者的言论、其来源以及 MLA、APA 或芝加哥引用的判断。
 
@@ -1028,21 +1030,23 @@
 >
 > 基于图的检索增强生成。
 
-> [卡][GraphSignal](/oss/python/integrations/providers/graphsignal)
+> [卡] [GraphSignal](/oss/python/integrations/providers/graphsignal)
 >
 > AI可观测和监控平台。
 
-> [卡] [GreenCalculus](https://greencalculus.com/guides/emission-factors-langchain/)
+> [卡][GreenCalculus](https://greencalculus.com/guides/emission-factors-langchain/)
 >
 > 来自公共出版商（DEFRA、US EPA、ADEME、IPCC）的温室气体排放因子，具有准确的源单元、许可证和数据版本。
 
 > [卡][GreenNode](https://greennode.ai/)
 >
-> 可持续的人工智能计算平台。> [卡][GridGain](https://pypi.org/project/langgraph-checkpoint-gridgain/)
+> 可持续的人工智能计算平台。
+
+> [卡] [GridGain](https://pypi.org/project/langgraph-checkpoint-gridgain/)
 >
 > LangGraph 的 GridGain 持久性：短期线程状态的检查指针、长期跨线程内存的存储以及编译图的节点缓存。
 
-> [卡] [GridPin](https://github.com/gridpin/gridpin/tree/main/integrations/langchain)
+> [卡][GridPin](https://github.com/gridpin/gridpin/tree/main/integrations/langchain)
 >
 > 每个国家/地区从一个本地数据文件进行离线地理编码和反向地理编码，无需 API 密钥，每次查询也无需网络调用。
 
@@ -1056,9 +1060,7 @@
 
 > [卡][FlipCoin](https://github.com/flipcoin-fun/flipcoin-langchain)
 >
-> Base 上的预测市场平台：交易是/否结果股票。
-
-> [卡][FoundryNet](https://mint.foundrynet.io)
+> Base 上的预测市场平台：交易是/否结果股票。> [卡][FoundryNet](https://mint.foundrynet.io)
 >
 > 通过 MINT 协议对 AI 代理进行链上工作证明。
 
@@ -1076,9 +1078,11 @@
 
 > [卡][HappyHorse by Ace Data Cloud](https://github.com/AceDataCloud/LangChain/tree/main/packages/happyhorse)
 >
-> Ace Data Cloud为HappyHorse提供的视频生成提交和同ID任务检索工具。> [卡][Harny](https://harny.ai/integrations/langchain)
+> Ace Data Cloud为HappyHorse提供的视频生成提交和同ID任务检索工具。
+
+> [卡][Harny](https://harny.ai/integrations/langchain)
 >
-> LangChain 特工的长期记忆：与 Harny 一起回忆每个人所说的内容以及时间。
+> LangChain 特工的长期记忆：与 Harny 一起回忆每个人所说的话以及时间。
 
 > [卡][Hashlock](https://docs.hashlock.markets/)
 >
@@ -1086,7 +1090,7 @@
 
 > [卡][Heabsy](https://heabsy.com/integrations/langchain)
 >
-> OpenAI- 和 Anthropic 兼容推理 API，适用于开放权重模型，按代币定价。
+> OpenAI 和 Anthropic 兼容推理 API，适用于开放权重模型，按代币定价。
 
 > [卡][HWP/HWPX](https://github.com/jaypakdevkr/HWP-Loader)
 >
@@ -1098,17 +1102,15 @@
 
 > [卡][Helicone](/oss/python/integrations/providers/helicone)
 >
-> LLM 可观察性和监控平台。
-
-> [卡][HighSNR](https://www.high-snr.com/docs.html)
+> LLM 可观察性和监控平台。> [卡][HighSNR](https://www.high-snr.com/docs.html)
 >
 > 确定性、隐私优先的上下文优化器，用于将文档和检索到的块压缩到令牌预算。
 
-> [卡][Hindsight](https://docs.hindsight.vectorize.io/sdks/integrations/langgraph)
+> [卡] [Hindsight](https://docs.hindsight.vectorize.io/sdks/integrations/langgraph)
 >
 > 用于人工智能代理的开源长期记忆引擎。
 
-> [卡] [HippoDid](https://docs.hippodid.com/guides/langchain)
+> [卡][HippoDid](https://docs.hippodid.com/guides/langchain)
 >
 > 人工智能代理的持久、结构化字符记忆。
 
@@ -1118,7 +1120,9 @@
 
 > [卡][HopBase](https://hop-base.com/en/docs)
 >
-> API 网关，具有适用于 GPT、Claude、Gemini、DeepSeek、GLM 和 Qwen 模型的OpenAI 兼容和 Anthropic 兼容基本 URL。> [卡][HouyiVectorStore](https://github.com/houyidb-community/houyidb/blob/main/sdk/python/langchain-houyidb/README.en.md)
+> API 网关，具有适用于 GPT、Claude、Gemini、DeepSeek、GLM 和 Qwen 模型的 OpenAI 兼容和 Anthropic 兼容基本 URL。
+
+> [卡][HouyiVectorStore](https://github.com/houyidb-community/houyidb/blob/main/sdk/python/langchain-houyidb/README.en.md)
 >
 > 具有 HNSW 搜索、元数据过滤器和持久 WAL 存储的内存优先矢量数据库。
 
@@ -1130,7 +1134,7 @@
 >
 > 远程 MCP 服务器通过三阶段 SOP 工作流程减少代理令牌的使用。
 
-> [卡][Hugging Bay](https://pypi.org/project/langchain-hugging-bay/0.1.0/)
+> [卡片][Hugging Bay](https://pypi.org/project/langchain-hugging-bay/0.1.0/)
 >
 > 只读模型目录搜索、文件元数据、可运行发现和部署计划。
 
@@ -1140,9 +1144,7 @@
 
 > [卡片][Hydrafetch](https://docs.hydrafetch.com)
 >
-> Web 数据 API 工具、加载器和搜索检索器，用于干净的 LLM 就绪 Markdown 和结构化数据。
-
-> [卡片][HyperBrowser](https://docs.hyperbrowser.ai/)
+> Web 数据 API 工具、加载器和搜索检索器，用于干净的 LLM 就绪 Markdown 和结构化数据。> [卡][HyperBrowser](https://docs.hyperbrowser.ai/)
 >
 > 网络自动化和抓取平台。
 
@@ -1150,17 +1152,19 @@
 >
 > Hyperresearch Answers 返回事实问题或 not_found 的经过引用检查的答案，以及带有逐字段落的排名网络和结构化资源。
 
-> [卡][IBM](/oss/python/integrations/providers/ibm)
+> [卡片][IBM](/oss/python/integrations/providers/ibm)
 >
 > IBM Watson AI 和企业解决方案。
 
-> [卡片][ICTContact](https://www.ictcontact.com)
+> [卡][ICTContact](https://www.ictcontact.com)
 >
 > 在 ICTContact 或 ICTDialer 上启动、停止和监控外拨联络中心活动。
 
 > [卡][ICTExam](https://www.ictlms.net)
 >
-> AI 考试创作和自动评分：解析试卷、发布考试并阅读成绩册。> [卡][ICTFax](https://www.ictinnovations.com/)
+> AI 考试创作和自动评分：解析试卷、发布考试并阅读成绩册。
+
+> [卡][ICTFax](https://www.ictinnovations.com/)
 >
 > LangChain 通过 ICTFax 或 ICTCore 服务器发送和跟踪传真的工具。
 
@@ -1178,9 +1182,7 @@
 
 > [卡][Inferrail](https://github.com/domondi1/inferrail/blob/main/docs/recipes/agent-run-budget.md?ref=langchain-docs#langchain)
 >
-> 自托管 OpenAI 兼容网关，强制执行每个代理运行的美元预算，通过 HTTP 402 拒绝超出预算的呼叫。
-
-> [卡][Infinispan](https://github.com/infinispan/langchain-infinispan/blob/main/libs/infinispan/README.md)
+> 自托管 OpenAI 兼容网关，强制执行每个代理运行的美元预算，通过 HTTP 402 拒绝超出预算的呼叫。> [卡][Infinispan](https://github.com/infinispan/langchain-infinispan/blob/main/libs/infinispan/README.md)
 >
 > 由 Infinispan 支持的矢量存储，Infinispan 是一种内存中分布式键/值数据存储，通过元数据过滤提供嵌入的相似性搜索。
 
@@ -1198,7 +1200,9 @@
 
 > [卡][InstaboxSandbox](https://github.com/InsForge/instabox-integrations/tree/main/langchain#readme)
 >
-> Deep Agents 沙箱后端，在 instabox 云 Linux VM 中运行命令和文件，空闲时暂停并在使用时恢复。> [卡][Instanode](https://instanode.dev/docs)
+> Deep Agents 沙箱后端，在 instabox 云 Linux VM 中运行命令和文件，空闲时暂停并在使用时恢复。
+
+> [卡][Instanode](https://instanode.dev/docs)
 >
 > 针对 AI 代理的零设置 Postgres 和 Webhook 配置。
 
@@ -1220,9 +1224,7 @@
 
 > [卡][Jenkins](https://github.com/Amitgb14/langchain_jenkins)
 >
-> 自动化服务器和 CI/CD 平台。
-
-> [卡][Job Opportunities API](https://github.com/lucagiftzek/langchain-job-opportunities-api)
+> 自动化服务器和 CI/CD 平台。> [卡][Job Opportunities API](https://github.com/lucagiftzek/langchain-job-opportunities-api)
 >
 > 具有雇主直接列表、全文搜索和增量变更源的职位发布 API。
 
@@ -1238,13 +1240,15 @@
 >
 > 网络搜索 API 具有自己的索引、实时网络和返回页面文本的深度通道。
 
-> [卡][Kalibr](https://kalibr.systems/docs)
+> [卡] [Kalibr](https://kalibr.systems/docs)
 >
 > 跨模型、工具和参数的 AI 代理的结果感知执行路由。
 
-> [卡] [Kapa](https://docs.kapa.ai/retrieval/frameworks/langchain)
+> [卡][Kapa](https://docs.kapa.ai/retrieval/frameworks/langchain)
 >
-> LangChain Kapa 工具，这是一个保持同步并为您的座席找到正确上下文的知识库。> [卡][Kavel](https://kavel.readthedocs.io/en/latest/integrations/langchain/)
+> LangChain Kapa 工具，这是一个保持同步并为您的座席找到正确上下文的知识库。
+
+> [卡][Kavel](https://kavel.readthedocs.io/en/latest/integrations/langchain/)
 >
 > Kavel 图像 API 的文本到图像和图像编辑工具；文本到图像在免费层上运行，无需 API 密钥。
 
@@ -1254,13 +1258,11 @@
 
 > [卡][Keiro](https://keirolabs.cloud)
 >
-> 具有结构化、可引用来源的代理的网络搜索、嵌入和检索。
+> 对具有结构化、可引用来源的代理进行网络搜索、嵌入和检索。
 
 > [卡][Keln](https://github.com/kris-holy/langchain-keln#readme)
 >
-> Keln 是一个开放模型的推理平台，具有与OpenAI兼容的 API，用于聊天、工具调用和结构化输出。
-
-> [卡][Kerq](https://kerq.dev/docs)
+> Keln 是一个开放模型的推理平台，具有与 OpenAI 兼容的 API，用于聊天、工具调用和结构化输出。> [卡][Kerq](https://kerq.dev/docs)
 >
 > AI 工具和 MCP 服务器的信任评分和遥测。
 
@@ -1290,7 +1292,9 @@
 
 > [卡][Kyvvu](https://docs.kyvvu.com)
 >
-> 运行时人工智能治理：代理的策略执行和防篡改审计跟踪。> [卡][LambdaDB](https://docs.lambdadb.ai/guides/get-started/quickstart)
+> 运行时人工智能治理：代理的策略执行和防篡改审计跟踪。
+
+> [卡][LambdaDB](https://docs.lambdadb.ai/guides/get-started/quickstart)
 >
 > RAG 和代理的无服务器数据库
 
@@ -1304,9 +1308,7 @@
 
 > [卡][langchain-arabic](https://github.com/louaychoum/langchain-arabic)
 >
-> LLM 输出的阿拉伯语文本后处理 — 变音符号恢复、数字到单词的转换和方言支持。
-
-> [卡][LangChain Replay](https://github.com/sixty-north/langchain-replay)
+> LLM 输出的阿拉伯语文本后处理 — 变音符号恢复、数字到单词的转换和方言支持。> [卡][LangChain Replay](https://github.com/sixty-north/langchain-replay)
 >
 > 当工具针对真实文件系统执行时，记录并重放 LangChain 代理决策。
 
@@ -1332,7 +1334,9 @@
 
 > [卡][LFG Alarm](https://github.com/lfg-gm/langchain-lfg#readme)
 >
-> 通过 LFG Alarm 设置、列出和删除电话上响起的警报以及立即拨打电话的工具。> [卡][Lindorm](https://help.aliyun.com/document_detail/174640.html)
+> 通过 LFG Alarm 设置、列出和删除电话上响起的警报以及立即拨打电话的工具。
+
+> [卡][Lindorm](https://help.aliyun.com/document_detail/174640.html)
 >
 > 阿里云多模型数据库服务。
 
@@ -1346,9 +1350,7 @@
 
 > [卡][Lians](https://www.lians.ai)
 >
-> 双时态代理记忆，可回忆 LangChain 和 LangGraph 的时间点。
-
-> [卡][LiquidVisionToolkit](https://github.com/lv-analytics/liquidvision-mcp/tree/main/integrations/langchain)
+> 双时态代理记忆，可回忆 LangChain 和 LangGraph 的时间点。> [卡][LiquidVisionToolkit](https://github.com/lv-analytics/liquidvision-mcp/tree/main/integrations/langchain)
 >
 > LiquidVision 为LangChain 代理提供只读加密衍生品数据工具，无需 API 密钥。
 
@@ -1372,9 +1374,11 @@
 >
 > MIT 许可的 ContextualCompressionRetriever 本地文档压缩器，可将查询相关内容保持在令牌预算内。
 
-> [卡][LLMSlimToolOutputMiddleware](https://github.com/Thanatos9404/llmslim/blob/main/docs/integrations/LANGCHAIN.md#agents-shorten-long-tool-output-langchain-1x)
+> [卡] [LLMSlimToolOutputMiddleware](https://github.com/Thanatos9404/llmslim/blob/main/docs/integrations/LANGCHAIN.md#agents-shorten-long-tool-output-langchain-1x)
 >
-> 在模型第一次看到长工具结果之前在本地缩短它们，避免在以后的模型调用中重复相同的字节。> [卡] [Lizard](https://github.com/lizard-build/langchain-lizard#readme)
+> 在模型第一次看到长工具结果之前在本地缩短它们，避免在以后的模型调用中重复相同的字节。
+
+> [卡][Lizard](https://github.com/lizard-build/langchain-lizard#readme)
 >
 > Lizard 通过 LangChain Deep Agents 提供用于运行 shell 命令和文件工具的云沙箱。
 
@@ -1388,9 +1392,7 @@
 
 > [卡][LoomKnowledgeRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
 >
-> 从 LangChain 搜索自托管 Loom 部署中的文档。
-
-> [卡][LoomMemoryRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
+> 从 LangChain 搜索自托管 Loom 部署中的文档。> [卡][LoomMemoryRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
 >
 > 从 LangChain 搜索自托管 Loom 部署中的代理内存。
 
@@ -1398,11 +1400,11 @@
 >
 > LangGraph BaseStore 由自托管 ClickHouse Loom 服务器支持：跨代理共享长期内存，按含义搜索。
 
-> [卡][LoopGrid](https://loopgrid.io/integrations/langchain/)
+> [卡] [LoopGrid](https://loopgrid.io/integrations/langchain/)
 >
 > 原生LangChain AgentMiddleware，用于通过 LoopGrid Core 签署决策证据、策略执行、人工批准和受保护的工具执行。
 
-> [卡] [LocalAI](/oss/python/integrations/providers/localai)
+> [卡][LocalAI](/oss/python/integrations/providers/localai)
 >
 > 自托管OpenAI兼容的API服务器。
 
@@ -1416,7 +1418,9 @@
 
 > [卡][Machine Library](https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary)
 >
-> 检索器和代理工具，用于跨学术论文、书籍、专利、标准和维基百科（以及 Reddit、Telegram 和 Discord）进行可引用搜索。> [卡][MadeOnSol](https://madeonsol.com/api-docs)
+> 检索器和代理工具，用于跨学术论文、书籍、专利、标准和维基百科（以及 Reddit、Telegram 和 Discord）进行可引用搜索。
+
+> [卡][MadeOnSol](https://madeonsol.com/api-docs)
 >
 > Solana memecoin 情报工具：KOL 源、协调信号、部署者声誉和警报。
 
@@ -1426,13 +1430,11 @@
 
 > [卡][MAQPNA](https://docs.maqpna.com/sdk/framework-adapters/#langchain)
 >
-> MAQPNA 是一个策略网关，将代理工具公开为 LangChain StructuredTools。
-
-> [卡][MariaDB](https://mariadb.com/docs/connectors/other/langchain-mariadb/api-reference)
+> MAQPNA 是一个策略网关，将代理工具公开为 LangChain StructuredTools。> [卡] [MariaDB](https://mariadb.com/docs/connectors/other/langchain-mariadb/api-reference)
 >
 > 开源关系数据库管理。
 
-> [卡] [MaskFlow](https://github.com/maskflow/maskflow/tree/main/packages/maskflow-langchain)
+> [卡][MaskFlow](https://github.com/maskflow/maskflow/tree/main/packages/maskflow-langchain)
 >
 > 适用于 LangChain 的可逆 PII 匿名器/去匿名器，是 Presidio 匿名器的插件。包括印度标识符。
 
@@ -1454,9 +1456,11 @@
 
 > [卡][Memstate AI](https://memstate.ai/docs/integrations/langchain)
 >
-> 人工智能代理的结构化、版本化长期记忆。> [卡][MemtomemHybridStore](https://github.com/memtomem/memtomem/blob/main/docs/guides/langgraph-hybrid-store.md)
+> 人工智能代理的结构化、版本化长期记忆。
+
+> [卡][MemtomemHybridStore](https://github.com/memtomem/memtomem/blob/main/docs/guides/langgraph-hybrid-store.md)
 >
-> SQLite 支持的 LangGraph BaseStore，具有 BM25、精确密集、加权 RRF 混合搜索、TTL 和搜索诊断。
+> 支持 SQLite 的 LangGraph BaseStore，具有 BM25、精确密集、加权 RRF 混合搜索、TTL 和搜索诊断。
 
 > [卡][MemtomemPipelineStore](https://github.com/memtomem/memtomem/blob/main/packages/langchain-memtomem/README.md)
 >
@@ -1464,15 +1468,13 @@
 
 > [卡][Mengram](https://mengram.io/docs)
 >
-> 具有语义、情景和程序类型的长期代理记忆。
-
-> [卡][MeragptDecider](https://github.com/Sandeep85Das/langchain-meragpt)
+> 具有语义、情景和程序类型的长期代理记忆。> [卡] [MeragptDecider](https://github.com/Sandeep85Das/langchain-meragpt)
 >
 > 使用 meraGPT Decider 1（作为 Runnable、工具和代理中间件）校准的概率键入决策（是/否、选择、分数）。
 
-> [卡] [MeshArc](https://mesharc.dev/docs/langchain)
+> [卡][MeshArc](https://mesharc.dev/docs/langchain)
 >
-> MeshArc 是一个网络爬行 API，它以干净的降价形式返回页面、映射站点、搜索网络以及报告爬行之间的页面更改。
+> MeshArc 是一种网络爬行 API，它以干净的降价形式返回页面、映射站点、搜索网络以及报告爬行之间的页面更改。
 
 > [卡][Metal](/oss/python/integrations/providers/metal)
 >
@@ -1496,7 +1498,9 @@
 
 > [卡][MinnsDB](https://github.com/Minns-ai/langgraph-minnsdb#readme)
 >
-> 代理内存工具和 MinnsDB 的 LangGraph 存储，MinnsDB 是一个时间图形数据库，记录每个事实何时为真。> [卡][Mixpeek](https://docs.mixpeek.com/agent-integrations/langchain)
+> 代理内存工具和 MinnsDB 的 LangGraph 存储，MinnsDB 是一个时间图形数据库，记录每个事实何时为真。
+
+> [卡][Mixpeek](https://docs.mixpeek.com/agent-integrations/langchain)
 >
 > 视频、图像、音频和文档的多模式搜索、摄取和矢量存储。
 
@@ -1510,9 +1514,7 @@
 
 > [卡][MistralAI](/oss/python/integrations/providers/mistralai)
 >
-> 高效的开源语言模型。
-
-> [卡][MobileboxToolkit](https://github.com/mobilebox-dev/mobilebox/tree/main/packages/python/langchain-mobilebox#readme)
+> 高效的开源语言模型。> [卡片][MobileboxToolkit](https://github.com/mobilebox-dev/mobilebox/tree/main/packages/python/langchain-mobilebox#readme)
 >
 > 允许客服人员创建云 Android 手机、阅读屏幕、点击、键入和安装应用程序的工具 (Mobilebox)。
 
@@ -1520,7 +1522,7 @@
 >
 > 用于数据科学的无服务器云计算。
 
-> [卡片][ModelScope](/oss/python/integrations/providers/modelscope)
+> [卡][ModelScope](/oss/python/integrations/providers/modelscope)
 >
 > 阿里巴巴的开源模型中心。
 
@@ -1546,7 +1548,9 @@
 
 > [卡][MovoaVideoGenerator](https://movoa.readthedocs.io/en/latest/integrations/langchain/)
 >
-> 用于 Movoa 视频 API（MiniMax H3、Veo 3.1 Fast、Seedance 2.5）的文本转视频和照片转视频，以及声音工具。> [卡][MrScraper](https://docs.mrscraper.com)
+> 用于 Movoa 视频 API（MiniMax H3、Veo 3.1 Fast、Seedance 2.5）的文本转视频和照片转视频，以及声音工具。
+
+> [卡][MrScraper](https://docs.mrscraper.com)
 >
 > 用于渲染 HTML、AI 提取、抓取器重新运行和结果管理的 Web 抓取 API。
 
@@ -1556,9 +1560,7 @@
 
 > [卡][Nano Banana by Ace Data Cloud](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana)
 >
-> Ace Data Cloud 为 Nano Banana 提供的图像生成提交和同 ID 任务检索工具。
-
-> [卡][Naver](https://guide.ncloud-docs.com/docs/clovastudio-dev-langchain)
+> Ace Data Cloud 为 Nano Banana 提供的图像生成提交和同 ID 任务检索工具。> [卡][Naver](https://guide.ncloud-docs.com/docs/clovastudio-dev-langchain)
 >
 > Naver 的人工智能服务和语言模型。
 
@@ -1584,13 +1586,15 @@
 
 > [卡][NewsCatcher](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain)
 >
-> 作为 LangChain 工具，CatchAll 网络搜索现实世界的商业事件。> [卡][Nextmail](https://nextmail.sh/docs/python/langchain)
+> 作为 LangChain 工具，CatchAll 网络搜索现实世界的商业事件。
+
+> [卡][Nextmail](https://nextmail.sh/docs/python/langchain)
 >
 > 在您自己的域上发送电子邮件，使用代理工具来阅读和搜索邮件、等待验证码、使用一次性收件箱、保存草稿、回复和发送。
 
 > [卡][Nexus Shield](https://api.nexusshield.ai)
 >
-> 低于 10 毫秒的 RAM 内 PII 清理和 LLM API 的安全防护代理。
+> 用于 LLM API 的 RAM 内 PII 清理和安全防护代理的时间低于 10 毫秒。
 
 > [卡][Nia](https://github.com/nozomio-labs/nia-langchain)
 >
@@ -1598,9 +1602,7 @@
 
 > [卡][NetMind](https://github.com/protagolabs/langchain-netmind)
 >
-> 去中心化人工智能计算网络。
-
-> [卡][NeuralTrust](https://docs.neuraltrust.ai/integrations/langchain)
+> 去中心化人工智能计算网络。> [卡][NeuralTrust](https://docs.neuraltrust.ai/integrations/langchain)
 >
 > TrustGuard 中间件，允许、阻止、报告或转换代理输入、模型输出和工具流量。
 
@@ -1612,13 +1614,13 @@
 >
 > 网络智能和数据提取。
 
-> [卡][NodeProxy](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations)
+> [卡] [NodeProxy](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations)
 >
 > x402 门控的 Web 表面 Markdown 解析器，用于高效的 LLM 摄取。
 
-> [卡] [NoMacSandbox](https://github.com/NoMac-app/langchain-nomac#readme)
+> [卡][NoMacSandbox](https://github.com/NoMac-app/langchain-nomac#readme)
 >
-> 使用 Xcode 作为 Deep Agents 沙箱的云 macOS 虚拟机：NoMac Mac 上的 shell 命令和文件上传和下载，按分钟计费。
+> 使用 Xcode 作为 Deep Agents 沙箱的云 macOS 虚拟机：在 NoMac Mac 上执行 shell 命令以及文件上传和下载，按分钟计费。
 
 > [卡][Nomic](https://atlas.nomic.ai/)
 >
@@ -1630,7 +1632,9 @@
 
 > [卡][Notte](https://docs.notte.cc/integrations/langchain)
 >
-> 管理 AI 代理的远程浏览器会话。> [卡][Noveum](https://noveum.ai/en/docs/integration-examples/langchain/overview)
+> 管理 AI 代理的远程浏览器会话。
+
+> [卡][Noveum](https://noveum.ai/en/docs/integration-examples/langchain/overview)
 >
 > 捕获 LangChain 和 LangGraph 运行、模型调用和工具活动，以在 Noveum 中进行跟踪和评估。
 
@@ -1644,9 +1648,7 @@
 
 > [卡][Novita](https://github.com/novitalabs/langchain-novita)
 >
-> 用于运行代理生成的代码的代码解释器沙箱。
-
-> [卡][ObscateMiddleware](https://obscate.com/docs/langchain)
+> 用于运行代理生成的代码的代码解释器沙箱。> [卡][ObscateMiddleware](https://obscate.com/docs/langchain)
 >
 > ObscateMiddleware 通过托管的 Obscate API 为 LangChain 文本和 JSON 提供可逆的 PII 编辑。
 
@@ -1668,7 +1670,7 @@
 
 > [卡][OddsRelay](https://github.com/oddsrelay/langchain-oddsrelay)
 >
-> 适用于英国和爱尔兰博彩公司的赛前赔率 API，包括 bet365，以及 Betfair、Smarkets 和 Matchbook 的非赔率。
+> 为英国和爱尔兰以及其他 20 个地区的博彩公司提供赛前和比赛中的赔率 API，包括英国和爱尔兰的 Betfair、Smarkets 和 Matchbook 的实时赔率。
 
 > [卡][Ollama](/oss/python/integrations/providers/ollama)
 >
@@ -1676,7 +1678,9 @@
 
 > [卡][Olostep](https://github.com/olostep-api/langchain-olostep#readme)
 >
-> 通过 Olostep API 进行网页抓取、爬行、站点映射、批量提取和引用的网页答案。> [卡][OMEM](https://infrastructure.omem-cloud.com/docs)
+> 通过 Olostep API 进行网页抓取、爬行、站点映射、批量提取和引用的网页答案。
+
+> [卡][OMEM](https://infrastructure.omem-cloud.com/docs)
 >
 > LangGraph 的信念跟踪 BaseStore，具有取代写入和出处。
 
@@ -1686,13 +1690,11 @@
 
 > [卡][OpenMemory](https://github.com/nullure/langchain-openmemory)
 >
-> LangChain 代理的本地优先持久时间记忆检索器。
-
-> [卡][OpenAI](/oss/python/integrations/providers/openai)
+> LangChain 代理的本地优先持久时间记忆检索器。> [卡] [OpenAI](/oss/python/integrations/providers/openai)
 >
 > GPT 模型和综合人工智能平台。
 
-> [卡] [OpenAlexSearch](https://github.com/ourresearch/langchain-openalex#readme)
+> [卡][OpenAlexSearch](https://github.com/ourresearch/langchain-openalex#readme)
 >
 > 通过 OpenAlex 进行搜索和查找工具，这是一个免费的学术著作、作者、来源和引文索引，以及一个检索器。
 
@@ -1710,7 +1712,7 @@
 
 > [卡][OpenDocKitLoader](https://github.com/hyeonsang010716/OpenDocKit/blob/main/docs/integrations.md#langchain)
 >
-> Document loader that converts PDF, Office, HWP/HWPX, ODF, RTF, EPUB, HTML and email files to Markdown locally, with no ML models or network calls.
+> 文档加载器，可将 PDF、Office、HWP/HWPX、ODF、RTF、EPUB、HTML 和电子邮件文件本地转换为 Markdown，无需 ML 模型或网络调用。
 
 > [卡][OpenGradient](https://docs.opengradient.ai/)
 >
@@ -1718,9 +1720,11 @@
 
 > [卡][OpenInference](/oss/python/integrations/callbacks/openinference)
 >
-> OpenTelemetry 工具使用 OpenInference 语义约定记录 LangChain 和 LangGraph 操作。> [卡][OpenpathSearch](https://github.com/agentbeacon-hq/clients)
+> OpenTelemetry 工具使用 OpenInference 语义约定记录 LangChain 和 LangGraph 操作。
+
+> [卡][OpenpathSearch](https://github.com/agentbeacon-hq/clients)
 >
-> Openpath 工具，一个职位空缺和奥斯汀本地企业的开放目录，以 Markdown 形式返回，没有 API 密钥。
+> Openpath 工具，一个开放的职位空缺目录和奥斯汀本地企业，以 Markdown 形式返回，没有 API 密钥。
 
 > [卡][OpenRouter](/oss/python/integrations/providers/openrouter)
 >
@@ -1728,9 +1732,7 @@
 
 > [卡][OpenSandbox](https://github.com/AyushSonuu/langchain-sandbox-opensandbox#readme)
 >
-> Deep Agents 的 OpenSandbox 后端：在隔离的沙箱中运行代理代码和文件操作。
-
-> [卡][Opensolr](https://opensolr.com/langchain)
+> Deep Agents 的 OpenSandbox 后端：在隔离的沙箱中运行代理代码和文件操作。> [卡][Opensolr](https://opensolr.com/langchain)
 >
 > 具有服务器端嵌入和混合 BM25 + kNN 搜索的托管 Apache Solr。
 
@@ -1760,19 +1762,19 @@
 
 > [卡][OrcaCallbackHandler](https://github.com/Continuum-AI-Corp/OrcaReplay/blob/main/python-langgraph/README.md)
 >
-> 记录哪个 LangGraph 节点运行、在哪个超级步中以及它如何结束，并记录到在无法访问提供者的情况下离线重放的跟踪中。> [卡][Opedd](https://opedd.com/for-ai-agents)
+> 记录哪个 LangGraph 节点运行、在哪个超级步中以及它如何结束，并记录到在提供者无法访问的情况下离线重放的跟踪中。
+
+> [卡] [Opedd](https://opedd.com/for-ai-agents)
 >
 > 为 RAG 和代理提供经过许可、权限明确的内容，并具有可验证的许可证密钥。
 
-> [卡] [OutcrawlSearchTool](https://github.com/outcrawlai/langchain-outcrawl#readme)
+> [卡][OutcrawlSearchTool](https://github.com/outcrawlai/langchain-outcrawl#readme)
 >
 > 用于 Outcrawl API 的 Web 搜索和页面抓取工具，以及文档加载器。
 
-> [卡][oxidize-pdf](https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain)
+> [卡] [oxidize-pdf](https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain)
 >
-> Rust 支持的 PDF 加载器，具有元素不相交的 RAG 分块。
-
-> [卡] [Oxylabs](https://github.com/oxylabs/langchain-oxylabs)
+> Rust 支持的 PDF 加载器，具有元素不相交的 RAG 分块。> [卡][Oxylabs](https://github.com/oxylabs/langchain-oxylabs)
 >
 > 针对代理和 RAG 的 Web 搜索、页面阅读和抓取工具，基于 Oxylabs Web API 和 Web Scraper API 构建。
 
@@ -1786,31 +1788,31 @@
 
 > [卡][PandaStackSandbox](https://docs.pandastack.ai/docs/agents/deep-agents)
 >
-> Deep Agents 的沙盒后端，在 PandaStack Firecracker microVM 中运行命令和文件操作。
+> Deep Agents 的沙箱后端，在 PandaStack Firecracker microVM 中运行命令和文件操作。
 
-> [卡][Parallel](/oss/python/integrations/providers/parallel)
+> [卡] [Parallel](/oss/python/integrations/providers/parallel)
 >
 > 面向法学硕士的人工智能网络搜索和内容提取。
 
-> [卡] [PaySafe](https://paysafe-agent.com)
+> [卡][PaySafe](https://paysafe-agent.com)
 >
 > x402 支付防火墙，带有来源标记，用于提示注入检测。
 
 > [卡][PaySafely](https://github.com/screwtapeai/pay-safely)
 >
-> LangChain 在代理商付款之前检查卖家是否安全付款并返回签名收据的工具。> [卡][PDFluentLoader](https://github.com/pdfluent/pdfluent-sdk/tree/main/integrations/langchain-pdfluent#readme)
+> LangChain 在代理商付款之前检查卖家是否安全付款并返回签名收据的工具。
+
+> [卡] [PDFluentLoader](https://github.com/pdfluent/pdfluent-sdk/tree/main/integrations/langchain-pdfluent#readme)
 >
 > PDF 文档加载器，返回带有页面、边界框和元数据类型的块、表格或 Markdown 页面。在本地运行。
 
-> [卡] [pdfmuse](https://github.com/casperkwok/pdfmuse)
+> [卡][pdfmuse](https://github.com/casperkwok/pdfmuse)
 >
 > 使用 RAG 的页面坐标和部分元数据进行确定性本地 PDF/DOCX 解析。
 
 > [卡][Perigon](https://dev.perigon.io/docs)
 >
-> 实时新闻和媒体监控。
-
-> [卡][Permit](https://docs.permit.io/)
+> 实时新闻和媒体监控。> [卡][Permit](https://docs.permit.io/)
 >
 > 授权和访问控制平台。
 
@@ -1828,7 +1830,7 @@
 
 > [卡][PIIGhost](https://athroniaeth.github.io/piighost/getting-started/langchain/)
 >
-> 适用于 LangChain 代理的可逆 PII 匿名化中间件。
+> 适用于 LangChain 代理的可逆 PII 匿名中间件。
 
 > [卡][PQS](https://pqs.onchainintel.net)
 >
@@ -1840,7 +1842,9 @@
 
 > [卡][PiloterrGoogleSearch](https://github.com/piloterr/langchain-piloterr#readme)
 >
-> 通过 Piloterr Web 数据 API，将 Google 搜索和网页抓取（普通、渲染或解锁）作为工具和文档加载器。> [卡][Pinecone](/oss/python/integrations/providers/pinecone)
+> 通过 Piloterr Web 数据 API，将 Google 搜索和网页抓取（普通、渲染或解锁）作为工具和文档加载器。
+
+> [卡][Pinecone](/oss/python/integrations/providers/pinecone)
 >
 > 用于 ML 应用程序的托管矢量数据库。
 
@@ -1850,11 +1854,13 @@
 
 > [卡][Pipeshift](/oss/python/integrations/providers/pipeshift)
 >
-> 人工智能驱动的内容审核平台。
-
-> [卡][Plasmate](https://docs.plasmate.app/integration-langchain)
+> 人工智能驱动的内容审核平台。> [卡][Plasmate](https://docs.plasmate.app/integration-langchain)
 >
 > 具有标记集 (SOM) 结构化 UI 提取功能的代理本机无头浏览器。
+
+> [卡][PlatinumSandbox](https://www.platinum.dev/docs/sdk/deepagents)
+>
+> Deep Agents 沙箱后端，在 Platinum microVM 中运行代理的执行和文件工具；已停止的沙箱将在下次调用时再次启动。
 
 > [卡][Plivo](https://github.com/plivo-dev/langchain-plivo-tools)
 >
@@ -1862,7 +1868,7 @@
 
 > [卡][Play Store](https://github.com/urraf/langchain-playstore#readme)
 >
-> LangChain 的 Google Play 商店应用详细信息和用户评论检索器。
+> Google Play 商店应用程序详细信息和用户评论 LangChain 检索器。
 
 > [卡][PlaceholderGuardMiddleware](https://github.com/bharatkhanna-dev/langchain-placeholder-guard#readme)
 >
@@ -1878,11 +1884,11 @@
 
 > [卡][PolarisAIDataInsight](https://datainsight.polarisoffice.com/playground)
 >
-> 适用于各种文件格式的文档加载器。> [卡][PoliasSearch](https://github.com/Polias-Team/langchain-polias)
->
-> Polias 的搜索工具和检索器，Polias 是一个搜索引擎，拥有自己的欧盟托管索引：网络、新闻、官方来源和法律。
+> 适用于各种文件格式的文档加载器。
 
-> [卡][Polign](https://github.com/Polign/polign/tree/main/python/langchain-polign)
+> [卡][PoliasSearch](https://github.com/Polias-Team/langchain-polias)
+>
+> Polias 的搜索工具和检索器，Polias 是一个搜索引擎，拥有自己的欧盟托管索引：网络、新闻、官方来源和法律。> [卡][Polign](https://github.com/Polign/polign/tree/main/python/langchain-polign)
 >
 > 用于 Polign 的矢量存储、对象存储本机矢量数据库，具有元数据过滤、MMR 和 BM25 混合搜索。
 
@@ -1890,19 +1896,19 @@
 >
 > 适用于 LangChain 代理的便携式角色加载、旧版迁移和边界感知工具过滤。
 
-> [卡][PopNow](https://popnow.ai/docs/langchain)
+> [卡片][PopNow](https://popnow.ai/docs/langchain)
 >
 > PopNow API 工具，用于使用 Nano Banana、Kling、MiniMax 和 Suno 等模型生成图像、视频、音乐和语音，以美元计费。
 
-> [卡][PplStore](https://github.com/ppl-crm/ppl-memory)
+> [卡片][PplStore](https://github.com/ppl-crm/ppl-memory)
 >
 > LangGraph BaseStore 由 ppl 个人 CRM 支持。座席记忆以笔记的形式存储在联系人的时间线上；搜索使用 ppl 的排名检索。
 
-> [卡片][pr402](https://docs.ipay.sh)
+> [卡][pr402](https://docs.ipay.sh)
 >
 > 通过 x402 协议对 HTTP 402 资源进行自主 Solana USDC 支付。
 
-> [卡片][Portkey](/oss/python/integrations/providers/portkey/logging_tracing_portkey)
+> [卡][Portkey](/oss/python/integrations/providers/portkey/logging_tracing_portkey)
 >
 > AI网关和可观测平台。
 
@@ -1912,11 +1918,11 @@
 
 > [卡][PredictionGuard](/oss/python/integrations/providers/predictionguard)
 >
-> AI模型安全与合规平台。> [卡][PrintFriendly](https://github.com/printfriendly/langchain-printfriendly#readme)
->
-> PrintFriendly 通过其 API 读取网页并返回干净的 Markdown、文本或 HTML，没有广告或页面混乱。
+> AI模型安全与合规平台。
 
-> [卡][Pramagent](https://github.com/sriram7737/pramagent)
+> [卡][PrintFriendly](https://github.com/printfriendly/langchain-printfriendly#readme)
+>
+> PrintFriendly 通过其 API 读取网页并返回干净的 Markdown、文本或 HTML，没有广告或页面混乱。> [卡][Pramagent](https://github.com/sriram7737/pramagent)
 >
 > 用于 LangGraph 工具调用的确定性工具策略和 HITL 门。
 
@@ -1939,6 +1945,10 @@
 > [卡][prompt-shield](https://github.com/mthamil107/prompt-shield)
 >
 > 用于输入、工具结果和模型输出的运行时提示注入防火墙。
+
+> [卡][Protogrid](https://docs.protogrid.dev/sdk/langchain/)
+>
+> 从 protogrid 注册表中的 MCP 服务器加载通过您的规则的 LangChain 工具，以及用于搜索注册表和检查服务器的工具。
 
 > [卡][ProvaredMiddleware](https://github.com/provared/provared/tree/main/python/integrations/provared-langchain)
 >
@@ -1996,27 +2006,27 @@
 
 > [卡][Reach Dog](https://github.com/reachdog/langchain-reachdog/tree/main/libs/reachdog)
 >
-> 通过 Reach Dog API 丰富产品标题、目录分组和市场研究的工具。> [card] [RecallChatMessageHistory](https://recallmem.dev/guides/langchain)
+> 通过 Reach Dog API 丰富产品标题、目录分组和市场研究的工具。> [卡][RecallChatMessageHistory](https://recallmem.dev/guides/langchain)
 >
 > 聊天消息历史记录存储在 Recall 会话中，因此 Recall 还可以从中了解用户。
 
-> [card] [RecallMiddleware](https://recallmem.dev/guides/langchain)
+> [卡][RecallMiddleware](https://recallmem.dev/guides/langchain)
 >
 > create_agent 代理的长期记忆：将 Recall 了解到的用户信息添加到系统提示中并记录每次交换。
 
-> [card] [RecallRetriever](https://recallmem.dev/guides/langchain)
+> [卡][RecallRetriever](https://recallmem.dev/guides/langchain)
 >
 > 以文档形式检索 Recall 了解的有关用户的事实以及用户的匹配消息。
 
-> [card] [RecallToolkit](https://recallmem.dev/guides/langchain)
+> [卡][RecallToolkit](https://recallmem.dev/guides/langchain)
 >
-> 代理用于搜索回忆、询问有关用户的问题并保存事实的工具。
+> 供代理搜索调用内存、询问有关用户的问题并保存事实的工具。
 
-> [card] [Reddit](https://github.com/urraf/langchain-reddit#readme)
+> [卡][Reddit](https://github.com/urraf/langchain-reddit#readme)
 >
-> 搜索 Reddit 的帖子、子 Reddit 提要和评论树检索器。
+> 搜索 Reddit 的帖子、subreddit feed 和评论树检索器。
 
-> [card] [ReDefiNERPIIMiddleware](https://github.com/Jungroo-AI/langchain-redefiner#readme)
+> [卡][ReDefiNERPIIMiddleware](https://github.com/Jungroo-AI/langchain-redefiner#readme)
 >
 > 代理中间件，根据简单英语规则手册的定义，在消息到达 LLM 之前使用本地 0.8B 模型编辑个人数据。
 
@@ -2024,15 +2034,15 @@
 >
 > 内存数据结构存储和缓存。
 
-> [card] [ReefAPIToolkit](https://reefapi.com/docs/langchain)
+> [卡][ReefAPIToolkit](https://reefapi.com/docs/langchain)
 >
 > 一个 API 密钥可用于 600 多个返回 JSON 的特定于站点的实时 Web 数据 API（Amazon、eBay、Zillow、Reddit、Google 地图等）。
 
-> [card] [RelayShield](https://api.relayshield.net/developers)
+> [卡][RelayShield](https://api.relayshield.net/developers)
 >
 > 身份和代理攻击表面威胁情报。
 
-> [card] [Remembrall](/oss/python/integrations/providers/remembrall)
+> [卡][Remembrall](/oss/python/integrations/providers/remembrall)
 >
 > 人工智能内存和上下文管理。> [卡][RE-call](https://giulioder.github.io/RE-call/integrations.html)
 >
@@ -2064,7 +2074,7 @@
 
 > [卡][RiskShield](https://github.com/kynto2001-ctrl/apexrunner-tools#riskshield-block-dangerous-trades-before-they-execute)
 >
-> RiskShield 为代理商提供交易前加密货币风险、时间安排和滑点检查，并阻止评分为危险的订单。
+> RiskShield 为代理商提供交易前加密货币风险、时间安排和滑点检查，并阻止评分为“危险”的订单。
 
 > [卡][Robocorp](https://github.com/robocorp/robocorp)
 >
@@ -2280,7 +2290,7 @@
 
 > [卡][SofyaSearch](https://sofya.co/docs/langchain)
 >
-> 网络搜索、页面和文档获取到降价、页面提取以及代理引用的研究工具。
+> 网络搜索、页面和文档获取到降价、页面提取以及为代理引用的研究工具。
 
 > [卡][Soniox](https://soniox.com/docs/stt/concepts/supported-languages)
 >
@@ -2322,7 +2332,7 @@
 
 > [卡][SQLiteGraphMemoryRetriever](https://github.com/tonydzi/langchain-sqlite-graph-memory#readme)
 >
-> Markdown 笔记上的本地检索器：矢量搜索、1 跳 wikilink 图扩展和跨编码器重新排序，无需服务器。
+> Markdown 注释上的本地检索器：矢量搜索、1 跳 wikilink 图扩展和跨编码器重新排序，无需服务器。
 
 > [卡][SRARiskGateMiddleware](https://github.com/sriram1983007-dev/langchain-sra-riskgate#readme)
 >
@@ -2334,7 +2344,7 @@
 
 > [卡][Strale](https://strale.dev/docs)
 >
-> 用于业务数据、合规性和文档提取的能力市场工具。
+> 用于业务数据、合规性和文档提取的功能市场工具。
 
 > [卡][Stardog](https://github.com/stardog-union/stardog-langchain)
 >
@@ -2406,7 +2416,7 @@
 
 > [卡][Synthorai](https://synthorai.io/docs/)
 >
-> 与OpenAI兼容的LLM网关路由到多个模型提供商。
+> OpenAI 兼容 LLM 网关路由到多个模型提供商。
 
 > [卡][Tableau](/oss/python/integrations/providers/tableau)
 >
@@ -2510,7 +2520,7 @@
 
 > [卡][TokenjuiceMiddleware](https://github.com/vincentkoc/tokenjuice/blob/main/docs/framework-integrations.md#langchain)
 >
-> 本地LangChain工具中间件，可压缩合格的成功 shell 输出，同时保留错误、精确读取、原始请求和工具元数据。
+> 本地 LangChain 工具中间件，可压缩合格的成功 shell 输出，同时保留错误、精确读取、原始请求和工具元数据。
 
 > [卡][TokenMix](https://tokenmix.ai/docs)
 >
@@ -2636,7 +2646,7 @@
 
 > [卡][VAST Data](https://github.com/vast-data/vast-vector-store)
 >
-> 具有本机矢量索引的高性能、EB 级数据平台。
+> 具有本机向量索引的高性能、EB 级数据平台。
 
 > [卡][Vaultak](https://docs.vaultak.com)
 >
@@ -2662,7 +2672,7 @@
 
 > [卡][Vectorize](https://docs.vectorize.io/rag-pipelines/retrieval-endpoint#access-tokens)
 >
-> Vector database and semantic search.
+> 矢量数据库和语义搜索。
 
 > [卡][VeqenCallbackHandler](https://github.com/Keyveve/veqen-sdks/tree/main/integrations/langchain#readme)
 >
@@ -2738,7 +2748,7 @@
 
 > [卡][WebCrawlerAPILoader](https://webcrawlerapi.com/docs/sdk/langchain)
 >
-> 使用 WebCrawlerAPI 抓取网站或单个页面的文档加载器，并以 Markdown 或 HTML 的形式返回每页一个文档。
+> 文档加载器使用 WebCrawlerAPI 抓取网站或单个页面，并以 Markdown 或 HTML 的形式返回每页一个文档。
 
 > [卡][Webz](https://docs.webz.io/docs/webz/news-search-api-mcp)
 >

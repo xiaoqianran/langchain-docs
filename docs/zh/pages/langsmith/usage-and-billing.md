@@ -14,7 +14,7 @@
 
 ## 数据保留
 
-LangSmith 仅在其层的保留期内保留每个跟踪。当该时间段结束时，LangSmith 会删除该跟踪。
+LangSmith 仅在其层的保留期内保留每个跟踪。当该时间段结束时，LangSmith 删除该跟踪。
 
 ### 为什么保留很重要
 
@@ -39,7 +39,7 @@ LangSmith 仅在其层的保留期内保留每个跟踪。当该时间段结束�
 
 默认保留层属于代理[environment](/langsmith/agent-environments)，而不属于整个代理。新环境继承工作区的默认层，您在[Configure trace tier distribution](/langsmith/billing#configure-trace-tier-distribution)中设置。更改工作区默认值不会更改现有环境，除非您选择将其应用到所有环境。无论其环境层如何，[auto-upgrade](#data-retention-auto-upgrades) 都可以将单个跟踪移至延长保留期。
 
-由于您为每个环境设置了层，因此一个代理可以将生产跟踪长期保留，并将开发跟踪保留在基础上。要更改整个代理的层，请在每个环境上进行设置。
+由于您为每个环境设置了层，因此一个代理可以将生产跟踪保留在较长的保留期，将开发跟踪保留在基础上。要更改整个代理的层，请在每个环境上进行设置。
 
 > [!提示]
 >
@@ -51,14 +51,16 @@ LangSmith 仅在其层的保留期内保留每个跟踪。当该时间段结束�
 >
 > 自动升级会增加您的账单。阅读本节以了解您的估计跟踪成本。
 
-某些操作会将基本层跟踪升级到扩展层，这会增加其保留期和成本。您可以控制哪些操作可以延长保留时间。
+某些操作会将基本层跟踪升级到扩展层，这会增加其保留期和成本。您可以控制哪些操作可以延长保留时间。要阻止工作区中的新升级，[disable extended trace retention](/langsmith/data-purging-compliance#disable-extended-trace-retention)。反馈和评估会继续进行，但不会延长保留时间。
 
-按操作保留行为：* **通过 API 或 SDK 进行反馈**：通过显式传递 `extend_trace_retention=true`（在 TypeScript 中为 `extendTraceRetention: true`）的 API 或 SDK 调用，将反馈添加到跟踪（或线程中的任何跟踪）上的任何运行。有关更多信息，请参阅[Attach user feedback](/langsmith/attach-user-feedback)。 LangSmith UI 发送反馈和注释，但不会延长保留时间。
+当工作区允许延长保留时，保留行为取决于操作：
+
+* **通过 API 或 SDK 进行反馈**：通过显式传递 `extend_trace_retention=true`（在 TypeScript 中为 `extendTraceRetention: true`）的 API 或 SDK 调用，将反馈添加到跟踪（或线程中的任何跟踪）上的任何运行。欲了解更多信息，请参阅[Attach user feedback](/langsmith/attach-user-feedback)。 LangSmith UI 发送反馈和注释，但不会延长保留时间。
 * **在线评估器**：在线评估器对跟踪进行评分并启用其保留设置。跟踪级和线程级评估器都可以选择退出此升级。
 * **自动化规则**：启用保留扩展的[automation rule](/langsmith/rules#create-a-rule)匹配跟踪中的任何运行。匹配单个运行会升级整个跟踪，而不仅仅是该运行。 [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 为 **Threads** 的规则会升级匹配线程中的每个跟踪，而不仅仅是最近的跟踪。
-* **手动注释队列添加**（不升级）：默认情况下，手动将运行或线程添加到 [annotation queue](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue) 不会升级保留。
+* **手动注释队列添加**（不升级）：默认情况下，手动将运行或线程添加到 [annotation queue](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue) 不会升级保留。默认情况下，新的在线评估器和自动化规则启用保留扩展。您可以在创建或编辑每个评估器或规则时将其关闭。仅当环境的默认保留为基础层时，在线评估者才能选择退出。参见[Manage evaluator trace retention](/langsmith/evaluators#manage-evaluator-trace-retention)。
 
-默认情况下，新的在线评估器和自动化规则启用保留扩展。您可以在创建或编辑每个评估器或规则时将其关闭。仅当环境的默认保留为基础层时，在线评估者才能选择退出。参见[Manage evaluator trace retention](/langsmith/evaluators#manage-evaluator-trace-retention)。关闭保留扩展不会降级跟踪。先前操作已升级的痕迹将保留较长的保留时间。
+关闭保留扩展不会降级跟踪。先前操作已升级的痕迹将保留其长期保留。
 
 #### 为什么LangSmith自动升级痕迹
 
@@ -67,17 +69,17 @@ LangSmith 仅在其层的保留期内保留每个跟踪。当该时间段结束�
 1. 通过 API 接收反馈、由在线评估程序评分或匹配自动化规则的跟踪通常比其他跟踪更有价值，因此将其保留更长时间非常有用。
 2. 无人交互的痕迹成本应低一个数量级。只有具有有意义的交互的痕迹才会以更高的扩展费率收费。
 
-有关 LangSmith 定价的问题，请通过 [support.langchain.com](https://support.langchain.com) 联系支持人员。
+有关 LangSmith 定价的问题，请联系支持人员[support.langchain.com](https://support.langchain.com)。
 
 #### 保留如何影响下游功能
 
-以下功能与保留的交互作用不同：
-
-* **实验**：默认情况下，运行是在延长保留时创建的。
+当工作区允许延长保留时间时，以下功能与保留的交互作用会有所不同：* **实验**：默认情况下，运行是在延长保留时创建的。
 * **自动化规则和评估器**：启用保留设置后，将匹配跟踪升级为延长保留。线程级规则和评估器升级匹配线程中的每个跟踪。
 * **UI 反馈、注释和注释队列**：保持跟踪的保留层不变。
 
-其他功能的行为独立于跟踪的保留层：* **监控**：即使基础层跟踪的数据保留期结束，监控选项卡仍会继续工作。它由保存超过 30 天的跟踪元数据提供支持，因此监控图表对于 `base` 层跟踪保持准确。
+其他功能的行为独立于跟踪的保留层：
+
+* **监控**：即使基础层跟踪的数据保留期结束，监控选项卡仍会继续工作。它由保存超过 30 天的跟踪元数据提供支持，因此监控图表对于 `base` 层跟踪保持准确。
 * **数据集**：数据集具有无限的数据保留期。如果将跟踪的输入和输出添加到数据集，它们永远不会被删除。如果您使用LangSmith进行数据收集，请将要保留的数据存储在[dataset](/langsmith/manage-datasets)中。
 
 ### 计费模型
@@ -87,23 +89,21 @@ LangSmith 仅在其层的保留期内保留每个跟踪。当该时间段结束�
 * **LangSmith 痕迹（基本费用）**：每条痕迹，无论等级如何。
 * **LangSmith 跟踪（扩展数据保留升级）**：每个扩展保留跟踪。
 
-#### 为什么发票单独计算升级
-
-直接计算基本和扩展跟踪会更简单，但它不处理升级。例如，在 6 月 30 日记录并在 7 月 3 日升级为扩展的基本层跟踪落在 6 月计费周期中，而其升级则落在 7 月中。分别测量这两个事件，在正确的时间段内对每个事件进行计费。
+#### 为什么发票单独计算升级直接计算基本和扩展跟踪会更简单，但它不处理升级。例如，在 6 月 30 日记录并在 7 月 3 日升级为扩展的基本层跟踪落在 6 月计费周期中，而其升级则落在 7 月中。分别测量这两个事件，并在正确的时间段内对每个事件进行计费。
 
 在延长保留时创建的跟踪记录具有相同时间戳的两个指标。
 
-## 速率限制LangSmith具有速率限制，旨在确保所有用户的服务稳定性。
+## 速率限制
 
-当超出速率限制或使用限制时，在以下情况下，LangSmith 会以 HTTP 状态代码 429 进行响应：
+LangSmith具有速率限制，旨在确保所有用户的服务稳定性。
+
+在以下情况下，当超出速率限制或使用限制时，LangSmith 会以 HTTP 状态代码 429 进行响应：
 
 ### 负载均衡器的每分钟吞吐量限制
 
 此 429 是基于每个服务密钥或 PAT 在 1 分钟窗口内超过固定数量的 API 调用的结果。该窗口不一定在时钟分钟开始时开始，并且其开始可能会随着应用程序部署事件而变化。
 
-达到最大调用次数后，LangSmith 会响应 429，直到窗口开始后经过 60 秒。然后窗口再次启动。
-
-LangSmith 应用程序负载均衡器返回此 429。它适用于所有 LangSmith 用户，无论计划如何。
+达到最大调用次数后，LangSmith 会以 429 响应，直到窗口开始后经过 60 秒。然后窗口再次启动。LangSmith 应用程序负载均衡器返回此 429。它适用于所有 LangSmith 用户，无论计划如何。
 
 |方法|端点 |限制|窗口|
 | - | - | - | - |
@@ -111,7 +111,9 @@ LangSmith 应用程序负载均衡器返回此 429。它适用于所有 LangSmit
 | `POST` 或 `PATCH` | `/runs*` | 5000 | 1 分钟 |
 | `GET` | `/runs/:id` | 30| 1 分钟 |
 | `POST` | `/feedbacks*` | 5000 | 1 分钟 |
-| `*` | `*` | 2000 | 2000 1 分钟 |> [!注意]
+| `*` | `*` | 2000 | 2000 1 分钟 |
+
+> [!注意]
 >
 > LangSmith SDK 采取措施，通过将单个会话 ID 中的最多 100 次运行批处理到单个 API 调用中，最大限度地降低在运行相关端点上达到这些限制的可能性。
 
@@ -121,16 +123,16 @@ LangSmith 应用程序负载均衡器返回此 429。它适用于所有 LangSmit
 
 此上下文中的事件是运行的创建或更新。如果创建运行并随后在同一小时窗口中更新，则针对此限制计为 2 个事件。
 
-LangSmith 应用程序返回此 429。限制因计划而异：Startup/Plus 和 Enterprise 计划的每小时限制高于专为个人使用而设计的 Developer 计划。
-
-|计划|限制|窗口|
+LangSmith 应用程序返回此 429。限制因计划而异：Startup/Plus 和 Enterprise 计划的每小时限制高于专为个人使用而设计的 Developer 计划。|计划|限制|窗口|
 | - | - | - |
 |开发商（档案中无付款）| 50,000 场活动 | 1小时|
 |开发商（已付款存档）| 250,000 场活动 | 1小时|
 |启动/增强 | 500,000 个事件 | 1小时|
 |企业 |定制|定制|
 
-### 计划级每小时跟踪数据摄取限制此 429 是在跟踪输入、输出和元数据中获取的最大数据量达到的结果，并在 UTC 每个时钟小时开始时的固定窗口中进行评估，并在每个新小时的顶部重置。
+### 计划级每小时跟踪数据摄取限制
+
+此 429 是在跟踪输入、输出和元数据中获取的最大数据量达到的结果，并在 UTC 每个时钟小时开始时的固定窗口中进行评估，并在每个新小时的顶部重置。
 
 通常，输入、输出和元数据都会在运行创建和更新事件上发送。如果以 2.0MB 创建运行并在同一小时窗口内更新为 3.0MB，则相对于此限制，该存储将计为 5.0MB。
 
@@ -143,9 +145,9 @@ LangSmith 应用程序返回此 429。限制因计划而异：Startup/Plus 和 E
 |启动/增强 | 5.0GB| 1小时|
 |企业 |定制|定制|
 
-### 计划级别每月唯一痕迹限制
+### 计划级别每月唯一痕迹限制此 429 是达到每月最大摄取痕迹的结果，并在 UTC 每个日历月月初开始的固定窗口中进行评估，并在每个新月月初重置。
 
-此 429 是达到每月最大摄取痕迹的结果，并在 UTC 每个日历月月初开始的固定窗口中进行评估，并在每个新月月初重置。LangSmith 应用程序返回此 429。它仅适用于当文件中没有付款方式时的开发者计划。
+LangSmith 应用程序返回此 429。它仅适用于当文件中没有付款方式时的开发者计划。
 
 |计划|限制|窗口|
 | - | - | - |
@@ -163,13 +165,13 @@ LangSmith 应用程序返回此 429。该限制取决于您的组织配置的使
 
 ### 运行查询端点
 
-LangSmith 公开具有不同速率限制配置文件的两个版本的运行查询端点。
-
-**v2（推荐）：** `POST /v2/runs/query`（Python 中的[⟦T15⟧](https://reference.langchain.com/python/langsmith/client/Client/list_runs)，JavaScript 中的[⟦T16⟧](https://reference.langchain.com/javascript/langsmith/client/Client/listRuns)）由 SmithDB 支持，并且每个 API 密钥都有统一的限制，没有时间窗口层：
+LangSmith 公开具有不同速率限制配置文件的两个版本的运行查询端点。**v2（推荐）：** `POST /v2/runs/query`（Python 中的[⟦T15⟧](https://reference.langchain.com/python/langsmith/client/Client/list_runs)，JavaScript 中的[⟦T16⟧](https://reference.langchain.com/javascript/langsmith/client/Client/listRuns)）由 SmithDB 支持，并且对每个 API 密钥有统一的限制，没有时间窗口层：
 
 | **限制** | **窗口** |
 | - | - |
-| 300 个请求 | 10 秒 |设置 `sem_filter`（语义搜索）的 API 密钥请求也限制为每个工作区每分钟 10 个请求。
+| 300 个请求 | 10 秒 |
+
+设置 `sem_filter`（语义搜索）的 API 密钥请求也限制为每个工作区每分钟 10 个请求。
 
 **v1:** `POST /runs/query` 具有根据查询参数而变化的每租户速率限制：
 
@@ -182,7 +184,7 @@ LangSmith 公开具有不同速率限制配置文件的两个版本的运行查�
 |选择`child_run_ids`，短时间窗口（≤7天）| 3 个请求 | 10 秒 |
 |选择`child_run_ids`，大时间窗口（>7天）| 1 请求 | 10 秒 |
 
-时间窗口由`end_time - start_time`决定。如果未提供 `end_time`，则 LangSmith 使用当前时间。没有 `start_time` 的查询将被视为大时间窗口查询。
+时间窗口由`end_time - start_time`决定。如果未提供 `end_time`，则LangSmith 使用当前时间。没有 `start_time` 的查询将被视为大时间窗口查询。
 
 为了避免达到 v1 速率限制并减少查询时间：* **设置`start_time`**：省略它会触发大时间窗口层（每10秒3个请求而不是10个）。尽可能使用 7 天或更短的时间窗口。
 * **使用`select`**：默认返回所有字段。仅指定您需要的字段（例如，`select=["inputs", "outputs"]`）可大大减少响应大小和查询时间。
@@ -258,14 +260,14 @@ Some 429 responses are temporary, so a later call may succeed. If your applicati
    * **项目** 或 **用户**：要限制的环境或成员。 **项目**列表按其 `tracer_session_name` 显示每个环境。要查找环境的 `tracer_session_name`，请参阅 [Configure integrations that require a project name](/langsmith/create-an-agent#use-an-environment-project)。
    * **每月跟踪限制**：每个日历月允许的最大跟踪数。
 
-**项目** 限制限制一个代理的 1 个[environment](/langsmith/agent-environments)，而不是整个代理。没有代理范围，因此限制代理的总跟踪数意味着为每个环境添加一个限制。
+**项目** 限制限制一个代理的一个[environment](/langsmith/agent-environments)，而不是整个代理。没有代理范围，因此限制代理的总跟踪数意味着为每个环境添加一个限制。
 
 用户使用限制仅对归因于该工作区成员的跟踪进行计数。使用未与成员绑定的 API 密钥或服务密钥发送的跟踪不计入任何用户使用限制。
 
 ### 如何实施使用限制* **每月重置**：使用限制按 UTC 日历月进行评估，并在每个月初重置。
 * **摄取在限制处停止**：一旦工作区、环境或用户达到使用限制，LangSmith 就会删除其新跟踪，直到限制重置。
 * **近似执行**：在生效之前，可能会在超出限制的情况下处理少量跟踪。
-* **缓存**：限制值被缓存，因此新的或更改的限制可能需要一两分钟才能应用。
+* **缓存**：限制值会被缓存，因此新的或更改的限制可能需要一两分钟才能应用。
 
 ## 相关内容
 

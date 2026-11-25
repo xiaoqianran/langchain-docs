@@ -8,7 +8,7 @@
 
 ## 上下文
 
-2026 年 5 月，我们发布了[SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs)，一个为现代人工智能代理构建的新可观测性数据库。 SmithDB 在每个关键可观测性工作负载中提供业界领先的性能，使核心LangSmith 体验速度显着加快。
+2026 年 5 月，我们发布了[SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs)，这是一个为现代人工智能代理构建的新可观测性数据库。 SmithDB 在每个关键可观测性工作负载中提供业界领先的性能，使核心LangSmith 体验速度显着加快。
 
 使用 SmithDB 查询跟踪记录需要新的 SDK 方法。本指南可帮助您迁移代码库。
 
@@ -56,31 +56,32 @@
 
 显示表格：文件：行、语言、SDK 或 HTTP、当前调用、替换、风险。
 
-标记为风险：从运行查询中读取 `total_tokens`、`total_cost`、`prompt_*` 或 `completion_*` 的代码（不再包括子运行；使用跟踪查询及其聚合），并捕获旧异常类。
+标记为风险：从运行查询中读取 `total_tokens`、`total_cost`、`prompt_*` 或 `completion_*` 的代码（不再包括子运行；使用跟踪查询及其聚合），并捕获迁移调用周围的旧异常类（在 Python 中，仍直接在 `Client` 或 `AsyncClient` 上调用的方法不断提高`langsmith.utils` 类；请参阅指南的例外部分）。
 
 每种语言的列表：当前版本、最新稳定版、最低指南。
 
 如果您发现超过 20 个调用站点，建议按区域将工作分成单独的 PR（每个文件夹、服务或包），并列出每个 PR 的调用站点计数，并询问先执行哪一个。第 3 阶段仅涵盖我选择的 PR。
 
-对您需要我做出的每个决定（1、2、3...）进行编号，每个决定都包含您提出的答案，以便我可以一一批准或拒绝它们（例如“1 是，2 否，3 是”）。
+在 Python 中，将在事件循环内或跨线程（同步 Web 处理程序、线程池、同步 LangGraph 节点等）运行的同步代码的每个调用站点标记为一个决策：新方法在那里是异步的。对您需要我做出的每个决定（1、2、3...）进行编号，每个决定都包含您提出的答案，以便我可以一一批准或拒绝它们（例如“1 是，2 否，3 是”）。
 
 然后停下来等待我的批准。
 
-**第3阶段：迁移（批准后，仅限我批准的范围和决定）**1. 将正在使用的每个LangSmith SDK 升级到最新的稳定版本（及其锁定文件：uv.lock/poetry.lock、package-lock/pnpm-lock/yarn.lock、go.sum、Gradle/Maven）。指南的最低限度只是地板。如果最新版本破坏了与此迁移无关的内容，请使用有效的最新版本，切勿低于最低版本，并在 PR 中说明原因。
-2. 从表中迁移每个调用站点。 v2 查询采用 `project_ids` (UUID)，而不是项目名称。按照指南所示按名称解析普通项目。如果项目是代理环境、实验或工作区评估器，建议使用[https://docs.langchain.com/langsmith/resolve-an-agent](https://docs.langchain.com/langsmith/resolve-an-agent)解决它，并标记它是测试版并且需要更新的 SDK 和服务器。
+**第3阶段：迁移（批准后，仅限我批准的范围和决定）**
+
+1. 将正在使用的每个LangSmith SDK 升级到最新的稳定版本（及其锁定文件：uv.lock/poetry.lock、package-lock/pnpm-lock/yarn.lock、go.sum、Gradle/Maven）。指南的最低限度只是地板。如果最新版本破坏了与此迁移无关的内容，请使用有效的最新版本，切勿低于最低版本，并在 PR 中说明原因。2. 从表中迁移每个调用站点。 v2 查询采用 `project_ids` (UUID)，而不是项目名称。按照指南所示按名称解析普通项目。如果项目是代理环境、实验或工作区评估器，建议使用[https://docs.langchain.com/langsmith/resolve-an-agent](https://docs.langchain.com/langsmith/resolve-an-agent)解决它，并标记它是测试版并且需要更新的 SDK 和服务器。在Python中，`client.runs`、`client.threads`、`client.traces`、`client.datasets`、`client.annotation_queues`、`client.public`、...下的方法是异步的；其他 `Client` 方法，例如 `create_feedback` 保持同步。在异步代码（异步函数、FastAPI `async def` 处理程序、异步 LangGraph 节点、笔记本等）中，`await` 它们。在同步脚本中，将迁移的调用放入一个 `async def` 中，并使用 `asyncio.run()` 运行一次。对于您标记为决策的调用站点，请执行我选择的操作。请参阅指南的“Python 故障排除”部分。
 3. 为涉及的每种语言运行测试、检查和构建。重新运行第 2 阶段搜索并显示没有找到任何内容，或解释每个剩余内容。
 4. 将更改保留在本地：提交，而不是推送。显示摘要：每个文件、更改内容和原因，以及尚待审核的内容。然后停止。仅在我批准的情况下推送并打开拉取请求。
 
-**第四阶段：反馈和跟进**1. 列出第 2 阶段中记录的可以使用 SDK 方法的原始 HTTP 调用。对于每个，说明 SDK 将为该调用站点带来什么，例如自动分页、速率限制和服务器错误的退避重试、捕获字段重命名的键入参数、删除端点之前的弃用警告或环境中的配置，以及适用于它的任何其他内容。然后问我是否想在单独的更改中切换它们。如果没有则跳过此操作。
-2. 列出指南未涵盖或错误的所有内容，作为我可以发送至LangChain 的简短说明。始终以此注释结尾，即使它是空的（“没有什么可报告的”）。
+**第四阶段：反馈和跟进**1. List the raw HTTP calls noted in phase 2 that could use an SDK method instead. For each, say what the SDK would bring to that call site, for example automatic pagination, retries with backoff on rate limits and server errors, typed parameters that catch field renames, deprecation warnings before an endpoint is removed, or config from the environment, plus anything else that applies to it. Then ask me if I want to switch them in a separate change. Skip this if there are none.
+2. List anything the guide did not cover or got wrong, as a short note I can send to LangChain. Always end with this note, even if it is empty ("nothing to report").
 
 **规则**
 
-* 如果指南未涵盖调用站点或参数，请首先搜索 LangSmith 文档的其余部分（[https://docs.langchain.com/langsmith](https://docs.langchain.com/langsmith)，包括 API 参考）。然后询问我，并在支持它的文档链接中添加建议的替换项，或者说您什么也没找到。未经我许可，切勿应用未覆盖的更改。
-* 测试时不要调用写入端点或更改LangSmith数据。
-* 未经我的许可，切勿推送分支、打开拉取请求或将任何内容发布到 GitHub。
+* If the guide does not cover a call site or parameter, search the rest of the LangSmith docs first ([https://docs.langchain.com/langsmith](https://docs.langchain.com/langsmith), including the API reference). Then ask me, and include a proposed replacement with the doc link that backs it, or say you found nothing. Never apply an uncovered change without my go.
+* Do not call write endpoints or change LangSmith data while testing.
+* Never push a branch, open a pull request or post anything to GitHub without my go.
 
-## 弃用和删除每个 SDK 方法及其底层端点共享相同的弃用日期。
+## Deprecation and removal每个 SDK 方法及其底层端点共享相同的弃用日期。
 
 |部署|弃用 |移除 |
 | - | - | - |
@@ -99,7 +100,7 @@
 |打字稿 | `langsmith` | `>=0.8.9` |
 |爪哇 | `langsmith-java` | `0.1.0-beta.22` |
 |去 | `langsmith-go` | `v0.25.4` |
-|命令行| `langsmith-cli` | `v0.2.44` |
+|命令行 | `langsmith-cli` | `v0.2.44` |
 
 [LangSmith CLI](/langsmith/langsmith-cli) 查询相同的 SmithDB 支持的端点，并需要 `v0.2.44` 或更高版本。
 
@@ -137,7 +138,7 @@
 
 ## 受影响的方法和端点
 
-下面的每个 SDK 方法和 API 端点均已弃用，并在上面的删除日期停止工作。在您的代码库中搜索所有这些内容。端点路径是相对于`/api/v1`；除非另有说明，各区域页面都有前后示例。
+下面的每个 SDK 方法和 API 端点均已弃用，并在上面的删除日期停止工作。在您的代码库中搜索所有这些内容。端点路径是相对于`/api/v1`；除非另有说明，各区域页面均包含之前/之后的示例。
 
 ### SDK方法> [选项卡] Python
 >
@@ -160,6 +161,8 @@
 > | `list_runs_from_annotation_queue()`、`get_run_from_annotation_queue()` | `client.annotation_queues.items.list()` |
 > | `delete_run_from_annotation_queue()` | `client.annotation_queues.items.delete_all()` |
 > | `evaluate_run()`、`aevaluate_run()` |没有替代：自己运行评估器并使用 `create_feedback()` | 记录结果
+>
+> `client.<resource>` 替代品（`client.runs`、`client.threads`、...）在 `Client` 上是异步的；其他`Client`方法，例如`create_feedback`保持同步。在异步代码中，`await`它们。在同步代码中，保持相同的`Client`：将迁移的调用放在一个`async def`中，并使用`asyncio.run()`运行一次（请参阅[Python troubleshooting](#python-troubleshooting)）。它们仅返回`selects`中列出的字段，因此包括`"ID"`。
 
 > [选项卡] TypeScript
 >
@@ -179,9 +182,7 @@
 > | `addRunsToAnnotationQueue()` | `client.annotationQueues.items.create()` |
 > | `listRunsFromAnnotationQueue()`、`getRunFromAnnotationQueue()` | `client.annotationQueues.items.list()` |
 > | `deleteRunFromAnnotationQueue()` | `client.annotationQueues.items.deleteAll()` |
-> | `getSizeFromAnnotationQueue()` | `client.annotationQueues.items.retrieveCount()` |
-
-> [选项卡] Java
+> | `getSizeFromAnnotationQueue()` | `client.annotationQueues.items.retrieveCount()` |> [选项卡] Java
 >
 > |已弃用 |更换|
 > | - | - |
@@ -193,7 +194,9 @@
 > | `client.annotationQueues().runs().update()` | `client.annotationQueues().items().update()` |
 > | `client.annotationQueues().runs().deleteAll()`、`deleteQueue()` | `client.annotationQueues().items().deleteAll()` |
 > | `client.annotationQueues().retrieveSize()`、`retrieveTotalSize()`、`retrieveTotalArchived()` | `client.annotationQueues().items().retrieveCount()` |
-> | `client.annotationQueues().createRunStatus()` | `client.annotationQueues().items().createStatus()` |> [选项卡] 前往
+> | `client.annotationQueues().createRunStatus()` | `client.annotationQueues().items().createStatus()` |
+
+> [选项卡] 前往
 >
 > |已弃用 |更换|
 > | - | - |
@@ -219,9 +222,7 @@
 | `DELETE /runs/{run_id}/share` | `DELETE /api/v2/runs/{trace_id}/share`（获取跟踪 ID）| [Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback) |
 | `POST /datasets/{dataset_id}/runs` | `POST /api/v2/datasets/{dataset_id}/experiment-runs` | [Dataset experiment runs](/langsmith/smithdb-sdk-migration-experiments) |
 | `GET /public/{share_token}/run/{run_id}` | `GET /api/v2/public/{share_token}/run/{run_id}` | [Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback) |
-| `POST /public/{share_token}/runs/query` | `POST /api/v2/public/{share_token}/runs/query` | [Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback) |
-
-注释队列运行端点移动到`/api/v1/platform/annotation-queues`下的队列项API。要将运行添加到队列，请参阅[Annotation queues: add runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-add-runs)。有关列出和计数队列项目的信息，请参阅[Annotation queues: read runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-read-runs)。对于其他端点，请参阅请求和响应形状的[API reference](/langsmith/smith-api)。
+| `POST /public/{share_token}/runs/query` | `POST /api/v2/public/{share_token}/runs/query` | [Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback) |注释队列运行端点移动到`/api/v1/platform/annotation-queues`下的队列项API。要将运行添加到队列，请参阅[Annotation queues: add runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-add-runs)。有关列出和计数队列项目的信息，请参阅[Annotation queues: read runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-read-runs)。对于其他端点，请参阅请求和响应形状的[API reference](/langsmith/smith-api)。
 
 |已弃用 (`/annotation-queues/...`) |替换品（`/api/v1/platform/annotation-queues/...`）|
 | - | - |
@@ -237,23 +238,25 @@
 >
 > SmithDB 支持的方法引发新的异常类，而不是旧的 `langsmith.utils` 异常类。
 >
+> 只有新方法（`client.runs.*` 和本指南中的其他替代方法）会引发这些类。直接在 `Client` 或 `AsyncClient` 上调用的方法（例如 `read_project()`）仍会引发 `langsmith.utils` 的方法。请参阅 [Python troubleshooting](#python-troubleshooting) 来了解两者。
+>
 > |之前 (`langsmith.utils`) |之后（`langsmith`）|笔记|
 > | - | - | - |
 > | `LangSmithError` | `LangsmithError` | SDK的异常基类；外壳已更改 |
 > | `LangSmithAPIError` | `InternalServerError` | 5xx |
 > | `LangSmithRequestTimeout` | `APITimeoutError` |请求超时时引发 |
 > | `LangSmithUserError` | *（已删除）* |没有直接等价物。 403 org-scoped-key 案例现在引发 `PermissionDeniedError`；客户端参数验证现在提出了标准 `ValueError` 或 `TypeError` |
-> | `LangSmithRateLimitError` | `RateLimitError` | 429；不变的名字 |
+> | `LangSmithRateLimitError` | `RateLimitError` | 429 | 429
 > | `LangSmithAuthError` | `AuthenticationError` | 401 | 401
-> | `LangSmithNotFoundError` | `NotFoundError` | 404;不变的名字 |
-> | `LangSmithConflictError` | `ConflictError` | 409；不变的名字 |
+> | `LangSmithNotFoundError` | `NotFoundError` | 404 | 404
+> | `LangSmithConflictError` | `ConflictError` | 409 | 409
 > | `LangSmithConnectionError` | `APIConnectionError` |当客户端无法连接到 API 时引发 |
-> | `LangSmithExceptionGroup` | *（已删除）* |没有同等的 |
-> | *（不可用）* | `APIError` |新增：所有 API 相关错误的基类，具有 `message`、`request` 和 `body` 属性 |
-> | *（不可用）* | `APIStatusError` |新：所有 4xx/5xx 状态错误的基类 |
-> | *（不可用）* | `BadRequestError` |新：400 |
+> | `LangSmithExceptionGroup` | *（已删除）* |没有同等的|
+> | *（不可用）* | `APIError` |新增：所有与 API 相关的错误的基类，具有 `message`、`request` 和 `body` 属性 |
+> | *（不可用）* | `APIStatusError` |新：所有 4xx/5xx 状态错误的基类 |> | *（不可用）* | `BadRequestError` |新：400 |
 > | *（不可用）* | `PermissionDeniedError` |新：403 |
-> | *（不可用）* | `UnprocessableEntityError` |新：422 |> | *（不可用）* | `APIResponseValidationError` |新：当响应与预期模式不匹配时引发 |
+> | *（不可用）* | `UnprocessableEntityError` |新：422 |
+> | *（不可用）* | `APIResponseValidationError` |新：当响应与预期模式不匹配时引发 |
 
 > [选项卡] TypeScript
 >
@@ -273,31 +276,87 @@
 > | *（不可用）* | `BadRequestError` | 400 |
 > | *（不可用）* | `PermissionDeniedError` | 403 | 403
 > | *（不可用）* | `UnprocessableEntityError` | 422 | 422
-> | *（不可用）* | `APIUserAbortError` |当请求通过 `AbortController` | 中止时引发
-
-> [选项卡] Java
+> | *（不可用）* | `APIUserAbortError` |当请求通过 `AbortController` | 中止时引发> [选项卡] Java
 >
 > 没有变化。错误处理不受此迁移的影响。
 
 > [选项卡] 前往
 >
-> 没有变化。错误处理不受此迁移的影响。> [选项卡] 卷曲
+> 没有变化。错误处理不受此迁移的影响。
+
+> [选项卡] 卷曲
 >
 > 没有变化。错误处理不受此迁移的影响。
 
 ## 停产
 
-以下方法已停止使用。他们调用已退役的 `/feedback/formulas` 端点，这些端点在复合反馈 v2 上返回 `410 Gone`，并计划于 2026 年 8 月 20 日删除。综合分数现在以[composite evaluators](/langsmith/composite-evaluators-ui)的形式进行管理，它将综合分数实现为代码评估器加运行规则。没有 SDK 替代品。
+以下方法已停止使用。他们调用已退役的 `/feedback/formulas` 端点，这些端点在复合反馈 v2 上返回 `410 Gone`，并计划于 2026 年 8 月 20 日删除。综合分数现在作为[composite evaluators](/langsmith/composite-evaluators-ui)进行管理，它将综合分数实现为代码评估器加运行规则。没有 SDK 替代品。
 
 ###反馈公式方法
 
 |蟒蛇 |打字稿 |
 | - | - |
-| [⟦T237⟧](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_formulas) |不适用 |
-| [⟦T238⟧](https://reference.langchain.com/python/langsmith/client/Client/get_feedback_formula_by_id) |不适用 |
-| [⟦T239⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_formula) |不适用 |
-| [⟦T240⟧](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_formula) |不适用 |
-| [⟦T241⟧](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_formula) |不适用 |
+| [⟦T272⟧](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_formulas) |不适用 |
+| [⟦T273⟧](https://reference.langchain.com/python/langsmith/client/Client/get_feedback_formula_by_id) |不适用 |
+| [⟦T274⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_formula) |不适用 |
+| [⟦T275⟧](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_formula) |不适用 |
+| [⟦T276⟧](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_formula) |不适用 |
+
+## Python 故障排除
+
+### 从同步代码调用新方法
+
+保持相同的 `Client` 并选择与代码运行位置匹配的模式：* 同步脚本：将迁移的调用放在一个`async def`中，并与`asyncio.run()`一起运行一次。
+* 笔记本、异步函数、FastAPI `async def` 处理程序、异步 LangGraph 节点，...：`await` 直接调用。
+* 当事件循环已经运行时，`asyncio.run()`会引发`RuntimeError: asyncio.run() cannot be called from a running event loop`。 `await` 拨打电话。
+* 来自共享 `Client` 的多个线程（线程池、FastAPI `def` 处理程序、同步负载下的 LangGraph 节点，...）的 `asyncio.run()` 可能会因 `Event loop is closed` 而失败。该调用路径需要做出决定：使其异步，或者在一个 `asyncio.run()` 中使用 `asyncio.gather()` 批量调用。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+
+from langsmith import Client
+
+client = Client()
+
+
+async def fetch_runs(run_ids, project_id):
+    return await asyncio.gather(
+        *(client.runs.retrieve(run_id, project_id=project_id) for run_id in run_ids)
+    )
+
+
+runs = asyncio.run(fetch_runs(run_ids, project_id))
+```
+
+### 捕获新旧方法中的错误
+
+除了 `Exception` 之外，这两个异常系列不共享任何基类。包装这两种调用的代码可以捕获这两种调用：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import NotFoundError
+from langsmith.utils import LangSmithNotFoundError
+
+try:
+    project = client.read_project(project_name="default")
+    run = await client.runs.retrieve(run_id, project_id=str(project.id))
+except (NotFoundError, LangSmithNotFoundError):
+    ...
+```
+
+### 在测试中模拟新方法
+
+从`langsmith` 0.12.0 开始，新方法使用[⟦T293⟧](https://pypi.org/project/httpx2/)而不是`httpx`发送请求，因此`respx`、`pytest-httpx`和`httpx.MockTransport`不会拦截它们。使用 `AsyncMock` 来修补 `client.runs`（或其他资源）上的方法：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from unittest.mock import AsyncMock, patch
+
+from langsmith import Client
+
+client = Client()
+
+with patch.object(client.runs, "retrieve", AsyncMock(return_value=fake_run)):
+    run = await client.runs.retrieve(run_id, project_id=project_id)
+```
 
 ***
 

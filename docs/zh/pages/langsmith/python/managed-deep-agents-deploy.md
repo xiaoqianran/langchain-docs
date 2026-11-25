@@ -16,11 +16,11 @@
 
 ## 先决条件
 
-在部署之前，请确保您拥有：
+对于 CLI 部署，请确保您拥有：
 
 * LangSmith 云工作空间或[BYOC data plane](/langsmith/byoc-onboarding-aws) 中的工作空间。
 
-* `.env` 或您的 shell 环境中的该工作空间的 [LangSmith API key](/langsmith/create-account-api-key)。在交互式终端上，`mda deploy` 会提示您输入密钥或通过浏览器登录。
+* 该工作空间的 [LangSmith API key](/langsmith/create-account-api-key)，位于 `.env` 或您的 shell 环境中。在交互式终端上，`mda deploy` 会提示您输入密钥或通过浏览器登录。
 
 * 从 `managed-deepagents` 安装`mda` CLI。
 
@@ -32,7 +32,7 @@
 
 在首次部署之前，在项目的 `.env` 或 shell 环境中设置 `LANGSMITH_ENDPOINT`：
 
-|地区 |端点 |部署支持 |
+|地区 |端点|部署支持 |
 | - | - | - |
 | GCP 美国 (`smith.langchain.com`) | `https://api.smith.langchain.com` |支持 |
 | GCP 欧盟 (`eu.smith.langchain.com`) | `https://eu.api.smith.langchain.com` |支持 |
@@ -101,7 +101,7 @@ uv run mda deploy --no-wait
 
 设置 `--no-wait` 时，将跳过该部署调用的计划协调，因为 CLI 在部署到达 `DEPLOYED` 之前退出。
 
-成功后，CLI 将打印 LangSmith 部署仪表板 URL。有关完整的部署步骤列表，请参阅[CLI reference](/langsmith/python/managed-deep-agents-cli#deploy-projects)。
+成功后，CLI 将打印LangSmith 部署仪表板 URL。有关完整的部署步骤列表，请参阅[CLI reference](/langsmith/python/managed-deep-agents-cli#deploy-projects)。
 
 ## 设置Python版本
 
@@ -131,7 +131,7 @@ MDA_PYTHON_VERSION=3.12 uv run mda deploy
 
 ## 秘密和环境文件
 
-`mda deploy` 在 shell 环境变量之前读取项目 `.env` 值。使用 `.env` 作为 LangSmith API 密钥来验证部署以及托管部署所需的运行时机密：
+对于每个设置 `mda deploy` 读取，Shell 变量都胜过项目 `.env`，例如 `LANGSMITH_API_KEY` 和 `LANGSMITH_ENDPOINT`。使用 `.env` 作为验证部署的 LangSmith API 密钥以及托管部署所需的运行时机密：
 
 ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
@@ -143,11 +143,23 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 仅当项目声明[backend identity](/langsmith/python/managed-deep-agents-identity#configure-identity-with-your-own-backend)时才需要`MDA_INGRESS_SECRET`。当存在该声明且缺少该值时，部署将在预检中失败。
 
-`LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY`等平台变量被保留。他们可以对部署进行身份验证，但不会作为用户管理的部署机密上传。当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的秘密转发。
+`LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY`等平台变量被保留。 `LANGSMITH_API_KEY` 对部署进行身份验证。它们都不会作为用户管理的部署机密上传。当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的机密转发。
 
 保留的平台变量、空值、`.env`和`.env.*`文件不会复制到已编译的构建存档中。
 
 认证密钥顺序和保留变量请参见[CLI reference](/langsmith/python/managed-deep-agents-cli#authentication)。
+
+## 从 GitHub 部署
+
+从 LangSmith 云中的 GitHub 存储库构建和部署代理，并可选择在分支推送时自动重建。首先为您的存储库授权 GitHub 应用程序。参见[Manage GitHub repository access](/langsmith/deploy-to-cloud#manage-github-repository-access)。
+
+从 GitHub 部署：1. 将您的 [Managed Deep Agent project](/langsmith/python/managed-deep-agents-project-structure) 推送到 GitHub。不要提交 `.env` 或 `.mda/build/`。
+2. 在[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-deploy)中，打开**代理服务器**并选择**+代理服务器**。选择您的存储库，命名部署，然后设置分支或标签。
+3. 选择 **这是托管 Deep Agent 项目**，并将 **项目目录** 设置为包含 `agent.py` 或 `agent.ts` 的路径（`.` 表示存储库根目录）。
+4. 为 [Agent Server type](/langsmith/cloud-platform-features#deployment-types) 选择 **无服务器** 或 **专用**，并可选择启用推送自动更新。
+5. 在 **环境变量** 下添加模型提供程序密钥和其他机密，然后选择 **提交**。
+
+LangSmith 在构建期间编译项目，将 `instructions.md` 和 `skills/` 从存储库同步到 Context Hub，并设置声明的时间表和通道。
 
 ## 部署故障排除
 
@@ -169,18 +181,18 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 >
 > 对调用者进行身份验证并提供私有线程。
 
-> [卡片][Schedules](/langsmith/python/managed-deep-agents-schedules)
+> [卡][Schedules](/langsmith/python/managed-deep-agents-schedules)
 >
-> 根据托管 cron 计划运行代理。
+> 根据托管 cron 计划运行代理。> [卡][Custom tools](/langsmith/python/managed-deep-agents-tools)
+>
+> 将创作的 LangChain 工具添加到代理定义中。
 
-> [卡片][Custom tools](/langsmith/python/managed-deep-agents-tools)
->
-> 将创作的 LangChain 工具添加到代理定义中。> [卡片][CLI reference](/langsmith/python/managed-deep-agents-cli)
+> [卡][CLI reference](/langsmith/python/managed-deep-agents-cli)
 >
 > 查找每个 `mda` 命令和标志。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-deploy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

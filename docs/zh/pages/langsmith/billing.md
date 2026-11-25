@@ -4,12 +4,12 @@
 
 # 管理您帐户中的账单
 
-本页介绍如何管理您的 LangSmith 组织的账单：
+This page describes how to manage billing for your LangSmith organization:
 
 * [Set up billing for your account](#set-up-billing-for-your-account)：完成 Developer 和 Plus 计划的计费设置流程，包括旧帐户的特殊说明。
 * [Track contract usage (Enterprise)](#track-contract-usage-enterprise)：查看预付费合约消费。
 * [Update your information](#update-your-information-paid-plans-only)：修改您组织的发票电子邮件地址、业务信息和税号。
-* [Enforce spend limits](#enforce-spend-limits)：了解如何通过使用限制和数据保留来管理您的支出。
+* [Enforce spend limits](#enforce-spend-limits): Learn how to manage your spend through usage limits and data retention.
 * [LangSmith Agent Server billing](#langsmith-deployment-billing)：了解部署费用，比较规模和每小时成本，降低部署成本。
 
 ## 为您的帐户设置账单
@@ -86,17 +86,17 @@
 
 ## 强制执行支出限制
 
-本节依赖于[data retention](/langsmith/usage-and-billing#data-retention)和[usage limits](/langsmith/usage-and-billing#usage-limits)的工作原理。 Read those sections first if you are not familiar with them.
+本节依赖于[data retention](/langsmith/usage-and-billing#data-retention)和[usage limits](/langsmith/usage-and-billing#usage-limits)的工作原理。如果您不熟悉这些部分，请先阅读它们。
 
 > [!注意]
 >
-> 由于其计费的自定义性质，本指南中提到的一些功能目前在企业计划上不可用。 If you are on the Enterprise plan and have questions about cost optimization, contact your sales rep or support via [support.langchain.com](https://support.langchain.com).
+> 由于其计费的自定义性质，本指南中提到的一些功能目前在企业计划上不可用。如果您使用企业计划并对成本优化有疑问，请通过 [support.langchain.com](https://support.langchain.com) 联系您的销售代表或支持人员。
 
-### 了解您当前的使用情况任何优化过程的第一步都是了解当前的使用情况。 For details on the usage graph, granular usage, invoices, and contract usage, refer to [View usage](/langsmith/view-usage).
+### 了解您当前的使用情况任何优化过程的第一步都是了解当前的使用情况。有关使用图、粒度使用、发票和合同使用的详细信息，请参阅[View usage](/langsmith/view-usage)。
 
 ### 设置工作空间支出限额
 
-LangSmith 根据 [workspace](/langsmith/administration-overview#workspaces) 测量使用情况。
+LangSmith 根据[workspace](/langsmith/administration-overview#workspaces) 测量使用情况。
 
 1. 导航到 **设置** > **计费和使用情况** > **使用限制**。
 2. 输入所选工作空间的支出限额。 LangSmith 将确定适当数量的基本和扩展跟踪限制以匹配该支出。跟踪限制包括您的计划附带的免费跟踪分配。请参阅[pricing page](https://smith.langchain.com/settings/payments)的详细信息。
@@ -127,6 +127,8 @@ LangSmith 有两个跟踪层：基础跟踪层和扩展跟踪层。有关您的�
 
 您可以单独为每个[agent environment](/langsmith/agent-environments)设置默认保留层，选择基本或扩展。要为整个代理设置层，请在每个环境上设置它。要自定义延长的持续时间，请使用 [workspace-level configuration](/langsmith/data-purging-compliance#customize-extended-retention-policy)（仅限企业）。
 
+如果[extended retention is disabled for the workspace](/langsmith/data-purging-compliance#disable-extended-trace-retention)，新跟踪将使用基本保留，无论保存的环境默认值如何。当限制处于活动状态时，您无法将环境的默认设置从基本更改为扩展。
+
 要更改环境的默认保留：
 
 1. 在[agent switcher](/langsmith/navigate-agents)中，选择您的代理，转到**跟踪**，然后选择环境。
@@ -135,11 +137,11 @@ LangSmith 有两个跟踪层：基础跟踪层和扩展跟踪层。有关您的�
 
 该更改仅适用于新跟踪。现有痕迹保留其原始等级和定价。
 
-#### 将扩展数据保留应用于一定百分比的跟踪
+#### 将扩展数据保留应用于一定百分比的跟踪您可能不希望所有跟踪在基本保留期结束时过期。您可以通过创建 [automation rule](/langsmith/rules) 自动延长符合某些条件的跟踪的保留时间。您可能希望将扩展数据保留应用于特定类型的跟踪，例如：
 
-您可能不希望所有跟踪在基本保留期结束时过期。您可以通过创建 [automation rule](/langsmith/rules) 自动延长符合某些条件的跟踪的保留时间。您可能希望将扩展数据保留应用于特定类型的跟踪，例如：* 所有痕迹的 10%：用于一般分析或分析长期趋势。
+* 所有痕迹的 10%：用于一般分析或分析长期趋势。
 * 错误跟踪：彻底调查和调试问题。
-* 具有特定元数据的跟踪：用于特定功能或用户流程的长期检查。
+* 具有特定元数据的跟踪：用于特定功能或用户流的长期检查。
 
 要配置此：
 
@@ -148,26 +150,24 @@ LangSmith 有两个跟踪层：基础跟踪层和扩展跟踪层。有关您的�
 
 > [!注意]
 >
-> 当自动化规则与 [trace](/langsmith/observability-concepts#traces) 中的任何 [run](/langsmith/observability-concepts#runs) 匹配时，跟踪中的所有运行都会升级到 [extended data retention](/langsmith/usage-and-billing#retention-periods)。
+> 当启用保留扩展的自动化规则与 [run](/langsmith/observability-concepts#runs) 匹配时，它将整个 [trace](/langsmith/observability-concepts#traces) 升级到 [extended data retention](/langsmith/usage-and-billing#retention-periods)。这些升级需要工作空间来允许延长保留时间。
 
-例如，这是保留所有跟踪的 10% 以延长数据保留时间的预期配置：
+例如，这是保留所有跟踪的 10% 以延长数据保留的预期配置：
 
-![P2sampletraces](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/langsmith/images/P2SampleTraces.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=09bbdf5ef7cf3a5a99d6bf0a704e2143)
-
-如果出于数据收集目的，您希望保留跟踪子集的时间超过延长保留期，则可以创建另一个运行规则，将一些运行发送到您选择的数据集。数据集允许您存储跟踪输入和输出（例如，作为键值数据集），并且即使在删除跟踪后也将无限期地保留。
+![P2sampletraces](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/langsmith/images/P2SampleTraces.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=09bbdf5ef7cf3a5a99d6bf0a704e2143)如果出于数据收集目的，您希望保留跟踪子集的时间超过延长保留期，则可以创建另一个运行规则，将一些运行发送到您选择的数据集。数据集允许您存储跟踪输入和输出（例如，作为键值数据集），并且即使在删除跟踪后也将无限期地保留。
 
 > [!提示]
 >
-> 如果您对进一步管理支出有疑问，请通过 [support.langchain.com](https://support.langchain.com) 联系支持人员。## LangSmith 代理服务器计费
+> 如果您对进一步管理支出有疑问，请通过 [support.langchain.com](https://support.langchain.com) 联系支持人员。
 
-除了跟踪之外，LangSmith还通过LangSmith代理服务器对部署的代理进行收费。部署根据其消耗的资源进行计费：
+## LangSmith 代理服务器计费
 
-* **计算**：每个正在运行的副本请求的 vCPU 和内存，以 LangChain 标准单位 (LSU) 衡量。 [Autoscaling](/langsmith/cloud-platform-features#scaling) 添加了可计费副本。 [Serverless](/langsmith/cloud-platform-features#serverless) 计算费用在规模缩小时停止，而不是在流量停止时停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 连续运行。
+除了跟踪之外，LangSmith 通过LangSmith 代理服务器对部署的代理进行收费。部署根据其消耗的资源进行计费：
+
+* **计算**：每个正在运行的副本请求的 vCPU 和内存，以 LangChain 标准单位 (LSU) 为单位进行测量。 [Autoscaling](/langsmith/cloud-platform-features#scaling) 添加了可计费副本。 [Serverless](/langsmith/cloud-platform-features#serverless) 计算费用在规模缩小时停止，而不是在流量停止时停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 连续运行。
 * **数据库**：专用数据库费用基于配置的 vCPU 和内存，包括空闲时。运行时自动缩放不会改变数据库费用。数据库磁盘存储和共享无服务器数据库不计费。
 
-托管 Redis 不按任何部署类型或规模计费。
-
-下图显示了每种部署类型的哪些部分需要计费。蓝色部分已计费。绿色部分不计费：
+托管 Redis 不按任何部署类型或规模计费。下图显示了每种部署类型的哪些部分需要计费。蓝色部分已计费。绿色部分不计费：
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init: {"theme":"base","flowchart":{"htmlLabels":true,"nodeSpacing":24,"rankSpacing":16,"padding":14,"subGraphTitleMargin":{"top":6,"bottom":10}},"themeVariables":{"fontFamily":"Inter, system-ui, sans-serif","fontSize":"14px","lineColor":"#40668D","primaryColor":"#E5F4FF","primaryTextColor":"#030710","primaryBorderColor":"#006DDD","clusterBkg":"transparent","edgeLabelBackground":"#FFFFFF"}}}%%
@@ -205,7 +205,9 @@ flowchart LR
 |运行时 vCPU |每 vCPU 小时 0.0675 LSU |
 |运行时内存|每 GiB 小时 0.009 LSU |
 |数据库 vCPU |每 vCPU 小时 0.177 LSU |
-|数据库内存|每 GiB 小时 0.025 LSU |每 5 分钟对使用情况进行一次采样，并每小时汇总一次。每个正在运行的可计费容器根据请求的资源而不是实际利用率在该时间间隔内收费。
+|数据库内存|每 GiB 小时 0.025 LSU |
+
+每 5 分钟对使用情况进行一次采样，并每小时汇总一次。每个正在运行的可计费容器根据请求的资源而不是实际利用率在该时间间隔内收费。
 
 ### 比较大小和每小时成本
 
@@ -217,15 +219,15 @@ flowchart LR
 | - | - | - |
 |小| 0.8 个 vCPU/2 GiB | 0.072 路易斯安那州立大学 |
 |中等| 4 个 vCPU/4 GiB | 0.306 路易斯安那州立大学 |
-|大| 8 个 vCPU / 8 GiB | 0.612 路易斯安那州立大学 |
-
-专用部署始终按其最短运行时间及其数据库收费。此表假设数据库大小与计算大小匹配：
+|大| 8 个 vCPU / 8 GiB | 0.612 路易斯安那州立大学 |专用部署始终按其最短运行时间及其数据库收费。此表假设数据库大小与计算大小匹配：
 
 |专用尺寸|运行时+数据库|最低总数 |
 | - | - | - |
 |小| 0.2565 + 0.277 | 0.2565 + 0.277 0.5335 路易斯安那州立大学 |
 |中等| 0.513 + 0.554 | 0.513 + 0.554 1.067 路易斯安那州立大学 |
-|大| 1.026 + 1.108 | 2.134 路易斯安那州立大学 |> [!注意]
+|大| 1.026 + 1.108 | 2.134 路易斯安那州立大学 |
+
+> [!注意]
 >
 > 专用最小运行时间为 2 个 API 服务器副本和 1 个队列工作线程。 [Autoscaling](/langsmith/cloud-platform-features#scaling) 添加 API 服务器或队列工作副本。每个添加的副本都会花费与其大小相应的添加副本速率。
 
@@ -239,19 +241,19 @@ flowchart LR
 
 GCP 中LangSmith 云上的专用数据库容量为：
 
-|数据库大小 |产能 |每小时数据库成本|
+|数据库大小|产能 |每小时数据库成本|
 | - | - | - |
 |小| 1 个 vCPU / 4 GiB | 0.277 路易斯安那州立大学 |
 |中等| 2 个 vCPU / 8 GiB | 0.554 路易斯安那州立大学 |
 |大| 4 个 vCPU/16 GiB | 1.108 路易斯安那州立大学 |
 
-数据库容量因云提供商而异。计算和数据库大小可以是[set independently](/langsmith/cloud-platform-features#sizes)。
-
-追踪和其他产品使用是单独收费的。
+数据库容量因云提供商而异。计算和数据库大小可以是[set independently](/langsmith/cloud-platform-features#sizes)。追踪和其他产品使用是单独收费的。
 
 [Free Serverless deployments](https://www.langchain.com/pricing) 仅提供小尺寸。在任何**缩减后**设置下，免费部署都不会为任何容器计费。专用部署从来都不是免费的。
 
-要估算部署成本，您还可以使用[pricing page](https://www.langchain.com/pricing)上的部署成本计算器。> [!注意]
+要估算部署成本，您还可以使用[pricing page](https://www.langchain.com/pricing)上的部署成本计算器。
+
+> [!注意]
 >
 > 2026 年 10 月 1 日，基于使用情况的定价取代了每次运行和正常运行时间定价。扩展到零需要新的定价。对于过渡问题，请联系[support](https://support.langchain.com)。
 
@@ -262,7 +264,7 @@ GCP 中LangSmith 云上的专用数据库容量为：
 部署费用基于每个部署请求的计算和数据库资源。要降低部署费用，请运行更少的部署，使用更小的规模，并缩小空闲部署的规模：* **使用无服务器且缩减时间较短**：无服务器部署在缩减时会停止计算费用。将**之后缩小**设置为`1 hour`，而不是默认的`1 week`。默认情况下，每周至少接收一次请求的部署永远不会缩小规模。无服务器部署具有冷启动并运行一个副本。无服务器尚不适用于 AWS 或 Azure 上的部署，也不适用于自托管和混合部署。
 * **在一个部署上运行多个代理**：费用适用于每个部署，而不是每个代理。 [Define multiple graphs](/langsmith/application-structure#define-multiple-graphs-in-one-deployment) 合二为一 `langgraph.json`，以便您的代理共享一组副本和一个数据库。这在 Dedicated 上节省了最多的时间，其中每个部署至少有 2 个 API 服务器副本、1 个队列工作线程和自己的数据库。
 * **使用有效的最小大小**：每个运行时副本和每个数据库均按其大小收费。在专用部署中，您可以单独设置计算大小和数据库大小。参见[Sizes](/langsmith/cloud-platform-features#sizes)。
-* **删除未使用的部署**：空闲的专用部署按其最小副本及其数据库收费。空闲的无服务器部署会被计费，直到其缩小规模为止。* **限制预览部署**：每个 [preview deployment](/langsmith/preview-builds) 都是一个单独的部署，并且按一次计费。降低**空闲 TTL** 和 **最大并发预览** 以限制运行预览部署的数量和时间。
+* **删除未使用的部署**：空闲的专用部署按其最小副本及其数据库收费。闲置的无服务器部署会被计费，直到其规模缩小为止。* **限制预览部署**：每个[preview deployment](/langsmith/preview-builds)都是一个单独的部署，并且像一次一样收费。降低**空闲 TTL** 和 **最大并发预览** 以限制运行预览部署的数量和时间。
 * **删除不需要的唤醒**：对缩小规模的无服务器部署的请求会再次启动它，包括自动运行状况检查。启用 [cron jobs](/langsmith/cron-jobs) 并安排运行，最多可在到期前 10 分钟启动部署。删除不需要的 cron 作业和运行状况检查。
 
 下图将三种专用部署与运行三个图表的一种专用部署进行了比较：
@@ -302,10 +304,10 @@ flowchart TB
 * **更短的缩减时间**：无服务器小型部署每个工作日、每月 22 天接收 2 小时的请求。
 * **多个图表**：三个代理在 GCP 上的专用小型部署上运行。
 
-|改变 |之前 |之后 |
+|改变 |之前 |之后|
 | - | - | - |
 |更短的缩减时间| `1 week`（默认）：720 小时正常运行时间，\~51.84 LSU 使用 | `1 hour`：\~66 小时的正常运行时间，\~4.75 LSU 使用量。节省约 47.09 LSU。 |
-|多个图表 | 3 次部署：\~1,152 LSU | 1 个部署，包含 3 个图表：\~384 LSU。节省约 768 LSU。 |自动缩放会增加两种专用设置的运行时间成本。
+|多个图表| 3 次部署：\~1,152 LSU | 1 个部署，包含 3 个图表：\~384 LSU。节省约 768 LSU。 |自动缩放会增加两种专用设置的运行时间成本。
 
 LangSmith 不支持创建部署后更改部署类型。要迁移到无服务器，请创建一个新的无服务器部署，并使用 [Agent Server API](/langsmith/server-api-ref) 从之前的部署复制数据。您还可以联系 [support](https://support.langchain.com) 寻求迁移帮助。
 

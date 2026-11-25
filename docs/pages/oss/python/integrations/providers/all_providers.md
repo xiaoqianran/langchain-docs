@@ -498,6 +498,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Open US healthcare jobs, posted pay and employers from CareJobs.Now, a free job board, with no API key.
 
+> [card] [CellproseLoader](https://cellprose.com/guide/)
+>
+> Document loader that reads .xlsx and .xlsm workbooks as Cellprose text, keeping formulas, cell addresses and every sheet in valid Markdown.
+
 > [card] [Cerebras](/oss/python/integrations/providers/cerebras)
 >
 > AI compute platform with specialized processors.
@@ -1748,7 +1752,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > [card] [OddsRelay](https://github.com/oddsrelay/langchain-oddsrelay)
 >
-> Pre-match odds API for UK and Irish bookmakers, bet365 included, with Betfair, Smarkets and Matchbook lay prices.
+> Odds API for bookmakers in the UK & Ireland and 20 more regions, pre-match and in-play, with Betfair, Smarkets and Matchbook lay prices in the UK & Ireland.
 
 > [card] [Ollama](/oss/python/integrations/providers/ollama)
 >
@@ -1946,6 +1950,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Agent-native headless browser with Set of Mark (SOM) structured UI extraction.
 
+> [card] [PlatinumSandbox](https://www.platinum.dev/docs/sdk/deepagents)
+>
+> Deep Agents sandbox backend that runs the agent's execute and file tools in a Platinum microVM; a stopped sandbox starts again on the next call.
+
 > [card] [Plivo](https://github.com/plivo-dev/langchain-plivo-tools)
 >
 > LangChain tools for sending SMS messages and placing voice calls through the Plivo communications APIs.
@@ -2033,6 +2041,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [prompt-shield](https://github.com/mthamil107/prompt-shield)
 >
 > Runtime prompt-injection firewall for inputs, tool results, and model outputs.
+
+> [card] [Protogrid](https://docs.protogrid.dev/sdk/langchain/)
+>
+> Loads LangChain tools from MCP servers in the protogrid registry that pass your rules, plus tools to search the registry and check a server.
 
 > [card] [ProvaredMiddleware](https://github.com/provared/provared/tree/main/python/integrations/provared-langchain)
 >

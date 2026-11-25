@@ -6,7 +6,7 @@ Copy users, datasets, prompts, experiments, Fleet resources, and other data from
 
 The [LangSmith data migration tool](https://github.com/langchain-ai/langsmith-data-migration-tool) copies data from an existing LangSmith Cloud organization or [self-hosted](/langsmith/self-hosted) instance into a BYOC data plane. The tool copies data (as opposed to moving data over), so the source instance is unchanged and stays available during the move.
 
-Run the migration after your data plane is [active and reachable](/langsmith/byoc-onboarding-aws). Trace migration is supported on AWS. Contact the LangChain team to arrange it, and plan the [manual steps](#move-data-the-tool-does-not-migrate) alongside the tool.
+Run the migration after your data plane is active and reachable. To create one, follow the onboarding guide for your cloud in [Get started](/langsmith/byoc#get-started). Trace migration is available only on AWS. Contact the LangChain team to arrange it, and plan the [manual steps](#move-data-the-tool-does-not-migrate) alongside the tool.
 
 ## Supported resources
 
@@ -42,7 +42,7 @@ langsmith-migrator --help
 
 **2. Create the destination workspaces**
 
-Workspace IDs differ between instances, so create the target workspaces in the data plane first. See the `Create workspaces` section of the [BYOC onboarding docs](/langsmith/byoc-onboarding-aws).
+Workspace IDs differ between instances, so create the target workspaces in the data plane first. Select the data plane when you create each workspace. A workspace cannot be moved to another data plane after creation. See [Organizations, data planes, and workspaces](/langsmith/byoc-usage#organizations-data-planes-and-workspaces).
 
 Migration commands run per workspace pair. Repeat them for each pair.
 
@@ -67,9 +67,9 @@ export LANGSMITH_VERIFY_SSL=true
 > `OLD` refers to your current LangSmith deployment, and `NEW` refers to the destination BYOC data plane:
 >
 > * **`LANGSMITH_OLD_API_KEY`**: An API key from your current deployment with permission to read all resources you want to migrate. For LangSmith Cloud at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-migration), create it under **Settings > API Keys**. For another Cloud region or a self-hosted instance, use that deployment's UI.
-> * **`LANGSMITH_NEW_API_KEY`**: An API key created under **Settings > API Keys** at [aws.smith.langchain.com](https://aws.smith.langchain.com). Scope it to a workspace in your destination BYOC data plane. See [Create an API key](/langsmith/create-account-api-key#api-keys).
+> * **`LANGSMITH_NEW_API_KEY`**: An API key created under **Settings > API Keys** in the LangSmith UI that hosts your BYOC organization. See [Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers) for the URL on each cloud. Scope it to a workspace in your destination BYOC data plane. See [Create an API key](/langsmith/create-account-api-key#api-keys).
 > * **`LANGSMITH_OLD_BASE_URL`**: Your current deployment's API URL. For LangSmith Cloud in GCP US, use `https://api.smith.langchain.com`. For another Cloud region, use its [regional API URL](/langsmith/create-account-api-key#configure-the-sdk). For self-hosted LangSmith, use your instance's API URL.
-> * **`LANGSMITH_NEW_BASE_URL`**: Your destination BYOC data plane's API URL, including `https://`. Find it under **Settings > Data Planes**. See [BYOC onboarding](/langsmith/byoc-onboarding-aws).
+> * **`LANGSMITH_NEW_BASE_URL`**: Your destination BYOC data plane's API URL, including `https://`. Find it under **Settings > Data Planes**. See [Find your data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint).
 
 > [!WARNING]
 >
@@ -124,7 +124,7 @@ To run Engine in the data plane, complete these steps in order:
 
 ### Traces
 
-Trace migration is supported on AWS. Contact the LangChain team to arrange trace migration to your BYOC data plane. The data migration tool does not migrate traces.
+Trace migration is available only on AWS. On AWS, contact the LangChain team to arrange trace migration to your BYOC data plane. The data migration tool does not migrate traces.
 
 To keep a separate copy of historical traces, [bulk export](/langsmith/data-export) them to an S3-compatible bucket.
 
@@ -140,7 +140,7 @@ Redeploy agents that run on your existing instance into a workspace in the data 
 For agent databases and caches, choose one of the following:
 
 * Create new instances in the data plane and point the redeployed agents at them. Start empty, or restore from a backup of the old instance.
-* Point the redeployed agents at your existing database instances, and reach them from the data plane cluster over PrivateLink or VPC peering.
+* Point the redeployed agents at your existing database instances, and reach them from the data plane cluster over private connectivity, such as network peering or your cloud's private endpoint service (AWS PrivateLink, GCP Private Service Connect, or Azure Private Link).
 
 For more information, see [Deploy agents](/langsmith/deploy-overview).
 
@@ -150,7 +150,7 @@ For more information, see [Deploy agents](/langsmith/deploy-overview).
 
 ## See also
 
-* [BYOC onboarding](/langsmith/byoc-onboarding-aws)
+* [BYOC overview](/langsmith/byoc)
 * [BYOC usage](/langsmith/byoc-usage)
 * [Bulk export trace data](/langsmith/data-export)
 

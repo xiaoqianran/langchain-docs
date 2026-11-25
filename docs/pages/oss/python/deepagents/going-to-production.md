@@ -382,7 +382,7 @@ async def github_action(runtime: ToolRuntime):
 
 **Credential injection for sandboxes.** If your agent runs code inside a [sandbox](#sandboxes) that calls external APIs, the [sandbox auth proxy](/langsmith/sandbox-auth-proxy) can inject credentials into outbound requests automatically, so sandbox code never receives raw API keys. See [Managing secrets](#managing-secrets) for setup details.
 
-**Workspace secrets.** For API keys shared across all users (for example your organization's LLM provider keys, search API keys), store them as [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) in LangSmith. See [Managing secrets](#managing-secrets) for details.
+**Workspace secrets.** For API keys shared across all users (for example your organization's LLM provider keys, search API keys), store them as [workspace secrets](/langsmith/workspace-secrets) in LangSmith. See [Managing secrets](#managing-secrets) for details.
 
 ### Async
 
@@ -738,13 +738,14 @@ For provider-specific file transfer examples, see [working with files](/oss/pyth
 >
 > [Skill](/oss/python/deepagents/skills) scripts that the agent needs to execute must be uploaded into the sandbox before the agent runs. You may also want to sync [memories](/oss/python/deepagents/memory) so the agent can read and update them inside the container. Use [custom middleware](/oss/python/langchain/middleware/custom) with `before_agent` and `after_agent` hooks to move files across the sandbox boundary:
 >
-> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from deepagents import create_deep_agent
 > from deepagents.backends import CompositeBackend, StoreBackend
 > from deepagents.backends.langsmith import LangSmithSandbox
 > from langchain.agents.middleware import AgentMiddleware, AgentState
 > from langgraph.runtime import Runtime
 > from langsmith.sandbox import SandboxClient
+>
 >
 >
 > def _safe_filename(key: str) -> str:
@@ -758,9 +759,12 @@ For provider-specific file transfer examples, see [working with files](/oss/pyth
 > class SandboxSyncMiddleware(AgentMiddleware):
 >     """Sync skills and memories between the store and the sandbox."""
 >
->     def __init__(self, backend: CompositeBackend):
+>     def __init__(self, sandbox: LangSmithSandbox):
 >         super().__init__()
->         self.backend = backend
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
 >
 >     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
 >         """Upload skill scripts and memories into the sandbox."""
@@ -774,14 +778,14 @@ For provider-specific file transfer examples, see [working with files](/oss/pyth
 >             name = _safe_filename(item.key)
 >             files.append((f"/memories/{name}", item.value["content"].encode()))
 >         if files:
->             await self.backend.upload_files(files)
+>             await self.sandbox.aupload_files(files)
 >
 >     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
 >         """Sync updated memories back to the store."""
 >         user_id = runtime.server_info.user.identity  # [!code highlight]
 >         store = runtime.store
 >         items = await store.asearch(("memories", user_id))
->         results = await self.backend.download_files(
+>         results = await self.sandbox.adownload_files(
 >             [f"/memories/{item.key}" for item in items]
 >         )
 >         for result in results:
@@ -795,17 +799,15 @@ For provider-specific file transfer examples, see [working with files](/oss/pyth
 >
 > client = SandboxClient()
 > ls_sandbox = client.create_sandbox()
->
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
 >
 > backend = CompositeBackend(
->     default=LangSmithSandbox(sandbox=ls_sandbox),
+>     default=sandbox_backend,
 >     routes={
 >         "/skills/": StoreBackend(
->             rt,
 >             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
 >         ),
 >         "/memories/": StoreBackend(
->             rt,
 >             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
 >         ),
 >     },
@@ -814,7 +816,499 @@ For provider-specific file transfer examples, see [working with files](/oss/pyth
 > agent = create_deep_agent(
 >     model="google_genai:gemini-4-hydrogen",
 >     backend=backend,
->     middleware=[SandboxSyncMiddleware(backend)],
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
+> )
+> ```
+>
+> ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StoreBackend
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain.agents.middleware import AgentMiddleware, AgentState
+> from langgraph.runtime import Runtime
+> from langsmith.sandbox import SandboxClient
+>
+>
+>
+> def _safe_filename(key: str) -> str:
+>     """Reject keys that contain path traversal or glob characters."""
+>     name = key.split("/")[-1]
+>     if ".." in name or any(c in name for c in ("*", "?")):
+>         raise ValueError(f"Invalid key: {key}")
+>     return name
+>
+>
+> class SandboxSyncMiddleware(AgentMiddleware):
+>     """Sync skills and memories between the store and the sandbox."""
+>
+>     def __init__(self, sandbox: LangSmithSandbox):
+>         super().__init__()
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
+>
+>     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Upload skill scripts and memories into the sandbox."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         files = []
+>         for item in await store.asearch(("skills", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/skills/{name}", item.value["content"].encode()))
+>         for item in await store.asearch(("memories", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/memories/{name}", item.value["content"].encode()))
+>         if files:
+>             await self.sandbox.aupload_files(files)
+>
+>     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Sync updated memories back to the store."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         items = await store.asearch(("memories", user_id))
+>         results = await self.sandbox.adownload_files(
+>             [f"/memories/{item.key}" for item in items]
+>         )
+>         for result in results:
+>             if result.content is not None:
+>                 await store.aput(
+>                     ("memories", user_id),
+>                     result.path.split("/")[-1],
+>                     {"content": result.content.decode()},
+>                 )
+>
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> backend = CompositeBackend(
+>     default=sandbox_backend,
+>     routes={
+>         "/skills/": StoreBackend(
+>             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>         "/memories/": StoreBackend(
+>             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>     },
+> )
+>
+> agent = create_deep_agent(
+>     model="openai:gpt-6.1-sol",
+>     backend=backend,
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
+> )
+> ```
+>
+> ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StoreBackend
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain.agents.middleware import AgentMiddleware, AgentState
+> from langgraph.runtime import Runtime
+> from langsmith.sandbox import SandboxClient
+>
+>
+>
+> def _safe_filename(key: str) -> str:
+>     """Reject keys that contain path traversal or glob characters."""
+>     name = key.split("/")[-1]
+>     if ".." in name or any(c in name for c in ("*", "?")):
+>         raise ValueError(f"Invalid key: {key}")
+>     return name
+>
+>
+> class SandboxSyncMiddleware(AgentMiddleware):
+>     """Sync skills and memories between the store and the sandbox."""
+>
+>     def __init__(self, sandbox: LangSmithSandbox):
+>         super().__init__()
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
+>
+>     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Upload skill scripts and memories into the sandbox."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         files = []
+>         for item in await store.asearch(("skills", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/skills/{name}", item.value["content"].encode()))
+>         for item in await store.asearch(("memories", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/memories/{name}", item.value["content"].encode()))
+>         if files:
+>             await self.sandbox.aupload_files(files)
+>
+>     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Sync updated memories back to the store."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         items = await store.asearch(("memories", user_id))
+>         results = await self.sandbox.adownload_files(
+>             [f"/memories/{item.key}" for item in items]
+>         )
+>         for result in results:
+>             if result.content is not None:
+>                 await store.aput(
+>                     ("memories", user_id),
+>                     result.path.split("/")[-1],
+>                     {"content": result.content.decode()},
+>                 )
+>
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> backend = CompositeBackend(
+>     default=sandbox_backend,
+>     routes={
+>         "/skills/": StoreBackend(
+>             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>         "/memories/": StoreBackend(
+>             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>     },
+> )
+>
+> agent = create_deep_agent(
+>     model="anthropic:claude-sonnet-5",
+>     backend=backend,
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
+> )
+> ```
+>
+> ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StoreBackend
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain.agents.middleware import AgentMiddleware, AgentState
+> from langgraph.runtime import Runtime
+> from langsmith.sandbox import SandboxClient
+>
+>
+>
+> def _safe_filename(key: str) -> str:
+>     """Reject keys that contain path traversal or glob characters."""
+>     name = key.split("/")[-1]
+>     if ".." in name or any(c in name for c in ("*", "?")):
+>         raise ValueError(f"Invalid key: {key}")
+>     return name
+>
+>
+> class SandboxSyncMiddleware(AgentMiddleware):
+>     """Sync skills and memories between the store and the sandbox."""
+>
+>     def __init__(self, sandbox: LangSmithSandbox):
+>         super().__init__()
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
+>
+>     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Upload skill scripts and memories into the sandbox."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         files = []
+>         for item in await store.asearch(("skills", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/skills/{name}", item.value["content"].encode()))
+>         for item in await store.asearch(("memories", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/memories/{name}", item.value["content"].encode()))
+>         if files:
+>             await self.sandbox.aupload_files(files)
+>
+>     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Sync updated memories back to the store."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         items = await store.asearch(("memories", user_id))
+>         results = await self.sandbox.adownload_files(
+>             [f"/memories/{item.key}" for item in items]
+>         )
+>         for result in results:
+>             if result.content is not None:
+>                 await store.aput(
+>                     ("memories", user_id),
+>                     result.path.split("/")[-1],
+>                     {"content": result.content.decode()},
+>                 )
+>
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> backend = CompositeBackend(
+>     default=sandbox_backend,
+>     routes={
+>         "/skills/": StoreBackend(
+>             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>         "/memories/": StoreBackend(
+>             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>     },
+> )
+>
+> agent = create_deep_agent(
+>     model="openrouter:z-ai/glm-5.2",
+>     backend=backend,
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
+> )
+> ```
+>
+> ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StoreBackend
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain.agents.middleware import AgentMiddleware, AgentState
+> from langgraph.runtime import Runtime
+> from langsmith.sandbox import SandboxClient
+>
+>
+>
+> def _safe_filename(key: str) -> str:
+>     """Reject keys that contain path traversal or glob characters."""
+>     name = key.split("/")[-1]
+>     if ".." in name or any(c in name for c in ("*", "?")):
+>         raise ValueError(f"Invalid key: {key}")
+>     return name
+>
+>
+> class SandboxSyncMiddleware(AgentMiddleware):
+>     """Sync skills and memories between the store and the sandbox."""
+>
+>     def __init__(self, sandbox: LangSmithSandbox):
+>         super().__init__()
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
+>
+>     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Upload skill scripts and memories into the sandbox."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         files = []
+>         for item in await store.asearch(("skills", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/skills/{name}", item.value["content"].encode()))
+>         for item in await store.asearch(("memories", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/memories/{name}", item.value["content"].encode()))
+>         if files:
+>             await self.sandbox.aupload_files(files)
+>
+>     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Sync updated memories back to the store."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         items = await store.asearch(("memories", user_id))
+>         results = await self.sandbox.adownload_files(
+>             [f"/memories/{item.key}" for item in items]
+>         )
+>         for result in results:
+>             if result.content is not None:
+>                 await store.aput(
+>                     ("memories", user_id),
+>                     result.path.split("/")[-1],
+>                     {"content": result.content.decode()},
+>                 )
+>
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> backend = CompositeBackend(
+>     default=sandbox_backend,
+>     routes={
+>         "/skills/": StoreBackend(
+>             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>         "/memories/": StoreBackend(
+>             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>     },
+> )
+>
+> agent = create_deep_agent(
+>     model="fireworks:accounts/fireworks/models/glm-5p2",
+>     backend=backend,
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
+> )
+> ```
+>
+> ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StoreBackend
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain.agents.middleware import AgentMiddleware, AgentState
+> from langgraph.runtime import Runtime
+> from langsmith.sandbox import SandboxClient
+>
+>
+>
+> def _safe_filename(key: str) -> str:
+>     """Reject keys that contain path traversal or glob characters."""
+>     name = key.split("/")[-1]
+>     if ".." in name or any(c in name for c in ("*", "?")):
+>         raise ValueError(f"Invalid key: {key}")
+>     return name
+>
+>
+> class SandboxSyncMiddleware(AgentMiddleware):
+>     """Sync skills and memories between the store and the sandbox."""
+>
+>     def __init__(self, sandbox: LangSmithSandbox):
+>         super().__init__()
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
+>
+>     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Upload skill scripts and memories into the sandbox."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         files = []
+>         for item in await store.asearch(("skills", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/skills/{name}", item.value["content"].encode()))
+>         for item in await store.asearch(("memories", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/memories/{name}", item.value["content"].encode()))
+>         if files:
+>             await self.sandbox.aupload_files(files)
+>
+>     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Sync updated memories back to the store."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         items = await store.asearch(("memories", user_id))
+>         results = await self.sandbox.adownload_files(
+>             [f"/memories/{item.key}" for item in items]
+>         )
+>         for result in results:
+>             if result.content is not None:
+>                 await store.aput(
+>                     ("memories", user_id),
+>                     result.path.split("/")[-1],
+>                     {"content": result.content.decode()},
+>                 )
+>
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> backend = CompositeBackend(
+>     default=sandbox_backend,
+>     routes={
+>         "/skills/": StoreBackend(
+>             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>         "/memories/": StoreBackend(
+>             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>     },
+> )
+>
+> agent = create_deep_agent(
+>     model="baseten:zai-org/GLM-5.2",
+>     backend=backend,
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
+> )
+> ```
+>
+> ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StoreBackend
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain.agents.middleware import AgentMiddleware, AgentState
+> from langgraph.runtime import Runtime
+> from langsmith.sandbox import SandboxClient
+>
+>
+>
+> def _safe_filename(key: str) -> str:
+>     """Reject keys that contain path traversal or glob characters."""
+>     name = key.split("/")[-1]
+>     if ".." in name or any(c in name for c in ("*", "?")):
+>         raise ValueError(f"Invalid key: {key}")
+>     return name
+>
+>
+> class SandboxSyncMiddleware(AgentMiddleware):
+>     """Sync skills and memories between the store and the sandbox."""
+>
+>     def __init__(self, sandbox: LangSmithSandbox):
+>         super().__init__()
+>         # Call the sandbox directly. CompositeBackend routes /skills/ and
+>         # /memories/ to StoreBackend, so upload_files on the composite would
+>         # write back to the store instead of seeding the container.
+>         self.sandbox = sandbox
+>
+>     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Upload skill scripts and memories into the sandbox."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         files = []
+>         for item in await store.asearch(("skills", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/skills/{name}", item.value["content"].encode()))
+>         for item in await store.asearch(("memories", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/memories/{name}", item.value["content"].encode()))
+>         if files:
+>             await self.sandbox.aupload_files(files)
+>
+>     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Sync updated memories back to the store."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         items = await store.asearch(("memories", user_id))
+>         results = await self.sandbox.adownload_files(
+>             [f"/memories/{item.key}" for item in items]
+>         )
+>         for result in results:
+>             if result.content is not None:
+>                 await store.aput(
+>                     ("memories", user_id),
+>                     result.path.split("/")[-1],
+>                     {"content": result.content.decode()},
+>                 )
+>
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+> sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+>
+> backend = CompositeBackend(
+>     default=sandbox_backend,
+>     routes={
+>         "/skills/": StoreBackend(
+>             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>         "/memories/": StoreBackend(
+>             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>     },
+> )
+>
+> agent = create_deep_agent(
+>     model="ollama:north-mini-code-1.0",
+>     backend=backend,
+>     middleware=[SandboxSyncMiddleware(sandbox_backend)],
 > )
 > ```
 
@@ -849,9 +1343,9 @@ Sandboxes are isolated containers, so environment variables from your host aren'
 }
 ```
 
-The `${SECRET_KEY}` references resolve against secrets stored in your LangSmith [workspace settings](/langsmith/set-up-hierarchy#configure-workspace-settings). Configure secrets there before creating a template that references them.
+The `${SECRET_KEY}` references resolve against your LangSmith [workspace secrets](/langsmith/workspace-secrets). Add the secrets before creating a template that references them.
 
-**Workspace secrets.** For API keys that don't need proxy-based injection (e.g., keys used by the agent server itself, not sandbox code), store them as [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) in LangSmith. These are available as environment variables at runtime for all agents in the workspace.
+**Workspace secrets.** For API keys that do not need proxy-based injection (for example, keys used by the agent server itself, not sandbox code), store them as [workspace secrets](/langsmith/workspace-secrets) in LangSmith. These are available as environment variables at runtime for all agents in the workspace.
 
 > [!WARNING]
 >

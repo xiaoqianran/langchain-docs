@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。这可确保保留符合您的评估标准的迹线（通常是对分析最有价值的迹线）以供调查。 
+> 在线评估器默认延长跟踪保留时间。当代理环境使用基本保留时，您可以[opt out for an individual evaluator](/langsmith/evaluators#manage-evaluator-trace-retention)。其他行动仍然可以延伸这些痕迹。如果[extended retention is disabled for the workspace](/langsmith/data-purging-compliance#disable-extended-trace-retention)，评估将继续，无需新的保留升级，无论保存的环境默认值如何。
 
 ## 查看在线评估器
 
@@ -18,9 +18,9 @@
 
 ## 配置复合在线评估器
 
-您可以在 [agent environment](/langsmith/agent-environments) 上为 [online evaluations](/langsmith/evaluation-concepts#online-evaluations) 创建复合赋值器。通过 UI 中的复合评估器，您可以计算多个评估器分数的加权平均值或加权总和，并具有可配置的权重。
+您可以在 [agent environment](/langsmith/agent-environments) 上为 [online evaluations](/langsmith/evaluation-concepts#online-evaluations) 创建复合赋值器。通过 UI 中的复合评估器，您可以计算多个评估器分数的加权平均值或加权总和，并具有可配置的权重。### 1. 导航到跟踪项目
 
-### 1. 导航到跟踪项目要开始配置复合评估器，请选择您的代理，转到 **跟踪**，然后选择环境。
+要开始配置复合评估器，请选择您的代理，转到 **跟踪**，然后选择环境。
 
 从代理环境视图中，导航至 **Online Evaluators** 选项卡。单击 **+ 评估器** 打开 **添加评估器** 面板。单击“从头开始创建”下的“综合得分”。
 
@@ -38,9 +38,9 @@
 >
 > 如果您需要调整综合分数的权重，可以在创建评估器后更新它们。对于配置了评估器的所有运行，所得分数将被更新。 
 
-### 3. 查看综合评估器结果
+### 3. 查看综合评估器结果综合分数作为**反馈**附加到运行中，类似于单个评估者的反馈。
 
-综合分数作为**反馈**附加到运行中，类似于单个评估者的反馈。**在代理环境上**：
+**在代理环境上**：
 
 * 综合分数显示为跑步反馈。
 * [Filter for runs](/langsmith/filter-traces) 具有综合分数，或综合分数满足特定阈值。

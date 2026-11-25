@@ -4,7 +4,7 @@
 
 How LangChain scales, upgrades, and maintains a LangSmith BYOC data plane on Azure, including instance sizes, maintenance windows, and auditing.
 
-LangChain operates your Azure data plane after provisioning, including upgrades, scaling, monitoring, and security patching. You do not need to size or tune each service. For BYOC on AWS, see [BYOC operations](/langsmith/byoc-operations-aws).
+LangChain operates your Azure data plane after provisioning, including upgrades, scaling, monitoring, and security patching. You do not need to size or tune each service. For BYOC on AWS, see [BYOC operations on AWS](/langsmith/byoc-operations-aws).
 
 Operations fall into three groups:
 
