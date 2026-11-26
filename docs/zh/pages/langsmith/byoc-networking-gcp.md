@@ -6,7 +6,7 @@
 
 LangSmith BYOC 在您的 GCP 项目中创建的网络、如何将您的网络连接到该网络以及离开数据平面的流量。
 
-LangSmith 为 GCP 项目中的每个 BYOC 数据平面创建一个 VPC。本页介绍了其地址范围、如何将您的网络连接到它，以及哪些流量保留在 Google 网络上或需要互联网。对于 LangSmith 部署的其他所有内容，请参阅 [BYOC architecture on GCP](/langsmith/byoc-architecture-gcp)。
+LangSmith 为 GCP 项目中的每个 BYOC 数据平面创建一个 VPC。本页介绍了其地址范围、如何将您的网络连接到它，以及哪些流量保留在 Google 网络上或需要互联网。对于 LangSmith 部署的其他内容，请参阅 [BYOC architecture on GCP](/langsmith/byoc-architecture-gcp)。
 
 > [!注意]
 >
@@ -16,7 +16,7 @@ LangSmith 为 GCP 项目中的每个 BYOC 数据平面创建一个 VPC。本页�
 
 所有子网都来自您选择的`vpc_cidr`，范围从`/16`到`/18`。全部都开启了私人 Google 访问权限。
 
-|范围 |尺寸|使用|
+|范围 |尺寸|使用 |
 | - | - | - |
 | GKE 子网 |第一`/20`| GKE 节点。 |
 |端点子网 | `/24` | Memorystore 的专用服务连接端点。 |
@@ -41,7 +41,7 @@ VPC 是一种具有自定义子网的区域 VPC。 Cloud NAT 使用一个静态�
 
 VPC 使用 GCP 默认 MTU，1460 字节。如果您将VPC连接到具有较小MTU的网络，例如中心VPC或1440字节的互连，请在创建数据平面时设置`mtu_bytes`。 LangSmith 接受 1300 至 8896。
 
-## 私人服务连接* LangChain 在`us-central1` 中发布服务附件。 LangSmith 在数据平面配置期间自动将您的项目添加到其接受列表中。无需手动将项目列入许可名单。
+## 私人服务连接* LangChain在`us-central1`发布服务附件。 LangSmith 在数据平面配置期间自动将您的项目添加到其接受列表中。无需手动将项目列入许可名单。
 * 数据平面创建端点：控制平面端点子网中的内部地址，以及服务附件的转发规则。其他区域的数据平面通过全局访问到达端点。
 * `us-central1.p.api.smith.langchain.com` 的私有 DNS 区域，仅在数据平面 VPC 中可见，指向端点。
 * Private Service Connect 仅将流量从数据平面传输到控制平面。控制平面通过基于 GKE DNS 的端点到达集群。
@@ -54,9 +54,10 @@ VPC 使用 GCP 默认 MTU，1460 字节。如果您将VPC连接到具有较小MT
 这些路由比默认路由更具体，包括从对等网络导入的路由。因此，Secret Manager、云存储、工作负载身份、云日志记录以及从 Artifact Registry 提取的图像不会通过该网络。 VPC 对等互连不会交换下一跳为默认 Internet 网关的路由，因此对等网络不会学习这些路由，并且其 DNS 保持不变。
 
 ## DNS 和入口* **主机名**：`<first 8 characters of the data plane ID>.gcp.langchain-byoc.com`。 LangChain 拥有父区域。
-* **公共区域**：项目中主机名的公共云 DNS 区域，LangChain 从父区域委托。
+* **公共区域**：项目中主机名的公共云 DNS 区域，由 LangChain 从父区域委托。
 * **公共端点**：外部直通负载均衡器。主机名在互联网上解析。
-* **内部端点**（默认）：GKE 子网中的内部直通负载均衡器，具有全局访问权限。地址记录位于私有区域中，仅在数据平面 VPC 中可见，因此私有地址永远不会发布。公共区域保留用于委托和证书挑战。
+* **内部端点**（默认）：GKE 子网中的内部直通负载均衡器，具有全局访问权限。地址记录位于私有区域中，仅在数据平面 VPC 中可见，因此私有地址永远不会被发布。公共区域保留用于委托和证书挑战。
+* **入口允许列表**：（可选）负载均衡器仅接受来自您选择的源范围的流量。参见[Ingress allowlist](/langsmith/byoc-onboarding-gcp#ingress-allowlist)。
 * **TLS**：Let's Encrypt 证书。 HTTP 重定向到 HTTPS。
 * **网关强化**：网关在路由之前规范化路径，拒绝超过 100 MiB 的请求正文，限制每个网关 pod 的请求，并拒绝 `TRACE`、`TRACK` 和 `CONNECT`。
 * **控制平面路径**：登录等路径通过 Private Service Connect 转发到控制平面。
@@ -71,7 +72,7 @@ VPC 使用 GCP 默认 MTU，1460 字节。如果您将VPC连接到具有较小MT
 * **Google API 和图像**：私人 Google 访问权限。
 * **Cloud SQL 和 Memorystore**：私有 IP 和私有服务连接。
 
-所有其他出口均通过 VPC 的默认路由：Cloud NAT 或您的网络（如果您从中导入默认路由）离开。如果您的网络过滤该流量，请允许以下目的地：|特色 |目的地 |
+所有其他出口均通过 VPC 的默认路由：Cloud NAT 或您的网络（如果您从中导入默认路由）离开。如果您的网络过滤该流量，请允许以下目的地：|特色|目的地 |
 | - | - |
 |模型提供商|您的工作区使用的 LLM 提供程序，例如 `api.openai.com` 和 `api.anthropic.com`、Azure OpenAI (`<resource>.openai.azure.com`)、Amazon Bedrock (`bedrock-runtime.<region>.amazonaws.com`) 或自定义基本 URL。对于 Vertex AI（包括 Vertex AI 上的 Gemini），仅允许其区域 `aiplatform.<region>.rep.googleapis.com` 端点。 Gemini 开发者 API (`generativelanguage.googleapis.com`) 通过私有 Google 访问，无需输入。 |
 |证书 | TCP 443 上的 `acme-v02.api.letsencrypt.org`，以及 TCP 和 UDP 53 上的 DNS 到 `1.1.1.1` 和 `8.8.8.8`，以进行 DNS-01 传播检查。 |

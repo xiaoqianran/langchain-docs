@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [beta](/langsmith/release-stages) 上的 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 将沙箱声明放在`sandbox/`下。仅当您想要配置快照时才添加 `sandbox/setup.sh`：
 
@@ -43,7 +43,7 @@ sandbox = define_sandbox(
     idle_ttl_seconds=600,
     default_timeout=600,
 )
-```|选项|默认 |描述 |
+```|选项 |默认 |描述 |
 | - | - | - |
 | `idle_ttl_seconds` | `600` |沙箱及其内容被删除之前不活动的秒数。删除是不可恢复的。 |
 | `default_timeout` | `600` |每个命令允许的秒数。 |
@@ -123,7 +123,7 @@ mkdir -p /workspace
 
 ## 选择烘焙底料在没有烘焙基础的情况下，LangSmith的默认沙箱模板是起点。要从其他内容开始，请准确设置其中之一：
 
-|选项|使用 |
+|选项 |使用 |
 | - | - |
 | `snapshot_name` | LangSmith 快照名称。允许使用标签。 |
 | `snapshot_id` | LangSmith 快照 ID。 |

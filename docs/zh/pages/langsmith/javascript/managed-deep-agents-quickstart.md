@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 先决条件
 
@@ -297,15 +297,15 @@ bunx mda dev
 What were the main announcements from the latest LangChain release?
 ```
 
-You should see the agent call the web search tool, then return a concise answer that cites sources. If search never appears in the trace, confirm the provider tool dict matches the model you set in `agent.py` or `agent.ts`.
+您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
 
-Tracing results in errors until you register the agent. For details, see [Trace local runs](/langsmith/javascript/managed-deep-agents-local-development#trace-local-runs).
+在您注册代理之前，跟踪会导致错误。详情请参见[Trace local runs](/langsmith/javascript/managed-deep-agents-local-development#trace-local-runs)。
 
 **7.部署代理**
 
-On [BYOC](/langsmith/byoc), add `--push-to <image-repository>` to every command in this step. A BYOC data plane deploys from an image in a registry you manage.
+在 [BYOC](/langsmith/byoc) 上，将 `--push-to <image-repository>` 添加到此步骤中的每个命令。 BYOC 数据平面从您管理的注册表中的映像进行部署。
 
-Deploy the project by running:
+通过运行以下命令来部署项目：
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx mda deploy
@@ -319,19 +319,19 @@ pnpm exec mda deploy
 bunx mda deploy
 ```
 
-Managed Deep Agents packages the project and runs it as a hosted deployment on [LangSmith Agent Server](/langsmith/agent-server).部署完成后，CLI 会打印部署仪表板 URL。
+托管 Deep Agents 打包项目并将其作为托管部署在 [LangSmith Agent Server](/langsmith/agent-server) 上运行。部署完成后，CLI 会打印部署仪表板 URL。
 
-打开该网址。 You should see the deployment in a ready state. Send the same research question from the previous step and confirm the hosted agent returns an answer with a search tool call. For deployment options and secrets handling, see [Deploy a Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy). To inspect the agent's execution after it runs, use [LangSmith observability](/langsmith/observability-quickstart).
+打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。有关部署选项和机密处理的信息，请参阅[Deploy a Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy)。要在代理运行后检查其执行情况，请使用[LangSmith observability](/langsmith/observability-quickstart)。
 
 ## 后续步骤
 
 > [卡][Daily digest](/langsmith/javascript/managed-deep-agents-tutorial)
 >
-> Add durable memory and a daily schedule to the research assistant.
+> 为研究助理添加持久记忆和日程安排。
 
 > [卡][Design agent template](/langsmith/javascript/managed-deep-agents-design-agent)
 >
-> Deploy LangChain's open-source design agent instead of scaffolding from scratch.> [卡][Paid media agent template](/langsmith/javascript/managed-deep-agents-paid-media-agent)
+> 部署LangChain的开源设计代理，而不是从头开始搭建脚手架。> [卡][Paid media agent template](/langsmith/javascript/managed-deep-agents-paid-media-agent)
 >
 > 部署 LangChain 的开源付费媒体代理以进行 Slack 活动分析。
 

@@ -6,7 +6,7 @@ Trace OpenAI Realtime voice agents in LangSmith using the LangSmith SDK.
 
 > [!NOTE]
 >
-> This integration is in beta, so its API may change.
+> This integration is in [beta](/langsmith/release-stages), so its API may change.
 
 OpenAI Realtime is a speech-to-speech model that streams typed events over a WebSocket. Regardless of whether you build it with a raw connection or the OpenAI Agents SDK, the integration captures each conversation as a single LangSmith trace, with a span for every meaningful event (transcripts, model responses, and tool calls) grouped by turn.
 

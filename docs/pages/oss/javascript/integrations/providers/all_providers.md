@@ -78,6 +78,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Marketplace of real residential Chrome sessions for AI agents.
 
+> [card] [ChatBelcore](https://github.com/terracore-kr/belcore-integrations#langchainjs)
+>
+> Chat model for the Belcore API, which adds long-term memory and an emotion state to chat while conversation history stays in the caller's database.
+
 > [card] [ChatC0mpute](https://github.com/profullstack/langchain-c0mpute#readme)
 >
 > Chat model for c0mpute, a peer-to-peer compute network serving open-weight models with sealed-bid auction pricing.
@@ -500,6 +504,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Parse and manipulate JSON data structures.
 
+> [card] [KtemiaToolkit](https://www.ktemia.com/docs/langchain/)
+>
+> Flight, hotel and car rental search tools that compare prices across airlines, booking sites and rental companies.
+
 > [card] [Lambda Agent](/oss/javascript/integrations/tools/lambda_agent)
 >
 > Execute code in AWS Lambda functions.
@@ -555,6 +563,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > [card] [Precleared](https://precleared.dev/docs/langchain)
 >
 > Checks whether a cold or marketing email to an address is legal in eight countries, and returns the deciding rule, footer requirements and a signed receipt.
+
+> [card] [Protogrid](https://docs.protogrid.dev/sdk/langchain-js/)
+>
+> Protogrid loads LangChain tools from MCP servers in its registry that pass your rules.
 
 > [card] [Pushary](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js)
 >

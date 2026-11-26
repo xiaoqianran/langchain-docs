@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 部署代理
 
@@ -85,7 +85,7 @@ uv run paid-media-agent mda deploy --yes
 
 ## 定制付费媒体代理
 
-大多数更改都是对存储库中的文件进行编辑。常见的：* **业务背景**：目标、转化定义和营销活动简介位于 `workspace/skills/company-context/`。
+大多数更改是对存储库中文件的编辑。常见的：* **业务背景**：目标、转化定义和营销活动简介位于 `workspace/skills/company-context/`。
 * **报告**：每周和每月报告从 `schedules/` 开始，每周一和每月第一天 13:00 UTC。在计划中设置`deliver_to`，将结果发布到 Slack 通道。
 * **报告设计**：颜色、排版和布局位于 `workspace/skills/report-design/DESIGN.md`。要求您的编码代理遵循 `.agents/skills/paid-media-design/SKILL.md` 以使渲染器保持同步。
 * **Slack 应用**：在`channels/slack.py` 中设置名称、描述和触发器。
@@ -108,20 +108,20 @@ uv run paid-media-agent mda deploy --yes
 | - | - | - |
 | `agent.py` |使用 `define_deep_agent` 从模型、工具、中间件和审批策略的一个共享组件构建代理 | [Agent definition](/langsmith/javascript/managed-deep-agents-agent-definition) |
 | `instructions.md` |永远在线的提示| [Instructions](/langsmith/javascript/managed-deep-agents-instructions) |
-| `skills/` | Skills for analysis, reports, report design, and change proposals, plus a paid-media wiki, edited in `workspace/skills/` | [Skills](/langsmith/javascript/managed-deep-agents-skills) |
-| `sandbox/` | Python 3.13 with ripgrep, jq, and PDF libraries, built by `mda deploy` | [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes) |
-| `channels/slack.py` | The managed Slack app for mentions, DMs, threads, and approval buttons | [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack) |
-| `schedules/` |周报、月报、每日内务管理| [Schedules](/langsmith/javascript/managed-deep-agents-schedules) |
+| `skills/` |分析、报告、报告设计和变更建议的技能，以及付费媒体维基，用 `workspace/skills/` 编辑 | [Skills](/langsmith/javascript/managed-deep-agents-skills) |
+| `sandbox/` | Python 3.13，带有 ripgrep、jq 和 PDF 库，由 `mda deploy` 构建 | [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes) |
+| `channels/slack.py` |用于提及、DM、话题和批准按钮的托管 Slack 应用程序 | [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack) |
+| `schedules/` |周报、月报以及每日内务管理 | [Schedules](/langsmith/javascript/managed-deep-agents-schedules) |
 | `identity.py` |使用 LangSmith API 密钥对调用者进行身份验证 | [Identity](/langsmith/javascript/managed-deep-agents-identity) |
-| `src/paid_media_agent/` | Application code the agent entry imports, such as ad platform tools, metrics, and report rendering | [Tools](/langsmith/javascript/managed-deep-agents-tools) |
+| `src/paid_media_agent/` |代理入口导入的应用程序代码，例如广告平台工具、指标和报告渲染 | [Tools](/langsmith/javascript/managed-deep-agents-tools) |
 
 ## 架构
 
-托管 Deep Agents 提供 Slack 应用程序、身份、计划和每个线程的沙箱。 The repository adds ad platform tools, analysis skills, and the approval policy.
+托管 Deep Agents 提供 Slack 应用程序、身份、计划和每个线程的沙箱。该存储库添加了广告平台工具、分析技能和审批政策。
 
 ![A Slack question or a weekly or monthly report reaches the main agent on Managed Deep Agents. The agent reads skills and a wiki, calls ad platform tools whose keys stay on the host, works in a sandbox per thread, and answers in the same Slack thread, where a proposed change waits for approval. Managed Deep Agents provides Slack, identity, schedules, durable runs, tracing, and mda deploy.](https://mintcdn.com/langchain-5e9cc07a/iUeSEP3j6ExFou6p/langsmith/images/paid-media-agent-architecture-light.png?fit=max\&auto=format\&n=iUeSEP3j6ExFou6p\&q=85\&s=8dde78cdd8ba52ede4592e8737518ec0)
 
-从 Slack 或调度通过代理返回线程的请求路径。模型决定研究什么。代码计算指标并根据源数据检查报告数字。 Large tool results stay in files.该模型读取带有源、日期窗口和数据质量标志的摘要。
+从 Slack 或调度通过代理返回线程的请求路径。模型决定研究什么。代码计算指标并根据源数据检查报告数字。大型工具结果保留在文件中。该模型读取带有源、日期窗口和数据质量标志的摘要。
 
 营销活动变更从提案开始：之前和之后的值、原因以及检查和撤销的计划。运行暂停，审批者列表中的审阅者批准或拒绝 Slack 中的具体提案。编辑提出了需要自己批准的新提案。
 
@@ -129,7 +129,7 @@ uv run paid-media-agent mda deploy --yes
 
 拟议的活动变更的宽松批准卡。
 
-批准后，主机在接触帐户之前检查每个门，进行更改，然后读回以记录收据。 Live changes are off by default. To turn them on, follow the [live-write runbook](https://github.com/langchain-ai/paid-media-agent/blob/main/docs/operations/live-write-runbook.md).
+批准后，主机在接触帐户之前检查每个门，进行更改，然后读回以记录收据。默认情况下，实时更改处于关闭状态。要打开它们，请按照[live-write runbook](https://github.com/langchain-ai/paid-media-agent/blob/main/docs/operations/live-write-runbook.md)操作。
 
 ![Five steps from left to right. Propose: before and after values, a reason, and how to check and undo it. Approve: a reviewer on the approver list approves the exact proposal in Slack. Check gates: kill switch, writes turned on, a released tool, and a signed approval; if any gate fails, the proposal is rejected and nothing changes. Execute: one change with the approved payload and no automatic retries. Verify: read the object back and record a receipt that is verified, failed, or unknown. An edit at the approval step loops back to a new proposal.](https://mintcdn.com/langchain-5e9cc07a/iUeSEP3j6ExFou6p/langsmith/images/paid-media-agent-approval-flow-light.png?fit=max\&auto=format\&n=iUeSEP3j6ExFou6p\&q=85\&s=d645d87066e0670192d3c376488596cf)
 

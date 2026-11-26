@@ -12,7 +12,7 @@ Slack 通道允许人们通过应用程序提及、直接消息和活动 Slack �
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 项目结构
 
@@ -114,7 +114,7 @@ export const channel = channels.slack({
 
 **allowBotTriggers** `boolean`（默认值：false）
 
-来自其他 Slack 机器人的消息是否可以启动代理运行。在`thread`和`all`模式下，代理也会收到不属于它的消息。如果代理准确回答`[quiet]`，则运行不会发布任何内容。告诉代理在其说明中没有任何可添加的内容时回答`[quiet]`。
+来自其他 Slack 机器人的消息是否可以启动代理运行。在`thread`和`all`模式下，代理也会收到不属于它的消息。如果代理准确回答`[quiet]`，则运行不会发布任何内容。在其说明中告诉代理在没有任何可添加的情况下回答`[quiet]`。
 
 ## 对开始运行的消息做出反应
 
@@ -141,9 +141,9 @@ export const channel = channels.slack({
 ```
 
 返回一个不带冒号的 Slack 短名称。 Slack 没有这个名字
-识别已被选择但从未出现，因此反应完全缺失。一个
+recognize 被选择但从未出现，因此反应完全缺失。一个
 抛出、花费超过五秒或返回的选择器
-其他任何内容都会回到默认表情符号，并且运行会继续。
+其他任何内容都会回退到默认表情符号，并且运行将以任何方式继续。
 
 ### 选择具有决策模型的表情符号[decision model](/langsmith/llm-gateway-decision-models) 获得一组固定的分数
 选项和答案用其中一个键，所以反应反映了

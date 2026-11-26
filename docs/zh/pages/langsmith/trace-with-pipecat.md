@@ -6,7 +6,7 @@
 
 > [!注意]
 >
-> 此集成处于测试阶段，因此其 API 可能会发生变化。
+> 此集成位于 [beta](/langsmith/release-stages) 中，因此其 API 可能会发生变化。
 
 通过 LangSmith Pipecat 集成将您的 [Pipecat](https://pipecat.ai/) 语音代理追踪到 LangSmith。有关高级约定，请参阅[Voice tracing fundamentals](/langsmith/trace-voice-fundamentals)。
 
@@ -73,7 +73,7 @@ task = PipelineTask(
 如果您的 LLM 阶段是进程内 [LangGraph or LangChain](/oss/python/langgraph/overview) 代理，则其模型和工具运行应嵌套在 Pipecat 的 `llm` 范围内，而不是形成单独的跟踪。为了实现这一点：
 
 * 通过`configure_pipecat(llm_span_kind="chain")`。这避免了实际上不代表推理请求的嵌套 `llm` 跨度。
-* 在环境中设置`LANGSMITH_TRACING_MODE=otel`。如果没有它，这些运行将直接发布到 LangSmith 并形成单独的跟踪而不是嵌套。
+* 在环境中设置`LANGSMITH_TRACING_MODE=otel`。如果没有它，这些运行将直接发布到LangSmith并形成单独的跟踪而不是嵌套。
 
 ### 使用您自己的跟踪器提供程序
 
@@ -87,7 +87,7 @@ provider.add_span_processor(PipecatLangSmithSpanProcessor())
 
 ## 将对话分组为线程
 
-要将对话的运行分组为 LangSmith [thread](/langsmith/threads) 以进行线程级视图以及令牌和成本聚合，请在发出其跨度之前为每个对话调用一次 `set_thread_id` ：
+要将对话的运行分组为 LangSmith [thread](/langsmith/threads) 以进行线程级视图以及令牌和成本聚合，请在发出其跨度之前为每个对话调用一次 `set_thread_id`：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.pipecat import configure_pipecat, set_thread_id
@@ -96,7 +96,7 @@ configure_pipecat()
 set_thread_id(conversation_id)
 ```## 将 Pipecat 与实时模型结合使用时
 
-对于语音到语音（实时）模型，没有单独的语音到文本阶段，因此用户的转录内容永远不会作为 OTel 范围发出。相反，它通过用户上下文聚合器的 `on_user_turn_message_added` 回调到达，Pipecat 在获得最终用户文本后会触发该回调。在未接线的情况下，迹线仅显示助手侧。
+对于语音到语音（实时）模型，没有单独的语音到文本阶段，因此用户的转录内容永远不会作为 OTel 范围发出。相反，它通过用户上下文聚合器的 `on_user_turn_message_added` 回调到达，Pipecat 在获得最终用户文本后会触发该回调。在没有接线的情况下，迹线仅显示助手侧。
 
 在构建上下文聚合器后立即调用 `instrument_user_aggregator` 一次，以便 SDK 为您订阅该回调并将每个记录与其轮次配对。它与您传递给 `set_thread_id` 的 id 相关，因此首先设置它并传递相同的 id：
 

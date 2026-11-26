@@ -23,7 +23,7 @@ Agent deployments running on Cloud require a [Plus plan or above](https://www.la
 >
 > Deploy your first LangGraph application to Cloud in a few minutes.
 
-To deploy a code-first Deep Agent without standing up your own Agent Server, [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) offers a CLI-first managed runtime in public beta.
+To deploy a code-first Deep Agent without standing up your own Agent Server, [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) offers a CLI-first managed runtime in [beta](/langsmith/release-stages).
 
 ## Next steps
 

@@ -18,10 +18,10 @@ GCP 上的 BYOC 在 GCP 项目中运行 LangSmith 数据平面，在 LangSmith U
 
 您需要以下内容：* **在您的组织上启用 BYOC**：在 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-onboarding-gcp) 在 LangSmith 中创建一个组织，或重复使用现有组织，并将其组织 ID 发送到 LangChain 团队以启用 BYOC。
 * **组织管理员**：创建数据平面需要组织管理员角色以及该用户的 API 密钥。
-* **数据平面的 GCP 项目**：使用仅包含 LangSmith 资源的项目。大多数配置者的权限仅适用于名称以`langsmith-`开头的资源，但有些权限涵盖整个项目。如果项目还拥有其他资源，则在[Step 2](#step-2-run-the-terraform-module)中设置`byo_iam = true`。该项目不得已有 `managed_by` 标签密钥，并且必须仅包含 Terraform 模块的一份副本。详情请参见[What LangChain can and cannot access](/langsmith/byoc-architecture-gcp#what-langchain-can-and-cannot-access)。
+* **数据平面的 GCP 项目**：使用仅包含 LangSmith 资源的项目。大多数配置者的权限仅适用于名称以`langsmith-`开头的资源，但有些权限涵盖整个项目。如果项目还拥有其他资源，则在[Step 2](#step-2-run-the-terraform-module)中设置`byo_iam = true`。该项目不得已有 `managed_by` 标签密钥，并且必须仅包含 Terraform 模块的一份副本。详情请参阅[What LangChain can and cannot access](/langsmith/byoc-architecture-gcp#what-langchain-can-and-cannot-access)。
 * **该项目中的权限**：创建服务帐户、授予项目 IAM 角色、启用 API 和创建标签的权限。标签需要项目上的标签管理员（`roles/resourcemanager.tagAdmin`）。
 * **Terraform**：Terraform 1.11.0 或更高版本，使用 Google 提供商 6.0 或更高版本，9.0 之前。
-* **GCP 区域**：GCP 上的 BYOC 可以在任何 GCP 区域中运行。如果您需要的区域尚未启用，请联系LangChain团队添加。* **资源位置策略**：如果您的 GCP 组织限制资源位置，请允许数据平面区域和 `us-central1`。数据平面在 `us-central1` 中创建其到 LangSmith 的 Private Service Connect 端点。
+* **GCP 区域**：GCP 上的 BYOC 可以在任何 GCP 区域中运行。如果您需要的区域尚未启用，请联系LangChain团队添加。* **资源位置策略**：如果您的 GCP 组织限制资源位置，请允许数据平面区域和 `us-central1`。数据平面在 `us-central1` 中创建其到 LangSmith 的专用服务连接端点。
 
 ## 设置数据平面
 
@@ -41,7 +41,7 @@ flowchart LR
 
 ### 步骤 2. 运行 Terraform 模块
 
-在您的项目中应用[⟦T10⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/gcp/langsmith-byoc-service-account)。该模块：* 启用数据平面使用的 API。如果您在其他地方管理项目的 API，请设置 `enable_apis = false`。
+在您的项目中应用[⟦T11⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/gcp/langsmith-byoc-service-account)。该模块：* 启用数据平面使用的 API。如果您在其他地方管理项目的 API，请设置 `enable_apis = false`。
 * 创建配置者服务帐户 `langsmith-byoc-provisioner`，其描述设置为您的外部 ID。
 * 授予其自定义角色，仅具有配置和拆卸使用的权限。其中大多数仅适用于名称以 `langsmith-` 开头的资源。
 * 在项目中创建标签 `managed_by: langsmith`，并仅在具有该标签的 GKE 集群上授予 LangSmith 控制平面服务帐户 `roles/container.admin`。 LangSmith 标记数据平面 GKE 集群及其创建的 Cloud SQL 实例，Postgres 设置帐户的 Cloud SQL 权限仅适用于标记的实例。
@@ -127,7 +127,17 @@ LangSmith 配置项目中的基础设施。数据平面状态从`requested`移�
 
 ### 更改数据平面设置
 
-在 GCP 上，您可以更改维护时段。 Blob TTL、队列 OIDC 和网络防火墙设置不可用。
+在 GCP 上，您可以更改维护时段和入口许可名单。 Blob TTL、队列 OIDC 和网络防火墙设置不可用。
+
+要编辑数据平面的设置：
+
+1. 导航到 **设置 > 数据平面**。
+2. 找到您的数据平面并选择**设置**。
+3. 打开要更改的设置的选项卡，然后保存。
+
+您还可以使用 [Update data plane settings](/langsmith/smith-api/data_planes/update-data-plane-settings) 端点。
+
+#### 维护窗口
 
 维护时段为 UTC 两小时，整点，例如 `sun:07:00-sun:09:00`。它适用于 Cloud SQL 和 Memorystore，其窗口持续一小时，因此 LangSmith 仅使用开始。当它被取消设置时，Google 会选择该窗口。
 
@@ -137,21 +147,42 @@ curl -X PATCH https://api.smith.langchain.com/orgs/current/data-planes/<id> \
   -H "X-Organization-Id: <organization-id>" \
   -H "Content-Type: application/json" \
   -d '{"maintenance_window": "sun:07:00-sun:09:00"}'
+```GKE 节点在 GKE `REGULAR` 发布通道上自动升级。
+
+#### 入口允许列表
+
+在 **Ingress** 选项卡上，您可以限制负载均衡器接受的源 IP 范围。最多添加 50 个 IPv4 CIDR 范围。然后，负载均衡器仅在端口 443 上接受来自这些范围的流量。
+
+* **空列表**：负载均衡器允许所有源。
+* **数据平面范围**：始终允许 GKE 节点和 Pod 范围，因此数据平面内的服务仍然可以到达负载均衡器。
+* **内部终端节点**：添加您的用户和应用程序连接的专用范围，例如对等 VPC 的范围或通过 Cloud VPN 连接的网络的范围。
+
+通过API发送`ingress.allowed_source_cidrs`：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -X PATCH https://api.smith.langchain.com/orgs/current/data-planes/<id> \
+  -H "X-API-Key: $LANGSMITH_API_KEY" \
+  -H "X-Organization-Id: <organization-id>" \
+  -H "Content-Type: application/json" \
+  -d '{"ingress": {"allowed_source_cidrs": ["203.0.113.0/24"]}}'
 ```
 
-GKE 节点在 GKE `REGULAR` 发布通道上自动升级。
+> [!警告]
+>
+> * API 更新取代了整个列表。包括您想要保留的每个范围，否则负载均衡器将停止接受您遗漏的范围中的流量。
+> * 请勿直接在 GCP 中编辑负载均衡器防火墙规则。 LangSmith 定期协调数据平面并恢复对托管资源的任何手动更改。
 
 ## 解决创建错误
 
 创建请求返回以下错误代码：|代码| HTTP |原因 |修复|
 | - | - | - | - |
-| `gcp_permissions` | 403 | 403 LangSmith 无法冒充配置者，或者配置者缺乏权限。 |应用 Terraform 模块，并选中 `crossplane_service_account`。 |
+| `gcp_permissions` | 403 | 403 LangSmith 无法冒充配置者，或者配置者缺乏权限。 |应用Terraform模块，并检查`crossplane_service_account`。 |
 | `gcp_api_disabled` | 400 |项目中禁用了所需的 API。 |启用消息中指定的 API，或保留`enable_apis = true`。 |
 | `gcp_project_not_found` | 400 |该项目不存在，或者配置者看不到它。 |检查`gcp_project_id`。 |
 | `gcp_service_account_not_found` | 400 |项目中不存在配置者服务帐户。 |检查`provisioner_service_account`和`gcp_project_id`。 |
 | `gcp_provisioner_project_mismatch` | 400 |配置者位于不同的项目中。 |使用在数据平面项目中创建的模块的配置程序。 |
 | `gcp_provisioner_not_owned` | 403 | 403配置者的描述不是您的外部 ID。 |使用 **设置 > 数据平面** 中的外部 ID 重新应用模块。 |
-| `byoiam_validation` | 400 | `byoiam_enabled` 是`true`，但项目缺少LangSmith 服务帐户。 |使用`byo_iam = true`应用模块。 |
+| `byoiam_validation` | 400 | `byoiam_enabled` 是 `true`，但该项目缺少 LangSmith 服务帐户。 |使用`byo_iam = true`应用模块。 |
 | `gcp_policy_denied` | 403 | 403组织策略拒绝了请求，例如资源位置限制。 |在策略中允许数据平面区域和`us-central1`。 |
 | `gcp_throttled` | 429 | 429 GCP 速率限制了请求。 |一分钟后重试。 || `gcp_unavailable` | 502 | 502 GCP 返回错误。 |一分钟后重试。 |
 | `organization_admin_required` | 403 | 403 API 密钥的用户不是组织管理员。 |使用组织管理员的 API 密钥。 |

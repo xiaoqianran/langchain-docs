@@ -58,6 +58,12 @@ model.invoke("Tell me a joke and include some emojis.").pretty_print()
 
 For setup and usage examples, see [Microsoft Foundry chat models](/oss/python/integrations/chat/azure_ai).
 
+### Decision models
+
+> [card] [Microsoft Foundry Decisions](/oss/python/integrations/decision_models/azure_ai)
+>
+> Ask typed `Noul`, `Choice`, and `Score` questions with Microsoft Decision models and the Azure OpenAI Decisions API.
+
 ### LLMs
 
 > [card] [Azure OpenAI (text completions)](/oss/python/integrations/llms/azure_openai)
@@ -102,7 +108,7 @@ For more on using Foundry agents in LangGraph, see [Microsoft Foundry Agent Serv
 
 ### Runtime
 
-[Microsoft Foundry hosted agents](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents) run your LangGraph code on managed infrastructure. Foundry manages compute, session lifecycles, and scaling. Responses hosting options can enable background execution, failure recovery after process interruptions, stream replay, and steering for new user input. These options are off by default.
+[Microsoft Foundry hosted agents](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents) run your LangGraph code on managed infrastructure. Foundry manages compute, session lifecycles, and scaling. Responses hosting options can enable background execution, failure recovery after process interruptions, stream replay, steering for new user input, and response branching. These options are off by default.
 
 Expose your agent through OpenAI-compatible Responses endpoints or Invocations endpoints with custom JSON inputs and outputs. The LangGraph hosting adapters handle request conversion, response mapping, and streaming. Responses also provides managed conversation history.
 
@@ -138,7 +144,7 @@ azd provision
 azd deploy
 ```
 
-To learn why to host LangGraph on Microsoft Foundry, read the [hosting blog post](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/hosting-your-langgraph-application-on-microsoft-foundry-agents/4573342). To migrate an existing graph, follow the [LangGraph-to-Foundry migration guide](https://github.com/langchain-ai/langchain-azure/blob/main/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md). For new or migrated agents, see [Microsoft Foundry hosted agents](/oss/python/integrations/providers/azure_ai#microsoft-foundry-hosted-agents) and the [hosted-agent samples](https://github.com/langchain-ai/langchain-azure/blob/main/samples/hosting/langgraph-hosted-agents/README.md#start-here).
+To learn why to host LangGraph on Microsoft Foundry, read the [hosting blog post](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/hosting-your-langgraph-application-on-microsoft-foundry-agents/4573342). To migrate an existing graph, follow the [LangGraph-to-Foundry migration guide](https://github.com/langchain-ai/langchain-azure/blob/main/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md). For new or migrated agents, see [Microsoft Foundry hosted agents](/oss/python/integrations/providers/azure_ai#microsoft-foundry-hosted-agents) and the [Foundry LangGraph samples](https://github.com/microsoft-foundry/foundry-samples/tree/main/samples/python/hosted-agents/langgraph).
 
 ### Tools
 
@@ -163,6 +169,10 @@ To learn why to host LangGraph on Microsoft Foundry, read the [hosting blog post
 > [card] [Azure AI Content Safety](/oss/python/integrations/middleware/azure_ai)
 >
 > Apply Content Safety checks to agent inputs and outputs.
+
+> [card] [Content Safety guardrail policy](/oss/python/integrations/middleware/azure_ai#guardrail-policy)
+>
+> Enforce a Content Safety guardrail policy across agent, model, and tool hooks.
 
 > [card] [Microsoft Foundry memory](/oss/python/integrations/middleware/azure_ai#microsoft-foundry-memory)
 >
@@ -229,6 +239,16 @@ To learn why to host LangGraph on Microsoft Foundry, read the [hosting blog post
 > [card] [Azure AI Search](/oss/python/integrations/vectorstores/azuresearch)
 >
 > Store embeddings and run vector, hybrid, and semantic searches in Azure AI Search.
+
+### Checkpointers
+
+> [card] [Foundry checkpoint saver](/oss/python/integrations/providers/azure_ai#foundry-checkpoint-saver)
+>
+> Persist LangGraph checkpoints across turns and restarts in Foundry State Store.
+
+> [card] [Azure Cosmos DB](https://github.com/langchain-ai/langchain-azure/blob/main/libs/azure-cosmosdb/README.md#langgraph-checkpointer)
+>
+> Persist LangGraph graph state in Azure Cosmos DB with sync and async checkpointers.
 
 ### Chat message history
 

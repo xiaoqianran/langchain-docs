@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 终点为出方向。 [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors) 指出了另一种方式：它将远程 MCP 服务器中的工具添加到您的代理中。部署可以同时使用两者。
 
@@ -30,7 +30,7 @@
 
 MCP 端点使用部署的 [identity](/langsmith/javascript/managed-deep-agents-identity) 配置，与部署上的所有其他路由相同。发送与配置模式匹配的凭证：
 
-|身份模式 |标题|
+|身份模式|标题 |
 | - | - |
 | LangSmith API 密钥（默认）| `x-api-key: <LANGSMITH_API_KEY>` |
 |苏帕巴斯| `Authorization: Bearer <access_token>` |
@@ -126,11 +126,11 @@ const tools = await client.getTools();
 
 为了在通话中保留知识，[opt in to durable memory](/langsmith/javascript/managed-deep-agents-memory)。持久内存是可选的，并由部署的每个调用者共享。当 MCP 客户端不应相互影响时，请勿启用它。
 
-## 何时使用 MCP 端点|概念|亲切 |它如何到达代理|
+## 何时使用 MCP 端点|概念 |亲切 |它如何到达代理|
 | - | - | - |
 | **MCP 端点** |部署API |将代理作为工具公开给 MCP 客户端 |
 | **[MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)** |托管配置|将远程 MCP 服务器托管的工具添加到代理 |
-| **[Channels](/langsmith/javascript/managed-deep-agents-channels)** |托管配置|从启动代理运行并传送响应的外部消息传递服务接收消息 |
+| **[Channels](/langsmith/javascript/managed-deep-agents-channels)** |托管配置|从启动代理运行并传送响应的外部消息服务接收消息 |
 
 ## 后续步骤
 

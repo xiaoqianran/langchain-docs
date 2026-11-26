@@ -44,7 +44,7 @@ Node.js 18 或更高版本。
 >
 >> [!注意]
 >>
->> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+>> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 >
 > 托管 Deep Agents 搭建项目并托管运行时。品牌声音进入`instructions.md`，技能保持在`skills/`，并且您在代码中声明工具和研究人员子代理。 `mda dev`期间，图像工具写入项目目录下。
 >
@@ -84,7 +84,7 @@ Node.js 18 或更高版本。
 > LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 > ```
 >
-> 即使聊天模型是克劳德，生成双子座图像也需要`GOOGLE_API_KEY`。
+> 即使聊天模型是克劳德，生成 Gemini 图像也需要`GOOGLE_API_KEY`。
 >
 >> [!警告]
 >>

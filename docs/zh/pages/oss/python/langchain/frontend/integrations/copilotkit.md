@@ -4,7 +4,7 @@
 
 # 副驾驶套件
 
-将 CopilotKit 与 LangGraph、Deep Agents 结合使用，并将 React 与自定义端点、Python AG-UI 桥、结构化生成 UI 和消息传递平台通道结合使用
+将 CopilotKit 与 LangGraph、Deep Agents 结合使用，并将 React 与自定义端点、Python AG-UI 桥、结构化生成 UI、消息传递平台通道和 OpenBot 结合使用
 
 [CopilotKit](https://www.copilotkit.ai/) 提供完整的 React 聊天运行时，并且当您希望代理返回 **结构化 UI 负载** 而不仅仅是纯文本时，它与 LangGraph 配合得特别好。前端与 CopilotKit 运行时 URL 进行通信，并将辅助消息解析为动态 React 组件。
 
@@ -26,9 +26,9 @@
 
 ## 它是如何工作的
 
-从较高的层面来看，CopilotKit 位于 React 应用程序和 LangGraph 部署之间。
+从较高层面来看，CopilotKit 位于 React 应用程序和 LangGraph 部署之间。
 
-前端将对话状态发送到 Node CopilotKit 运行时。该运行时调用 LangGraph 部署上的 AG-UI FastAPI 桥接器，响应会返回助手消息以及组件注册表可以呈现的任何结构化 UI 有效负载。1. **像平常一样部署图表**使用LangSmith或使用LangGraph开发服务器。
+前端将对话状态发送到 Node CopilotKit 运行时。该运行时调用 LangGraph 部署上的 AG-UI FastAPI 桥接器，并且响应会返回助手消息以及组件注册表可以呈现的任何结构化 UI 有效负载。1. **像平常一样部署图表**使用LangSmith或使用LangGraph开发服务器。
 2. **使用 HTTP 应用程序扩展部署**，该应用程序将 AG-UI FastAPI 桥安装在图形 API 旁边。
 3. **运行 Node CopilotKit 运行时**，将 `HttpAgent` 指向该桥，然后根据运行时 URL 将前端包装在 `CopilotKit` 中。
 4. **注册动态 UI 组件**并在渲染时将助手响应解析到这些组件中。
@@ -70,7 +70,7 @@ graph LR
 
 当您将 `middleware` 列表添加到 `middleware` 列表时，`CopilotKitMiddleware` 与 [create_deep_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 以及来自 [create_agent](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 的图表是相同的中间件。对于具有 `CopilotKitState` 和 FastAPI 桥的 `create_agent` 图，请遵循下面的 [Python ⟦T39⟧ example](#extend-the-langgraph-deployment-with-a-custom-endpoint)。结构化生成 UI（例如来自客户端的 `useAgentContext` 和 `output_schema`）需要额外的中间件将 Copilot 状态映射到 [structured output](/oss/python/langchain/agents#structured-output) 策略，如同一部分中的可扩展 `src/middleware.py` 示例。
 
-将`app`安装在`langgraph.json`中的`http`键上遵循通常的[LangGraph or LangSmith deployment](/oss/python/langgraph/deploy)：一个进程服务于图形API和AG-UI FastAPI桥。 CopilotKit React 客户端与调用该桥的 Node 运行时进行通信。
+将`app`安装到`langgraph.json`中的`http`键上遵循通常的[LangGraph or LangSmith deployment](/oss/python/langgraph/deploy)：一个进程服务于图形API和AG-UI FastAPI桥。 CopilotKit React 客户端与调用该桥的 Node 运行时进行通信。
 
 ＃＃ 安装对于后端端点：
 
@@ -193,7 +193,7 @@ add_langgraph_fastapi_endpoint(
 
 AG-UI 桥在每次运行时都会读取图的状态，因此 FastAPI 路由后面的图需要一个检查点。保持检查指针关闭 `agent` 本身：`agent` 也列在 `graphs` 下，并且 `langgraph dev` 拒绝加载带有自己检查指针的列出图，因为 LangGraph API 处理列出图的持久性。带有 `MemorySaver` 的副本仅服务于 FastAPI 路由。它的线程存在于进程内存中，因此它们不会在重新启动后继续存在，不会在副本之间共享，并且不会出现在部署的线程 API 中。对于此路线上的生产交通，请改为通过耐用的[checkpointer](/oss/python/langgraph/persistence)。
 
-这个自定义应用程序是重要的扩展点：它安装了 AG-UI FastAPI 桥，而无需替换底层LangGraph部署。 Node CopilotKit 运行时保持独立；参见[Add the CopilotKit runtime](#add-the-copilotkit-runtime)。在 Python 中，等效的工作发生在中间件中：规范化 CopilotKit 上下文并将 `output_schema` 从 `useAgentContext(...)` 转发到模型的结构化输出配置中。 Hashbrown 生成的模式没有顶级`title`，而OpenAI 集成需要命名结构化输出模式，因此中间件会在缺少`title` 和`description` 时填充它们。
+这个自定义应用程序是重要的扩展点：它安装了 AG-UI FastAPI 桥，而无需替换底层 LangGraph 部署。 Node CopilotKit 运行时保持独立；参见[Add the CopilotKit runtime](#add-the-copilotkit-runtime)。在 Python 中，等效的工作发生在中间件中：规范化 CopilotKit 上下文并将 `output_schema` 从 `useAgentContext(...)` 转发到模型的结构化输出配置中。 Hashbrown 生成的模式没有顶级`title`，而OpenAI 集成需要命名结构化输出模式，因此中间件会在缺少`title` 和`description` 时填充它们。
 
 ```python expandable src/middleware.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import json
@@ -452,7 +452,7 @@ export function CustomMessageRenderer({ message }: RenderMessageProps) {
 
 ## 频道
 
-为应用内副驾驶提供支持的同一代理也可以在 Slack 和其他消息平台中作为机器人运行。 [CopilotKit Channels](https://docs.copilotkit.ai/channels) 通过托管 CopilotKit Intelligence 连接将您的 LangChain 代理连接到消息传递平台：智能保存平台凭据和消息传递，而您的进程运行代理。
+为应用内副驾驶提供支持的同一代理也可以在 Slack 和其他消息平台中作为机器人运行。 [CopilotKit Channels](https://docs.copilotkit.ai/channels) 通过托管 CopilotKit Intelligence 连接将您的 LangChain 代理连接到消息平台：智能保存平台凭据和消息传递，而您的进程运行代理。
 
 > [!注意]
 >
@@ -625,8 +625,26 @@ node --env-file=.env --import tsx channel.ts
 
 Managed Slack 已普遍可用。托管团队是受控集成目标。 Channels SDK 还附带适用于 Teams、Discord、Telegram 和 WhatsApp 的直接适配器。有关当前平台列表和每个平台的设置，请参阅[Channels overview](https://docs.copilotkit.ai/slack)。
 
+## 开放机器人[OpenBot](https://open.bot) 是一个面向 AI 同事的开源、自托管工作区，基于 CopilotKit 和 AG-UI 构建。将您的LangChain代理连接为机器人以按计划运行它，为其提供连接的应用程序和带有浏览器的计算机，并将其操作置于工作区的工具权限、批准和审核日志下。代理代码保留在今天运行的位置。
+
+OpenBot 通过[AG-UI](https://docs.ag-ui.com/) 连接到代理，因此任何具有 OpenBot 可以到达的 AG-UI 端点的代理都可以成为机器人。
+
+[FastAPI bridge on this page](#extend-the-langgraph-deployment-with-a-custom-endpoint) 就是那个端点。 `add_langgraph_fastapi_endpoint` 服务 OpenBot 调用的 AG-UI 路由，因此 OpenBot 不需要 Node CopilotKit 运行时。
+
+连接代理：
+
+1. 在 OpenBot 中，创建一个机器人并为其指定名称和说明。
+2.选择自带代理，框架选择LangChain。
+3. 输入代理的 AG-UI 端点的 URL。
+4. （可选）添加密钥。 OpenBot 将其与每个请求一起发送到端点。
+
+OpenBot 在保存机器人之前会检查端点是否应答。
+
+有关完整设置，请参阅[OpenBot guide for builders](https://open.bot/builders)。对于也使用 OpenBot 每次运行时发送的工具的 LangGraph 代理，请参阅 [OpenBot repository](https://github.com/CopilotKit/OpenBot) 中的 [⟦T86⟧](https://github.com/CopilotKit/OpenBot/tree/main/agent-langgraph-agui)。
+
 ＃＃ 资源* CopilotKit 文档中的 [Deep Agents and CopilotKit](https://docs.copilotkit.ai/langgraph/deep-agents) — 端到端 Next.js、开发服务器和 **Deep Agent** 路径
 * [CopilotKit: LangGraph features](https://docs.copilotkit.ai/langgraph) — 生成式 UI、HITL、共享状态
+* [OpenBot](https://open.bot) — 开源工作区，通过 AG-UI 将代理作为机器人运行
 * [LangGraph deployment](/oss/python/langgraph/deploy) — 生产和开发服务器
 
 ## 最佳实践
@@ -639,6 +657,6 @@ Managed Slack 已普遍可用。托管团队是受控集成目标。 Channels SD
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/integrations/copilotkit.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

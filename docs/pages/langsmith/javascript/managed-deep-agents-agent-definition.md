@@ -8,7 +8,7 @@ The agent definition selects the model and core capabilities of a managed deep a
 
 > [!NOTE]
 >
-> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
+> Managed Deep Agents is in [beta](/langsmith/release-stages) on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
 
 The agent entry lives at the project root:
 
@@ -86,6 +86,10 @@ Configure the system prompt, skills, memory, sandbox, identity, channels, and sc
 | `interruptOn` | Pause before selected tool calls for human approval. Set `interruptOn` to pause before selected tool calls, so a person can approve, edit, or reject the call before it runs. See [Human-in-the-loop](/langsmith/javascript/managed-deep-agents-tools#human-in-the-loop). |
 | `responseFormat` | Set when the agent must return data that matches a schema instead of an unconstrained text response. See [Structured output](/oss/javascript/langchain/structured-output). |
 | `routes` | Mount Deep Agents backends at path prefixes. See [Mount your own backends](#mount-your-own-backends). |
+
+> [!WARNING]
+>
+> You cannot rename a deployed agent. After a rename, existing threads stop loading. Unless you pass the old name to `mda deploy --name`, the next deploy also creates a new Agent Server with empty memory.
 
 ## Mount your own backends
 

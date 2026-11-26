@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公共 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 决定是否移动
 
@@ -75,15 +75,15 @@
 
 其余的移动到项目文件或成为运行时的工作：| `create_deep_agent` |它去哪儿了|笔记|
 | - | - | - |
-| `system_prompt` | `instructions.md` |将文本移动到文件中，然后删除参数。参见[Instructions](/langsmith/python/managed-deep-agents-instructions)。 |
+| `system_prompt` | `instructions.md` |将文本移至文件中，然后删除参数。参见[Instructions](/langsmith/python/managed-deep-agents-instructions)。 |
 | `skills` | `skills/` |每个技能一个目录，每个目录都有一个`SKILL.md`。参见[Skills](/langsmith/python/managed-deep-agents-skills)。 |
 | `memory` | `memory.py` |出口`define_memory(scope="agent")`。如果没有持久内存，则省略该文件。参见[Memory](/langsmith/python/managed-deep-agents-memory)。 |
-| `backend` | `sandbox/` 或 `routes` |为文件系统和 shell 声明一个托管沙箱。要保留其他后端，请将它们安装在带有 `routes` 的路径前缀处。 See [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes) and [Mount your own backends](/langsmith/python/managed-deep-agents-agent-definition#mount-your-own-backends). |
-| `permissions` |保留参数 |已接受，并在项目声明沙箱时清除。参见[Permissions](/oss/python/deepagents/permissions)。 |
+| `backend` | `sandbox/` 或 `routes` |为文件系统和 shell 声明一个托管沙箱。要保留其他后端，请将它们安装在带有 `routes` 的路径前缀处。参见[Sandboxes](/langsmith/python/managed-deep-agents-sandboxes)和[Mount your own backends](/langsmith/python/managed-deep-agents-agent-definition#mount-your-own-backends)。 |
+| `permissions` |保留参数|已接受，并在项目声明沙箱时清除。参见[Permissions](/oss/python/deepagents/permissions)。 |
 | `store`、`checkpointer` |托管运行时 |删除两者。 |
-| `state_schema` |没有同等的| `define_deep_agent` does not accept it. |
+| `state_schema` |没有同等的| `define_deep_agent`不接受。 |
 
-Deep Agents 后端是可插拔的，并且托管运行时提供自己的后端。声明 `sandbox/` 的项目会获得一个用于代理文件系统和 shell 的托管沙箱。没有代理的项目会获得线程范围的代理状态，以及用于指令、技能和内存的只读 [Context Hub](/langsmith/python/managed-deep-agents-context-hub) 安装。您无法替换此默认后端。要保留特定后端，请将其安装在带有 [⟦T102⟧](/langsmith/python/managed-deep-agents-agent-definition#mount-your-own-backends) 的路径前缀处。每条路径都需要自己的后端的代理会停留在Deep Agents上。
+Deep Agents 后端是可插拔的，并且托管运行时提供自己的后端。声明 `sandbox/` 的项目会获得一个用于代理文件系统和 shell 的托管沙箱。没有代理的项目会获得线程范围的代理状态，以及用于指令、技能和内存的只读 [Context Hub](/langsmith/python/managed-deep-agents-context-hub) 安装。您无法替换此默认后端。要保留特定后端，请将其挂载到带有 [⟦T102⟧](/langsmith/python/managed-deep-agents-agent-definition#mount-your-own-backends) 的路径前缀。每条路径都需要自己的后端的代理停留在Deep Agents上。
 
 ## 移动代理就地转换项目。现有的布局、模块结构和依赖项保持原样：`mda build`将其所需的依赖项合并到项目清单中，而不是替换它。
 
@@ -237,7 +237,7 @@ mda deploy
 > mda init research-assistant
 > ```
 >
-> 安装通道选择创作语言：npm 包支架 TypeScript，PyPI 包支架 Python。该命令创建一个新目录并且不会就地运行，因此它适合绿地项目而不是迁移。请参阅[quickstart](/langsmith/python/managed-deep-agents-quickstart)。
+> 安装通道选择创作语言：npm 包脚手架 TypeScript，PyPI 包脚手架 Python。该命令创建一个新目录并且不会就地运行，因此它适合绿地项目而不是迁移。请参阅[quickstart](/langsmith/python/managed-deep-agents-quickstart)。
 
 ## 另请参阅
 

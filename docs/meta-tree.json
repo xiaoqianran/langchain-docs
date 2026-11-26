@@ -165,6 +165,12 @@
           "rel": "api-reference/auth-service-v2/wait-for-auth-completion.md"
         }
       ],
+      "add-domain": [
+        {
+          "title": "Add Domain",
+          "rel": "api-reference/deployments-v2/add-domain.md"
+        }
+      ],
       "create-deployment": [
         {
           "title": "Create Deployment",
@@ -189,10 +195,22 @@
           "rel": "api-reference/deployments-v2/delete-deployments.md"
         }
       ],
+      "delete-domain": [
+        {
+          "title": "Delete Domain",
+          "rel": "api-reference/deployments-v2/delete-domain.md"
+        }
+      ],
       "get-deployment": [
         {
           "title": "Get Deployment",
           "rel": "api-reference/deployments-v2/get-deployment.md"
+        }
+      ],
+      "get-domain": [
+        {
+          "title": "Get Domain",
+          "rel": "api-reference/deployments-v2/get-domain.md"
         }
       ],
       "get-free-deployment-count": [
@@ -271,6 +289,12 @@
         {
           "title": "Redeploy Revision",
           "rel": "api-reference/deployments-v2/redeploy-revision.md"
+        }
+      ],
+      "verify-domain": [
+        {
+          "title": "Verify Domain",
+          "rel": "api-reference/deployments-v2/verify-domain.md"
         }
       ],
       "list-forge-github-integrations": [
@@ -2619,6 +2643,12 @@
           "rel": "langsmith/self-host-smithdb.md"
         }
       ],
+      "self-host-smithdb-alerts": [
+        {
+          "title": "Recommended SmithDB alerts",
+          "rel": "langsmith/self-host-smithdb-alerts.md"
+        }
+      ],
       "self-host-smithdb-architecture": [
         {
           "title": "SmithDB architecture",
@@ -2627,7 +2657,7 @@
       ],
       "self-host-smithdb-common-issues": [
         {
-          "title": "Common SmithDB issues to monitor",
+          "title": "Diagnose common SmithDB issues",
           "rel": "langsmith/self-host-smithdb-common-issues.md"
         }
       ],

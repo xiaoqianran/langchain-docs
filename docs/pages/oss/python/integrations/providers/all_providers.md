@@ -150,6 +150,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Cryptographic policy guard and grant verification middleware for Python AI agent tools.
 
+> [card] [AgentHintsMiddleware](https://github.com/evan7ang/langchain-agent-hints#readme)
+>
+> AgentHintsMiddleware attaches per-request serving hints (X-Agent-Hint) for cache-aware inference gateways.
+
 > [card] [AgentLair](https://agentlair.dev/docs)
 >
 > Persistent agent identity with email, encrypted vault, and audit trail.
@@ -265,6 +269,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [AnyToMarkdownLoader](https://pypi.org/project/langchain-anytomarkdown/)
 >
 > Loads PDF, Word, Excel, PowerPoint, e-mail, and web pages as Markdown through the AnyToMarkdown API, with OCR for scanned files.
+
+> [card] [AperiodicToolkit](https://github.com/aperiodic-io/langchain-aperiodic#readme)
+>
+> Point-in-time market data for Binance, OKX, and Hyperliquid perpetual futures.
 
 > [card] [Apertis](https://docs.apertis.ai)
 >
@@ -393,6 +401,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Bastion Prompt Protection](https://bastionsoft.com)
 >
 > Local prompt-injection and jailbreak detection for LLM apps and agents.
+
+> [card] [bf16.ai](https://bf16.ai/docs)
+>
+> Open-weight 1M-context uncensored LLM API (`pip install langchain-bf16` / `ChatBF16`) with strict JSON tool calling, prompt caching, Streamable HTTP MCP, and Zero Data Retention (ZDR).
 
 > [card] [BhivedMiddleware](https://bhived.ai/docs/integrations/langchain)
 >
@@ -1346,6 +1358,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Connect LangChain chat models to KServe inference services on Kubernetes.
 
+> [card] [KtemiaToolkit](https://www.ktemia.com/docs/langchain/)
+>
+> Flight, hotel and car rental search tools that compare prices across airlines, booking sites and rental companies.
+
 > [card] [Kubernetes](https://gitlab.com/bitkaio/langchain/kubernetes-sandbox)
 >
 > Kubernetes sandbox provider for deepagents.
@@ -1953,6 +1969,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [PlatinumSandbox](https://www.platinum.dev/docs/sdk/deepagents)
 >
 > Deep Agents sandbox backend that runs the agent's execute and file tools in a Platinum microVM; a stopped sandbox starts again on the next call.
+
+> [card] [Plimsoll](https://plimsollmark.github.io/plimsoll/integrations/langchain/index.html)
+>
+> Runs Python and JavaScript tool calls in Plimsoll sandboxes and supplies a persistent shell and file workspace for Deep Agents.
 
 > [card] [Plivo](https://github.com/plivo-dev/langchain-plivo-tools)
 >

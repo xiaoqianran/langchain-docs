@@ -22,19 +22,19 @@ For example configurations, refer to [Example LangSmith configurations for scale
 
 The table below provides an overview comparing different LangSmith configurations for various load patterns (reads / writes):
 
-| | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | [Medium / medium](#medium-reads-medium-writes) | [High / high](#high-reads-high-writes) |
-| :- | :- | :- | :- | :- | :- |
-| Concurrent frontend users (Number of users actively viewing traces on the frontend) | 5 | 5 | 50 | 20 | 50 |
-| Traces submitted per second (Number of traces being ingested via SDKs or API endpoints) | 10 | 1000 | 10 | 100 | 1000 |
-| **Frontend replicas** (500m CPU, 1Gi requested per replica) | 1 (default) | 4 | 2 | 2 | 4 |
-| **Platform backend replicas** (1 CPU, 2Gi requested per replica) | 3 (default) | 20 | 3 (default) | 3 (default) | 20 |
-| **Ingest queue replicas** (1 CPU, 2Gi requested per replica) | 3 (default) | 24 | 3 (default) | 6 | 24 |
-| **Backend replicas** (1 CPU, 2Gi requested per replica) | 2 (default) | 5 | 40 | 16 | 50 |
-| **Redis resources** | 8 Gi (default) | 26 Gi external | 8 Gi (default) | 13Gi external | 26 Gi external |
-| **ClickHouse resources** | 4 CPU 16 Gi (default) | 10 CPU 32Gi memory | 8 CPU 16 Gi per replica | 16 CPU 24Gi memory | 14 CPU 24 Gi per replica |
-| **ClickHouse setup** | Single instance | Single instance | 3-node replicated cluster (Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).) | Single instance | 3-node replicated cluster (Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).) |
-| Postgres resources (We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) |
-| **Blob storage** | In-cluster RustFS (default) | External | External | External | External |
+| | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | **[Medium / medium](#medium-reads-medium-writes)** | **[High / high](#high-reads-high-writes)** | **[High / very high](#high-reads-very-high-writes)** |
+| :- | :- | :- | :- | :- | :- | :- |
+| Concurrent frontend users (Number of users actively viewing traces on the frontend) | 5 | 5 | 50 | 20 | 50 | 50 |
+| Runs submitted per second (Number of runs being ingested via SDKs or API endpoints) | 10 | 1,000 | 10 | 100 | 1,000 | 10,000 |
+| **Frontend replicas** (500m CPU, 1 Gi requested per replica) | 1 (default) | 4 | 2 | 2 | 4 | 4 |
+| **Platform backend replicas** (1 CPU, 2 Gi requested per replica) | 3 (default) | 20 | 3 (default) | 3 (default) | 20 | 30 |
+| **Ingest queue replicas** (1 CPU, 2 Gi requested per replica) | 3 (default) | 24 | 3 (default) | 6 | 24 | 80 (2 CPU, 2 Gi requested per replica) |
+| **Backend replicas** (1 CPU, 2 Gi requested per replica) | 2 (default) | 5 | 40 | 16 | 50 | 50 |
+| **Redis resources** | 8 Gi (default) | 26 Gi external | 8 Gi (default) | 13 Gi external | 26 Gi external | 4-shard [Redis cluster](/langsmith/self-host-external-redis#redis-cluster), 240+ GB, external |
+| **ClickHouse resources** | 4 CPU 16 Gi (default) | 10 CPU 32 Gi memory | 8 CPU 16 Gi per replica | 16 CPU 24 Gi memory | 14 CPU 24 Gi per replica | Not used. See [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale#baseline-tiers). |
+| **ClickHouse setup** | Single instance | Single instance | 3-node replicated cluster (Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).) | Single instance | 3-node replicated cluster (Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).) | Not used (SmithDB) |
+| Postgres resources (We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) |
+| **Blob storage** | In-cluster RustFS (default) | External | External | External | External | External |
 
 > [!NOTE]
 >
@@ -166,7 +166,7 @@ commonEnv:
 
 With one partition, traces use the `ingestion` queue. With more, in LangSmith v0.18.0 and later, they use `ingestion-0` to `ingestion-3`, then `ingestion-fur-4`, `ingestion-qg-5`, and so on. Workers also keep reading `ingestion`, so tasks queued before you partitioned still drain.
 
-LangSmith supports up to 250 partitions, but you are unlikely to need that many. As a starting point, move to 4 partitions when ingestion approaches 10,000 runs per second and your Redis Cluster already has more than 4 shards.
+LangSmith supports up to 250 partitions, but you are unlikely to need that many. As a starting point, move to 4 partitions when ingestion approaches 10,000 runs per second and your Redis Cluster has 4 or more shards.
 
 Change the variables in order, because tasks in a partition that no worker reads are never processed:
 
@@ -255,9 +255,10 @@ For read load (trace querying):
 
 For write load (trace ingestion):
 
-* Low means up to 10 traces submitted per second
-* Medium means up to 100 traces submitted per second
-* High means up to 1000 traces submitted per second
+* Low means up to 10 runs submitted per second
+* Medium means up to 100 runs submitted per second
+* High means up to 1,000 runs submitted per second
+* Very high means up to 10,000 runs submitted per second
 
 > [!NOTE]
 >
@@ -400,7 +401,7 @@ clickhouse:
 
 ### Medium reads, medium writes&#x20;
 
-This is a good all around configuration that should be able to handle most usage patterns of LangSmith. In internal testing, this configuration allowed us to scale to 100 traces ingested per second and 40 read requests per second.
+This is a good all around configuration that should be able to handle most usage patterns of LangSmith. In internal testing, this configuration allowed us to scale to 100 runs ingested per second and 40 read requests per second.
 
 For this, we recommend a configuration like this:
 
@@ -472,7 +473,7 @@ commonEnv:
 
 ### High reads, high writes&#x20;
 
-You have a very high rate of trace ingestion (approaching 1000 traces submitted per second) and also have many users querying traces on the frontend (over 50 users) and/or scripts that are consistently making requests to `/runs/query` or `/runs/<run-id>` endpoints.
+You have a very high rate of trace ingestion (approaching 1,000 runs submitted per second) and also have many users querying traces on the frontend (over 50 users) and/or scripts that are consistently making requests to `/runs/query` or `/runs/<run-id>` endpoints.
 
 **For this, we very strongly recommend setting up a replicated ClickHouse cluster to prevent degraded read performance at high write scale.** See our [external ClickHouse doc](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster) for more guidance on how to set up a replicated ClickHouse cluster. For this load pattern, we recommend using a 3 node replicated setup, where each replica in the cluster should have resource requests of 14+ cores and 24+ GB memory, and resource limit of 20 cores and 48 GB memory. We also recommend that each node/instance of ClickHouse has 600 Gi of volume storage for each day of TTL that you enable (as per the configuration below).
 
@@ -550,6 +551,94 @@ clickhouse:
 commonEnv:
   - name: "CLICKHOUSE_ASYNC_INSERT_WAIT_PCT_FLOAT"
     value: "0"
+```
+
+### High reads, very high writes&#x20;
+
+> [!NOTE]
+>
+> This configuration requires Helm chart version 0.18.0 or later, with SmithDB as the only trace store.
+
+You ingest up to 10,000 runs per second and have many users querying traces on the frontend (about 50 users), or scripts that regularly call the `/runs/query` or `/runs/<run-id>` endpoints.
+
+This configuration uses [SmithDB](/langsmith/self-host-smithdb) as the only trace store. For a new installation, set it up [without ClickHouse](/langsmith/self-host-smithdb-install#install-without-clickhouse) (`clickhouse.enabled: false`). On an existing installation, do not disable ClickHouse: that loses its data. Move to SmithDB with [Install LangSmith with SmithDB](/langsmith/self-host-smithdb-install), which runs SmithDB alongside ClickHouse and then switches queries to it, and [migrate ClickHouse history](/langsmith/self-host-smithdb-migrate) if you need it. Retiring ClickHouse afterwards is a separate procedure; contact LangChain through the [Support Portal](https://support.langchain.com/) first. Size SmithDB with the Large tier in [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale#baseline-tiers). Run Redis as an external [Redis cluster](/langsmith/self-host-external-redis#redis-cluster) with 4 shards, and [partition the ingestion queue](#partition-the-ingestion-queue) into 4 partitions.
+
+Treat the replica counts below as a minimum. The example sets `redisRunsExpirySeconds` to `7200` (2 hours; the chart default is 6 hours). A shorter value lowers the memory Redis needs, but it also limits how long a single run can last. Monitor [queue latency](/langsmith/self-host-smithdb-metrics#langsmith_asynq_queue_latency_seconds) and alert well before it reaches this value.
+
+Use a configuration like this:
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  blobStorage:
+    # Please also set the other keys to connect to your blob storage. See configuration section.
+    enabled: true
+  settings:
+    redisRunsExpirySeconds: "7200"
+
+commonEnv:
+  - name: GO_INGESTION_WORKER_PARTITIONS
+    value: "4"
+  - name: GO_INGESTION_QUEUE_PARTITIONS
+    value: "4"
+
+frontend:
+  deployment:
+    replicas: 4 # OR enable autoscaling below
+# autoscaling:
+#   hpa:
+#     enabled: true
+#     minReplicas: 2
+#     maxReplicas: 4
+
+platformBackend:
+  deployment:
+    replicas: 30 # OR enable autoscaling below
+# autoscaling:
+#   hpa:
+#     enabled: true
+#     minReplicas: 10
+#     maxReplicas: 60
+
+ingestQueue:
+  deployment:
+    replicas: 80 # OR enable KEDA autoscaling below
+    resources:
+      requests:
+        cpu: "2"
+        memory: 2Gi
+# autoscaling:
+#   keda:
+#     enabled: true
+#     minReplicaCount: 40
+#     maxReplicaCount: 150
+
+backend:
+  deployment:
+    replicas: 50 # OR enable autoscaling below
+# autoscaling:
+#   hpa:
+#     enabled: true
+#     minReplicas: 20
+#     maxReplicas: 50
+
+redis:
+  external:
+    enabled: true
+    existingSecretName: langsmith-redis-secret # Set the connection URL for your external Redis cluster (4 shards, 240+ GB)
+    cluster:
+      enabled: true
+
+# Also set the SmithDB metastore and object store keys. See the SmithDB installation guide.
+smithdb:
+  enabled: true
+  resourceTier: large
+  langsmith:
+    ingestion:
+      enabled: true
+    migration:
+      enabled: false
+    query:
+      enabled: true
 ```
 
 > [!NOTE]

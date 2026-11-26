@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 将沙箱声明放在`sandbox/`下。仅当您想要配置快照时才添加 `sandbox/setup.sh`：
 
@@ -43,7 +43,7 @@ export const sandbox = defineSandbox({
   idleTtlSeconds: 600,
   defaultTimeout: 600,
 });
-```|选项|默认 |描述 |
+```|选项 |默认 |描述 |
 | - | - | - |
 | `idleTtlSeconds` | `600` |沙箱及其内容被删除之前不活动的秒数。删除是不可恢复的。 |
 | `defaultTimeout` | `600` |每个命令允许的秒数。 |
@@ -121,9 +121,9 @@ mkdir -p /workspace
 
 编辑 `setup.sh` 并重新部署不会擦除活动线程上的 `/workspace`。这些盒子保存着他们已有的文件。新线程克隆新快照。
 
-## 选择烘焙底料在没有烘焙基础的情况下，LangSmith的默认沙箱模板是起点。要从其他内容开始，请准确设置其中之一：
+## 选择烘焙底料在没有烘焙基础的情况下，LangSmith的默认沙盒模板是起点。要从其他内容开始，请准确设置其中之一：
 
-|选项|使用 |
+|选项 |使用 |
 | - | - |
 | `snapshotName` | LangSmith 快照名称。允许使用标签。 |
 | `snapshotId` | LangSmith 快照 ID。 |
@@ -262,7 +262,7 @@ if (uploaded.error) {
 
 ### 限制
 
-`runtime.backend` 仅涵盖沙箱。它没有到 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 的路由，因此无法通过它到达 [skills](/langsmith/javascript/managed-deep-agents-skills)、[instructions](/langsmith/javascript/managed-deep-agents-instructions) 和 [memory](/langsmith/javascript/managed-deep-agents-memory)。
+`runtime.backend` 仅涵盖沙盒。它没有到 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 的路由，因此无法通过它到达 [skills](/langsmith/javascript/managed-deep-agents-skills)、[instructions](/langsmith/javascript/managed-deep-agents-instructions) 和 [memory](/langsmith/javascript/managed-deep-agents-memory)。
 
 如果没有沙箱，`runtime.backend`就是`undefined`。在每次调用之前对其进行保护，因为项目可以在工具发布后删除`sandbox/`。
 
@@ -288,6 +288,6 @@ if (uploaded.error) {
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

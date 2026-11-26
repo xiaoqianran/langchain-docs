@@ -4,23 +4,23 @@
 
 # 构建 Slack 手表代理
 
-Build a Slack agent that reads every channel message and decides when to reply.
+构建一个 Slack 代理来读取每个频道消息并决定何时回复。
 
-Watch mode lets a [Slack-connected agent](/langsmith/javascript/managed-deep-agents-channels-slack) read channel messages without waiting for a mention. The agent decides from context whether to reply or stay silent.
-
-> [!注意]
->
-> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc).使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+观看模式让 [Slack-connected agent](/langsmith/javascript/managed-deep-agents-channels-slack) 无需等待提及即可读取频道消息。代理根据上下文决定是回复还是保持沉默。
 
 > [!注意]
 >
-> This TypeScript example requires `managed-deepagents` version 0.10.4 or later and the matching `mda` CLI.
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+
+> [!注意]
+>
+> 此 TypeScript 示例需要 `managed-deepagents` 版本 0.10.4 或更高版本以及匹配的 `mda` CLI。
 
 ![Mock Slack channel #ops-deploys showing Watch Agent staying silent on casual chatter, silently scheduling a 15-minute check-in after a deploy message, and posting a latency check reply in the thread.](https://mintcdn.com/langchain-5e9cc07a/bdTAbHGS6Uo5z-4d/langsmith/images/managed-deep-agents-watch-mode-light.png?fit=max\&auto=format\&n=bdTAbHGS6Uo5z-4d\&q=85\&s=421a5e17e7ce21130f9d5ace97a2027c)
 
 ## 配置 Slack 通道
 
-Start with a project that has a [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack#add-a-slack-channel) and update its declaration:
+从具有 [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack#add-a-slack-channel) 的项目开始并更新其声明：
 
 ```ts channels/slack.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { channels } from "managed-deepagents";
@@ -32,7 +32,7 @@ export const channel = channels.slack({
 });
 ```
 
-Every message in channels the bot belongs to starts a run, and each run incurs usage. Turning off reactions and working status keeps the agent quiet when it chooses not to reply.
+机器人所属通道中的每条消息都会启动一次运行，并且每次运行都会产生使用量。当代理选择不回复时，关闭反应和工作状态可以使代理保持安静。
 
 ## 编写说明
 
@@ -47,11 +47,11 @@ can add something useful. Otherwise, respond with exactly [quiet].
 
 确切的 `[quiet]` 回复什么也没发布。
 
-[Deploy the agent](/langsmith/javascript/managed-deep-agents-deploy) 并邀请它加入频道。 Send a message that needs no reply and a message that mentions the agent, then confirm only the mention gets a reply.
+[Deploy the agent](/langsmith/javascript/managed-deep-agents-deploy) 并邀请它加入频道。发送一条不需要回复的消息和一条提及代理的消息，然后确认仅提及的内容会得到回复。
 
 ## 添加签到
 
-To let the agent follow up later, add a [custom tool](/langsmith/javascript/managed-deep-agents-tools) that schedules a one-time [check-in](/langsmith/javascript/managed-deep-agents-schedules#create-schedules-at-runtime) in the current thread.在 `managed-deepagents` 0.10.4 中，使用 npm：pnpm 可以解决不兼容的 LangChain 版本。安装该工具的依赖项：
+为了让代理稍后跟进，添加一个[custom tool](/langsmith/javascript/managed-deep-agents-tools)，在当前线程中调度一次性的[check-in](/langsmith/javascript/managed-deep-agents-schedules#create-schedules-at-runtime)。在 `managed-deepagents` 0.10.4 中，使用 npm：pnpm 可以解决不兼容的 LangChain 版本。安装该工具的依赖项：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install langchain zod

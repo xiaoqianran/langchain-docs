@@ -8,7 +8,7 @@ Deploy Content Studio, an open-source design agent, to Slack as a Managed Deep A
 
 > [!NOTE]
 >
-> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
+> Managed Deep Agents is in [beta](/langsmith/release-stages) on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
 
 [We Open Sourced Our Design Brain](https://www.youtube.com/embed/emId9_O2sU8)
 

@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [beta](/langsmith/release-stages) 的 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 您编写代理的智能：它的指令、它可以调用的工具、它遵循的技能，然后您选择驱动它的模型。 MDA 提供了以下所有内容：
 
@@ -19,9 +19,9 @@
 * **主动运行**：[Memory](/langsmith/python/managed-deep-agents-memory)、[channels](/langsmith/python/managed-deep-agents-channels) 和 [schedules](/langsmith/python/managed-deep-agents-schedules) 让代理在对话之间保持有用。计划运行摘要、提醒和签到，无需用户消息。
 * **Evals**：选择加入测试代理的[Harbor](https://www.harborframework.com/docs/tasks) 任务。 `mda evals init` 设置工作空间；结果可以记录到LangSmith。参见[Evals](/langsmith/python/managed-deep-agents-evals)。
 
-![Your agent definition runs inside the Deep Agents harness, within a managed runtime that includes Agent Server, channels, memory, sandboxes, schedules, and connections. LangSmith adds traces, evals, and Engine.](https://mintcdn.com/langchain-5e9cc07a/0ADI9Sltahk4u7Sd/images/managed-deep-agents-overview-light.png?fit=max\&auto=format\&n=0ADI9Sltahk4u7Sd\&q=85\&s=f5b87545b25599e48d3ff54026fd87ba)## 代理示例
+![Your agent definition runs inside the Deep Agents harness, within a managed runtime that includes Agent Server, channels, memory, sandboxes, schedules, and connections. LangSmith adds traces, evals, and Engine.](https://mintcdn.com/langchain-5e9cc07a/0ADI9Sltahk4u7Sd/images/managed-deep-agents-overview-light.png?fit=max\&auto=format\&n=0ADI9Sltahk4u7Sd\&q=85\&s=f5b87545b25599e48d3ff54026fd87ba)
 
-托管深度代理由一个项目文件夹组成，其中包含其行为的业务逻辑：
+## 代理示例托管深度代理由一个项目文件夹组成，其中包含其行为的业务逻辑：
 
 > [选项卡] 型号和配置
 >

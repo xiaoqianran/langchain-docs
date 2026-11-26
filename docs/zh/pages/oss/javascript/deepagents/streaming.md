@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Streaming | https://docs.langchain.com/oss/javascript/deepagents/streaming -->
 
-# Streaming
+# 流媒体
 
 从深度代理运行和子代理执行中传输实时更新
 
@@ -10,16 +10,16 @@ Deep Agents 构建于 LangGraph 的流基础架构之上，为子代理流提供
 
 深度代理流可以实现什么：
 
-* [**Stream subagent progress**](#subagent-progress)—跟踪每个子代理并行运行时的执行情况。
+* [**Stream subagent progress**](#subagent-progress)—跟踪每个并行运行的子代理的执行情况。
 * [**Stream LLM tokens**](#llm-tokens)——来自主代理和每个子代理的流令牌。
 * [**Stream tool calls**](#tool-calls)—查看子代理执行中的工具调用和结果。
 * [**Stream custom updates**](#custom-updates)—从内部子代理节点发出用户定义的信号。
 
 ## 启用子图流
 
-Deep Agents 使用LangGraph 的子图流来处理子代理执行中的表面事件。要接收子代理事件，请在流式传输时启用 `stream_subgraphs`。
+Deep Agents 使用 LangGraph 的子图流来处理来自子代理执行的表面事件。要接收子代理事件，请在流式传输时启用 `stream_subgraphs`。
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -56,7 +56,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -93,7 +93,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -130,7 +130,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -167,7 +167,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -204,7 +204,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -241,7 +241,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -282,17 +282,18 @@ for await (const [namespace, chunk] of await agent.stream(
 >
 > 为此示例打开公共 LangSmith 运行。
 
-## Namespaces
+## 命名空间
 
-当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。|命名空间 |来源 |
+当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。|命名空间|来源 |
 | - | - |
 | `()`（空）|主代理|
 | `("tools:abc123",)` |由主代理的 `task` 工具调用 `abc123` 生成的子代理 |
-| `("tools:abc123", "model_request:def456")` |子代理内的模型请求节点 |
+
+在每个更新块中，字典键是[graph node names](#inspect-graph-nodes)，例如`tools`和模型节点（`model_request`）。
 
 使用命名空间将事件路由到正确的 UI 组件：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for await (const [namespace, chunk] of await agent.stream(
   { messages: [{ role: "user", content: "Plan my vacation" }] },
   { streamMode: "updates", subgraphs: true },
@@ -318,11 +319,36 @@ for await (const [namespace, chunk] of await agent.stream(
 >
 > 为此示例打开公共 LangSmith 运行。
 
+## 检查图节点
+
+`createDeepAgent` 返回一个 DeepAgent。通过 `agent.graph` 访问编译后的 LangGraph 图。
+
+使用`streamMode: "updates"`，每个块都由节点名称作为键控，因此您需要这些名称来过滤或渲染进度。
+
+当您不需要原始更新密钥时，首选[event streaming](/oss/javascript/deepagents/event-streaming)。
+
+列出代理配置的节点：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
+const agent = createDeepAgent({
+  model: "openai:gpt-6.1-sol",
+});
+console.log(Object.keys(agent.graph.nodes));
+```
+
+每个深度代理都包含核心循环节点`model_request`和`tools`。实现 `before_agent`、`before_model`、`after_model` 或 `after_agent` 挂钩的中间件会添加名为 `{MiddlewareName}.{hook}` 的节点，例如 `patchToolCallsMiddleware.before_agent`。
+
+确切的设置取决于线束和您的配置所附加的中间件。
+
+对于根据这些相同键进行过滤的LangChain代理进度流，请参阅[Agent progress](/oss/javascript/langchain/streaming#agent-progress)。
+
 ## 子代理进度
 
 使用 `stream_mode="updates"` 跟踪每个步骤完成时的子代理进度。这对于显示哪些子代理处于活动状态以及它们已完成哪些工作非常有用。
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -376,7 +402,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -430,7 +456,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -482,9 +508,7 @@ for await (const [namespace, chunk] of await agent.stream(
     }
   }
 }
-```
-
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+``````ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -538,7 +562,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -592,7 +616,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -646,7 +670,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -705,25 +729,21 @@ for await (const [namespace, chunk] of await agent.stream(
 > 为此示例打开公共 LangSmith 运行。
 
 ```shell title="Output" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-Main agent step: model_request
+[main agent] step: model_request
   [tools:call_abc123] step: model_request
   [tools:call_abc123] step: tools
   [tools:call_abc123] step: model_request
+
 Subagent complete: task
-Result: ## AI Safety Report...
-Main agent step: model_request
-  [tools:call_def456] step: model_request
-  [tools:call_def456] step: model_request
-Subagent complete: task
-Result: # Comprehensive Report on AI Safety...
-Main agent step: model_request
+  Result: ## AI Safety Report...
+[main agent] step: model_request
 ```
 
 ## LLM 代币
 
 使用 `stream_mode="messages"` 从主代理和子代理流式传输各个令牌。每个消息事件都包含标识源代理的元数据。
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 let currentSource = "";
 
 for await (const [namespace, chunk] of await agent.stream(
@@ -775,7 +795,7 @@ process.stdout.write("\n");
 
 当子代理使用工具时，您可以流式传输工具调用事件以显示每个子代理正在执行的操作。工具调用块以`messages`流模式出现。
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessageChunk, ToolMessage } from "langchain";
 
 for await (const [namespace, chunk] of await agent.stream(
@@ -838,7 +858,7 @@ process.stdout.write("\n");
 
 在子代理工具中使用 `config.writer` 来发出自定义进度事件：
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -912,7 +932,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -986,7 +1006,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -1060,7 +1080,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -1134,7 +1154,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -1206,7 +1226,9 @@ for await (const [namespace, chunk] of await agent.stream(
     console.log("[main]", chunk);
   }
 }
-``````ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -1280,7 +1302,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -1368,7 +1390,7 @@ for await (const [namespace, chunk] of await agent.stream(
 
 结合多种流模式来全面了解代理执行情况：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // Skip internal middleware steps - only show meaningful node names
 const INTERESTING_NODES = new Set(["model", "tools"]);
 
@@ -1435,7 +1457,7 @@ process.stdout.write("\n");
 
 监视子代理何时启动、运行和完成：
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 function getToolCalls(message: unknown): Array<{
   id?: string;
   name?: string;
@@ -1553,9 +1575,7 @@ for (const [id, sub] of activeSubagents) {
 >
 > 为此示例打开公共 LangSmith 运行。
 
-### 处理人机交互中断
-
-配置 [⟦T41⟧](/oss/javascript/deepagents/human-in-the-loop) 时，`updates` 流可能包含暂停执行以供人工批准的 `__interrupt__` 条目。通过检查更新块中的 `__interrupt__` 键来检测它们。使用与 `.invoke()` 使用的相同平面 `{"decisions": [...]}` 有效负载继续：
+### 处理人机交互中断配置 [⟦T54⟧](/oss/javascript/deepagents/human-in-the-loop) 时，`updates` 流可能包含暂停执行以供人工批准的 `__interrupt__` 条目。通过检查更新块中的 `__interrupt__` 键来检测它们。使用与 `.invoke()` 使用的相同平面 `{"decisions": [...]}` 有效负载继续：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { v7 as uuid7 } from "uuid";
@@ -1580,14 +1600,14 @@ for await (const [mode, data] of await agent.stream(
 
 对于 `subgraphs: true`，块形状取决于您是否传递一种或多种流模式：
 
-| `streamMode` |块状 |
+| `streamMode` |块状|
 | - | - |
 |单模式（例如`"updates"`）| `[namespace, data]` |
 |多种模式（例如`["messages", "updates"]`）| `[namespace, mode, data]` |
 
-如果没有`subgraphs`，单模直接产生`data`，多模产生`[mode, data]`。
+如果没有`subgraphs`，单模式直接产生`data`，多模式产生`[mode, data]`。
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // Single mode + subgraphs
 for await (const [namespace, data] of await agent.stream(
   { messages: [{ role: "user", content: "Research quantum computing" }] },
@@ -1608,9 +1628,11 @@ for await (const [namespace, mode, data] of await agent.stream(
 }
 ```
 
-## 相关* [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)—为敏感工具操作配置审批工作流程
+## 相关
+
+* [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)—为敏感工具操作配置审批工作流程
 * [Subagents](/oss/javascript/deepagents/subagents)—通过 Deep Agents 配置和使用子代理
-* [Frontend streaming](/oss/javascript/deepagents/frontend/overview)—使用 [⟦T56⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 为 Deep Agents 构建 React UI
+* [Frontend streaming](/oss/javascript/deepagents/frontend/overview)—使用 [⟦T69⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 为 Deep Agents 构建 React UI
 * [LangChain Event Streaming](/oss/javascript/langchain/event-streaming)—使用 LangChain 代理的一般流概念
 
 ***

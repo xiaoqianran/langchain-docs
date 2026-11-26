@@ -6,7 +6,7 @@
 
 查看 LangSmith 合规性认证、部署模型以及身份、访问、API 密钥、审核、数据保护和代理治理的安全控制。
 
-LangSmith是用于测试、部署、监控和改进代理的平台。保护您的代理包括谁可以访问您的组织、他们的踪迹会发生什么以及他们可以使用哪些模型和工具。 LangChain 通过 SOC 2 Type II 认证以及 I​​SO/IEC 27001 和 42001 认证为平台提供支持。
+LangSmith 是用于测试、部署、监控和改进代理的平台。保护您的代理包括谁可以访问您的组织、他们的踪迹会发生什么以及他们可以使用哪些模型和工具。 LangChain 通过 SOC 2 Type II 认证以及 I​​SO/IEC 27001 和 42001 认证为平台提供支持。
 
 LangChain 和您的组织共同承担保护 LangSmith 的责任。 [shared responsibility model](/langsmith/shared-responsibility-model) 规定了每个职责的负责人，[BYOC shared responsibility model](/langsmith/byoc-shared-responsibility) 对“自带云”也做了同样的规定。对于审阅者关于 LangSmith 数据所在位置以及谁可以访问它的说明，请从 [LangChain Trust Center](https://trust.langchain.com/resources) 中的 LangSmith 安全概述开始。
 
@@ -14,7 +14,7 @@ LangChain 和您的组织共同承担保护 LangSmith 的责任。 [shared respo
 
 LangChain 保持 SOC 2 Type II 认证，每年进行审核，并持有 ISO/IEC 27001:2022 和 ISO/IEC 42001:2023 认证。 LangChain 符合 GDPR、CCPA 和 HIPAA。
 
-[LangChain Trust Center](https://trust.langchain.com)发布LangChain的安全报告和策略，并列出LangChain的子处理者及其处理位置。您可以在那里请求访问以下文档：* SOC 2 Type II 审核报告和过渡函
+[LangChain Trust Center](https://trust.langchain.com)发布LangChain的安全报告和策略，并列出LangChain的子处理者及其处理地点。您可以在那里请求访问以下文档：* SOC 2 Type II 审核报告和过渡函
 * ISO/IEC 27001:2022 证书和适用性声明
 * ISO/IEC 42001:2023 证书和适用性声明
 * 渗透测试执行摘要
@@ -33,7 +33,7 @@ LangChain 保持 SOC 2 Type II 认证，每年进行审核，并持有 ISO/IEC 2
 | [BYOC](/langsmith/byoc) | LangChain | LangChain，在您的云帐户中 |您的云帐户，位于您选择的区域。 |
 | [Self-hosted](/langsmith/self-hosted) |你|你|您的环境，在您运行的任何区域。 |
 
-[Hybrid](/langsmith/hybrid) 仅更改代理服务器运行的位置。您托管代理服务器，它们将跟踪发送到LangSmith云或自托管实例，因此跟踪数据位于该实例运行的任何地方。BYOC 在 AWS 上全面可用 (GA)，在 GCP 和 Azure 上则处于测试阶段。自托管 LangSmith 和 BYOC 需要 [Enterprise plan](/langsmith/pricing-plans)。
+[Hybrid](/langsmith/hybrid) 仅更改代理服务器运行的位置。您托管代理服务器，它们将跟踪发送到 LangSmith 云或自托管实例，因此跟踪数据位于该实例运行的任何位置。BYOC 在 AWS 上全面可用 (GA)，在 GCP 和 Azure 上则处于测试阶段。自托管 LangSmith 和 BYOC 需要 [Enterprise plan](/langsmith/pricing-plans)。
 
 云将您组织的数据存储在您注册的区域。您不能将组织移动到另一个区域。对于存储在您所在区域之外的数据，例如身份验证和计费数据，请参阅[Regional storage](/langsmith/cloud#regional-storage)和[Regions FAQ](/langsmith/regions-faq)。
 
@@ -43,16 +43,16 @@ LangChain 保持 SOC 2 Type II 认证，每年进行审核，并持有 ISO/IEC 2
 
 单点登录 (SSO) 允许用户通过您自己的身份提供商 (IdP) 进行身份验证，并且您可以要求每次登录都进行 SSO。
 
-* **云和 BYOC**：将 [SAML SSO](/langsmith/user-management) 与任何 SAML 2.0 IdP（例如 Okta 或 Microsoft Entra ID）结合使用，或使用 OIDC。 SAML SSO 需要企业计划。
+* **云和 BYOC**：将 [SAML SSO](/langsmith/user-management#set-up-saml-sso-for-your-organization) 与任何 SAML 2.0 IdP（例如 Okta 或 Microsoft Entra ID）一起使用，或使用 [OIDC SSO](/langsmith/user-management#set-up-oidc-sso-for-your-organization)。 SAML 和 OIDC SSO 需要企业计划，并且 OIDC SSO 可根据要求提供。
 * **自托管**：使用[SSO with OAuth 2.0 and OIDC](/langsmith/self-host-sso)。
 
 对于每个登录选项，请参阅 [Authentication methods](/langsmith/authentication-methods)。
 
 ### 授权
 
-一个[organization](/langsmith/administration-overview#organizations)包含一个或多个[workspaces](/langsmith/administration-overview#workspaces)。跟踪项目、数据集和提示等资源属于工作区，用户在他们加入的每个工作区中获得一个角色。使用单独的工作区来隔离业务部门、团队或用例。有关模式，请参阅[Workload isolation](/langsmith/workload-isolation)。
+一个[organization](/langsmith/administration-overview#organizations)包含一个或多个[workspaces](/langsmith/administration-overview#workspaces)。跟踪项目、数据集和提示等资源属于工作区，用户在他们加入的每个工作区中获得一个角色。使用单独的工作区来隔离业务部门、团队或用例。有关模式，请参阅[Workload isolation](/langsmith/workload-isolation)。工作区 RBAC、自定义角色、角色限制、ABAC 和用户组需要企业计划。其他计划为每个用户提供管理工作区角色。
 
-工作区 RBAC、自定义角色、角色限制、ABAC 和用户组需要企业计划。其他计划为每个用户提供管理工作区角色。* **[Role-based access control (RBAC)](/langsmith/rbac)**：分配内置管理员、编辑者或查看者工作区角色，或根据精细权限构建自定义角色。 [Mark sensitive roles as restricted](/langsmith/rbac#restrict-roles)，以便只有允许分配受限角色的成员（例如工作区管理员）才能分配它们。
+* **[Role-based access control (RBAC)](/langsmith/rbac)**：分配内置管理员、编辑者或查看者工作区角色，或根据精细权限构建自定义角色。 [Mark sensitive roles as restricted](/langsmith/rbac#restrict-roles)，以便只有允许分配受限角色的成员（例如工作区管理员）才能分配它们。
 * **[Attribute-based access control (ABAC)](/langsmith/abac)**：使用基于资源标签或根运行元数据的访问策略来缩小工作空间内的访问范围。
 * **[User groups](/langsmith/user-groups)**：将工作区成员资格和角色分配给一组用户而不是每个用户。
 
@@ -60,7 +60,7 @@ LangChain 保持 SOC 2 Type II 认证，每年进行审核，并持有 ISO/IEC 2
 
 配置将 LangSmith 连接到您的 IdP，以便访问遵循您的员工生命周期。
 
-* **[SCIM](/langsmith/user-management#set-up-scim-for-your-organization)**：从 IdP 中添加、更新和删除用户及其角色。在云上，SCIM 需要 SAML SSO。
+* **[SCIM](/langsmith/user-management#set-up-scim-for-your-organization)**：从 IdP 中添加、更新和删除用户及其角色。在云上，SCIM 需要 SAML 或 OIDC SSO。
 * **[SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative)**：每次登录时从 SSO 令牌读取组成员身份，作为 SCIM 的替代方案。
 * **[JIT provisioning](/langsmith/jit-invite-sso)**：首次使用 SSO 登录时将用户添加到您的组织及其默认工作区。
 
@@ -74,7 +74,7 @@ API 密钥向 LangSmith 验证您的应用程序和脚本。共有三种类型�
 
 * **过期**：每个密钥都可以带有过期日期。在企业计划中，管理员还可以在 **设置** > **最大过期设置** 下限制服务密钥和跟踪密钥的有效时间。过期的密钥无法重新激活。
 * **撤销**：随时删除任何密钥。组织管理员和组织操作员可以停用、重新激活或删除任何成员的 PAT。
-* **范围**：为服务密钥分配一个 [organization role](/langsmith/rbac#organization-roles)，在企业计划中分配一个 [workspace role](/langsmith/administration-overview#workspace-roles)，包括自定义角色，因此它仅包含集成所需的权限。
+* **范围**：为服务密钥分配一个 [organization role](/langsmith/rbac#organization-roles)，在企业计划中，分配一个 [workspace role](/langsmith/administration-overview#workspace-roles)，包括自定义角色，因此它仅拥有集成所需的权限。
 
 要创建和管理密钥，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
 
@@ -97,7 +97,7 @@ LangSmith 云使用 AES-256 对静态数据进行加密，并使用 TLS 1.2 或�
 
 默认跟踪保留取决于您的部署模型，而不是您的计划。您可以为跟踪选择基本或扩展保留层。在 Cloud 上，基本保留期为 14 天，延长保留期为 180 天。对于 BYOC 和自托管默认设置，请参阅 [Retention periods](/langsmith/usage-and-billing#retention-periods)。
 
-企业计划让您为每个工作区提供 [set the extended retention period](/langsmith/data-purging-compliance#customize-extended-retention-policy) 30 到 180 天的云服务。管理员还可以关闭工作区的延长保留。您可以随时通过 API 删除轨迹和数据集示例。参见[Data purging for compliance](/langsmith/data-purging-compliance)。
+企业计划让您为每个工作区提供 [set the extended retention period](/langsmith/data-purging-compliance#customize-extended-retention-policy)，云服务期限为 30 到 180 天。管理员还可以关闭工作区的延长保留。您可以随时通过 API 删除轨迹和数据集示例。参见[Data purging for compliance](/langsmith/data-purging-compliance)。
 
 数据集会一直存在，直到您将其删除，即使它们的源跟踪已过期。
 
@@ -120,7 +120,7 @@ LangSmith 在跟踪生命周期的每个阶段提供控制，以防止敏感数�
 
 ## 代理和模型治理
 
-这些控制措施控制您的代理使用哪些模型和工具，并使提供商凭据远离最终用户。* **[Model configurations](/langsmith/model-configurations)**：选择可在 LangSmith 功能（例如 Playground 和评估器）中使用的模型提供程序和模型。 LangSmith 在服务器端存储提供商机密。
+这些控制措施控制您的代理使用哪些模型和工具，并使提供商凭证远离最终用户。* **[Model configurations](/langsmith/model-configurations)**：选择可在 LangSmith 功能（例如 Playground 和评估器）中使用的模型提供程序和模型。 LangSmith 在服务器端存储提供者机密。
 * **[LLM Gateway](/langsmith/llm-gateway)**（测试版）：通过 LangSmith 路由模型调用以应用编辑敏感数据的 [spend policies](/langsmith/llm-gateway-spend-policies) 和 [data policies](/langsmith/llm-gateway-data-policy)。
 * **[Tool Gateway](/langsmith/tool-gateway)**（测试版）：将 MCP 服务器凭据存储在 LangSmith 中，并设置阻止工具调用或需要批准的 [policies](/langsmith/tool-gateway-policies)。
 * **[Agent Auth](/langsmith/agent-auth)**（测试版）：让代理使用 OAuth 2.0 代表用户向外部服务进行身份验证。

@@ -1551,9 +1551,25 @@ async function streamSubagentProgress() {
 }
 ```
 
+### Checkpoint namespace on task result
+
+When a subagent finishes with checkpointing active, the `task` tool's `ToolMessage` carries `artifact.checkpoint_ns`, the namespace the subagent saved under. Clients can load that subagent's history from the namespace instead of scanning the thread.
+
+> [!NOTE]
+>
+> The `checkpoint_ns` artifact on task results requires `deepagents>=1.16.5`.
+
 ### LangSmith tracing
 
 As your deep agent runs, all runs executed by a subagent or the coordinator will have the agent name in their metadata under the `lc_agent_name` key—for example, `{'lc_agent_name': 'research-agent'}`. This lets you identify and filter runs by subagent in LangSmith.
+
+Subagent runs also carry an `lc_subagent_tool_call_id` metadata key that holds the ID of the `task` tool call that spawned the subagent.
+
+Use it in traces and stream metadata to tie a subagent run back to the delegation call in the parent.
+
+> [!NOTE]
+>
+> The `lc_subagent_tool_call_id` metadata key requires `deepagents>=1.16.4`.
 
 ![LangSmith Example trace showing the metadata](https://mintcdn.com/langchain-5e9cc07a/IlqYrcANJ39avG84/oss/images/deepagents/deepagents-langsmith.png?fit=max\&auto=format\&n=IlqYrcANJ39avG84\&q=85\&s=4c3a1512fb27abc30da37751aee19afd)
 
@@ -1564,6 +1580,8 @@ As your deep agent runs, all runs executed by a subagent or the coordinator will
 ## Filter by subagent in LangSmith
 
 Because each subagent's `name` is written to the `lc_agent_name` metadata key on every run it produces, you can use LangSmith's metadata filtering to isolate all runs from a specific subagent — useful for debugging, monitoring, or comparing subagent behavior over time.
+
+To narrow results to a single `task` call, filter on `lc_subagent_tool_call_id` instead of (or in addition to) `lc_agent_name`.
 
 ### Filter in the LangSmith UI
 

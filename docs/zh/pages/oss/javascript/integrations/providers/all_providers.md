@@ -30,7 +30,7 @@
 
 ## LangGraph 集成
 
-将LangGraph代理连接到前端和可观察平台。
+将 LangGraph 代理连接到前端和可观察平台。
 
 > [卡][AG-UI Protocol](https://docs.ag-ui.com/)
 >
@@ -78,6 +78,10 @@
 >
 > 为 AI 代理提供真实住宅 Chrome 会话的市场。
 
+> [卡][ChatBelcore](https://github.com/terracore-kr/belcore-integrations#langchainjs)
+>
+> Belcore API 的聊天模型，为聊天添加了长期记忆和情绪状态，同时对话历史记录保留在呼叫者的数据库中。
+
 > [卡][ChatC0mpute](https://github.com/profullstack/langchain-c0mpute#readme)
 >
 > c0mpute 的聊天模型，这是一个点对点计算网络，提供具有密封投标拍卖定价的开放权重模型。
@@ -88,15 +92,15 @@
 
 > [卡][ChatWebLLM](https://github.com/ykoh42/web-llm-adapters/blob/main/packages/langchain-web-llm/README.md)
 >
-> 通过 LangChain、LangGraph 和 Deep Agents 使用 WebGPU 在本地运行 WebLLM 模型。
-
-> [卡][Cloudflare Workers AI](/oss/javascript/integrations/chat/cloudflare_workersai)
+> 通过 LangChain、LangGraph 和 Deep Agents 使用 WebGPU 在本地运行 WebLLM 模型。> [卡][Cloudflare Workers AI](/oss/javascript/integrations/chat/cloudflare_workersai)
 >
 > 在 Cloudflare 的边缘计算平台上运行 AI 模型。
 
 > [卡][Cohere](/oss/javascript/integrations/chat/cohere)
 >
-> 用于文本生成和理解的 Cohere 语言模型。> [卡][DeepSeek](/oss/javascript/integrations/chat/deepseek)
+> 用于文本生成和理解的 Cohere 语言模型。
+
+> [卡][DeepSeek](/oss/javascript/integrations/chat/deepseek)
 >
 > DeepSeek 的高级推理和编码模型。
 
@@ -110,7 +114,7 @@
 
 > [卡][Google Gemini](/oss/javascript/integrations/chat/google)
 >
-> 通过 AI Studio 和 Gemini Enterprise Agent Platform 实现的 Google Gemini 模型。
+> Google 通过 AI Studio 和 Gemini Enterprise Agent Platform 构建的 Gemini 模型。
 
 > [卡][Groq](/oss/javascript/integrations/chat/groq)
 >
@@ -132,17 +136,17 @@
 >
 > 使用 Ollama 的轻量级推理引擎运行本地模型。
 
-> [卡][OpenRouter](/oss/javascript/integrations/chat/openrouter)
+> [卡片][OpenRouter](/oss/javascript/integrations/chat/openrouter)
 >
-> 通过 OpenRouter 的统一 API 访问多个提供商的模型。
+> 通过 OpenRouter 的统一 API 访问来自多个提供商的模型。
 
-> [卡片][OpenAI](/oss/javascript/integrations/chat/openai)
+> [卡][OpenAI](/oss/javascript/integrations/chat/openai)
 >
-> GPT 模型和OpenAI 全面的聊天功能。
+> GPT 模型和OpenAI 全面的聊天功能。> [卡][RecallToolkit](https://recallmem.dev/guides/langchain)
+>
+> 供代理搜索调用内存、询问有关用户的问题并保存事实的工具。
 
-> [卡][RecallToolkit](https://recallmem.dev/guides/langchain)
->
-> 供代理搜索调用内存、询问有关用户的问题并保存事实的工具。> [卡][SCX](https://scx.ai/)
+> [卡][SCX](https://scx.ai/)
 >
 > 开放式聊天和多模式模型，通过 SCX 的 OpenAI 兼容 API 输入图像和视频。
 
@@ -172,11 +176,11 @@
 >
 > Cohere 用于各种 NLP 任务的语言模型。
 
-> [卡][Gemini Enterprise Agent Platform](/oss/javascript/integrations/llms/google_vertex_ai)
+> [卡片][Gemini Enterprise Agent Platform](/oss/javascript/integrations/llms/google_vertex_ai)
 >
 > Google Cloud 的企业 AI 和 ML 平台。
 
-> [卡片][JigsawStack](/oss/javascript/integrations/llms/jigsawstack)
+> [卡][JigsawStack](/oss/javascript/integrations/llms/jigsawstack)
 >
 > JigsawStack 的人工智能基础设施和模型服务。
 
@@ -196,15 +200,15 @@
 >
 > Yandex 的语言模型和 AI 服务。
 
-## 文本嵌入模型
-
-> [卡][Azure OpenAI](/oss/javascript/integrations/embeddings/azure_openai)
+## 文本嵌入模型> [卡][Azure OpenAI](/oss/javascript/integrations/embeddings/azure_openai)
 >
 > OpenAI 通过 Microsoft Azure 平台嵌入。
 
 > [卡][Baidu Qianfan](/oss/javascript/integrations/embeddings/baidu_qianfan)
 >
-> 百度针对中文内容的文本嵌入模型。> [卡][Amazon Bedrock](/oss/javascript/integrations/embeddings/bedrock)
+> 百度针对中文内容的文本嵌入模型。
+
+> [卡][Amazon Bedrock](/oss/javascript/integrations/embeddings/bedrock)
 >
 > 通过 Amazon Bedrock 嵌入基础模型。
 
@@ -258,15 +262,15 @@
 
 > [卡][Pinecone](/oss/javascript/integrations/embeddings/pinecone)
 >
-> Pinecone 的嵌入模型和矢量数据库。
-
-> [卡][SAP HANA Internal Embeddings](/oss/javascript/integrations/vectorstores/sap_hanavector)
+> Pinecone 的嵌入模型和矢量数据库。> [卡][SAP HANA Internal Embeddings](/oss/javascript/integrations/vectorstores/sap_hanavector)
 >
 > SAP HANA Cloud 用于数据库内向量生成的内置嵌入模型。
 
 > [卡][SCX](https://scx.ai/)
 >
-> 基于 SCX 的 OpenAI 兼容 API 的 4096 维 E5-Mistral 嵌入。## 向量存储
+> 基于 SCX 的 OpenAI 兼容 API 的 4096 维 E5-Mistral 嵌入。
+
+## 向量存储
 
 > [卡][Azure DocumentDB](/oss/javascript/integrations/vectorstores/azure_documentdb)
 >
@@ -314,15 +318,15 @@
 
 > [卡][Redis](/oss/javascript/integrations/vectorstores/redis)
 >
-> 具有矢量搜索功能的内存数据库。
-
-> [卡][RushDBVectorStore](https://docs.rushdb.com/connect/langchain)
+> 具有矢量搜索功能的内存数据库。> [卡][RushDBVectorStore](https://docs.rushdb.com/connect/langchain)
 >
 > RushDB 矢量存储和混合（矢量 + BM25）检索器，加上 LangGraph 存储和检查点，适用于 RushDB Cloud 或自托管引擎。
 
 > [卡][SAP HANA Cloud Vector Engine](/oss/javascript/integrations/vectorstores/sap_hanavector)
 >
-> 矢量存储完全集成到 SAP HANA Cloud 数据库中。> [卡][Weaviate](/oss/javascript/integrations/vectorstores/weaviate)
+> 矢量存储完全集成到 SAP HANA Cloud 数据库中。
+
+> [卡][Weaviate](/oss/javascript/integrations/vectorstores/weaviate)
 >
 > 具有 GraphQL API 的开源矢量数据库。
 
@@ -374,9 +378,7 @@
 
 > [卡][Supadata](/oss/javascript/integrations/providers/supadata)
 >
-> 从 YouTube、TikTok 等加载文字记录和元数据。
-
-## 文档转换器
+> 从 YouTube、TikTok 等加载文字记录和元数据。## 文档转换器
 
 > [卡][OpenAI Metadata Tagger](/oss/javascript/integrations/document_transformers/openai_metadata_tagger)
 >
@@ -390,7 +392,9 @@
 
 > [卡][MixedBread AI](/oss/javascript/integrations/document_compressors/mixedbread_ai)
 >
-> 使用 MixedBread AI 重新排序和压缩文档。## 工具
+> 使用 MixedBread AI 重新排序和压缩文档。
+
+## 工具
 
 > [卡][AgentForge](https://github.com/acarchidi/agentforge-tools#langchain-js)
 >
@@ -414,11 +418,11 @@
 
 > [卡][aiworker](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain)
 >
-> aiworker OpenAPI 目录中的付费数据工具；每个呼叫都通过代理钱包中的 x402 以 USDC 自行结算，无需 API 密钥。
-
-> [卡][Arcmira](https://github.com/arcmira/integrations/tree/master/packages/langchain)
+> aiworker OpenAPI 目录中的付费数据工具；每次调用都通过代理钱包中的 x402 以 USDC 自行结算，无需 API 密钥。> [卡][Arcmira](https://github.com/arcmira/integrations/tree/master/packages/langchain)
 >
-> 使用 Arcmira 的 LangChain 工具搜索索引的 YouTube 转录本以获取带时间戳的引述并解析人员、公司和频道。> [卡][Atomic Mail](https://docs.atomicmail.ai/langchain)
+> 使用 Arcmira 的 LangChain 工具搜索已索引的 YouTube 转录本以获取带时间戳的引述并解析人员、公司和频道。
+
+> [卡片][Atomic Mail](https://docs.atomicmail.ai/langchain)
 >
 > 电子邮件工具包，通过工作证明提供代理拥有的收件箱，并通过 JMAP 发送和接收。
 
@@ -428,15 +432,15 @@
 
 > [卡片][Channel3Toolkit](https://channel3.ai/docs/langchain)
 >
-> 在数千家零售商中搜索产品，以及每个零售商的报价和实时价格。
+> 在数千家零售商中搜索产品，包括每个零售商的报价和实时价格。
 
-> [卡片][ClawFetch](https://github.com/clawfetch/integrations#readme)
+> [卡][ClawFetch](https://github.com/clawfetch/integrations#readme)
 >
 > ClawFetch 为代理提供 Web 智能工具，包括获取、JavaScript 渲染、提取、文档解析和公司研究。
 
 > [卡][Continuity tools](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools)
 >
-> LangChain 工具，具有应用程序定义的权限、稳定的操作身份以及针对协作服务的仅状态恢复。
+> LangChain 具有应用程序定义的权限、稳定的操作身份和仅状态恢复的合作服务工具。
 
 > [卡][Corsair](https://docs.corsair.dev/mcp-adapters/langchain)
 >
@@ -448,19 +452,19 @@
 
 > [卡][DALL-E](/oss/javascript/integrations/tools/dalle)
 >
-> 使用 OpenAI 的 DALL-E 模型生成图像。
-
-> [卡][DataBazaar](https://databazaar.io/integrations?utm_source=langchain\&utm_campaign=integration-listing#langchain)
+> 使用 OpenAI 的 DALL-E 模型生成图像。> [卡][DataBazaar](https://databazaar.io/integrations?utm_source=langchain\&utm_campaign=integration-listing#langchain)
 >
-> 用于公共搜索、样本预览和赏金发现的数据集市场工具，以及经过帐户验证的数据检索。> [卡][Decodo](/oss/javascript/integrations/tools/decodo)
+> 用于公共搜索、样本预览和赏金发现的数据集市场工具，以及经过帐户验证的数据检索。
+
+> [卡][Decodo](/oss/javascript/integrations/tools/decodo)
 >
 > 使用 Decodo 执行和分析代码。
 
-> [卡][Exa Search](/oss/javascript/integrations/tools/exa_search)
+> [卡] [Exa Search](/oss/javascript/integrations/tools/exa_search)
 >
 > 人工智能驱动的搜索引擎可提供更好的结果。
 
-> [卡] [Fizzl](https://fizzl.eu/agents/langchain-js/)
+> [卡][Fizzl](https://fizzl.eu/agents/langchain-js/)
 >
 > Fizzl 在 AI 代理签名或付款之前检查交易、签名、代币、钱包批准和 x402 付费端点。
 
@@ -484,7 +488,9 @@
 >
 > 解析和操作 JSON 数据结构。
 
-> [卡][Lambda Agent](/oss/javascript/integrations/tools/lambda_agent)
+> [卡][KtemiaToolkit](https://www.ktemia.com/docs/langchain/)
+>
+> 航班、酒店和汽车租赁搜索工具，可比较航空公司、预订网站和租赁公司的价格。> [卡][Lambda Agent](/oss/javascript/integrations/tools/lambda_agent)
 >
 > 在 AWS Lambda 函数中执行代码。
 
@@ -494,7 +500,9 @@
 
 > [卡][M91](https://github.com/MSG91/m91-sdk#langchain)
 >
-> 暂停代理的工具，直到有人在手机上批准为止；警报会通过静音模式响起并升级为语音呼叫。> [卡][MCP Toolbox](/oss/javascript/integrations/tools/mcp_toolbox)
+> 暂停代理的工具，直到有人在手机上批准为止；警报会通过静音模式响起并升级为语音呼叫。
+
+> [卡][MCP Toolbox](/oss/javascript/integrations/tools/mcp_toolbox)
 >
 > 模型上下文协议工具和实用程序。
 
@@ -524,21 +532,25 @@
 
 > [卡][Pexafy Stock Photos](https://docs.pexafy.com/langchain)
 >
-> 对来自 Unsplash、Pexels、Pixabay 等的免费库存照片进行语义搜索，返回每张照片的许可和来源。
-
-> [卡][pipe0](https://www.pipe0.com/docs/sdks/integrations/langchain)
+> 对来自 Unsplash、Pexels、Pixabay 等的免费库存照片进行语义搜索，返回每张照片的许可和来源。> [卡][pipe0](https://www.pipe0.com/docs/sdks/integrations/langchain)
 >
 > 跨多个数据提供商进行人员搜索和联系人丰富（工作电子邮件、电话号码、个人资料和企业结构）
 
 > [卡][pilotfish](https://pilotfish.gai.ventures/docs/langchain)
 >
-> 用于代理的浏览器 MCP 服务器：逐步驱动本地 Chrome，或使用保存的登录信息在云浏览器中运行整个任务。> [卡][Precleared](https://precleared.dev/docs/langchain)
+> 用于代理的浏览器 MCP 服务器：逐步驱动本地 Chrome，或使用保存的登录信息在云浏览器中运行整个任务。
+
+> [卡][Precleared](https://precleared.dev/docs/langchain)
 >
 > 检查发送到某个地址的冷邮件或营销电子邮件在八个国家/地区是否合法，并返回决定规则、页脚要求和签名收据。
 
+> [卡][Protogrid](https://docs.protogrid.dev/sdk/langchain-js/)
+>
+> Protogrid 从其注册表中的 MCP 服务器加载LangChain 工具，这些工具可以通过您的规则。
+
 > [卡][Pushary](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js)
 >
-> LangGraph.js 代理的电话批准：在用户电话上询问并仅在批准时进行路由；没有答案就意味着没有行动。
+> LangGraph.js 代理的电话批准：在用户的电话上询问并仅在批准时进行路由；没有答案就意味着没有行动。
 
 > [卡][Serpex](https://serpex.dev/docs)
 >
@@ -550,9 +562,7 @@
 
 > [卡][SIGNA](https://github.com/codexvritra/signa/tree/main/sdk/langchain)
 >
-> 将钱包签名的消息传递工具添加到LangChain代理。
-
-> [卡][Sato Hub](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme)
+> 将钱包签名的消息传递工具添加到LangChain代理。> [卡][Sato Hub](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme)
 >
 > Sato Hub 链上代理构建块索引上的无密钥工具：搜索列表、预检查找、交换场地和构建计划。
 
@@ -566,7 +576,9 @@
 
 > [卡][Steward](https://github.com/brianbooms/plugin-steward)
 >
-> 用于 x402 付款的工具，可在付款前通过 LangChain MCP 适配器验证商家、价格和条款。> [卡][TalorData](https://www.talordata.com/docs)
+> 用于 x402 付款的工具，可在付款前通过 LangChain MCP 适配器验证商家、价格和条款。
+
+> [卡][TalorData](https://www.talordata.com/docs)
 >
 > 跨 33 个搜索引擎的统一 SERP API，具有地理定位功能。
 
@@ -596,9 +608,7 @@
 
 > [卡][VerictoSqlToolkit](https://vericto.com/docs/langchain)
 >
-> AI 代理的数据库护栏：在运行之前根据确定性 AST 规则（例如不带 WHERE 的 DELETE）检查每个 SQL 语句。
-
-> [卡][viaSocket](https://github.com/Walkover-Web-Solution/viasocket-apps#langchain)
+> AI 代理的数据库护栏：在运行之前根据确定性 AST 规则（例如不带 WHERE 的 DELETE）检查每个 SQL 语句。> [卡][viaSocket](https://github.com/Walkover-Web-Solution/viasocket-apps#langchain)
 >
 > viaSocket 让 LangChain.js 代理通过每个用户自己的连接在 2,300 多个连接的应用程序中运行操作。
 
@@ -616,7 +626,9 @@
 
 > [卡][Vector Store](/oss/javascript/integrations/tools/vectorstore)
 >
-> 作为工具查询矢量数据库。## 猎犬
+> 作为工具查询矢量数据库。
+
+## 猎犬
 
 > [卡][Bedrock Knowledge Bases](/oss/javascript/integrations/retrievers/bedrock-knowledge-bases)
 >
@@ -644,9 +656,7 @@
 
 > [卡][LoomKnowledgeRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
 >
-> 从 LangChain 搜索自托管 Loom 部署中的文档。
-
-> [卡][LoomMemoryRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
+> 从 LangChain 搜索自托管 Loom 部署中的文档。> [卡][LoomMemoryRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
 >
 > 从 LangChain 搜索自托管 Loom 部署中的代理内存。
 
@@ -666,7 +676,9 @@
 >
 > 时间感知文档检索和排名。
 
-## 商店> [卡][AlBuddyMemoryStore](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md)
+## 商店
+
+> [卡][AlBuddyMemoryStore](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md)
 >
 > LangGraph 本地 SQLite 上的 BaseStore：记录作者、版本而不是覆盖，并保留信念历史。
 
@@ -698,9 +710,7 @@
 
 > [卡][BRYDGE](https://github.com/contactkontey-dotcom/langchain-brydge#readme)
 >
-> 监督代理工具与 BRYDGE 的调用，并检查目标系统自己的记录，以报告每个操作是否在允许的情况下发生。
-
-> [卡][Nace](https://github.com/nace-ai/langchain-nace-js#readme)
+> 监督代理工具与 BRYDGE 的调用，并检查目标系统自己的记录，以报告每个操作是否在允许的情况下发生。> [卡][Nace](https://github.com/nace-ai/langchain-nace-js#readme)
 >
 > Nace 的 Drex 决策模型：通过文本和图像输入带有校准概率的答案，用于路由、模型选择和工具调用门控。
 
@@ -710,7 +720,9 @@
 
 > [卡][RecallChatMessageHistory](https://recallmem.dev/guides/langchain)
 >
-> 聊天消息历史记录存储在 Recall 会话中，因此 Recall 还可以从中了解用户。> [卡][RecallMiddleware](https://recallmem.dev/guides/langchain)
+> 聊天消息历史记录存储在 Recall 会话中，因此 Recall 还可以从中了解用户。
+
+> [卡][RecallMiddleware](https://recallmem.dev/guides/langchain)
 >
 > create_agent 代理的长期记忆：将 Recall 了解到的用户信息添加到系统提示中并记录每次交换。
 
@@ -730,9 +742,7 @@
 
 > [卡][Respan](https://www.respan.ai/docs)
 >
-> 跟踪 LangChain.js、LangGraph.js 和 Langflow 风格的回调在 Respan 中运行。
-
-> [卡][SafePrompt](https://safeprompt.dev/docs/langchain)
+> 跟踪 LangChain.js、LangGraph.js 和 Langflow 风格的回调在 Respan 中运行。> [卡][SafePrompt](https://safeprompt.dev/docs/langchain)
 >
 > 回调处理程序将每个提示和工具输出发送到 SafePrompt API，并在发现提示注入时停止运行。
 

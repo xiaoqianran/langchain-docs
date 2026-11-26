@@ -4,7 +4,7 @@
 
 > [!NOTE]
 >
-> This integration is in beta, so its API may change.
+> This integration is in [beta](/langsmith/release-stages), so its API may change.
 
 Use the LangSmith LiveKit integration to trace your [LiveKit Agents](https://docs.livekit.io/agents/) voice agents, including their transcripts and audio recordings. For high-level conventions, see [Voice tracing fundamentals](/langsmith/trace-voice-fundamentals).
 

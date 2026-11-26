@@ -6,7 +6,7 @@ Trace Gemini Live voice agents in LangSmith using the LangSmith SDK.
 
 > [!NOTE]
 >
-> This integration is in beta, so its API may change.
+> This integration is in [beta](/langsmith/release-stages), so its API may change.
 
 Gemini Live is a speech-to-speech model that streams typed events over a WebSocket. Whether you build with a raw `google-genai` connection or the Google Agent Development Kit (ADK), the integration captures each conversation as a single LangSmith trace with spans for transcripts, model responses, tool calls, turn boundaries, and interruptions.
 

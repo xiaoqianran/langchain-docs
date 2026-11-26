@@ -29,7 +29,7 @@ The rest of this page covers the two choices around those steps: who owns the cr
 
 > [!NOTE]
 >
-> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
+> Managed Deep Agents is in [beta](/langsmith/release-stages) on [LangSmith Cloud](/langsmith/cloud) and [Bring Your Own Cloud (BYOC)](/langsmith/byoc). Use Managed Deep Agents CLI and SDK v0.10 or later for BYOC.
 
 ## Choose a credential owner
 
@@ -672,7 +672,7 @@ User-owned connections require an authenticated caller and Agent Auth. Deploy th
 
 ## Review current limitations
 
-Connections are part of the Managed Deep Agents public beta. The following gaps apply to the current release:
+Connections are part of the Managed Deep Agents [beta](/langsmith/release-stages). The following gaps apply to the current release:
 
 * **User-owned API keys**: A user-owned connection holds an OAuth grant. Slack and Studio do not collect a per-caller API key, and the CLI does not create an empty slot for one. Use an agent-owned secret instead, or collect the key in a custom frontend as described in the following section.
 * **Custom channels**: Slack and Studio resolve caller identity and complete authorization for the caller. A custom frontend handles the [authorization interrupt](#handle-the-authorization-interrupt) itself.

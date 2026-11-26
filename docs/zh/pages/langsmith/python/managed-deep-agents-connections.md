@@ -30,7 +30,7 @@ api_key = await connections.get("organization-tavily", {"type": "agent"})
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上**公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 选择凭证所有者
 
@@ -58,7 +58,7 @@ notion_token = await connections.get("engineering-notion", {"type": "user"})
 
 用户拥有的连接根据托管Deep Agents附加到运行的调用者身份进行解析。该身份的来源取决于代理的调用方式：
 
-|表面|来电者身份|
+|表面|来电者身份 |
 | - | - |
 | [Slack channel](/langsmith/python/managed-deep-agents-channels-slack) |发送消息的 Slack 用户。 |
 | LangSmith 工作室 |已登录的 LangSmith 用户。 |
@@ -200,7 +200,7 @@ uv run mda connections catalog
 | `twitch` | [Twitch](https://dev.twitch.tv/console/apps) | `user:read:email` |
 | `x` | [X](https://developer.x.com/en/portal/dashboard) | `tweet.read` `users.read` `offline.access` |
 
-没有默认范围的服务需要`--scope`。
+没有默认范围的服务需要 `--scope`。
 
 > [accordion] 某些服务为其 API 和 MCP 服务器运行单独的 OAuth 应用程序
 >
@@ -213,7 +213,7 @@ uv run mda connections create frontend-github \
   --secret-from-env GITHUB_CLIENT_SECRET
 ```
 
-创建时，CLI 会打印重定向 URI 以向提供程序注册。在调用者授权之前，在提供商的应用程序设置页面上注册该 URI。 URI 遵循您的 LangSmith 主机，例如生产环境中的 `https://api.smith.langchain.com/v1/agent-auth/oauth/callback`。在 [BYOC](/langsmith/byoc) 上，它遵循您的数据平面端点。
+创建时，CLI 会打印重定向 URI 以向提供程序注册。在调用者授权之前，在提供商的应用程序设置页面上注册该 URI。 URI 遵循您的 LangSmith 主机，例如生产环境中的 `https://api.smith.langchain.com/v1/agent-auth/oauth/callback`。在 [BYOC](/langsmith/byoc) 上，它会跟随您的数据平面端点。
 
 可选标志：
 
@@ -285,7 +285,7 @@ uv run mda connections create support-linear \
   --authorize
 ```
 
-CLI 为您登录的帐户启动授权流程，并存储部署的结果授权。运行时代码将其解析为代理拥有的凭据：
+CLI 为您登录的帐户启动授权流程，并存储部署的结果授权。运行时代码将其解析为代理拥有的凭证：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 access_token = await connections.get("support-linear", {"type": "agent"})
@@ -295,7 +295,7 @@ access_token = await connections.get("support-linear", {"type": "agent"})
 
 > [!提示]
 >
-> 授权您的团队拥有的专用帐户，而不是您自己的帐户。您登录的帐户将成为客服人员为每个呼叫者采取的每项操作背后的身份。使用个人帐户会产生三项费用：
+> 授权您的团队拥有的专用帐户，而不是您自己的帐户。您登录的帐户将成为客服人员对每个呼叫者采取的每项操作背后的身份。使用个人帐户会产生三项费用：
 >
 > * 代理获得您对该提供商的完全访问权限。
 > * 提供商的审核日志显示您的姓名以及代理所做的事情。
@@ -369,7 +369,7 @@ uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mc
 
 无方案值（例如 `mcp.notion.com/mcp`）存储为 `https://mcp.notion.com/mcp`。
 
-如果服务器无法自动注册客户端，CLI 会提示您使用常规 OAuth（`--oauth` 或手动端点）。
+如果服务器无法自动注册客户端，CLI 会这样提示您并指示您使用常规 OAuth（`--oauth` 或手动端点）。
 
 `mda deploy` 将相同的推论应用于丢失的用户拥有的 MCP 连接。它保持现有连接不变，通过 OAuth 发现创建每个唯一的缺失 MCP 连接，并在发现或注册不可用时在部署之前失败。## 处理授权中断
 
@@ -639,7 +639,7 @@ uv run mda connections delete organization-tavily
 
 ## 查看当前限制
 
-连接是 Managed Deep Agents 公共测试版的一部分。当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
+连接是托管 Deep Agents [beta](/langsmith/release-stages) 的一部分。当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
 * **自定义渠道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
 * **工作区 UI**：LangSmith 不在 UI 中列出连接。使用 `mda connections list` 和 `mda connections get` 作为连接元数据。
 * **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示段头也是如此。从项目根目录运行`mda connections create <slug>`来创建一个。> [accordion] 通过代理身份验证存储用户拥有的 API 密钥
@@ -663,7 +663,7 @@ uv run mda connections delete organization-tavily
 > }
 > ```
 >
-> 代理身份验证重用该 slug 的现有连接并附加调用者的秘密。秘密材料是只写的。成功创建后，将该 slug 标记为已连接并恢复运行。有关更多信息，请参阅[Set up Agent Auth](/langsmith/agent-auth)。
+> 代理身份验证重用该 slug 的现有连接并附加调用者的秘密。秘密材料是只写的。成功创建后，将该 slug 标记为已连接并恢复运行。欲了解更多信息，请参阅[Set up Agent Auth](/langsmith/agent-auth)。
 
 ## 另请参阅
 

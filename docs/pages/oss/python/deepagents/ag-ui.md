@@ -171,6 +171,10 @@ Any AG-UI client can drive a deep agent exposed over the protocol, so you do not
 >
 > React chat runtime with AG-UI support for LangGraph and Deep Agents, including the Python FastAPI bridge.
 
+> [card] [OpenBot](https://open.bot)
+>
+> Open source, self-hostable workspace that runs any AG-UI agent as a Bot, with schedules, connected apps, and approvals.
+
 > [card] [AG-UI clients](https://docs.ag-ui.com/integrations)
 >
 > The full list of AG-UI clients and SDKs, including terminal and mobile clients.

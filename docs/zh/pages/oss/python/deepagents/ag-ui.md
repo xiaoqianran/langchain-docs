@@ -167,6 +167,10 @@ const input = {
 >
 > React 聊天运行时具有对 LangGraph 和 Deep Agents 的 AG-UI 支持，包括 Python FastAPI 桥。
 
+> [卡][OpenBot](https://open.bot)
+>
+> 开源、自托管工作区，可将任何 AG-UI 代理作为机器人运行，并具有时间表、连接的应用程序和批准。
+
 > [卡][AG-UI clients](https://docs.ag-ui.com/integrations)
 >
 > AG-UI 客户端和 SDK 的完整列表，包括终端和移动客户端。

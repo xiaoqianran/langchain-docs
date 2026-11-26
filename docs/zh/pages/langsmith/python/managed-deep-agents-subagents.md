@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 子代理有两种类型：
 
@@ -25,7 +25,7 @@
 
 ## 通用子代理
 
-每个代理都会获得一个内置的 `general-purpose` 子代理，即使您从 [agent definition](/langsmith/python/managed-deep-agents-agent-definition) 中省略 `subagents` 也是如此。代理可以在运行时将独立任务委托给它，包括[fanning out tasks in parallel](#fan-out-tasks-in-parallel)，而无需预先声明专门的子代理。
+每个代理都会有一个内置的 `general-purpose` 子代理，即使您从 [agent definition](/langsmith/python/managed-deep-agents-agent-definition) 中省略 `subagents` 也是如此。代理可以在运行时将独立任务委托给它，包括[fanning out tasks in parallel](#fan-out-tasks-in-parallel)，而无需预先声明专门的子代理。
 
 与自定义子代理不同，`general-purpose` 自动继承代理的技能及其模型和工具。与其他子代理一样，它使用自己的提示和上下文窗口运行，而不是代理的对话或[instructions](/langsmith/python/managed-deep-agents-instructions)。在每个任务的 `description` 中包含所有需要的上下文、约束和预期输出。
 
@@ -72,7 +72,7 @@
 > )
 > ```
 
-## 子代理代理使用 `task` 工具运行子代理并等待其答复。子代理在代理的图表内运行并在代理的[sandbox](/langsmith/python/managed-deep-agents-sandboxes)中工作。
+## 子代理代理使用`task`工具运行子代理并等待其答复。子代理在代理的图表内运行并在代理的[sandbox](/langsmith/python/managed-deep-agents-sandboxes)中工作。
 
 ### 子代理继承了什么
 

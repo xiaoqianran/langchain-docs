@@ -17,7 +17,7 @@ What's possible with deep agent streaming:
 
 Deep Agents use LangGraph's subgraph streaming to surface events from subagent execution. To receive subagent events, enable `stream_subgraphs` when streaming.
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -48,7 +48,7 @@ for chunk in agent.stream(
         print(chunk["data"])
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -79,7 +79,7 @@ for chunk in agent.stream(
         print(chunk["data"])
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -110,7 +110,7 @@ for chunk in agent.stream(
         print(chunk["data"])
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -141,7 +141,7 @@ for chunk in agent.stream(
         print(chunk["data"])
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -172,7 +172,7 @@ for chunk in agent.stream(
         print(chunk["data"])
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -203,7 +203,7 @@ for chunk in agent.stream(
         print(chunk["data"])
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -242,11 +242,12 @@ When `subgraphs` is enabled, each streaming event includes a **namespace** that 
 | - | - |
 | `()` (empty) | Main agent |
 | `("tools:abc123",)` | A subagent spawned by the main agent's `task` tool call `abc123` |
-| `("tools:abc123", "model_request:def456")` | The model request node inside a subagent |
+
+Within each update chunk, the dict keys are [graph node names](#inspect-graph-nodes) such as `tools` and the model node (`model`).
 
 Use namespaces to route events to the correct UI component:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for chunk in agent.stream(
     {"messages": [{"role": "user", "content": "Plan my vacation"}]},
     stream_mode="updates",
@@ -269,11 +270,36 @@ for chunk in agent.stream(
             print(f"Main agent: {chunk['data']}")
 ```
 
+## Inspect graph nodes
+
+`create_deep_agent` returns a compiled LangGraph graph.
+
+With `stream_mode="updates"`, each chunk is keyed by node name, so you need those names to filter or render progress.
+
+Prefer [event streaming](/oss/python/deepagents/event-streaming) when you do not need the raw update keys.
+
+To list the nodes for your agent configuration:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+
+agent = create_deep_agent(
+    model="google_genai:gemini-4-hydrogen",
+)
+print(list(agent.get_graph().nodes))
+```
+
+Every deep agent includes the core loop nodes `model` and `tools`. Middleware that implements `before_agent`, `before_model`, `after_model`, or `after_agent` hooks adds nodes named `{MiddlewareName}.{hook}`, for example `PatchToolCallsMiddleware.before_agent`.
+
+The exact set depends on the middleware the harness and your configuration attach.
+
+For LangChain agent progress streaming that filters on these same keys, see [Agent progress](/oss/python/langchain/streaming#agent-progress).
+
 ## Subagent progress
 
 Use `stream_mode="updates"` to track subagent progress as each step completes. This is useful for showing which subagents are active and what work they've completed.
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -321,7 +347,7 @@ for chunk in agent.stream(
                 print(f"  [{chunk['ns'][0]}] step: {node_name}")
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -369,7 +395,7 @@ for chunk in agent.stream(
                 print(f"  [{chunk['ns'][0]}] step: {node_name}")
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -417,7 +443,7 @@ for chunk in agent.stream(
                 print(f"  [{chunk['ns'][0]}] step: {node_name}")
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -465,7 +491,7 @@ for chunk in agent.stream(
                 print(f"  [{chunk['ns'][0]}] step: {node_name}")
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -513,7 +539,7 @@ for chunk in agent.stream(
                 print(f"  [{chunk['ns'][0]}] step: {node_name}")
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -561,7 +587,7 @@ for chunk in agent.stream(
                 print(f"  [{chunk['ns'][0]}] step: {node_name}")
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -610,21 +636,21 @@ for chunk in agent.stream(
 ```
 
 ```shell title="Output" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[main agent] step: model_request
-  [tools:call_abc123] step: model_request
+[main agent] step: model
+  [tools:call_abc123] step: model
   [tools:call_abc123] step: tools
-  [tools:call_abc123] step: model_request
+  [tools:call_abc123] step: model
 
 Subagent complete: task
   Result: ## AI Safety Report...
-[main agent] step: model_request
+[main agent] step: model
 ```
 
 ## LLM tokens
 
 Use `stream_mode="messages"` to stream individual tokens from both the main agent and subagents. Each message event includes metadata that identifies the source agent.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 current_source = ""
 
 for chunk in agent.stream(
@@ -662,7 +688,7 @@ print()
 
 When subagents use tools, you can stream tool call events to display what each subagent is doing. Tool call chunks appear in the `messages` stream mode.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import AIMessageChunk, ToolMessage
 
 for chunk in agent.stream(
@@ -706,7 +732,7 @@ print()
 
 Use [`get_stream_writer`](https://reference.langchain.com/python/langgraph/config/get_stream_writer) inside your subagent tools to emit custom progress events:
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -773,7 +799,7 @@ for chunk in agent.stream(
             print("[main]", chunk["data"])
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -840,7 +866,7 @@ for chunk in agent.stream(
             print("[main]", chunk["data"])
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -907,7 +933,7 @@ for chunk in agent.stream(
             print("[main]", chunk["data"])
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -974,7 +1000,7 @@ for chunk in agent.stream(
             print("[main]", chunk["data"])
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -1041,7 +1067,7 @@ for chunk in agent.stream(
             print("[main]", chunk["data"])
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -1108,7 +1134,7 @@ for chunk in agent.stream(
             print("[main]", chunk["data"])
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -1185,7 +1211,7 @@ for chunk in agent.stream(
 
 Combine multiple stream modes to get a complete picture of agent execution:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Skip internal middleware steps - only show meaningful node names
 INTERESTING_NODES = {"model", "tools"}
 
@@ -1238,7 +1264,7 @@ print()
 
 Monitor when subagents start, run, and complete:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 active_subagents = {}
 
 for chunk in agent.stream(
@@ -1337,7 +1363,7 @@ With `subgraphs=True`, chunk shape depends on whether you pass one stream mode o
 
 Without `subgraphs`, a single mode yields `data` directly, and multiple modes yield `(mode, data)`.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Single mode + subgraphs
 for namespace, data in agent.stream(
     {"messages": [{"role": "user", "content": "Research quantum computing"}]},

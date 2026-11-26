@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 代理条目位于项目根目录：
 
@@ -73,20 +73,24 @@ export const agent = defineDeepAgent({
 
 通过项目文件而不是代理定义来配置系统提示、技能、内存、沙箱、身份、通道和计划。参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。要为每次运行选择系统提示、技能、MCP 服务器、内存或沙箱，请参阅[Select configuration per run](#select-configuration-per-run)。
 
-`defineDeepAgent` 不编译代理。它返回一个定义，托管运行时在部署时使用 [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 对其进行编译。以下选项是 [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 表面，不包含运行时拥有的表面。参见[Relationship to Deep Agents](/langsmith/javascript/managed-deep-agents-overview#relationship-to-deep-agents)。
+`defineDeepAgent` 不编译代理。它返回一个定义，托管运行时在部署时使用 [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 对其进行编译。下面的选项是 [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 表面，不包含运行时拥有的表面。参见[Relationship to Deep Agents](/langsmith/javascript/managed-deep-agents-overview#relationship-to-deep-agents)。
 
 ＃＃ 参数|参数|它有什么作用 |
 | - | - |
 | `name` |必需的。设置代理和默认部署名称。传递以字母开头且仅包含字母、数字、下划线或连字符的静态字符串，例如`"research-assistant"`。  托管 Deep Agents 使用该名称作为代理的图形 ID 和默认的 LangSmith 部署名称，客户端在调用部署时将其作为 `assistantId` 传递。您可以使用 `mda deploy --name` 覆盖部署名称，而无需更改代理定义。 |
-| `model` |设置代理使用的聊天模型。最简单的选项是 `provider:model` 字符串。将提供商的 API 密钥添加到 `.env`，以便模型在本地和部署中运行。  当您需要在代码中配置模型参数时，请传递LangChain聊天模型实例。有关型号选项和支持的提供程序，请参阅[Models](/oss/javascript/deepagents/models)。  要连接到LLM网关，请参阅[Use LLM Gateway](#use-llm-gateway)。 |
+| `model` |设置代理使用的聊天模型。最简单的选项是 `provider:model` 字符串。将提供商的 API 密钥添加到 `.env`，以便模型在本地和部署中运行。  当您需要在代码中配置模型参数时，请传递LangChain聊天模型实例。有关型号选项和支持的提供程序，请参阅[Models](/oss/javascript/deepagents/models)。  要连接到 LLM Gateway，请参阅[Use LLM Gateway](#use-llm-gateway)。 |
 | `tools` |添加代理可以调用​​的工具。在 `tools` 数组中传递工具，以便代理可以调用​​应用程序逻辑或外部服务。  在本地模块中定义工具，将它们导入到代理条目中，并将它们添加到定义中。参见[Custom tools](/langsmith/javascript/managed-deep-agents-tools)。要从远程 MCP 服务器添加工具而不将其导入代理条目，请使用 [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)。 || `middleware` |添加围绕模型调用、工具调用和代理生命周期的行为。在 `middleware` 数组中传递中间件。中间件按数组顺序运行。参见[Custom middleware](/langsmith/javascript/managed-deep-agents-middleware)。 |
 | `subagents` |为委派的任务定义专门的代理。当代理应委派专门或上下文繁重的工作时，传递子代理定义。每个子代理可以有自己的提示、模型和工具。请参阅[Subagents](/langsmith/javascript/managed-deep-agents-subagents)，包括如何在后台运行子代理。 |
 | `permissions` |控制文件系统工具的路径级访问。传递文件系统权限规则来控制代理的内置文件系统工具可以读取或写入哪些路径。当项目声明[sandbox](/langsmith/javascript/managed-deep-agents-sandboxes)时清除，因为权限规则禁用了沙箱`execute`工具。参见[Permissions](/oss/javascript/deepagents/permissions)。 |
 | `interruptOn` |在所选工具需要人工批准之前暂停。将 `interruptOn` 设置为在选定工具调用之前暂停，以便人们可以在调用运行之前批准、编辑或拒绝调用。参见[Human-in-the-loop](/langsmith/javascript/managed-deep-agents-tools#human-in-the-loop)。 |
 | `responseFormat` |设置代理必须返回与架构匹配的数据而不是不受约束的文本响应的时间。参见[Structured output](/oss/javascript/langchain/structured-output)。 |
-| `routes` |在路径前缀处安装 Deep Agents 后端。参见[Mount your own backends](#mount-your-own-backends)。 |
+| `routes` |在路径前缀处安装 Deep Agents 后端。参见[Mount your own backends](#mount-your-own-backends)。 |> [!警告]
+>
+> 您无法重命名已部署的代理。重命名后，现有线程将停止加载。除非您将旧名称传递给`mda deploy --name`，否则下一次部署还会创建一个内存为空的新代理服务器。
 
-## 安装你自己的后端`routes` mounts Deep Agents [backends](/oss/javascript/deepagents/backends) at path prefixes, the same way [⟦T34⟧](/oss/javascript/deepagents/backends#compositebackend-router) routes do. A path under a prefix goes to that backend with the prefix removed.所有其他路径都保留在托管后端上。
+## 安装你自己的后端
+
+`routes` 在路径前缀处挂载 Deep Agents [backends](/oss/javascript/deepagents/backends)，与 [⟦T35⟧](/oss/javascript/deepagents/backends#compositebackend-router) 路由的方式相同。前缀下的路径会转到删除了前缀的后端。所有其他路径都保留在托管后端上。
 
 > [!注意]
 >
@@ -104,17 +108,15 @@ export const agent = defineDeepAgent({
 });
 ```
 
-With this route, the agent's file tools read and write `/documents/a.md` as `/a.md` in the store backend.
+通过此路由，代理的文件工具在商店后端中将 `/documents/a.md` 读写为 `/a.md`。
 
-* Each prefix must be an absolute directory that starts and ends with `/`, such as `"/documents/"`.
-* A prefix cannot overlap the paths Managed Deep Agents mounts itself: `/instructions.md`, `/skills/`, and `/memories/`.
+* 每个前缀必须是以`/`开头和结尾的绝对目录，例如`"/documents/"`。
+* 前缀不能与 Managed Deep Agents 安装自身的路径重叠：`/instructions.md`、`/skills/` 和 `/memories/`。
 * 路径仅适用于文件工具。 [sandbox](/langsmith/javascript/managed-deep-agents-sandboxes) 中的 Shell 命令看不到它们。
 
 ## 选择每次运行的配置
 
-To select the agent's configuration for each run, export a function as `agent` instead of a definition. One deployment can then adapt to different users, tasks, or repositories. The function is a graph factory, the same pattern LangGraph uses to [rebuild a graph at runtime](/langsmith/graph-rebuild): it receives the runtime and returns a definition.
-
-This example selects instructions and skills for the repository a run works on. It assumes the project has `skills/python-service/` and `skills/typescript-web/`, each with a [⟦T47⟧](/langsmith/javascript/managed-deep-agents-skills).
+要为每次运行选择代理的配置，请将函数导出为 `agent` 而不是定义。然后，一种部署可以适应不同的用户、任务或存储库。该函数是一个图工厂，与 LangGraph 用于 [rebuild a graph at runtime](/langsmith/graph-rebuild) 的模式相同：它接收运行时并返回定义。此示例选择运行所处理的存储库的说明和技能。它假设该项目有`skills/python-service/`和`skills/typescript-web/`，每个都有一个[⟦T48⟧](/langsmith/javascript/managed-deep-agents-skills)。
 
 ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineDeepAgent, type ManagedServerRuntime } from "managed-deepagents";
@@ -138,7 +140,9 @@ export function agent(
     contextSchema,
   });
 }
-```工厂可以是同步的或异步的。它接收一个`ManagedServerRuntime`，它扩展了原生的LangGraph`ServerRuntime`。从`executionRuntime.context`读取运行上下文。通道运行时为`undefined`，Agent Server 加载代理进行检查时`executionRuntime` 为`null`。
+```
+
+工厂可以是同步的或异步的。它接收一个`ManagedServerRuntime`，它扩展了原生的LangGraph`ServerRuntime`。从`executionRuntime.context`读取运行上下文。通道运行时为`undefined`，Agent Server 加载代理进行检查时`executionRuntime` 为`null`。
 
 调用者通过运行的`context`选择配置：
 
@@ -168,7 +172,7 @@ await client.runs.create(threadId, "open-swe", {
 
 静态定义无法设置这些字段。技能路径必须以 `skills/<name>` 结尾，并指向项目中的技能。工厂还可以返回生成的技能定义，其名称不得与项目技能名称重复。
 
-此示例根据请求启用文档 MCP 服务器，并为一个存储库提供更长的沙箱超时。它从[⟦T74⟧](/langsmith/javascript/managed-deep-agents-mcp-connectors)和[⟦T75⟧](/langsmith/javascript/managed-deep-agents-sandboxes)导入声明：```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+此示例根据请求启用文档 MCP 服务器，并为一个存储库提供更长的沙箱超时。它从[⟦T75⟧](/langsmith/javascript/managed-deep-agents-mcp-connectors)和[⟦T76⟧](/langsmith/javascript/managed-deep-agents-sandboxes)导入声明：```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   defineDeepAgent,
   defineSandbox,
@@ -208,7 +212,7 @@ export function agent(
 
 * **无副作用**：为相同的上下文返回相同的定义。不要创建记录、调用外部 API 或更改工厂中的共享状态。
 * **稳定中断**：保留可以在每个配置中中断运行的中间件。当运行恢复时，引发中断的中间件必须仍然存在。
-* **内联名称**：将 `name` 设置为内联字符串。 `mda build` 无需调用工厂即可读取它，并将其用作图 ID 和默认部署名称。
+* **内联名称**：将 `name` 设置为内联字符串。 `mda build` 无需调用工厂即可读取它，并将其用作图形 ID 和默认部署名称。
 * **模型依赖项**：为工厂可以返回的每个模型安装集成包。构建不会检测到它们。
 
 要更改运行中模型调用之间的行为，请使用[custom middleware](/langsmith/javascript/managed-deep-agents-middleware)。
@@ -256,11 +260,11 @@ export const agent = defineDeepAgent({
 
 > [!注意]
 >
-> 网关型号 ID 在提供商和型号之间使用斜线 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
+> 网关型号 ID 在提供商和型号之间使用斜杠 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
 
 网关按型号 ID 路由每个请求。 `moonshotai/kimi-k3` 是LangChain 托管模型，因此它不需要提供者密钥并利用 [Gateway Credits](/langsmith/llm-gateway-credits)。以您的工作区已配置的提供商开头的模型 ID（例如 `anthropic/claude-opus-5`）使用该 [provider secret](/langsmith/llm-gateway-provider-authentication#add-a-provider-key) 并向您自己的提供商帐户计费。
 
-有关更多信息，请参阅[LLM Gateway](/langsmith/llm-gateway)。要搭建一个从一开始就使用 Gateway 的项目，请在初始化时传递 `--gateway`：
+欲了解更多信息，请参阅[LLM Gateway](/langsmith/llm-gateway)。要搭建一个从一开始就使用 Gateway 的项目，请在初始化时传递 `--gateway`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 mda init my-agent --gateway

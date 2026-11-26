@@ -22,36 +22,34 @@
 
 ## 总结
 
-下表概述了不同负载模式（读/写）的不同LangSmith配置的比较：| | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | [Medium / medium](#medium-reads-medium-writes) | [High / high](#high-reads-high-writes) |
-| :-| :-| :-| :-| :-| :-|
-|并发前端用户（在前端主动查看跟踪的用户数量）| 5 | 5 | 50 | 50 20 | 50 | 50
-|每秒提交的跟踪数（通过 SDK 或 API 端点摄取的跟踪数）| 10 | 10 1000 | 1000 10 | 10 100 | 100 1000 | 1000
-| **前端副本**（500m CPU，每个副本请求 1Gi）| 1（默认）| 4 | 2 | 2 | 4 |
-| **平台后端副本**（1 个 CPU，每个副本请求 2Gi）| 3（默认）| 20 | 3（默认）| 3（默认）| 20 |
-| **摄取队列副本**（1 个 CPU，每个副本请求 2Gi）| 3（默认）| 24 | 3（默认）| 6 | 24 |
-| **后端副本**（1 个 CPU，每个副本请求 2Gi）| 2（默认）| 5 | 40 | 40 16 | 16 50 | 50
-| **Redis 资源** | 8 Gi（默认）| 26 Gi 外部 | 8 Gi（默认）| 13Gi 外部 | 26 Gi 外部 |
-| **ClickHouse 资源** | 4 CPU 16 Gi（默认）| 10个CPU 32Gi内存|每个副本 8 个 CPU 16 Gi | 16 CPU 24Gi 内存 |每个副本 14 个 CPU 24 Gi || **ClickHouse 设置** |单实例 |单实例 | 3 节点复制集群（建议用于高读取负载，以防止性能下降。另一个选择是[managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse)。）单实例 | 3 节点复制集群（建议用于高读取负载，以防止性能下降。另一个选择是 [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse)。） |
-| Postgres 资源（我们建议使用外部实例并启用磁盘自动扩展来处理不断增长的数据需求。） 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）|
-| **Blob 存储** |集群内 RustFS（默认）|外部|外部|外部|外部|
-
-> [!注意]
+下表概述了不同负载模式（读/写）的不同 LangSmith 配置的比较：| | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | **[Medium / medium](#medium-reads-medium-writes)** | **[High / high](#high-reads-high-writes)** | **[High / very high](#high-reads-very-high-writes)** |
+| :- | :- | :- | :- | :- | :- | :- |
+|并发前端用户（在前端主动查看跟踪的用户数量）| 5 | 5 | 50 | 50 20 | 50 | 50 50 | 50
+|每秒提交的运行次数（通过 SDK 或 API 端点摄取的运行次数）| 10 | 10 1,000 | 10 | 10 100 | 100 1,000 | 10,000 |
+| **前端副本**（500m CPU，每个副本请求 1 Gi）| 1（默认）| 4 | 2 | 2 | 4 | 4 |
+| **平台后端副本**（1 个 CPU，每个副本请求 2 Gi）| 3（默认）| 20 | 3（默认）| 3（默认）| 20 | 30|
+| **摄取队列副本**（1 个 CPU，每个副本请求 2 Gi）| 3（默认）| 24 | 3（默认）| 6 | 24 | 80（2 个 CPU，每个副本请求 2 Gi）|
+| **后端副本**（1 个 CPU，每个副本请求 2 Gi）| 2（默认）| 5 | 40 | 40 16 | 16 50 | 50 50 | 50
+| **Redis 资源** | 8 Gi（默认）| 26 Gi 外部 | 8 Gi（默认）| 13 Gi 外部 | 26 Gi 外部 | 4 分片 [Redis cluster](/langsmith/self-host-external-redis#redis-cluster)，240+ GB，外部 |
+| **ClickHouse 资源** | 4 CPU 16 Gi（默认）| 10 CPU 32 Gi 内存 |每个副本 8 个 CPU 16 Gi | 16 CPU 24 Gi 内存 |每个副本 14 个 CPU 24 Gi |没用过。参见[Configure SmithDB for scale](/langsmith/self-host-smithdb-scale#baseline-tiers)。 || **ClickHouse 设置** |单实例 |单实例 | 3 节点复制集群（建议用于高读取负载，以防止性能下降。另一个选择是 [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse)。） |单实例 | 3 节点复制集群（建议用于高读取负载，以防止性能下降。另一个选择是[managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse)。）未使用（SmithDB）|
+| Postgres 资源（我们建议使用外部实例并启用磁盘自动扩展来处理不断增长的数据需求。） 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）| 2 CPU 8 GB 内存 10 GB 存储（外部）|
+| **Blob 存储** |集群内 RustFS（默认）|外部|外部|外部|外部|外部|> [!注意]
 >
 > 上面每个副本的数字是资源请求，是 Kubernetes 调度程序预留的。
 > 每种情况下的限制都更高。有关图表附带的默认值，请参阅
 > [Default resource requests and limits](#default-resource-requests-and-limits)。
 >
 > 超过其内存限制的容器将被 OOM 杀死，超过其 CPU 限制的容器将被 OOM-killed
-> 节流。在未对结果进行负载测试的情况下，请勿将任一值降低到低于出厂默认值。下面我们将详细介绍读写路径，并提供一个 `values.yaml` 代码片段，供您开始构建自托管 LangSmith 实例。
+> 节流。在未对结果进行负载测试的情况下，请勿将任一值降低到低于出厂默认值。
+
+下面我们将详细介绍读写路径，并提供一个 `values.yaml` 代码片段，供您开始构建自托管 LangSmith 实例。
 
 ## 默认资源请求和限制
 
 Helm 图表为 LangSmith 应用程序服务提供这些请求和限制。的
 上面的[summary table](#summary)涵盖了Postgres、Redis和ClickHouse，以及副本
-针对每种负载模式运行的计数。
-
-| `values.yaml`键|请求（CPU/内存）|限制（CPU/内存）|默认副本 |
-| :-| :-| :-| :-|
+针对每种负载模式运行的计数。| `values.yaml`键|请求（CPU/内存）|限制（CPU/内存）|默认副本 |
+| :- | :- | :- | :- |
 | `frontend` | 500m / 1Gi | 1000m / 2Gi | 1 |
 | `backend` | 1000m / 2Gi | 2000米/4Gi | 2 |
 | `platformBackend` | 1000m / 2Gi | 2000米/4Gi | 3 |
@@ -61,7 +59,9 @@ Helm 图表为 LangSmith 应用程序服务提供这些请求和限制。的
 | `aceBackend` | 1000m / 2000Mi | 2000米/4000米| 1 |
 | `hostBackend` | 200m / 1000Mi | 1000m / 2Gi | 1 |
 | `listener` | 1000m / 2Gi | 2000米/4Gi | 1 |
-| `operator` | 1000m / 2Gi | 2000米/4Gi | 1 |每个键都将其资源嵌套在`deployment`下，因此后端的请求位于
+| `operator` | 1000m / 2Gi | 2000米/4Gi | 1 |
+
+每个键都将其资源嵌套在`deployment`下，因此后端的请求位于
 `backend.deployment.resources.requests`。 `playground` 是一个有内存限制的服务
 远高于其请求，8Gi 与 1Gi，因此调整其调度到的节点大小
 限制。要确认图表版本的默认值，请运行
@@ -73,10 +73,8 @@ Helm 图表为 LangSmith 应用程序服务提供这些请求和限制。的
 具有相同副本范围的块：`autoscaling.hpa`，对于 Kubernetes
 HorizontalPodAutoscaler (HPA) 和 `autoscaling.keda`，用于
 [KEDA](https://keda.sh/)（Kubernetes 事件驱动的自动缩放）。启用其中之一，而不启用
-两者都有。
-
-| `values.yaml`钥匙|最小副本 |最大副本数 |
-| :-| :-| :-|
+两者都有。| `values.yaml` 键 |最小副本 |最大副本数 |
+| :- | :- | :- |
 | `frontend` | 1 | 5 |
 | `backend` | 2 | 6 |
 | `platformBackend` | 3 | 10 | 10
@@ -87,11 +85,13 @@ HorizontalPodAutoscaler (HPA) 和 `autoscaling.keda`，用于
 | `hostBackend` | 1 | 5 |
 | `listener` | 1 | 10 | 10
 
-HPA 密钥为 `minReplicas` 和 `maxReplicas`； KEDA 等效项为 `minReplicaCount`
+HPA 密钥为 `minReplicas` 和 `maxReplicas`； KEDA 等效项是 `minReplicaCount`
 和`maxReplicaCount`。 `operator` 没有自动缩放块，并且始终以其配置运行
 副本数。对于队列服务，更喜欢 KEDA，它根据队列积压进行扩展，而不是
 仅在CPU和内存上。有关更多信息，请参阅
-[KEDA autoscaling for LangSmith queues](#keda-autoscaling-for-langsmith-queues)。> [!警告]
+[KEDA autoscaling for LangSmith queues](#keda-autoscaling-for-langsmith-queues)。
+
+> [!警告]
 >
 > 启用自动缩放会覆盖您的副本计数。当任一块启用时
 > 服务，图表停止在该部署上设置 `replicas` 并且自动缩放器拥有它，因此
@@ -101,9 +101,7 @@ HPA 密钥为 `minReplicas` 和 `maxReplicas`； KEDA 等效项为 `minReplicaCo
 > [summary table](#summary)。 [High reads, high writes](#high-reads-high-writes) 呼吁
 > 50 个 `backend` 副本、24 个 `ingestQueue` 和 20 个 `platformBackend`，相对于发货的最大值
 > 6、10 和 10。针对该负载调整部署大小，然后切换到自动缩放，运行速度为
-> 您配置的容量的一部分。
-
-将 `maxReplicas` 设置为等于或高于负载模式的副本计数，并将 `minReplicas` 设置为
+> 您配置的容量的一部分。将 `maxReplicas` 设置为等于或高于负载模式的副本计数，并将 `minReplicas` 设置为
 您想要保持的稳态计数。的
 [example configurations](#example-langsmith-configurations-for-scale) 给两者一个固定的
 每个服务的副本计数和注释的自动缩放范围。
@@ -116,23 +114,23 @@ HPA 密钥为 `minReplicas` 和 `maxReplicas`； KEDA 等效项为 `minReplicaCo
 * 通过 `@traceable` 包装器摄取痕迹
 * 通过`/runs/multipart`端点提交跟踪
 
-在跟踪摄取中发挥重要作用的服务：* 平台后端服务：接收初始请求以提取跟踪并将跟踪放置在 Redis 队列上
+在跟踪摄取中发挥重要作用的服务：
+
+* 平台后端服务：接收初始请求以提取跟踪并将跟踪放置在 Redis 队列上
 * Redis缓存：用于对需要持久化的痕迹进行排队
-* 摄取队列服务：将 Redis 队列中的跟踪保留到每个启用的跟踪存储、ClickHouse、SmithDB 或两者
+* 摄取队列服务：将来自 Redis 队列的跟踪保留到每个启用的跟踪存储、ClickHouse、SmithDB 或两者
 * ClickHouse：用于跟踪的持久存储
-* SmithDB 摄取服务：从摄取队列服务接收跟踪并将其写入对象存储。仅当启用 SmithDB 摄取时运行。在统一模式下，单个 SmithDB Pod 处理摄取。
+* SmithDB 摄取服务：从摄取队列服务接收跟踪并将其写入对象存储。仅当启用 SmithDB 摄取时运行。在统一模式下，单个 SmithDB Pod 处理摄取。启用 [SmithDB](/langsmith/self-host-smithdb) 双摄取后，摄取队列服务会将每个批次并行写入 ClickHouse 和 SmithDB。仅当两个写入都完成时，批处理才会完成，因此缓慢的存储会减慢摄取队列的速度。当一次写入失败时，重试仅写入失败的存储。运行 [without ClickHouse](/langsmith/self-host-smithdb-install#install-without-clickhouse) 的安装单独写入 SmithDB。
 
-启用 [SmithDB](/langsmith/self-host-smithdb) 双摄取后，摄取队列服务会将每个批次并行写入 ClickHouse 和 SmithDB。仅当两个写入都完成时，批处理才会完成，因此缓慢的存储会减慢摄取队列的速度。当一次写入失败时，重试仅写入失败的存储。运行 [without ClickHouse](/langsmith/self-host-smithdb-install#install-without-clickhouse) 的安装单独写入 SmithDB。
+扩展写入路径（跟踪摄取）时，监视上面列出的服务和资源。以下是一些有助于提高跟踪摄取性能的典型更改：
 
-扩展写入路径（跟踪摄取）时，监视上面列出的服务和资源。以下是一些有助于提高跟踪摄取性能的典型更改：* 如果 ClickHouse 接近资源限制，请为其提供更多资源（CPU 和内存）。
+* 如果 ClickHouse 接近资源限制，请为其提供更多资源（CPU 和内存）。
 * 如果启用了 SmithDB 摄取，请根据您的写入负载调整 SmithDB 摄取服务的大小。参见[Configure SmithDB for scale](/langsmith/self-host-smithdb-scale)。
 * 如果摄取请求需要很长时间才能响应，请增加平台后端 Pod 的数量。
 * 如果 Redis 处理跟踪的速度不够快，则增加摄取队列服务 Pod 副本。
 * 如果您发现当前 Redis 实例达到资源限制，请使用更大的 Redis 缓存。这也可能是摄取请求需要很长时间的原因。
 
-### 对摄取队列进行分区
-
-默认情况下，所有跟踪都在一个名为 `ingestion` 的 Redis 队列中等待。在 Redis 集群上，该队列位于单个分片上，这可能会限制摄取吞吐量。分区将队列分成多个分片。
+### 对摄取队列进行分区默认情况下，所有跟踪都在一个名为 `ingestion` 的 Redis 队列中等待。在 Redis 集群上，该队列位于单个分片上，这可能会限制摄取吞吐量。分区将队列分成多个分片。
 
 > [!注意]
 >
@@ -151,14 +149,14 @@ commonEnv:
     value: "4"
   - name: GO_INGESTION_QUEUE_PARTITIONS
     value: "4"
-```对于一个分区，跟踪使用 `ingestion` 队列。更多的是，在 LangSmith v0.18.0 及更高版本中，他们使用 `ingestion-0` 到 `ingestion-3`，然后是 `ingestion-fur-4`、`ingestion-qg-5`，依此类推。工作人员还会继续读取`ingestion`，因此在分区之前排队的任务仍然会耗尽。
+```
 
-LangSmith 最多支持 250 个分区，但您不太可能需要那么多。作为起点，当摄取速度接近每秒 10,000 次运行并且您的 Redis 集群已经拥有超过 4 个分片时，请移至 4 个分区。
+对于一个分区，跟踪使用 `ingestion` 队列。更多的是，在 LangSmith v0.18.0 及更高版本中，他们使用 `ingestion-0` 到 `ingestion-3`，然后是 `ingestion-fur-4`、`ingestion-qg-5`，依此类推。工作人员还会继续读取`ingestion`，因此在分区之前排队的任务仍然会耗尽。
 
-按顺序更改变量，因为分区中没有工作程序读取的任务永远不会被处理：
+LangSmith 最多支持 250 个分区，但您不太可能需要那么多。作为起点，当摄取接近每秒 10,000 次运行并且您的 Redis 集群具有 4 个或更多分片时，请移至 4 个分区。
 
-* **要添加分区：** 提高 `GO_INGESTION_WORKER_PARTITIONS` 并部署，然后将 `GO_INGESTION_QUEUE_PARTITIONS` 提高到相同值并部署。
-* **要删除分区：** 降低 `GO_INGESTION_QUEUE_PARTITIONS` 并部署。等待删除的分区没有待处理、活动、重试或计划任务，然后降低 `GO_INGESTION_WORKER_PARTITIONS`。
+按顺序更改变量，因为分区中没有工作程序读取的任务永远不会被处理：* **要添加分区：** 提高 `GO_INGESTION_WORKER_PARTITIONS` 并部署，然后将 `GO_INGESTION_QUEUE_PARTITIONS` 提高到相同值并部署。
+* **要删除分区：** 降低 `GO_INGESTION_QUEUE_PARTITIONS` 并部署。等待删除的分区没有待处理、活动、重试或计划任务，然后降低`GO_INGESTION_WORKER_PARTITIONS`。
 
 要检查删除的分区是否为空，请对每个分区运行以下命令。将连接选项添加到 Redis 集群上的 `redis-cli` 和 `-c`。该示例检查从 6 变为 4 时删除的分区：
 
@@ -168,7 +166,9 @@ for q in ingestion-fur-4 ingestion-qg-5; do
 done
 ```
 
-当每个删除的分区的所有四个计数均为 `0` 时继续。要检查分区，请阅读队列工作程序在启动时写入的`asynq worker queue configuration`日志行。它列出了工作人员读取的队列。
+当每个删除的分区的所有四个计数均为 `0` 时继续。
+
+要检查分区，请阅读队列工作程序在启动时写入的 `asynq worker queue configuration` 日志行。它列出了工作人员读取的队列。
 
 ## 跟踪查询（读取路径）
 
@@ -181,11 +181,11 @@ done
 在查询跟踪中发挥重要作用的服务：
 
 * 后端服务：接收请求并向ClickHouse提交查询，然后响应请求
-* ClickHouse：痕迹的持久存储。这是请求跟踪信息时查询的主数据库。
+* ClickHouse：痕迹的持久存储。这是请求跟踪信息时查询的主数据库。当扩展读取路径（跟踪查询）时，监视上面列出的两个服务/资源会很有帮助。以下是一些有助于提高跟踪查询性能的典型更改：
 
-当扩展读取路径（跟踪查询）时，监视上面列出的两个服务/资源会很有帮助。以下是一些有助于提高跟踪查询性能的典型更改：* 增加后端服务pod的数量。如果后端服务 Pod 达到 1 核 CPU 使用率，这将是最有影响的。
+* 增加后端服务pod的数量。如果后端服务 Pod 达到 1 核 CPU 使用率，这将是最有影响的。
 * 给ClickHouse更多的资源（CPU或内存）。 ClickHouse 可能会占用大量资源，但它应该会带来更好的性能。
-* 移动到[replicated ClickHouse cluster](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)。添加 ClickHouse 副本有助于提高读取性能，但我们建议副本数量保持在 5 个以下（从 3 个开始）。
+* 移动到[replicated ClickHouse cluster](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)。添加 ClickHouse 副本有助于提高读取性能，但我们建议将副本数量保持在 5 个以下（从 3 个开始）。
 
 有关如何将其转换为舵图值的更精确指导，请参阅以下示例[section](#example-langsmith-configurations-for-scale)。如果您不确定为什么您的 LangSmith 实例无法处理特定负载模式，请联系 LangChain 团队。
 
@@ -195,9 +195,7 @@ done
 >
 > 适用于 LangSmith v0.13.0 及更高版本。
 
-我们强烈建议您在集群上安装 KEDA。 KEDA 使 `queue` 和 `ingest-queue` 服务能够根据队列积压大小以及 CPU 和内存自动扩展。这可以提高资源利用率并更好地处理流量峰值。
-
-### 安装科达
+我们强烈建议您在集群上安装 KEDA。 KEDA 使 `queue` 和 `ingest-queue` 服务能够根据队列积压大小以及 CPU 和内存自动扩展。这可以提高资源利用率并更好地处理流量峰值。### 安装科达
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm repo add kedacore https://kedacore.github.io/charts
@@ -218,7 +216,9 @@ ingestQueue:
   autoscaling:
     keda:
       enabled: true
-```启用 KEDA 后，队列服务将在积压增加时自动扩展，并在处理积压时自动缩小。这对于处理可变跟踪摄取负载而无需过度配置资源特别有用。
+```
+
+启用 KEDA 后，队列服务将在积压增加时自动扩展，并在处理积压时自动缩小。这对于在不过度配置资源的情况下处理可变跟踪摄取负载特别有用。
 
 > [!注意]
 >
@@ -234,13 +234,14 @@ ingestQueue:
 * 中意味着大约 20 个用户同时查看跟踪（每秒大约 40 个请求）
 * 高意味着大约 50 个用户同时查看跟踪（每秒大约 100 个请求）
 
-对于写入负载（跟踪摄取）：
+对于写入负载（跟踪摄取）：* 低意味着每秒最多提交 10 次运行
+* 中意味着每秒最多提交 100 次运行
+* 高意味着每秒最多提交 1,000 次运行
+* 非常高意味着每秒提交最多 10,000 次运行
 
-* 低意味着每秒最多提交 10 条跟踪
-* 中表示每秒最多提交 100 条跟踪
-* 高意味着每秒最多提交 1000 条跟踪> [!注意]
+> [!注意]
 >
-> 确切的最佳配置取决于您的使用情况和跟踪负载。使用以下示例并结合上述信息和您的具体用途来更新您认为合适的 LangSmith 配置。如果您有任何疑问，请联系LangChain团队。
+> 确切的最佳配置取决于您的使用情况和跟踪负载。使用以下示例并结合上述信息和您的具体用法来更新您认为合适的 LangSmith 配置。如果您有任何疑问，请联系LangChain团队。
 
 ### 低读取，低写入 
 
@@ -377,7 +378,7 @@ clickhouse:
 
 ### 中等读取，中等写入 
 
-这是一个很好的全面配置，应该能够处理 LangSmith 的大多数使用模式。在内部测试中，此配置允许我们扩展到每秒摄取 100 个跟踪和每秒 40 个读取请求。
+这是一个很好的全方位配置，应该能够处理 LangSmith 的大多数使用模式。在内部测试中，此配置允许我们扩展到每秒摄取 100 次运行和每秒 40 次读取请求。
 
 为此，我们推荐这样的配置：
 
@@ -449,7 +450,7 @@ commonEnv:
 
 ### 高读取，高写入 
 
-您的跟踪摄取率非常高（接近每秒提交 1000 个跟踪），并且还有许多用户在前端查询跟踪（超过 50 个用户）和/或脚本持续向 `/runs/query` 或 `/runs/<run-id>` 端点发出请求。**为此，我们强烈建议设置复制 ClickHouse 集群，以防止高写入规模下读取性能下降。** 有关如何设置复制 ClickHouse 集群的更多指导，请参阅我们的 [external ClickHouse doc](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)。对于此负载模式，我们建议使用 3 节点复制设置，其中集群中的每个副本应具有 14 个以上核心和 24 GB 以上内存的资源请求，以及 20 个核心和 48 GB 内存的资源限制。我们还建议 ClickHouse 的每个节点/实例为您启用的每天 TTL 提供 600 Gi 的卷存储（根据下面的配置）。
+您的跟踪摄取率非常高（接近每秒提交 1,000 次运行），并且还有许多用户在前端查询跟踪（超过 50 个用户）和/或脚本持续向 `/runs/query` 或 `/runs/<run-id>` 端点发出请求。**为此，我们强烈建议设置复制 ClickHouse 集群，以防止高写入规模下读取性能下降。** 有关如何设置复制 ClickHouse 集群的更多指导，请参阅我们的 [external ClickHouse doc](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)。对于此负载模式，我们建议使用 3 节点复制设置，其中集群中的每个副本应具有 14 个以上核心和 24 GB 以上内存的资源请求，以及 20 个核心和 48 GB 内存的资源限制。我们还建议 ClickHouse 的每个节点/实例为您启用的每天 TTL 提供 600 Gi 的卷存储（根据下面的配置）。
 
 总的来说，我们推荐这样的配置：
 
@@ -527,7 +528,91 @@ commonEnv:
     value: "0"
 ```
 
+### 高读取，非常高写入 
+
 > [!注意]
+>
+> 此配置需要 Helm Chart 0.18.0 或更高版本，并使用 SmithDB 作为唯一的跟踪存储。
+
+您每秒摄取多达 10,000 次运行，并且有许多用户在前端查询跟踪（大约 50 个用户），或者定期调用 `/runs/query` 或 `/runs/<run-id>` 端点的脚本。此配置使用 [SmithDB](/langsmith/self-host-smithdb) 作为唯一的跟踪存储。对于新安装，请设置 [without ClickHouse](/langsmith/self-host-smithdb-install#install-without-clickhouse) (`clickhouse.enabled: false`)。在现有安装中，请勿禁用 ClickHouse：这会丢失数据。使用 [Install LangSmith with SmithDB](/langsmith/self-host-smithdb-install) 迁移到 SmithDB，它与 ClickHouse 一起运行 SmithDB，然后将查询切换到它，如果需要，还可以使用 [migrate ClickHouse history](/langsmith/self-host-smithdb-migrate)。之后退役 ClickHouse 是一个单独的过程；首先通过[Support Portal](https://support.langchain.com/)联系LangChain。使用 [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale#baseline-tiers) 中的大型层调整 SmithDB 的大小。将 Redis 作为具有 4 个分片的外部 [Redis cluster](/langsmith/self-host-external-redis#redis-cluster) 运行，并将 [partition the ingestion queue](#partition-the-ingestion-queue) 运行到 4 个分区中。
+
+将以下副本计数视为最小值。该示例将 `redisRunsExpirySeconds` 设置为 `7200`（2 小时；图表默认值为 6 小时）。较短的值会降低 Redis 所需的内存，但也会限制单次运行的持续时间。监控[queue latency](/langsmith/self-host-smithdb-metrics#langsmith_asynq_queue_latency_seconds)并在其达到该值之前发出警报。
+
+使用如下配置：
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  blobStorage:
+    # Please also set the other keys to connect to your blob storage. See configuration section.
+    enabled: true
+  settings:
+    redisRunsExpirySeconds: "7200"
+
+commonEnv:
+  - name: GO_INGESTION_WORKER_PARTITIONS
+    value: "4"
+  - name: GO_INGESTION_QUEUE_PARTITIONS
+    value: "4"
+
+frontend:
+  deployment:
+    replicas: 4 # OR enable autoscaling below
+# autoscaling:
+#   hpa:
+#     enabled: true
+#     minReplicas: 2
+#     maxReplicas: 4
+
+platformBackend:
+  deployment:
+    replicas: 30 # OR enable autoscaling below
+# autoscaling:
+#   hpa:
+#     enabled: true
+#     minReplicas: 10
+#     maxReplicas: 60
+
+ingestQueue:
+  deployment:
+    replicas: 80 # OR enable KEDA autoscaling below
+    resources:
+      requests:
+        cpu: "2"
+        memory: 2Gi
+# autoscaling:
+#   keda:
+#     enabled: true
+#     minReplicaCount: 40
+#     maxReplicaCount: 150
+
+backend:
+  deployment:
+    replicas: 50 # OR enable autoscaling below
+# autoscaling:
+#   hpa:
+#     enabled: true
+#     minReplicas: 20
+#     maxReplicas: 50
+
+redis:
+  external:
+    enabled: true
+    existingSecretName: langsmith-redis-secret # Set the connection URL for your external Redis cluster (4 shards, 240+ GB)
+    cluster:
+      enabled: true
+
+# Also set the SmithDB metastore and object store keys. See the SmithDB installation guide.
+smithdb:
+  enabled: true
+  resourceTier: large
+  langsmith:
+    ingestion:
+      enabled: true
+    migration:
+      enabled: false
+    query:
+      enabled: true
+```> [!注意]
 >
 > 确保 Kubernetes 集群配置了足够的资源以扩展到建议的大小。部署后，Kubernetes 集群中的所有 Pod 都应处于 `Running` 状态。 Pod 陷入 `Pending` 可能表明您已达到节点池限制或需要更大的节点。
 >

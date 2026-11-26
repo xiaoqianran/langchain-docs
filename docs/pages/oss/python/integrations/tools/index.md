@@ -569,6 +569,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`TickerLayerToolkit`](https://tickerlayer.com/docs/agent-frameworks#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tickerlayer/month)](https://pypi.org/project/langchain-tickerlayer/) |
 | [`viaSocket`](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/viasocket/month)](https://pypi.org/project/viasocket/) |
 | [`AdsCrawlReadTool`](https://github.com/AdsCrawl/langchain-adscrawl) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-adscrawl/month)](https://pypi.org/project/langchain-adscrawl/) |
+| [`PlimsollCodeTool`](https://plimsollmark.github.io/plimsoll/integrations/langchain/index.html) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-plimsoll/month)](https://pypi.org/project/langchain-plimsoll/) |
 | [`PaySafely`](https://github.com/screwtapeai/pay-safely) | [  ![Downloads per month](https://static.pepy.tech/badge/screwtape-pay-safely/month)](https://pypi.org/project/screwtape-pay-safely/) |
 | [`DataXAPIToolkit`](https://github.com/data-x-api/langchain-dataxapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dataxapi/month)](https://pypi.org/project/langchain-dataxapi/) |
 | [`CyberWareX`](https://github.com/cyberwareX/langchain-cyberwarex#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cyberwarex/month)](https://pypi.org/project/langchain-cyberwarex/) |
@@ -601,6 +602,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`X402CleanWebTool`](https://github.com/nohosa001-pixel/x402-cleanweb-agent/tree/main/packages/langchain-x402-cleanweb#readme) | N/A |
 | [`x402checkToolkit`](https://x402check.dev) | N/A |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
+| [`AperiodicToolkit`](https://github.com/aperiodic-io/langchain-aperiodic#readme) | N/A |
 | [`AsinAmazonSearch`](https://github.com/asindotdev/langchain-asin#readme) | N/A |
 | [`AutomSearch`](https://github.com/automdev/langchain-autom#readme) | N/A |
 | [`BrewPageToolkit`](https://github.com/kochetkov-ma/langchain-brewpage#readme) | N/A |
@@ -616,6 +618,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`FrameScanTool`](https://github.com/Sandeep85Das/langchain-frame) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
 | [`KaerSearch`](https://api.kaer.ai/docs/langchain) | N/A |
+| [`KtemiaToolkit`](https://www.ktemia.com/docs/langchain/) | N/A |
 | [`MovoaVideoGenerator`](https://movoa.readthedocs.io/en/latest/integrations/langchain/) | N/A |
 | [`PiloterrGoogleSearch`](https://github.com/piloterr/langchain-piloterr#readme) | N/A |
 | [`PopNowToolkit`](https://popnow.ai/docs/langchain) | N/A |

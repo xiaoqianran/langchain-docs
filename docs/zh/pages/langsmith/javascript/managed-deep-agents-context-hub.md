@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## Context Hub 中包含哪些内容
 
@@ -18,7 +18,7 @@
 | - | - | - | - |
 |系统提示| [⟦T3⟧](/langsmith/javascript/managed-deep-agents-instructions) |是的 |没有 |
 |技能 | [⟦T4⟧](/langsmith/javascript/managed-deep-agents-skills) |是的 |没有 |
-|持久记忆 |可选的[⟦T5⟧](/langsmith/javascript/managed-deep-agents-memory)声明 |启用树；不覆盖现有内存 |是的，在`/memories/agent/` |
+|持久记忆 |可选的[⟦T5⟧](/langsmith/javascript/managed-deep-agents-memory)声明|启用树；不覆盖现有内存|是的，在`/memories/agent/` |
 
 工具、中间件、MCP 连接器、通道、计划、沙箱和代理定义随已编译的部署一起提供。它们未同步到 Context Hub。
 

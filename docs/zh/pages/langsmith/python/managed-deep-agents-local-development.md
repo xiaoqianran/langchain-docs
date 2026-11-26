@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 启动本地工作室
 
@@ -48,7 +48,7 @@ LangSmith 拒绝这些跟踪，直到代理记录存在。 [⟦T14⟧](/langsmit
 
 ## 配置本地服务器
 
-|旗帜|使用|
+|旗帜|使用 |
 | - | - |
 | `--port PORT` |设置本地服务器端口。 |
 | `--hostname HOSTNAME` |设置服务器侦听的主机名。 |

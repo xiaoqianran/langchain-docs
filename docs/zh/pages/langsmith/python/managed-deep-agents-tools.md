@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 将编写的工具放在`tools/`下，将它们导入到代理条目中，并将它们传递给代理定义：
 
@@ -98,9 +98,9 @@ agent = define_deep_agent(
 
 ## 使用秘密和上下文
 
-工具从环境变量中读取固定配置，例如区域或端点 URL。将 `mda dev` 的本地值放入 `.env` 中。 `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。相反，凭证属于 [connection](/langsmith/python/managed-deep-agents-connections)。 A connection keeps the value in your LangSmith workspace rather than the project.它还可以为每个调用者解析不同的凭据。参见[Use tools that require authentication](#use-tools-that-require-authentication)。
+工具从环境变量中读取固定配置，例如区域或端点 URL。将 `mda dev` 的本地值放入 `.env` 中。 `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。相反，凭证属于 [connection](/langsmith/python/managed-deep-agents-connections)。连接将值保留在您的 LangSmith 工作区而不是项目中。它还可以为每个调用者解析不同的凭据。参见[Use tools that require authentication](#use-tools-that-require-authentication)。
 
-For per-run values such as request metadata or feature flags, see [Access runtime context](#access-runtime-context).
+对于每次运行的值，例如请求元数据或功能标志，请参阅 [Access runtime context](#access-runtime-context)。
 
 ## 部署
 
@@ -128,9 +128,9 @@ For per-run values such as request metadata or feature flags, see [Access runtim
 
 如果工具需要 API 密钥或 OAuth 令牌，请在运行时使用 [connection](/langsmith/python/managed-deep-agents-connections) 进行解析。 `connections.get(...)` 接受连接 slug 和凭证所有者，并将凭证作为字符串返回。
 
-第二个参数选择所有者。传递 `{"type": "agent"}` 以获得整个部署共享的一个凭证，例如团队搜索密钥。通过`{"type": "user"}`作为呼叫者自己的凭证，因此代理充当他们的角色。有关更多信息，请参阅[Choose a credential owner](/langsmith/python/managed-deep-agents-connections#choose-a-credential-owner)。
+第二个参数选择所有者。传递 `{"type": "agent"}` 以获得整个部署共享的一个凭证，例如团队搜索密钥。传递`{"type": "user"}`作为呼叫者自己的凭证，因此代理充当他们的角色。有关更多信息，请参阅[Choose a credential owner](/langsmith/python/managed-deep-agents-connections#choose-a-credential-owner)。
 
-该工具解析调用者自己的 GitHub 凭证：
+该工具解析调用者自己的 GitHub 凭据：
 
 ```python tools/get_github_user.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import httpx
@@ -152,11 +152,11 @@ async def get_github_user() -> str:
         return response.json()["login"]
 ```
 
-用户拥有的连接需要每个调用者的授权。未授权该服务的人的第一次运行会在 [⟦T25⟧ interrupt](/langsmith/python/managed-deep-agents-connections#handle-the-authorization-interrupt) 上暂停。 Slack 和 LangSmith Studio 为调用者完成该中断。Create the connection itself with `mda connections create`.创建模式、本地开发、授权中断请参见[Manage connections](/langsmith/python/managed-deep-agents-connections)。
+用户拥有的连接需要每个调用者的授权。未授权该服务的人的第一次运行会在 [⟦T25⟧ interrupt](/langsmith/python/managed-deep-agents-connections#handle-the-authorization-interrupt) 上暂停。 Slack 和 LangSmith Studio 为调用者完成该中断。使用 `mda connections create` 创建连接本身。创建模式、本地开发、授权中断请参见[Manage connections](/langsmith/python/managed-deep-agents-connections)。
 
 ## 访问运行时上下文
 
-对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。 See [how to access context from within your tools](/oss/python/langchain/tools#access-context).
+对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
 
 Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runtime](/langsmith/python/managed-deep-agents-runtime)。
 

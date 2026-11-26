@@ -4,7 +4,7 @@
 
 # 将计划添加到托管Deep Agents
 
-按计划运行托管Deep Agents，因此代理无需用户消息即可使用静态声明或运行时工具进行操作。
+按计划运行托管Deep Agents，以便代理无需用户消息即可使用静态声明或运行时工具进行操作。
 
 时间表使托管 Deep Agents 代理变得主动：它可以在没有用户消息的情况下运行。在 `schedules/` 中声明固定计划，或者让代理通过您公开的工具在运行时创建重复性和一次性计划。
 
@@ -18,7 +18,7 @@
 * **跟进和提醒**：运行时工具会在用户请求时创建一次性或重复的计划。参见[Create schedules at runtime](#create-schedules-at-runtime)。
 * **编排签入**：后台作业或子代理完成后，一次性计划会唤醒代理。参见[Create a one-time schedule](#create-a-one-time-schedule)。> [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 项目结构
 

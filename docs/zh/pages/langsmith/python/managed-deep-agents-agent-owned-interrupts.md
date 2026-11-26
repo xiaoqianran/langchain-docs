@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。> [!注意]
+> 托管 Deep Agents 位于 [beta](/langsmith/release-stages) 上的 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。> [!注意]
 >
 > 代理拥有的中断需要已部署代理上的 `managed-deepagents>=0.8.0` 和 [Slack channel](/langsmith/python/managed-deep-agents-channels-slack)。表单仅在 Slack 中呈现。 LangSmith Studio 显示原始中断值。
 
@@ -134,7 +134,7 @@ Slack 不知道按钮属于哪个中断，因此 SDK 读取停放在线程上的
 |一个或多个 |呈现并完全匹配 |恢复匹配的中断。 |
 |几个|缺席 |没有任何运行。 SDK 记录歧义并确认该事件。 |
 |一个或多个 |存在但不匹配任何一个，或匹配多个 |没有任何运行。开始转弯会放弃停放的检查站。 |
-|无 |任何 |开始新的运行，没有新消息。仅可在 `runtime.thread.origin.channel.event` 上获取响应。 |
+|无 |任何|开始新的运行，没有新消息。仅可在 `runtime.thread.origin.channel.event` 上获取响应。 |
 
 每当代理可能在线程上驻留多个中断时，就携带相关 ID。如果没有一个，则线程只能在恰好有一个中断待处理时得到应答。
 
@@ -158,7 +158,7 @@ Slack 不知道按钮属于哪个中断，因此 SDK 读取停放在线程上的
 视图上的两个字段属于平台：
 
 * **`callback_id`**：设置为按钮的`action_id`，以便可识别提交。
-* **`private_metadata`**：保存打开模态的加密通道和线程。模态提交不携带通道或线程，因此这是返回对话的唯一途径。如果您的视图已经设置了 `private_metadata`，则模式不会打开。
+* **`private_metadata`**：保存打开模态的加密通道和线程。模态提交不携带通道或线程，因此这是返回对话的唯一途径。如果您的视图已设置 `private_metadata`，则模式不会打开。
 
 所有其他字段都按照您所写的那样转到 Slack。 Managed Deep Agents 不会验证视图，因此 Slack 拒绝的视图不会向用户显示任何内容。模态提交永远不会带有 `correlation_id`。仅当恰好有一个中断被停放时，模式才能应答线程。
 

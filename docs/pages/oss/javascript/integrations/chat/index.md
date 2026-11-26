@@ -263,6 +263,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's (legac
 | [`ChatSCX`](https://scx.ai/) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@scx-ai/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@scx-ai/langchain) |
 | [`ChatObscurify`](https://github.com/Obscurify-ai/langchain-obscurify) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://img.shields.io/npm/dm/@obscurify/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@obscurify/langchain) |
 | [`Auxen`](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ | N/A |
+| [`ChatBelcore`](https://github.com/terracore-kr/belcore-integrations#langchainjs) | | ❌ | ❌ | | N/A |
 | [`FakeListChatModel`](/oss/javascript/integrations/chat/fake) | | | | | N/A |
 | [`Tuning Engines`](https://www.tuningengines.com/) | ✅ | ✅ | ✅ | ❌ | N/A |
 

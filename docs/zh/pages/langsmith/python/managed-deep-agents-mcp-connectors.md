@@ -12,7 +12,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 在`tools/mcp.py`中声明MCP服务器：
 
@@ -92,7 +92,7 @@ mcp = define_mcp(
 | `automatic_sse_fallback` / `automaticSSEFallback` |对于 HTTP，允许客户端回退到 SSE。 |
 | `reconnect` |对于 SSE，配置重新连接行为。 |
 
-MCP 定义还接受以下选项：|选项 |默认|描述 |
+MCP 定义还接受以下选项：|选项 |默认 |描述 |
 | - | - | - |
 | `throw_on_load_error` | `True` |加载失败而不是从部分工具集开始。 |
 | `jit_auth` | `False` |仅适用于 LangSmith 托管工具 URL。当`True`时，模型还会获取调用者尚未连接的提供者的工具。第一次调用其中一个工具时会要求用户进行连接。当`False`时，运行在开始之前会询问每个丢失的连接。需要 `managed-deepagents` 0.10.2 或更高版本。 |
@@ -103,11 +103,11 @@ MCP 定义还接受以下选项：|选项 |默认|描述 |
 
 ## 何时使用 MCP 连接器
 
-|概念|亲切 |它如何到达代理|
+|概念 |亲切 |它如何到达代理|
 | - | - | - |
 | **MCP 服务器** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
 | **[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)** |部署API |将代理作为工具公开给 MCP 客户端 |
-| **[Authored tools](/langsmith/python/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |
+| **[Authored tools](/langsmith/python/managed-deep-agents-tools)** |申请代码|导入并传入代理定义 |
 | **[Channels](/langsmith/python/managed-deep-agents-channels)** |托管配置|接收启动代理运行并传递响应的外部消息 |
 
 欲了解更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。

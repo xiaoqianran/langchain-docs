@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 决定是否移动
 
@@ -32,7 +32,7 @@
 
 ## 检查哪些内容没有保留
 
-大多数代理移动时不会对条目文件进行任何更改。有四种情况需要首先做出决定：* **自定义后端**：托管 Deep Agents 提供代理的默认后端。这是线程范围的代理状态，或者当项目声明一个时为[managed sandbox](/langsmith/javascript/managed-deep-agents-sandboxes)。您无法替换默认后端。要保留您自己的后端，请将其安装在路径前缀处，例如 `/documents/`，带有 [⟦T17⟧](/langsmith/javascript/managed-deep-agents-agent-definition#mount-your-own-backends)。路由需要 0.10.3 或更高版本。
+大多数代理移动时不会对条目文件进行任何更改。有四种情况需要首先做出决定：* **自定义后端**：托管 Deep Agents 提供代理的默认后端。这是线程范围的代理状态，或者当项目声明一个时为[managed sandbox](/langsmith/javascript/managed-deep-agents-sandboxes)。您无法替换默认后端。要保留您自己的后端，请将其安装在路径前缀处，例如 `/documents/` 和 [⟦T17⟧](/langsmith/javascript/managed-deep-agents-agent-definition#mount-your-own-backends)。路由需要 0.10.3 或更高版本。
 * **您自己的存储或检查点**：线程、运行和持久性来自[Agent Server](/langsmith/agent-server)。依赖于特定商店实现的代理需要将逻辑移至工具或中间件中。
 * **自定义应用程序代码和路由**：托管 Deep Agents 托管代理，而不是任意 Web 应用程序。对于自定义路由、高级身份验证或代理周围的应用程序代码，请改用 [LangSmith Agent Server](/langsmith/agent-server)。
 * **Python 中的自定义状态模式**：`define_deep_agent` 不接受 `state_schema`，因此扩展 `DeepAgentState` 的代理无法按原样移动。 TypeScript `defineDeepAgent` 接受 `stateSchema`。
@@ -231,7 +231,7 @@ mda deploy
 > npx managed-deepagents init research-assistant
 > ```
 >
-> 安装通道选择创作语言：npm 包支架 TypeScript，PyPI 包支架 Python。该命令创建一个新目录并且不会就地运行，因此它适合绿地项目而不是迁移。请参阅[quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。
+> 安装通道选择创作语言：npm 包脚手架 TypeScript，PyPI 包脚手架 Python。该命令创建一个新目录并且不会就地运行，因此它适合绿地项目而不是迁移。请参阅[quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。
 
 ## 另请参阅
 

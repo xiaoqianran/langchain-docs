@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 > [!注意]
 >
@@ -60,18 +60,18 @@ export const schedule = defineSchedule({
 
 [Deploy the agent](/langsmith/javascript/managed-deep-agents-deploy) 自动运行计划。每个计划运行都会在部署上启动一个新线程。
 
-## 扩展模式* Post the digest to Slack with [schedule delivery](/langsmith/javascript/managed-deep-agents-schedules#deliver-results-to-slack).
-* Let people set their own digest time with [runtime schedules](/langsmith/javascript/managed-deep-agents-schedules#create-schedules-at-runtime).
-* Switch to built-in [web search](/langsmith/javascript/managed-deep-agents-search) so search requires no separate API key.
+## 扩展模式* 使用 [schedule delivery](/langsmith/javascript/managed-deep-agents-schedules#deliver-results-to-slack) 将摘要发布到 Slack。
+* 让人们通过[runtime schedules](/langsmith/javascript/managed-deep-agents-schedules#create-schedules-at-runtime)设置自己的消化时间。
+* 切换到内置[web search](/langsmith/javascript/managed-deep-agents-search)，因此搜索不需要单独的 API 密钥。
 
 ## 另请参阅
 
-* [Memory](/langsmith/javascript/managed-deep-agents-memory): choose and control durable memory layers.
-* [Schedules](/langsmith/javascript/managed-deep-agents-schedules): configure and manage scheduled runs.
+* [Memory](/langsmith/javascript/managed-deep-agents-memory)：选择和控制持久内存层。
+* [Schedules](/langsmith/javascript/managed-deep-agents-schedules)：配置和管理计划运行。
 * [Web search](/langsmith/javascript/managed-deep-agents-search)：添加内置搜索，无需单独的 API 密钥。
 
 ***
 
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-tutorial.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

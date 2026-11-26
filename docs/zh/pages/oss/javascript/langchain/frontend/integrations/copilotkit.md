@@ -4,13 +4,13 @@
 
 # 副驾驶套件
 
-将 CopilotKit 与 LangGraph、Deep Agents 结合使用，并将 React 与自定义端点、Python AG-UI 桥、结构化生成 UI 和消息传递平台通道结合使用
+将 CopilotKit 与 LangGraph、Deep Agents 结合使用，并将 React 与自定义端点、Python AG-UI 桥、结构化生成 UI、消息传递平台通道和 OpenBot 结合使用
 
-[CopilotKit](https://www.copilotkit.ai/) 提供完整的 React 聊天运行时，并且当您希望代理返回 **结构化 UI 负载** 而不仅仅是纯文本时，它与 LangGraph 配合得特别好。前端与 CopilotKit 运行时 URL 进行通信，并将辅助消息解析为动态 React 组件。
+[CopilotKit](https://www.copilotkit.ai/) 提供完整的 React 聊天运行时，当您希望代理返回 **结构化 UI 有效负载** 而不仅仅是纯文本时，它与 LangGraph 配合得特别好。前端与 CopilotKit 运行时 URL 进行通信，并将辅助消息解析为动态 React 组件。
 
 在此模式中，您的 LangGraph 部署在同一进程上为图形 API 和自定义 CopilotKit 端点提供服务。
 
-在服务器上，[copilotkit](https://pypi.org/project/copilotkit/) 包提供 [⟦T18⟧](https://docs.copilotkit.ai)，因此 LangGraph 图、LangChain 代理或 [Deep Agent](/oss/javascript/deepagents/overview) 可以使用 [Agent UI (AG-UI)](https://docs.ag-ui.com/) 线路协议、将工具和消息事件流式传输到聊天 UI，并读取或写入共享的 **CopilotKit** 状态切片。 TypeScript 设置通常将 CopilotKit 运行时安装在图形 API 旁边。 Python 设置在部署上安装 AG-UI FastAPI 桥，并在其前面的 Node 中运行 CopilotKit 运行时。
+在服务器上，[copilotkit](https://pypi.org/project/copilotkit/) 包提供 [⟦T18⟧](https://docs.copilotkit.ai)，因此 LangGraph 图、LangChain 代理或 [Deep Agent](/oss/javascript/deepagents/overview) 可以使用 [Agent UI (AG-UI)](https://docs.ag-ui.com/) 线路协议，将工具和消息事件流式传输到聊天 UI，并读取或写入共享的 **CopilotKit** 状态切片。 TypeScript 设置通常将 CopilotKit 运行时安装在图形 API 旁边。 Python 设置在部署上安装 AG-UI FastAPI 桥，并在其前面的 Node 中运行 CopilotKit 运行时。
 
 当您需要以下情况时，此方法很有用：* 一个现成的聊天运行时，而不是自己连接`stream.messages`
 * 自定义服务器端点，可以在部署的图表旁边添加特定于提供者的行为
@@ -28,7 +28,7 @@
 
 从较高的层面来看，CopilotKit 位于 React 应用程序和 LangGraph 部署之间。
 
-前端将对话状态发送到与图形 API 一起安装的自定义 `/api/copilotkit` 路由。该路由将请求转发到LangGraph，并且响应会返回，其中包含辅助消息以及组件注册表可以呈现的任何结构化 UI 有效负载。1. **像平常一样部署图表**使用LangSmith或使用LangGraph开发服务器。
+前端将对话状态发送到与图形 API 一起安装的自定义 `/api/copilotkit` 路由。该路由将请求转发到LangGraph，响应会返回辅助消息以及组件注册表可以呈现的任何结构化 UI 有效负载。1. **像平常一样部署图表**使用LangSmith或使用LangGraph开发服务器。
 2. **使用 HTTP 应用程序扩展部署**，该应用程序在图形 API 旁边安装 CopilotKit 路由。
 3. **将前端包装在 `CopilotKit`** 中并将其指向该自定义运行时 URL。
 4. **注册动态 UI 组件**并在渲染时将助手响应解析到这些组件中。
@@ -451,7 +451,7 @@ CopilotKit Intelligence 拥有平台连接（Slack、Microsoft Teams 等）及�
 2. Intelligence 使用为通道配置的凭据接收平台事件。
 3. 持久的 Intelligence 网关连接将轮流转交给您的 Channels 侦听器。
 4. 侦听器在 [AG-UI](https://docs.ag-ui.com/) 上运行您的 LangChain 代理并呈现回复。
-5. 智能将结果作为本机 Slack Block Kit 发送回。平台凭证永远不会进入代理进程。在 [CopilotKit Intelligence](https://docs.copilotkit.ai/slack/intelligence) 中创建托管通道并连接 Slack：Intelligence 存储 Slack 凭据并为您提供侦听器的 **通道代码** (`CHANNEL_CODE`) 和项目范围的 **Intelligence API 密钥** (`INTELLIGENCE_API_KEY`)。
+5. 智能将结果作为本机 Slack Block Kit 发送回。平台凭证永远不会进入代理进程。在 [CopilotKit Intelligence](https://docs.copilotkit.ai/slack/intelligence) 中创建托管通道并连接 Slack：Intelligence 存储 Slack 凭证并为您提供侦听器的 **通道代码** (`CHANNEL_CODE`) 和项目范围的 **Intelligence API 密钥** (`INTELLIGENCE_API_KEY`)。
 
 ### 安装
 
@@ -606,10 +606,28 @@ node --env-file=.env --import tsx channel.ts
 
 ### 其他平台Managed Slack 已普遍可用。托管团队是受控集成目标。 Channels SDK 还附带适用于 Teams、Discord、Telegram 和 WhatsApp 的直接适配器。有关当前平台列表和每个平台的设置，请参阅[Channels overview](https://docs.copilotkit.ai/slack)。
 
+## 开放机器人
+
+[OpenBot](https://open.bot) 是一个面向 AI 同事的开源、自托管工作区，基于 CopilotKit 和 AG-UI 构建。将您的LangChain代理连接为机器人以按计划运行它，为其提供连接的应用程序和带有浏览器的计算机，并将其操作置于工作区的工具权限、批准和审核日志下。代理代码保留在今天运行的位置。
+
+OpenBot 通过[AG-UI](https://docs.ag-ui.com/) 连接到代理，因此任何具有 OpenBot 可以到达的 AG-UI 端点的代理都可以成为机器人。
+
+OpenBot 直接调用 AG-UI 端点，而不是 CopilotKit 运行时路由。有关 TypeScript 进程通过 AG-UI 提供的 LangGraph 图，请参阅 OpenBot 存储库中的 [⟦T41⟧ example](https://github.com/CopilotKit/OpenBot/tree/main/examples/langgraph-bot)。
+
+连接代理：
+
+1. 在 OpenBot 中，创建一个机器人并为其指定名称和说明。
+2.选择自带代理，框架选择LangChain。
+3. 输入代理的 AG-UI 端点的 URL。
+4. （可选）添加密钥。 OpenBot 将其与每个请求一起发送到端点。OpenBot 在保存机器人之前会检查端点是否应答。
+
+有关完整设置，请参阅[OpenBot guide for builders](https://open.bot/builders)。对于也使用 OpenBot 每次运行时发送的工具的 LangGraph 代理，请参阅 [OpenBot repository](https://github.com/CopilotKit/OpenBot) 中的 [⟦T42⟧](https://github.com/CopilotKit/OpenBot/tree/main/agent-langgraph-agui)。
+
 ## 资源
 
 * CopilotKit 文档中的 [Deep Agents and CopilotKit](https://docs.copilotkit.ai/langgraph/deep-agents) — 端到端 Next.js、开发服务器和 **Deep Agent** 路径
 * [CopilotKit: LangGraph features](https://docs.copilotkit.ai/langgraph) — 生成式 UI、HITL、共享状态
+* [OpenBot](https://open.bot) — 开源工作区，通过 AG-UI 将代理作为机器人运行
 * [LangGraph deployment](/oss/javascript/langgraph/deploy) — 生产和开发服务器
 
 ## 最佳实践

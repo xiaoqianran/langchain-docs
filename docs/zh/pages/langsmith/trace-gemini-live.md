@@ -8,7 +8,7 @@
 
 > [!注意]
 >
-> 此集成处于测试阶段，因此其 API 可能会发生变化。
+> 此集成位于 [beta](/langsmith/release-stages) 中，因此其 API 可能会发生变化。
 
 Gemini Live 是一种语音到语音模型，可通过 WebSocket 流式传输键入的事件。无论您是使用原始 `google-genai` 连接还是 Google 代理开发套件 (ADK) 进行构建，集成都会将每个对话捕获为单个 LangSmith 跟踪，其中包含转录本、模型响应、工具调用、回合边界和中断的范围。
 
@@ -22,7 +22,7 @@ Gemini Live 是一种语音到语音模型，可通过 WebSocket 流式传输键
 
 ## 选择一种方法
 
-LangSmith 为连接 Gemini Live 的每种方式提供跟踪集成：
+LangSmith 为连接 Gemini Live 的每种方式提供了跟踪集成：
 
 * 如果直接连接`client.aio.live.connect(...)`，请使用`wrap_gemini_live`。
 * 如果您使用 [Google ADK](https://google.github.io/adk-docs/streaming/) 构建，请使用 `LangSmithGoogleADKLivePlugin`。
@@ -155,13 +155,13 @@ async with (
 
 在包装器的`sample_rate`处将两个通道录制为PCM16。录制扬声器中的座席音频，以便附件仅反映用户听到的内容。底层附件API请参见[Upload files with traces](/langsmith/upload-files-with-traces)。
 
-## 使用谷歌ADK
+## 使用谷歌 ADK
 
 当 ADK 拥有 Gemini Live 会话和工具循环时，请使用此方法。
 
 ### 设置跟踪
 
-导入`LangSmithGoogleADKLivePlugin`并将其注册到您的`Runner`上。它与您的 `run_live` 循环一起运行，因此您的循环仅处理音频播放、插入和 UI 更新：
+导入`LangSmithGoogleADKLivePlugin`并在您的`Runner`上注册。它与您的 `run_live` 循环一起运行，因此您的循环仅处理音频播放、插入和 UI 更新：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from google.adk.agents.run_config import RunConfig, StreamingMode
@@ -202,7 +202,7 @@ async for event in runner.run_live(
 >
 > 优雅地结束时，当实时请求队列关闭时，ADK 发送其 `after_run` 回调，并且插件完成跟踪。
 >
-> 在取消运行时，例如按 Ctrl-C 停止 `run_live` 的控制台应用程序，ADK 可能不会发送该回调。在拆卸过程中调用`plugin.finalize(session_id=adk_session.id)`，以便完成跟踪和音频附件。该调用是幂等的，因此如果 ADK 的回调已经运行，它不会执行任何操作。
+> 在取消的运行中，例如按 Ctrl-C 停止 `run_live` 的控制台应用程序，ADK 可能不会发送该回调。在拆卸过程中调用`plugin.finalize(session_id=adk_session.id)`，以便完成跟踪和音频附件。该调用是幂等的，因此如果 ADK 的回调已经运行，它不会执行任何操作。
 
 ### 将对话分组为线程每个对话都被捕获为其自己的跟踪，并具有自己的线程 ID。要提供 ID，例如将对话与相关交互分组在 LangSmith [thread](/langsmith/threads) 中，请将 `thread_id_provider` 传递给插件：
 

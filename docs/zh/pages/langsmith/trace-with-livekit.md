@@ -6,7 +6,7 @@
 
 > [!注意]
 >
-> 此集成处于测试阶段，因此其 API 可能会发生变化。
+> 此集成位于 [beta](/langsmith/release-stages) 中，因此其 API 可能会发生变化。
 
 使用 LangSmith LiveKit 集成来跟踪您的 [LiveKit Agents](https://docs.livekit.io/agents/) 语音代理，包括他们的文字记录和录音。有关高级约定，请参阅[Voice tracing fundamentals](/langsmith/trace-voice-fundamentals)。
 
@@ -77,7 +77,7 @@ async def my_agent(ctx: agents.JobContext):
     )
 ```
 
-`configure_livekit()` 默认使用 LiveKit 会话录音。 `record={"audio": True}` 选项告诉 LiveKit 创建录音。此设置适用于 STT/LLM/TTS 级联和语音到语音（实时）模型。实时模型需要一次额外的调用来捕获用户的记录。有关更多信息，请参阅[Use a realtime model](#use-a-realtime-model)。
+`configure_livekit()` 默认使用 LiveKit 会话录音。 `record={"audio": True}` 选项告诉 LiveKit 创建录音。此设置适用于 STT/LLM/TTS 级联和语音到语音（实时）模型。实时模型需要一次额外的调用来捕获用户的记录。欲了解更多信息，请参阅[Use a realtime model](#use-a-realtime-model)。
 
 ### 使用您自己的跟踪器提供程序
 

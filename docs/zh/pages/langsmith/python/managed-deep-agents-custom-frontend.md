@@ -12,16 +12,16 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 选择身份模式
 
-前端代码的运行位置决定了它可以使用哪种 [identity](/langsmith/python/managed-deep-agents-identity) 模式。 LangSmith API 密钥授予对整个工作区的访问权限，因此它绝不能到达浏览器。|前端 |凭证存在于 |身份模式 |
+前端代码的运行位置决定了它可以使用哪种 [identity](/langsmith/python/managed-deep-agents-identity) 模式。 LangSmith API 密钥授予对整个工作区的访问权限，因此它绝不能到达浏览器。|前端 |凭证存在于 |身份模式|
 | - | - | - |
 |浏览器应用程序（React、Vue、Svelte、Angular）|用户的浏览器 | [Supabase](/langsmith/python/managed-deep-agents-identity#configure-identity-with-supabase) |
 |转发浏览器请求的服务器路由或代理 |您的服务器 | [LangSmith API key](/langsmith/python/managed-deep-agents-identity#configure-identity-with-a-langsmith-api-key) 或 [your own backend](/langsmith/python/managed-deep-agents-identity#configure-identity-with-your-own-backend) |
 | Python 应用程序（Streamlit、Gradio、Dash）|您的服务器 | LangSmith API 密钥 |
-| `mda dev` 本地开发 |无需任何凭证 |任何 |
+| `mda dev` 本地开发 |无需任何凭证 |任何|
 
 通过后端身份，浏览器永远不会调用部署。您的 API 对用户进行身份验证，然后使用入口密钥调用部署。 Supabase 和后端身份还为每个登录用户提供私有线程。 API 密钥默认情况并非如此：持有密钥的每个调用者共享相同的线程空间。
 
@@ -205,7 +205,7 @@ if prompt := st.chat_input("Message the agent"):
 ## 另请参阅
 
 * [Identity](/langsmith/python/managed-deep-agents-identity)：配置调用者如何对部署进行身份验证。
-* [Frontend overview](/oss/python/langchain/frontend/overview)：消息渲染、工具调用、中断和生成式 UI 模式。
+* [Frontend overview](/oss/python/langchain/frontend/overview)：消息渲染、工具调用、中断和生成 UI 模式。
 * [Connections](/langsmith/python/managed-deep-agents-connections)：处理 UI 中的凭证授权中断。
 * [MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)：将代理暴露给MCP客户端而不是调用API。
 * [Channels](/langsmith/python/managed-deep-agents-channels)：从 Slack 或您自己的 HTTP 服务到达代理。

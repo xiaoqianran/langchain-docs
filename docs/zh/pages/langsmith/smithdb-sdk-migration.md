@@ -31,7 +31,7 @@
 
 事实来源：首先获取[https://docs.langchain.com/langsmith/smithdb-sdk-migration.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration.md)（每种语言的最低 SDK 版本、异常更改、已停止的方法）。然后仅获取该代码库需要的区域页面。每一个都有 Python、TypeScript、Go、Java 和 cURL 的前后示例：* 搜索项目中的运行：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs.md)
 * 通过 ID 获取一个运行、其子运行及其 URL：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-runs.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-runs.md)
-* 查询跟踪、它们的令牌和成本聚合以及一个跟踪中的运行：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md)
+* 查询跟踪、它们的令牌和成本聚合，以及一个跟踪中的运行：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md)
 * 查询线程以及单个线程中的踪迹：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-threads.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-threads.md)
 * 查询数据集上实验的运行情况：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-experiments.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-experiments.md)
 * 反馈、注释队列和共享运行：[https://docs.langchain.com/langsmith/smithdb-sdk-migration-feedback.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-feedback.md)
@@ -62,26 +62,27 @@
 
 如果您发现超过 20 个调用站点，建议按区域将工作分成单独的 PR（每个文件夹、服务或包），并列出每个 PR 的调用站点计数，并询问先执行哪一个。第 3 阶段仅涵盖我选择的 PR。
 
-在 Python 中，将在事件循环内或跨线程（同步 Web 处理程序、线程池、同步 LangGraph 节点等）运行的同步代码的每个调用站点标记为一个决策：新方法在那里是异步的。对您需要我做出的每个决定（1、2、3...）进行编号，每个决定都包含您提出的答案，以便我可以一一批准或拒绝它们（例如“1 是，2 否，3 是”）。
+在 Python 中，将每个在事件循环内或跨线程（同步 Web 处理程序、线程池、同步 LangGraph 节点等）运行的同步代码的调用站点标记为一个决策：新方法在那里是异步的。对您需要我做出的每个决定（1、2、3...）进行编号，每个决定都包含您提出的答案，以便我可以一一批准或拒绝它们（例如“1 是，2 否，3 是”）。
 
 然后停下来等待我的批准。
 
 **第3阶段：迁移（批准后，仅限我批准的范围和决定）**
 
-1. 将正在使用的每个LangSmith SDK 升级到最新的稳定版本（及其锁定文件：uv.lock/poetry.lock、package-lock/pnpm-lock/yarn.lock、go.sum、Gradle/Maven）。指南的最低限度只是地板。如果最新版本破坏了与此迁移无关的内容，请使用有效的最新版本，切勿低于最低版本，并在 PR 中说明原因。2. 从表中迁移每个调用站点。 v2 查询采用 `project_ids` (UUID)，而不是项目名称。按照指南所示按名称解析普通项目。如果项目是代理环境、实验或工作区评估器，建议使用[https://docs.langchain.com/langsmith/resolve-an-agent](https://docs.langchain.com/langsmith/resolve-an-agent)解决它，并标记它是测试版并且需要更新的 SDK 和服务器。在Python中，`client.runs`、`client.threads`、`client.traces`、`client.datasets`、`client.annotation_queues`、`client.public`、...下的方法是异步的；其他 `Client` 方法，例如 `create_feedback` 保持同步。在异步代码（异步函数、FastAPI `async def` 处理程序、异步 LangGraph 节点、笔记本等）中，`await` 它们。在同步脚本中，将迁移的调用放入一个 `async def` 中，并使用 `asyncio.run()` 运行一次。对于您标记为决策的调用站点，请执行我选择的操作。请参阅指南的“Python 故障排除”部分。
-3. 为涉及的每种语言运行测试、检查和构建。重新运行第 2 阶段搜索并显示没有找到任何内容，或解释每个剩余内容。
-4. 将更改保留在本地：提交，而不是推送。显示摘要：每个文件、更改内容和原因，以及尚待审核的内容。然后停止。仅在我批准的情况下推送并打开拉取请求。
+1. 将正在使用的每个LangSmith SDK 升级到最新的稳定版本（及其锁定文件：uv.lock/poetry.lock、package-lock/pnpm-lock/yarn.lock、go.sum、Gradle/Maven）。指南的最低限度只是地板。如果最新版本破坏了与此迁移无关的内容，请使用有效的最新版本，切勿低于最低版本，并在 PR 中说明原因。2. 从表中迁移每个调用站点。 v2 查询采用 `project_ids` (UUID)，而不是项目名称。按照指南所示按名称解析普通项目。如果项目是代理环境、实验或工作区评估器，建议使用[https://docs.langchain.com/langsmith/resolve-an-agent](https://docs.langchain.com/langsmith/resolve-an-agent)解决它，并标记它是测试版并且需要更新的 SDK 和服务器。在Python中，`client.runs`、`client.threads`、`client.traces`、`client.datasets`、`client.annotation_queues`、`client.public`、...下的方法是异步的；其他 `Client` 方法，例如 `create_feedback` 保持同步。在异步代码（异步函数、FastAPI `async def` 处理程序、异步 LangGraph 节点、笔记本等）中，使用 `async for` 迭代分页结果，例如跨所有页面的 `client.runs.query()`，或使用 `await` 分页器来获取其第一页。对于非分页方法使用 `await`。在同步脚本中，将迁移的调用放入一个 `async def` 中，并使用 `asyncio.run()` 运行一次。对于您标记为决策的调用站点，请执行我选择的操作。请参阅指南的“Python 故障排除”部分。
+3. 为涉及的每种语言运行测试、检查和构建。重新运行第 2 阶段搜索并显示没有找到任何内容，或解释每个剩余内容。4. 将更改保留在本地：提交，而不是推送。显示摘要：每个文件、更改内容和原因，以及尚待审核的内容。然后停止。仅在我批准的情况下推送并打开拉取请求。
 
-**第四阶段：反馈和跟进**1. List the raw HTTP calls noted in phase 2 that could use an SDK method instead. For each, say what the SDK would bring to that call site, for example automatic pagination, retries with backoff on rate limits and server errors, typed parameters that catch field renames, deprecation warnings before an endpoint is removed, or config from the environment, plus anything else that applies to it. Then ask me if I want to switch them in a separate change. Skip this if there are none.
-2. List anything the guide did not cover or got wrong, as a short note I can send to LangChain. Always end with this note, even if it is empty ("nothing to report").
+**第四阶段：反馈和跟进**
 
-**规则**
+1. 列出第 2 阶段中记录的可以使用 SDK 方法的原始 HTTP 调用。对于每个，说明 SDK 将为该调用站点带来什么，例如自动分页、速率限制和服务器错误的退避重试、捕获字段重命名的键入参数、删除端点之前的弃用警告或环境中的配置，以及适用于它的任何其他内容。然后问我是否想在单独的更改中切换它们。如果没有则跳过此操作。
+2. 列出指南未涵盖或错误的所有内容，作为我可以发送至LangChain 的简短说明。始终以此注释结尾，即使它是空的（“没有什么可报告的”）。
 
-* If the guide does not cover a call site or parameter, search the rest of the LangSmith docs first ([https://docs.langchain.com/langsmith](https://docs.langchain.com/langsmith), including the API reference). Then ask me, and include a proposed replacement with the doc link that backs it, or say you found nothing. Never apply an uncovered change without my go.
-* Do not call write endpoints or change LangSmith data while testing.
-* Never push a branch, open a pull request or post anything to GitHub without my go.
+**规则*** 如果指南未涵盖调用站点或参数，请首先搜索 LangSmith 文档的其余部分（[https://docs.langchain.com/langsmith](https://docs.langchain.com/langsmith)，包括 API 参考）。然后询问我，并在支持它的文档链接中添加建议的替换项，或者说您什么也没找到。未经我许可，切勿应用未覆盖的更改。
+* 测试时不要调用写入端点或更改LangSmith数据。
+* 未经我的许可，切勿推送分支、打开拉取请求或将任何内容发布到 GitHub。
 
-## Deprecation and removal每个 SDK 方法及其底层端点共享相同的弃用日期。
+## 弃用和删除
+
+每个 SDK 方法及其底层端点共享相同的弃用日期。
 
 |部署|弃用 |移除 |
 | - | - | - |
@@ -100,19 +101,19 @@
 |打字稿 | `langsmith` | `>=0.8.9` |
 |爪哇 | `langsmith-java` | `0.1.0-beta.22` |
 |去 | `langsmith-go` | `v0.25.4` |
-|命令行 | `langsmith-cli` | `v0.2.44` |
+|命令行| `langsmith-cli` | `v0.2.44` |
 
 [LangSmith CLI](/langsmith/langsmith-cli) 查询相同的 SmithDB 支持的端点，并需要 `v0.2.44` 或更高版本。
 
-## 关于自托管
-
-* 本指南中记录的新方法需要自托管版本 0.16 或更高版本，与所使用的数据存储无关。
+## 关于自托管* 本指南中记录的新方法需要自托管版本 0.16 或更高版本，与所使用的数据存储无关。
 * 一旦 ClickHouse 被禁用，已弃用的方法将停止工作。
 * 在可能的情况下，SDK 会发出警告或错误，标识要升级到的版本，而不是在没有任何解释的情况下失败。
 
 ## 按区域划分的方法
 
-每种方法的更改前后都记录在其区域的页面上。> [卡][Query runs](/langsmith/smithdb-sdk-migration-query-runs)
+每种方法的更改前后都记录在其区域的页面上。
+
+> [卡][Query runs](/langsmith/smithdb-sdk-migration-query-runs)
 >
 > 搜索项目中的运行：过滤器、字段投影、排序和分页。迁移中表面积最大。
 
@@ -134,13 +135,13 @@
 
 > [卡][Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback)
 >
-> 创建运行反馈、将运行添加到注释队列以及共享、取消共享或读取公开共享的运行。
-
-## 受影响的方法和端点
+> 创建运行反馈、将运行添加到注释队列以及共享、取消共享或读取公开共享的运行。## 受影响的方法和端点
 
 下面的每个 SDK 方法和 API 端点均已弃用，并在上面的删除日期停止工作。在您的代码库中搜索所有这些内容。端点路径是相对于`/api/v1`；除非另有说明，各区域页面均包含之前/之后的示例。
 
-### SDK方法> [选项卡] Python
+### SDK方法
+
+> [选项卡] Python
 >
 > `Client` 和 `AsyncClient` 上已弃用的方法：
 >
@@ -161,8 +162,7 @@
 > | `list_runs_from_annotation_queue()`、`get_run_from_annotation_queue()` | `client.annotation_queues.items.list()` |
 > | `delete_run_from_annotation_queue()` | `client.annotation_queues.items.delete_all()` |
 > | `evaluate_run()`、`aevaluate_run()` |没有替代：自己运行评估器并使用 `create_feedback()` | 记录结果
->
-> `client.<resource>` 替代品（`client.runs`、`client.threads`、...）在 `Client` 上是异步的；其他`Client`方法，例如`create_feedback`保持同步。在异步代码中，`await`它们。在同步代码中，保持相同的`Client`：将迁移的调用放在一个`async def`中，并使用`asyncio.run()`运行一次（请参阅[Python troubleshooting](#python-troubleshooting)）。它们仅返回`selects`中列出的字段，因此包括`"ID"`。
+>> `client.<resource>` 替代品（`client.runs`、`client.threads`、...）在 `Client` 上是异步的；其他`Client`方法例如`create_feedback`保持同步。分页方法（例如 `client.runs.query()`）返回 `AsyncPaginator`：使用 `async for` 迭代所有页面上的各个运行，或使用 `await` 来获取第一页。在使用`async for`之前，您不需要`await`分页器。对于非分页方法使用 `await`。在同步代码中，保持相同的`Client`：将迁移的调用放在一个`async def`中，并使用`asyncio.run()`运行一次（请参阅[Python troubleshooting](#python-troubleshooting)）。它们仅返回`selects`中列出的字段，因此包括`"ID"`。
 
 > [选项卡] TypeScript
 >
@@ -222,7 +222,7 @@
 | `DELETE /runs/{run_id}/share` | `DELETE /api/v2/runs/{trace_id}/share`（获取跟踪 ID）| [Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback) |
 | `POST /datasets/{dataset_id}/runs` | `POST /api/v2/datasets/{dataset_id}/experiment-runs` | [Dataset experiment runs](/langsmith/smithdb-sdk-migration-experiments) |
 | `GET /public/{share_token}/run/{run_id}` | `GET /api/v2/public/{share_token}/run/{run_id}` | [Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback) |
-| `POST /public/{share_token}/runs/query` | `POST /api/v2/public/{share_token}/runs/query` | [Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback) |注释队列运行端点移动到`/api/v1/platform/annotation-queues`下的队列项API。要将运行添加到队列，请参阅[Annotation queues: add runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-add-runs)。有关列出和计数队列项目的信息，请参阅[Annotation queues: read runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-read-runs)。对于其他端点，请参阅请求和响应形状的[API reference](/langsmith/smith-api)。
+| `POST /public/{share_token}/runs/query` | `POST /api/v2/public/{share_token}/runs/query` | [Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback) |注释队列运行端点移动到`/api/v1/platform/annotation-queues`下的队列项API。有关将运行添加到队列的信息，请参阅[Annotation queues: add runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-add-runs)。有关列出和计数队列项目的信息，请参阅[Annotation queues: read runs](/langsmith/smithdb-sdk-migration-feedback#annotation-queues-read-runs)。对于其他端点，请参阅请求和响应形状的[API reference](/langsmith/smith-api)。
 
 |已弃用 (`/annotation-queues/...`) |替换品（`/api/v1/platform/annotation-queues/...`）|
 | - | - |
@@ -296,19 +296,23 @@
 
 |蟒蛇 |打字稿 |
 | - | - |
-| [⟦T272⟧](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_formulas) |不适用 |
-| [⟦T273⟧](https://reference.langchain.com/python/langsmith/client/Client/get_feedback_formula_by_id) |不适用 |
-| [⟦T274⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_formula) |不适用 |
-| [⟦T275⟧](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_formula) |不适用 |
-| [⟦T276⟧](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_formula) |不适用 |
+| [⟦T281⟧](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_formulas) |不适用 |
+| [⟦T282⟧](https://reference.langchain.com/python/langsmith/client/Client/get_feedback_formula_by_id) |不适用 |
+| [⟦T283⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_formula) |不适用 |
+| [⟦T284⟧](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_formula) |不适用 |
+| [⟦T285⟧](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_formula) |不适用 |
 
 ## Python 故障排除
+
+### 评估现有实验当您将现有实验传递给`evaluate()`或`aevaluate()`时，Python SDK会在内部加载其运行。在同时启用 ClickHouse 和 SmithDB 查询支持的部署中，它使用 `list_runs()` 执行此步骤。 SDK 会抑制这些内部调用的弃用警告，但它们可能会在工作区的弃用报告中显示为 `POST /runs/query`。当两个查询后端保持启用状态时，单独升级 SDK 并不能消除这些调用。在仅限 SmithDB 的部署中，SDK 通过 SmithDB 支持的 API 加载实验。
+
+保持 SDK 最新。在此迁移过程中，您不需要替换 `evaluate()` 或 `aevaluate()` 调用。单独迁移您自己的代码中的任何直接 `list_runs()` 调用。
 
 ### 从同步代码调用新方法
 
 保持相同的 `Client` 并选择与代码运行位置匹配的模式：* 同步脚本：将迁移的调用放在一个`async def`中，并与`asyncio.run()`一起运行一次。
-* 笔记本、异步函数、FastAPI `async def` 处理程序、异步 LangGraph 节点，...：`await` 直接调用。
-* 当事件循环已经运行时，`asyncio.run()`会引发`RuntimeError: asyncio.run() cannot be called from a running event loop`。 `await` 拨打电话。
+* 笔记本、异步函数、FastAPI `async def` 处理程序、异步 LangGraph 节点，...：对分页结果的所有页面使用 `async for`，或对首页或非分页调用使用 `await`。
+* `asyncio.run()` 如果事件循环已在运行则引发 `RuntimeError: asyncio.run() cannot be called from a running event loop`。直接使用`async for`或`await`代替。
 * 来自共享 `Client` 的多个线程（线程池、FastAPI `def` 处理程序、同步负载下的 LangGraph 节点，...）的 `asyncio.run()` 可能会因 `Event loop is closed` 而失败。该调用路径需要做出决定：使其异步，或者在一个 `asyncio.run()` 中使用 `asyncio.gather()` 批量调用。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -345,7 +349,7 @@ except (NotFoundError, LangSmithNotFoundError):
 
 ### 在测试中模拟新方法
 
-从`langsmith` 0.12.0 开始，新方法使用[⟦T293⟧](https://pypi.org/project/httpx2/)而不是`httpx`发送请求，因此`respx`、`pytest-httpx`和`httpx.MockTransport`不会拦截它们。使用 `AsyncMock` 来修补 `client.runs`（或其他资源）上的方法：
+从`langsmith` 0.12.0 开始，新方法使用[⟦T311⟧](https://pypi.org/project/httpx2/)而不是`httpx`发送请求，因此`respx`、`pytest-httpx`和`httpx.MockTransport`不会拦截它们。使用 `AsyncMock` 来修补 `client.runs`（或其他资源）上的方法：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from unittest.mock import AsyncMock, patch

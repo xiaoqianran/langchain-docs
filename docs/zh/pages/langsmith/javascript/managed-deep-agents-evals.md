@@ -12,7 +12,7 @@ Managed Deep Agents 初始化 Harbor 工作区。 Harbor 在隔离环境中针�
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [beta](/langsmith/release-stages) 上的 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 先决条件
 
@@ -125,7 +125,7 @@ uv run --env-file .env --python 3.12 --with 'harbor[langsmith]==0.21.0' harbor r
   --plugin mda_harbor.langsmith_plugin:LangSmithPlugin
 ```
 
-将 `my-agent` 替换为项目目录名称。生成的命令填写名称并在 Windows 上使用 PowerShell 语法。编辑代理后重新运行命令会拾取项目更改。
+将 `my-agent` 替换为项目目录名称。生成的命令将填写名称并在 Windows 上使用 PowerShell 语法。编辑代理后重新运行命令会拾取项目更改。
 
 **5.检查结果**
 

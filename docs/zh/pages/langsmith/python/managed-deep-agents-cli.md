@@ -12,7 +12,7 @@ mda 命令、项目文件和部署行为的参考。
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上**公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 要了解最快的端到端路径，请参阅[quickstart](/langsmith/python/managed-deep-agents-quickstart)。有关工作流程指南，请参阅 [Identity](/langsmith/python/managed-deep-agents-identity)、[Memory](/langsmith/python/managed-deep-agents-memory)、[Evals](/langsmith/python/managed-deep-agents-evals)、[Custom tools](/langsmith/python/managed-deep-agents-tools)、[Connections](/langsmith/python/managed-deep-agents-connections)、[Custom middleware](/langsmith/python/managed-deep-agents-middleware)、[Sandboxes](/langsmith/python/managed-deep-agents-sandboxes)、[Channels](/langsmith/python/managed-deep-agents-channels)、[Schedules](/langsmith/python/managed-deep-agents-schedules) 和[Deploy an agent](/langsmith/python/managed-deep-agents-deploy)。
 
@@ -39,12 +39,12 @@ uv run mda --version
 
 如果未设置，交互式终端会提示您粘贴密钥（CLI 将其保存到`.env`），或者按 Enter 并通过浏览器登录。
 
-对于 CLI 读取的每个设置，Shell 变量都优于 `.env`，包括 `LANGSMITH_ENDPOINT` 和 `LANGSMITH_WORKSPACE_ID`。如果两者不同，CLI 将使用 shell 值并打印警告。```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+对于 CLI 读取的每个设置，Shell 变量都优于 `.env`，包括 `LANGSMITH_ENDPOINT` 和 `LANGSMITH_WORKSPACE_ID`。如果两者不同，CLI 将使用 shell 值并打印警告。
+
+```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 OPENAI_API_KEY=<OPENAI_API_KEY>
-```
-
-要使用组织范围的密钥进行部署，请设置 `LANGSMITH_WORKSPACE_ID` 或将 `--workspace-id` 传递给 `mda deploy`。
+```要使用组织范围的密钥进行部署，请设置 `LANGSMITH_WORKSPACE_ID` 或将 `--workspace-id` 传递给 `mda deploy`。
 
 LangSmith API 密钥对部署进行身份验证。代理的模型提供者在运行时也需要凭据。在 `.env` 中设置提供程序密钥，将其导出到 shell 中，或将其配置为 LangSmith 工作区密钥。例如，`openai:gpt-6.1-sol`需要`OPENAI_API_KEY`。
 

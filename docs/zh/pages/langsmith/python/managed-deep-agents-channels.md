@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 项目结构
 
@@ -68,7 +68,7 @@ flowchart LR
 运行期间发送的消息首先作为排队运行在线程上等待。在每次模型调用之前，代理会检查线程是否可以进行排队运行。对于每一条消息，代理按照消息发送的顺序：1. 取消排队运行，原因为 `taken`，因此该消息稍后不会启动自己的运行。
 2. 将运行的消息添加到活动运行的对话中。
 
-转向在步骤之间起作用。已经在进行的工具调用或模型调用首先完成。
+转向在步骤之间起作用。已在进行的工具调用或模型调用首先完成。
 
 模型写出最终答案后，代理再次检查线程。如果在最后一次模型调用期间收到消息，则运行将返回到带有该消息的模型，而不是结束。
 

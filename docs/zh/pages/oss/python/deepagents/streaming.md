@@ -10,16 +10,16 @@ Deep Agents 构建于 LangGraph 的流基础架构之上，为子代理流提供
 
 深度代理流可以实现什么：
 
-* [**Stream subagent progress**](#subagent-progress)—跟踪每个子代理并行运行时的执行情况。
-* [**Stream LLM tokens**](#llm-tokens)—来自主代理和每个子代理的流令牌。
+* [**Stream subagent progress**](#subagent-progress)—跟踪每个并行运行的子代理的执行情况。
+* [**Stream LLM tokens**](#llm-tokens)——来自主代理和每个子代理的流令牌。
 * [**Stream tool calls**](#tool-calls)—查看子代理执行中的工具调用和结果。
 * [**Stream custom updates**](#custom-updates)—从内部子代理节点发出用户定义的信号。
 
 ## 启用子图流
 
-Deep Agents 使用 LangGraph 的子图流来处理来自子代理执行的表面事件。要接收子代理事件，请在流式传输时启用 `stream_subgraphs`。
+Deep Agents 使用LangGraph 的子图流来处理子代理执行中的表面事件。要接收子代理事件，请在流式传输时启用 `stream_subgraphs`。
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -50,7 +50,7 @@ for chunk in agent.stream(
         print(chunk["data"])
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -81,7 +81,7 @@ for chunk in agent.stream(
         print(chunk["data"])
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -112,7 +112,7 @@ for chunk in agent.stream(
         print(chunk["data"])
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -143,7 +143,7 @@ for chunk in agent.stream(
         print(chunk["data"])
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -174,7 +174,7 @@ for chunk in agent.stream(
         print(chunk["data"])
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -205,7 +205,7 @@ for chunk in agent.stream(
         print(chunk["data"])
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -238,15 +238,16 @@ for chunk in agent.stream(
 
 ## 命名空间
 
-当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。|命名空间 |来源 |
+当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。|命名空间|来源 |
 | - | - |
 | `()`（空）|主代理|
 | `("tools:abc123",)` |由主代理的 `task` 工具调用 `abc123` 生成的子代理 |
-| `("tools:abc123", "model_request:def456")` |子代理内的模型请求节点 |
+
+在每个更新块中，字典键是[graph node names](#inspect-graph-nodes)，例如`tools`和模型节点（`model`）。
 
 使用命名空间将事件路由到正确的 UI 组件：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for chunk in agent.stream(
     {"messages": [{"role": "user", "content": "Plan my vacation"}]},
     stream_mode="updates",
@@ -269,11 +270,36 @@ for chunk in agent.stream(
             print(f"Main agent: {chunk['data']}")
 ```
 
+## 检查图节点
+
+`create_deep_agent` 返回已编译的 LangGraph 图。
+
+使用`stream_mode="updates"`，每个块都由节点名称作为键控，因此您需要这些名称来过滤或渲染进度。
+
+当您不需要原始更新密钥时，首选[event streaming](/oss/python/deepagents/event-streaming)。
+
+列出代理配置的节点：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+
+agent = create_deep_agent(
+    model="google_genai:gemini-4-hydrogen",
+)
+print(list(agent.get_graph().nodes))
+```
+
+每个深度代理都包含核心循环节点`model`和`tools`。实现 `before_agent`、`before_model`、`after_model` 或 `after_agent` 挂钩的中间件会添加名为 `{MiddlewareName}.{hook}` 的节点，例如 `PatchToolCallsMiddleware.before_agent`。
+
+确切的设置取决于线束和您的配置所附加的中间件。
+
+对于根据这些相同键进行过滤的LangChain代理进度流，请参阅[Agent progress](/oss/python/langchain/streaming#agent-progress)。
+
 ## 子代理进度
 
 使用 `stream_mode="updates"` 跟踪每个步骤完成时的子代理进度。这对于显示哪些子代理处于活动状态以及它们已完成哪些工作非常有用。
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -321,7 +347,7 @@ for chunk in agent.stream(
                 print(f"  [{chunk['ns'][0]}] step: {node_name}")
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -369,7 +395,7 @@ for chunk in agent.stream(
                 print(f"  [{chunk['ns'][0]}] step: {node_name}")
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -417,7 +443,7 @@ for chunk in agent.stream(
                 print(f"  [{chunk['ns'][0]}] step: {node_name}")
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -465,7 +491,7 @@ for chunk in agent.stream(
                 print(f"  [{chunk['ns'][0]}] step: {node_name}")
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -513,7 +539,7 @@ for chunk in agent.stream(
                 print(f"  [{chunk['ns'][0]}] step: {node_name}")
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -561,7 +587,7 @@ for chunk in agent.stream(
                 print(f"  [{chunk['ns'][0]}] step: {node_name}")
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -610,21 +636,19 @@ for chunk in agent.stream(
 ```
 
 ```shell title="Output" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[main agent] step: model_request
-  [tools:call_abc123] step: model_request
+[main agent] step: model
+  [tools:call_abc123] step: model
   [tools:call_abc123] step: tools
-  [tools:call_abc123] step: model_request
+  [tools:call_abc123] step: model
 
 Subagent complete: task
   Result: ## AI Safety Report...
-[main agent] step: model_request
+[main agent] step: model
 ```
 
-## LLM 代币
+## LLM 代币使用 `stream_mode="messages"` 从主代理和子代理流式传输各个令牌。每个消息事件都包含标识源代理的元数据。
 
-使用 `stream_mode="messages"` 从主代理和子代理流式传输各个令牌。每个消息事件都包含标识源代理的元数据。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 current_source = ""
 
 for chunk in agent.stream(
@@ -662,7 +686,7 @@ print()
 
 当子代理使用工具时，您可以流式传输工具调用事件以显示每个子代理正在执行的操作。工具调用块以`messages`流模式出现。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import AIMessageChunk, ToolMessage
 
 for chunk in agent.stream(
@@ -704,9 +728,9 @@ print()
 
 ## 自定义更新
 
-在子代理工具中使用 [⟦T40⟧](https://reference.langchain.com/python/langgraph/config/get_stream_writer) 来发出自定义进度事件：
+在子代理工具中使用 [⟦T52⟧](https://reference.langchain.com/python/langgraph/config/get_stream_writer) 来发出自定义进度事件：
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -773,7 +797,7 @@ for chunk in agent.stream(
             print("[main]", chunk["data"])
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -840,7 +864,7 @@ for chunk in agent.stream(
             print("[main]", chunk["data"])
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -907,7 +931,7 @@ for chunk in agent.stream(
             print("[main]", chunk["data"])
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -974,7 +998,7 @@ for chunk in agent.stream(
             print("[main]", chunk["data"])
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -1041,7 +1065,7 @@ for chunk in agent.stream(
             print("[main]", chunk["data"])
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -1108,7 +1132,7 @@ for chunk in agent.stream(
             print("[main]", chunk["data"])
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import time
 from langchain.tools import tool
 from langgraph.config import get_stream_writer
@@ -1185,7 +1209,7 @@ for chunk in agent.stream(
 
 结合多种流模式来全面了解代理执行情况：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Skip internal middleware steps - only show meaningful node names
 INTERESTING_NODES = {"model", "tools"}
 
@@ -1238,7 +1262,7 @@ print()
 
 监视子代理何时启动、运行和完成：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 active_subagents = {}
 
 for chunk in agent.stream(
@@ -1302,9 +1326,11 @@ for chunk in agent.stream(
 print("\n--- Final subagent states ---")
 for sub_id, sub in active_subagents.items():
     print(f"  {sub['type']}: {sub['status']}")
-```### 处理人机交互中断
+```
 
-配置 [⟦T41⟧](/oss/python/deepagents/human-in-the-loop) 时，`updates` 流可能包含暂停执行以供人工批准的 `__interrupt__` 条目。通过检查更新块中的 `__interrupt__` 键来检测它们。使用与 `.invoke()` 使用的相同平面 `{"decisions": [...]}` 有效负载继续：
+### 处理人机交互中断
+
+配置 [⟦T53⟧](/oss/python/deepagents/human-in-the-loop) 时，`updates` 流可能包含暂停执行以供人工批准的 `__interrupt__` 条目。通过检查更新块中的 `__interrupt__` 键来检测它们。使用与 `.invoke()` 使用的相同平面 `{"decisions": [...]}` 有效负载继续：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.utils.uuid import uuid7
@@ -1326,16 +1352,14 @@ for mode, data in agent.stream(
 
 ## 流块形状
 
-对于 `subgraphs=True`，块形状取决于您是否传递一种或多种流模式：
-
-| `stream_mode` |块状 |
+对于 `subgraphs=True`，块的形状取决于您是否传递一种或多种流模式：| `stream_mode` |块状|
 | - | - |
 |单模式（例如`"updates"`）| `(namespace, data)` |
 |多种模式（例如`["messages", "updates"]`）| `(namespace, mode, data)` |
 
 如果没有`subgraphs`，单模直接产生`data`，多模产生`(mode, data)`。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Single mode + subgraphs
 for namespace, data in agent.stream(
     {"messages": [{"role": "user", "content": "Research quantum computing"}]},
@@ -1362,7 +1386,7 @@ LangGraph 1.1 及更高版本还支持统一的 `version="v2"` `StreamPart` dict
 
 * [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)—为敏感工具操作配置审批工作流程
 * [Subagents](/oss/python/deepagents/subagents)—通过 Deep Agents 配置和使用子代理
-* [Frontend streaming](/oss/python/deepagents/frontend/overview)—使用 [⟦T58⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 为 Deep Agents 构建 React UI
+* [Frontend streaming](/oss/python/deepagents/frontend/overview)—使用 [⟦T70⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 为 Deep Agents 构建 React UI
 * [LangChain Event Streaming](/oss/python/langchain/event-streaming)—使用 LangChain 代理的一般流概念
 
 ***

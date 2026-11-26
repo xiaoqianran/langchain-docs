@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [beta](/langsmith/release-stages) 上的 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 > [!注意]
 >
@@ -20,7 +20,7 @@
 
 ## 开始之前
 
-* 配置 [identity](/langsmith/javascript/managed-deep-agents-identity)，以便每个人都以自己的身份登录。用户内存和每用户跟踪查找需要登录人员。
+* 配置[identity](/langsmith/javascript/managed-deep-agents-identity)，以便每个人都以自己的身份登录。用户内存和每用户跟踪查找需要登录人员。
 * 将每个人的踪迹路由到他们自己的LangSmith追踪项目。
 * 将 `DREAM_TRACE_PROJECTS` 添加到 `.env` 并用单引号括起来，以便 `mda deploy` 保留 JSON 双引号。将 MDA 主体 ID 映射到项目 ID，并确保部署的 LangSmith 凭证具有对这些项目的读取访问权限：
 
@@ -65,7 +65,7 @@ MDA 始终装载登录者的内存，因此提示无法读取其他人的内存�
 
 `recent_user_traces` 最多可读取当前人最近一天的 25 条痕迹。 `schedule_dreaming` 创建一个以该人身份运行的夜间时间表。
 
-在 `managed-deepagents` 0.10.4 中，使用 npm：pnpm 可以解决不兼容的 LangChain 版本。安装工具的依赖项和模型提供程序包（工厂定义不会自动安装提供程序包）：
+对于 `managed-deepagents` 0.10.4，使用 npm：pnpm 可以解决不兼容的 LangChain 版本。安装工具的依赖项和模型提供程序包（工厂定义不会自动安装提供程序包）：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install langchain zod langsmith @langchain/openai

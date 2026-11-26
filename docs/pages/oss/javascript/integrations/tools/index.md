@@ -69,6 +69,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Precleared`](https://precleared.dev/docs/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/precleared?style=flat-square\&label=%20&)](https://www.npmjs.com/package/precleared) |
 | [`PexafyToolkit`](https://docs.pexafy.com/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-pexafy?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-pexafy) |
 | [`AgentSearchTool`](https://agentsearchhq.com/blog/add-web-search-to-langchain-js-agent) | [  ![Downloads per month](https://img.shields.io/npm/dm/@agentsearchhq/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@agentsearchhq/langchain) |
+| [`Protogrid`](https://docs.protogrid.dev/sdk/langchain-js/) | [  ![Downloads per month](https://img.shields.io/npm/dm/@protogrid/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@protogrid/langchain) |
 | [`SafePromptCallbackHandler`](https://safeprompt.dev/docs/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@safeprompt.dev/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@safeprompt.dev/langchain) |
 | [`AgentumToolkit`](https://github.com/Algiras/agentum-skills/tree/main/packages/agentum-langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/agentum-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/agentum-langchain) |
 | [`Channel3Toolkit`](https://channel3.ai/docs/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@channel3/agent-toolkit?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@channel3/agent-toolkit) |
@@ -115,6 +116,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Agent with AWS lambda`](/oss/javascript/integrations/tools/lambda_agent) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
 | [`JSON agent toolkit`](/oss/javascript/integrations/tools/json) | N/A |
+| [`KtemiaToolkit`](https://www.ktemia.com/docs/langchain/) | N/A |
 | [`NotteBrowserToolkit`](https://docs.notte.cc/integrations/langchain) | N/A |
 | [`SideQuest`](https://sidequestpays.com/docs#langchain) | N/A |
 | [`SQLToolkit`](/oss/javascript/integrations/tools/sql) | N/A |

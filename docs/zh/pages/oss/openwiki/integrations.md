@@ -36,7 +36,7 @@ Initialize this repository's OpenWiki from the current source and tests.
 Update this repository's OpenWiki for changes since its last successful run.
 ```
 
-安装的集成还公开了[search and read tools](/oss/openwiki/search-and-link)，因此主机可以查询现有的 wiki，而无需启动生成运行。
+安装的集成还公开了 [search and read tools](/oss/openwiki/search-and-link)，因此主机可以查询现有的 wiki，而无需启动生成运行。
 
 ### 检查或卸载
 
@@ -45,14 +45,14 @@ openwiki integrations list
 openwiki integrations uninstall <codex|claude|copilot|opencode|cursor|bob|kiro|omp|antigravity>
 ```
 
-将 `--project [path]` 添加到 `list`、`install` 或 `uninstall` 以获取存储库范围的状态。项目路径解析为 Git 存储库根目录。
+将 `--project [path]` 添加到 `list`、`install` 或 `uninstall` 以获取存储库范围内的状态。项目路径解析为 Git 存储库根目录。
 
 主机特定的用户级别位置：
 
 * **开放代码**：`~/.config/opencode`
 * **IBM Bob / Bob Shell**：`~/.agents/skills` 和 `~/.bob/settings/mcp.json`（项目范围使用 `.agents/skills` 和 `.bob/mcp.json`）
 * **Kiro**：`~/.kiro/skills` 和 `~/.kiro/settings/mcp.json`
-* **Oh My Pi**：`~/.omp/agent` 用于默认配置文件。使用 `--project` 命名配置文件或重新定位的 `PI_CODING_AGENT_DIR`
+* **Oh My Pi**：`~/.omp/agent` 用于默认配置文件。将 `--project` 用于命名配置文件或重新定位的 `PI_CODING_AGENT_DIR`
 * **反重力 CLI**：`~/.gemini/antigravity-cli/skills` 和 `~/.gemini/config/mcp_config.json`
 
 ## Pi 包
@@ -65,17 +65,48 @@ pi install npm:openwiki
 
 使用 `pi install --local npm:openwiki` 进行项目本地安装。 Pi 扩展通过 Node 启动 OpenWiki 的 CLI，因此 `openwiki` 不需要位于 `PATH` 上。 Pi 不是`openwiki integrations install` 的目标。
 
-## 主机驱动的运行如何工作主机驱动的运行遵循与本机`openwiki --init`和`openwiki --update`相同的可恢复页面作业生命周期。编码代理驱动存储库研究和页面创作； OpenWiki 验证每个完成情况，保留[Grounded Claims](/oss/openwiki/code-mode#grounded-claims)，并通过 MCP 最终确定元数据。
+## 主机驱动的运行如何工作主机驱动的运行遵循与本机`openwiki --init`和`openwiki --update`相同的可恢复页面作业生命周期。编码代理驱动存储库研究和页面创作； OpenWiki 验证每个完成情况，持久化[Grounded Claims](/oss/openwiki/code-mode#grounded-claims)，并通过 MCP 最终确定元数据。
 
-在每个页面上，主持人提交稀疏的声明决策（确认、修改、添加或撤回）。 OpenWiki 保留未受影响的声明，应用明确的决策，并拒绝完成，直到最终的声明状态持久为止。当主机需要当前页面的完整声明集时，可以调用`openwiki_inspect_page_claims`。
+在每个页面上，主持人提交稀疏的索赔决策（确认、修改、添加或撤回）。 OpenWiki 保留未受影响的声明，应用明确的决策，并在最终声明状态持久之前拒绝完成。当主机需要当前页面的完整声明集时，可以调用`openwiki_inspect_page_claims`。
 
-### 推迟计划外的索赔问题
+### openwiki_begin 中的结果上限
 
 > [!注意]
 >
+> 结果上限需要 OpenWiki v0.8.0 或更高版本。
+
+具有许多已更改文件或声明问题的存储库可能会产生大量 `openwiki_begin` 响应。为了将响应保持在传输限制内，OpenWiki 限制返回的列表并包含准确的总数，以便主机可以恢复遗漏的数据。
+
+响应包括以下上限字段：* **`changedPathCount`** (`number`)：自上次运行以来更改的存储库路径的确切数量。
+* **`changedPathsTruncated`** (`boolean`): `changedPaths`是否忽略超过200条路径限制的条目。每个`pageUpdateWindows`条目还带有自己的`changedPathCount`和`changedPathsTruncated`。每个窗口的路径列表在窗口之间均匀地共享该预算。
+* **`claimIssueCount`** (`number`)：索赔预检问题的确切数量。
+* **`claimIssuesTruncated`** (`boolean`)：`claimIssues`是否省略超过 50 期限制的条目。
+* **`claimIssuePages`** (`string[]`)：有索赔问题的每个页面，包括在 `claimIssues` 中省略了个别问题的页面。
+
+当 `changedPathsTruncated` 标志为 `true` 时，从 Git 恢复完整列表。每个`pageUpdateWindows`条目都带有自己的基线`baseGitHead`。对于每个具有 `baseGitHead` 的窗口（不是 `fullReview` 窗口），列出自该基线以来提交的更改：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+git diff --name-only <baseGitHead>..HEAD
+```
+
+对于每个窗口，添加对跟踪文件和未跟踪文件的未提交更改：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+git diff --name-only HEAD
+git ls-files --others --exclude-standard
+```
+
+从结果中排除 `openwiki/` 和 `.openwikiignore` 路径。
+
+规划和页面作业在内部读取完整的运行状态，因此上限不会影响正确性。仅当主机需要向用户呈现完整列表或在调用`openwiki_submit_plan`之前做出自己的路由决策时，才会使用截断字段。
+
+### 推迟计划外的索赔问题> [!注意]
+>
 > `deferUnplannedClaimIssues` 需要 OpenWiki v0.9.0 或更高版本。
 
-默认情况下，`update` 运行上的 `openwiki_submit_plan` 会自动为具有陈旧或未解决声明的每个现有页面添加页面作业，即使主机未将这些页面包含在其计划中也是如此。要运行仅涉及主机明确计划的页面的集中更新，请在 `openwiki_submit_plan` 输入中将 `deferUnplannedClaimIssues` 设置为 `true`：* **`deferUnplannedClaimIssues`**（可选`boolean`，默认`false`）：当`true`时，OpenWiki 会跳过为存在声明问题的计划外页面插入自动作业。这些页面被记录为延迟页面，并且运行以中断状态完成，直到将来的完整更新使它们协调一致。
+默认情况下，`update` 运行上的 `openwiki_submit_plan` 会自动为具有陈旧或未解决声明的每个现有页面添加页面作业，即使主机未将这些页面包含在其计划中也是如此。要运行仅涉及主机明确计划的页面的集中更新，请在 `openwiki_submit_plan` 输入中将 `deferUnplannedClaimIssues` 设置为 `true`：
+
+* **`deferUnplannedClaimIssues`**（可选`boolean`，默认`false`）：当`true`时，OpenWiki 会跳过为存在声明问题的计划外页面插入自动作业。这些页面被记录为延迟页面，并且运行以中断状态完成，直到将来的完整更新使它们协调一致。
   当`true`时，OpenWiki 会跳过为存在声明问题的计划外页面插入自动作业。这些页面保持不变，运行完成，但将其更新元数据记录为中断，直到将来的完整更新协调它们。
   此选项仅在 `update` 运行中有效。在 `init` 运行中设置它会返回 `invalid_input` 错误。
 

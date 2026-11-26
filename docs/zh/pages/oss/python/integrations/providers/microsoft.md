@@ -14,7 +14,7 @@
 >
 > 对于以 [Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/) 为中心的新 LangChain、LangGraph 或 Deep Agents 应用程序，请从 [⟦T4⟧](/oss/python/integrations/providers/azure_ai) 开始。它添加了 Foundry 项目端点、Azure 凭据集成、代理服务、托管、工具、内容安全、检索和 Azure 可观察性。
 >
-> 对于直接 [Azure OpenAI v1 API](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/api-version-lifecycle?tabs=python) 模型访问、在 OpenAI 和 Azure 之间切换的代码、传统 Azure OpenAI API 版本、完成 LLM 或较小的依赖关系表面，请使用 `langchain-openai` 包。
+> 对于直接 [Azure OpenAI v1 API](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/api-version-lifecycle?tabs=python) 模型访问、在 OpenAI 和 Azure 之间切换的代码、传统 Azure OpenAI API 版本、完成 LLM 或更小的依赖关系表面，请使用 `langchain-openai` 包。
 
 ## 探索集成
 
@@ -58,15 +58,21 @@ model.invoke("Tell me a joke and include some emojis.").pretty_print()
 
 有关设置和使用示例，请参阅[Microsoft Foundry chat models](/oss/python/integrations/chat/azure_ai)。
 
+### 决策模型
+
+> [卡][Microsoft Foundry Decisions](/oss/python/integrations/decision_models/azure_ai)
+>
+> 使用 Microsoft 决策模型和 Azure OpenAI 决策 API 询问键入的 `Noul`、`Choice` 和 `Score` 问题。
+
 ### 法学硕士
 
 > [卡][Azure OpenAI (text completions)](/oss/python/integrations/llms/azure_openai)
 >
 > 通过 LangChain 的 LLM 接口调用 Azure OpenAI 文本完成模型。
 
-### 代理
+### 代理使用现有的 Foundry 代理作为 LangGraph 工作流程中的节点。要在 Microsoft Foundry 上托管新的 LangGraph 代理，请参阅 [Runtime](#runtime)。
 
-使用现有的 Foundry 代理作为 LangGraph 工作流程中的节点。要在 Microsoft Foundry 上托管新的 LangGraph 代理，请参阅 [Runtime](#runtime)。> [卡][Microsoft Foundry Agent Service](https://github.com/langchain-ai/langchain-azure/blob/main/libs/azure-ai/README.md#microsoft-foundry-agent-service)
+> [卡][Microsoft Foundry Agent Service](https://github.com/langchain-ai/langchain-azure/blob/main/libs/azure-ai/README.md#microsoft-foundry-agent-service)
 >
 > 使用 `langchain-azure-ai` 调用 Foundry Agent Service 代理作为 LangGraph 工作流程中的节点。
 
@@ -100,11 +106,11 @@ result["messages"][-1].pretty_print()
 
 ### 运行时
 
-[Microsoft Foundry hosted agents](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents) 在托管基础设施上运行您的 LangGraph 代码。 Foundry 管理计算、会话生命周期和扩展。响应托管选项可以启用后台执行、进程中断后的故障恢复、流重放以及引导新用户输入。这些选项默认处于关闭状态。
+[Microsoft Foundry hosted agents](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents) 在托管基础设施上运行您的 LangGraph 代码。 Foundry 管理计算、会话生命周期和扩展。响应托管选项可以启用后台执行、进程中断后的故障恢复、流重播、新用户输入的引导以及响应分支。这些选项默认处于关闭状态。
 
-通过 OpenAI 兼容的响应端点或具有自定义 JSON 输入和输出的调用端点公开您的代理。 LangGraph 托管适配器处理请求转换、响应映射和流式传输。响应还提供托管对话历史记录。
+通过具有自定义 JSON 输入和输出的 OpenAI 兼容响应端点或调用端点公开您的代理。 LangGraph 托管适配器处理请求转换、响应映射和流式传输。响应还提供托管对话历史记录。托管代理可以使用专用的 Microsoft Entra 代理身份调用 Foundry 模型和 Toolbox 工具。 Foundry 还支持 RBAC、专用网络和内容安全护栏。 Application Insights 跟踪有助于调查故障。
 
-托管代理可以使用专用的 Microsoft Entra 代理身份调用 Foundry 模型和 Toolbox 工具。 Foundry 还支持 RBAC、专用网络和内容安全护栏。 Application Insights 跟踪有助于调查故障。> [卡][Microsoft Foundry hosted agents](/oss/python/integrations/providers/azure_ai#microsoft-foundry-hosted-agents)
+> [卡][Microsoft Foundry hosted agents](/oss/python/integrations/providers/azure_ai#microsoft-foundry-hosted-agents)
 >
 > 将 LangGraph 应用程序作为托管代理部署到 Microsoft Foundry。
 
@@ -134,11 +140,9 @@ azd provision
 azd deploy
 ```
 
-要了解为什么在 Microsoft Foundry 上托管 LangGraph，请阅读 [hosting blog post](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/hosting-your-langgraph-application-on-microsoft-foundry-agents/4573342)。要迁移现有图表，请遵循[LangGraph-to-Foundry migration guide](https://github.com/langchain-ai/langchain-azure/blob/main/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md)。对于新的或迁移的代理，请参阅 [Microsoft Foundry hosted agents](/oss/python/integrations/providers/azure_ai#microsoft-foundry-hosted-agents) 和 [hosted-agent samples](https://github.com/langchain-ai/langchain-azure/blob/main/samples/hosting/langgraph-hosted-agents/README.md#start-here)。
+要了解为什么在 Microsoft Foundry 上托管 LangGraph，请阅读 [hosting blog post](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/hosting-your-langgraph-application-on-microsoft-foundry-agents/4573342)。要迁移现有图表，请遵循[LangGraph-to-Foundry migration guide](https://github.com/langchain-ai/langchain-azure/blob/main/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md)。对于新的或迁移的代理，请参阅 [Microsoft Foundry hosted agents](/oss/python/integrations/providers/azure_ai#microsoft-foundry-hosted-agents) 和 [Foundry LangGraph samples](https://github.com/microsoft-foundry/foundry-samples/tree/main/samples/python/hosted-agents/langgraph)。
 
-### 工具
-
-> [卡][Azure AI services](/oss/python/integrations/tools/azure_ai_services)
+＃＃＃ 工具> [卡][Azure AI services](/oss/python/integrations/tools/azure_ai_services)
 >
 > 使用 Azure AI 服务进行文档分析、图像分析和语音处理。
 
@@ -148,7 +152,9 @@ azd deploy
 
 > [卡][Microsoft Foundry Toolbox](/oss/python/integrations/tools/azure_ai#toolboxes)
 >
-> 通过 Microsoft Foundry Toolbox 访问内置工具、MCP 服务器中的工具以及技能。> [卡][Azure Logic Apps](/oss/python/integrations/tools/azure_logic_apps)
+> 通过 Microsoft Foundry Toolbox 访问内置工具、MCP 服务器中的工具以及技能。
+
+> [卡][Azure Logic Apps](/oss/python/integrations/tools/azure_logic_apps)
 >
 > 让代理将 Azure 逻辑应用工作流作为工具调用。
 
@@ -157,6 +163,10 @@ azd deploy
 > [卡][Azure AI Content Safety](/oss/python/integrations/middleware/azure_ai)
 >
 > 对代理输入和输出应用内容安全检查。
+
+> [卡][Content Safety guardrail policy](/oss/python/integrations/middleware/azure_ai#guardrail-policy)
+>
+> 跨代理、模型和工具挂钩实施内容安全护栏策略。
 
 > [卡][Microsoft Foundry memory](/oss/python/integrations/middleware/azure_ai#microsoft-foundry-memory)
 >
@@ -188,9 +198,7 @@ azd deploy
 >
 > 使用`AzureAIMemoryRetriever`查询长期用户和对话记忆。
 
-### 嵌入模型
-
-> [卡][Microsoft Foundry](/oss/python/integrations/providers/azure_ai#microsoft-foundry-embeddings)
+### 嵌入模型> [卡][Microsoft Foundry](/oss/python/integrations/providers/azure_ai#microsoft-foundry-embeddings)
 >
 > 使用 Microsoft Foundry 中部署的模型生成文本嵌入。
 
@@ -210,7 +218,9 @@ azd deploy
 
 > [卡][Azure Database for PostgreSQL](/oss/python/integrations/vectorstores/azure_db_for_postgresql)
 >
-> 使用 DiskANN 索引在 Azure Database for PostgreSQL 中运行矢量搜索。> [卡][Azure SQL Database](/oss/python/integrations/providers/azure_ai#azure-sql-database)
+> 使用 DiskANN 索引在 Azure Database for PostgreSQL 中运行矢量搜索。
+
+> [卡][Azure SQL Database](/oss/python/integrations/providers/azure_ai#azure-sql-database)
 >
 > 在 Azure SQL 数据库中存储和查询向量嵌入。
 
@@ -222,6 +232,16 @@ azd deploy
 >
 > 在 Azure AI 搜索中存储嵌入并运行矢量、混合和语义搜索。
 
+### 检查点
+
+> [卡][Foundry checkpoint saver](/oss/python/integrations/providers/azure_ai#foundry-checkpoint-saver)
+>
+> 坚持 LangGraph 跨回合检查点并在 Foundry State Store 中重新启动。
+
+> [卡][Azure Cosmos DB](https://github.com/langchain-ai/langchain-azure/blob/main/libs/azure-cosmosdb/README.md#langgraph-checkpointer)
+>
+> 使用同步和异步检查指针在 Azure Cosmos DB 中保留 LangGraph 图形状态。
+
 ### 聊天消息历史记录
 
 > [卡][Azure Cosmos DB (chat message history)](/oss/python/integrations/providers/azure_ai#azure-cosmos-db-chat-message-history)
@@ -232,9 +252,7 @@ azd deploy
 
 > [卡][Azure Cosmos DB (semantic cache)](/oss/python/integrations/providers/azure_ai#azure-cosmos-db-semantic-cache)
 >
-> 通过 Azure Cosmos DB 重复使用缓存的模型响应来获得语义相似的提示。
-
-### 文档加载器
+> 通过 Azure Cosmos DB 重复使用缓存的模型响应来获得语义相似的提示。### 文档加载器
 
 > [卡][Azure Blob Storage](/oss/python/integrations/document_loaders/azure_blob_storage)
 >

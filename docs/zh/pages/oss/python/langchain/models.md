@@ -42,15 +42,15 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 >
 > 👉 阅读[OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[openai]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[openai]"
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 >
@@ -59,7 +59,7 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 > model = init_chat_model("gpt-6.1-sol")
 > ```
 >
-> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_openai import ChatOpenAI
 >
@@ -72,15 +72,15 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 >
 > 👉 阅读[Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[anthropic]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[anthropic]"
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 >
@@ -89,7 +89,7 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 > model = init_chat_model("claude-sonnet-4-6")
 > ```
 >
-> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_anthropic import ChatAnthropic
 >
@@ -102,15 +102,15 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 >
 > 👉 阅读[Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[openai]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[openai]"
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 >
@@ -124,7 +124,7 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 > )
 > ```
 >
-> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_openai import AzureChatOpenAI
 >
@@ -142,15 +142,15 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 >
 > 👉 阅读[Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[google-genai]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[google-genai]"
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 >
@@ -159,7 +159,7 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 > model = init_chat_model("google_genai:gemini-4-hydrogen")
 > ```
 >
-> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_google_genai import ChatGoogleGenerativeAI
 >
@@ -172,15 +172,15 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 >
 > 👉 阅读[AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[aws]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[aws]"
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain.chat_models import init_chat_model
 >
 > # Follow the steps here to configure your credentials:
@@ -192,7 +192,7 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 > )
 > ```
 >
-> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langchain_aws import ChatBedrock
 >
 > model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
@@ -202,15 +202,15 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 >
 > 👉 阅读[HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain[huggingface]"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain[huggingface]"
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 >
@@ -224,7 +224,7 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 > )
 > ```
 >
-> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 >
@@ -242,15 +242,15 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 >
 > 👉 阅读[OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)
 >
-> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > pip install -U "langchain-openrouter"
 > ```
 >
-> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv add "langchain-openrouter"
 > ```
 >
-> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain.chat_models import init_chat_model
 >
@@ -262,7 +262,7 @@ LangChain 的标准模型接口使您可以访问许多不同的提供商集成�
 > )
 > ```
 >
-> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import os
 > from langchain_openrouter import ChatOpenRouter
 >
@@ -664,8 +664,10 @@ for tool_call in response.tool_calls:
 > ```python Force use of specific tools theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > model_with_tools = model.bind_tools([tool_1], tool_choice="tool_1")
 > ```
-
-> [accordion] 并行工具调用
+>
+>> [!警告]
+>>
+>> 强制调用使模型调用绑定工具，即使它们都不符合请求。如果请求所需的工具未绑定，例如因为工具过滤器或路由器将其遗漏，则模型可能会调用更改状态的工具，例如当用户仅询问其状态时关闭票证的工具。仅当绑定工具包含请求所需的工具时才强制调用。否则，让模型选择。> [accordion] 并行工具调用
 >
 > 许多模型支持在适当的时候并行调用多个工具。这允许模型同时从不同来源收集信息。
 >
@@ -702,7 +704,7 @@ for tool_call in response.tool_calls:
 >> 大多数支持工具调用的机型默认启用并行工具调用。
 >> 有些（包括[OpenAI](/oss/python/integrations/chat/openai)和[Anthropic](/oss/python/integrations/chat/anthropic)）允许您禁用此功能。为此，请设置 `parallel_tool_calls=False`：
 >>
->> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > model.bind_tools([get_weather], parallel_tool_calls=False)
 > > ```
 
@@ -751,9 +753,9 @@ for tool_call in response.tool_calls:
 
 ***
 
-## 结构化输出可以请求模型以与给定模式匹配的格式提供响应。这对于确保输出可以轻松解析并在后续处理中使用非常有用。 LangChain 支持多种模式类型和方法来强制结构化输出。
+## 结构化输出
 
-> [!提示]
+可以请求模型以与给定模式匹配的格式提供响应。这对于确保输出可以轻松解析并在后续处理中使用非常有用。 LangChain 支持多种模式类型和方法来强制结构化输出。> [!提示]
 >
 > 要了解结构化输出，请参阅[Structured output](/oss/python/langchain/structured-output)。
 
@@ -833,7 +835,9 @@ for tool_call in response.tool_calls:
 > )
 > response = model_with_structure.invoke("Provide details about the movie Inception")
 > print(response)  # {'title': 'Inception', 'year': 2010, ...}
-> ```> [!注意]
+> ```
+
+> [!注意]
 >
 > **结构化输出的关键考虑因素**
 >
@@ -844,8 +848,7 @@ for tool_call in response.tool_calls:
 > * **包含原始**：设置`include_raw=True`以获取解析的输出和原始AI消息。
 > * **验证**：Pydantic 模型提供自动验证。 `TypedDict` 和 JSON Schema 需要手动验证。
 > * **拒绝**：如果模型拒绝，结构化输出将提高`ModelRefusalError`。参见[Handle a model refusal](#handle-a-model-refusal)和[Structured output](/oss/python/langchain/structured-output#model-refusal)。
->
-> 请参阅您的 [provider's integration page](/oss/python/integrations/providers/overview) 了解支持的方法和配置选项。
+>> 请参阅您的 [provider's integration page](/oss/python/integrations/providers/overview) 了解支持的方法和配置选项。
 
 > [accordion] 示例：消息输出以及已解析的结构
 >
@@ -909,7 +912,9 @@ for tool_call in response.tool_calls:
 > model_with_structure = model.with_structured_output(MovieDetails)
 > ```
 
-### 处理模型拒绝提供商将拒绝（例如安全策略拒绝）报告为成功响应而不是错误。普通模型调用返回带有 [⟦T154⟧ content block](/oss/python/langchain/messages#content-block-reference) 的消息。 `with_structured_output` 从 `langchain_core.exceptions` 引发 [⟦T156⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)，而不是解析错误。错误的 `raw_message` 包含拒绝的响应。消息的`response_metadata["normalized_finish_reason"]`是`"refusal"`；参见[Finish reason](/oss/python/langchain/messages#finish-reason)。
+### 处理模型拒绝
+
+提供商将拒绝（例如安全策略拒绝）报告为成功响应而不是错误。普通模型调用返回带有 [⟦T154⟧ content block](/oss/python/langchain/messages#content-block-reference) 的消息。 `with_structured_output` 从 `langchain_core.exceptions` 引发 [⟦T156⟧](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError)，而不是解析错误。错误的 `raw_message` 包含拒绝的响应。消息的`response_metadata["normalized_finish_reason"]`是`"refusal"`；参见[Finish reason](/oss/python/langchain/messages#finish-reason)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.exceptions import ModelRefusalError
@@ -932,9 +937,7 @@ if isinstance(response["parsing_error"], ModelRefusalError):
     refused = response["raw"]
 ```
 
-LangChain 检测来自 OpenAI、Anthropic 和 Gemini 型号的拒绝。对于代理，当您添加[⟦T167⟧](/oss/python/langchain/middleware/built-in#model-refusal)时，`create_agent`中的`response_format`会引发`ModelRefusalError`；参见[Structured output](/oss/python/langchain/structured-output#model-refusal)和[Handle a refusal](/oss/python/langchain/middleware/built-in#handle-a-refusal)。
-
-> [!注意]
+LangChain 检测来自 OpenAI、Anthropic 和 Gemini 型号的拒绝。对于代理，当您添加[⟦T167⟧](/oss/python/langchain/middleware/built-in#model-refusal)时，`create_agent`中的`response_format`会引发`ModelRefusalError`；参见[Structured output](/oss/python/langchain/structured-output#model-refusal)和[Handle a refusal](/oss/python/langchain/middleware/built-in#handle-a-refusal)。> [!注意]
 >
 > 拒绝处理需要`langchain-core>=1.7.5`，双子座需要`langchain-google-genai>=4.4.3`。如果您将`langchain-core`升级到1.7.5或更高版本，也请升级到`langchain-openai>=1.7.4`。早期版本针对响应 API 结构化输出拒绝提出通用 `ValueError` 而不是 `OpenAIRefusalError`。
 
@@ -961,14 +964,16 @@ model.profile
 # }
 ```
 
-请参阅 [API reference](https://reference.langchain.com/python/langchain-core/language_models/model_profile/ModelProfile) 中的完整字段集。大部分模型配置文件数据均由 [models.dev](https://github.com/sst/models.dev) 项目提供支持，这是一个提供模型功能数据的开源计划。这些数据通过附加字段进行了扩充，以便与 LangChain 一起使用。随着上游项目的发展，这些增强功能与上游项目保持一致。
+请参阅 [API reference](https://reference.langchain.com/python/langchain-core/language_models/model_profile/ModelProfile) 中的完整字段集。
 
-模型配置文件数据允许应用程序动态地处理模型功能。例如：
+大部分模型配置文件数据均由 [models.dev](https://github.com/sst/models.dev) 项目提供支持，这是一个提供模型功能数据的开源计划。这些数据通过附加字段进行了扩充，以便与 LangChain 一起使用。随着上游项目的发展，这些增强功能与上游项目保持一致。
 
-1. [Summarization middleware](/oss/python/langchain/middleware/built-in#summarization)可以根据模型的上下文窗口大小触发摘要。
+模型配置文件数据允许应用程序动态地处理模型功能。例如：1. [Summarization middleware](/oss/python/langchain/middleware/built-in#summarization)可以根据模型的上下文窗口大小触发摘要。
 2. `create_agent`中的[Structured output](/oss/python/langchain/structured-output)策略可以自动推断（例如，通过检查对本机结构化输出功能的支持）。
 3. 模型输入可以根据支持的[modalities](#multimodal)和最大输入令牌进行门控。
-4. [Deep Agents Code](/oss/deepagents/code) 将 [interactive model switcher](/oss/deepagents/code/providers#which-models-appear-in-the-switcher) 过滤到配置文件报告 `tool_calling` 支持和文本 I/O 的模型，并在选择器详细视图中显示上下文窗口大小和功能标志。> [accordion] 更新或覆盖配置文件数据
+4. [Deep Agents Code](/oss/deepagents/code) 将 [interactive model switcher](/oss/deepagents/code/providers#which-models-appear-in-the-switcher) 过滤到配置文件报告 `tool_calling` 支持和文本 I/O 的模型，并在选择器详细视图中显示上下文窗口大小和功能标志。
+
+> [accordion] 更新或覆盖配置文件数据
 >
 > 如果模型配置文件数据丢失、过时或不正确，则可以更改。
 >
@@ -998,8 +1003,7 @@ model.profile
 > 数据的主要来源是[models.dev](https://models.dev/) 项目。此数据与 LangChain [integration packages](/oss/python/integrations/providers/overview) 中的其他字段和覆盖合并，并随这些包一起提供。
 >
 > 模型配置文件数据可以通过以下过程更新：
->
-> 1.（如果需要）通过拉取请求将[models.dev](https://models.dev/)处的源数据更新到其[repository on GitHub](https://github.com/sst/models.dev)。
+>> 1.（如果需要）通过拉取请求将[models.dev](https://models.dev/)处的源数据更新到其[repository on GitHub](https://github.com/sst/models.dev)。
 > 2.（如果需要）通过向 LangChain [integration package](/oss/python/integrations/providers/overview)\` 发出拉取请求来更新 `langchain_<package>/data/profile_augmentations.toml` 中的其他字段和覆盖。
 > 3. 使用 [⟦T182⟧](https://pypi.org/project/langchain-model-profiles/) CLI 工具从 [models.dev](https://models.dev/) 提取最新数据，合并增量并更新配置文件数据：
 >
@@ -1020,7 +1024,8 @@ model.profile
 > * 从 models.dev 下载 `<provider>` 的最新数据
 > * 将`profile_augmentations.toml`的增强合并到`<data_dir>`
 > * 将合并的配置文件写入`<data_dir>`中的`_profiles.py`
->> 例如：从[⟦T188⟧](https://github.com/langchain-ai/langchain/tree/master/libs/partners/anthropic)到[LangChain monorepo](https://github.com/langchain-ai/langchain)：
+>
+> 例如：从[⟦T188⟧](https://github.com/langchain-ai/langchain/tree/master/libs/partners/anthropic)到[LangChain monorepo](https://github.com/langchain-ai/langchain)：
 >
 > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > uv run --with langchain-model-profiles langchain-profiles refresh --provider anthropic --data-dir langchain_anthropic/data
@@ -1042,9 +1047,7 @@ model.profile
 > 2. OpenAI [chat completions](https://platform.openai.com/docs/api-reference/chat) 格式
 > 3. 该特定提供商原生的任何格式（例如，Anthropic 模型接受 Anthropic 原生格式）
 
-详情请参阅消息指南[multimodal section](/oss/python/langchain/messages#multimodal)。
-
-某些模型（并非所有法学硕士都是一样的！）可以返回多模式数据作为其响应的一部分。如果调用这样做，生成的 [⟦T189⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 将具有多模式类型的内容块。
+详情请参阅消息指南[multimodal section](/oss/python/langchain/messages#multimodal)。某些模型（并非所有法学硕士都是一样的！）可以返回多模式数据作为其响应的一部分。如果调用这样做，生成的 [⟦T189⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 将具有多模式类型的内容块。
 
 ```python Multimodal output theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 response = model.invoke("Create a picture of a cat")
@@ -1059,7 +1062,9 @@ print(response.content_blocks)
 
 ### 推理
 
-许多模型能够执行多步骤推理来得出结论。这涉及将复杂的问题分解为更小、更易于管理的步骤。**如果得到底层模型的支持，**您可以展示此推理过程，以更好地理解模型如何得出最终答案。
+许多模型能够执行多步骤推理来得出结论。这涉及将复杂的问题分解为更小、更易于管理的步骤。
+
+**如果得到底层模型的支持，**您可以展示此推理过程，以更好地理解模型如何得出最终答案。
 
 ```python Stream reasoning output theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for chunk in model.stream("Why do parrots have colorful feathers?"):
@@ -1077,9 +1082,7 @@ print(" ".join(step["reasoning"] for step in reasoning_steps))
 
 > [!注意]
 >
-> `reasoning_effort` 作为标准参数需要`langchain-core>=1.5.2`，加上相应的合作伙伴包版本：`langchain-anthropic>=1.5.3`、`langchain-openai>=1.4.1`、`langchain-fireworks>=1.5.2`、`langchain-xai>=1.3.0`、`langchain-google-genai>=4.3.1` 或`langchain-aws>=1.7.0`。
-
-[⟦T200⟧](https://reference.langchain.com/python/langchain-openai/chat_models/base/ChatOpenAI)、[⟦T201⟧](https://reference.langchain.com/python/langchain-anthropic/chat_models/ChatAnthropic)、[⟦T202⟧](https://reference.langchain.com/python/langchain-fireworks/chat_models/ChatFireworks)、[⟦T203⟧](https://reference.langchain.com/python/langchain-xai/chat_models/ChatXAI)、[⟦T204⟧](https://reference.langchain.com/python/langchain-google-genai/chat_models/ChatGoogleGenerativeAI)和[⟦T205⟧](https://reference.langchain.com/python/langchain-aws/chat_models/bedrock_converse/ChatBedrockConverse)支持标准`reasoning_effort`参数。与`temperature`一样，它可以在模型构造时或每次调用时设置，并且每个提供者将其转换为自己的API格式：
+> `reasoning_effort` 作为标准参数需要`langchain-core>=1.5.2`，加上相应的合作伙伴包版本：`langchain-anthropic>=1.5.3`、`langchain-openai>=1.4.1`、`langchain-fireworks>=1.5.2`、`langchain-xai>=1.3.0`、`langchain-google-genai>=4.3.1` 或`langchain-aws>=1.7.0`。[⟦T200⟧](https://reference.langchain.com/python/langchain-openai/chat_models/base/ChatOpenAI)、[⟦T201⟧](https://reference.langchain.com/python/langchain-anthropic/chat_models/ChatAnthropic)、[⟦T202⟧](https://reference.langchain.com/python/langchain-fireworks/chat_models/ChatFireworks)、[⟦T203⟧](https://reference.langchain.com/python/langchain-xai/chat_models/ChatXAI)、[⟦T204⟧](https://reference.langchain.com/python/langchain-google-genai/chat_models/ChatGoogleGenerativeAI)和[⟦T205⟧](https://reference.langchain.com/python/langchain-aws/chat_models/bedrock_converse/ChatBedrockConverse)支持标准`reasoning_effort`参数。与`temperature`一样，它可以在模型构造时或每次调用时设置，并且每个提供者将其转换为自己的API格式：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_anthropic import ChatAnthropic
@@ -1098,7 +1101,9 @@ model.profile["reasoning_effort_levels"]  # e.g. ['low', 'medium', 'high']
 model.profile["reasoning_effort_default"]  # e.g. 'high'
 ```
 
-某些提供程序还接受 `reasoning_effort` 的本机别名（例如，`ChatAnthropic` 接受 `effort` 且 `ChatGoogleGenerativeAI` 接受 `thinking_level`）。请参阅 [chat model integrations](/oss/python/integrations/chat) 页面了解特定于提供商的详细信息。有关详细信息，请参阅相应聊天模型的[integrations page](/oss/python/integrations/providers/overview)或[reference](https://reference.langchain.com/python/integrations/)。
+某些提供程序还接受 `reasoning_effort` 的本机别名（例如，`ChatAnthropic` 接受 `effort` 且 `ChatGoogleGenerativeAI` 接受 `thinking_level`）。请参阅 [chat model integrations](/oss/python/integrations/chat) 页面了解特定于提供商的详细信息。
+
+有关详细信息，请参阅相应聊天模型的[integrations page](/oss/python/integrations/providers/overview)或[reference](https://reference.langchain.com/python/integrations/)。
 
 ### 本地模特
 

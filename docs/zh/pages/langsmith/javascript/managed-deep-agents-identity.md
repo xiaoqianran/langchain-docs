@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 将身份声明放在项目根目录下：
 
@@ -26,7 +26,7 @@ my-agent/
 
 默认情况下，`mda init`要求调用者提供LangSmith API密钥。拥有该密钥的任何人都可以使用相同的部署，并且可能会看到相同的线程。要为每个登录的最终用户提供私人对话，请使用 Supabase、另一个 JWT 提供商或您自己的后端：
 
-|目标|使用|
+|目标|使用 |
 | - | - |
 |锁定 SDK 客户端、脚本和服务的部署 | [LangSmith API key (default)](#configure-identity-with-a-langsmith-api-key) |
 |通过私人聊天登录的最终用户，由托管 Deep Agents 验证 | [Supabase](#configure-identity-with-supabase) |
@@ -41,7 +41,7 @@ my-agent/
 
 ## 使用 LangSmith API 密钥配置身份
 
-`mda init` 将此身份提供者作为安全默认设置。调用者必须提供有效的 LangSmith 工作区 API 密钥。托管Deep Agents使用LangSmith云验证密钥。
+`mda init` 将此身份提供者作为安全默认设置。调用者必须提供有效的 LangSmith 工作区 API 密钥。托管 Deep Agents 使用 LangSmith 云验证密钥。
 
 ```ts identity.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { auth, defineIdentity } from "managed-deepagents";

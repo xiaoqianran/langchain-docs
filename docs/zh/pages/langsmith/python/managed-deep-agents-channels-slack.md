@@ -12,7 +12,7 @@ Slack 通道允许人们通过应用程序提及、直接消息和活动 Slack �
 
 > [!注意]
 >
-> 托管 Deep Agents 在 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) **公开 [beta](/langsmith/release-stages)**。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
+> 托管 Deep Agents 位于 [LangSmith Cloud](/langsmith/cloud) 和 [Bring Your Own Cloud (BYOC)](/langsmith/byoc) 上的 [beta](/langsmith/release-stages)。使用托管 Deep Agents CLI 和 SDK v0.10 或更高版本进行 BYOC。
 
 ## 项目结构
 
@@ -125,9 +125,9 @@ channel = channels.slack(name="Support Bot", reactions=choose_emoji)
 ```
 
 返回一个不带冒号的 Slack 短名称。 Slack 没有这个名字
-识别已被选择但从未出现，因此反应完全缺失。一个
+recognize 被选择但从未出现，因此反应完全缺失。一个
 抛出、花费超过五秒或返回的选择器
-其他任何内容都会回到默认表情符号，并且运行会继续。
+其他任何内容都会回退到默认表情符号，并且运行将以任何方式继续。
 
 ### 选择具有决策模型的表情符号[decision model](/langsmith/llm-gateway-decision-models) 得分为一组固定值
 选项和答案用其中一个键，所以反应反映了
@@ -250,7 +250,7 @@ then call `attach_file` with that path so the file arrives in Slack.
 * [Decision models](/langsmith/llm-gateway-decision-models)：配置反应表情评分模型。
 * [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup)：添加反应所需的提供者密钥。
 * [Agent-owned interrupts](/langsmith/python/managed-deep-agents-agent-owned-interrupts)：从工具发布 Slack 表单并在提交时恢复运行。
-* [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes)：给代理提供文件传输读写的文件系统。
+* [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes)：给代理文件传输读写的文件系统。
 * [Deploy an agent](/langsmith/python/managed-deep-agents-deploy)：配置和部署托管深度代理。
 * [CLI reference](/langsmith/python/managed-deep-agents-cli)：查看托管 Deep Agents 命令和标志。
 

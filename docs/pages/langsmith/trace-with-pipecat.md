@@ -4,7 +4,7 @@
 
 > [!NOTE]
 >
-> This integration is in beta, so its API may change.
+> This integration is in [beta](/langsmith/release-stages), so its API may change.
 
 Trace your [Pipecat](https://pipecat.ai/) voice agents to LangSmith with the LangSmith Pipecat integration. For high-level conventions, see [Voice tracing fundamentals](/langsmith/trace-voice-fundamentals).
 
