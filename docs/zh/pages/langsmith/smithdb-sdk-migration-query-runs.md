@@ -18,7 +18,7 @@
 
 > [选项卡] Python
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.list_runs()` | `client.runs.query()`（别名为`client.runs.query_v2()`）|
 >
@@ -30,7 +30,7 @@
 
 > [选项卡] TypeScript
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.listRuns()` | `client.runs.query()`（别名为`client.runs.queryV2()`）|
 >
@@ -38,13 +38,13 @@
 
 > [选项卡] Java
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.runs().query()` | `client.runs().queryV2()` |
 >
 > 完整参数列表请参见[reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/RunService.html)。> [选项卡] 前往
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `client.Runs.Query()` | `client.Runs.QueryV2()` |
 >
@@ -52,7 +52,7 @@
 
 > [选项卡] 卷曲
 >
-> |之前 |之后|
+> |之前 |之后 |
 > | - | - |
 > | `POST /api/v1/runs/query` | `POST /api/v2/runs/query` |
 >
@@ -100,7 +100,7 @@
 >>
 >> `min_start_time` 省略时默认为 **1 天前**。没有 `startTime` 的 `listRuns` 返回所有历史运行；没有 `min_start_time` 的 `client.runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `min_start_time`。
 >
-> |之前 (`listRuns`) |之后(`client.runs.query`) |笔记|
+> |之前 (`listRuns`) |之后(`client.runs.query`)|笔记|
 > | - | - | - |
 > | `projectName` | *（已删除）* |将 `project_ids` 与 UUID 一起使用 - 请参阅上面的警告 |
 > | `projectId` | `project_ids` |更名为`snake_case`；现在需要一个列表；与 `reference_dataset_id` 互斥 |
@@ -116,7 +116,7 @@
 > | `error` | `has_error` |更名|
 > | `id` | `ids` |更名|
 > | `select` | `selects` |字段名称现在为大写（`"NAME"`、`"STATUS"` 等）|
-> | `limit` | *（已删除）* |使用 `page_size` 作为每个请求的批量大小。结果首先是最新的（按开始时间），因此 N 的页面大小加上 N 次运行后的 `break` 可以保持“最新 N”代码正常工作 |
+> | `limit` | *（已删除）* |使用 `page_size` 作为每个请求的批量大小。结果首先是最新的（按开始时间），因此 N 的页面大小加上 N 运行后的 `break` 可以保持“最新的 N”代码正常工作 |
 > | `order` | *（已删除）* |没有同等的|
 > | `executionOrder` | *（已删除）* |没有同等的|
 > | *（不可用）* | `max_start_time` | `start_time` 的上限；默认为现在 |
@@ -126,7 +126,7 @@
 >
 >> [!警告]
 >>
->> `minStartTime()` 省略时默认为 **1 天前**。没有 `startTime()` 的 `query()` 返回所有历史运行；没有 `minStartTime()` 的 `queryV2()` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `minStartTime()`。
+>> `minStartTime()` 省略时默认为 **1 天前**。没有 `startTime()` 的 `query()` 返回所有历史运行；不带 `minStartTime()` 的 `queryV2()` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `minStartTime()`。
 >
 > |之前 (`RunQueryParams`) |之后（`RunQueryV2Params`）|笔记|
 > | - | - | - |
@@ -144,7 +144,7 @@
 > | `error()` | `hasError()` |更名|
 > | `id()` | `ids()` |更名|
 > | `select()` | `selects()` |字段名称现在为大写 |
-> | `limit()` | *（已删除）* |使用`pageSize()`。结果首先是最新的（按开始时间），因此 N 的页面大小加上 N 运行后的 `break` 可以保持“最新 N”代码正常工作 |
+> | `limit()` | *（已删除）* |使用`pageSize()`。结果首先是最新的（按开始时间），因此 N 的页面大小加上 N 次运行后的 `break` 可以保持“最新的 N”代码正常工作 |
 > | `order()` | *（已删除）* |没有同等的|
 > | `executionOrder()` | *（已删除）* |没有同等的|> | `cursor()` | `cursor()` |不变 |
 > | *（不可用）* | `maxStartTime()` |开始时间的上限；默认为现在 |
@@ -295,7 +295,7 @@
 > | `run.promptCost` | `run.prompt_cost` |更名为`snake_case`；仅供自己使用；不再从子运行中求和|
 > | `run.completionCost` | `run.completion_cost` |更名为`snake_case`；仅供自己使用；不再从子运行中求和|
 > | `run.firstTokenTime` | `run.first_token_time` |更名为`snake_case` |
-> | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒） |
+> | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒）|
 > | `run.inDataset` | `run.is_in_dataset` |更名|
 > | `run.childRunIds` | *（已删除）* |没有同等的|
 > | `run.childRuns` | *（已删除）* |没有同等的|
@@ -401,11 +401,11 @@
 > | `run.ParentRunIDs` | `run.ParentRunIDs` |不变 |
 > | `run.PriceModelID` | `run.PriceModelID` |不变 |> | `run.PromptCost` | `run.PromptCost` |仅供自己使用；不再从子运行中求和|
 > | `run.PromptCostDetails` | `run.PromptCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
-> | `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变）|
+> | `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变） |
 > | `run.PromptTokens` | `run.PromptTokens` |仅供自己使用；不再从子运行中求和|
 > | `run.CompletionCost` | `run.CompletionCost` |仅供自己使用；不再从子运行中求和|
 > | `run.CompletionCostDetails` | `run.CompletionCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
-> | `run.CompletionTokenDetails` | `run.CompletionTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变）|
+> | `run.CompletionTokenDetails` | `run.CompletionTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变） |
 > | `run.CompletionTokens` | `run.CompletionTokens` |仅供自己使用；不再从子运行中求和|
 > | `run.TotalCost` | `run.TotalCost` |仅供自己使用；不再从子运行中求和|
 > | `run.TotalTokens` | `run.TotalTokens` |仅供自己使用；不再从子运行中求和|
@@ -469,11 +469,11 @@
 > | `parent_run_ids` | `parent_run_ids` |不变 |
 > | `price_model_id` | `price_model_id` |不变 |
 > | `prompt_cost` | `prompt_cost` |仅供自己使用；不再从子运行中求和|
-> | `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串） |
+> | `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
 > | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
 > | `prompt_tokens` | `prompt_tokens` |仅供自己使用；不再从子运行中求和|
 > | `completion_cost` | `completion_cost` |仅供自己使用；不再从子运行中求和|
-> | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串） |
+> | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|
 > | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
 > | `completion_tokens` | `completion_tokens` |仅供自己使用；不再从子运行中求和|
 > | `total_cost` | `total_cost` |仅供自己使用；不再从子运行中求和|
@@ -556,7 +556,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -565,7 +565,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -586,7 +586,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -595,7 +595,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -609,7 +609,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -627,7 +627,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -647,7 +647,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -672,7 +672,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -701,7 +701,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -713,7 +713,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -731,7 +731,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -743,7 +743,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -769,7 +769,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -782,7 +782,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -800,7 +800,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -822,7 +822,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -858,7 +858,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -888,7 +888,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -931,7 +931,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -943,7 +943,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -961,7 +961,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from datetime import datetime, timedelta
 > >
 > > from langsmith import Client
@@ -976,7 +976,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > > from datetime import datetime, timedelta
 > >
@@ -1002,7 +1002,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1015,7 +1015,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1032,7 +1032,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import java.time.OffsetDateTime
 > >
 > > import com.langchain.smith.client.LangsmithClient
@@ -1057,7 +1057,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import java.time.OffsetDateTime
 > >
 > > import com.langchain.smith.client.LangsmithClient
@@ -1086,7 +1086,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1114,7 +1114,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1146,7 +1146,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1158,7 +1158,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1176,7 +1176,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -1185,7 +1185,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -1206,7 +1206,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1215,7 +1215,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1232,7 +1232,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -1250,7 +1250,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -1272,7 +1272,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1298,7 +1298,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1328,7 +1328,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1340,7 +1340,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1360,7 +1360,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -1369,7 +1369,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -1393,7 +1393,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1402,7 +1402,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1419,7 +1419,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -1443,7 +1443,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -1467,7 +1467,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1495,7 +1495,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1527,7 +1527,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > RUN_ID_1="<run-id-1>"
 > > RUN_ID_2="<run-id-2>"
 > >
@@ -1539,7 +1539,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1560,7 +1560,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -1569,7 +1569,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -1596,7 +1596,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1609,7 +1609,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1627,7 +1627,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -1649,7 +1649,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -1675,7 +1675,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1707,7 +1707,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1743,7 +1743,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1755,7 +1755,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1784,7 +1784,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -1793,7 +1793,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -1814,7 +1814,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1823,7 +1823,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1840,7 +1840,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -1858,7 +1858,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -1878,7 +1878,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1904,7 +1904,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1934,7 +1934,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1946,7 +1946,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1964,7 +1964,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -1974,7 +1974,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -1996,7 +1996,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -2006,7 +2006,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -2024,7 +2024,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -2043,7 +2043,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -2066,7 +2066,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -2093,7 +2093,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -2122,7 +2122,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -2136,7 +2136,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -2156,7 +2156,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -2169,7 +2169,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -2192,7 +2192,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -2204,7 +2204,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -2222,7 +2222,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -2242,7 +2242,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -2264,7 +2264,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -2291,7 +2291,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -2320,7 +2320,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -2334,7 +2334,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -2354,7 +2354,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -2368,7 +2368,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -2392,7 +2392,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -2406,7 +2406,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -2425,7 +2425,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -2448,7 +2448,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -2475,7 +2475,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -2503,7 +2503,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -2535,7 +2535,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之前
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -2556,7 +2556,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 >
 >> [选项卡] 之后
 >>
->> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >

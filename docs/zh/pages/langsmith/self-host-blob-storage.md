@@ -22,7 +22,7 @@ LangSmith 将运行输入、输出、错误、清单、额外内容、事件和�
 ## 升级到 v0.18
 
 升级到 LangSmith v0.18 的行为方式取决于您当前的 Blob 存储配置：* **配置了存储桶或容器**：如果设置了 `config.blobStorage.bucketName`（S3 或 GCS）或 `config.blobStorage.azureStorageContainerName`（Azure），LangSmith 将继续使用该存储。不需要改变任何值。
-* **未配置 blob 存储**：图表部署 RustFS 并 LangSmith 在那里存储 blob。要使用您自己的存储，请在升级之前对其进行配置。参见[Configuration](#configuration)。
+* **未配置 blob 存储**：图表部署 RustFS 且 LangSmith 在那里存储 blob。要使用您自己的存储，请在升级之前对其进行配置。参见[Configuration](#configuration)。
 * **`config.blobStorage.enabled`已设置**：图表不再有此设置。将其从你的价值观中删除。该图表失败并显示 `enabled: false`。
 * **`engine` 是 `GCS` 或 `Azure`，没有存储桶或容器**：图表失败，而不是部署 RustFS。设置桶或容器。
 
@@ -65,7 +65,7 @@ RustFS 支持只读根文件系统。将`readOnlyRootFilesystem: true`设置为`
   * [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs)
   * [Neon Object Storage](https://neon.com/docs/storage/get-started)（兼容S3）
 
-* Blob 存储中用于存储数据的存储桶/目录。我们强烈建议为 LangSmith 数据创建单独的存储桶/目录。
+* Blob 存储中用于存储数据的存储桶/目录。我们强烈建议为 LangSmith 数据创建一个单独的存储桶/目录。
   * **如果您使用 TTL**，您将需要设置生命周期策略来删除旧数据。有关更多信息，请参阅[configuring TTLs](/langsmith/self-host-ttl)。这些策略应反映您在 LangSmith 配置中设置的 TTL，否则您可能会遇到数据丢失。如何设置生命周期规则请参见[TTL configuration for blob storage](#ttl-configuration)。
   * 如果您使用自动化规则，请单独配置[automation outcome retention](#automation-outcome-retention)，即使跟踪 TTL 已禁用。* 允许LangSmith服务访问存储桶/目录的凭证
   * 您需要为您的 LangSmith 实例提供访问存储桶/目录所需的凭据。请阅读下面的身份验证[section](#authentication)以了解更多信息。
@@ -73,7 +73,7 @@ RustFS 支持只读根文件系统。将`readOnlyRootFilesystem: true`设置为`
 * 如果使用 S3 或 GCS，则为 Blob 存储服务的 API URL
 
   * 这将是 LangSmith 用于访问您的 Blob 存储系统的 URL
-  * 对于 Amazon S3，这将是 S3 终端节点的 URL。类似于：`https://s3.amazonaws.com` 或 `https://s3.us-west-1.amazonaws.com`（如果使用区域端点）。
+  * 对于 Amazon S3，这将是 S3 终端节点的 URL。类似：`https://s3.amazonaws.com` 或 `https://s3.us-west-1.amazonaws.com`（如果使用区域端点）。
   * 对于 Google Cloud Storage，这将是 GCS 端点的 URL。类似于：`https://storage.googleapis.com`
   * 对于 Neon 对象存储，这是 Neon 分支的存储端点。类似于：`https://br-cool-darkness-a1b2c3d4.storage.c-1.us-east-2.aws.neon.tech`
 
@@ -163,7 +163,7 @@ RustFS 支持只读根文件系统。将`readOnlyRootFilesystem: true`设置为`
 >
 > ### Neon 对象存储
 >
-> [Neon Object Storage](https://neon.com/docs/storage/get-started) 是附加到 Neon 分支的 S3 兼容对象存储。 LangSmith 使用 `S3` 引擎以及访问密钥和秘密密钥连接到它。
+> [Neon Object Storage](https://neon.com/docs/storage/get-started) 是附加到 Neon 分支的 S3 兼容对象存储。 LangSmith 使用`S3` 引擎以及访问密钥和秘密密钥连接到它。
 >
 > 要为 LangSmith 设置 Neon 对象存储：
 >
@@ -201,7 +201,7 @@ RustFS 支持只读根文件系统。将`readOnlyRootFilesystem: true`设置为`
 
 ## 频道搜索
 
-默认情况下，LangSmith仍会存储用于在 ClickHouse 中搜索的令牌。如果您正在使用 LangSmith Managed Clickhouse，您可能需要禁用此功能以避免向 ClickHouse 发送潜在的敏感信息。您可以在 Blob 存储配置中执行此操作。
+默认情况下，LangSmith仍会存储用于在 ClickHouse 中搜索的令牌。如果您使用的是 LangSmith Managed Clickhouse，您可能需要禁用此功能以避免向 ClickHouse 发送潜在的敏感信息。您可以在 Blob 存储配置中执行此操作。
 
 ## 配置
 
@@ -274,11 +274,11 @@ config:
 * `ttl_s/`：短期（基本）TTL，配置为 14 天。
 * `ttl_l/`：长期（扩展）TTL，默认配置为 400 天。
 
-### 自定义工作区级别保留前缀
+### 自定义保留前缀
 
-如果使用 [workspace-level extended retention](/langsmith/data-purging-compliance#customize-extended-retention-policy)，LangSmith 会将 blob 数据写入到 `ttl_XXd/` 形式的前缀，其中 `XX` 是为该工作区配置的天数。例如，如果工作区配置了 90 天的延长保留期，则该工作区的 Blob 数据将写入 `ttl_90d/` 前缀。
+如果您使用 [workspace-level extended retention](/langsmith/data-purging-compliance#customize-extended-retention-policy) 或 [per-project extended retention](/langsmith/data-purging-compliance#project-level-extended-retention-for-self-hosted)，LangSmith 会将 blob 数据写入`ttl_XXd/` 形式的前缀，其中 `XX` 是为该工作区或项目配置的天数。例如，如果工作区配置了 90 天的延长保留期，则该工作区的 Blob 数据将写入 `ttl_90d/` 前缀。
 
-您必须为工作区中配置的**每个**自定义保留期创建生命周期规则。常见示例：
+您必须为工作区和项目中配置的**每个**自定义保留期创建生命周期规则。如果设置 [the periods users can pick](/langsmith/self-host-ttl#choose-the-extended-retention-periods-users-can-pick)，请在用户选择列表中的每个值之前为其创建规则。常见示例：
 
 * `ttl_90d/` — 90 天保留
 * `ttl_180d/` — 180 天保留
@@ -587,7 +587,7 @@ config:
 
 > [标签] 霓虹灯
 >
-> Neon 不运行生命周期过期规则。延长 [scheduled cleanup job](#neon-object-storage-lifecycle-rules) 以删除 `run_rules/outcomes/` 下超过 30 天的对象。对象锁定、合法保留和存储保留策略可以防止删除。在依赖生命周期规则进行永久删除之前，请先检查这些设置以及版本控制、快照和软删除。
+> Neon 不运行生命周期过期规则。延长您的 [scheduled cleanup job](#neon-object-storage-lifecycle-rules) 以删除 `run_rules/outcomes/` 下超过 30 天的对象。对象锁定、合法保留和存储保留策略可以防止删除。在依赖生命周期规则进行永久删除之前，请先检查这些设置以及版本控制、快照和软删除。
 
 ***
 

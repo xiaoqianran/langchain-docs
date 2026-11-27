@@ -14,7 +14,7 @@ LangSmith 自托管支持自动 TTL 和跟踪数据保留。使用它来遵守�
 
 LangSmith 通过两个步骤确定保留跟踪的时间：跟踪属于哪个保留层，以及该层适用的时间段。
 
-[workspace retention restriction](/langsmith/data-purging-compliance#disable-extended-trace-retention) 会覆盖新跟踪的层分配并阻止新升级。处于活动状态时，即使项目保存的默认值是 `longlived`，新迹线也会使用 `shortlived`。它不会更改保留期或现有跟踪到期日期。
+[workspace retention restriction](/langsmith/data-purging-compliance#disable-extended-trace-retention) 会覆盖新跟踪的层分配并阻止新升级。处于活动状态时，即使项目保存的默认值是 `longlived`，新迹线也会使用 `shortlived`。它不会更改保留期限或现有跟踪到期日期。
 
 当工作区允许延长保留时间时，LangSmith 按此顺序分配层，优先级最高的首先：1. **跟踪升级**：运行规则或其他限定操作将单个跟踪提升到`longlived`，覆盖否则适用的任何层。
 2. **项目层**：为跟踪项目配置的层。
@@ -24,7 +24,7 @@ LangSmith 通过两个步骤确定保留跟踪的时间：跟踪属于哪个保�
 
 LangSmith 然后解析指定层的保留期：
 
-* **`longlived`**：工作区延长保留期限（如果通过UI设置），否则`longlived`值来自[Helm configuration](#requirements)。
+* **`longlived`**：项目延长保留期（如果设置，参见[Project-level extended retention for self-hosted](/langsmith/data-purging-compliance#project-level-extended-retention-for-self-hosted)），否则工作区延长保留期（如果通过UI设置），否则`longlived`值来自[Helm configuration](#requirements)。 UI 中设置的基础项目没有自己的周期。因此，除非通过 API 在项目上设置了周期，否则其升级跟踪将使用工作区周期。
 * **`shortlived`**：来自 [Helm configuration](#requirements) 的 `shortlived` 值。
 
 Helm 图表默认 `shortlived` 为 14 天，`longlived` 为 400 天。
@@ -33,6 +33,8 @@ Helm 图表默认 `shortlived` 为 14 天，`longlived` 为 400 天。
 
 通过 Helm 或环境变量设置配置保留：* **启用**：启用或禁用自动数据保留。启用后，通过 UI 设置默认组织和项目 TTL 层（请参阅[data retention guide](/langsmith/usage-and-billing#data-retention)）。
 * **保留期限**：为 `shortlived` 和 `longlived` 跟踪设置系统范围的保留期限。设置后，在项目级别管理保留或为新项目设置组织范围内的默认值。
+* **按项目延长保留**：从 v0.18.0 起可用，默认禁用。设置`config.ttl.perProjectRetention.enabled: true`以启用它。仅当`config.ttl.enabled`同时为`true`时才生效。它适用于 ClickHouse 和 SmithDB 安装。在 SmithDB 安装上，同一标志还会打开将项目周期同步到 SmithDB 的作业。参见[Project-level extended retention for self-hosted](/langsmith/data-purging-compliance#project-level-extended-retention-for-self-hosted)。
+* **延长保留期**（可选）：设置用户可以选择延长保留期（以天为单位）。参见[Choose the extended retention periods users can pick](#choose-the-extended-retention-periods-users-can-pick)。
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
@@ -42,13 +44,45 @@ config:
       # -- 400 day longlived and 14 day shortlived
       longlived: "34560000"
       shortlived: "1209600"
+    perProjectRetention:
+      enabled: true # Optional. Requires v0.18.0 or later.
 ```
+
+## 选择用户可以选择的延长保留期
+
+> [!注意]
+>
+> 可配置的延长保留期需要 LangSmith v0.18.0 或更高版本。
+
+将 `config.ttl.longlivedAllowedDays` 设置为用户可以选择在工作区和项目上延长保留的时间段（以天为单位）。使用它来提供默认选项不包括的期限，例如 2 年：
+
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  ttl:
+    enabled: true
+    ttl_period_seconds:
+      longlived: "34560000" # 400 days
+      shortlived: "1209600"
+    longlivedAllowedDays: [30, 90, 180, 365, 730]
+```使用此配置，用户可以选择 30、90、180、365、400 和 730 天：
+
+* **列表值**：30、90、180、365 和 730 天。
+* **`longlived`期限**：400天。 LangSmith 总是提供它，即使它不在列表中。
+
+`longlived` 期限是默认值，不是限制。没有自己一段时间的工作空间和项目使用它，并且用户可以选择比它更长的列表值。
+
+如果没有 `longlivedAllowedDays`，用户可以选择 30、60、90、120、150、180、240、300、365 和 400 天，直到您的 `longlived` 期限，加上 `longlived` 期限本身。
+
+该列表必须遵循以下规则，否则 Helm 图表和 LangSmith 会拒绝它：
+
+* 最多 10 个值。
+* 每个值至少为 14 天。
+
+每个值的 `ttl_<N>d/` 前缀都需要自己的 Blob 存储生命周期规则。如果没有该规则，则永远不会删除前缀下的 blob 数据。参见[Custom retention prefixes](/langsmith/self-host-blob-storage#custom-retention-prefixes)。
 
 ## ClickHouse TTL 清理作业
 
-从版本 0.11 开始，cron 作业在周末运行，以删除 ClickHouse 内置 TTL 机制可能尚未清理的过期数据。
-
-> [!警告]
+从版本 0.11 开始，cron 作业在周末运行，以删除 ClickHouse 内置 TTL 机制可能尚未清理的过期数据。> [!警告]
 >
 > 此作业使用**突变** (`ALTER TABLE DELETE`)，这是昂贵的操作，可能会影响 ClickHouse 性能。仅在非高峰时段（夜间和周末）运行它们。使用 **1 个并发活动** 突变（默认）进行测试不会导致 CPU、内存或延迟显着增加。
 
@@ -85,7 +119,9 @@ queue:
       # UTC: Saturday 8pm/10pm
       - name: "CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_EVENING"
         value: "0 20,22 * * 6"
-```> [!提示]
+```
+
+> [!提示]
 >
 > 要使用单个 cron 计划，请将 `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_EVENING` 和 `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_MORNING` 设置为相同的值。作业锁定可防止重叠执行。
 
@@ -104,9 +140,7 @@ queue:
         value: "100000" # 100k expired rows
 ```
 
-#### 检查过期行
-
-运行此查询以查看每个表部分的过期行，然后调整最小值：
+#### 检查过期行运行此查询以查看每个表部分的过期行，然后调整最小值：
 
 ```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 -- Query for Runs table. For other tables, replace 'ttl_seconds' with 'trace_ttl_seconds'
@@ -145,7 +179,9 @@ queue:
 
    ```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    SELECT * FROM system.mutations WHERE is_done = 0;
-   ```查找 `mutation_id`，其中 `command` 列包含 `DELETE` 语句。
+   ```
+
+   查找 `mutation_id`，其中 `command` 列包含 `DELETE` 语句。
 
 2. **杀死突变**：
 
@@ -162,9 +198,7 @@ queue:
 * `/var/lib/clickhouse/backup`
 * `/var/lib/clickhouse/shadow`
 
-如果存在备份，请将其复制到外部存储（例如 S3），然后清除目录。磁盘空间应在几分钟内开始释放。
-
-## 跟踪过期后保留运行统计信息
+如果存在备份，请将其复制到外部存储（例如 S3），然后清除目录。磁盘空间应在几分钟内开始释放。## 跟踪过期后保留运行统计信息
 
 跟踪过期后，LangSmith 会保留其运行统计信息，例如运行计数、延迟和错误率，直到延长的 (`longlived`) 保留期过去。然后LangSmith删除剩余的存储数据，那些运行统计数据不再可用。 LangSmith如何解析`longlived`周期，请参见[TTL configuration precedence](#ttl-configuration-precedence)。
 
@@ -172,7 +206,9 @@ queue:
 >
 > 这适用于 LangSmith 0.18 上的 [SmithDB](/langsmith/self-host-smithdb) 安装（Helm 图表 `0.18.0` 或更高版本）。
 
-要保持运行统计数据更长时间可用，请将 `SMITHDB_COMPACTION__EXPIRY_CYCLE__RETENTION_CLEANUP_BUFFER` 设置为持续时间，例如 `30d` 或 `720h`。 LangSmith 等待了这么长时间，过了 `longlived` 时间段后才删除数据。默认为`0s`。例如，使用默认的 400 天 `longlived` 周期和 `30d` 缓冲区，运行统计信息在 LangSmith 收到跟踪后至少可保留 430 天。
+要使运行统计数据保持更长时间，请将 `SMITHDB_COMPACTION__EXPIRY_CYCLE__RETENTION_CLEANUP_BUFFER` 设置为持续时间，例如 `30d` 或 `720h`。 LangSmith 在 `longlived` 期间等待了很长时间才删除数据。默认为`0s`。
+
+例如，使用默认的 400 天 `longlived` 周期和 `30d` 缓冲区，运行统计信息在 LangSmith 收到跟踪后至少 430 天内保持可用。
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:

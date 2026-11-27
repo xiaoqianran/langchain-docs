@@ -155,6 +155,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`ChatGMI`](https://github.com/dhruvil-codes/langchain-gmi#readme) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gmi/month)](https://pypi.org/project/langchain-gmi/) |
 | [`ChatOutrun`](https://github.com/OutrunAIAPI/langchain-outrun#readme) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-outrun/month)](https://pypi.org/project/langchain-outrun/) |
 | [`ChatLinkrra`](https://github.com/weare-linkrra/linkrra-synap/tree/main/langchain-linkrra#readme) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-linkrra/month)](https://pypi.org/project/langchain-linkrra/) |
+| [`ChatStraitly`](https://github.com/Straitly-ai/langchain-straitly#readme) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-straitly/month)](https://pypi.org/project/langchain-straitly/) |
 | [`1Claw`](https://docs.1claw.xyz) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`API-Route`](https://www.api-route.com/docs/overview) | | | | | N/A |
 | [`Auxen`](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ | N/A |

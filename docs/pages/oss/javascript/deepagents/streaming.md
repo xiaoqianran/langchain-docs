@@ -17,7 +17,7 @@ What's possible with deep agent streaming:
 
 Deep Agents use LangGraph's subgraph streaming to surface events from subagent execution. To receive subagent events, enable `stream_subgraphs` when streaming.
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -54,7 +54,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -91,7 +91,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -128,7 +128,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -165,7 +165,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -202,7 +202,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -239,7 +239,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -293,7 +293,7 @@ Within each update chunk, the dict keys are [graph node names](#inspect-graph-no
 
 Use namespaces to route events to the correct UI component:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for await (const [namespace, chunk] of await agent.stream(
   { messages: [{ role: "user", content: "Plan my vacation" }] },
   { streamMode: "updates", subgraphs: true },
@@ -348,7 +348,7 @@ For LangChain agent progress streaming that filters on these same keys, see [Age
 
 Use `stream_mode="updates"` to track subagent progress as each step completes. This is useful for showing which subagents are active and what work they've completed.
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -402,7 +402,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -456,7 +456,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -510,7 +510,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -564,7 +564,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -618,7 +618,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -672,7 +672,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
@@ -745,7 +745,7 @@ Subagent complete: task
 
 Use `stream_mode="messages"` to stream individual tokens from both the main agent and subagents. Each message event includes metadata that identifies the source agent.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 let currentSource = "";
 
 for await (const [namespace, chunk] of await agent.stream(
@@ -797,7 +797,7 @@ process.stdout.write("\n");
 
 When subagents use tools, you can stream tool call events to display what each subagent is doing. Tool call chunks appear in the `messages` stream mode.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessageChunk, ToolMessage } from "langchain";
 
 for await (const [namespace, chunk] of await agent.stream(
@@ -860,7 +860,7 @@ process.stdout.write("\n");
 
 Use `config.writer` inside your subagent tools to emit custom progress events:
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -934,7 +934,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -1008,7 +1008,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -1082,7 +1082,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -1156,7 +1156,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -1230,7 +1230,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -1304,7 +1304,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 import { tool, type ToolRuntime } from "langchain";
 import { z } from "zod";
@@ -1392,7 +1392,7 @@ for await (const [namespace, chunk] of await agent.stream(
 
 Combine multiple stream modes to get a complete picture of agent execution:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // Skip internal middleware steps - only show meaningful node names
 const INTERESTING_NODES = new Set(["model", "tools"]);
 
@@ -1459,7 +1459,7 @@ process.stdout.write("\n");
 
 Monitor when subagents start, run, and complete:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 function getToolCalls(message: unknown): Array<{
   id?: string;
   name?: string;
@@ -1611,7 +1611,7 @@ With `subgraphs: true`, chunk shape depends on whether you pass one stream mode 
 
 Without `subgraphs`, a single mode yields `data` directly, and multiple modes yield `[mode, data]`.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // Single mode + subgraphs
 for await (const [namespace, data] of await agent.stream(
   { messages: [{ role: "user", content: "Research quantum computing" }] },

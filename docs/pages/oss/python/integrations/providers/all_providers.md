@@ -22,6 +22,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Checks each agent tool call against ACGS constitution rules before it runs: blocked calls are denied, review rules pause the agent with an interrupt.
 
+> [card] [Abe](https://fjp.flowinfo.co/abe)
+>
+> Deterministic ACT / BLOCK / ESCALATE gate on every tool call, with a tamper-evident audit record. Local, free, open source.
+
 > [card] [Abso](https://github.com/lunary-ai/langchain-abso)
 >
 > Custom AI integration platform for enterprise workflows.
@@ -573,6 +577,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [ChatSovereignEG](https://sovereigneg.com/docs/langchain)
 >
 > Egyptian sovereign AI platform with an OpenAI-compatible API for local and international models, billed in EGP.
+
+> [card] [ChatStraitly](https://github.com/Straitly-ai/langchain-straitly#readme)
+>
+> Straitly is an AI gateway: one OpenAI-compatible API key for 150+ models including Claude, GPT, Gemini, Grok and DeepSeek.
 
 > [card] [ChopperCompressor](https://github.com/wiiiktor/chopper_demo/tree/main/integrations/chopper-rag)
 >
@@ -2901,6 +2909,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Web2MDLoader](https://github.com/kanavsingla28/web2md-clients/tree/main/python#readme)
 >
 > Hosted API that converts web pages to clean Markdown and heading-aware, token-bounded chunks; `Web2MDLoader` yields one Document per chunk or per page.
+
+> [card] [WebciteToolkit](https://github.com/strategyconnect/langchain-webcite#readme)
+>
+> Webcite tools to verify claims with citations bound to source passages, search sources and parse documents to Markdown.
 
 > [card] [WebCrawlerAPILoader](https://webcrawlerapi.com/docs/sdk/langchain)
 >

@@ -296,7 +296,7 @@ result = agent.invoke({
     "messages": [{"role": "user", "content": "Analyze this review: 'Great product: 5 out of 5 stars. Fast shipping, but expensive'"}]
 })
 result["structured_response"]
-# {'rating': 5, 'sentiment': 'positive', 'key_points': ['fast shipping', 'expensive']}
+# ProductReview(rating=5, sentiment='positive', key_points=['fast shipping', 'expensive'])
 ```
 
 ```python TypedDict theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

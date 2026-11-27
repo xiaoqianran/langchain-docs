@@ -585,6 +585,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Agent Data Hub`](https://github.com/Jona1245/agentdatahub-python#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/agentdatahub/month)](https://pypi.org/project/agentdatahub/) |
 | [`AlionToolkit`](https://github.com/alion-io/alion-sdk/tree/main/langchain#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alion/month)](https://pypi.org/project/langchain-alion/) |
 | [`EtfiqToolkit`](https://github.com/etfiq/etfiq-connectors/tree/main/langchain-etfiq) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-etfiq/month)](https://pypi.org/project/langchain-etfiq/) |
+| [`WebciteToolkit`](https://github.com/strategyconnect/langchain-webcite#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webcite/month)](https://pypi.org/project/langchain-webcite/) |
 | [`Channel3Toolkit`](https://channel3.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-channel3/month)](https://pypi.org/project/langchain-channel3/) |
 | [`StoreRouterToolkit`](https://github.com/octogen-ai/octogen-dev/tree/main/integrations/langchain#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-storerouter/month)](https://pypi.org/project/langchain-storerouter/) |
 | [`TrezaToolkit`](https://www.trezalabs.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-treza/month)](https://pypi.org/project/langchain-treza/) |
